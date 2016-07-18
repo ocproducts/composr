@@ -40,7 +40,6 @@ require($FILE_BASE . '/sources/global.php');
 $url = get_param_string('url');
 $email = get_param_string('email');
 $advertise_on = get_param_integer('advertise_on', 0);
-$interest_level = get_param_integer('interest_level');
 $lang = get_param_string('lang');
 
 if ($advertise_on == 1) {
@@ -49,5 +48,5 @@ if ($advertise_on == 1) {
 
 if (($email != 'dont_sign_me_up@compo.sr') && ($email != '')) {
     require_code('newsletter');
-    basic_newsletter_join($email, $interest_level, $lang);
+    basic_newsletter_join($email, $lang);
 }

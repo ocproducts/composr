@@ -91,7 +91,7 @@ class Block_main_newsletter_signup
             require_code('character_sets');
             $forename = post_param_string('firstname' . strval($newsletter_id), '');
             $surname = post_param_string('lastname' . strval($newsletter_id), '');
-            $password = basic_newsletter_join($address, 4, null, !file_exists(get_custom_file_base() . '/' . $map['path'])/*Send confirm if we're not sending an intro email through this block*/, $newsletter_id, $forename, $surname);
+            $password = basic_newsletter_join($address, null, !file_exists(get_custom_file_base() . '/' . $map['path'])/*Send confirm if we're not sending an intro email through this block*/, $newsletter_id, $forename, $surname);
             if ($password == '') {
                 return do_template('INLINE_WIP_MESSAGE', array('_GUID' => 'bbbf2b31e71cbdbc2bcf2bdb7605142c', 'MESSAGE' => do_lang_tempcode('NEWSLETTER_THIS_ALSO')));
             }

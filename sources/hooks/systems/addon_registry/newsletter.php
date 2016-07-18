@@ -113,7 +113,6 @@ class Hook_addon_registry_newsletter
             'sources/hooks/systems/block_ui_renderers/newsletters.php',
             'sources/hooks/modules/admin_setupwizard/newsletter.php',
             'sources/hooks/systems/tasks/import_newsletter_subscribers.php',
-            'sources/hooks/systems/config/interest_levels.php',
             'sources/hooks/systems/config/newsletter_text.php',
             'sources/hooks/systems/config/newsletter_title.php',
             'sources/hooks/systems/addon_registry/newsletter.php',
@@ -263,7 +262,6 @@ class Hook_addon_registry_newsletter
         $outs = array();
         $outs[] = array(
             'SUB' => $out,
-            'TEXT' => lorem_phrase(),
         );
 
         return array(

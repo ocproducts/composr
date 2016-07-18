@@ -54,7 +54,6 @@ function _do_install_to($database, $username, $password, $table_prefix, $safe_mo
         'max' => '1000',
         'default_lang' => fallback_lang(),
         'email' => 'E-mail address',
-        'interest_level' => '3',
         'advertise_on' => '0',
         'use_multi_db' => '0',
         'use_msn' => '0',

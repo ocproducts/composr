@@ -90,7 +90,6 @@ class Module_newsletter
                 'subject' => 'SHORT_TEXT',
                 'newsletter' => 'LONG_TEXT',
                 'language' => 'ID_TEXT',
-                'importance_level' => 'INTEGER',
                 'from_email' => 'SHORT_TEXT',
                 'from_name' => 'SHORT_TEXT',
                 'priority' => 'INTEGER',
@@ -113,10 +112,8 @@ class Module_newsletter
 
             $GLOBALS['SITE_DB']->create_table('newsletter_subscribe', array(
                 'newsletter_id' => '*AUTO_LINK',
-                'the_level' => 'SHORT_INTEGER',
                 'email' => '*SHORT_TEXT',
             ), false, false, true);
-            $GLOBALS['SITE_DB']->create_index('newsletter_subscribe', 'peopletosendto', array('the_level'));
 
             $GLOBALS['SITE_DB']->create_table('newsletter_drip_send', array(
                 'id' => '*AUTO',
@@ -192,6 +189,10 @@ class Module_newsletter
                     $GLOBALS['SITE_DB']->query_update('newsletter_periodic', array('np_csv_data' => json_encode(unserialize($p['np_csv_data']))), array('id' => $p['id']), '', 1);
                 }
             }
+
+            // We've dropped interest levels
+            $GLOBALS['SITE_DB']->delete_table_field('newsletter_archive', 'importance_level');
+            $GLOBALS['SITE_DB']->delete_table_field('newsletter_subscribe', 'the_level');
         }
     }
 
@@ -349,25 +350,12 @@ class Module_newsletter
         if (count(find_all_langs()) != 1) {
             $fields->attach(form_input_list(do_lang_tempcode('LANGUAGE'), '', 'lang', create_selection_list_langs(user_lang())));
         }
-        $level = get_param_integer('level', null);
-        if (is_null($level)) {
-            $level = 3;
-        }
-        $l = form_input_list_entry('0', false, do_lang_tempcode('NEWSLETTER_0'));
-        $l->attach(form_input_list_entry('1', $level == 1, do_lang_tempcode('NEWSLETTER_1')));
-        $l->attach(form_input_list_entry('2', $level == 2, do_lang_tempcode('NEWSLETTER_2')));
-        $l->attach(form_input_list_entry('3', $level == 3, do_lang_tempcode('NEWSLETTER_3')));
-        $l->attach(form_input_list_entry('4', $level == 4, do_lang_tempcode('NEWSLETTER_4')));
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'a87e4be6cbc070e66e25ad4ece429cc4', 'TITLE' => do_lang_tempcode('NEWSLETTER_SUBSCRIPTIONS'))));
         foreach ($newsletters as $newsletter) {
             $newsletter_title = get_translated_text($newsletter['title']);
             $newsletter_description = get_translated_text($newsletter['description']);
             $GLOBALS['NO_DEV_MODE_FULLSTOP_CHECK'] = true;
-            if (get_option('interest_levels') == '1') {
-                $fields->attach(form_input_list(do_lang_tempcode('SUBSCRIPTION_LEVEL_FOR', make_string_tempcode(escape_html($newsletter_title))), do_lang_tempcode('DESCRIPTION_SUBSCRIPTION_LEVEL', escape_html($newsletter_description)), 'level' . strval($newsletter['id']), $l));
-            } else {
-                $fields->attach(form_input_tick(do_lang_tempcode('SUBSCRIBE_TO', make_string_tempcode(escape_html($newsletter_title))), make_string_tempcode(escape_html($newsletter_description)), 'level' . strval($newsletter['id']), $level != 0));
-            }
+            $fields->attach(form_input_tick(do_lang_tempcode('SUBSCRIBE_TO', make_string_tempcode(escape_html($newsletter_title))), make_string_tempcode(escape_html($newsletter_description)), 'subscribe' . strval($newsletter['id']), true));
         }
 
         url_default_parameters__disable();
@@ -421,21 +409,13 @@ class Module_newsletter
         if ((is_null($old_confirm)) || ($old_confirm != 0)) {
             // As it is new we need to actually confirm you were setting some subscription settings
             $newsletters = $GLOBALS['SITE_DB']->query_select('newsletters', array('id'));
-            $found_level = false;
+            $found_subscription = false;
             foreach ($newsletters as $newsletter) {
-                if (get_option('interest_levels') == '1') {
-                    $level = post_param_integer('level' . strval($newsletter['id']));
-                } else {
-                    $level = post_param_integer('level' . strval($newsletter['id']), 0);
-                    if ($level == 1) {
-                        $level = 4;
-                    }
-                }
-                if ($level != 0) {
-                    $found_level = true;
+                if (post_param_integer('subscribe' . strval($newsletter['id']), 0) == 1) {
+                    $found_subscription = true;
                 }
             }
-            if (!$found_level) {
+            if (!$found_subscription) {
                 // No subscription settings
                 warn_exit(do_lang_tempcode('NOT_NEWSLETTER_SUBSCRIBER'));
             }
@@ -472,18 +452,12 @@ class Module_newsletter
             // Access granted, make edit
             $newsletters = $GLOBALS['SITE_DB']->query_select('newsletters', array('id'));
             foreach ($newsletters as $newsletter) {
-                if (get_option('interest_levels') == '1') {
-                    $level = post_param_integer('level' . strval($newsletter['id']));
-                } else {
-                    $level = post_param_integer('level' . strval($newsletter['id']), 0);
-                    if ($level == 1) {
-                        $level = 4;
-                    }
-                }
+                $subscribe = (post_param_integer('subscribe' . strval($newsletter['id']), 0) == 1);
+
                 // First we delete
                 $GLOBALS['SITE_DB']->query_delete('newsletter_subscribe', array('newsletter_id' => $newsletter['id'], 'email' => $email), '', 1);
-                if ($level != 0) { // Then we put back if it's not a 0 level
-                    $GLOBALS['SITE_DB']->query_insert('newsletter_subscribe', array('newsletter_id' => $newsletter['id'], 'email' => $email, 'the_level' => $level));
+                if ($subscribe) {
+                    $GLOBALS['SITE_DB']->query_insert('newsletter_subscribe', array('newsletter_id' => $newsletter['id'], 'email' => $email));
                 }
             }
 

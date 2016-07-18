@@ -30,7 +30,7 @@ class Hook_task_send_newsletter
      * @param  LONG_TEXT $message The newsletter message
      * @param  SHORT_TEXT $subject The newsletter subject
      * @param  LANGUAGE_NAME $lang The language
-     * @param  array $send_details A map describing what newsletters and newsletter levels the newsletter is being sent to
+     * @param  array $send_details A map describing what newsletters the newsletter is being sent to
      * @param  BINARY $html_only Whether to only send in HTML format
      * @param  string $from_email Override the email address the mail is sent from (blank: staff address)
      * @param  string $from_name Override the name the mail is sent from (blank: site name)

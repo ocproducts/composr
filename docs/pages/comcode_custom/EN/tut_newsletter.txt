@@ -16,21 +16,9 @@ Newsletter subscription is distinct from membership, in that a subscription is s
 
 If you only ever e-mail members, it is better to ask them to join target usergroups rather than target newsletters.
 
-[title="3"]Multiple newsletters and Interest levels[/title]
+[title="3"]Multiple newsletters[/title]
 
-[surround]
-Composr newsletters support a concept of 'interest levels' which you can use to restrict newsletter receipt based on the level of interest the subscriber has.
-The subscriber sets interest as one of:
- - Any and all updates
- - Interesting updates
- - Important updates
- - Critical updates only
-Using this you can ensure that everyone gets critical updates while ensuring less interested users do not feel spammed by less important mailings.
-
-You may have multiple newsletters in Composr, for each of which members may choose to subscribe with an interest level of their choosing.
-
-[b]The interest levels feature is off-by-default[/b], but even when disabled you may see it mentioned within the administrative screens. This is because if you ever do have it turned on you may accumulate members who chose an interest level, and you may make use of that data even if you no longer request new subscribers to set their interest levels (by disabling them again).
-[/surround]
+You may have multiple newsletters in Composr. This allows you to set different subscription areas, or a way to allow people to subscribe to different traffic levels.
 
 [title="2"]Newsletter signup[/title]
 
@@ -54,7 +42,7 @@ The maintenance module is a bit richer:
  - An existing subscription, with the wrong maintenance password -- Composr will give an error (with an option to re-set the password), unless you are logged in with a privileged account
  - An existing subscription, with the correct maintenance password -- Composr will update the newsletter subscription
 
-The block sets only for a single newsletter, and does not support interest levels. The maintenance module can do for multiple newsletters at once, and does support interest levels. This difference between block and maintenance page is intentional, as the block is intended only for new signups to a specific newsletter, not for changing existing subscriptions.
+The block sets only for a single newsletter while the maintenance module can do for multiple newsletters at once. This difference between block and maintenance page is intentional, as the block is intended only for new signups to a specific newsletter, not for changing existing subscriptions.
 
 [title="3"]Manually unsubscribing a member[/title]
 
@@ -64,8 +52,7 @@ To unsubscribe a member from a newsletter:
 1) Log in with your administrative account, if you haven't already got an admin login open
 2) Go to the [tt]newsletter[/tt] module ([tt]site:newsletter[/tt] page-link, About > Newsletter on the default menus)
 3) Enter the e-mail address you wish to unsubscribe. Leave all other fields blank.
-4) If you have interest levels enabled: change "Subscription level for <newsletter name>" to "Not subscribed". If you do not have interest levels enabled, untick (uncheck) "Subscribe to <newsletter name>".
-5) Click "Join newsletter/Change settings"
+4) Click "Join newsletter/Change settings"
 This works, even though the maintenance password was left blank, because Composr acknowledges your overriding administrative access.
 
 [title="3"]Blocking recipients (advanced)[/title]
@@ -158,8 +145,6 @@ This can be used in many ways, such as:
  - Migrating the subscriber list to another piece of dedicated newsletter software, or sending it to an expert newsletter design company for targeting
 
 You can also import subscribers from a CSV file, or send a newsletter to a CSV file (this is done on the newsletter form). Composr is quite flexible in supporting different layouts of CSV file: it will try and auto-sense which columns are which.
-
-Note that if you are using interest levels, each set of users with a different interest level should be stored in a different CSV file, as when you import them they would all be imported to the same one.
 
 All these features are available under Admin Zone > Tools > Newsletter.
 

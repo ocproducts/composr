@@ -28,11 +28,11 @@ class Hook_task_import_newsletter_subscribers
      *
      * @param  LANGUAGE_NAME $_language The language for subscribers
      * @param  AUTO_LINK $newsletter_id The newsletter being imported into
-     * @param  integer $_level The level to import into
+     * @param  boolean $subscribe Whether we are subscribing the member (true=adding, false=removing)
      * @param  PATH $path The path of the file to import
      * @return ?array A tuple of at least 2: Return mime-type, content (either Tempcode, or a string, or a filename and file-path pair to a temporary file), map of HTTP headers if transferring immediately, map of ini_set commands if transferring immediately (null: show standard success message)
      */
-    public function run($_language, $newsletter_id, $_level, $path)
+    public function run($_language, $newsletter_id, $subscribe, $path)
     {
         require_lang('cns');
         require_lang('newsletter');
@@ -69,7 +69,6 @@ class Hook_task_import_newsletter_subscribers
         $language_index = null;
         $code_confirm_index = null;
         $join_time_index = null;
-        $level_index = null;
 
         $count = 0;
         $count2 = 0;
@@ -116,9 +115,6 @@ class Hook_task_import_newsletter_subscribers
                         if ((stripos($val, 'time') !== false) || (stripos($val, 'date') !== false) || (strtolower($val) == do_lang('JOIN_DATE'))) {
                             $join_time_index = $j;
                         }
-                        if (in_array(strtolower($val), array('subscription level', strtolower(do_lang('SUBSCRIPTION_LEVEL'))))) {
-                            $level_index = $j;
-                        }
                     }
                     continue;
                 }
@@ -145,23 +141,22 @@ class Hook_task_import_newsletter_subscribers
                     if ($join_time === false) {
                         $join_time = time();
                     }
-                    $level = ((!is_null($level_index)) && (array_key_exists($level_index, $csv_line))) ? intval($csv_line[$level_index]) : $_level;
 
                     if ($newsletter_id == -1) {
                         $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', 'id', array('m_email_address' => $email));
                         if (is_null($test)) {
-                            if ($level != 0) {
+                            if ($subscribe) {
                                 if (!$done_special_notice) {
                                     attach_message(do_lang_tempcode('NEWSLETTER_WONT_IMPORT_MEMBERS'), 'notice');
                                     $done_special_notice = true;
                                 }
                             }
                         } else {
-                            if ($level == 0) {
+                            if ($subscribe) {
+                                $GLOBALS['FORUM_DB']->query_update('f_members', array('m_allow_emails_from_staff' => 1), array('m_email_address' => $email), '', 1);
+                            } else {
                                 $GLOBALS['FORUM_DB']->query_update('f_members', array('m_allow_emails_from_staff' => 0), array('m_email_address' => $email), '', 1);
                                 $count++;
-                            } else {
-                                $GLOBALS['FORUM_DB']->query_update('f_members', array('m_allow_emails_from_staff' => 1), array('m_email_address' => $email), '', 1);
                             }
                         }
                     } else {
@@ -169,13 +164,13 @@ class Hook_task_import_newsletter_subscribers
                         if (is_null($test)) {
                             add_newsletter_subscriber($email, $join_time, $code_confirm, $hash, $salt, $language, $forename, $surname);
 
-                            if ($level != 0) {
+                            if ($subscribe) {
                                 $count++;
                             }
                         } else {
                             edit_newsletter_subscriber($test, null, null, null, null, null, null, $forename, $surname);
 
-                            if ($level == 0) {
+                            if (!$subscribe) {
                                 $count++;
                             }
                         }
@@ -185,10 +180,9 @@ class Hook_task_import_newsletter_subscribers
                             'newsletter_id' => $newsletter_id,
                             'email' => $email,
                         ), '', 1);
-                        if ($level != 0) { // Allow deletion CSV via setting subscription level to 0. So we only reinsert if NOT deletion.
+                        if ($subscribe) {
                             $GLOBALS['SITE_DB']->query_insert('newsletter_subscribe', array(
                                 'newsletter_id' => $newsletter_id,
-                                'the_level' => $level,
                                 'email' => $email,
                             ));
                         }
@@ -201,10 +195,10 @@ class Hook_task_import_newsletter_subscribers
 
         fclose($myfile);
 
-        if ($level == 0) {
-            $message = do_lang_tempcode('NEWSLETTER_REMOVED_THIS', escape_html(integer_format($count)), escape_html(integer_format($count2)));
-        } else {
+        if ($subscribe) {
             $message = do_lang_tempcode('NEWSLETTER_IMPORTED_THIS', escape_html(integer_format($count)), escape_html(integer_format($count2)));
+        } else {
+            $message = do_lang_tempcode('NEWSLETTER_REMOVED_THIS', escape_html(integer_format($count)), escape_html(integer_format($count2)));
         }
 
         log_it('IMPORT_NEWSLETTER_SUBSCRIBERS');

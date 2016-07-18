@@ -49,8 +49,6 @@ function incoming_bounced_email_script()
  * No authorisation support here, checks it works only for non-subscribed or non-confirmed members.
  *
  * @param  EMAIL $email The email address of the subscriber
- * @param  integer $interest_level The interest level
- * @range  1 4
  * @param  ?LANGUAGE_NAME $language The language (null: users)
  * @param  boolean $get_confirm_mail Whether to require a confirmation mail
  * @param  ?AUTO_LINK $newsletter_id The newsletter to join (null: the first)
@@ -58,7 +56,7 @@ function incoming_bounced_email_script()
  * @param  string $surname Subscribers surname
  * @return string Newsletter password
  */
-function basic_newsletter_join($email, $interest_level = 4, $language = null, $get_confirm_mail = false, $newsletter_id = null, $forename = '', $surname = '')
+function basic_newsletter_join($email, $language = null, $get_confirm_mail = false, $newsletter_id = null, $forename = '', $surname = '')
 {
     require_lang('newsletter');
 
@@ -103,7 +101,7 @@ function basic_newsletter_join($email, $interest_level = 4, $language = null, $g
 
     // Set subscription
     $GLOBALS['SITE_DB']->query_delete('newsletter_subscribe', array('newsletter_id' => $newsletter_id, 'email' => $email), '', 1);
-    $GLOBALS['SITE_DB']->query_insert('newsletter_subscribe', array('newsletter_id' => $newsletter_id, 'the_level' => $interest_level, 'email' => $email), false, true); // race condition
+    $GLOBALS['SITE_DB']->query_insert('newsletter_subscribe', array('newsletter_id' => $newsletter_id, 'email' => $email), false, true); // race condition
 
     return $password;
 }
@@ -368,7 +366,7 @@ function newsletter_wrap($_message, $lang, $subject = '')
  * @param  LONG_TEXT $message The newsletter message
  * @param  SHORT_TEXT $subject The newsletter subject
  * @param  LANGUAGE_NAME $language The language
- * @param  array $send_details A map describing what newsletters and newsletter levels the newsletter is being sent to
+ * @param  array $send_details A map describing what newsletters the newsletter is being sent to
  * @param  BINARY $html_only Whether to only send in HTML format
  * @param  string $from_email Override the email address the mail is sent from (blank: staff address)
  * @param  string $from_name Override the name the mail is sent from (blank: site name)
@@ -387,7 +385,6 @@ function send_newsletter($message, $subject, $language, $send_details, $html_onl
         'subject' => $subject,
         'newsletter' => $message,
         'language' => $language,
-        'importance_level' => 1,
         'from_email' => $from_email,
         'from_name' => $from_name,
         'priority' => $priority,
@@ -411,19 +408,17 @@ function send_newsletter($message, $subject, $language, $send_details, $html_onl
 /**
  * Find a group of people the newsletter will go to.
  *
- * @param  array $send_details A map describing what newsletters and newsletter levels the newsletter is being sent to
+ * @param  array $send_details A map describing what newsletters the newsletter is being sent to
  * @param  LANGUAGE_NAME $language The language
  * @param  integer $start Start position in result set (results are returned in parallel for each category of result)
  * @param  integer $max Maximum records to return from each category
  * @param  boolean $get_raw_rows Whether to get raw rows rather than mailer-ready correspondance lists
  * @param  string $csv_data JSON CSV data to also consider
- * @param  boolean $strict_level Whether to do exact level matching, rather than "at least" matching
- * @return array Returns a tuple of corresponding detail lists, emails,hashes,usernames,forenames,surnames,ids, and a record count for levels (depending on requests: csv, 1, <newsletterID>, g<groupID>) [record counts not returned if $start is not zero, for performance reasons]
+ * @return array Returns a tuple of corresponding detail lists, emails,hashes,usernames,forenames,surnames,ids, and a record count for newsletters (depending on requests: csv, 1, <newsletterID>, g<groupID>) [record counts not returned if $start is not zero, for performance reasons]
  */
-function newsletter_who_send_to($send_details, $language, $start, $max, $get_raw_rows = false, $csv_data = '', $strict_level = false)
+function newsletter_who_send_to($send_details, $language, $start, $max, $get_raw_rows = false, $csv_data = '')
 {
     // Find who to send to
-    $level = 0;
     $usernames = array();
     $forenames = array();
     $surnames = array();
@@ -436,15 +431,9 @@ function newsletter_who_send_to($send_details, $language, $start, $max, $get_raw
     // Standard newsletter subscribers
     $newsletters = $GLOBALS['SITE_DB']->query_select('newsletters', array('*'));
     foreach ($newsletters as $newsletter) {
-        $this_level = array_key_exists(strval($newsletter['id']), $send_details) ? $send_details[strval($newsletter['id'])] : 0;
-        if ($this_level != 0) {
+        if (!empty($send_details[strval($newsletter['id'])])) {
             $where_lang = multi_lang() ? (db_string_equal_to('language', $language) . ' AND ') : '';
             $query = ' FROM ' . get_table_prefix() . 'newsletter_subscribe s LEFT JOIN ' . get_table_prefix() . 'newsletter_subscribers n ON n.email=s.email WHERE ' . $where_lang . 'code_confirm=0 AND s.newsletter_id=' . strval($newsletter['id']);
-            if ($strict_level) {
-                $query .= ' AND the_level=' . strval($this_level);
-            } else {
-                $query .= ' AND the_level>=' . strval($this_level);
-            }
             $query .= ' ORDER BY n.id';
 
             $sql = 'SELECT n.id,n.email,the_password,n_forename,n_surname' . $query;
@@ -475,7 +464,6 @@ function newsletter_who_send_to($send_details, $language, $start, $max, $get_raw
                 }
             }
         }
-        $level = max($level, $this_level);
     }
 
     // Conversr imports
@@ -483,9 +471,8 @@ function newsletter_who_send_to($send_details, $language, $start, $max, $get_raw
         $where_lang = multi_lang() ? ('(' . db_string_equal_to('m_language', $language) . ' OR ' . db_string_equal_to('m_language', '') . ') AND ') : '';
 
         // Usergroups
-        $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list();
         foreach ($send_details as $_id => $is_on) {
-            if ((is_string($_id)) && (substr($_id, 0, 1) == 'g') && ($is_on == 1)) {
+            if ((is_string($_id)) && (substr($_id, 0, 1) == 'g') && (!empty($is_on))) {
                 $id = intval(substr($_id, 1));
                 $fields = 'm.id,m.m_email_address,m.m_username,m.m_pass_hash_salted';
                 $query = 'SELECT xxxxx  FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members m LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_group_members g ON m.id=g.gm_member_id AND g.gm_validated=1 WHERE ' . db_string_not_equal_to('m_email_address', '') . ' AND ' . $where_lang . 'm_validated=1 AND gm_group_id=' . strval($id);
@@ -522,7 +509,7 @@ function newsletter_who_send_to($send_details, $language, $start, $max, $get_raw
         }
 
         // *All* Conversr members
-        if (array_key_exists('-1', $send_details) ? $send_details['-1'] : 0 == 1) {
+        if (!empty($send_details['-1'])) {
             $query = ' FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE ' . db_string_not_equal_to('m_email_address', '') . ' AND ' . $where_lang . 'm_validated=1';
             if (get_option('allow_email_from_staff_disable') == '1') {
                 $query .= ' AND m_allow_emails=1';

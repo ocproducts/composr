@@ -28,7 +28,6 @@ class Module_admin_newsletter extends Standard_crud_module
     public $lang_type = 'NEWSLETTER';
     public $select_name = 'TITLE';
     public $do_preview = null;
-    public $cache_level_counts;
     public $menu_label = 'NEWSLETTER';
     public $table = 'newsletters';
     public $title_is_multi_lang = true;
@@ -93,7 +92,7 @@ class Module_admin_newsletter extends Standard_crud_module
         }
 
         if ($type == 'import_subscribers') {
-            if (either_param_integer('level', null) === 0) {
+            if (either_param_integer('subscribe', null) === 0) {
                 $this->title = get_screen_title('SOMETHING_NEWSLETTER_SUBSCRIBERS'); // Don't say import, so as to not confuse people given a pre-set link to unsubscribe people from
             } else {
                 $this->title = get_screen_title('IMPORT_NEWSLETTER_SUBSCRIBERS');
@@ -144,8 +143,6 @@ class Module_admin_newsletter extends Standard_crud_module
 
         require_code('newsletter');
         require_css('newsletter');
-
-        $this->cache_level_counts = array();
 
         $this->extra_donext_entries = array(
             array('menu/site_meta/newsletters', array('_SELF', array('type' => 'new'), '_SELF'), do_lang('NEWSLETTER_SEND')),
@@ -266,20 +263,18 @@ class Module_admin_newsletter extends Standard_crud_module
     }
 
     /**
-     * Count the number of users on a certain level and language of the newsletter.
+     * Count the number of users on a certain newsletter and language of the newsletter.
      *
-     * @param  AUTO_LINK $id The newsletter
-     * @param  integer $level The newsletter level
-     * @range  -1 5
+     * @param  string $key The newsletter identifier (as expected in $send_details parameter of newsletter_who_send_to)
      * @param  ID_TEXT $lang The language
      * @return integer The count
      */
-    public function _count_level($id, $level, $lang)
+    public function _count_on_newsletter($key, $lang)
     {
-        $map = array();
-        $map[strval($id)] = $level;
-        $results = newsletter_who_send_to($map, $lang, 0, 0, false, '', true);
-        return $results[6][strval($id)];
+        $send_details = array();
+        $send_details[$key] = true;
+        $_subscribers = newsletter_who_send_to($send_details, $lang, 0, 0, false, '');
+        return $_subscribers[6][$key];
     }
 
     /**
@@ -297,12 +292,11 @@ class Module_admin_newsletter extends Standard_crud_module
         require_lang('cns');
 
         $newsletter_id = post_param_string('id', null);
-        $level = post_param_integer('level', 4);
+        $subscribe = (post_param_integer('subscribe', 0) == 1);
 
         // Select newsletter and attach CSV
         if (is_null($newsletter_id)) {
             $default_newsletter_id = get_param_integer('id', null);
-            $default_level = get_param_integer('level', 4);
 
             $fields = new Tempcode();
             $hidden = new Tempcode();
@@ -326,21 +320,10 @@ class Module_admin_newsletter extends Standard_crud_module
                 $fields->attach(form_input_list(do_lang_tempcode('NEWSLETTER'), '', 'id', $newsletters));
             }
             $fields->attach(form_input_upload(do_lang_tempcode('UPLOAD'), do_lang_tempcode('DESCRIPTION_UPLOAD_CSV_2'), 'file', true, null, null, true, 'csv,txt'));
-            // Choose level
-            if (get_option('interest_levels') == '0') {
-                $l = new Tempcode();
-                $l->attach(form_input_list_entry('0', 0 == $default_level, do_lang_tempcode('NEWSLETTER_0')));
-                $l->attach(form_input_list_entry('4', 4 == $default_level, do_lang_tempcode('NEWSLETTER_IMPORT')));
-                $fields->attach(form_input_list(do_lang_tempcode('SUBSCRIPTION_STATUS'), do_lang_tempcode('DESCRIPTION_SUBSCRIPTION_LEVEL_3'), 'level', $l));
-            } else {
-                $l = new Tempcode();
-                $l->attach(form_input_list_entry('0', 0 == $default_level, do_lang_tempcode('NEWSLETTER_0')));
-                $l->attach(form_input_list_entry('1', 1 == $default_level, do_lang_tempcode('NEWSLETTER_1')));
-                $l->attach(form_input_list_entry('2', 2 == $default_level, do_lang_tempcode('NEWSLETTER_2')));
-                $l->attach(form_input_list_entry('3', 3 == $default_level, do_lang_tempcode('NEWSLETTER_3')));
-                $l->attach(form_input_list_entry('4', 4 == $default_level, do_lang_tempcode('NEWSLETTER_4')));
-                $fields->attach(form_input_list(do_lang_tempcode('SUBSCRIPTION_LEVEL'), do_lang_tempcode('DESCRIPTION_SUBSCRIPTION_LEVEL_2'), 'level', $l));
-            }
+            $l = new Tempcode();
+            $l->attach(form_input_list_entry('0', !$subscribe, do_lang_tempcode('NEWSLETTER_UNSUBSCRIBE')));
+            $l->attach(form_input_list_entry('1', $subscribe, do_lang_tempcode('NEWSLETTER_SUBSCRIBE')));
+            $fields->attach(form_input_list(do_lang_tempcode('SUBSCRIPTION_STATUS'), do_lang_tempcode('DESCRIPTION_SUBSCRIPTION_STATUS'), 'subscribe', $l));
 
             $submit_name = do_lang_tempcode('PROCEED');
             $post_url = get_self_url();
@@ -366,14 +349,14 @@ class Module_admin_newsletter extends Standard_crud_module
             warn_exit(do_lang_tempcode('IMPROPERLY_FILLED_IN_UPLOAD'));
         }
 
-        if (either_param_integer('level', null) === 0) {
+        if (either_param_integer('subscribe', null) === 0) {
             $action_title = do_lang('SOMETHING_NEWSLETTER_SUBSCRIBERS'); // Don't say import, so as to not confuse people given a pre-set link to unsubscribe people from
         } else {
             $action_title = do_lang('IMPORT_NEWSLETTER_SUBSCRIBERS');
         }
 
         require_code('tasks');
-        return call_user_func_array__long_task($action_title, $this->title, 'import_newsletter_subscribers', array($_language, $newsletter_id, $level, $target_path));
+        return call_user_func_array__long_task($action_title, $this->title, 'import_newsletter_subscribers', array($_language, $newsletter_id, $subscribe, $target_path));
     }
 
     /**
@@ -546,7 +529,6 @@ class Module_admin_newsletter extends Standard_crud_module
         }
 
         $id = either_param_string('id', null);
-        $level = get_param_integer('level', null);
 
         require_lang('cns');
 
@@ -568,11 +550,8 @@ class Module_admin_newsletter extends Standard_crud_module
                 $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list();
                 foreach ($groups as $group_id => $group) {
                     if ($group_id != db_get_first_id()) {
-                        $map = array();
-                        $map['g' . strval($group_id)] = 1;
-                        $_c = newsletter_who_send_to($map, $lang, 0, 0, false, '', true);
-                        $c6 = $_c[6]['g' . strval($group_id)];
-                        if ($c6 != 0) {
+                        $subscriber_count = $this->_count_on_newsletter('g' . strval($group_id), $lang);
+                        if ($subscriber_count != 0) {
                             $newsletters->attach(form_input_list_entry('g' . strval($group_id), false, do_lang_tempcode('THIS_WITH', do_lang_tempcode('USERGROUP'), make_string_tempcode(escape_html($group)))));
                         }
                     }
@@ -622,96 +601,79 @@ class Module_admin_newsletter extends Standard_crud_module
             safe_ini_set('ocproducts.xss_detect', '0');
         }
 
-        // Show subscribers
-        $levels = is_null($level) ? (($id == '-1' || substr($id, 0, 1) == 'g') ? array(4) : ((get_option('interest_levels') == '1') ? array(1, 2, 3, 4) : array(4))) : array($level);
+        // Show subscribers...
+
         $outs = array();
-        foreach ($levels as $level) {
-            $max = get_param_integer('max_' . (is_null($level) ? '' : strval($level)), 100);
-            $start = get_param_integer('start_' . (is_null($level) ? '' : strval($level)), 0);
 
-            $max_rows = 0;
-            if (is_null($level)) { // implies all Conversr members
-                $map[$id] = 1; // $id will be -1
-                $_c = newsletter_who_send_to($map, $lang, 0, 0, true, '', true);
-                if (isset($_c[6][$id])) {
-                    $max_rows = $_c[6][$id];
-                }
-            } else { // implies normal newsletter / usergroup
-                $map[$id] = $level; // We're requesting that we probe subscribers of $id on $level
-                $_c = newsletter_who_send_to($map, $lang, 0, 0, true, '', true);
-                if (isset($_c[6][$id])) {
-                    $max_rows = $_c[6][$id];
-                }
-            }
+        $max = get_param_integer('max', 100);
+        $start = get_param_integer('start', 0);
 
-            $num = 0;
+        $max_rows = 0;
 
-            $start2 = 0;
+        $send_details = array();
+        $send_details[strval($id)] = true;
+        $_subscribers = newsletter_who_send_to($send_details, $lang, 0, 0, true, '');
+        if (isset($_subscribers[6][$id])) {
+            $max_rows = $_subscribers[6][$id];
+        }
 
-            do {
-                $map = array();
-                if (is_null($level)) { // implies all Conversr members
-                    $map[$id] = 1; // $id will be -1
-                    $_c = newsletter_who_send_to($map, $lang, $start + $start2, $max, true, '', true);
-                } else { // implies normal newsletter / usergroup
-                    $map[$id] = $level; // We're requesting that we probe subscribers of $id on $level
-                    $_c = newsletter_who_send_to($map, $lang, $start + $start2, $max, true, '', true);
-                }
-                $rows = $_c[7];
+        $num = 0;
 
-                if ($csv == 1) {
-                    if ($start2 == 0) {
-                        if (!is_null($level)) {
-                            echo '"LEVEL ' . do_lang('NEWSLETTER_' . strval($level)) . '"' . "\n";
-                        }
-                        echo '"' . str_replace('"', '""', do_lang('EMAIL_ADDRESS')) . '",' . '"' . str_replace('"', '""', do_lang('FORENAME')) . '",' . '"' . str_replace('"', '""', do_lang('SURNAME')) . '",' . '"' . str_replace('"', '""', do_lang('NAME')) . '",' . '"' . str_replace('"', '""', do_lang('NEWSLETTER_SEND_ID')) . '",' . '"' . str_replace('"', '""', do_lang('NEWSLETTER_HASH')) . '",' . '"' . str_replace('"', '""', do_lang('PASSWORD_HASH')) . '",' . '"' . str_replace('"', '""', do_lang('SALT')) . '",' . '"' . str_replace('"', '""', do_lang('LANGUAGE')) . '",' . '"' . str_replace('"', '""', do_lang('CONFIRM_CODE')) . '",' . '"' . str_replace('"', '""', do_lang('JOIN_DATE')) . '",' . '"' . str_replace('"', '""', do_lang('SUBSCRIPTION_LEVEL')) . '"' . "\n";
-                    }
-                } else {
-                    $out = '';
-                }
+        $start2 = 0;
 
-                foreach ($rows as $r) {
-                    $email = array_key_exists('email', $r) ? $r['email'] : $r['m_email_address'];
-                    $forename = array_key_exists('n_forename', $r) ? $r['n_forename'] : '';
-                    $surname = array_key_exists('n_surname', $r) ? $r['n_surname'] : '';
-                    $name = array_key_exists('m_username', $r) ? $r['m_username'] : '';
-
-                    $salt = array_key_exists('pass_salt', $r) ? $r['pass_salt'] : '';
-                    $_language = array_key_exists('language', $r) ? $r['language'] : '';
-                    $confirm_code = array_key_exists('confirm_code', $r) ? $r['confirm_code'] : 0;
-                    $join_time = array_key_exists('join_time', $r) ? $r['join_time'] : time();
-
-                    $send_id = (array_key_exists('m_username', $r) ? 'm' : 'n') . (array_key_exists('id', $r) ? strval($r['id']) : $email);
-                    $hash = array_key_exists('the_password', $r) ? $r['the_password'] : '';
-                    $unsub = array_key_exists('the_password', $r) ? ratchet_hash($r['the_password'], 'xunsub') : '';
-
-                    if ($csv == 1) {
-                        echo '"' . str_replace('"', '""', $email) . '",' . '"' . str_replace('"', '""', $forename) . '",' . '"' . str_replace('"', '""', $surname) . '",' . '"' . str_replace('"', '""', $name) . '",' . '"' . str_replace('"', '""', $send_id) . '",' . '"' . str_replace('"', '""', $unsub) . '",' . '"' . str_replace('"', '""', $hash) . '",' . '"' . str_replace('"', '""', $salt) . '",' . '"' . str_replace('"', '""', $_language) . '",' . '"' . str_replace('"', '""', strval($confirm_code)) . '",' . '"' . str_replace('"', '""', date('Y-m-d h:i:s', $join_time)) . '",' . '"' . strval($level) . '"' . "\n";
-                    } else {
-                        $tpl = do_template('NEWSLETTER_SUBSCRIBER', array('_GUID' => 'ca45867a23cbaa7c6788d3cd2ba2793c', 'EMAIL' => $email, 'FORENAME' => $forename, 'SURNAME' => $surname, 'NAME' => $name, 'NEWSLETTER_SEND_ID' => $send_id, 'NEWSLETTER_HASH' => $hash));
-                        $out .= $tpl->evaluate();
-                    }
-                }
-
-                $start2 += $max;
-            } while (($csv == 1) && (array_key_exists(0, $rows)));
-
-            if ((count($rows) == 0) && ($start2 == 0)) {
-                if ($csv == 1) {
-                    echo '"(' . do_lang('NONE') . ')"' . "\n";
-                } else {
-                }
-            }
-
-            $text = do_lang_tempcode('NEWSLETTER_PEOPLE_ON_LEVEL', ((is_numeric($level)) && (intval($level) > 0)) ? make_string_tempcode(escape_html(do_lang('NEWSLETTER_' . strval($level)))) : do_lang_tempcode('NA_EM'));
+        do {
+            $send_details = array();
+            $send_details[strval($id)] = true;
+            $_subscribers = newsletter_who_send_to($send_details, $lang, $start + $start2, $max, true, '');
+            $rows = $_subscribers[7];
 
             if ($csv == 1) {
+                if ($start2 == 0) {
+                    echo '"' . str_replace('"', '""', do_lang('EMAIL_ADDRESS')) . '",' . '"' . str_replace('"', '""', do_lang('FORENAME')) . '",' . '"' . str_replace('"', '""', do_lang('SURNAME')) . '",' . '"' . str_replace('"', '""', do_lang('NAME')) . '",' . '"' . str_replace('"', '""', do_lang('NEWSLETTER_SEND_ID')) . '",' . '"' . str_replace('"', '""', do_lang('NEWSLETTER_HASH')) . '",' . '"' . str_replace('"', '""', do_lang('PASSWORD_HASH')) . '",' . '"' . str_replace('"', '""', do_lang('SALT')) . '",' . '"' . str_replace('"', '""', do_lang('LANGUAGE')) . '",' . '"' . str_replace('"', '""', do_lang('CONFIRM_CODE')) . '",' . '"' . str_replace('"', '""', do_lang('JOIN_DATE')) . '"' . "\n";
+                }
             } else {
-                require_code('templates_pagination');
-                $pagination = pagination(do_lang_tempcode('VIEW_NEWSLETTER_SUBSCRIBERS'), $start, 'start_' . (is_null($level) ? '' : strval($level)), $max, 'max_' . (is_null($level) ? '' : strval($level)), $max_rows);
-
-                $outs[] = array('PAGINATION' => $pagination, 'SUB' => $out, 'TEXT' => $text);
+                $out = '';
             }
+
+            foreach ($rows as $r) {
+                $email = array_key_exists('email', $r) ? $r['email'] : $r['m_email_address'];
+                $forename = array_key_exists('n_forename', $r) ? $r['n_forename'] : '';
+                $surname = array_key_exists('n_surname', $r) ? $r['n_surname'] : '';
+                $name = array_key_exists('m_username', $r) ? $r['m_username'] : '';
+
+                $salt = array_key_exists('pass_salt', $r) ? $r['pass_salt'] : '';
+                $_language = array_key_exists('language', $r) ? $r['language'] : '';
+                $confirm_code = array_key_exists('confirm_code', $r) ? $r['confirm_code'] : 0;
+                $join_time = array_key_exists('join_time', $r) ? $r['join_time'] : time();
+
+                $send_id = (array_key_exists('m_username', $r) ? 'm' : 'n') . (array_key_exists('id', $r) ? strval($r['id']) : $email);
+                $hash = array_key_exists('the_password', $r) ? $r['the_password'] : '';
+                $unsub = array_key_exists('the_password', $r) ? ratchet_hash($r['the_password'], 'xunsub') : '';
+
+                if ($csv == 1) {
+                    echo '"' . str_replace('"', '""', $email) . '",' . '"' . str_replace('"', '""', $forename) . '",' . '"' . str_replace('"', '""', $surname) . '",' . '"' . str_replace('"', '""', $name) . '",' . '"' . str_replace('"', '""', $send_id) . '",' . '"' . str_replace('"', '""', $unsub) . '",' . '"' . str_replace('"', '""', $hash) . '",' . '"' . str_replace('"', '""', $salt) . '",' . '"' . str_replace('"', '""', $_language) . '",' . '"' . str_replace('"', '""', strval($confirm_code)) . '",' . '"' . str_replace('"', '""', date('Y-m-d h:i:s', $join_time)) . '"' . "\n";
+                } else {
+                    $tpl = do_template('NEWSLETTER_SUBSCRIBER', array('_GUID' => 'ca45867a23cbaa7c6788d3cd2ba2793c', 'EMAIL' => $email, 'FORENAME' => $forename, 'SURNAME' => $surname, 'NAME' => $name, 'NEWSLETTER_SEND_ID' => $send_id, 'NEWSLETTER_HASH' => $hash));
+                    $out .= $tpl->evaluate();
+                }
+            }
+
+            $start2 += $max;
+        } while (($csv == 1) && (array_key_exists(0, $rows)));
+
+        if ((count($rows) == 0) && ($start2 == 0)) {
+            if ($csv == 1) {
+                echo '"(' . do_lang('NONE') . ')"' . "\n";
+            } else {
+            }
+        }
+
+        if ($csv == 1) {
+        } else {
+            require_code('templates_pagination');
+            $pagination = pagination(do_lang_tempcode('VIEW_NEWSLETTER_SUBSCRIBERS'), $start, 'start', $max, 'max', $max_rows);
+
+            $outs[] = array('PAGINATION' => $pagination, 'SUB' => $out);
         }
 
         if ($csv == 1) {
@@ -1120,42 +1082,27 @@ class Module_admin_newsletter extends Standard_crud_module
         $send_details = is_null($defaults) ? array() : unserialize($defaults['np_send_details']);
         $newsletters = $GLOBALS['SITE_DB']->query_select('newsletters', array('*'));
         foreach ($newsletters as $newsletter) {
-            $level = post_param_integer(strval($newsletter['id']), post_param_integer('level', empty($send_details[strval($newsletter['id'])]) ? -1 : $send_details[strval($newsletter['id'])]));
+            $send_to = (post_param_integer(strval($newsletter['id']), empty($send_details[strval($newsletter['id'])]) ? 0 : 1) == 1);
+            $subscriber_count = $this->_count_on_newsletter(strval($newsletter['id']), $lang);
 
-            $c4 = $this->_count_level($newsletter['id'], 4, $lang);
-            $c3 = $this->_count_level($newsletter['id'], 3, $lang);
-            $c2 = $this->_count_level($newsletter['id'], 2, $lang);
-            $c1 = $this->_count_level($newsletter['id'], 1, $lang);
-            //if ($c1!=0) {  Actually, this just confuses people if we don't show it
             $newsletter_title = get_translated_text($newsletter['title']);
             $newsletter_description = get_translated_text($newsletter['description']);
-
-            if (($c1 == $c2) && ($c1 == $c3) && ($c1 == $c4)) {
-                $fields->attach(form_input_tick(do_lang_tempcode('NEWSLETTER_PREFIX', escape_html($newsletter_title)), do_lang_tempcode('DESCRIPTION_NOSUBSCRIPTION_LEVEL', escape_html(integer_format($c4)), escape_html($newsletter_description)), strval($newsletter['id']), $level >= 1, null, '4'));
-            } else {
-                $l = new Tempcode();
-                $l->attach(form_input_list_entry('0', $level == 0, do_lang_tempcode('NNR', do_lang_tempcode('NEWSLETTER_0_ALT'), do_lang_tempcode('NUM_READERS', escape_html(integer_format(0))))));
-                $l->attach(form_input_list_entry('1', $level == 1, do_lang_tempcode('NNR', do_lang_tempcode('NEWSLETTER_1'), do_lang_tempcode('NUM_READERS', escape_html(integer_format($c1))))));
-                $l->attach(form_input_list_entry('2', $level == 2, do_lang_tempcode('NNR', do_lang_tempcode('NEWSLETTER_2'), do_lang_tempcode('NUM_READERS', escape_html(integer_format($c2))))));
-                $l->attach(form_input_list_entry('3', $level == 3, do_lang_tempcode('NNR', do_lang_tempcode('NEWSLETTER_3'), do_lang_tempcode('NUM_READERS', escape_html(integer_format($c3))))));
-                $l->attach(form_input_list_entry('4', $level == 4, do_lang_tempcode('NNR', do_lang_tempcode('NEWSLETTER_4'), do_lang_tempcode('NUM_READERS', escape_html(integer_format($c4))))));
-
-                $fields->attach(form_input_list(do_lang_tempcode('SUBSCRIPTION_LEVEL_FOR', escape_html($newsletter_title)), do_lang_tempcode('DESCRIPTION_SUBSCRIPTION_LEVEL', escape_html($newsletter_description)), strval($newsletter['id']), $l));
-            }
-            //}
+            $fields->attach(form_input_tick(do_lang_tempcode('NEWSLETTER_SEND_TO', escape_html($newsletter_title)), do_lang_tempcode('DESCRIPTION_NEWSLETTER_SEND_TO', escape_html(integer_format($subscriber_count)), escape_html($newsletter_description)), strval($newsletter['id']), $send_to));
         }
         if (get_forum_type() == 'cns') {
-            $c5 = $this->_count_level(-1, 5, $lang);
-            $fields->attach(form_input_tick(do_lang_tempcode('NEWSLETTER_CNS'), do_lang_tempcode('NUM_READERS', escape_html(integer_format($c5))), '-1', empty($send_details['-1']) ? false : ($send_details['-1'] == 1)));
+            $send_to = (post_param_integer('-1', empty($send_details['-1']) ? 0 : 1) == 1);
+            $newsletter_subscriber_count = $this->_count_on_newsletter('-1', $lang);
+
+            $fields->attach(form_input_tick(do_lang_tempcode('NEWSLETTER_CNS'), do_lang_tempcode('NUM_READERS', escape_html(integer_format($newsletter_subscriber_count))), '-1', $subscriber_count));
+
             $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list();
             foreach ($groups as $group_id => $group) {
                 if ($group_id != db_get_first_id()) {
-                    $map = array();
-                    $map['g' . strval($group_id)] = 1;
-                    $_c = newsletter_who_send_to($map, $lang, 0, 0, false, '', true);
-                    $c6 = $_c[6]['g' . strval($group_id)];
-                    if ($c6 != 0) {
-                        $fields->attach(form_input_tick(do_lang_tempcode('THIS_WITH', do_lang_tempcode('USERGROUP'), make_string_tempcode(escape_html($group))), do_lang_tempcode('NUM_READERS', escape_html(integer_format($c6))), 'g' . strval($group_id), post_param_integer('g' . strval($group_id), empty($send_details['g' . strval($group_id)]) ? 0 : $send_details['g' . strval($group_id)]) == 1));
+                    $send_to = (post_param_integer('g' . strval($group_id), empty($send_details['g' . strval($group_id)]) ? 0 : 1) == 1);
+                    $subscriber_count = $this->_count_on_newsletter('g' . strval($group_id), $lang);
+
+                    if ($subscriber_count != 0) {
+                        $fields->attach(form_input_tick(do_lang_tempcode('THIS_WITH', do_lang_tempcode('USERGROUP'), make_string_tempcode(escape_html($group))), do_lang_tempcode('NUM_READERS', escape_html(integer_format($subscriber_count))), 'g' . strval($group_id), $send_to));
                     }
                 }
             }
@@ -1444,14 +1391,14 @@ class Module_admin_newsletter extends Standard_crud_module
         $newsletters = $GLOBALS['SITE_DB']->query_select('newsletters', array('id'));
         $send_details = array();
         foreach ($newsletters as $newsletter) {
-            $send_details[strval($newsletter['id'])] = post_param_integer(strval($newsletter['id']), 0);
+            $send_details[strval($newsletter['id'])] = (post_param_integer(strval($newsletter['id']), 0) == 1);
         }
         if (get_forum_type() == 'cns') {
             $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list();
             foreach (array_keys($groups) as $id) {
-                $send_details['g' . strval($id)] = post_param_integer('g' . strval($id), 0);
+                $send_details['g' . strval($id)] = (post_param_integer('g' . strval($id), 0) == 1);
             }
-            $send_details['-1'] = post_param_integer('-1', 0);
+            $send_details['-1'] = (post_param_integer('-1', 0) == 1);
         }
 
         if (post_param_integer('make_periodic', 0) == 1) {
@@ -1607,11 +1554,6 @@ class Module_admin_newsletter extends Standard_crud_module
         $display_map['HTML_VERSION'] = do_template('NEWSLETTER_PREVIEW', array('HTML_PREVIEW' => $html_version));
         if ($text_version != '') {
             $display_map['TEXT_VERSION'] = $text_version;
-        }
-
-        $importance_level = integer_format($rows[0]['importance_level']);
-        if (get_option('interest_levels') == '1') {
-            $display_map['SUBSCRIPTION_LEVEL'] = $importance_level;
         }
 
         if (count(find_all_langs()) > 1) {

@@ -2493,7 +2493,6 @@ function string_scan($lang, $do_guessing = false)
         CONFIG_OPTION_initial_banner_hits
         CONFIG_OPTION_initial_quota
         CONFIG_OPTION_inline_pp_advertise
-        CONFIG_OPTION_interest_levels
         CONFIG_OPTION_intro_forum_id
         CONFIG_OPTION_invites_per_day
         CONFIG_OPTION_ip_forwarding
@@ -5184,7 +5183,7 @@ function string_scan($lang, $do_guessing = false)
         NEWSLETTER_IMPORT
         NEWSLETTER_IMPORTED_THIS
         NEWSLETTER_PEOPLE_ON_LEVEL
-        NEWSLETTER_PREFIX
+        NEWSLETTER_SEND_TO
         NEWSLETTER_PREVIEW_SUBJECT
         NEWSLETTER_REGULARITY
         NEWSLETTER_REMOVED_THIS
@@ -6717,7 +6716,6 @@ function string_scan($lang, $do_guessing = false)
         USE_CAPTCHAS
         USE_CONTEXTUAL_DATES
         USE_DEFAULT
-        USE_INTEREST_LEVELS
         USE_JOINDATE
         USE_LASTONDATE
         USE_LOCAL_PAYMENT
