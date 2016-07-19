@@ -104,7 +104,7 @@ function comcode_convert_script()
 
     } elseif ($from_html == 0) { // "Convert Comcode to HTML"
         if (either_param_integer('lax', 0) == 1) {
-            push_lax_comcode();
+            push_lax_comcode(true);
         }
 
         $db = $GLOBALS['SITE_DB'];
@@ -117,7 +117,7 @@ function comcode_convert_script()
             $data = semihtml_to_comcode($data);
         }
 
-        $tpl = comcode_to_tempcode($data, get_member(), false, null, null, $db, either_param_integer('semihtml', 0) == 1/*true*/, false, false, false);
+        $tpl = comcode_to_tempcode($data, get_member(), false, null, $db, (either_param_integer('semihtml', 0) == 1) ? COMCODE_SEMIPARSE_MODE : COMCODE_NORMAL);
         $evaluated = $tpl->evaluate();
         $out = '';
         if ($evaluated != '') {

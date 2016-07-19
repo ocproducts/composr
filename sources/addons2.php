@@ -951,7 +951,7 @@ function inform_about_addon_install($file, $also_uninstalling = null, $also_inst
     $chmod = new Tempcode();
     $root_chmod = false;
     foreach (array_keys($dirs) as $dir) {
-        if ((is_writable_wrap(get_file_base() . '/' . $dir)) && (file_exists(get_file_base() . '/' . $dir))) {
+        if ((cms_is_writable(get_file_base() . '/' . $dir)) && (file_exists(get_file_base() . '/' . $dir))) {
             if ($dir == '') {
                 $root_chmod = true;
                 continue;

@@ -713,7 +713,7 @@ function prepare_post_for_tapatalk($post, $return_html = false)
         $emoticon_map = get_tapatalk_to_composr_emoticon_map('missing_from_composr');
         $content = str_replace(array_values($emoticon_map), array_keys($emoticon_map), $content); // Map Composr ones back to Tapatalk ones
 
-        $post_tempcode = comcode_to_tempcode($content, $post['p_poster'], false, 60, null, $GLOBALS['FORUM_DB']);
+        $post_tempcode = comcode_to_tempcode($content, $post['p_poster'], false, null, $GLOBALS['FORUM_DB']);
 
         $GLOBALS['FORUM_DRIVER']->EMOTICON_CACHE = $bak;
 

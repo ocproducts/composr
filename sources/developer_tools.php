@@ -145,7 +145,9 @@ function destrictify($change_content_type = true, $db_too = false)
     //disable_php_memory_limit();   Don't do this, recipe for disaster
     safe_ini_set('suhosin.executor.disable_emodifier', '0');
     safe_ini_set('suhosin.executor.multiheader', '0');
+    pop_db_scope_check();
     push_db_scope_check(false);
+    pop_query_limiting();
     push_query_limiting(false);
 }
 
@@ -186,6 +188,7 @@ function restrictify()
     }
     safe_ini_set('suhosin.executor.disable_emodifier', '1');
     safe_ini_set('suhosin.executor.multiheader', '1');
+    pop_db_scope_check();
     push_db_scope_check(true);
     //push_query_limiting(false);   Leave off, may have been set elsewhere than destrictify();
 }

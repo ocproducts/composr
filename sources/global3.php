@@ -190,7 +190,7 @@ function is_suexec_like()
     static $answer = null;
     if ($answer === null) {
         $answer = (((php_function_allowed('posix_getuid')) && (!isset($_SERVER['HTTP_X_MOSSO_DT'])) && (is_integer(@posix_getuid())) && (@posix_getuid() == @fileowner(get_file_base() . '/' . (running_script('install') ? 'install.php' : 'index.php'))))
-                   || (is_writable_wrap(get_file_base() . '/' . (running_script('install') ? 'install.php' : 'index.php'))));
+                   || (cms_is_writable(get_file_base() . '/' . (running_script('install') ? 'install.php' : 'index.php'))));
     }
     return $answer;
 }
@@ -1027,7 +1027,7 @@ function is_ascii_string($x)
  * @param  PATH $path The file path
  * @return boolean Whether the file is writeable
  */
-function is_writable_wrap($path)
+function cms_is_writable($path)
 {
     if (strtoupper(substr(PHP_OS, 0, 3)) != 'WIN') {
         return is_writable($path);
@@ -2119,7 +2119,7 @@ function ip_banned($ip, $force_db = false, $handle_uncertainties = false)
     }
 
     global $SITE_INFO;
-    if ((!$force_db) && (((isset($SITE_INFO['known_suexec'])) && ($SITE_INFO['known_suexec'] == '1')) || (is_writable_wrap(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess')))) {
+    if ((!$force_db) && (((isset($SITE_INFO['known_suexec'])) && ($SITE_INFO['known_suexec'] == '1')) || (cms_is_writable(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess')))) {
         $bans = array();
         $ban_count = preg_match_all('#\ndeny from (.*)#', file_get_contents(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess'), $bans);
         $ip_bans = array();

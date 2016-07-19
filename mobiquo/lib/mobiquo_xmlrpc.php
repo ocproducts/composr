@@ -98,7 +98,7 @@ class MobiquoServerXMLRPC extends MobiquoServer
             $response = mobiquo_response_false($msg);
             $this->output_response($response);
 
-            if ((is_file(TAPATALK_LOG)) && (is_writable_wrap(TAPATALK_LOG))) {
+            if ((is_file(TAPATALK_LOG)) && (cms_is_writable(TAPATALK_LOG))) {
                 // Request
                 $log_file = fopen(TAPATALK_LOG, 'at');
                 fwrite($log_file, TAPATALK_REQUEST_ID . ' -- ' . date('Y-m-d H:i:s') . " *TRACE*:\n");

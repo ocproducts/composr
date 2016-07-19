@@ -283,7 +283,7 @@ function build_preview($multi_return = false)
 
     // This is to get the Comcode attachments updated to the new IDs
     if (!is_null($new_post_value)) {
-        $_new_post_value_html = comcode_to_tempcode($new_post_value, null, false, null, null, $db, true);
+        $_new_post_value_html = comcode_to_tempcode($new_post_value, null, false, null, $db, COMCODE_SEMIPARSE_MODE);
 
         require_code('comcode_from_html');
         $new_post_value_html = wysiwygify_media_set($_new_post_value_html->evaluate());

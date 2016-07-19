@@ -1252,7 +1252,7 @@ class Database_Static_xml extends DatabaseDriver
         fix_permissions($path);
         sync_file($path);
 
-        /* If we want them in subversion as binary, but we probably don't as merging can often work
+        /* If we want them in git as binary, but we probably don't as merging can often work
             if (file_exists($db[0] . '/' . $table_name . '/.svn/prop-base/')) {
                 $tpath = $db[0] . '/' . $table_name . '/.svn/prop-base/' . $guid . $suffix;
                 $myfile = fopen($tpath, 'wb');

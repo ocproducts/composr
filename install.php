@@ -390,11 +390,11 @@ function step_1()
     if (!@is_array($FILE_ARRAY)) { // Talk about manual permission setting a bit
         if ((php_function_allowed('posix_getuid')) && (!isset($_SERVER['HTTP_X_MOSSO_DT'])) && (@posix_getuid() == @fileowner(get_file_base() . '/install.php'))) { // NB: Could also be that files are owned by 'apache'/'nobody'. In these cases the users have consciously done something special and know what they're doing (they have open_basedir at least hopefully!) so we'll still consider this 'suexec'. It's too much an obscure situation.
             $warnings->attach(do_template('INSTALLER_NOTICE', array('MESSAGE' => do_lang_tempcode('SUEXEC_SERVER'))));
-        } elseif (is_writable_wrap(get_file_base() . '/install.php')) {
+        } elseif (cms_is_writable(get_file_base() . '/install.php')) {
             $warnings->attach(do_template('INSTALLER_NOTICE', array('MESSAGE' => do_lang_tempcode('RECURSIVE_SERVER'))));
         }
     }
-    if ((file_exists(get_file_base() . '/_config.php')) && (!is_writable_wrap(get_file_base() . '/_config.php')) && (!php_function_allowed('posix_getuid')) && ((strpos(PHP_OS, 'WIN') !== false))) {
+    if ((file_exists(get_file_base() . '/_config.php')) && (!cms_is_writable(get_file_base() . '/_config.php')) && (!php_function_allowed('posix_getuid')) && ((strpos(PHP_OS, 'WIN') !== false))) {
         $warnings->attach(do_template('INSTALLER_WARNING', array('MESSAGE' => do_lang_tempcode('TROUBLESOME_WINDOWS_SERVER', escape_html(get_tutorial_url('tut_adv_install'))))));
     }
 
@@ -1319,7 +1319,7 @@ function step_5_ftp()
             }
             @ftp_site($conn, 'CHMOD 0777 cms_inst_tmp');
         }
-        if (!is_writable_wrap('cms_inst_tmp')) {
+        if (!cms_is_writable('cms_inst_tmp')) {
             warn_exit(do_lang_tempcode('MANUAL_CHMOD_TMP_FILE'));
         }
 
@@ -2695,7 +2695,7 @@ function example($example, $description = '')
  */
 function test_writable($file)
 {
-    if ((!is_writable_wrap($file)) && (file_exists($file))) {
+    if ((!cms_is_writable($file)) && (file_exists($file))) {
         intelligent_write_error($file);
     }
 }
@@ -3002,7 +3002,7 @@ ErrorDocument 404 {$base}/index.php?page=404
 </FilesMatch>
 END;
 
-    if ((is_writable_wrap(get_file_base() . '/exports/addons')) && ((!file_exists(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess')) || (trim(file_get_contents(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess')) == ''))) {
+    if ((cms_is_writable(get_file_base() . '/exports/addons')) && ((!file_exists(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess')) || (trim(file_get_contents(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess')) == ''))) {
         global $HTTP_MESSAGE;
 
         $base_url = post_param_string('base_url', get_base_url());

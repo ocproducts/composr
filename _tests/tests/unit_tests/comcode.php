@@ -31,7 +31,7 @@ class comcode_test_set extends cms_test_case
  - bar" => "<ul><li>foo</li><li>bar</li></ul>", " - foo - bar" => " - foo - bar", "" => " ", " -foo" => "-foo", "-foo" => "-foo", "--foo" => "&ndash;foo", "[b]bar[/b]" => "<strongclass=\"comcode_bold\">bar</strong>");
 
         foreach ($expectations as $comcode => $html) {
-            $actual = comcode_to_tempcode($comcode, null, false, null, null, null, false, false, false, false, false, null, null);
+            $actual = comcode_to_tempcode($comcode);
 
             $actual_altered = str_replace("&nbsp;", "", preg_replace('#\s#', '', $actual->evaluate()));
 

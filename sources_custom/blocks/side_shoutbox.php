@@ -103,7 +103,7 @@ class Block_side_shoutbox
         // Did a message get sent last time?
         $shoutbox_message = post_param_string('shoutbox_message', '');
         if ($shoutbox_message != '') {
-            if (!chat_post_message($room_id, $shoutbox_message, get_option('chat_default_post_font'), get_option('chat_default_post_colour'), 15)) {
+            if (!chat_post_message($room_id, $shoutbox_message, get_option('chat_default_post_font'), get_option('chat_default_post_colour'))) {
                 // Error. But actually we'll get it from below
             }
         }

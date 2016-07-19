@@ -865,7 +865,7 @@ function sync_htaccess_with_zones()
     $url_scheme = get_option('url_scheme');
     $change_htaccess = (($url_scheme == 'HTM') || ($url_scheme == 'SIMPLE'));
     $htaccess_path = get_file_base() . '/.htaccess';
-    if (($change_htaccess) && (file_exists($htaccess_path)) && (is_writable_wrap($htaccess_path))) {
+    if (($change_htaccess) && (file_exists($htaccess_path)) && (cms_is_writable($htaccess_path))) {
         $zones = find_all_zones();
 
         $htaccess = file_get_contents($htaccess_path);

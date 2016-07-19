@@ -1048,7 +1048,7 @@ class Forum_driver_ipb3 extends Forum_driver_base
                     $comcode = comcode_to_tempcode($segment, $r['starter_id']);
                     $post = substr($post, 0, $pos) . $comcode->evaluate() . substr($post, $end);
                 }
-                $out[$i]['firstpost'] = comcode_to_tempcode(xhtmlise_html($post), $r['starter_id'], false, null, null, null, false, false, true); // Assumes HTML for posts
+                $out[$i]['firstpost'] = comcode_to_tempcode(xhtmlise_html($post), $r['starter_id'], false, null, null, COMCODE_IS_ALL_SEMIHTML); // Assumes HTML for posts
                 pop_lax_comcode();
             }
         }

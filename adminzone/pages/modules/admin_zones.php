@@ -371,7 +371,7 @@ class Module_admin_zones
                         $comcode = $LANG_FILTER_OB->compile_time(null, $comcode, $lang);
                     }
 
-                    $default_parsed = comcode_to_tempcode($comcode, null, false, null, null, null, true);
+                    $default_parsed = comcode_to_tempcode($comcode, null, false, null, null, COMCODE_SEMIPARSE_MODE);
                 } else {
                     $comcode = '';
                 }
@@ -696,7 +696,7 @@ class Module_admin_zones
         $url_scheme = get_option('url_scheme');
         $change_htaccess = (($url_scheme == 'HTM') || ($url_scheme == 'SIMPLE'));
         $htaccess_path = get_file_base() . '/.htaccess';
-        if (($change_htaccess) && (file_exists($htaccess_path)) && (!is_writable_wrap($htaccess_path))) {
+        if (($change_htaccess) && (file_exists($htaccess_path)) && (!cms_is_writable($htaccess_path))) {
             attach_message(do_lang_tempcode('HTM_SHORT_URLS_CARE'), 'warn');
         }
 

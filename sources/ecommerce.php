@@ -382,7 +382,7 @@ function dev__ipn_debug($ipn_target, $ipn_message)
  */
 function handle_transaction_script()
 {
-    if ((file_exists(get_file_base() . '/data_custom/ecommerce.log')) && (is_writable_wrap(get_file_base() . '/data_custom/ecommerce.log'))) {
+    if ((file_exists(get_file_base() . '/data_custom/ecommerce.log')) && (cms_is_writable(get_file_base() . '/data_custom/ecommerce.log'))) {
         $myfile = fopen(get_file_base() . '/data_custom/ecommerce.log', 'at');
         fwrite($myfile, serialize($_POST) . "\n");
         fwrite($myfile, serialize($_GET) . "\n");

@@ -266,22 +266,19 @@ function _custom_comcode_import($db)
  * @param  LONG_TEXT $comcode The Comcode to convert
  * @param  ?MEMBER $source_member The member the evaluation is running as. This is a security issue, and you should only run as an administrator if you have considered where the Comcode came from carefully (null: current member)
  * @param  boolean $as_admin Whether to explicitly execute this with admin rights. There are a few rare situations where this should be done, for data you know didn't come from a member, but is being evaluated by one.
- * @param  ?integer $wrap_pos The position to conduct wordwrapping at (null: do not conduct word-wrapping)
  * @param  ?string $pass_id A special identifier that can identify this resource in a sea of our resources of this class; usually this can be ignored, but may be used to provide a binding between JavaScript in evaluated Comcode, and the surrounding environment (null: no explicit binding)
  * @param  ?object $db The database connector to use (null: standard site connector)
- * @param  boolean $semiparse_mode Whether to parse so as to create something that would fit inside a semihtml tag. It means we generate HTML, with Comcode written into it where the tag could never be reverse-converted (e.g. a block).
- * @param  boolean $preparse_mode Whether this is being pre-parsed, to pick up errors before row insertion.
- * @param  boolean $is_all_semihtml Whether to treat this whole thing as being wrapped in semihtml, but apply normal security otherwise.
- * @param  boolean $structure_sweep Whether we are only doing this parse to find the title structure
- * @param  boolean $check_only Whether to only check the Comcode. It's best to use the check_comcode function which will in turn use this parameter.
+ * @param  integer $flags A bitmask of COMCODE_* flags
  * @param  ?array $highlight_bits A list of words to highlight (null: none)
  * @param  ?MEMBER $on_behalf_of_member The member we are running on behalf of, with respect to how attachments are handled; we may use this members attachments that are already within this post, and our new attachments will be handed to this member (null: member evaluating)
  * @return Tempcode The Tempcode generated
  *
  * @ignore
  */
-function _comcode_to_tempcode($comcode, $source_member = null, $as_admin = false, $wrap_pos = null, $pass_id = null, $db = null, $semiparse_mode = false, $preparse_mode = false, $is_all_semihtml = false, $structure_sweep = false, $check_only = false, $highlight_bits = null, $on_behalf_of_member = null)
+function _comcode_to_tempcode($comcode, $source_member = null, $as_admin = false, $pass_id = null, $db = null, $flags = 0, $highlight_bits = null, $on_behalf_of_member = null)
 {
+    $structure_sweep = ($flags & COMCODE_STRUCTURE_SWEEP) != 0;
+
     if (has_interesting_post_fields()) {
         disable_browser_xss_detection();
     }
@@ -307,7 +304,7 @@ function _comcode_to_tempcode($comcode, $source_member = null, $as_admin = false
 
     require_code('comcode_compiler');
 
-    $ret = __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $pass_id, $db, $semiparse_mode, $preparse_mode, $is_all_semihtml, $structure_sweep, $check_only, $highlight_bits, $on_behalf_of_member);
+    $ret = __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $db, $flags, $highlight_bits, $on_behalf_of_member);
 
     $STRUCTURE_LIST = $old_structure_list; // Restore, so that Comcode pages being loaded up in search results don't get skewed TOC's
 
@@ -691,7 +688,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 if (($in_semihtml) || ($is_all_semihtml)) { // Yuck. We've allowed unfiltered HTML through (as code tags are pass-thru): we need to pass it through proper HTML security.
                     require_code('comcode_from_html');
                     $back_to_comcode = semihtml_to_comcode($embed->evaluate()); // Undo what's happened already
-                    $embed = comcode_to_tempcode($back_to_comcode, $source_member, $as_admin, 80, $pass_id, $db, true); // Re-parse (with full security)
+                    $embed = comcode_to_tempcode($back_to_comcode, $source_member, $as_admin, $pass_id, $db, COMCODE_SEMIPARSE_MODE); // Re-parse (with full security)
                 }
 
                 $_embed = $embed->evaluate();
@@ -1027,7 +1024,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             break;
 
         case 'tooltip':
-            $param = comcode_to_tempcode($attributes['param'], $source_member, $as_admin, null, null, $db, false, false, false, false, false, $highlight_bits, $on_behalf_of_member);
+            $param = comcode_to_tempcode($attributes['param'], $source_member, $as_admin, null, $db, COMCODE_NORMAL, $highlight_bits, $on_behalf_of_member);
 
             $temp_tpl = do_template('COMCODE_TOOLTIP', array('_GUID' => 'c9f4793dc0c1a92cd7d08ae1b87c2308', 'URL' => array_key_exists('url', $attributes) ? $attributes['url'] : '', 'TOOLTIP' => $param, 'CONTENT' => $embed));
             break;
@@ -1077,7 +1074,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
 
             $max = ($embed->evaluate() == '') ? intval($embed->evaluate()) : 0;
             foreach ($attributes as $num => $val) {
-                $_temp = comcode_to_tempcode($val, $source_member, $as_admin, null, null, $db, false, false, false, false, false, $highlight_bits, $on_behalf_of_member);
+                $_temp = comcode_to_tempcode($val, $source_member, $as_admin, null, $db, COMCODE_NORMAL, $highlight_bits, $on_behalf_of_member);
                 $attributes[$num] = $_temp->evaluate();
                 if (intval($num) > $max) {
                     $max = intval($num);
@@ -1098,7 +1095,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
 
             $_parts = array();
             foreach ($attributes as $val) {
-                $_temp = comcode_to_tempcode($val, $source_member, $as_admin, null, null, $db, false, false, false, false, false, $highlight_bits, $on_behalf_of_member);
+                $_temp = comcode_to_tempcode($val, $source_member, $as_admin, null, $db, COMCODE_NORMAL, $highlight_bits, $on_behalf_of_member);
                 $_parts[] = array('PART' => $_temp->evaluate());
             }
 
@@ -1113,8 +1110,8 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                     $left = $val;
                     $right = array_key_exists('right_' . substr($key, 5), $attributes) ? $attributes['right_' . substr($key, 5)] : '';
 
-                    $left = comcode_to_tempcode($left, $source_member, $as_admin, null, null, $db, false, false, false, false, false, $highlight_bits, $on_behalf_of_member);
-                    $right = comcode_to_tempcode($right, $source_member, $as_admin, null, null, $db, false, false, false, false, false, $highlight_bits, $on_behalf_of_member);
+                    $left = comcode_to_tempcode($left, $source_member, $as_admin, null, $db, COMCODE_NORMAL, $highlight_bits, $on_behalf_of_member);
+                    $right = comcode_to_tempcode($right, $source_member, $as_admin, null, $db, COMCODE_NORMAL, $highlight_bits, $on_behalf_of_member);
 
                     $_parts[] = array('LEFT' => $left, 'RIGHT' => $right);
                 }
@@ -1284,13 +1281,13 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             break;
 
         case 'box':
-            $width = array_key_exists('width', $attributes) ? comcode_to_tempcode($attributes['width'], $source_member, $as_admin, null, null, $db, false, false, false, false, false, $highlight_bits, $on_behalf_of_member) : make_string_tempcode('auto');
+            $width = array_key_exists('width', $attributes) ? comcode_to_tempcode($attributes['width'], $source_member, $as_admin, null, $db, COMCODE_NORMAL, $highlight_bits, $on_behalf_of_member) : make_string_tempcode('auto');
             $type = array_key_exists('type', $attributes) ? $attributes['type'] : '';
             $class = array_key_exists('class', $attributes) ? $attributes['class'] : '';
             $options = array_key_exists('options', $attributes) ? $attributes['options'] : '';
             $meta = ($comcode_dangerous && isset($attributes['meta'])) ? $attributes['meta'] : ''; // Insecure, unneeded here
             $links = ($comcode_dangerous && isset($attributes['links'])) ? $attributes['links'] : ''; // Insecure, unneeded here
-            $converted_title = comcode_to_tempcode($attributes['param'], $source_member, $as_admin, null, null, $db, false, false, false, false, false, $highlight_bits, $on_behalf_of_member);
+            $converted_title = comcode_to_tempcode($attributes['param'], $source_member, $as_admin, null, $db, COMCODE_NORMAL, $highlight_bits, $on_behalf_of_member);
 
             $temp_tpl = directive_tempcode('BOX', $embed, array($converted_title, make_string_tempcode($type), $width, make_string_tempcode($options), make_string_tempcode($meta), make_string_tempcode($links), new Tempcode(), make_string_tempcode($class)));
             if (isset($attributes['float'])) {
@@ -1316,7 +1313,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                     $key = $_value;
                     $cid = substr($_key, 0, strlen($_key) - 4);
                     $to_parse = array_key_exists($cid . '_value', $attributes) ? $attributes[$cid . '_value'] : '';
-                    $value = comcode_to_tempcode($to_parse, $source_member, $as_admin, null, null, $db, false, false, false, false, false, $highlight_bits, $on_behalf_of_member);
+                    $value = comcode_to_tempcode($to_parse, $source_member, $as_admin, null, $db, COMCODE_NORMAL, $highlight_bits, $on_behalf_of_member);
                     $concepts[] = array('A' => 'concept__' . preg_replace('#[^\w]#', '_', $key), 'KEY' => $key, 'VALUE' => $value);
                 }
             }
@@ -1326,7 +1323,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
 
         case 'hide':
             if (array_key_exists('param', $attributes)) {
-                $text = comcode_to_tempcode($attributes['param'], $source_member, $as_admin, null, null, $db, false, false, false, false, false, $highlight_bits, $on_behalf_of_member);
+                $text = comcode_to_tempcode($attributes['param'], $source_member, $as_admin, null, $db, COMCODE_NORMAL, $highlight_bits, $on_behalf_of_member);
             } else {
                 $text = do_lang_tempcode('EXPAND');
             }
@@ -1348,7 +1345,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             }
 
             if ($attributes['param'] != '') {
-                $attributes['param'] = protect_from_escaping(comcode_to_tempcode($attributes['param'], $source_member, $as_admin, null, null, $db, false, false, false, false, false, $highlight_bits, $on_behalf_of_member));
+                $attributes['param'] = protect_from_escaping(comcode_to_tempcode($attributes['param'], $source_member, $as_admin, null, $db, COMCODE_NORMAL, $highlight_bits, $on_behalf_of_member));
                 $temp_tpl->attach(do_template('COMCODE_QUOTE_BY', array('_GUID' => '18f55a548892ad08b0b50b3b586b5b95', 'CITE' => $cite, 'CONTENT' => $embed, 'BY' => $attributes['param'], 'SAIDLESS' => array_key_exists('saidless', $attributes) ? $attributes['saidless'] : '0')));
             } else {
                 $temp_tpl->attach(do_template('COMCODE_QUOTE', array('_GUID' => 'fa275de59433c17da19b22814c17fdc5', 'CITE' => $cite, 'CONTENT' => $embed)));
@@ -1451,7 +1448,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 'LEVEL' => strval($level),
             );
             if (array_key_exists('sub', $attributes)) {
-                $tpl_map['SUB'] = protect_from_escaping(comcode_to_tempcode($attributes['sub'], $source_member, $as_admin, null, null, $db, false, false, false, false, false, $highlight_bits, $on_behalf_of_member));
+                $tpl_map['SUB'] = protect_from_escaping(comcode_to_tempcode($attributes['sub'], $source_member, $as_admin, null, $db, COMCODE_NORMAL, $highlight_bits, $on_behalf_of_member));
             }
             $temp_tpl = do_template($template, $tpl_map);
             break;
@@ -1471,7 +1468,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 foreach ($pages as $pg_name => $pg_type) {
                     if (substr($pg_name, 0, strlen($prefix)) == $prefix) {
                         $i = count($STRUCTURE_LIST);
-                        comcode_to_tempcode(file_get_contents(zone_black_magic_filterer(get_file_base() . '/' . $s_zone . '/pages/' . $pg_type . '/' . $pg_name . '.txt')), $source_member, $as_admin, null, null, $db, false, false, false, true, false, null, $on_behalf_of_member);
+                        comcode_to_tempcode(file_get_contents(zone_black_magic_filterer(get_file_base() . '/' . $s_zone . '/pages/' . $pg_type . '/' . $pg_name . '.txt')), $source_member, $as_admin, null, $db, COMCODE_NORMAL, null, $on_behalf_of_member);
                         $page_url = build_url(array('page' => $pg_name), $s_zone);
                         while (array_key_exists($i, $STRUCTURE_LIST)) {
                             $urls_for[] = $page_url;
@@ -1484,7 +1481,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             } else {
                 require_code('comcode_compiler');
 
-                __comcode_to_tempcode($comcode, $source_member, $as_admin, null, null, $db, false, false, false, true, false, null, $on_behalf_of_member);
+                __comcode_to_tempcode($comcode, $source_member, $as_admin, null, $db, COMCODE_NORMAL, null, $on_behalf_of_member);
 
                 $base = array_key_exists('base', $attributes) ? intval($attributes['base']) : 1;
             }
@@ -1601,7 +1598,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             $url = $embed->evaluate();
             $switch_over = ((!looks_like_url($url)) && (looks_like_url($attributes['param'], true)));
             if ((strpos($attributes['param'], '[') !== false) || (strpos($attributes['param'], '{') !== false)) { // Extra Comcode parsing wanted?
-                $param_temp = comcode_to_tempcode(escape_html($attributes['param']), $source_member, $as_admin, null, null, $db, false, false, true, false, false, $highlight_bits, $on_behalf_of_member);
+                $param_temp = comcode_to_tempcode(escape_html($attributes['param']), $source_member, $as_admin, null, $db, COMCODE_NORMAL, $highlight_bits, $on_behalf_of_member);
                 global $ADVERTISING_BANNERS_CACHE;
                 $temp_ab = $ADVERTISING_BANNERS_CACHE;
                 $ADVERTISING_BANNERS_CACHE = array();
@@ -1615,7 +1612,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             if ($switch_over) {
                 $url = $attributes['param'];
                 if ((strpos($url, '[') !== false) || (strpos($url, '{') !== false)) { // Extra Comcode parsing wanted?
-                    $url = static_evaluate_tempcode(comcode_to_tempcode($url, $source_member, $as_admin, null, null, $db, false, false, true, false, false, $highlight_bits, $on_behalf_of_member));
+                    $url = static_evaluate_tempcode(comcode_to_tempcode($url, $source_member, $as_admin, null, $db, COMCODE_NORMAL, $highlight_bits, $on_behalf_of_member));
                 }
                 $caption = $embed;
             }
@@ -1690,7 +1687,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 $_embed = $attributes['param'];
                 $attributes['param'] = $temp;
             } else {
-                $attributes['param'] = comcode_to_tempcode($attributes['param'], $source_member, $as_admin, null, null, $db, false, false, false, false, false, $highlight_bits, $on_behalf_of_member); // Becomes Tempcode
+                $attributes['param'] = comcode_to_tempcode($attributes['param'], $source_member, $as_admin, null, $db, COMCODE_NORMAL, $highlight_bits, $on_behalf_of_member); // Becomes Tempcode
             }
             if ($attributes['param']->is_empty()) {
                 $attributes['param'] = obfuscate_email_address($_embed);
@@ -1712,7 +1709,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                     $attributes['title'] = $attributes['param'];
                 }
                 if ($attributes['title'] != '') {
-                    $_title = comcode_to_tempcode($attributes['title'], $source_member, $as_admin, null, null, $db, false, false, false, false, false, $highlight_bits, $on_behalf_of_member);
+                    $_title = comcode_to_tempcode($attributes['title'], $source_member, $as_admin, null, $db, COMCODE_NORMAL, $highlight_bits, $on_behalf_of_member);
                     $title = $_title->evaluate();
                 } else {
                     $title = make_string_tempcode(escape_html($_embed));
@@ -1835,10 +1832,10 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
 
             $align = array_key_exists('align', $attributes) ? $attributes['align'] : '';
 
-            $caption = comcode_to_tempcode($attributes['param'], $source_member, $as_admin, null, null, $db, false, false, false, false, false, $highlight_bits, $on_behalf_of_member);
+            $caption = comcode_to_tempcode($attributes['param'], $source_member, $as_admin, null, $db, COMCODE_NORMAL, $highlight_bits, $on_behalf_of_member);
 
             if (array_key_exists('title', $attributes)) {
-                $tooltip = comcode_to_tempcode($attributes['title'], $source_member, $as_admin, null, null, $db, false, false, false, false, false, $highlight_bits, $on_behalf_of_member);
+                $tooltip = comcode_to_tempcode($attributes['title'], $source_member, $as_admin, null, $db, COMCODE_NORMAL, $highlight_bits, $on_behalf_of_member);
             } else {
                 $tooltip = $caption;
             }

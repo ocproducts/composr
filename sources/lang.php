@@ -972,18 +972,17 @@ function create_selection_list_langs($select_lang = null, $show_unset = false)
  * @param  ?object $db The database connector to use (null: standard site connector)
  * @param  boolean $insert_as_admin Whether to insert it as an admin (any Comcode parsing will be carried out with admin privileges)
  * @param  ?string $pass_id The special identifier for this language string on the page it will be displayed on; this is used to provide an explicit binding between languaged elements and greater templated areas (null: none)
- * @param  ?integer $wrap_pos Comcode parser wrap position (null: no wrapping)
  * @param  boolean $preparse_mode Whether to generate a fatal error if there is invalid Comcode
- * @param  boolean $save_as_volatile Whether we are saving as a 'volatile' file extension (used in the XML DB driver, to mark things as being non-syndicated to subversion)
+ * @param  boolean $save_as_volatile Whether we are saving as a 'volatile' file extension (used in the XML DB driver, to mark things as being non-syndicated to git)
  * @return array The language string ID save fields
  */
-function insert_lang_comcode($field_name, $text, $level, $db = null, $insert_as_admin = false, $pass_id = null, $wrap_pos = null, $preparse_mode = true, $save_as_volatile = false)
+function insert_lang_comcode($field_name, $text, $level, $db = null, $insert_as_admin = false, $pass_id = null, $preparse_mode = true, $save_as_volatile = false)
 {
     if (is_null($db)) {
         $db = $GLOBALS['SITE_DB'];
     }
 
-    return insert_lang($field_name, $text, $level, $db, true, null, null, $insert_as_admin, $pass_id, null, $wrap_pos, $preparse_mode, $save_as_volatile);
+    return insert_lang($field_name, $text, $level, $db, true, null, null, $insert_as_admin, $pass_id, null, $preparse_mode, $save_as_volatile);
 }
 
 /**
@@ -1000,15 +999,14 @@ function insert_lang_comcode($field_name, $text, $level, $db = null, $insert_as_
  * @param  boolean $insert_as_admin Whether to insert it as an admin (any Comcode parsing will be carried out with admin privileges)
  * @param  ?string $pass_id The special identifier for this language string on the page it will be displayed on; this is used to provide an explicit binding between languaged elements and greater templated areas (null: none)
  * @param  ?string $text_parsed Assembled Tempcode portion (null: work it out)
- * @param  ?integer $wrap_pos Comcode parser wrap position (null: no wrapping)
  * @param  boolean $preparse_mode Whether to generate a fatal error if there is invalid Comcode
- * @param  boolean $save_as_volatile Whether we are saving as a 'volatile' file extension (used in the XML DB driver, to mark things as being non-syndicated to subversion)
+ * @param  boolean $save_as_volatile Whether we are saving as a 'volatile' file extension (used in the XML DB driver, to mark things as being non-syndicated to git)
  * @return array The language string ID save fields
  */
-function insert_lang($field_name, $text, $level, $db = null, $comcode = false, $id = null, $lang = null, $insert_as_admin = false, $pass_id = null, $text_parsed = null, $wrap_pos = null, $preparse_mode = true, $save_as_volatile = false)
+function insert_lang($field_name, $text, $level, $db = null, $comcode = false, $id = null, $lang = null, $insert_as_admin = false, $pass_id = null, $text_parsed = null, $preparse_mode = true, $save_as_volatile = false)
 {
     require_code('lang3');
-    return _insert_lang($field_name, $text, $level, $db, $comcode, $id, $lang, $insert_as_admin, $pass_id, $text_parsed, $wrap_pos, $preparse_mode, $save_as_volatile);
+    return _insert_lang($field_name, $text, $level, $db, $comcode, $id, $lang, $insert_as_admin, $pass_id, $text_parsed, $preparse_mode, $save_as_volatile);
 }
 
 /**
@@ -1168,7 +1166,7 @@ function get_translated_tempcode($table, $row, $field_name, $db = null, $lang = 
                     $result['text_original'] = force_clean_comcode($result['text_original']); // Highlighting only works with pure Comcode
                 }
 
-                $ret = comcode_to_tempcode($result['text_original'], $result['source_user'], $as_admin, null, null, $db, false, false, false, false, false, $SEARCH__CONTENT_BITS);
+                $ret = comcode_to_tempcode($result['text_original'], $result['source_user'], $as_admin, null, $db, COMCODE_NORMAL, $SEARCH__CONTENT_BITS);
 
                 pop_lax_comcode();
 
@@ -1193,7 +1191,7 @@ function get_translated_tempcode($table, $row, $field_name, $db = null, $lang = 
                 $row[$field_name] = force_clean_comcode($row[$field_name]); // Highlighting only works with pure Comcode
             }
 
-            $ret = comcode_to_tempcode($row[$field_name], $row[$field_name . '__source_user'], $as_admin, null, null, $db, false, false, false, false, false, $SEARCH__CONTENT_BITS);
+            $ret = comcode_to_tempcode($row[$field_name], $row[$field_name . '__source_user'], $as_admin, null, $db, COMCODE_NORMAL, $SEARCH__CONTENT_BITS);
 
             pop_lax_comcode();
 

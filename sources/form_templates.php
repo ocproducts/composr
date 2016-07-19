@@ -376,7 +376,7 @@ function get_posting_form($submit_name, $submit_icon, $post, $post_url, $hidden_
     push_lax_comcode(true);
     $GLOBALS['COMCODE_PARSE_URLS_CHECKED'] = 100; // FUDGE: Little hack to stop it checking any URLs
     /*Actually we reparse always to ensure it is done in semiparse mode if ($default_parsed === null) */
-    $default_parsed = @comcode_to_tempcode($post, null, false, null, null, null, true);
+    $default_parsed = @comcode_to_tempcode($post, null, false, null, null, COMCODE_SEMIPARSE_MODE);
     pop_lax_comcode();
 
     global $MODSECURITY_WORKAROUND_ENABLED;
@@ -1119,7 +1119,7 @@ function form_input_text_comcode($pretty_name, $description, $name, $default, $r
         push_lax_comcode(true);
         $GLOBALS['COMCODE_PARSE_URLS_CHECKED'] = 100; // FUDGE: Little hack to stop it checking any URLs
         /*Actually we reparse always to ensure it is done in semiparse mode if ($default_parsed === null) */
-        $default_parsed = @comcode_to_tempcode($default, null, false, null, null, null, true);
+        $default_parsed = @comcode_to_tempcode($default, null, false, null, null, COMCODE_SEMIPARSE_MODE);
         pop_lax_comcode();
     } else {
         $w = false;
@@ -1182,7 +1182,7 @@ function form_input_huge_comcode($pretty_name, $description, $name, $default, $r
         push_lax_comcode(true);
         $GLOBALS['COMCODE_PARSE_URLS_CHECKED'] = 100; // FUDGE: Little hack to stop it checking any URLs
         /*Actually we reparse always to ensure it is done in semiparse mode if ($default_parsed === null) */
-        $default_parsed = @comcode_to_tempcode($default, null, false, null, null, null, true);
+        $default_parsed = @comcode_to_tempcode($default, null, false, null, null, COMCODE_SEMIPARSE_MODE);
         pop_lax_comcode();
     } else {
         $w = false;

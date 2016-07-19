@@ -856,7 +856,7 @@ function add_ip_ban($ip, $descrip = '', $ban_until = null, $ban_positive = true)
     $GLOBALS['SITE_DB']->query_delete('banned_ip', array('ip' => $ip), '', 1);
     $GLOBALS['SITE_DB']->query_insert('banned_ip', array('ip' => $ip, 'i_descrip' => $descrip, 'i_ban_until' => $ban_until, 'i_ban_positive' => $ban_positive ? 1 : 0), false, true); // To stop weird race-like conditions
     persistent_cache_delete('IP_BANS');
-    if ((is_writable_wrap(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess')) && (is_null($ban_until))) {
+    if ((cms_is_writable(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess')) && (is_null($ban_until))) {
         $myfile = fopen(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess', GOOGLE_APPENGINE ? 'rb' : 'rt');
         @flock($myfile, LOCK_SH);
         $original_contents = file_get_contents(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess');
@@ -891,7 +891,7 @@ function remove_ip_ban($ip)
 
     $GLOBALS['SITE_DB']->query_delete('banned_ip', array('ip' => $ip), '', 1);
     persistent_cache_delete('IP_BANS');
-    if (is_writable_wrap(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess')) {
+    if (cms_is_writable(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess')) {
         $contents = file_get_contents(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess');
         $ip_cleaned = str_replace('*', '', $ip);
         $ip_cleaned = str_replace('..', '.', $ip_cleaned);

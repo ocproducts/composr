@@ -203,7 +203,7 @@ class Hook_search_downloads extends FieldsSearchHook
             $_text_summary = '';
         }
         push_lax_comcode(true);
-        $text_summary_h = comcode_to_tempcode($_text_summary, null, false, null, null, null, false, false, false, false, false, $highlight_bits);
+        $text_summary_h = comcode_to_tempcode($_text_summary, null, false, null, null, COMCODE_NORMAL, $highlight_bits);
         pop_lax_comcode();
         $text_summary = generate_text_summary($text_summary_h->evaluate(), $highlight_bits);
 

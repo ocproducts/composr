@@ -824,7 +824,7 @@ function check_perms()
                 if (!file_exists(get_file_base() . '/' . $_chmod)) {
                     continue;
                 }
-                if (!is_writable_wrap(get_file_base() . '/' . $_chmod)) {
+                if (!cms_is_writable(get_file_base() . '/' . $_chmod)) {
                     $out .= '<li>' . do_lang('FU_NEEDS_CHMOD', '<kbd>' . escape_html($_chmod) . '</kbd>') . '</li>';
                 }
             }
@@ -833,7 +833,7 @@ function check_perms()
         if (!file_exists(get_file_base() . '/' . $chmod)) {
             continue;
         }
-        if (!is_writable_wrap(get_file_base() . '/' . $chmod)) {
+        if (!cms_is_writable(get_file_base() . '/' . $chmod)) {
             $out .= '<li>' . do_lang('FU_NEEDS_CHMOD', '<kbd>' . escape_html($chmod) . '</kbd>') . '</li>';
         }
         //}
@@ -901,7 +901,7 @@ function fix_perms()
                 if (!file_exists(get_file_base() . '/' . $_chmod)) {
                     continue;
                 }
-                if (!is_writable_wrap(get_file_base() . '/' . $_chmod)) {
+                if (!cms_is_writable(get_file_base() . '/' . $_chmod)) {
                     afm_set_perms($_chmod, true);
                 }
             }
@@ -910,7 +910,7 @@ function fix_perms()
         if (!file_exists(get_file_base() . '/' . $chmod)) {
             continue;
         }
-        if (!is_writable_wrap(get_file_base() . '/' . $chmod)) {
+        if (!cms_is_writable(get_file_base() . '/' . $chmod)) {
             afm_set_perms($chmod, true);
         }
         //}
@@ -998,7 +998,7 @@ function check_excess_perms($array, $rel = '')
 
             $relpath = $rel . (($rel == '') ? '' : '/') . $file;
             $ok = (in_array($relpath, $array)) || (in_array(preg_replace('#^[^/]+/#', 'site/', $relpath), $array)) || (in_array(preg_replace('#^themes/[^/]+/#', 'themes/default/', $relpath), $array));
-            if ((php_function_allowed('posix_getuid')) && (!$ok) && (is_writable_wrap($dir . $file)) && (fileowner($dir . $file) != posix_getuid())) {
+            if ((php_function_allowed('posix_getuid')) && (!$ok) && (cms_is_writable($dir . $file)) && (fileowner($dir . $file) != posix_getuid())) {
                 $out .= '<li>' . do_lang('FU_NEEDS_UNCHMOD', '<kbd>' . escape_html($rel . (($rel == '') ? '' : '/') . $file)) . '</kbd></li>';
             }
 
@@ -1310,7 +1310,7 @@ function check_outdated__handle_overrides($dir, $rela, &$master_data, &$hook_fil
                             }
 
                             if ((!is_null($true_hash)) && ($hash_on_disk != $true_hash)) {
-                                if ((function_exists('diff_compute_new')) && (substr($file, -4) == '.css') && ($true_hash !== 2) && (file_exists($dir . $file . '.editfrom')) && (is_writable_wrap($dir . $file))) {
+                                if ((function_exists('diff_compute_new')) && (substr($file, -4) == '.css') && ($true_hash !== 2) && (file_exists($dir . $file . '.editfrom')) && (cms_is_writable($dir . $file))) {
                                     $new = diff_compute_new($equiv_file, $dir . $file . '.editfrom', $dir . $file);
                                     $myfile = fopen($dir . $file . '.' . strval(time()), 'wb');
                                     fwrite($myfile, file_get_contents($dir . $file));
@@ -1753,7 +1753,7 @@ function fu_rename_zone($zone, $new_zone, $dont_bother_with_main_row = false)
     foreach ($pages as $page => $type) {
         $path = get_file_base() . '/' . $zone . '/pages/' . $type . '/' . $page;
         $new_path = get_file_base() . '/' . $new_zone . '/pages/' . $type . '/' . $page;
-        if ((is_writable_wrap($path)) && (is_writable_wrap($new_path))) {
+        if ((cms_is_writable($path)) && (cms_is_writable($new_path))) {
             rename($path, $new_path);
             sync_file_move($path, $new_path);
         }

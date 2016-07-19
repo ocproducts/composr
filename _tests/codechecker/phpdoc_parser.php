@@ -38,8 +38,6 @@ if (isset($_SERVER['argv'])) {
     }
 }
 
-define('DEFAULT_ZONE_PAGE_NAME', 'home');
-
 require_code('php');
 
 $no_custom = true;

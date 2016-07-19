@@ -180,7 +180,7 @@ class Hook_commandr_fs_bin
             $path .= '/' . filter_naughty($meta_dir_section);
         }
 
-        if ((is_dir($path)) && (((file_exists($path . '/' . $file_name)) && (is_writable_wrap($path . '/' . $file_name))) || ((!file_exists($path . '/' . $file_name)) && (is_writable_wrap($path))))) {
+        if ((is_dir($path)) && (((file_exists($path . '/' . $file_name)) && (cms_is_writable($path . '/' . $file_name))) || ((!file_exists($path . '/' . $file_name)) && (cms_is_writable($path))))) {
             $fh = @fopen($path . '/' . $file_name, GOOGLE_APPENGINE ? 'wb' : 'wt') or intelligent_write_error($path . '/' . $file_name);
             $output = fwrite($fh, $contents);
             fclose($fh);

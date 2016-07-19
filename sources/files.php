@@ -524,6 +524,9 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
         if ($addon_files === null) {
             $addon_files = array();// Old style: function_exists('collapse_1d_complexity') ? array_map('strtolower', collapse_1d_complexity('filename', $GLOBALS['SITE_DB']->query_select('addons_files', array('filename')))) : array();
             $hooks = find_all_hooks('systems', 'addon_registry');
+            if (!defined('DEFAULT_ZONE_PAGE_NAME')) {
+                define('DEFAULT_ZONE_PAGE_NAME', 'home');
+            }
             foreach ($hooks as $hook => $place) {
                 if ($place == 'sources_custom') {
                     if (function_exists('filter_naughty_harsh')) {

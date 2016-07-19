@@ -847,16 +847,10 @@ function _chat_post_message_ajax($room_id, $message, $font, $colour, $first_mess
  * @param  LONG_TEXT $message The message body
  * @param  SHORT_TEXT $font_name The font name for the message
  * @param  SHORT_TEXT $text_colour The text colour for the message
- * @param  SHORT_INTEGER $wrap_pos The wrap position for the message
  * @return boolean Whether the message was successfully posted or not
  */
-function chat_post_message($room_id, $message, $font_name, $text_colour, $wrap_pos = 60)
+function chat_post_message($room_id, $message, $font_name, $text_colour)
 {
-    // If it contains chatcode then we'll need to disable the word-filter
-    if ((strpos($message, '[') !== false) && (strpos($message, ']') !== false)) {
-        $wrap_pos = null;
-    }
-
     // Have we been blocked by flood control?
     $is_im = $GLOBALS['SITE_DB']->query_select_value('chat_rooms', 'is_im', array('id' => $room_id));
     if ($is_im == 1) { // No flood control for IMs
@@ -896,7 +890,7 @@ function chat_post_message($room_id, $message, $font_name, $text_colour, $wrap_p
             'text_colour' => $text_colour,
             'font_name' => $font_name,
         );
-        $map += insert_lang_comcode('the_message', wordfilter_text($message), 4, null, false, null, $wrap_pos);
+        $map += insert_lang_comcode('the_message', wordfilter_text($message), 4, null, false, null);
         $message_id = $GLOBALS['SITE_DB']->query_insert('chat_messages', $map, true);
 
         $myfile = @fopen(get_custom_file_base() . '/data_custom/modules/chat/chat_last_msg.dat', 'wb') or intelligent_write_error(get_custom_file_base() . '/data_custom/modules/chat/chat_last_msg.dat');
@@ -920,7 +914,7 @@ function chat_post_message($room_id, $message, $font_name, $text_colour, $wrap_p
                         'text_colour' => get_option('chat_default_post_colour'),
                         'font_name' => get_option('chat_default_post_font'),
                     );
-                    $map += insert_lang_comcode('the_message', wordfilter_text($response), 4, null, false, null, $wrap_pos);
+                    $map += insert_lang_comcode('the_message', wordfilter_text($response), 4, null, false, null);
                     $bot_message_id = $GLOBALS['SITE_DB']->query_insert('chat_messages', $map, true);
 
                     $myfile = @fopen(get_custom_file_base() . '/data_custom/modules/chat/chat_last_msg.dat', 'wb') or intelligent_write_error(get_custom_file_base() . '/data_custom/modules/chat/chat_last_msg.dat');
@@ -984,7 +978,7 @@ function chat_post_message($room_id, $message, $font_name, $text_colour, $wrap_p
         'text_colour' => get_option('chat_default_post_colour'),
         'font_name' => get_option('chat_default_post_font'),
     );
-    $map += insert_lang_comcode('the_message', '[private="' . $GLOBALS['FORUM_DRIVER']->get_username(get_member()) . '"]' . do_lang('FLOOD_CONTROL_BLOCKED', integer_format($time_left)) . '[/private]', 4, null, false, null/*, $wrap_pos*/); // Can't wrap system messages, the Comcode parser won't know 'private' is a real tag so will wrap inside its definition
+    $map += insert_lang_comcode('the_message', '[private="' . $GLOBALS['FORUM_DRIVER']->get_username(get_member()) . '"]' . do_lang('FLOOD_CONTROL_BLOCKED', integer_format($time_left)) . '[/private]', 4, null, false, null);
     $message_id = $GLOBALS['SITE_DB']->query_insert('chat_messages', $map, true);
     $myfile = @fopen(get_custom_file_base() . '/data_custom/modules/chat/chat_last_msg.dat', 'wb') or intelligent_write_error(get_custom_file_base() . '/data_custom/modules/chat/chat_last_msg.dat');
     fwrite($myfile, strval($message_id));

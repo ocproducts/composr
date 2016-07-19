@@ -129,7 +129,7 @@ function get_afm_form_fields()
     $ftp_domain = get_value('ftp_domain');
     $_uses_ftp = running_script('upgrader') ? '0' : get_value('uses_ftp');
     if (is_null($_uses_ftp)) {
-        $uses_ftp = !is_writable_wrap(get_file_base() . '/adminzone/index.php');
+        $uses_ftp = !cms_is_writable(get_file_base() . '/adminzone/index.php');
     } else {
         $uses_ftp = ($_uses_ftp == '1');
     }

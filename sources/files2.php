@@ -413,7 +413,7 @@ function make_csv($data, $filename = 'data.csv', $headers = true, $output_and_ex
  */
 function delete_csv_column($in_path, $column_name)
 {
-    if (!is_writable_wrap($in_path)) {
+    if (!cms_is_writable($in_path)) {
         fatal_exit(do_lang_tempcode('WRITE_ERROR', $in_path));
     }
 
@@ -767,7 +767,7 @@ function check_extension($name, $skip_server_side_security_check = false, $file_
         $message = do_lang_tempcode('INVALID_FILE_TYPE', escape_html($ext), escape_html(str_replace(',', ', ', $_types)));
         if (has_actual_page_access(get_member(), 'admin_config')) {
             $_url = build_url(array('page' => 'admin_config', 'type' => 'category', 'id' => 'SECURITY'), get_module_zone('admin_config'));
-            $url = $_link->evaluate();
+            $url = $_url->evaluate();
             $url .= '#group_UPLOAD';
             $message = do_lang_tempcode('INVALID_FILE_TYPE_ADMIN', escape_html($ext), escape_html(str_replace(',', ', ', $_types)), escape_html($url));
         }

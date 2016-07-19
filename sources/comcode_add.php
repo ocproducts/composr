@@ -1067,7 +1067,7 @@ function comcode_helper_script_step3()
     }
 
     $comcode = _get_preview_environment_comcode($tag);
-    $comcode_semihtml = comcode_to_tempcode($comcode, null, false, null, null, null, true, false, false);
+    $comcode_semihtml = comcode_to_tempcode($comcode, null, false, null, null, COMCODE_SEMIPARSE_MODE);
 
     $prefix = get_param_string('prefix', '', true);
 

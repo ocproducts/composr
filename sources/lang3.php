@@ -219,14 +219,13 @@ function _create_selection_list_langs($select_lang = null, $show_unset = false)
  * @param  boolean $insert_as_admin Whether to insert it as an admin (any Comcode parsing will be carried out with admin privileges)
  * @param  ?string $pass_id The special identifier for this language string on the page it will be displayed on; this is used to provide an explicit binding between languaged elements and greater templated areas (null: none)
  * @param  ?string $text_parsed Assembled Tempcode portion (null: work it out)
- * @param  ?integer $wrap_pos Comcode parser wrap position (null: no wrapping)
  * @param  boolean $preparse_mode Whether to generate a fatal error if there is invalid Comcode
- * @param  boolean $save_as_volatile Whether we are saving as a 'volatile' file extension (used in the XML DB driver, to mark things as being non-syndicated to subversion)
+ * @param  boolean $save_as_volatile Whether we are saving as a 'volatile' file extension (used in the XML DB driver, to mark things as being non-syndicated to git)
  * @return array The language string ID save fields
  *
  * @ignore
  */
-function _insert_lang($field_name, $text, $level, $db = null, $comcode = false, $id = null, $lang = null, $insert_as_admin = false, $pass_id = null, $text_parsed = null, $wrap_pos = null, $preparse_mode = true, $save_as_volatile = false)
+function _insert_lang($field_name, $text, $level, $db = null, $comcode = false, $id = null, $lang = null, $insert_as_admin = false, $pass_id = null, $text_parsed = null, $preparse_mode = true, $save_as_volatile = false)
 {
     if ($db === null) {
         $db = $GLOBALS['SITE_DB'];
@@ -246,7 +245,7 @@ function _insert_lang($field_name, $text, $level, $db = null, $comcode = false, 
                 $insert_as_admin = true;
             }
             require_code('comcode');
-            $_text_parsed = comcode_to_tempcode($text, $member, $insert_as_admin, $wrap_pos, $pass_id, $db, false, $preparse_mode);
+            $_text_parsed = comcode_to_tempcode($text, $member, $insert_as_admin, $pass_id, $db, $preparse_mode ? COMCODE_PREPARSE_MODE : COMCODE_NORMAL);
             $text_parsed = $_text_parsed->to_assembly();
         }
     } else {
@@ -360,7 +359,7 @@ function _lang_remap($field_name, $id, $text, $db = null, $comcode = false, $pas
     }
 
     if ($comcode) {
-        $_text_parsed = comcode_to_tempcode($text, ($source_user === null) ? $for_member : $source_user, $as_admin, null, $pass_id, $db);
+        $_text_parsed = comcode_to_tempcode($text, ($source_user === null) ? $for_member : $source_user, $as_admin, $pass_id, $db);
         $db->text_lookup_cache[$id] = $_text_parsed;
         $text_parsed = $_text_parsed->to_assembly();
     } else {
@@ -466,7 +465,7 @@ function parse_translated_text($table, &$row, $field_name, $db, $lang, $force, $
                 push_lax_comcode(true);
                 _lang_remap($field_name, $entry, ($result === null) ? '' : $result['text_original'], $db, true, null, $result['source_user'], $as_admin, true);
                 if ($SEARCH__CONTENT_BITS !== null) {
-                    $ret = comcode_to_tempcode($result['text_original'], $result['source_user'], $as_admin, null, null, $db, false, false, false, false, false, $SEARCH__CONTENT_BITS);
+                    $ret = comcode_to_tempcode($result['text_original'], $result['source_user'], $as_admin, null, $db, COMCODE_NORMAL, $SEARCH__CONTENT_BITS);
                     pop_lax_comcode();
                     pop_query_limiting();
                     return $ret;
@@ -493,7 +492,7 @@ function parse_translated_text($table, &$row, $field_name, $db, $lang, $force, $
         _lang_remap($field_name, $entry, $result['text_original'], $db, true, null, $result['source_user'], $as_admin, true);
 
         if ($SEARCH__CONTENT_BITS !== null) {
-            $ret = comcode_to_tempcode($result['text_original'], $result['source_user'], $as_admin, null, null, $db, false, false, false, false, false, $SEARCH__CONTENT_BITS);
+            $ret = comcode_to_tempcode($result['text_original'], $result['source_user'], $as_admin, null, $db, COMCODE_NORMAL, $SEARCH__CONTENT_BITS);
             pop_lax_comcode();
             pop_query_limiting();
             return $ret;
@@ -505,7 +504,7 @@ function parse_translated_text($table, &$row, $field_name, $db, $lang, $force, $
         $row = $map + $row;
 
         if ($SEARCH__CONTENT_BITS !== null) {
-            $ret = comcode_to_tempcode($row[$field_name], $row[$field_name . '__source_user'], $as_admin, null, null, $db, false, false, false, false, false, $SEARCH__CONTENT_BITS);
+            $ret = comcode_to_tempcode($row[$field_name], $row[$field_name . '__source_user'], $as_admin, null, $db, COMCODE_NORMAL, $SEARCH__CONTENT_BITS);
             pop_lax_comcode();
             pop_query_limiting();
             return $ret;
@@ -589,7 +588,7 @@ function _comcode_lang_string($lang_code)
         'the_theme' => $GLOBALS['FORUM_DRIVER']->get_theme(),
         'cc_page_title' => multi_lang_content() ? null : '',
     );
-    $map += insert_lang_comcode('string_index', $looked_up, 4, null, true, null, null, false, true);
+    $map += insert_lang_comcode('string_index', $looked_up, 4, null, true, null, false, true);
     $GLOBALS['SITE_DB']->query_insert('cached_comcode_pages', $map, false, true); // Race conditions
     $parsed = get_translated_tempcode('cached_comcode_pages', $map, 'string_index');
     $COMCODE_LANG_STRING_CACHE[$lang_code] = $parsed;

@@ -36,7 +36,7 @@ class Hook_cron_dynamic_firewall
         if (time() >= $last_time + 60 * 60 * 6) {
             $rules_path = get_custom_file_base() . '/data_custom/firewall_rules.txt';
 
-            if (is_writable_wrap($rules_path)) {
+            if (cms_is_writable($rules_path)) {
                 require_code('version2');
 
                 $new_contents = @http_download_file('https://compo.sr/data_custom/firewall_rules.txt?version=' . rawurlencode(get_version_dotted()), null, false);

@@ -75,7 +75,7 @@ class Hook_commandr_fs_root
         $new_dir_name = filter_naughty($new_dir_name);
         $path = $this->_customise_directory($meta_dir);
 
-        if ((is_dir($path)) && (!file_exists($path . $new_dir_name)) && (is_writable_wrap($path))) {
+        if ((is_dir($path)) && (!file_exists($path . $new_dir_name)) && (cms_is_writable($path))) {
             $ret = @mkdir($path . $new_dir_name, 0777) or warn_exit(do_lang_tempcode('WRITE_ERROR_DIRECTORY', $path . $new_dir_name), false, true);
             fix_permissions($path . $new_dir_name);
             sync_file($path . $new_dir_name);
@@ -99,7 +99,7 @@ class Hook_commandr_fs_root
         $dir_name = filter_naughty($dir_name);
         $path = $this->_customise_directory($meta_dir);
 
-        if ((is_dir($path)) && (file_exists($path . $dir_name)) && (is_writable_wrap($path . $dir_name))) {
+        if ((is_dir($path)) && (file_exists($path . $dir_name)) && (cms_is_writable($path . $dir_name))) {
             require_code('files');
             deldir_contents($path . $dir_name);
             $ret = @rmdir($path . $dir_name) or warn_exit(do_lang_tempcode('WRITE_ERROR', escape_html($path . $dir_name)), false, true);
@@ -124,7 +124,7 @@ class Hook_commandr_fs_root
         $file_name = filter_naughty($file_name);
         $path = $this->_customise_directory($meta_dir);
 
-        if ((is_dir($path)) && (file_exists($path . $file_name)) && (is_writable_wrap($path . $file_name))) {
+        if ((is_dir($path)) && (file_exists($path . $file_name)) && (cms_is_writable($path . $file_name))) {
             $ret = @unlink($path . $file_name) or intelligent_write_error($path . $file_name);
             sync_file($path . $file_name);
             return $ret;
@@ -172,7 +172,7 @@ class Hook_commandr_fs_root
         $file_name = filter_naughty($file_name);
         $path = $this->_customise_directory($meta_dir);
 
-        if ((is_dir($path)) && (((file_exists($path . $file_name)) && (is_writable_wrap($path . $file_name))) || ((!file_exists($path . $file_name)) && (is_writable_wrap($path))))) {
+        if ((is_dir($path)) && (((file_exists($path . $file_name)) && (cms_is_writable($path . $file_name))) || ((!file_exists($path . $file_name)) && (cms_is_writable($path))))) {
             $fh = @fopen($path . $file_name, GOOGLE_APPENGINE ? 'wb' : 'wt') or intelligent_write_error($path . $file_name);
             $output = fwrite($fh, $contents);
             fclose($fh);

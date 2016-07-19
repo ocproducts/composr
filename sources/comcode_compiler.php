@@ -51,7 +51,7 @@ function init__comcode_compiler()
     // The following could conceivably not need to be reversed, as they're pure HTML. However, it's better not to let the WYSIWYG'd HTML get too complex.
     // 'tooltip' => true, 'section' => true, 'section_controller' => true, 'big_tab' => true, 'big_tab_controller' => true, 'tabs' => true, 'tab' => true, 'carousel' => true, 'flash' => true, 'media' => true, 'hide' => true, 'quote' => true, 'ticker' => true, 'jumping' => true
 
-    // The contents of these tags is human readable text. It may be altered for reasons of bork, or word-wrapping, or textcode; they have hard white space
+    // The contents of these tags is human readable text. It may be altered for reasons of bork, or textcode; they have hard white space
     global $TEXTUAL_TAGS, $TEXTUAL_TAGS_WYSIWYG;
     $TEXTUAL_TAGS = array('overlay' => true, 'tooltip' => true, 'section' => true, 'surround' => true, 'if_in_group' => true, 'cite' => true, 'ins' => true, 'del' => true, 'dfn' => true, 'address' => true, 'abbr' => true, 'acronym' => true, 'list' => true, 'indent' => true, 'align' => true, 'left' => true, 'center' => true, 'right' => true, 'b' => true, 'i' => true, 'u' => true, 's' => true, 'sup' => true, 'sub' => true, 'title' => true, 'size' => true, 'color' => true, 'highlight' => true, 'font' => true, 'box' => true, 'hide' => true, 'quote' => true, 'tab' => true, 'big_tab' => true, 'ticker' => true, 'pulse' => true, 'concept' => true);
     $TEXTUAL_TAGS_WYSIWYG = $TEXTUAL_TAGS + array('tabs' => true, 'carousel' => true, 'media_set' => true, 'codebox' => true, 'code' => true);
@@ -319,24 +319,25 @@ function add_wysiwyg_comcode_markup($tag, $attributes, $embed, $semihtml, $metho
  * @param  LONG_TEXT $comcode The Comcode to convert
  * @param  MEMBER $source_member The member the evaluation is running as. This is a security issue, and you should only run as an administrator if you have considered where the Comcode came from carefully
  * @param  boolean $as_admin Whether to explicitly execute this with admin rights. There are a few rare situations where this should be done, for data you know didn't come from a member, but is being evaluated by one.
- * @param  ?integer $wrap_pos The position to conduct wordwrapping at (null: do not conduct word-wrapping)
  * @param  ?string $pass_id A special identifier that can identify this resource in a sea of our resources of this class; usually this can be ignored, but may be used to provide a binding between JavaScript in evaluated Comcode, and the surrounding environment (null: no explicit binding)
  * @param  object $db The database connector to use
- * @param  boolean $semiparse_mode Whether to parse so as to create something that would fit inside a semihtml tag. It means we generate HTML, with Comcode written into it where the tag could never be reverse-converted (e.g. a block).
- * @param  boolean $preparse_mode Whether this is being pre-parsed, to pick up errors before row insertion.
- * @param  boolean $is_all_semihtml Whether to treat this whole thing as being wrapped in semihtml, but apply normal security otherwise.
- * @param  boolean $structure_sweep Whether we are only doing this parse to find the title structure
- * @param  boolean $check_only Whether to only check the Comcode. It's best to use the check_comcode function which will in turn use this parameter.
+ * @param  integer $flags A bitmask of COMCODE_* flags
  * @param  ?array $highlight_bits A list of words to highlight (null: none)
  * @param  ?MEMBER $on_behalf_of_member The member we are running on behalf of, with respect to how attachments are handled; we may use this members attachments that are already within this post, and our new attachments will be handed to this member (null: member evaluating)
  * @return Tempcode The Tempcode generated
  *
  * @ignore
  */
-function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $pass_id, $db, $semiparse_mode, $preparse_mode, $is_all_semihtml, $structure_sweep, $check_only, $highlight_bits = null, $on_behalf_of_member = null)
+function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $db, $flags = 0, $highlight_bits = null, $on_behalf_of_member = null)
 {
     init_valid_comcode_tags();
     init_potential_js_naughty_array();
+
+    $semiparse_mode = ($flags & COMCODE_SEMIPARSE_MODE) != 0;
+    $preparse_mode = ($flags & COMCODE_PREPARSE_MODE) != 0;
+    $is_all_semihtml = ($flags & COMCODE_IS_ALL_SEMIHTML) != 0;
+    $structure_sweep = ($flags & COMCODE_STRUCTURE_SWEEP) != 0;
+    $check_only = ($flags & COMCODE_CHECK_ONLY) != 0;
 
     global $ADVERTISING_BANNERS_CACHE, $ALLOWED_COMCODE_ENTITIES, $CODE_TAGS, $DANGEROUS_TAGS, $VALID_COMCODE_TAGS, $BLOCK_TAGS, $POTENTIAL_JS_NAUGHTY_ARRAY, $TEXTUAL_TAGS, $LEET_FILTER, $IMPORTED_CUSTOM_COMCODE;
 
@@ -477,7 +478,6 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
     $pos = 0;
     $line_starting = true;
     $just_ended = false;
-    $none_wrap_length = 0;
     $just_new_line = true; // So we can detect lists starting right away
     $just_title = false;
     global $NUM_COMCODE_LINES_PARSED;
@@ -766,7 +766,6 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                     $tag_output->attach($_temp_tpl);
                                     $pos = $scan_pos + 1;
                                     $just_ended = true;
-                                    $none_wrap_length = 0;
                                     continue;
                                 }
                             }
@@ -846,7 +845,6 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                             }
                             $tag_output->attach($temp_tpl);
                             $just_ended = true;
-                            $none_wrap_length = 0;
                             $next = '';
                             $pos = $scan_pos + 2;
                         }
@@ -865,7 +863,6 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                         $tag_output->attach($continuation);
                         $continuation = '';
                         $just_new_line = true;
-                        $none_wrap_length = 0;
                         if (($list_indent === 0) && (!$just_ended)) {
                             $temp_tpl = '<br />';
                             if ($GLOBALS['XSS_DETECT']) {
@@ -878,9 +875,6 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                         if (($next === ' ') && ($white_space_area) && (!$in_semihtml)) {
                             if (($line_starting) || (($pos > 1) && ($comcode[$pos - 2] === ' '))) { // Hard spaces
                                 $next = '&nbsp;';
-                                ++$none_wrap_length;
-                            } else {
-                                $none_wrap_length = 0;
                             }
                             $continuation .= $next;
                         } elseif (($next === "\t") && ($white_space_area) && (!$in_semihtml)) {
@@ -891,28 +885,8 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                             $continuation = '';
                             $tab_tpl = do_template('COMCODE_TEXTCODE_TAB');
                             $_tab_tpl = $tab_tpl->evaluate();
-                            $none_wrap_length += strlen($_tab_tpl);
                             $tag_output->attach($tab_tpl);
                         } else {
-                            if (($next === ' ') || ($next === "\t") || ($just_ended)) {
-                                $none_wrap_length = 0;
-                            } else {
-                                if (($wrap_pos !== null) && ($none_wrap_length >= $wrap_pos) && ((get_charset() != 'utf-8') || (preg_replace(array('#[\x09\x0A\x0D\x20-\x7E]#', '#[\xC2-\xDF][\x80-\xBF]#', '#\xE0[\xA0-\xBF][\x80-\xBF]#', '#[\xE1-\xEC\xEE\xEF][\x80-\xBF]{2}#', '#\xED[\x80-\x9F][\x80-\xBF]#', '#\xF0[\x90-\xBF][\x80-\xBF]{2}#', '#[\xF1-\xF3][\x80-\xBF]{3}#', '#\xF4[\x80-\x8F][\x80-\xBF]{2}#'), array('', '', '', '', '', '', '', ''), $continuation) === '')) && ($textual_area) && (!$in_semihtml)) {
-                                    if ($GLOBALS['XSS_DETECT']) {
-                                        ocp_mark_as_escaped($continuation);
-                                    }
-                                    $tag_output->attach($continuation);
-                                    $continuation = '';
-                                    $temp_tpl = '<br />';
-                                    if ($GLOBALS['XSS_DETECT']) {
-                                        ocp_mark_as_escaped($temp_tpl);
-                                    }
-                                    $tag_output->attach($temp_tpl);
-                                    $none_wrap_length = 0;
-                                } elseif ($textual_area) {
-                                    ++$none_wrap_length;
-                                }
-                            }
                             $line_starting = false;
                             $just_ended = false;
 
@@ -956,7 +930,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                                 require_code('xhtml');
                                                 if (!$html_errors && preg_replace('#\s#', '', xhtmlise_html($p_portion, true)) === preg_replace('#\s#', '', $p_portion)) {
                                                     $ret->attach('<tempcode params="' . escape_html($p_opener) . '">');
-                                                    $p_portion_comcode = comcode_to_tempcode($p_portion, $source_member, $as_admin, $wrap_pos, $pass_id, $db, $semiparse_mode, $preparse_mode, $in_semihtml, $structure_sweep, $check_only, $highlight_bits, $on_behalf_of_member);
+                                                    $p_portion_comcode = comcode_to_tempcode($p_portion, $source_member, $as_admin, $pass_id, $db, $flags, $highlight_bits, $on_behalf_of_member);
                                                     $ret->attach($p_portion_comcode);
                                                     $ret->attach('</tempcode>');
 
@@ -973,7 +947,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                                 if (substr($comcode, $pos - 1, strlen('{+START,CASES,')) === '{+START,CASES,') {
                                                     $p_portion_comcode = make_string_tempcode($p_portion);
                                                 } else {
-                                                    $p_portion_comcode = comcode_to_tempcode($p_portion, $source_member, $as_admin, $wrap_pos, $pass_id, $db, $semiparse_mode, $preparse_mode, $in_semihtml, $structure_sweep, $check_only, $highlight_bits, $on_behalf_of_member);
+                                                    $p_portion_comcode = comcode_to_tempcode($p_portion, $source_member, $as_admin, $pass_id, $db, $flags, $highlight_bits, $on_behalf_of_member);
                                                 }
                                                 $d_parameters = array('DIRECTIVE_EMBEDMENT' => $p_portion_comcode);
                                                 $ret = template_to_tempcode($p_opener . '{DIRECTIVE_EMBEDMENT}' . $p_closer, 0, false, '', null, null, false, $d_parameters);
@@ -1305,7 +1279,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                                         'PADDING_AMOUNT' => (count($cells) === 2) ? '0' : float_to_raw_string(3.0 / (floatval(count($cells) - 2.0) / 2.0), 2),
                                                     )));
                                                 }
-                                                $tag_output->attach(comcode_to_tempcode(isset($cells[$to_float]) ? trim($cells[$to_float]) : '', $source_member, $as_admin, $wrap_pos, $pass_id, $db, $semiparse_mode, $preparse_mode, $in_semihtml, $structure_sweep, $check_only, $highlight_bits, $on_behalf_of_member));
+                                                $tag_output->attach(comcode_to_tempcode(isset($cells[$to_float]) ? trim($cells[$to_float]) : '', $source_member, $as_admin, $pass_id, $db, $flags, $highlight_bits, $on_behalf_of_member));
                                                 $tag_output->attach(do_template('COMCODE_FAKE_TABLE_END_CELL'));
 
                                                 // Do non-floated ones
@@ -1332,7 +1306,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                                                     'PADDING_AMOUNT' => (count($cells) === 2) ? '0' : float_to_raw_string(3.0 / (floatval(count($cells) - 2) / 2.0), 2),
                                                                 )));
                                                             }
-                                                            $tag_output->attach(comcode_to_tempcode(trim($cell), $source_member, $as_admin, $wrap_pos, $pass_id, $db, $semiparse_mode, $preparse_mode, $in_semihtml, $structure_sweep, $check_only, $highlight_bits, $on_behalf_of_member));
+                                                            $tag_output->attach(comcode_to_tempcode(trim($cell), $source_member, $as_admin, $pass_id, $db, $flags, $highlight_bits, $on_behalf_of_member));
                                                             $tag_output->attach(do_template('COMCODE_FAKE_TABLE_END_CELL'));
                                                         }
                                                         $cell_i++;
@@ -1399,7 +1373,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                                     if ($spec) {
                                                         $c_type = (strpos($cell, '!') !== false) ? 'th' : 'td';
                                                     } else {
-                                                        $_mid = comcode_to_tempcode(trim($cell), $source_member, $as_admin, $wrap_pos, $pass_id, $db, $semiparse_mode, $preparse_mode, $in_semihtml, $structure_sweep, $check_only, $highlight_bits, $on_behalf_of_member);
+                                                        $_mid = comcode_to_tempcode(trim($cell), $source_member, $as_admin, $pass_id, $db, $flags, $highlight_bits, $on_behalf_of_member);
 
                                                         $tag_output->attach(do_template('COMCODE_REAL_TABLE_CELL', array(
                                                             '_GUID' => '6640df8b503f65e3d36f595b0acf7600',

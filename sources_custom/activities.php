@@ -224,7 +224,7 @@ function render_activity($row, $use_inside_cms = true)
     $label = array();
     $link = array();
     for ($i = 1; $i <= 3; $i++) {
-        $label[$i] = comcode_to_tempcode($row['a_label_' . strval($i)], $guest_id, false, null);
+        $label[$i] = comcode_to_tempcode($row['a_label_' . strval($i)], $guest_id, false);
         $link[$i] = ($row['a_page_link_' . strval($i)] == '') ? new Tempcode() : page_link_to_tempcode($row['a_page_link_' . strval($i)], !$use_inside_cms);
         if (($row['a_page_link_' . strval($i)] != '') && (strpos($test, '{' . strval($i + 3) . '}') === false)) {
             $label[$i] = hyperlink($link[$i], $label[$i]->evaluate(), false, false);
