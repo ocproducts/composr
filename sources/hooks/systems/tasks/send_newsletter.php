@@ -150,7 +150,7 @@ class Hook_task_send_newsletter
             $subject = do_lang('NEWSLETTER_PAUSED_SUBJECT');
             $newsletter_manage_url = build_url(array('page' => 'admin_newsletter'), get_module_zone('admin_newsletter'), null, false, false, true);
             $message = do_lang('NEWSLETTER_PAUSED_BODY', escape_html($newsletter_manage_url->evaluate()));
-            dispatch_notification('newsletter_paused', 'newsletter_' . strval(time()), $subject, $message, null, null, 2, true);
+            dispatch_notification('newsletter_paused', 'newsletter_' . strval(time()), $subject, $message, null, null, array('priority' => 4, 'store_in_staff_messaging_system' => true));
         }
 
         $newsletter_manage_url = build_url(array('page' => 'admin_newsletter'), get_module_zone('admin_newsletter'));

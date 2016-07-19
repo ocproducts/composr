@@ -321,7 +321,7 @@ function cns_member_ask_join_group($group_id, $member_id = null)
         } else {
             $mail = do_notification_lang('GROUP_JOIN_REQUEST_MAIL', comcode_escape($their_username), comcode_escape($group_name), array($url), get_site_default_lang());
             $subject = do_lang('GROUP_JOIN_REQUEST_MAIL_SUBJECT', null, null, null, get_site_default_lang());
-            dispatch_notification('cns_group_join_request_staff', null, $subject, $mail, null, get_member(), 3, false, false, null, null, '', '', '', '', null, true);
+            dispatch_notification('cns_group_join_request_staff', null, $subject, $mail, null, get_member(), array('priority' => 3, 'use_real_from' => true));
         }
     }
 }

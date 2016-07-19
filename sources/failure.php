@@ -442,7 +442,7 @@ function _generic_exit($text, $template, $support_match_key_messages = false, $l
         require_lang('tasks');
         $n_subject = do_lang('_TASK_FAILED_SUBJECT');
         $n_message = do_notification_lang('TASK_FAILED_BODY', '[semihtml]' . $text_eval . '[/semihtml]');
-        dispatch_notification('task_completed', null, $n_subject, $n_message, array(get_member()), A_FROM_SYSTEM_PRIVILEGED, 2, false, false, null, null, '', '', '', '', null, false, true);
+        dispatch_notification('task_completed', null, $n_subject, $n_message, array(get_member()), A_FROM_SYSTEM_PRIVILEGED, array('priority' => 2, 'send_immediately' => true));
     }
 
     if (is_null($support_match_key_messages)) {

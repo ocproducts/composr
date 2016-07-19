@@ -159,22 +159,23 @@ function do_notification_template($codename, $parameters = null, $lang = null, $
  * @param  LONG_TEXT $message Message body (in Comcode)
  * @param  ?array $to_member_ids List of enabled members to limit sending to (null: everyone)
  * @param  ?integer $from_member_id The member ID doing the sending. Either a MEMBER or a negative number (e.g. A_FROM_SYSTEM_UNPRIVILEGED) (null: current member)
- * @param  integer $priority The message priority (1=urgent, 3=normal, 5=low)
- * @range  1 5
- * @param  boolean $store_in_staff_messaging_system Whether to create a topic for discussion (ignored if the staff_messaging addon not installed)
- * @param  boolean $no_cc Whether to NOT CC to the CC address
- * @param  ?ID_TEXT $no_notify_for__notification_code DO NOT send notifications to: The notification code (null: no restriction)
- * @param  ?SHORT_TEXT $no_notify_for__code_category DO NOT send notifications to: The category within the notification code (null: none / no restriction)
- * @param  string $subject_prefix Only relevant if $store_in_staff_messaging_system is true: subject prefix for storage
- * @param  string $subject_suffix Only relevant if $store_in_staff_messaging_system is true: subject suffix for storage
- * @param  string $body_prefix Only relevant if $store_in_staff_messaging_system is true: body prefix for storage
- * @param  string $body_suffix Only relevant if $store_in_staff_messaging_system is true: body suffix for storage
- * @param  ?array $attachments A list of attachments (each attachment being a map, path=>filename) (null: none)
- * @param  boolean $use_real_from Whether we will make a "reply to" direct -- we only do this if we're allowed to disclose email addresses for this particular notification type (i.e. if it's a direct contact)
- * @param  boolean $send_immediately Whether to send immediately rather than script end; this may be the case if the notification settings are expected to change before script end
+ * @param  ?array $advanced_parameters A map of additional parameters. See comments within this function implementation to know what can be sent. (null: none)
  */
-function dispatch_notification($notification_code, $code_category, $subject, $message, $to_member_ids = null, $from_member_id = null, $priority = 3, $store_in_staff_messaging_system = false, $no_cc = false, $no_notify_for__notification_code = null, $no_notify_for__code_category = null, $subject_prefix = '', $subject_suffix = '', $body_prefix = '', $body_suffix = '', $attachments = null, $use_real_from = false, $send_immediately = false)
+function dispatch_notification($notification_code, $code_category, $subject, $message, $to_member_ids = null, $from_member_id = null, $advanced_parameters = null)
 {
+    $priority = isset($advanced_parameters['priority']) ? $advanced_parameters['priority'] : 3; // The message priority (1=urgent, 3=normal, 5=low)
+    $store_in_staff_messaging_system = isset($advanced_parameters['store_in_staff_messaging_system']) ? $advanced_parameters['store_in_staff_messaging_system'] : false; // Whether to create a topic for discussion (ignored if the staff_messaging addon not installed)
+    $no_cc = isset($advanced_parameters['no_cc']) ? $advanced_parameters['no_cc'] : false; // Whether to NOT CC to the CC address
+    $no_notify_for__notification_code = isset($advanced_parameters['no_notify_for__notification_code']) ? $advanced_parameters['no_notify_for__notification_code'] : null; // DO NOT send notifications to: The notification code (null: no restriction)
+    $no_notify_for__code_category = isset($advanced_parameters['no_notify_for__code_category']) ? $advanced_parameters['no_notify_for__code_category'] : null; // DO NOT send notifications to: The category within the notification code (null: none / no restriction)
+    $subject_prefix = isset($advanced_parameters['subject_prefix']) ? $advanced_parameters['subject_prefix'] : ''; // Only relevant if $store_in_staff_messaging_system is true: subject prefix for storage
+    $subject_suffix = isset($advanced_parameters['subject_suffix']) ? $advanced_parameters['subject_suffix'] : ''; // Only relevant if $store_in_staff_messaging_system is true: subject suffix for storage
+    $body_prefix = isset($advanced_parameters['body_prefix']) ? $advanced_parameters['body_prefix'] : ''; // Only relevant if $store_in_staff_messaging_system is true: body prefix for storage
+    $body_suffix = isset($advanced_parameters['body_prefix']) ? $advanced_parameters['body_prefix'] : ''; // Only relevant if $store_in_staff_messaging_system is true: body suffix for storage
+    $attachments = isset($advanced_parameters['attachments']) ? $advanced_parameters['attachments'] : null; // A list of attachments (each attachment being a map, path=>filename) (null: none)
+    $use_real_from = isset($advanced_parameters['use_real_from']) ? $advanced_parameters['use_real_from'] : false; // Whether we will make a "reply to" direct -- we only do this if we're allowed to disclose email addresses for this particular notification type (i.e. if it's a direct contact)
+    $send_immediately = isset($advanced_parameters['send_immediately']) ? $advanced_parameters['send_immediately'] : false; // Whether to send immediately rather than script end; this may be the case if the notification settings are expected to change before script end
+
     global $NOTIFICATIONS_ON;
     if (!$NOTIFICATIONS_ON) {
         return;
@@ -190,7 +191,18 @@ function dispatch_notification($notification_code, $code_category, $subject, $me
         return;
     }
 
-    $dispatcher = new Notification_dispatcher($notification_code, $code_category, $subject, $message, $to_member_ids, $from_member_id, $priority, $store_in_staff_messaging_system, $no_cc, $no_notify_for__notification_code, $no_notify_for__code_category, $subject_prefix, $subject_suffix, $body_prefix, $body_suffix, $attachments, $use_real_from);
+    $dispatcher = new Notification_dispatcher($notification_code, $code_category, $subject, $message, $to_member_ids, $from_member_id);
+    $dispatcher->priority = $priority;
+    $dispatcher->store_in_staff_messaging_system = $store_in_staff_messaging_system;
+    $dispatcher->no_cc = $no_cc;
+    $dispatcher->no_notify_for__notification_code = $no_notify_for__notification_code;
+    $dispatcher->no_notify_for__code_category = $no_notify_for__code_category;
+    $dispatcher->subject_prefix = $subject_prefix;
+    $dispatcher->subject_suffix = $subject_suffix;
+    $dispatcher->body_prefix = $body_prefix;
+    $dispatcher->body_suffix = $body_suffix;
+    $dispatcher->attachments = $attachments;
+    $dispatcher->use_real_from = $use_real_from;
 
     if ((get_param_integer('keep_debug_notifications', 0) == 1) || ($send_immediately)) {
         $dispatcher->dispatch();
@@ -239,20 +251,8 @@ class Notification_dispatcher
      * @param  LONG_TEXT $message Message body (in Comcode)
      * @param  ?array $to_member_ids List of enabled members to limit sending to (null: everyone)
      * @param  ?integer $from_member_id The member ID doing the sending. Either a MEMBER or a negative number (e.g. A_FROM_SYSTEM_UNPRIVILEGED) (null: current member)
-     * @param  integer $priority The message priority (1=urgent, 3=normal, 5=low)
-     * @range  1 5
-     * @param  boolean $store_in_staff_messaging_system Whether to create a topic for discussion (ignored if the staff_messaging addon not installed)
-     * @param  boolean $no_cc Whether to NOT CC to the CC address
-     * @param  ?ID_TEXT $no_notify_for__notification_code DO NOT send notifications to: The notification code (null: no restriction)
-     * @param  ?SHORT_TEXT $no_notify_for__code_category DO NOT send notifications to: The category within the notification code (null: none / no restriction)
-     * @param  string $subject_prefix Only relevant if $store_in_staff_messaging_system is true: subject prefix for storage
-     * @param  string $subject_suffix Only relevant if $store_in_staff_messaging_system is true: subject suffix for storage
-     * @param  string $body_prefix Only relevant if $store_in_staff_messaging_system is true: body prefix for storage
-     * @param  string $body_suffix Only relevant if $store_in_staff_messaging_system is true: body suffix for storage
-     * @param  ?array $attachments A list of attachments (each attachment being a map, path=>filename) (null: none)
-     * @param  boolean $use_real_from Whether we will make a "reply to" direct -- we only do this if we're allowed to disclose email addresses for this particular notification type (i.e. if it's a direct contact)
      */
-    public function __construct($notification_code, $code_category, $subject, $message, $to_member_ids, $from_member_id, $priority, $store_in_staff_messaging_system, $no_cc, $no_notify_for__notification_code, $no_notify_for__code_category, $subject_prefix = '', $subject_suffix = '', $body_prefix = '', $body_suffix = '', $attachments = null, $use_real_from = false)
+    public function __construct($notification_code, $code_category, $subject, $message, $to_member_ids, $from_member_id)
     {
         $this->notification_code = $notification_code;
         $this->code_category = $code_category;
@@ -260,17 +260,6 @@ class Notification_dispatcher
         $this->message = $message;
         $this->to_member_ids = $to_member_ids;
         $this->from_member_id = is_null($from_member_id) ? get_member() : $from_member_id;
-        $this->priority = $priority;
-        $this->store_in_staff_messaging_system = $store_in_staff_messaging_system;
-        $this->no_cc = $no_cc;
-        $this->no_notify_for__notification_code = $no_notify_for__notification_code;
-        $this->no_notify_for__code_category = $no_notify_for__code_category;
-        $this->subject_prefix = $subject_prefix;
-        $this->subject_suffix = $subject_suffix;
-        $this->body_prefix = $body_prefix;
-        $this->body_suffix = $body_suffix;
-        $this->attachments = $attachments;
-        $this->use_real_from = $use_real_from;
     }
 
     /**

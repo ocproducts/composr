@@ -128,7 +128,7 @@ function execute_task_background($task_row)
             }
         }
 
-        dispatch_notification('task_completed', null, $subject, $message, array($requester), A_FROM_SYSTEM_PRIVILEGED, 2, false, false, null, null, '', '', '', '', $attachments, false, true);
+        dispatch_notification('task_completed', null, $subject, $message, array($requester), A_FROM_SYSTEM_PRIVILEGED, array('priority' => 2, 'attachments' => $attachments, 'send_immediately' => true));
 
         if (!is_null($result)) {
             list($mime_type, $content_result) = $result;

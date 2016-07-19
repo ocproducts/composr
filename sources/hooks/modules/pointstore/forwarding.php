@@ -270,7 +270,7 @@ class Hook_pointstore_forwarding
         $encoded_reason = do_lang('TITLE_NEWFORWARDING');
         $message_raw = do_notification_template('POINTSTORE_FORWARDER_MAIL', array('_GUID' => 'a09dba8b440baa5cd48d462ebfafd15f', 'ENCODED_REASON' => $encoded_reason, 'EMAIL' => $email, 'PREFIX' => $prefix, 'SUFFIX' => $_suffix, 'FORW_URL' => $forw_url, 'SUFFIX_PRICE' => integer_format($suffix_price)), null, false, null, '.txt', 'text');
 
-        dispatch_notification('pointstore_request_forwarding', 'forw_' . strval($sale_id), do_lang('MAIL_REQUEST_FORWARDING', null, null, null, get_site_default_lang()), $message_raw->evaluate(get_site_default_lang()), null, null, 3, true, false, null, null, '', '', '', '', null, true);
+        dispatch_notification('pointstore_request_forwarding', 'forw_' . strval($sale_id), do_lang('MAIL_REQUEST_FORWARDING', null, null, null, get_site_default_lang()), $message_raw->evaluate(get_site_default_lang()), null, null, array('priority' => 3, 'store_in_staff_messaging_system' => true, 'use_real_from' => true));
 
         $text = do_lang_tempcode('ORDER_FORWARDER_DONE', $email, escape_html($prefix . '@' . $_suffix));
         $url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');

@@ -791,7 +791,7 @@ function _chat_post_message_ajax($room_id, $message, $font, $colour, $first_mess
                         $username2 = $GLOBALS['FORUM_DRIVER']->get_username($allow);
                         $message = do_notification_lang('IM_INVITED_MESSAGE', get_timezoned_date_time(time()), $username, array($lobby_url, $username2, $message, strval($allow)), get_lang($allow));
 
-                        dispatch_notification('im_invited', null, $subject, $message, array($allow), $room_row['room_owner'], 1);
+                        dispatch_notification('im_invited', null, $subject, $message, array($allow), $room_row['room_owner'], array('priority' => 1));
                     }
                 }
             }

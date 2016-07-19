@@ -510,7 +510,7 @@ function send_booking_emails($request)
         ),
         get_site_default_lang()
     );
-    dispatch_notification('booking_inform_staff', null, $subject, static_evaluate_tempcode($notice), null, null, 2);
+    dispatch_notification('booking_inform_staff', null, $subject, static_evaluate_tempcode($notice), null, null, array('priority' => 2));
 }
 
 /**
