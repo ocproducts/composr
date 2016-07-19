@@ -330,7 +330,7 @@ class Notification_dispatcher
                 }
 
                 if (($to_member_id !== $this->from_member_id) || ($testing)) {
-                    $no_cc = _dispatch_notification_to_member($to_member_id, $setting, $this->notification_code, $this->code_category, $subject, $message, $this->from_member_id, $this->priority, $no_cc, $this->attachments, $this->use_real_from);
+                    $no_cc = $this->dispatch_notification_to_member($to_member_id, $setting, $this->notification_code, $this->code_category, $subject, $message, $this->from_member_id, $this->priority, $no_cc, $this->attachments, $this->use_real_from);
                 }
             }
 
@@ -338,6 +338,215 @@ class Notification_dispatcher
         } while ($possibly_has_more);
 
         cms_profile_end_for('Notification_dispatcher', $subject);
+    }
+
+    /**
+     * Send out a notification to a member.
+     *
+     * @param  MEMBER $to_member_id Member to send to
+     * @param  integer $setting Listening setting
+     * @param  ID_TEXT $notification_code The notification code to use
+     * @param  ?SHORT_TEXT $code_category The category within the notification code (null: none)
+     * @param  SHORT_TEXT $subject Message subject (in Comcode)
+     * @param  LONG_TEXT $message Message body (in Comcode)
+     * @param  integer $from_member_id The member ID doing the sending. Either a MEMBER or a negative number (e.g. A_FROM_SYSTEM_UNPRIVILEGED)
+     * @param  integer $priority The message priority (1=urgent, 3=normal, 5=low)
+     * @range  1 5
+     * @param  boolean $no_cc Whether to NOT CC to the CC address
+     * @param  ?array $attachments An list of attachments (each attachment being a map, path=>filename) (null: none)
+     * @param  boolean $use_real_from Whether we will make a "reply to" direct -- we only do this if we're allowed to disclose email addresses for this particular notification type (i.e. if it's a direct contact)
+     * @return boolean New $no_cc setting
+     *
+     * @ignore
+     */
+    private function dispatch_notification_to_member($to_member_id, $setting, $notification_code, $code_category, $subject, $message, $from_member_id, $priority, $no_cc, $attachments, $use_real_from)
+    {
+        // Fish out some general details of the sender
+        $to_name = $GLOBALS['FORUM_DRIVER']->get_username($to_member_id, true);
+        $from_email = '';
+        $from_name = '';
+        $from_member_id_shown = db_get_first_id();
+        if ((!is_null($from_member_id)) && ($from_member_id >= 0)) {
+            if ($use_real_from) {
+                $from_email = $GLOBALS['FORUM_DRIVER']->get_member_email_address($from_member_id);
+                if ($from_email == '') {
+                    $from_email = '';
+                }
+                $from_name = $GLOBALS['FORUM_DRIVER']->get_username($from_member_id, true);
+                $from_member_id_shown = $from_member_id;
+            }
+        } else {
+            $use_real_from = false;
+        }
+        $join_time = $GLOBALS['FORUM_DRIVER']->get_member_row_field($to_member_id, 'm_join_time');
+
+        $db = (substr($notification_code, 0, 4) == 'cns_') ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
+
+        // If none-specified, we'll need to be clever now
+        if ($setting == A__STATISTICAL) {
+            $setting = _find_member_statistical_notification_type($to_member_id, $notification_code);
+        }
+
+        $needs_manual_cc = true;
+
+        $message_to_send = $message; // May get tweaked, if we have some kind of error to explain, etc
+
+        // Send according to the listen setting...
+
+        if (_notification_setting_available(A_INSTANT_SMS, $to_member_id)) {
+            if (($setting & A_INSTANT_SMS) != 0) {
+                $wrapped_message = do_lang('NOTIFICATION_SMS_COMPLETE_WRAP', $subject, $message_to_send); // Language string ID may be modified to include {2}, but would cost more. Default just has {1}.
+
+                require_code('sms');
+                $successes = sms_wrap($wrapped_message, array($to_member_id));
+                if ($successes == 0) { // Could not send
+                    $setting = $setting | A_INSTANT_EMAIL; // Make sure it also goes to email then
+                    $message_to_send = do_lang('INSTEAD_OF_SMS', $message);
+                }
+            }
+        }
+
+        if (_notification_setting_available(A_INSTANT_EMAIL, $to_member_id)) {
+            if (($setting & A_INSTANT_EMAIL) != 0) {
+                $to_email = $GLOBALS['FORUM_DRIVER']->get_member_email_address($to_member_id);
+                if ($to_email != '') {
+                    $wrapped_subject = do_lang('NOTIFICATION_EMAIL_SUBJECT_WRAP', $subject, comcode_escape(get_site_name()));
+                    $wrapped_message = do_lang($use_real_from ? 'NOTIFICATION_EMAIL_MESSAGE_WRAP_DIRECT_REPLY' : 'NOTIFICATION_EMAIL_MESSAGE_WRAP', $message_to_send, comcode_escape(get_site_name()));
+
+                    mail_wrap(
+                        $wrapped_subject,
+                        $wrapped_message,
+                        array($to_email),
+                        $to_name,
+                        $from_email,
+                        $from_name,
+                        $priority,
+                        $attachments,
+                        $no_cc,
+                        ($from_member_id < 0) ? $GLOBALS['FORUM_DRIVER']->get_guest_id() : $from_member_id,
+                        ($from_member_id == A_FROM_SYSTEM_PRIVILEGED),
+                        false,
+                        false,
+                        'MAIL',
+                        true,
+                        null,
+                        null,
+                        $join_time
+                    );
+
+                    $needs_manual_cc = false;
+                    $no_cc = true; // Don't CC again
+                }
+            }
+        }
+
+        $frequencies = array(
+            A_DAILY_EMAIL_DIGEST,
+            A_WEEKLY_EMAIL_DIGEST,
+            A_MONTHLY_EMAIL_DIGEST,
+            A_WEB_NOTIFICATION,
+        );
+        foreach ($frequencies as $frequency) {
+            if (!_notification_setting_available($frequency, $to_member_id)) {
+                continue;
+            }
+
+            if (($setting & $frequency) != 0) {
+                if ($frequency == A_WEB_NOTIFICATION) {
+                    if (get_option('pt_notifications_as_web') == '0') {
+                        if (
+                            ($notification_code == 'cns_new_pt') ||
+                            ($notification_code == 'cns_topic' && is_numeric($code_category) && is_null($GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 't_forum_id', array('id' => intval($code_category)))))
+                        ) {
+                            continue;
+                        }
+                    }
+                    $path = get_custom_file_base() . '/data_custom/modules/web_notifications';
+                    if (!file_exists($path)) {
+                        require_code('files2');
+                        make_missing_directory($path);
+                    }
+                    @file_put_contents($path . '/latest.dat', strval(time()));
+                }
+
+                inject_web_resources_context_to_comcode($message);
+
+                $map = array(
+                    'd_subject' => $subject,
+                    'd_from_member_id' => $from_member_id,
+                    'd_to_member_id' => $to_member_id,
+                    'd_priority' => $priority,
+                    'd_no_cc' => $no_cc ? 1 : 0,
+                    'd_date_and_time' => time(),
+                    'd_notification_code' => substr($notification_code, 0, 80),
+                    'd_code_category' => is_null($code_category) ? '' : $code_category,
+                    'd_frequency' => $frequency,
+                    'd_read' => 0,
+                );
+                $map += insert_lang_comcode('d_message', $message, 4);
+                $GLOBALS['SITE_DB']->query_insert('digestives_tin', $map);
+
+                $GLOBALS['SITE_DB']->query_insert('digestives_consumed', array(
+                    'c_member_id' => $to_member_id,
+                    'c_frequency' => $frequency,
+                    'c_time' => time(),
+                ), false, true/*If we've not set up first digest time, make it the digest period from now; if we have then silent error is suppressed*/);
+
+                decache('_get_notifications', null, $to_member_id);
+            }
+        }
+
+        $needs_manual_cc = false;
+
+        if (_notification_setting_available(A_INSTANT_PT, $to_member_id)) {
+            if (($setting & A_INSTANT_PT) != 0) {
+                require_code('cns_topics_action');
+                require_code('cns_posts_action');
+
+                $wrapped_subject = do_lang('NOTIFICATION_PT_SUBJECT_WRAP', $subject);
+                $wrapped_message = do_lang($use_real_from ? 'NOTIFICATION_PT_MESSAGE_WRAP_DIRECT_REPLY' : 'NOTIFICATION_PT_MESSAGE_WRAP', $message_to_send);
+
+                // NB: These are posted by Guest (system) although the display name is set to the member triggering. This is intentional to stop said member getting unexpected replies.
+                $topic_id = cns_make_topic(null, '', 'icons/14x14/cns_topic_modifiers/announcement', 1, 1, 0, 0, $from_member_id_shown, $to_member_id, false, 0, null, '');
+                cns_make_post($topic_id, $wrapped_subject, $wrapped_message, 0, true, 1, 0, ($from_member_id < 0) ? do_lang('SYSTEM') : $from_name, null, null, $from_member_id_shown, null, null, null, false, true, null, true, $wrapped_subject, null, true, true, true, ($from_member_id == A_FROM_SYSTEM_PRIVILEGED));
+            }
+        }
+
+        global $HOOKS_NOTIFICATION_TYPES_EXTENDED;
+        foreach ($HOOKS_NOTIFICATION_TYPES_EXTENDED as $hook => $ob) {
+            $ob->dispatch_notification_to_member($to_member_id, $setting, $notification_code, $code_category, $subject, $message, $from_member_id, $priority, $no_cc, $attachments, $use_real_from);
+        }
+
+        // Send to staff CC address regardless
+        if ((!$no_cc) && ($needs_manual_cc)) {
+            $no_cc = true; // Don't CC again
+
+            $to_email = get_option('cc_address');
+            if ($to_email != '') {
+                mail_wrap(
+                    $subject,
+                    $message,
+                    array($to_email),
+                    $to_name,
+                    $from_email,
+                    $from_name,
+                    $priority,
+                    null,
+                    true,
+                    ($from_member_id < 0) ? null : $from_member_id,
+                    ($from_member_id == A_FROM_SYSTEM_PRIVILEGED),
+                    false,
+                    false,
+                    'MAIL',
+                    false,
+                    null,
+                    null,
+                    $join_time
+                );
+            }
+        }
+
+        return $no_cc;
     }
 }
 
@@ -502,215 +711,6 @@ function _find_member_statistical_notification_type($to_member_id, $notification
     $cache[$to_member_id] = $setting;
     $setting |= A_WEB_NOTIFICATION;
     return $setting;
-}
-
-/**
- * Send out a notification to a member.
- *
- * @param  MEMBER $to_member_id Member to send to
- * @param  integer $setting Listening setting
- * @param  ID_TEXT $notification_code The notification code to use
- * @param  ?SHORT_TEXT $code_category The category within the notification code (null: none)
- * @param  SHORT_TEXT $subject Message subject (in Comcode)
- * @param  LONG_TEXT $message Message body (in Comcode)
- * @param  integer $from_member_id The member ID doing the sending. Either a MEMBER or a negative number (e.g. A_FROM_SYSTEM_UNPRIVILEGED)
- * @param  integer $priority The message priority (1=urgent, 3=normal, 5=low)
- * @range  1 5
- * @param  boolean $no_cc Whether to NOT CC to the CC address
- * @param  ?array $attachments An list of attachments (each attachment being a map, path=>filename) (null: none)
- * @param  boolean $use_real_from Whether we will make a "reply to" direct -- we only do this if we're allowed to disclose email addresses for this particular notification type (i.e. if it's a direct contact)
- * @return boolean New $no_cc setting
- *
- * @ignore
- */
-function _dispatch_notification_to_member($to_member_id, $setting, $notification_code, $code_category, $subject, $message, $from_member_id, $priority, $no_cc, $attachments, $use_real_from)
-{
-    // Fish out some general details of the sender
-    $to_name = $GLOBALS['FORUM_DRIVER']->get_username($to_member_id, true);
-    $from_email = '';
-    $from_name = '';
-    $from_member_id_shown = db_get_first_id();
-    if ((!is_null($from_member_id)) && ($from_member_id >= 0)) {
-        if ($use_real_from) {
-            $from_email = $GLOBALS['FORUM_DRIVER']->get_member_email_address($from_member_id);
-            if ($from_email == '') {
-                $from_email = '';
-            }
-            $from_name = $GLOBALS['FORUM_DRIVER']->get_username($from_member_id, true);
-            $from_member_id_shown = $from_member_id;
-        }
-    } else {
-        $use_real_from = false;
-    }
-    $join_time = $GLOBALS['FORUM_DRIVER']->get_member_row_field($to_member_id, 'm_join_time');
-
-    $db = (substr($notification_code, 0, 4) == 'cns_') ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
-
-    // If none-specified, we'll need to be clever now
-    if ($setting == A__STATISTICAL) {
-        $setting = _find_member_statistical_notification_type($to_member_id, $notification_code);
-    }
-
-    $needs_manual_cc = true;
-
-    $message_to_send = $message; // May get tweaked, if we have some kind of error to explain, etc
-
-    // Send according to the listen setting...
-
-    if (_notification_setting_available(A_INSTANT_SMS, $to_member_id)) {
-        if (($setting & A_INSTANT_SMS) != 0) {
-            $wrapped_message = do_lang('NOTIFICATION_SMS_COMPLETE_WRAP', $subject, $message_to_send); // Language string ID may be modified to include {2}, but would cost more. Default just has {1}.
-
-            require_code('sms');
-            $successes = sms_wrap($wrapped_message, array($to_member_id));
-            if ($successes == 0) { // Could not send
-                $setting = $setting | A_INSTANT_EMAIL; // Make sure it also goes to email then
-                $message_to_send = do_lang('INSTEAD_OF_SMS', $message);
-            }
-        }
-    }
-
-    if (_notification_setting_available(A_INSTANT_EMAIL, $to_member_id)) {
-        if (($setting & A_INSTANT_EMAIL) != 0) {
-            $to_email = $GLOBALS['FORUM_DRIVER']->get_member_email_address($to_member_id);
-            if ($to_email != '') {
-                $wrapped_subject = do_lang('NOTIFICATION_EMAIL_SUBJECT_WRAP', $subject, comcode_escape(get_site_name()));
-                $wrapped_message = do_lang($use_real_from ? 'NOTIFICATION_EMAIL_MESSAGE_WRAP_DIRECT_REPLY' : 'NOTIFICATION_EMAIL_MESSAGE_WRAP', $message_to_send, comcode_escape(get_site_name()));
-
-                mail_wrap(
-                    $wrapped_subject,
-                    $wrapped_message,
-                    array($to_email),
-                    $to_name,
-                    $from_email,
-                    $from_name,
-                    $priority,
-                    $attachments,
-                    $no_cc,
-                    ($from_member_id < 0) ? $GLOBALS['FORUM_DRIVER']->get_guest_id() : $from_member_id,
-                    ($from_member_id == A_FROM_SYSTEM_PRIVILEGED),
-                    false,
-                    false,
-                    'MAIL',
-                    true,
-                    null,
-                    null,
-                    $join_time
-                );
-
-                $needs_manual_cc = false;
-                $no_cc = true; // Don't CC again
-            }
-        }
-    }
-
-    $frequencies = array(
-        A_DAILY_EMAIL_DIGEST,
-        A_WEEKLY_EMAIL_DIGEST,
-        A_MONTHLY_EMAIL_DIGEST,
-        A_WEB_NOTIFICATION,
-    );
-    foreach ($frequencies as $frequency) {
-        if (!_notification_setting_available($frequency, $to_member_id)) {
-            continue;
-        }
-
-        if (($setting & $frequency) != 0) {
-            if ($frequency == A_WEB_NOTIFICATION) {
-                if (get_option('pt_notifications_as_web') == '0') {
-                    if (
-                        ($notification_code == 'cns_new_pt') ||
-                        ($notification_code == 'cns_topic' && is_numeric($code_category) && is_null($GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 't_forum_id', array('id' => intval($code_category)))))
-                    ) {
-                        continue;
-                    }
-                }
-                $path = get_custom_file_base() . '/data_custom/modules/web_notifications';
-                if (!file_exists($path)) {
-                    require_code('files2');
-                    make_missing_directory($path);
-                }
-                @file_put_contents($path . '/latest.dat', strval(time()));
-            }
-
-            inject_web_resources_context_to_comcode($message);
-
-            $map = array(
-                'd_subject' => $subject,
-                'd_from_member_id' => $from_member_id,
-                'd_to_member_id' => $to_member_id,
-                'd_priority' => $priority,
-                'd_no_cc' => $no_cc ? 1 : 0,
-                'd_date_and_time' => time(),
-                'd_notification_code' => substr($notification_code, 0, 80),
-                'd_code_category' => is_null($code_category) ? '' : $code_category,
-                'd_frequency' => $frequency,
-                'd_read' => 0,
-            );
-            $map += insert_lang_comcode('d_message', $message, 4);
-            $GLOBALS['SITE_DB']->query_insert('digestives_tin', $map);
-
-            $GLOBALS['SITE_DB']->query_insert('digestives_consumed', array(
-                'c_member_id' => $to_member_id,
-                'c_frequency' => $frequency,
-                'c_time' => time(),
-            ), false, true/*If we've not set up first digest time, make it the digest period from now; if we have then silent error is suppressed*/);
-
-            decache('_get_notifications', null, $to_member_id);
-        }
-    }
-
-    $needs_manual_cc = false;
-
-    if (_notification_setting_available(A_INSTANT_PT, $to_member_id)) {
-        if (($setting & A_INSTANT_PT) != 0) {
-            require_code('cns_topics_action');
-            require_code('cns_posts_action');
-
-            $wrapped_subject = do_lang('NOTIFICATION_PT_SUBJECT_WRAP', $subject);
-            $wrapped_message = do_lang($use_real_from ? 'NOTIFICATION_PT_MESSAGE_WRAP_DIRECT_REPLY' : 'NOTIFICATION_PT_MESSAGE_WRAP', $message_to_send);
-
-            // NB: These are posted by Guest (system) although the display name is set to the member triggering. This is intentional to stop said member getting unexpected replies.
-            $topic_id = cns_make_topic(null, '', 'icons/14x14/cns_topic_modifiers/announcement', 1, 1, 0, 0, $from_member_id_shown, $to_member_id, false, 0, null, '');
-            cns_make_post($topic_id, $wrapped_subject, $wrapped_message, 0, true, 1, 0, ($from_member_id < 0) ? do_lang('SYSTEM') : $from_name, null, null, $from_member_id_shown, null, null, null, false, true, null, true, $wrapped_subject, null, true, true, true, ($from_member_id == A_FROM_SYSTEM_PRIVILEGED));
-        }
-    }
-
-    global $HOOKS_NOTIFICATION_TYPES_EXTENDED;
-    foreach ($HOOKS_NOTIFICATION_TYPES_EXTENDED as $hook => $ob) {
-        $ob->_dispatch_notification_to_member($to_member_id, $setting, $notification_code, $code_category, $subject, $message, $from_member_id, $priority, $no_cc, $attachments, $use_real_from);
-    }
-
-    // Send to staff CC address regardless
-    if ((!$no_cc) && ($needs_manual_cc)) {
-        $no_cc = true; // Don't CC again
-
-        $to_email = get_option('cc_address');
-        if ($to_email != '') {
-            mail_wrap(
-                $subject,
-                $message,
-                array($to_email),
-                $to_name,
-                $from_email,
-                $from_name,
-                $priority,
-                null,
-                true,
-                ($from_member_id < 0) ? null : $from_member_id,
-                ($from_member_id == A_FROM_SYSTEM_PRIVILEGED),
-                false,
-                false,
-                'MAIL',
-                false,
-                null,
-                null,
-                $join_time
-            );
-        }
-    }
-
-    return $no_cc;
 }
 
 /**
