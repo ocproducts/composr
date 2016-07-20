@@ -493,7 +493,7 @@ function send_booking_emails($request)
         dispatch_notification('booking_customer', null, $subject, $body, array(get_member()), A_FROM_SYSTEM_PRIVILEGED);
     } else {
         require_code('mail');
-        mail_wrap($subject, $body, array($customer_email), $customer_name);
+        dispatch_mail($subject, $body, array($customer_email), $customer_name);
     }
 
     // Send notice to staff

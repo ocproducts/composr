@@ -36,7 +36,7 @@ function cleanup_mobile_number($number)
  * @param  array $to_sms The member IDs of those receiving messages
  * @return integer How many were sent
  */
-function sms_wrap($message, $to_sms)
+function dispatch_sms($message, $to_sms)
 {
     // 140 byte limit for single packet
     // 134*255 byte limit for multiple packets (but there's cost for each additional 134 byte segment)

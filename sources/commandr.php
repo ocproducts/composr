@@ -113,7 +113,7 @@ function commandr_script()
                 }
                 $temp = new Virtual_shell(trim($command));
                 if (trim($temp->output[STREAM_STDHTML]) != '') {
-                    fwrite($stdout, trim(comcode_to_clean_text(semihtml_to_comcode(preg_replace('#<(\w+) [^<>]*>#', '<${1}>', $temp->output[STREAM_STDHTML])))));
+                    fwrite($stdout, trim(strip_comcode(semihtml_to_comcode(preg_replace('#<(\w+) [^<>]*>#', '<${1}>', $temp->output[STREAM_STDHTML])))));
                 }
                 if (trim($temp->output[STREAM_STDOUT]) != '') {
                     fwrite($stdout, trim($temp->output[STREAM_STDOUT]));

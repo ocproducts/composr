@@ -188,7 +188,7 @@ function create_tracker_post($tracker_id, $tracker_comment_message)
             $join_time = $GLOBALS['FORUM_DRIVER']->get_member_row_field($m['user_id'], 'm_join_time');
 
             require_code('mail');
-            mail_wrap('Tracker issue updated', 'A tracker issue you are monitoring has been updated (' . get_base_url() . '/tracker/view.php?id=' . strval($tracker_id) . ').', array($to_email), $to_name, '', '', 3, null, false, null, false, false, false, 'MAIL', false, null, null, $join_time);
+            dispatch_mail('Tracker issue updated', 'A tracker issue you are monitoring has been updated (' . get_base_url() . '/tracker/view.php?id=' . strval($tracker_id) . ').', array($to_email), $to_name, '', '', array('require_recipient_valid_since' => $join_time));
         }
     }
 

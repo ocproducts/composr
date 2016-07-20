@@ -1289,19 +1289,18 @@ class Module_admin_newsletter extends Standard_crud_module
 
         // Send e-mail
         require_code('mail');
-        mail_wrap(
+        dispatch_mail(
             $full_subject,
             ($html_only == 1) ? $html_version->evaluate() : $message,
             array($address),
             $username/*do_lang('NEWSLETTER_SUBSCRIBER',get_site_name())*/,
             $from_email,
             $from_name,
-            3,
-            null,
-            true,
-            null,
-            true,
-            $in_html
+            array(
+                'no_cc' => true,
+                'as_admin' => true,
+                'in_html' => $in_html,
+            )
         );
 
         // Spam check, if possible

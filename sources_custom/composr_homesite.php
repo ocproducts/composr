@@ -25,16 +25,18 @@ function init__composr_homesite()
 
 function get_latest_version_pretty()
 {
-    static $version = false;
-    if ($version === false) {
-        $version = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'name', array($GLOBALS['SITE_DB']->translate_field_ref('description') => 'This is the latest version.'));
-        if ($version !== null) {
+    static $version = null; // null means unset (uncached)
+    if ($version === null) {
+        $_version = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'name', array($GLOBALS['SITE_DB']->translate_field_ref('description') => 'This is the latest version.'));
+        if ($_version === null) {
+            $version = 0.0; // unknown
+        } else {
             require_code('version2');
-            $_version = preg_replace('# \(.*#', '', $version);
-            list(, , , , $version) = get_version_components__from_dotted(get_version_dotted__from_anything($_version));
+            $__version = preg_replace('# \(.*#', '', $_version);
+            list(, , , , $version) = get_version_components__from_dotted(get_version_dotted__from_anything($__version));
         }
     }
-    return is_null($version) ? null : float_format($version, 2, true);
+    return ($version == 0.0) ? null : float_format($version, 2, true);
 }
 
 // MAKING RELEASES
@@ -178,7 +180,7 @@ function demonstratr_add_site($codename, $name, $email_address, $password, $desc
     require_code('mail');
     $subject = do_lang('CMS_EMAIL_SUBJECT');
     $message = do_lang('CMS_EMAIL_BODY', comcode_escape($codename)/*email is not secure,comcode_escape($password)*/);
-    mail_wrap($subject, $message, array($email_address));
+    dispatch_mail($subject, $message, array($email_address));
 }
 
 function demonstratr_add_site_raw($server, $codename, $email_address, $password)
@@ -607,7 +609,7 @@ function demonstratr_delete_old_sites()
         $message = do_lang('CMS_EMAIL_EXPIRE_BODY', comcode_escape($site['s_codename']), get_brand_page_url(array('page' => 'free_tickets'), 'site'));
         $email_address = $GLOBALS['SITE_DB']->query_select_value_if_there('sites_email', 's_email_to', array('s_codename' => $site['s_codename'], 's_email_from' => 'staff'));
         if (!is_null($email_address)) {
-            mail_wrap($subject, $message, array($email_address));
+            dispatch_mail($subject, $message, array($email_address));
         }
 
         $GLOBALS['SITE_DB']->query_update('sites', array('s_sent_expire_message' => 1), array('s_codename' => $site['s_codename']), '', 1);

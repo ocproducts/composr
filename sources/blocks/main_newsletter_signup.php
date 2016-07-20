@@ -109,7 +109,7 @@ class Block_main_newsletter_signup
                 $body = str_replace('{email}', $address, $body);
                 $body = str_replace('{forename}', $forename, $body);
                 $body = str_replace('{surname}', $surname, $body);
-                mail_wrap($subject, $body, array($address), array_key_exists('to', $map) ? $map['to'] : '', '', '', 3, null, false, null, true);
+                dispatch_mail($subject, $body, array($address), array_key_exists('to', $map) ? $map['to'] : '', '', '', array('as_admin' => true));
             }
 
             return do_template('BLOCK_MAIN_NEWSLETTER_SIGNUP_DONE', array('_GUID' => '9953c83685df4970de8f23fcd5dd15bb', 'NEWSLETTER_TITLE' => $newsletter_title, 'NID' => strval($newsletter_id), 'PASSWORD' => $password));

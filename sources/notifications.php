@@ -71,34 +71,6 @@ function init__notifications()
 }
 
 /**
- * Find the notification object for a particular notification code.
- *
- * @param  ID_TEXT $notification_code The notification code to use
- * @return ?object Notification object (null: could not find)
- * @ignore
- */
-function _get_notification_ob_for_code($notification_code)
-{
-    $path = 'hooks/systems/notifications/' . filter_naughty(preg_replace('#\_\_\w*$#', '', $notification_code));
-    if ((!is_file(get_file_base() . '/sources/' . $path . '.php')) && (!is_file(get_file_base() . '/sources_custom/' . $path . '.php'))) {
-        require_all_lang();
-        $hooks = find_all_hook_obs('systems', 'notifications', 'Hook_notification_');
-        foreach ($hooks as $ob) {
-            if (method_exists($ob, 'list_handled_codes')) {
-                if (array_key_exists($notification_code, $ob->list_handled_codes())) {
-                    return $ob;
-                }
-            }
-        }
-    } else { // Ah, we know already (file exists directly) - so quick route
-        require_code($path);
-        return object_factory('Hook_notification_' . filter_naughty(preg_replace('#\_\_\w*$#', '', $notification_code)));
-    }
-    return null;
-    //return object_factory('Hook_Notification'); // default
-}
-
-/**
  * Wraps do_lang, keeping a record of the last call. You can use when building the notification $message.
  * This allows notification handlers to possibly repeat the call with a customised language string.
  *
@@ -214,6 +186,34 @@ function dispatch_notification($notification_code, $code_category, $subject, $me
 
     global $LAST_NOTIFICATION_LANG_CALL;
     $LAST_NOTIFICATION_LANG_CALL = null;
+}
+
+/**
+ * Find the notification object for a particular notification code.
+ *
+ * @param  ID_TEXT $notification_code The notification code to use
+ * @return ?object Notification object (null: could not find)
+ * @ignore
+ */
+function _get_notification_ob_for_code($notification_code)
+{
+    $path = 'hooks/systems/notifications/' . filter_naughty(preg_replace('#\_\_\w*$#', '', $notification_code));
+    if ((!is_file(get_file_base() . '/sources/' . $path . '.php')) && (!is_file(get_file_base() . '/sources_custom/' . $path . '.php'))) {
+        require_all_lang();
+        $hooks = find_all_hook_obs('systems', 'notifications', 'Hook_notification_');
+        foreach ($hooks as $ob) {
+            if (method_exists($ob, 'list_handled_codes')) {
+                if (array_key_exists($notification_code, $ob->list_handled_codes())) {
+                    return $ob;
+                }
+            }
+        }
+    } else { // Ah, we know already (file exists directly) - so quick route
+        require_code($path);
+        return object_factory('Hook_notification_' . filter_naughty(preg_replace('#\_\_\w*$#', '', $notification_code)));
+    }
+    return null;
+    //return object_factory('Hook_Notification'); // default
 }
 
 /**
@@ -398,7 +398,7 @@ class Notification_dispatcher
                 $wrapped_message = do_lang('NOTIFICATION_SMS_COMPLETE_WRAP', $subject, $message_to_send); // Language string ID may be modified to include {2}, but would cost more. Default just has {1}.
 
                 require_code('sms');
-                $successes = sms_wrap($wrapped_message, array($to_member_id));
+                $successes = dispatch_sms($wrapped_message, array($to_member_id));
                 if ($successes == 0) { // Could not send
                     $setting = $setting | A_INSTANT_EMAIL; // Make sure it also goes to email then
                     $message_to_send = do_lang('INSTEAD_OF_SMS', $message);
@@ -413,25 +413,22 @@ class Notification_dispatcher
                     $wrapped_subject = do_lang('NOTIFICATION_EMAIL_SUBJECT_WRAP', $subject, comcode_escape(get_site_name()));
                     $wrapped_message = do_lang($use_real_from ? 'NOTIFICATION_EMAIL_MESSAGE_WRAP_DIRECT_REPLY' : 'NOTIFICATION_EMAIL_MESSAGE_WRAP', $message_to_send, comcode_escape(get_site_name()));
 
-                    mail_wrap(
+                    dispatch_mail(
                         $wrapped_subject,
                         $wrapped_message,
                         array($to_email),
                         $to_name,
                         $from_email,
                         $from_name,
-                        $priority,
-                        $attachments,
-                        $no_cc,
-                        ($from_member_id < 0) ? $GLOBALS['FORUM_DRIVER']->get_guest_id() : $from_member_id,
-                        ($from_member_id == A_FROM_SYSTEM_PRIVILEGED),
-                        false,
-                        false,
-                        'MAIL',
-                        true,
-                        null,
-                        null,
-                        $join_time
+                        array(
+                            'priority' => $priority,
+                            'attachments' => $attachments,
+                            'no_cc' => $no_cc,
+                            'as' => (($from_member_id < 0) ? $GLOBALS['FORUM_DRIVER']->get_guest_id() : $from_member_id),
+                            'as_admin' => ($from_member_id == A_FROM_SYSTEM_PRIVILEGED),
+                            'bypass_queue' => true,
+                            'require_recipient_valid_since' => $join_time,
+                        )
                     );
 
                     $needs_manual_cc = false;
@@ -523,25 +520,20 @@ class Notification_dispatcher
 
             $to_email = get_option('cc_address');
             if ($to_email != '') {
-                mail_wrap(
+                dispatch_mail(
                     $subject,
                     $message,
                     array($to_email),
                     $to_name,
                     $from_email,
                     $from_name,
-                    $priority,
-                    null,
-                    true,
-                    ($from_member_id < 0) ? null : $from_member_id,
-                    ($from_member_id == A_FROM_SYSTEM_PRIVILEGED),
-                    false,
-                    false,
-                    'MAIL',
-                    false,
-                    null,
-                    null,
-                    $join_time
+                    array(
+                        'priority' => $priority,
+                        'no_cc' => true,
+                        'as' => (($from_member_id < 0) ? null : $from_member_id),
+                        'as_admin' => ($from_member_id == A_FROM_SYSTEM_PRIVILEGED),
+                        'require_recipient_valid_since' => $join_time,
+                    )
                 );
             }
         }

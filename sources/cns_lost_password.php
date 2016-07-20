@@ -88,7 +88,7 @@ function lost_password_emailer_step($username, $email_address)
         $url_simple = $_url_simple->evaluate();
         $message = do_lang($temporary_passwords ? 'LOST_PASSWORD_TEXT_TEMPORARY' : 'LOST_PASSWORD_TEXT', comcode_escape(get_site_name()), comcode_escape($username), array($url, comcode_escape($url_simple), strval($member_id), $code), get_lang($member_id));
         require_code('mail');
-        mail_wrap(do_lang('LOST_PASSWORD_CONFIRM', null, null, null, get_lang($member_id)), $message, array($email), $GLOBALS['FORUM_DRIVER']->get_username($member_id, true), '', '', 3, null, false, null, false, false, false, 'MAIL', true, null, null, $join_time);
+        dispatch_mail(do_lang('LOST_PASSWORD_CONFIRM', null, null, null, get_lang($member_id)), $message, array($email), $GLOBALS['FORUM_DRIVER']->get_username($member_id, true), '', '', array('bypass_queue' => true, 'require_recipient_valid_since' => $join_time));
     } else {
         $old_php_self = cms_srv('PHP_SELF');
         $old_server_name = cms_srv('SERVER_NAME');

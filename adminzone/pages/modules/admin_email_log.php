@@ -243,7 +243,7 @@ class Module_admin_email_log
 
         $fields['DATE_TIME'] = get_timezoned_date_time($row['m_date_and_time']);
 
-        $body = comcode_to_clean_text($row['m_message']);
+        $body = strip_comcode($row['m_message']);
 
         $from_email = $row['m_from_email'];
         if ($from_email == '') {
@@ -449,7 +449,26 @@ class Module_admin_email_log
                     $join_time = $row['m_join_time'];
 
                     require_code('mail');
-                    mail_wrap($subject, $message, $to_email, $to_name, $from_email, $from_name, $row['m_priority'], unserialize($row['m_attachments']), $row['m_no_cc'] == 1, $row['m_as'], $row['m_as_admin'] == 1, $row['m_in_html'] == 1, true, 'MAIL', false, $extra_cc_addresses, $extra_bcc_addresses, $join_time);
+                    dispatch_mail(
+                        $subject,
+                        $message,
+                        $to_email,
+                        $to_name,
+                        $from_email,
+                        $from_name,
+                        array(
+                            'priority' => $row['m_priority'],
+                            'attachments' => unserialize($row['m_attachments']),
+                            'no_cc' => ($row['m_no_cc'] == 1),
+                            'as' => $row['m_as'],
+                            'as_admin' => ($row['m_as_admin'] == 1),
+                            'in_html' => ($row['m_in_html'] == 1),
+                            'coming_out_of_queue' => true,
+                            'extra_cc_addresses' => $extra_cc_addresses,
+                            'extra_bcc_addresses' => $extra_bcc_addresses,
+                            'require_recipient_valid_since' => $join_time,
+                        )
+                    );
 
                     $remap['m_queued'] = 0;
                 }
@@ -482,7 +501,26 @@ class Module_admin_email_log
             $from_name = $row['m_from_name'];
             $join_time = $row['m_join_time'];
 
-            mail_wrap($subject, $message, $to_email, $to_name, $from_email, $from_name, $row['m_priority'], unserialize($row['m_attachments']), $row['m_no_cc'] == 1, $row['m_as'], $row['m_as_admin'] == 1, $row['m_in_html'] == 1, true, 'MAIL', false, $extra_cc_addresses, $extra_bcc_addresses, $join_time);
+            dispatch_mail(
+                $subject,
+                $message,
+                $to_email,
+                $to_name,
+                $from_email,
+                $from_name,
+                array(
+                    'priority' => $row['m_priority'],
+                    'attachments' => unserialize($row['m_attachments']),
+                    'no_cc' => ($row['m_no_cc'] == 1),
+                    'as' => $row['m_as'],
+                    'as_admin' => ($row['m_as_admin'] == 1),
+                    'in_html' => ($row['m_in_html'] == 1),
+                    'coming_out_of_queue' => true,
+                    'extra_cc_addresses' => $extra_cc_addresses,
+                    'extra_bcc_addresses' => $extra_bcc_addresses,
+                    'require_recipient_valid_since' => $join_time,
+                )
+            );
         }
 
         $GLOBALS['SITE_DB']->query_update('logged_mail_messages', array('m_queued' => 0), array('m_queued' => 1));

@@ -3090,17 +3090,19 @@ function strip_html($in)
         return $in; // Optimisation
     }
 
+    $text = $in;
+
     $search = array(
         '#<script[^>]*?' . '>.*?</script>#si',  // Strip out JavaScript
         '#<style[^>]*?' . '>.*?</style>#siU',   // Strip style tags properly
         '#<![\s\S]*?--[ \t\n\r]*>#',            // Strip multi-line comments including CDATA
     );
-    $in = preg_replace($search, '', $in);
+    $text = preg_replace($search, '', $text);
     if (get_charset() != 'utf-8') {
-        $in = str_replace(array('&ndash;', '&mdash;', '&middot;', '&ldquo;', '&rdquo;', '&lsquo;', '&rsquo;'), array('-', '-', '|', '"', '"', "'", "'"), $in);
+        $text = str_replace(array('&ndash;', '&mdash;', '&hellip;', '&middot;', '&ldquo;', '&rdquo;', '&lsquo;', '&rsquo;'), array('-', '-', '...', '|', '"', '"', "'", "'"), $text);
     }
-    $in = strip_tags($in);
-    return @html_entity_decode($in, ENT_QUOTES, get_charset());
+    $text = strip_tags($text);
+    return @html_entity_decode($text, ENT_QUOTES, get_charset());
 }
 
 /**

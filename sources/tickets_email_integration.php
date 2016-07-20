@@ -76,12 +76,11 @@ function ticket_outgoing_message($ticket_id, $ticket_url, $ticket_type_name, $su
     $tightened_subject = str_replace(array("\n", "\r"), array('', ''), $subject);
     $extended_subject = do_lang('TICKET_SIMPLE_SUBJECT_' . ($new ? 'new' : 'reply'), $subject, $ticket_id, array($ticket_type_name, $from_displayname, get_site_name()));
 
-    require_code('mail');
     $extended_message = '';
     $extended_message .= do_lang('TICKET_SIMPLE_MAIL_' . ($new ? 'new' : 'reply'), get_site_name(), $ticket_type_name, array($ticket_url, $from_displayname));
     $extended_message .= $message;
 
-    mail($to_name . ' <' . $to_email . '>', $extended_subject, comcode_to_clean_text($extended_message), $headers);
+    mail($to_name . ' <' . $to_email . '>', $extended_subject, strip_comcode($extended_message), $headers);
 }
 
 /**
@@ -106,9 +105,8 @@ function ticket_email_cannot_bind($subject, $body, $email, $email_bounce_to)
     $headers .= 'From: ' . get_site_name() . ' <' . $website_email . '>' . "\r\n";
     $headers .= 'Reply-To: ' . get_site_name() . ' <' . $from_email . '>';
 
-    require_code('mail');
     $extended_subject = do_lang('TICKET_CANNOT_BIND_SUBJECT', $subject, $email, get_site_name());
-    $extended_message = do_lang('TICKET_CANNOT_BIND_MAIL', comcode_to_clean_text($body), $email, array($subject, get_site_name()));
+    $extended_message = do_lang('TICKET_CANNOT_BIND_MAIL', strip_comcode($body), $email, array($subject, get_site_name()));
 
     mail($email_bounce_to, $extended_subject, $extended_message, $headers);
 }

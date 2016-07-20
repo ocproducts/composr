@@ -39,7 +39,7 @@ function handle_custom_purchase($purchase_id, $details, $type_code)
     $subject = do_lang('MAIL_REQUEST_CUSTOM', comcode_escape($c_title), null, null, get_site_default_lang());
     $username = $GLOBALS['FORUM_DRIVER']->get_username($purchase_id);
     $message_raw = do_notification_lang('MAIL_REQUEST_CUSTOM_BODY', comcode_escape($c_title), $username, null, get_site_default_lang());
-    dispatch_notification('pointstore_request_custom', 'custom' . strval($id) . '_' . strval($sale_id), $subject, $message_raw, null, null, array('priority' => 3, 'store_in_staff_messaging_system' => true));
+    dispatch_notification('pointstore_request_custom', 'custom' . strval($id) . '_' . strval($sale_id), $subject, $message_raw, null, null, array('store_in_staff_messaging_system' => true));
 
     // Email member
     require_code('mail');
@@ -49,7 +49,7 @@ function handle_custom_purchase($purchase_id, $details, $type_code)
         $message_raw = get_translated_text($row['cp_mail_body']);
         $email = $GLOBALS['FORUM_DRIVER']->get_member_email_address($purchase_id);
         $to_name = $GLOBALS['FORUM_DRIVER']->get_username($purchase_id, true);
-        mail_wrap($subject_line, $message_raw, array($email), $to_name, '', '', 3, null, false, null, true);
+        dispatch_mail($subject_line, $message_raw, array($email), $to_name, '', '', array('as_admin' => true));
     }
 }
 

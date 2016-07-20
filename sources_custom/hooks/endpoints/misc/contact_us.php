@@ -39,13 +39,13 @@ class Hook_endpoint_account_contact_us
         require_lang('messaging');
         $notification_subject = do_lang('CONTACT_US_NOTIFICATION_SUBJECT', $title, null, null, get_site_default_lang());
         $notification_message = do_lang('CONTACT_US_NOTIFICATION_MESSAGE', comcode_escape(get_site_name()), comcode_escape($GLOBALS['FORUM_DRIVER']->get_username(get_member())), array($post, comcode_escape($category)), get_site_default_lang());
-        dispatch_notification('messaging', $type . '_' . $id, $notification_subject, $notification_message, null, null, array('priority' => 3, 'store_in_staff_messaging_system' => true));
+        dispatch_notification('messaging', $type . '_' . $id, $notification_subject, $notification_message, null, null, array('store_in_staff_messaging_system' => true));
 
         // Send standard confirmation email to current user
         $email_from = trim(post_param_string('email', $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member())));
         if ($email_from != '' && get_option('message_received_emails') == '1') {
             require_code('mail');
-            mail_wrap(do_lang('YOUR_MESSAGE_WAS_SENT_SUBJECT', $title), do_lang('YOUR_MESSAGE_WAS_SENT_BODY', $post), array($email_from), null, '', '', 3, null, false, get_member());
+            dispatch_mail(do_lang('YOUR_MESSAGE_WAS_SENT_SUBJECT', $title), do_lang('YOUR_MESSAGE_WAS_SENT_BODY', $post), array($email_from), null, '', '', array('as' => get_member()));
         }
 
         // Return

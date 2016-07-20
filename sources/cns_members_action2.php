@@ -1073,7 +1073,7 @@ function cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $
 
         $subject = do_lang('STAFF_USERNAME_CHANGED_MAIL_SUBJECT', $username, $old_username, null, get_site_default_lang());
         $mail = do_notification_lang('STAFF_USERNAME_CHANGED_MAIL', comcode_escape(get_site_name()), comcode_escape($username), comcode_escape($old_username), get_site_default_lang());
-        dispatch_notification('cns_username_changed_staff', null, $subject, $mail, null, get_member(), array('priority' => 3, 'use_real_from' => true));
+        dispatch_notification('cns_username_changed_staff', null, $subject, $mail, null, get_member(), array('use_real_from' => true));
 
         if (addon_installed('news')) {
             $GLOBALS['SITE_DB']->query_update('news', array('author' => $username), array('author' => $old_username));
@@ -1138,7 +1138,7 @@ function cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $
         $_login_url = build_url(array('page' => 'login'), get_module_zone('login'), null, false, false, true);
         $login_url = $_login_url->evaluate();
         // NB: Same mail also sent in settings.php (quick-validate feature)
-        mail_wrap(do_lang('VALIDATED_MEMBER_SUBJECT', get_site_name(), null, get_lang($member_id)), do_lang('MEMBER_VALIDATED', get_site_name(), $username, $login_url, get_lang($member_id)), array($email_address), $username, '', '', 3, null, false, null, false, false, false, 'MAIL', false, null, null, $join_time);
+        dispatch_mail(do_lang('VALIDATED_MEMBER_SUBJECT', get_site_name(), null, get_lang($member_id)), do_lang('MEMBER_VALIDATED', get_site_name(), $username, $login_url, get_lang($member_id)), array($email_address), $username, '', '', array('require_recipient_valid_since' => $join_time));
     }
 
     $old_email_address = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_email_address');
@@ -1272,7 +1272,7 @@ function cns_ban_member($member_id)
     log_it('BAN_MEMBER', strval($member_id), $username);
 
     $mail = do_lang('BAN_MEMBER_MAIL', $username, get_site_name(), array(), get_lang($member_id));
-    mail_wrap(do_lang('BAN_MEMBER_MAIL_SUBJECT', null, null, null, get_lang($member_id)), $mail, array($email_address), $username, '', '', 2, null, false, null, false, false, false, 'MAIL', false, null, null, $join_time);
+    dispatch_mail(do_lang('BAN_MEMBER_MAIL_SUBJECT', null, null, null, get_lang($member_id)), $mail, array($email_address), $username, '', '', array('priority' => 2, 'require_recipient_valid_since' => $join_time));
 
     decache('main_members');
 
@@ -1301,7 +1301,7 @@ function cns_unban_member($member_id)
     log_it('UNBAN_MEMBER', strval($member_id), $username);
 
     $mail = do_lang('UNBAN_MEMBER_MAIL', $username, get_site_name(), array(), get_lang($member_id));
-    mail_wrap(do_lang('UNBAN_MEMBER_MAIL_SUBJECT', null, null, null, get_lang($member_id)), $mail, array($email_address), $username, '', '', 2, null, false, null, false, false, false, 'MAIL', false, null, null, $join_time);
+    dispatch_mail(do_lang('UNBAN_MEMBER_MAIL_SUBJECT', null, null, null, get_lang($member_id)), $mail, array($email_address), $username, '', '', array('priority' => 2, 'require_recipient_valid_since' => $join_time));
 
     decache('main_members');
 
@@ -1762,7 +1762,7 @@ function cns_member_choose_signature($new_signature, $member_id = null)
     require_code('notifications');
     $subject = do_lang('CHOOSE_SIGNATURE_SUBJECT', $GLOBALS['FORUM_DRIVER']->get_username($member_id, true), $GLOBALS['FORUM_DRIVER']->get_username($member_id), null, get_lang($member_id));
     $body = do_notification_lang('CHOOSE_SIGNATURE_BODY', $new_signature, $GLOBALS['FORUM_DRIVER']->get_username($member_id), $GLOBALS['FORUM_DRIVER']->get_username($member_id, true), get_lang($member_id));
-    dispatch_notification('cns_choose_signature', null, $subject, $body, null, get_member(), array('priority' => 3, 'use_real_from' => true));
+    dispatch_notification('cns_choose_signature', null, $subject, $body, null, get_member(), array('use_real_from' => true));
 
     // Decache from run-time cache
     unset($GLOBALS['FORUM_DRIVER']->MEMBER_ROWS_CACHED[$member_id]);
@@ -1822,7 +1822,7 @@ function cns_member_choose_avatar($avatar_url, $member_id = null)
             require_code('notifications');
             $subject = do_lang('CHOOSE_AVATAR_SUBJECT', $GLOBALS['FORUM_DRIVER']->get_username($member_id, true), $GLOBALS['FORUM_DRIVER']->get_username($member_id), null, get_lang($member_id));
             $body = do_notification_lang('CHOOSE_AVATAR_BODY', $stub . $avatar_url, $GLOBALS['FORUM_DRIVER']->get_username($member_id), $GLOBALS['FORUM_DRIVER']->get_username($member_id, true), get_lang($member_id));
-            dispatch_notification('cns_choose_avatar', null, $subject, $body, null, get_member(), array('priority' => 3, 'use_real_from' => true));
+            dispatch_notification('cns_choose_avatar', null, $subject, $body, null, get_member(), array('use_real_from' => true));
         }
     }
 
@@ -1935,7 +1935,7 @@ function cns_member_choose_photo_concrete($url, $thumb_url, $member_id = null)
     require_code('notifications');
     $subject = do_lang('CHOOSE_PHOTO_SUBJECT', $GLOBALS['FORUM_DRIVER']->get_username($member_id, true), $GLOBALS['FORUM_DRIVER']->get_username($member_id), null, get_lang($member_id));
     $body = do_notification_lang('CHOOSE_PHOTO_BODY', $url, $thumb_url, array($GLOBALS['FORUM_DRIVER']->get_username($member_id), $GLOBALS['FORUM_DRIVER']->get_username($member_id, true)), get_lang($member_id));
-    dispatch_notification('cns_choose_photo', null, $subject, $body, null, get_member(), array('priority' => 3, 'use_real_from' => true));
+    dispatch_notification('cns_choose_photo', null, $subject, $body, null, get_member(), array('use_real_from' => true));
 
     // If Avatars addon not installed, use photo for it
     if (!addon_installed('cns_avatars')) {

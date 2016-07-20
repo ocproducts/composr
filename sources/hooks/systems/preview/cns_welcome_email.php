@@ -44,7 +44,7 @@ class Hook_preview_cns_welcome_email
             if ($to == '') {
                 $to = get_option('staff_address');
             }
-            mail_wrap($subject_line, $message_raw->evaluate(get_site_default_lang()), array($to), $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true), '', '', 3, null, false, get_member(), true);
+            dispatch_mail($subject_line, $message_raw->evaluate(get_site_default_lang()), array($to), $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true), '', '', array('as' => get_member(), 'as_admin' => true));
         }
         return array($applies, null);
     }

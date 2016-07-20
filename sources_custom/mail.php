@@ -23,32 +23,33 @@
  * @param  ?mixed $to_name The recipient name. Array or string. (null: site name)
  * @param  EMAIL $from_email The from address (blank: site staff address)
  * @param  string $from_name The from name (blank: site name)
- * @param  integer $priority The message priority (1=urgent, 3=normal, 5=low)
- * @range  1 5
- * @param  ?array $attachments An list of attachments (each attachment being a map, path=>filename) (null: none)
- * @param  boolean $no_cc Whether to NOT CC to the CC address
- * @param  ?MEMBER $as Convert Comcode->Tempcode as this member (a privilege thing: we don't want people being able to use admin rights by default!) (null: guest)
- * @param  boolean $as_admin Replace above with arbitrary admin
- * @param  boolean $in_html HTML-only
- * @param  boolean $coming_out_of_queue Whether to bypass queueing, because this code is running as a part of the queue management tools
- * @param  ID_TEXT $mail_template The template used to show the email
- * @param  boolean $bypass_queue Whether to bypass queueing
- * @param  ?array $extra_cc_addresses Extra CC addresses to use (null: none)
- * @param  ?array $extra_bcc_addresses Extra BCC addresses to use (null: none)
- * @param  ?TIME $require_recipient_valid_since Implement the Require-Recipient-Valid-Since header (null: no restriction)
- * @param  ?boolean $smtp_sockets_use Whether to use SMTP sockets (null: default configured)
- * @param  ?string $smtp_sockets_host SMTP hostname (null: default configured)
- * @param  ?integer $smtp_sockets_port SMTP port (null: default configured)
- * @param  ?string $smtp_sockets_username SMTP username (null: default configured)
- * @param  ?string $smtp_sockets_password SMTP password (null: default configured)
- * @param  ?EMAIL $smtp_from_address SMTP from address (null: default configured)
- * @param  ?boolean $enveloper_override Use envelope override option for sendmail (null: default configured)
- * @param  ?boolean $allow_ext_images Allow external image references rather than embedding images (null: default configured)
- * @param  ?EMAIL $website_email Website e-mail address (null: default configured)
+ * @param  ?array $advanced_parameters A map of additional parameters. See comments within this function implementation to know what can be sent. (null: none)
  * @return ?Tempcode A full page (not complete XHTML) piece of Tempcode to output (null: it worked so no Tempcode message)
  */
-function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = null, $from_email = '', $from_name = '', $priority = 3, $attachments = null, $no_cc = false, $as = null, $as_admin = false, $in_html = false, $coming_out_of_queue = false, $mail_template = 'MAIL', $bypass_queue = false, $extra_cc_addresses = null, $extra_bcc_addresses = null, $require_recipient_valid_since = null, $smtp_sockets_use = null, $smtp_sockets_host = null, $smtp_sockets_port = null, $smtp_sockets_username = null, $smtp_sockets_password = null, $smtp_from_address = null, $enveloper_override = null, $allow_ext_images = null, $website_email = null)
+function dispatch_mail($subject_line, $message_raw, $to_email = null, $to_name = null, $from_email = '', $from_name = '', $advanced_parameters = null)
 {
+    $priority = isset($advanced_parameters['priority']) ? $advanced_parameters['priority'] : 3; // The message priority (1=urgent, 3=normal, 5=low)
+    $attachments = isset($advanced_parameters['attachments']) ? $advanced_parameters['attachments'] : null; // An list of attachments (each attachment being a map, path=>filename) (null: none)
+    $no_cc = isset($advanced_parameters['no_cc']) ? $advanced_parameters['no_cc'] : false; // Whether to CC to the CC address
+    $as = isset($advanced_parameters['as']) ? $advanced_parameters['as'] : null; // Convert Comcode->tempcode as this member (a privilege thing: we don't want people being able to use admin rights by default!) (null: guest)
+    $as_admin = isset($advanced_parameters['as_admin']) ? $advanced_parameters['as_admin'] : false; // Replace above with arbitrary admin
+    $in_html = isset($advanced_parameters['in_html']) ? $advanced_parameters['in_html'] : false; // HTML-only
+    $bypass_queue = isset($advanced_parameters['bypass_queue']) ? $advanced_parameters['bypass_queue'] : null; // Whether to bypass queueing
+    $coming_out_of_queue = isset($advanced_parameters['coming_out_of_queue']) ? $advanced_parameters['coming_out_of_queue'] : false; // Whether to bypass queueing, because this code is running as a part of the queue management tools (null: auto-decide)
+    $mail_template = isset($advanced_parameters['mail_template']) ? $advanced_parameters['mail_template'] : 'MAIL'; // The template used to show the email
+    $extra_cc_addresses = isset($advanced_parameters['extra_cc_addresses']) ? $advanced_parameters['extra_cc_addresses'] : null; // Extra CC addresses to use (null: none)
+    $extra_bcc_addresses = isset($advanced_parameters['extra_bcc_addresses']) ? $advanced_parameters['extra_bcc_addresses'] : null; // Extra BCC addresses to use (null: none)
+    $require_recipient_valid_since = isset($advanced_parameters['require_recipient_valid_since']) ? $advanced_parameters['require_recipient_valid_since'] : null; // Implement the Require-Recipient-Valid-Since header (null: no restriction)
+    $smtp_sockets_use = isset($advanced_parameters['smtp_sockets_use']) ? $advanced_parameters['smtp_sockets_use'] : null; // Whether to use SMTP sockets (null: default configured)
+    $smtp_sockets_host = isset($advanced_parameters['smtp_sockets_host']) ? $advanced_parameters['smtp_sockets_host'] : null; // SMTP hostname (null: default configured)
+    $smtp_sockets_port = isset($advanced_parameters['smtp_sockets_port']) ? $advanced_parameters['smtp_sockets_port'] : null; // SMTP port (null: default configured)
+    $smtp_sockets_username = isset($advanced_parameters['smtp_sockets_username']) ? $advanced_parameters['smtp_sockets_username'] : null; // SMTP username (null: default configured)
+    $smtp_sockets_password = isset($advanced_parameters['smtp_sockets_password']) ? $advanced_parameters['smtp_sockets_password'] : null; // SMTP password (null: default configured)
+    $smtp_from_address = isset($advanced_parameters['smtp_from_address']) ? $advanced_parameters['smtp_from_address'] : null; // SMTP from address (null: default configured)
+    $enveloper_override = isset($advanced_parameters['enveloper_override']) ? $advanced_parameters['enveloper_override'] : null; // Use envelope override option for sendmail (null: default configured)
+    $allow_ext_images = isset($advanced_parameters['allow_ext_images']) ? $advanced_parameters['allow_ext_images'] : null; // Allow external image references rather than embedding images (null: default configured)
+    $website_email = isset($advanced_parameters['website_email']) ? $advanced_parameters['website_email'] : null; // Website e-mail address (null: default configured)
+
     if (is_null($smtp_sockets_use)) {
         $smtp_sockets_use = (get_option('smtp_sockets_use') == '1');
     }
@@ -78,7 +79,37 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     }
 
     if (!$smtp_sockets_use) {
-        return non_overridden__mail_wrap($subject_line, $message_raw, $to_email, $to_name, $from_email, $from_name, $priority, $attachments, $no_cc, $as, $as_admin, $in_html, $coming_out_of_queue, $mail_template, $bypass_queue, $extra_cc_addresses, $extra_bcc_addresses, $require_recipient_valid_since, $smtp_sockets_use, $smtp_sockets_host, $smtp_sockets_port, $smtp_sockets_username, $smtp_sockets_password, $smtp_from_address, $enveloper_override, $allow_ext_images, $website_email);
+        return non_overridden__dispatch_mail(
+            $subject_line,
+            $message_raw,
+            $to_email,
+            $to_name,
+            $from_email,
+            $from_name,
+            array(
+                'priority' => $priority,
+                'attachments' => $attachments,
+                'no_cc' => $no_cc,
+                'as' => $as,
+                'as_admin' => $as_admin,
+                'in_html' => $in_html,
+                'coming_out_of_queue' => $coming_out_of_queue,
+                'mail_template' => $mail_template,
+                'bypass_queue' => $bypass_queue,
+                'extra_cc_addresses' => $extra_cc_addresses,
+                'extra_bcc_addresses' => $extra_bcc_addresses,
+                'require_recipient_valid_since' => $require_recipient_valid_since,
+                'smtp_sockets_use' => $smtp_sockets_use,
+                'smtp_sockets_host' => $smtp_sockets_host,
+                'smtp_sockets_port' => $smtp_sockets_port,
+                'smtp_sockets_username' => $smtp_sockets_username,
+                'smtp_sockets_password' => $smtp_sockets_password,
+                'smtp_from_address' => $smtp_from_address,
+                'enveloper_override' => $enveloper_override,
+                'allow_ext_images' => $allow_ext_images,
+                'website_email' => $website_email,
+            )
+        );
     }
 
     if (running_script('stress_test_loader')) {
@@ -205,7 +236,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         $from_name = get_site_name();
     }
 
-    cms_profile_start_for('mail_wrap');
+    cms_profile_start_for('dispatch_mail');
 
     $theme = method_exists($GLOBALS['FORUM_DRIVER'], 'get_theme') ? $GLOBALS['FORUM_DRIVER']->get_theme() : 'default';
     if ($theme == 'default') { // Sucks, probably due to sending from Admin Zone...
@@ -262,7 +293,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         }
 
         // Cleanup the Comcode a bit
-        $message_plain = comcode_to_clean_text($message_raw);
+        $message_plain = strip_comcode($message_raw);
     } else {
         $html_evaluated = $message_raw;
     }
@@ -498,7 +529,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         }
     }
 
-    cms_profile_end_for('mail_wrap', $subject_line);
+    cms_profile_end_for('dispatch_mail', $subject_line);
 
     // Return / Error handling
     if ($error != '') {

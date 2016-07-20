@@ -50,5 +50,5 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 }
 require($FILE_BASE . '/sources/global.php');
 
-require_code('mail');
+require_code('mail_forms');
 form_to_email_entry_script();

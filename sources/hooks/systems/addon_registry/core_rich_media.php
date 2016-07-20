@@ -243,6 +243,7 @@ class Hook_addon_registry_core_rich_media
             'data/comcode_convert.php',
             'lang/EN/comcode.ini',
             'sources/comcode.php',
+            'sources/comcode_to_text.php',
             'sources/comcode_tools.php',
             'sources/comcode_cleanup.php',
             'sources/comcode_check.php',

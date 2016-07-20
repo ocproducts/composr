@@ -163,7 +163,7 @@ function do_user_export__single_ipc($member_id, $delete = false)
                 }
 
                 require_code('mail');
-                mail_wrap('Updated member record', $message_raw, array(USER_EXPORT_EMAIL));
+                dispatch_mail('Updated member record', $message_raw, array(USER_EXPORT_EMAIL));
             }
         }
     }

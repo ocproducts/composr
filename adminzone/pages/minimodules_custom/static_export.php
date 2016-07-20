@@ -259,7 +259,7 @@ foreach ($fields as $field=>$field_title)
 }
 
 $subject=str_replace("xxx",$title,"' . addslashes(do_lang('CONTACT_US_NOTIFICATION_SUBJECT', 'xxx', null, null, $lang)) . '");
-$message=str_replace(array("aaa","bbb"),array($name,$post),"' . addslashes(comcode_to_clean_text(do_lang('CONTACT_US_NOTIFICATION_MESSAGE', get_site_name(), 'aaa', array('bbb'), $lang))) . '");
+$message=str_replace(array("aaa","bbb"),array($name,$post),"' . addslashes(strip_comcode(do_lang('CONTACT_US_NOTIFICATION_MESSAGE', get_site_name(), 'aaa', array('bbb'), $lang))) . '");
 $headers="";
 $website_email="' . addslashes(get_option('website_email')) . '";
 if ($website_email=="") $website_email=$email;

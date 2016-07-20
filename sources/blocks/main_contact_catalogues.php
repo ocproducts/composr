@@ -103,7 +103,7 @@ class Block_main_contact_catalogues
                 }
             }
 
-            require_code('mail');
+            require_code('mail_forms');
             $to_email = array_key_exists('to', $map) ? $map['to'] : '';
             if ($to_email == '') {
                 $to_email = null;

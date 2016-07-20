@@ -54,8 +54,6 @@ class Hook_task_send_newsletter
         require_code('mail');
         require_code('json');
 
-        //mail_wrap($subject, $message, $addresses, $usernames, $from_email, $from_name, 3, null, true, null, true, $html_only == 1);  Not so easy any more as message needs tailoring per subscriber
-
         $last_cron = get_value('last_cron');
 
         $blocked = newsletter_block_list();
@@ -125,7 +123,31 @@ class Hook_task_send_newsletter
                         }
                     }
 
-                    mail_wrap($subject, $newsletter_message_substituted, array($email_address), array($usernames[$i]), $from_email, $from_name, $priority, null, true, null, true, $in_html, false, $mail_template);
+                    dispatch_mail(
+                        $subject,
+                        $newsletter_message_substituted,
+                        array($email_address),
+                        array($usernames[$i]),
+                        $from_email,
+                        $from_name,
+                        array(
+                            'priority' => $priority,
+                            'no_cc' => true,
+                            'as_admin' => true,
+                            'in_html' => $in_html,
+                            'mail_template' => $mail_template,
+                            'bypass_queue' => true,
+                            'smtp_sockets_use' => (get_option('newsletter_smtp_sockets_use') == '1'),
+                            'smtp_sockets_host' => get_option('newsletter_smtp_sockets_host'),
+                            'smtp_sockets_port' => intval(get_option('newsletter_smtp_sockets_port')),
+                            'smtp_sockets_username' => get_option('newsletter_smtp_sockets_username'),
+                            'smtp_sockets_password' => get_option('newsletter_smtp_sockets_password'),
+                            'smtp_from_address' => get_option('newsletter_smtp_from_address'),
+                            'enveloper_override' => (get_option('newsletter_enveloper_override') == '1'),
+                            'allow_ext_images' => (get_option('newsletter_allow_ext_images') == '1'),
+                            'website_email' => get_option('newsletter_website_email'),
+                        )
+                    );
                 }
 
                 $count++;

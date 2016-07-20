@@ -350,7 +350,7 @@ class CMSAccountWrite
         $url_simple = $_url_simple->evaluate();
         $message = do_lang('RESET_PASSWORD_TEXT', comcode_escape(get_site_name()), comcode_escape($username), array(comcode_escape($url), $url_simple, strval($member), strval($code)), get_lang($member));
         require_code('mail');
-        mail_wrap(do_lang('RESET_PASSWORD', null, null, null, get_lang($member)), $message, array($email), $username, '', '', 3, null, false, null, false, false, false, 'MAIL', true);
+        dispatch_mail(do_lang('RESET_PASSWORD', null, null, null, get_lang($member)), $message, array($email), $username, '', '', array('bypass_queue' => true));
 
         // Return
         return array(

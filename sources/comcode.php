@@ -226,15 +226,17 @@ function comcode_to_tempcode($comcode, $source_member = null, $as_admin = false,
 }
 
 /**
- * Strip out any Comcode from this "plain text". Useful for semantic text is wanted but where Comcode is used as "the next best thing" we have.
+ * Make some Comcode more readable by humans.
  *
- * @param  string $text Plain-text/Comcode
+ * @param  string $in Plain-text/Comcode
  * @param  boolean $for_extract Whether this is for generating an extract that does not need to be fully comprehended (i.e. favour brevity)
  * @param  ?array $tags_to_preserve List of tags to preserve (null: none)
  * @return string Purified plain-text
  */
-function strip_comcode($text, $for_extract = false, $tags_to_preserve = null)
+function strip_comcode($in, $for_extract = false, $tags_to_preserve = null)
 {
+    $text = $in;
+
     if (is_null($tags_to_preserve)) {
         $tags_to_preserve = array();
     }
@@ -248,31 +250,8 @@ function strip_comcode($text, $for_extract = false, $tags_to_preserve = null)
         return $matches[2]; // Optimisation
     }
 
-    require_code('mail');
-    if (function_exists('comcode_to_clean_text')) { // For benefit of installer, which disables mail.php
-        $text = comcode_to_clean_text($text, $for_extract, $tags_to_preserve);
-    }
-
-    if (strpos($text, '[') !== false) {
-        init_valid_comcode_tags();
-
-        global $VALID_COMCODE_TAGS;
-        foreach (array_keys($VALID_COMCODE_TAGS) as $tag) {
-            if (in_array($tag, $tags_to_preserve)) {
-                continue;
-            }
-
-            if ($tag == 'i') {
-                $text = preg_replace('#\[/?' . $tag . '\]#i', '', $text);
-            } else {
-                $text = preg_replace('#\[/?' . $tag . '([ =][^\]]*)?\]#i', '', $text);
-            }
-        }
-    }
-
-    if (strpos($text, '&') !== false) {
-        $text = str_replace(array('&hellip;', '&middot;', '&ndash;', '&mdash;'), array('...', '-', '-', '-'), $text);
-    }
+    require_code('comcode_to_text');
+    $text = _strip_comcode($text, $for_extract, $tags_to_preserve);
 
     return $text;
 }

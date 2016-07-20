@@ -233,7 +233,7 @@ class Hook_profiles_tabs_edit_settings
             require_code('mail');
             $_login_url = build_url(array('page' => 'login'), get_module_zone('login'), null, false, false, true);
             $login_url = $_login_url->evaluate();
-            mail_wrap(do_lang('VALIDATED_MEMBER_SUBJECT', get_site_name(), null, get_lang($member_id_of)), do_lang('MEMBER_VALIDATED', get_site_name(), $username, $login_url, get_lang($member_id_of)), array($email_address), $username, '', '', 3, null, false, null, false, false, false, 'MAIL', false, null, null, $join_time);
+            dispatch_mail(do_lang('VALIDATED_MEMBER_SUBJECT', get_site_name(), null, get_lang($member_id_of)), do_lang('MEMBER_VALIDATED', get_site_name(), $username, $login_url, get_lang($member_id_of)), array($email_address), $username, '', '', array('require_recipient_valid_since' => $join_time));
 
             attach_message(do_lang_tempcode('SUCCESS_SAVE'), 'inform');
         }

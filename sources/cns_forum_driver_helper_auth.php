@@ -245,7 +245,7 @@ function _forum_authorise_login($this_ref, $username, $userid, $password_hashed,
                     $email_address = get_option('staff_address');
                 }
                 if ($IN_SELF_ROUTING_SCRIPT) {
-                    mail_wrap(do_lang('IP_VERIFY_MAIL_SUBJECT', null, null, null, get_lang($row['id'])), $mail, array($email_address), $row['m_username'], '', '', 1, null, false, null, false, false, false, 'MAIL', false, null, null, $row['m_join_time']);
+                    dispatch_mail(do_lang('IP_VERIFY_MAIL_SUBJECT', null, null, null, get_lang($row['id'])), $mail, array($email_address), $row['m_username'], '', '', array('priority' => 1, 'require_recipient_valid_since' => $row['m_join_time']));
                 }
 
                 $SENT_OUT_VALIDATE_NOTICE = true;

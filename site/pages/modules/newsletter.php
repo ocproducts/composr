@@ -490,7 +490,7 @@ class Module_newsletter
         $message = do_lang('NEWSLETTER_PASSWORD_CHANGE', comcode_escape(get_ip_address()), comcode_escape($new_password), null, $language);
 
         require_code('mail');
-        mail_wrap(get_option('newsletter_title'), $message, array($email), $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true));
+        dispatch_mail(get_option('newsletter_title'), $message, array($email), $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true));
 
         return inform_screen($this->title, protect_from_escaping(do_lang('NEWSLETTER_PASSWORD_BEEN_RESET', null, null, null, $language)));
     }
@@ -543,7 +543,7 @@ class Module_newsletter
         $message = do_lang('NEWSLETTER_SIGNUP_TEXT', comcode_escape($url), comcode_escape($password), array($forename, $surname, $email, get_site_name()));
 
         require_code('mail');
-        mail_wrap(do_lang('NEWSLETTER_SIGNUP'), $message, array($email), $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true));
+        dispatch_mail(do_lang('NEWSLETTER_SIGNUP'), $message, array($email), $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true));
     }
 
     /**

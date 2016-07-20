@@ -61,7 +61,27 @@ class Hook_cron_mail_queue
                         continue;
                     }
 
-                    mail_wrap($subject, $message, $to_email, $to_name, $from_email, $from_name, $row['m_priority'], unserialize($row['m_attachments']), $row['m_no_cc'] == 1, $row['m_as'], $row['m_as_admin'] == 1, $row['m_in_html'] == 1, true, $row['m_template'], false, $extra_cc_addresses, $extra_bcc_addresses, $join_time);
+                    dispatch_mail(
+                        $subject,
+                        $message,
+                        $to_email,
+                        $to_name,
+                        $from_email,
+                        $from_name,
+                        array(
+                            'priority' => $row['m_priority'],
+                            'attachments' => unserialize($row['m_attachments']),
+                            'no_cc' => ($row['m_no_cc'] == 1),
+                            'as' => $row['m_as'],
+                            'as_admin' => ($row['m_as_admin'] == 1),
+                            'in_html' => ($row['m_in_html'] == 1),
+                            'coming_out_of_queue' => true,
+                            'mail_template' => $row['m_template'],
+                            'extra_cc_addresses' => $extra_cc_addresses,
+                            'extra_bcc_addresses' => $extra_bcc_addresses,
+                            'require_recipient_valid_since' => $join_time,
+                        )
+                    );
 
                     $GLOBALS['SITE_DB']->query_update('logged_mail_messages', array('m_queued' => 0), array('id' => $row['id']), '', 1);
                 }

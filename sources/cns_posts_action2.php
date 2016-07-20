@@ -205,7 +205,7 @@ function cns_send_topic_notification($url, $topic_id, $forum_id, $sender_member_
         $limit_to[] = $topic_info[0]['t_pt_from'];
         $limit_to = array_merge($limit_to, collapse_1d_complexity('s_member_id', $GLOBALS['FORUM_DB']->query_select('f_special_pt_access', array('s_member_id'), array('s_topic_id' => $topic_id))));
     }
-    dispatch_notification('cns_topic', strval($topic_id), $subject, $mail, (count($limit_to) == 0) ? null : $limit_to, $sender_member_id, array('priority' => 3, 'no_notify_for__notification_code' => $no_notify_for__notification_code, 'no_notify_for__code_category' => $no_notify_for__code_category));
+    dispatch_notification('cns_topic', strval($topic_id), $subject, $mail, (count($limit_to) == 0) ? null : $limit_to, $sender_member_id, array('no_notify_for__notification_code' => $no_notify_for__notification_code, 'no_notify_for__code_category' => $no_notify_for__code_category));
 }
 
 /**

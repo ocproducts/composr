@@ -814,7 +814,7 @@ class Module_tickets
         $post = post_param_string('post', '');
         if ($post == '') {
             // Maybe we are relaying data into the ticket from elsewhere?
-            require_code('mail');
+            require_code('mail_forms');
             $details = _form_to_email(array('title', 'ticket_type_id', 'ticket_type', 'staff_only', 'faq_searched', 'email', 'close'));
             list(, $post) = $details;
             if ($post == '') {

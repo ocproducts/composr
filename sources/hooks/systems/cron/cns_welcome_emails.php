@@ -154,7 +154,7 @@ class Hook_cron_cns_welcome_emails
                         }
                     }
 
-                    mail_wrap($subject, $message, array($member['m_email_address']), $name, '', '', 3, null, false, null, true, $is_html);
+                    dispatch_mail($subject, $message, array($member['m_email_address']), $name, '', '', array('as_admin' => true, 'in_html' => $is_html));
                 }
             }
         }

@@ -278,7 +278,7 @@ class Module_lost_password
             }
             $message = do_lang($lang_string, comcode_escape($new_password), $login_url, array(comcode_escape(get_site_name()), comcode_escape($username), $account_edit_url->evaluate(), comcode_escape($email)));
             require_code('mail');
-            mail_wrap(do_lang('LOST_PASSWORD_FINAL'), $message, array($email), $GLOBALS['FORUM_DRIVER']->get_username($member_id, true), '', '', 3, null, false, null, false, false, false, 'MAIL', true, null, null, $join_time);
+            dispatch_mail(do_lang('LOST_PASSWORD_FINAL'), $message, array($email), $GLOBALS['FORUM_DRIVER']->get_username($member_id, true), '', '', array('require_recipient_valid_since' => $join_time));
         }
 
         if ((get_value('no_password_hashing') === '1') && (!$temporary_passwords)) {

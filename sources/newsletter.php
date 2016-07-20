@@ -96,7 +96,7 @@ function basic_newsletter_join($email, $language = null, $get_confirm_mail = fal
         $newsletter_url = build_url(array('page' => 'newsletter'), get_module_zone('newsletter'));
         $message = do_lang('NEWSLETTER_SIGNUP_TEXT', comcode_escape($url), comcode_escape($password), array($forename, $surname, $email, get_site_name(), $newsletter_url->evaluate()), $language);
         require_code('mail');
-        mail_wrap(do_lang('NEWSLETTER_SIGNUP', null, null, null, $language), $message, array($email), null, '', '', 3, null, false, null, false, false, false, 'MAIL', true);
+        dispatch_mail(do_lang('NEWSLETTER_SIGNUP', null, null, null, $language), $message, array($email), null, '', '', array('bypass_queue' => true));
     }
 
     // Set subscription
@@ -738,7 +738,7 @@ function newsletter_preview($message, $subject, $html_only, $forename = null, $s
     }
 
     // Text message
-    $text_version = $html_only ? '' : comcode_to_clean_text($message);
+    $text_version = $html_only ? '' : strip_comcode($message);
 
     return array($html_version, $text_version, $html_only);
 }

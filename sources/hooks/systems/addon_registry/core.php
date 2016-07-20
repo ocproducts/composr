@@ -1234,6 +1234,7 @@ class Hook_addon_registry_core
             'sources/lang3.php',
             'sources/mail.php',
             'sources/mail2.php',
+            'sources/mail_forms.php',
             'sources/miniblocks/.htaccess',
             'sources/miniblocks/index.html',
             'sources/minikernel.php',

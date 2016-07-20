@@ -189,7 +189,7 @@ function add_attachments_from_comcode($comcode, $attachment_ids)
 
     // Map BBCode that we do not support, to Comcode
     $comcode = str_ireplace(array('[spoiler', '[/spoiler'), array('[hide', '[/hide'), $comcode);
-    $comcode = preg_replace('#(\[\w+=)([^"\[\]]*)(\])#', '\1"\2"]', $comcode); // So comcode_to_clean_text works better
+    $comcode = preg_replace('#(\[\w+=)([^"\[\]]*)(\])#', '\1"\2"]', $comcode); // So strip_comcode works better
 
     // Add attachments
     $comcode .= "\n\n[media_set]";
