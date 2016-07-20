@@ -180,11 +180,7 @@ class Module_admin_cns_emoticons extends Standard_crud_module
 
         $post_url = build_url(array('page' => '_SELF', 'type' => '_import', 'uploading' => 1), '_SELF');
         $fields = new Tempcode();
-        $supported = 'tar';
-        if ((function_exists('zip_open')) || (get_option('unzip_cmd') != '')) {
-            $supported .= ', zip';
-        }
-        $fields->attach(form_input_upload_multi(do_lang_tempcode('UPLOAD'), do_lang_tempcode('DESCRIPTION_ARCHIVE_IMAGES', escape_html($supported), escape_html(str_replace(',', ', ', get_option('valid_images')))), 'file', true, null, null, true, str_replace(' ', '', get_option('valid_images') . ',' . $supported)));
+        $fields->attach(form_input_upload_multi(do_lang_tempcode('UPLOAD'), do_lang_tempcode('DESCRIPTION_ARCHIVE_IMAGES', escape_html(str_replace(',', ', ', get_option('valid_images')))), 'file', true, null, null, true, str_replace(' ', '', get_option('valid_images') . ',' . $supported)));
 
         $text = paragraph(do_lang_tempcode('IMPORT_EMOTICONS_WARNING'));
         require_code('images');
@@ -220,94 +216,13 @@ class Module_admin_cns_emoticons extends Standard_crud_module
         foreach ($_FILES as $attach_name => $__file) {
             $tmp_name = $__file['tmp_name'];
             $file = $__file['name'];
-            switch (get_file_extension($file)) {
-                case 'zip':
-                    if ((!function_exists('zip_open')) && (get_option('unzip_cmd') == '')) {
-                        warn_exit(do_lang_tempcode('ZIP_NOT_ENABLED'));
-                    }
-                    if (!function_exists('zip_open')) {
-                        require_code('m_zip');
-                        $mzip = true;
-                    } else {
-                        $mzip = false;
-                    }
-                    $myfile = zip_open($tmp_name);
-                    if (!is_integer($myfile)) {
-                        while (false !== ($entry = zip_read($myfile))) {
-                            // Load in file
-                            zip_entry_open($myfile, $entry);
 
-                            $_file = zip_entry_name($entry);
-
-                            if (is_image($_file, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous'))) {
-                                if (file_exists(get_file_base() . '/themes/default/images/emoticons/index.html')) {
-                                    $path = get_custom_file_base() . '/themes/default/images_custom/emoticons__' . basename($_file);
-                                } else {
-                                    $path = get_custom_file_base() . '/themes/default/images_custom/cns_emoticons__' . basename($_file);
-                                }
-                                if (!file_exists(dirname($path))) {
-                                    require_code('files2');
-                                    make_missing_directory(dirname($path));
-                                }
-                                $outfile = @fopen($path, 'wb') or intelligent_write_error($path);
-
-                                $more = mixed();
-                                do {
-                                    $more = zip_entry_read($entry);
-                                    if (fwrite($outfile, $more) < strlen($more)) {
-                                        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
-                                    }
-                                } while (($more !== false) && ($more != ''));
-
-                                fclose($outfile);
-                                fix_permissions($path);
-                                sync_file($path);
-
-                                $this->_import_emoticon($path);
-                            }
-
-                            zip_entry_close($entry);
-                        }
-
-                        zip_close($myfile);
-                    } else {
-                        require_code('failure');
-                        warn_exit(zip_error($myfile, $mzip));
-                    }
-                    break;
-                case 'tar':
-                    require_code('tar');
-                    $myfile = tar_open($tmp_name, 'rb');
-                    if ($myfile !== false) {
-                        $directory = tar_get_directory($myfile);
-                        foreach ($directory as $entry) {
-                            // Load in file
-                            $_file = $entry['path'];
-
-                            if (is_image($_file, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous'))) {
-                                if (file_exists(get_file_base() . '/themes/default/images/emoticons/index.html')) {
-                                    $path = get_custom_file_base() . '/themes/default/images_custom/emoticons__' . basename($_file);
-                                } else {
-                                    $path = get_custom_file_base() . '/themes/default/images_custom/cns_emoticons__' . basename($_file);
-                                }
-
-                                $_in = tar_get_file($myfile, $entry['path'], false, $path);
-
-                                $this->_import_emoticon($path);
-                            }
-                        }
-
-                        tar_close($myfile);
-                    }
-                    break;
-                default:
-                    if (is_image($file, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous'))) {
-                        $urls = get_url('', $attach_name, 'themes/default/images_custom');
-                        $path = $urls[0];
-                        $this->_import_emoticon($path);
-                    } else {
-                        attach_message(do_lang_tempcode('BAD_ARCHIVE_FORMAT'), 'warn');
-                    }
+            if (is_image($file, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous'))) {
+                $urls = get_url('', $attach_name, 'themes/default/images_custom');
+                $path = $urls[0];
+                $this->_import_emoticon($path);
+            } else {
+                attach_message(do_lang_tempcode('INVALID_FILE_TYPE_VERY_GENERAL', escape_html(get_file_extension($file))), 'warn');
             }
         }
 
@@ -377,7 +292,8 @@ class Module_admin_cns_emoticons extends Standard_crud_module
             $set_title = do_lang_tempcode('IMAGE');
             $field_set = (count($ids) == 0) ? new Tempcode() : alternate_fields_set__start($set_name);
 
-            $field_set->attach(form_input_upload(do_lang_tempcode('UPLOAD'), '', 'file', $required, null, null, true, str_replace(' ', '', get_option('valid_images'))));
+            require_code('images');
+            $field_set->attach(form_input_upload(do_lang_tempcode('UPLOAD'), '', 'file', $required, null, null, true, get_allowed_image_file_types()));
 
             $image_chooser_field = form_input_theme_image(do_lang_tempcode('STOCK'), '', 'theme_img_code', $ids, null, $theme_img_code, null, false, $GLOBALS['FORUM_DB']);
             $field_set->attach($image_chooser_field);

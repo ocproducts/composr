@@ -188,6 +188,7 @@ class Module_cms_galleries extends Standard_crud_module
         require_css('galleries');
         require_lang('dearchive');
         require_code('urls2');
+        require_code('images');
 
         $this->alt_crud_module->add_text = new Tempcode();
 
@@ -333,14 +334,10 @@ class Module_cms_galleries extends Standard_crud_module
         require_code('form_templates');
         require_lang('trackbacks');
 
-        // To choose to batch import from an attached TAR or ZIP file (ZIP file only supported if ZIP module running on php install)
+        // To choose to batch import from multiple attached files
         $post_url = build_url(array('page' => '_SELF', 'type' => '__import', 'cat' => $cat, 'uploading' => 1, 'redirect' => get_param_string('redirect', null)), '_SELF');
         $fields = new Tempcode();
-        $supported = 'tar';
-        if ((function_exists('zip_open')) || (get_option('unzip_cmd') != '')) {
-            $supported .= ', zip';
-        }
-        $fields->attach(form_input_upload_multi(do_lang_tempcode('UPLOAD'), do_lang_tempcode('DESCRIPTION_ARCHIVE_MEDIA', escape_html($supported), escape_html(str_replace(',', ', ', get_option('valid_images') . ',' . get_allowed_video_file_types()))), 'file', true, null, null, true, str_replace(' ', '', get_option('valid_images') . ',' . $supported)));
+        $fields->attach(form_input_upload_multi(do_lang_tempcode('UPLOAD'), do_lang_tempcode('DESCRIPTION_ARCHIVE_MEDIA', escape_html(str_replace(',', ', ', get_option('valid_images') . ',' . get_allowed_video_file_types()))), 'file', true, null, null, true, str_replace(' ', '', get_option('valid_images') . ',' . $supported)));
         $fields->attach(form_input_line(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_GALLERY_IMPORT_TITLE'), 'set_title', '', false/*Is multi-upload and may get from EXIF [besides, this is set_title not title] get_option('gallery_media_title_required') == '1'*/));
         $hidden = new Tempcode();
         handle_max_file_size($hidden);
@@ -374,7 +371,6 @@ class Module_cms_galleries extends Standard_crud_module
         // To choose to batch import what already exists in gallery directory, but is orphaned
         $orphaned_content = new Tempcode();
         if (($GLOBALS['FORUM_DRIVER']->is_staff(get_member())) && ($GLOBALS['SITE_DB']->query_select_value('images', 'COUNT(*)') + $GLOBALS['SITE_DB']->query_select_value('videos', 'COUNT(*)') < 4000)) {
-            require_code('images');
             $there = array();
             $_dir = opendir(get_custom_file_base() . '/uploads/galleries/');
             while (false !== ($file = readdir($_dir))) {
@@ -435,15 +431,13 @@ class Module_cms_galleries extends Standard_crud_module
     }
 
     /**
-     * The actualiser to import a zip/tar into a gallery.
+     * The actualiser to import multiple uploaded files into a gallery.
      *
      * @return Tempcode The UI
      */
     public function __import()
     {
         $cat = get_param_string('cat');
-
-        require_code('images');
 
         check_privilege('mass_import'/*Not currently scoped to categories, array('galleries', $cat)*/);
 
@@ -465,122 +459,43 @@ class Module_cms_galleries extends Standard_crud_module
                 continue; // Not filled in this one
             }
 
-            switch (get_file_extension($file)) {
-                case 'zip':
-                    if ((!function_exists('zip_open')) && (get_option('unzip_cmd') == '')) {
-                        warn_exit(do_lang_tempcode('ZIP_NOT_ENABLED'));
-                    }
-                    if (!function_exists('zip_open')) {
-                        require_code('m_zip');
-                        $mzip = true;
-                    } else {
-                        $mzip = false;
-                    }
-                    $myfile = zip_open($tmp_name);
-                    if (!is_integer($myfile)) {
-                        $directory = array();
-                        while (false !== ($entry = zip_read($myfile))) {
-                            // Strip off our slash to import right
-                            $_file = zip_entry_name($entry);
-                            $slash = strrpos($_file, '/');
-                            if ($slash === false) {
-                                $slash = strrpos($_file, "\\");
-                            }
-                            if ($slash !== false) {
-                                $_file = substr($_file, $slash + 1);
-                            }
+            if ((is_image($file, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous'))) || (is_video($file, has_privilege(get_member(), 'comcode_dangerous')))) {
+                $tmp_name_2 = cms_tempnam();
 
-                            $directory[] = array('path' => $_file, 'resource' => $entry);
-                        }
-                        $this->_sort_media($directory);
+                if ($__file['type'] != 'plupload') {
+                    $test = @move_uploaded_file($tmp_name, $tmp_name_2);
+                } else {
+                    $test = @copy($tmp_name, $tmp_name_2); // We could rename, but it would hurt integrity of refreshes
+                }
 
-                        foreach ($directory as $d) {
-                            $entry = $d['resource'];
-                            $_file = $d['path'];
+                list($new_path, $new_url, $new_filename) = find_unique_path('uploads/galleries', filter_naughty($file), true);
+                list(, $thumb_url) = find_unique_path('uploads/galleries_thumbs', filter_naughty($file), true);
 
-                            // Load in file
-                            zip_entry_open($myfile, $entry);
-                            $tmp_name_2 = cms_tempnam();
-                            $myfile2 = fopen($tmp_name_2, 'wb') or intelligent_write_error($tmp_name_2);
-                            $more = mixed();
-                            do {
-                                $more = zip_entry_read($entry);
-                                if ($more !== false) {
-                                    if (fwrite($myfile2, $more) < strlen($more)) {
-                                        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
-                                    }
-                                }
-                            } while (($more !== false) && ($more != ''));
-                            fclose($myfile2);
+                // Store on server
+                if (rename($tmp_name_2, $new_path) === false) {
+                    intelligent_write_error($new_path);
+                }
+                fix_permissions($new_path);
+                sync_file($new_path);
 
-                            if ((is_image($_file, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous'))) || (is_video($_file, has_privilege(get_member(), 'comcode_dangerous')))) {
-                                $ret = $this->store_from_archive($_file, $tmp_name_2, $cat);
-                                if (!is_null($ret)) {
-                                    $media_imported[] = $ret;
-                                }
-                            }
+                // Post-process
+                require_code('uploads');
+                $test = handle_upload_post_processing(is_image($file, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous')) ? CMS_UPLOAD_IMAGE : CMS_UPLOAD_VIDEO, $new_path, 'uploads/galleries', $file, 0);
+                if ($test !== null) {
+                    unlink($new_path);
+                    sync_file($new_path);
 
-                            zip_entry_close($entry);
-                        }
+                    $new_url = $test;
+                }
 
-                        zip_close($myfile);
-                    } else {
-                        require_code('failure');
-                        warn_exit(zip_error($myfile, $mzip));
-                    }
-                    break;
-                case 'tar':
-                    require_code('tar');
-                    $myfile = tar_open($tmp_name, 'rb');
-                    if ($myfile !== false) {
-                        $directory = tar_get_directory($myfile);
-                        $this->_sort_media($directory);
+                // Add to database
+                $import_details = $this->simple_add($new_url, $thumb_url, $new_filename, $cat);
 
-                        foreach ($directory as $entry) {
-                            $tmp_name_2 = cms_tempnam();
-
-                            // Load in file
-                            $_in = tar_get_file($myfile, $entry['path'], false, $tmp_name_2);
-
-                            // Strip off our slash to import right
-                            $_file = $entry['path'];
-                            $slash = strrpos($_file, '/');
-                            if ($slash === false) {
-                                $slash = strrpos($_file, "\\");
-                            }
-                            if ($slash !== false) {
-                                $_file = substr($_file, $slash + 1);
-                            }
-
-                            if ((is_image($_file, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous'))) || (is_video($_file, has_privilege(get_member(), 'comcode_dangerous')))) {
-                                $ret = $this->store_from_archive($_file, $tmp_name_2, $cat);
-                                if (!is_null($ret)) {
-                                    $media_imported[] = $ret;
-                                }
-                            }
-                            unset($_in);
-                        }
-
-                        tar_close($myfile);
-                    }
-                    break;
-                default:
-                    if ((is_image($file, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous'))) || (is_video($file, has_privilege(get_member(), 'comcode_dangerous')))) {
-                        $tmp_name_2 = cms_tempnam();
-
-                        if ($__file['type'] != 'plupload') {
-                            $test = @move_uploaded_file($tmp_name, $tmp_name_2);
-                        } else {
-                            $test = @copy($tmp_name, $tmp_name_2); // We could rename, but it would hurt integrity of refreshes
-                        }
-
-                        $ret = $this->store_from_archive($file, $tmp_name_2, $cat);
-                        if (!is_null($ret)) {
-                            $media_imported[] = $ret;
-                        }
-                    } else {
-                        attach_message(do_lang_tempcode('BAD_ARCHIVE_FORMAT'), 'warn');
-                    }
+                if (!is_null($import_details)) {
+                    $media_imported[] = $import_details;
+                }
+            } else {
+                attach_message(do_lang_tempcode('INVALID_FILE_TYPE_VERY_GENERAL', escape_html(get_file_extension($file))), 'warn');
             }
         }
 
@@ -607,32 +522,6 @@ class Module_cms_galleries extends Standard_crud_module
     }
 
     /**
-     * Sort a directory of gallery media being imported.
-     *
-     * @param  array $directory The unsorted media, will be saved by reference
-     */
-    public function _sort_media(&$directory)
-    {
-        // See if there is a numbering system to sort by
-        $all_are = null;
-        foreach ($directory as $entry) {
-            $this_are = strtolower(preg_replace('#\d#', '', $entry['path']));
-            if (is_null($all_are)) {
-                $all_are = $this_are;
-            }
-            if ($all_are != $this_are) {
-                $all_are = null;
-                break;
-            }
-        }
-        if (!is_null($all_are)) {
-            sort_maps_by($directory, 'path');
-        }
-
-        $directory = array_reverse($directory);
-    }
-
-    /**
      * The actualiser to simple add/delete orphaned files in a gallery.
      *
      * @return Tempcode The UI
@@ -641,7 +530,6 @@ class Module_cms_galleries extends Standard_crud_module
     {
         $cat = post_param_string('ss_cat');
 
-        require_code('images');
         require_code('exif');
 
         check_privilege('mass_import'/*Not currently scoped to categories, array('galleries', $cat)*/);
@@ -720,41 +608,6 @@ class Module_cms_galleries extends Standard_crud_module
     }
 
     /**
-     * Take some data and write it to be a file in the gallery uploads directory, and add it to a gallery.
-     *
-     * @param  string $file The filename
-     * @param  PATH $in Path to data file (will be copied from)
-     * @param  ID_TEXT $cat The gallery to add to
-     * @param  ?TIME $time Timestamp to use (null: now)
-     * @return ?array A pair: The media type, The media ID (null: error)
-     */
-    public function store_from_archive($file, &$in, $cat, $time = null)
-    {
-        list($new_path, $new_url, $new_filename) = find_unique_path('uploads/galleries', filter_naughty($file), true);
-        list(, $thumb_url) = find_unique_path('uploads/galleries_thumbs', filter_naughty($file), true);
-
-        // Store on server
-        if (rename($in, $new_path) === false) {
-            intelligent_write_error($new_path);
-        }
-        fix_permissions($new_path);
-        sync_file($new_path);
-
-        // Post-process
-        require_code('uploads');
-        $test = handle_upload_post_processing(is_image($file, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous')) ? CMS_UPLOAD_IMAGE : CMS_UPLOAD_VIDEO, $new_path, 'uploads/galleries', $file, 0);
-        if ($test !== null) {
-            unlink($new_path);
-            sync_file($new_path);
-
-            $new_url = $test;
-        }
-
-        // Add to database
-        return $this->simple_add($new_url, $thumb_url, $new_filename, $cat, $time);
-    }
-
-    /**
      * The actualiser to simple add an orphan file to a gallery.
      *
      * @return Tempcode The UI
@@ -787,35 +640,8 @@ class Module_cms_galleries extends Standard_crud_module
     }
 
     /**
-     * See if a gallery has any watermarks to use, or all galleries.
-     *
-     * @param  ?ID_TEXT $cat The gallery (null: all the current user has access to)
-     * @return boolean Whether watermarks are available
-     */
-    public function has_at_least_one_watermark($cat = null)
-    {
-        $where = '';
-        if (!is_null($cat)) {
-            $where = db_string_equal_to('name', $cat) . ' AND ';
-        }
-        $where .= '(' . db_string_not_equal_to('watermark_top_left', '');
-        $where .= ' OR ' . db_string_not_equal_to('watermark_top_left', '');
-        $where .= ' OR ' . db_string_not_equal_to('watermark_top_right', '');
-        $where .= ' OR ' . db_string_not_equal_to('watermark_bottom_left', '');
-        $where .= ' OR ' . db_string_not_equal_to('watermark_bottom_right', '') . ')';
-        $gals = $GLOBALS['SITE_DB']->query('SELECT name FROM ' . get_table_prefix() . 'galleries WHERE ' . $where);
-        foreach ($gals as $guy) {
-            $cat = $guy['name'];
-            if (has_category_access(get_member(), 'galleries', $cat)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
      * Take a file in the gallery uploads directory, and add it to a gallery.
+     * This function is used both for orphaned files and new files being mass-imported.
      *
      * @param  URLPATH $url The URL to the file
      * @param  URLPATH $thumb_url The thumb URL to the file
@@ -871,7 +697,6 @@ class Module_cms_galleries extends Standard_crud_module
                 return array('video', $id);
             }
         } else {
-            require_code('images');
             $thumb_path = get_custom_file_base() . '/' . rawurldecode($thumb_url);
             $thumb_url = convert_image($url, $thumb_path, -1, -1, intval(get_option('thumb_width')), true);
 
@@ -1050,8 +875,6 @@ class Module_cms_galleries extends Standard_crud_module
                 }
             }
         }
-
-        require_code('images');
 
         $fields = new Tempcode();
         $hidden = new Tempcode();
@@ -1418,6 +1241,34 @@ class Module_cms_galleries extends Standard_crud_module
             require_code('content_privacy2');
             delete_privacy_form_fields('image', strval($id));
         }
+    }
+
+    /**
+     * See if a gallery has any watermarks to use, or all galleries.
+     *
+     * @param  ?ID_TEXT $cat The gallery (null: all the current user has access to)
+     * @return boolean Whether watermarks are available
+     */
+    public function has_at_least_one_watermark($cat = null)
+    {
+        $where = '';
+        if (!is_null($cat)) {
+            $where = db_string_equal_to('name', $cat) . ' AND ';
+        }
+        $where .= '(' . db_string_not_equal_to('watermark_top_left', '');
+        $where .= ' OR ' . db_string_not_equal_to('watermark_top_left', '');
+        $where .= ' OR ' . db_string_not_equal_to('watermark_top_right', '');
+        $where .= ' OR ' . db_string_not_equal_to('watermark_bottom_left', '');
+        $where .= ' OR ' . db_string_not_equal_to('watermark_bottom_right', '') . ')';
+        $gals = $GLOBALS['SITE_DB']->query('SELECT name FROM ' . get_table_prefix() . 'galleries WHERE ' . $where);
+        foreach ($gals as $guy) {
+            $cat = $guy['name'];
+            if (has_category_access(get_member(), 'galleries', $cat)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -2190,10 +2041,10 @@ class Module_cms_galleries_cat extends Standard_crud_module
 
         if ((get_option('gallery_watermarks') == '1') && is_null($watermark_top_left) && is_null($watermark_top_right) && is_null($watermark_bottom_left) && is_null($watermark_bottom_right)) {
             $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '555320228b5a1ff1effb8a1bf9c15d8e', 'SECTION_HIDDEN' => is_null($watermark_top_left) && is_null($watermark_top_right) && is_null($watermark_bottom_left) && is_null($watermark_bottom_right), 'TITLE' => do_lang_tempcode('WATERMARKING'))));
-            $fields->attach(form_input_upload(do_lang_tempcode('_WATERMARK', do_lang_tempcode('TOP_LEFT')), do_lang_tempcode('_DESCRIPTION_WATERMARK', do_lang_tempcode('TOP_LEFT')), 'watermark_top_left', false, $watermark_top_left, null, true, str_replace(' ', '', get_option('valid_images'))));
-            $fields->attach(form_input_upload(do_lang_tempcode('_WATERMARK', do_lang_tempcode('TOP_RIGHT')), do_lang_tempcode('_DESCRIPTION_WATERMARK', do_lang_tempcode('TOP_RIGHT')), 'watermark_top_right', false, $watermark_top_right, null, true, str_replace(' ', '', get_option('valid_images'))));
-            $fields->attach(form_input_upload(do_lang_tempcode('_WATERMARK', do_lang_tempcode('BOTTOM_LEFT')), do_lang_tempcode('_DESCRIPTION_WATERMARK', do_lang_tempcode('BOTTOM_LEFT')), 'watermark_bottom_left', false, $watermark_bottom_left, null, true, str_replace(' ', '', get_option('valid_images'))));
-            $fields->attach(form_input_upload(do_lang_tempcode('_WATERMARK', do_lang_tempcode('BOTTOM_RIGHT')), do_lang_tempcode('_DESCRIPTION_WATERMARK', do_lang_tempcode('BOTTOM_RIGHT')), 'watermark_bottom_right', false, $watermark_bottom_right, null, true, str_replace(' ', '', get_option('valid_images'))));
+            $fields->attach(form_input_upload(do_lang_tempcode('_WATERMARK', do_lang_tempcode('TOP_LEFT')), do_lang_tempcode('_DESCRIPTION_WATERMARK', do_lang_tempcode('TOP_LEFT')), 'watermark_top_left', false, $watermark_top_left, null, true, get_allowed_image_file_types()));
+            $fields->attach(form_input_upload(do_lang_tempcode('_WATERMARK', do_lang_tempcode('TOP_RIGHT')), do_lang_tempcode('_DESCRIPTION_WATERMARK', do_lang_tempcode('TOP_RIGHT')), 'watermark_top_right', false, $watermark_top_right, null, true, get_allowed_image_file_types()));
+            $fields->attach(form_input_upload(do_lang_tempcode('_WATERMARK', do_lang_tempcode('BOTTOM_LEFT')), do_lang_tempcode('_DESCRIPTION_WATERMARK', do_lang_tempcode('BOTTOM_LEFT')), 'watermark_bottom_left', false, $watermark_bottom_left, null, true, get_allowed_image_file_types()));
+            $fields->attach(form_input_upload(do_lang_tempcode('_WATERMARK', do_lang_tempcode('BOTTOM_RIGHT')), do_lang_tempcode('_DESCRIPTION_WATERMARK', do_lang_tempcode('BOTTOM_RIGHT')), 'watermark_bottom_right', false, $watermark_bottom_right, null, true, get_allowed_image_file_types()));
         }
         handle_max_file_size($hidden, 'image');
 

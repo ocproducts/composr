@@ -75,13 +75,14 @@ class Hook_profiles_tabs_edit_photo
         // UI fields
         $fields = new Tempcode();
         require_code('form_templates');
+        require_code('images');
 
         $set_name = 'photo';
         $required = false;
         $set_title = do_lang_tempcode('PHOTO');
         $field_set = alternate_fields_set__start($set_name);
 
-        $field_set->attach(form_input_upload(do_lang_tempcode('UPLOAD'), '', 'photo_file', false, null, null, true, str_replace(' ', '', get_option('valid_images'))));
+        $field_set->attach(form_input_upload(do_lang_tempcode('UPLOAD'), '', 'photo_file', false, null, null, true, get_allowed_image_file_types()));
 
         $field_set->attach(form_input_url(do_lang_tempcode('URL'), '', 'photo_url', $photo_url, false));
 
@@ -95,7 +96,7 @@ class Hook_profiles_tabs_edit_photo
             $set_title = do_lang_tempcode('THUMBNAIL');
             $field_set = alternate_fields_set__start($set_name);
 
-            $field_set->attach(form_input_upload(do_lang_tempcode('THUMBNAIL'), '', 'photo_file2', false, null, null, true, str_replace(' ', '', get_option('valid_images'))));
+            $field_set->attach(form_input_upload(do_lang_tempcode('THUMBNAIL'), '', 'photo_file2', false, null, null, true, get_allowed_image_file_types()));
 
             $field_set->attach(form_input_url(do_lang_tempcode('URL'), '', 'photo_thumb_url', $thumb_url, false));
 

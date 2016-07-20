@@ -257,7 +257,8 @@ class Module_admin_cns_groups extends Standard_crud_module
             $set_title = do_lang_tempcode('RANK_IMAGE');
             $field_set = (count($ids) == 0) ? new Tempcode() : alternate_fields_set__start($set_name);
 
-            $field_set->attach(form_input_upload(do_lang_tempcode('UPLOAD'), '', 'file', $required, null, null, true, str_replace(' ', '', get_option('valid_images'))));
+            require_code('images');
+            $field_set->attach(form_input_upload(do_lang_tempcode('UPLOAD'), '', 'file', $required, null, null, true, get_allowed_image_file_types()));
 
             $image_chooser_field = form_input_theme_image(do_lang_tempcode('STOCK'), '', 'theme_img_code', $ids, null, $rank_image, null, false, $GLOBALS['FORUM_DB']);
             $field_set->attach($image_chooser_field);

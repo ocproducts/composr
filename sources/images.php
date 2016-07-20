@@ -350,7 +350,7 @@ function is_image($name, $criteria, $as_admin = false, $mime_too = false)
     // Configured extension list check
     static $types = null;
     if ($types === null) {
-        $types = explode(',', str_replace(' ', '', get_option('valid_images')));
+        $types = explode(',', get_allowed_image_file_types());
     }
     $found = false;
     foreach ($types as $val) {

@@ -106,6 +106,7 @@ class Hook_profiles_tabs_edit_avatar
         $fields = new Tempcode();
         require_code('form_templates');
         require_code('themes2');
+        require_code('images');
         $ids = get_all_image_ids_type('cns_default_avatars', true);
 
         $found_it = false;
@@ -123,7 +124,7 @@ class Hook_profiles_tabs_edit_avatar
             $set_title = do_lang_tempcode('IMAGE');
             $field_set = alternate_fields_set__start($set_name);
 
-            $field_set->attach(form_input_upload(do_lang_tempcode('UPLOAD'), '', 'avatar_file', false, null, null, true, str_replace(' ', '', get_option('valid_images'))));
+            $field_set->attach(form_input_upload(do_lang_tempcode('UPLOAD'), '', 'avatar_file', false, null, null, true, get_allowed_image_file_types()));
 
             $field_set->attach(form_input_url(do_lang_tempcode('URL'), '', 'avatar_alt_url', $found_it ? '' : $avatar_url, false));
 

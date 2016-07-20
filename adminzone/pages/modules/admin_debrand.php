@@ -146,10 +146,11 @@ class Module_admin_debrand
         $fields->attach(form_input_text_comcode(do_lang_tempcode('KEYBOARD_MAP'), '', 'keyboard_map', $keyboard_map, true));
         $fields->attach(form_input_tick(do_lang_tempcode('DELETE_UN_PC'), do_lang_tempcode('DESCRIPTION_DELETE_UN_PC'), 'churchy', false));
         $fields->attach(form_input_tick(do_lang_tempcode('SHOW_DOCS'), do_lang_tempcode('DESCRIPTION_SHOW_DOCS'), 'show_docs', get_option('show_docs') == '1'));
-        $fields->attach(form_input_upload(do_lang_tempcode('FAVICON'), do_lang_tempcode('DESCRIPTION_FAVICON'), 'favicon', false, find_theme_image('favicon'), null, true, str_replace(' ', '', get_option('valid_images'))));
-        $fields->attach(form_input_upload(do_lang_tempcode('WEBCLIPICON'), do_lang_tempcode('DESCRIPTION_WEBCLIPICON'), 'webclipicon', false, find_theme_image('webclipicon'), null, true, str_replace(' ', '', get_option('valid_images'))));
+        require_code('images');
+        $fields->attach(form_input_upload(do_lang_tempcode('FAVICON'), do_lang_tempcode('DESCRIPTION_FAVICON'), 'favicon', false, find_theme_image('favicon'), null, true, get_allowed_image_file_types()));
+        $fields->attach(form_input_upload(do_lang_tempcode('WEBCLIPICON'), do_lang_tempcode('DESCRIPTION_WEBCLIPICON'), 'webclipicon', false, find_theme_image('webclipicon'), null, true, get_allowed_image_file_types()));
         if (addon_installed('cns_avatars')) {
-            $fields->attach(form_input_upload(do_lang_tempcode('SYSTEM_AVATAR'), do_lang_tempcode('DESCRIPTION_SYSTEM_AVATAR'), 'system_avatar', false, find_theme_image('cns_default_avatars/system'), null, true, str_replace(' ', '', get_option('valid_images'))));
+            $fields->attach(form_input_upload(do_lang_tempcode('SYSTEM_AVATAR'), do_lang_tempcode('DESCRIPTION_SYSTEM_AVATAR'), 'system_avatar', false, find_theme_image('cns_default_avatars/system'), null, true, get_allowed_image_file_types()));
         }
 
         $post_url = build_url(array('page' => '_SELF', 'type' => 'actual'), '_SELF');

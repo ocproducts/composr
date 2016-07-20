@@ -332,7 +332,7 @@ $featuretree = array(
                 array('Slide-shows'),
                 array('Easily syndicate to Facebook'),
                 array('Automatic thumbnail generation'),
-                array('Import and export easily', 'With <kbd>.zip</kbd> and metadata support'),
+                array('Import and export easily', 'With mass upload and metadata support'),
                 array('Optional watermarking', 'To guard against thieving swines ;)'),
                 array('Geotargetting'),
             ),

@@ -1920,9 +1920,6 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
         case 'attachment_safe':
             // Work out display type
             $attributes['type'] = array_key_exists('type', $attributes) ? $attributes['type'] : '';
-            if ($attributes['type'] == 'extract') {
-                $attributes['type'] = '';
-            }
             // LEGACY
             if ($attributes['type'] == 'inline' || $attributes['type'] == 'left_inline' || $attributes['type'] == 'right_inline') {
                 $attributes['framed'] = '0';

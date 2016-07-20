@@ -350,6 +350,7 @@ class Module_cms_downloads extends Standard_crud_module
         $fields = new Tempcode();
         $hidden = new Tempcode();
         require_code('form_templates');
+        require_code('images');
         handle_max_file_size($hidden);
         $fields->attach(form_input_line(do_lang_tempcode('NAME'), do_lang_tempcode('DESCRIPTION_NAME'), 'name', $name, true));
         if (!is_null($original_filename)) {
@@ -379,7 +380,7 @@ class Module_cms_downloads extends Standard_crud_module
             $fields->attach(form_input_author(do_lang_tempcode('AUTHOR'), do_lang_tempcode('DESCRIPTION_AUTHOR', 'download'), 'author', $author, true));
         }
         $fields->attach(form_input_text_comcode(do_lang_tempcode('DESCRIPTION'), do_lang_tempcode('DESCRIPTION_DESCRIPTION'), 'description', $description, false));
-        $image_upload_field = form_input_upload(do_lang_tempcode('IMAGE'), do_lang_tempcode('DESCRIPTION_DOWNLOAD_IMAGE_SHORTCUT'), 'img_file', false, null, null, true, str_replace(' ', '', get_option('valid_images')));
+        $image_upload_field = form_input_upload(do_lang_tempcode('IMAGE'), do_lang_tempcode('DESCRIPTION_DOWNLOAD_IMAGE_SHORTCUT'), 'img_file', false, null, null, true, get_allowed_image_file_types());
         if ((is_null($id)) && (addon_installed('galleries'))) {
             $fields->attach($image_upload_field);
         }
@@ -405,7 +406,6 @@ class Module_cms_downloads extends Standard_crud_module
                 } else {
                     $selected_path = '';
 
-                    require_code('images');
                     $radios = new Tempcode();
                     foreach ($images as $i => $image) {
                         $selected = ($i + 1) == $default_pic;

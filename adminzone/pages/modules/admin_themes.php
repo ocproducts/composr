@@ -856,7 +856,8 @@ class Module_admin_themes
         $set_title = do_lang_tempcode('IMAGE');
         $field_set = alternate_fields_set__start($set_name);
 
-        $field_set->attach(form_input_upload(do_lang_tempcode('UPLOAD'), '', 'file', false, null, null, true, str_replace(' ', '', get_option('valid_images'))));
+        require_code('images');
+        $field_set->attach(form_input_upload(do_lang_tempcode('UPLOAD'), '', 'file', false, null, null, true, get_allowed_image_file_types()));
         //$fields->attach(form_input_radio(do_lang_tempcode('CHOOSE'), '', $list));
 
         $field_set->attach(form_input_url(do_lang_tempcode('URL'), '', 'path', $path, false));

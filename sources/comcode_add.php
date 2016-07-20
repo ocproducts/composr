@@ -911,9 +911,6 @@ function _try_for_special_comcode_tag_specific_param_ui($tag, $actual_tag, $para
         foreach ($hooks as $hook => $label) {
             $list->attach(form_input_list_entry($hook, $default == $hook, $label));
         }
-        if ($tag == 'attachment') {
-            $list->attach(form_input_list_entry('extract', $default == 'extract'/* || get_param_integer('is_archive',0)==1  Too assumptive*/, do_lang_tempcode('MEDIA_TYPE_extract')));
-        }
         $fields_advanced->attach(form_input_list($parameter_name, $descriptiont, $param, $list, null, false, false));
     } elseif ((($tag == 'attachment') || ($tag == 'media')) && ($param == 'thumb_url') && (addon_installed('filedump'))) {
         $set_name = 'thumbnail';

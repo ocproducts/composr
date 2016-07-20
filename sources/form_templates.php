@@ -1406,7 +1406,7 @@ function form_input_upload_multi_source($set_title, $set_description, &$hidden, 
     }
     if ($filter === null) {
         if ($images_only) {
-            $filter = str_replace(' ', '', get_option('valid_images')); // We don't use the filter from get_upload_syndication_json because we're not restricted to what can syndicate
+            $filter = get_allowed_image_file_types(); // We don't use the filter from get_upload_syndication_json because we're not restricted to what can syndicate
         } else {
             $filter = '';
         }

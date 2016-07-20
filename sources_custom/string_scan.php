@@ -8340,7 +8340,6 @@ function string_scan($lang, $do_guessing = false)
         MEDIA_TYPE_audio_websafe
         MEDIA_TYPE_code
         MEDIA_TYPE_email
-        MEDIA_TYPE_extract
         MEDIA_TYPE_flash
         MEDIA_TYPE_hyperlink
         MEDIA_TYPE_image_websafe
