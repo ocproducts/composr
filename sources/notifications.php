@@ -217,8 +217,7 @@ function _get_notification_ob_for_code($notification_code)
 }
 
 /**
- * Dispatcher object.
- * Used to create a closure for a notification dispatch, so we can then tell that to send in the background (register_shutdown_function), for performance reasons.
+ * Notification dispatcher object. Handles the actual delivery of a notification.
  *
  * @package    core_notifications
  */

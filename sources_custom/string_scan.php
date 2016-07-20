@@ -379,6 +379,7 @@ function string_scan($lang, $do_guessing = false)
         BAD_INPUT
         BAD_PATH
         BAD_ZONE
+        NO_PHP_EMAILING_AVAILABLE
         BANNED_ADDRESSES
         BANNERS
         BANNERS_DESCRIPTION

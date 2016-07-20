@@ -86,10 +86,11 @@ I'm sure you can see why such a function library (and the pre-written subsystems
 
 [title="2"]Overrides[/title]
 
-There are 3 different kinds of PHP override in Composr:
-1) Extending a module
-2) Replacing/supplementing a file
-3) Replacing/supplementing a file, [b]with support for programmatic alteration of the original code[/b]
+There are 4 different kinds of PHP override in Composr:
+1) Extending a module -- a special case where we allow automatic instantiation of a derived version of the original module
+2) Replacing/supplementing a file, with your override loading first, then any non-overridden functions/classes from the original loading second
+3) Replacing/supplementing a file, with the original loading first, then your override
+4) Replacing/supplementing a file, [b]with support for programmatic alteration of the original code[/b] -- actually this can be done in tandem with techniques 1 & 2 above
 
 It's important to note that as well as overrides you can place entirely new files in the [tt]*_custom[/tt] directories, and Composr will be able to reference them as if they were original files.
 
@@ -99,7 +100,8 @@ All these techniques are handled inside the Composr [tt]sources/global.php[/tt] 
 
 This form of overriding works via class inheritance. All you need to do is to make a [tt]modules_custom[/tt] directory version of an original [tt]modules[/tt] directory file, with two differences:
 1) Instead of just naming the module class [tt]Module_<modulename>[/tt], rename it and inherit using [tt]Mx_<modulename> extends Module_<modulename>[/tt]
-2) As this works via standard class inheritance you are at liberty to, and should, only re-define methods in your override when those methods are actually different from the original ones. i.e. start with a shell of a class and only re-define methods that you are actually wanting to change
+2) Make sure the top of the file contains [tt]/*FORCE_ORIGINAL_LOAD_FIRST*/[/tt]
+3) As this works via standard class inheritance you are at liberty to, and should, only re-define methods in your override when those methods are actually different from the original ones. i.e. start with a shell of a class and only re-define methods that you are actually wanting to change
 
 [title="3"]Replacing/supplementing a file[/title]
 
@@ -130,13 +132,15 @@ class example extends non_overridden__example
 [/code]
 This is a great technique for making changes to forum drivers.
 
-One word of caution -- if you are not supplementing a code files [tt]init[/tt] function, then you will want to strip out the init function from your override, otherwise both it and the original will be called in sequence. This is unavoidable, because the modified file is loaded first and thus cannot call the original init function itself -- and thus responsibility for that stays with the Composr code. There are two exceptions:
+A word of caution -- if you are not supplementing a code files [tt]init[/tt] function, then you will want to strip out the init function from your override, otherwise both it and the original will be called in sequence. This is unavoidable, because the modified file is loaded first and thus cannot call the original init function itself -- and thus responsibility for that stays with the Composr code. There are two exceptions:
 1) If your override contains every class or function the original file has (i.e. you overrode the whole file by copy&pasting) then the original init function will not be called as Composr assumes you copy&pasted all that code into your own init function.
 2) If you want a partial override but don't want the original init function to run, you need to use programmatic alteration to mask the original init function. This is explained in the last paragraph of the next section.
 
+A second sticking point is when you are extending a class defined in the original file. In such a case you need the original to load first. Do that by including [tt]/*FORCE_ORIGINAL_LOAD_FIRST*/[/tt] in your code. You will need to make sure that no function/class names conflict, which you can also do with "Programmatic alteration" (see next section).
+
 [title="3"]Programmatic alteration[/title]
 
-Sometimes you want to override something in the middle of a function and thus there is no neat way to do it without copy&pasting the whole function.
+Sometimes you want to override something in the middle of a function and thus there is no neat way to do it without copy&pasting the whole function. Sometimes you also need to rename conflicting function names if you've defined the original to load before your override.
 
 In theory, good software architecture (modularity etc) is meant to prevent this situation happening, but in practice:
  - its completely impossible for an original programmer to predict what changes someone might want to make to their code

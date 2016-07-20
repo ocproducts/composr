@@ -14,7 +14,7 @@
  */
 
 if (!function_exists('init__comcode_compiler')) {
-    function init__comcode_compiler($in = null)
+    function init__comcode_compiler($in)
     {
         $new_code = '
             require_code(\'textfiles\');

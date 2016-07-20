@@ -13,7 +13,7 @@
  * @package    referrals
  */
 
-function init__cns_join($in = null)
+function init__cns_join($in)
 {
     // More referral fields in form
     $ini_file = parse_ini_file(get_custom_file_base() . '/text_custom/referrals.txt', true);

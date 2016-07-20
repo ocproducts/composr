@@ -97,7 +97,7 @@ function require_code($codename, $light_exit = false)
             $orig = str_replace(array('?' . '>', '<' . '?php'), array('', ''), file_get_contents($path_orig));
             $a = file_get_contents($path_custom);
 
-            if ((strpos($codename, '.php') === false) || (strpos($a, 'class Mx_') === false)/*Cannot do code rewrite for a module override that includes an Mx, because the extends needs the parent class already defined*/) {
+            if ((strpos($codename, '.php') === false) && (strpos($a, '/*FORCE_ORIGINAL_LOAD_FIRST*/') === false)/*e.g. Cannot do code rewrite for a module override that includes an Mx, because the extends needs the parent class already defined*/) {
                 $functions_before = get_defined_functions();
                 $classes_before = get_declared_classes();
                 if (HHVM) {
@@ -182,6 +182,7 @@ function require_code($codename, $light_exit = false)
                         include($path_orig);
                     }
                 }
+
                 if (isset($_GET['keep_show_parse_errors'])) {
                     $orig = str_replace('?' . '>', '', str_replace('<' . '?php', '', file_get_contents($path_custom)));
                     if (eval($orig) === false) {

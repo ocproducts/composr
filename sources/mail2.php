@@ -347,62 +347,141 @@ function _find_mail_bounces($server, $port, $folder, $username, $password, $boun
 }
 
 /**
- * Send an e-mail.
+ * E-mail dispatcher object. Handles the actual delivery of an e-mail over a process call.
  *
- * @param  string $to The TO address.
- * @param  string $subject The subject.
- * @param  string $message The message.
- * @param  string $additional_headers Additional headers.
- * @param  string $additional_flags Additional stuff to send to sendmail executable (if appropriate, only works when safe mode is off).
- * @return boolean Success status.
+ * @package    core
  */
-function manualproc_mail($to, $subject, $message, $additional_headers, $additional_flags = '')
+class Mail_dispatcher_manualproc extends Mail_dispatcher_base
 {
-    $descriptorspec = array(
-        0 => array('pipe', 'r'), // stdin is a pipe that the child will read from
-        1 => array('pipe', 'w'), // stdout is a pipe that the child will write to
-        2 => array('pipe', 'w') // stderr is a file to write to
-    );
-    $pipes = array();
-    if (substr($additional_flags, 0, 1) != ' ') {
-        $additional_flags = ' ' . $additional_flags;
+    /**
+     * Construct e-mail dispatcher.
+     *
+     * @param  ?array $advanced_parameters List of advanced parameters (null: none)
+     */
+    public function __construct($advanced_parameters = null)
+    {
+        $this->line_term = "\n";
+
+        parent::__construct($advanced_parameters);
     }
-    //$additional_flags.=' -v';     mini_sendmail puts everything onto stderr if using this https://github.com/mattrude/mini_sendmail/blob/master/mini_sendmail.c
-    $command = ini_get('sendmail_path') . $additional_flags;
-    $handle = proc_open($command, $descriptorspec, $pipes);
-    if ($handle !== false) {
-        fprintf($pipes[0], "To: %s\n", $to);
-        fprintf($pipes[0], "Subject: %s\n", $subject);
-        fprintf($pipes[0], "%s\n", $additional_headers);
-        fprintf($pipes[0], "\n%s\n", $message);
-        fclose($pipes[0]);
 
-        $test = proc_get_status($handle);
+    /**
+     * Find whether the dispatcher instance is capable of sending e-mails.
+     *
+     * @param  ?array $advanced_parameters List of advanced parameters (null: none)
+     * @return boolean Whether the dispatcher instance is capable of sending e-mails
+     */
+    public function is_dispatcher_available($advanced_parameters)
+    {
+        return true;
+    }
 
-        $retmsg = '';
-        $stdout = stream_get_contents($pipes[1]);
-        $retmsg .= $stdout;
-        fclose($pipes[1]);
-        $stderr = stream_get_contents($pipes[2]);
-        $retmsg .= $stderr;
-        fclose($pipes[2]);
+    /**
+     * Implementation-specific e-mail dispatcher, passed with pre-prepared/tidied e-mail component details for us to use.
+     *
+     * @param  array $to_emails To e-mail addresses
+     * @param  array $to_names To names
+     * @param  EMAIL $from_email From e-mail address
+     * @param  string $from_name From name
+     * @param  string $subject_wrapped Subject line
+     * @param  string $headers Headers to use
+     * @param  string $sending_message Full MIME message
+     * @param  string $charset Character set to use
+     * @param  string $html_evaluated Full HTML message (is also inside $sending_message, so we won't use this unless we are not using $sending_message)
+     * @param  string $message_plain Full text message (is also inside $sending_message, so we won't use this unless we are not using $sending_message)
+     * @return array A pair: Whether it worked, and an error message
+     */
+    protected function _dispatch($to_emails, $to_names, $from_email, $from_name, $subject_wrapped, $headers, $sending_message, $charset, $html_evaluated, $message_plain)
+    {
+        $worked = false;
+        $error = null;
 
-        if (!$test['running']) {
-            $retcode = $test['exitcode'];
+        push_suppress_error_death(true);
+
+        $worked = false;
+        foreach ($to_emails as $i => $_to_email) {
+            $additional = '';
+            if (($this->enveloper_override) && ($this->website_email != '')) {
+                $additional = '-f ' . $this->website_email;
+            }
+            $_to_name = $to_names[$i];
+            if ($_to_email == $_to_name) {
+                $to_line = $_to_email;
+            } else {
+                $to_line = '"' . $_to_name . '" <' . $_to_email . '>';
+            }
+
+            $php_errormsg = mixed();
+            $worked = $this->manualproc_mail($to_line, $subject_wrapped, $sending_message, $headers, $additional);
+
+            if ((!$worked) && (isset($php_errormsg))) {
+                $error = $php_errormsg;
+            }
+        }
+
+        pop_suppress_error_death();
+
+        return array($worked, $error);
+    }
+
+    /**
+     * Send an e-mail.
+     *
+     * @param  string $to The TO address.
+     * @param  string $subject The subject.
+     * @param  string $message The message.
+     * @param  string $additional_headers Additional headers.
+     * @param  string $additional_flags Additional stuff to send to sendmail executable (if appropriate, only works when safe mode is off).
+     * @return boolean Success status.
+     */
+    protected function manualproc_mail($to, $subject, $message, $additional_headers, $additional_flags = '')
+    {
+        $descriptorspec = array(
+            0 => array('pipe', 'r'), // stdin is a pipe that the child will read from
+            1 => array('pipe', 'w'), // stdout is a pipe that the child will write to
+            2 => array('pipe', 'w') // stderr is a file to write to
+        );
+        $pipes = array();
+        if (substr($additional_flags, 0, 1) != ' ') {
+            $additional_flags = ' ' . $additional_flags;
+        }
+        //$additional_flags.=' -v';     mini_sendmail puts everything onto stderr if using this https://github.com/mattrude/mini_sendmail/blob/master/mini_sendmail.c
+        $command = ini_get('sendmail_path') . $additional_flags;
+        $handle = proc_open($command, $descriptorspec, $pipes);
+        if ($handle !== false) {
+            fprintf($pipes[0], "To: %s\n", $to);
+            fprintf($pipes[0], "Subject: %s\n", $subject);
+            fprintf($pipes[0], "%s\n", $additional_headers);
+            fprintf($pipes[0], "\n%s\n", $message);
+            fclose($pipes[0]);
+
+            $test = proc_get_status($handle);
+
+            $retmsg = '';
+            $stdout = stream_get_contents($pipes[1]);
+            $retmsg .= $stdout;
+            fclose($pipes[1]);
+            $stderr = stream_get_contents($pipes[2]);
+            $retmsg .= $stderr;
+            fclose($pipes[2]);
+
+            if (!$test['running']) {
+                $retcode = $test['exitcode'];
+            } else {
+                $retcode = proc_close($handle);
+            }
+            if (($retcode == -1) && ($stderr == '')) {
+                $retcode = 0; // https://bugs.php.net/bug.php?id=29123
+            }
+
+            if ($retcode != 0) {
+                trigger_error('Sendmail error code: ' . strval($retcode) . ' [' . $retmsg . ']', E_USER_WARNING);
+                return false;
+            }
         } else {
-            $retcode = proc_close($handle);
-        }
-        if (($retcode == -1) && ($stderr == '')) {
-            $retcode = 0; // https://bugs.php.net/bug.php?id=29123
-        }
-
-        if ($retcode != 0) {
-            trigger_error('Sendmail error code: ' . strval($retcode) . ' [' . $retmsg . ']', E_USER_WARNING);
+            trigger_error('Could not connect to sendmail process', E_USER_WARNING);
             return false;
         }
-    } else {
-        trigger_error('Could not connect to sendmail process', E_USER_WARNING);
-        return false;
+        return true;
     }
-    return true;
 }

@@ -18,6 +18,8 @@
  * @package    external_db_login
  */
 
+/*FORCE_ORIGINAL_LOAD_FIRST*/
+
 /**
  * Module page class.
  */

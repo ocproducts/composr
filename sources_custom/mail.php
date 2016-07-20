@@ -13,529 +13,166 @@
  * @package    better_mail
  */
 
+/*FORCE_ORIGINAL_LOAD_FIRST*/
+
 /**
- * Attempt to send an e-mail to the specified recipient. The mail will be forwarding to the CC address specified in the options (if there is one, and if not specified not to cc).
- * The mail will be sent in dual HTML/text format, where the text is the unconverted Comcode source: if a member does not read HTML mail, they may wish to fallback to reading that.
+ * E-mail dispatcher object. Handles the actual delivery of an e-mail over PHP's mail function.
  *
- * @param  string $subject_line The subject of the mail in plain text
- * @param  LONG_TEXT $message_raw The message, as Comcode
- * @param  ?array $to_email The destination (recipient) e-mail addresses [array of strings] (null: site staff address)
- * @param  ?mixed $to_name The recipient name. Array or string. (null: site name)
- * @param  EMAIL $from_email The from address (blank: site staff address)
- * @param  string $from_name The from name (blank: site name)
- * @param  ?array $advanced_parameters A map of additional parameters. See comments within this function implementation to know what can be sent. (null: none)
- * @return ?Tempcode A full page (not complete XHTML) piece of Tempcode to output (null: it worked so no Tempcode message)
+ * @package    core
  */
-function dispatch_mail($subject_line, $message_raw, $to_email = null, $to_name = null, $from_email = '', $from_name = '', $advanced_parameters = null)
+class Mail_dispatcher_override extends Mail_dispatcher_base
 {
-    $priority = isset($advanced_parameters['priority']) ? $advanced_parameters['priority'] : 3; // The message priority (1=urgent, 3=normal, 5=low)
-    $attachments = isset($advanced_parameters['attachments']) ? $advanced_parameters['attachments'] : null; // An list of attachments (each attachment being a map, path=>filename) (null: none)
-    $no_cc = isset($advanced_parameters['no_cc']) ? $advanced_parameters['no_cc'] : false; // Whether to CC to the CC address
-    $as = isset($advanced_parameters['as']) ? $advanced_parameters['as'] : null; // Convert Comcode->tempcode as this member (a privilege thing: we don't want people being able to use admin rights by default!) (null: guest)
-    $as_admin = isset($advanced_parameters['as_admin']) ? $advanced_parameters['as_admin'] : false; // Replace above with arbitrary admin
-    $in_html = isset($advanced_parameters['in_html']) ? $advanced_parameters['in_html'] : false; // HTML-only
-    $bypass_queue = isset($advanced_parameters['bypass_queue']) ? $advanced_parameters['bypass_queue'] : null; // Whether to bypass queueing
-    $coming_out_of_queue = isset($advanced_parameters['coming_out_of_queue']) ? $advanced_parameters['coming_out_of_queue'] : false; // Whether to bypass queueing, because this code is running as a part of the queue management tools (null: auto-decide)
-    $mail_template = isset($advanced_parameters['mail_template']) ? $advanced_parameters['mail_template'] : 'MAIL'; // The template used to show the email
-    $extra_cc_addresses = isset($advanced_parameters['extra_cc_addresses']) ? $advanced_parameters['extra_cc_addresses'] : null; // Extra CC addresses to use (null: none)
-    $extra_bcc_addresses = isset($advanced_parameters['extra_bcc_addresses']) ? $advanced_parameters['extra_bcc_addresses'] : null; // Extra BCC addresses to use (null: none)
-    $require_recipient_valid_since = isset($advanced_parameters['require_recipient_valid_since']) ? $advanced_parameters['require_recipient_valid_since'] : null; // Implement the Require-Recipient-Valid-Since header (null: no restriction)
-    $smtp_sockets_use = isset($advanced_parameters['smtp_sockets_use']) ? $advanced_parameters['smtp_sockets_use'] : null; // Whether to use SMTP sockets (null: default configured)
-    $smtp_sockets_host = isset($advanced_parameters['smtp_sockets_host']) ? $advanced_parameters['smtp_sockets_host'] : null; // SMTP hostname (null: default configured)
-    $smtp_sockets_port = isset($advanced_parameters['smtp_sockets_port']) ? $advanced_parameters['smtp_sockets_port'] : null; // SMTP port (null: default configured)
-    $smtp_sockets_username = isset($advanced_parameters['smtp_sockets_username']) ? $advanced_parameters['smtp_sockets_username'] : null; // SMTP username (null: default configured)
-    $smtp_sockets_password = isset($advanced_parameters['smtp_sockets_password']) ? $advanced_parameters['smtp_sockets_password'] : null; // SMTP password (null: default configured)
-    $smtp_from_address = isset($advanced_parameters['smtp_from_address']) ? $advanced_parameters['smtp_from_address'] : null; // SMTP from address (null: default configured)
-    $enveloper_override = isset($advanced_parameters['enveloper_override']) ? $advanced_parameters['enveloper_override'] : null; // Use envelope override option for sendmail (null: default configured)
-    $allow_ext_images = isset($advanced_parameters['allow_ext_images']) ? $advanced_parameters['allow_ext_images'] : null; // Allow external image references rather than embedding images (null: default configured)
-    $website_email = isset($advanced_parameters['website_email']) ? $advanced_parameters['website_email'] : null; // Website e-mail address (null: default configured)
+    /**
+     * Construct e-mail dispatcher.
+     *
+     * @param  ?array $advanced_parameters List of advanced parameters (null: none)
+     */
+    public function __construct($advanced_parameters = null)
+    {
+        require_code('Swift-4.1.1/lib/swift_required');
 
-    if (is_null($smtp_sockets_use)) {
-        $smtp_sockets_use = (get_option('smtp_sockets_use') == '1');
-    }
-    if (is_null($smtp_sockets_host)) {
-        $smtp_sockets_host = get_option('smtp_sockets_host');
-    }
-    if (is_null($smtp_sockets_port)) {
-        $smtp_sockets_port = intval(get_option('smtp_sockets_port'));
-    }
-    if (is_null($smtp_sockets_username)) {
-        $smtp_sockets_username = get_option('smtp_sockets_username');
-    }
-    if (is_null($smtp_sockets_password)) {
-        $smtp_sockets_password = get_option('smtp_sockets_password');
-    }
-    if (is_null($smtp_from_address)) {
-        $smtp_from_address = get_option('smtp_from_address');
-    }
-    if (is_null($enveloper_override)) {
-        $enveloper_override = (get_option('enveloper_override') == '1');
-    }
-    if (is_null($allow_ext_images)) {
-        $allow_ext_images = (get_option('allow_ext_images') == '1');
-    }
-    if (is_null($website_email)) {
-        $website_email = get_option('website_email');
+        parent::__construct($advanced_parameters);
     }
 
-    if (!$smtp_sockets_use) {
-        return non_overridden__dispatch_mail(
-            $subject_line,
-            $message_raw,
-            $to_email,
-            $to_name,
-            $from_email,
-            $from_name,
-            array(
-                'priority' => $priority,
-                'attachments' => $attachments,
-                'no_cc' => $no_cc,
-                'as' => $as,
-                'as_admin' => $as_admin,
-                'in_html' => $in_html,
-                'coming_out_of_queue' => $coming_out_of_queue,
-                'mail_template' => $mail_template,
-                'bypass_queue' => $bypass_queue,
-                'extra_cc_addresses' => $extra_cc_addresses,
-                'extra_bcc_addresses' => $extra_bcc_addresses,
-                'require_recipient_valid_since' => $require_recipient_valid_since,
-                'smtp_sockets_use' => $smtp_sockets_use,
-                'smtp_sockets_host' => $smtp_sockets_host,
-                'smtp_sockets_port' => $smtp_sockets_port,
-                'smtp_sockets_username' => $smtp_sockets_username,
-                'smtp_sockets_password' => $smtp_sockets_password,
-                'smtp_from_address' => $smtp_from_address,
-                'enveloper_override' => $enveloper_override,
-                'allow_ext_images' => $allow_ext_images,
-                'website_email' => $website_email,
-            )
-        );
+    /**
+     * Find whether the dispatcher instance is capable of sending e-mails.
+     *
+     * @param  ?array $advanced_parameters List of advanced parameters (null: none)
+     * @return boolean Whether the dispatcher instance is capable of sending e-mails
+     */
+    public function is_dispatcher_available($advanced_parameters)
+    {
+        $smtp_sockets_use = isset($advanced_parameters['smtp_sockets_use']) ? $advanced_parameters['smtp_sockets_use'] : null; // Whether to use SMTP sockets (null: default configured)
+        if (is_null($smtp_sockets_use)) {
+            $smtp_sockets_use = intval(get_option('smtp_sockets_use'));
+        }
+        return ($smtp_sockets_use == 1);
     }
 
-    if (running_script('stress_test_loader')) {
-        return null;
-    }
-
-    if (@$GLOBALS['SITE_INFO']['no_email_output'] === '1') {
-        return null;
-    }
-
-    if (is_null($bypass_queue)) {
-        $bypass_queue = (($priority < 3) || (strpos(serialize($attachments), 'tmpfile') !== false));
-    }
-
-    global $EMAIL_ATTACHMENTS;
-    $EMAIL_ATTACHMENTS = array();
-
-    require_code('site');
-    require_code('mime_types');
-
-    if (is_null($as)) {
-        $as = $GLOBALS['FORUM_DRIVER']->get_guest_id();
-    }
-    if (is_null($extra_cc_addresses)) {
-        $extra_cc_addresses = array();
-    }
-
-    if (count($attachments) == 0) {
-        $attachments = null;
-    }
-    if (is_null($extra_cc_addresses)) {
-        $extra_cc_addresses = array();
-    }
-    if (is_null($extra_bcc_addresses)) {
-        $extra_bcc_addresses = array();
-    }
-
-    if (!$coming_out_of_queue) {
-        if (!$GLOBALS['SITE_DB']->table_is_locked('logged_mail_messages')) {
-            $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'logged_mail_messages WHERE m_date_and_time<' . strval(time() - 60 * 60 * 24 * 14) . ' AND m_queued=0'); // Log it all for 2 weeks, then delete
+    /**
+     * Send out the e-mail according to the current dispatcher configuration.
+     *
+     * @param  string $subject_line The subject of the mail in plain text
+     * @param  LONG_TEXT $message_raw The message, as Comcode
+     * @param  ?array $to_emails The destination (recipient) e-mail address(es) [array of strings] (null: site staff address)
+     * @param  ?mixed $to_names The recipient name(s). Array or string. (null: site name)
+     * @param  EMAIL $from_email The from address (blank: site staff address)
+     * @param  string $from_name The from name (blank: site name)
+     */
+    public function dispatch($subject_line, $message_raw, $to_emails = null, $to_names = null, $from_email = '', $from_name = '')
+    {
+        if ($from_email == '') {
+            $from_email = $this->smtp_from_address;
         }
 
-        $through_queue = (!$bypass_queue) && (((cron_installed()) && (get_option('mail_queue') === '1')) || (get_option('mail_queue_debug') === '1'));
-        if (!is_null($attachments)) {
-            foreach (array_keys($attachments) as $path) {
-                if ((substr($path, 0, strlen(get_custom_file_base() . '/')) != get_custom_file_base() . '/') && (substr($path, 0, strlen(get_file_base() . '/')) != get_file_base() . '/')) {
-                    $through_queue = false;
-                }
-            }
+        parent::dispatch($subject_line, $message_raw, $to_emails, $to_names, $from_email, $from_name);
+    }
+
+    /**
+     * Implementation-specific e-mail dispatcher, passed with pre-prepared/tidied e-mail component details for us to use.
+     *
+     * @param  array $to_emails To e-mail addresses
+     * @param  array $to_names To names
+     * @param  EMAIL $from_email From e-mail address
+     * @param  string $from_name From name
+     * @param  string $subject_wrapped Subject line
+     * @param  string $headers Headers to use
+     * @param  string $sending_message Full MIME message
+     * @param  string $charset Character set to use
+     * @param  string $html_evaluated Full HTML message (is also inside $sending_message, so we won't use this unless we are not using $sending_message)
+     * @param  string $message_plain Full text message (is also inside $sending_message, so we won't use this unless we are not using $sending_message)
+     * @return array A pair: Whether it worked, and an error message
+     */
+    protected function _dispatch($to_emails, $to_names, $from_email, $from_name, $subject_wrapped, $headers, $sending_message, $charset, $html_evaluated, $message_plain)
+    {
+        $worked = true;
+        $error = null;
+
+        // Create the Transport
+        $transport = Swift_SmtpTransport::newInstance($this->smtp_sockets_host, $this->smtp_sockets_port)
+            ->setUsername($this->smtp_sockets_username)
+            ->setPassword($this->smtp_sockets_password);
+        if (($this->smtp_sockets_port == 419) || ($this->smtp_sockets_port == 465) || ($this->smtp_sockets_port == 587)) {
+            $transport->setEncryption('tls');
         }
 
-        $GLOBALS['SITE_DB']->query_insert('logged_mail_messages', array(
-            'm_subject' => $subject_line,
-            'm_message' => $message_raw,
-            'm_to_email' => serialize($to_email),
-            'm_to_name' => serialize($to_name),
-            'm_extra_cc_addresses' => serialize($extra_cc_addresses),
-            'm_extra_bcc_addresses' => serialize($extra_bcc_addresses),
-            'm_join_time' => $require_recipient_valid_since,
-            'm_from_email' => $from_email,
-            'm_from_name' => $from_name,
-            'm_priority' => 3,
-            'm_attachments' => serialize($attachments),
-            'm_no_cc' => $no_cc ? 1 : 0,
-            'm_as' => $as,
-            'm_as_admin' => $as_admin ? 1 : 0,
-            'm_in_html' => $in_html ? 1 : 0,
-            'm_date_and_time' => time(),
-            'm_member_id' => get_member(),
-            'm_url' => get_self_url(true),
-            'm_queued' => $through_queue ? 1 : 0,
-            'm_template' => $mail_template,
-        ));
-
-        if ($through_queue) {
-            return null;
-        }
-    }
-
-    global $SENDING_MAIL;
-    if ($SENDING_MAIL) {
-        return null;
-    }
-    $SENDING_MAIL = true;
-
-    // To and from, and language
-    $staff_address = get_option('staff_address');
-    if (is_null($to_email)) {
-        $to_email = array($staff_address);
-    }
-    $to_email_new = array();
-    foreach ($to_email as $test_address) {
-        if ($test_address != '') {
-            $to_email_new[] = $test_address;
-        }
-    }
-    $to_email = $to_email_new;
-    if ($to_email == array()) {
-        $SENDING_MAIL = false;
-        return null;
-    }
-    if ($to_email[0] == $staff_address) {
-        $lang = get_site_default_lang();
-    } else {
-        $lang = user_lang();
-        if (method_exists($GLOBALS['FORUM_DRIVER'], 'get_member_from_email_address')) {
-            $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_email_address($to_email[0]);
-            if (!is_null($member_id)) {
-                $lang = get_lang($member_id);
-            }
-        }
-    }
-    if (is_null($to_name)) {
-        if ($to_email[0] == $staff_address) {
-            $to_name = get_site_name();
-        } else {
-            $to_name = '';
-        }
-    }
-    if ($from_email == '') {
-        $from_email = get_option('staff_address');
-    }
-    if ($from_name == '') {
-        $from_name = get_site_name();
-    }
-
-    cms_profile_start_for('dispatch_mail');
-
-    $theme = method_exists($GLOBALS['FORUM_DRIVER'], 'get_theme') ? $GLOBALS['FORUM_DRIVER']->get_theme() : 'default';
-    if ($theme == 'default') { // Sucks, probably due to sending from Admin Zone...
-        $theme = $GLOBALS['FORUM_DRIVER']->get_theme(''); // ... So get theme of welcome zone
-    }
-
-    // Our subject
-    $_subject = do_template('MAIL_SUBJECT', array('_GUID' => '4c7eefb7296e7b7d4f3a4ef0eeeca658', 'SUBJECT_LINE' => $subject_line), $lang, false, null, '.txt', 'text', $theme);
-    $subject = $_subject->evaluate($lang);
-
-    // Evaluate message. Needs doing early so we know if we have any headers
-
-    // Misc settings
-    $cc_address = $no_cc ? '' : get_option('cc_address');
-
-    global $CID_IMG_ATTACHMENT;
-    $CID_IMG_ATTACHMENT = array();
-
-    // Decide message
-    push_lax_comcode(true);
-    $html_content = comcode_to_tempcode($message_raw, $as, $as_admin);
-    pop_lax_comcode();
-    if (!$in_html) {
-        $message_html = null;
-        $html_evaluated = null;
-        $derive_css = true;
-        $_html_content = $html_content->evaluate($lang);
-        $_html_content = preg_replace('#(keep|for)_session=\w*#', 'filtered=1', $_html_content);
-        $is_already_full_html = (stripos($_html_content, '<html') !== false);
-        if ($is_already_full_html) {
-            $html_evaluated = $_html_content;
-            $derive_css = (strpos($_html_content, '{CSS') !== false);
-        } else {
-            $message_html = do_template($mail_template, array(
-                '_GUID' => 'b23069c20202aa59b7450ebf8d49cde1',
-                'CSS' => '{CSS}',
-                'LOGOURL' => get_logo_url(''),
-                'LANG' => $lang,
-                'TITLE' => $subject,
-                'CONTENT' => $_html_content,
-            ), $lang, false, null, '.tpl', 'templates', $theme);
-        }
-        if ($derive_css) {
-            require_css('email');
-            $css = css_tempcode(true, false, ($message_html === null) ? null : $message_html->evaluate($lang), $theme);
-            $_css = $css->evaluate($lang);
-            if (!$allow_ext_images) {
-                $_css = preg_replace_callback('#url\(["\']?(http://[^"]*)["\']?\)#U', '_mail_css_rep_callback', $_css);
-            }
-            if ($message_html !== null) {
-                $message_html->singular_bind('CSS', $_css);
-                $html_evaluated = $message_html->evaluate($lang);
-            }
+        // Create the Mailer using your created Transport
+        static $mailer = null;
+        if ($mailer === null) {
+            $mailer = Swift_Mailer::newInstance($transport);
         }
 
-        // Cleanup the Comcode a bit
-        $message_plain = strip_comcode($message_raw);
-    } else {
-        $html_evaluated = $message_raw;
-    }
-
-    // Character set
-    $regexp = '#^[\x' . dechex(32) . '-\x' . dechex(126) . ']*$#';
-    $charset = ((preg_match($regexp, $html_evaluated) == 0) ? do_lang('charset', null, null, null, $lang) : 'us-ascii');
-
-    // CID attachments
-    if (!$allow_ext_images) {
-        $html_evaluated = preg_replace_callback('#<img\s([^>]*)src="(http://[^"]*)"#U', '_mail_img_rep_callback', $html_evaluated);
-        $matches = array();
-        foreach (array('#<([^"<>]*\s)style="([^"]*)"#', '#<style( [^<>]*)?' . '>(.*)</style>#Us') as $over) {
-            $num_matches = preg_match_all($over, $html_evaluated, $matches);
-            for ($i = 0; $i < $num_matches; $i++) {
-                $altered_inner = preg_replace_callback('#url\(["\']?(http://[^"]*)["\']?\)#U', '_mail_css_rep_callback', $matches[2][$i]);
-                if ($matches[2][$i] != $altered_inner) {
-                    $altered_outer = str_replace($matches[2][$i], $altered_inner, $matches[0][$i]);
-                    $html_evaluated = str_replace($matches[0][$i], $altered_outer, $html_evaluated);
-                }
-            }
+        // Create a message and basic address it
+        $to_array = array();
+        foreach ($to_emails as $i => $_to_email) {
+            $to_array[$_to_email] = $to_names[$i];
         }
-    }
-    $cid_attachments = array();
-    foreach ($CID_IMG_ATTACHMENT as $id => $img) {
-        $file_path_stub = convert_url_to_path($img);
-        $mime_type = get_mime_type(get_file_extension($img), has_privilege($as, 'comcode_dangerous'));
-        $filename = basename($img);
-
-        if (!is_null($file_path_stub)) {
-            $cid_attachment = array(
-                'mime' => $mime_type,
-                'filename' => $filename,
-                'path' => $file_path_stub,
-                'temp' => false,
-                'cid' => $id,
-            );
-        } else {
-            $myfile = mixed();
-            $matches = array();
-            if ((preg_match('#^' . preg_quote(find_script('attachment'), '#') . '\?id=(\d+)&amp;thumb=(0|1)#', $img, $matches) != 0) && (strpos($img, 'forum_db=1') === false)) {
-                $rows = $GLOBALS['SITE_DB']->query_select('attachments', array('*'), array('id' => intval($matches[1])), 'ORDER BY a_add_time DESC');
-                require_code('attachments');
-                if ((array_key_exists(0, $rows)) && (has_attachment_access($as, intval($matches[1])))) {
-                    $myrow = $rows[0];
-
-                    if ($matches[2] == '1') {
-                        $full = $myrow['a_thumb_url'];
-                    } else {
-                        $full = $myrow['a_url'];
-                    }
-
-                    if (url_is_local($full)) {
-                        $_full = get_custom_file_base() . '/' . rawurldecode($full);
-                        if (file_exists($_full)) {
-                            $filename = $myrow['a_original_filename'];
-                            require_code('mime_types');
-                            $myfile = $_full;
-                            $mime_type = get_mime_type(get_file_extension($filename), has_privilege($as, 'comcode_dangerous'));
-                        } else {
-                            continue;
-                        }
-                    }
-                }
-            }
-            if ($myfile === null) {
-                $myfile = cms_tempnam();
-                http_download_file($img, null, false, false, 'Composr', null, null, null, null, null, $myfile);
-                if (filesize($myfile) == 0) {
-                    continue;
-                }
-                if (!is_null($GLOBALS['HTTP_DOWNLOAD_MIME_TYPE'])) {
-                    $mime_type = $GLOBALS['HTTP_DOWNLOAD_MIME_TYPE'];
-                }
-                if (!is_null($GLOBALS['HTTP_FILENAME'])) {
-                    $filename = $GLOBALS['HTTP_FILENAME'];
-                }
-            }
-
-            $cid_attachment = array(
-                'mime' => $mime_type,
-                'filename' => $filename,
-                'path' => $myfile,
-                'temp' => true,
-                'cid' => $id,
-            );
-        }
-
-        $cid_attachments[] = $cid_attachment;
-    }
-
-    // Attachments
-    $real_attachments = array();
-    $attachments = array_merge(is_null($attachments) ? array() : $attachments, $EMAIL_ATTACHMENTS);
-    if (!is_null($attachments)) {
-        foreach ($attachments as $path => $filename) {
-            $mime_type = get_mime_type(get_file_extension($filename), has_privilege($as, 'comcode_dangerous'));
-
-            if ((strpos($path, '://') === false) && (substr($path, 0, 5) != 'gs://')) {
-                $real_attachment = array(
-                    'mime' => $mime_type,
-                    'filename' => $filename,
-                    'path' => $path,
-                    'temp' => false,
-                );
+        $message = Swift_Message::newInstance($subject_wrapped);
+        if ($this->website_email != '') {
+            if (get_option('use_true_from') == '0') {
+                $message->setFrom(array($this->website_email => $from_name));
             } else {
-                $myfile = cms_tempnam();
-                http_download_file($path, null, false, false, 'Composr', null, null, null, null, null, $myfile);
-                if (!is_null($GLOBALS['HTTP_DOWNLOAD_MIME_TYPE'])) {
-                    $mime_type = $GLOBALS['HTTP_DOWNLOAD_MIME_TYPE'];
-                }
-                if (!is_null($GLOBALS['HTTP_FILENAME'])) {
-                    $filename = $GLOBALS['HTTP_FILENAME'];
-                }
-
-                $real_attachment = array(
-                    'mime' => $mime_type,
-                    'filename' => $filename,
-                    'path' => $myfile,
-                    'temp' => true,
-                );
+                $message->setFrom(array($from_email => $from_name));
             }
-
-            $real_attachments[] = $real_attachment;
+        } // else maybe server won't let us set it due to whitelist security, and we must let it use it's default (i.e. accountname@hostname)
+        $message
+            ->setReplyTo(array($from_email => $from_name))
+            ->setTo($to_array)
+            ->setDate(time())
+            ->setPriority($this->priority)
+            ->setCharset($charset)
+            ->setBody($html_evaluated, 'text/html', $charset);
+        if (!$this->in_html) {
+            $message->addPart($message_plain, 'text/plain', $charset);
         }
-    }
+        $message->setCc($this->cc_addresses);
+        $message->setBcc($this->bcc_addresses);
 
-    // ==========================
-    // Interface with SwiftMailer
-    // ==========================
-
-    require_code('Swift-4.1.1/lib/swift_required');
-
-    // Read in SMTP settings
-    $host = $smtp_sockets_host;
-    $port = $smtp_sockets_port;
-    $username = $smtp_sockets_username;
-    $password = $smtp_sockets_password;
-    if ($smtp_from_address != '') {
-        $from_email = $smtp_from_address;
-    }
-
-    // Create the Transport
-    $transport = Swift_SmtpTransport::newInstance($host, $port)
-        ->setUsername($username)
-        ->setPassword($password);
-    if (($port == 419) || ($port == 465) || ($port == 587)) {
-        $transport->setEncryption('tls');
-    }
-
-    // Create the Mailer using your created Transport
-    static $mailer = null;
-    if ($mailer === null) {
-        $mailer = Swift_Mailer::newInstance($transport);
-    }
-
-    // Create a message
-    $to_array = array();
-    if ($to_name === '') {
-        foreach ($to_email as $_to_email) {
-            $to_array[] = $_to_email;
+        if ((count($to_emails) == 1) && (!is_null($this->require_recipient_valid_since))) {
+            $headers = $message->getHeaders();
+            $_require_recipient_valid_since = date('r', $this->require_recipient_valid_since);
+            $headers->addTextHeader('Require-Recipient-Valid-Since', $to_emails[0] . '; ' . $_require_recipient_valid_since);
         }
-    } else {
-        foreach ($to_email as $i => $_to_email) {
-            $to_array[$_to_email] = is_array($to_name) ? $to_name[$i] : $to_name;
+
+        // Attachments
+        foreach ($this->real_attachments as $r) {
+            if (isset($r['path'])) {
+                $attachment = Swift_Attachment::fromPath($r['path'], $r['mime']);
+            } else {
+                $attachment = Swift_Attachment::newInstance()->setContentType($r['mime'])->setBody($r['contents']);
+            }
+            $attachment->setFilename($r['filename'])->setDisposition('attachment');
+            $message->attach($attachment);
         }
-    }
-    $message = Swift_Message::newInstance($subject);
-    if ($website_email != '') {
-        if (get_option('use_true_from') == '0') {
-            $message->setFrom(array($website_email => $from_name));
-        } else {
-            $message->setFrom(array($from_email => $from_name));
+        foreach ($this->cid_attachments as $r) {
+            $attachment = Swift_Attachment::fromPath($r['path'], $r['mime'])->setFilename($r['filename'])->setDisposition('attachment')->setId($r['cid']);
+            $message->attach($attachment);
         }
-    }
-    $message
-        ->setReplyTo(array($from_email => $from_name))
-        ->setTo($to_array)
-        ->setDate(time())
-        ->setPriority($priority)
-        ->setCharset($charset)
-        ->setBody($html_evaluated, 'text/html', $charset);
-    if (!$in_html) {
-        $message->addPart($message_plain, 'text/plain', $charset);
-    }
 
-    if ($cc_address != '') {
-        if (get_option('bcc') == '0') {
-            $extra_cc_addresses[] = $cc_address;
-        } else {
-            $extra_bcc_addresses[] = $cc_address;
+        // Send the message, and error collection
+        $error = '';
+        try {
+            $result = $mailer->send($message);
+        } catch (Exception $e) {
+            $error = $e->getMessage();
+            $worked = false;
         }
-    }
-    $message->setCc(array_unique($extra_cc_addresses));
-    $message->setBcc(array_unique($extra_bcc_addresses));
-
-    if ((count($to_email) == 1) && (!is_null($require_recipient_valid_since))) {
-        $headers = $message->getHeaders();
-        $_require_recipient_valid_since = date('r', $require_recipient_valid_since);
-        $headers->addTextHeader('Require-Recipient-Valid-Since', $to_email[0] . '; ' . $_require_recipient_valid_since);
-    }
-
-    // Attachments
-    foreach ($real_attachments as $r) {
-        $attachment = Swift_Attachment::fromPath($r['path'], $r['mime'])->setFilename($r['filename'])->setDisposition('attachment');
-        $message->attach($attachment);
-    }
-    foreach ($cid_attachments as $r) {
-        $attachment = Swift_Attachment::fromPath($r['path'], $r['mime'])->setFilename($r['filename'])->setDisposition('attachment')->setId($r['cid']);
-        $message->attach($attachment);
-    }
-
-    // Send the message, and error collection
-    $error = '';
-    try {
-        $result = $mailer->send($message);
-    } catch (Exception $e) {
-        $error = $e->getMessage();
-    }
-    if (($error == '') && (!$result)) {
-        $error = 'Unknown error';
-    }
-
-    // Attachment cleanup
-    foreach ($real_attachments as $r) {
-        if ($r['temp']) {
-            @unlink($r['path']);
+        if (($error == '') && (!$result)) {
+            $error = 'Unknown error';
         }
-    }
-    foreach ($cid_attachments as $r) {
-        if ($r['temp']) {
-            @unlink($r['path']);
+
+        // Attachment cleanup
+        foreach ($this->real_attachments as $r) {
+            if ($r['temp']) {
+                @unlink($r['path']);
+            }
         }
-    }
+        foreach ($cid_attachments as $r) {
+            if ($r['temp']) {
+                @unlink($r['path']);
+            }
+        }
 
-    cms_profile_end_for('dispatch_mail', $subject_line);
-
-    // Return / Error handling
-    if ($error != '') {
-        require_code('site');
-        attach_message(!is_null($error) ? make_string_tempcode($error) : do_lang_tempcode('MAIL_FAIL', escape_html(get_option('staff_address'))), 'warn', false, true);
+        return array($worked, $error);
     }
-    $SENDING_MAIL = false;
-    return null;
 }

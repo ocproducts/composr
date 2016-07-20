@@ -13,7 +13,7 @@
  * @package    challengr
  */
 
-function init__site__pages__modules_custom__quiz($in = null)
+function init__site__pages__modules_custom__quiz($in)
 {
     $before = 'if ($minimum_percentage >= $quiz[\'q_percentage\'])';
     $after = 'if ((addon_installed(\'points\')) && ($quiz[\'q_points_for_passing\'] != 0)) { require_code(\'points2\'); $cost = $quiz[\'q_points_for_passing\'] / 2; $points_difference -= $cost; } if ($minimum_percentage >= $quiz[\'q_percentage\'])';

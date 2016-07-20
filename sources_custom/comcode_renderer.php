@@ -14,7 +14,7 @@
  */
 
 if (!function_exists('init__comcode_renderer')) {
-    function init__comcode_renderer($in = null)
+    function init__comcode_renderer($in)
     {
         $before = 'if ((isset($DANGEROUS_TAGS[$tag])) && (!$comcode_dangerous))';
         $after = 'if ((isset($DANGEROUS_TAGS[$tag])) && (!$comcode_dangerous) && (!comcode_white_listed($tag, $marker, $comcode)))';

@@ -13,7 +13,7 @@
  * @package    referrals
  */
 
-function init__hooks__systems__ecommerce__usergroup($in = null)
+function init__hooks__systems__ecommerce__usergroup($in)
 {
     require_code('referrals');
 

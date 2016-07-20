@@ -13,7 +13,7 @@
  * @package    referrals
  */
 
-function init__hooks__systems__ecommerce__cart_orders($in = null)
+function init__hooks__systems__ecommerce__cart_orders($in)
 {
     require_code('referrals');
 

@@ -1289,7 +1289,7 @@ class Module_admin_newsletter extends Standard_crud_module
 
         // Send e-mail
         require_code('mail');
-        dispatch_mail(
+        $mail_dispatcher = dispatch_mail(
             $full_subject,
             ($html_only == 1) ? $html_version->evaluate() : $message,
             array($address),
@@ -1306,8 +1306,7 @@ class Module_admin_newsletter extends Standard_crud_module
         // Spam check, if possible
         $spam_report = null;
         $spam_score = null;
-        global $LAST_MIME_MAIL_SENT;
-        if (!is_null($LAST_MIME_MAIL_SENT)) {
+        if ($mail_dispatcher->mime_data !== null) {
             require_code('json');
             $_spam_test = http_download_file(
                 'http://spamcheck.postmarkapp.com/filter',
@@ -1316,7 +1315,7 @@ class Module_admin_newsletter extends Standard_crud_module
                 false,
                 'Composr',
                 array(json_encode(array(
-                    'email' => $LAST_MIME_MAIL_SENT,
+                    'email' => $mail_dispatcher->mime_data,
                     'options' => 'long',
                 ))),
                 null,
