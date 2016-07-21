@@ -647,6 +647,7 @@ class Hook_addon_registry_cns_forum
 
         return array(
             lorem_globalise(do_lorem_template('BLOCK_MAIN_CNS_INVOLVED_TOPICS', array(
+                'BLOCK_ID' => lorem_word(),
                 'TOPICS' => lorem_paragraph_html(),
                 'BLOCK_PARAMS' => '',
 
@@ -691,6 +692,7 @@ class Hook_addon_registry_cns_forum
 
         return array(
             lorem_globalise(do_lorem_template('BLOCK_SIDE_CNS_PRIVATE_TOPICS', array(
+                'BLOCK_ID' => lorem_word(),
                 'SEND_URL' => placeholder_url(),
                 'VIEW_URL' => placeholder_url(),
                 'CONTENT' => $out,
@@ -783,7 +785,10 @@ class Hook_addon_registry_cns_forum
             'UNANSWERED_TOPICS_URL' => placeholder_url(),
         ));
 
-        $member_bar = do_lorem_template('BLOCK_MAIN_MEMBER_BAR', array('BAR' => $bar));
+        $member_bar = do_lorem_template('BLOCK_MAIN_MEMBER_BAR', array(
+            'BLOCK_ID' => lorem_word(),
+            'BAR' => $bar,
+        ));
 
         return array(
             lorem_globalise($member_bar, null, '', true)
@@ -865,7 +870,10 @@ class Hook_addon_registry_cns_forum
             'DETAILS' => $details,
         ));
 
-        $member_bar = do_lorem_template('BLOCK_MAIN_MEMBER_BAR', array('BAR' => $bar));
+        $member_bar = do_lorem_template('BLOCK_MAIN_MEMBER_BAR', array(
+            'BLOCK_ID' => lorem_word(),
+            'BAR' => $bar,
+        ));
 
         return array(
             lorem_globalise($member_bar, null, '', true)
@@ -903,7 +911,10 @@ class Hook_addon_registry_cns_forum
             'TYPE' => lorem_phrase(),
         ));
 
-        $notifications_bar = do_lorem_template('BLOCK_MAIN_PT_NOTIFICATIONS', array('NOTIFICATIONS' => $notifications));
+        $notifications_bar = do_lorem_template('BLOCK_MAIN_PT_NOTIFICATIONS', array(
+            'BLOCK_ID' => lorem_word(),
+            'NOTIFICATIONS' => $notifications,
+        ));
 
         return array(
             lorem_globalise($notifications_bar, null, '', true)
@@ -934,6 +945,7 @@ class Hook_addon_registry_cns_forum
         }
 
         $foot = do_lorem_template('BLOCK_MAIN_BOTTOM_BAR', array(
+            'BLOCK_ID' => lorem_word(),
             'NEWEST_MEMBER_PROFILE_URL' => placeholder_url(),
             'NEWEST_MEMBER_USERNAME' => lorem_word(),
             'NUM_MEMBERS' => placeholder_number(),

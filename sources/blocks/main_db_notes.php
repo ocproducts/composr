@@ -49,6 +49,8 @@ class Block_main_db_notes
      */
     public function run($map)
     {
+        $block_id = get_block_id($map);
+
         $file = array_key_exists('param', $map) ? $map['param'] : 'admin_notes';
         $title = array_key_exists('title', $map) ? $map['title'] : do_lang('NOTES');
         $scrolls = array_key_exists('scrolls', $map) ? $map['scrolls'] : '0';
@@ -71,6 +73,7 @@ class Block_main_db_notes
         $map_comcode = get_block_ajax_submit_map($map);
         return do_template('BLOCK_MAIN_NOTES', array(
             '_GUID' => '2a9e1c512b66600583735552b56e0911',
+            'BLOCK_ID' => $block_id,
             'TITLE' => $title,
             'BLOCK_NAME' => 'main_db_notes',
             'MAP' => $map_comcode,

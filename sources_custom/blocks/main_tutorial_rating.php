@@ -46,6 +46,8 @@ class Block_main_tutorial_rating
     {
         i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+        $block_id = get_block_id($map);
+
         $page_name = get_page_name();
 
         $views = $GLOBALS['SITE_DB']->query_select_value_if_there('tutorials_internal', 't_views', array('t_page_name' => $page_name));
@@ -69,6 +71,10 @@ class Block_main_tutorial_rating
 
         $rating = display_rating($self_url, $self_title, 'block_main_rating', $id, 'RATING_INLINE_DYNAMIC');
 
-        return do_template('BLOCK_MAIN_TUTORIAL_RATING', array('_GUID' => 'f68915b7d913e4736b558d0ccd59634a', 'RATING' => $rating));
+        return do_template('BLOCK_MAIN_TUTORIAL_RATING', array(
+            '_GUID' => 'f68915b7d913e4736b558d0ccd59634a',
+            'BLOCK_ID' => $block_id,
+            'RATING' => $rating,
+        ));
     }
 }

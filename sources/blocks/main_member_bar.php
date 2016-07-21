@@ -57,6 +57,8 @@ class Block_main_member_bar
         require_css('cns_header');
         require_lang('cns');
 
+        $block_id = get_block_id($map);
+
         $member_id = get_member();
 
         if (!is_guest($member_id)) { // Logged in user
@@ -119,6 +121,10 @@ class Block_main_member_bar
             ));
         }
 
-        return do_template('BLOCK_MAIN_MEMBER_BAR', array('_GUID' => '0ef12f7b17b7b40dca473db519e58a52', 'BAR' => $bar));
+        return do_template('BLOCK_MAIN_MEMBER_BAR', array(
+            '_GUID' => '0ef12f7b17b7b40dca473db519e58a52',
+            'BLOCK_ID' => $block_id,
+            'BAR' => $bar,
+        ));
     }
 }

@@ -64,6 +64,8 @@ class Block_menu
      */
     public function run($map)
     {
+        $block_id = get_block_id($map);
+
         global $LANGS_REQUESTED;
         $bak = $LANGS_REQUESTED;
 
@@ -109,6 +111,7 @@ class Block_menu
         if ($title != '') {
             $menu = do_template('BLOCK_MENU', array(
                 '_GUID' => 'ae46aa37a9c5a526f43b26a391164436',
+                'BLOCK_ID' => $block_id,
                 'CONTENT' => $menu,
                 'TYPE' => $type,
                 'PARAM' => $menu,

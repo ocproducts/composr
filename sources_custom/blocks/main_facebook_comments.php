@@ -48,10 +48,16 @@ class Block_main_facebook_comments
 
         require_code('facebook_connect');
 
+        $block_id = get_block_id($map);
+
         $appid = get_option('facebook_appid');
         if ($appid == '') {
             return new Tempcode();
         }
-        return do_template('BLOCK_MAIN_FACEBOOK_COMMENTS', array('_GUID' => '99de0fd4bc8b3f57d4f9238b798bfcbf', 'URL' => 'http://developers.facebook.com/docs/reference/plugins/like-box'));
+        return do_template('BLOCK_MAIN_FACEBOOK_COMMENTS', array(
+            '_GUID' => '99de0fd4bc8b3f57d4f9238b798bfcbf',
+            'BLOCK_ID' => $block_id,
+            'URL' => 'http://developers.facebook.com/docs/reference/plugins/like-box',
+        ));
     }
 }

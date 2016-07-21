@@ -249,6 +249,8 @@ class Block_main_staff_website_monitoring
      */
     public function run($map)
     {
+        $block_id = get_block_id($map);
+
         define('GOOGLE_MAGIC', 0xE6359A60);
 
         $links = post_param_string('website_monitoring_list_edit', null);
@@ -306,6 +308,14 @@ class Block_main_staff_website_monitoring
         }
 
         $map_comcode = get_block_ajax_submit_map($map);
-        return do_template('BLOCK_MAIN_STAFF_WEBSITE_MONITORING', array('_GUID' => '0abf65878c508bf133836589a8cc45da', 'URL' => get_self_url(), 'BLOCK_NAME' => 'main_staff_website_monitoring', 'MAP' => $map_comcode, 'SITES_BEING_WATCHED' => $sites_being_watched, 'GRID_DATA' => $grid_data));
+        return do_template('BLOCK_MAIN_STAFF_WEBSITE_MONITORING', array(
+            '_GUID' => '0abf65878c508bf133836589a8cc45da',
+            'BLOCK_ID' => $block_id,
+            'URL' => get_self_url(),
+            'BLOCK_NAME' => 'main_staff_website_monitoring',
+            'MAP' => $map_comcode,
+            'SITES_BEING_WATCHED' => $sites_being_watched,
+            'GRID_DATA' => $grid_data,
+        ));
     }
 }

@@ -66,6 +66,8 @@ class Block_main_content
      */
     public function run($map)
     {
+        $block_id = get_block_id($map);
+
         $guid = isset($map['guid']) ? $map['guid'] : '';
         if (isset($map['param'])) {
             $content_type = $map['param'];
@@ -248,6 +250,7 @@ class Block_main_content
             if ($cnt == 0) {
                 return do_template('BLOCK_NO_ENTRIES', array(
                     '_GUID' => ($guid != '') ? $guid : '13f060922a5ab6c370f218b2ecc6fe9c',
+                    'BLOCK_ID' => $block_id,
                     'HIGH' => true,
                     'TITLE' => $title,
                     'MESSAGE' => do_lang_tempcode('NO_ENTRIES', $content_type),
@@ -284,6 +287,7 @@ class Block_main_content
 
                 return do_template('BLOCK_NO_ENTRIES', array(
                     '_GUID' => ($guid != '') ? $guid : '12d8cdc62cd78480b83c8daaaa68b686',
+                    'BLOCK_ID' => $block_id,
                     'HIGH' => true,
                     'TITLE' => $title,
                     'MESSAGE' => do_lang_tempcode('MISSING_RESOURCE', $content_type),
@@ -316,6 +320,7 @@ class Block_main_content
         $raw_date = ($info['date_field'] == '') ? mixed() : $award_content_row[$info['date_field']];
         return do_template('BLOCK_MAIN_CONTENT', array(
             '_GUID' => ($guid != '') ? $guid : 'fce1eace6008d650afc0283a7be9ec30',
+            'BLOCK_ID' => $block_id,
             'TYPE' => do_lang_tempcode($info['content_type_label']),
             'TITLE' => $title,
             'RAW_AWARD_DATE' => ($raw_date === null) ? '' : strval($raw_date),

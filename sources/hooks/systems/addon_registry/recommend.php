@@ -149,6 +149,7 @@ class Hook_addon_registry_recommend
     {
         return array(
             lorem_globalise(do_lorem_template('BLOCK_MAIN_SCREEN_ACTIONS', array(
+                'BLOCK_ID' => lorem_word(),
                 'PRINT_URL' => placeholder_url(),
                 'RECOMMEND_URL' => placeholder_url(),
                 'EASY_SELF_URL' => placeholder_url(),

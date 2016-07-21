@@ -1523,6 +1523,7 @@ class Hook_addon_registry_core
     {
         return array(
             lorem_globalise(do_lorem_template('BLOCK_MAIN_CONTENT', array(
+                'BLOCK_ID' => lorem_word(),
                 'TYPE' => lorem_phrase(),
                 'TITLE' => lorem_word(),
                 'RAW_AWARD_DATE' => placeholder_date(),
@@ -1545,6 +1546,7 @@ class Hook_addon_registry_core
     {
         return array(
             lorem_globalise(do_lorem_template('BLOCK_MAIN_MULTI_CONTENT', array(
+                'BLOCK_ID' => lorem_word(),
                 'TYPE' => lorem_phrase(),
                 'CONTENT_TYPE' => lorem_phrase(),
                 'TITLE' => lorem_word(),
@@ -1827,6 +1829,7 @@ class Hook_addon_registry_core
 
         return array(
             lorem_globalise(do_lorem_template('BLOCK_SIDE_PERSONAL_STATS', array(
+                'BLOCK_ID' => lorem_word(),
                 'AVATAR_URL' => placeholder_avatar(),
                 'LINKS' => $links,
                 'LINKS_ECOMMERCE' => $links_ecommerce,
@@ -1880,6 +1883,7 @@ class Hook_addon_registry_core
 
         return array(
             lorem_globalise(do_lorem_template('BLOCK_TOP_PERSONAL_STATS', array(
+                'BLOCK_ID' => lorem_word(),
                 'AVATAR_URL' => placeholder_avatar(),
                 'LINKS' => $links,
                 'LINKS_ECOMMERCE' => $links_ecommerce,
@@ -1901,6 +1905,7 @@ class Hook_addon_registry_core
     {
         return array(
             lorem_globalise(do_lorem_template('BLOCK_SIDE_PERSONAL_STATS_NO', array(
+                'BLOCK_ID' => lorem_word(),
                 'TITLE' => lorem_phrase(),
                 'FULL_LOGIN_URL' => placeholder_url(),
                 'JOIN_URL' => placeholder_url(),
@@ -1920,6 +1925,7 @@ class Hook_addon_registry_core
     {
         return array(
             lorem_globalise(do_lorem_template('BLOCK_TOP_LOGIN', array(
+                'BLOCK_ID' => lorem_word(),
                 'TITLE' => lorem_phrase(),
                 'FULL_LOGIN_URL' => placeholder_url(),
                 'JOIN_URL' => placeholder_url(),
@@ -1939,6 +1945,7 @@ class Hook_addon_registry_core
     {
         return array(
             lorem_globalise(do_lorem_template('BLOCK_NO_ENTRIES', array(
+                'BLOCK_ID' => lorem_word(),
                 'HIGH' => lorem_phrase(),
                 'TITLE' => lorem_word(),
                 'MESSAGE' => lorem_phrase(),
@@ -1979,6 +1986,7 @@ class Hook_addon_registry_core
 
         return array(
             lorem_globalise(do_lorem_template('BLOCK_MAIN_EMOTICON_CODES', array(
+                'BLOCK_ID' => lorem_word(),
                 'ROWS' => $rows,
                 'NUM_COLUMNS' => '1',
             )), null, '', true)
@@ -2006,6 +2014,7 @@ class Hook_addon_registry_core
 
         return array(
             lorem_globalise(do_lorem_template('BLOCK_MAIN_COMCODE_PAGE_CHILDREN', array(
+                'BLOCK_ID' => lorem_word(),
                 'CHILDREN' => $children,
                 'THE_PAGE' => lorem_phrase(),
                 'THE_ZONE' => lorem_phrase(),
@@ -2263,6 +2272,7 @@ class Hook_addon_registry_core
     {
         return array(
             lorem_globalise(do_lorem_template('BLOCK_MAIN_CONTENT_FILTERING', array(
+                'BLOCK_ID' => lorem_word(),
                 'FIELDS' => placeholder_fields(),
                 'ACTIVE_FILTER' => placeholder_id(),
                 'SUBMIT_ICON' => 'buttons__proceed',

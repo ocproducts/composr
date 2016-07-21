@@ -63,6 +63,9 @@ class Block_top_search
     public function run($map)
     {
         require_code('search');
-        return do_template('BLOCK_TOP_SEARCH', do_search_block($map));
+
+        $block_id = get_block_id($map);
+
+        return do_template('BLOCK_TOP_SEARCH', array('BLOCK_ID' => $block_id,) + do_search_block($map));
     }
 }

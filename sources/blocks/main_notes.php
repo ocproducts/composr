@@ -51,6 +51,8 @@ class Block_main_notes
     {
         require_code('textfiles');
 
+        $block_id = get_block_id($map);
+
         $file = array_key_exists('param', $map) ? $map['param'] : 'admin_notes';
         $title = array_key_exists('title', $map) ? $map['title'] : do_lang('NOTES');
         $lang_none = array_key_exists('lang_none', $map) ? $map['lang_none'] : '0';
@@ -75,6 +77,15 @@ class Block_main_notes
         $post_url = get_self_url();
 
         $map_comcode = get_block_ajax_submit_map($map);
-        return do_template('BLOCK_MAIN_NOTES', array('_GUID' => 'f737053505de3bd8ccfe806ec014b8fb', 'TITLE' => $title, 'BLOCK_NAME' => 'main_notes', 'MAP' => $map_comcode, 'CONTENTS' => $contents, 'SCROLLS' => array_key_exists('scrolls', $map) && ($map['scrolls'] == '1'), 'URL' => $post_url));
+        return do_template('BLOCK_MAIN_NOTES', array(
+            '_GUID' => 'f737053505de3bd8ccfe806ec014b8fb',
+            'BLOCK_ID' => $block_id,
+            'TITLE' => $title,
+            'BLOCK_NAME' => 'main_notes',
+            'MAP' => $map_comcode,
+            'CONTENTS' => $contents,
+            'SCROLLS' => array_key_exists('scrolls', $map) && ($map['scrolls'] == '1'),
+            'URL' => $post_url,
+        ));
     }
 }

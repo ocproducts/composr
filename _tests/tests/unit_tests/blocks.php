@@ -18,6 +18,25 @@
  */
 class blocks_test_set extends cms_test_case
 {
+    public function testBlocksNotOverDefined()
+    {
+        require_code('zones2');
+
+        require_all_lang();
+
+        $standard = get_standard_block_parameters();
+
+        $blocks = find_all_blocks();
+        foreach ($blocks as $block => $type) {
+            $parameters = get_block_parameters($block, true);
+            $this->assertTrue(count(array_unique($parameters)) == count($parameters));
+
+            foreach ($standard as $param) {
+                $this->assertTrue(is_null(do_lang('BLOCK_' . $block . '_PARAM_' . $param . '_TITLE', null, null, null, null, false)));
+            }
+        }
+    }
+
     public function testBlocksRender()
     {
         require_code('zones2');

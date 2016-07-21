@@ -59,6 +59,8 @@ class Block_side_shoutbox
         require_javascript('shoutbox');
         require_javascript('ajax');
 
+        $block_id = get_block_id($map);
+
         $room_id = array_key_exists('param', $map) ? intval($map['param']) : null;
         $num_messages = array_key_exists('max', $map) ? intval($map['max']) : 5;
 
@@ -137,6 +139,7 @@ class Block_side_shoutbox
 
         return do_template('BLOCK_SIDE_SHOUTBOX', array(
             '_GUID' => '023aef81ed14e33f1b9337c5aa3b7bc9',
+            'BLOCK_ID' => $block_id,
             'LAST_MESSAGE_ID' => strval($last_message_id),
             'MESSAGES' => $tpl,
             'URL' => $url,

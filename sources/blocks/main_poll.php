@@ -55,6 +55,8 @@ class Block_main_poll
         require_css('polls');
         require_lang('polls');
 
+        $block_id = get_block_id($map);
+
         // Action links
         if ((has_actual_page_access(null, 'cms_polls', null, null)) && (has_submit_permission('mid', get_member(), get_ip_address(), 'cms_polls'))) {
             $submit_url = build_url(array('page' => 'cms_polls', 'type' => 'add', 'redirect' => get_self_url(true, false)), get_module_zone('cms_polls'));
@@ -77,7 +79,15 @@ class Block_main_poll
             $rows = $GLOBALS['SITE_DB']->query_select('poll', array('*'), array('id' => $poll_id), '', 1);
         }
         if (!array_key_exists(0, $rows)) {
-            return do_template('BLOCK_NO_ENTRIES', array('_GUID' => 'fdc85bb2e14bdf00830347e52f25cdac', 'HIGH' => true, 'TITLE' => do_lang_tempcode('POLL'), 'MESSAGE' => do_lang_tempcode('NO_ENTRIES', 'poll'), 'ADD_NAME' => do_lang_tempcode('ADD_POLL'), 'SUBMIT_URL' => $submit_url));
+            return do_template('BLOCK_NO_ENTRIES', array(
+                '_GUID' => 'fdc85bb2e14bdf00830347e52f25cdac',
+                'BLOCK_ID' => $block_id,
+                'HIGH' => true,
+                'TITLE' => do_lang_tempcode('POLL'),
+                'MESSAGE' => do_lang_tempcode('NO_ENTRIES', 'poll'),
+                'ADD_NAME' => do_lang_tempcode('ADD_POLL'),
+                'SUBMIT_URL' => $submit_url,
+            ));
         }
         $myrow = $rows[0];
         $poll_id = $myrow['id'];
@@ -98,6 +108,7 @@ class Block_main_poll
         // Render block wrapper template around poll
         return do_template('BLOCK_MAIN_POLL', array(
             '_GUID' => '06a5b384015504a6a57fc4ddedbe91a7',
+            'BLOCK_ID' => $block_id,
             'BLOCK_PARAMS' => block_params_arr_to_str($map),
             'CONTENT' => $content,
         ));

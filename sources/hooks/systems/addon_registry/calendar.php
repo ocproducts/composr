@@ -348,6 +348,7 @@ class Hook_addon_registry_calendar
         require_lang('dates');
         return array(
             lorem_globalise(do_lorem_template('BLOCK_SIDE_CALENDAR', array(
+                'BLOCK_ID' => lorem_word(),
                 'CALENDAR_URL' => placeholder_url(),
                 'ENTRIES' => $_entries,
                 '_MONTH' => lorem_phrase(),
@@ -367,6 +368,7 @@ class Hook_addon_registry_calendar
     {
         return array(
             lorem_globalise(do_lorem_template('BLOCK_SIDE_CALENDAR_LISTING', array(
+                'BLOCK_ID' => lorem_word(),
                 'DAYS' => placeholder_array(),
                 'EVENTS' => placeholder_array(),
                 'CALENDAR_URL' => placeholder_url(),

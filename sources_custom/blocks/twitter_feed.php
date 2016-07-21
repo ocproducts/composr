@@ -58,6 +58,8 @@ class Block_twitter_feed
     {
         i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+        $block_id = get_block_id($map);
+
         safe_ini_set('ocproducts.type_strictness', '0');
 
         // Set up variables from parameters
@@ -166,7 +168,14 @@ class Block_twitter_feed
         }
 
         if (count($twitter_statuses) == 0) {
-            return do_template('BLOCK_NO_ENTRIES', array('_GUID' => '24982bb4c3bfdc2ada1b4ccad92b5039', 'TITLE' => 'Twitter Profile Details', 'MESSAGE' => do_lang_tempcode('NO_ENTRIES'), 'ADD_NAME' => '', 'SUBMIT_URL' => ''));
+            return do_template('BLOCK_NO_ENTRIES', array(
+                '_GUID' => '24982bb4c3bfdc2ada1b4ccad92b5039',
+                'BLOCK_ID' => $block_id,
+                'TITLE' => 'Twitter Profile Details',
+                'MESSAGE' => do_lang_tempcode('NO_ENTRIES'),
+                'ADD_NAME' => '',
+                'SUBMIT_URL' => '',
+            ));
         }
 
         // Generate variables and pass them to Style template for each status (status=tweet)
@@ -274,6 +283,7 @@ class Block_twitter_feed
 
         // Pass all the Styled statuses to the main template container
         return do_template($twitter_templatemain, array(
+            'BLOCK_ID' => $block_id,
             'TWITTER_ERROR' => $twitter_error,
             'TWITTER_TITLE' => $twitter_title,
             'CONTENT' => $content,

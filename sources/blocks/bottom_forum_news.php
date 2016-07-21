@@ -66,6 +66,8 @@ class Block_bottom_forum_news
             return new Tempcode();
         }
 
+        $block_id = get_block_id($map);
+
         $limit = array_key_exists('param', $map) ? intval($map['param']) : 6;
         $forum_name = array_key_exists('forum', $map) ? $map['forum'] : do_lang('NEWS');
 
@@ -107,7 +109,11 @@ class Block_bottom_forum_news
                 }
             }
 
-            return do_template('BLOCK_BOTTOM_NEWS', array('_GUID' => '04d5390309dcba1f17391e9928da0d56', 'POSTS' => $_postdetailss));
+            return do_template('BLOCK_BOTTOM_NEWS', array(
+                '_GUID' => '04d5390309dcba1f17391e9928da0d56',
+                'BLOCK_ID' => $block_id,
+                'POSTS' => $_postdetailss,
+            ));
         } else {
             return new Tempcode();
         }

@@ -126,6 +126,8 @@ class Block_main_staff_links
     {
         require_lang('staff_checklist');
 
+        $block_id = get_block_id($map);
+
         $newdata = post_param_string('staff_links_edit', null);
         if (!is_null($newdata)) {
             $items = explode("\n", $newdata);
@@ -185,6 +187,14 @@ class Block_main_staff_links
         }
 
         $map_comcode = get_block_ajax_submit_map($map);
-        return do_template('BLOCK_MAIN_STAFF_LINKS', array('_GUID' => '555150e7f1626ae0689158b1ecc1d85b', 'URL' => get_self_url(), 'BLOCK_NAME' => 'main_staff_links', 'MAP' => $map_comcode, 'FORMATTED_LINKS' => $formatted_staff_links, 'UNFORMATTED_LINKS' => $unformatted_staff_links));
+        return do_template('BLOCK_MAIN_STAFF_LINKS', array(
+            '_GUID' => '555150e7f1626ae0689158b1ecc1d85b',
+            'BLOCK_ID' => $block_id,
+            'URL' => get_self_url(),
+            'BLOCK_NAME' => 'main_staff_links',
+            'MAP' => $map_comcode,
+            'FORMATTED_LINKS' => $formatted_staff_links,
+            'UNFORMATTED_LINKS' => $unformatted_staff_links,
+        ));
     }
 }

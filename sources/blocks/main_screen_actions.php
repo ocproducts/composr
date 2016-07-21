@@ -53,6 +53,8 @@ class Block_main_screen_actions
 
         require_lang('recommend');
 
+        $block_id = get_block_id($map);
+
         $from = isset($map['url']) ? $map['url'] : '';
         if ($from == '') {
             $from = get_self_url(true);
@@ -66,6 +68,7 @@ class Block_main_screen_actions
 
         return do_template('BLOCK_MAIN_SCREEN_ACTIONS', array(
             '_GUID' => '2f5ceee4e1cc3d31c184c62e0710b1c3',
+            'BLOCK_ID' => $block_id,
             'PRINT_URL' => get_self_url(true, false, array('wide_print' => 1)),
             'RECOMMEND_URL' => $recommend_url,
             'EASY_SELF_URL' => str_replace("'", '', urlencode(get_self_url(true))),

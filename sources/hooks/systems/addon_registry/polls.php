@@ -165,6 +165,7 @@ class Hook_addon_registry_polls
     {
         return array(
             lorem_globalise(do_lorem_template('BLOCK_MAIN_POLL', array(
+                'BLOCK_ID' => lorem_word(),
                 'CONTENT' => $this->poll('poll'),
                 'BLOCK_PARAMS' => '',
             )), null, '', true)

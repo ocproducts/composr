@@ -57,6 +57,8 @@ class Block_top_notifications
             return new Tempcode();
         }
 
+        $block_id = get_block_id($map);
+
         $max = isset($map['max']) ? intval($map['max']) : 5;
 
         require_code('notification_poller');
@@ -67,6 +69,8 @@ class Block_top_notifications
 
         return do_template('BLOCK_TOP_NOTIFICATIONS', array(
             '_GUID' => '3fa04eb827741561440dbf1a65988b33',
+            'BLOCK_ID' => $block_id,
+
             'NUM_UNREAD_WEB_NOTIFICATIONS' => strval($num_unread_web_notifications),
             'NOTIFICATIONS' => $notifications,
 

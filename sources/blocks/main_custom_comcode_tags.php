@@ -51,6 +51,8 @@ class Block_main_custom_comcode_tags
     {
         require_lang('custom_comcode');
 
+        $block_id = get_block_id($map);
+
         $tags = array();
         $wmap = array('tag_enabled' => 1);
         if (!has_privilege(get_member(), 'comcode_dangerous')) {
@@ -81,6 +83,10 @@ class Block_main_custom_comcode_tags
             );
         }
 
-        return do_template('BLOCK_MAIN_CUSTOM_COMCODE_TAGS', array('_GUID' => 'b8d3436e6e5fe679ae9b0a368e607610', 'TAGS' => $tags));
+        return do_template('BLOCK_MAIN_CUSTOM_COMCODE_TAGS', array(
+            '_GUID' => 'b8d3436e6e5fe679ae9b0a368e607610',
+            'BLOCK_ID' => $block_id,
+            'TAGS' => $tags,
+        ));
     }
 }

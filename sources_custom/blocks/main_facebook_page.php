@@ -62,6 +62,8 @@ class Block_main_facebook_page
         require_lang('facebook');
         require_code('facebook_connect');
 
+        $block_id = get_block_id($map);
+
         $appid = get_option('facebook_appid');
         if ($appid == '') {
             return new Tempcode();
@@ -76,6 +78,7 @@ class Block_main_facebook_page
 
         return do_template('BLOCK_MAIN_FACEBOOK_PAGE', array(
             '_GUID' => '5f4dc97379346496d8b8152a56a9ec84',
+            'BLOCK_ID' => $block_id,
             'PAGE_NAME' => $page_name,
             'WIDTH' => $width,
             'HEIGHT' => $height,

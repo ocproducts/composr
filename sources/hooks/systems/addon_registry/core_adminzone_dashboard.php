@@ -201,6 +201,7 @@ class Hook_addon_registry_core_adminzone_dashboard
 
         return array(
             lorem_globalise(do_lorem_template('BLOCK_MAIN_STAFF_WEBSITE_MONITORING', array(
+                'BLOCK_ID' => lorem_word(),
                 'GRID_DATA' => $data,
                 'URL' => placeholder_url(),
                 'SITE_URLS' => $urls,
@@ -236,6 +237,7 @@ class Hook_addon_registry_core_adminzone_dashboard
 
         return array(
             lorem_globalise(do_lorem_template('BLOCK_MAIN_STAFF_LINKS', array(
+                'BLOCK_ID' => lorem_word(),
                 'FORMATTED_LINKS' => $formatted,
                 'UNFORMATTED_LINKS' => $unformatted,
                 'URL' => placeholder_url(),
@@ -256,6 +258,7 @@ class Hook_addon_registry_core_adminzone_dashboard
     {
         return array(
             lorem_globalise(do_lorem_template('BLOCK_MAIN_NOTES', array(
+                'BLOCK_ID' => lorem_word(),
                 'TITLE' => lorem_word(),
                 'SCROLLS' => lorem_phrase(),
                 'CONTENTS' => lorem_phrase(),
@@ -336,6 +339,7 @@ class Hook_addon_registry_core_adminzone_dashboard
 
         return array(
             lorem_globalise(do_lorem_template('BLOCK_MAIN_STAFF_CHECKLIST', array(
+                'BLOCK_ID' => lorem_word(),
                 'URL' => placeholder_url(),
                 'NOTES' => lorem_phrase(),
                 'CUSTOM_TASKS' => $custom_task,
@@ -358,6 +362,7 @@ class Hook_addon_registry_core_adminzone_dashboard
         require_lang('version');
         return array(
             lorem_globalise(do_lorem_template('BLOCK_MAIN_STAFF_NEW_VERSION', array(
+                'BLOCK_ID' => lorem_word(),
                 'VERSION' => lorem_phrase(),
                 'VERSION_TABLE' => placeholder_table(),
                 'HAS_UPDATED_ADDONS' => true,
@@ -376,6 +381,7 @@ class Hook_addon_registry_core_adminzone_dashboard
     {
         return array(
             lorem_globalise(do_lorem_template('BLOCK_MAIN_STAFF_TIPS', array(
+                'BLOCK_ID' => lorem_word(),
                 'BLOCK_PARAMS' => '',
                 'TIP' => lorem_phrase(),
                 'TIP_CODE' => lorem_phrase(),
@@ -396,6 +402,7 @@ class Hook_addon_registry_core_adminzone_dashboard
     {
         return array(
             lorem_globalise(do_lorem_template('BLOCK_MAIN_STAFF_ACTIONS', array(
+                'BLOCK_ID' => lorem_word(),
                 'BLOCK_PARAMS' => '',
                 'CONTENT' => lorem_paragraph_html(),
             )), null, '', true)

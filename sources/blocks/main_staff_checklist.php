@@ -123,6 +123,8 @@ class Block_main_staff_checklist
 
         require_lang('dates');
 
+        $block_id = get_block_id($map);
+
         // Handle custom tasks
         $new_task = post_param_string('new_task', null);
         $recur_interval = post_param_integer('recur_interval', 0);
@@ -203,7 +205,15 @@ class Block_main_staff_checklist
             $out_dates->attach($item[0]);
         }
 
-        return do_template('BLOCK_MAIN_STAFF_CHECKLIST', array('_GUID' => 'aefbca8252dc1d6edc44fc6d1e78b3ec', 'URL' => get_self_url(), 'DATES' => $out_dates, 'NO_TIMES' => $out_no_times, 'TODO_COUNTS' => $out_todo_counts, 'CUSTOM_TASKS' => $custom_tasks));
+        return do_template('BLOCK_MAIN_STAFF_CHECKLIST', array(
+            '_GUID' => 'aefbca8252dc1d6edc44fc6d1e78b3ec',
+            'BLOCK_ID' => $block_id,
+            'URL' => get_self_url(),
+            'DATES' => $out_dates,
+            'NO_TIMES' => $out_no_times,
+            'TODO_COUNTS' => $out_todo_counts,
+            'CUSTOM_TASKS' => $custom_tasks,
+        ));
     }
 }
 

@@ -492,14 +492,26 @@ function get_block_parameters($block, $include_standard_parameters = false)
     }
 
     if ($include_standard_parameters) {
-        $parameters[] = 'failsafe';
-        $parameters[] = 'cache';
-        $parameters[] = 'quick_cache';
-        $parameters[] = 'defer';
-        $parameters[] = 'block_id';
+        $parameters = array_merge($parameters, get_standard_block_parameters());
     }
 
     return $parameters;
+}
+
+/**
+ * Gets standard parameters for any block
+ *
+ * @return array A list of standard parameters
+ */
+function get_standard_block_parameters()
+{
+    return array(
+        'failsafe',
+        'cache',
+        'quick_cache',
+        'defer',
+        'block_id',
+    );
 }
 
 /**

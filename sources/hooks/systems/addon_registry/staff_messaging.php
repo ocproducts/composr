@@ -212,6 +212,7 @@ class Hook_addon_registry_staff_messaging
 
         return array(
             lorem_globalise(do_lorem_template('BLOCK_MAIN_CONTACT_US', array(
+                'BLOCK_ID' => lorem_word(),
                 'COMMENT_DETAILS' => $comment_details,
                 'MESSAGE' => lorem_phrase(),
                 'NOTIFICATIONS_ENABLED' => lorem_phrase(),
@@ -252,6 +253,7 @@ class Hook_addon_registry_staff_messaging
 
         return array(
             lorem_globalise(do_lorem_template('BLOCK_MAIN_CONTACT_SIMPLE', array(
+                'BLOCK_ID' => lorem_word(),
                 'EMAIL_OPTIONAL' => lorem_word_html(),
                 'COMMENT_DETAILS' => $comment_details,
                 'MESSAGE' => lorem_phrase(),

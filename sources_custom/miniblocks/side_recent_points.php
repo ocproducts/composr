@@ -15,6 +15,8 @@
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+$block_id = get_block_id($map);
+
 $max = array_key_exists('max', $map) ? intval($map['max']) : 10;
 
 $sql = 'SELECT * FROM ' . get_table_prefix() . 'gifts g WHERE gift_from<>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id()) . ' ORDER BY g.id DESC';
@@ -66,5 +68,9 @@ foreach ($gifts as $gift) {
     );
 }
 
-$tpl = do_template('BLOCK_SIDE_RECENT_POINTS', array('_GUID' => 'ee241c0bd5356f1d6e28a9de3cdfa387', 'GIFTS' => $_gifts));
+$tpl = do_template('BLOCK_SIDE_RECENT_POINTS', array(
+    '_GUID' => 'ee241c0bd5356f1d6e28a9de3cdfa387',
+    'BLOCK_ID' => $block_id,
+    'GIFTS' => $_gifts,
+));
 $tpl->evaluate_echo();

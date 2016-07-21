@@ -61,6 +61,8 @@ class Block_side_amazon_affiliate_sales
 
         require_lang('amazon');
 
+        $block_id = get_block_id($map);
+
         if (!array_key_exists('associates_id', $map)) {
             return do_lang_tempcode('NO_PARAMETER_SENT', 'associates_id');
         }
@@ -73,6 +75,7 @@ class Block_side_amazon_affiliate_sales
 
         return do_template('BLOCK_SIDE_AMAZON_AFFILIATE_SALES', array(
             '_GUID' => '5edc2fd386f1688fca8e0e6eefa5f455',
+            'BLOCK_ID' => $block_id,
             'ASSOCIATES_ID' => $associates_id,
             'PRODUCT_LINE' => $product_line,
             'SUBJECT_KEYWORDS' => $subject_keywords,

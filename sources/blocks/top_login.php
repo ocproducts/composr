@@ -72,9 +72,18 @@ class Block_top_login
 
         require_css('personal_stats');
 
+        $block_id = get_block_id($map);
+
         $title = do_lang_tempcode('NOT_LOGGED_IN');
 
         list($full_url, $login_url, $join_url) = get_login_url();
-        return do_template('BLOCK_TOP_LOGIN', array('_GUID' => '9d1547632875ecd466ced4f90a866df9', 'TITLE' => $title, 'FULL_LOGIN_URL' => $full_url, 'JOIN_URL' => $join_url, 'LOGIN_URL' => $login_url));
+        return do_template('BLOCK_TOP_LOGIN', array(
+            '_GUID' => '9d1547632875ecd466ced4f90a866df9',
+            'BLOCK_ID' => $block_id,
+            'TITLE' => $title,
+            'FULL_LOGIN_URL' => $full_url,
+            'JOIN_URL' => $join_url,
+            'LOGIN_URL' => $login_url,
+        ));
     }
 }

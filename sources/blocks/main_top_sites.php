@@ -69,6 +69,8 @@ class Block_main_top_sites
         require_code('banners');
         require_lang('banners');
 
+        $block_id = get_block_id($map);
+
         $b_type = $map['param'];
         $myquery = banner_select_sql($b_type) . ' ORDER BY hits_from+hits_to DESC';
         $_banners = $GLOBALS['SITE_DB']->query($myquery, 200);
@@ -101,6 +103,12 @@ class Block_main_top_sites
             $submit_url = new Tempcode();
         }
 
-        return do_template('BLOCK_MAIN_TOP_SITES', array('_GUID' => '776cecc3769b4f4e082be327da5b7248', 'TYPE' => $map['param'], 'BANNERS' => $banners, 'SUBMIT_URL' => $submit_url));
+        return do_template('BLOCK_MAIN_TOP_SITES', array(
+            '_GUID' => '776cecc3769b4f4e082be327da5b7248',
+            'BLOCK_ID' => $block_id,
+            'TYPE' => $map['param'],
+            'BANNERS' => $banners,
+            'SUBMIT_URL' => $submit_url,
+        ));
     }
 }

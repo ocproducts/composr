@@ -63,6 +63,8 @@ class Block_main_comcode_page_children
      */
     public function run($map)
     {
+        $block_id = get_block_id($map);
+
         $page = ((array_key_exists('param', $map)) && ($map['param'] != '')) ? $map['param'] : get_page_name();
 
         $zone = array_key_exists('zone', $map) ? $map['zone'] : post_param_string('zone', get_comcode_zone($page, false));
@@ -131,6 +133,12 @@ class Block_main_comcode_page_children
 
         sort_maps_by($children, 'ORDER,TITLE');
 
-        return do_template('BLOCK_MAIN_COMCODE_PAGE_CHILDREN', array('_GUID' => '375aa1907fc6b2ca6b23ab5b5139aaef', 'CHILDREN' => $children, 'THE_PAGE' => $page, 'THE_ZONE' => $zone));
+        return do_template('BLOCK_MAIN_COMCODE_PAGE_CHILDREN', array(
+            '_GUID' => '375aa1907fc6b2ca6b23ab5b5139aaef',
+            'BLOCK_ID' => $block_id,
+            'CHILDREN' => $children,
+            'THE_PAGE' => $page,
+            'THE_ZONE' => $zone,
+        ));
     }
 }

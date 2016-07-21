@@ -152,6 +152,7 @@ class Hook_addon_registry_users_online_block
 
         return array(
             lorem_globalise(do_lorem_template('BLOCK_SIDE_USERS_ONLINE', array(
+                'BLOCK_ID' => lorem_word(),
                 'ONLINE' => $online,
                 'GUESTS' => placeholder_number(),
                 'MEMBERS' => placeholder_number(),

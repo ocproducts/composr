@@ -68,6 +68,8 @@ class Block_main_forum_topics
 
         require_css('news');
 
+        $block_id = get_block_id($map);
+
         // Read in variables
         $forum_name = array_key_exists('param', $map) ? $map['param'] : 'General chat';
         $limit = array_key_exists('limit', $map) ? intval($map['limit']) : 6;
@@ -206,6 +208,7 @@ class Block_main_forum_topics
             if ($_topics === array()) {
                 return do_template('BLOCK_NO_ENTRIES', array(
                     '_GUID' => 'c76ab018a0746c2875c6cf69c92a01fb',
+                    'BLOCK_ID' => $block_id,
                     'HIGH' => false,
                     'FORUM_NAME' => array_key_exists('param', $map) ? $map['param'] : 'General chat',
                     'TITLE' => $_title,
@@ -217,6 +220,7 @@ class Block_main_forum_topics
 
             return do_template('BLOCK_MAIN_FORUM_TOPICS', array(
                 '_GUID' => '368b80c49a335ad035b00510681d5008',
+                'BLOCK_ID' => $block_id,
                 'TITLE' => $_title,
                 'TOPICS' => $_topics,
                 'FORUM_NAME' => array_key_exists('param', $map) ? $map['param'] : 'General chat',

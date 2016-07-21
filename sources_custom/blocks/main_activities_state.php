@@ -53,8 +53,14 @@ class Block_main_activities_state
         require_javascript('activities_state');
         require_javascript('jquery');
 
+        $block_id = get_block_id($map);
+
         $title = array_key_exists('param', $map) ? $map['param'] : do_lang('STATUS_UPDATE');
 
-        return do_template('BLOCK_MAIN_ACTIVITIES_STATE', array('_GUID' => 'ad41b611db430c58189aa28e96a2712e', 'TITLE' => $title));
+        return do_template('BLOCK_MAIN_ACTIVITIES_STATE', array(
+            '_GUID' => 'ad41b611db430c58189aa28e96a2712e',
+            'BLOCK_ID' => $block_id,
+            'TITLE' => $title,
+        ));
     }
 }

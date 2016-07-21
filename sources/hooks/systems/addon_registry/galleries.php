@@ -363,6 +363,8 @@ class Hook_addon_registry_galleries
     public function tpl_preview__cns_member_profile_galleries()
     {
         $galleries = do_lorem_template('BLOCK_MAIN_PERSONAL_GALLERIES_LIST', array(
+            'BLOCK_ID' => lorem_word(),
+
             'GALLERIES' => lorem_paragraph_html(),
             'PAGINATION' => placeholder_pagination(),
             'BLOCK_PARAMS' => '',
@@ -400,21 +402,21 @@ class Hook_addon_registry_galleries
         return array(
             lorem_globalise(
                 do_lorem_template('BLOCK_MAIN_IMAGE_FADER', array(
-                        'GALLERY_URL' => placeholder_url(),
-                        'FIRST_URL' => placeholder_image_url(),
-                        'PREVIOUS_URL' => placeholder_image_url(),
-                        'NEXT_URL' => placeholder_image_url(),
-                        'FIRST_URL_FULL' => placeholder_image_url(),
-                        'PREVIOUS_URL_FULL' => placeholder_image_url(),
-                        'NEXT_URL_FULL' => placeholder_image_url(),
-                        'TITLES' => array(),
-                        'IMAGES' => array(),
-                        'IMAGES_FULL' => array(),
-                        'HTML' => array(),
-                        'MILL' => '3000',
-                        'BLOCK_ID' => placeholder_id(),
-                    )
-                ), null, '', true),
+                    'BLOCK_ID' => lorem_word(),
+                    'GALLERY_URL' => placeholder_url(),
+                    'FIRST_URL' => placeholder_image_url(),
+                    'PREVIOUS_URL' => placeholder_image_url(),
+                    'NEXT_URL' => placeholder_image_url(),
+                    'FIRST_URL_FULL' => placeholder_image_url(),
+                    'PREVIOUS_URL_FULL' => placeholder_image_url(),
+                    'NEXT_URL_FULL' => placeholder_image_url(),
+                    'TITLES' => array(),
+                    'IMAGES' => array(),
+                    'IMAGES_FULL' => array(),
+                    'HTML' => array(),
+                    'MILL' => '3000',
+                )
+            ), null, '', true),
         );
     }
 
@@ -443,11 +445,11 @@ class Hook_addon_registry_galleries
         return array(
             lorem_globalise(
                 do_lorem_template('GALLERY_IMPORT_SCREEN', array(
-                        'TITLE' => lorem_title(),
-                        'FORM2' => placeholder_form(),
-                        'FORM' => $form,
-                    )
-                ), null, '', true),
+                    'TITLE' => lorem_title(),
+                    'FORM2' => placeholder_form(),
+                    'FORM' => $form,
+                )
+            ), null, '', true),
         );
     }
 
@@ -463,10 +465,10 @@ class Hook_addon_registry_galleries
         return array(
             lorem_globalise(
                 do_lorem_template('GALLERY_POPULAR', array(
-                        'CHILDREN' => lorem_sentence_html(),
-                        'CAT' => 'root',
-                    )
-                ), null, '', true),
+                    'CHILDREN' => lorem_sentence_html(),
+                    'CAT' => 'root',
+                )
+            ), null, '', true),
         );
     }
 
@@ -482,23 +484,23 @@ class Hook_addon_registry_galleries
         return array(
             lorem_globalise(
                 do_lorem_template('GALLERY_IMAGE', array(
-                        'TITLE' => lorem_phrase(),
-                        'VIEW_URL' => placeholder_url(),
-                        'THUMB' => placeholder_image(),
-                        'DESCRIPTION' => lorem_phrase(),
-                        'ADD_DATE_RAW' => placeholder_date(),
-                        'EDIT_DATE_RAW' => placeholder_date(),
-                        'VIEWS' => placeholder_number(),
-                        'SUBMITTER' => placeholder_id(),
-                        'ID' => placeholder_id(),
-                        '_EDIT_URL' => placeholder_url(),
-                        'MEDIA_TYPE' => 'image',
-                        'FILE_SIZE' => lorem_word(),
-                        'FULL_URL' => placeholder_url(),
-                        'THUMB_URL' => placeholder_url(),
-                        'CAT' => lorem_word(),
-                    )
-                ), null, '', true),
+                    'TITLE' => lorem_phrase(),
+                    'VIEW_URL' => placeholder_url(),
+                    'THUMB' => placeholder_image(),
+                    'DESCRIPTION' => lorem_phrase(),
+                    'ADD_DATE_RAW' => placeholder_date(),
+                    'EDIT_DATE_RAW' => placeholder_date(),
+                    'VIEWS' => placeholder_number(),
+                    'SUBMITTER' => placeholder_id(),
+                    'ID' => placeholder_id(),
+                    '_EDIT_URL' => placeholder_url(),
+                    'MEDIA_TYPE' => 'image',
+                    'FILE_SIZE' => lorem_word(),
+                    'FULL_URL' => placeholder_url(),
+                    'THUMB_URL' => placeholder_url(),
+                    'CAT' => lorem_word(),
+                )
+            ), null, '', true),
         );
     }
 
@@ -539,21 +541,22 @@ class Hook_addon_registry_galleries
         return array(
             lorem_globalise(
                 do_lorem_template('BLOCK_MAIN_GALLERY_EMBED', array(
-                        'TITLE' => lorem_phrase(),
-                        'CAT' => placeholder_id(),
-                        'ENTRIES' => $entries,
-                        'TOTAL_VIDEOS' => placeholder_number(),
-                        'TOTAL_IMAGES' => placeholder_number(),
-                        'TOTAL' => lorem_phrase(),
-                        'PAGINATION' => placeholder_pagination(),
-                        'BLOCK_PARAMS' => '',
+                    'BLOCK_ID' => lorem_word(),
+                    'TITLE' => lorem_phrase(),
+                    'CAT' => placeholder_id(),
+                    'ENTRIES' => $entries,
+                    'TOTAL_VIDEOS' => placeholder_number(),
+                    'TOTAL_IMAGES' => placeholder_number(),
+                    'TOTAL' => lorem_phrase(),
+                    'PAGINATION' => placeholder_pagination(),
+                    'BLOCK_PARAMS' => '',
 
-                        'START' => '0',
-                        'MAX' => '10',
-                        'START_PARAM' => 'x_start',
-                        'MAX_PARAM' => 'x_max',
-                    )
-                ), null, '', true),
+                    'START' => '0',
+                    'MAX' => '10',
+                    'START_PARAM' => 'x_start',
+                    'MAX_PARAM' => 'x_max',
+                )
+            ), null, '', true),
         );
     }
 
@@ -580,10 +583,11 @@ class Hook_addon_registry_galleries
         return array(
             lorem_globalise(
                 do_lorem_template('BLOCK_SIDE_GALLERIES', array(
-                        'DEPTH' => true,
-                        'CONTENT' => $content,
-                    )
-                ), null, '', true),
+                    'BLOCK_ID' => lorem_word(),
+                    'DEPTH' => true,
+                    'CONTENT' => $content,
+                )
+            ), null, '', true),
         );
     }
 
@@ -599,11 +603,11 @@ class Hook_addon_registry_galleries
         return array(
             lorem_globalise(
                 do_lorem_template('GALLERY_VIDEO_INFO', array(
-                        'HEIGHT' => placeholder_number(),
-                        'WIDTH' => placeholder_number(),
-                        'LENGTH' => placeholder_number(),
-                    )
-                ), null, '', true),
+                    'HEIGHT' => placeholder_number(),
+                    'WIDTH' => placeholder_number(),
+                    'LENGTH' => placeholder_number(),
+                )
+            ), null, '', true),
         );
     }
 
@@ -619,10 +623,10 @@ class Hook_addon_registry_galleries
         return array(
             lorem_globalise(
                 do_lorem_template('GALLERY_ENTRY_LIST_LINE', array(
-                        'BREADCRUMBS' => lorem_phrase(),
-                        'URL' => placeholder_url(),
-                    )
-                ), null, '', true),
+                    'BREADCRUMBS' => lorem_phrase(),
+                    'URL' => placeholder_url(),
+                )
+            ), null, '', true),
         );
     }
 
@@ -703,42 +707,42 @@ class Hook_addon_registry_galleries
         return array(
             lorem_globalise(
                 do_lorem_template('GALLERY_FLOW_MODE_SCREEN', array(
-                        '_TITLE' => lorem_phrase(),
-                        'VIEW_URL' => placeholder_url(),
-                        'FULL_URL' => placeholder_url(),
-                        'PROBE_TYPE' => lorem_phrase(),
-                        'ENTRY_TITLE' => lorem_phrase(),
-                        'ENTRY_DESCRIPTION' => lorem_paragraph_html(),
-                        'ENTRY_SUBMITTER' => placeholder_id(),
-                        'ENTRY_VIEWS' => placeholder_number(),
-                        'ENTRY_ADD_DATE_RAW' => placeholder_date_raw(),
-                        'ENTRY_EDIT_DATE_RAW' => placeholder_date_raw(),
-                        'ENTRY_TRACKBACK_DETAILS' => lorem_sentence_html(),
-                        'ENTRY_RATING_DETAILS' => lorem_sentence_html(),
-                        'ENTRY_COMMENT_DETAILS' => lorem_sentence_html(),
-                        'ENTRY_EDIT_URL' => placeholder_url(),
-                        'WARNING_DETAILS' => '',
-                        'TAGS' => $tags,
-                        'RATING_DETAILS' => lorem_sentence_html(),
-                        'COMMENT_DETAILS' => $comment_details,
-                        'REP_IMAGE_URL' => placeholder_image_url(),
-                        'TITLE' => lorem_title(),
-                        'MEMBER_DETAILS' => lorem_phrase(),
-                        'DESCRIPTION' => lorem_paragraph_html(),
-                        'CHILDREN' => lorem_paragraph_html(),
-                        'CURRENT_ENTRY' => $video,
-                        'ENTRIES' => $entries,
-                        'EDIT_URL' => placeholder_url(),
-                        'ADD_GALLERY_URL' => placeholder_url(),
-                        'IMAGE_URL' => placeholder_image_url(),
-                        'MEMBER_ID' => placeholder_id(),
-                        'VIDEO_URL' => placeholder_url(),
-                        'MAY_DOWNLOAD' => lorem_phrase(),
-                        'CAT' => placeholder_id(),
-                        'FIRST_ENTRY_ID' => placeholder_id(),
-                        'SORTING' => lorem_phrase(),
-                    )
-                ), null, '', true),
+                    '_TITLE' => lorem_phrase(),
+                    'VIEW_URL' => placeholder_url(),
+                    'FULL_URL' => placeholder_url(),
+                    'PROBE_TYPE' => lorem_phrase(),
+                    'ENTRY_TITLE' => lorem_phrase(),
+                    'ENTRY_DESCRIPTION' => lorem_paragraph_html(),
+                    'ENTRY_SUBMITTER' => placeholder_id(),
+                    'ENTRY_VIEWS' => placeholder_number(),
+                    'ENTRY_ADD_DATE_RAW' => placeholder_date_raw(),
+                    'ENTRY_EDIT_DATE_RAW' => placeholder_date_raw(),
+                    'ENTRY_TRACKBACK_DETAILS' => lorem_sentence_html(),
+                    'ENTRY_RATING_DETAILS' => lorem_sentence_html(),
+                    'ENTRY_COMMENT_DETAILS' => lorem_sentence_html(),
+                    'ENTRY_EDIT_URL' => placeholder_url(),
+                    'WARNING_DETAILS' => '',
+                    'TAGS' => $tags,
+                    'RATING_DETAILS' => lorem_sentence_html(),
+                    'COMMENT_DETAILS' => $comment_details,
+                    'REP_IMAGE_URL' => placeholder_image_url(),
+                    'TITLE' => lorem_title(),
+                    'MEMBER_DETAILS' => lorem_phrase(),
+                    'DESCRIPTION' => lorem_paragraph_html(),
+                    'CHILDREN' => lorem_paragraph_html(),
+                    'CURRENT_ENTRY' => $video,
+                    'ENTRIES' => $entries,
+                    'EDIT_URL' => placeholder_url(),
+                    'ADD_GALLERY_URL' => placeholder_url(),
+                    'IMAGE_URL' => placeholder_image_url(),
+                    'MEMBER_ID' => placeholder_id(),
+                    'VIDEO_URL' => placeholder_url(),
+                    'MAY_DOWNLOAD' => lorem_phrase(),
+                    'CAT' => placeholder_id(),
+                    'FIRST_ENTRY_ID' => placeholder_id(),
+                    'SORTING' => lorem_phrase(),
+                )
+            ), null, '', true),
         );
     }
 
@@ -818,39 +822,39 @@ class Hook_addon_registry_galleries
         return array(
             lorem_globalise(
                 do_lorem_template('GALLERY_FLOW_MODE_SCREEN', array(
-                        '_TITLE' => lorem_phrase(),
-                        'VIEW_URL' => placeholder_url(),
-                        'FULL_URL' => placeholder_url(),
-                        'PROBE_TYPE' => lorem_phrase(),
-                        'ENTRY_VIEWS' => placeholder_number(),
-                        'ENTRY_ADD_DATE_RAW' => placeholder_date_raw(),
-                        'ENTRY_EDIT_DATE_RAW' => placeholder_date_raw(),
-                        'ENTRY_TRACKBACK_DETAILS' => lorem_sentence_html(),
-                        'ENTRY_RATING_DETAILS' => lorem_sentence_html(),
-                        'ENTRY_COMMENT_DETAILS' => lorem_sentence_html(),
-                        'ENTRY_EDIT_URL' => placeholder_url(),
-                        'WARNING_DETAILS' => '',
-                        'TAGS' => $tags,
-                        'RATING_DETAILS' => lorem_sentence_html(),
-                        'COMMENT_DETAILS' => $comment_details,
-                        'REP_IMAGE_URL' => placeholder_image_url(),
-                        'TITLE' => lorem_title(),
-                        'MEMBER_DETAILS' => lorem_paragraph_html(),
-                        'DESCRIPTION' => lorem_paragraph_html(),
-                        'CHILDREN' => lorem_paragraph_html(),
-                        'CURRENT_ENTRY' => $image,
-                        'ENTRIES' => $entries,
-                        'EDIT_URL' => placeholder_url(),
-                        'ADD_GALLERY_URL' => placeholder_url(),
-                        'IMAGE_URL' => placeholder_image_url(),
-                        'MEMBER_ID' => placeholder_id(),
-                        'VIDEO_URL' => placeholder_url(),
-                        'MAY_DOWNLOAD' => lorem_phrase(),
-                        'CAT' => placeholder_id(),
-                        'FIRST_ENTRY_ID' => placeholder_id(),
-                        'SORTING' => lorem_phrase(),
-                    )
-                ), null, '', true),
+                    '_TITLE' => lorem_phrase(),
+                    'VIEW_URL' => placeholder_url(),
+                    'FULL_URL' => placeholder_url(),
+                    'PROBE_TYPE' => lorem_phrase(),
+                    'ENTRY_VIEWS' => placeholder_number(),
+                    'ENTRY_ADD_DATE_RAW' => placeholder_date_raw(),
+                    'ENTRY_EDIT_DATE_RAW' => placeholder_date_raw(),
+                    'ENTRY_TRACKBACK_DETAILS' => lorem_sentence_html(),
+                    'ENTRY_RATING_DETAILS' => lorem_sentence_html(),
+                    'ENTRY_COMMENT_DETAILS' => lorem_sentence_html(),
+                    'ENTRY_EDIT_URL' => placeholder_url(),
+                    'WARNING_DETAILS' => '',
+                    'TAGS' => $tags,
+                    'RATING_DETAILS' => lorem_sentence_html(),
+                    'COMMENT_DETAILS' => $comment_details,
+                    'REP_IMAGE_URL' => placeholder_image_url(),
+                    'TITLE' => lorem_title(),
+                    'MEMBER_DETAILS' => lorem_paragraph_html(),
+                    'DESCRIPTION' => lorem_paragraph_html(),
+                    'CHILDREN' => lorem_paragraph_html(),
+                    'CURRENT_ENTRY' => $image,
+                    'ENTRIES' => $entries,
+                    'EDIT_URL' => placeholder_url(),
+                    'ADD_GALLERY_URL' => placeholder_url(),
+                    'IMAGE_URL' => placeholder_image_url(),
+                    'MEMBER_ID' => placeholder_id(),
+                    'VIDEO_URL' => placeholder_url(),
+                    'MAY_DOWNLOAD' => lorem_phrase(),
+                    'CAT' => placeholder_id(),
+                    'FIRST_ENTRY_ID' => placeholder_id(),
+                    'SORTING' => lorem_phrase(),
+                )
+            ), null, '', true),
         );
     }
 
@@ -958,24 +962,24 @@ class Hook_addon_registry_galleries
         return array(
             lorem_globalise(
                 do_lorem_template('GALLERY_REGULAR_MODE_SCREEN', array(
-                        '_TITLE' => lorem_phrase(),
-                        'TAGS' => $tags,
-                        'CAT' => lorem_word(),
-                        'MEMBER_DETAILS' => lorem_sentence_html(),
-                        'RATING_DETAILS' => lorem_sentence_html(),
-                        'COMMENT_DETAILS' => $comment_details,
-                        'ADD_GALLERY_URL' => placeholder_url(),
-                        'EDIT_URL' => placeholder_url(),
-                        'CHILDREN' => $children,
-                        'TITLE' => lorem_title(),
-                        'DESCRIPTION' => lorem_paragraph_html(),
-                        'IMAGE_URL' => placeholder_url(),
-                        'VIDEO_URL' => placeholder_url(),
-                        'MAY_DOWNLOAD' => lorem_phrase(),
-                        'ENTRIES' => $entries,
-                        'SORTING' => lorem_phrase(),
-                    )
-                ), null, '', true),
+                    '_TITLE' => lorem_phrase(),
+                    'TAGS' => $tags,
+                    'CAT' => lorem_word(),
+                    'MEMBER_DETAILS' => lorem_sentence_html(),
+                    'RATING_DETAILS' => lorem_sentence_html(),
+                    'COMMENT_DETAILS' => $comment_details,
+                    'ADD_GALLERY_URL' => placeholder_url(),
+                    'EDIT_URL' => placeholder_url(),
+                    'CHILDREN' => $children,
+                    'TITLE' => lorem_title(),
+                    'DESCRIPTION' => lorem_paragraph_html(),
+                    'IMAGE_URL' => placeholder_url(),
+                    'VIDEO_URL' => placeholder_url(),
+                    'MAY_DOWNLOAD' => lorem_phrase(),
+                    'ENTRIES' => $entries,
+                    'SORTING' => lorem_phrase(),
+                )
+            ), null, '', true),
         );
     }
 
@@ -1014,38 +1018,38 @@ class Hook_addon_registry_galleries
         return array(
             lorem_globalise(
                 do_lorem_template('GALLERY_ENTRY_SCREEN', array(
-                        'CAT' => placeholder_id(),
-                        'MEDIA_TYPE' => 'video',
-                        'ID' => placeholder_id(),
-                        'SLIDESHOW' => false,
-                        'TRUE_GALLERY_TITLE' => lorem_phrase(),
-                        'E_TITLE' => lorem_phrase(),
-                        'GALLERY_TITLE' => lorem_phrase(),
-                        'MEMBER_ID' => placeholder_id(),
-                        'TAGS' => lorem_word_html(),
-                        'TITLE' => lorem_title(),
-                        'SUBMITTER' => lorem_word_html(),
-                        'URL' => placeholder_url(),
-                        'VIDEO_DETAILS' => lorem_sentence_html(),
-                        'MEMBER_DETAILS' => lorem_sentence_html(),
-                        'X' => lorem_phrase(),
-                        'N' => lorem_phrase(),
-                        'VIEWS' => lorem_phrase(),
-                        'ADD_DATE_RAW' => placeholder_date_raw(),
-                        'EDIT_DATE_RAW' => placeholder_date_raw(),
-                        'ADD_DATE' => placeholder_date(),
-                        'EDIT_DATE' => placeholder_date(),
-                        'RATING_DETAILS' => lorem_sentence_html(),
-                        'TRACKBACK_DETAILS' => lorem_sentence_html(),
-                        'COMMENT_DETAILS' => $comment_details,
-                        'EDIT_URL' => placeholder_url(),
-                        'THUMB_URL' => placeholder_image_url(),
-                        'NAV' => $nav,
-                        'DESCRIPTION' => lorem_phrase(),
-                        'VIDEO' => $video,
-                        'WARNING_DETAILS' => '',
-                    )
-                ), null, '', true),
+                    'CAT' => placeholder_id(),
+                    'MEDIA_TYPE' => 'video',
+                    'ID' => placeholder_id(),
+                    'SLIDESHOW' => false,
+                    'TRUE_GALLERY_TITLE' => lorem_phrase(),
+                    'E_TITLE' => lorem_phrase(),
+                    'GALLERY_TITLE' => lorem_phrase(),
+                    'MEMBER_ID' => placeholder_id(),
+                    'TAGS' => lorem_word_html(),
+                    'TITLE' => lorem_title(),
+                    'SUBMITTER' => lorem_word_html(),
+                    'URL' => placeholder_url(),
+                    'VIDEO_DETAILS' => lorem_sentence_html(),
+                    'MEMBER_DETAILS' => lorem_sentence_html(),
+                    'X' => lorem_phrase(),
+                    'N' => lorem_phrase(),
+                    'VIEWS' => lorem_phrase(),
+                    'ADD_DATE_RAW' => placeholder_date_raw(),
+                    'EDIT_DATE_RAW' => placeholder_date_raw(),
+                    'ADD_DATE' => placeholder_date(),
+                    'EDIT_DATE' => placeholder_date(),
+                    'RATING_DETAILS' => lorem_sentence_html(),
+                    'TRACKBACK_DETAILS' => lorem_sentence_html(),
+                    'COMMENT_DETAILS' => $comment_details,
+                    'EDIT_URL' => placeholder_url(),
+                    'THUMB_URL' => placeholder_image_url(),
+                    'NAV' => $nav,
+                    'DESCRIPTION' => lorem_phrase(),
+                    'VIDEO' => $video,
+                    'WARNING_DETAILS' => '',
+                )
+            ), null, '', true),
         );
     }
 }

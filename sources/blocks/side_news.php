@@ -70,6 +70,8 @@ class Block_side_news
         require_css('news');
         require_code('news');
 
+        $block_id = get_block_id($map);
+
         $max = array_key_exists('param', $map) ? intval($map['param']) : 5;
         $zone = array_key_exists('zone', $map) ? $map['zone'] : get_module_zone('news');
         $blogs = array_key_exists('blogs', $map) ? intval($map['blogs']) : -1;
@@ -216,6 +218,7 @@ class Block_side_news
 
                 $content->attach(do_template('BLOCK_SIDE_NEWS_SUMMARY', array(
                     '_GUID' => 'f7bc5288680e68641ca94ca4a3111d4a',
+                    'BLOCK_ID' => $block_id,
                     'IMG_URL' => get_news_category_image_url($NEWS_CATS_CACHE[$myrow['news_category']]['nc_img']),
                     'AUTHOR' => $myrow['author'],
                     'ID' => strval($myrow['id']),
@@ -267,6 +270,14 @@ class Block_side_news
             $submit_url = build_url($map2, get_module_zone(($blogs === 1) ? 'cms_blogs' : 'cms_news'));
         }
 
-        return do_template('BLOCK_SIDE_NEWS', array('_GUID' => '611b83965c4b6e42fb4a709d94c332f7', 'BLOG' => $blogs === 1, 'TITLE' => $_title, 'CONTENT' => $content, 'SUBMIT_URL' => $submit_url, 'ARCHIVE_URL' => $archive_url));
+        return do_template('BLOCK_SIDE_NEWS', array(
+            '_GUID' => '611b83965c4b6e42fb4a709d94c332f7',
+            'BLOCK_ID' => $block_id,
+            'BLOG' => $blogs === 1,
+            'TITLE' => $_title,
+            'CONTENT' => $content,
+            'SUBMIT_URL' => $submit_url,
+            'ARCHIVE_URL' => $archive_url,
+        ));
     }
 }

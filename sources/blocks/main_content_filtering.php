@@ -49,6 +49,8 @@ class Block_main_content_filtering
      */
     public function run($map)
     {
+        $block_id = get_block_id($map);
+
         $links = array_key_exists('links', $map) ? $map['links'] : '';
         $labels = $this->interpret_pairs_from_string(array_key_exists('labels', $map) ? $map['labels'] : '');
         $_types = array_key_exists('types', $map) ? $map['types'] : '';
@@ -83,6 +85,7 @@ class Block_main_content_filtering
 
         return do_template('BLOCK_MAIN_CONTENT_FILTERING', array(
             '_GUID' => '6cdeed216dfac854672a16db39a6807f',
+            'BLOCK_ID' => $block_id,
             'FIELDS' => $fields,
             'ACTIVE_FILTER' => $filter,
             'LINKS' => $links,

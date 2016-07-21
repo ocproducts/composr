@@ -70,6 +70,8 @@ class Block_main_image_fader_news
         require_code('news');
         require_css('news');
 
+        $block_id = get_block_id($map);
+
         $cat = array_key_exists('param', $map) ? $map['param'] : '*';
         if ($cat == '') {
             $cat = 'root';
@@ -182,7 +184,15 @@ class Block_main_image_fader_news
             if ((has_actual_page_access(null, ($blogs === 1) ? 'cms_blogs' : 'cms_news', null, null)) && (has_submit_permission('mid', get_member(), get_ip_address(), ($blogs === 1) ? 'cms_blogs' : 'cms_news', array('news', $cat)))) {
                 $submit_url = build_url(array('page' => ($blogs === 1) ? 'cms_blogs' : 'cms_news', 'type' => 'add', 'cat' => $cat, 'redirect' => SELF_REDIRECT), get_module_zone(($blogs === 1) ? 'cms_blogs' : 'cms_news'));
             }
-            return do_template('BLOCK_NO_ENTRIES', array('_GUID' => 'ba84d65b8dd134ba6cd7b1b7bde99de2', 'HIGH' => false, 'TITLE' => $main_title, 'MESSAGE' => do_lang_tempcode('NO_ENTRIES', 'news'), 'ADD_NAME' => do_lang_tempcode('ADD_NEWS'), 'SUBMIT_URL' => $submit_url));
+            return do_template('BLOCK_NO_ENTRIES', array(
+                '_GUID' => 'ba84d65b8dd134ba6cd7b1b7bde99de2',
+                'BLOCK_ID' => $block_id,
+                'HIGH' => false,
+                'TITLE' => $main_title,
+                'MESSAGE' => do_lang_tempcode('NO_ENTRIES', 'news'),
+                'ADD_NAME' => do_lang_tempcode('ADD_NEWS'),
+                'SUBMIT_URL' => $submit_url,
+            ));
         }
 
         $tmp = array('page' => 'news', 'type' => 'browse', 'select' => ($cat == '') ? null : $cat);
@@ -193,6 +203,7 @@ class Block_main_image_fader_news
 
         return do_template('BLOCK_MAIN_IMAGE_FADER_NEWS', array(
             '_GUID' => 'dbe34e6f670edfd74b15d3c4afbe615e',
+            'BLOCK_ID' => $block_id,
             'TITLE' => $main_title,
             'ARCHIVE_URL' => $archive_url,
             'NEWS' => $news,

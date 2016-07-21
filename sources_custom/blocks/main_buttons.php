@@ -116,6 +116,8 @@ class Block_main_buttons
 
         require_css('banners');
 
+        $block_id = get_block_id($map);
+
         if (!array_key_exists('param', $map)) {
             $map['param'] = '';
         }
@@ -123,10 +125,10 @@ class Block_main_buttons
             $map['extra'] = '';
         }
         if (!array_key_exists('title', $map)) {
-            $map['title'] = 'I support'; // default value
+            $map['title'] = 'I support';
         }
         $max = array_key_exists('max', $map) ? intval($map['max']) : 100;
-        $height = (!empty($map['height'])) ? $map['height'] : '100%';//default: 100%
+        $height = (!empty($map['height'])) ? $map['height'] : '100%';
 
         $set_height = '';
         if ($height != '100%') {
@@ -151,6 +153,14 @@ class Block_main_buttons
             $assemble->attach(do_template('BLOCK_MAIN_BANNER_WAVE_BWRAP_CUSTOM', array('_GUID' => 'b7d22f954147f0d012cb6eaeaf721e8f', 'EXTRA' => $map['extra'], 'TYPE' => $map['param'], 'BANNER' => $bd, 'MORE_COMING' => $more_coming)));
         }
 
-        return do_template('BLOCK_MAIN_BUTTONS', array('_GUID' => 'b78228b68ce7f275c6cbb6055e37081e', 'EXTRA' => $map['extra'], 'TYPE' => $map['param'], 'ASSEMBLE' => $assemble, 'TITLE' => $map['title'], 'SET_HEIGHT' => $set_height));
+        return do_template('BLOCK_MAIN_BUTTONS', array(
+            '_GUID' => 'b78228b68ce7f275c6cbb6055e37081e',
+            'BLOCK_ID' => $block_id,
+            'EXTRA' => $map['extra'],
+            'TYPE' => $map['param'],
+            'ASSEMBLE' => $assemble,
+            'TITLE' => $map['title'],
+            'SET_HEIGHT' => $set_height,
+        ));
     }
 }

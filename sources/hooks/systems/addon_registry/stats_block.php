@@ -166,6 +166,7 @@ class Hook_addon_registry_stats_block
 
         return array(
             lorem_globalise(do_lorem_template('BLOCK_SIDE_STATS', array(
+                'BLOCK_ID' => lorem_word(),
                 'CONTENT' => $full_tpl,
             )), null, '', true)
         );

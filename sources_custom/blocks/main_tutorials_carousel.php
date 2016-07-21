@@ -59,6 +59,8 @@ class Block_main_tutorials_carousel
     {
         i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+        $block_id = get_block_id($map);
+
         if (!module_installed('tutorials')) {
             require_code('zones2');
             reinstall_module('docs', 'tutorials');
@@ -73,6 +75,10 @@ class Block_main_tutorials_carousel
         $tutorials = list_tutorials_by($criteria);
         $_tutorials = templatify_tutorial_list($tutorials, true);
 
-        return do_template('BLOCK_MAIN_TUTORIALS_CAROUSEL', array('_GUID' => '07b265b808abd02cc8abae7e3fe6992d', 'TUTORIALS' => $_tutorials));
+        return do_template('BLOCK_MAIN_TUTORIALS_CAROUSEL', array(
+            '_GUID' => '07b265b808abd02cc8abae7e3fe6992d',
+            'BLOCK_ID' => $block_id,
+            'TUTORIALS' => $_tutorials,
+        ));
     }
 }

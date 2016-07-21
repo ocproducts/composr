@@ -51,6 +51,8 @@ class Block_main_google_map
         require_lang('google_map');
         require_lang('locations');
 
+        $block_id = get_block_id($map);
+
         // Set up config/defaults
         if (!isset($map['title'])) {
             $map['title'] = '';
@@ -249,6 +251,7 @@ class Block_main_google_map
 
         return do_template('BLOCK_MAIN_GOOGLE_MAP', array(
             '_GUID' => ($guid == '') ? '939dd8fe2397bba0609fba129a8a3bfd' : $guid,
+            'BLOCK_ID' => $block_id,
             'TITLE' => $map['title'],
             'ICON' => $icon,
             'MIN_LATITUDE' => $min_latitude,

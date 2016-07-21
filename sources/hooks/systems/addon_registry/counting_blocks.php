@@ -132,6 +132,7 @@ class Hook_addon_registry_counting_blocks
     {
         return array(
             lorem_globalise(do_lorem_template('BLOCK_MAIN_COUNTDOWN', array(
+                'BLOCK_ID' => lorem_word(),
                 'LANG' => placeholder_number(),
                 'POSITIVE' => true,
                 'PRECISION' => placeholder_number(),
@@ -153,6 +154,7 @@ class Hook_addon_registry_counting_blocks
     {
         return array(
             lorem_globalise(do_lorem_template('BLOCK_MAIN_COUNT', array(
+                'BLOCK_ID' => lorem_word(),
                 'NAME' => lorem_word(),
                 'VALUE' => placeholder_number(),
             )), null, '', true)

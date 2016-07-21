@@ -154,6 +154,7 @@ class Hook_addon_registry_forum_blocks
 
         return array(
             lorem_globalise(do_lorem_template('BLOCK_MAIN_FORUM_TOPICS', array(
+                'BLOCK_ID' => lorem_word(),
                 'TITLE' => lorem_word(),
                 'TOPICS' => $topics,
                 'FORUM_NAME' => lorem_word_html(),
@@ -194,6 +195,7 @@ class Hook_addon_registry_forum_blocks
 
         return array(
             lorem_globalise(do_lorem_template('BLOCK_SIDE_FORUM_NEWS', array(
+                'BLOCK_ID' => lorem_word(),
                 'FORUM_NAME' => lorem_word_html(),
                 'TITLE' => lorem_phrase(),
                 'NEWS' => $news,
@@ -245,6 +247,7 @@ class Hook_addon_registry_forum_blocks
 
         return array(
             lorem_globalise(do_lorem_template('BLOCK_MAIN_FORUM_NEWS', array(
+                'BLOCK_ID' => lorem_word(),
                 'TITLE' => lorem_word(),
                 'FORUM_NAME' => lorem_word_html(),
                 'CONTENT' => $out,

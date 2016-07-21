@@ -69,6 +69,8 @@ class Block_side_forum_news
         require_css('news');
         require_lang('news');
 
+        $block_id = get_block_id($map);
+
         $limit = array_key_exists('param', $map) ? intval($map['param']) : 6;
         $forum_name = array_key_exists('forum', $map) ? $map['forum'] : do_lang('NEWS');
 
@@ -146,6 +148,7 @@ class Block_side_forum_news
 
             return do_template('BLOCK_SIDE_FORUM_NEWS', array(
                 '_GUID' => '174fa5ce0d35d9b49dca6347c66494a5',
+                'BLOCK_ID' => $block_id,
                 'FORUM_NAME' => array_key_exists('forum', $map) ? $map['forum'] : do_lang('NEWS'),
                 'TITLE' => $_title,
                 'NEWS' => $news,

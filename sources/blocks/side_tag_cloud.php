@@ -66,6 +66,8 @@ class Block_side_tag_cloud
         require_css('search');
         require_code('content');
 
+        $block_id = get_block_id($map);
+
         $zone = array_key_exists('zone', $map) ? $map['zone'] : get_module_zone('search');
         $max_tags = array_key_exists('max', $map) ? intval($map['max']) : 30;
 
@@ -154,6 +156,11 @@ class Block_side_tag_cloud
 
         $title = array_key_exists('title', $map) ? $map['title'] : do_lang('TAG_CLOUD');
 
-        return do_template('BLOCK_SIDE_TAG_CLOUD', array('_GUID' => '5cd3ece0f5c087fe1ce7db26d5356989', 'TAGS' => $tpl_tags, 'TITLE' => $title));
+        return do_template('BLOCK_SIDE_TAG_CLOUD', array(
+            '_GUID' => '5cd3ece0f5c087fe1ce7db26d5356989',
+            'BLOCK_ID' => $block_id,
+            'TAGS' => $tpl_tags,
+            'TITLE' => $title,
+        ));
     }
 }

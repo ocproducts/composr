@@ -49,7 +49,14 @@ class Block_side_printer_friendly
      */
     public function run($map)
     {
+        $block_id = get_block_id($map);
+
         $url = get_self_url(true, false, array('wide_print' => 1));
-        return do_template('BLOCK_SIDE_PRINTER_FRIENDLY', array('_GUID' => 'db1d2db67f07a3d6bd130f4cef4c5e9d', 'URL' => $url));
+
+        return do_template('BLOCK_SIDE_PRINTER_FRIENDLY', array(
+            '_GUID' => 'db1d2db67f07a3d6bd130f4cef4c5e9d',
+            'BLOCK_ID' => $block_id,
+            'URL' => $url,
+        ));
     }
 }

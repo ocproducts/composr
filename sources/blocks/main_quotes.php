@@ -65,6 +65,8 @@ class Block_main_quotes
     {
         require_lang('quotes');
 
+        $block_id = get_block_id($map);
+
         $file = array_key_exists('param', $map) ? $map['param'] : 'quotes';
         $title = array_key_exists('title', $map) ? $map['title'] : do_lang('QUOTES');
 
@@ -84,7 +86,14 @@ class Block_main_quotes
         if (($file == 'quotes') && (has_actual_page_access(get_member(), 'quotes', 'adminzone'))) {
             $edit_url = build_url(array('page' => 'quotes'), 'adminzone');
         }
-        return do_template('BLOCK_MAIN_QUOTES', array('_GUID' => '7cab7422f603f7b1197c940de48b99aa', 'TITLE' => $title, 'EDIT_URL' => $edit_url, 'FILE' => $file, 'CONTENT' => comcode_to_tempcode($this->get_random_line($place), null, true)));
+        return do_template('BLOCK_MAIN_QUOTES', array(
+            '_GUID' => '7cab7422f603f7b1197c940de48b99aa',
+            'BLOCK_ID' => $block_id,
+            'TITLE' => $title,
+            'EDIT_URL' => $edit_url,
+            'FILE' => $file,
+            'CONTENT' => comcode_to_tempcode($this->get_random_line($place), null, true),
+        ));
     }
 
     /**

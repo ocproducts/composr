@@ -1532,10 +1532,7 @@ function do_block_get_cache_identifier($cache_on, $map)
         $_cache_identifier = call_user_func($cache_on[0], $map);
     } else {
         if ($cache_on != '') {
-            $block_id = mixed();
-            if (strpos($cache_on, 'block_id') !== false) {
-                $block_id = get_block_id($map);
-            }
+            $block_id = get_block_id($map);
 
             $_cache_on = eval('return ' . $cache_on . ';'); // NB: This uses $map, as $map is referenced inside $cache_on
             if ($_cache_on === null) {
@@ -1544,6 +1541,7 @@ function do_block_get_cache_identifier($cache_on, $map)
             foreach ($_cache_on as $on) {
                 $_cache_identifier[] = $on;
             }
+            $_cache_identifier[] = get_block_id($map);
         }
     }
 

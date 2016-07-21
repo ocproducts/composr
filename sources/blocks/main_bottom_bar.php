@@ -64,6 +64,8 @@ class Block_main_bottom_bar
 
         require_lang('cns');
 
+        $block_id = get_block_id($map);
+
         $stats = cns_get_forums_stats();
 
         // Users online
@@ -143,6 +145,7 @@ class Block_main_bottom_bar
 
         return do_template('BLOCK_MAIN_BOTTOM_BAR', array(
             '_GUID' => 'sdflkdlfd303frksdf',
+            'BLOCK_ID' => $block_id,
             'NEWEST_MEMBER_PROFILE_URL' => $GLOBALS['CNS_DRIVER']->member_profile_url($stats['newest_member_id'], true),
             'NEWEST_MEMBER_USERNAME' => $stats['newest_member_username'],
             'NUM_MEMBERS' => integer_format($stats['num_members']),

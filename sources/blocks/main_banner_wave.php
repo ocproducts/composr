@@ -64,6 +64,8 @@ class Block_main_banner_wave
     {
         require_css('banners');
 
+        $block_id = get_block_id($map);
+
         $b_type = isset($map['param']) ? $map['param'] : '';
 
         $name = empty($map['name']) ? null : $map['name'];
@@ -95,6 +97,13 @@ class Block_main_banner_wave
             $assemble->attach(do_template('BLOCK_MAIN_BANNER_WAVE_BWRAP', array('_GUID' => 'bbb0851f015305da014f0a55006770f5', 'TYPE' => $b_type, 'BANNER' => $banner, 'MAX' => strval($max), 'REGION' => $region)));
         }
 
-        return do_template('BLOCK_MAIN_BANNER_WAVE', array('_GUID' => '8bced3f44675de9ef0bd5f4d286aea76', 'TYPE' => $b_type, 'ASSEMBLE' => $assemble, 'MAX' => strval($max), 'REGION' => $region));
+        return do_template('BLOCK_MAIN_BANNER_WAVE', array(
+            '_GUID' => '8bced3f44675de9ef0bd5f4d286aea76',
+            'BLOCK_ID' => $block_id,
+            'TYPE' => $b_type,
+            'ASSEMBLE' => $assemble,
+            'MAX' => strval($max),
+            'REGION' => $region,
+        ));
     }
 }

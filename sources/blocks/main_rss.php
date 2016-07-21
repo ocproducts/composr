@@ -71,6 +71,8 @@ class Block_main_rss
         require_css('news');
         require_code('obfuscate');
 
+        $block_id = get_block_id($map);
+
         $url = array_key_exists('param', $map) ? $map['param'] : (get_brand_base_url() . '/backend.php?type=rss&mode=news&select=1,2,17,18,29,30'); // http://news.google.co.uk/news?hs=UTT&tab=wn&topic=w&output=atom
 
         require_code('rss');
@@ -201,6 +203,7 @@ class Block_main_rss
 
             $content->attach(do_template('BLOCK_MAIN_RSS_SUMMARY', array(
                 '_GUID' => '9ca64090348263449ea1fcea75c8ed5f',
+                'BLOCK_ID' => $block_id,
                 'FEED_URL' => $url,
                 'DATE' => array_key_exists('add_date', $item) ? $item['add_date'] : '',
                 'DATE_RAW' => array_key_exists('clean_add_date', $item) ? strval($item['clean_add_date']) : '',
@@ -233,7 +236,15 @@ class Block_main_rss
             $author = new Tempcode();
         }
 
-        return do_template('BLOCK_MAIN_RSS', array('_GUID' => '6c9c1287abff88fda881e3e25ef7b296', 'FEED_URL' => $url, 'TITLE' => $rss->gleamed_feed['title'], 'COPYRIGHT' => $rss->gleamed_feed['copyright'], 'AUTHOR' => $author, 'CONTENT' => $content));
+        return do_template('BLOCK_MAIN_RSS', array(
+            '_GUID' => '6c9c1287abff88fda881e3e25ef7b296',
+            'BLOCK_ID' => $block_id,
+            'FEED_URL' => $url,
+            'TITLE' => $rss->gleamed_feed['title'],
+            'COPYRIGHT' => $rss->gleamed_feed['copyright'],
+            'AUTHOR' => $author,
+            'CONTENT' => $content,
+        ));
     }
 }
 

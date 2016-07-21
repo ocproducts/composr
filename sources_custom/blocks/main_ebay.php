@@ -61,6 +61,8 @@ class Block_main_ebay
 
         require_lang('ebay');
 
+        $block_id = get_block_id($map);
+
         if (!array_key_exists('seller', $map)) {
             return do_lang_tempcode('NO_PARAMETER_SENT', 'seller');
         }
@@ -74,6 +76,7 @@ class Block_main_ebay
 
         return do_template('BLOCK_MAIN_EBAY', array(
             '_GUID' => 'ffda4477bf08164f80dd45ef2985dfe9',
+            'BLOCK_ID' => $block_id,
             'TITLE' => $title,
             'MAX_ENTRIES' => strval($max_entries),
             'IMAGE_SIZE' => strval($image_size),

@@ -52,6 +52,8 @@ class Block_main_contact_us
         require_lang('messaging');
         require_code('feedback');
 
+        $block_id = get_block_id($map);
+
         $type = array_key_exists('param', $map) ? $map['param'] : do_lang('GENERAL');
 
         $body_prefix = array_key_exists('body_prefix', $map) ? $map['body_prefix'] : '';
@@ -174,6 +176,7 @@ class Block_main_contact_us
 
                 $out = do_template('BLOCK_MAIN_CONTACT_US', array(
                     '_GUID' => $guid,
+                    'BLOCK_ID' => $block_id,
                     'COMMENT_DETAILS' => $comment_details,
                     'MESSAGE' => $message,
                     'NOTIFICATIONS_ENABLED' => $notifications_enabled,

@@ -128,6 +128,7 @@ class Hook_addon_registry_language_block
     {
         return array(
             lorem_globalise(do_lorem_template('BLOCK_SIDE_LANGUAGE', array(
+                'BLOCK_ID' => lorem_word(),
                 'LANGS' => placeholder_options(),
             )), null, '', true)
         );

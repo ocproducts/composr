@@ -61,6 +61,11 @@ class Block_main_google_results
 
         require_lang('google_search');
 
-        return do_template('BLOCK_MAIN_GOOGLE_SEARCH_RESULTS', array('_GUID' => 'e2bd264817a6ad7852918583986bd373'));
+        $block_id = get_block_id($map);
+
+        return do_template('BLOCK_MAIN_GOOGLE_SEARCH_RESULTS', array(
+            '_GUID' => 'e2bd264817a6ad7852918583986bd373',
+            'BLOCK_ID' => $block_id,
+        ));
     }
 }

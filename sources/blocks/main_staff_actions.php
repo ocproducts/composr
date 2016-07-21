@@ -100,6 +100,8 @@ class Block_main_staff_actions
 
         require_code('actionlog');
 
+        $block_id = get_block_id($map);
+
         $start = get_param_integer('sa_start', 0);
         $max = array_key_exists('max', $map) ? intval($map['max']) : get_param_integer('sa_max', 10);
         $sortables = array('date_and_time' => do_lang_tempcode('DATE_TIME'),/*Not enough space 'ip' => do_lang_tempcode('IP_ADDRESS'),*/
@@ -164,6 +166,7 @@ class Block_main_staff_actions
         // Render block wrapper template around actions table
         return do_template('BLOCK_MAIN_STAFF_ACTIONS', array(
             '_GUID' => '16a5b384015504a6a57fc4ddedbe91a7',
+            'BLOCK_ID' => $block_id,
             'BLOCK_PARAMS' => block_params_arr_to_str($map),
             'CONTENT' => $content,
         ));

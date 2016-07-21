@@ -65,6 +65,8 @@ class Block_side_news_archive
     {
         require_lang('news');
 
+        $block_id = get_block_id($map);
+
         $zone = array_key_exists('zone', $map) ? $map['zone'] : get_module_zone('news');
         $select = array_key_exists('select', $map) ? $map['select'] : '*';
 
@@ -176,6 +178,11 @@ class Block_side_news_archive
 
         $title = array_key_exists('title', $map) ? $map['title'] : do_lang('ARCHIVES');
 
-        return do_template('BLOCK_SIDE_NEWS_ARCHIVE', array('_GUID' => '10d6267d943ad77a4025a4e286c41ee7', 'YEARS' => $years, 'TITLE' => $title));
+        return do_template('BLOCK_SIDE_NEWS_ARCHIVE', array(
+            '_GUID' => '10d6267d943ad77a4025a4e286c41ee7',
+            'BLOCK_ID' => $block_id,
+            'YEARS' => $years,
+            'TITLE' => $title,
+        ));
     }
 }

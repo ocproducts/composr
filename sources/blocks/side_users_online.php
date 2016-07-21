@@ -77,6 +77,8 @@ class Block_side_users_online
             require_css('cns');
         }
 
+        $block_id = get_block_id($map);
+
         $online = array();
         $guests = 0;
         $_members = 0;
@@ -140,6 +142,7 @@ class Block_side_users_online
 
         return do_template('BLOCK_SIDE_USERS_ONLINE', array(
             '_GUID' => 'fdfa68dff479b4ea7d517585297ea6af',
+            'BLOCK_ID' => $block_id,
             'ONLINE' => $online,
             'GUESTS' => integer_format($guests),
             'MEMBERS' => integer_format($_members),

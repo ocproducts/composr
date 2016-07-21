@@ -60,6 +60,8 @@ class Block_main_iotd
     {
         i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+        $block_id = get_block_id($map);
+
         require_lang('iotds');
         require_css('iotds');
         $mode = array_key_exists('param', $map) ? $map['param'] : 'current';
@@ -76,18 +78,42 @@ class Block_main_iotd
         } elseif (is_numeric($mode)) {
             $iotd = $GLOBALS['SITE_DB']->query_select('iotd', array('*'), array('id' => intval($mode)), '', 1);
             if (!array_key_exists(0, $iotd)) {
-                return do_template('BLOCK_NO_ENTRIES', array('_GUID' => '55cff098a0ff91416e6c0e52228ca02d', 'HIGH' => true, 'TITLE' => do_lang_tempcode('IOTD'), 'MESSAGE' => do_lang_tempcode('NO_ENTRIES', 'iotd'), 'ADD_NAME' => do_lang_tempcode('ADD_IOTD'), 'SUBMIT_URL' => $submit_url));
+                return do_template('BLOCK_NO_ENTRIES', array(
+                    '_GUID' => '55cff098a0ff91416e6c0e52228ca02d',
+                    'BLOCK_ID' => $block_id,
+                    'HIGH' => true,
+                    'TITLE' => do_lang_tempcode('IOTD'),
+                    'MESSAGE' => do_lang_tempcode('NO_ENTRIES', 'iotd'),
+                    'ADD_NAME' => do_lang_tempcode('ADD_IOTD'),
+                    'SUBMIT_URL' => $submit_url,
+                ));
             }
         } else {
             $cnt = $GLOBALS['SITE_DB']->query_select_value('iotd', 'COUNT(*)', array('used' => 1));
             if ($cnt == 0) {
-                return do_template('BLOCK_NO_ENTRIES', array('_GUID' => '3fe3dbbf8966b80cf3037f6dd914867d', 'HIGH' => true, 'TITLE' => do_lang_tempcode('IOTD'), 'MESSAGE' => do_lang_tempcode('NO_ENTRIES', 'iotd'), 'ADD_NAME' => do_lang_tempcode('ADD_IOTD'), 'SUBMIT_URL' => $submit_url));
+                return do_template('BLOCK_NO_ENTRIES', array(
+                    '_GUID' => '3fe3dbbf8966b80cf3037f6dd914867d',
+                    'BLOCK_ID' => $block_id,
+                    'HIGH' => true,
+                    'TITLE' => do_lang_tempcode('IOTD'),
+                    'MESSAGE' => do_lang_tempcode('NO_ENTRIES', 'iotd'),
+                    'ADD_NAME' => do_lang_tempcode('ADD_IOTD'),
+                    'SUBMIT_URL' => $submit_url,
+                ));
             }
             $at = mt_rand(0, $cnt - 1);
             $iotd = $GLOBALS['SITE_DB']->query_select('iotd', array('*'), array('used' => 1), '', 1, $at);
         }
         if (!array_key_exists(0, $iotd)) {
-            return do_template('BLOCK_NO_ENTRIES', array('_GUID' => '62baa388e068d4334f7a6c6093ead56a', 'HIGH' => true, 'TITLE' => do_lang_tempcode('IOTD'), 'MESSAGE' => do_lang_tempcode('NO_ENTRIES', 'iotd'), 'ADD_NAME' => do_lang_tempcode('ADD_IOTD'), 'SUBMIT_URL' => $submit_url));
+            return do_template('BLOCK_NO_ENTRIES', array(
+                '_GUID' => '62baa388e068d4334f7a6c6093ead56a',
+                'BLOCK_ID' => $block_id,
+                'HIGH' => true,
+                'TITLE' => do_lang_tempcode('IOTD'),
+                'MESSAGE' => do_lang_tempcode('NO_ENTRIES', 'iotd'),
+                'ADD_NAME' => do_lang_tempcode('ADD_IOTD'),
+                'SUBMIT_URL' => $submit_url,
+            ));
         }
         $myrow = $iotd[0];
 
@@ -107,7 +133,21 @@ class Block_main_iotd
 
         $archive_url = build_url(array('page' => 'iotds', 'type' => 'browse'), $zone);
 
-        $map2 = array('_GUID' => 'd710da3675a1775867168ae37db02ad4', 'CURRENT' => ($mode == 'current'), 'VIEW_URL' => $view_url, 'IMAGE_URL' => $image_url, 'THUMB_URL' => $thumb_url, 'SUBMITTER' => strval($myrow['submitter']), 'ID' => strval($myrow['id']), 'I_TITLE' => $i_title, 'CAPTION' => $caption, 'IMAGE' => $image, 'ARCHIVE_URL' => $archive_url, 'SUBMIT_URL' => $submit_url);
+        $map2 = array(
+            '_GUID' => 'd710da3675a1775867168ae37db02ad4',
+            'BLOCK_ID' => $block_id,
+            'CURRENT' => ($mode == 'current'),
+            'VIEW_URL' => $view_url,
+            'IMAGE_URL' => $image_url,
+            'THUMB_URL' => $thumb_url,
+            'SUBMITTER' => strval($myrow['submitter']),
+            'ID' => strval($myrow['id']),
+            'I_TITLE' => $i_title,
+            'CAPTION' => $caption,
+            'IMAGE' => $image,
+            'ARCHIVE_URL' => $archive_url,
+            'SUBMIT_URL' => $submit_url,
+        );
         if ((get_option('is_on_comments') == '1') && (get_forum_type() != 'none') && ($myrow['allow_comments'] >= 1)) {
             $map2['COMMENT_COUNT'] = '1';
         }

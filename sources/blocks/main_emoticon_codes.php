@@ -66,6 +66,8 @@ class Block_main_emoticon_codes
         require_code('comcode_compiler');
         require_code('comcode_renderer');
 
+        $block_id = get_block_id($map);
+
         $emoticons = $GLOBALS['FORUM_DRIVER']->find_emoticons(get_member());
 
         $num_columns = array_key_exists('num_columns', $map) ? intval($map['num_columns']) : 4;
@@ -110,6 +112,7 @@ class Block_main_emoticon_codes
 
         return do_template('BLOCK_MAIN_EMOTICON_CODES', array(
             '_GUID' => '56c12281d7e3662b13a7ad7d9958a65c',
+            'BLOCK_ID' => $block_id,
             'ROWS' => $rows,
             'NUM_COLUMNS' => strval($num_columns),
         ));

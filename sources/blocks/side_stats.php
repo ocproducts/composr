@@ -63,6 +63,8 @@ class Block_side_stats
      */
     public function run($map)
     {
+        $block_id = get_block_id($map);
+
         $full_tpl = new Tempcode();
 
         // Inbuilt
@@ -153,6 +155,10 @@ class Block_side_stats
             }
         }
 
-        return do_template('BLOCK_SIDE_STATS', array('_GUID' => '0e9986c117c2a3c04690840fedcbddcd', 'CONTENT' => $full_tpl));
+        return do_template('BLOCK_SIDE_STATS', array(
+            '_GUID' => '0e9986c117c2a3c04690840fedcbddcd',
+            'BLOCK_ID' => $block_id,
+            'CONTENT' => $full_tpl,
+        ));
     }
 }

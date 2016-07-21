@@ -53,6 +53,8 @@ class Block_main_countdown
 
         require_lang('dates');
 
+        $block_id = get_block_id($map);
+
         $precision = array_key_exists('precision', $map) ? intval($map['precision']) : 4;
         $tailing = array_key_exists('tailing', $map) ? intval($map['tailing']) : 4;
 
@@ -151,6 +153,7 @@ class Block_main_countdown
 
         return do_template('BLOCK_MAIN_COUNTDOWN', array(
             '_GUID' => '7bfbaf09b256edcdfc0aeb04d282c3b8',
+            'BLOCK_ID' => $block_id,
             'TAILING' => strval($tailing),
             'LANG' => $lang,
             'POSITIVE' => $positive,

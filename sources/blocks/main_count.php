@@ -51,6 +51,8 @@ class Block_main_count
     {
         require_css('counting_blocks');
 
+        $block_id = get_block_id($map);
+
         // The counter we're using
         $name = array_key_exists('param', $map) ? $map['param'] : '';
         if ($name == '-') {
@@ -83,6 +85,12 @@ class Block_main_count
             $update = $name;
         }
 
-        return do_template('BLOCK_MAIN_COUNT', array('_GUID' => '49d3ba8fb5b5544ac817f9a7d18f9d35', 'NAME' => $name, 'UPDATE' => $update, 'VALUE' => strval($current_value + 1)));
+        return do_template('BLOCK_MAIN_COUNT', array(
+            '_GUID' => '49d3ba8fb5b5544ac817f9a7d18f9d35',
+            'BLOCK_ID' => $block_id,
+            'NAME' => $name,
+            'UPDATE' => $update,
+            'VALUE' => strval($current_value + 1),
+        ));
     }
 }

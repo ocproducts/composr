@@ -114,6 +114,7 @@ class Block_main_personal_galleries_list
 
         return do_template('BLOCK_MAIN_PERSONAL_GALLERIES_LIST', array(
             '_GUID' => '90b11d3c01ff551be42a0472d27dd207',
+            'BLOCK_ID' => $block_id,
             'BLOCK_PARAMS' => block_params_arr_to_str(array('block_id' => $block_id) + $map),
             'GALLERIES' => $galleries,
             'PAGINATION' => $pagination,

@@ -62,6 +62,8 @@ class Block_main_unslider
         require_lang('unslider');
         require_css('unslider');
 
+        $block_id = get_block_id($map);
+
         $pages = explode(',', isset($map['pages']) ? $map['pages'] : 'slide1,slide2,slide3,slide4,slide5,slide6');
         $width = isset($map['width']) ? $map['width'] : '100%';
         if ($width == '100%') {
@@ -98,6 +100,7 @@ class Block_main_unslider
 
         return do_template('BLOCK_MAIN_UNSLIDER', array(
             '_GUID' => 'ae60f714ef84227c0cb958b65f7a253c',
+            'BLOCK_ID' => $block_id,
             'PAGES' => $pages,
             'WIDTH' => $width,
             'HEIGHT' => $height,

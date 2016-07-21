@@ -74,6 +74,8 @@ class Block_main_staff_tips
         require_css('adminzone_dashboard');
         require_lang('tips');
 
+        $block_id = get_block_id($map);
+
         // Anything to dismiss?
         $dismiss = get_param_string('staff_tips_dismiss', '');
         if ($dismiss != '') {
@@ -133,6 +135,7 @@ class Block_main_staff_tips
 
         return do_template('BLOCK_MAIN_STAFF_TIPS', array(
             '_GUID' => 'c2cffc480b7bd9beef7f78a8ee7b7359',
+            'BLOCK_ID' => $block_id,
             'BLOCK_PARAMS' => block_params_arr_to_str($map),
             'TIP' => $tip,
             'TIP_CODE' => $tip_code,

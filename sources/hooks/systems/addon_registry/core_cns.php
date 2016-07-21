@@ -877,7 +877,7 @@ class Hook_addon_registry_core_cns
 
         return array(
             lorem_globalise(do_lorem_template('BLOCK_MAIN_MEMBERS', array(
-                'BLOCK_ID' => '',
+                'BLOCK_ID' => lorem_word(),
                 'START' => strval(0),
                 'MAX' => strval(30),
                 'SORTABLE' => 'm_join_time',

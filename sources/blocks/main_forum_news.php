@@ -71,6 +71,8 @@ class Block_main_forum_news
         require_css('news');
         require_code('xhtml');
 
+        $block_id = get_block_id($map);
+
         $num_topics = array_key_exists('param', $map) ? intval($map['param']) : 14;
         $forum_name = array_key_exists('forum', $map) ? $map['forum'] : do_lang('NEWS');
 
@@ -187,7 +189,15 @@ class Block_main_forum_news
             }
         }
         if ($news_text->is_empty()) {
-            return do_template('BLOCK_NO_ENTRIES', array('_GUID' => 'f55c90205b4c80162494fc5e2b565ce6', 'HIGH' => false, 'TITLE' => $_title, 'MESSAGE' => do_lang_tempcode('NO_NEWS'), 'ADD_NAME' => do_lang_tempcode('ADD_TOPIC'), 'SUBMIT_URL' => $submit_url));
+            return do_template('BLOCK_NO_ENTRIES', array(
+                '_GUID' => 'f55c90205b4c80162494fc5e2b565ce6',
+                'BLOCK_ID' => $block_id,
+                'HIGH' => false,
+                'TITLE' => $_title,
+                'MESSAGE' => do_lang_tempcode('NO_NEWS'),
+                'ADD_NAME' => do_lang_tempcode('ADD_TOPIC'),
+                'SUBMIT_URL' => $submit_url,
+            ));
         }
 
         if (is_null($forum_id)) {
@@ -196,6 +206,7 @@ class Block_main_forum_news
 
         return do_template('BLOCK_MAIN_FORUM_NEWS', array(
             '_GUID' => '36b05da9aed5a2056bdb266e2ce4be9f',
+            'BLOCK_ID' => $block_id,
             'TITLE' => $_title,
             'FORUM_NAME' => array_key_exists('forum', $map) ? $map['forum'] : do_lang('NEWS'),
             'CONTENT' => $news_text,

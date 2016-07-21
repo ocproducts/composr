@@ -112,7 +112,6 @@ class Hook_addon_registry_chat
             'themes/default/images/icons/48x48/menu/social/chat/sound.png',
             'themes/default/images/icons/24x24/menu/social/chat/index.html',
             'themes/default/images/icons/48x48/menu/social/chat/index.html',
-            'sources/chat_shoutbox.php',
             'sources/chat_sounds.php',
             'sources/chat_lobby.php',
             'sources/chat_logs.php',
@@ -278,6 +277,8 @@ class Hook_addon_registry_chat
         $friends_arr[] = $friend_map;
 
         $friends = do_lorem_template('BLOCK_MAIN_FRIENDS_LIST', array(
+            'BLOCK_ID' => lorem_word(),
+
             'FRIENDS' => $friends_arr,
             'PAGINATION' => placeholder_pagination(),
             'BLOCK_PARAMS' => '',
@@ -411,6 +412,7 @@ class Hook_addon_registry_chat
 
         return array(
             lorem_globalise(do_lorem_template('BLOCK_SIDE_SHOUTBOX', array(
+                'BLOCK_ID' => lorem_word(),
                 'CHATROOM_ID' => placeholder_id(),
                 'NUM_MESSAGES' => placeholder_number(),
                 'LAST_MESSAGE_ID' => placeholder_id(),
@@ -472,6 +474,7 @@ class Hook_addon_registry_chat
 
         return array(
             lorem_globalise(do_lorem_template('BLOCK_SIDE_FRIENDS', array(
+                'BLOCK_ID' => lorem_word(),
                 'FRIENDS' => $friends_tpl,
             )), null, '', true)
         );

@@ -355,6 +355,7 @@ class Block_main_gallery_embed
                 }
                 return do_template('BLOCK_NO_ENTRIES', array(
                     '_GUID' => ($guid != '') ? $guid : 'bf84d65b8dd134ba6cd7b1b7bde99de2',
+                    'BLOCK_ID' => $block_id,
                     'HIGH' => false,
                     'TITLE' => $title,
                     'MESSAGE' => do_lang_tempcode('NO_ENTRIES'),
@@ -375,6 +376,7 @@ class Block_main_gallery_embed
         // Render
         return do_template('BLOCK_MAIN_GALLERY_EMBED', array(
             '_GUID' => ($guid != '') ? $guid : 'b7b969c8fe8c398dd6e3af7ee06717ea',
+            'BLOCK_ID' => $block_id,
             'IMAGE_FILTER' => $map['filter'],
             'VIDEO_FILTER' => $map['video_filter'],
             'DAYS' => $_days,

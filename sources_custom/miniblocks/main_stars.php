@@ -19,6 +19,8 @@ require_code('cns_groups');
 require_code('cns_members');
 require_lang('cns');
 
+$block_id = get_block_id($map);
+
 $stars = array();
 
 $sql = 'SELECT gift_to,SUM(amount) as cnt FROM ' . get_table_prefix() . 'gifts g WHERE ';
@@ -56,4 +58,8 @@ foreach ($gifts as $gift) {
     }
 }
 
-return do_template('BLOCK_MAIN_STARS', array('_GUID' => '298e81f1062087de02e30d77ff61305d', 'STARS' => $stars));
+return do_template('BLOCK_MAIN_STARS', array(
+    '_GUID' => '298e81f1062087de02e30d77ff61305d',
+    'BLOCK_ID' => $block_id,
+    'STARS' => $stars,
+));

@@ -52,6 +52,8 @@ class Block_main_contact_simple
         require_lang('messaging');
         require_code('feedback');
 
+        $block_id = get_block_id($map);
+
         $to = array_key_exists('param', $map) ? $map['param'] : get_option('staff_address');
 
         $body_prefix = array_key_exists('body_prefix', $map) ? $map['body_prefix'] : '';
@@ -149,6 +151,7 @@ class Block_main_contact_simple
 
         $out = do_template('BLOCK_MAIN_CONTACT_SIMPLE', array(
             '_GUID' => $guid,
+            'BLOCK_ID' => $block_id,
             'EMAIL_OPTIONAL' => true,
             'COMMENT_DETAILS' => $comment_details,
             'MESSAGE' => $message,

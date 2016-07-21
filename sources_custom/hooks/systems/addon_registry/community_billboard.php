@@ -185,9 +185,9 @@ class Hook_addon_registry_community_billboard
         return array(
             lorem_globalise(
                 do_lorem_template('POINTSTORE_COMMUNITY_BILLBOARD_2', array(
-                        'TEXT_URL' => placeholder_url(),
-                    )
-                ), null, '', true),
+                    'TEXT_URL' => placeholder_url(),
+                )
+            ), null, '', true),
         );
     }
 
@@ -203,12 +203,12 @@ class Hook_addon_registry_community_billboard
         return array(
             lorem_globalise(
                 do_lorem_template('POINTSTORE_COMMUNITY_BILLBOARD_SCREEN', array(
-                        'TITLE' => lorem_title(),
-                        'TEXT_URL' => placeholder_url(),
-                        'QUEUE' => placeholder_number(),
-                        'COST' => placeholder_number(),
-                    )
-                ), null, '', true),
+                    'TITLE' => lorem_title(),
+                    'TEXT_URL' => placeholder_url(),
+                    'QUEUE' => placeholder_number(),
+                    'COST' => placeholder_number(),
+                )
+            ), null, '', true),
         );
     }
 

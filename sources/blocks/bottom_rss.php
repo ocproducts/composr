@@ -62,6 +62,8 @@ class Block_bottom_rss
      */
     public function run($map)
     {
+        $block_id = get_block_id($map);
+
         $url = array_key_exists('param', $map) ? $map['param'] : (get_brand_base_url() . '/backend.php?type=rss&mode=news&select=16,17,18,19,20'); // http://channel9.msdn.com/Feeds/RSS/
 
         require_code('rss');
@@ -100,7 +102,11 @@ class Block_bottom_rss
             $_postdetailss[] = array('DATE' => $date, 'FULL_URL' => $full_url, 'NEWS_TITLE' => $_title);
         }
 
-        return do_template('BLOCK_BOTTOM_NEWS', array('_GUID' => '0fc123199c4d4b7af5a26706271b1f4f', 'POSTS' => $_postdetailss));
+        return do_template('BLOCK_BOTTOM_NEWS', array(
+            '_GUID' => '0fc123199c4d4b7af5a26706271b1f4f',
+            'BLOCK_ID' => $block_id,
+            'POSTS' => $_postdetailss,
+        ));
     }
 }
 

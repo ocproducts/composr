@@ -138,6 +138,7 @@ class Hook_addon_registry_msn
     {
         return array(
             lorem_globalise(do_lorem_template('BLOCK_SIDE_NETWORK', array(
+                'BLOCK_ID' => lorem_word(),
                 'CONTENT' => lorem_phrase(),
             )), null, '', true)
         );

@@ -368,6 +368,7 @@ class Hook_addon_registry_core_notifications
     public function tpl_preview__block_top_notifications()
     {
         $out = do_lorem_template('BLOCK_TOP_NOTIFICATIONS', array(
+            'BLOCK_ID' => lorem_word(),
             'NUM_UNREAD_WEB_NOTIFICATIONS' => placeholder_number(),
             'NUM_UNREAD_PTS' => placeholder_number(),
             'NOTIFICATIONS' => '',

@@ -86,6 +86,8 @@ class Block_side_weather
 
         require_lang('weather');
 
+        $block_id = get_block_id($map);
+
         $max_days = isset($map['max_days']) ? intval($map['max_days']) : 2;
 
         if (array_key_exists('param', $map)) {
@@ -219,6 +221,7 @@ class Block_side_weather
 
         return do_template('BLOCK_SIDE_WEATHER', array(
             '_GUID' => '8b46b3437fbe05e587b11dd3347fa195',
+            'BLOCK_ID' => $block_id,
             'TITLE' => $title,
             'LOC_CODE' => $loc_code,
             'IMAGE' => $image,

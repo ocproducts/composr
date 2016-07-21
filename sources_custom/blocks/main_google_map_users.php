@@ -63,6 +63,8 @@ class Block_main_google_map_users
         require_lang('google_map_users');
         require_lang('locations');
 
+        $block_id = get_block_id($map);
+
         // Set up config/defaults
         $geolocate_user = array_key_exists('geolocate_user', $map) ? $map['geolocate_user'] : '1';
         if (!array_key_exists('title', $map)) {
@@ -163,6 +165,7 @@ class Block_main_google_map_users
 
         return do_template('BLOCK_MAIN_GOOGLE_MAP_USERS', array(
             '_GUID' => '4c80efbd5d31183196ea0f6265f07921',
+            'BLOCK_ID' => $block_id,
             'TITLE' => $map['title'],
             'GEOLOCATE_USER' => $geolocate_user,
             'CLUSTER' => $cluster,

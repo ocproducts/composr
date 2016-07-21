@@ -442,6 +442,7 @@ class Block_main_news
             if ((!isset($map['render_if_empty'])) || ($map['render_if_empty'] == '0')) {
                 return do_template('BLOCK_NO_ENTRIES', array(
                     '_GUID' => '9d7065af4dd4026ffb34243fd931f99d',
+                    'BLOCK_ID' => $block_id,
                     'HIGH' => false,
                     'TITLE' => $_title,
                     'MESSAGE' => do_lang_tempcode(($blogs == 1) ? 'BLOG_NO_NEWS' : 'NO_NEWS'),
@@ -460,6 +461,7 @@ class Block_main_news
 
         return do_template('BLOCK_MAIN_NEWS', array(
             '_GUID' => '01f5fbd2b0c7c8f249023ecb4254366e',
+            'BLOCK_ID' => $block_id,
             'BLOCK_PARAMS' => block_params_arr_to_str(array('block_id' => $block_id) + $map),
             'BLOG' => $blogs === 1,
             'TITLE' => $_title,

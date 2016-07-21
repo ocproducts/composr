@@ -137,6 +137,7 @@ class Hook_addon_registry_random_quotes
     {
         return array(
             lorem_globalise(do_lorem_template('BLOCK_MAIN_QUOTES', array(
+                'BLOCK_ID' => lorem_word(),
                 'EDIT_URL' => placeholder_url(),
                 'FILE' => lorem_phrase(),
                 'CONTENT' => lorem_phrase(),

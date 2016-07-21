@@ -331,6 +331,7 @@ class Hook_addon_registry_newsletter
     {
         return array(
             lorem_globalise(do_lorem_template('BLOCK_MAIN_NEWSLETTER_SIGNUP', array(
+                'BLOCK_ID' => lorem_word(),
                 'URL' => placeholder_url(),
                 'NEWSLETTER_TITLE' => lorem_word(),
                 'NID' => placeholder_id(),
@@ -349,6 +350,7 @@ class Hook_addon_registry_newsletter
     {
         return array(
             lorem_globalise(do_lorem_template('BLOCK_MAIN_NEWSLETTER_SIGNUP_DONE', array(
+                'BLOCK_ID' => lorem_word(),
                 'PASSWORD' => lorem_phrase(),
                 'NEWSLETTER_TITLE' => lorem_word(),
             )), null, '', true)

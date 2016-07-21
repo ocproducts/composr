@@ -79,6 +79,8 @@ class Block_side_cns_private_topics
 
         require_code('cns_notifications');
 
+        $block_id = get_block_id($map);
+
         // Only show what's new in week. Some forums may want to tweak this, but forums themselves only mark unread topics for a week.
         $rows = cns_get_pp_rows();
         require_lang('cns');
@@ -120,6 +122,13 @@ class Block_side_cns_private_topics
             $send_url = new Tempcode();
         }
         $view_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => get_member()), get_module_zone('members'), null, true, false, false, 'tab__pts');
-        return do_template('BLOCK_SIDE_CNS_PRIVATE_TOPICS', array('_GUID' => '9376cd47884a78f3d1914c176b67ee28', 'SEND_URL' => $send_url, 'VIEW_URL' => $view_url, 'CONTENT' => $out, 'FORUM_NAME' => do_lang_tempcode('PRIVATE_TOPICS')));
+        return do_template('BLOCK_SIDE_CNS_PRIVATE_TOPICS', array(
+            '_GUID' => '9376cd47884a78f3d1914c176b67ee28',
+            'BLOCK_ID' => $block_id,
+            'SEND_URL' => $send_url,
+            'VIEW_URL' => $view_url,
+            'CONTENT' => $out,
+            'FORUM_NAME' => do_lang_tempcode('PRIVATE_TOPICS'),
+        ));
     }
 }

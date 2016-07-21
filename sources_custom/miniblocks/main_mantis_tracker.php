@@ -18,6 +18,8 @@ i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_
 require_css('tracker');
 require_lang('customers');
 
+$block_id = get_block_id($map);
+
 // Defer to inner frame
 if (!running_script('tracker') && get_param_integer('keep_no_frames', 0) == 0) {
     $params = '?' . http_build_query($map);
@@ -27,6 +29,7 @@ if (!running_script('tracker') && get_param_integer('keep_no_frames', 0) == 0) {
 
     $tpl = do_template('BLOCK_MAIN_MANTIS_TRACKER', array(
         '_GUID' => '52af5edf59440ba86c54e0324518561a',
+        'BLOCK_ID' => $block_id,
         'FRAME_NAME' => $frame_name,
         'PARAMS' => $params,
     ));
@@ -155,6 +158,7 @@ $pagination = pagination(make_string_tempcode('Issues'), $start, 'mantis_start',
 
 $tpl = do_template('MANTIS_TRACKER', array(
     '_GUID' => '619919c2bf1e5207a4bf25111638f719',
+    'BLOCK_ID' => $block_id,
     'ISSUES' => $issues,
     'PAGINATION' => $pagination,
 ));

@@ -65,6 +65,8 @@ class Block_side_news_categories
     {
         require_lang('news');
 
+        $block_id = get_block_id($map);
+
         $cnt = $GLOBALS['SITE_DB']->query_select_value('news_categories', 'COUNT(*)', array('nc_owner' => null));
         if ($cnt > 100) {
             $categories = $GLOBALS['SITE_DB']->query('SELECT c.* FROM ' . get_table_prefix() . 'news_categories c WHERE nc_owner IS NULL AND EXISTS (SELECT * FROM ' . get_table_prefix() . 'news n WHERE n.news_category=c.id AND n.validated=1)');
@@ -101,6 +103,12 @@ class Block_side_news_categories
             $_categories[] = array('URL' => $url, 'NAME' => $name, 'COUNT' => integer_format($count));
         }
 
-        return do_template('BLOCK_SIDE_NEWS_CATEGORIES', array('_GUID' => 'b47a0047247096373e5aa626348c4ebb', 'CATEGORIES' => $_categories, 'PRE' => '', 'POST' => ''));
+        return do_template('BLOCK_SIDE_NEWS_CATEGORIES', array(
+            '_GUID' => 'b47a0047247096373e5aa626348c4ebb',
+            'BLOCK_ID' => $block_id,
+            'CATEGORIES' => $_categories,
+            'PRE' => '',
+            'POST' => '',
+        ));
     }
 }

@@ -246,6 +246,7 @@ class Hook_addon_registry_banners
     {
         return array(
             lorem_globalise(do_lorem_template('BLOCK_MAIN_TOP_SITES', array(
+                'BLOCK_ID' => lorem_word(),
                 'TYPE' => lorem_phrase(),
                 'BANNERS' => placeholder_array(),
                 'SUBMIT_URL' => placeholder_url(),
@@ -303,6 +304,7 @@ class Hook_addon_registry_banners
 
         return array(
             lorem_globalise(do_lorem_template('BLOCK_MAIN_BANNER_WAVE', array(
+                'BLOCK_ID' => lorem_word(),
                 'EXTRA' => lorem_phrase(),
                 'TYPE' => lorem_phrase(),
                 'ASSEMBLE' => $assemble,

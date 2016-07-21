@@ -157,6 +157,7 @@ class Hook_addon_registry_syndication_blocks
 
         return array(
             lorem_globalise(do_lorem_template('BLOCK_SIDE_RSS', array(
+                'BLOCK_ID' => lorem_word(),
                 'FEED_URL' => placeholder_url(),
                 'TITLE' => lorem_phrase(),
                 'CONTENT' => $content,
@@ -195,6 +196,7 @@ class Hook_addon_registry_syndication_blocks
 
         return array(
             lorem_globalise(do_lorem_template('BLOCK_MAIN_RSS', array(
+                'BLOCK_ID' => lorem_word(),
                 'FEED_URL' => placeholder_url(),
                 'TITLE' => lorem_phrase(),
                 'COPYRIGHT' => lorem_phrase(),

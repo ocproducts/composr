@@ -241,11 +241,11 @@ class Hook_addon_registry_pointstore
         return array(
             lorem_globalise(
                 do_lorem_template('POINTSTORE_LOG_SCREEN', array(
-                        'TITLE' => lorem_title(),
-                        'CONTENT' => $content,
-                        'PAGINATION' => placeholder_pagination(),
-                    )
-                ), null, '', true),
+                    'TITLE' => lorem_title(),
+                    'CONTENT' => $content,
+                    'PAGINATION' => placeholder_pagination(),
+                )
+            ), null, '', true),
         );
     }
 
@@ -271,13 +271,13 @@ class Hook_addon_registry_pointstore
         return array(
             lorem_globalise(
                 do_lorem_template('POINTSTORE_PRICE_SCREEN', array(
-                        'PING_URL' => placeholder_url(),
-                        'WARNING_DETAILS' => $warning_details,
-                        'TITLE' => lorem_title(),
-                        'EDIT_FORM' => placeholder_form(),
-                        'ADD_FORMS' => $add_forms,
-                    )
-                ), null, '', true),
+                    'PING_URL' => placeholder_url(),
+                    'WARNING_DETAILS' => $warning_details,
+                    'TITLE' => lorem_title(),
+                    'EDIT_FORM' => placeholder_form(),
+                    'ADD_FORMS' => $add_forms,
+                )
+            ), null, '', true),
         );
     }
 
@@ -293,17 +293,17 @@ class Hook_addon_registry_pointstore
         return array(
             lorem_globalise(
                 do_lorem_template('POINTSTORE_CONFIRM_SCREEN', array(
-                        'TITLE' => lorem_title(),
-                        'KEEP' => '',
-                        'ACTION' => lorem_phrase(),
-                        'COST' => lorem_phrase(),
-                        'POINTS_AFTER' => lorem_phrase(),
-                        'PROCEED_URL' => placeholder_url(),
-                        'MESSAGE' => lorem_phrase(),
-                        'CANCEL_URL' => placeholder_url(),
-                        'page' => lorem_phrase(),
-                    )
-                ), null, '', true),
+                    'TITLE' => lorem_title(),
+                    'KEEP' => '',
+                    'ACTION' => lorem_phrase(),
+                    'COST' => lorem_phrase(),
+                    'POINTS_AFTER' => lorem_phrase(),
+                    'PROCEED_URL' => placeholder_url(),
+                    'MESSAGE' => lorem_phrase(),
+                    'CANCEL_URL' => placeholder_url(),
+                    'page' => lorem_phrase(),
+                )
+            ), null, '', true),
         );
     }
 
@@ -339,12 +339,12 @@ class Hook_addon_registry_pointstore
         return array(
             lorem_globalise(
                 do_lorem_template('POINTSTORE_POP3_SCREEN', array(
-                        'TITLE' => lorem_title(),
-                        'ACTIVATE' => $activate,
-                        'QUOTA' => $quota,
-                        'INITIAL_QUOTA' => placeholder_number(),
-                    )
-                ), null, '', true),
+                    'TITLE' => lorem_title(),
+                    'ACTIVATE' => $activate,
+                    'QUOTA' => $quota,
+                    'INITIAL_QUOTA' => placeholder_number(),
+                )
+            ), null, '', true),
         );
     }
 
@@ -384,16 +384,16 @@ class Hook_addon_registry_pointstore
         return array(
             lorem_globalise(
                 do_lorem_template('FORM_SCREEN', array(
-                        'GET' => true,
-                        'HIDDEN' => '',
-                        'URL' => placeholder_url(),
-                        'TITLE' => lorem_title(),
-                        'FIELDS' => $fields,
-                        'TEXT' => $text,
-                        'SUBMIT_ICON' => 'buttons__proceed',
-                        'SUBMIT_NAME' => lorem_word(),
-                    )
-                ), null, '', true),
+                    'GET' => true,
+                    'HIDDEN' => '',
+                    'URL' => placeholder_url(),
+                    'TITLE' => lorem_title(),
+                    'FIELDS' => $fields,
+                    'TEXT' => $text,
+                    'SUBMIT_ICON' => 'buttons__proceed',
+                    'SUBMIT_NAME' => lorem_word(),
+                )
+            ), null, '', true),
         );
     }
 
@@ -430,13 +430,13 @@ class Hook_addon_registry_pointstore
         return array(
             lorem_globalise(
                 do_lorem_template('POINTSTORE_CUSTOM_ITEM_SCREEN', array(
-                        'TITLE' => lorem_title(),
-                        'COST' => placeholder_number(),
-                        'REMAINING' => placeholder_number(),
-                        'NEXT_URL' => placeholder_url(),
-                        'ONE_PER_MEMBER' => true,
-                    )
-                ), null, '', true),
+                    'TITLE' => lorem_title(),
+                    'COST' => placeholder_number(),
+                    'REMAINING' => placeholder_number(),
+                    'NEXT_URL' => placeholder_url(),
+                    'ONE_PER_MEMBER' => true,
+                )
+            ), null, '', true),
         );
     }
 
@@ -452,12 +452,12 @@ class Hook_addon_registry_pointstore
         return array(
             lorem_globalise(
                 do_lorem_template('POINTSTORE_HIGHLIGHT_NAME_SCREEN', array(
-                        'TITLE' => lorem_title(),
-                        'COST' => placeholder_number(),
-                        'REMAINING' => placeholder_number(),
-                        'NEXT_URL' => placeholder_url(),
-                    )
-                ), null, '', true),
+                    'TITLE' => lorem_title(),
+                    'COST' => placeholder_number(),
+                    'REMAINING' => placeholder_number(),
+                    'NEXT_URL' => placeholder_url(),
+                )
+            ), null, '', true),
         );
     }
 
@@ -479,12 +479,12 @@ class Hook_addon_registry_pointstore
         return array(
             lorem_globalise(
                 do_lorem_template('POINTSTORE_SCREEN', array(
-                        'TITLE' => lorem_title(),
-                        'ITEMS' => $items,
-                        'POINTS_LEFT' => placeholder_number(),
-                        'USERNAME' => lorem_phrase(),
-                    )
-                ), null, '', true),
+                    'TITLE' => lorem_title(),
+                    'ITEMS' => $items,
+                    'POINTS_LEFT' => placeholder_number(),
+                    'USERNAME' => lorem_phrase(),
+                )
+            ), null, '', true),
         );
     }
 
@@ -500,11 +500,11 @@ class Hook_addon_registry_pointstore
         return array(
             lorem_globalise(
                 do_lorem_template('POINTSTORE_CUSTOM', array(
-                        'TITLE' => lorem_phrase(),
-                        'DESCRIPTION' => lorem_sentence(),
-                        'NEXT_URL' => placeholder_url(),
-                    )
-                ), null, '', true),
+                    'TITLE' => lorem_phrase(),
+                    'DESCRIPTION' => lorem_sentence(),
+                    'NEXT_URL' => placeholder_url(),
+                )
+            ), null, '', true),
         );
     }
 
@@ -520,9 +520,9 @@ class Hook_addon_registry_pointstore
         return array(
             lorem_globalise(
                 do_lorem_template('POINTSTORE_GAMBLING', array(
-                        'NEXT_URL' => placeholder_url(),
-                    )
-                ), null, '', true),
+                    'NEXT_URL' => placeholder_url(),
+                )
+            ), null, '', true),
         );
     }
 
@@ -538,9 +538,9 @@ class Hook_addon_registry_pointstore
         return array(
             lorem_globalise(
                 do_lorem_template('POINTSTORE_HIGHLIGHT_NAME', array(
-                        'NEXT_URL' => placeholder_url(),
-                    )
-                ), null, '', true),
+                    'NEXT_URL' => placeholder_url(),
+                )
+            ), null, '', true),
         );
     }
 
@@ -556,11 +556,11 @@ class Hook_addon_registry_pointstore
         return array(
             lorem_globalise(
                 do_lorem_template('POINTSTORE_PERMISSION', array(
-                        'TITLE' => lorem_phrase(),
-                        'DESCRIPTION' => lorem_sentence(),
-                        'NEXT_URL' => placeholder_url(),
-                    )
-                ), null, '', true),
+                    'TITLE' => lorem_phrase(),
+                    'DESCRIPTION' => lorem_sentence(),
+                    'NEXT_URL' => placeholder_url(),
+                )
+            ), null, '', true),
         );
     }
 
@@ -576,9 +576,9 @@ class Hook_addon_registry_pointstore
         return array(
             lorem_globalise(
                 do_lorem_template('POINTSTORE_TOPIC_PIN', array(
-                        'NEXT_URL' => placeholder_url(),
-                    )
-                ), null, '', true),
+                    'NEXT_URL' => placeholder_url(),
+                )
+            ), null, '', true),
         );
     }
 }

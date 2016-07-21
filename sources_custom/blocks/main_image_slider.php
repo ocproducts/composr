@@ -71,6 +71,8 @@ class Block_main_image_slider
 
         require_code('galleries');
 
+        $block_id = get_block_id($map);
+
         $cat = empty($map['param']) ? 'root' : $map['param'];
         $mill = array_key_exists('time', $map) ? intval($map['time']) : 8000; // milliseconds between animations
         $width = empty($map['width']) ? 750 : intval($map['width']);
@@ -181,6 +183,7 @@ class Block_main_image_slider
             }
             return do_template('BLOCK_NO_ENTRIES', array(
                 '_GUID' => '8b92cd992508e55bfe4139b5c09475c2',
+                'BLOCK_ID' => $block_id,
                 'HIGH' => false,
                 'TITLE' => do_lang_tempcode('GALLERY'),
                 'MESSAGE' => do_lang_tempcode('NO_ENTRIES', 'image'),
@@ -197,6 +200,7 @@ class Block_main_image_slider
 
         return do_template('BLOCK_MAIN_IMAGE_SLIDER', array(
             '_GUID' => '264a178c1ea7fa719ac53af07129a38c',
+            'BLOCK_ID' => $block_id,
             'GALLERY_URL' => $gallery_url,
             'IMAGES' => $images,
             'MILL' => strval($mill),

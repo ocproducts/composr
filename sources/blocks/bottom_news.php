@@ -66,6 +66,8 @@ class Block_bottom_news
      */
     public function run($map)
     {
+        $block_id = get_block_id($map);
+
         $max = array_key_exists('param', $map) ? intval($map['param']) : 5;
         $zone = array_key_exists('zone', $map) ? $map['zone'] : get_module_zone('news');
         $blogs = array_key_exists('blogs', $map) ? intval($map['blogs']) : -1;
@@ -148,6 +150,11 @@ class Block_bottom_news
             }
         }
 
-        return do_template('BLOCK_BOTTOM_NEWS', array('_GUID' => 'a2076520b171bdf36e5369f0541f92c5', 'BLOG' => $blogs === 1, 'POSTS' => $_postdetailss));
+        return do_template('BLOCK_BOTTOM_NEWS', array(
+            '_GUID' => 'a2076520b171bdf36e5369f0541f92c5',
+            'BLOCK_ID' => $block_id,
+            'BLOG' => $blogs === 1,
+            'POSTS' => $_postdetailss,
+        ));
     }
 }

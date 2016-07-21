@@ -62,6 +62,8 @@ class Block_side_network
      */
     public function run($map)
     {
+        $block_id = get_block_id($map);
+
         $netlinks = get_option('network_links');
         if (strlen($netlinks) > 0) {
             require_code('character_sets');
@@ -72,7 +74,11 @@ class Block_side_network
             } else {
                 $if_network = convert_to_internal_encoding($data);
             }
-            return do_template('BLOCK_SIDE_NETWORK', array('_GUID' => '5fe8867b9f69670ad61e6c78b956fab2', 'CONTENT' => $if_network));
+            return do_template('BLOCK_SIDE_NETWORK', array(
+                '_GUID' => '5fe8867b9f69670ad61e6c78b956fab2',
+                'BLOCK_ID' => $block_id,
+                'CONTENT' => $if_network,
+            ));
         }
         return new Tempcode();
     }

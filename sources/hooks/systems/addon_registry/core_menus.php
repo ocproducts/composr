@@ -255,19 +255,19 @@ class Hook_addon_registry_core_menus
         return array(
             lorem_globalise(
                 do_lorem_template('MENU_EDITOR_SCREEN', array(
-                        'ALL_MENUS' => placeholder_array(),
-                        'MENU_NAME' => lorem_word(),
-                        'DELETE_URL' => placeholder_url(),
-                        'PING_URL' => placeholder_url(),
-                        'WARNING_DETAILS' => '',
-                        'FIELDS_TEMPLATE' => placeholder_fields(),
-                        'HIGHEST_ORDER' => lorem_phrase(),
-                        'URL' => placeholder_url(),
-                        'CHILD_BRANCH_TEMPLATE' => $child_branch_template,
-                        'ROOT_BRANCH' => $root_branch,
-                        'TITLE' => lorem_title(),
-                    )
-                ), null, '', true),
+                    'ALL_MENUS' => placeholder_array(),
+                    'MENU_NAME' => lorem_word(),
+                    'DELETE_URL' => placeholder_url(),
+                    'PING_URL' => placeholder_url(),
+                    'WARNING_DETAILS' => '',
+                    'FIELDS_TEMPLATE' => placeholder_fields(),
+                    'HIGHEST_ORDER' => lorem_phrase(),
+                    'URL' => placeholder_url(),
+                    'CHILD_BRANCH_TEMPLATE' => $child_branch_template,
+                    'ROOT_BRANCH' => $root_branch,
+                    'TITLE' => lorem_title(),
+                )
+            ), null, '', true),
         );
     }
 
@@ -284,10 +284,10 @@ class Hook_addon_registry_core_menus
         return array(
             lorem_globalise(
                 do_lorem_template('PAGE_LINK_CHOOSER', array(
-                        'NAME' => lorem_word(),
-                        'VALUE' => lorem_word(),
-                    )
-                ), null, '', true),
+                    'NAME' => lorem_word(),
+                    'VALUE' => lorem_word(),
+                )
+            ), null, '', true),
         );
     }
 
@@ -366,13 +366,14 @@ class Hook_addon_registry_core_menus
         return array(
             lorem_globalise(
                 do_lorem_template('BLOCK_MENU', array(
-                        'CONTENT' => $menu,
-                        'PARAM' => lorem_phrase(),
-                        'TRAY_STATUS' => lorem_phrase(),
-                        'TITLE' => lorem_phrase(),
-                        'TYPE' => 'mobile',
-                    )
-                ), null, '', false),
+                    'BLOCK_ID' => lorem_word(),
+                    'CONTENT' => $menu,
+                    'PARAM' => lorem_phrase(),
+                    'TRAY_STATUS' => lorem_phrase(),
+                    'TITLE' => lorem_phrase(),
+                    'TYPE' => 'mobile',
+                )
+            ), null, '', false),
         );
     }
 
@@ -451,13 +452,14 @@ class Hook_addon_registry_core_menus
         return array(
             lorem_globalise(
                 do_lorem_template('BLOCK_MENU', array(
-                        'CONTENT' => $menu,
-                        'PARAM' => lorem_phrase(),
-                        'TRAY_STATUS' => lorem_phrase(),
-                        'TITLE' => lorem_phrase(),
-                        'TYPE' => 'tree',
-                    )
-                ), null, '', true),
+                    'BLOCK_ID' => lorem_word(),
+                    'CONTENT' => $menu,
+                    'PARAM' => lorem_phrase(),
+                    'TRAY_STATUS' => lorem_phrase(),
+                    'TITLE' => lorem_phrase(),
+                    'TYPE' => 'tree',
+                )
+            ), null, '', true),
         );
     }
 
@@ -613,13 +615,14 @@ class Hook_addon_registry_core_menus
         return array(
             lorem_globalise(
                 do_lorem_template('BLOCK_MENU', array(
-                        'CONTENT' => $menu,
-                        'PARAM' => lorem_phrase(),
-                        'TRAY_STATUS' => lorem_phrase(),
-                        'TITLE' => lorem_phrase(),
-                        'TYPE' => 'embossed',
-                    )
-                ), null, '', true),
+                    'BLOCK_ID' => lorem_word(),
+                    'CONTENT' => $menu,
+                    'PARAM' => lorem_phrase(),
+                    'TRAY_STATUS' => lorem_phrase(),
+                    'TITLE' => lorem_phrase(),
+                    'TYPE' => 'embossed',
+                )
+            ), null, '', true),
         );
     }
 
@@ -698,13 +701,14 @@ class Hook_addon_registry_core_menus
         return array(
             lorem_globalise(
                 do_lorem_template('BLOCK_MENU', array(
-                        'CONTENT' => $menu,
-                        'PARAM' => lorem_phrase(),
-                        'TRAY_STATUS' => lorem_phrase(),
-                        'TITLE' => lorem_phrase(),
-                        'TYPE' => 'popup',
-                    )
-                ), null, '', true),
+                    'BLOCK_ID' => lorem_word(),
+                    'CONTENT' => $menu,
+                    'PARAM' => lorem_phrase(),
+                    'TRAY_STATUS' => lorem_phrase(),
+                    'TITLE' => lorem_phrase(),
+                    'TYPE' => 'popup',
+                )
+            ), null, '', true),
         );
     }
 
@@ -783,13 +787,14 @@ class Hook_addon_registry_core_menus
         return array(
             lorem_globalise(
                 do_lorem_template('BLOCK_MENU', array(
-                        'CONTENT' => $menu,
-                        'PARAM' => lorem_phrase(),
-                        'TRAY_STATUS' => lorem_phrase(),
-                        'TITLE' => lorem_phrase(),
-                        'TYPE' => 'select',
-                    )
-                ), null, '', true),
+                    'BLOCK_ID' => lorem_word(),
+                    'CONTENT' => $menu,
+                    'PARAM' => lorem_phrase(),
+                    'TRAY_STATUS' => lorem_phrase(),
+                    'TITLE' => lorem_phrase(),
+                    'TYPE' => 'select',
+                )
+            ), null, '', true),
         );
     }
 

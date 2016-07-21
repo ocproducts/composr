@@ -66,6 +66,8 @@ class Block_main_newsletter_signup
         require_lang('newsletter');
         require_css('newsletter');
 
+        $block_id = get_block_id($map);
+
         $newsletter_id = array_key_exists('param', $map) ? intval($map['param']) : db_get_first_id();
 
         $_newsletter_title = $GLOBALS['SITE_DB']->query_select_value_if_there('newsletters', 'title', array('id' => $newsletter_id));
@@ -81,7 +83,12 @@ class Block_main_newsletter_signup
             require_code('type_sanitisation');
             if (!is_email_address($address)) {
                 $msg = do_template('INLINE_WIP_MESSAGE', array('_GUID' => '9ce849d0d2dc879acba609b907317c74', 'MESSAGE' => do_lang_tempcode('INVALID_EMAIL_ADDRESS')));
-                return do_template('BLOCK_MAIN_NEWSLETTER_SIGNUP', array('_GUID' => '3759e07077d74e6537cab04c897e76d2', 'URL' => get_self_url(), 'MSG' => $msg));
+                return do_template('BLOCK_MAIN_NEWSLETTER_SIGNUP', array(
+                    '_GUID' => '3759e07077d74e6537cab04c897e76d2',
+                    'BLOCK_ID' => $block_id,
+                    'URL' => get_self_url(),
+                    'MSG' => $msg,
+                ));
             }
 
             if (!array_key_exists('path', $map)) {
@@ -112,9 +119,21 @@ class Block_main_newsletter_signup
                 dispatch_mail($subject, $body, array($address), array_key_exists('to', $map) ? $map['to'] : '', '', '', array('as_admin' => true));
             }
 
-            return do_template('BLOCK_MAIN_NEWSLETTER_SIGNUP_DONE', array('_GUID' => '9953c83685df4970de8f23fcd5dd15bb', 'NEWSLETTER_TITLE' => $newsletter_title, 'NID' => strval($newsletter_id), 'PASSWORD' => $password));
+            return do_template('BLOCK_MAIN_NEWSLETTER_SIGNUP_DONE', array(
+                '_GUID' => '9953c83685df4970de8f23fcd5dd15bb',
+                'BLOCK_ID' => $block_id,
+                'NEWSLETTER_TITLE' => $newsletter_title,
+                'NID' => strval($newsletter_id),
+                'PASSWORD' => $password,
+            ));
         } else {
-            return do_template('BLOCK_MAIN_NEWSLETTER_SIGNUP', array('_GUID' => 'c0e6f9cdab3d624bf3d27b745e3de38f', 'NEWSLETTER_TITLE' => $newsletter_title, 'NID' => strval($newsletter_id), 'URL' => get_self_url()));
+            return do_template('BLOCK_MAIN_NEWSLETTER_SIGNUP', array(
+                '_GUID' => 'c0e6f9cdab3d624bf3d27b745e3de38f',
+                'BLOCK_ID' => $block_id,
+                'NEWSLETTER_TITLE' => $newsletter_title,
+                'NID' => strval($newsletter_id),
+                'URL' => get_self_url(),
+            ));
         }
     }
 }

@@ -63,6 +63,8 @@ class Block_side_similar_sites
 
         require_lang('similar_sites');
 
+        $block_id = get_block_id($map);
+
         $criteria = array_key_exists('criteria', $map) ? $map['criteria'] : get_option('site_scope');
         $max = (isset($map['max']) && intval($map['max']) > 0) ? intval($map['max']) : 3;
 
@@ -84,7 +86,13 @@ class Block_side_similar_sites
 
         $out .= '</ul>';
 
-        return do_template('BLOCK_SIDE_SIMILAR_SITES', array('_GUID' => '0eeeec88a1496aa8b0db3580dcaa4ed8', 'TITLE' => do_lang_tempcode('BLOCK_SIMILAR_SITES_TITLE'), 'CONTENT' => $out, 'CRITERIA' => $criteria));
+        return do_template('BLOCK_SIDE_SIMILAR_SITES', array(
+            '_GUID' => '0eeeec88a1496aa8b0db3580dcaa4ed8',
+            'BLOCK_ID' => $block_id,
+            'TITLE' => do_lang_tempcode('BLOCK_SIMILAR_SITES_TITLE'),
+            'CONTENT' => $out,
+            'CRITERIA' => $criteria,
+        ));
     }
 
     public function retrieveGoogleSearch($search_terms = 'example', $search_url = 'related:example.com')

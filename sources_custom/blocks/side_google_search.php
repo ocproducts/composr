@@ -61,8 +61,15 @@ class Block_side_google_search
 
         require_lang('google_search');
 
+        $block_id = get_block_id($map);
+
         $page_name = !empty($map['page_name']) ? $map['page_name'] : '_google_search';
 
-        return do_template('BLOCK_SIDE_GOOGLE_SEARCH', array('_GUID' => 'e42a949234538f8c2f9a8e96bc43056d', 'TITLE' => do_lang_tempcode('BLOCK_GOOGLE_TITLE'), 'PAGE_NAME' => $page_name));
+        return do_template('BLOCK_SIDE_GOOGLE_SEARCH', array(
+            '_GUID' => 'e42a949234538f8c2f9a8e96bc43056d',
+            'BLOCK_ID' => $block_id,
+            'TITLE' => do_lang_tempcode('BLOCK_GOOGLE_TITLE'),
+            'PAGE_NAME' => $page_name,
+        ));
     }
 }

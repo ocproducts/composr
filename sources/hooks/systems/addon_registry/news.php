@@ -229,6 +229,7 @@ class Hook_addon_registry_news
         );
 
         $block = do_lorem_template('BLOCK_MAIN_IMAGE_FADER_NEWS', array(
+            'BLOCK_ID' => lorem_word(),
             'TITLE' => lorem_phrase(),
             'ARCHIVE_URL' => placeholder_url(),
             'NEWS' => $news,
@@ -276,6 +277,7 @@ class Hook_addon_registry_news
 
         return array(
             lorem_globalise(do_lorem_template('BLOCK_SIDE_NEWS_ARCHIVE', array(
+                'BLOCK_ID' => lorem_word(),
                 'TITLE' => lorem_phrase(),
                 'YEARS' => array(
                     array(
@@ -363,6 +365,7 @@ class Hook_addon_registry_news
 
         return array(
             lorem_globalise(do_lorem_template('BLOCK_MAIN_NEWS', array(
+                'BLOCK_ID' => lorem_word(),
                 'BLOG' => true,
                 'TITLE' => lorem_phrase(),
                 'CONTENT' => $contents,
@@ -455,6 +458,7 @@ class Hook_addon_registry_news
 
         return array(
             lorem_globalise(do_lorem_template('BLOCK_SIDE_NEWS', array(
+                'BLOCK_ID' => lorem_word(),
                 'BLOG' => true,
                 'TITLE' => lorem_phrase(),
                 'CONTENT' => $contents,
@@ -484,6 +488,7 @@ class Hook_addon_registry_news
         }
         return array(
             lorem_globalise(do_lorem_template('BLOCK_SIDE_NEWS_CATEGORIES', array(
+                'BLOCK_ID' => lorem_word(),
                 'CATEGORIES' => $categories,
                 'PRE' => '',
                 'POST' => '',
@@ -510,6 +515,7 @@ class Hook_addon_registry_news
         }
         return array(
             lorem_globalise(do_lorem_template('BLOCK_BOTTOM_NEWS', array(
+                'BLOCK_ID' => lorem_word(),
                 'BLOG' => true,
                 'POSTS' => $contents_arr,
             )), null, '', true)

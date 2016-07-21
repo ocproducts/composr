@@ -148,6 +148,7 @@ class Block_main_friends_list
 
         return do_template('BLOCK_MAIN_FRIENDS_LIST', array(
             '_GUID' => '70b11d3c01ff551be42a0472d27dd207',
+            'BLOCK_ID' => $block_id,
             'BLOCK_PARAMS' => block_params_arr_to_str(array('block_id' => $block_id) + $map),
             'FRIENDS_MUTUAL' => $friends_mutual,
             'FRIENDS_NONMUTUAL' => $friends_nonmutual,

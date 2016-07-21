@@ -15,6 +15,8 @@
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
+$block_id = get_block_id($map);
+
 $backburner_minutes = integer_format(intval(get_option('support_priority_backburner_minutes')));
 $regular_minutes = integer_format(intval(get_option('support_priority_regular_minutes')));
 $s_currency = get_option('currency', true);
@@ -49,5 +51,10 @@ foreach ($products as $p => $v) {
     );
 }
 
-$tpl = do_template('BLOCK_CREDIT_EXPS_INNER', array('_GUID' => '6c6134a1b7157637dae280b54e90a877', 'CREDIT_KINDS' => $credit_kinds, 'LABEL_BUY' => $label_buy));
+$tpl = do_template('BLOCK_CREDIT_EXPS_INNER', array(
+    '_GUID' => '6c6134a1b7157637dae280b54e90a877',
+    'BLOCK_ID' => $block_id,
+    'CREDIT_KINDS' => $credit_kinds,
+    'LABEL_BUY' => $label_buy,
+));
 $tpl->evaluate_echo();

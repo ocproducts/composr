@@ -70,6 +70,8 @@ class Block_side_rss
         require_css('news');
         require_code('obfuscate');
 
+        $block_id = get_block_id($map);
+
         $url = array_key_exists('param', $map) ? $map['param'] : (get_brand_base_url() . '/backend.php?type=rss&mode=news&select=16,17,18,19,20'); // http://channel9.msdn.com/Feeds/RSS/
 
         if (strpos($url, '{') !== false) {
@@ -173,7 +175,14 @@ class Block_side_rss
             )));
         }
 
-        return do_template('BLOCK_SIDE_RSS', array('_GUID' => 'fe3319e942d75fedb83e4cf80f80e19f', 'TICKER' => $ticker, 'FEED_URL' => $url, 'TITLE' => $rss->gleamed_feed['title'], 'CONTENT' => $content));
+        return do_template('BLOCK_SIDE_RSS', array(
+            '_GUID' => 'fe3319e942d75fedb83e4cf80f80e19f',
+            'BLOCK_ID' => $block_id,
+            'TICKER' => $ticker,
+            'FEED_URL' => $url,
+            'TITLE' => $rss->gleamed_feed['title'],
+            'CONTENT' => $content,
+        ));
     }
 }
 

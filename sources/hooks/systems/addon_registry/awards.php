@@ -147,6 +147,7 @@ class Hook_addon_registry_awards
     {
         return array(
             lorem_globalise(do_lorem_template('BLOCK_MAIN_AWARDS', array(
+                'BLOCK_ID' => lorem_word(),
                 'TITLE' => lorem_word(),
                 'TYPE' => lorem_word(),
                 'DESCRIPTION' => lorem_paragraph_html(),

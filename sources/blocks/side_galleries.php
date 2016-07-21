@@ -67,6 +67,8 @@ class Block_side_galleries
         require_code('galleries');
         require_css('galleries');
 
+        $block_id = get_block_id($map);
+
         $parent_id = array_key_exists('param', $map) ? $map['param'] : 'root';
 
         $zone = array_key_exists('zone', $map) ? $map['zone'] : get_module_zone('galleries');
@@ -100,7 +102,14 @@ class Block_side_galleries
             $title = '';
         }
 
-        return do_template('BLOCK_SIDE_GALLERIES', array('_GUID' => 'ed420ce9d1b1dde95eb3fd8473090228', 'TITLE' => $title, 'ID' => $parent_id, 'DEPTH' => $depth != 0, 'CONTENT' => $content));
+        return do_template('BLOCK_SIDE_GALLERIES', array(
+            '_GUID' => 'ed420ce9d1b1dde95eb3fd8473090228',
+            'BLOCK_ID' => $block_id,
+            'TITLE' => $title,
+            'ID' => $parent_id,
+            'DEPTH' => $depth != 0,
+            'CONTENT' => $content,
+        ));
     }
 
     /**

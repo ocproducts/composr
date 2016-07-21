@@ -194,6 +194,7 @@ class Hook_addon_registry_search
     {
         return array(
             lorem_globalise(do_lorem_template('BLOCK_MAIN_SEARCH', array(
+                'BLOCK_ID' => lorem_word(),
                 'TITLE' => lorem_phrase(),
                 'INPUT_FIELDS' => array('a' => array('LABEL' => lorem_phrase(), 'INPUT' => '')),
                 'EXTRA' => placeholder_array(),
@@ -223,6 +224,7 @@ class Hook_addon_registry_search
     {
         return array(
             lorem_globalise(do_lorem_template('BLOCK_TOP_SEARCH', array(
+                'BLOCK_ID' => lorem_word(),
                 'TITLE' => lorem_phrase(),
                 'EXTRA' => placeholder_array(),
                 'SORT' => lorem_phrase(),
@@ -266,6 +268,7 @@ class Hook_addon_registry_search
 
         return array(
             lorem_globalise(do_lorem_template('BLOCK_SIDE_TAG_CLOUD', array(
+                'BLOCK_ID' => lorem_word(),
                 'TITLE' => lorem_phrase(),
                 'TAGS' => $tpl_tags,
             )), null, '', true)

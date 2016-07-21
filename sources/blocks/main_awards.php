@@ -66,6 +66,8 @@ class Block_main_awards
         require_lang('awards');
         require_code('awards');
 
+        $block_id = get_block_id($map);
+
         $award = (array_key_exists('param', $map) ? intval($map['param']) : db_get_first_id());
         $zone = array_key_exists('zone', $map) ? $map['zone'] : '_SEARCH';
 
@@ -116,6 +118,7 @@ class Block_main_awards
             if (!array_key_exists(0, $rows)) {
                 return do_template('BLOCK_NO_ENTRIES', array(
                     '_GUID' => ($guid != '') ? $guid : 'f32b50770fd6581c4a2c839a1ed25801',
+                    'BLOCK_ID' => $block_id,
                     'HIGH' => false,
                     'TITLE' => $award_title,
                     'MESSAGE' => do_lang_tempcode('NO_AWARD'),
@@ -150,6 +153,7 @@ class Block_main_awards
 
         return do_template('BLOCK_MAIN_AWARDS', array(
             '_GUID' => ($guid != '') ? $guid : '99f092e35db0c17f407f40ed55c42cfd',
+            'BLOCK_ID' => $block_id,
             'TITLE' => $award_title,
             'TYPE' => $award_type_row['a_content_type'],
             'DESCRIPTION' => $award_description,

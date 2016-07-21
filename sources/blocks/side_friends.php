@@ -63,10 +63,16 @@ class Block_side_friends
         require_css('chat');
         require_javascript('chat');
 
+        $block_id = get_block_id($map);
+
         $max = array_key_exists('max', $map) ? intval($map['max']) : 15;
 
         $friends = show_im_contacts(null, true, $max);
 
-        return do_template('BLOCK_SIDE_FRIENDS', array('_GUID' => 'ce94db14f9a212f38d0fce1658866e2c', 'FRIENDS' => $friends));
+        return do_template('BLOCK_SIDE_FRIENDS', array(
+            '_GUID' => 'ce94db14f9a212f38d0fce1658866e2c',
+            'BLOCK_ID' => $block_id,
+            'FRIENDS' => $friends,
+        ));
     }
 }

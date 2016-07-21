@@ -71,6 +71,8 @@ class Block_side_calendar
         require_lang('dates');
         require_css('calendar');
 
+        $block_id = get_block_id($map);
+
         $year = intval(date('Y', utctime_to_usertime()));
         $month = intval(date('m', utctime_to_usertime()));
         $day = intval(date('d', utctime_to_usertime()));
@@ -204,7 +206,14 @@ class Block_side_calendar
                 $_entries->attach(do_template('CALENDAR_YEAR_MONTH_DAY_ROW', array('_GUID' => '262279cb164be0fa908ec57c27dd727b', 'ENTRIES' => $__entries)));
             }
 
-            return do_template('BLOCK_SIDE_CALENDAR', array('_GUID' => '1324e98b4debf7ebd6d398fae65fe29f', 'CALENDAR_URL' => $calendar_url, 'ENTRIES' => $_entries, '_MONTH' => strval($_period_start), 'MONTH' => locale_filter(cms_strftime(do_lang('calendar_month_in_year'), $_period_start))));
+            return do_template('BLOCK_SIDE_CALENDAR', array(
+                '_GUID' => '1324e98b4debf7ebd6d398fae65fe29f',
+                'BLOCK_ID' => $block_id,
+                'CALENDAR_URL' => $calendar_url,
+                'ENTRIES' => $_entries,
+                '_MONTH' => strval($_period_start),
+                'MONTH' => locale_filter(cms_strftime(do_lang('calendar_month_in_year'), $_period_start)),
+            ));
         }
 
         // Listing mode
@@ -286,7 +295,13 @@ class Block_side_calendar
             }
         }
 
-        return do_template('BLOCK_SIDE_CALENDAR_LISTING', array('_GUID' => '52afb27d866fa6b620a55d223e2fd3ae', 'DAYS' => $days, 'CALENDAR_URL' => $calendar_url, 'TITLE' => $box_title));
+        return do_template('BLOCK_SIDE_CALENDAR_LISTING', array(
+            '_GUID' => '52afb27d866fa6b620a55d223e2fd3ae',
+            'BLOCK_ID' => $block_id,
+            'DAYS' => $days,
+            'CALENDAR_URL' => $calendar_url,
+            'TITLE' => $box_title,
+        ));
     }
 
     /**
