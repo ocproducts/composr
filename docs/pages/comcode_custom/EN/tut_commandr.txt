@@ -243,12 +243,6 @@ This shows the server CPU load (Linux and Mac servers only):
 Please note that the leading [tt]:[/tt] is needed for Commandr to identify that the input's going to be something for PHP.
 [/surround]
 
-[title="2"]Commandrchat (advanced)[/title]
-
-The final feature of Commandr is Commandrchat, which allows users of Commandr to chat with each other across the Internet. It is used via the [tt]commandrchat[/tt] command, taking a website URL and message as parameters (remember to double-quote them if they contain spaces). The system is designed to be resistant to intrusions, as each message is checked before it is displayed.
-
-Commandrchat is designed to allow website administrators to communicate with each other and share tips, tricks and experiences with Composr.
-
 [title="2"]Scripts (advanced)[/title]
 
 Commands can be put together in scripts and saved for later use in the [tt]bin[/tt] filesystem. These can be executed on the Commandr command-line just by entering the name of the script, or can alternatively be scheduled for execution by the calendar to run at some point in the future (possibly routinely).

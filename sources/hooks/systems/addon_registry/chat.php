@@ -201,7 +201,6 @@ class Hook_addon_registry_chat
             'sources/hooks/blocks/side_stats/chat.php',
             'sources/hooks/systems/commandr_commands/send_chatmessage.php',
             'sources/hooks/systems/commandr_commands/watch_chatroom.php',
-            'sources/hooks/systems/commandr_notifications/chat.php',
             'sources/hooks/modules/members/chat.php',
             'sources/hooks/systems/page_groupings/chat.php',
             'sources/hooks/systems/rss/chat.php',

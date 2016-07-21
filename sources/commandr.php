@@ -65,96 +65,61 @@ function commandr_script()
     require_code('input_filter_2');
     modsecurity_workaround_enable();
 
-    // Check the action
-    $action = get_param_string('action', 'commandr');
+    // Executing a command from the command-line
+    $command = post_param_string('command', is_cli() ? null : false);
+    if (is_null($command)) {
+        require_code('comcode_from_html');
+        require_code('mail');
 
-    if ($action == 'message') {
-        // We're receiving an Commandrchat message
-        $url = get_param_string('base_url') . '/data/commandr.php?action=confirm&message=' . urlencode(get_param_string('message'));
-        $return = http_download_file($url, null, false);
-        if ($return == '1') {
-            if (cms_srv('HTTP_USER_AGENT') == 'Composr') {
-                $GLOBALS['SITE_DB']->query_insert('commandrchat', array('c_message' => get_param_string('message'), 'c_url' => get_param_string('base_url'), 'c_incoming' => 1, 'c_timestamp' => time()));
-                echo '1';
-            } else {
-                echo '0';
+        $stdin = @fopen('php://stdin', GOOGLE_APPENGINE ? 'rb' : 'rt');
+        $stderr = @fopen('php://stderr', GOOGLE_APPENGINE ? 'wb' : 'wt');
+        $stdout = @fopen('php://stdout', GOOGLE_APPENGINE ? 'wb' : 'wt');
+        while (true) { // Goes on until ctrl+C
+            fwrite($stdout, "\n> ");
+
+            $command = fgets($stdin, 102400);
+            if (trim($command) == 'exit') {
+                break;
             }
-        } else {
-            echo '0';
-        }
-    } elseif ($action == 'confirm') {
-        // We're confirming a received message
-        if (cms_srv('HTTP_USER_AGENT') == 'Composr') {
-            $results = $GLOBALS['SITE_DB']->query_select_value_if_there('commandrchat', 'COUNT(*)', array('c_message' => get_param_string('message'), 'c_incoming' => false));
-            if (!is_null($results)) {
-                echo '1';
-            } else {
-                echo '0';
+            $temp = new Virtual_shell(trim($command));
+            if (trim($temp->output[STREAM_STDHTML]) != '') {
+                fwrite($stdout, trim(strip_comcode(semihtml_to_comcode(preg_replace('#<(\w+) [^<>]*>#', '<${1}>', $temp->output[STREAM_STDHTML])))));
             }
-        } else {
-            echo '0';
+            if (trim($temp->output[STREAM_STDOUT]) != '') {
+                fwrite($stdout, trim($temp->output[STREAM_STDOUT]));
+            }
+            if (trim($temp->output[STREAM_STDERR]) != '') {
+                fwrite($stderr, trim($temp->output[STREAM_STDERR]));
+            }
         }
+        fclose($stdin);
+        fclose($stderr);
+        fclose($stdout);
     } else {
-        // Executing a command from the command-line
-        $command = post_param_string('command', is_cli() ? null : false);
-        if (is_null($command)) {
-            require_code('comcode_from_html');
-            require_code('mail');
+        require_code('failure');
+        set_throw_errors();
+        try {
+            $temp = new Virtual_shell(trim($command));
+            $temp->output_xml();
+        } catch (Exception $e) {
+            @header('HTTP/1.0 200 Ok');
+            @header('Content-type: text/xml; charset=' . get_charset());
+            $output = '<' . '?xml version="1.0" encoding="' . get_charset() . '" ?' . '>
+                <response>
+                    <result>
+                        <command>' . xmlentities(post_param_string('command', '')) . '</command>
+                        <stdcommand></stdcommand>
+                        <stdhtml><div xmlns="http://www.w3.org/1999/xhtml">' . ((get_param_integer('keep_fatalistic', 0) == 1) ? static_evaluate_tempcode(get_html_trace()) : '') . '</div></stdhtml>
+                        <stdout>' . xmlentities($e->getMessage()) . '</stdout>
+                        <stderr>' . xmlentities(do_lang('EVAL_ERROR')) . '</stderr>
+                    </result>
+                </response>';
 
-            $stdin = @fopen('php://stdin', GOOGLE_APPENGINE ? 'rb' : 'rt');
-            $stderr = @fopen('php://stderr', GOOGLE_APPENGINE ? 'wb' : 'wt');
-            $stdout = @fopen('php://stdout', GOOGLE_APPENGINE ? 'wb' : 'wt');
-            while (true) { // Goes on until ctrl+C
-                fwrite($stdout, "\n> ");
-
-                $command = fgets($stdin, 102400);
-                if (trim($command) == 'exit') {
-                    break;
-                }
-                $temp = new Virtual_shell(trim($command));
-                if (trim($temp->output[STREAM_STDHTML]) != '') {
-                    fwrite($stdout, trim(strip_comcode(semihtml_to_comcode(preg_replace('#<(\w+) [^<>]*>#', '<${1}>', $temp->output[STREAM_STDHTML])))));
-                }
-                if (trim($temp->output[STREAM_STDOUT]) != '') {
-                    fwrite($stdout, trim($temp->output[STREAM_STDOUT]));
-                }
-                if (trim($temp->output[STREAM_STDERR]) != '') {
-                    fwrite($stderr, trim($temp->output[STREAM_STDERR]));
-                }
+            if ($GLOBALS['XSS_DETECT']) {
+                ocp_mark_as_escaped($output);
             }
-            fclose($stdin);
-            fclose($stderr);
-            fclose($stdout);
-        } else {
-            require_code('failure');
-            set_throw_errors();
-            try {
-                $temp = new Virtual_shell(trim($command));
-                $temp->output_xml();
-            } catch (Exception $e) {
-                @header('HTTP/1.0 200 Ok');
-                @header('Content-type: text/xml; charset=' . get_charset());
-                $output = '<' . '?xml version="1.0" encoding="' . get_charset() . '" ?' . '>
-                    <response>
-                        <result>
-                            <command>' . xmlentities(post_param_string('command', '')) . '</command>
-                            <stdcommand></stdcommand>
-                            <stdhtml><div xmlns="http://www.w3.org/1999/xhtml">' . ((get_param_integer('keep_fatalistic', 0) == 1) ? static_evaluate_tempcode(get_html_trace()) : '') . '</div></stdhtml>
-                            <stdout>' . xmlentities($e->getMessage()) . '</stdout>
-                            <stderr>' . xmlentities(do_lang('EVAL_ERROR')) . '</stderr>
-                            <stdnotifications><div xmlns="http://www.w3.org/1999/xhtml"></div></stdnotifications>
-                        </result>
-                    </response>';
 
-                if ($GLOBALS['XSS_DETECT']) {
-                    ocp_mark_as_escaped($output);
-                }
-
-                exit($output);
-            }
-        }
-        if (get_option('commandr_chat_announce') == '1') {
-            http_download_file('http://compo.sr/data_custom/commandr.php?title=' . urlencode(get_site_name()) . '&url=' . urlencode(get_custom_base_url()), null, false, true);
+            exit($output);
         }
     }
 }
@@ -321,7 +286,6 @@ class Virtual_shell
         <stdhtml><div xmlns="http://www.w3.org/1999/xhtml">' . $this->output[STREAM_STDHTML] . '</div></stdhtml>
         <stdout>' . xmlentities($this->output[STREAM_STDOUT]) . '</stdout>
         <stderr>' . xmlentities($this->output[STREAM_STDERR]) . '</stderr>
-        <stdnotifications>' . get_queued_messages() . '</stdnotifications>
     </result>
 </response>';
 
@@ -364,11 +328,8 @@ class Virtual_shell
             $this->output[STREAM_STDERR] = do_lang('ERROR_NON_TERMINAL') . "\n" . $this->output[STREAM_STDERR]; // And again :-(
         }
 
-        $notifications = get_queued_messages(false);
-
         $output = do_template('COMMANDR_COMMAND', array(
             '_GUID' => 'a05ee6b75302f8ccd5ec9f3a24207521',
-            'NOTIFICATIONS' => $notifications,
             'METHOD' => $this->current_input,
             'STDOUT' => $this->output[STREAM_STDOUT],
             'STDHTML' => $this->output[STREAM_STDHTML],
@@ -1374,48 +1335,6 @@ class Virtual_shell
         }
         return false;
     }
-}
-
-/**
- * Returns a string containing the XML for any messages queued to be sent to the client.
- *
- * @param  boolean $xml Output as XML or Tempcode?
- * @return string The queued message XML
- */
-function get_queued_messages($xml = true)
-{
-    $hooks = find_all_hook_obs('systems', 'commandr_notifications', 'Hook_commandr_notification_');
-    $output = mixed();
-    if ($xml) {
-        $output = '';
-    } else {
-        $output = new Tempcode();
-    }
-
-    $_loc = get_value('last_commandr_command');
-    $loc = is_null($_loc) ? null : intval($_loc);
-
-    foreach ($hooks as $object) {
-        $object_values = $object->run($loc);
-        if ($object_values === false) {
-            continue;
-        }
-
-        if ($xml) {
-            if (is_object($object_values[2])) {
-                $object_values[2] = $object_values[2]->evaluate();
-            }
-            $output .= '<notification section="' . escape_html($object_values[0]) . '" type="' . escape_html($object_values[1]) . '">' . $object_values[2] . '</notification>';
-        } else {
-            $output->attach(do_template('COMMANDR_NOTIFICATION', array('_GUID' => '0254d84dfbb2ce7b7410bdc0c2989833', 'SECTION' => $object_values[0], 'TYPE' => $object_values[1], 'NOTIFICATION_CONTENT' => $object_values[2])));
-        }
-    }
-
-    if ($xml) {
-        $output = '<div xmlns="http://www.w3.org/1999/xhtml">' . $output . '</div>';
-    }
-
-    return $output;
 }
 
 /**

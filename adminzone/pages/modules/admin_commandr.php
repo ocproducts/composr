@@ -70,18 +70,14 @@ class Module_admin_commandr
             foreach (array_keys($usergroups) as $id) {
                 $GLOBALS['SITE_DB']->query_insert('group_page_access', array('page_name' => 'admin_commandr', 'zone_name' => 'adminzone', 'group_id' => $id)); // Commandr very dangerous
             }
-
-            $GLOBALS['SITE_DB']->create_table('commandrchat', array(
-                'id' => '*AUTO',
-                'c_message' => 'LONG_TEXT',
-                'c_url' => 'URLPATH',
-                'c_incoming' => 'BINARY',
-                'c_timestamp' => 'TIME'
-            ));
         }
 
         if ((!is_null($upgrade_from)) && ($upgrade_from < 3)) {
             $GLOBALS['SITE_DB']->rename_table('occlechat', 'commandrchat');
+        }
+
+        if ((!is_null($upgrade_from)) && ($upgrade_from < 4)) {
+            $GLOBALS['SITE_DB']->drop_table_if_exists('commandrchat');
         }
     }
 
@@ -90,8 +86,6 @@ class Module_admin_commandr
      */
     public function uninstall()
     {
-        $GLOBALS['SITE_DB']->drop_table_if_exists('commandrchat');
-
         delete_value('last_commandr_command');
     }
 

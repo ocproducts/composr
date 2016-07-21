@@ -121,11 +121,8 @@ class Hook_addon_registry_commandr
             'sources_custom/hooks/systems/commandr_fs_extended_member/.htaccess',
             'sources/hooks/systems/commandr_fs_extended_config/privileges.php',
             'sources/hooks/systems/config/bottom_show_commandr_button.php',
-            'sources/hooks/systems/config/commandr_chat_announce.php',
             'sources/hooks/systems/commandr_fs/.htaccess',
             'sources_custom/hooks/systems/commandr_fs/.htaccess',
-            'sources/hooks/systems/commandr_notifications/.htaccess',
-            'sources_custom/hooks/systems/commandr_notifications/.htaccess',
             'sources/hooks/systems/addon_registry/commandr.php',
             'sources/hooks/systems/commandr_commands/antispam_check.php',
             'sources/hooks/systems/commandr_commands/set_comment_forum.php',
@@ -138,17 +135,12 @@ class Hook_addon_registry_commandr
             'themes/default/javascript/commandr.js',
             'themes/default/templates/COMMANDR_ARRAY.tpl',
             'themes/default/templates/COMMANDR_BOX.tpl',
-            'themes/default/templates/COMMANDR_CHAT_NOTIFICATION.tpl',
             'themes/default/templates/COMMANDR_COMMAND.tpl',
             'themes/default/templates/COMMANDR_COMMANDS.tpl',
             'themes/default/templates/COMMANDR_EDIT.tpl',
             'themes/default/templates/COMMANDR_ENTRY_POINTS.tpl',
             'themes/default/templates/COMMANDR_FIND_CODES.tpl',
             'themes/default/templates/COMMANDR_MAIN_SCREEN.tpl',
-            'themes/default/templates/COMMANDR_NOTIFICATION.tpl',
-            'themes/default/templates/COMMANDR_COMMANDRCHAT_NOTIFICATION.tpl',
-            'themes/default/templates/COMMANDR_CNS_NOTIFICATION.tpl',
-            'themes/default/templates/COMMANDR_PT_NOTIFICATION.tpl',
             'themes/default/templates/COMMANDR_RSS.tpl',
             'themes/default/templates/COMMANDR_USERS_ONLINE.tpl',
             'themes/default/templates/COMMANDR_WHOIS.tpl',
@@ -198,7 +190,6 @@ class Hook_addon_registry_commandr
             'sources/hooks/systems/commandr_commands/mkdir.php',
             'sources/hooks/systems/commandr_commands/mv.php',
             'sources/hooks/systems/commandr_commands/mvdir.php',
-            'sources/hooks/systems/commandr_commands/commandrchat.php',
             'sources/hooks/systems/commandr_commands/passwd.php',
             'sources/hooks/systems/commandr_commands/pwd.php',
             'sources/hooks/systems/commandr_commands/read.php',
@@ -223,9 +214,6 @@ class Hook_addon_registry_commandr
             'sources_custom/hooks/systems/commandr_fs/index.html',
             'sources/hooks/systems/commandr_fs/raw.php',
             'sources/hooks/systems/commandr_fs/root.php',
-            'sources/hooks/systems/commandr_notifications/index.html',
-            'sources_custom/hooks/systems/commandr_notifications/index.html',
-            'sources/hooks/systems/commandr_notifications/commandrchat.php',
             'sources/hooks/systems/page_groupings/commandr.php',
             'sources/hooks/systems/snippets/commandr.php',
             'sources/commandr.php',
@@ -245,7 +233,6 @@ class Hook_addon_registry_commandr
             'templates/COMMANDR_MAIN_SCREEN.tpl' => 'administrative__commandr_main_screen',
             'templates/COMMANDR_COMMAND.tpl' => 'administrative__commandr_command',
             'templates/COMMANDR_ARRAY.tpl' => 'administrative__commandr_array',
-            'templates/COMMANDR_NOTIFICATION.tpl' => 'administrative__commandr_command',
             'templates/COMMANDR_HELP.tpl' => 'administrative__commandr_help',
             'templates/COMMANDR_BOX.tpl' => 'administrative__commandr_box',
             'templates/COMMANDR_COMMANDS.tpl' => 'administrative__commandr_commands',
@@ -256,10 +243,6 @@ class Hook_addon_registry_commandr
             'templates/COMMANDR_WHOIS.tpl' => 'administrative__commandr_whois',
             'templates/COMMANDR_ENTRY_POINTS.tpl' => 'administrative__commandr_entry_points',
             'templates/COMMANDR_LS.tpl' => 'administrative__commandr_ls',
-            'templates/COMMANDR_CHAT_NOTIFICATION.tpl' => 'administrative__commandr_chat_notification',
-            'templates/COMMANDR_COMMANDRCHAT_NOTIFICATION.tpl' => 'administrative__commandr_commandrchat_notification',
-            'templates/COMMANDR_CNS_NOTIFICATION.tpl' => 'administrative__commandr_cns_notification',
-            'templates/COMMANDR_PT_NOTIFICATION.tpl' => 'administrative__commandr_pt_notification'
         );
     }
 
@@ -314,19 +297,11 @@ class Hook_addon_registry_commandr
      */
     public function tpl_preview__administrative__commandr_command()
     {
-        $notifications = do_lorem_template('COMMANDR_NOTIFICATION', array(
-            'SECTION' => lorem_phrase(),
-            'TYPE' => lorem_phrase(),
-            'NOTIFICATION_CONTENT' => lorem_phrase(),
-        ));
-
         return array(
             lorem_globalise(do_lorem_template('COMMANDR_COMMAND', array(
-                'NOTIFICATIONS' => $notifications,
                 'METHOD' => lorem_phrase(),
                 'STDOUT' => lorem_phrase(),
                 'STDHTML' => lorem_phrase(),
-                'STDCOMMAND' => lorem_word_2(),
                 'STDERR' => lorem_phrase(),
             )), null, '', true)
         );
@@ -541,92 +516,6 @@ class Hook_addon_registry_commandr
                 'FILENAME' => lorem_word(),
                 'FILESIZE' => lorem_word(),
                 'MTIME' => lorem_word(),
-            )), null, '', true)
-        );
-    }
-
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
-    public function tpl_preview__administrative__commandr_chat_notification()
-    {
-        require_lang('chat');
-
-        $rooms = array();
-        foreach (placeholder_array() as $k => $v) {
-            $rooms[$v] = $k;
-        }
-        return array(
-            lorem_globalise(do_lorem_template('COMMANDR_CHAT_NOTIFICATION', array(
-                'MESSAGE_COUNT' => placeholder_number(),
-                'ROOMS' => $rooms,
-            )), null, '', true)
-        );
-    }
-
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
-    public function tpl_preview__administrative__commandr_commandrchat_notification()
-    {
-        return array(
-            lorem_globalise(do_lorem_template('COMMANDR_COMMANDRCHAT_NOTIFICATION', array(
-                'MESSAGE_COUNT' => placeholder_number(),
-                'MESSAGES' => placeholder_array(),
-            )), null, '', true)
-        );
-    }
-
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
-    public function tpl_preview__administrative__commandr_cns_notification()
-    {
-        $topics = array();
-        foreach (placeholder_array() as $val) {
-            $topics[] = array(
-                '_loop_var' => placeholder_url(),
-                '_loop_key' => lorem_word(),
-            );
-        }
-        return array(
-            lorem_globalise(do_lorem_template('COMMANDR_CNS_NOTIFICATION', array(
-                'TOPICS' => $topics,
-            )), null, '', true)
-        );
-    }
-
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
-    public function tpl_preview__administrative__commandr_pt_notification()
-    {
-        $topics = array();
-        foreach (placeholder_array() as $val) {
-            $topics[] = array(
-                '_loop_var' => placeholder_url(),
-                '_loop_key' => lorem_word(),
-            );
-        }
-        return array(
-            lorem_globalise(do_lorem_template('COMMANDR_PT_NOTIFICATION', array(
-                'TOPICS' => $topics,
             )), null, '', true)
         );
     }

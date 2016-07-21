@@ -135,32 +135,9 @@ function commandr_command_response(ajax_result_frame,ajax_result)
 	var stdhtml=ajax_result.getElementsByTagName('stdhtml')[0].childNodes[0];
 	var stdout=merge_text_nodes(ajax_result.getElementsByTagName('stdout')[0].childNodes);
 	var stderr=merge_text_nodes(ajax_result.getElementsByTagName('stderr')[0].childNodes);
-	var stdnotifications=ajax_result.getElementsByTagName('stdnotifications')[0].childNodes[0];
 
 	var past_command_text=document.createTextNode(method+' \u2192 ');
 	past_command_prompt.appendChild(past_command_text);
-
-	if (stdnotifications.childNodes.length>0)
-	{
-		// Handle notifications
-		var notifications_block=document.createElement('div');
-		var notification,notification_p,notification_p_text;
-		for (var i=0;i<stdnotifications.childNodes.length;i++)
-		{
-			notification=document.createElement('div');
-			notification.setAttribute('class','commandr_notification');
-			notification_p=document.createElement('p');
-			notification_p_text=document.createTextNode('{!NOTIFICATION_SECTION;^} '+stdnotifications.childNodes[i].getAttribute('section')+'{!NOTIFICATION_TYPE;^} '+stdnotifications.childNodes[i].getAttribute('type'));
-			notification_p.appendChild(notification_p_text);
-			notification.appendChild(notification_p);
-			for (var a=0;a<stdnotifications.childNodes[i].childNodes.length;a++)
-			{
-				notification.appendChild(careful_import_node(stdnotifications.childNodes[i].childNodes[a]));
-			}
-			notifications_block.appendChild(notification);
-		}
-		new_command.appendChild(notifications_block);
-	}
 
 	new_command.appendChild(past_command_prompt);
 
