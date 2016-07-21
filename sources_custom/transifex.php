@@ -56,7 +56,6 @@ function init__transifex()
         'adminzone/pages/comcode_custom/EN/referrals.txt' => array(null, TRANSLATE_PRIORITY_NORMAL, TRANSLATE_ADDON, TRANSLATE_ADMINISTRATIVE_YES),
         'buildr/pages/comcode_custom/EN/docs.txt' => array(null, TRANSLATE_PRIORITY_NORMAL, TRANSLATE_ADDON, TRANSLATE_ADMINISTRATIVE_NO),
         'buildr/pages/comcode_custom/EN/rules.txt' => array(null, TRANSLATE_PRIORITY_NORMAL, TRANSLATE_ADDON, TRANSLATE_ADMINISTRATIVE_NO),
-        'collaboration/pages/comcode/EN/about.txt' => array(null, TRANSLATE_PRIORITY_HIGH, TRANSLATE_CORE, TRANSLATE_ADMINISTRATIVE_YES),
         'data/modules/cms_comcode_pages/EN/about_us.txt' => array(null, TRANSLATE_PRIORITY_NORMAL, TRANSLATE_CORE, TRANSLATE_ADMINISTRATIVE_YES),
         'data/modules/cms_comcode_pages/EN/advertise.txt' => array(null, TRANSLATE_PRIORITY_NORMAL, TRANSLATE_CORE, TRANSLATE_ADMINISTRATIVE_YES),
         'data/modules/cms_comcode_pages/EN/article.txt' => array(null, TRANSLATE_PRIORITY_NORMAL, TRANSLATE_CORE, TRANSLATE_ADMINISTRATIVE_YES),
@@ -92,7 +91,6 @@ function init__transifex()
     );
     $EXTRA_LANGUAGE_FILES['adminzone/pages/comcode/EN/' . DEFAULT_ZONE_PAGE_NAME . '.txt'] = array(null, TRANSLATE_PRIORITY_NORMAL, TRANSLATE_CORE, TRANSLATE_ADMINISTRATIVE_YES);
     $EXTRA_LANGUAGE_FILES['buildr/pages/comcode_custom/EN/' . DEFAULT_ZONE_PAGE_NAME . '.txt'] = array(null, TRANSLATE_PRIORITY_NORMAL, TRANSLATE_ADDON, TRANSLATE_ADMINISTRATIVE_NO);
-    $EXTRA_LANGUAGE_FILES['collaboration/pages/comcode/EN/' . DEFAULT_ZONE_PAGE_NAME . '.txt'] = array(null, TRANSLATE_PRIORITY_HIGH, TRANSLATE_CORE, TRANSLATE_ADMINISTRATIVE_YES);
     $EXTRA_LANGUAGE_FILES['pages/comcode/EN/' . DEFAULT_ZONE_PAGE_NAME . '.txt'] = array(null, TRANSLATE_PRIORITY_NORMAL, TRANSLATE_CORE, TRANSLATE_ADMINISTRATIVE_NO);
     $EXTRA_LANGUAGE_FILES['site/pages/comcode/EN/' . DEFAULT_ZONE_PAGE_NAME . '.txt'] = array(null, TRANSLATE_PRIORITY_NORMAL, TRANSLATE_CORE, TRANSLATE_ADMINISTRATIVE_NO);
     foreach ($EXTRA_LANGUAGE_FILES as $file => &$properties) {

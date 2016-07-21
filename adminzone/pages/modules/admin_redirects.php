@@ -68,7 +68,6 @@ class Module_admin_redirects
 
             $GLOBALS['SITE_DB']->query_insert('redirects', array('r_from_page' => 'rules', 'r_from_zone' => 'site', 'r_to_page' => 'rules', 'r_to_zone' => '', 'r_is_transparent' => 1));
             $GLOBALS['SITE_DB']->query_insert('redirects', array('r_from_page' => 'rules', 'r_from_zone' => 'forum', 'r_to_page' => 'rules', 'r_to_zone' => '', 'r_is_transparent' => 1));
-            $GLOBALS['SITE_DB']->query_insert('redirects', array('r_from_page' => 'authors', 'r_from_zone' => 'collaboration', 'r_to_page' => 'authors', 'r_to_zone' => 'site', 'r_is_transparent' => 1));
         }
 
         if ((is_null($upgrade_from)) || ($upgrade_from < 3)) {

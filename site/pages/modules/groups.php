@@ -130,15 +130,7 @@ class Module_groups
         if ($type == 'apply') {
             $id = post_param_integer('id', null);
             if (is_null($id)) {
-                $_id = get_param_string('id');
-                if (is_numeric($_id)) {
-                    $id = intval($_id);
-                } else { // Collaboration zone has a text link like this
-                    $id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('g_name') => $_id));
-                    if (is_null($id)) {
-                        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'group'));
-                    }
-                }
+                $id = get_param_integer('id');
                 if ($id == db_get_first_id()) {
                     warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
                 }
@@ -698,15 +690,7 @@ class Module_groups
      */
     public function add_to($special_permission = false, $username = null)
     {
-        $_id = get_param_string('id');
-        if (is_numeric($_id)) {
-            $id = intval($_id);
-        } else { // Collaboration zone has a text link like this
-            $id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('f_description') => $_id));
-            if (is_null($id)) {
-                warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'group'));
-            }
-        }
+        $id = get_param_integer('id');
 
         if ($id == db_get_first_id()) {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));

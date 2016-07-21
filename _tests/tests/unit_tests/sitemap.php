@@ -44,7 +44,7 @@ class sitemap_test_set extends cms_test_case
 
     public function flatten_sitemap($sitemap)
     {
-        if ($sitemap['page_link'] == 'collaboration:' || $sitemap['page_link'] == 'forum:' || $sitemap['page_link'] == 'buildr:') {
+        if ($sitemap['page_link'] == 'forum:' || $sitemap['page_link'] == 'buildr:') {
             return array();
         }
 

@@ -193,10 +193,10 @@ When you visit the home page you are redirected to the Forums page just like ear
 
 [title="3"]Example: Moving a module[/title]
 
-If you wanted to move the [tt]supermembers[/tt] module from the Collaboration Zone to the Site zone, you could set up these redirects:
-1) [tt]site:supermembers[/tt]-->[tt]collaboration:supermembers[/tt] [i]transparent[/i]
-2) [tt]collaboration:supermembers[/tt]-->[tt]site:supermembers[/tt] [i]non-transparent[/i]
-Composr will see the transparent redirect as an indication the [tt]supermembers[/tt] module really has a proper home in the [tt]site[/tt] zone, and it will see the non-transparent redirect as an indication the [tt]supermembers[/tt] module really does not have a proper home in the collaboration zone; Composr will respect these indications and consistently link to the module in its new home.
+If you wanted to move the [tt]downloads[/tt] module from the Site Zone to the Example zone, you could set up these redirects:
+1) [tt]example:downloads[/tt]-->[tt]site:downloads[/tt] [i]transparent[/i]
+2) [tt]site:downloads[/tt]-->[tt]example:downloads[/tt] [i]non-transparent[/i]
+Composr will see the transparent redirect as an indication the [tt]downloads[/tt] module really has a proper home in the [tt]site[/tt] zone, and it will see the non-transparent redirect as an indication the [tt]downloads[/tt] module really does not have a proper home in the site zone; Composr will respect these indications and consistently link to the module in its new home.
 [/box]
 [/surround]
 

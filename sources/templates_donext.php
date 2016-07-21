@@ -49,7 +49,7 @@ function do_next_manager_hooked($title, $text, $type, $main_title = null)
                     if (!isset($link[2][1]['type'])) {
                         continue;
                     }
-                    if (in_array($link[2][1]['type'], array('site_meta', 'pages', 'social', 'collaboration', 'rich_content'))) {
+                    if (in_array($link[2][1]['type'], array('site_meta', 'pages', 'social', 'rich_content'))) {
                         continue;
                     }
                 }

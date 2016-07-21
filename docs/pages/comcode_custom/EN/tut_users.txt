@@ -76,12 +76,6 @@ This short tutorial aims simply to clarify what all these terms to relate to, an
 			<br />Membership is defined by the forum driver (i.e. similar to above). For Conversr, a member is a super administrator if they are in a usergroup that is marked as one.</td>
 			<td>This term is a specific term to identify first level staff.</td>
 		</tr>
-		<tr class="zebra_0">
-			<td>Super member</td>
-			<td>Super member is a vague term, that has no hard coded meaning. It is purely created as an abstraction to help allocate access permissions, especially to the 'Collaboration Zone' zone.
-			<br />Conversr has a default 'Super member' usergroup.</td>
-			<td>To distinguish privileged members from ordinary members, and to help allocate permissions.</td>
-		</tr>
 	</tbody>
 </table>
 [/html]
@@ -118,7 +112,6 @@ That should do it!
  7_key="Staff"                7_value="Someone who is on the staff list, or generally has staff access (term is often used vaguely as a convenience, as permissions in reality are very configurable)"
  8_key="Super moderator"      8_value="Someone who has special staff-like access, but not full site control"
  9_key="Super administrator"  9_value="Someone who has full site control, and can't have it taken away as long as they are a super administrator"
- 10_key="Super member"        10_value="Someone who in in a super member usergroup, which typically has Collaboration Zone access; a vague concept to avoid having to refer to the low-level permissions"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]

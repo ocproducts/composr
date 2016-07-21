@@ -29,7 +29,7 @@ if (!$cli) {
 
 header('Content-type: text/plain');
 
-$zones = array('', 'site', 'forum', 'adminzone', 'cms', 'collaboration');
+$zones = array('', 'site', 'forum', 'adminzone', 'cms');
 
 $zone_list = '';
 foreach ($zones as $zone) {

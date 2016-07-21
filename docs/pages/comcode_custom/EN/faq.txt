@@ -328,7 +328,7 @@ suhosin.upload.remove_binary=off
 ; open_basedir=/tmp:/home/blah/public_html/composr/		Customise this line for your server, or leave it commented out
 [/codebox]
 
-Theoretically the file should be placed in any directory from which a PHP file might be called up by URL. Practically though you can just put it in the base directory, [tt]adminzone[/tt], [tt]cms[/tt], [tt]collaboration[/tt], [tt]data[/tt], [tt]data_custom[/tt], [tt]forum[/tt] and [tt]site[/tt] directories.
+Theoretically the file should be placed in any directory from which a PHP file might be called up by URL. Practically though you can just put it in the base directory, [tt]adminzone[/tt], [tt]cms[/tt], [tt]data[/tt], [tt]data_custom[/tt], [tt]forum[/tt] and [tt]site[/tt] directories.
 
 [title="3"]Composr has gone very slow after changing the configuration / will not save configuration changes / catalogue adding or editing will not work?[/title]
 

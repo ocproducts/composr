@@ -118,18 +118,6 @@ The default Comcode pages are...
 			<td>Help for the chat system. Only installed if the <kbd>chat</kbd> addon is installed.</td>
 			<td>2%</td>
 		</tr>
-		<tr>
-			<td>Collaboration</td>
-			<td><kbd>start</td>
-			<td>This is the default front-page of the collaboration zone. Only installed if the <kbd>collaboration_zone</kbd> addon is installed.</td>
-			<td>100%</td>
-		</tr>
-		<tr>
-			<td>Collaboration</td>
-			<td><kbd>about</kbd></td>
-			<td>This describes the Collaboration Zone. Only installed if the <kbd>collaboration_zone</kbd> addon is installed.</td>
-			<td>100%</td>
-		</tr>
 	</tbody>
 </table>
 [/html]

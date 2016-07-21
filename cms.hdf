@@ -128,7 +128,7 @@ VirtualHost {
 
 			# HTM STYLE: These have a specially reduced form (no need to make it too explicit that these are Wiki+). We shouldn't shorten them too much, or the actual zone or base url might conflict
 			rule7 {
-				pattern = ^(site|forum|adminzone|cms|collaboration)/s/([^\&\?]*)\.htm$
+				pattern = ^(site|forum|adminzone|cms)/s/([^\&\?]*)\.htm$
 				to = $1/index.php\?page=wiki&id=$2
 				qsa = true
 			}
@@ -141,19 +141,19 @@ VirtualHost {
 
 			# HTM STYLE: These are standard patterns
 			rule9 {
-				pattern = ^(site|forum|adminzone|cms|collaboration)/([^/\&\?]+)/([^/\&\?]*)/([^\&\?]*)\.htm$
+				pattern = ^(site|forum|adminzone|cms)/([^/\&\?]+)/([^/\&\?]*)/([^\&\?]*)\.htm$
 				to = $1/index.php\?page=$2&type=$3&id=$4
 				qsa = true
 			}
 			
 			rule9 {
-				pattern = ^(site|forum|adminzone|cms|collaboration)/([^/\&\?]+)/([^/\&\?]*)\.htm$
+				pattern = ^(site|forum|adminzone|cms)/([^/\&\?]+)/([^/\&\?]*)\.htm$
 				to = $1/index.php\?page=$2&type=$3
 				qsa = true
 			}
 			
 			rule9 {
-				pattern = ^(site|forum|adminzone|cms|collaboration)/([^/\&\?]+)\.htm$
+				pattern = ^(site|forum|adminzone|cms)/([^/\&\?]+)\.htm$
 				to = $1/index.php\?page=$2
 				qsa = true
 			}
@@ -178,7 +178,7 @@ VirtualHost {
 
 			# SIMPLE STYLE: These have a specially reduced form (no need to make it too explicit that these are Wiki+). We shouldn't shorten them too much, or the actual zone or base url might conflict
 			#rule10 {
-				#pattern = ^(site|forum|adminzone|cms|collaboration)/s/([^\&\?]*)$
+				#pattern = ^(site|forum|adminzone|cms)/s/([^\&\?]*)$
 				#to = $1/index.php\?page=wiki&id=$2
 				#qsa = true
 			#}
@@ -191,19 +191,19 @@ VirtualHost {
 
 			# SIMPLE STYLE: These are standard patterns
 			#rule12 {
-				#pattern = ^(site|forum|adminzone|cms|collaboration)/([^/\&\?]+)/([^/\&\?]*)/([^\&\?]*)$
+				#pattern = ^(site|forum|adminzone|cms)/([^/\&\?]+)/([^/\&\?]*)/([^\&\?]*)$
 				#to = $1/index.php\?page=$2&type=$3&id=$4
 				#qsa = true
 			#}
 			
 			#rule12 {
-				#pattern = ^(site|forum|adminzone|cms|collaboration)/([^/\&\?]+)/([^/\&\?]*)$
+				#pattern = ^(site|forum|adminzone|cms)/([^/\&\?]+)/([^/\&\?]*)$
 				#to = $1/index.php\?page=$2&type=$3
 				#qsa = true
 			#}
 			
 			#rule12 {
-				#pattern = ^(site|forum|adminzone|cms|collaboration)/([^/\&\?]+)$
+				#pattern = ^(site|forum|adminzone|cms)/([^/\&\?]+)$
 				#to = $1/index.php\?page=$2
 				#qsa = true
 			#}

@@ -360,7 +360,6 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/cqc_adminzone.php',
             '_tests/tests/unit_tests/cqc_blocks.php',
             '_tests/tests/unit_tests/cqc_cms.php',
-            '_tests/tests/unit_tests/cqc_collaboration.php',
             '_tests/tests/unit_tests/cqc_database.php',
             '_tests/tests/unit_tests/cqc_forum.php',
             '_tests/tests/unit_tests/cqc_forumdrivers.php',

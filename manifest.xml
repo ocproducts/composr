@@ -60,8 +60,6 @@
   <setAcl path="composr/caches/self_learning" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/cms/pages/comcode_custom/EN" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/cms/pages/html_custom/EN" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
-  <setAcl path="composr/collaboration/pages/comcode_custom/EN" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
-  <setAcl path="composr/collaboration/pages/html_custom/EN" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/data_custom/errorlog.php" setAclResourceType="File" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/data_custom/firewall_rules.txt" setAclResourceType="File" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />
   <setAcl path="composr/data_custom/modules/admin_backup" setAclAccess="Modify" setAclUser="anonymousAuthenticationUser" />

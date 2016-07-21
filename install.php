@@ -1968,11 +1968,6 @@ function step_5_core_2()
     $trans2 = insert_lang('zone_header_text', do_lang('HEADER_TEXT_ADMINZONE'), 1, null, false, null, $INSTALL_LANG);
     $h2 = insert_lang('zone_title', do_lang('ADMIN_ZONE'), 1, null, false, null, $INSTALL_LANG);
     $GLOBALS['SITE_DB']->query_insert('zones', array('zone_name' => 'adminzone', 'zone_default_page' => DEFAULT_ZONE_PAGE_NAME, 'zone_theme' => 'admin', 'zone_require_session' => 1) + $trans2 + $h2);
-    if (file_exists(get_file_base() . '/collaboration')) {
-        $trans3 = insert_lang('zone_header_text', do_lang('HEADER_TEXT_collaboration'), 1, null, false, null, $INSTALL_LANG);
-        $h3 = insert_lang('zone_title', do_lang('COLLABORATION'), 1, null, false, null, $INSTALL_LANG);
-        $GLOBALS['SITE_DB']->query_insert('zones', array('zone_name' => 'collaboration', 'zone_default_page' => DEFAULT_ZONE_PAGE_NAME, 'zone_theme' => '-1', 'zone_require_session' => 0) + $trans3 + $h3);
-    }
     $trans4 = insert_lang('zone_header_text', '', 1, null, false, null, $INSTALL_LANG);
     $h4 = insert_lang('zone_title', do_lang('SITE'), 1, null, false, null, $INSTALL_LANG);
     $GLOBALS['SITE_DB']->query_insert('zones', array('zone_name' => 'site', 'zone_default_page' => DEFAULT_ZONE_PAGE_NAME, 'zone_theme' => '-1', 'zone_require_session' => 0) + $trans4 + $h4);
@@ -2963,25 +2958,25 @@ RewriteRule ^([^=]*)pg/([^/\&\?\.]*)/([^/\&\?\.]*)&(.*)$ $1index.php\?$4&page=$2
 RewriteRule ^([^=]*)pg/([^/\&\?\.]*)&(.*)$ $1index.php\?$3&page=$2 [L,QSA]
 
 # HTM STYLE: These have a specially reduced form (no need to make it too explicit that these are Wiki+). We shouldn't shorten them too much, or the actual zone or base URL might conflict
-RewriteRule ^(site|forum|adminzone|cms|collaboration)/s/([^\&\?]*)\.htm$ $1/index.php\?page=wiki&id=$2 [L,QSA]
+RewriteRule ^(site|forum|adminzone|cms)/s/([^\&\?]*)\.htm$ $1/index.php\?page=wiki&id=$2 [L,QSA]
 RewriteRule ^s/([^\&\?]*)\.htm$ index\.php\?page=wiki&id=$1 [L,QSA]
 
 # HTM STYLE: These are standard patterns
-RewriteRule ^(site|forum|adminzone|cms|collaboration)/([^/\&\?]+)/([^/\&\?]*)/([^\&\?]*)\.htm$ $1/index.php\?page=$2&type=$3&id=$4 [L,QSA]
-RewriteRule ^(site|forum|adminzone|cms|collaboration)/([^/\&\?]+)/([^/\&\?]*)\.htm$ $1/index.php\?page=$2&type=$3 [L,QSA]
-RewriteRule ^(site|forum|adminzone|cms|collaboration)/([^/\&\?]+)\.htm$ $1/index.php\?page=$2 [L,QSA]
+RewriteRule ^(site|forum|adminzone|cms)/([^/\&\?]+)/([^/\&\?]*)/([^\&\?]*)\.htm$ $1/index.php\?page=$2&type=$3&id=$4 [L,QSA]
+RewriteRule ^(site|forum|adminzone|cms)/([^/\&\?]+)/([^/\&\?]*)\.htm$ $1/index.php\?page=$2&type=$3 [L,QSA]
+RewriteRule ^(site|forum|adminzone|cms)/([^/\&\?]+)\.htm$ $1/index.php\?page=$2 [L,QSA]
 RewriteRule ^([^/\&\?]+)/([^/\&\?]*)/([^\&\?]*)\.htm$ index.php\?page=$1&type=$2&id=$3 [L,QSA]
 RewriteRule ^([^/\&\?]+)/([^/\&\?]*)\.htm$ index.php\?page=$1&type=$2 [L,QSA]
 RewriteRule ^([^/\&\?]+)\.htm$ index.php\?page=$1 [L,QSA]
 
 # SIMPLE STYLE: These have a specially reduced form (no need to make it too explicit that these are Wiki+). We shouldn't shorten them too much, or the actual zone or base URL might conflict
-#RewriteRule ^(site|forum|adminzone|cms|collaboration)/s/([^\&\?]*)$ $1/index.php\?page=wiki&id=$2 [L,QSA]
+#RewriteRule ^(site|forum|adminzone|cms)/s/([^\&\?]*)$ $1/index.php\?page=wiki&id=$2 [L,QSA]
 #RewriteRule ^s/([^\&\?]*)$ index\.php\?page=wiki&id=$1 [L,QSA]
 
 # SIMPLE STYLE: These are standard patterns
-#RewriteRule ^(site|forum|adminzone|cms|collaboration)/([^/\&\?]+)/([^/\&\?]*)/([^\&\?]*)$ $1/index.php\?page=$2&type=$3&id=$4 [L,QSA]
-#RewriteRule ^(site|forum|adminzone|cms|collaboration)/([^/\&\?]+)/([^/\&\?]*)$ $1/index.php\?page=$2&type=$3 [L,QSA]
-#RewriteRule ^(site|forum|adminzone|cms|collaboration)/([^/\&\?]+)$ $1/index.php\?page=$2 [L,QSA]
+#RewriteRule ^(site|forum|adminzone|cms)/([^/\&\?]+)/([^/\&\?]*)/([^\&\?]*)$ $1/index.php\?page=$2&type=$3&id=$4 [L,QSA]
+#RewriteRule ^(site|forum|adminzone|cms)/([^/\&\?]+)/([^/\&\?]*)$ $1/index.php\?page=$2&type=$3 [L,QSA]
+#RewriteRule ^(site|forum|adminzone|cms)/([^/\&\?]+)$ $1/index.php\?page=$2 [L,QSA]
 #RewriteRule ^([^/\&\?]+)/([^/\&\?]*)/([^\&\?]*)$ index.php\?page=$1&type=$2&id=$3 [L,QSA]
 #RewriteRule ^([^/\&\?]+)/([^/\&\?]*)$ index.php\?page=$1&type=$2 [L,QSA]
 #RewriteRule ^([^/\&\?]+)$ index.php\?page=$1 [L,QSA]

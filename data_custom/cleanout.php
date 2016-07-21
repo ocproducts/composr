@@ -389,7 +389,7 @@ function cleanup()
             'zones2',
             'zones',
             'zone_name',
-            array('', 'site', 'adminzone', 'cms', 'collaboration', 'forum'),
+            array('', 'site', 'adminzone', 'cms', 'forum'),
         ),*/
 
         /*array(  Probably not wanted
@@ -403,9 +403,6 @@ function cleanup()
                     array('adminzone', 'quotes'),
                     array('adminzone', DEFAULT_ZONE_PAGE_NAME),
                     array('cms', 'panel_top'),
-                    array('collaboration', 'about'),
-                    array('collaboration', 'panel_left'),
-                    array('collaboration', DEFAULT_ZONE_PAGE_NAME),
                     array('forum', 'panel_left'),
                     array('site', 'help'),
                     array('site', 'panel_left'),

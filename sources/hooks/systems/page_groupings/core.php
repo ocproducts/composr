@@ -100,7 +100,7 @@ class Hook_page_groupings_core
             array('', 'menu/site_meta', array('admin', array('type' => 'site_meta'), 'adminzone'), do_lang_tempcode('menus:SITE_META')),
             array('', 'menu/social', array('admin', array('type' => 'social'), 'adminzone'), do_lang_tempcode('SECTION_SOCIAL')),
 
-            (get_comcode_zone('about', false) === null || get_comcode_zone('about', false) == 'collaboration') ? null : array('pages', 'menu/pages/about_us', array('about', array(), get_comcode_zone('about')), do_lang_tempcode('menus:ABOUT')),
+            (get_comcode_zone('about', false) === null) ? null : array('pages', 'menu/pages/about_us', array('about', array(), get_comcode_zone('about')), do_lang_tempcode('menus:ABOUT')),
 
             //(get_comcode_zone('keymap', false) === null) ? null : array('site_meta',/*'menu/pages/keymap'*/null, array('keymap', array(), get_comcode_zone('keymap')), do_lang_tempcode('KEYBOARD_MAP')),   Shows as child of help page
             (get_comcode_zone('privacy', false) === null || get_option('bottom_show_privacy_link') == '1') ? null : array('site_meta', 'menu/pages/privacy_policy', array('privacy', array(), get_comcode_zone('privacy')), do_lang_tempcode('PRIVACY')),

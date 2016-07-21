@@ -626,7 +626,6 @@ The documentation is primarily maintained on our website, and this archive is on
             'data_custom/images/docs/tut_cleanup/cleanup_1.png',
             'data_custom/images/docs/tut_cleanup/cleanup_2.png',
             'data_custom/images/docs/tut_collaboration/collaboration_filedump.png',
-            'data_custom/images/docs/tut_collaboration/collaboration_supermembers.png',
             'data_custom/images/docs/tut_comcode/comcode_attachment_add.png',
             'data_custom/images/docs/tut_comcode/comcode_attachment_edit.png',
             'data_custom/images/docs/tut_comcode/comcode_list.png',

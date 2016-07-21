@@ -1,8 +1,7 @@
-[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Running a collaboration hub: the Collaboration Zone[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Running a collaboration hub[/title]
 
-Composr includes many features that allow your website to function, in whole or in part, as an on-line collaboration tool. Many of these features are, by default, pooled together and placed in the 'Collaboration Zone', a Composr zone available, by default, only to staff and Super-Members (if the latter group exists).
-
-A Super-Member is a member who is not staff, but is granted additional access based on their need to access collaborative resources. There is no hard-coded concept of a Super-Member in Composr but the default configuration for the Collaboration Zone is to grant access only to staff and the 'Super Members' usergroup. You may configure access however you desire.
+Composr includes many features that allow your website to function, in whole or in part, as an on-line collaboration tool.
+Some of these features are directly documented in this tutorial as they are implemented directly for collaboration purposes; others are referenced and discussed in other tutorials.
 
 [contents]decimal,lower-alpha[/contents]
 
@@ -10,15 +9,17 @@ A Super-Member is a member who is not staff, but is granted additional access ba
 
 The Internet, combined with Composr, is a powerful tool for online-collaboration. It provides the ability for people across the world to work together; but even when used by people working in the same building it can still be a great aid in the sharing and organising of information.
 
-Composr can be used to organise shared documents, provide a forum for discussion, make announcements, structure information, chat from across the world, and a lot more.
-
-[title="2"]Default settings[/title]
-
-By default, some resources (Comcode pages, menu links, and catalogues), are created in the Collaboration Zone:
- - A 'Projects' catalogue (so that super-members can advertise projects they are working on, to solicit help with them)
- - A page about how the Super-Member can request webhosting-space
- - A link for the Super-Member to manage their author profile
-These may be used, deleted, or moved, according to your specific needs.
+Services you could easily offer using Composr features include:
+ - Forum hosting (usually as a sub-forum of our main forums -- which brings a lot of interest to someone's project)
+ - News posting/coverage, of projects
+ - Access to a file storage service, with remote linking enabled (the File/Media library)
+ - File hosting, in the public download database
+ - An active community on the forums, with public and private forums; also public and private chatrooms
+ - Advertising for projects in a banner exchange, and in a project database
+ - Personal author profiles, so people can give information about yourself themself with your file releases
+ - The points system, so people can be awarded for their work. They can use their gained points to 'purchase' banner hits, e-mail addresses, and text-banner promotion
+ - Advertisement of works as images of the day
+ - Project documentation on Wiki+
 
 [title="2"]File/Media library[/title]
 
@@ -45,32 +46,25 @@ There is nothing stopping ordinary users from downloading from the file/media li
 This is sometimes useful, but you should be aware that if files are given guessable filenames, they will not be secure.
 [/box]
 
-[title="2"]Other Super-members[/title]
+You may want to provide some guidelines to members before you give them access. For example:
+[quote]
+Feel free to create personal folders in here for your own use.
 
-[surround]
-[media width="150" description="The Super-members fellows page" float="right"]data_custom/images/docs/tut_collaboration/collaboration_supermembers.png[/media]
-The Collaboration Zone includes a page listing all members that have access, with links to information relating to them, and to contact them. It exists to make sure super-members are aware of each other, and to facilitate easy communication between them.
-[/surround]
+Please do not use the space for large, unrelated. files. It is not for the storage of purely personal files, or illegal material.
 
-[title="2"]Additional resources that may be used[/title]
+If any rules are broken with the space, or people cause trouble, they are liable to have their access revoked.
 
-The following are not by default set up for specifically for Super-Members, but may be:
- - Blogs (Personal news categories)
- - Personal galleries
- - Private forums
- - Private chatrooms
- - Sole access to any Composr feature, such as the download system, or Wiki+.
+Please use our public download system for releasing final (public) files, as this is much more powerful and organised.
 
-If a Composr website is intended solely for collaboration, and the collaborators are trusted, it might be a good idea to make each of them staff, rather than a super-member.
+Most members will only be able to delete their own files, but all files are viewable by all with File/Media library access, and may be downloaded by anyone who knows the URL.
+[/quote]
 
 [concepts
- 1_key="Super-Member"          1_value="A member given access to collaboration facilities"
- 2_key="Collaboration Zone"    2_value="The zone where isolated collaboration facilities are located"
- 3_key="File/Media Library"    3_value="A tool to allow members to store their own files"
+ 1_key="File/Media Library"    2_value="A tool to allow members to store their own files"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_users"]People in their roles[/page]
 
-{$SET,tutorial_tags,Collaboration,supermember_directory,filedump,collaboration_zone,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Composr includes many features that allow your website to function, in whole or in part, as an on-line collaboration tool.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Collaboration,filedump,collaboration_zone,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Composr includes many features that allow your website to function, in whole or in part, as an on-line collaboration tool.}[block]main_tutorial_rating[/block]

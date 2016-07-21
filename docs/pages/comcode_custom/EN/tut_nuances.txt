@@ -56,13 +56,6 @@ The first post in comment topics is a special 'spacer post'. This is necessary b
 2) To allow the first true post in the topic to be deleted (with ordinary forum topics the first post can not usually be deleted because it is considered as setting the grounds for the topic)
 [/surround]
 
-[title="2"]Super-members[/title]
-
-Super-members are a Composr concept for advanced members that have access to extra facilities and are given greater trust. There is no constraint on how you might implement super-membership on your site, but most users would do as follows:
- - Create a super-member usergroup, and add all the desired users who aren't already staff
- - Give the super-member usergroup access to the collaboration zone
- - Turn on additional privileges for the super-member usergroup as desired
-
 [title="2"]Forum base URL[/title]
 
 It is very common for Composr users to install Composr with the forum base URL wrong. This can be easily corrected after installation by using the separate [tt]http://yourbaseurl/config_editor.php[/tt] script (the one where you need to enter the master password you chose upon install to change the installation environment). Once this is done, it is necessary to clean the Comcode page cache (go to: Admin Zone > Tools > Website cleanup tools).

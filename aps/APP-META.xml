@@ -218,12 +218,6 @@
           <mapping url="cms/pages/html_custom/EN">
             <php:permissions writable="true"/>
           </mapping>
-          <mapping url="collaboration/pages/comcode_custom/EN">
-            <php:permissions writable="true"/>
-          </mapping>
-          <mapping url="collaboration/pages/html_custom/EN">
-            <php:permissions writable="true"/>
-          </mapping>
           <mapping url="data_custom/errorlog.php">
             <php:permissions writable="true"/>
           </mapping>

@@ -73,7 +73,7 @@ class Module_admin_zones
         $zones = find_all_zones(true);
         require_code('files');
         foreach ($zones as $zone) {
-            //if (!in_array($zone, array('', 'docs', 'adminzone', 'collaboration', 'forum', 'cms', 'site'))) {
+            //if (!in_array($zone, array('', 'docs', 'adminzone', 'forum', 'cms', 'site'))) {
             //    deldir_contents(get_file_base() . '/' . $zone, true);
             //}
             $langs = find_all_langs(true);
@@ -876,7 +876,7 @@ class Module_admin_zones
         } else {
             $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'b6915d8e00ae36d2f47e44bbbb14ae69', 'TITLE' => do_lang_tempcode('ACTIONS'))));
             $rename_label = 'DESCRIPTION_ZONE_RENAME';
-            if (in_array($zone, array('site', 'cms', 'collaboration'))) {
+            if (in_array($zone, array('site', 'cms'))) {
                 $rename_label = 'DESCRIPTION_ZONE_RENAME_DEFAULT_ZONE';
             }
             $fields->attach(form_input_codename(do_lang_tempcode('CODENAME'), do_lang_tempcode($rename_label), 'new_zone', $zone, true));

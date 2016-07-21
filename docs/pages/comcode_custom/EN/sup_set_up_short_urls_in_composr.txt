@@ -29,31 +29,31 @@ You will need to add all of your new zones before completing this process and if
 If you do this please make sure you back up your [tt].htaccess[/tt] file before you start. Open your [tt].htaccess[/tt] file and you need to look for the following code which will need to be edited to add your zones to the following code which is located in your [tt].htaccess[/tt] file:
 [code="htaccess"]
 # HTM STYLE: These have a specially reduced form (no need to make it too explicit that these are Wiki+). We shouldn't shorten them too much, or the actual zone or base URL might conflict
-RewriteRule ^(site|forum|adminzone|cms|collaboration)/s/([^\&\?]*)\.htm$ $1/index.php\?page=wiki&id=$2 [L,QSA]
+RewriteRule ^(site|forum|adminzone|cms)/s/([^\&\?]*)\.htm$ $1/index.php\?page=wiki&id=$2 [L,QSA]
 RewriteRule ^s/([^\&\?]*)\.htm$ index\.php\?page=wiki&id=$1 [L,QSA]
 
 # HTM STYLE: These are standard patterns
-RewriteRule ^(site|forum|adminzone|cms|collaboration)/([^/\&\?]+)/([^/\&\?]*)/([^\&\?]*)\.htm$ $1/index.php\?page=$2&type=$3&id=$4 [L,QSA]
-RewriteRule ^(site|forum|adminzone|cms|collaboration)/([^/\&\?]+)/([^/\&\?]*)\.htm$ $1/index.php\?page=$2&type=$3 [L,QSA]
-RewriteRule ^(site|forum|adminzone|cms|collaboration)/([^/\&\?]+)\.htm$ $1/index.php\?page=$2 [L,QSA]
+RewriteRule ^(site|forum|adminzone|cms)/([^/\&\?]+)/([^/\&\?]*)/([^\&\?]*)\.htm$ $1/index.php\?page=$2&type=$3&id=$4 [L,QSA]
+RewriteRule ^(site|forum|adminzone|cms)/([^/\&\?]+)/([^/\&\?]*)\.htm$ $1/index.php\?page=$2&type=$3 [L,QSA]
+RewriteRule ^(site|forum|adminzone|cms)/([^/\&\?]+)\.htm$ $1/index.php\?page=$2 [L,QSA]
 RewriteRule ^([^/\&\?]+)/([^/\&\?]*)/([^\&\?]*)\.htm$ index.php\?page=$1&type=$2&id=$3 [L,QSA]
 RewriteRule ^([^/\&\?]+)/([^/\&\?]*)\.htm$ index.php\?page=$1&type=$2 [L,QSA]
 RewriteRule ^([^/\&\?]+)\.htm$ index.php\?page=$1 [L,QSA]
 [/code]
 
 The section you need to add is wherever it says:
-[tt](site|forum|adminzone|cms|collaboration)[/tt]
+[tt](site|forum|adminzone|cms)[/tt]
 
 You need to add your zone codenames to this within the code. So, if you are adding three new zones which we will call them [tt]ZONEA[/tt], [tt]ZONEB[/tt] and [tt]ZONEC[/tt], your new section will look something like:
 [code="htaccess"]
 # HTM STYLE: These have a specially reduced form (no need to make it too explicit that these are Wiki+). We shouldn't shorten them too much, or the actual zone or base URL might conflict
-RewriteRule ^(site|forum|adminzone|cms|collaboration|ZONEA|ZONEB|ZONEC)/s/([^\&\?]*)\.htm$ $1/index.php\?page=wiki&id=$2 [L,QSA]
+RewriteRule ^(site|forum|adminzone|cms|ZONEA|ZONEB|ZONEC)/s/([^\&\?]*)\.htm$ $1/index.php\?page=wiki&id=$2 [L,QSA]
 RewriteRule ^s/([^\&\?]*)\.htm$ index\.php\?page=wiki&id=$1 [L,QSA]
 
 # HTM STYLE: These are standard patterns
-RewriteRule ^(site|forum|adminzone|cms|collaboration|ZONEA|ZONEB|ZONEC)/([^/\&\?]+)/([^/\&\?]*)/([^\&\?]*)\.htm$ $1/index.php\?page=$2&type=$3&id=$4 [L,QSA]
-RewriteRule ^(site|forum|adminzone|cms|collaboration|ZONEA|ZONEB|ZONEC)/([^/\&\?]+)/([^/\&\?]*)\.htm$ $1/index.php\?page=$2&type=$3 [L,QSA]
-RewriteRule ^(site|forum|adminzone|cms|collaboration|ZONEA|ZONEB|ZONEC)/([^/\&\?]+)\.htm$ $1/index.php\?page=$2 [L,QSA]
+RewriteRule ^(site|forum|adminzone|cms|ZONEA|ZONEB|ZONEC)/([^/\&\?]+)/([^/\&\?]*)/([^\&\?]*)\.htm$ $1/index.php\?page=$2&type=$3&id=$4 [L,QSA]
+RewriteRule ^(site|forum|adminzone|cms|ZONEA|ZONEB|ZONEC)/([^/\&\?]+)/([^/\&\?]*)\.htm$ $1/index.php\?page=$2&type=$3 [L,QSA]
+RewriteRule ^(site|forum|adminzone|cms|ZONEA|ZONEB|ZONEC)/([^/\&\?]+)\.htm$ $1/index.php\?page=$2 [L,QSA]
 RewriteRule ^([^/\&\?]+)/([^/\&\?]*)/([^\&\?]*)\.htm$ index.php\?page=$1&type=$2&id=$3 [L,QSA]
 RewriteRule ^([^/\&\?]+)/([^/\&\?]*)\.htm$ index.php\?page=$1&type=$2 [L,QSA]
 RewriteRule ^([^/\&\?]+)\.htm$ index.php\?page=$1 [L,QSA]

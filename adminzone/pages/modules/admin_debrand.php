@@ -304,11 +304,6 @@ class Module_admin_debrand
             if ($test != '') {
                 $GLOBALS['SITE_DB']->query_update('theme_images', array('path' => $main_logo_url), array('id' => 'logo/cms-logo', 'theme' => $theme), '', 1);
             }
-
-            $test = find_theme_image('logo/collaboration-logo', true);
-            if ($test != '') {
-                $GLOBALS['SITE_DB']->query_update('theme_images', array('path' => $main_logo_url), array('id' => 'logo/collaboration-logo', 'theme' => $theme), '', 1);
-            }
         }
 
         // Various other icons

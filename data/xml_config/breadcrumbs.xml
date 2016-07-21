@@ -21,12 +21,6 @@
 	<substitution match_key="site:wiki:browse:1"> <!-- Wiki+ has a special URL structure -->
 		<link label="{!HOME}">:</link>
 	</substitution>
-	<substitution match_key="collaboration:_WILD_NOT_START">
-		<link label="{!COLLABORATION}">collaboration:</link>
-	</substitution>
-	<substitution match_key="collaboration:home">
-		<link label="{!HOME}">:</link>
-	</substitution>
 	<substitution match_key="docs:_WILD_NOT_START">
 		<link label="{!HELP}">docs:tutorials</link>
 	</substitution>

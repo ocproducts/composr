@@ -492,7 +492,7 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
     }
 
     if (($bitmask & IGNORE_CUSTOM_ZONES) != 0) {
-        if ((is_dir(get_file_base() . '/' . $filepath)) && (is_file(get_file_base() . '/' . $filepath . '/index.php')) && (is_dir(get_file_base() . '/' . $filepath . '/pages')) && (!in_array($filename_lower, array('adminzone', 'collaboration', 'cms', 'forum', 'site')))) {
+        if ((is_dir(get_file_base() . '/' . $filepath)) && (is_file(get_file_base() . '/' . $filepath . '/index.php')) && (is_dir(get_file_base() . '/' . $filepath . '/pages')) && (!in_array($filename_lower, array('adminzone', 'cms', 'forum', 'site')))) {
             return true;
         }
     }

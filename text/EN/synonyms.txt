@@ -54,7 +54,6 @@ award	highlight	feature
 bookmark	favorite
 calendar	event	diary	schedule
 admin zone	admincp	admin panel	control panel
-collaboration_zone	groupware
 actionlog	audit
 atom	rss	feed	syndication
 login	logon	log-in	log-on

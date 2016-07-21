@@ -317,7 +317,7 @@ If synching is not enabled, or group memberships come from LDAP, then the follow
  - sending a newsletter to a usergroup
  - implicit memberships are not shown in exported CSV files
  - copying members from one usergroup to another
- - various areas of code that list all staff or super-members
+ - various areas of code that list all staff
  - signing up everyone in a usergroup for calendar event reminders
  - showing how many members there are in a usergroup
  - listing usergroup memberships when viewing a usergroup

@@ -111,7 +111,6 @@ class Hook_sitemap_page_grouping extends Hook_sitemap_base
                     $zone = 'cms';
                     break;
 
-                case 'collaboration':
                 case 'pages':
                 case 'rich_content':
                 case 'site_meta':
@@ -128,12 +127,8 @@ class Hook_sitemap_page_grouping extends Hook_sitemap_base
         $deployed_page_link = $page_link;
         if (!$require_permission_support) {
             if ($zone != 'adminzone' && $zone != 'cms') {
-                if ($page_grouping == 'collaboration') {
-                    $deployed_page_link = 'collaboration:';
-                } else {
-                    if (($options & SITEMAP_GEN_NO_EMPTY_PAGE_LINKS) == 0) {
-                        $deployed_page_link = ''; // Can't actually always visit it (well you can, but we don't want to promote it)
-                    }
+                if (($options & SITEMAP_GEN_NO_EMPTY_PAGE_LINKS) == 0) {
+                    $deployed_page_link = ''; // Can't actually always visit it (well you can, but we don't want to promote it)
                 }
             }
         }

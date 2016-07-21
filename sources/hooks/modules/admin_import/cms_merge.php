@@ -2118,7 +2118,7 @@ class Hook_import_cms_merge
         $this->_fix_comcode_ownership($rows);
         foreach ($rows as $row) {
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('zones', 'zone_name', array('zone_name' => $row['zone_name']));
-            if ((is_null($test)) && ($test != 'wiki') && ($test != 'supermembercentre') && ($test != 'admincentre') && ($test != 'membersonly') && ($test != 'personalcentre') && ($test != 'membercentre')) {
+            if ((is_null($test)) && ($test != 'personalzone')/*LEGACY*/ && ($test != 'collaboration')/*LEGACY*/) {
                 $old_title = $this->get_lang_string($db, $row['zone_title']);
                 $row = insert_lang('zone_title', array_key_exists('zone_title', $row) ? $old_title : $row['zone_name'], 1) + $row;
                 $row = insert_lang('zone_header_text', $this->get_lang_string($db, $row['zone_header_text']), 1) + $row;

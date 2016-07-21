@@ -119,9 +119,6 @@ class Hook_sitemap_zone extends Hook_sitemap_base
             case 'site':
                 $icon = 'menu/start';
                 break;
-            case 'collaboration':
-                $icon = 'menu/collaboration';
-                break;
             case 'adminzone':
                 $icon = 'menu/adminzone/adminzone';
                 break;
@@ -253,13 +250,6 @@ class Hook_sitemap_zone extends Hook_sitemap_base
                         'pages',
                         'rich_content',
                         'social',
-                    );
-                    if (has_zone_access(get_member(), 'collaboration')) {
-                        $applicable_page_groupings = array_merge($applicable_page_groupings, array(
-                            'collaboration',
-                        ));
-                    }
-                    $applicable_page_groupings = array_merge($applicable_page_groupings, array(
                         'site_meta',
                     ));
                     break;

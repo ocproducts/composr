@@ -2950,7 +2950,6 @@ function get_zone_default_page($zone_name)
                 $_zone_default_page = $GLOBALS['SITE_DB']->query_select('zones', array('zone_name', 'zone_default_page'), null/*Load multiple so we can cache for performance array('zone_name' => $zone_name)*/, 'ORDER BY zone_title', 50/*reasonable limit; zone_title is sequential for default zones*/);
             }
             $ZONE_DEFAULT_PAGES_CACHE[$zone_name] = DEFAULT_ZONE_PAGE_NAME;
-            $ZONE_DEFAULT_PAGES_CACHE['collaboration'] = DEFAULT_ZONE_PAGE_NAME; // Set this in case collaboration zone removed but still referenced. Performance tweak!
             foreach ($_zone_default_page as $zone_row) {
                 $ZONE_DEFAULT_PAGES_CACHE[$zone_row['zone_name']] = $zone_row['zone_default_page'];
             }

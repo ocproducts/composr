@@ -37,15 +37,15 @@ handlers:
   script: \1index.php
 - url: /([=]*)pg/([/\&\?\.]*)&(.*)
   script: \1index.php
-- url: /(site|forum|adminzone|cms|collaboration|docs)/s/([^\&\?]*)\.htm
+- url: /(site|forum|adminzone|cms|docs)/s/([^\&\?]*)\.htm
   script: \1/index.php
 - url: /s/([^\&\?]*)\.htm
   script: index\.php
-- url: /(site|forum|adminzone|cms|collaboration|docs)/([^/\&\?]+)/([^/\&\?]*)/([^\&\?]*)\.htm
+- url: /(site|forum|adminzone|cms|docs)/([^/\&\?]+)/([^/\&\?]*)/([^\&\?]*)\.htm
   script: \1/index.php
-- url: /(site|forum|adminzone|cms|collaboration|docs)/([^/\&\?]+)/([^/\&\?]*)\.htm
+- url: /(site|forum|adminzone|cms|docs)/([^/\&\?]+)/([^/\&\?]*)\.htm
   script: \1/index.php
-- url: /(site|forum|adminzone|cms|collaboration|docs)/([^/\&\?]+)\.htm
+- url: /(site|forum|adminzone|cms|docs)/([^/\&\?]+)\.htm
   script: \1/index.php
 - url: /([^/\&\?]+)/([^/\&\?]*)/([^\&\?]*)\.htm
   script: index.php
@@ -53,15 +53,15 @@ handlers:
   script: index.php
 - url: /([^/\&\?]+)\.htm
   script: index.php
-#- url: /(site|forum|adminzone|cms|collaboration|docs)/s/([^\&\?]*)
+#- url: /(site|forum|adminzone|cms|docs)/s/([^\&\?]*)
 #  script: \1/index.php
 #- url: /s/([^\&\?]*)
 #  script: index\.php
-#- url: /(site|forum|adminzone|cms|collaboration|docs)/([^/\&\?]+)/([^/\&\?]*)/([^\&\?]*)
+#- url: /(site|forum|adminzone|cms|docs)/([^/\&\?]+)/([^/\&\?]*)/([^\&\?]*)
 #  script: \1/index.php
-#- url: /(site|forum|adminzone|cms|collaboration|docs)/([^/\&\?]+)/([^/\&\?]*)
+#- url: /(site|forum|adminzone|cms|docs)/([^/\&\?]+)/([^/\&\?]*)
 #  script: \1/index.php
-#- url: /(site|forum|adminzone|cms|collaboration|docs)/([^/\&\?]+)
+#- url: /(site|forum|adminzone|cms|docs)/([^/\&\?]+)
 #  script: \1/index.php
 #- url: /([^/\&\?]+)/([^/\&\?]*)/([^\&\?]*)
 #  script: index.php
@@ -81,8 +81,6 @@ handlers:
   script: cms/index.php
 - url: /forum/
   script: forum/index.php
-- url: /collaboration/
-  script: collaboration/index.php
 - url: /test.php
   script: test.php
 - url: /docs/

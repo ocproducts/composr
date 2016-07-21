@@ -1380,7 +1380,6 @@ function check_alien($addon_files, $old_files, $files, $dir, $rela = '', $raw = 
                 'sources/hooks/systems/addon_registry/core_installation_uninstallation.php',
             );
             $modules_moved_intentionally = array(
-                'collaboration/pages/modules/filedump.php',
             );
             foreach (array_merge($old_addons_now_gone, $modules_moved_intentionally) as $x) {
                 if (file_exists(get_file_base() . '/' . $x)) {

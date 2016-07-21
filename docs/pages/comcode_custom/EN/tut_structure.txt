@@ -13,7 +13,6 @@ To view the structural contents of your website, head over to the Admin Zone > S
 The default zones in Composr are for the following purposes:
  - [b]Welcome Zone[/b]: this zone gives users the chance to join or login. It could be modified to act more like a 'splash screen' if you desire that
  - [b]Site[/b]: this is your main website; it includes primary content viewing, and permission based submission, editing, and deleting features. The contents of this zone may automatically be merged into the Welcome Zone via the 'Single public zone' option, which will simplify things for you
- - [b]Collaboration Zone[/b]: this is a section for users given greater trust and tools
  - [b]Admin Zone[/b]: this is a section for site staff to manage the site
  - [b]Content Management[/b]: this is where content is added, edited and deleted
 And if you are using Conversr, the following additional zones are usable:
@@ -132,7 +131,6 @@ A default Composr install contains the following panel pages:
  - [tt]site:panel_left[/tt] (only applicable if the "Single public zone" configuration option is off)
  - [tt]site:panel_right[/tt] (only applicable if the "Single public zone" configuration option is off)
  - [tt]forum:panel_right[/tt]
- - [tt]collaboration:panel_right[/tt]
 
 All zones are set up to share [tt]:panel_top[/tt] and [tt]:panel_bottom[/tt], due to some default transparent redirects set up under Admin Zone > Structure > Redirects.
 

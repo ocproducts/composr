@@ -428,7 +428,6 @@ class Module_admin_setupwizard
                                                      'staff',
                                                      'backup',
                                                      'bookmarks',
-                                                     'supermember_directory',
                                                      'ldap',
                                                      'sms',
                                                      'printer_friendly_block',
@@ -895,9 +894,6 @@ class Module_admin_setupwizard
                 require_code('images_png');
                 png_compress(get_custom_file_base() . '/' . $path);
                 actual_edit_theme_image('logo/-logo', $logo_save_theme, get_site_default_lang(), 'logo/-logo', $path, true);
-                if (addon_installed('collaboration_zone')) {
-                    actual_edit_theme_image('logo/collaboration-logo', $logo_save_theme, get_site_default_lang(), 'logo/collaboration-logo', $path, true);
-                }
                 imagedestroy($logo);
                 $logo = generate_logo($name, $font, $logo_theme_image, $background_theme_image, false, $logo_save_theme, true);
                 $path = 'themes/' . $logo_save_theme . '/images_custom/standalone_logo.png';

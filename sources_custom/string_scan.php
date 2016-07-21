@@ -47,7 +47,6 @@ function string_scan($lang, $do_guessing = false)
         }
         $source_files_admin = array_merge($source_files_admin, find_files_in_dir('adminzone'));
         $source_files_admin = array_merge($source_files_admin, find_files_in_dir('cms'));
-        $source_files_admin = array_merge($source_files_admin, find_files_in_dir('collaboration'));
         $source_files_non_admin = array_merge($source_files_non_admin, find_files_in_dir('site'));
         $source_files_non_admin = array_merge($source_files_non_admin, find_files_in_dir('pages'));
         $source_files_non_admin = array_merge($source_files_non_admin, find_files_in_dir('forum'));
@@ -2769,7 +2768,6 @@ function string_scan($lang, $do_guessing = false)
         CONFIG_OPTION_store_revisions
         CONFIG_OPTION_subgallery_link_limit
         CONFIG_OPTION_super_logging
-        CONFIG_OPTION_supermembers_text
         CONFIG_OPTION_support_operator
         CONFIG_OPTION_tasks_background
         CONFIG_OPTION_threaded_buttons
@@ -4510,7 +4508,6 @@ function string_scan($lang, $do_guessing = false)
         HEADER_SPLIT_HACK
         HEADER_TEXT
         HEADER_TEXT_ADMINZONE
-        HEADER_TEXT_collaboration
         HELP_ADD_NEWSLETTER
         HELP_ADD_WORDFILTER
         HELP_IMPORTING_ADDON
@@ -6203,7 +6200,6 @@ function string_scan($lang, $do_guessing = false)
         SUGGEST_ADD_CATEGORY_NEXT
         SUHOSIN_MAX_VALUE_TOO_SHORT
         SUHOSIN_MAX_VARS_TOO_LOW
-        SUPERMEMBERS_TEXT
         SUPER_ADMIN
         SUPER_DEBRAND
         SUPER_LOGGING
@@ -7491,7 +7487,6 @@ function string_scan($lang, $do_guessing = false)
         CODE
         CODENAME
         CODE_IN_LANGUAGE
-        COLLABORATION
         COLOUR
         COLUMNED_TABLE
         COMBINED_BIRTHDAY_NOTIFICATION_MAIL
@@ -8456,7 +8451,6 @@ function string_scan($lang, $do_guessing = false)
         MODULE_TRANS_NAME_search
         MODULE_TRANS_NAME_staff
         MODULE_TRANS_NAME_subscriptions
-        MODULE_TRANS_NAME_supermembers
         MODULE_TRANS_NAME_tickets
         MODULE_TRANS_NAME_topics
         MODULE_TRANS_NAME_topicview
@@ -9688,7 +9682,6 @@ function string_scan($lang, $do_guessing = false)
         _CANT_AFFORD
         _CATEGORISE_PTS
         _CHATROOM
-        _COLLABORATION
         _COMCODE
         _COMCODE_PAGES
         _COMMENTS

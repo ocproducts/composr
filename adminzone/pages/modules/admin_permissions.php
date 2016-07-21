@@ -100,9 +100,6 @@ class Module_admin_permissions
                 if ($id != $guest_groups[0]) {
                     $GLOBALS['SITE_DB']->query_insert('group_zone_access', array('zone_name' => 'cms', 'group_id' => $id));
                 }
-                if ((($name == do_lang('SUPER_MEMBERS')) || (in_array($id, $admin_groups)))/* && (cms_enterprise())*/) {
-                    $GLOBALS['SITE_DB']->query_insert('group_zone_access', array('zone_name' => 'collaboration', 'group_id' => $id));
-                }
             }
             foreach ($admin_groups as $admin_group) {
                 $GLOBALS['SITE_DB']->query_insert('group_zone_access', array('zone_name' => 'adminzone', 'group_id' => $admin_group));

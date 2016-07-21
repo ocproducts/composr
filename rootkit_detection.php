@@ -172,7 +172,7 @@ END;
     while (($row = mysqli_fetch_assoc($r)) !== null) {
         $results .= "In-staff-group (secondary): {$row['gm_member_id']}=N/A\n";
     }
-    $r = mysqli_query($db, 'SELECT * FROM ' . $prefix . 'group_zone_access WHERE zone_name=\'cms\' OR zone_name=\'adminzone\' OR zone_name=\'collaboration\' ORDER BY zone_name,group_id');
+    $r = mysqli_query($db, 'SELECT * FROM ' . $prefix . 'group_zone_access WHERE zone_name=\'cms\' OR zone_name=\'adminzone\' ORDER BY zone_name,group_id');
     while (($row = mysqli_fetch_assoc($r)) !== null) {
         $results .= "Zone-access: {$row['zone_name']}/{$row['group_id']}=N/A\n";
     }
@@ -183,7 +183,7 @@ END;
         }
         $results .= "Privileges: {$row['privilege']}/{$row['the_page']}/{$row['module_the_name']}/{$row['category_name']}/{$row['group_id']}={$row['the_value']}\n";
     }
-    $r = mysqli_query($db, 'SELECT * FROM ' . $prefix . 'member_zone_access WHERE zone_name=\'cms\' OR zone_name=\'adminzone\' OR zone_name=\'collaboration\' ORDER BY zone_name,member_id');
+    $r = mysqli_query($db, 'SELECT * FROM ' . $prefix . 'member_zone_access WHERE zone_name=\'cms\' OR zone_name=\'adminzone\' ORDER BY zone_name,member_id');
     while (($row = mysqli_fetch_assoc($r)) !== null) {
         $results .= "Member-Zone-access: {$row['zone_name']}/{$row['member_id']}=N/A\n";
     }

@@ -129,7 +129,6 @@ Content-management modules are all prefixed [tt]cms_[/tt] and reside in the [tt]
 Recall that Composr zones are sub-directories of your site, which operate with different settings. By default, Composr contains a number of zones:
  - Welcome ([tt]/[/tt])
  - Admin Zone ([tt]/adminzone[/tt]) -- Where Composr is configured
- - Collaboration ([tt]/collaboration[/tt]) -- Where privileged members may access collaboration tools
  - Site ([tt]/site[/tt]) -- Where the majority of the Composr modules are, by default
  - CMS ([tt]/cms[/tt]) -- Where the content is managed
  - Forum ([tt]/forum[/tt]) -- Only for installations using Conversr

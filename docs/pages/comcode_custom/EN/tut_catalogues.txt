@@ -8,9 +8,9 @@
 The pre-made catalogues are:
  - Links (for sharing links with visitors)
  - FAQs (frequently asked questions and answers)
- - Super-members projects (see the [page="_SEARCH:tut_collaboration"]Running a collaboration hub: the Collaboration Zone[/page] tutorial)
+ - Projects (a simple projects listing)
  - Contacts (a simple contacts directory / address book)
-All the pre-made catalogues may be removed in the Setup Wizard, so depending on what you chose in that wizard, they may or may not currently be on your site.
+All the pre-made catalogues may be removed in the Setup Wizard, so depending on what you chose in that wizard, they may or may not currently be on your site. They are somewhere between mere examples and a 'leg up' to producing a website.
 
 Catalogues can be used to model most things required by large websites that would otherwise have to be implemented either as new modules, or hard-coded pages. Note that catalogues are designed to store records of which there are likely more than one, not as a container for all unstructured custom information (that is what Comcode pages are for).
 
