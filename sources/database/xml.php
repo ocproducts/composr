@@ -252,7 +252,7 @@ class Database_Static_xml extends DatabaseDriver
             }
         }
         if (!$found_key) {
-            fatal_exit('No key specified for table ' . $table_name);
+            $this->failed_query_exit('No key specified for table ' . $table_name);
         }
 
         @mkdir($path, 0777);
@@ -688,7 +688,7 @@ class Database_Static_xml extends DatabaseDriver
 
         if (count($schema) == 0) {
             if (!$fail_ok) {
-                fatal_exit('Internal error: missing schema for ' . $table_name);
+                $this->failed_query_exit('Internal error: missing schema for ' . $table_name);
             } else {
                 return null;
             }
@@ -1079,7 +1079,7 @@ class Database_Static_xml extends DatabaseDriver
         /* Too slow
         $ob = new xml_file_parse($file_contents);
         if (!is_null($ob->error)) {
-            fatal_exit($ob->error);
+            $this->failed_query_exit($ob->error);
         }
         $_record = $ob->output;
         */
@@ -1223,7 +1223,7 @@ class Database_Static_xml extends DatabaseDriver
         }
 
         if ((strlen($path) > 255) && (stripos(PHP_OS, 'win') !== false)) {
-            attach_message('File path too long on Windows (' . $path . ')', 'warn', false, true);
+            $this->failed_query_message('File path too long on Windows (' . $path . ')');
             return;
         }
         $myfile = fopen($path, GOOGLE_APPENGINE ? 'wb' : 'ab');
@@ -3301,7 +3301,7 @@ class Database_Static_xml extends DatabaseDriver
             if (!is_null($error)) {
                 $msg .= ' [' . $error . ']';
             }
-            fatal_exit($msg);
+            $this->failed_query_exit($msg);
         }
         return null;
     }

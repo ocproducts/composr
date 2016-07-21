@@ -955,12 +955,13 @@ function warn_exit($text, $support_match_key_messages = false, $log_error = fals
  * It also adds an entry to the error log, for reference.
  *
  * @param  mixed $text The error message (string or Tempcode)
+ * @param  boolean $log_error Whether to log the error
  * @return mixed Never returns (i.e. exits)
  */
-function fatal_exit($text)
+function fatal_exit($text, $log_error = true)
 {
     require_code('failure');
-    _generic_exit($text, 'FATAL_SCREEN', false, true);
+    _generic_exit($text, 'FATAL_SCREEN', false, $log_error);
 }
 
 /**

@@ -150,9 +150,9 @@ class Database_super_mysql extends DatabaseDriver
                 /*@mysql_query('SET session max_allowed_packet=' . strval(intval(strlen($query) * 1.3)), $db); Does not work well, as MySQL server has gone away error will likely just happen instead */
 
                 if ($get_insert_id) {
-                    fatal_exit(do_lang_tempcode('QUERY_FAILED_TOO_BIG', escape_html($query), escape_html(integer_format(strlen($query))), escape_html(integer_format(intval($test_result[0]['Value'])))));
+                    $this->failed_query_exit(do_lang_tempcode('QUERY_FAILED_TOO_BIG', escape_html($query), escape_html(integer_format(strlen($query))), escape_html(integer_format(intval($test_result[0]['Value'])))));
                 } else {
-                    attach_message(do_lang_tempcode('QUERY_FAILED_TOO_BIG', escape_html(substr($query, 0, 300)) . '...', escape_html(integer_format(strlen($query))), escape_html(integer_format(intval($test_result[0]['Value'])))), 'warn', false, true);
+                    $this->failed_query_message(do_lang_tempcode('QUERY_FAILED_TOO_BIG', escape_html(substr($query, 0, 300)) . '...', escape_html(integer_format(strlen($query))), escape_html(integer_format(intval($test_result[0]['Value'])))));
                 }
                 return false;
             }
@@ -180,11 +180,11 @@ class Database_super_mysql extends DatabaseDriver
             }
 
             if (!function_exists('do_lang') || is_null(do_lang('QUERY_FAILED', null, null, null, null, false))) {
-                fatal_exit(htmlentities('Query failed: ' . $query . ' : ' . $err));
+                $this->failed_query_exit(htmlentities('Query failed: ' . $query . ' : ' . $err));
             }
-            fatal_exit(do_lang_tempcode('QUERY_FAILED', escape_html($query), ($err)));
+            $this->failed_query_exit(do_lang_tempcode('QUERY_FAILED', escape_html($query), ($err)));
         } else {
-            echo htmlentities('Database query failed: ' . $query . ' [') . ($err) . htmlentities(']') . "<br />\n";
+            $this->failed_query_echo(htmlentities('Database query failed: ' . $query . ' [') . ($err) . htmlentities(']'));
         }
     }
 

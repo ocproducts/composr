@@ -172,6 +172,10 @@ class Module_admin_permissions
         if ((!is_null($upgrade_from)) && ($upgrade_from < 10)) {
             rename_privilege('see_stack_dump', 'see_stack_trace');
         }
+
+        if ((is_null($upgrade_from)) || ($upgrade_from < 10)) {
+            add_privilege('STAFF_ACTIONS', 'see_query_errors', false);
+        }
     }
 
     /**

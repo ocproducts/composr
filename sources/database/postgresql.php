@@ -124,12 +124,12 @@ class Database_Static_postgresql extends DatabaseDriver
             }
             if ((!running_script('upgrader')) && (!get_mass_import_mode())) {
                 if (!function_exists('do_lang') || is_null(do_lang('QUERY_FAILED', null, null, null, null, false))) {
-                    fatal_exit(htmlentities('Query failed: ' . $query . ' : ' . $err));
+                    $this->failed_query_exit(htmlentities('Query failed: ' . $query . ' : ' . $err));
                 }
 
-                fatal_exit(do_lang_tempcode('QUERY_FAILED', escape_html($query), ($err)));
+                $this->failed_query_exit(do_lang_tempcode('QUERY_FAILED', escape_html($query), ($err)));
             } else {
-                echo htmlentities('Database query failed: ' . $query . ' [') . ($err) . htmlentities(']') . "<br />\n";
+                $this->failed_query_echo(htmlentities('Database query failed: ' . $query . ' [') . ($err) . htmlentities(']'));
                 return null;
             }
         }

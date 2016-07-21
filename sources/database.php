@@ -633,6 +633,79 @@ class DatabaseDriver
     {
         return $this->escape_string($pattern);
     }
+
+    /**
+     * Exit with an error message. If the user doesn't have permissions to view queries it shows a generic message.
+     *
+     * @param  mixed $message Message to show (Tempcode or string)
+     */
+    public function failed_query_exit($message)
+    {
+        $this->substitute_query_message($message);
+        fatal_exit($message, false);
+    }
+
+    /**
+     * Attach a non-fatal error message. If the user doesn't have permissions to view queries it shows a generic message.
+     *
+     * @param  mixed $message Message to show (Tempcode or string)
+     */
+    public function failed_query_message($message)
+    {
+        $this->substitute_query_message($message);
+        attach_message($message, 'warn', false, true);
+    }
+
+    /**
+     * Echo out an error message. If the user doesn't have permissions to view queries it shows a generic message.
+     * Only use this in unusual situations, like upgrading or importing, where throwing out rough messages rather than using the normal framework is the best choice.
+     *
+     * @param  string $message Message to show
+     */
+    public function failed_query_echo($message)
+    {
+        if (!running_script('upgrader')) {
+            $this->substitute_query_message($message);
+        }
+        echo $message . "<br />\n";
+    }
+
+    /**
+     * Substitute an alternative error message if the user doesn't have permissions to view queries it shows a generic message.
+     * Additionally, log the original error.
+     *
+     * @param  mixed $message Original message (Tempcode or string)
+     */
+    protected function substitute_query_message(&$message)
+    {
+        require_code('urls');
+        $text_eval = is_object($message) ? $message->evaluate() : $message;
+        $php_error_label = $text_eval . ' @ ' . get_self_url_easy(true);
+        if ((function_exists('syslog')) && (GOOGLE_APPENGINE)) {
+            syslog(LOG_ERR, $php_error_label);
+        }
+        if (php_function_allowed('error_log')) {
+            @error_log('Database: ' . $php_error_label, 0);
+        }
+
+        $restricted = false;
+        if (!$GLOBALS['DEV_MODE'] && !$GLOBALS['IS_ACTUALLY_ADMIN']) {
+            if (function_exists('get_member') && !function_exists('has_privilege')) {
+                require_code('permissions'); // Due to $MICRO_BOOTUP, or some error during bootup
+            }
+            if (!function_exists('get_member') || !function_exists('has_privilege') || !has_privilege(get_member(), 'see_query_errors')) {
+                $restricted = true;
+            }
+        }
+
+        if ($restricted) {
+            if (function_exists('do_lang')) {
+                $message = do_lang('DATABASE_ERROR');
+            } else {
+                $message = 'A database error has occurred. The error has been logged so that staff may see what happened.';
+            }
+        }
+    }
 }
 
 /**
@@ -813,8 +886,9 @@ class DatabaseConnector
             return null; // error
         }
         if (!array_key_exists(0, $values)) {
-            fatal_exit(do_lang_tempcode('QUERY_NULL', escape_html($this->_get_where_expand($this->table_prefix . $table, array($selected_value), $where_map, $end)))); // No result found
+            $this->static_ob->failed_query_exit(do_lang_tempcode('QUERY_NULL', escape_html($this->_get_where_expand($this->table_prefix . $table, array($selected_value), $where_map, $end)))); // No result found
         }
+        $this->static_ob->failed_query_exit(do_lang_tempcode('QUERY_NULL', escape_html($this->_get_where_expand($this->table_prefix . $table, array($selected_value), $where_map, $end)))); // No result found
         return $this->_query_select_value($values);
     }
 
