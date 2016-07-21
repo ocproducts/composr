@@ -438,7 +438,9 @@ function wysiwyg_editor_init_for(element,id)
 	editor.on('key',function (event) {
 		if (typeof element.externalOnKeyPress!='undefined')
 		{
-			element.value=editor.getData();
+			window.setTimeout(function() { // timeout so that getData returns data *after* keypress
+				element.value=editor.getData();
+			},0);
 			element.externalOnKeyPress(event,element);
 		}
 	});

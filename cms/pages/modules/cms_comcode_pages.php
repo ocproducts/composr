@@ -493,6 +493,8 @@ class Module_cms_comcode_pages
                 $located = _request_page($row['page'], $row['zone'], null, $lang);
                 if ($located !== false) {
                     $page_path = (($row['zone'] == '') ? '' : ($row['zone'] . '/')) . 'pages/' . strtolower($located[0]) . '/' . $row['page'];
+                } else {
+                    continue;
                 }
             }
 

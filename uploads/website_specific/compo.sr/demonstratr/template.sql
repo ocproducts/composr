@@ -6705,7 +6705,6 @@ insert into `cms_blocks` values('Chris Graham','',null,'bottom_forum_news','ocPr
  ('Chris Graham','',null,'main_personal_galleries_list','ocProducts','2'),
  ('Chris Graham','',null,'main_top_sites','ocProducts','2'),
  ('Chris Graham','',null,'menu','ocProducts','2'),
- ('Chris Graham','',null,'side_cns_private_topics','ocProducts','2'),
  ('Chris Graham','',null,'side_friends','ocProducts','2'),
  ('Chris Graham','',null,'side_galleries','ocProducts','2'),
  ('Chris Graham','',null,'top_login','ocProducts','2'),
