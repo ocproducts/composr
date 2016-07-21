@@ -1039,16 +1039,6 @@ class Forum_driver_mybb extends Forum_driver_base
     }
 
     /**
-     * If we can't get a list of admins via a usergroup query, we have to disable the staff filter - else the staff filtering can cause disaster at the point of being turned on (because it can't automatically sync).
-     *
-     * @return boolean Whether to disable the staff filter
-     */
-    protected function _disable_staff_filter()
-    {
-        return true;
-    }
-
-    /**
      * Get the number of members currently online on the forums.
      *
      * @return integer The number of members

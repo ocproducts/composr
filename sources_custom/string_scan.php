@@ -2523,7 +2523,6 @@ function string_scan($lang, $do_guessing = false)
         CONFIG_OPTION_is_on_rating
         CONFIG_OPTION_is_on_rss
         CONFIG_OPTION_is_on_show_online
-        CONFIG_OPTION_is_on_staff_filter
         CONFIG_OPTION_is_on_strong_forum_tie
         CONFIG_OPTION_is_on_sync_staff
         CONFIG_OPTION_is_on_template_cache
@@ -6142,8 +6141,6 @@ function string_scan($lang, $do_guessing = false)
         STAFF_CHECKLIST_MAIL_BODY
         STAFF_CHECKLIST_MAIL_SUBJECT
         STAFF_EMAIL
-        STAFF_FILTER_OFF
-        STAFF_FILTER_ON
         STAFF_LINKS
         STAFF_NEW_TICKET_AS
         STAFF_USERNAME_CHANGED_MAIL

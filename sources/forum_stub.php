@@ -260,48 +260,20 @@ class Forum_driver_base
      * Find whether a member is staff.
      *
      * @param  MEMBER $id The member
-     * @param  boolean $skip_staff_filter Whether to avoid checking the staff filter (i.e. ignore M.S.N.'s)
      * @return boolean The answer
      */
-    public function is_staff($id, $skip_staff_filter = false)
+    public function is_staff($id)
     {
         if (is_guest($id)) {
             return false;
         }
 
-        if (!$skip_staff_filter) {
-            global $IS_STAFF_CACHE;
-            if (array_key_exists($id, $IS_STAFF_CACHE)) {
-                return $IS_STAFF_CACHE[$id];
-            }
-
-            if ((isset($this->db)) && ($this->db->is_forum_db()) && (get_option('is_on_staff_filter', true) === '1') && (get_forum_type() != 'none') && (!$GLOBALS['FORUM_DRIVER']->disable_staff_filter())) {
-                if (stripos(get_cms_cpf('sites', $id), substr(get_site_name(), 0, 200)) === false) {
-                    $IS_STAFF_CACHE[$id] = false;
-                    return false;
-                }
-            }
+        if (isset($IS_STAFF_CACHE[$id])) {
+            return $IS_STAFF_CACHE[$id];
         }
 
-        $ret = $this->_is_staff($id);
-        if (!$skip_staff_filter) {
-            $IS_STAFF_CACHE[$id] = $ret;
-        }
-        return $ret;
-    }
-
-    /**
-     * If we can't get a list of admins via a usergroup query, we have to disable the staff filter - else the staff filtering can cause disaster at the point of being turned on (because it can't automatically sync).
-     *
-     * @return boolean Whether the staff filter is disabled
-     */
-    public function disable_staff_filter()
-    {
-        if (method_exists($this, '_disable_staff_filter')) {
-            return $this->_disable_staff_filter();
-        }
-
-        return false;
+        $IS_STAFF_CACHE[$id] = $this->_is_staff($id);
+        return $IS_STAFF_CACHE[$id];
     }
 
     /**
