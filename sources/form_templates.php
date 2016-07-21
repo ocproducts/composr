@@ -209,21 +209,17 @@ function attach_wysiwyg()
 function handle_max_file_size(&$hidden, $regular_max_size_type = 'file')
 {
     require_code('files2');
-    if (!$GLOBALS['FORUM_DRIVER']->is_staff(get_member())) {
-        switch ($regular_max_size_type) {
-            case 'image':
-                require_code('images');
-                $regular_max_size = get_max_image_size();
-                break;
-            case 'file':
-            default:
-                $regular_max_size = get_max_file_size();
-                break;
-        }
-        $hidden->attach(form_input_hidden('MAX_FILE_SIZE', strval($regular_max_size)));
-    } else {
-        $hidden->attach(form_input_hidden('MAX_FILE_SIZE', strval(get_max_file_size())));
+    switch ($regular_max_size_type) {
+        case 'image':
+            require_code('images');
+            $regular_max_size = get_max_image_size();
+            break;
+        case 'file':
+        default:
+            $regular_max_size = get_max_file_size();
+            break;
     }
+    $hidden->attach(form_input_hidden('MAX_FILE_SIZE', strval($regular_max_size)));
 }
 
 /**

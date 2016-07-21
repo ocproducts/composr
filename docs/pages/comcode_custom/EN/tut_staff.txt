@@ -6,19 +6,13 @@ Staff can use these features to distinguish themselves from ordinary users, and 
 
 [contents]decimal,lower-alpha[/contents]
 
-[title="2"]Staff and the [tt]staff[/tt] module[/title]
+[title="2"]Who are staff?[/title]
 
-[media width="150" description="Viewing a staff member" float="right"]data_custom/images/docs/tut_staff/staff_actual.png[/media]
-[media width="150" description="The staff list" float="right"]data_custom/images/docs/tut_staff/staff_list.png[/media]
-{!staff:DOC_STAFF}
+We use the term staff in one of two ways:
+1) Whoever the forum/member system thinks is a staff (for Conversr this means administrators and super-moderators)
+2) Anyone who has been given whatever privileges are required for a particular situation
 
-Staff are listed/viewed from the [tt]staff[/tt] module ([tt]site:staff[/tt] page-link, About > Staff on the default menus).
-
-You can configure staff from the staff administration page. This is available from:
-Admin Zone > Security > Staff
-The staff administration page allows you to choose staff (if the staff filter is on) as well as configure their listed details. You may also configure their details by editing the corresponding custom profile fields from your forums profile editing screen.
-
-By default, Conversr is installed with a single staff member, 'admin'. It is recommended that this member be left as a general purpose 'site representative', not used solely by any single staff member. It is also useful as a fail-safe account, because as a super-administrator, 'admin' can access any part of your Composr-based site.
+We try and limit the first case and rely on privileges, for maximum flexibility. However there are some website behaviours that hang more on an intuitive sense of someone being staff rather than actual privileges. For example, tickets have a "staff reply" feature, for posting messages between staff within a ticket; as this intrinsically rests on the concept of staff as already understood by the user, we don't codify a privilege for that.
 
 [title="2"]Coordinating with other staff[/title]
 

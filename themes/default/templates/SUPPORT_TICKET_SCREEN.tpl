@@ -242,25 +242,4 @@
 	</table></div>
 {+END}
 
-{+START,IF,{$IS_STAFF}}
-	{+START,IF_NON_EMPTY,{TYPE_ACTIVITY_OVERVIEW}}
-		{+START,COMMENT} This is kind of bloaty
-			<p>
-				{!TICKET_ACTIVITY_OVERVIEW,{USERNAME*}}
-			</p>
-
-			<dl class="compact_list">
-				{+START,LOOP,TYPE_ACTIVITY_OVERVIEW}
-					<dt>
-						{OVERVIEW_TYPE*}
-					</dt>
-					<dd>
-						{$NUMBER_FORMAT*,{OVERVIEW_COUNT}}
-					</dd>
-				{+END}
-			</dl>
-		{+END}
-	{+END}
-{+END}
-
 {$SET,ticket_merge_into,}

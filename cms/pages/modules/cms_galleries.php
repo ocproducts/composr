@@ -370,7 +370,7 @@ class Module_cms_galleries extends Standard_crud_module
         // Orphaned upload form
         // To choose to batch import what already exists in gallery directory, but is orphaned
         $orphaned_content = new Tempcode();
-        if (($GLOBALS['FORUM_DRIVER']->is_staff(get_member())) && ($GLOBALS['SITE_DB']->query_select_value('images', 'COUNT(*)') + $GLOBALS['SITE_DB']->query_select_value('videos', 'COUNT(*)') < 4000)) {
+        if ((has_actual_page_access(get_member(), 'admin_cleanup')) && ($GLOBALS['SITE_DB']->query_select_value('images', 'COUNT(*)') + $GLOBALS['SITE_DB']->query_select_value('videos', 'COUNT(*)') < 4000)) {
             $there = array();
             $_dir = opendir(get_custom_file_base() . '/uploads/galleries/');
             while (false !== ($file = readdir($_dir))) {
@@ -534,7 +534,7 @@ class Module_cms_galleries extends Standard_crud_module
 
         check_privilege('mass_import'/*Not currently scoped to categories, array('galleries', $cat)*/);
 
-        if (!$GLOBALS['FORUM_DRIVER']->is_staff(get_member())) {
+        if (has_actual_page_access(get_member(), 'admin_cleanup')) {
             return new Tempcode();
         }
 
@@ -1039,7 +1039,7 @@ class Module_cms_galleries extends Standard_crud_module
         $delete_fields = mixed();
         if (get_option('cleanup_files') == '0') {
             if (has_delete_permission('mid', get_member(), $myrow['submitter'], 'cms_galleries', array('galleries', $cat))) {
-                if ($GLOBALS['FORUM_DRIVER']->is_staff(get_member())) {
+                if (has_actual_page_access(get_member(), 'admin_cleanup')) {
                     $radios = form_input_radio_entry('delete', '0', true, do_lang_tempcode('LEAVE'));
                     $radios->attach(form_input_radio_entry('delete', '1', false, do_lang_tempcode('DELETE_PARTIAL')));
                     $radios->attach(form_input_radio_entry('delete', '2', false, do_lang_tempcode('DELETE_FULL')));
@@ -1659,7 +1659,7 @@ class Module_cms_galleries_alt extends Standard_crud_module
         $delete_fields = mixed();
         if (get_option('cleanup_files') == '0') {
             if (has_delete_permission('mid', get_member(), $myrow['submitter'], 'cms_galleries', array('galleries', $cat))) {
-                if ($GLOBALS['FORUM_DRIVER']->is_staff(get_member())) {
+                if (has_actual_page_access(get_member(), 'admin_cleanup')) {
                     $radios = form_input_radio_entry('delete', '0', true, do_lang_tempcode('LEAVE'));
                     $radios->attach(form_input_radio_entry('delete', '1', false, do_lang_tempcode('DELETE_PARTIAL')));
                     $radios->attach(form_input_radio_entry('delete', '2', false, do_lang_tempcode('DELETE_FULL')));

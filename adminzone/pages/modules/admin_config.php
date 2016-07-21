@@ -649,33 +649,6 @@ class Module_admin_config
             warn_exit(do_lang_tempcode('BEFORE_MOD_REWRITE'));
         }
 
-        // Make sure we haven't just locked staff out
-        if (addon_installed('staff')) {
-            $new_site_name = substr(post_param_string('site_name', ''), 0, 200);
-            if (($new_site_name != '') && (get_option('is_on_sync_staff') === '1')) {
-                $admin_groups = array_merge($GLOBALS['FORUM_DRIVER']->get_super_admin_groups(), $GLOBALS['FORUM_DRIVER']->get_moderator_groups());
-                $staff = $GLOBALS['FORUM_DRIVER']->member_group_query($admin_groups, 100);
-                if (count($staff) < 100) {
-                    foreach ($staff as $row_staff) {
-                        $member = $GLOBALS['FORUM_DRIVER']->mrow_id($row_staff);
-                        if ($GLOBALS['FORUM_DRIVER']->is_staff($member)) {
-                            $sites = get_cms_cpf('sites');
-                            $sites = str_replace(', ' . get_site_name(), '', $sites);
-                            $sites = str_replace(',' . get_site_name(), '', $sites);
-                            $sites = str_replace(get_site_name() . ', ', '', $sites);
-                            $sites = str_replace(get_site_name() . ',', '', $sites);
-                            $sites = str_replace(get_site_name(), '', $sites);
-                            if ($sites != '') {
-                                $sites .= ', ';
-                            }
-                            $sites .= $new_site_name;
-                            $GLOBALS['FORUM_DRIVER']->set_custom_field($member, 'sites', $sites);
-                        }
-                    }
-                }
-            }
-        }
-
         // Empty thumbnail cache if needed
         if (function_exists('imagetypes')) {
             if ((!is_null(post_param_string('thumb_width', null))) && (post_param_string('thumb_width') != get_option('thumb_width'))) {

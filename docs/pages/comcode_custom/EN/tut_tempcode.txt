@@ -1150,7 +1150,7 @@ These are advanced symbols, and mirror Composr's internal API. The parameters ar
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$IS_ADMIN,2}</td>
-			<td>Is the current user / given user a super admin (optionally give it a member ID else works on current member, returns Tempcode boolean)</td>
+			<td>Is the current user / given user an administrator (optionally give it a member ID else works on current member, returns Tempcode boolean)</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$HAS_PRIVILEGE,submit_midrange_content}</td>

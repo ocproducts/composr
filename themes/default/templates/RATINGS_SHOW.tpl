@@ -18,7 +18,7 @@
 
 				{+START,IF_EMPTY,{RATING_USERNAME}}
 					{!BY_SIMPLE_LOWER,{!GUEST}}
-					{+START,IF,{$IS_STAFF}}
+					{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,admin_lookup}}
 						<span class="associated_details">(<a class="link_exempt" target="_blank" title="{RATING_IP*} {!LINK_NEW_WINDOW}" href="{$PAGE_LINK*,adminzone:admin_lookup:param={RATING_IP&}}">{RATING_IP*}</a>)</span>
 					{+END}
 				{+END}

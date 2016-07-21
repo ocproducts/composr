@@ -80,10 +80,7 @@ class Module_admin_cns_members
             /*if (addon_installed('ecommerce')) {
                 $ret['_SEARCH:admin_ecommerce:browse'] = array('CUSTOM_PRODUCT_USERGROUP', 'menu/adminzone/audit/ecommerce/ecommerce');
             }
-            $ret['_SEARCH:admin_cns_groups:browse'] = array('USERGROUPS', 'menu/social/groups');
-            if (addon_installed('staff')) {
-                $ret['_SEARCH:admin_staff:browse'] = array('STAFF', 'menu/site_meta/staff');
-            }*/
+            $ret['_SEARCH:admin_cns_groups:browse'] = array('USERGROUPS', 'menu/social/groups');*/
             if (addon_installed('warnings')) {
                 $ret['_SEARCH:warnings:edit'] = array('WARNINGS', 'tabs/member_account/warnings');
             }
@@ -230,9 +227,6 @@ class Module_admin_cns_members
         if (addon_installed('ecommerce')) {
             require_lang('ecommerce');
         }
-        if (addon_installed('staff')) {
-            require_lang('staff');
-        }
         require_lang('group_member_timeouts');
 
         require_code('templates_donext');
@@ -251,7 +245,6 @@ class Module_admin_cns_members
                 array('menu/adminzone/security/usergroups_temp', array('admin_group_member_timeouts', array('type' => 'browse'), get_module_zone('admin_group_member_timeouts')), do_lang_tempcode('GROUP_MEMBER_TIMEOUTS'), 'DOC_GROUP_MEMBER_TIMEOUTS'),
                 addon_installed('ecommerce') ? array('menu/adminzone/audit/ecommerce/ecommerce', array('admin_ecommerce', array('type' => 'browse'), get_module_zone('admin_ecommerce')), do_lang_tempcode('CUSTOM_PRODUCT_USERGROUP'), 'DOC_ECOMMERCE') : null,
                 array('menu/social/groups', array('admin_cns_groups', array('type' => 'browse'), get_module_zone('admin_cns_groups'), do_lang_tempcode('SWITCH_SECTION_WARNING')), do_lang_tempcode('USERGROUPS'), 'DOC_GROUPS'),
-                addon_installed('staff') ? array('menu/site_meta/staff', array('admin_staff', array('type' => 'browse'), get_module_zone('admin_staff'), do_lang_tempcode('SWITCH_SECTION_WARNING')), do_lang_tempcode('STAFF'), 'DOC_STAFF') : null,
             ), do_lang('MEMBERS')
         );
     }

@@ -474,7 +474,7 @@ function _helper_get_forum_topic_posts($this_ref, $topic_id, &$count, $max, $sta
 
     $out = array();
     foreach ($rows as $myrow) {
-        if (($myrow['p_intended_solely_for'] === null) || (($myrow['p_poster'] == get_member()) && (!is_guest($myrow['p_poster']))) || ($myrow['p_intended_solely_for'] == get_member()) || (($myrow['p_intended_solely_for'] == $this_ref->get_guest_id()) && ($this_ref->is_staff(get_member())))) {
+        if (($myrow['p_intended_solely_for'] === null) || (($myrow['p_poster'] == get_member()) && (!is_guest($myrow['p_poster']))) || ($myrow['p_intended_solely_for'] == get_member()) || (($myrow['p_intended_solely_for'] == $this_ref->get_guest_id()) && (has_privilege(get_member(), 'view_other_pt')))) {
             $temp = $myrow; // Takes all Conversr properties
 
             // Then sanitised for normal forum driver API too (involves repetition)

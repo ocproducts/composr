@@ -425,7 +425,6 @@ class Module_admin_setupwizard
                                                      'rootkit_detector',
                                                      'failover',
                                                      'msn',
-                                                     'staff',
                                                      'backup',
                                                      'ldap',
                                                      'sms',

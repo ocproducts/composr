@@ -1,4 +1,4 @@
-<tr class="{$CYCLE,results_table_zebra,zebra_0,zebra_1}{+START,IF,{$AND,{$EQ,{LAST_POSTER_ID},{FIRST_POSTER_ID}},{$IS_STAFF},{$NOT,{CLOSED}}}} unclosed_ticket{+END}">
+<tr class="{$CYCLE,results_table_zebra,zebra_0,zebra_1}{+START,IF,{$AND,{$EQ,{LAST_POSTER_ID},{FIRST_POSTER_ID}},{$HAS_PRIVILEGE,support_operator},{$NOT,{CLOSED}}}} unclosed_ticket{+END}">
 	<td>
 		<a class="ticket_title" href="{URL*}">{+START,IF_EMPTY,{TITLE}}{!SUPPORT_TICKET}{+END}{TITLE*}</a>
 

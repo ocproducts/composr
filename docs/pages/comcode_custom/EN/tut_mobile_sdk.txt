@@ -1055,7 +1055,7 @@ Returns a boolean value if the user is staff or not in Composr.
 [/code]
 
 [i]Description:[/i]
-Returns a boolean value if the user is a super admin or not in Composr.
+Returns a boolean value if the user is an administrator or not in Composr.
 
 [i]Usage:[/i]
 [code="objc"]
