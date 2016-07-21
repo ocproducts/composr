@@ -765,6 +765,8 @@ function ecv_IMG($lang, $escaped, $param)
  */
 function ecv_IMG_MTIME($lang, $escaped, $param)
 {
+    $value = '';
+
     if (isset($param[0])) {
         $path = find_theme_image($param[0], true, true);
         if ($path != '') {
