@@ -2731,6 +2731,7 @@ END;
                 $hidden = new Tempcode();
                 $hidden->attach(form_input_hidden('id', strval($post_id)));
                 $hidden->attach(form_input_hidden('reason', post_param_string('reason')));
+                $hidden->attach(form_input_hidden('post_all', '1'));
 
                 $stuff = new Tempcode();
                 foreach ($posts as $post) {
