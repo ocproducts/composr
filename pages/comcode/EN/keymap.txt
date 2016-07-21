@@ -11,7 +11,6 @@ On most web browsers you can activate a key shortcut by holding down the Alt key
 [b][tt]K[/tt][/b] Another/Next
 [b][tt]L[/tt][/b] Log in/Log out
 [b][tt]M[/tt][/b] Activate the management menu (staff only)
-[b][tt]N[/tt][/b] Activate bookmarks menu
 {+START,IF,{$ADDON_INSTALLED,commandr}}[b][tt]O[/tt][/b] Open Commandr (staff only)
 {+END}[b][tt]P[/tt][/b] Preview
 [b][tt]Q[/tt][/b] Activate edit link (staff only)

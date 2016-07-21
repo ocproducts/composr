@@ -427,7 +427,6 @@ class Module_admin_setupwizard
                                                      'msn',
                                                      'staff',
                                                      'backup',
-                                                     'bookmarks',
                                                      'ldap',
                                                      'sms',
                                                      'printer_friendly_block',

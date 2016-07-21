@@ -7327,7 +7327,6 @@ function string_scan($lang, $do_guessing = false)
         BLUE
         BODY_CONTENT
         BODY_TICKET_REROUTED
-        BOOKMARKS
         BOOKMARK_THIS
         BOOLEAN_HELP
         BOOLEAN_SEARCH
@@ -8308,7 +8307,6 @@ function string_scan($lang, $do_guessing = false)
         MAKE_PERSONAL_DESCRIPTION
         MAKE_POST
         MAKE_POST_SHORT
-        MANAGE_BOOKMARKS
         MANUALLY_MARKED
         MANUAL_CHECKS_TOO
         MAP_POSITION_FIELD
@@ -8424,7 +8422,6 @@ function string_scan($lang, $do_guessing = false)
         MODULE_TRANS_NAME_authors
         MODULE_TRANS_NAME_awards
         MODULE_TRANS_NAME_banners
-        MODULE_TRANS_NAME_bookmarks
         MODULE_TRANS_NAME_calendar
         MODULE_TRANS_NAME_catalogues
         MODULE_TRANS_NAME_chat
@@ -8467,7 +8464,6 @@ function string_scan($lang, $do_guessing = false)
         MOST_ACTIVE_FORUM
         MOST_DOWNLOADED
         MOVE
-        MOVE_OR_DELETE_BOOKMARKS
         MULTIPLE
         MULTI_MODERATIONS
         MUST_ADD_CONTACTS

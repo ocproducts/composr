@@ -95,13 +95,12 @@ class Hook_import_cms_merge
             'feedback',
             'ecommerce',
             'cns_welcome_emails',
-            'bookmarks',
             'quizzes',
         );
         $info['dependencies'] = array( // This dependency tree is overdefined, but I wanted to make it clear what depends on what, rather than having a simplified version
                                        'attachment_references' => array('attachments', 'cns_members', 'cns_posts', 'news_and_categories', 'wiki'),
-                                       'permissions' => array_diff($info['import'], array('feedback', 'attachment_references', 'permissions', 'bookmarks', 'stats')),
-                                       'feedback' => array_diff($info['import'], array('themes', 'cns_warnings', 'feedback', 'attachment_references', 'permissions', 'quizzes', 'bookmarks', 'stats')),
+                                       'permissions' => array_diff($info['import'], array('feedback', 'attachment_references', 'permissions', 'stats')),
+                                       'feedback' => array_diff($info['import'], array('themes', 'cns_warnings', 'feedback', 'attachment_references', 'permissions', 'quizzes', 'stats')),
                                        'authors' => array('cns_members', 'catalogues'),
                                        'banners' => array('cns_members'),
                                        'catalogues' => array('cns_members'),
@@ -137,7 +136,6 @@ class Hook_import_cms_merge
                                        'awards' => array('calendar', 'wiki', 'news_and_categories', 'images_and_galleries', 'catalogues', 'authors', 'cns_topics', 'cns_posts', 'cns_forums', 'cns_groups', 'cns_members', 'downloads_and_categories'),
                                        'ecommerce' => array('cns_groups', 'cns_members'),
                                        'cns_welcome_emails' => array('cns_members'),
-                                       'bookmarks' => array('cns_members'),
                                        'quizzes' => array('cns_members', 'catalogues'),
                                        'aggregate_type_instances' => array(),
         );
@@ -306,31 +304,6 @@ class Hook_import_cms_merge
             cns_make_welcome_email($row['w_name'], $this->get_lang_string($db, $row['w_subject']), $this->get_lang_string($db, $row['w_text']), $row['w_send_time'], array_key_exists('w_usergroup', $row) ? $row['w_usergroup'] : null, array_key_exists('w_usergroup_type', $row) ? $row['w_usergroup_type'] : '');
 
             import_id_remap_put('welcome_email', $row['w_name'], 0);
-        }
-    }
-
-    /**
-     * Standard import function.
-     *
-     * @param  object $db The database connector to import from
-     * @param  string $table_prefix The table prefix the target prefix is using
-     * @param  PATH $file_base The base directory we are importing from
-     */
-    public function import_bookmarks($db, $table_prefix, $file_base)
-    {
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'bookmarks', null, null, true);
-        if (is_null($rows)) {
-            return;
-        }
-        $this->_fix_comcode_ownership($rows);
-        $on_same_msn = ($this->on_same_msn($file_base));
-        foreach ($rows as $row) {
-            $owner = $on_same_msn ? $row['b_owner'] : import_id_remap_get('member', $row['b_owner'], true);
-            if (is_null($owner)) {
-                $owner = $GLOBALS['FORUM_DRIVER']->get_guest_id();
-            }
-
-            $GLOBALS['SITE_DB']->query_insert('bookmarks', array('b_owner' => $owner, 'b_folder' => $row['b_folder'], 'b_title' => $row['b_title'], 'b_page_link' => $row['b_page_link']));
         }
     }
 

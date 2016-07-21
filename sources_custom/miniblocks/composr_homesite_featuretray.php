@@ -216,7 +216,6 @@ $featuretree = array(
                 array('User submission', 'Allow users to submit to any area of your site. Staff approval is supported <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of CMS" href="http://shareddemo.composr.info/cms/index.php?page=cms&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Public awards', 'Give public awards to your choice of &ldquo;best content&rdquo; <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Awards" href="http://shareddemo.composr.info/site/index.php?page=awards&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Per-usergroup privileges', 'Give special members access to extra features, like file storage <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Permissions" href="http://shareddemo.composr.info/adminzone/index.php?page=admin_permissions&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
-                array('Bookmarks', 'Users can bookmark their favourite pages to their account <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Bookmarks" href="http://shareddemo.composr.info/site/index.php?page=bookmarks&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
             ),
         ),
         'chat' => array(

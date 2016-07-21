@@ -35,7 +35,7 @@ class Module_admin_version
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 17;
+        $info['version'] = 18;
         $info['locked'] = true;
         $info['update_require_upgrade'] = true;
         return $info;
@@ -971,6 +971,10 @@ class Module_admin_version
                 'usage_tally' => 'INTEGER',
             ));
             $GLOBALS['SITE_DB']->create_index('post_tokens', 'generation_time', array('generation_time'));
+        }
+
+        if ((!is_null($upgrade_from)) && ($upgrade_from < 18)) {
+            $GLOBALS['SITE_DB']->drop_table_if_exists('bookmarks');
         }
     }
 

@@ -66,7 +66,6 @@ function get_table_purpose_flags()
         'banners' => TABLE_PURPOSE__NORMAL,
         'banners_types' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__SUBDATA/*under banners*/,
         'blocks' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__AUTOGEN_STATIC,
-        'bookmarks' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__SUBDATA/*under f_members*/,
         'cache' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__NO_BACKUPS | TABLE_PURPOSE__FLUSHABLE,
         'cache_on' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__NO_BACKUPS | TABLE_PURPOSE__FLUSHABLE | TABLE_PURPOSE__AUTOGEN_STATIC,
         'cached_comcode_pages' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__NO_BACKUPS | TABLE_PURPOSE__FLUSHABLE,

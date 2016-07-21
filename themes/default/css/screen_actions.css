@@ -58,10 +58,6 @@
 	background-image: url('{$IMG_INLINE;,icons/24x24/menu/site_meta/recommend}');
 }
 
-.screen_actions .favorites {
-	background-image: url('{$IMG_INLINE;,icons/24x24/links/favorites}');
-}
-
 .screen_actions .facebook {
 	background-image: url('{$IMG_INLINE;,icons/24x24/links/facebook}');
 }
@@ -85,10 +81,6 @@
 
 	.screen_actions .recommend {
 		background-image: url('{$IMG;,icons/48x48/menu/site_meta/recommend}');
-	}
-
-	.screen_actions .favorites {
-		background-image: url('{$IMG;,icons/48x48/links/favorites}');
 	}
 
 	.screen_actions .facebook {

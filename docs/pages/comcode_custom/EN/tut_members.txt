@@ -311,4 +311,4 @@ Essentially member profiles contain a last request date (in the database), which
  - [page="_SEARCH:tut_notifications"]Notifications[/page]
  - [page="_SEARCH:tut_antispam"]Anti-spam settings[/page]
 
-{$SET,tutorial_tags,Members,users_online_block,recommend,cns_thematic_avatars,cns_signatures,cns_member_titles,cns_member_photos,cns_member_avatars,cns_cartoon_avatars,cns_avatars,core_cns,captcha,bookmarks,Social,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,This tutorial explains aspects of the Conversr member system, including usergroups, profiles, and avatars.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Members,users_online_block,recommend,cns_thematic_avatars,cns_signatures,cns_member_titles,cns_member_photos,cns_member_avatars,cns_cartoon_avatars,cns_avatars,core_cns,captcha,Social,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,This tutorial explains aspects of the Conversr member system, including usergroups, profiles, and avatars.}[block]main_tutorial_rating[/block]

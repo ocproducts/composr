@@ -121,14 +121,6 @@ function cleanup()
         ),
 
         array(
-            'delete_bookmark',
-            'bookmarks',
-            'bookmarks',
-            'id',
-            array(),
-        ),
-
-        array(
             'delete_event_type',
             'calendar2',
             'calendar_types',

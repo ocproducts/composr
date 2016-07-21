@@ -74,7 +74,6 @@ class Hook_import_phpbb3
             'cns_private_topics',
             'cns_warnings',
             'wordfilter',
-            'bookmarks',
             'config',
             'ip_bans',
             'friends',
@@ -93,7 +92,6 @@ class Hook_import_phpbb3
                                        'notifications' => array('cns_topics', 'cns_members'),
                                        'cns_private_topics' => array('cns_members', 'attachments'),
                                        'friends' => array('cns_members'),
-                                       'bookmarks' => array('cns_members', 'cns_topics'),
                                        'reported_posts_forum' => array('cns_members', 'cns_topics', 'cns_posts'),
         );
         $_cleanup_url = build_url(array('page' => 'admin_cleanup'), get_module_zone('admin_cleanup'));
@@ -1264,30 +1262,6 @@ class Hook_import_phpbb3
             $map += insert_lang('tag_title', $row['bbcode_tag'], 3);
             $map += insert_lang('tag_description', $row['bbcode_helpline'], 3);
             $GLOBALS['FORUM_DB']->query_insert('custom_comcode', $map);
-        }
-    }
-
-    /**
-     * Standard import function.
-     *
-     * @param  object $db The database connector to import from
-     * @param  string $table_prefix The table prefix the target prefix is using
-     * @param  PATH $file_base The base directory we are importing from
-     */
-    public function import_bookmarks($db, $table_prefix, $file_base)
-    {
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'bookmarks', null, null, true);
-        if (is_null($rows)) {
-            return;
-        }
-        foreach ($rows as $row) {
-            $owner = import_id_remap_get('member', $row['user_id'], true);
-            $topic_id = import_id_remap_get('topic', $row['topic_id'], true);
-            if ((is_null($owner)) || (is_null($topic_id))) {
-                continue;
-            }
-
-            $GLOBALS['FORUM_DB']->query_insert('bookmarks', array('b_owner' => $owner, 'b_folder' => '', 'b_title' => 'Topic #' . strval($topic_id), 'b_page_link' => 'forum:topicview:browse:' . strval($topic_id)));
         }
     }
 
