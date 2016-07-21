@@ -637,7 +637,6 @@ class Module_tickets
             list($warning_details, $ping_url) = handle_conflict_resolution(null, true);
             $other_tickets = new Tempcode();
             $our_topic = null;
-            $type_activity_overview = array();
             if (!is_guest($ticket_owner)) {
                 $tickets_of_member = get_tickets($ticket_owner, null, true);
                 if (!is_null($tickets_of_member)) {
@@ -646,21 +645,12 @@ class Module_tickets
 
                         list($other_ticket_tpl, $ticket_type_id, $ticket_type_name) = $this->_render_ticket_row($topic);
 
-                        if (!isset($type_activity_overview[$ticket_type_id])) {
-                            $type_activity_overview[$ticket_type_id] = array(
-                                'OVERVIEW_TYPE' => $ticket_type_name,
-                                'OVERVIEW_COUNT' => '0',
-                            );
-                        }
-                        $type_activity_overview[$ticket_type_id]['OVERVIEW_COUNT'] = strval(intval($type_activity_overview[$ticket_type_id]['OVERVIEW_COUNT']) + 1);
-
                         if ($id != $_id) {
                             $other_tickets->attach($other_ticket_tpl);
                         } else {
                             $our_topic = $topic;
                         }
                     }
-                    sort_maps_by($type_activity_overview, 'OVERVIEW_TYPE');
                 }
             }
 
@@ -749,7 +739,6 @@ class Module_tickets
                 'URL' => $post_url,
                 'ADD_TICKET_URL' => $add_ticket_url,
                 'PAGINATION' => $pagination,
-                'TYPE_ACTIVITY_OVERVIEW' => $type_activity_overview,
                 'SET_TICKET_EXTRA_ACCESS_URL' => $set_ticket_extra_access_url,
                 'EDIT_URL' => $edit_url,
                 'ASSIGNED' => $assigned,

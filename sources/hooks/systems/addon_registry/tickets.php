@@ -300,12 +300,6 @@ class Hook_addon_registry_tickets
                 'URL' => placeholder_url(),
                 'ADD_TICKET_URL' => placeholder_url(),
                 'OTHER_TICKETS' => $other_tickets,
-                'TYPE_ACTIVITY_OVERVIEW' => array(
-                    array(
-                        'OVERVIEW_TYPE' => lorem_phrase(),
-                        'OVERVIEW_COUNT' => placeholder_number(),
-                    ),
-                ),
                 'SET_TICKET_EXTRA_ACCESS_URL' => placeholder_url(),
                 'ASSIGNED' => array(),
                 'EXTRA_DETAILS' => lorem_phrase(),
