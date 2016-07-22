@@ -27,11 +27,10 @@
  */
 function init__symbols()
 {
-    global $BLOCKS_CACHE, $PAGES_CACHE, $PANELS_CACHE, $EXTRA_SYMBOLS, $CANONICAL_URL, $STATIC_TEMPLATE_TEST_MODE;
+    global $BLOCKS_CACHE, $PAGES_CACHE, $PANELS_CACHE, $CANONICAL_URL, $STATIC_TEMPLATE_TEST_MODE;
     $BLOCKS_CACHE = array();
     $PAGES_CACHE = array();
     $PANELS_CACHE = array();
-    $EXTRA_SYMBOLS = null;
     $CANONICAL_URL = null;
     $STATIC_TEMPLATE_TEST_MODE = false;
 }
@@ -58,24 +57,24 @@ function ecv($lang, $escaped, $type, $name, $param)
             $value = call_user_func('ecv_' . $name, $lang, $escaped, $param);
         } else {
             // Maybe a hook?
-            global $EXTRA_SYMBOLS;
-            if ($EXTRA_SYMBOLS === null) {
+            static $extra_symbols = null;
+            if ($extra_symbols === null) {
                 if (running_script('install')) {
-                    $EXTRA_SYMBOLS = array('BETA_CSS_PROPERTY' => array()); // Needed for installer to look good ('find_all_hooks' won't run in initial steps of quick installer)
+                    $extra_symbols = array('BETA_CSS_PROPERTY' => array()); // Needed for installer to look good ('find_all_hooks' won't run in initial steps of quick installer)
                 } else {
-                    $EXTRA_SYMBOLS = array();
+                    $extra_symbols = array();
                     $hooks = find_all_hooks('systems', 'symbols');
                     foreach (array_keys($hooks) as $hook) {
-                        $EXTRA_SYMBOLS[$hook] = array();
+                        $extra_symbols[$hook] = array();
                     }
                 }
             }
-            if (isset($EXTRA_SYMBOLS[$name])) {
-                if (!isset($EXTRA_SYMBOLS[$name]['ob'])) {
+            if (isset($extra_symbols[$name])) {
+                if (!isset($extra_symbols[$name]['ob'])) {
                     require_code('hooks/systems/symbols/' . filter_naughty_harsh($name));
-                    $EXTRA_SYMBOLS[$name]['ob'] = object_factory('Hook_symbol_' . filter_naughty_harsh($name));
+                    $extra_symbols[$name]['ob'] = object_factory('Hook_symbol_' . filter_naughty_harsh($name));
                 }
-                $value = $EXTRA_SYMBOLS[$name]['ob']->run($param);
+                $value = $extra_symbols[$name]['ob']->run($param);
 
                 if ($escaped !== array()) {
                     if (is_object($value)) {
@@ -107,7 +106,7 @@ function ecv($lang, $escaped, $type, $name, $param)
                         ocp_mark_as_escaped($value);
                     }
                     if (!running_script('install')) {
-                        trigger_error(do_lang('MISSING_SYMBOL', escape_html($name)), E_NOTICE);
+                        trigger_error(do_lang('MISSING_SYMBOL', escape_html($name)), E_USER_NOTICE);
                     }
                 }
             }
@@ -471,7 +470,7 @@ function ecv($lang, $escaped, $type, $name, $param)
                 break;
 
             default:
-                trigger_error(do_lang('UNKNOWN_DIRECTIVE', escape_html($name)), E_NOTICE);
+                trigger_error(do_lang('UNKNOWN_DIRECTIVE', escape_html($name)), E_USER_NOTICE);
         }
 
         if ($escaped !== array()) {
@@ -499,7 +498,7 @@ function ecv($lang, $escaped, $type, $name, $param)
     }
     $value = $dle ? do_lang($name, $a, $b, $c, $lang, false) : escape_html($name . ':' . (($a !== null) ? $a : '') . ',' . (($b !== null) ? $b : ''));
     if ($value === null) {
-        trigger_error(do_lang('MISSING_LANG_STRING', escape_html($name)), E_NOTICE);
+        trigger_error(do_lang('MISSING_LANG_STRING', escape_html($name)), E_USER_NOTICE);
 
         $value = '';
         if ($GLOBALS['XSS_DETECT']) {
@@ -2788,7 +2787,7 @@ function ecv_PHOTO($lang, $escaped, $param)
     }
 
     if (isset($param[0])) {
-        $value = $GLOBALS['FORUM_DRIVER']->get_member_photo_url(intval($param[0]));
+        $value = $GLOBALS['FORUM_DRIVER']->get_member_photo_url(intval($param[0]), (isset($param[1])) && ($param[1] == '1'));
     }
 
     if ($escaped !== array()) {

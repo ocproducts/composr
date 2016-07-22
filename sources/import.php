@@ -25,9 +25,6 @@
  */
 function init__import()
 {
-    global $REMAP_CACHE;
-    $REMAP_CACHE = array();
-
     require_code('urls2');
 }
 
@@ -88,9 +85,9 @@ function cns_over_msn()
  */
 function import_id_remap_get($type, $id_old, $fail_ok = false)
 {
-    global $REMAP_CACHE;
-    if ((array_key_exists($type, $REMAP_CACHE)) && (array_key_exists($id_old, $REMAP_CACHE[$type]))) {
-        return $REMAP_CACHE[$type][$id_old];
+    static $remap_cache = array();
+    if ((array_key_exists($type, $remap_cache)) && (array_key_exists($id_old, $remap_cache[$type]))) {
+        return $remap_cache[$type][$id_old];
     }
 
     $value = $GLOBALS['SITE_DB']->query_select_value_if_there('import_id_remap', 'id_new', array('id_session' => get_session_id(), 'id_type' => $type, 'id_old' => $id_old));
@@ -100,7 +97,7 @@ function import_id_remap_get($type, $id_old, $fail_ok = false)
         }
         warn_exit(do_lang_tempcode('IMPORT_NOT_IMPORTED', $type, $id_old));
     }
-    $REMAP_CACHE[$type][$id_old] = $value;
+    $remap_cache[$type][$id_old] = $value;
     return $value;
 }
 

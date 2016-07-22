@@ -72,7 +72,7 @@ function output_inventory_screen($member_id)
         $member_id = get_member();
     }
 
-    $pic = '';
+    $photo = '';
     $avatar = '';
     if ($member_id > $GLOBALS['FORUM_DRIVER']->get_guest_id()) {
         $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
@@ -80,7 +80,7 @@ function output_inventory_screen($member_id)
             $username = do_lang('UNKNOWN');
         }
         if (method_exists($GLOBALS['FORUM_DRIVER'], 'get_member_photo_url')) {
-            $pic = $GLOBALS['FORUM_DRIVER']->get_member_photo_url($member_id);
+            $photo = $GLOBALS['FORUM_DRIVER']->get_member_photo_url($member_id);
         }
         if (method_exists($GLOBALS['FORUM_DRIVER'], 'get_member_avatar_url')) {
             $avatar = $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($member_id);
@@ -128,7 +128,7 @@ function output_inventory_screen($member_id)
         $inventory->attach(do_template('W_INVENTORY_ITEM', array('_GUID' => '6850866532d2e5a65ca1b74f5ed8e49a', 'HEALTHY' => $healthy == 1, 'BRIBABLE' => $bribable == 1, 'WIDTH' => $width, 'PIC_URL' => $pic_url, 'ITEM_NAME' => $myrow['item_name'], 'DESCRIPTION' => $description, 'ITEM_COUNT' => integer_format($myrow['item_count']))));
     }
 
-    return do_template('W_INVENTORY_SCREEN', array('_GUID' => '74dd29919831eb75212b9805511fdca8', 'TITLE' => $title, 'USERNAME' => $username, 'HEALTH' => integer_format($health), 'AVATAR' => $avatar, 'PIC' => $pic, 'INVENTORY' => $inventory));
+    return do_template('W_INVENTORY_SCREEN', array('_GUID' => '74dd29919831eb75212b9805511fdca8', 'TITLE' => $title, 'USERNAME' => $username, 'HEALTH' => integer_format($health), 'AVATAR' => $avatar, 'PHOTO' => $photo, 'INVENTORY' => $inventory));
 }
 
 /**

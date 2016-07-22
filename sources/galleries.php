@@ -25,13 +25,6 @@
  */
 function init__galleries()
 {
-    global $GALLERY_ENTRIES_CATS_USED_CACHE;
-    $GALLERY_ENTRIES_CATS_USED_CACHE = null;
-    global $GALLERY_PAIRS_CACHE;
-    $GALLERY_PAIRS_CACHE = null;
-    global $PT_PAIR_CACHE_G;
-    $PT_PAIR_CACHE_G = array();
-
     require_code('images');
 }
 
@@ -237,7 +230,7 @@ function render_gallery_box($myrow, $root = 'root', $show_member_stats_if_approp
         if (($is_member) && (get_forum_type() == 'cns')) {
             require_code('cns_members');
             require_code('cns_members2');
-            $member_info = render_member_box($member_id, true, null, true, null, false);
+            $member_info = render_member_box($member_id, true, true, null, false);
         } else {
             $member_info = new Tempcode();
         }
@@ -355,43 +348,43 @@ function gallery_has_content($name)
 {
     $num_galleries = null;
 
-    global $GALLERY_ENTRIES_CATS_USED_CACHE;
-    if (is_null($GALLERY_ENTRIES_CATS_USED_CACHE)) {
+    static $gallery_entries_cats_used_cache = null;
+    if (is_null($gallery_entries_cats_used_cache)) {
         $num_galleries = $GLOBALS['SITE_DB']->query_select_value('galleries', 'COUNT(*)');
 
-        $GALLERY_ENTRIES_CATS_USED_CACHE = array();
+        $gallery_entries_cats_used_cache = array();
         $images_cats = $GLOBALS['SITE_DB']->query_select('images', array('DISTINCT cat'), ($num_galleries < intval(get_option('general_safety_listing_limit'))) ? array('validated' => 1) : array('validated' => 1, 'cat' => $name));
         foreach ($images_cats as $images_cat) {
-            $GALLERY_ENTRIES_CATS_USED_CACHE[$images_cat['cat']] = 1;
+            $gallery_entries_cats_used_cache[$images_cat['cat']] = 1;
         }
         $videos_cats = $GLOBALS['SITE_DB']->query_select('videos', array('DISTINCT cat'), ($num_galleries < intval(get_option('general_safety_listing_limit'))) ? array('validated' => 1) : array('validated' => 1, 'cat' => $name));
         foreach ($videos_cats as $videos_cat) {
-            $GALLERY_ENTRIES_CATS_USED_CACHE[$videos_cat['cat']] = 1;
+            $gallery_entries_cats_used_cache[$videos_cat['cat']] = 1;
         }
     }
-    if (array_key_exists($name, $GALLERY_ENTRIES_CATS_USED_CACHE)) {
+    if (array_key_exists($name, $gallery_entries_cats_used_cache)) {
         if ($num_galleries >= intval(get_option('general_safety_listing_limit'))) {
-            $GALLERY_ENTRIES_CATS_USED_CACHE = null; // It's not right so reset it
+            $gallery_entries_cats_used_cache = null; // It's not right so reset it
         }
         return true;
     }
     if ($num_galleries >= intval(get_option('general_safety_listing_limit'))) {
-        $GALLERY_ENTRIES_CATS_USED_CACHE = null; // It's not right so reset it
+        $gallery_entries_cats_used_cache = null; // It's not right so reset it
     }
 
-    global $GALLERY_PAIRS_CACHE;
-    if (is_null($GALLERY_PAIRS_CACHE)) {
+    static $gallery_pairs_cache = null;
+    if (is_null($gallery_pairs_cache)) {
         if (is_null($num_galleries)) {
             $num_galleries = $GLOBALS['SITE_DB']->query_select_value('galleries', 'COUNT(*)');
         }
 
         if ($num_galleries < intval(get_option('general_safety_listing_limit'))) {
-            $GALLERY_PAIRS_CACHE = collapse_2d_complexity('name', 'parent_id', $GLOBALS['SITE_DB']->query_select('galleries', array('name', 'parent_id')));
+            $gallery_pairs_cache = collapse_2d_complexity('name', 'parent_id', $GLOBALS['SITE_DB']->query_select('galleries', array('name', 'parent_id')));
         } else {
             return !is_null($GLOBALS['SITE_DB']->query_select_value_if_there('galleries', 'name', array('parent_id' => $name)));
         }
     }
-    foreach ($GALLERY_PAIRS_CACHE as $_parent_id) {
+    foreach ($gallery_pairs_cache as $_parent_id) {
         if ($_parent_id == $name) {
             return true;
         }
@@ -877,23 +870,23 @@ function gallery_breadcrumbs($gallery, $root = 'root', $no_link_for_me_sir = tru
         return array(array($page_link, $title));
     }
 
-    global $PT_PAIR_CACHE_G;
-    if (!array_key_exists($gallery, $PT_PAIR_CACHE_G)) {
+    static $pt_pair_cache_g = array();
+    if (!array_key_exists($gallery, $pt_pair_cache_g)) {
         $category_rows = $GLOBALS['SITE_DB']->query_select('galleries', array('parent_id', 'fullname'), array('name' => $gallery), '', 1);
         if (!array_key_exists(0, $category_rows)) {
             return array();
         }//fatal_exit(do_lang_tempcode('CAT_NOT_FOUND',escape_html($gallery), 'gallery'));
-        $PT_PAIR_CACHE_G[$gallery] = $category_rows[0];
+        $pt_pair_cache_g[$gallery] = $category_rows[0];
     }
 
     $segments = array();
 
-    $title = get_translated_text($PT_PAIR_CACHE_G[$gallery]['fullname']);
+    $title = get_translated_text($pt_pair_cache_g[$gallery]['fullname']);
     if (!$no_link_for_me_sir) {
         $segments[] = array($page_link, $title);
     }
 
-    if ($PT_PAIR_CACHE_G[$gallery]['parent_id'] == $gallery) {
+    if ($pt_pair_cache_g[$gallery]['parent_id'] == $gallery) {
         fatal_exit(do_lang_tempcode('RECURSIVE_TREE_CHAIN', escape_html($gallery), 'gallery'));
     }
 
@@ -925,7 +918,7 @@ function gallery_breadcrumbs($gallery, $root = 'root', $no_link_for_me_sir = tru
         }
     }
 
-    $below = gallery_breadcrumbs($PT_PAIR_CACHE_G[$gallery]['parent_id'], $root, false, $zone, $attach_to_url_filter);
+    $below = gallery_breadcrumbs($pt_pair_cache_g[$gallery]['parent_id'], $root, false, $zone, $attach_to_url_filter);
 
     return array_merge($below, $segments);
 }

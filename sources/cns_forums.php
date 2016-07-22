@@ -19,26 +19,6 @@
  */
 
 /**
- * Standard code module initialisation function.
- *
- * @ignore
- */
-function init__cns_forums()
-{
-    global $USER_ACCESS_CACHE;
-    $USER_ACCESS_CACHE = array();
-
-    global $FORUM_GROUPINGS_TITLES_CACHE;
-    $FORUM_GROUPINGS_TITLES_CACHE = null;
-
-    global $FORUM_TREE_SECURE_CACHE;
-    $FORUM_TREE_SECURE_CACHE = mixed();
-
-    global $ALL_FORUMS_STRUCT_CACHE;
-    $ALL_FORUMS_STRUCT_CACHE = null;
-}
-
-/**
  * Render a forum box.
  *
  * @param  array $row Forum row
@@ -187,8 +167,8 @@ function cns_get_all_subordinate_forums($forum_id, $create_or_list = null, $tree
     }
 
     if (is_null($tree)) {
-        global $ALL_FORUMS_STRUCT_CACHE;
-        if (is_null($ALL_FORUMS_STRUCT_CACHE)) {
+        static $all_forums_struct_cache = null;
+        if (is_null($all_forums_struct_cache)) {
             $max_forum_detail = intval(get_option('max_forum_detail'));
             $huge_forums = $GLOBALS['FORUM_DB']->query_select_value('f_forums', 'COUNT(*)') > $max_forum_detail;
             if ($huge_forums) {
@@ -204,12 +184,12 @@ function cns_get_all_subordinate_forums($forum_id, $create_or_list = null, $tree
                 }
                 $tree = cns_organise_into_tree($all_descendant, $forum_id);
             } else {
-                $ALL_FORUMS_STRUCT_CACHE = $GLOBALS['FORUM_DB']->query_select('f_forums');
-                $all_forum_struct_copy = $ALL_FORUMS_STRUCT_CACHE;
+                $all_forums_struct_cache = $GLOBALS['FORUM_DB']->query_select('f_forums');
+                $all_forum_struct_copy = $all_forums_struct_cache;
                 $tree = cns_organise_into_tree($all_forum_struct_copy, $forum_id);
             }
         } else {
-            $all_forum_struct_copy = $ALL_FORUMS_STRUCT_CACHE;
+            $all_forum_struct_copy = $all_forums_struct_cache;
             $tree = cns_organise_into_tree($all_forum_struct_copy, $forum_id);
         }
     }

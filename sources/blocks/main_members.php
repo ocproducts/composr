@@ -327,16 +327,11 @@ class Block_main_members
             ));
         }*/
 
-        $hook_objects = null;
-        if (is_null($hook_objects)) {
-            $hook_objects = find_all_hook_obs('modules', 'topicview', 'Hook_topicview_');
-        }
-
         $cnt = 0;
         $member_boxes = array();
         foreach ($rows as $row) {
             $member_id = $row['id'];
-            $box = render_member_box($member_id, true, $hook_objects, $show_avatar, null, false);
+            $box = render_member_box($member_id, true, $show_avatar, null, false);
 
             if ($display_mode == 'media') {
                 $gallery_sql = 'SELECT name,fullname FROM ' . get_table_prefix() . 'galleries WHERE';

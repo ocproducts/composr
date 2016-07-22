@@ -383,9 +383,10 @@ class Forum_driver_ipb3 extends Forum_driver_base
      * Get the photo thumbnail URL for the specified member ID.
      *
      * @param  MEMBER $member The member ID
+     * @param  boolean $full Get full photo
      * @return URLPATH The URL (blank: none)
      */
-    public function get_member_photo_url($member)
+    public function get_member_photo_url($member, $full = false)
     {
         $pic = $this->db->query_select_value_if_there('member_extra', 'photo_location', array('id' => $member));
         if (is_null($pic)) {
@@ -1065,14 +1066,14 @@ class Forum_driver_ipb3 extends Forum_driver_base
      */
     public function get_emo_dir()
     {
-        global $EMOTICON_SET_DIR;
-        if (is_null($EMOTICON_SET_DIR)) {
-            $EMOTICON_SET_DIR = $this->db->query_select_value_if_there('skin_collections', 'set_emo_dir', array('set_image_dir' => $this->get_theme()));
-            if (is_null($EMOTICON_SET_DIR)) {
-                $EMOTICON_SET_DIR = 'default';
+        static $emoticon_set_dir = null;
+        if (is_null($emoticon_set_dir)) {
+            $emoticon_set_dir = $this->db->query_select_value_if_there('skin_collections', 'set_emo_dir', array('set_image_dir' => $this->get_theme()));
+            if (is_null($emoticon_set_dir)) {
+                $emoticon_set_dir = 'default';
             }
         }
-        return get_forum_base_url() . '/public/style_emoticons/' . $EMOTICON_SET_DIR . '/';
+        return get_forum_base_url() . '/public/style_emoticons/' . $emoticon_set_dir . '/';
     }
 
     /**

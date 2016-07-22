@@ -888,7 +888,6 @@ class DatabaseConnector
         if (!array_key_exists(0, $values)) {
             $this->static_ob->failed_query_exit(do_lang_tempcode('QUERY_NULL', escape_html($this->_get_where_expand($this->table_prefix . $table, array($selected_value), $where_map, $end)))); // No result found
         }
-        $this->static_ob->failed_query_exit(do_lang_tempcode('QUERY_NULL', escape_html($this->_get_where_expand($this->table_prefix . $table, array($selected_value), $where_map, $end)))); // No result found
         return $this->_query_select_value($values);
     }
 

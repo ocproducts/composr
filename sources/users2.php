@@ -26,14 +26,38 @@
  */
 function member_is_online($member_id)
 {
-    $count = 0;
-    $online = get_users_online(false, $member_id, $count);
-    foreach ($online as $m) {
-        if ($m['member_id'] == $member_id) {
-            return true;
+    if (get_option('session_prudence') == '0') {
+        // If we have all sessions loaded, use that...
+
+        $count = 0;
+        $online = get_users_online(false, $member_id, $count);
+        foreach ($online as $m) {
+            if ($m['member_id'] == $member_id) {
+                return true;
+            }
+        }
+        return false;
+
+        if (is_guest($member_id)) {
+            return false;
         }
     }
-    return false;
+
+    // Otherwise a manual query...
+
+    static $cache = array();
+    if (isset($cache[$member_id])) {
+        return $cache[$member_id];
+    }
+
+    $users_online_time_seconds = intval(get_option('users_online_time')) * 60;
+    $sql = 'SELECT last_activity FROM ' . get_table_prefix() . 'sessions WHERE last_activity>' . strval(time() - $users_online_time_seconds) . ' AND member_id=' . strval($member_id);
+    $result = $GLOBALS['SITE_DB']->query_value_if_there($sql);
+    $ret = !is_null($result);
+
+    $cache[$member_id] = $ret;
+
+    return $ret;
 }
 
 /**
@@ -126,28 +150,28 @@ function member_blocked($member_id, $member_blocker = null)
     }
 
     if ($member_id == get_member()) {
-        global $MEMBERS_BLOCKING_US_CACHE;
-        if (is_null($MEMBERS_BLOCKING_US_CACHE)) {
+        static $members_blocking_us_cache = array();
+        if (is_null($members_blocking_us_cache)) {
             $rows = $GLOBALS['SITE_DB']->query_select('chat_blocking', array('member_blocker'), array('member_blocked' => get_member()), '', null, null, true);
             if (is_null($rows)) {
-                $MEMBERS_BLOCKING_US_CACHE = array();
+                $members_blocking_us_cache = array();
                 return false;
             }
-            $MEMBERS_BLOCKING_US_CACHE = collapse_1d_complexity('member_blocker', $rows);
+            $members_blocking_us_cache = collapse_1d_complexity('member_blocker', $rows);
         }
-        return (in_array($member_blocker, $MEMBERS_BLOCKING_US_CACHE));
+        return (in_array($member_blocker, $members_blocking_us_cache));
     }
 
-    global $MEMBERS_BLOCKED_CACHE;
-    if (is_null($MEMBERS_BLOCKED_CACHE)) {
+    static $members_blocked_cache = array();
+    if (is_null($members_blocked_cache)) {
         $rows = $GLOBALS['SITE_DB']->query_select('chat_blocking', array('member_blocked'), array('member_blocker' => get_member()), '', null, null, true);
         if (is_null($rows)) {
-            $MEMBERS_BLOCKED_CACHE = array();
+            $members_blocked_cache = array();
             return false;
         }
-        $MEMBERS_BLOCKED_CACHE = collapse_1d_complexity('member_blocked', $rows);
+        $members_blocked_cache = collapse_1d_complexity('member_blocked', $rows);
     }
-    return (in_array($member_id, $MEMBERS_BLOCKED_CACHE));
+    return (in_array($member_id, $members_blocked_cache));
 }
 
 /**

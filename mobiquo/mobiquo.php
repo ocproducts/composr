@@ -31,7 +31,6 @@ define('COMMON_CLASS_PATH_INCLUDE', dirname(__FILE__) . '/include');
 include(COMMON_CLASS_PATH_INCLUDE . '/mobiquo_functions.php');
 include(COMMON_CLASS_PATH_INCLUDE . '/common_functions.php');
 include(COMMON_CLASS_PATH_INCLUDE . '/forum_functions.php');
-include(COMMON_CLASS_PATH_INCLUDE . '/member_functions.php');
 include(COMMON_CLASS_PATH_INCLUDE . '/permission_functions.php');
 include(COMMON_CLASS_PATH_INCLUDE . '/pm_functions.php');
 

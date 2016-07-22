@@ -93,9 +93,8 @@ function render_post_box($row, $use_post_title = false, $give_context = true, $i
         // Poster details
         if ((!is_guest($row['p_poster'])) && (!is_null($primary_group))) {
             require_code('cns_members2');
-            $poster_details = render_member_box($row['p_poster'], false, null, false, null, false);
+            $poster_details = render_member_box($row['p_poster'], false, false, null, false);
         } else {
-            $custom_fields = new Tempcode();
             $poster_details = new Tempcode();
         }
         if (addon_installed('cns_forum')) {

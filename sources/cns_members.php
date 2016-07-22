@@ -39,9 +39,6 @@ function init__cns_members()
 
     global $PRIMARY_GROUP_MEMBERS_CACHE;
     $PRIMARY_GROUP_MEMBERS_CACHE = array();
-
-    global $MAY_WHISPER_CACHE;
-    $MAY_WHISPER_CACHE = array();
 }
 
 /**

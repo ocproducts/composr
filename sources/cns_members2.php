@@ -81,151 +81,56 @@ function _members_filtercode($db, $info, $context, &$extra_join, &$extra_select,
 }
 
 /**
- * Get a member display box. Some terminology refers to a member here as a 'poster', as this function is used in forum topics also.
+ * Get a member display box.
  *
- * @param  mixed $poster_details Either a member ID or an array containing: ip_address, poster_num_warnings, poster, poster_posts, poster_points, poster_join_date_string, primary_group_name.
+ * @param  MEMBER $member_id Member ID
  * @param  boolean $preview Whether only to show 'preview' details
- * @param  ?array $hook_objects An array of hook objects that allow us to collect additional mouse-over member information. (null: lookup)
  * @param  boolean $show_avatar Whether to show the avatar
  * @param  ?array $extra_fields Map of extra fields to show (null: none)
  * @param  boolean $give_context Whether to include context (i.e. say WHAT this is, not just show the actual content)
  * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
  * @return Tempcode The member box
  */
-function render_member_box($poster_details, $preview = false, $hook_objects = null, $show_avatar = true, $extra_fields = null, $give_context = true, $guid = '')
+function render_member_box($member_id, $preview = false, $show_avatar = true, $extra_fields = null, $give_context = true, $guid = '')
 {
-    if (is_null($poster_details)) { // Should never happen, but we need to be defensive
+    if (is_null($member_id)) { // Should never happen, but we need to be defensive
+        return new Tempcode();
+    }
+
+    if (is_guest($member_id)) {
         return new Tempcode();
     }
 
     require_lang('cns');
     require_css('cns');
+    require_code('cns_general');
 
-    // Have to build up $poster_details instead?
-    if (!is_array($poster_details)) {
-        if (addon_installed('points')) {
-            require_code('points');
-            $points = integer_format(total_points($poster_details));
-        } else {
-            $points = '';
-        }
-        $primary_group = cns_get_member_primary_group($poster_details);
-        if ($primary_group === null) {
-            return new Tempcode();
-        }
-        require_code('cns_groups');
-        $poster_details = array(
-            'poster' => $poster_details,
-            'poster_posts' => $GLOBALS['CNS_DRIVER']->get_member_row_field($poster_details, 'm_cache_num_posts'),
-            'poster_join_date' => $GLOBALS['CNS_DRIVER']->get_member_row_field($poster_details, 'm_join_time'),
-            'poster_join_date_string' => get_timezoned_date($GLOBALS['CNS_DRIVER']->get_member_row_field($poster_details, 'm_join_time')),
-            'primary_group_name' => cns_get_group_name($primary_group),
-        );
-        $poster_details['custom_fields'] = cns_get_all_custom_fields_match_member(
-            $poster_details['poster'],
-            ((get_member() != $poster_details['poster']) && (!has_privilege(get_member(), 'view_any_profile_field'))) ? 1 : null, // public view
-            ((get_member() == $poster_details['poster']) && (!has_privilege(get_member(), 'view_any_profile_field'))) ? 1 : null, // owner view
-            null, // owner set
-            0, // encrypted
-            null, // required
-            $preview ? null : 1, // show in posts
-            $preview ? 1 : null // show in post previews
-        );
-        if ($preview) {
-            $poster_details['custom_fields_full'] = cns_get_all_custom_fields_match_member(
-                $poster_details['poster'],
-                ((get_member() != $poster_details['poster']) && (!has_privilege(get_member(), 'view_any_profile_field'))) ? 1 : null, // public view
-                ((get_member() == $poster_details['poster']) && (!has_privilege(get_member(), 'view_any_profile_field'))) ? 1 : null, // owner view
-                null, // owner set
-                0, // encrypted
-                null, // required
-                1, // show in posts
-                0 // show in post previews
-            );
-        } else {
-            $poster_details['custom_fields_full'] = $poster_details['custom_fields'];
-        }
-        if ((has_privilege(get_member(), 'see_warnings')) && (addon_installed('cns_warnings'))) {
-            $num_warnings = $GLOBALS['CNS_DRIVER']->get_member_row_field($poster_details['poster'], 'm_cache_warnings');
-            $poster_details['poster_num_warnings'] = $num_warnings;
-        }
-        if (has_privilege(get_member(), 'see_ip')) {
-            $poster_details['ip_address'] = $GLOBALS['CNS_DRIVER']->get_member_row_field($poster_details['poster'], 'm_ip_address');
-        }
-    } else {
-        $points = isset($poster_details['points']) ? integer_format($poster_details['points']) : '';
-    }
-
-    $member_id = $poster_details['poster'];
-
-    if ($hook_objects === null) {
-        // Poster detail hooks
-        $hook_objects = find_all_hook_obs('modules', 'topicview', 'Hook_topicview_');
-    }
+    $need = array(
+        'custom_fields',
+        'custom_data',
+        'username',
+        'posts',
+        'points',
+        'join_date',
+        'primary_group_name',
+        'secondary_groups_named',
+        'online',
+        'avatar',
+        'ip_address',
+        'num_warnings',
+        'galleries',
+        'dob_label',
+        'dob',
+    );
+    $member_info = cns_read_in_member_profile($member_id, $need, false, $preview);
 
     $custom_fields = new Tempcode();
-    foreach ($poster_details['custom_fields'] as $name => $value) {
+    foreach ($member_info['custom_fields'] as $name => $value) {
         if (($value !== null) && ($value !== '')) {
             if (is_integer($name)) {
                 $name = strval($name);
             }
             $custom_fields->attach(do_template('CNS_MEMBER_BOX_CUSTOM_FIELD', array('_GUID' => ($guid != '') ? $guid : '10b72cd1ec240c315e56bc8a0f3a92a1', 'MEMBER_ID' => strval($member_id), 'NAME' => $name, 'RAW' => $value['RAW'], 'VALUE' => is_object($value['RENDERED']) ? protect_from_escaping($value['RENDERED']) : $value['RENDERED'])));
-        }
-    }
-    $custom_fields_full = new Tempcode();
-    if (isset($poster_details['custom_fields_full'])) {
-        foreach ($poster_details['custom_fields_full'] as $name => $value) {
-            if (($value !== null) && ($value !== '')) {
-                if (is_integer($name)) {
-                    $name = strval($name);
-                }
-                $custom_fields_full->attach(do_template('CNS_MEMBER_BOX_CUSTOM_FIELD', array('_GUID' => ($guid != '') ? $guid : '20b72cd1ec240c315e56bc8a0f3a92a1', 'MEMBER_ID' => strval($member_id), 'NAME' => $name, 'RAW' => $value['RAW'], 'VALUE' => is_object($value['RENDERED']) ? protect_from_escaping($value['RENDERED']) : $value['RENDERED'])));
-            }
-        }
-    }
-
-    $ip_address = null;
-    if (isset($poster_details['ip_address'])) {
-        $ip_address = $poster_details['ip_address'];
-    }
-
-    $num_warnings = null;
-    if ((isset($poster_details['poster_num_warnings'])) && (addon_installed('cns_warnings'))) {
-        $num_warnings = integer_format($poster_details['poster_num_warnings']);
-    }
-
-    $galleries = null;
-    if ((addon_installed('galleries')) && (get_option('show_gallery_counts') == '1')) {
-        $gallery_cnt = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) AS cnt FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'galleries WHERE name LIKE \'' . db_encode_like('member_' . strval($member_id) . '_%') . '\'');
-
-        if ($gallery_cnt > 1) {
-            require_lang('galleries');
-            $galleries = integer_format($gallery_cnt);
-        }
-    }
-
-    $dob = null;
-    $age = null;
-    $day = $GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_dob_day');
-    $month = $GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_dob_month');
-    $year = $GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_dob_year');
-    if (($day !== null) && ($month !== null) && ($year !== null)) {
-        if ($GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_reveal_age') == 1) {
-            if (@strftime('%Y', @mktime(0, 0, 0, 1, 1, 1963)) != '1963') {
-                $dob = strval($year) . '-' . str_pad(strval($month), 2, '0', STR_PAD_LEFT) . '-' . str_pad(strval($day), 2, '0', STR_PAD_LEFT);
-            } else {
-                $dob = get_timezoned_date(mktime(12, 0, 0, $month, $day, $year), false, true);
-            }
-
-            $age = intval(date('Y')) - $year;
-            if ($month > intval(date('m'))) {
-                $age--;
-            }
-            if (($month == intval(date('m'))) && ($day > intval(date('D')))) {
-                $age--;
-            }
-        } else {
-            $dob = cms_strftime(do_lang('date_no_year'), mktime(12, 0, 0, $month, $day));
         }
     }
 
@@ -235,51 +140,40 @@ function render_member_box($poster_details, $preview = false, $hook_objects = nu
                 $key = strval($key);
             }
 
-            $custom_fields->attach(do_template('CNS_MEMBER_BOX_CUSTOM_FIELD', array('_GUID' => ($guid != '') ? $guid : '530f049d3b3065df2d1b69270aa93490', 'MEMBER_ID' => strval($member_id), 'NAME' => $key, 'VALUE' => ($val))));
+            $custom_fields->attach(do_template('CNS_MEMBER_BOX_CUSTOM_FIELD', array('_GUID' => ($guid != '') ? $guid : '530f049d3b3065df2d1b69270aa93490', 'MEMBER_ID' => strval($member_id), 'NAME' => $key, 'VALUE' => $val)));
         }
     }
 
-    foreach ($hook_objects as $hook_object) {
-        $hook_result = $hook_object->run($member_id);
-        if ($hook_result !== null) {
-            $custom_fields->attach($hook_result);
-        }
+    foreach ($member_info['custom_data'] as $hook_result) {
+        $custom_fields->attach(do_template('CNS_MEMBER_BOX_CUSTOM_FIELD', array('_GUID' => ($guid != '') ? $guid : '630f049d3b3065df2d1b69270aa93490', 'MEMBER_ID' => strval($member_id), 'NAME' => $hook_result[0], 'VALUE' => $hook_result[1])));
     }
 
-    $_usergroups = $GLOBALS['FORUM_DRIVER']->get_members_groups($member_id, true);
-    $all_usergroups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(true, false, false, $_usergroups);
-    $usergroups = array();
-    foreach ($_usergroups as $u) {
-        if (isset($all_usergroups[$u])) {
-            $usergroups[] = $all_usergroups[$u];
-        }
-    }
-
-    require_code('users2');
     return do_template('CNS_MEMBER_BOX', array(
         '_GUID' => ($guid != '') ? $guid : 'dfskfdsf9',
         'GIVE_CONTEXT' => $give_context,
         'MEMBER_ID' => strval($member_id),
-        'POSTS' => integer_format($poster_details['poster_posts']),
-        'POINTS' => $points,
-        'JOIN_DATE_RAW' => strval($poster_details['poster_join_date']),
-        'JOIN_DATE' => $poster_details['poster_join_date_string'],
-        'PRIMARY_GROUP_NAME' => $poster_details['primary_group_name'],
-        'OTHER_USERGROUPS' => $usergroups,
+        'USERNAME' => $member_info['username'],
+        'POSTS' => integer_format($member_info['posts']),
+        'POINTS' => isset($member_info['points']) ? integer_format($member_info['points']) : '',
+        'JOIN_DATE_RAW' => strval($member_info['join_time']),
+        'JOIN_DATE' => $member_info['join_date'],
+        'PRIMARY_GROUP_NAME' => $member_info['primary_group_name'],
+        'SECONDARY_GROUPS' => array_values($member_info['secondary_groups_named']),
         'CUSTOM_FIELDS' => $custom_fields,
-        'CUSTOM_FIELDS_FULL' => $custom_fields_full,
-        'ONLINE' => member_is_online($member_id),
-        'AVATAR_URL' => $show_avatar ? $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($member_id) : '',
-        'IP_ADDRESS' => $ip_address,
-        'NUM_WARNINGS' => $num_warnings,
-        'GALLERIES' => $galleries,
-        'DATE_OF_BIRTH' => $dob,
-        'AGE' => ($age === null) ? null : integer_format($age),
+        'ONLINE' => $member_info['online'],
+        'AVATAR_URL' => $show_avatar ? $member_info['avatar'] : '',
+        'IP_ADDRESS' => ((has_privilege(get_member(), 'see_ip')) && (isset($member_info['ip_address']))) ? $member_info['ip_address'] : null,
+        'NUM_WARNINGS' => integer_format($member_info['num_warnings']),
+        'GALLERIES' => isset($member_info['galleries']) ? $member_info['galleries'] : null,
+        'DOB_LABEL' => isset($member_info['dob_label']) ? $member_info['dob_label'] : '',
+        'DOB' => isset($member_info['dob']) ? $member_info['dob'] : '',
+        '_DOB' => isset($member_info['_dob']) ? $member_info['_dob'] : '',
+        '_DOB_CENSORED' => isset($member_info['_dob_censored']) ? $member_info['_dob_censored'] : '',
     ));
 }
 
 /**
- * Find if a certain member may be PTd be a certain member.
+ * Find if a certain member may be PTd by a certain member.
  *
  * @param  MEMBER $target Member to be PT'd
  * @param  ?MEMBER $member_id Member to PT. (null: current member)
@@ -307,24 +201,23 @@ function cns_may_whisper($target, $member_id = null)
         return true;
     }
 
-    global $MAY_WHISPER_CACHE;
+    static $may_whisper_cache = array();
     $key = serialize(array($target, $member_id));
-    if (array_key_exists($key, $MAY_WHISPER_CACHE)) {
-        return $MAY_WHISPER_CACHE[$key];
+    if (array_key_exists($key, $may_whisper_cache)) {
+        return $may_whisper_cache[$key];
     }
-    $MAY_WHISPER_CACHE = array();
 
     require_code('selectcode');
     $groups = $GLOBALS['FORUM_DRIVER']->get_members_groups($member_id);
     $answer = count(array_intersect(selectcode_to_idlist_using_memory($pt_allow, $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, false, false, null, $member_id)), $groups)) != 0;
 
     if ((!$answer) && (addon_installed('chat'))) {
-        $rows = $GLOBALS['SITE_DB']->query_select('chat_friends', array('date_and_time'), array('member_likes' => $target, 'member_liked' => $member_id), '', 1);
-        if (count($rows) != 0) {
+        require_code('chat');
+        if (member_befriended($member_id, $target)) {
             $answer = true;
         }
     }
 
-    $MAY_WHISPER_CACHE[$key] = $answer;
+    $may_whisper_cache[$key] = $answer;
     return $answer;
 }

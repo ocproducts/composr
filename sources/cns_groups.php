@@ -33,9 +33,6 @@ function init__cns_groups()
 
     global $PROBATION_GROUP_CACHE;
     $PROBATION_GROUP_CACHE = null;
-
-    global $ALL_DEFAULT_GROUPS_CACHE;
-    $ALL_DEFAULT_GROUPS_CACHE = array();
 }
 
 /**
@@ -127,9 +124,9 @@ function cns_get_all_default_groups($include_primary = false, $include_all_confi
         warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
     }
 
-    global $ALL_DEFAULT_GROUPS_CACHE;
-    if (array_key_exists($include_primary ? 1 : 0, $ALL_DEFAULT_GROUPS_CACHE)) {
-        return $ALL_DEFAULT_GROUPS_CACHE[$include_primary ? 1 : 0];
+    static $all_default_groups_cache = array();
+    if (array_key_exists($include_primary ? 1 : 0, $all_default_groups_cache)) {
+        return $all_default_groups_cache[$include_primary ? 1 : 0];
     }
 
     $rows = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id', 'g_name'), array('g_is_default' => 1, 'g_is_presented_at_install' => 0), 'ORDER BY g_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('g_name'));
@@ -149,7 +146,7 @@ function cns_get_all_default_groups($include_primary = false, $include_all_confi
         }
     }
 
-    $ALL_DEFAULT_GROUPS_CACHE[$include_primary ? 1 : 0] = $groups;
+    $all_default_groups_cache[$include_primary ? 1 : 0] = $groups;
     return $groups;
 }
 
@@ -329,10 +326,10 @@ function cns_get_best_group_property($groups, $property)
  * Get a list of the usergroups a member is in (keys say the usergroups, values are irrelevant).
  *
  * @param  ?MEMBER $member_id The member to find the usergroups of (null: current member).
- * @param  boolean $skip_secret Whether to skip looking at secret usergroups.
+ * @param  boolean $skip_secret Whether to skip looking at secret usergroups, unless we have access.
  * @param  boolean $handle_probation Whether to take probation into account
  * @param  boolean $include_implicit Whether to include implicit groups
- * @return array Reverse list (e.g. array(1=>true,2=>true,3=>true) for someone in (1,2,3)).
+ * @return array Flipped list (e.g. array(1=>true,2=>true,3=>true) for someone in (1,2,3)).
  */
 function cns_get_members_groups($member_id = null, $skip_secret = false, $handle_probation = true, $include_implicit = true)
 {

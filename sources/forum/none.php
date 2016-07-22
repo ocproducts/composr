@@ -340,9 +340,10 @@ class Forum_driver_none extends Forum_driver_base
      * Get the photo thumbnail URL for the specified member ID.
      *
      * @param  MEMBER $member The member ID
+     * @param  boolean $full Get full photo
      * @return URLPATH The URL (blank: none)
      */
-    public function get_member_photo_url($member)
+    public function get_member_photo_url($member, $full = false)
     {
         return '';
     }

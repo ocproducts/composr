@@ -435,6 +435,8 @@ function get_topic_participant_uids($topic_id, $max, $topic_details = null)
  */
 function get_topic_participants($topic_id, $max = null, $topic_details = null)
 {
+    require_code('users2');
+
     $participants = array();
     foreach (get_topic_participant_uids($topic_id, $max, $topic_details) as $participant) {
         $username = $GLOBALS['FORUM_DRIVER']->get_username($participant);
@@ -443,7 +445,7 @@ function get_topic_participants($topic_id, $max = null, $topic_details = null)
                 'user_id' => $participant,
                 'username' => $username,
                 'icon_url' => $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($participant),
-                'is_online' => is_member_online($participant),
+                'is_online' => member_is_online($participant),
             );
         }
     }
@@ -482,6 +484,8 @@ function render_post_to_tapatalk($post_id, $return_html, $post_row = null, $beha
         $username = do_lang('UNKNOWN');
     }
 
+    require_code('users2');
+
     $likes_info = array();
     $can_like = ($post_author_id != $member_id);
     $is_liked = false;
@@ -516,7 +520,7 @@ function render_post_to_tapatalk($post_id, $return_html, $post_row = null, $beha
         'post_title' => mobiquo_val($post_row['p_title'], 'base64'),
         'post_author_id' => mobiquo_val(strval($post_author_id), 'string'),
         'post_author_name' => mobiquo_val($username, 'base64'),
-        'is_online' => mobiquo_val(is_member_online($post_author_id), 'boolean'),
+        'is_online' => mobiquo_val(member_is_online($post_author_id), 'boolean'),
         'can_edit' => mobiquo_val($moderation_details['can_edit'], 'boolean'),
         'icon_url' => mobiquo_val($GLOBALS['FORUM_DRIVER']->get_member_avatar_url($post_row['p_poster']), 'string'),
         'post_time' => mobiquo_val($post_row['p_time'], 'dateTime.iso8601'),

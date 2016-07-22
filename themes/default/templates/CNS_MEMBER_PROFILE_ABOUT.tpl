@@ -283,7 +283,7 @@
 
 						{+START,IF_NON_EMPTY,{DOB}}
 							<tr>
-								<th class="de_th">{!DATE_OF_BIRTH}:</th>
+								<th class="de_th">{DOB_LABEL*}:</th>
 								<td><span class="bday">{DOB*}</span></td>
 							</tr>
 						{+END}
@@ -346,10 +346,12 @@
 							</tr>
 						{+END}
 
-						<tr>
-							<th class="de_th">{!LAST_SUBMIT_TIME}:</th>
-							<td>{!DAYS_AGO,{SUBMIT_DAYS_AGO}}</td>
-						</tr>
+						{+START,IF_PASSED,SUBMIT_DAYS_AGO}
+							<tr>
+								<th class="de_th">{!LAST_SUBMIT_TIME}:</th>
+								<td>{!DAYS_AGO,{SUBMIT_DAYS_AGO}}</td>
+							</tr>
+						{+END}
 
 						{+START,IF,{$ADDON_INSTALLED,securitylogging}}
 							{+START,IF_NON_EMPTY,{IP_ADDRESS}}

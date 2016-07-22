@@ -5,19 +5,19 @@
 <div class="cns_member_box">
 {+END}
 	{+START,IF,{GIVE_CONTEXT}}
-		<h3>{!CONTENT_IS_OF_TYPE,{!MEMBER},{$USERNAME*,{MEMBER_ID},1}}</h3>
+		<h3>{!CONTENT_IS_OF_TYPE,{!MEMBER},{$DISPLAYED_USERNAME*,{USERNAME}}}</h3>
 	{+END}
 
 	<div class="inline_lined_up">
 		{+START,IF,{$NOT,{$MOBILE}}}
 			{+START,IF_NON_EMPTY,{AVATAR_URL}}
-				<img class="cns_member_box_avatar" src="{$ENSURE_PROTOCOL_SUITABILITY*,{AVATAR_URL}}" alt="{!SPECIFIC_AVATAR,{$USERNAME*,{MEMBER_ID}}}" title="{!SPECIFIC_AVATAR,{$USERNAME*,{MEMBER_ID}}}" />
+				<img class="cns_member_box_avatar" src="{$ENSURE_PROTOCOL_SUITABILITY*,{AVATAR_URL}}" alt="{!SPECIFIC_AVATAR,{USERNAME*}}" title="{!SPECIFIC_AVATAR,{USERNAME*}}" />
 			{+END}
 		{+END}
 
 		<div>{$,div will be set as inline block}<table class="map_table tooltip_fields autosized_table">
 			<tbody>
-				<tr><th class="de_th">{!USERNAME}:</th><td><a href="{$MEMBER_PROFILE_URL*,{MEMBER_ID}}">{$USERNAME*,{MEMBER_ID}}</a></td></tr>
+				<tr><th class="de_th">{!USERNAME}:</th><td><a href="{$MEMBER_PROFILE_URL*,{MEMBER_ID}}">{USERNAME*}</a></td></tr>
 				<tr><th class="de_th">{!cns:SPECIFIC_FORUM_POSTS}:</th><td>{POSTS*}</td></tr>
 				{+START,IF_NON_EMPTY,{POINTS}}
 					<tr><th class="de_th"><abbr title="{!LIFETIME_POINTS,{$NUMBER_FORMAT*,{$AVAILABLE_POINTS,{MEMBER_ID}}}}">{!POINTS}</abbr>:</th><td>{POINTS*}</td></tr>
@@ -33,13 +33,16 @@
 					{+START,IF_PASSED,GALLERIES}
 						<tr><th class="de_th">{!galleries:GALLERIES}:</th><td>{GALLERIES*}</td></tr>
 					{+END}
-					{+START,IF_PASSED,DATE_OF_BIRTH}
-						<tr><th class="de_th">{!DATE_OF_BIRTH}:</th><td>{DATE_OF_BIRTH*}</td></tr>
+					{+START,IF_NON_EMPTY,{DOB}}
+						<tr>
+							<th class="de_th">{DOB_LABEL*}:</th>
+							<td>{DOB*}</td>
+						</tr>
 					{+END}
 				{+END}
 				<tr>
 					<th class="de_th">{!USERGROUPS}:</th>
-					<td>{+START,LOOP,OTHER_USERGROUPS}{+START,IF,{$NEQ,{_loop_key},0}}, {+END}{_loop_var*}{+END}</td>
+					<td>{+START,LOOP,SECONDARY_GROUPS}{+START,IF,{$NEQ,{_loop_key},0}}, {+END}{_loop_var*}{+END}</td>
 				</tr>
 				<tr><th class="de_th">{!ONLINE_NOW}:</th><td>{$?*,{ONLINE},{!YES},{!NO}}</td></tr>
 				{CUSTOM_FIELDS}

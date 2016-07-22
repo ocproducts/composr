@@ -274,54 +274,73 @@ class CMSUserRead
     {
         cms_verify_parameters_phpdoc();
 
-        $username = $GLOBALS['FORUM_DRIVER']->get_username($user_id);
-        if (is_null($username)) {
-            $username = do_lang('UNKNOWN');
-        }
+        push_query_limiting(false);
 
-        require_code('cns_members2');
+        require_code('cns_general');
+        $need = array(
+            'username',
+            'posts',
+            'join_time',
+            'last_visit_time',
+            'online',
+            'likes',
+            'liked',
+            'avatar',
+            'banned',
+            'display_name',
+            'current_action',
+            'custom_fields',
+            'dob_label',
+            'dob',
+            'points',
+            'browser',
+            'operating_system',
+            'secondary_groups',
+            'poster_title',
+            'time_for_them',
+            'num_warnings',
+            'signature_comcode',
+            'custom_fields_list',
+        );
+        $member_info = cns_read_in_member_profile($user_id, $need);
 
         $user_info = array(
             'user_id' => $user_id,
-            'username' => $username,
-            'post_count' => $GLOBALS['FORUM_DRIVER']->get_member_row_field($user_id, 'm_cache_num_posts'),
-            'reg_time' => $GLOBALS['FORUM_DRIVER']->get_member_row_field($user_id, 'm_join_time'),
-            'last_activity_time' => $GLOBALS['FORUM_DRIVER']->get_member_row_field($user_id, 'm_last_visit_time'),
-            'is_online' => is_member_online($user_id),
+            'username' => $member_info['username'],
+            'post_count' => $member_info['posts'],
+            'reg_time' => $member_info['join_time'],
+            'last_activity_time' => $member_info['last_visit_time'],
+            'is_online' => $member_info['online'],
 
             'accept_pm' => cns_may_make_private_topic() && cns_may_whisper($user_id),
-            'i_follow_u' => i_follow_u($user_id),
-            'u_follow_me' => u_follow_me($user_id),
+            'i_follow_u' => $member_info['likes'],
+            'u_follow_me' => $member_info['liked'],
 
             'accept_follow' => true,
             'following_count' => $this->get_member_follow_count($user_id, false),
             'follower' => $this->get_member_follow_count($user_id, true),
 
-            'icon_url' => $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($user_id),
+            'icon_url' => isset($member_info['avatar']) ? $member_info['avatar'] : '',
             'can_ban' => can_ban_member($user_id),
-            'is_ban' => $GLOBALS['FORUM_DRIVER']->is_banned($user_id),
+            'is_ban' => $member_info['banned'],
         );
 
-        $display_text = $GLOBALS['FORUM_DRIVER']->get_username($user_id, true);
-        if ($display_text != $username) {
+        if ($member_info['display_name'] != $member_info['username']) {
             $user_info += array(
-                'display_text' => mobiquo_val($display_text, 'base64'),
+                'display_text' => mobiquo_val($member_info['display_name'], 'base64'),
             );
         }
 
-        $at_title = $GLOBALS['SITE_DB']->query_select_value_if_there('sessions', 'the_title', array('member_id' => $user_id), 'ORDER BY last_activity DESC');
-        if (!is_null($at_title)) {
-            $user_info['current_action'] = $at_title;
+        if (isset($member_info['current_action'])) {
+            $user_info['current_action'] = $member_info['current_action'];
         }
-
-        require_code('encryption');
 
         $custom_fields_list = array();
 
         if (has_privilege(get_member(), 'view_profiles')) {
-            $_custom_fields = cns_get_all_custom_fields_match_member($user_id, ((get_member() != $user_id) && (!has_privilege(get_member(), 'view_any_profile_field'))) ? 1 : null, ((get_member() == $user_id) && (!has_privilege(get_member(), 'view_any_profile_field'))) ? 1 : null);
             $value = mixed();
-            foreach ($_custom_fields as $name => $_value) {
+            require_code('encryption');
+            foreach ($member_info['custom_fields'] as $name => $_value) {
                 $value = $_value['RAW'];
                 $rendered_value = $_value['RENDERED'];
 
@@ -331,7 +350,7 @@ class CMSUserRead
                 } elseif (is_integer($value)) {
                     $value = strval($value);
                 } elseif (is_float($value)) {
-                    $value = float_to_raw_string($value);
+                    $value = float_format($value);
                 }
 
                 if (((!is_object($value)) && ($value != '')) || ((is_object($value)) && (!$value->is_empty()))) {
@@ -341,62 +360,47 @@ class CMSUserRead
                     }
                 }
             }
-
-            $day = $GLOBALS['FORUM_DRIVER']->get_member_row_field($user_id, 'm_dob_day');
-            $month = $GLOBALS['FORUM_DRIVER']->get_member_row_field($user_id, 'm_dob_month');
-            $year = $GLOBALS['FORUM_DRIVER']->get_member_row_field($user_id, 'm_dob_year');
-            if (($day !== null) && ($month !== null) && ($year !== null)) {
-                if ($GLOBALS['FORUM_DRIVER']->get_member_row_field($user_id, 'm_reveal_age') == 1) {
-                    if (@strftime('%Y', @mktime(0, 0, 0, 1, 1, 1963)) != '1963') {
-                        $dob = strval($year) . '-' . str_pad(strval($month), 2, '0', STR_PAD_LEFT) . '-' . str_pad(strval($day), 2, '0', STR_PAD_LEFT);
-                    } else {
-                        $dob = get_timezoned_date(mktime(12, 0, 0, $month, $day, $year), false, true);
-                    }
-                    $custom_fields_list[do_lang('DATE_OF_BIRTH')] = $dob;
-                } else {
-                    $dob = cms_strftime(do_lang('date_no_year'), mktime(12, 0, 0, $month, $day));
-                    $custom_fields_list[do_lang('ENTER_YOUR_BIRTHDAY')] = $dob;
-                }
+            if (isset($member_info['dob'])) {
+                $custom_fields_list[$member_info['dob_label']] = $member_info['dob'];
             }
 
             if (addon_installed('points')) {
                 require_code('points');
-                $custom_fields_list[do_lang('POINTS')] = integer_format(total_points($user_id));
+                $custom_fields_list[do_lang('POINTS')] = integer_format($member_info['points']);
             }
 
             if ((has_privilege(get_member(), 'show_user_browsing')) && (addon_installed('stats'))) {
-                $last_stats = $GLOBALS['SITE_DB']->query_select('stats', array('browser', 'operating_system'), array('member_id' => $user_id), 'ORDER BY date_and_time DESC', 1);
-                if (array_key_exists(0, $last_stats)) {
-                    $custom_fields_list[do_lang('USER_AGENT')] = $last_stats[0]['browser'];
-                    $custom_fields_list[do_lang('USER_OS')] = $last_stats[0]['operating_system'];
+                if (isset($member_info['browser'])) {
+                    $custom_fields_list[do_lang('USER_AGENT')] = $member_info['browser'];
+                }
+                if (isset($member_info['operating_system'])) {
+                    $custom_fields_list[do_lang('USER_OS')] = $member_info['operating_system'];
                 }
             }
 
-            $groups = $GLOBALS['FORUM_DRIVER']->get_members_groups($user_id);
-            foreach ($groups as $group_id) {
-                $custom_fields_list[do_lang('USERGROUP')] = cns_get_group_name($group_id, true);
+            foreach ($member_info['secondary_groups'] as $i => $group_id) {
+                $custom_fields_list[do_lang('USERGROUP') . ' #' . strval($i + 1)] = cns_get_group_name($group_id, true);
             }
 
-            $member_title = get_member_title($user_id);
-            if ($member_title != '') {
-                $custom_fields_list[do_lang('TITLE')] = $member_title;
+            if (isset($member_info['poster_title'])) {
+                $custom_fields_list[do_lang('TITLE')] = $member_info['poster_title'];
             }
 
-            $time_for_them_raw = tz_time(time(), get_users_timezone($user_id));
-            $time_for_them = get_timezoned_time(time(), false, false, $user_id);
-            $custom_fields_list[do_lang('TIME_FOR_THEM')] = $time_for_them;
+            $custom_fields_list[do_lang('TIME_FOR_THEM')] = $member_info['time_for_them'];
 
             if ((has_privilege(get_member(), 'see_warnings')) && (addon_installed('cns_warnings'))) {
-                $num_warnings = $GLOBALS['FORUM_DRIVER']->get_member_row_field($user_id, 'm_cache_warnings');
+                $num_warnings = $member_info['num_warnings'];
                 if ($num_warnings != 0) {
                     $custom_fields_list[do_lang('NUM_WARNINGS')] = integer_format($num_warnings);
                 }
             }
         }
 
-        $signature = strip_comcode(get_translated_text($GLOBALS['FORUM_DRIVER']->get_member_row_field($user_id, 'm_signature'), $GLOBALS['FORUM_DB']));
-        if ($signature != '') {
-            $custom_fields_list[do_lang('SIGNATURE')] = $signature;
+        if (isset($member_info['signature_comcode'])) {
+            $signature = strip_comcode($member_info['signature_comcode']);
+            if ($signature != '') {
+                $custom_fields_list[do_lang('SIGNATURE')] = $signature;
+            }
         }
 
         $user_info['custom_fields_list'] = $custom_fields_list;

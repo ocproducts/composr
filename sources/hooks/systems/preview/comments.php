@@ -56,17 +56,8 @@ class Hook_preview_comments
         $post = comcode_to_tempcode($post_comcode);
 
         // Conversr renderings of poster
-        static $hook_objects = null;
-        if (is_null($hook_objects)) {
-            $hook_objects = find_all_hook_obs('modules', 'topicview', 'Hook_topicview_');
-        }
-        if (!is_guest()) {
-            require_code('cns_members2');
-            $poster_details = render_member_box(get_member(), false, $hook_objects, false, null, false);
-        } else {
-            $custom_fields = new Tempcode();
-            $poster_details = new Tempcode();
-        }
+        require_code('cns_members2');
+        $poster_details = render_member_box(get_member(), false, false, null, false);
         if (addon_installed('cns_forum')) {
             if (is_guest()) {
                 $poster = do_template('CNS_POSTER_MEMBER', array('_GUID' => 'adbfe268015ca904c3f61020a7b0adde', 'ONLINE' => true, 'ID' => strval(get_member()), 'POSTER_DETAILS' => $poster_details, 'PROFILE_URL' => $GLOBALS['FORUM_DRIVER']->member_profile_url(get_member(), true), 'POSTER_USERNAME' => $poster_name));

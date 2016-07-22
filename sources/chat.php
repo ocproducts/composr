@@ -25,9 +25,6 @@
  */
 function init__chat()
 {
-    global $MEMBERS_BEFRIENDED_CACHE;
-    $MEMBERS_BEFRIENDED_CACHE = null;
-
     global $EFFECT_SETTINGS_ROWS;
     $EFFECT_SETTINGS_ROWS = null;
 
@@ -254,25 +251,35 @@ function messages_script()
  * Find if a member is befriended by the current member.
  *
  * @param  MEMBER $member_id The member being checked
+ * @param  ?MEMBER $member_id_current Current member (null: true current member)
  * @return boolean Whether the member is befriended
  */
-function member_befriended($member_id)
+function member_befriended($member_id, $member_id_current = null)
 {
-    if ($member_id == get_member()) {
+    if ($member_id_current === null) {
+        $member_id_current = get_member();
+    }
+
+    if ($member_id == $member_id_current) {
         return false;
     }
     if (is_guest()) {
         return false;
     }
 
-    global $MEMBERS_BEFRIENDED_CACHE;
-    if (is_null($MEMBERS_BEFRIENDED_CACHE)) {
-        $MEMBERS_BEFRIENDED_CACHE = collapse_1d_complexity('member_liked', $GLOBALS['SITE_DB']->query_select('chat_friends', array('member_liked'), array('member_likes' => get_member()), '', 100));
+    static $cache = array();
+    if (is_null($cache)) {
+        $_cache = collapse_1d_complexity('member_liked', $GLOBALS['SITE_DB']->query_select('chat_friends', array('member_liked'), array('member_likes' => $member_id_current), '', 100));
+        $cache = array_combine($_cache, array_fill(0, count($_cache), true));
     }
-    if (count($MEMBERS_BEFRIENDED_CACHE) == 100) { // Ah, too much to preload
-        return !is_null($GLOBALS['SITE_DB']->query_select_value_if_there('chat_friends', 'member_liked', array('member_liked' => $member_id, 'member_likes' => get_member())));
+    if (isset($cache[$member_id])) {
+        return $cache[$member_id];
     }
-    return (in_array($member_id, $MEMBERS_BEFRIENDED_CACHE));
+    if (count($cache) >= 100) { // Ah, too much to preload
+        $cache[$member_id] = !is_null($GLOBALS['SITE_DB']->query_select_value_if_there('chat_friends', 'member_liked', array('member_liked' => $member_id, 'member_likes' => $member_id_current)));
+        return $cache[$member_id];
+    }
+    return false;
 }
 
 /**

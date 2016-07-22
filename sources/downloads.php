@@ -19,17 +19,6 @@
  */
 
 /**
- * Standard code module initialisation function.
- *
- * @ignore
- */
-function init__downloads()
-{
-    global $PT_PAIR_CACHE_D;
-    $PT_PAIR_CACHE_D = array();
-}
-
-/**
  * Show a download licence for display
  */
 function download_licence_script()
@@ -555,27 +544,27 @@ function download_breadcrumbs($category_id, $root = null, $no_link_for_me_sir = 
         return array(array($page_link, $title));
     }
 
-    global $PT_PAIR_CACHE_D;
-    if (!array_key_exists($category_id, $PT_PAIR_CACHE_D)) {
+    static $pt_pair_cache_d = array();
+    if (!array_key_exists($category_id, $pt_pair_cache_d)) {
         $category_rows = $GLOBALS['SITE_DB']->query_select('download_categories', array('parent_id', 'category'), array('id' => $category_id), '', 1);
         if (!array_key_exists(0, $category_rows)) {
             //warn_exit(do_lang_tempcode('CAT_NOT_FOUND', escape_html(strval($category_id)), 'download_category'));
             return array();
         }
-        $PT_PAIR_CACHE_D[$category_id] = $category_rows[0];
+        $pt_pair_cache_d[$category_id] = $category_rows[0];
     }
 
-    $title = get_translated_text($PT_PAIR_CACHE_D[$category_id]['category']);
+    $title = get_translated_text($pt_pair_cache_d[$category_id]['category']);
     $segments = array();
     if (!$no_link_for_me_sir) {
         $segments[] = array($page_link, $title);
     }
 
-    if ($PT_PAIR_CACHE_D[$category_id]['parent_id'] == $category_id) {
+    if ($pt_pair_cache_d[$category_id]['parent_id'] == $category_id) {
         fatal_exit(do_lang_tempcode('RECURSIVE_TREE_CHAIN', escape_html(strval($category_id)), 'download_category'));
     }
 
-    $below = download_breadcrumbs($PT_PAIR_CACHE_D[$category_id]['parent_id'], $root, false, $zone, $attach_to_url_filter);
+    $below = download_breadcrumbs($pt_pair_cache_d[$category_id]['parent_id'], $root, false, $zone, $attach_to_url_filter);
 
     return array_merge($below, $segments);
 }

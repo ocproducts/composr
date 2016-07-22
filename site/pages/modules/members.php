@@ -120,21 +120,8 @@ class Module_members
                 $privacy_ok = has_privacy_access('_photo', strval($member_id_of), get_member());
             }
 
-            $photo_url = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_photo_url');
-            if (($photo_url != '') && (addon_installed('cns_member_photos')) && (has_privilege(get_member(), 'view_member_photos')) && ($privacy_ok)) {
-                require_code('images');
-                $photo_thumb_url = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_photo_thumb_url');
-                $photo_thumb_url = ensure_thumbnail($photo_url, $photo_thumb_url, (strpos($photo_url, 'uploads/photos') !== false) ? 'photos' : 'cns_photos', 'f_members', $member_id_of, 'm_photo_thumb_url');
-                if (url_is_local($photo_url)) {
-                    $photo_url = get_complex_base_url($photo_url) . '/' . $photo_url;
-                }
-                if (url_is_local($photo_thumb_url)) {
-                    $photo_thumb_url = get_complex_base_url($photo_thumb_url) . '/' . $photo_thumb_url;
-                }
-            } else {
-                $photo_url = '';
-                $photo_thumb_url = '';
-            }
+            $photo_url = $GLOBALS['FORUM_DRIVER']->get_member_photo_url($member_id_of, true);
+            $photo_thumb_url = $GLOBALS['FORUM_DRIVER']->get_member_photo_url($member_id_of);
 
             $avatar_url = $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($member_id_of);
 

@@ -179,60 +179,18 @@ function cns_get_details_to_show_post($_postdetails, $topic_info, $only_post = f
 
     // If this isn't guest posted, we can put some member details in
     if ((!is_null($_postdetails['p_poster'])) && ($_postdetails['p_poster'] != $GLOBALS['CNS_DRIVER']->get_guest_id())) {
-        if (addon_installed('points')) {
-            require_code('points');
-            $post['poster_points'] = total_points($_postdetails['p_poster']);
-        }
-        $post['poster_posts'] = $GLOBALS['CNS_DRIVER']->get_member_row_field($_postdetails['p_poster'], 'm_cache_num_posts');
-        $post['poster_highlighted_name'] = $GLOBALS['CNS_DRIVER']->get_member_row_field($_postdetails['p_poster'], 'm_highlighted_name');
-
-        // Signature
-        if ((($GLOBALS['CNS_DRIVER']->get_member_row_field(get_member(), 'm_views_signatures') == 1) || (get_option('enable_views_sigs_option') == '0')) && ($_postdetails['p_skip_sig'] == 0) && (addon_installed('cns_signatures'))) {
-            global $SIGNATURES_CACHE;
-            if (array_key_exists($_postdetails['p_poster'], $SIGNATURES_CACHE)) {
-                $sig = $SIGNATURES_CACHE[$_postdetails['p_poster']];
-            } else {
-                $member_row = $GLOBALS['CNS_DRIVER']->get_member_row($_postdetails['p_poster']);
-                $just_member_row = db_map_restrict($member_row, array('id', 'm_signature'));
-                $sig = get_translated_tempcode('f_members', $just_member_row, 'm_signature', $GLOBALS['FORUM_DB']);
-                $SIGNATURES_CACHE[$_postdetails['p_poster']] = $sig;
-            }
-            $post['signature'] = $sig;
-        }
-
-        // Any custom fields to show?
-        $post['custom_fields'] = cns_get_all_custom_fields_match_member(
-            $_postdetails['p_poster'],
-            ((get_member() != $_postdetails['p_poster']) && (!has_privilege(get_member(), 'view_any_profile_field'))) ? 1 : null,
-            ((get_member() == $_postdetails['p_poster']) && (!has_privilege(get_member(), 'view_any_profile_field'))) ? 1 : null,
-            null,
-            null,
-            null,
-            1
+        require_code('cns_general');
+        $need = array(
+            'highlighted_name',
+            'online',
+            'avatar',
+            'ip_address',
+            'signature',
         );
-
-        // Usergroup
-        $post['primary_group'] = $primary_group;
-        $post['primary_group_name'] = cns_get_group_name($primary_group);
-
-        // Find avatar
-        $avatar = $GLOBALS['CNS_DRIVER']->get_member_avatar_url($_postdetails['p_poster']);
-        if ($avatar != '') {
-            $post['poster_avatar'] = $avatar;
-        }
-
-        // Any warnings?
-        if ((has_privilege(get_member(), 'see_warnings')) && (addon_installed('cns_warnings'))) {
-            $num_warnings = $GLOBALS['CNS_DRIVER']->get_member_row_field($_postdetails['p_poster'], 'm_cache_warnings');
-            $post['poster_num_warnings'] = $num_warnings;
-        }
-
-        // Join date
-        $post['poster_join_date'] = $GLOBALS['CNS_DRIVER']->get_member_row_field($_postdetails['p_poster'], 'm_join_time');
-        $post['poster_join_date_string'] = get_timezoned_date_time($post['poster_join_date']);
+        $post += cns_read_in_member_profile($_postdetails['p_poster'], $need, false, false);
     } elseif ($_postdetails['p_poster'] == $GLOBALS['CNS_DRIVER']->get_guest_id()) {
         if ($_postdetails['p_poster_name_if_guest'] == do_lang('SYSTEM')) {
-            $post['poster_avatar'] = find_theme_image('cns_default_avatars/system', true);
+            $post['avatar'] = find_theme_image('cns_default_avatars/system', true);
             $post['poster_title'] = '';
         }
     }

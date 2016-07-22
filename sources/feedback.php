@@ -38,9 +38,6 @@ function init__feedback()
     $RATINGS_STRUCTURE = array();
     global $REVIEWS_STRUCTURE;
     $REVIEWS_STRUCTURE = array();
-
-    global $RATING_DETAILS_CACHE;
-    $RATING_DETAILS_CACHE = array();
 }
 
 /**
@@ -286,9 +283,9 @@ function display_rating($content_url, $content_title, $content_type, $content_id
 function get_rating_simple_array($content_url, $content_title, $content_type, $content_id, $form_tpl = 'RATING_FORM', $submitter = null)
 {
     if (get_option('is_on_rating') == '1') {
-        global $RATING_DETAILS_CACHE;
-        if (isset($RATING_DETAILS_CACHE[$content_type][$content_id][$form_tpl])) {
-            return $RATING_DETAILS_CACHE[$content_type][$content_id][$form_tpl];
+        static $rating_details_cache = array();
+        if (isset($rating_details_cache[$content_type][$content_id][$form_tpl])) {
+            return $rating_details_cache[$content_type][$content_id][$form_tpl];
         }
 
         $liked_by = mixed();
@@ -398,7 +395,7 @@ function get_rating_simple_array($content_url, $content_title, $content_type, $c
         $ret = $tpl_params + array(
             'RATING_FORM' => $rating_form,
         );
-        $RATING_DETAILS_CACHE[$content_type][$content_id][$form_tpl] = $ret;
+        $rating_details_cache[$content_type][$content_id][$form_tpl] = $ret;
         return $ret;
     }
     return null;

@@ -2043,8 +2043,9 @@ function ecv2_IS_FRIEND($lang, $escaped, $param)
 
     if (isset($param[0])) {
         if (addon_installed('chat')) {
-            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('chat_friends', 'member_likes', array('member_likes' => isset($param[1]) ? intval($param[1]) : get_member(), 'member_liked' => intval($param[0])));
-            $value = is_null($test) ? '0' : '1';
+            require_code('chat');
+            $test = member_befriended(intval($param[0]), isset($param[1]) ? intval($param[1]) : get_member());
+            $value = ($test ? '0' : '1');
         } else {
             $value = '0';
         }
@@ -2069,31 +2070,6 @@ function ecv2_IS_FRIEND($lang, $escaped, $param)
 function ecv2_IS_VIRTUALISED_REQUEST($lang, $escaped, $param)
 {
     $value = $GLOBALS['IS_VIRTUALISED_REQUEST'] ? '1' : '0';
-
-    if ($GLOBALS['XSS_DETECT']) {
-        ocp_mark_as_escaped($value);
-    }
-    return $value;
-}
-
-/**
- * Evaluate a particular Tempcode symbol.
- *
- * @ignore
- *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
- * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
- */
-function ecv2_LAST_VISIT_TIME($lang, $escaped, $param)
-{
-    $value = '';
-
-    if (get_forum_type() == 'cns') {
-        $member_info = cns_read_in_member_profile(get_member(), true);
-        $value = strval($member_info['last_visit_time']);
-    }
 
     if ($GLOBALS['XSS_DETECT']) {
         ocp_mark_as_escaped($value);
@@ -2327,42 +2303,30 @@ function ecv2_NUMBER_FORMAT($lang, $escaped, $param)
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
  * @return string The result.
  */
-function ecv2_NUM_NEW_POSTS($lang, $escaped, $param)
+function ecv2_MEMBER_DATA($lang, $escaped, $param)
 {
     $value = '';
 
-    if (get_forum_type() == 'cns') {
-        $member_info = cns_read_in_member_profile(get_member(), true);
-        $_new_posts = $GLOBALS['FORUM_DB']->query('SELECT COUNT(*) AS mycnt FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE p_cache_forum_id IS NOT NULL AND p_time>' . strval($member_info['last_visit_time']));
-        $new_posts = $_new_posts[0]['mycnt'];
-        $value = strval($new_posts);
-    }
+    if (get_forum_type() == 'cns' && isset($param[0])) {
+        require_code('cns_general');
+        $member_id = isset($param[1]) ? intval($param[1]) : get_member();
+        $setting = $param[0];
+        $member_info = cns_read_in_member_profile($member_id, array($setting));
+        if (isset($member_info[$setting])) {
+            $_value = $member_info[$setting];
 
-    if ($GLOBALS['XSS_DETECT']) {
-        ocp_mark_as_escaped($value);
-    }
-    return $value;
-}
+            if (is_bool($_value)) {
+                $value = ($_value ? '1' : '0');
+            }
 
-/**
- * Evaluate a particular Tempcode symbol.
- *
- * @ignore
- *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
- * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
- */
-function ecv2_NUM_NEW_TOPICS($lang, $escaped, $param)
-{
-    $value = '';
+            if (is_integer($_value)) {
+                $_value = strval($_value);
+            }
 
-    if (get_forum_type() == 'cns') {
-        $member_info = cns_read_in_member_profile(get_member(), true);
-        $_new_topics = $GLOBALS['FORUM_DB']->query('SELECT COUNT(*) AS mycnt FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics WHERE t_forum_id IS NOT NULL AND t_cache_first_time>' . strval($member_info['last_visit_time']));
-        $new_topics = $_new_topics[0]['mycnt'];
-        $value = strval($new_topics);
+            if (is_float($_value)) {
+                $_value = float_to_raw_string($_value);
+            }
+        }
     }
 
     if ($GLOBALS['XSS_DETECT']) {
@@ -2522,7 +2486,7 @@ function ecv2_CNS_MEMBER_HTML($lang, $escaped, $param)
     if (get_forum_type() == 'cns') {
         require_code('cns_members');
         require_code('cns_members2');
-        $_value = render_member_box(isset($param[0]) ? intval($param[0]) : get_member(), false, null, true, null, false);
+        $_value = render_member_box(isset($param[0]) ? intval($param[0]) : get_member(), false, true, null, false);
         $value = $_value->evaluate();
     }
 
@@ -3823,7 +3787,7 @@ function ecv2_LOOP(&$value, $lang, $escaped, $param)
 {
     if (isset($param[0])) {
         if (!array_key_exists($param[0]->evaluate(), $param['vars'])) {
-            trigger_error(do_lang('MISSING_TEMPLATE_PARAMETER', $param[0]->evaluate(), '???'), E_NOTICE);
+            trigger_error(do_lang('MISSING_TEMPLATE_PARAMETER', $param[0]->evaluate(), '???'), E_USER_NOTICE);
             return;
         }
 

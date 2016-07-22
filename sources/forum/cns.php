@@ -36,9 +36,8 @@ function init__forum__cns()
     global $LAST_POST_ID, $LAST_TOPIC_ID;
     $LAST_POST_ID = null;
     $LAST_TOPIC_ID = null;
-    global $TOPIC_IDENTIFIERS_TO_IDS_CACHE, $FORUM_NAMES_TO_IDS_CACHE, $TOPIC_IS_THREADED_CACHE;
+    global $TOPIC_IDENTIFIERS_TO_IDS_CACHE, $TOPIC_IS_THREADED_CACHE;
     $TOPIC_IDENTIFIERS_TO_IDS_CACHE = array();
-    $FORUM_NAMES_TO_IDS_CACHE = array();
     $TOPIC_IS_THREADED_CACHE = array();
 }
 
@@ -679,9 +678,9 @@ class Forum_driver_cns extends Forum_driver_base
      */
     public function forum_id_from_name($forum_name)
     {
-        global $FORUM_NAMES_TO_IDS_CACHE;
-        if (array_key_exists($forum_name, $FORUM_NAMES_TO_IDS_CACHE)) {
-            return $FORUM_NAMES_TO_IDS_CACHE[$forum_name];
+        static $forum_names_to_ids_cache = array();
+        if (array_key_exists($forum_name, $forum_names_to_ids_cache)) {
+            return $forum_names_to_ids_cache[$forum_name];
         }
 
         if (is_numeric($forum_name)) {
@@ -694,7 +693,7 @@ class Forum_driver_cns extends Forum_driver_base
             }
         }
 
-        $FORUM_NAMES_TO_IDS_CACHE[$forum_name] = $result;
+        $forum_names_to_ids_cache[$forum_name] = $result;
         return $result;
     }
 
@@ -979,9 +978,10 @@ class Forum_driver_cns extends Forum_driver_base
      * Get the photo thumbnail URL for the specified member ID.
      *
      * @param  MEMBER $member The member ID
+     * @param  boolean $full Get full photo
      * @return URLPATH The URL (blank: none)
      */
-    public function get_member_photo_url($member)
+    public function get_member_photo_url($member, $full = false)
     {
         if ($member == db_get_first_id()) {
             return '';
@@ -1000,13 +1000,17 @@ class Forum_driver_cns extends Forum_driver_base
             return $this->get_member_avatar_url($member);
         }
 
-        $pic = $this->get_member_row_field($member, 'm_photo_thumb_url');
+        if ($full) {
+            $pic = $this->get_member_row_field($member, 'm_photo_url');
+        } else {
+            $pic = $this->get_member_row_field($member, 'm_photo_thumb_url');
 
-        if ($pic == '') {
-            $photo_url = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member, 'm_photo_url');
-            if ($photo_url != '') {
-                require_code('images');
-                $pic = ensure_thumbnail($photo_url, $pic, (strpos($photo_url, 'uploads/photos') !== false) ? 'photos' : 'cns_photos', 'f_members', $member, 'm_photo_thumb_url');
+            if ($pic == '') {
+                $photo_url = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member, 'm_photo_url');
+                if ($photo_url != '') {
+                    require_code('images');
+                    $pic = ensure_thumbnail($photo_url, $pic, 'cns_photos', 'f_members', $member, 'm_photo_thumb_url');
+                }
             }
         }
 
@@ -1468,7 +1472,7 @@ class Forum_driver_cns extends Forum_driver_base
      * Get the forum usergroup relating to the specified member ID.
      *
      * @param  MEMBER $member The member ID
-     * @param  boolean $skip_secret Whether to skip looking at secret usergroups.
+     * @param  boolean $skip_secret Whether to skip looking at secret usergroups, unless we have access.
      * @param  boolean $handle_probation Whether to take probation into account
      * @return array The array of forum usergroups
      */

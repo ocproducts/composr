@@ -94,7 +94,7 @@ function dispatch_mail($subject_line, $message_raw, $to_emails = null, $to_names
         $dispatcher = new Mail_dispatcher_php($advanced_parameters);
         if (!$dispatcher->is_dispatcher_available($advanced_parameters)) {
             $dispatcher = null;
-            trigger_error(do_lang('NO_PHP_EMAILING_AVAILABLE'), E_NOTICE);
+            trigger_error(do_lang('NO_PHP_EMAILING_AVAILABLE'), E_USER_NOTICE);
         }
     }
 

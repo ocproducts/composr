@@ -46,7 +46,8 @@ class Hook_snippet_im_friends_rejig
         $add_member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($add);
         if ((!is_null($add_member_id)) && (!is_guest($add_member_id))) {
             if ($add_member_id != get_member()) {
-                if (is_null($GLOBALS['SITE_DB']->query_select_value_if_there('chat_friends', 'date_and_time', array('member_likes' => get_member(), 'member_liked' => $add_member_id)))) {
+                require_code('chat');
+                if (!member_befriended($add_member_id)) {
                     require_code('chat2');
                     friend_add(get_member(), $add_member_id);
                 }

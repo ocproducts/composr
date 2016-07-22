@@ -21,17 +21,6 @@
 /*EXTRA FUNCTIONS: shell_exec*/
 
 /**
- * Standard code module initialisation function.
- *
- * @ignore
- */
-function init__downloads2()
-{
-    global $PT_PAIR_CACHE;
-    $PT_PAIR_CACHE = array();
-}
-
-/**
  * Farm out the files for downloads.
  */
 function download_gateway_script()

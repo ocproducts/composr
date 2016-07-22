@@ -99,6 +99,8 @@ class CMSPtRead
     {
         cms_verify_parameters_phpdoc();
 
+        require_code('users2');
+
         if (is_guest()) {
             access_denied('NOT_AS_GUEST');
         }
@@ -114,7 +116,7 @@ class CMSPtRead
         }
 
         $sql = '';
-        $sql .= ' FROM ' . $table_prefix . 'f_posts p JOIN '.$table_prefix.'f_topics t ON t.id=p.p_topic_id';
+        $sql .= ' FROM ' . $table_prefix . 'f_posts p JOIN ' . $table_prefix . 'f_topics t ON t.id=p.p_topic_id';
         $sql .= ' WHERE ' . tapatalk_get_topic_where($topic_id);
         $sql .= ' ORDER BY p_time,p.id';
         $_posts = $GLOBALS['FORUM_DB']->query('SELECT *,p.id AS post_id,p.p_topic_id AS topic_id' . $sql, $max, $start);
@@ -138,7 +140,7 @@ class CMSPtRead
                 'msg_content' => $content,
                 'msg_author_id' => $post['p_poster'],
                 'is_unread' => $is_unread,
-                'is_online' => is_member_online($post['p_poster']),
+                'is_online' => member_is_online($post['p_poster']),
                 'has_left' => false,
                 'post_time' => $post['p_time'],
                 'new_post' => $is_unread,

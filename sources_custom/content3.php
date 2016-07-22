@@ -13,21 +13,6 @@
  * @package    content_oop_api
  */
 
-function init__content3()
-{
-    global $CAPI_CATALOGUE_OBJECT_CACHE;
-    $CAPI_CATALOGUE_OBJECT_CACHE = array();
-
-    global $CAPI_DATABASE_OBJECT_CACHE;
-    $CAPI_DATABASE_OBJECT_CACHE = array();
-
-    global $CAPI_CATALOGUE_QUERY_CACHE;
-    $CAPI_CATALOGUE_QUERY_CACHE = array();
-
-    global $CAPI_CATALOGUE_OPTIONS;
-    $CAPI_CATALOGUE_OPTIONS = array();
-}
-
 abstract class CMS_API_object
 {
     public $entity_id = null;
@@ -52,9 +37,9 @@ abstract class CMS_API_object
 function catalogue_find_options($field, $catalogue_name, $where = '')
 {
     $sx = $catalogue_name . '__' . $field;
-    global $CAPI_CATALOGUE_OPTIONS;
-    if (isset($CAPI_CATALOGUE_OPTIONS[$sx])) {
-        return $CAPI_CATALOGUE_OPTIONS[$sx];
+    static $capi_catalogue_options = array();
+    if (isset($capi_catalogue_options[$sx])) {
+        return $capi_catalogue_options[$sx];
     }
 
     $cf_id = $GLOBALS['SITE_DB']->query_select_value('catalogue_fields', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('cf_name') => $field, 'c_name' => $catalogue_name));
@@ -63,17 +48,17 @@ function catalogue_find_options($field, $catalogue_name, $where = '')
     foreach ($rows as $row) {
         $out[$row['ce_id']] = $row['cv_value'];
     }
-    $CAPI_CATALOGUE_OPTIONS[$sx] = $out;
+    $capi_catalogue_options[$sx] = $out;
 
     return $out;
 }
 
 function catalogue_query_select($catalogue_name, $select, $where = null, $filters = '', $max = null, $start = 0)
 {
-    global $CAPI_CATALOGUE_QUERY_CACHE;
+    static $capi_catalogue_query_cache = array();
     $sz = serialize(array($catalogue_name, $select, $where, $filters, $max, $start));
-    if (isset($CAPI_CATALOGUE_QUERY_CACHE[$sz])) {
-        return $CAPI_CATALOGUE_QUERY_CACHE[$sz];
+    if (isset($capi_catalogue_query_cache[$sz])) {
+        return $capi_catalogue_query_cache[$sz];
     }
 
     require_code('catalogues');
@@ -110,7 +95,7 @@ function catalogue_query_select($catalogue_name, $select, $where = null, $filter
         $out[] = $row;
     }
 
-    $CAPI_CATALOGUE_QUERY_CACHE[$sz] = $out;
+    $capi_catalogue_query_cache[$sz] = $out;
     return $out;
 }
 
@@ -139,8 +124,8 @@ abstract class CMS_API_catalogue_object extends CMS_API_object
 
     public function __construct($entity_id, $missing_ok = false)
     {
-        global $CAPI_CATALOGUE_OBJECT_CACHE;
-        if (!isset($CAPI_CATALOGUE_OBJECT_CACHE[$entity_id])) {
+        static $capi_catalogue_object_cache = array();
+        if (!isset($capi_catalogue_object_cache[$entity_id])) {
             $rows = $GLOBALS['SITE_DB']->query_select('catalogue_entries', array('*'), array('id' => $entity_id), '', 1);
             if (!array_key_exists(0, $rows)) {
                 if ($missing_ok) {
@@ -164,9 +149,9 @@ abstract class CMS_API_catalogue_object extends CMS_API_object
                 $this->field_refs[$key] = $_val;
             }
 
-            $CAPI_CATALOGUE_OBJECT_CACHE[$entity_id] = array($this->properties, $this->field_refs);
+            $capi_catalogue_object_cache[$entity_id] = array($this->properties, $this->field_refs);
         } else {
-            list($this->properties, $this->field_refs) = $CAPI_CATALOGUE_OBJECT_CACHE[$entity_id];
+            list($this->properties, $this->field_refs) = $capi_catalogue_object_cache[$entity_id];
         }
 
         parent::__construct($entity_id);
@@ -223,11 +208,11 @@ abstract class CMS_API_database_object extends CMS_API_object
 
     public function __construct($entity_id)
     {
-        global $CAPI_DATABASE_OBJECT_CACHE;
+        static $capi_database_object_cache = array();
         $sx = serialize(array($this->table, $entity_id));
 
-        if (isset($CAPI_DATABASE_OBJECT_CACHE[$sx])) {
-            $this->properties = $CAPI_DATABASE_OBJECT_CACHE[$sx];
+        if (isset($capi_database_object_cache[$sx])) {
+            $this->properties = $capi_database_object_cache[$sx];
         } else {
             $rows = $GLOBALS['SITE_DB']->query_select($this->table, array('*'), array('id' => $entity_id));
             if (!isset($rows[0])) {
@@ -235,7 +220,7 @@ abstract class CMS_API_database_object extends CMS_API_object
             }
             $this->properties = $rows[0];
 
-            $CAPI_DATABASE_OBJECT_CACHE[$sx] = $this->properties;
+            $capi_database_object_cache[$sx] = $this->properties;
         }
 
         parent::__construct($entity_id);

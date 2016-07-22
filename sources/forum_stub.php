@@ -19,18 +19,6 @@
  */
 
 /**
- * Standard code module initialisation function.
- *
- * @ignore
- */
-function init__forum_stub()
-{
-    global $IS_SUPER_ADMIN_CACHE, $IS_STAFF_CACHE;
-    $IS_SUPER_ADMIN_CACHE = array();
-    $IS_STAFF_CACHE = array();
-}
-
-/**
  * Forum Driver base class.
  *
  * @package    core
@@ -246,13 +234,13 @@ class Forum_driver_base
      */
     public function get_member_email_address($id)
     {
-        global $MEMBER_EMAIL_CACHE;
-        if (array_key_exists($id, $MEMBER_EMAIL_CACHE)) {
-            return $MEMBER_EMAIL_CACHE[$id];
+        static $member_email_cache = array();
+        if (array_key_exists($id, $member_email_cache)) {
+            return $member_email_cache[$id];
         }
 
         $ret = $this->_get_member_email_address($id);
-        $MEMBER_EMAIL_CACHE[$id] = $ret;
+        $member_email_cache[$id] = $ret;
         return $ret;
     }
 
@@ -268,12 +256,13 @@ class Forum_driver_base
             return false;
         }
 
-        if (isset($IS_STAFF_CACHE[$id])) {
-            return $IS_STAFF_CACHE[$id];
+        static $is_staff_cache = array();
+        if (isset($is_staff_cache[$id])) {
+            return $is_staff_cache[$id];
         }
 
-        $IS_STAFF_CACHE[$id] = $this->_is_staff($id);
-        return $IS_STAFF_CACHE[$id];
+        $is_staff_cache[$id] = $this->_is_staff($id);
+        return $is_staff_cache[$id];
     }
 
     /**
@@ -284,18 +273,18 @@ class Forum_driver_base
      */
     public function is_super_admin($id)
     {
-        global $IS_SUPER_ADMIN_CACHE;
-        if (isset($IS_SUPER_ADMIN_CACHE[$id])) {
-            return $IS_SUPER_ADMIN_CACHE[$id];
+        static $is_super_admin_cache = array();
+        if (isset($is_super_admin_cache[$id])) {
+            return $is_super_admin_cache[$id];
         }
 
         if (is_guest($id)) {
-            $IS_SUPER_ADMIN_CACHE[$id] = false;
+            $is_super_admin_cache[$id] = false;
             return false;
         }
 
         $ret = $this->_is_super_admin($id);
-        $IS_SUPER_ADMIN_CACHE[$id] = $ret;
+        $is_super_admin_cache[$id] = $ret;
         return $ret;
     }
 
@@ -306,13 +295,13 @@ class Forum_driver_base
      */
     public function get_super_admin_groups()
     {
-        global $ADMIN_GROUP_CACHE;
-        if ($ADMIN_GROUP_CACHE !== null) {
-            return $ADMIN_GROUP_CACHE;
+        static $admin_group_cache = null;
+        if ($admin_group_cache !== null) {
+            return $admin_group_cache;
         }
 
         $ret = $this->_get_super_admin_groups();
-        $ADMIN_GROUP_CACHE = $ret;
+        $admin_group_cache = $ret;
         return $ret;
     }
 
@@ -323,13 +312,14 @@ class Forum_driver_base
      */
     public function get_moderator_groups()
     {
-        global $MODERATOR_GROUP_CACHE, $IN_MINIKERNEL_VERSION;
-        if ((!is_null($MODERATOR_GROUP_CACHE)) && ((!$IN_MINIKERNEL_VERSION) || ($MODERATOR_GROUP_CACHE != array()))) {
-            return $MODERATOR_GROUP_CACHE;
+        global $IN_MINIKERNEL_VERSION;
+        static $moderator_group_cache = null;
+        if ((!is_null($moderator_group_cache)) && ((!$IN_MINIKERNEL_VERSION) || ($moderator_group_cache != array()))) {
+            return $moderator_group_cache;
         }
 
         $ret = $this->_get_moderator_groups();
-        $MODERATOR_GROUP_CACHE = $ret;
+        $moderator_group_cache = $ret;
         return $ret;
     }
 
@@ -346,17 +336,17 @@ class Forum_driver_base
      */
     public function get_usergroup_list($hide_hidden = false, $only_permissive = false, $force_show_all = false, $force_find = null, $for_member = null, $skip_hidden = false)
     {
-        global $USERGROUP_LIST_CACHE;
-        if ((!is_null($USERGROUP_LIST_CACHE)) && (isset($USERGROUP_LIST_CACHE[$hide_hidden][$only_permissive][$force_show_all][serialize($force_find)][$for_member][$skip_hidden]))) {
-            return $USERGROUP_LIST_CACHE[$hide_hidden][$only_permissive][$force_show_all][serialize($force_find)][$for_member][$skip_hidden];
+        static $usergroup_list_cache = null;
+        if ((!is_null($usergroup_list_cache)) && (isset($usergroup_list_cache[$hide_hidden][$only_permissive][$force_show_all][serialize($force_find)][$for_member][$skip_hidden]))) {
+            return $usergroup_list_cache[$hide_hidden][$only_permissive][$force_show_all][serialize($force_find)][$for_member][$skip_hidden];
         }
 
         $ret = $this->_get_usergroup_list($hide_hidden, $only_permissive, $force_show_all, $force_find, $for_member, $skip_hidden);
         if (count($ret) != 0) { // Conditional is for when installing... can't cache at point of there being no usergroups
-            if (is_null($USERGROUP_LIST_CACHE)) {
-                $USERGROUP_LIST_CACHE = array();
+            if (is_null($usergroup_list_cache)) {
+                $usergroup_list_cache = array();
             }
-            $USERGROUP_LIST_CACHE[$hide_hidden][$only_permissive][$force_show_all][serialize($force_find)][$for_member][$skip_hidden] = $ret;
+            $usergroup_list_cache[$hide_hidden][$only_permissive][$force_show_all][serialize($force_find)][$for_member][$skip_hidden] = $ret;
         }
         return $ret;
     }
@@ -365,7 +355,7 @@ class Forum_driver_base
      * Get a list of usergroups a member is in.
      *
      * @param  MEMBER $id The member
-     * @param  boolean $skip_secret Whether to skip looking at secret usergroups.
+     * @param  boolean $skip_secret Whether to skip looking at secret usergroups, unless we have access.
      * @param  boolean $handle_probation Whether to take probation into account
      * @return array The list of usergroups
      */

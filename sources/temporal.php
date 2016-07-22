@@ -27,6 +27,9 @@ function init__temporal()
 {
     global $TIMEZONE_MEMBER_CACHE;
     $TIMEZONE_MEMBER_CACHE = array();
+
+    global $LOCALE_FILTER_CACHE;
+    $LOCALE_FILTER_CACHE = null;
 }
 
 /**

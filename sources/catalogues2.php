@@ -19,17 +19,6 @@
  */
 
 /**
- * Standard code module initialisation function.
- *
- * @ignore
- */
-function init__catalogues2()
-{
-    global $DISABLE_TREE_CACHE_UPDATE;
-    $DISABLE_TREE_CACHE_UPDATE = false;
-}
-
-/**
  * Converts a non-tree catalogue to a tree catalogue.
  *
  * @param  ID_TEXT $catalogue_name Catalogue name
@@ -672,11 +661,6 @@ function store_in_catalogue_cat_treecache($id, $parent_id, $cleanup_first = true
 function calculate_category_child_count_cache($cat_id, $recursive_updates = true)
 {
     if (is_null($cat_id)) {
-        return;
-    }
-
-    global $DISABLE_TREE_CACHE_UPDATE;
-    if ($DISABLE_TREE_CACHE_UPDATE) {
         return;
     }
 

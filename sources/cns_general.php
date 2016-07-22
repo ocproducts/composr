@@ -36,146 +36,458 @@ function init__cns_general()
  */
 function cns_get_forums_stats()
 {
-    $out = array();
+    $forums_stats = array();
 
     if (isset($GLOBALS['CNS_DRIVER'])) {
-        $out['num_topics'] = $GLOBALS['CNS_DRIVER']->get_num_topics();
-        $out['num_posts'] = $GLOBALS['CNS_DRIVER']->get_num_forum_posts();
-        $out['num_members'] = $GLOBALS['CNS_DRIVER']->get_num_members();
+        $forums_stats['num_topics'] = $GLOBALS['CNS_DRIVER']->get_num_topics();
+        $forums_stats['num_posts'] = $GLOBALS['CNS_DRIVER']->get_num_forum_posts();
+        $forums_stats['num_members'] = $GLOBALS['CNS_DRIVER']->get_num_members();
     } else {
-        $out['num_topics'] = 0;
-        $out['num_posts'] = 0;
-        $out['num_members'] = 0;
+        $forums_stats['num_topics'] = 0;
+        $forums_stats['num_posts'] = 0;
+        $forums_stats['num_members'] = 0;
     }
 
     $temp = get_value_newer_than('cns_newest_member_id', time() - 60 * 60 * 1);
-    $out['newest_member_id'] = is_null($temp) ? null : intval($temp);
-    if (!is_null($out['newest_member_id'])) {
-        $out['newest_member_username'] = get_value_newer_than('cns_newest_member_username', time() - 60 * 60 * 1);
+    $forums_stats['newest_member_id'] = ($temp === null) ? null : intval($temp);
+    if ($forums_stats['newest_member_id'] !== null) {
+        $forums_stats['newest_member_username'] = get_value_newer_than('cns_newest_member_username', time() - 60 * 60 * 1);
     } else {
-        $out['newest_member_username'] = null;
+        $forums_stats['newest_member_username'] = null;
     }
-    if (is_null($out['newest_member_username'])) {
+    if ($forums_stats['newest_member_username'] === null) {
         $newest_member = $GLOBALS['FORUM_DB']->query('SELECT m_username,id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE m_validated=1 AND id<>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id()) . ' ORDER BY m_join_time DESC', 1); // Only ordered by m_join_time and not double ordered with ID to make much faster in MySQL
         if (array_key_exists(0, $newest_member)) {
-            $out['newest_member_id'] = $newest_member[0]['id'];
-            $out['newest_member_username'] = $newest_member[0]['m_username'];
+            $forums_stats['newest_member_id'] = $newest_member[0]['id'];
+            $forums_stats['newest_member_username'] = $newest_member[0]['m_username'];
         } else {
-            $out['newest_member_id'] = $GLOBALS['FORUM_DRIVER']->get_guest_id();
-            $out['newest_member_username'] = do_lang('GUEST');
+            $forums_stats['newest_member_id'] = $GLOBALS['FORUM_DRIVER']->get_guest_id();
+            $forums_stats['newest_member_username'] = do_lang('GUEST');
         }
         if (get_db_type() != 'xml') {
             if (!$GLOBALS['SITE_DB']->table_is_locked('values')) {
-                set_value('cns_newest_member_id', strval($out['newest_member_id']));
-                set_value('cns_newest_member_username', $out['newest_member_username']);
+                set_value('cns_newest_member_id', strval($forums_stats['newest_member_id']));
+                set_value('cns_newest_member_username', $forums_stats['newest_member_username']);
             }
         }
     }
 
-    return $out;
+    return $forums_stats;
 }
 
 /**
- * Get details on a member profile.
+ * Get details on a member profile. This function aggregates a whole lot of data together and also makes some calculations.
+ * If something is not set, it's not set in the result map. We don't use blank or null here.
+ * See the member_personal_links_and_details function for a non-CNS specific UI retriever.
  *
  * @param  MEMBER $member_id The member to get details of.
- * @param  boolean $lite Whether to get a 'lite' version (contains less detail, therefore less costly).
- * @return array A map of details.
+ * @param  ?array $need Array of details needed to be returned (it will return more than specified, but this helps performance). Actually even requested stuff may not be set if it's not defined. (null: return everything)
+ * @param  boolean $include_encrypted_cpfs Whether to include encrypted CPFs.
+ * @param  ?boolean $cpf_preview_mode Whether to only gather preview CPFs. (null: don't care).
+ * @param  ?MEMBER $member_id_viewing The member viewing the details. (null: current member)
+ * @return ?array A map of details (null: not found).
  */
-function cns_read_in_member_profile($member_id, $lite = true)
+function cns_read_in_member_profile($member_id, $need = null, $include_encrypted_cpfs = false, $cpf_preview_mode = null, $member_id_viewing = null)
 {
-    $row = $GLOBALS['CNS_DRIVER']->get_member_row($member_id);
-    if (is_null($row)) {
-        return array();
+    if ($member_id_viewing === null) {
+        $member_id_viewing = get_member();
     }
+
+    $sz = serialize(array($member_id, $need, $include_encrypted_cpfs, $cpf_preview_mode, $member_id_viewing));
+
+    static $cache = array();
+    if (isset($cache[$sz])) {
+        return $cache[$sz];
+    }
+
+    require_lang('cns');
+    require_code('users2');
+    require_code('cns_members');
+    require_code('cns_groups');
+    require_code('temporal2');
+
+    $row = $GLOBALS['CNS_DRIVER']->get_member_row($member_id);
+    if ($row === null) {
+        $cache[$sz] = null;
+        return null;
+    }
+
+    // Low-cost details
     $last_visit_time = (($member_id == get_member()) && (array_key_exists('last_visit', $_COOKIE))) ? intval($_COOKIE['last_visit']) : $row['m_last_visit_time'];
     $join_time = $row['m_join_time'];
-
-    $out = array(
+    $member_info = array(
         'username' => $row['m_username'],
+        'display_name' => $GLOBALS['FORUM_DRIVER']->get_username($member_id, true),
         'last_visit_time' => $last_visit_time,
         'last_visit_date' => get_timezoned_date_time($last_visit_time),
-        'signature' => $row['m_signature'],
-        'posts' => $row['m_cache_num_posts'],
+        'posts' => $GLOBALS['FORUM_DRIVER']->get_post_count($member_id),
+        'topics' => $GLOBALS['FORUM_DRIVER']->get_topic_count($member_id),
         'join_time' => $join_time,
         'join_date' => get_timezoned_date_time($join_time),
+        'banned' => $GLOBALS['FORUM_DRIVER']->is_banned($member_id),
+        'is_staff' => $GLOBALS['FORUM_DRIVER']->is_staff($member_id),
+        'is_super_admin' => $GLOBALS['FORUM_DRIVER']->is_super_admin($member_id),
+        'validated' => ($row['m_validated'] == 1),
+        'self_validated' => ($row['m_validated_email_confirm_code'] != ''),
+        'highlighted_name' => ($row['m_highlighted_name'] == 1),
+        'profile_views' => $row['m_profile_views'],
+        'total_sessions' => $row['m_total_sessions'],
     );
-
-    if (addon_installed('points')) {
-        require_code('points');
-        $num_points = total_points($member_id);
-        $out['points'] = $num_points;
+    if ($row['m_email_address'] != '') {
+        $member_info['email_address'] = $row['m_email_address'];
+    }
+    if ($row['m_ip_address'] != '') {
+        $member_info['ip_address'] = $row['m_ip_address'];
+    }
+    if ($row['m_theme'] != '') {
+        $member_info['theme'] = $row['m_theme'];
+    }
+    if ($row['m_language'] != '') {
+        $member_info['language'] = $row['m_language'];
+    }
+    if ($row['m_last_submit_time'] !== null) {
+        $member_info['last_submit_time'] = $row['m_last_submit_time'];
+        $member_info['last_submit_date'] = get_timezoned_date_time($row['m_last_submit_time']);
+        $member_info['submit_days_ago'] = intval(floor(floatval(time() - $row['m_last_submit_time']) / 60.0 / 60.0 / 24.0));
+    }
+    if (($row['m_on_probation_until'] !== null) && ($row['m_on_probation_until'] > time())) {
+        $member_info['on_probation_until'] = $row['m_on_probation_until'];
     }
 
-    if (!$lite) {
-        $out['groups'] = cns_get_members_groups($member_id);
+    // Points
+    if (($need === null) || (in_array('points', $need))) {
+        if (addon_installed('points')) {
+            require_code('points');
+            $num_points = total_points($member_id);
+            $member_info['points'] = $num_points;
+        }
+    }
 
-        // Custom fields
-        $out['custom_fields'] = cns_get_all_custom_fields_match_member($member_id, ((get_member() != $member_id) && (!has_privilege(get_member(), 'view_any_profile_field'))) ? 1 : null, ((get_member() != $member_id) && (!has_privilege(get_member(), 'view_any_profile_field'))) ? 1 : null);
+    // Signature details
+    if (($need === null) || (in_array('signature', $need)) || (in_array('signature_comcode', $need))) {
+        if (addon_installed('cns_signatures')) {
+            $member_info['signature_comcode'] = get_translated_text($row['m_signature'], $GLOBALS['FORUM_DB']);
 
-        // Birthdate
-        $dob = '';
-        $day = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_dob_day');
-        $month = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_dob_month');
-        $year = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_dob_year');
-        if (($day !== null) && ($month !== null) && ($year !== null)) {
-            if ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_reveal_age') == 1) {
-                if (@strftime('%Y', @mktime(0, 0, 0, 1, 1, 1963)) != '1963') {
-                    $dob = strval($year) . '-' . str_pad(strval($month), 2, '0', STR_PAD_LEFT) . '-' . str_pad(strval($day), 2, '0', STR_PAD_LEFT);
-                } else {
-                    $dob = get_timezoned_date(mktime(12, 0, 0, $month, $day, $year), false, true);
-                }
+            global $SIGNATURES_CACHE;
+            if (array_key_exists($member_id, $SIGNATURES_CACHE)) {
+                $member_info['signature'] = $SIGNATURES_CACHE[$member_id];
             } else {
-                $dob = cms_strftime(do_lang('date_no_year'), mktime(12, 0, 0, $month, $day));
+                $just_member_row = db_map_restrict($row, array('id', 'm_signature'));
+                $member_info['signature'] = get_translated_tempcode('f_members', $just_member_row, 'm_signature', $GLOBALS['FORUM_DB']);
+                $SIGNATURES_CACHE[$member_id] = $member_info['signature'];
             }
         }
-        $out['birthdate'] = $dob;
+    }
 
-        // Find title
-        $title = get_member_title($member_id);
-        if ($title != '') {
-            $out['title'] = $title;
-        }
-
-        // Find photo
-        $photo = $GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_photo_thumb_url');
-        if (($photo != '') && (addon_installed('cns_member_photos'))) {
-            if (url_is_local($photo)) {
-                $photo = get_complex_base_url($photo) . '/' . $photo;
+    // Last online
+    if (($need === null) || (in_array('online', $need)) || (in_array('online_now', $need))) {
+        $member_info['online'] = member_is_online($member_id);
+        if (member_is_online($member_id)) {
+            $online_now = do_lang_tempcode('YES');
+            $_online_now = true;
+        } else {
+            $_online_now = false;
+            $minutes_ago = intval(floor((floatval(time() - $last_visit_time) / 60.0)));
+            $hours_ago = intval(floor((floatval(time() - $last_visit_time) / 60.0 / 60.0)));
+            $days_ago = intval(floor((floatval(time() - $last_visit_time) / 60.0 / 60.0 / 24.0)));
+            $months_ago = intval(floor((floatval(time() - $last_visit_time) / 60.0 / 60.0 / 24.0 / 31.0)));
+            if ($minutes_ago < 180) {
+                $online_now = do_lang_tempcode('_ONLINE_NOW_NO_MINUTES', escape_html(integer_format($minutes_ago)));
+            } elseif ($hours_ago < 72) {
+                $online_now = do_lang_tempcode('_ONLINE_NOW_NO_HOURS', escape_html(integer_format($hours_ago)));
+            } elseif ($days_ago < 93) {
+                $online_now = do_lang_tempcode('_ONLINE_NOW_NO_DAYS', escape_html(integer_format($days_ago)));
+            } else {
+                $online_now = do_lang_tempcode('_ONLINE_NOW_NO_MONTHS', escape_html(integer_format($months_ago)));
             }
-            $out['photo'] = $photo;
         }
+        $member_info['online_now'] = $online_now;
+        $member_info['_online_now'] = $_online_now;
+    }
 
-        // Any warnings?
-        if ((has_privilege(get_member(), 'see_warnings')) && (addon_installed('cns_warnings'))) {
+    // Primary usergroup
+    $primary_group = cns_get_member_primary_group($member_id);
+    if (($need === null) || (in_array('primary_group', $need)) || (in_array('primary_group_name', $need))) {
+        $member_info['primary_group'] = $primary_group;
+        $member_info['primary_group_name'] = cns_get_group_name($primary_group);
+    }
+
+    // Secondary usergroups
+    if (($need === null) || (in_array('secondary_groups', $need)) || (in_array('secondary_groups_named', $need))) {
+        $secondary_groups = cns_get_members_groups($member_id, true, false);
+        unset($secondary_groups[$primary_group]);
+        $all_usergroups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list($member_id != $member_id_viewing, false, false, array_keys($secondary_groups), $member_id);
+        $secondary_groups_named = array();
+        foreach (array_keys($secondary_groups) as $group_id) {
+            if (isset($all_usergroups[$group_id])) {
+                $secondary_groups_named[$group_id] = $all_usergroups[$group_id];
+            }
+        }
+        $member_info += array(
+            'secondary_groups' => array_keys($secondary_groups),
+            'secondary_groups_named' => $secondary_groups_named,
+        );
+    }
+
+    // Points
+    if (addon_installed('points')) {
+        if (($need === null) || (in_array('points_used', $need))) {
+            $member_info += array(
+                'points_used' => points_used($member_id),
+            );
+        }
+        if (($need === null) || (in_array('available_points', $need))) {
+            $member_info += array(
+                'available_points' => available_points($member_id),
+            );
+        }
+        if (($need === null) || (in_array('gift_points_to_give', $need))) {
+            $member_info += array(
+                'gift_points_to_give' => get_gift_points_to_give($member_id),
+            );
+        }
+        if (($need === null) || (in_array('gift_points_used', $need))) {
+            $member_info += array(
+                'gift_points_used' => get_gift_points_used($member_id),
+            );
+        }
+    }
+
+    // Usergroup subscriptions
+    if (($need === null) || (in_array('subscriptions', $need))) {
+        if (addon_installed('ecommerce')) {
+            require_code('ecommerce_subscriptions');
+            $member_info['subscriptions'] = find_member_subscriptions($member_id);
+        }
+    }
+
+    // Friendships
+    if (($need === null) || (in_array('likes', $need)) || (in_array('liked', $need))) {
+        if ((addon_installed('chat')) && ($member_id != $member_id_viewing)) {
+            require_code('chat');
+            $member_info += array(
+                'likes' => member_befriended($member_id, $member_id_viewing),
+                'liked' => member_befriended($member_id_viewing, $member_id),
+            );
+        }
+    }
+
+    // Times
+    if (($need === null) || (in_array('timezone_raw', $need)) || (in_array('timezone', $need)) || (in_array('time_for_them_raw', $need)) || (in_array('time_for_them', $need))) {
+        $users_timezone = get_users_timezone($member_id);
+        $member_info += array(
+            'timezone_raw' => $users_timezone,
+            'timezone' => make_nice_timezone_name($users_timezone),
+            'time_for_them_raw' => tz_time(time(), $users_timezone),
+            'time_for_them' => get_timezoned_time(time(), false, false, $member_id),
+        );
+    }
+
+    // Since last visit
+    if (($need === null) || (in_array('new_posts', $need)) || (in_array('new_topics', $need))) {
+        $new_posts = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) AS mycnt FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE p_cache_forum_id IS NOT NULL AND p_time>' . strval($last_visit_time));
+        $new_topics = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) AS mycnt FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics WHERE t_forum_id IS NOT NULL AND t_cache_first_time>' . strval($last_visit_time));
+        $member_info += array(
+            'new_posts' => $new_posts,
+            'new_topics' => $new_topics,
+        );
+    }
+
+    // Browser
+    if (($need === null) || (in_array('browser', $need)) || (in_array('operating_system', $need))) {
+        $last_stats = $GLOBALS['SITE_DB']->query_select('stats', array('browser', 'operating_system'), array('member_id' => $member_id), 'ORDER BY date_and_time DESC', 1);
+        if (array_key_exists(0, $last_stats)) {
+            $member_info['browser'] = $last_stats[0]['browser'];
+            $member_info['operating_system'] = $last_stats[0]['operating_system'];
+        }
+    }
+
+    // Last viewed page
+    if (($need === null) || (in_array('current_action', $need))) {
+        $at_title = $GLOBALS['SITE_DB']->query_select_value_if_there('sessions', 'the_title', array('member_id' => $member_id), 'ORDER BY last_activity DESC');
+        if ($at_title !== null) {
+            $member_info['current_action'] = $at_title;
+        }
+    }
+
+    // Custom fields
+    if (($need === null) || (in_array('custom_fields', $need))) {
+        $member_info['custom_fields'] = cns_get_all_custom_fields_match_member(
+            $member_id,
+            (($member_id_viewing != $member_id) && (!has_privilege($member_id_viewing, 'view_any_profile_field'))) ? 1 : null,
+            (($member_id_viewing != $member_id) && (!has_privilege($member_id_viewing, 'view_any_profile_field'))) ? 1 : null,
+            null, // owner set
+            $include_encrypted_cpfs ? null : 0, // encrypted
+            null, // required
+            ($cpf_preview_mode !== true) ? null : 1, // show in posts
+            ($cpf_preview_mode !== false) ? null : 1 // show in post previews
+        );
+    }
+
+    // Custom data
+    if (($need === null) || (in_array('custom_data', $need))) {
+        static $hook_objects = null;
+        if ($hook_objects === null) {
+            $hook_objects = find_all_hook_obs('systems', 'member_boxes', 'Hook_member_boxes_');
+        }
+        $member_info['custom_data'] = array();
+        foreach ($hook_objects as $hook_object) {
+            $member_info['custom_data'] += $hook_object->run($member_id);
+        }
+    }
+
+    // Birthday
+    $dob_test = get_member_dob_details($member_id);
+    if ($dob_test !== null) {
+        $member_info += array(
+            'dob_label' => $dob_test[0],
+            'dob' => $dob_test[1],
+            '_dob_censored' => $dob_test[2],
+            '_dob' => $dob_test[3],
+            'age' => $dob_test[4],
+        );
+    }
+
+    // Find title
+    $title = get_member_title($member_id);
+    if ($title != '') {
+        $member_info['poster_title'] = $title;
+    }
+
+    // Any warnings?
+    if (($need === null) || (in_array('warnings', $need))) {
+        if ((has_privilege($member_id_viewing, 'see_warnings')) && (addon_installed('cns_warnings'))) {
             require_code('cns_moderation');
-            $out['warnings'] = cns_get_warnings($member_id);
+            $member_info['warnings'] = cns_get_warnings($member_id);
+        }
+    }
+    $member_info['num_warnings'] = $row['m_cache_warnings'];
+
+    // Gallery counts
+    if (($need === null) || (in_array('galleries', $need))) {
+        if ((addon_installed('galleries')) && (get_option('show_gallery_counts') == '1')) {
+            $gallery_cnt = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) AS cnt FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'galleries WHERE name LIKE \'' . db_encode_like('member_' . strval($member_id) . '_%') . '\'');
+
+            if ($gallery_cnt > 1) {
+                require_lang('galleries');
+                $member_info['galleries'] = $gallery_cnt;
+            }
+        }
+    }
+
+    // Find forum with most posts
+    if (($need === null) || (in_array('most_active_forum', $need))) {
+        $forums = $GLOBALS['FORUM_DB']->query('SELECT id,f_name FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forums WHERE f_cache_num_posts>0');
+        $best_yet_forum = 0; // Initialise to integer type
+        $best_yet_forum = null;
+        $_most_active_forum = null;
+        $_best_yet_forum = $GLOBALS['FORUM_DB']->query_select('f_posts', array('COUNT(*) as cnt', 'p_cache_forum_id'), array('p_poster' => $member_id), 'GROUP BY p_cache_forum_id ORDER BY COUNT(*) DESC', 1); // order by and limit have been added since original code, makes it run a bit faster
+        $_best_yet_forum = collapse_2d_complexity('p_cache_forum_id', 'cnt', $_best_yet_forum);
+        foreach ($forums as $forum) {
+            if (((array_key_exists($forum['id'], $_best_yet_forum)) && ((is_null($best_yet_forum)) || ($_best_yet_forum[$forum['id']] > $best_yet_forum)))) {
+                $_most_active_forum = has_category_access($member_id_viewing, 'forums', strval($forum['id'])) ? protect_from_escaping(escape_html($forum['f_name'])) : do_lang_tempcode('PROTECTED_FORUM');
+                $best_yet_forum = $_best_yet_forum[$forum['id']];
+            }
+        }
+        $post_count = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_cache_num_posts');
+        $best_post_fraction = ($post_count == 0) ? do_lang_tempcode('NA_EM') : make_string_tempcode(integer_format(100 * $best_yet_forum / $post_count));
+        $member_info['most_active_forum'] = ($_most_active_forum === null) ? new Tempcode() : do_lang_tempcode('_MOST_ACTIVE_FORUM', $_most_active_forum, make_string_tempcode(integer_format($best_yet_forum)), array($best_post_fraction));
+    }
+
+    // Further posting details
+    if (($need === null) || (in_array('posts_details', $need))) {
+        $days_joined = intval(round((time() - $join_time) / 60 / 60 / 24));
+        $total_posts = $GLOBALS['FORUM_DRIVER']->get_num_forum_posts();
+        $member_info['posts_details'] = do_lang_tempcode('_COUNT_POSTS', escape_html(integer_format($post_count)), escape_html(float_format(floatval($post_count) / floatval(($days_joined == 0) ? 1 : $days_joined))), array(escape_html(float_format(floatval(100 * $post_count) / floatval(($total_posts == 0) ? 1 : $total_posts)))));
+    }
+
+    // Find photo
+    if (($need === null) || (in_array('photo', $need)) || (in_array('photo_thumb', $need))) {
+        $photo = $GLOBALS['CNS_DRIVER']->get_member_photo_url($member_id, true);
+        if ($photo != '') {
+            $member_info['photo'] = $photo;
+        }
+        $photo_thumb = $GLOBALS['CNS_DRIVER']->get_member_photo_url($member_id);
+        if ($photo != '') {
+            $member_info['photo_thumb'] = $photo_thumb;
         }
     }
 
     // Find avatar
-    $avatar = $GLOBALS['CNS_DRIVER']->get_member_avatar_url($member_id);
-    if ($avatar != '') {
-        $out['avatar'] = $avatar;
-    }
-
-    // Primary usergroup
-    require_code('cns_members');
-    $primary_group = cns_get_member_primary_group($member_id);
-    $out['primary_group'] = $primary_group;
-    require_code('cns_groups');
-    $out['primary_group_name'] = cns_get_group_name($primary_group);
-
-    // Find how many points we need to advance
-    if (addon_installed('points')) {
-        $promotion_threshold = cns_get_group_property($primary_group, 'promotion_threshold');
-        if (!is_null($promotion_threshold)) {
-            $num_points_advance = $promotion_threshold - $num_points;
-            $out['num_points_advance'] = $num_points_advance;
+    if (($need === null) || (in_array('avatar', $need))) {
+        $avatar = $GLOBALS['CNS_DRIVER']->get_member_avatar_url($member_id);
+        if ($avatar != '') {
+            $member_info['avatar'] = $avatar;
         }
     }
 
-    return $out;
+    // Find how many points we need to advance
+    if (($need === null) || (in_array('num_points_advance', $need))) {
+        if (addon_installed('points')) {
+            $promotion_threshold = cns_get_group_property($primary_group, 'promotion_threshold');
+            if ($promotion_threshold !== null) {
+                $num_points_advance = $promotion_threshold - $num_points;
+                $member_info['num_points_advance'] = $num_points_advance;
+            }
+        }
+    }
+
+    $cache[$sz] = $member_info;
+
+    return $member_info;
+}
+
+/**
+ * Get details of a member's date of birth / birthday / age.
+ *
+ * @param  MEMBER $member_id The member to check
+ * @return ?array A tuple: label to refer to with, written date string, timestamp with censoring applied if needed, timestamp without censoring, age or null if censored (null: none)
+ */
+function get_member_dob_details($member_id)
+{
+    if (is_guest($member_id)) {
+        return null;
+    }
+
+    $day = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_dob_day');
+    $month = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_dob_month');
+    $year = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_dob_year');
+
+    if (($day === null) || ($month === null) || ($year === null)) {
+        return null;
+    }
+
+    $_dob = mktime(12, 0, 0, $month, $day, $year);
+    $_dob_censored = mktime(12, 0, 0, $month, $day);
+    if ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_reveal_age') == 1) {
+        if (@strftime('%Y', @mktime(0, 0, 0, 1, 1, 1963)) != '1963') {
+            $dob = strval($year) . '-' . str_pad(strval($month), 2, '0', STR_PAD_LEFT) . '-' . str_pad(strval($day), 2, '0', STR_PAD_LEFT);
+            $_dob = $_dob_censored; // Have to use censored as other is broken
+        } else {
+            $dob = get_timezoned_date($_dob, false, true);
+        }
+        $_dob_censored_if_needed = $_dob; // No censoring needed
+        $label = do_lang('DATE_OF_BIRTH');
+
+        $age = intval(date('Y')) - $year;
+        if ($month > intval(date('m'))) {
+            $age--;
+        }
+        if (($month == intval(date('m'))) && ($day > intval(date('D')))) {
+            $age--;
+        }
+    } else {
+        if (@strftime('%Y', @mktime(0, 0, 0, 1, 1, 1963)) != '1963') {
+            $_dob = $_dob_censored; // Have to use censored as other is broken
+        }
+        $_dob_censored_if_needed = $_dob_censored;
+        $dob = cms_strftime(do_lang('date_no_year'), $_dob_censored);
+        $label = do_lang('dates:BIRTHDAY');
+
+        $age = null;
+    }
+
+    return array($label, $dob, $_dob_censored_if_needed, $_dob, $age);
 }
 
 /**
@@ -218,7 +530,7 @@ function get_group_colour($gid)
  */
 function cns_find_birthdays($time = null)
 {
-    if (is_null($time)) {
+    if ($time === null) {
         $time = time();
     }
 

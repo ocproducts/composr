@@ -52,11 +52,6 @@ $limit = isset($map['limit']) ? intval($map['limit']) : 200;
 
 require_code('cns_members2');
 
-$hook_objects = null;
-if (is_null($hook_objects)) {
-    $hook_objects = find_all_hook_obs('modules', 'topicview', 'Hook_topicview_');
-}
-
 $query = 'SELECT m.* FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members m WHERE ' . $where . ' ORDER BY ' . $order;
 $rows = $GLOBALS['FORUM_DB']->query($query, $limit);
 foreach ($rows as $row) {
@@ -69,7 +64,7 @@ foreach ($rows as $row) {
 
     $username = $GLOBALS['FORUM_DRIVER']->get_username($row['id']);
 
-    $tooltip = static_evaluate_tempcode(render_member_box($row['id'], true, $hook_objects, false));
+    $tooltip = static_evaluate_tempcode(render_member_box($row['id'], true, false));
 
     echo '
         <div class="box left float_separation"><div class="box_inner">

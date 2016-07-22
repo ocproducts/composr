@@ -30,9 +30,7 @@ class Hook_snippet_member_tooltip
         require_lang('cns');
         require_code('cns_members2');
 
-        $hook_objects = find_all_hook_obs('modules', 'topicview', 'Hook_topicview_');
- 
-        return render_member_box(get_param_integer('member_id'), true, $hook_objects, false);
+        return render_member_box(get_param_integer('member_id'), true, false);
     }
 }
 

@@ -64,12 +64,9 @@ class Block_main_member_bar
         if (!is_guest($member_id)) { // Logged in user
             require_code('cns_general');
 
-            $member_info = cns_read_in_member_profile($member_id, true);
+            $member_info = cns_read_in_member_profile($member_id, array('avatar', 'username', 'num_points_advance', 'points', 'posts', 'primary_group_name', 'last_visit_date', 'new_topics', 'new_posts'));
 
             $profile_url = $GLOBALS['CNS_DRIVER']->member_profile_url($member_id, true);
-
-            $new_topics = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) AS mycnt FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics WHERE t_forum_id IS NOT NULL AND t_cache_first_time>' . strval($member_info['last_visit_time']));
-            $new_posts = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) AS mycnt FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE p_cache_forum_id IS NOT NULL AND p_time>' . strval($member_info['last_visit_time']));
 
             $max_avatar_height = cns_get_member_best_group_property($member_id, 'max_avatar_height');
 
@@ -83,12 +80,12 @@ class Block_main_member_bar
 
             $bar = do_template('CNS_MEMBER_BAR', array(
                 '_GUID' => 's3kdsadf0p3wsjlcfksdj',
-                'AVATAR_URL' => array_key_exists('avatar', $member_info) ? $member_info['avatar'] : '',
+                'AVATAR_URL' => isset($member_info['avatar']) ? $member_info['avatar'] : '',
                 'PROFILE_URL' => $profile_url,
                 'USERNAME' => $member_info['username'],
                 'LOGOUT_URL' => build_url(array('page' => 'login', 'type' => 'logout'), get_module_zone('login')),
-                'NUM_POINTS_ADVANCE' => array_key_exists('num_points_advance', $member_info) ? make_string_tempcode(integer_format($member_info['num_points_advance'])) : null,
-                'NUM_POINTS' => array_key_exists('points', $member_info) ? integer_format($member_info['points']) : '',
+                'NUM_POINTS_ADVANCE' => isset($member_info['num_points_advance']) ? integer_format($member_info['num_points_advance']) : null,
+                'NUM_POINTS' => isset($member_info['points']) ? integer_format($member_info['points']) : '',
                 'NUM_POSTS' => integer_format($member_info['posts']),
                 'PRIMARY_GROUP' => $member_info['primary_group_name'],
                 'LAST_VISIT_DATE_RAW' => strval($member_info['last_visit_time']),
@@ -102,8 +99,8 @@ class Block_main_member_bar
                 'INVOLVED_TOPICS_URL' => build_url(array('page' => 'vforums', 'type' => 'involved'), get_module_zone('vforums')),
                 'PT_EXTRA' => $pt_extra,
                 'NUM_UNREAD_PTS' => strval($num_unread_pps),
-                'NEW_TOPICS' => integer_format($new_topics),
-                'NEW_POSTS' => integer_format($new_posts),
+                'NEW_TOPICS' => integer_format($member_info['new_topics']),
+                'NEW_POSTS' => integer_format($member_info['new_posts']),
                 'MAX_AVATAR_HEIGHT' => strval($max_avatar_height),
                 'LINKS' => $links,
                 'LINKS_ECOMMERCE' => $links_ecommerce,

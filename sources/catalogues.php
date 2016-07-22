@@ -28,9 +28,6 @@ function init__catalogues()
     global $SEARCH_CATALOGUE_ENTRIES_CATALOGUES_CACHE;
     $SEARCH_CATALOGUE_ENTRIES_CATALOGUES_CACHE = array();
 
-    global $PT_PAIR_CACHE;
-    $PT_PAIR_CACHE = array();
-
     global $CAT_FIELDS_CACHE;
     $CAT_FIELDS_CACHE = array();
 
@@ -1673,16 +1670,16 @@ function catalogue_category_breadcrumbs($category_id, $root = null, $no_link_for
     $page_link = build_page_link($map, get_module_zone('catalogues'));
 
     if (($category_id != $root) || (!$no_link_for_me_sir)) {
-        global $PT_PAIR_CACHE;
-        if (!array_key_exists($category_id, $PT_PAIR_CACHE)) {
+        static $pt_pair_cache = array();
+        if (!array_key_exists($category_id, $pt_pair_cache)) {
             $category_rows = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('cc_parent_id', 'cc_title'), array('id' => $category_id), '', 1);
             if (!array_key_exists(0, $category_rows)) {
                 fatal_exit(do_lang_tempcode('CAT_NOT_FOUND', escape_html(strval($category_id)), 'catalogue_category'));
             }
-            $PT_PAIR_CACHE[$category_id] = $category_rows[0];
+            $pt_pair_cache[$category_id] = $category_rows[0];
         }
 
-        if ($PT_PAIR_CACHE[$category_id]['cc_parent_id'] == $category_id) {
+        if ($pt_pair_cache[$category_id]['cc_parent_id'] == $category_id) {
             fatal_exit(do_lang_tempcode('RECURSIVE_TREE_CHAIN', escape_html(strval($category_id)), 'catalogue_category'));
         }
     }
@@ -1690,13 +1687,13 @@ function catalogue_category_breadcrumbs($category_id, $root = null, $no_link_for
     if ($category_id == $root) {
         $below = array();
     } else {
-        $below = catalogue_category_breadcrumbs($PT_PAIR_CACHE[$category_id]['cc_parent_id'], $root, false, $attach_to_url_filter);
+        $below = catalogue_category_breadcrumbs($pt_pair_cache[$category_id]['cc_parent_id'], $root, false, $attach_to_url_filter);
     }
 
     $segments = array();
 
     if (!$no_link_for_me_sir) {
-        $title = get_translated_text($PT_PAIR_CACHE[$category_id]['cc_title']);
+        $title = get_translated_text($pt_pair_cache[$category_id]['cc_title']);
         $segments[] = array($page_link, $title);
     }
 

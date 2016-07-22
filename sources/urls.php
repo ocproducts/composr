@@ -44,9 +44,6 @@ URL -> Tempcode : N/A
  */
 function init__urls()
 {
-    global $HTTPS_PAGES_CACHE;
-    $HTTPS_PAGES_CACHE = null;
-
     global $CAN_TRY_URL_SCHEMES_CACHE;
     $CAN_TRY_URL_SCHEMES_CACHE = null;
 
@@ -327,23 +324,23 @@ function is_page_https($zone, $page)
         }
     }
 
-    global $HTTPS_PAGES_CACHE;
-    if (($HTTPS_PAGES_CACHE === null) && (function_exists('persistent_cache_get'))) {
-        $HTTPS_PAGES_CACHE = persistent_cache_get('HTTPS_PAGES_CACHE');
+    static $https_pages_cache = null;
+    if (($https_pages_cache === null) && (function_exists('persistent_cache_get'))) {
+        $https_pages_cache = persistent_cache_get('HTTPS_PAGES_CACHE');
     }
-    if ($HTTPS_PAGES_CACHE === null) {
+    if ($https_pages_cache === null) {
         if (isset($GLOBALS['SITE_DB'])) {
             $results = $GLOBALS['SITE_DB']->query_select('https_pages', array('*'), null, '', null, null, true);
-            $HTTPS_PAGES_CACHE = array();
+            $https_pages_cache = array();
             foreach ($results as $r) {
-                $HTTPS_PAGES_CACHE[$r['https_page_name']] = true;
+                $https_pages_cache[$r['https_page_name']] = true;
             }
             if (function_exists('persistent_cache_set')) {
-                persistent_cache_set('HTTPS_PAGES_CACHE', $HTTPS_PAGES_CACHE);
+                persistent_cache_set('HTTPS_PAGES_CACHE', $https_pages_cache);
             }
         }
     }
-    return isset($HTTPS_PAGES_CACHE[$zone . ':' . $page]);
+    return isset($https_pages_cache[$zone . ':' . $page]);
 }
 
 /**

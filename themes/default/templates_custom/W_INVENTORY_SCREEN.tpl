@@ -4,8 +4,8 @@
 	{+START,IF_NON_EMPTY,{AVATAR}}
 		<div class="buildr_avatar">
 			<img alt="{!AVATAR}" src="{AVATAR*}" />
-			{+START,IF_NON_EMPTY,{PIC}}
-				[<a title="{!W_PHOTO} {!LINK_NEW_WINDOW}" target="_blank" href="{PIC*}">{!W_PHOTO}</a>]
+			{+START,IF_NON_EMPTY,{PHOTO}}
+				[<a title="{!W_PHOTO} {!LINK_NEW_WINDOW}" target="_blank" href="{PHOTO*}">{!W_PHOTO}</a>]
 			{+END}
 		</div>
 	{+END}

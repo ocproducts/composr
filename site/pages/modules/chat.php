@@ -989,7 +989,9 @@ class Module_chat
         if ($member_id == get_member()) {
             warn_exit(do_lang_tempcode('CANNOT_BEFRIEND_ONESELF'));
         }
-        if (!is_null($GLOBALS['SITE_DB']->query_select_value_if_there('chat_friends', 'date_and_time', array('member_likes' => get_member(), 'member_liked' => $member_id)))) {
+
+        require_code('chat');
+        if (member_befriended($member_id)) {
             warn_exit(do_lang('ALREADY_FRIENDS', escape_html($username)));
         }
 
@@ -1035,7 +1037,8 @@ class Module_chat
             $members = array($member_id);
             $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id, true);
 
-            if (is_null($GLOBALS['SITE_DB']->query_select_value_if_there('chat_friends', 'date_and_time', array('member_likes' => get_member(), 'member_liked' => $member_id)))) {
+            require_code('chat');
+            if (!member_befriended($member_id)) {
                 warn_exit(do_lang('NOT_CURRENTLY_FRIENDS', escape_html($username)));
             }
         }

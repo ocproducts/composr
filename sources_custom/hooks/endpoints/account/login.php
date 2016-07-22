@@ -47,7 +47,9 @@ class Hook_endpoint_account_login
         }
         cms_setcookie(get_pass_cookie(), $password_hashed_salted);
 
-        $data = cns_read_in_member_profile($member_id, false);
+        push_query_limiting(false);
+
+        $data = cns_read_in_member_profile($member_id);
 
         $_groups = $data['groups'];
         unset($data['groups']);

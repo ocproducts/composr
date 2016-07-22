@@ -313,9 +313,6 @@ class Module_topicview
         // Render posts according to whether threaded or not
         $threaded = ($topic_info['is_threaded'] == 1);
         if (!$threaded) {
-            // Poster detail hooks
-            $hook_objects = find_all_hook_obs('modules', 'topicview', 'Hook_topicview_');
-
             $jump_post_id = get_param_integer('post_id', null);
 
             // Render non-threaded
@@ -370,12 +367,12 @@ class Module_topicview
                     $poster_online = mixed();
                     if ((get_option('is_on_show_online') == '1') && (!is_guest($_postdetails['poster']))) {
                         require_code('users2');
-                        $poster_online = member_is_online($_postdetails['poster']);
+                        $poster_online = $_postdetails['online'];
                     }
 
                     // Avatar
-                    if ((array_key_exists('poster_avatar', $_postdetails)) && ($_postdetails['poster_avatar'] != '')) {
-                        $post_avatar = do_template('CNS_TOPIC_POST_AVATAR', array('_GUID' => 'd647ada9c11d56eedc0ff7894d33e83c', 'AVATAR' => $_postdetails['poster_avatar']));
+                    if ((array_key_exists('avatar', $_postdetails)) && ($_postdetails['avatar'] != '')) {
+                        $post_avatar = do_template('CNS_TOPIC_POST_AVATAR', array('_GUID' => 'd647ada9c11d56eedc0ff7894d33e83c', 'AVATAR' => $_postdetails['avatar']));
                     } else {
                         $post_avatar = new Tempcode();
                     }
@@ -399,7 +396,7 @@ class Module_topicview
                     if (!$is_spacer_post) {
                         if (!is_guest($_postdetails['poster'])) {
                             require_code('cns_members2');
-                            $poster_details = render_member_box($_postdetails, false, $hook_objects, false, null, false);
+                            $poster_details = render_member_box($_postdetails['poster'], false, false, null, false);
                         } else {
                             $custom_fields = new Tempcode();
                             if (array_key_exists('ip_address', $_postdetails)) {
@@ -417,12 +414,12 @@ class Module_topicview
                         require_code('users2');
                         $poster = do_template('CNS_POSTER_MEMBER', array(
                             '_GUID' => 'dbbed1850b6c01a6c9601d85c6aee43f',
-                            'ONLINE' => member_is_online($_postdetails['poster']),
+                            'ONLINE' => $_postdetails['online'],
                             'ID' => strval($_postdetails['poster']),
                             'POSTER_DETAILS' => $poster_details,
                             'PROFILE_URL' => $GLOBALS['FORUM_DRIVER']->member_profile_url($_postdetails['poster'], true),
                             'POSTER_USERNAME' => $_postdetails['poster_username'],
-                            'HIGHLIGHT_NAME' => array_key_exists('poster_highlighted_name', $_postdetails) ? strval($_postdetails['poster_highlighted_name']) : null,
+                            'HIGHLIGHT_NAME' => array_key_exists('highlighted_name', $_postdetails) ? ($_postdetails['highlighted_name'] ? '1' : '0') : null,
                         ));
                     } else {
                         $lookup_ip_url = ((addon_installed('securitylogging')) && (array_key_exists('ip_address', $_postdetails)) && (has_actual_page_access(get_member(), 'admin_lookup'))) ? build_url(array('page' => 'admin_lookup', 'param' => $_postdetails['ip_address']), get_module_zone('admin_lookup')) : new Tempcode();

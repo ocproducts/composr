@@ -19,17 +19,6 @@
  */
 
 /**
- * Standard code module initialisation function.
- *
- * @ignore
- */
-function init__cns_notifications()
-{
-    global $PRIVATE_POST_ROWS_CACHE;
-    $PRIVATE_POST_ROWS_CACHE = array();
-}
-
-/**
  * Get the personal post rows for the current member.
  *
  * @param  ?integer $limit The maximum number of rows to get (gets newest first) (null: no limit).
@@ -42,9 +31,9 @@ function cns_get_pp_rows($limit = 5, $unread = true, $include_inline = true, $ti
 {
     $cache_key = serialize(array($limit, $unread, $include_inline, $time_barrier));
 
-    global $PRIVATE_POST_ROWS_CACHE;
-    if (isset($PRIVATE_POST_ROWS_CACHE[$cache_key])) {
-        return $PRIVATE_POST_ROWS_CACHE[$cache_key];
+    static $private_post_rows_cache = array();
+    if (isset($private_post_rows_cache[$cache_key])) {
+        return $private_post_rows_cache[$cache_key];
     }
 
     if (!addon_installed('cns_forum')) {
@@ -162,7 +151,7 @@ function cns_get_pp_rows($limit = 5, $unread = true, $include_inline = true, $ti
     $ret = $GLOBALS['FORUM_DB']->query($query, $limit, null, false, true);
     $ret = remove_duplicate_rows($ret, 't_id');
 
-    $PRIVATE_POST_ROWS_CACHE[$cache_key] = $ret;
+    $private_post_rows_cache[$cache_key] = $ret;
 
     return $ret;
 }

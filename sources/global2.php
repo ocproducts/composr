@@ -48,7 +48,7 @@ function init__global2()
     }
     safe_ini_set('error_log', get_custom_file_base() . '/data_custom/errorlog.php');
 
-    global $BOOTSTRAPPING, $CHECKING_SAFEMODE, $BROWSER_DECACHEING_CACHE, $CHARSET_CACHE, $TEMP_CHARSET_CACHE, $RELATIVE_PATH, $CURRENTLY_HTTPS_CACHE, $RUNNING_SCRIPT_CACHE, $SERVER_TIMEZONE_CACHE, $HAS_SET_ERROR_HANDLER, $DYING_BADLY, $XSS_DETECT, $SITE_INFO, $IN_MINIKERNEL_VERSION, $EXITING, $FILE_BASE, $CACHE_TEMPLATES, $BASE_URL_HTTP_CACHE, $BASE_URL_HTTPS_CACHE, $WORDS_TO_FILTER_CACHE, $FIELD_RESTRICTIONS, $VALID_ENCODING, $CONVERTED_ENCODING, $MICRO_BOOTUP, $MICRO_AJAX_BOOTUP, $QUERY_LOG, $CURRENT_SHARE_USER, $FIND_SCRIPT_CACHE, $WHAT_IS_RUNNING_CACHE, $DEV_MODE, $SEMI_DEV_MODE, $IS_VIRTUALISED_REQUEST, $FILE_ARRAY, $DIR_ARRAY, $JAVASCRIPTS_DEFAULT, $JAVASCRIPTS, $JAVASCRIPT_BOTTOM, $KNOWN_AJAX, $KNOWN_UTF8, $CSRF_TOKENS, $STATIC_CACHE_ENABLED, $IN_SELF_ROUTING_SCRIPT;
+    global $BOOTSTRAPPING, $CHECKING_SAFEMODE, $RELATIVE_PATH, $RUNNING_SCRIPT_CACHE, $SERVER_TIMEZONE_CACHE, $HAS_SET_ERROR_HANDLER, $DYING_BADLY, $XSS_DETECT, $SITE_INFO, $IN_MINIKERNEL_VERSION, $EXITING, $FILE_BASE, $CACHE_TEMPLATES, $WORDS_TO_FILTER_CACHE, $FIELD_RESTRICTIONS, $VALID_ENCODING, $CONVERTED_ENCODING, $MICRO_BOOTUP, $MICRO_AJAX_BOOTUP, $QUERY_LOG, $CURRENT_SHARE_USER, $WHAT_IS_RUNNING_CACHE, $DEV_MODE, $SEMI_DEV_MODE, $IS_VIRTUALISED_REQUEST, $FILE_ARRAY, $DIR_ARRAY, $JAVASCRIPTS_DEFAULT, $JAVASCRIPTS, $JAVASCRIPT_BOTTOM, $KNOWN_AJAX, $KNOWN_UTF8, $CSRF_TOKENS, $STATIC_CACHE_ENABLED, $IN_SELF_ROUTING_SCRIPT;
 
     @ob_end_clean(); // Reset to have no output buffering by default (we'll use it internally, taking complete control)
 
@@ -73,11 +73,6 @@ function init__global2()
     $JAVASCRIPTS_DEFAULT = array('global' => true, 'transitions' => true, 'modalwindow' => true, 'custom_globals' => true);
     $JAVASCRIPT_BOTTOM = array();
     $RUNNING_SCRIPT_CACHE = array();
-    $BROWSER_DECACHEING_CACHE = null;
-    $CHARSET_CACHE = null;
-    $TEMP_CHARSET_CACHE = null;
-    $CURRENTLY_HTTPS_CACHE = null;
-    $FIND_SCRIPT_CACHE = array();
     $WHAT_IS_RUNNING_CACHE = current_script();
     $WORDS_TO_FILTER_CACHE = null;
     $FIELD_RESTRICTIONS = null;
@@ -215,10 +210,6 @@ function init__global2()
         $SITE_INFO['forum_type'] = 'cns';
         $SITE_INFO['cns_table_prefix'] = $SITE_INFO['table_prefix'];
     }
-
-    // The URL to our install (no trailing /)
-    $BASE_URL_HTTP_CACHE = null;
-    $BASE_URL_HTTPS_CACHE = null;
 
     require_code_no_override('version');
     if ((!$MICRO_BOOTUP) && (!$MICRO_AJAX_BOOTUP)) {
@@ -572,32 +563,33 @@ function disable_php_memory_limit()
  */
 function get_charset()
 {
-    global $CHARSET_CACHE, $XSS_DETECT;
-    if (isset($CHARSET_CACHE)) {
-        return $CHARSET_CACHE;
+    static $charset_cache = null;
+    global $XSS_DETECT;
+    if (isset($charset_cache)) {
+        return $charset_cache;
     }
 
     global $SITE_INFO;
     if (!empty($SITE_INFO['charset'])) { // An optimisation, if you want to put it in here
-        $CHARSET_CACHE = $SITE_INFO['charset'];
+        $charset_cache = $SITE_INFO['charset'];
         if ($XSS_DETECT) {
-            ocp_mark_as_escaped($CHARSET_CACHE);
+            ocp_mark_as_escaped($charset_cache);
         }
-        return $CHARSET_CACHE;
+        return $charset_cache;
     }
 
     global $LANGS_REQUESTED;
     if ((function_exists('do_lang')) && (function_exists('user_lang')) && (isset($LANGS_REQUESTED['critical_error'])) && (isset($LANGS_REQUESTED['global'])) && (!in_safe_mode())) {
         $attempt = do_lang('charset', null, null, null, null, false);
         if ($attempt !== null) {
-            $CHARSET_CACHE = trim($attempt);
+            $charset_cache = trim($attempt);
             return $attempt;
         }
     }
 
-    global $TEMP_CHARSET_CACHE;
-    if (isset($TEMP_CHARSET_CACHE)) {
-        return $TEMP_CHARSET_CACHE;
+    static $temp_charset_cache = null;
+    if (isset($temp_charset_cache)) {
+        return $temp_charset_cache;
     }
 
     global $SITE_INFO;
@@ -614,14 +606,14 @@ function get_charset()
     fclose($file);
     $matches = array();
     if (preg_match('#\[strings\].*charset=([\w\-]+)\n#s', $contents, $matches) != 0) {
-        $TEMP_CHARSET_CACHE = $matches[1];
+        $temp_charset_cache = $matches[1];
         if ($XSS_DETECT) {
-            ocp_mark_as_escaped($TEMP_CHARSET_CACHE);
+            ocp_mark_as_escaped($temp_charset_cache);
         }
-        return $TEMP_CHARSET_CACHE;
+        return $temp_charset_cache;
     }
-    $TEMP_CHARSET_CACHE = 'utf-8';
-    return $TEMP_CHARSET_CACHE;
+    $temp_charset_cache = 'utf-8';
+    return $temp_charset_cache;
 }
 
 /**
@@ -843,9 +835,9 @@ function composr_error_handler($errno, $errstr, $errfile, $errline)
  */
 function is_browser_decaching()
 {
-    global $BROWSER_DECACHEING_CACHE;
-    if ($BROWSER_DECACHEING_CACHE !== null) {
-        return $BROWSER_DECACHEING_CACHE;
+    static $browser_decacheing_cache = null;
+    if ($browser_decacheing_cache !== null) {
+        return $browser_decacheing_cache;
     }
 
     if (GOOGLE_APPENGINE) {
@@ -1196,17 +1188,17 @@ function find_script($name, $append_keep = false, $base_url_code = 0)
         $append .= $keep->evaluate();
     }
 
-    global $FIND_SCRIPT_CACHE;
-    if ($FIND_SCRIPT_CACHE === array()) {
+    static $find_script_cache = array();
+    if ($find_script_cache === array()) {
         if (function_exists('persistent_cache_get')) {
-            $FIND_SCRIPT_CACHE = persistent_cache_get('SCRIPT_PLACES');
+            $find_script_cache = persistent_cache_get('SCRIPT_PLACES');
         }
-        if ($FIND_SCRIPT_CACHE === null) {
-            $FIND_SCRIPT_CACHE = array();
+        if ($find_script_cache === null) {
+            $find_script_cache = array();
         }
     }
-    if (isset($FIND_SCRIPT_CACHE[$name][$append_keep][$base_url_code])) {
-        return $FIND_SCRIPT_CACHE[$name][$append_keep][$base_url_code] . $append;
+    if (isset($find_script_cache[$name][$append_keep][$base_url_code])) {
+        return $find_script_cache[$name][$append_keep][$base_url_code] . $append;
     }
 
     $zones = array(get_zone_name());
@@ -1218,17 +1210,17 @@ function find_script($name, $append_keep = false, $base_url_code = 0)
     foreach ($zones as $zone) {
         if (is_file(get_file_base() . '/' . $zone . (($zone == '') ? '' : '/') . $name . '.php')) {
             $ret = get_base_url() . '/' . $zone . (($zone == '') ? '' : '/') . $name . '.php';
-            $FIND_SCRIPT_CACHE[$name][$append_keep][$base_url_code] = $ret;
+            $find_script_cache[$name][$append_keep][$base_url_code] = $ret;
             if (function_exists('persistent_cache_set')) {
-                persistent_cache_set('SCRIPT_PLACES', $FIND_SCRIPT_CACHE);
+                persistent_cache_set('SCRIPT_PLACES', $find_script_cache);
             }
             return $ret . $append;
         }
     }
     $ret = get_base_url(($base_url_code == 0) ? null : ($base_url_code == 2)) . '/site/' . $name . '.php';
-    $FIND_SCRIPT_CACHE[$name][$append_keep][$base_url_code] = $ret;
+    $find_script_cache[$name][$append_keep][$base_url_code] = $ret;
     if (function_exists('persistent_cache_set')) {
-        persistent_cache_set('SCRIPT_PLACES', $FIND_SCRIPT_CACHE);
+        persistent_cache_set('SCRIPT_PLACES', $find_script_cache);
     }
     return $ret . $append;
 }
@@ -1243,8 +1235,8 @@ function find_script($name, $append_keep = false, $base_url_code = 0)
 function get_base_url($https = null, $zone_for = null)
 {
     if ($https === null) { // If we don't know, we go by what the current page is
-        global $CURRENTLY_HTTPS_CACHE;
-        $https = $CURRENTLY_HTTPS_CACHE;
+        static $currently_https_cache = null;
+        $https = $currently_https_cache;
         if ($https === null) {
             require_code('urls');
             if (running_script('index')) {
@@ -1256,22 +1248,24 @@ function get_base_url($https = null, $zone_for = null)
             } else {
                 $https = function_exists('tacit_https') && tacit_https();
             }
-            $CURRENTLY_HTTPS_CACHE = $https;
+            $currently_https_cache = $https;
         }
     }
 
-    global $BASE_URL_HTTP_CACHE, $BASE_URL_HTTPS_CACHE, $VIRTUALISED_ZONES_CACHE;
+    global $VIRTUALISED_ZONES_CACHE;
+    static $base_url_http_cache = null;
+    static $base_url_https_cache = null;
 
     if ($VIRTUALISED_ZONES_CACHE === null) {
         require_code('zones');
         get_zone_name();
     }
 
-    if (($BASE_URL_HTTP_CACHE !== null) && (!$https) && ((!$VIRTUALISED_ZONES_CACHE) || ($zone_for === null))) {
-        return $BASE_URL_HTTP_CACHE . (empty($zone_for) ? '' : ('/' . $zone_for));
+    if (($base_url_http_cache !== null) && (!$https) && ((!$VIRTUALISED_ZONES_CACHE) || ($zone_for === null))) {
+        return $base_url_http_cache . (empty($zone_for) ? '' : ('/' . $zone_for));
     }
-    if (($BASE_URL_HTTPS_CACHE !== null) && ($https) && ((!$VIRTUALISED_ZONES_CACHE) || ($zone_for === null))) {
-        return $BASE_URL_HTTPS_CACHE . (empty($zone_for) ? '' : ('/' . $zone_for));
+    if (($base_url_https_cache !== null) && ($https) && ((!$VIRTUALISED_ZONES_CACHE) || ($zone_for === null))) {
+        return $base_url_https_cache . (empty($zone_for) ? '' : ('/' . $zone_for));
     }
 
     global $SITE_INFO;
@@ -1317,10 +1311,10 @@ function get_base_url($https = null, $zone_for = null)
     if ($https) {
         $base_url = 'https://' . preg_replace('#^\w*://#', '', $base_url);
         if ((!$VIRTUALISED_ZONES_CACHE) || ($zone_for === null)) {
-            $BASE_URL_HTTPS_CACHE = $base_url;
+            $base_url_https_cache = $base_url;
         }
     } elseif ((!$VIRTUALISED_ZONES_CACHE) || ($zone_for === null)) {
-        $BASE_URL_HTTP_CACHE = $base_url;
+        $base_url_http_cache = $base_url;
     }
 
     if (!$found_mapping) { // Scope inside the correct zone

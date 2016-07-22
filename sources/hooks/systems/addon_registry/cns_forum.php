@@ -292,10 +292,10 @@ class Hook_addon_registry_cns_forum
             'sources/cns_forumview.php',
             'sources/cns_forumview_pt.php',
             'sources/cns_topicview.php',
-            'sources/hooks/modules/topicview/.htaccess',
-            'sources_custom/hooks/modules/topicview/.htaccess',
-            'sources/hooks/modules/topicview/index.html',
-            'sources_custom/hooks/modules/topicview/index.html',
+            'sources/hooks/systems/member_boxes/.htaccess',
+            'sources_custom/hooks/systems/member_boxes/.htaccess',
+            'sources/hooks/systems/member_boxes/index.html',
+            'sources_custom/hooks/systems/member_boxes/index.html',
             'sources/hooks/systems/ajax_tree/choose_topic.php',
             'sources/hooks/systems/ajax_tree/choose_forum.php',
             'sources/hooks/systems/rss/cns_unread_topics.php',
@@ -1631,17 +1631,24 @@ class Hook_addon_registry_cns_forum
             ));
 
             $poster_details_mem = do_lorem_template('CNS_MEMBER_BOX', array(
-                'AVATAR_URL' => placeholder_image_url(),
-                'ONLINE' => false,
+                'GIVE_CONTEXT' => false,
+                'MEMBER_ID' => placeholder_id(),
+                'USERNAME' => lorem_phrase(),
                 'POSTS' => placeholder_number(),
                 'POINTS' => placeholder_number(),
                 'JOIN_DATE_RAW' => placeholder_date_raw(),
-                'MEMBER_ID' => placeholder_id(),
                 'JOIN_DATE' => placeholder_date(),
                 'PRIMARY_GROUP_NAME' => lorem_phrase(),
+                'SECONDARY_GROUPS' => array(
+                    lorem_word_html()
+                ),
                 'CUSTOM_FIELDS' => lorem_phrase(),
-                'CUSTOM_FIELDS_FULL' => lorem_phrase(),
-                'GIVE_CONTEXT' => false,
+                'ONLINE' => false,
+                'AVATAR_URL' => placeholder_image_url(),
+                'DOB_LABEL' => do_lang('DATE_OF_BIRTH'),
+                'DOB' => lorem_title(),
+                '_DOB' => placeholder_date_raw(),
+                '_DOB_CENSORED' => placeholder_date_raw(),
             ));
 
             $poster = do_lorem_template('CNS_POSTER_MEMBER', array(
@@ -1649,9 +1656,6 @@ class Hook_addon_registry_cns_forum
                 'POSTER_DETAILS' => $poster_details_mem,
                 'PROFILE_URL' => placeholder_url(),
                 'POSTER_USERNAME' => lorem_word(),
-                'OTHER_USERGROUPS' => array(
-                    lorem_word_html()
-                ),
                 'POSTER' => placeholder_number(),
                 'HIGHLIGHT_NAME' => lorem_word_html(),
                 'ONLINE' => false,

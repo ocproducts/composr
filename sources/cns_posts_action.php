@@ -19,17 +19,6 @@
  */
 
 /**
- * Standard code module initialisation function.
- *
- * @ignore
- */
-function init__cns_posts_action()
-{
-    global $ALL_FORUM_POST_COUNT_INFO_CACHE;
-    $ALL_FORUM_POST_COUNT_INFO_CACHE = null;
-}
-
-/**
  * Get a list of post templates that apply to a certain forum.
  *
  * @param  AUTO_LINK $forum_id The ID of the forum.
@@ -467,12 +456,12 @@ function cns_force_update_member_post_count($member_id, $member_post_count_dif =
 
     if (is_null($member_post_count_dif)) {
         // This is gonna take a while!!
-        global $ALL_FORUM_POST_COUNT_INFO_CACHE;
-        if (is_null($ALL_FORUM_POST_COUNT_INFO_CACHE)) {
-            $ALL_FORUM_POST_COUNT_INFO_CACHE = collapse_2d_complexity('id', 'f_post_count_increment', $GLOBALS['FORUM_DB']->query('SELECT id,f_post_count_increment FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forums WHERE f_cache_num_posts>0'));
+        static $all_forum_post_count_info_cache = array();
+        if (is_null($all_forum_post_count_info_cache)) {
+            $all_forum_post_count_info_cache = collapse_2d_complexity('id', 'f_post_count_increment', $GLOBALS['FORUM_DB']->query('SELECT id,f_post_count_increment FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forums WHERE f_cache_num_posts>0'));
         }
         $member_post_count = 0;
-        foreach ($ALL_FORUM_POST_COUNT_INFO_CACHE as $forum_id => $post_count_increment) {
+        foreach ($all_forum_post_count_info_cache as $forum_id => $post_count_increment) {
             if ($post_count_increment == 1) {
                 $map = array('p_poster' => $member_id, 'p_cache_forum_id' => $forum_id);
                 if (addon_installed('unvalidated')) {

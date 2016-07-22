@@ -456,9 +456,6 @@ function cns_make_boiler_custom_field($type)
         $show_in_post_previews = 1;
     }
 
-    global $CUSTOM_FIELD_CACHE;
-    $CUSTOM_FIELD_CACHE = array();
-
     require_lang('cns_special_cpf');
 
     if (substr($type, 0, 4) == 'cms_') {

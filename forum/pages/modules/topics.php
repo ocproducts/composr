@@ -4062,6 +4062,6 @@ END;
             $forum_id = db_get_first_id();
         }
         $_GET['id'] = strval($forum_id);
-        return $this->new_topic(false, null, file_exists(get_file_base() . '/themes/default/images/emoticons/index.html') ? 'emoticons/birthday' : 'cns_emoticons/birthday');
+        return $this->new_topic(false, null, 'cns_emoticons/birthday');
     }
 }

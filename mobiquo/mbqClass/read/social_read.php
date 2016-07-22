@@ -29,6 +29,8 @@ class CMSSocialRead
     {
         cms_verify_parameters_phpdoc();
 
+        require_code('users2');
+
         if (is_guest()) {
             return array();
         }
@@ -49,7 +51,7 @@ class CMSSocialRead
                 'user_id' => $row['member_liked'],
                 'username' => $username,
                 'display_text' => $GLOBALS['FORUM_DRIVER']->get_username($row['member_liked'], true),
-                'is_online' => is_member_online($row['member_liked']),
+                'is_online' => member_is_online($row['member_liked']),
             );
 
             $display_text = $GLOBALS['FORUM_DRIVER']->get_username($row['member_liked'], true);
@@ -73,6 +75,8 @@ class CMSSocialRead
     {
         cms_verify_parameters_phpdoc();
 
+        require_code('users2');
+
         if (is_guest()) {
             return array();
         }
@@ -93,7 +97,7 @@ class CMSSocialRead
                 'user_id' => $row['member_likes'],
                 'username' => $username,
                 'display_text' => $GLOBALS['FORUM_DRIVER']->get_username($row['member_likes'], true),
-                'is_online' => is_member_online($row['member_likes']),
+                'is_online' => member_is_online($row['member_likes']),
             );
 
             $display_text = $GLOBALS['FORUM_DRIVER']->get_username($row['member_likes'], true);

@@ -950,7 +950,7 @@ class Module_galleries
             require_code('cns_members');
             require_code('cns_members2');
         }
-        $member_details = ((is_null($member_id)) || (get_forum_type() != 'cns')) ? new Tempcode() : render_member_box($member_id, true, null, true, null, false);
+        $member_details = ((is_null($member_id)) || (get_forum_type() != 'cns')) ? new Tempcode() : render_member_box($member_id, true, true, null, false);
 
         // Rep-image
         $rep_image_url = '';
@@ -1044,7 +1044,7 @@ class Module_galleries
             require_code('cns_members');
             require_code('cns_members2');
         }
-        $member_details = ((is_null($member_id)) || (get_forum_type() != 'cns')) ? new Tempcode() : render_member_box($member_id, true, null, true, null, false);
+        $member_details = ((is_null($member_id)) || (get_forum_type() != 'cns')) ? new Tempcode() : render_member_box($member_id, true, true, null, false);
 
         // Render
         return do_template('GALLERY_REGULAR_MODE_SCREEN', array(
@@ -1151,7 +1151,7 @@ class Module_galleries
             require_code('cns_members');
             require_code('cns_members2');
         }
-        $member_details = ((is_null($member_id)) || (get_forum_type() != 'cns')) ? new Tempcode() : render_member_box($member_id, true, null, true, null, false);
+        $member_details = ((is_null($member_id)) || (get_forum_type() != 'cns')) ? new Tempcode() : render_member_box($member_id, true, true, null, false);
 
         return do_template('GALLERY_ENTRY_SCREEN', array(
             '_GUID' => '332a19b6a72505f8e1eb4d288df247ce',
@@ -1271,7 +1271,7 @@ class Module_galleries
             require_code('cns_members');
             require_code('cns_members2');
         }
-        $member_details = ((is_null($member_id)) || (get_forum_type() != 'cns')) ? new Tempcode() : render_member_box($member_id, true, null, true, null, false);
+        $member_details = ((is_null($member_id)) || (get_forum_type() != 'cns')) ? new Tempcode() : render_member_box($member_id, true, true, null, false);
 
         $video_details = show_video_details($myrow);
 

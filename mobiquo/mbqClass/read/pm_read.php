@@ -75,6 +75,8 @@ class CMSPmRead
     {
         cms_verify_parameters_phpdoc();
 
+        require_code('users2');
+
         if (is_guest()) {
             access_denied('NOT_AS_GUEST');
         }
@@ -173,7 +175,7 @@ class CMSPmRead
                     'icon_url' => $icon_url,
                     'msg_subject' => $msg_subject,
                     'short_content' => generate_shortened_post($post, $post['post_id'] == $topic['t_cache_first_post_id']),
-                    'is_online' => is_member_online($post['p_poster']),
+                    'is_online' => member_is_online($post['p_poster']),
                 );
             }
         }

@@ -51,6 +51,6 @@ class Hook_config_error_handling_notices
      */
     public function get_default()
     {
-        return 'ATTACH';
+        return $GLOBALS['DEV_MODE'] ? 'FATAL' : 'ATTACH';
     }
 }

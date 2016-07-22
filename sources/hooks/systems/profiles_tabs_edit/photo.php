@@ -116,7 +116,13 @@ class Hook_profiles_tabs_edit_photo
             $text->attach(paragraph(do_lang_tempcode(is_null($config_url) ? 'MAXIMUM_UPLOAD' : 'MAXIMUM_UPLOAD_STAFF', escape_html(($max > 10.0) ? integer_format(intval($max)) : float_format($max)), is_null($config_url) ? '' : escape_html($config_url))));
         }
 
-        $text = do_template('CNS_EDIT_PHOTO_TAB', array('_GUID' => 'ae0eb6d27bc8b576b326b54a9a792554', 'TEXT' => $text, 'MEMBER_ID' => strval($member_id_of), 'USERNAME' => $GLOBALS['FORUM_DRIVER']->get_username($member_id_of), 'PHOTO' => $GLOBALS['FORUM_DRIVER']->get_member_photo_url($member_id_of)));
+        $text = do_template('CNS_EDIT_PHOTO_TAB', array(
+            '_GUID' => 'ae0eb6d27bc8b576b326b54a9a792554',
+            'TEXT' => $text,
+            'MEMBER_ID' => strval($member_id_of),
+            'USERNAME' => $GLOBALS['FORUM_DRIVER']->get_username($member_id_of),
+            'PHOTO' => $GLOBALS['FORUM_DRIVER']->get_member_photo_url($member_id_of),
+        ));
 
         $javascript = '';
 

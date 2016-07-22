@@ -146,6 +146,10 @@ function make_xhtml_strict($global)
 
 /**
  * Get links and details related to a member.
+ * Note that this is:
+ * 1) Available under all forum drivers
+ * 2) Mainly about producing UI elements, not raw data
+ * See the cns_read_in_member_profile function for a CNS-specific raw-data retriever.
  *
  * @param  MEMBER $member_id A member ID
  * @return array A tuple: links (Tempcode), eCommerce links (Tempcode), details (Tempcode), number of unread inline personal posts or private topics

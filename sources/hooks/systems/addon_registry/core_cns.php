@@ -832,17 +832,24 @@ class Hook_addon_registry_core_cns
             'CUSTOM_FIELDS' => $custom_fields,
         ));
         $box = do_lorem_template('CNS_MEMBER_BOX', array(
-            'AVATAR_URL' => placeholder_image_url(),
-            'ONLINE' => false,
+            'GIVE_CONTEXT' => false,
+            'MEMBER_ID' => placeholder_id(),
+            'USERNAME' => lorem_phrase(),
             'POSTS' => placeholder_number(),
             'POINTS' => placeholder_number(),
             'JOIN_DATE_RAW' => placeholder_date_raw(),
-            'MEMBER_ID' => placeholder_id(),
             'JOIN_DATE' => placeholder_date(),
             'PRIMARY_GROUP_NAME' => lorem_phrase(),
+            'SECONDARY_GROUPS' => array(
+                lorem_word_html()
+            ),
             'CUSTOM_FIELDS' => lorem_phrase(),
-            'CUSTOM_FIELDS_FULL' => lorem_phrase(),
-            'GIVE_CONTEXT' => false,
+            'ONLINE' => false,
+            'AVATAR_URL' => placeholder_image_url(),
+            'DOB_LABEL' => do_lang('DATE_OF_BIRTH'),
+            'DOB' => lorem_title(),
+            '_DOB' => placeholder_date_raw(),
+            '_DOB_CENSORED' => placeholder_date_raw(),
         ));
 
         $member_boxes = array();
@@ -946,6 +953,7 @@ class Hook_addon_registry_core_cns
             'BANNED' => lorem_phrase(),
             'USER_AGENT' => lorem_phrase(),
             'OPERATING_SYSTEM' => lorem_phrase(),
+            'DOB_LABEL' => lorem_phrase(),
             'DOB' => lorem_phrase(),
             '_DOB' => placeholder_date_raw(),
             '_DOB_CENSORED' => placeholder_date_raw(),
@@ -981,8 +989,6 @@ class Hook_addon_registry_core_cns
             'ON_PROBATION' => lorem_phrase(),
             'USERGROUP' => lorem_word(),
             'CLUBS' => lorem_phrase(),
-            'VIEWS' => placeholder_number(),
-            'TOTAL_SESSIONS' => placeholder_number(),
             'EXTRA_INFO_DETAILS' => array(),
             'EXTRA_TRACKING_DETAILS' => array(),
             'USERS_TIMEZONE' => lorem_word(),

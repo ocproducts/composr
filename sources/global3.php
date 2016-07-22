@@ -33,13 +33,8 @@ function init__global3()
         define('DEFAULT_ZONE_PAGE_NAME', 'home');
     }
 
-    global $PAGE_NAME_CACHE, $GETTING_PAGE_NAME;
+    global $PAGE_NAME_CACHE;
     $PAGE_NAME_CACHE = null;
-    $GETTING_PAGE_NAME = false;
-
-    global $IS_MOBILE_CACHE, $IS_MOBILE_TRUTH_CACHE;
-    $IS_MOBILE_CACHE = null;
-    $IS_MOBILE_TRUTH_CACHE = null;
 
     // Heavily optimised string escaping data
     global $PHP_REP_FROM, $PHP_REP_TO, $PHP_REP_TO_TWICE;
@@ -50,15 +45,6 @@ function init__global3()
     global $BOT_MAP_CACHE, $BOT_TYPE_CACHE;
     $BOT_MAP_CACHE = null;
     $BOT_TYPE_CACHE = false;
-
-    global $LOCALE_FILTER_CACHE;
-    $LOCALE_FILTER_CACHE = null;
-
-    global $HAS_COOKIES_CACHE;
-    $HAS_COOKIES_CACHE = null;
-
-    global $BROWSER_MATCHES_CACHE;
-    $BROWSER_MATCHES_CACHE = array();
 
     global $MSN_DB;
     $MSN_DB = null;
@@ -1645,11 +1631,12 @@ function get_page_name()
     if (isset($PAGE_NAME_CACHE)) {
         return $PAGE_NAME_CACHE;
     }
-    global $ZONE, $GETTING_PAGE_NAME;
-    if ($GETTING_PAGE_NAME) {
+    global $ZONE;
+    static $getting_page_name = false;
+    if ($getting_page_name) {
         return 'unknown';
     }
-    $GETTING_PAGE_NAME = true;
+    $getting_page_name = true;
     $page = get_param_string('page', '', true);
     if (strlen($page) > 80) {
         warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
@@ -1673,7 +1660,7 @@ function get_page_name()
     if ($ZONE !== null) {
         $PAGE_NAME_CACHE = $page;
     }
-    $GETTING_PAGE_NAME = false;
+    $getting_page_name = false;
     return $page;
 }
 
@@ -2414,9 +2401,9 @@ function escape_html($string)
  */
 function browser_matches($code, $comcode = null)
 {
-    global $BROWSER_MATCHES_CACHE;
-    if (isset($BROWSER_MATCHES_CACHE[$code])) {
-        return $BROWSER_MATCHES_CACHE[$code];
+    static $browser_matches_cache = array();
+    if (isset($browser_matches_cache[$code])) {
+        return $browser_matches_cache[$code];
     }
 
     $browser = strtolower(cms_srv('HTTP_USER_AGENT'));
@@ -2432,69 +2419,69 @@ function browser_matches($code, $comcode = null)
 
     switch ($code) {
         case 'simplified_attachments_ui':
-            $BROWSER_MATCHES_CACHE[$code] = !$is_ie8 && !$is_ie9 && get_option('simplified_attachments_ui') == '1' && get_option('complex_uploader') == '1' && has_js();
-            return $BROWSER_MATCHES_CACHE[$code];
+            $browser_matches_cache[$code] = !$is_ie8 && !$is_ie9 && get_option('simplified_attachments_ui') == '1' && get_option('complex_uploader') == '1' && has_js();
+            return $browser_matches_cache[$code];
         case 'itunes':
-            $BROWSER_MATCHES_CACHE[$code] = (get_param_integer('itunes', 0) == 1) || (strpos($browser, 'itunes') !== false);
-            return $BROWSER_MATCHES_CACHE[$code];
+            $browser_matches_cache[$code] = (get_param_integer('itunes', 0) == 1) || (strpos($browser, 'itunes') !== false);
+            return $browser_matches_cache[$code];
         case 'bot':
-            $BROWSER_MATCHES_CACHE[$code] = (get_bot_type() !== null);
-            return $BROWSER_MATCHES_CACHE[$code];
+            $browser_matches_cache[$code] = (get_bot_type() !== null);
+            return $browser_matches_cache[$code];
         case 'android':
-            $BROWSER_MATCHES_CACHE[$code] = strpos($browser, 'android') !== false;
-            return $BROWSER_MATCHES_CACHE[$code];
+            $browser_matches_cache[$code] = strpos($browser, 'android') !== false;
+            return $browser_matches_cache[$code];
         case 'ios':
-            $BROWSER_MATCHES_CACHE[$code] = strpos($browser, 'iphone') !== false || strpos($browser, 'ipad') !== false;
-            return $BROWSER_MATCHES_CACHE[$code];
+            $browser_matches_cache[$code] = strpos($browser, 'iphone') !== false || strpos($browser, 'ipad') !== false;
+            return $browser_matches_cache[$code];
         case 'wysiwyg':
             if ((get_option('wysiwyg') == '0') || ((is_mobile()) && ((is_null($comcode)) || (strpos($comcode, 'html]') === false)))) {
-                $BROWSER_MATCHES_CACHE[$code] = false;
+                $browser_matches_cache[$code] = false;
                 return false;
             }
-            $BROWSER_MATCHES_CACHE[$code] = (strpos($browser, 'android') === false); // Using CKEditor, which does not yet support Android
-            return $BROWSER_MATCHES_CACHE[$code];
+            $browser_matches_cache[$code] = (strpos($browser, 'android') === false); // Using CKEditor, which does not yet support Android
+            return $browser_matches_cache[$code];
         case 'windows':
-            $BROWSER_MATCHES_CACHE[$code] = (strpos($os, 'windows') !== false) || (strpos($os, 'win32') !== false);
-            return $BROWSER_MATCHES_CACHE[$code];
+            $browser_matches_cache[$code] = (strpos($os, 'windows') !== false) || (strpos($os, 'win32') !== false);
+            return $browser_matches_cache[$code];
         case 'mac':
-            $BROWSER_MATCHES_CACHE[$code] = strpos($os, 'mac') !== false;
-            return $BROWSER_MATCHES_CACHE[$code];
+            $browser_matches_cache[$code] = strpos($os, 'mac') !== false;
+            return $browser_matches_cache[$code];
         case 'linux':
-            $BROWSER_MATCHES_CACHE[$code] = strpos($os, 'linux') !== false;
-            return $BROWSER_MATCHES_CACHE[$code];
+            $browser_matches_cache[$code] = strpos($os, 'linux') !== false;
+            return $browser_matches_cache[$code];
         case 'odd_os':
-            $BROWSER_MATCHES_CACHE[$code] = (strpos($os, 'windows') === false) && (strpos($os, 'mac') === false) && (strpos($os, 'linux') === false);
-            return $BROWSER_MATCHES_CACHE[$code];
+            $browser_matches_cache[$code] = (strpos($os, 'windows') === false) && (strpos($os, 'mac') === false) && (strpos($os, 'linux') === false);
+            return $browser_matches_cache[$code];
         case 'mobile':
-            $BROWSER_MATCHES_CACHE[$code] = is_mobile();
-            return $BROWSER_MATCHES_CACHE[$code];
+            $browser_matches_cache[$code] = is_mobile();
+            return $browser_matches_cache[$code];
         case 'ie':
-            $BROWSER_MATCHES_CACHE[$code] = $is_ie;
-            return $BROWSER_MATCHES_CACHE[$code];
+            $browser_matches_cache[$code] = $is_ie;
+            return $browser_matches_cache[$code];
         case 'ie8':
-            $BROWSER_MATCHES_CACHE[$code] = $is_ie8;
-            return $BROWSER_MATCHES_CACHE[$code];
+            $browser_matches_cache[$code] = $is_ie8;
+            return $browser_matches_cache[$code];
         case 'ie8+':
-            $BROWSER_MATCHES_CACHE[$code] = $is_ie8_plus;
-            return $BROWSER_MATCHES_CACHE[$code];
+            $browser_matches_cache[$code] = $is_ie8_plus;
+            return $browser_matches_cache[$code];
         case 'ie9':
-            $BROWSER_MATCHES_CACHE[$code] = $is_ie9;
-            return $BROWSER_MATCHES_CACHE[$code];
+            $browser_matches_cache[$code] = $is_ie9;
+            return $browser_matches_cache[$code];
         case 'ie9+':
-            $BROWSER_MATCHES_CACHE[$code] = $is_ie9_plus;
-            return $BROWSER_MATCHES_CACHE[$code];
+            $browser_matches_cache[$code] = $is_ie9_plus;
+            return $browser_matches_cache[$code];
         case 'chrome':
-            $BROWSER_MATCHES_CACHE[$code] = $is_chrome;
-            return $BROWSER_MATCHES_CACHE[$code];
+            $browser_matches_cache[$code] = $is_chrome;
+            return $browser_matches_cache[$code];
         case 'gecko':
-            $BROWSER_MATCHES_CACHE[$code] = $is_gecko;
-            return $BROWSER_MATCHES_CACHE[$code];
+            $browser_matches_cache[$code] = $is_gecko;
+            return $browser_matches_cache[$code];
         case 'safari':
-            $BROWSER_MATCHES_CACHE[$code] = $is_safari;
-            return $BROWSER_MATCHES_CACHE[$code];
+            $browser_matches_cache[$code] = $is_safari;
+            return $browser_matches_cache[$code];
         case 'odd_browser':
-            $BROWSER_MATCHES_CACHE[$code] = !$is_safari && !$is_gecko && !$is_ie;
-            return $BROWSER_MATCHES_CACHE[$code];
+            $browser_matches_cache[$code] = !$is_safari && !$is_gecko && !$is_ie;
+            return $browser_matches_cache[$code];
     }
 
     // Should never get here
@@ -2512,18 +2499,19 @@ function is_mobile($user_agent = null, $truth = false)
 {
     $user_agent_given = ($user_agent !== null);
 
-    global $IS_MOBILE_CACHE, $IS_MOBILE_TRUTH_CACHE;
+    static $is_mobile_cache = null;
+    static $is_mobile_truth_cache = null;
 
     if (!$user_agent_given) {
-        if (($truth ? $IS_MOBILE_TRUTH_CACHE : $IS_MOBILE_CACHE) !== null) {
-            return $truth ? $IS_MOBILE_TRUTH_CACHE : $IS_MOBILE_CACHE;
+        if (($truth ? $is_mobile_truth_cache : $is_mobile_cache) !== null) {
+            return $truth ? $is_mobile_truth_cache : $is_mobile_cache;
         }
     }
 
     if ((!function_exists('get_option')) || (get_option('mobile_support') == '0')) {
         if (function_exists('get_option')) {
-            $IS_MOBILE_CACHE = false;
-            $IS_MOBILE_TRUTH_CACHE = false;
+            $is_mobile_cache = false;
+            $is_mobile_truth_cache = false;
         }
         return false;
     }
@@ -2541,12 +2529,12 @@ function is_mobile($user_agent = null, $truth = false)
             if (!empty($details['mobile_pages'])) {
                 if (substr($details['mobile_pages'], 0, 1) == '#' && substr($details['mobile_pages'], -1) == '#') {
                     if (preg_match($details['mobile_pages'], get_zone_name() . ':' . get_page_name()) == 0) {
-                        $IS_MOBILE_CACHE = false;
+                        $is_mobile_cache = false;
                         return false;
                     }
                 } else {
                     if (preg_match('#(^|,)\s*' . str_replace('#', '\#', preg_quote(get_page_name())) . '\s*(,|$)#', $details['mobile_pages']) == 0 && preg_match('#(^|,)\s*' . str_replace('#', '\#', preg_quote(get_zone_name() . ':' . get_page_name())) . '\s*(,|$)#', $details['mobile_pages']) == 0) {
-                        $IS_MOBILE_CACHE = false;
+                        $is_mobile_cache = false;
                         return false;
                     }
                 }
@@ -2560,9 +2548,9 @@ function is_mobile($user_agent = null, $truth = false)
             $result = ($val == 1);
             if (isset($GLOBALS['FORUM_DRIVER'])) {
                 if ($truth) {
-                    $IS_MOBILE_TRUTH_CACHE = $result;
+                    $is_mobile_truth_cache = $result;
                 } else {
-                    $IS_MOBILE_CACHE = $result;
+                    $is_mobile_cache = $result;
                 }
             }
             return $result;
@@ -2615,9 +2603,9 @@ function is_mobile($user_agent = null, $truth = false)
     if (!$user_agent_given) {
         if (isset($GLOBALS['FORUM_DRIVER'])) {
             if ($truth) {
-                $IS_MOBILE_TRUTH_CACHE = $result;
+                $is_mobile_truth_cache = $result;
             } else {
-                $IS_MOBILE_CACHE = $result;
+                $is_mobile_cache = $result;
             }
         }
     }
@@ -2703,9 +2691,9 @@ function get_bot_type()
  */
 function has_cookies() // Will fail on users first visit, but then will catch on
 {
-    global $HAS_COOKIES_CACHE;
-    if ($HAS_COOKIES_CACHE !== null) {
-        return $HAS_COOKIES_CACHE;
+    static $has_cookies_cache = null;
+    if ($has_cookies_cache !== null) {
+        return $has_cookies_cache;
     }
 
     /*if (($GLOBALS['DEV_MODE']) && (get_param_integer('keep_debug_has_cookies', 0) == 0) && (!running_script('commandr')))   We know this works by now, was tested for years. Causes annoyance when developing
@@ -2715,12 +2703,12 @@ function has_cookies() // Will fail on users first visit, but then will catch on
     }*/
 
     if (isset($_COOKIE['has_cookies'])) {
-        $HAS_COOKIES_CACHE = true;
+        $has_cookies_cache = true;
         return true;
     }
     require_code('users_active_actions');
     cms_setcookie('has_cookies', '1');
-    $HAS_COOKIES_CACHE = false;
+    $has_cookies_cache = false;
     return false;
 }
 

@@ -86,7 +86,8 @@ function friend_add($likes, $liked, $time = null)
     ));
 
     // Send a notification
-    if (is_null($GLOBALS['SITE_DB']->query_select_value_if_there('chat_friends', 'date_and_time', array('member_likes' => $liked, 'member_liked' => $likes)))) {
+    require_code('chat');
+    if (member_befriended($likes, $liked)) {
         require_lang('chat');
 
         require_code('notifications');
