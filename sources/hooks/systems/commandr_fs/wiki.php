@@ -107,11 +107,11 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
         $id = wiki_add_page($label, $description, $notes, $hide_posts, $member, $add_time, $views, $meta_keywords, $meta_description, $edit_date);
 
         $the_order = $GLOBALS['SITE_DB']->query_select_value('wiki_children', 'MAX(the_order)', array('parent_id' => $parent_id));
-        if (is_null($the_order)) {
+        if ($the_order === null) {
             $the_order = -1;
         }
         $the_order++;
-        if (!is_null($parent_id)) {
+        if ($parent_id !== null) {
             $GLOBALS['SITE_DB']->query_insert('wiki_children', array('parent_id' => $parent_id, 'child_id' => $id, 'the_order' => $the_order, 'title' => $label));
         }
 
@@ -196,14 +196,14 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
             if ($explicit_move) {
                 $GLOBALS['SITE_DB']->query_delete('wiki_children', array('child_id' => $id, 'parent_id' => $old_parent_id));
             }
-            if ((is_null($the_order)) || (!$explicit_move)) { // Put on end of existing children
+            if (($the_order === null) || (!$explicit_move)) { // Put on end of existing children
                 $the_order = $GLOBALS['SITE_DB']->query_select_value('wiki_children', 'MAX(the_order)', array('parent_id' => $parent_id));
-                if (is_null($the_order)) {
+                if ($the_order === null) {
                     $the_order = -1;
                 }
                 $the_order++;
             }
-            if (!is_null($parent_id)) {
+            if ($parent_id !== null) {
                 $GLOBALS['SITE_DB']->query_insert('wiki_children', array('parent_id' => $parent_id, 'child_id' => $id, 'the_order' => $the_order, 'title' => $label));
             }
         }
@@ -243,7 +243,7 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
         list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
-        if (is_null($category)) {
+        if ($category === null) {
             return false; // Folder not found
         }
 
@@ -251,7 +251,7 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
 
         $page_id = $this->_integer_category($category);
         $validated = $this->_default_property_int_null($properties, 'validated');
-        if (is_null($validated)) {
+        if ($validated === null) {
             $validated = 1;
         }
         $member = $this->_default_property_member($properties, 'member_id');
@@ -308,7 +308,7 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
         list($properties,) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
-        if (is_null($category)) {
+        if ($category === null) {
             return false; // Folder not found
         }
 
@@ -317,7 +317,7 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
         $label = $this->_default_property_str($properties, 'label');
         $page_id = $this->_integer_category($category);
         $validated = $this->_default_property_int_null($properties, 'validated');
-        if (is_null($validated)) {
+        if ($validated === null) {
             $validated = 1;
         }
         $member = $this->_default_property_member($properties, 'member_id');

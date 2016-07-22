@@ -175,7 +175,7 @@ class Hook_addon_registry_alternate_emoticons
      */
     public function install($upgrade_from = null)
     {
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'theme_images WHERE path LIKE \'themes/%/images/cns_emoticons/%\'');
             $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'theme_images WHERE path LIKE \'themes/%/images//cns_emoticons/%\'');
 

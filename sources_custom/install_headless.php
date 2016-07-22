@@ -33,19 +33,19 @@ function do_install_to($database, $username, $password, $table_prefix, $safe_mod
 
 function _do_install_to($database, $username, $password, $table_prefix, $safe_mode, $forum_driver, $board_path, $forum_base_url, $database_forums, $username_forums, $password_forums, $extra_settings)
 {
-    if (is_null($board_path)) {
+    if ($board_path === null) {
         $board_path = get_file_base() . '/forums';
     }
-    if (is_null($database_forums)) {
+    if ($database_forums === null) {
         $database_forums = $database;
     }
-    if (is_null($username_forums)) {
+    if ($username_forums === null) {
         $username_forums = $username;
     }
-    if (is_null($password_forums)) {
+    if ($password_forums === null) {
         $password_forums = $password;
     }
-    if (is_null($extra_settings)) {
+    if ($extra_settings === null) {
         $extra_settings = array(
         );
     }

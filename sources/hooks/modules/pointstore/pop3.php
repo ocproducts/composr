@@ -125,7 +125,7 @@ class Hook_pointstore_pop3
         $title = get_screen_title('TITLE_POP3');
 
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('sales', 'details', array('memberid' => get_member(), 'purchasetype' => 'pop3'));
-        if (is_null($test)) {
+        if ($test === null) {
             $quota = new Tempcode();
             $activate_url = build_url(array('page' => '_SELF', 'type' => 'newpop3', 'id' => 'pop3'), '_SELF');
             $activate = do_template('POINTSTORE_POP3_ACTIVATE', array('_GUID' => '2af73c37855846947aae8935391154cf', 'ACTIVATE_URL' => $activate_url, 'INITIAL_QUOTA' => integer_format(intval(get_option('initial_quota')))));

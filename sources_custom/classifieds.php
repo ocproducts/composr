@@ -20,7 +20,7 @@ function initialise_classified_listing(&$row)
         'c_price' => 0.0,
     ));
     $row['ce_last_moved'] = $row['ce_add_date'];
-    if (!is_null($free_days)) {
+    if ($free_days !== null) {
         $row['ce_last_moved'] += $free_days * 60 * 60 * 24;
     }
     $GLOBALS['SITE_DB']->query_update('catalogue_entries', array('ce_last_moved' => $row['ce_last_moved']), array('id' => $row['id']), '', 1);

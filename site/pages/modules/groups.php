@@ -129,7 +129,7 @@ class Module_groups
 
         if ($type == 'apply') {
             $id = post_param_integer('id', null);
-            if (is_null($id)) {
+            if ($id === null) {
                 $id = get_param_integer('id');
                 if ($id == db_get_first_id()) {
                     warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
@@ -244,7 +244,7 @@ class Module_groups
             if (in_array($group['id'], $staff_groups)) {
                 $_staff[$group['id']] = $group;
             } else {
-                if (!is_null($group['g_promotion_target'])) {
+                if ($group['g_promotion_target'] !== null) {
                     // Are we at the start of a usergroup?
                     $found = false;
                     foreach ($groups as $group2) {
@@ -256,7 +256,7 @@ class Module_groups
                     if (!$found) {
                         $_ranks[$group['id']] = array($group['id'] => $group);
                         $next = $group['g_promotion_target'];
-                        while (!is_null($next)) {
+                        while ($next !== null) {
                             $found = false;
                             foreach ($groups as $group2) {
                                 if ($group2['id'] == $next) {
@@ -371,7 +371,7 @@ class Module_groups
 
                 $_p_t = $row['g_promotion_threshold'];
                 $p_t = new Tempcode();
-                if ((!is_null($_p_t)) && (array_key_exists($row['g_promotion_target'], $_rank))) {
+                if (($_p_t !== null) && (array_key_exists($row['g_promotion_target'], $_rank))) {
                     $p_t = do_lang_tempcode('PROMOTION_TO', escape_html(integer_format($_p_t)), escape_html($_rank[$row['g_promotion_target']]['_name']));
                 }
 
@@ -510,9 +510,9 @@ class Module_groups
         $club = $this->club;
 
         // Leadership
-        if ((!is_null($group['g_group_leader'])) && (!is_null($GLOBALS['FORUM_DRIVER']->get_username($group['g_group_leader'])))) {
+        if (($group['g_group_leader'] !== null) && ($GLOBALS['FORUM_DRIVER']->get_username($group['g_group_leader']) !== null)) {
             $leader_name = $GLOBALS['FORUM_DRIVER']->get_username($group['g_group_leader'], true);
-            if (is_null($leader_name)) {
+            if ($leader_name === null) {
                 $leader_name = do_lang('UNKNOWN');
             }
             $leader_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => $group['g_group_leader']), get_module_zone('members'));
@@ -523,7 +523,7 @@ class Module_groups
         }
 
         // Promotion
-        if ((addon_installed('points')) && (!is_null($group['g_promotion_threshold'])) && (!is_null($group['g_promotion_target']))) {
+        if ((addon_installed('points')) && ($group['g_promotion_threshold'] !== null) && ($group['g_promotion_target'] !== null)) {
             $promote_link = cns_get_group_link($group['g_promotion_target']);
             $promotion_info = do_lang_tempcode('CNS_PROMOTION_INFO', escape_html(integer_format($group['g_promotion_threshold'])), $promote_link->evaluate());
         } else {
@@ -594,7 +594,7 @@ class Module_groups
         $d_max_rows = cns_get_group_members_raw_count($id, false, true, true, cns_may_control_group($id, get_member()));
         foreach ($_secondary_members as $secondary_member) {
             $m_username = $GLOBALS['FORUM_DRIVER']->get_member_row_field($secondary_member['gm_member_id'], 'm_username');
-            if (is_null($m_username)) {
+            if ($m_username === null) {
                 continue;
             }
             if ($secondary_member['gm_validated'] == 1) {
@@ -663,7 +663,7 @@ class Module_groups
             '_GUID' => 'fc6cac5c73f92ab4410b492d58976dbe',
             'GROUP_NAME' => $group_name,
             'ID' => strval($id),
-            'FORUM' => is_null($forum_id) ? '' : strval($forum_id),
+            'FORUM' => ($forum_id === null) ? '' : strval($forum_id),
             'CLUB' => $club,
             'EDIT_URL' => $edit_url,
             'TITLE' => $this->title,
@@ -696,7 +696,7 @@ class Module_groups
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
 
-        if (is_null($username)) {
+        if ($username === null) {
             $username = trim(post_param_string('username'));
         }
 
@@ -709,7 +709,7 @@ class Module_groups
         }
 
         $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($username);
-        if (is_null($member_id)) {
+        if ($member_id === null) {
             warn_exit(do_lang_tempcode('_MEMBER_NO_EXIST', escape_html($username)));
         }
 
@@ -733,12 +733,12 @@ class Module_groups
     {
         $member_id = get_param_integer('member_id');
         $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id, true);
-        if (is_null($username)) {
+        if ($username === null) {
             $username = do_lang('UNKNOWN');
         }
 
         $id = post_param_integer('id', null);
-        if (is_null($id)) {
+        if ($id === null) {
             $id = get_param_integer('id');
 
             $post_url = build_url(array('page' => '_SELF', 'type' => get_param_string('type')), '_SELF', null, true);
@@ -767,7 +767,7 @@ class Module_groups
         $group_name = $this->group_name;
 
         $id = post_param_integer('id', null);
-        if (is_null($id)) {
+        if ($id === null) {
             $id = $this->id;
 
             $_leader = cns_get_group_property($id, 'group_leader');
@@ -779,11 +779,11 @@ class Module_groups
             if ($free_access) {
                 $text = do_lang_tempcode('ABOUT_TO_APPLY_FREE_ACCESS', escape_html($group_name));
             } else {
-                if ((is_null($_leader)) || (is_null($GLOBALS['FORUM_DRIVER']->get_username($_leader)))) {
+                if (($_leader === null) || ($GLOBALS['FORUM_DRIVER']->get_username($_leader) === null)) {
                     $text = do_lang_tempcode('ABOUT_TO_APPLY_STAFF', escape_html($group_name), escape_html(get_site_name()));
                 } else {
                     $leader_username = $GLOBALS['FORUM_DRIVER']->get_username($_leader, true);
-                    if (is_null($leader_username)) {
+                    if ($leader_username === null) {
                         $leader_username = do_lang('UNKNOWN');
                     }
                     $leader_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($_leader, true);
@@ -822,7 +822,7 @@ class Module_groups
     public function accept()
     {
         $id = post_param_integer('id', null);
-        if (is_null($id)) {
+        if ($id === null) {
             $id = get_param_integer('id');
 
             $post_url = build_url(array('page' => '_SELF', 'type' => get_param_string('type')), '_SELF', null, true);
@@ -849,7 +849,7 @@ class Module_groups
     public function decline()
     {
         $id = post_param_integer('id', null);
-        if (is_null($id)) {
+        if ($id === null) {
             $id = get_param_integer('id');
 
             require_code('form_templates');
@@ -884,7 +884,7 @@ class Module_groups
     public function resign()
     {
         $id = post_param_integer('id', null);
-        if (is_null($id)) {
+        if ($id === null) {
             $id = get_param_integer('id');
 
             $post_url = build_url(array('page' => '_SELF', 'type' => get_param_string('type')), '_SELF', null, true);

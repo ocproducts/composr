@@ -71,7 +71,7 @@ function fix_geoposition($lstring, $category_id)
 
 function find_nearest_location($latitude, $longitude, $latitude_field_id = null, $longitude_field_id = null, $error_tolerance = null)
 {
-    if (is_null($error_tolerance)) { // Ah, pick a default
+    if ($error_tolerance === null) { // Ah, pick a default
         $error_tolerance = 50.0 / EARTH_RADIUS; // 50 metres radius
     }
 
@@ -115,7 +115,7 @@ function find_nearest_location($latitude, $longitude, $latitude_field_id = null,
 
     // ==== ^^^
 
-    if ((is_null($latitude_field_id)) || (is_null($longitude_field_id))) { // Just do a raw query on locations table
+    if (($latitude_field_id === null) || ($longitude_field_id === null)) { // Just do a raw query on locations table
         $query = 'SELECT * FROM ' . get_table_prefix() . 'locations WHERE ' . $where;
         $locations = $GLOBALS['SITE_DB']->query($query);
     } else { // Catalogue query (works both for entries and categories that use custom fields)
@@ -137,7 +137,7 @@ function find_nearest_location($latitude, $longitude, $latitude_field_id = null,
     foreach ($locations as $l) {
         $dist = latlong_distance_miles($l['l_latitude'], $l['l_longitude'], $latitude, $longitude);
 
-        if ((is_null($best)) || ($dist < $best)) {
+        if (($best === null) || ($dist < $best)) {
             $best = $dist;
             $best_at = $l;
         }

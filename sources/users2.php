@@ -53,7 +53,7 @@ function member_is_online($member_id)
     $users_online_time_seconds = intval(get_option('users_online_time')) * 60;
     $sql = 'SELECT last_activity FROM ' . get_table_prefix() . 'sessions WHERE last_activity>' . strval(time() - $users_online_time_seconds) . ' AND member_id=' . strval($member_id);
     $result = $GLOBALS['SITE_DB']->query_value_if_there($sql);
-    $ret = !is_null($result);
+    $ret = $result !== null;
 
     $cache[$member_id] = $ret;
 
@@ -84,7 +84,7 @@ function get_users_online($longer_time, $filter, &$count)
     if (get_option('session_prudence') == '1') {
         // If we have multiple servers this many not be accurate as we probably turned replication off for the sessions table. The site design should be updated to not show this kind of info
         $count = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'sessions WHERE last_activity>' . strval($cutoff)); // Written in by reference
-        if (!is_null($filter)) {
+        if ($filter !== null) {
             return $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'sessions WHERE last_activity>' . strval($cutoff) . ' AND member_id=' . strval($filter), 1);
         }
         if (count($SESSION_CACHE) > $max_to_show) {
@@ -109,7 +109,7 @@ function get_users_online($longer_time, $filter, &$count)
                 $members[] = $row;
                 $members_online++;
                 if ($members_online == $max_to_show + 1) { // This is silly, don't display any
-                    if (!is_null($filter)) { // Unless we are filtering
+                    if ($filter !== null) { // Unless we are filtering
                         return $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'sessions WHERE last_activity>' . strval($cutoff) . ' AND member_id=' . strval($filter), 1);
                     }
                     return null;
@@ -151,9 +151,9 @@ function member_blocked($member_id, $member_blocker = null)
 
     if ($member_id == get_member()) {
         static $members_blocking_us_cache = array();
-        if (is_null($members_blocking_us_cache)) {
+        if ($members_blocking_us_cache === null) {
             $rows = $GLOBALS['SITE_DB']->query_select('chat_blocking', array('member_blocker'), array('member_blocked' => get_member()), '', null, null, true);
-            if (is_null($rows)) {
+            if ($rows === null) {
                 $members_blocking_us_cache = array();
                 return false;
             }
@@ -163,9 +163,9 @@ function member_blocked($member_id, $member_blocker = null)
     }
 
     static $members_blocked_cache = array();
-    if (is_null($members_blocked_cache)) {
+    if ($members_blocked_cache === null) {
         $rows = $GLOBALS['SITE_DB']->query_select('chat_blocking', array('member_blocked'), array('member_blocker' => get_member()), '', null, null, true);
-        if (is_null($rows)) {
+        if ($rows === null) {
             $members_blocked_cache = array();
             return false;
         }
@@ -185,10 +185,10 @@ function member_blocked($member_id, $member_blocker = null)
  */
 function get_members_viewing_wrap($page = null, $type = null, $id = null, $forum_layer = false)
 {
-    $members = is_null($id) ? array() : get_members_viewing($page, $type, $id, $forum_layer);
+    $members = ($id === null) ? array() : get_members_viewing($page, $type, $id, $forum_layer);
     $num_guests = 0;
     $num_members = 0;
-    if (is_null($members)) {
+    if ($members === null) {
         $members_viewing = new Tempcode();
     } else {
         $members_viewing = new Tempcode();
@@ -305,7 +305,7 @@ function get_modal_user()
             return get_member();
         }
         $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($modal_user);
-        if (!is_null($member_id)) {
+        if ($member_id !== null) {
             return $member_id;
         }
     }

@@ -423,7 +423,7 @@ function get_custom_file_base()
     if (!empty($SITE_INFO['custom_file_base_stub'])) {
         require_code('shared_installs');
         $u = current_share_user();
-        if (!is_null($u)) {
+        if ($u !== null) {
             return $SITE_INFO['custom_file_base_stub'] . '/' . $u;
         }
     }

@@ -51,7 +51,7 @@ class Hook_preview_image
         $url = post_param_image('image', 'uploads/galleries', null, true, false, $filename, $thumb_url);
 
         if ($url == '') {
-            if (!is_null(post_param_integer('id', null))) {
+            if (post_param_integer('id', null) !== null) {
                 $rows = $GLOBALS['SITE_DB']->query_select('images', array('url', 'thumb_url'), array('id' => post_param_integer('id')), '', 1);
                 $urls = $rows[0];
 

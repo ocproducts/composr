@@ -111,7 +111,7 @@ function render_attachment($tag, $attributes, $attachment_row, $pass_id, $source
         ((array_key_exists('type', $attributes)) && ($attributes['type'] != '')) ? $attributes['type'] : null,
         $attachment_row['a_url']
     );
-    if (is_null($ret)) {
+    if ($ret === null) {
         $ret = do_template('WARNING_BOX', array('_GUID' => '1e8a6c605fb61b9b5067a9d627506654', 'WARNING' => do_lang_tempcode('comcode:INVALID_ATTACHMENT')));
     }
     return $ret;
@@ -127,7 +127,7 @@ function render_attachment($tag, $attributes, $attachment_row, $pass_id, $source
  */
 function has_attachment_access($member, $id, $db = null)
 {
-    if (is_null($db)) {
+    if ($db === null) {
         $db = $GLOBALS['SITE_DB'];
     }
 
@@ -167,7 +167,7 @@ function attachments_script()
 
     $id = get_param_integer('id', 0);
     $db = $GLOBALS[(get_param_integer('forum_db', 0) == 1) ? 'FORUM_DB' : 'SITE_DB'];
-    $has_no_restricts = !is_null($db->query_select_value_if_there('attachment_refs', 'id', array('r_referer_type' => 'null', 'a_id' => $id)));
+    $has_no_restricts = ($db->query_select_value_if_there('attachment_refs', 'id', array('r_referer_type' => 'null', 'a_id' => $id)) !== null);
 
     if (!$has_no_restricts) {
         global $SITE_INFO;

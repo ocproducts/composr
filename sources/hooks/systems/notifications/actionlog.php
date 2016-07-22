@@ -66,7 +66,7 @@ class Hook_notification_actionlog extends Hook_notification__Staff
         }
         foreach ($types as $type) {
             $lang = do_lang($type['the_type'], null, null, null, null, false);
-            if (is_null($lang)) {
+            if ($lang === null) {
                 continue;
             }
             $page_links[] = array(

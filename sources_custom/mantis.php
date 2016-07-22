@@ -36,7 +36,7 @@ function create_tracker_issue($version, $tracker_title, $tracker_message, $track
         )
     ", null, null, false, true, null, '', false);
 
-    if (is_null($GLOBALS['SITE_DB']->query_value_if_there('SELECT version FROM mantis_project_version_table WHERE ' . db_string_equal_to('version', $version)))) {
+    if ($GLOBALS['SITE_DB']->query_value_if_there('SELECT version FROM mantis_project_version_table WHERE ' . db_string_equal_to('version', $version)) === null) {
         $GLOBALS['SITE_DB']->_query("
             INSERT INTO
             `mantis_project_version_table`
@@ -182,7 +182,7 @@ function create_tracker_post($tracker_id, $tracker_comment_message)
     $monitors = $GLOBALS['SITE_DB']->query('SELECT user_id FROM mantis_bug_monitor_table WHERE bug_id=' . strval($tracker_id));
     foreach ($monitors as $m) {
         $to_name = $GLOBALS['FORUM_DRIVER']->get_username($m['user_id'], true);
-        if (!is_null($to_name)) {
+        if ($to_name !== null) {
             $to_email = $GLOBALS['FORUM_DRIVER']->get_member_email_address($m['user_id']);
 
             $join_time = $GLOBALS['FORUM_DRIVER']->get_member_row_field($m['user_id'], 'm_join_time');
@@ -233,14 +233,14 @@ function get_user_currency()
     $safe_currency = 'USD';
     $the_id = intval(get_member());
     $member_id = is_guest($the_id) ? mixed() : $the_id;
-    if (!is_null($member_id)) {
+    if ($member_id !== null) {
         $cpf_id = get_credits_profile_field_id('cms_currency');
-        if (!is_null($cpf_id)) {
+        if ($cpf_id !== null) {
             require_code('cns_members_action2');
             $_fields = cns_get_custom_field_mappings($member_id);
             $result = strval($_fields['field_' . strval($cpf_id)]);
-            $user_currency = !is_null($result) ? $result : null;
-            $return_default = is_null($user_currency);
+            $user_currency = $result !== null ? $result : null;
+            $return_default = ($user_currency === null);
             if ($return_default === false) {
                 if (preg_match('/^[a-zA-Z]$/', $user_currency) == 0) {
                     log_hack_attack_and_exit('HACK_ATTACK');
@@ -253,7 +253,7 @@ function get_user_currency()
         $return_default = true;
     }
     $_system_currency = get_option('currency', true);
-    $system_currency = is_null($_system_currency) ? $safe_currency : $_system_currency;
+    $system_currency = ($_system_currency === null) ? $safe_currency : $_system_currency;
     return $return_default ? $system_currency : $user_currency;
 }
 

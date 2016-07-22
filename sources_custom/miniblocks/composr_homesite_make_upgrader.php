@@ -85,12 +85,12 @@ echo <<<END
 END;
 
 $from_version = get_param_string('from_version', null);
-if (is_null($from_version)) {
+if ($from_version === null) {
     $a = post_param_string('from_version_a', null);
     $b = post_param_string('from_version_b', null);
     $c = post_param_string('from_version_c', null);
     $d = post_param_string('from_version_d', null);
-    if ((is_null($a)) || (is_null($b)) || (is_null($c))) {
+    if (($a === null) || ($b === null) || ($c === null)) {
         mu_ui();
         echo <<<END
         </div>
@@ -120,12 +120,12 @@ $from_version = get_version_dotted__from_anything($from_version); // Canonicalis
 require_code('uploads/website_specific/compo.sr/upgrades/make_upgrader.php');
 $ret = make_upgrade_get_path($from_version, $to_version);
 
-if (!is_null($ret[1])) {
+if ($ret[1] !== null) {
 
     echo '<p>' . $ret[1] . '</p>';
 }
 
-if (!is_null($ret[0])) {
+if ($ret[0] !== null) {
     mu_result($ret[0]);
 }
 

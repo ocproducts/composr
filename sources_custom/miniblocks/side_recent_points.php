@@ -33,14 +33,14 @@ foreach ($gifts as $gift) {
     }
 
     $from_name = $GLOBALS['FORUM_DRIVER']->get_username($gift['gift_from'], true);
-    if (is_null($from_name)) {
+    if ($from_name === null) {
         continue;
     }
     $from_url = build_url(array('page' => 'points', 'type' => 'member', 'id' => $gift['gift_from']), get_module_zone('points'));
     $from_link = hyperlink($from_url, $from_name, false, true);
 
     $to_name = $GLOBALS['FORUM_DRIVER']->get_username($gift['gift_to'], true);
-    if (is_null($to_name)) {
+    if ($to_name === null) {
         continue;
     }
     $to_url = build_url(array('page' => 'points', 'type' => 'member', 'id' => $gift['gift_to']), get_module_zone('points'));

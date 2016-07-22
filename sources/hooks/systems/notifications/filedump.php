@@ -47,7 +47,7 @@ class Hook_notification_filedump extends Hook_Notification
         require_code('files2');
 
         $path = get_custom_file_base() . '/uploads/filedump';
-        if (!is_null($id)) {
+        if ($id !== null) {
             $path .= '/' . $id;
         }
         $files = get_directory_contents($path, '', false, false);

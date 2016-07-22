@@ -70,7 +70,7 @@ function cns_make_poll($topic_id, $question, $is_private, $is_open, $minimum_sel
     if (get_param_integer('re_validate', 0) == 1) {
         $forum_id = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_forum_id', array('id' => $topic_id));
 
-        if ((is_null($forum_id)) || (has_privilege(get_member(), 'bypass_validation_midrange_content', 'topics', array('forums', $forum_id)))) {
+        if (($forum_id === null) || (has_privilege(get_member(), 'bypass_validation_midrange_content', 'topics', array('forums', $forum_id)))) {
             $map['t_validated'] = 1;
         }
     }

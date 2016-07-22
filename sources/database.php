@@ -1050,7 +1050,7 @@ class DatabaseConnector
                     foreach ($lang_fields_provisional as $lang_field => $field_type) {
                         if (
                             (isset($select_inv[$field_prefix . $lang_field])) ||
-                            ((!is_null($where_map)) && (isset($where_map['t_' . $lang_field . '.text_original']))) ||
+                            (($where_map !== null) && (isset($where_map['t_' . $lang_field . '.text_original']))) ||
                             (isset($select_inv[$field_prefix . '*']))
                         ) {
                             $lang_fields[$lang_field] = $field_type;
@@ -1228,7 +1228,7 @@ class DatabaseConnector
         $lang_strings_expecting = array();
         if ($lang_fields !== null) {
             if (multi_lang_content()) {
-                if ((strpos($query, 'text_original') !== false) || (function_exists('user_lang')) && ((is_null($start)) || ($start < 200))) {
+                if ((strpos($query, 'text_original') !== false) || (function_exists('user_lang')) && (($start === null) || ($start < 200))) {
                     $lang = function_exists('user_lang') ? user_lang() : get_site_default_lang(); // We can we assume this, as we will cache against it -- if subsequently code wants something else it'd be a cache miss which is fine
 
                     foreach ($lang_fields as $field => $field_type) {
@@ -1363,7 +1363,7 @@ class DatabaseConnector
         $ret = $this->static_ob->query($query, $connection, $max, $start, $fail_ok, $get_insert_id, false, $save_as_volatile);
         if ($QUERY_LOG) {
             $after = microtime(true);
-            $text = (!is_null($max)) ? ($query . ' (' . (is_null($start) ? '0' : strval($start)) . '-' . strval((is_null($start) ? 0 : $start) + $max) . ')') : $query;
+            $text = ($max !== null) ? ($query . ' (' . (($start === null) ? '0' : strval($start)) . '-' . strval((($start === null) ? 0 : $start) + $max) . ')') : $query;
             $out = array('time' => ($after - $before), 'text' => $text, 'rows' => is_array($ret) ? count($ret) : null);
             $QUERY_LIST[] = $out;
         }
@@ -1693,7 +1693,7 @@ class DatabaseConnector
     public function query_delete($table, $where_map = null, $end = '', $max = null, $start = null, $fail_ok = false)
     {
         if ($where_map === null) {
-            if (($end === '') && (is_null($max)) && (is_null($start)) && (strpos(get_db_type(), 'mysql') !== false)) {
+            if (($end === '') && ($max === null) && ($start === null) && (strpos(get_db_type(), 'mysql') !== false)) {
                 $this->_query('TRUNCATE ' . $this->table_prefix . $table, null, null, $fail_ok);
             } else {
                 $this->_query('DELETE FROM ' . $this->table_prefix . $table . ' ' . $end, $max, $start, $fail_ok);
@@ -1912,7 +1912,7 @@ class DatabaseConnector
 
         $ret = '';
         if (substr(get_db_type(), 0, 5) == 'mysql') {
-            if ((!$do_check_first) || (!is_null($GLOBALS['SITE_DB']->query_select_value_if_there('db_meta_indices', 'i_fields', array('i_table' => $table, 'i_name' => $index))))) {
+            if ((!$do_check_first) || ($GLOBALS['SITE_DB']->query_select_value_if_there('db_meta_indices', 'i_fields', array('i_table' => $table, 'i_name' => $index)) !== null)) {
                 $ret = ' FORCE INDEX (' . filter_naughty_harsh($index) . ')';
             }
         }
@@ -1977,7 +1977,7 @@ class DatabaseConnector
                 $db = $GLOBALS['FORUM_DB'];
             }
             $locks = $db->query('SHOW OPEN TABLES FROM ' . $db_name . ' WHERE `Table`=\'' . db_escape_string($db->get_table_prefix() . $table) . '\' AND In_use>=1', null, null, true);
-            if (is_null($locks)) {
+            if ($locks === null) {
                 return false; // MySQL version older than 5.0 (e.g. 4.1.x)
             }
             $locked = count($locks) >= 1;

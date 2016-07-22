@@ -128,7 +128,7 @@ class Hook_profiles_tabs_edit_signature
 
         push_lax_comcode(true);
         $GLOBALS['COMCODE_PARSE_URLS_CHECKED'] = 100; // FUDGE: Little hack to stop it checking any URLs
-        /*Make sure we reparse with semi-parse mode if (is_null($default_parsed)) */
+        /*Make sure we reparse with semi-parse mode if ($default_parsed === null) */
         $default_parsed = comcode_to_tempcode($signature_original, null, false, null, null, COMCODE_SEMIPARSE_MODE);
         pop_lax_comcode();
 
@@ -144,7 +144,7 @@ class Hook_profiles_tabs_edit_signature
             'COMCODE_EDITOR' => $comcode_editor,
             'COMCODE_EDITOR_SMALL' => $comcode_editor_small,
             'CLASS' => $class,
-            'COMCODE_URL' => is_null($help_zone) ? new Tempcode() : build_url(array('page' => 'userguide_comcode'), $help_zone),
+            'COMCODE_URL' => ($help_zone === null) ? new Tempcode() : build_url(array('page' => 'userguide_comcode'), $help_zone),
             'EXTRA' => '',
             'POST_COMMENT' => $post_comment,
             'EMOTICON_CHOOSER' => $emoticon_chooser,

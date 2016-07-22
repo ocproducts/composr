@@ -52,7 +52,7 @@ function give_award($award_id, $content_id, $time = null)
 {
     require_lang('awards');
 
-    if (is_null($time)) {
+    if ($time === null) {
         $time = time();
     }
 
@@ -66,14 +66,14 @@ function give_award($award_id, $content_id, $time = null)
     require_code('content');
     $object = get_content_object($awards[0]['a_content_type']);
     $info = $object->info();
-    if (is_null($info)) {
+    if ($info === null) {
         fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
     }
-    if ((array_key_exists('submitter_field', $info)) && (!is_null($info['submitter_field']))) {
+    if ((array_key_exists('submitter_field', $info)) && ($info['submitter_field'] !== null)) {
         require_code('content');
         list($content_title, $member_id, , $content) = content_get_details($awards[0]['a_content_type'], $content_id);
 
-        if (is_null($content)) {
+        if ($content === null) {
             warn_exit(do_lang_tempcode('_MISSING_RESOURCE', escape_html($awards[0]['a_content_type'] . ':' . $content_id), 'award_type'));
         }
 
@@ -92,7 +92,7 @@ function give_award($award_id, $content_id, $time = null)
             }
         }
         require_code('users2');
-        if ((has_actual_page_access(get_modal_user(), 'awards')) && (has_actual_page_access(get_modal_user(), $module)) && (($permission_type_code == '') || (is_null($category_id)) || (has_category_access(get_modal_user(), $permission_type_code, is_integer($category_id) ? strval($category_id) : $category_id)))) {
+        if ((has_actual_page_access(get_modal_user(), 'awards')) && (has_actual_page_access(get_modal_user(), $module)) && (($permission_type_code == '') || ($category_id === null) || (has_category_access(get_modal_user(), $permission_type_code, is_integer($category_id) ? strval($category_id) : $category_id)))) {
             $privacy_ok = true;
             if (addon_installed('content_privacy')) {
                 require_code('content_privacy');
@@ -100,13 +100,13 @@ function give_award($award_id, $content_id, $time = null)
             }
             if ($privacy_ok) {
                 require_code('activities');
-                syndicate_described_activity(((is_null($member_id)) || (is_guest($member_id))) ? 'awards:_ACTIVITY_GIVE_AWARD' : 'awards:ACTIVITY_GIVE_AWARD', $award_title, $content_title, '', '_SEARCH:awards:award:' . strval($award_id), '', '', 'awards', 1, null, false, $member_id);
+                syndicate_described_activity((($member_id === null) || (is_guest($member_id))) ? 'awards:_ACTIVITY_GIVE_AWARD' : 'awards:ACTIVITY_GIVE_AWARD', $award_title, $content_title, '', '_SEARCH:awards:award:' . strval($award_id), '', '', 'awards', 1, null, false, $member_id);
             }
         }
     } else {
         $member_id = null;
     }
-    if (is_null($member_id)) {
+    if ($member_id === null) {
         $member_id = $GLOBALS['FORUM_DRIVER']->get_guest_id();
     }
 
@@ -146,7 +146,7 @@ function get_award_fields($content_type, $id = null)
             if (has_category_access(get_member(), 'award', strval($row['id']))) {
                 $test = $GLOBALS['SITE_DB']->query_select_value_if_there('award_archive', 'content_id', array('a_type_id' => $row['id']), 'ORDER BY date_and_time DESC');
 
-                if (!is_null($id)) {
+                if ($id !== null) {
                     $has_award = ($test === $id);
                 } else {
                     $has_award = (get_param_integer('award', null) === $row['id']);
@@ -165,7 +165,7 @@ function get_award_fields($content_type, $id = null)
                         require_code('content');
                         list($current_content_title) = content_get_details($_content_type, $test);
                     }
-                    $description->attach(paragraph(do_lang_tempcode('CURRENTLY_AWARDED_TO', is_null($current_content_title) ? do_lang_tempcode('NA_EM') : make_string_tempcode(escape_html($current_content_title)))));
+                    $description->attach(paragraph(do_lang_tempcode('CURRENTLY_AWARDED_TO', ($current_content_title === null) ? do_lang_tempcode('NA_EM') : make_string_tempcode(escape_html($current_content_title)))));
                 }
 
                 $fields->attach(form_input_tick(get_translated_text($row['a_title']), $description, 'award_' . strval($row['id']), $has_award));
@@ -179,7 +179,7 @@ function get_award_fields($content_type, $id = null)
             $help_link = do_lang_tempcode('TUTORIAL_ON_THIS', get_tutorial_url('tut_featured'));
             $help->attach(paragraph($help_link));
         }
-        $_fields = do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '5b91c53ff3966c13407d33680354fd5d', 'SECTION_HIDDEN' => is_null(get_param_integer('award', null)), 'TITLE' => do_lang_tempcode('AWARDS'), 'HELP' => protect_from_escaping($help)));
+        $_fields = do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '5b91c53ff3966c13407d33680354fd5d', 'SECTION_HIDDEN' => (get_param_integer('award', null) === null), 'TITLE' => do_lang_tempcode('AWARDS'), 'HELP' => protect_from_escaping($help)));
         $_fields->attach($fields);
         $fields = $_fields;
     }
@@ -204,7 +204,7 @@ function handle_award_setting($content_type, $id)
     foreach ($rows as $row) {
         if (has_category_access(get_member(), 'award', strval($row['id']))) {
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('award_archive', 'content_id', array('a_type_id' => $row['id']), 'ORDER BY date_and_time DESC');
-            $has_award = (!is_null($test)) && ($test === $id);
+            $has_award = ($test !== null) && ($test === $id);
             $will_have_award = (post_param_integer('award_' . strval($row['id']), 0) == 1);
 
             if (($will_have_award) && ($has_award)) { // Has to be recached

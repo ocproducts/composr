@@ -37,11 +37,11 @@ class Hook_endpoint_content_commandr_fs
             access_denied('PAGE_ACCESS');
         }
 
-        if (is_null($type)) {
+        if ($type === null) {
             warn_exit(do_lang_tempcode('NO_PARAMETER_SENT', escape_html('type')));
         }
 
-        if (is_null($id)) {
+        if ($id === null) {
             $id = '';
         }
 
@@ -112,7 +112,7 @@ class Hook_endpoint_content_commandr_fs
                     list($resource_type, $resource_id) = explode('/', $id, 2);
                 }
                 $id = find_commandr_fs_filename_via_id($resource_type, $resource_id, true);
-                if (is_null($id)) {
+                if ($id === null) {
                     warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
                 }
                 $fs_hook = convert_composr_type_codes('content_type', $resource_type, 'commandr_filesystem_hook');

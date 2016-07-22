@@ -54,7 +54,7 @@ class Hook_snippet_rating
 
         $template = get_param_string('template', null);
         if ($template !== '') {
-            if (is_null($template)) {
+            if ($template === null) {
                 $template = 'RATING_BOX';
             }
             return display_rating($content_url, $content_title, $content_type, $content_id, $template);

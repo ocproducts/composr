@@ -197,7 +197,7 @@ function javascript_tempcode($position = null)
 
         _javascript_tempcode($j, $js, $minify, $https, $mobile, $do_enforce);
     }
-    if (!is_null($JAVASCRIPT)) {
+    if ($JAVASCRIPT !== null) {
         $js->attach($JAVASCRIPT);
     }
     return $js;
@@ -542,10 +542,10 @@ function _get_web_resources_env($_seed = null, $_minify = null, $_https = null, 
  */
 function _get_web_resource_grouping_codename($zone_name = null, $is_admin = null)
 {
-    if (is_null($is_admin)) {
+    if ($is_admin === null) {
         $is_admin = $GLOBALS['FORUM_DRIVER']->is_super_admin(get_member());
     }
-    if (is_null($zone_name)) {
+    if ($zone_name === null) {
         $zone_name = get_zone_name();
     }
 

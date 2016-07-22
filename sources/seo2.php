@@ -72,14 +72,14 @@ function seo_meta_erase_storage($type, $id, $do_decache = true)
 function seo_get_fields($type, $id = null, $show_header = true)
 {
     require_code('form_templates');
-    if (is_null($id)) {
+    if ($id === null) {
         list($keywords, $description) = array('', '');
     } else {
         list($keywords, $description) = seo_meta_get_for($type, $id);
     }
 
     $fields = new Tempcode();
-    if ((get_option('enable_seo_fields') != 'no') && ((get_option('enable_seo_fields') != 'only_on_edit') || (!is_null($id)))) {
+    if ((get_option('enable_seo_fields') != 'no') && ((get_option('enable_seo_fields') != 'only_on_edit') || ($id !== null))) {
         if ($show_header) {
             $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array(
                 '_GUID' => '545aefd48d73cf01bdec7226dc6d93fb',
@@ -310,7 +310,7 @@ function _seo_meta_find_data($keyword_sources, $description = '')
  */
 function seo_meta_set_for_implicit($type, $id, $keyword_sources, $description)
 {
-    if ((!is_null(post_param_string('meta_keywords', null))) && ((post_param_string('meta_keywords') != '') || (post_param_string('meta_description') != ''))) {
+    if ((post_param_string('meta_keywords', null) !== null) && ((post_param_string('meta_keywords') != '') || (post_param_string('meta_description') != ''))) {
         seo_meta_set_for_explicit($type, $id, post_param_string('meta_keywords'), post_param_string('meta_description'));
         return '';
     }

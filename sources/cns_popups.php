@@ -25,7 +25,7 @@ function rules_script()
 {
     $id = get_param_integer('id', null);
 
-    if (is_null($id)) {
+    if ($id === null) {
         require_code('site');
         $output = request_page('_rules', true);
         $title = do_lang_tempcode('RULES');

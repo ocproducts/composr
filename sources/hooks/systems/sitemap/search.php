@@ -87,7 +87,7 @@ class Hook_sitemap_search extends Hook_sitemap_base
         require_code('database_search');
         foreach ($_hooks as $hook => $ob) {
             $info = $ob->info(false);
-            if (is_null($info)) {
+            if ($info === null) {
                 continue;
             }
             if (($hook == 'catalogue_entries') || (array_key_exists('special_on', $info)) || (array_key_exists('special_off', $info)) || (method_exists($ob, 'get_tree')) || (method_exists($ob, 'ajax_tree'))) {
@@ -193,11 +193,11 @@ class Hook_sitemap_search extends Hook_sitemap_base
 
         require_code('hooks/modules/search/' . filter_naughty_harsh($hook));
         $ob = object_factory('Hook_search_' . filter_naughty_harsh($hook), true);
-        if (is_null($ob)) {
+        if ($ob === null) {
             return null;
         }
         $info = $ob->info(false);
-        if (is_null($info)) {
+        if ($info === null) {
             return null;
         }
 

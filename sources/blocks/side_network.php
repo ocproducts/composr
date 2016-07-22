@@ -69,8 +69,8 @@ class Block_side_network
             require_code('character_sets');
 
             $data = http_download_file($netlinks, null, false);
-            if (is_null($data)) {
-                $if_network = is_null($GLOBALS['HTTP_MESSAGE_B']) ? $GLOBALS['HTTP_MESSAGE'] : $GLOBALS['HTTP_MESSAGE_B'];
+            if ($data === null) {
+                $if_network = ($GLOBALS['HTTP_MESSAGE_B'] === null) ? $GLOBALS['HTTP_MESSAGE'] : $GLOBALS['HTTP_MESSAGE_B'];
             } else {
                 $if_network = convert_to_internal_encoding($data);
             }

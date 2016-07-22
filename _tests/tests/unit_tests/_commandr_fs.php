@@ -106,9 +106,9 @@ class _commandr_fs_test_set extends cms_test_case
         foreach (array_keys($cma_hooks) as $cma_hook) {
             $ob = get_content_object($cma_hook);
             $info = $ob->info();
-            if (!is_null($info)) {
+            if ($info !== null) {
                 $fs_hook = $info['commandr_filesystem_hook'];
-                if (!is_null($fs_hook)) {
+                if ($fs_hook !== null) {
                     $this->assertTrue(array_key_exists($fs_hook, $commandr_fs_hooks), 'Commandr-FS hook with broken Resource-FS reference: ' . $fs_hook);
                     $referenced_in_cma[$fs_hook] = true;
                 }

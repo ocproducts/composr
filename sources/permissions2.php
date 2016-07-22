@@ -71,7 +71,7 @@ function _handle_permission_check_logging($member, $op, $params, $result)
                 $str .= ',';
             }
 
-            $str .= is_string($p) ? $p : (is_null($p) ? '' : strval($p));
+            $str .= is_string($p) ? $p : (($p === null) ? '' : strval($p));
         }
     }
 
@@ -79,7 +79,7 @@ function _handle_permission_check_logging($member, $op, $params, $result)
     if (($PERMISSION_CHECK_LOGGER !== false) && (($show_all) || (!$result))) {
         fwrite($PERMISSION_CHECK_LOGGER, "\t" . ($show_all ? '' : '! ') . $str);
         $username = $GLOBALS['FORUM_DRIVER']->get_username($member);
-        if (is_null($username)) {
+        if ($username === null) {
             $username = do_lang('UNKNOWN');
         }
         if ($member != get_member()) {
@@ -108,15 +108,15 @@ function _handle_permission_check_logging($member, $op, $params, $result)
  */
 function has_privilege_group($group_id, $privilege, $page = null, $cats = null)
 {
-    if (is_null($page)) {
+    if ($page === null) {
         $page = get_page_name();
     }
 
     global $GROUP_PRIVILEGE_CACHE;
     if (array_key_exists($group_id, $GROUP_PRIVILEGE_CACHE)) {
-        if (!is_null($cats)) {
+        if ($cats !== null) {
             for ($i = 0; $i < intval(floor(count($cats) / 2)); $i++) {
-                if (is_null($cats[$i * 2])) {
+                if ($cats[$i * 2] === null) {
                     continue;
                 }
                 if (isset($GROUP_PRIVILEGE_CACHE[$group_id][$privilege][''][$cats[$i * 2 + 0]][$cats[$i * 2 + 1]])) {
@@ -177,7 +177,7 @@ function get_category_permissions_hidden_on()
  */
 function get_category_permissions_for_environment($module, $category, $page = null, $help = null, $new_category = false, $pinterface_view = null)
 {
-    if (is_null($page)) {
+    if ($page === null) {
         $page = get_page_name();
     }
     if ($category == '-1') {
@@ -215,7 +215,7 @@ function get_category_permissions_for_environment($module, $category, $page = nu
     require_code('zones2');
     $_overridables = extract_module_functions_page(get_module_zone($page, 'modules', null, 'php', true, false), $page, array('get_privilege_overrides'));
     $out = new Tempcode;
-    if (is_null($_overridables[0])) {
+    if ($_overridables[0] === null) {
         $temp = do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '6789cb454688a1bc811af1b4011ede35', 'TITLE' => do_lang_tempcode('PERMISSIONS'), 'HELP' => $help, 'SECTION_HIDDEN' => true));
         $overridables = array();
     } else {
@@ -276,7 +276,7 @@ function get_permissions_matrix($server_id, $access, $overridables, $privileges,
     $admin_groups = $GLOBALS['FORUM_DRIVER']->get_super_admin_groups();
     $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(true, true);
 
-    if (is_null($pinterface_view)) {
+    if ($pinterface_view === null) {
         $pinterface_view = do_lang_tempcode('PINTERFACE_VIEW');
     }
 
@@ -413,7 +413,7 @@ function get_permissions_matrix($server_id, $access, $overridables, $privileges,
  */
 function set_category_permissions_from_environment($module, $category, $page = null)
 {
-    if (is_null($page)) {
+    if ($page === null) {
         $page = get_page_name();
     }
 
@@ -444,7 +444,7 @@ function set_category_permissions_from_environment($module, $category, $page = n
     }
 
     $_overridables = extract_module_functions_page(get_module_zone($page, 'modules', null, 'php', true, false), $page, array('get_privilege_overrides'));
-    if (is_null($_overridables[0])) {
+    if ($_overridables[0] === null) {
         $overridables = array();
     } else {
         $overridables = is_array($_overridables[0]) ? call_user_func_array($_overridables[0][0], $_overridables[0][1]) : eval($_overridables[0]);
@@ -532,7 +532,7 @@ function get_page_permissions_for_environment($zone, $page, $help = null)
  */
 function set_page_permissions_from_environment($zone, $page)
 {
-    if (is_null($page)) {
+    if ($page === null) {
         $page = get_page_name();
     }
 

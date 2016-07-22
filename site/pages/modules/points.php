@@ -70,7 +70,7 @@ class Module_points
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             add_privilege('POINTS', 'use_points', true);
 
             $GLOBALS['SITE_DB']->create_table('chargelog', array(
@@ -105,11 +105,11 @@ class Module_points
             $GLOBALS['FORUM_DRIVER']->install_create_custom_field('points_gained_rating', 20, 1, 0, 0, 0, '', 'integer');
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 8)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 8)) {
             $GLOBALS['SITE_DB']->alter_table_field('chargelog', 'user_id', 'MEMBER', 'member_id');
         }
 
-        if ((is_null($upgrade_from)) || ($upgrade_from < 8)) {
+        if (($upgrade_from === null) || ($upgrade_from < 8)) {
             rename_config_option('leaderboard_start_date', 'leader_board_start_date');
 
             $GLOBALS['FORUM_DRIVER']->install_create_custom_field('points_gained_visiting', 20, 1, 0, 0, 0, '', 'integer');
@@ -187,7 +187,7 @@ class Module_points
             set_feed_url('?mode=points&select=' . strval($this->member_id_of));
 
             $username = $GLOBALS['FORUM_DRIVER']->get_username($this->member_id_of, true);
-            if ((is_null($username)) || (is_guest($this->member_id_of))) {
+            if (($username === null) || (is_guest($this->member_id_of))) {
                 warn_exit(do_lang_tempcode('MEMBER_NO_EXIST'));
             }
             $this->title = get_screen_title('_POINTS', true, array(escape_html($username)));
@@ -375,7 +375,7 @@ class Module_points
                     $left = available_points($member_id_of);
 
                     $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id_of);
-                    if (is_null($username)) {
+                    if ($username === null) {
                         $username = do_lang('UNKNOWN');
                     }
                     $message = do_lang_tempcode('MEMBER_HAS_BEEN_CHARGED', escape_html($username), escape_html(integer_format($amount)), escape_html(integer_format($left)));

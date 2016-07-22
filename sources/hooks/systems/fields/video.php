@@ -92,7 +92,7 @@ class Hook_fields_video
             return '';
         }
 
-        if (is_null($submitter)) {
+        if ($submitter === null) {
             $submitter = get_member();
         }
 
@@ -174,7 +174,7 @@ class Hook_fields_video
      */
     public function get_field_inputter($_cf_name, $_cf_description, $field, $actual_value, $new)
     {
-        $say_required = ($field['cf_required'] == 1) && (($actual_value == '') || (is_null($actual_value)));
+        $say_required = ($field['cf_required'] == 1) && (($actual_value == '') || ($actual_value === null));
         require_code('galleries');
         $input_name = empty($field['cf_input_name']) ? ('field_' . strval($field['id'])) : $field['cf_input_name'];
         $ffield = form_input_upload($_cf_name, $_cf_description, $input_name, $say_required, ($field['cf_required'] == 1) ? null/*so unlink option not shown*/ : preg_replace('# .*$#', '', $actual_value), null, true, get_allowed_video_file_types());
@@ -196,7 +196,7 @@ class Hook_fields_video
      */
     public function inputted_to_field_value($editing, $field, $upload_dir = 'uploads/catalogues', $old_value = null)
     {
-        if (is_null($upload_dir)) {
+        if ($upload_dir === null) {
             return null;
         }
 
@@ -207,10 +207,10 @@ class Hook_fields_video
             $temp = get_url($tmp_name . '_url', $tmp_name, $upload_dir, 0, CMS_UPLOAD_VIDEO);
             $ev = $temp[0];
             if (($editing) && ($ev == '') && (post_param_integer($tmp_name . '_unlink', 0) != 1)) {
-                return is_null($old_value) ? '' : $old_value['cv_value'];
+                return ($old_value === null) ? '' : $old_value['cv_value'];
             }
 
-            if ((!is_null($old_value)) && ($old_value['cv_value'] != '') && (($ev != '') || (post_param_integer('custom_' . strval($field['id']) . '_value_unlink', 0) == 1))) {
+            if (($old_value !== null) && ($old_value['cv_value'] != '') && (($ev != '') || (post_param_integer('custom_' . strval($field['id']) . '_value_unlink', 0) == 1))) {
                 @unlink(get_custom_file_base() . '/' . rawurldecode($old_value['cv_value']));
                 sync_file(rawurldecode($old_value['cv_value']));
             }
@@ -239,7 +239,7 @@ class Hook_fields_video
                 list($width, $height, $length) = get_video_details(get_custom_file_base() . '/' . rawurldecode($stripped_ev), basename($stripped_ev));
             }
 
-            $value = $ev . ' ' . $thumb_url . ' ' . (is_null($width) ? '' : strval($width)) . ' ' . (is_null($height) ? '' : strval($height)) . ' ' . (is_null($length) ? '' : strval($length));
+            $value = $ev . ' ' . $thumb_url . ' ' . (($width === null) ? '' : strval($width)) . ' ' . (($height === null) ? '' : strval($height)) . ' ' . (($length === null) ? '' : strval($length));
         } else {
             $value = STRING_MAGIC_NULL;
         }

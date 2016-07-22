@@ -94,7 +94,7 @@ function remove_url_mistakes($url)
  */
 function _build_keep_form_fields($page = '', $keep_all = false, $exclude = null)
 {
-    if (is_null($exclude)) {
+    if ($exclude === null) {
         $exclude = array();
     }
 
@@ -181,7 +181,7 @@ function _build_keep_post_fields($exclude = null, $force_everything = false)
             $key = strval($key);
         }
 
-        if (((!is_null($exclude)) && (in_array($key, $exclude))) || ($key == 'session_id'/*for spam blackhole*/)) {
+        if ((($exclude !== null) && (in_array($key, $exclude))) || ($key == 'session_id'/*for spam blackhole*/)) {
             continue;
         }
 
@@ -425,7 +425,7 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
     foreach (array('PG', 'HTM', 'SIMPLE') as $url_scheme) {
         $mappings = get_remappings($url_scheme);
         foreach ($mappings as $mapping) { // e.g. array(array('page' => 'wiki', 'id' => null), 'pg/s/ID', true),
-            if (is_null($mapping)) {
+            if ($mapping === null) {
                 continue;
             }
 
@@ -458,7 +458,7 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
                         break;
                 }
                 foreach ($bits_pattern as $i => $bit) {
-                    if ((strtoupper($bit) == $bit) && (array_key_exists(strtolower($bit), $params)) && (is_null($params[strtolower($bit)]))) {
+                    if ((strtoupper($bit) == $bit) && (array_key_exists(strtolower($bit), $params)) && ($params[strtolower($bit)]) === null) {
                         $attributes[strtolower($bit)] = $bits_real[$i];
                     }
                 }
@@ -648,7 +648,7 @@ function suggest_new_idmoniker_for($page, $type, $id, $zone, $moniker_src, $is_n
 
         // Deprecate old one if already exists
         $old = $GLOBALS['SITE_DB']->query_select_value_if_there('url_id_monikers', 'm_moniker', array('m_resource_page' => $page, 'm_resource_type' => $type, 'm_resource_id' => $id, 'm_deprecated' => 0), 'ORDER BY id DESC');
-        if (!is_null($old)) {
+        if ($old !== null) {
             // See if it is same as current
             if ($moniker === null) {
                 $scope = _give_moniker_scope($page, $type, $id, $zone, '');
@@ -668,7 +668,7 @@ function suggest_new_idmoniker_for($page, $type, $id, $zone, $moniker_src, $is_n
             load_moniker_hooks();
             $looking_for = '_SEARCH:' . $page . ':' . $type . ':_WILD';
             $ob_info = isset($CONTENT_OBS[$looking_for]) ? $CONTENT_OBS[$looking_for] : null;
-            if (!is_null($ob_info)) {
+            if ($ob_info !== null) {
                 $parts = explode(':', $ob_info['view_page_link_pattern']);
                 $category_page = $parts[1];
                 $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'url_id_monikers SET m_deprecated=1 WHERE ' . db_string_equal_to('m_resource_page', $category_page) . ' AND m_moniker LIKE \'' . db_encode_like($old . '/%') . '\''); // Deprecate
@@ -737,7 +737,7 @@ function _choose_moniker($page, $type, $id, $moniker_src, $no_exists_check_for =
     }
     $test = mixed();
     do {
-        if (!is_null($no_exists_check_for)) {
+        if ($no_exists_check_for !== null) {
             if ($moniker == preg_replace('#^.*/#', '', $no_exists_check_for)) {
                 return $moniker; // This one is okay, we know it is safe
             }
@@ -751,7 +751,7 @@ function _choose_moniker($page, $type, $id, $moniker_src, $no_exists_check_for =
             $dupe_sql .= ' AND ' . db_string_equal_to('m_resource_type', $type) . ' AND ' . db_string_not_equal_to('m_resource_id', $id);
         }
         $dupe_sql .= ' AND (';
-        if (!is_null($scope_context)) {
+        if ($scope_context !== null) {
             $dupe_sql .= db_string_equal_to('m_moniker', $scope_context . $moniker);
         } else {
             // Use reversing for better indexing performance
@@ -760,11 +760,11 @@ function _choose_moniker($page, $type, $id, $moniker_src, $no_exists_check_for =
         }
         $dupe_sql .= ')';
         $test = $GLOBALS['SITE_DB']->query_value_if_there($dupe_sql, false, true);
-        if (!is_null($test)) { // Oh dear, will pass to next iteration, but trying a new moniker
+        if ($test !== null) { // Oh dear, will pass to next iteration, but trying a new moniker
             $next_num++;
             $moniker = $moniker_origin . '-' . strval($next_num);
         }
-    } while (!is_null($test));
+    } while ($test !== null);
 
     return $moniker;
 }
@@ -830,11 +830,11 @@ function _give_moniker_scope($page, $type, $id, $zone, $main)
 
     $moniker = $main;
 
-    if (is_null($ob_info)) {
+    if ($ob_info === null) {
         return $moniker;
     }
 
-    if (!is_null($ob_info['parent_category_field'])) {
+    if ($ob_info['parent_category_field'] !== null) {
         if ($ob_info['parent_category_field'] == 'the_zone') {
             $ob_info['parent_category_field'] = 'p_parent_page'; // Special exception for Comcode page monikers
         }
@@ -847,7 +847,7 @@ function _give_moniker_scope($page, $type, $id, $zone, $main)
         if (substr($ob_info['title_field'], 0, 5) != 'CALL:') {
             $select[] = $ob_info['title_field'];
         }
-        if (!is_null($ob_info['parent_category_field'])) {
+        if ($ob_info['parent_category_field'] !== null) {
             $select[] = $ob_info['parent_category_field'];
         }
         $where = get_content_where_for_str_id(($type == '') ? $page : $id, $ob_info);
@@ -865,7 +865,7 @@ function _give_moniker_scope($page, $type, $id, $zone, $main)
         if (is_integer($parent)) {
             $parent = strval($parent);
         }
-        if ((is_null($parent)) || ($parent === 'root') || ($parent === '') || ($parent == strval(db_get_first_id()))) {
+        if (($parent === null) || ($parent === 'root') || ($parent === '') || ($parent == strval(db_get_first_id()))) {
             $tree = null;
         } else {
             $view_category_page_link_pattern = explode(':', $ob_info['view_category_page_link_pattern']);
@@ -877,7 +877,7 @@ function _give_moniker_scope($page, $type, $id, $zone, $main)
         }
 
         // Okay, so our full tree path is as follows
-        if (!is_null($tree)) {
+        if ($tree !== null) {
             $moniker = $tree . '/' . $main;
         }
     }

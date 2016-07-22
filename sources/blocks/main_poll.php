@@ -71,7 +71,7 @@ class Block_main_poll
         }
         if ($poll_id === null) {
             $rows = persistent_cache_get('POLL');
-            if (is_null($rows)) {
+            if ($rows === null) {
                 $rows = $GLOBALS['SITE_DB']->query_select('poll', array('*'), array('is_current' => 1), 'ORDER BY id DESC', 1);
                 persistent_cache_set('POLL', $rows);
             }

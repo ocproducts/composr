@@ -40,7 +40,7 @@ function init__themewizard()
     $hooks = find_all_hook_obs('modules', 'admin_themewizard', 'Hook_admin_themewizard_');
     foreach ($hooks as $ob) {
         $results = $ob->run();
-        if (is_null($results)) {
+        if ($results === null) {
             continue;
         }
         list($a, $b) = $results;
@@ -280,7 +280,7 @@ function generate_logo($name, $font_choice = 'Vera', $logo_theme_image = 'logo/d
     require_code('files');
     require_code('themes2');
 
-    if (is_null($theme)) {
+    if ($theme === null) {
         $theme = $GLOBALS['SITE_DB']->query_select_value('zones', 'zone_theme', array('zone_name' => ''));
         if (($theme == '') || ($theme == '-1')) {
             $theme = 'default';
@@ -303,7 +303,7 @@ function generate_logo($name, $font_choice = 'Vera', $logo_theme_image = 'logo/d
     foreach (array('logo' => $logo_theme_image, 'background' => $background_theme_image, 'standalone' => 'logo/standalone_logo') as $id => $theme_image) {
         $url = find_theme_image($theme_image, false, false, $theme);
         $file_path_stub = convert_url_to_path($url);
-        if (!is_null($file_path_stub)) {
+        if ($file_path_stub !== null) {
             if (!file_exists($file_path_stub)) {
                 $file_path_stub = get_file_base() . '/themes/default/images/EN/logo/' . filter_naughty($theme_image) . '.png'; // Exceptional situation. Maybe theme got corrupted?
             }
@@ -511,7 +511,7 @@ function make_theme($theme_name, $source_theme, $algorithm, $seed, $use, $dark =
 
                         if ((!file_exists($saveat)) || ($source_theme != 'default') || ($algorithm == 'hsv')) {
                             $image = calculate_theme($seed, $source_theme, $algorithm, $image_code, $dark, $colours, $landscape, $lang);
-                            if (!is_null($image)) {
+                            if ($image !== null) {
                                 $pos = strrpos($image_code, '/');
                                 if (($pos !== false) || (strpos($orig_path, '/' . fallback_lang() . '/') !== false)) {
                                     afm_make_directory($composite . substr($image_code, 0, $pos), true, true);
@@ -599,7 +599,7 @@ function themewizard_script()
         $seed = str_pad(dechex(mt_rand(0, 255)), 2, '0', STR_PAD_LEFT) . str_pad(dechex(mt_rand(0, 255)), 2, '0', STR_PAD_LEFT) . str_pad(dechex(mt_rand(0, 255)), 2, '0', STR_PAD_LEFT);
     }
     $_dark = get_param_integer('keep_theme_dark', null);
-    $dark = is_null($_dark) ? null : ($_dark == 1);
+    $dark = ($_dark === null) ? null : ($_dark == 1);
     if ($type == 'preview') {
         $_tpl = do_template('THEMEWIZARD_2_PREVIEW');
         $tpl = do_template('STANDALONE_HTML_WRAP', array('_GUID' => '652b7df378b36714cb9dfa146490cbb8', 'TITLE' => do_lang_tempcode('PREVIEW'), 'CONTENT' => $_tpl, 'FRAME' => true));
@@ -625,7 +625,7 @@ function themewizard_script()
     }
     if ($type == 'image') {
         $image = calculate_theme($seed, $source_theme, $algorithm, $show, $dark);
-        if (is_null($image)) {
+        if ($image === null) {
             header('Location: ' . find_theme_image($show));
             exit();
         }
@@ -719,7 +719,7 @@ function calculate_theme($seed, $source_theme, $algorithm, $show = 'colours', $d
         $awb = 'FFFFFF';
     }
 
-    if ((is_null($landscape)) || (is_null($colours))) {
+    if (($landscape === null) || ($colours === null)) {
         $colours = array(
             // Hints for computation
             'dark' => ($light_dark == 'dark') ? '1' : '0',
@@ -862,7 +862,7 @@ function calculate_dynamic_css_colours($colours, $source_theme)
 
                 // A one we're really interested in
                 $parsed = parse_css_colour_expression($matches[3][$i]);
-                if (!is_null($parsed)) {
+                if ($parsed !== null) {
                     $landscape[] = array(
                         $matches[2][$i], // Colour name
                         $parsed, // Parsed expression
@@ -879,10 +879,10 @@ function calculate_dynamic_css_colours($colours, $source_theme)
     $safety_count = 0;
     while (count($landscape) != 0) {
         foreach ($landscape as $i => $peak) {
-            if (is_null($peak[3])) {
+            if ($peak[3] === null) {
                 $peak[3] = execute_css_colour_expression($peak[1], $colours);
             }
-            if (!is_null($peak[3])) { // We were able to get a result
+            if ($peak[3] !== null) { // We were able to get a result
                 $resolved_landscaped[] = $peak;
                 unset($landscape[$i]);
 
@@ -1018,11 +1018,11 @@ function execute_css_colour_expression($expression, $colours)
 
     $operation = $expression[0];
     $operand_a = execute_css_colour_expression($expression[1], $colours);
-    if (is_null($operand_a)) {
+    if ($operand_a === null) {
         return null;
     }
     $operand_b = execute_css_colour_expression($expression[2], $colours);
-    if (is_null($operand_b)) {
+    if ($operand_b === null) {
         return null;
     }
 
@@ -1346,7 +1346,7 @@ function theme_wizard_colours_to_css($contents, $landscape, $source_theme, $algo
         return $contents;
     }
     foreach ($landscape as $peak) {
-        if (!is_null($peak[2])) {
+        if ($peak[2] !== null) {
             $from = $peak[2];
             $to = preg_replace('#\{\$THEME_WIZARD_COLOR,\#[\da-fA-F]{6},#', '{$THEME_WIZARD_COLOR,#' . $peak[3] . ',', $peak[2]);
             $contents = str_ireplace($from, $to, $contents);
@@ -1397,7 +1397,7 @@ function re_hue_image($path, $seed, $source_theme, $also_s_and_v = false, $inver
                             if (!imageistruecolor($_image)) {
                                 require_code('images2');
                                 $imagemagick = find_imagemagick();
-                                if (!is_null($imagemagick)) {
+                                if ($imagemagick !== null) {
                                     $tempnam = cms_tempnam();
                                     shell_exec($imagemagick . ' -depth 32 ' . escapeshellarg($path) . ' PNG32:' . $tempnam);
                                     if (is_file($tempnam)) {
@@ -1448,7 +1448,7 @@ function re_hue_image($path, $seed, $source_theme, $also_s_and_v = false, $inver
         for ($x = 0; $x < $width; $x++) {
             $_existing_colour = imagecolorat($image, $x, $y);
             $existing_colour = imagecolorsforindex($image, $_existing_colour);
-            if (!is_null($trans_colour)) {
+            if ($trans_colour !== null) {
                 $__existing_colour = imagecolorat($_image, $x, $y);
                 if ($__existing_colour == $trans_colour) {
                     $existing_colour['alpha'] = 127;
@@ -1548,12 +1548,12 @@ function generate_recoloured_image($path, $colour_a_orig, $colour_a_new, $colour
 
     $colour_a_orig = str_replace('#', '', $colour_a_orig);
     $colour_b1_orig = str_replace('#', '', $colour_b1_orig);
-    if (!is_null($colour_b2_new)) {
+    if ($colour_b2_new !== null) {
         $colour_b2_orig = str_replace('#', '', $colour_b2_orig);
     }
     $colour_a_new = str_replace('#', '', $colour_a_new);
     $colour_b1_new = str_replace('#', '', $colour_b1_new);
-    if (!is_null($colour_b2_new)) {
+    if ($colour_b2_new !== null) {
         $colour_b2_new = str_replace('#', '', $colour_b2_new);
     }
     $colour_a_orig_r = hexdec(substr($colour_a_orig, 0, 2));
@@ -1568,7 +1568,7 @@ function generate_recoloured_image($path, $colour_a_orig, $colour_a_new, $colour
     $colour_b1_new_r = hexdec(substr($colour_b1_new, 0, 2));
     $colour_b1_new_g = hexdec(substr($colour_b1_new, 2, 2));
     $colour_b1_new_b = hexdec(substr($colour_b1_new, 4, 2));
-    if (!is_null($colour_b2_new)) {
+    if ($colour_b2_new !== null) {
         $colour_b2_orig_r = hexdec(substr($colour_b2_orig, 0, 2));
         $colour_b2_orig_g = hexdec(substr($colour_b2_orig, 2, 2));
         $colour_b2_orig_b = hexdec(substr($colour_b2_orig, 4, 2));
@@ -1616,7 +1616,7 @@ function generate_recoloured_image($path, $colour_a_orig, $colour_a_new, $colour
         imagesavealpha($image, true);
     }
 
-    if (is_null($colour_b2_new)) {
+    if ($colour_b2_new === null) {
         $colour_b_orig_r = $colour_b1_orig_r;
         $colour_b_orig_g = $colour_b1_orig_g;
         $colour_b_orig_b = $colour_b1_orig_b;
@@ -1659,27 +1659,27 @@ function generate_recoloured_image($path, $colour_a_orig, $colour_a_new, $colour
         $x = 0;
         $end = $width;
         if ($end_array) {
-            if ((!is_null($pixel_x_start_array)) && (array_key_exists($y, $pixel_x_start_array))) {
+            if (($pixel_x_start_array !== null) && (array_key_exists($y, $pixel_x_start_array))) {
                 $end = min($width, $pixel_x_start_array[$y]);
             } else {
                 $end = $width;
             }
         } else {
-            if ((!is_null($pixel_x_start_array)) && (array_key_exists($y, $pixel_x_start_array))) {
+            if (($pixel_x_start_array !== null) && (array_key_exists($y, $pixel_x_start_array))) {
                 $x = $pixel_x_start_array[$y];
             }
         }
         for (; $x < $end; $x++) {
             $_existing_colour = imagecolorat($image, $x, $y);
             $existing_colour = imagecolorsforindex($image, $_existing_colour);
-            if (!is_null($trans_colour)) {
+            if ($trans_colour !== null) {
                 $__existing_colour = imagecolorat($_image, $x, $y);
                 if ($__existing_colour == $trans_colour) {
                     $existing_colour['alpha'] = 127;
                 }
             }
 
-            if (!is_null($colour_b2_new)) {
+            if ($colour_b2_new !== null) {
                 if ($vertical) {
                     $ratio = floatval($y - $gradient_offset) / $gh;
                 } elseif ($horizontal) {

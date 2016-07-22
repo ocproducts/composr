@@ -33,7 +33,7 @@ function inline_language_editing($codename, $lang)
     $best_for = null;
     foreach (array_keys($LANGS_REQUESTED) as $possible) {
         $dist = levenshtein(get_page_name(), $possible);
-        if ((is_null($best)) || ($best > $dist)) {
+        if (($best === null) || ($best > $dist)) {
             $best = $dist;
             $best_for = $possible;
         }
@@ -77,7 +77,7 @@ function get_lang_files($lang = null)
 {
     require_code('files');
 
-    if (is_null($lang)) {
+    if ($lang === null) {
         $lang = get_site_default_lang();
     }
 
@@ -127,7 +127,7 @@ function get_lang_files($lang = null)
 function find_lang_content_names($ids)
 {
     static $langidfields = null;
-    if (is_null($langidfields)) {
+    if ($langidfields === null) {
         $query = 'SELECT m_name,m_table,m_type FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'db_meta';
         $all_fields = $GLOBALS['SITE_DB']->query($query);
 
@@ -150,7 +150,7 @@ function find_lang_content_names($ids)
 
     foreach ($langidfields as $field) {
         $db = $GLOBALS[((substr($field['m_table'], 0, 2) == 'f_') ? 'FORUM_DB' : 'SITE_DB')];
-        if (is_null($db)) {
+        if ($db === null) {
             continue; // None forum driver
         }
         $or_list = '';
@@ -207,7 +207,7 @@ function find_lang_content_names($ids)
  */
 function create_selection_list_lang_files($lang = null)
 {
-    $_lang_files = get_lang_files(is_null($lang) ? get_site_default_lang() : $lang);
+    $_lang_files = get_lang_files(($lang === null) ? get_site_default_lang() : $lang);
 
     ksort($_lang_files);
 
@@ -215,7 +215,7 @@ function create_selection_list_lang_files($lang = null)
 
     $lang_files = new Tempcode();
     foreach (array_keys($_lang_files) as $lang_file) {
-        if (!is_null($lang)) {
+        if ($lang !== null) {
             $base_map = get_lang_file_map(fallback_lang(), $lang_file, true);
             $criticise_map = get_lang_file_map($lang, $lang_file);
 

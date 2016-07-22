@@ -37,7 +37,7 @@ function get_config_func($raw_params)
     $login_type = (get_option('one_per_email_address') == '1') ? 'both' : 'username';
 
     $brand_name = get_value('rebrand_name');
-    if (is_null($brand_name)) {
+    if ($brand_name === null) {
         $brand_name = 'Composr';
     }
 
@@ -295,7 +295,7 @@ function get_id_by_url_func($raw_params)
 
     $arr = get_id_by_url($params[0]);
 
-    if (is_null($arr)) {
+    if ($arr === null) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
     }
 

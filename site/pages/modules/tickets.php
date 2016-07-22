@@ -67,7 +67,7 @@ class Module_tickets
     {
         require_lang('tickets');
 
-        if ((is_null($upgrade_from)) || ($upgrade_from < 6)) {
+        if (($upgrade_from === null) || ($upgrade_from < 6)) {
             $GLOBALS['SITE_DB']->create_table('ticket_known_emailers', array(
                 'email_address' => '*SHORT_TEXT',
                 'member_id' => 'MEMBER',
@@ -79,18 +79,18 @@ class Module_tickets
             ), false, false, true);
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 6)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 6)) {
             $GLOBALS['SITE_DB']->delete_index_if_exists('ticket_types', '#ticket_type');
             $GLOBALS['SITE_DB']->alter_table_field('ticket_types', 'ticket_type', '*AUTO', 'id');
             $GLOBALS['SITE_DB']->add_table_field('ticket_types', 'ticket_type_name', 'SHORT_TRANS', 0);
             $GLOBALS['SITE_DB']->query('UPDATE ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'ticket_types SET ticket_type_name=id');
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 5)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 5)) {
             $GLOBALS['SITE_DB']->delete_table_field('ticket_types', 'send_sms_to');
         }
 
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->create_table('tickets', array(
                 'ticket_id' => '*SHORT_TEXT',
                 'topic_id' => 'AUTO_LINK',
@@ -164,7 +164,7 @@ class Module_tickets
             if (!is_guest()) {
                 // Our tickets
                 $default_ticket_type = $this->get_ticket_type_id();
-                if (!is_null($default_ticket_type)) {
+                if ($default_ticket_type !== null) {
                     set_feed_url('?mode=tickets&select=' . strval($default_ticket_type));
                 }
                 $this->ticket_type_id = $default_ticket_type;
@@ -286,11 +286,11 @@ class Module_tickets
     private function get_ticket_type_id()
     {
         $default_ticket_type = either_param_integer('ticket_type_id', null);
-        if (is_null($default_ticket_type)) {
+        if ($default_ticket_type === null) {
             $_default_ticket_type = either_param_string('ticket_type', null);
-            if (!is_null($_default_ticket_type)) {
+            if ($_default_ticket_type !== null) {
                 $default_ticket_type = $GLOBALS['SITE_DB']->query_select_value_if_there('ticket_types', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('ticket_type_name') => $_default_ticket_type));
-                if (is_null($default_ticket_type)) {
+                if ($default_ticket_type === null) {
                     warn_exit(do_lang_tempcode('CAT_NOT_FOUND', escape_html($_default_ticket_type), 'ticket_type'));
                 }
             }
@@ -317,7 +317,7 @@ class Module_tickets
             $tickets = get_tickets(get_member(), $ticket_type_id, false, false, get_param_integer('open', 0) == 1);
 
             // Find all ticket types used
-            if (is_null($ticket_type_id)) {
+            if ($ticket_type_id === null) {
                 $all_tickets = $tickets;
             } else {
                 $all_tickets = get_tickets(get_member(), null, false, false, get_param_integer('open', 0) == 1);
@@ -325,13 +325,13 @@ class Module_tickets
             foreach ($all_tickets as $topic) {
                 $ticket_id = extract_topic_identifier($topic['description']);
                 $ticket_type_id = $GLOBALS['SITE_DB']->query_select_value_if_there('tickets', 'ticket_type', array('ticket_id' => $ticket_id));
-                if (!is_null($ticket_type_id)) {
+                if ($ticket_type_id !== null) {
                     $existing_ticket_types[] = $ticket_type_id;
                 }
             }
 
             // List (our?) tickets
-            if (!is_null($tickets)) {
+            if ($tickets !== null) {
                 if (has_privilege(get_member(), 'support_operator')) {
                     $message = do_lang_tempcode('TICKETS_STAFF');
                 } else {
@@ -393,7 +393,7 @@ class Module_tickets
         $first_poster_id = isset($topic['firstmemberid']) ? $topic['firstmemberid'] : $GLOBALS['FORUM_DRIVER']->get_member_from_username($topic['firstusername']);
         $first_poster_profile_url = '';
         $first_poster = do_lang('UNKNOWN');
-        if (!is_null($first_poster_id)) {
+        if ($first_poster_id !== null) {
             $first_poster_profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($first_poster_id, true);
             $first_poster = $topic['firstusername'];
         }
@@ -402,13 +402,13 @@ class Module_tickets
         $last_poster_id = isset($topic['lastmemberid']) ? $topic['lastmemberid'] : $GLOBALS['FORUM_DRIVER']->get_member_from_username($topic['lastusername']);
         $last_poster = do_lang('UNKNOWN');
         $last_poster_profile_url = '';
-        if (!is_null($last_poster_id)) {
+        if ($last_poster_id !== null) {
             $last_poster_profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($last_poster_id, true);
             $last_poster = $topic['lastusername'];
         }
 
         $ticket_type_id = $GLOBALS['SITE_DB']->query_select_value_if_there('tickets', 'ticket_type', array('ticket_id' => $ticket_id));
-        if (is_null($ticket_type_id)) {
+        if ($ticket_type_id === null) {
             $ticket_type_name = do_lang('UNKNOWN');
         } else {
             $ticket_type_details = get_ticket_type($ticket_type_id);
@@ -432,7 +432,7 @@ class Module_tickets
             'TITLE' => $title,
             'EXTRA_DETAILS' => $extra_details,
             'TICKET_TYPE_NAME' => $ticket_type_name,
-            'TICKET_TYPE_ID' => is_null($ticket_type_id) ? '' : strval($ticket_type_id),
+            'TICKET_TYPE_ID' => ($ticket_type_id === null) ? '' : strval($ticket_type_id),
             'FIRST_DATE' => $first_date,
             'FIRST_DATE_RAW' => strval($topic['firsttime']),
             'FIRST_POSTER_PROFILE_URL' => $first_poster_profile_url,
@@ -462,7 +462,7 @@ class Module_tickets
         if ($id == '') {
             $id = null;
         }
-        if (!is_null($id)) { // Existing ticket
+        if ($id !== null) { // Existing ticket
             $_temp = explode('_', $id);
             if (!isset($_temp[1])) {
                 warn_exit(do_lang_tempcode('INTERNAL_ERROR')); // Normal topic, not a ticket!
@@ -488,8 +488,8 @@ class Module_tickets
         $serialized_options = mixed();
         $hash = mixed();
         $ticket_type_id = mixed();
-        if ((!is_guest()) || (is_null($id))) { // If this isn't a guest posting their ticket
-            $new = is_null($id);
+        if ((!is_guest()) || ($id === null)) { // If this isn't a guest posting their ticket
+            $new = ($id === null);
 
             $num_to_show_limit = get_param_integer('max_comments', intval(get_option('comments_to_show_in_thread')));
             $start = get_param_integer('start_comments', 0);
@@ -538,7 +538,7 @@ class Module_tickets
             $pagination = null;
             $staff_details = new Tempcode();
             if (!$new) {
-                if (is_null($_comments)) {
+                if ($_comments === null) {
                     warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'ticket'));
                 }
                 if (has_privilege(get_member(), 'support_operator')) {
@@ -639,7 +639,7 @@ class Module_tickets
             $our_topic = null;
             if (!is_guest($ticket_owner)) {
                 $tickets_of_member = get_tickets($ticket_owner, null, true);
-                if (!is_null($tickets_of_member)) {
+                if ($tickets_of_member !== null) {
                     foreach ($tickets_of_member as $topic) {
                         $_id = extract_topic_identifier($topic['description']);
 
@@ -655,7 +655,7 @@ class Module_tickets
             }
 
             // Is it closed?
-            $closed = is_null($our_topic) ? false : ($our_topic['closed'] == 1);
+            $closed = ($our_topic === null) ? false : ($our_topic['closed'] == 1);
             $toggle_ticket_closed_url = mixed();
             if ((get_forum_type() == 'cns') && (!$new)) {
                 $toggle_ticket_closed_url = build_url(array('page' => '_SELF', 'type' => 'toggle_ticket_closed', 'id' => $id), '_SELF');
@@ -716,14 +716,14 @@ class Module_tickets
             $post_url = build_url(array('page' => '_SELF', 'type' => 'post', 'id' => $id, 'redirect' => get_param_string('redirect', null), 'start_comments' => get_param_string('start_comments', null), 'max_comments' => get_param_string('max_comments', null)), '_SELF');
             $tpl = do_template('SUPPORT_TICKET_SCREEN', array(
                 '_GUID' => 'd21a9d161008c6c44fe7309a14be2c5b',
-                'ID' => is_null($id) ? '' : $id,
+                'ID' => ($id === null) ? '' : $id,
                 'SERIALIZED_OPTIONS' => $serialized_options,
                 'HASH' => $hash,
                 'TOGGLE_TICKET_CLOSED_URL' => $toggle_ticket_closed_url,
                 'CLOSED' => $closed,
                 'OTHER_TICKETS' => $other_tickets,
                 'USERNAME' => $GLOBALS['FORUM_DRIVER']->get_username($ticket_owner),
-                'TICKET_TYPE_ID' => is_null($ticket_type_id) ? null : strval($ticket_type_id),
+                'TICKET_TYPE_ID' => ($ticket_type_id === null) ? null : strval($ticket_type_id),
                 'PING_URL' => $ping_url,
                 'WARNING_DETAILS' => $warning_details,
                 'NEW' => $new,
@@ -829,7 +829,7 @@ class Module_tickets
             // Check FAQ search results first
             if (($ticket_type_details['search_faq']) && (post_param_integer('faq_searched', 0) == 0)) {
                 $results = $this->do_search($this->title, $id, $post);
-                if (!is_null($results)) {
+                if ($results !== null) {
                     return $results;
                 }
             }
@@ -911,13 +911,13 @@ class Module_tickets
         require_code('hooks/modules/search/catalogue_entries');
         $object = object_factory('Hook_search_catalogue_entries');
         $info = $object->info();
-        if (is_null($info)) {
+        if ($info === null) {
             return null;
         }
 
         // Get the ID of the default FAQ catalogue
         $catalogue_id = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_categories', 'id', array('c_name' => 'faqs'), '');
-        if (is_null($catalogue_id)) {
+        if ($catalogue_id === null) {
             return null;
         }
 
@@ -926,7 +926,7 @@ class Module_tickets
         $boolean_operator = 'OR';
         $content_where = build_content_where($content, true, $boolean_operator);
         $hook_results = $object->run($content, false, 'ASC', $max, 0, false, $content_where, '', null, null, 'relevance', null, $boolean_operator, $where_clause, null, true);
-        if ((is_null($hook_results)) || (count($hook_results) == 0)) {
+        if (($hook_results === null) || (count($hook_results) == 0)) {
             return null;
         }
 
@@ -961,7 +961,7 @@ class Module_tickets
 
         $ticket_owner = check_ticket_access($id);
         $ticket_owner_username = $GLOBALS['FORUM_DRIVER']->get_username($ticket_owner);
-        if (is_null($ticket_owner_username)) {
+        if ($ticket_owner_username === null) {
             $ticket_owner_username = do_lang('UNKNOWN');
         }
 
@@ -1010,7 +1010,7 @@ class Module_tickets
                 $username = stripslashes($username);
             }
             $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($username);
-            if (is_null($member_id)) {
+            if ($member_id === null) {
                 continue;
             }
 
@@ -1089,7 +1089,7 @@ class Module_tickets
 
             require_code('notifications');
             $username = $GLOBALS['FORUM_DRIVER']->get_username($uid);
-            if (is_null($username)) {
+            if ($username === null) {
                 $username = do_lang('UNKNOWN');
             }
             $ticket_type_details = get_ticket_type($ticket_type);
@@ -1252,7 +1252,7 @@ class Module_tickets
 
         $username = post_param_string('username');
         $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($username);
-        if (is_null($member_id)) {
+        if ($member_id === null) {
             warn_exit(do_lang_tempcode('_MEMBER_NO_EXIST', escape_html($username)));
         }
         if (!has_privilege($member_id, 'support_operator')) {

@@ -41,7 +41,7 @@ class Hook_checklist_tickets
         $outstanding = 0;
 
         $tickets = get_tickets(get_member(), null, false, true);
-        if (!is_null($tickets)) {
+        if ($tickets !== null) {
             foreach ($tickets as $topic) {
                 if ($topic['closed'] == 0) {
                     $outstanding++;

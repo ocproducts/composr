@@ -37,7 +37,7 @@ class Hook_page_groupings_quotes
         }
 
         $zone = get_page_zone('quotes', false);
-        if (is_null($zone)) {
+        if ($zone === null) {
             return array();
         }
 

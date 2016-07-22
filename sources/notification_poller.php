@@ -116,7 +116,7 @@ function notification_poller_script()
             $xml .= web_notification_to_xml($row);
         }
 
-        if (!is_null($max)) {
+        if ($max !== null) {
             list($display, $unread) = get_web_notifications($max);
             $xml .= '
                     <display_web_notifications>' . $display->evaluate() . '</display_web_notifications>
@@ -150,7 +150,7 @@ function notification_poller_script()
                     $xml .= pt_to_xml($row);
                 }
 
-                if (!is_null($max)) {
+                if ($max !== null) {
                     list($display, $unread) = get_pts($max);
                     $xml .= '
                         <display_pts>' . $display->evaluate() . '</display_pts>
@@ -244,7 +244,7 @@ function get_web_notifications($max = null, $start = 0)
 
     if ($start == 0) {
         require_code('caches2');
-        put_into_cache('_get_notifications', 60 * 60 * 24, serialize(array($max)), null, get_member(), '', is_null(get_bot_type()) ? 0 : 1, get_users_timezone(get_member()), $ret);
+        put_into_cache('_get_notifications', 60 * 60 * 24, serialize(array($max)), null, get_member(), '', (get_bot_type() === null) ? 0 : 1, get_users_timezone(get_member()), $ret);
     }
 
     return $ret;
@@ -260,7 +260,7 @@ function web_notification_to_xml($row)
 {
     $member_id = $row['d_from_member_id'];
     $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id, true);
-    if (is_null($username)) {
+    if ($username === null) {
         $username = do_lang('UNKNOWN');
     }
     $from_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id);
@@ -349,7 +349,7 @@ function get_pts($max = null, $start = 0)
         $with_username = $GLOBALS['FORUM_DRIVER']->get_username($with_poster_id);
         $with_member_url = $GLOBALS['CNS_DRIVER']->member_profile_url($with_poster_id, true);
 
-        $is_unread = ($topic['t_cache_last_time'] > time() - 60 * 60 * 24 * intval(get_option('post_read_history_days'))) && ((is_null($topic['l_time'])) || ($topic['l_time'] < $topic['p_time']));
+        $is_unread = ($topic['t_cache_last_time'] > time() - 60 * 60 * 24 * intval(get_option('post_read_history_days'))) && (($topic['l_time'] === null) || ($topic['l_time'] < $topic['p_time']));
 
         $out->attach(do_template('CNS_PRIVATE_TOPIC_LINK', array(
             '_GUID' => '6a36e785b05d10f53e7ee76acdfb9f80',
@@ -376,7 +376,7 @@ function get_pts($max = null, $start = 0)
 
     if ($start == 0) {
         require_code('caches2');
-        put_into_cache('_get_pts', 60 * 60 * 24, serialize(array($max)), null, get_member(), '', is_null(get_bot_type()) ? 0 : 1, get_users_timezone(get_member()), $ret);
+        put_into_cache('_get_pts', 60 * 60 * 24, serialize(array($max)), null, get_member(), '', (get_bot_type() === null) ? 0 : 1, get_users_timezone(get_member()), $ret);
     }
 
     return $ret;

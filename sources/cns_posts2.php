@@ -31,7 +31,7 @@
  */
 function render_post_box($row, $use_post_title = false, $give_context = true, $include_breadcrumbs = true, $root = null, $guid = '')
 {
-    if (is_null($row)) { // Should never happen, but we need to be defensive
+    if ($row === null) { // Should never happen, but we need to be defensive
         return new Tempcode();
     }
 
@@ -49,7 +49,7 @@ function render_post_box($row, $use_post_title = false, $give_context = true, $i
     } else {
         // Poster title
         $primary_group = $GLOBALS['FORUM_DRIVER']->get_member_row_field($row['p_poster'], 'm_primary_group');
-        if (!is_null($primary_group)) {
+        if ($primary_group !== null) {
             if (addon_installed('cns_member_titles')) {
                 $poster_title = $GLOBALS['CNS_DRIVER']->get_member_row_field($row['p_poster'], 'm_title');
                 if ($poster_title == '') {
@@ -91,16 +91,16 @@ function render_post_box($row, $use_post_title = false, $give_context = true, $i
         }
 
         // Poster details
-        if ((!is_guest($row['p_poster'])) && (!is_null($primary_group))) {
+        if ((!is_guest($row['p_poster'])) && ($primary_group !== null)) {
             require_code('cns_members2');
             $poster_details = render_member_box($row['p_poster'], false, false, null, false);
         } else {
             $poster_details = new Tempcode();
         }
         if (addon_installed('cns_forum')) {
-            if ((!is_guest($row['p_poster'])) && (!is_null($primary_group))) {
+            if ((!is_guest($row['p_poster'])) && ($primary_group !== null)) {
                 require_code('users2');
-                if ((!is_guest($row['p_poster'])) && (!is_null($primary_group))) {
+                if ((!is_guest($row['p_poster'])) && ($primary_group !== null)) {
                     $poster = do_template('CNS_POSTER_MEMBER', array(
                         '_GUID' => ($guid != '') ? $guid : 'ab1724a9d97f93e097cf49b50eeafa66',
                         'ONLINE' => member_is_online($row['p_poster']),
@@ -124,29 +124,29 @@ function render_post_box($row, $use_post_title = false, $give_context = true, $i
     }
 
     // Last edited
-    if (!is_null($row['p_last_edit_time'])) {
+    if ($row['p_last_edit_time'] !== null) {
         $last_edited = do_template('CNS_TOPIC_POST_LAST_EDITED', array(
             '_GUID' => ($guid != '') ? $guid : 'cb1724a9d97f93e097cf49b50eeafa66',
-            'LAST_EDIT_DATE_RAW' => is_null($row['p_last_edit_time']) ? '' : strval($row['p_last_edit_time']),
+            'LAST_EDIT_DATE_RAW' => ($row['p_last_edit_time'] === null) ? '' : strval($row['p_last_edit_time']),
             'LAST_EDIT_DATE' => get_timezoned_date_time_tempcode($row['p_last_edit_time']),
-            'LAST_EDIT_PROFILE_URL' => is_null($row['p_last_edit_by']) ? '' : $GLOBALS['FORUM_DRIVER']->member_profile_url($row['p_last_edit_by'], true),
-            'LAST_EDIT_USERNAME' => is_null($row['p_last_edit_by']) ? '' : $GLOBALS['FORUM_DRIVER']->get_username($row['p_last_edit_by']),
+            'LAST_EDIT_PROFILE_URL' => ($row['p_last_edit_by'] === null) ? '' : $GLOBALS['FORUM_DRIVER']->member_profile_url($row['p_last_edit_by'], true),
+            'LAST_EDIT_USERNAME' => ($row['p_last_edit_by'] === null) ? '' : $GLOBALS['FORUM_DRIVER']->get_username($row['p_last_edit_by']),
         ));
     } else {
         $last_edited = new Tempcode();
     }
-    $last_edited_raw = is_null($row['p_last_edit_time']) ? '' : strval($row['p_last_edit_time']);
+    $last_edited_raw = ($row['p_last_edit_time'] === null) ? '' : strval($row['p_last_edit_time']);
 
     // Breadcrumbs
     $breadcrumbs = mixed();
     if ($include_breadcrumbs) {
-        $breadcrumbs = breadcrumb_segments_to_tempcode(cns_forum_breadcrumbs($row['p_cache_forum_id'], null, null, false, is_null($root) ? get_param_integer('keep_forum_root', null) : $root));
+        $breadcrumbs = breadcrumb_segments_to_tempcode(cns_forum_breadcrumbs($row['p_cache_forum_id'], null, null, false, ($root === null) ? get_param_integer('keep_forum_root', null) : $root));
     }
 
     // Misc stuff
     $poster_id = $row['p_poster'];
     $map = array('page' => 'topicview', 'type' => 'findpost', 'id' => $row['id']);
-    if (!is_null($root)) {
+    if ($root !== null) {
         $map['keep_forum_root'] = $root;
     }
     $post_url = build_url($map, get_module_zone('topicview'));
@@ -167,13 +167,13 @@ function render_post_box($row, $use_post_title = false, $give_context = true, $i
     $emphasis = new Tempcode();
     if ($row['p_is_emphasised'] == 1) {
         $emphasis = do_lang_tempcode('IMPORTANT');
-    } elseif (!is_null($row['p_intended_solely_for'])) {
+    } elseif ($row['p_intended_solely_for'] !== null) {
         $pp_to_displayname = $GLOBALS['FORUM_DRIVER']->get_username($row['p_intended_solely_for'], true);
-        if (is_null($pp_to_displayname)) {
+        if ($pp_to_displayname === null) {
             $pp_to_displayname = do_lang('UNKNOWN');
         }
         $pp_to_username = $GLOBALS['FORUM_DRIVER']->get_username($row['p_intended_solely_for']);
-        if (is_null($pp_to_username)) {
+        if ($pp_to_username === null) {
             $pp_to_username = do_lang('UNKNOWN');
         }
         $emphasis = do_lang('PP_TO', $pp_to_displayname, $pp_to_username);
@@ -193,7 +193,7 @@ function render_post_box($row, $use_post_title = false, $give_context = true, $i
         'TOPIC_FIRST_POSTER' => '',
         'POST_ID' => strval($row['id']),
         'URL' => $post_url,
-        'CLASS' => ($row['p_is_emphasised'] == 1) ? 'cns_post_emphasis' : ((!is_null($row['p_intended_solely_for'])) ? 'cns_post_personal' : ''),
+        'CLASS' => ($row['p_is_emphasised'] == 1) ? 'cns_post_emphasis' : (($row['p_intended_solely_for'] !== null) ? 'cns_post_personal' : ''),
         'EMPHASIS' => $emphasis,
         'FIRST_UNREAD' => '',
         'POSTER_TITLE' => $poster_title,
@@ -201,7 +201,7 @@ function render_post_box($row, $use_post_title = false, $give_context = true, $i
         'POST_DATE_RAW' => strval($post_date_raw),
         'POST_DATE' => $post_date,
         'POST' => $post,
-        'TOPIC_ID' => is_null($row['p_topic_id']) ? '' : strval($row['p_topic_id']),
+        'TOPIC_ID' => ($row['p_topic_id'] === null) ? '' : strval($row['p_topic_id']),
         'LAST_EDITED_RAW' => $last_edited_raw,
         'LAST_EDITED' => $last_edited,
         'POSTER_ID' => strval($poster_id),

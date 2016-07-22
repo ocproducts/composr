@@ -177,7 +177,7 @@ Allows people to specify who referred them when they join your site or other con
      */
     public function install($upgrade_from = null)
     {
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->create_table('referrer_override', array(
                 'o_referrer' => '*MEMBER',
                 'o_scheme_name' => '*ID_TEXT',
@@ -200,7 +200,7 @@ Allows people to specify who referred them when they join your site or other con
                 $rows = $GLOBALS['FORUM_DB']->query_select('f_invites', array('i_email_address', 'i_time', 'i_inviter'), array('i_taken' => 1));
                 foreach ($rows as $row) {
                     $member_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', 'id', array('m_email_address' => $row['i_email_address']));
-                    if (!is_null($member_id)) {
+                    if ($member_id !== null) {
                         $ini_file = parse_ini_file(get_custom_file_base() . '/text_custom/referrals.txt', true);
 
                         foreach (array_keys($ini_file) as $scheme_name) {

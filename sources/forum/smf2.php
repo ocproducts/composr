@@ -33,7 +33,7 @@ class Forum_driver_smf2 extends Forum_driver_base
     public function check_db()
     {
         $test = $this->db->query('SELECT COUNT(*) FROM ' . $this->db->get_table_prefix() . 'members', null, null, true);
-        return !is_null($test);
+        return $test !== null;
     }
 
     /**
@@ -338,14 +338,14 @@ class Forum_driver_smf2 extends Forum_driver_base
         $ret = $this->get_member_row_field($member, 'avatar');
         if ($ret == '') {
             $attach_id = $this->db->query_select_value_if_there('attachments', 'id_attach', array('id_member' => $member));
-            if (is_null($attach_id)) {
+            if ($attach_id === null) {
                 return '';
             }
             return get_forum_base_url() . '/index.php?action=dlattach;attach=' . strval($attach_id) . ';type=avatar';
         }
         if (url_is_local($ret)) {
             static $base_url = null; //get_forum_base_url().'/avatars';
-            if (is_null($base_url)) {
+            if ($base_url === null) {
                 $base_url = $this->db->query_select_value_if_there('settings', 'value', array('variable' => 'avatar_url'));
             }
             $ret = $base_url . '/' . $ret;
@@ -471,19 +471,19 @@ class Forum_driver_smf2 extends Forum_driver_base
     {
         $post = str_replace("\n", '<br />', $post);
 
-        if (is_null($time)) {
+        if ($time === null) {
             $time = time();
         }
-        if (is_null($ip)) {
+        if ($ip === null) {
             $ip = get_ip_address();
         }
         $forum_id = $this->forum_id_from_name($forum_name);
-        if (is_null($forum_id)) {
+        if ($forum_id === null) {
             warn_exit(do_lang_tempcode('MISSING_FORUM', escape_html($forum_name)), false, true);
         }
         $username = $this->get_username($member);
         $topic_id = $this->find_topic_id_for_topic_identifier($forum_name, $topic_identifier);
-        $is_new = is_null($topic_id);
+        $is_new = ($topic_id === null);
         if ($is_new) {
             $topic_id = $this->db->query_insert('topics', array('id_board' => $forum_id, 'id_first_msg' => mt_rand(0, mt_getrandmax()), 'id_last_msg' => mt_rand(0, mt_getrandmax()), 'id_member_started' => $member, 'id_member_updated' => $member, 'num_replies' => 2), true);
             $home_link = hyperlink($content_url, $content_title, false, true);
@@ -503,11 +503,11 @@ class Forum_driver_smf2 extends Forum_driver_base
         }
 
         $email = $this->get_member_email_address($member);
-        if (is_null($email)) {
+        if ($email === null) {
             $email = '';
         }
         $username = $this->get_username($member);
-        if (is_null($username)) {
+        if ($username === null) {
             $username = do_lang('UNKNOWN');
         }
         $post_id = $this->db->query_insert('messages', array('id_topic' => $topic_id, 'id_board' => $forum_id, 'poster_time' => $time, 'id_member' => $member, 'subject' => $post_title, 'poster_name' => $username, 'poster_email' => $email, 'poster_ip' => $ip, 'body' => $post, 'modified_name' => ''), true);
@@ -530,7 +530,7 @@ class Forum_driver_smf2 extends Forum_driver_base
      */
     public function get_forum_topic_posts($topic_id, &$count, $max = 100, $start = 0, $mark_read = true, $reverse = false)
     {
-        if (is_null($topic_id)) {
+        if ($topic_id === null) {
             return (-2);
         }
         $order = $reverse ? 'poster_time DESC' : 'poster_time';
@@ -540,7 +540,7 @@ class Forum_driver_smf2 extends Forum_driver_base
         foreach ($rows as $myrow) {
             $temp = array();
             $temp['title'] = $myrow['subject'];
-            if (is_null($temp['title'])) {
+            if ($temp['title'] === null) {
                 $temp['title'] = '';
             }
             push_lax_comcode(true);
@@ -577,7 +577,7 @@ class Forum_driver_smf2 extends Forum_driver_base
     public function post_url($id, $forum)
     {
         $topic_id = $this->db->query_select_value_if_there('messages', 'id_topic', array('id_msg' => $id));
-        if (is_null($topic_id)) {
+        if ($topic_id === null) {
             return '?';
         }
         $url = get_forum_base_url() . '/index.php?topic=' . strval($topic_id) . '.msg' . strval($id) . '#msg' . strval($id);
@@ -612,7 +612,7 @@ class Forum_driver_smf2 extends Forum_driver_base
             $id_list = 't.id_board=' . strval($name);
         } elseif (!is_array($name)) {
             $id = $this->forum_id_from_name($name);
-            if (is_null($id)) {
+            if ($id === null) {
                 return null;
             }
             $id_list = 't.id_board=' . strval($id);
@@ -811,7 +811,7 @@ class Forum_driver_smf2 extends Forum_driver_base
     public function get_post_count($member)
     {
         $c = $this->get_member_row_field($member, 'posts');
-        if (is_null($c)) {
+        if ($c === null) {
             return 0;
         }
         return $c;
@@ -837,7 +837,7 @@ class Forum_driver_smf2 extends Forum_driver_base
     public function is_banned($member)
     {
         $rows = $this->db->query('SELECT id_ban FROM ' . $this->db->get_table_prefix() . 'banned WHERE id_member=' . strval($member) . ' AND expire_time IS NULL OR expire_time>' . strval(time()), null, null, true);
-        if (is_null($rows)) {
+        if ($rows === null) {
             $rows = $this->db->query('SELECT id_ban FROM ' . $this->db->get_table_prefix() . 'ban_items i LEFT JOIN ' . $this->db->get_table_prefix() . 'ban_groups g on i.id_ban_group=g.id_ban_group WHERE id_member=' . strval($member) . ' AND expire_time IS NULL OR expire_time>' . strval(time()));
         }
         return count($rows) > 0;
@@ -860,7 +860,7 @@ class Forum_driver_smf2 extends Forum_driver_base
      */
     public function find_emoticons()
     {
-        if (!is_null($this->EMOTICON_CACHE)) {
+        if ($this->EMOTICON_CACHE !== null) {
             return $this->EMOTICON_CACHE;
         }
         $rows = $this->db->query_select('smileys', array('*'));
@@ -920,7 +920,7 @@ class Forum_driver_smf2 extends Forum_driver_base
         // Look for a skin according to our site name (we bother with this instead of 'default' because Composr itself likes to never choose a theme when forum-theme integration is on: all forum [via map] or all Composr seems cleaner, although it is complex)
         if ((!(strlen($def) > 0)) || (!file_exists(get_custom_file_base() . '/themes/' . $def))) {
             $obb = $this->db->query_select_value_if_there('themes', 'value', array('variable' => 'name', 'value' => get_site_name()));
-            if (!is_null($obb)) {
+            if ($obb !== null) {
                 $def = array_key_exists($obb, $map) ? $map[$obb] : $obb;
             }
         }
@@ -1141,7 +1141,7 @@ class Forum_driver_smf2 extends Forum_driver_base
         $out = array();
         $out['id'] = null;
 
-        if (is_null($userid)) {
+        if ($userid === null) {
             $rows = $this->db->query_select('members', array('*'), array('member_name' => $username), '', 1);
             if (array_key_exists(0, $rows)) {
                 $this->MEMBER_ROWS_CACHED[$rows[0]['id_member']] = $rows[0];
@@ -1242,7 +1242,7 @@ class Forum_driver_smf2 extends Forum_driver_base
     public function get_member_row_field($member, $field)
     {
         $row = $this->get_member_row($member);
-        return is_null($row) ? null : $row[$field];
+        return ($row === null) ? null : $row[$field];
     }
 
     /**

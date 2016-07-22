@@ -64,9 +64,9 @@ function xml_dump_script()
         $mysql_tables = array_keys($mysql_status);
         foreach ($tables as $table_name) {
             $default_selected =
-                (((!is_null($from)) && ($table_name >= $from)) ||
-                 ((!is_null($only)) && (in_array($table_name, explode(',', $only))))) &&
-                ((!is_null($skip)) || (!in_array($table_name, explode(',', $skip))));
+                ((($from !== null) && ($table_name >= $from)) ||
+                 (($only !== null) && (in_array($table_name, explode(',', $only))))) &&
+                (($skip !== null) || (!in_array($table_name, explode(',', $skip))));
 
             $missing = !in_array(get_table_prefix() . $table_name, $mysql_tables);
             $count_mismatch = !$missing && $chain_db->query_select_value($table_name, 'COUNT(*)') != $GLOBALS['SITE_DB']->query_select_value($table_name, 'COUNT(*)');
@@ -83,7 +83,7 @@ function xml_dump_script()
                     }
                     closedir($dh);
                 }
-                if (!is_null($last_m_time)) {
+                if ($last_m_time !== null) {
                     $mysql_time = strtotime($mysql_status[get_table_prefix() . $table_name]['Update_time']);
                     $date_mismatch = ($mysql_time < $last_m_time); // We can't do "!=" as last m-time for MySQL could well by the last sync time
                 }
@@ -135,7 +135,7 @@ function xml_dump_script()
 
     @header('Content-type: text/plain; charset=' . get_charset());
 
-    $sql = get_sql_dump(true, true, $from, is_null($skip) ? array() : explode(',', $skip), is_null($only) ? null : explode(',', $only));
+    $sql = get_sql_dump(true, true, $from, ($skip === null) ? array() : explode(',', $skip), ($only === null) ? null : explode(',', $only));
 
     $cnt = count($sql);
     foreach ($sql as $i => $s) {
@@ -194,11 +194,11 @@ function get_sql_dump($include_drops = false, $output_statuses = false, $from = 
     push_db_scope_check(false);
     push_query_limiting(false);
 
-    if (is_null($skip)) {
+    if ($skip === null) {
         $skip = array();
     }
 
-    if (is_null($conn)) {
+    if ($conn === null) {
         $conn = $GLOBALS['SITE_DB'];
     }
 
@@ -208,13 +208,13 @@ function get_sql_dump($include_drops = false, $output_statuses = false, $from = 
 
     // Tables
     foreach ($tables as $table_name => $fields) {
-        if ((!is_null($from)) && ($table_name < $from)) {
+        if (($from !== null) && ($table_name < $from)) {
             continue;
         }
         if (in_array($table_name, $skip)) {
             continue;
         }
-        if ((!is_null($only)) && (!in_array($table_name, $only))) {
+        if (($only !== null) && (!in_array($table_name, $only))) {
             continue;
         }
 
@@ -264,7 +264,7 @@ function get_sql_dump($include_drops = false, $output_statuses = false, $from = 
                             $values .= ', ';
                         }
 
-                        if (is_null($value)) {
+                        if ($value === null) {
                             $values .= 'NULL';
                         } else {
                             if (is_float($v)) {

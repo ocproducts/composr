@@ -63,7 +63,7 @@ class Hook_content_meta_aware_catalogue_category
             'edit_page_link_pattern' => '_SEARCH:cms_catalogues:_edit_category:_WILD',
             'view_category_page_link_pattern' => '_SEARCH:catalogues:category:_WILD',
             'add_url' => (function_exists('has_submit_permission') && has_submit_permission('mid', get_member(), get_ip_address(), 'cms_catalogues')) ? (get_module_zone('cms_catalogues') . ':cms_catalogues:add_category:catalogue_name=!') : null,
-            'archive_url' => ((!is_null($zone)) ? $zone : get_module_zone('catalogues')) . ':catalogues',
+            'archive_url' => (($zone !== null) ? $zone : get_module_zone('catalogues')) . ':catalogues',
 
             'support_url_monikers' => true,
 
@@ -123,6 +123,6 @@ class Hook_content_meta_aware_catalogue_category
     {
         require_code('catalogues');
 
-        return render_catalogue_category_box($row, $zone, $give_context, $include_breadcrumbs, is_null($root) ? null : intval($root), $attach_to_url_filter, $guid);
+        return render_catalogue_category_box($row, $zone, $give_context, $include_breadcrumbs, ($root === null) ? null : intval($root), $attach_to_url_filter, $guid);
     }
 }

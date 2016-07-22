@@ -93,7 +93,7 @@ function resource_fs_logging__start($level = 'notice')
 function resource_fs_logging($message, $type = 'warn')
 {
     global $RESOURCE_FS_LOGGER, $RESOURCE_FS_LOGGER_LEVEL;
-    if (!is_null($RESOURCE_FS_LOGGER)) {
+    if ($RESOURCE_FS_LOGGER !== null) {
         if (($type == 'inform') && ($RESOURCE_FS_LOGGER_LEVEL != 'inform')) {
             return;
         }
@@ -138,7 +138,7 @@ function get_resource_fs_record($resource_type, $resource_id)
     $resource_fs_ob = get_resource_commandr_fs_object($resource_type);
 
     $resource_fs_path = find_commandr_fs_filename_via_id($resource_type, $resource_id, true);
-    if (is_null($resource_fs_path)) {
+    if ($resource_fs_path === null) {
         return null;
     }
 
@@ -162,7 +162,7 @@ function get_resource_commandr_fs_object($resource_type)
 
     require_code('hooks/systems/commandr_fs/' . filter_naughty_harsh($fs_hook));
     $fs_object = object_factory('Hook_commandr_fs_' . filter_naughty_harsh($fs_hook), true);
-    if (is_null($fs_object)) {
+    if ($fs_object === null) {
         return null;
     }
     return $fs_object;
@@ -187,22 +187,22 @@ ACTUAL FILESYSTEM INTERACTION IS DONE VIA A RESOURCE-FS OBJECT (fetch that via t
 function generate_resource_fs_moniker($resource_type, $resource_id, $label = null, $new_guid = null, $definitely_new = false)
 {
     static $cache = array();
-    if (is_null($new_guid)) {
+    if ($new_guid === null) {
         if (isset($cache[$resource_type][$resource_id])) {
             return $cache[$resource_type][$resource_id];
         }
     }
 
     $resource_object = get_content_object($resource_type);
-    if (is_null($resource_object)) {
+    if ($resource_object === null) {
         fatal_exit('Cannot load content object for ' . $resource_type);
     }
     $resource_info = $resource_object->info();
     $resource_fs_hook = $resource_info['commandr_filesystem_hook'];
 
-    if (is_null($label)) {
+    if ($label === null) {
         list($label) = content_get_details($resource_type, $resource_id, true);
-        if (is_null($label)) {
+        if ($label === null) {
             return array(null, null, null);
         }
     }
@@ -212,9 +212,9 @@ function generate_resource_fs_moniker($resource_type, $resource_id, $label = nul
     $lookup = $definitely_new ? array() : $GLOBALS['SITE_DB']->query_select('alternative_ids', array('resource_moniker', 'resource_guid', 'resource_label'), array('resource_type' => $resource_type, 'resource_id' => $resource_id), '', 1);
     if (array_key_exists(0, $lookup)) {
         $no_exists_check_for = $lookup[0]['resource_moniker'];
-        $guid = is_null($new_guid) ? $lookup[0]['resource_guid'] : $new_guid;
+        $guid = ($new_guid === null) ? $lookup[0]['resource_guid'] : $new_guid;
 
-        if ((is_null($new_guid)) && ($lookup[0]['resource_label'] == $label)) {
+        if (($new_guid === null) && ($lookup[0]['resource_label'] == $label)) {
             $ret = array($no_exists_check_for, $guid, $lookup[0]['resource_label']);
             $cache[$resource_type][$resource_id] = $ret;
             return $ret;
@@ -222,7 +222,7 @@ function generate_resource_fs_moniker($resource_type, $resource_id, $label = nul
     } else {
         $no_exists_check_for = mixed();
         require_code('global4');
-        $guid = is_null($new_guid) ? generate_guid() : $new_guid;
+        $guid = ($new_guid === null) ? generate_guid() : $new_guid;
     }
 
     require_code('urls2');
@@ -236,7 +236,7 @@ function generate_resource_fs_moniker($resource_type, $resource_id, $label = nul
     }
     $test = mixed();
     do {
-        if (!is_null($no_exists_check_for)) {
+        if ($no_exists_check_for !== null) {
             if ($moniker == $no_exists_check_for) { // This one is okay, we know it is safe, and no need to change it
                 break;
             }
@@ -244,14 +244,14 @@ function generate_resource_fs_moniker($resource_type, $resource_id, $label = nul
 
         $where = array('resource_resource_fs_hook' => $resource_fs_hook, 'resource_moniker' => $moniker);
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('alternative_ids', 'resource_id', $where);
-        $ok = (is_null($test)) && ($moniker != '_folder'/*reserved*/);
+        $ok = ($test === null) && ($moniker != '_folder'/*reserved*/);
         if (!$ok) { // Oh dear, will pass to next iteration, but trying a new moniker
             $next_num++;
             $moniker = $moniker_origin . '_' . strval($next_num);
         }
     } while (!$ok);
 
-    if (($moniker !== $no_exists_check_for) || (!is_null($new_guid))) {
+    if (($moniker !== $no_exists_check_for) || ($new_guid !== null)) {
         $GLOBALS['SITE_DB']->query_delete('alternative_ids', array('resource_type' => $resource_type, 'resource_id' => $resource_id), '', 1);
 
         $GLOBALS['SITE_DB']->query_insert('alternative_ids', array(
@@ -304,14 +304,14 @@ function find_guid_via_id($resource_type, $resource_id)
 function find_commandr_fs_filename_via_id($resource_type, $resource_id, $include_subpath = false)
 {
     $resource_fs_ob = get_resource_commandr_fs_object($resource_type);
-    if (is_null($resource_fs_ob)) {
+    if ($resource_fs_ob === null) {
         warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
     }
     $filename = $resource_fs_ob->convert_id_to_filename($resource_type, $resource_id);
-    if (!is_null($filename)) {
+    if ($filename !== null) {
         if ($include_subpath) {
             $subpath = $resource_fs_ob->search($resource_type, $resource_id, true);
-            if (is_null($subpath)) {
+            if ($subpath === null) {
                 return null;
             }
             if ($subpath != '') {
@@ -390,7 +390,7 @@ function find_id_via_label($resource_type, $_resource_label, $subpath = null)
     }
 
     $commandr_fs_ob = get_resource_commandr_fs_object($resource_type);
-    if (is_null($commandr_fs_ob)) {
+    if ($commandr_fs_ob === null) {
         fatal_exit('Cannot load resource-fs object for ' . $resource_type);
     }
 
@@ -500,7 +500,7 @@ function find_id_via_commandr_fs_filename($resource_type, $filename)
 {
     $resource_fs_ob = get_resource_commandr_fs_object($resource_type);
     $test = $resource_fs_ob->convert_filename_to_id($filename, $resource_type);
-    if (is_null($test)) {
+    if ($test === null) {
         return null;
     }
     list(, $resource_id) = $test;
@@ -535,11 +535,11 @@ function table_to_json($table, $fields_to_skip = null, $where_map = null)
  */
 function table_to_portable_rows($table, $fields_to_skip = null, $where_map = null, $db = null)
 {
-    if (is_null($where_map)) {
+    if ($where_map === null) {
         $where_map = array();
     }
 
-    if (is_null($db)) {
+    if ($db === null) {
         $db = (substr($table, 0, 2) == 'f_' && get_forum_type() == 'cns') ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
     }
 
@@ -549,7 +549,7 @@ function table_to_portable_rows($table, $fields_to_skip = null, $where_map = nul
 
     $relation_map = get_relation_map_for_table($table);
 
-    if (is_null($fields_to_skip)) {
+    if ($fields_to_skip === null) {
         $fields_to_skip = array();
     }
     $fields_to_skip = array_merge($fields_to_skip, array_keys($where_map));
@@ -593,7 +593,7 @@ function table_from_json($table, $json, $extra_field_data, $replace_mode)
  */
 function table_from_portable_rows($table, $rows, $extra_field_data, $replace_mode, $db = null)
 {
-    if (is_null($db)) {
+    if ($db === null) {
         $db = (substr($table, 0, 2) == 'f_' && get_forum_type() == 'cns') ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
     }
 
@@ -656,7 +656,7 @@ function table_from_portable_rows($table, $rows, $extra_field_data, $replace_mod
     $relation_map = get_relation_map_for_table($table);
 
     foreach ($rows as $row) {
-        if (!is_null($extra_field_data)) {
+        if ($extra_field_data !== null) {
             $row += $extra_field_data;
         }
 
@@ -705,7 +705,7 @@ ROW LEVEL
  */
 function table_row_to_portable_row($row, $db_fields, $relation_map, $db = null)
 {
-    if (is_null($db)) {
+    if ($db === null) {
         $db = $GLOBALS['SITE_DB'];
     }
 
@@ -763,7 +763,7 @@ function table_row_to_portable_row($row, $db_fields, $relation_map, $db = null)
  */
 function table_row_from_portable_row($row, $db_fields, $relation_map, $db = null)
 {
-    if (is_null($db)) {
+    if ($db === null) {
         $db = $GLOBALS['SITE_DB'];
     }
 
@@ -822,7 +822,7 @@ FIELD LEVEL
  */
 function remap_time_as_portable($timestamp)
 {
-    if (is_null($timestamp)) {
+    if ($timestamp === null) {
         return null;
     }
 
@@ -837,7 +837,7 @@ function remap_time_as_portable($timestamp)
  */
 function remap_portable_as_time($portable_data)
 {
-    if (is_null($portable_data)) {
+    if ($portable_data === null) {
         return null;
     }
 
@@ -852,7 +852,7 @@ function remap_portable_as_time($portable_data)
  */
 function remap_urlpath_as_portable($urlpath)
 {
-    if (is_null($urlpath)) {
+    if ($urlpath === null) {
         return null;
     }
 
@@ -909,7 +909,7 @@ function remap_portable_as_urlpath($portable_data, $ignore_conflicts = false)
  */
 function remap_foreign_key_as_portable($_table_referenced, $id)
 {
-    if (is_null($id)) {
+    if ($id === null) {
         return null;
     }
 
@@ -917,7 +917,7 @@ function remap_foreign_key_as_portable($_table_referenced, $id)
 
     $commandr_filesystem_hook = convert_composr_type_codes('table', $table_referenced, 'commandr_filesystem_hook');
 
-    if (is_null($commandr_filesystem_hook)) {
+    if ($commandr_filesystem_hook === null) {
         return $id; // No special Resource-fs to tie to, so we'll leave it alone
     }
 
@@ -963,7 +963,7 @@ function remap_portable_as_foreign_key($_table_referenced, $portable_data)
  */
 function remap_resource_id_as_portable($resource_type, $resource_id)
 {
-    if (is_null($resource_id)) {
+    if ($resource_id === null) {
         return null;
     }
 
@@ -974,11 +974,11 @@ function remap_resource_id_as_portable($resource_type, $resource_id)
     list($moniker, $guid, $label) = generate_resource_fs_moniker($resource_type, $resource_id);
 
     $resource_fs_ob = get_resource_commandr_fs_object($resource_type);
-    if (is_null($resource_fs_ob)) {
+    if ($resource_fs_ob === null) {
         return null;
     }
     $subpath = $resource_fs_ob->search($resource_type, $resource_id, true);
-    if (is_null($subpath)) {
+    if ($subpath === null) {
         $subpath = '';
     }
 
@@ -1008,7 +1008,7 @@ function remap_portable_as_resource_id($resource_type, $portable_data)
 
     // Ideally, find via GUID
     $resource_id = array_key_exists('guid', $portable_data) ? find_id_via_guid($portable_data['guid']) : null;
-    if (!is_null($resource_id)) {
+    if ($resource_id !== null) {
         return $resource_id;
     }
 

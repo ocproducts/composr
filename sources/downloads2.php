@@ -119,7 +119,7 @@ function dload_script()
             }
 
             // Check they haven't downloaded this before (they only get charged once - maybe they are resuming)
-            if (is_null($got_before)) {
+            if ($got_before === null) {
                 $cost = $myrow['download_cost'];
 
                 $member = get_member();
@@ -174,7 +174,7 @@ function dload_script()
             log_hack_attack_and_exit('HEADER_SPLIT_HACK');
         }
         header('Location: ' . str_replace("\r", '', str_replace("\n", '', $full)));
-        log_download($id, 0, !is_null($got_before)); // Bandwidth used is 0 for an external download
+        log_download($id, 0, $got_before !== null); // Bandwidth used is 0 for an external download
         return;
     }
 
@@ -188,7 +188,7 @@ function dload_script()
         warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
     }
     $size = filesize($_full);
-    if (is_null($got_before)) {
+    if ($got_before === null) {
         $bandwidth = $GLOBALS['SITE_DB']->query_value_if_there('SELECT SUM(file_size) AS answer FROM ' . get_table_prefix() . 'download_logging l LEFT JOIN ' . get_table_prefix() . 'download_downloads d ON l.id=d.id WHERE date_and_time>' . strval(time() - 24 * 60 * 60 * 32) . ' AND date_and_time<=' . strval(time()));
         if ((($bandwidth + floatval($size)) > (floatval(get_option('maximum_download')) * 1024 * 1024 * 1024)) && (!has_privilege(get_member(), 'bypass_bandwidth_restriction'))) {
             warn_exit(do_lang_tempcode('TOO_MUCH_DOWNLOAD'));
@@ -204,7 +204,7 @@ function dload_script()
     header('Pragma: private');
     header('Cache-Control: private');
     header('Expires: ' . gmdate('D, d M Y H:i:s', time() + 60 * 60 * 24 * 365) . ' GMT');
-    $time = is_null($myrow['edit_date']) ? $myrow['add_date'] : $myrow['edit_date'];
+    $time = ($myrow['edit_date'] === null) ? $myrow['add_date'] : $myrow['edit_date'];
     $time = max($time, filemtime($_full));
     header('Last-Modified: ' . gmdate('D, d M Y H:i:s', $time) . ' GMT');
 
@@ -254,7 +254,7 @@ function dload_script()
     }
 
     if ($from == 0) {
-        log_download($id, $size, !is_null($got_before));
+        log_download($id, $size, $got_before !== null);
     }
 
     // Send actual data
@@ -307,7 +307,7 @@ function add_download_category($category, $parent_id, $description, $notes = '',
     require_code('global4');
     prevent_double_submit('ADD_DOWNLOAD_CATEGORY', null, $category);
 
-    if (is_null($add_time)) {
+    if ($add_time === null) {
         $add_time = time();
     }
 
@@ -319,7 +319,7 @@ function add_download_category($category, $parent_id, $description, $notes = '',
     );
     $map += insert_lang('category', $category, 2);
     $map += insert_lang_comcode('description', $description, 2);
-    if (!is_null($id)) {
+    if ($id !== null) {
         $map['id'] = $id;
     }
     $id = $GLOBALS['SITE_DB']->query_insert('download_categories', $map, true);
@@ -338,7 +338,7 @@ function add_download_category($category, $parent_id, $description, $notes = '',
         seo_meta_set_for_explicit('downloads_category', strval($id), $meta_keywords, $meta_description);
     }
 
-    if (!is_null($parent_id)) {
+    if ($parent_id !== null) {
         require_code('notifications2');
         copy_notifications_to_new_child('download', strval($parent_id), strval($id));
     }
@@ -368,7 +368,7 @@ function add_download_category($category, $parent_id, $description, $notes = '',
 function edit_download_category($category_id, $category, $parent_id, $description, $notes, $rep_image, $meta_keywords, $meta_description, $add_time = null)
 {
     $under_category_id = $parent_id;
-    while ((!is_null($under_category_id)) && ($under_category_id != INTEGER_MAGIC_NULL)) {
+    while (($under_category_id !== null) && ($under_category_id != INTEGER_MAGIC_NULL)) {
         if ($category_id == $under_category_id) {
             warn_exit(do_lang_tempcode('OWN_PARENT_ERROR', 'download_category'));
         }
@@ -395,12 +395,12 @@ function edit_download_category($category_id, $category, $parent_id, $descriptio
     );
     $update_map += lang_remap('category', $_category, $category);
     $update_map += lang_remap_comcode('description', $_description, $description);
-    if (!is_null($rep_image)) {
+    if ($rep_image !== null) {
         $update_map['rep_image'] = $rep_image;
         require_code('files2');
         delete_upload('uploads/repimages', 'download_categories', 'rep_image', 'id', $category_id, $rep_image);
     }
-    if (!is_null($add_time)) {
+    if ($add_time !== null) {
         $update_map['add_date'] = $add_time;
     }
     $GLOBALS['SITE_DB']->query_update('download_categories', $update_map, array('id' => $category_id), '', 1);
@@ -492,13 +492,13 @@ function create_data_mash($url, $data = null, $extension = null, $direct_path = 
         return ''; // Some cowardice... don't want to tempt fate
     }
 
-    if (is_null($extension)) {
+    if ($extension === null) {
         $extension = get_file_extension($url);
     }
 
     $tmp_file = null;
 
-    if (is_null($data)) {
+    if ($data === null) {
         if (($direct_path) || (url_is_local($url))) {
             $actual_path = $direct_path ? $url : get_custom_file_base() . '/' . rawurldecode($url);
 
@@ -549,7 +549,7 @@ function create_data_mash($url, $data = null, $extension = null, $direct_path = 
             }
 
             $data = http_download_file($url, 3 * 1024 * 1024, false); // 3MB is enough
-            if (is_null($data)) {
+            if ($data === null) {
                 return '';
             }
         }
@@ -614,7 +614,7 @@ function create_data_mash($url, $data = null, $extension = null, $direct_path = 
                         continue; // 3MB is enough
                     }
                     $_entrya = tar_get_file($myfile_tar, $entry['path']);
-                    if (!is_null($_entrya)) {
+                    if ($_entrya !== null) {
                         $mash .= ' ' . create_data_mash($entry_name, $_entrya['data']);
                         if (strlen($mash) >= 3 * 1024 * 1024) {
                             break; // 3MB is enough
@@ -717,7 +717,7 @@ function create_data_mash($url, $data = null, $extension = null, $direct_path = 
             }
             break;
         case 'pdf':
-            if ((str_replace(array('on', 'true', 'yes'), array('1', '1', '1'), strtolower(ini_get('safe_mode'))) != '1') && (php_function_allowed('shell_exec')) && (!is_null($tmp_file))) {
+            if ((str_replace(array('on', 'true', 'yes'), array('1', '1', '1'), strtolower(ini_get('safe_mode'))) != '1') && (php_function_allowed('shell_exec')) && ($tmp_file !== null)) {
                 $enc = (get_charset() == 'utf-8') ? ' -enc UTF-8' : '';
                 $path = 'pdftohtml -i -noframes -stdout -hidden' . $enc . ' -q -xml ' . escapeshellarg_wrap($tmp_file);
                 if (stripos(PHP_OS, 'win') !== false) {
@@ -863,11 +863,11 @@ function add_download($category_id, $name, $url, $description, $author, $additio
     require_code('global4');
     prevent_double_submit('ADD_DOWNLOAD', null, $name);
 
-    if (is_null($add_date)) {
+    if ($add_date === null) {
         $add_date = time();
     }
 
-    if (is_null($submitter)) {
+    if ($submitter === null) {
         $submitter = get_member();
     }
 
@@ -913,7 +913,7 @@ function add_download($category_id, $name, $url, $description, $author, $additio
     $map += insert_lang_comcode('description', $description, 3);
     $map += insert_lang_comcode('additional_details', $additional_details, 3);
 
-    if (!is_null($id)) {
+    if ($id !== null) {
         $map['id'] = $id;
         $GLOBALS['SITE_DB']->query_insert('download_downloads', $map);
     } else {
@@ -934,7 +934,7 @@ function add_download($category_id, $name, $url, $description, $author, $additio
     // Make its gallery
     if ((addon_installed('galleries')) && (!running_script('stress_test_loader'))) {
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('galleries', 'name', array('name' => 'download_' . strval($id)));
-        if (is_null($test)) {
+        if ($test === null) {
             require_lang('downloads');
             require_code('galleries2');
             $download_gallery_root = get_option('download_gallery_root');
@@ -989,7 +989,7 @@ function add_download($category_id, $name, $url, $description, $author, $additio
  */
 function set_download_gallery_permissions($id, $submitter = null)
 {
-    if (is_null($submitter)) {
+    if ($submitter === null) {
         $submitter = $GLOBALS['SITE_DB']->query_select_value('download_downloads', 'submitter', array('id' => $id));
     }
 
@@ -1049,7 +1049,7 @@ function set_download_gallery_permissions($id, $submitter = null)
  */
 function edit_download($id, $category_id, $name, $url, $description, $author, $additional_details, $out_mode_id, $default_pic, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $original_filename, $file_size, $cost, $submitter_gets_points, $licence, $meta_keywords, $meta_description, $edit_time = null, $add_time = null, $views = null, $submitter = null, $num_downloads = null, $null_is_literal = false, $url_redirect = '')
 {
-    if (is_null($edit_time)) {
+    if ($edit_time === null) {
         $edit_time = $null_is_literal ? null : time();
     }
 
@@ -1121,16 +1121,16 @@ function edit_download($id, $category_id, $name, $url, $description, $author, $a
     $update_map += lang_remap_comcode('additional_details', $myrow['additional_details'], $additional_details);
 
     $update_map['edit_date'] = $edit_time;
-    if (!is_null($add_time)) {
+    if ($add_time !== null) {
         $update_map['add_date'] = $add_time;
     }
-    if (!is_null($views)) {
+    if ($views !== null) {
         $update_map['download_views'] = $views;
     }
-    if (!is_null($submitter)) {
+    if ($submitter !== null) {
         $update_map['submitter'] = $submitter;
     }
-    if (!is_null($num_downloads)) {
+    if ($num_downloads !== null) {
         $update_map['num_downloads'] = $num_downloads;
     }
 
@@ -1165,7 +1165,7 @@ function edit_download($id, $category_id, $name, $url, $description, $author, $a
         require_code('galleries2');
         $download_gallery_root = get_option('download_gallery_root');
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('galleries', 'parent_id', array('name' => 'download_' . strval($id)));
-        if (!is_null($test)) {
+        if ($test !== null) {
             edit_gallery('download_' . strval($id), 'download_' . strval($id), do_lang('GALLERY_FOR_DOWNLOAD', $name), '', '', $download_gallery_root);
         }
     }
@@ -1229,7 +1229,7 @@ function delete_download($id, $leave = false)
         $name = 'download_' . strval($id);
         require_code('galleries2');
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('galleries', 'parent_id', array('name' => 'download_' . strval($id)));
-        if (!is_null($test)) {
+        if ($test !== null) {
             delete_gallery($name);
         }
     }

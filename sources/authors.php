@@ -29,7 +29,7 @@
  */
 function render_author_box($row, $zone = '_SEARCH', $give_context = true, $guid = '')
 {
-    if (is_null($row)) { // Should never happen, but we need to be defensive
+    if ($row === null) { // Should never happen, but we need to be defensive
         return new Tempcode();
     }
 
@@ -116,7 +116,7 @@ function authors_script()
 function get_author_id_from_name($author)
 {
     $handle = $GLOBALS['SITE_DB']->query_select_value_if_there('authors', 'member_id', array('author' => $author));
-    if (is_null($handle)) {
+    if ($handle === null) {
         $handle = $GLOBALS['FORUM_DRIVER']->get_member_from_username($author);
     }
     return $handle;
@@ -135,7 +135,7 @@ function get_author_id_from_name($author)
  */
 function add_author($author, $url, $member_id, $description, $skills, $meta_keywords = '', $meta_description = '')
 {
-    log_it('DEFINE_AUTHOR', $author, is_null($member_id) ? '' : strval($member_id));
+    log_it('DEFINE_AUTHOR', $author, ($member_id === null) ? '' : strval($member_id));
 
     $rows = $GLOBALS['SITE_DB']->query_select('authors', array('description', 'skills'), array('author' => $author), '', 1);
     if (array_key_exists(0, $rows)) {

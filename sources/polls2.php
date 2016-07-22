@@ -73,7 +73,7 @@ function add_poll($question, $a1, $a2, $a3 = '', $a4 = '', $a5 = '', $a6 = '', $
     require_code('global4');
     prevent_double_submit('ADD_POLL', null, $question);
 
-    if (is_null($num_options)) {
+    if ($num_options === null) {
         $num_options = 2;
         if ($a3 != '') {
             $num_options++;
@@ -106,10 +106,10 @@ function add_poll($question, $a1, $a2, $a3 = '', $a4 = '', $a5 = '', $a6 = '', $
         $GLOBALS['SITE_DB']->query_update('poll', array('is_current' => 0), array('is_current' => 1), '', 1);
     }
 
-    if (is_null($time)) {
+    if ($time === null) {
         $time = time();
     }
-    if (is_null($submitter)) {
+    if ($submitter === null) {
         $submitter = get_member();
     }
 
@@ -195,7 +195,7 @@ function add_poll($question, $a1, $a2, $a3 = '', $a4 = '', $a5 = '', $a6 = '', $
  */
 function edit_poll($id, $question, $a1, $a2, $a3, $a4, $a5, $a6, $a7, $a8, $a9, $a10, $num_options, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $edit_time = null, $add_time = null, $views = null, $submitter = null, $null_is_literal = false)
 {
-    if (is_null($edit_time)) {
+    if ($edit_time === null) {
         $edit_time = $null_is_literal ? null : time();
     }
 
@@ -241,13 +241,13 @@ function edit_poll($id, $question, $a1, $a2, $a3, $a4, $a5, $a6, $a7, $a8, $a9, 
     $update_map += lang_remap_comcode('option10', $_a10, $a10);
 
     $update_map['edit_date'] = $edit_time;
-    if (!is_null($add_time)) {
+    if ($add_time !== null) {
         $update_map['add_time'] = $add_time;
     }
-    if (!is_null($views)) {
+    if ($views !== null) {
         $update_map['poll_views'] = $views;
     }
-    if (!is_null($submitter)) {
+    if ($submitter !== null) {
         $update_map['submitter'] = $submitter;
     }
 

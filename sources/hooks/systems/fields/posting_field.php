@@ -100,7 +100,7 @@ class Hook_fields_posting_field
      */
     public function get_field_inputter($_cf_name, $_cf_description, $field, $actual_value, $new, $last = true)
     {
-        if (is_null($actual_value)) {
+        if ($actual_value === null) {
             $actual_value = ''; // Plug anomaly due to unusual corruption
         }
 
@@ -140,7 +140,7 @@ class Hook_fields_posting_field
 
         push_lax_comcode(true);
         $GLOBALS['COMCODE_PARSE_URLS_CHECKED'] = 100; // FUDGE: Little hack to stop it checking any URLs
-        /*We want to always reparse with semi-parse mode if (is_null($default_parsed)) */
+        /*We want to always reparse with semi-parse mode if ($default_parsed === null) */
         $default_parsed = comcode_to_tempcode($actual_value, null, false, null, null, COMCODE_SEMIPARSE_MODE);
         pop_lax_comcode();
 
@@ -161,7 +161,7 @@ class Hook_fields_posting_field
             'COMCODE_EDITOR' => $comcode_editor,
             'COMCODE_EDITOR_SMALL' => $comcode_editor_small,
             'CLASS' => $class,
-            'COMCODE_URL' => is_null($help_zone) ? new Tempcode() : build_url(array('page' => 'userguide_comcode'), $help_zone),
+            'COMCODE_URL' => ($help_zone === null) ? new Tempcode() : build_url(array('page' => 'userguide_comcode'), $help_zone),
             'EMOTICON_CHOOSER' => $emoticon_chooser,
             'POST' => $actual_value,
             'DEFAULT_PARSED' => $default_parsed,

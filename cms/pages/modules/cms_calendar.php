@@ -383,7 +383,7 @@ class Module_cms_calendar extends Standard_crud_module
 
         require_code('form_templates');
         $only_owned = has_privilege(get_member(), 'edit_lowrange_content', 'cms_calendar') ? null : get_member();
-        list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering, (is_null($only_owned) ? array() : array('e_submitter' => $only_owned)));
+        list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering, (($only_owned === null) ? array() : array('e_submitter' => $only_owned)));
         $types = array();
         foreach ($rows as $row) {
             $edit_url = build_url($url_map + array('id' => $row['id']), '_SELF');
@@ -395,9 +395,9 @@ class Module_cms_calendar extends Standard_crud_module
                 $types[$row['e_type']] = $type;
             }
 
-            $start_day_of_month = find_concrete_day_of_month($row['e_start_year'], $row['e_start_month'], $row['e_start_day'], $row['e_start_monthly_spec_type'], is_null($row['e_start_hour']) ? find_timezone_start_hour_in_utc($row['e_timezone'], $row['e_start_year'], $row['e_start_month'], $row['e_start_day'], $row['e_start_monthly_spec_type']) : $row['e_start_hour'], is_null($row['e_start_minute']) ? find_timezone_start_minute_in_utc($row['e_timezone'], $row['e_start_year'], $row['e_start_month'], $row['e_start_day'], $row['e_start_monthly_spec_type']) : $row['e_start_minute'], $row['e_timezone'], $row['e_do_timezone_conv'] == 1);
+            $start_day_of_month = find_concrete_day_of_month($row['e_start_year'], $row['e_start_month'], $row['e_start_day'], $row['e_start_monthly_spec_type'], ($row['e_start_hour'] === null) ? find_timezone_start_hour_in_utc($row['e_timezone'], $row['e_start_year'], $row['e_start_month'], $row['e_start_day'], $row['e_start_monthly_spec_type']) : $row['e_start_hour'], ($row['e_start_minute'] === null) ? find_timezone_start_minute_in_utc($row['e_timezone'], $row['e_start_year'], $row['e_start_month'], $row['e_start_day'], $row['e_start_monthly_spec_type']) : $row['e_start_minute'], $row['e_timezone'], $row['e_do_timezone_conv'] == 1);
             $time_raw = mktime($row['e_start_hour'], $row['e_start_minute'], 0, $row['e_start_month'], $start_day_of_month, $row['e_start_year']);
-            if (is_null($row['e_start_hour'])) {
+            if ($row['e_start_hour'] === null) {
                 $date = get_timezoned_date($time_raw);
             } else {
                 $date = get_timezoned_date_time($time_raw);
@@ -466,13 +466,13 @@ class Module_cms_calendar extends Standard_crud_module
 
         unset($content);
 
-        if ((is_null($timezone)) || ($timezone == '')) {
+        if (($timezone === null) || ($timezone == '')) {
             $timezone = get_users_timezone();
         }
 
         require_code('form_templates');
 
-        if (is_null($type)) { // Adding one
+        if ($type === null) { // Adding one
             $date = get_param_string('date', '');
             $start_hour = null;
             $start_minute = null;
@@ -496,7 +496,7 @@ class Module_cms_calendar extends Standard_crud_module
             $type = get_param_integer('e_type', null);
 
             // Get a nice default title for the event
-            $calendar_member_id = is_null($member_calendar) ? get_member() : $member_calendar;
+            $calendar_member_id = ($member_calendar === null) ? get_member() : $member_calendar;
             $index = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'calendar_events WHERE e_submitter=' . strval($calendar_member_id) . ' OR e_member_calendar=' . strval($calendar_member_id)) + 1;
             $calendar_username = $GLOBALS['FORUM_DRIVER']->get_username($calendar_member_id, true);
             $abbreviation = get_ordinal_suffix($index);
@@ -507,22 +507,22 @@ class Module_cms_calendar extends Standard_crud_module
             $adding = false;
         }
 
-        if (is_null($type)) {
+        if ($type === null) {
             $_type = get_value('default_event_type');
-            if (is_null($_type)) {
+            if ($_type === null) {
                 $type = db_get_first_id() + 1;
             } else {
                 $type = intval($_type);
             }
         }
-        if (is_null($start_month)) {
+        if ($start_month === null) {
             $start_year = intval(date('Y'));
             $start_month = intval(date('m'));
             $start_day = intval(date('d'));
             $start_hour = null;
             $start_minute = null;
         }
-        if ((is_null($end_year) || is_null($end_month) || is_null($end_day)) && ($adding)) {
+        if ((($end_year === null) || ($end_month === null) || ($end_day === null)) && ($adding)) {
             $end_year = null;//$start_year;
             $end_month = null;//$start_month;
             $end_day = null;//$start_day;
@@ -536,11 +536,11 @@ class Module_cms_calendar extends Standard_crud_module
         $fields->attach(form_input_line(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_TITLE'), 'title', $title, true));
 
         // Dates
-        $fields->attach(form_input_tick(do_lang_tempcode('ALL_DAY_EVENT'), do_lang_tempcode('DESCRIPTION_ALL_DAY_EVENT'), 'all_day_event', is_null($start_hour)));
-        $start_day_of_month = find_concrete_day_of_month($start_year, $start_month, $start_day, $start_monthly_spec_type, is_null($start_hour) ? find_timezone_start_hour_in_utc($timezone, $start_year, $start_month, $start_day, $start_monthly_spec_type) : $start_hour, is_null($start_minute) ? find_timezone_start_minute_in_utc($timezone, $start_year, $start_month, $start_day, $start_monthly_spec_type) : $start_minute, $timezone, $do_timezone_conv == 1);
-        $fields->attach(form_input_date(do_lang_tempcode('DATE_TIME'), '', 'start', true, false, true, array(is_null($start_minute) ? find_timezone_start_minute_in_utc($timezone, $start_year, $start_month, $start_day, $start_monthly_spec_type) : $start_minute, is_null($start_hour) ? (find_timezone_start_hour_in_utc($timezone, $start_year, $start_month, $start_day, $start_monthly_spec_type) + 9) : $start_hour, $start_month, $start_day_of_month, $start_year), 120, intval(date('Y')) - 100, null, true, $timezone, get_param_string('date', '') == ''));
-        $end_day_of_month = find_concrete_day_of_month($end_year, $end_month, $end_day, $end_monthly_spec_type, is_null($end_hour) ? find_timezone_end_hour_in_utc($timezone, $end_year, $end_month, $end_day, $end_monthly_spec_type) : $end_hour, is_null($end_minute) ? find_timezone_end_minute_in_utc($timezone, $end_year, $end_month, $end_day, $end_monthly_spec_type) : $end_minute, $timezone, $do_timezone_conv == 1);
-        $fields->attach(form_input_date(do_lang_tempcode('END_DATE_TIME'), do_lang_tempcode('DESCRIPTION_END_DATE_TIME'), 'end', false, is_null($end_year), true, array(is_null($end_minute) ? find_timezone_end_minute_in_utc($timezone, $end_year, $end_month, $end_day, $end_monthly_spec_type) : $end_minute, is_null($end_hour) ? find_timezone_end_hour_in_utc($timezone, $end_year, $end_month, $end_day, $end_monthly_spec_type) : $end_hour, $end_month, $end_day_of_month, $end_year), 120, intval(date('Y')) - 100, null, true, $timezone));
+        $fields->attach(form_input_tick(do_lang_tempcode('ALL_DAY_EVENT'), do_lang_tempcode('DESCRIPTION_ALL_DAY_EVENT'), 'all_day_event', ($start_hour === null)));
+        $start_day_of_month = find_concrete_day_of_month($start_year, $start_month, $start_day, $start_monthly_spec_type, ($start_hour === null) ? find_timezone_start_hour_in_utc($timezone, $start_year, $start_month, $start_day, $start_monthly_spec_type) : $start_hour, ($start_minute === null) ? find_timezone_start_minute_in_utc($timezone, $start_year, $start_month, $start_day, $start_monthly_spec_type) : $start_minute, $timezone, $do_timezone_conv == 1);
+        $fields->attach(form_input_date(do_lang_tempcode('DATE_TIME'), '', 'start', true, false, true, array(($start_minute === null) ? find_timezone_start_minute_in_utc($timezone, $start_year, $start_month, $start_day, $start_monthly_spec_type) : $start_minute, ($start_hour === null) ? (find_timezone_start_hour_in_utc($timezone, $start_year, $start_month, $start_day, $start_monthly_spec_type) + 9) : $start_hour, $start_month, $start_day_of_month, $start_year), 120, intval(date('Y')) - 100, null, true, $timezone, get_param_string('date', '') == ''));
+        $end_day_of_month = find_concrete_day_of_month($end_year, $end_month, $end_day, $end_monthly_spec_type, ($end_hour === null) ? find_timezone_end_hour_in_utc($timezone, $end_year, $end_month, $end_day, $end_monthly_spec_type) : $end_hour, ($end_minute === null) ? find_timezone_end_minute_in_utc($timezone, $end_year, $end_month, $end_day, $end_monthly_spec_type) : $end_minute, $timezone, $do_timezone_conv == 1);
+        $fields->attach(form_input_date(do_lang_tempcode('END_DATE_TIME'), do_lang_tempcode('DESCRIPTION_END_DATE_TIME'), 'end', false, ($end_year === null), true, array(($end_minute === null) ? find_timezone_end_minute_in_utc($timezone, $end_year, $end_month, $end_day, $end_monthly_spec_type) : $end_minute, ($end_hour === null) ? find_timezone_end_hour_in_utc($timezone, $end_year, $end_month, $end_day, $end_monthly_spec_type) : $end_hour, $end_month, $end_day_of_month, $end_year), 120, intval(date('Y')) - 100, null, true, $timezone));
 
         // Type
         $type_list = create_selection_list_event_types($type);
@@ -549,7 +549,7 @@ class Module_cms_calendar extends Standard_crud_module
         // Member calendar
         $member_calendar = get_param_integer('member_id', $member_calendar);
         if (has_privilege(get_member(), 'calendar_add_to_others') || $member_calendar == get_member()) {
-            $_member_calendar = is_null($member_calendar) ? '' : $GLOBALS['FORUM_DRIVER']->get_username($member_calendar);
+            $_member_calendar = ($member_calendar === null) ? '' : $GLOBALS['FORUM_DRIVER']->get_username($member_calendar);
             $fields->attach(form_input_username(do_lang_tempcode('MEMBER_CALENDAR'), do_lang_tempcode('DESCRIPTION_MEMBER_CALENDAR'), 'member_calendar', $_member_calendar, !has_privilege(get_member(), 'add_public_events')));
         }
 
@@ -642,16 +642,16 @@ class Module_cms_calendar extends Standard_crud_module
 
         // Metadata
         require_code('seo2');
-        $seo_fields = seo_get_fields($this->seo_type, is_null($id) ? null : strval($id), false);
+        $seo_fields = seo_get_fields($this->seo_type, ($id === null) ? null : strval($id), false);
         require_code('feedback2');
         $feedback_fields = feedback_fields($this->content_type, $allow_rating == 1, $allow_comments == 1, $allow_trackbacks == 1, false, $notes, $allow_comments == 2, false, true, false);
-        $fields2->attach(metadata_get_fields('event', is_null($id) ? null : strval($id), false, null, ($seo_fields->is_empty() && $feedback_fields->is_empty()) ? METADATA_HEADER_YES : METADATA_HEADER_FORCE));
+        $fields2->attach(metadata_get_fields('event', ($id === null) ? null : strval($id), false, null, ($seo_fields->is_empty() && $feedback_fields->is_empty()) ? METADATA_HEADER_YES : METADATA_HEADER_FORCE));
         $fields2->attach($seo_fields);
         $fields2->attach($feedback_fields);
 
         if (addon_installed('content_privacy')) {
             require_code('content_privacy2');
-            if (is_null($id)) {
+            if ($id === null) {
                 $fields2->attach(get_privacy_form_fields('event'));
             } else {
                 $fields2->attach(get_privacy_form_fields('event', strval($id)));
@@ -659,7 +659,7 @@ class Module_cms_calendar extends Standard_crud_module
         }
 
         if (addon_installed('content_reviews')) {
-            $fields2->attach(content_review_get_fields('event', is_null($id) ? null : strval($id)));
+            $fields2->attach(content_review_get_fields('event', ($id === null) ? null : strval($id)));
         }
 
         // Relay control parameters
@@ -718,13 +718,13 @@ class Module_cms_calendar extends Standard_crud_module
         } else {
             $member_calendar = mixed();
         }
-        if ((!has_privilege(get_member(), 'add_public_events')) && (is_null($member_calendar))) {
+        if ((!has_privilege(get_member(), 'add_public_events')) && ($member_calendar === null)) {
             warn_exit(do_lang_tempcode('MEMBER_NO_EXIST'));
         }
 
         $start_monthly_spec_type = post_param_string('start_monthly_spec_type', post_param_string('monthly_spec_type', 'day_of_month')); // We actually don't suppose separate spec-types for the ends and starts in the UI
         $start = post_param_date('start');
-        if (is_null($start)) {
+        if ($start === null) {
             $start_year = INTEGER_MAGIC_NULL;
             $start_month = INTEGER_MAGIC_NULL;
             $start_day = INTEGER_MAGIC_NULL;
@@ -764,7 +764,7 @@ class Module_cms_calendar extends Standard_crud_module
         } else {
             $end_monthly_spec_type = post_param_string('end_monthly_spec_type', $start_monthly_spec_type);
             $end = post_param_date('end');
-            if (!is_null($end)) {
+            if ($end !== null) {
                 if (strpos($end_monthly_spec_type, 'dow') === false) {
                     $end_year = intval(date('Y', $end));
                     $end_month = intval(date('m', $end));
@@ -834,7 +834,7 @@ class Module_cms_calendar extends Standard_crud_module
     public function get_cat($id)
     {
         $temp = $GLOBALS['SITE_DB']->query_select_value_if_there('calendar_events', 'e_type', array('id' => $id));
-        if (is_null($temp)) {
+        if ($temp === null) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'event'));
         }
         return $temp;
@@ -895,7 +895,7 @@ class Module_cms_calendar extends Standard_crud_module
         $metadata = actual_metadata_get_fields('event', null);
 
         $conflicts = detect_conflicts(get_member(), null, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year, $end_month, $end_day, $start_monthly_spec_type, $end_hour, $end_minute, $recurrence, $recurrences, $type, $member_calendar, DETECT_CONFLICT_SCOPE_ALL);
-        $_description = is_null($conflicts) ? paragraph(do_lang_tempcode('SUBMIT_THANKYOU')) : $conflicts;
+        $_description = ($conflicts === null) ? paragraph(do_lang_tempcode('SUBMIT_THANKYOU')) : $conflicts;
 
         $regions = isset($_POST['regions']) ? $_POST['regions'] : array();
 
@@ -1006,7 +1006,7 @@ class Module_cms_calendar extends Standard_crud_module
         regenerate_event_reminder_jobs($id);
 
         $this->donext_type = $type;
-        $start_day_of_month = find_concrete_day_of_month($start_year, $start_month, $start_day, $start_monthly_spec_type, is_null($start_hour) ? find_timezone_start_hour_in_utc($timezone, $start_year, $start_month, $start_day, $start_monthly_spec_type) : $start_hour, is_null($start_minute) ? find_timezone_start_minute_in_utc($timezone, $start_year, $start_month, $start_day, $start_monthly_spec_type) : $start_minute, $timezone, $do_timezone_conv == 1);
+        $start_day_of_month = find_concrete_day_of_month($start_year, $start_month, $start_day, $start_monthly_spec_type, ($start_hour === null) ? find_timezone_start_hour_in_utc($timezone, $start_year, $start_month, $start_day, $start_monthly_spec_type) : $start_hour, ($start_minute === null) ? find_timezone_start_minute_in_utc($timezone, $start_year, $start_month, $start_day, $start_monthly_spec_type) : $start_minute, $timezone, $do_timezone_conv == 1);
         $this->donext_date = strval($start_year) . '-' . strval($start_month) . '-' . strval($start_day_of_month);
 
         if (addon_installed('content_privacy')) {
@@ -1079,7 +1079,7 @@ class Module_cms_calendar extends Standard_crud_module
             if (count($past_times) > 0) {
                 foreach ($past_times as $past_time) {
                     list($start_year, $start_month, $start_day, $start_hour, $start_minute) = explode('-', date('Y-m-d-h-i', usertime_to_utctime($past_time[0])));
-                    if (is_null($event['e_end_day'])) {
+                    if ($event['e_end_day'] === null) {
                         list($end_year, $end_month, $end_day, $end_hour, $end_minute) = array(null, null, null, null, null);
                     } else {
                         $explode = explode('-', date('Y-m-d-h-i', usertime_to_utctime($past_time[1])));
@@ -1091,7 +1091,7 @@ class Module_cms_calendar extends Standard_crud_module
                     }
                     add_calendar_event($event['e_type'], 'none', null, 0, get_translated_text($event['e_title']), get_translated_text($event['e_content']), $event['e_priority'], intval($start_year), intval($start_month), intval($start_day), 'day_of_month', intval($start_hour), intval($start_minute), $end_year, $end_month, $end_day, 'day_of_month', $end_hour, $end_minute, $timezone, $do_timezone_conv, $member_calendar, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes);
                 }
-                if (is_null($_recurrences)) {
+                if ($_recurrences === null) {
                     $recurrences = null;
                 } else {
                     $recurrences = max(0, $_recurrences - count($past_times));
@@ -1120,7 +1120,7 @@ class Module_cms_calendar extends Standard_crud_module
                     $start_hour = intval($explode[3]);
                     $start_minute = intval($explode[4]);
 
-                    if (is_null($event['e_end_day'])) {
+                    if ($event['e_end_day'] === null) {
                         list($end_year, $end_month, $end_day, $end_hour, $end_minute) = array(null, null, null, null, null);
                     } else {
                         $explode = explode('-', date('Y-m-d-h-i', $past_time[1]));
@@ -1184,7 +1184,7 @@ class Module_cms_calendar extends Standard_crud_module
 
         if (!fractional_edit()) {
             $conflicts = detect_conflicts(get_member(), $id, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year, $end_month, $end_day, $end_monthly_spec_type, $end_hour, $end_minute, $recurrence, $recurrences, $type, $member_calendar, DETECT_CONFLICT_SCOPE_ALL);
-            $_description = is_null($conflicts) ? paragraph(do_lang_tempcode('SUCCESS')) : $conflicts;
+            $_description = ($conflicts === null) ? paragraph(do_lang_tempcode('SUCCESS')) : $conflicts;
         } else {
             $_description = do_lang_tempcode('SUCCESS');
         }
@@ -1198,7 +1198,7 @@ class Module_cms_calendar extends Standard_crud_module
         }
 
         $this->donext_type = $type;
-        $start_day_of_month = find_concrete_day_of_month($start_year, $start_month, $start_day, $start_monthly_spec_type, is_null($start_hour) ? find_timezone_start_hour_in_utc($timezone, $start_year, $start_month, $start_day, $start_monthly_spec_type) : $start_hour, is_null($start_minute) ? find_timezone_start_minute_in_utc($timezone, $start_year, $start_month, $start_day, $start_monthly_spec_type) : $start_minute, $timezone, $do_timezone_conv == 1);
+        $start_day_of_month = find_concrete_day_of_month($start_year, $start_month, $start_day, $start_monthly_spec_type, ($start_hour === null) ? find_timezone_start_hour_in_utc($timezone, $start_year, $start_month, $start_day, $start_monthly_spec_type) : $start_hour, ($start_minute === null) ? find_timezone_start_minute_in_utc($timezone, $start_year, $start_month, $start_day, $start_monthly_spec_type) : $start_minute, $timezone, $do_timezone_conv == 1);
         $this->donext_date = strval($start_year) . '-' . strval($start_month) . '-' . strval($start_day_of_month);
 
         if (addon_installed('content_reviews')) {
@@ -1242,7 +1242,7 @@ class Module_cms_calendar extends Standard_crud_module
      */
     public function do_next_manager($title, $description, $id)
     {
-        return $this->cat_crud_module->_do_next_manager($title, $description, is_null($id) ? null : intval($id), $this->donext_type, $this->donext_date);
+        return $this->cat_crud_module->_do_next_manager($title, $description, ($id === null) ? null : intval($id), $this->donext_type, $this->donext_date);
     }
 
     /**
@@ -1294,7 +1294,7 @@ class Module_cms_calendar extends Standard_crud_module
             $ical_url = $_FILES['file_anytype']['tmp_name'];
         }
 
-        if (is_null($ical_url)) {
+        if ($ical_url === null) {
             warn_exit(do_lang_tempcode('IMPROPERLY_FILLED_IN'));
         }
 
@@ -1392,14 +1392,14 @@ class Module_cms_calendar_cat extends Standard_crud_module
             $hidden->attach(form_input_hidden('external_feed', $external_feed));
         }
 
-        $fields->attach(metadata_get_fields('calendar_type', is_null($id) ? null : strval($id)));
+        $fields->attach(metadata_get_fields('calendar_type', ($id === null) ? null : strval($id)));
         require_code('seo2');
 
         // Permissions
-        $fields->attach($this->get_permission_fields(is_null($id) ? null : strval($id), null, ($title == '')));
+        $fields->attach($this->get_permission_fields(($id === null) ? null : strval($id), null, ($title == '')));
 
         if (addon_installed('content_reviews')) {
-            $fields->attach(content_review_get_fields('calendar_type', is_null($id) ? null : strval($id)));
+            $fields->attach(content_review_get_fields('calendar_type', ($id === null) ? null : strval($id)));
         }
 
         return array($fields, $hidden);
@@ -1546,7 +1546,7 @@ class Module_cms_calendar_cat extends Standard_crud_module
      */
     public function do_next_manager($title, $description, $id)
     {
-        return $this->_do_next_manager($title, $description, null, is_null($id) ? null : intval($id), '');
+        return $this->_do_next_manager($title, $description, null, ($id === null) ? null : intval($id), '');
     }
 
     /**
@@ -1578,7 +1578,7 @@ class Module_cms_calendar_cat extends Standard_crud_module
             $extra['member_id'] = $relay__member_id;
         }
 
-        if ((is_null($id)) && (is_null($type))) {
+        if (($id === null) && ($type === null)) {
             return do_next_manager($title, $description,
                 null,
                 null,
@@ -1610,9 +1610,9 @@ class Module_cms_calendar_cat extends Standard_crud_module
             null,
             /* TYPED-ORDERED LIST OF 'LINKS'  */
             array('_SELF', array('type' => 'add', 'e_type' => $type) + $extra, '_SELF', do_lang_tempcode('ADD_CALENDAR_EVENT')), // Add one
-            (is_null($id) || (!has_privilege(get_member(), 'edit_own_lowrange_content', 'cms_calendar', array('calendar', 'type') + $extra))) ? null : array('_SELF', array('type' => '_edit', 'id' => $id) + $extra, '_SELF', do_lang_tempcode('EDIT_THIS_CALENDAR_EVENT')), // Edit this
+            (($id === null) || (!has_privilege(get_member(), 'edit_own_lowrange_content', 'cms_calendar', array('calendar', 'type') + $extra))) ? null : array('_SELF', array('type' => '_edit', 'id' => $id) + $extra, '_SELF', do_lang_tempcode('EDIT_THIS_CALENDAR_EVENT')), // Edit this
             has_privilege(get_member(), 'edit_own_lowrange_content', 'cms_calendar') ? array('_SELF', array('type' => 'edit') + $extra, '_SELF', do_lang_tempcode('EDIT_CALENDAR_EVENT')) : null, // Edit one
-            is_null($id) ? null : array('calendar', array('type' => 'view', 'id' => $id) + $extra, get_module_zone('calendar')), // View this
+            ($id === null) ? null : array('calendar', array('type' => 'view', 'id' => $id) + $extra, get_module_zone('calendar')), // View this
             array('calendar', $archive_map + $extra, get_module_zone('calendar'), do_lang('CALENDAR')), // View archive
             null, // Add to category
             has_privilege(get_member(), 'submit_cat_highrange_content', 'cms_calendar') ? array('_SELF', array('type' => 'add_category') + $extra, '_SELF', do_lang_tempcode('ADD_EVENT_TYPE')) : null, // Add one category

@@ -56,7 +56,7 @@ class Block_main_db_notes
         $scrolls = array_key_exists('scrolls', $map) ? $map['scrolls'] : '0';
 
         $new = post_param_string('new', null);
-        if (!is_null($new)) {
+        if ($new !== null) {
             set_value('note_text_' . $file, $new, true);
             log_it('NOTES', $file);
 
@@ -64,7 +64,7 @@ class Block_main_db_notes
         }
 
         $contents = get_value('note_text_' . $file, null, true);
-        if (is_null($contents)) {
+        if ($contents === null) {
             $contents = '';
         }
 

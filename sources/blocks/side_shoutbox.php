@@ -72,9 +72,9 @@ class Block_side_shoutbox
         $room_id = array_key_exists('param', $map) ? intval($map['param']) : null;
         $num_messages = array_key_exists('max', $map) ? intval($map['max']) : 5;
 
-        if (is_null($room_id)) {
+        if ($room_id === null) {
             $room_id = $GLOBALS['SITE_DB']->query_select_value_if_there('chat_rooms', 'MIN(id)', array('is_im' => 0/*, 'room_language' => user_lang()*/));
-            if (is_null($room_id)) {
+            if ($room_id === null) {
                 return new Tempcode();
             }
         }
@@ -92,18 +92,18 @@ class Block_side_shoutbox
         }
 
         $last_message_id = $GLOBALS['SITE_DB']->query_select_value('chat_messages', 'MAX(id)', array('room_id' => $room_id));
-        if (is_null($last_message_id)) {
+        if ($last_message_id === null) {
             $last_message_id = -1;
         }
 
         $zone = get_module_zone('chat');
 
-        if (is_null($room_id)) {
+        if ($room_id === null) {
             $room_id = $GLOBALS['SITE_DB']->query_select_value_if_there('chat_rooms', 'MIN(id)', array('is_im' => 0, 'room_language' => user_lang()));
-            if (is_null($room_id)) {
+            if ($room_id === null) {
                 $room_id = $GLOBALS['SITE_DB']->query_select_value_if_there('chat_rooms', 'MIN(id)', array('is_im' => 0));
             }
-            if (is_null($room_id)) {
+            if ($room_id === null) {
                 return paragraph(do_lang_tempcode('NONE_EM'), '', 'nothing_here');
             }
         }

@@ -19,7 +19,7 @@ function parse($_tokens = null)
 
     global $TOKENS, $I, $OK_EXTRA_FUNCTIONS;
     $OK_EXTRA_FUNCTIONS = null;
-    if (!is_null($_tokens)) {
+    if ($_tokens !== null) {
         $TOKENS = $_tokens;
     }
     $I = 0;
@@ -49,7 +49,7 @@ function _parse_php()
     $program['classes'] = array();
     $program['main'] = array();
     $modifiers = array();
-    while (!is_null($next)) {
+    while ($next !== null) {
         switch ($next) {
             case 'FUNCTION':
                 $_function = _parse_function_dec();
@@ -1466,7 +1466,7 @@ function _parse_parameter()
         case 'ARRAY':
             $hint = 'ARRAY';
         case 'IDENTIFIER':
-            if (is_null($hint)) {
+            if ($hint === null) {
                 $hint = $next[1];
             }
 
@@ -1584,7 +1584,7 @@ function pparse__parser_peek($all = false)
 function pparse__parser_peek_dist($d, $p = null)
 {
     global $TOKENS, $I;
-    if (is_null($p)) {
+    if ($p === null) {
         $p = $I;
     }
     while ($d != 0) {

@@ -253,7 +253,7 @@ function _helper_create_index($this_ref, $table_name, $index_name, $fields, $uni
             $_field = preg_replace('#\(.*\)$#', '', $field);
 
             $db_type = $this_ref->query_select_value_if_there('db_meta', 'm_type', array('m_table' => $table_name, 'm_name' => $_field));
-            if (is_null($db_type)) {
+            if ($db_type === null) {
                 $db_type = 'INTEGER';
                 if (running_script('install')) {
                     fatal_exit('It seems we are creating an index on a table & field combo that is not yet created (' . $table_name  . ' & ' . $_field . ').');
@@ -292,7 +292,7 @@ function _helper_create_index($this_ref, $table_name, $index_name, $fields, $uni
 
         if (strpos($field, '(') === false) {
             $db_type = $this_ref->query_select_value_if_there('db_meta', 'm_type', array('m_table' => $table_name, 'm_name' => $field));
-            if ((substr($index_name, 0, 1) != '#') && (!is_null($db_type)) && ((!multi_lang_content()) || (strpos($db_type, '_TRANS') === false))) {
+            if ((substr($index_name, 0, 1) != '#') && ($db_type !== null) && ((!multi_lang_content()) || (strpos($db_type, '_TRANS') === false))) {
                 if (($db_type !== null) && ((strpos($db_type, 'SHORT_TEXT') !== false) || (strpos($db_type, 'SHORT_TRANS') !== false) || (strpos($db_type, 'LONG_TEXT') !== false) || (strpos($db_type, 'LONG_TRANS') !== false) || (strpos($db_type, 'URLPATH') !== false))) {
                     $_fields .= '(250)'; // 255 would be too much with MySQL's UTF
                 }
@@ -420,7 +420,7 @@ function _helper_add_table_field($this_ref, $table_name, $name, $_type, $default
     $lang_level = 3;
  
     if (multi_lang_content()) {
-        if (!is_null($default_st)) {
+        if ($default_st !== null) {
             $start = 0;
             do {
                 $rows = $this_ref->_query('SELECT * FROM ' . $this_ref->get_table_prefix() . $table_name, 1000, $start);
@@ -483,7 +483,7 @@ function _helper_add_table_field_sql($this_ref, $table_name, $name, $_type, $def
 {
     $default_st = null;
 
-    if (is_null($default)) {
+    if ($default === null) {
         switch (str_replace(array('*', '?'), array('', ''), $_type)) {
             case 'AUTO':
                 $default = null;
@@ -527,7 +527,7 @@ function _helper_add_table_field_sql($this_ref, $table_name, $name, $_type, $def
 
     $_final_type = $_type;
     if (strpos($_type, '_TRANS') !== false) {
-        if ((is_null($default)) && (strpos($_type, '?') === false)) {
+        if (($default === null) && (strpos($_type, '?') === false)) {
             $default = '';
         }
 
@@ -549,7 +549,7 @@ function _helper_add_table_field_sql($this_ref, $table_name, $name, $_type, $def
     $final_type = str_replace(array('*', '?'), array('', ''), $_final_type);
     $extra = '';
     if (($final_type != 'LONG_TEXT') || (get_db_type() == 'postgresql')) {
-        $extra = is_null($default) ? 'DEFAULT NULL' : ('DEFAULT ' . (is_string($default) ? ('\'' . db_escape_string($default) . '\'') : strval($default)));
+        $extra = ($default === null) ? 'DEFAULT NULL' : ('DEFAULT ' . (is_string($default) ? ('\'' . db_escape_string($default) . '\'') : strval($default)));
     }
     $query = 'ALTER TABLE ' . $this_ref->table_prefix . $table_name;
     $query .= ' ADD ' . $name . ' ' . $type_remap[$final_type] . ' ' . $extra . ' ' . $tag;
@@ -579,7 +579,7 @@ function _helper_alter_table_field($this_ref, $table_name, $name, $_type, $new_n
     }
 
     $update_map = array('m_type' => $_type);
-    if (!is_null($new_name)) {
+    if ($new_name !== null) {
         $update_map['m_name'] = $new_name;
     }
     $this_ref->query_update('db_meta', $update_map, array('m_table' => $table_name, 'm_name' => $name));
@@ -605,7 +605,7 @@ function _helper_alter_table_field_sql($this_ref, $table_name, $name, $_type, $n
 {
     $type_remap = $this_ref->static_ob->get_type_remap();
 
-    if ((strpos($_type, '__COMCODE') !== false) && (!is_null($new_name)) && ($new_name != $name)) {
+    if ((strpos($_type, '__COMCODE') !== false) && ($new_name !== null) && ($new_name != $name)) {
         foreach (array('text_parsed' => 'LONG_TEXT', 'source_user' => 'MEMBER') as $sub_name => $sub_type) {
             $sub_name = $name . '__' . $sub_name;
             $sub_new_name = $new_name . '__' . $sub_name;
@@ -638,7 +638,7 @@ function _helper_alter_table_field_sql($this_ref, $table_name, $name, $_type, $n
         $tag = ' NOT NULL';
     }
     $final_type = str_replace(array('*', '?'), array('', ''), $_final_type);
-    $extra = (!is_null($new_name)) ? $new_name : $name;
+    $extra = ($new_name !== null) ? $new_name : $name;
     $query = 'ALTER TABLE ' . $this_ref->table_prefix . $table_name;
     $query .= ' CHANGE ';
     if (strpos(get_db_type(), 'mysql') !== false) {
@@ -752,7 +752,7 @@ function _helper_promote_text_field_to_comcode($this_ref, $table_name, $name, $k
 function _helper_delete_table_field($this_ref, $table_name, $name)
 {
     $type = $this_ref->query_select_value_if_there('db_meta', 'm_type', array('m_table' => $table_name, 'm_name' => $name));
-    if (is_null($type)) {
+    if ($type === null) {
         $type = 'SHORT_TEXT';
     }
 

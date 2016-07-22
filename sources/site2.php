@@ -350,19 +350,19 @@ function _load_comcode_page_not_cached($string, $zone, $codename, $file_base, $c
     @flock($tmp, LOCK_UN);
     fclose($tmp);
 
-    if (is_null($new_comcode_page_row['p_submitter'])) {
+    if ($new_comcode_page_row['p_submitter'] === null) {
         $as_admin = true;
         require_code('users_active_actions');
         $new_comcode_page_row['p_submitter'] = get_first_admin_user();
     }
 
-    if (is_null($comcode_page_row)) { // Default page. We need to find an admin to assign it to.
+    if ($comcode_page_row === null) { // Default page. We need to find an admin to assign it to.
         $page_submitter = $new_comcode_page_row['p_submitter'];
     } else {
         $as_admin = false; // Will only have admin privileges if $page_submitter has them
         $page_submitter = $comcode_page_row['p_submitter'];
     }
-    if (is_null($page_submitter)) {
+    if ($page_submitter === null) {
         $page_submitter = get_member();
     }
 
@@ -385,11 +385,11 @@ function _load_comcode_page_not_cached($string, $zone, $codename, $file_base, $c
 
     // Check it still needs inserting (it might actually be there, but not translated)
     $trans_key = $GLOBALS['SITE_DB']->query_select_value_if_there('cached_comcode_pages', 'string_index', array('the_page' => $codename, 'the_zone' => $zone, 'the_theme' => $GLOBALS['FORUM_DRIVER']->get_theme()));
-    if (is_null($COMCODE_PARSE_TITLE)) {
+    if ($COMCODE_PARSE_TITLE === null) {
         $COMCODE_PARSE_TITLE = '';
     }
     $title_to_use = clean_html_title($COMCODE_PARSE_TITLE);
-    if (is_null($trans_key)) {
+    if ($trans_key === null) {
         $map = array(
             'the_zone' => $zone,
             'the_page' => $codename,
@@ -408,7 +408,7 @@ function _load_comcode_page_not_cached($string, $zone, $codename, $file_base, $c
         decache('main_comcode_page_children');
 
         // Try and insert corresponding page; will silently fail if already exists. This is only going to add a row for a page that was not created in-system
-        if (is_null($comcode_page_row)) {
+        if ($comcode_page_row === null) {
             $comcode_page_row = $new_comcode_page_row;
             $GLOBALS['SITE_DB']->query_insert('comcode_pages', $comcode_page_row, false, true);
 
@@ -434,14 +434,14 @@ function _load_comcode_page_not_cached($string, $zone, $codename, $file_base, $c
         // Check to see if it needs translating
         if (multi_lang_content()) {
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('translate', 'id', array('id' => $trans_key, 'language' => $lang));
-            if (is_null($test)) {
+            if ($test === null) {
                 $GLOBALS['SITE_DB']->query_insert('translate', array('id' => $trans_key, 'source_user' => $page_submitter, 'broken' => 0, 'importance_level' => 1, 'text_original' => $comcode, 'text_parsed' => $text_parsed, 'language' => $lang), false, true);
                 $index = $trans_key;
 
                 $trans_cc_page_title_key = $GLOBALS['SITE_DB']->query_select_value_if_there('cached_comcode_pages', 'cc_page_title', array('the_page' => $codename, 'the_zone' => $zone, 'the_theme' => $GLOBALS['FORUM_DRIVER']->get_theme()));
-                if (!is_null($trans_cc_page_title_key)) {
+                if ($trans_cc_page_title_key !== null) {
                     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('translate', 'id', array('id' => $trans_cc_page_title_key, 'language' => $lang));
-                    if (is_null($test)) {
+                    if ($test === null) {
                         $GLOBALS['SITE_DB']->query_insert('translate', array('id' => $trans_cc_page_title_key, 'source_user' => $page_submitter, 'broken' => 0, 'importance_level' => 1, 'text_original' => $title_to_use, 'text_parsed' => '', 'language' => $lang), true);
                     }
                 } // else race condition, decached while being recached
@@ -493,7 +493,7 @@ function _load_comcode_page_cache_off($string, $zone, $codename, $file_base, $ne
 {
     global $COMCODE_PARSE_TITLE;
 
-    if (is_null($new_comcode_page_row['p_submitter'])) {
+    if ($new_comcode_page_row['p_submitter'] === null) {
         $as_admin = true;
         $members = $GLOBALS['FORUM_DRIVER']->member_group_query($GLOBALS['FORUM_DRIVER']->get_super_admin_groups(), 1);
         if (count($members) != 0) {
@@ -524,7 +524,7 @@ function _load_comcode_page_cache_off($string, $zone, $codename, $file_base, $ne
     $_new = do_comcode_attachments($comcode, 'comcode_page', $zone . ':' . $codename, false, null, (!array_key_exists(0, $_comcode_page_row)) || (is_guest($_comcode_page_row[0]['p_submitter'])), array_key_exists(0, $_comcode_page_row) ? $_comcode_page_row[0]['p_submitter'] : get_member());
     $html = $_new['tempcode'];
     pop_lax_comcode();
-    $title_to_use = is_null($COMCODE_PARSE_TITLE) ? null : clean_html_title($COMCODE_PARSE_TITLE);
+    $title_to_use = ($COMCODE_PARSE_TITLE === null) ? null : clean_html_title($COMCODE_PARSE_TITLE);
 
     // Try and insert corresponding page; will silently fail if already exists. This is only going to add a row for a page that was not created in-system
     if (array_key_exists(0, $_comcode_page_row)) {

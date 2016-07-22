@@ -140,7 +140,7 @@ function init__webstandards_js_lint()
     do {
         $found_one = false;
         foreach ($JS_PROTOTYPES as $prototype => $details) {
-            if ((!is_null($details[0])) && ($details[0] != '')) {
+            if (($details[0] !== null) && ($details[0] != '')) {
                 if (!array_key_exists(2, $JS_PROTOTYPES[$details[0]])) {
                     $JS_PROTOTYPES[$details[0]][2] = array(); // This is an inverse-list of all the classes inheriting from self
                 }
@@ -149,7 +149,7 @@ function init__webstandards_js_lint()
                 do {
                     $JS_PROTOTYPES[$t][2] += array($prototype => true);
                     $t = isset($JS_PROTOTYPES[$t][3]) ? $JS_PROTOTYPES[$t][3] : $JS_PROTOTYPES[$t][0];
-                } while (!is_null($t));
+                } while ($t !== null);
                 $details[1] = array_merge($JS_PROTOTYPES[$details[0]][1], $details[1]);
                 if (!isset($details[2])) {
                     $details[3] = $details[0];
@@ -197,9 +197,9 @@ function check_js($data, $raw_errors = false)
     $JS_TAG_RANGES = array();
     $JS_VALUE_RANGES = array();
     $lexed = webstandards_js_lex($data);
-    if (!is_null($lexed)) {
+    if ($lexed !== null) {
         $parsed = webstandards_js_parse();
-        if (!is_null($parsed)) {
+        if ($parsed !== null) {
             _check_js($parsed);
         }
     }
@@ -404,7 +404,7 @@ function js_check_command($command, $depth)
                 $switch_type = js_check_expression($c[1]);
                 foreach ($c[2] as $case) {
                     /*
-                    if (!is_null($case[0])) {
+                    if ($case[0] !== null) {
                         $passes = js_ensure_type(array($switch_type), js_check_expression($case[0]), $c_pos, 'Switch type inconsistency');
                         if ($passes) {
                             js_infer_expression_type_to_variable_type($switch_type, $case[0]);
@@ -451,15 +451,15 @@ function js_check_command($command, $depth)
                 js_check_command($c[3], $depth + 1);
                 break;
             case 'FOR':
-                if (!is_null($c[1])) {
+                if ($c[1] !== null) {
                     js_check_command(array($c[1]), $depth + 1);
                 }
-                if (!is_null($c[3])) {
+                if ($c[3] !== null) {
                     js_check_command(array($c[3]), $depth + 1);
                 }
                 $passes = js_ensure_type(array('Boolean'), js_check_expression($c[2]), $c_pos, 'Loop conditionals must be Boolean (for)');
                 //if ($passes) js_infer_expression_type_to_variable_type('Boolean', $c[2]);
-                if (!is_null($c[4])) {
+                if ($c[4] !== null) {
                     js_check_command($c[4], $depth + 1);
                 }
                 break;
@@ -501,7 +501,7 @@ function js_check_command($command, $depth)
             case 'VAR':
                 foreach ($c[1] as $var) {
                     js_add_variable_reference($var[1], $c_pos, true);
-                    if (!is_null($var[2])) {
+                    if ($var[2] !== null) {
                         js_set_composr_type($var[1], js_check_expression($var[2]));
                     }
                 }
@@ -682,12 +682,12 @@ function js_check_expression($e, $secondary = false, $is_guarded = false)
             return $ret;
         case 'OBJECT_OPERATOR':
             $class = js_check_expression($inner[1], false, $is_guarded);
-            if (is_null($class)) {
+            if ($class === null) {
                 return 'Null';
             }
             if ($inner[2][0] == 'CALL') {
                 $ret = js_check_call($inner[2], $c_pos, $class);
-                if (is_null($ret)) {
+                if ($ret === null) {
                     if (!$secondary) {
                         js_log_warning('CHECKER', '(Function (\'' . (is_array($inner[1]) ? '(complex)' : $inner[1]) . '\') that returns no value used in an expression', $c_pos);
                     }
@@ -705,7 +705,7 @@ function js_check_expression($e, $secondary = false, $is_guarded = false)
             return $ret;
         case 'CALL':
             $ret = js_check_call($inner, $c_pos, $is_guarded ? 'Object' : null);
-            if (is_null($ret)) {
+            if ($ret === null) {
                 if (!$secondary) {
                     js_log_warning('CHECKER', '(Function (\'' . (is_array($inner[1]) ? '(complex)' : $inner[1]) . '\') that returns no value used in an expression', $c_pos);
                 }
@@ -803,7 +803,7 @@ function js_check_variable($variable, $reference = false, $function_duality = fa
 
     $_class = null;
 
-    if (is_null($class)) {
+    if ($class === null) {
         if ($identifier[0] != '!') { // Sometimes we use fake static objects (like !Object), and we can't start referencing these as real variables
             // Add to reference count if: this specifically is a reference, or it's complex therefore the base is explicitly a reference, or we are forced to add it because it is yet unseen
             if (($reference) || (count($variable[2]) != 0) || (!isset($JS_LOCAL_VARIABLES[$identifier]))) {
@@ -833,7 +833,7 @@ function js_check_variable($variable, $reference = false, $function_duality = fa
                     $JS_PROTOTYPES[$class][1][] = array('!Object', $identifier); // Could be any type
                 }
             }
-            if (is_null($found)) {
+            if ($found === null) {
                 if (($class != 'self') && ($class != 'Window') && ($identifier != $class) && ($class != 'Object')) { // We're allowed to freely add to Object because we need to to make our own. It's also not likely people will "mistakingly" handle things they think Object has but it doesn't.
                     if ((!$GLOBALS['JS_PARSING_CONDITIONAL']) || (count($variable[2]) != 0)) { // We're running a conditional on this, meaning the user is likely checking to see if it exists (if it's a boolean that doesn't exist, we're in trouble, but unfortunately it's ambiguous).
                         if ($GLOBALS['WEBSTANDARDS_MANUAL']) {
@@ -904,7 +904,7 @@ function js_check_variable($variable, $reference = false, $function_duality = fa
                 }
                 return '!Object';
             }
-            if (is_null($_class)) {
+            if ($_class === null) {
                 $_class = js_check_variable(array('VARIABLE', $identifier, array(), $variable[count($variable) - 1]));
             }
             return js_check_variable(array('VARIABLE', $variable[2][1][1], $variable[2][2], $variable[count($variable) - 1]), $reference, $function_duality, $_class, $_class == $identifier);
@@ -914,7 +914,7 @@ function js_check_variable($variable, $reference = false, $function_duality = fa
     }
 
     $function_return = isset($JS_LOCAL_VARIABLES[$identifier]['function_return']) ? $JS_LOCAL_VARIABLES[$identifier]['function_return'] : null;
-    if (is_null($function_return)) {
+    if ($function_return === null) {
         if (isset($JS_PROTOTYPES[$identifier])) {
             return $identifier;
         } else {
@@ -1066,6 +1066,6 @@ function js_ensure_type($_allowed_types, $actual_type, $pos, $alt_error = null)
         return true;
     }
 
-    js_log_warning('CHECKER', is_null($alt_error) ? 'Type mismatch' : $alt_error, $pos);
+    js_log_warning('CHECKER', ($alt_error === null) ? 'Type mismatch' : $alt_error, $pos);
     return false;
 }

@@ -34,7 +34,7 @@ class Hook_cron_catalogue_entry_timeouts
 
         $time = time();
         $last_time = get_value('last_catalogue_entry_timeouts_calc', null, true);
-        if (!is_null($last_time)) {
+        if ($last_time !== null) {
             if (intval($last_time) > $time - 6 * 60 * 60) {
                 return; // Every 6 hours
             }

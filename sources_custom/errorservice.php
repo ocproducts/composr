@@ -24,7 +24,7 @@ function get_problem_match()
     $error_message = get_param_string('error_message', false, true);
 
     $output = get_problem_match_nearest($error_message);
-    if (!is_null($output)) {
+    if ($output !== null) {
         echo $output;
     }
 }

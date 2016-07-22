@@ -40,7 +40,7 @@ function form_to_email_entry_script()
     $title = get_screen_title('MAIL_SENT');
     $text = do_lang_tempcode('MAIL_SENT_TEXT', escape_html(post_param_string('to_written_name', get_site_name())));
     $redirect = get_param_string('redirect', null);
-    if (!is_null($redirect)) {
+    if ($redirect !== null) {
         require_code('site2');
         $tpl = redirect_screen($title, $redirect, $text);
     } else {
@@ -72,7 +72,7 @@ function form_to_email($subject = null, $intro = '', $fields = null, $to_email =
         }
     }
 
-    dispatch_mail($subject, $message_raw, is_null($to_email) ? null : array($to_email), $to_name, $from_email, $from_name, array('attachments' => $attachments, 'bypass_queue' => count($attachments) != 0));
+    dispatch_mail($subject, $message_raw, ($to_email === null) ? null : array($to_email), $to_name, $from_email, $from_name, array('attachments' => $attachments, 'bypass_queue' => count($attachments) != 0));
 
     if ($from_email != '' && get_option('message_received_emails') == '1') {
         dispatch_mail(do_lang('YOUR_MESSAGE_WAS_SENT_SUBJECT', $subject), do_lang('YOUR_MESSAGE_WAS_SENT_BODY', $from_email), array($from_email), null, '', '', array('as' => get_member()));
@@ -95,11 +95,11 @@ function form_to_email($subject = null, $intro = '', $fields = null, $to_email =
  */
 function _form_to_email($extra_boring_fields = null, $subject = null, $intro = '', $fields = null, $to_email = null, $outro = '', $is_via_post = true)
 {
-    if (is_null($subject)) {
+    if ($subject === null) {
         $subject = post_param_string('subject', get_site_name());
     }
 
-    if (is_null($fields)) {
+    if ($fields === null) {
         $fields = array();
         $boring_fields = array( // NB: Keep in sync with static_export.php
             'MAX_FILE_SIZE',
@@ -122,7 +122,7 @@ function _form_to_email($extra_boring_fields = null, $subject = null, $intro = '
             'csrf_token',
             md5(get_site_name() . ': antispam'),
         );
-        if (!is_null($extra_boring_fields)) {
+        if ($extra_boring_fields !== null) {
             $boring_fields = array_merge($boring_fields, $extra_boring_fields);
         }
         foreach (array_diff(array_keys($_POST), $boring_fields) as $key) {
@@ -172,7 +172,7 @@ function _form_to_email($extra_boring_fields = null, $subject = null, $intro = '
     if ($is_via_post) {
         foreach ($fields as $field_name => $field_title) {
             $field_val = post_param_string($field_name, null);
-            if (!is_null($field_val)) {
+            if ($field_val !== null) {
                 _append_form_to_email($message_raw, post_param_integer('tick_on_form__' . $field_name, null) !== null, $field_title, $field_val);
 
                 if (($from_email == '') && ($field_val != '') && (post_param_string('field_tagged__' . $field_name, '') == 'email')) {
@@ -182,7 +182,7 @@ function _form_to_email($extra_boring_fields = null, $subject = null, $intro = '
         }
     } else {
         foreach ($fields as $field_title => $field_val) {
-            if (!is_null($field_val)) {
+            if ($field_val !== null) {
                 _append_form_to_email($message_raw, false, $field_title, $field_val);
             }
         }
@@ -198,9 +198,9 @@ function _form_to_email($extra_boring_fields = null, $subject = null, $intro = '
     $from_name = post_param_string('name', $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true));
 
     $to_name = mixed();
-    if ((is_null($to_email)) && (!is_null(get_value('allow_member_mail_relay')))) {
+    if (($to_email === null) && (get_value('allow_member_mail_relay') !== null)) {
         $to = post_param_integer('to_members_email', null);
-        if (!is_null($to)) {
+        if ($to !== null) {
             $to_email = $GLOBALS['FORUM_DRIVER']->get_member_email_address($to);
             $to_name = $GLOBALS['FORUM_DRIVER']->get_username($to, true);
         }

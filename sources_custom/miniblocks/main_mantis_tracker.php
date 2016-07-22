@@ -115,15 +115,15 @@ $max_rows = $GLOBALS['SITE_DB']->query_value_if_there($query_count);
 
 $issues = array();
 foreach ($_issues as $issue) {
-    $cost = ($issue['hours'] == 0 || is_null($issue['hours'])) ? mixed() : ($issue['hours'] * $s_credit_value * $credits_per_hour);
-    $_cost = is_null($cost) ? do_lang('FEATURES_UNKNOWN_lc') : (static_evaluate_tempcode(comcode_to_tempcode('[currency="' . $s_currency . '"]' . float_to_raw_string($cost) . '[/currency]')));
+    $cost = ($issue['hours'] == 0 || ($issue['hours'] === null)) ? mixed() : ($issue['hours'] * $s_credit_value * $credits_per_hour);
+    $_cost = ($cost === null) ? do_lang('FEATURES_UNKNOWN_lc') : (static_evaluate_tempcode(comcode_to_tempcode('[currency="' . $s_currency . '"]' . float_to_raw_string($cost) . '[/currency]')));
     $money_raised = $issue['money_raised'];
     $_money_raised = static_evaluate_tempcode(comcode_to_tempcode('[currency="' . $s_currency . '"]' . float_to_raw_string($money_raised) . '[/currency]'));
-    $_percentage = is_null($cost) ? do_lang('FEATURES_UNKNOWN_lc') : (escape_html(float_format(100.0 * $money_raised / $cost, 0)) . '%');
-    $_hours = is_null($cost) ? do_lang('FEATURES_UNKNOWN_lc') : do_lang('FEATURES_HOURS_lc', escape_html(integer_format($issue['hours'])));
-    $_credits = is_null($cost) ? do_lang('FEATURES_UNKNOWN_lc') : do_lang('FEATURES_CREDITS_lc', escape_html(integer_format($issue['hours'] * $credits_per_hour)));
+    $_percentage = ($cost === null) ? do_lang('FEATURES_UNKNOWN_lc') : (escape_html(float_format(100.0 * $money_raised / $cost, 0)) . '%');
+    $_hours = ($cost === null) ? do_lang('FEATURES_UNKNOWN_lc') : do_lang('FEATURES_HOURS_lc', escape_html(integer_format($issue['hours'])));
+    $_credits = ($cost === null) ? do_lang('FEATURES_UNKNOWN_lc') : do_lang('FEATURES_CREDITS_lc', escape_html(integer_format($issue['hours'] * $credits_per_hour)));
 
-    $voted = !is_null($GLOBALS['SITE_DB']->query_value_if_there('SELECT user_id FROM mantis_bug_monitor_table WHERE user_id=' . strval(get_member()) . ' AND bug_id=' . strval($issue['id'])));
+    $voted = ($GLOBALS['SITE_DB']->query_value_if_there('SELECT user_id FROM mantis_bug_monitor_table WHERE user_id=' . strval(get_member()) . ' AND bug_id=' . strval($issue['id'])) !== null);
 
     $issues[] = array(
         'CATEGORY' => $issue['category'],

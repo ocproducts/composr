@@ -109,13 +109,13 @@ class CMS_Topic
 
         // Settings we need
         $max_thread_depth = get_param_integer('max_thread_depth', intval(get_option('max_thread_depth')));
-        if (is_null($num_to_show_limit)) {
+        if ($num_to_show_limit === null) {
             $num_to_show_limit = get_param_integer('max_comments', intval(get_option('comments_to_show_in_thread')));
         }
         $start = get_param_integer('start_comments', 0);
 
         // Load up posts from DB
-        if (is_null($preloaded_comments)) {
+        if ($preloaded_comments === null) {
             if (!$this->load_from_topic($topic_id, $num_to_show_limit, $start, $reverse)) {
                 attach_message(do_lang_tempcode('MISSING_FORUM', escape_html($forum_name)), 'warn', false, true);
             }
@@ -162,7 +162,7 @@ class CMS_Topic
 
             // Pagination
             $pagination = null;
-            if ((!$this->is_threaded) && (is_null($preloaded_comments))) {
+            if ((!$this->is_threaded) && ($preloaded_comments === null)) {
                 if ($this->total_posts > $num_to_show_limit) {
                     require_code('templates_pagination');
                     $pagination = pagination(do_lang_tempcode('COMMENTS'), $start, 'start_comments', $num_to_show_limit, 'max_comments', $this->total_posts);
@@ -187,9 +187,9 @@ class CMS_Topic
                 foreach ($this->reviews_rating_criteria as $review_title) {
                     $_rating = $GLOBALS['SITE_DB']->query_select_value('review_supplement', 'AVG(r_rating)', array('r_rating_type' => $review_title, 'r_topic_id' => $topic_id));
                     $rating = mixed();
-                    $rating = is_null($_rating) ? null : $_rating;
-                    $reviews_rating_criteria[] = array('REVIEW_TITLE' => $review_title, 'REVIEW_RATING' => make_string_tempcode(is_null($rating) ? '' : float_format($rating)));
-                    if (!is_null($rating)) {
+                    $rating = ($_rating === null) ? null : $_rating;
+                    $reviews_rating_criteria[] = array('REVIEW_TITLE' => $review_title, 'REVIEW_RATING' => make_string_tempcode(($rating === null) ? '' : float_format($rating)));
+                    if ($rating !== null) {
                         set_extra_request_metadata(array(
                             'rating' => float_to_raw_string($rating),
                         ));
@@ -198,7 +198,7 @@ class CMS_Topic
             }
 
             // Direct links to forum
-            $forum_url = is_null($topic_id) ? '' : $GLOBALS['FORUM_DRIVER']->topic_url($topic_id, $forum_name, true);
+            $forum_url = ($topic_id === null) ? '' : $GLOBALS['FORUM_DRIVER']->topic_url($topic_id, $forum_name, true);
             if (($GLOBALS['FORUM_DRIVER']->is_staff(get_member())) || ($forum_name == get_option('comments_forum_name'))) {
                 $authorised_forum_url = $forum_url;
             } else {
@@ -220,7 +220,7 @@ class CMS_Topic
                 'HASH' => $hash,
                 'SERIALIZED_OPTIONS' => $serialized_options,
                 'SORT' => $sort,
-                'TOTAL_POSTS' => is_null($this->total_posts) ? '0' : strval($this->total_posts),
+                'TOTAL_POSTS' => ($this->total_posts === null) ? '0' : strval($this->total_posts),
                 'IS_THREADED' => $this->is_threaded,
             ));
         }
@@ -410,7 +410,7 @@ class CMS_Topic
     {
         $all_posts_ordered = array();
         foreach ($posts as $post) {
-            if (is_null($post)) {
+            if ($post === null) {
                 continue;
             }
 
@@ -461,13 +461,13 @@ class CMS_Topic
 
         $posts = array();
         $queue = $this->all_posts_ordered;
-        if ((!is_null($parent_post_id)) && (!$maybe_missing_links)) {
+        if (($parent_post_id !== null) && (!$maybe_missing_links)) {
             $queue = $this->_grab_at_and_underneath($parent_post_id, $queue);
         }
-        if (is_null($this->is_threaded)) {
+        if ($this->is_threaded === null) {
             $this->is_threaded = false;
         }
-        if ((is_null($num_to_show_limit)) || (!$this->is_threaded)) {
+        if (($num_to_show_limit === null) || (!$this->is_threaded)) {
             $posts = $queue;
             $queue = array();
         } else {
@@ -499,7 +499,7 @@ class CMS_Topic
             cns_cache_member_details(array_keys($members));
         }
 
-        if (!is_null($this->topic_id)) { // If FALSE then Posts will have been passed in manually as full already anyway
+        if ($this->topic_id !== null) { // If FALSE then Posts will have been passed in manually as full already anyway
             $posts = $this->_grab_full_post_details($posts);
         }
 
@@ -548,7 +548,7 @@ class CMS_Topic
         }
         $ret->attach(do_template('POST_CHILD_LOAD_LINK', array('_GUID' => '79e1f3feec7a6d48cd554b41e831b287', 'NUM_TO_SHOW_LIMIT' => strval($num_to_show_limit), 'OTHER_IDS' => $other_ids, 'ID' => '', 'CHILDREN' => (count($other_ids) == 0) ? '' : '1')));
 
-        if (!is_null($this->topic_id)) {
+        if ($this->topic_id !== null) {
             $serialized_options = serialize(array($this->topic_id, $num_to_show_limit, true, false, strval($forum_id), $this->reverse, $may_reply, $highlight_by_member, count($all_individual_review_ratings) != 0));
             require_code('crypt');
             $hash = ratchet_hash($serialized_options, get_site_salt());
@@ -628,7 +628,7 @@ class CMS_Topic
             }
             unset($queue['post_' . strval($post_id)]);
             $parent = $grabbed['parent_id'];
-            if (!is_null($parent)) {
+            if ($parent !== null) {
                 $this->_grab_at_and_above_and_remove($parent, $queue, $posts);
             }
         }
@@ -645,7 +645,7 @@ class CMS_Topic
     {
         $posts_out = array();
 
-        if (!is_null($parent_post_id)) {
+        if ($parent_post_id !== null) {
             if (isset($posts_in['post_' . strval($parent_post_id)])) {
                 $grabbed = $posts_in['post_' . strval($parent_post_id)];
                 $posts_out['post_' . strval($parent_post_id)] = $grabbed;
@@ -768,7 +768,7 @@ class CMS_Topic
             $date = get_timezoned_date_time($post['date']);
             $poster_url = is_guest($post['member']) ? new Tempcode() : $GLOBALS['FORUM_DRIVER']->member_profile_url($post['member'], true);
             $poster_name = array_key_exists('username', $post) ? $post['username'] : $GLOBALS['FORUM_DRIVER']->get_username($post['member']);
-            if (is_null($poster_name)) {
+            if ($poster_name === null) {
                 $poster_name = do_lang('UNKNOWN');
             }
             $highlight = ($highlight_by_member === $post['member']);
@@ -795,7 +795,7 @@ class CMS_Topic
             $is_spacer_post = false;
             if (get_forum_type() == 'cns') {
                 // Spacer post fiddling
-                if ((!is_null($this->first_post_id)) && (!is_null($this->topic_title)) && (!is_null($this->topic_description)) && (!is_null($this->topic_description_link))) {
+                if (($this->first_post_id !== null) && ($this->topic_title !== null) && ($this->topic_description !== null) && ($this->topic_description_link !== null)) {
                     $is_spacer_post = (($post['id'] == $this->first_post_id) && (substr($post['message_comcode'], 0, strlen('[semihtml]' . do_lang('SPACER_POST_MATCHER'))) == '[semihtml]' . do_lang('SPACER_POST_MATCHER')));
 
                     if ($is_spacer_post) {
@@ -806,8 +806,8 @@ class CMS_Topic
 
                             require_code('cns_posts');
                             list($new_description, $new_post) = cns_display_spacer_post($linked_type, $linked_id);
-                            //if (!is_null($new_description)) $this->topic_description=$new_description; Actually, it's a bit redundant
-                            if (!is_null($new_post)) {
+                            //if ($new_description !== null) $this->topic_description=$new_description; Actually, it's a bit redundant
+                            if ($new_post !== null) {
                                 $post['message'] = $new_post;
                             }
                             $highlight = false;
@@ -825,18 +825,18 @@ class CMS_Topic
                 if (array_key_exists('last_edit_time', $post)) {
                     $last_edited = do_template('CNS_TOPIC_POST_LAST_EDITED', array(
                         '_GUID' => '6301ad8d8f80948ad8270828f1bdaf33',
-                        'LAST_EDIT_DATE_RAW' => is_null($post['last_edit_time']) ? '' : strval($post['last_edit_time']),
+                        'LAST_EDIT_DATE_RAW' => ($post['last_edit_time'] === null) ? '' : strval($post['last_edit_time']),
                         'LAST_EDIT_DATE' => $post['last_edit_date'],
                         'LAST_EDIT_PROFILE_URL' => $GLOBALS['FORUM_DRIVER']->member_profile_url($post['last_edit_by'], true),
                         'LAST_EDIT_USERNAME' => $post['last_edit_by_username'],
                     ));
-                    $last_edited_raw = (is_null($post['last_edit_time']) ? '' : strval($post['last_edit_time']));
+                    $last_edited_raw = (($post['last_edit_time'] === null) ? '' : strval($post['last_edit_time']));
                 }
 
                 // Post buttons
                 if (!$is_spacer_post) {
-                    if (!is_null($this->topic_id)) {
-                        if (is_null($this->topic_info)) {
+                    if ($this->topic_id !== null) {
+                        if ($this->topic_info === null) {
                             $this->topic_info = cns_read_in_topic($this->topic_id, 0, 0, false, false);
                         }
                         require_lang('cns');
@@ -944,7 +944,7 @@ class CMS_Topic
 
             // Render...
 
-            $is_unread = is_null($this->topic_last_read) || ($this->topic_last_read <= $post['date']) || ((get_forum_type() == 'cns') && ($this->topic_last_read <= $post['p_last_edit_time']));
+            $is_unread = ($this->topic_last_read === null) || ($this->topic_last_read <= $post['date']) || ((get_forum_type() == 'cns') && ($this->topic_last_read <= $post['p_last_edit_time']));
             if ($post['member'] == get_member()) {
                 $is_unread = false;
             }
@@ -971,7 +971,7 @@ class CMS_Topic
                 'BUTTONS' => $buttons,
                 'LAST_EDITED_RAW' => $last_edited_raw,
                 'LAST_EDITED' => $last_edited,
-                'TOPIC_ID' => is_null($this->topic_id) ? '' : strval($this->topic_id),
+                'TOPIC_ID' => ($this->topic_id === null) ? '' : strval($this->topic_id),
                 'UNVALIDATED' => $unvalidated,
                 'IS_SPACER_POST' => $is_spacer_post,
                 'NUM_TO_SHOW_LIMIT' => strval($num_to_show_limit),
@@ -1010,7 +1010,7 @@ class CMS_Topic
      */
     protected function set_level_has_adjacent_sibling(&$posts, $level_has_adjacent_sibling = null)
     {
-        if (is_null($level_has_adjacent_sibling)) {
+        if ($level_has_adjacent_sibling === null) {
             $level_has_adjacent_sibling = array();
         }
 
@@ -1033,10 +1033,10 @@ class CMS_Topic
         $date = get_timezoned_date_time($post['date']);
         $poster_url = is_guest($post['member']) ? new Tempcode() : $GLOBALS['FORUM_DRIVER']->member_profile_url($post['member'], true);
         $poster_name = array_key_exists('username', $post) ? $post['username'] : $GLOBALS['FORUM_DRIVER']->get_username($post['member']);
-        if (is_null($poster_name)) {
+        if ($poster_name === null) {
             $poster_name = do_lang('UNKNOWN');
         }
-        $is_unread = is_null($this->topic_last_read) || ($this->topic_last_read <= $post['date']) || (get_forum_type() == 'cns') && !is_null($post['p_last_edit_time']) && ($this->topic_last_read <= $post['p_last_edit_time']);
+        $is_unread = ($this->topic_last_read === null) || ($this->topic_last_read <= $post['date']) || (get_forum_type() == 'cns') && ($post['p_last_edit_time'] !== null) && ($this->topic_last_read <= $post['p_last_edit_time']);
         if ($post['p_poster'] == get_member()) {
             $is_unread = false;
         }
@@ -1108,7 +1108,7 @@ class CMS_Topic
 
         $comment_text = get_option('comment_text');
 
-        if (is_null($post_warning)) {
+        if ($post_warning === null) {
             $post_warning = do_lang('POST_WARNING');
         }
 

@@ -90,7 +90,7 @@ class Hook_syndication_facebook
     public function auth_is_set($member_id)
     {
         $save_to = 'facebook_oauth_token';
-        if (!is_null($member_id)) {
+        if ($member_id !== null) {
             $save_to .= '__' . strval($member_id);
         }
         $val = get_value($save_to, null, true);
@@ -107,7 +107,7 @@ class Hook_syndication_facebook
 
         if ($code == '') {
             $scope = array('publish_actions');
-            if (is_null($member_id)) {
+            if ($member_id === null) {
                 $scope[] = 'manage_pages';
                 $scope[] = 'publish_pages';
             }
@@ -116,19 +116,19 @@ class Hook_syndication_facebook
             smart_redirect($oauth_redir_url);
         }
 
-        if (!is_null(get_param_string('error_reason', null))) { // oauth happened and ERROR!
+        if (get_param_string('error_reason', null) !== null) { // oauth happened and ERROR!
             attach_message(do_lang_tempcode('FACEBOOK_OAUTH_FAIL', escape_html(get_param_string('error_reason'))), 'warn', false, true);
             return false;
         }
 
         // oauth apparently worked
         $access_token = $FACEBOOK_CONNECT->getAccessToken();
-        if (is_null($access_token)) { // Actually it didn't
+        if ($access_token === null) { // Actually it didn't
             attach_message(do_lang_tempcode('FACEBOOK_OAUTH_FAIL', escape_html(do_lang('UNKNOWN'))), 'warn', false, true);
             return false;
         }
 
-        if (is_null($member_id)) {
+        if ($member_id === null) {
             /*$FACEBOOK_CONNECT->setExtendedAccessToken();
             $FACEBOOK_CONNECT->api('/oauth/access_token', 'POST',
                 array(
@@ -146,9 +146,9 @@ class Hook_syndication_facebook
             }
         }
 
-        if ((strpos($access_token, '|') === false) || (is_null($member_id))) { // If for users, not if application access token, which will happen on a refresh (as user token will not confirm twice)
+        if ((strpos($access_token, '|') === false) || ($member_id === null)) { // If for users, not if application access token, which will happen on a refresh (as user token will not confirm twice)
             $save_to = 'facebook_oauth_token';
-            if (!is_null($member_id)) {
+            if ($member_id !== null) {
                 $save_to .= '__' . strval($member_id);
             }
             set_value($save_to, $access_token, true);
@@ -173,7 +173,7 @@ class Hook_syndication_facebook
     public function auth_unset($member_id)
     {
         $save_to = 'facebook_oauth_token';
-        if (!is_null($member_id)) {
+        if ($member_id !== null) {
             $save_to .= '__' . strval($member_id);
         }
         set_value($save_to, null, true);
@@ -266,7 +266,7 @@ class Hook_syndication_facebook
         try {
             $ret = $fb->api('/' . $post_to_uid . '/feed', 'POST', $attachment);
         } catch (Exception $e) {
-            if ((!is_null($member_id)) && (!has_interesting_post_fields()) && (running_script('index')) && (!headers_sent())) {
+            if (($member_id !== null) && (!has_interesting_post_fields()) && (running_script('index')) && (!headers_sent())) {
                 $this->auth_set($member_id, get_self_url());
             }
 

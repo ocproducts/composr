@@ -49,7 +49,7 @@ class Hook_cleanup_tags
         foreach ($hooks as $hook => $ob) {
             $info = $ob->info();
             $seo_type_code = $info['seo_type_code'];
-            if (!is_null($seo_type_code)) {
+            if ($seo_type_code !== null) {
                 $table = $info['table'];
 
                 $id_field = $info['id_field'];

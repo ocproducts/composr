@@ -279,7 +279,7 @@ function _convert_image($from, &$to, $width, $height, $box_width = -1, $exit_on_
         $exif = function_exists('exif_read_data') ? @exif_read_data($from) : false;
     } else {
         $file_path_stub = convert_url_to_path($from);
-        if (!is_null($file_path_stub)) {
+        if ($file_path_stub !== null) {
             if (!check_memory_limit_for($file_path_stub, $exit_on_error)) {
                 return $from;
             }
@@ -290,7 +290,7 @@ function _convert_image($from, &$to, $width, $height, $box_width = -1, $exit_on_
             $exif = function_exists('exif_read_data') ? @exif_read_data($file_path_stub) : false;
         } else {
             $from_file = http_download_file($from, 1024 * 1024 * 20/*reasonable limit*/, false);
-            if (is_null($from_file)) {
+            if ($from_file === null) {
                 $from_file = false;
                 $exif = false;
             } else {
@@ -337,7 +337,7 @@ function _convert_image($from, &$to, $width, $height, $box_width = -1, $exit_on_
     }
 
     list($source, $reorientated) = adjust_pic_orientation($source, $exif);
-    if ((!is_null($thumb_options)) || (!$only_make_smaller)) {
+    if (($thumb_options !== null) || (!$only_make_smaller)) {
         unset($from_file);
     }
 
@@ -357,7 +357,7 @@ function _convert_image($from, &$to, $width, $height, $box_width = -1, $exit_on_
 
     $red = null;
 
-    if (is_null($thumb_options)) {
+    if ($thumb_options === null) {
         // Simpler algorithm
 
         // If we're not sure if this is gonna stretch to fit a width or stretch to fit a height
@@ -479,7 +479,7 @@ function _convert_image($from, &$to, $width, $height, $box_width = -1, $exit_on_
         } elseif ($thumb_options['type'] == 'pad' || (($thumb_options['type'] == 'pad_horiz_crop_horiz') && ($wrong_x < $width)) || (($thumb_options['type'] == 'pad_vert_crop_vert') && ($wrong_y < $height))) {
             // We definitely need to pad some excess space because otherwise $thumb_options would not call us.
             // Thus we need a background (can be transparent). Let's see if we've been given one.
-            if (array_key_exists('background', $thumb_options) && !is_null($thumb_options['background'])) {
+            if (array_key_exists('background', $thumb_options) && ($thumb_options['background'] !== null)) {
                 if (substr($thumb_options['background'], 0, 1) == '#') {
                     $thumb_options['background'] = substr($thumb_options['background'], 1);
                 }
@@ -564,7 +564,7 @@ function _convert_image($from, &$to, $width, $height, $box_width = -1, $exit_on_
     $gd_version = get_gd_version();
     if ($gd_version >= 2.0) { // If we have GD2
         // Set the background if we have one
-        if (!is_null($thumb_options) && !is_null($red)) {
+        if ($thumb_options !== null && $red !== null) {
             $dest = imagecreatetruecolor($width, $height);
             imagealphablending($dest, false);
             if ((function_exists('imagecolorallocatealpha')) && ($using_alpha)) {
@@ -587,7 +587,7 @@ function _convert_image($from, &$to, $width, $height, $box_width = -1, $exit_on_
         imagecopyresampled($dest, $source, $dest_x, $dest_y, $source_x, $source_y, $_width, $_height, $sx, $sy);
     } else {
         // Set the background if we have one
-        if (!is_null($thumb_options) && !is_null($red)) {
+        if ($thumb_options !== null && $red !== null) {
             $dest = imagecreate($width, $height);
 
             $back_col = imagecolorallocate($dest, $red, $green, $blue);
@@ -604,11 +604,11 @@ function _convert_image($from, &$to, $width, $height, $box_width = -1, $exit_on_
 
     // Save...
 
-    if (is_null($ext2)) {
+    if ($ext2 === null) {
         $ext2 = get_file_extension($to);
     }
     // If we've got transparency then we have to save as PNG
-    if (!is_null($thumb_options) && isset($using_alpha) && $using_alpha || $ext2 == '') {
+    if ($thumb_options !== null && isset($using_alpha) && $using_alpha || $ext2 == '') {
         $ext2 = 'png';
     }
 
@@ -704,10 +704,10 @@ function check_memory_limit_for($file_path, $exit_on_error = true)
     $ov = ini_get('memory_limit');
 
     $_what_we_will_allow = get_value('real_memory_available_mb');
-    $what_we_will_allow = is_null($_what_we_will_allow) ? null : (intval($_what_we_will_allow) * 1024 * 1024);
+    $what_we_will_allow = ($_what_we_will_allow === null) ? null : (intval($_what_we_will_allow) * 1024 * 1024);
 
-    if ((substr($ov, -1) == 'M') || (!is_null($what_we_will_allow))) {
-        if (is_null($what_we_will_allow)) {
+    if ((substr($ov, -1) == 'M') || ($what_we_will_allow !== null)) {
+        if ($what_we_will_allow === null) {
             $total_memory_limit_in_bytes = intval(substr($ov, 0, strlen($ov) - 1)) * 1024 * 1024;
 
             $what_we_will_allow = $total_memory_limit_in_bytes - memory_get_usage() - 1024 * 1024 * 8; // 8 is for 8MB extra space needed to finish off
@@ -734,7 +734,7 @@ function check_memory_limit_for($file_path, $exit_on_error = true)
                     $output_arr = array();
                     if (php_function_allowed('shell_exec')) {
                         $err_cond = @shell_exec($shrink_command);
-                        if (!is_null($err_cond)) {
+                        if ($err_cond !== null) {
                             return true;
                         }
                     }

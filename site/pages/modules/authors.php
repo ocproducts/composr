@@ -59,7 +59,7 @@ class Module_authors
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->create_table('authors', array(
                 'author' => '*ID_TEXT',
                 'url' => 'URLPATH',
@@ -69,17 +69,17 @@ class Module_authors
             ));
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 3)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 3)) {
             $GLOBALS['SITE_DB']->alter_table_field('authors', 'member_id', '?MEMBER');
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 4)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 4)) {
             $GLOBALS['SITE_DB']->alter_table_field('authors', 'forum_handle', '?MEMBER', 'member_id');
 
             $GLOBALS['SITE_DB']->delete_index_if_exists('authors', 'findmemberlink');
         }
 
-        if ((is_null($upgrade_from)) || ($upgrade_from < 4)) {
+        if (($upgrade_from === null) || ($upgrade_from < 4)) {
             $GLOBALS['SITE_DB']->create_index('authors', 'findmemberlink', array('member_id'));
         }
 
@@ -121,7 +121,7 @@ class Module_authors
         require_code('authors');
 
         $author = get_param_string('id', null);
-        if (is_null($author)) {
+        if ($author === null) {
             if (is_guest()) {
                 attach_to_screen_header('<meta name="robots" content="noindex" />'); // XHTMLXHTML
 
@@ -130,7 +130,7 @@ class Module_authors
 
             $author = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
         }
-        if ((is_null($author)) || ($author == '')) {
+        if (($author === null) || ($author == '')) {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR')); // Really don't want to have to search on this
         }
 
@@ -204,7 +204,7 @@ class Module_authors
 
         // Links associated with the mapping between the author and a forum member
         $handle = get_author_id_from_name($author);
-        if (!is_null($handle)) {
+        if ($handle !== null) {
             $forum_details = do_template('AUTHOR_SCREEN_POTENTIAL_ACTION_ENTRY', array('_GUID' => 'b90b606f263eeabeba38e06eef40a21e', 'ACTION' => hyperlink($GLOBALS['FORUM_DRIVER']->member_profile_url($handle, true), do_lang_tempcode('AUTHOR_PROFILE'), false, false, '', null, null, 'me')));
             if (addon_installed('points')) {
                 $give_points_url = build_url(array('page' => 'points', 'type' => 'member', 'id' => $handle), get_module_zone('points'));

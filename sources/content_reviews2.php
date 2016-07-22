@@ -34,7 +34,7 @@ function content_review_get_fields($content_type, $content_id = null, $catalogue
         return $fields;
     }
 
-    if (is_null($catalogue_name)) {
+    if ($catalogue_name === null) {
         $catalogue_name = '_' . $content_type;
     }
 
@@ -47,7 +47,7 @@ function content_review_get_fields($content_type, $content_id = null, $catalogue
             'TITLE' => do_lang_tempcode('CONTENT_REVIEWS'),
         )));
 
-        $content_review_rows = is_null($content_id) ? array() : $GLOBALS['SITE_DB']->query_select('content_reviews', array('review_freq', 'next_review_time', 'auto_action', 'display_review_status'), array('content_type' => $content_type, 'content_id' => $content_id), '', 1);
+        $content_review_rows = ($content_id === null) ? array() : $GLOBALS['SITE_DB']->query_select('content_reviews', array('review_freq', 'next_review_time', 'auto_action', 'display_review_status'), array('content_type' => $content_type, 'content_id' => $content_id), '', 1);
         if (array_key_exists(0, $content_review_rows)) {
             $review_freq = $content_review_rows[0]['review_freq'];
             $next_review_time = $content_review_rows[0]['next_review_time'];
@@ -56,7 +56,7 @@ function content_review_get_fields($content_type, $content_id = null, $catalogue
         } else {
             if ($catalogue_name !== null) {
                 $review_freq = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_default_review_freq', array('c_name' => $catalogue_name));
-                if (!is_null($review_freq)) {
+                if ($review_freq !== null) {
                     if ($review_freq <= 0) {
                         $review_freq = mixed();
                     }
@@ -94,7 +94,7 @@ function content_review_get_fields($content_type, $content_id = null, $catalogue
         $review_freq_days = mixed();
         $review_freq_months = mixed();
         $review_freq_years = mixed();
-        if (!is_null($review_freq)) {
+        if ($review_freq !== null) {
             if ($review_freq % (60 * 60 * 24 * 365) == 0) {
                 $review_freq_years = $review_freq / (60 * 60 * 24 * 365);
             } elseif ($review_freq % (60 * 60 * 24 * 31) == 0) {
@@ -120,21 +120,21 @@ function content_review_get_fields($content_type, $content_id = null, $catalogue
 
         // Specification of a specific date
 
-        if ((!is_null($next_review_time)) && ($next_review_time < time())) {
+        if (($next_review_time !== null) && ($next_review_time < time())) {
             $next_review_time = null; // Stop edits resetting the reviewed status and leaving the old date there
         }
 
-        $fields->attach(form_input_date(do_lang_tempcode('NEXT_REVIEW_DATE'), do_lang_tempcode('DESCRIPTION_NEXT_REVIEW_DATE'), 'next_review_time', false, is_null($next_review_time), false, $next_review_time));
+        $fields->attach(form_input_date(do_lang_tempcode('NEXT_REVIEW_DATE'), do_lang_tempcode('DESCRIPTION_NEXT_REVIEW_DATE'), 'next_review_time', false, ($next_review_time === null), false, $next_review_time));
 
         // Specification of auto-action to perform
 
         $auto_action_list = new Tempcode();
         $auto_actions = array();
         $auto_actions[] = 'leave';
-        if (!is_null($content_info['validated_field'])) {
+        if ($content_info['validated_field'] !== null) {
             $auto_actions[] = 'unvalidate';
         }
-        if (($auto_action == 'delete') || ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) || ((!is_null($content_info['permissions_type_code'])) && (has_privilege(get_member(), 'delete_' . $content_info['permissions_type_code'] . 'range_content', $content_info['module'])))) {
+        if (($auto_action == 'delete') || ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) || (($content_info['permissions_type_code'] !== null) && (has_privilege(get_member(), 'delete_' . $content_info['permissions_type_code'] . 'range_content', $content_info['module'])))) {
             $auto_actions[] = 'delete';
         }
         foreach ($auto_actions as $type) {
@@ -163,7 +163,7 @@ function content_review_set($content_type, $content_id, $old_content_id = null)
         return;
     }
 
-    if (!is_null($old_content_id)) { // Do renaming operation
+    if ($old_content_id !== null) { // Do renaming operation
         $GLOBALS['SITE_DB']->query_update('content_reviews', array('content_id' => $content_id), array(
             'content_type' => $content_type,
             'content_id' => $old_content_id,
@@ -179,11 +179,11 @@ function content_review_set($content_type, $content_id, $old_content_id = null)
         $review_freq_days = post_param_integer('review_freq_days', null);
         $review_freq_months = post_param_integer('review_freq_months', null);
         $review_freq_years = post_param_integer('review_freq_years', null);
-        if (!is_null($review_freq_days)) {
+        if ($review_freq_days !== null) {
             $review_freq = $review_freq_days * 60 * 60 * 24;
-        } elseif (!is_null($review_freq_months)) {
+        } elseif ($review_freq_months !== null) {
             $review_freq = $review_freq_months * 60 * 60 * 24 * 31;
-        } elseif (!is_null($review_freq_years)) {
+        } elseif ($review_freq_years !== null) {
             $review_freq = $review_freq_years * 60 * 60 * 24 * 365;
         }
 
@@ -221,10 +221,10 @@ function schedule_content_review($content_type, $content_id, $review_freq, $next
     ), '', 1);
 
     // Work out review time
-    if ((is_null($next_review_time)) && (is_null($review_freq))) {
+    if (($next_review_time === null) && ($review_freq === null)) {
         return; // Nothing to schedule
     }
-    if (is_null($next_review_time)) {
+    if ($next_review_time === null) {
         $calc_review_time = (time() + $review_freq);
         $next_review_time = $calc_review_time;
     }

@@ -70,7 +70,7 @@ class Hook_content_meta_aware_member
             'edit_page_link_field' => 'edit_username',
             'view_category_page_link_pattern' => null,
             'add_url' => has_actual_page_access(get_member(), 'admin_cns_members') ? '_SEARCH:admin_cns_members:step1' : null,
-            'archive_url' => ((!is_null($zone)) ? $zone : get_module_zone('members')) . ':members',
+            'archive_url' => (($zone !== null) ? $zone : get_module_zone('members')) . ':members',
 
             'support_url_monikers' => (get_option('username_profile_links') == '0'),
 

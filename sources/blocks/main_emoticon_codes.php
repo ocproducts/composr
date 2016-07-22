@@ -95,7 +95,7 @@ class Block_main_emoticon_codes
                 $code = $keys[$i];
                 $imgcode = $values[$i];
 
-                if ((is_null($EMOTICON_LEVELS)) || ($EMOTICON_LEVELS[$code] < 3)) { // If within a displayable level
+                if (($EMOTICON_LEVELS === null) || ($EMOTICON_LEVELS[$code] < 3)) { // If within a displayable level
                     $columns[] = array(
                         'CODE' => $code,
                         'TPL' => do_emoticon($imgcode),

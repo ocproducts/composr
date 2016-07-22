@@ -67,7 +67,7 @@ class Module_admin_config
                 $ret['xml_breadcrumbs'] = array('BREADCRUMB_OVERRIDES', 'menu/adminzone/structure/breadcrumbs');
             }
 
-            if (is_null(get_value('brand_base_url'))) {
+            if (get_value('brand_base_url') === null) {
                 $ret['upgrader'] = array('FU_UPGRADER_TITLE', 'menu/adminzone/tools/upgrade');
             }
 
@@ -114,7 +114,7 @@ class Module_admin_config
             $category = get_param_string('id');
 
             $test = do_lang('CONFIG_CATEGORY_' . $category, null, null, null, null, false);
-            if (is_null($test)) {
+            if ($test === null) {
                 attach_message(do_lang_tempcode('CAT_NOT_FOUND', $category, 'OPTION_CATEGORY'), 'warn');
 
                 $this->title = get_screen_title('CONFIGURATION');
@@ -132,7 +132,7 @@ class Module_admin_config
             $category = get_param_string('id', 'MAIN');
 
             $test = do_lang('CONFIG_CATEGORY_' . $category, null, null, null, null, false);
-            if (is_null($test)) {
+            if ($test === null) {
                 $this->title = get_screen_title('CONFIGURATION');
             } else {
                 $this->title = get_screen_title(do_lang_tempcode('CONFIG_CATEGORY_' . $category), false);
@@ -221,7 +221,7 @@ class Module_admin_config
         if ($type == 'base') {
             return $this->base();
         }
-        if (is_null(get_value('brand_base_url'))) {
+        if (get_value('brand_base_url') === null) {
             if ($type == 'upgrader') {
                 return $this->upgrader();
             }
@@ -252,8 +252,8 @@ class Module_admin_config
         $categories = array();
         foreach ($hooks as $ob) {
             $option = $ob->get_details();
-            if ((is_null($GLOBALS['CURRENT_SHARE_USER'])) || ($option['shared_hosting_restricted'] == 0)) {
-                if (!is_null($ob->get_default())) {
+            if (($GLOBALS['CURRENT_SHARE_USER'] === null) || ($option['shared_hosting_restricted'] == 0)) {
+                if ($ob->get_default() !== null) {
                     $category = $option['category'];
                     if (!isset($categories[$category])) {
                         $categories[$category] = 0;
@@ -287,7 +287,7 @@ class Module_admin_config
             $url = build_url(array('page' => '_SELF', 'type' => 'category', 'id' => $category), '_SELF');
 
             $_category_name = do_lang('CONFIG_CATEGORY_' . $category, null, null, null, null, false);
-            if (is_null($_category_name)) {
+            if ($_category_name === null) {
                 attach_message(do_lang_tempcode('CAT_NOT_FOUND', $category, 'OPTION_CATEGORY'), 'warn');
 
                 $category_name = make_string_tempcode($category);
@@ -651,13 +651,13 @@ class Module_admin_config
 
         // Empty thumbnail cache if needed
         if (function_exists('imagetypes')) {
-            if ((!is_null(post_param_string('thumb_width', null))) && (post_param_string('thumb_width') != get_option('thumb_width'))) {
+            if ((post_param_string('thumb_width', null) !== null) && (post_param_string('thumb_width') != get_option('thumb_width'))) {
                 erase_thumb_cache();
             }
         }
 
         // Empty language cache if needed
-        if ((!is_null(post_param_string('yeehaw', null))) && (post_param_string('yeehaw') != get_option('yeehaw'))) {
+        if ((post_param_string('yeehaw', null) !== null) && (post_param_string('yeehaw') != get_option('yeehaw'))) {
             erase_cached_language();
         }
 
@@ -667,8 +667,8 @@ class Module_admin_config
         foreach ($hooks as $hook => $ob) {
             $option = $ob->get_details();
             if ($category == $option['category']) {
-                if ((is_null($GLOBALS['CURRENT_SHARE_USER'])) || ($option['shared_hosting_restricted'] == 0)) {
-                    if (!is_null($ob->get_default())) {
+                if (($GLOBALS['CURRENT_SHARE_USER'] === null) || ($option['shared_hosting_restricted'] == 0)) {
+                    if ($ob->get_default() !== null) {
                         $option['ob'] = $ob;
                         $options[$hook] = $option;
                     }
@@ -688,13 +688,13 @@ class Module_admin_config
                 $value = strval(post_param_integer($name, 0));
             } elseif ($option['type'] == 'date') {
                 $date_value = post_param_date($name);
-                $value = is_null($date_value) ? '' : strval($date_value);
+                $value = ($date_value === null) ? '' : strval($date_value);
             } elseif ((($option['type'] == 'forum') || ($option['type'] == '?forum')) && (get_forum_type() == 'cns')) {
                 $value = post_param_string($name);
                 if (is_numeric($value)) {
                     $value = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forums', 'f_name', array('id' => post_param_integer($name)));
                 }
-                if (is_null($value)) {
+                if ($value === null) {
                     $value = '';
                 }
             } elseif (($option['type'] == 'forum_grouping') && (get_forum_type() == 'cns')) {
@@ -702,12 +702,12 @@ class Module_admin_config
                 if (is_numeric($value)) {
                     $value = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forum_groupings', 'c_title', array('id' => post_param_integer($name)));
                 }
-                if (is_null($value)) {
+                if ($value === null) {
                     $value = '';
                 }
             } elseif ((($option['type'] == 'usergroup') || ($option['type'] == 'usergroup_not_guest')) && (get_forum_type() == 'cns')) {
                 $_value = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'g_name', array('id' => post_param_integer($name)));
-                if (is_null($_value)) {
+                if ($_value === null) {
                     $value = '';
                 } else {
                     $value = get_translated_text($_value);

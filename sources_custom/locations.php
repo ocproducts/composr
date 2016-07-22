@@ -21,7 +21,7 @@
  */
 function create_region_selection_list($regions = null)
 {
-    if (is_null($regions)) {
+    if ($regions === null) {
         $regions = array();
     }
 

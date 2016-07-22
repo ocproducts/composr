@@ -322,11 +322,11 @@ class Hook_ccbill
      */
     public function store_shipping_address($order_id)
     {
-        if (is_null(post_param_string('address1', null))) {
+        if (post_param_string('address1', null) === null) {
             return null;
         }
 
-        if (is_null($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order_addresses', 'id', array('order_id' => $order_id)))) {
+        if ($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order_addresses', 'id', array('order_id' => $order_id)) === null) {
             $shipping_address = array();
             $shipping_address['order_id'] = $order_id;
             $shipping_address['address_name'] = post_param_string('customer_fname', '') . ' ' . post_param_string('customer_lname', '');

@@ -407,7 +407,7 @@ class Block_main_sortable_table
         foreach ($_rows as $row) {
             if ($row[$j] != '') {
                 if ((is_numeric($row[$j])) && (strpos($row[$j], '.') === false)) {
-                    if (is_null($sortable_type)) {
+                    if ($sortable_type === null) {
                         $sortable_type = 'integer';
                     } else {
                         if ($sortable_type != 'integer' && $sortable_type != 'float'/*an integer value can also fit a float*/) {
@@ -419,7 +419,7 @@ class Block_main_sortable_table
                 }
 
                 if ((is_numeric($row[$j])) && (strpos($row[$j], '.') !== false)) {
-                    if ((is_null($sortable_type)) || ($sortable_type == 'integer'/*an integer value may upgrade to a float*/)) {
+                    if (($sortable_type === null) || ($sortable_type == 'integer'/*an integer value may upgrade to a float*/)) {
                         $sortable_type = 'float';
                     } else {
                         if ($sortable_type != 'float') {
@@ -431,7 +431,7 @@ class Block_main_sortable_table
                 }
 
                 if ((preg_match('#^\d\d\d\d-\d\d-\d\d$#', $row[$j]) != 0) || (preg_match('#^\d\d-\d\d-\d\d\d\d$#', $row[$j]) != 0)) {
-                    if (is_null($sortable_type)) {
+                    if ($sortable_type === null) {
                         $sortable_type = 'date';
                     } else {
                         if ($sortable_type != 'date') {
@@ -445,7 +445,7 @@ class Block_main_sortable_table
                 if (addon_installed('ecommerce')) {
                     require_code('ecommerce');
                     if (preg_match('#^' . preg_quote(ecommerce_get_currency_symbol(), '#') . '#', $row[$j]) != 0) {
-                        if (is_null($sortable_type)) {
+                        if ($sortable_type === null) {
                             $sortable_type = 'currency';
                         } else {
                             if ($sortable_type != 'currency') {
@@ -462,7 +462,7 @@ class Block_main_sortable_table
                 break;
             }
         }
-        return is_null($sortable_type) ? 'alphanumeric' : $sortable_type;
+        return ($sortable_type === null) ? 'alphanumeric' : $sortable_type;
     }
 
     /**

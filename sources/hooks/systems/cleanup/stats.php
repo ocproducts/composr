@@ -30,7 +30,7 @@ class Hook_cleanup_stats
      */
     public function info()
     {
-        if (!is_null($GLOBALS['CURRENT_SHARE_USER'])) {
+        if ($GLOBALS['CURRENT_SHARE_USER'] !== null) {
             return null;
         }
 
@@ -49,7 +49,7 @@ class Hook_cleanup_stats
      */
     public function run()
     {
-        if (!is_null($GLOBALS['CURRENT_SHARE_USER'])) {
+        if ($GLOBALS['CURRENT_SHARE_USER'] !== null) {
             return new Tempcode();
         }
 

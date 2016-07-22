@@ -82,8 +82,8 @@ class Hook_sitemap_config_category extends Hook_sitemap_base
         $categories = array();
         foreach ($hooks as $ob) {
             $option = $ob->get_details();
-            if ((is_null($GLOBALS['CURRENT_SHARE_USER'])) || ($option['shared_hosting_restricted'] == 0)) {
-                if (!is_null($ob->get_default())) {
+            if (($GLOBALS['CURRENT_SHARE_USER'] === null) || ($option['shared_hosting_restricted'] == 0)) {
+                if ($ob->get_default() !== null) {
                     $category = $option['category'];
                     if (!isset($categories[$category])) {
                         $categories[$category] = 0;

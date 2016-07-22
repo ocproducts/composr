@@ -63,7 +63,7 @@ class Hook_content_meta_aware_author
             'edit_page_link_pattern' => '_SEARCH:cms_authors:_add:_WILD',
             'view_category_page_link_pattern' => null,
             'add_url' => (function_exists('has_submit_permission') && has_submit_permission('mid', get_member(), get_ip_address(), 'cms_authors')) ? (get_module_zone('cms_authors') . ':cms_authors:_add') : null,
-            'archive_url' => ((!is_null($zone)) ? $zone : get_module_zone('authors')) . ':authors',
+            'archive_url' => (($zone !== null) ? $zone : get_module_zone('authors')) . ':authors',
 
             'support_url_monikers' => false,
 

@@ -121,7 +121,7 @@ class Module_admin_cleanup
         $hooks = find_all_hook_obs('systems', 'cleanup', 'Hook_cleanup_');
         foreach ($hooks as $hook => $object) {
             $output = $object->info();
-            if (!is_null($output)) {
+            if ($output !== null) {
                 $tick = form_input_tick($output['title'], $output['description'], 'cleanup_' . $hook, false);
                 if ($output['type'] == 'cache') {
                     $_fields_cache[$output['title']->evaluate()] = $tick;

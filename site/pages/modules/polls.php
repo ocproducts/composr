@@ -67,7 +67,7 @@ class Module_polls
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->create_table('poll', array(
                 'id' => '*AUTO',
                 'question' => 'SHORT_TRANS__COMCODE',
@@ -122,7 +122,7 @@ class Module_polls
             $GLOBALS['FORUM_DRIVER']->install_create_custom_field('points_gained_voting', 20, 1, 0, 0, 0, '', 'integer');
         }
 
-        if ((is_null($upgrade_from)) || ($upgrade_from < 5)) {
+        if (($upgrade_from === null) || ($upgrade_from < 5)) {
             $GLOBALS['SITE_DB']->create_table('poll_votes', array(
                 'id' => '*AUTO',
                 'v_poll_id' => 'AUTO_LINK',
@@ -136,7 +136,7 @@ class Module_polls
             $GLOBALS['SITE_DB']->create_index('poll_votes', 'v_vote_for', array('v_vote_for'));
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 5)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 5)) {
             $polls = $GLOBALS['SITE_DB']->query_select('poll', array('id', 'ip'));
             foreach ($polls as $poll) {
                 $voters = explode('-', $poll['ip']);
@@ -152,12 +152,12 @@ class Module_polls
             $GLOBALS['SITE_DB']->delete_table_field('poll', 'ip');
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 6)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 6)) {
             $GLOBALS['SITE_DB']->alter_table_field('poll', 'option6', '?SHORT_TRANS__COMCODE');
             $GLOBALS['SITE_DB']->alter_table_field('poll', 'option7', '?SHORT_TRANS__COMCODE');
         }
 
-        if ((is_null($upgrade_from)) || ($upgrade_from < 6)) {
+        if (($upgrade_from === null) || ($upgrade_from < 6)) {
             $GLOBALS['SITE_DB']->create_index('poll', '#poll_search__combined', array('question', 'option1', 'option2', 'option3', 'option4', 'option5'));
 
             add_privilege('SEARCH', 'autocomplete_keyword_poll', false);
@@ -280,15 +280,15 @@ class Module_polls
         $myrow = $this->myrow;
         $_title = $this->_title;
 
-        $date_raw = is_null($myrow['date_and_time']) ? '' : strval($myrow['date_and_time']);
+        $date_raw = ($myrow['date_and_time'] === null) ? '' : strval($myrow['date_and_time']);
         $add_date_raw = strval($myrow['add_time']);
-        $edit_date_raw = is_null($myrow['edit_date']) ? '' : strval($myrow['edit_date']);
+        $edit_date_raw = ($myrow['edit_date'] === null) ? '' : strval($myrow['edit_date']);
         $date = get_timezoned_date_time($myrow['date_and_time']);
         $add_date = get_timezoned_date_time($myrow['add_time']);
         $edit_date = get_timezoned_date_time($myrow['edit_date']);
 
         // Views
-        if ((get_db_type() != 'xml') && (get_value('no_view_counts') !== '1') && (is_null(get_bot_type()))) {
+        if ((get_db_type() != 'xml') && (get_value('no_view_counts') !== '1') && (get_bot_type() === null)) {
             $myrow['poll_views']++;
             if (!$GLOBALS['SITE_DB']->table_is_locked('poll')) {
                 $GLOBALS['SITE_DB']->query_update('poll', array('poll_views' => $myrow['poll_views']), array('id' => $id), '', 1, null, false, true);
@@ -303,7 +303,7 @@ class Module_polls
             $myrow['allow_rating'],
             $myrow['allow_comments'],
             $myrow['allow_trackbacks'],
-            is_null($myrow['date_and_time']) ? 0 : 1,
+            ($myrow['date_and_time'] === null) ? 0 : 1,
             $myrow['submitter'],
             build_url(array('page' => '_SELF', 'type' => 'view', 'id' => $id), '_SELF', null, false, false, true),
             $_title,

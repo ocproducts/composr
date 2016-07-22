@@ -42,7 +42,7 @@ class Hook_checklist_messaging
 
         $max_rows = 0;
         $rows = $GLOBALS['FORUM_DRIVER']->show_forum_topics(get_option('messaging_forum_name'), 100, 0, $max_rows);
-        if (!is_null($rows)) {
+        if ($rows !== null) {
             foreach ($rows as $i => $row) {
                 $looking_at = $row['title'];
                 if ($row['description'] != '') {

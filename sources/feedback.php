@@ -57,7 +57,7 @@ function process_overridden_comment_forum($feedback_code, $id, $category_id, $ol
         // Move if needed
         $old_forum_id = find_overridden_comment_forum($feedback_code, $old_category_id);
         $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier($old_forum_id, $feedback_code . '_' . $id, do_lang('COMMENT'));
-        if (!is_null($topic_id)) {
+        if ($topic_id !== null) {
             $_forum_id = $GLOBALS['FORUM_DRIVER']->forum_id_from_name($forum_id);
             $_old_forum_id = $GLOBALS['FORUM_DRIVER']->forum_id_from_name($old_forum_id);
             require_code('cns_topics_action2');
@@ -77,16 +77,16 @@ function process_overridden_comment_forum($feedback_code, $id, $category_id, $ol
  */
 function find_overridden_comment_forum($feedback_code, $category_id = null)
 {
-    if (!is_null($category_id)) {
+    if ($category_id !== null) {
         $comment_topic_forum = get_value('comment_forum__' . $feedback_code . '__' . $category_id);
-        if (is_null($comment_topic_forum)) {
+        if ($comment_topic_forum === null) {
             $comment_topic_forum = get_value('comment_forum__' . $feedback_code);
         }
     } else {
         $comment_topic_forum = get_value('comment_forum__' . $feedback_code);
     }
 
-    if (is_null($comment_topic_forum)) {
+    if ($comment_topic_forum === null) {
         $comment_topic_forum = get_option('comments_forum_name');
     }
 
@@ -144,7 +144,7 @@ function embed_feedback_systems($page_name, $content_id, $allow_rating, $allow_c
                 'l_notification_code' => 'comment_posted',
                 'l_code_category' => $page_name . '_' . $content_id,
             ));
-            if (is_null($test)) {
+            if ($test === null) {
                 require_code('notifications');
                 enable_notifications('comment_posted', $page_name . '_' . $content_id, $submitter);
             }
@@ -152,7 +152,7 @@ function embed_feedback_systems($page_name, $content_id, $allow_rating, $allow_c
     }
 
     actualise_rating($allow_rating == 1, $page_name, $content_id, $content_url, $content_title);
-    if ((!is_null(post_param_string('title', null))) || ($validated == 1)) {
+    if ((post_param_string('title', null) !== null) || ($validated == 1)) {
         actualise_post_comment($allow_comments >= 1, $page_name, $content_id, $content_url, $content_title, $forum, false, null, false, false, false, null, null, $time);
     }
     $rating_details = get_rating_box($content_url, $content_title, $page_name, $content_id, $allow_rating == 1, $submitter);
@@ -262,7 +262,7 @@ function display_rating($content_url, $content_title, $content_type, $content_id
 {
     $rating_data = get_rating_simple_array($content_url, $content_title, $content_type, $content_id, 'RATING_FORM', $submitter);
 
-    if (is_null($rating_data)) {
+    if ($rating_data === null) {
         return new Tempcode();
     }
 
@@ -324,14 +324,14 @@ function get_rating_simple_array($content_url, $content_title, $content_type, $c
                 $overall_num_ratings = max($overall_num_ratings, $num_ratings);
 
                 if (($num_ratings < MAX_LIKES_TO_SHOW) && ($likes)) { // Show likes
-                    if (is_null($liked_by)) {
+                    if ($liked_by === null) {
                         $liked_by = array();
                     }
                     if (count($liked_by) < MAX_LIKES_TO_SHOW) {
                         $_liked_by = $GLOBALS['SITE_DB']->query_select('rating', array('rating_member'), array('rating_for_type' => $rating_for_type, 'rating_for_id' => $content_id, 'rating' => 10));
                         foreach ($_liked_by as $l) {
                             $username = $GLOBALS['FORUM_DRIVER']->get_username($l['rating_member']);
-                            if (!is_null($username)) {
+                            if ($username !== null) {
                                 $liked_by[] = array(
                                     'MEMBER_ID' => strval($l['rating_member']),
                                     'USERNAME' => $username,
@@ -477,7 +477,7 @@ function actualise_rating($allow_rating, $content_type, $content_id, $content_ur
     foreach ($all_rating_criteria as $type) {
         // Has there actually been any rating?
         $rating = post_param_integer('rating__' . $content_type . '__' . $type . '__' . $content_id, null);
-        if (is_null($rating)) {
+        if ($rating === null) {
             return;
         }
 
@@ -518,7 +518,7 @@ function actualise_give_rating_points()
  */
 function actualise_specific_rating($rating, $page_name, $member_id, $content_type, $type, $content_id, $content_url, $content_title)
 {
-    if (!is_null($rating)) {
+    if ($rating !== null) {
         if (($rating > 10) || ($rating < 1)) {
             log_hack_attack_and_exit('VOTE_CHEAT');
         }
@@ -531,7 +531,7 @@ function actualise_specific_rating($rating, $page_name, $member_id, $content_typ
     }
     $already_rated = already_rated(array($rating_for_type), $content_id);
     $past_rating = mixed();
-    if (!is_null($rating)) {
+    if ($rating !== null) {
         if ($already_rated) {
             $past_rating = $GLOBALS['SITE_DB']->query_select_value_if_there('rating', 'rating', array('rating_for_type' => $rating_for_type, 'rating_for_id' => $content_id, 'rating_member' => $member_id, 'rating_ip' => get_ip_address()));
             // Delete, in preparation for re-rating
@@ -540,14 +540,14 @@ function actualise_specific_rating($rating, $page_name, $member_id, $content_typ
     }
 
     list($_content_title, $submitter, , $safe_content_url, $cma_info) = get_details_behind_feedback_code($content_type, $content_id);
-    if (is_null($content_title)) {
+    if ($content_title === null) {
         $content_title = $_content_title;
     }
     if ((get_option('allow_own_rate') == '0') && ($member_id === $submitter) && (!is_guest($member_id))) {
         return;
     }
 
-    if (!is_null($rating)) {
+    if ($rating !== null) {
         $GLOBALS['SITE_DB']->query_insert('rating', array('rating_for_type' => $rating_for_type, 'rating_for_id' => $content_id, 'rating_member' => $member_id, 'rating_ip' => get_ip_address(), 'rating_time' => time(), 'rating' => $rating));
     } else {
         $GLOBALS['SITE_DB']->query_delete('rating', array('rating_for_type' => $rating_for_type, 'rating_for_id' => $content_id, 'rating_member' => $member_id, 'rating_ip' => get_ip_address()));
@@ -555,7 +555,7 @@ function actualise_specific_rating($rating, $page_name, $member_id, $content_typ
 
     // Top rating / liked
     if (($rating === 10) && ($type == '') && ($past_rating !== $rating)) {
-        if (!is_null($cma_info)) {
+        if ($cma_info !== null) {
             $content_type_title = do_lang($cma_info['content_type_label']);
 
             // Special case. Would prefer not to hard-code, but important for usability
@@ -565,7 +565,7 @@ function actualise_specific_rating($rating, $page_name, $member_id, $content_typ
 
             $real_content_type = convert_composr_type_codes('feedback_type_code', $content_type, 'content_type');
 
-            if ((!is_null($submitter)) && (!is_guest($submitter))) {
+            if (($submitter !== null) && (!is_guest($submitter))) {
                 // Give points
                 if ($member_id != $submitter) {
                     if ((addon_installed('points')) && (!$already_rated)) {
@@ -585,7 +585,7 @@ function actualise_specific_rating($rating, $page_name, $member_id, $content_typ
                     require_code('content');
                     $cma_ob = get_content_object($real_content_type);
                     $cma_content_row = content_get_row($content_id, $cma_ob->info());
-                    if (!is_null($cma_content_row)) {
+                    if ($cma_content_row !== null) {
                         push_no_keep_context();
                         $rendered = static_evaluate_tempcode($cma_ob->run($cma_content_row, '_SEARCH', true, true));
                         pop_no_keep_context();
@@ -604,11 +604,11 @@ function actualise_specific_rating($rating, $page_name, $member_id, $content_typ
                 // Put on activity wall / whatever
                 require_code('users2');
                 if (may_view_content_behind(get_modal_user(), $real_content_type, $content_id, 'feedback_type_code')) {
-                    if (is_null($submitter)) {
+                    if ($submitter === null) {
                         $submitter = $GLOBALS['FORUM_DRIVER']->get_guest_id();
                     }
 
-                    $activity_type = ((is_null($submitter)) || (is_guest($submitter))) ? '_ACTIVITY_LIKES' : 'ACTIVITY_LIKES';
+                    $activity_type = (($submitter === null) || (is_guest($submitter))) ? '_ACTIVITY_LIKES' : 'ACTIVITY_LIKES';
                     $_safe_content_url = is_object($safe_content_url) ? $safe_content_url->evaluate() : $safe_content_url;
                     if ($_safe_content_url == '') {
                         $_safe_content_url = is_object($content_url) ? $content_url->evaluate() : $content_url;
@@ -652,7 +652,7 @@ function actualise_specific_rating($rating, $page_name, $member_id, $content_typ
 function get_comments($content_type, $allow_comments, $content_id, $invisible_if_no_comments = false, $forum = null, $post_warning = null, $_comments = null, $explicit_allow = false, $reverse = null, $highlight_by_user = null, $allow_reviews = false, $num_to_show_limit = null)
 {
     if (((get_option('is_on_comments') == '1') && (get_forum_type() != 'none') && ((get_forum_type() != 'cns') || (addon_installed('cns_forum'))) && (($allow_reviews) || ($allow_comments))) || ($explicit_allow)) {
-        if (is_null($forum)) {
+        if ($forum === null) {
             $forum = get_option('comments_forum_name');
         }
 
@@ -724,20 +724,20 @@ function actualise_post_comment($allow_comments, $content_type, $content_id, $co
         }
     }
 
-    if (is_null($post_title)) {
+    if ($post_title === null) {
         $post_title = post_param_string('title', null);
     }
-    if ((is_null($post_title)) && (!$forum_tie)) {
+    if (($post_title === null) && (!$forum_tie)) {
         return false;
     }
 
-    if (is_null($post)) {
+    if ($post === null) {
         $post = post_param_string('post', null);
         if (($post == do_lang('POST_WARNING')) || ($post == do_lang('THREADED_REPLY_NOTICE', do_lang('POST_WARNING')))) {
             $post = '';
         }
     }
-    if (!is_null($post_title)) {
+    if ($post_title !== null) {
         if (($post == '') && ($post_title !== '')) {
             if (($post == '') && ($post_title != '')) {
                 $post = $post_title;
@@ -766,7 +766,7 @@ function actualise_post_comment($allow_comments, $content_type, $content_id, $co
 
     $content_title = strip_comcode($content_title);
 
-    if (is_null($forum)) {
+    if ($forum === null) {
         $forum = get_option('comments_forum_name');
     }
 
@@ -816,14 +816,14 @@ function actualise_post_comment($allow_comments, $content_type, $content_id, $co
         $submitter
     );
 
-    if (!is_null($topic_id)) {
+    if ($topic_id !== null) {
         if (!is_integer($forum)) {
             $forum_id = $GLOBALS['FORUM_DRIVER']->forum_id_from_name($forum);
         } else {
             $forum_id = intval($forum);
         }
 
-        if ((get_forum_type() == 'cns') && (!is_null($GLOBALS['LAST_POST_ID']))) {
+        if ((get_forum_type() == 'cns') && ($GLOBALS['LAST_POST_ID'] !== null)) {
             $extra_review_ratings = array();
             global $REVIEWS_STRUCTURE;
             if (array_key_exists($content_type, $REVIEWS_STRUCTURE)) {
@@ -836,7 +836,7 @@ function actualise_post_comment($allow_comments, $content_type, $content_id, $co
                 // Has there actually been any rating?
                 $rating = post_param_integer('review_rating__' . fix_id($rating_type), null);
 
-                if (!is_null($rating)) {
+                if ($rating !== null) {
                     if (($rating > 10) || ($rating < 1)) {
                         log_hack_attack_and_exit('VOTE_CHEAT');
                     }
@@ -858,7 +858,7 @@ function actualise_post_comment($allow_comments, $content_type, $content_id, $co
         $real_content_type = convert_composr_type_codes('feedback_type_code', $content_type, 'content_type');
 
         $content_type_title = $real_content_type;
-        if (!is_null($cma_info)) {
+        if ($cma_info !== null) {
             $content_type_title = do_lang($cma_info['content_type_label']);
         }
 
@@ -894,10 +894,10 @@ function actualise_post_comment($allow_comments, $content_type, $content_id, $co
             // Activity
             require_code('users2');
             if (may_view_content_behind(get_modal_user(), $real_content_type, $content_id, 'feedback_type_code')) {
-                if (is_null($submitter)) {
+                if ($submitter === null) {
                     $submitter = $GLOBALS['FORUM_DRIVER']->get_guest_id();
                 }
-                $activity_type = ((is_null($submitter)) || (is_guest($submitter))) ? '_ADDED_COMMENT_ON' : 'ADDED_COMMENT_ON';
+                $activity_type = (($submitter === null) || (is_guest($submitter))) ? '_ADDED_COMMENT_ON' : 'ADDED_COMMENT_ON';
                 $_safe_content_url = is_object($safe_content_url) ? $safe_content_url->evaluate() : $safe_content_url;
                 if ($_safe_content_url == '') {
                     $_safe_content_url = is_object($content_url) ? $content_url->evaluate() : $content_url;
@@ -948,14 +948,14 @@ function update_spacer_post($allow_comments, $content_type, $content_id, $conten
         return;
     }
 
-    $home_link = is_null($content_title) ? new Tempcode() : hyperlink($content_url, $content_title, false, true);
+    $home_link = ($content_title === null) ? new Tempcode() : hyperlink($content_url, $content_title, false, true);
 
-    if (is_null($forum)) {
+    if ($forum === null) {
         $forum = get_option('comments_forum_name');
     }
     if (!is_integer($forum)) {
         $forum_id = $GLOBALS['FORUM_DRIVER']->forum_id_from_name($forum);
-        if (is_null($forum_id)) {
+        if ($forum_id === null) {
             return;
         }
     } else {
@@ -964,25 +964,25 @@ function update_spacer_post($allow_comments, $content_type, $content_id, $conten
 
     $content_title = strip_comcode($content_title);
 
-    if (is_null($post_id)) {
+    if ($post_id === null) {
         $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(strval($forum_id), $content_type . '_' . $content_id, do_lang('COMMENT'));
-        if (is_null($topic_id)) {
+        if ($topic_id === null) {
             return;
         }
         $post_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_posts', 'MIN(id)', array('p_topic_id' => $topic_id));
-        if (is_null($post_id)) {
+        if ($post_id === null) {
             return;
         }
     } else {
         $topic_id = $GLOBALS['FORUM_DB']->query_select_value('f_posts', 'p_topic_id', array('id' => $post_id));
     }
 
-    $spacer_title = is_null($content_title) ? ($content_type . '_' . $content_id) : ($content_title . ' (#' . $content_type . '_' . $content_id . ')');
+    $spacer_title = ($content_title === null) ? ($content_type . '_' . $content_id) : ($content_title . ' (#' . $content_type . '_' . $content_id . ')');
     $spacer_post = '[semihtml]' . do_lang('SPACER_POST', $home_link->evaluate(), '', '', get_site_default_lang()) . '[/semihtml]';
 
     if (get_forum_type() == 'cns') {
         require_code('cns_posts_action3');
-        cns_edit_post($post_id, 1, is_null($content_title) ? $spacer_title : $content_title, $spacer_post, 0, 0, null, false, false, '', false);
+        cns_edit_post($post_id, 1, ($content_title === null) ? $spacer_title : $content_title, $spacer_post, 0, 0, null, false, false, '', false);
         require_code('cns_topics_action2');
         cns_edit_topic($topic_id, do_lang('COMMENT') . ': #' . $content_type . '_' . $content_id, null, null, null, null, null, '', null, $home_link->evaluate(), false);
     }
@@ -1013,7 +1013,7 @@ function get_trackbacks($content_type, $content_id, $allow_trackback, $type = ''
 
         global $CURRENT_SCREEN_TITLE;
 
-        if (is_null($CURRENT_SCREEN_TITLE)) {
+        if ($CURRENT_SCREEN_TITLE === null) {
             $CURRENT_SCREEN_TITLE = '';
         }
 
@@ -1092,7 +1092,7 @@ function actualise_post_trackback($allow_trackbacks, $content_type, $content_id)
     inject_action_spamcheck();
 
     $url = post_param_string('url', null);
-    if (is_null($url)) {
+    if ($url === null) {
         return false;
     }
     $title = post_param_string('title', $url);

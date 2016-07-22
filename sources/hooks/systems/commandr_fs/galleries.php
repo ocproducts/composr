@@ -285,7 +285,7 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
     {
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
 
-        if (is_null($category)) {
+        if ($category === null) {
             return false; // Folder not found
         }
 
@@ -299,7 +299,7 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
         $url = $this->_default_property_urlpath($properties, 'url');
         $thumb_url = $this->_default_property_urlpath($properties, 'thumb_url');
         $validated = $this->_default_property_int_null($properties, 'validated');
-        if (is_null($validated)) {
+        if ($validated === null) {
             $validated = 1;
         }
         $notes = $this->_default_property_str($properties, 'notes');
@@ -337,11 +337,11 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
 
             $video_length = $this->_default_property_int($properties, 'video_length');
             $video_width = $this->_default_property_int_null($properties, 'video_width');
-            if (is_null($video_width)) {
+            if ($video_width === null) {
                 $video_width = 720;
             }
             $video_height = $this->_default_property_int_null($properties, 'video_height');
-            if (is_null($video_height)) {
+            if ($video_height === null) {
                 $video_height = 576;
             }
 
@@ -422,7 +422,7 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
 
         list($properties,) = $this->_file_magic_filter($filename, $path, $properties, $resource_type);
 
-        if (is_null($category)) {
+        if ($category === null) {
             return false; // Folder not found
         }
 
@@ -433,7 +433,7 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
         $url = $this->_default_property_urlpath($properties, 'url', true);
         $thumb_url = $this->_default_property_urlpath($properties, 'thumb_url', true);
         $validated = $this->_default_property_int_null($properties, 'validated');
-        if (is_null($validated)) {
+        if ($validated === null) {
             $validated = 1;
         }
         $notes = $this->_default_property_str($properties, 'notes');
@@ -470,11 +470,11 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
 
             $video_length = $this->_default_property_int($properties, 'video_length');
             $video_width = $this->_default_property_int_null($properties, 'video_width');
-            if (is_null($video_width)) {
+            if ($video_width === null) {
                 $video_width = 720;
             }
             $video_height = $this->_default_property_int_null($properties, 'video_height');
-            if (is_null($video_height)) {
+            if ($video_height === null) {
                 $video_height = 576;
             }
 

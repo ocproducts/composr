@@ -78,7 +78,7 @@ function member_password_too_old($member_id)
         $last_time = $GLOBALS['FORUM_DB']->query_select_value('f_password_history', 'MAX(p_time)', array(
             'p_member_id' => $member_id,
         ));
-        if (is_null($last_time)) {
+        if ($last_time === null) {
             $last_time = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_join_time');
         }
         if ($last_time < time() - 60 * 60 * 24 * $change_days) {
@@ -146,7 +146,7 @@ function check_password_complexity($username, $password, $return_errors = false)
  */
 function bump_password_change_date($member_id, $password, $password_salted, $salt, $skip_checks = false, $time = null)
 {
-    if (is_null($time)) {
+    if ($time === null) {
         $time = time();
     }
 

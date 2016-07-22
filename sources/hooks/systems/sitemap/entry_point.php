@@ -52,7 +52,7 @@ class Hook_sitemap_entry_point extends Hook_sitemap_base
                         true, // $support_crosslinks
                         true // $be_deferential
                     ));
-                    if (!is_null($functions[0])) {
+                    if ($functions[0] !== null) {
                         $entry_points = is_array($functions[0]) ? call_user_func_array($functions[0][0], $functions[0][1]) : eval($functions[0]);
 
                         if ($entry_points !== null) {
@@ -170,8 +170,8 @@ class Hook_sitemap_entry_point extends Hook_sitemap_base
         $icon = mixed();
         $_title = $entry_point[0];
         $icon = $entry_point[1];
-        if (is_null($_title)) {
-            if (!is_null($row)) {
+        if ($_title === null) {
+            if ($row !== null) {
                 $title = $row[0];
             } else {
                 $title = new Tempcode();
@@ -182,8 +182,8 @@ class Hook_sitemap_entry_point extends Hook_sitemap_base
             $title = (preg_match('#^[A-Z\_]+$#', $_title) == 0) ? make_string_tempcode($_title) : do_lang_tempcode($_title);
         }
 
-        if (is_null($icon)) {
-            if (!is_null($row)) {
+        if ($icon === null) {
+            if ($row !== null) {
                 $icon = $row[1];
             }
         }
@@ -266,7 +266,7 @@ class Hook_sitemap_entry_point extends Hook_sitemap_base
                             $children = array();
 
                             $virtual_child_nodes = $ob->get_virtual_nodes($page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level + 1, $options, $zone, $meta_gather, true);
-                            if (is_null($virtual_child_nodes)) {
+                            if ($virtual_child_nodes === null) {
                                 $virtual_child_nodes = array();
                             }
                             foreach ($virtual_child_nodes as $child_node) {

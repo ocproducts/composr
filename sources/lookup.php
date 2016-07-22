@@ -48,30 +48,30 @@ function lookup_member_page($member, &$name, &$id, &$ip)
     if (is_numeric($member)) {
         // From member ID
         $name = $GLOBALS['FORUM_DRIVER']->get_username(intval($member));
-        if (is_null($name)) {
+        if ($name === null) {
             return array();
         }
         $id = intval($member);
         $ip = $GLOBALS['FORUM_DRIVER']->get_member_ip($id);
-        if (is_null($ip)) {
+        if ($ip === null) {
             $ip = '127.0.0.1';
         }
     } elseif (is_email_address($member)) {
         // From e-mail address
         $id = $GLOBALS['FORUM_DRIVER']->get_member_from_email_address($member);
         $name = $GLOBALS['FORUM_DRIVER']->get_username($id);
-        if (is_null($id)) {
+        if ($id === null) {
             return array();
         }
         $ip = $GLOBALS['FORUM_DRIVER']->get_member_ip($id);
-        if (is_null($ip)) {
+        if ($ip === null) {
             $ip = '127.0.0.1';
         }
     } elseif ((strpos($member, '.') !== false) || (strpos($member, ':') !== false)) {
         // From IP
         $ids = wrap_probe_ip($member);
         $ip = $member;
-        if (is_null($ip)) {
+        if ($ip === null) {
             $ip = '127.0.0.1';
         }
         if (count($ids) == 0) {
@@ -92,18 +92,18 @@ function lookup_member_page($member, &$name, &$id, &$ip)
             attach_message(do_lang_tempcode('MEMBERS_ALSO_ON_IP', $also), 'inform');
         }
         $name = $GLOBALS['FORUM_DRIVER']->get_username($id);
-        if (is_null($name)) {
+        if ($name === null) {
             $name = do_lang('UNKNOWN');
         }
     } else {
         // From name
         $id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($member);
         $name = $member;
-        if (is_null($id)) {
+        if ($id === null) {
             return array();
         }
         $ip = $GLOBALS['FORUM_DRIVER']->get_member_ip($id);
-        if (is_null($ip)) {
+        if ($ip === null) {
             $ip = '127.0.0.1';
         }
     }
@@ -166,7 +166,7 @@ function get_stats_track($member, $ip, $start = 0, $max = 50, $sortable = 'date_
             $page_converted = str_replace('/', ':', preg_replace('#((.*)/)?pages/.*/\w+/(.*)#', '$2/$3', $page_converted));
         }
 
-        if (!is_null($myrow['s_get'])) {
+        if ($myrow['s_get'] !== null) {
             $get = $myrow['s_get'];
             if (strpos($page_converted, ':') !== false) {
                 $get = str_replace('<param>page=' . substr($page_converted, strpos($page_converted, ':') + 1) . '</param>' . "\n", '', $get);
@@ -220,13 +220,13 @@ function find_security_alerts($where)
         $member_url = build_url(array('page' => 'admin_lookup', 'param' => $row['member_id']), '_SELF');
         $full_url = build_url(array('page' => 'admin_security', 'type' => 'view', 'id' => $row['id']), '_SELF');
         $reason = do_lang($row['reason'], $row['reason_param_a'], $row['reason_param_b'], null, null, false);
-        if (is_null($reason)) {
+        if ($reason === null) {
             $reason = $row['reason'];
         }
         $reason = symbol_truncator(array($reason, '50', '1'), 'left');
 
         $username = $GLOBALS['FORUM_DRIVER']->get_username($row['member_id']);
-        if (is_null($username)) {
+        if ($username === null) {
             $username = do_lang('UNKNOWN');
         }
 

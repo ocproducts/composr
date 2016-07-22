@@ -53,7 +53,7 @@ class Module_admin_cmsusers
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->create_table('may_feature', array(
                 'id' => '*AUTO',
                 'url' => 'URLPATH'
@@ -71,7 +71,7 @@ class Module_admin_cmsusers
             ));
         }
 
-        if (!is_null($upgrade_from)) {
+        if ($upgrade_from !== null) {
             $GLOBALS['SITE_DB']->rename_table('mayfeature', 'may_feature');
         }
     }
@@ -193,7 +193,7 @@ class Module_admin_cmsusers
                 continue;
             }
             $perm = $GLOBALS['SITE_DB']->query_select_value_if_there('may_feature', 'id', array('url' => $url_parts['scheme'] . '://' . $url_parts['host']));
-            if ((is_null($perm)) && (get_param_integer('no_feature', 0) == 1)) {
+            if (($perm === null) && (get_param_integer('no_feature', 0) == 1)) {
                 continue;
             }
 
@@ -207,9 +207,9 @@ class Module_admin_cmsusers
             $rt['LAST_ACP_ACCESS_2'] = integer_format(intval(round((time() - $r['hittime']) / 60 / 60 / 24)));
             if ($i < 100) {
                 $active = get_value_newer_than('testing__' . $r['website_url'] . '/_config.php', time() - 60 * 60 * 10, true);
-                if (is_null($active)) {
+                if ($active === null) {
                     $test = http_download_file($r['website_url'] . '/_config.php', 10, false, false, 'Simple install stats', null, null, null, null, null, null, null, null, 2.0);
-                    if (!is_null($test)) {
+                    if ($test !== null) {
                         $active = do_lang('YES');
                     } else {
                         $active = @strval($GLOBALS['HTTP_MESSAGE']);

@@ -58,7 +58,7 @@ class Hook_profiles_tabs_edit_avatar
                     $stock = post_param_string('avatar_alt_url', '');
                     if ($stock == '') { // No URL -> Stock or none
                         $stock = post_param_string('avatar_stock', null);
-                        if (!is_null($stock)) { // Stock
+                        if ($stock !== null) { // Stock
                             $urls[0] = ($stock == '') ? '' : find_theme_image($stock, false, true);
                         } else {
                             $urls[0] = ''; // None

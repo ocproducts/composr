@@ -127,7 +127,7 @@ function build_preview($multi_return = false)
             continue;
         }
 
-        if ((!is_null($limit_to)) && (!in_array($key, $limit_to))) {
+        if (($limit_to !== null) && (!in_array($key, $limit_to))) {
             continue;
         }
 
@@ -155,7 +155,7 @@ function build_preview($multi_return = false)
         if (substr($key, -4) == '_day') {
             $key = substr($key, 0, strlen($key) - 4);
             $timestamp = post_param_date($key);
-            if (is_null($timestamp)) {
+            if ($timestamp === null) {
                 $is_hidden = true;
             } else {
                 $val = get_timezoned_date($timestamp, false);
@@ -205,8 +205,8 @@ function build_preview($multi_return = false)
             }
         }
 
-        if (is_null($output)) {
-            if ((is_null($attachment_type)) || ($key != 'post')) { // Not an attachment-supporting field
+        if ($output === null) {
+            if (($attachment_type === null) || ($key != 'post')) { // Not an attachment-supporting field
                 $tempcodecss = (post_param_integer('tempcodecss__' . $key, 0) == 1);
                 $supports_comcode = (post_param_integer('comcode__' . $key, 0) == 1);
                 $preformatted = (post_param_integer('pre_f_' . $key, 0) == 1);
@@ -256,7 +256,7 @@ function build_preview($multi_return = false)
     require_code('comcode_compiler');
     global $COMCODE_ATTACHMENTS;
     $posting_ref_id = post_param_integer('posting_ref_id', null);
-    if (!is_null($posting_ref_id)) {
+    if ($posting_ref_id !== null) {
         if (array_key_exists(strval(-$posting_ref_id), $COMCODE_ATTACHMENTS)) {
             foreach ($COMCODE_ATTACHMENTS[strval(-$posting_ref_id)] as $attachment) {
                 $db->query_delete('attachment_refs', array('r_referer_type' => 'null', 'r_referer_id' => strval(-$posting_ref_id), 'a_id' => $attachment['id']), '', 1);
@@ -265,7 +265,7 @@ function build_preview($multi_return = false)
         }
     }
 
-    if (is_null($output)) {
+    if ($output === null) {
         if (count($map_table_map) == 1) {
             $output = array_pop($map_table_map);
         } else {
@@ -282,7 +282,7 @@ function build_preview($multi_return = false)
     }
 
     // This is to get the Comcode attachments updated to the new IDs
-    if (!is_null($new_post_value)) {
+    if ($new_post_value !== null) {
         $_new_post_value_html = comcode_to_tempcode($new_post_value, null, false, null, $db, COMCODE_SEMIPARSE_MODE);
 
         require_code('comcode_from_html');

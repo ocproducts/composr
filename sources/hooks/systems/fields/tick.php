@@ -128,7 +128,7 @@ class Hook_fields_tick
             return form_input_tick($_cf_name, $_cf_description, $input_name, $actual_value == '1');
         }
         $_list = new Tempcode();
-        $_list->attach(form_input_list_entry('', is_null($actual_value) || ($actual_value === ''), do_lang_tempcode('NA_EM')));
+        $_list->attach(form_input_list_entry('', ($actual_value === null) || ($actual_value === ''), do_lang_tempcode('NA_EM')));
         $_list->attach(form_input_list_entry('0', $actual_value === '0', do_lang_tempcode('NO')));
         $_list->attach(form_input_list_entry('1', $actual_value === '1', do_lang_tempcode('YES')));
         return form_input_list($_cf_name, $_cf_description, $input_name, $_list, null, false, $field['cf_required'] == 1);
@@ -147,6 +147,6 @@ class Hook_fields_tick
     {
         $id = $field['id'];
         $tmp_name = 'field_' . strval($id);
-        return post_param_string($tmp_name, ($editing && is_null(post_param_string('tick_on_form__' . $tmp_name, null))) ? STRING_MAGIC_NULL : '');
+        return post_param_string($tmp_name, ($editing && (post_param_string('tick_on_form__' . $tmp_name, null) === null)) ? STRING_MAGIC_NULL : '');
     }
 }

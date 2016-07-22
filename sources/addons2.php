@@ -216,7 +216,7 @@ function find_updated_addons()
 
     require_code('files2');
     list($addon_data) = cache_and_carry('http_download_file', array($url, null, false), 5/*5 minute cache*/);
-    if ((is_null($addon_data)) || ($addon_data == '')) {
+    if (($addon_data === null) || ($addon_data == '')) {
         return array();
         //warn_exit(do_lang('INTERNAL_ERROR'));
     }
@@ -236,7 +236,7 @@ function find_updated_addons()
         foreach ($available_addons as $available_addon) {
             if ($available_addon['name'] == $addon[3]) {
                 $found = true;
-                if ((!is_null($addon[0])) && ($available_addon['mtime'] < $addon[0])) { // If known to server, and updated
+                if (($addon[0] !== null) && ($available_addon['mtime'] < $addon[0])) { // If known to server, and updated
                     $updated_addons[$addon[3]] = array($addon[1]); // Is known to server though
                 }
                 break;
@@ -244,7 +244,7 @@ function find_updated_addons()
         }
         if (!$found) { // Don't have our original .tar, so lets say we need to reinstall
             $mtime = find_addon_effective_mtime($addon[3]);
-            if ((!is_null($addon[0])) && (!is_null($mtime)) && ($mtime < $addon[0])) { // If server has it and is newer
+            if (($addon[0] !== null) && ($mtime !== null) && ($mtime < $addon[0])) { // If server has it and is newer
                 $updated_addons[$addon[3]] = array($addon[1]);
             }
         }
@@ -304,7 +304,7 @@ function find_addon_effective_mtime($addon_name)
     foreach ($files_rows as $filename) {
         if (@file_exists(get_file_base() . '/' . $filename)) { //@d due to possible bad file paths
             $_mtime = filemtime(get_file_base() . '/' . $filename);
-            $mtime = is_null($mtime) ? $_mtime : max($mtime, $_mtime);
+            $mtime = ($mtime === null) ? $_mtime : max($mtime, $_mtime);
         }
     }
     return $mtime;
@@ -347,7 +347,7 @@ function find_available_addons($installed_too = true)
         $info_file = tar_get_file($tar, 'addon.inf', true);
         tar_close($tar);
 
-        if (!is_null($info_file)) {
+        if ($info_file !== null) {
             $info = better_parse_ini_file(null, $info_file['data']);
 
             if (!empty($info['copyright_attribution'])) {
@@ -414,7 +414,7 @@ function find_addon_dependencies_on($addon)
         }
 
         $_hook_bits = extract_module_functions($path, array('get_dependencies'));
-        if (is_null($_hook_bits[0])) {
+        if ($_hook_bits[0] === null) {
             $dep = array();
         } else {
             $dep = is_array($_hook_bits[0]) ? call_user_func_array($_hook_bits[0][0], $_hook_bits[0][1]) : @eval($_hook_bits[0]);
@@ -571,7 +571,7 @@ function install_addon($file, $files = null, $do_files = true, $do_db = true)
     require_code('tar');
     $tar = tar_open($full, 'rb');
     $info_file = tar_get_file($tar, 'addon.inf');
-    if (is_null($info_file)) {
+    if ($info_file === null) {
         warn_exit(do_lang_tempcode('NOT_ADDON'));
     }
     $info = better_parse_ini_file(null, $info_file['data']);
@@ -592,13 +592,13 @@ function install_addon($file, $files = null, $do_files = true, $do_db = true)
         foreach ($directory as $dir) {
             $addon_file = $dir['path'];
 
-            if ((is_null($files)) || (in_array($addon_file, $files))) {
+            if (($files === null) || (in_array($addon_file, $files))) {
                 $matches = array();
                 if (preg_match('#(\w*)/index\.php$#', $addon_file, $matches) != 0) {
                     $zone = $matches[1];
 
                     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('zones', 'zone_name', array('zone_name' => $zone));
-                    if (is_null($test)) {
+                    if ($test === null) {
                         $map = array(
                             'zone_name' => $zone,
                             'zone_default_page' => ($zone == 'forum') ? 'forumview' : DEFAULT_ZONE_PAGE_NAME,
@@ -636,7 +636,7 @@ function install_addon($file, $files = null, $do_files = true, $do_db = true)
                     continue;
                 }
 
-                if ((is_null($files)) || (in_array($addon_file, $files))) {
+                if (($files === null) || (in_array($addon_file, $files))) {
                     if (preg_match('#^' . $prefix . 'pages/(modules|modules_custom)/([^/]*)\.php$#', $addon_file, $matches) != 0) {
                         if (!module_installed($matches[2])) {
                             reinstall_module($zone, $matches[2]);
@@ -657,7 +657,7 @@ function install_addon($file, $files = null, $do_files = true, $do_db = true)
                 continue;
             }
 
-            if ((is_null($files)) || (in_array($addon_file, $files))) {
+            if (($files === null) || (in_array($addon_file, $files))) {
                 if (preg_match('#^(sources|sources\_custom)/blocks/([^/]*)\.php$#', $addon_file, $matches) != 0) {
                     if (!block_installed($matches[2])) {
                         reinstall_block($matches[2]);
@@ -683,7 +683,7 @@ function install_addon($file, $files = null, $do_files = true, $do_db = true)
             if (substr($addon_file, -1) == '/') {
                 continue;
             }
-            if ((is_null($files)) || (in_array($addon_file, $files))) {
+            if (($files === null) || (in_array($addon_file, $files))) {
                 $_files[] = $addon_file;
             }
         }
@@ -713,7 +713,7 @@ function install_addon($file, $files = null, $do_files = true, $do_db = true)
     // Load addon_install_code.php if it exists
     if ($do_db) {
         $_modphp_file = tar_get_file($tar, 'addon_install_code.php');
-        if (!is_null($_modphp_file)) {
+        if ($_modphp_file !== null) {
             $modphp_file = trim($_modphp_file['data']);
 
             if (substr($modphp_file, 0, 5) == '<' . '?php') {
@@ -845,10 +845,10 @@ function uninstall_addon($addon, $clear_caches = true)
  */
 function inform_about_addon_install($file, $also_uninstalling = null, $also_installing = null, $always_return = false)
 {
-    if (is_null($also_uninstalling)) {
+    if ($also_uninstalling === null) {
         $also_uninstalling = array();
     }
-    if (is_null($also_installing)) {
+    if ($also_installing === null) {
         $also_installing = array();
     }
 
@@ -862,7 +862,7 @@ function inform_about_addon_install($file, $also_uninstalling = null, $also_inst
     $tar = tar_open($full, 'rb');
     $directory = tar_get_directory($tar);
     $info_file = tar_get_file($tar, 'addon.inf');
-    if (is_null($info_file)) {
+    if ($info_file === null) {
         warn_exit(do_lang_tempcode('NOT_ADDON'));
     }
     $info = better_parse_ini_file(null, $info_file['data']);
@@ -902,7 +902,7 @@ function inform_about_addon_install($file, $also_uninstalling = null, $also_inst
         }
 
         // .php?
-        if ((strtolower(substr($entry['path'], -4, 4)) == '.php') || ((!is_null($data)) && ((strpos($data['data'], '{+START,PHP') !== false) || (strpos($data['data'], '<' . '?php') !== false)))) {
+        if ((strtolower(substr($entry['path'], -4, 4)) == '.php') || (($data !== null) && ((strpos($data['data'], '{+START,PHP') !== false) || (strpos($data['data'], '<' . '?php') !== false)))) {
             $php = true;
             $this_php = true;
         } else {
@@ -1077,7 +1077,7 @@ function has_feature($dependency)
 
     // Non-bundled addon
     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('addons', 'addon_name', array('addon_name' => $dependency));
-    if (!is_null($test)) {
+    if ($test !== null) {
         return true;
     }
 
@@ -1130,12 +1130,12 @@ function has_feature($dependency)
  */
 function inform_about_addon_uninstall($addon, $also_uninstalling = null, $addon_info = null, $always_return = false)
 {
-    if (is_null($also_uninstalling)) {
+    if ($also_uninstalling === null) {
         $also_uninstalling = array();
     }
 
     // Read/show info
-    if (is_null($addon_info)) {
+    if ($addon_info === null) {
         $addon_info = read_addon_info($addon, true);
     }
     $files = new Tempcode();

@@ -41,7 +41,7 @@ function init__site()
     inform_non_canonical_parameter('#^(.*_)?(max|start|sort)$#');
     if (function_exists('get_value')) {
         $is_non_canonical = false;
-        $canonical_keep_params = explode(',', is_null(get_value('canonical_keep_params')) ? 'keep_devtest' : get_value('canonical_keep_params'));
+        $canonical_keep_params = explode(',', (get_value('canonical_keep_params') === null) ? 'keep_devtest' : get_value('canonical_keep_params'));
         foreach (array_intersect(array_keys($_GET), array('keep_session'/*may be inserted later*/)) as $key) {
             if ((is_string($key)) && (substr($key, 0, 5) == 'keep_') && (!@in_array($key, $canonical_keep_params))) {
                 $NON_CANONICAL_PARAMS[] = $key;
@@ -107,7 +107,7 @@ function init__site()
 
             if ((array_key_exists('host', $parsed_base_url)) && (strtolower($parsed_base_url['host']) != strtolower($access_host))) {
                 if (empty($SITE_INFO['ZONE_MAPPING_' . get_zone_name()])) {
-                    if ((!is_null($GLOBALS['FORUM_DRIVER'])) && ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()))) {
+                    if (($GLOBALS['FORUM_DRIVER'] !== null) && ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()))) {
                         attach_message(do_lang_tempcode('BAD_ACCESS_DOMAIN', escape_html($parsed_base_url['host']), escape_html($access_host)), 'warn');
                     }
 
@@ -851,7 +851,7 @@ function do_site()
             set_value('setupwizard_completed', '1');
         } else {
             $_done_sw_once = get_value('setupwizard_completed');
-            $done_sw_once = !is_null($_done_sw_once);
+            $done_sw_once = $_done_sw_once !== null;
             if ((!$done_sw_once) && (get_page_name() != 'admin_setupwizard') && (has_actual_page_access(get_member(), 'admin_setupwizard'))) {
                 require_lang('config');
                 $setupwizard_url = build_url(array('page' => 'admin_setupwizard'), get_module_zone('admin_setupwizard'));

@@ -140,7 +140,7 @@ class Hook_search_downloads extends FieldsSearchHook
 
         // Calculate our where clause (search)
         $sq = build_search_submitter_clauses('submitter', $author_id, $author, 'author');
-        if (is_null($sq)) {
+        if ($sq === null) {
             return array();
         } else {
             $where_clause .= $sq;
@@ -190,7 +190,7 @@ class Hook_search_downloads extends FieldsSearchHook
     public function render($row)
     {
         global $SEARCH__CONTENT_BITS;
-        $highlight_bits = is_null($SEARCH__CONTENT_BITS) ? array() : $SEARCH__CONTENT_BITS;
+        $highlight_bits = ($SEARCH__CONTENT_BITS === null) ? array() : $SEARCH__CONTENT_BITS;
 
         if (array_key_exists(0, $highlight_bits)) {
             $pos = strpos($row['download_data_mash'], $highlight_bits[0]) - 1000;

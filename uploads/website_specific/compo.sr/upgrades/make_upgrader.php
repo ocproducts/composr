@@ -58,16 +58,16 @@ function make_upgrade_get_path($from_version_dotted, $to_version_dotted)
 
     // Find corresponding download rows
     $old_download_row = ($from_version_dotted == '') ? null : find_download($from_version_pretty);
-    if (is_null($old_download_row)) {
+    if ($old_download_row === null) {
         $err = escape_html('Version ' . $from_version_pretty . ' is not recognised');
         return array(null, $err);
     }
     $new_download_row = find_download($to_version_pretty);
-    if (is_null($new_download_row)) {
+    if ($new_download_row === null) {
         return array(null, escape_html('Could not find version ' . $to_version_pretty . ' in the download database'));
     }
     $mtime = $new_download_row['add_date'];
-    if (!is_null($new_download_row['edit_date'])) {
+    if ($new_download_row['edit_date'] !== null) {
         $mtime = $new_download_row['edit_date'];
     }
     $mtime_disk = filemtime(get_file_base() . '/' . rawurldecode($new_download_row['url']));
@@ -90,7 +90,7 @@ function make_upgrade_get_path($from_version_dotted, $to_version_dotted)
     }
 
     // Unzip old
-    if (!is_null($old_download_row)) {
+    if ($old_download_row !== null) {
         @mkdir($old_base_path, 0777);
         if (!url_is_local($old_download_row['url'])) {
             return array(null, escape_html('Non-local URL found (' . $old_download_row['url'] . '). Unexpected.'));
@@ -143,7 +143,7 @@ function find_download($version_pretty)
         }
     }
 
-    if ((is_null($download_row)) && (substr_count($version_pretty, '.') < 2)) {
+    if (($download_row === null) && (substr_count($version_pretty, '.') < 2)) {
         return find_download($version_pretty . '.0');
     }
 

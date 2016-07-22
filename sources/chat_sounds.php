@@ -55,10 +55,10 @@ function get_effect_settings($full_urls = false, $for_member = null, $all_member
         return $cache[$full_urls][$for_member][$all_members];
     }
 
-    $effects = get_effect_set(!is_null($for_member));
+    $effects = get_effect_set($for_member !== null);
 
     global $EFFECT_SETTINGS_ROWS;
-    if (is_null($EFFECT_SETTINGS_ROWS)) {
+    if ($EFFECT_SETTINGS_ROWS === null) {
         $EFFECT_SETTINGS_ROWS = collapse_2d_complexity('s_effect_id', 's_url', $GLOBALS['SITE_DB']->query_select('chat_sound_effects', array('s_url', 's_effect_id'), array('s_member' => get_member())));
     }
     $effect_settings = array();
@@ -71,11 +71,11 @@ function get_effect_settings($full_urls = false, $for_member = null, $all_member
         }
     }
     foreach ($effects as $effect => $base_effect_code) {
-        if (is_null($base_effect_code)) {
+        if ($base_effect_code === null) {
             continue;
         }
 
-        if (is_null($for_member)) { // Global settings
+        if ($for_member === null) { // Global settings
             if (array_key_exists($effect, $EFFECT_SETTINGS_ROWS)) {
                 $member_setting = $EFFECT_SETTINGS_ROWS[$effect];
             } else {

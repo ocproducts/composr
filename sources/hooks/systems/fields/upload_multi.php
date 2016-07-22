@@ -142,7 +142,7 @@ class Hook_fields_upload_multi
     public function get_field_inputter($_cf_name, $_cf_description, $field, $actual_value, $new)
     {
         $default = ($actual_value == '') ? mixed() : explode("\n", $actual_value);
-        if (!is_null($default)) {
+        if ($default !== null) {
             foreach ($default as $i => $_actual_value) {
                 if (strpos($_actual_value, '::') !== false) {
                     list($_actual_value,) = explode('::', $_actual_value);
@@ -151,7 +151,7 @@ class Hook_fields_upload_multi
             }
         }
 
-        $say_required = ($field['cf_required'] == 1) && (($actual_value == '') || (is_null($actual_value)));
+        $say_required = ($field['cf_required'] == 1) && (($actual_value == '') || ($actual_value === null));
 
         $filetype_filter = option_value_from_field_array($field, 'filetype_filter', '');
 
@@ -175,7 +175,7 @@ class Hook_fields_upload_multi
      */
     public function inputted_to_field_value($editing, $field, $upload_dir = 'uploads/catalogues', $old_value = null)
     {
-        if (is_null($upload_dir)) {
+        if ($upload_dir === null) {
             return null;
         }
 
@@ -186,7 +186,7 @@ class Hook_fields_upload_multi
 
             $value = '';
 
-            $_old_value = ((is_null($old_value)) || ($old_value['cv_value'] == '')) ? array() : explode("\n", $old_value['cv_value']);
+            $_old_value = (($old_value === null) || ($old_value['cv_value'] == '')) ? array() : explode("\n", $old_value['cv_value']);
 
             require_code('uploads');
             is_plupload(true);

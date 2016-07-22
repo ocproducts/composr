@@ -42,7 +42,7 @@ class Hook_preview_iotd
 
         $urls = get_url('', 'file', 'uploads/iotds_addon', 0, CMS_UPLOAD_IMAGE, true, '', 'file2');
         if ($urls[0] == '') {
-            if (!is_null(post_param_integer('id', null))) {
+            if (post_param_integer('id', null) !== null) {
                 $rows = $GLOBALS['SITE_DB']->query_select('iotds', array('url', 'thumb_url'), array('id' => post_param_integer('id')), '', 1);
                 $urls = $rows[0];
 

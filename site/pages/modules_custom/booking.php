@@ -59,7 +59,7 @@ class Module_booking
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->create_table('bookable', array(
                 'id' => '*AUTO',
                 //'num_available' => 'INTEGER',      Implied by number of bookable_codes attached to bookable_id
@@ -152,7 +152,7 @@ class Module_booking
             ));
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 2)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 2)) {
             $GLOBALS['SITE_DB']->add_table_field('booking', 'customer_name', 'SHORT_TEXT');
             $GLOBALS['SITE_DB']->add_table_field('booking', 'customer_email', 'SHORT_TEXT');
             $GLOBALS['SITE_DB']->add_table_field('booking', 'customer_mobile', 'SHORT_TEXT');
@@ -273,14 +273,14 @@ class Module_booking
         foreach ($bookables as $bookable) {
             $active_from = mktime(0, 0, 0, $bookable['active_from_month'], $bookable['active_from_day'], $bookable['active_from_year']);
             $active_to = mixed();
-            $active_to = is_null($bookable['active_to_year']) ? null : mktime(0, 0, 0, $bookable['active_to_month'], $bookable['active_to_day'], $bookable['active_to_year']);
+            $active_to = ($bookable['active_to_year'] === null) ? null : mktime(0, 0, 0, $bookable['active_to_month'], $bookable['active_to_day'], $bookable['active_to_year']);
             $min_date = $active_from;
             $max_date = $active_to;
 
             if ($min_date < $min_min_date) {
                 $min_min_date = $min_date;
             }
-            if ((is_null($max_max_date)) || (!is_null($active_to))) {
+            if (($max_max_date === null) || ($active_to !== null)) {
                 if ($max_date > $max_max_date) {
                     $max_max_date = $max_date;
                 }
@@ -300,7 +300,7 @@ class Module_booking
             }
 
             // Message if becomes inactive within next 6 months
-            if ((!is_null($active_to)) && ($active_to < SHOW_WARNINGS_UNTIL)) {
+            if (($active_to !== null) && ($active_to < SHOW_WARNINGS_UNTIL)) {
                 $messages[] = do_lang_tempcode('NOTE_BOOKING_IMPOSSIBLE_ENDED', get_timezoned_date($active_to, false));
             }
 
@@ -316,7 +316,7 @@ class Module_booking
             foreach ($blacked as $black) {
                 $black_from = mktime(0, 0, 0, $black['blacked_from_month'], $black['blacked_from_day'], $black['blacked_from_year']);
                 $black_to = mixed();
-                $black_to = is_null($black['blacked_to_year']) ? null : mktime(0, 0, 0, $black['blacked_to_month'], $black['blacked_to_day'], $black['blacked_to_year']);
+                $black_to = ($black['blacked_to_year'] === null) ? null : mktime(0, 0, 0, $black['blacked_to_month'], $black['blacked_to_day'], $black['blacked_to_year']);
                 if (($black_from > time()) && ($black_to < SHOW_WARNINGS_UNTIL)) {
                     $messages[] = do_lang_tempcode(
                         ($black_from == $black_to) ? 'NOTE_BOOKING_IMPOSSIBLE_BLACKED_ONEOFF' : 'NOTE_BOOKING_IMPOSSIBLE_BLACKED_PERIOD',
@@ -337,7 +337,7 @@ class Module_booking
 
             list($quantity, $date_from, $date_to) = $this->_read_chosen_bookable_settings($bookable);
 
-            if (is_null($max_max_date)) {
+            if ($max_max_date === null) {
                 $max_max_date = MAX_AHEAD_BOOKING_DATE;
             }
 
@@ -442,17 +442,17 @@ class Module_booking
     {
         $quantity = post_param_integer('bookable_' . strval($bookable['id']) . '_quantity', 0);
         $date_from = post_param_date('bookable_' . strval($bookable['id']) . '_date_from');
-        if (is_null($date_from)) {
+        if ($date_from === null) {
             $date_from = post_param_date('bookable_date_from'); // allow to be specified for whole form (the norm actually)
         }
-        if (is_null($date_from)) {
+        if ($date_from === null) {
             $date_from = time();
         }
         $date_to = post_param_date('bookable_' . strval($bookable['id']) . '_date_to');
-        if (is_null($date_to)) {
+        if ($date_to === null) {
             $date_to = post_param_date('bookable_date_to'); // allow to be specified for whole form (the norm actually); may still be null, if ranges not being used
         }
-        if (is_null($date_to)) {
+        if ($date_to === null) {
             $date_to = $date_from;
         }
 
@@ -469,7 +469,7 @@ class Module_booking
         // Check booking: redirect to last step as re-entrant if not valid
         $request = get_booking_request_from_form();
         $test = check_booking_dates_available($request, array());
-        if (!is_null($test)) {
+        if ($test !== null) {
             attach_message($test, 'warn');
             return $this->choose_bookables_and_dates();
         }
@@ -587,7 +587,7 @@ class Module_booking
 
         // Save
         $test = save_booking_form_to_db($request, array());
-        if (is_null($test)) {
+        if ($test === null) {
             warn_exit(do_lang_tempcode('BOOKING_ERROR'));
         }
 

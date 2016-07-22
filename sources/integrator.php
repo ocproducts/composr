@@ -116,7 +116,7 @@ function reprocess_url($url, $operation_base_url)
     // Were we asked to set any cookies?
     if ($url_bits['host'] == $url_bits_2['host']) {
         global $HTTP_NEW_COOKIES;
-        if (!is_null($HTTP_NEW_COOKIES)) {
+        if ($HTTP_NEW_COOKIES !== null) {
             foreach ($HTTP_NEW_COOKIES as $key => $val) {
                 $parts = explode('; ', $val);
                 foreach ($parts as $i => $part) {

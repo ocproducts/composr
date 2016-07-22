@@ -70,7 +70,7 @@ class Module_admin_themes
 
         $themes = find_all_themes(); // Find all images for all themes
 
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->create_table('theme_images', array(
                 'id' => '*SHORT_TEXT',
                 'theme' => '*MINIID_TEXT',
@@ -80,7 +80,7 @@ class Module_admin_themes
             $GLOBALS['SITE_DB']->create_index('theme_images', 'theme', array('theme', 'lang'));
         }
 
-        if ((is_null($upgrade_from)) || ($upgrade_from < 5)) {
+        if (($upgrade_from === null) || ($upgrade_from < 5)) {
             $GLOBALS['SITE_DB']->create_table('theme_template_relations', array(
                 'rel_a' => '*ID_TEXT',
                 'rel_b' => '*ID_TEXT'
@@ -205,7 +205,7 @@ class Module_admin_themes
                 }
                 $path = substr($url, $pos);
                 $id = $GLOBALS['SITE_DB']->query_select_value_if_there('theme_images', 'id', array('path' => $path, 'theme' => $theme));
-                if (is_null($id)) {
+                if ($id === null) {
                     warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
                 }
             } else {
@@ -468,7 +468,7 @@ class Module_admin_themes
      */
     public function get_theme_fields($name = '', $title = '', $description = '', $author = null, $mobile_pages = '', $supports_wide = 1, $use_on_all_zones = false)
     {
-        if (is_null($author)) {
+        if ($author === null) {
             $author = $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true);
         }
 
@@ -949,7 +949,7 @@ class Module_admin_themes
         if ($max < 3.0) {
             require_code('files2');
             $config_url = get_upload_limit_config_url();
-            $text->attach(paragraph(do_lang_tempcode(is_null($config_url) ? 'MAXIMUM_UPLOAD' : 'MAXIMUM_UPLOAD_STAFF', escape_html(($max > 10.0) ? integer_format(intval($max)) : float_format($max)), escape_html(is_null($config_url) ? '' : $config_url))));
+            $text->attach(paragraph(do_lang_tempcode(($config_url === null) ? 'MAXIMUM_UPLOAD' : 'MAXIMUM_UPLOAD_STAFF', escape_html(($max > 10.0) ? integer_format(intval($max)) : float_format($max)), escape_html(($config_url === null) ? '' : $config_url))));
         }
 
         return do_template('FORM_SCREEN', array('_GUID' => '7b8066b63002cda0a7628ddadddd9962', 'HIDDEN' => $hidden, 'TITLE' => $this->title, 'URL' => $post_url, 'FIELDS' => $fields, 'TEXT' => $text, 'SUBMIT_ICON' => 'menu___generic_admin__add_one', 'SUBMIT_NAME' => $submit_name));
@@ -1027,10 +1027,10 @@ class Module_admin_themes
             $where_map['lang'] = $lang;
         }
         $path = $GLOBALS['SITE_DB']->query_select_value_if_there('theme_images', 'path', $where_map);
-        if (is_null($path)) {
+        if ($path === null) {
             $path = $GLOBALS['SITE_DB']->query_select_value_if_there('theme_images', 'path', array('theme' => $theme, 'lang' => get_site_default_lang(), 'id' => $id));
         }
-        if (is_null($path)) {
+        if ($path === null) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }
 
@@ -1070,7 +1070,7 @@ class Module_admin_themes
         if ($max < 3.0) {
             require_code('files2');
             $config_url = get_upload_limit_config_url();
-            $text->attach(paragraph(do_lang_tempcode(is_null($config_url) ? 'MAXIMUM_UPLOAD' : 'MAXIMUM_UPLOAD_STAFF', escape_html(($max > 10.0) ? integer_format(intval($max)) : float_format($max)), escape_html(is_null($config_url) ? '' : $config_url))));
+            $text->attach(paragraph(do_lang_tempcode(($config_url === null) ? 'MAXIMUM_UPLOAD' : 'MAXIMUM_UPLOAD_STAFF', escape_html(($max > 10.0) ? integer_format(intval($max)) : float_format($max)), escape_html(($config_url === null) ? '' : $config_url))));
         }
 
         return do_template('FORM_SCREEN', array('_GUID' => 'b0e178ad1f840a07c4967f3c266c750b', 'HIDDEN' => $hidden, 'TITLE' => $this->title, 'URL' => $post_url, 'FIELDS' => $fields, 'TEXT' => $text, 'SUBMIT_ICON' => 'menu___generic_admin__edit_this', 'SUBMIT_NAME' => $submit_name));
@@ -1104,7 +1104,7 @@ class Module_admin_themes
                 if ($old_url != '' && ((array_key_exists('file', $_FILES)) && ((is_plupload()) || (is_uploaded_file($_FILES['file']['tmp_name']))) || $old_url != post_param_string('path', ''))) {
                     if (($theme == 'default') || (strpos($old_url, 'themes/default/') === false)) {
                         $where_map = array('theme' => $theme, 'id' => $old_id);
-                        if (($lang != '') && (!is_null($lang))) {
+                        if (($lang != '') && ($lang !== null)) {
                             $where_map['lang'] = $lang;
                         }
                         $GLOBALS['SITE_DB']->query_delete('theme_images', $where_map);
@@ -1299,7 +1299,7 @@ class Module_admin_themes
      */
     public function do_next_manager($title, $description, $theme, $lang, $type, $file)
     {
-        if (is_null($lang)) {
+        if ($lang === null) {
             $lang = '';
         }
 
@@ -1346,9 +1346,9 @@ class Module_admin_themes
             array(),
             array(
                 array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add_theme'), '_SELF'), do_lang_tempcode('ADD_THEME')), // Add one
-                is_null($theme) ? null : array('menu/_generic_admin/edit_this', array('_SELF', array('type' => 'edit_theme', 'theme' => $theme), '_SELF'), do_lang_tempcode('EDIT_THEME')),
-                is_null($theme) ? null : array('menu/adminzone/style/themes/templates', array('_SELF', array('type' => 'edit_templates', 'theme' => $theme), '_SELF'), do_lang('EDIT_TEMPLATES')),
-                is_null($theme) ? null : array('menu/adminzone/style/themes/theme_images', array('_SELF', array('type' => 'manage_images', 'theme' => $theme, 'lang' => $lang), '_SELF'), do_lang('EDIT_THEME_IMAGES')),
+                ($theme === null) ? null : array('menu/_generic_admin/edit_this', array('_SELF', array('type' => 'edit_theme', 'theme' => $theme), '_SELF'), do_lang_tempcode('EDIT_THEME')),
+                ($theme === null) ? null : array('menu/adminzone/style/themes/templates', array('_SELF', array('type' => 'edit_templates', 'theme' => $theme), '_SELF'), do_lang('EDIT_TEMPLATES')),
+                ($theme === null) ? null : array('menu/adminzone/style/themes/theme_images', array('_SELF', array('type' => 'manage_images', 'theme' => $theme, 'lang' => $lang), '_SELF'), do_lang('EDIT_THEME_IMAGES')),
                 array('menu/adminzone/style/themes/themes', array('_SELF', array('type' => 'browse'), '_SELF'), do_lang('MANAGE_THEMES'))
             ),
             do_lang('MANAGE_THEMES'),

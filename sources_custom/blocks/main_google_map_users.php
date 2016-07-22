@@ -98,7 +98,7 @@ class Block_main_google_map_users
         // Ensure installed
         $latitude_cpf_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('cf_name') => 'cms_latitude'));
         $longitude_cpf_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('cf_name') => 'cms_longitude'));
-        if (is_null($longitude_cpf_id) || is_null($latitude_cpf_id)) {
+        if (($longitude_cpf_id === null) || ($latitude_cpf_id === null)) {
             require_code('zones2');
             reinstall_block('main_google_map_users');
 

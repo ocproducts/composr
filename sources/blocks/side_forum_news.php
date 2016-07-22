@@ -95,13 +95,13 @@ class Block_side_forum_news
                 $forum_id = is_numeric($forum_name) ? intval($forum_name) : $GLOBALS['FORUM_DRIVER']->forum_id_from_name($forum_name);
             }
 
-            if (!is_null($forum_id)) {
+            if ($forum_id !== null) {
                 $forum_ids[$forum_id] = $forum_name;
             }
 
-            if (!is_null($forum_id)) {
+            if ($forum_id !== null) {
                 $forum_ids[$forum_id] = $forum_name;
-                if (is_null($archive_url)) {
+                if ($archive_url === null) {
                     $archive_url = $GLOBALS['FORUM_DRIVER']->forum_url($forum_id, true); // First forum will count as archive
                     if (get_forum_type() == 'cns') {
                         $submit_url = build_url(array('page' => 'topics', 'type' => 'new_topic', 'id' => $forum_id), get_module_zone('topics'));
@@ -120,7 +120,7 @@ class Block_side_forum_news
             $topics = $GLOBALS['FORUM_DRIVER']->show_forum_topics($forum_ids, $limit, 0, $max_rows, '', false, $date_key);
 
             $news = array();
-            if (!is_null($topics)) {
+            if ($topics !== null) {
                 sort_maps_by($topics, $date_key);
                 $topics = array_reverse($topics, false);
 
@@ -153,7 +153,7 @@ class Block_side_forum_news
                 'TITLE' => $_title,
                 'NEWS' => $news,
                 'SUBMIT_URL' => $submit_url,
-                'ARCHIVE_URL' => is_null($archive_url) ? '' : $archive_url,
+                'ARCHIVE_URL' => ($archive_url === null) ? '' : $archive_url,
             ));
         } else {
             return new Tempcode();

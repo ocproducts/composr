@@ -42,7 +42,7 @@ function add_aggregate_type_instance($aggregate_label, $aggregate_type, $_other_
 
     // Error if label is a duplicate
     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('aggregate_type_instances', 'id', array('aggregate_type' => $aggregate_type, 'aggregate_label' => $aggregate_label));
-    if (!is_null($test)) {
+    if ($test !== null) {
         if ($uniqify) {
             $aggregate_label .= '_' . uniqid('', false);
         } else {
@@ -50,7 +50,7 @@ function add_aggregate_type_instance($aggregate_label, $aggregate_type, $_other_
         }
     }
 
-    if (is_null($add_time)) {
+    if ($add_time === null) {
         $add_time = time();
     }
 
@@ -102,7 +102,7 @@ function edit_aggregate_type_instance($id, $aggregate_label, $aggregate_type, $_
 
     // Error if label is a duplicate
     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('aggregate_type_instances', 'id', array('aggregate_type' => $aggregate_type, 'aggregate_label' => $aggregate_label));
-    if ((!is_null($test)) && ($test != $id)) {
+    if (($test !== null) && ($test != $id)) {
         if ($uniqify) {
             $aggregate_label .= '_' . uniqid('', false);
         } else {
@@ -114,9 +114,9 @@ function edit_aggregate_type_instance($id, $aggregate_label, $aggregate_type, $_
         'aggregate_label' => $aggregate_label,
         'aggregate_type' => $aggregate_type,
         'other_parameters' => $other_parameters,
-        'edit_time' => is_null($edit_time) ? time() : $edit_time,
+        'edit_time' => ($edit_time === null) ? time() : $edit_time,
     );
-    if (!is_null($add_time)) {
+    if ($add_time !== null) {
         $map['add_time'] = $add_time;
     }
     $GLOBALS['SITE_DB']->query_update('aggregate_type_instances', $map, array('id' => $id), '', 1);
@@ -140,7 +140,7 @@ function edit_aggregate_type_instance($id, $aggregate_label, $aggregate_type, $_
 function delete_aggregate_type_instance($id, $delete_matches = false)
 {
     $aggregate_label = $GLOBALS['SITE_DB']->query_select_value_if_there('aggregate_type_instances', 'aggregate_label', array('id' => $id));
-    if (is_null($aggregate_label)) {
+    if ($aggregate_label === null) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'aggregate_type_instance'));
     }
     $aggregate_type = $GLOBALS['SITE_DB']->query_select_value_if_there('aggregate_type_instances', 'aggregate_type', array('id' => $id));
@@ -171,7 +171,7 @@ function delete_aggregate_type_instance($id, $delete_matches = false)
                 $filename = $object_fs->convert_label_to_filename($resource['label'], $resource['subpath'], $resource['type'], true);
 
                 // If bound, delete resource
-                if (!is_null($filename)) {
+                if ($filename !== null) {
                     $object_fs->resource_delete($resource['type'], $filename, $resource['subpath']);
                 }
             }
@@ -420,7 +420,7 @@ function parse_aggregate_xml($display_errors = false)
 function resync_all_aggregate_type_instances($type = null)
 {
     $where = mixed();
-    if (!is_null($type)) {
+    if ($type !== null) {
         $where['aggregate_type'] = $type;
     }
 
@@ -450,7 +450,7 @@ function sync_aggregate_type_instance($id, $aggregate_label = null, $old_aggrega
     require_lang('aggregate_types');
 
     // Load details from DB if required
-    if ((is_null($aggregate_label)) || (is_null($aggregate_type)) || (is_null($other_parameters))) {
+    if (($aggregate_label === null) || ($aggregate_type === null) || ($other_parameters === null)) {
         $instance_rows = $GLOBALS['SITE_DB']->query_select('aggregate_type_instances', array('*'), array('id' => $id), '', 1);
         if (!array_key_exists(0, $instance_rows)) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'aggregate_type_instance'));
@@ -460,10 +460,10 @@ function sync_aggregate_type_instance($id, $aggregate_label = null, $old_aggrega
         $aggregate_type = $instance_row['aggregate_type'];
         $other_parameters = unserialize($instance_row['other_parameters']);
     }
-    if (is_null($old_aggregate_label)) {
+    if ($old_aggregate_label === null) {
         $old_aggregate_label = $aggregate_label;
     }
-    if (is_null($old_parameters)) {
+    if ($old_parameters === null) {
         $old_parameters = $other_parameters;
     }
 
@@ -516,13 +516,13 @@ function sync_aggregate_type_instance($id, $aggregate_label = null, $old_aggrega
         // Can we bind to an existing resource? (using subpath and label)
         $is_new = false;
         $object_fs = get_resource_commandr_fs_object($resource['type']);
-        if (is_null($object_fs)) {
+        if ($object_fs === null) {
             warn_exit(do_lang_tempcode('MISSING_CONTENT_TYPE', escape_html($resource['type'])));
         }
         $filename = $object_fs->convert_label_to_filename($old_resource_label, $resource['subpath'], $resource['type'], true);
 
         // If not bound, create resource
-        if (is_null($filename)) {
+        if ($filename === null) {
             $is_new = true;
         }
 
@@ -538,7 +538,7 @@ function sync_aggregate_type_instance($id, $aggregate_label = null, $old_aggrega
                     $properties += $existing_properties;
                 }
             }
-            if (($is_new) && (!is_null($resource['template_label']))) { // Copy from template (using template_subpath and template_label), if new
+            if (($is_new) && ($resource['template_label'] !== null)) { // Copy from template (using template_subpath and template_label), if new
                 $tempcode = template_to_tempcode($resource['template_label']);
                 $tempcode = $tempcode->bind($parameters, 'aggregate_types.xml');
                 $resource['template_label'] = $tempcode->evaluate();
@@ -547,7 +547,7 @@ function sync_aggregate_type_instance($id, $aggregate_label = null, $old_aggrega
                 $resource['template_subpath'] = $tempcode->evaluate();
 
                 $template_filename = $object_fs->convert_label_to_filename($resource['template_label'], $resource['template_subpath'], $resource['type'], true);
-                if (is_null($template_filename)) {
+                if ($template_filename === null) {
                     warn_exit(do_lang_tempcode('MISSING_CONTENT_TYPE_TEMPLATE', escape_html($resource['type']), escape_html($resource['template_label']), escape_html($resource['template_subpath'])));
                 }
 
@@ -599,19 +599,19 @@ function sync_aggregate_type_instance($id, $aggregate_label = null, $old_aggrega
                             warn_exit(do_lang_tempcode('UNKNOWN_PRIVILEGE_PRESET', escape_html($preset['value'])));
                     }
 
-                    if (!is_null($preset['member'])) {
+                    if ($preset['member'] !== null) {
                         $tempcode = template_to_tempcode($preset['member']);
                         $tempcode = $tempcode->bind($parameters, 'aggregate_types.xml');
                         $preset['member'] = $tempcode->evaluate();
 
                         $member_id = is_numeric($preset['member']) ? intval($preset['member']) : remap_portable_as_resource_id('member', array('label' => $preset['member']));
-                        if (is_null($member_id)) {
+                        if ($member_id === null) {
                             warn_exit(do_lang_tempcode('_MEMBER_NO_EXIST', escape_html($preset['member'])));
                         } else {
                             $member_presets[$member_id] = $preset_value;
                         }
                     }
-                    if (!is_null($preset['usergroup'])) {
+                    if ($preset['usergroup'] !== null) {
                         $tempcode = template_to_tempcode($preset['usergroup']);
                         $tempcode = $tempcode->bind($parameters, 'aggregate_types.xml');
                         $preset['usergroup'] = $tempcode->evaluate();
@@ -622,7 +622,7 @@ function sync_aggregate_type_instance($id, $aggregate_label = null, $old_aggrega
                             }
                         } else {
                             $group_id = is_numeric($preset['usergroup']) ? intval($preset['usergroup']) : remap_portable_as_resource_id('group', array('label' => $preset['usergroup']));
-                            if (is_null($group_id)) {
+                            if ($group_id === null) {
                                 warn_exit(do_lang_tempcode('_GROUP_NO_EXIST', escape_html($preset['usergroup'])));
                             } else {
                                 $group_presets[$group_id] = $preset_value;
@@ -639,13 +639,13 @@ function sync_aggregate_type_instance($id, $aggregate_label = null, $old_aggrega
             $member_privileges = array();
             foreach ($resource['privileges'] as $privilege) {
                 if (($privilege['resync']) || ($is_new)) {
-                    if (!is_null($privilege['member'])) {
+                    if ($privilege['member'] !== null) {
                         $tempcode = template_to_tempcode($privilege['member']);
                         $tempcode = $tempcode->bind($parameters, 'aggregate_types.xml');
                         $privilege['member'] = $tempcode->evaluate();
 
                         $member_id = is_numeric($privilege['member']) ? intval($privilege['member']) : remap_portable_as_resource_id('member', array('label' => $privilege['member']));
-                        if (is_null($member_id)) {
+                        if ($member_id === null) {
                             warn_exit(do_lang_tempcode('_MEMBER_NO_EXIST', escape_html($privilege['member'])));
                         } else {
                             if (!array_key_exists($member_id, $member_privileges)) {
@@ -654,7 +654,7 @@ function sync_aggregate_type_instance($id, $aggregate_label = null, $old_aggrega
                             $member_privileges[$member_id][$privilege['name']] = $privilege['value'];
                         }
                     }
-                    if (!is_null($privilege['usergroup'])) {
+                    if ($privilege['usergroup'] !== null) {
                         $tempcode = template_to_tempcode($privilege['usergroup']);
                         $tempcode = $tempcode->bind($parameters, 'aggregate_types.xml');
                         $privilege['usergroup'] = $tempcode->evaluate();
@@ -668,7 +668,7 @@ function sync_aggregate_type_instance($id, $aggregate_label = null, $old_aggrega
                             }
                         } else {
                             $group_id = is_numeric($privilege['usergroup']) ? intval($privilege['usergroup']) : remap_portable_as_resource_id('group', array('label' => $privilege['usergroup']));
-                            if (is_null($group_id)) {
+                            if ($group_id === null) {
                                 warn_exit(do_lang_tempcode('_GROUP_NO_EXIST', escape_html($privilege['usergroup'])));
                             } else {
                                 if (!array_key_exists($group_id, $group_privileges)) {
@@ -705,19 +705,19 @@ function sync_aggregate_type_instance($id, $aggregate_label = null, $old_aggrega
             $member_access = array();
             foreach ($resource['access'] as $access) {
                 if (($property['resync']) || ($is_new)) {
-                    if (!is_null($access['member'])) {
+                    if ($access['member'] !== null) {
                         $tempcode = template_to_tempcode($access['member']);
                         $tempcode = $tempcode->bind($parameters, 'aggregate_types.xml');
                         $access['member'] = $tempcode->evaluate();
 
                         $member_id = is_numeric($access['member']) ? intval($access['member']) : remap_portable_as_resource_id('member', array('label' => $access['member']));
-                        if (is_null($member_id)) {
+                        if ($member_id === null) {
                             warn_exit(do_lang_tempcode('_MEMBER_NO_EXIST', escape_html($access['member'])));
                         } else {
                             $member_access[$member_id] = $access['value'];
                         }
                     }
-                    if (!is_null($access['usergroup'])) {
+                    if ($access['usergroup'] !== null) {
                         $tempcode = template_to_tempcode($access['usergroup']);
                         $tempcode = $tempcode->bind($parameters, 'aggregate_types.xml');
                         $access['usergroup'] = $tempcode->evaluate();
@@ -729,7 +729,7 @@ function sync_aggregate_type_instance($id, $aggregate_label = null, $old_aggrega
                         } else {
                             $group_id = is_numeric($access['usergroup']) ? intval($access['usergroup']) : remap_portable_as_resource_id('group', array('label' => $access['usergroup']));
 
-                            if (is_null($group_id)) {
+                            if ($group_id === null) {
                                 warn_exit(do_lang_tempcode('_GROUP_NO_EXIST', escape_html($access['usergroup'])));
                             } else {
                                 $group_access[$group_id] = $access['value'];

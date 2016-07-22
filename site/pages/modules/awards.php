@@ -96,7 +96,7 @@ class Module_awards
             require_code('content');
             $ob = get_content_object($award_type_row['a_content_type']);
             $info = $ob->info();
-            if (is_null($info)) {
+            if ($info === null) {
                 fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
             }
 
@@ -158,7 +158,7 @@ class Module_awards
             require_code('content');
             $ob = get_content_object($myrow['a_content_type']);
             $info = $ob->info();
-            if (!is_null($info)) {
+            if ($info !== null) {
                 $url = build_url(array('page' => '_SELF', 'type' => 'award', 'id' => $myrow['id']), '_SELF');
                 $_title = get_translated_text($myrow['a_title']);
                 $description = get_translated_tempcode('award_types', $myrow, 'a_description');
@@ -192,7 +192,7 @@ class Module_awards
             require_code('content');
             $ob = get_content_object($award_type_row['a_content_type']);
             $info = $ob->info();
-            if (is_null($info)) {
+            if ($info === null) {
                 continue;
             }
 
@@ -203,7 +203,7 @@ class Module_awards
             foreach ($rows as $myrow) {
                 $award_content_row = content_get_row($myrow['content_id'], $info);
 
-                if (!is_null($award_content_row)) {
+                if ($award_content_row !== null) {
                     $rendered_content = $ob->run($award_content_row, '_SEARCH', false, true);
 
                     if (($award_type_row['a_hide_awardee'] == 1) || (is_guest($myrow['member_id']))) {
@@ -213,7 +213,7 @@ class Module_awards
                     } else {
                         $awardee = strval($myrow['member_id']);
                         $awardee_username = $GLOBALS['FORUM_DRIVER']->get_username($myrow['member_id']);
-                        if (is_null($awardee_username)) {
+                        if ($awardee_username === null) {
                             $awardee_username = do_lang('UNKNOWN');
                         }
                         $awardee_profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($myrow['member_id'], true);
@@ -263,7 +263,7 @@ class Module_awards
             require_code('content');
             $award_content_row = content_get_row($myrow['content_id'], $info);
 
-            if (!is_null($award_content_row)) {
+            if ($award_content_row !== null) {
                 $rendered_content = $ob->run($award_content_row, '_SEARCH', false, true);
 
                 if (($award_type_row['a_hide_awardee'] == 1) || (is_guest($myrow['member_id']))) {
@@ -273,7 +273,7 @@ class Module_awards
                 } else {
                     $awardee = strval($myrow['member_id']);
                     $awardee_username = $GLOBALS['FORUM_DRIVER']->get_username($myrow['member_id']);
-                    if (is_null($awardee_username)) {
+                    if ($awardee_username === null) {
                         $awardee_username = do_lang('UNKNOWN');
                     }
                     $awardee_profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($myrow['member_id'], true);

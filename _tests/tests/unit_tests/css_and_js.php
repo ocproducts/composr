@@ -54,17 +54,17 @@ class css_and_js_test_set extends cms_test_case
                 $path = javascript_enforce(basename($f, '.js'), 'default');
                 $contents = file_get_contents($path);
                 $errors = check_js($contents);
-                if (!is_null($errors)) {
+                if ($errors !== null) {
                     foreach ($errors['errors'] as $i => $e) {
                         $e['line'] += 3;
                         $errors['errors'][$i] = $e;
                     }
                 }
-                if ((!is_null($errors)) && ($errors['errors'] == array())) {
+                if (($errors !== null) && ($errors['errors'] == array())) {
                     $errors = null; // Normalise
                 }
-                $this->assertTrue(is_null($errors), 'Bad JS in ' . $f);
-                if (!is_null($errors)) {
+                $this->assertTrue(($errors === null), 'Bad JS in ' . $f);
+                if ($errors !== null) {
                     if (get_param_integer('debug', 0) == 1) {
                         unset($errors['tag_ranges']);
                         unset($errors['value_ranges']);
@@ -88,11 +88,11 @@ class css_and_js_test_set extends cms_test_case
 
                 $contents = file_get_contents($path);
                 $errors = check_css($contents);
-                if ((!is_null($errors)) && ($errors['errors'] == array())) {
+                if (($errors !== null) && ($errors['errors'] == array())) {
                     $errors = null; // Normalise
                 }
-                $this->assertTrue(is_null($errors), 'Bad CSS in ' . $f);
-                if (!is_null($errors)) {
+                $this->assertTrue(($errors === null), 'Bad CSS in ' . $f);
+                if ($errors !== null) {
                     var_dump($errors['errors']);
                     var_dump($contents);
                 }

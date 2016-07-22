@@ -72,26 +72,26 @@ $releases_category_id = $GLOBALS['SITE_DB']->query_select_value('download_catego
 // ^ Result must return, composr_homesite_install.php added the category
 
 $release_category_id = $GLOBALS['SITE_DB']->query_select_value_if_there('download_categories', 'id', array('parent_id' => $releases_category_id, $GLOBALS['SITE_DB']->translate_field_ref('category') => 'Version ' . strval(intval($version_dotted))));
-if (is_null($release_category_id)) {
+if ($release_category_id === null) {
     $release_category_id = add_download_category('Version ' . strval(intval($version_dotted)), $releases_category_id, '', '');
     set_global_category_access('downloads', $release_category_id);
 }
 // NB: We don't add addon categories. This is done in publish_addons_as_downloads.php
 
 $installatron_category_id = $GLOBALS['SITE_DB']->query_select_value_if_there('download_categories', 'id', array('parent_id' => $releases_category_id, $GLOBALS['SITE_DB']->translate_field_ref('category') => 'Installatron integration'));
-if (is_null($installatron_category_id)) {
+if ($installatron_category_id === null) {
     $installatron_category_id = add_download_category('Installatron integration', $releases_category_id, '', '');
     set_global_category_access('downloads', $installatron_category_id);
 }
 
 $microsoft_category_id = $GLOBALS['SITE_DB']->query_select_value_if_there('download_categories', 'id', array('parent_id' => $releases_category_id, $GLOBALS['SITE_DB']->translate_field_ref('category') => 'Microsoft integration'));
-if (is_null($microsoft_category_id)) {
+if ($microsoft_category_id === null) {
     $microsoft_category_id = add_download_category('Microsoft integration', $releases_category_id, '', '');
     set_global_category_access('downloads', $microsoft_category_id);
 }
 
 $aps_category_id = $GLOBALS['SITE_DB']->query_select_value_if_there('download_categories', 'id', array('parent_id' => $releases_category_id, $GLOBALS['SITE_DB']->translate_field_ref('category') => 'APS integration'));
-if (is_null($aps_category_id)) {
+if ($aps_category_id === null) {
     $aps_category_id = add_download_category('APS integration', $releases_category_id, '', '');
     set_global_category_access('downloads', $aps_category_id);
 }
@@ -168,7 +168,7 @@ foreach ($all_downloads_to_add as $i => $d) {
     $category_id = $d['category_id'];
 
     $download_id = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'id', array('category_id' => $category_id, $GLOBALS['SITE_DB']->translate_field_ref('name') => $name));
-    if (is_null($download_id)) {
+    if ($download_id === null) {
         $download_id = add_download($category_id, $name, $url, $description, 'ocProducts', $comments, null, 1, 0, 0, 0, '', $original_filename, $file_size, 0, 0);
     } else {
         edit_download($download_id, $category_id, $name, $url, $description, 'ocProducts', $comments, null, 0, 1, 0, 0, 0, '', $original_filename, $file_size, 0, 0, null, '', '');
@@ -185,7 +185,7 @@ foreach ($all_downloads_to_add as $i => $d) {
 
 if ((!$is_bleeding_edge) && (!$is_old_tree) && (isset($all_downloads_to_add[0]['download_id']))) {
     $last_version_str = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'comments', array($GLOBALS['SITE_DB']->translate_field_ref('comments') => 'This is the latest version.'), ' AND d.id<>' . strval($all_downloads_to_add[0]['download_id']));
-    if (!is_null($last_version_str)) {
+    if ($last_version_str !== null) {
         $last_version_id = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('comments') => 'This is the latest version.'), ' AND d.id<>' . strval($all_downloads_to_add[0]['download_id']));
         if ($last_version_id != $all_downloads_to_add[0]['download_id']) {
             $description = "A new version, {$version_pretty} is available. Upgrading to {$version_pretty} is considered {$needed} by ocProducts{$justification}. There may have been other upgrades since {$version_pretty} - see [url=\"the ocProducts news archive\" target=\"_blank\"]http://compo.sr/site/news.htm[/url].";
@@ -229,13 +229,13 @@ To upgrade follow the steps in your website's [tt]http://mybaseurl/upgrader.php[
 {$changes}";
 
 $news_category = $GLOBALS['SITE_DB']->query_select_value_if_there('news_categories', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('nc_title') => 'New releases'));
-if (is_null($news_category)) {
+if ($news_category === null) {
     $news_category = add_news_category('New releases', 'newscats/general', '');
     set_global_category_access('news', $news_category);
 }
 
 $news_id = $GLOBALS['SITE_DB']->query_select_value_if_there('news', 'id', array('news_category' => $news_category, $GLOBALS['SITE_DB']->translate_field_ref('title') => $news_title));
-if (is_null($news_id)) {
+if ($news_id === null) {
     $news_id = add_news($news_title, $summary, 'ocProducts', 1, 0, 1, 0, '', $article, $news_category);
 } else {
     edit_news($news_id, $news_title, $summary, 'ocProducts', 1, 0, 1, 0, '', $article, $news_category, null, '', '', '');

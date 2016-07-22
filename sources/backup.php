@@ -73,7 +73,7 @@ function get_table_backup($logfile, $db_meta, $db_meta_indices, &$install_php_fi
                             }
                         }
 
-                        if (is_null($value)) {
+                        if ($value === null) {
                             continue;
                         }
                         if ($list != '') {
@@ -271,7 +271,7 @@ function make_backup_2($file, $b_type, $max_size) // This is called as a shutdow
             $file = null;
         }
 
-        if (!is_null($file)) { // If the backup was actually made
+        if ($file !== null) { // If the backup was actually made
             $copy_port = get_option('backup_server_port');
             if ($copy_port == '') {
                 $copy_port = '21';

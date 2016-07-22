@@ -39,7 +39,7 @@ class Hook_login_providers_direct_auth_external_db
         }
 
         $db = external_db();
-        if (is_null($db)) {
+        if ($db === null) {
             return null;
         }
 

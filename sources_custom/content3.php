@@ -64,7 +64,7 @@ function catalogue_query_select($catalogue_name, $select, $where = null, $filter
     require_code('catalogues');
 
     require_code('filtercode');
-    if (!is_null($where)) {
+    if ($where !== null) {
         foreach ($where as $key => $val) {
             if ($filters != '') {
                 $filters .= ',';
@@ -104,7 +104,7 @@ function catalogue_query_select_count($catalogue_name, $where = null, $filters =
     require_code('catalogues');
 
     require_code('filtercode');
-    if (!is_null($where)) {
+    if ($where !== null) {
         foreach ($where as $key => $val) {
             if ($filters != '') {
                 $filters .= ',';
@@ -180,7 +180,7 @@ abstract class CMS_API_catalogue_object extends CMS_API_object
 
         if (substr($sup_table_name, -6) == '_trans') {
             $_val = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_efv_' . $sup_table_name, 'cv_value', array('cf_id' => $field_id, 'ce_id' => $id));
-            if (is_null($_val)) {
+            if ($_val === null) {
                 $_val = insert_lang_comcode('cv_value', $val, 3);
             } else {
                 $_val = lang_remap_comcode('cv_value', $_val, $val);
@@ -189,9 +189,9 @@ abstract class CMS_API_catalogue_object extends CMS_API_object
             $GLOBALS['SITE_DB']->query_update('catalogue_efv_' . $sup_table_name, $_val, array('cf_id' => $field_id, 'ce_id' => $id), '', 1);
         } else {
             if ($sup_table_name == 'float') {
-                $smap = array('cv_value' => ((is_null($val)) || ($val == '')) ? null : floatval($val));
+                $smap = array('cv_value' => (($val === null) || ($val == '')) ? null : floatval($val));
             } elseif ($sup_table_name == 'integer') {
-                $smap = array('cv_value' => ((is_null($val)) || ($val == '')) ? null : intval($val));
+                $smap = array('cv_value' => (($val === null) || ($val == '')) ? null : intval($val));
             } else {
                 $smap = array('cv_value' => $val);
             }

@@ -126,15 +126,15 @@ class Module_admin_content_reviews
         foreach (array_keys($_hooks) as $content_type) {
             require_code('content');
             $object = get_content_object($content_type);
-            if (is_null($object)) {
+            if ($object === null) {
                 continue;
             }
             $info = $object->info();
-            if (is_null($info)) {
+            if ($info === null) {
                 continue;
             }
 
-            if (is_null($info['edit_page_link_pattern'])) {
+            if ($info['edit_page_link_pattern'] === null) {
                 continue;
             }
 
@@ -143,7 +143,7 @@ class Module_admin_content_reviews
             $_content_ids = array();
             foreach ($content_ids as $content_id => $next_review_time) {
                 list($title,) = content_get_details($content_type, $content_id);
-                if (!is_null($title)) {
+                if ($title !== null) {
                     $title = ($content_type == 'comcode_page') ? $content_id : strip_comcode($title);
                     $title .= ' (' . get_timezoned_date($next_review_time) . ')';
                     $_content_ids[$content_id] = $title;

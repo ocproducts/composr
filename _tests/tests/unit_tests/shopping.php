@@ -36,7 +36,7 @@ class shopping_test_set extends cms_test_case
         require_lang('shopping');
         require_lang('ecommerce');
 
-        if (!is_null($GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_name', array('c_name' => 'storetesting' . strval(get_member()))))) {
+        if ($GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_name', array('c_name' => 'storetesting' . strval(get_member()))) !== null) {
             actual_delete_catalogue('storetesting' . strval(get_member()));
         }
 

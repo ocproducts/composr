@@ -150,7 +150,7 @@ class DecisionTree
         // Verify we can be on this screen
         if (isset($details['expects_parameters'])) {
             foreach ($details['expects_parameters'] as $param) {
-                if (is_null(either_param_string($param, null))) {
+                if (either_param_string($param, null) === null) {
                     $url = $this->build_url($this->default_screen);
                     return redirect_screen($title, $url, do_lang_tempcode('DECISION_TREE_SCREEN_NEEDS_PARAMETER', escape_html($param)));
                 }
@@ -298,7 +298,7 @@ class DecisionTree
                     $section = null;
                 }
 
-                if (!is_null($section) && $current_section !== $section) {
+                if ($section !== null && $current_section !== $section) {
                     $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '103da055fbd879f2bfc023d83d64091d', 'TITLE' => $section)));
                 }
                 $current_section = $section;
@@ -415,7 +415,7 @@ class DecisionTree
                     }
                     $val = $hook_ob->inputted_to_field_value(false, $field);
                     $_POST = $backup;
-                    if (!is_null($val)) {
+                    if ($val !== null) {
                         $_POST[$question_name] = $val;
 
                         $_POST['_processed__' . $question_name] = '1';

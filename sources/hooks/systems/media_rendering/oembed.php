@@ -91,7 +91,7 @@ class Hook_media_rendering_oembed extends Media_renderer_with_fallback
     public function get_video_thumbnail($src_url)
     {
         $data = $this->get_oembed_data_result($src_url, array());
-        if ((!is_null($data)) && (isset($data['thumbnail_url']))) {
+        if (($data !== null) && (isset($data['thumbnail_url']))) {
             return $data['thumbnail_url'];
         }
         return null;
@@ -170,7 +170,7 @@ class Hook_media_rendering_oembed extends Media_renderer_with_fallback
                 }
                 $data = array();
                 foreach ($_data as $key => $val) { // It's currently an object, we want an array
-                    if (is_null($val)) {
+                    if ($val === null) {
                         continue;
                     }
                     $data[$key] = is_string($val) ? convert_to_internal_encoding($val, 'utf-8') : strval($val);
@@ -385,7 +385,7 @@ class Hook_media_rendering_oembed extends Media_renderer_with_fallback
         }
 
         require_code('comcode_renderer');
-        if (is_null($source_member)) {
+        if ($source_member === null) {
             $source_member = get_member();
         }
         $comcode = '';

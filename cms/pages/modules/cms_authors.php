@@ -227,9 +227,9 @@ class Module_cms_authors
             $may_delete = false;
         }
 
-        if (is_null($handle)) {
+        if ($handle === null) {
             $handle = get_author_id_from_name($author);
-            if (!is_null($handle)) {
+            if ($handle !== null) {
                 $handle = strval($handle);
             }
         }
@@ -240,7 +240,7 @@ class Module_cms_authors
         $fields = new Tempcode();
         $hidden = new Tempcode();
 
-        if (is_null($handle)) {
+        if ($handle === null) {
             $fields->attach(form_input_line(do_lang_tempcode('AUTHOR'), do_lang_tempcode('DESCRIPTION_NAME'), 'author', $author, true));
         }
         $fields->attach(form_input_line(do_lang_tempcode('AUTHOR_URL'), do_lang_tempcode('DESCRIPTION_AUTHOR_URL'), 'url', $url, false));
@@ -249,8 +249,8 @@ class Module_cms_authors
         $specialisation2 = new Tempcode();
 
         if (has_privilege(get_member(), 'edit_midrange_content', 'cms_authors')) {
-            $specialisation2->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'b18ab131f72a024039eaa92814f0f4a9', 'SECTION_HIDDEN' => !is_null($handle), 'TITLE' => do_lang_tempcode('ADVANCED'))));
-            $specialisation2->attach(form_input_username(do_lang_tempcode('MEMBER'), do_lang_tempcode('DESCRIPTION_MEMBER_AUTHOR'), 'member_id', is_null($handle) ? '' : $GLOBALS['FORUM_DRIVER']->get_username(intval($handle)), false));
+            $specialisation2->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'b18ab131f72a024039eaa92814f0f4a9', 'SECTION_HIDDEN' => $handle !== null, 'TITLE' => do_lang_tempcode('ADVANCED'))));
+            $specialisation2->attach(form_input_username(do_lang_tempcode('MEMBER'), do_lang_tempcode('DESCRIPTION_MEMBER_AUTHOR'), 'member_id', ($handle === null) ? '' : $GLOBALS['FORUM_DRIVER']->get_username(intval($handle)), false));
         } else {
             $hidden->attach(form_input_hidden('member_id', strval($handle)));
         }
@@ -301,7 +301,7 @@ class Module_cms_authors
         if ($author == '') {
             $member_id_string = post_param_string('member_id', strval(get_member()));
             $author = is_numeric($member_id_string) ? $GLOBALS['FORUM_DRIVER']->get_username(intval($member_id_string)) : $member_id_string;
-            if (is_null($author)) {
+            if ($author === null) {
                 $author = do_lang('UNKNOWN');
             }
         }
@@ -310,7 +310,7 @@ class Module_cms_authors
         if ($_member_id == '') {
             $_member_id = null;
         }
-        if (!is_null($_member_id)) {
+        if ($_member_id !== null) {
             $member_id = is_numeric($_member_id) ? intval($_member_id) : $GLOBALS['FORUM_DRIVER']->get_member_from_username($_member_id);
         } else {
             $member_id = null;
@@ -375,9 +375,9 @@ class Module_cms_authors
             null,
             /* TYPED-ORDERED LIST OF 'LINKS'  */
             has_privilege(get_member(), 'edit_midrange_content', 'cms_authors') ? array('_SELF', array('type' => '_add'), '_SELF') : null, // Add one
-            is_null($author) ? null : array('_SELF', array('type' => '_add', 'id' => $author), '_SELF'), // Edit this
+            ($author === null) ? null : array('_SELF', array('type' => '_add', 'id' => $author), '_SELF'), // Edit this
             has_privilege(get_member(), 'edit_midrange_content', 'cms_authors') ? array('_SELF', array('type' => 'edit'), '_SELF') : null, // Edit one
-            is_null($author) ? null : array('authors', array('type' => 'browse', 'id' => $author), get_module_zone('authors')), // View this
+            ($author === null) ? null : array('authors', array('type' => 'browse', 'id' => $author), get_module_zone('authors')), // View this
             null, // View archive
             null, // Add to category
             null, // Add one category

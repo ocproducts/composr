@@ -50,7 +50,7 @@ class Hook_fields_member
         $param = get_param_string('option_' . strval($field['id']), '');
         if ($param != '' && !is_numeric($param)) {
             $_member = $GLOBALS['FORUM_DRIVER']->get_member_from_username($param);
-            if (is_null($_member)) {
+            if ($_member === null) {
                 attach_message(do_lang_tempcode('_MEMBER_NO_EXIST', escape_html($param)), 'warn');
                 return array(array(), array(), '', '', '');
             }
@@ -121,7 +121,7 @@ class Hook_fields_member
      */
     public function get_field_inputter($_cf_name, $_cf_description, $field, $actual_value, $new)
     {
-        if (is_null($actual_value)) {
+        if ($actual_value === null) {
             $actual_value = ''; // Plug anomaly due to unusual corruption
         }
         if ($actual_value === do_lang('NA')) {
@@ -154,7 +154,7 @@ class Hook_fields_member
         $value = post_param_string($tmp_name, strval(INTEGER_MAGIC_NULL));
         if (($value != '') && ($value != strval(INTEGER_MAGIC_NULL))) {
             $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($value);
-            $value = is_null($member_id) ? '' : strval($member_id);
+            $value = ($member_id === null) ? '' : strval($member_id);
         }
         return $value;
     }

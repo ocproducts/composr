@@ -67,7 +67,7 @@ class Module_newsletter
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             require_lang('newsletter');
 
             $GLOBALS['SITE_DB']->create_table('newsletter_subscribers', array(
@@ -125,7 +125,7 @@ class Module_newsletter
             ));
         }
 
-        if ((is_null($upgrade_from)) || ($upgrade_from < 9)) {
+        if (($upgrade_from === null) || ($upgrade_from < 9)) {
             $GLOBALS['SITE_DB']->create_table('newsletter_periodic', array(
                 'id' => '*AUTO',
                 'np_message' => 'LONG_TEXT',
@@ -145,17 +145,17 @@ class Module_newsletter
             ));
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 9)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 9)) {
             $GLOBALS['SITE_DB']->add_table_field('newsletter_drip_send', 'd_template', 'ID_TEXT');
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 11)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 11)) {
             $GLOBALS['SITE_DB']->rename_table('newsletter', 'newsletter_subscribers');
 
             $GLOBALS['SITE_DB']->alter_table_field('newsletter_subscribers', 'the_password', 'SHORT_TEXT');
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 12)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 12)) {
             $GLOBALS['SITE_DB']->delete_index_if_exists('newsletter_drip_send', 'd_to_email');
             $GLOBALS['SITE_DB']->delete_index_if_exists('newsletter_drip_send', 'd_inject_time');
 
@@ -176,11 +176,11 @@ class Module_newsletter
             $GLOBALS['SITE_DB']->add_table_field('newsletter_archive', 'html_only', 'BINARY');
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 12)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 12)) {
             $GLOBALS['SITE_DB']->create_index('newsletter_drip_send', 'd_message_id', array('d_message_id'));
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 13)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 13)) {
             // We've switched to JSON for CSV data
             require_code('json');
             $periodic = $GLOBALS['SITE_DB']->query_select('newsletter_periodic', array('id', 'np_csv_data'));
@@ -406,7 +406,7 @@ class Module_newsletter
         $old_confirm = $GLOBALS['SITE_DB']->query_select_value_if_there('newsletter_subscribers', 'code_confirm', array('email' => $email));
 
         // New (or as new - replace old unconfirmed records)
-        if ((is_null($old_confirm)) || ($old_confirm != 0)) {
+        if (($old_confirm === null) || ($old_confirm != 0)) {
             // As it is new we need to actually confirm you were setting some subscription settings
             $newsletters = $GLOBALS['SITE_DB']->query_select('newsletters', array('id'));
             $found_subscription = false;
@@ -420,12 +420,12 @@ class Module_newsletter
                 warn_exit(do_lang_tempcode('NOT_NEWSLETTER_SUBSCRIBER'));
             }
 
-            $code_confirm = is_null($old_confirm) ? mt_rand(1, mt_getrandmax()) : $old_confirm;
+            $code_confirm = ($old_confirm === null) ? mt_rand(1, mt_getrandmax()) : $old_confirm;
             if ($password == '') {
                 $password = get_rand_password();
             }
             $salt = produce_salt();
-            if (is_null($old_confirm)) {
+            if ($old_confirm === null) {
                 add_newsletter_subscriber($email, time(), $code_confirm, ratchet_hash($password, $salt, PASSWORD_SALT), $salt, $language, $forename, $surname);
 
                 $this->_send_confirmation($email, $code_confirm, $password, $forename, $surname);
@@ -443,7 +443,7 @@ class Module_newsletter
         // Change/make settings
         $old_password = $GLOBALS['SITE_DB']->query_select_value('newsletter_subscribers', 'the_password', array('email' => $email));
         $old_salt = $GLOBALS['SITE_DB']->query_select_value('newsletter_subscribers', 'pass_salt', array('email' => $email));
-        if ((!has_privilege(get_member(), 'change_newsletter_subscriptions')) && (!is_null($old_confirm)) && ($old_confirm == 0) && ($old_password != '') && ($old_password != md5($password . $old_salt))) { // Access denied. People who can change any subscriptions can't get denied.
+        if ((!has_privilege(get_member(), 'change_newsletter_subscriptions')) && ($old_confirm !== null) && ($old_confirm == 0) && ($old_password != '') && ($old_password != md5($password . $old_salt))) { // Access denied. People who can change any subscriptions can't get denied.
             // Access denied to an existing record that was confirmed
             $_reset_url = build_url(array('page' => '_SELF', 'type' => 'reset', 'email' => $email), '_SELF');
             $reset_url = $_reset_url->evaluate();
@@ -462,7 +462,7 @@ class Module_newsletter
             }
 
             // Update name etc if it's an edit
-            if ((!is_null($old_confirm)) && ($old_confirm == 0)) {
+            if (($old_confirm !== null) && ($old_confirm == 0)) {
                 $id = $GLOBALS['SITE_DB']->query_select_value('newsletter_subscribers', 'id', array('email' => $email));
                 edit_newsletter_subscriber($id, $email, null, null, null, null, null, $forename, $surname);
             }
@@ -534,7 +534,7 @@ class Module_newsletter
      */
     public function _send_confirmation($email, $code_confirm, $password, $forename, $surname)
     {
-        if (is_null($password)) {
+        if ($password === null) {
             $password = do_lang('NEWSLETTER_PASSWORD_ENCRYPTED');
         }
 

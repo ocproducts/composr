@@ -78,11 +78,11 @@ class Hook_preview_download
             $original_filename = $_FILES['file']['name'];
             $file_size = $_FILES['file']['size'];
 
-            if (!is_null($id)) {
+            if ($id !== null) {
                 attach_message(do_lang_tempcode('UPLOADED_FILE_NOT_DOWNLOADABLE_YET'), 'notice');
             }
         }
-        if (!is_null($id)) {
+        if ($id !== null) {
             $rows = $GLOBALS['SITE_DB']->query_select('download_downloads', array('*'), array('id' => $id), '', 1);
             if (array_key_exists(0, $rows)) {
                 $map['id'] = $id;
@@ -98,7 +98,7 @@ class Hook_preview_download
             'download_data_mash' => '',
             'download_licence' => $licence,
             'rep_image' => '',
-            'edit_date' => is_null($id) ? null : time(),
+            'edit_date' => ($id === null) ? null : time(),
             'download_submitter_gets_points' => $submitter_gets_points,
             'download_cost' => $cost,
             'original_filename' => $original_filename,

@@ -158,7 +158,7 @@ class Hook_addon_registry_bankr
      */
     public function install($upgrade_from = null)
     {
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->create_table('bank', array(
                 'id' => '*AUTO',
                 'member_id' => 'MEMBER',

@@ -420,7 +420,7 @@ Your income");
     }
     $results = check_xhtml($contents, false, $is_fragment, true, true, true, true, $ext, $manual); // full check, but no external file checking
 }
-if (!is_null($results)) {
+if ($results !== null) {
     $pedantic = (in_array('checks', $_SERVER['argv'])) || ((array_key_exists('pedantic', $_SERVER['argv']) && ($_SERVER['argv']['pedantic'] == '1')));
     $skip_over = $pedantic ? array() : array('XHTML_EMPTY_TAG', 'CSS_INLINE_STYLES', 'WCAG_ADJACENT_LINKS', 'XHTML_SPELLING');
     foreach ($results['errors'] as $result) {

@@ -76,7 +76,7 @@ class Module_wiki
     {
         require_lang('wiki');
 
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->create_table('wiki_children', array(
                 'parent_id' => '*AUTO_LINK',
                 'child_id' => '*AUTO_LINK',
@@ -137,7 +137,7 @@ class Module_wiki
             $GLOBALS['SITE_DB']->create_index('wiki_pages', 'ftjoin_spd', array('description'));
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 9)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 9)) {
             $GLOBALS['SITE_DB']->rename_table('seedy_children', 'wiki_children');
             $GLOBALS['SITE_DB']->rename_table('seedy_pages', 'wiki_pages');
             $GLOBALS['SITE_DB']->rename_table('seedy_posts', 'wiki_posts');
@@ -186,7 +186,7 @@ class Module_wiki
             $GLOBALS['SITE_DB']->delete_index_if_exists('wiki_posts', 'spos');
         }
 
-        if ((is_null($upgrade_from)) || ($upgrade_from < 9)) {
+        if (($upgrade_from === null) || ($upgrade_from < 9)) {
             $GLOBALS['SITE_DB']->create_index('wiki_pages', '#wiki_search__combined', array('title', 'description'));
 
             $GLOBALS['SITE_DB']->create_index('wiki_posts', 'wiki_views', array('wiki_views'));
@@ -246,7 +246,7 @@ class Module_wiki
             $find = get_param_string('find', '');
             if ($find != '') { // Allow quick 'find' remapping to a real ID
                 $id = $GLOBALS['SITE_DB']->query_select_value_if_there('wiki_pages', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('title') => $find));
-                if (is_null($id)) {
+                if ($id === null) {
                     $this->title = get_screen_title('ERROR_OCCURRED');
                     $add_access = (has_submit_permission('low', get_member(), get_ip_address(), 'cms_wiki'));
                     require_lang('zones');
@@ -331,7 +331,7 @@ class Module_wiki
             $_chain = get_param_wiki_chain('id', strval(db_get_first_id()));
             $chain = $_chain[1];
 
-            $posting = is_null(get_param_integer('post_id', null));
+            $posting = (get_param_integer('post_id', null) === null);
 
             $breadcrumbs = wiki_breadcrumbs($chain, null, true, true);
             $breadcrumbs[] = array('', do_lang_tempcode($posting ? 'MAKE_POST' : 'SAVE'));
@@ -347,7 +347,7 @@ class Module_wiki
         }
 
         if ($type == '_post') {
-            $posting = is_null(post_param_integer('post_id', null));
+            $posting = (post_param_integer('post_id', null) === null);
 
             if ($posting) {
                 $this->title = get_screen_title('WIKI_MAKE_POST');
@@ -465,7 +465,7 @@ class Module_wiki
         }
 
         // Views
-        if ((get_db_type() != 'xml') && (get_value('no_view_counts') !== '1') && (is_null(get_bot_type()))) {
+        if ((get_db_type() != 'xml') && (get_value('no_view_counts') !== '1') && (get_bot_type() === null)) {
             $page['wiki_views']++;
             if (!$GLOBALS['SITE_DB']->table_is_locked('wiki_pages')) {
                 $GLOBALS['SITE_DB']->query_update('wiki_pages', array('wiki_views' => $page['wiki_views']), array('id' => $id), '', 1, null, false, true);
@@ -523,7 +523,7 @@ class Module_wiki
             // Work out posters details
             $poster = $myrow['member_id'];
             $username = $GLOBALS['FORUM_DRIVER']->get_username($poster);
-            if (is_null($username)) {
+            if ($username === null) {
                 $username = do_lang('UNKNOWN');
             }
 
@@ -536,7 +536,7 @@ class Module_wiki
             // Rating
             actualise_rating(true, 'wiki_post', strval($post_id), build_url(array('page' => '_SELF', 'type' => 'browse', 'id' => $chain), '_SELF'), $current_title);
             $rating_array = get_rating_simple_array(build_url(array('page' => '_SELF', 'type' => 'browse', 'id' => $chain), '_SELF'), $current_title, 'wiki_post', strval($post_id), 'WIKI_RATING_FORM', $poster);
-            if (!is_null($rating_array)) {
+            if ($rating_array !== null) {
                 $rating = do_template('WIKI_RATING', $rating_array);
             } else {
                 $rating = new Tempcode();
@@ -667,7 +667,7 @@ class Module_wiki
     {
         $_id = get_param_string('id', null);
         $id = null;
-        if (!is_null($_id)) {
+        if ($_id !== null) {
             list($id,) = get_param_wiki_chain('id');
         }
 
@@ -702,18 +702,18 @@ class Module_wiki
     {
         $_id = get_param_string('id', null);
         $id = null;
-        if (!is_null($_id)) {
+        if ($_id !== null) {
             list($id,) = get_param_wiki_chain('id');
         }
 
         $page_id = intval($revision['r_category_id']);
 
         $l = $GLOBALS['SITE_DB']->query_select_value_if_there('wiki_pages', 'title', array('id' => $page_id));
-        if (is_null($l)) {
+        if ($l === null) {
             return null;
         }
 
-        $chain = is_null($id) ? wiki_derive_chain($page_id) : $_id;
+        $chain = ($id === null) ? wiki_derive_chain($page_id) : $_id;
         $view_link = span(breadcrumb_segments_to_tempcode(wiki_breadcrumbs($chain, get_translated_text($l), true)), '', 'breadcrumbs');
 
         $member_link = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($revision['log_member_id']);
@@ -723,7 +723,7 @@ class Module_wiki
         $action = do_lang_tempcode($revision['log_action']);
         $do_actionlog = has_actual_page_access(get_member(), 'admin_actionlog');
         if ($do_actionlog) {
-            $actionlog_url = build_url(array('page' => 'admin_actionlog', 'type' => 'view', 'id' => is_null($revision['r_actionlog_id']) ? $revision['r_moderatorlog_id'] : $revision['r_actionlog_id'], 'mode' => is_null($revision['r_actionlog_id']) ? 'cns' : 'cms'), get_module_zone('admin_actionlog'));
+            $actionlog_url = build_url(array('page' => 'admin_actionlog', 'type' => 'view', 'id' => ($revision['r_actionlog_id'] === null) ? $revision['r_moderatorlog_id'] : $revision['r_actionlog_id'], 'mode' => ($revision['r_actionlog_id'] === null) ? 'cns' : 'cms'), get_module_zone('admin_actionlog'));
             $action = hyperlink($actionlog_url, $action, false, false, strval($revision['r_actionlog_id']));
         }
 

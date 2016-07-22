@@ -285,7 +285,7 @@ class Module_admin_cns_members
         $email_address = trim(post_param_string('email_address', member_field_is_required(null, 'email_address') ? false : ''));
         require_code('temporal2');
         list($dob_year, $dob_month, $dob_day) = post_param_date_components('dob');
-        if ((is_null($dob_year)) || (is_null($dob_month)) || (is_null($dob_day))) {
+        if (($dob_year === null) || ($dob_month === null) || ($dob_day === null)) {
             if (member_field_is_required(null, 'dob', null, null)) {
                 warn_exit(do_lang_tempcode('NO_PARAMETER_SENT', escape_html('dob')));
             }
@@ -407,32 +407,32 @@ class Module_admin_cns_members
         $_min_days_since_login = get_value('delurk__min_days_since_login');
         $_min_days_since_join = get_value('delurk__min_days_since_join');
         $_usergroups = get_value('delurk__usergroups');
-        if (is_null($_max_posts)) {
+        if ($_max_posts === null) {
             $max_posts = 2;
         } else {
             $max_posts = intval($_max_posts);
         }
-        if (is_null($_max_points)) {
+        if ($_max_points === null) {
             $max_points = 150;
         } else {
             $max_points = intval($_max_points);
         }
-        if (is_null($_max_logged_actions)) {
+        if ($_max_logged_actions === null) {
             $max_logged_actions = 2;
         } else {
             $max_logged_actions = intval($_max_logged_actions);
         }
-        if (is_null($_min_days_since_login)) {
+        if ($_min_days_since_login === null) {
             $min_days_since_login = 60;
         } else {
             $min_days_since_login = intval($_min_days_since_login);
         }
-        if (is_null($_min_days_since_join)) {
+        if ($_min_days_since_join === null) {
             $min_days_since_join = 90;
         } else {
             $min_days_since_join = intval($_min_days_since_join);
         }
-        if (is_null($_usergroups)) {
+        if ($_usergroups === null) {
             $usergroups = array();
         } else {
             $temp = explode(',', $_usergroups);

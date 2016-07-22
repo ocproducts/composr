@@ -36,7 +36,7 @@ class Hook_ecommerce_classifieds
             $ad_title = $data_map['FIELD_0'];
 
             $username = $GLOBALS['FORUM_DRIVER']->get_username($row['ce_submitter']);
-            if (is_null($username)) {
+            if ($username === null) {
                 $username = do_lang('UNKNOWN');
             }
             $list->attach(form_input_list_entry(strval($row['id']), get_param_integer('id', null) === $row['id'], do_lang('CLASSIFIED_OF', strval($row['id']), $username, $ad_title)));
@@ -96,14 +96,14 @@ class Hook_ecommerce_classifieds
     public function set_needed_fields($type_code)
     {
         $entry_id = get_param_integer('id', null);
-        if (is_null($entry_id)) {
+        if ($entry_id === null) {
             return '';
         }
 
         $matches = array();
         if (preg_match('#^CLASSIFIEDS\_ADVERT\_(\d+)$#', $type_code, $matches) != 0) {
             $entry_catalogue_name = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_entries', 'c_name', array('id' => $entry_id));
-            if (is_null($entry_catalogue_name)) {
+            if ($entry_catalogue_name === null) {
                 warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
             }
 
@@ -133,7 +133,7 @@ function handle_classifieds_advert($purchase_id, $details, $type_code)
 
     // Make validated, bump up timer
     $time = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_entries', 'ce_last_moved', array('id' => intval($purchase_id)));
-    if (!is_null($time)) {
+    if ($time !== null) {
         $time += $days * 60 * 60 * 24;
         $GLOBALS['SITE_DB']->query_update('catalogue_entries', array('ce_validated' => 1, 'ce_last_moved' => $time), array('id' => intval($purchase_id)), '', 1);
         decache('main_cc_embed');

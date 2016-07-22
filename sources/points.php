@@ -59,7 +59,7 @@ function total_points($member, $timestamp = null)
 
     global $TOTAL_POINTS_CACHE;
 
-    if (is_null($timestamp)) {
+    if ($timestamp === null) {
         if (isset($TOTAL_POINTS_CACHE[$member])) {
             return $TOTAL_POINTS_CACHE[$member];
         }
@@ -84,7 +84,7 @@ function total_points($member, $timestamp = null)
     $points_per_day = intval(get_option('points_per_day'));
     $points_gained_auto = intval(floor(floatval(time() - $GLOBALS['FORUM_DRIVER']->get_member_join_timestamp($member)) / floatval(60 * 60 * 24)));
 
-    if (!is_null($timestamp)) {
+    if ($timestamp !== null) {
         if (addon_installed('chat')) {
             $points_gained_chat -= min($points_gained_chat, $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'chat_messages WHERE date_and_time>' . strval($timestamp) . ' AND member_id=' . strval($member)));
         }
@@ -117,7 +117,7 @@ function total_points($member, $timestamp = null)
     $points += $points_gained_voting * $points_voting;
     $points += $points_gained_auto * $points_per_day;
 
-    if (is_null($timestamp)) {
+    if ($timestamp === null) {
         $TOTAL_POINTS_CACHE[$member] = $points;
     }
 
@@ -176,7 +176,7 @@ function point_info($member)
     }
 
     $values = $GLOBALS['FORUM_DRIVER']->get_custom_fields($member);
-    if (is_null($values)) {
+    if ($values === null) {
         $values = array();
     }
 

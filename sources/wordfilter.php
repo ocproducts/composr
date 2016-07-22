@@ -58,10 +58,10 @@ function check_wordfilter($a, $name = null, $no_die = false, $try_patterns = fal
 
     // Load filter
     global $WORDS_TO_FILTER_CACHE;
-    if (is_null($WORDS_TO_FILTER_CACHE)) {
+    if ($WORDS_TO_FILTER_CACHE === null) {
         $WORDS_TO_FILTER_CACHE = array();
         $rows = $GLOBALS['SITE_DB']->query_select('wordfilter', array('*'), null, '', null, null, true);
-        if (!is_null($rows)) {
+        if ($rows !== null) {
             foreach ($rows as $i => $r) {
                 if (($i == 0) && (!array_key_exists('w_replacement', $r))) {
                     return $a; // Safe upgrading
@@ -73,7 +73,7 @@ function check_wordfilter($a, $name = null, $no_die = false, $try_patterns = fal
 
     // Find words
     $words = str_word_count($a, 2);
-    if (is_null($words)) {
+    if ($words === null) {
         $words = array(); // HPHP issue #113
     }
 
@@ -137,7 +137,7 @@ function warn_exit_wordfilter($name, $message)
     global $WORDFILTERING_ALREADY;
     $WORDFILTERING_ALREADY = true;
 
-    if (is_null($name)) {
+    if ($name === null) {
         warn_exit($message);
     }
 

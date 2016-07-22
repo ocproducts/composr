@@ -39,7 +39,7 @@ class Hook_commandr_command_users_online
             $count = 0;
             require_code('users2');
             $members = get_users_online(true, null, $count);
-            if (is_null($members)) {
+            if ($members === null) {
                 return array('', '', do_lang('TOO_MANY_USERS_ONLINE'), '');
             }
             $out = new Tempcode();
@@ -47,7 +47,7 @@ class Hook_commandr_command_users_online
 
             $valid_members = array();
             foreach ($members as $member) {
-                if ((is_guest($member['member_id'])) || (is_null($member['cache_username']))) {
+                if ((is_guest($member['member_id'])) || ($member['cache_username'] === null)) {
                     $guests++;
                 } else {
                     $valid_members[$member['cache_username']] = $member['member_id'];

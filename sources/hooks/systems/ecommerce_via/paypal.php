@@ -321,8 +321,8 @@ class Hook_paypal
             do { // Try up to 3 times
                 $res = http_download_file('https://' . (ecommerce_test_mode() ? 'www.sandbox.paypal.com' : 'www.paypal.com') . '/cgi-bin/webscr', null, false, false, 'Composr', $pure_post + array('cmd' => '_notify-validate'));
                 $x++;
-            } while ((is_null($res)) && ($x < 3));
-            if (is_null($res)) {
+            } while (($res === null) && ($x < 3));
+            if ($res === null) {
                 fatal_ipn_exit(do_lang('IPN_SOCKET_ERROR'));
             }
             if (!(strcmp($res, 'VERIFIED') == 0)) {
@@ -397,11 +397,11 @@ class Hook_paypal
      */
     public function store_shipping_address($order_id)
     {
-        if (is_null(post_param_string('address_name', null))) {
+        if (post_param_string('address_name', null) === null) {
             return null;
         }
 
-        if (is_null($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order_addresses', 'id', array('order_id' => $order_id)))) {
+        if ($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order_addresses', 'id', array('order_id' => $order_id)) === null) {
             $shipping_address = array();
             $shipping_address['order_id'] = $order_id;
             $shipping_address['address_name'] = post_param_string('address_name', '');

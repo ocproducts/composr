@@ -295,7 +295,7 @@ class Module_admin_newsletter extends Standard_crud_module
         $subscribe = (post_param_integer('subscribe', 0) == 1);
 
         // Select newsletter and attach CSV
-        if (is_null($newsletter_id)) {
+        if ($newsletter_id === null) {
             $default_newsletter_id = get_param_integer('id', null);
 
             $fields = new Tempcode();
@@ -535,7 +535,7 @@ class Module_admin_newsletter extends Standard_crud_module
         require_code('crypt');
 
         // Select newsletter
-        if (is_null($id)) {
+        if ($id === null) {
             $fields = new Tempcode();
             require_code('form_templates');
 
@@ -745,8 +745,8 @@ class Module_admin_newsletter extends Standard_crud_module
         )));
 
         $_cutoff_time = get_value('newsletter_whatsnew');
-        $cutoff_time = is_null($_cutoff_time) ? null : intval($_cutoff_time);
-        if (is_null($cutoff_time)) {
+        $cutoff_time = ($_cutoff_time === null) ? null : intval($_cutoff_time);
+        if ($cutoff_time === null) {
             $cutoff_time = time() - 60 * 60 * 24 * 365 * 3;
         }
         $fields->attach(form_input_date(do_lang_tempcode('CUTOFF_DATE'), do_lang_tempcode('DESCRIPTION_CUTOFF_DATE'), 'cutoff', true, false, true, $cutoff_time, 3, intval(date('Y')) - 3, null));
@@ -887,7 +887,7 @@ class Module_admin_newsletter extends Standard_crud_module
         $in_full = post_param_integer('in_full', 0);
         $chosen_categories = post_param_string('chosen_categories');
         $message = generate_whatsnew_comcode($chosen_categories, $in_full, $lang, $cutoff_time);
-        if (is_null($message)) {
+        if ($message === null) {
             $message = do_lang('NOTHING_HERE');
         }
 
@@ -968,7 +968,7 @@ class Module_admin_newsletter extends Standard_crud_module
         require_code('form_templates');
 
         $default_subject = get_option('newsletter_title');
-        if (!is_null($defaults)) {
+        if ($defaults !== null) {
             $default_subject = $defaults['np_subject'];
         }
         if ($periodic_action != 'make' && $periodic_action != 'replace') {
@@ -985,7 +985,7 @@ class Module_admin_newsletter extends Standard_crud_module
         list($message, $message_is_html) = get_full_newsletter_code($_message, $lang, $default_subject);
         if ($periodic_action == 'make' || $periodic_action == 'replace') {
             // We are making a periodic newsletter. This means we need to pass through the chosen categories - add extra fields to the form - and there's no direct editing
-            if (!is_null($defaults)) {
+            if ($defaults !== null) {
                 $chosen_categories = $defaults['np_message'];
                 $in_full = $defaults['np_in_full'];
 
@@ -995,7 +995,7 @@ class Module_admin_newsletter extends Standard_crud_module
                 $hidden->attach(form_input_hidden('in_full', strval($in_full)));
                 $hidden->attach(form_input_hidden('chosen_categories', $chosen_categories));
             }
-            if (!is_null(post_param_string('cutoff', null))) {
+            if (post_param_string('cutoff', null) !== null) {
                 $hidden->attach(form_input_hidden('cutoff', post_param_string('cutoff')));
                 $hidden->attach(form_input_hidden('cutoff_time', post_param_string('cutoff_time')));
             } else {
@@ -1024,24 +1024,24 @@ class Module_admin_newsletter extends Standard_crud_module
             $fields->attach(form_input_date__scheduler(do_lang_tempcode('DEFER_TIME'), do_lang_tempcode('DESCRIPTION_DEFER_TIME'), 'schedule', false, true, true));
         }
         $from_email = post_param_string('from_email', get_option('staff_address'));
-        if (!is_null($defaults)) {
+        if ($defaults !== null) {
             $from_email = post_param_string('from_email', $defaults['np_from_email']);
         }
         $fields->attach(form_input_email(do_lang_tempcode('FROM_EMAIL'), do_lang_tempcode('DESCRIPTION_NEWSLETTER_FROM_EMAIL'), 'from_email', $from_email, true));
         $from_name = post_param_string('from_name', get_site_name());
-        if (!is_null($defaults)) {
+        if ($defaults !== null) {
             $from_name = post_param_string('from_name', $defaults['np_from_name']);
         }
         $fields->attach(form_input_line(do_lang_tempcode('FROM_NAME'), do_lang_tempcode('DESCRIPTION_NEWSLETTER_FROM_NAME'), 'from_name', $from_name, true));
         if (get_option('dual_format_newsletters') == '0' || $message_is_html) {
             $hidden->attach(form_input_hidden('html_only', '1'));
         } else {
-            $html_only = (post_param_integer('html_only', is_null($defaults) ? 0 : $defaults['np_html_only']) == 1);
+            $html_only = (post_param_integer('html_only', ($defaults === null) ? 0 : $defaults['np_html_only']) == 1);
             $fields->attach(form_input_tick(do_lang_tempcode('HTML_ONLY'), do_lang_tempcode('DESCRIPTION_HTML_ONLY'), 'html_only', $html_only));
         }
         $l = new Tempcode();
         $priority = post_param_integer('priority', 3);
-        if (!is_null($defaults)) {
+        if ($defaults !== null) {
             $priority = post_param_integer('priority', $defaults['np_priority']);
         }
         for ($i = 1; $i <= 5; $i++) {
@@ -1052,7 +1052,7 @@ class Module_admin_newsletter extends Standard_crud_module
         // Where to send to
         $csv_data = post_param_string('csv_data', null);
         $send_to_help = mixed();
-        if (is_null($csv_data)) { // Maybe discern it from passed parameters from search module
+        if ($csv_data === null) { // Maybe discern it from passed parameters from search module
             $_csv_data = array();
             $_csv_data[] = array(do_lang('EMAIL_ADDRESS'), do_lang('NAME'), do_lang('NEWSLETTER_SEND_ID'));
             foreach (array_keys($_POST) as $post_key) {
@@ -1071,7 +1071,7 @@ class Module_admin_newsletter extends Standard_crud_module
                 $csv_data = json_encode($_csv_data);
             }
         }
-        if (!is_null($csv_data)) {
+        if ($csv_data !== null) {
             $hidden->attach(form_input_hidden('csv_data', $csv_data));
             require_code('json');
             $_csv_data = json_decode($csv_data, true);
@@ -1079,7 +1079,7 @@ class Module_admin_newsletter extends Standard_crud_module
             $send_to_help = do_lang_tempcode('SOME_NEWSLETTER_TARGETS_KNOWN', escape_html(integer_format($num_csv_data)));
         }
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '7e1c75fef01054164abfa72f55e5ba86', 'TITLE' => do_lang_tempcode('CHOOSE_SEND_TO'), 'HELP' => $send_to_help)));
-        $send_details = is_null($defaults) ? array() : unserialize($defaults['np_send_details']);
+        $send_details = ($defaults === null) ? array() : unserialize($defaults['np_send_details']);
         $newsletters = $GLOBALS['SITE_DB']->query_select('newsletters', array('*'));
         foreach ($newsletters as $newsletter) {
             $send_to = (post_param_integer(strval($newsletter['id']), empty($send_details[strval($newsletter['id'])]) ? 0 : 1) == 1);
@@ -1107,7 +1107,7 @@ class Module_admin_newsletter extends Standard_crud_module
                 }
             }
         }
-        if (is_null($csv_data)) {
+        if ($csv_data === null) {
             $fields->attach(form_input_upload(do_lang_tempcode('UPLOAD'), do_lang_tempcode('DESCRIPTION_UPLOAD_CSV'), 'file', false, null, null, true, 'csv,txt'));
         }
 
@@ -1148,19 +1148,19 @@ class Module_admin_newsletter extends Standard_crud_module
             // the week and day of the month.
 
             $frequency = post_param_string('periodic_when', 'weekly');
-            if (!is_null($defaults)) {
+            if ($defaults !== null) {
                 $frequency = post_param_string('periodic_when', $defaults['np_frequency']);
             }
             $current_day_weekly = post_param_integer('periodic_weekly', 5);
-            if (!is_null($defaults)) {
+            if ($defaults !== null) {
                 $current_day_weekly = post_param_integer('periodic_weekly', $defaults['np_day']);
             }
             $current_day_biweekly = post_param_integer('periodic_biweekly', 5);
-            if (!is_null($defaults)) {
+            if ($defaults !== null) {
                 $current_day_biweekly = post_param_integer('periodic_biweekly', $defaults['np_day']);
             }
             $current_day_of_month = post_param_integer('periodic_monthly', 1);
-            if (!is_null($defaults)) {
+            if ($defaults !== null) {
                 $current_day_of_month = post_param_integer('periodic_monthly', $defaults['np_day']);
             }
 
@@ -1241,7 +1241,7 @@ class Module_admin_newsletter extends Standard_crud_module
         $extra_post_data = array();
         require_code('uploads');
         $_csv_data = post_param_string('csv_data', null);
-        if (!is_null($_csv_data)) {
+        if ($_csv_data !== null) {
             $extra_post_data['csv_data'] = $_csv_data;
         } else {
             if (((is_plupload(true)) && (array_key_exists('file', $_FILES))) || ((array_key_exists('file', $_FILES)) && (is_uploaded_file($_FILES['file']['tmp_name'])))) {
@@ -1272,7 +1272,7 @@ class Module_admin_newsletter extends Standard_crud_module
 
             // Re-generate preview from latest chosen_categories
             $message = generate_whatsnew_comcode(post_param_string('chosen_categories', ''), $in_full, $lang, post_param_date('cutoff'));
-            if (is_null($message)) {
+            if ($message === null) {
                 $message = do_lang('NOTHING_HERE');
             }
         }
@@ -1350,7 +1350,7 @@ class Module_admin_newsletter extends Standard_crud_module
             'TEXT_PREVIEW' => $text_version,
             'HTML_PREVIEW' => $html_version,
             'SPAM_REPORT' => $spam_report,
-            'SPAM_SCORE' => is_null($spam_score) ? null : $spam_score,
+            'SPAM_SCORE' => ($spam_score === null) ? null : $spam_score,
         ));
 
         // Confirm screen
@@ -1446,7 +1446,7 @@ class Module_admin_newsletter extends Standard_crud_module
 
         if (addon_installed('calendar')) {
             $schedule = post_param_date('schedule');
-            if (!is_null($schedule)) {
+            if ($schedule !== null) {
                 require_code('calendar');
                 require_code('calendar2');
                 $send_details_string_exp = '';

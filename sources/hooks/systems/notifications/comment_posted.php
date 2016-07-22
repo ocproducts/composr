@@ -47,7 +47,7 @@ class Hook_notification_comment_posted extends Hook_Notification
         $categories = parent::create_category_tree($notification_code, $id);
 
         $notification_category = get_param_string('id', null);
-        if (!is_null($notification_category)) {
+        if ($notification_category !== null) {
             $found = false;
             foreach ($categories as $i => $c) {
                 if ($c['id'] == $notification_category) {
@@ -67,7 +67,7 @@ class Hook_notification_comment_posted extends Hook_Notification
             if (preg_match('#^([^\_]*)\_(.*)$#', preg_replace('#^catalogues__\w+_#', 'catalogues_', $c['id']), $matches) != 0) {
                 $details = get_details_behind_feedback_code($matches[1], $matches[2]);
                 $new_title = $details[0];
-                if ((!is_null($new_title)) && ($new_title != '')) {
+                if (($new_title !== null) && ($new_title != '')) {
                     $categories[$i]['title'] = $new_title;
                     $num_done++;
                     if ($num_done > 200) { // Reasonable limit
@@ -133,7 +133,7 @@ class Hook_notification_comment_posted extends Hook_Notification
     public function list_members_who_have_enabled($notification_code, $category = null, $to_member_ids = null, $start = 0, $max = 300)
     {
         list($_members, $maybe_more) = $this->_all_members_who_have_enabled($notification_code, $category, $to_member_ids, $start, $max);
-        if (!is_null($category)) { // Check permissions for content
+        if ($category !== null) { // Check permissions for content
             $matches = array();
             if (preg_match('#^catalogues\_\_(.*)\_(\d+)$#', $category, $matches) != 0) {
                 list($type_id, $id) = array($matches[1], $matches[2]);

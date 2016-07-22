@@ -90,12 +90,12 @@ class Block_main_awards
         require_code('content');
         $object = get_content_object($award_type_row['a_content_type']);
         $info = $object->info();
-        if (is_null($info)) {
+        if ($info === null) {
             return do_lang_tempcode('IMPOSSIBLE_TYPE_USED');
         }
 
         $submit_url = $info['add_url'];
-        if (!is_null($submit_url)) {
+        if ($submit_url !== null) {
             $submit_url = page_link_to_url($submit_url);
         } else {
             $submit_url = '';
@@ -132,7 +132,7 @@ class Block_main_awards
 
             $award_content_row = content_get_row($myrow['content_id'], $info);
             $sup = ' AND date_and_time<' . strval($myrow['date_and_time']);
-        } while (is_null($award_content_row));
+        } while ($award_content_row === null);
 
         $archive_url = build_url(array('page' => 'awards', 'type' => 'award', 'id' => $award), get_module_zone('awards'));
 
@@ -145,7 +145,7 @@ class Block_main_awards
         } else {
             $awardee = strval($myrow['member_id']);
             $awardee_username = $GLOBALS['FORUM_DRIVER']->get_username($myrow['member_id']);
-            if (is_null($awardee_username)) {
+            if ($awardee_username === null) {
                 $awardee_username = do_lang('UNKNOWN');
             }
             $awardee_profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($myrow['member_id'], true);

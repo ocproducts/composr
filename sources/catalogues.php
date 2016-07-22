@@ -77,7 +77,7 @@ function load_catalogue_row($catalogue_name, $fail_ok = false)
  */
 function render_catalogue_entry_box($row, $zone = '_SEARCH', $give_context = true, $include_breadcrumbs = true, $root = null, $guid = '')
 {
-    if (is_null($row)) { // Should never happen, but we need to be defensive
+    if ($row === null) { // Should never happen, but we need to be defensive
         return new Tempcode();
     }
 
@@ -120,7 +120,7 @@ function render_catalogue_entry_box($row, $zone = '_SEARCH', $give_context = tru
  */
 function render_catalogue_category_box($row, $zone = '_SEARCH', $give_context = true, $include_breadcrumbs = true, $root = null, $attach_to_url_filter = false, $guid = '')
 {
-    if (is_null($row)) { // Should never happen, but we need to be defensive
+    if ($row === null) { // Should never happen, but we need to be defensive
         return new Tempcode();
     }
 
@@ -201,7 +201,7 @@ function render_catalogue_category_box($row, $zone = '_SEARCH', $give_context = 
  */
 function render_catalogue_box($row, $zone = '_SEARCH', $give_context = true, $guid = '')
 {
-    if (is_null($row)) { // Should never happen, but we need to be defensive
+    if ($row === null) { // Should never happen, but we need to be defensive
         return new Tempcode();
     }
 
@@ -386,7 +386,7 @@ function render_catalogue_category_entry_buildup($category_id, $catalogue_name, 
         if (get_option('is_on_rating') == '0') {
             $has_ratings = false;
         } else {
-            if (is_null($entries)) {
+            if ($entries === null) {
                 $has_ratings = false;
                 foreach ($entries as $entry) {
                     if ($entry['allow_rating'] == 1) {
@@ -592,14 +592,14 @@ function _catalogues_filtercode($db, $info, $catalogue_name, &$extra_join, &$ext
 {
     if (preg_match('#^((.*)\.)?field\_(\d+)#', $filter_key) != 0) {
         $ret = _fields_api_filtercode($db, $info, $catalogue_name, $extra_join, $extra_select, $filter_key, $filter_val, $db_fields, $table_join_code);
-        if (!is_null($ret)) {
+        if ($ret !== null) {
             return $ret;
         }
     }
 
     // Named
     $ret = _fields_api_filtercode_named($db, $info, $catalogue_name, $extra_join, $extra_select, $filter_key, $filter_val, $db_fields, $table_join_code);
-    if (!is_null($ret)) {
+    if ($ret !== null) {
         return $ret;
     }
 
@@ -996,7 +996,7 @@ function get_catalogue_entry_map($entry, $catalogue, $view_type, $tpl_set, $root
     $map['ADD_DATE_RAW'] = strval($entry['ce_add_date']);
     $map['EDIT_DATE_RAW'] = ($entry['ce_edit_date'] === null) ? '' : strval($entry['ce_edit_date']);
     $map['ADD_DATE'] = get_timezoned_date_time_tempcode($entry['ce_add_date']);
-    $map['EDIT_DATE'] = is_null($entry['ce_edit_date']) ? new Tempcode() : get_timezoned_date_time_tempcode($entry['ce_edit_date']);
+    $map['EDIT_DATE'] = ($entry['ce_edit_date'] === null) ? new Tempcode() : get_timezoned_date_time_tempcode($entry['ce_edit_date']);
     $map['ID'] = strval($id);
     $map['CATALOGUE'] = $catalogue_name;
     $map['CATALOGUE_TITLE'] = array_key_exists('c_title', $catalogue) ? get_translated_text($catalogue['c_title']) : '';
@@ -1152,7 +1152,7 @@ function _resolve_catalogue_entry_field($field, $entry_id, $only_field_ids, &$ta
 {
     $ob = get_fields_hook($field['cf_type']);
     list($raw_type, , $type) = $ob->get_field_value_row_bits($field);
-    if (is_null($raw_type)) {
+    if ($raw_type === null) {
         $raw_type = $field['cf_type'];
     }
 
@@ -1314,7 +1314,7 @@ function _get_catalogue_entry_field($field_id, $entry_id, $type = 'short', $only
 function create_selection_list_catalogues($it = null, $prefer_ones_with_entries = false, $only_submittable = false, $updated_since = null)
 {
     $query = 'SELECT c.* FROM ' . get_table_prefix() . 'catalogues c';
-    if (!is_null($updated_since)) {
+    if ($updated_since !== null) {
         $privacy_join = '';
         $privacy_where = '';
         if (addon_installed('content_privacy')) {
@@ -1801,7 +1801,7 @@ function render_catalogue_entry_screen($id, $no_title = false, $attach_to_url_fi
     $breadcrumbs = array();
     $map = get_catalogue_entry_map($entry, $catalogue, 'PAGE', $tpl_set, $root, null, null, true, true, null, $breadcrumbs);
 
-    if ((get_db_type() != 'xml') && (get_value('no_view_counts') !== '1') && (is_null(get_bot_type()))) {
+    if ((get_db_type() != 'xml') && (get_value('no_view_counts') !== '1') && (get_bot_type() === null)) {
         $entry['ce_views']++;
         if (!$GLOBALS['SITE_DB']->table_is_locked('catalogue_entries')) {
             $GLOBALS['SITE_DB']->query_update('catalogue_entries', array('ce_views' => $entry['ce_views']), array('id' => $id), '', 1, null, false, true);

@@ -403,7 +403,7 @@ class Block_youtube_channel
                     $t = 0;
                     // Loop through and add a url to thumbimg for which thumbnails weren't available
                     foreach ($thumbimg as $thumburl) {
-                        if (is_null($thumburl['url'])) {
+                        if ($thumburl['url'] === null) {
                             $thumbimg[$t]['url'] = $base_thumb_url . $thumbalt[$t] . '.jpg';
                         }
                         $t++;

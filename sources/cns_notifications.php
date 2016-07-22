@@ -53,7 +53,7 @@ function cns_get_pp_rows($limit = 5, $unread = true, $include_inline = true, $ti
     }
 
     $time_clause = '';
-    if (!is_null($time_barrier)) {
+    if ($time_barrier !== null) {
         $time_clause = '
             t_cache_last_time>' . strval($time_barrier) . ' AND
         ';
@@ -176,7 +176,7 @@ function generate_notifications($member_id)
         $cache_identifier = serialize(array());
         $_notifications = get_cache_entry('_new_pp', $cache_identifier, CACHE_AGAINST_MEMBER, 10000);
 
-        if (!is_null($_notifications)) {
+        if ($_notifications !== null) {
             list($__notifications, $num_unread_pps) = $_notifications;
             $notifications = new Tempcode();
             if (!$notifications->from_assembly($__notifications, true)) {
@@ -185,7 +185,7 @@ function generate_notifications($member_id)
         }
     }
 
-    if (is_null($notifications)) {
+    if ($notifications === null) {
         push_query_limiting(false);
 
         $unread_pps = cns_get_pp_rows();
@@ -194,13 +194,13 @@ function generate_notifications($member_id)
         foreach ($unread_pps as $unread_pp) {
             $just_post_row = db_map_restrict($unread_pp, array('id', 'p_post'));
 
-            $by_id = (is_null($unread_pp['t_cache_first_member_id']) || !is_null($unread_pp['t_forum_id'])) ? $unread_pp['p_poster'] : $unread_pp['t_cache_first_member_id'];
+            $by_id = (($unread_pp['t_cache_first_member_id'] === null) || ($unread_pp['t_forum_id'] !== null)) ? $unread_pp['p_poster'] : $unread_pp['t_cache_first_member_id'];
             $by = is_guest($by_id) ? do_lang('SYSTEM') : $GLOBALS['CNS_DRIVER']->get_username($by_id);
-            if (is_null($by)) {
+            if ($by === null) {
                 $by = do_lang('UNKNOWN');
             }
             $u_title = $unread_pp['t_cache_first_title'];
-            if (is_null($unread_pp['t_forum_id'])) {
+            if ($unread_pp['t_forum_id'] === null) {
                 $type = do_lang_tempcode(($unread_pp['t_cache_first_post_id'] == $unread_pp['id']) ? 'NEW_PT_NOTIFICATION' : 'NEW_PP_NOTIFICATION');
                 $num_unread_pps++;
                 $reply_url = build_url(array('page' => 'topics', 'type' => 'new_post', 'id' => $unread_pp['p_topic_id'], 'quote' => $unread_pp['id']), get_module_zone('topics'));
@@ -250,7 +250,7 @@ function generate_notifications($member_id)
 
         if ($do_caching) {
             require_code('caches2');
-            put_into_cache('_new_pp', 60 * 60 * 24, $cache_identifier, null, get_member(), '', is_null(get_bot_type()) ? 0 : 1, get_users_timezone(get_member()), array($notifications->to_assembly(), $num_unread_pps));
+            put_into_cache('_new_pp', 60 * 60 * 24, $cache_identifier, null, get_member(), '', (get_bot_type() === null) ? 0 : 1, get_users_timezone(get_member()), array($notifications->to_assembly(), $num_unread_pps));
         }
 
         pop_query_limiting();

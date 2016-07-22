@@ -49,7 +49,7 @@ class Hook_cron_content_reviews
 
             // Get title / check not deleted, cleanup if is
             list($title, $submitter) = content_get_details($content_type, $content_id);
-            if (is_null($title)) {
+            if ($title === null) {
                 $GLOBALS['SITE_DB']->query_delete('content_reviews', array('content_type' => $content_type, 'content_id' => $content_id), '', 1); // The actual content was deleted, I guess
                 continue;
             }
@@ -60,7 +60,7 @@ class Hook_cron_content_reviews
             }
             require_code('content');
             $object = get_content_object($content_type);
-            if (is_null($object)) {
+            if ($object === null) {
                 continue; // Weird :S
             }
             $info = $object->info();
@@ -76,14 +76,14 @@ class Hook_cron_content_reviews
             $subject = do_lang('NOTIFICATION_SUBJECT_CONTENT_REVIEWS' . (($auto_action == 'delete') ? '_delete' : ''), $title, $auto_action_str);
             $message = do_notification_lang('NOTIFICATION_BODY_CONTENT_REVIEWS' . (($auto_action == 'delete') ? '_delete' : ''), $title, $auto_action_str, $edit_url->evaluate());
             dispatch_notification('content_reviews', $content_type, $subject, $message, null, null, array('priority' => 4));
-            if ((!is_null($submitter)) && (!notifications_enabled('content_reviews', $content_type, $submitter))) {
+            if (($submitter !== null) && (!notifications_enabled('content_reviews', $content_type, $submitter))) {
                 dispatch_notification('content_reviews__own', $content_type, $subject, $message, array($submitter), null, array('priority' => 4));
             }
 
             // Do auto-action
             switch ($auto_action) {
                 case 'unvalidate':
-                    if (!is_null($info['validated_field'])) {
+                    if ($info['validated_field'] !== null) {
                         $info['db']->query_update($info['table'], array($info['validated_field'] => 0), get_content_where_for_str_id($content_id, $info), '', 1);
                     }
                     break;
@@ -91,9 +91,9 @@ class Hook_cron_content_reviews
                 case 'delete':
                     require_code('resource_fs');
                     $object_fs = get_resource_commandr_fs_object($content_type);
-                    if (!is_null($object_fs)) {
+                    if ($object_fs !== null) {
                         $filename = $object_fs->convert_id_to_filename($content_type, $content_id);
-                        if (!is_null($filename)) {
+                        if ($filename !== null) {
                             $object_fs->resource_delete($content_type, $filename);
                         }
                     }

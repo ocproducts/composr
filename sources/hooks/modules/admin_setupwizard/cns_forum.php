@@ -39,7 +39,7 @@ class Hook_sw_cns_forum
 
         if (!is_cns_satellite_site()) {
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('f_groups', 'id', array('id' => db_get_first_id() + 7));
-            $settings['have_default_rank_set'] = is_null($test) ? '0' : '1';
+            $settings['have_default_rank_set'] = ($test === null) ? '0' : '1';
 
             $test = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'f_emoticons WHERE e_code<>\':P\' AND e_code<>\';)\' AND e_code<>\':)\' AND e_code<>\':)\' AND e_code<>\':\\\'(\'');
             $settings['have_default_full_emoticon_set'] = (count($test) != 0) ? '1' : '0';
@@ -48,7 +48,7 @@ class Hook_sw_cns_forum
             $fields_l = array('im_jabber', 'im_skype', 'interests', 'location', 'occupation', 'sn_google', 'sn_facebook', 'sn_twitter');
             foreach ($fields_l as $field) {
                 $test = $GLOBALS['SITE_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('cf_name') => do_lang('DEFAULT_CPF_' . $field . '_NAME')));
-                if (!is_null($test)) {
+                if ($test !== null) {
                     $have_default_cpf_set = true;
                     break;
                 }
@@ -111,7 +111,7 @@ class Hook_sw_cns_forum
                 $group_rows = $GLOBALS['SITE_DB']->query_select('f_groups', array('id'), array('id' => db_get_first_id() + 8));
                 if (array_key_exists(0, $group_rows)) {
                     $promotion_target = cns_get_group_property(db_get_first_id() + 8, 'promotion_target');
-                    if (!is_null($promotion_target)) {
+                    if ($promotion_target !== null) {
                         $GLOBALS['SITE_DB']->query_update('f_groups', array('g_promotion_target' => null, 'g_promotion_threshold' => null, 'g_rank_image' => ''), array('id' => db_get_first_id() + 8), '', 1);
                         for ($i = db_get_first_id() + 4; $i < db_get_first_id() + 8; $i++) {
                             require_code('cns_groups_action');

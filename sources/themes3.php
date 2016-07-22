@@ -162,7 +162,7 @@ function actual_add_theme($name)
         $theme_images = $GLOBALS['SITE_DB']->query_select('theme_images', array('*'), array('theme' => 'default'), '', 100, $start);
         foreach ($theme_images as $theme_image) {
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('theme_images', 'id', array('theme' => $name, 'id' => $theme_image['id'], 'lang' => $theme_image['lang']));
-            if (is_null($test)) {
+            if ($test === null) {
                 $GLOBALS['SITE_DB']->query_insert('theme_images', array('id' => $theme_image['id'], 'theme' => $name, 'path' => $theme_image['path'], 'lang' => $theme_image['lang']));
             }
         }
@@ -191,7 +191,7 @@ function actual_rename_theme($theme, $to)
     }
 
     global $USER_THEME_CACHE;
-    if ((!is_null($USER_THEME_CACHE)) && ($USER_THEME_CACHE == $theme)) {
+    if (($USER_THEME_CACHE !== null) && ($USER_THEME_CACHE == $theme)) {
         $USER_THEME_CACHE = $to;
     }
 
@@ -276,7 +276,7 @@ function actual_delete_theme($theme)
     }
 
     global $USER_THEME_CACHE;
-    if ((!is_null($USER_THEME_CACHE)) && ($USER_THEME_CACHE == $theme)) {
+    if (($USER_THEME_CACHE !== null) && ($USER_THEME_CACHE == $theme)) {
         $USER_THEME_CACHE = 'default';
     }
 
@@ -331,7 +331,7 @@ function tempcode_tester_script()
 function actual_add_theme_image($theme, $lang, $id, $path, $fail_ok = false)
 {
     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('theme_images', 'id', array('id' => $id, 'theme' => $theme, 'lang' => $lang));
-    if (!is_null($test)) {
+    if ($test !== null) {
         if ($fail_ok) {
             return;
         }
@@ -368,7 +368,7 @@ function actual_edit_theme_image($old_id, $theme, $lang, $id, $path, $quick = fa
             $where_map['lang'] = $lang;
         }
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('theme_images', 'id', $where_map);
-        if (!is_null($test)) {
+        if ($test !== null) {
             warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($id)));
         }
     }
@@ -426,15 +426,15 @@ function actual_edit_theme_image($old_id, $theme, $lang, $id, $path, $quick = fa
  */
 function actual_delete_theme_image($id, $theme = null, $lang = null)
 {
-    if (!is_null($theme)) {
+    if ($theme !== null) {
         $old_url = find_theme_image($id, true, true, $theme, $lang);
 
         $where_map = array('theme' => $theme, 'id' => $id);
-        if (($lang != '') && (!is_null($lang))) {
+        if (($lang != '') && ($lang !== null)) {
             $where_map['lang'] = $lang;
         }
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('theme_images', 'path', $where_map);
-        if (!is_null($test)) {
+        if ($test !== null) {
             $GLOBALS['SITE_DB']->query_delete('theme_images', array('id' => $id, 'path' => $test));
         }
     } else {
@@ -480,10 +480,10 @@ function export_theme_images()
  */
 function regen_theme_images($theme, $langs = null, $target_theme = null)
 {
-    if (is_null($langs)) {
+    if ($langs === null) {
         $langs = find_all_langs(true);
     }
-    if (is_null($target_theme)) {
+    if ($target_theme === null) {
         $target_theme = $theme;
     }
 

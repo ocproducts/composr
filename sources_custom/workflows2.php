@@ -38,11 +38,11 @@ function add_approval_point_to_workflow($bits, $workflow_id, $position = null)
     // the position in the record (we don't assume that positions are
     // unique in any case, points with the same position will appear
     // together but their specific order is undefined)
-    if (is_null($position)) {
+    if ($position === null) {
         // The easy case, we simply grab the existing approval points in
         // order of position and +1 to the highest.
         $current_position = $GLOBALS['SITE_DB']->query_select_value('workflow_approval_points', 'MAX(the_position)', array('workflow_id' => $workflow_id));
-        $position = is_null($current_position) ? 1 : ($current_position + 1);
+        $position = ($current_position === null) ? 1 : ($current_position + 1);
     }
 
     // Do the insertion.

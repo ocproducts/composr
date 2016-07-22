@@ -33,7 +33,7 @@ class Hook_snippet_exists_banner_type
         $val = get_param_string('name');
 
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('banner_types', 'id', array('id' => $val));
-        if (is_null($test)) {
+        if ($test === null) {
             return new Tempcode();
         }
 

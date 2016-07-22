@@ -43,12 +43,12 @@ do {
     $str = 'Version ' . /*preg_replace('#\.0$#', '', */float_to_raw_string($id_float, 1)/*)*/
     ;
     $_id = $GLOBALS['SITE_DB']->query_select_value_if_there('download_categories', 'id', array('parent_id' => 3, $GLOBALS['SITE_DB']->translate_field_ref('category') => $str));
-    if (is_null($_id)) {
+    if ($_id === null) {
         $id_float -= 0.1;
     }
-} while ((is_null($_id)) && ($id_float >= 0.0));
+} while (($_id === null) && ($id_float >= 0.0));
 
-if (is_null($_id)) {
+if ($_id === null) {
     header('Content-type: text/plain; charset=' . get_charset());
     exit();
 }

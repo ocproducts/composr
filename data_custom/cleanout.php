@@ -57,7 +57,7 @@ $out = cleanup();
 if (!headers_sent()) {
     header('Content-type: text/plain; charset=' . get_charset());
     safe_ini_set('ocproducts.xss_detect', '0');
-    if (!is_null($out)) {
+    if ($out !== null) {
         echo is_object($out) ? $out->evaluate() : (is_bool($out) ? ($out ? 'true' : 'false') : $out);
     }
     echo do_lang('SUCCESS');
@@ -71,7 +71,7 @@ if (!headers_sent()) {
 function cleanup()
 {
     $password = post_param_string('password', null);
-    if (is_null($password)) {
+    if ($password === null) {
         @exit('<form action="#" method="post"><label>Master password <input type="password" name="password" value="" /></label><input class="menu___generic_admin__delete button_screen" type="submit" value="Delete programmed data" /></form>');
     }
     require_code('crypt');

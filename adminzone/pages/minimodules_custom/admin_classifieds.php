@@ -34,7 +34,7 @@ if (count($_POST) != 0) {
             if (($catalogue != '') && ($days != '') && ($label != '') && ($price != '')) {
                 if ($matches[1] == 'existing') {
                     $_label = $GLOBALS['SITE_DB']->query_select_value_if_there('classifieds_prices', 'c_label', array('id' => intval($matches[2])));
-                    if (is_null($_label)) {
+                    if ($_label === null) {
                         $matches[1] = 'new'; // Was lost, so add as new
                     }
                 }

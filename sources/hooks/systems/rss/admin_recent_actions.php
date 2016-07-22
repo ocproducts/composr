@@ -50,7 +50,7 @@ class Hook_rss_admin_recent_actions
         foreach ($rows as $row) {
             $id = strval($row['id']);
             $author = $GLOBALS['FORUM_DRIVER']->get_username($row['member_id']);
-            if (is_null($author)) {
+            if ($author === null) {
                 $author = do_lang('UNKNOWN');
             }
             $author .= ' / ' . $row['ip'];
@@ -59,7 +59,7 @@ class Hook_rss_admin_recent_actions
             $edit_date = escape_html('');
 
             $type = do_lang($row['the_type'], null, null, null, null, false);
-            if (is_null($type)) {
+            if ($type === null) {
                 $type = $row['the_type'];
             }
             $news_title = xmlentities($type);

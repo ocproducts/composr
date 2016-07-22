@@ -235,7 +235,7 @@ function has_actual_page_access($member = null, $page = null, $zone = null, $cat
     }
     if ($cats !== null) {
         for ($i = 0; $i < intval(floor(floatval(count($cats)) / 2.0)); $i++) {
-            if (is_null($cats[$i * 2])) {
+            if ($cats[$i * 2] === null) {
                 continue;
             }
             if (!has_category_access($member, $cats[$i * 2 + 0], $cats[$i * 2 + 1])) {
@@ -408,7 +408,7 @@ function load_up_all_module_category_permissions($member, $module = null)
         return;
     }
 
-    if (!is_null($module)) {
+    if ($module !== null) {
         $catclause = '(' . db_string_equal_to('module_the_name', $module) . ') AND ';
         $select = 'category_name';
     } else {
@@ -425,7 +425,7 @@ function load_up_all_module_category_permissions($member, $module = null)
 
     $CATEGORY_ACCESS_CACHE[$member] = array();
     foreach ($perhaps as $row) {
-        if (!is_null($module)) {
+        if ($module !== null) {
             $for = $module . '/' . $row['category_name'];
         } else {
             $for = $row['module_the_name'] . '/' . $row['category_name'];
@@ -593,19 +593,19 @@ function filter_group_permissivity($groups)
  */
 function enforce_personal_access($member_id, $privilege = null, $privilege2 = null, $member_viewing = null)
 {
-    if (is_null($member_viewing)) {
+    if ($member_viewing === null) {
         $member_viewing = get_member();
     }
 
     if (is_guest($member_id)) {
         warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
     }
-    if ((!has_privilege($member_viewing, 'assume_any_member')) && ((is_null($privilege2)) || (!has_privilege($member_viewing, $privilege2)))) {
-        if (($member_id != $member_viewing) || ((!is_null($privilege)) && (!has_privilege($member_viewing, $privilege)))) {
-            if (!is_null($privilege)) {
+    if ((!has_privilege($member_viewing, 'assume_any_member')) && (($privilege2 === null) || (!has_privilege($member_viewing, $privilege2)))) {
+        if (($member_id != $member_viewing) || (($privilege !== null) && (!has_privilege($member_viewing, $privilege)))) {
+            if ($privilege !== null) {
                 access_denied('PRIVILEGE', $privilege);
             } else {
-                access_denied('PRIVILEGE', is_null($privilege2) ? 'assume_any_member' : $privilege2);
+                access_denied('PRIVILEGE', ($privilege2 === null) ? 'assume_any_member' : $privilege2);
             }
         }
     }
@@ -621,10 +621,10 @@ function enforce_personal_access($member_id, $privilege = null, $privilege2 = nu
  */
 function check_privilege($privilege, $cats = null, $member_id = null, $page_name = null)
 {
-    if (is_null($page_name)) {
+    if ($page_name === null) {
         $page_name = get_page_name();
     }
-    if (is_null($member_id)) {
+    if ($member_id === null) {
         $member_id = get_member();
     }
     if (!has_privilege($member_id, $privilege, $page_name, $cats)) {
@@ -699,13 +699,13 @@ function has_privilege($member, $privilege, $page = null, $cats = null)
             $okay = false;
             if (is_array($cats)) { // Specific overrides for cats allowed
                 for ($i = 0; $i < intval(floor((float)count($cats) / 2.0)); $i++) {
-                    if (is_null($cats[$i * 2])) {
+                    if ($cats[$i * 2] === null) {
                         continue;
                     }
                     if (isset($PRIVILEGE_CACHE[$member][$privilege][''][$cats[$i * 2 + 0]][$cats[$i * 2 + 1]])) {
                         $result = $PRIVILEGE_CACHE[$member][$privilege][''][$cats[$i * 2 + 0]][$cats[$i * 2 + 1]] == 1;
                         if (!$result) { // Negative overrides take precedence over positive ones; got to be careful of that!
-                            handle_permission_check_logging($member, 'has_privilege', array_merge(array($privilege, $page), is_null($cats) ? array() : (is_array($cats) ? $cats : array($cats))), $result);
+                            handle_permission_check_logging($member, 'has_privilege', array_merge(array($privilege, $page), ($cats === null) ? array() : (is_array($cats) ? $cats : array($cats))), $result);
                             return $result;
                         }
                         $okay = true;
@@ -723,20 +723,20 @@ function has_privilege($member, $privilege, $page = null, $cats = null)
             }
             if ($okay) {
                 $result = $okay;
-                handle_permission_check_logging($member, 'has_privilege', array_merge(array($privilege, $page), is_null($cats) ? array() : (is_array($cats) ? $cats : array($cats))), $result);
+                handle_permission_check_logging($member, 'has_privilege', array_merge(array($privilege, $page), ($cats === null) ? array() : (is_array($cats) ? $cats : array($cats))), $result);
                 return $result;
             }
         }
         if ($page != '') {
             if (isset($PRIVILEGE_CACHE[$member][$privilege][$page][''][''])) {
                 $result = $PRIVILEGE_CACHE[$member][$privilege][$page][''][''] == 1;
-                handle_permission_check_logging($member, 'has_privilege', array_merge(array($privilege, $page), is_null($cats) ? array() : (is_array($cats) ? $cats : array($cats))), $result);
+                handle_permission_check_logging($member, 'has_privilege', array_merge(array($privilege, $page), ($cats === null) ? array() : (is_array($cats) ? $cats : array($cats))), $result);
                 return $result;
             }
         }
         if (isset($PRIVILEGE_CACHE[$member][$privilege][''][''][''])) {
             $result = $PRIVILEGE_CACHE[$member][$privilege][''][''][''] == 1;
-            handle_permission_check_logging($member, 'has_privilege', array_merge(array($privilege, $page), is_null($cats) ? array() : (is_array($cats) ? $cats : array($cats))), $result);
+            handle_permission_check_logging($member, 'has_privilege', array_merge(array($privilege, $page), ($cats === null) ? array() : (is_array($cats) ? $cats : array($cats))), $result);
             return $result;
         }
     }
@@ -913,7 +913,7 @@ function has_edit_permission($range, $member, $resource_owner, $page, $cats = nu
     if (is_guest($member)) {
         return false;
     }
-    if ((!is_null($resource_owner)) && ($member == $resource_owner) && (has_privilege($member, 'edit_own_' . $range . 'range_content', $page, $cats))) {
+    if (($resource_owner !== null) && ($member == $resource_owner) && (has_privilege($member, 'edit_own_' . $range . 'range_content', $page, $cats))) {
         return true;
     }
     if (has_privilege($member, 'edit_' . $range . 'range_content', $page, $cats)) {
@@ -958,7 +958,7 @@ function has_delete_permission($range, $member, $resource_owner, $page, $cats = 
     if (is_guest($member)) {
         return false;
     }
-    if ((!is_null($resource_owner)) && ($member == $resource_owner) && (has_privilege($member, 'delete_own_' . $range . 'range_content', $page, $cats))) {
+    if (($resource_owner !== null) && ($member == $resource_owner) && (has_privilege($member, 'delete_own_' . $range . 'range_content', $page, $cats))) {
         return true;
     }
     if (has_privilege($member, 'delete_' . $range . 'range_content', $page, $cats)) {
@@ -980,7 +980,7 @@ function has_add_comcode_page_permission($zone = null, $member = null)
         $member = get_member();
     }
 
-    if (!is_null($zone)) {
+    if ($zone !== null) {
         if (!has_zone_access($member, $zone)) {
             return false;
         }
@@ -991,7 +991,7 @@ function has_add_comcode_page_permission($zone = null, $member = null)
 
     $cats = mixed();
     $cats = 'zone_page';
-    if (!is_null($zone)) {
+    if ($zone !== null) {
         $cats = array('zone_page', $zone);
     }
     return has_privilege($member, 'submit_highrange_content', 'cms_comcode_pages', $cats);
@@ -1010,7 +1010,7 @@ function has_bypass_validation_comcode_page_permission($zone = null, $member = n
         $member = get_member();
     }
 
-    if (!is_null($zone)) {
+    if ($zone !== null) {
         if (!has_zone_access($member, $zone)) {
             return false;
         }
@@ -1021,7 +1021,7 @@ function has_bypass_validation_comcode_page_permission($zone = null, $member = n
 
     $cats = mixed();
     $cats = 'zone_page';
-    if (!is_null($zone)) {
+    if ($zone !== null) {
         $cats = array('zone_page', $zone);
     }
     return has_privilege($member, 'bypass_validation_highrange_content', 'cms_comcode_pages', $cats);
@@ -1041,7 +1041,7 @@ function has_some_edit_comcode_page_permission($scope, $zone = null, $member = n
         $member = get_member();
     }
 
-    if (!is_null($zone)) {
+    if ($zone !== null) {
         if (!has_zone_access($member, $zone)) {
             return false;
         }
@@ -1051,7 +1051,7 @@ function has_some_edit_comcode_page_permission($scope, $zone = null, $member = n
     }
 
     $cats = mixed();
-    if (!is_null($zone)) {
+    if ($zone !== null) {
         $cats = array('zone_page', $zone);
     }
 

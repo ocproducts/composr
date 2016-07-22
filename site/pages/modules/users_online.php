@@ -96,10 +96,10 @@ class Module_users_online
         $count = 0;
         require_code('users2');
         $members = get_users_online(has_privilege(get_member(), 'show_user_browsing'), null, $count);
-        if ((is_null($members)) && (has_privilege(get_member(), 'show_user_browsing'))) {
+        if (($members === null) && (has_privilege(get_member(), 'show_user_browsing'))) {
             $members = get_users_online(false, null, $count);
         }
-        if (is_null($members)) {
+        if ($members === null) {
             warn_exit(do_lang_tempcode('TOO_MANY_USERS_ONLINE'));
         }
 
@@ -131,18 +131,18 @@ class Module_users_online
                 if (is_guest($member)) {
                     if (addon_installed('stats')) {
                         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('stats', 'ip', array('session_id' => $row['the_session']));
-                        if ((!is_null($test)) && ($test != '')) {
+                        if (($test !== null) && ($test != '')) {
                             $ip = $test;
                         } else {
                             $test = $GLOBALS['SITE_DB']->query_value_if_there('SELECT ip FROM ' . get_table_prefix() . 'stats WHERE ip LIKE \'' . db_encode_like(str_replace('*', '%', $ip)) . '\' AND date_and_time>=' . strval(time() - intval(60.0 * 60.0 * floatval(get_option('session_expiry_time')))) . ' ORDER BY date_and_time DESC');
-                            if ((!is_null($test)) && ($test != '')) {
+                            if (($test !== null) && ($test != '')) {
                                 $ip = $test;
                             }
                         }
                     }
                 } else {
                     $test = $GLOBALS['FORUM_DRIVER']->get_member_ip($member);
-                    if ((!is_null($test)) && ($test != '')) {
+                    if (($test !== null) && ($test != '')) {
                         $ip = $test;
                     }
                 }

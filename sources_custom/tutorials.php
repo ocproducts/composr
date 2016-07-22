@@ -213,7 +213,7 @@ function get_tutorial_metadata($tutorial_name, $db_row = null, $tags = null)
     if (is_numeric($tutorial_name)) {
         // From database
 
-        if (is_null($db_row)) {
+        if ($db_row === null) {
             $db_rows = $GLOBALS['SITE_DB']->query_select('tutorials_external t', array('t.*', tutorial_sql_rating('t.id'), tutorial_sql_rating_recent('t.id'), tutorial_sql_likes('t.id'), tutorial_sql_likes_recent('t.id')), array('id' => intval($tutorial_name)), '', 1);
             if (!isset($db_rows[0])) {
                 warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
@@ -221,7 +221,7 @@ function get_tutorial_metadata($tutorial_name, $db_row = null, $tags = null)
             $db_row = $db_rows[0];
         }
 
-        if (is_null($tags)) {
+        if ($tags === null) {
             $_tags = $GLOBALS['SITE_DB']->query_select('tutorials_external_tags', array('t_tag'), array('t_id' => intval($tutorial_name)));
             $tags = collapse_1d_complexity('t_tag', $_tags);
         }
@@ -257,7 +257,7 @@ function get_tutorial_metadata($tutorial_name, $db_row = null, $tags = null)
     } else {
         // From git
 
-        if (is_null($db_row)) {
+        if ($db_row === null) {
             $db_rows = $GLOBALS['SITE_DB']->query_select('tutorials_internal t', array('t.*', tutorial_sql_rating('t.t_page_name'), tutorial_sql_rating_recent('t.t_page_name'), tutorial_sql_likes('t.t_page_name'), tutorial_sql_likes_recent('t.t_page_name')), array('t_page_name' => $tutorial_name), '', 1);
             if (isset($db_rows[0])) {
                 $db_row = $db_rows[0];

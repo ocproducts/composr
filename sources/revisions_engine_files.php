@@ -67,7 +67,7 @@ class RevisionEngineFiles
             return;
         }
 
-        if (is_null($original_text) || is_null($original_timestamp)) {
+        if (($original_text === null) || ($original_timestamp === null)) {
             $existing_path = get_custom_file_base() . '/' . filter_naughty($directory . '/' . $filename_id . '.' . $ext);
             $existing_path = zone_black_magic_filterer($existing_path);
             if (!is_file($existing_path)) {
@@ -78,11 +78,11 @@ class RevisionEngineFiles
                 return;
             }
 
-            if (is_null($original_text)) {
+            if ($original_text === null) {
                 $original_text = file_get_contents($existing_path);
             }
 
-            if (is_null($original_timestamp)) {
+            if ($original_timestamp === null) {
                 $original_timestamp = filemtime($existing_path);
             }
         }
@@ -157,7 +157,7 @@ class RevisionEngineFiles
             $_ext = get_file_extension($f);
             if (is_numeric($_ext)) {
                 $time = intval($_ext);
-                if ((!is_null($revision_time)) && ($revision_time != filemtime($f))) {
+                if (($revision_time !== null) && ($revision_time != filemtime($f))) {
                     continue;
                 }
 
@@ -167,7 +167,7 @@ class RevisionEngineFiles
 
         rsort($times); // Sort into reverse time order
         array_splice($times, 0, $start, array()); // Remove before start
-        if (!is_null($max)) {
+        if ($max !== null) {
             array_splice($times, $max, count($times), array()); // Remove after max
         }
 
@@ -206,7 +206,7 @@ class RevisionEngineFiles
                 'log_reason' => '',
             );
 
-            if (!is_null($action)) {
+            if ($action !== null) {
                 $test = $GLOBALS['SITE_DB']->query_select('actionlogs', array('*'), array('date_and_time' => $mtime, 'the_type' => $action), '', 1);
                 if (array_key_exists(0, $test)) {
                     $ret[$time] = array(
@@ -381,7 +381,7 @@ class RevisionEngineFiles
 
             $size_change = strlen($more_recent_text) - strlen($revision['r_original_text']);
 
-            if (is_null($revision['log_member_id'])) {
+            if ($revision['log_member_id'] === null) {
                 $member_link = do_lang_tempcode('UNKNOWN_EM');
             } else {
                 $member_link = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($revision['log_member_id']);
@@ -402,7 +402,7 @@ class RevisionEngineFiles
                 $undo_link = hyperlink($undo_url, do_lang_tempcode('UNDO'), false, false, $date);
             }
 
-            if (is_null($revision['r_actionlog_id'])) {
+            if ($revision['r_actionlog_id'] === null) {
                 $actionlog_link = do_lang_tempcode('UNKNOWN_EM');
             } else {
                 $actionlog_url = build_url(array('page' => 'admin_actionlog', 'type' => 'view', 'id' => $revision['r_actionlog_id'], 'mode' => 'cms'), get_module_zone('admin_actionlog'));

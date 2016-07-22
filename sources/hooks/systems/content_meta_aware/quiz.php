@@ -63,7 +63,7 @@ class Hook_content_meta_aware_quiz
             'edit_page_link_pattern' => '_SEARCH:cms_quiz:_edit:_WILD',
             'view_category_page_link_pattern' => null,
             'add_url' => (function_exists('has_submit_permission') && has_submit_permission('high', get_member(), get_ip_address(), 'cms_quiz')) ? (get_module_zone('cms_quiz') . ':cms_quiz:add') : null,
-            'archive_url' => ((!is_null($zone)) ? $zone : get_module_zone('quiz')) . ':quiz',
+            'archive_url' => (($zone !== null) ? $zone : get_module_zone('quiz')) . ':quiz',
 
             'support_url_monikers' => true,
 

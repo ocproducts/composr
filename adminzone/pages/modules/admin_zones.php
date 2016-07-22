@@ -352,7 +352,7 @@ class Module_admin_zones
             }
             $class = '';
             $w = false;
-            $current_zone = is_null($redirecting_to) ? $id : $redirecting_to;
+            $current_zone = ($redirecting_to === null) ? $id : $redirecting_to;
             $default_parsed = null;
             if ($is_comcode) {
                 $full_path = zone_black_magic_filterer((($page_info[0] == 'comcode' || $pure) ? get_file_base() : get_custom_file_base()) . '/' . $current_zone . '/pages/' . strtolower($page_info[0]) . '/' . $lang . '/' . $current_for . '.txt');
@@ -404,7 +404,7 @@ class Module_admin_zones
             }
 
             $preview = (substr($page_info[0], 0, 6) == 'MODULE') ? null : request_page($for, false, $id, null, true);
-            if (!is_null($preview)) {
+            if ($preview !== null) {
                 $_preview = $preview->evaluate();
                 if ((!$is_comcode) || (strpos($comcode, '<') !== false)) { // Save RAM by only doing this if needed
                     require_code('xhtml');
@@ -495,7 +495,7 @@ class Module_admin_zones
         // Edit pages
         foreach (array('panel_left', DEFAULT_ZONE_PAGE_NAME, 'panel_right') as $for) {
             $redirect = post_param_string('redirect_' . $for, null);
-            if (!is_null($redirect)) {
+            if ($redirect !== null) {
                 if (addon_installed('redirects_editor')) {
                     $GLOBALS['SITE_DB']->query_delete('redirects', array(
                         'r_from_page' => $for,
@@ -519,9 +519,9 @@ class Module_admin_zones
             }
 
             $comcode = post_param_string($for, null);
-            if (!is_null($comcode)) {
+            if ($comcode !== null) {
                 // Where to save to
-                $full_path = zone_black_magic_filterer(get_custom_file_base() . (((is_null($redirect) ? $id : $redirect) == '') ? '' : '/') . (is_null($redirect) ? $id : $redirect) . '/pages/comcode_custom/' . $lang . '/' . $for . '.txt');
+                $full_path = zone_black_magic_filterer(get_custom_file_base() . (((($redirect === null) ? $id : $redirect) == '') ? '' : '/') . (($redirect === null) ? $id : $redirect) . '/pages/comcode_custom/' . $lang . '/' . $for . '.txt');
 
                 // Make dir if needed
                 if (!file_exists(dirname($full_path))) {
@@ -552,11 +552,11 @@ class Module_admin_zones
                 sync_file($full_path);
 
                 // De-cache
-                $caches = $GLOBALS['SITE_DB']->query_select('cached_comcode_pages', array('string_index'), array('the_zone' => is_null($redirect) ? $id : $redirect, 'the_page' => $for));
+                $caches = $GLOBALS['SITE_DB']->query_select('cached_comcode_pages', array('string_index'), array('the_zone' => ($redirect === null) ? $id : $redirect, 'the_page' => $for));
                 foreach ($caches as $cache) {
                     delete_lang($cache['string_index']);
                 }
-                $GLOBALS['SITE_DB']->query_delete('cached_comcode_pages', array('the_zone' => is_null($redirect) ? $id : $redirect, 'the_page' => $for));
+                $GLOBALS['SITE_DB']->query_delete('cached_comcode_pages', array('the_zone' => ($redirect === null) ? $id : $redirect, 'the_page' => $for));
             }
         }
 
@@ -619,11 +619,11 @@ class Module_admin_zones
                 $base_url = 'http://' . $SITE_INFO['ZONE_MAPPING_' . $zone][0] . '/' . $SITE_INFO['ZONE_MAPPING_' . $zone][1];
             }
         }
-        if (is_null($GLOBALS['CURRENT_SHARE_USER'])) {
+        if ($GLOBALS['CURRENT_SHARE_USER'] === null) {
             $fields .= static_evaluate_tempcode(form_input_line(do_lang_tempcode('ZONE_BASE_URL'), do_lang_tempcode('DESCRIPTION_ZONE_BASE_URL'), 'base_url', $base_url, false));
         }
 
-        if ((!$in_zone_editor) && (!is_null($zone)) && (addon_installed('zone_logos'))) {
+        if ((!$in_zone_editor) && ($zone !== null) && (addon_installed('zone_logos'))) {
             // Logos
             handle_max_file_size($hidden, 'image');
             require_code('themes2');
@@ -673,8 +673,8 @@ class Module_admin_zones
                     continue;
                 }
 
-                $perhaps = is_null($zone) ? true : $GLOBALS['SITE_DB']->query_select_value_if_there('group_zone_access', 'zone_name', array('zone_name' => $zone, 'group_id' => $id));
-                $fields .= static_evaluate_tempcode(form_input_tick(do_lang_tempcode('ACCESS_FOR', escape_html($name)), do_lang_tempcode('DESCRIPTION_ACCESS_FOR', escape_html($name)), 'access_' . strval($id), !is_null($perhaps)));
+                $perhaps = ($zone === null) ? true : $GLOBALS['SITE_DB']->query_select_value_if_there('group_zone_access', 'zone_name', array('zone_name' => $zone, 'group_id' => $id));
+                $fields .= static_evaluate_tempcode(form_input_tick(do_lang_tempcode('ACCESS_FOR', escape_html($name)), do_lang_tempcode('DESCRIPTION_ACCESS_FOR', escape_html($name)), 'access_' . strval($id), $perhaps !== null));
             }
         }
 
@@ -690,7 +690,7 @@ class Module_admin_zones
     {
         appengine_live_guard();
 
-        if (!is_null($GLOBALS['CURRENT_SHARE_USER'])) {
+        if ($GLOBALS['CURRENT_SHARE_USER'] !== null) {
             warn_exit(do_lang_tempcode('SHARED_INSTALL_PROHIBIT'));
         }
 
@@ -747,7 +747,7 @@ class Module_admin_zones
     {
         appengine_live_guard();
 
-        if (!is_null($GLOBALS['CURRENT_SHARE_USER'])) {
+        if ($GLOBALS['CURRENT_SHARE_USER'] !== null) {
             warn_exit(do_lang_tempcode('SHARED_INSTALL_PROHIBIT'));
         }
 
@@ -785,7 +785,7 @@ class Module_admin_zones
      */
     public function edit_zone($type = '_edit', $title = null)
     {
-        if (is_null($title)) {
+        if ($title === null) {
             $title = $this->title;
         }
 
@@ -881,7 +881,7 @@ class Module_admin_zones
             }
             $fields->attach(form_input_codename(do_lang_tempcode('CODENAME'), do_lang_tempcode($rename_label), 'new_zone', $zone, true));
         }
-        if ((!in_array($zone, $no_delete_zones)) && (!appengine_is_live()) && (is_null($GLOBALS['CURRENT_SHARE_USER']))) {
+        if ((!in_array($zone, $no_delete_zones)) && (!appengine_is_live()) && ($GLOBALS['CURRENT_SHARE_USER'] === null)) {
             if ($no_rename) {
                 $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '2fec0bddfe975b573da9bbd68ec16689', 'TITLE' => do_lang_tempcode('ACTIONS'))));
             }
@@ -890,7 +890,7 @@ class Module_admin_zones
 
         $map = array('page' => '_SELF', 'type' => '__edit');
         $url = get_param_string('redirect', null);
-        if (!is_null($url)) {
+        if ($url !== null) {
             $map['redirect'] = $url;
         }
         $post_url = build_url($map, '_SELF');
@@ -966,7 +966,7 @@ class Module_admin_zones
 
             // Show it worked / Refresh
             $url = get_param_string('redirect', null);
-            if (is_null($url)) {
+            if ($url === null) {
                 $_url = build_url(array('page' => '_SELF', 'type' => 'edit'), '_SELF');
                 $url = $_url->evaluate();
             }

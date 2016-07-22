@@ -55,13 +55,13 @@ class Hook_commandr_command_whois
             $id = mixed();
             $ip = mixed();
             $rows = lookup_member_page($parameters[0], $name, $id, $ip);
-            if (is_null($name)) {
+            if ($name === null) {
                 $name = do_lang('UNKNOWN');
             }
-            if (is_null($id)) {
+            if ($id === null) {
                 $id = $GLOBALS['FORUM_DRIVER']->get_guest_id();
             }
-            if (is_null($ip)) {
+            if ($ip === null) {
                 $ip = '';
             }
 

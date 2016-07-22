@@ -180,7 +180,7 @@ class Hook_sitemap_page extends Hook_sitemap_base
                     }
 
                     $info = extract_module_info(zone_black_magic_filterer(get_file_base() . '/' . $path));
-                    if ((!is_null($info)) && (array_key_exists('author', $info))) {
+                    if (($info !== null) && (array_key_exists('author', $info))) {
                         $struct['author'] = $info['author'];
                         $struct['organisation'] = $info['organisation'];
                         $struct['version'] = $info['version'];
@@ -235,10 +235,10 @@ class Hook_sitemap_page extends Hook_sitemap_base
 
                 $has_entry_points = false;
 
-                if (!is_null($functions[0])) {
+                if ($functions[0] !== null) {
                     $entry_points = is_array($functions[0]) ? call_user_func_array($functions[0][0], $functions[0][1]) : eval($functions[0]);
 
-                    if (is_null($entry_points)) {
+                    if ($entry_points === null) {
                         return null;
                     }
 
@@ -260,7 +260,7 @@ class Hook_sitemap_page extends Hook_sitemap_base
                                         $struct['title'] = (preg_match('#^[A-Z\_]+$#', $_title) == 0) ? make_string_tempcode($_title) : do_lang_tempcode($_title);
                                     }
                                 }
-                                if (!is_null($entry_points['!'][1])) {
+                                if ($entry_points['!'][1] !== null) {
                                     if (($meta_gather & SITEMAP_GATHER_IMAGE) != 0) {
                                         $struct['extra_meta']['image'] = find_theme_image('icons/24x24/' . $entry_points['!'][1]);
                                         $struct['extra_meta']['image_2x'] = find_theme_image('icons/48x48/' . $entry_points['!'][1]);
@@ -285,7 +285,7 @@ class Hook_sitemap_page extends Hook_sitemap_base
                                         $struct['title'] = (preg_match('#^[A-Z\_]+$#', $_title) == 0) ? make_string_tempcode($_title) : do_lang_tempcode($_title);
                                     }
                                 }
-                                if (!is_null($entry_points[$move_down_entry_point][1])) {
+                                if ($entry_points[$move_down_entry_point][1] !== null) {
                                     if (($meta_gather & SITEMAP_GATHER_IMAGE) != 0) {
                                         $struct['extra_meta']['image'] = find_theme_image('icons/24x24/' . $entry_points[$move_down_entry_point][1]);
                                         $struct['extra_meta']['image_2x'] = find_theme_image('icons/48x48/' . $entry_points[$move_down_entry_point][1]);
@@ -299,7 +299,7 @@ class Hook_sitemap_page extends Hook_sitemap_base
                             }
 
                             // Is the icon for the container explicitly defined within get_wrapper_icon()?
-                            if (!is_null($functions[1])) {
+                            if ($functions[1] !== null) {
                                 if (($meta_gather & SITEMAP_GATHER_IMAGE) != 0) {
                                     $icon = is_array($functions[1]) ? call_user_func_array($functions[1][0], $functions[1][1]) : eval($functions[1]);
                                     $struct['extra_meta']['image'] = find_theme_image('icons/24x24/' . $icon);
@@ -349,7 +349,7 @@ class Hook_sitemap_page extends Hook_sitemap_base
                         $struct['has_possible_children'] = true;
 
                         $virtual_child_nodes = $ob->get_virtual_nodes($page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level + 1, $options, $zone, $meta_gather, true);
-                        if (is_null($virtual_child_nodes)) {
+                        if ($virtual_child_nodes === null) {
                             $virtual_child_nodes = array();
                         }
                         foreach ($virtual_child_nodes as $child_node) {

@@ -49,12 +49,12 @@ class Hook_rss_polls
         foreach ($rows as $row) {
             $id = strval($row['id']);
             $author = $GLOBALS['FORUM_DRIVER']->get_username($row['submitter']);
-            if (is_null($author)) {
+            if ($author === null) {
                 $author = '';
             }
 
             $news_date = date($date_string, $row['add_time']);
-            $edit_date = is_null($row['edit_date']) ? '' : date($date_string, $row['edit_date']);
+            $edit_date = ($row['edit_date'] === null) ? '' : date($date_string, $row['edit_date']);
 
             $_news_title = get_translated_tempcode('poll', $row, 'question');
             $news_title = xmlentities($_news_title->evaluate());

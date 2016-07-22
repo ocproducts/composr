@@ -35,9 +35,9 @@ class Hook_content_meta_aware_forum
             return null;
         }
 
-        if (is_null($zone)) {
+        if ($zone === null) {
             $zone = get_module_zone('forumview');
-            if (is_null($zone)) {
+            if ($zone === null) {
                 return null;
             }
         }
@@ -134,6 +134,6 @@ class Hook_content_meta_aware_forum
     {
         require_code('cns_forums');
 
-        return render_forum_box($row, $zone, $give_context, $include_breadcrumbs, is_null($root) ? null : intval($root), $guid);
+        return render_forum_box($row, $zone, $give_context, $include_breadcrumbs, ($root === null) ? null : intval($root), $guid);
     }
 }

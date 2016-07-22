@@ -35,10 +35,10 @@ class Hook_ajax_tree_choose_catalogue_entry
     {
         require_code('catalogues');
 
-        $only_owned = array_key_exists('only_owned', $options) ? (is_null($options['only_owned']) ? null : intval($options['only_owned'])) : null;
+        $only_owned = array_key_exists('only_owned', $options) ? (($options['only_owned'] === null) ? null : intval($options['only_owned'])) : null;
         $catalogue_name = array_key_exists('catalogue_name', $options) ? $options['catalogue_name'] : null;
         $editable_filter = array_key_exists('editable_filter', $options) ? ($options['editable_filter']) : false;
-        $tree = get_catalogue_entries_tree($catalogue_name, $only_owned, is_null($id) ? null : intval($id), null, null, is_null($id) ? 0 : 1, $editable_filter);
+        $tree = get_catalogue_entries_tree($catalogue_name, $only_owned, ($id === null) ? null : intval($id), null, null, ($id === null) ? 0 : 1, $editable_filter);
 
         $levels_to_expand = array_key_exists('levels_to_expand', $options) ? ($options['levels_to_expand']) : intval(get_value('levels_to_expand__' . substr(get_class($this), 5), null, true));
         $options['levels_to_expand'] = max(0, $levels_to_expand - 1);
@@ -73,9 +73,9 @@ class Hook_ajax_tree_choose_catalogue_entry
         }
 
         // Mark parent cats for pre-expansion
-        if ((!is_null($default)) && ($default != '')) {
+        if (($default !== null) && ($default != '')) {
             $cat = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_entries', 'cc_id', array('id' => intval($default)));
-            while (!is_null($cat)) {
+            while ($cat !== null) {
                 $out .= '<expand>' . strval($cat) . '</expand>';
                 $cat = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_categories', 'cc_parent_id', array('id' => $cat));
             }
@@ -96,9 +96,9 @@ class Hook_ajax_tree_choose_catalogue_entry
     {
         require_code('catalogues');
 
-        $only_owned = array_key_exists('only_owned', $options) ? (is_null($options['only_owned']) ? null : intval($options['only_owned'])) : null;
+        $only_owned = array_key_exists('only_owned', $options) ? (($options['only_owned'] === null) ? null : intval($options['only_owned'])) : null;
         $catalogue_name = array_key_exists('catalogue_name', $options) ? $options['catalogue_name'] : null;
         $editable_filter = array_key_exists('editable_filter', $options) ? ($options['editable_filter']) : false;
-        return create_selection_list_catalogue_entries_tree($catalogue_name, is_null($it) ? null : intval($it), $only_owned, $editable_filter);
+        return create_selection_list_catalogue_entries_tree($catalogue_name, ($it === null) ? null : intval($it), $only_owned, $editable_filter);
     }
 }

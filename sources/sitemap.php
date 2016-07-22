@@ -123,14 +123,14 @@ function retrieve_sitemap_node($page_link = '', $callback = null, $valid_node_ty
     cms_profile_start_for('retrieve_sitemap_node');
 
     $test = find_sitemap_object($page_link);
-    if (is_null($test)) {
+    if ($test === null) {
         return null;
     }
     list($ob, $is_virtual) = $test;
 
     if ($is_virtual) {
         $children = $ob->get_virtual_nodes($page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, 0, $options, $zone, $meta_gather);
-        if (is_null($children)) {
+        if ($children === null) {
             $children = array();
         }
         return array('children' => $children);
@@ -176,7 +176,7 @@ function find_sitemap_object($page_link)
             $is_handled = intval(substr(key($matches), 1));
             $is_virtual = ($is_handled == SITEMAP_NODE_HANDLED_VIRTUALLY);
         }
-        if (is_null($hook)) {
+        if ($hook === null) {
             attach_message(do_lang_tempcode('MISSING_RESOURCE'), 'warn');
             return null;
         }
@@ -738,7 +738,7 @@ abstract class Hook_sitemap_content extends Hook_sitemap_base
         $page = $matches[2];
 
         $has_entries = ($cma_info['is_category']) && ($this->entry_content_type !== null);
-        $has_subcategories = (!is_null($cma_info['parent_spec__parent_name'])) && ($cma_info['parent_category_meta_aware_type'] == $this->content_type);
+        $has_subcategories = ($cma_info['parent_spec__parent_name'] !== null) && ($cma_info['parent_category_meta_aware_type'] == $this->content_type);
 
         $struct = array(
             'title' => $title,
@@ -784,7 +784,7 @@ abstract class Hook_sitemap_content extends Hook_sitemap_base
             'sitemap_refreshfreq' => 'monthly',
         );
 
-        if (!is_null($cma_info['permissions_type_code'])) {
+        if ($cma_info['permissions_type_code'] !== null) {
             if (is_array($cma_info['category_field'])) {
                 $cma_info['category_field'] = array_pop($cma_info['category_field']);
             }
@@ -798,7 +798,7 @@ abstract class Hook_sitemap_content extends Hook_sitemap_base
         }
 
         /* Description field generally not appropriate for Sitemap
-        if ((($meta_gather & SITEMAP_GATHER_DESCRIPTION) != 0) && (!is_null($cma_info['description_field']))) {
+        if ((($meta_gather & SITEMAP_GATHER_DESCRIPTION) != 0) && ($cma_info['description_field'] !== null)) {
             $description = $row[$cma_info['description_field']];
             if (is_integer($description)) {
                 $struct['extra_meta']['description'] = get_translated_tempcode($description, $cma_info['db']);
@@ -808,7 +808,7 @@ abstract class Hook_sitemap_content extends Hook_sitemap_base
         }
         */
 
-        if ((($meta_gather & SITEMAP_GATHER_IMAGE) != 0) && (!is_null($cma_info['thumb_field']))) {
+        if ((($meta_gather & SITEMAP_GATHER_IMAGE) != 0) && ($cma_info['thumb_field'] !== null)) {
             if (method_exists($this, '_find_theme_image')) {
                 $this->_find_theme_image($row, $struct);
             } else {
@@ -832,44 +832,44 @@ abstract class Hook_sitemap_content extends Hook_sitemap_base
         }
 
         if (($meta_gather & SITEMAP_GATHER_TIMES) != 0) {
-            if (!is_null($cma_info['add_time_field'])) {
+            if ($cma_info['add_time_field'] !== null) {
                 $struct['extra_meta']['add_time'] = $row[$cma_info['add_time_field']];
             }
 
-            if (!is_null($cma_info['edit_time_field'])) {
+            if ($cma_info['edit_time_field'] !== null) {
                 $struct['extra_meta']['edit_time'] = $row[$cma_info['edit_time_field']];
             }
         }
 
-        if ((($meta_gather & SITEMAP_GATHER_SUBMITTER) != 0) && (!is_null($cma_info['submitter_field']))) {
+        if ((($meta_gather & SITEMAP_GATHER_SUBMITTER) != 0) && ($cma_info['submitter_field'] !== null)) {
             $struct['extra_meta']['submitter'] = $row[$cma_info['submitter_field']];
         }
 
-        if ((($meta_gather & SITEMAP_GATHER_AUTHOR) != 0) && (!is_null($cma_info['author_field']))) {
+        if ((($meta_gather & SITEMAP_GATHER_AUTHOR) != 0) && ($cma_info['author_field'] !== null)) {
             $struct['extra_meta']['author'] = $row[$cma_info['author_field']];
         }
 
-        if ((($meta_gather & SITEMAP_GATHER_VIEWS) != 0) && (!is_null($cma_info['views_field']))) {
+        if ((($meta_gather & SITEMAP_GATHER_VIEWS) != 0) && ($cma_info['views_field'] !== null)) {
             $struct['extra_meta']['views'] = $row[$cma_info['views_field']];
         }
 
-        if ((($meta_gather & SITEMAP_GATHER_RATING) != 0) && (!is_null($cma_info['feedback_type_code']))) {
+        if ((($meta_gather & SITEMAP_GATHER_RATING) != 0) && ($cma_info['feedback_type_code'] !== null)) {
             $rating = $GLOBALS['SITE_DB']->query_select_value('rating', 'AVG(rating)', array('rating_for_type' => $cma_info['feedback_type_code'], 'rating_for_id' => $content_id));
             $struct['extra_meta']['rating'] = $rating;
         }
 
-        if ((($meta_gather & SITEMAP_GATHER_NUM_COMMENTS) != 0) && (!is_null($cma_info['feedback_type_code']))) {
+        if ((($meta_gather & SITEMAP_GATHER_NUM_COMMENTS) != 0) && ($cma_info['feedback_type_code'] !== null)) {
             $num_comments = 0;
             $_comments = $GLOBALS['FORUM_DRIVER']->get_forum_topic_posts($GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(get_option('comments_forum_name'), $cma_info['feedback_type_code'] . '_' . $content_id, do_lang('COMMENT')), $num_comments, 0, 0, false);
 
             $struct['extra_meta']['num_comments'] = $num_comments;
         }
 
-        if ((($meta_gather & SITEMAP_GATHER_META) != 0) && (!is_null($cma_info['seo_type_code']))) {
+        if ((($meta_gather & SITEMAP_GATHER_META) != 0) && ($cma_info['seo_type_code'] !== null)) {
             list($struct['extra_meta']['meta_keywords'], $struct['extra_meta']['meta_description']) = seo_meta_get_for($this->content_type, $content_id);
         }
 
-        if ((($meta_gather & SITEMAP_GATHER_VALIDATED) != 0) && (!is_null($cma_info['validated_field']))) {
+        if ((($meta_gather & SITEMAP_GATHER_VALIDATED) != 0) && ($cma_info['validated_field'] !== null)) {
             $struct['extra_meta']['validated'] = $row[$cma_info['validated_field']];
         }
 
@@ -901,7 +901,7 @@ abstract class Hook_sitemap_content extends Hook_sitemap_base
      */
     protected function _get_children_nodes($content_id, $page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level, $options, $zone, $meta_gather, $row, $extra_where_entries = '', $explicit_order_by_entries = null, $explicit_order_by_subcategories = null)
     {
-        if ((!is_null($max_recurse_depth)) && ($recurse_level >= $max_recurse_depth)) {
+        if (($max_recurse_depth !== null) && ($recurse_level >= $max_recurse_depth)) {
             return null;
         }
 
@@ -916,7 +916,7 @@ abstract class Hook_sitemap_content extends Hook_sitemap_base
         $children = array();
 
         $has_entries = ($cma_info['is_category']) && ($this->entry_content_type !== null);
-        $has_subcategories = (!is_null($cma_info['parent_spec__parent_name'])) && ($cma_info['parent_category_meta_aware_type'] == $this->content_type);
+        $has_subcategories = ($cma_info['parent_spec__parent_name'] !== null) && ($cma_info['parent_category_meta_aware_type'] == $this->content_type);
         if (!$has_entries && !$has_subcategories) {
             return null;
         }
@@ -935,7 +935,7 @@ abstract class Hook_sitemap_content extends Hook_sitemap_base
                 $cma_entry_ob = get_content_object($entry_content_type);
                 $cma_entry_info = $cma_entry_ob->info();
 
-                if ((!$require_permission_support) || (!is_null($cma_entry_info['permissions_type_code']))) {
+                if ((!$require_permission_support) || ($cma_entry_info['permissions_type_code'] !== null)) {
                     $child_hook_ob = $this->_get_sitemap_object($entry_sitetree_hook);
 
                     $children_entries = array();
@@ -954,7 +954,7 @@ abstract class Hook_sitemap_content extends Hook_sitemap_base
                         $cma_entry_info['category_field'] = array_pop($cma_entry_info['category_field']);
                     }
                     $where[$cma_entry_info['category_field']] = $cma_info['id_field_numeric'] ? intval($content_id) : $content_id;
-                    if (($consider_validation) && (!is_null($cma_entry_info['validated_field']))) {
+                    if (($consider_validation) && ($cma_entry_info['validated_field'] !== null)) {
                         $where[$cma_entry_info['validated_field']] = 1;
                     }
                     $table = $cma_entry_info['table'] . ' r';
@@ -977,7 +977,7 @@ abstract class Hook_sitemap_content extends Hook_sitemap_base
                     if (!$skip_children) {
                         $start = 0;
                         do {
-                            $rows = $cma_entry_info['db']->query_select($table, array('r.*'), $where, $extra_where_entries . $privacy_where . (is_null($explicit_order_by_entries) ? '' : (' ORDER BY ' . $explicit_order_by_entries)), SITEMAP_MAX_ROWS_PER_LOOP, $start);
+                            $rows = $cma_entry_info['db']->query_select($table, array('r.*'), $where, $extra_where_entries . $privacy_where . (($explicit_order_by_entries === null) ? '' : (' ORDER BY ' . $explicit_order_by_entries)), SITEMAP_MAX_ROWS_PER_LOOP, $start);
                             $child_page = ($cma_entry_info['module'] == $cma_info['module']) ? $page : $cma_entry_info['module']; // assumed in same zone
                             foreach ($rows as $child_row) {
                                 $child_page_link = $zone . ':' . $child_page . ':' . $child_hook_ob->screen_type . ':' . ($cma_entry_info['id_field_numeric'] ? strval($child_row[$cma_entry_info['id_field']]) : $child_row[$cma_entry_info['id_field']]);
@@ -990,7 +990,7 @@ abstract class Hook_sitemap_content extends Hook_sitemap_base
                         } while (count($rows) == SITEMAP_MAX_ROWS_PER_LOOP);
                     }
 
-                    if (is_null($explicit_order_by_entries)) {
+                    if ($explicit_order_by_entries === null) {
                         sort_maps_by($children_entries, 'title');
                     }
                     $children = array_merge($children, $children_entries);
@@ -1004,7 +1004,7 @@ abstract class Hook_sitemap_content extends Hook_sitemap_base
 
             $where = array();
             $where[$cma_info['parent_spec__parent_name']] = $cma_info['category_is_string'] ? $content_id : intval($content_id);
-            if (($consider_validation) && (!is_null($cma_info['validated_field']))) {
+            if (($consider_validation) && ($cma_info['validated_field'] !== null)) {
                 $where[$cma_info['validated_field']] = 1;
             }
             $select = array('r.*');
@@ -1033,7 +1033,7 @@ abstract class Hook_sitemap_content extends Hook_sitemap_base
 
                 $start = 0;
                 do {
-                    $rows = $cma_info['db']->query_select($table, $select, $where, (is_null($explicit_order_by_subcategories) ? '' : ('ORDER BY ' . $explicit_order_by_subcategories)), SITEMAP_MAX_ROWS_PER_LOOP, $start, false, $lang_fields);
+                    $rows = $cma_info['db']->query_select($table, $select, $where, (($explicit_order_by_subcategories === null) ? '' : ('ORDER BY ' . $explicit_order_by_subcategories)), SITEMAP_MAX_ROWS_PER_LOOP, $start, false, $lang_fields);
                     foreach ($rows as $child_row) {
                         if ($this->content_type == 'comcode_page') {
                             $child_page_link = $zone . ':' . $child_row['the_page'];
@@ -1049,7 +1049,7 @@ abstract class Hook_sitemap_content extends Hook_sitemap_base
                 } while (count($rows) == SITEMAP_MAX_ROWS_PER_LOOP);
             }
 
-            if (is_null($explicit_order_by_subcategories)) {
+            if ($explicit_order_by_subcategories === null) {
                 sort_maps_by($children_categories, 'title');
             }
             $children = array_merge($children, $children_categories);
@@ -1158,7 +1158,7 @@ function get_root_comcode_pages($zone, $include_zone = false)
  */
 function create_selection_list($root_page_link, $under_only = false, $default = null, $valid_node_types = null, $valid_selectable_content_types = null, $check_permissions_against = 0, $check_permissions_for = null, $consider_validation = false, $only_owned = null, $use_compound_list = false, $filter_func = null)
 {
-    if (is_null($check_permissions_for)) {
+    if ($check_permissions_for === null) {
         $check_permissions_for = get_member();
     }
 
@@ -1169,7 +1169,7 @@ function create_selection_list($root_page_link, $under_only = false, $default = 
     }
 
     $out = new Tempcode();
-    $root_node = retrieve_sitemap_node($root_page_link, null, null, null, null, $options, '_SEARCH', is_null($filter_func) ? 0 : SITEMAP_GATHER_DB_ROW);
+    $root_node = retrieve_sitemap_node($root_page_link, null, null, null, null, $options, '_SEARCH', ($filter_func === null) ? 0 : SITEMAP_GATHER_DB_ROW);
 
     if (!$under_only) {
         _create_selection_list($out, $root_node, $default, $valid_selectable_content_types, $check_permissions_against, $check_permissions_for, $only_owned, $use_compound_list, $filter_func);
@@ -1204,7 +1204,7 @@ function create_selection_list($root_page_link, $under_only = false, $default = 
 function _create_selection_list(&$out, $node, $default, $valid_selectable_content_types, $check_permissions_against, $check_permissions_for, $only_owned, $use_compound_list, $filter_func, $depth = 0)
 {
     // Skip?
-    if (!is_null($check_permissions_for)) {
+    if ($check_permissions_for !== null) {
         foreach ($node['permissions'] as $permission) {
             if ($permission['type'] == 'privilege') {
                 if (($check_permissions_against & CSL_PERMISSION_ADD) != 0) {
@@ -1231,22 +1231,22 @@ function _create_selection_list(&$out, $node, $default, $valid_selectable_conten
             }
         }
     }
-    if (!is_null($only_owned)) {
+    if ($only_owned !== null) {
         if ($node['submitter'] != $only_owned) {
             return '';
         }
     }
-    if (!is_null($filter_func)) {
+    if ($filter_func !== null) {
         if (!call_user_func($filter_func, $node)) {
             return '';
         }
     }
 
     $content_id = $node['content_id'];
-    if (is_null($content_id)) {
+    if ($content_id === null) {
         $content_id = $node['page_link'];
     }
-    if (is_null($content_id)) {
+    if ($content_id === null) {
         $content_id = '';
     }
 
@@ -1266,7 +1266,7 @@ function _create_selection_list(&$out, $node, $default, $valid_selectable_conten
     // Handle node
     $title = str_repeat('-', $depth) . $node['title']->evaluate();
     $selected = ($content_id === (is_integer($default) ? strval($default) : $default));
-    $disabled = (!is_null($valid_selectable_content_types) && !in_array($node['content_type'], $valid_selectable_content_types));
+    $disabled = ($valid_selectable_content_types !== null && !in_array($node['content_type'], $valid_selectable_content_types));
     $_content_id = $use_compound_list ? $compound_list : $content_id;
     $out->attach(form_input_list_entry($_content_id, $selected, $title, false, $disabled));
 

@@ -50,7 +50,7 @@ class CMSPostRead
             $poster = $post_details[0]['p_poster_name_if_guest'];
             if ($poster == '') {
                 $poster = $GLOBALS['FORUM_DRIVER']->get_username($post_details[0]['p_poster']);
-                if (is_null($poster)) {
+                if ($poster === null) {
                     $poster = do_lang('UNKNOWN');
                 }
             }
@@ -86,7 +86,7 @@ class CMSPostRead
         $edit_reason = '';
         if (has_actual_page_access(get_member(), 'admin_actionlog')) {
             $_edit_reason = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_moderator_logs', 'l_reason', array('l_the_type' => 'EDIT_POST', 'l_param_a' => strval($post_id)));
-            if (!is_null($_edit_reason)) {
+            if ($_edit_reason !== null) {
                 $edit_reason = $_edit_reason;
             }
         }

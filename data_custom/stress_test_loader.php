@@ -544,7 +544,7 @@ function random_text()
 {
     static $words = array('fish', 'cheese', 'soup', 'tomato', 'alphabet', 'whatever', 'cannot', 'be', 'bothered', 'to', 'type', 'many', 'more', 'will', 'be', 'here', 'all', 'day');
     static $word_count = null;
-    if (is_null($word_count)) {
+    if ($word_count === null) {
         $word_count = count($words);
     }
 
@@ -562,7 +562,7 @@ function random_line()
 {
     static $words = array('fish', 'cheese', 'soup', 'tomato', 'alphabet', 'whatever', 'cannot', 'be', 'bothered', 'to', 'type', 'many', 'more', 'will', 'be', 'here', 'all', 'day');
     static $word_count = null;
-    if (is_null($word_count)) {
+    if ($word_count === null) {
         $word_count = count($words);
     }
 

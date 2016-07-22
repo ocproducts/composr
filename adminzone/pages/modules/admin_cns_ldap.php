@@ -103,7 +103,7 @@ class Module_admin_cns_ldap
         require_code('cns_groups_action2');
 
         global $LDAP_CONNECTION;
-        if (is_null($LDAP_CONNECTION) && !$GLOBALS['DEV_MODE']) {
+        if (($LDAP_CONNECTION === null) && !$GLOBALS['DEV_MODE']) {
             warn_exit(do_lang_tempcode('LDAP_DISABLED'));
         }
 
@@ -137,7 +137,7 @@ class Module_admin_cns_ldap
             $all_ldap_groups[] = 'Example LDAP group';
         }
         foreach ($all_ldap_groups as $group) {
-            if (is_null(cns_group_ldapcn_to_cnsid($group))) {
+            if (cns_group_ldapcn_to_cnsid($group) === null) {
                 $_group = str_replace(' ', '_space_', $group);
                 $tpl = do_template('CNS_LDAP_LIST_ENTRY', array('_GUID' => '99aa6dd1a7a4caafd0199f8b5512cf29', 'NAME' => 'add_group_' . $_group, 'NICE_NAME' => $group));
                 $groups_add->attach($tpl);

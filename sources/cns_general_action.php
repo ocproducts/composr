@@ -62,7 +62,7 @@ function cns_make_post_template($title, $text, $forum_multi_code, $use_default_f
 function cns_make_emoticon($code, $theme_img_code, $relevance_level = 1, $use_topics = 1, $is_special = 0)
 {
     $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_emoticons', 'e_code', array('e_code' => $code));
-    if (!is_null($test)) {
+    if ($test !== null) {
         require_lang('cns');
         warn_exit(do_lang_tempcode('CONFLICTING_EMOTICON_CODE', escape_html($test)));
     }

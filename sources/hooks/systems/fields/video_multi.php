@@ -92,7 +92,7 @@ class Hook_fields_video_multi
             return '';
         }
 
-        if (is_null($submitter)) {
+        if ($submitter === null) {
             $submitter = get_member();
         }
 
@@ -178,7 +178,7 @@ class Hook_fields_video_multi
      */
     public function get_field_inputter($_cf_name, $_cf_description, $field, $actual_value, $new)
     {
-        $say_required = ($field['cf_required'] == 1) && (($actual_value == '') || (is_null($actual_value)));
+        $say_required = ($field['cf_required'] == 1) && (($actual_value == '') || ($actual_value === null));
         require_code('galleries');
         $input_name = empty($field['cf_input_name']) ? ('field_' . strval($field['id'])) : $field['cf_input_name'];
         $ffield = form_input_upload_multi($_cf_name, $_cf_description, $input_name, $say_required, null, ($field['cf_required'] == 1) ? null/*so unlink option not shown*/ : (($actual_value == '') ? null : explode("\n", preg_replace('# .*$#m', '', $actual_value))), true, get_allowed_video_file_types());
@@ -200,7 +200,7 @@ class Hook_fields_video_multi
      */
     public function inputted_to_field_value($editing, $field, $upload_dir = 'uploads/catalogues', $old_value = null)
     {
-        if (is_null($upload_dir)) {
+        if ($upload_dir === null) {
             return null;
         }
 
@@ -209,7 +209,7 @@ class Hook_fields_video_multi
 
             $value = '';
 
-            $_old_value = ((is_null($old_value)) || ($old_value['cv_value'] == '')) ? array() : explode("\n", $old_value['cv_value']);
+            $_old_value = (($old_value === null) || ($old_value['cv_value'] == '')) ? array() : explode("\n", $old_value['cv_value']);
 
             require_code('uploads');
             is_plupload(true);
@@ -262,7 +262,7 @@ class Hook_fields_video_multi
                     if ($value != '') {
                         $value .= "\n";
                     }
-                    $value .= $ev . ' ' . $thumb_url . ' ' . (is_null($width) ? '' : strval($width)) . ' ' . (is_null($height) ? '' : strval($height)) . ' ' . (is_null($length) ? '' : strval($length));
+                    $value .= $ev . ' ' . $thumb_url . ' ' . (($width === null) ? '' : strval($width)) . ' ' . (($height === null) ? '' : strval($height)) . ' ' . (($length === null) ? '' : strval($length));
                 }
 
                 $i++;

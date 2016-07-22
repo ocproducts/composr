@@ -49,14 +49,14 @@ function handle_facebook_connection_login($current_logged_in_member)
     }
 
     // If already session-logged-in onto a Facebook account, or a non-Facebook account (i.e. has a log in on top), don't bother doing anything
-    if ((!is_null($current_logged_in_member)) && (!is_guest($current_logged_in_member))) {
+    if (($current_logged_in_member !== null) && (!is_guest($current_logged_in_member))) {
         return $current_logged_in_member;
     }
 
     // Who is this user, from Facebook's point of view?
     global $FACEBOOK_CONNECT;
     $facebook_uid = $FACEBOOK_CONNECT->getUser();
-    if (is_null($facebook_uid)) {
+    if ($facebook_uid === null) {
         return $current_logged_in_member;
     }
     try {
@@ -128,18 +128,18 @@ function handle_facebook_connection_login($current_logged_in_member)
         $member_id = null;
     }
 
-    /*if (!is_null($member_id)) { // Useful for debugging
+    /*if ($member_id !== null) { // Useful for debugging
         require_code('cns_members_action2');
         cns_delete_member($member_id);
         $member_id = null;
     }*/
 
-    if ((!is_null($member_id)) && ($current_logged_in_member !== null) && (!is_guest($current_logged_in_member)) && ($current_logged_in_member != $member_id)) {
+    if (($member_id !== null) && ($current_logged_in_member !== null) && (!is_guest($current_logged_in_member)) && ($current_logged_in_member != $member_id)) {
         return $current_logged_in_member; // User has an active login, and the Facebook account is bound to a DIFFERENT login. Take precedence to the other login that is active on top of this
     }
 
     // If logged in before using Facebook, do some synching
-    if (!is_null($member_id)) {
+    if ($member_id !== null) {
         $last_visit_time = $member_id[0]['m_last_visit_time'];
         if ($timezone !== null) {
             if ((!is_numeric($member_row[0]['m_timezone_offset'])) && (tz_time(time(), $timezone) == tz_time(time(), $member_row[0]['m_timezone_offset']))) {
@@ -152,7 +152,7 @@ function handle_facebook_connection_login($current_logged_in_member)
         // Username
         if (get_option('facebook_sync_username') == '1') {
             $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', 'id', array('m_username' => $username));
-            if (is_null($test)) { // Make sure there's no conflict yet the name has changed
+            if ($test === null) { // Make sure there's no conflict yet the name has changed
                 $update_map['m_username'] = $username;
             }
         }
@@ -194,9 +194,9 @@ function handle_facebook_connection_login($current_logged_in_member)
 
     // Not logged in before using Facebook, so we need to create an account, or bind to the active Composr login if there is one
     $in_a_sane_place = (get_page_name() != 'login') && ((running_script('index')) || (running_script('execute_temp'))); // If we're in some weird script, or the login module UI, it's not a sane place, don't be doing account creation yet
-    if ((is_null($member_id)) && ($in_a_sane_place)) {
+    if (($member_id === null) && ($in_a_sane_place)) {
         // Bind to existing Composr login?
-        if (!is_null($current_logged_in_member)) {
+        if ($current_logged_in_member !== null) {
             /* Won't work because Facebook is currently done in JS and cookies force this. If user wishes to cancel they must go to http://www.facebook.com/settings?tab=applications and remove the app, then run a lost password reset.
             if (post_param_integer('associated_confirm', 0) == 0) {
                 $title = get_screen_title('LOGIN_FACEBOOK_HEADER');
@@ -274,7 +274,7 @@ function handle_facebook_connection_login($current_logged_in_member)
             foreach ($mappings as $facebook_field => $composr_field_title) {
                 if (!empty($details[$facebook_field])) {
                     $composr_field_id = find_cms_cpf_field_id($composr_field_title);
-                    if (!is_null($composr_field_id)) {
+                    if ($composr_field_id !== null) {
                         switch ($facebook_field) {
                             case 'user_currency':
                                 $changes['field_' . strval($composr_field_id)] = $details[$facebook_field]['user_currency'];
@@ -304,7 +304,7 @@ function handle_facebook_connection_login($current_logged_in_member)
                     foreach ($mappings as $facebook_field => $composr_field_title) {
                         if (!empty($details3[$facebook_field])) {
                             $composr_field_id = find_cms_cpf_field_id($composr_field_title);
-                            if (!is_null($composr_field_id)) {
+                            if ($composr_field_id !== null) {
                                 $changes['field_' . strval($composr_field_id)] = $details3[$facebook_field];
                             }
                         }
@@ -320,14 +320,14 @@ function handle_facebook_connection_login($current_logged_in_member)
     }
 
     // Finalise the session
-    if (!is_null($member_id)) {
+    if ($member_id !== null) {
         require_code('users_inactive_occasionals');
         create_session($member_id, 1, (isset($_COOKIE[get_member_cookie() . '_invisible'])) && ($_COOKIE[get_member_cookie() . '_invisible'] == '1')); // This will mark it as confirmed
     }
 
     // Store oAuth for syndication
     if (get_option('facebook_auto_syndicate') == '1') {
-        if (!is_null($member_id)) {
+        if ($member_id !== null) {
             set_value('facebook_oauth_token__' . strval($member_id), $FACEBOOK_CONNECT->getAccessToken(), true);
 
             if (get_option('facebook_member_syndicate_to_page') == '1') {

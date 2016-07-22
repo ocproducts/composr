@@ -61,7 +61,7 @@ function cns_get_post_templates($forum_id)
  */
 function cns_check_post($post, $topic_id = null, $poster = null)
 {
-    if (is_null($poster)) {
+    if ($poster === null) {
         $poster = get_member();
     }
 
@@ -76,7 +76,7 @@ function cns_check_post($post, $topic_id = null, $poster = null)
         warn_exit(make_string_tempcode(escape_html(do_lang('POST_TOO_LONG'))));
     }
 
-    if (!is_null($topic_id)) {
+    if ($topic_id !== null) {
         if (running_script('stress_test_loader')) {
             return null;
         }
@@ -135,17 +135,17 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
     require_code('cns_topics');
     require_code('cns_posts');
 
-    if (is_null($poster)) {
+    if ($poster === null) {
         $poster = get_member();
     }
 
-    if (is_null($is_starter)) {
-        $is_starter = is_null($GLOBALS['FORUM_DB']->query_select_value_if_there('f_posts', 'id', array('p_topic_id' => $topic_id)));
+    if ($is_starter === null) {
+        $is_starter = ($GLOBALS['FORUM_DB']->query_select_value_if_there('f_posts', 'id', array('p_topic_id' => $topic_id)) === null);
     }
-    if (is_null($is_pt)) {
+    if ($is_pt === null) {
         $is_pt = false;
         if ($is_starter) {
-            $is_pt = is_null($GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 't_forum_id', array('id' => $topic_id)));
+            $is_pt = ($GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 't_forum_id', array('id' => $topic_id)) === null);
         }
     }
 
@@ -164,31 +164,31 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
             warn_exit(do_lang_tempcode('TITLE_TOO_LONG'));
         }
 
-        if ((is_null($intended_solely_for)) && (!$skip_post_checks)) {
+        if (($intended_solely_for === null) && (!$skip_post_checks)) {
             cms_profile_start_for('cns_make_post:cns_check_post');
             cns_check_post($post, $topic_id, $poster);
             cms_profile_end_for('cns_make_post:cns_check_post');
         }
     }
 
-    if (is_null($ip_address)) {
+    if ($ip_address === null) {
         $ip_address = get_ip_address();
     }
-    if (is_null($time)) {
+    if ($time === null) {
         $time = time();
     }
-    if (is_null($poster_name_if_guest)) {
+    if ($poster_name_if_guest === null) {
         if (($poster == $GLOBALS['CNS_DRIVER']->get_guest_id()) || ($anonymous)) {
             $poster_name_if_guest = do_lang('GUEST');
         } else {
             $poster_name_if_guest = $GLOBALS['CNS_DRIVER']->get_username($poster, true);
-            if (is_null($poster_name_if_guest)) {
+            if ($poster_name_if_guest === null) {
                 $poster_name_if_guest = do_lang('UNKNOWN');
             }
         }
     }
 
-    if ((is_null($forum_id)) || (($topic_title == '') && (!$is_starter))) {
+    if (($forum_id === null) || (($topic_title == '') && (!$is_starter))) {
         $info = $GLOBALS['FORUM_DB']->query_select('f_topics', array('t_is_open', 't_pt_from', 't_pt_to', 't_forum_id', 't_cache_last_member_id', 't_cache_first_title'), array('id' => $topic_id), '', 1);
         if (!array_key_exists(0, $info)) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'topic'));
@@ -200,12 +200,12 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
         }
 
         if ($check_permissions) {
-            if (((($info[0]['t_pt_from'] != $poster) && ($info[0]['t_pt_to'] != $poster) && (!cns_has_special_pt_access($topic_id))) && (!has_privilege($poster, 'view_other_pt')) && (is_null($forum_id)))) {
+            if (((($info[0]['t_pt_from'] != $poster) && ($info[0]['t_pt_to'] != $poster) && (!cns_has_special_pt_access($topic_id))) && (!has_privilege($poster, 'view_other_pt')) && ($forum_id === null))) {
                 access_denied('I_ERROR');
             }
         }
     }
-    if (is_null($forum_id)) {
+    if ($forum_id === null) {
         if (($check_permissions) && ($poster == $GLOBALS['CNS_DRIVER']->get_guest_id())) {
             access_denied('I_ERROR');
         }
@@ -214,22 +214,22 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
         if ($check_permissions) {
             $last_member_id = $is_starter ? null : $info[0]['t_cache_last_member_id'];
             $closed = $is_starter ? false : ($info[0]['t_is_open'] == 0);
-            if ((!cns_may_post_in_topic($forum_id, $topic_id, $last_member_id, $closed, $poster, !is_null($intended_solely_for))) && (!$is_starter)) {
+            if ((!cns_may_post_in_topic($forum_id, $topic_id, $last_member_id, $closed, $poster, $intended_solely_for !== null)) && (!$is_starter)) {
                 access_denied('I_ERROR');
             }
         }
     }
 
     // Ensure parent post is from the same topic
-    if (!is_null($parent_id)) {
+    if ($parent_id !== null) {
         $test_topic_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_posts', 'p_topic_id', array('id' => $parent_id), ' AND ' . cns_get_topic_where($topic_id, $poster));
-        if (is_null($test_topic_id)) {
+        if ($test_topic_id === null) {
             $parent_id = null;
         }
     }
 
-    if ((is_null($validated)) || (($validated == 1) && ($check_permissions))) {
-        if ((!is_null($forum_id)) && (!has_privilege($poster, 'bypass_validation_lowrange_content', 'topics', array('forums', $forum_id)))) {
+    if (($validated === null) || (($validated == 1) && ($check_permissions))) {
+        if (($forum_id !== null) && (!has_privilege($poster, 'bypass_validation_lowrange_content', 'topics', array('forums', $forum_id)))) {
             $validated = 0;
         } else {
             $validated = 1;
@@ -255,7 +255,7 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
         'p_skip_sig' => $skip_sig,
         'p_parent_id' => $parent_id
     );
-    if (!is_null($id)) {
+    if ($id !== null) {
         $map['id'] = $id;
     }
 
@@ -308,7 +308,7 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
             cms_profile_end_for('cns_make_post:cns_send_topic_notification');
 
             // Send a notification for the inline PP
-            if (!is_null($intended_solely_for)) {
+            if ($intended_solely_for !== null) {
                 require_code('notifications');
                 $msubject = do_lang('NEW_PERSONAL_POST_SUBJECT', $topic_title, null, null, get_lang($intended_solely_for));
                 $mmessage = do_notification_lang('NEW_PERSONAL_POST_MESSAGE', comcode_escape($GLOBALS['FORUM_DRIVER']->get_username($anonymous ? db_get_first_id() : $poster, true)), comcode_escape($topic_title), array(comcode_escape($url), $post_comcode, strval($anonymous ? db_get_first_id() : $poster)), get_lang($intended_solely_for));
@@ -336,7 +336,7 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
                 // We have to mark read, even if is_on_automatic_mark_topic_read=0, because otherwise our own post would make the topic show unread (because we don't track individual post read statuses)
                 //  (for performance we do not query the latest post which is not our own for each topic, we rely on caching it for all users)
                 $read_to_timestamp = get_param_integer('timestamp', null);
-                if (!is_null($read_to_timestamp)) {
+                if ($read_to_timestamp !== null) {
                     // Nothing unread since it was read?
                     if ($GLOBALS['FORUM_DB']->query_select_value('f_posts', 'COUNT(*)', array('p_topic_id' => $topic_id), ' AND p_time>' . strval($read_to_timestamp) . ' AND id<>' . strval($post_id)) == 0) {
                         $read_to_timestamp = time(); // ... then bump up to now, so our own post doesn't make the topic as a whole seem unread
@@ -347,7 +347,7 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
                 cms_profile_end_for('cns_make_post:cns_ping_topic_read');
             }
 
-            if (is_null($forum_id)) {
+            if ($forum_id === null) {
                 $with = $info[0]['t_pt_from'];
                 if ($with == $poster) {
                     $with = $info[0]['t_pt_to'];
@@ -357,7 +357,7 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
             }
         }
 
-        if (is_null($intended_solely_for)) {
+        if ($intended_solely_for === null) {
             if ($validated == 1) {
                 require_code('cns_posts_action2');
                 cms_profile_start_for('cns_make_post:cns_force_update_topic_caching');
@@ -365,11 +365,11 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
                 cms_profile_end_for('cns_make_post:cns_force_update_topic_caching');
             }
             if ($validated == 1) {
-                if (!is_null($forum_id)) {
+                if ($forum_id !== null) {
                     require_code('cns_posts_action2');
 
                     // Find if the topic is validated. This can be approximate, if we don't get 1 then cns_force_update_forum_caching will do a search, making the code very slightly slower
-                    if ((!$check_permissions) || (is_null($forum_id))) {
+                    if ((!$check_permissions) || ($forum_id === null)) {
                         $topic_validated = 1;
                     } else {
                         if ($is_starter) {
@@ -387,8 +387,8 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
             }
         }
 
-        if (!is_null($forum_id)) {
-            $post_counts = is_null($forum_id) ? 1 : $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forums', 'f_post_count_increment', array('id' => $forum_id));
+        if ($forum_id !== null) {
+            $post_counts = ($forum_id === null) ? 1 : $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forums', 'f_post_count_increment', array('id' => $forum_id));
             if (($post_counts === 1) && (!$anonymous) && ($validated == 1)) {
                 // Update post count
                 cms_profile_start_for('cns_make_post:cns_force_update_member_post_count');
@@ -425,7 +425,7 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
     dispatch_member_mention_notifications('post', strval($post_id), $anonymous ? db_get_first_id() : $poster);
     cms_profile_end_for('cns_make_post:dispatch_member_mention_notifications');
 
-    if (($is_starter) && (!$is_pt) && (!is_null($forum_id))) {
+    if (($is_starter) && (!$is_pt) && ($forum_id !== null)) {
         require_code('sitemap_xml');
         notify_sitemap_node_add('SEARCH:topicview:id=' . strval($topic_id), $time, $last_edit_time, SITEMAP_IMPORTANCE_LOW, 'daily', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'forums', strval($forum_id)));
     }
@@ -454,10 +454,10 @@ function cns_force_update_member_post_count($member_id, $member_post_count_dif =
         return;
     }
 
-    if (is_null($member_post_count_dif)) {
+    if ($member_post_count_dif === null) {
         // This is gonna take a while!!
         static $all_forum_post_count_info_cache = array();
-        if (is_null($all_forum_post_count_info_cache)) {
+        if ($all_forum_post_count_info_cache === null) {
             $all_forum_post_count_info_cache = collapse_2d_complexity('id', 'f_post_count_increment', $GLOBALS['FORUM_DB']->query('SELECT id,f_post_count_increment FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forums WHERE f_cache_num_posts>0'));
         }
         $member_post_count = 0;
@@ -490,7 +490,7 @@ function cns_force_update_member_post_count($member_id, $member_post_count_dif =
  */
 function cns_decache_cms_blocks($updated_forum_id, $forum_name = null, $member = null)
 {
-    if (is_null($forum_name)) {
+    if ($forum_name === null) {
         $forum_name = $GLOBALS['FORUM_DB']->query_select_value('f_forums', 'f_name', array('id' => $updated_forum_id));
     }
 
@@ -507,7 +507,7 @@ function cns_decache_cms_blocks($updated_forum_id, $forum_name = null, $member =
 
     decache($decache);
 
-    if (!is_null($member)) {
+    if ($member !== null) {
         decache_private_topics($member);
     }
 }

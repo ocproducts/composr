@@ -64,7 +64,7 @@ class galleries_test_set extends cms_test_case
     {
         // Cleanup after failed prior execution
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('galleries', 'name', array('name' => 'a_test_gallery_for_ut'));
-        if (!is_null($test)) {
+        if ($test !== null) {
             require_code('galleries2');
             delete_gallery('a_test_gallery_for_ut');
         }

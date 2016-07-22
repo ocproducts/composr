@@ -38,7 +38,7 @@ class Hook_commandr_command_whoami
         } else {
             $member_id = get_member();
             $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
-            if (is_null($username)) {
+            if ($username === null) {
                 $username = do_lang('GUEST');
             }
             return array('', '', $username . ' (#' . strval($member_id) . ')', '');

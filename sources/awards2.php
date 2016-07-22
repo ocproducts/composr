@@ -68,7 +68,7 @@ function add_award_type($title, $description, $points, $content_type, $hide_awar
 function edit_award_type($id, $title, $description, $points, $content_type, $hide_awardee, $update_time_hours)
 {
     $_title = $GLOBALS['SITE_DB']->query_select_value_if_there('award_types', 'a_title', array('id' => $id));
-    if (is_null($_title)) {
+    if ($_title === null) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'award_type'));
     }
     $_description = $GLOBALS['SITE_DB']->query_select_value('award_types', 'a_description', array('id' => $id));
@@ -98,7 +98,7 @@ function edit_award_type($id, $title, $description, $points, $content_type, $hid
 function delete_award_type($id)
 {
     $_title = $GLOBALS['SITE_DB']->query_select_value_if_there('award_types', 'a_title', array('id' => $id));
-    if (is_null($_title)) {
+    if ($_title === null) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'award_type'));
     }
     $_description = $GLOBALS['SITE_DB']->query_select_value('award_types', 'a_description', array('id' => $id));

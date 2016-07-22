@@ -240,9 +240,9 @@ function member_personal_links_and_details($member_id)
             $subscriptions = find_member_subscriptions($member_id);
             foreach ($subscriptions as $subscription) {
                 $expiry_time = $subscription['expiry_time'];
-                if ((!is_null($expiry_time)) && (($expiry_time - time()) < ($manual_subscription_expiry_notice * 24 * 60 * 60)) && ($expiry_time >= time())) {
+                if (($expiry_time !== null) && (($expiry_time - time()) < ($manual_subscription_expiry_notice * 24 * 60 * 60)) && ($expiry_time >= time())) {
                     require_lang('ecommerce');
-                    $expiry_date = is_null($expiry_time) ? do_lang('INTERNAL_ERROR') : get_timezoned_date($expiry_time, false);
+                    $expiry_date = ($expiry_time === null) ? do_lang('INTERNAL_ERROR') : get_timezoned_date($expiry_time, false);
                     $details->attach(do_template('BLOCK_SIDE_PERSONAL_STATS_LINE', array(
                         '_GUID' => '2675d56aa278616aa9f00b051ca084fc',
                         'KEY' => do_lang_tempcode('SUBSCRIPTION_EXPIRY_MESSAGE', escape_html($subscription['item_name'])),
@@ -328,7 +328,7 @@ function member_personal_links_and_details($member_id)
 function handle_has_checked_recently($id_code)
 {
     $last_check_test = $GLOBALS['SITE_DB']->query_select_value_if_there('url_title_cache', 't_title', array('t_url' => substr('!' . $id_code, 0, 255)));
-    if ((is_null($last_check_test)) || (substr($last_check_test, 0, 1) != '!') || (intval(substr($last_check_test, 1)) + 60 * 60 * 24 * 30 < time())) { // only re-checks every 30 days
+    if (($last_check_test === null) || (substr($last_check_test, 0, 1) != '!') || (intval(substr($last_check_test, 1)) + 60 * 60 * 24 * 30 < time())) { // only re-checks every 30 days
         // Record when it was last tested (i.e. it will be tested now, so put this into the DB)
         $GLOBALS['SITE_DB']->query_delete('url_title_cache', array('t_url' => substr('!' . $id_code, 0, 255)), '', 1); // To make sure it can insert below
         $GLOBALS['SITE_DB']->query_insert('url_title_cache', array('t_meta_title' => '', 't_keywords' => '', 't_description' => '', 't_image_url' => '', 't_title' => '!' . strval(time()), 't_mime_type' => '', 't_json_discovery' => '', 't_xml_discovery' => '', 't_url' => substr('!' . $id_code, 0, 255)), false, true); // To stop weird race-like conditions
@@ -410,7 +410,7 @@ function prevent_double_submit($type, $a = null, $b = null)
         'the_type' => $type,
         'member_id' => get_member(),
     );
-    if (!is_null($a)) {
+    if ($a !== null) {
         if ($a == '') {
             return; // Cannot work with this
         }
@@ -418,7 +418,7 @@ function prevent_double_submit($type, $a = null, $b = null)
             'param_a' => cms_mb_substr($a, 0, 80),
         );
     }
-    if (!is_null($b)) {
+    if ($b !== null) {
         if ($b == '') {
             return; // Cannot work with this
         }
@@ -428,7 +428,7 @@ function prevent_double_submit($type, $a = null, $b = null)
     }
     $time_window = 60 * 5; // 5 minutes seems reasonable
     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('actionlogs', 'date_and_time', $where, ' AND date_and_time>' . strval(time() - $time_window));
-    if (!is_null($test)) {
+    if ($test !== null) {
         warn_exit(do_lang_tempcode('DOUBLE_SUBMISSION_PREVENTED', display_time_period($time_window), display_time_period($time_window - (time() - $test))));
     }
 }
@@ -481,8 +481,8 @@ function _log_it($type, $a = null, $b = null)
         $ip = get_ip_address();
         $log_id = $GLOBALS['SITE_DB']->query_insert('actionlogs', array(
             'the_type' => $type,
-            'param_a' => is_null($a) ? '' : cms_mb_substr($a, 0, 80),
-            'param_b' => is_null($b) ? '' : cms_mb_substr($b, 0, 80),
+            'param_a' => ($a === null) ? '' : cms_mb_substr($a, 0, 80),
+            'param_b' => ($b === null) ? '' : cms_mb_substr($b, 0, 80),
             'date_and_time' => time(),
             'member_id' => get_member(),
             'ip' => $ip,
@@ -511,16 +511,16 @@ function _log_it($type, $a = null, $b = null)
         if ($logged < 10) { // Be extra sure it's not some kind of import, causing spam
             if (addon_installed('actionlog')) {
                 require_all_lang();
-                if (is_null($a)) {
+                if ($a === null) {
                     $a = do_lang('NA');
                 }
-                if (is_null($a)) {
+                if ($a === null) {
                     $a = do_lang('NA');
                 }
                 require_code('notifications');
                 require_lang('actionlog');
                 $subject = do_lang('ACTIONLOG_NOTIFICATION_MAIL_SUBJECT', get_site_name(), do_lang($type), array($a, $b));
-                $mail = do_notification_lang('ACTIONLOG_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape(do_lang($type)), array(is_null($a) ? '' : comcode_escape($a), is_null($b) ? '' : comcode_escape($b)));
+                $mail = do_notification_lang('ACTIONLOG_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape(do_lang($type)), array(($a === null) ? '' : comcode_escape($a), ($b === null) ? '' : comcode_escape($b)));
                 dispatch_notification('actionlog', $type, $subject, $mail, null, get_member(), array('use_real_from' => true));
             }
         }

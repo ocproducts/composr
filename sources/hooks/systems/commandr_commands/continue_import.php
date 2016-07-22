@@ -71,7 +71,7 @@ class Hook_commandr_command_continue_import
             require_code('hooks/modules/admin_import/' . filter_naughty_harsh($importer));
             $object = object_factory('Hook_import_' . filter_naughty_harsh($importer));
 
-            $import_source = is_null($db_name) ? null : new DatabaseConnector($db_name, $db_host, $db_user, $db_password, $db_table_prefix);
+            $import_source = ($db_name === null) ? null : new DatabaseConnector($db_name, $db_host, $db_user, $db_password, $db_table_prefix);
 
             if (get_forum_type() != 'cns') {
                 require_code('forum/cns');
@@ -83,7 +83,7 @@ class Hook_commandr_command_continue_import
             $info = $object->info();
             $_import_list = $info['import'];
             foreach ($_import_list as $import) {
-                if (is_null($GLOBALS['SITE_DB']->query_select_value_if_there('import_parts_done', 'imp_session', array('imp_id' => $import, 'imp_session' => get_session_id())))) {
+                if ($GLOBALS['SITE_DB']->query_select_value_if_there('import_parts_done', 'imp_session', array('imp_id' => $import, 'imp_session' => get_session_id())) === null) {
                     $function_name = 'import_' . $import;
                     cns_over_local();
                     $func_output = call_user_func_array(array($object, $function_name), array($import_source, $db_table_prefix, $old_base_dir));

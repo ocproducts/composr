@@ -63,7 +63,7 @@ class Hook_content_meta_aware_wiki_post
             'edit_page_link_pattern' => '_SEARCH:wiki:post:post_id=_WILD',
             'view_category_page_link_pattern' => '_SEARCH:wiki:browse:_WILD',
             'add_url' => (function_exists('has_submit_permission') && has_submit_permission('low', get_member(), get_ip_address(), 'wiki')) ? (get_module_zone('wiki') . ':wiki:add_post') : null,
-            'archive_url' => ((!is_null($zone)) ? $zone : get_module_zone('wiki')) . ':wiki',
+            'archive_url' => (($zone !== null) ? $zone : get_module_zone('wiki')) . ':wiki',
 
             'support_url_monikers' => false,
 
@@ -123,6 +123,6 @@ class Hook_content_meta_aware_wiki_post
     {
         require_code('wiki');
 
-        return render_wiki_post_box($row, $zone, $give_context, $include_breadcrumbs, is_null($root) ? null : intval($root), $guid);
+        return render_wiki_post_box($row, $zone, $give_context, $include_breadcrumbs, ($root === null) ? null : intval($root), $guid);
     }
 }

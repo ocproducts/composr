@@ -75,10 +75,10 @@ function cns_create_selection_list_topic_tree($it = null)
  */
 function cns_get_topic_tree($forum_id = null, $breadcrumbs = null, $title = null, $levels = null)
 {
-    if (is_null($forum_id)) {
+    if ($forum_id === null) {
         $forum_id = db_get_first_id();
     }
-    if (is_null($breadcrumbs)) {
+    if ($breadcrumbs === null) {
         $breadcrumbs = '';
     }
 
@@ -87,7 +87,7 @@ function cns_get_topic_tree($forum_id = null, $breadcrumbs = null, $title = null
     }
 
     // Put our title onto our breadcrumbs
-    if (is_null($title)) {
+    if ($title === null) {
         $title = $GLOBALS['FORUM_DB']->query_select_value('f_forums', 'f_name', array('id' => $forum_id));
     }
     $breadcrumbs .= $title;
@@ -121,7 +121,7 @@ function cns_get_topic_tree($forum_id = null, $breadcrumbs = null, $title = null
             $child_title = $child['f_name'];
             $child_breadcrumbs = $breadcrumbs;
 
-            $child_children = cns_get_topic_tree($child_id, $child_breadcrumbs, $child_title, is_null($levels) ? null : max(0, $levels - 1));
+            $child_children = cns_get_topic_tree($child_id, $child_breadcrumbs, $child_title, ($levels === null) ? null : max(0, $levels - 1));
 
             $children = array_merge($children, $child_children);
         }
@@ -160,7 +160,7 @@ function create_selection_list_forum_tree($member_id = null, $base_forum = null,
         }
 
         $selected = false;
-        if (!is_null($selected_forum)) {
+        if ($selected_forum !== null) {
             foreach ($selected_forum as $s) {
                 if ((is_integer($s)) && ($s == $t['id'])) {
                     $selected = true;
@@ -209,12 +209,12 @@ function cns_get_forum_tree($member_id = null, $base_forum = null, $breadcrumbs 
 
     static $forum_tree_secure_cache = null;
 
-    if (is_null($member_id)) {
+    if ($member_id === null) {
         $member_id = get_member();
     }
 
-    if (is_null($forum_details)) {
-        if (is_null($base_forum)) {
+    if ($forum_details === null) {
+        if ($base_forum === null) {
             $forum_details = array('f_order_sub_alpha' => 0); // Optimisation
         } else {
             $_forum_details = $GLOBALS['FORUM_DB']->query_select('f_forums', array('f_order_sub_alpha'), array('id' => $base_forum), '', 1);
@@ -229,15 +229,15 @@ function cns_get_forum_tree($member_id = null, $base_forum = null, $breadcrumbs 
     $out = array();
     $order = $order_sub_alpha ? 'f_name' : 'f_position,id';
     $forums = array();
-    if (is_null($forum_tree_secure_cache)) {
+    if ($forum_tree_secure_cache === null) {
         $forum_tree_secure_cache = mixed();
         $num_forums = $GLOBALS['FORUM_DB']->query_select_value('f_forums', 'COUNT(*)');
         $forum_tree_secure_cache = ($num_forums >= 300); // Mark it as 'huge'
     }
     if ($forum_tree_secure_cache === true) {
-        $forums = $GLOBALS['FORUM_DB']->query('SELECT id,f_order_sub_alpha,f_name,f_forum_grouping_id,f_parent_forum,f_position,f_cache_last_time FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forums WHERE id IS NOT NULL AND ' . db_string_equal_to('f_redirection', '') . ' AND ' . (is_null($base_forum) ? 'f_parent_forum IS NULL' : ('f_parent_forum=' . strval($base_forum))) . ' ORDER BY f_position,f_name', intval(get_option('general_safety_listing_limit'))/*reasonable limit*/);
+        $forums = $GLOBALS['FORUM_DB']->query('SELECT id,f_order_sub_alpha,f_name,f_forum_grouping_id,f_parent_forum,f_position,f_cache_last_time FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forums WHERE id IS NOT NULL AND ' . db_string_equal_to('f_redirection', '') . ' AND ' . (($base_forum === null) ? 'f_parent_forum IS NULL' : ('f_parent_forum=' . strval($base_forum))) . ' ORDER BY f_position,f_name', intval(get_option('general_safety_listing_limit'))/*reasonable limit*/);
     } else {
-        if ((is_null($forum_tree_secure_cache)) || ($forum_tree_secure_cache === false)) {
+        if (($forum_tree_secure_cache === null) || ($forum_tree_secure_cache === false)) {
             $forum_tree_secure_cache = $GLOBALS['FORUM_DB']->query('SELECT id,f_order_sub_alpha,f_name,f_forum_grouping_id,f_parent_forum,f_position,f_cache_last_time FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forums WHERE id IS NOT NULL AND ' . db_string_equal_to('f_redirection', '') . ' ORDER BY f_position,f_name');
         }
         foreach ($forum_tree_secure_cache as $x) {
@@ -251,13 +251,13 @@ function cns_get_forum_tree($member_id = null, $base_forum = null, $breadcrumbs 
     $child_breadcrumbs = ($breadcrumbs == '') ? '' : ($breadcrumbs . ' > ');
     foreach ($forums as $forum) {
         $access = has_category_access($member_id, 'forums', strval($forum['id']));
-        $cat_sort_key = '!' . (is_null($forum['f_forum_grouping_id']) ? '' : strval($forum['f_forum_grouping_id']));
+        $cat_sort_key = '!' . (($forum['f_forum_grouping_id'] === null) ? '' : strval($forum['f_forum_grouping_id']));
 
         if (($access) && ($skip !== $forum['id']) && ($levels !== 0)) {
             $cat_bit = '';
-            if (!is_null($forum['f_forum_grouping_id'])) {
+            if ($forum['f_forum_grouping_id'] !== null) {
                 static $forum_groupings_titles_cache = null;
-                if (is_null($forum_groupings_titles_cache)) {
+                if ($forum_groupings_titles_cache === null) {
                     $forum_groupings_titles_cache = collapse_2d_complexity('id', 'c_title', $GLOBALS['FORUM_DB']->query_select('f_forum_groupings', array('id', 'c_title')));
                 }
                 $cat_bit = array_key_exists($forum['f_forum_grouping_id'], $forum_groupings_titles_cache) ? $forum_groupings_titles_cache[$forum['f_forum_grouping_id']] : do_lang('NA');

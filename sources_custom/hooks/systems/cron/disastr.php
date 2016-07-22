@@ -37,14 +37,14 @@ class Hook_cron_disastr
 
         // get just disease that should spead and are enabled
         $diseases_to_spread = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'diseases WHERE (last_spread_time<(' . strval(time()) . '-(spread_rate*60*60)) OR  last_spread_time=0) AND enabled=1', null, null, true);
-        if (is_null($diseases_to_spread)) {
+        if ($diseases_to_spread === null) {
             return; // Missing table
         }
 
         foreach ($diseases_to_spread as $disease) {
             // select infected by the disease members
             $sick_by_disease_members = $GLOBALS['SITE_DB']->query_select('members_diseases', array('member_id'), array('sick' => 1, 'disease_id' => $disease['id']), '', null, null, true);
-            if (is_null($sick_by_disease_members)) {
+            if ($sick_by_disease_members === null) {
                 return; // Missing table
             }
 

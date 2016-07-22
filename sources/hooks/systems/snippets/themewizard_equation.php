@@ -46,11 +46,11 @@ class Hook_snippet_themewizard_equation
 
         $colours = calculate_theme($seed, $theme, 'equations', 'colours', $dark);
         $parsed_equation = parse_css_colour_expression($equation);
-        if (is_null($parsed_equation)) {
+        if ($parsed_equation === null) {
             return make_string_tempcode('');
         }
         $answer = execute_css_colour_expression($parsed_equation, $colours[0]);
-        if (is_null($answer)) {
+        if ($answer === null) {
             return make_string_tempcode('');
         }
 

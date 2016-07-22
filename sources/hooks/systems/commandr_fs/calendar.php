@@ -209,7 +209,7 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
         list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
-        if (is_null($category)) {
+        if ($category === null) {
             return false; // Folder not found
         }
 
@@ -254,7 +254,7 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
         $timezone = $this->_default_property_str($properties, 'timezone');
         $do_timezone_conv = $this->_default_property_int($properties, 'do_timezone_conv');
         $validated = $this->_default_property_int_null($properties, 'validated');
-        if (is_null($validated)) {
+        if ($validated === null) {
             $validated = 1;
         }
         $allow_rating = $this->_default_property_int_modeavg($properties, 'allow_rating', 'calendar_events', 1);
@@ -354,7 +354,7 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
         list($properties,) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
-        if (is_null($category)) {
+        if ($category === null) {
             return false; // Folder not found
         }
 
@@ -400,7 +400,7 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
         $timezone = $this->_default_property_str($properties, 'timezone');
         $do_timezone_conv = $this->_default_property_int($properties, 'do_timezone_conv');
         $validated = $this->_default_property_int_null($properties, 'validated');
-        if (is_null($validated)) {
+        if ($validated === null) {
             $validated = 1;
         }
         $allow_rating = $this->_default_property_int_modeavg($properties, 'allow_rating', 'calendar_events', 1);

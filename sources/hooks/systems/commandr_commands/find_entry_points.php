@@ -56,7 +56,7 @@ class Hook_commandr_command_find_entry_points
                             } else {
                                 $object = object_factory('Module_' . filter_naughty_harsh($page), true);
                             }
-                            if ((!is_null($object)) && (method_exists($object, 'get_entry_points'))) {
+                            if (($object !== null) && (method_exists($object, 'get_entry_points'))) {
                                 $_entry_points = $object->get_entry_points();
                                 foreach ($_entry_points as $key => $_val) {
                                     $val = $_val[0];

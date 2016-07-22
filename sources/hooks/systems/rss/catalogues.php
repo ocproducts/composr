@@ -97,12 +97,12 @@ class Hook_rss_catalogues
 
                 $id = strval($row['id']);
                 $author = $GLOBALS['FORUM_DRIVER']->get_username($row['ce_submitter']);
-                if (is_null($author)) {
+                if ($author === null) {
                     $author = '';
                 }
 
                 $news_date = date($date_string, $row['ce_add_date']);
-                $edit_date = is_null($row['ce_edit_date']) ? '' : date($date_string, $row['ce_edit_date']);
+                $edit_date = ($row['ce_edit_date'] === null) ? '' : date($date_string, $row['ce_edit_date']);
 
                 $tpl_set = $_category['c_name'];
                 $map = get_catalogue_entry_map($row, $catalogues[$_category['c_name']], 'PAGE', $tpl_set, db_get_first_id());

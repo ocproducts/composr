@@ -44,7 +44,7 @@ class Hook_snippet_im_friends_rejig
         // Do an add action?
         $add = post_param_string('add');
         $add_member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($add);
-        if ((!is_null($add_member_id)) && (!is_guest($add_member_id))) {
+        if (($add_member_id !== null) && (!is_guest($add_member_id))) {
             if ($add_member_id != get_member()) {
                 require_code('chat');
                 if (!member_befriended($add_member_id)) {

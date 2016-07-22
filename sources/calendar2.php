@@ -63,17 +63,17 @@
  */
 function add_calendar_event($type, $recurrence, $recurrences, $seg_recurrences, $title, $content, $priority, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year = null, $end_month = null, $end_day = null, $end_monthly_spec_type = 'day_of_month', $end_hour = null, $end_minute = null, $timezone = null, $do_timezone_conv = 1, $member_calendar = null, $validated = 1, $allow_rating = 1, $allow_comments = 1, $allow_trackbacks = 1, $notes = '', $submitter = null, $views = 0, $add_time = null, $edit_time = null, $id = null, $meta_keywords = '', $meta_description = '', $regions = null)
 {
-    if (is_null($regions)) {
+    if ($regions === null) {
         $regions = array();
     }
-    if (is_null($submitter)) {
+    if ($submitter === null) {
         $submitter = get_member();
     }
-    if (is_null($add_time)) {
+    if ($add_time === null) {
         $add_time = time();
     }
 
-    if (is_null($timezone)) {
+    if ($timezone === null) {
         $timezone = get_users_timezone();
     }
 
@@ -128,7 +128,7 @@ function add_calendar_event($type, $recurrence, $recurrences, $seg_recurrences, 
         $map['e_content__source_user'] = get_member();
     }
     $map += insert_lang_comcode('e_title', $title, 2);
-    if (!is_null($id)) {
+    if ($id !== null) {
         $map['id'] = $id;
     }
     $id = $GLOBALS['SITE_DB']->query_insert('calendar_events', $map, true);
@@ -242,10 +242,10 @@ function add_calendar_event($type, $recurrence, $recurrences, $seg_recurrences, 
  */
 function edit_calendar_event($id, $type, $recurrence, $recurrences, $seg_recurrences, $title, $content, $priority, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year, $end_month, $end_day, $end_monthly_spec_type, $end_hour, $end_minute, $timezone, $do_timezone_conv, $member_calendar, $meta_keywords, $meta_description, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $edit_time = null, $add_time = null, $views = null, $submitter = null, $regions = null, $null_is_literal = false)
 {
-    if (is_null($regions)) {
+    if ($regions === null) {
         $regions = array();
     }
-    if (is_null($edit_time)) {
+    if ($edit_time === null) {
         $edit_time = $null_is_literal ? null : time();
     }
 
@@ -312,17 +312,17 @@ function edit_calendar_event($id, $type, $recurrence, $recurrences, $seg_recurre
     $update_map += lang_remap_comcode('e_title', $myrow['e_title'], $title);
     $update_map += update_lang_comcode_attachments('e_content', $myrow['e_content'], $content, 'calendar', strval($id), null, $myrow['e_submitter']);
 
-    if (!is_null($validated)) {
+    if ($validated !== null) {
         $update_map['validated'] = $validated;
     }
     $update_map['e_edit_date'] = $edit_time;
-    if (!is_null($add_time)) {
+    if ($add_time !== null) {
         $update_map['e_add_date'] = $add_time;
     }
-    if (!is_null($views)) {
+    if ($views !== null) {
         $update_map['e_views'] = $views;
     }
-    if (!is_null($submitter)) {
+    if ($submitter !== null) {
         $update_map['e_submitter'] = $submitter;
     }
 
@@ -354,7 +354,7 @@ function edit_calendar_event($id, $type, $recurrence, $recurrences, $seg_recurre
     }
 
     if ($member_calendar !== null) {
-        if (!is_null($submitter)) {
+        if ($submitter !== null) {
             $myrow['e_submitter'] = $submitter;
         }
         if ($member_calendar != $myrow['e_submitter']) {
@@ -423,7 +423,7 @@ function delete_calendar_event($id)
     delete_lang($myrow['e_title']);
     require_code('attachments2');
     require_code('attachments3');
-    if (!is_null($myrow['e_content'])) {
+    if ($myrow['e_content'] !== null) {
         delete_lang_comcode_attachments($myrow['e_content'], 'e_content', strval($id));
     }
 
@@ -565,7 +565,7 @@ function delete_event_type($id)
     $myrow = $myrows[0];
 
     $lowest = $GLOBALS['SITE_DB']->query_value_if_there('SELECT MIN(id) FROM ' . get_table_prefix() . 'calendar_types WHERE id<>' . strval($id) . ' AND id<>' . strval(db_get_first_id()));
-    if (is_null($lowest)) {
+    if ($lowest === null) {
         warn_exit(do_lang_tempcode('NO_DELETE_LAST_CATEGORY', 'calendar_type'));
     }
     $GLOBALS['SITE_DB']->query_update('calendar_events', array('e_type' => $lowest), array('e_type' => $id));

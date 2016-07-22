@@ -112,7 +112,7 @@ function clean_file_size($bytes)
         return '-' . clean_file_size(-$bytes);
     }
 
-    if (is_null($bytes)) {
+    if ($bytes === null) {
         return do_lang('UNKNOWN') . ' bytes';
     }
     if (floatval($bytes) > 2.0 * 1024.0 * 1024.0 * 1024.0) {
@@ -147,7 +147,7 @@ function better_parse_ini_file($filename, $file = null)
 {
     // NB: 'file()' function not used due to slowness compared to file_get_contents then explode
 
-    if (is_null($file)) {
+    if ($file === null) {
         global $FILE_ARRAY;
         if (@is_array($FILE_ARRAY)) {
             $file = file_array_get($filename);

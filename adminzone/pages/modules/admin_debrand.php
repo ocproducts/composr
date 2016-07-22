@@ -85,7 +85,7 @@ class Module_admin_debrand
      */
     public function run()
     {
-        if (!is_null($GLOBALS['CURRENT_SHARE_USER'])) {
+        if ($GLOBALS['CURRENT_SHARE_USER'] !== null) {
             warn_exit(do_lang_tempcode('SHARED_INSTALL_PROHIBIT'));
         }
 
@@ -112,12 +112,12 @@ class Module_admin_debrand
         require_code('form_templates');
 
         $rebrand_name = get_value('rebrand_name');
-        if (is_null($rebrand_name)) {
+        if ($rebrand_name === null) {
             $rebrand_name = 'Composr';
         }
         $rebrand_base_url = get_brand_base_url();
         $company_name = get_value('company_name');
-        if (is_null($company_name)) {
+        if ($company_name === null) {
             $company_name = 'ocProducts';
         }
         $keyboard_map = file_exists(get_file_base() . '/pages/comcode/' . get_site_default_lang() . '/keymap.txt') ? file_get_contents(get_file_base() . '/pages/comcode/' . get_site_default_lang() . '/keymap.txt') : file_get_contents(get_file_base() . '/pages/comcode/' . fallback_lang() . '/keymap.txt');
@@ -168,7 +168,7 @@ class Module_admin_debrand
     {
         require_code('config2');
 
-        if (is_null($GLOBALS['CURRENT_SHARE_USER'])) { // Only if not a shared install
+        if ($GLOBALS['CURRENT_SHARE_USER'] === null) { // Only if not a shared install
             require_code('abstract_file_manager');
             force_have_afm_details();
         }
@@ -237,7 +237,7 @@ class Module_admin_debrand
             sync_file($start_path);
         }
 
-        if (is_null($GLOBALS['CURRENT_SHARE_USER'])) { // Only if not a shared install
+        if ($GLOBALS['CURRENT_SHARE_USER'] === null) { // Only if not a shared install
             $critical_errors = file_get_contents(get_file_base() . '/sources/critical_errors.php');
             $critical_errors = str_replace('Composr', addslashes(post_param_string('rebrand_name')), $critical_errors);
             $critical_errors = str_replace('http://compo.sr', addslashes(post_param_string('rebrand_base_url')), $critical_errors);

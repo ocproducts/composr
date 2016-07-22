@@ -170,7 +170,7 @@ class Module_admin_points
     public function points_export()
     {
         $d = array(post_param_date('from', true), post_param_date('to', true));
-        if (is_null($d[0])) {
+        if ($d[0] === null) {
             return $this->_get_between($this->title);
         }
         list($from, $to) = $d;
@@ -216,14 +216,14 @@ class Module_admin_points
             } else {
                 $to_name = $GLOBALS['FORUM_DRIVER']->get_username($myrow['gift_to']);
                 $to_url = build_url(array('page' => 'points', 'type' => 'member', 'id' => $myrow['gift_to']), get_module_zone('points'));
-                $to = is_null($to_name) ? do_lang_tempcode('UNKNOWN_EM') : hyperlink($to_url, $to_name, false, true);
+                $to = ($to_name === null) ? do_lang_tempcode('UNKNOWN_EM') : hyperlink($to_url, $to_name, false, true);
             }
             if (is_guest($myrow['gift_from'])) {
                 $from = do_lang_tempcode('USER_SYSTEM');
             } else {
                 $from_name = $GLOBALS['FORUM_DRIVER']->get_username($myrow['gift_from']);
                 $from_url = build_url(array('page' => 'points', 'type' => 'member', 'id' => $myrow['gift_from']), get_module_zone('points'));
-                $from = is_null($from_name) ? do_lang_tempcode('UNKNOWN_EM') : hyperlink($from_url, $from_name, false, true);
+                $from = ($from_name === null) ? do_lang_tempcode('UNKNOWN_EM') : hyperlink($from_url, $from_name, false, true);
             }
 
             $delete_url = build_url(array('page' => '_SELF', 'type' => 'reverse', 'redirect' => get_self_url(true)), '_SELF');
@@ -266,10 +266,10 @@ class Module_admin_points
         if ($confirm == 0) {
             $_sender_id = (is_guest($sender_id)) ? get_site_name() : $GLOBALS['FORUM_DRIVER']->get_username($sender_id);
             $_recipient_id = (is_guest($recipient_id)) ? get_site_name() : $GLOBALS['FORUM_DRIVER']->get_username($recipient_id);
-            if (is_null($_sender_id)) {
+            if ($_sender_id === null) {
                 $_sender_id = do_lang('UNKNOWN');
             }
-            if (is_null($_recipient_id)) {
+            if ($_recipient_id === null) {
                 $_recipient_id = do_lang('UNKNOWN');
             }
             $preview = do_lang_tempcode('ARE_YOU_SURE_REVERSE', escape_html(integer_format($amount)), escape_html($_sender_id), escape_html($_recipient_id));
@@ -281,7 +281,7 @@ class Module_admin_points
 
         // Show it worked / Refresh
         $url = get_param_string('redirect', null);
-        if (is_null($url)) {
+        if ($url === null) {
             $_url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');
             $url = $_url->evaluate();
         }
@@ -304,14 +304,14 @@ class Module_admin_points
         $left = available_points($member);
 
         $username = $GLOBALS['FORUM_DRIVER']->get_username($member);
-        if (is_null($username)) {
+        if ($username === null) {
             $username = do_lang('UNKNOWN');
         }
         $text = do_lang_tempcode('MEMBER_HAS_BEEN_CHARGED', escape_html($username), escape_html(integer_format($amount)), escape_html(integer_format($left)));
 
         // Show it worked / Refresh
         $url = get_param_string('redirect', null);
-        if (is_null($url)) {
+        if ($url === null) {
             $_url = build_url(array('page' => 'points', 'type' => 'member', 'id' => $member), get_module_zone('points'));
             $url = $_url->evaluate();
         }

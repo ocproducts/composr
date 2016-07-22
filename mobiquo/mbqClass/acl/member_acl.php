@@ -33,7 +33,7 @@ class CMSMemberACL
         $feedback = $GLOBALS['FORUM_DRIVER']->forum_authorise_login($username, null, md5($password), $password);
 
         $id = $feedback['id'];
-        if (!is_null($id)) {
+        if ($id !== null) {
             $this->set_auth($id, $invisible);
 
             return $id;

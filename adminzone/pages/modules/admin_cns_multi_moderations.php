@@ -173,7 +173,7 @@ class Module_admin_cns_multi_moderations extends Standard_crud_module
             $ticket_forum_id = mixed();
         }
         require_code('cns_general_action2');
-        $fields->attach(cns_get_forum_multi_code_field(is_null($ticket_forum_id) ? '' : ('+' . strval($ticket_forum_id))));
+        $fields->attach(cns_get_forum_multi_code_field(($ticket_forum_id === null) ? '' : ('+' . strval($ticket_forum_id))));
 
         $text = paragraph(do_lang_tempcode('DESCRIPTION_IMPORT_STOCK_RESPONSES'));
 
@@ -313,14 +313,14 @@ class Module_admin_cns_multi_moderations extends Standard_crud_module
         $fields = new Tempcode();
         $fields->attach(form_input_line(do_lang_tempcode('NAME'), do_lang_tempcode('DESCRIPTION_NAME'), 'name', $name, true));
         $fields->attach(form_input_text_comcode(do_lang_tempcode('FORUM_POST'), do_lang_tempcode('DESCRIPTION_MULTI_MODERATION_POST'), 'post_text', $post_text, false));
-        $fields->attach(form_input_tree_list(do_lang_tempcode('DESTINATION'), do_lang_tempcode('DESCRIPTION_DESTINATION_FORUM'), 'move_to', null, 'choose_forum', array(), false, is_null($move_to) ? null : strval($move_to)));
+        $fields->attach(form_input_tree_list(do_lang_tempcode('DESTINATION'), do_lang_tempcode('DESCRIPTION_DESTINATION_FORUM'), 'move_to', null, 'choose_forum', array(), false, ($move_to === null) ? null : strval($move_to)));
         $pin_state_list = new Tempcode();
-        $pin_state_list->attach(form_input_radio_entry('pin_state', '-1', is_null($pin_state), do_lang_tempcode('NA_EM')));
+        $pin_state_list->attach(form_input_radio_entry('pin_state', '-1', ($pin_state === null), do_lang_tempcode('NA_EM')));
         $pin_state_list->attach(form_input_radio_entry('pin_state', '0', $pin_state === 0, do_lang_tempcode('UNPIN_TOPIC')));
         $pin_state_list->attach(form_input_radio_entry('pin_state', '1', $pin_state === 1, do_lang_tempcode('PIN_TOPIC')));
         $fields->attach(form_input_radio(do_lang_tempcode('PIN_STATE'), do_lang_tempcode('DESCRIPTION_PIN_STATE'), 'pin_state', $pin_state_list));
         $open_state_list = new Tempcode();
-        $open_state_list->attach(form_input_radio_entry('open_state', '-1', is_null($open_state), do_lang_tempcode('NA_EM')));
+        $open_state_list->attach(form_input_radio_entry('open_state', '-1', ($open_state === null), do_lang_tempcode('NA_EM')));
         $open_state_list->attach(form_input_radio_entry('open_state', '0', $open_state === 0, do_lang_tempcode('CLOSE_TOPIC')));
         $open_state_list->attach(form_input_radio_entry('open_state', '1', $open_state === 1, do_lang_tempcode('OPEN_TOPIC')));
         $fields->attach(form_input_radio(do_lang_tempcode('OPEN_STATE'), do_lang_tempcode('DESCRIPTION_OPEN_STATE'), 'open_state', $open_state_list));
@@ -368,7 +368,7 @@ class Module_admin_cns_multi_moderations extends Standard_crud_module
         list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering);
         foreach ($rows as $row) {
             $pin_state = do_lang_tempcode('NA_EM');
-            if (!is_null($row['mm_pin_state'])) {
+            if ($row['mm_pin_state'] !== null) {
                 switch ($row['mm_pin_state']) {
                     case 0:
                         $pin_state = do_lang_tempcode('UNPIN_TOPIC');
@@ -379,7 +379,7 @@ class Module_admin_cns_multi_moderations extends Standard_crud_module
                 }
             }
             $open_state = do_lang_tempcode('NA_EM');
-            if (!is_null($row['mm_open_state'])) {
+            if ($row['mm_open_state'] !== null) {
                 switch ($row['mm_open_state']) {
                     case 0:
                         $open_state = do_lang_tempcode('CLOSE_TOPIC');
@@ -390,8 +390,8 @@ class Module_admin_cns_multi_moderations extends Standard_crud_module
                 }
             }
 
-            $destination = is_null($row['mm_move_to']) ? null : $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forums', 'f_name', array('id' => $row['mm_move_to']));
-            if (is_null($destination)) {
+            $destination = ($row['mm_move_to'] === null) ? null : $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forums', 'f_name', array('id' => $row['mm_move_to']));
+            if ($destination === null) {
                 $destination = do_lang_tempcode('NA_EM');
             }
 

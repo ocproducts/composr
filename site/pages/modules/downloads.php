@@ -81,7 +81,7 @@ class Module_downloads
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             require_lang('downloads');
 
             $GLOBALS['SITE_DB']->create_table('download_categories', array(
@@ -169,7 +169,7 @@ class Module_downloads
             ));
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 8)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 8)) {
             $GLOBALS['SITE_DB']->add_table_field('download_downloads', 'url_redirect', 'URLPATH');
 
             $GLOBALS['SITE_DB']->alter_table_field('download_downloads', 'comments', 'LONG_TRANS', 'additional_details');
@@ -181,7 +181,7 @@ class Module_downloads
             $GLOBALS['SITE_DB']->delete_index_if_exists('download_downloads', 'ftjoin_dcomments');
         }
 
-        if ((is_null($upgrade_from)) || ($upgrade_from < 8)) {
+        if (($upgrade_from === null) || ($upgrade_from < 8)) {
             $GLOBALS['SITE_DB']->create_index('download_categories', '#dl_cat_search__combined', array('category', 'description'));
             $GLOBALS['SITE_DB']->create_index('download_downloads', '#dl_search__combined', array('original_filename', 'download_data_mash'));
 
@@ -656,7 +656,7 @@ class Module_downloads
         );
 
         // Views
-        if ((get_db_type() != 'xml') && (get_value('no_view_counts') !== '1') && (is_null(get_bot_type()))) {
+        if ((get_db_type() != 'xml') && (get_value('no_view_counts') !== '1') && (get_bot_type() === null)) {
             $myrow['download_views']++;
             if (!$GLOBALS['SITE_DB']->table_is_locked('download_downloads')) {
                 $GLOBALS['SITE_DB']->query_update('download_downloads', array('download_views' => $myrow['download_views']), array('id' => $id), '', 1, null, false, true);
@@ -697,7 +697,7 @@ class Module_downloads
         }
 
         // Outmoding
-        if (!is_null($myrow['out_mode_id'])) {
+        if ($myrow['out_mode_id'] !== null) {
             $outmode_url = build_url(array('page' => '_SELF', 'type' => 'entry', 'id' => $myrow['out_mode_id']), '_SELF');
         } else {
             $outmode_url = new Tempcode();
@@ -710,7 +710,7 @@ class Module_downloads
         $additional_details = get_translated_tempcode('download_downloads', $myrow, 'additional_details');
 
         // Edit date
-        if (!is_null($myrow['edit_date'])) {
+        if ($myrow['edit_date'] !== null) {
             $edit_date = make_string_tempcode(get_timezoned_date($myrow['edit_date']));
         } else {
             $edit_date = new Tempcode();
@@ -725,9 +725,9 @@ class Module_downloads
         $licence_url = null;
         $licence_hyperlink = null;
         $licence = $myrow['download_licence'];
-        if (!is_null($licence)) {
+        if ($licence !== null) {
             $licence_title = $GLOBALS['SITE_DB']->query_select_value_if_there('download_licences', 'l_title', array('id' => $licence));
-            if (!is_null($licence_title)) {
+            if ($licence_title !== null) {
                 $keep = symbol_tempcode('KEEP');
                 $licence_url = find_script('download_licence') . '?id=' . strval($licence) . $keep->evaluate();
                 $licence_hyperlink = do_template('HYPERLINK_POPUP_WINDOW', array('_GUID' => '10582f28c37ee7e9e462fdbd6a2cb8dd', 'TITLE' => '', 'CAPTION' => $licence_title, 'URL' => $licence_url, 'WIDTH' => '600', 'HEIGHT' => '500', 'REL' => 'license'));
@@ -748,12 +748,12 @@ class Module_downloads
             'URL' => $myrow['url'],
             'NUM_IMAGES' => strval($num_images),
             'TAGS' => get_loaded_tags('downloads'),
-            'LICENCE' => is_null($licence) ? null : strval($licence),
+            'LICENCE' => ($licence === null) ? null : strval($licence),
             'LICENCE_TITLE' => $licence_title,
             'LICENCE_HYPERLINK' => $licence_hyperlink,
             'SUBMITTER' => strval($myrow['submitter']),
             'EDIT_DATE' => $edit_date,
-            'EDIT_DATE_RAW' => is_null($myrow['edit_date']) ? '' : strval($myrow['edit_date']),
+            'EDIT_DATE_RAW' => ($myrow['edit_date'] === null) ? '' : strval($myrow['edit_date']),
             'VIEWS' => integer_format($myrow['download_views']),
             'NAME' => $name,
             'DATE' => $add_date,

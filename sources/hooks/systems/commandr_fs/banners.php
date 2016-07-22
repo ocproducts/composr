@@ -230,7 +230,7 @@ class Hook_commandr_fs_banners extends Resource_fs_base
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
         list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
-        if (is_null($category)) {
+        if ($category === null) {
             return false; // Folder not found
         }
 
@@ -248,7 +248,7 @@ class Hook_commandr_fs_banners extends Resource_fs_base
         $expiry_date = $this->_default_property_time_null($properties, 'expiry_date');
         $submitter = $this->_default_property_member($properties, 'submitter');
         $validated = $this->_default_property_int_null($properties, 'validated');
-        if (is_null($validated)) {
+        if ($validated === null) {
             $validated = 1;
         }
         $b_type = $category;
@@ -326,7 +326,7 @@ class Hook_commandr_fs_banners extends Resource_fs_base
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
         list($properties,) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
-        if (is_null($category)) {
+        if ($category === null) {
             return false; // Folder not found
         }
 
@@ -345,7 +345,7 @@ class Hook_commandr_fs_banners extends Resource_fs_base
         $expiry_date = $this->_default_property_time_null($properties, 'expiry_date');
         $submitter = $this->_default_property_member($properties, 'submitter');
         $validated = $this->_default_property_int_null($properties, 'validated');
-        if (is_null($validated)) {
+        if ($validated === null) {
             $validated = 1;
         }
         $b_type = $category;

@@ -40,7 +40,7 @@ class Hook_checklist_iotds
         $limit_hours = intval(get_option('iotd_update_time'));
 
         $seconds_ago = mixed();
-        if (!is_null($date)) {
+        if ($date !== null) {
             $seconds_ago = time() - $date;
             $status = ($seconds_ago > $limit_hours * 60 * 60) ? 0 : 1;
         } else {
@@ -68,7 +68,7 @@ class Hook_checklist_iotds
     public function get_num_iotd_queue()
     {
         $c = $GLOBALS['SITE_DB']->query_select_value_if_there('iotd', 'COUNT(*)', array('is_current' => 0, 'used' => 0));
-        if (is_null($c)) {
+        if ($c === null) {
             return 0;
         }
         return $c;

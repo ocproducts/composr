@@ -161,7 +161,7 @@ function gd_text_script()
             $previous = mixed();
             $nxpos = 0;
             for ($i = 0; $i < strlen($text); $i++) {
-                if (!is_null($previous)) { // check for existing previous character
+                if ($previous !== null) { // check for existing previous character
                     list(, , $rx1, , $rx2) = imagettfbbox(floatval($font_size * $scale), 0.0, $font, $previous);
                     $nxpos += max($rx1, $rx2) + 3;
                 }
@@ -280,7 +280,7 @@ function cron_bridge_script($caller)
 
     // For multi-site installs, run for each install
     global $CURRENT_SHARE_USER, $SITE_INFO;
-    if ((is_null($CURRENT_SHARE_USER)) && (!empty($SITE_INFO['custom_share_domain']))) {
+    if (($CURRENT_SHARE_USER === null) && (!empty($SITE_INFO['custom_share_domain']))) {
         require_code('files');
 
         foreach ($SITE_INFO as $key => $val) {
@@ -311,18 +311,18 @@ function cron_bridge_script($caller)
             continue;
         }
 
-        if (!is_null($log_file)) {
+        if ($log_file !== null) {
             fwrite($log_file, date('Y-m-d H:i:s') . '  STARTING ' . $hook . "\n");
         }
 
         $object->run();
 
-        if (!is_null($log_file)) {
+        if ($log_file !== null) {
             fwrite($log_file, date('Y-m-d H:i:s') . '  FINISHED ' . $hook . "\n");
         }
     }
 
-    if (!is_null($log_file)) {
+    if ($log_file !== null) {
         fclose($log_file);
     }
 

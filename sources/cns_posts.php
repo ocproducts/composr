@@ -42,7 +42,7 @@ function init__cns_posts()
  */
 function cns_may_post_in_topic($forum_id, $topic_id, $last_member_id = null, $closed = false, $member_id = null, $will_be_private_post = false)
 {
-    if (is_null($member_id)) {
+    if ($member_id === null) {
         $member_id = get_member();
     }
 
@@ -51,14 +51,14 @@ function cns_may_post_in_topic($forum_id, $topic_id, $last_member_id = null, $cl
         return false;
     }
 
-    if (is_null($forum_id)) {
+    if ($forum_id === null) {
         return true; // A private topic
     }
 
     if (!has_privilege($member_id, 'submit_lowrange_content', 'topics', array('forums', $forum_id, 'topics', $topic_id))) {
         return false;
     }
-    if (is_null($last_member_id)) {
+    if ($last_member_id === null) {
         return true;
     }
     if (($last_member_id == $member_id) && (!$will_be_private_post)) {
@@ -68,7 +68,7 @@ function cns_may_post_in_topic($forum_id, $topic_id, $last_member_id = null, $cl
     }
 
     $test = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_warnings WHERE (p_silence_from_topic=' . strval($topic_id) . ' OR p_silence_from_forum=' . strval($forum_id) . ') AND w_member_id=' . strval($member_id));
-    if (!is_null($test)) {
+    if ($test !== null) {
         return false;
     }
 
@@ -89,13 +89,13 @@ function cns_may_post_in_topic($forum_id, $topic_id, $last_member_id = null, $cl
  */
 function cns_may_edit_post_by($post_id, $post_time, $resource_owner, $forum_id, $member_id = null, $topic_is_closed = null, &$reason = null)
 {
-    if (is_null($member_id)) {
+    if ($member_id === null) {
         $member_id = get_member();
     }
 
     $reason = null;
 
-    if (is_null($post_time)) {
+    if ($post_time === null) {
         $posts = $GLOBALS['FORUM_DB']->query_select('f_posts p JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics t ON t.id=p.p_topic_id', array('p_time', 'p_poster', 'p_cache_forum_id', 't_is_open'), array('id' => $post_id), '', 1);
         if (!array_key_exists(0, $posts)) {
             $reason = do_lang('INTERNAL_ERROR');
@@ -107,7 +107,7 @@ function cns_may_edit_post_by($post_id, $post_time, $resource_owner, $forum_id, 
         $topic_is_closed = ($posts[0]['t_is_open'] == 0);
     }
 
-    if (is_null($forum_id)) {
+    if ($forum_id === null) {
         if (!has_privilege($member_id, 'moderate_personal_topic')) {
             if (($resource_owner != $member_id) || (!has_privilege($member_id, 'delete_personal_topic_posts'))) {
                 return false;
@@ -116,7 +116,7 @@ function cns_may_edit_post_by($post_id, $post_time, $resource_owner, $forum_id, 
     } else {
         $ticket_forum = get_option('ticket_forum_name', true);
         $comments_forum = get_option('comments_forum_name', true);
-        if ((is_null($ticket_forum)) || (($forum_id != $GLOBALS['FORUM_DRIVER']->forum_id_from_name($ticket_forum)) && ($forum_id != $GLOBALS['FORUM_DRIVER']->forum_id_from_name($comments_forum)))) {
+        if (($ticket_forum === null) || (($forum_id != $GLOBALS['FORUM_DRIVER']->forum_id_from_name($ticket_forum)) && ($forum_id != $GLOBALS['FORUM_DRIVER']->forum_id_from_name($comments_forum)))) {
             if (!has_category_access($member_id, 'forums', strval($forum_id))) {
                 return false;
             }
@@ -130,7 +130,7 @@ function cns_may_edit_post_by($post_id, $post_time, $resource_owner, $forum_id, 
         }
     }
 
-    if (!is_null($forum_id) || !has_privilege($member_id, 'moderate_personal_topic')) {
+    if ($forum_id !== null || !has_privilege($member_id, 'moderate_personal_topic')) {
         if (!has_edit_permission('low', $member_id, $resource_owner, 'topics', array('forums', $forum_id))) {
             return false;
         }
@@ -159,13 +159,13 @@ function cns_may_edit_post_by($post_id, $post_time, $resource_owner, $forum_id, 
  */
 function cns_may_delete_post_by($post_id, $post_time = null, $resource_owner, $forum_id, $member_id = null, $topic_is_closed = null, &$reason = null)
 {
-    if (is_null($member_id)) {
+    if ($member_id === null) {
         $member_id = get_member();
     }
 
     $reason = null;
 
-    if (is_null($post_time)) {
+    if ($post_time === null) {
         $posts = $GLOBALS['FORUM_DB']->query_select('f_posts p JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics t ON t.id=p.p_topic_id', array('p_time', 'p_poster', 'p_cache_forum_id', 't_is_open'), array('p.id' => $post_id), '', 1);
         if (!array_key_exists(0, $posts)) {
             $reason = do_lang('INTERNAL_ERROR');
@@ -177,7 +177,7 @@ function cns_may_delete_post_by($post_id, $post_time = null, $resource_owner, $f
         $topic_is_closed = ($posts[0]['t_is_open'] == 0);
     }
 
-    if (is_null($forum_id)) {
+    if ($forum_id === null) {
         if (!has_privilege($member_id, 'moderate_personal_topic')) {
             if (($resource_owner != $member_id) || (!has_privilege($member_id, 'delete_personal_topic_posts'))) {
                 return false;
@@ -186,14 +186,14 @@ function cns_may_delete_post_by($post_id, $post_time = null, $resource_owner, $f
     } else {
         $ticket_forum = get_option('ticket_forum_name', true);
         $comments_forum = get_option('comments_forum_name', true);
-        if ((is_null($ticket_forum)) || (($forum_id != $GLOBALS['FORUM_DRIVER']->forum_id_from_name($ticket_forum)) && ($forum_id != $GLOBALS['FORUM_DRIVER']->forum_id_from_name($comments_forum)))) {
+        if (($ticket_forum === null) || (($forum_id != $GLOBALS['FORUM_DRIVER']->forum_id_from_name($ticket_forum)) && ($forum_id != $GLOBALS['FORUM_DRIVER']->forum_id_from_name($comments_forum)))) {
             if (!has_category_access($member_id, 'forums', strval($forum_id))) {
                 return false;
             }
         }
     }
 
-    if (!is_null($forum_id) || !has_privilege($member_id, 'moderate_personal_topic')) {
+    if ($forum_id !== null || !has_privilege($member_id, 'moderate_personal_topic')) {
         if (!has_delete_permission('low', $member_id, $resource_owner, 'topics', array('forums', $forum_id))) {
             return false;
         }

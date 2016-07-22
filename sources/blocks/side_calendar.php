@@ -128,7 +128,7 @@ class Block_side_calendar
                     $priorities[$_day] = min($priorities[$_day], $event['e_priority']);
                 }
 
-                if (!is_null($to)) {
+                if ($to !== null) {
                     $test = date('d', $to);
                     $test2 = date('d', $from);
                     if (((intval($test) > intval($test2)) || (intval(date('m', $to)) != intval(date('m', $from))) || (intval(date('Y', $to)) != intval(date('Y', $from))))) {
@@ -230,7 +230,7 @@ class Block_side_calendar
 
             list($e_id, $event, $from, $to, $real_from, $real_to) = $happening;
 
-            if ((!is_null($to)) && ($to < $period_start)) {
+            if (($to !== null) && ($to < $period_start)) {
                 continue;
             }
             if ($real_from != $from) {
@@ -239,8 +239,8 @@ class Block_side_calendar
 
             // Because we looked 100 days before (to find stuff that might be doing a span), we need to do an extra check to see if stuff is actually in our true window
             $starts_within = (($real_from >= $period_start) && ($real_from < $period_end));
-            $ends_within = ((!is_null($to)) && ($real_to > $period_start) && ($real_to <= $period_end));
-            $spans = ((!is_null($to)) && ($real_from < $period_start) && ($real_to > $period_end));
+            $ends_within = (($to !== null) && ($real_to > $period_start) && ($real_to <= $period_end));
+            $spans = (($to !== null) && ($real_from < $period_start) && ($real_to > $period_end));
             if (!$starts_within && !$ends_within && !$spans) {
                 continue;
             }
@@ -272,13 +272,13 @@ class Block_side_calendar
             $days[$day_start]['EVENTS'][] = array(
                 'DESCRIPTION' => is_string($event['e_content']) ? protect_from_escaping($event['e_content']) : get_translated_tempcode('calendar_events', $just_event_row, 'e_content'),
                 'TIMESTAMP' => strval($real_from),
-                'TIME' => ($real_from != $from) ? do_lang('EVENT_CONTINUES') : (is_null($event['e_start_hour']) ? do_lang_tempcode('ALL_DAY_EVENT') : make_string_tempcode(get_timezoned_time($real_from, true, true))),
+                'TIME' => ($real_from != $from) ? do_lang('EVENT_CONTINUES') : (($event['e_start_hour'] === null) ? do_lang_tempcode('ALL_DAY_EVENT') : make_string_tempcode(get_timezoned_time($real_from, true, true))),
                 'TIME_RAW' => strval($real_from),
-                'FROM_DAY' => get_timezoned_date($real_from, !is_null($event['e_start_hour'])),
-                'TO_DAY' => is_null($real_to) ? null : get_timezoned_date($real_to, !is_null($event['e_end_hour'])),
-                'TO_DAY_RAW' => is_null($real_to) ? '' : strval($real_to),
+                'FROM_DAY' => get_timezoned_date($real_from, ($event['e_start_hour'] !== null)),
+                'TO_DAY' => ($real_to === null) ? null : get_timezoned_date($real_to, ($event['e_end_hour'] !== null)),
+                'TO_DAY_RAW' => ($real_to === null) ? '' : strval($real_to),
                 'TIME_VCAL' => date('Y-m-d', $real_from) . ' ' . date('H:i:s', $real_from),
-                'TO_TIME_VCAL' => is_null($real_to) ? null : (date('Y-m-d', $real_to) . ' ' . date('H:i:s', $real_to)),
+                'TO_TIME_VCAL' => ($real_to === null) ? null : (date('Y-m-d', $real_to) . ' ' . date('H:i:s', $real_to)),
                 'T_TITLE' => array_key_exists('t_title', $event) ? (is_string($event['t_title']) ? $event['t_title'] : get_translated_text($event['t_title'])) : 'RSS',
                 'TITLE' => is_string($event['e_title']) ? protect_from_escaping($title) : make_string_tempcode($title),
                 'VIEW_URL' => $view_url,
@@ -287,7 +287,7 @@ class Block_side_calendar
 
             $test = date('d', $to);
             $test2 = date('d', $from);
-            if ((!is_null($to)) && ((intval($test) > intval($test2)) || (intval(date('m', $to)) != intval(date('m', $from))) || (intval(date('Y', $to)) != intval(date('Y', $from))))) {
+            if (($to !== null) && ((intval($test) > intval($test2)) || (intval(date('m', $to)) != intval(date('m', $from))) || (intval(date('Y', $to)) != intval(date('Y', $from))))) {
                 $ntime = mktime(0, 0, 0, intval(date('m', $from)), intval($test2) + 1, intval(date('Y', $from)));
                 if ($ntime < $period_end) {
                     $happenings[] = array($e_id, $event, $ntime, $to, $real_from, $real_to);

@@ -61,7 +61,7 @@ function catalogue_from_tree($catalogue_name)
  */
 function actual_add_catalogue($name, $title, $description, $display_type, $is_tree, $notes, $submit_points, $ecommerce = 0, $send_view_reports = 'never', $default_review_freq = null, $add_time = null, $uniqify = false)
 {
-    if (is_null($add_time)) {
+    if ($add_time === null) {
         $add_time = time();
     }
 
@@ -72,7 +72,7 @@ function actual_add_catalogue($name, $title, $description, $display_type, $is_tr
 
     // Check doesn't already exist
     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_name', array('c_name' => $name));
-    if (!is_null($test)) {
+    if ($test !== null) {
         if ($uniqify) {
             $name .= '_' . uniqid('', false);
         } else {
@@ -166,9 +166,9 @@ function actual_add_catalogue($name, $title, $description, $display_type, $is_tr
  */
 function actual_add_catalogue_field($c_name, $name, $description = '', $type = 'short_text', $order = null, $defines_order = 0, $visible = 1, $searchable = 0, $default = '', $required = 0, $put_in_category = 1, $put_in_search = 1, $options = '', $id = null)
 {
-    if (is_null($order)) {
+    if ($order === null) {
         $order = $GLOBALS['SITE_DB']->query_select_value('catalogue_fields', 'MAX(cf_order)', array('c_name' => $c_name));
-        if (is_null($order)) {
+        if ($order === null) {
             $order = 0;
         } else {
             $order++;
@@ -198,11 +198,11 @@ function actual_add_catalogue_field($c_name, $name, $description = '', $type = '
     } else {
         $map += $description;
     }
-    if (!is_null($id)) {
+    if ($id !== null) {
         $map['id'] = $id;
     }
     $cf_id = $GLOBALS['SITE_DB']->query_insert('catalogue_fields', $map, true);
-    if (!is_null($id)) {
+    if ($id !== null) {
         $cf_id = $id;
     }
 
@@ -225,13 +225,13 @@ function actual_add_catalogue_field($c_name, $name, $description = '', $type = '
 
             $entry_map = array('cf_id' => $cf_id, 'ce_id' => $entry);
             if (strpos($_type, '_trans') !== false) {
-                $entry_map += insert_lang_comcode('cv_value', is_null($default) ? '' : $default, 3);
+                $entry_map += insert_lang_comcode('cv_value', ($default === null) ? '' : $default, 3);
             } elseif ($_type == 'float') {
-                $entry_map['cv_value'] = ((is_null($default)) || ($default == '')) ? null : floatval($default);
+                $entry_map['cv_value'] = (($default === null) || ($default == '')) ? null : floatval($default);
             } elseif ($_type == 'integer') {
-                $entry_map['cv_value'] = ((is_null($default)) || ($default == '')) ? null : intval($default);
+                $entry_map['cv_value'] = (($default === null) || ($default == '')) ? null : intval($default);
             } else {
-                $entry_map['cv_value'] = ((is_null($default)) || ($type == 'list')) ? '' : $default;
+                $entry_map['cv_value'] = (($default === null) || ($type == 'list')) ? '' : $default;
             }
             $GLOBALS['SITE_DB']->query_insert('catalogue_efv_' . $_type, $entry_map);
         }
@@ -265,7 +265,7 @@ function actual_edit_catalogue($old_name, $name, $title, $description, $display_
     if ($old_name != $name) {
         // Check doesn't already exist
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_name', array('c_name' => $name));
-        if (!is_null($test)) {
+        if ($test !== null) {
             if ($uniqify) {
                 $name .= '_' . uniqid('', false);
             } else {
@@ -300,7 +300,7 @@ function actual_edit_catalogue($old_name, $name, $title, $description, $display_
     );
     $update_map += lang_remap('c_title', $_title, $title);
     $update_map += lang_remap_comcode('c_description', $_description, $description);
-    if (!is_null($add_time)) {
+    if ($add_time !== null) {
         $update_map['c_add_date'] = $add_time;
     }
     $GLOBALS['SITE_DB']->query_update('catalogues', $update_map, array('c_name' => $old_name), '', 1);
@@ -446,13 +446,13 @@ function actual_edit_catalogue_field($id, $c_name, $name, $description, $order, 
         'cf_put_in_search' => $put_in_search,
         'cf_options' => $options,
     );
-    if (!is_null($type)) {
+    if ($type !== null) {
         $map['cf_type'] = $type;
     }
-    if (!is_null($name)) {
+    if ($name !== null) {
         $map += lang_remap('cf_name', $_name, $name);
     }
-    if (!is_null($description)) {
+    if ($description !== null) {
         $map += lang_remap('cf_description', $_description, $description);
     }
 
@@ -498,7 +498,7 @@ function actual_delete_catalogue_field($id)
  */
 function actual_add_catalogue_category($catalogue_name, $title, $description, $notes, $parent_id, $rep_image = '', $move_days_lower = 30, $move_days_higher = 60, $move_target = null, $order = null, $add_date = null, $id = null, $meta_keywords = '', $meta_description = '')
 {
-    if (is_null($add_date)) {
+    if ($add_date === null) {
         $add_date = time();
     }
 
@@ -507,9 +507,9 @@ function actual_add_catalogue_category($catalogue_name, $title, $description, $n
         prevent_double_submit('ADD_CATALOGUE_CATEGORY', null, $title);
     }
 
-    if (is_null($order)) {
+    if ($order === null) {
         $order = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'MAX(cc_order)', array('c_name' => $catalogue_name));
-        if (is_null($order)) {
+        if ($order === null) {
             $order = 0;
         } else
         {
@@ -538,7 +538,7 @@ function actual_add_catalogue_category($catalogue_name, $title, $description, $n
     } else {
         $map += $description;
     }
-    if (!is_null($id)) {
+    if ($id !== null) {
         $map['id'] = $id;
     }
     $id = $GLOBALS['SITE_DB']->query_insert('catalogue_categories', $map, true);
@@ -558,7 +558,7 @@ function actual_add_catalogue_category($catalogue_name, $title, $description, $n
         seo_meta_set_for_explicit('catalogue_category', strval($id), $meta_keywords, $meta_description);
     }
 
-    if (!is_null($parent_id)) {
+    if ($parent_id !== null) {
         require_code('notifications2');
         copy_notifications_to_new_child('catalogue_entry', strval($parent_id), strval($id));
     }
@@ -578,7 +578,7 @@ function actual_add_catalogue_category($catalogue_name, $title, $description, $n
         'SEARCH:catalogues:category:' . strval($id),
         $add_date,
         null,
-        is_null($parent_id) ? SITEMAP_IMPORTANCE_MEDIUM : SITEMAP_IMPORTANCE_LOW,
+        ($parent_id === null) ? SITEMAP_IMPORTANCE_MEDIUM : SITEMAP_IMPORTANCE_LOW,
         'weekly',
         has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'catalogues_catalogue', $catalogue_name) && has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'catalogues_category', strval($id))
     );
@@ -643,7 +643,7 @@ function store_in_catalogue_cat_treecache($id, $parent_id, $cleanup_first = true
     ));
 
     // Stored recursed referenced towards root
-    while (!is_null($parent_id)) {
+    while ($parent_id !== null) {
         $GLOBALS['SITE_DB']->query_insert('catalogue_cat_treecache', array(
             'cc_id' => $id,
             'cc_ancestor_id' => $parent_id,
@@ -660,7 +660,7 @@ function store_in_catalogue_cat_treecache($id, $parent_id, $cleanup_first = true
  */
 function calculate_category_child_count_cache($cat_id, $recursive_updates = true)
 {
-    if (is_null($cat_id)) {
+    if ($cat_id === null) {
         return;
     }
 
@@ -681,7 +681,7 @@ function calculate_category_child_count_cache($cat_id, $recursive_updates = true
 
     if ($recursive_updates) {
         $parent_id = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_categories', 'cc_parent_id', array('id' => $cat_id));
-        if (!is_null($parent_id)) {
+        if ($parent_id !== null) {
             calculate_category_child_count_cache($parent_id);
         }
     }
@@ -708,7 +708,7 @@ function calculate_category_child_count_cache($cat_id, $recursive_updates = true
 function actual_edit_catalogue_category($id, $title, $description, $notes, $parent_id, $meta_keywords, $meta_description, $rep_image, $move_days_lower, $move_days_higher, $move_target, $order, $add_time = null, $c_name = null)
 {
     $under_category_id = $parent_id;
-    while ((!is_null($under_category_id)) && ($under_category_id != INTEGER_MAGIC_NULL)) {
+    while (($under_category_id !== null) && ($under_category_id != INTEGER_MAGIC_NULL)) {
         if ($id == $under_category_id) {
             warn_exit(do_lang_tempcode('OWN_PARENT_ERROR', 'catalogue_category'));
         }
@@ -740,17 +740,17 @@ function actual_edit_catalogue_category($id, $title, $description, $notes, $pare
     $update_map += lang_remap('cc_title', $_title, $title);
     $update_map += lang_remap_comcode('cc_description', $_description, $description);
 
-    if (!is_null($rep_image)) {
+    if ($rep_image !== null) {
         $update_map['rep_image'] = $rep_image;
         require_code('files2');
         delete_upload('uploads/repimages', 'catalogue_categories', 'rep_image', 'id', $id, $rep_image);
     }
 
-    if (!is_null($add_time)) {
+    if ($add_time !== null) {
         $update_map['cc_add_date'] = $add_time;
     }
 
-    if (!is_null($c_name)) { // Moving to a different catalogue
+    if ($c_name !== null) { // Moving to a different catalogue
         $update_map['c_name'] = $c_name;
         $GLOBALS['SITE_DB']->query_update('catalogue_entries', array('c_name' => $c_name), array('cc_id' => $id));
         $sub_ids = $GLOBALS['SITE_DB']->query_select('catalogue_cat_treecache', array('cc_id'), array('cc_ancestor_id' => $id));
@@ -905,10 +905,10 @@ function actual_delete_catalogue_category($id, $deleting_all = false)
  */
 function actual_add_catalogue_entry($category_id, $validated, $notes, $allow_rating, $allow_comments, $allow_trackbacks, $map, $time = null, $submitter = null, $edit_date = null, $views = 0, $id = null, $meta_keywords = '', $meta_description = '')
 {
-    if (is_null($time)) {
+    if ($time === null) {
         $time = time();
     }
-    if (is_null($submitter)) {
+    if ($submitter === null) {
         $submitter = get_member();
     }
 
@@ -926,7 +926,7 @@ function actual_add_catalogue_entry($category_id, $validated, $notes, $allow_rat
         $validated = 1;
     }
     $imap = array('c_name' => $catalogue_name, 'ce_edit_date' => $edit_date, 'cc_id' => $category_id, 'ce_last_moved' => time(), 'ce_submitter' => $submitter, 'ce_add_date' => $time, 'ce_views' => $views, 'ce_views_prior' => $views, 'ce_validated' => $validated, 'notes' => $notes, 'allow_rating' => $allow_rating, 'allow_comments' => $allow_comments, 'allow_trackbacks' => $allow_trackbacks);
-    if (!is_null($id)) {
+    if ($id !== null) {
         $imap['id'] = $id;
     }
     $val = mixed();
@@ -947,7 +947,7 @@ function actual_add_catalogue_entry($category_id, $validated, $notes, $allow_rat
             $val = '';
         }
 
-        if (is_null($title)) {
+        if ($title === null) {
             $title = $val;
 
             require_code('global4');
@@ -984,9 +984,9 @@ function actual_add_catalogue_entry($category_id, $validated, $notes, $allow_rat
             }
 
             if ($sup_table_name == 'float') {
-                $smap['cv_value'] = ((is_null($val)) || ($val == '')) ? null : floatval($val);
+                $smap['cv_value'] = (($val === null) || ($val == '')) ? null : floatval($val);
             } elseif ($sup_table_name == 'integer') {
-                $smap['cv_value'] = ((is_null($val)) || ($val == '')) ? null : intval($val);
+                $smap['cv_value'] = (($val === null) || ($val == '')) ? null : intval($val);
             } else {
                 $smap['cv_value'] = $val;
             }
@@ -998,7 +998,7 @@ function actual_add_catalogue_entry($category_id, $validated, $notes, $allow_rat
     if (($meta_keywords == '') && ($meta_description == '')) {
         $seo_source_map = $map;
         $seo_source_map__specific = get_value('catalogue_seo_source_map__' . $catalogue_name);
-        if (!is_null($seo_source_map__specific)) {
+        if ($seo_source_map__specific !== null) {
             $seo_source_map = array();
             foreach (explode(',', $seo_source_map__specific) as $_map_source) {
                 if (substr($seo_source_map__specific, -1) == '!') {
@@ -1085,7 +1085,7 @@ function actual_add_catalogue_entry($category_id, $validated, $notes, $allow_rat
  */
 function actual_edit_catalogue_entry($id, $category_id, $validated, $notes, $allow_rating, $allow_comments, $allow_trackbacks, $map, $meta_keywords = '', $meta_description = '', $edit_time = null, $add_time = null, $views = null, $submitter = null, $null_is_literal = false)
 {
-    if (is_null($edit_time)) {
+    if ($edit_time === null) {
         $edit_time = $null_is_literal ? null : time();
     }
 
@@ -1095,7 +1095,7 @@ function actual_edit_catalogue_entry($id, $category_id, $validated, $notes, $all
     $fields = collapse_2d_complexity('id', 'cf_type', $_fields);
 
     $original_submitter = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_entries', 'ce_submitter', array('id' => $id));
-    if (is_null($original_submitter)) {
+    if ($original_submitter === null) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'catalogue_entry'));
     }
 
@@ -1122,13 +1122,13 @@ function actual_edit_catalogue_entry($id, $category_id, $validated, $notes, $all
     );
 
     $update_map['ce_edit_date'] = $edit_time;
-    if (!is_null($add_time)) {
+    if ($add_time !== null) {
         $update_map['ce_add_date'] = $add_time;
     }
-    if (!is_null($views)) {
+    if ($views !== null) {
         $update_map['ce_views'] = $views;
     }
-    if (!is_null($submitter)) {
+    if ($submitter !== null) {
         $update_map['ce_submitter'] = $submitter;
     }
 
@@ -1139,7 +1139,7 @@ function actual_edit_catalogue_entry($id, $category_id, $validated, $notes, $all
     require_code('fields');
     $title = null;
     foreach ($map as $field_id => $val) {
-        if (is_null($title)) {
+        if ($title === null) {
             $title = $val;
         }
 
@@ -1152,7 +1152,7 @@ function actual_edit_catalogue_entry($id, $category_id, $validated, $notes, $all
 
         if (substr($sup_table_name, -6) == '_trans') {
             $_val = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_efv_' . $sup_table_name, 'cv_value', array('cf_id' => $field_id, 'ce_id' => $id));
-            if (is_null($_val)) {
+            if ($_val === null) {
                 $smap += insert_lang_comcode('cv_value', $val, 3);
             } else {
                 if ($type == 'posting_field') {
@@ -1165,9 +1165,9 @@ function actual_edit_catalogue_entry($id, $category_id, $validated, $notes, $all
             }
         } else {
             if ($sup_table_name == 'float') {
-                $smap['cv_value'] = ((is_null($val)) || ($val == '')) ? null : floatval($val);
+                $smap['cv_value'] = (($val === null) || ($val == '')) ? null : floatval($val);
             } elseif ($sup_table_name == 'integer') {
-                $smap['cv_value'] = ((is_null($val)) || ($val == '')) ? null : intval($val);
+                $smap['cv_value'] = (($val === null) || ($val == '')) ? null : intval($val);
             } else {
                 $smap['cv_value'] = $val;
             }
@@ -1260,7 +1260,7 @@ function actual_delete_catalogue_entry($id)
         if (method_exists($object, 'cleanup')) {
             $object->cleanup($value);
         }
-        if (is_null($title)) {
+        if ($title === null) {
             $target = array();
             _resolve_catalogue_entry_field($field, $id, null, $target);
             $title = $target['effective_value_pure'];

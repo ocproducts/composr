@@ -84,7 +84,7 @@ class Hook_whatsnew_catalogues
             $id = $row['id'];
 
             $c_name = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_categories', 'c_name', array('id' => $row['cc_id']));
-            if (is_null($c_name)) {
+            if ($c_name === null) {
                 continue; // Corruption
             }
             $c_title = $GLOBALS['SITE_DB']->query_select_value('catalogues', 'c_title', array('c_name' => $c_name));
@@ -98,7 +98,7 @@ class Hook_whatsnew_catalogues
             switch ($raw_type) {
                 case 'short_trans':
                     $_name = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_efv_short_trans', 'cv_value', array('ce_id' => $row['id'], 'cf_id' => $fields[0]['id']));
-                    if (is_null($name)) {
+                    if ($name === null) {
                         $name = do_lang('UNKNOWN');
                     } else {
                         $name = get_translated_text($_name, null, $lang);
@@ -106,13 +106,13 @@ class Hook_whatsnew_catalogues
                     break;
                 case 'short_text':
                     $name = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_efv_short', 'cv_value', array('ce_id' => $row['id'], 'cf_id' => $fields[0]['id']));
-                    if (is_null($name)) {
+                    if ($name === null) {
                         $name = do_lang('UNKNOWN');
                     }
                     break;
                 case 'float':
                     $_name = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_efv_float', 'cv_value', array('ce_id' => $row['id'], 'cf_id' => $fields[0]['id']));
-                    if (is_null($name)) {
+                    if ($name === null) {
                         $name = do_lang('UNKNOWN');
                     } else {
                         $name = float_to_raw_string($_name);
@@ -120,7 +120,7 @@ class Hook_whatsnew_catalogues
                     break;
                 case 'integer':
                     $_name = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_efv_integer', 'cv_value', array('ce_id' => $row['id'], 'cf_id' => $fields[0]['id']));
-                    if (is_null($name)) {
+                    if ($name === null) {
                         $name = do_lang('UNKNOWN');
                     } else {
                         $name = strval($_name);

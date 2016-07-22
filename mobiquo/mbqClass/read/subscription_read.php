@@ -129,7 +129,7 @@ class CMSSubscriptionRead
      */
     public function get_member_forum_monitoring($member_id = null)
     {
-        if (is_null($member_id)) {
+        if ($member_id === null) {
             $member_id = get_member();
         }
 
@@ -151,7 +151,7 @@ class CMSSubscriptionRead
      */
     public function get_member_topic_monitoring($member_id = null)
     {
-        if (is_null($member_id)) {
+        if ($member_id === null) {
             $member_id = get_member();
         }
 

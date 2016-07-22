@@ -53,7 +53,7 @@ function require_lang_compile($codename, $lang, $type, $cache_path, $ignore_erro
             if (!$DECACHED_COMCODE_LANG_STRINGS) {
                 $DECACHED_COMCODE_LANG_STRINGS = true;
                 $comcode_lang_strings = $GLOBALS['SITE_DB']->query('SELECT string_index FROM ' . get_table_prefix() . 'cached_comcode_pages WHERE ' . db_string_equal_to('the_zone', '') . ' AND the_page LIKE \'' . db_encode_like($codename . ':') . '\'');
-                if (!is_null($comcode_lang_strings)) {
+                if ($comcode_lang_strings !== null) {
                     foreach ($comcode_lang_strings as $comcode_lang_string) {
                         $GLOBALS['SITE_DB']->query_delete('cached_comcode_pages', $comcode_lang_string);
                         delete_lang($comcode_lang_string['string_index']);
@@ -182,7 +182,7 @@ function get_lang_file_section($lang, $file = null, $section = 'descriptions')
 {
     $entries = array();
 
-    if (is_null($file)) {
+    if ($file === null) {
         foreach (array('lang', 'lang_custom') as $dir) {
             $dh = @opendir(get_file_base() . '/' . $dir . '/' . $lang);
             if ($dh !== false) {
@@ -293,7 +293,7 @@ function _get_lang_file_map($b, &$entries, $section = 'strings', $given_whole_fi
             }
 
             if (($line[0] == '#') && (preg_match('/#: \[strings\](.*)/', $line, $matches) !== 0)) {
-                if ((!is_null($doing)) && ($value !== '')) {
+                if (($doing !== null) && ($value !== '')) {
                     $entries[$doing] = $value;
                 }
                 $doing = $matches[1];
@@ -309,7 +309,7 @@ function _get_lang_file_map($b, &$entries, $section = 'strings', $given_whole_fi
                     $value .= stripslashes($v);
                 } else {
                     $processing = false;
-                    if ((!is_null($doing)) && ($value !== '')) {
+                    if (($doing !== null) && ($value !== '')) {
                         if (($doing == 'en_left') && ($value !== 'left') && ($value !== 'right')) {
                             $value = 'left';
                         }
@@ -331,7 +331,7 @@ function _get_lang_file_map($b, &$entries, $section = 'strings', $given_whole_fi
                 }
             }
         }
-        if ((!is_null($doing)) && ($value !== '')) {
+        if (($doing !== null) && ($value !== '')) {
             $entries[$doing] = $value;
         }
         if (substr(basename($b), 0, 6) == 'global' || $given_whole_file) {

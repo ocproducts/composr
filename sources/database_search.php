@@ -829,7 +829,7 @@ function build_search_submitter_clauses($member_field_name, $member_id, $author,
     $clauses = '';
 
     // Member ID
-    if ((!is_null($member_id)) && (!is_null($member_field_name))) {
+    if (($member_id !== null) && ($member_field_name !== null)) {
         if ($clauses != '') {
             $clauses .= ' OR ';
         }
@@ -837,7 +837,7 @@ function build_search_submitter_clauses($member_field_name, $member_id, $author,
     }
 
     // Groups
-    if ((!is_null($member_field_name)) && ($author != '')) {
+    if (($member_field_name !== null) && ($author != '')) {
         $all_usergroups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(true);
         foreach ($all_usergroups as $usergroup => $usergroup_name) {
             if ($usergroup_name == $author) {
@@ -856,7 +856,7 @@ function build_search_submitter_clauses($member_field_name, $member_id, $author,
     }
 
     // Author
-    if ((!is_null($author_field_name)) && ($author != '')) {
+    if (($author_field_name !== null) && ($author != '')) {
         if ($clauses != '') {
             $clauses .= ' OR ';
         }
@@ -888,7 +888,7 @@ function exact_match_sql($field, $i, $type = 'short', $param = null)
 {
     $table = ' LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'catalogue_efv_' . $type . ' f' . strval($i) . ' ON (f' . strval($i) . '.ce_id=r.id AND f' . strval($i) . '.cf_id=' . strval($field['id']) . ')';
     $search_field = 'f' . strval($i) . '.cv_value';
-    if (is_null($param)) {
+    if ($param === null) {
         $param = get_param_string('option_' . strval($field['id']), '');
     }
     $where_clause = '';
@@ -916,7 +916,7 @@ function nl_delim_match_sql($field, $i, $type = 'short', $param = null)
 {
     $table = ' LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'catalogue_efv_' . $type . ' f' . strval($i) . ' ON (f' . strval($i) . '.ce_id=r.id AND f' . strval($i) . '.cf_id=' . strval($field['id']) . ')';
     $search_field = 'f' . strval($i) . '.cv_value';
-    if (is_null($param)) {
+    if ($param === null) {
         $param = get_param_string('option_' . strval($field['id']), '');
     }
     $where_clause = '';
@@ -965,7 +965,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
         $where_clause = substr($where_clause, 0, strlen($where_clause) - 5);
     }
 
-    if ((!is_null($permissions_module)) && (!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()))) {
+    if (($permissions_module !== null) && (!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()))) {
         $g_or = _get_where_clause_groups(get_member());
 
         // this destroys mysqls query optimiser by forcing complexed OR's into the join, so we'll do this in PHP code
@@ -982,7 +982,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
         }
     }
 
-    if (is_null($raw_fields)) {
+    if ($raw_fields === null) {
         $raw_fields = array();
     }
 
@@ -1010,7 +1010,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
     }
 
     // Defined-keywords/tags search
-    if ((get_param_integer('keep_just_show_query', 0) == 0) && (!is_null($meta_type)) && ($content != '')) {
+    if ((get_param_integer('keep_just_show_query', 0) == 0) && ($meta_type !== null) && ($content != '')) {
         list($meta_content_where) = build_content_where($content, $boolean_search, $boolean_operator, true);
         if (multi_lang_content()) {
             $keywords_where = preg_replace('#\?#', 'tm.text_original', $meta_content_where);
@@ -1059,7 +1059,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
             cms_profile_start_for('SEARCH:t_keyword_search_rows_count');
             $t_keyword_search_rows_count = $db->query_value_if_there($_count_query_keywords_search, true);
             cms_profile_end_for('SEARCH:t_keyword_search_rows_count', $_count_query_keywords_search);
-            if (is_null($t_keyword_search_rows_count)) {
+            if ($t_keyword_search_rows_count === null) {
                 $t_keyword_search_rows_count = MAXIMUM_RESULT_COUNT_POINT; // Too slow, so just put in a maximum
             }
             $t_count += $t_keyword_search_rows_count;
@@ -1067,7 +1067,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
             cms_profile_start_for('SEARCH:t_keyword_search_rows');
             $t_keyword_search_rows = $db->query($keywords_query, $max + $start);
             cms_profile_end_for('SEARCH:t_keyword_search_rows', $keywords_query);
-            if (is_null($t_keyword_search_rows)) {
+            if ($t_keyword_search_rows === null) {
                 warn_exit(do_lang_tempcode('SEARCH_QUERY_TOO_SLOW'), false, true);
             }
             $t_rows = array_merge($t_rows, $t_keyword_search_rows);
@@ -1242,7 +1242,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
 
             cms_profile_start_for('SEARCH:t_main_search_rows_count');
             $t_main_search_rows_count = $db->query_value_if_there($_count_query_main_search);
-            if (is_null($t_main_search_rows_count)) {
+            if ($t_main_search_rows_count === null) {
                 $t_main_search_rows_count = MAXIMUM_RESULT_COUNT_POINT; // Too slow, so just put in a maximum
             }
             cms_profile_end_for('SEARCH:t_main_search_rows_count', $_count_query_main_search);
@@ -1251,7 +1251,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
             cms_profile_start_for('SEARCH:t_main_search_rows');
             $t_main_search_rows = $db->query($query, $max + $start, null, false, true);
             cms_profile_end_for('SEARCH:t_main_search_rows', $query);
-            if (is_null($t_main_search_rows)) {
+            if ($t_main_search_rows === null) {
                 warn_exit(do_lang_tempcode('SEARCH_QUERY_TOO_SLOW'), false, true);
             }
 
@@ -1552,7 +1552,7 @@ function in_memory_search_match($filter, $title, $post = null)
     }
 
     $search_filter = $filter['content'];
-    if (((array_key_exists('only_titles', $filter)) && ($filter['only_titles'] == 1)) || (is_null($post))) {
+    if (((array_key_exists('only_titles', $filter)) && ($filter['only_titles'] == 1)) || ($post === null)) {
         $context = $title;
     } else {
         $context = $title . ' ' . $post;
@@ -1793,7 +1793,7 @@ function build_search_results_interface($results, $start, $max, $direction, $gen
             } else {
                 $rendered_result = $result['object']->render($result['data']);
             }
-            if (!is_null($rendered_result)) {
+            if ($rendered_result !== null) {
                 if (is_array($rendered_result)) {
                     $class = get_class($result['object']);
                     if (!array_key_exists($class, $tabular_results)) {

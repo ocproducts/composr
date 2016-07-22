@@ -73,7 +73,7 @@ class Module_banners
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             require_lang('banners');
             require_code('banners');
 
@@ -198,19 +198,19 @@ class Module_banners
             add_privilege('BANNERS', 'banner_free', false);
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 6)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 6)) {
             $GLOBALS['SITE_DB']->add_table_field('banners', 'b_direct_code', 'LONG_TEXT');
             delete_config_option('money_ad_code');
             delete_config_option('advert_chance');
             delete_config_option('is_on_banners');
         }
 
-        if ((is_null($upgrade_from)) || ($upgrade_from < 6)) {
+        if (($upgrade_from === null) || ($upgrade_from < 6)) {
             add_privilege('BANNERS', 'use_html_banner', false);
             add_privilege('BANNERS', 'use_php_banner', false, true);
         }
 
-        if ((is_null($upgrade_from)) || ($upgrade_from < 7)) {
+        if (($upgrade_from === null) || ($upgrade_from < 7)) {
             $GLOBALS['SITE_DB']->create_table('banners_types', array(
                 'name' => '*ID_TEXT',
                 'b_type' => '*ID_TEXT',
@@ -236,7 +236,7 @@ class Module_banners
                 return array();
             }
 
-            if (is_null($member_id)) {
+            if ($member_id === null) {
                 $member_id = get_member();
             }
             if (!has_zone_access($member_id, 'adminzone')) {
@@ -304,7 +304,7 @@ class Module_banners
      */
     public function run()
     {
-        if (!is_null($GLOBALS['CURRENT_SHARE_USER'])) {
+        if ($GLOBALS['CURRENT_SHARE_USER'] !== null) {
             warn_exit(do_lang_tempcode('SHARED_INSTALL_PROHIBIT'));
         }
 
@@ -377,13 +377,13 @@ class Module_banners
 
         require_code('form_templates');
         $only_owned = has_privilege(get_member(), 'edit_midrange_content', 'cms_banners') ? null : get_member();
-        $max_rows = $GLOBALS['SITE_DB']->query_select_value('banners', 'COUNT(*)', is_null($only_owned) ? null : array('submitter' => $only_owned));
+        $max_rows = $GLOBALS['SITE_DB']->query_select_value('banners', 'COUNT(*)', ($only_owned === null) ? null : array('submitter' => $only_owned));
         if ($max_rows == 0) {
             inform_exit(do_lang_tempcode('NO_ENTRIES', 'banner'));
         }
         $max = get_param_integer('banner_max', 20);
         $start = get_param_integer('banner_start', 0);
-        $rows = $GLOBALS['SITE_DB']->query_select('banners', array('*'), is_null($only_owned) ? null : array('submitter' => $only_owned), 'ORDER BY ' . $current_ordering, $max, $start);
+        $rows = $GLOBALS['SITE_DB']->query_select('banners', array('*'), ($only_owned === null) ? null : array('submitter' => $only_owned), 'ORDER BY ' . $current_ordering, $max, $start);
         foreach ($rows as $row) {
             $view_url = build_url($url_map + array('source' => $row['name']), '_SELF');
 
@@ -406,7 +406,7 @@ class Module_banners
                 //$deployment_agreement,  Too much detail
                 //integer_format($row['campaign_remaining']),  Too much detail
                 strval($row['importance_modulus']),
-                is_null($row['expiry_date']) ? protect_from_escaping(do_lang_tempcode('NA_EM')) : make_string_tempcode(get_timezoned_date_time($row['expiry_date'])),
+                ($row['expiry_date'] === null) ? protect_from_escaping(do_lang_tempcode('NA_EM')) : make_string_tempcode(get_timezoned_date_time($row['expiry_date'])),
                 get_timezoned_date($row['add_date']),
             );
             if (addon_installed('unvalidated')) {
@@ -484,7 +484,7 @@ class Module_banners
 
         $fields->attach(map_table_field(do_lang_tempcode('ADDED'), get_timezoned_date_time($myrow['add_date'])));
 
-        $expiry_date = is_null($myrow['expiry_date']) ? do_lang_tempcode('NA_EM') : make_string_tempcode(escape_html(get_timezoned_date_time($myrow['expiry_date'])));
+        $expiry_date = ($myrow['expiry_date'] === null) ? do_lang_tempcode('NA_EM') : make_string_tempcode(escape_html(get_timezoned_date_time($myrow['expiry_date'])));
         $fields->attach(map_table_field(do_lang_tempcode('EXPIRY_DATE'), $expiry_date));
 
         if ($has_banner_network) {

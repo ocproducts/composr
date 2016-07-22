@@ -26,7 +26,7 @@
 function current_share_user()
 {
     global $CURRENT_SHARE_USER;
-    if (!is_null($CURRENT_SHARE_USER)) {
+    if ($CURRENT_SHARE_USER !== null) {
         return $CURRENT_SHARE_USER;
     }
 

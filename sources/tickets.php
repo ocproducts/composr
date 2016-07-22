@@ -31,7 +31,7 @@ function get_active_support_user()
         $support_operator = get_option('support_operator');
         if (!empty($support_operator)) {
             $_member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($support_operator);
-            if (!is_null($_member_id)) {
+            if ($_member_id !== null) {
                 $member_id = $_member_id;
             }
         }
@@ -66,7 +66,7 @@ function find_ticket_assigned_to($ticket_id)
  */
 function build_types_list($selected_ticket_type_id, $ticket_types_to_let_through = null)
 {
-    if (is_null($ticket_types_to_let_through)) {
+    if ($ticket_types_to_let_through === null) {
         $ticket_types_to_let_through = array();
     }
 
@@ -77,7 +77,7 @@ function build_types_list($selected_ticket_type_id, $ticket_types_to_let_through
             continue;
         }
 
-        if (is_null($type['cache_lead_time'])) {
+        if ($type['cache_lead_time'] === null) {
             $lead_time = do_lang('UNKNOWN');
         } else {
             $lead_time = display_time_period($type['cache_lead_time']);
@@ -115,7 +115,7 @@ function check_ticket_access($id)
 
     // Check we're allowed using extra access
     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('ticket_extra_access', 'ticket_id', array('ticket_id' => $id, 'member_id' => get_member()));
-    if (!is_null($test)) {
+    if ($test !== null) {
         return $ticket_owner;
     }
 
@@ -149,7 +149,7 @@ function get_ticket_forum_id($member_id = null, $ticket_type_id = null, $create 
 
     // Check the root ticket forum is valid
     $fid = $GLOBALS['FORUM_DRIVER']->forum_id_from_name($root_forum);
-    if (is_null($fid)) {
+    if ($fid === null) {
         if ($silent_error_handling) {
             return null;
         }
@@ -166,7 +166,7 @@ function get_ticket_forum_id($member_id = null, $ticket_type_id = null, $create 
 
     $category_id = $GLOBALS['FORUM_DB']->query_select_value('f_forums', 'f_forum_grouping_id', array('id' => $fid));
 
-    if ((!is_null($member_id)) && (get_option('ticket_member_forums') == '1')) {
+    if (($member_id !== null) && (get_option('ticket_member_forums') == '1')) {
         $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
         $rows = $GLOBALS['FORUM_DB']->query_select('f_forums', array('id'), array('f_parent_forum' => $fid, 'f_name' => $username), '', 1);
         if (count($rows) == 0) {
@@ -176,9 +176,9 @@ function get_ticket_forum_id($member_id = null, $ticket_type_id = null, $create 
         }
     }
 
-    if ((!is_null($ticket_type_id)) && (get_option('ticket_type_forums') == '1')) {
+    if (($ticket_type_id !== null) && (get_option('ticket_type_forums') == '1')) {
         $_ticket_type_name = $GLOBALS['SITE_DB']->query_select_value_if_there('ticket_types', 'ticket_type_name', array('id' => $ticket_type_id));
-        if (!is_null($_ticket_type_name)) {
+        if ($_ticket_type_name !== null) {
             $ticket_type_name = get_translated_text($_ticket_type_name);
             $rows = $GLOBALS['FORUM_DB']->query_select('f_forums', array('id'), array('f_parent_forum' => $fid, 'f_name' => $ticket_type_name), '', 1);
             if (count($rows) == 0) {
@@ -202,12 +202,12 @@ function get_ticket_forum_id($member_id = null, $ticket_type_id = null, $create 
  */
 function is_ticket_forum($forum_id)
 {
-    if (is_null($forum_id)) {
+    if ($forum_id === null) {
         return false;
     }
 
     $root_ticket_forum_id = get_ticket_forum_id(null, null, false, true);
-    if (is_null($root_ticket_forum_id)) {
+    if ($root_ticket_forum_id === null) {
         return false;
     }
     if (($root_ticket_forum_id == db_get_first_id()) && ($forum_id != db_get_first_id())) {

@@ -40,7 +40,7 @@ class Hook_symbol_CURRENCY
                 $from_currency = empty($param[1]) ? get_option('currency') : $param[1];
                 $to_currency = empty($param[2]) ? null : $param[2];
                 $value = currency_convert($amount, $from_currency, $to_currency, true);
-                if (is_null($value)) {
+                if ($value === null) {
                     $value = $param[0] . ' ' . $from_currency . '<!--' . do_lang('INTERNAL_ERROR') . '-->';
                 }
             } else {

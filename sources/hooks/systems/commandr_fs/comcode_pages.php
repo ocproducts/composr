@@ -260,7 +260,7 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
         list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
-        if (is_null($category)) {
+        if ($category === null) {
             return false; // Folder not found
         }
 
@@ -272,18 +272,18 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
         $_parent_page = $this->_default_property_str($properties, 'parent_page');
         $parent_page = ($_parent_page == '') ? '' : $this->_create_name_from_label($_parent_page);
         $order = $this->_default_property_int_null($properties, 'order');
-        if (is_null($order)) {
+        if ($order === null) {
             $order = 0;
         }
         $validated = $this->_default_property_int_null($properties, 'validated');
-        if (is_null($validated)) {
+        if ($validated === null) {
             $validated = 1;
         }
         $edit_time = $this->_default_property_time_null($properties, 'edit_date');
         $add_time = $this->_default_property_time($properties, 'add_date');
         $show_as_edit = $this->_default_property_int($properties, 'show_as_edit');
         $submitter = $this->_default_property_member($properties, 'submitter');
-        if (is_null($submitter)) {
+        if ($submitter === null) {
             $submitter = get_member();
         }
         $text = $this->_default_property_str($properties, 'text');
@@ -374,7 +374,7 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
         list($properties,) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
-        if (is_null($category)) {
+        if ($category === null) {
             return false; // Folder not found
         }
 
@@ -387,18 +387,18 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
         $lang = get_site_default_lang();
         $parent_page = $this->_create_name_from_label($this->_default_property_str($properties, 'parent_page'));
         $order = $this->_default_property_int_null($properties, 'order');
-        if (is_null($order)) {
+        if ($order === null) {
             $order = 0;
         }
         $validated = $this->_default_property_int_null($properties, 'validated');
-        if (is_null($validated)) {
+        if ($validated === null) {
             $validated = 1;
         }
         $edit_time = $this->_default_property_time($properties, 'edit_date');
         $add_time = $this->_default_property_time($properties, 'add_date');
         $show_as_edit = $this->_default_property_int($properties, 'show_as_edit');
         $submitter = $this->_default_property_member($properties, 'submitter');
-        if (is_null($submitter)) {
+        if ($submitter === null) {
             $submitter = get_member();
         }
         $text = $this->_default_property_str($properties, 'text');

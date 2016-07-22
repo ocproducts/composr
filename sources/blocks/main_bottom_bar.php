@@ -76,7 +76,7 @@ class Block_main_bottom_bar
         $groups_seen = array();
         $num_members = 0;
         $num_guests = 0;
-        if (!is_null($members)) {
+        if ($members !== null) {
             foreach ($members as $bits) {
                 $member = $bits['member_id'];
                 $username = $bits['cache_username'];
@@ -85,7 +85,7 @@ class Block_main_bottom_bar
                     $num_guests++;
                     continue;
                 }
-                if (is_null($username)) {
+                if ($username === null) {
                     continue;
                 }
                 $url = $GLOBALS['CNS_DRIVER']->member_profile_url($member, true);
@@ -93,7 +93,7 @@ class Block_main_bottom_bar
                     $bits['m_primary_group'] = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member, 'm_primary_group');
                 }
                 $pgid = $bits['m_primary_group'];//$GLOBALS['FORUM_DRIVER']->get_member_row_field($member,'m_primary_group');
-                if (is_null($pgid)) {
+                if ($pgid === null) {
                     continue; // Deleted member
                 }
                 $groups_seen[$pgid] = 1;

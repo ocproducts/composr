@@ -173,7 +173,7 @@ class Module_admin_cns_post_templates extends Standard_crud_module
             $ticket_forum_id = mixed();
         }
         require_code('cns_general_action2');
-        $fields->attach(cns_get_forum_multi_code_field(is_null($ticket_forum_id) ? '' : ('+' . strval($ticket_forum_id))));
+        $fields->attach(cns_get_forum_multi_code_field(($ticket_forum_id === null) ? '' : ('+' . strval($ticket_forum_id))));
 
         $text = paragraph(do_lang_tempcode('DESCRIPTION_IMPORT_STOCK_RESPONSES_PT'));
 

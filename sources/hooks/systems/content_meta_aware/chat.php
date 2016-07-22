@@ -63,7 +63,7 @@ class Hook_content_meta_aware_chat
             'edit_page_link_pattern' => '_SEARCH:cms_chat:room:_WILD',
             'view_category_page_link_pattern' => '_SEARCH:chat:room:_WILD',
             'add_url' => (function_exists('has_submit_permission') && has_submit_permission('mid', get_member(), get_ip_address(), 'cms_chat')) ? (get_module_zone('cms_chat') . ':cms_chat:add_category') : null,
-            'archive_url' => ((!is_null($zone)) ? $zone : get_module_zone('chat')) . ':chat',
+            'archive_url' => (($zone !== null) ? $zone : get_module_zone('chat')) . ':chat',
 
             'support_url_monikers' => true,
 

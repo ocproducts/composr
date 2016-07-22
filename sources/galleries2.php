@@ -103,7 +103,7 @@ function get_video_details($file_path, $filename, $delay_errors = false)
 
     fclose($file);
 
-    if (is_null($info)) {
+    if ($info === null) {
         require_code('mime_types');
         $mime_type = get_mime_type($extension, true);
         if (substr($mime_type, 0, 6) == 'audio/') {
@@ -111,7 +111,7 @@ function get_video_details($file_path, $filename, $delay_errors = false)
         }
     }
 
-    if (is_null($info)) {
+    if ($info === null) {
         return array(null, null, null);
     }
     return $info;
@@ -180,7 +180,7 @@ function _get_wmv_details_do_chunk_list($file, $chunk_length = null)
     $height = null;
 
     $count = 0;
-    while ((!feof($file)) && ((is_null($chunk_length)) || ($count < $chunk_length)) && ((is_null($length)) || (is_null($width)) || (is_null($height)))) {
+    while ((!feof($file)) && (($chunk_length === null) || ($count < $chunk_length)) && (($length === null) || ($width === null) || ($height === null))) {
         // Read in chunk info
         $a = read_intel_endian_int(fread($file, 4));
         $b = read_intel_endian_int(fread($file, 4));
@@ -198,13 +198,13 @@ function _get_wmv_details_do_chunk_list($file, $chunk_length = null)
             fseek($file, 6, SEEK_CUR);
             $info = _get_wmv_details_do_chunk_list($file, $sub_chunk_length - 30);
             $sub_chunk_length = 24;
-            if (!is_null($info[1])) {
+            if ($info[1] !== null) {
                 $width = $info[1];
             }
-            if (!is_null($info[2])) {
+            if ($info[2] !== null) {
                 $height = $info[2];
             }
-            if (!is_null($info[3])) {
+            if ($info[3] !== null) {
                 $length = $info[3];
             }
         }
@@ -271,7 +271,7 @@ function _get_ram_details($file) // + rm
     $height = null;
 
     // Read in chunks
-    while ((!feof($file)) && ((is_null($length)) || (is_null($width)) || (is_null($height)))) {
+    while ((!feof($file)) && (($length === null) || ($width === null) || ($height === null))) {
         $type = fread($file, 4);
         $size = read_network_endian_int(fread($file, 4));
         if ($size <= 8) {
@@ -301,7 +301,7 @@ function _get_mov_details($file)
 {
     // Read in atoms
     $info = _get_mov_details_do_atom_list($file);
-    if (is_null($info)) {
+    if ($info === null) {
         return null;
     }
     list($_, $width, $height, $length) = $info;
@@ -323,7 +323,7 @@ function _get_mov_details_do_atom_list($file, $atom_size = null)
     $height = null;
 
     $count = 0;
-    while ((!feof($file)) && ((is_null($atom_size)) || ($count < $atom_size)) && ((is_null($length)) || (is_null($width)) || (is_null($height)))) {
+    while ((!feof($file)) && (($atom_size === null) || ($count < $atom_size)) && (($length === null) || ($width === null) || ($height === null))) {
         $next_read = fread($file, 4);
         if (strlen($next_read) < 4) {
             return array($count, $width, $height, $length); // END / problem
@@ -365,25 +365,25 @@ function _get_mov_details_do_atom_list($file, $atom_size = null)
         } elseif ($type == 'moov') { // moov contains more atoms, and the one we need for length
             $info = _get_mov_details_do_atom_list($file, $size - $count);
             $count += $info[0];
-            if (!is_null($info[1])) {
+            if ($info[1] !== null) {
                 $width = $info[1];
             }
-            if (!is_null($info[2])) {
+            if ($info[2] !== null) {
                 $height = $info[2];
             }
-            if (!is_null($info[3])) {
+            if ($info[3] !== null) {
                 $length = $info[3];
             }
         } elseif ($type == 'trak') { // trak contains more atoms, and the one we need for width and height
             $info = _get_mov_details_do_atom_list($file, $size - $count);
             $count += $info[0];
-            if (!is_null($info[1])) {
+            if ($info[1] !== null) {
                 $width = $info[1];
             }
-            if (!is_null($info[2])) {
+            if ($info[2] !== null) {
                 $height = $info[2];
             }
-            if (!is_null($info[3])) {
+            if ($info[3] !== null) {
                 $length = $info[3];
             }
         } else {
@@ -423,13 +423,13 @@ function add_image($title, $cat, $description, $url, $thumb_url, $validated, $al
     require_code('global4');
     prevent_double_submit('ADD_IMAGE', null, $title);
 
-    if (is_null($regions)) {
+    if ($regions === null) {
         $regions = array();
     }
-    if (is_null($submitter)) {
+    if ($submitter === null) {
         $submitter = get_member();
     }
-    if (is_null($add_date)) {
+    if ($add_date === null) {
         $add_date = time();
     }
 
@@ -452,7 +452,7 @@ function add_image($title, $cat, $description, $url, $thumb_url, $validated, $al
     );
     $map += insert_lang('title', $title, 2);
     $map += insert_lang_comcode('description', $description, 3);
-    if (!is_null($id)) {
+    if ($id !== null) {
         $map['id'] = $id;
     }
     $id = $GLOBALS['SITE_DB']->query_insert('images', $map, true);
@@ -531,10 +531,10 @@ function add_image($title, $cat, $description, $url, $thumb_url, $validated, $al
  */
 function edit_image($id, $title, $cat, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $meta_keywords, $meta_description, $edit_time = null, $add_time = null, $views = null, $submitter = null, $regions = null, $null_is_literal = false)
 {
-    if (is_null($regions)) {
+    if ($regions === null) {
         $regions = array();
     }
-    if (is_null($edit_time)) {
+    if ($edit_time === null) {
         $edit_time = $null_is_literal ? null : time();
     }
 
@@ -575,13 +575,13 @@ function edit_image($id, $title, $cat, $description, $url, $thumb_url, $validate
     $update_map += lang_remap_comcode('description', $_description, $description);
 
     $update_map['edit_date'] = $edit_time;
-    if (!is_null($add_time)) {
+    if ($add_time !== null) {
         $update_map['add_date'] = $add_time;
     }
-    if (!is_null($views)) {
+    if ($views !== null) {
         $update_map['image_views'] = $views;
     }
-    if (!is_null($submitter)) {
+    if ($submitter !== null) {
         $update_map['submitter'] = $submitter;
     }
 
@@ -707,13 +707,13 @@ function create_video_thumb($src_url, $expected_output_path = null)
     // Try to find a hook that can get a thumbnail easily
     require_code('media_renderer');
     $hooks = find_media_renderers($src_url, array(), true, null);
-    if (!is_null($hooks)) {
+    if ($hooks !== null) {
         foreach ($hooks as $hook) {
             $ve_ob = object_factory('Hook_media_rendering_' . $hook);
             if (method_exists($ve_ob, 'get_video_thumbnail')) {
                 $ret = $ve_ob->get_video_thumbnail($src_url);
-                if (!is_null($ret)) {
-                    if (is_null($expected_output_path)) {
+                if ($ret !== null) {
+                    if ($expected_output_path === null) {
                         $filename = 'thumb_' . md5(uniqid('', true)) . '.png';
                         $expected_output_path = get_custom_file_base() . '/uploads/galleries/' . $filename;
                     }
@@ -740,7 +740,7 @@ function create_video_thumb($src_url, $expected_output_path = null)
     if (is_audio($src_url, true)) {
         $ret = find_theme_image('audio_thumb', true);
         if ($ret != '') {
-            if (!is_null($expected_output_path)) {
+            if ($expected_output_path !== null) {
                 require_code('files');
                 $_expected_output_path = @fopen($expected_output_path, 'wb');
                 if ($_expected_output_path !== false) {
@@ -763,7 +763,7 @@ function create_video_thumb($src_url, $expected_output_path = null)
 
         if (class_exists('ffmpeg_movie')) {
             $filename = 'thumb_' . md5(uniqid('', true)) . '1.jpg';
-            if (is_null($expected_output_path)) {
+            if ($expected_output_path === null) {
                 $expected_output_path = get_custom_file_base() . '/uploads/galleries/' . $filename;
             }
             if (file_exists($expected_output_path)) {
@@ -798,11 +798,11 @@ function create_video_thumb($src_url, $expected_output_path = null)
         if (($ffmpeg_path != '') && (php_function_allowed('shell_exec'))) {
             $filename = 'thumb_' . md5(uniqid(strval(post_param_integer('thumbnail_auto_position', 1)), true)) . '%d.jpg';
             $dest_file = get_custom_file_base() . '/uploads/galleries/' . $filename;
-            if (is_null($expected_output_path)) {
+            if ($expected_output_path === null) {
                 $expected_output_path = str_replace('%d', '1', $dest_file);
             }
 
-            if ((file_exists($dest_file)) && (is_null(post_param_integer('thumbnail_auto_position', null)))) {
+            if ((file_exists($dest_file)) && (post_param_integer('thumbnail_auto_position', null) === null)) {
                 return 'uploads/galleries/' . rawurlencode(basename($expected_output_path));
             }
             @unlink($dest_file); // So "if (@filesize($expected_output_path)) break;" will definitely fail if error
@@ -840,7 +840,7 @@ function create_video_thumb($src_url, $expected_output_path = null)
     // Default
     $ret = find_theme_image('video_thumb', true);
     if ($ret != '') {
-        if (!is_null($expected_output_path)) {
+        if ($expected_output_path !== null) {
             require_code('files');
             $_expected_output_path = fopen($expected_output_path, 'wb');
             http_download_file($ret, null, true, false, 'Composr', null, null, null, null, null, $_expected_output_path);
@@ -881,13 +881,13 @@ function add_video($title, $cat, $description, $url, $thumb_url, $validated, $al
     require_code('global4');
     prevent_double_submit('ADD_VIDEO', null, $title);
 
-    if (is_null($regions)) {
+    if ($regions === null) {
         $regions = array();
     }
-    if (is_null($submitter)) {
+    if ($submitter === null) {
         $submitter = get_member();
     }
-    if (is_null($add_date)) {
+    if ($add_date === null) {
         $add_date = time();
     }
 
@@ -913,7 +913,7 @@ function add_video($title, $cat, $description, $url, $thumb_url, $validated, $al
     );
     $map += insert_lang('title', $title, 2);
     $map += insert_lang_comcode('description', $description, 3);
-    if (!is_null($id)) {
+    if ($id !== null) {
         $map['id'] = $id;
     }
     $id = $GLOBALS['SITE_DB']->query_insert('videos', $map, true);
@@ -1004,10 +1004,10 @@ function add_video($title, $cat, $description, $url, $thumb_url, $validated, $al
  */
 function edit_video($id, $title, $cat, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $video_length, $video_width, $video_height, $meta_keywords, $meta_description, $edit_time = null, $add_time = null, $views = null, $submitter = null, $regions = null, $null_is_literal = false)
 {
-    if (is_null($regions)) {
+    if ($regions === null) {
         $regions = array();
     }
-    if (is_null($edit_time)) {
+    if ($edit_time === null) {
         $edit_time = $null_is_literal ? null : time();
     }
 
@@ -1050,13 +1050,13 @@ function edit_video($id, $title, $cat, $description, $url, $thumb_url, $validate
     $update_map += lang_remap_comcode('description', $_description, $description);
 
     $update_map['edit_date'] = $edit_time;
-    if (!is_null($add_time)) {
+    if ($add_time !== null) {
         $update_map['add_date'] = $add_time;
     }
-    if (!is_null($views)) {
+    if ($views !== null) {
         $update_map['video_views'] = $views;
     }
-    if (!is_null($submitter)) {
+    if ($submitter !== null) {
         $update_map['submitter'] = $submitter;
     }
 
@@ -1324,7 +1324,7 @@ function constrain_gallery_image_to_max_size($file_path, $filename, $box_width)
  */
 function add_gallery($name, $fullname, $description, $notes, $parent_id, $accept_images = 1, $accept_videos = 1, $is_member_synched = 0, $flow_mode_interface = 0, $rep_image = '', $watermark_top_left = '', $watermark_top_right = '', $watermark_bottom_left = '', $watermark_bottom_right = '', $allow_rating = 1, $allow_comments = 1, $skip_exists_check = false, $add_date = null, $g_owner = null, $meta_keywords = '', $meta_description = '', $uniqify = false)
 {
-    if (is_null($add_date)) {
+    if ($add_date === null) {
         $add_date = time();
     }
 
@@ -1335,7 +1335,7 @@ function add_gallery($name, $fullname, $description, $notes, $parent_id, $accept
 
     if (!$skip_exists_check) {
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('galleries', 'name', array('name' => $name));
-        if (!is_null($test)) {
+        if ($test !== null) {
             if ($uniqify) {
                 $name .= '_' . uniqid('', false);
             } else {
@@ -1448,7 +1448,7 @@ function edit_gallery($old_name, $name, $fullname, $description, $notes, $parent
         $under_category_id = $_under_category_id;
     }
 
-    if (is_null($parent_id)) {
+    if ($parent_id === null) {
         $parent_id = '';
     }
 
@@ -1461,7 +1461,7 @@ function edit_gallery($old_name, $name, $fullname, $description, $notes, $parent
         }
 
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('galleries', 'name', array('name' => $name));
-        if (!is_null($test)) {
+        if ($test !== null) {
             if ($uniqify) {
                 $name .= '_' . uniqid('', false);
             } else {
@@ -1485,7 +1485,7 @@ function edit_gallery($old_name, $name, $fullname, $description, $notes, $parent
         }
     }
 
-    if (!is_null($meta_keywords)) {
+    if ($meta_keywords !== null) {
         seo_meta_set_for_explicit('gallery', $name, $meta_keywords, $meta_description);
     }
 
@@ -1511,31 +1511,31 @@ function edit_gallery($old_name, $name, $fullname, $description, $notes, $parent
 
     require_code('files2');
 
-    if (!is_null($rep_image)) {
+    if ($rep_image !== null) {
         $update_map['rep_image'] = $rep_image;
         delete_upload('uploads/repimages', 'galleries', 'rep_image', 'name', $old_name, $rep_image);
     }
-    if (!is_null($watermark_top_left)) {
+    if ($watermark_top_left !== null) {
         $update_map['watermark_top_left'] = $watermark_top_left;
         delete_upload('uploads/watermarks', 'galleries', 'watermark_top_left', 'name', $old_name, $watermark_top_left);
     }
-    if (!is_null($watermark_top_right)) {
+    if ($watermark_top_right !== null) {
         $update_map['watermark_top_right'] = $watermark_top_right;
         delete_upload('uploads/watermarks', 'galleries', 'watermark_top_right', 'name', $old_name, $watermark_top_right);
     }
-    if (!is_null($watermark_bottom_left)) {
+    if ($watermark_bottom_left !== null) {
         $update_map['watermark_bottom_left'] = $watermark_bottom_left;
         delete_upload('uploads/watermarks', 'galleries', 'watermark_bottom_left', 'name', $old_name, $watermark_bottom_left);
     }
-    if (!is_null($watermark_bottom_right)) {
+    if ($watermark_bottom_right !== null) {
         $update_map['watermark_bottom_right'] = $watermark_bottom_right;
         delete_upload('uploads/watermarks', 'galleries', 'watermark_bottom_right', 'name', $old_name, $watermark_bottom_right);
     }
 
-    if (!is_null($add_time)) {
+    if ($add_time !== null) {
         $update_map['add_date'] = $add_time;
     }
-    if (!is_null($g_owner)) {
+    if ($g_owner !== null) {
         $update_map['g_owner'] = $g_owner;
     }
 
@@ -1658,7 +1658,7 @@ function make_member_gallery_if_needed($cat)
 
     // Test to see if it exists
     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('galleries', 'name', array('name' => $cat));
-    if (is_null($test)) {
+    if ($test === null) {
         $parts = explode('_', $cat, 3);
         $member = intval($parts[1]);
         $parent_id = $parts[2];
@@ -1691,7 +1691,7 @@ function get_potential_gallery_title($cat)
 {
     // Test to see if it exists
     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('galleries', 'fullname', array('name' => $cat));
-    if ((is_null($test)) && (substr($cat, 0, 7) == 'member_')) {
+    if (($test === null) && (substr($cat, 0, 7) == 'member_')) {
         // Does not exist but is a potential member gallery
         $parts = explode('_', $cat, 3);
         $member = intval($parts[1]); // Almost certainly going to be same as get_member(), but we might as well be general here
@@ -1706,7 +1706,7 @@ function get_potential_gallery_title($cat)
 
         // Work out name
         $username = $GLOBALS['FORUM_DRIVER']->get_username($member, true);
-        if (is_null($username)) {
+        if ($username === null) {
             warn_exit(do_lang_tempcode('_MEMBER_NO_EXIST', escape_html($username)));
         }
         $fullname = get_translated_text($parent_info['fullname']);

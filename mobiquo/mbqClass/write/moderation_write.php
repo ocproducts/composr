@@ -131,7 +131,7 @@ class CMSModerationWrite
 
         require_code('cns_posts_action3');
         $topic_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_posts', 'p_topic_id', array('id' => $post_id));
-        if (is_null($topic_id)) {
+        if ($topic_id === null) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'post'));
         }
         cns_delete_posts_topic($topic_id, array($post_id), $reason); // NB: Checks perms implicitly
@@ -390,7 +390,7 @@ class CMSModerationWrite
         }
 
         $user_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($username);
-        if (is_null($user_id)) {
+        if ($user_id === null) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'member'));
         }
 
@@ -418,7 +418,7 @@ class CMSModerationWrite
             }
         }
 
-        if (is_null($expires)) {
+        if ($expires === null) {
             require_code('cns_members_action2');
             cns_ban_member($user_id);
         } else {
@@ -450,7 +450,7 @@ class CMSModerationWrite
         }
 
         $username = $GLOBALS['FORUM_DRIVER']->get_username($user_id);
-        if (is_null($username)) {
+        if ($username === null) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'member'));
         }
 
@@ -460,7 +460,7 @@ class CMSModerationWrite
         cns_unban_member($user_id);
 
         $on_probation_until = $GLOBALS['FORUM_DRIVER']->get_member_row_field($user_id, 'm_on_probation_until');
-        if (!is_null($on_probation_until)) {
+        if ($on_probation_until !== null) {
             $GLOBALS['FORUM_DB']->query_update('f_members', array('m_on_probation_until' => null), array('id' => $user_id), '', 1);
 
             require_code('cns_general_action2');
@@ -489,7 +489,7 @@ class CMSModerationWrite
         }
 
         $username = $GLOBALS['FORUM_DRIVER']->get_username($user_id);
-        if (is_null($username)) {
+        if ($username === null) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'member'));
         }
 

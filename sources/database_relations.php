@@ -355,7 +355,7 @@ function get_relation_map_for_table($table)
     $relation_map = get_relation_map();
     $new_relation_map = array();
     foreach ($relation_map as $from => $to) {
-        if (!is_null($to)) {
+        if ($to !== null) {
             list($from_table, $from_field) = explode('.', $from, 2);
             if ($table == $from_table) {
                 list($to_table, $to_field) = explode('.', $to, 2);

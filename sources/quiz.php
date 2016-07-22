@@ -29,7 +29,7 @@
  */
 function render_quiz_box($row, $zone = '_SEARCH', $give_context = true, $guid = '')
 {
-    if (is_null($row)) { // Should never happen, but we need to be defensive
+    if ($row === null) { // Should never happen, but we need to be defensive
         return new Tempcode();
     }
 
@@ -47,8 +47,8 @@ function render_quiz_box($row, $zone = '_SEARCH', $give_context = true, $guid = 
         $row['q_timeout'] = null;
     }
 
-    $timeout = is_null($row['q_timeout']) ? '' : display_time_period($row['q_timeout'] * 60);
-    $redo_time = ((is_null($row['q_redo_time'])) || ($row['q_redo_time'] == 0)) ? '' : display_time_period($row['q_redo_time'] * 60 * 60);
+    $timeout = ($row['q_timeout'] === null) ? '' : display_time_period($row['q_timeout'] * 60);
+    $redo_time = (($row['q_redo_time'] === null) || ($row['q_redo_time'] == 0)) ? '' : display_time_period($row['q_redo_time'] * 60 * 60);
 
     return do_template('QUIZ_BOX', array(
         '_GUID' => ($guid != '') ? $guid : '3ba4e19d93eb41f6cf2d472af982116e',
@@ -193,10 +193,10 @@ function render_quiz($questions)
  */
 function score_quiz($entry_id, $quiz_id = null, $quiz = null, $questions = null, $reveal_all = false)
 {
-    if (is_null($quiz_id)) {
+    if ($quiz_id === null) {
         $quiz_id = $GLOBALS['SITE_DB']->query_select_value('quiz_entries', 'q_quiz', array('id' => $entry_id));
     }
-    if (is_null($quiz_id)) {
+    if ($quiz_id === null) {
         $quizzes = $GLOBALS['SITE_DB']->query_select('quizzes', array('*'), array('id' => $quiz_id), '', 1);
         if (!array_key_exists(0, $quizzes)) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'quiz'));
@@ -213,7 +213,7 @@ function score_quiz($entry_id, $quiz_id = null, $quiz = null, $questions = null,
         $_given_answers[$_given_answer['q_question']][] = $_given_answer['q_answer'];
     }
 
-    if (is_null($questions)) {
+    if ($questions === null) {
         $questions = $GLOBALS['SITE_DB']->query_select('quiz_questions', array('*'), array('q_quiz' => $quiz_id), 'ORDER BY q_order');
         foreach ($questions as $i => $question) {
             $answers = $GLOBALS['SITE_DB']->query_select('quiz_question_answers', array('*'), array('q_question' => $question['id']), 'ORDER BY id');
@@ -262,13 +262,13 @@ function score_quiz($entry_id, $quiz_id = null, $quiz = null, $questions = null,
                     $marks++;
 
                     $affirmation = array($question['id'], $question_text, $correct_answer, $given_answer);
-                    if ((!is_null($correct_explanation)) && ($correct_explanation != '')) {
+                    if (($correct_explanation !== null) && ($correct_explanation != '')) {
                         $affirmation[] = $correct_explanation;
                     }
                     $affirmations[] = $affirmation;
                 } else {
                     $correction = array($question['id'], $question_text, $correct_answer, $given_answer);
-                    if ((!is_null($correct_explanation)) && ($correct_explanation != '')) {
+                    if (($correct_explanation !== null) && ($correct_explanation != '')) {
                         $correction[] = $correct_explanation;
                     }
                     $corrections[] = $correction;
@@ -321,7 +321,7 @@ function score_quiz($entry_id, $quiz_id = null, $quiz = null, $questions = null,
 
             if ($correctness != 1.0) {
                 $correction = array($question['id'], $question_text, $correct_answer, $accum);
-                if ((!is_null($correct_explanation)) && ($correct_explanation != '')) {
+                if (($correct_explanation !== null) && ($correct_explanation != '')) {
                     $correction[] = $correct_explanation;
                 }
                 $corrections[] = $correction;
@@ -361,13 +361,13 @@ function score_quiz($entry_id, $quiz_id = null, $quiz = null, $questions = null,
 
             if (!$was_correct) {
                 $correction = array($question['id'], $question_text, $correct_answer, $given_answer);
-                if ((!is_null($correct_explanation)) && ($correct_explanation != '')) {
+                if (($correct_explanation !== null) && ($correct_explanation != '')) {
                     $correction[] = $correct_explanation;
                 }
                 $corrections[] = $correction;
             } else {
                 $affirmation = array($question['id'], $question_text, $correct_answer, $given_answer);
-                if ((!is_null($correct_explanation)) && ($correct_explanation != '')) {
+                if (($correct_explanation !== null) && ($correct_explanation != '')) {
                     $affirmation[] = $correct_explanation;
                 }
                 $affirmations[] = $affirmation;

@@ -65,7 +65,7 @@ class Module_admin_phpinfo
      */
     public function run()
     {
-        if (!is_null($GLOBALS['CURRENT_SHARE_USER'])) {
+        if ($GLOBALS['CURRENT_SHARE_USER'] !== null) {
             warn_exit(do_lang_tempcode('SHARED_INSTALL_PROHIBIT'));
         }
 
@@ -159,7 +159,7 @@ class Module_admin_phpinfo
                 } else {
                     $suexec = null;
                 }
-                $out .= '<p><strong>Running as user</strong>: ' . escape_html($test) . (is_null($suexec) ? '' : (' (' . ($suexec ? 'suEXEC or similar' : 'Not suEXEC') . ')')) . '</p>';
+                $out .= '<p><strong>Running as user</strong>: ' . escape_html($test) . (($suexec === null) ? '' : (' (' . ($suexec ? 'suEXEC or similar' : 'Not suEXEC') . ')')) . '</p>';
             }
         } else {
             $tmp = cms_tempnam();

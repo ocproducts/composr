@@ -37,7 +37,7 @@ class Hook_ajax_tree_choose_wiki_page
         require_lang('wiki');
 
         $wiki_seen = array();
-        $tree = get_wiki_page_tree($wiki_seen, is_null($id) ? null : intval($id), null, null, false, false, is_null($id) ? 0 : 1);
+        $tree = get_wiki_page_tree($wiki_seen, ($id === null) ? null : intval($id), null, null, false, false, ($id === null) ? 0 : 1);
 
         $levels_to_expand = array_key_exists('levels_to_expand', $options) ? ($options['levels_to_expand']) : intval(get_value('levels_to_expand__' . substr(get_class($this), 5), null, true));
         $options['levels_to_expand'] = max(0, $levels_to_expand - 1);
@@ -71,7 +71,7 @@ class Hook_ajax_tree_choose_wiki_page
             }
         }
 
-        if (is_null($id)) {
+        if ($id === null) {
             $orphans = $GLOBALS['SITE_DB']->query('SELECT p.id,p.title FROM ' . get_table_prefix() . 'wiki_pages p WHERE NOT EXISTS(SELECT * FROM ' . get_table_prefix() . 'wiki_children WHERE child_id=p.id) ORDER BY add_date DESC', 50/*reasonable limit*/, null, false, false, array('title' => 'SHORT_TRANS'));
             foreach ($orphans as $i => $orphan) {
                 $orphans[$i]['_title'] = get_translated_text($orphan['title']);
@@ -118,6 +118,6 @@ class Hook_ajax_tree_choose_wiki_page
         require_lang('wiki');
         require_code('wiki');
 
-        return create_selection_list_wiki_page_tree(is_null($it) ? null : intval($it));
+        return create_selection_list_wiki_page_tree(($it === null) ? null : intval($it));
     }
 }

@@ -40,7 +40,7 @@ class Hook_ajax_tree_choose_forum
         $addable_filter = array_key_exists('addable_filter', $options) ? ($options['addable_filter']) : false;
         $stripped_id = ($compound_list ? preg_replace('#,.*$#', '', $id) : $id);
 
-        $tree = cns_get_forum_tree(null, is_null($id) ? null : intval($id), '', null, null, $compound_list, 1, true);
+        $tree = cns_get_forum_tree(null, ($id === null) ? null : intval($id), '', null, null, $compound_list, 1, true);
 
         $levels_to_expand = array_key_exists('levels_to_expand', $options) ? ($options['levels_to_expand']) : intval(get_value('levels_to_expand__' . substr(get_class($this), 5), null, true));
         $options['levels_to_expand'] = max(0, $levels_to_expand - 1);
@@ -83,9 +83,9 @@ class Hook_ajax_tree_choose_forum
         }
 
         // Mark parent cats for pre-expansion
-        if ((!is_null($default)) && ($default != '')) {
+        if (($default !== null) && ($default != '')) {
             $cat = intval($default);
-            while (!is_null($cat)) {
+            while ($cat !== null) {
                 $out .= '<expand>' . strval($cat) . '</expand>';
                 $cat = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forums', 'f_parent_forum', array('id' => $cat));
             }
@@ -113,7 +113,7 @@ class Hook_ajax_tree_choose_forum
         require_code('cns_forums');
         require_code('cns_forums2');
 
-        $tree = create_selection_list_forum_tree(null, null, is_null($it) ? null : array(intval($it)), $compound_list);
+        $tree = create_selection_list_forum_tree(null, null, ($it === null) ? null : array(intval($it)), $compound_list);
 
         return $tree;
     }

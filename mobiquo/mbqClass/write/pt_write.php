@@ -214,7 +214,7 @@ class CMSPtWrite
             access_denied('NOT_AS_GUEST');
         }
 
-        if (is_null($topic_id)) {
+        if ($topic_id === null) {
             $table_prefix = $GLOBALS['FORUM_DB']->get_table_prefix();
             $sql = 'SELECT id FROM ' . $table_prefix . 'f_topics t';
             $sql .= ' WHERE t_forum_id IS NULL';

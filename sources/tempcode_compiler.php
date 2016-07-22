@@ -245,7 +245,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                 $parameters[$key] = $parameter ? '1' : '0';
             }
 
-            elseif (is_null($parameter)) {
+            elseif ($parameter === null) {
                 unset($parameters[$key]);
             }
 
@@ -1041,7 +1041,7 @@ function may_optimise_out_symbol($symbol)
  */
 function _do_template($theme, $directory, $codename, $_codename, $lang, $suffix, $theme_orig = null, &$parameters = null)
 {
-    if (is_null($theme_orig)) {
+    if ($theme_orig === null) {
         $theme_orig = $theme;
     }
 
@@ -1200,7 +1200,7 @@ function _do_template($theme, $directory, $codename, $_codename, $lang, $suffix,
             fclose($myfile);
             require_code('files');
             fix_permissions($path2 . '/' . filter_naughty($_codename) . $suffix . '.tcp');
-            /*if (!is_null($final_css_path)) {
+            /*if ($final_css_path !== null) {
                 @unlink($final_css_path); // So we know to regenerate the final file (so far we just did the .tcp)
             }*/
         } else {
@@ -1229,10 +1229,10 @@ function _do_template($theme, $directory, $codename, $_codename, $lang, $suffix,
  */
 function template_to_tempcode($text, $symbol_pos = 0, $inside_directive = false, $codename = '', $theme = null, $lang = null, $tolerate_errors = false, &$parameters = null)
 {
-    if (is_null($theme)) {
+    if ($theme === null) {
         $theme = isset($GLOBALS['FORUM_DRIVER']) ? $GLOBALS['FORUM_DRIVER']->get_theme() : 'default';
     }
-    if (is_null($lang)) {
+    if ($lang === null) {
         $lang = user_lang();
     }
 

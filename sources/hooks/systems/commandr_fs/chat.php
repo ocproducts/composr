@@ -84,7 +84,7 @@ class Hook_commandr_fs_chat extends Resource_fs_base
         if (!empty($properties['allow'])) {
             foreach ($properties['allow'] as $x) {
                 $_x = remap_portable_as_resource_id('member', $x);
-                if (!is_null($_x)) {
+                if ($_x !== null) {
                     $_allow[] = $_x;
                 }
             }
@@ -95,7 +95,7 @@ class Hook_commandr_fs_chat extends Resource_fs_base
         if (!empty($properties['allow_groups'])) {
             foreach ($properties['allow_groups'] as $x) {
                 $_x = remap_portable_as_resource_id('group', $x);
-                if (!is_null($_x)) {
+                if ($_x !== null) {
                     $_allow_groups[] = $_x;
                 }
             }
@@ -106,7 +106,7 @@ class Hook_commandr_fs_chat extends Resource_fs_base
         if (!empty($properties['disallow'])) {
             foreach ($properties['disallow'] as $x) {
                 $_x = remap_portable_as_resource_id('member', $x);
-                if (!is_null($_x)) {
+                if ($_x !== null) {
                     $_disallow[] = $_x;
                 }
             }
@@ -117,7 +117,7 @@ class Hook_commandr_fs_chat extends Resource_fs_base
         if (!empty($properties['disallow_groups'])) {
             foreach ($properties['disallow_groups'] as $x) {
                 $_x = remap_portable_as_resource_id('group', $x);
-                if (!is_null($_x)) {
+                if ($_x !== null) {
                     $_disallow_groups[] = $_x;
                 }
             }
@@ -178,7 +178,7 @@ class Hook_commandr_fs_chat extends Resource_fs_base
         if (!empty($row['allow_list'])) {
             foreach (explode(',', $row['allow_list']) as $x) {
                 $_x = remap_resource_id_as_portable('member', intval($x));
-                if (!is_null($_x)) {
+                if ($_x !== null) {
                     $allow[] = $_x;
                 }
             }
@@ -188,7 +188,7 @@ class Hook_commandr_fs_chat extends Resource_fs_base
         if (!empty($row['allow_list_groups'])) {
             foreach (explode(',', $row['allow_list_groups']) as $x) {
                 $_x = remap_resource_id_as_portable('group', intval($x));
-                if (!is_null($_x)) {
+                if ($_x !== null) {
                     $allow_groups[] = $_x;
                 }
             }
@@ -198,7 +198,7 @@ class Hook_commandr_fs_chat extends Resource_fs_base
         if (!empty($row['disallow_list'])) {
             foreach (explode(',', $row['disallow_list']) as $x) {
                 $_x = remap_resource_id_as_portable('member', intval($x));
-                if (!is_null($_x)) {
+                if ($_x !== null) {
                     $disallow[] = $_x;
                 }
             }
@@ -208,7 +208,7 @@ class Hook_commandr_fs_chat extends Resource_fs_base
         if (!empty($row['disallow_list_groups'])) {
             foreach (explode(',', $row['disallow_list_groups']) as $x) {
                 $_x = remap_resource_id_as_portable('group', intval($x));
-                if (!is_null($_x)) {
+                if ($_x !== null) {
                     $disallow_groups[] = $_x;
                 }
             }

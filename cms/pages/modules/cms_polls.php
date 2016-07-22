@@ -183,7 +183,7 @@ class Module_cms_polls extends Standard_crud_module
         $fields = new Tempcode();
 
         $only_owned = has_privilege(get_member(), 'edit_midrange_content', 'cms_polls') ? null : get_member();
-        list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering, (is_null($only_owned) ? array() : array('submitter' => $only_owned)));
+        list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering, (($only_owned === null) ? array() : array('submitter' => $only_owned)));
         require_code('form_templates');
         foreach ($rows as $row) {
             $edit_url = build_url($url_map + array('id' => $row['id']), '_SELF');
@@ -266,7 +266,7 @@ class Module_cms_polls extends Standard_crud_module
         if (has_privilege(get_member(), 'choose_poll')) {
             if ($question == '') {
                 $test = $GLOBALS['SITE_DB']->query_select_value_if_there('poll', 'is_current', array('is_current' => 1));
-                if (is_null($test)) {
+                if ($test === null) {
                     $current = true;
                 }
             }
@@ -276,11 +276,11 @@ class Module_cms_polls extends Standard_crud_module
         // Metadata
         require_code('feedback2');
         $feedback_fields = feedback_fields($this->content_type, $allow_rating == 1, $allow_comments == 1, $allow_trackbacks == 1, false, $notes, $allow_comments == 2, false, true, false);
-        $fields->attach(metadata_get_fields('poll', is_null($id) ? null : strval($id), false, null, ($feedback_fields->is_empty()) ? METADATA_HEADER_YES : METADATA_HEADER_FORCE));
+        $fields->attach(metadata_get_fields('poll', ($id === null) ? null : strval($id), false, null, ($feedback_fields->is_empty()) ? METADATA_HEADER_YES : METADATA_HEADER_FORCE));
         $fields->attach($feedback_fields);
 
         if (addon_installed('content_reviews')) {
-            $fields->attach(content_review_get_fields('poll', is_null($id) ? null : strval($id)));
+            $fields->attach(content_review_get_fields('poll', ($id === null) ? null : strval($id)));
         }
 
         return array($fields, new Tempcode());

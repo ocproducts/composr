@@ -49,7 +49,7 @@ function sign_in_func($raw_params)
     $results = $account_object->sign_in($token, $code, $email, $username, $password, $custom_fields);
 
     // Error
-    if (is_null($results['member_id'])) {
+    if ($results['member_id'] === null) {
         $arr = array(
             'status' => mobiquo_val($results['status'], 'string'),
         );
@@ -213,7 +213,7 @@ function register_func($raw_params)
     $arr = array(
         'result' => mobiquo_val(true, 'boolean'),
     );
-    if (!is_null($results['preview_topic_id'])) {
+    if ($results['preview_topic_id'] !== null) {
         $arr['preview_topic_id'] = mobiquo_val(strval($results['preview_topic_id']), 'string');
     }
     $response = mobiquo_val($arr, 'struct');
@@ -242,7 +242,7 @@ function prefetch_account_func($raw_params)
         $member = null;
     }
 
-    $member_exists = !is_null($member);
+    $member_exists = $member !== null;
 
     $_custom_register_fields = $account_object->get_custom_register_fields();
     $custom_register_fields = array();

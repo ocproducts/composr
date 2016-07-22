@@ -57,7 +57,7 @@ class Module_admin_security
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->create_table('hackattack', array(
                 'id' => '*AUTO',
                 'url' => 'URLPATH',
@@ -76,13 +76,13 @@ class Module_admin_security
             $GLOBALS['SITE_DB']->create_index('hackattack', 'h_date_and_time', array('date_and_time'));
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 3)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 3)) {
             $GLOBALS['SITE_DB']->add_table_field('hackattack', 'user_agent', 'SHORT_TEXT');
             $GLOBALS['SITE_DB']->add_table_field('hackattack', 'referer', 'SHORT_TEXT');
             $GLOBALS['SITE_DB']->add_table_field('hackattack', 'user_os', 'SHORT_TEXT');
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 4)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 4)) {
             $GLOBALS['SITE_DB']->alter_table_field('hackattack', 'the_user', 'MEMBER', 'member_id');
         }
     }
@@ -196,7 +196,7 @@ class Module_admin_security
         require_code('templates_results_table');
         $fields_title = results_field_title(array(do_lang_tempcode('USERNAME'), do_lang_tempcode('DATE_TIME'), do_lang_tempcode('IP_ADDRESS')), $sortables, 'failed_sort', $_sortable . ' ' . $sort_order);
         $member_id = post_param_integer('member_id', null);
-        $map = (!is_null($member_id)) ? array('failed_account' => $GLOBALS['FORUM_DRIVER']->get_username($member_id)) : null;
+        $map = ($member_id !== null) ? array('failed_account' => $GLOBALS['FORUM_DRIVER']->get_username($member_id)) : null;
         $max_rows = $GLOBALS['SITE_DB']->query_select_value('failedlogins', 'COUNT(*)', $map);
         $rows = $GLOBALS['SITE_DB']->query_select('failedlogins', array('*'), $map, 'ORDER BY ' . $_sortable . ' ' . $sort_order, $max, $start);
         $fields = new Tempcode();
@@ -208,7 +208,7 @@ class Module_admin_security
         $failed_logins = results_table(do_lang_tempcode('FAILED_LOGINS'), $start, 'failed_start', $max, 'failed_max', $max_rows, $fields_title, $fields, $sortables, $_sortable, $sort_order, 'failed_sort', new Tempcode());
 
         $member_id = post_param_integer('member_id', null);
-        $map = (!is_null($member_id)) ? array('member_id' => $member_id) : null;
+        $map = ($member_id !== null) ? array('member_id' => $member_id) : null;
         list($alerts, $num_alerts) = find_security_alerts($map);
 
         $post_url = build_url(array('page' => '_SELF', 'type' => 'clean', 'start' => $start, 'max' => $max), '_SELF');
@@ -269,7 +269,7 @@ class Module_admin_security
         $post = with_whitespace(unixify_line_format($row['data_post']));
 
         $username = $GLOBALS['FORUM_DRIVER']->get_username($row['member_id']);
-        if (is_null($username)) {
+        if ($username === null) {
             $username = do_lang('UNKNOWN');
         }
 

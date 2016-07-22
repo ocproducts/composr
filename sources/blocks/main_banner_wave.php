@@ -73,13 +73,13 @@ class Block_main_banner_wave
         $region = empty($map['region']) ? null : $map['region'];
 
         $max = array_key_exists('max', $map) ? intval($map['max']) : 100;
-        if (!is_null($name)) {
+        if ($name !== null) {
             $max = 1;
         }
 
         require_code('banners');
 
-        if (is_null($name)) {
+        if ($name === null) {
             $myquery = banner_select_sql($b_type, false, null, $region) . ' ORDER BY name';
             $banners = $GLOBALS['SITE_DB']->query($myquery, 200/*just in case of insane amounts of data*/);
         } else {

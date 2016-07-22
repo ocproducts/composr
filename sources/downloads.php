@@ -50,7 +50,7 @@ function download_licence_script()
  */
 function render_download_box($row, $pic = true, $include_breadcrumbs = true, $zone = null, $text_summary = null, $give_context = true, $root = null, $guid = '')
 {
-    if (is_null($row)) { // Should never happen, but we need to be defensive
+    if ($row === null) { // Should never happen, but we need to be defensive
         return new Tempcode();
     }
 
@@ -58,7 +58,7 @@ function render_download_box($row, $pic = true, $include_breadcrumbs = true, $zo
     require_css('downloads');
     require_code('files');
 
-    if (is_null($zone)) {
+    if ($zone === null) {
         $zone = get_module_zone('downloads');
     }
 
@@ -70,7 +70,7 @@ function render_download_box($row, $pic = true, $include_breadcrumbs = true, $zo
     $description = (is_string($row['description']) && !isset($row['description__text_parsed'])) ? comcode_to_tempcode($row['description']) : get_translated_tempcode('download_downloads', $just_download_row, 'description');
     if (array_key_exists('id', $row)) {
         $map = array('page' => 'downloads', 'type' => 'entry', 'id' => $row['id']);
-        if (!is_null($root)) {
+        if ($root !== null) {
             $map['keep_download_root'] = ($root == db_get_first_id()) ? null : $root;
         }
         $view_url = build_url($map, $zone);
@@ -80,7 +80,7 @@ function render_download_box($row, $pic = true, $include_breadcrumbs = true, $zo
     $date = get_timezoned_date_tempcode($row['add_date']);
     $date_raw = $row['add_date'];
 
-    $breadcrumbs = $include_breadcrumbs ? breadcrumb_segments_to_tempcode(download_breadcrumbs($row['category_id'], is_null($root) ? get_param_integer('keep_download_root', null) : $root, false, $zone)) : new Tempcode();
+    $breadcrumbs = $include_breadcrumbs ? breadcrumb_segments_to_tempcode(download_breadcrumbs($row['category_id'], ($root === null) ? get_param_integer('keep_download_root', null) : $root, false, $zone)) : new Tempcode();
 
     // Download has image?
     $pic_suffix = '';
@@ -105,7 +105,7 @@ function render_download_box($row, $pic = true, $include_breadcrumbs = true, $zo
     // Rating
     require_code('feedback');
     $rating = ($row['allow_rating'] == 1 && array_key_exists('id', $row)) ? display_rating($view_url, is_string($row['name']) ? $row['name'] : get_translated_text($row['name']), 'downloads', strval($row['id']), 'RATING_INLINE_STATIC', $row['submitter']) : null;
-    if (!is_null($rating)) {
+    if ($rating !== null) {
         if (trim($rating->evaluate()) == '') {
             $rating = null;
         }
@@ -116,9 +116,9 @@ function render_download_box($row, $pic = true, $include_breadcrumbs = true, $zo
     $licence_url = null;
     $licence_hyperlink = null;
     $licence = $row['download_licence'];
-    if (!is_null($licence)) {
+    if ($licence !== null) {
         $licence_title = $GLOBALS['SITE_DB']->query_select_value_if_there('download_licences', 'l_title', array('id' => $licence));
-        if (!is_null($licence_title)) {
+        if ($licence_title !== null) {
             $keep = symbol_tempcode('KEEP');
             $licence_url = find_script('download_licence') . '?id=' . strval($licence) . $keep->evaluate();
             $licence_hyperlink = do_template('HYPERLINK_POPUP_WINDOW', array('_GUID' => ($guid != '') ? $guid : '58a9e5c99bd236290009b6eab44dbac3', 'TITLE' => '', 'CAPTION' => $licence_title, 'URL' => $licence_url, 'WIDTH' => '600', 'HEIGHT' => '500', 'REL' => 'license'));
@@ -150,14 +150,14 @@ function render_download_box($row, $pic = true, $include_breadcrumbs = true, $zo
         'DOWNLOADS' => integer_format($row['num_downloads']),
         'DATE_RAW' => strval($date_raw),
         'DATE' => $date,
-        'EDIT_DATE_RAW' => is_null($row['edit_date']) ? '' : strval($row['edit_date']),
+        'EDIT_DATE_RAW' => ($row['edit_date'] === null) ? '' : strval($row['edit_date']),
         'URL' => $view_url,
         'NAME' => is_string($row['name']) ? $row['name'] : get_translated_text($row['name']),
         'BREADCRUMBS' => $breadcrumbs,
         'IMG_URL' => $thumb_url,
         'FULL_IMG_URL' => $full_img_url,
         'IMGCODE' => $imgcode,
-        'LICENCE' => is_null($licence) ? null : strval($licence),
+        'LICENCE' => ($licence === null) ? null : strval($licence),
         'LICENCE_TITLE' => $licence_title,
         'LICENCE_HYPERLINK' => $licence_hyperlink,
         'MAY_DOWNLOAD' => $may_download,
@@ -179,14 +179,14 @@ function render_download_box($row, $pic = true, $include_breadcrumbs = true, $zo
  */
 function render_download_category_box($row, $zone = '_SEARCH', $give_context = true, $include_breadcrumbs = true, $root = null, $attach_to_url_filter = false, $guid = '')
 {
-    if (is_null($row)) { // Should never happen, but we need to be defensive
+    if ($row === null) { // Should never happen, but we need to be defensive
         return new Tempcode();
     }
 
     require_lang('downloads');
 
     $map = array('page' => 'downloads', 'type' => 'browse', 'id' => ($row['id'] == db_get_first_id()) ? null : $row['id']);
-    if (!is_null($root)) {
+    if ($root !== null) {
         $map['keep_download_root'] = $root;
     }
     if ($attach_to_url_filter) {
@@ -199,7 +199,7 @@ function render_download_category_box($row, $zone = '_SEARCH', $give_context = t
 
     $breadcrumbs = mixed();
     if ($include_breadcrumbs) {
-        $breadcrumbs = breadcrumb_segments_to_tempcode(download_breadcrumbs($row['parent_id'], is_null($root) ? get_param_integer('keep_download_root', null) : $root, false, $zone, $attach_to_url_filter));
+        $breadcrumbs = breadcrumb_segments_to_tempcode(download_breadcrumbs($row['parent_id'], ($root === null) ? get_param_integer('keep_download_root', null) : $root, false, $zone, $attach_to_url_filter));
     }
 
     $just_download_category_row = db_map_restrict($row, array('id', 'description'));
@@ -287,7 +287,7 @@ function create_selection_list_downloads_tree($it = null, $submitter = null, $sh
  */
 function get_downloads_tree($submitter = null, $category_id = null, $breadcrumbs = null, $title = null, $shun = null, $levels = null, $use_compound_list = false, $editable_filter = false, $tar_filter = false)
 {
-    if (is_null($category_id)) {
+    if ($category_id === null) {
         $category_id = db_get_first_id();
     }
 
@@ -295,12 +295,12 @@ function get_downloads_tree($submitter = null, $category_id = null, $breadcrumbs
         return array();
     }
 
-    if (is_null($breadcrumbs)) {
+    if ($breadcrumbs === null) {
         $breadcrumbs = '';
     }
 
     // Put our title onto our breadcrumbs
-    if (is_null($title)) {
+    if ($title === null) {
         $title = get_translated_text($GLOBALS['SITE_DB']->query_select_value('download_categories', 'category', array('id' => $category_id)));
     }
     $breadcrumbs .= $title;
@@ -320,7 +320,7 @@ function get_downloads_tree($submitter = null, $category_id = null, $breadcrumbs
         $rows = array();
     }
     $where = array('category_id' => $category_id);
-    if (!is_null($submitter)) {
+    if ($submitter !== null) {
         $where['submitter'] = $submitter;
     }
     $erows = $GLOBALS['SITE_DB']->query_select('download_downloads', array('id', 'name', 'submitter', 'original_filename'), $where, 'ORDER BY ' . $GLOBALS['SITE_DB']->translate_field_ref('name') . ' DESC', intval(get_option('general_safety_listing_limit'))/*reasonable limit*/);
@@ -335,7 +335,7 @@ function get_downloads_tree($submitter = null, $category_id = null, $breadcrumbs
         if (($editable_filter) && (!has_edit_permission('mid', get_member(), $row['submitter'], 'cms_downloads', array('download_downloads', $category_id)))) {
             continue;
         }
-        if ((!is_null($shun)) && ($shun == $row['id'])) {
+        if (($shun !== null) && ($shun == $row['id'])) {
             continue;
         }
 
@@ -353,7 +353,7 @@ function get_downloads_tree($submitter = null, $category_id = null, $breadcrumbs
             $child_title = get_translated_text($child['category']);
             $child_breadcrumbs = $breadcrumbs;
 
-            $child_children = get_downloads_tree($submitter, $child_id, $child_breadcrumbs, $child_title, $shun, is_null($levels) ? null : max(0, $levels - 1), $use_compound_list, $editable_filter, $tar_filter);
+            $child_children = get_downloads_tree($submitter, $child_id, $child_breadcrumbs, $child_title, $shun, ($levels === null) ? null : max(0, $levels - 1), $use_compound_list, $editable_filter, $tar_filter);
             if ($use_compound_list) {
                 list($child_children, $_compound_list) = $child_children;
                 $compound_list .= $_compound_list;
@@ -427,10 +427,10 @@ function get_download_category_tree($category_id = null, $breadcrumbs = null, $c
         }
     }
 
-    if (is_null($category_id)) {
+    if ($category_id === null) {
         $category_id = db_get_first_id();
     }
-    if (is_null($breadcrumbs)) {
+    if ($breadcrumbs === null) {
         $breadcrumbs = '';
     }
 
@@ -438,7 +438,7 @@ function get_download_category_tree($category_id = null, $breadcrumbs = null, $c
         return $use_compound_list ? array(array(), '') : array();
     }
 
-    if (is_null($category_info)) {
+    if ($category_info === null) {
         $_category_info = $GLOBALS['SITE_DB']->query_select('download_categories', array('*'), array('id' => $category_id), '', 1);
         if (!array_key_exists(0, $_category_info)) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'download_category'));
@@ -475,7 +475,7 @@ function get_download_category_tree($category_id = null, $breadcrumbs = null, $c
         foreach ($rows as $child) {
             $child_id = $child['id'];
 
-            $child_children = get_download_category_tree($child_id, $child_breadcrumbs, $child, $do_stats, $use_compound_list, is_null($levels) ? null : max(0, $levels - 1), $addable_filter);
+            $child_children = get_download_category_tree($child_id, $child_breadcrumbs, $child, $do_stats, $use_compound_list, ($levels === null) ? null : max(0, $levels - 1), $addable_filter);
             if ($use_compound_list) {
                 list($child_children, $_compound_list) = $child_children;
                 $children[0]['compound_list'] .= $_compound_list;
@@ -523,10 +523,10 @@ function create_selection_list_download_licences($it = null, $allow_na = false)
  */
 function download_breadcrumbs($category_id, $root = null, $no_link_for_me_sir = true, $zone = null, $attach_to_url_filter = false)
 {
-    if (is_null($root)) {
+    if ($root === null) {
         $root = db_get_first_id();
     }
-    if (is_null($zone)) {
+    if ($zone === null) {
         $zone = get_module_zone('downloads');
     }
 
@@ -578,7 +578,7 @@ function download_breadcrumbs($category_id, $root = null, $no_link_for_me_sir = 
 function count_download_category_children($category_id)
 {
     static $total_categories = null;
-    if (is_null($total_categories)) {
+    if ($total_categories === null) {
         $total_categories = $GLOBALS['SITE_DB']->query_select_value('download_categories', 'COUNT(*)');
     }
 

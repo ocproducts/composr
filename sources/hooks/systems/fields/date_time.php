@@ -77,13 +77,13 @@ class Hook_fields_date_time
         if ($range_search) {
             $_from = post_param_date('option_' . strval($field['id']) . '_from', true, false);
             $from = '';
-            if (!is_null($_from)) {
+            if ($_from !== null) {
                 $from = date('Y-m-d H:i', $_from);
             }
 
             $_to = post_param_date('option_' . strval($field['id']) . '_to', true, false);
             $to = '';
-            if (!is_null($_to)) {
+            if ($_to !== null) {
                 $to = date('Y-m-d H:i', $_to);
             }
 
@@ -91,7 +91,7 @@ class Hook_fields_date_time
         }
 
         $filter = post_param_date('option_' . strval($field['id']), true);
-        return is_null($filter) ? '' : date('Y-m-d H:i', $filter);
+        return ($filter === null) ? '' : date('Y-m-d H:i', $filter);
     }
 
     // ===================
@@ -177,7 +177,7 @@ class Hook_fields_date_time
     {
         $time = mixed();
 
-        if ((is_null($actual_value)) || ($actual_value == '')) {
+        if (($actual_value === null) || ($actual_value == '')) {
             $time = null;
         } elseif ($actual_value == 'NOW') {
             $time = time();
@@ -232,13 +232,13 @@ class Hook_fields_date_time
 
         require_code('temporal2');
         list($year, $month, $day, $hour, $minute) = post_param_date_components($stub);
-        if (is_null($year)) {
+        if ($year === null) {
             return $editing ? STRING_MAGIC_NULL : '';
         }
-        if (is_null($month)) {
+        if ($month === null) {
             return $editing ? STRING_MAGIC_NULL : '';
         }
-        if (is_null($day)) {
+        if ($day === null) {
             return $editing ? STRING_MAGIC_NULL : '';
         }
 

@@ -44,7 +44,7 @@ class Hook_startup_tapatalk
                     $default_max = intval(get_option('forum_posts_per_page'));
                     $max = get_param_integer('max', $default_max);
                     $id = get_param_integer('id', null);
-                    if (!is_null($id)) {
+                    if ($id !== null) {
                         $extra = '&tid=' . strval($id);
                     }
                     break;
@@ -57,7 +57,7 @@ class Hook_startup_tapatalk
 
                             $page_type = 'message';
                             $id = get_param_integer('id', null);
-                            if (!is_null($id)) {
+                            if ($id !== null) {
                                 $extra = '&mid=' . strval($id);
                             }
                             break;
@@ -98,7 +98,7 @@ class Hook_startup_tapatalk
                 $app_location_url .= 'user_id=' . strval(get_member()) . '&';
             }
             $app_location_url .= 'location=' . $page_type;
-            if (!is_null($start)) {
+            if ($start !== null) {
                 $app_location_url .= '&page=' . strval(intval(floor($start / $max)) + 1) . '&perpage=' . strval($max);
             }
             $app_location_url .= $extra;

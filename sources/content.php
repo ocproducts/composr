@@ -59,7 +59,7 @@ function may_view_content_behind($member_id, $content_type, $content_id, $type_h
         $info = $content_type_ob->info();
         if (isset($info['category_field'])) {
             list(, , , $content) = content_get_details($content_type, $content_id);
-            if (!is_null($content)) {
+            if ($content !== null) {
                 $category_field = $info['category_field'];
                 if (is_array($category_field)) {
                     $category_field = array_pop($category_field);
@@ -92,7 +92,7 @@ function may_view_content_behind($member_id, $content_type, $content_id, $type_h
     if (($content_type == 'topic') && (get_forum_type() == 'cns')) {
         $topic_id = intval($content_id);
     }
-    if (!is_null($topic_id)) {
+    if ($topic_id !== null) {
         $topic_rows = $GLOBALS['FORUM_DB']->query_select('f_topics', array('t_forum_id', 't_pt_from', 't_pt_to'), array('id' => $topic_id), '', 1);
         if (!array_key_exists(0, $topic_rows)) {
             return false;
@@ -103,7 +103,7 @@ function may_view_content_behind($member_id, $content_type, $content_id, $type_h
         }
     }
 
-    return ((has_actual_page_access($member_id, $module)) && (($permission_type_code == '') || (is_null($category_id)) || (has_category_access($member_id, $permission_type_code, $category_id))));
+    return ((has_actual_page_access($member_id, $module)) && (($permission_type_code == '') || ($category_id === null) || (has_category_access($member_id, $permission_type_code, $category_id))));
 }
 
 /**
@@ -227,7 +227,7 @@ function content_get_details($content_type, $content_id, $resource_fs_style = fa
     $db = $cma_info['db'];
 
     $content_row = content_get_row($content_id, $cma_info);
-    if (is_null($content_row)) {
+    if ($content_row === null) {
         if (($content_type == 'comcode_page') && (strpos($content_id, ':') !== false) && (!$resource_fs_style)) {
             list($zone, $page) = explode(':', $content_id, 2);
 
@@ -253,7 +253,7 @@ function content_get_details($content_type, $content_id, $resource_fs_style = fa
             $content_url_email_safe = build_url(array('page' => $page), $zone, null, false, false, true);
 
             $_content_title = $GLOBALS['SITE_DB']->query_select_value_if_there('cached_comcode_pages', 'cc_page_title', array('the_zone' => $zone, 'the_page' => $page));
-            if (!is_null($_content_title)) {
+            if ($_content_title !== null) {
                 $content_title = get_translated_text($_content_title);
             } else {
                 $content_title = $zone . ':' . $page;
@@ -271,7 +271,7 @@ function content_get_details($content_type, $content_id, $resource_fs_style = fa
         $title_field = $cma_info['title_field__resource_fs'];
         $title_field_dereference = $cma_info['title_field_dereference__resource_fs'];
     }
-    if (is_null($title_field)) {
+    if ($title_field === null) {
         $content_title = do_lang($cma_info['content_type_label']);
     } else {
         if (strpos($title_field, 'CALL:') !== false) {
@@ -284,7 +284,7 @@ function content_get_details($content_type, $content_id, $resource_fs_style = fa
                 if ($content_type == 'image' || $content_type == 'video') { // A bit of a fudge, but worth doing
                     require_lang('galleries');
                     $fullname = $GLOBALS['SITE_DB']->query_select_value_if_there('galleries', 'fullname', array('name' => $content_row['cat']));
-                    if (!is_null($fullname)) {
+                    if ($fullname !== null) {
                         $content_title = do_lang('VIEW_' . strtoupper($content_type) . '_IN', get_translated_text($fullname));
                     }
                 }
@@ -292,7 +292,7 @@ function content_get_details($content_type, $content_id, $resource_fs_style = fa
         }
     }
 
-    if (!is_null($cma_info['submitter_field'])) {
+    if ($cma_info['submitter_field'] !== null) {
         if (strpos($cma_info['submitter_field'], ':') !== false) {
             $bits = explode(':', $cma_info['submitter_field']);
             $matches = array();
@@ -310,7 +310,7 @@ function content_get_details($content_type, $content_id, $resource_fs_style = fa
 
     $content_url = mixed();
     $content_url_email_safe = mixed();
-    if (!is_null($cma_info['view_page_link_pattern'])) {
+    if ($cma_info['view_page_link_pattern'] !== null) {
         list($zone, $url_bits, $hash) = page_link_decode(str_replace('_WILD', $content_id, $cma_info['view_page_link_pattern']));
         $content_url = build_url($url_bits, $zone, null, false, false, false, $hash);
         $content_url_email_safe = build_url($url_bits, $zone, null, false, false, true, $hash);

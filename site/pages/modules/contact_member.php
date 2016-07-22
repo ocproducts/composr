@@ -92,7 +92,7 @@ class Module_contact_member
 
             $member_id = get_param_integer('id');
             $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id, true);
-            if (is_null($username)) {
+            if ($username === null) {
                 warn_exit(do_lang_tempcode('MEMBER_NO_EXIST'));
             }
 
@@ -239,13 +239,13 @@ class Module_contact_member
         $to_name = $this->to_name;
 
         $email_address = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_email_address');
-        if (is_null($email_address)) {
+        if ($email_address === null) {
             fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
 
         $join_time = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_join_time');
 
-        if (is_null($to_name)) {
+        if ($to_name === null) {
             warn_exit(do_lang_tempcode('MEMBER_NO_EXIST'));
         }
 
@@ -264,7 +264,7 @@ class Module_contact_member
                     $address = post_param_string($key);
                     if (!is_email_address($address)) {
                         $address = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', 'm_email_address', array('m_username' => $address));
-                        if (is_null($address)) {
+                        if ($address === null) {
                             warn_exit(do_lang_tempcode('MEMBER_NO_EXIST'));
                         }
                         if (!is_email_address($address)) {

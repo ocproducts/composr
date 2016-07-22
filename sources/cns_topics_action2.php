@@ -57,12 +57,12 @@ function cns_edit_topic($topic_id, $description = null, $emoticon = null, $valid
 
         if (!(($info[0]['t_cache_first_member_id'] == get_member()) && (has_privilege(get_member(), 'close_own_topics')))) {
             require_code('cns_topics');
-            if ((!cns_may_edit_topics_by($forum_id, get_member(), $info[0]['t_cache_first_member_id'])) || ((($info[0]['t_pt_from'] != get_member()) && ($info[0]['t_pt_to'] != get_member())) && (!cns_has_special_pt_access($topic_id)) && (!has_privilege(get_member(), 'view_other_pt')) && (is_null($forum_id)))) {
+            if ((!cns_may_edit_topics_by($forum_id, get_member(), $info[0]['t_cache_first_member_id'])) || ((($info[0]['t_pt_from'] != get_member()) && ($info[0]['t_pt_to'] != get_member())) && (!cns_has_special_pt_access($topic_id)) && (!has_privilege(get_member(), 'view_other_pt')) && ($forum_id === null))) {
                 access_denied('I_ERROR');
             }
         }
 
-        if ((!is_null($forum_id)) && (!has_privilege(get_member(), 'bypass_validation_midrange_content', 'topics', array('forums', $forum_id)))) {
+        if (($forum_id !== null) && (!has_privilege(get_member(), 'bypass_validation_midrange_content', 'topics', array('forums', $forum_id)))) {
             $validated = null;
         }
     }
@@ -84,46 +84,46 @@ function cns_edit_topic($topic_id, $description = null, $emoticon = null, $valid
         );
     }
 
-    if (!is_null($title)) {
+    if ($title !== null) {
         require_code('urls2');
         suggest_new_idmoniker_for('topicview', 'browse', strval($topic_id), '', $title);
     }
 
     $update = array();
-    if (!is_null($description)) {
+    if ($description !== null) {
         $update['t_description'] = $description;
     }
-    if (!is_null($description_link)) {
+    if ($description_link !== null) {
         $update['t_description_link'] = $description_link;
     }
-    if (!is_null($emoticon)) {
+    if ($emoticon !== null) {
         $update['t_emoticon'] = $emoticon;
     }
     if (!addon_installed('unvalidated')) {
         $validated = 1;
     }
-    if (!is_null($validated)) {
+    if ($validated !== null) {
         $update['t_validated'] = $validated;
     }
-    if (!is_null($pinned)) {
+    if ($pinned !== null) {
         $update['t_pinned'] = $pinned;
     }
-    if (!is_null($cascading)) {
+    if ($cascading !== null) {
         $update['t_cascading'] = $cascading;
     }
-    if (!is_null($open)) {
+    if ($open !== null) {
         $update['t_is_open'] = $open;
     }
-    if (!is_null($views)) {
+    if ($views !== null) {
         $update['t_num_views'] = $views;
     }
 
-    if ((!is_null($title)) && ($title != '')) {
+    if (($title !== null) && ($title != '')) {
         $update['t_cache_first_title'] = $title;
         $GLOBALS['FORUM_DB']->query_update('f_posts', array('p_title' => $title), array('id' => $info[0]['t_cache_first_post_id']), '', 1);
     }
 
-    if ((!is_null($validated)) && ($validated == 1)) {
+    if (($validated !== null) && ($validated == 1)) {
         $GLOBALS['FORUM_DB']->query_update('f_posts', array('p_validated' => 1), array('id' => $info[0]['t_cache_first_post_id']), '', 1); // Auto-validate first post, if topic validated
     }
 
@@ -135,7 +135,7 @@ function cns_edit_topic($topic_id, $description = null, $emoticon = null, $valid
 
     $GLOBALS['FORUM_DB']->query_update('f_topics', $update, array('id' => $topic_id), '', 1);
 
-    if ((!is_null($title)) && ($title != '') && (!is_null($forum_id))) {
+    if (($title !== null) && ($title != '') && ($forum_id !== null)) {
         require_code('cns_posts_action2');
         cns_force_update_forum_caching($forum_id, 0, 0);
     }
@@ -145,7 +145,7 @@ function cns_edit_topic($topic_id, $description = null, $emoticon = null, $valid
         generate_resource_fs_moniker('topic', strval($topic_id));
     }
 
-    if (!is_null($forum_id)) {
+    if ($forum_id !== null) {
         require_code('cns_posts_action');
         cns_decache_cms_blocks($forum_id);
     } else {
@@ -153,7 +153,7 @@ function cns_edit_topic($topic_id, $description = null, $emoticon = null, $valid
         decache_private_topics($info[0]['t_pt_to']);
     }
 
-    if (!is_null($forum_id)) {
+    if ($forum_id !== null) {
         require_code('sitemap_xml');
         notify_sitemap_node_edit('SEARCH:topicview:id=' . strval($topic_id), has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'forums', strval($forum_id)));
     }
@@ -187,21 +187,21 @@ function cns_delete_topic($topic_id, $reason = '', $post_target_topic_id = null,
             (!cns_may_delete_topics_by($forum_id, get_member(), $info[0]['t_cache_first_member_id'])) ||
             (
                 (
-                    ((!is_null($info[0]['t_pt_from'])) && ($info[0]['t_pt_from'] != get_member())) &&
-                    ((!is_null($info[0]['t_pt_to'])) && ($info[0]['t_pt_to'] != get_member()))
+                    (($info[0]['t_pt_from'] !== null) && ($info[0]['t_pt_from'] != get_member())) &&
+                    (($info[0]['t_pt_to'] !== null) && ($info[0]['t_pt_to'] != get_member()))
                 ) &&
                 (!cns_has_special_pt_access($topic_id)) &&
                 (!has_privilege(get_member(), 'view_other_pt')) &&
-                (is_null($forum_id))
+                ($forum_id === null)
             )
         ) {
             access_denied('I_ERROR');
         }
     }
 
-    if (!is_null($post_target_topic_id)) {
+    if ($post_target_topic_id !== null) {
         $to = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 't_forum_id', array('id' => $post_target_topic_id));
-        if (is_null($to)) {
+        if ($to === null) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'topic'));
         }
     }
@@ -223,9 +223,9 @@ function cns_delete_topic($topic_id, $reason = '', $post_target_topic_id = null,
         );
     }
 
-    if (!is_null($forum_id)) {
+    if ($forum_id !== null) {
         // Update member post counts if we've switched between post-count countable forums
-        $post_count_info = $GLOBALS['FORUM_DB']->query('SELECT id,f_post_count_increment FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forums WHERE id=' . strval($forum_id) . (!is_null($post_target_topic_id) ? (' OR id=' . strval($to)) : ''), 2, null, false, true);
+        $post_count_info = $GLOBALS['FORUM_DB']->query('SELECT id,f_post_count_increment FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forums WHERE id=' . strval($forum_id) . ($post_target_topic_id !== null ? (' OR id=' . strval($to)) : ''), 2, null, false, true);
         if ($post_count_info[0]['id'] == $forum_id) {
             $from_cnt = $post_count_info[0]['f_post_count_increment'];
             $to_cnt = (array_key_exists(1, $post_count_info)) ? $post_count_info[1]['f_post_count_increment'] : 0;
@@ -252,14 +252,14 @@ function cns_delete_topic($topic_id, $reason = '', $post_target_topic_id = null,
     }
 
     // What to do with our posts
-    if (!is_null($post_target_topic_id)) { // If we were asked to move the posts into another topic
+    if ($post_target_topic_id !== null) { // If we were asked to move the posts into another topic
         $GLOBALS['FORUM_DB']->query_update('f_posts', array('p_cache_forum_id' => $to, 'p_topic_id' => $post_target_topic_id), array('p_topic_id' => $topic_id));
 
         require_code('cns_posts_action2');
 
         cns_force_update_topic_caching($post_target_topic_id);
 
-        if (!is_null($forum_id)) {
+        if ($forum_id !== null) {
             cns_force_update_forum_caching($forum_id, $to, 1, $num_posts);
         }
     } else {
@@ -274,7 +274,7 @@ function cns_delete_topic($topic_id, $reason = '', $post_target_topic_id = null,
     }
 
     // Delete stuff
-    if (!is_null($poll_id)) {
+    if ($poll_id !== null) {
         require_code('cns_polls_action');
         require_code('cns_polls_action2');
         cns_delete_poll($poll_id, '', false);
@@ -287,14 +287,14 @@ function cns_delete_topic($topic_id, $reason = '', $post_target_topic_id = null,
     // Delete the ticket row if it's a ticket
     if (addon_installed('tickets')) {
         require_code('tickets');
-        if ((!is_null($forum_id)) && (is_ticket_forum($forum_id))) {
+        if (($forum_id !== null) && (is_ticket_forum($forum_id))) {
             require_code('tickets2');
             delete_ticket_by_topic_id($topic_id);
         }
     }
 
     // Update forum view caching
-    if (!is_null($forum_id)) {
+    if ($forum_id !== null) {
         require_code('cns_posts_action2');
         cns_force_update_forum_caching($forum_id, ($validated == 0) ? 0 : -1, -$num_posts);
     }
@@ -303,7 +303,7 @@ function cns_delete_topic($topic_id, $reason = '', $post_target_topic_id = null,
         update_catalogue_content_ref('topic', strval($topic_id), '');
     }
 
-    if (!is_null($forum_id)) {
+    if ($forum_id !== null) {
         require_code('cns_posts_action');
         cns_decache_cms_blocks($forum_id);
     } else {
@@ -351,8 +351,8 @@ function cns_move_topics($from, $to, $topics = null, $check_perms = true) // NB:
 
     $topic_count = 0;
 
-    if (is_null($topics)) { // All of them
-        if (is_null($from)) {
+    if ($topics === null) { // All of them
+        if ($from === null) {
             access_denied('I_ERROR');
         }
 
@@ -386,7 +386,7 @@ function cns_move_topics($from, $to, $topics = null, $check_perms = true) // NB:
         if (!array_key_exists(0, $topic_info)) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'topic'));
         }
-        if (($topic_info[0]['t_forum_id'] != $from) || ((($topic_info[0]['t_pt_from'] != get_member()) && ($topic_info[0]['t_pt_to'] != get_member())) && (!cns_has_special_pt_access($topics[0])) && (!has_privilege(get_member(), 'view_other_pt')) && (is_null($topic_info[0]['t_forum_id'])))) {
+        if (($topic_info[0]['t_forum_id'] != $from) || ((($topic_info[0]['t_pt_from'] != get_member()) && ($topic_info[0]['t_pt_to'] != get_member())) && (!cns_has_special_pt_access($topics[0])) && (!has_privilege(get_member(), 'view_other_pt')) && ($topic_info[0]['t_forum_id'] === null))) {
             access_denied('I_ERROR');
         }
         if ($topic_info[0]['t_validated'] == 1) {
@@ -413,7 +413,7 @@ function cns_move_topics($from, $to, $topics = null, $check_perms = true) // NB:
             }
             $or_list .= 'id=' . strval($topic_id);
 
-            if (is_null($from)) {
+            if ($from === null) {
                 $topic_info = $GLOBALS['FORUM_DB']->query_select('f_topics', array('t_forum_id', 't_pt_from', 't_pt_to'), array('id' => $topic_id));
                 if (array_key_exists(0, $topic_info)) {
                     if ($topic_info[0]['t_validated'] == 1) {
@@ -429,7 +429,7 @@ function cns_move_topics($from, $to, $topics = null, $check_perms = true) // NB:
             }
         }
 
-        $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics SET t_forum_id=' . strval($to) . ',t_pt_from=NULL,t_pt_to=NULL WHERE t_forum_id' . (is_null($from) ? ' IS NULL' : ('=' . strval($from))) . ' AND (' . $or_list . ')', null, null, false, true);
+        $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics SET t_forum_id=' . strval($to) . ',t_pt_from=NULL,t_pt_to=NULL WHERE t_forum_id' . (($from === null) ? ' IS NULL' : ('=' . strval($from))) . ' AND (' . $or_list . ')', null, null, false, true);
         log_it('MOVE_TOPICS', do_lang('MULTIPLE'));
 
         $post_count = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT SUM(t_cache_num_posts) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics WHERE ' . $or_list, false, true);
@@ -442,14 +442,14 @@ function cns_move_topics($from, $to, $topics = null, $check_perms = true) // NB:
     require_code('cns_posts_action2');
 
     // Update source forum cache view
-    if (!is_null($from)) {
+    if ($from !== null) {
         cns_force_update_forum_caching($from, -$topic_count, -$post_count);
     }
 
     // Update dest forum cache view
     cns_force_update_forum_caching($to, $topic_count, $post_count);
 
-    if (!is_null($from)) {
+    if ($from !== null) {
         // Update member post counts if we've switched between post-count countable forums
         $post_count_info = $GLOBALS['FORUM_DB']->query('SELECT id,f_post_count_increment FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forums WHERE id=' . strval($from) . ' OR id=' . strval($to), 2);
         if ($post_count_info[0]['id'] == $from) {
@@ -478,7 +478,7 @@ function cns_move_topics($from, $to, $topics = null, $check_perms = true) // NB:
     }
 
     require_code('cns_posts_action');
-    if (!is_null($from)) {
+    if ($from !== null) {
         cns_decache_cms_blocks($from);
     } else {
         if (count($topics) == 1) {
@@ -519,7 +519,7 @@ function cns_invite_to_pt($member_id, $topic_id)
         's_member_id' => $member_id,
         's_topic_id' => $topic_id,
     ));
-    if (!is_null($test)) {
+    if ($test !== null) {
         warn_exit(do_lang_tempcode('NO_INVITE_SENSE_ALREADY'));
     }
     $GLOBALS['FORUM_DB']->query_insert('f_special_pt_access', array(
@@ -559,11 +559,11 @@ function cns_invite_to_pt($member_id, $topic_id)
  */
 function send_pt_notification($post_id, $subject, $topic_id, $to_id, $from_id = null, $post_comcode = null, $mark_unread = false)
 {
-    if (is_null($from_id)) {
+    if ($from_id === null) {
         $from_id = get_member();
     }
 
-    if (is_null($post_comcode)) {
+    if ($post_comcode === null) {
         $post_comcode = get_translated_text($GLOBALS['FORUM_DB']->query_select_value('f_posts', 'p_post', array('id' => $post_id)), $GLOBALS['FORUM_DB']);
     }
 

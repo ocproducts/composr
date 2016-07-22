@@ -125,18 +125,18 @@ class Block_main_staff_actions
         $fields = new Tempcode();
         foreach ($rows as $myrow) {
             $username = $GLOBALS['FORUM_DRIVER']->get_username($myrow['member_id']);
-            if (is_null($username)) {
+            if ($username === null) {
                 $username = do_lang('UNKNOWN');
             }
 
             $date = escape_html_tempcode(get_timezoned_date_time_tempcode($myrow['date_and_time']));
 
-            if (!is_null($myrow['param_a'])) {
+            if ($myrow['param_a'] !== null) {
                 $a = $myrow['param_a'];
             } else {
                 $a = '';
             }
-            if (!is_null($myrow['param_b'])) {
+            if ($myrow['param_b'] !== null) {
                 $b = $myrow['param_b'];
             } else {
                 $b = '';
@@ -147,12 +147,12 @@ class Block_main_staff_actions
             $_b = tpl_crop_text_mouse_over($b, 15);
 
             $type_str = do_lang($myrow['the_type'], $_a, $_b, null, null, false);
-            if (is_null($type_str)) {
+            if ($type_str === null) {
                 $type_str = $myrow['the_type'];
             }
 
             $test = actionlog_linkage($myrow['the_type'], $a, $b, $_a, $_b);
-            if (!is_null($test)) {
+            if ($test !== null) {
                 list($_a, $_b) = $test;
             }
 

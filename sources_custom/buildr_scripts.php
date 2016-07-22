@@ -33,10 +33,10 @@ function buildr_messages_script()
     $messages = new Tempcode();
     foreach ($rows as $myrow) {
         $message_sender = $GLOBALS['FORUM_DRIVER']->get_username($myrow['originator_id']);
-        if (is_null($message_sender)) {
+        if ($message_sender === null) {
             $message_sender = do_lang('UNKNOWN');
         }
-        $messages->attach(do_template('W_MESSAGE_' . (is_null($myrow['destination']) ? 'ALL' : 'TO'), array('MESSAGE_SENDER' => $message_sender, 'MESSAGE' => comcode_to_tempcode($myrow['m_message'], $myrow['originator_id']), 'DATE' => get_timezoned_date_time($myrow['m_datetime']))));
+        $messages->attach(do_template('W_MESSAGE_' . (($myrow['destination'] === null) ? 'ALL' : 'TO'), array('MESSAGE_SENDER' => $message_sender, 'MESSAGE' => comcode_to_tempcode($myrow['m_message'], $myrow['originator_id']), 'DATE' => get_timezoned_date_time($myrow['m_datetime']))));
     }
 
     $tpl = do_template('W_MESSAGES_HTML_WRAP', array('_GUID' => '05b40c794578d3221e2775895ecf8dbb', 'MESSAGES' => $messages));
@@ -63,7 +63,7 @@ function buildr_map_script()
 function download_map_wrap($member_id, $realm)
 {
     list($_realm, $x, $y) = get_loc_details($member_id);
-    if (is_null($realm)) {
+    if ($realm === null) {
         $realm = $_realm;
     }
     download_map($realm, $x, $y);
@@ -135,7 +135,7 @@ function download_map($realm, $sx, $sy)
             $by = $_y * $room_size + $border_size + $room_size - 1;
 
             $owner = $GLOBALS['FORUM_DRIVER']->get_username($room['owner']);
-            if (is_null($owner)) {
+            if ($owner === null) {
                 $owner = do_lang('UNKNOWN');
             }
 

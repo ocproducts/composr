@@ -50,11 +50,11 @@ class IOSPushNotifications
 
         // Some extra metadata that may be useful...
 
-        $message_ob->setCustomIdentifier($notification_code . '_' . (is_null($code_category) ? '' : $code_category) . '_' . strval(get_member()) . '_' . strval(time()));
+        $message_ob->setCustomIdentifier($notification_code . '_' . (($code_category === null) ? '' : $code_category) . '_' . strval(get_member()) . '_' . strval(time()));
 
         $data = array();
         $data['notification_code'] = $notification_code;
-        $data['code_category'] = is_null($code_category) ? '' : $code_category;
+        $data['code_category'] = ($code_category === null) ? '' : $code_category;
         $data['from_id'] = strval($from_member_id);
         $data['from_username'] = ($from_member_id >= 0) ? $GLOBALS['FORUM_DRIVER']->get_username($from_member_id) : '';
         $data['from_displayname'] = ($from_member_id >= 0) ? $GLOBALS['FORUM_DRIVER']->get_username($from_member_id, true) : '';

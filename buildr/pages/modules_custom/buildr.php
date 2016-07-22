@@ -77,11 +77,11 @@ class Module_buildr
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        if ((is_null($upgrade_from)) || ($upgrade_from < 3)) {
+        if (($upgrade_from === null) || ($upgrade_from < 3)) {
             add_privilege('BUILDR', 'administer_buildr');
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 3)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 3)) {
             $GLOBALS['SITE_DB']->alter_table_field('w_attempts', 'datetime', 'TIME', 'a_datetime');
             $GLOBALS['SITE_DB']->alter_table_field('w_items', 'count', 'INTEGER', 'i_count');
             $GLOBALS['SITE_DB']->alter_table_field('w_messages', 'message', 'SHORT_TEXT', 'm_message');
@@ -91,7 +91,7 @@ class Module_buildr
             $GLOBALS['SITE_DB']->alter_table_field('w_realms', 'private', 'BINARY', 'r_private');
         }
 
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->create_table('w_attempts', array(
                 'id' => '*AUTO',
                 'a_datetime' => 'TIME',
@@ -477,7 +477,7 @@ class Module_buildr
             $realm = $member_row['location_realm'];
             $troll_id = -$realm - 1;
             $troll_loc = get_loc_details($troll_id, true);
-            if (!is_null($troll_loc)) {
+            if ($troll_loc !== null) {
                 list(, $troll_x, $troll_y) = $troll_loc;
                 $dx = -1;
                 $dy = -1;
@@ -512,7 +512,7 @@ class Module_buildr
             $rows = $GLOBALS['SITE_DB']->query_select('items', array('*'), array('copy_owner' => null), 'ORDER BY name');
             foreach ($rows as $myrow) {
                 $owner = $GLOBALS['SITE_DB']->query_select_value('w_itemdef', 'owner', array('name' => $myrow['name']));
-                if (!is_null($owner)) {
+                if ($owner !== null) {
                     $GLOBALS['SITE_DB']->query_update('w_items', array('copy_owner' => $owner), array('name' => $myrow['name'], 'copy_owner' => null));
                     $out->attach(paragraph(do_lang_tempcode('W_REALLOCATING', escape_html($myrow['name']), 'tfgdfgd4rf')));
                 }
@@ -532,28 +532,28 @@ class Module_buildr
 
         if ($type == 'up') {
             $tpl = try_to_enter_room($member_id, 0, -1, '');
-            if (!is_null($tpl)) {
+            if ($tpl !== null) {
                 return $tpl;
             }
             buildr_refresh_with_message(new Tempcode());
         }
         if ($type == 'down') {
             $tpl = try_to_enter_room($member_id, 0, 1, '');
-            if (!is_null($tpl)) {
+            if ($tpl !== null) {
                 return $tpl;
             }
             buildr_refresh_with_message(new Tempcode());
         }
         if ($type == 'right') {
             $tpl = try_to_enter_room($member_id, 1, 0, '');
-            if (!is_null($tpl)) {
+            if ($tpl !== null) {
                 return $tpl;
             }
             buildr_refresh_with_message(new Tempcode());
         }
         if ($type == 'left') {
             $tpl = try_to_enter_room($member_id, -1, 0, '');
-            if (!is_null($tpl)) {
+            if ($tpl !== null) {
                 return $tpl;
             }
             buildr_refresh_with_message(new Tempcode());
@@ -561,7 +561,7 @@ class Module_buildr
 
         if ($type == 'answered') {
             $tpl = try_to_enter_room($member_id, post_param_integer('dx'), post_param_integer('dy'), $param);
-            if (!is_null($tpl)) {
+            if ($tpl !== null) {
                 return $tpl;
             }
         }
@@ -854,7 +854,7 @@ class Module_buildr
                     'BRIBABLE' => strval($row['bribable']),
                     'HEALTHY' => strval($row['healthy']),
                     'PICTURE_URL' => $row['picture_url'],
-                    'OWNER' => is_null($row['owner']) ? '' : strval($row['owner']),
+                    'OWNER' => ($row['owner'] === null) ? '' : strval($row['owner']),
                     'MAX_PER_PLAYER' => strval($row['max_per_player']),
                     'REPLICATEABLE' => strval($row['replicateable']),
                 ));
@@ -928,7 +928,7 @@ class Module_buildr
                     'LOCKED_RIGHT' => strval($row['locked_right']),
                     'ALLOW_PORTAL' => strval($row['allow_portal']),
                     'PICTURE_URL' => $row['picture_url'],
-                    'OWNER' => is_null($row['owner']) ? '' : strval($row['owner']),
+                    'OWNER' => ($row['owner'] === null) ? '' : strval($row['owner']),
                 ));
                 return $tpl;
             }
@@ -960,7 +960,7 @@ class Module_buildr
                     '_GUID' => 'f2503e0be6e45a296baa8625cafb4d72',
                     'TITLE' => $this->title,
                     'PAGE_TYPE' => 'editrealm',
-                    'OWNER' => is_null($row['owner']) ? '' : strval($row['owner']),
+                    'OWNER' => ($row['owner'] === null) ? '' : strval($row['owner']),
                     'QA' => $qatc,
                     'NAME' => $row['name'],
                     'TROLL_NAME' => $row['troll_name'],
@@ -1004,7 +1004,7 @@ class Module_buildr
                     'END_LOCATION_REALM' => strval($end_realm),
                     'END_LOCATION_X' => strval($row['end_location_x']),
                     'END_LOCATION_Y' => strval($row['end_location_y']),
-                    'OWNER' => is_null($row['owner']) ? '' : strval($row['owner']),
+                    'OWNER' => ($row['owner'] === null) ? '' : strval($row['owner']),
                 ));
                 return $tpl;
             }

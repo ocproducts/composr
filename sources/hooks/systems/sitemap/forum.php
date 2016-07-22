@@ -210,7 +210,7 @@ class Hook_sitemap_forum extends Hook_sitemap_content
         $backup_meta_gather = $meta_gather;
         $meta_gather |= SITEMAP_GATHER_DB_ROW;
         $children = $this->_get_children_nodes($content_id, $page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level, $options, $zone, $meta_gather, $row, '', $explicit_order_by_entries, $explicit_order_by_categories);
-        if (!is_null($children)) {
+        if ($children !== null) {
             $children2 = array();
             foreach ($children as $child) {
                 $child_row = $child['extra_meta']['db_row'];

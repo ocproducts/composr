@@ -246,16 +246,16 @@ class Hook_task_download_member_csv
         $out = array();
         $i = 0;
         foreach ($headings as $written_heading => $f) {
-            if (is_null($f)) {
+            if ($f === null) {
                 continue;
             }
 
             if (is_integer($f)) { // CPF
-                if (is_null($m['mf_member_id'])) {
+                if ($m['mf_member_id'] === null) {
                     $at = '';
                 } else {
                     $at = $m['field_' . strval($f)];
-                    if (is_null($at)) {
+                    if ($at === null) {
                         $at = '';
                     } else {
                         if (strpos($cpfs[$f]['cf_type'], '_trans') !== false) {
@@ -320,7 +320,7 @@ class Hook_task_download_member_csv
                     if ($wider != '') {
                         $wider .= '/';
                     }
-                    $wider .= is_integer($at) ? strval($at) : (is_null($at) ? '' : $at);
+                    $wider .= is_integer($at) ? strval($at) : (($at === null) ? '' : $at);
                 }
                 $out[$written_heading] = $wider;
 

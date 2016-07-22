@@ -35,7 +35,7 @@ class Hook_cron_newsletter_periodic
         $periodic_rows = $GLOBALS['SITE_DB']->query_select('newsletter_periodic', array('*'));
         foreach ($periodic_rows as $periodic_row) {
             $last_sent = $this->newsletter_periodic_handle($periodic_row);
-            if (!is_null($last_sent)) { // was sent, so update with new time
+            if ($last_sent !== null) { // was sent, so update with new time
                 $GLOBALS['SITE_DB']->query_update('newsletter_periodic', array('np_last_sent' => $last_sent), array('id' => $periodic_row['id']), '', 1);
                 break; // Limited to 1 because we use global variables to store what we're sending, so can only do one per request
             }
@@ -105,7 +105,7 @@ class Hook_cron_newsletter_periodic
 
 		// We need to build the content, based on the chosen categories.
         $message = generate_whatsnew_comcode($periodic_row['np_message'], $periodic_row['np_in_full'], $lang, $cutoff_time);
-        if (is_null($message)) {
+        if ($message === null) {
             return null;
         }
 

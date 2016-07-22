@@ -72,7 +72,7 @@ class Module_admin_permissions
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->create_table('match_key_messages', array(
                 'id' => '*AUTO',
                 'k_message' => 'LONG_TRANS__COMCODE',
@@ -137,21 +137,21 @@ class Module_admin_permissions
             }
         }
 
-        if ((is_null($upgrade_from)) || ($upgrade_from < 8)) {
+        if (($upgrade_from === null) || ($upgrade_from < 8)) {
             add_privilege('SUBMISSION', 'unfiltered_input', false);
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 8)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 8)) {
             if (!privilege_exists('perform_keyword_check')) {
                 add_privilege('SUBMISSION', 'perform_keyword_check', false);
             }
         }
 
-        if ((is_null($upgrade_from)) || ($upgrade_from < 9)) {
+        if (($upgrade_from === null) || ($upgrade_from < 9)) {
             $GLOBALS['SITE_DB']->create_index('group_page_access', 'group_id', array('group_id'));
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 9)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 9)) {
             rename_privilege('bypass_word_filter', 'bypass_wordfilter');
 
             delete_privilege('view_revision_history');
@@ -166,11 +166,11 @@ class Module_admin_permissions
             $GLOBALS['SITE_DB']->query_update('privilege_list', array('p_section' => 'VOTE'), array('the_name' => 'vote_in_polls'), '', 1);
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 10)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 10)) {
             rename_privilege('see_stack_dump', 'see_stack_trace');
         }
 
-        if ((is_null($upgrade_from)) || ($upgrade_from < 10)) {
+        if (($upgrade_from === null) || ($upgrade_from < 10)) {
             add_privilege('STAFF_ACTIONS', 'see_query_errors', false);
         }
     }
@@ -238,7 +238,7 @@ class Module_admin_permissions
             require_all_lang();
 
             $p_section = get_param_string('id', null);
-            if ((is_null($p_section)) || ($p_section == '')) {
+            if (($p_section === null) || ($p_section == '')) {
                 $this->title = get_screen_title('PRIVILEGES');
             } else {
                 breadcrumb_set_parents(array(array('_SELF:_SELF:privileges', do_lang_tempcode('PRIVILEGES'))));
@@ -250,7 +250,7 @@ class Module_admin_permissions
 
         if ($type == '_privileges') {
             $p_section = get_param_string('id', null);
-            if ((is_null($p_section)) || ($p_section == '')) {
+            if (($p_section === null) || ($p_section == '')) {
                 set_helper_panel_tutorial('tut_permissions');
             }
 
@@ -374,12 +374,12 @@ class Module_admin_permissions
             }
 
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('group_privileges', 'group_id', array('group_id' => $id));
-            if (is_null($test)) {
+            if ($test === null) {
                 $groups_without[$id] = $name;
             }
 
-            $list1->attach(form_input_list_entry($id, is_null($test), $name));
-            $list2->attach(form_input_list_entry($id, !is_null($test) && !in_array($id, $moderator_groups), $name));
+            $list1->attach(form_input_list_entry($id, ($test === null), $name));
+            $list2->attach(form_input_list_entry($id, $test !== null && !in_array($id, $moderator_groups), $name));
         }
 
         $__groups_without = escape_html(implode(', ', $groups_without));
@@ -447,7 +447,7 @@ class Module_admin_permissions
         $all_groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
         $initial_group = null;
         foreach ($all_groups as $id => $group_name) {
-            if (is_null($initial_group)) {
+            if ($initial_group === null) {
                 $initial_group = $group_name;
             }
             if (!in_array($id, $admin_groups)) {
@@ -814,7 +814,7 @@ class Module_admin_permissions
         require_code('zones2');
 
         $p_section = get_param_string('id', null);
-        if ((is_null($p_section)) || ($p_section == '')) {
+        if (($p_section === null) || ($p_section == '')) {
             $fields = new Tempcode();
             require_code('form_templates');
 
@@ -824,10 +824,10 @@ class Module_admin_permissions
             $sections_uncommon = new Tempcode();
             $doing_uncommon = false;
             foreach ($_sections as $s) {
-                if (is_null($s)) {
+                if ($s === null) {
                     $doing_uncommon = true;
                 } else {
-                    if (!is_null($s['trans'])) {
+                    if ($s['trans'] !== null) {
                         if ($doing_uncommon) {
                             $sections_uncommon->attach(form_input_list_entry($s['p_section'], false, $s['trans']));
                         } else {
@@ -870,7 +870,7 @@ class Module_admin_permissions
 
             foreach ($all_modules as $module => $module_type) {
                 $functions = extract_module_functions(zone_black_magic_filterer(get_file_base() . '/' . $zone . (($zone == '') ? '' : '/') . 'pages/' . $module_type . '/' . $module . '.php'), array('get_privilege_overrides'));
-                if (!is_null($functions[0])) {
+                if ($functions[0] !== null) {
                     $overrides = is_array($functions[0]) ? call_user_func_array($functions[0][0], $functions[0][1]) : eval($functions[0]);
                     foreach (array_keys($overrides) as $override) {
                         if (!array_key_exists($override, $all_module_overrides)) {
@@ -918,7 +918,7 @@ class Module_admin_permissions
         // Display
         foreach ($_permissions as $permission => $section) {
             $permission_text = do_lang('PRIVILEGE_' . $permission, null, null, null, null, false);
-            if (is_null($permission_text)) {
+            if ($permission_text === null) {
                 continue;
             }
 
@@ -1023,7 +1023,7 @@ class Module_admin_permissions
         $next_section = $array_keys[0];
         $counter = 0;
         foreach ($_sections as $s) {
-            if (is_null($s)) {
+            if ($s === null) {
                 continue;
             }
 

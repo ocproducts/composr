@@ -63,7 +63,7 @@ function backend_cloud_script()
 function _cloud_register_them($path, $procedure, $protocol, $port, $watching_channel)
 {
     $before = $GLOBALS['SITE_DB']->query_select_value_if_there('news_rss_cloud', 'register_time', array('watching_channel' => $watching_channel, 'rem_path' => $path, 'rem_ip' => get_ip_address()));
-    if (!is_null($before)) {
+    if ($before !== null) {
         return false;
     }
     $GLOBALS['SITE_DB']->query_insert('news_rss_cloud', array('watching_channel' => $watching_channel, 'rem_procedure' => $procedure, 'rem_port' => $port, 'rem_path' => $path, 'rem_protocol' => $protocol, 'rem_ip' => get_ip_address(), 'register_time' => time()));
@@ -198,7 +198,7 @@ function rss_backend_script()
     if (is_array($_content)) {
         list($content, $mode_nice) = $_content;
     } else {
-        $content = is_null($_content) ? array() : $_content;
+        $content = ($_content === null) ? array() : $_content;
     }
 
     if ($type == 'RSS2') {
@@ -257,7 +257,7 @@ function get_enclosure_details($url, $enclosure_url)
     } else {
         http_download_file($enclosure_url, 0, false);
         $enclosure_length = strval($GLOBALS['HTTP_DOWNLOAD_SIZE']);
-        if (is_null($enclosure_length)) {
+        if ($enclosure_length === null) {
             $enclosure_length = strval(strlen(http_download_file($enclosure_url)));
         }
         $enclosure_type = $GLOBALS['HTTP_DOWNLOAD_MIME_TYPE'];

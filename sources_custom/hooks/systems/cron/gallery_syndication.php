@@ -25,7 +25,7 @@ class Hook_cron_gallery_syndication
     {
         $value = get_value('last_gallery_syndication');
         if ($value !== 'in_progress') {
-            if ((is_null($value)) || (intval($value) < time() - 60 * 60)) {
+            if (($value === null) || (intval($value) < time() - 60 * 60)) {
                 set_value('last_gallery_syndication', 'in_progress');
 
                 require_code('gallery_syndication');

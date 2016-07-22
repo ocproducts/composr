@@ -54,7 +54,7 @@ abstract class FieldsSearchHook
             foreach ($rows as $i => $row) {
                 $ob = get_fields_hook($row['cf_type']);
                 $temp = $ob->inputted_to_sql_for_search($row, $i);
-                if (is_null($temp)) { // Standard direct 'substring' search
+                if ($temp === null) { // Standard direct 'substring' search
                     $extra_sort_fields['f' . strval($i) . '_actual_value'] = get_translated_text($row['cf_name']);
                 }
             }
@@ -77,7 +77,7 @@ abstract class FieldsSearchHook
         foreach ($rows as $row) {
             $ob = get_fields_hook($row['cf_type']);
             $temp = $ob->get_search_inputter($row);
-            if (is_null($temp)) {
+            if ($temp === null) {
                 $type = '_TEXT';
                 $special = get_param_string('option_' . strval($row['id']), '');
                 $extra = '';
@@ -118,7 +118,7 @@ abstract class FieldsSearchHook
         foreach ($fields as $i => $field) {
             $ob = get_fields_hook($field['cf_type']);
             $temp = $ob->inputted_to_sql_for_search($field, $i);
-            if (is_null($temp)) { // Standard direct 'substring' search
+            if ($temp === null) { // Standard direct 'substring' search
                 list(, , $row_type) = $ob->get_field_value_row_bits($field);
                 switch ($row_type) {
                     case 'long_trans':
@@ -253,7 +253,7 @@ abstract class FieldsSearchHook
     protected function _get_search_parameterisation_advanced_for_content_type($catalogue_name, &$table, &$where_clause, &$trans_fields, &$nontrans_fields)
     {
         $advanced = $this->_get_search_parameterisation_advanced($catalogue_name, 'ce');
-        if (is_null($advanced)) {
+        if ($advanced === null) {
             return;
         }
 
@@ -276,14 +276,14 @@ abstract class FieldsSearchHook
      */
     protected function _handle_date_check($cutoff, $field, &$where_clause)
     {
-        if (!is_null($cutoff)) {
+        if ($cutoff !== null) {
             if (is_integer($cutoff)) {
                 $where_clause .= ' AND ' . $field . '>' . strval($cutoff);
             } elseif (is_array($cutoff)) {
-                if (!is_null($cutoff[0])) {
+                if ($cutoff[0] !== null) {
                     $where_clause .= ' AND ' . $field . '>=' . strval($cutoff[0]);
                 }
-                if (!is_null($cutoff[1])) {
+                if ($cutoff[1] !== null) {
                     $where_clause .= ' AND ' . $field . '<=' . strval($cutoff[1]);
                 }
             }
@@ -299,13 +299,13 @@ abstract class FieldsSearchHook
      */
     protected function _handle_date_check_runtime($cutoff, $compare)
     {
-        if (!is_null($cutoff)) {
+        if ($cutoff !== null) {
             if (is_integer($cutoff)) {
                 if ($compare < $cutoff) {
                     return false;
                 }
             } elseif (is_array($cutoff)) {
-                if (((!is_null($cutoff[0])) && ($compare < $cutoff[0])) || ((!is_null($cutoff[1])) && ($compare > $cutoff[1]))) {
+                if ((($cutoff[0] !== null) && ($compare < $cutoff[0])) || (($cutoff[1] !== null) && ($compare > $cutoff[1]))) {
                     return false;
                 }
             }
@@ -337,7 +337,7 @@ function is_under_radar($test)
 function get_minimum_search_length()
 {
     static $min_word_length = null;
-    if (is_null($min_word_length)) {
+    if ($min_word_length === null) {
         $min_word_length = 4;
         if (substr(get_db_type(), 0, 5) == 'mysql') {
             $_min_word_length = $GLOBALS['SITE_DB']->query('SHOW VARIABLES LIKE \'ft_min_word_len\'', null, null);
@@ -555,7 +555,7 @@ function do_search_block($map)
         require_code('hooks/modules/search/' . filter_naughty($id));
         $object = object_factory('Hook_search_' . $id);
         $info = $object->info();
-        if (!is_null($info)) {
+        if ($info !== null) {
             if (array_key_exists('special_on', $info)) {
                 foreach ($info['special_on'] as $name => $display) {
                     $_name = 'option_' . $id . '_' . $name;

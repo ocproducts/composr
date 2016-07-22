@@ -137,7 +137,7 @@ function delete_ticket_type($ticket_type_id)
  */
 function get_ticket_type($ticket_type_id)
 {
-    if (is_null($ticket_type_id)) {
+    if ($ticket_type_id === null) {
         // LEGACY
         return array('ticket_type' => null, 'ticket_type_name' => do_lang('UNKNOWN'), 'guest_emails_mandatory' => 0, 'search_faq' => 0, 'cache_lead_time' => null);
     }
@@ -166,7 +166,7 @@ function update_ticket_type_lead_times()
         foreach ($tickets as $ticket) {
             $max_rows = 0;
             $topic = $GLOBALS['FORUM_DRIVER']->show_forum_topics($ticket['forum_id'], 1, 0, $max_rows, $ticket['ticket_id'], true, 'lasttime', false, do_lang('SUPPORT_TICKET') . ': #' . $ticket['ticket_id']);
-            if (is_null($topic)) {
+            if ($topic === null) {
                 continue;
             }
             $topic = $topic[0];
@@ -230,23 +230,23 @@ function get_tickets($member_id, $ticket_type_id = null, $override_view_others_t
         $restrict = strval($member_id) . '\_%';
         $restrict_description = do_lang('SUPPORT_TICKET') . ': #' . $restrict;
     } else {
-        if ((!is_null($ticket_type_id)) && (!has_category_access(get_member(), 'tickets', strval($ticket_type_id)))) {
+        if (($ticket_type_id !== null) && (!has_category_access(get_member(), 'tickets', strval($ticket_type_id)))) {
             return array();
         }
     }
 
-    if (!is_null($ticket_type_id)) {
+    if ($ticket_type_id !== null) {
         $ticket_type_name = $GLOBALS['SITE_DB']->query_select_value('ticket_types', 'ticket_type_name', array('id' => $ticket_type_id));
     }
 
     if ((get_option('ticket_member_forums') == '1') || (get_option('ticket_type_forums') == '1')) {
         if (get_forum_type() == 'cns') {
             $fid = ($view_others_tickets) ? get_ticket_forum_id(null, null, false, $silent_error_handling) : get_ticket_forum_id(get_member(), null, false, $silent_error_handling);
-            if (is_null($fid)) {
+            if ($fid === null) {
                 return array();
             }
 
-            if (is_null($ticket_type_id)) {
+            if ($ticket_type_id === null) {
                 require_code('cns_forums');
                 $forums = cns_get_all_subordinate_forums($fid, null, null, true);
             } else {
@@ -267,12 +267,12 @@ function get_tickets($member_id, $ticket_type_id = null, $override_view_others_t
         $forums = array(get_ticket_forum_id(null, null, false, $silent_error_handling));
     }
 
-    if ((count($forums) == 1) && (array_key_exists(0, $forums)) && (is_null($forums[0]))) {
+    if ((count($forums) == 1) && (array_key_exists(0, $forums)) && ($forums[0] === null)) {
         return array();
     }
     $max_rows = 0;
     $topics = $GLOBALS['FORUM_DRIVER']->show_forum_topics(array_flip($forums), $view_others_tickets ? 100 : 500, 0, $max_rows, $restrict, true, 'lasttime', false, $restrict_description, $open_only);
-    if (is_null($topics)) {
+    if ($topics === null) {
         return array();
     }
     $filtered_topics = array();
@@ -281,7 +281,7 @@ function get_tickets($member_id, $ticket_type_id = null, $override_view_others_t
         if (!$include_first_posts) {
             unset($topic['firstpost']); // To stop Tempcode randomly making serialization sometimes change such that the refresh_if_changed is triggered
         }
-        if ((is_null($ticket_type_id)) || (strpos($fp->evaluate(), do_lang('TICKET_TYPE') . ': ' . get_translated_text($ticket_type_name)) !== false)) {
+        if (($ticket_type_id === null) || (strpos($fp->evaluate(), do_lang('TICKET_TYPE') . ': ' . get_translated_text($ticket_type_name)) !== false)) {
             $filtered_topics[] = $topic;
         }
     }
@@ -353,12 +353,12 @@ function ticket_add_post($member_id, $ticket_id, $ticket_type_id, $title, $post,
 {
     // Get the forum ID first
     $fid = $GLOBALS['SITE_DB']->query_select_value_if_there('tickets', 'forum_id', array('ticket_id' => $ticket_id));
-    if (is_null($fid)) {
+    if ($fid === null) {
         $fid = get_ticket_forum_id($member_id, $ticket_type_id);
     }
 
     // Find member ID
-    if (is_null($member_id)) {
+    if ($member_id === null) {
         $member_id = get_active_support_user();
     }
 
@@ -407,7 +407,7 @@ function ticket_add_post($member_id, $ticket_id, $ticket_type_id, $title, $post,
  */
 function send_ticket_email($ticket_id, $title, $post, $ticket_url, $uid_email, $ticket_type_id_if_new, $new_poster = null, $auto_created = false)
 {
-    if (is_null($new_poster)) {
+    if ($new_poster === null) {
         $new_poster = get_active_support_user();
         $new_poster_real = get_member();
     } else {
@@ -421,11 +421,11 @@ function send_ticket_email($ticket_id, $title, $post, $ticket_url, $uid_email, $
     $_temp = explode('_', $ticket_id);
     $uid = intval($_temp[0]);
     $uid_displayname = $GLOBALS['FORUM_DRIVER']->get_username($uid, true);
-    if (is_null($uid_displayname)) {
+    if ($uid_displayname === null) {
         $uid_displayname = do_lang('UNKNOWN');
     }
     $uid_username = $GLOBALS['FORUM_DRIVER']->get_username($uid);
-    if (is_null($uid_username)) {
+    if ($uid_username === null) {
         $uid_username = do_lang('UNKNOWN');
     }
 
@@ -442,7 +442,7 @@ function send_ticket_email($ticket_id, $title, $post, $ticket_url, $uid_email, $
         $ticket_type_id = $GLOBALS['SITE_DB']->query_select_value_if_there('tickets', 'ticket_type', array('ticket_id' => $ticket_id));
     }
     $_ticket_type_name = $GLOBALS['SITE_DB']->query_select_value_if_there('ticket_types', 'ticket_type_name', array('id' => $ticket_type_id));
-    if (is_null($_ticket_type_name)) {
+    if ($_ticket_type_name === null) {
         $ticket_type_name = do_lang('UNKNOWN');
     } else {
         $ticket_type_name = get_translated_text($_ticket_type_name);
@@ -488,7 +488,7 @@ function send_ticket_email($ticket_id, $title, $post, $ticket_url, $uid_email, $
 
                 dispatch_notification(
                     'ticket_reply',
-                    is_null($ticket_type_id) ? '' : strval($ticket_type_id),
+                    ($ticket_type_id === null) ? '' : strval($ticket_type_id),
                     $subject,
                     $message,
                     array($uid)
@@ -585,5 +585,5 @@ function is_ticket_post_staff_only($post)
     if (get_forum_type() != 'cns') {
         return false;
     }
-    return ((!is_null($post['p_intended_solely_for'])) && (is_guest($post['p_intended_solely_for'])));
+    return (($post['p_intended_solely_for'] !== null) && (is_guest($post['p_intended_solely_for'])));
 }

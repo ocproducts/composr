@@ -51,7 +51,7 @@ function bookables_ical_script()
 
         echo "DTSTAMP:" . date('Ymd', $event['add_date']) . "T" . date('His', $event['add_date']) . "\n";
         echo "CREATED:" . date('Ymd', $event['add_date']) . "T" . date('His', $event['add_date']) . "\n";
-        if (!is_null($event['edit_date'])) {
+        if ($event['edit_date'] !== null) {
             echo "LAST-MODIFIED:" . date('Ymd', time()) . "T" . date('His', $event['edit_date']) . "\n";
         }
 
@@ -83,27 +83,27 @@ function bookables_ical_script()
                     switch ($parts[0]) {
                         case 'daily':
                             $time += 60 * 60 * 24;
-                            if (!is_null($time2)) {
+                            if ($time2 !== null) {
                                 $time2 += 60 * 60 * 24;
                             }
                             break;
                         case 'weekly':
                             $time += 60 * 60 * 24 * 7;
-                            if (!is_null($time2)) {
+                            if ($time2 !== null) {
                                 $time2 += 60 * 60 * 24 * 7;
                             }
                             break;
                         case 'monthly':
                             $days_in_month = intval(date('D', mktime(0, 0, 0, intval(date('m', $time)) + 1, 0, intval(date('Y', $time)))));
                             $time += 60 * 60 * $days_in_month;
-                            if (!is_null($time2)) {
+                            if ($time2 !== null) {
                                 $time2 += 60 * 60 * $days_in_month;
                             }
                             break;
                         case 'yearly':
                             $days_in_year = intval(date('Y', mktime(0, 0, 0, 0, 0, intval(date('Y', $time)) + 1)));
                             $time += 60 * 60 * 24 * $days_in_year;
-                            if (!is_null($time2)) {
+                            if ($time2 !== null) {
                                 $time2 += 60 * 60 * 24 * $days_in_year;
                             }
                             break;

@@ -107,7 +107,7 @@ class CMSPmWrite
                 break;
 
             case self::TAPATALK_MESSAGE_REPLY:
-                if (is_null($post_id)) {
+                if ($post_id === null) {
                     warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
                 }
                 if (!has_post_access($post_id)) {
@@ -125,7 +125,7 @@ class CMSPmWrite
                 break;
 
             case self::TAPATALK_MESSAGE_FORWARD:
-                if (is_null($post_id)) {
+                if ($post_id === null) {
                     warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
                 }
                 $post_details = $GLOBALS['FORUM_DB']->query_select('f_posts', array('*', 'p.id AS post_id', 't.id AS topic_id'), array('p.id' => $post_id), '', 1);
@@ -138,7 +138,7 @@ class CMSPmWrite
 
                 $post = get_translated_text($post_details[0]['p_post'], $GLOBALS['FORUM_DB']);
                 $poster = $GLOBALS['FORUM_DRIVER']->get_username($post_details[0]['p_poster']);
-                if (is_null($poster)) {
+                if ($poster === null) {
                     $poster = do_lang('UNKNOWN');
                 }
                 $quote_content = '[quote="' . addslashes($poster) . '"]' . $post . "[/quote]\n";
@@ -182,7 +182,7 @@ class CMSPmWrite
         require_code('cns_posts_action3');
 
         $topic_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_posts', 'p_topic_id', array('id' => $post_id));
-        if (is_null($topic_id)) {
+        if ($topic_id === null) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'post'));
         }
 
@@ -202,7 +202,7 @@ class CMSPmWrite
             access_denied('NOT_AS_GUEST');
         }
 
-        if (is_null($message_ids)) {
+        if ($message_ids === null) {
             $table_prefix = $GLOBALS['FORUM_DB']->get_table_prefix();
             $sql = 'SELECT id FROM ' . $table_prefix . 'f_topics t';
             $sql .= ' WHERE t_forum_id IS NULL';
@@ -233,7 +233,7 @@ class CMSPmWrite
             access_denied('NOT_AS_GUEST');
         }
 
-        if (is_null($message_ids)) {
+        if ($message_ids === null) {
             $table_prefix = $GLOBALS['FORUM_DB']->get_table_prefix();
             $sql = 'SELECT id FROM ' . $table_prefix . 'f_topics t';
             $sql .= ' WHERE t_forum_id IS NULL';

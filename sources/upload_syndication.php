@@ -183,7 +183,7 @@ function handle_upload_syndication($name, $title, $description, $url, $filename,
                 $hook_file_handling_types = $ob->get_file_handling_types();
                 if (_check_enforcement_of_type(get_member(), $filename, $hook_file_handling_types, true)) { // Check the upload API agrees this file matches the filetype bitmask
                     $remote_url = $ob->syndicate($url, $filepath, $filename, $title, $description);
-                    if (!is_null($remote_url)) {
+                    if ($remote_url !== null) {
                         $remote_urls[$hook] = array($remote_url, $ob->get_reference_precedence());
                         if ($ob->get_reference_precedence() == UPLOAD_PRECEDENCE_REGARDLESS) { // Cloud-filesystem use-case
                             $remove_locally_if_no_quota = true;

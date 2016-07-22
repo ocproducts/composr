@@ -30,7 +30,7 @@ function bump_member_group_timeout($member_id, $group_id, $num_minutes, $prefer_
 {
     // Extend or add, depending on whether they're in it yet
     $existing_timeout = $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']->query_select_value_if_there('f_group_member_timeouts', 'timeout', array('member_id' => $member_id, 'group_id' => $group_id));
-    if (is_null($existing_timeout)) {
+    if ($existing_timeout === null) {
         $timestamp = time() + 60 * $num_minutes;
     } else {
         $timestamp = $existing_timeout + 60 * $num_minutes;

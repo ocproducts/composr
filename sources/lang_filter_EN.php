@@ -217,7 +217,7 @@ class LangFilter_EN extends LangFilter
             $remapping = array();
 
             // Put in correct brand name
-            if (!is_null($key)) {
+            if ($key !== null) {
                 $remapping['the software'] = preg_quote(brand_name(), '#');
                 $remapping['the website software'] = preg_quote(brand_name(), '#');
                 $remapping['other webmasters'] = 'other ' . preg_quote(brand_name(), '#') . ' users';
@@ -361,13 +361,13 @@ class LangFilter_EN extends LangFilter
 
                     require_code('content');
                     $object = get_content_object($content_type);
-                    if (is_null($object)) {
+                    if ($object === null) {
                         if (preg_match('#^\w+$#', $content_type) != 0) {
                             $specific = do_lang($content_type, null, null, null, null, false);
                         } else {
                             $specific = $content_type;
                         }
-                        if (is_null($specific)) {
+                        if ($specific === null) {
                             $specific = strtolower($content_type);
                         } else {
                             $specific = strtolower($specific);

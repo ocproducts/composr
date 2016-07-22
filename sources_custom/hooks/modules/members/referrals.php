@@ -116,14 +116,14 @@ class Hook_members_referrals
         if (has_privilege(get_member(), 'member_maintenance')) {
             $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
             $referrer = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_invites', 'i_inviter', array('i_email_address' => $GLOBALS['FORUM_DRIVER']->get_member_email_address($member_id)));
-            if (!is_null($referrer)) {
+            if ($referrer !== null) {
                 $referrer_username = $GLOBALS['FORUM_DRIVER']->get_username($referrer);
-                if (is_null($referrer_username)) {
+                if ($referrer_username === null) {
                     $referrer_username = do_lang('DELETED');
                 }
                 $referrer_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($referrer);
                 $test = $GLOBALS['SITE_DB']->query_select_value_if_there('referees_qualified_for', 'id', array('q_referee' => $member_id));
-                $link = do_lang_tempcode(is_null($test) ? 'MEMBER_REFERRED_BY_NONQUALIFIED' : 'MEMBER_REFERRED_BY_QUALIFIED', escape_html($username), escape_html($referrer_username), escape_html($referrer_url));
+                $link = do_lang_tempcode(($test === null) ? 'MEMBER_REFERRED_BY_NONQUALIFIED' : 'MEMBER_REFERRED_BY_QUALIFIED', escape_html($username), escape_html($referrer_username), escape_html($referrer_url));
                 $ret[do_lang('TYPE_REFERRER')] = $link;
             } else {
                 $ret[do_lang('TYPE_REFERRER')] = do_lang_tempcode('MEMBER_NOT_REFERRED', escape_html($username));

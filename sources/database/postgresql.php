@@ -107,11 +107,11 @@ class Database_Static_postgresql extends DatabaseDriver
     public function query($query, $connection, $max = null, $start = null, $fail_ok = false, $get_insert_id = false)
     {
         if ((strtoupper(substr($query, 0, 7)) == 'SELECT ') || (strtoupper(substr($query, 0, 8)) == '(SELECT ')) {
-            if ((!is_null($max)) && (!is_null($start))) {
+            if (($max !== null) && ($start !== null)) {
                 $query .= ' LIMIT ' . strval(intval($max)) . ' OFFSET ' . strval(intval($start));
-            } elseif (!is_null($max)) {
+            } elseif ($max !== null) {
                 $query .= ' LIMIT ' . strval(intval($max));
-            } elseif (!is_null($start)) {
+            } elseif ($start !== null) {
                 $query .= ' OFFSET ' . strval(intval($start));
             }
         }
@@ -123,7 +123,7 @@ class Database_Static_postgresql extends DatabaseDriver
                 ocp_mark_as_escaped($err);
             }
             if ((!running_script('upgrader')) && (!get_mass_import_mode())) {
-                if (!function_exists('do_lang') || is_null(do_lang('QUERY_FAILED', null, null, null, null, false))) {
+                if ((!function_exists('do_lang')) || (do_lang('QUERY_FAILED', null, null, null, null, false) === null)) {
                     $this->failed_query_exit(htmlentities('Query failed: ' . $query . ' : ' . $err));
                 }
 
@@ -184,7 +184,7 @@ class Database_Static_postgresql extends DatabaseDriver
                 $type = $types[$j];
 
                 if (($type == 'INTEGER') || ($type == 'SMALLINT') || ($type == 'SERIAL') || ($type == 'UINTEGER')) {
-                    if (!is_null($v)) {
+                    if ($v !== null) {
                         $newrow[$name] = intval($v);
                     } else {
                         $newrow[$name] = null;

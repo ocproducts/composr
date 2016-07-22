@@ -141,7 +141,7 @@ class CMSPmRead
                 }
 
                 $username = $GLOBALS['FORUM_DRIVER']->get_username($topic[$anti_lookup_key]);
-                if (is_null($username)) {
+                if ($username === null) {
                     $username = do_lang('UNKNOWN');
                 }
                 $msgs_to[$topic[$anti_lookup_key]] = array(
@@ -155,7 +155,7 @@ class CMSPmRead
                 }
 
                 $msg_from = $GLOBALS['FORUM_DRIVER']->get_username($post['p_poster']);
-                if (is_null($msg_from)) {
+                if ($msg_from === null) {
                     $msg_from = do_lang('UNKNOWN');
                 }
 
@@ -261,7 +261,7 @@ class CMSPmRead
 
         $msg_to = array();
         $username = $GLOBALS['FORUM_DRIVER']->get_username($post_row['t_pt_to']);
-        if (is_null($username)) {
+        if ($username === null) {
             $username = do_lang('UNKNOWN');
         }
         $msg_to[] = array(
@@ -270,7 +270,7 @@ class CMSPmRead
         );
 
         $username = $GLOBALS['FORUM_DRIVER']->get_username($post_row['t_pt_from']);
-        if (is_null($username)) {
+        if ($username === null) {
             $username = do_lang('UNKNOWN');
         }
 

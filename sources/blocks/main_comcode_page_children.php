@@ -72,7 +72,7 @@ class Block_main_comcode_page_children
             $zone = null;
         }
         $qmap = array('p_parent_page' => $page);
-        if (!is_null($zone)) {
+        if ($zone !== null) {
             $qmap['the_zone'] = $zone;
         }
         if ((!has_privilege(get_member(), 'see_unvalidated')) && (addon_installed('unvalidated'))) {
@@ -86,9 +86,9 @@ class Block_main_comcode_page_children
             }
 
             $_title = $GLOBALS['SITE_DB']->query_select_value_if_there('cached_comcode_pages', 'cc_page_title', array('the_page' => $child['the_page'], 'the_zone' => $child['the_zone']));
-            if (!is_null($_title)) {
+            if ($_title !== null) {
                 $title = get_translated_text($_title, null, null, true);
-                if (is_null($title)) {
+                if ($title === null) {
                     $title = '';
                 }
             } else {
@@ -105,7 +105,7 @@ class Block_main_comcode_page_children
                     // Execute child page and get its title
                     request_page($child['the_page'], false, $child['the_zone'], null, true);
                     $_title = $GLOBALS['SITE_DB']->query_select_value_if_there('cached_comcode_pages', 'cc_page_title', array('the_page' => $child['the_page'], 'the_zone' => $child['the_zone']));
-                    if (!is_null($_title)) {
+                    if ($_title !== null) {
                         $title = get_translated_text($_title);
                     }
 

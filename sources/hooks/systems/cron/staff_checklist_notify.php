@@ -43,7 +43,7 @@ class Hook_cron_staff_checklist_notify
         $outstanding = 0;
         $rows = $GLOBALS['SITE_DB']->query_select('staff_checklist_cus_tasks', array('*'));
         foreach ($rows as $r) {
-            $task_done = ((!is_null($r['task_is_done'])) && (($r['recur_interval'] == 0) || (($r['recur_every'] != 'mins') || (time() < $r['task_is_done'] + 60 * $r['recur_interval'])) && (($r['recur_every'] != 'hours') || (time() < $r['task_is_done'] + 60 * 60 * $r['recur_interval'])) && (($r['recur_every'] != 'days') || (time() < $r['task_is_done'] + 24 * 60 * 60 * $r['recur_interval'])) && (($r['recur_every'] != 'months') || (time() < $r['task_is_done'] + 31 * 24 * 60 * 60 * $r['recur_interval']))));
+            $task_done = (($r['task_is_done'] !== null) && (($r['recur_interval'] == 0) || (($r['recur_every'] != 'mins') || (time() < $r['task_is_done'] + 60 * $r['recur_interval'])) && (($r['recur_every'] != 'hours') || (time() < $r['task_is_done'] + 60 * 60 * $r['recur_interval'])) && (($r['recur_every'] != 'days') || (time() < $r['task_is_done'] + 24 * 60 * 60 * $r['recur_interval'])) && (($r['recur_every'] != 'months') || (time() < $r['task_is_done'] + 31 * 24 * 60 * 60 * $r['recur_interval']))));
             if (!$task_done) {
                 $outstanding++;
             }
@@ -51,13 +51,13 @@ class Hook_cron_staff_checklist_notify
         $_hooks = find_all_hook_obs('blocks', 'main_staff_checklist', 'Hook_checklist_');
         foreach ($_hooks as $object) {
             $ret = $object->run();
-            if ((!is_null($ret)) && (count($ret) != 0)) {
+            if (($ret !== null) && (count($ret) != 0)) {
                 foreach ($ret as $r) {
-                    if (!is_null($r[2])) {
+                    if ($r[2] !== null) {
                         if ($r[2] > 0) {
                             $outstanding++; // A tally of undone stuff
                         }
-                    } elseif (!is_null($r[1])) {
+                    } elseif ($r[1] !== null) {
                         if ($r[1] < 0) { // Needed doing in the past
                             $outstanding++;
                         }

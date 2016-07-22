@@ -147,7 +147,7 @@ class Hook_media_rendering_hyperlink
         }
 
         require_code('comcode_renderer');
-        if (is_null($source_member)) {
+        if ($source_member === null) {
             $source_member = get_member();
         }
         $comcode = '';

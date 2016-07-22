@@ -135,13 +135,13 @@ class Module_admin_lookup
             $id = mixed();
             $ip = mixed();
             $rows = lookup_member_page($param, $name, $id, $ip);
-            if (is_null($name)) {
+            if ($name === null) {
                 $name = do_lang('UNKNOWN');
             }
-            if (is_null($id)) {
+            if ($id === null) {
                 $id = $GLOBALS['FORUM_DRIVER']->get_guest_id();
             }
-            if (is_null($ip)) {
+            if ($ip === null) {
                 $ip = '';
             }
 
@@ -240,11 +240,11 @@ class Module_admin_lookup
             if ($ip != '' && addon_installed('securitylogging')) {
                 $ban_until = $GLOBALS['SITE_DB']->query_select('banned_ip', array('i_ban_until'), array('i_ban_positive' => 1, 'ip' => $ip));
                 if (array_key_exists(0, $ban_until)) {
-                    $ip_banned = is_null($ban_until[0]['i_ban_until']) || $ban_until[0]['i_ban_until'] > time();
+                    $ip_banned = ($ban_until[0]['i_ban_until'] === null) || $ban_until[0]['i_ban_until'] > time();
                 }
             }
             $banned_test_2 = $GLOBALS['SITE_DB']->query_select_value_if_there('usersubmitban_member', 'the_member', array('the_member' => $id));
-            $submitter_banned = !is_null($banned_test_2);
+            $submitter_banned = $banned_test_2 !== null;
 
             $member_ban_link = null;
             $ip_ban_link = null;

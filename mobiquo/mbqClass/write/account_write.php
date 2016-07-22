@@ -66,7 +66,7 @@ class CMSAccountWrite
             }
 
             $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_email_address($email);
-            if (!is_null($member_id)) {
+            if ($member_id !== null) {
                 $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
             }
         } else {
@@ -87,7 +87,7 @@ class CMSAccountWrite
                 );
             }
         }
-        $exists = !is_null($member_id); // At this point either $exists and $username and $email is set, or !$exists
+        $exists = $member_id !== null; // At this point either $exists and $username and $email is set, or !$exists
 
         // Do SSO
         $connection = new classTTConnection();
@@ -148,7 +148,7 @@ class CMSAccountWrite
 
         $result = $this->join($username, $email, $password, $custom_fields, true);
 
-        if (is_null($result['member_id'])) {
+        if ($result['member_id'] === null) {
             warn_exit($result['result_text']);
         }
 
@@ -172,7 +172,7 @@ class CMSAccountWrite
         cms_verify_parameters_phpdoc();
 
         // Do we have password for a registration?
-        if (is_null($password)) {
+        if ($password === null) {
             return array(
                 'status' => self::SIGN_IN_REGISTER_NEEDS_PASSWORD,
                 'register' => false,
@@ -181,7 +181,7 @@ class CMSAccountWrite
             );
         }
 
-        if (!is_null($GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', 'id', array('m_username' => $username)))) {
+        if ($GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', 'id', array('m_username' => $username)) !== null) {
             return array(
                 'status' => self::SIGN_IN_REGISTER_USERNAME_OCCUPIED,
                 'register' => false,
@@ -203,7 +203,7 @@ class CMSAccountWrite
             false,/*$instant_login=*/
             false, $username, $email, $password, $custom_fields);
 
-        if (is_null($member_id)) {
+        if ($member_id === null) {
             return array(
                 'status' => self::SIGN_IN_REGISTER_OTHER_ERROR,
                 'register' => false,
@@ -262,7 +262,7 @@ class CMSAccountWrite
         }
 
         $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($username);
-        if (!is_null($member_id)) {
+        if ($member_id !== null) {
             // Has to go through full process...
 
             $result = $this->lost_password($member_id);
@@ -379,7 +379,7 @@ class CMSAccountWrite
         require_once(COMMON_CLASS_PATH_ACL . '/member_acl.php');
         $acl_object = new CMSMemberACL();
         $member_id = $acl_object->authenticate_credentials_and_set_auth($username, $old_password);
-        if (is_null($member_id)) {
+        if ($member_id === null) {
             warn_exit(do_lang_tempcode('USER_BAD_PASSWORD'));
         }
 
@@ -404,7 +404,7 @@ class CMSAccountWrite
         if ($test['verified']) {
             $email_address = $test['TTEmail'];
             $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_email_address($email_address);
-            if (is_null($member_id)) {
+            if ($member_id === null) {
                 warn_exit(do_lang_tempcode('USER_NO_EXIST'));
             }
 
@@ -467,7 +467,7 @@ class CMSAccountWrite
         require_once(COMMON_CLASS_PATH_ACL . '/member_acl.php');
         $acl_object = new CMSMemberACL();
         $member_id = $acl_object->authenticate_credentials_and_set_auth($username, $password);
-        if (is_null($member_id)) {
+        if ($member_id === null) {
             warn_exit(do_lang_tempcode('USER_BAD_PASSWORD'));
         }
 

@@ -60,7 +60,7 @@ class Module_recommend
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        if ((is_null($upgrade_from)) || ($upgrade_from < 5)) {
+        if (($upgrade_from === null) || ($upgrade_from < 5)) {
             require_code('users_active_actions');
             $admin_user = get_first_admin_user();
 
@@ -132,14 +132,14 @@ class Module_recommend
             inform_non_canonical_parameter('cms');
 
             $page_title = get_param_string('page_title', null, true);
-            if (!is_null(get_param_string('from', null, true))) {
-                if (is_null($page_title)) {
+            if (get_param_string('from', null, true) !== null) {
+                if ($page_title === null) {
                     $this->title = get_screen_title('RECOMMEND_LINK');
                 } else {
                     $this->title = get_screen_title($page_title, false);
                 }
             } else {
-                if (is_null($page_title)) {
+                if ($page_title === null) {
                     $this->title = get_screen_title('_RECOMMEND_SITE', true, array(escape_html(get_site_name())));
                 } else {
                     $this->title = get_screen_title($page_title, false);
@@ -149,14 +149,14 @@ class Module_recommend
 
         if ($type == 'gui2') {
             $page_title = get_param_string('page_title', null, true);
-            if (!is_null(get_param_string('from', null, true))) {
-                if (is_null($page_title)) {
+            if (get_param_string('from', null, true) !== null) {
+                if ($page_title === null) {
                     $this->title = get_screen_title('RECOMMEND_LINK');
                 } else {
                     $this->title = get_screen_title($page_title, false);
                 }
             } else {
-                if (is_null($page_title)) {
+                if ($page_title === null) {
                     $this->title = get_screen_title('_RECOMMEND_SITE', true, array(escape_html(get_site_name())));
                 } else {
                     $this->title = get_screen_title($page_title, false);
@@ -229,7 +229,7 @@ class Module_recommend
 
         $page_title = get_param_string('page_title', null, true);
 
-        $submit_name = (!is_null($page_title)) ? make_string_tempcode($page_title) : do_lang_tempcode('SEND');
+        $submit_name = ($page_title !== null) ? make_string_tempcode($page_title) : do_lang_tempcode('SEND');
         $post_url = build_url(array('page' => '_SELF', 'type' => 'actual'), '_SELF', null, true);
 
         $hidden = new Tempcode();
@@ -288,11 +288,11 @@ class Module_recommend
         }
         $message = post_param_string('message', null);
         $subject = get_param_string('subject', do_lang('RECOMMEND_MEMBER_SUBJECT', get_site_name()), true);
-        if (is_null($message)) {
+        if ($message === null) {
             $message = get_param_string('s_message', '', true);
             if ($message == '') {
                 $from = get_param_string('from', null, true);
-                if (!is_null($from)) {
+                if ($from !== null) {
                     $resource_title = get_param_string('title', '', true);
                     if ($resource_title == '') { // Auto download it
                         $downloaded_at_link = http_download_file($from, 3000, false);
@@ -319,9 +319,9 @@ class Module_recommend
             }
         }
 
-        $text = is_null($page_title) ? do_lang_tempcode('RECOMMEND_SITE_TEXT', escape_html(get_site_name())) : new Tempcode();
+        $text = ($page_title === null) ? do_lang_tempcode('RECOMMEND_SITE_TEXT', escape_html(get_site_name())) : new Tempcode();
 
-        if (!is_null(get_param_string('from', null, true))) {
+        if (get_param_string('from', null, true) !== null) {
             $submit_name = do_lang_tempcode('SEND');
             $text = do_lang_tempcode('RECOMMEND_AUTO_TEXT', get_site_name());
             $need_message = true;
@@ -402,7 +402,7 @@ class Module_recommend
         $text = do_lang_tempcode('RECOMMEND_SITE_TEXT_CHOOSE_CONTACTS', escape_html(get_site_name()));
 
         $page_title = get_param_string('page_title', null, true);
-        if (is_null(get_param_string('from', null, true))) {
+        if (get_param_string('from', null, true) === null) {
             $hidden->attach(form_input_hidden('wrap_message', '1'));
         }
 
@@ -563,7 +563,7 @@ class Module_recommend
                                     }
                                 }
                                 // Hmm, first one that is not the email then
-                                if (is_null($name_field_index)) {
+                                if ($name_field_index === null) {
                                     foreach ($csv_header_line_fields as $i => $header_field) {
                                         if ($i != $email_field_index) {
                                             $name_field_index = $i;

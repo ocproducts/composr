@@ -391,7 +391,7 @@ class Module_admin_menus
                     'DISPLAY' => $display,
                     'CLICKABLE_SECTIONS' => $clickable_sections,
                     'ORDER' => strval($order),
-                    'PARENT' => is_null($branch) ? '' : strval($branch),
+                    'PARENT' => ($branch === null) ? '' : strval($branch),
                     'BRANCH_TYPE' => strval($branch_type),
                     'NEW_WINDOW' => strval($new_window),
                     'CHECK_PERMS' => strval($check_perms),

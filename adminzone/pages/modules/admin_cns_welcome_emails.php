@@ -72,7 +72,7 @@ class Module_admin_cns_welcome_emails extends Standard_crud_module
     {
         push_db_scope_check(false);
 
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->create_table('f_welcome_emails', array(
                 'id' => '*AUTO',
                 'w_name' => 'SHORT_TEXT',
@@ -85,7 +85,7 @@ class Module_admin_cns_welcome_emails extends Standard_crud_module
             ));
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 4)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 4)) {
             $GLOBALS['SITE_DB']->add_table_field('f_welcome_emails', 'w_usergroup', '?AUTO_LINK', null);
             $GLOBALS['SITE_DB']->add_table_field('f_welcome_emails', 'w_usergroup_type', 'ID_TEXT', '');
             $GLOBALS['SITE_DB']->alter_table_field('f_welcome_emails', 'w_newsletter', '?AUTO_LINK');
@@ -234,7 +234,7 @@ class Module_admin_cns_welcome_emails extends Standard_crud_module
             $newsletters = new Tempcode();
             $rows = $GLOBALS['SITE_DB']->query_select('newsletters', array('id', 'title'));
             if (get_forum_type() == 'cns') {
-                $newsletters->attach(form_input_list_entry('', is_null($newsletter), do_lang_tempcode('WELCOME_EMAIL_MEMBERS')));
+                $newsletters->attach(form_input_list_entry('', ($newsletter === null), do_lang_tempcode('WELCOME_EMAIL_MEMBERS')));
             }
             foreach ($rows as $_newsletter) {
                 $newsletters->attach(form_input_list_entry(strval($_newsletter['id']), $_newsletter['id'] === $newsletter, get_translated_text($_newsletter['title'])));

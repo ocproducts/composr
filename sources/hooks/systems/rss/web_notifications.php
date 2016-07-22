@@ -83,8 +83,8 @@ class Hook_rss_web_notifications
         $content = new Tempcode();
         foreach ($rows as $row) {
             $id = strval($row['id']);
-            $author = is_null($row['d_from_member_id']) ? null : $GLOBALS['FORUM_DRIVER']->get_username($row['d_from_member_id']);
-            if (is_null($author)) {
+            $author = ($row['d_from_member_id'] === null) ? null : $GLOBALS['FORUM_DRIVER']->get_username($row['d_from_member_id']);
+            if ($author === null) {
                 $author = do_lang('UNKNOWN');
             }
 
@@ -96,7 +96,7 @@ class Hook_rss_web_notifications
             $news = escape_html(get_translated_text($row['d_message']));
 
             $ob = _get_notification_ob_for_code($row['d_notification_code']);
-            if (is_null($ob)) {
+            if ($ob === null) {
                 continue;
             }
             $codes = $ob->list_handled_codes();

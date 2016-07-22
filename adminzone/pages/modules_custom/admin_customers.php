@@ -110,7 +110,7 @@ class Module_admin_customers
         require_code('mantis');
         $cur_id = null;
         $cur_id = get_credits_profile_field_id('cms_currency');
-        if (!is_null($cur_id)) {
+        if ($cur_id !== null) {
             $GLOBALS['SITE_DB']->query_update('f_custom_fields', array('cf_owner_view' => 1, 'cf_owner_set' => 1), array('id' => $cur_id), '', 1);
         }
         cns_make_custom_field('cms_support_credits', 1, '', '', 0, 1, 0, 0, 'integer');
@@ -742,9 +742,9 @@ class Module_admin_customers
         $submit_name = do_lang_tempcode('CHARGE');
 
         $username = get_param_string('username', null);
-        if (is_null($username)) {
+        if ($username === null) {
             $member_id = get_param_integer('member_id', null);
-            if (!is_null($member_id)) {
+            if ($member_id !== null) {
                 $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
             } else {
                 $username = '';
@@ -759,14 +759,14 @@ class Module_admin_customers
         $fields->attach(form_input_tick(do_lang_tempcode('ALLOW_OVERDRAFT'), do_lang_tempcode('DESCRIPTION_ALLOW_OVERDRAFT'), 'allow_overdraft', true));
         $fields->attach(form_input_line(do_lang_tempcode('REASON'), 'If for a ticket, you can just paste in the ticket URL.', 'reason', '', true));
 
-        if (!is_null($member_id)) {
+        if ($member_id !== null) {
             $cpf_id = get_credits_profile_field_id();
-            if (is_null($cpf_id)) {
+            if ($cpf_id === null) {
                 $msg_tpl = warn_screen($this->title, do_lang_tempcode('INVALID_FIELD_ID'));
                 return $msg_tpl;
             }
             $num_credits = 0;
-            if (!is_null($cpf_id)) {
+            if ($cpf_id !== null) {
                 require_code('cns_members_action2');
                 $_fields = cns_get_custom_field_mappings($member_id);
                 $num_credits = intval($_fields['field_' . strval($cpf_id)]);
@@ -782,7 +782,7 @@ class Module_admin_customers
         $logs = $GLOBALS['SITE_DB']->query_select('credit_charge_log', array('charging_member_id', 'num_credits', 'date_and_time', 'reason'), array('member_id' => $member_id), 'ORDER BY date_and_time DESC', 10);
         foreach ($logs as $log) {
             $charging_username = $GLOBALS['FORUM_DRIVER']->get_username($log['charging_member_id']);
-            if (is_null($charging_username)) {
+            if ($charging_username === null) {
                 $charging_username = do_lang('DELETED');
             }
             $_num_credits = integer_format($log['num_credits']);
@@ -817,7 +817,7 @@ class Module_admin_customers
 
         require_code('mantis');
         $cpf_id = get_credits_profile_field_id();
-        if (is_null($cpf_id)) {
+        if ($cpf_id === null) {
             $msg_tpl = warn_screen($this->title, do_lang_tempcode('INVALID_FIELD_ID'));
             return $msg_tpl;
         }

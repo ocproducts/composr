@@ -41,7 +41,7 @@ class Hook_task_export_catalogue
         $ini_set['ocproducts.xss_detect'] = '0';
 
         $catalogue_row = $GLOBALS['SITE_DB']->query_select('catalogues', array('*'), array('c_name' => $catalogue_name), '', null, null, true);
-        if (is_null($catalogue_row)) {
+        if ($catalogue_row === null) {
             $catalogue_row = array();
         }
         if (isset($catalogue_row[0])) {
@@ -69,7 +69,7 @@ class Hook_task_export_catalogue
             $entry_rows = $GLOBALS['SITE_DB']->query_select('catalogue_entries', array('*'), array('c_name' => $catalogue_name), 'ORDER BY ce_add_date ASC', 4000, $start);
 
             foreach ($entry_rows as $entry_row) {
-                if (is_null($entry_row)) {
+                if ($entry_row === null) {
                     $entry_row = array();
                 }
                 if (isset($entry_row[0])) {

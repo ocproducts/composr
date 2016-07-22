@@ -200,8 +200,8 @@ class Database_Static_sqlserver extends DatabaseDriver
      */
     public function query($query, $connection, $max = null, $start = null, $fail_ok = false, $get_insert_id = false)
     {
-        if (!is_null($max)) {
-            if (is_null($start)) {
+        if ($max !== null) {
+            if ($start === null) {
                 $max += $start;
             }
 
@@ -226,7 +226,7 @@ class Database_Static_sqlserver extends DatabaseDriver
                 @mssql_query('SET IDENTITY_INSERT ' . $table_name . ' ON', $connection);
             }
         }
-        if (!is_null($start)) {
+        if ($start !== null) {
             if (function_exists('sqlsrv_fetch_array')) {
                 sqlsrv_fetch($results, SQLSRV_SCROLL_ABSOLUTE, $start - 1);
             } else {
@@ -238,7 +238,7 @@ class Database_Static_sqlserver extends DatabaseDriver
                 $err = serialize(sqlsrv_errors());
             } else {
                 $_error_msg = array_pop($GLOBALS['ATTACHED_MESSAGES_RAW']);
-                if (is_null($_error_msg)) {
+                if ($_error_msg === null) {
                     $error_msg = make_string_tempcode('?');
                 } else {
                     $error_msg = $_error_msg[0];
@@ -249,7 +249,7 @@ class Database_Static_sqlserver extends DatabaseDriver
                 }
             }
             if ((!running_script('upgrader')) && (!get_mass_import_mode())) {
-                if (!function_exists('do_lang') || is_null(do_lang('QUERY_FAILED', null, null, null, null, false))) {
+                if ((!function_exists('do_lang')) || (do_lang('QUERY_FAILED', null, null, null, null, false) === null)) {
                     $this->failed_query_exit(htmlentities('Query failed: ' . $query . ' : ' . $err));
                 }
 
@@ -313,7 +313,7 @@ class Database_Static_sqlserver extends DatabaseDriver
                     $name = $names[$j];
 
                     if (($type == 'SMALLINT') || ($type == 'INT') || ($type == 'INTEGER') || ($type == 'UINTEGER') || ($type == 'BYTE') || ($type == 'COUNTER')) {
-                        if (!is_null($v)) {
+                        if ($v !== null) {
                             $newrow[$name] = intval($v);
                         } else {
                             $newrow[$name] = null;

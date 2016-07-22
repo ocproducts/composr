@@ -211,7 +211,7 @@ class Hook_commandr_fs_news extends Resource_fs_base
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
         list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
-        if (is_null($category)) {
+        if ($category === null) {
             return false; // Folder not found
         }
 
@@ -220,7 +220,7 @@ class Hook_commandr_fs_news extends Resource_fs_base
         $news = $this->_default_property_str($properties, 'summary');
         $author = $this->_default_property_str($properties, 'author');
         $validated = $this->_default_property_int_null($properties, 'validated');
-        if (is_null($validated)) {
+        if ($validated === null) {
             $validated = 1;
         }
         $allow_rating = $this->_default_property_int_modeavg($properties, 'allow_rating', 'news', 1);
@@ -306,7 +306,7 @@ class Hook_commandr_fs_news extends Resource_fs_base
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
         list($properties,) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
-        if (is_null($category)) {
+        if ($category === null) {
             return false; // Folder not found
         }
 
@@ -316,7 +316,7 @@ class Hook_commandr_fs_news extends Resource_fs_base
         $news = $this->_default_property_str($properties, 'summary');
         $author = $this->_default_property_str($properties, 'author');
         $validated = $this->_default_property_int_null($properties, 'validated');
-        if (is_null($validated)) {
+        if ($validated === null) {
             $validated = 1;
         }
         $allow_rating = $this->_default_property_int_modeavg($properties, 'allow_rating', 'news', 1);

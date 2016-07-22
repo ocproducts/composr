@@ -53,7 +53,7 @@ function cns_get_group_members_raw_count($group_id, $include_primaries = true, $
         foreach ($hooks as $ob) {
             if (in_array($group_id, $ob->get_bound_group_ids())) {
                 $c = $ob->get_member_list_count($group_id);
-                if (!is_null($c)) {
+                if ($c !== null) {
                     $a += $c;
                 }
             }
@@ -62,7 +62,7 @@ function cns_get_group_members_raw_count($group_id, $include_primaries = true, $
 
     // Find for LDAP members
     global $LDAP_CONNECTION;
-    if (!is_null($LDAP_CONNECTION)) {
+    if ($LDAP_CONNECTION !== null) {
         $members = array();
         cns_get_group_members_raw_ldap($members, $group_id, $include_primaries, $non_validated, $include_secondaries);
         $c = count($members);
@@ -74,10 +74,10 @@ function cns_get_group_members_raw_count($group_id, $include_primaries = true, $
     $d = 0;
     if ($include_secondaries) {
         global $PROBATION_GROUP_CACHE;
-        if (is_null($PROBATION_GROUP_CACHE)) {
+        if ($PROBATION_GROUP_CACHE === null) {
             $probation_group = get_option('probation_usergroup');
             $PROBATION_GROUP_CACHE = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('g_name') => $probation_group));
-            if (is_null($PROBATION_GROUP_CACHE)) {
+            if ($PROBATION_GROUP_CACHE === null) {
                 $PROBATION_GROUP_CACHE = false;
             }
         }
@@ -133,7 +133,7 @@ function cns_get_group_members_raw($group_id, $include_primaries = true, $non_va
         foreach ($hooks as $ob) {
             if (in_array($group_id, $ob->get_bound_group_ids())) {
                 $c = $ob->get_member_list($group_id);
-                if (!is_null($c)) {
+                if ($c !== null) {
                     foreach ($c as $member_id => $member_row) {
                         $members[$member_id] = $non_validated ? array('gm_member_id' => $member_id, 'gm_validated' => 1, 'm_username' => $member_row['m_username'], 'implicit' => true) : $member_id;
                     }
@@ -144,17 +144,17 @@ function cns_get_group_members_raw($group_id, $include_primaries = true, $non_va
 
     // Find for LDAP members
     global $LDAP_CONNECTION;
-    if (!is_null($LDAP_CONNECTION)) {
+    if ($LDAP_CONNECTION !== null) {
         cns_get_group_members_raw_ldap($members, $group_id, $include_primaries, $non_validated, $include_secondaries);
     }
 
     // Now for probation
     if ($include_secondaries) {
         global $PROBATION_GROUP_CACHE;
-        if (is_null($PROBATION_GROUP_CACHE)) {
+        if ($PROBATION_GROUP_CACHE === null) {
             $probation_group = get_option('probation_usergroup');
             $PROBATION_GROUP_CACHE = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('g_name') => $probation_group));
-            if (is_null($PROBATION_GROUP_CACHE)) {
+            if ($PROBATION_GROUP_CACHE === null) {
                 $PROBATION_GROUP_CACHE = false;
             }
         }

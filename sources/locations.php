@@ -423,7 +423,7 @@ function create_region_selection_list($regions = null)
     foreach ($continents_and_countries as $continent => $countries) {
         $list = new Tempcode();
         foreach ($countries as $country_code => $country_name) {
-            $list->attach(form_input_list_entry($country_code, !is_null($regions) && in_array($country_code, $regions), $country_name));
+            $list->attach(form_input_list_entry($country_code, $regions !== null && in_array($country_code, $regions), $country_name));
         }
         $list_groups->attach(form_input_list_group($continent, $list));
     }
@@ -489,7 +489,7 @@ function get_country()
  */
 function geolocate_ip($ip = null)
 {
-    if (is_null($ip)) {
+    if ($ip === null) {
         $ip = get_ip_address();
     }
 
@@ -511,7 +511,7 @@ function geolocate_ip($ip = null)
 
     if (!array_key_exists(0, $results)) {
         return null;
-    } elseif (!is_null($results[0]['country'])) {
+    } elseif ($results[0]['country'] !== null) {
         return $results[0]['country'];
     } else {
         return null;
@@ -541,10 +541,10 @@ function form_input_regions($regions = null)
  */
 function sql_region_filter($content_type, $field_name_to_join, $region = null)
 {
-    if (is_null($region)) {
+    if ($region === null) {
         $region = get_region();
     }
-    if (is_null($region)) {
+    if ($region === null) {
     	return '';
     }
     $ret = ' AND (';

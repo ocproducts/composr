@@ -55,7 +55,7 @@ class Hook_notification_wiki extends Hook_Notification
         if ($id === null) {
             $wiki_seen = array();
         }
-        $page_links = get_wiki_page_tree($wiki_seen, is_null($id) ? null : intval($id), null, null, false, false, is_null($id) ? 0 : 1);
+        $page_links = get_wiki_page_tree($wiki_seen, ($id === null) ? null : intval($id), null, null, false, false, ($id === null) ? 0 : 1);
 
         $filtered = array();
         foreach ($page_links as $p) {

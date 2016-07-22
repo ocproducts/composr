@@ -94,15 +94,15 @@ function username_check_script()
     require_lang('cns');
 
     $username = post_param_string('username', null, true);
-    if (!is_null($username)) {
+    if ($username !== null) {
         $username = trim($username);
     }
     $password = post_param_string('password', null);
-    if (!is_null($password)) {
+    if ($password !== null) {
         $password = trim($password);
     }
     $error = cns_check_name_valid($username, null, $password, true);
-    if (!is_null($error)) {
+    if ($error !== null) {
         $error->evaluate_echo();
     }
 }
@@ -120,7 +120,7 @@ function username_exists_script()
 
     $username = trim(get_param_string('username', false, true));
     $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($username);
-    if (is_null($member_id)) {
+    if ($member_id === null) {
         echo 'false';
     }
 }
@@ -151,7 +151,7 @@ function namelike_script()
             foreach ($hooks as $hook => $object) {
                 $info = $object->run();
                 foreach ($info as $i) {
-                    if (is_null($i)) {
+                    if ($i === null) {
                         continue;
                     }
                     $n = $i[3];
@@ -186,7 +186,7 @@ function namelike_script()
             $names = array();
             foreach ($rows as $row) {
                 $username = $GLOBALS['FORUM_DRIVER']->get_username($row['member_liked']);
-                if (!is_null($username)) {
+                if ($username !== null) {
                     $names[$row['member_liked']] = $username;
                 }
             }
@@ -259,7 +259,7 @@ function find_permissions_script()
         require_code('sitemap');
 
         $test = find_sitemap_object($serverid);
-        if (!is_null($test)) {
+        if ($test !== null) {
             list($ob,) = $test;
 
             $privilege_page = $ob->get_privilege_page($serverid);

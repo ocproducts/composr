@@ -35,7 +35,7 @@ The concept of a chain is crucial to proper understanding of the Wiki+ system. P
  */
 function render_wiki_post_box($row, $zone = '_SEARCH', $give_context = true, $include_breadcrumbs = true, $root = null, $guid = '')
 {
-    if (is_null($row)) { // Should never happen, but we need to be defensive
+    if ($row === null) { // Should never happen, but we need to be defensive
         return new Tempcode();
     }
 
@@ -44,7 +44,7 @@ function render_wiki_post_box($row, $zone = '_SEARCH', $give_context = true, $in
     $just_wiki_post_row = db_map_restrict($row, array('id', 'the_message'));
 
     $map = array('page' => 'wiki', 'type' => 'browse', 'id' => $row['page_id']);
-    if (!is_null($root)) {
+    if ($root !== null) {
         $map['keep_forum_root'] = $root;
     }
     $url = build_url($map, $zone);
@@ -84,7 +84,7 @@ function render_wiki_post_box($row, $zone = '_SEARCH', $give_context = true, $in
  */
 function render_wiki_page_box($row, $zone = '_SEARCH', $give_context = true, $include_breadcrumbs = true, $root = null, $guid = '')
 {
-    if (is_null($row)) { // Should never happen, but we need to be defensive
+    if ($row === null) { // Should never happen, but we need to be defensive
         return new Tempcode();
     }
 
@@ -95,7 +95,7 @@ function render_wiki_page_box($row, $zone = '_SEARCH', $give_context = true, $in
     $content = get_translated_tempcode('wiki_pages', $just_wiki_page_row, 'description');
 
     $map = array('page' => 'wiki', 'type' => 'browse', 'id' => $row['id']);
-    if (!is_null($root)) {
+    if ($root !== null) {
         $map['keep_forum_root'] = $root;
     }
     $url = build_url($map, $zone);
@@ -138,10 +138,10 @@ function render_wiki_page_box($row, $zone = '_SEARCH', $give_context = true, $in
  */
 function wiki_add_post($page_id, $message, $validated = 1, $member = null, $send_notification = true, $add_time = null, $views = 0, $edit_date = null)
 {
-    if (is_null($member)) {
+    if ($member === null) {
         $member = get_member();
     }
-    if (is_null($add_time)) {
+    if ($add_time === null) {
         $add_time = time();
     }
 
@@ -224,7 +224,7 @@ function wiki_add_post($page_id, $message, $validated = 1, $member = null, $send
  */
 function wiki_edit_post($post_id, $message, $validated, $member = null, $page_id = null, $edit_time = null, $add_time = null, $views = null, $null_is_literal = false)
 {
-    if (is_null($edit_time)) {
+    if ($edit_time === null) {
         $edit_time = $null_is_literal ? null : time();
     }
 
@@ -271,18 +271,18 @@ function wiki_edit_post($post_id, $message, $validated, $member = null, $page_id
     );
     $update_map += update_lang_comcode_attachments('the_message', $_message, $message, 'wiki_post', strval($post_id), null, $original_poster);
 
-    if (!is_null($page_id)) {
+    if ($page_id !== null) {
         $update_map['page_id'] = $page_id;
     }
 
     $update_map['edit_date'] = $edit_time;
-    if (!is_null($add_time)) {
+    if ($add_time !== null) {
         $update_map['date_and_time'] = $add_time;
     }
-    if (!is_null($views)) {
+    if ($views !== null) {
         $update_map['wiki_views'] = $views;
     }
-    if (!is_null($member)) {
+    if ($member !== null) {
         $update_map['member_id'] = $member;
     }
 
@@ -310,7 +310,7 @@ function wiki_edit_post($post_id, $message, $validated, $member = null, $page_id
  */
 function wiki_delete_post($post_id, $member = null)
 {
-    if (is_null($member)) {
+    if ($member === null) {
         $member = get_member();
     }
 
@@ -377,10 +377,10 @@ function wiki_delete_post($post_id, $member = null)
  */
 function wiki_add_page($title, $description, $notes, $hide_posts, $member = null, $add_time = null, $views = 0, $meta_keywords = '', $meta_description = '', $edit_date = null, $send_notification = true)
 {
-    if (is_null($member)) {
+    if ($member === null) {
         $member = get_member();
     }
-    if (is_null($add_time)) {
+    if ($add_time === null) {
         $add_time = time();
     }
 
@@ -467,7 +467,7 @@ function wiki_add_page($title, $description, $notes, $hide_posts, $member = null
  */
 function wiki_edit_page($page_id, $title, $description, $notes, $hide_posts, $meta_keywords, $meta_description, $member = null, $edit_time = null, $add_time = null, $views = null, $null_is_literal = false)
 {
-    if (is_null($edit_time)) {
+    if ($edit_time === null) {
         $edit_time = $null_is_literal ? null : time();
     }
 
@@ -501,13 +501,13 @@ function wiki_edit_page($page_id, $title, $description, $notes, $hide_posts, $me
     );
 
     $update_map['edit_date'] = $edit_time;
-    if (!is_null($add_time)) {
+    if ($add_time !== null) {
         $update_map['add_date'] = $add_time;
     }
-    if (!is_null($views)) {
+    if ($views !== null) {
         $update_map['wiki_views'] = $views;
     }
-    if (!is_null($member)) {
+    if ($member !== null) {
         $update_map['submitter'] = $member;
     } else {
         $member = $page['submitter'];
@@ -614,7 +614,7 @@ function wiki_delete_page($page_id)
  */
 function get_param_wiki_chain($parameter_name, $default_value = null)
 {
-    if (is_null($default_value)) {
+    if ($default_value === null) {
         $default_value = strval(db_get_first_id());
     }
     $value = get_param_string($parameter_name, $default_value, true);
@@ -632,7 +632,7 @@ function get_param_wiki_chain($parameter_name, $default_value = null)
         } else {
             $url_moniker_where = array('m_resource_page' => 'wiki', 'm_moniker' => $part);
             $_id = $GLOBALS['SITE_DB']->query_select_value_if_there('url_id_monikers', 'm_resource_id', $url_moniker_where);
-            if (is_null($_id)) {
+            if ($_id === null) {
                 warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
             }
             $id = intval($_id);
@@ -677,15 +677,15 @@ function wiki_breadcrumbs($chain, $current_title = null, $final_link = false, $l
 
         if ($next_token !== false) { // If not the last token (i.e. not the current page)
             $title = $GLOBALS['SITE_DB']->query_select_value_if_there('wiki_pages', 'title', array('id' => $id));
-            if (is_null($title)) {
+            if ($title === null) {
                 continue;
             }
             $token_title = get_translated_text($title);
             $segments[] = $links ? array($page_link, $token_title) : array('', $token_title);
         } else {
-            if (is_null($current_title)) {
+            if ($current_title === null) {
                 $_current_title = $GLOBALS['SITE_DB']->query_select_value_if_there('wiki_pages', 'title', array('id' => $id));
-                $current_title = is_null($_current_title) ? do_lang('MISSING_RESOURCE', 'wiki_page') : get_translated_text($_current_title);
+                $current_title = ($_current_title === null) ? do_lang('MISSING_RESOURCE', 'wiki_page') : get_translated_text($_current_title);
             }
             if ($final_link) {
                 $segments[] = array($page_link, $current_title);
@@ -716,7 +716,7 @@ function wiki_derive_chain($id, $root = null)
         );
     }
 
-    if (is_null($root)) {
+    if ($root === null) {
         $root = get_param_integer('keep_wiki_root', db_get_first_id());
     }
 
@@ -778,7 +778,7 @@ function wiki_derive_chain($id, $root = null)
  */
 function create_selection_list_wiki_page_tree($select = null, $id = null, $breadcrumbs = '', $include_orphans = true, $use_compound_list = false, $ins_format = false)
 {
-    if (is_null($id)) {
+    if ($id === null) {
         $id = db_get_first_id();
     }
 
@@ -842,7 +842,7 @@ function _create_selection_list_wiki_page_tree(&$wiki_seen, $select, $id, $bread
                 continue;
             }
 
-            if (is_null($myrow['title'])) {
+            if ($myrow['title'] === null) {
                 $temp_rows = $GLOBALS['SITE_DB']->query_select('wiki_pages', array('title'), array('id' => $myrow['child_id']), '', 1);
                 $myrow['title'] = get_translated_text($temp_rows[0]['title']);
                 $rows[$i]['title'] = $myrow['title'];
@@ -890,16 +890,16 @@ function get_wiki_page_tree(&$wiki_seen, $page_id = null, $breadcrumbs = null, $
         }
     }
 
-    if (is_null($page_id)) {
+    if ($page_id === null) {
         $page_id = db_get_first_id();
     }
-    if (is_null($breadcrumbs)) {
+    if ($breadcrumbs === null) {
         $breadcrumbs = '';
     }
 
     $wiki_seen[] = $page_id;
 
-    if (is_null($page_details)) {
+    if ($page_details === null) {
         $_page_details = $GLOBALS['SITE_DB']->query_select('wiki_pages', array('title'), array('id' => $page_id), '', 1);
         if (!array_key_exists(0, $_page_details)) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'wiki_page'));
@@ -933,7 +933,7 @@ function get_wiki_page_tree(&$wiki_seen, $page_id = null, $breadcrumbs = null, $
                 }
 
                 // Fix child title
-                if (is_null($child['title'])) {
+                if ($child['title'] === null) {
                     $temp_rows = $GLOBALS['SITE_DB']->query_select('wiki_pages', array('title'), array('id' => $child['child_id']), '', 1);
                     $child['title'] = get_translated_text($temp_rows[0]['title']);
 
@@ -942,7 +942,7 @@ function get_wiki_page_tree(&$wiki_seen, $page_id = null, $breadcrumbs = null, $
 
                 $child_id = $child['child_id'];
 
-                $child_children = get_wiki_page_tree($wiki_seen, $child_id, $breadcrumbs, $child, $do_stats, $use_compound_list, is_null($levels) ? null : ($levels - 1));
+                $child_children = get_wiki_page_tree($wiki_seen, $child_id, $breadcrumbs, $child, $do_stats, $use_compound_list, ($levels === null) ? null : ($levels - 1));
                 if ($use_compound_list) {
                     list($child_children, $_compound_list) = $child_children;
                     $children[0]['compound_list'] .= $_compound_list;

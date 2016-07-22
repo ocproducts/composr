@@ -48,7 +48,7 @@ class Hook_preview_video
 
         $urls = get_url('url', 'file', 'uploads/galleries', 0, CMS_UPLOAD_VIDEO, true, '', 'file2');
         if ($urls[0] == '') {
-            if (!is_null(post_param_integer('id', null))) {
+            if (post_param_integer('id', null) !== null) {
                 $rows = $GLOBALS['SITE_DB']->query_select('videos', array('url', 'thumb_url'), array('id' => post_param_integer('id')), '', 1);
                 $urls = $rows[0];
 
@@ -73,13 +73,13 @@ class Hook_preview_video
         } else {
             list($_width, $_height, $_length) = array(intval(get_option('video_width_setting')), intval(get_option('video_height_setting')), 0);
         }
-        if (is_null($length)) {
+        if ($length === null) {
             $length = $_length;
         }
-        if (is_null($width)) {
+        if ($width === null) {
             $width = $_width;
         }
-        if (is_null($height)) {
+        if ($height === null) {
             $height = $_height;
         }
         $preview = show_gallery_video_media($url, $thumb_url, $width, $height, $length, get_member());

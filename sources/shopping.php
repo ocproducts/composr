@@ -128,7 +128,7 @@ function log_cart_actions($action)
 
     $id = $GLOBALS['SITE_DB']->query_select_value_if_there('shopping_logging', 'id', $where);
 
-    if (is_null($id)) {
+    if ($id === null) {
         $GLOBALS['SITE_DB']->query_insert(
             'shopping_logging',
             array(
@@ -259,7 +259,7 @@ function update_stock($order_id)
         require_code('hooks/systems/ecommerce/' . filter_naughty_harsh($hook), true);
 
         $object = object_factory('Hook_ecommerce_' . $hook, true);
-        if (is_null($object)) {
+        if ($object === null) {
             continue;
         }
 
@@ -337,7 +337,7 @@ function payment_form()
             'tax_opted_out' => $tax_opt_out,
         );
 
-        if (is_null($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order', 'id'))) {
+        if ($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order', 'id') === null) {
             $insert['id'] = hexdec('1701D'); // Start offset
         }
 
@@ -356,7 +356,7 @@ function payment_form()
         require_code('hooks/systems/ecommerce/' . filter_naughty_harsh($hook), true);
 
         $object = object_factory('Hook_ecommerce_' . filter_naughty_harsh($hook), true);
-        if (is_null($object)) {
+        if ($object === null) {
             continue;
         }
 
@@ -422,7 +422,7 @@ function payment_form()
 
         $price = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'tot_price', array('id' => $order_id));
         $item_name = do_lang('CART_ORDER', strval($order_id));
-        if (is_null($order_id)) {
+        if ($order_id === null) {
             $fields = new Tempcode();
             $hidden = new Tempcode();
         } else {

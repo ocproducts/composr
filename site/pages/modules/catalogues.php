@@ -88,7 +88,7 @@ class Module_catalogues
         require_code('catalogues');
         require_code('catalogues2');
 
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->create_table('catalogues', array(
                 'c_name' => '*ID_TEXT',
                 'c_title' => 'SHORT_TRANS',
@@ -187,7 +187,7 @@ class Module_catalogues
             ));
         }
 
-        if ((is_null($upgrade_from)) || ($upgrade_from < 6)) {
+        if (($upgrade_from === null) || ($upgrade_from < 6)) {
             $GLOBALS['SITE_DB']->create_table('catalogue_entry_linkage', array(
                 'catalogue_entry_id' => '*AUTO_LINK',
                 'content_type' => 'ID_TEXT',
@@ -238,7 +238,7 @@ class Module_catalogues
             $GLOBALS['SITE_DB']->create_index('catalogue_efv_short_trans', 'cefv_st_combo', array('ce_id', 'cf_id'), 'id');
         }
 
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             // Add the default catalogues
             // ==========================
 
@@ -414,12 +414,12 @@ class Module_catalogues
             $GLOBALS['SITE_DB']->create_index('catalogue_efv_short_trans', 'stcv_value', array('cv_value'));
         }
 
-        if ((is_null($upgrade_from)) || ($upgrade_from < 6)) {
+        if (($upgrade_from === null) || ($upgrade_from < 6)) {
             $GLOBALS['SITE_DB']->create_index('catalogue_entries', 'ce_add_date', array('ce_add_date'), 'id');
             $GLOBALS['SITE_DB']->create_index('catalogue_entries', 'ce_c_name', array('c_name'), 'id');
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 6)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 6)) {
             require_code('catalogues2');
             rebuild_catalogue_cat_treecache();
 
@@ -457,14 +457,14 @@ class Module_catalogues
             }
         }
 
-        if ((is_null($upgrade_from)) || ($upgrade_from < 8)) {
+        if (($upgrade_from === null) || ($upgrade_from < 8)) {
             $GLOBALS['SITE_DB']->create_index('catalogue_categories', '#cat_cat_search__combined', array('cc_title', 'cc_description'));
 
             add_privilege('SEARCH', 'autocomplete_keyword_catalogue_category', false);
             add_privilege('SEARCH', 'autocomplete_title_catalogue_category', false);
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 8)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 8)) {
             $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'member'), array('cf_type' => 'user'));
             $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'member_multi'), array('cf_type' => 'user_multi'));
 
@@ -484,11 +484,11 @@ class Module_catalogues
             $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'integer', 'cf_default' => 'AUTO_INCREMENT'), array('cf_type' => 'auto_increment'));
         }
 
-        if ((is_null($upgrade_from)) || ($upgrade_from < 8)) {
+        if (($upgrade_from === null) || ($upgrade_from < 8)) {
             $GLOBALS['SITE_DB']->create_index('catalogue_categories', 'cc_order', array('cc_order'));
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 9)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 9)) {
             $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'date_time'), array('cf_type' => 'date'));
             $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'date'), array('cf_type' => 'just_date'));
             $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'time'), array('cf_type' => 'just_time'));
@@ -562,7 +562,7 @@ class Module_catalogues
             // Title
             $title_to_use = do_lang_tempcode($catalogue_name . '__CATALOGUE_INDEX', make_fractionable_editable('catalogue', $catalogue_name, get_translated_text($catalogue['c_title'])));
             $title_to_use_2 = do_lang($catalogue_name . '__CATALOGUE_INDEX', escape_html(get_translated_text($catalogue['c_title'])), null, null, null, false);
-            if (is_null($title_to_use_2)) {
+            if ($title_to_use_2 === null) {
                 $title_to_use = do_lang_tempcode('DEFAULT__CATALOGUE_INDEX', escape_html(get_translated_text($catalogue['c_title'])));
             }
             if ((get_value('no_awards_in_titles') !== '1') && (addon_installed('awards'))) {
@@ -599,7 +599,7 @@ class Module_catalogues
             $id = get_param_integer('id', null);
             if ($id === null) {
                 $id = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'MIN(id)', array('c_name' => get_param_string('catalogue_name'), 'cc_parent_id' => null));
-                if (is_null($id)) {
+                if ($id === null) {
                     warn_exit(do_lang_tempcode('NO_CATEGORIES', 'catalogue_category'));
                 }
             }
@@ -629,7 +629,7 @@ class Module_catalogues
             // Screen title
             $title_to_use = do_lang_tempcode($catalogue_name . '__CATALOGUE_CATEGORY', make_fractionable_editable('catalogue_category', $id, $_title));
             $title_to_use_2 = do_lang($catalogue_name . '__CATALOGUE_CATEGORY', $_title, null, null, null, false);
-            if (is_null($title_to_use_2)) {
+            if ($title_to_use_2 === null) {
                 $title_to_use = do_lang_tempcode('DEFAULT__CATALOGUE_CATEGORY', escape_html($_title));
                 $title_to_use_2 = do_lang('DEFAULT__CATALOGUE_CATEGORY', $_title);
             }
@@ -652,7 +652,7 @@ class Module_catalogues
 
             // Breadcrumbs
             $breadcrumbs = array();
-            if (is_null($root)) {
+            if ($root === null) {
                 $breadcrumbs = array_merge($breadcrumbs, array(array('_SELF:_SELF:browse' . ($is_ecommerce ? ':ecommerce=1' : ''), do_lang_tempcode('CATALOGUES'))));
             }
             if ($catalogue['c_is_tree'] == 1) {
@@ -787,14 +787,14 @@ class Module_catalogues
             $query .= ' LEFT JOIN ' . get_table_prefix() . 'catalogue_entries e ON e.c_name=c.c_name';
         }
         $query .= ' WHERE ';
-        $query .= is_null($ecommerce) ? '1=1' : ('c_ecommerce=' . strval($ecommerce));
+        $query .= ($ecommerce === null) ? '1=1' : ('c_ecommerce=' . strval($ecommerce));
         $query .= ' AND c.c_name NOT LIKE \'' . db_encode_like('\_%') . '\'';
         $rows = $GLOBALS['SITE_DB']->query('SELECT c.* ' . $query . ($GLOBALS['SITE_DB']->can_arbitrary_groupby() ? ' GROUP BY c.c_name' : ''), $max, $start);
         $max_rows = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(DISTINCT c.c_name) ' . $query);
         $out = new Tempcode();
         foreach ($rows as $myrow) {
             $first_category = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_categories', 'MIN(id)', array('c_name' => $myrow['c_name'], 'cc_parent_id' => null));
-            if (is_null($first_category)) {
+            if ($first_category === null) {
                 continue;
             }
 

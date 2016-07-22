@@ -28,7 +28,7 @@ class Hook_notification_classifieds extends Hook_Notification
     {
         $list = array();
         $catalogues = $GLOBALS['SITE_DB']->query_select('classifieds_prices', array('DISTINCT c_catalogue_name'), null, '', null, null, true);
-        if (is_null($catalogues)) {
+        if ($catalogues === null) {
             return array();
         }
         foreach ($catalogues as $catalogue) {

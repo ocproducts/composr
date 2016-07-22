@@ -160,7 +160,7 @@ function _cms_profile_generate_line($identifier, $at, $cnt)
     $line = $identifier;
     $line .= '(x' . strval($cnt) . ')';
     $line .= str_repeat(' ', max(1, 55 - strlen($line))) . float_to_raw_string($at['time_length'], 4) . 's';
-    if (!is_null($at['specifics'])) {
+    if ($at['specifics'] !== null) {
         $line .= '  ' . $at['specifics'];
     }
     return $line;

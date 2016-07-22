@@ -70,7 +70,7 @@ class Block_side_stats
         // Inbuilt
         $bits = new Tempcode();
         $on_forum = $GLOBALS['FORUM_DRIVER']->get_num_users_forums();
-        if (!is_null($on_forum)) {
+        if ($on_forum !== null) {
             if (get_option('activity_show_stats_count_users_online') == '1') {
                 $bits->attach(do_template('BLOCK_SIDE_STATS_SUBLINE', array(
                     '_GUID' => '5ac97313d4c83e8afdeec09a48cea030',
@@ -146,7 +146,7 @@ class Block_side_stats
         foreach (array_keys($_hooks) as $hook) {
             require_code('hooks/blocks/side_stats/' . filter_naughty_harsh($hook));
             $object = object_factory('Hook_stats_' . filter_naughty_harsh($hook), true);
-            if (is_null($object)) {
+            if ($object === null) {
                 continue;
             }
             $bits = $object->run();

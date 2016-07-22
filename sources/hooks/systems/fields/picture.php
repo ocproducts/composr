@@ -132,7 +132,7 @@ class Hook_fields_picture
         $height = option_value_from_field_array($field, 'height', '');
 
         return do_template('CATALOGUE_' . $tpl_set . '_FIELD_PICTURE', array(
-            'I' => is_null($only_fields) ? '-1' : strval($i),
+            'I' => ($only_fields === null) ? '-1' : strval($i),
             'CATALOGUE' => $field['c_name'],
             'URL' => $download_url,
             'THUMB_URL' => $img_thumb_url,
@@ -157,7 +157,7 @@ class Hook_fields_picture
      */
     public function get_field_inputter($_cf_name, $_cf_description, $field, $actual_value, $new)
     {
-        $say_required = ($field['cf_required'] == 1) && (($actual_value == '') || (is_null($actual_value)));
+        $say_required = ($field['cf_required'] == 1) && (($actual_value == '') || ($actual_value === null));
         $input_name = empty($field['cf_input_name']) ? ('field_' . strval($field['id'])) : $field['cf_input_name'];
         require_code('images');
         $ffield = form_input_upload($_cf_name, $_cf_description, $input_name, $say_required, ($field['cf_required'] == 1) ? null/*so unlink option not shown*/ : $actual_value, null, true, get_allowed_image_file_types());
@@ -179,7 +179,7 @@ class Hook_fields_picture
      */
     public function inputted_to_field_value($editing, $field, $upload_dir = 'uploads/catalogues', $old_value = null)
     {
-        if (is_null($upload_dir)) {
+        if ($upload_dir === null) {
             return null;
         }
 
@@ -190,10 +190,10 @@ class Hook_fields_picture
             $temp = get_url($tmp_name . '_url', $tmp_name, $upload_dir, 0, CMS_UPLOAD_IMAGE);
             $value = $temp[0];
             if (($editing) && ($value == '') && (post_param_integer($tmp_name . '_unlink', 0) != 1)) {
-                return is_null($old_value) ? '' : $old_value['cv_value'];
+                return ($old_value === null) ? '' : $old_value['cv_value'];
             }
 
-            if ((!is_null($old_value)) && ($old_value['cv_value'] != '') && (($value != '') || (post_param_integer('custom_' . strval($field['id']) . '_value_unlink', 0) == 1))) {
+            if (($old_value !== null) && ($old_value['cv_value'] != '') && (($value != '') || (post_param_integer('custom_' . strval($field['id']) . '_value_unlink', 0) == 1))) {
                 @unlink(get_custom_file_base() . '/' . rawurldecode($old_value['cv_value']));
                 sync_file(rawurldecode($old_value['cv_value']));
             }

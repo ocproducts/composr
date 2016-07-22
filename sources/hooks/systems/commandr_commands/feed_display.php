@@ -46,7 +46,7 @@ class Hook_commandr_command_feed_display
             require_code('rss');
 
             $rss = new CMS_RSS($parameters[0]);
-            if (!is_null($rss->error)) {
+            if ($rss->error !== null) {
                 return array('', '', '', $rss->error);
             }
 
@@ -68,7 +68,7 @@ class Hook_commandr_command_feed_display
                 } elseif (array_key_exists('author_email', $rss->gleamed_feed)) {
                     $__author = hyperlink(mailto_obfuscated() . obfuscate_email_address($rss->gleamed_feed['author_email']), $_author, true, true);
                 }
-                if (!is_null($__author)) {
+                if ($__author !== null) {
                     $_author = $__author->evaluate();
                 }
                 $_author = do_lang('RSS_SOURCE_FROM', $_author);

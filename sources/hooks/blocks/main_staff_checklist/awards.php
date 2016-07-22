@@ -44,16 +44,16 @@ class Hook_checklist_awards
 
             require_code('content');
             $hook_object = get_content_object($award['a_content_type']);
-            if (is_null($hook_object)) {
+            if ($hook_object === null) {
                 continue;
             }
             $details = $hook_object->info();
-            if (!is_null($details)) {
+            if ($details !== null) {
                 $date = $GLOBALS['SITE_DB']->query_select_value_if_there('award_archive', 'date_and_time', array('a_type_id' => $award['id']), 'ORDER BY date_and_time DESC');
 
                 $seconds_ago = mixed();
                 $limit_hours = $award['a_update_time_hours'];
-                if (!is_null($date)) {
+                if ($date !== null) {
                     $seconds_ago = time() - $date;
                     $status = ($seconds_ago > $limit_hours * 60 * 60) ? 0 : 1;
                 } else {
@@ -65,7 +65,7 @@ class Hook_checklist_awards
                 $_status = ($status == 0) ? do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM_STATUS_0') : do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM_STATUS_1');
 
                 $url = $details['add_url'];
-                if (!is_null($url)) {
+                if ($url !== null) {
                     $url = page_link_to_url($url);
                 } else {
                     $url = '';
@@ -74,7 +74,7 @@ class Hook_checklist_awards
 
                 $task = do_lang_tempcode('_GIVE_AWARD', escape_html(get_translated_text($award['a_title'])));
 
-                if ((!is_null($date)) && (!is_null($details['date_field']))) {
+                if (($date !== null) && ($details['date_field'] !== null)) {
                     $where = filter_naughty_harsh($details['date_field']) . '>' . strval(intval($date));
                     $num_queue = $details['db']->query_value_if_there('SELECT COUNT(*) FROM ' . $details['db']->get_table_prefix() . str_replace('1=1', $where, $details['table']) . ' r WHERE ' . $where);
                     $_num_queue = integer_format($num_queue);

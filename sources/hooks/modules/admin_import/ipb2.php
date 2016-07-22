@@ -111,7 +111,7 @@ class Hook_import_ipb2
 
             global $VALID_COMCODE_TAGS;
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('custom_comcode', 'tag_tag', array('tag_tag' => $row['bbcode_tag']));
-            if ((array_key_exists($row['bbcode_tag'], $VALID_COMCODE_TAGS)) || (!is_null($test))) {
+            if ((array_key_exists($row['bbcode_tag'], $VALID_COMCODE_TAGS)) || ($test !== null)) {
                 import_id_remap_put('custom_comcode', strval($row['bbcode_id']), 1);
                 continue;
             }
@@ -155,7 +155,7 @@ class Hook_import_ipb2
             $title = @html_entity_decode($row['name'], ENT_QUOTES, get_charset());
 
             $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forum_groupings', 'id', array('c_title' => $title));
-            if (!is_null($test)) {
+            if ($test !== null) {
                 import_id_remap_put('category', strval($row['id']), $test);
                 continue;
             }
@@ -184,7 +184,7 @@ class Hook_import_ipb2
         $rows = $db->query('SELECT * FROM ' . $table_prefix . 'forums WHERE parent_id<>-1 ORDER BY id');
         foreach ($rows as $row_number => $row) {
             $remapped = import_id_remap_get('forum', strval($row['id']), true);
-            if (!is_null($remapped)) {
+            if ($remapped !== null) {
                 $remap_id[$row['id']] = $remapped;
                 $rows[$row_number]['parent_id'] = null;
                 continue;
@@ -201,7 +201,7 @@ class Hook_import_ipb2
             $parent_test = $db->query('SELECT use_ibc,parent_id FROM ' . $table_prefix . 'forums WHERE id=' . strval($row['parent_id']));
             if ($parent_test[0]['parent_id'] != -1) { // Pointing to parent
                 $parent_forum = import_id_remap_get('forum', strval($row['parent_id']), true);
-                if (!is_null($parent_forum)) {
+                if ($parent_forum !== null) {
                     $rows[$row_number]['parent_id'] = null; // Mark it as good (we do not need to fix this parenting)
                 }
                 $category_id = db_get_first_id();
@@ -222,7 +222,7 @@ class Hook_import_ipb2
             $access_mapping = array();
             foreach ($_all_groups as $old_group) {
                 $new_group = import_id_remap_get('group', $old_group, true);
-                if (is_null($new_group)) {
+                if ($new_group === null) {
                     continue;
                 }
 
@@ -245,7 +245,7 @@ class Hook_import_ipb2
 
         // Now we must fix parenting
         foreach ($rows as $row) {
-            if (!is_null($row['parent_id'])) {
+            if ($row['parent_id'] !== null) {
                 $parent_id = $remap_id[$row['parent_id']];
                 $GLOBALS['FORUM_DB']->query_update('f_forums', array('f_parent_forum' => $parent_id), array('id' => $remap_id[$row['id']]), '', 1);
             }
@@ -354,11 +354,11 @@ class Hook_import_ipb2
 
             // Create topic
             $from_id = import_id_remap_get('member', strval($row['mt_from_id']), true);
-            if (is_null($from_id)) {
+            if ($from_id === null) {
                 $from_id = $GLOBALS['CNS_DRIVER']->get_guest_id();
             }
             $to_id = import_id_remap_get('member', strval($row['mt_to_id']), true);
-            if (is_null($to_id)) {
+            if ($to_id === null) {
                 $to_id = $GLOBALS['CNS_DRIVER']->get_guest_id();
             }
             $topic_id = cns_make_topic(null, '', '', 1, 1, 0, 0, $from_id, $to_id, false);
@@ -374,7 +374,7 @@ class Hook_import_ipb2
                 $post = str_replace('$', '[html]$[/html]', $this->clean_ipb_post($_postdetails['msg_post']));
                 $validated = 1;
                 $from_id = import_id_remap_get('member', strval($_postdetails['mt_from_id']), true);
-                if (is_null($from_id)) {
+                if ($from_id === null) {
                     $from_id = $GLOBALS['CNS_DRIVER']->get_guest_id();
                 }
                 $poster_name_if_guest = $GLOBALS['CNS_DRIVER']->get_member_row_field($from_id, 'm_username');
@@ -478,7 +478,7 @@ class Hook_import_ipb2
             }
 
             $id_new = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('g_name') => $row['g_title']));
-            if (is_null($id_new)) {
+            if ($id_new === null) {
                 $id_new = cns_make_group(@html_entity_decode($row['g_title'], ENT_QUOTES, get_charset()), 0, $row['g_access_cp'], $row['g_is_supmod'], '', '', $promotion_target, $promotion_threshold, null, $row['g_avoid_flood'] ? 0 : $row['g_search_flood'], 0, 5, 5, $max_avatar_width, $max_avatar_height, $max_post_length_comcode, $max_sig_length_comcode);
             }
 
@@ -499,11 +499,11 @@ class Hook_import_ipb2
             }
             foreach ($denies as $deny) {
                 list($page, $zone) = $deny;
-                if (is_null($zone)) {
+                if ($zone === null) {
                     continue;
                 }
                 $test = $GLOBALS['SITE_DB']->query_select_value_if_there('group_page_access', 'group_id', array('group_id' => $id_new, 'zone_name' => $zone, 'page_name' => $page));
-                if (is_null($test)) {
+                if ($test === null) {
                     $GLOBALS['SITE_DB']->query_insert('group_page_access', array('group_id' => $id_new, 'zone_name' => $zone, 'page_name' => $page));
                 }
             }
@@ -550,7 +550,7 @@ class Hook_import_ipb2
             }
 
             $submitter = import_id_remap_get('member', strval($row['userid']), true);
-            if (is_null($submitter)) {
+            if ($submitter === null) {
                 $submitter = $GLOBALS['FORUM_DRIVER']->get_guest_id();
             }
 
@@ -659,7 +659,7 @@ class Hook_import_ipb2
                     continue;
                 }
                 $test = $GLOBALS['CNS_DRIVER']->get_member_from_username($row['name']);
-                if (!is_null($test)) {
+                if ($test !== null) {
                     import_id_remap_put('member', strval($row['id']), $test);
                     continue;
                 }
@@ -668,7 +668,7 @@ class Hook_import_ipb2
                     $row['mgroup'] = db_get_first_id(); // Not really necessary - but repairs problem in my test db
                 }
                 $primary_group = import_id_remap_get('group', strval($row['mgroup']));
-                $language = is_null($row['language']) ? '' : strtoupper($row['language']);
+                $language = ($row['language'] === null) ? '' : strtoupper($row['language']);
                 if ((!file_exists(get_custom_file_base() . '/lang_custom/' . $language)) && (!file_exists(get_file_base() . '/lang/' . $language))) {
                     $language = '';
                 }
@@ -723,7 +723,7 @@ class Hook_import_ipb2
                     $type = 'md5';
                     $salt = '';
                 }
-                if (is_null($password)) {
+                if ($password === null) {
                     $password = '';
                 }
                 $id_new = cns_make_member($row['name'], $password, $row['email'], null, $row['bday_day'], $row['bday_month'], $row['bday_year'], $custom_fields, strval($row['time_offset']), $primary_group, $validated, $row['joined'], $row['last_visit'], '', '', $signature, 0, 1, 1, $row['title'], '', '', $row['view_sigs'], $row['auto_track'], $language, $row['email_pm'], $row['email_pm'], $row['ip_address'], '', false, $type, $salt);
@@ -883,7 +883,7 @@ class Hook_import_ipb2
             }
 
             $id_new = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('cf_name') => $row['ftitle']));
-            if (is_null($id_new)) {
+            if ($id_new === null) {
                 $id_new = cns_make_custom_field($row['ftitle'], 0, $row['fdesc'], '', 1 - $row['fhide'], 1 - $row['fhide'], $row['fedit'], 0, $type, $row['freq'], 0, 0, $row['forder'], '', 0, '', true);
             }
 
@@ -914,7 +914,7 @@ class Hook_import_ipb2
                 }
 
                 $forum_id = import_id_remap_get('forum', strval($row['forum_id']), true);
-                if (is_null($forum_id)) {
+                if ($forum_id === null) {
                     //import_id_remap_put('topic', strval($row['tid']), -1);  Want to allow coming back if accidently a forum was missed
                     continue;
                 }
@@ -995,12 +995,12 @@ class Hook_import_ipb2
                 }
 
                 $topic_id = import_id_remap_get('topic', strval($row['topic_id']), true);
-                if (is_null($topic_id)) {
+                if ($topic_id === null) {
                     import_id_remap_put('post', strval($row['pid']), -1);
                     continue;
                 }
                 $member_id = import_id_remap_get('member', strval($row['author_id']), true);
-                if (is_null($member_id)) {
+                if ($member_id === null) {
                     $member_id = db_get_first_id();
                 }
 
@@ -1010,7 +1010,7 @@ class Hook_import_ipb2
                     $forum_id = $TOPIC_FORUM_CACHE[$topic_id];
                 } else {
                     $forum_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 't_forum_id', array('id' => $topic_id));
-                    if (is_null($forum_id)) {
+                    if ($forum_id === null) {
                         continue;
                     }
                     $TOPIC_FORUM_CACHE[$topic_id] = $forum_id;
@@ -1020,7 +1020,7 @@ class Hook_import_ipb2
                 if ($row['new_topic'] == 1) {
                     $topics = $db->query('SELECT * FROM ' . $table_prefix . 'topics WHERE tid=' . strval($row['topic_id']));
                     $title = strip_html($topics[0]['title']);
-                } elseif (!is_null($row['post_title'])) {
+                } elseif ($row['post_title'] !== null) {
                     $title = @html_entity_decode($row['post_title'], ENT_QUOTES, get_charset());
                 }
 
@@ -1029,7 +1029,7 @@ class Hook_import_ipb2
                 cns_over_local();
 
                 $last_edit_by = null;
-                if (!is_null($row['edit_name'])) {
+                if ($row['edit_name'] !== null) {
                     $last_edit_by = $GLOBALS['CNS_DRIVER']->get_member_from_username(@html_entity_decode($row['edit_name'], ENT_QUOTES, get_charset()));
                 }
 
@@ -1087,7 +1087,7 @@ class Hook_import_ipb2
                 }
 
                 $post_id = import_id_remap_get('post', strval($row['pid']), true);
-                if (is_null($post_id)) {
+                if ($post_id === null) {
                     continue;
                 }
 
@@ -1187,7 +1187,7 @@ class Hook_import_ipb2
             }
 
             $topic_id = import_id_remap_get('topic', strval($row['tid']), true);
-            if (is_null($topic_id)) {
+            if ($topic_id === null) {
                 continue;
             }
 
@@ -1216,13 +1216,13 @@ class Hook_import_ipb2
 
             foreach ($rows2 as $row2) { // For all votes. We have to match votes to members - but it is arbitrary because no such mapping is stored from IPB
                 $member_id = import_id_remap_get('member', $row2['member_id'], true);
-                if (is_null($member_id)) {
+                if ($member_id === null) {
                     $member_id = db_get_first_id();
                 }
 
                 if ($member_id != $GLOBALS['CNS_DRIVER']->get_guest_id()) {
                     $answer = array_pop($vote_list);
-                    if (is_null($answer)) {
+                    if ($answer === null) {
                         $answer = -1;
                     }
                     $GLOBALS['FORUM_DB']->query_insert('f_poll_votes', array('pv_poll_id' => $id_new, 'pv_member_id' => $member_id, 'pv_answer_id' => $answer, 'pv_ip' => ''));
@@ -1289,11 +1289,11 @@ class Hook_import_ipb2
             }
 
             $member_id = import_id_remap_get('member', $row['member_id'], true);
-            if (is_null($member_id)) {
+            if ($member_id === null) {
                 continue;
             }
             $forum_id = import_id_remap_get('forum', strval($row['forum_id']), true);
-            if (is_null($forum_id)) {
+            if ($forum_id === null) {
                 continue;
             }
             enable_notifications('cns_topic', 'forum:' . strval($forum_id), $member_id);
@@ -1309,11 +1309,11 @@ class Hook_import_ipb2
                 }
 
                 $member_id = import_id_remap_get('member', strval($row['member_id']), true);
-                if (is_null($member_id)) {
+                if ($member_id === null) {
                     continue;
                 }
                 $topic_id = import_id_remap_get('topic', strval($row['topic_id']), true);
-                if (is_null($topic_id)) {
+                if ($topic_id === null) {
                     continue;
                 }
                 enable_notifications('cns_topic', strval($topic_id), $member_id);
@@ -1345,7 +1345,7 @@ class Hook_import_ipb2
             }
 
             $member_id = import_id_remap_get('member', strval($row['wlog_mid']), true);
-            if (is_null($member_id)) {
+            if ($member_id === null) {
                 continue;
             }
             $by = import_id_remap_get('member', strval($row['wlog_addedby']));

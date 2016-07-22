@@ -35,8 +35,8 @@ function login_func($raw_params)
     $user_object = new CMSMemberACL();
     $user_id = $user_object->authenticate_credentials_and_set_auth($username, $password, $invisible);
 
-    if (is_null($user_id)) {
-        if (is_null($GLOBALS['FORUM_DRIVER']->get_member_from_username($username))) {
+    if ($user_id === null) {
+        if ($GLOBALS['FORUM_DRIVER']->get_member_from_username($username) === null) {
             $response = mobiquo_val(array(
                 'result' => mobiquo_val(true, 'boolean'),
                 'result_text' => mobiquo_val(do_lang('USER_NO_EXIST'), 'base64'),
@@ -356,7 +356,7 @@ function get_recommended_user_func($raw_params)
     $users = array();
     foreach ($_users as $user) {
         $username = $GLOBALS['FORUM_DRIVER']->get_username($user['member_liked']);
-        if (is_null($username)) {
+        if ($username === null) {
             continue;
         }
 

@@ -36,7 +36,7 @@ function init__menus2()
  */
 function export_menu_csv($file_path = null)
 {
-    if (is_null($file_path)) {
+    if ($file_path === null) {
         $file_path = get_custom_file_base() . '/uploads/website_specific/cms_menu_items.csv';
     }
 
@@ -71,7 +71,7 @@ function import_menu_csv($file_path = null)
     }
     $GLOBALS['SITE_DB']->query_delete('menu_items');
 
-    if (is_null($file_path)) {
+    if ($file_path === null) {
         $file_path = get_custom_file_base() . '/uploads/website_specific/cms_menu_items.csv';
     }
     $myfile = fopen($file_path, 'rt');
@@ -126,7 +126,7 @@ function menu_management_script()
         $val = $test ? get_param_string($key) : post_param_string($key);
         $key = preg_replace('#\_\d+$#', '', $key);
         if (($key == 'caption') || ($key == 'caption_long')) {
-            if (is_null($row)) {
+            if ($row === null) {
                 $changes += insert_lang('i_' . $key, $val, 2);
             } else {
                 $changes += lang_remap('i_' . $key, $row['i_' . $key], $val);
@@ -144,7 +144,7 @@ function menu_management_script()
     $changes['i_expanded'] = 0;
     $changes['i_parent'] = null;
 
-    if (is_null($row)) {
+    if ($row === null) {
         $GLOBALS['SITE_DB']->query_insert('menu_items', $changes);
     } else {
         $GLOBALS['SITE_DB']->query_update('menu_items', $changes, array('id' => $id), '', 1);
@@ -173,7 +173,7 @@ function add_menu_item_simple($menu, $parent, $caption, $url = '', $expanded = 0
     global $ADD_MENU_COUNTER;
 
     $id = $GLOBALS['SITE_DB']->query_select_value_if_there('menu_items', 'id', array('i_url' => $url, 'i_menu' => $menu));
-    if (!is_null($id)) {
+    if ($id !== null) {
         return $id; // Already exists
     }
     if (is_string($parent)) {
@@ -181,7 +181,7 @@ function add_menu_item_simple($menu, $parent, $caption, $url = '', $expanded = 0
     }
 
     $_caption = (strpos($caption, ':') === false) ? do_lang($caption, null, null, null, null, false) : null;
-    if (is_null($_caption)) {
+    if ($_caption === null) {
         $_caption = $caption;
     }
     $id = add_menu_item($menu, $ADD_MENU_COUNTER, $parent, $dereference_caption ? $_caption : $caption, $url, $check_permissions, '', $expanded, $new_window, $caption_long, $theme_image_code, $include_sitemap);
@@ -240,7 +240,7 @@ function add_menu_item($menu, $order, $parent, $caption, $url, $check_permission
     );
     $map += insert_lang_comcode('i_caption', $caption, 1);
     $map += insert_lang_comcode('i_caption_long', $caption_long, 1);
-    if (!is_null($id)) {
+    if ($id !== null) {
         $map['id'] = $id;
     }
     $id = $GLOBALS['SITE_DB']->query_insert('menu_items', $map, true);
@@ -391,7 +391,7 @@ function _copy_from_sitemap_to_new_menu($target_menu, $node, &$order, $parent = 
     if (isset($node['children'])) {
         foreach ($node['children'] as $child) {
             $theme_image_code = mixed();
-            if (!is_null($child['extra_meta']['image'])) {
+            if ($child['extra_meta']['image'] !== null) {
                 $_theme_image_code = $child['extra_meta']['image'];
                 if (substr($_theme_image_code, 0, strlen(get_custom_base_url() . '/')) == get_custom_base_url() . '/') {
                     $_theme_image_code = substr($_theme_image_code, strlen(get_custom_base_url() . '/'));
@@ -404,13 +404,13 @@ function _copy_from_sitemap_to_new_menu($target_menu, $node, &$order, $parent = 
                 $order,
                 $parent,
                 semihtml_to_comcode($child['title']->evaluate(), true),
-                is_null($child['page_link']) ? '' : $child['page_link'],
+                ($child['page_link'] === null) ? '' : $child['page_link'],
                 1,
                 '',
                 1,
                 0,
-                is_null($child['extra_meta']['description']) ? '' : semihtml_to_comcode($child['extra_meta']['description']->evaluate(), true),
-                is_null($theme_image_code) ? '' : $theme_image_code,
+                ($child['extra_meta']['description'] === null) ? '' : semihtml_to_comcode($child['extra_meta']['description']->evaluate(), true),
+                ($theme_image_code === null) ? '' : $theme_image_code,
                 0
             );
 

@@ -45,7 +45,7 @@ function update_lang_comcode_attachments($field_name, $lang_id, $text, $type, $i
         return array();
     }
 
-    if (is_null($db)) {
+    if ($db === null) {
         $db = $GLOBALS['SITE_DB'];
     }
 
@@ -55,7 +55,7 @@ function update_lang_comcode_attachments($field_name, $lang_id, $text, $type, $i
 
     $member = (function_exists('get_member')) ? get_member() : $GLOBALS['FORUM_DRIVER']->get_guest_id();
 
-    if ((is_null($for_member)) || ($GLOBALS['FORUM_DRIVER']->get_username($for_member) === null)) {
+    if (($for_member === null) || ($GLOBALS['FORUM_DRIVER']->get_username($for_member) === null)) {
         $for_member = $member;
     }
 
@@ -82,7 +82,7 @@ function update_lang_comcode_attachments($field_name, $lang_id, $text, $type, $i
         );
 
         $test = $db->query_select_value_if_there('translate', 'text_original', array('id' => $id, 'language' => user_lang()));
-        if (!is_null($test)) { // Good, we save into our own language, as we have a translation for the lang entry setup properly
+        if ($test !== null) { // Good, we save into our own language, as we have a translation for the lang entry setup properly
             $db->query_update('translate', $remap, array('id' => $lang_id, 'language' => user_lang()));
         } else { // Darn, we'll have to save over whatever we did load from
             $db->query_update('translate', $remap, array('id' => $lang_id));
@@ -150,7 +150,7 @@ function delete_comcode_attachments($type, $id, $db = null, $force = false)
         return;
     }
 
-    if (is_null($db)) {
+    if ($db === null) {
         $db = $GLOBALS['SITE_DB'];
     }
 
@@ -161,7 +161,7 @@ function delete_comcode_attachments($type, $id, $db = null, $force = false)
     foreach ($refs as $ref) {
         // Was that the last reference to this attachment? (if so -- delete attachment)
         $test = $db->query_select_value_if_there('attachment_refs', 'id', array('a_id' => $ref['a_id']));
-        if (is_null($test)) {
+        if ($test === null) {
             _delete_attachment($ref['a_id'], $db);
         }
     }
@@ -177,7 +177,7 @@ function delete_comcode_attachments($type, $id, $db = null, $force = false)
  */
 function delete_lang_comcode_attachments($lang_id, $type, $id, $db = null)
 {
-    if (is_null($db)) {
+    if ($db === null) {
         $db = $GLOBALS['SITE_DB'];
     }
 

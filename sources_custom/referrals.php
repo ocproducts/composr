@@ -16,14 +16,14 @@
 function get_referral_scheme_stats_for($referrer, $scheme_name, $raw = false)
 {
     $num_total_by_referrer = count($GLOBALS['FORUM_DB']->query_select('f_invites', array('*'), array('i_inviter' => $referrer), 'GROUP BY i_email_address'));
-    if (is_null($num_total_by_referrer)) {
+    if ($num_total_by_referrer === null) {
         $num_total_by_referrer = 0;
     }
     $num_total_qualified_by_referrer = $GLOBALS['SITE_DB']->query_select_value('referees_qualified_for', 'COUNT(*)', array('q_referee' => $referrer, 'q_scheme_name' => $scheme_name));
 
     if (!$raw) {
         $dif = $GLOBALS['SITE_DB']->query_select_value_if_there('referrer_override', 'o_referrals_dif', array('o_referrer' => $referrer, 'o_scheme_name' => $scheme_name));
-        if (!is_null($dif)) {
+        if ($dif !== null) {
             $num_total_qualified_by_referrer += $dif;
         }
     }
@@ -46,7 +46,7 @@ function assign_referral_awards($referee, $trigger)
     require_code('notifications');
 
     $referrer = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_invites', 'i_inviter', array('i_email_address' => $referee_email), 'ORDER BY i_time');
-    if (is_null($referrer)) { // Was not actually a referral, member joined site on own accord
+    if ($referrer === null) { // Was not actually a referral, member joined site on own accord
         if ((isset($ini_file['global']['notify_if_join_but_no_referral'])) && ($ini_file['global']['notify_if_join_but_no_referral'] == '1')) {
             dispatch_notification(
                 'referral_staff',
@@ -69,7 +69,7 @@ function assign_referral_awards($referee, $trigger)
         return;
     }
     $referrer_username = $GLOBALS['FORUM_DRIVER']->get_username($referrer);
-    if (is_null($referrer_username)) {
+    if ($referrer_username === null) {
         return; // Deleted member
     }
     $referrer_displayname = $GLOBALS['FORUM_DRIVER']->get_username($referrer, true);
@@ -83,7 +83,7 @@ function assign_referral_awards($referee, $trigger)
             $ini_file_section['name'] = $ini_file_section_name;
 
             list($num_total_qualified_by_referrer, $num_total_by_referrer) = get_referral_scheme_stats_for($referrer, $ini_file_section_name);
-            $one_trigger_already = !is_null($GLOBALS['SITE_DB']->query_select_value_if_there('referees_qualified_for', 'q_referee', array('q_scheme_name' => $ini_file_section_name, 'q_referee' => $referee)));
+            $one_trigger_already = ($GLOBALS['SITE_DB']->query_select_value_if_there('referees_qualified_for', 'q_referee', array('q_scheme_name' => $ini_file_section_name, 'q_referee' => $referee)) !== null);
 
             $qualified_trigger = _assign_referral_awards(
                 $trigger,
@@ -373,7 +373,7 @@ function referrer_is_qualified($scheme, $member_id)
     }
 
     $is_qualified_override = $GLOBALS['SITE_DB']->query_select_value_if_there('referrer_override', 'o_is_qualified', array('o_referrer' => $member_id, 'o_scheme_name' => $scheme['name']));
-    if (!is_null($is_qualified_override)) {
+    if ($is_qualified_override !== null) {
         return ($is_qualified_override == 1);
     }
 
@@ -406,7 +406,7 @@ function referrer_is_qualified($scheme, $member_id)
     }
 
     if ((isset($scheme['referrer_qualified_for__event'])) && ($scheme['referrer_qualified_for__event'] == '1')) {
-        if (!is_null($GLOBALS['SITE_DB']->query_value_if_there('SELECT id FROM ' . get_table_prefix() . 'calendar_events WHERE (e_submitter=' . strval($member_id) . ' OR e_member_calendar=' . strval($member_id) . ') AND validated=1'))) {
+        if ($GLOBALS['SITE_DB']->query_value_if_there('SELECT id FROM ' . get_table_prefix() . 'calendar_events WHERE (e_submitter=' . strval($member_id) . ' OR e_member_calendar=' . strval($member_id) . ') AND validated=1') !== null) {
             $positive++;
         } else {
             $negative++;
@@ -415,7 +415,7 @@ function referrer_is_qualified($scheme, $member_id)
 
     if (addon_installed('shopping')) {
         if ((isset($scheme['referrer_qualified_for__misc_purchase'])) && ($scheme['referrer_qualified_for__misc_purchase'] == '1')) {
-            if (!is_null($GLOBALS['SITE_DB']->query_value_if_there('SELECT id FROM ' . get_table_prefix() . 'shopping_order WHERE c_member=' . strval($member_id) . ' AND ' . (db_string_equal_to('order_status', 'payment_received') . ' OR ' . db_string_equal_to('order_status', 'dispatched'))))) {
+            if ($GLOBALS['SITE_DB']->query_value_if_there('SELECT id FROM ' . get_table_prefix() . 'shopping_order WHERE c_member=' . strval($member_id) . ' AND ' . (db_string_equal_to('order_status', 'payment_received') . ' OR ' . db_string_equal_to('order_status', 'dispatched'))) !== null) {
                 $positive++;
             } else {
                 $negative++;
@@ -426,7 +426,7 @@ function referrer_is_qualified($scheme, $member_id)
             $matches = array();
 
             if (preg_match('#^referrer\_qualified\_for\_\_purchase\_(\d+)$#', $key, $matches) != 0) {
-                if (!is_null($GLOBALS['SITE_DB']->query_value_if_there('SELECT o.id FROM ' . get_table_prefix() . 'shopping_order o JOIN ' . get_table_prefix() . 'shopping_order_details d ON o.id=d.order_id WHERE p_id=' . strval(intval($matches[1])) . ' AND c_member=' . strval($member_id) . ' AND ' . (db_string_equal_to('order_status', 'payment_received') . ' OR ' . db_string_equal_to('order_status', 'dispatched'))))) {
+                if ($GLOBALS['SITE_DB']->query_value_if_there('SELECT o.id FROM ' . get_table_prefix() . 'shopping_order o JOIN ' . get_table_prefix() . 'shopping_order_details d ON o.id=d.order_id WHERE p_id=' . strval(intval($matches[1])) . ' AND c_member=' . strval($member_id) . ' AND ' . (db_string_equal_to('order_status', 'payment_received') . ' OR ' . db_string_equal_to('order_status', 'dispatched'))) !== null) {
                     $positive++;
                 } else {
                     $negative++;
@@ -461,7 +461,7 @@ function referrer_report_script($ret = false)
         access_denied('ZONE_ACCESS', 'adminzone');
     }
 
-    if (!is_null($member_id)) {
+    if ($member_id !== null) {
         if (!referrer_is_qualified($scheme, $member_id)) {
             warn_exit(do_lang_tempcode($is_self ? '_MEMBER_NOT_ON_REFERRAL_SCHEME' : 'MEMBER_NOT_ON_REFERRAL_SCHEME', escape_html($scheme_title)));
         }
@@ -497,23 +497,23 @@ function referrer_report_script($ret = false)
         $start
     );
     $max_rows = $GLOBALS['FORUM_DB']->query_select_value('referees_qualified_for', 'COUNT(*)', ($member_id !== null) ? array('q_referrer' => $member_id) : null) * 2;
-    if ((count($referrals) == 0) && (is_null($dif))) {
+    if ((count($referrals) == 0) && ($dif === null)) {
         inform_exit(do_lang_tempcode('NO_ENTRIES'), true);
     }
     foreach ($referrals as $ref) {
         $data_row = array();
         $data_row[do_lang('DATE_TIME')] = get_timezoned_date_time($ref['time'], false);
-        if (is_null($member_id)) {
+        if ($member_id === null) {
             if ($csv) {
                 $deleted = true;
-                $data_row[do_lang('TYPE_REFERRER')] = is_null($ref['referrer']) ? do_lang($deleted ? 'REFEREE_DELETED' : 'REFEREE_NOT_SIGNED_UP') : $ref['referrer'];
+                $data_row[do_lang('TYPE_REFERRER')] = ($ref['referrer'] === null) ? do_lang($deleted ? 'REFEREE_DELETED' : 'REFEREE_NOT_SIGNED_UP') : $ref['referrer'];
             } else {
-                $data_row[do_lang('TYPE_REFERRER')] = is_null($ref['referrer_id']) ? '' : strval($ref['referrer_id']);
+                $data_row[do_lang('TYPE_REFERRER')] = ($ref['referrer_id'] === null) ? '' : strval($ref['referrer_id']);
             }
             if (has_privilege(get_member(), 'member_maintenance')) {
                 $data_row[do_lang('TYPE_REFERRER') . ' (' . do_lang('EMAIL_ADDRESS') . ')'] = $ref['referrer_email'];
             }
-            if (is_null($ref['referrer_id'])) {
+            if ($ref['referrer_id'] === null) {
                 $data_row[do_lang('QUALIFIED_REFERRER', $scheme_title)] = do_lang('NA');
             } else {
                 $data_row[do_lang('QUALIFIED_REFERRER', $scheme_title)] = do_lang(referrer_is_qualified($scheme, $ref['referrer_id']) ? 'YES' : 'NO');
@@ -521,7 +521,7 @@ function referrer_report_script($ret = false)
         }
 
         $qualifications = array();
-        if (($ref['qualified'] == 1) && (!is_null($ref['referee_id']))) { // Clarify, are they really qualified?
+        if (($ref['qualified'] == 1) && ($ref['referee_id'] !== null)) { // Clarify, are they really qualified?
             $qualifications = $GLOBALS['SITE_DB']->query_select('referees_qualified_for', array('q_time', 'q_action'), array('q_referee' => $ref['referee_id'], 'q_scheme_name' => $scheme_name));
             if (count($qualifications) == 0) {
                 $ref['qualified'] = 0; // Not actually qualified for this scheme
@@ -529,16 +529,16 @@ function referrer_report_script($ret = false)
         }
 
         $deleted = false;
-        if (is_null($ref['referee'])) {
-            $deleted = !is_null($GLOBALS['SITE_DB']->query_select_value_if_there('actionlogs', 'id', array('the_type' => 'DELETE_MEMBER', 'param_a' => strval($ref['referee']))));
+        if ($ref['referee'] === null) {
+            $deleted = ($GLOBALS['SITE_DB']->query_select_value_if_there('actionlogs', 'id', array('the_type' => 'DELETE_MEMBER', 'param_a' => strval($ref['referee']))) !== null);
         }
         if ($csv) {
-            $data_row[do_lang('REFEREE')] = is_null($ref['referee']) ? do_lang($deleted ? 'REFEREE_DELETED' : 'REFEREE_NOT_SIGNED_UP') : $ref['referee'];
+            $data_row[do_lang('REFEREE')] = ($ref['referee'] === null) ? do_lang($deleted ? 'REFEREE_DELETED' : 'REFEREE_NOT_SIGNED_UP') : $ref['referee'];
         } else {
-            $data_row[do_lang('REFEREE')] = is_null($ref['referee_id']) ? '' : strval($ref['referee_id']);
+            $data_row[do_lang('REFEREE')] = ($ref['referee_id'] === null) ? '' : strval($ref['referee_id']);
         }
         if (has_privilege(get_member(), 'member_maintenance')) {
-            $data_row[do_lang('REFEREE') . ' (' . do_lang('EMAIL_ADDRESS') . ')'] = is_null($ref['referee_email']) ? '' : $ref['referee_email'];
+            $data_row[do_lang('REFEREE') . ' (' . do_lang('EMAIL_ADDRESS') . ')'] = ($ref['referee_email'] === null) ? '' : $ref['referee_email'];
         }
 
         $data_row[do_lang('QUALIFIED_REFERRAL', $scheme_name)] = do_lang(($ref['qualified'] == 1) ? 'YES' : 'NO');
@@ -552,7 +552,7 @@ function referrer_report_script($ret = false)
                 $data_row_x = $data_row;
 
                 $test = do_lang('REFERRAL_TRIGGER__' . $qual['q_action'], null, null, null, null, false);
-                if (!is_null($test)) {
+                if ($test !== null) {
                     $qual['q_action'] = $test;
                 }
                 $data_row_x[do_lang('ACTION')] = $qual['q_action'];
@@ -568,11 +568,11 @@ function referrer_report_script($ret = false)
     }
 
     // Manual adjustment
-    if (!is_null($dif)) {
+    if ($dif !== null) {
         $data_row = array();
         $data_row[do_lang('DATE_TIME')] = do_lang('NA');
 
-        if (is_null($member_id)) {
+        if ($member_id === null) {
             $data_row[do_lang('TYPE_REFERRER')] = '';
 
             if (has_privilege(get_member(), 'member_maintenance')) {
@@ -605,7 +605,7 @@ function referrer_report_script($ret = false)
     // Show results
     if ($csv) {
         require_code('files2');
-        make_csv($data, (is_null($member_id) ? get_site_name() : $GLOBALS['FORUM_DRIVER']->get_username($member_id)) . ' referrals.csv');
+        make_csv($data, (($member_id === null) ? get_site_name() : $GLOBALS['FORUM_DRIVER']->get_username($member_id)) . ' referrals.csv');
     } else {
         require_code('templates_results_table');
 

@@ -831,7 +831,7 @@ function find_all_previews__by_screen()
  */
 function render_screen_preview($template, $hook, $function)
 {
-    if (is_null($hook)) {
+    if ($hook === null) {
         $hooks = find_all_hook_obs('systems', 'addon_registry', 'Hook_addon_registry_');
         foreach ($hooks as $hook => $ob) {
             if (method_exists($ob, 'tpl_previews')) {

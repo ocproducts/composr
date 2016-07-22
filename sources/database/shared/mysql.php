@@ -179,7 +179,7 @@ class Database_super_mysql extends DatabaseDriver
                 $this->query('REPAIR TABLE ' . $matches[1], $connection);
             }
 
-            if (!function_exists('do_lang') || is_null(do_lang('QUERY_FAILED', null, null, null, null, false))) {
+            if ((!function_exists('do_lang')) || (do_lang('QUERY_FAILED', null, null, null, null, false) === null)) {
                 $this->failed_query_exit(htmlentities('Query failed: ' . $query . ' : ' . $err));
             }
             $this->failed_query_exit(do_lang_tempcode('QUERY_FAILED', escape_html($query), ($err)));
@@ -339,7 +339,7 @@ class Database_super_mysql extends DatabaseDriver
     public function create_index($table_name, $index_name, $_fields, $connection)
     {
         $query = $this->create_index_sql($table_name, $index_name, $_fields, $connection);
-        if (!is_null($query)) {
+        if ($query !== null) {
             $this->query($query, $connection);
         }
     }
@@ -394,7 +394,7 @@ class Database_super_mysql extends DatabaseDriver
     public function full_text_assemble($content, $boolean)
     {
         static $stopwords = null;
-        if (is_null($stopwords)) {
+        if ($stopwords === null) {
             require_code('database_search');
             $stopwords = get_stopwords_list();
         }

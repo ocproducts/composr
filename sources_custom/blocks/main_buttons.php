@@ -66,7 +66,7 @@ class Block_main_buttons
         $comcode_inline = 0;
 
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('banner_types', 'id', array('id' => $id));
-        if (is_null($test)) {
+        if ($test === null) {
             $GLOBALS['SITE_DB']->query_insert('banner_types', array(
                 'id' => $id,
                 't_is_textual' => $is_textual,

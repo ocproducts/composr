@@ -31,7 +31,7 @@ function internalise_own_screen($screen_content, $refresh_time = null, $refresh_
     if (!has_js()) {
         return $screen_content; // We need JS to make this a seamless process
     }
-    if (!is_null(get_bot_type())) {
+    if (get_bot_type() !== null) {
         return $screen_content;
     }
     if (get_param_integer('keep_no_frames', 0) == 1) {
@@ -68,7 +68,7 @@ function internalise_own_screen($screen_content, $refresh_time = null, $refresh_
 
     $url = find_script('iframe') . $params;
 
-    if (!is_null($refresh_if_changed)) {
+    if ($refresh_if_changed !== null) {
         require_javascript('sound');
         $change_detection_url = find_script('change_detection') . $params;
     } else {
@@ -82,6 +82,6 @@ function internalise_own_screen($screen_content, $refresh_time = null, $refresh_
         'REFRESH_IF_CHANGED' => md5(serialize($refresh_if_changed)),
         'CHANGE_DETECTION_URL' => $change_detection_url,
         'URL' => $url,
-        'REFRESH_TIME' => is_null($refresh_time) ? '' : strval($refresh_time),
+        'REFRESH_TIME' => ($refresh_time === null) ? '' : strval($refresh_time),
     ));
 }

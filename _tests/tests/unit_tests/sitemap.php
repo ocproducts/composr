@@ -52,7 +52,7 @@ class sitemap_test_set extends cms_test_case
         unset($sitemap['children']);
         $ret = array($sitemap['page_link'] => $sitemap);
 
-        if (!is_null($children)) {
+        if ($children !== null) {
             foreach ($children as $c) {
                 $_c = $this->flatten_sitemap($c);
                 foreach ($_c as $k => $__c) {

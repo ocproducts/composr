@@ -31,7 +31,7 @@ class Hook_commandr_fs_extended_member__banned_from_submitting
      */
     public function read_property($member_id)
     {
-        return !is_null($GLOBALS['SITE_DB']->query_select_value_if_there('usersubmitban_member', 'the_member', array('the_member' => $member_id)));
+        return ($GLOBALS['SITE_DB']->query_select_value_if_there('usersubmitban_member', 'the_member', array('the_member' => $member_id)) !== null);
     }
 
     /**

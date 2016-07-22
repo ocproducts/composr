@@ -127,7 +127,7 @@ class Hook_task_import_ftp_downloads
                 if ($make_subfolders) {
                     // Do we need to make new category, or is it already existent?
                     $category_id = $GLOBALS['SITE_DB']->query_select_value_if_there('download_categories', 'id', array('parent_id' => $dest_cat, $GLOBALS['SITE_DB']->translate_field_ref('category') => $entry));
-                    if (is_null($category_id)) {
+                    if ($category_id === null) {
                         // Add the directory
                         $category_id = add_download_category(titleify($entry), $dest_cat, '', '', '');
                         require_code('permissions2');
@@ -143,7 +143,7 @@ class Hook_task_import_ftp_downloads
 
                 // Test to see if the file is already in our database
                 $test = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'url', array('url' => $full_url));
-                if (is_null($test)) {
+                if ($test === null) {
                     // It is a file, so add it
                     add_download($dest_cat, titleify($entry), $full_url, '', $GLOBALS['FORUM_DRIVER']->get_username(get_member()), '', null, 1, 1, 1, 1, '', $entry, ftp_size($conn_id, $entry), 0, 0);
                     $num_added++;

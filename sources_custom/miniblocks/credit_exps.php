@@ -20,7 +20,7 @@ $block_id = get_block_id($map);
 $backburner_minutes = integer_format(intval(get_option('support_priority_backburner_minutes')));
 $regular_minutes = integer_format(intval(get_option('support_priority_regular_minutes')));
 $s_currency = get_option('currency', true);
-if (is_null($s_currency)) {
+if ($s_currency === null) {
     $s_currency = 'USD';
 }
 
@@ -35,7 +35,7 @@ $products = $ob->get_products();
 $credit_kinds = array();
 foreach ($products as $p => $v) {
     $num_credits = str_replace('_CREDITS', '', $p);
-    if ((intval($num_credits) < 1) && (is_null($GLOBALS['SITE_DB']->query_value_if_there('SELECT id FROM mantis_sponsorship_table WHERE user_id=' . strval(get_member()))))) {
+    if ((intval($num_credits) < 1) && ($GLOBALS['SITE_DB']->query_value_if_there('SELECT id FROM mantis_sponsorship_table WHERE user_id=' . strval(get_member())) === null)) {
         continue;
     }
 

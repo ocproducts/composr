@@ -39,13 +39,13 @@
  */
 function cns_make_topic($forum_id, $description = '', $emoticon = '', $validated = null, $open = 1, $pinned = 0, $cascading = 0, $pt_from = null, $pt_to = null, $check_perms = true, $num_views = 0, $id = null, $description_link = '')
 {
-    if (is_null($pinned)) {
+    if ($pinned === null) {
         $pinned = 0;
     }
-    if (is_null($description)) {
+    if ($description === null) {
         $description = '';
     }
-    if (is_null($num_views)) {
+    if ($num_views === null) {
         $num_views = 0;
     }
 
@@ -55,11 +55,11 @@ function cns_make_topic($forum_id, $description = '', $emoticon = '', $validated
             access_denied('I_ERROR');
         }
 
-        if (!is_null($pt_to)) {
+        if ($pt_to !== null) {
             decache_private_topics($pt_to);
         }
 
-        if (!is_null($forum_id)) {
+        if ($forum_id !== null) {
             require_code('cns_posts_action');
             cns_decache_cms_blocks($forum_id);
         }
@@ -72,8 +72,8 @@ function cns_make_topic($forum_id, $description = '', $emoticon = '', $validated
         }
     }
 
-    if ((is_null($validated)) || (($check_perms) && ($validated == 1))) {
-        if ((!is_null($forum_id)) && (!has_privilege(get_member(), 'bypass_validation_midrange_content', 'topics', array('forums', $forum_id)))) {
+    if (($validated === null) || (($check_perms) && ($validated == 1))) {
+        if (($forum_id !== null) && (!has_privilege(get_member(), 'bypass_validation_midrange_content', 'topics', array('forums', $forum_id)))) {
             $validated = 0;
         } else {
             $validated = 1;
@@ -116,7 +116,7 @@ function cns_make_topic($forum_id, $description = '', $emoticon = '', $validated
         $map['t_cache_first_post'] = '';
         $map['t_cache_first_post__text_parsed'] = '';
     }
-    if (!is_null($id)) {
+    if ($id !== null) {
         $map['id'] = $id;
     }
 
@@ -130,7 +130,7 @@ function cns_make_topic($forum_id, $description = '', $emoticon = '', $validated
     require_code('member_mentions');
     dispatch_member_mention_notifications('topic', strval($topic_id));
 
-    if (is_null($forum_id)) {
+    if ($forum_id === null) {
         decache_private_topics($pt_from);
         decache_private_topics($pt_to);
     }

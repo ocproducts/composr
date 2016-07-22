@@ -49,7 +49,7 @@ function banner_select_sql($b_type = null, $do_type_join = false, $banner_to_avo
 
     $sql .= '(the_type<>' . strval(BANNER_CAMPAIGN) . ' OR ((campaign_remaining>0) AND ((expiry_date IS NULL) OR (expiry_date>' . strval(time()) . '))))';
 
-    if (!is_null($b_type)) {
+    if ($b_type !== null) {
         $sql .= ' AND (' . db_string_equal_to('b_type', $b_type) . ' OR EXISTS(SELECT * FROM ' . get_table_prefix() . 'banners_types bt WHERE b.name=bt.name AND ' . db_string_equal_to('bt.b_type', $b_type) . '))';
     }
 
@@ -58,7 +58,7 @@ function banner_select_sql($b_type = null, $do_type_join = false, $banner_to_avo
         $sql .= sql_region_filter('banner', 'b.name', $region);
     }
 
-    if (!is_null($banner_to_avoid)) {
+    if ($banner_to_avoid !== null) {
         $sql .= ' AND ' . db_string_not_equal_to('name', $banner_to_avoid);
     }
 
@@ -353,7 +353,7 @@ function show_banner($name, $title_text, $caption, $direct_code, $img_url, $sour
                 $img_url = get_custom_base_url() . '/' . $img_url;
             }
             $_banner_type_row = $GLOBALS['SITE_DB']->query_select('banner_types', array('t_image_width', 't_image_height'), array('id' => $b_type), '', 1);
-            if (is_null($width)) {
+            if ($width === null) {
                 if (array_key_exists(0, $_banner_type_row)) {
                     $banner_type_row = $_banner_type_row[0];
                 } else {
@@ -376,7 +376,7 @@ function show_banner($name, $title_text, $caption, $direct_code, $img_url, $sour
                 $banner_type_row = $banner_type_rows[$b_type];
             } else {
                 $_banner_type_row = $GLOBALS['SITE_DB']->query_select('banner_types', array('t_image_width', 't_image_height'), array('id' => $b_type), '', 1);
-                if (is_null($width)) {
+                if ($width === null) {
                     if (array_key_exists(0, $_banner_type_row)) {
                         $banner_type_row = $_banner_type_row[0];
                     } else {
@@ -394,7 +394,7 @@ function show_banner($name, $title_text, $caption, $direct_code, $img_url, $sour
                 $img_url = get_custom_base_url() . '/' . $img_url;
             }
             $_banner_type_row = $GLOBALS['SITE_DB']->query_select('banner_types', array('t_image_width', 't_image_height'), array('id' => $b_type), '', 1);
-            if (is_null($width)) {
+            if ($width === null) {
                 if (array_key_exists(0, $_banner_type_row)) {
                     $banner_type_row = $_banner_type_row[0];
                 } else {
@@ -419,7 +419,7 @@ function show_banner($name, $title_text, $caption, $direct_code, $img_url, $sour
         } else { // HTML/PHP
             require_code('permissions');
             if (has_privilege($submitter, 'use_html_banner')) {
-                if (is_null($GLOBALS['CURRENT_SHARE_USER'])) { // Only allow PHP code if not a shared install
+                if ($GLOBALS['CURRENT_SHARE_USER'] === null) { // Only allow PHP code if not a shared install
                     $matches = array();
                     $num_matches = preg_match_all('#\<\?(.*)\?\>#U', $direct_code, $matches);
                     for ($i = 0; $i < $num_matches; $i++) {

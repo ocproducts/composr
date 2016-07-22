@@ -31,7 +31,7 @@
  */
 function render_forum_box($row, $zone = '_SEARCH', $give_context = true, $include_breadcrumbs = true, $root = null, $guid = '')
 {
-    if (is_null($row)) { // Should never happen, but we need to be defensive
+    if ($row === null) { // Should never happen, but we need to be defensive
         return new Tempcode();
     }
 
@@ -41,7 +41,7 @@ function render_forum_box($row, $zone = '_SEARCH', $give_context = true, $includ
     if ($row['id'] != db_get_first_id()) {
         $map['id'] = $row['id'];
     }
-    if (!is_null($root)) {
+    if ($root !== null) {
         $map['keep_forum_root'] = $root;
     }
     $url = build_url($map, get_module_zone('forumview'));
@@ -50,7 +50,7 @@ function render_forum_box($row, $zone = '_SEARCH', $give_context = true, $includ
 
     $breadcrumbs = mixed();
     if ($include_breadcrumbs) {
-        $breadcrumbs = breadcrumb_segments_to_tempcode(cns_forum_breadcrumbs($row['id'], null, null, true, is_null($root) ? get_param_integer('keep_forum_root', null) : $root));
+        $breadcrumbs = breadcrumb_segments_to_tempcode(cns_forum_breadcrumbs($row['id'], null, null, true, ($root === null) ? get_param_integer('keep_forum_root', null) : $root));
     }
 
     $just_forum_row = db_map_restrict($row, array('id', 'f_description'));
@@ -90,7 +90,7 @@ function get_forum_access_sql($field)
 {
     $groups = _get_where_clause_groups(get_member());
 
-    if (is_null($groups)) {
+    if ($groups === null) {
         return '1=1';
     }
 
@@ -158,17 +158,17 @@ function cns_organise_into_tree(&$all_forums, $forum_id)
  */
 function cns_get_all_subordinate_forums($forum_id, $create_or_list = null, $tree = null, $ignore_permissions = false)
 {
-    if (is_null($forum_id)) {
-        if (is_null($create_or_list)) {
+    if ($forum_id === null) {
+        if ($create_or_list === null) {
             return array($forum_id);
         } else {
             return '(' . $create_or_list . ' IS NULL)';
         }
     }
 
-    if (is_null($tree)) {
+    if ($tree === null) {
         static $all_forums_struct_cache = null;
-        if (is_null($all_forums_struct_cache)) {
+        if ($all_forums_struct_cache === null) {
             $max_forum_detail = intval(get_option('max_forum_detail'));
             $huge_forums = $GLOBALS['FORUM_DB']->query_select_value('f_forums', 'COUNT(*)') > $max_forum_detail;
             if ($huge_forums) {
@@ -176,7 +176,7 @@ function cns_get_all_subordinate_forums($forum_id, $create_or_list = null, $tree
 
                 $all_descendant = $GLOBALS['FORUM_DB']->query('SELECT id,f_parent_forum FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forums WHERE id=' . strval($forum_id) . ' OR f_parent_forum=' . strval($forum_id), $max_forum_inspect);
                 if (count($all_descendant) == $max_forum_inspect) { // Too many
-                    if (is_null($create_or_list)) {
+                    if ($create_or_list === null) {
                         return array($forum_id);
                     } else {
                         return '(' . $create_or_list . '=' . strval($forum_id) . ')';
@@ -203,7 +203,7 @@ function cns_get_all_subordinate_forums($forum_id, $create_or_list = null, $tree
         $subordinates[$forum_id] = $forum_id;
     }
 
-    if (!is_null($create_or_list)) {
+    if ($create_or_list !== null) {
         $or_list = '';
         foreach ($subordinates as $subordinate) {
             if ($or_list != '') {
@@ -242,11 +242,11 @@ function cns_is_up_to_date_on_forum($forum_id, $member_id = null)
  */
 function cns_may_moderate_forum($forum_id, $member_id = null)
 {
-    if (is_null($member_id)) {
+    if ($member_id === null) {
         $member_id = get_member();
     }
 
-    if (is_null($forum_id)) {
+    if ($forum_id === null) {
         return has_privilege($member_id, 'moderate_private_topic');
     }
 
@@ -262,13 +262,13 @@ function cns_may_moderate_forum($forum_id, $member_id = null)
  */
 function cns_get_forum_parent_or_list($forum_id, $parent_id = -1)
 {
-    if (is_null($forum_id)) {
+    if ($forum_id === null) {
         return '';
     }
 
     if ($parent_id == -1) {
         $parent_id = $GLOBALS['FORUM_DB']->query_select_value('f_forums', 'f_parent_forum', array('id' => $forum_id));
-        if (is_null($parent_id)) {
+        if ($parent_id === null) {
             return '';
         }
     }
@@ -292,11 +292,11 @@ function cns_get_forum_parent_or_list($forum_id, $parent_id = -1)
  */
 function cns_forum_breadcrumbs($end_point_forum, $this_name = null, $parent_forum = null, $start = true, $root = null)
 {
-    if (is_null($end_point_forum)) {
+    if ($end_point_forum === null) {
         return array();
     }
 
-    if (is_null($root)) {
+    if ($root === null) {
         $root = get_param_integer('keep_forum_root', db_get_first_id());
     }
 
@@ -305,7 +305,7 @@ function cns_forum_breadcrumbs($end_point_forum, $this_name = null, $parent_foru
         return $cache[$end_point_forum];
     }
 
-    if (is_null($this_name)) {
+    if ($this_name === null) {
         $_forum_details = $GLOBALS['FORUM_DB']->query_select('f_forums', array('f_name', 'f_parent_forum'), array('id' => $end_point_forum), '', 1);
         if (!array_key_exists(0, $_forum_details)) {
             //warn_exit(do_lang_tempcode('_MISSING_RESOURCE', escape_html(strval($end_point_forum)), 'forum'));
@@ -359,7 +359,7 @@ function cns_forum_breadcrumbs($end_point_forum, $this_name = null, $parent_foru
  */
 function cns_forum_allows_anonymous_posts($forum_id)
 {
-    if (is_null($forum_id)) {
+    if ($forum_id === null) {
         return (get_option('is_on_anonymous_posts') == '1');
     }
     return ($GLOBALS['FORUM_DB']->query_select_value_if_there('f_forums', 'f_allows_anonymous_posts', array('id' => $forum_id)) === 1);

@@ -52,7 +52,7 @@ function upgrade_script()
             if (isset($SITE_INFO['custom_file_base_stub'])) { // This upgrader script must be called on a particular site with a real DB (e.g. shareddemo.composr.info), but will run for all sites on same install
                 require_code('shared_installs');
                 $u = current_share_user();
-                if (!is_null($u)) {
+                if ($u !== null) {
                     upgrade_sharedinstall_sites();
                     global $SITE_INFO;
                     $cmd = 'mysqldump -u' . escapeshellarg_wrap($SITE_INFO['db_site_user'] . '_shareddemo') . ' -p' . escapeshellarg_wrap($SITE_INFO['db_site_password']) . ' ' . escapeshellarg_wrap($SITE_INFO['db_site']) . '_shareddemo';
@@ -94,7 +94,7 @@ function upgrade_script()
                     $l_refer_release_notes = do_lang('FU_REFER_RELEASE_NOTES');
                     $news_id = post_param_integer('news_id', null);
                     $tar_url = '';
-                    if (!is_null($news_id)) {
+                    if ($news_id !== null) {
                         require_code('files');
                         $fetch_url = 'http://compo.sr/uploads/website_specific/compo.sr/scripts/fetch_release_details.php?format=json&news_id=' . strval($news_id) . '&from_version=' . urlencode(strval(cms_version()) . '.' . cms_version_minor());
                         $news = http_download_file($fetch_url, null, true, false, 'Composr', null, null, null, null, null, null, null, null, 30.0);
@@ -332,7 +332,7 @@ function upgrade_script()
                             //  - it's some file not in an addon (shouldn't actually happen)
                             //  - it's a new addon (addon that is not installed or uninstalled i.e. does not have an exported addon file, and not showing up as uninstalled in log)
                             //  - it's a file in an addon we have installed
-                            if ((is_null($found)) || (file_exists(get_file_base() . '/sources/hooks/systems/addon_registry/' . $found . '.php'))) {
+                            if (($found === null) || (file_exists(get_file_base() . '/sources/hooks/systems/addon_registry/' . $found . '.php'))) {
                                 if (substr($upgrade_file['path'], -1) == '/') {
                                     if (!$dry_run) {
                                         afm_make_directory($upgrade_file['path'], false, true);
@@ -356,11 +356,11 @@ function upgrade_script()
 
                             if (substr($upgrade_file['path'], -1) != '/') {
                                 // If true: We need to copy it into our archived addon so that addon is kept up-to-date
-                                if ((!is_null($found)) && (file_exists(get_file_base() . '/imports/addons/' . $found . '.tar'))) {
+                                if (($found !== null) && (file_exists(get_file_base() . '/imports/addons/' . $found . '.tar'))) {
                                     $old_addon_file = tar_open(get_file_base() . '/imports/addons/' . $found . '.tar', 'rb');
                                     $new_addon_file = tar_open(get_file_base() . '/imports/addons/' . $found . '.new.tar', 'wb');
                                     $directory2 = tar_get_directory($old_addon_file, true);
-                                    if (!is_null($directory2)) {
+                                    if ($directory2 !== null) {
                                         foreach ($directory2 as $d) {
                                             if ($d['path'] == $upgrade_file['path']) {
                                                 continue;
@@ -457,10 +457,10 @@ function upgrade_script()
 
                     $version_files = cms_version_number();
                     $_version_database = get_value('cns_version');
-                    if (is_null($_version_database)) { // LEGACY
+                    if ($_version_database === null) { // LEGACY
                         $_version_database = get_value('ocf_version');
                     }
-                    if (is_null($_version_database)) {
+                    if ($_version_database === null) {
                         $_version_database = '2.1';
                     }
                     $version_database = floatval($_version_database);
@@ -583,10 +583,10 @@ function up_do_login($message = null)
     $ftp_username = get_value('ftp_username');
     $ftp_folder = get_value('ftp_directory');
     $ftp_domain = get_value('ftp_domain');
-    if (is_null($ftp_domain)) {
+    if ($ftp_domain === null) {
         $ftp_domain = (!empty($SITE_INFO['ftp_domain'])) ? $SITE_INFO['ftp_domain'] : 'localhost';
     }
-    if (is_null($ftp_username)) {
+    if ($ftp_username === null) {
         if (empty($SITE_INFO['ftp_username'])) {
             if (php_function_allowed('posix_getpwuid')) {
                 $u_info = posix_getpwuid(fileowner(get_file_base() . '/index.php'));
@@ -594,14 +594,14 @@ function up_do_login($message = null)
             } else {
                 $ftp_username = '';
             }
-            if (is_null($ftp_username)) {
+            if ($ftp_username === null) {
                 $ftp_username = '';
             }
         } else {
             $ftp_username = $SITE_INFO['ftp_username'];
         }
     }
-    if (is_null($ftp_folder)) {
+    if ($ftp_folder === null) {
         if (empty($SITE_INFO['ftp_folder'])) {
             $dr = cms_srv('DOCUMENT_ROOT');
             if (strpos($dr, '/') !== false) {
@@ -632,7 +632,7 @@ function up_do_login($message = null)
     $l_login_info = do_lang('FU_LOGIN_INFO');
     $l_login_info_pass_forget = do_lang('FU_LOGIN_INFO_PASS_FORGET');
     $l_login_forgot_password_q = do_lang('FU_LOGIN_FORGOT_PASSWORD_Q');
-    if (!is_null($message)) {
+    if ($message !== null) {
         echo '<p><strong>' . $message . '</strong></p>';
     }
     $news_id = get_param_integer('news_id', null);
@@ -646,7 +646,7 @@ function up_do_login($message = null)
     echo "
     <p>{$l_login_info}</p>
     <form title=\"{$l_login}\" action=\"" . escape_html($url) . "\" method=\"post\">
-    " . (is_null($news_id) ? '' : ('<input type="hidden" name="news_id" value="' . strval($news_id) . '" />')) . "
+    " . (($news_id === null) ? '' : ('<input type="hidden" name="news_id" value="' . strval($news_id) . '" />')) . "
     <p>
         {$l_password}: <input type=\"password\" name=\"given_password\" value=\"" . escape_html(post_param_string('password', '')) . "\" />
     </p>
@@ -1120,7 +1120,7 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
                 $outdated__missing_file_entirely .= '<li><kbd>' . escape_html($file) . '</kbd></li>';
                 $files_determined_to_upload[] = $file;
             }
-        } elseif (!is_null($file_info)) {
+        } elseif ($file_info !== null) {
             if (@filesize(get_file_base() . '/' . $file) > 1024 * 1024) {
                 continue; // Too big, so special exception
             }
@@ -1309,7 +1309,7 @@ function check_outdated__handle_overrides($dir, $rela, &$master_data, &$hook_fil
                                 }
                             }
 
-                            if ((!is_null($true_hash)) && ($hash_on_disk != $true_hash)) {
+                            if (($true_hash !== null) && ($hash_on_disk != $true_hash)) {
                                 if ((function_exists('diff_compute_new')) && (substr($file, -4) == '.css') && ($true_hash !== 2) && (file_exists($dir . $file . '.editfrom')) && (cms_is_writable($dir . $file))) {
                                     $new = diff_compute_new($equiv_file, $dir . $file . '.editfrom', $dir . $file);
                                     $myfile = fopen($dir . $file . '.' . strval(time()), 'wb');
@@ -1513,7 +1513,7 @@ function version_specific()
     $version_files = cms_version_number();
     $_version_database = get_value('version');
     $version_database = floatval($_version_database);
-    if (is_null($_version_database)) {
+    if ($_version_database === null) {
         $version_database = 2.1; // Either 2.0 or 2.1, and they are equivalent in terms of what we need to do
     }
     if ($version_database < $version_files) {
@@ -1613,7 +1613,7 @@ function version_specific()
             delete_value('oracle_index_cleanup_last_time');
             delete_value('last_sitemap_time_calc');
             delete_value('last_ticket_lead_time_calc');
-            if (!is_null(get_value('last_welcome_mail_time'))) {
+            if (get_value('last_welcome_mail_time') !== null) {
                 $GLOBALS['SITE_DB']->query_insert('long_values', array('date_and_time' => time(), 'the_value' => get_value('last_welcome_mail_time'), 'the_name' => 'last_welcome_mail_time'));
                 delete_value('last_welcome_mail_time');
             }
@@ -1851,11 +1851,11 @@ function cns_upgrade()
 {
     $version_files = cms_version_number();
     $_version_database = get_value('cns_version');
-    if (is_null($_version_database)) { // LEGACY
+    if ($_version_database === null) { // LEGACY
         $_version_database = get_value('ocf_version');
         delete_value('ocf_version');
     }
-    if (is_null($_version_database)) {
+    if ($_version_database === null) {
         $_version_database = '2.1';
     }
     $version_database = floatval($_version_database);
@@ -2271,7 +2271,7 @@ function upgrade_theme($theme, $from_version, $to_version, $test_run = true)
                         }
 
                         $where_map = array('theme' => $theme, 'id' => $new);
-                        if (($lang != '') && (!is_null($lang))) {
+                        if (($lang != '') && ($lang !== null)) {
                             $where_map['lang'] = $lang;
                         }
                         $GLOBALS['SITE_DB']->query_delete('theme_images', $where_map);
@@ -2297,7 +2297,7 @@ function upgrade_theme($theme, $from_version, $to_version, $test_run = true)
                             }
 
                             $image = calculate_theme($seed, 'default', 'equations', $new, $dark, $colours, $landscape, $lang);
-                            if (!is_null($image)) {
+                            if ($image !== null) {
                                 if (!$test_run) {
                                     @imagepng($image, get_custom_file_base() . '/' . $new_path, 9) or intelligent_write_error(get_custom_file_base() . '/' . $new_path);
                                     imagedestroy($image);

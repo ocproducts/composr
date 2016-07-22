@@ -143,7 +143,7 @@ function get_nested_csv_structure()
                     attach_message('Specified heading,' . $csv_heading . ' , not found in CSV file for "' . $custom_field['trans_name'] . '".', 'warn', false, true);
                     continue;
                 }
-                if ((!is_null($csv_parent_filename)) && (!is_null($csv_parent_heading))) {
+                if (($csv_parent_filename !== null) && ($csv_parent_heading !== null)) {
                     if (!array_key_exists($csv_parent_filename, $csv_files)) { // Check referenced filename exists
                         attach_message('Specified parent CSV file, ' . $csv_parent_filename . ', not found for "' . $custom_field['trans_name'] . '".', 'warn', false, true);
                         $csv_parent_filename = null;
@@ -198,7 +198,7 @@ function get_nested_csv_structure()
 function get_csv_data_values($csv_file, $known_field_key = null, $known_field_value = null, $desired_field = null)
 {
     $map = array();
-    if ((!is_null($known_field_key)) && (!is_null($known_field_value))) {
+    if (($known_field_key !== null) && ($known_field_value !== null)) {
         $map[$known_field_key] = $known_field_value;
     }
     return get_csv_data_values__and($csv_file, $map, $desired_field);
@@ -225,7 +225,7 @@ function get_csv_data_values__and($csv_file, $map, $desired_field = null)
             }
         }
         if ($okay) {
-            $results[] = is_null($desired_field) ? $row : $row[$desired_field];
+            $results[] = ($desired_field === null) ? $row : $row[$desired_field];
         }
     }
     return array_unique($results);

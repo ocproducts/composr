@@ -124,7 +124,7 @@ while (($r = fgetcsv($csvfile, 1024000)) !== false) {
     $news = empty($r[6]) ? '' : $r[6]; // Summary
 
     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('news', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('title') => $title, 'date_and_time' => $time));
-    if (is_null($test)) { // If does not exist yet
+    if ($test === null) { // If does not exist yet
         $id = add_news($title, $news, $author, 1, 1, 1, 1, '', $news_article, $main_news_category, null, $time);
         seo_meta_set_for_explicit('news', strval($id), $r[7], $news);
 

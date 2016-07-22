@@ -139,7 +139,7 @@ class Hook_search_cns_within_topic extends FieldsSearchHook
 
         // Calculate our where clause (search)
         $sq = build_search_submitter_clauses('p_poster', $author_id, $author);
-        if (is_null($sq)) {
+        if ($sq === null) {
             return array();
         } else {
             $where_clause .= $sq;

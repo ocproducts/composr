@@ -251,7 +251,7 @@ class Hook_sitemap_zone extends Hook_sitemap_base
                         'rich_content',
                         'social',
                         'site_meta',
-                    ));
+                    );
                     break;
 
                 case 'cms':

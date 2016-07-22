@@ -62,7 +62,7 @@ class Hook_task_send_newsletter
 
         $count = 0;
 
-        $using_drip_queue = (!is_null($last_cron)) || (get_option('newsletter_paused') == '1');
+        $using_drip_queue = ($last_cron !== null) || (get_option('newsletter_paused') == '1');
 
         $in_html = false;
         if (stripos(trim($message), '<') === 0) {

@@ -75,7 +75,7 @@ function _forum_authorise_login($this_ref, $username, $userid, $password_hashed,
         // See if LDAP has it -- if so, we can add
         $test = cns_is_on_ldap($username);
         if (!$test) {
-            $out['error'] = is_null($username) ? do_lang_tempcode('MEMBER_NO_EXISTS') : do_lang_tempcode('_MEMBER_NO_EXIST', escape_html($username));
+            $out['error'] = ($username === null) ? do_lang_tempcode('MEMBER_NO_EXISTS') : do_lang_tempcode('_MEMBER_NO_EXIST', escape_html($username));
             return $out;
         }
 
@@ -112,12 +112,12 @@ function _forum_authorise_login($this_ref, $username, $userid, $password_hashed,
         $hooks = find_all_hook_obs('systems', 'login_providers_direct_auth', 'Hook_login_providers_direct_auth_');
         foreach ($hooks as $ob) {
             $try_login = $ob->try_login($username, $userid, $password_hashed, $password_raw, $cookie_login);
-            if (!is_null($try_login)) {
+            if ($try_login !== null) {
                 return $try_login;
             }
         }
 
-        $out['error'] = is_null($username) ? do_lang_tempcode('MEMBER_NO_EXIST') : do_lang_tempcode('_MEMBER_NO_EXIST', escape_html($username));
+        $out['error'] = ($username === null) ? do_lang_tempcode('MEMBER_NO_EXIST') : do_lang_tempcode('_MEMBER_NO_EXIST', escape_html($username));
         return $out;
     }
     $row = $rows[0];
@@ -127,7 +127,7 @@ function _forum_authorise_login($this_ref, $username, $userid, $password_hashed,
         //$rows[0]['m_pass_hash_salted'] = cns_get_ldap_hash($userid);
 
         // Doesn't exist any more? This is a special case - the 'LDAP member' exists in our DB, but not LDAP. It has been deleted from LDAP or LDAP server has jumped
-        /*if (is_null($rows[0]['m_pass_hash_salted']))
+        /*if ($rows[0]['m_pass_hash_salted'] === null)
         {
             $out['error'] = do_lang_tempcode('_MEMBER_NO_EXIST', $username);
             return $out;
@@ -215,7 +215,7 @@ function _forum_authorise_login($this_ref, $username, $userid, $password_hashed,
                 require_code('hooks/systems/cns_auth/' . $password_compatibility_scheme);
                 $ob = object_factory('Hook_cns_auth_' . $password_compatibility_scheme);
                 $error = $ob->auth($username, $userid, $password_hashed, $password_raw, $cookie_login, $row);
-                if (!is_null($error)) {
+                if ($error !== null) {
                     $out['error'] = $error;
                     return $out;
                 }
@@ -228,13 +228,13 @@ function _forum_authorise_login($this_ref, $username, $userid, $password_hashed,
         global $SENT_OUT_VALIDATE_NOTICE, $IN_SELF_ROUTING_SCRIPT;
         $ip = get_ip_address(3);
         $test2 = $this_ref->db->query_select_value_if_there('f_member_known_login_ips', 'i_val_code', array('i_member_id' => $row['id'], 'i_ip' => $ip));
-        if (((is_null($test2)) || ($test2 != '')) && (!compare_ip_address($ip, $row['m_ip_address']))) {
+        if ((($test2 === null) || ($test2 != '')) && (!compare_ip_address($ip, $row['m_ip_address']))) {
             if (!$SENT_OUT_VALIDATE_NOTICE) {
-                if (!is_null($test2)) { // Tidy up
+                if ($test2 !== null) { // Tidy up
                     $this_ref->db->query_delete('f_member_known_login_ips', array('i_member_id' => $row['id'], 'i_ip' => $ip), '', 1);
                 }
 
-                $code = !is_null($test2) ? $test2 : uniqid('', true);
+                $code = $test2 !== null ? $test2 : uniqid('', true);
                 $this_ref->db->query_insert('f_member_known_login_ips', array('i_val_code' => $code, 'i_member_id' => $row['id'], 'i_ip' => $ip));
                 $url = find_script('approve_ip') . '?code=' . $code;
                 $url_simple = find_script('approve_ip');

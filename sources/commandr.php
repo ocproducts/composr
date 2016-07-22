@@ -53,7 +53,7 @@ function commandr_script()
             @exit(get_option('closed'));
         }
 
-        if (!is_null($GLOBALS['CURRENT_SHARE_USER'])) {
+        if ($GLOBALS['CURRENT_SHARE_USER'] !== null) {
             warn_exit(do_lang_tempcode('SHARED_INSTALL_PROHIBIT'));
         }
 
@@ -67,7 +67,7 @@ function commandr_script()
 
     // Executing a command from the command-line
     $command = post_param_string('command', is_cli() ? null : false);
-    if (is_null($command)) {
+    if ($command === null) {
         require_code('comcode_from_html');
         require_code('mail');
 
@@ -183,7 +183,7 @@ class Virtual_shell
         $this->output = array(STREAM_STDCOMMAND => '', STREAM_STDHTML => '', STREAM_STDOUT => '', STREAM_STDERR => '');
         $this->input_parameters = array();
 
-        if (!is_null($parameters)) {
+        if ($parameters !== null) {
             foreach ($parameters as $parameter_key => $parameter_value) {
                 $this->input_parameters['{P' . $parameter_key . '}'] = $parameter_value;
             }
@@ -921,7 +921,7 @@ class Virtual_shell
                 }
             }
 
-            if (!is_null($hook_return)) {
+            if ($hook_return !== null) {
                 $this->output[STREAM_STDCOMMAND] = $hook_return[0];
                 if (is_object($hook_return[1])) {
                     $this->output[STREAM_STDHTML] = $hook_return[1]->evaluate();
@@ -978,7 +978,7 @@ class Virtual_shell
             $this->output[STREAM_STDOUT] = '';
             $this->output[STREAM_STDERR] = '';
 
-            if (is_null($commandr_output)) {
+            if ($commandr_output === null) {
                 $this->output[STREAM_STDERR] = do_lang('SUCCESS');
             } else {
                 $this->output[STREAM_STDHTML] = $this->_array_to_html($commandr_output);
@@ -1100,7 +1100,7 @@ class Virtual_shell
             if (is_array($value)) {
                 $value = protect_from_escaping($this->_array_to_html($value));
             }
-            $output[] = array('KEY' => is_string($key) ? $key : strval($key), 'VALUE' => is_string($value) ? $value : (is_null($value) ? 'null' : (is_object($value) ? $value : strval($value))));
+            $output[] = array('KEY' => is_string($key) ? $key : strval($key), 'VALUE' => is_string($value) ? $value : (($value === null) ? 'null' : (is_object($value) ? $value : strval($value))));
         }
         return do_template('COMMANDR_ARRAY', array('_GUID' => 'ab75cdb77fa797d2e42185b51e34d857', 'ELEMENTS' => $output));
     }
@@ -1151,7 +1151,7 @@ class Virtual_shell
         $commandr_output = mixed();
 
         // NOTE: Variables throughout this function use the $commandr_ prefix to avoid conflicts with any created through executing PHP commands from the CL
-        if (is_null($GLOBALS['CURRENT_SHARE_USER'])) {
+        if ($GLOBALS['CURRENT_SHARE_USER'] === null) {
             // Reload settings...
 
             if (array_key_exists('commandr_state', $_COOKIE)) {
@@ -1299,7 +1299,7 @@ class Virtual_shell
         if ($commandr_eval_output === false) {
             $this->output[STREAM_STDERR] = do_lang('EVAL_ERROR');
         }
-        if (is_null($commandr_output)) {
+        if ($commandr_output === null) {
             $this->output[STREAM_STDERR] = do_lang('NO_RESULTS');
         }
     }
@@ -1315,7 +1315,7 @@ class Virtual_shell
     {
         require_code('files');
 
-        if (is_null($dir)) {
+        if ($dir === null) {
             $dir = get_custom_file_base() . '/data/modules/admin_commandr/';
         }
         $dh = @opendir($dir);
@@ -1360,7 +1360,7 @@ function do_command_help($command, $options, $parameters)
 
     foreach (array_keys($parameters) as $parameter_number) {
         $_parameter = do_lang('CMD_' . strtoupper($command) . '_HELP_PARAM_' . strval($parameter_number), null, null, null, null, false);
-        if (is_null($_parameter)) {
+        if ($_parameter === null) {
             continue;
         }
         $matches = array();

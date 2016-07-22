@@ -63,7 +63,7 @@ class Module_admin_community_billboard extends Standard_crud_module
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->create_table('community_billboard', array(
                 'id' => '*AUTO',
                 'member_id' => 'MEMBER',
@@ -78,7 +78,7 @@ class Module_admin_community_billboard extends Standard_crud_module
             $GLOBALS['SITE_DB']->create_index('community_billboard', 'find_active_billboard_msg', array('active_now'));
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 4)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 4)) {
             rename_config_option('system_flagrant', 'system_community_billboard');
 
             $GLOBALS['SITE_DB']->rename_table('text', 'community_billboard');
@@ -207,7 +207,7 @@ class Module_admin_community_billboard extends Standard_crud_module
             $username = protect_from_escaping($GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($row['member_id']));
 
             $activation_time = $row['activation_time'];
-            $days = is_null($activation_time) ? '' : float_format(floatval(time() - $activation_time) / 60.0 / 60.0 / 24.0, 3);
+            $days = ($activation_time === null) ? '' : float_format(floatval(time() - $activation_time) / 60.0 / 60.0 / 24.0, 3);
 
             $fields->attach(results_entry(array(protect_from_escaping(get_translated_tempcode('community_billboard', $row, 'the_message')), integer_format($row['days']), get_timezoned_date_time($row['order_time']), ($row['active_now'] == 1) ? $days : do_lang_tempcode('NA_EM'), $username, protect_from_escaping(hyperlink($edit_url, do_lang_tempcode('EDIT'), false, true, do_lang('EDIT') . ' #' . strval($row['id'])))), true));
         }

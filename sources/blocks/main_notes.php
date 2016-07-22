@@ -62,7 +62,7 @@ class Block_main_notes
         $file = filter_naughty($file, true);
 
         $new = post_param_string('new', null);
-        if (!is_null($new)) {
+        if ($new !== null) {
             $hooks = find_all_hook_obs('blocks', 'main_notes', 'Hook_notes_');
             foreach ($hooks as $ob) {
                 $ob->run($file);

@@ -68,7 +68,7 @@ class Block_main_cns_involved_topics
 
         $forum1 = null;//$GLOBALS['FORUM_DRIVER']->forum_id_from_name(get_option('comments_forum_name'));
         $tf = get_option('ticket_forum_name', true);
-        if (!is_null($tf)) {
+        if ($tf !== null) {
             $forum2 = $GLOBALS['FORUM_DRIVER']->forum_id_from_name($tf);
         } else {
             $forum2 = null;
@@ -76,10 +76,10 @@ class Block_main_cns_involved_topics
         $where_more = '';
         /*
         Actually including this just slows down the COUNT part of the query due to lack of indexability
-        if (!is_null($forum1)) {
+        if ($forum1 !== null) {
             $where_more .= ' AND p_cache_forum_id<>' . strval($forum1);
         }
-        if (!is_null($forum2)) {
+        if ($forum2 !== null) {
             $where_more .= ' AND p_cache_forum_id<>' . strval($forum2);
         }
         */

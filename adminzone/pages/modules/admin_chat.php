@@ -191,7 +191,7 @@ class Module_admin_chat extends Standard_crud_module
         $disallow2 = $row['disallow_list'];
         $disallow2_groups = $row['disallow_list_groups'];
         $username = $GLOBALS['FORUM_DRIVER']->get_username($row['room_owner']);
-        if (is_null($username)) {
+        if ($username === null) {
             $username = '';
         }//do_lang('UNKNOWN');
 

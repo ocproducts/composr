@@ -47,7 +47,7 @@ function do_comcode_attachments($comcode, $type, $id, $previewing_only = false, 
     global $COMCODE_ATTACHMENTS;
     unset($COMCODE_ATTACHMENTS[$id]); // In case we have some kind of conflict
 
-    if (is_null($db)) {
+    if ($db === null) {
         $db = $GLOBALS['SITE_DB'];
     }
 
@@ -56,7 +56,7 @@ function do_comcode_attachments($comcode, $type, $id, $previewing_only = false, 
     } else {
         $member = function_exists('get_member') ? get_member() : db_get_first_id();
     }
-    if (is_null($insert_as_admin)) {
+    if ($insert_as_admin === null) {
         $insert_as_admin = false;
     }
 
@@ -129,14 +129,14 @@ function do_comcode_attachments($comcode, $type, $id, $previewing_only = false, 
     for ($i = 0; $i < count($COMCODE_ATTACHMENTS[$id]); $i++) {
         $attachment = $COMCODE_ATTACHMENTS[$id][$i];
 
-        if (!is_null($attachment['initial_id'])) {
+        if ($attachment['initial_id'] !== null) {
             // If it's a new one, we need to change the comcode to reference the ID we made for it
             if ($attachment['type'] == 'new') {
                 $marker_id = intval(substr($attachment['initial_id'], 4)); // After 'new_'
 
                 $comcode = preg_replace('#(\[(attachment|attachment_safe)[^\]]*\])new_' . strval($marker_id) . '(\[/)#', '${1}' . strval($attachment['id']) . '${3}', $comcode);
 
-                if (!is_null($type)) {
+                if ($type !== null) {
                     $db->query_insert('attachment_refs', array('r_referer_type' => $type, 'r_referer_id' => $id, 'a_id' => $attachment['id']));
                 }
             } else {
@@ -160,7 +160,7 @@ function do_comcode_attachments($comcode, $type, $id, $previewing_only = false, 
 
                 // Was that the last reference to this attachment? (if so -- delete attachment)
                 $test = $db->query_select_value_if_there('attachment_refs', 'id', array('a_id' => $ref['a_id']));
-                if (is_null($test)) {
+                if ($test === null) {
                     require_code('attachments3');
                     _delete_attachment($ref['a_id'], $db);
                 }
@@ -292,7 +292,7 @@ function _check_attachment_count()
  */
 function insert_lang_comcode_attachments($field_name, $level, $text, $type, $id, $db = null, $insert_as_admin = false, $for_member = null)
 {
-    if (is_null($db)) {
+    if ($db === null) {
         $db = $GLOBALS['SITE_DB'];
     }
 
@@ -319,7 +319,7 @@ function insert_lang_comcode_attachments($field_name, $level, $text, $type, $id,
     if (user_lang() == 'Gibb') { // Debug code to help us spot language layer bugs. We expect &keep_lang=EN to show EnglishEnglish content, but otherwise no EnglishEnglish content.
         $lang_id = $db->query_insert('translate', array('source_user' => $source_user, 'broken' => 0, 'importance_level' => $level, 'text_original' => 'EnglishEnglishWarningWrongLanguageWantGibberishLang', 'text_parsed' => '', 'language' => 'EN'), true);
     }
-    if (is_null($lang_id)) {
+    if ($lang_id === null) {
         $lang_id = $db->query_insert('translate', array(
             'source_user' => $source_user,
             'broken' => 0,
@@ -355,7 +355,7 @@ function insert_lang_comcode_attachments($field_name, $level, $text, $type, $id,
  */
 function final_attachments_from_preview($id, $db = null)
 {
-    if (is_null($db)) {
+    if ($db === null) {
         $db = $GLOBALS['SITE_DB'];
     }
 
@@ -364,7 +364,7 @@ function final_attachments_from_preview($id, $db = null)
     if ($posting_ref_id < 0) {
         fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
     }
-    if (!is_null($posting_ref_id)) {
+    if ($posting_ref_id !== null) {
         $db->query_delete('attachment_refs', array('r_referer_type' => 'null', 'r_referer_id' => strval(-$posting_ref_id)), '', 1);
         $db->query_delete('attachment_refs', array('r_referer_id' => strval(-$posting_ref_id))); // Can trash this, was made during preview but we made a new one in do_comcode_attachments (recalled by insert_lang_comcode_attachments)
     }

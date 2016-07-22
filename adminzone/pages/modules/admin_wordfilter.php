@@ -57,7 +57,7 @@ class Module_admin_wordfilter
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->create_table('wordfilter', array(
                 'id' => '*AUTO',
                 'word' => 'SHORT_TEXT',
@@ -77,7 +77,7 @@ class Module_admin_wordfilter
             }
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 4)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 4)) {
             $GLOBALS['SITE_DB']->add_auto_key('wordfilter');
         }
     }
@@ -214,7 +214,7 @@ class Module_admin_wordfilter
     public function _add_word($word, $replacement, $substr)
     {
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('wordfilter', 'word', array('word' => $word));
-        if (!is_null($test)) {
+        if ($test !== null) {
             warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($word)));
         }
 

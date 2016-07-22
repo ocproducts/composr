@@ -61,7 +61,7 @@ class Module_iotds
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->create_table('iotd', array(
                 'id' => '*AUTO',
                 'url' => 'URLPATH',
@@ -219,7 +219,7 @@ class Module_iotds
             $myrow['allow_rating'],
             $myrow['allow_comments'],
             $myrow['allow_trackbacks'],
-            ((is_null($myrow['date_and_time'])) && ($myrow['used'] == 0)) ? 0 : 1,
+            (($myrow['date_and_time'] === null) && ($myrow['used'] == 0)) ? 0 : 1,
             $myrow['submitter'],
             build_url(array('page' => '_SELF', 'type' => 'view', 'id' => $id), '_SELF', null, false, false, true),
             get_translated_text($myrow['i_title']),
@@ -232,10 +232,10 @@ class Module_iotds
         $add_date = get_timezoned_date_time($myrow['add_date']);
         $add_date_raw = strval($myrow['add_date']);
         $edit_date = get_timezoned_date_time($myrow['edit_date']);
-        $edit_date_raw = is_null($myrow['edit_date']) ? '' : strval($myrow['edit_date']);
+        $edit_date_raw = ($myrow['edit_date'] === null) ? '' : strval($myrow['edit_date']);
 
         // Views
-        if ((get_db_type() != 'xml') && (get_value('no_view_counts') !== '1') && (is_null(get_bot_type()))) {
+        if ((get_db_type() != 'xml') && (get_value('no_view_counts') !== '1') && (get_bot_type() === null)) {
             $myrow['iotd_views']++;
             if (!$GLOBALS['SITE_DB']->table_is_locked('iotd')) {
                 $GLOBALS['SITE_DB']->query_update('iotd', array('iotd_views' => $myrow['iotd_views']), array('id' => $id), '', 1, null, false, true);

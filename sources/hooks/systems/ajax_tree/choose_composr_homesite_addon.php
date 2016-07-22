@@ -33,7 +33,7 @@ class Hook_ajax_tree_choose_composr_homesite_addon
     {
         $stub = (get_param_integer('localhost', 0) == 1) ? get_base_url() : 'http://compo.sr';
         $v = 'Version ' . float_to_raw_string(cms_version_number(), 2, true);
-        if (!is_null($id)) {
+        if ($id !== null) {
             $v = $id;
         }
         $url = $stub . '/data/ajax_tree.php?hook=choose_download&id=' . rawurlencode($v) . '&file_type=tar';
@@ -76,7 +76,7 @@ class Hook_ajax_tree_choose_composr_homesite_addon
         $file = $this->get_file($id);
 
         $list = new Tempcode();
-        if (is_null($id)) { // Root, needs an NA option
+        if ($id === null) { // Root, needs an NA option
             $list->attach(form_input_list_entry('', false, do_lang_tempcode('NA_EM')));
         }
 

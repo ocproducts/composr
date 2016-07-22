@@ -69,7 +69,7 @@ class Hook_rss_cns_unread_topics
 
         $content = new Tempcode();
         foreach ($rows as $row) {
-            if (((!is_null($row['t_forum_id'])) || ($row['t_pt_to'] == get_member())) && (has_category_access(get_member(), 'forums', strval($row['t_forum_id'])))) {
+            if ((($row['t_forum_id'] !== null) || ($row['t_pt_to'] == get_member())) && (has_category_access(get_member(), 'forums', strval($row['t_forum_id'])))) {
                 $id = strval($row['id']);
                 $author = $row['t_cache_first_username'];
 

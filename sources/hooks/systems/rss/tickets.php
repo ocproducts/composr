@@ -90,7 +90,7 @@ class Hook_rss_tickets
 
             $category = '';
             $category_raw = '';
-            if ((!is_null($ticket_type_id)) && (isset($ticket_type_rows[$ticket_type_id]))) {
+            if (($ticket_type_id !== null) && (isset($ticket_type_rows[$ticket_type_id]))) {
                 $category = get_translated_text($ticket_type_rows[$ticket_type_id]);
                 $category_raw = strval($ticket_type_id);
             }

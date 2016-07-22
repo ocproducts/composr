@@ -107,7 +107,7 @@ class Block_main_staff_tips
                 $tip_id = strval($i) . $j;
                 if (!in_array($tip_id, $read)) {
                     $lang2 = do_lang('TIP_' . $tip_id, null, null, null, null, false);
-                    if (!is_null($lang2)) {
+                    if ($lang2 !== null) {
                         $lang = do_lang_tempcode('TIP_' . $tip_id, $esc_free_support, $esc_brand_name, $remaining_tip_params);
                         $tips[$i][$tip_id] = $lang;
                     }

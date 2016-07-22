@@ -159,7 +159,7 @@ class Hook_fields_time
     {
         $time = mixed();
 
-        if ((is_null($actual_value)) || ($actual_value == '') || ($actual_value[0] == ':')) {
+        if (($actual_value === null) || ($actual_value == '') || ($actual_value[0] == ':')) {
             $time = null;
         } elseif ($actual_value == 'NOW') {
             $time = time();
@@ -213,7 +213,7 @@ class Hook_fields_time
         } else {
             $time = post_param_string($stub, null);
         }
-        if (!is_null($time)) {
+        if ($time !== null) {
             $matches = array();
             if (preg_match('#^(\d\d):(\d\d)$#', $time, $matches) != 0) {
                 $hour = intval($matches[1]);
@@ -232,10 +232,10 @@ class Hook_fields_time
             }
         }
 
-        if (is_null($hour) && is_null($minute)) {
+        if (($hour === null) && ($minute === null)) {
             return '';
         }
 
-        return (is_null($hour) ? '' : strval($hour)) . ':' . str_pad((is_null($minute) ? '' : strval($minute)), 2, '0', STR_PAD_LEFT);
+        return (($hour === null) ? '' : strval($hour)) . ':' . str_pad((($minute === null) ? '' : strval($minute)), 2, '0', STR_PAD_LEFT);
     }
 }

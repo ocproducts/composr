@@ -139,7 +139,7 @@ class Hook_addon_registry_composr_mobile_sdk
      */
     public function install($upgrade_from = null)
     {
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             // Table for holding the IDs of devices signed up for notifications
             $GLOBALS['SITE_DB']->create_table('device_token_details', array(
                 'id' => '*AUTO',

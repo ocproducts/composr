@@ -84,7 +84,7 @@ class Block_main_comments
         $self_url = build_url(array('page' => '_SELF'), '_SELF', null, true, false, true);
         $self_title = empty($map['title']) ? $map['page'] : $map['title'];
         $test_changed = post_param_string('title', null);
-        if (!is_null($test_changed)) {
+        if ($test_changed !== null) {
             decache('main_comments');
         }
         $hidden = $submitted ? actualise_post_comment(true, 'block_main_comments', $map['page'] . '_' . $map['param'] . $extra, $self_url, $self_title, array_key_exists('forum', $map) ? $map['forum'] : null, false, null, $explicit_allow) : false;

@@ -202,7 +202,7 @@ class Module_admin_group_member_timeouts
         $username = post_param_string('gmt_username_new', '');
         $time = post_param_date('gmt_time_new');
 
-        if ((!is_null($group_id)) && ($username != '') && (!is_null($time))) {
+        if (($group_id !== null) && ($username != '') && ($time !== null)) {
             $this->_save_group_member_timeout(null, $group_id, $username, $time);
         }
 
@@ -237,10 +237,10 @@ class Module_admin_group_member_timeouts
         }
 
         $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($username);
-        if (is_null($member_id)) {
+        if ($member_id === null) {
             attach_message(do_lang_tempcode('_MEMBER_NO_EXIST', escape_html($username)), 'warn');
         } else {
-            if (!is_null($old_group_id)) {
+            if ($old_group_id !== null) {
                 $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']->query_delete('f_group_member_timeouts', array(
                     'member_id' => $member_id,
                     'group_id' => $old_group_id,

@@ -1690,7 +1690,7 @@ class FirePHP {
             }
 		} elseif ( is_bool($object) ) {
 			return $object;
-		} elseif ( is_null($object) ) {
+		} elseif ( ($object === null) ) {
 			return $object;
 		} elseif ( is_numeric($object) ) {
 			return $object;

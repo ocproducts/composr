@@ -135,7 +135,7 @@ class Module_leader_board
                 $profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member, true);
 
                 $username = $GLOBALS['FORUM_DRIVER']->get_username($member);
-                if (is_null($username)) {
+                if ($username === null) {
                     $username = do_lang('UNKNOWN');
                 }
 

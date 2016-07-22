@@ -46,7 +46,7 @@ function spreadsheet_export__spout($ext, $data, $filename, $headers, $output_and
         $writer->setShouldUseInlineStrings(false); // Inline strings are buggy in Excel, line-breaks don't initially show, until a new input within Excel shifts it to shared strings mode
     }
 
-    if (is_null($outfile_path)) {
+    if ($outfile_path === null) {
         if (!$output_and_exit) {
             ob_start();
         }
@@ -74,7 +74,7 @@ function spreadsheet_export__spout($ext, $data, $filename, $headers, $output_and
         // Main data
         $single_row = array();
         foreach (array_values($line) as $column => $val) {
-            if (is_null($val)) {
+            if ($val === null) {
                 $val = '';
             } elseif (!is_string($val)) {
                 $val = strval($val);
@@ -98,7 +98,7 @@ function spreadsheet_export__spout($ext, $data, $filename, $headers, $output_and
             foreach ($new_rows as $new_line) {
                 $single_row = array();
                 foreach (array_values($new_line) as $column => $val) {
-                    if (is_null($val)) {
+                    if ($val === null) {
                         $val = '';
                     } elseif (!is_string($val)) {
                         $val = strval($val);
@@ -118,7 +118,7 @@ function spreadsheet_export__spout($ext, $data, $filename, $headers, $output_and
     $writer->close();
 
     if ($output_and_exit) {
-        if (!is_null($outfile_path)) {
+        if ($outfile_path !== null) {
             readfile($outfile_path);
             @unlink($outfile_path);
         }
@@ -131,7 +131,7 @@ function spreadsheet_export__spout($ext, $data, $filename, $headers, $output_and
 
         exit();
     } else {
-        if (is_null($outfile_path)) {
+        if ($outfile_path === null) {
             $out = ob_get_clean();
         } else {
             $out = '';

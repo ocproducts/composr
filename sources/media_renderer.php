@@ -92,14 +92,14 @@ function peek_media_mode()
  */
 function find_media_renderers($url, $attributes, $as_admin, $source_member, $acceptable_media = 15, $limit_to = null)
 {
-    if (is_null($source_member)) {
+    if ($source_member === null) {
         $source_member = get_member();
     }
     if (has_privilege($source_member, 'comcode_dangerous')) {
         $as_admin = true;
     }
 
-    $hooks = is_null($limit_to) ? array_keys(find_all_hooks('systems', 'media_rendering')) : array($limit_to);
+    $hooks = ($limit_to === null) ? array_keys(find_all_hooks('systems', 'media_rendering')) : array($limit_to);
     $obs = array();
     foreach ($hooks as $hook) {
         if (($limit_to !== null) && ($limit_to != $hook)) {
@@ -194,14 +194,14 @@ function find_media_renderers($url, $attributes, $as_admin, $source_member, $acc
 function render_media_url($url, $url_safe, $attributes, $as_admin = false, $source_member = null, $acceptable_media = 15, $limit_to = null, $url_to_scan_against = null)
 {
     $hooks = find_media_renderers(
-        is_null($url_to_scan_against) ? (is_object($url) ? $url->evaluate() : $url) : $url_to_scan_against,
+        ($url_to_scan_against === null) ? (is_object($url) ? $url->evaluate() : $url) : $url_to_scan_against,
         $attributes,
         $as_admin,
         $source_member,
         $acceptable_media,
         $limit_to
     );
-    if (is_null($hooks)) {
+    if ($hooks === null) {
         return null;
     }
     $hook = reset($hooks);
@@ -231,7 +231,7 @@ function _create_media_template_parameters($url, $attributes, $as_admin = false,
 {
     $_url = is_object($url) ? $url->evaluate() : $url;
 
-    if (is_null($source_member)) {
+    if ($source_member === null) {
         $source_member = get_member();
     }
     if (has_privilege($source_member, 'comcode_dangerous')) {
@@ -383,7 +383,7 @@ abstract class Media_renderer_with_fallback
                     }
                 } else {
                     // Natural link
-                    if (!is_null($click_url)) {
+                    if ($click_url !== null) {
                         $attributes['click_url'] = $click_url;
                     } // Else: no link
                 }

@@ -77,10 +77,10 @@ class Hook_profiles_tabs_edit_privacy
                     $_groups_view = post_param_string('groups_' . strval($field_id), null);
                     $_members_view = ($_groups_view == 'all') ? 1 : 0;
 
-                    $guests_view = (!is_null($_guests_view)) ? 1 : 0;
-                    $members_view = (!is_null($_members_view)) ? 1 : 0;
-                    $friends_view = (!is_null($_friends_view)) ? 1 : 0;
-                    $groups_view = (!is_null($_groups_view)) ? $_groups_view : '';
+                    $guests_view = ($_guests_view !== null) ? 1 : 0;
+                    $members_view = ($_members_view !== null) ? 1 : 0;
+                    $friends_view = ($_friends_view !== null) ? 1 : 0;
+                    $groups_view = ($_groups_view !== null) ? $_groups_view : '';
                 }
 
                 $cpf_permissions = $GLOBALS['FORUM_DB']->query_select('f_member_cpf_perms', array('*'), array('member_id' => $member_id_of, 'field_id' => $field_id), '', 1);
@@ -160,7 +160,7 @@ class Hook_profiles_tabs_edit_privacy
             if (substr($cpf_title, 0, 4) == 'cms_') {
                 require_lang('cns_special_cpf');
                 $_cpf_title = do_lang('SPECIAL_CPF__' . $cpf_title, null, null, null, null, false);
-                if (!is_null($_cpf_title)) {
+                if ($_cpf_title !== null) {
                     $cpf_title = $_cpf_title;
                 }
             }

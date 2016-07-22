@@ -96,7 +96,7 @@ class Block_side_galleries
         }
 
         $_title = $GLOBALS['SITE_DB']->query_select_value_if_there('galleries', 'fullname', array('name' => $parent_id));
-        if (!is_null($_title)) {
+        if ($_title !== null) {
             $title = get_translated_text($_title);
         } else {
             $title = '';

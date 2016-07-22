@@ -57,7 +57,7 @@ function inject_action_spamcheck($username = null, $email = null)
  */
 function check_rbls($page_level = false, $user_ip = null)
 {
-    if (is_null($user_ip)) {
+    if ($user_ip === null) {
         $user_ip = get_ip_address();
     }
 
@@ -85,10 +85,10 @@ function check_rbls($page_level = false, $user_ip = null)
     $confidence_level = mixed();
     $rbl_list = explode(',', get_option('spam_block_lists'));
     foreach ($rbl_list as $rbl) {
-        list($_is_potential_blocked, $_confidence_level) = check_rbl($rbl, $user_ip, !is_null($confidence_level), $page_level);
+        list($_is_potential_blocked, $_confidence_level) = check_rbl($rbl, $user_ip, $confidence_level !== null, $page_level);
         if ($_is_potential_blocked == ANTISPAM_RESPONSE_ACTIVE || $_is_potential_blocked == ANTISPAM_RESPONSE_ACTIVE_UNKNOWN_STALE) { // If it is a potential block
             // If this is a stronger block than we've seen so far
-            if ((!is_null($_confidence_level)) || (is_null($confidence_level)) || ($confidence_level < $_confidence_level)) {
+            if (($_confidence_level !== null) || ($confidence_level === null) || ($confidence_level < $_confidence_level)) {
                 $confidence_level = $_confidence_level;
                 $blocked_by = preg_replace('#(^|\.)\*(\.|$)#', '', $rbl);
                 $is_blocked = true;
@@ -147,7 +147,7 @@ function check_rbl($rbl, $user_ip, $we_have_a_result_already = false, $page_leve
             return array(ANTISPAM_RESPONSE_SKIP, null); // We know better than this RBL can tell us, so stick with what we know
         }
         $rbl_response = rbl_resolve($user_ip, $rbl, $page_level);
-        if (is_null($rbl_response)) {
+        if ($rbl_response === null) {
             return array(ANTISPAM_RESPONSE_ERROR, null); // Error
         }
 
@@ -185,7 +185,7 @@ function check_rbl($rbl, $user_ip, $we_have_a_result_already = false, $page_leve
             return array(ANTISPAM_RESPONSE_SKIP, null); // We know better than this RBL can tell us, so stick with what we know
         }
         $rbl_response = rbl_resolve($user_ip, $rbl, $page_level);
-        if (is_null($rbl_response)) {
+        if ($rbl_response === null) {
             return array(ANTISPAM_RESPONSE_ERROR, null); // Error
         }
 
@@ -219,7 +219,7 @@ function check_rbl($rbl, $user_ip, $we_have_a_result_already = false, $page_leve
             return array(ANTISPAM_RESPONSE_SKIP, null); // We know better than this RBL can tell us, so stick with what we know
         }
         $rbl_response = rbl_resolve($user_ip, $rbl, $page_level);
-        if (is_null($rbl_response)) {
+        if ($rbl_response === null) {
             return array(ANTISPAM_RESPONSE_ERROR, null); // Error
         }
 
@@ -238,7 +238,7 @@ function check_rbl($rbl, $user_ip, $we_have_a_result_already = false, $page_leve
             $rbl = str_replace('7.1.1.127', '*', $rbl);
         }
         $rbl_response = rbl_resolve($user_ip, $rbl, $page_level);
-        if (is_null($rbl_response)) {
+        if ($rbl_response === null) {
             return array(ANTISPAM_RESPONSE_ERROR, null); // Error
         }
 
@@ -266,7 +266,7 @@ function check_rbl($rbl, $user_ip, $we_have_a_result_already = false, $page_leve
             return array(ANTISPAM_RESPONSE_SKIP, null); // We know better than this RBL can tell us, so stick with what we know
         }
         $rbl_response = rbl_resolve($user_ip, $rbl, $page_level);
-        if (is_null($rbl_response)) {
+        if ($rbl_response === null) {
             return array(ANTISPAM_RESPONSE_ERROR, null); // Error
         }
 
@@ -433,10 +433,10 @@ function _check_stopforumspam($user_ip, $username = null, $email = null)
     require_code('character_sets');
     $key = get_option('stopforumspam_api_key');
     $url = 'http://www.stopforumspam.com/api?f=json&unix&confidence&ip=' . urlencode($user_ip);
-    if (!is_null($username)) {
+    if ($username !== null) {
         $url .= '&username=' . urlencode(convert_to_internal_encoding($username, get_charset(), 'utf-8'));
     }
-    if (!is_null($email)) {
+    if ($email !== null) {
         $url .= '&email=' . urlencode(convert_to_internal_encoding($email, get_charset(), 'utf-8'));
     }
     if ($key != '') {

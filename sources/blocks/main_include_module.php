@@ -76,7 +76,7 @@ class Block_main_include_module
         } elseif ($zone == '_SELF') {
             $zone = get_zone_name();
         }
-        if (is_null($zone)) {
+        if ($zone === null) {
             return new Tempcode();
         }
         foreach ($_GET as $key => $val) {

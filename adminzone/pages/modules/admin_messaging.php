@@ -160,7 +160,7 @@ class Module_admin_messaging
 
         $max_rows = 0;
         $rows = $GLOBALS['FORUM_DRIVER']->show_forum_topics(get_option('messaging_forum_name'), $max, $start, $max_rows);
-        if (!is_null($rows)) {
+        if ($rows !== null) {
             foreach ($rows as $i => $row) {
                 $name = $row['firsttitle'];
                 if (trim($name) == '') {

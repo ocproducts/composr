@@ -45,7 +45,7 @@ class Hook_ajax_tree_choose_theme_files
         require_code('themes2');
         require_code('files');
 
-        if (is_null($id)) {
+        if ($id === null) {
             $top_level = array(
                 'templates' => array(do_lang('TEMPLATES_HTML'), 'DOC_TEMPLATES'),
                 'templates-related' => array(do_lang('TEMPLATES_HTML_RELATED'), 'DOC_TEMPLATES_RELATED'),
@@ -472,7 +472,7 @@ class Hook_ajax_tree_choose_theme_files
 
         list($img_url, $img_url_2, $template_file_shortened) = $this->get_template_file_icons($file);
 
-        if (is_null($img_url)) {
+        if ($img_url === null) {
             $image_xml = '';
         } else {
             $image_xml = '

@@ -79,7 +79,7 @@ class Hook_rss_calendar
             $news_date = date($date_string, usertime_to_utctime($_news_date));
 
             // The edit date'll be the latest of add/edit
-            $edit_date = is_null($row['e_edit_date']) ? date($date_string, $row['e_add_date']) : date($date_string, $row['e_edit_date']);
+            $edit_date = ($row['e_edit_date'] === null) ? date($date_string, $row['e_add_date']) : date($date_string, $row['e_edit_date']);
 
             $just_event_row = db_map_restrict($row, array('id', 'e_content'));
 

@@ -34,7 +34,7 @@ class Persistent_caching_apccache
      */
     public function load_objects_list()
     {
-        if (is_null($this->objects_list)) {
+        if ($this->objects_list === null) {
             $this->objects_list = apc_fetch(get_file_base() . 'PERSISTENT_CACHE_OBJECTS');
             if ($this->objects_list === false) {
                 $this->objects_list = array();

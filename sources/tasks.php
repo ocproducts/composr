@@ -88,7 +88,7 @@ function execute_task_background($task_row)
 
         require_code('notifications');
 
-        if (is_null($result)) {
+        if ($result === null) {
             $subject = do_lang('TASK_COMPLETED_SUBJECT', $task_row['t_title']);
             $message = do_notification_lang('TASK_COMPLETED_BODY_SIMPLE');
         } else {
@@ -97,7 +97,7 @@ function execute_task_background($task_row)
             list($mime_type, $content_result) = $result;
 
             // Handle error results
-            if (is_null($mime_type)) {
+            if ($mime_type === null) {
                 $subject = do_lang('TASK_FAILED_SUBJECT', $task_row['t_title']);
                 $_content_result = is_object($content_result) ? ('[semihtml]' . $content_result->evaluate() . '[/semihtml]') : $content_result;
                 $message = do_notification_lang('TASK_FAILED_SIMPLE', $_content_result);
@@ -130,7 +130,7 @@ function execute_task_background($task_row)
 
         dispatch_notification('task_completed', null, $subject, $message, array($requester), A_FROM_SYSTEM_PRIVILEGED, array('priority' => 2, 'attachments' => $attachments, 'send_immediately' => true));
 
-        if (!is_null($result)) {
+        if ($result !== null) {
             list($mime_type, $content_result) = $result;
             @unlink($content_result[1]);
             sync_file($content_result[1]);
@@ -158,7 +158,7 @@ function execute_task_background($task_row)
  */
 function call_user_func_array__long_task($plain_title, $title, $hook, $args = null, $run_at_end_of_script = false, $force_immediate = false, $send_notification = true)
 {
-    if (is_null($args)) {
+    if ($args === null) {
         $args = array();
     }
 
@@ -191,8 +191,8 @@ function call_user_func_array__long_task($plain_title, $title, $hook, $args = nu
         require_code('hooks/systems/tasks/' . filter_naughty($hook));
         $ob = object_factory('Hook_task_' . $hook);
         $result = call_user_func_array(array($ob, 'run'), $args);
-        if (is_null($result)) {
-            if (is_null($title)) {
+        if ($result === null) {
+            if ($title === null) {
                 return new Tempcode();
             }
             return inform_screen($title, do_lang_tempcode('SUCCESS'));
@@ -216,8 +216,8 @@ function call_user_func_array__long_task($plain_title, $title, $hook, $args = nu
         }
 
         // Handle error results
-        if (is_null($mime_type)) {
-            if (is_null($title)) {
+        if ($mime_type === null) {
+            if ($title === null) {
                 return $content_result;
             }
             return warn_screen($title, $content_result);
@@ -232,7 +232,7 @@ function call_user_func_array__long_task($plain_title, $title, $hook, $args = nu
                 sync_file($path);
             }
 
-            if (is_null($title)) {
+            if ($title === null) {
                 return is_object($content_result) ? protect_from_escaping($content_result) : make_string_tempcode($content_result);
             }
             return do_template('FULL_MESSAGE_SCREEN', array(
@@ -284,7 +284,7 @@ function call_user_func_array__long_task($plain_title, $title, $hook, $args = nu
         $task_name = $task->add();
     }
 
-    if (is_null($title)) {
+    if ($title === null) {
         return do_lang_tempcode('NEW_TASK_RUNNING');
     }
     return inform_screen($title, do_lang_tempcode('NEW_TASK_RUNNING'));

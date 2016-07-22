@@ -83,7 +83,7 @@ class Block_side_rss
 
         require_code('rss');
         $rss = new CMS_RSS($url);
-        if (!is_null($rss->error)) {
+        if ($rss->error !== null) {
             $GLOBALS['DO_NOT_CACHE_THIS'] = true;
             require_code('failure');
             relay_error_notification(do_lang('rss:ERROR_HANDLING_RSS_FEED', $url, $rss->error), false, 'error_occurred_rss');
@@ -128,7 +128,7 @@ class Block_side_rss
             } elseif (array_key_exists('author_email', $rss->gleamed_feed)) {
                 $__author = hyperlink(mailto_obfuscated() . obfuscate_email_address($rss->gleamed_feed['author_email']), $_author_string, true, true);
             }
-            if (!is_null($__author)) {
+            if ($__author !== null) {
                 $_author_string = $__author->evaluate();
             }
             $_author = do_lang_tempcode('RSS_SOURCE_FROM', $_author_string);

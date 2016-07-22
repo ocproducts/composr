@@ -41,7 +41,7 @@ class Hook_fields_reference
 
         require_lang('fields');
         static $cats = null;
-        if (is_null($cats)) {
+        if ($cats === null) {
             $cats = $GLOBALS['SITE_DB']->query_select('catalogues', array('c_name', 'c_title'));
         }
         $ret = array();

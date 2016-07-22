@@ -47,7 +47,7 @@ function css_inherit($css_file, $theme, $destination_theme, $seed, $dark, $algor
     $full_path = get_custom_file_base() . '/themes/' . $theme . '/css_custom/' . $css_file . '.css';
     if (!is_file($full_path)) {
         $full_path = get_custom_file_base() . '/themes/' . $theme . '/css/' . $css_file . '.css';
-        if (!is_null($GLOBALS['CURRENT_SHARE_USER'])) {
+        if ($GLOBALS['CURRENT_SHARE_USER'] !== null) {
             $full_path = get_file_base() . '/themes/' . $theme . '/css_custom/' . $css_file . '.css';
             if (!is_file($full_path)) {
                 $full_path = get_file_base() . '/themes/' . $theme . '/css/' . $css_file . '.css';
@@ -67,7 +67,7 @@ function css_inherit($css_file, $theme, $destination_theme, $seed, $dark, $algor
 
     // Re-seed
     if (addon_installed('themewizard')) {
-        if (!is_null($seed)) {
+        if ($seed !== null) {
             // Not actually needed
             $sheet = preg_replace('#\{\$THEME_WIZARD_COLOR,\#[A-Fa-f0-9]{6},seed,100% [A-Fa-f0-9]{6}\}#', '{$THEME_WIZARD_COLOR,#' . $seed . ',seed,100% ' . $seed . '}', $sheet);
             $sheet = preg_replace('#\{\$THEME_WIZARD_COLOR,\#[A-Fa-f0-9]{6},WB,100% [A-Fa-f0-9]{6}\}#', '{$THEME_WIZARD_COLOR,#' . $seed . ',WB,100% ' . ($dark ? '000000' : 'FFFFFF') . '}', $sheet);

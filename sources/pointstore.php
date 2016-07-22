@@ -28,7 +28,7 @@ function pointstore_handle_error_taken($prefix, $suffix)
 {
     // Has this email address been taken?
     $taken = $GLOBALS['SITE_DB']->query_select_value_if_there('sales', 'details', array('details' => $prefix, 'details2' => '@' . $suffix));
-    if (!is_null($taken)) {
+    if ($taken !== null) {
         warn_exit(do_lang_tempcode('EMAIL_TAKEN'));
     }
 }
@@ -68,7 +68,7 @@ function pointstore_handle_error_already_has($type)
 
     // If we already own a forwarding account, inform our users.
     $has_one_already = $GLOBALS['SITE_DB']->query_select_value_if_there('sales', 'memberid', array('memberid' => $userid, 'purchasetype' => $type));
-    if (!is_null($has_one_already)) {
+    if ($has_one_already !== null) {
         warn_exit(do_lang_tempcode('ALREADY_HAVE'));
     }
 }

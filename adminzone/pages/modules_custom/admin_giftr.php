@@ -54,7 +54,7 @@ class Module_admin_giftr extends Standard_crud_module
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->create_table('giftr', array(
                 'id' => '*AUTO',
                 'name' => 'SHORT_TEXT',
@@ -101,20 +101,20 @@ class Module_admin_giftr extends Standard_crud_module
             ));
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 3)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 3)) {
             $GLOBALS['SITE_DB']->add_table_field('giftr', 'category', 'SHORT_TEXT', do_lang('GENERAL'));
 
             $GLOBALS['SITE_DB']->alter_table_field('members_gifts', 'annonymous', 'BINARY', 'is_anonymous');
             $GLOBALS['SITE_DB']->alter_table_field('members_gifts', 'topic_id', '?AUTO_LINK');
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 4)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 4)) {
             $GLOBALS['SITE_DB']->delete_table_field('members_gifts', 'topic_id');
             $GLOBALS['SITE_DB']->alter_table_field('members_gifts', 'from_user_id', 'MEMBER', 'from_member_id');
             $GLOBALS['SITE_DB']->alter_table_field('members_gifts', 'to_user_id', 'MEMBER', 'to_member_id');
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 5)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 5)) {
             $GLOBALS['SITE_DB']->rename_table('ocgifts', 'giftr');
         }
     }

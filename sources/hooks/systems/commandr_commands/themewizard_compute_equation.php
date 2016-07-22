@@ -57,11 +57,11 @@ class Hook_commandr_command_themewizard_compute_equation
 
             $colours = calculate_theme($seed, $theme, 'equations', 'colours', $dark);
             $parsed_equation = parse_css_colour_expression($equation);
-            if (is_null($parsed_equation)) {
+            if ($parsed_equation === null) {
                 return array('', '', '', '?');
             }
             $answer = execute_css_colour_expression($parsed_equation, $colours[0]);
-            if (is_null($answer)) {
+            if ($answer === null) {
                 return array('', '', '', '?');
             }
 

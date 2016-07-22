@@ -193,7 +193,7 @@ function get_html_trace()
                 $_value = new Tempcode();
                 foreach ($__value as $param) {
                     if (!((is_array($param)) && (array_key_exists('GLOBALS', $param)))) { // Some versions of PHP give the full environment as parameters. This will cause a recursive issue when outputting due to GLOBALS->ENV chaining.
-                        if ((is_object($param) && (is_a($param, 'Tempcode'))) || (is_null($param))) {
+                        if ((is_object($param) && (is_a($param, 'Tempcode'))) || ($param === null)) {
                             $__value = gettype($param);
                         } else {
                             @ob_start();
@@ -249,7 +249,7 @@ function fatal_exit($text)
 
     // To break any looping of errors
     global $EXITING;
-    if ((!is_null($EXITING)) || (!class_exists('Tempcode'))) {
+    if (($EXITING !== null) || (!class_exists('Tempcode'))) {
         die_html_trace($text);
     }
     $EXITING = 1;
@@ -309,7 +309,7 @@ function catch_fatal_errors()
 
     $error = error_get_last();
 
-    if (!is_null($error)) {
+    if ($error !== null) {
         if (substr($error['message'], 0, 26) == 'Maximum execution time of ') {
             if (function_exists('i_force_refresh')) {
                 i_force_refresh();
@@ -472,7 +472,7 @@ function warn_exit($text)
 {
     // To break any looping of errors
     global $EXITING;
-    if ((!is_null($EXITING)) || (!class_exists('Tempcode'))) {
+    if (($EXITING !== null) || (!class_exists('Tempcode'))) {
         die_html_trace($text);
     }
     $EXITING = 1;
@@ -719,8 +719,8 @@ function __param($array, $name, $default, $must_integer = false, $is_post = fals
  */
 function either_param_integer($name, $default = null)
 {
-    $ret = __param($_REQUEST, $name, ($default === false) ? false : (is_null($default) ? null : strval($default)));
-    if ((is_null($default)) && (($ret === '') || (is_null($ret)))) {
+    $ret = __param($_REQUEST, $name, ($default === false) ? false : (($default === null) ? null : strval($default)));
+    if (($default === null) && (($ret === '') || ($ret === null))) {
         return null;
     }
     return intval($ret);
@@ -735,8 +735,8 @@ function either_param_integer($name, $default = null)
  */
 function post_param_integer($name, $default = null)
 {
-    $ret = __param($_POST, $name, ($default === false) ? false : (is_null($default) ? null : strval($default)));
-    if ((is_null($default)) && (($ret === '') || (is_null($ret)))) {
+    $ret = __param($_POST, $name, ($default === false) ? false : (($default === null) ? null : strval($default)));
+    if (($default === null) && (($ret === '') || ($ret === null))) {
         return null;
     }
     return intval($ret);
@@ -751,8 +751,8 @@ function post_param_integer($name, $default = null)
  */
 function get_param_integer($name, $default = null)
 {
-    $ret = __param($_GET, $name, ($default === false) ? false : (is_null($default) ? null : strval($default)));
-    if ((is_null($default)) && (($ret === '') || (is_null($ret)))) {
+    $ret = __param($_GET, $name, ($default === false) ? false : (($default === null) ? null : strval($default)));
+    if (($default === null) && (($ret === '') || ($ret === null))) {
         return null;
     }
     return intval($ret);

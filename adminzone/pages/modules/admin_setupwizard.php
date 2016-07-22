@@ -166,7 +166,7 @@ class Module_admin_setupwizard
         }
 
         $_done_once = get_value('setupwizard_completed');
-        $done_once = !is_null($_done_once);
+        $done_once = $_done_once !== null;
 
         $post_url = build_url(array('page' => '_SELF', 'type' => 'step2'), '_SELF', array('keep_theme_seed', 'keep_theme_dark', 'keep_theme_source', 'keep_theme_algorithm'));
         $text = new Tempcode();
@@ -354,7 +354,7 @@ class Module_admin_setupwizard
         );*/
 
         // These are on by default regardless of install profile. It's useful, because we don't want install profiles to have to be too prescriptive, and we want old ones to keep working well even if new addons have been introduced.
-        if (!is_null($addon_list_on_by_default)) {
+        if ($addon_list_on_by_default !== null) {
             $addon_list_on_by_default = array_merge($addon_list_on_by_default, array(
                 'banners',
                 'ecommerce',
@@ -407,7 +407,7 @@ class Module_admin_setupwizard
         ));
         // ... unless the install profile really is shunning them
         foreach ($addon_list_override_to_off_by_default as $_to_find) {
-            if (!is_null($addon_list_on_by_default)) {
+            if ($addon_list_on_by_default !== null) {
                 $_found = array_search($_to_find, $addon_list_on_by_default);
                 if ($_found !== false) {
                     unset($addon_list_on_by_default[$_found]);
@@ -440,7 +440,7 @@ class Module_admin_setupwizard
 
         // Do we need to download any from compo.sr?
         $GLOBALS['DEV_MODE'] = false;
-        foreach (array_merge(is_null($addon_list_on_by_default) ? array() : $addon_list_on_by_default, $addon_list_advanced_on_by_default, $addon_list_advanced_off_by_default) as $mentioned_addon) {
+        foreach (array_merge(($addon_list_on_by_default === null) ? array() : $addon_list_on_by_default, $addon_list_advanced_on_by_default, $addon_list_advanced_off_by_default) as $mentioned_addon) {
             if ((!array_key_exists($mentioned_addon, $addons_installed)) && (!array_key_exists($mentioned_addon, $addons_not_installed))) {
                 $remote_addons = find_remote_addons();
                 $_mentioned_addon = titleify($mentioned_addon);
@@ -467,7 +467,7 @@ class Module_admin_setupwizard
             if ((!$is_core) && (substr($addon_name, -7) != '_shared') && ($addon_name != 'setupwizard')) {
                 $is_advanced_on_by_default = in_array($addon_name, $addon_list_advanced_on_by_default);
                 $is_advanced_off_by_default = in_array($addon_name, $addon_list_advanced_off_by_default);
-                $install_by_default = ((!is_null($addon_list_on_by_default)) && (in_array($addon_name, $addon_list_on_by_default)) || ($is_advanced_on_by_default) || ((is_null($addon_list_on_by_default)) && (!$is_advanced_off_by_default)));
+                $install_by_default = (($addon_list_on_by_default !== null) && (in_array($addon_name, $addon_list_on_by_default)) || ($is_advanced_on_by_default) || (($addon_list_on_by_default === null) && (!$is_advanced_off_by_default)));
 
                 $addon_description = $row['description'];
                 if ((substr($addon_description, -1) != '.') && ($addon_description != '')) {
@@ -538,7 +538,7 @@ class Module_admin_setupwizard
                 if (strpos(file_get_contents($path), 'get_fields') !== false) { // Memory optimisation
                     require_code('hooks/modules/admin_setupwizard/' . filter_naughty_harsh($hook));
                     $hook = object_factory('Hook_sw_' . filter_naughty_harsh($hook), true);
-                    if (is_null($hook)) {
+                    if ($hook === null) {
                         continue;
                     }
                     if (method_exists($hook, 'get_fields')) {
@@ -633,7 +633,7 @@ class Module_admin_setupwizard
                 $description = paragraph(do_lang_tempcode('BLOCK_' . $block . '_DESCRIPTION'));
                 $description->attach(paragraph(do_lang_tempcode('BLOCK_' . $block . '_USE')));
                 $block_nice = cleanup_block_name($block);
-                if (is_null($default_blocks)) {
+                if ($default_blocks === null) {
                     $position = $position_bits[1];
                 } else {
                     $position = 'NO';
@@ -665,7 +665,7 @@ class Module_admin_setupwizard
                 $description = paragraph(do_lang_tempcode('BLOCK_' . $block . '_DESCRIPTION'));
                 $description->attach(paragraph(do_lang_tempcode('BLOCK_' . $block . '_USE')));
                 $block_nice = cleanup_block_name($block);
-                if (is_null($default_blocks)) {
+                if ($default_blocks === null) {
                     $position = $position_bits[1];
                 } else {
                     $position = 'NO';
@@ -862,7 +862,7 @@ class Module_admin_setupwizard
                 require_code('hooks/modules/admin_setupwizard_installprofiles/' . $installprofile);
                 $object = object_factory('Hook_admin_setupwizard_installprofiles_' . $installprofile, true);
             }
-            if (!is_null($object)) {
+            if ($object !== null) {
                 $object->install_code();
                 $installprofileblocks = $object->default_blocks();
             } else { // Hmm, we probably just uninstalled the install-profile hook as its addon was not chosen! Whoopsie, but do our best.
@@ -929,7 +929,7 @@ class Module_admin_setupwizard
             $GLOBALS['SITE_DB']->query_update('zones', lang_remap('zone_header_text', $a, $header_text), array('zone_name' => ''), '', 1);
 
             $b = $GLOBALS['SITE_DB']->query_select_value_if_there('zones', 'zone_header_text', array('zone_name' => 'site'));
-            if (!is_null($b)) {
+            if ($b !== null) {
                 $GLOBALS['SITE_DB']->query_update('zones', lang_remap('zone_header_text', $b, $header_text), array('zone_name' => 'site'), '', 1);
             }
         }
@@ -940,7 +940,7 @@ class Module_admin_setupwizard
         }
 
         // Set addons
-        if ((post_param_integer('skip_4', 0) == 0) && (is_null($GLOBALS['CURRENT_SHARE_USER']))) {
+        if ((post_param_integer('skip_4', 0) == 0) && ($GLOBALS['CURRENT_SHARE_USER'] === null)) {
             require_lang('addons');
             require_code('addons2');
             $addons_installed = find_installed_addons();
@@ -1070,7 +1070,7 @@ class Module_admin_setupwizard
         }
 
         $block_options = mixed();
-        if (($installprofile != '') && (!is_null($object))) {
+        if (($installprofile != '') && ($object !== null)) {
             $block_options = $object->block_options();
         }
 

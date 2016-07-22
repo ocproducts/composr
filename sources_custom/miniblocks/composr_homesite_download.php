@@ -28,19 +28,19 @@ $releases_tpl_map = array();
 if ($t !== null) {
     $latest = $t;
     $release_quick = do_release($latest, 'QUICK_');
-    if (!is_null($release_quick)) {
+    if ($release_quick !== null) {
         $releases_tpl_map += $release_quick;
     }
     $release_manual = do_release($latest . ' (manual)', 'MANUAL_');
-    if (!is_null($release_manual)) {
+    if ($release_manual !== null) {
         $releases_tpl_map += $release_manual;
     }
-    $release_bleedingquick = do_release('(bleeding-edge)', 'BLEEDINGQUICK_', is_null($release_quick) ? null : $release_quick['QUICK_VERSION']);
-    if (!is_null($release_bleedingquick)) {
+    $release_bleedingquick = do_release('(bleeding-edge)', 'BLEEDINGQUICK_', ($release_quick === null) ? null : $release_quick['QUICK_VERSION']);
+    if ($release_bleedingquick !== null) {
         $releases_tpl_map += $release_bleedingquick;
     }
-    $release_bleedingmanual = do_release('(bleeding-edge, manual)', 'BLEEDINGMANUAL_', is_null($release_manual) ? null : $release_manual['MANUAL_VERSION']);
-    if (!is_null($release_bleedingmanual)) {
+    $release_bleedingmanual = do_release('(bleeding-edge, manual)', 'BLEEDINGMANUAL_', ($release_manual === null) ? null : $release_manual['MANUAL_VERSION']);
+    if ($release_bleedingmanual !== null) {
         $releases_tpl_map += $release_bleedingmanual;
     }
 }
@@ -84,7 +84,7 @@ function do_release($name_suffix, $prefix, $version_must_be_newer_than = null)
         $myrow = $rows[0];
     }
 
-    if (!is_null($version_must_be_newer_than)) {
+    if ($version_must_be_newer_than !== null) {
         if (strpos($version_must_be_newer_than, '.') === false) {
             $version_must_be_newer_than .= '.0.0'; // Weird, but PHP won't do version_compare right without it
         }
@@ -105,7 +105,7 @@ function do_release($name_suffix, $prefix, $version_must_be_newer_than = null)
     require_code('files');
     $filesize = clean_file_size($myrow['file_size']);
 
-    if (!is_null($version_must_be_newer_than)) {
+    if ($version_must_be_newer_than !== null) {
         if (version_compare($version_must_be_newer_than, $version) == 1) {
             return null;
         }

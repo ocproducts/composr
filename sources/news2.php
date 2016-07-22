@@ -43,7 +43,7 @@ function add_news_category($title, $img, $notes, $owner = null, $id = null)
         'nc_owner' => $owner,
     );
     $map += insert_lang('nc_title', $title, 1);
-    if (!is_null($id)) {
+    if ($id !== null) {
         $map['id'] = $id;
     }
     $id = $GLOBALS['SITE_DB']->query_insert('news_categories', $map, true);
@@ -107,13 +107,13 @@ function edit_news_category($id, $title, $img, $notes, $owner)
         generate_resource_fs_moniker('news_category', strval($id));
     }
 
-    if (is_null($title)) {
+    if ($title === null) {
         $title = get_translated_text($myrow['nc_title']);
     }
-    if (is_null($img)) {
+    if ($img === null) {
         $img = $myrow['nc_img'];
     }
-    if (is_null($notes)) {
+    if ($notes === null) {
         $notes = $myrow['notes'];
     }
 
@@ -154,10 +154,10 @@ function delete_news_category($id)
     $myrow = $rows[0];
 
     $min = $GLOBALS['SITE_DB']->query_value_if_there('SELECT c.id FROM ' . get_table_prefix() . 'news_categories c WHERE c.id<>' . strval($id) . ' AND ' . db_string_equal_to($GLOBALS['SITE_DB']->translate_field_ref('nc_title'), do_lang('news:NC_general')), false, false, array('nc_title' => 'SHORT_TRANS'));
-    if (is_null($min)) {
+    if ($min === null) {
         $min = $GLOBALS['SITE_DB']->query_value_if_there('SELECT MIN(id) FROM ' . get_table_prefix() . 'news_categories WHERE id<>' . strval($id));
     }
-    if (is_null($min)) {
+    if ($min === null) {
         warn_exit(do_lang_tempcode('YOU_MUST_KEEP_ONE_NEWS_CAT'));
     }
 
@@ -231,19 +231,19 @@ function delete_news_category($id)
  */
 function add_news($title, $news, $author = null, $validated = 1, $allow_rating = 1, $allow_comments = 1, $allow_trackbacks = 1, $notes = '', $news_article = '', $main_news_category = null, $news_categories = null, $time = null, $submitter = null, $views = 0, $edit_date = null, $id = null, $image = '', $meta_keywords = '', $meta_description = '', $regions = null)
 {
-    if (is_null($author)) {
+    if ($author === null) {
         $author = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
     }
-    if (is_null($news_categories)) {
+    if ($news_categories === null) {
         $news_categories = array();
     }
-    if (is_null($regions)) {
+    if ($regions === null) {
         $regions = array();
     }
-    if (is_null($time)) {
+    if ($time === null) {
         $time = time();
     }
-    if (is_null($submitter)) {
+    if ($submitter === null) {
         $submitter = get_member();
     }
     $already_created_personal_category = false;
@@ -254,9 +254,9 @@ function add_news($title, $news, $author = null, $validated = 1, $allow_rating =
     require_code('global4');
     prevent_double_submit('ADD_NEWS', null, $title);
 
-    if (is_null($main_news_category)) {
+    if ($main_news_category === null) {
         $main_news_category_id = $GLOBALS['SITE_DB']->query_select_value_if_there('news_categories', 'id', array('nc_owner' => $submitter));
-        if (is_null($main_news_category_id)) {
+        if ($main_news_category_id === null) {
             if (!has_privilege(get_member(), 'have_personal_category', 'cms_news')) {
                 fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
             }
@@ -304,15 +304,15 @@ function add_news($title, $news, $author = null, $validated = 1, $allow_rating =
     }
     $map += insert_lang_comcode('title', $title, 1);
     $map += insert_lang_comcode('news', $news, 1);
-    if (!is_null($id)) {
+    if ($id !== null) {
         $map['id'] = $id;
     }
     $id = $GLOBALS['SITE_DB']->query_insert('news', $map, true);
 
-    if (!is_null($news_categories)) {
+    if ($news_categories !== null) {
         $news_categories = array_unique($news_categories);
         foreach ($news_categories as $i => $value) {
-            if ((is_null($value)) && (!$already_created_personal_category)) {
+            if (($value === null) && (!$already_created_personal_category)) {
                 $map = array(
                     'nc_img' => 'newscats/community',
                     'notes' => '',
@@ -327,7 +327,7 @@ function add_news($title, $news, $author = null, $validated = 1, $allow_rating =
                 $news_category_id = $value;
             }
 
-            if (is_null($news_category_id)) {
+            if ($news_category_id === null) {
                 continue; // Double selected
             }
 
@@ -377,7 +377,7 @@ function add_news($title, $news, $author = null, $validated = 1, $allow_rating =
     require_code('seo2');
     if (get_option('enable_seo_fields') === '0') {
         $meta_keywords = '';
-        foreach (array_unique(array_merge(is_null($news_categories) ? array() : $news_categories, array($main_news_category_id))) as $news_category_id) {
+        foreach (array_unique(array_merge(($news_categories === null) ? array() : $news_categories, array($main_news_category_id))) as $news_category_id) {
             if ($meta_keywords != '') {
                 $meta_keywords .= ',';
             }
@@ -471,10 +471,10 @@ function send_rss_ping($show_errors = true)
  */
 function edit_news($id, $title, $news, $author, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $news_article, $main_news_category, $news_categories, $meta_keywords, $meta_description, $image, $add_time = null, $edit_time = null, $views = null, $submitter = null, $regions = null, $null_is_literal = false)
 {
-    if (is_null($regions)) {
+    if ($regions === null) {
         $regions = array();
     }
-    if (is_null($edit_time)) {
+    if ($edit_time === null) {
         $edit_time = $null_is_literal ? null : time();
     }
 
@@ -514,23 +514,23 @@ function edit_news($id, $title, $news, $author, $validated, $allow_rating, $allo
     $update_map += lang_remap_comcode('news', $_news, $news);
 
     $update_map['edit_date'] = $edit_time;
-    if (!is_null($add_time)) {
+    if ($add_time !== null) {
         $update_map['date_and_time'] = $add_time;
     }
-    if (!is_null($views)) {
+    if ($views !== null) {
         $update_map['news_views'] = $views;
     }
-    if (!is_null($submitter)) {
+    if ($submitter !== null) {
         $update_map['submitter'] = $submitter;
     }
 
-    if (!is_null($image)) {
+    if ($image !== null) {
         $update_map['news_image'] = $image;
         require_code('files2');
         delete_upload('uploads/repimages', 'news', 'news_image', 'id', $id, $image);
     }
 
-    if (!is_null($news_categories)) {
+    if ($news_categories !== null) {
         $GLOBALS['SITE_DB']->query_delete('news_category_entries', array('news_entry' => $id));
 
         foreach ($news_categories as $value) {
@@ -562,7 +562,7 @@ function edit_news($id, $title, $news, $author, $validated, $allow_rating, $allo
     if (get_option('enable_seo_fields') === '0') {
         $meta_description = ($news == '') ? $news_article : $news;
         $meta_keywords = '';
-        foreach (array_unique(array_merge(is_null($news_categories) ? array() : $news_categories, array($main_news_category))) as $news_category_id) {
+        foreach (array_unique(array_merge(($news_categories === null) ? array() : $news_categories, array($main_news_category))) as $news_category_id) {
             if ($meta_keywords != '') {
                 $meta_keywords .= ',';
             }
@@ -607,7 +607,7 @@ function dispatch_news_notification($id, $title, $main_news_category)
 {
     $self_url = build_url(array('page' => 'news', 'type' => 'view', 'id' => $id), get_module_zone('news'), null, false, false, true);
 
-    $is_blog = !is_null($GLOBALS['SITE_DB']->query_select_value('news_categories', 'nc_owner', array('id' => $main_news_category)));
+    $is_blog = ($GLOBALS['SITE_DB']->query_select_value('news_categories', 'nc_owner', array('id' => $main_news_category)) !== null);
 
     if (addon_installed('content_privacy')) {
         require_code('content_privacy');
@@ -662,7 +662,7 @@ function delete_news($id)
     delete_lang($news);
     require_code('attachments2');
     require_code('attachments3');
-    if (!is_null($news_article)) {
+    if ($news_article !== null) {
         delete_lang_comcode_attachments($news_article, 'news', strval($id));
     }
 
@@ -756,7 +756,7 @@ function _get_wordpress_db_data()
     $db = new DatabaseConnector($db_name, $host_name, $db_user, $db_passwrod, $db_table_prefix);
 
     $users = $db->query('SELECT * FROM ' . db_escape_string($db_name) . '.' . db_escape_string($db_table_prefix) . '_users', null, null, true);
-    if (is_null($users)) {
+    if ($users === null) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
     }
 
@@ -908,7 +908,7 @@ function _news_import_grab_image(&$data, $url)
     fclose($target_handle);
     sync_file($target_path);
     fix_permissions($target_path);
-    if (!is_null($result)) {
+    if ($result !== null) {
         $data = str_replace('"' . $url . '"', $target_url, $data);
         $data = str_replace('"' . preg_replace('#^http://.*/#U', '/', $url) . '"', $target_url, $data);
         $data = str_replace('\'' . $url . '\'', $target_url, $data);

@@ -218,7 +218,7 @@ function _custom_comcode_import($db)
             if (is_on_multi_site_network()) {
                 if ($db->is_forum_db()) {
                     $tags = array_merge($tags, $GLOBALS['SITE_DB']->query_select('custom_comcode', array('tag_parameters', 'tag_replace', 'tag_tag', 'tag_dangerous_tag', 'tag_block_tag', 'tag_textual_tag'), array('tag_enabled' => 1)));
-                } elseif ((!is_null($GLOBALS['FORUM_DB'])) && (get_forum_type() == 'cns')) {
+                } elseif (($GLOBALS['FORUM_DB'] !== null) && (get_forum_type() == 'cns')) {
                     $tags = array_merge($tags, $GLOBALS['FORUM_DB']->query_select('custom_comcode', array('tag_parameters', 'tag_replace', 'tag_tag', 'tag_dangerous_tag', 'tag_block_tag', 'tag_textual_tag'), array('tag_enabled' => 1)));
                 }
             }
@@ -283,11 +283,11 @@ function _comcode_to_tempcode($comcode, $source_member = null, $as_admin = false
         disable_browser_xss_detection();
     }
 
-    if (is_null($db)) {
+    if ($db === null) {
         $db = $GLOBALS['SITE_DB'];
     }
 
-    if (is_null($source_member)) {
+    if ($source_member === null) {
         $source_member = (function_exists('get_member')) ? get_member() : 0;
     }
 
@@ -324,7 +324,7 @@ function _comcode_to_tempcode($comcode, $source_member = null, $as_admin = false
 function comcode_parse_error($preparse_mode, $_message, $pos, $comcode, $check_only = false)
 {
     require_lang('comcode');
-    if (is_null($_message[0])) {
+    if ($_message[0] === null) {
         $message = $_message[1];
     } else {
         if (strpos($_message[0], ':') === false) {
@@ -384,7 +384,7 @@ function comcode_parse_error($preparse_mode, $_message, $pos, $comcode, $check_o
         $sofar .= $tmp_tpl->evaluate();
     }
     $lines->attach(do_template('COMCODE_MISTAKE_LINE', array('_GUID' => 'eebfe1342f3129d4e31fc9fc1963af2b', 'NUMBER' => integer_format($number), 'LINE' => make_string_tempcode($sofar))));
-    if (is_null($line)) {
+    if ($line === null) {
         $line = $number;
     }
 
@@ -400,7 +400,7 @@ function comcode_parse_error($preparse_mode, $_message, $pos, $comcode, $check_o
             break;
         }
     }
-    if (is_null($name)) {
+    if ($name === null) {
         if ($check_only) { // Maybe it has been appended with something else, so search deeper (we suspect this as we have been explictly asked to check the Comcode)
             foreach ($_POST as $key => $val) {
                 if (!is_string($val)) {
@@ -413,7 +413,7 @@ function comcode_parse_error($preparse_mode, $_message, $pos, $comcode, $check_o
                 }
             }
         }
-        if (is_null($name)) {
+        if ($name === null) {
             warn_exit(do_lang_tempcode('COMCODE_ERROR', $message, escape_html(integer_format($line))));
         }
     }
@@ -504,7 +504,7 @@ function test_url($url_full, $tag_type, $given_url, $source_member)
     if (!handle_has_checked_recently($url_full)) {
         $COMCODE_PARSE_URLS_CHECKED++;
         $test = ($COMCODE_PARSE_URLS_CHECKED >= MAX_URLS_TO_READ) ? '' : http_download_file($url_full, 0, false);
-        if ((is_null($test)) && (in_array($HTTP_MESSAGE, array('404')))) {
+        if (($test === null) && (in_array($HTTP_MESSAGE, array('404')))) {
             if ($HTTP_MESSAGE != 'could not connect to host'/*don't show for random connectivity issue*/) {
                 $temp_tpl = do_template('WARNING_BOX', array(
                     '_GUID' => '7bcea67226f89840394614d88020e3ac',
@@ -581,7 +581,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
     global $DANGEROUS_TAGS, $STRUCTURE_LIST, $COMCODE_PARSE_TITLE;
     if ((isset($DANGEROUS_TAGS[$tag])) && (!$comcode_dangerous)) {
         $username = $GLOBALS['FORUM_DRIVER']->get_username($source_member);
-        if (is_null($username)) {
+        if ($username === null) {
             $username = do_lang('UNKNOWN');
         }
         if ($semiparse_mode) { // Can't load through error for this, so just show it as a tag
@@ -673,7 +673,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
 
         case 'code':
             list($_embed, $title) = do_code_box($attributes['param'], $embed, (array_key_exists('numbers', $attributes)) && ($attributes['numbers'] == '1'), $in_semihtml, $is_all_semihtml);
-            if (!is_null($_embed)) {
+            if ($_embed !== null) {
                 $tpl = (array_key_exists('scroll', $attributes) && ($attributes['scroll'] == '1')) ? 'COMCODE_CODE_SCROLL' : 'COMCODE_CODE';
                 if (($tpl == 'COMCODE_CODE_SCROLL') && (substr_count($_embed, "\n") < 10)) {
                     $style = 'height: auto';
@@ -773,7 +773,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                     $_s_title = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_posts', 'p_title', array('id' => $post_id));
                     if ($_s_title != '') {
                         $forum_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_posts', 'p_cache_forum_id', array('id' => $post_id));
-                        if ((!is_null($forum_id)) && (has_category_access($source_member, 'forums', strval($forum_id)))) {
+                        if (($forum_id !== null) && (has_category_access($source_member, 'forums', strval($forum_id)))) {
                             $s_title = make_string_tempcode($_s_title);
                         }
                     }
@@ -792,8 +792,8 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 '_GUID' => 'af7b6920e58027256d536a8cdb8a164a',
                 'URL' => $GLOBALS['FORUM_DRIVER']->post_url($post_id, $forum, true),
                 'TITLE' => $s_title,
-                'DATE' => is_null($_date) ? null : get_timezoned_date($_date, false),
-                '_DATE' => is_null($_date) ? null : strval($_date),
+                'DATE' => ($_date === null) ? null : get_timezoned_date($_date, false),
+                '_DATE' => ($_date === null) ? null : strval($_date),
                 'POST_ID' => strval($post_id),
             ));
             break;
@@ -940,7 +940,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
 
         case 'del':
             $cite = array_key_exists('cite', $attributes) ? $attributes['cite'] : null;
-            if (!is_null($cite)) {
+            if ($cite !== null) {
                 $temp_tpl = test_url($cite, 'del', $cite, $source_member);
             }
             $datetime = array_key_exists('datetime', $attributes) ? $attributes['datetime'] : null;
@@ -949,7 +949,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
 
         case 'ins':
             $cite = array_key_exists('cite', $attributes) ? $attributes['cite'] : null;
-            if (!is_null($cite)) {
+            if ($cite !== null) {
                 $temp_tpl = test_url($cite, 'ins', $cite, $source_member);
                 if (!$temp_tpl->is_empty()) {
                     break;
@@ -1332,7 +1332,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
 
         case 'quote':
             $cite = array_key_exists('cite', $attributes) ? $attributes['cite'] : null;
-            if (!is_null($cite)) {
+            if ($cite !== null) {
                 $temp_tpl = test_url($cite, 'quote', $cite, $source_member);
             }
 
@@ -1396,7 +1396,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 $template = 'COMCODE_SUBTITLE';
             }
             if ($level == 1) {
-                if (is_null($COMCODE_PARSE_TITLE)) {
+                if ($COMCODE_PARSE_TITLE === null) {
                     $COMCODE_PARSE_TITLE = $embed->evaluate();
                     if (is_object($COMCODE_PARSE_TITLE)) {
                         $COMCODE_PARSE_TITLE = $COMCODE_PARSE_TITLE->evaluate();
@@ -1554,7 +1554,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 $uniq_id = $struct[2];
                 $url = array_key_exists($i, $urls_for) ? $urls_for[$i] : '';
 
-                if ((!is_null($levels_allowed)) && ($level > $levels_allowed)) {
+                if (($levels_allowed !== null) && ($level > $levels_allowed)) {
                     continue;
                 }
 
@@ -1732,12 +1732,12 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             if (!array_key_exists('page', $_attributes)) {
                 $_attributes['page'] = '';
             }
-            if (($zone == '_SELF') && (!is_null($OVERRIDE_SELF_ZONE))) {
+            if (($zone == '_SELF') && ($OVERRIDE_SELF_ZONE !== null)) {
                 $zone = $OVERRIDE_SELF_ZONE;
             }
             if ($zone == '_SEARCH') {
                 $zone = get_page_zone($_attributes['page'], false);
-                if (is_null($zone)) {
+                if ($zone === null) {
                     $zone = '';
                 }
             }
@@ -1752,7 +1752,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 }
                 if ($zone == '_SEARCH') {
                     $zone = get_page_zone($page, false);
-                    if (is_null($zone)) {
+                    if ($zone === null) {
                         $zone = ''; // Oh dear, well it will be correctly identified as not found anyway
                     }
                 }
@@ -1762,9 +1762,9 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                         if (!is_numeric($_attributes['id'])) {
                             $_attributes['id'] = $GLOBALS['SITE_DB']->query_select_value_if_there('url_id_monikers', 'm_resource_id', array('m_resource_page' => $page, 'm_moniker' => $_attributes['id']));
                         }
-                        if (!is_null($_attributes['id'])) {
+                        if ($_attributes['id'] !== null) {
                             $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 'id', array('id' => $_attributes['id']));
-                            if (is_null($test)) {
+                            if ($test === null) {
                                 $ptest = false;
                             }
                         } else {
@@ -1841,7 +1841,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             }
 
             $rollover = array_key_exists('rollover', $attributes) ? $attributes['rollover'] : null;
-            if ((!is_null($rollover)) && (url_is_local($rollover))) {
+            if (($rollover !== null) && (url_is_local($rollover))) {
                 if ((file_exists(get_file_base() . '/' . $rollover)) && (!file_exists(get_custom_file_base() . '/' . $rollover))) {
                     $rollover = get_base_url() . '/' . $rollover;
                 } else {
@@ -1944,7 +1944,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 $attributes['type'] = 'hyperlink';
             }
 
-            if (is_null($on_behalf_of_member)) {
+            if ($on_behalf_of_member === null) {
                 $on_behalf_of_member = $source_member;
             }
 
@@ -1971,9 +1971,9 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                     $daily_quota = 5; // 5 is a hard coded default for non-Conversr forums
                 }
                 require_code('upload_syndication');
-                if ((!is_null($daily_quota)) && ((substr($id, 0, 4) != 'new_') || (!upload_will_syndicate('file' . substr($id, 4))))) {
+                if (($daily_quota !== null) && ((substr($id, 0, 4) != 'new_') || (!upload_will_syndicate('file' . substr($id, 4))))) {
                     $_size_uploaded_today = $db->query('SELECT SUM(a_file_size) AS the_answer FROM ' . $db->get_table_prefix() . 'attachments WHERE a_member_id=' . strval($source_member) . ' AND a_add_time>' . strval(time() - 60 * 60 * 24) . ' AND a_add_time<=' . strval(time()));
-                    if (is_null($_size_uploaded_today[0]['the_answer'])) {
+                    if ($_size_uploaded_today[0]['the_answer'] === null) {
                         $_size_uploaded_today[0]['the_answer'] = 0;
                     }
                     $size_uploaded_today = ceil(((float)$_size_uploaded_today[0]['the_answer']) / 1024.0 / 1024.0);
@@ -2129,7 +2129,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 } else { // No permission
                     require_lang('permissions');
                     $username = $GLOBALS['FORUM_DRIVER']->get_username($source_member);
-                    if (is_null($username)) {
+                    if ($username === null) {
                         $username = do_lang('DELETED');
                     }
                     $temp_tpl = do_template('WARNING_BOX', array('_GUID' => 'af61f96b5cc6819979ce681d6f49b384', 'WARNING' => do_lang_tempcode('permissions:ACCESS_DENIED__REUSE_ATTACHMENT', $username)));
@@ -2138,7 +2138,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             }
 
             // New attachments need inserting
-            if (is_null($attachment_row)) {
+            if ($attachment_row === null) {
                 require_code('images');
 
                 // Thumbnail generation
@@ -2224,7 +2224,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             break;
     }
 
-    if (is_null($temp_tpl)) {
+    if ($temp_tpl === null) {
         $temp_tpl = new Tempcode();
     }
 

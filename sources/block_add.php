@@ -135,20 +135,20 @@ function block_helper_script()
                 $addon_icon = null;
             }
 
-            $this_block_type = (is_null($addon_name) || (strpos($addon_name, 'block') !== false) || ($addon_name == 'core')) ? substr($block, 0, (strpos($block, '_') === false) ? strlen($block) : strpos($block, '_')) : $addon_name;
+            $this_block_type = (($addon_name === null) || (strpos($addon_name, 'block') !== false) || ($addon_name == 'core')) ? substr($block, 0, (strpos($block, '_') === false) ? strlen($block) : strpos($block, '_')) : $addon_name;
             if (!array_key_exists($this_block_type, $block_types)) {
                 $block_types[$this_block_type] = new Tempcode();
             }
-            if (!is_null($addon_icon)) {
+            if ($addon_icon !== null) {
                 $block_types_icon[$this_block_type] = $addon_icon;
             }
 
             $block_description = do_lang('BLOCK_' . $block . '_DESCRIPTION', null, null, null, null, false);
             $block_use = do_lang('BLOCK_' . $block . '_USE', null, null, null, null, false);
-            if (is_null($block_description)) {
+            if ($block_description === null) {
                 $block_description = '';
             }
-            if (is_null($block_use)) {
+            if ($block_use === null) {
                 $block_use = '';
             }
             $descriptiont = ($block_description == '' && $block_use == '') ? new Tempcode() : do_lang_tempcode('BLOCK_HELPER_1X', $block_description, $block_use);
@@ -235,7 +235,7 @@ function block_helper_script()
         if (!isset($defaults['cache'])) {
             $defaults['cache'] = block_cache_default($block);
         }
-        if (is_null($parameters)) {
+        if ($parameters === null) {
             $parameters = array();
         }
         $advanced_ind = do_lang('BLOCK_IND_ADVANCED');
@@ -266,7 +266,7 @@ function block_helper_script()
                 // Work out and cleanup the title
                 $parameter_title = titleify($parameter);
                 $test = do_lang('BLOCK_' . $block . '_PARAM_' . $parameter . '_TITLE', null, null, null, null, false);
-                if (!is_null($test)) {
+                if ($test !== null) {
                     $parameter_title = $test;
                 }
 
@@ -305,7 +305,7 @@ function block_helper_script()
                 // Show field
                 foreach ($block_ui_renderers as $block_ui_renderer) {
                     $test = $block_ui_renderer->render_block_ui($block, $parameter, $has_default, $default, $description);
-                    if (!is_null($test)) {
+                    if ($test !== null) {
                         $fields->attach($test);
                         continue 2;
                     }
@@ -436,11 +436,11 @@ function block_helper_script()
             $submit_name = do_lang_tempcode('USE');
         }
         $block_description = do_lang('BLOCK_' . $block . '_DESCRIPTION', null, null, null, null, false);
-        if (is_null($block_description)) {
+        if ($block_description === null) {
             $block_description = '';
         }
         $block_use = do_lang('BLOCK_' . $block . '_USE', null, null, null, null, false);
-        if (is_null($block_use)) {
+        if ($block_use === null) {
             $block_use = '';
         }
         if (($block_description == '') && ($block_use == '')) {
@@ -473,7 +473,7 @@ function block_helper_script()
         }
         foreach ($parameters as $parameter) {
             $value = post_param_string($parameter, post_param_string($parameter . '_fallback_list', null));
-            if (is_null($value)) {
+            if ($value === null) {
                 if (post_param_integer('tick_on_form__' . $parameter, null) === null) {
                     continue; // If not on form, continue, otherwise must be 0
                 }

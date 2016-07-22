@@ -100,7 +100,7 @@ class Hook_fields_long_trans
      */
     public function get_field_inputter($_cf_name, $_cf_description, $field, $actual_value, $new, $last = true)
     {
-        if (is_null($actual_value)) {
+        if ($actual_value === null) {
             $actual_value = ''; // Plug anomaly due to unusual corruption
         }
 

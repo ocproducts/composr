@@ -242,7 +242,7 @@ class Hook_import_html_site
                                 }
                             }
                             $av_ratios = array_sum($all_ratios_for_pos) / floatval(count($all_ratios_for_pos));
-                            if ((is_null($best_av_ratios)) || ($av_ratios < $best_av_ratios)) {
+                            if (($best_av_ratios === null) || ($av_ratios < $best_av_ratios)) {
                                 $best_av_ratios = $av_ratios;
                             } elseif ($av_ratios > $best_av_ratios + 300) { // If we go a long way off-course, die out for efficiency reasons (no point going through whole file if we think a new peak is very unlikely)
                                 break;
@@ -267,7 +267,7 @@ class Hook_import_html_site
                 $best_reference_file = null;
                 foreach ($best_ratios as $bits) {
                     list($pos, $ratio, $reference_file) = $bits;
-                    if ((is_null($best)) || ($ratio < $best)) {
+                    if (($best === null) || ($ratio < $best)) {
                         $best = $ratio;
                         $best_pos = $pos;
                         $best_reference_file = $reference_file;
@@ -453,7 +453,7 @@ class Hook_import_html_site
                 // Copy htm/html/php files to correct zone page directories (html_custom/<lang>, or minimodules_custom)
                 if ($convert_to_comcode == 0) {
                     // Insert an <h1> if the h1 is not there
-                    if ((strpos($filtered, '<h1') === false) && (!is_null($page_title))) {
+                    if ((strpos($filtered, '<h1') === false) && ($page_title !== null)) {
                         $filtered = "<h1>" . $page_title . "</h1>\n\n" . $filtered;
                     }
 
@@ -466,7 +466,7 @@ class Hook_import_html_site
                     sync_file($file_path);
                 } else { // Or copy htm/html's as Comcode-converted instead, if the user chose this
                     // Insert an <h1> if the h1 is not there
-                    if ((strpos($filtered, '[title') === false) && (!is_null($page_title))) {
+                    if ((strpos($filtered, '[title') === false) && ($page_title !== null)) {
                         $filtered = "[title]" . $page_title . "[/title]\n\n" . $filtered;
                     }
 
@@ -647,12 +647,12 @@ class Hook_import_html_site
             }
 
             // Take the 3/8 point of the search list, and find it's levenshtein distance
-            if (is_null($positions[$point_a][1])) {
+            if ($positions[$point_a][1] === null) {
                 $positions[$point_a][1] = fake_levenshtein($backwards ? substr($subject, -$positions[$point_a][0]) : substr($subject, 0, $positions[$point_a][0]), $to_strip);
             }
 
             // Take the 5/8 point of the search list, and find it's levenshtein distance
-            if (is_null($positions[$point_b][1])) {
+            if ($positions[$point_b][1] === null) {
                 $positions[$point_b][1] = fake_levenshtein($backwards ? substr($subject, -$positions[$point_b][0]) : substr($subject, 0, $positions[$point_b][0]), $to_strip);
             }
             // If the 3/8 point has a higher or equal levenshtein  distance, throw away everything to the left of the 3/8 point
@@ -667,11 +667,11 @@ class Hook_import_html_site
         // Loop over the remaining results, finding the smallest levenshtein distance remaining- this is our result
         foreach ($positions as $p) {
             list($i, $lev) = $p;
-            if (is_null($lev)) {
+            if ($lev === null) {
                 $lev = fake_levenshtein(substr($subject, 0, $i), $to_strip);
             }
 
-            if ((is_null($best)) || ($lev < $best)) {
+            if (($best === null) || ($lev < $best)) {
                 $best = $lev;
                 $best_at = $i;
             }

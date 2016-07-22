@@ -246,12 +246,12 @@ function notifications_ui_advanced($notification_code, $enable_message = null, $
     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('notification_lockdown', 'l_setting', array(
         'l_notification_code' => substr($notification_code, 0, 80),
     ));
-    if (!is_null($test)) {
+    if ($test !== null) {
         warn_exit(do_lang_tempcode('NOTIFICATION_CODE_LOCKED_DOWN'));
     }
 
     $ob = _get_notification_ob_for_code($notification_code);
-    if (is_null($ob)) {
+    if ($ob === null) {
         warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
     }
     $info_details = $ob->list_handled_codes();
@@ -264,17 +264,17 @@ function notifications_ui_advanced($notification_code, $enable_message = null, $
 
     $db = (substr($notification_code, 0, 4) == 'cns_') ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
 
-    if (is_null($enable_message)) {
+    if ($enable_message === null) {
         $enable_message = do_lang_tempcode('NOW_ENABLED_NOTIFICATIONS');
     }
-    if (is_null($disable_message)) {
+    if ($disable_message === null) {
         $disable_message = do_lang_tempcode('NOW_DISABLED_NOTIFICATIONS');
     }
 
     $_notification_types = _get_available_notification_types(get_member());
 
     $notification_category = get_param_string('id', null);
-    if (is_null($notification_category)) {
+    if ($notification_category === null) {
         if (has_interesting_post_fields()) { // If we've just saved via form POST
             enable_notifications($notification_code, null, null, A_NA); // Make it clear we've overridden the general value by doing this
 
@@ -298,7 +298,7 @@ function notifications_ui_advanced($notification_code, $enable_message = null, $
 
             // Redirect them back
             $redirect = get_param_string('redirect', null);
-            if (!is_null($redirect)) {
+            if ($redirect !== null) {
                 return redirect_screen($title, $redirect, do_lang_tempcode('SUCCESS'));
             }
         }

@@ -47,7 +47,7 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 require($FILE_BASE . '/sources/global.php');
 
 $password = post_param_string('password', null);
-if (is_null($password)) {
+if ($password === null) {
     @exit('<form action="#" method="post"><label>Master password <input type="password" name="password" value="" /></label><input class="menu___generic_admin__delete button_screen" type="submit" value="Delete programmed data" /></form>');
 }
 require_code('crypt');
@@ -99,7 +99,7 @@ if ($mode == 'unbundle') {
             $new_file = 'lang_custom/' . $matches[1];
         }
 
-        if (!is_null($new_file)) {
+        if ($new_file !== null) {
             //var_dump($new_file);continue;
             if (!file_exists(get_file_base() . '/' . $new_file)) {
                 @mkdir(dirname($new_file), 0777, true);

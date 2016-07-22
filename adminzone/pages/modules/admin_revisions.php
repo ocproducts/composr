@@ -186,7 +186,7 @@ class Module_admin_revisions
             $username = null;
         }
         $member_id = null;
-        if (!is_null($username)) {
+        if ($username !== null) {
             $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($username);
         }
 
@@ -205,7 +205,7 @@ class Module_admin_revisions
 
         require_code('revisions_engine_database');
         $revision_engine = new RevisionEngineDatabase();
-        return $revision_engine->ui_browse_revisions($this->title, $_fields_titles, is_null($resource_types) ? null : explode(',', $resource_types), $row_renderer, $resource_id, $category_id, $member_id, null, true);
+        return $revision_engine->ui_browse_revisions($this->title, $_fields_titles, ($resource_types === null) ? null : explode(',', $resource_types), $row_renderer, $resource_id, $category_id, $member_id, null, true);
     }
 
     /**
@@ -221,7 +221,7 @@ class Module_admin_revisions
         if (empty($content_title)) {
             $content_title = $revision['r_original_title'];
         }
-        if (is_null($content_url)) {
+        if ($content_url === null) {
             $view_link = do_lang_tempcode('NA_EM');
         } else {
             $view_link = hyperlink($content_url, $content_title, false, true);
@@ -234,8 +234,8 @@ class Module_admin_revisions
         $action = do_lang_tempcode($revision['log_action']);
         $do_actionlog = has_actual_page_access(get_member(), 'admin_actionlog');
         if ($do_actionlog) {
-            $actionlog_url = build_url(array('page' => 'admin_actionlog', 'type' => 'view', 'id' => is_null($revision['r_actionlog_id']) ? $revision['r_moderatorlog_id'] : $revision['r_actionlog_id'], 'mode' => is_null($revision['r_actionlog_id']) ? 'cns' : 'cms'), get_module_zone('admin_actionlog'));
-            $action = hyperlink($actionlog_url, $action, false, false, '#' . strval(is_null($revision['r_actionlog_id']) ? $revision['r_moderatorlog_id'] : $revision['r_actionlog_id']));
+            $actionlog_url = build_url(array('page' => 'admin_actionlog', 'type' => 'view', 'id' => ($revision['r_actionlog_id'] === null) ? $revision['r_moderatorlog_id'] : $revision['r_actionlog_id'], 'mode' => ($revision['r_actionlog_id'] === null) ? 'cns' : 'cms'), get_module_zone('admin_actionlog'));
+            $action = hyperlink($actionlog_url, $action, false, false, '#' . strval(($revision['r_actionlog_id'] === null) ? $revision['r_moderatorlog_id'] : $revision['r_actionlog_id']));
         }
 
         $_revision = array(

@@ -118,7 +118,7 @@ class Hook_profiles_tabs_about
         }
         if (addon_installed('authors')) {
             $author = $GLOBALS['SITE_DB']->query_value_if_there('SELECT author FROM ' . get_table_prefix() . 'authors WHERE (member_id=' . strval($member_id_of) . ') OR (member_id IS NULL AND ' . db_string_equal_to('author', $member_info['username']) . ')');
-            if ((has_actual_page_access($member_id_viewing, 'authors')) && (!is_null($author))) {
+            if ((has_actual_page_access($member_id_viewing, 'authors')) && ($author !== null)) {
                 $modules[] = array('content', do_lang_tempcode('AUTHOR'), build_url(array('page' => 'authors', 'type' => 'browse', 'id' => $author), get_module_zone('authors')), 'menu/rich_content/authors', 'me');
             }
         }
@@ -252,7 +252,7 @@ class Hook_profiles_tabs_about
                 $club_rows = null;
             }
             foreach ($club_ids as $club_id) {
-                if (is_null($club_rows)) {
+                if ($club_rows === null) {
                     $club_rows = list_to_map('id', $GLOBALS['FORUM_DB']->query_select('f_groups', array('*'), array('g_is_private_club' => 1, 'id' => $club_id), '', 200));
                     if (!array_key_exists($club_id, $club_rows)) {
                         continue;
@@ -272,7 +272,7 @@ class Hook_profiles_tabs_about
                 $clubs[] = array(
                     'CLUB_NAME' => $club_name,
                     'CLUB_ID' => strval($club_row['id']),
-                    'CLUB_FORUM' => is_null($club_forum) ? '' : strval($club_forum),
+                    'CLUB_FORUM' => ($club_forum === null) ? '' : strval($club_forum),
                 );
             }
         }

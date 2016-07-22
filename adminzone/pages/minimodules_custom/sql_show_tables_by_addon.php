@@ -48,7 +48,7 @@ foreach ($tables_by as $t => $ts) {
             $extra = '';
             if (array_key_exists($table . '.' . $field['m_name'], $relation_map)) {
                 $relation = $relation_map[$table . '.' . $field['m_name']];
-                $extra .= ' ( &rarr; <strong>' . escape_html(is_null($relation) ? '*' : $relation) . '</strong>)';
+                $extra .= ' ( &rarr; <strong>' . escape_html(($relation === null) ? '*' : $relation) . '</strong>)';
             }
             if (strpos($field['m_type'], '*') !== false) {
                 $extra .= ' (<span style="text-decoration: underline"">Key field</span>)';

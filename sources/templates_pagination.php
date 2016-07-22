@@ -153,7 +153,7 @@ function pagination($title, $start, $start_name, $max, $max_name, $max_rows, $ke
 
     if (get_page_name() == 'members') {
         // Don't allow guest bots to probe too deep into the forum index, it gets very slow; the XML Sitemap is for guiding to topics like this
-        if (($start > $max * 5) && (is_guest()) && (!is_null(get_bot_type()))) {
+        if (($start > $max * 5) && (is_guest()) && (get_bot_type() !== null)) {
             access_denied('NOT_AS_GUEST');
         }
     }
@@ -174,7 +174,7 @@ function pagination($title, $start, $start_name, $max, $max_name, $max_rows, $ke
     $get_url = get_self_url(true);
 
     // How many to show per page
-    if (is_null($_selectors)) {
+    if ($_selectors === null) {
         $_selectors = array(10, 25, 50, 80);
     }
     if (has_privilege(get_member(), 'remove_page_split')) {
@@ -250,7 +250,7 @@ function pagination($title, $start, $start_name, $max, $max_name, $max_rows, $ke
             $continues_left = new Tempcode();
         }
 
-        $bot = (is_guest()) && (!is_null(get_bot_type()));
+        $bot = ((is_guest()) && (get_bot_type() !== null));
 
         // Show the page number jump links
         if ($keyset_value === null) {

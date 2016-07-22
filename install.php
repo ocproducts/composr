@@ -213,7 +213,7 @@ if (intval($_GET['step']) == 10) {
 $css_url = 'install.php?type=css';
 $css_url_2 = 'install.php?type=css_2';
 $logo_url = 'install.php?type=logo';
-if (is_null($DEFAULT_FORUM)) {
+if ($DEFAULT_FORUM === null) {
     $DEFAULT_FORUM = 'cns'; // Shouldn't happen, but who knows
 }
 require_code('tempcode_compiler');
@@ -482,7 +482,7 @@ function step_2()
     global $FILE_ARRAY;
     if (@is_array($FILE_ARRAY)) {
         $licence = file_array_get('text/' . filter_naughty($_POST['default_lang']) . '/licence.txt');
-        if (is_null($licence)) {
+        if ($licence === null) {
             $licence = file_array_get('text/EN/licence.txt');
         }
     } else {
@@ -554,7 +554,7 @@ function step_3()
         }
 
         $mapped_name = do_lang('FORUM_CLASS_' . $class, null, null, null, null, false);
-        if (is_null($mapped_name)) {
+        if ($mapped_name === null) {
             $mapped_name = ucwords($class);
         }
         $versions = new Tempcode();
@@ -805,7 +805,7 @@ function step_4()
     } else {
         $ftp_username = '';
     }
-    if (is_null($ftp_username)) {
+    if ($ftp_username === null) {
         $ftp_username = '';
     }
     $dr = array_key_exists('DOCUMENT_ROOT', $_SERVER) ? $_SERVER['DOCUMENT_ROOT'] : (array_key_exists('DOCUMENT_ROOT', $_ENV) ? $_ENV['DOCUMENT_ROOT'] : '');
@@ -875,7 +875,7 @@ function step_4()
         $forum_title = do_lang_tempcode('MEMBER_SETTINGS');
     } else {
         $_forum_type = do_lang('FORUM_CLASS_' . preg_replace('#\d+$#', '', $forum_type), null, null, null, null, false);
-        if (is_null($_forum_type)) {
+        if ($_forum_type === null) {
             $_forum_type = ucwords($forum_type);
         }
         $forum_title = do_lang_tempcode('_FORUM_SETTINGS', escape_html($_forum_type));
@@ -1153,7 +1153,7 @@ function step_5()
         $tmp = new DatabaseConnector(trim(post_param_string('db_site')), trim(post_param_string('db_site_host')), trim(post_param_string('db_site_user')), trim(post_param_string('db_site_password')), $table_prefix);
         $test = $tmp->query_select_value_if_there('config', 'c_value', array('c_name' => 'is_on_block_cache'), '', true);
         unset($tmp);
-        if (!is_null($test)) {
+        if ($test !== null) {
             global $INSTALL_LANG;
             $sections = new Tempcode();
 
@@ -1182,7 +1182,7 @@ function step_5()
     // Give warning if setting up a multi-site-network to a bad database
     if (($_POST['db_forums'] != $_POST['db_site']) && (get_forum_type() == 'cns')) {
         $tmp = new DatabaseConnector(trim(post_param_string('db_forums')), trim(post_param_string('db_forums_host')), trim(post_param_string('db_forums_user')), trim(post_param_string('db_forums_password')), post_param_string('cns_table_prefix'));
-        if (is_null($tmp->query_select_value_if_there('db_meta', 'COUNT(*)', null, '', true))) {
+        if ($tmp->query_select_value_if_there('db_meta', 'COUNT(*)', null, '', true) === null) {
             warn_exit(do_lang_tempcode('MSN_FORUM_DB_NOT_CNS_ALREADY'));
         }
     }
@@ -2627,7 +2627,7 @@ function handle_self_referencing_embedment()
  */
 function make_option($nice_name, $description, $name, $value, $hidden = false, $required = false)
 {
-    if (is_null($value)) {
+    if ($value === null) {
         $value = '';
     }
 
@@ -3024,7 +3024,7 @@ END;
 
         $out = '';
         foreach ($clauses as $i => $clause) {
-            if (!is_null($clause)) {
+            if ($clause !== null) {
                 $out .= $clause . "\n\n";
             }
         }

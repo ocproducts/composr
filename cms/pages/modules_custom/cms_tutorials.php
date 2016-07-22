@@ -63,7 +63,7 @@ class Module_cms_tutorials extends Standard_crud_module
             require_code('zones2');
 
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('zones', 'zone_header_text', array('zone_name' => 'docs'));
-            if (is_null($test)) {
+            if ($test === null) {
                 actual_add_zone('docs', do_lang('TUTORIALS'), 'tutorials');
             }
 

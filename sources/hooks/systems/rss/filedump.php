@@ -55,7 +55,7 @@ class Hook_rss_filedump
         $content = new Tempcode();
         $files = get_directory_contents(get_custom_file_base() . '/uploads/filedump/');
         $_rows = $GLOBALS['SITE_DB']->query_select('filedump', null, null, '', null, null, true);
-        if (is_null($_rows)) {
+        if ($_rows === null) {
             return null;
         }
         $rows = array();

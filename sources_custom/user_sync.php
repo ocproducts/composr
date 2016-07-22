@@ -115,10 +115,10 @@ function user_sync__inbound($since = null)
 
         // Run query to gather remote data
         $sql = 'SELECT * FROM ' . $db_table . ' WHERE 1=1';
-        if ((!is_null($time_field)) && (!is_null($since))) {
+        if (($time_field !== null) && ($since !== null)) {
             $sql .= ' AND ' . $db_field_delim . $time_field . $db_field_delim . '>=' . $dbh->quote(date('Y-m-d H:i:s', $since));
         }
-        if (!is_null($DO_USER_ONLY_ID)) {
+        if ($DO_USER_ONLY_ID !== null) {
             foreach ($username_fields as $j => $username_field) {
                 $sql .= ' AND ' . $username_field . '=' . $dbh->quote(is_array($DO_USER_ONLY_ID) ? $DO_USER_ONLY_ID[$j] : $DO_USER_ONLY_ID);
             }
@@ -156,7 +156,7 @@ function user_sync__inbound($since = null)
 
             // Bind to existing?
             $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($username);
-            if ((is_null($member_id)) && (get_option('one_per_email_address') == '1') && ($email_address != '')) {
+            if (($member_id === null) && (get_option('one_per_email_address') == '1') && ($email_address != '')) {
                 $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_email_address($email_address);
             }
 
@@ -197,7 +197,7 @@ function user_sync__inbound($since = null)
                 if (is_numeric($key)) {
                     $cpf_id = intval($key);
                 }
-                if (is_null($cpf_id)) {
+                if ($cpf_id === null) {
                     foreach ($cpfs as $cpf) {
                         if ($cpf['trans_name'] == $key) {
                             $cpf_id = $cpf['id'];
@@ -205,7 +205,7 @@ function user_sync__inbound($since = null)
                         }
                     }
                 }
-                if (is_null($cpf_id)) {
+                if ($cpf_id === null) {
                     foreach ($cpfs as $cpf) {
                         if ($cpf['trans_name'] == 'cms_' . $key) {
                             $cpf_id = $cpf['id'];
@@ -226,8 +226,8 @@ function user_sync__inbound($since = null)
             // Import to standard member record
             if ($member_id === null) {
                 $user_data['pass_hash_salted'] = ($user_data['pass_hash_salted'] === null) ? $default_password : $user_data['pass_hash_salted'];
-                $password = is_null($user_data['pass_hash_salted']) ? get_rand_password() : $user_data['pass_hash_salted'];
-                $password_compatibility_scheme = $temporary_password ? 'temporary' : (is_null($user_data['pass_hash_salted']) ? 'plain'/*so we can find it from the DB*/ : null);
+                $password = ($user_data['pass_hash_salted'] === null) ? get_rand_password() : $user_data['pass_hash_salted'];
+                $password_compatibility_scheme = $temporary_password ? 'temporary' : (($user_data['pass_hash_salted'] === null) ? 'plain'/*so we can find it from the DB*/ : null);
 
                 // These ones are very Composr-centric and hence won't be synched specially
                 $last_visit_time = null;
@@ -318,7 +318,7 @@ function user_sync__inbound($since = null)
 function user_sync_handle_field_remap($field_name, $remap_scheme, $remote_data, $dbh, $member_id)
 {
     // Specified to use default/omitted (same effect)
-    if (is_null($remap_scheme)) {
+    if ($remap_scheme === null) {
         return user_sync_get_field_default($field_name);
     }
 
@@ -367,7 +367,7 @@ function user_sync_handle_field_remap($field_name, $remap_scheme, $remote_data, 
         case 'groups':
         case 'primary_group':
             foreach ($data as $i => $_data) {
-                if ((!is_integer($_data)) && (!is_null($_data))) {
+                if ((!is_integer($_data)) && ($_data !== null)) {
                     if (is_numeric($_data)) {
                         $data[$i] = intval($_data);
                     } else { // By name
@@ -387,21 +387,21 @@ function user_sync_handle_field_remap($field_name, $remap_scheme, $remote_data, 
             if (is_integer($data[0])) {
                 return $data[0];
             }
-            return is_null($data[0]) ? null : intval($data[0]);
+            return ($data[0] === null) ? null : intval($data[0]);
         // Timestamps
         case 'join_time':
         case 'on_probation_until':
             if (is_integer($data[0])) {
                 return $data[0];
             }
-            return is_null($data[0]) ? null : (is_numeric($data[0]) ? intval($data[0]) : strtotime($data[0]));
+            return ($data[0] === null) ? null : (is_numeric($data[0]) ? intval($data[0]) : strtotime($data[0]));
         // Binary values
         case 'validated':
         case 'is_perm_banned':
         case 'reveal_age':
         case 'allow_emails':
         case 'allow_emails_from_staff':
-            if (is_null($data[0])) {
+            if ($data[0] === null) {
                 return null;
             }
             if (is_string($data[0])) {
@@ -413,7 +413,7 @@ function user_sync_handle_field_remap($field_name, $remap_scheme, $remote_data, 
             return 0;
     }
     if (!is_string($data[0])) {
-        if (is_null($data[0])) {
+        if ($data[0] === null) {
             $data[0] = '';
         } else {
             $data[0] = strval($data[0]);
@@ -535,7 +535,7 @@ function user_sync__outbound($member_id)
 
         // Go through other fields
         foreach ($field_remap as $key => $remap_scheme) {
-            if (is_null($remap_scheme)) {
+            if ($remap_scheme === null) {
                 continue; // Not actually mapped
             }
 

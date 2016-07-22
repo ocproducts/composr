@@ -34,7 +34,7 @@ function get_news_category_image_url($nc_img)
         $image = $nc_img;
     } else {
         $image = find_theme_image($nc_img, true);
-        if (is_null($image)) {
+        if ($image === null) {
             $image = '';
         }
     }
@@ -53,7 +53,7 @@ function get_news_category_image_url($nc_img)
  */
 function render_news_box($row, $zone = '_SEARCH', $give_context = true, $brief = false, $guid = '')
 {
-    if (is_null($row)) { // Should never happen, but we need to be defensive
+    if ($row === null) { // Should never happen, but we need to be defensive
         return new Tempcode();
     }
 
@@ -92,7 +92,7 @@ function render_news_box($row, $zone = '_SEARCH', $give_context = true, $brief =
         $img = $img_raw;
     } else {
         $img_raw = get_news_category_image_url($news_cat_row['nc_img']);
-        if (is_null($img_raw)) {
+        if ($img_raw === null) {
             $img_raw = '';
         }
         $img = $img_raw;
@@ -152,7 +152,7 @@ function render_news_box($row, $zone = '_SEARCH', $give_context = true, $brief =
  */
 function render_news_category_box($row, $zone = '_SEARCH', $give_context = true, $attach_to_url_filter = false, $blogs = null, $guid = '')
 {
-    if (is_null($row)) { // Should never happen, but we need to be defensive
+    if ($row === null) { // Should never happen, but we need to be defensive
         return new Tempcode();
     }
 
@@ -203,7 +203,7 @@ function render_news_category_box($row, $zone = '_SEARCH', $give_context = true,
         'TITLE_PLAIN' => $_title,
         '_REP_IMAGE' => $_rep_image,
         'REP_IMAGE' => $rep_image,
-        'OWNER' => is_null($row['nc_owner']) ? '' : strval($row['nc_owner']),
+        'OWNER' => ($row['nc_owner'] === null) ? '' : strval($row['nc_owner']),
         'SUMMARY' => '',
         'ENTRY_DETAILS' => $entry_details,
         'URL' => $url,
@@ -238,7 +238,7 @@ function create_selection_list_news_categories($it = null, $show_all_personal_ca
     } else {
         $where = 'WHERE 1=1';
     }
-    if (!is_null($updated_since)) {
+    if ($updated_since !== null) {
         $extra_join = '';
         $extra_where = '';
         if (addon_installed('content_privacy')) {
@@ -271,12 +271,12 @@ function create_selection_list_news_categories($it = null, $show_all_personal_ca
         $title_ordered_cats = $_cats;
         $_cats = array();
         foreach ($title_ordered_cats as $cat) {
-            if (is_null($cat['nc_owner'])) {
+            if ($cat['nc_owner'] === null) {
                 $_cats[] = $cat;
             }
         }
         foreach ($title_ordered_cats as $cat) {
-            if (!is_null($cat['nc_owner'])) {
+            if ($cat['nc_owner'] !== null) {
                 $_cats[] = $cat;
             }
         }
@@ -309,11 +309,11 @@ function create_selection_list_news_categories($it = null, $show_all_personal_ca
             }
         }
 
-        if (is_null($cat['nc_owner'])) {
+        if ($cat['nc_owner'] === null) {
             $li = form_input_list_entry(strval($cat['n_id']), ($it != array(null)) && in_array($cat['n_id'], $it), $cat['nice_title'] . ' (#' . strval($cat['n_id']) . ')');
             $categories->attach($li);
         } else {
-            if ((((!is_null($cat['nc_owner'])) && ($may_blog)) || (($cat['nc_owner'] == get_member()) && (!is_guest()))) || ($show_all_personal_categories)) {
+            if (((($cat['nc_owner'] !== null) && ($may_blog)) || (($cat['nc_owner'] == get_member()) && (!is_guest()))) || ($show_all_personal_categories)) {
                 $categories->attach(form_input_list_entry(strval($cat['n_id']), (($cat['nc_owner'] == get_member()) && ((!$prefer_not_blog_selected) && (in_array(null, $it)))) || (in_array($cat['n_id'], $it)), $cat['nice_title']/*Performance do_lang('MEMBER_CATEGORY', $GLOBALS['FORUM_DRIVER']->get_username($cat['nc_owner'], true))*/ . ' (#' . strval($cat['n_id']) . ')'));
             }
         }
@@ -337,7 +337,7 @@ function create_selection_list_news_categories($it = null, $show_all_personal_ca
  */
 function create_selection_list_news($it, $only_owned = null, $editable_filter = false, $only_in_blog = false)
 {
-    $where = is_null($only_owned) ? '1' : 'submitter=' . strval($only_owned);
+    $where = ($only_owned === null) ? '1' : 'submitter=' . strval($only_owned);
     if ($only_in_blog) {
         $rows = $GLOBALS['SITE_DB']->query('SELECT n.* FROM ' . get_table_prefix() . 'news n JOIN ' . get_table_prefix() . 'news_categories c ON c.id=n.news_category AND ' . $where . ' AND nc_owner IS NOT NULL ORDER BY date_and_time DESC', intval(get_option('general_safety_listing_limit'))/*reasonable limit*/);
     } else {

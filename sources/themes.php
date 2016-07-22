@@ -280,7 +280,7 @@ function load_theme_image_cache($db, $db_place, $true_theme, $true_lang)
     switch ($THEME_IMAGES_LOAD_INTENSITY[$db_place]) {
         case THEME_IMAGES_LOAD_INTENSITY__NONE:
             $THEME_IMAGES_CACHE[$db_place] = $SMART_CACHE->get('theme_images_' . $true_theme . '_' . $true_lang . '_' . strval($db_place));
-            if (is_null($THEME_IMAGES_CACHE[$db_place])) {
+            if ($THEME_IMAGES_CACHE[$db_place] === null) {
                 $THEME_IMAGES_CACHE[$db_place] = array();
             }
 

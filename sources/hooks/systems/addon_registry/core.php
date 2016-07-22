@@ -1974,7 +1974,7 @@ class Hook_addon_registry_core
         $rows = array();
         global $EMOTICON_LEVELS;
         foreach ($emoticons as $code => $imgcode) {
-            if ((is_null($EMOTICON_LEVELS)) || ($EMOTICON_LEVELS[$code] < 3)) {
+            if (($EMOTICON_LEVELS === null) || ($EMOTICON_LEVELS[$code] < 3)) {
                 $rows[] = array(
                     'COLUMNS' => array(array(
                        'CODE' => $code,

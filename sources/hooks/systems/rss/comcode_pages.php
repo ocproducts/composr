@@ -108,7 +108,7 @@ class Hook_rss_comcode_pages
                 $news_title = xmlentities($page);
                 if (array_key_exists($id, $rows)) {
                     $_news_title = get_translated_text($rows[$id]['cc_page_title'], null, null, true);
-                    if (is_null($_news_title)) {
+                    if ($_news_title === null) {
                         $_news_title = '';
                     }
                     $news_title = xmlentities($_news_title);
@@ -128,7 +128,7 @@ class Hook_rss_comcode_pages
                         $edit_date = '';
                     }
                 }
-                if (is_null($author)) {
+                if ($author === null) {
                     $author = '';
                 }
 

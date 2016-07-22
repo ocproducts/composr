@@ -64,7 +64,7 @@ class Hook_content_meta_aware_gallery
             'edit_page_link_pattern' => '_SEARCH:cms_galleries:_edit_category:_WILD',
             'view_category_page_link_pattern' => '_SEARCH:galleries:browse:_WILD',
             'add_url' => (function_exists('has_submit_permission') && has_submit_permission('mid', get_member(), get_ip_address(), 'cms_galleries')) ? (get_module_zone('cms_galleries') . ':cms_galleries:add_category:parent_id=!') : null,
-            'archive_url' => ((!is_null($zone)) ? $zone : get_module_zone('galleries')) . ':galleries',
+            'archive_url' => (($zone !== null) ? $zone : get_module_zone('galleries')) . ':galleries',
 
             'support_url_monikers' => true,
 
@@ -124,6 +124,6 @@ class Hook_content_meta_aware_gallery
     {
         require_code('galleries');
 
-        return render_gallery_box($row, is_null($root) ? $root : 'root', false, $zone, false, false, $give_context, $include_breadcrumbs, $attach_to_url_filter, $guid);
+        return render_gallery_box($row, ($root === null) ? $root : 'root', false, $zone, false, false, $give_context, $include_breadcrumbs, $attach_to_url_filter, $guid);
     }
 }

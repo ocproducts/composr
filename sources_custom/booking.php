@@ -65,7 +65,7 @@ function check_booking_dates_available(&$request, $ignore_bookings)
             list($day, $month, $year) = $_date;
             $status_error = booking_date_available($part['bookable_id'], $day, $month, $year, $part['quantity'], $ignore_bookings);
             $part['status_error'] = $status_error;
-            if ((!is_null($status_error)) && (is_null($success))) {
+            if (($status_error !== null) && ($success === null)) {
                 $success = $status_error; // Set status to first error
             }
         }
@@ -113,7 +113,7 @@ function get_booking_request_from_form()
         $quantity = post_param_integer('bookable_' . strval($bookable_id) . '_quantity', 0);
         if ($quantity > 0) {
             $start = post_param_date('bookable_' . strval($bookable_id) . '_date_from');
-            if (is_null($start)) {
+            if ($start === null) {
                 $start = post_param_date('bookable_date_from');
             }
             $start_day = intval(date('d', $start));
@@ -121,7 +121,7 @@ function get_booking_request_from_form()
             $start_year = intval(date('Y', $start));
             if ($bookable['dates_are_ranges'] == 1) {
                 $end = post_param_date('bookable_' . strval($bookable_id) . '_date_to');
-                if (is_null($end)) {
+                if ($end === null) {
                     $end = post_param_date('bookable_date_to');
                 }
                 $end_day = intval(date('d', $end));
@@ -150,7 +150,7 @@ function get_booking_request_from_form()
 
             $customer_email = post_param_string('customer_email', '');
             $customer_email_confirm = post_param_string('customer_email_confirm', null);
-            if ((!is_null($customer_email_confirm)) && ($customer_email != $customer_email_confirm)) {
+            if (($customer_email_confirm !== null) && ($customer_email != $customer_email_confirm)) {
                 warn_exit(do_lang_tempcode('EMAIL_ADDRESS_MISMATCH'));
             }
 
@@ -186,7 +186,7 @@ function get_booking_request_from_form()
  */
 function save_booking_form_to_db($request, $ignore_bookings, $member_id = null)
 {
-    if (is_null($member_id)) {
+    if ($member_id === null) {
         $member_id = get_member();
     }
 
@@ -197,7 +197,7 @@ function save_booking_form_to_db($request, $ignore_bookings, $member_id = null)
     }
 
     $test = check_booking_dates_available($request, $ignore_bookings);
-    if (!is_null($test)) {
+    if ($test !== null) {
         attach_message($test, 'warn');
         return null;
     }
@@ -227,7 +227,7 @@ function add_booking($request, $member_id)
                 list($day, $month, $year) = $_date;
 
                 $code = find_free_bookable_code($req['bookable_id'], $day, $month, $year, $code); // Hopefully $code will stay the same, but it might not
-                if (is_null($code)) {
+                if ($code === null) {
                     fatal_exit(do_lang_tempcode('INTERNAL_ERROR')); // Should not be possible, as we already checked availability
                 }
 
@@ -423,7 +423,7 @@ function booking_date_available($bookable_id, $day, $month, $year, $quantity, $i
     if ($asked < $from) {
         return do_lang_tempcode('BOOKING_IMPOSSIBLE_NOT_STARTED', escape_html(get_timezoned_date($from, false)));
     }
-    if (!is_null($bookable_row['active_to_month'])) {
+    if ($bookable_row['active_to_month'] !== null) {
         $to = mktime(0, 0, 0, $bookable_row['active_to_month'], $bookable_row['active_to_day'], $bookable_row['active_to_year']);
         if ($asked >= $to) {
             return do_lang_tempcode('BOOKING_IMPOSSIBLE_ENDED', escape_html(get_timezoned_date($to, false)));

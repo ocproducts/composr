@@ -425,7 +425,7 @@ class Module_admin
             foreach ($hooks as $object) {
                 $info = $object->run(null, true);
                 foreach ($info as $i) {
-                    if (is_null($i)) {
+                    if ($i === null) {
                         continue;
                     }
 
@@ -451,13 +451,13 @@ class Module_admin
                 $modules = find_all_modules($zone);
                 foreach (array_keys($modules) as $page) {
                     $_entrypoints = extract_module_functions_page($zone, $page, array('get_entry_points'));
-                    if (!is_null($_entrypoints[0])) {
+                    if ($_entrypoints[0] !== null) {
                         $entry_points = is_array($_entrypoints[0]) ? call_user_func_array($_entrypoints[0][0], $_entrypoints[0][1]) : eval($_entrypoints[0]);
                         if ($page == 'admin_themes') {
                             $entry_points['!themes'] = array('EDIT_TEMPLATES', 'menu/adminzone/style/themes/templates');
                             $entry_points['!!themes'] = array('EDIT_THEME_IMAGES', 'menu/adminzone/style/themes/theme_images');
                         }
-                        if (is_null($entry_points)) {
+                        if ($entry_points === null) {
                             $entry_points = array();
                         }
                         foreach ($entry_points as $type => $ep_parts) {
@@ -478,7 +478,7 @@ class Module_admin
                                         foreach ($hooks as $object) {
                                             $info = $object->run();
                                             foreach ($info as $i) {
-                                                if (is_null($i)) {
+                                                if ($i === null) {
                                                     continue;
                                                 }
 
@@ -527,7 +527,7 @@ class Module_admin
                     }
 
                     $n = do_lang('MODULE_TRANS_NAME_' . $page, null, null, null, null, false);
-                    if (!is_null($n)) {
+                    if ($n !== null) {
                         if (($this->_keyword_match($n)) && (has_actual_page_access(get_member(), $page, $zone))) {
                             $_url = build_url(array('page' => $page), $zone);
                             $site_tree_editor_url = build_url(array('page' => 'admin_sitemap', 'type' => 'sitemap', 'id' => $zone . ':' . $page), get_module_zone('admin_sitemap'));
@@ -569,8 +569,8 @@ class Module_admin
             $all_options = array();
             foreach ($hooks as $hook => $ob) {
                 $option = $ob->get_details();
-                if ((is_null($GLOBALS['CURRENT_SHARE_USER'])) || ($option['shared_hosting_restricted'] == 0)) {
-                    if (!is_null($ob->get_default())) {
+                if (($GLOBALS['CURRENT_SHARE_USER'] === null) || ($option['shared_hosting_restricted'] == 0)) {
+                    if ($ob->get_default() !== null) {
                         $all_options[$hook] = $option;
                     }
                 }
@@ -580,7 +580,7 @@ class Module_admin
             $conf_found_count = 0;
             foreach ($all_options as $name => $p) {
 				$_n = do_lang($p['human_name'], null, null, null, null, false);
-				if (is_null($_n)) {
+				if ($_n === null) {
                     continue;
                 }
                 $n = do_lang_tempcode($p['human_name']);
@@ -592,7 +592,7 @@ class Module_admin
                     $_url = build_url(array('page' => 'admin_config', 'type' => 'category', 'id' => $p['category']), get_module_zone('admin_config'));
                     $url = $_url->evaluate();
                     $url .= '#group_' . $p['group'];
-                    if (is_null($t)) {
+                    if ($t === null) {
                         $t = '';
                     }
                     $breadcrumbs = new Tempcode();
@@ -626,7 +626,7 @@ class Module_admin
             $content[$current_results_type_2] = new Tempcode();
             foreach ($config_categories as $p => $groups) {
                 $_n = do_lang('CONFIG_CATEGORY_' . $p, null, null, null, null, false);
-                if (is_null($_n)) {
+                if ($_n === null) {
                     continue;
                 }
                 $n = do_lang_tempcode('CONFIG_CATEGORY_' . $p);
@@ -642,7 +642,7 @@ class Module_admin
                 }
                 foreach (array_keys($groups) as $group) {
                     $n2 = do_lang($group, null, null, null, null, false);
-                    if (is_null($n2)) {
+                    if ($n2 === null) {
                         continue;
                     }
 
@@ -650,7 +650,7 @@ class Module_admin
                         $upload_max_filesize = (ini_get('upload_max_filesize') == '0') ? do_lang('NA') : clean_file_size(php_return_bytes(ini_get('upload_max_filesize')));
                         $post_max_size = (ini_get('post_max_size') == '0') ? do_lang('NA') : clean_file_size(php_return_bytes(ini_get('post_max_size')));
                         $_group_description = do_lang('CONFIG_GROUP_DESCRIP_' . $group, escape_html($post_max_size), escape_html($upload_max_filesize), null, null, false);
-                        if (is_null($_group_description)) {
+                        if ($_group_description === null) {
                             $group_description = new Tempcode();
                         } else {
                             $group_description = do_lang_tempcode('CONFIG_GROUP_DESCRIP_' . $group, escape_html($post_max_size), escape_html($upload_max_filesize), false);
@@ -757,7 +757,7 @@ class Module_admin
             $all_blocks = find_all_blocks();
             foreach (array_keys($all_blocks) as $p) {
                 $t = do_lang('BLOCK_' . $p . '_DESCRIPTION', null, null, null, null, false);
-                if (($this->_keyword_match($p)) || ((!is_null($t)) && ($this->_keyword_match($t)))) {
+                if (($this->_keyword_match($p)) || (($t !== null) && ($this->_keyword_match($t)))) {
                     $url = '';
                     $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => '1368be933d0ccbcd65939f29dd6d7003', 'NAME' => $p, 'URL' => $url, 'TITLE' => '', 'DESCRIPTION' => escape_html($t))));
                 }
@@ -781,7 +781,7 @@ class Module_admin
                             $tar = tar_open(get_custom_file_base() . '/imports/addons/' . $f, 'rb');
                             $directory = tar_get_directory($tar);
                             $info_file = tar_get_file($tar, 'addon.inf');
-                            if (!is_null($info_file)) {
+                            if ($info_file !== null) {
                                 $info = better_parse_ini_file(null, $info_file['data']);
 
                                 $title = isset($info['title']) ? $info['title'] : '';
@@ -807,7 +807,7 @@ class Module_admin
             $pt_sections = array();
             foreach ($all_permissions as $p) {
                 $n = do_lang('PRIVILEGE_' . $p['the_name'], null, null, null, null, false);
-                if (is_null($n)) {
+                if ($n === null) {
                     continue;
                 }
                 if (($this->_keyword_match($n)) || ($this->_keyword_match($p['the_name']))) {
@@ -827,7 +827,7 @@ class Module_admin
             $content[$current_results_type] = new Tempcode();
             foreach (array_keys($pt_sections) as $p) {
                 $n = do_lang($p, null, null, null, null, false);
-                if (is_null($n)) {
+                if ($n === null) {
                     continue;
                 }
                 if (($this->_keyword_match($n)) || ($this->_keyword_match($p))) {

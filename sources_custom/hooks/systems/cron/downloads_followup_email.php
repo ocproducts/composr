@@ -65,7 +65,7 @@ class Hook_cron_downloads_followup_email
         working for more than 2 days we will not generate emails for downloads prior to the previous
         48 hours to prevent sending stale notifications for download actions that are not recent.
         */
-        if ((is_null($last)) || (intval($last) < $time - 60 * 60 * 48)) {
+        if (($last === null) || (intval($last) < $time - 60 * 60 * 48)) {
             $last = strval($time - 60 * 60 * 48);
         }
 

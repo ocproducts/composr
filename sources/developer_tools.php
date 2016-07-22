@@ -56,7 +56,7 @@ function semi_dev_mode_startup()
             erase_cached_templates(true); // Stop anything trying to read a template cache item (E.g. CSS, JS) that might not exist!
         }*/
 
-        if ((strpos(cms_srv('HTTP_REFERER'), cms_srv('HTTP_HOST')) !== false) && (strpos(cms_srv('HTTP_REFERER'), 'keep_devtest') !== false) && (!running_script('attachment')) && (!running_script('upgrader')) && (strpos(cms_srv('HTTP_REFERER'), 'login') === false) && (get_page_name() != 'login') && (is_null(get_param_string('keep_devtest', null)))) {
+        if ((strpos(cms_srv('HTTP_REFERER'), cms_srv('HTTP_HOST')) !== false) && (strpos(cms_srv('HTTP_REFERER'), 'keep_devtest') !== false) && (!running_script('attachment')) && (!running_script('upgrader')) && (strpos(cms_srv('HTTP_REFERER'), 'login') === false) && (get_page_name() != 'login') && (get_param_string('keep_devtest', null) === null)) {
             $_GET['keep_devtest'] = '1';
             attach_message('URL not constructed properly: development mode in use but keep_devtest was not specified. This indicates that links have been made without build_url (in PHP) or keep_stub (in JavaScript). While not fatal this time, failure to use these functions can cause problems when your site goes live. See the Composr codebook for more details.', 'warn', false, true);
         } else {
@@ -86,10 +86,10 @@ function semi_dev_mode_startup()
             }
 
             global $TITLE_CALLED, $SCREEN_TEMPLATE_CALLED, $EXITING;
-            if ((is_null($SCREEN_TEMPLATE_CALLED)) && ($EXITING == 0) && (running_script('index'))) {
+            if (($SCREEN_TEMPLATE_CALLED === null) && ($EXITING == 0) && (running_script('index'))) {
                 @exit(escape_html('No screen template called.'));
             }
-            if ((!$TITLE_CALLED) && ((is_null($SCREEN_TEMPLATE_CALLED)) || ($SCREEN_TEMPLATE_CALLED != '')) && ($EXITING == 0) && (strpos(cms_srv('SCRIPT_NAME'), 'index.php') !== false)) {
+            if ((!$TITLE_CALLED) && (($SCREEN_TEMPLATE_CALLED === null) || ($SCREEN_TEMPLATE_CALLED != '')) && ($EXITING == 0) && (strpos(cms_srv('SCRIPT_NAME'), 'index.php') !== false)) {
                 @exit(escape_html('No title used on screen.'));
             }
         }
@@ -280,7 +280,7 @@ function _inspect($args, $force_plain = false)
 function memory_trace_point($name = null)
 {
     global $MEMORY_PROFILING_POINTS;
-    if (is_null($name)) {
+    if ($name === null) {
         $name = '#' . integer_format(count($MEMORY_PROFILING_POINTS) + 1);
     }
     $MEMORY_PROFILING_POINTS[] = array(memory_get_usage(), $name);
@@ -301,7 +301,7 @@ function show_memory_points()
     $before = mixed();
     foreach ($MEMORY_PROFILING_POINTS as $point) {
         list($memory, $name) = $point;
-        echo 'Memory at ' . $name . ' is' . "\t" . integer_format($memory) . ' (growth of ' . (is_null($before) ? 'N/A' : integer_format($memory - $before)) . ')' . "\n";
+        echo 'Memory at ' . $name . ' is' . "\t" . integer_format($memory) . ' (growth of ' . (($before === null) ? 'N/A' : integer_format($memory - $before)) . ')' . "\n";
         $before = $memory;
     }
     exit();
@@ -319,7 +319,7 @@ function show_memory_points()
     $stack = debug_backtrace();
     foreach ($stack as $level) {
         if (in_array($function, $level)) {
-            if (!is_null($death_message)) {
+            if ($death_message !== null) {
                 fatal_exit($death_message);
             }
             return true;

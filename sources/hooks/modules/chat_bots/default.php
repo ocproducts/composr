@@ -42,13 +42,13 @@ class Hook_chat_bot_default
                 $count = 0;
                 require_code('users2');
                 $members = get_users_online(true, null, $count);
-                if (is_null($members)) {
+                if ($members === null) {
                     return do_lang('TOO_MANY_USERS_ONLINE');
                 }
                 $guests = 0;
                 $site_members = '';
                 foreach ($members as $member) {
-                    if ((is_guest($member['member_id'])) || (is_null($member['cache_username']))) {
+                    if ((is_guest($member['member_id'])) || ($member['cache_username'] === null)) {
                         $guests++;
                     } else {
                         if ($site_members != '') {

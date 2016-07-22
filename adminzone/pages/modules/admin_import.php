@@ -59,7 +59,7 @@ class Module_admin_import
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 7)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 7)) {
             $GLOBALS['SITE_DB']->alter_table_field('import_id_remap', 'id_session', '*ID_TEXT');
 
             $GLOBALS['SITE_DB']->alter_table_field('import_session', 'imp_session', '*ID_TEXT');
@@ -68,15 +68,15 @@ class Module_admin_import
             $GLOBALS['SITE_DB']->alter_table_field('import_parts_done', 'imp_session', 'ID_TEXT');
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 6)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 6)) {
             $GLOBALS['SITE_DB']->add_table_field('import_session', 'imp_db_host', 'ID_TEXT');
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 5)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 5)) {
             $GLOBALS['SITE_DB']->alter_table_field('import_id_remap', 'id_old', 'ID_TEXT');
         }
 
-        if ((is_null($upgrade_from)) || ($upgrade_from < 4)) {
+        if (($upgrade_from === null) || ($upgrade_from < 4)) {
             $GLOBALS['SITE_DB']->create_table('import_parts_done', array(
                 'id' => '*AUTO',
                 'imp_id' => 'SHORT_TEXT',
@@ -174,7 +174,7 @@ class Module_admin_import
      */
     public function run()
     {
-        if (!is_null($GLOBALS['CURRENT_SHARE_USER'])) {
+        if ($GLOBALS['CURRENT_SHARE_USER'] !== null) {
             warn_exit(do_lang_tempcode('SHARED_INSTALL_PROHIBIT'));
         }
 
@@ -405,7 +405,7 @@ class Module_admin_import
         if (($db_name == get_db_site()) && ($importer == 'cms_merge') && ($db_table_prefix == $GLOBALS['SITE_DB']->get_table_prefix())) {
             warn_exit(do_lang_tempcode('IMPORT_SELF_NO'));
         }
-        $import_source = is_null($db_name) ? null : new DatabaseConnector($db_name, $db_host, $db_user, $db_password, $db_table_prefix);
+        $import_source = ($db_name === null) ? null : new DatabaseConnector($db_name, $db_host, $db_user, $db_password, $db_table_prefix);
         unset($import_source);
 
         // Save data
@@ -415,10 +415,10 @@ class Module_admin_import
         $GLOBALS['SITE_DB']->query_insert('import_session', array(
             'imp_hook' => $importer,
             'imp_old_base_dir' => $old_base_dir,
-            'imp_db_name' => is_null($db_name) ? '' : $db_name,
-            'imp_db_user' => is_null($db_user) ? '' : $db_user,
-            'imp_db_table_prefix' => is_null($db_table_prefix) ? '' : $db_table_prefix,
-            'imp_db_host' => is_null($db_host) ? '' : $db_host,
+            'imp_db_name' => ($db_name === null) ? '' : $db_name,
+            'imp_db_user' => ($db_user === null) ? '' : $db_user,
+            'imp_db_table_prefix' => ($db_table_prefix === null) ? '' : $db_table_prefix,
+            'imp_db_host' => ($db_host === null) ? '' : $db_host,
             'imp_refresh_time' => $refresh_time,
             'imp_session' => get_session_id()
         ));
@@ -451,13 +451,13 @@ class Module_admin_import
         $_import_list = $info['import'];
         $_import_list_2 = array();
         foreach ($_import_list as $import) {
-            if (is_null($import)) {
+            if ($import === null) {
                 continue;
             }
             if (!array_key_exists($import, $lang_array)) {
                 continue;
             }
-            if (is_null($lang_array[$import])) {
+            if ($lang_array[$import] === null) {
                 continue;
             }
 
@@ -484,7 +484,7 @@ class Module_admin_import
                     'ADVANCED_URL' => $info['supports_advanced_import'] ? build_url(array('page' => '_SELF', 'type' => 'advanced_hook', 'session' => $session, 'content_type' => $import, 'importer' => $importer), '_SELF') : new Tempcode(),
                 )));
             } else {
-                $checked = (is_null($just)) && ($first);
+                $checked = ($just === null) && ($first);
                 $import_list->attach(do_template('IMPORT_ACTION_LINE', array(
                     '_GUID' => 'f2215115f920200a0a1ba6bc776ad945',
                     'CHECKED' => $checked,
@@ -563,13 +563,13 @@ class Module_admin_import
             warn_exit(do_lang_tempcode('IMPORT_SELF_NO'));
         }
 
-        $import_source = is_null($db_name) ? null : new DatabaseConnector($db_name, $db_host, $db_user, $db_password, $db_table_prefix);
+        $import_source = ($db_name === null) ? null : new DatabaseConnector($db_name, $db_host, $db_user, $db_password, $db_table_prefix);
 
         // Some preliminary tests
         $happy = get_param_integer('happy', 0);
         if ((method_exists($object, 'pre_import_tests')) && ($happy == 0)) {
             $ui = $object->pre_import_tests($import_source, $db_table_prefix, $old_base_dir);
-            if (!is_null($ui)) {
+            if ($ui !== null) {
                 return $ui;
             }
         }
@@ -579,10 +579,10 @@ class Module_admin_import
         $GLOBALS['SITE_DB']->query_insert('import_session', array(
             'imp_hook' => $importer,
             'imp_old_base_dir' => $old_base_dir,
-            'imp_db_name' => is_null($db_name) ? '' : $db_name,
-            'imp_db_user' => is_null($db_user) ? '' : $db_user,
-            'imp_db_table_prefix' => is_null($db_table_prefix) ? '' : $db_table_prefix,
-            'imp_db_host' => is_null($db_host) ? '' : $db_host,
+            'imp_db_name' => ($db_name === null) ? '' : $db_name,
+            'imp_db_user' => ($db_user === null) ? '' : $db_user,
+            'imp_db_table_prefix' => ($db_table_prefix === null) ? '' : $db_table_prefix,
+            'imp_db_host' => ($db_host === null) ? '' : $db_host,
             'imp_refresh_time' => $refresh_time,
             'imp_session' => get_session_id()
         ));
@@ -618,14 +618,14 @@ class Module_admin_import
                         }
                     }
                 }
-                if (is_null($dependency)) {
+                if ($dependency === null) {
                     if ($import == 'cns_switch') {
                         $out->attach($this->cns_switch());
                     } else {
                         $function_name = 'import_' . $import;
                         cns_over_local();
                         $func_output = call_user_func_array(array($object, $function_name), array($import_source, $db_table_prefix, $old_base_dir));
-                        if (!is_null($func_output)) {
+                        if ($func_output !== null) {
                             $out->attach($func_output);
                         }
                         cns_over_msn();
@@ -673,7 +673,7 @@ class Module_admin_import
 
             $count = 0;
 
-            $extra = is_null($field_name_also) ? '' : (' OR ' . db_string_equal_to('m_name', $field_name_also));
+            $extra = ($field_name_also === null) ? '' : (' OR ' . db_string_equal_to('m_name', $field_name_also));
             $fields = $GLOBALS['SITE_DB']->query('SELECT m_table,m_name FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'db_meta WHERE (NOT (m_table LIKE \'' . db_encode_like('f_%') . '\')) AND (' . db_string_equal_to('m_type', $db_abstraction) . ' OR ' . db_string_equal_to('m_type', '*' . $db_abstraction) . ' OR ' . db_string_equal_to('m_type', '?' . $db_abstraction) . $extra . ')');
             foreach ($fields as $field) {
                 if ($field['m_table'] == 'stats') {
@@ -686,15 +686,15 @@ class Module_admin_import
                 foreach ($values as $value) {
                     $current = $value[$field['m_name']];
                     $remapped = import_id_remap_get($import_code, $current, true);
-                    if (is_null($remapped)) {
+                    if ($remapped === null) {
                         $remapped = $default_id;
                     }
 
-                    if (!is_null($remapped)) {
+                    if ($remapped !== null) {
                         $value2 = $value;
                         $value2[$field['m_name']] = -$remapped;
                         $c = $GLOBALS['SITE_DB']->query_update($field['m_table'], $value2, $value, '', null, null, true, true);
-                        if (is_null($c)) { // Something went wrong apparently- but we still need to clean up
+                        if ($c === null) { // Something went wrong apparently- but we still need to clean up
                             $GLOBALS['SITE_DB']->query_delete($field['m_table'], $value);
                         } else {
                             $count += $c;

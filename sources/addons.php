@@ -212,11 +212,11 @@ function find_addon_icon($addon_name, $pick_default = true, $tar_path = null)
 {
     $matches = array();
 
-    if (!is_null($tar_path)) {
+    if ($tar_path !== null) {
         require_code('tar');
         $tar_file = tar_open($tar_path, 'rb');
         $directory = tar_get_directory($tar_file, true);
-        if (!is_null($directory)) {
+        if ($directory !== null) {
             // Is there an explicitly defined addon?
             $_data = tar_get_file($tar_file, 'sources_custom/hooks/systems/addon_registry/' . $addon_name . '.php', true);
             if ($_data === null) {

@@ -39,7 +39,7 @@ class Hook_sw_core
 
         $guest_groups = $GLOBALS['FORUM_DRIVER']->get_members_groups($GLOBALS['FORUM_DRIVER']->get_guest_id());
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('group_zone_access', 'zone_name', array('zone_name' => 'site', 'group_id' => $guest_groups[0]));
-        $settings['guest_zone_access'] = is_null($test) ? '0' : '1';
+        $settings['guest_zone_access'] = ($test === null) ? '0' : '1';
 
         return $settings;
     }
@@ -83,7 +83,7 @@ class Hook_sw_core
         $guest_groups = $GLOBALS['FORUM_DRIVER']->get_members_groups($GLOBALS['FORUM_DRIVER']->get_guest_id());
         if (post_param_integer('guest_zone_access', 0) == 1) {
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('group_zone_access', 'zone_name', array('zone_name' => 'site', 'group_id' => $guest_groups[0]));
-            if (is_null($test)) {
+            if ($test === null) {
                 $GLOBALS['SITE_DB']->query_insert('group_zone_access', array('zone_name' => 'site', 'group_id' => $guest_groups[0]));
             }
         } else {

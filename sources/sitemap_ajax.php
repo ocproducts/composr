@@ -112,7 +112,7 @@ function sitemap_script_loading()
     // Mark parent nodes for pre-expansion (we guess a bit about what there may be, it doesn't matter if we guess some wrong ones)
     echo "\n" . '<expand></expand>';
     echo "\n" . '<expand>:</expand>';
-    if ((!is_null($default)) && ($default != '') && (strpos($default, ':') !== false)) {
+    if (($default !== null) && ($default != '') && (strpos($default, ':') !== false)) {
         $parts = explode(':', $default);
         $buildup = '';
         foreach ($parts as $part) {
@@ -261,7 +261,7 @@ function _sitemap_node_to_xml($admin_groups, $groups, $node, $permissions_needed
      ' . (isset($node['version']) ? ('version="' . xmlentities(integer_format($node['version'])) . '"') : '') . '
      ' . ($permissions_needed ? '' : ('draggable="' . ($draggable ? 'page' : 'false') . '"')) . '
      ' . ($permissions_needed ? '' : ('droppable="' . (($type == 'zone') ? 'page' : 'false') . '"')) . '
-     type="' . xmlentities(is_null($type) ? '' : $type) . '"
+     type="' . xmlentities(($type === null) ? '' : $type) . '"
      id="' . xmlentities(uniqid('', true)) . '"' . $view_perms . $privilege_perms . '>
     ');
 
@@ -413,7 +413,7 @@ function _organise_loaded_privileges($admin_groups, $groups, $_privilege_access)
  */
 function _get_overridable_privileges_for_privilege_page($privilege_page)
 {
-    if (is_null($privilege_page)) { // For root
+    if ($privilege_page === null) { // For root
         return array(
             'submit_cat_highrange_content' => 0,
             'edit_cat_highrange_content' => 0,
@@ -552,7 +552,7 @@ function sitemap_script_saving()
                 $page = $matches[2];
 
                 $node = retrieve_sitemap_node($page_link);
-                if (!is_null($node)) {
+                if ($node !== null) {
                     $privilege_page = isset($node['privilege_page']) ? $node['privilege_page'] : $page;
                 } else {
                     $privilege_page = $page;
@@ -595,7 +595,7 @@ function sitemap_script_saving()
                 $page = $matches[2];
 
                 $node = retrieve_sitemap_node($page_link);
-                if (!is_null($node)) {
+                if ($node !== null) {
                     $privilege_page = isset($node['privilege_page']) ? $node['privilege_page'] : $page;
                 } else {
                     $privilege_page = $page;

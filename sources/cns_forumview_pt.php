@@ -31,11 +31,11 @@
  */
 function cns_get_private_topics($start = 0, $true_start = 0, $max = null, $sql_sup = '', $sql_sup_order_by = '', $member_id = null)
 {
-    if (is_null($max)) {
+    if ($max === null) {
         $max = intval(get_option('forum_topics_per_page'));
     }
 
-    if (is_null($member_id)) {
+    if ($member_id === null) {
         $member_id = get_member();
     } else {
         if ((!has_privilege(get_member(), 'view_other_pt')) && ($member_id != get_member())) {
@@ -92,7 +92,7 @@ function cns_get_private_topics($start = 0, $true_start = 0, $max = null, $sql_s
         $topic['num_posts'] = $topic_row['t_cache_num_posts'];
         $topic['first_time'] = $topic_row['t_cache_first_time'];
         $topic['first_title'] = $topic_row['t_cache_first_title'];
-        if (is_null($topic_row['p_post'])) {
+        if ($topic_row['p_post'] === null) {
             $topic['first_post'] = new Tempcode();
         } else {
             $post_row = db_map_restrict($topic_row, array('p_post')) + array('id' => $topic_row['t_cache_first_post_id']);
@@ -103,7 +103,7 @@ function cns_get_private_topics($start = 0, $true_start = 0, $max = null, $sql_s
         $topic['first_member_id'] = $topic_row['t_cache_first_member_id'];
         $topic['last_post_id'] = $topic_row['t_cache_last_post_id'];
         $topic['last_time'] = $topic_row['t_cache_last_time'];
-        $topic['last_date'] = is_null($topic_row['t_cache_last_time']) ? '' : get_timezoned_date_time($topic_row['t_cache_last_time']);
+        $topic['last_date'] = ($topic_row['t_cache_last_time'] === null) ? '' : get_timezoned_date_time($topic_row['t_cache_last_time']);
         $topic['last_title'] = $topic_row['t_cache_last_title'];
         $topic['last_username'] = $topic_row['t_cache_last_username'];
         $topic['last_member_id'] = $topic_row['t_cache_last_member_id'];
@@ -124,7 +124,7 @@ function cns_get_private_topics($start = 0, $true_start = 0, $max = null, $sql_s
         if ($topic_row['t_is_open'] == 0) {
             $topic['modifiers'][] = 'closed';
         }
-        if (!is_null($topic_row['t_poll_id'])) {
+        if ($topic_row['t_poll_id'] !== null) {
             $topic['modifiers'][] = 'poll';
         }
         $num_posts = $topic_row['t_cache_num_posts'];

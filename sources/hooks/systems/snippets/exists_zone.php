@@ -38,7 +38,7 @@ class Hook_snippet_exists_zone
         }
 
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('zones', 'zone_header_text', array('zone_name' => $zone));
-        if (is_null($test)) {
+        if ($test === null) {
             return new Tempcode();
         }
 

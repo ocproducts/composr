@@ -38,7 +38,7 @@ function transcode_video($url, $table, $local_id, $local_id_field, $url_field, $
     $orig_url = $url;
 
     // If there is a locally uploaded file, that is not in a web-safe format, go convert it to such
-    if ((!is_null($local_id)) && (preg_match('#http\:\/\/#i', $url) == 0) && (preg_match('#\.(flv|mp4|webm|mp3)$#i', $url) == 0)) {
+    if (($local_id !== null) && (preg_match('#http\:\/\/#i', $url) == 0) && (preg_match('#\.(flv|mp4|webm|mp3)$#i', $url) == 0)) {
         require_code('files');
 
         // ZENCODER
@@ -92,11 +92,11 @@ function transcode_video($url, $table, $local_id, $local_id_field, $url_field, $
                     't_local_id_field' => $local_id_field,
                     't_error' => '',
                     't_url' => $url,
-                    't_table' => is_null($table) ? '' : $table,
-                    't_url_field' => is_null($url_field) ? '' : $url_field,
-                    't_orig_filename_field' => is_null($orig_filename_field) ? '' : $orig_filename_field,
-                    't_width_field' => is_null($width_field) ? '' : $width_field,
-                    't_height_field' => is_null($height_field) ? '' : $height_field,
+                    't_table' => ($table === null) ? '' : $table,
+                    't_url_field' => ($url_field === null) ? '' : $url_field,
+                    't_orig_filename_field' => ($orig_filename_field === null) ? '' : $orig_filename_field,
+                    't_width_field' => ($width_field === null) ? '' : $width_field,
+                    't_height_field' => ($height_field === null) ? '' : $height_field,
                     't_output_filename' => $transcoded_filename,
                 ));
             } else {
@@ -111,7 +111,7 @@ function transcode_video($url, $table, $local_id, $local_id_field, $url_field, $
 
         // CMS TRANSCODING SERVER ADDON
 
-        if (!is_null($local_id)) {
+        if ($local_id !== null) {
             $transcoding_server = get_option('transcoding_server');
             if ($transcoding_server != '') {
                 http_download_file($transcoding_server . '/receive_script.php?file=' . urlencode(url_is_local($url) ? (get_custom_base_url() . '/' . $url) : $url));
@@ -125,11 +125,11 @@ function transcode_video($url, $table, $local_id, $local_id_field, $url_field, $
                     't_local_id_field' => $local_id_field,
                     't_error' => '',
                     't_url' => $url,
-                    't_table' => is_null($table) ? '' : $table,
-                    't_url_field' => is_null($url_field) ? '' : $url_field,
-                    't_orig_filename_field' => is_null($orig_filename_field) ? '' : $orig_filename_field,
-                    't_width_field' => is_null($width_field) ? '' : $width_field,
-                    't_height_field' => is_null($height_field) ? '' : $height_field,
+                    't_table' => ($table === null) ? '' : $table,
+                    't_url_field' => ($url_field === null) ? '' : $url_field,
+                    't_orig_filename_field' => ($orig_filename_field === null) ? '' : $orig_filename_field,
+                    't_width_field' => ($width_field === null) ? '' : $width_field,
+                    't_height_field' => ($height_field === null) ? '' : $height_field,
                     't_output_filename' => rawurldecode(basename($url)),
                 ));
 
@@ -189,7 +189,7 @@ function transcode_video($url, $table, $local_id, $local_id_field, $url_field, $
     }
 
     // If it's happened already, save this back
-    if (($url != $orig_url) && (!is_null($local_id_field))) {
+    if (($url != $orig_url) && ($local_id_field !== null)) {
         $GLOBALS['SITE_DB']->query_update($table, array($url_field => $url), array($local_id_field => $local_id), '', 1);
     }
 
@@ -299,14 +299,14 @@ function store_transcoding_success($transcoder_id, $new_url = null)
     }
 
     // Update URL to transcoded one
-    if (!is_null($new_url)) {
+    if ($new_url !== null) {
         $row[$descript_row['t_url_field']] = $new_url;
     } else {
         $row[$descript_row['t_url_field']] = 'uploads/galleries/' . rawurlencode($descript_row['t_output_filename']);
     }
 
     // Update record to point to new file
-    if (!is_null($descript_row['t_local_id_field'])) {
+    if ($descript_row['t_local_id_field'] !== null) {
         $GLOBALS['SITE_DB']->query_update($descript_row['t_table'], $row, array($descript_row['t_local_id_field'] => $descript_row['t_local_id']), '', 1);
     }
 }

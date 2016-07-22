@@ -43,7 +43,7 @@ class Hook_stats_external
             $map['Speed'] = $speed;
         }
         foreach ($map as $key => $val) {
-            $bits->attach(do_template('BLOCK_SIDE_STATS_SUBLINE', array('_GUID' => 'fa391b1b773cd8a4b283cb6617af898b', 'KEY' => $key, 'VALUE' => is_null($val) ? '' : $val)));
+            $bits->attach(do_template('BLOCK_SIDE_STATS_SUBLINE', array('_GUID' => 'fa391b1b773cd8a4b283cb6617af898b', 'KEY' => $key, 'VALUE' => ($val === null) ? '' : $val)));
         }
         $section = do_template('BLOCK_SIDE_STATS_SECTION', array('_GUID' => '0d26b94a7903aab57d76d72da53eca98', 'SECTION' => 'Meta stats', 'CONTENT' => $bits));
 
@@ -184,7 +184,7 @@ function getpr($url)
     $errno = '0';
     $errstr = '';
     $data = http_download_file('http://toolbarqueries.google.com/search?client=navclient-auto&ch=' . $ch . '&features=Rank&q=info:' . $url, null, false);
-    if (is_null($data)) {
+    if ($data === null) {
         return '';
     }
 

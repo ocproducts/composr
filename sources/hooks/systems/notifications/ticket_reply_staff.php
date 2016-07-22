@@ -103,7 +103,7 @@ class Hook_notification_ticket_reply_staff extends Hook_Notification
      */
     protected function _is_staff($only_if_enabled_on__notification_code, $only_if_enabled_on__category, $member_id)
     {
-        $test = is_null($only_if_enabled_on__notification_code) ? true : notifications_enabled($only_if_enabled_on__notification_code, $only_if_enabled_on__category, $member_id);
+        $test = ($only_if_enabled_on__notification_code === null) ? true : notifications_enabled($only_if_enabled_on__notification_code, $only_if_enabled_on__category, $member_id);
 
         require_code('permissions');
         return (($test) && (has_privilege($member_id, 'support_operator')));

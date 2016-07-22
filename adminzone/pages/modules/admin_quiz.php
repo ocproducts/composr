@@ -286,7 +286,7 @@ class Module_admin_quiz
         if (!array_key_exists(0, $winners)) {
             // Close competition
             $close_time = $GLOBALS['SITE_DB']->query_select_value('quizzes', 'q_close_time', array('id' => $id));
-            if (is_null($close_time)) {
+            if ($close_time === null) {
                 $GLOBALS['SITE_DB']->query_update('quizzes', array('q_close_time' => time()), array('id' => $id), '', 1);
             }
 
@@ -331,7 +331,7 @@ class Module_admin_quiz
                 rsort($k);
                 $temp = $filtered_entries[$k[0]];
                 $_entry = array_shift($temp);
-                if (!is_null($_entry)) {
+                if ($_entry !== null) {
                     $filtered_entries[$k[0]] = $temp;
                     $winners[] = array('q_entry' => $_entry['id']);
 
@@ -382,7 +382,7 @@ class Module_admin_quiz
 
         $where = array();
         $type = get_param_string('q_type', null);
-        if (!is_null($type)) {
+        if ($type !== null) {
             $where['q_type'] = $type;
         }
 
@@ -419,7 +419,7 @@ class Module_admin_quiz
         require_code('templates_map_table');
 
         // Show summary
-        if (!is_null($id)) {
+        if ($id !== null) {
             $question_rows = $GLOBALS['SITE_DB']->query_select('quiz_questions', array('*'), array('q_quiz' => $id), 'ORDER BY id');
             foreach ($question_rows as $q) {
                 $question = get_translated_text($q['q_question_text']);
@@ -463,11 +463,11 @@ class Module_admin_quiz
             log_hack_attack_and_exit('ORDERBY_HACK');
         }
         $where = array();
-        if (!is_null($id)) {
+        if ($id !== null) {
             $where['q_quiz'] = $id;
         }
         $member_id = get_param_integer('member_id', null);
-        if (!is_null($member_id)) {
+        if ($member_id !== null) {
             $where['q_member'] = $member_id;
         }
         $max_rows = $GLOBALS['SITE_DB']->query_select_value('quiz_entries', 'COUNT(*)', $where);
@@ -478,7 +478,7 @@ class Module_admin_quiz
         $fields = new Tempcode();
         $_fields_title = array();
         $_fields_title[] = do_lang_tempcode('DATE');
-        if (is_null($id)) {
+        if ($id === null) {
             $_fields_title[] = do_lang_tempcode('NAME');
             $_fields_title[] = do_lang_tempcode('TYPE');
         } else {
@@ -492,7 +492,7 @@ class Module_admin_quiz
             $date_link = hyperlink(build_url(array('page' => '_SELF', 'type' => '__quiz_results', 'id' => $myrow['e_id']), '_SELF'), get_timezoned_date_time($myrow['q_time']), false, true);
             $results_entry[] = $date_link;
 
-            if (is_null($id)) {
+            if ($id === null) {
                 $results_entry[] = get_translated_text($myrow['q_name']);
                 $results_entry[] = do_lang_tempcode($myrow['q_type']);
             } else {
@@ -538,7 +538,7 @@ class Module_admin_quiz
 
         $member_id = $row['q_member'];
         $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
-        if (is_null($username)) {
+        if ($username === null) {
             $username = do_lang('UNKNOWN');
         }
         $member_url = mixed();

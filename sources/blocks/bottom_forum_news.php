@@ -85,7 +85,7 @@ class Block_bottom_forum_news
             } else {
                 $forum_id = is_numeric($forum_name) ? intval($forum_name) : $GLOBALS['FORUM_DRIVER']->forum_id_from_name($forum_name);
             }
-            if (!is_null($forum_id)) {
+            if ($forum_id !== null) {
                 $forum_ids[$forum_id] = $forum_name;
             }
         }
@@ -96,7 +96,7 @@ class Block_bottom_forum_news
 
             $out = new Tempcode();
             $_postdetailss = array();
-            if (!is_null($topics)) {
+            if ($topics !== null) {
                 sort_maps_by($topics, $date_key);
                 $topics = array_reverse($topics, false);
 

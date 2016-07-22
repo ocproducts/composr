@@ -305,7 +305,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
         if (strtoupper($sort_order) != 'DESC') {
             for ($record_counter = $record_start; $record_counter < $record_start + $record_max; $record_counter++) {
                 $new_order_value = post_param_integer('order_' . strval($record_counter), null);
-                if ($new_order_value !== $record_counter && !is_null($new_order_value)) {
+                if ($new_order_value !== $record_counter && $new_order_value !== null) {
                     $this->change_order($new_order_value, $record_counter, $current_ordering);
                     $changed = true;
                 }
@@ -315,7 +315,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
             $record_max = $record_start - $record_max;
             for ($record_counter = $record_max; $record_counter <= $record_start; $record_counter++) {
                 $new_order_value = post_param_integer('order_' . strval($record_counter), null);
-                if ($new_order_value !== $record_counter && !is_null($new_order_value)) {
+                if ($new_order_value !== $record_counter && $new_order_value !== null) {
                     $this->change_order($new_order_value, $record_counter, $current_ordering);
                     $changed = true;
                 }
@@ -339,7 +339,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
                 }
 
                 $test = do_lang('SPECIAL_CPF__' . $trans, null, null, null, null, false);
-                if (!is_null($test)) {
+                if ($test !== null) {
                     $trans = $test;
                 }
             }
@@ -604,16 +604,16 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
     {
         $f_name = 'field_' . strval(get_param_integer('id'));
         $_a = post_param_date('start');
-        $a = is_null($_a) ? '1=1' : ('m_join_time>' . strval($_a));
+        $a = ($_a === null) ? '1=1' : ('m_join_time>' . strval($_a));
         $_b = post_param_date('end');
-        $b = is_null($_b) ? '1=1' : ('m_join_time<' . strval($_b));
+        $b = ($_b === null) ? '1=1' : ('m_join_time<' . strval($_b));
         $members_in_range = $GLOBALS['FORUM_DB']->query('SELECT ' . $f_name . ',COUNT(' . $f_name . ') AS cnt FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members m LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_member_custom_fields f ON m.id=f.mf_member_id WHERE ' . $a . ' AND ' . $b . ' GROUP BY ' . $f_name . ' ORDER BY cnt', 300/*reasonable limit*/);
         if (count($members_in_range) == 300) {
             attach_message(do_lang_tempcode('TOO_MUCH_CHOOSE__TOP_ONLY', escape_html(integer_format(300))), 'warn');
         }
         $lines = array();
         foreach ($members_in_range as $row) {
-            if (!is_null($row[$f_name])) {
+            if ($row[$f_name] !== null) {
                 $val = $row[$f_name];
 
                 if ($val == STRING_MAGIC_NULL) {

@@ -111,7 +111,7 @@ class Hook_fields_short_text_multi
      */
     public function get_field_inputter($_cf_name, $_cf_description, $field, $actual_value, $new)
     {
-        if (is_null($actual_value)) {
+        if ($actual_value === null) {
             $actual_value = ''; // Plug anomaly due to unusual corruption
         }
 
@@ -140,7 +140,7 @@ class Hook_fields_short_text_multi
         do {
             $tmp_name = 'field_' . strval($id) . '_' . strval($i);
             $_value = post_param_string($tmp_name, null);
-            if ((is_null($_value)) && ($i == 0)) {
+            if (($_value === null) && ($i == 0)) {
                 return $editing ? STRING_MAGIC_NULL : '';
             }
             if (($_value !== null) && ($_value != '')) {

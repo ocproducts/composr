@@ -36,7 +36,7 @@ function points_profile($member_id_of, $member_id_viewing)
 
     // Get info about viewed user
     $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id_of, true);
-    if ((is_null($username)) || (is_guest($member_id_of))) {
+    if (($username === null) || (is_guest($member_id_of))) {
         warn_exit(do_lang_tempcode('MEMBER_NO_EXIST'));
     }
 
@@ -56,7 +56,7 @@ function points_profile($member_id_of, $member_id_viewing)
     $gift_points_used = get_gift_points_used($member_id_of); //$_point_info['gift_points_used'];
     $gift_points_available = get_gift_points_to_give($member_id_of);
     $points_gained_credits = $GLOBALS['SITE_DB']->query_select_value('credit_purchases', 'SUM(num_credits)', array('member_id' => $member_id_of, 'purchase_validated' => 1));
-    if (is_null($points_gained_credits)) {
+    if ($points_gained_credits === null) {
         $points_gained_credits = 0;
     }
 
@@ -66,12 +66,12 @@ function points_profile($member_id_of, $member_id_viewing)
     $points_voting = intval(get_option('points_voting'));
     $points_joining = intval(get_option('points_joining'));
     $_points_wiki_posting = get_option('points_wiki', true);
-    if (is_null($_points_wiki_posting)) {
+    if ($_points_wiki_posting === null) {
         $_points_wiki_posting = '0';
     }
     $points_wiki_posting = intval($_points_wiki_posting);
     $_points_chat = get_option('points_chat', true);
-    if (is_null($_points_chat)) {
+    if ($_points_chat === null) {
         $_points_chat = '0';
     }
     $points_chat_posting = intval($_points_chat);
@@ -104,7 +104,7 @@ function points_profile($member_id_of, $member_id_viewing)
         $charges = new Tempcode();
         $from_name = get_site_name();
         $to_name = $GLOBALS['FORUM_DRIVER']->get_username($member_id_of, true);
-        if (is_null($to_name)) {
+        if ($to_name === null) {
             $to_name = do_lang('UNKNOWN');
         }
         require_code('templates_results_table');

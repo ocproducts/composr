@@ -135,7 +135,7 @@ class Hook_search_calendar extends FieldsSearchHook
         }
         $where_clause .= ')';
         $sq = build_search_submitter_clauses('e_submitter', $author_id, $author);
-        if (is_null($sq)) {
+        if ($sq === null) {
             return array();
         } else {
             $where_clause .= $sq;

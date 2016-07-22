@@ -71,7 +71,7 @@ function cns_make_group($name, $is_default = 0, $is_super_admin = 0, $is_super_m
 
     if (!running_script('stress_test_loader')) {
         $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('g_name') => $name));
-        if (!is_null($test)) {
+        if ($test !== null) {
             if ($uniqify) {
                 $name .= '_' . uniqid('', false);
             } else {
@@ -80,17 +80,17 @@ function cns_make_group($name, $is_default = 0, $is_super_admin = 0, $is_super_m
         }
     }
 
-    if (is_null($is_super_admin)) {
+    if ($is_super_admin === null) {
         $is_super_admin = 0;
     }
-    if (is_null($is_super_moderator)) {
+    if ($is_super_moderator === null) {
         $is_super_moderator = 0;
     }
 
     if (!running_script('stress_test_loader')) {
-        if (is_null($order)) {
+        if ($order === null) {
             $order = $GLOBALS['FORUM_DB']->query_select_value('f_groups', 'MAX(g_order)');
-            if (is_null($order)) {
+            if ($order === null) {
                 $order = 0;
             } else {
                 $order++;

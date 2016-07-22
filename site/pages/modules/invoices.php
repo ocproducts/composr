@@ -168,7 +168,7 @@ class Module_invoices
         foreach ($rows as $row) {
             $type_code = $row['i_type_code'];
             $object = find_product($type_code);
-            if (is_null($object)) {
+            if ($object === null) {
                 continue;
             }
             $products = $object->get_products(false, $type_code);

@@ -154,7 +154,7 @@ class Module_vforums
         $title = do_lang_tempcode('POSTS_SINCE');
 
         $seconds_back = get_param_integer('seconds_back', null);
-        if (is_null($seconds_back)) {
+        if ($seconds_back === null) {
             if (array_key_exists('last_visit', $_COOKIE)) {
                 $last_time = intval($_COOKIE['last_visit']);
             } else {
@@ -289,7 +289,7 @@ class Module_vforums
         $keyset_value = null;
         foreach (is_array($condition) ? $condition : array($condition) as $_condition) {
             $query = ' FROM ';
-            if (!is_null($initial_table)) {
+            if ($initial_table !== null) {
                 $query .= $initial_table;
             } else {
                 $query .= $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics top';
@@ -304,7 +304,7 @@ class Module_vforums
             $query_cnt = $query;
             $_query_cnt = $query;
             $query .= $sql_sup;
-            if (($GLOBALS['SITE_DB']->can_arbitrary_groupby()) && (!is_null($initial_table))) {
+            if (($GLOBALS['SITE_DB']->can_arbitrary_groupby()) && ($initial_table !== null)) {
                 $query .= ' GROUP BY top.id';
                 $query_cnt .= ' GROUP BY top.id';
             }
@@ -317,12 +317,12 @@ class Module_vforums
             }
             $full_query .= $extra_select;
             $full_query .= $query;
-            if (($start < 200) && (is_null($initial_table)) && (multi_lang_content())) {
+            if (($start < 200) && ($initial_table === null) && (multi_lang_content())) {
                 $topic_rows = array_merge($topic_rows, $GLOBALS['FORUM_DB']->query($full_query, $max, $start, false, false, array('t_cache_first_post' => '?LONG_TRANS__COMCODE')));
             } else {
                 $topic_rows = array_merge($topic_rows, $GLOBALS['FORUM_DB']->query($full_query, $max, $start));
             }
-            if (($GLOBALS['SITE_DB']->can_arbitrary_groupby()) && (!is_null($initial_table))) {
+            if (($GLOBALS['SITE_DB']->can_arbitrary_groupby()) && ($initial_table !== null)) {
                 $max_rows += $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(DISTINCT top.id) ' . $_query_cnt);
             } else {
                 $max_rows += $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) ' . $query_cnt);
@@ -410,7 +410,7 @@ class Module_vforums
             'TOPIC_WRAPPER' => $topic_wrapper,
             'FORUM_GROUPINGS' => '',
         );
-        if (!is_null($extra_tpl_map)) {
+        if ($extra_tpl_map !== null) {
             $tpl_map += $extra_tpl_map;
         }
         return do_template('CNS_FORUM', $tpl_map);

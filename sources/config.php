@@ -81,7 +81,7 @@ function init__config()
     if ((get_db_type() == 'xml') && (!running_script('xml_db_import')) && (is_file(get_file_base() . '/data_custom/xml_db_import.php')) && (is_dir(get_file_base() . '/.git'))) {
         $last_xml_import = get_value('last_xml_import');
         $mod_time = filemtime(get_file_base() . '/.git');
-        if ((is_null($last_xml_import)) || (intval($last_xml_import) < $mod_time)) {
+        if (($last_xml_import === null) || (intval($last_xml_import) < $mod_time)) {
             set_value('last_xml_import', strval(time()));
 
             header('Location: ' . get_base_url() . '/data_custom/xml_db_import.php');
@@ -209,7 +209,7 @@ function get_option($name, $missing_ok = false)
 
             $value = get_option($name, $missing_ok);
 
-            if (!is_null($value)) {
+            if ($value !== null) {
                 global $SMART_CACHE;
                 if ($SMART_CACHE !== null) {
                     $SMART_CACHE->append('CONFIG_OPTIONS', $name, $value);
@@ -279,7 +279,7 @@ function get_option($name, $missing_ok = false)
     }
 
     // Translated...
-    $value = is_string($option['c_value_trans']) ? /*LEGACY*/$option['c_value_trans'] : (is_null($option['c_value_trans']) ? '' : get_translated_text($option['c_value_trans']));
+    $value = is_string($option['c_value_trans']) ? /*LEGACY*/$option['c_value_trans'] : (($option['c_value_trans'] === null) ? '' : get_translated_text($option['c_value_trans']));
     $option['_cached_string_value'] = $value; // Allows slightly better code path next time (see "The master of redundant quick exit points")
 
     if ($CONFIG_OPTIONS_FULLY_LOADED) {
@@ -459,7 +459,7 @@ function update_stat($stat, $increment)
     }
 
     $current = get_value($stat);
-    if (is_null($current)) {
+    if ($current === null) {
         $current = '0';
     }
     $new = intval($current) + $increment;

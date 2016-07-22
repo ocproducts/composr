@@ -44,7 +44,7 @@ class Hook_task_import_rss
 
         push_lax_comcode(true);
 
-        if (!is_null($rss->error)) {
+        if ($rss->error !== null) {
             return array(null, $rss->error);
         }
 
@@ -72,7 +72,7 @@ class Hook_task_import_rss
             if (($to_own_account == 0) && (array_key_exists('author', $item))) {
                 $creator = $item['author'];
                 $submitter_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($creator);
-                if (is_null($submitter_id)) {
+                if ($submitter_id === null) {
                     $submitter_id = get_member();
                 }
             } else {
@@ -98,7 +98,7 @@ class Hook_task_import_rss
             if ($edit_time === false) {
                 $edit_time = null;
             }
-            if (!is_null($edit_time)) {
+            if ($edit_time !== null) {
                 if (($edit_time < 0) || ($edit_time > 2147483647)) {
                     $edit_time = 2147483647;
                 }
@@ -166,7 +166,7 @@ class Hook_task_import_rss
                             $cat_id = $_cat;
                         }
                     }
-                    if (is_null($cat_id)) { // Could not find existing category, create new
+                    if ($cat_id === null) { // Could not find existing category, create new
                         $cat_id = add_news_category($cat, 'newscats/general', '', null);
                         require_code('permissions2');
                         set_global_category_access('news', $cat_id);
@@ -181,7 +181,7 @@ class Hook_task_import_rss
                         $cat_ids[] = $cat_id; // Secondary
                     }
                 }
-                if (is_null($owner_category_id)) {
+                if ($owner_category_id === null) {
                     $owner_category_id = $GLOBALS['SITE_DB']->query_select_value_if_there('news_categories', 'id', array('nc_owner' => $submitter_id));
                 }
 
@@ -394,14 +394,14 @@ class Hook_task_import_rss
                         }
 
                         $submitter = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', 'id', array('m_username' => $comment_author));
-                        if (is_null($submitter)) {
+                        if ($submitter === null) {
                             $submitter = $GLOBALS['FORUM_DRIVER']->get_guest_id(); // If comment is made by a non-member, assign comment to guest account
                         }
 
-                        $forum = (is_null(find_overridden_comment_forum('news'))) ? get_option('comments_forum_name') : find_overridden_comment_forum('news');
+                        $forum = (find_overridden_comment_forum('news') === null) ? get_option('comments_forum_name') : find_overridden_comment_forum('news');
 
                         $comment_parent_id = mixed();
-                        if ((get_forum_type() == 'cns') && (!is_null($comment_parent)) && (isset($comment_mapping[$comment_parent]))) {
+                        if ((get_forum_type() == 'cns') && ($comment_parent !== null) && (isset($comment_mapping[$comment_parent]))) {
                             $comment_parent_id = $comment_mapping[$comment_parent];
                         }
                         if ($comment_parent_id == 0) {
@@ -463,14 +463,14 @@ class Hook_task_import_rss
             fclose($myfile);
             sync_file($item['path']);
             fix_permissions($item['path']);
-            if (!is_null($item['parent_page'])) {
+            if ($item['parent_page'] !== null) {
                 $parent_page = mixed();
                 foreach ($imported_pages as $item2) {
                     if ($item2['id'] == $item['parent_page']) {
                         $parent_page = $item2['page'];
                     }
                 }
-                if (!is_null($parent_page)) {
+                if ($parent_page !== null) {
                     $GLOBALS['SITE_DB']->query_update('comcode_pages', array('p_parent_page' => $parent_page), array('the_zone' => $zone, 'the_page' => $page), '', 1);
                 }
             }

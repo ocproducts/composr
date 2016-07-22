@@ -46,7 +46,7 @@ function init__cns_groups()
  */
 function render_group_box($row, $zone = '_SEARCH', $give_context = true, $guid = '')
 {
-    if (is_null($row)) { // Should never happen, but we need to be defensive
+    if ($row === null) { // Should never happen, but we need to be defensive
         return new Tempcode();
     }
 
@@ -140,7 +140,7 @@ function cns_get_all_default_groups($include_primary = false, $include_all_confi
 
         if (count($rows) == 0) {
             $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'id', array('id' => db_get_first_id() + 8));
-            if (!is_null($test)) {
+            if ($test !== null) {
                 $groups[] = db_get_first_id() + 8;
             }
         }
@@ -312,7 +312,7 @@ function cns_get_best_group_property($groups, $property)
     $best_value_so_far = null;
     foreach ($groups as $group) {
         $this_value = $USER_GROUPS_CACHED[$group]['g_' . $property];
-        if ((is_null($best_value_so_far)) ||
+        if (($best_value_so_far === null) ||
             (($best_value_so_far < $this_value) && ($go_super_size)) ||
             (($best_value_so_far > $this_value) && (!$go_super_size))
         ) {
@@ -339,18 +339,18 @@ function cns_get_members_groups($member_id = null, $skip_secret = false, $handle
         return $ret;
     }
 
-    if (is_null($member_id)) {
+    if ($member_id === null) {
         $member_id = get_member();
     }
 
     if (($handle_probation) && ((!$GLOBALS['IS_VIA_BACKDOOR']) || ($member_id != get_member()))) {
         $opt = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_on_probation_until');
-        if ((!is_null($opt)) && ($opt > time())) {
+        if (($opt !== null) && ($opt > time())) {
             global $PROBATION_GROUP_CACHE;
-            if (is_null($PROBATION_GROUP_CACHE)) {
+            if ($PROBATION_GROUP_CACHE === null) {
                 $probation_group = get_option('probation_usergroup');
                 $PROBATION_GROUP_CACHE = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('g_name') => $probation_group));
-                if (is_null($PROBATION_GROUP_CACHE)) {
+                if ($PROBATION_GROUP_CACHE === null) {
                     $PROBATION_GROUP_CACHE = false;
                 }
             }
@@ -401,7 +401,7 @@ function cns_get_members_groups($member_id = null, $skip_secret = false, $handle
             }
         }
         $primary_group = $GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_primary_group');
-        if (is_null($primary_group)) {
+        if ($primary_group === null) {
             $primary_group = db_get_first_id();
         }
         $groups[$primary_group] = true;

@@ -26,7 +26,7 @@
  */
 function autofill_geo_cpfs($member_id = null) {
     $where = mixed();
-    if (!is_null($member_id)) {
+    if ($member_id !== null) {
         $where['mf_member_id'] = $member_id;
     }
 
@@ -65,14 +65,14 @@ function _autofill_geo_cpfs($row) {
     $post_code_field = find_cms_cpf_field_id('cms_post_code');
     $country_field = find_cms_cpf_field_id('cms_country');
 
-    $has_street_address = (!is_null($street_address_field)) && (!empty($row['field_' . strval($street_address_field)]));
-    $has_city = (!is_null($city_field)) && (!empty($row['field_' . strval($city_field)]));
-    $has_county = (!is_null($county_field)) && (!empty($row['field_' . strval($county_field)]));
-    $has_state = (!is_null($state_field)) && (!empty($row['field_' . strval($state_field)]));
-    $has_post_code = (!is_null($post_code_field)) && (!empty($row['field_' . strval($post_code_field)]));
-    $has_country = (!is_null($country_field)) && (!empty($row['field_' . strval($country_field)]));
-    $has_latitude = (!is_null($latitude_field)) && (!empty($row['field_' . strval($latitude_field)]));
-    $has_longitude = (!is_null($longitude_field)) && (!empty($row['field_' . strval($longitude_field)]));
+    $has_street_address = ($street_address_field !== null) && (!empty($row['field_' . strval($street_address_field)]));
+    $has_city = ($city_field !== null) && (!empty($row['field_' . strval($city_field)]));
+    $has_county = ($county_field !== null) && (!empty($row['field_' . strval($county_field)]));
+    $has_state = ($state_field !== null) && (!empty($row['field_' . strval($state_field)]));
+    $has_post_code = ($post_code_field !== null) && (!empty($row['field_' . strval($post_code_field)]));
+    $has_country = ($country_field !== null) && (!empty($row['field_' . strval($country_field)]));
+    $has_latitude = ($latitude_field !== null) && (!empty($row['field_' . strval($latitude_field)]));
+    $has_longitude = ($longitude_field !== null) && (!empty($row['field_' . strval($longitude_field)]));
 
     $has_address = $has_city && $has_country;
     $has_gps = $has_latitude && $has_longitude;
@@ -104,7 +104,7 @@ function _autofill_geo_cpfs($row) {
             }
 
             $gps_parts = geocode(implode(', ', $address_components));
-            if (!is_null($gps_parts)) {
+            if ($gps_parts !== null) {
                 list($latitude, $longitude) = $gps_parts;
                 if (!$has_latitude) {
                     $changes['field_' . strval($latitude_field)] = $latitude;
@@ -123,7 +123,7 @@ function _autofill_geo_cpfs($row) {
             $longitude = $row['field_' . strval($longitude_field)];
 
             $address_parts = reverse_geocode($latitude, $longitude);
-            if (!is_null($address_parts)) {
+            if ($address_parts !== null) {
                 list(, , $city, $county, $state, , $country) = $address_parts;
                 if (!$has_city && !empty($city)) {
                     $changes['field_' . strval($city_field)] = $city;

@@ -81,8 +81,8 @@ class Hook_fields_integer
      */
     public function get_field_value_row_bits($field, $required = null, $default = null)
     {
-        if (($default !== null) && (strtoupper($default) == 'AUTO_INCREMENT') && (!is_null($field)) && (!is_null($field['id']))) { // We need to calculate a default even if not required, because the defaults are programmatic
-            $default = is_null($field) ? '0' : $this->get_field_auto_increment($field['id'], intval($default));
+        if (($default !== null) && (strtoupper($default) == 'AUTO_INCREMENT') && ($field !== null) && ($field['id'] !== null)) { // We need to calculate a default even if not required, because the defaults are programmatic
+            $default = ($field === null) ? '0' : $this->get_field_auto_increment($field['id'], intval($default));
     	} else {
             if ($required !== null) {
                 if (($required) && ($default == '')) {
@@ -145,7 +145,7 @@ class Hook_fields_integer
         }
 
         $input_name = empty($field['cf_input_name']) ? ('field_' . strval($field['id'])) : $field['cf_input_name'];
-        return form_input_integer($_cf_name, $_cf_description, $input_name, (is_null($actual_value) || ($actual_value === '')) ? null : intval($actual_value), $field['cf_required'] == 1);
+        return form_input_integer($_cf_name, $_cf_description, $input_name, (($actual_value === null) || ($actual_value === '')) ? null : intval($actual_value), $field['cf_required'] == 1);
     }
 
     /**
@@ -179,7 +179,7 @@ class Hook_fields_integer
     {
         // Get most recent value, to start with- we will iterate forward on it
         $value = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_efv_integer', 'cv_value', array('cf_id' => $field_id), 'ORDER BY ce_id DESC');
-        if (is_null($value)) {
+        if ($value === null) {
             $value = strval(intval($default) - 1);
         }
 
@@ -188,7 +188,7 @@ class Hook_fields_integer
             $value = strval(intval($value) + 1);
 
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_efv_integer', 'ce_id', array('cv_value' => $value, 'cf_id' => $field_id));
-        } while (!is_null($test));
+        } while ($test !== null);
 
         return $value;
     }

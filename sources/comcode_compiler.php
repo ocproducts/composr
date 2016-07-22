@@ -1151,7 +1151,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                                             $this_member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($username);
                                         }
 
-                                        if (!is_null($this_member_id)) {
+                                        if ($this_member_id !== null) {
                                             if ($GLOBALS['XSS_DETECT']) {
                                                 ocp_mark_as_escaped($continuation);
                                             }
@@ -1248,7 +1248,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                                                 $to_float = null;
                                                 foreach ($cells as $i => $cell) {
                                                     if (!$spec) {
-                                                        if ((strpos($cell, '!') !== false) || (is_null($to_float))) {
+                                                        if ((strpos($cell, '!') !== false) || ($to_float === null)) {
                                                             $to_float = $i;
                                                         }
                                                     }
@@ -1409,12 +1409,12 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                                         $banner_sql = banner_select_sql(null, true);
                                         $banner_sql .= ' AND t_comcode_inline=1 AND ' . db_string_not_equal_to('b_title_text', '');
                                         $rows = $GLOBALS['SITE_DB']->query($banner_sql, null, null, true);
-                                        if (!is_null($rows)) {
+                                        if ($rows !== null) {
                                             // Filter out what we don't have permission for
                                             if (get_option('use_banner_permissions', true) === '1') {
                                                 require_code('permissions');
                                                 $groups = _get_where_clause_groups($source_member);
-                                                if (!is_null($groups)) {
+                                                if ($groups !== null) {
                                                     $perhaps = collapse_1d_complexity('category_name', $GLOBALS['SITE_DB']->query('SELECT DISTINCT category_name FROM ' . get_table_prefix() . 'group_category_access WHERE ' . db_string_equal_to('module_the_name', 'banners') . ' AND (' . $groups . ')', null, null, false, true));
                                                     $new_rows = array();
                                                     foreach ($rows as $row) {
@@ -1524,7 +1524,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                                     }
 
                                     // If it was successfully rendered as media, put this into the output stream rather than the written link
-                                    if (!is_null($embed_output)) {
+                                    if ($embed_output !== null) {
                                         if ($GLOBALS['XSS_DETECT']) {
                                             ocp_mark_as_escaped($continuation);
                                         }
@@ -1958,7 +1958,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
     if (($status != CCP_NO_MANS_LAND) || (count($tag_stack) != 0)) {
         if (!$lax) {
             $stack_top = array_pop($tag_stack);
-            return comcode_parse_error($preparse_mode, array('CCP_BROKEN_END', is_null($stack_top) ? $current_tag : $stack_top[0]), $pos, $comcode, $check_only);
+            return comcode_parse_error($preparse_mode, array('CCP_BROKEN_END', ($stack_top === null) ? $current_tag : $stack_top[0]), $pos, $comcode, $check_only);
         } else {
             while (count($tag_stack) > 0) {
                 $_last = array_pop($tag_stack);

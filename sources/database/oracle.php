@@ -114,10 +114,10 @@ class Database_Static_oracle extends DatabaseDriver
      */
     public function query($query, $connection, $max = null, $start = null, $fail_ok = false, $get_insert_id = false)
     {
-        if ((!is_null($start)) && (!is_null($max)) && (strtoupper(substr($query, 0, 7)) == 'SELECT ') || (strtoupper(substr($query, 0, 8)) == '(SELECT ')) {
+        if (($start !== null) && ($max !== null) && (strtoupper(substr($query, 0, 7)) == 'SELECT ') || (strtoupper(substr($query, 0, 8)) == '(SELECT ')) {
             $old_query = $query;
 
-            if (is_null($start)) {
+            if ($start === null) {
                 $start = 0;
             }
 
@@ -130,7 +130,7 @@ class Database_Static_oracle extends DatabaseDriver
                     $pos4 = strlen($old_query);
                 }
                 $query = substr($old_query, 0, $pos4) . ' WHERE rownum>=' . strval(intval($start));
-                if (!is_null($max)) {
+                if ($max !== null) {
                     $query .= ' AND rownum<' . strval(intval($start + $max));
                 }
                 $query .= substr($old_query, $pos4);
@@ -140,7 +140,7 @@ class Database_Static_oracle extends DatabaseDriver
                     $pos4 = strlen($old_query);
                 }
                 $query = substr($old_query, 0, $pos3) . 'WHERE (' . substr($old_query, $pos3 + 6, $pos4 - $pos3 - 6) . ') AND rownum>=' . strval(intval($start));
-                if (!is_null($max)) {
+                if ($max !== null) {
                     $query .= ' AND rownum<' . strval(intval($start + $max));
                 }
                 $query .= substr($old_query, $pos4);
@@ -155,7 +155,7 @@ class Database_Static_oracle extends DatabaseDriver
                 ocp_mark_as_escaped($err);
             }
             if ((!running_script('upgrader')) && (!get_mass_import_mode())) {
-                if (!function_exists('do_lang') || is_null(do_lang('QUERY_FAILED', null, null, null, null, false))) {
+                if ((!function_exists('do_lang')) || (do_lang('QUERY_FAILED', null, null, null, null, false) === null)) {
                     $this->failed_query_exit(htmlentities('Query failed: ' . $query . ' : ' . $err));
                 }
 
@@ -207,7 +207,7 @@ class Database_Static_oracle extends DatabaseDriver
             $names[$x] = strtolower(ocicolumnname($stmt, $x));
         }
         while (ocifetch($stmt)) {
-            if ((is_null($start)) || ($i >= $start)) {
+            if (($start === null) || ($i >= $start)) {
                 $newrow = array();
 
                 for ($j = 1; $j <= $num_fields; $j++) {
@@ -223,7 +223,7 @@ class Database_Static_oracle extends DatabaseDriver
                     $type = $types[$j];
 
                     if ($type == 'NUMBER') {
-                        if (!is_null($v)) {
+                        if ($v !== null) {
                             $newrow[$name] = intval($v);
                         } else {
                             $newrow[$name] = null;

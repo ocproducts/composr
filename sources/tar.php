@@ -28,7 +28,7 @@
  */
 function tar_open($path, $mode)
 {
-    if (is_null($path)) {
+    if ($path === null) {
         $myfile = mixed();
         $exists = false;
     } else {
@@ -50,7 +50,7 @@ function tar_open($path, $mode)
     $resource['already_at_end'] = false;
     if (((!$exists) || (!(filesize($path) > 0))) && (strpos($mode, 'r') === false)) {
         $chunk = pack('a1024', '');
-        if (!is_null($myfile)) {
+        if ($myfile !== null) {
             if (fwrite($myfile, $chunk) < strlen($chunk)) {
                 warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
             }
@@ -189,7 +189,7 @@ function tar_add_folder_incremental(&$resource, $logfile, $path, $threshold, $ma
         $_full = '.';
     }
     $info = array();
-    if (!is_null($logfile)) {
+    if ($logfile !== null) {
         $dh = @opendir($_full);
         if ($dh === false) {
             if (fwrite($logfile, 'Could not access ' . $_full . "\n") == 0) {
@@ -221,9 +221,9 @@ function tar_add_folder_incremental(&$resource, $logfile, $path, $threshold, $ma
                     if (($full != $resource['full']) && ($full != 'DIRECTORY')) {
                         $ctime = filectime($full);
                         $mtime = filemtime($full);
-                        if ((($mtime > $threshold || $ctime > $threshold)) && ((is_null($max_size)) || (filesize($full) < $max_size * 1024 * 1024))) {
+                        if ((($mtime > $threshold || $ctime > $threshold)) && (($max_size === null) || (filesize($full) < $max_size * 1024 * 1024))) {
                             tar_add_file($resource, $_subpath, $full, fileperms($full), filemtime($full), true);
-                            if (!is_null($logfile) && fwrite($logfile, 'Backed up file ' . $_subpath . ' (' . clean_file_size(filesize($full)) . ')' . "\n") == 0) {
+                            if ($logfile !== null && fwrite($logfile, 'Backed up file ' . $_subpath . ' (' . clean_file_size(filesize($full)) . ')' . "\n") == 0) {
                                 warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
                             }
                         }
@@ -270,7 +270,7 @@ function tar_add_folder(&$resource, $logfile, $path, $max_size = null, $subpath 
     if ($_full == '') {
         $_full = '.';
     }
-    if (!is_null($logfile)) {
+    if ($logfile !== null) {
         $dh = @opendir($_full);
         if ($dh === false) {
             if (fwrite($logfile, 'Could not access ' . $_full . ' [case 2]' . "\n") == 0) {
@@ -300,13 +300,13 @@ function tar_add_folder(&$resource, $logfile, $path, $max_size = null, $subpath 
                     continue;
                 }
                 if (is_dir($full)) {
-                    if ((is_null($root_only_dirs)) || (in_array($entry, $root_only_dirs))) {
+                    if (($root_only_dirs === null) || (in_array($entry, $root_only_dirs))) {
                         tar_add_folder($resource, $logfile, $path, $max_size, $_subpath, $avoid_backing_up, null, $tick, $all_files);
                     }
                 } else {
-                    if ((($full != $resource['full']) && ((is_null($max_size)) || (filesize($full) < $max_size * 1024 * 1024))) && ((is_null($avoid_backing_up)) || (!array_key_exists($_subpath, $avoid_backing_up)))) {
+                    if ((($full != $resource['full']) && (($max_size === null) || (filesize($full) < $max_size * 1024 * 1024))) && (($avoid_backing_up === null) || (!array_key_exists($_subpath, $avoid_backing_up)))) {
                         tar_add_file($resource, $_subpath, $full, fileperms($full), filemtime($full), true);
-                        if (!is_null($logfile) && fwrite($logfile, 'Backed up file ' . $_subpath . ' (' . clean_file_size(filesize($full)) . ')' . "\n") == 0) {
+                        if ($logfile !== null && fwrite($logfile, 'Backed up file ' . $_subpath . ' (' . clean_file_size(filesize($full)) . ')' . "\n") == 0) {
                             warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
                         }
                     }
@@ -339,7 +339,7 @@ function tar_extract_to_folder(&$resource, $path, $use_afm = false, $files = nul
     $directory = $resource['directory'];
 
     foreach ($directory as $file) {
-        if (($file['path'] != 'addon.inf') && ($file['path'] != 'addon_install_code.php') && ((is_null($files)) || (in_array($file['path'], $files)))) {
+        if (($file['path'] != 'addon.inf') && ($file['path'] != 'addon_install_code.php') && (($files === null) || (in_array($file['path'], $files)))) {
             // Special case for directories. Composr doesn't add directory records, but at least 7-zip does
             if (substr($file['path'], -1) == '/') {
                 if (!$use_afm) {
@@ -398,7 +398,7 @@ function tar_extract_to_folder(&$resource, $path, $use_afm = false, $files = nul
                         break;
                     }
                 }
-                if (!is_null($theme)) {
+                if ($theme !== null) {
                     $file['path'] = dirname($file['path']) . '/' . $theme . '__' . basename($file['path']);
                 }
             }
@@ -446,7 +446,7 @@ function tar_get_file(&$resource, $path, $tolerate_errors = false, $write_data_t
 {
     if (!array_key_exists('directory', $resource)) {
         $ret = tar_get_directory($resource, $tolerate_errors);
-        if (is_null($ret)) {
+        if ($ret === null) {
             return null;
         }
     }
@@ -455,7 +455,7 @@ function tar_get_file(&$resource, $path, $tolerate_errors = false, $write_data_t
 
     foreach ($directory as $offset => $stuff) {
         if ($stuff['path'] == $path) {
-            if (!is_null($write_data_to)) {
+            if ($write_data_to !== null) {
                 $outfile = fopen($write_data_to, 'wb');
             }
 
@@ -475,7 +475,7 @@ function tar_get_file(&$resource, $path, $tolerate_errors = false, $write_data_t
                     $data .= $test;
                     $len += strlen($test);
 
-                    if (!is_null($write_data_to)) {
+                    if ($write_data_to !== null) {
                         if (fwrite($outfile, $data) < strlen($data)) {
                             warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
                         }
@@ -485,7 +485,7 @@ function tar_get_file(&$resource, $path, $tolerate_errors = false, $write_data_t
                 }
             }
 
-            if (!is_null($write_data_to)) {
+            if ($write_data_to !== null) {
                 fclose($outfile);
                 fix_permissions($path);
                 sync_file($path);
@@ -512,7 +512,7 @@ function tar_get_file(&$resource, $path, $tolerate_errors = false, $write_data_t
  */
 function tar_add_file(&$resource, $target_path, $data, $_mode = 0644, $_mtime = null, $data_is_path = false, $return_on_errors = false, $efficient_mode = false)
 {
-    if (is_null($_mtime)) {
+    if ($_mtime === null) {
         $_mtime = time();
     }
 
@@ -549,7 +549,7 @@ function tar_add_file(&$resource, $target_path, $data, $_mode = 0644, $_mtime = 
     $myfile = $resource['myfile'];
 
     //if (!$resource['already_at_end']) {   Don't trust this as reliable at the moment and seeking is not a problem
-    if (!is_null($myfile)) {
+    if ($myfile !== null) {
         fseek($myfile, $resource['end'], SEEK_SET);
     }
     $resource['already_at_end'] = true;
@@ -602,7 +602,7 @@ function tar_add_file(&$resource, $target_path, $data, $_mode = 0644, $_mtime = 
     $whole = pack('a512', $name . $mode . $uid . $gid . $size . $mtime . $chksum . $typeflag . $linkname . $magic . $version . $uname . $gname . $devmajor . $devminor . $prefix);
 
     $chunk = pack('a512', $whole);
-    if (is_null($myfile)) {
+    if ($myfile === null) {
         echo $chunk;
     } else {
         if (fwrite($myfile, $chunk) < strlen($chunk)) {
@@ -615,7 +615,7 @@ function tar_add_file(&$resource, $target_path, $data, $_mode = 0644, $_mtime = 
         $infile = fopen($data, 'rb');
         while (!feof($infile)) {
             $in = fread($infile, 8000);
-            if (is_null($myfile)) {
+            if ($myfile === null) {
                 echo $in;
             } else {
                 if (fwrite($myfile, $in) < strlen($in)) {
@@ -626,7 +626,7 @@ function tar_add_file(&$resource, $target_path, $data, $_mode = 0644, $_mtime = 
         fclose($infile);
         $extra_to_write = $block_size - filesize($data);
         if ($extra_to_write != 0) {
-            if (is_null($myfile)) {
+            if ($myfile === null) {
                 echo pack('a' . strval($extra_to_write), '');
             } else {
                 if (fwrite($myfile, pack('a' . strval($extra_to_write), '')) == 0) {
@@ -636,7 +636,7 @@ function tar_add_file(&$resource, $target_path, $data, $_mode = 0644, $_mtime = 
         }
     } else {
         $chunk = pack('a' . strval($block_size), $data);
-        if (is_null($myfile)) {
+        if ($myfile === null) {
             echo $chunk;
         } else {
             if (fwrite($myfile, $chunk) < strlen($chunk)) {
@@ -673,7 +673,7 @@ function tar_crc($header)
 function tar_close($resource)
 {
     if (substr($resource['mode'], 0, 1) != 'r') {
-        if (is_null($resource['myfile'])) {
+        if ($resource['myfile'] === null) {
             $chunk = pack('a1024', '');
             echo $chunk;
         } else {

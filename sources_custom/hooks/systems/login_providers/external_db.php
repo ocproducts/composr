@@ -26,12 +26,12 @@ class Hook_login_provider_external_db
      */
     public function try_login($member)
     {
-        if ((is_null($member)) || (is_guest($member))) {
+        if (($member === null) || (is_guest($member))) {
             require_code('external_db');
 
             $record = external_db_user_from_session();
 
-            if (is_null($record)) {
+            if ($record === null) {
                 return $member;
             }
 
@@ -42,10 +42,10 @@ class Hook_login_provider_external_db
             if (get_option('one_per_email_address') == '1') {
                 $member = $GLOBALS['FORUM_DRIVER']->get_member_from_email_address($record[$email_address_field]);
             }
-            if (is_null($member)) {
+            if ($member === null) {
                 $member = $GLOBALS['FORUM_DRIVER']->get_member_from_username($record[$username_field]);
             }
-            if (!is_null($member)) {
+            if ($member !== null) {
                 external_db_user_sync($record);
 
                 // Return existing user

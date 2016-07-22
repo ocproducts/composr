@@ -56,7 +56,7 @@ class Hook_rss_points
             $author = '';
             if ($row['anonymous'] == 0) {
                 $from = $GLOBALS['FORUM_DRIVER']->get_username($row['gift_from']);
-                if (is_null($from)) {
+                if ($from === null) {
                     $from = '';
                 }
             }
@@ -65,7 +65,7 @@ class Hook_rss_points
             $edit_date = '';
 
             $to = $GLOBALS['FORUM_DRIVER']->get_username($row['gift_to']);
-            if (is_null($to)) {
+            if ($to === null) {
                 $to = do_lang('UNKNOWN');
             }
             $news_title = xmlentities(do_lang('POINTS_RSS_LINE', $to, integer_format($row['amount'])));

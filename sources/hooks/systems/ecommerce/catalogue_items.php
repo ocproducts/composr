@@ -32,7 +32,7 @@ class Hook_ecommerce_catalogue_items
      */
     public function get_products($site_lang = false, $search = null, $search_item_names = false)
     {
-        if (is_null($search)) {
+        if ($search === null) {
             $cnt = $GLOBALS['SITE_DB']->query_select_value('catalogue_entries t1 LEFT JOIN ' . get_table_prefix() . 'catalogues t2 ON t1.c_name=t2.c_name', 'COUNT(*)', array('c_ecommerce' => 1));
             if ($cnt > 50) {
                 return array(); // Too many to list
@@ -44,7 +44,7 @@ class Hook_ecommerce_catalogue_items
         $products = array();
 
         $where = array('c_ecommerce' => 1);
-        if (!is_null($search)) {
+        if ($search !== null) {
             if (!$search_item_names) {
                 if (!is_numeric($search)) {
                     return array();
@@ -67,7 +67,7 @@ class Hook_ecommerce_catalogue_items
 
                 $product_title = $map[0]['effective_value_pure'];
 
-                if ((!is_null($search)) && ($search_item_names)) {
+                if (($search !== null) && ($search_item_names)) {
                     if ($product_title != $search) {
                         continue;
                     }
@@ -138,7 +138,7 @@ class Hook_ecommerce_catalogue_items
                 $fields[4]['effective_value'] = $fields[4]['effective_value']->evaluate();
             }
 
-            if ((is_null($fields[4]['effective_value'])) || (intval($fields[4]['effective_value']) == 0)) {
+            if (($fields[4]['effective_value'] === null) || (intval($fields[4]['effective_value']) == 0)) {
                 return ECOMMERCE_PRODUCT_AVAILABLE;
             }
         }
@@ -151,7 +151,7 @@ class Hook_ecommerce_catalogue_items
 
             // Locked order check
             $item_count = $GLOBALS['SITE_DB']->query_select_value('shopping_order t1 JOIN ' . get_table_prefix() . 'shopping_order_details t2 ON t1.id=t2.order_id', 'SUM(t2.p_quantity) as qty', array('t1.order_status' => 'ORDER_STATUS_awaiting_payment', 't2.p_id' => intval($type_code)));
-            if (is_null($item_count)) {
+            if ($item_count === null) {
                 $item_count = 0;
             }
 
@@ -185,7 +185,7 @@ class Hook_ecommerce_catalogue_items
         if (is_object($fields[3]['effective_value'])) {
             $fields[3]['effective_value'] = $fields[3]['effective_value']->evaluate();
         }
-        if ((is_null($fields[3]['effective_value'])) || (intval($fields[3]['effective_value']) == 0)) {
+        if (($fields[3]['effective_value'] === null) || (intval($fields[3]['effective_value']) == 0)) {
             return null;
         }
 
@@ -257,14 +257,14 @@ class Hook_ecommerce_catalogue_items
 
         $product_det = array();
 
-        if (is_null($pid)) {
+        if ($pid === null) {
             $pid = either_param_integer('product_id');
         }
 
         $qty = post_param_integer('quantity', 1);
 
         $catalogue_name = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_entries', 'c_name', array('id' => $pid));
-        if (is_null($catalogue_name)) {
+        if ($catalogue_name === null) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'catalogue_entry'));
         }
 
@@ -445,7 +445,7 @@ class Hook_ecommerce_catalogue_items
         );
 
         $catalogue_name = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_entries', 'c_name', array('id' => $entry['product_id']));
-        if (is_null($catalogue_name)) {
+        if ($catalogue_name === null) {
             $GLOBALS['SITE_DB']->query_delete('shopping_cart', array('product_id' => $entry['product_id']));
             return new Tempcode();
         }
@@ -626,7 +626,7 @@ class Hook_ecommerce_catalogue_items
                 $fields[4]['effective_value'] = $fields[4]['effective_value']->evaluate();
             }
 
-            if (is_null($fields[4]['effective_value'])) {
+            if ($fields[4]['effective_value'] === null) {
                 return;
             }
 
@@ -638,7 +638,7 @@ class Hook_ecommerce_catalogue_items
                 $fields[5]['effective_value'] = $fields[5]['effective_value']->evaluate();
             }
 
-            if (is_null($fields[5]['effective_value'])) {
+            if ($fields[5]['effective_value'] === null) {
                 return;
             }
 
@@ -725,7 +725,7 @@ class Hook_ecommerce_catalogue_items
 
         $cart_url = build_url(array('page' => 'shopping', 'type' => 'add_item', 'hook' => 'catalogue_items'), '_SELF');
 
-        $purchase_mod_url = build_url(array('page' => 'purchase', 'type' => ($terms == '') ? (is_null($fields) ? 'pay' : 'details') : 'terms', 'type_code' => strval($id), 'id' => $id), '_SELF');
+        $purchase_mod_url = build_url(array('page' => 'purchase', 'type' => ($terms == '') ? (($fields === null) ? 'pay' : 'details') : 'terms', 'type_code' => strval($id), 'id' => $id), '_SELF');
 
         $map['CART_BUTTONS'] = do_template('CATALOGUE_ENTRY_CART_BUTTONS', array(
             '_GUID' => 'd4491c6e221b1f06375a6427da062bac',

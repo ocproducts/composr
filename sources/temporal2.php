@@ -289,7 +289,7 @@ function post_param_date_components($stub, $year = null, $month = null, $day = n
     $timezone = post_param_string('timezone', get_users_timezone());
     if ($get_also) {
         $date = either_param_string($stub, null);
-        if (!is_null($date)) { // HTML5 input style
+        if ($date !== null) { // HTML5 input style
             $matches = array();
             if (preg_match('#^(\d\d\d\d)-(\d\d)-(\d\d)$#', $date, $matches) == 0) {
                 return $default_ret;
@@ -300,7 +300,7 @@ function post_param_date_components($stub, $year = null, $month = null, $day = n
             $day = intval($matches[3]);
 
             $time = either_param_string($stub . '_time', null);
-            if ((!is_null($time)) && (preg_match('#^(\d\d):(\d\d)(:| |$)#', $time, $matches) != 0)) {
+            if (($time !== null) && (preg_match('#^(\d\d):(\d\d)(:| |$)#', $time, $matches) != 0)) {
                 $hour = intval($matches[1]);
                 $minute = intval($matches[2]);
                 if (strpos($time, 'PM') !== false) {
@@ -312,15 +312,15 @@ function post_param_date_components($stub, $year = null, $month = null, $day = n
             }
         } else { // Legacy input style
             $year = either_param_integer($stub . '_year', null);
-            if (is_null($year)) {
+            if ($year === null) {
                 return $default_ret;
             }
             $month = either_param_integer($stub . '_month', null);
-            if (is_null($month)) {
+            if ($month === null) {
                 return $default_ret;
             }
             $day = either_param_integer($stub . '_day', null);
-            if (is_null($day)) {
+            if ($day === null) {
                 return $default_ret;
             }
 
@@ -329,7 +329,7 @@ function post_param_date_components($stub, $year = null, $month = null, $day = n
         }
     } else {
         $date = post_param_string($stub, null);
-        if (!is_null($date)) { // HTML5 input style
+        if ($date !== null) { // HTML5 input style
             $matches = array();
             if (preg_match('#^(\d\d\d\d)-(\d\d)-(\d\d)$#', $date, $matches) == 0) {
                 return $default_ret;
@@ -340,7 +340,7 @@ function post_param_date_components($stub, $year = null, $month = null, $day = n
             $day = intval($matches[3]);
 
             $time = post_param_string($stub . '_time', null);
-            if ((!is_null($time)) && (preg_match('#^(\d\d):(\d\d)(:| |$)#', $time, $matches) != 0)) {
+            if (($time !== null) && (preg_match('#^(\d\d):(\d\d)(:| |$)#', $time, $matches) != 0)) {
                 $hour = intval($matches[1]);
                 $minute = intval($matches[2]);
                 if (strpos($time, 'PM') !== false) {
@@ -352,15 +352,15 @@ function post_param_date_components($stub, $year = null, $month = null, $day = n
             }
         } else { // Legacy input style
             $year = post_param_integer($stub . '_year', null);
-            if (is_null($year)) {
+            if ($year === null) {
                 return $default_ret;
             }
             $month = post_param_integer($stub . '_month', null);
-            if (is_null($month)) {
+            if ($month === null) {
                 return $default_ret;
             }
             $day = post_param_integer($stub . '_day', null);
-            if (is_null($day)) {
+            if ($day === null) {
                 return $default_ret;
             }
 
@@ -369,7 +369,7 @@ function post_param_date_components($stub, $year = null, $month = null, $day = n
         }
     }
 
-    if (is_null($hour)) {
+    if ($hour === null) {
         if (strpos($stub, 'end') !== false) {
             $hour = 23;
             $minute = 59;
@@ -400,7 +400,7 @@ function _post_param_date($stub, $get_also = false, $do_timezone_conversion = tr
     $timezone = post_param_string('timezone', get_users_timezone());
 
     list($year, $month, $day, $hour, $minute) = post_param_date_components($stub, null, null, null, $get_also);
-    if (is_null($year)) {
+    if ($year === null) {
         return null;
     }
 

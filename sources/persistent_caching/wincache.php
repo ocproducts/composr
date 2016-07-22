@@ -34,7 +34,7 @@ class Persistent_caching_wincache
      */
     public function load_objects_list()
     {
-        if (is_null($this->objects_list)) {
+        if ($this->objects_list === null) {
             $success = false;
             $this->objects_list = wincache_ucache_get(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $success);
             if ($this->objects_list === null || !$success) {
@@ -58,7 +58,7 @@ class Persistent_caching_wincache
         if (!$success) {
             return null;
         }
-        if ((!is_null($min_cache_date)) && ($data[0] < $min_cache_date)) {
+        if (($min_cache_date !== null) && ($data[0] < $min_cache_date)) {
             return null;
         }
         return $data[1];

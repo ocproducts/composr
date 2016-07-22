@@ -142,7 +142,7 @@ function _param_invalid($name, $ret, $posted)
     }
     $param_invalid_looping = true;
 
-    if (!is_null($ret)) {
+    if ($ret !== null) {
         // Try and recover by stripping junk off...
         $test = preg_replace('#[^\d]+$#', '', $ret);
         if (is_numeric($test)) {
@@ -234,7 +234,7 @@ function _composr_error_handler($type, $errno, $errstr, $errfile, $errline, $sys
 
     if ($fatal) {
         // Turn off MSN, as this increases stability
-        if ((array_key_exists('MSN_DB', $GLOBALS)) && (!is_null($GLOBALS['MSN_DB']))) {
+        if ((array_key_exists('MSN_DB', $GLOBALS)) && ($GLOBALS['MSN_DB'] !== null)) {
             $GLOBALS['FORUM_DB'] = $GLOBALS['MSN_DB'];
             $GLOBALS['MSN_DB'] = null;
         }
@@ -321,7 +321,7 @@ function _warn_screen($title, $text, $provide_back = true, $support_match_key_me
     $text_eval = is_object($text) ? $text->evaluate() : $text;
 
     $tmp = _look_for_match_key_message($text_eval, !$support_match_key_messages);
-    if (!is_null($tmp)) {
+    if ($tmp !== null) {
         $text = $tmp;
     }
 
@@ -445,11 +445,11 @@ function _generic_exit($text, $template, $support_match_key_messages = false, $l
         dispatch_notification('task_completed', null, $n_subject, $n_message, array(get_member()), A_FROM_SYSTEM_PRIVILEGED, array('priority' => 2, 'send_immediately' => true));
     }
 
-    if (is_null($support_match_key_messages)) {
+    if ($support_match_key_messages === null) {
         $support_match_key_messages = in_array($text_eval, array(do_lang('NO_ENTRIES'), do_lang('NO_CATEGORIES')));
     }
     $tmp = _look_for_match_key_message($text_eval, false, !$support_match_key_messages);
-    if (!is_null($tmp)) {
+    if ($tmp !== null) {
         $text = $tmp;
     }
 
@@ -486,7 +486,7 @@ function _generic_exit($text, $template, $support_match_key_messages = false, $l
         }
     }
 
-    if ((array_key_exists('MSN_DB', $GLOBALS)) && (!is_null($GLOBALS['MSN_DB']))) {
+    if ((array_key_exists('MSN_DB', $GLOBALS)) && ($GLOBALS['MSN_DB'] !== null)) {
         $GLOBALS['FORUM_DB'] = $GLOBALS['MSN_DB'];
         $GLOBALS['MSN_DB'] = null;
     }
@@ -648,7 +648,7 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
     if (function_exists('get_member')) {
         $id = get_member();
         $username = $GLOBALS['FORUM_DRIVER']->get_username($id);
-        if (is_null($username)) {
+        if ($username === null) {
             $username = do_lang('UNKNOWN');
         }
     } else {
@@ -667,7 +667,7 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
 
     $count = $GLOBALS['SITE_DB']->query_select_value('hackattack', 'COUNT(*)', array('ip' => $ip));
     $alt_ip = false;
-    if (!is_null($ip2)) {
+    if ($ip2 !== null) {
         $count2 = $GLOBALS['SITE_DB']->query_select_value('hackattack', 'COUNT(*)', array('ip' => $ip2));
         if ($count2 > $count) {
             $count = $count2;
@@ -692,7 +692,7 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
         'ip' => $ip,
     );
     $ip_ban_todo = null;
-    if ((($count >= $hack_threshold) || ($instant_ban)) && (get_option('autoban') != '0') && (is_null($GLOBALS['SITE_DB']->query_select_value_if_there('unbannable_ip', 'ip', array('ip' => $alt_ip ? $ip2 : $ip))))) {
+    if ((($count >= $hack_threshold) || ($instant_ban)) && (get_option('autoban') != '0') && ($GLOBALS['SITE_DB']->query_select_value_if_there('unbannable_ip', 'ip', array('ip' => $alt_ip ? $ip2 : $ip)) === null)) {
         // Test we're not banning a good bot
         $se_ip_lists = array(
             // NB: We're using Coral Cache (nyud.net)
@@ -774,7 +774,7 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
         }
     }
     $GLOBALS['SITE_DB']->query_insert('hackattack', $new_row);
-    if (!is_null($ip2)) {
+    if ($ip2 !== null) {
         $new_row['ip'] = $ip2;
         $GLOBALS['SITE_DB']->query_insert('hackattack', $new_row);
     }
@@ -815,7 +815,7 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
             dispatch_notification('hack_attack', null, $subject, $message->evaluate(get_site_default_lang()), null, A_FROM_SYSTEM_PRIVILEGED);
         }
 
-        if (!is_null($ip_ban_todo)) {
+        if ($ip_ban_todo !== null) {
             $subject = do_lang('AUTO_BAN_SUBJECT', $ip, null, null, get_site_default_lang());
             dispatch_notification('auto_ban', null, $subject, $ip_ban_todo, null, A_FROM_SYSTEM_PRIVILEGED);
         }
@@ -849,14 +849,14 @@ function add_ip_ban($ip, $descrip = '', $ban_until = null, $ban_positive = true)
     }
 
     require_code('global4');
-    if ((!is_null($ban_until)) && (ip_banned($ip, true))) {
+    if (($ban_until !== null) && (ip_banned($ip, true))) {
         return false; // Don't allow shortening ban period automatically, or having a negative ban negating a positive one!
     }
 
     $GLOBALS['SITE_DB']->query_delete('banned_ip', array('ip' => $ip), '', 1);
     $GLOBALS['SITE_DB']->query_insert('banned_ip', array('ip' => $ip, 'i_descrip' => $descrip, 'i_ban_until' => $ban_until, 'i_ban_positive' => $ban_positive ? 1 : 0), false, true); // To stop weird race-like conditions
     persistent_cache_delete('IP_BANS');
-    if ((cms_is_writable(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess')) && (is_null($ban_until))) {
+    if ((cms_is_writable(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess')) && ($ban_until === null)) {
         $myfile = fopen(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess', GOOGLE_APPENGINE ? 'rb' : 'rt');
         @flock($myfile, LOCK_SH);
         $original_contents = file_get_contents(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess');
@@ -953,7 +953,7 @@ function get_webservice_result($error_message)
                 if ($regexp != '.*') {
                     if (preg_match('#' . $regexp . '#', $error_message) != 0) {
                         $_error_message = do_lang($key, '', '', '', fallback_lang(), false);
-                        if (!is_null($_error_message)) {
+                        if ($_error_message !== null) {
                             $error_message = $_error_message;
                         }
                         break;
@@ -970,7 +970,7 @@ function get_webservice_result($error_message)
 
     // Talk to web service
     $brand = get_value('rebrand_name');
-    if (is_null($brand)) {
+    if ($brand === null) {
         $brand = 'Composr';
     }
 
@@ -1007,7 +1007,7 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
     }
 
     // Make sure we don't send too many error emails
-    if ((function_exists('get_value')) && (!$GLOBALS['BOOTSTRAPPING']) && (array_key_exists('SITE_DB', $GLOBALS)) && (!is_null($GLOBALS['SITE_DB']))) {
+    if ((function_exists('get_value')) && (!$GLOBALS['BOOTSTRAPPING']) && (array_key_exists('SITE_DB', $GLOBALS)) && ($GLOBALS['SITE_DB'] !== null)) {
         $num = intval(get_value('num_error_mails_' . date('Y-m-d'), null, true)) + 1;
         if ($num == 51) {
             return; // We've sent too many error mails today
@@ -1088,7 +1088,7 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
         require_code('mail');
         dispatch_mail(cms_version_pretty() . ': ' . do_lang('ERROR_OCCURRED_SUBJECT', get_page_or_script_name(), null, null, get_site_default_lang()), $mail, array('errors_final' . strval(cms_version()) . '@compo.sr'), '', '', '', array('no_cc' => true, 'as_admin' => true));
     }
-    if (($ocproducts) && (!is_null(get_value('agency_email_address')))) {
+    if (($ocproducts) && (get_value('agency_email_address') !== null)) {
         require_code('mail');
         $agency_email_address = get_value('agency_email_address');
         dispatch_mail(cms_version_pretty() . ': ' . do_lang('ERROR_OCCURRED_SUBJECT', get_page_or_script_name(), null, null, get_site_default_lang()), $mail, array($agency_email_address), '', '', '', array('no_cc' => true, 'as_admin' => true));
@@ -1102,7 +1102,7 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
  */
 function may_see_stack_traces()
 {
-    if (!is_null($GLOBALS['CURRENT_SHARE_USER'])) {
+    if ($GLOBALS['CURRENT_SHARE_USER'] !== null) {
         return true; // Demonstratr exception
     }
     if ((function_exists('cms_srv')) && (cms_srv('REQUEST_METHOD') == '')) {
@@ -1172,7 +1172,7 @@ function die_html_trace($message)
 function put_value_in_stack_trace($value)
 {
     try {
-        if ((is_null($value)) || (is_array($value) && (strlen(serialize($value)) > MAX_STACK_TRACE_VALUE_LENGTH))) {
+        if (($value === null) || (is_array($value) && (strlen(serialize($value)) > MAX_STACK_TRACE_VALUE_LENGTH))) {
             $_value = gettype($value);
         } elseif (is_object($value) && (is_a($value, 'Tempcode'))) {
             if (($value->codename == 'GLOBAL_HTML_WRAP') || (strlen(serialize($value)) > 1000)) { // NB: We can't do an eval on GLOBAL_HTML_WRAP because it may be output streaming, incomplete
@@ -1361,7 +1361,7 @@ function _access_denied($class, $param, $force_login)
     }
 
     $_message = _look_for_match_key_message($message->evaluate(), strpos($class, 'ZONE') !== false);
-    if (!is_null($_message)) {
+    if ($_message !== null) {
         $message = $_message;
     }
 

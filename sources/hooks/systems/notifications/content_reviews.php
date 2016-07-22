@@ -62,16 +62,16 @@ class Hook_notification_content_reviews extends Hook_notification__Staff
         foreach (array_keys($_hooks) as $content_type) {
             require_code('content');
             $object = get_content_object($content_type);
-            if (is_null($object)) {
+            if ($object === null) {
                 continue;
             }
             $info = $object->info();
-            if (is_null($info)) {
+            if ($info === null) {
                 continue;
             }
 
             $lang = do_lang($info['content_type_label'], null, null, null, null, false);
-            if (is_null($lang)) {
+            if ($lang === null) {
                 continue;
             }
 

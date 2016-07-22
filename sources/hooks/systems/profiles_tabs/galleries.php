@@ -36,7 +36,7 @@ class Hook_profiles_tabs_galleries
             return false;
         }
         if ($member_id_of == $member_id_viewing) {
-            if (!is_null($GLOBALS['SITE_DB']->query_select_value_if_there('galleries', 'is_member_synched', array('is_member_synched' => 1)))) {
+            if ($GLOBALS['SITE_DB']->query_select_value_if_there('galleries', 'is_member_synched', array('is_member_synched' => 1)) !== null) {
                 return true; // Can have one, even if don't know
             }
         }

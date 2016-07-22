@@ -25,7 +25,7 @@ function total_points($member, $timestamp = null)
 {
     global $TOTAL_POINTS_CACHE;
 
-    if (is_null($timestamp)) {
+    if ($timestamp === null) {
         if (array_key_exists($member, $TOTAL_POINTS_CACHE)) {
             return $TOTAL_POINTS_CACHE[$member];
         }
@@ -36,14 +36,14 @@ function total_points($member, $timestamp = null)
     if ($GLOBALS['SITE_DB']->table_exists('credit_purchases')) {
         $credits = intval($GLOBALS['SITE_DB']->query_select_value('credit_purchases', 'SUM(num_credits)', array('member_id' => $member, 'purchase_validated' => 1)));
 
-        if (!is_null($timestamp)) {
+        if ($timestamp !== null) {
             $credits -= intval($GLOBALS['SITE_DB']->query_value_if_there('SELECT SUM(num_credits) FROM ' . get_table_prefix() . 'credit_purchases WHERE date_and_time>' . strval($timestamp) . ' AND member_id=' . strval($member)));
         }
 
         $points += $credits * 50;
     }
 
-    if (is_null($timestamp)) {
+    if ($timestamp === null) {
         $TOTAL_POINTS_CACHE[$member] = $points;
     }
 
@@ -53,7 +53,7 @@ function total_points($member, $timestamp = null)
 function get_group_points()
 {
     $_group_points = $GLOBALS['SITE_DB']->query_select('group_points', array('*'), null, '', null, null, true);
-    if (is_null($_group_points)) {
+    if ($_group_points === null) {
         $group_points = array();
     } else {
         $group_points = list_to_map('p_group_id', $_group_points);

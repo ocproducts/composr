@@ -131,7 +131,7 @@ function demonstratr_add_site($codename, $name, $email_address, $password, $desc
 
     // Check named site available
     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('sites', 's_server', array('s_codename' => $codename));
-    if (!is_null($test)) {
+    if ($test !== null) {
         // Did it fail adding before? It's useful to not have to fiddle around manually cleaning up when debugging
         $definitely_failed = false;//(strpos(file_get_contents(special_demonstratr_dir().'/rcpthosts'),"\n".$codename.'.composr.info'."\n")===false);
         $probably_failed = !file_exists(special_demonstratr_dir() . '/alias/.qmail-demonstratr_' . $codename . '_staff');
@@ -140,7 +140,7 @@ function demonstratr_add_site($codename, $name, $email_address, $password, $desc
             $test = null;
         }
     }
-    if ((!is_null($test)) || (in_array($codename, array('ssh', 'ftp', 'ns1', 'ns2', 'ns3', 'ns4', 'private', 'staff', 'webmail', 'imap', 'smtp', 'mail', 'ns', 'com', 'net', 'www', 'sites', 'chris', 'test', 'example', 'ocproducts', 'composr', 'cms'))) || (strpos($codename, 'demonstratr') !== false)) {
+    if (($test !== null) || (in_array($codename, array('ssh', 'ftp', 'ns1', 'ns2', 'ns3', 'ns4', 'private', 'staff', 'webmail', 'imap', 'smtp', 'mail', 'ns', 'com', 'net', 'www', 'sites', 'chris', 'test', 'example', 'ocproducts', 'composr', 'cms'))) || (strpos($codename, 'demonstratr') !== false)) {
         warn_exit(do_lang_tempcode('CMS_NOT_AVAILABLE'));
     }
 
@@ -511,10 +511,10 @@ function choose_available_server()
     $lowest_for = mixed();
     foreach ($servers as $server) {
         $server_load = find_server_load($server);
-        if (is_null($server_load)) {
+        if ($server_load === null) {
             continue;
         }
-        if ((is_null($lowest_load)) || ($server_load < $lowest_load)) {
+        if (($lowest_load === null) || ($server_load < $lowest_load)) {
             $lowest_load = $server_load;
             $lowest_for = $server;
         }
@@ -608,7 +608,7 @@ function demonstratr_delete_old_sites()
         $subject = do_lang('CMS_EMAIL_EXPIRE_SUBJECT', $site['s_codename']);
         $message = do_lang('CMS_EMAIL_EXPIRE_BODY', comcode_escape($site['s_codename']), get_brand_page_url(array('page' => 'free_tickets'), 'site'));
         $email_address = $GLOBALS['SITE_DB']->query_select_value_if_there('sites_email', 's_email_to', array('s_codename' => $site['s_codename'], 's_email_from' => 'staff'));
-        if (!is_null($email_address)) {
+        if ($email_address !== null) {
             dispatch_mail($subject, $message, array($email_address));
         }
 

@@ -48,11 +48,11 @@ function get_future_version_information()
     $url = 'http://compo.sr/uploads/website_specific/compo.sr/scripts/version.php?version=' . rawurlencode(get_version_dotted()) . '&lang=' . rawurlencode(user_lang());
 
     static $data = null; // Cache
-    if (is_null($data)) {
+    if ($data === null) {
         require_code('files2');
         list($data) = cache_and_carry('http_download_file', array($url, null, false), 5/*5 minute cache*/);
     }
-    if (!is_null($data)) {
+    if ($data !== null) {
         $data = str_replace('"../upgrader.php"', '"' . get_base_url() . '/upgrader.php"', $data);
 
         if ($GLOBALS['XSS_DETECT']) {
@@ -80,7 +80,7 @@ function get_future_version_information()
  */
 function get_version_branch($general = null)
 {
-    if (is_null($general)) {
+    if ($general === null) {
         $general = cms_version_number();
     }
 
@@ -96,10 +96,10 @@ function get_version_branch($general = null)
  */
 function get_version_dotted($main = null, $minor = null)
 {
-    if (is_null($main)) {
+    if ($main === null) {
         $main = cms_version();
     }
-    if (is_null($minor)) {
+    if ($minor === null) {
         $minor = cms_version_minor();
     }
 
@@ -155,7 +155,7 @@ function get_version_components__from_dotted($dotted)
             break;
         }
     }
-    if (is_null($basis_dotted_number)) {
+    if ($basis_dotted_number === null) {
         $basis_dotted_number = $dotted;
     }
 

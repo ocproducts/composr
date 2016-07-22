@@ -31,7 +31,7 @@
 function actionlog_linkage($type, $a, $b, $_a, $_b)
 {
     $type_str = do_lang($type, $a, $b, null, null, false);
-    if (is_null($type_str)) {
+    if ($type_str === null) {
         $type_str = $type;
     }
 

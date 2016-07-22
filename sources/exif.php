@@ -32,7 +32,7 @@ function get_exif_data($path, $filename = null)
 {
     $out = array();
 
-    if (is_null($filename)) {
+    if ($filename === null) {
         $filename = rawurldecode(basename($path));
     }
 
@@ -256,7 +256,7 @@ function store_exif($content_type, $content_id, $exif, $map = null)
 
     // Get field values
     $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('id', 'cf_name'), array('c_name' => '_' . $content_type), 'ORDER BY cf_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cf_name'));
-    if (is_null($map)) {
+    if ($map === null) {
         $map = array();
     }
     foreach ($fields as $field) {
@@ -296,7 +296,7 @@ function store_exif($content_type, $content_id, $exif, $map = null)
         'content_type' => $content_type,
         'content_id' => $content_id,
     ));
-    if (is_null($test)) {
+    if ($test === null) {
         $catalogue_entry_id = actual_add_catalogue_entry($first_cat, 1, '', 0, 0, 0, $map);
 
         $GLOBALS['SITE_DB']->query_insert('catalogue_entry_linkage', array(

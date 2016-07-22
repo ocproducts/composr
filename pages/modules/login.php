@@ -57,7 +57,7 @@ class Module_login
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->create_table('failedlogins', array(
                 'id' => '*AUTO',
                 'failed_account' => 'ID_TEXT',
@@ -66,7 +66,7 @@ class Module_login
             ));
         }
 
-        if ((is_null($upgrade_from)) || ($upgrade_from < 3)) {
+        if (($upgrade_from === null) || ($upgrade_from < 3)) {
             $GLOBALS['SITE_DB']->create_index('failedlogins', 'failedlogins_by_ip', array('ip'));
         }
     }
@@ -130,7 +130,7 @@ class Module_login
             $username = trim(post_param_string('login_username'));
 
             $feedback = $GLOBALS['FORUM_DRIVER']->forum_authorise_login($username, null, apply_forum_driver_md5_variant(trim(post_param_string('password')), $username), trim(post_param_string('password')));
-            if (!is_null($feedback['id'])) {
+            if ($feedback['id'] !== null) {
                 $this->title = get_screen_title('LOGGED_IN');
             } else {
                 $this->title = get_screen_title('MEMBER_LOGIN_ERROR');
@@ -234,7 +234,7 @@ class Module_login
         if (count($_FILES) == 0) { // Only if we don't have _FILES (which could never be relayed)
             $passion->attach(build_keep_post_fields($this->fields_to_not_relay));
             $redirect_passon = post_param_string('redirect', null);
-            if (!is_null($redirect_passon)) {
+            if ($redirect_passon !== null) {
                 $passion->attach(form_input_hidden('redirect_passon', $redirect_passon)); // redirect_passon is used when there are POST fields, as it says what the redirect will be on the post-login-check hop (post fields prevent us doing an immediate HTTP-level redirect).
             }
         }
@@ -274,7 +274,7 @@ class Module_login
         $feedback = $this->feedback;
 
         $id = $feedback['id'];
-        if (!is_null($id)) {
+        if ($id !== null) {
             $url = enforce_sessioned_url(either_param_string('redirect')); // Now that we're logged in, we need to ensure the redirect URL contains our new session ID
 
             if (!has_interesting_post_fields()) {
@@ -285,7 +285,7 @@ class Module_login
             } else {
                 $post = build_keep_post_fields($this->fields_to_not_relay);
                 $redirect_passon = post_param_string('redirect_passon', null); // redirect_passon is used when there are POST fields, as it says what the redirect will be on this post-login-check hop (post fields prevent us doing an immediate HTTP-level redirect).
-                if (!is_null($redirect_passon)) {
+                if ($redirect_passon !== null) {
                     $post->attach(form_input_hidden('redirect', enforce_sessioned_url($redirect_passon)));
                 }
                 $refresh = do_template('JS_REFRESH', array('_GUID' => 'c7d2f9e7a2cc637f3cf9ac4d1cf97eca', 'FORM_NAME' => 'redir_form'));
@@ -330,7 +330,7 @@ class Module_login
         decache('side_users_online');
 
         $url = get_param_string('redirect', null);
-        if (is_null($url)) {
+        if ($url === null) {
             $_url = build_url(array('page' => ''), '', array('keep_session' => 1));
             $url = $_url->evaluate();
         }
@@ -354,7 +354,7 @@ class Module_login
         }
 
         $url = get_param_string('redirect', null);
-        if (is_null($url)) {
+        if ($url === null) {
             $_url = build_url(array('page' => ''), '');
             $url = $_url->evaluate();
         }
@@ -374,7 +374,7 @@ class Module_login
         set_invisibility($visible_now);
 
         $url = get_param_string('redirect', null);
-        if (is_null($url)) {
+        if ($url === null) {
             $_url = build_url(array('page' => ''), '');
             $url = $_url->evaluate();
         }

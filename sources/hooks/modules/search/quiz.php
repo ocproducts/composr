@@ -117,7 +117,7 @@ class Hook_search_quiz extends FieldsSearchHook
 
         // Calculate our where clause (search)
         $sq = build_search_submitter_clauses('q_submitter', $author_id, $author);
-        if (is_null($sq)) {
+        if ($sq === null) {
             return array();
         } else {
             $where_clause .= $sq;

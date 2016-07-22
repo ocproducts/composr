@@ -44,12 +44,12 @@ class Hook_rss_iotds
         foreach ($rows as $row) {
             $id = strval($row['id']);
             $author = $GLOBALS['FORUM_DRIVER']->get_username($row['submitter']);
-            if (is_null($author)) {
+            if ($author === null) {
                 $author = '';
             }
 
             $news_date = date($date_string, $row['add_date']);
-            $edit_date = is_null($row['edit_date']) ? '' : date($date_string, $row['edit_date']);
+            $edit_date = ($row['edit_date'] === null) ? '' : date($date_string, $row['edit_date']);
 
             $_news_title = get_translated_tempcode('iotd', $row, 'i_title');
             $news_title = xmlentities($_news_title->evaluate());

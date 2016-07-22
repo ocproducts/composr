@@ -135,7 +135,7 @@ class Hook_search_wiki_posts extends FieldsSearchHook
 
         // Calculate our where clause (search)
         $sq = build_search_submitter_clauses('member_id', $author_id, $author);
-        if (is_null($sq)) {
+        if ($sq === null) {
             return array();
         } else {
             $where_clause .= $sq;

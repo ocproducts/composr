@@ -64,7 +64,7 @@ class Block_main_staff_checklist
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        if ((is_null($upgrade_from)) || ($upgrade_from < 4)) {
+        if (($upgrade_from === null) || ($upgrade_from < 4)) {
             $GLOBALS['SITE_DB']->create_table('staff_checklist_cus_tasks', array(
                 'id' => '*AUTO',
                 'task_title' => 'LONG_TEXT',
@@ -129,7 +129,7 @@ class Block_main_staff_checklist
         $new_task = post_param_string('new_task', null);
         $recur_interval = post_param_integer('recur_interval', 0);
         $recur_every = post_param_string('recur_every', null);
-        if ((!is_null($new_task)) && (!is_null($recur_interval)) && (!is_null($recur_every))) {
+        if (($new_task !== null) && ($recur_interval !== null) && ($recur_every !== null)) {
             $GLOBALS['SITE_DB']->query_insert('staff_checklist_cus_tasks', array('task_title' => $new_task, 'add_date' => time(), 'recur_interval' => $recur_interval, 'recur_every' => $recur_every, 'task_is_done' => null));
             decache('main_staff_checklist');
         }
@@ -157,7 +157,7 @@ class Block_main_staff_checklist
                 'ADD_DATE' => display_time_period($r['add_date']),
                 'RECUR_INTERVAL' => ($r['recur_interval'] == 0) ? '' : integer_format($r['recur_interval']),
                 'RECUR_EVERY' => $recur_every,
-                'TASK_DONE' => ((!is_null($r['task_is_done'])) && (($r['recur_interval'] == 0) || (($r['recur_every'] != 'mins') || (time() < $r['task_is_done'] + 60 * $r['recur_interval'])) && (($r['recur_every'] != 'hours') || (time() < $r['task_is_done'] + 60 * 60 * $r['recur_interval'])) && (($r['recur_every'] != 'days') || (time() < $r['task_is_done'] + 24 * 60 * 60 * $r['recur_interval'])) && (($r['recur_every'] != 'months') || (time() < $r['task_is_done'] + 31 * 24 * 60 * 60 * $r['recur_interval'])))) ? 'checklist1' : 'not_completed',
+                'TASK_DONE' => (($r['task_is_done'] !== null) && (($r['recur_interval'] == 0) || (($r['recur_every'] != 'mins') || (time() < $r['task_is_done'] + 60 * $r['recur_interval'])) && (($r['recur_every'] != 'hours') || (time() < $r['task_is_done'] + 60 * 60 * $r['recur_interval'])) && (($r['recur_every'] != 'days') || (time() < $r['task_is_done'] + 24 * 60 * 60 * $r['recur_interval'])) && (($r['recur_every'] != 'months') || (time() < $r['task_is_done'] + 31 * 24 * 60 * 60 * $r['recur_interval'])))) ? 'checklist1' : 'not_completed',
                 'ID' => strval($r['id']),
                 'ADD_TIME' => do_lang_tempcode('DAYS_AGO', escape_html(integer_format(intval(round(floatval(time() - $r['add_date']) / 60.0 / 60.0 / 24.0))))),
             )));
@@ -176,11 +176,11 @@ class Block_main_staff_checklist
         ksort($_hooks);
         foreach ($_hooks as $object) {
             $ret = $object->run();
-            if ((!is_null($ret)) && (count($ret) != 0)) {
+            if (($ret !== null) && (count($ret) != 0)) {
                 foreach ($ret as $r) {
-                    if ((is_null($r[1])) && (is_null($r[2]))) {
+                    if (($r[1] === null) && ($r[2] === null)) {
                         $rets_no_times[] = $r;
-                    } elseif (!is_null($r[2])) {
+                    } elseif ($r[2] !== null) {
                         $rets_todo_counts[] = $r;
                     } else {
                         $rets_dates[] = $r;
@@ -226,14 +226,14 @@ class Block_main_staff_checklist
  */
 function staff_checklist_time_ago_and_due($seconds_ago, $recur_hours = null)
 {
-    if (is_null($recur_hours)) { // None recurring
+    if ($recur_hours === null) { // None recurring
         $seconds_to_go = $seconds_ago; // Actually, if only one parameter given, meaning is different
         $seconds_ago = mixed();
-        if (is_null($seconds_to_go)) {
+        if ($seconds_to_go === null) {
             return array(do_lang_tempcode('DUE_NOT'), 1000000);
         }
     } else { // Recurring
-        if (is_null($seconds_ago)) {
+        if ($seconds_ago === null) {
             return array(do_lang_tempcode('DUE_NOW'), 0); // Due for first time now
         } else {
             $seconds_to_go = $recur_hours * 60 * 60 - $seconds_ago;
@@ -244,8 +244,8 @@ function staff_checklist_time_ago_and_due($seconds_ago, $recur_hours = null)
         return array(do_lang_tempcode('DUE_NOW'), 0); // Due for first time now (this is a special encoding for non-recurring tasks that still need doing on some form of schedule and need doing for first time now)
     }
     if ($seconds_to_go > 0) {
-        return array(do_lang_tempcode('DUE_TIME', is_null($seconds_ago) ? do_lang_tempcode('NA_EM') : make_string_tempcode(escape_html(display_time_period($seconds_ago))), make_string_tempcode(escape_html(display_time_period($seconds_to_go)))), $seconds_to_go);
+        return array(do_lang_tempcode('DUE_TIME', ($seconds_ago === null) ? do_lang_tempcode('NA_EM') : make_string_tempcode(escape_html(display_time_period($seconds_ago))), make_string_tempcode(escape_html(display_time_period($seconds_to_go)))), $seconds_to_go);
     } else {
-        return array(do_lang_tempcode('DUE_TIME_AGO', is_null($seconds_ago) ? do_lang_tempcode('NA_EM') : make_string_tempcode(escape_html(display_time_period($seconds_ago))), make_string_tempcode(escape_html(display_time_period(-$seconds_to_go)))), $seconds_to_go);
+        return array(do_lang_tempcode('DUE_TIME_AGO', ($seconds_ago === null) ? do_lang_tempcode('NA_EM') : make_string_tempcode(escape_html(display_time_period($seconds_ago))), make_string_tempcode(escape_html(display_time_period(-$seconds_to_go)))), $seconds_to_go);
     }
 }

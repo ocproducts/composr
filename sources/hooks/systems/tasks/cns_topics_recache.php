@@ -41,10 +41,10 @@ class Hook_task_cns_topics_recache
                 cns_force_update_topic_caching($topic['id'], null, true, true);
 
                 // NB: p_cache_forum_id must not be intval'd as may be null
-                if (is_null($topic['t_forum_id'])) {
+                if ($topic['t_forum_id'] === null) {
                     $topic['t_forum_id'] = null;
                 }
-                $GLOBALS['FORUM_DB']->query_update('f_posts', array('p_cache_forum_id' => is_null($topic['t_forum_id']) ? null : $topic['t_forum_id']), array('p_topic_id' => is_null($topic['id']) ? null : $topic['id']));
+                $GLOBALS['FORUM_DB']->query_update('f_posts', array('p_cache_forum_id' => ($topic['t_forum_id'] === null) ? null : $topic['t_forum_id']), array('p_topic_id' => ($topic['id'] === null) ? null : $topic['id']));
             }
 
             $start += 500;

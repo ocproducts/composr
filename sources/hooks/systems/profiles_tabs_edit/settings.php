@@ -118,13 +118,13 @@ class Hook_profiles_tabs_edit_settings
                     $on_probation_until = post_param_date('on_probation_until');
 
                     $current__on_probation_until = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_on_probation_until');
-                    if (((is_null($on_probation_until)) || ($on_probation_until <= time())) && ($current__on_probation_until > time())) {
+                    if ((($on_probation_until === null) || ($on_probation_until <= time())) && ($current__on_probation_until > time())) {
                         log_it('STOP_PROBATION', strval($member_id_of), $GLOBALS['FORUM_DRIVER']->get_username($member_id_of));
-                    } elseif ((!is_null($on_probation_until)) && ($on_probation_until > time()) && ($current__on_probation_until <= time())) {
+                    } elseif (($on_probation_until !== null) && ($on_probation_until > time()) && ($current__on_probation_until <= time())) {
                         log_it('START_PROBATION', strval($member_id_of), $GLOBALS['FORUM_DRIVER']->get_username($member_id_of));
-                    } elseif ((!is_null($on_probation_until)) && ($current__on_probation_until > $on_probation_until) && ($on_probation_until > time()) && ($current__on_probation_until > time())) {
+                    } elseif (($on_probation_until !== null) && ($current__on_probation_until > $on_probation_until) && ($on_probation_until > time()) && ($current__on_probation_until > time())) {
                         log_it('REDUCE_PROBATION', strval($member_id_of), $GLOBALS['FORUM_DRIVER']->get_username($member_id_of));
-                    } elseif ((!is_null($on_probation_until)) && ($current__on_probation_until < $on_probation_until) && ($on_probation_until > time()) && ($current__on_probation_until > time())) {
+                    } elseif (($on_probation_until !== null) && ($current__on_probation_until < $on_probation_until) && ($on_probation_until > time()) && ($current__on_probation_until > time())) {
                         log_it('EXTEND_PROBATION', strval($member_id_of), $GLOBALS['FORUM_DRIVER']->get_username($member_id_of));
                     }
                 } else {
@@ -162,7 +162,7 @@ class Hook_profiles_tabs_edit_settings
 
             require_code('temporal2');
             list($dob_year, $dob_month, $dob_day) = post_param_date_components('dob');
-            if ((is_null($dob_year)) || (is_null($dob_month)) || (is_null($dob_day))) {
+            if (($dob_year === null) || ($dob_month === null) || ($dob_day === null)) {
                 if (member_field_is_required($member_id_of, 'dob', null, $member_id_viewing)) {
                     warn_exit(do_lang_tempcode('NO_PARAMETER_SENT', escape_html('dob')));
                 }
@@ -247,7 +247,7 @@ class Hook_profiles_tabs_edit_settings
         $title = do_lang_tempcode('SETTINGS');
 
         $myrow = $GLOBALS['FORUM_DRIVER']->get_member_row($member_id_of);
-        if (is_null($myrow)) {
+        if ($myrow === null) {
             warn_exit(do_lang_tempcode('MEMBER_NO_EXIST'));
         }
 
@@ -261,7 +261,7 @@ class Hook_profiles_tabs_edit_settings
         }
 
         $redirect = get_param_string('redirect', null);
-        if (!is_null($redirect)) {
+        if ($redirect !== null) {
             $hidden->attach(form_input_hidden('redirect', $redirect));
         }
 

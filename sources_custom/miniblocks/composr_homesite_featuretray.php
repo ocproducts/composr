@@ -713,7 +713,7 @@ foreach (($map['param'] == '') ? array() : explode(',', $map['param']) as $i => 
         } else {
             $subsection_caption = '';
         }
-        if ((!is_null($subsection_caption)) && ($subsection_caption != '')) {
+        if (($subsection_caption !== null) && ($subsection_caption != '')) {
             echo '<p class="subsectionCaption">' . $subsection_caption . '.</p>';
         }
 
@@ -722,7 +722,7 @@ foreach (($map['param'] == '') ? array() : explode(',', $map['param']) as $i => 
             echo '<div><ul class="main">';
             $see_more = false;
             foreach ($subsection_items as $item) {
-                if (is_null($item)) { // Divider
+                if ($item === null) { // Divider
                     if (has_js()) {
                         echo '</ul></div>' . "\n\n";
                         $see_more = true;

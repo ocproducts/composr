@@ -173,7 +173,7 @@ class Module_admin_banners
             $importance_modulus = $myrow['importance_modulus'];
 
             $validated = ($myrow['validated'] == 1) ? do_lang('YES') : do_lang('NO');
-            if ((!is_null($myrow['expiry_date'])) && ($myrow['expiry_date'] < time())) {
+            if (($myrow['expiry_date'] !== null) && ($myrow['expiry_date'] < time())) {
                 $validated .= do_lang('BUT_EXPIRED');
             }
 

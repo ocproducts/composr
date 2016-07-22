@@ -130,7 +130,7 @@ class Module_admin_backup
 
         require_code('files');
 
-        if (!is_null($GLOBALS['CURRENT_SHARE_USER'])) {
+        if ($GLOBALS['CURRENT_SHARE_USER'] !== null) {
             warn_exit(do_lang_tempcode('SHARED_INSTALL_PROHIBIT'));
         }
 
@@ -199,7 +199,7 @@ class Module_admin_backup
         if (addon_installed('calendar')) {
             $fields->attach(form_input_date__scheduler(do_lang_tempcode('SCHEDULE_TIME'), do_lang_tempcode('DESCRIPTION_SCHEDULE_TIME'), 'schedule', false, true, true));
             $_recurrence_days = get_value('backup_recurrance_days');
-            $recurrance_days = is_null($_recurrence_days) ? null : intval($_recurrence_days);
+            $recurrance_days = ($_recurrence_days === null) ? null : intval($_recurrence_days);
             if (cron_installed()) {
                 $fields->attach(form_input_integer(do_lang_tempcode('RECURRANCE_DAYS'), do_lang_tempcode('DESCRIPTION_RECURRANCE_DAYS'), 'recurrance_days', $recurrance_days, false));
             }
@@ -337,7 +337,7 @@ class Module_admin_backup
 
         if (addon_installed('calendar')) {
             $schedule = post_param_date('schedule');
-            if (!is_null($schedule)) {
+            if ($schedule !== null) {
                 set_value('backup_schedule_time', strval($schedule));
                 set_value('backup_recurrance_days', strval(post_param_integer('recurrance_days', 0)));
                 set_value('backup_max_size', strval($max_size));

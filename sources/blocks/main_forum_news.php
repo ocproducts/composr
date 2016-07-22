@@ -102,9 +102,9 @@ class Block_main_forum_news
                 $forum_id = is_numeric($forum_name) ? intval($forum_name) : $GLOBALS['FORUM_DRIVER']->forum_id_from_name($forum_name);
             }
 
-            if (!is_null($forum_id)) {
+            if ($forum_id !== null) {
                 $forum_ids[$forum_id] = $forum_name;
-                if (is_null($archive_url)) {
+                if ($archive_url === null) {
                     $archive_url = $GLOBALS['FORUM_DRIVER']->forum_url($forum_id, true); // First forum will count as archive
                     if (get_forum_type() == 'cns') {
                         $submit_url = build_url(array('page' => 'topics', 'type' => 'new_topic', 'id' => $forum_id), get_module_zone('topics'));
@@ -115,7 +115,7 @@ class Block_main_forum_news
 
         $max_rows = 0;
         $rows = $GLOBALS['FORUM_DRIVER']->show_forum_topics($forum_ids, $num_topics, 0, $max_rows, '', true, $date_key);
-        if (is_null($rows)) {
+        if ($rows === null) {
             $rows = array();
         }
 
@@ -150,7 +150,7 @@ class Block_main_forum_news
             } else {
                 $news = make_string_tempcode(xhtmlise_html($myrow['firstpost']));
             }
-            if (is_null($news)) {
+            if ($news === null) {
                 $news = '';
             }
             $full_url = $GLOBALS['FORUM_DRIVER']->topic_url($id, '', true);
@@ -200,7 +200,7 @@ class Block_main_forum_news
             ));
         }
 
-        if (is_null($forum_id)) {
+        if ($forum_id === null) {
             $archive_url = '';
         }
 

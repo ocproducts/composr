@@ -83,14 +83,14 @@ class RevisionEngineDatabase
             return;
         }
 
-        if (is_null($log_id)) {
+        if ($log_id === null) {
             return;
         }
 
         require_code('resource_fs');
 
         $test = get_resource_fs_record($resource_type, $resource_id);
-        if (is_null($test)) {
+        if ($test === null) {
             return; // It's gone already, somehow
         }
         list($original_data_resource_fs_record, $original_data_resource_fs_path) = $test;
@@ -99,10 +99,10 @@ class RevisionEngineDatabase
             'r_resource_type' => $resource_type,
             'r_resource_id' => $resource_id,
             'r_category_id' => $category_id,
-            'r_original_title' => is_null($original_title) ? '' : $original_title,
-            'r_original_text' => is_null($original_text) ? '' : $original_text,
-            'r_original_content_owner' => is_null($original_content_owner) ? $GLOBALS['FORUM_DRIVER']->get_guest_id() : $original_content_owner,
-            'r_original_content_timestamp' => is_null($original_content_timestamp) ? time() : $original_content_timestamp,
+            'r_original_title' => ($original_title === null) ? '' : $original_title,
+            'r_original_text' => ($original_text === null) ? '' : $original_text,
+            'r_original_content_owner' => ($original_content_owner === null) ? $GLOBALS['FORUM_DRIVER']->get_guest_id() : $original_content_owner,
+            'r_original_content_timestamp' => ($original_content_timestamp === null) ? time() : $original_content_timestamp,
             'r_original_resource_fs_path' => $original_data_resource_fs_path,
             'r_original_resource_fs_record' => $original_data_resource_fs_record,
             'r_actionlog_id' => $this->is_log_mod ? null : $log_id,
@@ -139,28 +139,28 @@ class RevisionEngineDatabase
             return array();
         }
 
-        if ((!is_null($resource_types)) && (count($resource_types) == 0) && (is_null($revision_id))) {
+        if (($resource_types !== null) && (count($resource_types) == 0) && ($revision_id === null)) {
             return array();
         }
 
         $extra_where = '1=1';
 
-        if (!is_null($resource_id)) {
+        if ($resource_id !== null) {
             $extra_where .= ' AND ';
             $extra_where .= db_string_equal_to('r_resource_id', $resource_id);
         }
 
-        if (!is_null($category_id)) {
+        if ($category_id !== null) {
             $extra_where .= ' AND ';
             $extra_where .= db_string_equal_to('r_category_id', $category_id);
         }
 
-        if (!is_null($revision_id)) {
+        if ($revision_id !== null) {
             $extra_where .= ' AND ';
             $extra_where .= 'r.id=' . strval($revision_id);
         }
 
-        if (!is_null($resource_types)) {
+        if ($resource_types !== null) {
             $or_list = '';
             foreach ($resource_types as $resource_type) {
                 if ($or_list != '') {
@@ -179,7 +179,7 @@ class RevisionEngineDatabase
         if ($this->is_log_mod || !is_on_multi_site_network()) {
             $where = $extra_where;
 
-            if (!is_null($member_id)) {
+            if ($member_id !== null) {
                 $where .= ' AND ';
                 $where .= 'l_by=' . strval($member_id);
             }
@@ -200,7 +200,7 @@ class RevisionEngineDatabase
         if (!$this->is_log_mod || !is_on_multi_site_network()) {
             $where = $extra_where;
 
-            if (!is_null($member_id)) {
+            if ($member_id !== null) {
                 $where .= ' AND ';
                 $where .= 'member_id=' . strval($member_id);
             }
@@ -274,7 +274,7 @@ class RevisionEngineDatabase
         }
 
         $revision_id = $this->db->query_select_value_if_there('revisions', 'id', $map);
-        if (is_null($revision_id)) {
+        if ($revision_id === null) {
             return null;
         }
 
@@ -298,7 +298,7 @@ class RevisionEngineDatabase
         $join_field = ($this->is_log_mod) ? 'r_moderatorlog_id' : 'r_actionlog_id';
         $time_field = ($this->is_log_mod) ? 'l_date_and_time' : 'date_and_time';
         $test = $this->db->query_select_value_if_there('revisions r JOIN ' . $this->db->get_table_prefix() . $join_table . ' l ON l.id=r.' . $join_field, 'MAX(' . $time_field . ')', array('r_category_id' => $category_id));
-        if (is_null($test)) {
+        if ($test === null) {
             $test = 0;
         }
         return $test;
@@ -342,7 +342,7 @@ class RevisionEngineDatabase
 
         require_lang('actionlog');
 
-        if (is_null($title)) {
+        if ($title === null) {
             $title = get_screen_title('REVISIONS');
         }
 
@@ -366,12 +366,12 @@ class RevisionEngineDatabase
 
         $field_rows = new Tempcode();
         foreach ($revisions as $revision) {
-            if ((!is_null($category_permission_type)) && (!has_category_access(get_member(), $category_permission_type, $revision['r_category_id']))) {
+            if (($category_permission_type !== null) && (!has_category_access(get_member(), $category_permission_type, $revision['r_category_id']))) {
                 continue;
             }
 
             $field_row = call_user_func($row_renderer, $revision);
-            if (!is_null($field_row)) {
+            if ($field_row !== null) {
                 $field_rows->attach($field_row);
             }
         }
@@ -397,7 +397,7 @@ class RevisionEngineDatabase
         require_code('content');
         foreach ($_resource_types as $resource_type) {
             $cma_ob = get_content_object($resource_type);
-            if (!is_null($cma_ob)) {
+            if ($cma_ob !== null) {
                 $cma_info = $cma_ob->info();
                 if ($cma_info['support_revisions']) {
                     $resource_types[$resource_type] = do_lang_tempcode($cma_info['content_type_label']);
@@ -497,7 +497,7 @@ class RevisionEngineDatabase
             $undo_url = get_self_url(false, false, array('undo_revision' => $revision['id']));
             $undo_link = hyperlink($undo_url, do_lang_tempcode('UNDO'), false, false, $date);
 
-            if (is_null($revision['r_moderatorlog_id'])) {
+            if ($revision['r_moderatorlog_id'] === null) {
                 $actionlog_url = build_url(array('page' => 'admin_actionlog', 'type' => 'view', 'id' => $revision['r_actionlog_id'], 'mode' => 'cms'), get_module_zone('admin_actionlog'));
                 $actionlog_link = hyperlink($actionlog_url, do_lang_tempcode('LOG'), false, false, strval($revision['r_actionlog_id']));
             } else {
@@ -546,7 +546,7 @@ class RevisionEngineDatabase
         ));
 
         $_text = $GLOBALS['SITE_DB']->query_select_value_if_there('revisions', 'r_original_text', array('id' => $undo_revision));
-        if (!is_null($_text)) {
+        if ($_text !== null) {
             $text = $_text;
             $revision_loaded = true;
 

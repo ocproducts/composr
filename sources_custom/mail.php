@@ -43,7 +43,7 @@ class Mail_dispatcher_override extends Mail_dispatcher_base
     public function is_dispatcher_available($advanced_parameters)
     {
         $smtp_sockets_use = isset($advanced_parameters['smtp_sockets_use']) ? $advanced_parameters['smtp_sockets_use'] : null; // Whether to use SMTP sockets (null: default configured)
-        if (is_null($smtp_sockets_use)) {
+        if ($smtp_sockets_use === null) {
             $smtp_sockets_use = intval(get_option('smtp_sockets_use'));
         }
         return ($smtp_sockets_use == 1);
@@ -128,7 +128,7 @@ class Mail_dispatcher_override extends Mail_dispatcher_base
         $message->setCc($this->cc_addresses);
         $message->setBcc($this->bcc_addresses);
 
-        if ((count($to_emails) == 1) && (!is_null($this->require_recipient_valid_since))) {
+        if ((count($to_emails) == 1) && ($this->require_recipient_valid_since !== null)) {
             $headers = $message->getHeaders();
             $_require_recipient_valid_since = date('r', $this->require_recipient_valid_since);
             $headers->addTextHeader('Require-Recipient-Valid-Since', $to_emails[0] . '; ' . $_require_recipient_valid_since);

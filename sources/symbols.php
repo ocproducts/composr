@@ -966,28 +966,28 @@ function ecv_METADATA($lang, $escaped, $param)
         switch ($param[0]) {
             case 'site_newestmember':
                 $value = get_value('cns_newest_member_username');
-                if (is_null($value)) {
+                if ($value === null) {
                     $value = '';
                 }
                 break;
             case 'site_nummembers':
-                if (!is_null($GLOBALS['FORUM_DRIVER'])) {
+                if ($GLOBALS['FORUM_DRIVER'] !== null) {
                     $value = strval($GLOBALS['FORUM_DRIVER']->get_num_members());
                 }
                 break;
             case 'site_bestmember':
                 $value = get_value('site_bestmember');
-                if (is_null($value)) {
+                if ($value === null) {
                     $value = '';
                 }
                 break;
             case 'forum_numtopics':
-                if (!is_null($GLOBALS['FORUM_DRIVER'])) {
+                if ($GLOBALS['FORUM_DRIVER'] !== null) {
                     $value = strval($GLOBALS['FORUM_DRIVER']->get_num_topics());
                 }
                 break;
             case 'forum_numposts':
-                if (!is_null($GLOBALS['FORUM_DRIVER'])) {
+                if ($GLOBALS['FORUM_DRIVER'] !== null) {
                     $value = strval($GLOBALS['FORUM_DRIVER']->get_num_forum_posts());
                 }
                 break;
@@ -1110,7 +1110,7 @@ function keep_symbol($param)
 {
     $value = '';
     $get_vars = $_GET;
-    if ((isset($param[1])) && ($param[1] === '1') && (is_null(get_bot_type())) && (!isset($get_vars['keep_session']))) {
+    if ((isset($param[1])) && ($param[1] === '1') && (get_bot_type() === null) && (!isset($get_vars['keep_session']))) {
         $get_vars['keep_session'] = get_session_id();
     }
 
@@ -1125,7 +1125,7 @@ function keep_symbol($param)
             $val = stripslashes($val);
         }
 
-        if ((@$key[0] == 'k') && (substr($key, 0, 5) === 'keep_') && ((!skippable_keep($key, $val)) || (($key === 'keep_session') && (is_null(get_bot_type())) && (isset($param[1])) && ($param[1] === '1'))) && (is_string($val))) {
+        if ((@$key[0] == 'k') && (substr($key, 0, 5) === 'keep_') && ((!skippable_keep($key, $val)) || (($key === 'keep_session') && (get_bot_type() === null) && (isset($param[1])) && ($param[1] === '1'))) && (is_string($val))) {
             $value .= ($first ? '?' : '&') . urlencode($key) . '=' . cms_url_encode($val);
             $first = false;
         }
@@ -1463,7 +1463,7 @@ function symbol_truncator($param, $type, $tooltip_if_truncated = null)
         }
 
         if ($tooltip) {
-            if (!is_null($tooltip_if_truncated)) {
+            if ($tooltip_if_truncated !== null) {
                 $tif = (is_object($tooltip_if_truncated) ? $tooltip_if_truncated->evaluate() : $tooltip_if_truncated);
                 if (strpos($tif, $html) !== false) {
                     $html = $tif;
@@ -2266,7 +2266,7 @@ function ecv_CPF_VALUE($lang, $escaped, $param)
             } else {
                 require_code('cns_members');
                 $cpf_id = find_cpf_field_id($param[0]);
-                if (!is_null($cpf_id)) {
+                if ($cpf_id !== null) {
                     $fields = cns_get_custom_fields_member(isset($param[1]) ? intval($param[1]) : get_member());
                     if (array_key_exists($cpf_id, $fields)) {
                         $_value = $fields[$cpf_id];
@@ -2278,7 +2278,7 @@ function ecv_CPF_VALUE($lang, $escaped, $param)
         }
 
         if (!is_string($_value)) {
-            $value = is_null($_value) ? '' : strval($_value);
+            $value = ($_value === null) ? '' : strval($_value);
         } else {
             $value = $_value;
         }
@@ -2309,7 +2309,7 @@ function ecv_BANNER($lang, $escaped, $param)
 
     if (addon_installed('banners')) {
         global $SITE_INFO;
-        $is_on_banners = ((isset($param[1])) && ($param[1] == '1')) || (((!has_privilege(get_member(), 'banner_free')) || (($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) && (get_option('admin_banners') == '1')) || (!is_null($GLOBALS['CURRENT_SHARE_USER']))));
+        $is_on_banners = ((isset($param[1])) && ($param[1] == '1')) || (((!has_privilege(get_member(), 'banner_free')) || (($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) && (get_option('admin_banners') == '1')) || ($GLOBALS['CURRENT_SHARE_USER'] !== null)));
         if (!empty($SITE_INFO['throttle_bandwidth_registered'])) {
             $views_till_now = intval(get_value('page_views'));
             $bandwidth_allowed = $SITE_INFO['throttle_bandwidth_registered'];
@@ -2401,7 +2401,7 @@ function ecv_MEMBER($lang, $escaped, $param)
         $value = strval(get_member());
     } else {
         $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($param[0]);
-        $value = is_null($member_id) ? '' : strval($member_id);
+        $value = ($member_id === null) ? '' : strval($member_id);
     }
 
     if ($GLOBALS['XSS_DETECT']) {
@@ -2465,12 +2465,12 @@ function ecv_IS_HTTPAUTH_LOGIN($lang, $escaped, $param)
  */
 function ecv_MEMBER_PROFILE_URL($lang, $escaped, $param)
 {
-    $member_id = ((!is_null($param)) && (isset($param[0]))) ? intval($param[0]) : get_member();
+    $member_id = (($param !== null) && (isset($param[0]))) ? intval($param[0]) : get_member();
     $value = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true);
     if (is_object($value)) {
         $value = $value->evaluate();
     }
-    if (is_null($value)) {
+    if ($value === null) {
         $value = '';
     }
 
@@ -2734,7 +2734,7 @@ function ecv_IS_IN_GROUP($lang, $escaped, $param)
 function ecv_IS_STAFF($lang, $escaped, $param)
 {
     if ((isset($GLOBALS['FORUM_DRIVER'])) && (function_exists('get_member'))) {
-        $value = $GLOBALS['FORUM_DRIVER']->is_staff(((!is_null($param)) && (isset($param[0]))) ? intval($param[0]) : get_member()) ? '1' : '0';
+        $value = $GLOBALS['FORUM_DRIVER']->is_staff((($param !== null) && (isset($param[0]))) ? intval($param[0]) : get_member()) ? '1' : '0';
     } else {
         $value = '0';
     }
@@ -2758,7 +2758,7 @@ function ecv_IS_STAFF($lang, $escaped, $param)
 function ecv_IS_ADMIN($lang, $escaped, $param)
 {
     if ((isset($GLOBALS['FORUM_DRIVER'])) && (function_exists('get_member'))) {
-        $value = $GLOBALS['FORUM_DRIVER']->is_super_admin(((!is_null($param)) && (isset($param[0]))) ? intval($param[0]) : get_member()) ? '1' : '0';
+        $value = $GLOBALS['FORUM_DRIVER']->is_super_admin((($param !== null) && (isset($param[0]))) ? intval($param[0]) : get_member()) ? '1' : '0';
     } else {
         $value = '0';
     }
@@ -3314,7 +3314,7 @@ function ecv_JS_TEMPCODE($lang, $escaped, $param)
 function ecv_PAGE_TITLE($lang, $escaped, $param)
 {
     global $DISPLAYED_TITLE;
-    $value = is_null($DISPLAYED_TITLE) ? '' : $DISPLAYED_TITLE->evaluate();
+    $value = ($DISPLAYED_TITLE === null) ? '' : $DISPLAYED_TITLE->evaluate();
 
     if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
@@ -3482,7 +3482,7 @@ function ecv_HAS_PRIVILEGE($lang, $escaped, $param)
     $value = '';
 
     if ((isset($param[0])) && (function_exists('has_privilege'))) {
-        $value = has_privilege(((!is_null($param)) && (isset($param[1]))) ? intval($param[1]) : get_member(), $param[0]) ? '1' : '0';
+        $value = has_privilege((($param !== null) && (isset($param[1]))) ? intval($param[1]) : get_member(), $param[0]) ? '1' : '0';
     }
 
     if ($GLOBALS['XSS_DETECT']) {
@@ -3506,7 +3506,7 @@ function ecv_HAS_ZONE_ACCESS($lang, $escaped, $param)
     $value = '';
 
     if ((isset($param[0])) && (function_exists('has_zone_access'))) {
-        $value = has_zone_access(((!is_null($param)) && (isset($param[1]))) ? intval($param[1]) : get_member(), $param[0]) ? '1' : '0';
+        $value = has_zone_access((($param !== null) && (isset($param[1]))) ? intval($param[1]) : get_member(), $param[0]) ? '1' : '0';
     }
 
     if ($GLOBALS['XSS_DETECT']) {
@@ -3532,8 +3532,8 @@ function ecv_HAS_DELETE_PERMISSION($lang, $escaped, $param)
     if (isset($param[1])) {
         $range = strtolower($param[0]);
         $owner = intval($param[1]);
-        $member = ((!is_null($param)) && (isset($param[2]))) ? intval($param[2]) : get_member();
-        $cms_page = ((!is_null($param)) && (isset($param[3]))) ? $param[3] : get_page_name();
+        $member = (($param !== null) && (isset($param[2]))) ? intval($param[2]) : get_member();
+        $cms_page = (($param !== null) && (isset($param[3]))) ? $param[3] : get_page_name();
         if (array_key_exists(5, $param)) {
             $value = has_delete_permission($range, $member, $owner, $cms_page, array($param[5], $param[6])) ? '1' : '0';
         } else {
@@ -4398,7 +4398,7 @@ function ecv_HONEYPOT_LINK($lang, $escaped, $param)
     }
 
     $honeypot_url = get_option('honeypot_url');
-    if (($honeypot_url != '') && (!is_null($honeypot_url))) {
+    if (($honeypot_url != '') && ($honeypot_url !== null)) {
         $first_char = substr(md5(get_page_name()), 0, 1);
         $bot_phrase = get_option('honeypot_phrase');
         switch ($first_char) {

@@ -189,7 +189,7 @@ function is_suexec_like()
  */
 function fix_permissions($path, $perms = null)
 {
-    if (is_null($perms)) {
+    if ($perms === null) {
         $perms = is_dir($path) ? 0777 : 0666;
     }
 
@@ -2434,7 +2434,7 @@ function browser_matches($code, $comcode = null)
             $browser_matches_cache[$code] = strpos($browser, 'iphone') !== false || strpos($browser, 'ipad') !== false;
             return $browser_matches_cache[$code];
         case 'wysiwyg':
-            if ((get_option('wysiwyg') == '0') || ((is_mobile()) && ((is_null($comcode)) || (strpos($comcode, 'html]') === false)))) {
+            if ((get_option('wysiwyg') == '0') || ((is_mobile()) && (($comcode === null) || (strpos($comcode, 'html]') === false)))) {
                 $browser_matches_cache[$code] = false;
                 return false;
             }
@@ -3114,8 +3114,8 @@ function get_brand_base_url()
  */
 function get_tutorial_url($tutorial)
 {
-    $ret = get_brand_page_url(array('page' => is_null($tutorial) ? 'abcdef' : $tutorial), 'docs' . strval(cms_version()));
-    if (is_null($tutorial)) {
+    $ret = get_brand_page_url(array('page' => ($tutorial === null) ? 'abcdef' : $tutorial), 'docs' . strval(cms_version()));
+    if ($tutorial === null) {
         $ret = str_replace('abcdef.htm', '', $ret);
     }
     return $ret;

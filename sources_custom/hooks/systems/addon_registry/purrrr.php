@@ -239,7 +239,7 @@ class Hook_addon_registry_purrrr
             return;
         }
 
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             require_lang('iotds');
             require_code('iotds2');
             require_css('iotds');

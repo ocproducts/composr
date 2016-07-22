@@ -81,7 +81,7 @@ class Hook_search_cns_members extends FieldsSearchHook
             foreach ($rows as $row) {
                 $ob = get_fields_hook($row['cf_type']);
                 $temp = $ob->get_search_inputter($row);
-                if (is_null($temp)) {
+                if ($temp === null) {
                     $type = '_TEXT';
                     $special = make_string_tempcode(get_param_string('option_' . strval($row['id']), ''));
                     $display = $row['trans_name'];
@@ -323,7 +323,7 @@ class Hook_search_cns_members extends FieldsSearchHook
      */
     public function render($row)
     {
-        if (is_null($row['id'])) {
+        if ($row['id'] === null) {
             return new Tempcode(); // Should not happen, some weird DB corruption probably
         }
 

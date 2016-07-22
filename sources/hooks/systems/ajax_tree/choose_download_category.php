@@ -40,7 +40,7 @@ class Hook_ajax_tree_choose_download_category
         $addable_filter = array_key_exists('addable_filter', $options) ? ($options['addable_filter']) : false;
         $stripped_id = ($compound_list ? preg_replace('#,.*$#', '', $id) : $id);
 
-        $tree = get_download_category_tree(is_null($id) ? null : intval($id), null, null, false, $compound_list, is_null($id) ? 0 : 1, $addable_filter);
+        $tree = get_download_category_tree(($id === null) ? null : intval($id), null, null, false, $compound_list, ($id === null) ? 0 : 1, $addable_filter);
 
         $levels_to_expand = array_key_exists('levels_to_expand', $options) ? ($options['levels_to_expand']) : intval(get_value('levels_to_expand__' . substr(get_class($this), 5), null, true));
         $options['levels_to_expand'] = max(0, $levels_to_expand - 1);
@@ -80,9 +80,9 @@ class Hook_ajax_tree_choose_download_category
         }
 
         // Mark parent cats for pre-expansion
-        if ((!is_null($default)) && ($default != '')) {
+        if (($default !== null) && ($default != '')) {
             $cat = intval($default);
-            while (!is_null($cat)) {
+            while ($cat !== null) {
                 $out .= '<expand>' . strval($cat) . '</expand>';
                 $cat = $GLOBALS['SITE_DB']->query_select_value_if_there('download_categories', 'parent_id', array('id' => $cat));
             }
@@ -107,6 +107,6 @@ class Hook_ajax_tree_choose_download_category
         $compound_list = array_key_exists('compound_list', $options) ? $options['compound_list'] : false;
         $addable_filter = array_key_exists('addable_filter', $options) ? ($options['addable_filter']) : false;
 
-        return create_selection_list_download_category_tree(is_null($it) ? null : intval($it), $compound_list, $addable_filter);
+        return create_selection_list_download_category_tree(($it === null) ? null : intval($it), $compound_list, $addable_filter);
     }
 }

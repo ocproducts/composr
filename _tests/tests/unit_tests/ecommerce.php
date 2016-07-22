@@ -91,7 +91,7 @@ class ecommerce_test_set extends cms_test_case
     public function testOrderDispatch()
     {
         $order_id = $GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order', 'MAX(id)', array('order_status' => 'ORDER_STATUS_payment_received'));
-        if (!is_null($order_id)) {
+        if ($order_id !== null) {
             $_GET['id'] = $order_id;
             $this->admin_orders->dispatch();
         }

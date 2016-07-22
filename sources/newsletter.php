@@ -38,7 +38,7 @@ function incoming_bounced_email_script()
         $email = $matches[1];
 
         $id = $GLOBALS['SITE_DB']->query_select_value_if_there('newsletter_subscribers', 'id', array('email' => $email));
-        if (!is_null($id)) {
+        if ($id !== null) {
             delete_newsletter_subscriber($id);
         }
     }
@@ -60,15 +60,15 @@ function basic_newsletter_join($email, $language = null, $get_confirm_mail = fal
 {
     require_lang('newsletter');
 
-    if (is_null($language)) {
+    if ($language === null) {
         $language = user_lang();
     }
-    if (is_null($newsletter_id)) {
+    if ($newsletter_id === null) {
         $newsletter_id = db_get_first_id();
     }
 
     $code_confirm = $GLOBALS['SITE_DB']->query_select_value_if_there('newsletter_subscribers', 'code_confirm', array('email' => $email));
-    if (is_null($code_confirm)) {
+    if ($code_confirm === null) {
         // New, set their details
         require_code('crypt');
         $password = get_rand_password();
@@ -79,7 +79,7 @@ function basic_newsletter_join($email, $language = null, $get_confirm_mail = fal
         if ($code_confirm > 0) {
             // Was not confirmed, allow confirm mail to go again as if this was new, and update their details
             $id = $GLOBALS['SITE_DB']->query_select_value_if_there('newsletter_subscribers', 'id', array('email' => $email));
-            if (!is_null($id)) {
+            if ($id !== null) {
                 edit_newsletter_subscriber($id, $email, time(), null, null, null, $language, $forename, $surname);
             }
             $password = do_lang('NEWSLETTER_PASSWORD_ENCRYPTED');
@@ -186,11 +186,11 @@ function generate_whatsnew_comcode($chosen_categories, $in_full, $lang, $cutoff_
             if (preg_match('#\[' . preg_quote($hook, '#') . '/(.*)\]#', $line, $matches) != 0) {
                 $found_one_match = true;
 
-                if ((!is_null($last_find_id)) && (($find_id != $last_find_id + 1)/* || ($last_cat_id>intval($matches[1]))*/)) {
+                if (($last_find_id !== null) && (($find_id != $last_find_id + 1)/* || ($last_cat_id>intval($matches[1]))*/)) {
                     $last_cat_id = intval($matches[1]);
 
                     $temp = $object->run(intval($cutoff_time), $lang, $filter);
-                    if ((is_null($temp)) || (count($temp) == 0)) {
+                    if (($temp === null) || (count($temp) == 0)) {
                         continue;
                     }
                     if (!$temp[0]->is_empty()) {
@@ -229,7 +229,7 @@ function generate_whatsnew_comcode($chosen_categories, $in_full, $lang, $cutoff_
             }
 
             $temp = $object->run(intval($cutoff_time), $lang, '*', $in_full);
-            if ((is_null($temp)) || (count($temp) == 0)) {
+            if (($temp === null) || (count($temp) == 0)) {
                 continue;
             }
             if (!$temp[0]->is_empty()) {
@@ -244,7 +244,7 @@ function generate_whatsnew_comcode($chosen_categories, $in_full, $lang, $cutoff_
             }
         } elseif ($filter != '') {
             $temp = $object->run(intval($cutoff_time), $lang, $filter, $in_full);
-            if ((is_null($temp)) || (count($temp) == 0)) {
+            if (($temp === null) || (count($temp) == 0)) {
                 continue;
             }
             if (!$temp[0]->is_empty()) {
@@ -392,7 +392,7 @@ function send_newsletter($message, $subject, $language, $send_details, $html_onl
         'html_only' => $html_only,
     );
     $message_id = $GLOBALS['SITE_DB']->query_select_value_if_there('newsletter_archive', 'id', $archive_map);
-    if (is_null($message_id)) {
+    if ($message_id === null) {
         $message_id = $GLOBALS['SITE_DB']->query_insert('newsletter_archive', $archive_map + array('date_and_time' => time()), true);
     }
 
@@ -578,7 +578,7 @@ function newsletter_who_send_to($send_details, $language, $start, $max, $get_raw
                 continue;
             }
 
-            if ((count($csv_line) >= 1) && (!is_null($csv_line[$email_index])) && (strpos($csv_line[$email_index], '@') !== false)) {
+            if ((count($csv_line) >= 1) && ($csv_line[$email_index] !== null) && (strpos($csv_line[$email_index], '@') !== false)) {
                 if (($pos >= $start) && ($pos - $start < $max)) {
                     if (!$get_raw_rows) {
                         $emails[] = $csv_line[$email_index];
@@ -672,30 +672,30 @@ function newsletter_variable_substitution($message, $subject, $forename, $surnam
  */
 function newsletter_preview($message, $subject, $html_only, $forename = null, $surname = null, $name = null, $address = null, $sendid = null, $hash = null)
 {
-    if (is_null($forename)) {
+    if ($forename === null) {
         $forename = do_lang('SAMPLE_FORENAME');
     }
 
-    if (is_null($surname)) {
+    if ($surname === null) {
         $surname = do_lang('SAMPLE_SURNAME');
     }
 
-    if (is_null($name)) {
+    if ($name === null) {
         $name = do_lang('SAMPLE_NAME');
     }
 
-    if (is_null($address)) {
+    if ($address === null) {
         $address = $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member());
         if ($address == '') {
             $address = do_lang('SAMPLE_ADDRESS');
         }
     }
 
-    if (is_null($sendid)) {
+    if ($sendid === null) {
         $sendid = 'm' . strval(get_member());
     }
 
-    if (is_null($hash)) {
+    if ($hash === null) {
         require_code('crypt');
         $hash = ratchet_hash($GLOBALS['FORUM_DRIVER']->get_member_row_field(get_member(), 'm_pass_hash_salted'), 'xunsub');
     }
@@ -870,7 +870,7 @@ function add_periodic_newsletter($subject, $message, $lang, $send_details, $html
     require_code('global4');
     prevent_double_submit('ADD_PERIODIC_NEWSLETTER', null, $subject);
 
-    if (is_null($last_sent)) {
+    if ($last_sent === null) {
         $last_sent = time();
     }
 
@@ -938,7 +938,7 @@ function edit_periodic_newsletter($id, $subject, $message, $lang, $send_details,
         'np_in_full' => $in_full,
         'np_template' => $template,
     );
-    if (!is_null($last_sent)) {
+    if ($last_sent !== null) {
         $map['np_last_sent'] = $last_sent;
     }
     $GLOBALS['SITE_DB']->query_update('newsletter_periodic', $map, array('id' => $id));
@@ -1023,28 +1023,28 @@ function add_newsletter_subscriber($email, $join_time, $code_confirm, $password,
 function edit_newsletter_subscriber($id, $email = null, $join_time = null, $code_confirm = null, $password = null, $salt = null, $language = null, $forename = null, $surname = null)
 {
     $map = array();
-    if (!is_null($email)) {
+    if ($email !== null) {
         $map['email'] = $email;
     }
-    if (!is_null($join_time)) {
+    if ($join_time !== null) {
         $map['join_time'] = $join_time;
     }
-    if (!is_null($code_confirm)) {
+    if ($code_confirm !== null) {
         $map['code_confirm'] = $code_confirm;
     }
-    if (!is_null($password)) {
+    if ($password !== null) {
         $map['the_password'] = $password;
     }
-    if (!is_null($salt)) {
+    if ($salt !== null) {
         $map['pass_salt'] = $salt;
     }
-    if (!is_null($language)) {
+    if ($language !== null) {
         $map['language'] = $language;
     }
-    if (!is_null($forename)) {
+    if ($forename !== null) {
         $map['n_forename'] = $forename;
     }
-    if (!is_null($surname)) {
+    if ($surname !== null) {
         $map['n_surname'] = $surname;
     }
 

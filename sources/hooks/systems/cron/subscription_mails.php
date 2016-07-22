@@ -68,7 +68,7 @@ class Hook_cron_subscription_mails
                             $send = (($sub['term_end_time'] - time() <= $offset) && ($sub['term_end_time'] - $last_time > $offset));
                             break;
                         case 'expiry':
-                            if (!is_null($sub['expiry_time'])) {
+                            if ($sub['expiry_time'] !== null) {
                                 $send = (($sub['expiry_time'] - time() <= $offset) && ($sub['expiry_time'] - $last_time > $offset));
                             }
                             break;

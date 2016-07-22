@@ -42,7 +42,7 @@ function _imap_server_spec($server, $port, $type = null)
     }
 
     if ($is_pop3) {
-        if (is_null($type)) {
+        if ($type === null) {
             $ssl = ($port == 995);
         } else {
             $ssl = ($type == 'pop3s');
@@ -50,7 +50,7 @@ function _imap_server_spec($server, $port, $type = null)
         $server_special_details = $ssl ? '/pop3/ssl/novalidate-cert' : '/pop3/novalidate-cert';
         $server_spec = '{' . $server . ':' . strval($port) . '' . $server_special_details . '}';
     } else {
-        if (is_null($type)) {
+        if ($type === null) {
             $ssl = ($port == 993);
         } else {
             $ssl = ($type == 'imaps');
@@ -133,7 +133,7 @@ function is_mail_bounced($email, $server = null, $port = null, $folder = null, $
         return null;
     }
 
-    if (is_null($server)) {
+    if ($server === null) {
         $server = get_option('imap_host');
         $port = intval(get_option('imap_port'));
         $folder = get_option('imap_folder');
@@ -146,7 +146,7 @@ function is_mail_bounced($email, $server = null, $port = null, $folder = null, $
     }
 
     static $update_since = null;
-    if (is_null($update_since)) {
+    if ($update_since === null) {
         $update_since = $GLOBALS['SITE_DB']->query_select_value_if_there('email_bounces', 'MAX(b_time)');
     }
     update_bounce_storage($server, $port, $folder, $username, $password, $update_since);
@@ -166,7 +166,7 @@ function is_mail_bounced($email, $server = null, $port = null, $folder = null, $
  */
 function update_bounce_storage($server, $port, $folder, $username, $password, $since = null)
 {
-    if (is_null($since)) {
+    if ($since === null) {
         $since = time() - 60 * 60 * 24 * 7 * 8;
     } else {
         static $done_in_session = false;
@@ -211,11 +211,11 @@ function update_bounce_storage($server, $port, $folder, $username, $password, $s
  */
 function find_mail_bounces($server, $port, $folder, $username, $password, $since = null)
 {
-    if (is_null($since)) {
+    if ($since === null) {
         $since = time() - 60 * 60 * 24 * 7 * 8;
     }
     $update_since = $GLOBALS['SITE_DB']->query_select_value_if_there('email_bounces', 'MAX(b_time)');
-    if (is_null($update_since)) {
+    if ($update_since === null) {
         $update_since = 0;
     }
     $_since = max($since, $update_since);
@@ -268,7 +268,7 @@ function _find_mail_bounces($server, $port, $folder, $username, $password, $boun
     $out = array();
 
     $filter = 'UNDELETED';
-    if (!is_null($since)) {
+    if ($since !== null) {
         $filter .= ' SINCE "' . gmdate('j-M-Y', $since - 60 * 60 * 24) . '"';
     }
     $messages = imap_search($mbox, $filter);

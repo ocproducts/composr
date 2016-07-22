@@ -531,10 +531,10 @@ function load_field_restrictions($this_page = null, $this_type = null)
         $FIELD_RESTRICTIONS = array();
         if (function_exists('xml_parser_create')) {
             $temp = new Field_restriction_loader();
-            if (is_null($this_page)) {
+            if ($this_page === null) {
                 $this_page = get_page_name();
             }
-            if (is_null($this_type)) {
+            if ($this_type === null) {
                 $this_type = get_param_string('type', array_key_exists('type', $_POST) ? $_POST['type'] : 'browse');
             }
             $temp->this_page = $this_page;

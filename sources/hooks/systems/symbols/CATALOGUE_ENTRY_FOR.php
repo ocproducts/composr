@@ -40,7 +40,7 @@ class Hook_symbol_CATALOGUE_ENTRY_FOR
 
             require_code('fields');
             $entry_id = get_bound_content_entry($param[0], $param[1]);
-            $value = is_null($entry_id) ? '' : strval($entry_id);
+            $value = ($entry_id === null) ? '' : strval($entry_id);
             $cache[$param[0]][$param[1]] = $value;
         }
 

@@ -115,14 +115,14 @@ function cns_edit_emoticon($old_code, $code, $theme_img_code, $relevance_level, 
 {
     if ($code != $old_code) {
         $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_emoticons', 'e_code', array('e_code' => $code));
-        if (!is_null($test)) {
+        if ($test !== null) {
             require_lang('cns');
             warn_exit(do_lang_tempcode('CONFLICTING_EMOTICON_CODE', escape_html($code)));
         }
     }
 
     $old_theme_img_code = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_emoticons', 'e_theme_img_code', array('e_code' => $old_code));
-    if (is_null($old_theme_img_code)) {
+    if ($old_theme_img_code === null) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
     }
 
@@ -155,7 +155,7 @@ function cns_edit_emoticon($old_code, $code, $theme_img_code, $relevance_level, 
 function cns_delete_emoticon($code)
 {
     $old_theme_img_code = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_emoticons', 'e_theme_img_code', array('e_code' => $code));
-    if (is_null($old_theme_img_code)) {
+    if ($old_theme_img_code === null) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
     }
 
@@ -190,7 +190,7 @@ function cns_delete_emoticon($code)
 function cns_edit_welcome_email($id, $name, $subject, $text, $send_time, $newsletter, $usergroup, $usergroup_type)
 {
     $_subject = $GLOBALS['SITE_DB']->query_select_value_if_there('f_welcome_emails', 'w_subject', array('id' => $id));
-    if (is_null($_subject)) {
+    if ($_subject === null) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
     }
     $_text = $GLOBALS['SITE_DB']->query_select_value('f_welcome_emails', 'w_text', array('id' => $id));
@@ -221,7 +221,7 @@ function cns_edit_welcome_email($id, $name, $subject, $text, $send_time, $newsle
 function cns_delete_welcome_email($id)
 {
     $_subject = $GLOBALS['SITE_DB']->query_select_value_if_there('f_welcome_emails', 'w_subject', array('id' => $id));
-    if (is_null($_subject)) {
+    if ($_subject === null) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
     }
     $_text = $GLOBALS['SITE_DB']->query_select_value('f_welcome_emails', 'w_text', array('id' => $id));
@@ -272,10 +272,10 @@ function cns_get_forum_multi_code_field($forum_multi_code)
  */
 function cns_mod_log_it($the_type, $param_a = '', $param_b = '', $reason = '', $by = null, $timestamp = null)
 {
-    if (is_null($timestamp)) {
+    if ($timestamp === null) {
         $timestamp = time();
     }
-    if (is_null($by)) {
+    if ($by === null) {
         $by = get_member();
     }
 

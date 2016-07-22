@@ -255,7 +255,7 @@ class Module_admin_lang
         $potentials = $GLOBALS['SITE_DB']->query_select('translate', array('id'), array('text_original' => $old, 'language' => get_site_default_lang()));
         foreach ($potentials as $potential) {
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('translate', 'text_original', array('id' => $potential['id'], 'language' => $lang));
-            if (!is_null($test)) {
+            if ($test !== null) {
                 return $test;
             }
         }
@@ -424,7 +424,7 @@ class Module_admin_lang
 
             $id = $it['id'];
             $name = $names[$id];
-            if (is_null($name)) {
+            if ($name === null) {
                 continue; // Orphaned string
             }
 
@@ -503,7 +503,7 @@ class Module_admin_lang
             if ($val != '') {
                 $GLOBALS['SITE_DB']->query_delete('translate', array('language' => $lang, 'id' => $lang_id), '', 1);
                 $importance_level = $GLOBALS['SITE_DB']->query_select_value_if_there('translate', 'importance_level', array('id' => $lang_id));
-                if (!is_null($importance_level)) {
+                if ($importance_level !== null) {
                     $GLOBALS['SITE_DB']->query_insert('translate', array('id' => $lang_id, 'source_user' => get_member(), 'language' => $lang, 'importance_level' => $importance_level, 'text_original' => $val, 'text_parsed' => '', 'broken' => 0));
                 }
             }
@@ -521,7 +521,7 @@ class Module_admin_lang
 
         // Show it worked / Refresh
         $url = post_param_string('redirect', null);
-        if (is_null($url)) {
+        if ($url === null) {
             $_url = build_url(array('page' => '_SELF', 'type' => 'content', 'lang' => $lang, 'start' => get_param_integer('start', null)), '_SELF');
             $url = $_url->evaluate();
         }
@@ -660,7 +660,7 @@ class Module_admin_lang
         $translated_stuff = array();
         if (($trans_lot != '') && ($google != '')) {
             $result = http_download_file('http://translate.google.com/translate_t', null, false, false, 'Composr', array('text' => $trans_lot, 'langpair' => 'en|' . $google));
-            if (!is_null($result)) {
+            if ($result !== null) {
                 require_code('character_sets');
 
                 $result = convert_to_internal_encoding($result);

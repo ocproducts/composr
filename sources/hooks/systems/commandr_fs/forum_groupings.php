@@ -93,7 +93,7 @@ class Hook_commandr_fs_forum_groupings extends Resource_fs_base
 
         $description = $this->_default_property_str($properties, 'description');
         $expanded_by_default = $this->_default_property_int_null($properties, 'expanded_by_default');
-        if (is_null($expanded_by_default)) {
+        if ($expanded_by_default === null) {
             $expanded_by_default = 1;
         }
 
@@ -148,7 +148,7 @@ class Hook_commandr_fs_forum_groupings extends Resource_fs_base
         $label = $this->_default_property_str($properties, 'label');
         $description = $this->_default_property_str($properties, 'description');
         $expanded_by_default = $this->_default_property_int_null($properties, 'expanded_by_default');
-        if (is_null($expanded_by_default)) {
+        if ($expanded_by_default === null) {
             $expanded_by_default = 1;
         }
 
@@ -185,7 +185,7 @@ class Hook_commandr_fs_forum_groupings extends Resource_fs_base
      */
     public function file_convert_filename_to_id($filename, $resource_type = null)
     {
-        if (is_null($resource_type)) {
+        if ($resource_type === null) {
             $resource_type = $this->file_resource_type;
         }
 

@@ -36,9 +36,9 @@ function init__site__pages__modules_custom__galleries($code)
             require_lang(\'workflows\');
             // We need to find our ID first
             $wf = get_workflow_of_content(\'image\', strval($row[\'id\']));
-            if (!is_null($wf)) {
+            if ($wf !== null) {
                 $workflow_content_id = get_workflow_content_id(\'image\', strval($row[\'id\']));
-                if (!is_null($workflow_content_id)) $warning_details->attach(get_workflow_form($workflow_content_id));
+                if ($workflow_content_id !== null) $warning_details->attach(get_workflow_form($workflow_content_id));
             }
         }
         $current_entry = do_template(\'GALLERY_FLOW_MODE_IMAGE\'',
@@ -53,9 +53,9 @@ function init__site__pages__modules_custom__galleries($code)
             require_lang(\'workflows\');
             // We need to find our ID first
             $wf = get_workflow_of_content(\'video\', strval($row[\'id\']));
-            if (!is_null($wf)) {
+            if ($wf !== null) {
                 $workflow_content_id = get_workflow_content_id(\'video\', strval($row[\'id\']));
-                if (!is_null($workflow_content_id)) $warning_details->attach(get_workflow_form($workflow_content_id));
+                if ($workflow_content_id !== null) $warning_details->attach(get_workflow_form($workflow_content_id));
             }
         }
         $current_entry = do_template(\'GALLERY_FLOW_MODE_VIDEO',
@@ -75,7 +75,7 @@ function init__site__pages__modules_custom__galleries($code)
         if (array_key_exists(\'image_views\', $myrow)) $content_type = \'image\';
         if (array_key_exists(\'video_views\', $myrow)) $content_type = \'video\';
         $workflow_content_id = get_workflow_content_id($content_type, strval($myrow[\'id\']));
-        if (!is_null($workflow_content_id)) $warning_details->attach(get_workflow_form($workflow_content_id));
+        if ($workflow_content_id !== null) $warning_details->attach(get_workflow_form($workflow_content_id));
         } else $warning_details = new Tempcode();
 
         if ((has_actual_page_access',
@@ -91,7 +91,7 @@ function init__site__pages__modules_custom__galleries($code)
         require_lang(\'workflows\');
         // We need to find our ID first
         $workflow_content_id = get_workflow_content_id(\'video\', strval($id));
-        if (!is_null($workflow_content_id)) $warning_details->attach(get_workflow_form($workflow_content_id));
+        if ($workflow_content_id !== null) $warning_details->attach(get_workflow_form($workflow_content_id));
         } else $warning_details = new Tempcode();
 
         // Comments',

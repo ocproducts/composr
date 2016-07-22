@@ -75,7 +75,7 @@ class Hook_rss_news
                 $author = $row['author'];
 
                 $news_date = date($date_string, $row['date_and_time']);
-                $edit_date = is_null($row['edit_date']) ? '' : date($date_string, $row['edit_date']);
+                $edit_date = ($row['edit_date'] === null) ? '' : date($date_string, $row['edit_date']);
 
                 $just_news_row = db_map_restrict($row, array('id', 'title', 'news', 'news_article'));
 
@@ -87,7 +87,7 @@ class Hook_rss_news
                 }
                 $summary = xmlentities($_summary->evaluate());
 
-                if (!is_null($row['news_article'])) {
+                if ($row['news_article'] !== null) {
                     $_news = get_translated_tempcode('news', $just_news_row, 'news_article');
                     if ($_news->is_empty()) {
                         $news = '';

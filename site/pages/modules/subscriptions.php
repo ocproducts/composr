@@ -64,7 +64,7 @@ class Module_subscriptions
     {
         push_db_scope_check(false);
 
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->create_table('subscriptions', array(
                 'id' => '*AUTO', // linked to IPN with this
                 's_type_code' => 'ID_TEXT',
@@ -99,7 +99,7 @@ class Module_subscriptions
             ));
         }
 
-        if ((is_null($upgrade_from)) || ($upgrade_from < 5)) {
+        if (($upgrade_from === null) || ($upgrade_from < 5)) {
             $GLOBALS['SITE_DB']->create_table('f_usergroup_sub_mails', array(
                 'id' => '*AUTO',
                 'm_usergroup_sub_id' => 'AUTO_LINK',
@@ -110,7 +110,7 @@ class Module_subscriptions
             ));
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 5)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 5)) {
             $GLOBALS['SITE_DB']->alter_table_field('subscriptions', 's_special', 'ID_TEXT', 's_purchase_id');
             $GLOBALS['SITE_DB']->add_table_field('subscriptions', 's_length', 'INTEGER', 1);
             $GLOBALS['SITE_DB']->add_table_field('subscriptions', 's_length_units', 'SHORT_TEXT', 'm');
@@ -247,7 +247,7 @@ class Module_subscriptions
     {
         $id = get_param_integer('id');
         $via = $GLOBALS['SITE_DB']->query_select_value_if_there('subscriptions', 's_via', array('id' => $id));
-        if (is_null($via)) {
+        if ($via === null) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }
 

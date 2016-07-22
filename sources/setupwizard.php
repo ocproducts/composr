@@ -78,7 +78,7 @@ function _get_zone_pages($installprofileblocks, $block_options, $collapse_zones,
         $cell_count = 0;
         foreach ($blocks as $block => $val) {
             $params = '';
-            if (!is_null($block_options)) {
+            if ($block_options !== null) {
                 if (array_key_exists($block, $block_options)) {
                     foreach ($block_options[$block] as $block_option => $block_option_value) {
                         $params .= ' ' . $block_option . '="' . comcode_escape($block_option_value) . '"';

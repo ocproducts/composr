@@ -30,7 +30,7 @@ function _strip_comcode($in, $for_extract = false, $tags_to_preserve = null)
 {
     $text = $in;
 
-    if (is_null($tags_to_preserve)) {
+    if ($tags_to_preserve === null) {
         $tags_to_preserve = array();
     }
 

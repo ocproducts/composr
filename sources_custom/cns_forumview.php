@@ -45,7 +45,7 @@ function cns_render_topic($topic, $has_topic_marking, $pt = false, $show_forum =
         $ticket_id = extract_topic_identifier($topic['description']);
         $ticket_type_id = $GLOBALS['SITE_DB']->query_select_value_if_there('tickets', 'ticket_type', array('ticket_id' => $ticket_id));
         $ticket_type_name = mixed();
-        if (!is_null($ticket_type_id)) {
+        if ($ticket_type_id !== null) {
             $_ticket_type_name = $GLOBALS['SITE_DB']->query_select_value_if_there('ticket_types', 'ticket_type_name', array('id' => $ticket_type_id));
 
             $d = new Tempcode();

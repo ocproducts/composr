@@ -45,7 +45,7 @@ class Hook_checklist_news
         $limit_hours = intval(get_option('news_update_time'));
 
         $seconds_ago = mixed();
-        if (!is_null($date)) {
+        if ($date !== null) {
             $seconds_ago = time() - $date;
             $status = ($seconds_ago > $limit_hours * 60 * 60) ? 0 : 1;
         } else {

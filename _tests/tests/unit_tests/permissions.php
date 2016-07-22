@@ -23,7 +23,7 @@ class permissions_test_set extends cms_test_case
         require_all_lang();
         $privileges = $GLOBALS['SITE_DB']->query_select('privilege_list', array('*'));
         foreach ($privileges as $p) {
-            $this->assertTrue(!is_null(do_lang('PRIVILEGE_' . $p['the_name'], null, null, null, null, false)), 'Could not find language string PRIVILEGE_' . $p['the_name']);
+            $this->assertTrue(do_lang('PRIVILEGE_' . $p['the_name'], null, null, null, null, false) !== null, 'Could not find language string PRIVILEGE_' . $p['the_name']);
         }
     }
 }

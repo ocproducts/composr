@@ -36,7 +36,7 @@ function check_joining_allowed()
     }
 
     global $LDAP_CONNECTION;
-    if ((!is_null($LDAP_CONNECTION)) && (get_option('ldap_allow_joining', true) === '0')) {
+    if (($LDAP_CONNECTION !== null) && (get_option('ldap_allow_joining', true) === '0')) {
         warn_exit(do_lang_tempcode('JOIN_DISALLOW'));
     }
 }
@@ -220,12 +220,12 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
 
     // Read in data
 
-    if (is_null($username))	{
+    if ($username === null)	{
         $username = trim(post_param_string('username'));
     }
     cns_check_name_valid($username, null, null, true); // Adjusts username if needed
 
-    if (is_null($password))	{
+    if ($password === null)	{
         $password = trim(post_param_string('password'));
         $password_confirm = trim(post_param_string('password_confirm'));
         if ($password != $password_confirm) {
@@ -233,10 +233,10 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
         }
     }
 
-    if (is_null($email_address))	{
+    if ($email_address === null)	{
         $confirm_email_address = post_param_string('email_address_confirm', null);
         $email_address = trim(post_param_string('email_address', member_field_is_required(null, 'email_address') ? false : ''));
-        if (!is_null($confirm_email_address)) {
+        if ($confirm_email_address !== null) {
             if (trim($confirm_email_address) != $email_address) {
                 warn_exit(make_string_tempcode(escape_html(do_lang('EMAIL_ADDRESS_MISMATCH'))));
             }
@@ -250,7 +250,7 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
     if ($invites_if_enabled) { // code branch also triggers general tracking of referrals
         if (get_option('is_on_invites') == '1') {
             $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_invites', 'i_inviter', array('i_email_address' => $email_address, 'i_taken' => 0));
-            if (is_null($test)) {
+            if ($test === null) {
                 warn_exit(do_lang_tempcode('NO_INVITE'));
             }
         }
@@ -260,7 +260,7 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
 
     require_code('temporal2');
     list($dob_year, $dob_month, $dob_day) = post_param_date_components('dob');
-    if ((is_null($dob_year)) || (is_null($dob_month)) || (is_null($dob_day))) {
+    if (($dob_year === null) || ($dob_month === null) || ($dob_day === null)) {
         if (member_field_is_required(null, 'dob', null, null)) {
             warn_exit(do_lang_tempcode('NO_PARAMETER_SENT', escape_html('dob')));
         }
@@ -297,7 +297,7 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
     }
 
     $custom_fields = cns_get_all_custom_fields_match($groups, null, null, null, null, null, null, 0, true);
-    if (is_null($actual_custom_fields)) {
+    if ($actual_custom_fields === null) {
         $actual_custom_fields = cns_read_in_custom_fields($custom_fields);
     }
 
@@ -352,7 +352,7 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
         $coppa = false;
     }
     $validated = ($staff_validation || $coppa) ? 0 : 1;
-    if (is_null($member_id)) {
+    if ($member_id === null) {
         $member_id = cns_make_member($username, $password, $email_address, $groups, $dob_day, $dob_month, $dob_year, $actual_custom_fields, $timezone, $primary_group, $validated, time(), time(), '', null, '', 0, (get_option('default_preview_guests') == '1') ? 1 : 0, $reveal_age, '', '', '', 1, (get_option('allow_auto_notifications') == '0') ? 0 : 1, $language, $allow_emails, $allow_emails_from_staff, get_ip_address(), $validated_email_confirm_code, true, '', '');
     } else {
         attach_message(do_lang_tempcode('ALREADY_EXISTS', escape_html($username)), 'notice');
@@ -413,7 +413,7 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
         if ($forum_id != '') {
             if (!is_numeric($forum_id)) {
                 $_forum_id = $GLOBALS['FORUM_DB']->query_select_value('f_forums', 'id', array('f_name' => $forum_id));
-                if (is_null($_forum_id)) {
+                if ($_forum_id === null) {
                     $forum_id = strval(db_get_first_id());
                 } else {
                     $forum_id = strval($_forum_id);

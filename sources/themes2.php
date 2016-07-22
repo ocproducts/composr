@@ -55,7 +55,7 @@ function autoprobe_cdns()
     $detected_cdns = '';
     $expected = file_get_contents(get_file_base() . '/themes/default/images/icons/16x16/editor/comcode.png');
     foreach ($try as $t) {
-        if (is_null($t)) {
+        if ($t === null) {
             continue;
         }
 
@@ -64,7 +64,7 @@ function autoprobe_cdns()
 
             $test_result = http_download_file($test_url, null, false, false, 'Composr', null, null, null, null, null, null, null, null, 0.25, false, null);
 
-            if ((!is_null($test_result)) && ($test_result == $expected)) {
+            if (($test_result !== null) && ($test_result == $expected)) {
                 if ($detected_cdns != '') {
                     $detected_cdns .= ',';
                 }
@@ -380,11 +380,11 @@ function find_template_parameters($file)
  */
 function post_param_theme_img_code($type, $required = false, $field_file = 'file', $field_choose = 'theme_img_code', $db = null, $upload_to = null)
 {
-    if (is_null($db)) {
+    if ($db === null) {
         $db = $GLOBALS['SITE_DB'];
     }
 
-    if (is_null($upload_to)) {
+    if ($upload_to === null) {
         $upload_to = 'themes/default/images_custom/' . $type;
         @mkdir(get_custom_file_base() . '/' . $upload_to, 0777);
         if (file_exists(get_custom_file_base() . '/' . $upload_to)) {
@@ -445,7 +445,7 @@ function post_param_image($name = 'image', $upload_to = null, $theme_image_type 
     // Upload
     // ------
 
-    if (is_null($upload_to)) {
+    if ($upload_to === null) {
         $upload_to = 'themes/default/images_custom/' . $theme_image_type;
         @mkdir(get_custom_file_base() . '/' . $upload_to, 0777);
         if (file_exists(get_custom_file_base() . '/' . $upload_to)) {
@@ -461,7 +461,7 @@ function post_param_image($name = 'image', $upload_to = null, $theme_image_type 
     if ((is_plupload()) || (((array_key_exists($field_file, $_FILES)) && (is_uploaded_file($_FILES[$field_file]['tmp_name']))))) {
         $urls = get_url('', $field_file, $upload_to, 0, CMS_UPLOAD_IMAGE, $thumb_url !== null, $thumb_specify_name, $thumb_attach_name);
 
-        if ((substr($urls[0], 0, 8) != 'uploads/') && (is_null(http_download_file($urls[0], 0, false))) && (!is_null($GLOBALS['HTTP_MESSAGE_B']))) {
+        if ((substr($urls[0], 0, 8) != 'uploads/') && ((http_download_file($urls[0], 0, false) === null)) && ($GLOBALS['HTTP_MESSAGE_B'] !== null)) {
             attach_message($GLOBALS['HTTP_MESSAGE_B'], 'warn');
         }
 
@@ -613,7 +613,7 @@ function find_images_do_dir($theme, $subdir, $langs)
  */
 function get_all_image_ids_type($type, $recurse = false, $db = null, $theme = null, $dirs_only = false, $db_only = false, $skip = null)
 {
-    if (is_null($db)) {
+    if ($db === null) {
         $db = $GLOBALS['SITE_DB'];
     }
 
@@ -630,10 +630,10 @@ function get_all_image_ids_type($type, $recurse = false, $db = null, $theme = nu
 
     global $THEME_IMAGES_CACHE;
 
-    if (is_null($theme)) {
+    if ($theme === null) {
         $theme = $GLOBALS['FORUM_DRIVER']->get_theme();
     }
-    if (is_null($skip)) {
+    if ($skip === null) {
         $skip = array();
     }
 
@@ -931,12 +931,12 @@ function tidy_theme_img_code($new, $old, $table, $field, $db = null)
     }
 
     $path = ($old == '') ? null : find_theme_image($old, true, true);
-    if ((is_null($path)) || ($path == '')) {
+    if (($path === null) || ($path == '')) {
         return;
     }
 
     if ((strpos($path, '/images_custom/') !== false) && ($GLOBALS['SITE_DB']->query_select_value('theme_images', 'COUNT(DISTINCT id)', array('path' => $path)) == 1)) {
-        if (is_null($db)) {
+        if ($db === null) {
             $db = $GLOBALS['SITE_DB'];
         }
         $count = $db->query_select_value($table, 'COUNT(*)', array($field => $old));

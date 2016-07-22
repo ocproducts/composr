@@ -41,7 +41,7 @@ class Hook_fields_reference_multi
 
         require_lang('fields');
         static $cats = null;
-        if (is_null($cats)) {
+        if ($cats === null) {
             $cats = $GLOBALS['SITE_DB']->query_select('catalogues', array('c_name', 'c_title'));
         }
         $ret = array();
@@ -156,8 +156,8 @@ class Hook_fields_reference_multi
         /*
         $_list = new Tempcode();
         $list = create_selection_list_catalogue_entries_tree($field['c_name'], intval($actual_value), null, false);
-        if (($field['cf_required'] == 0) || ($actual_value === '') || (is_null($actual_value)) || ($list->is_empty())) {
-            $_list->attach(form_input_list_entry('', (($actual_value === '') || (is_null($actual_value))), do_lang_tempcode('NA_EM')));
+        if (($field['cf_required'] == 0) || ($actual_value === '') || ($actual_value === null) || ($list->is_empty())) {
+            $_list->attach(form_input_list_entry('', (($actual_value === '') || ($actual_value === null)), do_lang_tempcode('NA_EM')));
         }
         $_list->attach($list);
         return form_input_list($_cf_name, $_cf_description, 'field_' . strval($field['id']), $_list, null, false, $field['cf_required'] == 1);

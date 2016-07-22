@@ -41,13 +41,13 @@ if (!function_exists('init__comcode_renderer')) {
                             }
                     }
 
-                    if (is_null(\$video_length)) {
+                    if (\$video_length === null) {
                         \$video_length = 30;
                     }
-                    if (is_null(\$video_width)) {
+                    if (\$video_width === null) {
                         \$video_width = 300;
                     }
-                    if (is_null(\$video_height)) {
+                    if (\$video_height === null) {
                         \$video_height = 200;
                     }
 

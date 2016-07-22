@@ -89,7 +89,7 @@ function get_activity_querying_sql($viewer_member, $mode, $member_ids)
                             $friends_check_where .= ' AND member_likes NOT IN (' . $blocked_by . ')';
                         }
 
-                        $view_private = !is_null($GLOBALS['SITE_DB']->query_value_if_there('SELECT member_likes FROM ' . get_table_prefix() . 'chat_friends WHERE ' . $friends_check_where, false, true));
+                        $view_private = ($GLOBALS['SITE_DB']->query_value_if_there('SELECT member_likes FROM ' . get_table_prefix() . 'chat_friends WHERE ' . $friends_check_where, false, true) !== null);
                     } else {
                         $view_private = false;
                     }
@@ -216,7 +216,7 @@ function render_activity($row, $use_inside_cms = true)
     $message = new Tempcode();
 
     $test = do_lang($row['a_language_string_code'], '{1}', '{2}', '{3}', null, false);
-    if (is_null($test)) {
+    if ($test === null) {
         $test = do_lang('UNKNOWN');
     }
 
@@ -238,7 +238,7 @@ function render_activity($row, $use_inside_cms = true)
         symbol_tempcode('ESCAPE', array($link[2])),
         symbol_tempcode('ESCAPE', array($link[3]))
     );
-    if (!is_null($row['a_also_involving'])) {
+    if ($row['a_also_involving'] !== null) {
         $_username = $GLOBALS['FORUM_DRIVER']->get_username($row['a_also_involving'], true);
         $url = $GLOBALS['FORUM_DRIVER']->member_profile_url($row['a_also_involving'], $use_inside_cms);
         $hyperlink = hyperlink($url, $_username, false, true);

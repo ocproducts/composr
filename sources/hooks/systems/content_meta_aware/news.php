@@ -63,7 +63,7 @@ class Hook_content_meta_aware_news
             'edit_page_link_pattern' => '_SEARCH:cms_news:_edit:_WILD',
             'view_category_page_link_pattern' => '_SEARCH:news:browse:_WILD',
             'add_url' => (function_exists('has_submit_permission') && has_submit_permission('mid', get_member(), get_ip_address(), 'cms_news')) ? (get_module_zone('cms_news') . ':cms_news:add') : null,
-            'archive_url' => ((!is_null($zone)) ? $zone : get_module_zone('news')) . ':news',
+            'archive_url' => (($zone !== null) ? $zone : get_module_zone('news')) . ':news',
 
             'support_url_monikers' => true,
 

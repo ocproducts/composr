@@ -49,7 +49,7 @@ if (cms_srv('REQUEST_METHOD') == 'POST') {
     $title = post_param_string('title');
     $notes = post_param_string('notes', '');
     $affects = post_param_string('affects', '');
-    if (!is_null(post_param_string('fixed_files', null))) {
+    if (post_param_string('fixed_files', null) !== null) {
         $fixed_files = explode(',', post_param_string('fixed_files'));
     } else {
         $fixed_files = array();
@@ -406,7 +406,7 @@ function make_call($call, $params, $file = null)
 {
     $data = $params;
     $data['password'] = post_param_string('password');
-    if (is_null($file)) {
+    if ($file === null) {
         $data_url = http_build_query($data);
         $data_len = strlen($data_url);
         $header = "Content-type: application/x-www-form-urlencoded\r\nContent-Length: $data_len\r\n";

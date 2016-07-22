@@ -58,7 +58,7 @@ class Hook_preview_cns_post
 
         // Put quote in
         $parent_id = post_param_integer('parent_id', null);
-        if ((!is_null($parent_id)) && (strpos($post_comcode, '[quote') === false)) {
+        if (($parent_id !== null) && (strpos($post_comcode, '[quote') === false)) {
             $_p = $GLOBALS['FORUM_DB']->query_select('f_posts', array('*'), array('id' => $parent_id), '', 1);
             if (array_key_exists(0, $_p)) {
                 $p = $_p[0];
@@ -74,14 +74,14 @@ class Hook_preview_cns_post
         $post_owner = get_member();
         $_post_date = time();
         $post_id = post_param_integer('post_id', null);
-        if (!is_null($post_id)) {
+        if ($post_id !== null) {
             $post_owner = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_posts', 'p_poster', array('id' => $post_id));
-            if (is_null($post_owner)) {
+            if ($post_owner === null) {
                 $post_owner = get_member();
             }
 
             $_post_date = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_posts', 'p_time', array('id' => $post_id));
-            if (is_null($_post_date)) {
+            if ($_post_date === null) {
                 $_post_date = time();
             }
         }
@@ -100,10 +100,10 @@ class Hook_preview_cns_post
         $is_emphasised = post_param_integer('is_emphasised', 0) == 1;
         if ($is_emphasised) {
             $emphasis = do_lang_tempcode('IMPORTANT');
-        } elseif (!is_null($intended_solely_for)) {
+        } elseif ($intended_solely_for !== null) {
             $emphasis = do_lang_tempcode('PP_TO', escape_html($intended_solely_for));
         }
-        $class = $is_emphasised ? 'cns_post_emphasis' : (!is_null($intended_solely_for) ? 'cns_post_personal' : '');
+        $class = $is_emphasised ? 'cns_post_emphasis' : ($intended_solely_for !== null ? 'cns_post_personal' : '');
 
         // Member details
         $member_row = $GLOBALS['FORUM_DRIVER']->get_member_row($post_owner);
@@ -125,7 +125,7 @@ class Hook_preview_cns_post
             require_code('cns_members2');
             $poster_details = render_member_box($post_owner, false, false, null, false);
             $poster_username = $GLOBALS['FORUM_DRIVER']->get_username($post_owner);
-            if (is_null($poster_username)) {
+            if ($poster_username === null) {
                 $poster_username = do_lang('UNKNOWN');
             }
             $poster = do_template('CNS_POSTER_MEMBER', array('_GUID' => '976a6ceb631bbdcdd950b723cb5d2487', 'ONLINE' => true, 'ID' => strval($post_owner), 'POSTER_DETAILS' => $poster_details, 'PROFILE_URL' => $GLOBALS['FORUM_DRIVER']->member_profile_url($post_owner, true), 'POSTER_USERNAME' => $poster_username));

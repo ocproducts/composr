@@ -141,14 +141,14 @@ class template_previews_test_set extends cms_test_case
 
             if (stripos($_out, '<html') !== false && strpos($_out, '<xsl') === false) {
                 $result = check_xhtml($_out, false, false, false, true, true, false, false);
-                if ((!is_null($result)) && (count($result['errors']) == 0)) {
+                if (($result !== null) && (count($result['errors']) == 0)) {
                     $result = null;
                 }
             } else {
                 $result = null;
             }
-            $this->assertTrue(is_null($result), $hook . ':' . $function);
-            if (!is_null($result)) {
+            $this->assertTrue(($result === null), $hook . ':' . $function);
+            if ($result !== null) {
                 require_code('view_modes');
                 display_webstandards_results($_out, $result, false, false);
             } else {

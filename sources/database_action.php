@@ -252,7 +252,7 @@ function get_true_permissions()
 function privilege_exists($name)
 {
     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('privilege_list', 'the_name', array('the_name' => $name));
-    return !is_null($test);
+    return $test !== null;
 }
 
 /**
@@ -290,13 +290,13 @@ function add_privilege($section, $name, $default = false, $not_even_mods = false
  */
 function set_privilege($group_id, $permission, $value, $page = null, $category_type = null, $category_name = null)
 {
-    if (is_null($page)) {
+    if ($page === null) {
         $page = '';
     }
-    if (is_null($category_type)) {
+    if ($category_type === null) {
         $category_type = '';
     }
-    if (is_null($category_name)) {
+    if ($category_name === null) {
         $category_name = '';
     }
 
@@ -343,7 +343,7 @@ function delete_attachments($type, $db = null)
         return;
     }
 
-    if (is_null($db)) {
+    if ($db === null) {
         $db = $GLOBALS['SITE_DB'];
     }
 
@@ -358,7 +358,7 @@ function delete_attachments($type, $db = null)
 
         // Was that the last reference to this attachment? (if so -- delete attachment)
         $test = $db->query_select_value_if_there('attachment_refs', 'id', array('a_id' => $ref['a_id']));
-        if (is_null($test)) {
+        if ($test === null) {
             _delete_attachment($ref['a_id'], $db);
         }
     }
@@ -377,22 +377,22 @@ function mass_delete_lang($table, $attrs, $db)
         return;
     }
 
-    if (is_null($db)) {
+    if ($db === null) {
         $db = $GLOBALS['SITE_DB'];
     }
 
     $start = 0;
     do {
         $rows = $db->query_select($table, $attrs, null, '', 1000, $start, true);
-        if (!is_null($rows)) {
+        if ($rows !== null) {
             foreach ($rows as $row) {
                 foreach ($attrs as $attr) {
-                    if (!is_null($row[$attr])) {
+                    if ($row[$attr] !== null) {
                         delete_lang($row[$attr], $db);
                     }
                 }
             }
         }
         $start += 1000;
-    } while ((!is_null($rows)) && (count($rows) > 0));
+    } while (($rows !== null) && (count($rows) > 0));
 }

@@ -32,7 +32,7 @@ class Hook_checklist_cron
     {
         $last_cron = get_value('last_cron');
 
-        if ((is_null($last_cron)) || (intval($last_cron) < time() - 60 * 60 * 24)) {
+        if (($last_cron === null) || (intval($last_cron) < time() - 60 * 60 * 24)) {
             $status = 0;
             $info = null;
             $url = get_tutorial_url('tut_configuration');

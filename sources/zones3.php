@@ -41,13 +41,13 @@ function actual_edit_zone($zone, $title, $default_page, $header_text, $theme, $r
             warn_exit(do_lang_tempcode('BAD_CODENAME'));
         }
 
-        if (!is_null($GLOBALS['CURRENT_SHARE_USER'])) {
+        if ($GLOBALS['CURRENT_SHARE_USER'] !== null) {
             warn_exit(do_lang_tempcode('SHARED_INSTALL_PROHIBIT'));
         }
 
         // Check doesn't already exist
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('zones', 'zone_header_text', array('zone_name' => $new_zone));
-        if (!is_null($test)) {
+        if ($test !== null) {
             if ($uniqify) {
                 $new_zone .= '_' . uniqid('', false);
             } else {
@@ -158,7 +158,7 @@ function actual_rename_zone_lite($zone, $new_zone, $dont_bother_with_main_row = 
  */
 function actual_delete_zone($zone, $force = false, $skip_afm = false)
 {
-    if (!is_null($GLOBALS['CURRENT_SHARE_USER'])) {
+    if ($GLOBALS['CURRENT_SHARE_USER'] !== null) {
         warn_exit(do_lang_tempcode('SHARED_INSTALL_PROHIBIT'));
     }
 
@@ -201,7 +201,7 @@ function actual_delete_zone($zone, $force = false, $skip_afm = false)
 function actual_delete_zone_lite($zone)
 {
     $zone_header_text = $GLOBALS['SITE_DB']->query_select_value_if_there('zones', 'zone_header_text', array('zone_name' => $zone));
-    if (is_null($zone_header_text)) {
+    if ($zone_header_text === null) {
         return;
     }
     $zone_title = $GLOBALS['SITE_DB']->query_select_value('zones', 'zone_title', array('zone_name' => $zone));
@@ -257,7 +257,7 @@ function sitemap_do_next_manager($title, $page, $zone, $completion_text)
         array('menu/_generic_admin/add_one', array('cms_comcode_pages', array('type' => 'browse'), get_module_zone('cms_comcode_pages')), do_lang('COMCODE_PAGE_ADD')),
         array('menu/cms/comcode_page_edit', array('cms_comcode_pages', array('type' => 'browse'), get_module_zone('cms_comcode_pages')), do_lang_tempcode('COMCODE_PAGE_EDIT')),
     );
-    if (!is_null($page)) {
+    if ($page !== null) {
         $special = array_merge($special, array(
             array('menu/_generic_admin/edit_this', array('_SELF', array('type' => '_edit', 'page_link' => $zone . ':' . $page), '_SELF'), do_lang('COMCODE_PAGE_EDIT_THIS')),
             array('menu/_generic_admin/view_this', array($page, array(), $zone), do_lang('COMCODE_PAGE_VIEW_THIS')),
@@ -305,7 +305,7 @@ function sitemap_do_next_manager($title, $page, $zone, $completion_text)
  */
 function create_selection_list_zones($sel = null, $no_go = null, $reorder = null, $updated_since = null)
 {
-    if (is_null($no_go)) {
+    if ($no_go === null) {
         $no_go = array();
     }
 
@@ -313,7 +313,7 @@ function create_selection_list_zones($sel = null, $no_go = null, $reorder = null
         $sel = '';
     }
 
-    if (!is_null($updated_since)) {
+    if ($updated_since !== null) {
         $rows = $GLOBALS['SITE_DB']->query('SELECT zone_name,zone_title FROM ' . get_table_prefix() . 'zones z WHERE EXISTS (SELECT * FROM ' . get_table_prefix() . 'comcode_pages c WHERE z.zone_name=c.the_zone AND p_add_date>' . strval($updated_since) . ') ORDER BY zone_name');
         $zones = array();
         foreach ($rows as $row) {
@@ -323,7 +323,7 @@ function create_selection_list_zones($sel = null, $no_go = null, $reorder = null
         $zones = find_all_zones(false, true);
     }
     $content = new Tempcode();
-    if (!is_null($reorder)) {
+    if ($reorder !== null) {
         $_zones_a = array();
         $_zones_b = array();
         foreach ($zones as $_zone) {
@@ -339,7 +339,7 @@ function create_selection_list_zones($sel = null, $no_go = null, $reorder = null
     foreach ($zones as $_zone) {
         list($zone, $title) = $_zone;
         if ((has_zone_access(get_member(), $zone)) && (!in_array($zone, $no_go))) {
-            $content->attach(form_input_list_entry($zone, ((!is_null($sel)) && ($zone == $sel)), $title));
+            $content->attach(form_input_list_entry($zone, (($sel !== null) && ($zone == $sel)), $title));
         }
     }
     return $content;
@@ -441,29 +441,29 @@ function get_template_contents($name)
  */
 function save_comcode_page($zone, $new_file, $lang, $text, $validated = null, $parent_page = null, $order = null, $add_time = null, $edit_time = null, $show_as_edit = 0, $submitter = null, $file = null, $meta_keywords = '', $meta_description = '')
 {
-    if (is_null($submitter)) {
+    if ($submitter === null) {
         $submitter = get_member();
     }
-    if (is_null($file)) {
+    if ($file === null) {
         $file = $new_file; // Not renamed
     }
 
-    if (is_null($add_time)) {
+    if ($add_time === null) {
         $add_time = $GLOBALS['SITE_DB']->query_select_value_if_there('comcode_pages', 'p_add_date', array('the_zone' => $zone, 'the_page' => $file));
         if ($add_time === null) {
             $add_time = time();
         }
     }
-    if (is_null($order)) {
+    if ($order === null) {
         $order = $GLOBALS['SITE_DB']->query_select_value_if_there('comcode_pages', 'p_order', array('the_zone' => $zone, 'the_page' => $file));
         if ($order === null) {
             $order = 0;
         }
-        if (is_null($parent_page)) {
+        if ($parent_page === null) {
             $parent_page = $GLOBALS['SITE_DB']->query_select_value_if_there('comcode_pages', 'p_parent_page', array('the_zone' => $zone, 'the_page' => $file));
         }
     }
-    if (is_null($validated)) {
+    if ($validated === null) {
         $validated = $GLOBALS['SITE_DB']->query_select_value_if_there('comcode_pages', 'p_validated', array('the_zone' => $zone, 'the_page' => $file));
         if ($validated === null) {
             $validated = 1;
@@ -637,7 +637,7 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated = null, $p
  */
 function delete_cms_page($zone, $page, $type = null, $use_afm = false)
 {
-    if (is_null($type)) {
+    if ($type === null) {
         $type = 'comcode_custom/' . fallback_lang();
     }
 

@@ -193,7 +193,7 @@ class Forum_driver_none extends Forum_driver_base
         }
 
         global $EMOTICON_LEVELS;
-        if (!is_null($this->EMOTICON_CACHE)) {
+        if ($this->EMOTICON_CACHE !== null) {
             return $this->EMOTICON_CACHE;
         }
         $this->EMOTICON_CACHE = array();

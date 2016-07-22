@@ -65,7 +65,7 @@ class Hook_login_provider_openid
 
                     // If member already existed, no action needed - just create a session to existing record
                     $member = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', 'id', array('m_password_compat_scheme' => 'openid', 'm_pass_hash_salted' => $openid->identity));
-                    if (!is_null($member)) {
+                    if ($member !== null) {
                         require_code('users_inactive_occasionals');
 
                         create_session($member, 1, (isset($_COOKIE[get_member_cookie() . '_invisible'])) && ($_COOKIE[get_member_cookie() . '_invisible'] == '1')); // This will mark it as confirmed
@@ -100,11 +100,11 @@ class Hook_login_provider_openid
                             $i = 1;
                             do {
                                 $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', 'id', array('m_username' => $_username));
-                                if (!is_null($test)) {
+                                if ($test !== null) {
                                     $i++;
                                     $_username = $username . ' (' . strval($i) . ')';
                                 }
-                            } while (!is_null($test));
+                            } while ($test !== null);
                             $username = $_username;
                         }
 
@@ -149,7 +149,7 @@ class Hook_login_provider_openid
                         cns_member_choose_avatar($avatar, $member);
                     }
 
-                    if (!is_null($member)) {
+                    if ($member !== null) {
                         require_code('users_inactive_occasionals');
                         create_session($member, 1, (isset($_COOKIE[get_member_cookie() . '_invisible'])) && ($_COOKIE[get_member_cookie() . '_invisible'] == '1')); // This will mark it as confirmed
                     }

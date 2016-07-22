@@ -71,7 +71,7 @@ class Block_main_staff_links
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        if ((is_null($upgrade_from)) || ($upgrade_from < 3)) {
+        if (($upgrade_from === null) || ($upgrade_from < 3)) {
             $GLOBALS['SITE_DB']->create_table('staff_links', array(
                 'id' => '*AUTO',
                 'link' => 'URLPATH',
@@ -129,7 +129,7 @@ class Block_main_staff_links
         $block_id = get_block_id($map);
 
         $newdata = post_param_string('staff_links_edit', null);
-        if (!is_null($newdata)) {
+        if ($newdata !== null) {
             $items = explode("\n", $newdata);
             $GLOBALS['SITE_DB']->query_delete('staff_links');
 

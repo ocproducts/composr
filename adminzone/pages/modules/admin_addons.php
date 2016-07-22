@@ -83,7 +83,7 @@ class Module_admin_addons
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->create_table('addons', array(
                 'addon_name' => '*SHORT_TEXT',
                 'addon_author' => 'SHORT_TEXT',
@@ -110,7 +110,7 @@ class Module_admin_addons
             ));
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 4)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 4)) {
             $GLOBALS['SITE_DB']->add_table_field('addons', 'addon_category', 'SHORT_TEXT');
             $GLOBALS['SITE_DB']->add_table_field('addons', 'addon_copyright_attribution', 'SHORT_TEXT');
             $GLOBALS['SITE_DB']->add_table_field('addons', 'addon_licence', 'SHORT_TEXT');
@@ -257,7 +257,7 @@ class Module_admin_addons
      */
     public function run()
     {
-        if (!is_null($GLOBALS['CURRENT_SHARE_USER'])) {
+        if ($GLOBALS['CURRENT_SHARE_USER'] !== null) {
             warn_exit(do_lang_tempcode('SHARED_INSTALL_PROHIBIT'));
         }
 
@@ -525,7 +525,7 @@ class Module_admin_addons
         $max = floatval(get_max_file_size()) / floatval(1024 * 1024);
         if ($max < 30.0) {
             $config_url = get_upload_limit_config_url();
-            $text->attach(paragraph(do_lang_tempcode(is_null($config_url) ? 'MAXIMUM_UPLOAD' : 'MAXIMUM_UPLOAD_STAFF', escape_html(($max > 10.0) ? integer_format(intval($max)) : float_format($max)), escape_html(is_null($config_url) ? '' : $config_url))));
+            $text->attach(paragraph(do_lang_tempcode(($config_url === null) ? 'MAXIMUM_UPLOAD' : 'MAXIMUM_UPLOAD_STAFF', escape_html(($max > 10.0) ? integer_format(intval($max)) : float_format($max)), escape_html(($config_url === null) ? '' : $config_url))));
         }
 
         return do_template('FORM_SCREEN', array('_GUID' => '7f50130c5a46e0f6e8a95e936ce7bf47', 'SKIP_WEBSTANDARDS' => true, 'HIDDEN' => $hidden, 'TITLE' => $this->title, 'SUBMIT_ICON' => 'menu___generic_admin__import', 'SUBMIT_NAME' => $submit_name, 'FIELDS' => $fields, 'TEXT' => $text, 'URL' => $post_url));
@@ -649,7 +649,7 @@ class Module_admin_addons
                 if (
                     (!file_exists(get_file_base() . '/sources_custom/hooks/systems/addon_registry/' . filter_naughty_harsh($name, true) . '.php')) &&
                     (!file_exists(get_file_base() . '/sources/hooks/systems/addon_registry/' . filter_naughty_harsh($name, true) . '.php')) &&
-                    (is_null($GLOBALS['SITE_DB']->query_select_value_if_there('addons', 'addon_name', array('addon_name' => $name))))
+                    ($GLOBALS['SITE_DB']->query_select_value_if_there('addons', 'addon_name', array('addon_name' => $name)) === null)
                 ) {
                     continue;
                 }
@@ -771,7 +771,7 @@ class Module_admin_addons
         install_addon($file, $files);
 
         // Show it worked / Refresh
-        if ((!is_null($theme)) && ($theme != 'default')) {
+        if (($theme !== null) && ($theme != 'default')) {
             $url = build_url(array('page' => 'admin_themes', 'type' => 'edit_theme', 'theme' => $theme), 'adminzone');
             return redirect_screen($this->title, $url, do_lang_tempcode('INSTALL_THEME_SUCCESS'));
         }
@@ -995,7 +995,7 @@ class Module_admin_addons
         $incompatibilities = '';
 
         // ... but the theme might already define some of this
-        if (!is_null($theme)) {
+        if ($theme !== null) {
             $ini_file = (($theme == 'default') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini';
             if (file_exists($ini_file)) {
                 $details = better_parse_ini_file($ini_file);
@@ -1035,7 +1035,7 @@ class Module_admin_addons
         $fields .= $field->evaluate();
         $field = form_input_line(do_lang_tempcode('VERSION'), do_lang_tempcode('DESCRIPTION_VERSION'), 'version', $version, true);
         $fields .= $field->evaluate();
-        if (!is_null($theme)) {
+        if ($theme !== null) {
             $categories = array(
                 'Themes',
             );
@@ -1077,7 +1077,7 @@ class Module_admin_addons
         $fields .= $field->evaluate();
 
         if (get_param_string('exp', 'custom') == 'theme') {
-            if (!is_null($theme)) {
+            if ($theme !== null) {
                 // Option for selecting exactly what files are used
                 $field = do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '40cf0d0d5b6fee74fbd476e720a59675', 'SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('COUNT_FILES')));
                 $fields .= $field->evaluate();
@@ -1125,7 +1125,7 @@ class Module_admin_addons
         $submit_name = do_lang_tempcode('EXPORT_ADDON');
 
         $map = array('page' => '_SELF', 'type' => '__addon_export');
-        if (!is_null($theme)) {
+        if ($theme !== null) {
             $_redirect = build_url(array('page' => 'admin_themes', 'type' => 'browse'), 'adminzone');
             $redirect = $_redirect->evaluate();
             $map['redirect'] = $redirect;
@@ -1244,7 +1244,7 @@ class Module_admin_addons
             }
 
             $info = extract_module_info(get_file_base() . '/' . $module_path);
-            if (is_null($info)) {
+            if ($info === null) {
                 continue;
             }
             if (get_param_integer('keep_module_dangerous', 0) == 1) {
@@ -1274,7 +1274,7 @@ class Module_admin_addons
                     $hidden->attach(form_input_hidden('zone', $zone));
                     $hidden->attach(form_input_hidden('module', $module));
                     $actions->attach(do_template('COLUMNED_TABLE_ACTION_UPGRADE_ENTRY', array('_GUID' => 'e5d012cb8c839e0e869f1edfa008dacd', 'HIDDEN' => $hidden, 'NAME' => $module, 'URL' => build_url(array('page' => '_SELF', 'type' => 'upgrade'), '_SELF'))));
-                } elseif ((!is_null($hack_version)) && ($row[$prefix . '_hack_version'] < $hack_version)) {
+                } elseif (($hack_version !== null) && ($row[$prefix . '_hack_version'] < $hack_version)) {
                     $status = do_lang_tempcode('STATUS_TO_HACK');
                     $hidden = new Tempcode();
                     $hidden->attach(form_input_hidden('zone', $zone));
@@ -1296,10 +1296,10 @@ class Module_admin_addons
                 $actions->attach(do_template('COLUMNED_TABLE_ACTION_INSTALL_ENTRY', array('_GUID' => '6b438e07cfe154afc21439479fd76978', 'HIDDEN' => $hidden, 'NAME' => $module, 'URL' => build_url(array('page' => '_SELF', 'type' => 'reinstall'), '_SELF'))));
             }
 
-            if (is_null($hacked_by)) {
+            if ($hacked_by === null) {
                 $hacked_by = do_lang_tempcode('NA_EM');
             }
-            if (is_null($hack_version)) {
+            if ($hack_version === null) {
                 $hack_version = do_lang_tempcode('NA_EM');
             }
             $tpl_modules[] = array('STATUS' => $status, 'NAME' => $module, 'AUTHOR' => $author, 'ORGANISATION' => $organisation, 'VERSION' => strval($version), 'HACKED_BY' => $hacked_by, 'HACK_VERSION' => $hack_version, 'ACTIONS' => $actions);

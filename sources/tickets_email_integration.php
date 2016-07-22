@@ -465,7 +465,7 @@ function ticket_incoming_message($from_email, $subject, $body, $attachments)
 
             // Validate
             $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(get_option('ticket_forum_name'), $existing_ticket, do_lang('SUPPORT_TICKET'));
-            if (is_null($topic_id)) {
+            if ($topic_id === null) {
                 $existing_ticket = null; // Invalid
             }
         }
@@ -506,18 +506,18 @@ function ticket_incoming_message($from_email, $subject, $body, $attachments)
     $member_id = mixed();
     foreach ($tags as $tag) {
         $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($tag);
-        if (!is_null($member_id)) {
+        if ($member_id !== null) {
             break;
         }
     }
-    if (is_null($member_id)) {
+    if ($member_id === null) {
         $member_id = $GLOBALS['SITE_DB']->query_select_value_if_there('ticket_known_emailers', 'member_id', array(
             'email_address' => $from_email,
         ));
-        if (is_null($member_id)) {
+        if ($member_id === null) {
             $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_email_address($from_email);
-            if (is_null($member_id)) {
-                if (is_null($existing_ticket)) {
+            if ($member_id === null) {
+                if ($existing_ticket === null) {
                     // E-mail back, saying user not found
                     ticket_email_cannot_bind($subject, $body, $from_email, $from_email_orig);
                     return;
@@ -573,7 +573,7 @@ function ticket_incoming_message($from_email, $subject, $body, $attachments)
     push_lax_comcode(true);
 
     // Post
-    if (is_null($existing_ticket)) {
+    if ($existing_ticket === null) {
         $new_ticket_id = strval($member_id) . '_' . uniqid('', false);
 
         $_home_url = build_url(array('page' => 'tickets', 'type' => 'ticket', 'id' => $new_ticket_id, 'redirect' => null), get_module_zone('tickets'), null, false, true, true);
@@ -585,11 +585,11 @@ function ticket_incoming_message($from_email, $subject, $body, $attachments)
         $tags[] = do_lang('GENERAL');
         foreach ($tags as $tag) {
             $ticket_type_id = $GLOBALS['SITE_DB']->query_select_value_if_there('ticket_types', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('ticket_type_name') => $tag));
-            if (!is_null($ticket_type_id)) {
+            if ($ticket_type_id !== null) {
                 break;
             }
         }
-        if (is_null($ticket_type_id)) {
+        if ($ticket_type_id === null) {
             $ticket_type_id = $GLOBALS['SITE_DB']->query_select_value('ticket_types', 'MIN(id)');
         }
 

@@ -105,7 +105,7 @@ class Hook_search_comcode_pages extends FieldsSearchHook
         }
 
         $sq = build_search_submitter_clauses('p_submitter', $author_id, $author);
-        if (is_null($sq)) {
+        if ($sq === null) {
             return array();
         } else {
             $where_clause .= $sq;
@@ -119,7 +119,7 @@ class Hook_search_comcode_pages extends FieldsSearchHook
             $where_clause .= ' AND ';
             $where_clause .= '(r.the_page NOT LIKE \'' . db_encode_like('panel\_%') . '\') AND (r.the_page NOT LIKE \'' . db_encode_like('\_%') . '\')';
         }
-        if ((!is_null($search_under)) && ($search_under != '!')) {
+        if (($search_under !== null) && ($search_under != '!')) {
             $where_clause .= ' AND ';
             $where_clause .= '(' . db_string_equal_to('r.the_zone', $search_under) . ')';
         }
@@ -188,7 +188,7 @@ class Hook_search_comcode_pages extends FieldsSearchHook
             // Now, look on disk for non-cached Comcode pages
             $zones = find_all_zones();
             $i = count($out);
-            if ((!is_null($search_under)) && ($search_under != '!')) {
+            if (($search_under !== null) && ($search_under != '!')) {
                 $zones = array($search_under);
             }
             foreach ($zones as $zone) {
@@ -332,7 +332,7 @@ class Hook_search_comcode_pages extends FieldsSearchHook
                 global $PAGES_CACHE;
                 $PAGES_CACHE = array(); // Decache this, or we'll eat up a tonne of RAM
 
-                $summary = generate_text_summary($_temp_summary, is_null($SEARCH__CONTENT_BITS) ? array() : $SEARCH__CONTENT_BITS);
+                $summary = generate_text_summary($_temp_summary, ($SEARCH__CONTENT_BITS === null) ? array() : $SEARCH__CONTENT_BITS);
 
                 $GLOBALS['TEMPCODE_SETGET']['no_comcode_page_edit_links'] = '0';
             }

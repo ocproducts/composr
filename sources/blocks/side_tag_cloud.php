@@ -122,7 +122,7 @@ class Block_side_tag_cloud
 
         // Work out variation in sizings
         foreach ($tags as $tag => $count) {
-            if ((is_null($smallest_num)) || ($count < $smallest_num)) {
+            if (($smallest_num === null) || ($count < $smallest_num)) {
                 $smallest_num = $count;
             }
             if ($count > $largest_num) {

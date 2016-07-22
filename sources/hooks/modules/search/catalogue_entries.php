@@ -56,7 +56,7 @@ class Hook_search_catalogue_entries extends FieldsSearchHook
 
         $extra_sort_fields = array();
         $catalogue_name = get_param_string('catalogue_name', null);
-        if (!is_null($catalogue_name)) {
+        if ($catalogue_name !== null) {
             $extra_sort_fields = $this->_get_extra_sort_fields($catalogue_name);
         }
         $info['extra_sort_fields'] = $extra_sort_fields;
@@ -173,7 +173,7 @@ class Hook_search_catalogue_entries extends FieldsSearchHook
 
         // Calculate our where clause (search)
         $sq = build_search_submitter_clauses('ce_submitter', $author_id, $author);
-        if (is_null($sq)) {
+        if ($sq === null) {
             return array();
         } else {
             $where_clause .= $sq;
@@ -209,7 +209,7 @@ class Hook_search_catalogue_entries extends FieldsSearchHook
 
             $extra_select = '';
 
-            if (is_null($title_field)) {
+            if ($title_field === null) {
                 return array(); // No fields in catalogue -- very odd
             }
             if ($g_or == '') {

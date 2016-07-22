@@ -103,7 +103,7 @@ class Hook_commandr_fs_menus extends Resource_fs_base
 
         $menu = $this->_create_name_from_label($label);
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('menu_items', 'i_menu', array('i_menu' => $menu));
-        if (!is_null($test)) {
+        if ($test !== null) {
             $menu .= '_' . uniqid('', false); // uniqify
         }
 
@@ -166,7 +166,7 @@ class Hook_commandr_fs_menus extends Resource_fs_base
         $menu = $this->_create_name_from_label($label);
 
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('menu_items', 'i_menu', array('i_menu' => $menu));
-        if (is_null($test)) {
+        if ($test === null) {
             return false;
         }
 
@@ -217,7 +217,7 @@ class Hook_commandr_fs_menus extends Resource_fs_base
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
         list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
-        if (is_null($category)) {
+        if ($category === null) {
             return false; // Folder not found
         }
 
@@ -289,7 +289,7 @@ class Hook_commandr_fs_menus extends Resource_fs_base
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
         list($properties,) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
-        if (is_null($category)) {
+        if ($category === null) {
             return false; // Folder not found
         }
 
@@ -340,7 +340,7 @@ class Hook_commandr_fs_menus extends Resource_fs_base
      */
     public function file_convert_filename_to_id($filename, $resource_type = null)
     {
-        if (is_null($resource_type)) {
+        if ($resource_type === null) {
             $resource_type = $this->file_resource_type;
         }
 

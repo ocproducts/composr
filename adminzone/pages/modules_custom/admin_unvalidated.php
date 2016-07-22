@@ -86,7 +86,7 @@ class Module_admin_unvalidated
         $_hooks = find_all_hook_obs('modules', 'admin_unvalidated', 'Hook_unvalidated_');
         foreach ($_hooks as $object) {
             $info = $object->info();
-            if (is_null($info)) {
+            if ($info === null) {
                 continue;
             }
 

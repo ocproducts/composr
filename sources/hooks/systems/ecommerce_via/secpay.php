@@ -211,7 +211,7 @@ class Hook_secpay
         $password = get_option('ipn_password');
         $password_2 = get_option('vpn_password');
         $result = xml_rpc('https://www.secpay.com:443/secxmlrpc/make_call', 'SECVPN.repeatCardFullAddr', array($username, $password_2, $trans_id, -1, $password, '', '', '', '', '', 'repeat_change=true, repeat=false'), true);
-        if (is_null($result)) {
+        if ($result === null) {
             return false;
         }
         return (strpos($result, '&code=A&') !== false);
@@ -265,7 +265,7 @@ class Hook_secpay
      */
     public function do_transaction($trans_id, $name, $card_number, $amount, $currency, $expiry_date, $issue_number, $start_date, $card_type, $cv2, $length = null, $length_units = null)
     {
-        if (is_null($trans_id)) {
+        if ($trans_id === null) {
             $trans_id = $this->generate_trans_id();
         }
         $username = $this->_get_username();
@@ -275,7 +275,7 @@ class Hook_secpay
         if (ecommerce_test_mode()) {
             $options .= ',test_status=true';
         }
-        if (!is_null($length)) {
+        if ($length !== null) {
             list($length_units_2, $first_repeat) = $this->_translate_subscription_details($length, $length_units);
             $options .= ',repeat=' . $first_repeat . '/' . $length_units_2 . '/0/' . $amount;
         }
@@ -455,11 +455,11 @@ class Hook_secpay
      */
     public function store_shipping_address($order_id)
     {
-        if (is_null(post_param_string('first_name', null))) {
+        if (post_param_string('first_name', null) === null) {
             return null;
         }
 
-        if (is_null($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order_addresses', 'id', array('order_id' => $order_id)))) {
+        if ($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order_addresses', 'id', array('order_id' => $order_id)) === null) {
             $shipping_address = array();
             $shipping_address['order_id'] = $order_id;
             $shipping_address['address_name'] = post_param_string('ship_addr_1', '');

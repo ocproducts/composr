@@ -223,10 +223,10 @@ class Module_lost_password
             ));
         }
         $username = get_param_string('username', null);
-        if (!is_null($username)) {
+        if ($username !== null) {
             $username = trim($username);
             $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($username);
-            if (is_null($member_id)) {
+            if ($member_id === null) {
                 warn_exit(do_lang_tempcode('PASSWORD_RESET_ERROR_2'));
             }
         } else {
@@ -251,7 +251,7 @@ class Module_lost_password
         }
         if ($code != $correct_code) {
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('actionlogs', 'date_and_time', array('the_type' => 'LOST_PASSWORD', 'param_a' => strval($member_id), 'param_b' => $code));
-            if (!is_null($test)) {
+            if ($test !== null) {
                 warn_exit(do_lang_tempcode('INCORRECT_PASSWORD_RESET_CODE')); // Just an old code that has expired
             }
             log_hack_attack_and_exit('HACK_ATTACK_PASSWORD_CHANGE'); // Incorrect code, hack attack

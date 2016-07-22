@@ -65,18 +65,18 @@ class Module_admin_commandr
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             $usergroups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
             foreach (array_keys($usergroups) as $id) {
                 $GLOBALS['SITE_DB']->query_insert('group_page_access', array('page_name' => 'admin_commandr', 'zone_name' => 'adminzone', 'group_id' => $id)); // Commandr very dangerous
             }
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 3)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 3)) {
             $GLOBALS['SITE_DB']->rename_table('occlechat', 'commandrchat');
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 4)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 4)) {
             $GLOBALS['SITE_DB']->drop_table_if_exists('commandrchat');
         }
     }
@@ -135,7 +135,7 @@ class Module_admin_commandr
      */
     public function main_gui()
     {
-        if (!is_null($GLOBALS['CURRENT_SHARE_USER'])) {
+        if ($GLOBALS['CURRENT_SHARE_USER'] !== null) {
             warn_exit(do_lang_tempcode('SHARED_INSTALL_PROHIBIT'));
         }
 

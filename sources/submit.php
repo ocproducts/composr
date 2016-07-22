@@ -33,7 +33,7 @@ function content_validated($content_type, $content_id)
 
     require_code('content');
     list(, , $cma_info, $content_row,) = content_get_details($content_type, $content_id);
-    if (is_null($content_row)) {
+    if ($content_row === null) {
         return false;
     }
     return ($content_row[$cma_info['validated_field']] == 1);
@@ -50,7 +50,7 @@ function send_content_validated_notification($content_type, $content_id)
     require_code('content');
     list($content_title, $submitter_id, , , , $content_url_safe) = content_get_details($content_type, $content_id);
 
-    if (!is_null($content_url_safe)) {
+    if ($content_url_safe !== null) {
         require_code('notifications');
         require_lang('unvalidated');
         $subject = do_lang('CONTENT_VALIDATED_NOTIFICATION_MAIL_SUBJECT', $content_title, get_site_name());
@@ -72,11 +72,11 @@ function send_content_validated_notification($content_type, $content_id)
 function send_validation_request($type, $table, $non_integer_id, $id, $url, $member_id = null)
 {
     $good = null;
-    if (!is_null($table)) {
+    if ($table !== null) {
         $_hooks = find_all_hook_obs('modules', 'admin_unvalidated', 'Hook_unvalidated_');
         foreach ($_hooks as $object) {
             $info = $object->info();
-            if (is_null($info)) {
+            if ($info === null) {
                 continue;
             }
             if ($info['db_table'] == $table) {
@@ -88,7 +88,7 @@ function send_validation_request($type, $table, $non_integer_id, $id, $url, $mem
 
     $title = mixed();
     $title = '';
-    if ((!is_null($good)) && (!is_array($good['db_identifier']))) {
+    if (($good !== null) && (!is_array($good['db_identifier']))) {
         $db = array_key_exists('db', $good) ? $good['db'] : $GLOBALS['SITE_DB'];
         $where = $good['db_identifier'] . '=' . $id;
         if ($non_integer_id) {
@@ -109,14 +109,14 @@ function send_validation_request($type, $table, $non_integer_id, $id, $url, $mem
         $title = '#' . (is_integer($id) ? strval($id) : $id);
     }
 
-    if (is_null($member_id)) {
+    if ($member_id === null) {
         $member_id = get_member();
     }
 
     require_lang('unvalidated');
 
     $_type = do_lang($type, null, null, null, null, false);
-    if (!is_null($_type)) {
+    if ($_type !== null) {
         $type = $_type;
     }
 
@@ -138,12 +138,12 @@ function send_validation_request($type, $table, $non_integer_id, $id, $url, $mem
  */
 function give_submit_points($type, $member = null)
 {
-    if (is_null($member)) {
+    if ($member === null) {
         $member = get_member();
     }
     if ((!is_guest($member)) && (addon_installed('points'))) {
         $points = get_option('points_' . $type, true);
-        if (is_null($points)) {
+        if ($points === null) {
             return '';
         }
         require_code('points2');

@@ -46,7 +46,7 @@ function init__content2()
  */
 function get_order_field($entry_type, $category_type, $current_order, $max = null, $total = null, $order_field = 'order', $description = null)
 {
-    $new = is_null($current_order);
+    $new = ($current_order === null);
 
     $min = 0;
 
@@ -56,14 +56,14 @@ function get_order_field($entry_type, $category_type, $current_order, $max = nul
 
     $db_order_field = isset($info['order_field']) ? $info['order_field'] : 'order';
 
-    if (is_null($max)) {
+    if ($max === null) {
         $max = $info['db']->query_select_value($info['table'], 'MAX(' . $db_order_field . ')', null, 'WHERE ' . $db_order_field . '<>' . strval(ORDER_AUTOMATED_CRITERIA));
-        if (is_null($max)) {
+        if ($max === null) {
             $max = 0;
         }
     }
 
-    if (is_null($total)) {
+    if ($total === null) {
         $total = $info['db']->query_select_value($info['table'], 'COUNT(*)');
     }
 
@@ -83,8 +83,8 @@ function get_order_field($entry_type, $category_type, $current_order, $max = nul
         }
     }
 
-    if (is_null($description)) {
-        if (is_null($category_type)) {
+    if ($description === null) {
+        if ($category_type === null) {
             $description = do_lang_tempcode('DESCRIPTION_ORDER_NO_CATS', $entry_type);
         } else {
             $description = do_lang_tempcode('DESCRIPTION_ORDER', $entry_type, $category_type);
@@ -115,7 +115,7 @@ function get_order_field($entry_type, $category_type, $current_order, $max = nul
 function post_param_order_field($order_field = 'order')
 {
     $ret = post_param_integer($order_field, null);
-    if (is_null($ret)) {
+    if ($ret === null) {
         $ret = ORDER_AUTOMATED_CRITERIA;
     }
     return $ret;
@@ -138,7 +138,7 @@ function metadata_get_fields($content_type, $content_id, $allow_no_owner = false
     $fields = new Tempcode();
 
     if (has_privilege(get_member(), 'edit_meta_fields')) {
-        if (is_null($fields_to_skip)) {
+        if ($fields_to_skip === null) {
             $fields_to_skip = array();
         }
 
@@ -148,43 +148,43 @@ function metadata_get_fields($content_type, $content_id, $allow_no_owner = false
 
         require_code('content');
         $content_row = mixed();
-        if (!is_null($content_id)) {
+        if ($content_id !== null) {
             list(, , , $content_row) = content_get_details($content_type, $content_id);
         }
 
         $views_field = in_array('views', $fields_to_skip) ? null : $info['views_field'];
-        if (!is_null($views_field)) {
-            $views = is_null($content_row) ? 0 : $content_row[$views_field];
+        if ($views_field !== null) {
+            $views = ($content_row === null) ? 0 : $content_row[$views_field];
             $fields->attach(form_input_integer(do_lang_tempcode('COUNT_VIEWS'), do_lang_tempcode('DESCRIPTION_META_VIEWS'), 'meta_views', null, false));
         }
 
         $submitter_field = in_array('submitter', $fields_to_skip) ? null : $info['submitter_field'];
-        if (!is_null($submitter_field)) {
-            $submitter = is_null($content_row) ? get_member() : $content_row[$submitter_field];
+        if ($submitter_field !== null) {
+            $submitter = ($content_row === null) ? get_member() : $content_row[$submitter_field];
             $username = $GLOBALS['FORUM_DRIVER']->get_username($submitter);
-            if (is_null($username)) {
+            if ($username === null) {
                 $username = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
             }
             $fields->attach(form_input_username(do_lang_tempcode('OWNER'), do_lang_tempcode('DESCRIPTION_OWNER'), 'meta_submitter', $username, !$allow_no_owner));
         }
 
         $add_time_field = in_array('add_time', $fields_to_skip) ? null : $info['add_time_field'];
-        if (!is_null($add_time_field)) {
-            $add_time = is_null($content_row) ? null : $content_row[$add_time_field];
-            $fields->attach(form_input_date(do_lang_tempcode('ADD_TIME'), do_lang_tempcode('DESCRIPTION_META_ADD_TIME'), 'meta_add_time', !is_null($content_row), is_null($content_row), true, $add_time, 40, intval(date('Y')) - 20, null));
+        if ($add_time_field !== null) {
+            $add_time = ($content_row === null) ? null : $content_row[$add_time_field];
+            $fields->attach(form_input_date(do_lang_tempcode('ADD_TIME'), do_lang_tempcode('DESCRIPTION_META_ADD_TIME'), 'meta_add_time', $content_row !== null, ($content_row === null), true, $add_time, 40, intval(date('Y')) - 20, null));
         }
 
-        if (!is_null($content_id)) {
+        if ($content_id !== null) {
             $edit_time_field = in_array('edit_time', $fields_to_skip) ? null : $info['edit_time_field'];
-            if (!is_null($edit_time_field)) {
-                $edit_time = is_null($content_row) ? null : (is_null($content_row[$edit_time_field]) ? time() : max(time(), $content_row[$edit_time_field]));
-                $fields->attach(form_input_date(do_lang_tempcode('EDIT_TIME'), do_lang_tempcode('DESCRIPTION_META_EDIT_TIME'), 'meta_edit_time', false, is_null($edit_time), true, $edit_time, 10, null, null));
+            if ($edit_time_field !== null) {
+                $edit_time = ($content_row === null) ? null : (($content_row[$edit_time_field] === null) ? time() : max(time(), $content_row[$edit_time_field]));
+                $fields->attach(form_input_date(do_lang_tempcode('EDIT_TIME'), do_lang_tempcode('DESCRIPTION_META_EDIT_TIME'), 'meta_edit_time', false, ($edit_time === null), true, $edit_time, 10, null, null));
             }
         }
 
         if (($info['support_url_monikers']) && (!in_array('url_moniker', $fields_to_skip))) {
             $url_moniker = mixed();
-            if (!is_null($content_id)) {
+            if ($content_id !== null) {
                 if ($content_type == 'comcode_page') {
                     list($zone, $_content_id) = explode(':', $content_id);
                     $attributes = array();
@@ -195,7 +195,7 @@ function metadata_get_fields($content_type, $content_id, $allow_no_owner = false
                     $url_moniker = find_id_moniker(array('id' => $_content_id) + $attributes, $zone);
                 }
 
-                if (is_null($url_moniker)) {
+                if ($url_moniker === null) {
                     $url_moniker = '';
                 }
 
@@ -205,7 +205,7 @@ function metadata_get_fields($content_type, $content_id, $allow_no_owner = false
                     'm_resource_type' => ($content_type == 'comcode_page') ? '' : (isset($attributes['type']) ? $attributes['type'] : ''),
                     'm_resource_id' => ($content_type == 'comcode_page') ? $zone : $_content_id
                 );
-                $manually_chosen = !is_null($GLOBALS['SITE_DB']->query_select_value_if_there('url_id_monikers', 'm_moniker', $moniker_where));
+                $manually_chosen = ($GLOBALS['SITE_DB']->query_select_value_if_there('url_id_monikers', 'm_moniker', $moniker_where) !== null);
             } else {
                 $url_moniker = '';
                 $manually_chosen = false;
@@ -224,7 +224,7 @@ function metadata_get_fields($content_type, $content_id, $allow_no_owner = false
             '_GUID' => 'adf2a2cda231619243763ddbd0cc9d4e',
             'SECTION_HIDDEN' => true,
             'TITLE' => do_lang_tempcode('METADATA'),
-            'HELP' => do_lang_tempcode('DESCRIPTION_METADATA', is_null($content_id) ? do_lang_tempcode('RESOURCE_NEW') : $content_id),
+            'HELP' => do_lang_tempcode('DESCRIPTION_METADATA', ($content_id === null) ? do_lang_tempcode('RESOURCE_NEW') : $content_id),
         )));
         $_fields->attach($fields);
         return $_fields;
@@ -246,7 +246,7 @@ function actual_metadata_get_fields($content_type, $content_id, $fields_to_skip 
 {
     require_lang('metadata');
 
-    if (is_null($fields_to_skip)) {
+    if ($fields_to_skip === null) {
         $fields_to_skip = array();
     }
 
@@ -262,9 +262,9 @@ function actual_metadata_get_fields($content_type, $content_id, $fields_to_skip 
 
     if (!has_privilege(get_member(), 'edit_meta_fields')) { // Pass through as how an edit would normally function (things left alone except edit time)
         return array(
-            'views' => is_null($content_id) ? 0 : INTEGER_MAGIC_NULL,
-            'submitter' => is_null($content_id) ? get_member() : INTEGER_MAGIC_NULL,
-            'add_time' => is_null($content_id) ? time() : INTEGER_MAGIC_NULL,
+            'views' => ($content_id === null) ? 0 : INTEGER_MAGIC_NULL,
+            'submitter' => ($content_id === null) ? get_member() : INTEGER_MAGIC_NULL,
+            'add_time' => ($content_id === null) ? time() : INTEGER_MAGIC_NULL,
             'edit_time' => time(),
             /*'url_moniker' => null, was handled internally*/
         );
@@ -276,10 +276,10 @@ function actual_metadata_get_fields($content_type, $content_id, $fields_to_skip 
 
     $views = mixed();
     $views_field = in_array('views', $fields_to_skip) ? null : $info['views_field'];
-    if (!is_null($views_field)) {
+    if ($views_field !== null) {
         $views = post_param_integer('meta_views', null);
-        if (is_null($views)) {
-            if (is_null($content_id)) {
+        if ($views === null) {
+            if ($content_id === null) {
                 $views = 0;
             } else {
                 $views = INTEGER_MAGIC_NULL;
@@ -289,16 +289,16 @@ function actual_metadata_get_fields($content_type, $content_id, $fields_to_skip 
 
     $submitter = mixed();
     $submitter_field = in_array('submitter', $fields_to_skip) ? null : $info['submitter_field'];
-    if (!is_null($submitter_field)) {
+    if ($submitter_field !== null) {
         $_submitter = post_param_string('meta_submitter', $GLOBALS['FORUM_DRIVER']->get_username(get_member()));
         if ($_submitter != '') {
             $submitter = $GLOBALS['FORUM_DRIVER']->get_member_from_username($_submitter);
-            if (is_null($submitter)) {
+            if ($submitter === null) {
                 $submitter = null; // Leave alone, we did not recognise the user
                 attach_message(do_lang_tempcode('_MEMBER_NO_EXIST', escape_html($_submitter)), 'warn'); // ...but attach an error at least
             }
-            if (is_null($submitter)) {
-                if (is_null($content_id)) {
+            if ($submitter === null) {
+                if ($content_id === null) {
                     $submitter = get_member();
                 }
             }
@@ -309,10 +309,10 @@ function actual_metadata_get_fields($content_type, $content_id, $fields_to_skip 
 
     $add_time = mixed();
     $add_time_field = in_array('add_time', $fields_to_skip) ? null : $info['add_time_field'];
-    if (!is_null($add_time_field)) {
+    if ($add_time_field !== null) {
         $add_time = post_param_date('meta_add_time');
-        if (is_null($add_time)) {
-            if (is_null($content_id)) {
+        if ($add_time === null) {
+            if ($content_id === null) {
                 $add_time = time();
             } else {
                 $add_time = INTEGER_MAGIC_NULL; // This code branch should actually be impossible to reach
@@ -322,10 +322,10 @@ function actual_metadata_get_fields($content_type, $content_id, $fields_to_skip 
 
     $edit_time = mixed();
     $edit_time_field = in_array('edit_time', $fields_to_skip) ? null : $info['edit_time_field'];
-    if (!is_null($edit_time_field)) {
+    if ($edit_time_field !== null) {
         $edit_time = post_param_date('meta_edit_time');
-        if (is_null($edit_time)) {
-            if (is_null($content_id)) {
+        if ($edit_time === null) {
+            if ($content_id === null) {
                 $edit_time = null; // No edit time
             } else {
                 $edit_time = null; // Edit time explicitly wiped out
@@ -333,7 +333,7 @@ function actual_metadata_get_fields($content_type, $content_id, $fields_to_skip 
         }
     }
 
-    if (!is_null($content_id)) {
+    if ($content_id !== null) {
         set_url_moniker($content_type, $content_id, $fields_to_skip, $new_content_id);
     }
 
@@ -358,7 +358,7 @@ function set_url_moniker($content_type, $content_id, $fields_to_skip = null, $ne
 {
     require_lang('metadata');
 
-    if (is_null($fields_to_skip)) {
+    if ($fields_to_skip === null) {
         $fields_to_skip = array();
     }
 
@@ -398,13 +398,13 @@ function set_url_moniker($content_type, $content_id, $fields_to_skip = null, $ne
                 $url_moniker = null;
             }
 
-            if (!is_null($url_moniker)) {
+            if ($url_moniker !== null) {
                 if ($content_type == 'comcode_page') {
                     list($zone, $page) = explode(':', $content_id);
                     $type = '';
                     $_content_id = $zone;
 
-                    if (!is_null($new_content_id)) {
+                    if ($new_content_id !== null) {
                         $GLOBALS['SITE_DB']->query_update('url_id_monikers', array(
                             'm_resource_page' => $new_content_id,
                         ), array('m_resource_page' => $page, 'm_resource_type' => '', 'm_resource_id' => $zone));
@@ -415,7 +415,7 @@ function set_url_moniker($content_type, $content_id, $fields_to_skip = null, $ne
                     $type = $attributes['type'];
                     $_content_id = $content_id;
 
-                    if (!is_null($new_content_id)) {
+                    if ($new_content_id !== null) {
                         $GLOBALS['SITE_DB']->query_update('url_id_monikers', array(
                             'm_resource_id' => $new_content_id,
                         ), array('m_resource_page' => $page, 'm_resource_type' => $type, 'm_resource_id' => $content_id));

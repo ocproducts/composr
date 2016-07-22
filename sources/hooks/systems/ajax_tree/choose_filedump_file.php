@@ -79,7 +79,7 @@ class Hook_ajax_tree_choose_filedump_file
                     }
 
                     if ((!isset($options['only_images'])) || (!$options['only_images']) || (is_image($f, IMAGE_CRITERIA_WEBSAFE, true))) {
-                        if ((is_null($description)) || (get_translated_text($description) == '')) {
+                        if (($description === null) || (get_translated_text($description) == '')) {
                             $_description = '';
                             if (is_image($f, IMAGE_CRITERIA_WEBSAFE, true)) {
                                 $url = get_custom_base_url() . '/uploads/filedump/' . (($id == '') ? '' : ($id . '/')) . $f;
@@ -94,7 +94,7 @@ class Hook_ajax_tree_choose_filedump_file
             }
 
             // Mark parent cats for pre-expansion
-            if ((!is_null($default)) && ($default != '')) {
+            if (($default !== null) && ($default != '')) {
                 $cat = '';
                 foreach (explode('/', $default) as $_cat) {
                     if ($_cat != '') {

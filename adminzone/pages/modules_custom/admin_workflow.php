@@ -264,7 +264,7 @@ class Module_admin_workflow extends Standard_crud_module
         $workflow_name = '';
 
         // Now overwrite those assumptions if they're wrong
-        if (!is_null($id)) {
+        if ($id !== null) {
             $workflows = $GLOBALS['SITE_DB']->query_select('workflows', array('*'), array('id' => $id), '', 1);
             if (!array_key_exists(0, $workflows)) {
                 warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
@@ -276,7 +276,7 @@ class Module_admin_workflow extends Standard_crud_module
 
             // Now see if we're the default
             $default_workflow = get_default_workflow();
-            if (!is_null($default_workflow) && $id == $default_workflow) {
+            if ($default_workflow !== null && $id == $default_workflow) {
                 $default = true;
             }
             // Get the approval points in workflow order
@@ -301,7 +301,7 @@ class Module_admin_workflow extends Standard_crud_module
 
         $fields->attach(form_input_line(do_lang_tempcode('NAME'), do_lang_tempcode('WORKFLOW_NAME_DESCRIPTION', $defined_names), 'name', $workflow_name, true));
 
-        $all_points = is_null($id) ? array() : get_all_approval_points($id);        // We need to display which points are available
+        $all_points = ($id === null) ? array() : get_all_approval_points($id);        // We need to display which points are available
         if ($all_points == array()) {
             $points_list = do_lang_tempcode('APPROVAL_POINTS_DESCRIPTION_EMPTY_LIST');
         } else {
@@ -404,7 +404,7 @@ class Module_admin_workflow extends Standard_crud_module
             $hidden->attach(form_input_hidden($n, post_param_string($n, '')));
         }
         $hidden->attach(form_input_hidden('redefined', '1'));
-        if (!is_null($workflow_id)) {
+        if ($workflow_id !== null) {
             $hidden->attach(form_input_hidden('id', strval($workflow_id)));
         }
 
@@ -584,7 +584,7 @@ class Module_admin_workflow extends Standard_crud_module
         // We override the add screen here so that we can provide multiple screens
 
         $test = $this->handle_confirmations($this->title);
-        if (!is_null($test)) {
+        if ($test !== null) {
             return $test;
         }
 
@@ -601,7 +601,7 @@ class Module_admin_workflow extends Standard_crud_module
         $description = do_lang_tempcode('SUCCESS');
 
         $url = get_param_string('redirect', null);
-        if (!is_null($url)) {
+        if ($url !== null) {
             return redirect_screen($this->title, $url, $description);
         }
 
@@ -640,7 +640,7 @@ class Module_admin_workflow extends Standard_crud_module
         $delete = post_param_integer('delete', 0);
         if ($delete == 1) {
             $test = $this->handle_confirmations($this->title);
-            if (!is_null($test)) {
+            if ($test !== null) {
                 return $test;
             }
 
@@ -651,7 +651,7 @@ class Module_admin_workflow extends Standard_crud_module
             return $this->do_next_manager($this->title, $description, null);
         } else {
             $test = $this->handle_confirmations($this->title);
-            if (!is_null($test)) {
+            if ($test !== null) {
                 return $test;
             }
 

@@ -36,7 +36,7 @@ class Hook_symbol_HAS_READ
             'r_member_id' => get_member()
         ));
 
-        if (!is_null($test)) {
+        if ($test !== null) {
             return '1';
         }
 

@@ -29,7 +29,7 @@ function geocode($location, &$error_msg = null)
 {
     $url_params = '&address=' . urlencode($location);
     $result = _google_geocode($url_params, $error_msg);
-    if (is_null($result)) {
+    if ($result === null) {
         return null;
     }
 
@@ -63,7 +63,7 @@ function reverse_geocode($latitude, $longitude, &$error_msg = null)
 {
     $url_params = '&latlng=' . urlencode(float_to_raw_string($latitude)) . ',' . urlencode(float_to_raw_string($longitude));
     $result = _google_geocode($url_params, $error_msg);
-    if (is_null($result)) {
+    if ($result === null) {
         return null;
     }
 
@@ -94,7 +94,7 @@ function reverse_geocode($latitude, $longitude, &$error_msg = null)
                 $street_address = $component['long_name'];
             }
             if (in_array('route', $component['types'])) {
-                if (is_null($street_address)) {
+                if ($street_address === null) {
                     $street_address = '';
                 } else {
                     $street_address .= ' ';

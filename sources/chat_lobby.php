@@ -67,11 +67,11 @@ function show_im_contacts($member_id = null, $simpler = false, $max = null)
     require_lang('chat');
     require_code('users2');
 
-    if (is_null($max)) {
+    if ($max === null) {
         $max = intval(get_option('max_chat_lobby_friends'));
     }
 
-    if (is_null($member_id)) {
+    if ($member_id === null) {
         $member_id = get_member();
     }
 
@@ -93,7 +93,7 @@ function show_im_contacts($member_id = null, $simpler = false, $max = null)
             $online_text = $online ? do_lang_tempcode('ONLINE') : do_lang_tempcode('OFFLINE');
         }
         $username = array_key_exists($friend['member_liked'], $friend_active) ? $friend_active[$friend['member_liked']] : $GLOBALS['FORUM_DRIVER']->get_username($friend['member_liked']);
-        if (!is_null($username)) {
+        if ($username !== null) {
             $member_profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($friend['member_liked'], true);
 
             $friend = array(
@@ -143,7 +143,7 @@ function handle_chatroom_pruning($row)
     if ($deletion_time == 0) {
         return false;
     }
-    if (($row['allow_list'] != '') || (!is_null($row['room_owner']))) {
+    if (($row['allow_list'] != '') || ($row['room_owner'] !== null)) {
         // As this is a private chatroom, we need to delete it if it has been idle for too long ;-)
         $message = $GLOBALS['SITE_DB']->query_select('chat_messages', array('date_and_time'), array('room_id' => $row['id']), 'ORDER BY date_and_time DESC', 1);
         if ((isset($message[0])) && (($message[0]['date_and_time'] + ($deletion_time * 60)) <= time())) {

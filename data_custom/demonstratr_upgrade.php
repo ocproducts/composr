@@ -101,7 +101,7 @@ http_download_file(get_brand_base_url() . '/data_custom/composr_homesite_web_ser
 // Run upgrade
 global $SITE_INFO;
 $u = current_share_user();
-if (is_null($u)) {
+if ($u === null) {
     warn_exit('Eh, this does not seem to be running on a shared site?');
 }
 upgrade_sharedinstall_sites(get_param_integer('from', 1) - 1);

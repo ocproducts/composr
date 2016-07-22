@@ -63,7 +63,7 @@ class Hook_content_meta_aware_download
             'edit_page_link_pattern' => '_SEARCH:cms_downloads:_edit:_WILD',
             'view_category_page_link_pattern' => '_SEARCH:downloads:browse:_WILD',
             'add_url' => (function_exists('has_submit_permission') && has_submit_permission('mid', get_member(), get_ip_address(), 'cms_downloads')) ? (get_module_zone('cms_downloads') . ':cms_downloads:add') : null,
-            'archive_url' => ((!is_null($zone)) ? $zone : get_module_zone('downloads')) . ':downloads',
+            'archive_url' => (($zone !== null) ? $zone : get_module_zone('downloads')) . ':downloads',
 
             'support_url_monikers' => true,
 
@@ -123,6 +123,6 @@ class Hook_content_meta_aware_download
     {
         require_code('downloads');
 
-        return render_download_box($row, true, $include_breadcrumbs, $zone, null, $give_context, is_null($root) ? null : intval($root), $guid);
+        return render_download_box($row, true, $include_breadcrumbs, $zone, null, $give_context, ($root === null) ? null : intval($root), $guid);
     }
 }

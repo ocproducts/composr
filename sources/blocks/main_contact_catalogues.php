@@ -98,7 +98,7 @@ class Block_main_contact_catalogues
             foreach ($special_fields as $field_num => $field) {
                 $ob = get_fields_hook($field['cf_type']);
                 $inputted_value = $ob->inputted_to_field_value(false, $field, null);
-                if (!is_null($inputted_value)) {
+                if ($inputted_value !== null) {
                     $field_results[get_translated_text($field['cf_name'])] = $inputted_value;
                 }
             }
@@ -162,7 +162,7 @@ class Block_main_contact_catalogues
             $result = $ob->get_field_inputter($_cf_name, $_cf_description, $field, $default, true, !array_key_exists($field_num + 1, $special_fields));
             $GLOBALS['NO_DEV_MODE_FULLSTOP_CHECK'] = false;
 
-            if (is_null($result)) {
+            if ($result === null) {
                 continue;
             }
 

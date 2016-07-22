@@ -337,7 +337,7 @@ class Stemmer_EN
 
         if (substr($str, $len) == $check) {
             $substr = substr($str, 0, $len);
-            if (is_null($m) OR self::m($substr) > $m) {
+            if (($m === null) OR self::m($substr) > $m) {
                 $str = $substr . $repl;
             }
 

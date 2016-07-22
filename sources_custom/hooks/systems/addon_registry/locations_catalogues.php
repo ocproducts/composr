@@ -156,7 +156,7 @@ class Hook_addon_registry_locations_catalogues
      */
     public function install($upgrade_from = null)
     {
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->create_table('locations', array(
                 'id' => '*AUTO',
                 'l_place' => 'SHORT_TEXT',

@@ -79,10 +79,10 @@ function cns_make_forum($name, $description, $forum_grouping_id, $access_mapping
     }
 
     if (!get_mass_import_mode()) {
-        if ((!is_null($forum_grouping_id)) && (function_exists('cns_ensure_forum_grouping_exists'))) {
+        if (($forum_grouping_id !== null) && (function_exists('cns_ensure_forum_grouping_exists'))) {
             cns_ensure_forum_grouping_exists($forum_grouping_id);
         }
-        if ((!is_null($parent_forum)) && (function_exists('cns_ensure_forum_exists'))) {
+        if (($parent_forum !== null) && (function_exists('cns_ensure_forum_exists'))) {
             cns_ensure_forum_exists($parent_forum);
         }
     }
@@ -113,7 +113,7 @@ function cns_make_forum($name, $description, $forum_grouping_id, $access_mapping
     $forum_id = $GLOBALS['FORUM_DB']->query_insert('f_forums', $map, true);
 
     // Set permissions
-    if (!is_null($access_mapping)) {
+    if ($access_mapping !== null) {
         $groups = $GLOBALS['CNS_DRIVER']->get_usergroup_list(false, true);
 
         foreach (array_keys($groups) as $group_id) {
@@ -151,7 +151,7 @@ function cns_make_forum($name, $description, $forum_grouping_id, $access_mapping
         generate_resource_fs_moniker('forum', strval($forum_id), null, null, true);
     }
 
-    if ((!is_null($parent_forum)) && (!running_script('install'))) {
+    if (($parent_forum !== null) && (!running_script('install'))) {
         require_code('notifications2');
         copy_notifications_to_new_child('cns_topic', strval($parent_forum), strval($forum_id));
     }

@@ -67,7 +67,7 @@ function cns_may_control_group($group_id, $member_id)
 function cns_edit_group($group_id, $name, $is_default, $is_super_admin, $is_super_moderator, $title, $rank_image, $promotion_target, $promotion_threshold, $group_leader, $flood_control_submit_secs, $flood_control_access_secs, $max_daily_upload_mb, $max_attachments_per_post, $max_avatar_width, $max_avatar_height, $max_post_length_comcode, $max_sig_length_comcode, $gift_points_base, $gift_points_per_day, $enquire_on_new_ips, $is_presented_at_install, $hidden, $order, $rank_image_pri_only, $open_membership, $is_private_club, $uniqify = false)
 {
     $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('g_name') => $name));
-    if ((!is_null($test)) && ($test != $group_id)) {
+    if (($test !== null) && ($test != $group_id)) {
         if ($uniqify) {
             $name .= '_' . uniqid('', false);
         } else {
@@ -83,80 +83,80 @@ function cns_edit_group($group_id, $name, $is_default, $is_super_admin, $is_supe
     $_title = $_group_info[0]['g_title'];
 
     $map = array();
-    if (!is_null($name)) {
+    if ($name !== null) {
         $map += lang_remap('g_name', $_name, $name, $GLOBALS['FORUM_DB']);
     }
-    if (!is_null($is_default)) {
+    if ($is_default !== null) {
         $map['g_is_default'] = $is_default;
     }
-    if (!is_null($is_presented_at_install)) {
+    if ($is_presented_at_install !== null) {
         $map['g_is_presented_at_install'] = $is_presented_at_install;
     }
-    if (!is_null($is_super_admin)) {
+    if ($is_super_admin !== null) {
         $map['g_is_super_admin'] = $is_super_admin;
     }
-    if (!is_null($is_super_moderator)) {
+    if ($is_super_moderator !== null) {
         $map['g_is_super_moderator'] = $is_super_moderator;
     }
     $map['g_group_leader'] = $group_leader;
-    if (!is_null($title)) {
+    if ($title !== null) {
         $map += lang_remap('g_title', $_title, $title, $GLOBALS['FORUM_DB']);
     }
     if (addon_installed('points')) {
         $map['g_promotion_target'] = $promotion_target;
         $map['g_promotion_threshold'] = $promotion_threshold;
     }
-    if (!is_null($flood_control_submit_secs)) {
+    if ($flood_control_submit_secs !== null) {
         $map['g_flood_control_submit_secs'] = $flood_control_submit_secs;
     }
-    if (!is_null($flood_control_access_secs)) {
+    if ($flood_control_access_secs !== null) {
         $map['g_flood_control_access_secs'] = $flood_control_access_secs;
     }
-    if (!is_null($max_daily_upload_mb)) {
+    if ($max_daily_upload_mb !== null) {
         $map['g_max_daily_upload_mb'] = $max_daily_upload_mb;
     }
-    if (!is_null($max_attachments_per_post)) {
+    if ($max_attachments_per_post !== null) {
         $map['g_max_attachments_per_post'] = $max_attachments_per_post;
     }
-    if (!is_null($max_avatar_width)) {
+    if ($max_avatar_width !== null) {
         $map['g_max_avatar_width'] = $max_avatar_width;
     }
-    if (!is_null($max_avatar_height)) {
+    if ($max_avatar_height !== null) {
         $map['g_max_avatar_height'] = $max_avatar_height;
     }
-    if (!is_null($max_post_length_comcode)) {
+    if ($max_post_length_comcode !== null) {
         $map['g_max_post_length_comcode'] = $max_post_length_comcode;
     }
-    if (!is_null($max_sig_length_comcode)) {
+    if ($max_sig_length_comcode !== null) {
         $map['g_max_sig_length_comcode'] = $max_sig_length_comcode;
     }
     if (addon_installed('points')) {
-        if (!is_null($gift_points_base)) {
+        if ($gift_points_base !== null) {
             $map['g_gift_points_base'] = $gift_points_base;
         }
-        if (!is_null($gift_points_per_day)) {
+        if ($gift_points_per_day !== null) {
             $map['g_gift_points_per_day'] = $gift_points_per_day;
         }
     }
-    if (!is_null($enquire_on_new_ips)) {
+    if ($enquire_on_new_ips !== null) {
         $map['g_enquire_on_new_ips'] = $enquire_on_new_ips;
     }
-    if (!is_null($rank_image)) {
+    if ($rank_image !== null) {
         $map['g_rank_image'] = $rank_image;
     }
-    if (!is_null($hidden)) {
+    if ($hidden !== null) {
         $map['g_hidden'] = $hidden;
     }
-    if (!is_null($order)) {
+    if ($order !== null) {
         $map['g_order'] = $order;
     }
-    if (!is_null($rank_image_pri_only)) {
+    if ($rank_image_pri_only !== null) {
         $map['g_rank_image_pri_only'] = $rank_image_pri_only;
     }
-    if (!is_null($open_membership)) {
+    if ($open_membership !== null) {
         $map['g_open_membership'] = $open_membership;
     }
-    if (!is_null($is_private_club)) {
+    if ($is_private_club !== null) {
         $map['g_is_private_club'] = $is_private_club;
     }
 
@@ -195,7 +195,7 @@ function cns_delete_group($group_id, $target_group = null)
 {
     $orig_target_group = $target_group;
     require_code('cns_groups');
-    if (is_null($target_group)) {
+    if ($target_group === null) {
         $target_group = get_first_default_group();
     }
 
@@ -215,7 +215,7 @@ function cns_delete_group($group_id, $target_group = null)
 
     $GLOBALS['FORUM_DB']->query_update('f_groups', array('g_promotion_target' => null), array('g_promotion_target' => $group_id));
     $GLOBALS['FORUM_DB']->query_update('f_members', array('m_primary_group' => $target_group), array('m_primary_group' => $group_id));
-    if (!is_null($orig_target_group)) {
+    if ($orig_target_group !== null) {
         $GLOBALS['FORUM_DB']->query_update('f_group_members', array('gm_group_id' => $target_group), array('gm_group_id' => $group_id), '', null, null, false, true);
     }
     $GLOBALS['FORUM_DB']->query_delete('f_group_members', array('gm_group_id' => $group_id));
@@ -271,7 +271,7 @@ function cns_member_ask_join_group($group_id, $member_id = null)
         warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'group'));
     }
 
-    if (is_null($member_id)) {
+    if ($member_id === null) {
         $member_id = get_member();
     }
 
@@ -280,7 +280,7 @@ function cns_member_ask_join_group($group_id, $member_id = null)
     }
 
     $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_group_members', 'gm_validated', array('gm_member_id' => $member_id, 'gm_group_id' => $group_id));
-    if (!is_null($test)) {
+    if ($test !== null) {
         if ($test == 1) {
             warn_exit(do_lang_tempcode('ALREADY_IN_GROUP'));
         }
@@ -314,7 +314,7 @@ function cns_member_ask_join_group($group_id, $member_id = null)
         $their_username = $GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_username');
 
         $leader_id = $group_info[0]['g_group_leader'];
-        if (!is_null($leader_id)) {
+        if ($leader_id !== null) {
             $mail = do_notification_lang('GROUP_JOIN_REQUEST_MAIL', comcode_escape($their_username), comcode_escape($group_name), array($url), get_lang($leader_id));
             $subject = do_lang('GROUP_JOIN_REQUEST_MAIL_SUBJECT', null, null, null, get_lang($leader_id));
             dispatch_notification('cns_group_join_request', null, $subject, $mail, array($leader_id));
@@ -334,7 +334,7 @@ function cns_member_ask_join_group($group_id, $member_id = null)
  */
 function cns_member_leave_group($group_id, $member_id = null)
 {
-    if (is_null($member_id)) {
+    if ($member_id === null) {
         $member_id = get_member();
     }
 
@@ -348,7 +348,7 @@ function cns_member_leave_group($group_id, $member_id = null)
     }
 
     $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_group_members', 'gm_group_id', array('gm_group_id' => $group_id, 'gm_member_id' => $member_id));
-    if (!is_null($test)) {
+    if ($test !== null) {
         $GLOBALS['FORUM_DB']->query_delete('f_group_members', array('gm_group_id' => $group_id, 'gm_member_id' => $member_id), '', 1);
 
         $GLOBALS['FORUM_DB']->query_delete('f_group_join_log', array(
@@ -374,7 +374,7 @@ function cns_add_member_to_group($member_id, $id, $validated = 1)
     }
 
     $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'g_is_presented_at_install', array('id' => $id));
-    if (is_null($test)) {
+    if ($test === null) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'group'));
     }
 

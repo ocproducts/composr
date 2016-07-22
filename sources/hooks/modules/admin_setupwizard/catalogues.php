@@ -32,13 +32,13 @@ class Hook_sw_catalogues
     {
         $settings = array();
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_name', array('c_name' => 'projects'));
-        $settings['have_default_catalogues_projects'] = is_null($test) ? '0' : '1';
+        $settings['have_default_catalogues_projects'] = ($test === null) ? '0' : '1';
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_name', array('c_name' => 'faqs'));
-        $settings['have_default_catalogues_faqs'] = is_null($test) ? '0' : '1';
+        $settings['have_default_catalogues_faqs'] = ($test === null) ? '0' : '1';
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_name', array('c_name' => 'links'));
-        $settings['have_default_catalogues_links'] = is_null($test) ? '0' : '1';
+        $settings['have_default_catalogues_links'] = ($test === null) ? '0' : '1';
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_name', array('c_name' => 'contacts'));
-        $settings['have_default_catalogues_contacts'] = is_null($test) ? '0' : '1';
+        $settings['have_default_catalogues_contacts'] = ($test === null) ? '0' : '1';
         return $settings;
     }
 
@@ -85,7 +85,7 @@ class Hook_sw_catalogues
 
         if (post_param_integer('have_default_catalogues_projects', 0) == 0) {
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_name', array('c_name' => 'projects'));
-            if (!is_null($test)) {
+            if ($test !== null) {
                 require_code('catalogues2');
                 actual_delete_catalogue('projects');
                 require_lang('catalogues');
@@ -98,7 +98,7 @@ class Hook_sw_catalogues
         }
         if (post_param_integer('have_default_catalogues_faqs', 0) == 0) {
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_name', array('c_name' => 'faqs'));
-            if (!is_null($test)) {
+            if ($test !== null) {
                 require_code('catalogues2');
                 actual_delete_catalogue('faqs');
                 require_code('menus2');
@@ -107,7 +107,7 @@ class Hook_sw_catalogues
         }
         if (post_param_integer('have_default_catalogues_links', 0) == 0) {
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_name', array('c_name' => 'links'));
-            if (!is_null($test)) {
+            if ($test !== null) {
                 require_code('catalogues2');
                 actual_delete_catalogue('links');
                 require_code('menus2');
@@ -116,7 +116,7 @@ class Hook_sw_catalogues
         }
         if (post_param_integer('have_default_catalogues_contacts', 0) == 0) {
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_name', array('c_name' => 'contacts'));
-            if (!is_null($test)) {
+            if ($test !== null) {
                 require_code('catalogues2');
                 actual_delete_catalogue('contacts');
                 require_code('menus2');

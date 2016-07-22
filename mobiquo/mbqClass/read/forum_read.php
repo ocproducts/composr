@@ -37,11 +37,11 @@ class CMSForumRead
             access_denied('I_ERROR');
         }
 
-        if (is_null($order_sub_alpha)) {
+        if ($order_sub_alpha === null) {
             $order_sub_alpha = ($GLOBALS['FORUM_DB']->query_select_value('f_forums', 'f_order_sub_alpha', array('id' => $forum_id)) == 1);
         }
 
-        if (is_null($all_groupings)) {
+        if ($all_groupings === null) {
             $all_groupings = list_to_map('id', $GLOBALS['FORUM_DB']->query_select('f_forum_groupings', array('*')));
         }
 

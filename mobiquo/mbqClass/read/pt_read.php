@@ -133,7 +133,7 @@ class CMSPtRead
 
             $attachments = get_post_attachments($post['post_id'], null, true, $content);
 
-            $is_unread = (is_null($topic_read_time)) || ($post['p_time'] > $topic_read_time);
+            $is_unread = ($topic_read_time === null) || ($post['p_time'] > $topic_read_time);
 
             $posts[] = array(
                 'msg_id' => $post['post_id'],

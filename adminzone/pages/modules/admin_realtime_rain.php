@@ -92,7 +92,7 @@ class Module_admin_realtime_rain
         }
 
         $min_time = $GLOBALS['SITE_DB']->query_select_value('stats', 'MIN(date_and_time)');
-        if (is_null($min_time)) {
+        if ($min_time === null) {
             $min_time = time();
         }
         return do_template('REALTIME_RAIN_OVERLAY', array('_GUID' => 'd7cb1b8286311a9505c3de2d1b9a5185', 'MIN_TIME' => strval($min_time)));

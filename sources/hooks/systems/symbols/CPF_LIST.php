@@ -64,7 +64,7 @@ class Hook_symbol_CPF_LIST
             }
             require_code('cns_members');
             $cpf_id = find_cpf_field_id($param[0]);
-            if (!is_null($cpf_id)) {
+            if ($cpf_id !== null) {
                 $test = $GLOBALS['FORUM_DB']->query_select('f_custom_fields', array('cf_default', 'cf_type'), array('id' => $cpf_id));
                 if (array_key_exists(0, $test)) {
                     switch ($test[0]['cf_type']) {

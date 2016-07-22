@@ -45,7 +45,7 @@ class Hook_checklist_polls
         $limit_hours = intval(get_option('poll_update_time'));
 
         $seconds_ago = mixed();
-        if (!is_null($date)) {
+        if ($date !== null) {
             $status = ($seconds_ago > $limit_hours * 60 * 60) ? 0 : 1;
         } else {
             $status = 0;
@@ -72,7 +72,7 @@ class Hook_checklist_polls
     public function get_num_poll_queue()
     {
         $c = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'poll WHERE votes1+votes2+votes3+votes4+votes5+votes6+votes7+votes8+votes9+votes10=0 AND is_current=0');
-        if (is_null($c)) {
+        if ($c === null) {
             return 0;
         }
         return $c;

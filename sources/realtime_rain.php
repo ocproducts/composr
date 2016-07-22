@@ -134,7 +134,7 @@ function rain_get_country_image($ip_address)
     require_code('locations');
 
     $country = geolocate_ip($ip_address);
-    if (is_null($country)) {
+    if ($country === null) {
         return '';
     }
 
@@ -156,11 +156,11 @@ function rain_get_special_icons($ip_address, $timestamp, $user_agent = null, $ne
     $tooltip = '';
     $multiplicity = 1;
     $bot = get_bot_type();
-    if (!is_null($bot)) {
+    if ($bot !== null) {
         $icon = 'searchengine-icon';
         $tooltip = do_lang('RTEV_BOT');
     } else {
-        if ((!is_null($user_agent)) && (is_mobile($user_agent))) {
+        if (($user_agent !== null) && (is_mobile($user_agent))) {
             $icon = 'phone-icon';
             $tooltip = do_lang('RTEV_PHONE');
         } else {
@@ -169,7 +169,7 @@ function rain_get_special_icons($ip_address, $timestamp, $user_agent = null, $ne
                 $multiplicity = $mails_sent;
                 $icon = 'email-icon';
                 $tooltip = do_lang('RTEV_EMAILS', integer_format($multiplicity));
-            } elseif (!is_null($news)) {
+            } elseif ($news !== null) {
                 $icon = 'news-icon';
                 $tooltip = do_lang('RTEV_NEWS');
             }

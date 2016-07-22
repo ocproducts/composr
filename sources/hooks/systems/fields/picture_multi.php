@@ -134,7 +134,7 @@ class Hook_fields_picture_multi
             $height = option_value_from_field_array($field, 'height', '');
 
             $ret->attach(do_template('CATALOGUE_' . $tpl_set . '_FIELD_PICTURE', array(
-                'I' => is_null($only_fields) ? '-1' : strval($i),
+                'I' => ($only_fields === null) ? '-1' : strval($i),
                 'CATALOGUE' => $field['c_name'],
                 'URL' => $download_url,
                 'THUMB_URL' => $img_thumb_url,
@@ -161,7 +161,7 @@ class Hook_fields_picture_multi
      */
     public function get_field_inputter($_cf_name, $_cf_description, $field, $actual_value, $new)
     {
-        $say_required = ($field['cf_required'] == 1) && (($actual_value == '') || (is_null($actual_value)));
+        $say_required = ($field['cf_required'] == 1) && (($actual_value == '') || ($actual_value === null));
         $input_name = empty($field['cf_input_name']) ? ('field_' . strval($field['id'])) : $field['cf_input_name'];
         require_code('images');
         $ffield = form_input_upload_multi($_cf_name, $_cf_description, $input_name, $say_required, null, ($field['cf_required'] == 1) ? null/*so unlink option not shown*/ : (($actual_value == '') ? null : explode("\n", $actual_value)), true, get_allowed_image_file_types());
@@ -183,7 +183,7 @@ class Hook_fields_picture_multi
      */
     public function inputted_to_field_value($editing, $field, $upload_dir = 'uploads/catalogues', $old_value = null)
     {
-        if (is_null($upload_dir)) {
+        if ($upload_dir === null) {
             return null;
         }
 
@@ -192,7 +192,7 @@ class Hook_fields_picture_multi
 
             $value = '';
 
-            $_old_value = ((is_null($old_value)) || ($old_value['cv_value'] == '')) ? array() : explode("\n", $old_value['cv_value']);
+            $_old_value = (($old_value === null) || ($old_value['cv_value'] == '')) ? array() : explode("\n", $old_value['cv_value']);
 
             require_code('uploads');
             is_plupload(true);

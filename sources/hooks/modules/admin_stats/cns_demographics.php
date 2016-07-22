@@ -64,17 +64,17 @@ class Hook_admin_stats_cns_demographics
         }
         $time_start = post_param_date('time_start', true);
         $time_end = post_param_date('time_end', true);
-        if (!is_null($time_end)) {
+        if ($time_end !== null) {
             $time_end += 60 * 60 * 24 - 1; // So it is end of day not start
         }
 
-        if ((is_null($time_start)) && (is_null($time_end))) {
+        if (($time_start === null) && ($time_end === null)) {
             $rows = $GLOBALS['FORUM_DB']->query_select('f_members', array('m_dob_year', 'COUNT(*) AS cnt', null, 'GROUP BY m_dob_year'));
         } else {
-            if (is_null($time_start)) {
+            if ($time_start === null) {
                 $time_start = 0;
             }
-            if (is_null($time_end)) {
+            if ($time_end === null) {
                 $time_end = time();
             }
 
@@ -102,7 +102,7 @@ class Hook_admin_stats_cns_demographics
             $day = 1;
             $month = 1;
             $year = $row['m_dob_year'];
-            if (!is_null($year)) {
+            if ($year !== null) {
                 $age = intval($current_year) - $year;
                 if ($age < 0) {
                     $age = 0;

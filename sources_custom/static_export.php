@@ -32,7 +32,7 @@ function _page_link_to_static($node)
         global $STATIC_EXPORT_TAR, $STATIC_EXPORT_WARNINGS;
 
         $only_page_links = get_param_string('only_page_links', null);
-        if (!is_null($only_page_links)) {
+        if ($only_page_links !== null) {
             if (!in_array($page_link, explode(',', $only_page_links))) {
                 return;
             }
@@ -41,10 +41,10 @@ function _page_link_to_static($node)
         $date = time();
         if (get_param_integer('dir', 0) == 0) { // For dir export we actually use times to represent overall change times, to benefit upload
             if (get_param_integer('guess_dates', 0) == 1) { // Bad idea actually, aggregate data can easily make the dates wrong
-                if (!is_null($add_date)) {
+                if ($add_date !== null) {
                     $date = $add_date;
                 }
-                if (!is_null($edit_date)) {
+                if ($edit_date !== null) {
                     $date = $edit_date;
                 }
             }
@@ -85,7 +85,7 @@ function _page_link_to_static($node)
 
             $session_cookie_id = get_session_cookie();
             $data = http_download_file($url, null, false, false, 'Composr', null, array($session_cookie_id => 12345));
-            if (is_null($data)) {
+            if ($data === null) {
                 continue;
             }
 

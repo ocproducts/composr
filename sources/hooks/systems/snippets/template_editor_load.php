@@ -95,7 +95,7 @@ class Hook_snippet_template_editor_load
 
             // Read contents
             $path = find_template_path($_file, $subdir, $theme);
-            if (is_null($path)) {
+            if ($path === null) {
                 $contents = '';
             } else {
                 $tmp = fopen($path, 'rb');

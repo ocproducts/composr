@@ -42,7 +42,7 @@ class Hook_activities_activities
 
         cms_profile_start_for('syndicate_described_activity');
         $ret = activities_addon_syndicate_described_activity($a_language_string_code, $a_label_1, $a_label_2, $a_label_3, $a_page_link_1, $a_page_link_2, $a_page_link_3, $a_addon, $a_is_public, $a_member_id, $sitewide_too, $also_involving);
-        cms_profile_end_for('syndicate_described_activity', is_null($ret) ? '' : ('#' . strval($ret)));
+        cms_profile_end_for('syndicate_described_activity', ($ret === null) ? '' : ('#' . strval($ret)));
         return $ret;
     }
 

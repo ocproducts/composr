@@ -31,7 +31,7 @@ class Hook_members_filedump
         }
 
         $zone = get_page_zone('filedump', false);
-        if (is_null($zone)) {
+        if ($zone === null) {
             return array();
         }
         if (!has_zone_access(get_member(), $zone)) {

@@ -43,7 +43,7 @@ class CMSSocialRead
         $followers = array();
         foreach ($rows as $row) {
             $username = $GLOBALS['FORUM_DRIVER']->get_username($row['member_liked']);
-            if (is_null($username)) {
+            if ($username === null) {
                 continue;
             }
 
@@ -89,7 +89,7 @@ class CMSSocialRead
         $followers = array();
         foreach ($rows as $row) {
             $username = $GLOBALS['FORUM_DRIVER']->get_username($row['member_likes']);
-            if (is_null($username)) {
+            if ($username === null) {
                 continue;
             }
 
@@ -140,7 +140,7 @@ class CMSSocialRead
                 $username = do_lang('SYSTEM');
             } else {
                 $username = $GLOBALS['FORUM_DRIVER']->get_username($row['d_from_member_id']);
-                if (is_null($username)) {
+                if ($username === null) {
                     $username = do_lang('UNKNOWN');
                 }
             }
@@ -161,7 +161,7 @@ class CMSSocialRead
             $num_matches = preg_match_all('#\[url[^\[\]]*\](.*)\[/url\]#U', $row['d_message'], $matches);
             for ($i = 0; $i < $num_matches; $i++) {
                 $test = get_id_by_url($matches[1][$i]);
-                if (!is_null($test)) {
+                if ($test !== null) {
                     $arr['topic_id'] = strval($test['topic_id']);
                     $arr['position'] = $GLOBALS['FORUM_DB']->query_select_value('f_posts', 'COUNT(*)', null, ' WHERE id<=' . strval($test['post_id']));
                     break;
@@ -197,7 +197,7 @@ class CMSSocialRead
         $items = array();
         foreach ($rows as $row) {
             $username = $GLOBALS['FORUM_DRIVER']->get_username($row['a_member_id']);
-            if (is_null($username)) {
+            if ($username === null) {
                 $username = do_lang('UNKNOWN');
             }
 

@@ -29,7 +29,7 @@ function sync_video_syndication($local_id = null, $new_upload = false, $reupload
     $orphaned_handling = intval(get_option('gallery_sync_orphaned_handling'));
 
     $num_local_videos = $GLOBALS['SITE_DB']->query_select_value('videos', 'COUNT(*)');
-    if (is_null($local_id)) { // If being asked to do a full sync
+    if ($local_id === null) { // If being asked to do a full sync
         if ($num_local_videos > 1000) {
             return; // Too much, we won't do complex two-way syncs
         }
@@ -37,7 +37,7 @@ function sync_video_syndication($local_id = null, $new_upload = false, $reupload
 
     $local_videos = get_local_videos($local_id);
 
-    if ((($consider_deferring) || ($num_local_videos > 1000)) && (cron_installed()) && (!is_null($local_id)) && (count($local_videos) == 1)) {
+    if ((($consider_deferring) || ($num_local_videos > 1000)) && (cron_installed()) && ($local_id !== null) && (count($local_videos) == 1)) {
         foreach ($local_videos as $local_video) {
             $GLOBALS['SITE_DB']->query_insert('video_transcoding', array(
                 't_id' => 'sync_defer_' . strval($local_id) . ($new_upload ? '__new_upload' : '') . ($reupload ? '__reupload' : ''),
@@ -111,7 +111,7 @@ function sync_video_syndication($local_id = null, $new_upload = false, $reupload
         }
     }
 
-    if (!is_null($local_id)) {
+    if ($local_id !== null) {
         $GLOBALS['SITE_DB']->query_delete('video_transcoding', array(
             't_id' => 'sync_defer_' . strval($local_id) . ($new_upload ? '__new_upload' : '') . ($reupload ? '__reupload' : ''),
         ));
@@ -128,7 +128,7 @@ function get_local_videos($local_id = null)
         $where = selectcode_to_sqlfragment($filter, 'v.id', 'galleries', 'parent_id', 'v.cat', 'name', true, false);
     }
 
-    if (!is_null($local_id)) {
+    if ($local_id !== null) {
         $where .= ' AND v.id=' . strval($local_id);
     }
 
@@ -181,7 +181,7 @@ function _get_local_video($row)
         'local_id' => $row['id'],
         'title' => get_translated_text($row['title']),
         'description' => strip_comcode(get_translated_text($row['description'])),
-        'mtime' => is_null($row['edit_date']) ? $row['add_date'] : $row['edit_date'],
+        'mtime' => ($row['edit_date'] === null) ? $row['add_date'] : $row['edit_date'],
         'tags' => $tags,
         'url' => $url,
         '_raw_url' => $row['url'],
@@ -200,7 +200,7 @@ function _sync_remote_video($ob, $video, $local_videos, $orphaned_handling, $reu
         // Handle changes
         $changes = array();
         foreach (array('title', 'description', 'tags', 'allow_rating', 'allow_comments', 'validated') as $property) {
-            if ((!is_null($video[$property])) && ($video[$property] != $local_video[$property])) {
+            if (($video[$property] !== null) && ($video[$property] != $local_video[$property])) {
                 $changes[$property] = $local_video[$property];
             }
         }
@@ -239,7 +239,7 @@ function _sync_remote_video($ob, $video, $local_videos, $orphaned_handling, $reu
 function _sync_onlylocal_video($ob, $local_video)
 {
     $remote_video = $ob->upload_video($local_video);
-    if (is_null($remote_video)) {
+    if ($remote_video === null) {
         return; // Didn't work, can't do anything further
     }
 

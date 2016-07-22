@@ -70,7 +70,7 @@ function post_param_multi_source_upload($name, $upload_to, $required = true, $is
     if (((array_key_exists($field_file, $_FILES)) && ((is_plupload()) || (is_uploaded_file($_FILES[$field_file]['tmp_name']))))) {
         $urls = get_url('', $field_file, $upload_to, 0, $upload_type, $thumb_url !== null, $thumb_specify_name, $thumb_attach_name);
 
-        if ((substr($urls[0], 0, 8) != 'uploads/') && (is_null(http_download_file($urls[0], 0, false))) && (!is_null($GLOBALS['HTTP_MESSAGE_B']))) {
+        if ((substr($urls[0], 0, 8) != 'uploads/') && (http_download_file($urls[0], 0, false) === null) && ($GLOBALS['HTTP_MESSAGE_B'] !== null)) {
             attach_message($GLOBALS['HTTP_MESSAGE_B'], 'warn');
         }
 
@@ -253,16 +253,16 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
 {
     require_code('files2');
 
-    if (is_null($member_id)) {
+    if ($member_id === null) {
         $member_id = get_member();
     }
 
     $upload_folder = filter_naughty($upload_folder);
-    if (is_null($upload_folder_full)) {
+    if ($upload_folder_full === null) {
         $upload_folder_full = get_custom_file_base() . '/' . $upload_folder;
     }
     $thumb_folder = preg_replace('#^(uploads/[^/]+)#', '${1}_thumbs', $upload_folder);
-    if (is_null($thumb_folder_full)) {
+    if ($thumb_folder_full === null) {
         $thumb_folder_full = get_custom_file_base() . '/' . $thumb_folder;
     }
 
@@ -290,7 +290,7 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
         }
 
         // ID of the upload from the incoming uploads database table
-        if (!is_null($row_id_file_value)) { // plupload was used
+        if ($row_id_file_value !== null) { // plupload was used
             // Get the incoming upload's appropiate DB table row
             if ((substr($row_id_file_value, -4) == '.dat') && (strpos($row_id_file_value, ':') === false)) {
                 $path = 'uploads/incoming/' . filter_naughty($row_id_file_value);
@@ -384,7 +384,7 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
 
             $file = http_download_file($url[0], $max_size, true, false, 'Composr', null, null, null, null, null, $tmpfile);
             fclose($tmpfile);
-            if (is_null($file)) {
+            if ($file === null) {
                 @unlink($path2);
                 if ($accept_errors) {
                     attach_message(do_lang_tempcode('CANNOT_COPY_TO_SERVER'), 'warn', false, true);
@@ -394,7 +394,7 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
                 }
             }
             global $HTTP_FILENAME;
-            if (is_null($HTTP_FILENAME)) {
+            if ($HTTP_FILENAME === null) {
                 $HTTP_FILENAME = $url[1];
             }
 
@@ -418,7 +418,7 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
                     warn_exit(do_lang_tempcode('CANNOT_COPY_TO_SERVER'), false, true);
                 }
             }
-            if (is_null($filename)) {
+            if ($filename === null) {
                 if (($obfuscate != 0) && ($obfuscate != 3)) {
                     $ext = (($obfuscate == 2) && (!is_image($HTTP_FILENAME, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous')))) ? 'dat' : get_file_extension($HTTP_FILENAME);
                     list($place, , $filename) = find_unique_path($upload_folder, $filename);
@@ -442,7 +442,7 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
             }
             $result = @rename($path2, $place);
             global $HTTP_DOWNLOAD_MTIME;
-            if ((!is_null($HTTP_DOWNLOAD_MTIME)) && ($HTTP_DOWNLOAD_MTIME != 0)) {
+            if (($HTTP_DOWNLOAD_MTIME !== null) && ($HTTP_DOWNLOAD_MTIME != 0)) {
                 @touch($place, $HTTP_DOWNLOAD_MTIME);
             }
             if (!$result) {
@@ -548,7 +548,7 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
             $_thumb = _get_specify_url($member_id, $thumb_specify_name, $thumb_folder, CMS_UPLOAD_IMAGE, $accept_errors);
             $thumb = $_thumb[0];
         }
-        if (!is_null($thumb)) {
+        if ($thumb !== null) {
             $out[1] = $thumb;
         }
     }
@@ -612,7 +612,7 @@ function _get_specify_url($member_id, $specify_name, $upload_folder, $enforce_ty
             global $HTTP_MESSAGE;
             $actuallyis = http_download_file(get_custom_base_url() . '/' . $url[0], 8000, false);
 
-            if (($HTTP_MESSAGE == '200') && (is_null($shouldbe))) {
+            if (($HTTP_MESSAGE == '200') && ($shouldbe === null)) {
                 // No error downloading, but error using file system - therefore file exists and we'll use URL to download. Hence no security check.
                 $missing_ok = true;
             } else {
@@ -794,7 +794,7 @@ function _get_upload_url($member_id, $attach_name, $upload_folder, $upload_folde
         return array('', '');
     }
 
-    if (is_null($filename)) {
+    if ($filename === null) {
         // If we are not obfuscating then we will need to search for an available filename
         if (($obfuscate == 0) || ($obfuscate == 3) || (strlen($file) > 150)) {
             $filename = preg_replace('#\..*\.#', '.', $file);

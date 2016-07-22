@@ -22,7 +22,7 @@ function find_addon_category_download_category($category_name, $parent_id = null
         return $cache[$category_name][$parent_id];
     }
 
-    if (is_null($parent_id)) {
+    if ($parent_id === null) {
         $parent_id = $GLOBALS['SITE_DB']->query_select_value('download_categories', 'id', array('parent_id' => db_get_first_id(), $GLOBALS['SITE_DB']->translate_field_ref('category') => 'Addons'));
         // ^ Result must return, composr_homesite_install.php added the category
 
@@ -30,7 +30,7 @@ function find_addon_category_download_category($category_name, $parent_id = null
             return $cache[$category_name][$parent_id];
         }
 
-        if (is_null($description)) {
+        if ($description === null) {
             // Copy version category description from parent ("Addons")
             $description = get_translated_text($GLOBALS['SITE_DB']->query_select_value('download_categories', 'description', array('id' => $parent_id)));
             $description = str_replace('[title="2"]Choose Composr version below[/title]', '[title="2"]Choose addon category below[/title]', $description);
@@ -39,7 +39,7 @@ function find_addon_category_download_category($category_name, $parent_id = null
 
     require_code('downloads2');
     $id = $GLOBALS['SITE_DB']->query_select_value_if_there('download_categories', 'id', array('parent_id' => $parent_id, $GLOBALS['SITE_DB']->translate_field_ref('category') => $category_name));
-    if (is_null($id)) {
+    if ($id === null) {
         // Missing, add it...
 
         if ($description === null) {

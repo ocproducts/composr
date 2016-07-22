@@ -44,7 +44,7 @@ class Hook_commandr_command_help
                 }
             }
 
-            if (!is_null($hook_return)) {
+            if ($hook_return !== null) {
                 return array($hook_return[0], $hook_return[1], $hook_return[2], $hook_return[3]);
             } else {
                 return array('', '', '', do_lang('NO_HELP'));

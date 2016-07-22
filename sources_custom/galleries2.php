@@ -33,7 +33,7 @@ function init__galleries2($code)
             if ($workflow_id == -1) {
                 // Look for the workflow of the containing gallery
                 $workflow_id = get_workflow_of_content("gallery", $title);
-                if (is_null($workflow_id)) {
+                if ($workflow_id === null) {
                     // Use the default if it has none
                     add_content_to_workflow("image", strval($id));
                     attach_message(do_lang("CONTENT_NOW_IN_WORKFLOW", get_translated_text(get_default_workflow())), "inform");
@@ -70,7 +70,7 @@ function init__galleries2($code)
             if ($workflow_id == -1) {
                 // Look for the workflow of the containing gallery
                 $workflow_id = get_workflow_of_content("gallery", $title);
-                if (is_null($workflow_id)) {
+                if ($workflow_id === null) {
                     // Use the default if it has none
                     add_content_to_workflow("video", strval($id));
                     attach_message(do_lang("CONTENT_NOW_IN_WORKFLOW", get_translated_text(get_default_workflow())), "inform");
@@ -104,7 +104,7 @@ function init__galleries2($code)
         if ($workflow_id == -1) {
             // Look for the workflow of the containing gallery
             $workflow_id = get_workflow_of_content("gallery", $parent_id);
-            if (is_null($workflow_id)) {
+            if ($workflow_id === null) {
                 // Use the default if it has none
                 add_content_to_workflow("gallery", $name);
             } else {
@@ -142,7 +142,7 @@ function init__galleries2($code)
             if ($edit_workflow && ($workflow_id == -1)) {
                 // Look for the workflow of the containing gallery
                 $workflow_id = get_workflow_of_content("gallery", $title);
-                if (is_null($workflow_id))
+                if ($workflow_id === null)
                 {
                     // Use the default if it has none
                     if ($current_workflow != get_default_workflow())
@@ -194,7 +194,7 @@ function init__galleries2($code)
             if (($edit_workflow) && ($workflow_id == -1)) {
                 // Look for the workflow of the containing gallery
                 $workflow_id = get_workflow_of_content("gallery", $title);
-                if (is_null($workflow_id)) {
+                if ($workflow_id === null) {
                     // Use the default if it has none
                     if ($current_workflow != get_default_workflow()) {
                         add_content_to_workflow("video", strval($id), null, true);
@@ -239,7 +239,7 @@ function init__galleries2($code)
         if ($edit_workflow && $workflow_id == -1) {
             // Look for the workflow of the containing gallery
             $workflow_id = get_workflow_of_content("gallery", $parent_id);
-            if (is_null($workflow_id))
+            if ($workflow_id === null)
             {
                 // Use the default if it has none
                 if ($current_workflow != get_default_workflow()) {
@@ -268,7 +268,7 @@ function init__galleries2($code)
         'log_it(\'DELETE_IMAGE\', strval($id), get_translated_text($description));
         require_code("workflows");
         require_lang("workflows");
-        if (!is_null(get_workflow_of_content("image", strval($id)))) {
+        if (get_workflow_of_content("image", strval($id)) !== null) {
             remove_content_from_workflows("image", strval($id));
         }',
         $code
@@ -279,7 +279,7 @@ function init__galleries2($code)
         'log_it(\'DELETE_VIDEO\', strval($id), get_translated_text($description));
         require_code("workflows");
         require_lang("workflows");
-        if (!is_null(get_workflow_of_content("video", strval($id)))) {
+        if (get_workflow_of_content("video", strval($id)) !== null) {
             remove_content_from_workflows("video", strval($id));
         }',
         $code
@@ -290,7 +290,7 @@ function init__galleries2($code)
         'log_it(\'DELETE_GALLERY\', $name, get_translated_text($rows[0][\'fullname\']));
         require_code("workflows");
         require_lang("workflows");
-        if (!is_null(get_workflow_of_content("gallery", $name))) {
+        if (get_workflow_of_content("gallery", $name) !== null) {
             remove_content_from_workflows("gallery", $name);
         }',
         $code

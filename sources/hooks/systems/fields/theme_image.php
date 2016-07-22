@@ -121,7 +121,7 @@ class Hook_fields_theme_image
         $height = option_value_from_field_array($field, 'height', '');
 
         return do_template('CATALOGUE_' . $tpl_set . '_FIELD_PICTURE', array(
-            'I' => is_null($only_fields) ? '-1' : strval($i),
+            'I' => ($only_fields === null) ? '-1' : strval($i),
             'CATALOGUE' => $field['c_name'],
             'URL' => $img_url,
             'THUMB_URL' => $img_url,

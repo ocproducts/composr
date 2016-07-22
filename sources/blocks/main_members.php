@@ -189,7 +189,7 @@ class Block_main_members
                     $group_id = intval($_usergroup);
                 } else {
                     $group_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('g_name') => $_usergroup));
-                    if (is_null($group_id)) {
+                    if ($group_id === null) {
                         return paragraph(do_lang_tempcode('MISSING_RESOURCE', 'group'), 'red_alert');
                     }
                 }
@@ -344,7 +344,7 @@ class Block_main_members
                         if ($cnt >= $start) {
                             $member_boxes[] = array(
                                 'I' => strval($cnt - $start + 1),
-                                'BREAK' => (!is_null($per_row)) && (($cnt - $start + 1) % $per_row == 0),
+                                'BREAK' => ($per_row !== null) && (($cnt - $start + 1) % $per_row == 0),
                                 'BOX' => $box,
                                 'MEMBER_ID' => strval($member_id),
                                 'GALLERY_NAME' => $gallery['name'],
@@ -361,7 +361,7 @@ class Block_main_members
             } else {
                 $member_boxes[$member_id] = array(
                     'I' => strval($cnt + 1),
-                    'BREAK' => (!is_null($per_row)) && (($cnt + 1) % $per_row == 0),
+                    'BREAK' => ($per_row !== null) && (($cnt + 1) % $per_row == 0),
                     'BOX' => $box,
                     'MEMBER_ID' => strval($member_id),
                     'GALLERY_NAME' => '',
@@ -497,8 +497,8 @@ class Block_main_members
             'SORT_ORDER' => $sort_order,
             'FILTERS_ROW_A' => $filters_row_a,
             'FILTERS_ROW_B' => $filters_row_b,
-            'ITEM_WIDTH' => is_null($per_row) ? '' : float_to_raw_string(99.0/*avoid possibility of rounding issues as pixels won't divide perfectly*/ / floatval($per_row)) . '%',
-            'PER_ROW' => is_null($per_row) ? '' : strval($per_row),
+            'ITEM_WIDTH' => ($per_row === null) ? '' : float_to_raw_string(99.0/*avoid possibility of rounding issues as pixels won't divide perfectly*/ / floatval($per_row)) . '%',
+            'PER_ROW' => ($per_row === null) ? '' : strval($per_row),
             'DISPLAY_MODE' => $display_mode,
             'MEMBER_BOXES' => $member_boxes,
             'PAGINATION' => new Tempcode(),

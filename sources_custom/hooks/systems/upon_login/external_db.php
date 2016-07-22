@@ -30,7 +30,7 @@ class Hook_upon_login_external_db
         if (!$new_attempt) {
             return; // We don't try and bind to a third-party login if we're dealing with re-establishing an existing Composr session
         }
-        if (is_null($member) || is_guest($member)) {
+        if (($member === null) || is_guest($member)) {
             return; // No login to speak of
         }
 
@@ -39,7 +39,7 @@ class Hook_upon_login_external_db
         require_code('external_db');
 
         $db = external_db();
-        if (is_null($db)) {
+        if ($db === null) {
             return;
         }
 

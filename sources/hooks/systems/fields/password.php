@@ -98,7 +98,7 @@ class Hook_fields_password
      */
     public function get_field_inputter($_cf_name, $_cf_description, $field, $actual_value, $new)
     {
-        if (is_null($actual_value)) {
+        if ($actual_value === null) {
             $actual_value = ''; // Plug anomaly due to unusual corruption
         }
         $input_name = empty($field['cf_input_name']) ? ('field_' . strval($field['id'])) : $field['cf_input_name'];

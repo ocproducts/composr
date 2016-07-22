@@ -237,7 +237,7 @@ class Hook_chat_bot_trickstr
 
             restrictify();
 
-            if (is_null($response) || $response->response == '') {
+            if (($response === null) || $response->response == '') {
                 return null;
             }
             return '[html]' . $response->response . '[/html]';

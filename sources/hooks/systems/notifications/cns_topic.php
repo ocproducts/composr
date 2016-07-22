@@ -47,14 +47,14 @@ class Hook_notification_cns_topic extends Hook_Notification
         require_code('cns_forums2');
 
         $notification_category = get_param_string('id', null);
-        $done_in_url = is_null($notification_category);
+        $done_in_url = ($notification_category === null);
 
         $total = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forums', 'COUNT(*)');
         if ($total > intval(get_option('general_safety_listing_limit'))/*reasonable limit*/) {
             return parent::create_category_tree($notification_code, $id); // Too many, so just allow removing UI
         }
 
-        if (!is_null($id)) {
+        if ($id !== null) {
             if (substr($id, 0, 6) != 'forum:') {
                 $title = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 't_cache_first_title', array('id' => intval($id)));
 
@@ -68,7 +68,7 @@ class Hook_notification_cns_topic extends Hook_Notification
             $id = substr($id, 6);
         }
 
-        $_page_links = cns_get_forum_tree(null, is_null($id) ? null : intval($id), '', null, null, false, 1);
+        $_page_links = cns_get_forum_tree(null, ($id === null) ? null : intval($id), '', null, null, false, 1);
 
         $page_links = array();
         foreach ($_page_links as $p) {
@@ -83,7 +83,7 @@ class Hook_notification_cns_topic extends Hook_Notification
             }
         }
 
-        if (is_null($id)) { // On root level add monitored topics too
+        if ($id === null) { // On root level add monitored topics too
             $max_topic_rows = max(0, 200 - $total);
             $types2 = $GLOBALS['SITE_DB']->query_select('notifications_enabled', array('l_code_category'), array('l_notification_code' => 'cns_topic', 'l_member_id' => get_member()), 'ORDER BY id DESC', $max_topic_rows/*reasonable limit*/);
             if (count($types2) == $max_topic_rows) {
@@ -93,7 +93,7 @@ class Hook_notification_cns_topic extends Hook_Notification
             foreach ($types2 as $type) {
                 if (is_numeric($type['l_code_category'])) {
                     $title = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 't_cache_first_title', array('id' => intval($type['l_code_category'])));
-                    if (!is_null($title)) {
+                    if ($title !== null) {
                         $page_links[] = array(
                             'id' => $type['l_code_category'],
                             'title' => do_lang('A_TOPIC', $title),
@@ -179,7 +179,7 @@ class Hook_notification_cns_topic extends Hook_Notification
      */
     protected function _is_member($only_if_enabled_on__notification_code, $only_if_enabled_on__category, $member_id)
     {
-        if (is_null($only_if_enabled_on__notification_code)) {
+        if ($only_if_enabled_on__notification_code === null) {
             return true;
         }
 
@@ -187,7 +187,7 @@ class Hook_notification_cns_topic extends Hook_Notification
             $forum_details = $GLOBALS['FORUM_DB']->query_select('f_topics', array('t_forum_id', 't_pt_from', 't_pt_to'), array('id' => intval($only_if_enabled_on__category)));
             $forum_id = $forum_details[0]['t_forum_id'];
 
-            if (is_null($forum_id)) {
+            if ($forum_id === null) {
                 require_code('cns_topics');
                 if (!(($forum_details[0]['t_pt_from'] == $member_id) || ($forum_details[0]['t_pt_to'] == $member_id) || (cns_has_special_pt_access(intval($only_if_enabled_on__category), $member_id)) || (!has_privilege($member_id, 'view_other_pt')))) {
                     return false;
@@ -210,7 +210,7 @@ class Hook_notification_cns_topic extends Hook_Notification
      */
     public function list_members_who_have_enabled($notification_code, $category = null, $to_member_ids = null, $start = 0, $max = 300)
     {
-        if ((!is_numeric($category)) && (!is_null($category))) {
+        if ((!is_numeric($category)) && ($category !== null)) {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR')); // We should never be accessing as forum:<id>, that is used only behind the scenes
         }
 
@@ -223,7 +223,7 @@ class Hook_notification_cns_topic extends Hook_Notification
             }
             $forum_id = $forum_details[0]['t_forum_id'];
 
-            if (!is_null($forum_id)) { // Forum
+            if ($forum_id !== null) { // Forum
                 list($members2, $maybe_more2) = $this->_all_members_who_have_enabled($notification_code, 'forum:' . strval($forum_id), $to_member_ids, $start, $max);
                 $members += $members2;
                 $maybe_more = $maybe_more || $maybe_more2;
@@ -241,7 +241,7 @@ class Hook_notification_cns_topic extends Hook_Notification
             $forum_id = intval(substr($category, 6));
         }
 
-        if (!is_null($forum_id)) { // We know PTs have been pre-filtered before notification is sent out, to limit them
+        if ($forum_id !== null) { // We know PTs have been pre-filtered before notification is sent out, to limit them
             list($members, $maybe_more) = $this->_all_members_who_have_enabled_with_zone_access(array($members, $maybe_more), 'forum', $notification_code, $category, $to_member_ids, $start, $max);
             list($members, $maybe_more) = $this->_all_members_who_have_enabled_with_category_access(array($members, $maybe_more), 'forums', $notification_code, strval($forum_id), $to_member_ids, $start, $max);
         }
@@ -255,7 +255,7 @@ class Hook_notification_cns_topic extends Hook_Notification
 
                 if ($smart_topic_notification_enabled) { // Maybe we don't send, based on identifying whether they have received a notification already since last reading the topic
                     $read_log_time = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_read_logs', 'l_time', array('l_member_id' => $member_id, 'l_topic_id' => intval($category)));
-                    if (!is_null($read_log_time)) { // Has been visited at some point
+                    if ($read_log_time !== null) { // Has been visited at some point
                         $num_posts_since = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE p_intended_solely_for IS NULL AND p_topic_id=' . strval(intval($category)) . ' AND p_time>' . strval($read_log_time));
                         if ($num_posts_since <= 1) { // Ah, just this one new post, so we can notify
                             $members_new[$member_id] = $setting;

@@ -88,7 +88,7 @@ class Hook_commandr_fs_quizzes extends Resource_fs_base
         $notes = $this->_default_property_str($properties, 'notes');
         $percentage = $this->_default_property_int($properties, 'percentage');
         $open_time = $this->_default_property_time_null($properties, 'open_time');
-        if (is_null($open_time)) {
+        if ($open_time === null) {
             $open_time = time();
         }
         $close_time = $this->_default_property_time_null($properties, 'close_time');
@@ -99,7 +99,7 @@ class Hook_commandr_fs_quizzes extends Resource_fs_base
             $type = 'SURVEY';
         }
         $validated = $this->_default_property_int_null($properties, 'validated');
-        if (is_null($validated)) {
+        if ($validated === null) {
             $validated = 1;
         }
         $text = $this->_default_property_str($properties, 'text');
@@ -229,7 +229,7 @@ class Hook_commandr_fs_quizzes extends Resource_fs_base
         $notes = $this->_default_property_str($properties, 'notes');
         $percentage = $this->_default_property_int($properties, 'percentage');
         $open_time = $this->_default_property_time_null($properties, 'open_time');
-        if (is_null($open_time)) {
+        if ($open_time === null) {
             $open_time = time();
         }
         $close_time = $this->_default_property_time_null($properties, 'close_time');
@@ -240,7 +240,7 @@ class Hook_commandr_fs_quizzes extends Resource_fs_base
             $type = 'SURVEY';
         }
         $validated = $this->_default_property_int_null($properties, 'validated');
-        if (is_null($validated)) {
+        if ($validated === null) {
             $validated = 1;
         }
         $text = $this->_default_property_str($properties, 'text');

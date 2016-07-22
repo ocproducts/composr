@@ -56,7 +56,7 @@ class Hook_cron_catalogue_view_reports
                     $amount = null;
             }
 
-            if (!is_null($amount)) {
+            if ($amount !== null) {
                 $last_time = intval(get_value('last_catalogue_reports_' . $catalogue['c_send_view_reports'], null, true));
                 if ($last_time <= ($time - $amount)) {
                     // Mark done
@@ -108,17 +108,17 @@ class Hook_cron_catalogue_view_reports
                         $views = $entry['ce_views'] - $entry['ce_views_prior'];
                         $GLOBALS['SITE_DB']->query_update('catalogue_entries', array('ce_views_prior' => $entry['ce_views']), array('id' => $entry['id']), '', 1);
                         $temp = do_lang($catalogue['c_name'] . '__CATALOGUE_VIEW_REPORT_LINE', comcode_escape(is_object($entry_title) ? $entry_title->evaluate() : $entry_title), integer_format($views), null, null, false);
-                        if (is_null($temp)) {
+                        if ($temp === null) {
                             $temp = do_lang('DEFAULT__CATALOGUE_VIEW_REPORT_LINE', comcode_escape(is_object($entry_title) ? $entry_title->evaluate() : $entry_title), integer_format($views));
                         }
                         $buildup .= $temp;
                     }
                     $mail = do_notification_lang($catalogue['c_name'] . '__CATALOGUE_VIEW_REPORT', $buildup, comcode_escape($catalogue_title), $regularity, get_lang($member_id), false);
-                    if (is_null($mail)) {
+                    if ($mail === null) {
                         $mail = do_notification_lang('DEFAULT__CATALOGUE_VIEW_REPORT', $buildup, comcode_escape($catalogue_title), array($regularity, get_site_name()), get_lang($member_id));
                     }
                     $subject_line = do_lang($catalogue['c_name'] . '__CATALOGUE_VIEW_REPORT_SUBJECT', $catalogue_title, get_site_name(), null, get_lang($member_id), false);
-                    if (is_null($subject_line)) {
+                    if ($subject_line === null) {
                         $subject_line = do_lang('DEFAULT__CATALOGUE_VIEW_REPORT_SUBJECT', comcode_escape($catalogue_title), comcode_escape(get_site_name()), null, get_lang($member_id));
                     }
 

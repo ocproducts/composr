@@ -72,10 +72,10 @@ class Hook_realtime_rain_cns
                 $rows = $GLOBALS['FORUM_DB']->query('SELECT p_intended_solely_for,id,p_poster AS member_id,p_time AS timestamp,p_cache_forum_id,p_post,p_title,p_ip_address FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE p_time BETWEEN ' . strval($from) . ' AND ' . strval($to));
 
                 foreach ($rows as $row) {
-                    if (is_null($row['p_cache_forum_id'])) {
+                    if ($row['p_cache_forum_id'] === null) {
                         continue;
                     }
-                    if (!is_null($row['p_intended_solely_for'])) {
+                    if ($row['p_intended_solely_for'] !== null) {
                         continue;
                     }
                     if (!has_category_access(get_member(), 'forums', strval($row['p_cache_forum_id']))) {

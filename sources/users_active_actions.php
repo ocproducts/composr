@@ -31,14 +31,14 @@ function restricted_manually_enabled_backdoor()
     require_code('users_inactive_occasionals');
 
     $ks = get_param_string('keep_su', null);
-    if (!is_null($ks)) {
+    if ($ks !== null) {
         if (get_param_integer('keep_su_strict', 0) == 0) {
             $GLOBALS['IS_ACTUALLY_ADMIN'] = true;
             $GLOBALS['SESSION_CONFIRMED'] = 1;
         }
         $su = $GLOBALS['FORUM_DRIVER']->get_member_from_username($ks);
 
-        if (!is_null($su)) {
+        if ($su !== null) {
             $ret = $su;
             create_session($ret, 1);
             return $ret;
@@ -108,7 +108,7 @@ function handle_active_login($username)
         $ob->run(true, $username, $member); // true means "a new login attempt"
     }
 
-    if (!is_null($member)) { // Valid user
+    if ($member !== null) { // Valid user
         $remember = post_param_integer('remember', 0);
 
         // Create invisibility cookie
@@ -368,7 +368,7 @@ function cms_setcookie($name, $value, $session = false, $http_only = false, $day
         }
     }
 
-    $time = $session ? null : (time() + (is_null($days) ? get_cookie_days() : $days) * 24 * 60 * 60);
+    $time = $session ? null : (time() + (($days === null) ? get_cookie_days() : $days) * 24 * 60 * 60);
     if ($cookie_domain == '') {
         $output = @setcookie($name, $value, $time, $path);
     } else {

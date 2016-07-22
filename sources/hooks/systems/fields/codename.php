@@ -65,7 +65,7 @@ class Hook_fields_codename
      */
     public function get_field_value_row_bits($field, $required = null, $default = null)
     {
-        if (($default !== null) && (strtoupper($default) === 'RANDOM') && (!is_null($field)) && (!is_null($field['id']))) { // We need to calculate a default even if not required, because the defaults are programmatic
+        if (($default !== null) && (strtoupper($default) === 'RANDOM') && ($field !== null) && ($field['id'] !== null)) { // We need to calculate a default even if not required, because the defaults are programmatic
             $default = $this->get_field_random($field['id'], $default);
         }
         return array('short_text', $default, 'short');
@@ -106,7 +106,7 @@ class Hook_fields_codename
             return null;
         }
 
-        if (is_null($actual_value)) {
+        if ($actual_value === null) {
             $actual_value = ''; // Plug anomaly due to unusual corruption
         }
         $input_name = empty($field['cf_input_name']) ? ('field_' . strval($field['id'])) : $field['cf_input_name'];
@@ -157,7 +157,7 @@ class Hook_fields_codename
     {
         $rand_array = '1234567890abcdefghijklmnopqrstuvwxyz';
         $c = strlen($rand_array) - 1;
-        if (($default == '') || (is_null($default))) {
+        if (($default == '') || ($default === null)) {
             $length = 10;
         } else {
             $length = intval($default);
@@ -176,7 +176,7 @@ class Hook_fields_codename
                 break;
             }
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_efv_integer', 'ce_id', array('cv_value' => $value, 'cf_id' => $field_id));
-        } while (!is_null($test));
+        } while ($test !== null);
 
         return $value;
     }

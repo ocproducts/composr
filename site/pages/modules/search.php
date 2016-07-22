@@ -61,7 +61,7 @@ class Module_search
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->create_table('searches_logged', array(
                 'id' => '*AUTO',
                 's_member_id' => 'MEMBER',
@@ -76,13 +76,13 @@ class Module_search
             $GLOBALS['SITE_DB']->create_index('searches_logged', '#past_search_ft', array('s_primary'));
         }
 
-        if ((is_null($upgrade_from)) || ($upgrade_from < 5)) {
+        if (($upgrade_from === null) || ($upgrade_from < 5)) {
             add_privilege('SEARCH', 'autocomplete_past_search', false);
             add_privilege('SEARCH', 'autocomplete_keyword_comcode_page', false);
             add_privilege('SEARCH', 'autocomplete_title_comcode_page', false);
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 6)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 6)) {
             $GLOBALS['SITE_DB']->drop_table_if_exists('searches_saved');
         }
     }
@@ -138,7 +138,7 @@ class Module_search
                 $ob = object_factory('Hook_search_' . filter_naughty_harsh($id));
                 $info = $ob->info();
 
-                if (!is_null($info)) {
+                if ($info !== null) {
                     $this->title = get_screen_title('_SEARCH_TITLE', true, array($info['lang']));
                 }
 
@@ -206,7 +206,7 @@ class Module_search
             $info = $this->info;
 
             $under = get_param_string('search_under', '!', true);
-            if ((!is_null($info)) && (method_exists($ob, 'get_tree'))) {
+            if (($info !== null) && (method_exists($ob, 'get_tree'))) {
                 $ob->get_tree($under);
             }
         }
@@ -251,7 +251,7 @@ class Module_search
             require_code('hooks/modules/search/' . filter_naughty_harsh($id), true);
             $ob = object_factory('Hook_search_' . filter_naughty_harsh($id));
             $info = $ob->info();
-            if (is_null($info)) {
+            if ($info === null) {
                 warn_exit(do_lang_tempcode('SEARCH_HOOK_NOT_AVAILABLE'));
             }
 
@@ -282,7 +282,7 @@ class Module_search
                 $simple_content = $tree_hook_ob->simple(null, $ajax_options, preg_replace('#,.*$#', '', $under));
 
                 $nice_label = $under;
-                if (!is_null($under)) {
+                if ($under !== null) {
                     $simple_content_evaluated = $simple_content->evaluate();
                     $matches = array();
                     if (preg_match('#<option [^>]*value="' . preg_quote($under, '#') . '(' . ((strpos($under, ',') === false) ? ',' : '') . '[^"]*)?"[^>]*>([^>]* &gt; )?([^>]*)</option>#', $simple_content_evaluated, $matches) != 0) {
@@ -298,7 +298,7 @@ class Module_search
                     '_GUID' => '25368e562be3b4b9c6163aa008b47c91',
                     'MULTI_SELECT' => false,
                     'TABINDEX' => strval(get_form_field_tabindex()),
-                    'NICE_LABEL' => (is_null($nice_label) || $nice_label == '-1') ? '' : $nice_label,
+                    'NICE_LABEL' => (($nice_label === null) || $nice_label == '-1') ? '' : $nice_label,
                     'END_OF_FORM' => true,
                     'REQUIRED' => '',
                     '_REQUIRED' => false,
@@ -323,7 +323,7 @@ class Module_search
             $options = new Tempcode();
             if (array_key_exists('special_on', $info)) {
                 foreach ($info['special_on'] as $name => $display) {
-                    $options->attach(do_template('SEARCH_FOR_SEARCH_DOMAIN_OPTION', array('_GUID' => 'c1853f42d0a110026453f8b94c9f623c', 'CHECKED' => (is_null($content)) || (get_param_integer('option_' . $id . '_' . $name, 0) == 1), 'NAME' => 'option_' . $id . '_' . $name, 'DISPLAY' => $display)));
+                    $options->attach(do_template('SEARCH_FOR_SEARCH_DOMAIN_OPTION', array('_GUID' => 'c1853f42d0a110026453f8b94c9f623c', 'CHECKED' => ($content === null) || (get_param_integer('option_' . $id . '_' . $name, 0) == 1), 'NAME' => 'option_' . $id . '_' . $name, 'DISPLAY' => $display)));
                 }
             }
             if (array_key_exists('special_off', $info)) {
@@ -353,7 +353,7 @@ class Module_search
                 $has_template_search = true;
             }
 
-            $specialisation = do_template('SEARCH_ADVANCED', array('_GUID' => 'fad0c147b8291ba972f105c65715f1ac', 'AJAX' => $ajax, 'OPTIONS' => $options, 'TREE' => $tree, 'UNDERNEATH' => !is_null($under)));
+            $specialisation = do_template('SEARCH_ADVANCED', array('_GUID' => 'fad0c147b8291ba972f105c65715f1ac', 'AJAX' => $ajax, 'OPTIONS' => $options, 'TREE' => $tree, 'UNDERNEATH' => $under !== null));
         } else { // General screen
             $map = array('page' => '_SELF', 'type' => 'results');
             $under = get_param_string('search_under', '-1', true);
@@ -367,13 +367,13 @@ class Module_search
             $_hooks = find_all_hook_obs('modules', 'search', 'Hook_search_');
             foreach ($_hooks as $hook => $ob) {
                 $info = $ob->info();
-                if (is_null($info)) {
+                if ($info === null) {
                     continue;
                 }
 
                 $is_default_or_advanced = (($info['default']) && ($id == '')) || ($hook == $id);
 
-                $checked = (get_param_integer('search_' . $hook, (((is_null($content)) && (get_param_integer('all_defaults', null) !== 0)) || (get_param_integer('all_defaults', 0) == 1)) ? ($is_default_or_advanced ? 1 : 0) : 0) == 1);
+                $checked = (get_param_integer('search_' . $hook, ((($content === null) && (get_param_integer('all_defaults', null) !== 0)) || (get_param_integer('all_defaults', 0) == 1)) ? ($is_default_or_advanced ? 1 : 0) : 0) == 1);
 
                 $options_url = ((array_key_exists('special_on', $info)) || (array_key_exists('special_off', $info)) || (array_key_exists('extra_sort_fields', $info)) || (method_exists($ob, 'get_fields')) || (method_exists($ob, 'get_tree')) || (method_exists($ob, 'get_ajax_tree'))) ? build_url(array('page' => '_SELF', 'id' => $hook), '_SELF', null, false, true) : new Tempcode();
 
@@ -415,17 +415,17 @@ class Module_search
         if (get_option('search_with_date_range') == '1') {
             $cutoff_from = post_param_date('cutoff_from', true);
             $cutoff_to = post_param_date('cutoff_to', true);
-            if (is_null($cutoff_from) && is_null($cutoff_to)) {
+            if (($cutoff_from === null) && ($cutoff_to === null)) {
                 $cutoff = null;
             } else {
                 $cutoff = array($cutoff_from, $cutoff_to);
 
-                $cutoff_from_day = is_null($cutoff_from) ? null : intval(date('d', utctime_to_usertime($cutoff_from)));
-                $cutoff_from_month = is_null($cutoff_from) ? null : intval(date('m', utctime_to_usertime($cutoff_from)));
-                $cutoff_from_year = is_null($cutoff_from) ? null : intval(date('Y', utctime_to_usertime($cutoff_from)));
-                $cutoff_to_day = is_null($cutoff_to) ? null : intval(date('d', utctime_to_usertime($cutoff_to)));
-                $cutoff_to_month = is_null($cutoff_to) ? null : intval(date('m', utctime_to_usertime($cutoff_to)));
-                $cutoff_to_year = is_null($cutoff_to) ? null : intval(date('Y', utctime_to_usertime($cutoff_to)));
+                $cutoff_from_day = ($cutoff_from === null) ? null : intval(date('d', utctime_to_usertime($cutoff_from)));
+                $cutoff_from_month = ($cutoff_from === null) ? null : intval(date('m', utctime_to_usertime($cutoff_from)));
+                $cutoff_from_year = ($cutoff_from === null) ? null : intval(date('Y', utctime_to_usertime($cutoff_from)));
+                $cutoff_to_day = ($cutoff_to === null) ? null : intval(date('d', utctime_to_usertime($cutoff_to)));
+                $cutoff_to_month = ($cutoff_to === null) ? null : intval(date('m', utctime_to_usertime($cutoff_to)));
+                $cutoff_to_year = ($cutoff_to === null) ? null : intval(date('Y', utctime_to_usertime($cutoff_to)));
             }
         } else {
             $days = get_param_integer('days', null);
@@ -448,7 +448,7 @@ class Module_search
         $out = null;
         $pagination = '';
         $num_results = 0;
-        if (!is_null($content)) {
+        if ($content !== null) {
             list($out, $pagination, $num_results) = $this->results($id, $author, $author_id, $cutoff, $sort, $direction, $only_titles, $search_under);
 
             if (has_zone_access(get_member(), 'adminzone')) {
@@ -459,7 +459,7 @@ class Module_search
 
         $tpl = do_template('SEARCH_FORM_SCREEN', array(
             '_GUID' => '8bb208185740183323a6fe6e89d55de5',
-            'SEARCH_TERM' => is_null($content) ? '' : $content,
+            'SEARCH_TERM' => ($content === null) ? '' : $content,
             'HAS_TEMPLATE_SEARCH' => $has_template_search,
             'NUM_RESULTS' => integer_format($num_results),
             'EXTRA_SORT_FIELDS' => $extra_sort_fields,
@@ -480,14 +480,14 @@ class Module_search
             'SEARCH_TYPE' => ($id == '') ? null : $id,
 
             'DAYS_LABEL' => (get_option('search_with_date_range') == '1') ? null : $days_label,
-            'DAYS' => is_null($days) ? '' : strval($days),
+            'DAYS' => ($days === null) ? '' : strval($days),
             'DATE_RANGE_LABEL' => (get_option('search_with_date_range') == '1') ? $date_range_label : null,
-            'CUTOFF_FROM_DAY' => is_null($cutoff_from_day) ? '' : strval($cutoff_from_day),
-            'CUTOFF_FROM_MONTH' => is_null($cutoff_from_month) ? '' : strval($cutoff_from_month),
-            'CUTOFF_FROM_YEAR' => is_null($cutoff_from_year) ? '' : strval($cutoff_from_year),
-            'CUTOFF_TO_DAY' => is_null($cutoff_to_day) ? '' : strval($cutoff_to_day),
-            'CUTOFF_TO_MONTH' => is_null($cutoff_to_month) ? '' : strval($cutoff_to_month),
-            'CUTOFF_TO_YEAR' => is_null($cutoff_to_year) ? '' : strval($cutoff_to_year),
+            'CUTOFF_FROM_DAY' => ($cutoff_from_day === null) ? '' : strval($cutoff_from_day),
+            'CUTOFF_FROM_MONTH' => ($cutoff_from_month === null) ? '' : strval($cutoff_from_month),
+            'CUTOFF_FROM_YEAR' => ($cutoff_from_year === null) ? '' : strval($cutoff_from_year),
+            'CUTOFF_TO_DAY' => ($cutoff_to_day === null) ? '' : strval($cutoff_to_day),
+            'CUTOFF_TO_MONTH' => ($cutoff_to_month === null) ? '' : strval($cutoff_to_month),
+            'CUTOFF_TO_YEAR' => ($cutoff_to_year === null) ? '' : strval($cutoff_to_year),
         ));
 
         require_code('templates_internalise_screen');
@@ -581,7 +581,7 @@ class Module_search
 
             if ((($id == '') || ($id == $hook)) && (($test == 1) || ((get_param_integer('all_defaults', 0) == 1) && (true)) || ($id == $hook))) {
                 $info = $ob->info();
-                if (is_null($info)) {
+                if ($info === null) {
                     continue;
                 }
             }
@@ -616,7 +616,7 @@ class Module_search
                     set_time_limit(5); // Prevent errant search hooks (easily written!) taking down a server. Each call given 5 seconds (calling set_time_limit resets the timer).
                 }
                 $hook_results = $ob->run($content, $only_search_meta, $direction, $max, $start, $only_titles, $content_where, $author, $author_id, $cutoff, $sort, $max, $boolean_operator, $where_clause, $search_under, $boolean_search ? 1 : 0);
-                if (is_null($hook_results)) {
+                if ($hook_results === null) {
                     continue;
                 }
                 foreach ($hook_results as $i => $result) {

@@ -33,7 +33,7 @@ class Forum_driver_vb3 extends Forum_driver_base
     public function check_db()
     {
         $test = $this->db->query('SELECT COUNT(*) FROM ' . $this->db->get_table_prefix() . 'user', null, null, true);
-        return !is_null($test);
+        return $test !== null;
     }
 
     /**
@@ -356,19 +356,19 @@ class Forum_driver_vb3 extends Forum_driver_base
      */
     public function make_post_forum_topic($forum_name, $topic_identifier, $member, $post_title, $post, $content_title, $topic_identifier_encapsulation_prefix, $content_url = null, $time = null, $ip = null, $validated = null, $topic_validated = 1, $skip_post_checks = false, $poster_name_if_guest = '', $parent_id = null, $staff_only = false)
     {
-        if (is_null($time)) {
+        if ($time === null) {
             $time = time();
         }
-        if (is_null($ip)) {
+        if ($ip === null) {
             $ip = get_ip_address();
         }
         $forum_id = $this->forum_id_from_name($forum_name);
-        if (is_null($forum_id)) {
+        if ($forum_id === null) {
             warn_exit(do_lang_tempcode('MISSING_FORUM', escape_html($forum_name)), false, true);
         }
         $username = $this->get_username($member);
         $topic_id = $this->find_topic_id_for_topic_identifier($forum_name, $topic_identifier);
-        $is_new = is_null($topic_id);
+        $is_new = ($topic_id === null);
         if ($is_new) {
             $topic_id = $this->db->query_insert('thread', array('title' => $content_title . ', ' . $topic_identifier_encapsulation_prefix . ': #' . $topic_identifier, 'lastpost' => $time, 'forumid' => $forum_id, 'open' => 1, 'postusername' => $username, 'postuserid' => $member, 'lastposter' => $username, 'dateline' => $time, 'visible' => 1), true);
             $home_link = hyperlink($content_url, $content_title, false, true);
@@ -407,7 +407,7 @@ class Forum_driver_vb3 extends Forum_driver_base
      */
     public function get_forum_topic_posts($topic_id, &$count, $max = 100, $start = 0, $mark_read = true, $reverse = false)
     {
-        if (is_null($topic_id)) {
+        if ($topic_id === null) {
             return (-2);
         }
         $order = $reverse ? 'dateline DESC' : 'dateline';
@@ -481,7 +481,7 @@ class Forum_driver_vb3 extends Forum_driver_base
             $id_list = 'forumid=' . strval($name);
         } elseif (!is_array($name)) {
             $id = $this->forum_id_from_name($name);
-            if (is_null($id)) {
+            if ($id === null) {
                 return null;
             }
             $id_list = 'forumid=' . strval($id);
@@ -663,7 +663,7 @@ class Forum_driver_vb3 extends Forum_driver_base
     public function get_post_count($member)
     {
         $c = $this->get_member_row_field($member, 'posts');
-        if (is_null($c)) {
+        if ($c === null) {
             return 0;
         }
         return $c;
@@ -697,7 +697,7 @@ class Forum_driver_vb3 extends Forum_driver_base
      */
     public function find_emoticons()
     {
-        if (!is_null($this->EMOTICON_CACHE)) {
+        if ($this->EMOTICON_CACHE !== null) {
             return $this->EMOTICON_CACHE;
         }
         $this->EMOTICON_CACHE = array();
@@ -754,7 +754,7 @@ class Forum_driver_vb3 extends Forum_driver_base
             }
             if ($skin > 0) { // User has a custom theme
                 $vb = $this->db->query_select_value_if_there('style', 'title', array('styleid' => $skin));
-                if (!is_null($vb)) {
+                if ($vb !== null) {
                     $def = array_key_exists($vb, $map) ? $map[$vb] : $vb;
                 }
             }
@@ -763,7 +763,7 @@ class Forum_driver_vb3 extends Forum_driver_base
         // Look for a skin according to our site name (we bother with this instead of 'default' because Composr itself likes to never choose a theme when forum-theme integration is on: all forum [via map] or all Composr seems cleaner, although it is complex)
         if ((!(strlen($def) > 0)) || (!file_exists(get_custom_file_base() . '/themes/' . $def))) {
             $vb = $this->db->query_select_value_if_there('style', 'title', array('title' => get_site_name()));
-            if (!is_null($vb)) {
+            if ($vb !== null) {
                 $def = array_key_exists($vb, $map) ? $map[$vb] : $vb;
             }
         }
@@ -840,11 +840,11 @@ class Forum_driver_vb3 extends Forum_driver_base
         } else {
             $id = $this->db->query_select_value_if_there('profilefield', 'profilefieldid', array('title' => 'cms_' . $field));
         }
-        if (is_null($id)) {
+        if ($id === null) {
             return;
         }
         $old = $this->db->query_select_value_if_there('userfield', 'userid', array('userid' => $member));
-        if (is_null($old)) {
+        if ($old === null) {
             $this->db->query_insert('userfield', array('userid' => $member));
         }
         $this->db->query_update('userfield', array('field' . strval($id) => $value), array('userid' => $member), '', 1);
@@ -937,7 +937,7 @@ class Forum_driver_vb3 extends Forum_driver_base
     public function get_member_row_field($member, $field)
     {
         $row = $this->get_member_row($member);
-        return is_null($row) ? null : $row[$field];
+        return ($row === null) ? null : $row[$field];
     }
 
     /**
@@ -1008,7 +1008,7 @@ class Forum_driver_vb3 extends Forum_driver_base
             $config = array();
             @include($path . '/includes/config.php');
             $PROBED_FORUM_CONFIG = array();
-            if (!is_null($dbname)) {
+            if ($dbname !== null) {
                 $PROBED_FORUM_CONFIG['sql_database'] = $dbname;
                 $PROBED_FORUM_CONFIG['sql_user'] = $dbusername;
                 $PROBED_FORUM_CONFIG['sql_pass'] = $dbpassword;
@@ -1084,7 +1084,7 @@ class Forum_driver_vb3 extends Forum_driver_base
     {
         // Are they banned
         $ban = $this->db->query_select_value_if_there('userban', 'liftdate', array('userid' => $member));
-        if (!is_null($ban)) {
+        if ($ban !== null) {
             return true;
         }
 
@@ -1100,7 +1100,7 @@ class Forum_driver_vb3 extends Forum_driver_base
     protected function _is_staff($member)
     {
         $usergroup = $this->get_member_row_field($member, 'usergroupid');
-        if (is_null($usergroup)) {
+        if ($usergroup === null) {
             return false;
         }
         return ((in_array($usergroup, $this->get_super_admin_groups())) || (in_array($usergroup, $this->get_moderator_groups())));
@@ -1115,7 +1115,7 @@ class Forum_driver_vb3 extends Forum_driver_base
     protected function _is_super_admin($member)
     {
         $usergroup = $this->get_member_row_field($member, 'usergroupid');
-        if (is_null($usergroup)) {
+        if ($usergroup === null) {
             return false;
         }
         return (in_array($usergroup, $this->get_super_admin_groups()));
@@ -1210,7 +1210,7 @@ class Forum_driver_vb3 extends Forum_driver_base
         $out = array();
         $out['id'] = null;
 
-        if (is_null($userid)) {
+        if ($userid === null) {
             $rows = $this->db->query_select('user', array('*'), array('username' => $username), '', 1);
             if (array_key_exists(0, $rows)) {
                 $this->MEMBER_ROWS_CACHED[$rows[0]['userid']] = $rows[0];

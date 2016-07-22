@@ -263,7 +263,7 @@ class Module_cms_chat
                 $url = build_url(array('page' => '_SELF', 'type' => 'room', 'id' => $row['id']), '_SELF');
                 $messages = $GLOBALS['SITE_DB']->query_select_value('chat_messages', 'COUNT(*)', array('room_id' => $row['id']));
                 $_username = $GLOBALS['FORUM_DRIVER']->get_username($row['room_owner']);
-                if (is_null($_username)) {
+                if ($_username === null) {
                     $username = do_lang_tempcode('NA_EM');
                 } else {
                     $username = make_string_tempcode($_username);
@@ -346,7 +346,7 @@ class Module_cms_chat
             $url = build_url(array('page' => '_SELF', 'type' => 'edit', 'room_id' => $room_id, 'id' => $myrow['id']), '_SELF');
 
             $username = $GLOBALS['FORUM_DRIVER']->get_username($myrow['member_id']);
-            if (is_null($username)) {
+            if ($username === null) {
                 $username = '';
             }//do_lang('UNKNOWN');
 
@@ -405,7 +405,7 @@ class Module_cms_chat
         check_privilege('ban_chatters_from_rooms');
 
         $member_id = post_param_integer('member_id', null);
-        if (is_null($member_id)) {
+        if ($member_id === null) {
             $member_id = get_param_integer('member_id');
             $confirm_needed = true;
         } else {
@@ -421,7 +421,7 @@ class Module_cms_chat
         }
 
         $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
-        if (is_null($username)) {
+        if ($username === null) {
             $username = do_lang('UNKNOWN');
         }
 
@@ -456,7 +456,7 @@ class Module_cms_chat
         check_privilege('ban_chatters_from_rooms');
 
         $member_id = post_param_integer('member_id', null);
-        if (is_null($member_id)) {
+        if ($member_id === null) {
             $member_id = get_param_integer('member_id');
             $confirm_needed = true;
         } else {
@@ -464,7 +464,7 @@ class Module_cms_chat
         }
 
         $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
-        if (is_null($username)) {
+        if ($username === null) {
             $username = do_lang('UNKNOWN');
         }
 
@@ -532,7 +532,7 @@ class Module_cms_chat
             $message_id = get_param_integer('id');
 
             $room_id = $GLOBALS['SITE_DB']->query_select_value_if_there('chat_messages', 'room_id', array('id' => $message_id));
-            if (is_null($room_id)) {
+            if ($room_id === null) {
                 warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
             }
             check_chatroom_access($room_id);

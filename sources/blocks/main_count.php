@@ -66,7 +66,7 @@ class Block_main_count
 
         // Set it if it's not already
         $_current_value = get_value($name);
-        if (is_null($_current_value)) {
+        if ($_current_value === null) {
             set_value($name, strval($start));
             $current_value = $start;
         } else {

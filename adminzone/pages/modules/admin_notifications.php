@@ -142,7 +142,7 @@ class Module_admin_notifications
                     if ($save_query) {
                         $checked = false; // Will strictly read from POST
                     } else {
-                        if (is_null($current_setting)) {
+                        if ($current_setting === null) {
                             $checked = ($possible == A__CHOICE);
                         } else {
                             if ($possible == A__STATISTICAL) {

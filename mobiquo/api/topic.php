@@ -130,7 +130,7 @@ function get_topic_func($raw_params) // Get topics in a forum
     list($total_topic_num, $_details, $forum_name, $unread_sticky_count, $unread_announce_count, $action_details) = $topic_object->get_num_topics($mode, $forum_id, $start, $max);
 
     foreach ($_details as $topic) {
-        if (is_null($topic['t_cache_first_member_id'])) {
+        if ($topic['t_cache_first_member_id'] === null) {
             continue;
         }
 

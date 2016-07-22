@@ -32,12 +32,12 @@ function set_comment_forum_for($feedback_code, $category_id, $forum_id)
     $old_forum_id = find_overridden_comment_forum($feedback_code, $category_id);
     $_old_forum_id = $GLOBALS['FORUM_DRIVER']->forum_id_from_name($old_forum_id);
     $_forum_id = $GLOBALS['FORUM_DRIVER']->forum_id_from_name($forum_id);
-    if (is_null($_forum_id)) {
+    if ($_forum_id === null) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'forum'));
     }
 
     $default_comment_topic_forum = $GLOBALS['FORUM_DRIVER']->forum_id_from_name(get_option('comments_forum_name'));
-    if (!is_null($category_id)) {
+    if ($category_id !== null) {
         if ($default_comment_topic_forum == $_forum_id) {
             delete_value('comment_forum__' . $feedback_code . '__' . $category_id);
         } else {
@@ -67,7 +67,7 @@ function set_comment_forum_for($feedback_code, $category_id, $forum_id)
                 $id = $row[$info['id_field']];
                 $feedback_id = $feedback_code . '_' . (is_string($id) ? $id : strval($id));
                 $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier($old_forum_id, $feedback_id, do_lang('COMMENT'));
-                if (!is_null($topic_id)) {
+                if ($topic_id !== null) {
                     $topics[] = $topic_id;
                 }
             }
@@ -105,7 +105,7 @@ function trackback_script()
         if ($hook == $page) {
             require_code('hooks/systems/trackback/' . filter_naughty_harsh($hook));
             $object = object_factory('Hook_trackback_' . filter_naughty_harsh($hook), true);
-            if (is_null($object)) {
+            if ($object === null) {
                 continue;
             }
             $allow_trackbacks = $object->run($id);
@@ -173,7 +173,7 @@ function feedback_fields($content_type, $allow_rating, $allow_comments, $allow_t
     }
 
     if (get_option('is_on_comments') == '1') {
-        if (!is_null($allow_reviews)) {
+        if ($allow_reviews !== null) {
             $choices = new Tempcode();
             $choices->attach(form_input_list_entry('0', !$allow_comments && !$allow_reviews, do_lang('NO')));
             $choices->attach(form_input_list_entry('1', $allow_comments && !$allow_reviews, do_lang('ALLOW_COMMENTS_ONLY')));
@@ -184,7 +184,7 @@ function feedback_fields($content_type, $allow_rating, $allow_comments, $allow_t
         }
     }
 
-    if ((get_option('is_on_trackbacks') == '1') && (!is_null($allow_trackbacks))) {
+    if ((get_option('is_on_trackbacks') == '1') && ($allow_trackbacks !== null)) {
         require_lang('trackbacks');
         $fields->attach(form_input_tick(do_lang_tempcode('ALLOW_TRACKBACKS'), do_lang_tempcode('DESCRIPTION_ALLOW_TRACKBACKS', $content_type), $field_name_prefix . 'allow_trackbacks', $allow_trackbacks));
     }
@@ -196,9 +196,9 @@ function feedback_fields($content_type, $allow_rating, $allow_comments, $allow_t
     if ($show_header) {
         if (!$fields->is_empty()) {
             if ($default_off) {
-                $section_hidden = $notes == '' && !$allow_comments && (is_null($allow_trackbacks) || !$allow_trackbacks) && !$allow_rating;
+                $section_hidden = $notes == '' && !$allow_comments && (($allow_trackbacks === null) || !$allow_trackbacks) && !$allow_rating;
             } else {
-                $section_hidden = $notes == '' && $allow_comments && (is_null($allow_trackbacks) || $allow_trackbacks || (get_option('is_on_trackbacks') == '0')) && $allow_rating;
+                $section_hidden = $notes == '' && $allow_comments && (($allow_trackbacks === null) || $allow_trackbacks || (get_option('is_on_trackbacks') == '0')) && $allow_rating;
             }
             $_fields = do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '95864784029fd6d46a8b2ebbca9d81eb', 'SECTION_HIDDEN' => $section_hidden, 'TITLE' => do_lang_tempcode((get_option('enable_staff_notes') == '1') ? 'FEEDBACK_AND_NOTES' : '_FEEDBACK')));
             $_fields->attach($fields);

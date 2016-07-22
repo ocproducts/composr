@@ -61,7 +61,7 @@ function force_have_afm_details()
 
     $got_ftp_details = post_param_integer('got_ftp_details', 0);
     $ftp_password = get_value('ftp_password');
-    if (is_null($ftp_password)) {
+    if ($ftp_password === null) {
         $ftp_password = '';
     }
     //$uses_ftp = get_value('uses_ftp');    We can't use this because there's no reliable way to trust this is always going to be right (permissions change/differ, and we can't accurately run a test and trust the result going forward for everything)
@@ -128,14 +128,14 @@ function get_afm_form_fields()
     $ftp_directory = get_value('ftp_directory');
     $ftp_domain = get_value('ftp_domain');
     $_uses_ftp = running_script('upgrader') ? '0' : get_value('uses_ftp');
-    if (is_null($_uses_ftp)) {
+    if ($_uses_ftp === null) {
         $uses_ftp = !cms_is_writable(get_file_base() . '/adminzone/index.php');
     } else {
         $uses_ftp = ($_uses_ftp == '1');
     }
 
     // Domain
-    if (is_null($ftp_domain)) {
+    if ($ftp_domain === null) {
         if (!empty($GLOBALS['SITE_INFO']['ftp_domain'])) {
             $ftp_domain = $GLOBALS['SITE_INFO']['ftp_domain'];
         } else {
@@ -144,7 +144,7 @@ function get_afm_form_fields()
     }
 
     // Username
-    if (is_null($ftp_username)) {
+    if ($ftp_username === null) {
         if (!empty($GLOBALS['SITE_INFO']['ftp_username'])) {
             $ftp_username = $GLOBALS['SITE_INFO']['ftp_username'];
         } else {
@@ -158,14 +158,14 @@ function get_afm_form_fields()
             } else {
                 $ftp_username = '';
             }
-            if (is_null($ftp_username)) {
+            if ($ftp_username === null) {
                 $ftp_username = '';
             }
         }
     }
 
     // Directory
-    if (is_null($ftp_directory)) {
+    if ($ftp_directory === null) {
         if (!empty($GLOBALS['SITE_INFO']['ftp_directory'])) {
             $ftp_directory = $GLOBALS['SITE_INFO']['ftp_directory'];
         } else {
@@ -221,7 +221,7 @@ function get_afm_form_fields()
 function _ftp_info($light_fail = false)
 {
     global $AFM_FTP_CONN;
-    if (!is_null($AFM_FTP_CONN)) {
+    if ($AFM_FTP_CONN !== null) {
         return $AFM_FTP_CONN;
     }
 

@@ -115,7 +115,7 @@ class Module_admin_aggregate_types extends Standard_crud_module
      */
     public function pre_run($top_level = true, $type = null)
     {
-        if (is_null($type)) {
+        if ($type === null) {
             $type = get_param_string('type', 'browse');
         }
 
@@ -222,7 +222,7 @@ class Module_admin_aggregate_types extends Standard_crud_module
             }
         }
 
-        if (is_null($other_parameters)) {
+        if ($other_parameters === null) {
             $other_parameters = array();
         }
 

@@ -70,11 +70,11 @@ class Module_quiz
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 5)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 5)) {
             $GLOBALS['SITE_DB']->add_table_field('quiz_questions', 'q_required', 'BINARY');
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 6)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 6)) {
             $GLOBALS['SITE_DB']->add_table_field('quizzes', 'q_reveal_answers', 'BINARY');
             $GLOBALS['SITE_DB']->add_table_field('quizzes', 'q_shuffle_questions', 'BINARY');
             $GLOBALS['SITE_DB']->add_table_field('quizzes', 'q_shuffle_answers', 'BINARY');
@@ -95,7 +95,7 @@ class Module_quiz
             $GLOBALS['SITE_DB']->add_table_field('quiz_questions', 'q_question_extra_text', 'LONG_TRANS');
         }
 
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->create_table('quiz_member_last_visit', array(
                 'id' => '*AUTO',
                 'v_time' => 'TIME',
@@ -174,7 +174,7 @@ class Module_quiz
             $GLOBALS['SITE_DB']->create_index('quizzes', 'ftjoin_qstarttext', array('q_start_text'));
         }
 
-        if ((is_null($upgrade_from)) || ($upgrade_from < 6)) {
+        if (($upgrade_from === null) || ($upgrade_from < 6)) {
             add_privilege('QUIZZES', 'view_others_quiz_results', false);
             add_privilege('QUIZZES', 'bypass_quiz_timer', false);
 
@@ -391,27 +391,27 @@ class Module_quiz
     public function enforcement_checks($quiz)
     {
         // Check they are not a guest trying to do a quiz a guest could not do
-        if ((is_guest()) && (($quiz['q_points_for_passing'] != 0) || (!is_null($quiz['q_redo_time'])) || ($quiz['q_num_winners'] != 0))) {
+        if ((is_guest()) && (($quiz['q_points_for_passing'] != 0) || ($quiz['q_redo_time'] !== null) || ($quiz['q_num_winners'] != 0))) {
             access_denied('NOT_AS_GUEST');
         }
 
         // Check they are on the necessary newsletter, if appropriate
-        if ((!is_null($quiz['q_tied_newsletter'])) && (addon_installed('newsletter'))) {
+        if (($quiz['q_tied_newsletter'] !== null) && (addon_installed('newsletter'))) {
             $on = $GLOBALS['SITE_DB']->query_select_value_if_there('newsletter_subscribe', 'email', array('newsletter_id' => $quiz['q_tied_newsletter'], 'email' => $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member())));
-            if (is_null($on)) {
+            if ($on === null) {
                 warn_exit(do_lang_tempcode('NOT_ON_NEWSLETTER'));
             }
         }
 
         // Check it is open
-        if (((!is_null($quiz['q_close_time'])) && ($quiz['q_close_time'] < time())) || ($quiz['q_open_time'] > time())) {
+        if ((($quiz['q_close_time'] !== null) && ($quiz['q_close_time'] < time())) || ($quiz['q_open_time'] > time())) {
             warn_exit(do_lang_tempcode('NOT_OPEN_THIS', do_lang_tempcode($quiz['q_type'])));
         }
 
         // Check they are allowed to do this (if repeating)
-        if ((!has_privilege(get_member(), 'bypass_quiz_repeat_time_restriction')) && (!is_null($quiz['q_redo_time']))) {
+        if ((!has_privilege(get_member(), 'bypass_quiz_repeat_time_restriction')) && ($quiz['q_redo_time'] !== null)) {
             $last_entry = $GLOBALS['SITE_DB']->query_select_value_if_there('quiz_entries', 'q_time', array('q_member' => get_member(), 'q_quiz' => $quiz['id']), 'ORDER BY q_time DESC');
-            if ((!is_null($last_entry)) && ($last_entry + $quiz['q_redo_time'] * 60 * 60 > time()) && ((is_null($quiz['q_timeout'])) || (time() - $last_entry >= $quiz['q_timeout']))) { // If passed timeout and less than redo time, error
+            if (($last_entry !== null) && ($last_entry + $quiz['q_redo_time'] * 60 * 60 > time()) && (($quiz['q_timeout'] === null) || (time() - $last_entry >= $quiz['q_timeout']))) { // If passed timeout and less than redo time, error
                 warn_exit(do_lang_tempcode('REPEATING_TOO_SOON', get_timezoned_date_time($last_entry + $quiz['q_redo_time'] * 60 * 60)));
             }
         }
@@ -437,9 +437,9 @@ class Module_quiz
         $this->enforcement_checks($quiz);
 
         $last_visit_time = $GLOBALS['SITE_DB']->query_select_value_if_there('quiz_member_last_visit', 'v_time', array('v_quiz_id' => $quiz_id, 'v_member_id' => get_member()), 'ORDER BY v_time DESC');
-        if (!is_null($last_visit_time)) { // Refresh / new attempt
+        if ($last_visit_time !== null) { // Refresh / new attempt
             $timer_offset = time() - $last_visit_time;
-            if ((is_null($quiz['q_timeout'])) || ($timer_offset >= $quiz['q_timeout'] * 60)) { // Treat as a new attempt. Must be within redo time to get here
+            if (($quiz['q_timeout'] === null) || ($timer_offset >= $quiz['q_timeout'] * 60)) { // Treat as a new attempt. Must be within redo time to get here
                 $GLOBALS['SITE_DB']->query_delete('quiz_member_last_visit', array(
                     'v_member_id' => get_member(),
                     'v_quiz_id' => $quiz_id,
@@ -512,7 +512,7 @@ class Module_quiz
             'TITLE' => $this->title,
             'START_TEXT' => $start_text,
             'FIELDS' => $fields,
-            'TIMEOUT' => is_null($quiz['q_timeout']) ? '' : strval($quiz['q_timeout'] * 60 - $timer_offset),
+            'TIMEOUT' => ($quiz['q_timeout'] === null) ? '' : strval($quiz['q_timeout'] * 60 - $timer_offset),
             'ALL_REQUIRED' => $all_required,
         ));
     }
@@ -533,10 +533,10 @@ class Module_quiz
         }
 
         $last_visit_time = $GLOBALS['SITE_DB']->query_select_value_if_there('quiz_member_last_visit', 'v_time', array('v_quiz_id' => $quiz_id, 'v_member_id' => get_member()), 'ORDER BY v_time DESC');
-        if (is_null($last_visit_time)) {
+        if ($last_visit_time === null) {
             warn_exit(do_lang_tempcode('QUIZ_TWICE'));
         }
-        if (!is_null($quiz['q_timeout'])) {
+        if ($quiz['q_timeout'] !== null) {
             if (time() - $last_visit_time > $quiz['q_timeout'] * 60 + 10) {
                 warn_exit(do_lang_tempcode('TOO_LONG_ON_SCREEN')); // +10 is for page load time, worst case scenario to be fair
             }
@@ -581,7 +581,7 @@ class Module_quiz
             }
         }
         $GLOBALS['SITE_DB']->query_update('quiz_member_last_visit', array( // Say quiz was completed on time limit, to force next attempt to be considered a re-do
-            'v_time' => time() - (is_null($quiz['q_timeout']) ? 0 : $quiz['q_timeout']) * 60,
+            'v_time' => time() - (($quiz['q_timeout'] === null) ? 0 : $quiz['q_timeout']) * 60,
         ), array(
             'v_member_id' => get_member(), 'v_quiz_id' => $quiz_id,
         ), '', 1);

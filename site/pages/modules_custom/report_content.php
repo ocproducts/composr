@@ -52,7 +52,7 @@ class Module_report_content
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->create_table('reported_content', array(
                 'r_session_id' => '*ID_TEXT',
                 'r_content_type' => '*ID_TEXT',
@@ -62,7 +62,7 @@ class Module_report_content
             $GLOBALS['SITE_DB']->create_index('reported_content', 'reported_already', array('r_content_type', 'r_content_id'));
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 3)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 3)) {
             $GLOBALS['SITE_DB']->alter_table_field('reported_content', 'r_session_id', 'ID_TEXT');
         }
     }
@@ -122,7 +122,7 @@ class Module_report_content
         require_code('cns_forums');
 
         $forum_id = $GLOBALS['FORUM_DRIVER']->forum_id_from_name(get_option('reported_posts_forum'));
-        if (is_null($forum_id)) {
+        if ($forum_id === null) {
             warn_exit(do_lang_tempcode('cns:NO_REPORTED_POST_FORUM'));
         }
 
@@ -132,11 +132,11 @@ class Module_report_content
 
         require_code('content');
 
-        if (!is_null($GLOBALS['SITE_DB']->query_select_value_if_there('reported_content', 'r_counts', array(
+        if ($GLOBALS['SITE_DB']->query_select_value_if_there('reported_content', 'r_counts', array(
             'r_session_id' => get_session_id(),
             'r_content_type' => $content_type,
             'r_content_id' => $content_id,
-        )))
+        ) !== null)
         ) {
             warn_exit(do_lang_tempcode('ALREADY_REPORTED_CONTENT'));
         }
@@ -149,9 +149,9 @@ class Module_report_content
         // Show form with input field and CAPTCHA, like forum's report post...
 
         $poster = do_lang('UNKNOWN');
-        if ((!is_null($poster_id)) && (!is_guest($poster_id))) {
+        if (($poster_id !== null) && (!is_guest($poster_id))) {
             $poster = $GLOBALS['FORUM_DRIVER']->get_username($poster_id);
-            if (!is_null($poster)) {
+            if ($poster !== null) {
                 $member = '{{' . $poster . '}}';
             }
         }
@@ -211,12 +211,11 @@ class Module_report_content
         $content_type = post_param_string('content_type'); // Equates to a content_meta_aware hook
         $content_id = post_param_string('content_id');
 
-        if (!is_null($GLOBALS['SITE_DB']->query_select_value_if_there('reported_content', 'r_counts', array(
+        if ($GLOBALS['SITE_DB']->query_select_value_if_there('reported_content', 'r_counts', array(
             'r_session_id' => get_session_id(),
             'r_content_type' => $content_type,
             'r_content_id' => $content_id,
-        )))
-        ) {
+        )) !== null) {
             warn_exit(do_lang_tempcode('ALREADY_REPORTED_CONTENT'));
         }
         list($content_title, , $cma_info, , $content_url) = content_get_details($content_type, $content_id);
@@ -231,7 +230,7 @@ class Module_report_content
         require_code('cns_topics_action2');
         require_code('cns_posts_action');
         require_code('cns_posts_action2');
-        if (!is_null($topic_id)) {
+        if ($topic_id !== null) {
             // Already a topic
             $new_topic = false;
         } else { // New topic
@@ -259,7 +258,7 @@ class Module_report_content
         ));
         if ($count >= intval(get_option('reported_times'))) {
             // Mark as unvalidated
-            if ((!is_null($cma_info['validated_field'])) && (strpos($cma_info['table'], '(') === false)) {
+            if (($cma_info['validated_field'] !== null) && (strpos($cma_info['table'], '(') === false)) {
                 $db = $GLOBALS[(substr($cma_info['table'], 0, 2) == 'f_') ? 'FORUM_DB' : 'SITE_DB'];
                 $db->query_update($cma_info['table'], array($cma_info['validated_field'] => 0), get_content_where_for_str_id($content_id, $cma_info));
             }

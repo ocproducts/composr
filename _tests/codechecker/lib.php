@@ -74,7 +74,7 @@ function parse_file($to_use, $verbose = false, $very_verbose = false, $i = null,
         echo '</pre>';
     }
     /*echo 'DONE ' . $FILENAME;
-    if (!is_null($i)) {
+    if ($i !== null) {
         echo ' - ' . $i . ' of ' . $count;
     }
     echo cnl();*/
@@ -162,7 +162,7 @@ function do_dir($dir, $no_custom = false, $orig_priority = false, $avoid = null)
     $dh = opendir($_dir);
     if ($dh) {
         while (($file = readdir($dh)) !== false) {
-            if ((!is_null($avoid)) && (in_array($file, $avoid))) {
+            if (($avoid !== null) && (in_array($file, $avoid))) {
                 continue;
             }
 

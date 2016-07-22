@@ -94,7 +94,7 @@ class Hook_whatsnew_comcode_pages
                 $name = titleify($page);
                 if (array_key_exists($id, $rows)) {
                     $_name = get_translated_text($rows[$id]['cc_page_title'], null, null, true);
-                    if (!is_null($_name)) {
+                    if ($_name !== null) {
                         $name = $_name;
                     }
                 }

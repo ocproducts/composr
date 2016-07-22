@@ -27,7 +27,7 @@ class Hook_member_boxes_buildr
     public function run($member_id)
     {
         $zone = get_page_zone('buildr', false);
-        if (is_null($zone)) {
+        if ($zone === null) {
             return array();
         }
         if (!has_zone_access(get_member(), $zone)) {
@@ -35,7 +35,7 @@ class Hook_member_boxes_buildr
         }
 
         $rows = $GLOBALS['SITE_DB']->query_select('w_members m JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'w_realms r ON m.location_realm=r.id JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'w_rooms rm ON r.location_x=rm.location_x AND r.location_y=rm.location_y AND r.location_realm=rm.location_realm', array('m.*', 'r.*', 'rm.name AS room_name'), array('m.id' => $member_id), '', 1, 0, true);
-        if ((is_null($rows)) || (!array_key_exists(0, $rows))) {
+        if (($rows === null) || (!array_key_exists(0, $rows))) {
             return array();
         }
 

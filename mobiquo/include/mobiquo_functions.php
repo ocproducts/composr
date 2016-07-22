@@ -118,7 +118,7 @@ function mobiquo_response_true()
  */
 function mobiquo_response_false($error_message = null)
 {
-    if (is_null($error_message)) {
+    if ($error_message === null) {
         $error_message = do_lang('INTERNAL_ERROR');
     }
 

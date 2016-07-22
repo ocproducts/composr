@@ -226,7 +226,7 @@ function add_spellchecker_words($words)
  */
 function _spellcheck_initialise($lang = null)
 {
-    if (is_null($lang)) {
+    if ($lang === null) {
         $lang = user_lang();
     }
     $lang = function_exists('do_lang') ? do_lang('dictionary') : 'en_GB'; // Default to UK English (as per Composr)

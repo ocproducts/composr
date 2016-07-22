@@ -97,8 +97,8 @@ function rebuild_sitemap_set($set_number, $last_time)
 
         $optional_details = '';
 
-        $_lastmod_date = is_null($edit_date) ? $add_date : $edit_date;
-        if (!is_null($_lastmod_date)) {
+        $_lastmod_date = ($edit_date === null) ? $add_date : $edit_date;
+        if ($_lastmod_date !== null) {
             $xml_date = xmlentities(date('Y-m-d\TH:i:s', $_lastmod_date) . substr_replace(date('O', $_lastmod_date), ':', 3, 0));
             $optional_details = '
         <lastmod>' . $xml_date . '</lastmod>';
@@ -310,10 +310,10 @@ function notify_sitemap_node_add($page_link, $add_date, $edit_date, $priority, $
 
     // Find set number we will write into
     $set_number = $GLOBALS['SITE_DB']->query_select_value_if_there('sitemap_cache', 'set_number', null, 'GROUP BY set_number HAVING COUNT(*)<' . strval(URLS_PER_SITEMAP_SET));
-    if (is_null($set_number)) {
+    if ($set_number === null) {
         // Next set number in sequence
         $set_number = $GLOBALS['SITE_DB']->query_select_value_if_there('sitemap_cache', 'MAX(set_number)');
-        if (is_null($set_number)) {
+        if ($set_number === null) {
             $set_number = 0;
         } else {
             $set_number++;
@@ -327,8 +327,8 @@ function notify_sitemap_node_add($page_link, $add_date, $edit_date, $priority, $
     $GLOBALS['SITE_DB']->query_insert('sitemap_cache', array(
         'page_link' => $page_link,
         'set_number' => $set_number,
-        'add_date' => is_null($add_date) ? null : $add_date,
-        'edit_date' => is_null($edit_date) ? $add_date : $edit_date,
+        'add_date' => ($add_date === null) ? null : $add_date,
+        'edit_date' => ($edit_date === null) ? $add_date : $edit_date,
         'last_updated' => time(),
         'is_deleted' => 0,
         'priority' => $priority,

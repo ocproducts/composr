@@ -60,7 +60,7 @@ class Module_pointstore
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->create_table('prices', array(
                 'name' => '*ID_TEXT',
                 'price' => 'INTEGER'
@@ -105,7 +105,7 @@ class Module_pointstore
             ));
         }
 
-        if (($upgrade_from < 5) && (!is_null($upgrade_from))) {
+        if (($upgrade_from < 5) && ($upgrade_from !== null)) {
             $GLOBALS['SITE_DB']->add_table_field('pstore_permissions', 'p_mail_subject', 'SHORT_TRANS');
             $GLOBALS['SITE_DB']->add_table_field('pstore_permissions', 'p_mail_body', 'LONG_TRANS');
 
@@ -113,7 +113,7 @@ class Module_pointstore
             $GLOBALS['SITE_DB']->add_table_field('pstore_customs', 'c_mail_body', 'LONG_TRANS');
         }
 
-        if (($upgrade_from < 6) && (!is_null($upgrade_from))) {
+        if (($upgrade_from < 6) && ($upgrade_from !== null)) {
             rename_config_option('text', 'community_billboard');
             rename_config_option('is_on_flagrant_buy', 'is_on_community_billboard_buy');
 

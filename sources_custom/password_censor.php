@@ -118,7 +118,7 @@ function _password_censor($text, $scan_type = 1, $explicit_only = false)
                 if (strtolower($m) == 'reminder') {
                     continue;
                 }
-                if (!is_null($GLOBALS['FORUM_DRIVER']->get_member_from_username($m))) {
+                if ($GLOBALS['FORUM_DRIVER']->get_member_from_username($m) !== null) {
                     continue; // A username
                 }
                 if (preg_match('#://[^ ]*' . preg_quote($m, '#') . '#', $text) != 0) {

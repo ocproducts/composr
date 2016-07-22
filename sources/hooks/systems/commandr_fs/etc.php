@@ -49,7 +49,7 @@ class Hook_commandr_fs_etc
         $hooks = find_all_hooks('systems', 'config');
         foreach (array_keys($hooks) as $option) {
             $value = get_option($option);
-            if (is_null($value)) {
+            if ($value === null) {
                 continue;
             }
 
@@ -150,7 +150,7 @@ class Hook_commandr_fs_etc
         }
 
         $option = get_option($file_name, true);
-        if (is_null($option)) {
+        if ($option === null) {
             return false;
         }
         return $option;
@@ -184,7 +184,7 @@ class Hook_commandr_fs_etc
         }
 
         $value = get_option($file_name, true);
-        if (is_null($value)) {
+        if ($value === null) {
             return false; // File doesn't exist
         }
 

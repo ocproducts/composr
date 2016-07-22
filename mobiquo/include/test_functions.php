@@ -59,7 +59,7 @@ function mobiquo_xmlrpc_simple_call($method, $params, $username = null)
     $mobiquo = basename(dirname(dirname(__FILE__)));
 
     $url = get_base_url() . '/' . $mobiquo . '/mobiquo.php?';
-    if (!is_null($username)) {
+    if ($username !== null) {
         $url .= '&keep_su=' . urlencode($username);
     }
     $url .= static_evaluate_tempcode(symbol_tempcode('KEEP', array()));
@@ -103,7 +103,7 @@ function mobiquo_post_simple_call($method, $params, $username = null, $files = n
     $mobiquo = basename(dirname(dirname(__FILE__)));
 
     $url = get_base_url() . '/' . $mobiquo . '/mobiquo.php?';
-    if (!is_null($username)) {
+    if ($username !== null) {
         $url .= '&keep_su=' . urlencode($username);
     }
     $url .= static_evaluate_tempcode(symbol_tempcode('KEEP', array()));
@@ -142,7 +142,7 @@ function mobiquo_json_simple_call($method, $params, $username = null)
     $mobiquo = basename(dirname(dirname(__FILE__)));
 
     $url = get_base_url() . '/' . $mobiquo . '/mobiquo.php?method_name=' . rawurlencode($method);
-    if (!is_null($username)) {
+    if ($username !== null) {
         $url .= '&keep_su=' . urlencode($username);
     }
     $url .= static_evaluate_tempcode(symbol_tempcode('KEEP', array()));

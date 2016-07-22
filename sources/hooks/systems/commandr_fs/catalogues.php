@@ -103,7 +103,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
      */
     protected function _has_parent_child_relationship($above, $under)
     {
-        if (is_null($above)) {
+        if ($above === null) {
             $above = '';
         }
         switch ($above) {
@@ -171,7 +171,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
     {
         if ($resource_type == 'catalogue') {
             $f = parent::folder_convert_id_to_filename('catalogue', $resource_id);
-            if (is_null($f)) {
+            if ($f === null) {
                 return null;
             }
             return 'CATALOGUE-' . $f;
@@ -195,7 +195,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
             return parent::folder_convert_filename_to_id(substr($filename, 10), 'catalogue');
         }
 
-        if (!is_null($resource_type)) {
+        if ($resource_type !== null) {
             return parent::folder_convert_filename_to_id($filename, $resource_type);
         }
 
@@ -576,7 +576,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
                 $props_already[$key] = true;
 
                 $value = $this->_default_property_str($properties, $key);
-                if (is_null($value)) {
+                if ($value === null) {
                     $value = $field_bits['cf_default'];
                 }
                 $map[$field_id] = $value;
@@ -584,7 +584,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
         }
 
         $validated = $this->_default_property_int_null($properties, 'validated');
-        if (is_null($validated)) {
+        if ($validated === null) {
             $validated = 1;
         }
         $notes = $this->_default_property_str($properties, 'notes');

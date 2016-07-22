@@ -2100,7 +2100,7 @@ function is_callable($var)
 }
 
 /**
- * Finds whether a variable is null.
+ * Finds whether a variable is null. Avoid this, use "=== null" instead for performance reasons.
  *
  * @param  mixed $var What to check.
  * @return boolean Whether it is.

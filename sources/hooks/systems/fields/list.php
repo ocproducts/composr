@@ -152,7 +152,7 @@ class Hook_fields_list
         $custom_values = option_value_from_field_array($field, 'custom_values', 'off');
 
         if ($custom_values == 'on') { // Only makes sense to allow dynamic choices if custom values are enterable
-            if (is_null($dynamic_choices)) {
+            if ($dynamic_choices === null) {
                 $dynamic_choices = (option_value_from_field_array($field, 'dynamic_choices', 'off') == 'on');
             }
             if (isset($field['c_name'])) {
@@ -247,12 +247,12 @@ class Hook_fields_list
                 } else {
                     $list_tpl = new Tempcode();
 
-                    if ((($field['cf_required'] == 0) || ($actual_value === '') || (is_null($actual_value))) && (!array_key_exists('', $list))) {
+                    if ((($field['cf_required'] == 0) || ($actual_value === '') || ($actual_value === null)) && (!array_key_exists('', $list))) {
                         $list_tpl->attach(form_input_list_entry('', true, do_lang_tempcode('NA_EM')));
                     }
 
                     foreach ($list as $l => $l_nice) {
-                        $selected = ($l === $actual_value || is_null($actual_value) && $l == do_lang('OTHER') && $field['cf_required'] == 1);
+                        $selected = ($l === $actual_value || ($actual_value === null) && $l == do_lang('OTHER') && $field['cf_required'] == 1);
                         $list_tpl->attach(form_input_list_entry($l, $selected, protect_from_escaping(comcode_to_tempcode($l_nice, null, true))));
                     }
 

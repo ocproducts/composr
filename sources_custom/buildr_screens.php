@@ -22,7 +22,7 @@ function realms()
     $out = new Tempcode();
     foreach ($rows as $myrow) {
         $owner = $GLOBALS['FORUM_DRIVER']->get_username($myrow['owner']);
-        if (is_null($owner)) {
+        if ($owner === null) {
             $owner = do_lang('UNKNOWN');
             $url = '';
         } else {
@@ -68,7 +68,7 @@ function output_question_screen($member_id, $dx, $dy)
  */
 function output_inventory_screen($member_id)
 {
-    if ((is_null($member_id)) || ($member_id == -1)) {
+    if (($member_id === null) || ($member_id == -1)) {
         $member_id = get_member();
     }
 
@@ -76,7 +76,7 @@ function output_inventory_screen($member_id)
     $avatar = '';
     if ($member_id > $GLOBALS['FORUM_DRIVER']->get_guest_id()) {
         $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
-        if (is_null($username)) {
+        if ($username === null) {
             $username = do_lang('UNKNOWN');
         }
         if (method_exists($GLOBALS['FORUM_DRIVER'], 'get_member_photo_url')) {
@@ -162,30 +162,30 @@ function output_room_screen($member_id)
     }
     $up_room = $GLOBALS['SITE_DB']->query_select_value_if_there('w_rooms', 'name', array('location_x' => $x, 'location_y' => $y - 1, 'location_realm' => $realm));
     $locked_up = $room['locked_up'];
-    if (($locked_up == 1) || (is_null($up_room))) {
+    if (($locked_up == 1) || ($up_room === null)) {
         $up_room = '';
     }
     $down_room = $GLOBALS['SITE_DB']->query_select_value_if_there('w_rooms', 'name', array('location_x' => $x, 'location_y' => $y + 1, 'location_realm' => $realm));
     $locked_down = $room['locked_down'];
-    if (($locked_down == 1) || (is_null($down_room))) {
+    if (($locked_down == 1) || ($down_room === null)) {
         $down_room = '';
     }
     $right_room = $GLOBALS['SITE_DB']->query_select_value_if_there('w_rooms', 'name', array('location_x' => $x + 1, 'location_y' => $y, 'location_realm' => $realm));
     $locked_right = $room['locked_right'];
-    if (($locked_right == 1) || (is_null($right_room))) {
+    if (($locked_right == 1) || ($right_room === null)) {
         $right_room = '';
     }
     $left_room = $GLOBALS['SITE_DB']->query_select_value_if_there('w_rooms', 'name', array('location_x' => $x - 1, 'location_y' => $y, 'location_realm' => $realm));
     $locked_left = $room['locked_left'];
-    if (($locked_left == 1) || (is_null($left_room))) {
+    if (($locked_left == 1) || ($left_room === null)) {
         $left_room = '';
     }
     $realm_name = $GLOBALS['SITE_DB']->query_select_value('w_realms', 'name', array('id' => $realm));
 
-    $has_up_room = (!is_null($up_room)) && ($up_room != '') && ($locked_up == 0);
-    $has_left_room = (!is_null($left_room)) && ($left_room != '') && ($locked_left == 0);
-    $has_right_room = (!is_null($right_room)) && ($right_room != '') && ($locked_right == 0);
-    $has_down_room = (!is_null($down_room)) && ($down_room != '') && ($locked_down == 0);
+    $has_up_room = ($up_room !== null) && ($up_room != '') && ($locked_up == 0);
+    $has_left_room = ($left_room !== null) && ($left_room != '') && ($locked_left == 0);
+    $has_right_room = ($right_room !== null) && ($right_room != '') && ($locked_right == 0);
+    $has_down_room = ($down_room !== null) && ($down_room != '') && ($locked_down == 0);
 
     $rows = $GLOBALS['SITE_DB']->query_select('w_portals', array('name', 'end_location_realm', 'owner'), array('start_location_x' => $x, 'start_location_y' => $y, 'start_location_realm' => $realm), 'ORDER BY name');
     $portals = new Tempcode();
@@ -219,7 +219,7 @@ function output_room_screen($member_id)
     $people_here = new Tempcode();
     foreach ($rows as $myrow) {
         $this_member_name = $GLOBALS['FORUM_DRIVER']->get_username($myrow['id']);
-        if (is_null($this_member_name)) {
+        if ($this_member_name === null) {
             $this_member_name = do_lang('UNKNOWN');
         }
         $people_here->attach(do_template('W_MAIN_PERSON_HERE', array('_GUID' => 'd799e4343da8daa27459b097bc3b2e89', 'THIS_MEMBER_NAME' => $this_member_name, 'ID' => strval($myrow['id']), 'SELECTED' => false)));
@@ -234,7 +234,7 @@ function output_room_screen($member_id)
         $aux = new Tempcode();
         if ($id >= 0) {
             $name = $GLOBALS['FORUM_DRIVER']->get_username($id);
-            if (is_null($name)) {
+            if ($name === null) {
                 $name = do_lang('UNKNOWN');
             }
             if ($myrow['banned'] == 1) {
@@ -304,7 +304,7 @@ function output_room_screen($member_id)
         $myrow2 = $rows2[0];
 
         $seller = $GLOBALS['FORUM_DRIVER']->get_username($myrow['copy_owner']);
-        if (is_null($seller)) {
+        if ($seller === null) {
             $seller = do_lang('UNKNOWN');
         }
 
@@ -346,13 +346,13 @@ function output_room_screen($member_id)
     foreach ($rows as $myrow) {
         if ($myrow['id'] >= 0) {
             $this_member_name = $GLOBALS['FORUM_DRIVER']->get_username($myrow['id']);
-            if (is_null($this_member_name)) {
+            if ($this_member_name === null) {
                 $this_member_name = do_lang('UNKNOWN');
             }
         } else {
             $this_member_name = $GLOBALS['SITE_DB']->query_select_value('w_realms', 'troll_name', array('id' => (-$myrow['id'] - 1)));
         }
-        $selected = (($myrow['id'] == $other_person) && (!is_null($other_person))) || ($myrow['id'] == $other_person);
+        $selected = (($myrow['id'] == $other_person) && ($other_person !== null)) || ($myrow['id'] == $other_person);
         $people_here->attach(do_template('W_MAIN_PERSON_HERE', array('_GUID' => '4fd3908b7b47338a4f47710c85a060ac', 'THIS_MEMBER_NAME' => $this_member_name, 'ID' => strval($myrow['id']), 'SELECTED' => $selected)));
     }
     if (has_privilege($member_id, 'administer_buildr')) {
@@ -361,7 +361,7 @@ function output_room_screen($member_id)
         foreach ($rows as $myrow) {
             if ($myrow['id'] >= 0) {
                 $this_member_name = $GLOBALS['FORUM_DRIVER']->get_username($myrow['id']);
-                if (is_null($this_member_name)) {
+                if ($this_member_name === null) {
                     $this_member_name = do_lang('UNKNOWN');
                 }
             } else {
@@ -404,7 +404,7 @@ function output_room_screen($member_id)
     $items_owned = do_template('W_MAIN_ITEMS_OWNED', array('_GUID' => '6738150dc18abd7695623f98133c60fe', 'NAME' => 'item', 'CONTENT' => $_items_owned));
     $items_owned_2 = do_template('W_MAIN_ITEMS_OWNED', array('_GUID' => '471f3536533e534fe29ac910cb854c04', 'NAME' => 'item2', 'CONTENT' => $_items_owned));
 
-    $is_room_owner = ((!is_null($member_id)) || ($GLOBALS['SITE_DB']->query_select_value('w_rooms', 'owner', array('location_x' => $x, 'location_y' => $y, 'location_realm' => $realm)) == $member_id));
+    $is_room_owner = (($member_id !== null) || ($GLOBALS['SITE_DB']->query_select_value('w_rooms', 'owner', array('location_x' => $x, 'location_y' => $y, 'location_realm' => $realm)) == $member_id));
     $is_realm_owner = ((has_privilege($member_id, 'administer_buildr')) || ($GLOBALS['SITE_DB']->query_select_value('w_realms', 'owner', array('id' => $realm)) == $member_id));
 
     $may_do_stuff = (!((!has_privilege($member_id, 'administer_buildr')) && ($GLOBALS['SITE_DB']->query_select_value('w_realms', 'owner', array('id' => $realm)) != $member_id) && ($GLOBALS['SITE_DB']->query_select_value('w_realms', 'r_private', array('id' => $realm)) == 1)));

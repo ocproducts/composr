@@ -315,11 +315,11 @@ class Hook_worldpay
      */
     public function store_shipping_address($order_id)
     {
-        if (is_null(post_param_string('first_name', null))) {
+        if (post_param_string('first_name', null) === null) {
             return null;
         }
 
-        if (is_null($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order_addresses', 'id', array('order_id' => $order_id)))) {
+        if ($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order_addresses', 'id', array('order_id' => $order_id)) === null) {
             $shipping_address = array();
             $shipping_address['order_id'] = $order_id;
             $shipping_address['address_name'] = post_param_string('delvName', '');

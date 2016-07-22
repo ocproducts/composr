@@ -426,7 +426,7 @@ function is_httpauth_login()
     }
 
     require_code('cns_members');
-    return ((!empty($_SERVER['PHP_AUTH_USER'])) && (!is_null(cns_authusername_is_bound_via_httpauth($_SERVER['PHP_AUTH_USER']))));
+    return ((!empty($_SERVER['PHP_AUTH_USER'])) && (cns_authusername_is_bound_via_httpauth($_SERVER['PHP_AUTH_USER']) !== null));
 }
 
 /**
@@ -438,7 +438,7 @@ function is_httpauth_login()
  */
 function enforce_sessioned_url($url)
 {
-    if ((!has_cookies()) && (is_null(get_bot_type()))) {
+    if ((!has_cookies()) && (get_bot_type() === null)) {
         require_code('users_inactive_occasionals');
         return _enforce_sessioned_url($url);
     }
@@ -566,12 +566,12 @@ function cms_admirecookie($name, $default = null)
  */
 function get_cms_cpf($cpf, $member = null)
 {
-    if (is_null($member)) {
+    if ($member === null) {
         $member = get_member();
     }
 
     $values = $GLOBALS['FORUM_DRIVER']->get_custom_fields($member);
-    if (is_null($values)) {
+    if ($values === null) {
         return '';
     }
 

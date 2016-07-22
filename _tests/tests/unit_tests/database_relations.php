@@ -77,7 +77,7 @@ class database_relations_test_set extends cms_test_case
         foreach (array_keys($meta_aware) as $hook) {
             $resource_fs_hook = convert_composr_type_codes('content_type', $hook, 'commandr_filesystem_hook');
             $table = convert_composr_type_codes('content_type', $hook, 'table');
-            if (!is_null($table)) {
+            if ($table !== null) {
                 $tables_in_hooks[$table] = $resource_fs_hook;
             }
         }

@@ -151,7 +151,7 @@ class Module_admin_trackbacks
                     case '2':
                         if (addon_installed('securitylogging')) {
                             $trackback_ip = $GLOBALS['SITE_DB']->query_select_value_if_there('trackbacks', 'trackback_ip', array('id' => $id));
-                            if (is_null($trackback_ip)) {
+                            if ($trackback_ip === null) {
                                 break;
                             }
                             require_code('failure');
@@ -171,7 +171,7 @@ class Module_admin_trackbacks
         // Show it worked / Refresh
         $text = do_lang_tempcode('SUCCESS');
         $url = get_param_string('redirect', null);
-        if (is_null($url)) {
+        if ($url === null) {
             $_url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');
             $url = $_url->evaluate();
         }

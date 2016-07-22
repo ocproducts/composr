@@ -72,7 +72,7 @@ class Module_admin_awards extends Standard_crud_module
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->create_table('award_archive', array(
                 'a_type_id' => '*AUTO_LINK',
                 'date_and_time' => '*TIME',
@@ -236,11 +236,11 @@ class Module_admin_awards extends Standard_crud_module
                 if ($hook == $row['a_content_type']) {
                     require_code('content');
                     $hook_object = get_content_object($hook);
-                    if (is_null($hook_object)) {
+                    if ($hook_object === null) {
                         continue;
                     }
                     $hook_info = $hook_object->info();
-                    if (!is_null($hook_info)) {
+                    if ($hook_info !== null) {
                         $hook_title = do_lang($hook_info['content_type_label']);
                     }
                 }
@@ -269,9 +269,9 @@ class Module_admin_awards extends Standard_crud_module
      */
     public function get_form_fields($id = null, $title = '', $description = '', $points = 0, $content_type = 'download', $hide_awardee = null, $update_time_hours = 168)
     {
-        if (is_null($hide_awardee)) {
+        if ($hide_awardee === null) {
             $val = $GLOBALS['SITE_DB']->query_select_value('award_types', 'AVG(a_hide_awardee)');
-            $hide_awardee = is_null($val) ? 1 : intval(round($val));
+            $hide_awardee = ($val === null) ? 1 : intval(round($val));
         }
 
         $fields = new Tempcode();
@@ -286,11 +286,11 @@ class Module_admin_awards extends Standard_crud_module
         foreach (array_keys($hooks) as $hook) {
             require_code('content');
             $hook_object = get_content_object($hook);
-            if (is_null($hook_object)) {
+            if ($hook_object === null) {
                 continue;
             }
             $hook_info = $hook_object->info();
-            if (!is_null($hook_info)) {
+            if ($hook_info !== null) {
                 $_hooks[$hook] = do_lang($hook_info['content_type_label']);
             }
         }
@@ -306,7 +306,7 @@ class Module_admin_awards extends Standard_crud_module
         $fields->attach(form_input_integer(do_lang_tempcode('AWARD_UPDATE_TIME_HOURS'), do_lang_tempcode('DESCRIPTION_AWARD_UPDATE_TIME_HOURS'), 'update_time_hours', $update_time_hours, true));
 
         // Permissions
-        $fields->attach($this->get_permission_fields(is_null($id) ? null : strval($id), do_lang_tempcode('AWARD_PERMISSION_HELP'), false/*We want permissions off by default so we do not say new category is_null($id)*/, do_lang_tempcode('GIVE_AWARD')));
+        $fields->attach($this->get_permission_fields(($id === null) ? null : strval($id), do_lang_tempcode('AWARD_PERMISSION_HELP'), false/*We want permissions off by default so we do not say new category ($id === null)*/, do_lang_tempcode('GIVE_AWARD')));
 
         return array($fields, new Tempcode());
     }

@@ -105,7 +105,7 @@ class Hook_commandr_fs_forums extends Resource_fs_base
      */
     protected function _has_parent_child_relationship($above, $under)
     {
-        if (is_null($above)) {
+        if ($above === null) {
             $above = '';
         }
         switch ($above) {
@@ -179,7 +179,7 @@ class Hook_commandr_fs_forums extends Resource_fs_base
     {
         if ($resource_type == 'forum') {
             $f = parent::folder_convert_id_to_filename('forum', $resource_id);
-            if (is_null($f)) {
+            if ($f === null) {
                 return null;
             }
             return 'FORUM-' . $f;
@@ -203,7 +203,7 @@ class Hook_commandr_fs_forums extends Resource_fs_base
             return parent::folder_convert_filename_to_id(substr($filename, 6), 'forum');
         }
 
-        if (!is_null($resource_type)) {
+        if ($resource_type !== null) {
             return parent::folder_convert_filename_to_id($filename, $resource_type);
         }
 
@@ -221,16 +221,16 @@ class Hook_commandr_fs_forums extends Resource_fs_base
     {
         $description = $this->_default_property_str($properties, 'description');
         $forum_grouping_id = $this->_default_property_resource_id_null('forum_grouping', $properties, 'forum_grouping_id');
-        if (is_null($forum_grouping_id)) {
+        if ($forum_grouping_id === null) {
             $forum_grouping_id = $GLOBALS['FORUM_DB']->query_select_value('f_forum_groupings', 'MIN(id)');
         }
         $access_mapping = array();
         $position = $this->_default_property_int_null($properties, 'position');
-        if (is_null($position)) {
+        if ($position === null) {
             $position = 1;
         }
         $post_count_increment = $this->_default_property_int_null($properties, 'post_count_increment');
-        if (is_null($post_count_increment)) {
+        if ($post_count_increment === null) {
             $post_count_increment = 1;
         }
         $order_sub_alpha = $this->_default_property_int($properties, 'order_sub_alpha');
@@ -460,7 +460,7 @@ class Hook_commandr_fs_forums extends Resource_fs_base
         );
         $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
 
-        if (!is_null($row['t_forum_id'])) {
+        if ($row['t_forum_id'] !== null) {
             $properties['special_pt_access'] = table_to_portable_rows('f_special_pt_access', /*skip*/array(), array('s_topic_id' => intval($resource_id)));
         }
 
@@ -529,7 +529,7 @@ class Hook_commandr_fs_forums extends Resource_fs_base
                 $requires_reply = $poll_data['requires_reply'];
                 $answers = $poll_data['answers']; // A list of pairs of the potential voteable answers and the number of votes.
 
-                if (is_null($poll_id)) {
+                if ($poll_id === null) {
                     require_code('cns_polls_action');
                     $poll_id = cns_make_poll(intval($resource_id), $question, $is_private, $is_open, $minimum_selections, $maximum_selections, $requires_reply, $answers, false);
                 } else {
@@ -540,7 +540,7 @@ class Hook_commandr_fs_forums extends Resource_fs_base
                 $votes = $poll_data['votes'];
                 table_from_portable_rows('f_poll_votes', $properties['votes'], array('pv_poll_id' => $poll_id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
             } else {
-                if (!is_null($poll_id)) {
+                if ($poll_id !== null) {
                     require_code('cns_polls_action2');
                     cns_delete_poll($poll_id);
                 }
@@ -606,7 +606,7 @@ class Hook_commandr_fs_forums extends Resource_fs_base
         $post = $this->_default_property_str($properties, 'post');
         $skip_sig = $this->_default_property_int($properties, 'skip_sig');
         $validated = $this->_default_property_int_null($properties, 'validated');
-        if (is_null($validated)) {
+        if ($validated === null) {
             $validated = 1;
         }
         $is_emphasised = $this->_default_property_int($properties, 'is_emphasised');
@@ -686,7 +686,7 @@ class Hook_commandr_fs_forums extends Resource_fs_base
         $post = $this->_default_property_str($properties, 'post');
         $skip_sig = $this->_default_property_int($properties, 'skip_sig');
         $validated = $this->_default_property_int_null($properties, 'validated');
-        if (is_null($validated)) {
+        if ($validated === null) {
             $validated = 1;
         }
         $is_emphasised = $this->_default_property_int($properties, 'is_emphasised');

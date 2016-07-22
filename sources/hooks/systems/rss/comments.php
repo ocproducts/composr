@@ -44,16 +44,16 @@ class Hook_rss_comments
         if ($hook != '') {
             require_code('content');
             $ob = get_content_object($hook);
-            if (is_null($ob)) {
+            if ($ob === null) {
                 return null;
             }
             $info = $ob->info();
 
             // Category access
             $permissions_field = $info['permissions_type_code'];
-            if (!is_null($permissions_field)) {
+            if ($permissions_field !== null) {
                 $cat = $GLOBALS['SITE_DB']->query_select_value_if_there($info['table'], $info['parent_category_field'], get_content_where_for_str_id($parts[1], $info));
-                if (is_null($cat)) {
+                if ($cat === null) {
                     return null;
                 }
                 if (!has_category_access(get_member(), $permissions_field, $cat)) {
@@ -62,7 +62,7 @@ class Hook_rss_comments
             }
 
             // Page/Zone access
-            if (!is_null($info['view_page_link_pattern'])) {
+            if ($info['view_page_link_pattern'] !== null) {
                 $view_page_link_bits = explode(':', $info['view_page_link_pattern']);
                 $zone = $view_page_link_bits[0];
                 if ($zone == '_SEARCH') {
@@ -82,7 +82,7 @@ class Hook_rss_comments
             }
         } else {
             $zone = get_page_zone($parts[0], false);
-            if (is_null($zone)) {
+            if ($zone === null) {
                 return null;
             }
             if (!has_actual_page_access(get_member(), $parts[0], $zone)) {
@@ -103,7 +103,7 @@ class Hook_rss_comments
                 $_comments = array_reverse($_comments);
 
                 foreach ($_comments as $i => $comment) {
-                    if (is_null($comment)) {
+                    if ($comment === null) {
                         continue;
                     }
                     if ($i + $start > $max) {
@@ -119,7 +119,7 @@ class Hook_rss_comments
 
                     $id = strval($comment['id']);
                     $author = $GLOBALS['FORUM_DRIVER']->get_username($comment['member']);
-                    if (is_null($author)) {
+                    if ($author === null) {
                         $author = do_lang('UNKNOWN');
                     }
 
@@ -127,7 +127,7 @@ class Hook_rss_comments
                     $edit_date = escape_html('');
 
                     $news_title = xmlentities($comment['title']);
-                    if (($news_title != '') && (is_null($title))) {
+                    if (($news_title != '') && ($title === null)) {
                         $title = $comment['title'];
                     }
                     $_summary = $comment['message'];

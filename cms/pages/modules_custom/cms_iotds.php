@@ -179,7 +179,7 @@ class Module_cms_iotds extends Standard_crud_module
         if (has_privilege(get_member(), 'choose_iotd')) {
             if ($caption == '') {
                 $test = $GLOBALS['SITE_DB']->query_select_value_if_there('iotd', 'is_current', array('is_current' => 1));
-                if (is_null($test)) {
+                if ($test === null) {
                     $current = true;
                 }
             }
@@ -189,11 +189,11 @@ class Module_cms_iotds extends Standard_crud_module
         // Metadata
         require_code('feedback2');
         $feedback_fields = feedback_fields($this->content_type, $allow_rating == 1, $allow_comments == 1, $allow_trackbacks == 1, false, $notes, $allow_comments == 2, false, true, false);
-        $fields->attach(metadata_get_fields('iotd', is_null($id) ? null : strval($id), false, null, ($feedback_fields->is_empty()) ? METADATA_HEADER_YES : METADATA_HEADER_FORCE));
+        $fields->attach(metadata_get_fields('iotd', ($id === null) ? null : strval($id), false, null, ($feedback_fields->is_empty()) ? METADATA_HEADER_YES : METADATA_HEADER_FORCE));
         $fields->attach($feedback_fields);
 
         if (addon_installed('content_reviews')) {
-            $fields->attach(content_review_get_fields('iotd', is_null($id) ? null : strval($id)));
+            $fields->attach(content_review_get_fields('iotd', ($id === null) ? null : strval($id)));
         }
 
         return array($fields, $hidden);
@@ -241,7 +241,7 @@ class Module_cms_iotds extends Standard_crud_module
     public function _get_iotd_boxes($used = 0, $current = 0, $submitter = null)
     {
         $where = array('used' => $used, 'is_current' => $current);
-        if (!is_null($submitter)) {
+        if ($submitter !== null) {
             $where['submitter'] = $submitter;
         }
         $rows = $GLOBALS['SITE_DB']->query_select('iotd', array('*'), $where, 'ORDER BY id DESC', 100);

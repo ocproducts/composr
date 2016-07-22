@@ -26,7 +26,7 @@ class Hook_cron_bank
         //if (!addon_installed('bank')) return;
 
         $to_be_restored = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'bank WHERE add_time<' . strval(time() - (30 * 24 * 60 * 60)), null, null, true);
-        if (is_null($to_be_restored)) {
+        if ($to_be_restored === null) {
             return;
         }
 

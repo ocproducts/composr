@@ -88,7 +88,7 @@ class CMS_RSS
             $data = http_download_file($url, null, false);
         }
 
-        if (is_null($data)) {
+        if ($data === null) {
             $this->error = do_lang('RSS_XML_MISSING', $url) . ' [' . $GLOBALS['HTTP_MESSAGE'] . ']';
         } else {
             // Try and detect feed charset
@@ -101,7 +101,7 @@ class CMS_RSS
                 }
             }
             // Weed out if isn't supported
-            if ((is_null($GLOBALS['HTTP_CHARSET'])) || (!in_array(strtoupper($GLOBALS['HTTP_CHARSET']), array('ISO-8859-1', 'US-ASCII', 'utf-8')))) {
+            if (($GLOBALS['HTTP_CHARSET'] === null) || (!in_array(strtoupper($GLOBALS['HTTP_CHARSET']), array('ISO-8859-1', 'US-ASCII', 'utf-8')))) {
                 $GLOBALS['HTTP_CHARSET'] = 'utf-8';
             }
 
@@ -527,7 +527,7 @@ class CMS_RSS
                     $data = base64_decode($data);
                 }
                 $prefix = 'HTTP://PURL.ORG/ATOM/NS#:';
-                if (!is_null($prelast_tag)) {
+                if ($prelast_tag !== null) {
                     $prelast_tag = str_replace('HTTP://WWW.W3.ORG/2005/ATOM:', $prefix, $prelast_tag);
                 }
                 $last_tag = str_replace('HTTP://WWW.W3.ORG/2005/ATOM:', $prefix, $last_tag);

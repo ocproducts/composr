@@ -112,7 +112,7 @@ class Block_main_forum_topics
                 }
             }
 
-            if (!is_null($forum_id)) {
+            if ($forum_id !== null) {
                 $forum_ids[$forum_id] = $forum_name;
             }
         }
@@ -121,7 +121,7 @@ class Block_main_forum_topics
         $forum_name = array_key_exists('param', $map) ? $map['param'] : 'General chat';
         if ((is_numeric($forum_name)) && (get_forum_type() == 'cns')) {
             $forum_name = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forums', 'f_name', array('id' => intval($forum_name)));
-            if (is_null($forum_name)) {
+            if ($forum_name === null) {
                 return paragraph(do_lang_tempcode('MISSING_RESOURCE', 'topic'), '', 'red_alert');
             }
         }
@@ -131,7 +131,7 @@ class Block_main_forum_topics
         }
 
         // Add topic link
-        if ((count($forum_names) == 1) && (get_forum_type() == 'cns') && (!is_null($forum_id))) {
+        if ((count($forum_names) == 1) && (get_forum_type() == 'cns') && ($forum_id !== null)) {
             $submit_url = build_url(array('page' => 'topics', 'type' => 'new_topic', 'id' => $forum_id), get_module_zone('topics'));
             $add_name = do_lang_tempcode('ADD_TOPIC');
         } else {
@@ -150,13 +150,13 @@ class Block_main_forum_topics
             $topics = $GLOBALS['FORUM_DRIVER']->show_forum_topics($forum_ids, $limit, 0, $max_rows, '', true, $date_key, $hot == 1);
 
             $_topics = array();
-            if (!is_null($topics)) {
+            if ($topics !== null) {
                 sort_maps_by($topics, $date_key);
                 $topics = array_reverse($topics, false);
 
                 if ((count($topics) < $limit) && ($hot == 1)) {
                     $more_topics = $GLOBALS['FORUM_DRIVER']->show_forum_topics($forum_ids, $limit, 0, $max_rows, '', true, $date_key);
-                    if (is_null($more_topics)) {
+                    if ($more_topics === null) {
                         $more_topics = array();
                     }
                     $topics = array_merge($topics, $more_topics);
@@ -179,14 +179,14 @@ class Block_main_forum_topics
                     $date = get_timezoned_date_time_tempcode($topic[$date_key]);
                     $username = $topic[$username_key];
                     $member_id = array_key_exists($memberid_key, $topic) ? $topic[$memberid_key] : null;
-                    if ((!is_null($forum_names_map)) && (!array_key_exists($topic['forum_id'], $forum_names_map))) {
+                    if (($forum_names_map !== null) && (!array_key_exists($topic['forum_id'], $forum_names_map))) {
                         continue; // Maybe Private Topic, slipped in via reference to a missing forum
                     }
-                    $forum_name = is_null($forum_names_map) ? null : $forum_names_map[$topic['forum_id']];
+                    $forum_name = ($forum_names_map === null) ? null : $forum_names_map[$topic['forum_id']];
 
                     $_topics[] = array(
                         'POST' => $topic['firstpost'],
-                        'FORUM_ID' => is_null($forum_names_map) ? null : strval($topic['forum_id']),
+                        'FORUM_ID' => ($forum_names_map === null) ? null : strval($topic['forum_id']),
                         'FORUM_NAME' => $forum_name,
                         'TOPIC_URL' => $topic_url,
                         'TOPIC_URL_UNREAD' => $topic_url_unread,
@@ -194,7 +194,7 @@ class Block_main_forum_topics
                         'DATE' => $date,
                         'DATE_RAW' => strval($topic[$date_key]),
                         'USERNAME' => $username,
-                        'MEMBER_ID' => is_null($member_id) ? '' : strval($member_id),
+                        'MEMBER_ID' => ($member_id === null) ? '' : strval($member_id),
                         'NUM_POSTS' => integer_format($topic['num']),
                     );
 

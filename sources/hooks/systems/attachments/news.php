@@ -44,7 +44,7 @@ class Hook_attachments_news
         }
 
         $cat_id = $GLOBALS['SITE_DB']->query_select_value_if_there('news', 'news_category', array('id' => intval($id)));
-        if (is_null($cat_id)) {
+        if ($cat_id === null) {
             return false;
         }
         return (has_category_access(get_member(), 'news', strval($cat_id)));

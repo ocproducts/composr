@@ -145,14 +145,14 @@ class CMSAttachmentWrite
 
         $type = 'cns_post';
 
-        if (is_null($post_id)) {
+        if ($post_id === null) {
             $_post_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('attachment_refs', 'r_referer_id', array('r_referer_type' => $type, 'a_id' => $attachment_id));
-            if (!is_null($_post_id)) {
+            if ($_post_id !== null) {
                 $post_id = intval($_post_id);
             }
         }
 
-        if (is_null($post_id)) {
+        if ($post_id === null) {
             warn_exit('Cannot currently delete a standalone attachment, as no standardised permission mechanism for it');
         } else {
             if (!can_moderate_post($post_id)) {
@@ -161,7 +161,7 @@ class CMSAttachmentWrite
         }
 
         $_post_comcode = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_posts', 'p_post', array('id' => $post_id));
-        if (is_null($_post_comcode)) {
+        if ($_post_comcode === null) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'post'));
         }
         $post_comcode = get_translated_text($_post_comcode);
@@ -176,14 +176,14 @@ class CMSAttachmentWrite
         }
 
         $ref_where = array('a_id' => $attachment_id, 'r_referer_type' => $type);
-        if (!is_null($post_id)) {
+        if ($post_id !== null) {
             $ref_where['r_referer_id'] = strval($post_id);
         }
         $GLOBALS['SITE_DB']->query_delete('attachment_refs', $ref_where);
 
         // Was that the last reference to this attachment? (if so -- delete attachment)
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('attachment_refs', 'id', array('a_id' => $attachment_id));
-        if (is_null($test)) {
+        if ($test === null) {
             _delete_attachment($attachment_id, $GLOBALS['FORUM_DB']);
         }
     }

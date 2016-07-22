@@ -186,7 +186,7 @@ class Hook_fields_float
             $input = do_template('FORM_SCREEN_INPUT_MAP_POSITION', array('_GUID' => '86d69d152d7bfd125e6216c9ac936cfd', 'REQUIRED' => $required, 'NAME' => $input_name, 'LATITUDE' => $latitude, 'LONGITUDE' => $longitude));
             $lang_string = 'MAP_POSITION_FIELD_field_' . strval($field['id']);
             $test = do_lang($lang_string, null, null, null, null, false);
-            if (is_null($test)) {
+            if ($test === null) {
                 $lang_string = 'MAP_POSITION_FIELD';
             }
             return _form_input($input_name, do_lang_tempcode($lang_string), '', $input, $required, false);
@@ -198,7 +198,7 @@ class Hook_fields_float
             return new Tempcode();
         }
 
-        return form_input_float($_cf_name, $_cf_description, $input_name, (is_null($actual_value) || ($actual_value === '')) ? null : floatval($actual_value), $field['cf_required'] == 1);
+        return form_input_float($_cf_name, $_cf_description, $input_name, (($actual_value === null) || ($actual_value === '')) ? null : floatval($actual_value), $field['cf_required'] == 1);
     }
 
     /**

@@ -125,7 +125,7 @@ class Hook_task_import_member_csv
                 if (array_key_exists('Last Name', $line)) {
                     $surname = $line['Last Name'];
                 }
-                if ((!is_null($forename)) || (!is_null($surname))) {
+                if (($forename !== null) || ($surname !== null)) {
                     // Can we get a year too?
                     $year = '';
                     foreach ($line as $tl_key => $tl_val) {
@@ -161,10 +161,10 @@ class Hook_task_import_member_csv
             if (array_key_exists('ID', $line)) {
                 $linked_id = (($line['ID'] != '') && (array_key_exists(intval($line['ID']), $all_members))) ? intval($line['ID']) : null;
             }
-            if (is_null($linked_id)) {
+            if ($linked_id === null) {
                 $linked_id = array_key_exists($username, $all_members_flipped) ? $all_members_flipped[$username] : null;
             }
-            $new_member = is_null($linked_id);
+            $new_member = ($linked_id === null);
 
             $email_address_key = 'E-mail address';
             if (array_key_exists('Email address', $line)) {
@@ -264,7 +264,7 @@ class Hook_task_import_member_csv
             }
 
             $avatar_url = array_key_exists('Avatar', $line) ? $line['Avatar'] : null;
-            if (!is_null($avatar_url)) {
+            if ($avatar_url !== null) {
                 if (substr($avatar_url, 0, strlen(get_custom_base_url())) == get_custom_base_url()) {
                     $avatar_url = substr($avatar_url, strlen(get_custom_base_url()));
                 }
@@ -364,20 +364,20 @@ class Hook_task_import_member_csv
                 $all_cpfs[] = array('id' => $cf_id, 'cf_default' => '', '_cf_name' => $h, 'cf_type' => 'short_line');
             }
             if ($new_member) {
-                if (is_null($password)) {
+                if ($password === null) {
                     $password = $default_password;
-                    if (is_null($password)) {
+                    if ($password === null) {
                         continue;
                     }
                 }
-                if (is_null($salt)) {
+                if ($salt === null) {
                     $salt = '';
                 }
-                if (is_null($password_compatibility_scheme)) {
+                if ($password_compatibility_scheme === null) {
                     $password_compatibility_scheme = ($use_temporary_passwords ? 'temporary' : '');
                 }
 
-                $linked_id = cns_make_member($username, $password, is_null($email_address) ? '' : $email_address, $groups, $dob_day, $dob_month, $dob_year, $custom_fields, null, $primary_group, $validated, $join_time, null, '', $avatar_url, $signature, $is_perm_banned, (get_option('default_preview_guests') == '1') ? 1 : 0, $reveal_age, '', $photo_url, $photo_thumb_url, 1, 1, $language, $allow_emails, $allow_emails_from_staff, null, '', false, $password_compatibility_scheme, $salt, 1, null, 0, '*', '', null, $auto_mark_read);
+                $linked_id = cns_make_member($username, $password, ($email_address === null) ? '' : $email_address, $groups, $dob_day, $dob_month, $dob_year, $custom_fields, null, $primary_group, $validated, $join_time, null, '', $avatar_url, $signature, $is_perm_banned, (get_option('default_preview_guests') == '1') ? 1 : 0, $reveal_age, '', $photo_url, $photo_thumb_url, 1, 1, $language, $allow_emails, $allow_emails_from_staff, null, '', false, $password_compatibility_scheme, $salt, 1, null, 0, '*', '', null, $auto_mark_read);
                 $all_members[$linked_id] = $username;
                 $all_members_flipped[$username] = $linked_id;
                 $num_added++;
@@ -388,7 +388,7 @@ class Hook_task_import_member_csv
                 }
 
                 cns_edit_member($linked_id, $email_address, null, $dob_day, $dob_month, $dob_year, null, $primary_group, $custom_fields, null, $reveal_age, null, null, $language, $allow_emails, $allow_emails_from_staff, $validated, $username, $password, null, null, null, null, $auto_mark_read, $join_time, $avatar_url, $signature, $is_perm_banned, $photo_url, $photo_thumb_url, $salt, $password_compatibility_scheme, true);
-                if (!is_null($groups)) {
+                if ($groups !== null) {
                     foreach ($groups as $g_id) {
                         $GLOBALS['FORUM_DB']->query_delete('f_group_members', array('gm_member_id' => $linked_id, 'gm_group_id' => $g_id), '', 1);
                         $GLOBALS['FORUM_DB']->query_insert('f_group_members', array(

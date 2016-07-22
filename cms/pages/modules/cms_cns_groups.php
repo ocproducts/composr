@@ -127,7 +127,7 @@ class Module_cms_cns_groups extends Standard_crud_module
      */
     public function get_form_fields($id = null, $name = '', $group_leader = null, $open_membership = 1)
     {
-        if (is_null($group_leader)) {
+        if ($group_leader === null) {
             $group_leader = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
         }
 
@@ -250,7 +250,7 @@ class Module_cms_cns_groups extends Standard_crud_module
         $myrow = $rows[0];
 
         $username = $GLOBALS['FORUM_DRIVER']->get_username($myrow['g_group_leader']);
-        if (is_null($username)) {
+        if ($username === null) {
             $username = '';
         }//do_lang('UNKNOWN');
         return $this->get_form_fields($id, get_translated_text($myrow['g_name'], $GLOBALS['FORUM_DB']), $username, $myrow['g_open_membership']);
@@ -268,7 +268,7 @@ class Module_cms_cns_groups extends Standard_crud_module
         $_group_leader = post_param_string('group_leader');
         if ($_group_leader != '') {
             $group_leader = $GLOBALS['FORUM_DRIVER']->get_member_from_username($_group_leader);
-            if (is_null($group_leader)) {
+            if ($group_leader === null) {
                 warn_exit(do_lang_tempcode('_MEMBER_NO_EXIST', $_group_leader));
             }
         } else {
@@ -289,7 +289,7 @@ class Module_cms_cns_groups extends Standard_crud_module
             $cat = intval($_cat);
         } else {
             $cat = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forum_groupings', 'id', array('c_title' => $_cat));
-            if (is_null($cat)) {
+            if ($cat === null) {
                 $cat = $GLOBALS['FORUM_DB']->query_select_value('f_forum_groupings', 'MIN(id)');
             }
         }
@@ -298,7 +298,7 @@ class Module_cms_cns_groups extends Standard_crud_module
             $forum = intval($_forum);
         } else {
             $forum = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forums', 'id', array('f_name' => $_forum));
-            if (is_null($forum)) {
+            if ($forum === null) {
                 $forum = $GLOBALS['FORUM_DB']->query_select_value('f_forums', 'MIN(id)');
             }
         }
@@ -372,7 +372,7 @@ class Module_cms_cns_groups extends Standard_crud_module
         $_group_leader = post_param_string('group_leader');
         if ($_group_leader != '') {
             $group_leader = $GLOBALS['FORUM_DRIVER']->get_member_from_username($_group_leader);
-            if (is_null($group_leader)) {
+            if ($group_leader === null) {
                 warn_exit(do_lang_tempcode('_MEMBER_NO_EXIST', $_group_leader));
             }
         } else {
@@ -385,7 +385,7 @@ class Module_cms_cns_groups extends Standard_crud_module
 
         $forum_where = array('f_name' => $old_name, 'f_forum_grouping_id' => intval(get_option('club_forum_parent_forum_grouping')), 'f_parent_forum' => intval(get_option('club_forum_parent_forum')));
         $forum_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forums', 'id', $forum_where);
-        if (!is_null($forum_id)) {
+        if ($forum_id !== null) {
             $this->_set_permissions(intval($id), $forum_id);
         }
 

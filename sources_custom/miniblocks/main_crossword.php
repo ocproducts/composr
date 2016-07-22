@@ -25,7 +25,7 @@ $max_words = array_key_exists('max_words', $map) ? intval($map['max_words']) : 1
 
 $cache_id = $id . '_' . strval($cols) . '_' . strval($rows) . '_' . strval($max_words);
 $cached = (isset($map['cache']) && $map['cache'] == '0') ? null : get_cache_entry('main_crossword', $cache_id, CACHE_AGAINST_NOTHING_SPECIAL);
-if (is_null($cached)) {
+if ($cached === null) {
     $pc = new PHP_Crossword($rows, $cols);
 
     $pc->setMaxWords($max_words);

@@ -153,7 +153,7 @@ class Module_admin_pointstore
         }
         foreach ($rows as $row) {
             $username = $GLOBALS['FORUM_DRIVER']->get_username($row['memberid']);
-            if (is_null($username)) {
+            if ($username === null) {
                 $username = do_lang('UNKNOWN');
             }
             switch ($row['purchasetype']) {
@@ -169,7 +169,7 @@ class Module_admin_pointstore
                     break;
                 default:
                     $_type = do_lang($row['purchasetype'], null, null, null, null, false);
-                    if (is_null($_type)) {
+                    if ($_type === null) {
                         $type = make_string_tempcode($row['purchasetype']);
                     } else {
                         $type = do_lang_tempcode($row['purchasetype']);
@@ -250,7 +250,7 @@ class Module_admin_pointstore
         foreach ($_hooks as $object) {
             if (method_exists($object, 'config')) {
                 $fg = $object->config();
-                if (!is_null($fg)) {
+                if ($fg !== null) {
                     foreach ($fg[0] as $__fg) {
                         $_fg = do_template('FORM_GROUP', array('_GUID' => '58a0948313f0e8e69c06ee01fb7ee48a', 'FIELDS' => $__fg[0], 'HIDDEN' => $__fg[1]));
                         $field_groups->attach(do_template('POINTSTORE_PRICES_FORM_WRAP', array('_GUID' => '938143162b418de982cdb6ce8d8a92ee', 'TITLE' => $__fg[2], 'FORM' => $_fg)));

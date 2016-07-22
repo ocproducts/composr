@@ -101,7 +101,7 @@ class Hook_media_rendering_vimeo extends Media_renderer_with_fallback
 
             // Lame method (not so reliable)
             $html = http_download_file($src_url, null, false);
-            if (is_null($html)) {
+            if ($html === null) {
                 return null;
             }
             $matches2 = array();

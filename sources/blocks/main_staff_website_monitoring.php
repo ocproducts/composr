@@ -73,7 +73,7 @@ class Block_main_staff_website_monitoring
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        if ((is_null($upgrade_from)) || ($upgrade_from < 2)) {
+        if (($upgrade_from === null) || ($upgrade_from < 2)) {
             $GLOBALS['SITE_DB']->create_table('staff_website_monitoring', array(
                 'id' => '*AUTO',
                 'site_url' => 'URLPATH',
@@ -217,7 +217,7 @@ class Block_main_staff_website_monitoring
         $errno = '0';
         $errstr = '';
         $data = http_download_file('http://toolbarqueries.google.com/tbr?client=navclient-auto&ch=' . $ch . '&features=Rank&q=info:' . $url, null, false, false, 'Composr', null, null, null, null, null, null, null, null, 1.0);
-        if (is_null($data)) {
+        if ($data === null) {
             return '';
         }
         $pos = strpos($data, "Rank_");
@@ -254,7 +254,7 @@ class Block_main_staff_website_monitoring
         define('GOOGLE_MAGIC', 0xE6359A60);
 
         $links = post_param_string('website_monitoring_list_edit', null);
-        if (!is_null($links)) {
+        if ($links !== null) {
             $GLOBALS['SITE_DB']->query_delete('staff_website_monitoring');
             $items = explode("\n", $links);
             foreach ($items as $i) {

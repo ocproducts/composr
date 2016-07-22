@@ -85,7 +85,7 @@ class Module_chat
     {
         require_lang('chat');
 
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->create_table('chat_rooms', array(
                 'id' => '*AUTO',
                 'room_name' => 'SHORT_TEXT',
@@ -192,7 +192,7 @@ class Module_chat
             // NB: edit_lowrange_content may be overridden for the chat module also, allowing editing messages in rooms
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 12)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 12)) {
             $GLOBALS['SITE_DB']->rename_table('chat_buddies', 'chat_friends');
 
             $GLOBALS['SITE_DB']->alter_table_field('chat_messages', 'user_id', 'MEMBER', 'member_id');
@@ -202,7 +202,7 @@ class Module_chat
             $GLOBALS['SITE_DB']->delete_index_if_exists('chat_rooms', 'is_im');
         }
 
-        if ((is_null($upgrade_from)) || ($upgrade_from < 12)) {
+        if (($upgrade_from === null) || ($upgrade_from < 12)) {
             require_code('users_active_actions');
             $admin_user = get_first_admin_user();
 
@@ -464,7 +464,7 @@ class Module_chat
 
         // Starting an IM? The IM will popup by AJAX once the page loads, because it's in the system now
         $enter_im = get_param_integer('enter_im', null);
-        if ((!is_null($enter_im)) && (!is_guest())) {
+        if (($enter_im !== null) && (!is_guest())) {
             $test = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'chat_rooms WHERE is_im=1 AND allow_list LIKE \'' . db_encode_like('%' . strval($enter_im) . '%') . '\'');
             $found_one = false;
             foreach ($test as $t) {
@@ -610,9 +610,9 @@ class Module_chat
         check_chatroom_access($room_row);
 
         $help_zone = get_comcode_zone('userguide_comcode', false);
-        $comcode_help = is_null($help_zone) ? new Tempcode() : build_url(array('page' => 'userguide_comcode'), $help_zone);
+        $comcode_help = ($help_zone === null) ? new Tempcode() : build_url(array('page' => 'userguide_comcode'), $help_zone);
         $help_zone = get_comcode_zone('userguide_chatcode', false);
-        $chatcode_help = is_null($help_zone) ? new Tempcode() : build_url(array('page' => 'userguide_chatcode'), $help_zone);
+        $chatcode_help = ($help_zone === null) ? new Tempcode() : build_url(array('page' => 'userguide_chatcode'), $help_zone);
 
         $posting_name = do_lang_tempcode('SEND_MESSAGE');
         $keep = symbol_tempcode('KEEP');
@@ -820,7 +820,7 @@ class Module_chat
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '85cbdbced505a6621ccbedc2de50c5f9', 'TITLE' => do_lang_tempcode('EXISTING_BLOCKS'), 'HELP' => (count($blocked) != 0) ? new Tempcode() : do_lang_tempcode('NONE_EM'))));
         foreach ($blocked as $row) {
             $username = $GLOBALS['FORUM_DRIVER']->get_username($row['member_blocked'], true);
-            if (!is_null($username)) {
+            if ($username !== null) {
                 $fields->attach(form_input_tick(do_lang_tempcode('BLOCK_THEM', escape_html($username)), do_lang_tempcode('_BLOCK_MEMBER', $username), 'block_' . strval($row['member_blocked']), true));
             }
         }
@@ -851,7 +851,7 @@ class Module_chat
         $username = trim(post_param_string('username', ''));
         if ($username != '') {
             $_member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($username);
-            if (is_null($_member_id)) {
+            if ($_member_id === null) {
                 warn_exit(do_lang_tempcode('_MEMBER_NO_EXIST', escape_html($username)));
             }
             require_code('chat2');
@@ -880,7 +880,7 @@ class Module_chat
     public function handle_repost($action, $param)
     {
         $member_id = get_param_integer('member_id', null);
-        if (!is_null($member_id)) {
+        if ($member_id !== null) {
             $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id, true);
             if (strpos(do_lang($action), '{1}') !== false) {
                 $preview = do_lang_tempcode($action, escape_html($param));
@@ -920,7 +920,7 @@ class Module_chat
         }
 
         $test = $this->handle_repost('BLOCK_MEMBER', $username);
-        if (!is_null($test)) {
+        if ($test !== null) {
             return $test;
         }
 
@@ -949,7 +949,7 @@ class Module_chat
         $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id, true);
 
         $test = $this->handle_repost('UNBLOCK_MEMBER', $username);
-        if (!is_null($test)) {
+        if ($test !== null) {
             return $test;
         }
 
@@ -975,10 +975,10 @@ class Module_chat
         }
 
         $member_id = either_param_integer('member_id', null);
-        if (is_null($member_id)) {
+        if ($member_id === null) {
             $username = post_param_string('friend_username');
             $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($username);
-            if ((is_null($member_id)) || (is_guest($member_id))) {
+            if (($member_id === null) || (is_guest($member_id))) {
                 warn_exit(do_lang_tempcode('_USER_NO_EXIST', escape_html($username)));
             }
         } else {
@@ -996,7 +996,7 @@ class Module_chat
         }
 
         $test = $this->handle_repost('ADD_FRIEND_ACTION_DESCRIPTION', $username);
-        if (!is_null($test)) {
+        if ($test !== null) {
             return $test;
         }
 
@@ -1022,7 +1022,7 @@ class Module_chat
         }
 
         $member_id = either_param_integer('member_id', null);
-        if (is_null($member_id)) {
+        if ($member_id === null) {
             $members = array();
             foreach ($_POST as $key => $val) {
                 if ((substr($key, 0, 7) == 'select_') && ($val == '1')) {
@@ -1044,7 +1044,7 @@ class Module_chat
         }
 
         $test = $this->handle_repost('DUMP_FRIEND', $username);
-        if (!is_null($test)) {
+        if ($test !== null) {
             return $test;
         }
 
@@ -1171,7 +1171,7 @@ class Module_chat
 
         $hidden = new Tempcode();
         $redirect = get_param_string('redirect', null);
-        if (!is_null($redirect)) {
+        if ($redirect !== null) {
             $hidden->attach(form_input_hidden('redirect', $redirect));
         }
 
@@ -1193,7 +1193,7 @@ class Module_chat
         if ($friend_count < 200) {
             $friends = $GLOBALS['SITE_DB']->query_select('chat_friends', array('member_liked'), array('member_likes' => get_member()));
             foreach ($friends as $friend) {
-                if (is_null($GLOBALS['FORUM_DRIVER']->get_username($friend['member_liked']))) {
+                if ($GLOBALS['FORUM_DRIVER']->get_username($friend['member_liked']) === null) {
                     continue;
                 }
 
@@ -1233,7 +1233,7 @@ class Module_chat
             $friends = $GLOBALS['SITE_DB']->query_select('chat_friends', array('member_liked'), array('member_likes' => get_member()));
             $suffixes = array('');
             foreach ($friends as $friend) {
-                if (is_null($GLOBALS['FORUM_DRIVER']->get_username($friend['member_liked']))) {
+                if ($GLOBALS['FORUM_DRIVER']->get_username($friend['member_liked']) === null) {
                     continue;
                 }
 
@@ -1247,11 +1247,11 @@ class Module_chat
         foreach ($suffixes as $suffix) {
             $effects = get_effect_set($suffix != '');
             foreach ($effects as $effect) {
-                if (is_null($effect)) {
+                if ($effect === null) {
                     continue;
                 }
 
-                if ((post_param_string('select_' . $effect . $suffix) == '-1') && (is_null(post_param_string('hidFileID_upload_' . $effect . $suffix, null))) && (isset($_FILES['upload_' . $effect . $suffix])) && (!is_uploaded_file($_FILES['upload_' . $effect . $suffix]['tmp_name']))) { // Handle special case of '-1'
+                if ((post_param_string('select_' . $effect . $suffix) == '-1') && (post_param_string('hidFileID_upload_' . $effect . $suffix, null) === null) && (isset($_FILES['upload_' . $effect . $suffix])) && (!is_uploaded_file($_FILES['upload_' . $effect . $suffix]['tmp_name']))) { // Handle special case of '-1'
                     $url = '-1';
                 } else {
                     $url_bits = get_url('select_' . $effect . $suffix, 'upload_' . $effect . $suffix, 'uploads/personal_sound_effects', 0, CMS_UPLOAD_AUDIO);
@@ -1282,7 +1282,7 @@ class Module_chat
         }
 
         $redirect = post_param_string('redirect', null);
-        if (!is_null($redirect)) {
+        if ($redirect !== null) {
             return redirect_screen($this->title, $redirect, do_lang_tempcode('SUCCESS'));
         }
 

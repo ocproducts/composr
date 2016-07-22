@@ -60,7 +60,7 @@ function webdav_script()
         $parsed['path'] .= '/';
     }
     $webdav_root = get_value('webdav_root');
-    if (is_null($webdav_root)) {
+    if ($webdav_root === null) {
         $webdav_root = 'webdav';
     }
     $server->setBaseUri($parsed['path'] . $webdav_root);
@@ -81,7 +81,7 @@ function webdav_script()
     $server->exec();
 
     // Close off log
-    if (!is_null($WEBDAV_LOG_FILE)) {
+    if ($WEBDAV_LOG_FILE !== null) {
         fclose($WEBDAV_LOG_FILE);
         $WEBDAV_LOG_FILE = null;
     }
@@ -95,7 +95,7 @@ function webdav_script()
 function webdav_log($str)
 {
     global $WEBDAV_LOG_FILE;
-    if (!is_null($WEBDAV_LOG_FILE)) {
+    if ($WEBDAV_LOG_FILE !== null) {
         fwrite($WEBDAV_LOG_FILE, $str . "\n\n");
     }
 }

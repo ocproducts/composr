@@ -77,7 +77,7 @@ function cns_get_filter_cats($only_exists_now = false)
 function cns_authusername_is_bound_via_httpauth($authusername)
 {
     $ret = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', 'id', array('m_password_compat_scheme' => 'httpauth', 'm_pass_hash_salted' => $authusername));
-    if (is_null($ret)) {
+    if ($ret === null) {
         $ret = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE ' . db_string_not_equal_to('m_password_compat_scheme', '') . ' AND ' . db_string_equal_to('m_username', $authusername));
     }
     return $ret;
@@ -92,7 +92,7 @@ function cns_authusername_is_bound_via_httpauth($authusername)
 function cns_is_ldap_member($member_id)
 {
     global $LDAP_CONNECTION;
-    if (is_null($LDAP_CONNECTION)) {
+    if ($LDAP_CONNECTION === null) {
         return false;
     }
 
@@ -244,13 +244,13 @@ function cns_get_all_custom_fields_match_member($member_id, $public_view = null,
         if (!is_string($member_value)) {
             if (is_float($member_value)) {
                 $member_value = float_to_raw_string($member_value);
-            } elseif (!is_null($member_value)) {
+            } elseif ($member_value !== null) {
                 $member_value = strval($member_value);
             }
         }
 
         // Decrypt the value if appropriate
-        if ((isset($field_to_show['cf_encrypted'])) && ($field_to_show['cf_encrypted'] == 1) && ($member_value != $field_to_show['cf_default']) && (!is_null($member_value))) {
+        if ((isset($field_to_show['cf_encrypted'])) && ($field_to_show['cf_encrypted'] == 1) && ($member_value != $field_to_show['cf_default']) && ($member_value !== null)) {
             require_code('encryption');
             if ((is_encryption_enabled()) && (post_param_string('decrypt', null) !== null)) {
                 $member_value = decrypt_data($member_value, post_param_string('decrypt'));

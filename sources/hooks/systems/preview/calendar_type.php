@@ -45,12 +45,12 @@ class Hook_preview_calendar_type
 
         $urls = get_url('', 'file', 'safe_mode_temp', 0, CMS_UPLOAD_IMAGE, false);
         if ($urls[0] == '') {
-            if (!is_null(post_param_integer('id', null))) {
+            if (post_param_integer('id', null) !== null) {
                 $rows = $GLOBALS['SITE_DB']->query_select('calendar_types', array('t_logo'), array('id' => post_param_integer('id')), '', 1);
                 $urls = $rows[0];
 
                 $url = find_theme_image($urls['t_logo']);
-            } elseif (!is_null(post_param_string('theme_img_code', null))) {
+            } elseif (post_param_string('theme_img_code', null) !== null) {
                 $url = find_theme_image(post_param_string('theme_img_code'));
             } else {
                 warn_exit(do_lang_tempcode('IMPROPERLY_FILLED_IN_UPLOAD'));

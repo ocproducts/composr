@@ -29,13 +29,13 @@
  */
 function render_profile_tabset($title, $member_id_of, $member_id_viewing = null, $username = null)
 {
-    if (is_null($member_id_viewing)) {
+    if ($member_id_viewing === null) {
         $member_id_viewing = get_member();
     }
 
-    if (is_null($username)) {
+    if ($username === null) {
         $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id_of);
-        if ((is_null($username)) || (is_guest($member_id_of))) {
+        if (($username === null) || (is_guest($member_id_of))) {
             warn_exit(do_lang_tempcode('MEMBER_NO_EXIST'));
         }
     }
@@ -58,7 +58,7 @@ function render_profile_tabset($title, $member_id_of, $member_id_viewing = null,
         }
     }
 
-    if (!is_null($only_tab)) {
+    if ($only_tab !== null) {
         $_unsorted = $tabs;
         $tabs = array();
         foreach (explode(',', $only_tab) as $tab) {

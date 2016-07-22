@@ -68,7 +68,7 @@ class Block_bottom_rss
 
         require_code('rss');
         $rss = new CMS_RSS($url);
-        if (!is_null($rss->error)) {
+        if ($rss->error !== null) {
             return do_template('WARNING_BOX', array('_GUID' => '7ae6a91db7c7ac7d607b9e29ddafc344', 'WARNING' => $rss->error));
         }
 

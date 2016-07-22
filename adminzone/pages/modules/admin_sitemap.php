@@ -246,7 +246,7 @@ class Module_admin_sitemap
 
         require_code('zones2');
         require_code('zones3');
-        $zones = create_selection_list_zones(null, is_null($no_go) ? null : array($no_go));
+        $zones = create_selection_list_zones(null, ($no_go === null) ? null : array($no_go));
         $fields->attach(form_input_list(do_lang_tempcode('ZONE'), '', 'zone', $zones, null, true));
 
         $post_url = get_self_url(false, false, null, false, true);
@@ -261,12 +261,12 @@ class Module_admin_sitemap
      */
     public function delete()
     {
-        if (!is_null($GLOBALS['CURRENT_SHARE_USER'])) {
+        if ($GLOBALS['CURRENT_SHARE_USER'] !== null) {
             warn_exit(do_lang_tempcode('SHARED_INSTALL_PROHIBIT'));
         }
 
         $zone = get_param_string('zone', null);
-        if (is_null($zone)) {
+        if ($zone === null) {
             return $this->_choose_zone($this->title);
         }
 
@@ -285,7 +285,7 @@ class Module_admin_sitemap
 
             if (substr($type, 0, 7) == 'modules') {
                 $info = extract_module_info(zone_black_magic_filterer(get_file_base() . '/' . $zone . (($zone == '') ? '' : '/') . 'pages/' . $type . '/' . $page . '.php'));
-                if ((!is_null($info)) && (array_key_exists('locked', $info)) && ($info['locked'])) {
+                if (($info !== null) && (array_key_exists('locked', $info)) && ($info['locked'])) {
                     continue;
                 }
             }
@@ -415,12 +415,12 @@ class Module_admin_sitemap
      */
     public function move()
     {
-        if (!is_null($GLOBALS['CURRENT_SHARE_USER'])) {
+        if ($GLOBALS['CURRENT_SHARE_USER'] !== null) {
             warn_exit(do_lang_tempcode('SHARED_INSTALL_PROHIBIT'));
         }
 
         $zone = get_param_string('zone', null);
-        if (is_null($zone)) {
+        if ($zone === null) {
             return $this->_choose_zone($this->title);
         }
 
@@ -466,13 +466,13 @@ class Module_admin_sitemap
      */
     public function _move()
     {
-        if (!is_null($GLOBALS['CURRENT_SHARE_USER'])) {
+        if ($GLOBALS['CURRENT_SHARE_USER'] !== null) {
             warn_exit(do_lang_tempcode('SHARED_INSTALL_PROHIBIT'));
         }
 
         $zone = post_param_string('zone', null);
 
-        if (is_null($zone)) {
+        if ($zone === null) {
             $post_url = build_url(array('page' => '_SELF', 'type' => get_param_string('type')), '_SELF', null, true);
             $hidden = build_keep_form_fields('', true);
 
@@ -589,7 +589,7 @@ class Module_admin_sitemap
                 log_it('MOVE_PAGES', $page);
             }
         }
-        if (is_null($moved_something)) {
+        if ($moved_something === null) {
             warn_exit(do_lang_tempcode('NOTHING_SELECTED'));
         }
 

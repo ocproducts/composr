@@ -30,7 +30,7 @@ function unit_testing_run()
     require_code('_tests/cmstest/cms_test_case.php');
 
     $id = get_param_string('id', null);
-    if (!is_null($id)) {
+    if ($id !== null) {
         //ob_start();
 
         if ($id == '!') {

@@ -208,7 +208,7 @@ class Hook_commandr_fs_database
             // We're in a row, and deleting a field entry for this row
             $where = $this->_do_where($meta_dir[0], $meta_dir[1]);
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('db_meta', 'm_type', array('m_table' => $meta_dir[0], 'm_name' => $file_name));
-            if (is_null($test)) {
+            if ($test === null) {
                 return false;
             }
             $test = str_replace('?', '', str_replace('*', '', $test));
@@ -243,14 +243,14 @@ class Hook_commandr_fs_database
             // We're in a row, and reading a field entry for this row
             $where = $this->_do_where($meta_dir[0], $meta_dir[1]);
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('db_meta', 'm_type', array('m_table' => $meta_dir[0], 'm_name' => $this->unescape_name($file_name)));
-            if (is_null($test)) {
+            if ($test === null) {
                 return false;
             }
             $output = $GLOBALS['SITE_DB']->query_select($meta_dir[0], array($file_name), $where);
             if (!array_key_exists(0, $output)) {
                 return false;
             }
-            return is_null($output[0][$file_name]) ? '' : strval($output[0][$file_name]);
+            return ($output[0][$file_name] === null) ? '' : strval($output[0][$file_name]);
         } else {
             return false; // Files shouldn't even exist anywhere else!
         }
@@ -274,7 +274,7 @@ class Hook_commandr_fs_database
             // We're in a row, and writing a field entry for this row
             $where = $this->_do_where($meta_dir[0], $meta_dir[1]);
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('db_meta', 'm_type', array('m_table' => $meta_dir[0], 'm_name' => $this->unescape_name($file_name)));
-            if (is_null($test)) {
+            if ($test === null) {
                 return false;
             }
             $accepts_null = (strpos($test, '?') !== false);
@@ -282,13 +282,13 @@ class Hook_commandr_fs_database
             $update = array();
             if (in_array($test, array('AUTO', 'MEMBER', 'INTEGER', 'UINTEGER', 'MEMBER', 'SHORT_INTEGER', 'AUTO_LINK', 'BINARY', 'GROUP', 'TIME'))) {
                 $update[$this->unescape_name($file_name)] = ($contents == '') ? null : intval($contents);
-                if ((is_null($update[$this->unescape_name($file_name)])) && (!$accepts_null)) {
+                if (($update[$this->unescape_name($file_name)] === null) && (!$accepts_null)) {
                     $update[$this->unescape_name($file_name)] = 0;
                 }
                 $GLOBALS['SITE_DB']->query_update($meta_dir[0], $update, $where, '', 1);
             } elseif ($test == 'REAL') {
                 $update[$this->unescape_name($file_name)] = ($contents == '') ? null : floatval($contents);
-                if ((is_null($update[$this->unescape_name($file_name)])) && (!$accepts_null)) {
+                if (($update[$this->unescape_name($file_name)] === null) && (!$accepts_null)) {
                     $update[$this->unescape_name($file_name)] = 0.0;
                 }
                 $GLOBALS['SITE_DB']->query_update($meta_dir[0], $update, $where, '', 1);

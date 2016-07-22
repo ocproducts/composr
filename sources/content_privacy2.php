@@ -41,7 +41,7 @@ function get_privacy_form_fields($content_type, $content_id = null, $show_header
     require_lang('cns_privacy');
     require_code('form_templates');
 
-    if (!is_null($content_id)) {
+    if ($content_id !== null) {
         $rows = $GLOBALS['SITE_DB']->query_select('content_privacy', null, array('content_type' => $content_type, 'content_id' => $content_id));
         if (count($rows) == 0) {
             $view_by_guests = true;
@@ -58,19 +58,19 @@ function get_privacy_form_fields($content_type, $content_id = null, $show_header
             $additional_access[] = $GLOBALS['FORUM_DRIVER']->get_username($row['member_id']);
         }
     } else {
-        $test = is_null($content_type) ? null : $GLOBALS['SITE_DB']->query_select_value_if_there('content_privacy', 'AVG(guest_view)', array('content_type' => $content_type));
+        $test = ($content_type === null) ? null : $GLOBALS['SITE_DB']->query_select_value_if_there('content_privacy', 'AVG(guest_view)', array('content_type' => $content_type));
         if ($test === null) {
             $view_by_guests = true;
         } else {
             $view_by_guests = (intval($test) == 1);
         }
-        $test = is_null($content_type) ? null : $GLOBALS['SITE_DB']->query_select_value_if_there('content_privacy', 'AVG(member_view)', array('content_type' => $content_type));
+        $test = ($content_type === null) ? null : $GLOBALS['SITE_DB']->query_select_value_if_there('content_privacy', 'AVG(member_view)', array('content_type' => $content_type));
         if ($test === null) {
             $view_by_members = true;
         } else {
             $view_by_members = (intval($test) == 1);
         }
-        $test = is_null($content_type) ? null : $GLOBALS['SITE_DB']->query_select_value_if_there('content_privacy', 'AVG(friend_view)', array('content_type' => $content_type));
+        $test = ($content_type === null) ? null : $GLOBALS['SITE_DB']->query_select_value_if_there('content_privacy', 'AVG(friend_view)', array('content_type' => $content_type));
         if ($test === null) {
             $view_by_friends = true;
         } else {

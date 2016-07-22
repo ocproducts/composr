@@ -34,8 +34,8 @@ class Hook_cron_manual_subscription_notification
         */
 
         $_last_time = get_value('last_cron_manual_subscription_notification', null, true);
-        $last_time = is_null($_last_time) ? mixed() : intval($_last_time);
-        if (!is_null($last_time)) {
+        $last_time = ($_last_time === null) ? mixed() : intval($_last_time);
+        if ($last_time !== null) {
             if ($last_time < 60 * 60 * 24) {
                 return; // Only do once per day
             }
@@ -57,8 +57,8 @@ class Hook_cron_manual_subscription_notification
                 $subscriptions = find_member_subscriptions($member_id);
                 foreach ($subscriptions as $subscription) {
                     $expiry_time = $subscription['expiry_time'];
-                    if ((!is_null($expiry_time)) && (($expiry_time - time()) < ($manual_subscription_expiry_notice * 24 * 60 * 60)) && ($expiry_time >= time())) {
-                        if (!is_null($last_time)) {
+                    if (($expiry_time !== null) && (($expiry_time - time()) < ($manual_subscription_expiry_notice * 24 * 60 * 60)) && ($expiry_time >= time())) {
+                        if ($last_time !== null) {
                             if (($expiry_time - $last_time) < ($manual_subscription_expiry_notice * 24 * 60 * 60)) {
                                 continue; // Notification already sent!
                             }
@@ -67,7 +67,7 @@ class Hook_cron_manual_subscription_notification
                         if (($expiry_time - time()) < ($manual_subscription_expiry_notice * 24 * 60 * 60)) {
                             $expiry_date = get_timezoned_date_time($expiry_time, false);
                             $member_name = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
-                            if (!is_null($member_name)) { // If not a deleted member
+                            if ($member_name !== null) { // If not a deleted member
                                 $member_profile_url = $GLOBALS['CNS_DRIVER']->member_profile_url($member_id);
                                 $cancel_url = build_url(array('page' => 'admin_ecommerce_logs', 'type' => 'cancel_subscription', 'subscription_id' => $subscription['subscription_id']), get_module_zone('admin_ecommerce'), null, false, false, true);
 

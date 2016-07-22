@@ -174,7 +174,7 @@ class Hook_fields_list_multi
         $custom_values = option_value_from_field_array($field, 'custom_values', 'off');
 
         if ($custom_values != 'off') { // Only makes sense to allow dynamic choices if custom values are enterable
-            if (is_null($dynamic_choices)) {
+            if ($dynamic_choices === null) {
                 $dynamic_choices = (option_value_from_field_array($field, 'dynamic_choices', 'off') == 'on');
             }
             if ($dynamic_choices) {
@@ -284,7 +284,7 @@ class Hook_fields_list_multi
 
         $tmp_name = 'field_' . strval($field['id']);
 
-        if ((fractional_edit()) && (is_null(post_param_string('require__' . $tmp_name, null)))) {
+        if ((fractional_edit()) && ((post_param_string('require__' . $tmp_name, null) === null))) {
             return STRING_MAGIC_NULL; // Was not on UI
         }
 
@@ -301,7 +301,7 @@ class Hook_fields_list_multi
                     }
                     $i++;
                 }
-                while (!is_null(post_param_string('tick_on_form__' . $_tmp_name, null)));
+                while (post_param_string('tick_on_form__' . $_tmp_name, null) !== null);
                 break;
 
             case 'multilist':

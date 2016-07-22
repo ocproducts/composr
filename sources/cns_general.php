@@ -384,7 +384,7 @@ function cns_read_in_member_profile($member_id, $need = null, $include_encrypted
         $_best_yet_forum = $GLOBALS['FORUM_DB']->query_select('f_posts', array('COUNT(*) as cnt', 'p_cache_forum_id'), array('p_poster' => $member_id), 'GROUP BY p_cache_forum_id ORDER BY COUNT(*) DESC', 1); // order by and limit have been added since original code, makes it run a bit faster
         $_best_yet_forum = collapse_2d_complexity('p_cache_forum_id', 'cnt', $_best_yet_forum);
         foreach ($forums as $forum) {
-            if (((array_key_exists($forum['id'], $_best_yet_forum)) && ((is_null($best_yet_forum)) || ($_best_yet_forum[$forum['id']] > $best_yet_forum)))) {
+            if (((array_key_exists($forum['id'], $_best_yet_forum)) && (($best_yet_forum === null) || ($_best_yet_forum[$forum['id']] > $best_yet_forum)))) {
                 $_most_active_forum = has_category_access($member_id_viewing, 'forums', strval($forum['id'])) ? protect_from_escaping(escape_html($forum['f_name'])) : do_lang_tempcode('PROTECTED_FORUM');
                 $best_yet_forum = $_best_yet_forum[$forum['id']];
             }

@@ -152,7 +152,7 @@ class Hook_addon_registry_content_read_tracking
      */
     public function install($upgrade_from = null)
     {
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->create_table('content_read', array(
                 'r_content_type' => '*ID_TEXT',
                 'r_content_id' => '*ID_TEXT',

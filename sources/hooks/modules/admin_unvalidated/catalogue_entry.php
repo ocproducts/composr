@@ -31,7 +31,7 @@ class Hook_unvalidated_catalogue_entry
     public function info()
     {
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('modules', 'module_version', array('module_the_name' => 'catalogues'));
-        if (is_null($test)) {
+        if ($test === null) {
             return null;
         }
 

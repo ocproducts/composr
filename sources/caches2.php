@@ -108,11 +108,11 @@ function request_via_cron($codename, $map, $special_cache_flags, $tempcode)
         'c_staff_status' => (($special_cache_flags & CACHE_AGAINST_STAFF_STATUS) != 0) ? $GLOBALS['FORUM_DRIVER']->is_staff(get_member()) : null,
         'c_member' => (($special_cache_flags & CACHE_AGAINST_BOT_STATUS) != 0) ? get_member() : null,
         'c_groups' => (($special_cache_flags & CACHE_AGAINST_PERMISSIVE_GROUPS) != 0) ? implode(',', array_map('strval', filter_group_permissivity($GLOBALS['FORUM_DRIVER']->get_members_groups(get_member())))) : '',
-        'c_is_bot' => (($special_cache_flags & CACHE_AGAINST_BOT_STATUS) != 0) ? (is_null(get_bot_type()) ? 0 : 1) : null,
+        'c_is_bot' => (($special_cache_flags & CACHE_AGAINST_BOT_STATUS) != 0) ? ((get_bot_type() === null) ? 0 : 1) : null,
         'c_timezone' => (($special_cache_flags & CACHE_AGAINST_TIMEZONE) != 0) ? get_users_timezone(get_member()) : '',
         'c_store_as_tempcode' => $tempcode ? 1 : 0,
     );
-    if (is_null($GLOBALS['SITE_DB']->query_select_value_if_there('cron_caching_requests', 'id', $map))) {
+    if ($GLOBALS['SITE_DB']->query_select_value_if_there('cron_caching_requests', 'id', $map) === null) {
         $GLOBALS['SITE_DB']->query_insert('cron_caching_requests', $map);
     }
 }
@@ -150,18 +150,18 @@ function put_into_cache($codename, $ttl, $cache_identifier, $staff_status, $memb
         return;
     }
 
-    $dependencies = (is_null($_langs_required)) ? '' : implode(':', $_langs_required);
+    $dependencies = ($_langs_required === null) ? '' : implode(':', $_langs_required);
     $dependencies .= '!';
-    $dependencies .= (is_null($_javascripts_required)) ? '' : implode(':', $_javascripts_required);
+    $dependencies .= ($_javascripts_required === null) ? '' : implode(':', $_javascripts_required);
     $dependencies .= '!';
-    $dependencies .= (is_null($_csss_required)) ? '' : implode(':', $_csss_required);
+    $dependencies .= ($_csss_required === null) ? '' : implode(':', $_csss_required);
 
     $big_mainstream_cache = false;//($codename != 'menu') && ($ttl > 60 * 5) && (get_users_timezone(get_member()) == get_site_timezone());
     if ($big_mainstream_cache) {
         cms_profile_start_for('put_into_cache');
     }
 
-    if (!is_null($GLOBALS['PERSISTENT_CACHE'])) {
+    if ($GLOBALS['PERSISTENT_CACHE'] !== null) {
         $pcache = array('dependencies' => $dependencies, 'date_and_time' => time(), 'the_value' => $cache);
         persistent_cache_set(array('CACHE', $codename, md5($cache_identifier), $lang, $theme, $staff_status, $member, $groups, $is_bot, $timezone), $pcache, false, $ttl * 60);
     } else {

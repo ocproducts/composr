@@ -31,7 +31,7 @@
  */
 function render_poll_box($results, $myrow, $zone = '_SEARCH', $include_manage_links = false, $give_context = true, $guid = '')
 {
-    if (is_null($myrow)) { // Should never happen, but we need to be defensive
+    if ($myrow === null) { // Should never happen, but we need to be defensive
         return new Tempcode();
     }
 
@@ -140,14 +140,14 @@ function render_poll_box($results, $myrow, $zone = '_SEARCH', $include_manage_li
  */
 function vote_in_poll($poll_id, $cast, $myrow = null, $member_id = null, $ip = null)
 {
-    if (is_null($member_id)) {
+    if ($member_id === null) {
         $member_id = get_member();
     }
-    if (is_null($ip)) {
+    if ($ip === null) {
         $ip = get_ip_address();
     }
 
-    if (is_null($myrow)) {
+    if ($myrow === null) {
         $rows = $GLOBALS['SITE_DB']->query_select('poll', array('*'), array('id' => $poll_id), '', 1);
         if (!array_key_exists(0, $rows)) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'poll'));
@@ -155,7 +155,7 @@ function vote_in_poll($poll_id, $cast, $myrow = null, $member_id = null, $ip = n
         $myrow = $rows[0];
     }
 
-    if (!is_null($cast)) {
+    if ($cast !== null) {
         if (may_vote_in_poll($poll_id, $member_id, $ip)) {
             if (addon_installed('points')) {
                 require_code('points');
@@ -211,18 +211,18 @@ function may_vote_in_poll($poll_id, $member_id, $ip)
         return false;
     }
 
-    if ((get_option('vote_member_ip_restrict') == '0') || (is_null($ip))) {
+    if ((get_option('vote_member_ip_restrict') == '0') || ($ip === null)) {
         if (is_guest($member_id)) {
-            if (is_null($ip)) {
+            if ($ip === null) {
                 return true;
             }
-            return is_null($GLOBALS['SITE_DB']->query_select_value_if_there('poll_votes', 'id', array('v_poll_id' => $poll_id, 'v_voter_ip' => $ip)));
+            return ($GLOBALS['SITE_DB']->query_select_value_if_there('poll_votes', 'id', array('v_poll_id' => $poll_id, 'v_voter_ip' => $ip)) === null);
         } else {
-            return is_null($GLOBALS['SITE_DB']->query_select_value_if_there('poll_votes', 'id', array('v_poll_id' => $poll_id, 'v_voter_id' => $member_id)));
+            return ($GLOBALS['SITE_DB']->query_select_value_if_there('poll_votes', 'id', array('v_poll_id' => $poll_id, 'v_voter_id' => $member_id)) === null);
         }
     }
 
-    return is_null($GLOBALS['SITE_DB']->query_value_if_there('SELECT id FROM ' . get_table_prefix() . 'poll_votes WHERE v_poll_id=' . strval($poll_id) . ' AND (v_voter_id=' . strval($member_id) . ' OR ' . db_string_equal_to('v_voter_ip', $ip) . ')'));
+    return ($GLOBALS['SITE_DB']->query_value_if_there('SELECT id FROM ' . get_table_prefix() . 'poll_votes WHERE v_poll_id=' . strval($poll_id) . ' AND (v_voter_id=' . strval($member_id) . ' OR ' . db_string_equal_to('v_voter_ip', $ip) . ')') === null);
 }
 
 /**
@@ -234,21 +234,21 @@ function may_vote_in_poll($poll_id, $member_id, $ip)
  */
 function create_selection_list_polls($it = null, $only_owned = null)
 {
-    $where = is_null($only_owned) ? null : array('submitter' => $only_owned);
+    $where = ($only_owned === null) ? null : array('submitter' => $only_owned);
     $rows = $GLOBALS['SITE_DB']->query_select('poll', array('question', 'is_current', 'votes1', 'votes2', 'votes3', 'votes4', 'votes5', 'votes6', 'votes7', 'votes8', 'votes9', 'votes10', 'id'), $where, 'ORDER BY is_current DESC,date_and_time,question', intval(get_option('general_safety_listing_limit')));
     if (count($rows) == intval(get_option('general_safety_listing_limit'))) { // Ok, just new ones
-        if (is_null($where)) {
+        if ($where === null) {
             $where = array();
         }
         $rows = $GLOBALS['SITE_DB']->query_select('poll', array('question', 'is_current', 'votes1', 'votes2', 'votes3', 'votes4', 'votes5', 'votes6', 'votes7', 'votes8', 'votes9', 'votes10', 'id'), $where + array('date_and_time' => null), 'ORDER BY add_time DESC', intval(get_option('general_safety_listing_limit')));
     }
     $out = new Tempcode();
     foreach ($rows as $myrow) {
-        $selected = !is_null($it);
+        $selected = $it !== null;
 
         if ($myrow['is_current'] == 1) {
             $status = do_lang_tempcode('CURRENT');
-            if (is_null($it)) {
+            if ($it === null) {
                 $selected = true;
             }
         } else {

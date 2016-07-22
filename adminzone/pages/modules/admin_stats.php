@@ -59,7 +59,7 @@ class Module_admin_stats
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->create_table('stats', array(
                 'id' => '*AUTO',
                 'the_page' => 'SHORT_TEXT',
@@ -114,11 +114,11 @@ class Module_admin_stats
             ), true);
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 8)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 8)) {
             $GLOBALS['SITE_DB']->alter_table_field('stats', 'get', 'URLPATH', 's_get');
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 9)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 9)) {
             $GLOBALS['SITE_DB']->alter_table_field('stats', 'the_user', 'MEMBER', 'member_id');
             $GLOBALS['SITE_DB']->add_table_field('stats', 'session_id', 'ID_TEXT');
             $GLOBALS['SITE_DB']->query_update('db_meta_indices', array('i_fields' => 'member_id'), array('i_name' => 'member_track_1'), '', 1);
@@ -127,7 +127,7 @@ class Module_admin_stats
             $GLOBALS['SITE_DB']->delete_index_if_exists('stats', 'member_track_3');
         }
 
-        if ((is_null($upgrade_from)) || ($upgrade_from < 9)) {
+        if (($upgrade_from === null) || ($upgrade_from < 9)) {
             $GLOBALS['SITE_DB']->create_index('stats', 'member_track_4', array('session_id'));
             $GLOBALS['SITE_DB']->create_index('stats', 'member_track_1', array('member_id'));
             $GLOBALS['SITE_DB']->create_index('stats', 'member_track_3', array('member_id', 'date_and_time'));
@@ -167,7 +167,7 @@ class Module_admin_stats
         $hooks = find_all_hook_obs('modules', 'admin_stats', 'Hook_admin_stats_');
         foreach ($hooks as $ob) {
             $info = $ob->info();
-            if (!is_null($info)) {
+            if ($info !== null) {
                 $ret += $info[0];
             }
         }
@@ -339,7 +339,7 @@ class Module_admin_stats
         $hooks = find_all_hook_obs('modules', 'admin_stats', 'Hook_admin_stats_');
         foreach ($hooks as $ob) {
             $info = $ob->info();
-            if (!is_null($info)) {
+            if ($info !== null) {
                 $actions = array_merge($actions, array($info[1]));
             }
         }
@@ -380,7 +380,7 @@ class Module_admin_stats
         }
         $prior_month_start = utctime_to_usertime(mktime(0, 0, 0, $prior_month, 1, $prior_year));
         $first_stat = $stats_table ? $GLOBALS['SITE_DB']->query_select_value_if_there('stats', 'MIN(date_and_time)') : null;
-        if (is_null($first_stat)) {
+        if ($first_stat === null) {
             $year_start = intval(date('Y')) - 5;
             $years_ahead = 5;
             $first_stat = time();
@@ -396,13 +396,13 @@ class Module_admin_stats
         }
         $fields->attach(form_input_date(do_lang_tempcode('FROM'), do_lang_tempcode('TIME_RANGE_START'), 'time_start', false, false, false, $prior_month_start, $years_ahead, $year_start));
         $fields->attach(form_input_date(do_lang_tempcode('TO'), do_lang_tempcode('TIME_RANGE_END'), 'time_end', false, false, false, $month_start, $years_ahead, $year_start));
-        if (!is_null($extra_fields)) {
+        if ($extra_fields !== null) {
             $fields->attach($extra_fields);
         }
 
         $post_url = get_self_url(false, false, array('dated' => 1), false, true);
 
-        if (is_null($message)) {
+        if ($message === null) {
             $message = do_lang_tempcode($stats_table ? 'SELECT_STATS_RANGE' : '_SELECT_STATS_RANGE', escape_html(get_timezoned_date($first_stat)));
         }
 
@@ -588,13 +588,13 @@ class Module_admin_stats
         }
         $time_start = post_param_date('time_start', true);
         $time_end = post_param_date('time_end', true);
-        if (!is_null($time_end)) {
+        if ($time_end !== null) {
             $time_end += 60 * 60 * 24 - 1; // So it is end of day not start
         }
-        if (is_null($time_start)) {
+        if ($time_start === null) {
             $time_start = 0;
         }
-        if (is_null($time_end)) {
+        if ($time_end === null) {
             $time_end = time();
         }
         $first_stat = $GLOBALS['SITE_DB']->query_select_value_if_there('stats', 'MIN(date_and_time)');
@@ -703,13 +703,13 @@ class Module_admin_stats
         }
         $time_start = post_param_date('time_start', true);
         $time_end = post_param_date('time_end', true);
-        if (!is_null($time_end)) {
+        if ($time_end !== null) {
             $time_end += 60 * 60 * 24 - 1; // So it is end of day not start
         }
-        if (is_null($time_start)) {
+        if ($time_start === null) {
             $time_start = 0;
         }
-        if (is_null($time_end)) {
+        if ($time_end === null) {
             $time_end = time();
         }
         $first_stat = $GLOBALS['SITE_DB']->query_select_value_if_there('stats', 'MIN(date_and_time)');
@@ -835,13 +835,13 @@ class Module_admin_stats
         }
         $time_start = post_param_date('time_start', true);
         $time_end = post_param_date('time_end', true);
-        if (!is_null($time_end)) {
+        if ($time_end !== null) {
             $time_end += 60 * 60 * 24 - 1; // So it is end of day not start
         }
-        if (is_null($time_start)) {
+        if ($time_start === null) {
             $time_start = 0;
         }
-        if (is_null($time_end)) {
+        if ($time_end === null) {
             $time_end = time();
         }
         $first_stat = $GLOBALS['SITE_DB']->query_select_value_if_there('stats', 'MIN(date_and_time)');
@@ -979,13 +979,13 @@ class Module_admin_stats
         }
         $time_start = post_param_date('time_start', true);
         $time_end = post_param_date('time_end', true);
-        if (!is_null($time_end)) {
+        if ($time_end !== null) {
             $time_end += 60 * 60 * 24 - 1; // So it is end of day not start
         }
-        if (is_null($time_start)) {
+        if ($time_start === null) {
             $time_start = 0;
         }
-        if (is_null($time_end)) {
+        if ($time_end === null) {
             $time_end = time();
         }
         $first_stat = $GLOBALS['SITE_DB']->query_select_value_if_there('stats', 'MIN(date_and_time)');
@@ -1077,11 +1077,11 @@ class Module_admin_stats
             list($value, $page) = $_value;
 
             $real_data[] = array(
-                do_lang('PAGE_OR_URL') => is_null($page) ? $url : $page,
+                do_lang('PAGE_OR_URL') => ($page === null) ? $url : $page,
                 do_lang('COUNT_TOTAL') => $value,
             );
 
-            $fields->attach(results_entry(array(is_null($page) ? make_string_tempcode(escape_html($url)) : hyperlink(build_url(array('page' => '_SELF', 'type' => '_page', 'iscreen' => $page), '_SELF'), $url, false, true), integer_format($value)), false));
+            $fields->attach(results_entry(array(($page === null) ? make_string_tempcode(escape_html($url)) : hyperlink(build_url(array('page' => '_SELF', 'type' => '_page', 'iscreen' => $page), '_SELF'), $url, false, true), integer_format($value)), false));
 
             $i++;
         }
@@ -1326,7 +1326,7 @@ class Module_admin_stats
                 $degrees = 360 / count($rows);
                 foreach ($rows as $value) {
                     $region = geolocate_ip($value['ip']);
-                    if ((is_null($region)) || ($region == '')) {
+                    if (($region === null) || ($region == '')) {
                         $region = do_lang('_UNKNOWN');
                     }
 

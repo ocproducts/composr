@@ -45,13 +45,13 @@ function _helper_install_create_custom_field($this_ref, $name, $length, $locked 
 
     $name = 'cms_' . $name;
     $id = $this_ref->db->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('cf_name') => $name));
-    if (is_null($id)) {
-        if (is_null($default)) {
+    if ($id === null) {
+        if ($default === null) {
             $default = (strpos($name, 'points') !== false) ? '0' : '';
         }
         $id = cns_make_custom_field($name, $locked, $description, $default, $viewable, $viewable, $settable, $encrypted, $type, $required);
     }
-    return !is_null($id);
+    return $id !== null;
 }
 
 /**

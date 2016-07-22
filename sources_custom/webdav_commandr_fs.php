@@ -171,7 +171,7 @@ namespace webdav_commandr_fs {
                 fpassthru($data);
                 $data = ob_get_clean();
             }
-            $test = $this->commandr_fs->write_file($parsedNewPath, is_null($data) ? '' : $data);
+            $test = $this->commandr_fs->write_file($parsedNewPath, ($data === null) ? '' : $data);
 
             if ($test === false) {
                 throw new \Sabre\DAV\Exception\Forbidden('Could not create ' . $name);
@@ -323,7 +323,7 @@ namespace webdav_commandr_fs {
                 $data = ob_get_clean();
             }
 
-            $test = $this->commandr_fs->write_file($parsedPath, is_null($data) ? '' : $data);
+            $test = $this->commandr_fs->write_file($parsedPath, ($data === null) ? '' : $data);
 
             if ($test === false) {
                 throw new \Sabre\DAV\Exception\Forbidden('Could not save ' . $this->path);
@@ -380,7 +380,7 @@ namespace webdav_commandr_fs {
             foreach ($listing[1] as $l) {
                 list($filename, $filetype, $filesize, $filetime) = $l;
                 if ($filename == $currentName) {
-                    if (is_null($filesize)) {
+                    if ($filesize === null) {
                         $filesize = strlen($this->get()); // Needed at least for Cyberduck
                     }
                     return $filesize;
@@ -436,12 +436,12 @@ namespace webdav_commandr_fs {
         {
             $password_hashed = $GLOBALS['FORUM_DRIVER']->forum_md5($password, $username);
             $result = $GLOBALS['FORUM_DRIVER']->forum_authorise_login($username, null, $password_hashed, $password);
-            if (is_null($result['id'])) { // Failure, try blank password (as some clients don't let us input a blank password, so the real password could be blank)
+            if ($result['id'] === null) { // Failure, try blank password (as some clients don't let us input a blank password, so the real password could be blank)
                 $password = '';
                 $password_hashed = $GLOBALS['FORUM_DRIVER']->forum_md5($password, $username);
                 $result = $GLOBALS['FORUM_DRIVER']->forum_authorise_login($username, null, $password_hashed, $password);
             }
-            if (!is_null($result['id'])) {
+            if ($result['id'] !== null) {
                 return $GLOBALS['FORUM_DRIVER']->is_super_admin($result['id']);
             }
             return false;

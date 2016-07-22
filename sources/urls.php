@@ -413,7 +413,7 @@ function build_url($vars, $zone_name = '_SEARCH', $skip = null, $keep_all = fals
     if (
         (isset($SITE_INFO['no_keep_params'])) &&
         ($SITE_INFO['no_keep_params'] === '1') &&
-        ((get_option('url_monikers_enabled') === '0') || (!is_numeric($id)/*i.e. not going to trigger a URL moniker query*/) && ((is_null($id)) || (strpos($id, '/') !== false)))
+        ((get_option('url_monikers_enabled') === '0') || (!is_numeric($id)/*i.e. not going to trigger a URL moniker query*/) && (($id === null) || (strpos($id, '/') !== false)))
     ) {
         if (($id === null) && (isset($vars['type'])) && ($vars['type'] === 'browse') && (!$keep_all)) {
             unset($vars['type']); // Redundant, let it default, this is our convention
@@ -1496,7 +1496,7 @@ function check_url_exists($url, $test_freq_secs)
 
     if ((!isset($test1[0])) || ($test1[0]['url_check_time'] < time() - $test_freq_secs)) {
         $test2 = http_download_file($url, 0, false);
-        $exists = is_null($test2) ? 0 : 1;
+        $exists = ($test2 === null) ? 0 : 1;
 
         if (!isset($test1[0])) {
             $GLOBALS['SITE_DB']->query_delete('urls_checked', array(

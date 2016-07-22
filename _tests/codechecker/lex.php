@@ -170,7 +170,7 @@ function lex($text = null)
 
     ini_set('pcre.backtrack_limit', '10000000');
 
-    if (!is_null($text)) {
+    if ($text !== null) {
         $TEXT = $text;
     }
 
@@ -225,7 +225,7 @@ function lex($text = null)
             $last_m = $m;
         }
     }
-    if (!is_null($last_m)) {
+    if ($last_m !== null) {
         $between = substr($TEXT, $last_m[1] + strlen($last_m[0]) + 2);
         $BETWEEN_ALL .= $between;
         $new_text .= preg_replace('#[^\n]#', ' ', $between);
@@ -466,7 +466,7 @@ function lex($text = null)
                         if ($reached_end) {
                             break 3;
                         }
-                        if (is_null($numeric)) {
+                        if ($numeric === null) {
                             $numeric = in_array($char, array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9'));
                         }
 

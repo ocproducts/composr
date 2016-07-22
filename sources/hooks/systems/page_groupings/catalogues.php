@@ -38,7 +38,7 @@ class Hook_page_groupings_catalogues
 
         $exhaustive = true;
 
-        if (is_null($member_id)) {
+        if ($member_id === null) {
             $member_id = get_member();
         }
 
@@ -48,7 +48,7 @@ class Hook_page_groupings_catalogues
         }
         if ($exhaustive) {
             $catalogues = $GLOBALS['SITE_DB']->query_select('catalogues', array('c_name', 'c_title', 'c_description', 'c_ecommerce', 'c_is_tree'), null, 'ORDER BY c_add_date', 50, null, true);
-            if (!is_null($catalogues)) {
+            if ($catalogues !== null) {
                 $ret2 = array();
                 $count = 0;
 
@@ -72,7 +72,7 @@ class Hook_page_groupings_catalogues
 
                         $page_grouping = 'rich_content';
                         if ($row['c_name'] == 'projects') {
-                            $page_grouping = 'rich_content');
+                            $page_grouping = 'rich_content';
                         }
                         if ($row['c_name'] == 'classifieds') {
                             $page_grouping = 'social';

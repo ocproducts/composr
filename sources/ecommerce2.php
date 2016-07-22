@@ -39,7 +39,7 @@
  */
 function add_usergroup_subscription($title, $description, $cost, $length, $length_units, $auto_recur, $group_id, $uses_primary, $enabled, $mail_start, $mail_end, $mail_uhoh, $mails = null)
 {
-    if (is_null($mails)) {
+    if ($mails === null) {
         $mails = array();
     }
 
@@ -159,7 +159,7 @@ function edit_usergroup_subscription($id, $title, $description, $cost, $length, 
     $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']->query_update('f_usergroup_subs', $map, array('id' => $id), '', 1);
 
     // Handle extra mails. Add/edit/delete as required
-    if (!is_null($mails)) {
+    if ($mails !== null) {
         $existing_mails = array();
         $_mails = $GLOBALS['FORUM_DB']->query_select('f_usergroup_sub_mails', array('*'), array('m_usergroup_sub_id' => $id), 'ORDER BY id');
         foreach ($_mails as $_mail) {
@@ -229,7 +229,7 @@ function delete_usergroup_subscription($id, $uhoh_mail = '')
 
         $test = in_array($new_group, $GLOBALS['FORUM_DRIVER']->get_members_groups($member_id));
         if ($test) {
-            if (is_null($GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']->query_select_value_if_there('f_group_member_timeouts', 'member_id', array('member_id' => $member_id, 'group_id' => $new_group)))) {
+            if ($GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']->query_select_value_if_there('f_group_member_timeouts', 'member_id', array('member_id' => $member_id, 'group_id' => $new_group)) === null) {
                 // Remove them from the group
 
                 if ((method_exists($GLOBALS['FORUM_DB'], 'remove_member_from_group')) && (get_value('unofficial_ecommerce') === '1') && (get_forum_type() != 'cns')) {

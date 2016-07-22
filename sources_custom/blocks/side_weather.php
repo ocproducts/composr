@@ -98,7 +98,7 @@ class Block_side_weather
 
         if (!is_numeric($loc_code)) {
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('cached_weather_codes', 'w_code', array('w_string' => $loc_code));
-            if (is_null($test)) {
+            if ($test === null) {
                 $matches = array();
 
                 require_code('files');

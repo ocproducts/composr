@@ -145,7 +145,7 @@ class Forum_driver_cns extends Forum_driver_base
     protected function _install_delete_custom_field($name)
     {
         $id = $this->db->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('cf_name') => 'cms_' . $name));
-        if (!is_null($id)) {
+        if ($id !== null) {
             require_code('cns_members_action2');
             cns_delete_custom_field($id);
         }
@@ -411,7 +411,7 @@ class Forum_driver_cns extends Forum_driver_base
     {
         // Check member exists
         $username = $this->get_username($member);
-        if (is_null($username)) {
+        if ($username === null) {
             return;
         }
 
@@ -440,7 +440,7 @@ class Forum_driver_cns extends Forum_driver_base
     {
         // Check member exists
         $username = $this->get_username($member);
-        if (is_null($username)) {
+        if ($username === null) {
             return null;
         }
 
@@ -561,7 +561,7 @@ class Forum_driver_cns extends Forum_driver_base
     {
         if (get_option('username_profile_links') == '1') {
             $username = $GLOBALS['FORUM_DRIVER']->get_username($id);
-            $map = array('page' => 'members', 'type' => 'view', 'id' => is_null($username) ? strval($id) : $username);
+            $map = array('page' => 'members', 'type' => 'view', 'id' => ($username === null) ? strval($id) : $username);
             if (get_page_name() == 'members') {
                 $map += propagate_filtercode();
             }
@@ -728,7 +728,7 @@ class Forum_driver_cns extends Forum_driver_base
         } else {
             $forum_id = $this->forum_id_from_name($forum);
         }
-        if (is_null($forum_id)) {
+        if ($forum_id === null) {
             return null;
         }
 
@@ -765,7 +765,7 @@ class Forum_driver_cns extends Forum_driver_base
      */
     public function topic_url($id, $forum = '', $tempcode_okay = false)
     {
-        if (is_null($id)) {
+        if ($id === null) {
             return ''; // Should not happen, but if it does, this is how we should handle it.
         }
 
@@ -791,7 +791,7 @@ class Forum_driver_cns extends Forum_driver_base
      */
     public function post_url($id, $forum, $tempcode_okay = false)
     {
-        if (is_null($id)) {
+        if ($id === null) {
             return ''; // Should not happen, but if it does, this is how we should handle it.
         }
 
@@ -845,7 +845,7 @@ class Forum_driver_cns extends Forum_driver_base
                 foreach ($group_ids as $group_id) {
                     if (in_array($group_id, $groups)) {
                         $c = $ob->get_member_list($group_id);
-                        if (!is_null($c)) {
+                        if ($c !== null) {
                             foreach ($c as $member_id => $x) {
                                 $out[$member_id] = $x;
                             }
@@ -931,7 +931,7 @@ class Forum_driver_cns extends Forum_driver_base
         $generator = get_option('display_name_generator');
         if ($generator != '') {
             $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($username);
-            if (!is_null($member_id)) {
+            if ($member_id !== null) {
                 require_code('cns_members');
                 $fields = cns_get_custom_field_mappings($member_id);
 
@@ -1014,7 +1014,7 @@ class Forum_driver_cns extends Forum_driver_base
             }
         }
 
-        if (is_null($pic)) {
+        if ($pic === null) {
             $pic = '';
         } elseif ((url_is_local($pic)) && ($pic != '')) {
             $pic = get_complex_base_url($pic) . '/' . $pic;
@@ -1046,7 +1046,7 @@ class Forum_driver_cns extends Forum_driver_base
         }*/
 
         $avatar = $this->get_member_row_field($member, 'm_avatar_url');
-        if (is_null($avatar)) {
+        if ($avatar === null) {
             $avatar = '';
         } else {
             $base_url = get_base_url();
@@ -1307,7 +1307,7 @@ class Forum_driver_cns extends Forum_driver_base
         }
         $row = $this->db->query_select('f_members', array('*'), array('m_username' => $name), '', 1);
         if (!array_key_exists(0, $row)) {
-            if ((is_numeric($name)) && (!is_null($this->get_username(intval($name))))) {
+            if ((is_numeric($name)) && ($this->get_username(intval($name)) !== null)) {
                 return intval($name);
             }
             return null;
@@ -1517,14 +1517,14 @@ class Forum_driver_cns extends Forum_driver_base
         require_code('cns_members');
 
         $member_id = $this->get_member_from_username($username);
-        if (((is_null($GLOBALS['LDAP_CONNECTION'])) || (!cns_is_on_ldap($username))) && (is_null($member_id))) {
+        if ((($GLOBALS['LDAP_CONNECTION'] === null) || (!cns_is_on_ldap($username))) && ($member_id === null)) {
             $member_id = $this->db->query_select_value_if_there('f_members', 'id', array('m_email_address' => $username));
-            if (is_null($member_id)) {
+            if ($member_id === null) {
                 return '!'; // Invalid user logging in
             }
         }
 
-        if ((!cns_is_ldap_member($member_id)) && (!is_null($member_id))) {
+        if ((!cns_is_ldap_member($member_id)) && ($member_id !== null)) {
             return md5($password);
         } else {
             return $password; //cns_ldap_hash($member_id, $password); Can't do hash checks under all systems
@@ -1571,7 +1571,7 @@ class Forum_driver_cns extends Forum_driver_base
             require_code('users_active_actions');
             $lvt = $this->get_member_row_field($id, 'm_last_visit_time');
             if (function_exists('cms_setcookie')) { // May be trying to check in safe mode when doing above require_code, so recurse
-                cms_setcookie('last_visit', is_null($lvt) ? strval(time()) : strval($lvt), true);
+                cms_setcookie('last_visit', ($lvt === null) ? strval(time()) : strval($lvt), true);
             }
             $new_visit = true;
         } else {
@@ -1675,7 +1675,7 @@ class Forum_driver_cns extends Forum_driver_base
         }
         if (($restrict_answer != 0) || ($seconds_since_last_visit > 180) || ($new_visit)) {
             $_min_lastvisit_frequency = get_value('min_lastvisit_frequency');
-            $min_lastvisit_frequency = is_null($_min_lastvisit_frequency) ? 0 : intval($_min_lastvisit_frequency);
+            $min_lastvisit_frequency = ($_min_lastvisit_frequency === null) ? 0 : intval($_min_lastvisit_frequency);
             if (($submitting) || ((!$submitting) && ($seconds_since_last_visit > $wait_time/*don't want a flood control message to itself bump the last-visit time*/) && ($seconds_since_last_visit > $min_lastvisit_frequency))) {
                 $old_ip = $this->get_member_row_field($id, 'm_ip_address');
 

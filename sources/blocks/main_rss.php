@@ -86,14 +86,14 @@ class Block_main_rss
             }
 
             $rss = new CMS_RSS($url);
-            if (!is_null($rss->error)) {
+            if ($rss->error !== null) {
                 $error = $rss->error;
                 continue;
             }
             $rss_feeds[] = $rss;
         }
 
-        if ((!is_null($error)) && (count($rss_feeds) == 0)) {
+        if (($error !== null) && (count($rss_feeds) == 0)) {
             $GLOBALS['DO_NOT_CACHE_THIS'] = true;
             require_code('failure');
             relay_error_notification(do_lang('rss:ERROR_HANDLING_RSS_FEED', $url, $error), false, 'error_occurred_rss');
@@ -192,9 +192,9 @@ class Block_main_rss
                         $cat = $_cat;
                     }
                 }
-                if (!is_null($cat)) {
+                if ($cat !== null) {
                     $category_img = ($NEWS_CATS_CACHE[$cat]['nc_img'] == '') ? '' : find_theme_image($NEWS_CATS_CACHE[$cat]['nc_img']);
-                    if (is_null($category_img)) {
+                    if ($category_img === null) {
                         $category_img = '';
                     }
                 }
@@ -228,7 +228,7 @@ class Block_main_rss
             } elseif (array_key_exists('author_email', $rss->gleamed_feed)) {
                 $__author = hyperlink(mailto_obfuscated() . obfuscate_email_address($rss->gleamed_feed['author_email']), $_author_string, true, true);
             }
-            if (!is_null($__author)) {
+            if ($__author !== null) {
                 $_author_string = $__author->evaluate();
             }
             $author = do_lang_tempcode('RSS_SOURCE_FROM', $_author_string);

@@ -31,7 +31,7 @@ class Hook_members_buildr
         }
 
         $zone = get_page_zone('buildr', false);
-        if (is_null($zone)) {
+        if ($zone === null) {
             return array();
         }
         if (!has_zone_access(get_member(), $zone)) {
@@ -39,7 +39,7 @@ class Hook_members_buildr
         }
 
         $id = $GLOBALS['SITE_DB']->query_select_value_if_there('w_members', 'id', array('id' => $member_id), '', true);
-        if (!is_null($id)) {
+        if ($id !== null) {
             require_lang('buildr');
             return array(array('audit', do_lang_tempcode('BUILDR'), build_url(array('page' => 'buildr', 'type' => 'inventory', 'member' => $member_id), get_module_zone('buildr')), 'menu/buildr'));
         }

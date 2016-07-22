@@ -354,7 +354,7 @@ class Module_sites
 
         // Check there's a latest version
         $t = get_latest_version_pretty();
-        if (is_null($t)) {
+        if ($t === null) {
             warn_exit(do_lang_tempcode('ARCHIVE_NOT_AVAILABLE'));
         }
 

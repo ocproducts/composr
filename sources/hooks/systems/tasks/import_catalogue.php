@@ -55,7 +55,7 @@ class Hook_task_import_catalogue
             $categories[get_translated_text($cat_row['cc_title'])] = $cat_row['id'];
 
             // Root category is 'default' category for catalogue importing (category with same name as catalogue)
-            if ((!array_key_exists($catalogue_name, $categories)) && (is_null($cat_row['cc_parent_id']))) {
+            if ((!array_key_exists($catalogue_name, $categories)) && ($cat_row['cc_parent_id'] === null)) {
                 $categories[$catalogue_name] = $cat_row['id'];
             }
         }
@@ -126,7 +126,7 @@ class Hook_task_import_catalogue
                 continue; // blank line
             }
             $test = $this->import_csv_lines($catalogue_name, $data, $root_cat, $fields, $categories, $csv_field_titles, $key_field, $new_handling, $delete_handling, $update_handling, $matched_ids, $notes_field, $meta_keywords_field, $meta_description_field, $allow_rating, $allow_comments, $allow_trackbacks);
-            if (!is_null($test)) {
+            if ($test !== null) {
                 fclose($handle);
                 @unlink($csv_name);
                 sync_file($csv_name);
@@ -291,7 +291,7 @@ class Hook_task_import_catalogue
                 }
             }
 
-            if (!is_null($has_match)) {
+            if ($has_match !== null) {
                 $method = $update_handling;
             } else {
                 $method = $new_handling;
@@ -338,7 +338,7 @@ class Hook_task_import_catalogue
             if (($method == 'overwrite') || ($method == 'add')) {
                 // Map settings to defaults
                 foreach ($map as $key => $val) {
-                    if (is_null($val)) {
+                    if ($val === null) {
                         foreach ($fields as $field) {
                             if ($field['id'] == $key) {
                                 $map[$key] = $field['cf_default'];
@@ -349,7 +349,7 @@ class Hook_task_import_catalogue
             } else { // 'freshen'
                 // Remove non-covered columns
                 foreach ($map as $key => $val) {
-                    if ((is_null($val)) || ($val == '')) {
+                    if (($val === null) || ($val == '')) {
                         unset($map[$key]);
                     }
                 }

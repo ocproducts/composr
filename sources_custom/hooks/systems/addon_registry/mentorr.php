@@ -163,7 +163,7 @@ New users should then be assigned a mentor/buddy who will receive an equal amoun
      */
     public function install($upgrade_from = null)
     {
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->create_table('members_mentors', array(
                 'id' => '*AUTO',
                 'member_id' => '*INTEGER',

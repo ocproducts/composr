@@ -220,7 +220,7 @@ function comcode_to_tempcode($comcode, $source_member = null, $as_admin = false,
     }
     $ret = _comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $db, $flags, $highlight_bits, $on_behalf_of_member);
     if ($long) {
-        cms_profile_end_for('comcode_to_tempcode/LONG', is_null($source_member) ? '' : ('owned by member #' . strval($source_member)));
+        cms_profile_end_for('comcode_to_tempcode/LONG', ($source_member === null) ? '' : ('owned by member #' . strval($source_member)));
     }
     return $ret;
 }
@@ -237,7 +237,7 @@ function strip_comcode($in, $for_extract = false, $tags_to_preserve = null)
 {
     $text = $in;
 
-    if (is_null($tags_to_preserve)) {
+    if ($tags_to_preserve === null) {
         $tags_to_preserve = array();
     }
 

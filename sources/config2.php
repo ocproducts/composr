@@ -103,7 +103,7 @@ function get_default_option($name)
     $ob = object_factory('Hook_config_' . $name);
 
     $value = $ob->get_default();
-    if (is_null($value)) {
+    if ($value === null) {
         $value = ''; // Cannot save a null. We don't need to save as null anyway, options are only disabled when they wouldn't have been used anyway
     }
 
@@ -124,7 +124,7 @@ function set_option($name, $value, $will_be_formally_set = 1)
 
     require_code('hooks/systems/config/' . filter_naughty($name));
     $ob = object_factory('Hook_config_' . $name, true);
-    if (is_null($ob)) {
+    if ($ob === null) {
         return;
     }
     $option = $ob->get_details();
@@ -219,7 +219,7 @@ function config_update_value_ref($old_setting, $setting, $type)
 function config_option_url($name)
 {
     $value = get_option($name, true);
-    if (is_null($value)) {
+    if ($value === null) {
         return null;
     }
 

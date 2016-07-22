@@ -54,7 +54,7 @@ if ($is_substantial) {
 $news_category = $GLOBALS['SITE_DB']->query_select_value_if_there('news_categories', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('nc_title') => 'New releases'));
 
 $news_id = $GLOBALS['SITE_DB']->query_select_value_if_there('news', 'id', array('news_category' => $news_category, $GLOBALS['SITE_DB']->translate_field_ref('title') => $news_title));
-if (is_null($news_id)) {
+if ($news_id === null) {
     warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
 }
 

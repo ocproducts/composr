@@ -126,10 +126,10 @@ class Hook_task_find_broken_urls
 
                 get_translated_tempcode($field['m_table'], $of, $field['m_name']);
 
-                if ((array_key_exists('COMCODE_BROKEN_URLS', $GLOBALS)) && (!is_null($COMCODE_BROKEN_URLS))) {
+                if ((array_key_exists('COMCODE_BROKEN_URLS', $GLOBALS)) && ($COMCODE_BROKEN_URLS !== null)) {
                     foreach ($COMCODE_BROKEN_URLS as $i => $_url) {
                         list($url, $spot) = $_url;
-                        if (is_null($spot)) {
+                        if ($spot === null) {
                             if (multi_lang_content()) {
                                 $_url[$i][1] = 'translate#' . strval($i) . ' (text_original)';
                             } else {
@@ -205,10 +205,10 @@ class Hook_task_find_broken_urls
                 $comcode = file_get_contents($file_path);
                 comcode_to_tempcode($comcode, null, true);
 
-                if ((array_key_exists('COMCODE_BROKEN_URLS', $GLOBALS)) && (!is_null($COMCODE_BROKEN_URLS))) {
+                if ((array_key_exists('COMCODE_BROKEN_URLS', $GLOBALS)) && ($COMCODE_BROKEN_URLS !== null)) {
                     foreach ($COMCODE_BROKEN_URLS as $i => $_url) {
                         list($url, $spot) = $_url;
-                        if (is_null($spot)) {
+                        if ($spot === null) {
                             $_url[$i][1] = $zone . ':' . $page;
                         }
                     }
@@ -216,7 +216,7 @@ class Hook_task_find_broken_urls
             }
         }
 
-        if ((array_key_exists('COMCODE_BROKEN_URLS', $GLOBALS)) && (!is_null($COMCODE_BROKEN_URLS))) {
+        if ((array_key_exists('COMCODE_BROKEN_URLS', $GLOBALS)) && ($COMCODE_BROKEN_URLS !== null)) {
             foreach ($COMCODE_BROKEN_URLS as $_url) {
                 list($url, $spot) = $_url;
 
@@ -269,7 +269,7 @@ class Hook_task_find_broken_urls
             }
 
             $test = http_download_file($url, 0, false);
-            if ((is_null($test)) && (in_array($GLOBALS['HTTP_MESSAGE'], array('404', 'could not connect to host')))) {
+            if (($test === null) && (in_array($GLOBALS['HTTP_MESSAGE'], array('404', 'could not connect to host')))) {
                 $found_404[] = array('URL' => $url, 'SPOT' => $spot);
             }
         }

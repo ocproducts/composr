@@ -71,7 +71,7 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
 
     $middle_spt = new Tempcode();
 
-    if (is_null($out_evaluated)) {
+    if ($out_evaluated === null) {
         $out->evaluate(); // False evaluation
     }
 
@@ -124,7 +124,7 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
 
         foreach (array_keys($CSSS) as $name) {
             $search = find_template_place($name, get_site_default_lang(), $GLOBALS['FORUM_DRIVER']->get_theme(), '.css', 'css');
-            if (!is_null($search)) {
+            if ($search !== null) {
                 list($theme, $type, $suffix) = $search;
                 $txtmte_url = 'txmt://open?url=file://' . get_file_base() . '/themes/' . $theme . '/' . $type . '/' . $name . $suffix;
                 $file_links->attach(do_template('INDEX_SCREEN_ENTRY', array(
@@ -189,7 +189,7 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
                 '.' . get_file_extension($name),
                 dirname($name)
             );
-            if (!is_null($search)) {
+            if ($search !== null) {
                 list($theme, $type) = $search;
                 $txtmte_url = 'txmt://open?url=file://' . get_file_base() . '/themes/' . $theme . '/' . $type . '/' . basename($name);
                 $file_links->attach(do_template('INDEX_SCREEN_ENTRY', array(
@@ -223,7 +223,7 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
             $url_map = array(
                 'page' => 'admin_themes',
                 'type' => 'edit_image',
-                'theme' => is_null($theme) ? $GLOBALS['FORUM_DRIVER']->get_theme() : $theme,
+                'theme' => ($theme === null) ? $GLOBALS['FORUM_DRIVER']->get_theme() : $theme,
                 'lang' => $lang,
                 'id' => $id,
             );
@@ -300,7 +300,7 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
                     ));
                 }
                 $description->attach($actions);
-                $fields->attach(form_input_text(is_null($names[$key]) ? ('#' . strval($key)) : $names[$key], $description, 'trans_' . strval($key), $value_found, false));
+                $fields->attach(form_input_text(($names[$key] === null) ? ('#' . strval($key)) : $names[$key], $description, 'trans_' . strval($key), $value_found, false));
             }
         }
 
@@ -356,7 +356,7 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
         foreach (array_keys($RECORDED_LANG_STRINGS) as $key) {
             $value_found = do_lang($key, null, null, null, null, false);
             $description = array_key_exists($key, $descriptions) ? make_string_tempcode($descriptions[$key]) : new Tempcode();
-            if (!is_null($value_found)) {
+            if ($value_found !== null) {
                 if ((get_option('google_translate_api_key') == '') || (user_lang() == get_site_default_lang())) {
                     $actions = new Tempcode();
                 } else {
@@ -489,7 +489,7 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
             $queries->attach(do_template('QUERY_LOG', array(
                 '_GUID' => 'ab88e1e92609136229ad920c30647647',
                 'TIME' => float_format($query['time'], 3),
-                'ROWS' => is_null($query['rows']) ? '' : integer_format($query['rows']),
+                'ROWS' => ($query['rows'] === null) ? '' : integer_format($query['rows']),
                 'TEXT' => $query['text']
             )));
             $total_time += $query['time'];
@@ -526,7 +526,7 @@ function check_xhtml_webstandards($out, $display_regardless = false, $preview_mo
     if ((!$display_regardless) && ($preview_mode == 0)) {
         $hash = md5($out);
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('webstandards_checked_once', 'hash', array('hash' => $hash));
-        if (!is_null($test)) {
+        if ($test !== null) {
             return '';
         }
     }
@@ -554,7 +554,7 @@ function check_xhtml_webstandards($out, $display_regardless = false, $preview_mo
         if ((!$show) && (get_option('webstandards_ext_files') == '1')) {
             $out = array_pop($EXTRA_CHECK);
         }
-    } while ((!$show) && (!is_null($out)) && (get_option('webstandards_ext_files') == '1'));
+    } while ((!$show) && ($out !== null) && (get_option('webstandards_ext_files') == '1'));
 
     if ($show) {
         return display_webstandards_results($out, $error, $preview_mode != 0, $ret);
@@ -787,10 +787,10 @@ function display_webstandards_results($out, $error, $preview_mode = false, $ret 
         elseif ($char == '\'') {
             $char = '&#039;';
         }
-        if ((is_null($level_ranges)) && ($char == ' ')) {
+        if (($level_ranges === null) && ($char == ' ')) {
             $char = '&nbsp;';
         }
-        if ((is_null($level_ranges)) && ($char == "\t")) {
+        if (($level_ranges === null) && ($char == "\t")) {
             $char = '&nbsp;&nbsp;&nbsp;';
         }
         //if ($char == ' ') $char = '&nbsp;';

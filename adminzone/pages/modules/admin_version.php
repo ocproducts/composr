@@ -118,7 +118,7 @@ class Module_admin_version
         // A lot of "peripheral architectural" tables are defined here. Central ones are defined in the installer -- as they need to be installed before any module.
         // This is always the first module to be installed.
 
-        if (is_null($upgrade_from)) { // These are only for fresh installs
+        if ($upgrade_from === null) { // These are only for fresh installs
             set_value('version', float_to_raw_string(cms_version_number()));
             set_value('cns_version', float_to_raw_string(cms_version_number()));
 
@@ -315,7 +315,7 @@ class Module_admin_version
 
         // A lot of core upgrade is also here. When absolutely necessary it is put in upgrade.php.
 
-        if (($upgrade_from < 10) || (is_null($upgrade_from))) {
+        if (($upgrade_from < 10) || ($upgrade_from === null)) {
             $GLOBALS['SITE_DB']->create_table('url_id_monikers', array(
                 'id' => '*AUTO',
                 'm_resource_page' => 'ID_TEXT',
@@ -383,11 +383,11 @@ class Module_admin_version
             ));
         }
 
-        if (($upgrade_from < 11) && (!is_null($upgrade_from))) {
+        if (($upgrade_from < 11) && ($upgrade_from !== null)) {
             $GLOBALS['SITE_DB']->query_update('comcode_pages', array('p_submitter' => 2), array('p_submitter' => $GLOBALS['FORUM_DRIVER']->get_guest_id()));
         }
 
-        if ((is_null($upgrade_from)) || ($upgrade_from < 12)) {
+        if (($upgrade_from === null) || ($upgrade_from < 12)) {
             $GLOBALS['SITE_DB']->drop_table_if_exists('cache');
             $GLOBALS['SITE_DB']->create_table('cache', array(
                 'id' => '*AUTO',
@@ -409,7 +409,7 @@ class Module_admin_version
             $GLOBALS['SITE_DB']->create_index('cache', 'cached_forh', array('the_theme'));
         }
 
-        if ((is_null($upgrade_from)) || ($upgrade_from < 13)) {
+        if (($upgrade_from === null) || ($upgrade_from < 13)) {
             if (!$GLOBALS['SITE_DB']->table_exists('f_group_member_timeouts')) {
                 $GLOBALS['SITE_DB']->create_table('f_group_member_timeouts', array(
                     'member_id' => '*MEMBER',
@@ -419,23 +419,23 @@ class Module_admin_version
             }
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 13)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 13)) {
             if (substr(get_db_type(), 0, 5) == 'mysql') {
                 $GLOBALS['SITE_DB']->create_index('translate', 'equiv_lang', array('text_original(4)'));
                 $GLOBALS['SITE_DB']->create_index('translate', 'decache', array('text_parsed(2)'));
             }
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from >= 10) && ($upgrade_from < 14)) {
+        if (($upgrade_from !== null) && ($upgrade_from >= 10) && ($upgrade_from < 14)) {
             $GLOBALS['SITE_DB']->drop_table_if_exists('tracking');
             $GLOBALS['SITE_DB']->add_table_field('logged_mail_messages', 'm_template', 'ID_TEXT');
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from == 14)) {
+        if (($upgrade_from !== null) && ($upgrade_from == 14)) {
             $GLOBALS['SITE_DB']->alter_table_field('digestives_tin', 'd_from_member_id', '?MEMBER');
         }
 
-        if ((is_null($upgrade_from)) || ($upgrade_from < 14)) {
+        if (($upgrade_from === null) || ($upgrade_from < 14)) {
             $GLOBALS['SITE_DB']->create_table('temp_block_permissions', array(
                 'id' => '*AUTO',
                 'p_session_id' => 'ID_TEXT',
@@ -497,7 +497,7 @@ class Module_admin_version
             ));
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 16)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 16)) {
             $GLOBALS['SITE_DB']->delete_index_if_exists('cron_caching_requests', 'c_in_panel');
             $GLOBALS['SITE_DB']->delete_index_if_exists('cron_caching_requests', 'c_interlock');
             $GLOBALS['SITE_DB']->delete_table_field('cron_caching_requests', 'c_interlock');
@@ -507,7 +507,7 @@ class Module_admin_version
             $GLOBALS['SITE_DB']->create_index('rating', 'rating_for_id', array('rating_for_id'));
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 17)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 17)) {
             $comcode_lang_fields = array(
                 'award_types' => array(
                     'a_description',
@@ -760,7 +760,7 @@ class Module_admin_version
             $max = 300;
             do {
                 $keywords = $GLOBALS['SITE_DB']->query_select('seo_meta', array('meta_for_type', 'meta_for_id', 'meta_keywords'), null, '', $max, $start);
-                if (!is_null($keywords)) {
+                if ($keywords !== null) {
                     foreach ($keywords as $_keyword) {
                         $_keywords = array_unique(explode(',', trim(get_translated_text($_keyword['meta_keywords']))));
                         foreach ($_keywords as $keyword) {
@@ -819,7 +819,7 @@ class Module_admin_version
             $GLOBALS['SITE_DB']->create_index('url_title_cache', 't_url', array('t_url'));
         }
 
-        if ((is_null($upgrade_from)) || ($upgrade_from < 17)) {
+        if (($upgrade_from === null) || ($upgrade_from < 17)) {
             $GLOBALS['SITE_DB']->create_table('alternative_ids', array( // Needs to be first, as install_create_custom_field needs it
                 'resource_type' => '*ID_TEXT',
                 'resource_id' => '*ID_TEXT',
@@ -973,7 +973,7 @@ class Module_admin_version
             $GLOBALS['SITE_DB']->create_index('post_tokens', 'generation_time', array('generation_time'));
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 18)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 18)) {
             $GLOBALS['SITE_DB']->drop_table_if_exists('bookmarks');
         }
     }

@@ -182,7 +182,7 @@ class Hook_commandr_fs_post_templates extends Resource_fs_base
      */
     public function file_convert_filename_to_id($filename, $resource_type = null)
     {
-        if (is_null($resource_type)) {
+        if ($resource_type === null) {
             $resource_type = $this->file_resource_type;
         }
 

@@ -159,7 +159,7 @@ function code_editor_do_login()
         } else {
             $ftp_username = '';
         }
-        if (is_null($ftp_username)) {
+        if ($ftp_username === null) {
             $ftp_username = '';
         }
     } else {
@@ -463,7 +463,7 @@ END;
 
         // Edit
         if (!isset($_POST['delete'])) {
-            if (is_null($conn)) { // Via direct access
+            if ($conn === null) { // Via direct access
                 $myfile = @fopen($save_path, 'at');
                 if ($myfile === false) {
                     echo <<<END
@@ -557,7 +557,7 @@ END;
         if (!isset($_POST['delete'])) {
             if (file_exists(str_replace('_custom/', '/', $save_path))) {
                 $hash = file_get_contents(str_replace('_custom/', '/', $save_path));
-                if (is_null($conn)) { // Via direct access
+                if ($conn === null) { // Via direct access
                     $myfile = @fopen($save_path . '.editfrom', 'wt');
                     if ($myfile !== false) {
                         fwrite($myfile, $hash);

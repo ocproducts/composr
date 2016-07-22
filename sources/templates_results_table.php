@@ -47,17 +47,17 @@ function results_table($text_id, $start, $start_name, $max, $max_name, $max_rows
 {
     require_code('templates_pagination');
 
-    if (!is_null($sort_name)) {
+    if ($sort_name !== null) {
         inform_non_canonical_parameter($sort_name);
     }
 
-    if (is_null($widths)) {
+    if ($widths === null) {
         $widths = array();
     }
 
-    if (is_null($message)) {
+    if ($message === null) {
         $message = new Tempcode();
-        if (!is_null($sortables)) {
+        if ($sortables !== null) {
             foreach ($sortables as $_sortable => $text) {
                 if (is_object($text)) {
                     $text = $text->evaluate();
@@ -70,17 +70,17 @@ function results_table($text_id, $start, $start_name, $max, $max_name, $max_rows
     }
 
     // Sorting
-    if (!is_null($sortables)) {
+    if ($sortables !== null) {
         $sort = results_sorter($sortables, $sortable, $sort_order, $sort_name, $hash);
     } else {
         $sort = new Tempcode();
     }
 
     // Pagination
-    $pagination = pagination(is_object($text_id) ? $text_id : make_string_tempcode($text_id), $start, $start_name, $max, $max_name, $max_rows, true, $max_page_links, null, is_null($hash) ? '' : $hash);
+    $pagination = pagination(is_object($text_id) ? $text_id : make_string_tempcode($text_id), $start, $start_name, $max, $max_name, $max_rows, true, $max_page_links, null, ($hash === null) ? '' : $hash);
 
     return do_template(
-        is_null($tplset) ? 'RESULTS_TABLE' : ('RESULTS_' . $tplset . '_TABLE'),
+        ($tplset === null) ? 'RESULTS_TABLE' : ('RESULTS_' . $tplset . '_TABLE'),
         array(
             '_GUID' => $guid,
             'TEXT_ID' => $text_id,
@@ -157,10 +157,10 @@ function results_entry($values, $auto_escape, $tplset = null, $guid = '9e340dd14
         if (($auto_escape) && (!is_object($value))) {
             $value = escape_html($value);
         }
-        $cells->attach(do_template(is_null($tplset) ? 'RESULTS_TABLE_FIELD' : ('RESULTS_TABLE_' . $tplset . '_FIELD'), array('_GUID' => $guid, 'VALUE' => $value, 'CLASS' => (is_string($class)) ? $class : ''), null, false, 'RESULTS_TABLE_FIELD'));
+        $cells->attach(do_template(($tplset === null) ? 'RESULTS_TABLE_FIELD' : ('RESULTS_TABLE_' . $tplset . '_FIELD'), array('_GUID' => $guid, 'VALUE' => $value, 'CLASS' => (is_string($class)) ? $class : ''), null, false, 'RESULTS_TABLE_FIELD'));
     }
 
-    return do_template(is_null($tplset) ? 'RESULTS_TABLE_ENTRY' : ('RESULTS_TABLE_' . $tplset . '_ENTRY'), array('_GUID' => $guid, 'VALUES' => $cells), null, false, 'RESULTS_TABLE_ENTRY');
+    return do_template(($tplset === null) ? 'RESULTS_TABLE_ENTRY' : ('RESULTS_TABLE_' . $tplset . '_ENTRY'), array('_GUID' => $guid, 'VALUES' => $cells), null, false, 'RESULTS_TABLE_ENTRY');
 }
 
 /**
@@ -175,7 +175,7 @@ function results_entry($values, $auto_escape, $tplset = null, $guid = '9e340dd14
  */
 function results_field_title($values, $sortables = null, $order_param = 'sort', $current_ordering = '', $guid = 'fbcaf8b021e3939bfce1dce9ff8ed63a')
 {
-    if (is_null($sortables)) {
+    if ($sortables === null) {
         $sortables = array();
     }
 
@@ -189,7 +189,7 @@ function results_field_title($values, $sortables = null, $order_param = 'sort', 
                 break;
             }
         }
-        if (!is_null($found)) {
+        if ($found !== null) {
             $sort_url_asc = get_self_url(false, false, array($order_param => $found . ' ASC'), true);
             $sort_url_desc = get_self_url(false, false, array($order_param => $found . ' DESC'), true);
             $sort_asc_selected = ($current_ordering == $found . ' ASC');

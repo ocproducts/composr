@@ -96,13 +96,13 @@ function _helper_apply_emoticons($this_ref, $member_id = null)
  */
 function _helper_make_post_forum_topic($this_ref, $forum_name, $topic_identifier, $member_id, $post_title, $post, $content_title, $topic_identifier_encapsulation_prefix, $content_url, $time, $ip, $validated, $topic_validated, $skip_post_checks, $poster_name_if_guest, $parent_id, $staff_only, $no_notify_for__notification_code, $no_notify_for__code_category, $time_post, $spacer_post_member_id)
 {
-    if (is_null($time)) {
+    if ($time === null) {
         $time = time();
     }
-    if (is_null($ip)) {
+    if ($ip === null) {
         $ip = get_ip_address();
     }
-    if (is_null($spacer_post_member_id)) {
+    if ($spacer_post_member_id === null) {
         $spacer_post_member_id = $this_ref->get_guest_id();
     }
 
@@ -117,7 +117,7 @@ function _helper_make_post_forum_topic($this_ref, $forum_name, $topic_identifier
 
     if (!is_integer($forum_name)) {
         $forum_id = $this_ref->forum_id_from_name($forum_name);
-        if (is_null($forum_id)) {
+        if ($forum_id === null) {
             warn_exit(do_lang_tempcode('MISSING_FORUM', escape_html($forum_name)), false, true);
         }
     } else {
@@ -133,11 +133,11 @@ function _helper_make_post_forum_topic($this_ref, $forum_name, $topic_identifier
         $support_attachments = true;
     }
 
-    if (is_null($topic_id)) {
+    if ($topic_id === null) {
         $is_starter = true;
 
         require_code('cns_topics_action');
-        $topic_id = cns_make_topic($forum_id, $topic_identifier_encapsulation_prefix . ': #' . $topic_identifier, '', $topic_validated, 1, 0, 0, null, null, false, 0, null, is_null($content_url) ? '' : $content_url);
+        $topic_id = cns_make_topic($forum_id, $topic_identifier_encapsulation_prefix . ': #' . $topic_identifier, '', $topic_validated, 1, 0, 0, null, null, false, 0, null, ($content_url === null) ? '' : $content_url);
 
         if (strpos($topic_identifier, ':') !== false) {
             // Sync comment_posted ones to also monitor the forum ones; no need for opposite way as comment ones already trigger forum ones
@@ -157,7 +157,7 @@ function _helper_make_post_forum_topic($this_ref, $forum_name, $topic_identifier
         }
 
         // Make spacer post
-        if (!is_null($content_url)) {
+        if ($content_url !== null) {
             $spacer_post_title = $content_title;
             $home_link = hyperlink($content_url, $content_title, false, true);
             $spacer_post = '[semihtml]' . do_lang('SPACER_POST', $home_link->evaluate(), '', '', get_site_default_lang()) . '[/semihtml]';
@@ -241,7 +241,7 @@ function _helper_show_forum_topics($this_ref, $name, $limit, $start, &$max_rows,
         $id_list = 't_forum_id=' . strval($name);
     } elseif (!is_array($name)) {
         $id = $this_ref->forum_id_from_name($name);
-        if (is_null($id)) {
+        if ($id === null) {
             return null;
         }
         $id_list = 't_forum_id=' . strval($id);

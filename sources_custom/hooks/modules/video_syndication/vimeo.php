@@ -73,7 +73,7 @@ class Hook_video_syndication_vimeo
         }
 
         $token = get_value('vimeo_access_token', null, true);
-        if ((is_null($token)) || ($token == '')) {
+        if (($token === null) || ($token == '')) {
             return false;
         }
 
@@ -84,10 +84,10 @@ class Hook_video_syndication_vimeo
     {
         $videos = array();
 
-        if (!is_null($local_id)) {
+        if ($local_id !== null) {
             // This code is a bit annoying. Ideally we'd do a remote tag search (vimeo.videos.search), but Vimeo's API seems to be buggy/lagged here. We'll therefore look at our local mappings.
             $transcoding_id = $GLOBALS['SITE_DB']->query_value_if_there('SELECT t_id FROM ' . get_table_prefix() . 'video_transcoding WHERE t_local_id=' . strval($local_id) . ' AND t_id LIKE \'' . db_encode_like('vimeo\_%') . '\'');
-            if (is_null($transcoding_id)) {
+            if ($transcoding_id === null) {
                 return array(); // Not uploaded yet
             }
 
@@ -98,7 +98,7 @@ class Hook_video_syndication_vimeo
         do {
             $query_params = array();
 
-            if (!is_null($transcoding_id)) {
+            if ($transcoding_id !== null) {
                 $query_params['video_id'] = preg_replace('#^vimeo_#', '', $transcoding_id);
                 $api_method = 'vimeo.videos.getInfo';
 
@@ -112,7 +112,7 @@ class Hook_video_syndication_vimeo
                 }
 
                 $detected_video = $this->_process_remote_video($p->video[0]);
-                if (!is_null($detected_video)) {
+                if ($detected_video !== null) {
                     $remote_id = $detected_video['remote_id'];
                     if ((!array_key_exists($remote_id, $videos)) || (!$videos[$remote_id]['validated'])) { // If new match, or last match was unvalidated (i.e. old version)
                         $videos[$remote_id] = $detected_video;
@@ -143,7 +143,7 @@ class Hook_video_syndication_vimeo
 
             foreach ($result->videos->video as $p) {
                 $detected_video = $this->_process_remote_video($p);
-                if (!is_null($detected_video)) {
+                if ($detected_video !== null) {
                     $remote_id = $detected_video['remote_id'];
                     if ((!array_key_exists($remote_id, $videos)) || (!$videos[$remote_id]['validated'])) { // If new match, or last match was unvalidated (i.e. old version)
                         $videos[$remote_id] = $detected_video;
@@ -152,7 +152,7 @@ class Hook_video_syndication_vimeo
             }
 
             $page++;
-        } while ((!is_null($local_id)) && (count($result['entry']) > 0));
+        } while (($local_id !== null) && (count($result['entry']) > 0));
 
         return $videos;
     }
@@ -211,7 +211,7 @@ class Hook_video_syndication_vimeo
             'validated' => $validated,
         );
 
-        if (!is_null($bound_to_local_id)) {
+        if ($bound_to_local_id !== null) {
             return $detected_video; // else we ignore remote videos that aren't bound to local ones
         }
 

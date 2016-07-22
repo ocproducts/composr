@@ -118,7 +118,7 @@ class Module_forumview
 
             if ((get_value('no_awards_in_titles') !== '1') && (addon_installed('awards'))) {
                 require_code('awards');
-                $awards = is_null($id) ? array() : find_awards_for('forum', strval($id));
+                $awards = ($id === null) ? array() : find_awards_for('forum', strval($id));
             } else {
                 $awards = array();
             }
@@ -156,7 +156,7 @@ class Module_forumview
             $of_member_id = get_param_integer('id', get_member());
             $pt_username = $GLOBALS['FORUM_DRIVER']->get_username($of_member_id);
             $pt_displayname = $GLOBALS['FORUM_DRIVER']->get_username($of_member_id, true);
-            if (is_null($pt_username)) {
+            if ($pt_username === null) {
                 $pt_username = do_lang('UNKNOWN');
             }
             $breadcrumbs[] = array('', do_lang_tempcode('PRIVATE_TOPICS_OF', escape_html($pt_displayname), escape_html($pt_username)));
@@ -210,7 +210,7 @@ class Module_forumview
         }
 
         // Members viewing this forum
-        if (is_null($id)) {
+        if ($id === null) {
             list($num_guests, $num_members, $members_viewing) = array(null, null, null);
         } else {
             require_code('users2');
@@ -221,9 +221,9 @@ class Module_forumview
             '_GUID' => '9e9fd9110effd8a92b7a839a4fea60c5',
             'TITLE' => $this->title,
             'CONTENT' => $content,
-            'ID' => is_null($id) ? '' : strval($id),
-            'NUM_GUESTS' => is_null($num_guests) ? '' : integer_format($num_guests),
-            'NUM_MEMBERS' => is_null($num_members) ? '' : integer_format($num_members),
+            'ID' => ($id === null) ? '' : strval($id),
+            'NUM_GUESTS' => ($num_guests === null) ? '' : integer_format($num_guests),
+            'NUM_MEMBERS' => ($num_members === null) ? '' : integer_format($num_members),
             'MEMBERS_VIEWING' => $members_viewing,
         ));
 

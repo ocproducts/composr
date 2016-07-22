@@ -50,7 +50,7 @@ require_code('version2');
 $dotted = get_version_dotted__from_anything(get_param_string('version'));
 list($intended, $qualifier, $qualifier_number, $long_version) = get_version_components__from_dotted($dotted);
 $version_pretty = get_version_pretty__from_dotted($dotted);
-if (is_null($qualifier)) {
+if ($qualifier === null) {
     $long_version_with_qualifier = $long_version;
 } else {
     $long_version_with_qualifier = $long_version . ' ' . $qualifier . $qualifier_number;
@@ -69,7 +69,7 @@ qualifier_number: null or integer
 // Find our version
 $our_version = null;
 $download_row = find_download($version_pretty);
-if (!is_null($download_row)) {
+if ($download_row !== null) {
     $our_version = array(
         'version' => $version_pretty,
         'download_description' => strip_download_description($download_row['nice_description']),
@@ -89,7 +89,7 @@ for ($i = 0; $i < 3; $i++) {
 $possible_next_versions = array();
 $stub = '';
 for ($i = 0; $i < 3; $i++) {
-    if ((is_null($qualifier)) || ($i != 2)) {
+    if (($qualifier === null) || ($i != 2)) {
         $x = $stub . (($stub == '') ? '' : '.') . strval($bits[$i] + 1);
         $possible_next_versions[] = $x;
     } elseif ($qualifier == 'RC') {
@@ -135,12 +135,12 @@ foreach ($possible_next_versions as $pos_version) {
     }
 
     $row = find_version($pos_version);
-    if (!is_null($row)) {
+    if ($row !== null) {
         $download_row = find_download($pos_version);
         $next_upgrade_version = array(
             'version' => $pos_version,
             'news_id' => $row['id'],
-            'download_description' => is_null($download_row) ? '' : strip_download_description($download_row['nice_description']),
+            'download_description' => ($download_row === null) ? '' : strip_download_description($download_row['nice_description']),
             'add_date' => $row['add_date'],
         );
         break;
@@ -158,7 +158,7 @@ for ($i = 0; $i < 3; $i++) { // Loop over each release level
 
     foreach (array_reverse($DOWNLOAD_ROWS) as $row) { // Iterate, newest to oldest
         // If it's on the release level being inspected, and we're either on a qualifier (alpha/beta/RC) already, or this isn't having a qualifier (i.e. we don't want to suggest someone go to a bleeding-edge version)
-        if ((substr($row['nice_title'], 0, strlen($looking_for)) == $looking_for) && ((!is_null($qualifier)) || ((strpos($row['nice_title'], 'RC') === false) && (strpos($row['nice_title'], 'beta') === false) && (strpos($row['nice_title'], 'alpha') === false)))) {
+        if ((substr($row['nice_title'], 0, strlen($looking_for)) == $looking_for) && (($qualifier !== null) || ((strpos($row['nice_title'], 'RC') === false) && (strpos($row['nice_title'], 'beta') === false) && (strpos($row['nice_title'], 'alpha') === false)))) {
             // $this_version will hold the version we're currently looking at, comparing to the version the user has
             // Lots of work to split up version numbering
             $this_version = preg_replace('# \(.*#', '', substr($row['nice_title'], strlen($looking_for) - strlen($_stub)));
@@ -178,26 +178,26 @@ for ($i = 0; $i < 3; $i++) { // Loop over each release level
                     $different = true;
                 }
             }
-            if (!is_null($this_qualifier)) {
+            if ($this_qualifier !== null) {
                 if ($this_qualifier !== ($qualifier . strval($qualifier_number)) && $i == 2) {
                     $different = true;
                 }
-            } elseif (!is_null($qualifier)) {
+            } elseif ($qualifier !== null) {
                 $different = true;
             }
 
             $news_row = find_version(preg_replace('#(\.0)+$#', '', $this_version));
 
             // If different and better version
-            $this_assembled = implode('.', $this_bits) . (is_null($this_qualifier) ? '' : ('.' . preg_replace('#(\d+)#', '.$1', $this_qualifier)));
-            $assembled = implode('.', $bits) . (is_null($qualifier) ? '' : ('.' . $qualifier . '.' . $qualifier_number));
-            if ((version_compare($this_assembled, $assembled) >= 0) && ($different) && (!is_null($news_row))) {
+            $this_assembled = implode('.', $this_bits) . (($this_qualifier === null) ? '' : ('.' . preg_replace('#(\d+)#', '.$1', $this_qualifier)));
+            $assembled = implode('.', $bits) . (($qualifier === null) ? '' : ('.' . $qualifier . '.' . $qualifier_number));
+            if ((version_compare($this_assembled, $assembled) >= 0) && ($different) && ($news_row !== null)) {
                 if (get_param_integer('test', 0) == 1) {
-                    @var_dump(implode('.', $this_bits) . (is_null($this_qualifier) ? '' : ('.' . $this_qualifier)));
-                    @var_dump(implode('.', $bits) . (is_null($qualifier) ? '' : ('.' . $qualifier . $qualifier_number)));
+                    @var_dump(implode('.', $this_bits) . (($this_qualifier === null) ? '' : ('.' . $this_qualifier)));
+                    @var_dump(implode('.', $bits) . (($qualifier === null) ? '' : ('.' . $qualifier . $qualifier_number)));
                 }
 
-                if (is_null($found)) { // Only set $found if not already. We were iterating downloads in reverse order, so the newest is found first via this
+                if ($found === null) { // Only set $found if not already. We were iterating downloads in reverse order, so the newest is found first via this
                     $found = array( // Outside
                                     'version' => $this_version,
                                     'news_id' => $news_row['id'],
@@ -213,7 +213,7 @@ for ($i = 0; $i < 3; $i++) { // Loop over each release level
                     }
                 }
             } elseif (!$different) {
-                if (!is_null($found)) {
+                if ($found !== null) {
                     if (strlen($found['download_description']) < 3000) {
                         if ($found['download_description'] != '') {
                             $found['download_description'] .= "\n---\n";
@@ -226,7 +226,7 @@ for ($i = 0; $i < 3; $i++) { // Loop over each release level
     }
 
     // If the best yet for any valid release level, remember it
-    if (!is_null($found)) {
+    if ($found !== null) {
         for ($_i = 0; $_i < $i; $_i++) {
             if (($higher_versions[$_i] !== null) && ($higher_versions[$_i]['version'] == $found['version'])) {
                 $found = null;
@@ -245,8 +245,8 @@ for ($i = 0; $i < 3; $i++) { // Loop over each release level
 // Output it all (descriptions, news links, etc)
 // Current version
 echo '<h3 class="notes_about">Notes about your current version (' . escape_html($long_version_with_qualifier) . ')</h3>';
-$has_jump = (!is_null($higher_versions[0])) || (!is_null($higher_versions[1])) || (!is_null($higher_versions[2]));
-if (!is_null($our_version)) {
+$has_jump = ($higher_versions[0] !== null) || ($higher_versions[1] !== null) || ($higher_versions[2] !== null);
+if ($our_version !== null) {
     if (!$has_jump) {
         $descrip = $our_version['download_description'] . ' You are running the latest version.';
     } else {
@@ -259,17 +259,17 @@ if (!is_null($our_version)) {
 /*if (false) { // Info isn't actually helpful, as the download_description above contains it also
     echo '<h3>Next version</h3>';
     // Next version
-    if (!is_null($next_upgrade_version)) {
+    if ($next_upgrade_version !== null) {
         // NB: $has_jump should always be true in this branch, unless there are holes in the version DB
         echo '<p>You are running an outdated version. The closest version is <a onclick="window.open(this.href,null,\'status=yes,toolbar=no,location=no,menubar=no,resizable=yes,scrollbars=yes,width=976,height=600\'); return false;" target="_blank" title="Version ' . escape_html($next_upgrade_version['version']) . ' (this link will open in a new window)" href="' . escape_html(static_evaluate_tempcode(build_url(array('page' => 'news', 'type' => 'view', 'id' => $next_upgrade_version['news_id'], 'wide_high' => 1), 'site'))) . '">version ' . escape_html($next_upgrade_version['version']) . '</a>, but read on for the latest recommended upgrade paths.</p>';
-    } elseif ((!is_null($our_version)) && (!$has_jump)) {
+    } elseif (($our_version !== null) && (!$has_jump)) {
         echo '<p>You are running the latest version.</p>';
     } else {
         echo '<p>Sorry, details of the next version is not in our database.</p>';
     }
 } else
 {
-    if ((is_null($next_upgrade_version)) && (!is_null($our_version)) && (!$has_jump)) {
+    if (($next_upgrade_version === null) && ($our_version !== null) && (!$has_jump)) {
         echo '<p>You are running the latest version.</p>';
     }
 }*/
@@ -279,7 +279,7 @@ if ($has_jump) {
 
     $upgrade_type = array('major upgrade, may break compatibility of customisations', 'feature upgrade', 'easy patch upgrade');
     for ($i = 0; $i <= 2; $i++) {
-        if (!is_null($higher_versions[$i])) {
+        if ($higher_versions[$i] !== null) {
             $discontinued = array('1', '2', '2.1', '2.5', '2.6', '3', '3.1', '3.2', '4', '5', '6', '7');
             $note = '';
             foreach ($discontinued as $d) {

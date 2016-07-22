@@ -32,7 +32,7 @@ class blocks_test_set extends cms_test_case
             $this->assertTrue(count(array_unique($parameters)) == count($parameters));
 
             foreach ($standard as $param) {
-                $this->assertTrue(is_null(do_lang('BLOCK_' . $block . '_PARAM_' . $param . '_TITLE', null, null, null, null, false)));
+                $this->assertTrue(do_lang('BLOCK_' . $block . '_PARAM_' . $param . '_TITLE', null, null, null, null, false) === null);
             }
         }
     }

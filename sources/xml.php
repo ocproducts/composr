@@ -75,7 +75,7 @@ function get_xml_entities()
  */
 function xmlentities($string, $charset = null)
 {
-    if (is_null($charset)) {
+    if ($charset === null) {
         $charset = get_charset();
     }
     if (ENT_SUBSTITUTE == 0 && $charset == 'utf-8') {

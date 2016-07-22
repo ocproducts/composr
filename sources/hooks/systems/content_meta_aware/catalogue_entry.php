@@ -63,8 +63,8 @@ class Hook_content_meta_aware_catalogue_entry
             'view_page_link_pattern' => '_SEARCH:catalogues:entry:_WILD',
             'edit_page_link_pattern' => '_SEARCH:cms_catalogues:_edit:_WILD',
             'view_category_page_link_pattern' => '_SEARCH:catalogues:category:_WILD',
-            'add_url' => (function_exists('has_submit_permission') && has_submit_permission('mid', get_member(), get_ip_address(), 'cms_catalogues')) ? (get_module_zone('cms_catalogues') . ':cms_catalogues:add_entry' . (is_null($catalogue_name) ? '' : (':catalogue_name=' . $catalogue_name))) : null,
-            'archive_url' => ((!is_null($zone)) ? $zone : get_module_zone('catalogues')) . ':catalogues',
+            'add_url' => (function_exists('has_submit_permission') && has_submit_permission('mid', get_member(), get_ip_address(), 'cms_catalogues')) ? (get_module_zone('cms_catalogues') . ':cms_catalogues:add_entry' . (($catalogue_name === null) ? '' : (':catalogue_name=' . $catalogue_name))) : null,
+            'archive_url' => (($zone !== null) ? $zone : get_module_zone('catalogues')) . ':catalogues',
 
             'support_url_monikers' => true,
 
@@ -127,7 +127,7 @@ class Hook_content_meta_aware_catalogue_entry
     {
         require_code('catalogues');
 
-        return render_catalogue_entry_box($row, $zone, $give_context, $include_breadcrumbs, is_null($root) ? null : intval($root), $guid);
+        return render_catalogue_entry_box($row, $zone, $give_context, $include_breadcrumbs, ($root === null) ? null : intval($root), $guid);
     }
 }
 
@@ -158,7 +158,7 @@ function generate_catalogue_entry_title($url_parts, $resource_fs_style = false)
     require_code('catalogues');
     $field_values = get_catalogue_entry_field_values($catalogue_name, intval($url_parts['id']), array($unique_key_num), $fields);
     $field = $field_values[$unique_key_num];
-    if (is_null($field)) {
+    if ($field === null) {
         return uniqid('', true);
     }
     $value = $field['effective_value_pure'];
@@ -191,7 +191,7 @@ function generate_catalogue_thumb_field($url_parts)
     require_code('catalogues');
     $field_values = get_catalogue_entry_field_values($catalogue_name, intval($url_parts['id']), array($unique_key_num), $fields);
     $field = $field_values[$unique_key_num];
-    if (is_null($field)) {
+    if ($field === null) {
         return '';
     }
     $value = $field['effective_value_pure'];

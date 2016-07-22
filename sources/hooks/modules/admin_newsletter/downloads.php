@@ -89,7 +89,7 @@ class Hook_whatsnew_downloads
             $thumb_url = mixed();
             if (addon_installed('galleries')) {
                 $thumbnail = $GLOBALS['SITE_DB']->query_select_value_if_there('images', 'thumb_url', array('cat' => 'download_' . strval($row['id'])), 'ORDER BY add_date ASC');
-                if (!is_null($thumbnail)) {
+                if ($thumbnail !== null) {
                     if ($thumbnail != '') {
                         if (url_is_local($thumbnail)) {
                             $thumbnail = get_custom_base_url() . '/' . $thumbnail;

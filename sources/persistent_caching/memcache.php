@@ -42,7 +42,7 @@ class Persistent_caching_memcache extends Memcache
      */
     public function load_objects_list()
     {
-        if (is_null($this->objects_list)) {
+        if ($this->objects_list === null) {
             $this->objects_list = $this->get(get_file_base() . 'PERSISTENT_CACHE_OBJECTS');
             if ($this->objects_list === false) {
                 $this->objects_list = array();
@@ -65,7 +65,7 @@ class Persistent_caching_memcache extends Memcache
             return null;
         }
         $data = unserialize($_data);
-        if ((!is_null($min_cache_date)) && ($data[0] < $min_cache_date)) {
+        if (($min_cache_date !== null) && ($data[0] < $min_cache_date)) {
             return null;
         }
         return $data[1];

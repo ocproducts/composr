@@ -193,7 +193,7 @@ if ($type == 'auto_probe') {
                 foreach ($manual_changes[$d] as $file => $caption) {
                     echo '<li>';
                     echo '<kbd>' . escape_html($file) . '</kbd>';
-                    if (!is_null($caption)) {
+                    if ($caption !== null) {
                         echo ':<br /><br />';
                         /*require_code('geshi');   If you want to see it highlighted
                         $geshi = new GeSHi($caption, 'diff');

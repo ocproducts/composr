@@ -268,11 +268,11 @@ class Module_cms_quiz extends Standard_crud_module
      */
     public function get_form_fields($id = null, $name = '', $timeout = null, $start_text = '', $end_text = '', $end_text_fail = '', $notes = '', $percentage = 70, $open_time = null, $close_time = null, $num_winners = 2, $redo_time = null, $type = 'SURVEY', $validated = 1, $text = null, $points_for_passing = 0, $tied_newsletter = null, $reveal_answers = 0, $shuffle_questions = 0, $shuffle_answers = 0)
     {
-        if (is_null($open_time)) {
+        if ($open_time === null) {
             $open_time = time();
         }
 
-        if (is_null($text)) {
+        if ($text === null) {
             $text = do_lang('EXAMPLE_QUESTIONS');
         }
 
@@ -306,7 +306,7 @@ class Module_cms_quiz extends Standard_crud_module
 
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array(
             '_GUID' => '00b9a6a21eab07864d41d5465d9569cd',
-            'SECTION_HIDDEN' => is_null($redo_time) && is_null($timeout) && ((is_null($open_time)) || ($open_time <= time())) && is_null($close_time) && $points_for_passing == 0 && is_null($tied_newsletter) && $notes == '',
+            'SECTION_HIDDEN' => ($redo_time === null) && ($timeout === null) && (($open_time === null) || ($open_time <= time())) && ($close_time === null) && $points_for_passing == 0 && ($tied_newsletter === null) && $notes == '',
             'TITLE' => do_lang_tempcode('ADVANCED'),
         )));
         $fields->attach(form_input_tick(do_lang_tempcode('SHUFFLE_QUESTIONS'), do_lang_tempcode('DESCRIPTION_SHUFFLE_QUESTIONS'), 'shuffle_questions', $shuffle_questions == 1));
@@ -314,7 +314,7 @@ class Module_cms_quiz extends Standard_crud_module
         $fields->attach(form_input_integer(do_lang_tempcode('REDO_TIME'), do_lang_tempcode('DESCRIPTION_REDO_TIME'), 'redo_time', $redo_time, false));
         $fields->attach(form_input_integer(do_lang_tempcode('TIMEOUT'), do_lang_tempcode('DESCRIPTION_QUIZ_TIMEOUT'), 'timeout', $timeout, false));
         $fields->attach(form_input_date(do_lang_tempcode('OPEN_TIME'), do_lang_tempcode('DESCRIPTION_OPEN_TIME'), 'open_time', true, false, true, $open_time, 2));
-        $fields->attach(form_input_date(do_lang_tempcode('CLOSE_TIME'), do_lang_tempcode('DESCRIPTION_CLOSE_TIME'), 'close_time', false, is_null($close_time), true, is_null($close_time) ? (null/*time()+60*60*24*30*/) : $close_time, 2));
+        $fields->attach(form_input_date(do_lang_tempcode('CLOSE_TIME'), do_lang_tempcode('DESCRIPTION_CLOSE_TIME'), 'close_time', false, ($close_time === null), true, ($close_time === null) ? (null/*time()+60*60*24*30*/) : $close_time, 2));
         if (addon_installed('points')) {
             $fields->attach(form_input_integer(do_lang_tempcode('POINTS_FOR_COMPLETING'), do_lang_tempcode('DESCRIPTION_POINTS_FOR_COMPLETING'), 'points_for_passing', $points_for_passing, true));
         }
@@ -333,12 +333,12 @@ class Module_cms_quiz extends Standard_crud_module
             $fields->attach(form_input_text(do_lang_tempcode('NOTES'), do_lang_tempcode('DESCRIPTION_NOTES'), 'notes', $notes, false));
         }
 
-        $fields->attach(metadata_get_fields('quiz', is_null($id) ? null : strval($id)));
+        $fields->attach(metadata_get_fields('quiz', ($id === null) ? null : strval($id)));
         require_code('seo2');
-        $fields->attach(seo_get_fields($this->seo_type, is_null($id) ? null : strval($id), false));
+        $fields->attach(seo_get_fields($this->seo_type, ($id === null) ? null : strval($id), false));
 
         if (addon_installed('content_reviews')) {
-            $fields->attach(content_review_get_fields('quiz', is_null($id) ? null : strval($id)));
+            $fields->attach(content_review_get_fields('quiz', ($id === null) ? null : strval($id)));
         }
 
         // Permissions

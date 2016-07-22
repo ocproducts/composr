@@ -68,10 +68,10 @@ class Hook_video_syndication_youtube
     {
         $videos = array();
 
-        if (!is_null($local_id)) {
+        if ($local_id !== null) {
             // This code is a bit annoying. Ideally we'd do a remote tag search, but Youtube's API is lagged here, and only works for listed videos. We'll therefore look at our local mappings.
             $transcoding_id = $GLOBALS['SITE_DB']->query_value_if_there('SELECT t_id FROM ' . get_table_prefix() . 'video_transcoding WHERE t_local_id=' . strval($local_id) . ' AND t_id LIKE \'' . db_encode_like('youtube\_%') . '\'');
-            if (is_null($transcoding_id)) {
+            if ($transcoding_id === null) {
                 return array(); // Not uploaded yet
             }
 
@@ -80,7 +80,7 @@ class Hook_video_syndication_youtube
 
         $start = 1;
         do {
-            if (!is_null($transcoding_id)) {
+            if ($transcoding_id !== null) {
                 /* EDIT: Actually we looked at transcoding table instead and lookup individual video and process as such
                 $query_params['category'] = 'sync' . strval($local_id); // Covers {http://gdata.youtube.com/schemas/2007/developertags.cat} and {http://gdata.youtube.com/schemas/2007/keywords.cat}
                 $xml = $this->_http('https://gdata.youtube.com/feeds/api/users/default/uploads', $query_params);
@@ -102,7 +102,7 @@ class Hook_video_syndication_youtube
 
                 $detected_video = $this->_process_remote_video($p);
 
-                if (!is_null($detected_video)) {
+                if ($detected_video !== null) {
                     $remote_id = $detected_video['remote_id'];
                     if ((!array_key_exists($remote_id, $videos)) || (!$videos[$remote_id]['validated'])) { // If new match, or last match was unvalidated (i.e. old version)
                         $videos[$remote_id] = $detected_video;
@@ -127,7 +127,7 @@ class Hook_video_syndication_youtube
             foreach ($parsed->entry as $p) {
                 $detected_video = $this->_process_remote_video($p);
 
-                if (!is_null($detected_video)) {
+                if ($detected_video !== null) {
                     $remote_id = $detected_video['remote_id'];
                     if ((!array_key_exists($remote_id, $videos)) || (!$videos[$remote_id]['validated'])) { // If new match, or last match was unvalidated (i.e. old version)
                         $videos[$remote_id] = $detected_video;
@@ -212,7 +212,7 @@ class Hook_video_syndication_youtube
             'validated' => $validated,
         );
 
-        if (!is_null($bound_to_local_id)) {
+        if ($bound_to_local_id !== null) {
             return $detected_video; // else we ignore remote videos that aren't bound to local ones
         }
 
@@ -431,7 +431,7 @@ class Hook_video_syndication_youtube
             return true;
         }
         $refresh_token = get_value('youtube_refresh_token', null, true);
-        if ((is_null($refresh_token)) || ($refresh_token == '')) {
+        if (($refresh_token === null) || ($refresh_token == '')) {
             return true;
         }
 
@@ -439,14 +439,14 @@ class Hook_video_syndication_youtube
         $auth_url = $endpoint . '/token';
         $this->_access_token = refresh_oauth2_token('youtube', $auth_url, $client_id, $client_secret, $refresh_token, $endpoint);
 
-        return !is_null($this->_access_token);
+        return ($this->_access_token !== null);
     }
 
     protected function _http($url, $params, $http_verb = 'GET', $xml = null, $timeout = 6.0, $extra_headers = null, $file_to_upload = null, $content_type = 'application/atom+xml')
     {
         $youtube_developer_key = get_option('youtube_developer_key');
 
-        if (is_null($this->_access_token)) {
+        if ($this->_access_token === null) {
             if (!$this->_connect()) {
                 return null;
             }
@@ -458,11 +458,11 @@ class Hook_video_syndication_youtube
             $full_url = $url;
         }
 
-        if (is_null($extra_headers)) {
+        if ($extra_headers === null) {
             $extra_headers = array();
         }
 
-        if (!is_null($this->_access_token)) {
+        if ($this->_access_token !== null) {
             $extra_headers['Authorization'] = 'Bearer ' . $this->_access_token;
         }
 
@@ -471,17 +471,17 @@ class Hook_video_syndication_youtube
         }
 
         $files = mixed();
-        if (!is_null($file_to_upload)) {
+        if ($file_to_upload !== null) {
             require_code('mime_types');
             $mime_type = get_mime_type(get_file_extension($file_to_upload), false);
             $files = array($mime_type => $file_to_upload);
         }
 
-        $response = http_download_file($full_url, null, false, true, 'Composr', is_null($xml) ? null : array($xml), null, null, null, null, null, null, null, $timeout, !is_null($xml), $files, $extra_headers, $http_verb, $content_type);
+        $response = http_download_file($full_url, null, false, true, 'Composr', ($xml === null) ? null : array($xml), null, null, null, null, null, null, null, $timeout, $xml !== null, $files, $extra_headers, $http_verb, $content_type);
 
-        if (is_null($response)) {
+        if ($response === null) {
             global $HTTP_MESSAGE_B;
-            throw new Exception(is_null($HTTP_MESSAGE_B) ? do_lang('UNKNOWN') : static_evaluate_tempcode($HTTP_MESSAGE_B));
+            throw new Exception(($HTTP_MESSAGE_B === null) ? do_lang('UNKNOWN') : static_evaluate_tempcode($HTTP_MESSAGE_B));
         }
 
         return $response;

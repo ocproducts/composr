@@ -86,7 +86,7 @@ class Hook_task_import_newsletter_subscribers
 
             // Process data
             foreach ($_csv_data as $i => $csv_line) {
-                if (($i <= 1) && (count($csv_line) >= 1) && (!is_null($csv_line[$email_index])) && (strpos($csv_line[$email_index], '@') === false)) {
+                if (($i <= 1) && (count($csv_line) >= 1) && ($csv_line[$email_index] !== null) && (strpos($csv_line[$email_index], '@') === false)) {
                     foreach ($csv_line as $j => $val) {
                         if (in_array(strtolower($val), array('e-mail', 'email', 'email address', 'e-mail address', strtolower(do_lang('EMAIL_ADDRESS'))))) {
                             $email_index = $j;
@@ -119,32 +119,32 @@ class Hook_task_import_newsletter_subscribers
                     continue;
                 }
 
-                if ((count($csv_line) >= 1) && (!is_null($csv_line[$email_index])) && (strpos($csv_line[$email_index], '@') !== false)) {
+                if ((count($csv_line) >= 1) && ($csv_line[$email_index] !== null) && (strpos($csv_line[$email_index], '@') !== false)) {
                     $email = $csv_line[$email_index];
-                    $forename = ((!is_null($forename_index)) && (array_key_exists($forename_index, $csv_line))) ? $csv_line[$forename_index] : '';
+                    $forename = (($forename_index !== null) && (array_key_exists($forename_index, $csv_line))) ? $csv_line[$forename_index] : '';
                     if ($forename == $email) {
                         $forename = ucfirst(strtolower(preg_replace('#^(\w+)([^\w].*)?$#', '\\1', $forename)));
                         if (in_array($forename, array('Sales', 'Info', 'Business', 'Enquiries', 'Admin'))) {
                             $forename = '';
                         }
                     }
-                    $surname = ((!is_null($surname_index)) && (array_key_exists($surname_index, $csv_line))) ? $csv_line[$surname_index] : '';
-                    $username = ((!is_null($username_index)) && (array_key_exists($username_index, $csv_line))) ? $csv_line[$username_index] : '';
-                    $hash = ((!is_null($hash_index)) && (array_key_exists($hash_index, $csv_line))) ? $csv_line[$hash_index] : '';
-                    $salt = ((!is_null($salt_index)) && (array_key_exists($salt_index, $csv_line))) ? $csv_line[$salt_index] : '';
-                    $language = ((!is_null($language_index)) && (array_key_exists($language_index, $csv_line)) && ((file_exists(get_custom_file_base() . '/lang/' . $csv_line[$language_index])) || (file_exists(get_custom_file_base() . '/lang_custom/' . $csv_line[$language_index])))) ? $csv_line[$language_index] : $_language;
+                    $surname = (($surname_index !== null) && (array_key_exists($surname_index, $csv_line))) ? $csv_line[$surname_index] : '';
+                    $username = (($username_index !== null) && (array_key_exists($username_index, $csv_line))) ? $csv_line[$username_index] : '';
+                    $hash = (($hash_index !== null) && (array_key_exists($hash_index, $csv_line))) ? $csv_line[$hash_index] : '';
+                    $salt = (($salt_index !== null) && (array_key_exists($salt_index, $csv_line))) ? $csv_line[$salt_index] : '';
+                    $language = (($language_index !== null) && (array_key_exists($language_index, $csv_line)) && ((file_exists(get_custom_file_base() . '/lang/' . $csv_line[$language_index])) || (file_exists(get_custom_file_base() . '/lang_custom/' . $csv_line[$language_index])))) ? $csv_line[$language_index] : $_language;
                     if ($language == '') {
                         $language = $_language;
                     }
-                    $code_confirm = ((!is_null($code_confirm_index)) && (array_key_exists($code_confirm_index, $csv_line))) ? intval($csv_line[$code_confirm_index]) : 0;
-                    $join_time = ((!is_null($join_time_index)) && (array_key_exists($join_time_index, $csv_line))) ? strtotime($csv_line[$join_time_index]) : time();
+                    $code_confirm = (($code_confirm_index !== null) && (array_key_exists($code_confirm_index, $csv_line))) ? intval($csv_line[$code_confirm_index]) : 0;
+                    $join_time = (($join_time_index !== null) && (array_key_exists($join_time_index, $csv_line))) ? strtotime($csv_line[$join_time_index]) : time();
                     if ($join_time === false) {
                         $join_time = time();
                     }
 
                     if ($newsletter_id == -1) {
                         $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', 'id', array('m_email_address' => $email));
-                        if (is_null($test)) {
+                        if ($test === null) {
                             if ($subscribe) {
                                 if (!$done_special_notice) {
                                     attach_message(do_lang_tempcode('NEWSLETTER_WONT_IMPORT_MEMBERS'), 'notice');
@@ -161,7 +161,7 @@ class Hook_task_import_newsletter_subscribers
                         }
                     } else {
                         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('newsletter_subscribers', 'id', array('email' => $email));
-                        if (is_null($test)) {
+                        if ($test === null) {
                             add_newsletter_subscriber($email, $join_time, $code_confirm, $hash, $salt, $language, $forename, $surname);
 
                             if ($subscribe) {

@@ -37,7 +37,7 @@ $count = 0;
 foreach ($gifts as $gift) {
     $member_id = $gift['gift_to'];
     $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id, true);
-    if (!is_null($username)) {
+    if ($username !== null) {
         $url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id);
         $avatar_url = $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($member_id);
         $signature = get_translated_tempcode('gifts', $GLOBALS['FORUM_DRIVER']->get_member_row($member_id), 'm_signature', $GLOBALS['FORUM_DB']);

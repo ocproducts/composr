@@ -55,7 +55,7 @@ function form_input_various_ticks($options, $description, $_tabindex = null, $_p
 
     $options = array_values($options);
 
-    if (is_null($_tabindex)) {
+    if ($_tabindex === null) {
         $tabindex = get_form_field_tabindex(null);
     } else {
         $_tabindex++;

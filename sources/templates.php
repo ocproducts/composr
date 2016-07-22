@@ -130,7 +130,7 @@ function get_screen_title($title, $dereference_lang = true, $params = null, $use
             if (!$GLOBALS['SITE_DB']->table_is_locked('sessions')) {
                 $change_map = array(
                     'last_activity' => time(),
-                    'the_title' => is_null($user_online_title) ? cms_mb_substr($_title->evaluate(), 0, 255) : $user_online_title->evaluate(),
+                    'the_title' => ($user_online_title === null) ? cms_mb_substr($_title->evaluate(), 0, 255) : $user_online_title->evaluate(),
                     'the_zone' => get_zone_name(),
                     'the_page' => cms_mb_substr(get_page_name(), 0, 80),
                     'the_type' => cms_mb_substr(get_param_string('type', '', true), 0, 80),
@@ -245,7 +245,7 @@ function inform_screen($title, $text, $support_match_key_messages = false, $back
     require_code('failure');
 
     $tmp = _look_for_match_key_message(is_object($text) ? $text->evaluate() : $text, false, !$support_match_key_messages);
-    if (!is_null($tmp)) {
+    if ($tmp !== null) {
         $text = $tmp;
     }
 

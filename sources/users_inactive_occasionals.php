@@ -98,7 +98,7 @@ function create_session($member, $session_confirmed = 0, $invisible = false)
     $new_session = mixed();
     $prior_session_row = mixed();
     $restored_session = delete_expired_sessions_or_recover($member);
-    if (is_null($restored_session)) { // We're force to make a new one
+    if ($restored_session === null) { // We're force to make a new one
         // Generate random session
         require_code('crypt');
         $new_session = get_rand_password();
@@ -161,14 +161,14 @@ function create_session($member, $session_confirmed = 0, $invisible = false)
     set_session_id($new_session, is_guest($member));
 
     // New sessions=Login points
-    if ((!is_null($member)) && (!is_guest($member)) && (addon_installed('points')) && (addon_installed('stats'))) {
+    if (($member !== null) && (!is_guest($member)) && (addon_installed('points')) && (addon_installed('stats'))) {
         // See if this is the first visit today
         global $SESSION_CACHE;
         $test = isset($prior_session_row['last_activity']) ? $prior_session_row['last_activity'] : null;
         if ($test === null) {
             $test = $GLOBALS['SITE_DB']->query_select_value('stats', 'MAX(date_and_time)', array('member_id' => $member), '', true);
         }
-        if (!is_null($test)) {
+        if ($test !== null) {
             require_code('temporal');
             require_code('tempcode');
             if (date('d/m/Y', tz_time($test, get_site_timezone())) != date('d/m/Y', tz_time(time(), get_site_timezone()))) {
@@ -211,14 +211,14 @@ function set_session_id($id, $guest_session = false)  // NB: Guests sessions can
         $test = false;
     } else {*/
     $test = @setcookie(get_session_cookie(), $id, $timeout, get_cookie_path(), get_cookie_domain()); // Set a session cookie with our session ID. We only use sessions for secure browser-session login... the database and url's do the rest
-    if (is_null($test)) {
+    if ($test === null) {
         $test = false;
     }
     //}
     $_COOKIE[get_session_cookie()] = $id; // So we remember for this page view
 
     // If we really have to, store in URL
-    if (((!has_cookies()) || (!$test)) && (!$guest_session/*restorable with no special auth*/) && (is_null(get_bot_type()))) {
+    if (((!has_cookies()) || (!$test)) && (!$guest_session/*restorable with no special auth*/) && (get_bot_type() === null)) {
         $_GET['keep_session'] = $id;
     }
 
@@ -260,11 +260,11 @@ function try_su_login($member)
     }
     if (has_privilege($member, 'assume_any_member')) {
         $su = $GLOBALS['FORUM_DRIVER']->get_member_from_username($ks);
-        if ((is_null($su)) && (is_numeric($ks))) {
+        if (($su === null) && (is_numeric($ks))) {
             $su = intval($ks);
         }
 
-        if (!is_null($su)) {
+        if ($su !== null) {
             $member = $su;
         } elseif (is_numeric($ks)) {
             $member = intval($ks);
@@ -272,7 +272,7 @@ function try_su_login($member)
             $member = null;
         }
 
-        if (is_null($member)) {
+        if ($member === null) {
             require_code('site');
             attach_message(do_lang_tempcode('_MEMBER_NO_EXIST', escape_html($ks)), 'warn');
             return get_member();
@@ -337,7 +337,7 @@ function try_httpauth_login()
     require_lang('cns');
 
     $member = cns_authusername_is_bound_via_httpauth($_SERVER['PHP_AUTH_USER']);
-    if ((is_null($member)) && ((running_script('index')) || (running_script('execute_temp')))) {
+    if (($member === null) && ((running_script('index')) || (running_script('execute_temp')))) {
         require_code('cns_members_action');
         require_code('cns_members_action2');
         if ((trim(post_param_string('email_address', '')) == '') && (get_option('finish_profile') == '1')) {
@@ -347,16 +347,16 @@ function try_httpauth_login()
             }
 
             @ob_end_clean(); // Emergency output, potentially, so kill off any active buffer
-            $middle = cns_member_external_linker_ask($_SERVER['PHP_AUTH_USER'], ((get_value('windows_auth_is_enabled') !== '1') || is_null($LDAP_CONNECTION)) ? 'httpauth' : 'ldap');
+            $middle = cns_member_external_linker_ask($_SERVER['PHP_AUTH_USER'], ((get_value('windows_auth_is_enabled') !== '1') || ($LDAP_CONNECTION === null)) ? 'httpauth' : 'ldap');
             $tpl = globalise($middle, null, '', true);
             $tpl->evaluate_echo();
             exit();
         } else {
-            $member = cns_member_external_linker($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_USER'], ((get_value('windows_auth_is_enabled') !== '1') || is_null($LDAP_CONNECTION)) ? 'httpauth' : 'ldap');
+            $member = cns_member_external_linker($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_USER'], ((get_value('windows_auth_is_enabled') !== '1') || ($LDAP_CONNECTION === null)) ? 'httpauth' : 'ldap');
         }
     }
 
-    if (!is_null($member)) {
+    if ($member !== null) {
         create_session($member, 1, (isset($_COOKIE[get_member_cookie() . '_invisible'])) && ($_COOKIE[get_member_cookie() . '_invisible'] == '1')); // This will mark it as confirmed
     }
 
@@ -432,7 +432,7 @@ function try_cookie_login()
                 $member = $login_array['id'];
             }
 
-            if (!is_null($member)) {
+            if ($member !== null) {
                 global $IS_A_COOKIE_LOGIN;
                 $IS_A_COOKIE_LOGIN = true;
 

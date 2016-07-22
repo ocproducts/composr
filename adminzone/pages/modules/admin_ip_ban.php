@@ -58,7 +58,7 @@ class Module_admin_ip_ban
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->create_table('banned_ip', array(
                 'ip' => '*IP',
                 'i_descrip' => 'LONG_TEXT',
@@ -71,7 +71,7 @@ class Module_admin_ip_ban
             ));
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 5)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 5)) {
             $GLOBALS['SITE_DB']->add_table_field('banned_ip', 'i_ban_until', '?TIME');
             $GLOBALS['SITE_DB']->add_table_field('banned_ip', 'i_ban_positive', 'BINARY', 1);
         }
@@ -162,7 +162,7 @@ class Module_admin_ip_ban
             $id = get_param_integer('id');
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('usersubmitban_member', 'the_member', array('the_member' => $id));
 
-            if (is_null($test)) {
+            if ($test === null) {
                 $this->title = get_screen_title('SUBMITTER_BANNED');
             } else {
                 $this->title = get_screen_title('SUBMITTER_UNBANNED');
@@ -222,7 +222,7 @@ class Module_admin_ip_ban
         $locked_bans = '';
         $rows = $GLOBALS['SITE_DB']->query('SELECT ip,i_descrip,i_ban_until FROM ' . get_table_prefix() . 'banned_ip WHERE i_ban_positive=1 AND (i_ban_until IS NULL' . ' OR i_ban_until>' . strval(time()) . ')');
         foreach ($rows as $row) {
-            if (is_null($row['i_ban_until'])) {
+            if ($row['i_ban_until'] === null) {
                 $bans .= $row['ip'] . ' ' . str_replace("\n", ' ', $row['i_descrip']) . "\n";
             } else {
                 $locked_bans .= do_lang('SPAM_AUTO_BAN_TIMEOUT', $row['ip'], str_replace("\n", ' ', $row['i_descrip']), get_timezoned_date_time($row['i_ban_until'])) . "\n";
@@ -372,7 +372,7 @@ class Module_admin_ip_ban
 
         // Show it worked / Refresh
         $_url = get_param_string('redirect', null);
-        if (!is_null($_url)) {
+        if ($_url !== null) {
             $url = make_string_tempcode($_url);
             return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
         }
@@ -389,7 +389,7 @@ class Module_admin_ip_ban
         $id = get_param_integer('id');
         $test = $this->test;
 
-        if (is_null($test)) {
+        if ($test === null) {
             $this->title = get_screen_title('SUBMITTER_BANNED');
 
             if ($id == get_member()) {
@@ -421,7 +421,7 @@ class Module_admin_ip_ban
 
         // Show it worked / Refresh
         $_url = get_param_string('redirect', null);
-        if (!is_null($_url)) {
+        if ($_url !== null) {
             $url = make_string_tempcode($_url);
             return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
         }
@@ -451,7 +451,7 @@ class Module_admin_ip_ban
 
         // Show it worked / Refresh
         $_url = get_param_string('redirect', null);
-        if (!is_null($_url)) {
+        if ($_url !== null) {
             $url = make_string_tempcode($_url);
             return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
         }
@@ -498,7 +498,7 @@ class Module_admin_ip_ban
 
         // Show it worked / Refresh
         $_url = get_param_string('redirect', null);
-        if (!is_null($_url)) {
+        if ($_url !== null) {
             $url = make_string_tempcode($_url);
             return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
         }
@@ -518,12 +518,12 @@ class Module_admin_ip_ban
         $member = array_key_exists(1, $_ip) ? strrev($_ip[1]) : null;
 
         if (post_param_integer('confirm', 0) == 0) {
-            $preview = do_lang_tempcode('BAN_MEMBER_DOUBLE_DESCRIPTION', is_null($member) ? do_lang_tempcode('NA_EM') : make_string_tempcode(strval($member)), make_string_tempcode(escape_html($ip)));
+            $preview = do_lang_tempcode('BAN_MEMBER_DOUBLE_DESCRIPTION', ($member === null) ? do_lang_tempcode('NA_EM') : make_string_tempcode(strval($member)), make_string_tempcode(escape_html($ip)));
             $url = get_self_url(false, false);
             return do_template('CONFIRM_SCREEN', array('_GUID' => '3840c52b23d9034cb6f9dd529b236c97', 'TITLE' => $this->title, 'PREVIEW' => $preview, 'FIELDS' => form_input_hidden('confirm', '1'), 'URL' => $url));
         }
 
-        if (!is_null($member)) {
+        if ($member !== null) {
             cns_ban_member(intval($member));
         }
         require_code('failure');

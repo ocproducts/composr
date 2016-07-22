@@ -264,11 +264,11 @@ class Module_cms_wiki
         }
 
         require_code('content2');
-        $fields2->attach(metadata_get_fields('wiki_page', is_null($id) ? null : strval($id)));
+        $fields2->attach(metadata_get_fields('wiki_page', ($id === null) ? null : strval($id)));
 
         if (addon_installed('content_reviews')) {
             require_code('content_reviews2');
-            $fields2->attach(content_review_get_fields('wiki_page', is_null($id) ? null : strval($id)));
+            $fields2->attach(content_review_get_fields('wiki_page', ($id === null) ? null : strval($id)));
         }
 
         require_code('permissions2');
@@ -348,7 +348,7 @@ class Module_cms_wiki
 
         // Show it worked / Refresh
         $url = get_param_string('redirect', null);
-        if (is_null($url)) {
+        if ($url === null) {
             $_url = build_url(array('page' => 'wiki', 'type' => 'browse', 'id' => ($id == db_get_first_id()) ? null : $id), get_module_zone('wiki'));
             $url = $_url->evaluate();
         }
@@ -404,7 +404,7 @@ class Module_cms_wiki
         $_description = get_translated_tempcode('wiki_pages', $page, 'description');
 
         $redir_url = get_param_string('redirect', null);
-        if (is_null($redir_url)) {
+        if ($redir_url === null) {
             $_redir_url = build_url(array('page' => 'wiki', 'type' => 'browse', 'id' => get_param_string('id', false, true)), get_module_zone('wiki'));
             $redir_url = $_redir_url->evaluate();
         }
@@ -539,7 +539,7 @@ class Module_cms_wiki
         }
 
         $redir_url = get_param_string('redirect', null);
-        if (is_null($redir_url)) {
+        if ($redir_url === null) {
             $_redir_url = build_url(array('page' => 'wiki', 'type' => 'browse', 'id' => get_param_string('id', false, true)), get_module_zone('wiki'));
             $redir_url = $_redir_url->evaluate();
         }
@@ -616,7 +616,7 @@ class Module_cms_wiki
                         continue;
                     }
                     $title_id = $GLOBALS['SITE_DB']->query_select_value_if_there('wiki_pages', 'title', array('id' => $child_id));
-                    if (is_null($title_id)) {
+                    if ($title_id === null) {
                         attach_message(do_lang_tempcode('BROKEN_WIKI_CHILD_LINK', strval($child_id)), 'warn');
                         continue;
                     }

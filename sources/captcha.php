@@ -38,7 +38,7 @@ function captcha_script()
     }
 
     $code_needed = $GLOBALS['SITE_DB']->query_select_value_if_there('captchas', 'si_code', array('si_session_id' => get_session_id()));
-    if (is_null($code_needed)) {
+    if ($code_needed === null) {
         generate_captcha();
         $code_needed = $GLOBALS['SITE_DB']->query_select_value_if_there('captchas', 'si_code', array('si_session_id' => get_session_id()));
         /*set_http_status_code('500');    This would actually be very slightly insecure, as it could be used to probe (binary) login state via rogue sites that check if CAPTCHAs had been generated
@@ -278,7 +278,7 @@ function check_captcha($code_entered, $regenerate_on_error = true)
 {
     if (use_captcha()) {
         $code_needed = $GLOBALS['SITE_DB']->query_select_value_if_there('captchas', 'si_code', array('si_session_id' => get_session_id()));
-        if (is_null($code_needed)) {
+        if ($code_needed === null) {
             if (get_option('captcha_single_guess') == '1') {
                 generate_captcha();
             }

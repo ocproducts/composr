@@ -42,7 +42,7 @@ class Hook_rss_activities
         foreach ($rows as $row) {
             $id = strval($row['id']);
             $author = $GLOBALS['FORUM_DRIVER']->get_username($row['a_member_id']);
-            if (is_null($author)) {
+            if ($author === null) {
                 $author = do_lang('UNKNOWN');
             }
 

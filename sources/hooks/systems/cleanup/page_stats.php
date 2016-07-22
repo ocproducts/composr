@@ -52,7 +52,7 @@ class Hook_cleanup_page_stats
         require_lang('dates');
 
         $delete_older_than = post_param_integer('delete_older_than', null);
-        if (is_null($delete_older_than)) {
+        if ($delete_older_than === null) {
             $delete_older_than = intval(get_option('stats_store_time'));
 
             require_code('form_templates');
@@ -96,7 +96,7 @@ class Hook_cleanup_page_stats
             foreach ($data as $d) {
                 $list = '';
                 foreach ($d as $name => $value) {
-                    if (is_null($value)) {
+                    if ($value === null) {
                         continue;
                     }
                     if ($list != '') {

@@ -68,14 +68,14 @@ class Hook_admin_stats_cns_posting_rates
         }
         $time_start = post_param_date('time_start', true);
         $time_end = post_param_date('time_end', true);
-        if (!is_null($time_end)) {
+        if ($time_end !== null) {
             $time_end += 60 * 60 * 24 - 1; // So it is end of day not start
         }
 
-        if (is_null($time_start)) {
+        if ($time_start === null) {
             $time_start = 0;
         }
-        if (is_null($time_end)) {
+        if ($time_end === null) {
             $time_end = time();
         }
 

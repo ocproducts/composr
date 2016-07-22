@@ -77,7 +77,7 @@ class Block_main_cc_embed
 
         // Selectcode
         $select = mixed();
-        if ((!is_null($map)) && (array_key_exists('select', $map)) && ($map['select'] != '')) {
+        if (($map !== null) && (array_key_exists('select', $map)) && ($map['select'] != '')) {
             require_code('selectcode');
             $select = selectcode_to_sqlfragment($map['select'], 'r.id', 'catalogue_categories', 'cc_parent_id', 'cc_id', 'id');
         }
@@ -108,7 +108,7 @@ class Block_main_cc_embed
         $tpl_set = array_key_exists('template_set', $map) ? $map['template_set'] : $catalogue_name;
         $_display_type = ((array_key_exists('display_type', $map)) && ($map['display_type'] != '')) ? $map['display_type'] : null;
         $display_type = mixed();
-        if (!is_null($_display_type)) {
+        if ($_display_type !== null) {
             if (is_numeric($_display_type)) {
                 $display_type = intval($_display_type);
             } else {
@@ -134,7 +134,7 @@ class Block_main_cc_embed
         // Get entries
         $as_guest = array_key_exists('as_guest', $map) ? ($map['as_guest'] == '1') : false;
         $viewing_member_id = $as_guest ? $GLOBALS['FORUM_DRIVER']->get_guest_id() : mixed();
-        list($entry_buildup, $sorting, , $max_rows) = render_catalogue_category_entry_buildup(is_null($select) ? $category_id : null, $catalogue_name, $catalogue, 'CATEGORY', $tpl_set, $max, $start, $select, $root, $display_type, true, null, $filter, $sort, $block_id . '_order', $viewing_member_id);
+        list($entry_buildup, $sorting, , $max_rows) = render_catalogue_category_entry_buildup(($select === null) ? $category_id : null, $catalogue_name, $catalogue, 'CATEGORY', $tpl_set, $max, $start, $select, $root, $display_type, true, null, $filter, $sort, $block_id . '_order', $viewing_member_id);
 
         // Sorting and pagination
         if (!$do_sorting) {
@@ -182,7 +182,7 @@ class Block_main_cc_embed
             '_GUID' => 'dfdsfdsfsd3ffsdfsd',
             'BLOCK_PARAMS' => block_params_arr_to_str(array('block_id' => $block_id) + $map),
             'DISPLAY_TYPE' => $display_type_str,
-            'ROOT' => is_null($root) ? '' : strval($root),
+            'ROOT' => ($root === null) ? '' : strval($root),
             'CATALOGUE' => $catalogue_name,
             'ENTRIES' => $entry_buildup,
             'SORTING' => $sorting,

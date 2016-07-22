@@ -23,7 +23,7 @@
 function can_choose_workflow($member = null)
 {
     // Sort out the user
-    if (is_null($member)) {
+    if ($member === null) {
         $member = get_member();
     }
 
@@ -143,7 +143,7 @@ function get_default_workflow()
 function get_submitter_of_workflow_content($content_id)
 {
     // Exit on misuse
-    if (is_null($content_id)) {
+    if ($content_id === null) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
     }
     // Find out the author straight from the workflow_content table
@@ -403,13 +403,13 @@ function get_workflow_form($workflow_content_id)
     // Now tack the original submitter onto the end of the send-to list,
     // if we know who it is
     $submitter = get_submitter_of_workflow_content($workflow_content_id);
-    if (!is_null($submitter)) {
+    if ($submitter !== null) {
         $submitter_details = array();        // Build the array independently
         $submitter_details[] = $GLOBALS['FORUM_DRIVER']->get_username($submitter) . ' (' . do_lang('SUBMITTER') . ')';
         $submitter_details[] = 'send_author';        // Name
         $submitter_details[] = false;        // Value
         $username = $GLOBALS['FORUM_DRIVER']->get_username($submitter);
-        if (is_null($username)) {
+        if ($username === null) {
             $username = do_lang('DELETED');
         }
         $submitter_details[] = do_lang_tempcode('NEXT_APPROVAL_AUTHOR', $username);        // Description
@@ -493,7 +493,7 @@ function workflow_update_handler()
     $send_to_members = array();
     if (post_param_integer('send_author') == 1) {
         $submitter = get_submitter_of_workflow_content($content_id);
-        if (!is_null($submitter)) {
+        if ($submitter !== null) {
             $send_to_members[$submitter] = 1;
         }
     }
@@ -713,9 +713,9 @@ function workflow_update_handler()
 function add_content_to_workflow($content_type = '', $content_id = '', $workflow_id = null, $remove_existing = false)
 {
     // Have we been given a valid workflow to use? If not, use system default
-    if (is_null($workflow_id)) {
+    if ($workflow_id === null) {
         $default_workflow = get_default_workflow();
-        if (is_null($default_workflow)) {
+        if ($default_workflow === null) {
             // No default, so don't apply any
             return null;
         } else {
@@ -748,7 +748,7 @@ function add_content_to_workflow($content_type = '', $content_id = '', $workflow
     // Remove existing associations if we've been asked to
     if ($remove_existing) {
         $wf = get_workflow_of_content($content_type, $content_id);
-        if (!is_null($wf)) {
+        if ($wf !== null) {
             $workflow_content_ids = $GLOBALS['SITE_DB']->query_select('workflow_content', array('id'), array('content_type' => $content_type, 'content_id' => $content_id));
             foreach ($workflow_content_ids as $workflow_content_id) {
                 $GLOBALS['SITE_DB']->query_delete('workflow_content', array('id' => $workflow_content_id['id']));
@@ -800,7 +800,7 @@ function get_all_approval_points($workflow_id)
  */
 function get_usergroups_for_approval_point($approval_id)
 {
-    if (is_null($approval_id)) {
+    if ($approval_id === null) {
         warn_exit(do_lang_tempcode('_MISSING_RESOURCE', 'null approval'));
     }
     $groups = $GLOBALS['SITE_DB']->query_select('workflow_permissions', array('usergroup'), array('workflow_approval_point_id' => $approval_id));

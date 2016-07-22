@@ -112,7 +112,7 @@ class Module_cms_banners extends Standard_crud_module
      */
     public function run_start($type)
     {
-        //if (!is_null($GLOBALS['CURRENT_SHARE_USER'])) warn_exit(do_lang_tempcode('SHARED_INSTALL_PROHIBIT'));
+        //if ($GLOBALS['CURRENT_SHARE_USER'] !== null) warn_exit(do_lang_tempcode('SHARED_INSTALL_PROHIBIT'));
 
         require_code('banners');
         require_code('banners2');
@@ -241,11 +241,11 @@ class Module_cms_banners extends Standard_crud_module
         }
 
         $only_owned = has_privilege(get_member(), 'edit_midrange_content', 'cms_banners') ? null : get_member();
-        list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering, is_null($only_owned) ? null : array('submitter' => $only_owned));
+        list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering, ($only_owned === null) ? null : array('submitter' => $only_owned));
 
         $has_expiry_dates = false; // Save space by default
         foreach ($rows as $row) {
-            if (!is_null($row['expiry_date'])) {
+            if ($row['expiry_date'] !== null) {
                 $has_expiry_dates = true;
             }
         }
@@ -294,7 +294,7 @@ class Module_cms_banners extends Standard_crud_module
                 strval($row['importance_modulus']),
             );
             if ($has_expiry_dates) {
-                $fr[] = is_null($row['expiry_date']) ? protect_from_escaping(do_lang_tempcode('NA_EM')) : make_string_tempcode(get_timezoned_date_time($row['expiry_date']));
+                $fr[] = ($row['expiry_date'] === null) ? protect_from_escaping(do_lang_tempcode('NA_EM')) : make_string_tempcode(get_timezoned_date_time($row['expiry_date']));
             }
             $fr[] = get_timezoned_date($row['add_date']);
             if (addon_installed('unvalidated')) {
@@ -363,7 +363,7 @@ class Module_cms_banners extends Standard_crud_module
             $fields->attach($this->get_permission_fields($name, null, ($name == '')));
         }
 
-        $edit_text = ($name == '') ? new Tempcode() : do_template('BANNER_PREVIEW', array('_GUID' => 'b7c58bc13ff317870b6823716fd36f0c', 'PREVIEW' => show_banner($name, $title_text, comcode_to_tempcode($caption, $submitter), $direct_code, $image_url, '', $site_url, $b_type, is_null($submitter) ? get_member() : $submitter)));
+        $edit_text = ($name == '') ? new Tempcode() : do_template('BANNER_PREVIEW', array('_GUID' => 'b7c58bc13ff317870b6823716fd36f0c', 'PREVIEW' => show_banner($name, $title_text, comcode_to_tempcode($caption, $submitter), $direct_code, $image_url, '', $site_url, $b_type, ($submitter === null) ? get_member() : $submitter)));
 
         $hidden = new Tempcode();
         handle_max_file_size($hidden, 'image');
@@ -466,7 +466,7 @@ class Module_cms_banners extends Standard_crud_module
     public function edit_actualisation($id)
     {
         $orig_submitter = $GLOBALS['SITE_DB']->query_select_value_if_there('banners', 'submitter', array('name' => $id));
-        if (is_null($orig_submitter)) {
+        if ($orig_submitter === null) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'banner'));
         }
 
@@ -540,7 +540,7 @@ class Module_cms_banners extends Standard_crud_module
         $has_banner_network = $GLOBALS['SITE_DB']->query_select_value('banners', 'SUM(views_from)') != 0.0;
 
         $only_owned = has_privilege(get_member(), 'edit_midrange_content', 'cms_banners') ? null : get_member();
-        $rows = $GLOBALS['SITE_DB']->query_select('banners', array('*'), is_null($only_owned) ? null : array('submitter' => $only_owned), 'ORDER BY name');
+        $rows = $GLOBALS['SITE_DB']->query_select('banners', array('*'), ($only_owned === null) ? null : array('submitter' => $only_owned), 'ORDER BY name');
 
         $has_title_text = false;
         $has_caption = false;
@@ -626,7 +626,7 @@ class Module_cms_banners extends Standard_crud_module
                 $csv_row[do_lang('FILTER_REGIONS')] = $banners_regions;
             }
 
-            $csv_row[do_lang('EXPIRY_DATE')] = is_null($row['expiry_date']) ? do_lang('NA') : get_timezoned_date_time($row['expiry_date']);
+            $csv_row[do_lang('EXPIRY_DATE')] = ($row['expiry_date'] === null) ? do_lang('NA') : get_timezoned_date_time($row['expiry_date']);
 
             if (addon_installed('unvalidated')) {
                 $csv_row[do_lang('VALIDATED')] = ($row['validated'] == 1) ? do_lang('YES') : do_lang('NO');
@@ -637,7 +637,7 @@ class Module_cms_banners extends Standard_crud_module
             $csv_row[do_lang('SUBMITTER')] = $GLOBALS['FORUM_DRIVER']->get_username($row['submitter']);
 
             $csv_row[do_lang('ADDED')] = get_timezoned_date_time($row['add_date']);
-            $csv_row[do_lang('EDITED')] = is_null($row['edit_date']) ? '' : date('Y-m-d', $row['edit_date']);
+            $csv_row[do_lang('EDITED')] = ($row['edit_date'] === null) ? '' : date('Y-m-d', $row['edit_date']);
 
             $csv_rows[] = $csv_row;
         }
@@ -866,7 +866,7 @@ class Module_cms_banners_cat extends Standard_crud_module
     {
         require_code('templates_donext');
 
-        if ((is_null($id)) && (is_null($type))) {
+        if (($id === null) && ($type === null)) {
             return do_next_manager($title, $description,
                 null,
                 null,
@@ -898,9 +898,9 @@ class Module_cms_banners_cat extends Standard_crud_module
             null,
             /* TYPED-ORDERED LIST OF 'LINKS'  */
             array('_SELF', array('type' => 'add', 'b_type' => $type), '_SELF', do_lang_tempcode('ADD_BANNER')), // Add one
-            (is_null($id) || (!has_privilege(get_member(), 'edit_own_lowrange_content', 'cms_banners'))) ? null : array('_SELF', array('type' => '_edit', 'id' => $id), '_SELF', do_lang_tempcode('EDIT_THIS_BANNER')), // Edit this
+            (($id === null) || (!has_privilege(get_member(), 'edit_own_lowrange_content', 'cms_banners'))) ? null : array('_SELF', array('type' => '_edit', 'id' => $id), '_SELF', do_lang_tempcode('EDIT_THIS_BANNER')), // Edit this
             has_privilege(get_member(), 'edit_own_lowrange_content', 'cms_banners') ? array('_SELF', array('type' => 'edit'), '_SELF', do_lang_tempcode('EDIT_BANNER')) : null, // Edit one
-            ((is_null($id)) || (/*Don't go direct to view if simplified do-next on as too unnatural*/
+            (($id === null) || (/*Don't go direct to view if simplified do-next on as too unnatural*/
                     get_option('simplified_donext') == '1')) ? null : array('banners', array('type' => 'view', 'source' => $id), get_module_zone('banners')), // View this
             array('admin_banners', array('type' => 'browse'), get_module_zone('admin_banners')), // View archive
             null, // Add to category

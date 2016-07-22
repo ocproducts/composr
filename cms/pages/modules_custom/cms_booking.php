@@ -88,7 +88,7 @@ class Module_cms_booking extends Standard_crud_module
 
         require_lang('booking');
 
-        if (is_null($type)) {
+        if ($type === null) {
             $type = get_param_string('type', 'browse');
 
             // Type equivalencies, for metadata purposes (i.e. activate correct title-generation code)
@@ -226,19 +226,19 @@ class Module_cms_booking extends Standard_crud_module
      */
     public function get_form_fields($details = null, $supplements = null, $blacks = null, $codes = null)
     {
-        if (is_null($supplements)) {
+        if ($supplements === null) {
             $supplements = array();
         }
-        if (is_null($blacks)) {
+        if ($blacks === null) {
             $blacks = array();
         }
-        if (is_null($codes)) {
+        if ($codes === null) {
             $codes = array();
         }
 
-        if (is_null($details)) {
+        if ($details === null) {
             $max_sort_order = $GLOBALS['SITE_DB']->query_select_value('bookable', 'MAX(sort_order)');
-            if (is_null($max_sort_order)) {
+            if ($max_sort_order === null) {
                 $max_sort_order = 0;
             }
 
@@ -272,13 +272,13 @@ class Module_cms_booking extends Standard_crud_module
         $hidden->attach(form_input_hidden('timezone', get_server_timezone()));
 
         $fields = new Tempcode();
-        $fields->attach(form_input_line(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_TITLE'), 'title', is_null($details['title']) ? '' : get_translated_text($details['title']), true));
-        $fields->attach(form_input_text(do_lang_tempcode('DESCRIPTION'), do_lang_tempcode('DESCRIPTION_DESCRIPTION'), 'description', is_null($details['description']) ? '' : get_translated_text($details['description']), false));
+        $fields->attach(form_input_line(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_TITLE'), 'title', ($details['title'] === null) ? '' : get_translated_text($details['title']), true));
+        $fields->attach(form_input_text(do_lang_tempcode('DESCRIPTION'), do_lang_tempcode('DESCRIPTION_DESCRIPTION'), 'description', ($details['description'] === null) ? '' : get_translated_text($details['description']), false));
         $fields->attach(form_input_line(do_lang_tempcode('PRICE'), do_lang_tempcode('DESCRIPTION_BOOKABLE_PRICE'), 'price', float_to_raw_string($details['price'], 2), true));
-        $categorisation = is_null($details['categorisation']) ? '' : get_translated_text($details['categorisation']);
+        $categorisation = ($details['categorisation'] === null) ? '' : get_translated_text($details['categorisation']);
         if ($categorisation == '') {
             $_categorisation = $GLOBALS['SITE_DB']->query_select_value_if_there('bookable', 'categorisation', null, 'GROUP BY categorisation ORDER BY COUNT(*) DESC');
-            if (is_null($_categorisation)) {
+            if ($_categorisation === null) {
                 $categorisation = do_lang('GENERAL');
             } else {
                 $categorisation = get_translated_text($_categorisation);
@@ -312,7 +312,7 @@ class Module_cms_booking extends Standard_crud_module
         }
 
         $fields->attach(form_input_date(do_lang_tempcode('BOOKABLE_ACTIVE_FROM'), do_lang_tempcode('DESCRIPTION_BOOKABLE_ACTIVE_FROM'), 'active_from', true, false, false, array(0, 0, $details['active_from_month'], $details['active_from_day'], $details['active_from_year']), 10, null, null, true, get_server_timezone()));
-        $fields->attach(form_input_date(do_lang_tempcode('BOOKABLE_ACTIVE_TO'), do_lang_tempcode('DESCRIPTION_BOOKABLE_ACTIVE_TO'), 'active_to', false, true, false, is_null($details['active_to_month']) ? null : array(0, 0, $details['active_to_month'], $details['active_to_day'], $details['active_to_year']), 10, null, null, true, get_server_timezone()));
+        $fields->attach(form_input_date(do_lang_tempcode('BOOKABLE_ACTIVE_TO'), do_lang_tempcode('DESCRIPTION_BOOKABLE_ACTIVE_TO'), 'active_to', false, true, false, ($details['active_to_month'] === null) ? null : array(0, 0, $details['active_to_month'], $details['active_to_day'], $details['active_to_year']), 10, null, null, true, get_server_timezone()));
 
         $fields->attach(form_input_integer(do_lang_tempcode('SORT_ORDER'), do_lang_tempcode('DESCRIPTION_SORT_ORDER'), 'sort_order', $details['sort_order'], true));
 
@@ -473,13 +473,13 @@ class Module_cms_booking_supplements extends Standard_crud_module
      */
     public function get_form_fields($details = null, $bookables = null)
     {
-        if (is_null($bookables)) {
+        if ($bookables === null) {
             $bookables = array();
         }
 
-        if (is_null($details)) {
+        if ($details === null) {
             $max_sort_order = $GLOBALS['SITE_DB']->query_select_value('bookable_supplement', 'MAX(sort_order)');
-            if (is_null($max_sort_order)) {
+            if ($max_sort_order === null) {
                 $max_sort_order = 0;
             }
 
@@ -501,7 +501,7 @@ class Module_cms_booking_supplements extends Standard_crud_module
         $hidden->attach(form_input_hidden('timezone', get_server_timezone()));
 
         $fields = new Tempcode();
-        $fields->attach(form_input_line(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_TITLE'), 'title', is_null($details['title']) ? '' : get_translated_text($details['title']), true));
+        $fields->attach(form_input_line(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_TITLE'), 'title', ($details['title'] === null) ? '' : get_translated_text($details['title']), true));
         $fields->attach(form_input_line(do_lang_tempcode('PRICE'), do_lang_tempcode('DESCRIPTION_SUPPLEMENT_PRICE'), 'price', float_to_raw_string($details['price'], 2), true));
         $fields->attach(form_input_tick(do_lang_tempcode('PRICE_IS_PER_PERIOD'), do_lang_tempcode('DESCRIPTION_PRICE_IS_PER_PERIOD'), 'price_is_per_period', $details['price_is_per_period'] == 1));
         $fields->attach(form_input_tick(do_lang_tempcode('SUPPORTS_QUANTITIES'), do_lang_tempcode('DESCRIPTION_SUPPORTS_QUANTITIES'), 'supports_quantities', $details['supports_quantities'] == 1));
@@ -671,11 +671,11 @@ class Module_cms_booking_blacks extends Standard_crud_module
      */
     public function get_form_fields($details = null, $bookables = null)
     {
-        if (is_null($bookables)) {
+        if ($bookables === null) {
             $bookables = array();
         }
 
-        if (is_null($details)) {
+        if ($details === null) {
             $details = array(
                 'blacked_from_day' => intval(date('d')),
                 'blacked_from_month' => intval(date('m')),
@@ -695,7 +695,7 @@ class Module_cms_booking_blacks extends Standard_crud_module
         $fields = new Tempcode();
         $fields->attach(form_input_date(do_lang_tempcode('BLACKED_FROM'), do_lang_tempcode('DESCRIPTION_BLACKED_FROM'), 'blacked_from', true, false, false, array(0, 0, $details['blacked_from_month'], $details['blacked_from_day'], $details['blacked_from_year']), 10, null, null, true, get_server_timezone()));
         $fields->attach(form_input_date(do_lang_tempcode('BLACKED_TO'), do_lang_tempcode('DESCRIPTION_BLACKED_TO'), 'blacked_to', true, false, false, array(0, 0, $details['blacked_to_month'], $details['blacked_to_day'], $details['blacked_to_year']), 10, null, null, true, get_server_timezone()));
-        $fields->attach(form_input_text(do_lang_tempcode('BLACKED_EXPLANATION'), do_lang_tempcode('DESCRIPTION_BLACKED_EXPLANATION'), 'blacked_explanation', is_null($details['blacked_explanation']) ? '' : get_translated_text($details['blacked_explanation']), true));
+        $fields->attach(form_input_text(do_lang_tempcode('BLACKED_EXPLANATION'), do_lang_tempcode('DESCRIPTION_BLACKED_EXPLANATION'), 'blacked_explanation', ($details['blacked_explanation'] === null) ? '' : get_translated_text($details['blacked_explanation']), true));
 
         $_bookables = new Tempcode();
         $all_bookables = $GLOBALS['SITE_DB']->query_select('bookable', array('id', 'title'), null, 'ORDER BY sort_order');
@@ -813,18 +813,18 @@ class Module_cms_booking_bookings extends Standard_crud_module
      */
     public function get_entry_rows($recache = false, $orderer = null, $where = null, $force_site_db = false, $join = '')
     {
-        if ((!$recache) && (!is_null($orderer)) && (!is_null($where))) {
+        if ((!$recache) && ($orderer !== null) && ($where !== null)) {
             if (isset($this->cached_entry_rows)) {
                 return array($this->cached_entry_rows, $this->cached_max_rows);
             }
         }
 
-        $select_field = !is_null($this->orderer) ? $this->orderer : ($this->table_prefix . strtolower($this->select_name));
+        $select_field = ($this->orderer !== null) ? $this->orderer : ($this->table_prefix . strtolower($this->select_name));
 
-        if (is_null($orderer)) {
+        if ($orderer === null) {
             $orderer = $select_field;
         }
-        $table = is_null($this->table) ? $this->module_type : $this->table;
+        $table = ($this->table === null) ? $this->module_type : $this->table;
         $db = ((substr($table, 0, 2) == 'f_') && (!$force_site_db) && (get_forum_type() != 'none')) ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
         if ($force_site_db) {
             push_db_scope_check(false);
@@ -873,7 +873,7 @@ class Module_cms_booking_bookings extends Standard_crud_module
             $_entries[] = $row;
         }
 
-        if ((!is_null($orderer)) && (!is_null($where))) {
+        if (($orderer !== null) && ($where !== null)) {
             $this->cached_entry_rows = $_entries;
             $this->cached_max_rows = count($request);
         }
@@ -954,9 +954,9 @@ class Module_cms_booking_bookings extends Standard_crud_module
 
         $fields = new Tempcode();
 
-        if (is_null($details)) {
+        if ($details === null) {
             $bookable_id = get_param_integer('bookable_id', null);
-            if (is_null($bookable_id)) {
+            if ($bookable_id === null) {
                 $bookables = $GLOBALS['SITE_DB']->query_select('bookable', array('*'), null, 'ORDER BY sort_order');
                 if (count($bookables) == 0) {
                     inform_exit(do_lang_tempcode('NO_CATEGORIES'));
@@ -1004,7 +1004,7 @@ class Module_cms_booking_bookings extends Standard_crud_module
                 'customer_phone' => '',
             );
         }
-        if (is_null($member_id)) {
+        if ($member_id === null) {
             $member_id = get_member();
         }
 
@@ -1081,7 +1081,7 @@ class Module_cms_booking_bookings extends Standard_crud_module
         if (get_option('member_booking_only') == '1') {
             $username = post_param_string('username');
             $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($username);
-            if (is_null($member_id)) {
+            if ($member_id === null) {
                 require_code('cns_member_action');
                 $member_id = cns_make_member($username, uniqid('', true), '', array(), null, null, null, array(), null, null, 1, null, null, '', null, '', 0, 0, 1, '', '', '', 1, 1, null, 1, 1, null, '', false);
             }
@@ -1092,7 +1092,7 @@ class Module_cms_booking_bookings extends Standard_crud_module
         $request = get_booking_request_from_form();
         $request = save_booking_form_to_db($request, array(), $member_id);
 
-        if (is_null($request)) {
+        if ($request === null) {
             warn_exit(do_lang_tempcode('ERROR_OCCURRED'));
         }
 
@@ -1134,7 +1134,7 @@ class Module_cms_booking_bookings extends Standard_crud_module
 
         $request = get_booking_request_from_form();
         $test = check_booking_dates_available($request, $ignore_bookings);
-        if (!is_null($test)) {
+        if ($test !== null) {
             warn_exit($test);
         }
 

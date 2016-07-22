@@ -84,7 +84,7 @@ class Hook_commandr_fs_newsletter_subscribers extends Resource_fs_base
         $email = $label;
         $join_time = $this->_default_property_time($properties, 'join_time');
         $code_confirm = $this->_default_property_int_null($properties, 'code_confirm');
-        if (is_null($code_confirm)) {
+        if ($code_confirm === null) {
             $code_confirm = 0;
         }
         $password = $this->_default_property_str($properties, 'password');
@@ -152,7 +152,7 @@ class Hook_commandr_fs_newsletter_subscribers extends Resource_fs_base
         $email = $this->_default_property_str($properties, 'label');
         $join_time = $this->_default_property_time($properties, 'join_time');
         $code_confirm = $this->_default_property_int_null($properties, 'code_confirm');
-        if (is_null($code_confirm)) {
+        if ($code_confirm === null) {
             $code_confirm = 0;
         }
         $password = $this->_default_property_str($properties, 'password');
@@ -198,7 +198,7 @@ class Hook_commandr_fs_newsletter_subscribers extends Resource_fs_base
      */
     public function file_convert_filename_to_id($filename, $resource_type = null)
     {
-        if (is_null($resource_type)) {
+        if ($resource_type === null) {
             $resource_type = $this->file_resource_type;
         }
 

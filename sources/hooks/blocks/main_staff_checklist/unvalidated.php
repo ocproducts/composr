@@ -66,12 +66,12 @@ class Hook_checklist_unvalidated
         $_hooks = find_all_hook_obs('modules', 'admin_unvalidated', 'Hook_unvalidated_');
         foreach ($_hooks as $object) {
             $info = $object->info();
-            if (is_null($info)) {
+            if ($info === null) {
                 continue;
             }
             $db = array_key_exists('db', $info) ? $info['db'] : $GLOBALS['SITE_DB'];
             $amount = $db->query_select_value($info['db_table'], 'COUNT(*)', array($info['db_validated'] => 0));
-            if ((is_null($info)) || ((array_key_exists('is_minor', $info)) && ($info['is_minor']))) {
+            if (($info === null) || ((array_key_exists('is_minor', $info)) && ($info['is_minor']))) {
                 $sum2 += $amount;
             } else {
                 $sum += $amount;

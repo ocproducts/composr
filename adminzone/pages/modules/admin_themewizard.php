@@ -455,7 +455,7 @@ class Module_admin_themewizard
 
         // Find the most appropriate theme to edit for
         $theme = $GLOBALS['SITE_DB']->query_select_value_if_there('zones', 'zone_theme', array('zone_name' => 'site'));
-        if (is_null($theme)) { // Just in case the 'site' zone no longer exists
+        if ($theme === null) { // Just in case the 'site' zone no longer exists
             $theme = $GLOBALS['SITE_DB']->query_select_value('zones', 'zone_theme', array('zone_name' => ''));
         }
         if ($theme == '-1') {

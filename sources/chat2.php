@@ -27,7 +27,7 @@
  */
 function blocking_add($blocker, $blocked, $time = null)
 {
-    if (is_null($time)) {
+    if ($time === null) {
         $time = time();
     }
 
@@ -70,7 +70,7 @@ function blocking_remove($blocker, $blocked)
  */
 function friend_add($likes, $liked, $time = null)
 {
-    if (is_null($time)) {
+    if ($time === null) {
         $time = time();
     }
 
@@ -220,11 +220,11 @@ function get_chatroom_fields($id = null, $is_made_by_me = false, $room_name = ''
     }
 
     require_code('content2');
-    $fields->attach(metadata_get_fields('chat', is_null($id) ? null : strval($id)));
+    $fields->attach(metadata_get_fields('chat', ($id === null) ? null : strval($id)));
 
     if (addon_installed('content_reviews')) {
         require_code('content_reviews2');
-        $fields->attach(content_review_get_fields('chat', is_null($id) ? null : strval($id)));
+        $fields->attach(content_review_get_fields('chat', ($id === null) ? null : strval($id)));
     }
 
     return array($fields, new Tempcode());
@@ -240,7 +240,7 @@ function read_in_chat_perm_fields()
     $allow2 = '';
     $_x = post_param_string('allow_list_0', '');
     $x = $GLOBALS['FORUM_DRIVER']->get_member_from_username($_x);
-    if (!is_null($x)) {
+    if ($x !== null) {
         $allow2 .= strval($x);
     }
     foreach ($_POST as $key => $_x) {
@@ -260,7 +260,7 @@ function read_in_chat_perm_fields()
             continue;
         }
         $x = $GLOBALS['FORUM_DRIVER']->get_member_from_username($_x);
-        if (!is_null($x)) {
+        if ($x !== null) {
             if ($allow2 != '') {
                 $allow2 .= ',';
             }
@@ -271,7 +271,7 @@ function read_in_chat_perm_fields()
     $disallow2 = '';
     $_x = post_param_string('disallow_list_0', '');
     $x = $GLOBALS['FORUM_DRIVER']->get_member_from_username($_x);
-    if (!is_null($x)) {
+    if ($x !== null) {
         $disallow2 .= strval($x);
     }
     foreach ($_POST as $key => $_x) {
@@ -291,7 +291,7 @@ function read_in_chat_perm_fields()
             continue;
         }
         $x = $GLOBALS['FORUM_DRIVER']->get_member_from_username($_x);
-        if (!is_null($x)) {
+        if ($x !== null) {
             if ($disallow2 != '') {
                 $disallow2 .= ',';
             }

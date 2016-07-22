@@ -196,7 +196,7 @@ function get_php_file_api($filename, $include_code = true)
                         }
 
                         $parts = _cleanup_array(preg_split('/\s/', substr($ltrim, 6)));
-                        if (($parts[0][0] != '?') && (array_key_exists('default', $parameters[$arg_counter])) && (is_null($parameters[$arg_counter]['default']))) {
+                        if (($parts[0][0] != '?') && (array_key_exists('default', $parameters[$arg_counter])) && ($parameters[$arg_counter]['default'] === null)) {
                             attach_message(do_lang_tempcode('UNALLOWED_NULL', escape_html($parameters[$arg_counter]['name']), escape_html($function_name), array(escape_html('null'))), 'warn');
                             continue 2;
                         }
@@ -310,7 +310,7 @@ function get_php_file_api($filename, $include_code = true)
                     }
                 }
             }
-            if (!is_null($return)) {
+            if ($return !== null) {
                 $fret = $return;
                 check_function_type($return['type'], $function_name, '(return)', null, array_key_exists('range', $return) ? $return['range'] : null, array_key_exists('set', $return) ? $return['set'] : null);
 
@@ -343,7 +343,7 @@ function get_php_file_api($filename, $include_code = true)
             if ($include_code) {
                 $function['code'] = $code;
             }
-            if (!is_null($fret)) {
+            if ($fret !== null) {
                 $function['return'] = $fret;
             }
             $functions[$function_name] = $function;
@@ -597,12 +597,12 @@ function check_function_type($type, $function_name, $name, $value, $range, $set,
         attach_message(do_lang_tempcode('INVALID_PARAMETER_TYPE', escape_html($type), escape_html($function_name)), 'warn');
     }
 
-    if (!is_null($value)) {
+    if ($value !== null) {
         test_fail_php_type_check($type, $function_name, $name, $value, $echo);
     }
 
     // Check range
-    if ((!is_null($range)) && (!is_null($value))) {
+    if (($range !== null) && ($value !== null)) {
         $allowed = array(
             'UINTEGER',
             'SHORT_INTEGER',
@@ -645,7 +645,7 @@ function check_function_type($type, $function_name, $name, $value, $range, $set,
     }
 
     // Check set
-    if ((!is_null($set)) && (!is_null($value))) {
+    if (($set !== null) && ($value !== null)) {
         $_set = explode(' ', $set);
         foreach ($_set as $i => $s) {
             if ($s == '""') {
@@ -675,7 +675,7 @@ function test_fail_php_type_check($type, $function_name, $name, $value, $echo = 
     $false_allowed = ($type[0] == '~');
     $_type = preg_replace('#[^\w]#', '', $type);
 
-    if ((is_null($value)) && (!$null_allowed)) {
+    if (($value === null) && (!$null_allowed)) {
         attach_message(do_lang_tempcode('UNALLOWED_NULL', escape_html($name), escape_html($function_name), array('null')), 'warn');
     }
 
@@ -776,7 +776,7 @@ function test_fail_php_type_check($type, $function_name, $name, $value, $echo = 
         case 'LANGUAGE_NAME':
             global $LANG_TD_MAP;
             require_code('files');
-            if (is_null($LANG_TD_MAP)) {
+            if ($LANG_TD_MAP === null) {
                 $LANG_TD_MAP = better_parse_ini_file(get_file_base() . '/lang/langs.ini');
             }
             if ((!is_string($value)) || (!array_key_exists($value, $LANG_TD_MAP))) {
@@ -927,7 +927,7 @@ function render_php_function_do_bits($parameter)
     if (array_key_exists('default', $parameter)) { // Default
         $value = '';
         if (!is_string($parameter['default'])) {
-            if (!is_null($parameter['default'])) {
+            if ($parameter['default'] !== null) {
                 $value = strval($parameter['default']);
             }
         } else {

@@ -100,7 +100,7 @@ class Hook_notification_types_extended_composr_mobile_sdk
                 if (get_option('enable_notifications_instant_ios') === '1') {
                     $system_wide = true;
                     $token = $GLOBALS['SITE_DB']->query_select_value_if_there('device_token_details', 'device_token', array('member_id' => $member_id, 'token_type' => 'ios'));
-                    if ($system_wide && !is_null($token)) {
+                    if ($system_wide && $token !== null) {
                         $for_member = true;
                     }
                 }
@@ -110,7 +110,7 @@ class Hook_notification_types_extended_composr_mobile_sdk
                 if (get_option('enable_notifications_instant_android') === '1') {
                     $system_wide = true;
                     $token = $GLOBALS['SITE_DB']->query_select_value_if_there('device_token_details', 'device_token', array('member_id' => $member_id, 'token_type' => 'android'));
-                    if ($system_wide && !is_null($token)) {
+                    if ($system_wide && $token !== null) {
                         $for_member = true;
                     }
                 }
@@ -176,17 +176,17 @@ class Hook_notification_types_extended_composr_mobile_sdk
 
         // Re-processing of language string for iOS specifically (we can customise it so long as do_notification_lang was used).
         global $LAST_NOTIFICATION_LANG_CALL;
-        if (!is_null($LAST_NOTIFICATION_LANG_CALL)) {
+        if ($LAST_NOTIFICATION_LANG_CALL !== null) {
             require_lang('composr_mobile_sdk');
 
             list($codename, $parameter1, $parameter2, $parameter3, $lang, ) = $LAST_NOTIFICATION_LANG_CALL;
-            if (!is_null($parameter1)) {
+            if ($parameter1 !== null) {
                 $properties['do_lang_1'] = is_object($parameter1) ? $parameter1->evaluate() : $parameter1;
             }
-            if (!is_null($parameter2)) {
+            if ($parameter2 !== null) {
                 $properties['do_lang_2'] = is_object($parameter2) ? $parameter2->evaluate() : $parameter2;
             }
-            if (!is_null($parameter3)) {
+            if ($parameter3 !== null) {
                 if (is_array($parameter3)) {
                     foreach ($parameter3 as $i => $param) {
                         $properties['do_lang_' . strval(3 + $i)] = is_object($param) ? $param->evaluate() : $param;
@@ -196,14 +196,14 @@ class Hook_notification_types_extended_composr_mobile_sdk
                 }
             }
             $_message = do_lang('MOBILE__' . $codename, $parameter1, $parameter2, $parameter3, $lang, false);
-            if (!is_null($_message)) {
+            if ($_message !== null) {
                 $message = $_message;
             }
         }
 
         // Re-processing of template for iOS specifically (we can customise it so long as do_notification_template was used).
         global $LAST_NOTIFICATION_TEMPLATE_CALL;
-        if (!is_null($LAST_NOTIFICATION_TEMPLATE_CALL)) {
+        if ($LAST_NOTIFICATION_TEMPLATE_CALL !== null) {
             list($codename, $parameters, $lang, $light_error, , $suffix, $directory, $theme) = $LAST_NOTIFICATION_TEMPLATE_CALL;
             $_message_tempcode = do_template('MOBILE__' . $codename, $parameters, $lang, false, $codename, $suffix, $directory, $theme);
             $message = $_message_tempcode->evaluate();

@@ -66,12 +66,12 @@ if (!function_exists('critical_error')) {
         @ob_end_clean(); // Emergency output so kill off any active buffer
         ob_start();
 
-        if ((!is_null($relay)) && (function_exists('_sanitise_error_msg'))) {
+        if (($relay !== null) && (function_exists('_sanitise_error_msg'))) {
             $relay = _sanitise_error_msg($relay);
         }
 
         if (!headers_sent()) {
-            if ((function_exists('browser_matches')) && ((is_null($relay)) || (strpos($relay, 'Allowed memory') === false))) {
+            if ((function_exists('browser_matches')) && (($relay === null) || (strpos($relay, 'Allowed memory') === false))) {
                 if ((!browser_matches('ie')) && (strpos(cms_srv('SERVER_SOFTWARE'), 'IIS') === false)) {
                     header('HTTP/1.0 500 Internal server error');
                 }
@@ -147,7 +147,7 @@ if (!function_exists('critical_error')) {
 
         $extra = '';
 
-        if ((strpos($error, 'Allowed memory') === false) && ((is_null($relay)) || (strpos($relay, 'Stack trace') === false)) && (function_exists('cms_srv')) && (((cms_srv('REMOTE_ADDR') == cms_srv('SERVER_ADDR')) && (cms_srv('HTTP_X_FORWARDED_FOR') == '')) || ((isset($SITE_INFO['backdoor_ip'])) && (cms_srv('REMOTE_ADDR') == $SITE_INFO['backdoor_ip']) && (cms_srv('HTTP_X_FORWARDED_FOR') == '')) || (preg_match('#^localhost(\.|\:|$)#', cms_srv('HTTP_HOST')) != 0) && (function_exists('get_base_url')) && (substr(get_base_url(), 0, 16) == 'http://localhost'))) {
+        if ((strpos($error, 'Allowed memory') === false) && (($relay === null) || (strpos($relay, 'Stack trace') === false)) && (function_exists('cms_srv')) && (((cms_srv('REMOTE_ADDR') == cms_srv('SERVER_ADDR')) && (cms_srv('HTTP_X_FORWARDED_FOR') == '')) || ((isset($SITE_INFO['backdoor_ip'])) && (cms_srv('REMOTE_ADDR') == $SITE_INFO['backdoor_ip']) && (cms_srv('HTTP_X_FORWARDED_FOR') == '')) || (preg_match('#^localhost(\.|\:|$)#', cms_srv('HTTP_HOST')) != 0) && (function_exists('get_base_url')) && (substr(get_base_url(), 0, 16) == 'http://localhost'))) {
             $_trace = debug_backtrace();
             $extra = '<div class="box guid_{_GUID}"><div class="box_inner"><h2>Stack trace&hellip;</h2>';
             foreach ($_trace as $stage) {

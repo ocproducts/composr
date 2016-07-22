@@ -34,7 +34,7 @@ class Hook_page_groupings_core
     {
         require_code('site');
 
-        if (is_null($member_id)) {
+        if ($member_id === null) {
             $member_id = get_member();
         }
 
@@ -81,7 +81,7 @@ class Hook_page_groupings_core
             (get_forum_type() != 'cns') ? null : array('tools', 'menu/adminzone/tools/users/member_add', array('admin_cns_members', array(), get_module_zone('admin_cns_members')), do_lang_tempcode('MEMBERS'), 'cns:DOC_MEMBERS'),
             //((get_forum_type() != 'cns') || (!has_privilege($member_id, 'control_usergroups'))) ? null : array('tools', 'menu/social/groups', array('groups', array('type' => 'browse'), get_module_zone('groups'), do_lang_tempcode('SWITCH_ZONE_WARNING')), do_lang_tempcode('SECONDARY_GROUP_MEMBERSHIP'), 'DOC_SECONDARY_GROUP_MEMBERSHIP'), Excessive
             array('tools', 'menu/adminzone/tools/cleanup', array('admin_cleanup', array('type' => 'browse'), get_module_zone('admin_cleanup')), do_lang_tempcode('cleanup:CLEANUP_TOOLS'), 'cleanup:DOC_CLEANUP_TOOLS'),
-            (is_null(get_value('brand_base_url'))) ? array('tools', 'menu/adminzone/tools/upgrade', array('admin_config', array('type' => 'upgrader'), get_module_zone('admin_config')), do_lang_tempcode('upgrade:FU_UPGRADER_TITLE'), 'upgrade:FU_UPGRADER_INTRO') : null,
+            (get_value('brand_base_url') === null) ? array('tools', 'menu/adminzone/tools/upgrade', array('admin_config', array('type' => 'upgrader'), get_module_zone('admin_config')), do_lang_tempcode('upgrade:FU_UPGRADER_TITLE'), 'upgrade:FU_UPGRADER_INTRO') : null,
             (addon_installed('syndication')) ? array('tools', 'links/rss', array('admin_config', array('type' => 'backend'), get_module_zone('admin_config')), do_lang_tempcode('FEEDS'), 'rss:OPML_INDEX_DESCRIPTION') : null,
             (addon_installed('code_editor')) ? array('tools', 'menu/adminzone/tools/code_editor', array('admin_config', array('type' => 'code_editor'), get_module_zone('admin_config')), do_lang_tempcode('CODE_EDITOR'), 'DOC_CODE_EDITOR') : null,
 

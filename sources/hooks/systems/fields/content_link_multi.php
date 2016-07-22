@@ -168,15 +168,15 @@ class Hook_fields_content_link_multi
         if ($type == 'comcode_page') {
             $select[] = 'the_zone';
         }
-        if (!is_null($info['title_field'])) {
+        if ($info['title_field'] !== null) {
             $select[] = $info['title_field'];
         }
-        $rows = $db->query_select($info['table'], $select, null, is_null($info['add_time_field']) ? '' : ('ORDER BY ' . $info['add_time_field'] . ' DESC'), 2000/*reasonable limit*/);
+        $rows = $db->query_select($info['table'], $select, null, ($info['add_time_field'] === null) ? '' : ('ORDER BY ' . $info['add_time_field'] . ' DESC'), 2000/*reasonable limit*/);
         $list = new Tempcode();
         $_list = array();
         foreach ($rows as $row) {
             $id = extract_content_str_id_from_data($row, $info);
-            if (is_null($info['title_field'])) {
+            if ($info['title_field'] === null) {
                 $text = $id;
             } else {
                 $text = $info['title_field_dereference'] ? get_translated_text($row[$info['title_field']], $info['db']) : $row[$info['title_field']];
@@ -190,7 +190,7 @@ class Hook_fields_content_link_multi
             if (!is_string($id)) {
                 $id = strval($id);
             }
-            $list->attach(form_input_list_entry($id, (is_null($actual_value) || $id == '') ? false : (strpos("\n" . $actual_value . "\n", $id) !== false), $text));
+            $list->attach(form_input_list_entry($id, (($actual_value === null) || $id == '') ? false : (strpos("\n" . $actual_value . "\n", $id) !== false), $text));
         }
         return form_input_multi_list($_cf_name, $_cf_description, $input_name, $list, null, 5, $field['cf_required'] == 1);
     }

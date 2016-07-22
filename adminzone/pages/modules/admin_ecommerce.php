@@ -213,18 +213,18 @@ class Module_admin_ecommerce extends Standard_crud_module
 
         $hidden = new Tempcode();
 
-        if (is_null($group_id)) {
+        if ($group_id === null) {
             $group_id = get_param_integer('group_id', db_get_first_id() + 3);
         }
-        if (is_null($mail_start)) {
+        if ($mail_start === null) {
             $mail_start = do_lang('_PAID_SUBSCRIPTION_STARTED', get_option('site_name'));
         }
-        if (is_null($mail_end)) {
+        if ($mail_end === null) {
             $_purchase_url = build_url(array('page' => 'purchase'), get_module_zone('purchase'), null, false, false, true);
             $purchase_url = $_purchase_url->evaluate();
             $mail_end = do_lang('_PAID_SUBSCRIPTION_ENDED', get_option('site_name'), $purchase_url);
         }
-        if (is_null($mail_uhoh)) {
+        if ($mail_uhoh === null) {
             $mail_uhoh = do_lang('_PAID_SUBSCRIPTION_UHOH', get_option('site_name'));
         }
 
@@ -274,7 +274,7 @@ class Module_admin_ecommerce extends Standard_crud_module
         $fields->attach(form_input_text_comcode(do_lang_tempcode('MAIL_UHOH'), do_lang_tempcode('DESCRIPTION_USERGROUP_SUBSCRIPTION_MAIL_UHOH'), 'mail_uhoh', $mail_uhoh, false, null, true));
 
         // Extra mails
-        if (is_null($mails)) {
+        if ($mails === null) {
             $mails = array();
         }
         if (get_forum_type() == 'cns') {
@@ -302,7 +302,7 @@ class Module_admin_ecommerce extends Standard_crud_module
             $delete_fields->attach(form_input_tick(do_lang_tempcode('DELETE'), do_lang_tempcode('DESCRIPTION_DELETE_USERGROUP_SUB_DANGER'), 'delete', false));
         }
 
-        return array($fields, $hidden, $delete_fields, null, !is_null($delete_fields));
+        return array($fields, $hidden, $delete_fields, null, $delete_fields !== null);
     }
 
     /**

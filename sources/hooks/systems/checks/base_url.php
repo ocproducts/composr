@@ -65,7 +65,7 @@ class Hook_check_base_url
             $warning[] = do_lang_tempcode('HTTP_REDIRECT_PROBLEM', $a, $b, make_string_tempcode(escape_html($HTTP_MESSAGE)));
         }
 
-        elseif ((in_array($HTTP_MESSAGE, array('400', '404', '500', 'no-data', '408', '502', '503', '504'))) || (is_null($test))) {
+        elseif ((in_array($HTTP_MESSAGE, array('400', '404', '500', 'no-data', '408', '502', '503', '504'))) || ($test === null)) {
             // Some kind of error state that we shouldn't ever be expecting
 
             if ($installing) {

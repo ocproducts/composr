@@ -43,10 +43,10 @@ class core_fields_test_set extends cms_test_case
                 );
 
                 $test = $ob->get_search_inputter($field);
-                $this->assertTrue(is_null($test) || is_array($test), 'Failed get_search_inputter for ' . $type);
+                $this->assertTrue(($test === null) || is_array($test), 'Failed get_search_inputter for ' . $type);
 
                 $test = $ob->inputted_to_sql_for_search($field, 1);
-                $this->assertTrue(is_null($test) || is_array($test), 'Failed inputted_to_sql_for_search for ' . $type);
+                $this->assertTrue(($test === null) || is_array($test), 'Failed inputted_to_sql_for_search for ' . $type);
 
                 $test = $ob->get_field_value_row_bits($field);
                 $this->assertTrue(is_array($test), 'Failed get_field_value_row_bits for ' . $type);
@@ -59,10 +59,10 @@ class core_fields_test_set extends cms_test_case
                 $this->assertTrue(is_string($test) || is_object($test), 'Failed render_field_value for ' . $type);
 
                 $test = $ob->get_field_inputter('Test', 'Description.', $field, '', true);
-                $this->assertTrue(is_null($test) || is_object($test) || is_array($test), 'Failed get_field_inputter for ' . $type);
+                $this->assertTrue(($test === null) || is_object($test) || is_array($test), 'Failed get_field_inputter for ' . $type);
 
                 $test = $ob->inputted_to_field_value(false, $field);
-                $this->assertTrue(is_null($test) || is_string($test), 'Failed inputted_to_field_value for ' . $type);
+                $this->assertTrue(($test === null) || is_string($test), 'Failed inputted_to_field_value for ' . $type);
             }
         }
     }

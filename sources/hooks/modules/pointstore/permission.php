@@ -82,7 +82,7 @@ class Hook_pointstore_permission
         $__privileges = array();
         foreach ($_privileges as $_privilege) {
             $_pt_name = do_lang('PRIVILEGE_' . $_privilege['the_name'], null, null, null, null, false);
-            if (is_null($_pt_name)) {
+            if ($_pt_name === null) {
                 continue;
             }
             $__privileges[$_privilege['the_name']] = $_pt_name;
@@ -219,7 +219,7 @@ class Hook_pointstore_permission
             $i++;
         }
         $title = post_param_string('permission_title', null);
-        if (!is_null($title)) {
+        if ($title !== null) {
             $description = post_param_string('permission_description');
             $enabled = post_param_integer('permission_enabled', 0);
             $cost = post_param_integer('permission_cost');
@@ -353,7 +353,7 @@ class Hook_pointstore_permission
 
         // Actuate
         $map = $this->get_map($row);
-        $map['active_until'] = is_null($row['p_hours']) ? null : (time() + $row['p_hours'] * 60 * 60);
+        $map['active_until'] = ($row['p_hours'] === null) ? null : (time() + $row['p_hours'] * 60 * 60);
         $GLOBALS['SITE_DB']->query_insert(filter_naughty_harsh($row['p_type']), $map);
 
         $member = get_member();
@@ -415,6 +415,6 @@ class Hook_pointstore_permission
     {
         $map = $this->get_map($row);
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there(filter_naughty_harsh($row['p_type']), 'member_id', $map);
-        return (!is_null($test));
+        return ($test !== null);
     }
 }

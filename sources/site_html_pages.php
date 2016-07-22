@@ -30,12 +30,12 @@
  */
 function load_html_page($string, $file_base = null, &$out = null)
 {
-    if (is_null($file_base)) {
+    if ($file_base === null) {
         $file_base = get_file_base();
     }
 
     global $PAGE_STRING;
-    if (is_null($PAGE_STRING)) {
+    if ($PAGE_STRING === null) {
         $PAGE_STRING = $string;
     }
 

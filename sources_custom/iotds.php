@@ -25,7 +25,7 @@
  */
 function render_iotd_box($myrow, $zone = '_SEARCH', $include_manage_links = false, $give_context = true, $guid = '')
 {
-    if (is_null($myrow)) { // Should never happen, but we need to be defensive
+    if ($myrow === null) { // Should never happen, but we need to be defensive
         return new Tempcode();
     }
 
@@ -62,7 +62,7 @@ function render_iotd_box($myrow, $zone = '_SEARCH', $include_manage_links = fals
         'VIEWS' => integer_format($myrow['iotd_views']),
         'THUMB' => $thumb,
         'DATE' => $date,
-        'DATE_RAW' => is_null($myrow['date_and_time']) ? '' : strval($myrow['date_and_time']),
+        'DATE_RAW' => ($myrow['date_and_time'] === null) ? '' : strval($myrow['date_and_time']),
         'IS_CURRENT' => ($myrow['is_current'] == 1),
         'THUMB_URL' => $thumb_url,
         'VIEW_URL' => $view_url,

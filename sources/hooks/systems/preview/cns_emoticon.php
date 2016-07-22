@@ -45,12 +45,12 @@ class Hook_preview_cns_emoticon
 
         $urls = get_url('', 'file', 'safe_mode_temp', 0, CMS_UPLOAD_IMAGE, false);
         if ($urls[0] == '') {
-            if (!is_null(post_param_integer('id', null))) {
+            if (post_param_integer('id', null) !== null) {
                 $rows = $GLOBALS['SITE_DB']->query_select('cns_emoticons', array('e_theme_img_code'), array('id' => post_param_integer('id')), '', 1);
                 $urls = $rows[0];
 
                 $url = find_theme_image($urls['e_theme_img_code']);
-            } elseif (!is_null(post_param_string('theme_img_code', null))) {
+            } elseif (post_param_string('theme_img_code', null) !== null) {
                 $url = find_theme_image(post_param_string('theme_img_code'));
             } else {
                 warn_exit(do_lang_tempcode('IMPROPERLY_FILLED_IN_UPLOAD'));

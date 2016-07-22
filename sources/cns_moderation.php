@@ -30,7 +30,7 @@ function cns_list_multi_moderations($forum_id)
         return array();
     }
 
-    if (is_null($forum_id)) {
+    if ($forum_id === null) {
         return array();
     }
 
@@ -55,7 +55,7 @@ function cns_list_multi_moderations($forum_id)
         require_code('selectcode');
         if ($lots_of_forums) {
             $sql = selectcode_to_sqlfragment($row['mm_forum_multi_code'], 'id', 'f_forums', 'f_parent_forum', 'f_parent_forum', 'id', true, true, $GLOBALS['FORUM_DB']);
-            if (!is_null($GLOBALS['FORUM_DB']->query_value_if_there('SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forums WHERE id=' . strval($forum_id) . ' AND (' . $sql . ')', false, true))) {
+            if ($GLOBALS['FORUM_DB']->query_value_if_there('SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forums WHERE id=' . strval($forum_id) . ' AND (' . $sql . ')', false, true) !== null) {
                 $out[$row['id']] = $row['_mm_name'];
             }
         } else {
@@ -77,7 +77,7 @@ function cns_list_multi_moderations($forum_id)
  */
 function cns_may_perform_multi_moderation($forum_id, $member_id = null)
 {
-    if (is_null($member_id)) {
+    if ($member_id === null) {
         $member_id = get_member();
     }
 
@@ -96,7 +96,7 @@ function cns_may_perform_multi_moderation($forum_id, $member_id = null)
  */
 function cns_may_warn_members($member_id = null)
 {
-    if (is_null($member_id)) {
+    if ($member_id === null) {
         $member_id = get_member();
     }
 

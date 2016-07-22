@@ -66,7 +66,7 @@ class Hook_pointstore_banners
         $title = get_screen_title('MANAGE_BANNERS');
 
         $banner_name = $GLOBALS['SITE_DB']->query_select_value_if_there('sales', 'details', array('memberid' => get_member(), 'purchasetype' => 'banner'));
-        if (!is_null($banner_name)) {
+        if ($banner_name !== null) {
             $activate = new Tempcode();
             $upgrade_url = build_url(array('page' => '_SELF', 'type' => 'upgradebanner', 'id' => 'banners'), '_SELF');
             $upgrade = do_template('POINTSTORE_BANNERS_UPGRADE', array('_GUID' => '975688582e5acbfc0a84a4ef2c3b824e', 'UPGRADE_URL' => $upgrade_url));
@@ -86,7 +86,7 @@ class Hook_pointstore_banners
     {
         $member_id = get_member();
         $has_one = $GLOBALS['SITE_DB']->query_select_value_if_there('sales', 'details', array('memberid' => $member_id, 'purchasetype' => 'banner'));
-        if (!is_null($has_one)) {
+        if ($has_one !== null) {
             $myrows = $GLOBALS['SITE_DB']->query_select('banners', array('campaign_remaining', 'importance_modulus', 'name'), array('name' => $has_one), '', 1);
             if (array_key_exists(0, $myrows)) {
                 warn_exit(do_lang_tempcode('BANNER_ALREADY'));
@@ -277,7 +277,7 @@ class Hook_pointstore_banners
         $details = $GLOBALS['SITE_DB']->query_select_value_if_there('sales', 'details', array('memberid' => $member_id, 'purchasetype' => 'banner'));
 
         // If we don't own a banner account, stop right here.
-        if (is_null($details)) {
+        if ($details === null) {
             warn_exit(do_lang_tempcode('NO_BANNER'));
         }
 

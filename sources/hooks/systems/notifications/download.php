@@ -51,7 +51,7 @@ class Hook_notification_download extends Hook_Notification
             return parent::create_category_tree($notification_code, $id); // Too many, so just allow removing UI
         }
 
-        $page_links = get_downloads_tree(null, is_null($id) ? null : intval($id), null, null, null, 5);
+        $page_links = get_downloads_tree(null, ($id === null) ? null : intval($id), null, null, null, 5);
         $filtered = array();
         foreach ($page_links as $p) {
             if (strval($p['id']) !== $id) {

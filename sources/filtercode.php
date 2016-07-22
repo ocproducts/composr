@@ -828,7 +828,7 @@ function filtercode_to_sql($db, $filters, $content_type = '', $context = '', $ta
 
             if ($is_join) {
                 $bits2 = call_user_func_array($conv_func, array($db, $info, &$context, &$extra_join, &$extra_select, &$filter_val, '', $db_fields, $table_join_code)); // call_user_func_array has to be used for reference passing, bizarrely
-                if (is_null($bits2)) {
+                if ($bits2 === null) {
                     require_lang('filtercode');
                     attach_message(do_lang_tempcode('FILTERCODE_UNKNOWN_FIELD', escape_html($filter_val)), 'warn');
 

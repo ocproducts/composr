@@ -233,9 +233,9 @@ function ecv2_VALUE_OPTION($lang, $escaped, $param)
 
     if (isset($param[0])) {
         $value = function_exists('get_value') ? get_value($param[0]) : '';
-        if (is_null($value)) {
+        if ($value === null) {
             $value = function_exists('get_value') ? get_value($param[0], null, true) : '';
-            if (is_null($value)) {
+            if ($value === null) {
                 $value = isset($param[1]) ? $param[1] : '';
                 if (($param[0] == 'textmate') && ((running_locally()) && (strpos(cms_srv('HTTP_USER_AGENT'), 'Macintosh') !== false))) {
                     $value = '1';
@@ -514,7 +514,7 @@ function ecv2_COOKIE_PATH($lang, $escaped, $param)
 function ecv2_COOKIE_DOMAIN($lang, $escaped, $param)
 {
     $s_value = function_exists('get_cookie_domain') ? get_cookie_domain() : '';
-    $value = is_null($s_value) ? '' : $s_value;
+    $value = ($s_value === null) ? '' : $s_value;
 
     if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
@@ -757,7 +757,7 @@ function ecv2_ATTACHMENT_DOWNLOADS($lang, $escaped, $param)
             $db = $GLOBALS['FORUM_DB'];
         }
         $_value = $db->query_select_value_if_there('attachments', 'a_num_downloads', array('id' => intval($param[0])));
-        $value = is_null($_value) ? '?' : strval($_value);
+        $value = ($_value === null) ? '?' : strval($_value);
     }
 
     if ($GLOBALS['XSS_DETECT']) {
@@ -1704,7 +1704,7 @@ function ecv2_FORUM_BASE_URL($lang, $escaped, $param)
 function ecv2_FORUM_CONTEXT($lang, $escaped, $param)
 {
     global $SET_CONTEXT_FORUM;
-    $value = is_null($SET_CONTEXT_FORUM) ? '' : strval($SET_CONTEXT_FORUM);
+    $value = ($SET_CONTEXT_FORUM === null) ? '' : strval($SET_CONTEXT_FORUM);
 
     if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
@@ -1803,7 +1803,7 @@ function ecv2_HAS_CATEGORY_ACCESS($lang, $escaped, $param)
     $value = '';
 
     if ((isset($param[0])) && (function_exists('has_category_access'))) {
-        $value = has_category_access(((!is_null($param)) && (isset($param[2]))) ? intval($param[2]) : get_member(), $param[0], $param[1]) ? '1' : '0';
+        $value = has_category_access((($param !== null) && (isset($param[2]))) ? intval($param[2]) : get_member(), $param[0], $param[1]) ? '1' : '0';
     }
 
     if ($GLOBALS['XSS_DETECT']) {
@@ -1829,8 +1829,8 @@ function ecv2_HAS_EDIT_PERMISSION($lang, $escaped, $param)
     if (isset($param[1])) {
         $range = strtolower($param[0]);
         $owner = intval($param[1]);
-        $member = ((!is_null($param)) && (isset($param[2]))) ? intval($param[2]) : get_member();
-        $cms_page = ((!is_null($param)) && (isset($param[3]))) ? $param[3] : get_page_name();
+        $member = (($param !== null) && (isset($param[2]))) ? intval($param[2]) : get_member();
+        $cms_page = (($param !== null) && (isset($param[3]))) ? $param[3] : get_page_name();
         if (array_key_exists(5, $param)) {
             $value = has_edit_permission($range, $member, $owner, $cms_page, array($param[4], $param[5])) ? '1' : '0';
         } else {
@@ -1919,7 +1919,7 @@ function ecv2_HAS_PAGE_ACCESS($lang, $escaped, $param)
             $param[1] = '_SEARCH';
         }
 
-        $value = has_page_access(((!is_null($param)) && (isset($param[2]))) ? intval($param[2]) : get_member(), $param[0], $param[1], ((!is_null($param)) && (isset($param[3]))) ? ($param[3] == '1') : false) ? '1' : '0';
+        $value = has_page_access((($param !== null) && (isset($param[2]))) ? intval($param[2]) : get_member(), $param[0], $param[1], (($param !== null) && (isset($param[3]))) ? ($param[3] == '1') : false) ? '1' : '0';
     }
 
     if ($GLOBALS['XSS_DETECT']) {
@@ -1945,8 +1945,8 @@ function ecv2_HAS_SUBMIT_PERMISSION($lang, $escaped, $param)
     if (isset($param[0])) {
         $range = strtolower($param[0]);
         $ip_address = $param[1];
-        $member = ((!is_null($param)) && (isset($param[2]))) ? intval($param[2]) : get_member();
-        $cms_page = ((!is_null($param)) && (isset($param[3]))) ? $param[3] : get_page_name();
+        $member = (($param !== null) && (isset($param[2]))) ? intval($param[2]) : get_member();
+        $cms_page = (($param !== null) && (isset($param[3]))) ? $param[3] : get_page_name();
         if (array_key_exists(5, $param)) {
             $value = has_submit_permission($range, $member, $ip_address, $cms_page, array($param[5], $param[6])) ? '1' : '0';
         } else {
@@ -2366,7 +2366,7 @@ function ecv2_RATING($lang, $escaped, $param)
             $display_tpl = array_key_exists(5, $param) ? $param[5] : 'RATING_FORM';
             $rating = get_rating_simple_array(
                 array_key_exists(3, $param) ? $param[3] : get_self_url(true), // content_url
-                array_key_exists(4, $param) ? $param[4] : (is_null($DISPLAYED_TITLE) ? '' : $DISPLAYED_TITLE->evaluate()), // content_title
+                array_key_exists(4, $param) ? $param[4] : (($DISPLAYED_TITLE === null) ? '' : $DISPLAYED_TITLE->evaluate()), // content_title
                 $param[0], // content_type
                 $param[1], // content_id
                 'RATING_FORM', // form_tpl
@@ -2425,7 +2425,7 @@ function ecv2_NUM_RATINGS($lang, $escaped, $param)
             $value = $cache_num_ratings[$cache_key];
         } else {
             require_code('feedback');
-            $rating = get_rating_simple_array(array_key_exists(3, $param) ? $param[3] : get_self_url(true), array_key_exists(4, $param) ? $param[4] : (is_null($DISPLAYED_TITLE) ? '' : $DISPLAYED_TITLE->evaluate()), $param[0], $param[1], array_key_exists(5, $param) ? $param[5] : 'RATING_FORM', array_key_exists(2, $param) ? $param[2] : null);
+            $rating = get_rating_simple_array(array_key_exists(3, $param) ? $param[3] : get_self_url(true), array_key_exists(4, $param) ? $param[4] : (($DISPLAYED_TITLE === null) ? '' : $DISPLAYED_TITLE->evaluate()), $param[0], $param[1], array_key_exists(5, $param) ? $param[5] : 'RATING_FORM', array_key_exists(2, $param) ? $param[2] : null);
             $value = $rating['ALL_RATING_CRITERIA'][key($rating['ALL_RATING_CRITERIA'])]['NUM_RATINGS'];
 
             $cache_num_ratings[$cache_key] = $value;
@@ -2509,7 +2509,7 @@ function ecv2_CNS_MEMBER_HTML($lang, $escaped, $param)
 function ecv2_OS($lang, $escaped, $param)
 {
     $os = get_os_string();
-    if (is_null($os)) {
+    if ($os === null) {
         $os = '';
     }
     $value = $os;
@@ -3531,7 +3531,7 @@ function ecv2_DISPLAY_CONCEPT($lang, $escaped, $param)
         require_code('comcode_renderer');
         $_key = 'concept__' . preg_replace('#[^\w_]#', '_', $key);
         $page_link = get_tutorial_link($_key);
-        if (is_null($page_link)) {
+        if ($page_link === null) {
             $temp_tpl = make_string_tempcode($key);
         } else {
             list($zone, $attributes, $hash) = page_link_decode($page_link);

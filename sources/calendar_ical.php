@@ -70,7 +70,7 @@ function output_ical()
         $where .= sql_region_filter('event', 'r.id');
     }
 
-    if (!is_null($filter)) {
+    if ($filter !== null) {
         if ($where != '') {
             $where .= ' AND ';
         }
@@ -91,7 +91,7 @@ function output_ical()
     foreach ($_categories as $category) {
         $categories[$category['id']] = get_translated_text($category['t_title']);
     }
-    if ((is_null($filter)) || (!array_key_exists($filter, $categories))) {
+    if (($filter === null) || (!array_key_exists($filter, $categories))) {
         echo "X-WR-CALNAME:" . ical_escape(get_site_name()) . "\n";
     } else {
         echo "X-WR-CALNAME:" . ical_escape(get_site_name() . ": " . $categories[$filter]) . "\n";
@@ -117,7 +117,7 @@ function output_ical()
 
             echo "DTSTAMP:" . date('Ymd', $event['e_add_date']) . "T" . date('His', $event['e_add_date']) . "\n";
             echo "CREATED:" . date('Ymd', $event['e_add_date']) . "T" . date('His', $event['e_add_date']) . "\n";
-            if (!is_null($event['e_edit_date'])) {
+            if ($event['e_edit_date'] !== null) {
                 echo "LAST-MODIFIED:" . date('Ymd', $event['e_add_date']) . "T" . date('His', $event['e_edit_date']) . "\n";
             }
 
@@ -153,7 +153,7 @@ function output_ical()
             echo "URL:" . ical_escape($url) . "\n";
 
             $forum = find_overridden_comment_forum('calendar', strval($event['e_type']));
-            if (is_null($forum)) {
+            if ($forum === null) {
                 $forum = get_option('comments_forum_name');
             }
             $start = 0;
@@ -171,13 +171,13 @@ function output_ical()
                 $start += 1000;
             } while (count($_comments) == 1000);
 
-            $start_day_of_month = find_concrete_day_of_month($event['e_start_year'], $event['e_start_month'], $event['e_start_day'], $event['e_start_monthly_spec_type'], is_null($event['e_start_hour']) ? find_timezone_start_hour_in_utc($event['e_timezone'], $event['e_start_year'], $event['e_start_month'], $event['e_start_day'], $event['e_start_monthly_spec_type']) : $event['e_start_hour'], is_null($event['e_start_minute']) ? find_timezone_start_minute_in_utc($event['e_timezone'], $event['e_start_year'], $event['e_start_month'], $event['e_start_day'], $event['e_start_monthly_spec_type']) : $event['e_start_minute'], $event['e_timezone'], $event['e_do_timezone_conv'] == 1);
-            $time = mktime(is_null($event['e_start_hour']) ? 12 : $event['e_start_hour'], is_null($event['e_start_minute']) ? 0 : $event['e_start_minute'], 0, $event['e_start_month'], $start_day_of_month, $event['e_start_year']);
-            if (is_null($event['e_end_year']) || is_null($event['e_end_month']) || is_null($event['e_end_day'])) {
+            $start_day_of_month = find_concrete_day_of_month($event['e_start_year'], $event['e_start_month'], $event['e_start_day'], $event['e_start_monthly_spec_type'], ($event['e_start_hour'] === null) ? find_timezone_start_hour_in_utc($event['e_timezone'], $event['e_start_year'], $event['e_start_month'], $event['e_start_day'], $event['e_start_monthly_spec_type']) : $event['e_start_hour'], ($event['e_start_minute'] === null) ? find_timezone_start_minute_in_utc($event['e_timezone'], $event['e_start_year'], $event['e_start_month'], $event['e_start_day'], $event['e_start_monthly_spec_type']) : $event['e_start_minute'], $event['e_timezone'], $event['e_do_timezone_conv'] == 1);
+            $time = mktime(($event['e_start_hour'] === null) ? 12 : $event['e_start_hour'], ($event['e_start_minute'] === null) ? 0 : $event['e_start_minute'], 0, $event['e_start_month'], $start_day_of_month, $event['e_start_year']);
+            if (($event['e_end_year'] === null) || ($event['e_end_month'] === null) || ($event['e_end_day'] === null)) {
                 $time2 = mixed();
             } else {
-                $end_day_of_month = find_concrete_day_of_month($event['e_end_year'], $event['e_end_month'], $event['e_end_day'], $event['e_end_monthly_spec_type'], is_null($event['e_end_hour']) ? find_timezone_end_hour_in_utc($event['e_timezone'], $event['e_end_year'], $event['e_end_month'], $event['e_end_day'], $event['e_end_monthly_spec_type']) : $event['e_end_hour'], is_null($event['e_end_minute']) ? find_timezone_end_minute_in_utc($event['e_timezone'], $event['e_end_year'], $event['e_end_month'], $event['e_end_day'], $event['e_end_monthly_spec_type']) : $event['e_end_minute'], $event['e_timezone'], $event['e_do_timezone_conv'] == 1);
-                $time2 = mktime(is_null($event['e_end_hour']) ? 12 : $event['e_end_hour'], is_null($event['e_end_minute']) ? 0 : $event['e_end_minute'], 0, $event['e_end_month'], $end_day_of_month, $event['e_end_year']);
+                $end_day_of_month = find_concrete_day_of_month($event['e_end_year'], $event['e_end_month'], $event['e_end_day'], $event['e_end_monthly_spec_type'], ($event['e_end_hour'] === null) ? find_timezone_end_hour_in_utc($event['e_timezone'], $event['e_end_year'], $event['e_end_month'], $event['e_end_day'], $event['e_end_monthly_spec_type']) : $event['e_end_hour'], ($event['e_end_minute'] === null) ? find_timezone_end_minute_in_utc($event['e_timezone'], $event['e_end_year'], $event['e_end_month'], $event['e_end_day'], $event['e_end_monthly_spec_type']) : $event['e_end_minute'], $event['e_timezone'], $event['e_do_timezone_conv'] == 1);
+                $time2 = mktime(($event['e_end_hour'] === null) ? 12 : $event['e_end_hour'], ($event['e_end_minute'] === null) ? 0 : $event['e_end_minute'], 0, $event['e_end_month'], $end_day_of_month, $event['e_end_year']);
             }
             if ($event['e_recurrence'] != 'none') {
                 $parts = explode(' ', $event['e_recurrence']);
@@ -191,43 +191,43 @@ function output_ical()
                         switch ($parts[0]) {
                             case 'daily':
                                 $time += 60 * 60 * 24;
-                                if (!is_null($time2)) {
+                                if ($time2 !== null) {
                                     $time2 += 60 * 60 * 24;
                                 }
                                 break;
                             case 'weekly':
                                 $time += 60 * 60 * 24 * 7;
-                                if (!is_null($time2)) {
+                                if ($time2 !== null) {
                                     $time2 += 60 * 60 * 24 * 7;
                                 }
                                 break;
                             case 'monthly':
                                 $days_in_month = intval(date('D', mktime(0, 0, 0, intval(date('m', $time)) + 1, 0, intval(date('Y', $time)))));
                                 $time += 60 * 60 * $days_in_month;
-                                if (!is_null($time2)) {
+                                if ($time2 !== null) {
                                     $time2 += 60 * 60 * $days_in_month;
                                 }
                                 break;
                             case 'yearly':
                                 $days_in_year = intval(date('Y', mktime(0, 0, 0, 0, 0, intval(date('Y', $time)) + 1)));
                                 $time += 60 * 60 * 24 * $days_in_year;
-                                if (!is_null($time2)) {
+                                if ($time2 !== null) {
                                     $time2 += 60 * 60 * 24 * $days_in_year;
                                 }
                                 break;
                         }
                     }
                     if ($parts[1][$i] != '0') {
-                        echo "DTSTART;TZ=" . $event['e_timezone'] . ":" . date('Ymd', $time) . (is_null($event['e_start_hour']) ? "" : ("T" . date('His', $time))) . "\n";
-                        if (!is_null($time2)) {
-                            echo "DTEND:" . date('Ymd', $time2) . "T" . (is_null($event['e_end_hour']) ? "" : ("T" . date('His', $time2))) . "\n";
+                        echo "DTSTART;TZ=" . $event['e_timezone'] . ":" . date('Ymd', $time) . (($event['e_start_hour'] === null) ? "" : ("T" . date('His', $time))) . "\n";
+                        if ($time2 !== null) {
+                            echo "DTEND:" . date('Ymd', $time2) . "T" . (($event['e_end_hour'] === null) ? "" : ("T" . date('His', $time2))) . "\n";
                         }
                         $recurrence_code = 'FREQ=' . strtoupper($parts[0]); // MONTHLY etc
                         echo "RRULE:" . $recurrence_code;
                         if (strlen($parts[1]) != 1) {
                             echo ";INTERVAL=" . strval(strlen($parts[1]));
                         }
-                        if (!is_null($event['e_recurrences'])) {
+                        if ($event['e_recurrences'] !== null) {
                             echo ";COUNT=" . strval($event['e_recurrences']);
                         }
                         if ($event['e_start_monthly_spec_type'] != 'day_of_month') {
@@ -271,8 +271,8 @@ function output_ical()
                 }
             } else {
                 echo "DTSTART:" . date('Ymd', $time) . "T" . date('His', $time) . "\n";
-                if (!is_null($time2)) {
-                    echo "DTEND:" . date('Ymd', $time2) . (is_null($event['e_start_hour']) ? "" : "T" . date('His', $time2)) . "\n";
+                if ($time2 !== null) {
+                    echo "DTEND:" . date('Ymd', $time2) . (($event['e_start_hour'] === null) ? "" : "T" . date('His', $time2)) . "\n";
                 }
             }
 
@@ -365,7 +365,7 @@ function ical_import($file_name)
         if ($key != 0) {
             list(, $type_id, $type, $recurrence, $recurrences, $seg_recurrences, $title, $content, $priority, $is_public, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year, $end_month, $end_day, $end_monthly_spec_type, $end_hour, $end_minute, $timezone, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes) = get_event_data_ical($calendar_nodes[$key]);
 
-            if (is_null($type_id)) {
+            if ($type_id === null) {
                 require_code('calendar2');
                 $type_id = add_event_type(ucfirst($type), 'calendar/general');
             }
@@ -507,7 +507,7 @@ function get_event_data_ical($calendar_nodes)
 
     // Check existency of category
     $type_id = null;
-    if (is_null($type)) {
+    if ($type === null) {
         $type = do_lang('GENERAL');
     }
     $rows = $GLOBALS['SITE_DB']->query_select('calendar_types', array('id', 't_title'));
@@ -598,7 +598,7 @@ function get_event_data_ical($calendar_nodes)
         $start_day = find_abstract_day(intval(date('Y', $start)), intval(date('m', $start)), intval(date('d', $start)), $start_monthly_spec_type);
     }
 
-    if (($end_monthly_spec_type != 'day_of_month') && (!is_null($end_day))) {
+    if (($end_monthly_spec_type != 'day_of_month') && ($end_day !== null)) {
         $end_day = find_abstract_day(intval(date('Y', $end)), intval(date('m', $end)), intval(date('d', $end)), $start_monthly_spec_type/*not encoded differently in iCalendar*/);
     }
 

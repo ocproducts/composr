@@ -67,14 +67,14 @@ if (isset($root['children'])) {
 
 function bookmarks_process_node($node)
 {
-    if (!is_null($node['page_link'])) {
+    if ($node['page_link'] !== null) {
         list($zone, $attributes, $hash) = page_link_decode($node['page_link']);
         $url = _build_url($attributes, $zone, null, false, false, true, $hash);
     } else {
         $url = $node['url'];
     }
     $title = $node['title']->evaluate();
-    if (!is_null($url)) {
+    if ($url !== null) {
         echo '<DT><A HREF="' . escape_html($url) . '">' . escape_html($title) . '</A>' . "\n";
     }
 

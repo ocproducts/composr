@@ -32,7 +32,7 @@ function dispatch_member_mention_notifications($content_type, $content_id, $subm
         return;
     }
 
-    if (is_null($submitter)) {
+    if ($submitter === null) {
         $submitter = get_member();
     }
     $poster_username = $GLOBALS['FORUM_DRIVER']->get_username($submitter);
@@ -53,7 +53,7 @@ function dispatch_member_mention_notifications($content_type, $content_id, $subm
         $info = $cma_ob->info();
         list($content_title, $submitter_id, $cma_info, , , $content_url_email_safe) = content_get_details($content_type, $content_id);
 
-        if (is_null($content_title)) {
+        if ($content_title === null) {
             continue;
         }
 
@@ -67,7 +67,7 @@ function dispatch_member_mention_notifications($content_type, $content_id, $subm
         $rendered = '';
         if ($content_type != '') {
             $cma_content_row = content_get_row($content_id, $info);
-            if (!is_null($cma_content_row)) {
+            if ($cma_content_row !== null) {
                 push_no_keep_context();
                 $rendered = static_evaluate_tempcode($cma_ob->run($cma_content_row, '_SEARCH', true, true));
                 pop_no_keep_context();

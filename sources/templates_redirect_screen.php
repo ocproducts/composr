@@ -51,7 +51,7 @@ function _redirect_screen($title, $url, $text = null, $intermediary_hop = false,
     }
 
     // Even if we have $FORCE_META_REFRESH we want to relay $text if provided --- our delay is zero so it won't be read in time by most users
-    if (!is_null($text)) {
+    if ($text !== null) {
         $_message = is_object($text) ? $text->evaluate() : escape_html($text);
         if ($_message != '' && $_message != do_lang('_REDIRECTING')) {
             $GLOBALS['SITE_DB']->query_insert('messages_to_render', array(
@@ -75,7 +75,7 @@ function _redirect_screen($title, $url, $text = null, $intermediary_hop = false,
         $url .= $hash_bit;
     }
 
-    if (is_null($text)) {
+    if ($text === null) {
         $text = do_lang_tempcode('_REDIRECTING');
     }
 

@@ -75,6 +75,6 @@ class Hook_implicit_usergroups_under18s
         }
 
         $sql = 'SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE (' . $this->_where() . ') AND id=' . strval($member_id);
-        return !is_null($GLOBALS['FORUM_DB']->query_value_if_there($sql));
+        return ($GLOBALS['FORUM_DB']->query_value_if_there($sql) !== null);
     }
 }

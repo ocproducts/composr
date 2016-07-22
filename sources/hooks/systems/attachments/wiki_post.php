@@ -37,7 +37,7 @@ class Hook_attachments_wiki_post
         }
 
         $cat_id = $GLOBALS['SITE_DB']->query_select_value_if_there('wiki_posts', 'page_id', array('id' => intval($id)));
-        if (is_null($cat_id)) {
+        if ($cat_id === null) {
             return false;
         }
         return (has_category_access(get_member(), 'wiki_page', strval($cat_id)));

@@ -28,7 +28,7 @@
  */
 function cns_may_edit_poll_by($forum_id, $poll_owner, $member_id = null)
 {
-    if (is_null($member_id)) {
+    if ($member_id === null) {
         $member_id = get_member();
     }
 
@@ -55,17 +55,17 @@ function cns_may_edit_poll_by($forum_id, $poll_owner, $member_id = null)
  */
 function cns_may_attach_poll($topic_id, $topic_owner = null, $has_poll_already = null, $forum_id = null, $member_id = null)
 {
-    if (is_null($topic_owner)) {
+    if ($topic_owner === null) {
         $topic_info = $GLOBALS['FORUM_DB']->query_select('f_topics', array('*'), array('id' => $topic_id), '', 1);
         if (!array_key_exists(0, $topic_info)) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }
         $topic_owner = $topic_info[0]['t_cache_first_member_id'];
-        $has_poll_already = !is_null($topic_info[0]['t_poll_id']);
+        $has_poll_already = ($topic_info[0]['t_poll_id'] !== null);
         $forum_id = $topic_info[0]['t_forum_id'];
     }
 
-    if (is_null($member_id)) {
+    if ($member_id === null) {
         $member_id = get_member();
     }
     if ($has_poll_already) {
@@ -92,7 +92,7 @@ function cns_may_attach_poll($topic_id, $topic_owner = null, $has_poll_already =
  */
 function cns_may_delete_poll_by($forum_id, $poll_owner, $member_id = null)
 {
-    if (is_null($member_id)) {
+    if ($member_id === null) {
         $member_id = get_member();
     }
 
@@ -143,7 +143,7 @@ function cns_poll_get_results($poll_id, $request_results = true)
             $voted_already_map = array('pv_poll_id' => $poll_id, 'pv_member_id' => get_member());
         }
         $voted_already = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_poll_votes', 'pv_member_id', $voted_already_map);
-        if (is_null($voted_already)) {
+        if ($voted_already === null) {
             $forfeight = !has_privilege(get_member(), 'view_poll_results_before_voting');
             if ($forfeight) {
                 $GLOBALS['FORUM_DB']->query_insert('f_poll_votes', array(

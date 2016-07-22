@@ -34,7 +34,7 @@ function member_field_is_required($member_id, $field_class, $current_value = nul
         return false;
     }
 
-    if (is_null($editing_member)) {
+    if ($editing_member === null) {
         $editing_member = get_member();
     }
 
@@ -43,8 +43,8 @@ function member_field_is_required($member_id, $field_class, $current_value = nul
     }
 
     // Existing member, allow blank to persist if such a privilege
-    if (!is_null($member_id)) {
-        if (is_null($current_value)) {
+    if ($member_id !== null) {
+        if ($current_value === null) {
             $current_value = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, ($field_class == 'dob') ? ('m_' . $field_class . '_day') : ('m_' . $field_class));
         }
 
@@ -106,44 +106,44 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
     require_code('form_templates');
 
     $preview_posts = take_param_int_modeavg($preview_posts, 'm_preview_posts', 'f_members', 0);
-    if (is_null($auto_monitor_contrib_content)) {
+    if ($auto_monitor_contrib_content === null) {
         $auto_monitor_contrib_content = (get_option('allow_auto_notifications') == '0') ? 0 : 1;
     }
 
-    if (is_null($password_compatibility_scheme)) {
+    if ($password_compatibility_scheme === null) {
         if (get_value('no_password_hashing') === '1' || $password == ''/*Makes debugging easier or allows basic testing to work on PHP installs with broken OpenSSL*/) {
             $password_compatibility_scheme = 'plain';
         } else {
             $password_compatibility_scheme = '';
         }
     }
-    if (is_null($language)) {
+    if ($language === null) {
         $language = '';
     }
-    if (is_null($signature)) {
+    if ($signature === null) {
         $signature = '';
     }
-    if (is_null($title)) {
+    if ($title === null) {
         $title = '';
     }
-    if (is_null($timezone)) {
+    if ($timezone === null) {
         $timezone = get_site_timezone();
     }
     $doing_email_option = (get_option('allow_email_disable') == '1') && (addon_installed('cns_contact_member'));
     if (!$doing_email_option) {
         $allow_emails = 1;
     }
-    if (is_null($allow_emails)) {
+    if ($allow_emails === null) {
         $allow_emails = 1;
     }
     $doing_email_from_staff_option = (get_option('allow_email_from_staff_disable') == '1');
     if (!$doing_email_from_staff_option) {
         $allow_emails_from_staff = 1;
     }
-    if (is_null($allow_emails_from_staff)) {
+    if ($allow_emails_from_staff === null) {
         $allow_emails_from_staff = 1;
     }
-    if (is_null($avatar_url)) {
+    if ($avatar_url === null) {
         if (($GLOBALS['IN_MINIKERNEL_VERSION']) || (!addon_installed('cns_member_avatars'))) {
             $avatar_url = '';
         } else {
@@ -158,7 +158,7 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
                     }
 
                     $count = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', 'SUM(m_cache_num_posts)', array('m_avatar_url' => find_theme_image($code, false, true)));
-                    if (is_null($count)) {
+                    if ($count === null) {
                         $count = 0;
                     }
                     $results[$code] = $count;
@@ -168,10 +168,10 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
                 $avatar_url = find_theme_image(array_shift($found_avatars), true, true);
             }
 
-            if (is_null($avatar_url)) {
+            if ($avatar_url === null) {
                 $GLOBALS['SITE_DB']->query_delete('theme_images', array('id' => 'cns_default_avatars/default', 'path' => '')); // In case failure cached, gets very confusing
                 $avatar_url = find_theme_image('cns_default_avatars/default', true, true);
-                if (is_null($avatar_url)) {
+                if ($avatar_url === null) {
                     $avatar_url = '';
                 }
             }
@@ -192,7 +192,7 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
         if ((get_option('one_per_email_address') == '1') && ($email_address != ''))
         {
             $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', 'id', array('m_email_address' => $email_address));
-            if (!is_null($test)) {
+            if ($test !== null) {
                 warn_exit(do_lang_tempcode('_EMAIL_ADDRESS_IN_USE'));
             }
         }
@@ -200,19 +200,19 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
 
     require_code('cns_members');
     require_code('cns_groups');
-    if (is_null($last_submit_time)) {
+    if ($last_submit_time === null) {
         $last_submit_time = time();
     }
-    if (is_null($join_time)) {
+    if ($join_time === null) {
         $join_time = time();
     }
-    if (is_null($last_visit_time)) {
+    if ($last_visit_time === null) {
         $last_visit_time = time();
     }
-    if (is_null($primary_group)) {
+    if ($primary_group === null) {
         $primary_group = get_first_default_group(); // This is members
     }
-    if (is_null($secondary_groups)) {
+    if ($secondary_groups === null) {
         $secondary_groups = cns_get_all_default_groups(false);
     }
     foreach ($secondary_groups as $_g_id => $g_id) {
@@ -220,7 +220,7 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
             unset($secondary_groups[$_g_id]);
         }
     }
-    if (is_null($ip_address)) {
+    if ($ip_address === null) {
         $ip_address = get_ip_address();
     }
 
@@ -295,7 +295,7 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
     );
     $map += insert_lang_comcode('m_signature', $signature, 4, $GLOBALS['FORUM_DB']);
     $map += insert_lang_comcode('m_pt_rules_text', $pt_rules_text, 4, $GLOBALS['FORUM_DB']);
-    if (!is_null($id)) {
+    if ($id !== null) {
         $map['id'] = $id;
     }
     $member_id = $GLOBALS['FORUM_DB']->query_insert('f_members', $map, true);
@@ -304,7 +304,7 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
         // If it was an invite/recommendation, award the referrer
         if (addon_installed('recommend')) {
             $inviter = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_invites', 'i_inviter', array('i_email_address' => $email_address), 'ORDER BY i_time');
-            if (!is_null($inviter)) {
+            if ($inviter !== null) {
                 if (addon_installed('points')) {
                     require_code('points2');
                     require_lang('recommend');
@@ -500,11 +500,11 @@ function get_cpf_storage_for($type, $encrypted = 0, $_default = null)
             break;
         case 'integer':
             $_type = '?INTEGER';
-            $default = (is_null($_default) || $_default == '') ? null : intval($_default);
+            $default = (($_default === null) || $_default == '') ? null : intval($_default);
             break;
         case 'float':
             $_type = '?REAL';
-            $default = (is_null($_default) || $_default == '') ? null : floatval($_default);
+            $default = (($_default === null) || $_default == '') ? null : floatval($_default);
             break;
         default:
             $default = empty($_default) ? '' : $_default;
@@ -577,15 +577,15 @@ function cns_make_custom_field($name, $locked = 0, $description = '', $default =
 
     if ($no_name_dupe) {
         $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('cf_name') => $name));
-        if (!is_null($test)) {
+        if ($test !== null) {
             pop_db_scope_check();
             return $test;
         }
     }
 
-    if (is_null($order)) {
+    if ($order === null) {
         $order = $GLOBALS['FORUM_DB']->query_select_value('f_custom_fields', 'MAX(cf_order)');
-        if (is_null($order)) {
+        if ($order === null) {
             $order = 0;
         } else {
             $order++;
@@ -610,7 +610,7 @@ function cns_make_custom_field($name, $locked = 0, $description = '', $default =
     $map += insert_lang('cf_name', $name, 2, $GLOBALS['FORUM_DB']);
     $map += insert_lang('cf_description', $description, 2, $GLOBALS['FORUM_DB']);
     $id = $GLOBALS['FORUM_DB']->query_insert('f_custom_fields', $map + array('cf_encrypted' => $encrypted), true, true);
-    if (is_null($id)) {
+    if ($id === null) {
         $id = $GLOBALS['FORUM_DB']->query_insert('f_custom_fields', $map, true); // Still upgrading, cf_encrypted does not exist yet
     }
 

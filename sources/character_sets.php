@@ -481,14 +481,14 @@ function convert_to_internal_encoding($data, $input_charset = null, $internal_ch
 
     convert_data_encodings(); // In case it hasn't run yet. We need $VALID_ENCODING to be set.
 
-    if (is_null($input_charset)) {
+    if ($input_charset === null) {
         $input_charset = $GLOBALS['HTTP_CHARSET'];
     }
-    if (($input_charset === '') || (is_null($input_charset))) {
+    if (($input_charset === '') || ($input_charset === null)) {
         return $data;
     }
 
-    if (is_null($internal_charset)) {
+    if ($internal_charset === null) {
         $internal_charset = get_charset();
     }
 

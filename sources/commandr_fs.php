@@ -78,7 +78,7 @@ class Commandr_fs
             $cma_ob = get_content_object($hook);
             $cma_info = $cma_ob->info();
             $commandr_fs_hook = $cma_info['commandr_filesystem_hook'];
-            if (!is_null($commandr_fs_hook)) {
+            if ($commandr_fs_hook !== null) {
                 unset($commandr_fs_hooks[$commandr_fs_hook]); // It's under 'var', don't put elsewhere
                 $var[$commandr_fs_hook] = $commandr_fs_hook;
             }
@@ -123,7 +123,7 @@ class Commandr_fs
      */
     protected function _get_current_dir_contents($dir = null, $full_paths = false)
     {
-        if (is_null($dir)) {
+        if ($dir === null) {
             $dir = $this->pwd;
         }
 
@@ -161,7 +161,7 @@ class Commandr_fs
         $meta_root_node_type = '';
         $current_dir = $this->_discern_meta_dir($meta_dir, $meta_root_node, $meta_root_node_type, $dir);
 
-        if (!is_null($meta_root_node)) {
+        if ($meta_root_node !== null) {
             // We're underneath a meta root node (a directory which is generated dynamically)
             require_code('hooks/systems/commandr_fs/' . filter_naughty_harsh($meta_root_node_type));
             $object = object_factory('Hook_commandr_fs_' . filter_naughty_harsh($meta_root_node_type));
@@ -210,7 +210,7 @@ class Commandr_fs
         // Merge two array-form pwds, assuming the former is absolute and the latter isn't
         $target_directory = $pwd1;
         foreach ($pwd2 as $section) {
-            if (($section != '.') && ($section != '..') && ($section != '') && (!is_null($section))) {
+            if (($section != '.') && ($section != '..') && ($section != '') && ($section !== null)) {
                 $target_directory[] = $section;
             } elseif ($section == '..') {
                 array_pop($target_directory);
@@ -227,7 +227,7 @@ class Commandr_fs
      */
     public function pwd_to_string($pwd = null)
     {
-        if (is_null($pwd)) {
+        if ($pwd === null) {
             $pwd = $this->pwd;
         }
         $output = '';
@@ -261,7 +261,7 @@ class Commandr_fs
      */
     public function _is_dir($dir = null)
     {
-        if (is_null($dir)) {
+        if ($dir === null) {
             $dir = $this->pwd;
         }
 
@@ -321,7 +321,7 @@ class Commandr_fs
     {
         // Get the details of the current meta dir (re: object creation) and where the pwd is in relation to it
         $inspected_dir = $this->_convert_meta_dir_to_detailed_dir($this->commandr_fs); // Start at the root
-        if (is_null($target_dir)) {
+        if ($target_dir === null) {
             $target_dir = $this->pwd;
         }
         $meta_dir = $target_dir;
@@ -384,10 +384,10 @@ class Commandr_fs
         foreach ($entries as $entry) {
             $out[] = array(
                 'FILENAME' => $entry[0],
-                'FILESIZE' => is_null($entry[2]) ? '' : clean_file_size($entry[2]),
-                '_FILESIZE' => is_null($entry[2]) ? '' : strval($entry[2]),
-                'MTIME' => is_null($entry[3]) ? '' : date('Y-m-d H:i', $entry[3]),
-                '_MTIME' => is_null($entry[3]) ? '' : strval($entry[3]),
+                'FILESIZE' => ($entry[2] === null) ? '' : clean_file_size($entry[2]),
+                '_FILESIZE' => ($entry[2] === null) ? '' : strval($entry[2]),
+                'MTIME' => ($entry[3] === null) ? '' : date('Y-m-d H:i', $entry[3]),
+                '_MTIME' => ($entry[3] === null) ? '' : strval($entry[3]),
             );
         }
         return $out;
@@ -536,7 +536,7 @@ class Commandr_fs
         $meta_root_node_type = '';
         $this->_discern_meta_dir($meta_dir, $meta_root_node, $meta_root_node_type, $directory);
 
-        if (!is_null($meta_root_node)) {
+        if ($meta_root_node !== null) {
             // We're underneath a meta root node (a directory which is generated dynamically)
             require_code('hooks/systems/commandr_fs/' . filter_naughty_harsh($meta_root_node_type));
             $object = object_factory('Hook_commandr_fs_' . filter_naughty_harsh($meta_root_node_type));
@@ -560,7 +560,7 @@ class Commandr_fs
         $meta_root_node_type = '';
         $this->_discern_meta_dir($meta_dir, $meta_root_node, $meta_root_node_type, $directory);
 
-        if (!is_null($meta_root_node)) {
+        if ($meta_root_node !== null) {
             // We're underneath a meta root node (a directory which is generated dynamically)
             require_code('hooks/systems/commandr_fs/' . filter_naughty_harsh($meta_root_node_type));
             $object = object_factory('Hook_commandr_fs_' . filter_naughty_harsh($meta_root_node_type));
@@ -727,7 +727,7 @@ class Commandr_fs
         $meta_root_node_type = '';
         $this->_discern_meta_dir($meta_dir, $meta_root_node, $meta_root_node_type, $to_remove);
 
-        if (!is_null($meta_root_node)) {
+        if ($meta_root_node !== null) {
             // We're underneath a meta root node (a directory which is generated dynamically)
             require_code('hooks/systems/commandr_fs/' . filter_naughty_harsh($meta_root_node_type));
             $object = object_factory('Hook_commandr_fs_' . filter_naughty_harsh($meta_root_node_type));
@@ -751,7 +751,7 @@ class Commandr_fs
         $meta_root_node_type = '';
         $this->_discern_meta_dir($meta_dir, $meta_root_node, $meta_root_node_type, $to_read);
 
-        if (!is_null($meta_root_node)) {
+        if ($meta_root_node !== null) {
             // We're underneath a meta root node (a directory which is generated dynamically)
             require_code('hooks/systems/commandr_fs/' . filter_naughty_harsh($meta_root_node_type));
             $object = object_factory('Hook_commandr_fs_' . filter_naughty_harsh($meta_root_node_type));
@@ -776,7 +776,7 @@ class Commandr_fs
         $meta_root_node_type = '';
         $this->_discern_meta_dir($meta_dir, $meta_root_node, $meta_root_node_type, $to_write);
 
-        if (!is_null($meta_root_node)) {
+        if ($meta_root_node !== null) {
             // We're underneath a meta root node (a directory which is generated dynamically)
             require_code('hooks/systems/commandr_fs/' . filter_naughty_harsh($meta_root_node_type));
             $object = object_factory('Hook_commandr_fs_' . filter_naughty_harsh($meta_root_node_type));
@@ -801,7 +801,7 @@ class Commandr_fs
         $meta_root_node_type = '';
         $this->_discern_meta_dir($meta_dir, $meta_root_node, $meta_root_node_type, $to_append);
 
-        if (!is_null($meta_root_node)) {
+        if ($meta_root_node !== null) {
             // We're underneath a meta root node (a directory which is generated dynamically)
             require_code('hooks/systems/commandr_fs/' . filter_naughty_harsh($meta_root_node_type));
             $object = object_factory('Hook_commandr_fs_' . filter_naughty_harsh($meta_root_node_type));

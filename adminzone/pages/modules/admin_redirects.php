@@ -57,7 +57,7 @@ class Module_admin_redirects
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->create_table('redirects', array(
                 'r_from_page' => '*ID_TEXT',
                 'r_from_zone' => '*ID_TEXT',
@@ -70,7 +70,7 @@ class Module_admin_redirects
             $GLOBALS['SITE_DB']->query_insert('redirects', array('r_from_page' => 'rules', 'r_from_zone' => 'forum', 'r_to_page' => 'rules', 'r_to_zone' => '', 'r_is_transparent' => 1));
         }
 
-        if ((is_null($upgrade_from)) || ($upgrade_from < 3)) {
+        if (($upgrade_from === null) || ($upgrade_from < 3)) {
             $zones = find_all_zones();
             if (!in_array('site', $zones)) {
                 $zones[] = 'site';
@@ -86,7 +86,7 @@ class Module_admin_redirects
             }
         }
 
-        if ((is_null($upgrade_from)) || ($upgrade_from < 4)) {
+        if (($upgrade_from === null) || ($upgrade_from < 4)) {
             $zones = find_all_zones();
             if (!in_array('site', $zones)) {
                 $zones[] = 'site';
@@ -220,7 +220,7 @@ class Module_admin_redirects
         list($warning_details, $ping_url) = handle_conflict_resolution();
 
         $notes = get_value('notes', null, true);
-        if (is_null($notes)) {
+        if ($notes === null) {
             $notes = '';
         }
 
@@ -288,7 +288,7 @@ class Module_admin_redirects
         log_it('SET_REDIRECTS');
 
         // Personal notes
-        if (!is_null(post_param_string('notes', null))) {
+        if (post_param_string('notes', null) !== null) {
             $notes = post_param_string('notes');
             set_value('notes', $notes, true);
         }

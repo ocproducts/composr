@@ -63,7 +63,7 @@ class Module_shopping
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->create_table('shopping_cart', array(
                 'id' => '*AUTO',
                 'session_id' => 'ID_TEXT',
@@ -145,7 +145,7 @@ class Module_shopping
             $GLOBALS['SITE_DB']->create_index('shopping_order_addresses', 'order_id', array('order_id'));
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 7)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 7)) {
             $GLOBALS['SITE_DB']->add_table_field('shopping_order_addresses', 'contact_phone', 'SHORT_TEXT');
             $GLOBALS['SITE_DB']->add_table_field('shopping_order_addresses', 'address_state', 'SHORT_TEXT');
             $GLOBALS['SITE_DB']->add_table_field('shopping_order_addresses', 'first_name', 'SHORT_TEXT');
@@ -494,7 +494,7 @@ class Module_shopping
                 if (method_exists($object, 'get_available_quantity')) {
                     $available_qty = $object->get_available_quantity($pid);
 
-                    if ((!is_null($available_qty)) && ($available_qty <= $qty)) {
+                    if (($available_qty !== null) && ($available_qty <= $qty)) {
                         $qty = $available_qty;
 
                         attach_message(do_lang_tempcode('PRODUCT_QUANTITY_CHANGED', strval($pid)), 'warn');
@@ -551,7 +551,7 @@ class Module_shopping
      */
     public function wrap($content, $title, $url, $get = false)
     {
-        if (is_null($url)) {
+        if ($url === null) {
             $url = '';
         }
         require_javascript('checking');
@@ -607,9 +607,9 @@ class Module_shopping
 
                 list($success, , $message, $message_raw) = $object->do_transaction($trans_id, $name, $card_number, $amount, $currency, $expiry_date, $issue_number, $start_date, $card_type, $cv2, $length, $length_units);
 
-                if (($success) || (!is_null($length))) {
-                    $status = ((!is_null($length)) && (!$success)) ? 'SCancelled' : 'Completed';
-                    handle_confirmed_transaction($transaction_row['e_purchase_id'], $transaction_row['e_item_name'], $status, $message_raw, '', '', $amount, get_option('currency'), $trans_id, '', is_null($length) ? '' : strtolower(strval($length) . ' ' . $length_units), $via);
+                if (($success) || ($length !== null)) {
+                    $status = (($length !== null) && (!$success)) ? 'SCancelled' : 'Completed';
+                    handle_confirmed_transaction($transaction_row['e_purchase_id'], $transaction_row['e_item_name'], $status, $message_raw, '', '', $amount, get_option('currency'), $trans_id, '', ($length === null) ? '' : strtolower(strval($length) . ' ' . $length_units), $via);
                 }
 
                 if ($success) {
@@ -637,7 +637,7 @@ class Module_shopping
 
         delete_pending_orders_for_current_user(); // Don't lock the stock unless they go back to the cart again
 
-        if (!is_null($message)) {
+        if ($message !== null) {
             return $this->wrap(do_template('PURCHASE_WIZARD_STAGE_FINISH', array('_GUID' => '6eafce1925e5069ceb438ec24754b47d', 'TITLE' => $this->title, 'MESSAGE' => $message)), $this->title, null);
         }
 

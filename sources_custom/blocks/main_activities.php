@@ -55,7 +55,7 @@ class Block_main_activities
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->create_table('activities', array(
                 'id' => '*AUTO',
                 'a_member_id' => '*MEMBER',
@@ -83,7 +83,7 @@ class Block_main_activities
             add_privilege('SUBMISSION', 'syndicate_site_activity', false);
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 2)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 2)) {
             $GLOBALS['SITE_DB']->alter_table_field('activities', 'a_pagelink_1', 'SHORT_TEXT', 'a_page_link_1');
             $GLOBALS['SITE_DB']->alter_table_field('activities', 'a_pagelink_2', 'SHORT_TEXT', 'a_page_link_2');
             $GLOBALS['SITE_DB']->alter_table_field('activities', 'a_pagelink_3', 'SHORT_TEXT', 'a_page_link_3');
@@ -164,7 +164,7 @@ class Block_main_activities
                 list($message, $member_avatar, $timestamp, $member_url, $lang_string, $is_public) = render_activity($row);
 
                 $username = $GLOBALS['FORUM_DRIVER']->get_username($row['a_member_id']);
-                if (is_null($username)) {
+                if ($username === null) {
                     $username = do_lang('UNKNOWN');
                 }
 

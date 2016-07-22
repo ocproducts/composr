@@ -98,7 +98,7 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
     public function folder_add($filename, $path, $properties)
     {
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
-        if (is_null($category)) {
+        if ($category === null) {
             $category = strval(db_get_first_id());
         }/*return false;*/ // Can't create more than one root
 
@@ -107,7 +107,7 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
         require_code('downloads2');
 
         $parent_id = $this->_integer_category($category);
-        if (is_null($parent_id)) {
+        if ($parent_id === null) {
             $parent_id = db_get_first_id();
         }
         $description = $this->_default_property_str($properties, 'description');
@@ -229,7 +229,7 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
         list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
-        if (is_null($category)) {
+        if ($category === null) {
             return false; // Folder not found
         }
 
@@ -242,7 +242,7 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
         $additional_details = $this->_default_property_str($properties, 'additional_details');
         $out_mode_id = $this->_default_property_int_null($properties, 'out_mode_id');
         $validated = $this->_default_property_int_null($properties, 'validated');
-        if (is_null($validated)) {
+        if ($validated === null) {
             $validated = 1;
         }
         $allow_rating = $this->_default_property_int_modeavg($properties, 'allow_rating', 'download_downloads', 1);
@@ -340,7 +340,7 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
         list($properties,) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
-        if (is_null($category)) {
+        if ($category === null) {
             return false; // Folder not found
         }
 
@@ -354,7 +354,7 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
         $additional_details = $this->_default_property_str($properties, 'additional_details');
         $out_mode_id = $this->_default_property_int_null($properties, 'out_mode_id');
         $validated = $this->_default_property_int_null($properties, 'validated');
-        if (is_null($validated)) {
+        if ($validated === null) {
             $validated = 1;
         }
         $allow_rating = $this->_default_property_int_modeavg($properties, 'allow_rating', 'download_downloads', 1);

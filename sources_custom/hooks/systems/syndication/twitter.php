@@ -36,7 +36,7 @@ class Hook_syndication_twitter
     public function auth_is_set($member_id)
     {
         $save_to = 'twitter_oauth_token';
-        if (!is_null($member_id)) {
+        if ($member_id !== null) {
             $save_to .= '__' . strval($member_id);
         }
         return get_value($save_to, null, true) !== null;
@@ -66,12 +66,12 @@ class Hook_syndication_twitter
         }
 
         $save_to = 'twitter_oauth_token';
-        if (!is_null($member_id)) {
+        if ($member_id !== null) {
             $save_to .= '__' . strval($member_id);
         }
         set_value($save_to, $response['oauth_token'], true);
         $save_to = 'twitter_oauth_token_secret';
-        if (!is_null($member_id)) {
+        if ($member_id !== null) {
             $save_to .= '__' . strval($member_id);
         }
         set_value($save_to, $response['oauth_token_secret'], true);
@@ -82,12 +82,12 @@ class Hook_syndication_twitter
     public function auth_unset($member_id)
     {
         $save_to = 'twitter_oauth_token';
-        if (!is_null($member_id)) {
+        if ($member_id !== null) {
             $save_to .= '__' . strval($member_id);
         }
         set_value($save_to, null, true);
         $save_to = 'twitter_oauth_token_secret';
-        if (!is_null($member_id)) {
+        if ($member_id !== null) {
             $save_to .= '__' . strval($member_id);
         }
         set_value($save_to, null, true);

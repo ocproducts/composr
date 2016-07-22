@@ -611,7 +611,7 @@ function comcode_helper_script_step2()
     if (!_try_for_special_comcode_tag_specific_contents_ui($tag, $actual_tag, $fields, $fields_advanced, $hidden, $default_embed, $javascript, $preview)) {
         if (!$done_tag_contents) {
             $descriptiont = do_lang('COMCODE_TAG_' . $tag . '_EMBED', null, null, null, null, false);
-            if (is_null($descriptiont)) {
+            if ($descriptiont === null) {
                 $descriptiont = '';
             }
 
@@ -626,7 +626,7 @@ function comcode_helper_script_step2()
             }
 
             $field_title = do_lang('COMCODE_TAG_' . $tag . '_EMBED_TITLE', null, null, null, null, false);
-            if (is_null($field_title)) {
+            if ($field_title === null) {
                 $field_title = do_lang('TAG_CONTENTS');
             }
             if ($GLOBALS['XSS_DETECT']) {
@@ -945,7 +945,7 @@ function _try_for_special_comcode_tag_specific_param_ui($tag, $actual_tag, $para
 function _get_comcode_tag_param_name($actual_tag, $param)
 {
     $parameter_name = do_lang('COMCODE_TAG_' . $actual_tag . '_PARAM_' . $param . '_TITLE', null, null, null, null, false);
-    if (is_null($parameter_name)) {
+    if ($parameter_name === null) {
         $parameter_name = titleify($param);
     }
     return $parameter_name;
@@ -1033,7 +1033,7 @@ page=URL
 page=URL';
         }
         $descriptiont = do_lang('COMCODE_TAG_' . $tag . '_EMBED', null, null, null, null, false);
-        if (is_null($descriptiont)) {
+        if ($descriptiont === null) {
             $descriptiont = '';
         }
         $descriptiont = trim(str_replace(do_lang('BLOCK_IND_SUPPORTS_COMCODE'), '', $descriptiont));

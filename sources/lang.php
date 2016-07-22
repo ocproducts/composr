@@ -391,7 +391,7 @@ function get_lang_member($member)
 
     // In forum?
     $lang = $GLOBALS['FORUM_DRIVER']->forum_get_lang($member);
-    if ((!is_null($lang)) && ($lang != '')) {
+    if (($lang !== null) && ($lang != '')) {
         $_lang = strtoupper($lang);
         if (!does_lang_exist($_lang)) {
             require_code('files');
@@ -411,7 +411,7 @@ function get_lang_member($member)
                 }
             }
         }
-        if (!is_null($_lang)) {
+        if ($_lang !== null) {
             return $_lang;
         }
     }
@@ -601,7 +601,7 @@ function require_all_lang($lang = null, $only_if_for_lang = false)
 {
     $support_smart_decaching = support_smart_decaching();
 
-    if (is_null($lang)) {
+    if ($lang === null) {
         global $REQUIRED_ALL_LANG;
         if (array_key_exists($lang, $REQUIRED_ALL_LANG)) {
             if ($support_smart_decaching) {
@@ -612,7 +612,7 @@ function require_all_lang($lang = null, $only_if_for_lang = false)
         $REQUIRED_ALL_LANG[$lang] = true;
     }
 
-    if (is_null($lang)) {
+    if ($lang === null) {
         $lang = user_lang();
     }
 
@@ -978,7 +978,7 @@ function create_selection_list_langs($select_lang = null, $show_unset = false)
  */
 function insert_lang_comcode($field_name, $text, $level, $db = null, $insert_as_admin = false, $pass_id = null, $preparse_mode = true, $save_as_volatile = false)
 {
-    if (is_null($db)) {
+    if ($db === null) {
         $db = $GLOBALS['SITE_DB'];
     }
 
@@ -1057,7 +1057,7 @@ function delete_lang($id, $db = null)
         return;
     }
 
-    if (is_null($db)) {
+    if ($db === null) {
         $db = $GLOBALS['SITE_DB'];
     }
     $db->query_delete('translate', array('id' => $id));
@@ -1083,7 +1083,7 @@ function get_translated_tempcode__and_simplify($table, $row, $field_name, $db = 
         $db = $GLOBALS['SITE_DB'];
     }
     $ret = get_translated_tempcode($table, $row, $field_name, $db, $lang, $force, $as_admin, $clear_away_from_cache);
-    if (is_null($ret)) {
+    if ($ret === null) {
         return $ret;
     }
     $ret = make_string_tempcode($ret->evaluate());

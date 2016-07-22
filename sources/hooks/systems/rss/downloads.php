@@ -59,12 +59,12 @@ class Hook_rss_downloads
         foreach ($rows as $row) {
             $id = strval($row['id']);
             $author = $GLOBALS['FORUM_DRIVER']->get_username($row['submitter']);
-            if (is_null($author)) {
+            if ($author === null) {
                 $author = '';
             }
 
             $news_date = date($date_string, $row['add_date']);
-            $edit_date = is_null($row['edit_date']) ? '' : date($date_string, $row['edit_date']);
+            $edit_date = ($row['edit_date'] === null) ? '' : date($date_string, $row['edit_date']);
 
             $news_title = xmlentities(escape_html(get_translated_text($row['name'])));
             $_summary = get_translated_tempcode('download_downloads', $row, 'description');
@@ -73,7 +73,7 @@ class Hook_rss_downloads
 
             if (!array_key_exists($row['category_id'], $categories)) {
                 $c = $GLOBALS['SITE_DB']->query_select_value_if_there('download_categories', 'category', array('id' => $row['category_id']));
-                if (is_null($c)) {
+                if ($c === null) {
                     continue; // Slight corruption
                 }
                 $categories[$row['category_id']] = get_translated_text($c);

@@ -53,7 +53,7 @@ header('Content-type: text/plain; charset=' . get_charset());
 safe_ini_set('ocproducts.xss_detect', '0');
 
 $lstring = get_param_string('lstring', null);
-if (!is_null($lstring)) {
+if ($lstring !== null) {
 
     $url = 'http://maps.googleapis.com/maps/api/geocode/xml?address=' . urlencode($lstring);
     if (isset($_COOKIE['google_bias'])) {
@@ -118,22 +118,22 @@ if (!is_null($lstring)) {
         }
     } else {
         $bits = find_nearest_location(floatval(get_param_string('latitude')), floatval(get_param_string('longitude')), get_param_integer('latitude_search_field', null), get_param_integer('longitude_search_field', null));
-        if (!is_null($bits)) {
+        if ($bits !== null) {
             // Give out different IDs, depending on what the search fields were in.
 
             $with_contents = (get_param_integer('with_contents', 0) == 1);
-            if (($with_contents) && (isset($bits['id'])) && (!is_null(get_param_integer('latitude_search_field', null))) && (!is_null(get_param_integer('longitude_search_field', null)))) {
+            if (($with_contents) && (isset($bits['id'])) && (get_param_integer('latitude_search_field', null) !== null) && (get_param_integer('longitude_search_field', null) !== null)) {
                 $backup = $bits['id'];
                 do { // Ensure we have some entries under the idealised location
                     $num_entries = $GLOBALS['SITE_DB']->query_select_value('catalogue_childcountcache', 'c_num_rec_entries', array('cc_id' => $bits['id']));
                     if ($num_entries == 0) {
                         $bits['id'] = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'cc_parent_id', array('id' => $bits['id']));
-                        if (is_null($bits['id'])) {
+                        if ($bits['id'] === null) {
                             break;
                         }
                     }
                 } while ($num_entries == 0);
-                if (is_null($bits['id'])) {
+                if ($bits['id'] === null) {
                     $bits['id'] = $backup; // Could find nothing, so revert to being specific
                 }
             }
@@ -155,10 +155,10 @@ if (!is_null($lstring)) {
                 echo '\'';
                 $parent_id = $bits['id'];
                 do {
-                    if (!is_null($parent_id)) {
+                    if ($parent_id !== null) {
                         $row = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('cc_parent_id', 'cc_title'), array('id' => $parent_id), '', 1);
                         $parent_id = $row[0]['cc_parent_id'];
-                        if (!is_null($parent_id)) { // Top level skipped also
+                        if ($parent_id !== null) { // Top level skipped also
                             if ($done_one) {
                                 echo ', ';
                             }
@@ -166,7 +166,7 @@ if (!is_null($lstring)) {
                             $done_one = true;
                         }
                     }
-                } while (!is_null($parent_id));
+                } while ($parent_id !== null);
                 echo '\'';
             } elseif (isset($bits['l_place'])) {
                 echo '\'';

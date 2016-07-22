@@ -199,11 +199,11 @@ class Module_admin_cns_forums extends Standard_crud_module
      */
     public function get_form_fields($id = null, $name = '', $description = '', $forum_grouping_id = null, $parent_forum = null, $position = null, $post_count_increment = 1, $order_sub_alpha = 0, $intro_question = '', $intro_answer = '', $redirection = '', $order = 'last_post', $is_threaded = 0, $allows_anonymous_posts = 1)
     {
-        if (is_null($forum_grouping_id)) {
+        if ($forum_grouping_id === null) {
             $forum_grouping_id = get_param_integer('forum_grouping_id', db_get_first_id());
         }
 
-        if (is_null($parent_forum)) {
+        if ($parent_forum === null) {
             $parent_forum = get_param_integer('parent_forum', null);
         }
 
@@ -214,8 +214,8 @@ class Module_admin_cns_forums extends Standard_crud_module
         $fields->attach(form_input_line_comcode(do_lang_tempcode('DESCRIPTION'), do_lang_tempcode('DESCRIPTION_DESCRIPTION'), 'description', $description, false));
         $list = cns_create_selection_list_forum_groupings(null, $forum_grouping_id);
         $fields->attach(form_input_list(do_lang_tempcode('FORUM_GROUPING'), do_lang_tempcode('DESCRIPTION_FORUM_GROUPING'), 'forum_grouping_id', $list));
-        if ((is_null($id)) || ((!is_null($id)) && ($id != db_get_first_id()))) {
-            $fields->attach(form_input_tree_list(do_lang_tempcode('PARENT'), do_lang_tempcode('DESCRIPTION_PARENT_FORUM'), 'parent_forum', null, 'choose_forum', array(), true, is_null($parent_forum) ? '' : strval($parent_forum)));
+        if (($id === null) || (($id !== null) && ($id != db_get_first_id()))) {
+            $fields->attach(form_input_tree_list(do_lang_tempcode('PARENT'), do_lang_tempcode('DESCRIPTION_PARENT_FORUM'), 'parent_forum', null, 'choose_forum', array(), true, ($parent_forum === null) ? '' : strval($parent_forum)));
         }
 
         $fields->attach(get_order_field('forum', null, $position, null, null, 'position', do_lang_tempcode('DESCRIPTION_FORUM_ORDER')));
@@ -234,14 +234,14 @@ class Module_admin_cns_forums extends Standard_crud_module
         $fields->attach(form_input_tick(do_lang_tempcode('IS_THREADED'), do_lang_tempcode('DESCRIPTION_IS_THREADED'), 'is_threaded', $is_threaded == 1));
         $fields->attach(form_input_tick(do_lang_tempcode('ALLOWS_ANONYMOUS_POSTS'), do_lang_tempcode('DESCRIPTION_ALLOWS_ANONYMOUS_POSTS'), 'allows_anonymous_posts', $allows_anonymous_posts == 1));
     
-        $fields->attach(metadata_get_fields('forum', is_null($id) ? null : strval($id)));
+        $fields->attach(metadata_get_fields('forum', ($id === null) ? null : strval($id)));
 
         if (addon_installed('content_reviews')) {
-            $fields->attach(content_review_get_fields('forum', is_null($id) ? null : strval($id)));
+            $fields->attach(content_review_get_fields('forum', ($id === null) ? null : strval($id)));
         }
 
         // Permissions
-        $fields->attach($this->get_permission_fields(is_null($id) ? null : strval($id), null, is_null($id)));
+        $fields->attach($this->get_permission_fields(($id === null) ? null : strval($id), null, ($id === null)));
 
         return array($fields, $hidden);
     }
@@ -274,13 +274,13 @@ class Module_admin_cns_forums extends Standard_crud_module
             }
         }
 
-        if (is_null($order_sub_alpha)) {
+        if ($order_sub_alpha === null) {
             $parent_order_sub_alpha = 0;
             $order_sub_alpha = $GLOBALS['FORUM_DB']->query_select_value('f_forums', 'f_order_sub_alpha', array('id' => $id));
         }
 
         global $C_TITLE;
-        if (is_null($C_TITLE)) {
+        if ($C_TITLE === null) {
             $C_TITLE = collapse_2d_complexity('id', 'c_title', $GLOBALS['FORUM_DB']->query_select('f_forum_groupings', array('id', 'c_title')));
         }
 
@@ -309,7 +309,7 @@ class Module_admin_cns_forums extends Standard_crud_module
         $orderings = '';
         while (count($subforums) != 0) {
             $i = null;
-            if (!is_null($forum_grouping_id)) {
+            if ($forum_grouping_id !== null) {
                 foreach ($subforums as $j => $subforum) {
                     if ($subforum['f_forum_grouping_id'] == $forum_grouping_id) {
                         $i = $j;
@@ -318,8 +318,8 @@ class Module_admin_cns_forums extends Standard_crud_module
                 }
             }
 
-            if (is_null($i)) {
-                if (!is_null($forums)) {
+            if ($i === null) {
+                if ($forums !== null) {
                     $forum_groupings->attach(do_template('CNS_EDIT_FORUM_SCREEN_GROUPING', array('_GUID' => '889173769e237b917b7e06eda0fb4350', 'ORDERINGS' => $orderings, 'GROUPING' => $C_TITLE[$forum_grouping_id], 'SUBFORUMS' => $forums)));
                     $forum_grouping_position++;
                 }
@@ -354,7 +354,7 @@ class Module_admin_cns_forums extends Standard_crud_module
             $position_in_cat++;
             unset($subforums[$i]);
         }
-        if (!is_null($forum_grouping_id)) {
+        if ($forum_grouping_id !== null) {
             $forum_groupings->attach(do_template('CNS_EDIT_FORUM_SCREEN_GROUPING', array('_GUID' => '6cb30ec5189f75a9631b2bb430c89fd0', 'ORDERINGS' => $orderings, 'GROUPING' => $C_TITLE[$forum_grouping_id], 'SUBFORUMS' => $forums)));
         }
 
@@ -413,7 +413,7 @@ class Module_admin_cns_forums extends Standard_crud_module
         $all = $GLOBALS['FORUM_DB']->query_select('f_forums', array('id', 'f_parent_forum', 'f_forum_grouping_id'));
         $ordering = array();
         foreach ($all as $forum) {
-            $cat_order = post_param_integer('forum_grouping_order_' . (is_null($forum['f_parent_forum']) ? '' : strval($forum['f_parent_forum'])) . '_' . (is_null($forum['f_forum_grouping_id']) ? '' : strval($forum['f_forum_grouping_id'])), null);
+            $cat_order = post_param_integer('forum_grouping_order_' . (($forum['f_parent_forum'] === null) ? '' : strval($forum['f_parent_forum'])) . '_' . (($forum['f_forum_grouping_id'] === null) ? '' : strval($forum['f_forum_grouping_id'])), null);
             $order = post_param_integer('order_' . strval($forum['id']), null);
             if (($cat_order !== null) && ($order !== null)) { // Should only be null if since created
                 if (!array_key_exists($forum['f_parent_forum'], $ordering)) {
@@ -477,7 +477,7 @@ class Module_admin_cns_forums extends Standard_crud_module
 
                 $option = $ob->get_details();
                 if ($option['type'] == 'forum') {
-                    if ((is_null($GLOBALS['CURRENT_SHARE_USER'])) || ($option['shared_hosting_restricted'] == 0)) {
+                    if (($GLOBALS['CURRENT_SHARE_USER'] === null) || ($option['shared_hosting_restricted'] == 0)) {
                         require_code('config2');
                         require_all_lang();
                         $edit_url = config_option_url($hook);
@@ -505,7 +505,7 @@ class Module_admin_cns_forums extends Standard_crud_module
     public function fill_in_edit_form($id)
     {
         $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('group_privileges p JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_groups g ON g.id=group_id', 'g.id', array('module_the_name' => 'forums', 'category_name' => $id, 'the_value' => '1', 'g_is_private_club' => 1));
-        if (!is_null($test)) {
+        if ($test !== null) {
             attach_message(do_lang_tempcode('THIS_CLUB_FORUM'), 'notice');
         }
 

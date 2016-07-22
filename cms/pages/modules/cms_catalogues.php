@@ -268,7 +268,7 @@ class Module_cms_catalogues extends Standard_crud_module
             $cat_title = $cat_rows[0]['c_title'];
         }
 
-        if ((!is_null($catalogue_name)) && ($catalogue_name != '')) {
+        if (($catalogue_name !== null) && ($catalogue_name != '')) {
             $cat_count = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'COUNT(*)', array('c_name' => $catalogue_name));
             $has_categories = ($cat_count != 0);
         } else {
@@ -337,7 +337,7 @@ class Module_cms_catalogues extends Standard_crud_module
 
         require_code('form_templates');
         $only_owned = has_privilege(get_member(), 'edit_midrange_content', 'cms_catalogues') ? null : get_member();
-        list($rows, $max_rows) = $this->get_entry_rows(false, ($current_ordering == 'title ASC' || $current_ordering == 'title DESC') ? 'ce_add_date ASC' : $current_ordering, is_null($only_owned) ? array('c_name' => get_param_string('catalogue_name')) : array('c_name' => get_param_string('catalogue_name'), 'ce_submitter' => $only_owned));
+        list($rows, $max_rows) = $this->get_entry_rows(false, ($current_ordering == 'title ASC' || $current_ordering == 'title DESC') ? 'ce_add_date ASC' : $current_ordering, ($only_owned === null) ? array('c_name' => get_param_string('catalogue_name')) : array('c_name' => get_param_string('catalogue_name'), 'ce_submitter' => $only_owned));
         $_fields = array();
         $cat_titles = array();
         foreach ($rows as $row) {
@@ -356,7 +356,7 @@ class Module_cms_catalogues extends Standard_crud_module
                 $cc_title = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_categories', 'cc_title', array('id' => $row['cc_id']));
                 $cat_titles[$row['cc_id']] = $cc_title;
             }
-            if (!is_null($cc_title)) {
+            if ($cc_title !== null) {
                 $fr[] = protect_from_escaping(hyperlink(build_url(array('page' => 'catalogues', 'type' => 'category', 'id' => $row['cc_id']), get_module_zone('catalogues')), get_translated_text($cc_title), false, true));
             } else {
                 $fr[] = do_lang('UNKNOWN');
@@ -431,7 +431,7 @@ class Module_cms_catalogues extends Standard_crud_module
     {
         list($allow_rating, $allow_comments, $allow_trackbacks) = $this->choose_feedback_fields_statistically($allow_rating, $allow_comments, $allow_trackbacks);
 
-        if (is_null($catalogue_name)) {
+        if ($catalogue_name === null) {
             $catalogue_name = get_param_string('catalogue_name');
         }
 
@@ -444,7 +444,7 @@ class Module_cms_catalogues extends Standard_crud_module
 
         $hidden = form_input_hidden('catalogue_name', $catalogue_name);
 
-        if ((is_null($id)) && (is_null($category_id))) {
+        if (($id === null) && ($category_id === null)) {
             $category_id = get_param_integer('category_id', null);
         }
 
@@ -455,26 +455,26 @@ class Module_cms_catalogues extends Standard_crud_module
         // ===============
 
         // Category
-        if ((is_null($id)) && (is_null($category_id)) && (get_value('no_confirm_url_spec_cats') !== '1')) {
+        if (($id === null) && ($category_id === null) && (get_value('no_confirm_url_spec_cats') !== '1')) {
             $category_id = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_categories', 'MIN(id)', array('c_name' => $catalogue_name, 'cc_parent_id' => null));
-            if (is_null($category_id)) {
+            if ($category_id === null) {
                 $category_id = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_categories', 'MIN(id)', array('c_name' => $catalogue_name));
             }
         }
-        if ((!is_null($category_id)) && ((is_null($id)) && (get_value('no_confirm_url_spec_cats') === '1') || (get_value('no_spec_cat__' . $catalogue_name) === '1'))) { // Adding, but defined category ID in URL, and set option saying not to ask for passed categories
+        if (($category_id !== null) && (($id === null) && (get_value('no_confirm_url_spec_cats') === '1') || (get_value('no_spec_cat__' . $catalogue_name) === '1'))) { // Adding, but defined category ID in URL, and set option saying not to ask for passed categories
             $hidden->attach(form_input_hidden('category_id', strval($category_id)));
         } else {
-            if ((is_null($id)) && (is_null($category_id))) {
+            if (($id === null) && ($category_id === null)) {
                 $category_id = get_param_integer('category_id_suggest', null); // Less forceful than 'category_id', as may be changed even with 'no_confirm_url_spec_cats' on
             }
 
-            $fields->attach(form_input_tree_list(do_lang_tempcode('CATEGORY'), do_lang_tempcode('DESCRIPTION_CATEGORY_TREE', 'catalogue_category'), 'category_id', null, 'choose_catalogue_category', array('catalogue_name' => $catalogue_name, 'addable_filter' => true), true, is_null($category_id) ? '' : strval($category_id)));
+            $fields->attach(form_input_tree_list(do_lang_tempcode('CATEGORY'), do_lang_tempcode('DESCRIPTION_CATEGORY_TREE', 'catalogue_category'), 'category_id', null, 'choose_catalogue_category', array('catalogue_name' => $catalogue_name, 'addable_filter' => true), true, ($category_id === null) ? '' : strval($category_id)));
         }
 
         // Special fields
         // ==============
 
-        if (!is_null($id)) {
+        if ($id !== null) {
             $special_fields = get_catalogue_entry_field_values($catalogue_name, $id);
         } else {
             $special_fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name), 'ORDER BY cf_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cf_name'));
@@ -483,7 +483,7 @@ class Module_cms_catalogues extends Standard_crud_module
         $field_groups = array();
 
         $field_defaults = array( // We load up these into a map to allow custom add/edit form templating
-                                 'CATEGORY_ID' => is_null($category_id) ? '' : strval($category_id),
+                                 'CATEGORY_ID' => ($category_id === null) ? '' : strval($category_id),
                                  'VALIDATED' => strval($validated),
                                  'NOTES' => $notes,
                                  'ALLOW_RATING' => strval($allow_rating),
@@ -513,11 +513,11 @@ class Module_cms_catalogues extends Standard_crud_module
             $_cf_description = escape_html(get_translated_text($field['cf_description']));
 
             $GLOBALS['NO_DEV_MODE_FULLSTOP_CHECK'] = true;
-            $result = $ob->get_field_inputter($_cf_name, $_cf_description, $field, $default, is_null($id), !array_key_exists($field_num + 1, $special_fields));
+            $result = $ob->get_field_inputter($_cf_name, $_cf_description, $field, $default, ($id === null), !array_key_exists($field_num + 1, $special_fields));
 
             $GLOBALS['NO_DEV_MODE_FULLSTOP_CHECK'] = false;
 
-            if (is_null($result)) {
+            if ($result === null) {
                 continue;
             }
 
@@ -572,20 +572,20 @@ class Module_cms_catalogues extends Standard_crud_module
 
         // Metadata
         require_code('seo2');
-        $seo_fields = seo_get_fields($this->seo_type, is_null($id) ? null : strval($id), false);
+        $seo_fields = seo_get_fields($this->seo_type, ($id === null) ? null : strval($id), false);
         require_code('feedback2');
         $feedback_fields = feedback_fields($this->content_type, $allow_rating == 1, $allow_comments == 1, $allow_trackbacks == 1, false, $notes, $allow_comments == 2, false, true, false);
-        $fields->attach(metadata_get_fields('catalogue_entry', is_null($id) ? null : strval($id), false, null, ($seo_fields->is_empty() && $feedback_fields->is_empty()) ? METADATA_HEADER_YES : METADATA_HEADER_FORCE));
+        $fields->attach(metadata_get_fields('catalogue_entry', ($id === null) ? null : strval($id), false, null, ($seo_fields->is_empty() && $feedback_fields->is_empty()) ? METADATA_HEADER_YES : METADATA_HEADER_FORCE));
         $fields->attach($seo_fields);
         $fields->attach($feedback_fields);
 
         if (addon_installed('content_reviews')) {
-            $fields->attach(content_review_get_fields('catalogue_entry', is_null($id) ? null : strval($id)));
+            $fields->attach(content_review_get_fields('catalogue_entry', ($id === null) ? null : strval($id)));
         }
 
         if (addon_installed('content_privacy')) {
             require_code('content_privacy2');
-            if (is_null($id)) {
+            if ($id === null) {
                 $fields->attach(get_privacy_form_fields('catalogue_entry'));
             } else {
                 $fields->attach(get_privacy_form_fields('catalogue_entry', strval($id)));
@@ -593,10 +593,10 @@ class Module_cms_catalogues extends Standard_crud_module
         }
 
         $fields2 = new Tempcode();
-        if ((!is_null($id)) && (is_ecommerce_catalogue($catalogue_name)) && (!$this->may_delete_this(strval($id)))) {
+        if (($id !== null) && (is_ecommerce_catalogue($catalogue_name)) && (!$this->may_delete_this(strval($id)))) {
             $_submitter = $this->get_submitter($id);
             $submitter = $_submitter[0];
-            $delete_permission = has_delete_permission($this->permissions_require, get_member(), $submitter, is_null($this->privilege_page_name) ? get_page_name() : $this->privilege_page_name, array($this->permissions_cat_require, is_null($this->permissions_cat_name) ? null : $this->get_cat(strval($id)), $this->permissions_cat_require_b, is_null($this->permissions_cat_name_b) ? null : $this->get_cat_b(strval($id))));
+            $delete_permission = has_delete_permission($this->permissions_require, get_member(), $submitter, ($this->privilege_page_name === null) ? get_page_name() : $this->privilege_page_name, array($this->permissions_cat_require, ($this->permissions_cat_name === null) ? null : $this->get_cat(strval($id)), $this->permissions_cat_require_b, ($this->permissions_cat_name_b === null) ? null : $this->get_cat_b(strval($id))));
             if ($delete_permission) {
                 $fields2->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'f38200840366846dd7d9ed769f673657', 'TITLE' => do_lang_tempcode('ACTIONS'), 'SECTION_HIDDEN' => true)));
                 $fields2->attach(form_input_tick(do_lang_tempcode('shopping:SHOPPING_FORCE_DELETE'), do_lang_tempcode('shopping:DESCRIPTION_SHOPPING_FORCE_DELETE'), 'force_delete', false));
@@ -630,7 +630,7 @@ class Module_cms_catalogues extends Standard_crud_module
     public function get_cat_b($id)
     {
         $temp = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_entries', 'cc_id', array('id' => $id));
-        if (is_null($temp)) {
+        if ($temp === null) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'catalogue_entry'));
         }
         return strval($temp);
@@ -665,7 +665,7 @@ class Module_cms_catalogues extends Standard_crud_module
         $myrow = $myrows[0];
 
         $catalogue_name = $myrow['c_name'];
-        if (is_null($catalogue_name)) {
+        if ($catalogue_name === null) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'catalogue_entry'));
         }
 
@@ -692,7 +692,7 @@ class Module_cms_catalogues extends Standard_crud_module
 
             list(, , $storage_type) = $object->get_field_value_row_bits($field);
 
-            $value = $object->inputted_to_field_value(!is_null($editing_id), $field, 'uploads/catalogues', is_null($editing_id) ? null : _get_catalogue_entry_field($field['id'], $editing_id, $storage_type));
+            $value = $object->inputted_to_field_value($editing_id !== null, $field, 'uploads/catalogues', ($editing_id === null) ? null : _get_catalogue_entry_field($field['id'], $editing_id, $storage_type));
             if ((fractional_edit()) && ($value != STRING_MAGIC_NULL)) {
                 $rendered = static_evaluate_tempcode($object->render_field_value($field, $value, 0, null, 'catalogue_efv_' . $storage_type, null, 'ce_id', 'cf_id', 'cv_value', $submitter));
                 $_POST['field_' . strval($field['id']) . '__altered_rendered_output'] = $rendered;
@@ -721,7 +721,7 @@ class Module_cms_catalogues extends Standard_crud_module
         $allow_trackbacks = post_param_integer('allow_trackbacks', 0);
 
         $catalogue_name = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_categories', 'c_name', array('id' => $category_id));
-        if (is_null($catalogue_name)) {
+        if ($catalogue_name === null) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'catalogue_category'));
         }
 
@@ -758,7 +758,7 @@ class Module_cms_catalogues extends Standard_crud_module
                     $title = array_shift($map_copy);
                     $catalogue_title = get_translated_text($GLOBALS['SITE_DB']->query_select_value('catalogues', 'c_title', array('c_name' => $catalogue_name)));
                     $lang_string = 'catalogues:ACTIVITY_CATALOGUE_' . $catalogue_name . '_ADD';
-                    if (is_null(do_lang($lang_string, null, null, null, null, false))) {
+                    if (do_lang($lang_string, null, null, null, null, false) === null) {
                         $lang_string = 'catalogues:ACTIVITY_CATALOGUE_GENERIC_ADD';
                     }
                     syndicate_described_activity($lang_string, $catalogue_title, $title, '', '_SEARCH:catalogues:entry:' . strval($id), '', '', 'catalogues');
@@ -797,7 +797,7 @@ class Module_cms_catalogues extends Standard_crud_module
         $submitter = $GLOBALS['SITE_DB']->query_select_value('catalogue_entries', 'ce_submitter', array('id' => $id));
 
         $catalogue_name = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_categories', 'c_name', array('id' => $category_id));
-        if (is_null($catalogue_name)) {
+        if ($catalogue_name === null) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'catalogue_category'));
         }
         $map = $this->get_set_field_map($catalogue_name, $submitter, $id);
@@ -823,13 +823,13 @@ class Module_cms_catalogues extends Standard_crud_module
 
                 if (($validated == 1) && ($GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_entries', 'ce_validated', array('id' => $id)) === 0)) { // Just became validated, syndicate as just added
                     $lang_string = ($submitter != get_member()) ? ('calendar:ACTIVITY_VALIDATE_CATALOGUE_' . $catalogue_name) : ('catalogues:ACTIVITY_CATALOGUE_' . $catalogue_name . '_ADD');
-                    if (is_null(do_lang($lang_string, null, null, null, null, false))) {
+                    if (do_lang($lang_string, null, null, null, null, false) === null) {
                         $lang_string = ($submitter != get_member()) ? 'calendar:ACTIVITY_VALIDATE_CATALOGUE_GENERIC' : 'catalogues:ACTIVITY_CATALOGUE_GENERIC_ADD';
                     }
                     syndicate_described_activity($lang_string, $catalogue_title, $title, '', '_SEARCH:catalogues:entry:' . strval($id), '', '', 'catalogues', 1, $submitter);
                 } elseif ($validated == 1) {
                     $lang_string = 'catalogues:ACTIVITY_CATALOGUE_' . $catalogue_name . '_EDIT';
-                    if (!is_null(do_lang($lang_string, null, null, null, null, false))) {
+                    if (do_lang($lang_string, null, null, null, null, false) !== null) {
                         syndicate_described_activity($lang_string, $catalogue_title, $title, '', '_SEARCH:catalogues:entry:' . strval($id), '', '', 'catalogues', 1, null/*$submitter*/);
                     }
                 }
@@ -848,7 +848,7 @@ class Module_cms_catalogues extends Standard_crud_module
         if (post_param_integer('force_delete', 0) == 1) {
             $_submitter = $this->get_submitter($id);
             $submitter = $_submitter[0];
-            $delete_permission = has_delete_permission($this->permissions_require, get_member(), $submitter, is_null($this->privilege_page_name) ? get_page_name() : $this->privilege_page_name, array($this->permissions_cat_require, is_null($this->permissions_cat_name) ? null : $this->get_cat(strval($id)), $this->permissions_cat_require_b, is_null($this->permissions_cat_name_b) ? null : $this->get_cat_b(strval($id))));
+            $delete_permission = has_delete_permission($this->permissions_require, get_member(), $submitter, ($this->privilege_page_name === null) ? get_page_name() : $this->privilege_page_name, array($this->permissions_cat_require, ($this->permissions_cat_name === null) ? null : $this->get_cat(strval($id)), $this->permissions_cat_require_b, ($this->permissions_cat_name_b === null) ? null : $this->get_cat_b(strval($id))));
             if ($delete_permission) {
                 $start = 0;
                 do {
@@ -883,7 +883,7 @@ class Module_cms_catalogues extends Standard_crud_module
         $id = intval($_id);
 
         $category_id = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_entries', 'cc_id', array('id' => $id));
-        if (is_null($category_id)) {
+        if ($category_id === null) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'catalogue_entry'));
         }
 
@@ -911,9 +911,9 @@ class Module_cms_catalogues extends Standard_crud_module
             return true;
         }
         return
-            is_null($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order_details', 'id', array('p_id' => intval($id), 'p_type' => 'catalogue_items')))
+            ($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order_details', 'id', array('p_id' => intval($id), 'p_type' => 'catalogue_items')) === null)
             &&
-            is_null($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_cart', 'product_id', array('product_id' => intval($id), 'product_type' => 'catalogue_items')));
+            ($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_cart', 'product_id', array('product_id' => intval($id), 'product_type' => 'catalogue_items')) === null);
     }
 
     /**
@@ -935,9 +935,9 @@ class Module_cms_catalogues extends Standard_crud_module
             null,
             /* TYPED-ORDERED LIST OF 'LINKS'  */
             array('_SELF', array('type' => 'add_entry', 'catalogue_name' => $c_name, 'category_id' => $category_id), '_SELF'), // Add one
-            (is_null($id) || (!has_privilege(get_member(), 'edit_own_midrange_content', 'cms_catalogues', array('catalogues_category', $category_id)))) ? null : array('_SELF', array('type' => '_edit_entry', 'id' => $id, 'catalogue_name' => $c_name), '_SELF'), // Edit this
+            (($id === null) || (!has_privilege(get_member(), 'edit_own_midrange_content', 'cms_catalogues', array('catalogues_category', $category_id)))) ? null : array('_SELF', array('type' => '_edit_entry', 'id' => $id, 'catalogue_name' => $c_name), '_SELF'), // Edit this
             has_privilege(get_member(), 'edit_own_midrange_content', 'cms_catalogues') ? array('_SELF', array('type' => 'edit_entry', 'catalogue_name' => $c_name), '_SELF') : null, // Edit one
-            is_null($id) ? null : array('catalogues', array('type' => 'entry', 'id' => $id), get_module_zone('catalogues')), // View this
+            ($id === null) ? null : array('catalogues', array('type' => 'entry', 'id' => $id), get_module_zone('catalogues')), // View this
             null, // View archive
             null, // Add to category
             has_privilege(get_member(), 'submit_cat_midrange_content', 'cms_catalogues') ? array('_SELF', array('type' => 'add_category', 'catalogue_name' => $c_name), '_SELF') : null, // Add one category
@@ -974,7 +974,7 @@ class Module_cms_catalogues extends Standard_crud_module
 
         $catalogue_select = $this->choose_catalogue($this->title);
 
-        if (!is_null($catalogue_select)) {
+        if ($catalogue_select !== null) {
             return $catalogue_select;
         }
 
@@ -1079,7 +1079,7 @@ class Module_cms_catalogues extends Standard_crud_module
         if (((is_plupload(true)) && (array_key_exists('file_anytype', $_FILES))) || ((array_key_exists('file_anytype', $_FILES)) && (is_uploaded_file($_FILES['file_anytype']['tmp_name'])))) {
             $csv_name = $_FILES['file_anytype']['tmp_name'];
         }
-        if (is_null($csv_name)) {
+        if ($csv_name === null) {
             warn_exit(do_lang_tempcode('IMPROPERLY_FILLED_IN'));
         }
 
@@ -1109,7 +1109,7 @@ class Module_cms_catalogues extends Standard_crud_module
 
         $catalogue_select = $this->choose_catalogue($this->title);
 
-        if (!is_null($catalogue_select)) {
+        if ($catalogue_select !== null) {
             return $catalogue_select;
         }
 
@@ -1258,8 +1258,8 @@ class Module_cms_catalogues_cat extends Standard_crud_module
      */
     public function get_form_fields($catalogue_name = null, $title = '', $description = '', $notes = '', $parent_id = -1, $id = null, $rep_image = '', $move_days_lower = 30, $move_days_higher = 60, $move_target = null, $order = null)
     {
-        if (is_null($catalogue_name)) {
-            $catalogue_name = get_param_string('catalogue_name', is_null($id) ? false : $GLOBALS['SITE_DB']->query_select_value('catalogues_categories', 'c_name', array('id' => $id)));
+        if ($catalogue_name === null) {
+            $catalogue_name = get_param_string('catalogue_name', ($id === null) ? false : $GLOBALS['SITE_DB']->query_select_value('catalogues_categories', 'c_name', array('id' => $id)));
         }
 
         if ($parent_id == -1) {
@@ -1285,38 +1285,38 @@ class Module_cms_catalogues_cat extends Standard_crud_module
 
         // Is the catalogue a tree?
         $is_tree = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_is_tree', array('c_name' => $catalogue_name));
-        if (is_null($is_tree)) {
+        if ($is_tree === null) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'catalogue'));
         }
-        if (($is_tree == 1) && (!is_null($parent_id))) {
-            $fields->attach(form_input_tree_list(do_lang_tempcode('PARENT'), do_lang_tempcode('DESCRIPTION_PARENT', 'catalogue_category'), 'parent_id', null, 'choose_catalogue_category', array('catalogue_name' => $catalogue_name), true, ((is_null($parent_id)) || ($parent_id == -1)) ? '' : strval($parent_id)));
+        if (($is_tree == 1) && ($parent_id !== null)) {
+            $fields->attach(form_input_tree_list(do_lang_tempcode('PARENT'), do_lang_tempcode('DESCRIPTION_PARENT', 'catalogue_category'), 'parent_id', null, 'choose_catalogue_category', array('catalogue_name' => $catalogue_name), true, (($parent_id === null) || ($parent_id == -1)) ? '' : strval($parent_id)));
         }
 
         $max = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'MAX(cc_order)', array('c_name' => $catalogue_name), 'AND cc_order<>' . strval(ORDER_AUTOMATED_CRITERIA));
-        if (is_null($max)) {
+        if ($max === null) {
             $max = 0;
         }
         $total = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'COUNT(*)', array('c_name' => $catalogue_name));
         $fields->attach(get_order_field('catalogue_category', null, $order, $max, $total));
 
         if (cron_installed()) {
-            $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '745236e628a4d3da5355f07874433600', 'SECTION_HIDDEN' => is_null($move_target), 'TITLE' => do_lang_tempcode('CLASSIFIED_ADS'))));
-            $fields->attach(form_input_tree_list(do_lang_tempcode('EXPIRY_MOVE_TARGET'), do_lang_tempcode('DESCRIPTION_EXPIRY_MOVE_TARGET'), 'move_target', null, 'choose_catalogue_category', array('catalogue_name' => $catalogue_name), false, is_null($move_target) ? null : strval($move_target)));
+            $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '745236e628a4d3da5355f07874433600', 'SECTION_HIDDEN' => ($move_target === null), 'TITLE' => do_lang_tempcode('CLASSIFIED_ADS'))));
+            $fields->attach(form_input_tree_list(do_lang_tempcode('EXPIRY_MOVE_TARGET'), do_lang_tempcode('DESCRIPTION_EXPIRY_MOVE_TARGET'), 'move_target', null, 'choose_catalogue_category', array('catalogue_name' => $catalogue_name), false, ($move_target === null) ? null : strval($move_target)));
             $fields->attach(form_input_integer(do_lang_tempcode('EXPIRY_MOVE_DAYS_LOWER'), do_lang_tempcode('DESCRIPTION_EXPIRY_MOVE_DAYS_LOWER'), 'move_days_lower', $move_days_lower, true));
             $fields->attach(form_input_integer(do_lang_tempcode('EXPIRY_MOVE_DAYS_HIGHER'), do_lang_tempcode('DESCRIPTION_EXPIRY_MOVE_DAYS_HIGHER'), 'move_days_higher', $move_days_higher, true));
         }
 
-        $fields->attach(metadata_get_fields('catalogue_category', is_null($id) ? null : strval($id)));
+        $fields->attach(metadata_get_fields('catalogue_category', ($id === null) ? null : strval($id)));
         require_code('seo2');
-        $fields->attach(seo_get_fields($this->seo_type, is_null($id) ? null : strval($id), false));
+        $fields->attach(seo_get_fields($this->seo_type, ($id === null) ? null : strval($id), false));
 
         if (addon_installed('content_reviews')) {
-            $fields->attach(content_review_get_fields('catalogue_category', is_null($id) ? null : strval($id)));
+            $fields->attach(content_review_get_fields('catalogue_category', ($id === null) ? null : strval($id)));
         }
 
         // Permissions
         if (get_value('disable_cat_cat_perms') !== '1') {
-            $fields->attach($this->get_permission_fields(is_null($id) ? '' : strval($id), null, is_null($id)));
+            $fields->attach($this->get_permission_fields(($id === null) ? '' : strval($id), null, ($id === null)));
         }
 
         return array($fields, $hidden);
@@ -1331,7 +1331,7 @@ class Module_cms_catalogues_cat extends Standard_crud_module
     public function get_cat($id)
     {
         $c_name = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'c_name', array('id' => intval($id)));
-        if (is_null($c_name)) {
+        if ($c_name === null) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'catalogue_category'));
         }
         return $c_name;
@@ -1370,7 +1370,7 @@ class Module_cms_catalogues_cat extends Standard_crud_module
         if (!array_key_exists(0, $cat)) {
             return true;
         }
-        return ($cat[0]['c_is_tree'] == 0) || (!is_null($cat[0]['cc_parent_id']));
+        return ($cat[0]['c_is_tree'] == 0) || ($cat[0]['cc_parent_id'] !== null);
     }
 
     /**
@@ -1394,7 +1394,7 @@ class Module_cms_catalogues_cat extends Standard_crud_module
         $move_days_lower = post_param_integer('move_days_lower', 30);
         $move_days_higher = post_param_integer('move_days_higher', 60);
         $move_target = post_param_integer('move_target', null);
-        if (!is_null($move_target)) {
+        if ($move_target !== null) {
             if (!has_submit_permission('mid', get_member(), get_ip_address(), 'cms_catalogues', array('catalogues_catalogue', $catalogue_name) + ((get_value('disable_cat_cat_perms') !== '1') ? array('catalogues_category', $move_target) : array()))) {
                 access_denied('CATEGORY_ACCESS');
             }
@@ -1432,7 +1432,7 @@ class Module_cms_catalogues_cat extends Standard_crud_module
         $category_id = intval($_id);
 
         $catalogue_name = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_categories', 'c_name', array('id' => $category_id));
-        if (is_null($catalogue_name)) {
+        if ($catalogue_name === null) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'catalogue_category'));
         }
 
@@ -1444,7 +1444,7 @@ class Module_cms_catalogues_cat extends Standard_crud_module
         $move_days_lower = post_param_integer('move_days_lower', fractional_edit() ? INTEGER_MAGIC_NULL : 30/*may be CRON disabled*/);
         $move_days_higher = post_param_integer('move_days_higher', fractional_edit() ? INTEGER_MAGIC_NULL : 60/*may be CRON disabled*/);
         $move_target = post_param_integer('move_target', fractional_edit() ? INTEGER_MAGIC_NULL : null);
-        if ((!is_null($move_target)) && ($move_target != INTEGER_MAGIC_NULL)) {
+        if (($move_target !== null) && ($move_target != INTEGER_MAGIC_NULL)) {
             if (!has_submit_permission('mid', get_member(), get_ip_address(), 'cms_catalogues', array('catalogues_catalogue', $catalogue_name) + ((get_value('disable_cat_cat_perms') !== '1') ? array('catalogues_category', $move_target) : array()))) {
                 access_denied('CATEGORY_ACCESS');
             }
@@ -1484,7 +1484,7 @@ class Module_cms_catalogues_cat extends Standard_crud_module
         require_code('catalogues2');
 
         $catalogue_name = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_categories', 'c_name', array('id' => $id));
-        if (is_null($catalogue_name)) {
+        if ($catalogue_name === null) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'catalogue_category'));
         }
 
@@ -1510,16 +1510,16 @@ class Module_cms_catalogues_cat extends Standard_crud_module
             null,
             null,
             /* TYPED-ORDERED LIST OF 'LINKS'  */
-            (!is_null($id)) ? null : array('_SELF', array('type' => 'add_entry', 'catalogue_name' => $catalogue_name), '_SELF'),// Add one
+            ($id !== null) ? null : array('_SELF', array('type' => 'add_entry', 'catalogue_name' => $catalogue_name), '_SELF'),// Add one
             null, // Edit this
             has_privilege(get_member(), 'edit_own_midrange_content', 'cms_catalogues') ? array('_SELF', array('type' => 'edit_entry', 'catalogue_name' => $catalogue_name), '_SELF') : null, // Edit one
             null, // View this
             null, // View archive
-            is_null($id) ? null : array('_SELF', array('type' => 'add_entry', 'category_id' => $id, 'catalogue_name' => $catalogue_name), '_SELF'),// Add to category
+            ($id === null) ? null : array('_SELF', array('type' => 'add_entry', 'category_id' => $id, 'catalogue_name' => $catalogue_name), '_SELF'),// Add to category
             has_privilege(get_member(), 'submit_cat_midrange_content', 'cms_catalogues') ? array('_SELF', array('type' => 'add_category', 'catalogue_name' => $catalogue_name), '_SELF') : null, // Add one category
             has_privilege(get_member(), 'edit_own_cat_midrange_content', 'cms_catalogues') ? array('_SELF', array('type' => 'edit_category', 'catalogue_name' => $catalogue_name), '_SELF') : null, // Edit one category
-            (is_null($id) || (!has_privilege(get_member(), 'edit_own_cat_midrange_content', 'cms_catalogues'))) ? null : array('_SELF', array('type' => '_edit_category', 'id' => $id, 'catalogue_name' => $catalogue_name), '_SELF'), // Edit this category
-            is_null($id) ? null : array('catalogues', array('type' => 'category', 'id' => $id), get_module_zone('catalogues')),// View this category
+            (($id === null) || (!has_privilege(get_member(), 'edit_own_cat_midrange_content', 'cms_catalogues'))) ? null : array('_SELF', array('type' => '_edit_category', 'id' => $id, 'catalogue_name' => $catalogue_name), '_SELF'), // Edit this category
+            ($id === null) ? null : array('catalogues', array('type' => 'category', 'id' => $id), get_module_zone('catalogues')),// View this category
 
             /* SPECIALLY TYPED 'LINKS' */
             array(), array(),
@@ -1589,7 +1589,7 @@ class Module_cms_catalogues_alt extends Standard_crud_module
      */
     public function tied_to_content_type($name)
     {
-        if (is_null($name)) {
+        if ($name === null) {
             return null;
         }
 
@@ -1868,7 +1868,7 @@ class Module_cms_catalogues_alt extends Standard_crud_module
         $category_id = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_categories', 'id', array('c_name' => $name));
 
         $this->set_permissions($name);
-        if (!is_null($category_id)) {
+        if ($category_id !== null) {
             $GLOBALS['MODULE_CMS_CATALOGUES']->cat_crud_module->set_permissions(strval($category_id));
         }
 
@@ -1931,12 +1931,12 @@ class Module_cms_catalogues_alt extends Standard_crud_module
                     $bit = trim($bit);
 
                     if (array_key_exists($bit, $categories)) {
-                        if (!is_null($parent_id)) {
+                        if ($parent_id !== null) {
                             $parent_id = $categories[$bit];
                         }
                     } else {
                         $_parent_id = actual_add_catalogue_category($name, $bit, '', '', $parent_id, '');
-                        if (!is_null($parent_id)) {
+                        if ($parent_id !== null) {
                             $parent_id = $_parent_id;
                         }
                         require_code('permissions2');
@@ -1993,7 +1993,7 @@ class Module_cms_catalogues_alt extends Standard_crud_module
         $default_review_freq = post_param_integer('default_review_freq', fractional_edit() ? INTEGER_MAGIC_NULL : null);
 
         $was_tree = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_is_tree', array('c_name' => $old_name));
-        if (is_null($was_tree)) {
+        if ($was_tree === null) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'catalogue'));
         }
         $is_tree = post_param_integer('is_tree', fractional_edit() ? INTEGER_MAGIC_NULL : 0);
@@ -2182,28 +2182,28 @@ class Module_cms_catalogues_alt extends Standard_crud_module
      */
     public function do_next_manager($title, $description, $name)
     {
-        if (!is_null($name)) {
+        if ($name !== null) {
             $cat_count = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'COUNT(*)', array('c_name' => $name));
             $has_categories = ($cat_count != 0);
         } else {
             $has_categories = false;
         }
 
-        $is_custom_fields = (!is_null($name)) && (substr($name, 0, 1) == '_');
+        $is_custom_fields = ($name !== null) && (substr($name, 0, 1) == '_');
 
         require_code('templates_donext');
         return do_next_manager($title, $description,
             null,
             null,
             /* TYPED-ORDERED LIST OF 'LINKS'  */
-            (is_null($name) || (!$has_categories)) ? null : array('_SELF', array('type' => 'add_entry', 'catalogue_name' => $name), '_SELF'), // Add one
+            (($name === null) || (!$has_categories)) ? null : array('_SELF', array('type' => 'add_entry', 'catalogue_name' => $name), '_SELF'), // Add one
             null, // Edit this
-            (is_null($name) || (!$has_categories)) ? null : (has_privilege(get_member(), 'edit_own_midrange_content', 'cms_catalogues') ? array('_SELF', array('type' => 'edit_entry', 'catalogue_name' => $name), '_SELF') : null), // Edit one
+            (($name === null) || (!$has_categories)) ? null : (has_privilege(get_member(), 'edit_own_midrange_content', 'cms_catalogues') ? array('_SELF', array('type' => 'edit_entry', 'catalogue_name' => $name), '_SELF') : null), // Edit one
             null, // View this
             null, // View archive
             null, // Add to category
-            (is_null($name) || $is_custom_fields) ? null : array('_SELF', array('type' => 'add_category', 'catalogue_name' => $name), '_SELF'), // Add one category
-            (is_null($name) || (!$has_categories)) ? null : array('_SELF', array('type' => 'edit_category', 'catalogue_name' => $name), '_SELF'), // Edit one category
+            (($name === null) || $is_custom_fields) ? null : array('_SELF', array('type' => 'add_category', 'catalogue_name' => $name), '_SELF'), // Add one category
+            (($name === null) || (!$has_categories)) ? null : array('_SELF', array('type' => 'edit_category', 'catalogue_name' => $name), '_SELF'), // Edit one category
             null, // Edit this category
             null, // View this category
             /* SPECIALLY TYPED 'LINKS' */
@@ -2211,9 +2211,9 @@ class Module_cms_catalogues_alt extends Standard_crud_module
             array(),
             array(
                 $is_custom_fields ? null : array('menu/cms/catalogues/add_one_catalogue', array('_SELF', array('type' => 'add_catalogue'), '_SELF')),
-                is_null($name) ? null : array('menu/cms/catalogues/edit_this_catalogue', array('_SELF', array('type' => '_edit_catalogue', 'id' => $name), '_SELF')),
+                ($name === null) ? null : array('menu/cms/catalogues/edit_this_catalogue', array('_SELF', array('type' => '_edit_catalogue', 'id' => $name), '_SELF')),
                 $is_custom_fields ? null : array('menu/cms/catalogues/edit_one_catalogue', array('_SELF', array('type' => 'edit_catalogue'), '_SELF')),
-                (is_null($name) || $is_custom_fields) ? null : array('menu/rich_content/catalogues/catalogues', array('catalogues', $this->is_tree_catalogue ? array('type' => 'category', 'catalogue_name' => $name) : array('type' => 'index', 'id' => $name), get_module_zone('catalogues')), do_lang('VIEW_CATALOGUE'))
+                (($name === null) || $is_custom_fields) ? null : array('menu/rich_content/catalogues/catalogues', array('catalogues', $this->is_tree_catalogue ? array('type' => 'category', 'catalogue_name' => $name) : array('type' => 'index', 'id' => $name), get_module_zone('catalogues')), do_lang('VIEW_CATALOGUE'))
             ),
             do_lang('MANAGE_CATALOGUES'),
             null,

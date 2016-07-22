@@ -35,7 +35,7 @@ require_lang('customers');
 $title = get_screen_title('UNSPENT_SUPPORT_CREDITS');
 
 $field_id = get_credits_profile_field_id();
-if (!is_null($field_id)) {
+if ($field_id !== null) {
     $field_id = strval($field_id);
     require_lang('cns');
     require_lang('stats');

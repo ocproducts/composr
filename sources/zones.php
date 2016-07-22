@@ -68,7 +68,7 @@ function init__zones()
 
     global $VIRTUALISED_ZONES_CACHE;
     $VIRTUALISED_ZONES_CACHE = null;
-    if (is_null($MODULES_ZONES_CACHE)) {
+    if ($MODULES_ZONES_CACHE === null) {
         foreach ($MODULES_ZONES_CACHE_DEFAULT as $key => $val) {
             if ((!$hardcoded) && (!is_file(get_file_base() . '/' . $val . '/pages/modules/' . $key . '.php'))) {
                 unset($MODULES_ZONES_CACHE_DEFAULT[$key]);
@@ -593,7 +593,7 @@ function get_page_zone($page_name, $error = true)
 function load_minimodule_page($string, &$out = null)
 {
     global $PAGE_STRING;
-    if (is_null($PAGE_STRING)) {
+    if ($PAGE_STRING === null) {
         $PAGE_STRING = $string;
     }
 
@@ -682,7 +682,7 @@ function _load_mini_code($string, $map = null)
 function load_module_page($string, $codename, &$out = null)
 {
     global $PAGE_STRING;
-    if (is_null($PAGE_STRING)) {
+    if ($PAGE_STRING === null) {
         $PAGE_STRING = $string;
     }
 
@@ -701,7 +701,7 @@ function load_module_page($string, $codename, &$out = null)
     if (get_value('assume_modules_correct') !== '1') {
         $rows = persistent_cache_get('MODULES');
         if ($rows === null) {
-            $rows = list_to_map('module_the_name', $GLOBALS['SITE_DB']->query_select('modules', array('*'), is_null($GLOBALS['PERSISTENT_CACHE']) ? array('module_the_name' => $codename) : null));
+            $rows = list_to_map('module_the_name', $GLOBALS['SITE_DB']->query_select('modules', array('*'), ($GLOBALS['PERSISTENT_CACHE'] === null) ? array('module_the_name' => $codename) : null));
             persistent_cache_set('MODULES', $rows);
         }
         if (array_key_exists($codename, $rows)) {
@@ -709,13 +709,13 @@ function load_module_page($string, $codename, &$out = null)
             $installed_version = $rows[$codename]['module_version'];
             $installed_hack_version = $rows[$codename]['module_hack_version'];
             $installed_hacked_by = $rows[$codename]['module_hacked_by'];
-            if (is_null($installed_hacked_by)) {
+            if ($installed_hacked_by === null) {
                 $installed_hacked_by = '';
             }
             $this_version = $info['version'];
             $this_hack_version = $info['hack_version'];
             $this_hacked_by = $info['hacked_by'];
-            if (is_null($this_hacked_by)) {
+            if ($this_hacked_by === null) {
                 $this_hacked_by = '';
             }
 
@@ -732,7 +732,7 @@ function load_module_page($string, $codename, &$out = null)
                 require_code('database_action');
                 require_code('config2');
                 require_code('menus2');
-                /*if (($installed_hacked_by!=$this_hacked_by) && (!is_null($installed_hacked_by)))
+                /*if (($installed_hacked_by!=$this_hacked_by) && ($installed_hacked_by !== null))
                     {
                             fatal_exit('Managed by different author');
                     } Probably better we leave the solution to this to modders rather than just block the potential for there even to be a solution   */
@@ -922,7 +922,7 @@ function module_installed($module)
         return $MODULE_INSTALLED_CACHE[$module];
     }
     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('modules', 'module_the_name', array('module_the_name' => $module));
-    $answer = !is_null($test);
+    $answer = $test !== null;
     $MODULE_INSTALLED_CACHE[$module] = $answer;
     return $answer;
 }
@@ -959,7 +959,7 @@ function find_all_hook_obs($type, $subtype, $classname_prefix)
     foreach (array_keys($hooks) as $hook) {
         require_code('hooks/' . $type . '/' . $subtype . '/' . $hook);
         $ob = object_factory($classname_prefix . $hook, true);
-        if (!is_null($ob)) {
+        if ($ob !== null) {
             $hooks[$hook] = $ob;
         }
     }
@@ -1179,7 +1179,7 @@ function do_block($codename, $map = null, $ttl = null)
                         $staff_status = (($special_cache_flags & CACHE_AGAINST_STAFF_STATUS) !== 0) ? ($GLOBALS['FORUM_DRIVER']->is_staff(get_member()) ? 1 : 0) : null;
                         $member = (($special_cache_flags & CACHE_AGAINST_MEMBER) !== 0) ? get_member() : null;
                         $groups = (($special_cache_flags & CACHE_AGAINST_PERMISSIVE_GROUPS) !== 0) ? implode(',', array_map('strval', filter_group_permissivity($GLOBALS['FORUM_DRIVER']->get_members_groups(get_member())))) : '';
-                        $is_bot = (($special_cache_flags & CACHE_AGAINST_BOT_STATUS) !== 0) ? (is_null(get_bot_type()) ? 0 : 1) : null;
+                        $is_bot = (($special_cache_flags & CACHE_AGAINST_BOT_STATUS) !== 0) ? ((get_bot_type() === null) ? 0 : 1) : null;
                         $timezone = (($special_cache_flags & CACHE_AGAINST_TIMEZONE) !== 0) ? get_users_timezone(get_member()) : '';
                         put_into_cache($codename, $ttl, $cache_identifier, $staff_status, $member, $groups, $is_bot, $timezone, $cache, array_keys($LANGS_REQUESTED), array_keys($JAVASCRIPTS), array_keys($CSSS), true);
                     } elseif (($ttl !== -1) && ($cache->is_empty())) { // Try again with no TTL, if we currently failed but did impose a TTL
@@ -1247,7 +1247,7 @@ function do_block($codename, $map = null, $ttl = null)
                 $staff_status = (($special_cache_flags & CACHE_AGAINST_STAFF_STATUS) !== 0) ? ($GLOBALS['FORUM_DRIVER']->is_staff(get_member()) ? 1 : 0) : null;
                 $member = (($special_cache_flags & CACHE_AGAINST_MEMBER) !== 0) ? get_member() : null;
                 $groups = (($special_cache_flags & CACHE_AGAINST_PERMISSIVE_GROUPS) !== 0) ? implode(',', array_map('strval', filter_group_permissivity($GLOBALS['FORUM_DRIVER']->get_members_groups(get_member())))) : '';
-                $is_bot = (($special_cache_flags & CACHE_AGAINST_BOT_STATUS) !== 0) ? (is_null(get_bot_type()) ? 0 : 1) : null;
+                $is_bot = (($special_cache_flags & CACHE_AGAINST_BOT_STATUS) !== 0) ? ((get_bot_type() === null) ? 0 : 1) : null;
                 $timezone = (($special_cache_flags & CACHE_AGAINST_TIMEZONE) !== 0) ? get_users_timezone(get_member()) : '';
                 put_into_cache($codename, $info['ttl'], $cache_identifier, $staff_status, $member, $groups, $is_bot, $timezone, $cache, array_keys($LANGS_REQUESTED), $GLOBALS['OUTPUT_STREAMING'] ? array() : array_keys($JAVASCRIPTS), $GLOBALS['OUTPUT_STREAMING'] ? array() : array_keys($CSSS), true);
             }
@@ -1581,7 +1581,7 @@ function _get_block_path($block)
 function block_installed($block)
 {
     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('blocks', 'block_name', array('block_name' => $block));
-    return !is_null($test);
+    return $test !== null;
 }
 
 /**

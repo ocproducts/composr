@@ -87,12 +87,12 @@ function composr_cleanup($caches = null)
         $hooks['cns'] = $temp;
     }
 
-    if (!is_null($caches)) {
+    if ($caches !== null) {
         foreach ($caches as $cache) {
             if (array_key_exists($cache, $hooks)) {
                 require_code('hooks/systems/cleanup/' . filter_naughty_harsh($cache));
                 $object = object_factory('Hook_cleanup_' . filter_naughty_harsh($cache), true);
-                if (is_null($object)) {
+                if ($object === null) {
                     continue;
                 }
                 $messages->attach($object->run());
@@ -104,7 +104,7 @@ function composr_cleanup($caches = null)
         foreach (array_keys($hooks) as $hook) {
             require_code('hooks/systems/cleanup/' . filter_naughty_harsh($hook));
             $object = object_factory('Hook_cleanup_' . filter_naughty_harsh($hook), true);
-            if (is_null($object)) {
+            if ($object === null) {
                 continue;
             }
             $info = $object->info();
@@ -469,7 +469,7 @@ function erase_comcode_page_cache()
 
     do {
         $rows = $GLOBALS['SITE_DB']->query_select('cached_comcode_pages', array('string_index'), null, '', 50, null, true, array());
-        if (is_null($rows)) {
+        if ($rows === null) {
             $rows = array();
         }
         foreach ($rows as $row) {

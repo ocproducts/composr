@@ -48,7 +48,7 @@ function do_user_import()
         $infile = fopen(get_custom_file_base() . '/' . USER_IMPORT_TEMP_PATH, 'wb');
         $test = http_download_file(USER_IMPORT_URL, null, false, false, 'Composr', null, null, null, null, null, $infile);
         fclose($infile);
-        if (is_null($test)) {
+        if ($test === null) {
             return;
         }
         $infile = fopen(get_custom_file_base() . '/' . USER_IMPORT_TEMP_PATH, 'rb');
@@ -111,10 +111,10 @@ function do_user_import()
             $groups = isset($USER_IMPORT_WANTED['groups']) ? array_map('intval', explode(',', $row[$USER_IMPORT_WANTED['groups']])) : null;
             $photo_url = isset($USER_IMPORT_WANTED['m_photo_url']) ? $row[$USER_IMPORT_WANTED['m_photo_url']] : null;
 
-            if (is_null($member_id)) {
-                if (!is_null($username)) {
+            if ($member_id === null) {
+                if ($username !== null) {
                     // Add
-                    if (is_null($password)) {
+                    if ($password === null) {
                         $password = produce_salt();
                     }
                     cns_make_member($username, $password, $email_address, $groups, $dob_day, $dob_month, $dob_year, $custom_fields, $timezone, $primary_group, 1, null, null, '', null, '', 0, 0, 1, '', $photo_url, '', 1, null, null, 1, 1, null, '', false, 'plain');
@@ -123,7 +123,7 @@ function do_user_import()
                 // Edit
                 cns_edit_member($member_id, $email_address, null, $dob_day, $dob_month, $dob_year, $timezone, $primary_group, $custom_fields, null, null, null, null, null, null, null, null, $username, $password, null, null, null, null, null, null, null, null, null, $photo_url, null, null, null, true);
                 require_code('cns_groups_action2');
-                if (!is_null($groups)) {
+                if ($groups !== null) {
                     $members_groups = $GLOBALS['CNS_DRIVER']->get_members_groups($member_id);
                     foreach ($groups as $group_id) {
                         if (!in_array($group_id, $members_groups)) {

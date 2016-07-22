@@ -40,7 +40,7 @@ class Hook_checklist_reported_posts
         require_lang('cns_config');
 
         $forum_id = $GLOBALS['FORUM_DRIVER']->forum_id_from_name(get_option('reported_posts_forum'));
-        if (is_null($forum_id)) {
+        if ($forum_id === null) {
             return array();
         }
         $where = 't_forum_id=' . strval($forum_id) . ' AND t_is_open=1';

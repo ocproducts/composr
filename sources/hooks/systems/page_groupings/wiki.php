@@ -36,7 +36,7 @@ class Hook_page_groupings_wiki
             return array();
         }
 
-        if (is_null($member_id)) {
+        if ($member_id === null) {
             $member_id = get_member();
         }
 

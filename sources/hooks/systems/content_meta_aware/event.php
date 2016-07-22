@@ -63,7 +63,7 @@ class Hook_content_meta_aware_event
             'edit_page_link_pattern' => '_SEARCH:cms_calendar:_edit:_WILD',
             'view_category_page_link_pattern' => '_SEARCH:calendar:browse:_WILD',
             'add_url' => (function_exists('has_submit_permission') && has_submit_permission('mid', get_member(), get_ip_address(), 'cms_calendar')) ? (get_module_zone('cms_calendar') . ':cms_calendar:add') : null,
-            'archive_url' => ((!is_null($zone)) ? $zone : get_module_zone('calendar')) . ':calendar',
+            'archive_url' => (($zone !== null) ? $zone : get_module_zone('calendar')) . ':calendar',
 
             'support_url_monikers' => true,
 

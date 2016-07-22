@@ -55,7 +55,7 @@ class Hook_pointstore_community_billboard
         $title = get_screen_title('TITLE_NEWCOMMUNITY_BILLBOARD');
 
         $queue = $GLOBALS['SITE_DB']->query_select_value('community_billboard', 'SUM(days) AS days', array('activation_time' => null));
-        if (is_null($queue)) {
+        if ($queue === null) {
             $queue = 0;
         }
         $community_billboard_url = build_url(array('page' => '_SELF', 'type' => '_community_billboard', 'id' => 'community_billboard'), '_SELF');

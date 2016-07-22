@@ -138,7 +138,7 @@ class Module_admin_actionlog
                 $members = list_to_map('l_by', $GLOBALS['FORUM_DB']->query_select('f_moderator_logs', array('l_by', 'COUNT(*) AS cnt'), null, 'GROUP BY l_by ORDER BY COUNT(*) DESC'));
                 foreach ($members as $member) {
                     $username = $GLOBALS['FORUM_DRIVER']->get_username($member['l_by']);
-                    if (is_null($username)) {
+                    if ($username === null) {
                         $username = strval($member['l_by']);
                     }
                     $_member_choice_list[$member['l_by']] = array($username, $member['cnt']);
@@ -149,7 +149,7 @@ class Module_admin_actionlog
             $_staff = list_to_map('member_id', $GLOBALS['SITE_DB']->query_select('actionlogs', array('member_id', 'COUNT(*) AS cnt'), null, 'GROUP BY member_id ORDER BY COUNT(*) DESC'));
             foreach ($_staff as $staff) {
                 $username = $GLOBALS['FORUM_DRIVER']->get_username($staff['member_id']);
-                if (is_null($username)) {
+                if ($username === null) {
                     $username = strval($staff['member_id']);
                 }
                 if (!array_key_exists($staff['member_id'], $_member_choice_list)) {
@@ -173,13 +173,13 @@ class Module_admin_actionlog
         $rows2 = $GLOBALS['SITE_DB']->query_select('actionlogs', array('DISTINCT the_type'));
         foreach ($rows1 as $row) {
             $lang = do_lang($row['l_the_type'], null, null, null, null, false);
-            if (!is_null($lang)) {
+            if ($lang !== null) {
                 $_action_type_list[$row['l_the_type']] = $lang;
             }
         }
         foreach ($rows2 as $row) {
             $lang = do_lang($row['the_type'], null, null, null, null, false);
-            if (!is_null($lang)) {
+            if ($lang !== null) {
                 $_action_type_list[$row['the_type']] = $lang;
             }
         }
@@ -317,7 +317,7 @@ class Module_admin_actionlog
             $best = null;
             $_best = null;
             foreach ($rows as $x => $row) {
-                if ((is_null($best))
+                if (($best === null)
                     || (($row['date_and_time'] < $_best) && ($sortable == 'date_and_time') && ($sort_order == 'ASC'))
                     || (($row['date_and_time'] > $_best) && ($sortable == 'date_and_time') && ($sort_order == 'DESC'))
                     || ((intval($row['the_type']) < $_best) && ($sortable == 'the_type') && ($sort_order == 'ASC'))
@@ -341,12 +341,12 @@ class Module_admin_actionlog
                 $mode_nice = ($mode == 'cms') ? 'Composr' : 'Conversr';
                 $date = hyperlink($url, get_timezoned_date_time($myrow['date_and_time']), false, true, $mode_nice . '/' . $row['the_type'] . '/' . strval($myrow['id']), null, null, null, '_top');
 
-                if (!is_null($myrow['param_a'])) {
+                if ($myrow['param_a'] !== null) {
                     $a = $myrow['param_a'];
                 } else {
                     $a = '';
                 }
-                if (!is_null($myrow['param_b'])) {
+                if ($myrow['param_b'] !== null) {
                     $b = $myrow['param_b'];
                 } else {
                     $b = '';
@@ -357,12 +357,12 @@ class Module_admin_actionlog
                 $_b = tpl_crop_text_mouse_over($b, 15);
 
                 $type_str = do_lang($myrow['the_type'], $_a, $_b, null, null, false);
-                if (is_null($type_str)) {
+                if ($type_str === null) {
                     $type_str = $myrow['the_type'];
                 }
 
                 $test = actionlog_linkage($myrow['the_type'], $a, $b, $_a, $_b);
-                if (!is_null($test)) {
+                if ($test !== null) {
                     list($_a, $_b) = $test;
                 }
 
@@ -370,7 +370,7 @@ class Module_admin_actionlog
 
                 if (addon_installed('securitylogging')) {
                     $banned_test_1 = array_key_exists('ip', $myrow) ? ip_banned($myrow['ip'], true) : false;
-                    $banned_test_2 = !is_null($GLOBALS['SITE_DB']->query_select_value_if_there('usersubmitban_member', 'the_member', array('the_member' => $myrow['member_id'])));
+                    $banned_test_2 = ($GLOBALS['SITE_DB']->query_select_value_if_there('usersubmitban_member', 'the_member', array('the_member' => $myrow['member_id'])) !== null);
                     $banned_test_3 = $GLOBALS['FORUM_DRIVER']->is_banned($myrow['member_id']);
                     $banned = (((!$banned_test_1)) && ((!$banned_test_2)) && (!$banned_test_3)) ? do_lang_tempcode('NO') : do_lang_tempcode('YES');
 
@@ -413,12 +413,12 @@ class Module_admin_actionlog
         $row = $rows[0];
 
         $username = $GLOBALS['FORUM_DRIVER']->get_username($row['member_id']);
-        if (is_null($username)) {
+        if ($username === null) {
             $username = do_lang('UNKNOWN');
         }
 
         $type_str = do_lang($row['the_type'], $row['param_a'], $row['param_b'], null, null, false);
-        if (is_null($type_str)) {
+        if ($type_str === null) {
             $type_str = $row['the_type'];
         }
 
@@ -426,8 +426,8 @@ class Module_admin_actionlog
             'USERNAME' => $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($row['member_id'], '', false),
             'DATE_TIME' => get_timezoned_date_time($row['date_and_time']),
             'TYPE' => $type_str,
-            'PARAMETER_A' => is_null($row['param_a']) ? '' : $row['param_a'],
-            'PARAMETER_B' => is_null($row['param_b']) ? '' : $row['param_b'],
+            'PARAMETER_A' => ($row['param_a'] === null) ? '' : $row['param_a'],
+            'PARAMETER_B' => ($row['param_b'] === null) ? '' : $row['param_b'],
         );
 
         if (array_key_exists('ip', $row)) {
@@ -466,7 +466,7 @@ class Module_admin_actionlog
                 ));
             } else {
                 $banned_test_2 = $GLOBALS['SITE_DB']->query_select_value_if_there('usersubmitban_member', 'the_member', array('the_member' => $row['member_id']));
-                $fields['SUBMITTER_BANNED'] = is_null($banned_test_2) ? do_lang_tempcode('NO') : do_lang_tempcode('YES');
+                $fields['SUBMITTER_BANNED'] = ($banned_test_2 === null) ? do_lang_tempcode('NO') : do_lang_tempcode('YES');
             }
 
             if (((get_forum_type() == 'cns') && (!is_guest($row['member_id']))) && ($row['member_id'] != get_member())) {
@@ -486,19 +486,19 @@ class Module_admin_actionlog
         require_code('revisions_engine_database');
         $revision_engine = new RevisionEngineDatabase($mode == 'cns');
         $revision = $revision_engine->find_revision_for_log($id);
-        if (is_null($revision)) {
+        if ($revision === null) {
             require_code('revisions_engine_files');
             $revision_engine = new RevisionEngineFiles();
             $revision = $revision_engine->find_revision_for_log($id);
         }
-        if (!is_null($revision)) {
+        if ($revision !== null) {
             if (isset($revision['r_resource_type']) && isset($revision['r_resource_id'])) {
                 require_code('content');
                 list($content_title, , , , $content_url) = content_get_details($revision['r_resource_type'], $revision['r_resource_id']);
                 if (empty($content_title)) {
                     $content_title = $revision['r_original_title'];
                 }
-                if (!is_null($content_url)) {
+                if ($content_url !== null) {
                     $fields['VIEW'] = hyperlink($content_url, $content_title, false, true);
                 }
             }

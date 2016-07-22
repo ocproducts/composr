@@ -192,12 +192,12 @@ function install_cns($upgrade_from = null)
     require_code('cns_topics_action');
     require_code('database_action');
 
-    if (is_null($upgrade_from)) {
+    if ($upgrade_from === null) {
         uninstall_cns(); // Remove if already installed
     }
 
     // Upgrade code for making changes (<8 not supported) lots of LEGACY code below
-    if ((is_null($upgrade_from)) || ($upgrade_from < 10.0)) {
+    if (($upgrade_from === null) || ($upgrade_from < 10.0)) {
         $GLOBALS['FORUM_DB']->create_table('f_group_join_log', array(
             'id' => '*AUTO',
             'member_id' => 'MEMBER',
@@ -217,7 +217,7 @@ function install_cns($upgrade_from = null)
         ));
         $GLOBALS['FORUM_DB']->create_index('f_password_history', 'p_member_id', array('p_member_id'));
     }
-    if ((!is_null($upgrade_from)) && ($upgrade_from < 11.0)) {
+    if (($upgrade_from !== null) && ($upgrade_from < 11.0)) {
         $GLOBALS['FORUM_DB']->delete_table_field('f_multi_moderations', 'mm_sink_state');
         $GLOBALS['FORUM_DB']->delete_table_field('f_topics', 't_sunk');
 
@@ -229,7 +229,7 @@ function install_cns($upgrade_from = null)
         $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_type' => 'date'), array('cf_type' => 'just_date'));
         $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_type' => 'time'), array('cf_type' => 'just_time'));
     }
-    if ((!is_null($upgrade_from)) && ($upgrade_from < 10.0)) {
+    if (($upgrade_from !== null) && ($upgrade_from < 10.0)) {
         delete_config_option('no_dob_ask');
 
         $GLOBALS['FORUM_DB']->delete_index_if_exists('f_posts', 'posts_by');
@@ -269,7 +269,7 @@ function install_cns($upgrade_from = null)
                         'p_member_id' => $member['id'],
                         'p_hash_salted' => $member['m_pass_hash_salted'],
                         'p_salt' => $member['m_pass_salt'],
-                        'p_time' => is_null($member['m_last_submit_time']) ? $member['m_join_time'] : $member['m_last_submit_time'],
+                        'p_time' => ($member['m_last_submit_time'] === null) ? $member['m_join_time'] : $member['m_last_submit_time'],
                     ));
                 }
             }
@@ -315,12 +315,12 @@ function install_cns($upgrade_from = null)
         $GLOBALS['FORUM_DB']->delete_index_if_exists('f_posts', 'posts_since');
         $GLOBALS['FORUM_DB']->create_index('f_posts', 'posts_since', array('p_time', 'p_cache_forum_id')); // p_cache_forum_id is used to not count PT posts
     }
-    if ((!is_null($upgrade_from)) && ($upgrade_from < 11.0)) {
+    if (($upgrade_from !== null) && ($upgrade_from < 11.0)) {
         add_privilege('FORUMS_AND_MEMBERS', 'appear_under_birthdays', true);
     }
 
     // If we have the forum installed to this db already, leave
-    if (is_null($upgrade_from)) {
+    if ($upgrade_from === null) {
         $GLOBALS['FORUM_DB']->create_table('f_member_cpf_perms', array(
             'member_id' => '*MEMBER',
             'field_id' => '*AUTO_LINK',
@@ -867,7 +867,7 @@ function install_cns($upgrade_from = null)
         }
     }
 
-    if ((is_null($upgrade_from)) || ($upgrade_from < 10.0)) {
+    if (($upgrade_from === null) || ($upgrade_from < 10.0)) {
         $GLOBALS['FORUM_DB']->create_index('f_members', 'last_visit_time', array('m_dob_month', 'm_dob_day', 'm_last_visit_time'));
         $GLOBALS['FORUM_DB']->create_index('f_posts', 'posts_by_in_forum', array('p_poster', 'p_cache_forum_id')); // Used for searching by member, filtered by forum access
         $GLOBALS['FORUM_DB']->create_index('f_posts', 'posts_by_in_topic', array('p_poster', 'p_topic_id')); // Used to help on some joins / complex queries

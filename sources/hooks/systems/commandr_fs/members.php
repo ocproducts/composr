@@ -49,7 +49,7 @@ class Hook_commandr_fs_members
             foreach ($users as $user) {
                 $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'actionlogs WHERE ' . db_string_equal_to('param_a', strval($user['id'])) . ' AND  (' . db_string_equal_to('the_type', 'EDIT_EDIT_MEMBER_PROFILE') . ')';
                 $modification_time = $GLOBALS['SITE_DB']->query_value_if_there($query);
-                if (is_null($modification_time)) {
+                if ($modification_time === null) {
                     $modification_time = $user['m_join_time'];
                 }
 
@@ -257,7 +257,7 @@ class Hook_commandr_fs_members
             require_code('cns_members_action');
             require_code('cns_members_action2');
             $field_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('cf_name') => $file_name));
-            if (is_null($field_id)) { // Should never happen, but sometimes on upgrades/corruption...
+            if ($field_id === null) { // Should never happen, but sometimes on upgrades/corruption...
                 $GLOBALS['FORUM_DRIVER']->install_create_custom_field($file_name, 10);
                 $field_id = $GLOBALS['FORUM_DB']->query_select_value('f_custom_fields', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('cf_name') => $file_name));
             }
@@ -337,7 +337,7 @@ class Hook_commandr_fs_members
             require_code('cns_members_action');
             require_code('cns_members_action2');
             $field_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('cf_name') => $file_name));
-            if (is_null($field_id)) { // Should never happen, but sometimes on upgrades/corruption...
+            if ($field_id === null) { // Should never happen, but sometimes on upgrades/corruption...
                 $GLOBALS['FORUM_DRIVER']->install_create_custom_field($file_name, 10);
                 $field_id = $GLOBALS['FORUM_DB']->query_select_value('f_custom_fields', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('cf_name') => $file_name));
             }
@@ -410,12 +410,12 @@ class Hook_commandr_fs_members
             require_code('cns_members_action');
             require_code('cns_members_action2');
             $field_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('cf_name') => $file_name));
-            if (is_null($field_id)) { // Should never happen, but sometimes on upgrades/corruption...
+            if ($field_id === null) { // Should never happen, but sometimes on upgrades/corruption...
                 $GLOBALS['FORUM_DRIVER']->install_create_custom_field($file_name, 10);
                 $field_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('cf_name') => $file_name));
             }
 
-            if (is_null($field_id)) {
+            if ($field_id === null) {
                 $field_id = cns_make_custom_field($file_name);
             }
             cns_set_custom_field($GLOBALS['FORUM_DRIVER']->get_member_from_username($meta_dir[0]), $field_id, $contents);

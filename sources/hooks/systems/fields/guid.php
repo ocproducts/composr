@@ -64,7 +64,7 @@ class Hook_fields_guid
      */
     public function get_field_value_row_bits($field, $required = null, $default = null)
     {
-        if (((is_null($default)) || ($default == '')) && (!is_null($field)) && (!is_null($field['id']))) { // We need to calculate a default even if not required, because the defaults are programmatic
+        if ((($default === null) || ($default == '')) && ($field !== null) && ($field['id'] !== null)) { // We need to calculate a default even if not required, because the defaults are programmatic
             $default = $this->get_field_guid();
         }
         return array('short_unescaped', $default, 'short');
@@ -106,7 +106,7 @@ class Hook_fields_guid
             return null;
         }
 
-        if (is_null($actual_value)) {
+        if ($actual_value === null) {
             $actual_value = ''; // Plug anomaly due to unusual corruption
         }
         $input_name = empty($field['cf_input_name']) ? ('field_' . strval($field['id'])) : $field['cf_input_name'];

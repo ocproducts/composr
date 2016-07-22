@@ -48,7 +48,7 @@ set_value('external_login_url', '?', true); // Optional
 function external_db()
 {
     $db_type = get_value('external_db_login__db_type', null, true);
-    if (is_null($db_type)) {
+    if ($db_type === null) {
         return null;
     }
     $db_name = get_value('external_db_login__db_name', null, true);

@@ -60,7 +60,7 @@ function add_item_wrap($member_id, $name, $cost, $not_infinite, $bribable, $heal
 
     // Make sure the item does not already exist! (people aren't allowed to arbitarily duplicate items for security reasons)
     $r = $GLOBALS['SITE_DB']->query_select_value_if_there('w_itemdef', 'bribable', array('name' => $name));
-    if (!is_null($r)) {
+    if ($r !== null) {
         buildr_refresh_with_message(do_lang_tempcode('W_DUPE_ITEM'), 'warn');
     }
 
@@ -251,7 +251,7 @@ function add_room_wrap($member_id, $relative, $name, $text, $password_question, 
 
     // Check there is no room already there
     $r = $GLOBALS['SITE_DB']->query_select_value_if_there('w_rooms', 'name', array('location_realm' => $realm, 'location_x' => $x, 'location_y' => $y));
-    if (!is_null($r)) {
+    if ($r !== null) {
         buildr_refresh_with_message(do_lang_tempcode('W_ROOM_ALREADY'), 'warn');
     }
 
@@ -353,7 +353,7 @@ function add_realm_wrap($member_id, $name, $troll_name, $jail_name, $jail_text, 
     }
 
     // Charge them
-    if ((!is_null($member_id)) && (!has_privilege($member_id, 'administer_buildr'))) {
+    if (($member_id !== null) && (!has_privilege($member_id, 'administer_buildr'))) {
         // Have they been a member long enough for a new realm?
         $fortnights = (time() - $GLOBALS['FORUM_DRIVER']->get_member_join_timestamp($member_id)) / (60 * 60 * 24 * 7 * 2);
         $made = $GLOBALS['SITE_DB']->query_select_value('w_realms', 'COUNT(*)', array('owner' => $member_id));
@@ -371,7 +371,7 @@ function add_realm_wrap($member_id, $name, $troll_name, $jail_name, $jail_text, 
 
     // Find the next available $realm
     $temp = $GLOBALS['SITE_DB']->query_select_value_if_there('w_realms', 'id');
-    if (is_null($temp)) {
+    if ($temp === null) {
         $realm = 0; // Our first realm
     } else {
         $temp = $GLOBALS['SITE_DB']->query_select_value('w_realms', 'MAX(id)');
@@ -466,10 +466,10 @@ function add_portal_wrap($member_id, $name, $text, $end_location_realm, $end_loc
 
     // Get $realm,$x,$y from $member_id
     list($realm, $x, $y) = get_loc_details($member_id);
-    if (is_null($end_location_realm)) {
+    if ($end_location_realm === null) {
         buildr_refresh_with_message(do_lang_tempcode('W_MISSING_DESTINATION_REALM'), 'warn');
     }
-    if ((is_null($end_location_x)) || (is_null($end_location_y))) {
+    if (($end_location_x === null) || ($end_location_y === null)) {
         buildr_refresh_with_message(do_lang_tempcode('W_MISSING_DESTINATION'), 'warn');
     }
     if ($name == '') {
@@ -478,7 +478,7 @@ function add_portal_wrap($member_id, $name, $text, $end_location_realm, $end_loc
 
     // Check $end_location_realm exists
     $allow_portal = $GLOBALS['SITE_DB']->query_select_value_if_there('w_rooms', 'allow_portal', array('location_x' => $end_location_x, 'location_y' => $end_location_y, 'location_realm' => $end_location_realm));
-    if (is_null($allow_portal)) {
+    if ($allow_portal === null) {
         buildr_refresh_with_message(do_lang_tempcode('W_NO_END'), 'warn');
     }
     if ($allow_portal == 0) {
@@ -487,7 +487,7 @@ function add_portal_wrap($member_id, $name, $text, $end_location_realm, $end_loc
 
     // Check we don't have a portal to this realm here already
     $t = $GLOBALS['SITE_DB']->query_select_value_if_there('w_portals', 'name', array('start_location_x' => $x, 'start_location_y' => $y, 'start_location_realm' => $realm, 'end_location_realm' => $end_location_realm));
-    if (!is_null($t)) {
+    if ($t !== null) {
         buildr_refresh_with_message(do_lang_tempcode('W_DUPE_END'), 'warn');
     }
 
@@ -784,7 +784,7 @@ function edit_room_wrap($member_id, $name, $text, $password_question, $password_
     // Make sure the new x,y,realm is free
     if (($x != $new_x) || ($y != $new_y) || ($realm != $new_realm)) {
         $r = $GLOBALS['SITE_DB']->query_select_value_if_there('w_rooms', 'name', array('location_realm' => $new_realm, 'location_x' => $new_x, 'location_y' => $new_y));
-        if (!is_null($r)) {
+        if ($r !== null) {
             buildr_refresh_with_message(do_lang_tempcode('W_ROOM_ALREADY'), 'warn');
         }
     }
@@ -842,7 +842,7 @@ function edit_realm_wrap($member_id, $name, $troll_name, $qa, $private, $new_own
     if ($name == '') {
         buildr_refresh_with_message(do_lang_tempcode('W_MISSING_NAME'), 'warn');
     }
-    if (is_null($new_owner)) {
+    if ($new_owner === null) {
         $new_owner = $member_id;
     }
     if ($troll_name == '') {
@@ -906,16 +906,16 @@ function edit_portal_wrap($member_id, $dest_realm, $name, $text, $end_location_r
         buildr_refresh_with_message(do_lang_tempcode('W_MISSING_NAME'), 'warn');
     }
 
-    if (is_null($end_location_realm)) {
+    if ($end_location_realm === null) {
         buildr_refresh_with_message(do_lang_tempcode('W_MISSING_DESTINATION_REALM'), 'warn');
     }
-    if ((is_null($end_location_x)) || (is_null($end_location_y))) {
+    if (($end_location_x === null) || ($end_location_y === null)) {
         buildr_refresh_with_message(do_lang_tempcode('W_MISSING_DESTINATION'), 'warn');
     }
-    if (is_null($new_realm)) {
+    if ($new_realm === null) {
         buildr_refresh_with_message(do_lang_tempcode('W_MISSING_START_REALM'), 'warn');
     }
-    if ((is_null($new_x)) || (is_null($new_y))) {
+    if (($new_x === null) || ($new_y === null)) {
         buildr_refresh_with_message(do_lang_tempcode('W_MISSING_START'), 'warn');
     }
 
@@ -938,7 +938,7 @@ function edit_portal_wrap($member_id, $dest_realm, $name, $text, $end_location_r
 
     // Check $end_location_realm exists
     $allow_portal = $GLOBALS['SITE_DB']->query_select_value_if_there('w_rooms', 'allow_portal', array('location_x' => $end_location_x, 'location_y' => $end_location_y, 'location_realm' => $end_location_realm));
-    if (is_null($allow_portal)) {
+    if ($allow_portal === null) {
         buildr_refresh_with_message(do_lang_tempcode('W_NO_END'), 'warn');
     }
     if (($allow_portal == 0) && ($dest_realm == $end_location_realm)) {
@@ -948,7 +948,7 @@ function edit_portal_wrap($member_id, $dest_realm, $name, $text, $end_location_r
     if (($dest_realm != $end_location_realm) || ($x != $new_x) || ($y != $new_y) || ($realm != $new_realm)) {
         // Check we don't have a portal to this realm here already
         $t = $GLOBALS['SITE_DB']->query_select_value_if_there('w_portals', 'name', array('start_location_x' => $new_x, 'start_location_y' => $new_y, 'start_location_realm' => $new_realm, 'end_location_realm' => $end_location_realm));
-        if (!is_null($t)) {
+        if ($t !== null) {
             buildr_refresh_with_message(do_lang_tempcode('W_DUPE_END'), 'warn');
         }
     }
@@ -1021,7 +1021,7 @@ function edit_item($name, $original_name, $bribable, $healthy, $picture_url, $ne
     // Support renaming
     if ((strlen($name) > 0) && ($name != $original_name)) {
         $r = $GLOBALS['SITE_DB']->query_select_value_if_there('w_itemdef', 'bribable', array('name' => $name));
-        if (!is_null($r)) {
+        if ($r !== null) {
             buildr_refresh_with_message(do_lang_tempcode('W_DUPE_ITEM'), 'warn');
         }
         $GLOBALS['SITE_DB']->query_update('w_itemdef', array('name' => $name), array('name' => $original_name), '', 1);
@@ -1065,14 +1065,14 @@ function edit_item_wrap_copy($member_id, $name, $cost, $not_infinite, $new_x, $n
     if (($x != $new_x) || ($y != $new_y) || ($realm != $new_realm)) {
         // Check we don't have a copy of this item at new dest already
         $t = $GLOBALS['SITE_DB']->query_select_value_if_there('w_items', 'name', array('location_x' => $new_x, 'location_y' => $new_y, 'location_realm' => $new_realm, 'copy_owner' => $member, 'name' => $name));
-        if (!is_null($t)) {
+        if ($t !== null) {
             buildr_refresh_with_message(do_lang_tempcode('W_COPY_SOURCE_ALREADY'), 'warn');
         }
     }
 
     // Fix infinity source thing... we can never make a non-infinite source into an infinite source
     $old_not_infinite = $GLOBALS['SITE_DB']->query_select_value_if_there('w_items', 'not_infinite', array('location_x' => $x, 'location_y' => $y, 'location_realm' => $realm, 'copy_owner' => $member, 'name' => $name));
-    if (is_null($old_not_infinite)) {
+    if ($old_not_infinite === null) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
     }
     if ($old_not_infinite == 1) {

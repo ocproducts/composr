@@ -190,7 +190,7 @@ function _create_selection_list_langs($select_lang = null, $show_unset = false)
 
     if ($show_unset) {
         global $LANGS_MAP_CACHE;
-        if (!is_null($LANGS_MAP_CACHE)) {
+        if ($LANGS_MAP_CACHE !== null) {
             asort($LANGS_MAP_CACHE);
             foreach ($LANGS_MAP_CACHE as $lang => $full) {
                 if (!array_key_exists($lang, $_langs)) {

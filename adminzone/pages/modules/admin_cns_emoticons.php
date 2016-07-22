@@ -188,7 +188,7 @@ class Module_admin_cns_emoticons extends Standard_crud_module
         /*if ($max < 1.0) { Ok - this is silly! Emoticons are tiny.
             require_code('files2');
             $config_url = get_upload_limit_config_url();
-            $text->attach(paragraph(do_lang_tempcode(is_null($config_url) ? 'MAXIMUM_UPLOAD' : 'MAXIMUM_UPLOAD_STAFF', escape_html(($max > 10.0) ? integer_format(intval($max)) : float_format($max)), escape_html(is_null($config_url) ? '' : $config_url))));
+            $text->attach(paragraph(do_lang_tempcode(($config_url === null) ? 'MAXIMUM_UPLOAD' : 'MAXIMUM_UPLOAD_STAFF', escape_html(($max > 10.0) ? integer_format(intval($max)) : float_format($max)), escape_html(($config_url === null) ? '' : $config_url))));
         }*/
 
         $hidden = build_keep_post_fields();

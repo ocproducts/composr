@@ -67,7 +67,7 @@ class Block_side_users_online
         $count = 0;
         require_code('users2');
         $members = get_users_online(false, null, $count);
-        if (is_null($members)) {
+        if ($members === null) {
             return new Tempcode(); // Too many to show
         }
 
@@ -89,7 +89,7 @@ class Block_side_users_online
             $username = $_member['cache_username'];
             $ip = $_member['ip'];
 
-            if ((is_guest($member)) || (is_null($username))) {
+            if ((is_guest($member)) || ($username === null)) {
                 if (!array_key_exists($ip, $done_ips)) {
                     $done_ips[$ip] = 1;
                     $guests++;

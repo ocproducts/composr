@@ -184,7 +184,7 @@ function reconstitute_booking_requests(&$request)
  */
 function get_future_member_booking_ids($member = null)
 {
-    if (is_null($member)) {
+    if ($member === null) {
         $member = get_member();
     }
 
@@ -216,7 +216,7 @@ function get_bookable_details_from_form()
 {
     $active_from = post_param_date('active_from');
     $active_to = post_param_date('active_to');
-    if (!is_null($active_to)) {
+    if ($active_to !== null) {
         if ($active_to < $active_from) {
             warn_exit(do_lang_tempcode('DATE_AROUND'));
         }
@@ -241,9 +241,9 @@ function get_bookable_details_from_form()
         'active_from_day' => intval(date('d', $active_from)),
         'active_from_month' => intval(date('m', $active_from)),
         'active_from_year' => intval(date('Y', $active_from)),
-        'active_to_day' => is_null($active_to) ? null : intval(date('d', $active_to)),
-        'active_to_month' => is_null($active_to) ? null : intval(date('m', $active_to)),
-        'active_to_year' => is_null($active_to) ? null : intval(date('Y', $active_to)),
+        'active_to_day' => ($active_to === null) ? null : intval(date('d', $active_to)),
+        'active_to_month' => ($active_to === null) ? null : intval(date('m', $active_to)),
+        'active_to_year' => ($active_to === null) ? null : intval(date('Y', $active_to)),
     );
 
     /*
@@ -361,17 +361,17 @@ function get_bookable_blacked_details_from_form()
  */
 function add_bookable($bookable_details, $codes, $blacked = null, $supplements = null, $add_date = null, $submitter = null)
 {
-    if (is_null($blacked)) {
+    if ($blacked === null) {
         $blacked = array();
     }
-    if (is_null($supplements)) {
+    if ($supplements === null) {
         $supplements = array();
     }
 
-    if (is_null($add_date)) {
+    if ($add_date === null) {
         $add_date = time();
     }
-    if (is_null($submitter)) {
+    if ($submitter === null) {
         $submitter = get_member();
     }
 
@@ -455,7 +455,7 @@ function edit_bookable($bookable_id, $bookable_details, $codes, $blacked = null,
     $bookable_details['calendar_type'] = $_old_bookable[0]['calendar_type'];
     require_code('calendar2');
     $external_feed = find_script('bookings_ical') . '?id=' . strval($bookable_id) . '&pass=' . md5('booking_salt_' . $GLOBALS['SITE_INFO']['master_password']);
-    if ((is_null($bookable_details['calendar_type'])) && (is_null($GLOBALS['SITE_DB']->query_select_value_if_there('calendar_types', 'id', array('id' => $bookable_details['calendar_type']))))) {
+    if (($bookable_details['calendar_type'] === null) && ($GLOBALS['SITE_DB']->query_select_value_if_there('calendar_types', 'id', array('id' => $bookable_details['calendar_type'])) === null)) {
         $bookable_details['calendar_type'] = add_event_type($title, 'calendar/booking', $external_feed);
     } else {
         edit_event_type($bookable_details['calendar_type'], $title, 'calendar/booking', $external_feed);
@@ -475,7 +475,7 @@ function edit_bookable($bookable_id, $bookable_details, $codes, $blacked = null,
         ));
     }
 
-    if (!is_null($blacked)) {
+    if ($blacked !== null) {
         $GLOBALS['SITE_DB']->query_delete('bookable_blacked_for', array('bookable_id' => $bookable_id));
         foreach ($blacked as $blacked_id) {
             $GLOBALS['SITE_DB']->query_insert('bookable_blacked_for', array(
@@ -485,7 +485,7 @@ function edit_bookable($bookable_id, $bookable_details, $codes, $blacked = null,
         }
     }
 
-    if (!is_null($supplements)) {
+    if ($supplements !== null) {
         $GLOBALS['SITE_DB']->query_delete('bookable_supplement_for', array('bookable_id' => $bookable_id));
         foreach ($supplements as $supplement_id) {
             $GLOBALS['SITE_DB']->query_insert('bookable_supplement_for', array(
@@ -505,7 +505,7 @@ function edit_bookable($bookable_id, $bookable_details, $codes, $blacked = null,
  */
 function delete_bookable($bookable_id)
 {
-    if (!is_null($GLOBALS['SITE_DB']->query_select_value_if_there('booking', 'id', array('bookable_id' => $bookable_id)))) {
+    if ($GLOBALS['SITE_DB']->query_select_value_if_there('booking', 'id', array('bookable_id' => $bookable_id)) !== null) {
         warn_exit(do_lang_tempcode('CANNOT_DELETE_BOOKINGS_EXIST'));
     }
 
@@ -521,7 +521,7 @@ function delete_bookable($bookable_id)
     delete_lang($_old_bookable[0]['categorisation']);
 
     $calendar_type = $_old_bookable[0]['calendar_type'];
-    if ((is_null($calendar_type)) && (is_null($GLOBALS['SITE_DB']->query_select_value_if_there('calendar_types', 'id', array('id' => $calendar_type)))) && ($GLOBALS['SITE_DB']->query_select_value('calendar_events', 'COUNT(*)', array('e_type' => $calendar_type)) == 0)) {
+    if (($calendar_type === null) && ($GLOBALS['SITE_DB']->query_select_value_if_there('calendar_types', 'id', array('id' => $calendar_type)) === null) && ($GLOBALS['SITE_DB']->query_select_value('calendar_events', 'COUNT(*)', array('e_type' => $calendar_type)) == 0)) {
         require_code('calendar2');
         delete_event_type($calendar_type);
     }
@@ -549,7 +549,7 @@ function add_bookable_supplement($details, $bookables = null)
     /*require_code('global4');   $title is not actually unique enough to do this
     prevent_double_submit('ADD_BOOKABLE_SUPPLEMENT', null, $title);*/
 
-    if (is_null($bookables)) {
+    if ($bookables === null) {
         $bookables = array();
     }
 
@@ -580,7 +580,7 @@ function add_bookable_supplement($details, $bookables = null)
  */
 function edit_bookable_supplement($supplement_id, $details, $bookables = null)
 {
-    if (is_null($bookables)) {
+    if ($bookables === null) {
         $bookables = array();
     }
 
@@ -596,7 +596,7 @@ function edit_bookable_supplement($supplement_id, $details, $bookables = null)
 
     $GLOBALS['SITE_DB']->query_update('bookable_supplement', $details, array('id' => $supplement_id), '', 1);
 
-    if (!is_null($bookables)) {
+    if ($bookables !== null) {
         $GLOBALS['SITE_DB']->query_delete('bookable_supplement_for', array('supplement_id' => $supplement_id));
         foreach ($bookables as $bookable_id) {
             $GLOBALS['SITE_DB']->query_insert('bookable_supplement_for', array(
@@ -641,7 +641,7 @@ function delete_bookable_supplement($supplement_id)
  */
 function add_bookable_blacked($details, $bookables = null)
 {
-    if (is_null($bookables)) {
+    if ($bookables === null) {
         $bookables = array();
     }
 
@@ -684,7 +684,7 @@ function edit_bookable_blacked($blacked_id, $details, $bookables = null)
 
     $GLOBALS['SITE_DB']->query_update('bookable_blacked', $details, array('id' => $blacked_id), '', 1);
 
-    if (!is_null($bookables)) {
+    if ($bookables !== null) {
         $GLOBALS['SITE_DB']->query_delete('bookable_blacked_for', array('blacked_id' => $blacked_id));
         foreach ($bookables as $bookable_id) {
             $GLOBALS['SITE_DB']->query_insert('bookable_blacked_for', array(

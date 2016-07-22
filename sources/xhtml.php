@@ -163,11 +163,11 @@ function xhtmlise_html($html, $definitely_want = false, $snippet = false)
             while (true) {
                 $token = _get_next_tag();
                 $temp .= $INBETWEEN_TEXT;
-                if (is_null($token)) {
+                if ($token === null) {
                     break;
                 }
                 if ($token[0] != '</' . $treat_as_cdata . '>') {
-                    if (!is_null($token[0])) {
+                    if ($token[0] !== null) {
                         $temp .= $token[0];
                     }
                 } else {
@@ -289,7 +289,7 @@ function xhtml_substr($html, $from, $length = null, $literal_pos = false, $ellip
     $c = 0; // The virtual length so far in the scan
     $total_length = strlen($html);
     $total_length_minus_one = $total_length - 1;
-    $end_pos = is_null($length) ? $total_length : ($from + $length);
+    $end_pos = ($length === null) ? $total_length : ($from + $length);
     for ($i = 0; $i < $total_length; $i++) {
         // Load the current character and the next one if the string has not arrived at the last character
         $current_char = $html[$i];
@@ -480,7 +480,7 @@ function xhtml_substr($html, $from, $length = null, $literal_pos = false, $ellip
                 $start_ellipses = '';
             }
             if ($ellipses) {
-                $end_ellipses = ((!is_null($length)) && (($end_pos < $total_length - 1)) ? $entity : '');
+                $end_ellipses = (($length !== null) && (($end_pos < $total_length - 1)) ? $entity : '');
             } else {
                 $end_ellipses = '';
             }
@@ -577,18 +577,18 @@ function _smart_grammar_says_futile($nieve_end_pos, $grammar_completeness_tolera
     foreach ($look_out as $l) {
         $pos = strpos($html, '<' . $l, $real_offset + 1);
         if ($pos !== false) {
-            if ((is_null($best_pos)) || ($best_pos > $pos)) {
+            if (($best_pos === null) || ($best_pos > $pos)) {
                 $best_pos = $pos;
             }
         }
         $pos = strpos($html, '</' . $l, $real_offset + 1);
         if ($pos !== false) {
-            if ((is_null($best_pos)) || ($best_pos > $pos)) {
+            if (($best_pos === null) || ($best_pos > $pos)) {
                 $best_pos = $pos;
             }
         }
     }
-    $length_of_paragraph = (is_null($best_pos) ? strlen($html) : $best_pos) - $real_offset;
+    $length_of_paragraph = (($best_pos === null) ? strlen($html) : $best_pos) - $real_offset;
 
     // Work it out, based on looking-ahead into this paragraph. If we can't get through 0.3 (hard-coded) then it's considered a futile paragraph.
     $jump_ahead = intval(round(0.3 * floatval($length_of_paragraph)));
@@ -622,18 +622,18 @@ function _smart_grammar_says_continue($nieve_end_pos, $grammar_completeness_tole
     foreach ($look_out as $l) {
         $pos = strpos($html, '<' . $l, $real_offset);
         if ($pos !== false) {
-            if ((is_null($best_pos)) || ($best_pos > $pos)) {
+            if (($best_pos === null) || ($best_pos > $pos)) {
                 $best_pos = $pos;
             }
         }
         $pos = strpos($html, '</' . $l, $real_offset);
         if ($pos !== false) {
-            if ((is_null($best_pos)) || ($best_pos > $pos)) {
+            if (($best_pos === null) || ($best_pos > $pos)) {
                 $best_pos = $pos;
             }
         }
     }
-    $para_end_pos = is_null($best_pos) ? strlen($html) : $best_pos;
+    $para_end_pos = ($best_pos === null) ? strlen($html) : $best_pos;
     if ($para_end_pos == $real_offset + 1) {
         return false; // Just finished paragraph
     }
@@ -654,12 +654,12 @@ function _smart_grammar_says_continue($nieve_end_pos, $grammar_completeness_tole
     foreach ($look_out as $l) {
         $pos = strpos($html, $l, $real_offset);
         if ($pos !== false) {
-            if ((is_null($best_pos)) || ($best_pos > $pos)) {
+            if (($best_pos === null) || ($best_pos > $pos)) {
                 $best_pos = $pos;
             }
         }
     }
-    $sentence_end_pos = is_null($best_pos) ? strlen($html) : ($best_pos + 1);
+    $sentence_end_pos = ($best_pos === null) ? strlen($html) : ($best_pos + 1);
     if ($sentence_end_pos == $real_offset) {
         return false; // Just finished sentence
     }

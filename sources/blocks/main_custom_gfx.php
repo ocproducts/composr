@@ -133,7 +133,7 @@ class Block_main_custom_gfx
                     $nxpos = 0;
                     for ($i = 0; $i < strlen($line); $i++) {
                         list(, , $rx1, $ry1, $rx2, $ry2) = imagettfbbox(floatval($map['font_size']), 0.0, $file_base . $font . '.ttf', $previous);
-                        if (!is_null($previous)) // check for existing previous character
+                        if ($previous !== null) // check for existing previous character
                         {
                             $nxpos += max($rx1, $rx2) + 1;
                         }

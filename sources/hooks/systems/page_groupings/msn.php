@@ -37,7 +37,7 @@ class Hook_page_groupings_msn
         }
 
         $zone = get_page_zone('netlink', false);
-        if (is_null($zone)) {
+        if ($zone === null) {
             return array();
         }
 

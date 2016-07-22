@@ -111,7 +111,7 @@ class Hook_import_vb3
         }
         require($file_base . '/includes/config.php');
 
-        if (!is_null($dbname)) {
+        if ($dbname !== null) {
             $sql_database = $dbname;
             $sql_user = $dbusername;
             $sql_pass = $dbpassword;
@@ -233,7 +233,7 @@ class Hook_import_vb3
             }
 
             $row_group_leader = null;
-            if (!is_null($row['userid'])) {
+            if ($row['userid'] !== null) {
                 $row_group_leader = -$row['userid']; // This will be fixed when we import members
             }
 
@@ -244,7 +244,7 @@ class Hook_import_vb3
             $is_super_moderator = (($row['adminpermissions'] & 1) != 0) ? 1 : 0;
 
             $id_new = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('g_name') => $row['title']));
-            if (is_null($id_new)) {
+            if ($id_new === null) {
                 $id_new = cns_make_group($row['title'], 0, $is_super_admin, $is_super_moderator, $row['usertitle'], '', $row_promotion_target, $row['reputation'], $row_group_leader, 5, 0, 5, $row['attachlimit'], $row['avatarmaxwidth'], $row['avatarmaxheight'], $PROBED_FORUM_CONFIG['postmaxchars'], array_key_exists('sigmax', $PROBED_FORUM_CONFIG) ? $PROBED_FORUM_CONFIG['sigmax'] : 700);
             }
 
@@ -267,7 +267,7 @@ class Hook_import_vb3
             foreach ($denies as $deny) {
                 list($page, $zone) = $deny;
                 $test = $GLOBALS['SITE_DB']->query_select_value_if_there('group_page_access', 'group_id', array('group_id' => $id_new, 'zone_name' => $zone, 'page_name' => $page));
-                if (is_null($test)) {
+                if ($test === null) {
                     $GLOBALS['SITE_DB']->query_insert('group_page_access', array('group_id' => $id_new, 'zone_name' => $zone, 'page_name' => $page));
                 }
             }
@@ -289,7 +289,7 @@ class Hook_import_vb3
 
         // Now we must fix promotion
         foreach ($rows as $row) {
-            if (!is_null($row['joinusergroupid'])) {
+            if ($row['joinusergroupid'] !== null) {
                 $row_promotion_target = $remap_id[$row['joinusergroupid']];
                 $GLOBALS['FORUM_DB']->query_update('f_groups', array('g_promotion_target' => $row_promotion_target), array('id' => $remap_id[$row['usergroupid']]), '', 1);
             }
@@ -315,7 +315,7 @@ class Hook_import_vb3
                 }
 
                 $test = $GLOBALS['CNS_DRIVER']->get_member_from_username($row['username']);
-                if (!is_null($test)) {
+                if ($test !== null) {
                     import_id_remap_put('member', strval($row['userid']), $test);
                     continue;
                 }
@@ -408,7 +408,7 @@ class Hook_import_vb3
         $rows = array();
         do {
             $extra = '';
-            if (is_null($dbname)) {
+            if ($dbname === null) {
                 $extra = ',a.filedata AS avatardata,p.filedata AS profilepicdata';
             }
             $query = 'SELECT *,p.filename AS p_filename,a.filename AS a_filename,u.userid AS userid' . $extra . ' FROM ' . $table_prefix . 'user u LEFT JOIN ' . $table_prefix . 'customavatar a ON a.userid=u.userid LEFT JOIN ' . $table_prefix . 'customprofilepic p ON p.userid=u.userid ORDER BY u.userid';
@@ -422,12 +422,12 @@ class Hook_import_vb3
 
                 $photo_url = '';
                 $photo_thumb_url = '';
-                if (!is_null($row['profilepicdata'])) {
+                if ($row['profilepicdata'] !== null) {
                     list($photo_url, $photo_thumb_url) = $this->data_to_disk($row['profilepicdata'], $row['p_filename'], 'cns_photos');
                 }
 
                 $avatar_url = '';
-                if (!is_null($row['avatardata'])) {
+                if ($row['avatardata'] !== null) {
                     list($avatar_url) = $this->data_to_disk($row['avatardata'], $row['a_filename'], 'cns_avatars', false);
                 } else {
                     if ($row['avatarid'] != 0) {
@@ -482,14 +482,14 @@ class Hook_import_vb3
                 $row['description'] = $db->query_value_if_there('SELECT text FROM ' . $table_prefix . 'phrase WHERE ' . db_string_equal_to('product', 'vbulletin') . ' AND ' . db_string_equal_to('varname', 'field' . strval($row['profilefieldid']) . '_desc'));
             }
             $id_new = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('cf_name') => $row['title']));
-            if (is_null($id_new)) {
+            if ($id_new === null) {
                 $id_new = cns_make_custom_field($row['title'], 0, $row['description'], '', 1 - $row['hidden'], 1 - $row['hidden'], $row['editable'], 0, $type, $row['required'], $row['memberlist'], $row['memberlist'], $row['displayorder'], '', 0, '', true);
             }
 
             foreach ($members as $member) {
                 $v = $member['field' . strval($row['profilefieldid'])];
                 $member_id = import_id_remap_get('member', strval($member['userid']), true);
-                if (($v != '') && (!is_null($member_id))) {
+                if (($v != '') && ($member_id !== null)) {
                     cns_set_custom_field($member_id, $id_new, $v);
                 }
             }
@@ -516,7 +516,7 @@ class Hook_import_vb3
             $title = $row['title'];
 
             $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forum_groupings', 'id', array('c_title' => $title));
-            if (!is_null($test)) {
+            if ($test !== null) {
                 import_id_remap_put('category', strval($row['forumid']), $test);
                 continue;
             }
@@ -542,7 +542,7 @@ class Hook_import_vb3
         $rows = $db->query('SELECT * FROM ' . $table_prefix . 'forum WHERE parentid<>-1');
         foreach ($rows as $row) {
             $remapped = import_id_remap_get('forum', strval($row['forumid']), true);
-            if (!is_null($remapped)) {
+            if ($remapped !== null) {
                 $remap_id[$row['forumid']] = $remapped;
                 continue;
             }
@@ -553,7 +553,7 @@ class Hook_import_vb3
             $post_count_increment = 1;//$row['options']&4096; This didn't work, not important though
 
             $category_id = import_id_remap_get('category', strval($row['parentid']), true);
-            if (is_null($category_id)) {
+            if ($category_id === null) {
                 $category_id = db_get_first_id();
             }
             $parent_forum = db_get_first_id();
@@ -593,7 +593,7 @@ class Hook_import_vb3
             $parents = explode(',', $row['parentlist']);
             if (array_key_exists(2, $parents)) {
                 $category_id = import_id_remap_get('category', strval($parents[1]), true);
-                $r = $parents[is_null($category_id) ? 1 : 2];
+                $r = $parents[($category_id === null) ? 1 : 2];
                 if ($r != -1) {
                     $parent_id = $remap_id[$r];
                     $GLOBALS['FORUM_DB']->query_update('f_forums', array('f_parent_forum' => $parent_id), array('id' => $remap_id[$row['forumid']]), '', 1);
@@ -653,14 +653,14 @@ class Hook_import_vb3
 
         // Read logs
         $rows = $db->query('SELECT * FROM ' . $table_prefix . 'threadread', null, null, true);
-        if (!is_null($rows)) {
+        if ($rows !== null) {
             foreach ($rows as $row) {
                 $member_id = import_id_remap_get('member', $row['userid'], true);
                 $topic_id = import_id_remap_get('topic', $row['threadid'], true);
-                if (is_null($member_id)) {
+                if ($member_id === null) {
                     continue;
                 }
-                if (is_null($topic_id)) {
+                if ($topic_id === null) {
                     continue;
                 }
                 $new_row = array('l_member_id' => $member_id, 'l_topic_id' => $topic_id, 'l_time' => $row['readtime']);
@@ -691,12 +691,12 @@ class Hook_import_vb3
                 }
 
                 $topic_id = import_id_remap_get('topic', strval($row['threadid']), true);
-                if (is_null($topic_id)) {
+                if ($topic_id === null) {
                     import_id_remap_put('post', strval($row['postid']), -1);
                     continue;
                 }
                 $member_id = import_id_remap_get('member', strval($row['userid']), true);
-                if (is_null($member_id)) {
+                if ($member_id === null) {
                     $member_id = db_get_first_id();
                 }
 
@@ -706,7 +706,7 @@ class Hook_import_vb3
                     $forum_id = $TOPIC_FORUM_CACHE[$topic_id];
                 } else {
                     $forum_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 't_forum_id', array('id' => $topic_id));
-                    if (is_null($forum_id)) {
+                    if ($forum_id === null) {
                         continue;
                     }
                     $TOPIC_FORUM_CACHE[$topic_id] = $forum_id;
@@ -716,7 +716,7 @@ class Hook_import_vb3
                 if ($row['parentid'] == 0) {
                     $topics = $db->query('SELECT title FROM ' . $table_prefix . 'thread WHERE threadid=' . $row['threadid']);
                     $title = $topics[0]['title'];
-                } elseif (!is_null($row['title'])) {
+                } elseif ($row['title'] !== null) {
                     $title = $row['title'];
                 }
 
@@ -788,7 +788,7 @@ class Hook_import_vb3
     public function fix_links($post, $db, $table_prefix)
     {
         global $OLD_BASE_URL;
-        if (is_null($OLD_BASE_URL)) {
+        if ($OLD_BASE_URL === null) {
             $rows = $db->query('SELECT value FROM ' . $table_prefix . 'setting WHERE ' . db_string_equal_to('varname', 'bburl'));
             $OLD_BASE_URL = $rows[0]['value'];
         }
@@ -823,7 +823,7 @@ class Hook_import_vb3
                 }
 
                 $post_id = import_id_remap_get('post', strval($row['postid']), true);
-                if (is_null($post_id)) {
+                if ($post_id === null) {
                     continue;
                 }
 
@@ -931,7 +931,7 @@ class Hook_import_vb3
             }
 
             $topic_id = import_id_remap_get('topic', strval($row['threadid']), true);
-            if (is_null($topic_id)) {
+            if ($topic_id === null) {
                 continue;
             }
 
@@ -951,7 +951,7 @@ class Hook_import_vb3
 
             foreach ($rows2 as $row2) {
                 $member_id = $row2['userid'];
-                if ((!is_null($member_id)) && ($member_id != 0)) {
+                if (($member_id !== null) && ($member_id != 0)) {
                     $answer = array_key_exists($row2['voteoption'] - 1, $answers) ? $answers[$row2['voteoption'] - 1] : -1;
                     $GLOBALS['FORUM_DB']->query_insert('f_poll_votes', array('pv_poll_id' => $id_new, 'pv_member_id' => $member_id, 'pv_answer_id' => $answer, 'pv_ip' => ''));
                 }
@@ -979,7 +979,7 @@ class Hook_import_vb3
             }
 
             $submitter = import_id_remap_get('member', strval($row['userid']), true);
-            if (is_null($submitter)) {
+            if ($submitter === null) {
                 $submitter = $GLOBALS['CNS_DRIVER']->get_guest_id();
             }
 
@@ -1088,11 +1088,11 @@ class Hook_import_vb3
 
             // Create topic
             $from_id = import_id_remap_get('member', strval($row['fromuserid']), true);
-            if (is_null($from_id)) {
+            if ($from_id === null) {
                 $from_id = $GLOBALS['CNS_DRIVER']->get_guest_id();
             }
             $to_id = import_id_remap_get('member', strval($row['userid']), true);
-            if (is_null($to_id)) {
+            if ($to_id === null) {
                 $to_id = $GLOBALS['CNS_DRIVER']->get_guest_id();
             }
             $topic_id = cns_make_topic(null, '', $this->convert_topic_emoticon($row['iconid']), 1, 1, 0, 0, $from_id, $to_id, false);
@@ -1108,7 +1108,7 @@ class Hook_import_vb3
                 $post = $this->fix_links($_postdetails['message'], $db, $table_prefix);
                 $validated = 1;
                 $from_id = import_id_remap_get('member', strval($_postdetails['fromuserid']), true);
-                if (is_null($from_id)) {
+                if ($from_id === null) {
                     $from_id = $GLOBALS['CNS_DRIVER']->get_guest_id();
                 }
                 $poster_name_if_guest = $_postdetails['fromusername'];
@@ -1177,7 +1177,7 @@ class Hook_import_vb3
 
             global $VALID_COMCODE_TAGS;
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('custom_comcode', 'tag_tag', array('tag_tag' => $row['bbcodetag']));
-            if ((array_key_exists($row['bbcodetag'], $VALID_COMCODE_TAGS)) || (!is_null($test))) {
+            if ((array_key_exists($row['bbcodetag'], $VALID_COMCODE_TAGS)) || ($test !== null)) {
                 import_id_remap_put('custom_comcode', strval($row['bbcodeid']), 1);
                 continue;
             }
@@ -1217,11 +1217,11 @@ class Hook_import_vb3
             }
 
             $member_id = import_id_remap_get('member', strval($row['userid']), true);
-            if (is_null($member_id)) {
+            if ($member_id === null) {
                 continue;
             }
             $forum_id = import_id_remap_get('forum', strval($row['forumid']), true);
-            if (is_null($forum_id)) {
+            if ($forum_id === null) {
                 continue;
             }
             enable_notifications('cns_topic', 'forum:' . strval($forum_id), $member_id);
@@ -1237,11 +1237,11 @@ class Hook_import_vb3
                 }
 
                 $member_id = import_id_remap_get('member', strval($row['userid']), true);
-                if (is_null($member_id)) {
+                if ($member_id === null) {
                     continue;
                 }
                 $topic_id = import_id_remap_get('topic', strval($row['threadid']), true);
-                if (is_null($topic_id)) {
+                if ($topic_id === null) {
                     continue;
                 }
                 enable_notifications('cns_topic', strval($topic_id), $member_id);

@@ -35,7 +35,7 @@ class Hook_task_dispatch_notification
         require_code('notifications');
         require_lang('notifications');
 
-        if (!is_null($csss)) {
+        if ($csss !== null) {
             foreach ($csss as $css) {
                 require_css($css);
             }

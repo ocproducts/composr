@@ -102,12 +102,12 @@ class Module_members
                     access_denied('NOT_AS_GUEST');
                 }
                 $username = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_username');
-                if ((is_null($username)) || (is_guest($member_id_of))) {
+                if (($username === null) || (is_guest($member_id_of))) {
                     warn_exit(do_lang_tempcode('MEMBER_NO_EXIST'));
                 }
             } else {
                 $member_id_of = $GLOBALS['FORUM_DRIVER']->get_member_from_username($username);
-                if (is_null($member_id_of)) {
+                if ($member_id_of === null) {
                     warn_exit(do_lang_tempcode('_MEMBER_NO_EXIST', escape_html($username)));
                 }
             }

@@ -154,7 +154,7 @@ class Hook_sitemap_news_category extends Hook_sitemap_content
 
         // Categories done after node callback, to ensure sensible ordering
         $children = $this->_get_children_nodes($content_id, $page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level, $options, $zone, $meta_gather, $row);
-        if (!is_null($children)) {
+        if ($children !== null) {
             foreach ($children as &$child) {
                 if (strpos($page_link, ':blog=0') !== false) {
                     $child['page_link'] .= ':blog=0';

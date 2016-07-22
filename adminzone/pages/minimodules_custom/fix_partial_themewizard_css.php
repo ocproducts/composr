@@ -160,7 +160,7 @@ if (function_exists('imagecolorallocatealpha')) {
             $saveat_url = $composite . $image_code . '.png';
             if (!file_exists($saveat)) {
                 $image = calculate_theme($seed, 'default', 'equations', $image_code, $dark, $theme_map, $theme_landscape, 'EN');
-                if (!is_null($image)) {
+                if ($image !== null) {
                     $pos = strpos($image_code, '/');
                     if (($pos !== false) || (strpos($orig_path, '/EN/') !== false)) {
                         afm_make_directory($composite . substr($image_code, 0, $pos), true, true);

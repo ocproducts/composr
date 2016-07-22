@@ -66,7 +66,7 @@ function _members_filtercode($db, $info, $context, &$extra_join, &$extra_select,
     } elseif (preg_match('#^field\_\d+$#', $filter_key) == 0) { // If it's not already correct
         require_code('cns_members');
         $cpf_id = find_cpf_field_id($filter_key);
-        if (is_null($cpf_id)) {
+        if ($cpf_id === null) {
             return null;
         }
         $new_filter_key = 'field_' . strval($cpf_id);
@@ -93,7 +93,7 @@ function _members_filtercode($db, $info, $context, &$extra_join, &$extra_select,
  */
 function render_member_box($member_id, $preview = false, $show_avatar = true, $extra_fields = null, $give_context = true, $guid = '')
 {
-    if (is_null($member_id)) { // Should never happen, but we need to be defensive
+    if ($member_id === null) { // Should never happen, but we need to be defensive
         return new Tempcode();
     }
 
@@ -181,7 +181,7 @@ function render_member_box($member_id, $preview = false, $show_avatar = true, $e
  */
 function cns_may_whisper($target, $member_id = null)
 {
-    if (is_null($member_id)) {
+    if ($member_id === null) {
         $member_id = get_member();
     }
 

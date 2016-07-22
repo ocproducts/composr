@@ -63,7 +63,7 @@ class Block_main_leader_board
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->create_table('leader_board', array(
                 'lb_member' => '*MEMBER',
                 'lb_points' => 'INTEGER',
@@ -115,7 +115,7 @@ class Block_main_leader_board
             $profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member, true);
 
             $username = $GLOBALS['FORUM_DRIVER']->get_username($member);
-            if (is_null($username)) {
+            if ($username === null) {
                 continue; // Deleted member now
             }
 

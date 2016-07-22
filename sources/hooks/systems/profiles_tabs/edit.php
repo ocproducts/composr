@@ -127,7 +127,7 @@ class Hook_profiles_tabs_edit
         $_tabs = array();
         $tab_first = true;
         foreach ($tabs as $i => $tab) {
-            if (is_null($tab)) {
+            if ($tab === null) {
                 continue;
             }
 
@@ -136,7 +136,7 @@ class Hook_profiles_tabs_edit
             $tab_last = true;
             foreach ($tabs as $j => $tabj) {
                 if ($j > $i) {
-                    if (!is_null($tabj)) {
+                    if ($tabj !== null) {
                         $tab_last = false;
                         break;
                     }

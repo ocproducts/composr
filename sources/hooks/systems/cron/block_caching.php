@@ -97,7 +97,7 @@ class Hook_cron_block_caching
                     } else {
                         if ($cache_on != '') {
                             $_cache_on = eval('return ' . $cache_on . ';'); // NB: This uses $map, as $map is referenced inside $cache_on
-                            if (is_null($_cache_on)) {
+                            if ($_cache_on === null) {
                                 return null;
                             }
                             foreach ($_cache_on as $on) {

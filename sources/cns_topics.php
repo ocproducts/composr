@@ -31,14 +31,14 @@
  */
 function render_topic_box($row, $zone = '_SEARCH', $give_context = true, $include_breadcrumbs = true, $root = null, $guid = '')
 {
-    if (is_null($row)) { // Should never happen, but we need to be defensive
+    if ($row === null) { // Should never happen, but we need to be defensive
         return new Tempcode();
     }
 
     require_lang('cns');
 
     $map = array('page' => 'topicview', 'id' => $row['id']);
-    if (!is_null($root)) {
+    if ($root !== null) {
         $map['keep_forum_root'] = $root;
     }
     $url = build_url($map, get_module_zone('topicview'));
@@ -51,7 +51,7 @@ function render_topic_box($row, $zone = '_SEARCH', $give_context = true, $includ
     $breadcrumbs = mixed();
     if ($include_breadcrumbs) {
         require_code('cns_forums');
-        $breadcrumbs = breadcrumb_segments_to_tempcode(cns_forum_breadcrumbs($row['t_forum_id'], null, null, false, is_null($root) ? get_param_integer('keep_forum_root', null) : $root));
+        $breadcrumbs = breadcrumb_segments_to_tempcode(cns_forum_breadcrumbs($row['t_forum_id'], null, null, false, ($root === null) ? get_param_integer('keep_forum_root', null) : $root));
     }
 
     $num_posts = $row['t_cache_num_posts'];
@@ -81,7 +81,7 @@ function render_topic_box($row, $zone = '_SEARCH', $give_context = true, $includ
  */
 function cns_get_topic_where($topic_id, $member_id = null)
 {
-    if (is_null($member_id)) {
+    if ($member_id === null) {
         $member_id = get_member();
     }
 
@@ -109,7 +109,7 @@ function cns_get_topic_where($topic_id, $member_id = null)
  */
 function cns_may_make_private_topic($member_id = null)
 {
-    if (is_null($member_id)) {
+    if ($member_id === null) {
         $member_id = get_member();
     }
 
@@ -141,19 +141,19 @@ function cns_check_make_private_topic()
  */
 function cns_may_post_topic($forum_id, $member_id = null)
 {
-    if (is_null($member_id)) {
+    if ($member_id === null) {
         $member_id = get_member();
     }
 
     if (!has_privilege($member_id, 'submit_midrange_content', 'topics', array('forums', $forum_id))) {
         return false;
     }
-    if (is_null($forum_id)) {
+    if ($forum_id === null) {
         return true;
     }
 
     $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_warnings', 'id', array('p_silence_from_forum' => $forum_id, 'w_member_id' => $member_id));
-    if (!is_null($test)) {
+    if ($test !== null) {
         return false;
     }
 
@@ -168,7 +168,7 @@ function cns_may_post_topic($forum_id, $member_id = null)
  */
 function cns_may_report_post($member_id = null)
 {
-    if (is_null($member_id)) {
+    if ($member_id === null) {
         $member_id = get_member();
     }
 
@@ -185,7 +185,7 @@ function cns_may_report_post($member_id = null)
 function cns_has_replied_topic($topic_id, $member_id = null)
 {
     $test = $GLOBALS['FORUM_DB']->query_select_value('f_posts', 'id', array('p_topic_id' => $topic_id, 'p_poster' => $member_id));
-    return !is_null($test);
+    return $test !== null;
 }
 
 /**
@@ -198,11 +198,11 @@ function cns_has_replied_topic($topic_id, $member_id = null)
  */
 function cns_may_edit_topics_by($forum_id, $member_id, $resource_owner)
 {
-    if (is_null($member_id)) {
+    if ($member_id === null) {
         $member_id = get_member();
     }
 
-    if (is_null($forum_id)) {
+    if ($forum_id === null) {
         return has_privilege($member_id, 'moderate_private_topic');
     }
 
@@ -219,11 +219,11 @@ function cns_may_edit_topics_by($forum_id, $member_id, $resource_owner)
  */
 function cns_may_delete_topics_by($forum_id, $member_id, $resource_owner)
 {
-    if (is_null($member_id)) {
+    if ($member_id === null) {
         $member_id = get_member();
     }
 
-    if (is_null($forum_id)) {
+    if ($forum_id === null) {
         return has_privilege($member_id, 'moderate_private_topic');
     }
 
@@ -239,10 +239,10 @@ function cns_may_delete_topics_by($forum_id, $member_id, $resource_owner)
  */
 function cns_ping_topic_read($topic_id, $member_id = null, $timestamp = null)
 {
-    if (is_null($member_id)) {
+    if ($member_id === null) {
         $member_id = get_member();
     }
-    if (is_null($timestamp)) {
+    if ($timestamp === null) {
         $timestamp = time();
     }
     if (!$GLOBALS['SITE_DB']->table_is_locked('f_read_logs')) {
@@ -262,16 +262,16 @@ function cns_ping_topic_read($topic_id, $member_id = null, $timestamp = null)
  */
 function cns_has_read_topic($topic_id, $topic_last_time = null, $member_id = null, $member_last_time = null)
 {
-    if (is_null($member_id)) {
+    if ($member_id === null) {
         $member_id = get_member();
     }
     if ($member_id == $GLOBALS['CNS_DRIVER']->get_guest_id()) {
         return true;
     }
 
-    if (is_null($topic_last_time)) {
+    if ($topic_last_time === null) {
         $topic_last_time = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 't_cache_last_time', array('id' => $topic_id));
-        if (is_null($topic_last_time)) {
+        if ($topic_last_time === null) {
             return true; // Should not happen
         }
     }
@@ -290,10 +290,10 @@ function cns_has_read_topic($topic_id, $topic_last_time = null, $member_id = nul
     if ($topic_last_time < $post_read_history_days_ago) {
         return true; // We don't store that old
     }
-    if (is_null($member_last_time)) {
+    if ($member_last_time === null) {
         $member_last_time = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_read_logs', 'l_time', array('l_member_id' => $member_id, 'l_topic_id' => $topic_id));
     }
-    if (is_null($member_last_time)) {
+    if ($member_last_time === null) {
         return false;
     }
     if ($member_last_time < $topic_last_time) {
@@ -311,7 +311,7 @@ function cns_has_read_topic($topic_id, $topic_last_time = null, $member_id = nul
  */
 function cns_has_special_pt_access($topic_id, $member_id = null)
 {
-    if (is_null($member_id)) {
+    if ($member_id === null) {
         $member_id = get_member();
     }
 

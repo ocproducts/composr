@@ -33,7 +33,7 @@ class Forum_driver_wbb22 extends Forum_driver_base
     public function check_db()
     {
         $test = $this->db->query('SELECT COUNT(*) FROM ' . $this->db->get_table_prefix() . 'users', null, null, true);
-        return !is_null($test);
+        return $test !== null;
     }
 
     /**
@@ -327,7 +327,7 @@ class Forum_driver_wbb22 extends Forum_driver_base
     public function get_member_avatar_url($member)
     {
         $avatar = $this->db->query_select_value_if_there('avatars', 'avatarname', array('userid' => $member));
-        if ((is_null($avatar)) || ($avatar == '') || (!url_is_local($avatar))) {
+        if (($avatar === null) || ($avatar == '') || (!url_is_local($avatar))) {
             return $avatar;
         }
         return get_forum_base_url() . '/images/avatars/' . $avatar;
@@ -438,19 +438,19 @@ class Forum_driver_wbb22 extends Forum_driver_base
      */
     public function make_post_forum_topic($forum_name, $topic_identifier, $member, $post_title, $post, $content_title, $topic_identifier_encapsulation_prefix, $content_url = null, $time = null, $ip = null, $validated = null, $topic_validated = 1, $skip_post_checks = false, $poster_name_if_guest = '', $parent_id = null, $staff_only = false)
     {
-        if (is_null($time)) {
+        if ($time === null) {
             $time = time();
         }
-        if (is_null($ip)) {
+        if ($ip === null) {
             $ip = get_ip_address();
         }
         $forum_id = $this->forum_id_from_name($forum_name);
-        if (is_null($forum_id)) {
+        if ($forum_id === null) {
             warn_exit(do_lang_tempcode('MISSING_FORUM', escape_html($forum_name)), false, true);
         }
         $username = $this->get_username($member);
         $topic_id = $this->find_topic_id_for_topic_identifier($forum_name, $topic_identifier);
-        $is_new = is_null($topic_id);
+        $is_new = ($topic_id === null);
         if ($is_new) {
             $topic_id = $this->db->query_insert('threads', array('topic' => $content_title . ', ' . $topic_identifier_encapsulation_prefix . ': #' . $topic_identifier, 'starttime' => $time, 'boardid' => $forum_id, 'closed' => 0, 'starter' => $username, 'starterid' => $member, 'lastposter' => $username, 'lastposttime' => $time, 'visible' => 1), true);
             $home_link = hyperlink($content_url, $content_title, false, true);
@@ -485,7 +485,7 @@ class Forum_driver_wbb22 extends Forum_driver_base
      */
     public function get_forum_topic_posts($topic_id, &$count, $max = 100, $start = 0, $mark_read = true, $reverse = false)
     {
-        if (is_null($topic_id)) {
+        if ($topic_id === null) {
             return (-2);
         }
         $order = $reverse ? 'posttime DESC' : 'posttime';
@@ -495,7 +495,7 @@ class Forum_driver_wbb22 extends Forum_driver_base
         foreach ($rows as $myrow) {
             $temp = array();
             $temp['title'] = $myrow['posttopic'];
-            if (is_null($temp['title'])) {
+            if ($temp['title'] === null) {
                 $temp['title'] = '';
             }
             push_lax_comcode(true);
@@ -562,7 +562,7 @@ class Forum_driver_wbb22 extends Forum_driver_base
             $id_list = 'boardid=' . strval($name);
         } elseif (!is_array($name)) {
             $id = $this->forum_id_from_name($name);
-            if (is_null($id)) {
+            if ($id === null) {
                 return null;
             }
             $id_list = 'boardid=' . strval($id);
@@ -723,7 +723,7 @@ class Forum_driver_wbb22 extends Forum_driver_base
     public function get_post_count($member)
     {
         $c = $this->get_member_row_field($member, 'userposts');
-        if (is_null($c)) {
+        if ($c === null) {
             return 0;
         }
         return $c;
@@ -757,7 +757,7 @@ class Forum_driver_wbb22 extends Forum_driver_base
      */
     public function find_emoticons()
     {
-        if (!is_null($this->EMOTICON_CACHE)) {
+        if ($this->EMOTICON_CACHE !== null) {
             return $this->EMOTICON_CACHE;
         }
         $rows = $this->db->query_select('smilies', array('*'));
@@ -834,7 +834,7 @@ class Forum_driver_wbb22 extends Forum_driver_base
     public function set_custom_field($member, $field, $value)
     {
         $id = $this->db->query_select_value_if_there('profilefields', 'profilefieldid', array('title' => 'cms_' . $field));
-        if (is_null($id)) {
+        if ($id === null) {
             return;
         }
         $this->db->query_update('userfields', array('field' . strval($id) => $value), array('userid' => $member), '', 1);
@@ -890,7 +890,7 @@ class Forum_driver_wbb22 extends Forum_driver_base
         $out = array();
         $out['id'] = null;
 
-        if (is_null($memberid)) {
+        if ($memberid === null) {
             $rows = $this->db->query_select('users', array('*'), array('username' => $username), '', 1);
             if (array_key_exists(0, $rows)) {
                 $this->MEMBER_ROWS_CACHED[$rows[0]['userid']] = $rows[0];
@@ -973,7 +973,7 @@ class Forum_driver_wbb22 extends Forum_driver_base
     public function get_member_row_field($member, $field)
     {
         $row = $this->get_member_row($member);
-        return is_null($row) ? null : $row[$field];
+        return ($row === null) ? null : $row[$field];
     }
 
     /**
@@ -984,7 +984,7 @@ class Forum_driver_wbb22 extends Forum_driver_base
     protected function _get_guest_group()
     {
         $guest_group = $this->db->query_select_value_if_there('groups', 'groupid', array('title' => 'Guests'));
-        if (is_null($guest_group)) {
+        if ($guest_group === null) {
             $guest_group = 5;
         }
         return $guest_group;
@@ -1072,15 +1072,15 @@ class Forum_driver_wbb22 extends Forum_driver_base
             }
             if ($skin > 0) { // User has a custom theme
                 $bb = $this->db->query_select_value('styles', 'stylename', array('styleid' => $skin));
-                $def = !is_null($map[$bb]) ? $map[$bb] : $bb;
+                $def = ($map[$bb] !== null) ? $map[$bb] : $bb;
             }
         }
 
         // Look for a skin according to our site name (we bother with this instead of 'default' because Composr itself likes to never choose a theme when forum-theme integration is on: all forum [via map] or all Composr seems cleaner, although it is complex)
         if ((!(strlen($def) > 0)) || (!file_exists(get_custom_file_base() . '/themes/' . $def))) {
             $bb = $this->db->query_select_value_if_there('styles', 'stylename', array('stylename' => get_site_name()));
-            if (!is_null($bb)) {
-                $def = !is_null($map[$bb]) ? $map[$bb] : $bb;
+            if ($bb !== null) {
+                $def = ($map[$bb] !== null) ? $map[$bb] : $bb;
             }
         }
 

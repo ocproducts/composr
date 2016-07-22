@@ -111,10 +111,10 @@ function cns_perform_multi_moderation($id, $topic_id, $reason, $post_text = '', 
     $title_suffix = $mm[0]['mm_title_suffix'];
     //$post_text = $mm[0]['mm_post_text']; We'll allow user to specify the post_text, with this as a default
     $update_array = array();
-    if (!is_null($pin_state)) {
+    if ($pin_state !== null) {
         $update_array['t_pinned'] = $pin_state;
     }
-    if (!is_null($open_state)) {
+    if ($open_state !== null) {
         $update_array['t_is_open'] = $open_state;
     }
     if ($title_suffix != '') {
@@ -127,7 +127,7 @@ function cns_perform_multi_moderation($id, $topic_id, $reason, $post_text = '', 
         $GLOBALS['FORUM_DB']->query_update('f_topics', $update_array, array('id' => $topic_id), '', 1);
     }
 
-    if (!is_null($move_to)) {
+    if ($move_to !== null) {
         require_code('cns_topics_action');
         require_code('cns_topics_action2');
         cns_move_topics($from, $move_to, array($topic_id));
@@ -140,7 +140,7 @@ function cns_perform_multi_moderation($id, $topic_id, $reason, $post_text = '', 
         require_code('cns_topics_action2');
         cns_make_post($topic_id, '', $post_text, $skip_sig, false, 1, $is_emphasised);
 
-        $forum_id = is_null($move_to) ? $from : $move_to;
+        $forum_id = ($move_to === null) ? $from : $move_to;
         handle_topic_ticket_reply($forum_id, $topic_id, $topic_details[0]['t_cache_first_title'], $post_text);
     }
 
@@ -222,14 +222,14 @@ function warnings_script()
  */
 function cns_make_warning($member_id, $explanation, $by = null, $time = null, $is_warning = 1, $silence_from_topic = null, $silence_from_forum = null, $probation = 0, $banned_ip = '', $charged_points = 0, $banned_member = 0, $changed_usergroup_from = null)
 {
-    if ((is_null($time)) && (!cns_may_warn_members())) {
+    if (($time === null) && (!cns_may_warn_members())) {
         access_denied('PRIVILEGE', 'warn_members');
     }
 
-    if (is_null($time)) {
+    if ($time === null) {
         $time = time();
     }
-    if (is_null($by)) {
+    if ($by === null) {
         $by = get_member();
     }
 
@@ -268,7 +268,7 @@ function cns_edit_warning($warning_id, $explanation, $is_warning = 1)
     }
 
     $member_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_warnings', 'w_member_id', array('id' => $warning_id));
-    if (is_null($member_id)) {
+    if ($member_id === null) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
     }
 
@@ -295,7 +295,7 @@ function cns_delete_warning($warning_id)
     }
 
     $member_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_warnings', 'w_member_id', array('id' => $warning_id));
-    if (is_null($member_id)) {
+    if ($member_id === null) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
     }
 

@@ -120,7 +120,7 @@ function create_selection_list_community_billboard_messages()
         $selected = false;
         if ($row['activation_time'] < $time) {
             $status = do_lang_tempcode('USED_PREVIOUSLY');
-        } elseif (is_null($row['activation_time'])) {
+        } elseif ($row['activation_time'] === null) {
             $status = do_lang_tempcode('NOT_USED_PREVIOUSLY');
         } else {
             $status = do_lang_tempcode('CURRENT');

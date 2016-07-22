@@ -225,8 +225,8 @@ class Database_Static_ibm extends DatabaseDriver
      */
     public function query($query, $connection, $max = null, $start = null, $fail_ok = false, $get_insert_id = false)
     {
-        if (!is_null($max)) {
-            if (is_null($start)) {
+        if ($max !== null) {
+            if ($start === null) {
                 $max += $start;
             }
 
@@ -242,7 +242,7 @@ class Database_Static_ibm extends DatabaseDriver
                 ocp_mark_as_escaped($err);
             }
             if ((!running_script('upgrader')) && (!get_mass_import_mode())) {
-                if (!function_exists('do_lang') || is_null(do_lang('QUERY_FAILED', null, null, null, null, false))) {
+                if ((!function_exists('do_lang')) || (do_lang('QUERY_FAILED', null, null, null, null, false) === null)) {
                     $this->failed_query_exit(htmlentities('Query failed: ' . $query . ' : ' . $err));
                 }
 
@@ -294,7 +294,7 @@ class Database_Static_ibm extends DatabaseDriver
         }
 
         while (odbc_fetch_row($results)) {
-            if ((is_null($start)) || ($i >= $start)) {
+            if (($start === null) || ($i >= $start)) {
                 $newrow = array();
 
                 for ($j = 1; $j <= $num_fields; $j++) {
@@ -304,7 +304,7 @@ class Database_Static_ibm extends DatabaseDriver
                     $name = strtolower($names[$j]);
 
                     if (($type == 'INTEGER') || ($type == 'SMALLINT') || ($type == 'UINTEGER')) {
-                        if (!is_null($v)) {
+                        if ($v !== null) {
                             $newrow[$name] = intval($v);
                         } else {
                             $newrow[$name] = null;

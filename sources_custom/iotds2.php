@@ -38,10 +38,10 @@ function add_iotd($url, $title, $caption, $thumb_url, $current, $allow_rating, $
     require_code('global4');
     prevent_double_submit('ADD_IOTD', null, $caption);
 
-    if (is_null($time)) {
+    if ($time === null) {
         $time = time();
     }
-    if (is_null($submitter)) {
+    if ($submitter === null) {
         $submitter = get_member();
     }
 
@@ -97,7 +97,7 @@ function add_iotd($url, $title, $caption, $thumb_url, $current, $allow_rating, $
  */
 function edit_iotd($id, $title, $caption, $thumb_url, $url, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $edit_time = null, $add_time = null, $views = null, $submitter = null, $null_is_literal = false)
 {
-    if (is_null($edit_time)) {
+    if ($edit_time === null) {
         $edit_time = $null_is_literal ? null : time();
     }
 
@@ -124,13 +124,13 @@ function edit_iotd($id, $title, $caption, $thumb_url, $url, $allow_rating, $allo
     $update_map += lang_remap_comcode('caption', $_caption, $caption);
 
     $update_map['edit_date'] = $edit_time;
-    if (!is_null($add_time)) {
+    if ($add_time !== null) {
         $update_map['add_date'] = $add_time;
     }
-    if (!is_null($views)) {
+    if ($views !== null) {
         $update_map['iotd_views'] = $views;
     }
-    if (!is_null($submitter)) {
+    if ($submitter !== null) {
         $update_map['submitter'] = $submitter;
     }
 

@@ -70,7 +70,7 @@ class Module_news
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->create_table('news', array(
                 'id' => '*AUTO',
                 'date_and_time' => 'TIME',
@@ -145,7 +145,7 @@ class Module_news
             $GLOBALS['SITE_DB']->create_index('news', 'ftjoin_nnewsa', array('news_article'));
         }
 
-        if ((is_null($upgrade_from)) || ($upgrade_from < 7)) {
+        if (($upgrade_from === null) || ($upgrade_from < 7)) {
             $GLOBALS['SITE_DB']->create_index('news', '#news_search__combined', array('title', 'news', 'news_article'));
 
             add_privilege('SEARCH', 'autocomplete_keyword_news', false);
@@ -340,7 +340,7 @@ class Module_news
             $news_cats = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'news_categories WHERE nc_owner IS NULL OR id=' . strval($myrow['news_category']));
             $news_cats = list_to_map('id', $news_cats);
             $img = get_news_category_image_url($news_cats[$myrow['news_category']]['nc_img']);
-            if (is_null($img)) {
+            if ($img === null) {
                 $img = '';
             }
             if ($myrow['news_image'] != '') {
@@ -438,7 +438,7 @@ class Module_news
             $where = selectcode_to_sqlfragment($select, 'r.news_category', 'news_categories', null, 'r.news_category', 'id'); // Note that the parameters are fiddled here so that category-set and record-set are the same, yet SQL is returned to deal in an entirely different record-set (entries' record-set)
         }
 
-        if (is_null($blogs)) {
+        if ($blogs === null) {
             $map = array();
             $categories = $GLOBALS['SITE_DB']->query_select('news_categories', array('*'), $map, 'ORDER BY nc_owner,' . $GLOBALS['SITE_DB']->translate_field_ref('nc_title'), $max, $start); // Ordered to show non-blogs first (nc_owner=NULL)
             $max_rows = $GLOBALS['SITE_DB']->query_select_value('news_categories', 'COUNT(*)', $map);
@@ -519,7 +519,7 @@ class Module_news
             'title' => '',
             'select' => $select,
             'select_and' => $select_and,
-            'blogs' => is_null($blog) ? '-1' : strval($blog),
+            'blogs' => ($blog === null) ? '-1' : strval($blog),
             'member_based' => ($blog === 1) ? '1' : '0',
             'zone' => '_SELF',
             'days' => '0',
@@ -569,7 +569,7 @@ class Module_news
         $self_url_map = array('page' => '_SELF', 'type' => 'view', 'id' => $id);
         /*if ($select != '*') $self_url_map['select'] = $select;      Potentially makes URL too long for content topic to store, and we probably don't want to store this assumptive context anyway
         if (($select_and != '*') && ($select_and != '')) $self_url_map['select_and'] = $filter_and;*/
-        if (!is_null($blog)) {
+        if ($blog !== null) {
             $self_url_map['blog'] = $blog;
         }
         list($rating_details, $comment_details, $trackback_details) = embed_feedback_systems(
@@ -610,7 +610,7 @@ class Module_news
         }
 
         // Views
-        if ((get_db_type() != 'xml') && (get_value('no_view_counts') !== '1') && (is_null(get_bot_type()))) {
+        if ((get_db_type() != 'xml') && (get_value('no_view_counts') !== '1') && (get_bot_type() === null)) {
             $myrow['news_views']++;
             if (!$GLOBALS['SITE_DB']->table_is_locked('news')) {
                 $GLOBALS['SITE_DB']->query_update('news', array('news_views' => $myrow['news_views']), array('id' => $id), '', 1, null, false, true);
@@ -630,7 +630,7 @@ class Module_news
         if (($select_and != '*') && ($select_and != '')) {
             $tmp['select_and'] = $select_and;
         }
-        if (!is_null($blog)) {
+        if ($blog !== null) {
             $tmp['blog'] = $blog;
         }
         $archive_url = build_url($tmp + propagate_filtercode(), '_SELF');
@@ -681,7 +681,7 @@ class Module_news
             'CATEGORIES' => $categories,
             'NEWSLETTER_URL' => $newsletter_url,
             'ADD_DATE_RAW' => strval($myrow['date_and_time']),
-            'EDIT_DATE_RAW' => is_null($myrow['edit_date']) ? '' : strval($myrow['edit_date']),
+            'EDIT_DATE_RAW' => ($myrow['edit_date'] === null) ? '' : strval($myrow['edit_date']),
             'SUBMITTER' => strval($myrow['submitter']),
             'CATEGORY' => $category,
             'IMG' => $img,

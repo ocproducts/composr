@@ -127,7 +127,7 @@ class Hook_search_cns_own_pt extends FieldsSearchHook
         $where_clause .= ' AND ';
         $where_clause .= 't_forum_id IS NULL AND (t_pt_from=' . strval(get_member()) . ' OR t_pt_to=' . strval(get_member()) . ')';
         $sq = build_search_submitter_clauses('p_poster', $author_id, $author);
-        if (is_null($sq)) {
+        if ($sq === null) {
             return array();
         } else {
             $where_clause .= $sq;

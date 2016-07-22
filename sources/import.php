@@ -91,7 +91,7 @@ function import_id_remap_get($type, $id_old, $fail_ok = false)
     }
 
     $value = $GLOBALS['SITE_DB']->query_select_value_if_there('import_id_remap', 'id_new', array('id_session' => get_session_id(), 'id_type' => $type, 'id_old' => $id_old));
-    if (is_null($value)) {
+    if ($value === null) {
         if ($fail_ok) {
             return null;
         }
@@ -111,7 +111,7 @@ function import_id_remap_get($type, $id_old, $fail_ok = false)
 function import_check_if_imported($type, $id_old)
 {
     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('import_id_remap', 'id_new', array('id_session' => get_session_id(), 'id_type' => $type, 'id_old' => $id_old));
-    return !is_null($test);
+    return $test !== null;
 }
 
 /**
@@ -136,7 +136,7 @@ function import_id_remap_put($type, $id_old, $id_new)
 function add_wordfilter_word($word, $replacement = '', $substr = 0)
 {
     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('wordfilter', 'word', array('word' => $word));
-    if (is_null($test)) {
+    if ($test === null) {
         $GLOBALS['SITE_DB']->query_insert('wordfilter', array('word' => $word, 'w_replacement' => $replacement, 'w_substr' => $substr));
     }
 }

@@ -112,7 +112,7 @@ function give_points($amount, $recipient_id, $sender_id, $reason, $anonymous = f
     $temp_points = point_info($recipient_id);
     $GLOBALS['FORUM_DRIVER']->set_custom_field($recipient_id, 'points_gained_given', strval((array_key_exists('points_gained_given', $temp_points) ? $temp_points['points_gained_given'] : 0) + $amount));
     $their_username = $GLOBALS['FORUM_DRIVER']->get_username($recipient_id);
-    if (is_null($their_username)) {
+    if ($their_username === null) {
         warn_exit(do_lang_tempcode('_MEMBER_NO_EXIST', $recipient_id));
     }
     $their_displayname = $GLOBALS['FORUM_DRIVER']->get_username($recipient_id, true);
@@ -153,7 +153,7 @@ function give_points($amount, $recipient_id, $sender_id, $reason, $anonymous = f
         require_code('users2');
         if (has_actual_page_access(get_modal_user(), 'points')) {
             require_code('activities');
-            syndicate_described_activity(((is_null($recipient_id)) || (is_guest($recipient_id))) ? 'points:_ACTIVITY_GIVE_POINTS' : 'points:ACTIVITY_GIVE_POINTS', $reason, integer_format($amount), '', '_SEARCH:points:member:' . strval($recipient_id), '', '', 'points', 1, null, false, $recipient_id);
+            syndicate_described_activity((($recipient_id === null) || (is_guest($recipient_id))) ? 'points:_ACTIVITY_GIVE_POINTS' : 'points:ACTIVITY_GIVE_POINTS', $reason, integer_format($amount), '', '_SEARCH:points:member:' . strval($recipient_id), '', '', 'points', 1, null, false, $recipient_id);
         }
     }
 }
@@ -195,7 +195,7 @@ function charge_member($member_id, $amount, $reason)
  */
 function add_to_charge_log($member_id, $amount, $reason, $time = null)
 {
-    if (is_null($time)) {
+    if ($time === null) {
         $time = time();
     }
     $map = array(

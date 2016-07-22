@@ -49,7 +49,7 @@ function build_news_sitemap()
     $has_guest_page_access = has_actual_page_access($guest_id, 'news', $zone);
     $modal_member_id = get_modal_user();
     $has_member_page_access = true;
-    if (!is_null($modal_member_id)) {
+    if ($modal_member_id !== null) {
         $has_member_page_access = has_actual_page_access($modal_member_id, 'news', $zone);
     }
 
@@ -64,11 +64,11 @@ function build_news_sitemap()
         foreach ($rows as $row) {
             $url = build_url(array('page' => 'news', 'type' => 'view', 'id' => $row['id']), $zone, null, false, false, true);
 
-            $is_blog = !is_null($GLOBALS['SITE_DB']->query_select_value('news_categories', 'nc_owner', array('id' => $row['news_category'])));
+            $is_blog = ($GLOBALS['SITE_DB']->query_select_value('news_categories', 'nc_owner', array('id' => $row['news_category'])) !== null);
 
             $has_guest_category_access = has_category_access($guest_id, 'news', strval($row['news_category']));
             $has_member_category_access = true;
-            if (!is_null($modal_member_id)) {
+            if ($modal_member_id !== null) {
                 $has_member_category_access = has_category_access($modal_member_id, 'news', strval($row['news_category']));
             }
 
@@ -114,7 +114,7 @@ function build_news_sitemap()
                                         <news:title>' . xmlentities(get_translated_text($row['title'])) . '</news:title>
                                         <news:keywords>' . xmlentities(((trim($meta[0], ' ,') == '') ? '' : preg_replace('#\s*,\s*#', ', ', $meta[0]))) . '</news:keywords>
             ');
-            if (!is_null($site_location)) {
+            if ($site_location !== null) {
                 fwrite($sitemap_file, '
                                         <news:geo_locations>' . xmlentities($site_location) . '</news:geo_locations>
                     ');

@@ -854,7 +854,7 @@ function __check_tag($tag, $attributes, $self_close, $close, $errors)
     }
 
     // Unexpected tags
-    if ((!is_null($EXPECTING_TAG)) && ($EXPECTING_TAG != $tag)) {
+    if (($EXPECTING_TAG !== null) && ($EXPECTING_TAG != $tag)) {
         if ($EXPECTING_TAG == 'noscript') {
             if ($GLOBALS['WEBSTANDARDS_MANUAL']) {
                 $errors[] = array('MANUAL_WCAG_SCRIPT');
@@ -867,7 +867,7 @@ function __check_tag($tag, $attributes, $self_close, $close, $errors)
 
     // Note that we do NOT take into account display:inline, because the W3C one doesn't either - probably because 'display' implies not 'semantic'
     $tmp = _check_blockyness($tag, $attributes, $self_close, $close);
-    if (!is_null($tmp)) {
+    if ($tmp !== null) {
         $errors = array_merge($errors, $tmp);
     }
 
@@ -878,7 +878,7 @@ function __check_tag($tag, $attributes, $self_close, $close, $errors)
 
     // Look for unknown attributes, or bad values
     $tmp = _check_attributes($tag, $attributes, $self_close, $close);
-    if (!is_null($tmp)) {
+    if ($tmp !== null) {
         $errors = array_merge($errors, $tmp);
     }
 
@@ -912,7 +912,7 @@ function __check_tag($tag, $attributes, $self_close, $close, $errors)
         // Iframes and CSS sheets need external checking
         if ($GLOBALS['WEBSTANDARDS_EXT_FILES']) {
             $tmp = _check_externals($tag, $attributes, $self_close, $close);
-            if (!is_null($tmp)) {
+            if ($tmp !== null) {
                 $errors = array_merge($errors, $tmp);
             }
         }
@@ -923,7 +923,7 @@ function __check_tag($tag, $attributes, $self_close, $close, $errors)
                 $errors[] = array('XHTML_SPAM');
             }
             $tmp = _check_link_accessibility($tag, $attributes, $self_close, $close);
-            if (!is_null($tmp)) {
+            if ($tmp !== null) {
                 $errors = array_merge($errors, $tmp);
             }
         }
@@ -942,7 +942,7 @@ function __check_tag($tag, $attributes, $self_close, $close, $errors)
 
     // Check our form labelling is OK
     $tmp = _check_labelling($tag, $attributes, $self_close, $close);
-    if (!is_null($tmp)) {
+    if ($tmp !== null) {
         $errors = array_merge($errors, $tmp);
     }
 
@@ -1433,7 +1433,7 @@ function _check_externals($tag, $attributes, $self_close, $close)
         $url = qualify_url($attributes['href'], $GLOBALS['URL_BASE']);
         if ($url != '') {
             $sheet = http_download_file($url, null, false);
-            if (!is_null($sheet)) {
+            if ($sheet !== null) {
                 $css_conformance = _webstandards_css_sheet($sheet);
                 if (is_array($css_conformance)) {
                     $errors = array_merge($errors, $css_conformance); // Some kind of error
@@ -1447,7 +1447,7 @@ function _check_externals($tag, $attributes, $self_close, $close)
         $url = qualify_url($attributes['src'], $GLOBALS['URL_BASE']);
         if ($url != '') {
             $js = http_download_file($url, null, false);
-            if (!is_null($js)) {
+            if ($js !== null) {
                 require_code('character_sets');
 
                 $js = convert_to_internal_encoding($js);
@@ -1470,7 +1470,7 @@ function _check_externals($tag, $attributes, $self_close, $close)
         $url = qualify_url($attributes['src'], $GLOBALS['URL_BASE']);
         if ($url != '') {
             $iframe = http_download_file($url, null, false);             //   Sometimes disabled due to my iframe producing a weird PHP exception, that was stopping me working
-            if ((!is_null($iframe)) && ($iframe != '')) {
+            if (($iframe !== null) && ($iframe != '')) {
                 require_code('character_sets');
 
                 $iframe = convert_to_internal_encoding($iframe);
@@ -1505,7 +1505,7 @@ function _check_link_accessibility($tag, $attributes, $self_close, $close)
 
     // Check positioning - not anymore "until user agents"
     /*
-    if ((!is_null($LAST_A_TAG)) && (isset($attributes['href']))) {
+    if (($LAST_A_TAG !== null) && (isset($attributes['href']))) {
         $between = substr($OUT, $LAST_A_TAG + 1, $TAG_RANGES[count($TAG_RANGES) - 1][0] - $LAST_A_TAG - 2);
         $between = str_replace('&nbsp;', ' ', $between);
         $between = strip_tags($between, '<li><td><img><hr><br><p><th>');
@@ -1625,7 +1625,7 @@ function check_css($data)
         $GLOBALS['MAIL_MODE'] = false;
     }
     $_errors = _webstandards_css_sheet($data);
-    if (is_null($_errors)) {
+    if ($_errors === null) {
         $_errors = array();
     }
     $errors = array();
@@ -1703,7 +1703,7 @@ function _webstandards_css_sheet($data)
                             $at_file = qualify_url($at_file, $GLOBALS['URL_BASE']);
                             if ($at_file != '') {
                                 $data2 = http_download_file($at_file, null, false);
-                                if (!is_null($data2)) {
+                                if ($data2 !== null) {
                                     $css_tag_ranges_backup = $CSS_TAG_RANGES;
                                     $css_value_ranges_backup = $CSS_VALUE_RANGES;
                                     $test = _webstandards_css_sheet($data2);

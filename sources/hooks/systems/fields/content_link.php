@@ -155,15 +155,15 @@ class Hook_fields_content_link
         $db = $GLOBALS[(substr($info['table'], 0, 2) == 'f_') ? 'FORUM_DB' : 'SITE_DB'];
         $select = array();
         append_content_select_for_id($select, $info);
-        if (!is_null($info['title_field'])) {
+        if ($info['title_field'] !== null) {
             $select[] = $info['title_field'];
         }
-        $rows = $db->query_select($info['table'], $select, null, is_null($info['add_time_field']) ? '' : ('ORDER BY ' . $info['add_time_field'] . ' DESC'), 2000/*reasonable limit*/);
+        $rows = $db->query_select($info['table'], $select, null, ($info['add_time_field'] === null) ? '' : ('ORDER BY ' . $info['add_time_field'] . ' DESC'), 2000/*reasonable limit*/);
 
         $_list = array();
         foreach ($rows as $row) {
             $id = extract_content_str_id_from_data($row, $info);
-            if (is_null($info['title_field'])) {
+            if ($info['title_field'] === null) {
                 $text = $id;
             } else {
                 $text = $info['title_field_dereference'] ? get_translated_text($row[$info['title_field']], $info['db']) : $row[$info['title_field']];
@@ -175,14 +175,14 @@ class Hook_fields_content_link
         }
 
         $list_tpl = new Tempcode();
-        if ((($field['cf_required'] == 0) || ($actual_value === '') || (is_null($actual_value)))) {
+        if ((($field['cf_required'] == 0) || ($actual_value === '') || ($actual_value === null))) {
             $list_tpl->attach(form_input_list_entry('', true, do_lang_tempcode('NA_EM')));
         }
         foreach ($_list as $id => $text) {
             if (!is_string($id)) {
                 $id = strval($id);
             }
-            $list_tpl->attach(form_input_list_entry($id, is_null($actual_value) ? false : ($actual_value === $id), $text));
+            $list_tpl->attach(form_input_list_entry($id, ($actual_value === null) ? false : ($actual_value === $id), $text));
         }
 
         return form_input_list($_cf_name, $_cf_description, $input_name, $list_tpl, null, false, $field['cf_required'] == 1);

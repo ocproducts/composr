@@ -22,7 +22,7 @@ function get_composr_support_timings_wrap($open, $topic_id, $ticket_type_name, $
             $most_recent_post = $post;
             // Don't break, their first unanswered query may be further back
         } else {
-            if (is_null($most_recent_post)) {
+            if ($most_recent_post === null) {
                 $most_recent_post = $post; // Ok, most recent was staff
             }
             break; // Okay, the furthest back unanswered/answer post was the one in $most_recent_post
@@ -55,7 +55,7 @@ function get_composr_support_timings($open, $member_id, $ticket_type_name, $last
                 $timestamp_to_answer_by = within_business_hours(3 * 8, $last_time);
                 break;
         }
-        if (!is_null($timestamp_to_answer_by)) {
+        if ($timestamp_to_answer_by !== null) {
             $text = 'Next reply due by: ' . date('D jS M Y', $timestamp_to_answer_by);
             if ($say_more) {
                 $text .= ' (Response times are determined by the requested ticket priority. Any requested programming tasks are started at the time of response. Response times apply between replies, as well as initially. Tickets may not be read until the next response time, so higher priority requests should be made in a new ticket. Sometimes we will beat response times but this should not be considered a precedent.)';

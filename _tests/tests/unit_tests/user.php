@@ -30,7 +30,7 @@ class user_test_set extends cms_test_case
         require_lang('cns');
 
         $this->member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username('testmember');
-        if (!is_null($this->member_id)) {
+        if ($this->member_id !== null) {
             cns_delete_member($this->member_id);
         }
 

@@ -53,7 +53,7 @@ class Hook_notification_catalogue_entry extends Hook_Notification
             return parent::create_category_tree($notification_code, $id); // Too many, so just allow removing UI
         }
 
-        $page_links = get_catalogue_category_tree($name, is_null($id) ? null : intval($id), '', null, 1);
+        $page_links = get_catalogue_category_tree($name, ($id === null) ? null : intval($id), '', null, 1);
         $filtered = array();
         foreach ($page_links as $p) {
             if (strval($p['id']) !== $id) {
@@ -88,7 +88,7 @@ class Hook_notification_catalogue_entry extends Hook_Notification
         foreach ($catalogues as $catalogue) {
             $catalogue_name = $catalogue['c_name'];
             $nl = do_lang('catalogues:NOTIFICATION_TYPE_catalogue_entry__' . $catalogue_name, null, null, null, null, false);
-            if (is_null($nl)) {
+            if ($nl === null) {
                 $nl = do_lang('catalogues:NOTIFICATION_TYPE_catalogue_entry', get_translated_text($catalogue['c_title']));
             }
             $list['catalogue_entry__' . $catalogue_name] = array(do_lang('menus:CONTENT'), $nl);

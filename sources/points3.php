@@ -40,7 +40,7 @@ function points_profile($member_id_of, $member_id_viewing)
 
     // Get info about viewed user
     $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id_of);
-    if ((is_null($username)) || (is_guest($member_id_of))) {
+    if (($username === null) || (is_guest($member_id_of))) {
         warn_exit(do_lang_tempcode('MEMBER_NO_EXIST'));
     }
 
@@ -66,12 +66,12 @@ function points_profile($member_id_of, $member_id_viewing)
     $points_voting = intval(get_option('points_voting'));
     $points_joining = intval(get_option('points_joining'));
     $_points_wiki_posting = get_option('points_wiki', true);
-    if (is_null($_points_wiki_posting)) {
+    if ($_points_wiki_posting === null) {
         $_points_wiki_posting = '0';
     }
     $points_wiki_posting = intval($_points_wiki_posting);
     $_points_chat = get_option('points_chat', true);
-    if (is_null($_points_chat)) {
+    if ($_points_chat === null) {
         $_points_chat = '0';
     }
     $points_chat_posting = intval($_points_chat);
@@ -103,7 +103,7 @@ function points_profile($member_id_of, $member_id_viewing)
         $charges = new Tempcode();
         $from_name = get_site_name();
         $to_name = $GLOBALS['FORUM_DRIVER']->get_username($member_id_of, true);
-        if (is_null($to_name)) {
+        if ($to_name === null) {
             $to_name = do_lang('UNKNOWN');
         }
         require_code('templates_results_table');
@@ -221,7 +221,7 @@ function points_get_transactions($type, $member_id_of, $member_id_viewing)
     $rows = $GLOBALS['SITE_DB']->query_select('gifts', array('*'), $where, 'ORDER BY ' . $sortable . ' ' . $sort_order, $max, $start);
     $out = new Tempcode();
     $viewing_name = $GLOBALS['FORUM_DRIVER']->get_username($member_id_of, true);
-    if (is_null($viewing_name)) {
+    if ($viewing_name === null) {
         $viewing_name = do_lang('UNKNOWN');
     }
     require_code('templates_results_table');
@@ -234,7 +234,7 @@ function points_get_transactions($type, $member_id_of, $member_id_viewing)
         // Their name
         $from_name = (is_guest($myrow['gift_from'])) ? get_site_name() : $GLOBALS['FORUM_DRIVER']->get_username($myrow['gift_from'], true);
         $to_name = $GLOBALS['FORUM_DRIVER']->get_username($myrow['gift_to'], true);
-        if (is_null($from_name)) {
+        if ($from_name === null) {
             $from_name = do_lang('UNKNOWN');
         }
         if (($myrow['anonymous'] == 1) && (!is_guest($myrow['gift_from']))) {

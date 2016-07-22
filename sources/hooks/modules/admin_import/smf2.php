@@ -285,7 +285,7 @@ class Hook_import_smf2
             $is_super_moderator = 0;
 
             $id_new = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('g_name') => $group_name));
-            if (is_null($id_new)) {
+            if ($id_new === null) {
                 $id_new = cns_make_group($group_name, 0, $is_super_admin, $is_super_moderator, '', '', null, null, $leader, null, null, null, $max_attachments_upload, $avatar_max_width, $avatar_max_height, null);
             }
 
@@ -361,7 +361,7 @@ class Hook_import_smf2
                 }
 
                 $test = $GLOBALS['CNS_DRIVER']->get_member_from_username($row['member_name']);
-                if (!is_null($test)) {
+                if ($test !== null) {
                     import_id_remap_put('member', strval($row['id_member']), $test);
                     continue;
                 }
@@ -373,7 +373,7 @@ class Hook_import_smf2
                 foreach ($secondary as $g) {
                     if (trim($g) != '') {
                         $g = import_id_remap_get('group', $g, true);
-                        if (!is_null($g)) {
+                        if ($g !== null) {
                             $secondary_groups[] = intval($g);
                         }
                     }
@@ -474,7 +474,7 @@ class Hook_import_smf2
 
             $name = $row['field_name'];
             $id_new = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('cf_name') => $name));
-            if (is_null($id_new)) {
+            if ($id_new === null) {
                 $default = $row['default_value'];
                 $options = $row['field_options'];
                 $pub_view = 1;
@@ -771,7 +771,7 @@ class Hook_import_smf2
             $title = @html_entity_decode($title, ENT_QUOTES, get_charset());
 
             $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forum_groupings', 'id', array('c_title' => $title));
-            if (!is_null($test)) {
+            if ($test !== null) {
                 import_id_remap_put('category', strval($row['id_cat']), $test);
                 continue;
             }
@@ -798,7 +798,7 @@ class Hook_import_smf2
         $rows = $db->query_select('boards');
         foreach ($rows as $row) {
             $remapped = import_id_remap_get('forum', strval($row['id_board']), true);
-            if (!is_null($remapped)) {
+            if ($remapped !== null) {
                 continue;
             }
 
@@ -883,7 +883,7 @@ class Hook_import_smf2
 
         // Now we must fix parenting
         foreach ($rows as $row) {
-            if ((!is_null($row['id_parent'])) && (isset($remap_id[$row['id_board']]))) {
+            if (($row['id_parent'] !== null) && (isset($remap_id[$row['id_board']]))) {
                 $parent_id = array_key_exists($row['id_parent'], $remap_id) ? $remap_id[$row['id_parent']] : db_get_first_id();
                 $GLOBALS['FORUM_DB']->query_update('f_forums', array('f_parent_forum' => $parent_id), array('id' => $remap_id[$row['id_board']]), '', 1);
             }
@@ -1009,12 +1009,12 @@ class Hook_import_smf2
                 }
 
                 $topic_id = import_id_remap_get('topic', strval($row['id_topic']), true);
-                if (is_null($topic_id)) {
+                if ($topic_id === null) {
                     import_id_remap_put('post', strval($row['id_msg']), -1);
                     continue;
                 }
                 $member_id = import_id_remap_get('member', strval($row['id_member']), true);
-                if (is_null($member_id)) {
+                if ($member_id === null) {
                     $member_id = db_get_first_id();
                 }
 
@@ -1213,7 +1213,7 @@ class Hook_import_smf2
             $poll_topic_id = $poll_topic_id[0]['id_topic'];
 
             $topic_id = import_id_remap_get('topic', strval($poll_topic_id), true);
-            if (is_null($topic_id)) {
+            if ($topic_id === null) {
                 import_id_remap_put('poll', strval($row['id_poll']), -1);
                 continue;
             }
@@ -1247,7 +1247,7 @@ class Hook_import_smf2
 
             foreach ($rows2 as $row2) {
                 $member_id = $row2['id_member'];
-                if ((!is_null($member_id)) && ($member_id != 0)) {
+                if (($member_id !== null) && ($member_id != 0)) {
                     if (!isset($answers[strval($row2['id_choice'])])) {
                         continue; // Safety
                     }
@@ -1303,11 +1303,11 @@ class Hook_import_smf2
 
                 // Create topic
                 $from_id = import_id_remap_get('member', strval($row['id_member_from']), true);
-                if (is_null($from_id)) {
+                if ($from_id === null) {
                     $from_id = $GLOBALS['CNS_DRIVER']->get_guest_id();
                 }
                 $to_id = import_id_remap_get('member', strval($row['id_member']), true);
-                if (is_null($to_id)) {
+                if ($to_id === null) {
                     $to_id = $GLOBALS['CNS_DRIVER']->get_guest_id();
                 }
                 $topic_id = cns_make_topic(null, '', '', 1, 1, 0, 0, $from_id, $to_id, false);
@@ -1327,7 +1327,7 @@ class Hook_import_smf2
                     $post = $this->fix_links($post_description, $db, $table_prefix, $old_base_dir);
                     $validated = 1;
                     $from_id = import_id_remap_get('member', strval($_post['id_member_from']), true);
-                    if (is_null($from_id)) {
+                    if ($from_id === null) {
                         $from_id = $GLOBALS['CNS_DRIVER']->get_guest_id();
                     }
                     $poster_name_if_guest = $GLOBALS['CNS_DRIVER']->get_username($from_id);
@@ -1404,11 +1404,11 @@ class Hook_import_smf2
                 }
 
                 $member_id = import_id_remap_get('member', strval($row['id_member']), true);
-                if (is_null($member_id)) {
+                if ($member_id === null) {
                     continue;
                 }
                 $topic_id = import_id_remap_get('topic', strval($row['id_topic']), true);
-                if (is_null($topic_id)) {
+                if ($topic_id === null) {
                     continue;
                 }
                 enable_notifications('cns_topic', strval($topic_id), $member_id);
@@ -1643,7 +1643,7 @@ class Hook_import_smf2
             }
 
             $submitter = import_id_remap_get('member', strval($row['id_member']), true);
-            if (is_null($submitter)) {
+            if ($submitter === null) {
                 $submitter = $GLOBALS['CNS_DRIVER']->get_guest_id();
             }
 
@@ -1717,12 +1717,12 @@ class Hook_import_smf2
         require_code('banners2');
 
         $rows = $db->query('SELECT * FROM ' . $table_prefix . 'ads', null, null, true);
-        if (is_null($rows)) {
+        if ($rows === null) {
             return; // SMFAds addon not installed
         }
         foreach ($rows as $row) {
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('banners', 'name', array('name' => $row['NAME']));
-            if (is_null($test)) {
+            if ($test === null) {
                 $submitter = $GLOBALS['FORUM_DRIVER']->get_guest_id();
                 add_banner(fix_id($row['NAME']), '', '', $row['NAME'], stripslashes($row['CONTENT']), null, '', 1, '', BANNER_PERMANENT, null, $submitter, $row['show_topofpage'], '', array(), array(), time(), 0, $row['HITS'], 0, $row['HITS'], null);
             }
@@ -1741,7 +1741,7 @@ class Hook_import_smf2
         require_code('news');
 
         $rows = $db->query_select('tp_variables', array('value1 AS title', 'id'), array('type' => 'category'), '', null, null, true);
-        if (is_null($rows)) {
+        if ($rows === null) {
             return; // Not TinyPortal
         }
         foreach ($rows as $row) {
@@ -1756,7 +1756,7 @@ class Hook_import_smf2
             import_id_remap_put('news_category', strval($row['id']), $id_new);
         }
 
-        $forum = (is_null(find_overridden_comment_forum('news'))) ? get_option('comments_forum_name') : find_overridden_comment_forum('news');
+        $forum = (find_overridden_comment_forum('news') === null) ? get_option('comments_forum_name') : find_overridden_comment_forum('news');
 
         require_code('files');
 
@@ -1780,7 +1780,7 @@ class Hook_import_smf2
                 }
 
                 $main_news_category = import_id_remap_get('news_category', $row['category'], true);
-                if (is_null($main_news_category)) {
+                if ($main_news_category === null) {
                     $main_news_category = $GLOBALS['SITE_DB']->query_select_value('news', 'MIN(id)');
                 }
 
@@ -1806,10 +1806,10 @@ class Hook_import_smf2
                 }
 
                 $submitter = import_id_remap_get('member', $row['author_id'], true);
-                if (is_null($submitter)) {
+                if ($submitter === null) {
                     $submitter = $GLOBALS['FORUM_DRIVER']->get_guest_id();
                 }
-                $author = is_null($row['author']) ? $GLOBALS['FORUM_DRIVER']->get_username($submitter) : $row['author'];
+                $author = ($row['author'] === null) ? $GLOBALS['FORUM_DRIVER']->get_username($submitter) : $row['author'];
 
                 $id_new = add_news($subject, $news, $author, $validated, $allow_rating, $allow_comments, $allow_trackbacks, '', $news_article, $main_news_category, $news_categories, $time, $submitter, $views, $edit_date, null, $image);
 
@@ -1819,7 +1819,7 @@ class Hook_import_smf2
                 $comments = $db->query_select('tp_variables', array('value1 AS subject', 'value2 AS post', 'value3 AS poster', 'value4 AS time'), array('type' => 'article_comment', 'value5' => $row['id']));
                 foreach ($comments as $comment) {
                     $comment['poster'] = import_id_remap_get('member', $comment['poster'], true);
-                    if (is_null($comment['poster'])) {
+                    if ($comment['poster'] === null) {
                         $comment['poster'] = $GLOBALS['FORUM_DRIVER']->get_guest_id();
                     }
 
@@ -1843,13 +1843,13 @@ class Hook_import_smf2
                 }
 
                 // Rating
-                if (!is_null($row['rating'])) {
+                if ($row['rating'] !== null) {
                     $ratings = explode(',', $row['rating']);
                     $voters = explode(',', $row['voters']);
                     foreach ($ratings as $i => $rating) {
                         if (isset($voters[$i])) {
                             $member_id = import_id_remap_get('member', $voters[$i], true);
-                            if (is_null($member_id)) {
+                            if ($member_id === null) {
                                 $member_id = $GLOBALS['FORUM_DRIVER']->get_guest_id();
                             }
 

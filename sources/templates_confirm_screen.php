@@ -31,7 +31,7 @@
  */
 function confirm_screen($title, $preview, $url_type, $back_url_type = null, $sup_post = null, $fields = null)
 {
-    if (is_null($sup_post)) {
+    if ($sup_post === null) {
         $sup_post = array();
     }
 
@@ -47,7 +47,7 @@ function confirm_screen($title, $preview, $url_type, $back_url_type = null, $sup
         $url = $url_type;
     }
 
-    if (is_null($fields)) {
+    if ($fields === null) {
         $fields = new Tempcode();
     }
     $fields->attach(build_keep_post_fields(array_keys($sup_post))); // Everything EXCEPT what might have been passed in sup_post

@@ -33,7 +33,7 @@ class Forum_driver_mybb extends Forum_driver_base
     public function check_db()
     {
         $test = $this->db->query('SELECT COUNT(*) FROM ' . $this->db->get_table_prefix() . 'users', null, null, true);
-        return !is_null($test);
+        return $test !== null;
     }
 
     /**
@@ -481,14 +481,14 @@ class Forum_driver_mybb extends Forum_driver_base
         $__post = comcode_to_tempcode($_post);
         $post = $__post->evaluate();
 
-        if (is_null($time)) {
+        if ($time === null) {
             $time = time();
         }
-        if (is_null($ip)) {
+        if ($ip === null) {
             $ip = get_ip_address();
         }
         $forum_id = $this->forum_id_from_name($forum_name);
-        if (is_null($forum_id)) {
+        if ($forum_id === null) {
             warn_exit(do_lang_tempcode('MISSING_FORUM', escape_html($forum_name)), false, true);
         }
 
@@ -503,7 +503,7 @@ class Forum_driver_mybb extends Forum_driver_base
         $long_ip_address = $this->_phpbb_ip($ip);
         $local_ip_address = '127.0.0.1'; //$this->_phpbb_ip('127.0.0.1');
 
-        $is_new = is_null($topic_id);
+        $is_new = ($topic_id === null);
         if ($is_new) {
             $topic_id = $this->db->query_insert('threads', array('fid' => $forum_id, 'subject' => $content_title . ', ' . $topic_identifier_encapsulation_prefix . ': #' . $topic_identifier, 'username' => $username, 'uid' => $member, 'lastposter' => $username, 'lastposteruid' => $member, 'visible' => 1, 'dateline' => $time, 'lastpost' => $time), true);
             $home_link = hyperlink($content_url, $content_title, false, true);
@@ -538,7 +538,7 @@ class Forum_driver_mybb extends Forum_driver_base
      */
     public function get_forum_topic_posts($topic_id, &$count, $max = 100, $start = 0, $mark_read = true, $reverse = false)
     {
-        if (is_null($topic_id)) {
+        if ($topic_id === null) {
             return (-2);
         }
 
@@ -550,7 +550,7 @@ class Forum_driver_mybb extends Forum_driver_base
         foreach ($rows as $myrow) {
             $temp = array();
             $temp['title'] = $myrow['subject'];
-            if (is_null($temp['title'])) {
+            if ($temp['title'] === null) {
                 $temp['title'] = '';
             }
             push_lax_comcode(true);
@@ -587,7 +587,7 @@ class Forum_driver_mybb extends Forum_driver_base
     public function post_url($id, $forum)
     {
         $topic_id = $this->db->query_select_value_if_there('posts', 'post_tid', array('pid' => $id));
-        if (is_null($topic_id)) {
+        if ($topic_id === null) {
             return '?';
         }
         $url = get_forum_base_url() . '/showthread.php?tid=' . strval($topic_id) . '&pid=' . strval($id) . '#pid' . strval($id);
@@ -640,7 +640,7 @@ class Forum_driver_mybb extends Forum_driver_base
             $id_list = 'fid=' . strval($name);
         } elseif (!is_array($name)) {
             $id = $this->forum_id_from_name($name);
-            if (is_null($id)) {
+            if ($id === null) {
                 return null;
             }
             $id_list = 'fid=' . strval($id);
@@ -929,7 +929,7 @@ class Forum_driver_mybb extends Forum_driver_base
      */
     public function find_emoticons()
     {
-        if (!is_null($this->EMOTICON_CACHE)) {
+        if ($this->EMOTICON_CACHE !== null) {
             return $this->EMOTICON_CACHE;
         }
         $rows = $this->db->query_select('smilies', array('*'));
@@ -986,7 +986,7 @@ class Forum_driver_mybb extends Forum_driver_base
                 $user_theme = (!empty($user_theme[0])) ? $user_theme[0] : '';
                 $user_theme = (!empty($user_theme['name'])) ? $user_theme['name'] : '';
 
-                if (!is_null($user_theme)) {
+                if ($user_theme !== null) {
                     $def = array_key_exists($user_theme, $map) ? $map[$user_theme] : $user_theme;
                 }
             }
@@ -995,7 +995,7 @@ class Forum_driver_mybb extends Forum_driver_base
         // Look for a skin according to our site name (we bother with this instead of 'default' because Composr itself likes to never choose a theme when forum-theme integration is on: all forum [via map] or all Composr seems cleaner, although it is complex)
         if ((!(strlen($def) > 0)) || (!file_exists(get_custom_file_base() . '/cache/themes/theme' . $skin))) {
             $mybbtheme = $this->db->query_select_value_if_there('themes', 'name', array('name' => get_site_name()));
-            if (!is_null($mybbtheme)) {
+            if ($mybbtheme !== null) {
                 $def = array_key_exists($mybbtheme, $map) ? $map[$mybbtheme] : $mybbtheme;
             }
         }
@@ -1108,7 +1108,7 @@ class Forum_driver_mybb extends Forum_driver_base
     protected function _get_super_admin_groups()
     {
         $admin_group = $this->db->query_select_value_if_there('usergroups', 'gid', array('title' => 'Administrators'), 'ORDER BY gid DESC');
-        if (is_null($admin_group)) {
+        if ($admin_group === null) {
             return array();
         }
         return array($admin_group);
@@ -1124,7 +1124,7 @@ class Forum_driver_mybb extends Forum_driver_base
     {
         $moderator_group = $this->db->query('SELECT gid FROM ' . $this->db->get_table_prefix() . 'usergroups WHERE title LIKE \'' . db_encode_like('%Moderator%') . '\'');
 
-        if (is_null($moderator_group)) {
+        if ($moderator_group === null) {
             return array();
         }
 
@@ -1238,7 +1238,7 @@ class Forum_driver_mybb extends Forum_driver_base
         $out = array();
         $out['id'] = null;
 
-        if (is_null($userid)) {
+        if ($userid === null) {
             $rows = $this->db->query_select('users', array('*'), array('username' => $username), '', 1);
             if (array_key_exists(0, $rows)) {
                 $this->MEMBER_ROWS_CACHED[$rows[0]['uid']] = $rows[0];
@@ -1305,7 +1305,7 @@ class Forum_driver_mybb extends Forum_driver_base
     public function get_member_ip($member)
     {
         $ip = $this->db->query_select_value_if_there('users', 'regip', array('uid' => $member));
-        if (!is_null($ip)) {
+        if ($ip !== null) {
             return $ip;
         }
         return '';
@@ -1341,7 +1341,7 @@ class Forum_driver_mybb extends Forum_driver_base
     public function get_member_row_field($member, $field)
     {
         $row = $this->get_member_row($member);
-        return is_null($row) ? null : $row[$field];
+        return ($row === null) ? null : $row[$field];
     }
 
     /**

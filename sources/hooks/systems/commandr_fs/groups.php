@@ -129,7 +129,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
         $is_presented_at_install = $this->_default_property_int($properties, 'is_presented_at_install');
         $hidden = $this->_default_property_int($properties, 'hidden');
         $order = $this->_default_property_int_null($properties, 'order');
-        if (is_null($order)) {
+        if ($order === null) {
             $order = $GLOBALS['FORUM_DB']->query_select_value('f_groups', 'MAX(g_order)') + 1;
         }
         $rank_image_pri_only = $this->_default_property_int($properties, 'rank_image_pri_only');
@@ -267,7 +267,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
     {
         $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'actionlogs WHERE ' . db_string_equal_to('param_a', strval($row['id'])) . ' AND  (' . db_string_equal_to('the_type', 'EDIT_EDIT_MEMBER_PROFILE') . ')';
         $time = $GLOBALS['SITE_DB']->query_value_if_there($query);
-        //if (is_null($time)) $time = $row['m_join_time']; This will be picked up naturally
+        //if ($time === null) $time = $row['m_join_time']; This will be picked up naturally
         return $time;
     }
 
@@ -292,7 +292,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
         $dob_year = $this->_default_property_int_null($properties, 'dob_year');
         $timezone = $this->_default_property_str_null($properties, 'timezone');
         $validated = $this->_default_property_int_null($properties, 'validated');
-        if (is_null($validated)) {
+        if ($validated === null) {
             $validated = 1;
         }
         $join_time = $this->_default_property_time($properties, 'join_time');
@@ -309,7 +309,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
         $photo_thumb_url = $this->_default_property_urlpath($properties, 'photo_thumb_url', $edit);
         $views_signatures = $this->_default_property_int($properties, 'views_signatures');
         $auto_monitor_contrib_content = $this->_default_property_int_null($properties, 'auto_monitor_contrib_content');
-        if (is_null($auto_monitor_contrib_content)) {
+        if ($auto_monitor_contrib_content === null) {
             $auto_monitor_contrib_content = intval(get_option('allow_auto_notifications'));
         }
         $language = $this->_default_property_str_null($properties, 'language');
@@ -339,7 +339,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
             }
             $props_already[$key] = true;
             $value = $this->_default_property_str_null($properties, $key);
-            if (is_null($value)) {
+            if ($value === null) {
                 $value = $custom_field['cf_default'];
             }
             $actual_custom_fields[$custom_field['id']] = $value;
@@ -361,7 +361,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
         list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
-        if (is_null($category)) {
+        if ($category === null) {
             return false; // Folder not found
         }
 
@@ -396,7 +396,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
      */
     public function file_convert_filename_to_id($filename, $resource_type = null)
     {
-        if (is_null($resource_type)) {
+        if ($resource_type === null) {
             $resource_type = $this->file_resource_type;
         }
 
@@ -496,7 +496,7 @@ class Hook_commandr_fs_groups extends Resource_fs_base
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
         list($properties,) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
-        if (is_null($category)) {
+        if ($category === null) {
             return false; // Folder not found
         }
 

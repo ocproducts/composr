@@ -31,7 +31,7 @@ class CMSUserRead
         cms_verify_parameters_phpdoc();
 
         $username = $GLOBALS['FORUM_DRIVER']->get_username($user_id);
-        if (is_null($username)) {
+        if ($username === null) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'member'));
         }
 
@@ -198,7 +198,7 @@ class CMSUserRead
     {
         cms_verify_parameters_phpdoc();
 
-        if (is_null($id)) {
+        if ($id === null) {
             $sessions = $GLOBALS['SITE_DB']->query_select('sessions', array('DISTINCT member_id'), array('session_invisible' => 0), ' AND member_id>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id()), $max, $start);
 
             $member_count = $GLOBALS['SITE_DB']->query_select_value('sessions', 'COUNT(DISTINCT member_id)', array('session_invisible' => 0), ' AND member_id>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id()));
@@ -208,7 +208,7 @@ class CMSUserRead
                 $member_id = $session['member_id'];
 
                 $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
-                if (is_null($username)) {
+                if ($username === null) {
                     $username = do_lang('UNKNOWN');
                 }
 
@@ -244,7 +244,7 @@ class CMSUserRead
                 $member_id = $member_viewing['mt_member_id'];
 
                 $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
-                if (is_null($username)) {
+                if ($username === null) {
                     $username = do_lang('UNKNOWN');
                 }
 
@@ -557,7 +557,7 @@ class CMSUserRead
         $users = array();
         foreach ($user_ids as $user_id) {
             $username = $GLOBALS['FORUM_DRIVER']->get_username($user_id);
-            if (is_null($username)) {
+            if ($username === null) {
                 $username = $GLOBALS['FORUM_DRIVER']->get_username($user_id);
             }
 

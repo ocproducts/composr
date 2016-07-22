@@ -32,7 +32,7 @@ class Hook_endpoint_account_login
 
         $feedback = $GLOBALS['FORUM_DRIVER']->forum_authorise_login($username, null, apply_forum_driver_md5_variant($password, $username), $password);
         $member_id = $feedback['id'];
-        if (is_null($member_id)) {
+        if ($member_id === null) {
             warn_exit($feedback['error']);
         }
 
@@ -56,7 +56,7 @@ class Hook_endpoint_account_login
 
         require_code('permissions');
         $where_groups = _get_where_clause_groups($member_id);
-        if (is_null($where_groups)) {
+        if ($where_groups === null) {
             $privileges_perhaps = $GLOBALS['SITE_DB']->query_select('privilege_list', array('the_name AS privilege'));
             $pages_blacklist = array();
             $zones_perhaps = $GLOBALS['SITE_DB']->query_select('zones', array('zone_name'));

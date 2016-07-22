@@ -37,7 +37,7 @@ class Hook_login_provider_facebook
             safe_ini_set('ocproducts.type_strictness', '0');
 
             global $FACEBOOK_CONNECT;
-            if (!is_null($FACEBOOK_CONNECT)) {
+            if ($FACEBOOK_CONNECT !== null) {
                 try {
                     if ($FACEBOOK_CONNECT->getUser() != 0) {
                         $member = handle_facebook_connection_login($member);

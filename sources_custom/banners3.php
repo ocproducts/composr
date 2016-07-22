@@ -47,15 +47,15 @@ function add_banner_quiet($name, $imgurl, $title_text, $caption, $campaign_remai
     if (!is_numeric($campaign_remaining)) {
         $campaign_remaining = null;
     }
-    if (is_null($time)) {
+    if ($time === null) {
         $time = time();
     }
-    if (is_null($submitter)) {
+    if ($submitter === null) {
         $submitter = get_member();
     }
 
     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('banners', 'name', array('name' => $name));
-    if (is_null($test)) {
+    if ($test === null) {
         if (!addon_installed('unvalidated')) {
             $validated = 1;
         }

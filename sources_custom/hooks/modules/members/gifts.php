@@ -51,7 +51,7 @@ class Hook_members_gifts
     {
         require_lang('giftr');
         $rows = $GLOBALS['SITE_DB']->query_select('members_gifts', array('*'), array('to_member_id' => $member_id), '', null, 0, true);
-        if (is_null($rows)) {
+        if ($rows === null) {
             return array();
         }
 

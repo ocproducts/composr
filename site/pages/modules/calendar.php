@@ -84,7 +84,7 @@ class Module_calendar
     {
         require_lang('calendar');
 
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             add_privilege('CALENDAR', 'view_calendar', true);
             add_privilege('CALENDAR', 'add_public_events', true);
             add_privilege('CALENDAR', 'sense_personal_conflicts', false);
@@ -171,7 +171,7 @@ class Module_calendar
             $GLOBALS['SITE_DB']->create_index('calendar_jobs', 'applicablejobs', array('j_time'));
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 6)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 6)) {
             $GLOBALS['SITE_DB']->delete_table_field('calendar_events', 'e_geo_position');
             $GLOBALS['SITE_DB']->delete_table_field('calendar_events', 'e_groups_access');
             $GLOBALS['SITE_DB']->delete_table_field('calendar_events', 'e_groups_modify');
@@ -183,7 +183,7 @@ class Module_calendar
             $GLOBALS['SITE_DB']->add_table_field('calendar_types', 't_external_feed', 'URLPATH');
         }
 
-        if ((is_null($upgrade_from)) || ($upgrade_from < 6)) {
+        if (($upgrade_from === null) || ($upgrade_from < 6)) {
             // Save in permissions for event type
             $types = $GLOBALS['SITE_DB']->query_select('calendar_types');
             foreach ($types as $type) {
@@ -194,16 +194,16 @@ class Module_calendar
             }
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 7)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 7)) {
             $GLOBALS['SITE_DB']->add_table_field('calendar_events', 'e_start_monthly_spec_type', 'ID_TEXT', 'day_of_month');
             $GLOBALS['SITE_DB']->add_table_field('calendar_events', 'e_end_monthly_spec_type', 'ID_TEXT', 'day_of_month');
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 7)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 7)) {
             add_privilege('CALENDAR', 'set_reminders', false);
         }
 
-        if ((is_null($upgrade_from)) || ($upgrade_from < 8)) {
+        if (($upgrade_from === null) || ($upgrade_from < 8)) {
             add_privilege('CALENDAR', 'calendar_add_to_others', true);
 
             $GLOBALS['SITE_DB']->create_index('calendar_events', '#event_search__combined', array('e_title', 'e_content'));
@@ -212,7 +212,7 @@ class Module_calendar
             add_privilege('SEARCH', 'autocomplete_title_event', false);
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 8)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 8)) {
             $GLOBALS['SITE_DB']->add_table_field('calendar_events', 'e_member_calendar', '?MEMBER');
             if (addon_installed('content_privacy')) {
                 $private_events = $GLOBALS['SITE_DB']->query_select('calendar_events', array('id'), array('e_is_public' => 0));
@@ -327,7 +327,7 @@ class Module_calendar
             if ($private !== 1) {
                 $title_to_use = do_lang_tempcode('CALENDAR_EVENT_VCAL', make_fractionable_editable('event', $id, $_title));
             } else {
-                $username = $GLOBALS['FORUM_DRIVER']->get_username(/*is_null($event['e_member_calendar'])?$event['e_submitter']:$event['e_member_calendar']*/
+                $username = $GLOBALS['FORUM_DRIVER']->get_username(/*($event['e_member_calendar'] === null)?$event['e_submitter']:$event['e_member_calendar']*/
                     $event['e_submitter'], true);
                 $title_to_use = do_lang_tempcode('_CALENDAR_EVENT_VCAL', escape_html($username), make_fractionable_editable('event', $id, $_title));
             }
@@ -493,7 +493,7 @@ class Module_calendar
 
         $member_id = get_param_integer('member_id', get_member());
         $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id, true);
-        if (is_null($username)) {
+        if ($username === null) {
             warn_exit(do_lang_tempcode('MEMBER_NO_EXIST'));
         }
 
@@ -625,13 +625,13 @@ class Module_calendar
         // Nofollow stuff
         $previous_no_follow = ($previous_timestamp < time() - 60 * 60 * 24 * 31);
         $test = $GLOBALS['SITE_DB']->query_value_if_there('SELECT id FROM ' . get_table_prefix() . 'calendar_events WHERE e_start_year=' . date('Y', $next_timestamp) . ' AND e_start_month<=' . date('m', $next_timestamp) . ' OR e_start_year<' . date('Y', $next_timestamp));
-        if (!is_null($test)) // if there really are events before, this takes priority
+        if ($test !== null) // if there really are events before, this takes priority
         {
             $previous_no_follow = false;
         }
         $next_no_follow = ($next_timestamp > time() + 60 * 60 * 24 * 31 * 6/*So can see 6 months of recurrences/empty space*/);
         $test = $GLOBALS['SITE_DB']->query_value_if_there('SELECT id FROM ' . get_table_prefix() . 'calendar_events WHERE e_start_year=' . date('Y', $next_timestamp) . ' AND e_start_month>=' . date('m', $next_timestamp) . ' OR e_start_year>' . date('Y', $next_timestamp));
-        if (!is_null($test)) // if there really are events after, this takes priority
+        if ($test !== null) // if there really are events after, this takes priority
         {
             $next_no_follow = false;
         }
@@ -639,13 +639,13 @@ class Module_calendar
             // Some bots ignore nofollow, so let's be more forceful
             $past_no_follow = ($timestamp < time() - 60 * 60 * 24 * 31);
             $test = $GLOBALS['SITE_DB']->query_value_if_there('SELECT id FROM ' . get_table_prefix() . 'calendar_events WHERE e_start_year=' . date('Y', $timestamp) . ' AND e_start_month<=' . date('m', $timestamp) . ' OR e_start_year<' . date('Y', $timestamp));
-            if (!is_null($test)) // if there really are events before, this takes priority
+            if ($test !== null) // if there really are events before, this takes priority
             {
                 $past_no_follow = false;
             }
             $future_no_follow = ($timestamp > time() + 60 * 60 * 24 * 31 * 6/*So can see 6 months of recurrences/empty space*/);
             $test = $GLOBALS['SITE_DB']->query_value_if_there('SELECT id FROM ' . get_table_prefix() . 'calendar_events WHERE e_start_year=' . date('Y', $timestamp) . ' AND e_start_month>=' . date('m', $timestamp) . ' OR e_start_year>' . date('Y', $timestamp));
-            if (!is_null($test)) // if there really are events after, this takes priority
+            if ($test !== null) // if there really are events after, this takes priority
             {
                 $future_no_follow = false;
             }
@@ -665,7 +665,7 @@ class Module_calendar
         $previous_url = build_url($map, '_SELF');
         $map = array_merge($filter, array('page' => '_SELF', 'view' => $view, 'id' => $next));
         $next_url = build_url($map, '_SELF');
-        if (is_null($back_url)) {
+        if ($back_url === null) {
             $map = array_merge($filter, array('page' => '_SELF', 'type' => 'browse', 'view' => $back_view, 'id' => $back));
             $back_url = build_url($map, '_SELF');
         }
@@ -686,7 +686,7 @@ class Module_calendar
                 $interested = '';
             } else {
                 $test = in_array($type['id'], $member_interests);
-                $interested = (!is_null($test)) ? 'not_interested' : 'interested';
+                $interested = ($test !== null) ? 'not_interested' : 'interested';
             }
             $event_types_1->attach(do_template('CALENDAR_EVENT_TYPE', array('_GUID' => '104b723d5211f400267345f616c4a677', 'S' => 'I', 'INTERESTED' => $interested, 'TYPE' => get_translated_text($type['t_title']), 'TYPE_ID' => strval($type['id']))));
         }
@@ -707,7 +707,7 @@ class Module_calendar
         $add_url = new Tempcode();
         if ((has_actual_page_access(null, 'cms_calendar', null, null)) && (has_submit_permission('low', get_member(), get_ip_address(), 'cms_calendar'))) {
             $and_filter = $this->get_and_filter(true);
-            if ((has_privilege(get_member(), 'calendar_add_to_others')) || (is_null(get_param_integer('member_id', null)))) {
+            if ((has_privilege(get_member(), 'calendar_add_to_others')) || (get_param_integer('member_id', null) === null)) {
                 $add_url = build_url(array('page' => 'cms_calendar', 'type' => 'add', 'date' => $self_encompassing ? null : $date, 'e_type' => (count($and_filter) == 1) ? $and_filter[0] : null, 'private' => get_param_integer('private', null), 'member_id' => get_param_integer('member_id', null)), get_module_zone('cms_calendar'));
             }
         }
@@ -787,7 +787,7 @@ class Module_calendar
         foreach ($happenings as $happening) {
             list($e_id, $event, $from, $to, $real_from, $real_to, $utc_real_from) = $happening;
 
-            $date = is_null($event['e_start_hour']) ? '' : locale_filter(cms_strftime(do_lang('calendar_minute'), $from));
+            $date = ($event['e_start_hour'] === null) ? '' : locale_filter(cms_strftime(do_lang('calendar_minute'), $from));
             if (is_numeric($e_id)) {
                 $map = array_merge($filter, array('page' => '_SELF', 'type' => 'view', 'id' => $event['e_id'], 'day' => date('Y-m-d', $utc_real_from), 'date' => $view_id));
                 $url = build_url($map, '_SELF');
@@ -796,8 +796,8 @@ class Module_calendar
             }
             $icon = $event['t_logo'];
             $from_h = intval(date('H', $from));
-            if (!is_null($to)) {
-                $date = date_range($real_from, $real_to, !is_null($event['e_start_hour']));
+            if ($to !== null) {
+                $date = date_range($real_from, $real_to, ($event['e_start_hour'] !== null));
                 if ($to >= $period_end - 60/*1 minute gap we use to stop stuff spanning to start of next day*/) {
                     $to_h = 24;
                 } else {
@@ -823,7 +823,7 @@ class Module_calendar
                     break;
                 }
             }
-            if (is_null($found_stream)) {
+            if ($found_stream === null) {
                 $streams[] = array();
                 $found_stream = count($streams) - 1;
             }
@@ -882,7 +882,7 @@ class Module_calendar
                     $add_url = new Tempcode();
                     if ((has_actual_page_access(null, 'cms_calendar', null, null)) && (has_submit_permission('low', get_member(), get_ip_address(), 'cms_calendar'))) {
                         $and_filter = $this->get_and_filter(true);
-                        if ((has_privilege(get_member(), 'calendar_add_to_others')) || (is_null(get_param_integer('member_id', null)))) {
+                        if ((has_privilege(get_member(), 'calendar_add_to_others')) || (get_param_integer('member_id', null) === null)) {
                             $add_url = build_url(array('page' => 'cms_calendar', 'type' => 'add', 'date' => date('Y-m-d H:i:s', $timestamp), 'e_type' => (count($and_filter) == 1) ? $and_filter[0] : null, 'private' => get_param_integer('private', null), 'member_id' => get_param_integer('member_id', null)), get_module_zone('cms_calendar'));
                         }
                     }
@@ -949,7 +949,7 @@ class Module_calendar
                     $date = date('D:H', $from);
                     $explode2 = explode(':', $date);
                     if ((intval($explode2[1]) == $i) && ($day_remap[$explode2[0]] == $j)) {
-                        $date = is_null($event['e_start_hour']) ? '' : locale_filter(cms_strftime(do_lang('calendar_minute'), $real_from));
+                        $date = ($event['e_start_hour'] === null) ? '' : locale_filter(cms_strftime(do_lang('calendar_minute'), $real_from));
                         if (is_numeric($e_id)) {
                             $map = array_merge($filter, array('page' => '_SELF', 'type' => 'view', 'id' => $event['e_id'], 'day' => date('Y-m-d', $utc_real_from), 'date' => $view_id, 'back' => 'week'));
                             $url = build_url($map, '_SELF');
@@ -957,9 +957,9 @@ class Module_calendar
                             $url = $e_id;
                         }
                         $icon = $event['t_logo'];
-                        if (!is_null($to)) {
-                            $date = date_range($real_from, $real_to, !is_null($event['e_start_hour']));
-                            if ((!is_null($to)) && ($to >= mktime(0, 0, 0, $start_month, $start_day + $j + 1, $start_year))) {
+                        if ($to !== null) {
+                            $date = date_range($real_from, $real_to, ($event['e_start_hour'] !== null));
+                            if (($to !== null) && ($to >= mktime(0, 0, 0, $start_month, $start_day + $j + 1, $start_year))) {
                                 $continuation = 24;
                                 $ntime = mktime(0, 0, 0, $start_month, $start_day + $j + 1, $start_year);
                                 if ($ntime < $period_end) {
@@ -1038,7 +1038,7 @@ class Module_calendar
                     $add_url = new Tempcode();
                     if ((has_actual_page_access(null, 'cms_calendar', null, null)) && (has_submit_permission('low', get_member(), get_ip_address(), 'cms_calendar'))) {
                         $and_filter = $this->get_and_filter(true);
-                        if ((has_privilege(get_member(), 'calendar_add_to_others')) || (is_null(get_param_integer('member_id', null)))) {
+                        if ((has_privilege(get_member(), 'calendar_add_to_others')) || (get_param_integer('member_id', null) === null)) {
                             $add_url = build_url(array('page' => 'cms_calendar', 'type' => 'add', 'date' => date('Y-m-d H:i:s', $timestamp), 'e_type' => (count($and_filter) == 1) ? $and_filter[0] : null, 'private' => get_param_integer('private', null), 'member_id' => get_param_integer('member_id', null)), get_module_zone('cms_calendar'));
                         }
                     }
@@ -1183,7 +1183,7 @@ class Module_calendar
                 list($e_id, $event, $from, $to, $real_from, $real_to, $utc_real_from) = $happening;
                 $date = date('d', $from);
                 if (intval($date) == $i) {
-                    $date = is_null($event['e_start_hour']) ? '' : locale_filter(cms_strftime(do_lang('calendar_minute'), $real_from));
+                    $date = ($event['e_start_hour'] === null) ? '' : locale_filter(cms_strftime(do_lang('calendar_minute'), $real_from));
 
                     if (is_numeric($e_id)) {
                         $map = array_merge($filter, array('page' => '_SELF', 'type' => 'view', 'id' => $event['e_id'], 'day' => date('Y-m-d', $utc_real_from), 'date' => $view_id, 'back' => 'month'));
@@ -1192,8 +1192,8 @@ class Module_calendar
                         $url = $e_id;
                     }
                     $icon = $event['t_logo'];
-                    if (!is_null($to)) {
-                        $date = date_range($real_from, $real_to, !is_null($event['e_start_hour']));
+                    if ($to !== null) {
+                        $date = date_range($real_from, $real_to, ($event['e_start_hour'] !== null));
                     }
                     $_title = is_integer($event['e_title']) ? get_translated_text($event['e_title']) : $event['e_title'];
                     $entries->attach(do_template('CALENDAR_MONTH_ENTRY', array(
@@ -1214,7 +1214,7 @@ class Module_calendar
                         $class = 'priority_' . strval($event['e_priority']);
                     }
 
-                    if (!is_null($to)) {
+                    if ($to !== null) {
                         $test = date('d', $to);
                         $test2 = date('d', $from);
                         if (((intval($test) > intval($test2)) || (intval(date('m', $to)) != intval(date('m', $from))) || (intval(date('Y', $to)) != intval(date('Y', $from))))) {
@@ -1318,7 +1318,7 @@ class Module_calendar
                         }
 
                         // Maybe spanning multiple days of month
-                        if (!is_null($to)) {
+                        if ($to !== null) {
                             $_explode = explode('-', date('d-m', $to));
                             $continues = (intval($_explode[0]) != $_day) || (intval($_explode[1]) != $i);
                             if ($continues) {
@@ -1333,7 +1333,7 @@ class Module_calendar
                     } while ($continues);
 
                     // Push to other months too
-                    if (!is_null($to)) {
+                    if ($to !== null) {
                         $date2 = date('m', $to);
                         if (intval($date2) > $i) {
                             $ntime = mktime(0, 0, 0, intval(date('m', $from)) + 1, 1, intval(date('Y', $from)));
@@ -1471,7 +1471,7 @@ class Module_calendar
             if (count($subscriptions) < 100) {
                 foreach ($subscriptions as $subscription) {
                     $username = $GLOBALS['FORUM_DRIVER']->get_username($subscription['n_member_id']);
-                    if (!is_null($username)) {
+                    if ($username !== null) {
                         $member_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($subscription['n_member_id'], true);
                         $subscribed[] = array('MEMBER_ID' => strval($subscription['n_member_id']), 'MEMBER_URL' => $member_url, 'USERNAME' => $username);
                     }
@@ -1520,17 +1520,17 @@ class Module_calendar
         }
         list($time_raw, $from) = find_event_start_timestamp($event);
         $day_formatted = locale_filter(date(do_lang('calendar_date'), $from));
-        if ((!is_null($event['e_end_year'])) && (!is_null($event['e_end_month'])) && (!is_null($event['e_end_day']))) {
+        if (($event['e_end_year'] !== null) && ($event['e_end_month'] !== null) && ($event['e_end_day'] !== null)) {
             list($to_raw, $to) = find_event_end_timestamp($event);
 
             $to_day_formatted = locale_filter(date(do_lang('calendar_date'), $to));
-            $human_readable_time_range = date_range($from, $to, !is_null($event['e_start_hour']));
+            $human_readable_time_range = date_range($from, $to, ($event['e_start_hour'] !== null));
         } else {
             $to_raw = null;
             $to = null;
 
             $to_day_formatted = null;
-            $human_readable_time_range = is_null($event['e_start_hour']) ? '' : locale_filter(cms_strftime(do_lang('calendar_minute'), $from));
+            $human_readable_time_range = ($event['e_start_hour'] === null) ? '' : locale_filter(cms_strftime(do_lang('calendar_minute'), $from));
         }
 
         // Recurrences
@@ -1539,7 +1539,7 @@ class Module_calendar
             $l_code = explode(' ', strtoupper($event['e_recurrence']));
             $recurrence = do_lang_tempcode($l_code[0]);
 
-            if (!is_null($event['e_recurrences'])) {
+            if ($event['e_recurrences'] !== null) {
                 $recurrence = do_lang_tempcode('RECURRENCE_ITERATION', $recurrence, make_string_tempcode(integer_format($event['e_recurrences'])));
             }
         } elseif ($day == '') {
@@ -1547,7 +1547,7 @@ class Module_calendar
         }
 
         // Views
-        if ((get_db_type() != 'xml') && (get_value('no_view_counts') !== '1') && (is_null(get_bot_type()))) {
+        if ((get_db_type() != 'xml') && (get_value('no_view_counts') !== '1') && (get_bot_type() === null)) {
             $event['e_views']++;
             if (!$GLOBALS['SITE_DB']->table_is_locked('calendar_events')) {
                 $GLOBALS['SITE_DB']->query_update('calendar_events', array('e_views' => $event['e_views']), array('id' => $id), '', 1, null, false, true);
@@ -1564,21 +1564,21 @@ class Module_calendar
             'SUBMITTER' => strval($event['e_submitter']),
             'ADD_DATE' => get_timezoned_date_time($event['e_add_date']),
             'ADD_DATE_RAW' => strval($event['e_add_date']),
-            'EDIT_DATE_RAW' => is_null($event['e_edit_date']) ? '' : strval($event['e_edit_date']),
+            'EDIT_DATE_RAW' => ($event['e_edit_date'] === null) ? '' : strval($event['e_edit_date']),
             'VIEWS' => integer_format($event['e_views']),
             'LOGO' => $event['t_logo'],
             'DAY' => $day_formatted,
             'TO_DAY' => $to_day_formatted,
             'RECURRENCE' => $recurrence,
             'IS_PUBLIC' => $is_public,
-            'MEMBER_CALENDAR' => is_null($event['e_member_calendar']) ? null : strval($event['e_member_calendar']),
+            'MEMBER_CALENDAR' => ($event['e_member_calendar'] === null) ? null : strval($event['e_member_calendar']),
             'PRIORITY' => strval($priority),
             'PRIORITY_LANG' => $priority_lang,
             'TYPE' => $type,
             'TIME' => $human_readable_time_range,
             'TIME_RAW' => strval($time_raw),
             'TIME_VCAL' => date('Y-m-d', $time_raw) . ' ' . date('H:i:s', $time_raw),
-            'TO_TIME_VCAL' => is_null($to_raw) ? null : (date('Y-m-d', $to_raw) . ' ' . date('H:i:s', $to_raw)),
+            'TO_TIME_VCAL' => ($to_raw === null) ? null : (date('Y-m-d', $to_raw) . ' ' . date('H:i:s', $to_raw)),
             'EDIT_URL' => $edit_url,
             'SUBSCRIPTIONS' => $_subscriptions,
             'SUBSCRIBE_URL' => $subscribe_url,
@@ -1668,16 +1668,16 @@ class Module_calendar
         if ((has_actual_page_access(get_modal_user(), 'calendar')) && (has_category_access(get_modal_user(), 'calendar', strval($event['e_type']))) && ($privacy_ok)) {
             list(, $from) = find_event_start_timestamp($event);
             $to = mixed();
-            if (!is_null($event['e_end_year']) && !is_null($event['e_end_month']) && !is_null($event['e_end_day'])) {
+            if (($event['e_end_year'] !== null) && ($event['e_end_month'] !== null) && ($event['e_end_day'] !== null)) {
                 list(, $to) = find_event_end_timestamp($event);
             }
 
             require_code('activities');
-            syndicate_described_activity('calendar:ACTIVITY_SUBSCRIBED_EVENT', get_translated_text($event['e_title']), date_range($from, $to, !is_null($event['e_start_hour'])), make_nice_timezone_name($event['e_timezone']), '_SEARCH:calendar:view:' . strval($id), '', '', 'calendar', 1, null, true);
+            syndicate_described_activity('calendar:ACTIVITY_SUBSCRIBED_EVENT', get_translated_text($event['e_title']), date_range($from, $to, ($event['e_start_hour'] !== null)), make_nice_timezone_name($event['e_timezone']), '_SEARCH:calendar:view:' . strval($id), '', '', 'calendar', 1, null, true);
         }
 
         // Add next reminder to job system
-        $recurrences = find_periods_recurrence($event['e_timezone'], 1, $event['e_start_year'], $event['e_start_month'], $event['e_start_day'], $event['e_start_monthly_spec_type'], is_null($event['e_start_hour']) ? 0 : $event['e_start_hour'], is_null($event['e_start_minute']) ? 0 : $event['e_start_minute'], $event['e_end_year'], $event['e_end_month'], $event['e_end_day'], $event['e_end_monthly_spec_type'], is_null($event['e_end_hour']) ? 0 : $event['e_end_hour'], is_null($event['e_end_minute']) ? 0 : $event['e_end_minute'], $event['e_recurrence'], min(1, $event['e_recurrences']));
+        $recurrences = find_periods_recurrence($event['e_timezone'], 1, $event['e_start_year'], $event['e_start_month'], $event['e_start_day'], $event['e_start_monthly_spec_type'], ($event['e_start_hour'] === null) ? 0 : $event['e_start_hour'], ($event['e_start_minute'] === null) ? 0 : $event['e_start_minute'], $event['e_end_year'], $event['e_end_month'], $event['e_end_day'], $event['e_end_monthly_spec_type'], ($event['e_end_hour'] === null) ? 0 : $event['e_end_hour'], ($event['e_end_minute'] === null) ? 0 : $event['e_end_minute'], $event['e_recurrence'], min(1, $event['e_recurrences']));
         if (array_key_exists(0, $recurrences)) {
             $GLOBALS['SITE_DB']->query_insert('calendar_jobs', array(
                 'j_time' => usertime_to_utctime($recurrences[0][0]) - $seconds_before,

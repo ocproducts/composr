@@ -35,9 +35,9 @@ class Hook_ajax_tree_choose_video
     {
         require_code('galleries');
 
-        $only_owned = array_key_exists('only_owned', $options) ? (is_null($options['only_owned']) ? null : intval($options['only_owned'])) : null;
+        $only_owned = array_key_exists('only_owned', $options) ? (($options['only_owned'] === null) ? null : intval($options['only_owned'])) : null;
         $editable_filter = array_key_exists('editable_filter', $options) ? ($options['editable_filter']) : false;
-        $tree = get_gallery_content_tree('videos', $only_owned, $id, null, null, is_null($id) ? 0 : 1, false, $editable_filter);
+        $tree = get_gallery_content_tree('videos', $only_owned, $id, null, null, ($id === null) ? 0 : 1, false, $editable_filter);
 
         $levels_to_expand = array_key_exists('levels_to_expand', $options) ? ($options['levels_to_expand']) : intval(get_value('levels_to_expand__' . substr(get_class($this), 5), null, true));
         $options['levels_to_expand'] = max(0, $levels_to_expand - 1);
@@ -79,9 +79,9 @@ class Hook_ajax_tree_choose_video
         }
 
         // Mark parent cats for pre-expansion
-        if ((!is_null($default)) && ($default != '')) {
+        if (($default !== null) && ($default != '')) {
             $cat = $GLOBALS['SITE_DB']->query_select_value_if_there('videos', 'cat', array('id' => intval($default)));
-            while ((!is_null($cat)) && ($cat != '')) {
+            while (($cat !== null) && ($cat != '')) {
                 $out .= '<expand>' . $cat . '</expand>';
                 $cat = $GLOBALS['SITE_DB']->query_select_value_if_there('galleries', 'parent_id', array('name' => $cat));
             }
@@ -102,7 +102,7 @@ class Hook_ajax_tree_choose_video
     {
         require_code('galleries');
 
-        $only_owned = array_key_exists('only_owned', $options) ? (is_null($options['only_owned']) ? null : intval($options['only_owned'])) : null;
+        $only_owned = array_key_exists('only_owned', $options) ? (($options['only_owned'] === null) ? null : intval($options['only_owned'])) : null;
         $editable_filter = array_key_exists('editable_filter', $options) ? ($options['editable_filter']) : false;
         return create_selection_list_gallery_content_tree('videos', $it, $only_owned, false, $editable_filter);
     }

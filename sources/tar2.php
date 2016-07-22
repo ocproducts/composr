@@ -50,7 +50,7 @@ function convert_zip_to_tar($in_path, $out_path = null)
         warn_exit(zip_error($in_file, $mzip), false, true);
     }
 
-    if (is_null($out_path)) {
+    if ($out_path === null) {
         $out_path = cms_tempnam();
     }
     $out_file = tar_open($out_path, 'wb');

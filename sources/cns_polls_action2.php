@@ -133,7 +133,7 @@ function cns_delete_poll($poll_id, $reason = '', $check_perms = true)
 function cns_vote_in_poll($poll_id, $votes, $member_id = null, $topic_info = null)
 {
     // Who's voting
-    if (is_null($member_id)) {
+    if ($member_id === null) {
         $member_id = get_member();
     }
 
@@ -141,7 +141,7 @@ function cns_vote_in_poll($poll_id, $votes, $member_id = null, $topic_info = nul
     if (!has_privilege($member_id, 'vote_in_polls')) {
         warn_exit(do_lang_tempcode('VOTE_DENIED'));
     }
-    if (is_null($topic_info)) {
+    if ($topic_info === null) {
         $topic_info = $GLOBALS['FORUM_DB']->query_select('f_topics', array('id', 't_forum_id'), array('t_poll_id' => $poll_id), '', 1);
     }
     if (!array_key_exists(0, $topic_info)) {
@@ -149,7 +149,7 @@ function cns_vote_in_poll($poll_id, $votes, $member_id = null, $topic_info = nul
     }
     $topic_id = $topic_info[0]['id'];
     $forum_id = $topic_info[0]['t_forum_id'];
-    if ((!has_category_access($member_id, 'forums', strval($forum_id))) && (!is_null($forum_id))) {
+    if ((!has_category_access($member_id, 'forums', strval($forum_id))) && ($forum_id !== null)) {
         warn_exit(do_lang_tempcode('VOTE_CHEAT'));
     }
     $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_poll_votes', 'pv_member_id', array('pv_poll_id' => $poll_id, 'pv_member_id' => $member_id));
@@ -159,10 +159,10 @@ function cns_vote_in_poll($poll_id, $votes, $member_id = null, $topic_info = nul
         $voted_already_map = array('pv_poll_id' => $poll_id, 'pv_member_id' => $member_id);
     }
     $voted_already = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_poll_votes', 'pv_member_id', $voted_already_map);
-    if (!is_null($voted_already)) {
+    if ($voted_already !== null) {
         warn_exit(do_lang_tempcode('NOVOTE'));
     }
-    if (!is_null($test)) {
+    if ($test !== null) {
         warn_exit(do_lang_tempcode('NOVOTE'));
     }
 

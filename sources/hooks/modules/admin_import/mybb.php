@@ -185,7 +185,7 @@ class Hook_import_mybb
 
             if (isset($row['name']) && $row['name'] == 'postmaxavatarsize') {
                 $avatar_dimensions = explode('x', $row['value']);
-                if (isset($avatar_dimensions[0]) && isset($avatar_dimensions[1]) && (!is_null($avatar_dimensions[0])) && (!is_null($avatar_dimensions[1]))) {
+                if (isset($avatar_dimensions[0]) && isset($avatar_dimensions[1]) && ($avatar_dimensions[0] !== null) && ($avatar_dimensions[1] !== null)) {
                     $additional_data['avatar_max_width'] = intval($avatar_dimensions[0]);
                     $additional_data['avatar_max_height'] = intval($avatar_dimensions[1]);
                 }
@@ -268,7 +268,7 @@ class Hook_import_mybb
         }
 
         $avatar_dimensions = explode('x', $PROBED_FORUM_CONFIG['postmaxavatarsize']);
-        if (isset($avatar_dimensions[0]) && isset($avatar_dimensions[1]) && (!is_null($avatar_dimensions[0])) && (!is_null($avatar_dimensions[1]))) {
+        if (isset($avatar_dimensions[0]) && isset($avatar_dimensions[1]) && ($avatar_dimensions[0] !== null) && ($avatar_dimensions[1] !== null)) {
             $avatar_max_width = intval($avatar_dimensions[0]);
             $avatar_max_height = intval($avatar_dimensions[1]);
         } else {
@@ -286,7 +286,7 @@ class Hook_import_mybb
             $is_super_moderator = ($row['title'] == 'Universal Moderator') ? 1 : 0;
 
             $id_new = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('g_name') => $row['title']));
-            if (is_null($id_new)) {
+            if ($id_new === null) {
                 $id_new = cns_make_group($row['title'], 0, $is_super_admin, $is_super_moderator, '', '', null, null, null, null, null, null, null, $avatar_max_width, $avatar_max_height, null);
             }
 
@@ -320,7 +320,7 @@ class Hook_import_mybb
                 }
 
                 $test = $GLOBALS['CNS_DRIVER']->get_member_from_username($row['username']);
-                if (!is_null($test)) {
+                if ($test !== null) {
                     import_id_remap_put('member', strval($row['muid']), $test);
                     continue;
                 }
@@ -340,7 +340,7 @@ class Hook_import_mybb
                 $secondary_groups = array();
                 foreach ($_secondary_groups as $_sec_group) {
                     $sec_group = import_id_remap_get('group', $_sec_group, true);
-                    if (!is_null($sec_group)) {
+                    if ($sec_group !== null) {
                         $secondary_groups[] = $sec_group;
                     }
                 }
@@ -587,7 +587,7 @@ class Hook_import_mybb
             $title = @html_entity_decode($title, ENT_QUOTES, get_charset());
 
             $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forum_groupings', 'id', array('c_title' => $title));
-            if (!is_null($test)) {
+            if ($test !== null) {
                 import_id_remap_put('category', strval($row['fid']), $test);
                 continue;
             }
@@ -612,7 +612,7 @@ class Hook_import_mybb
         $rows = $db->query('SELECT * FROM ' . $table_prefix . 'forums WHERE ' . db_string_equal_to('type', 'f'));
         foreach ($rows as $row) {
             $remapped = import_id_remap_get('forum', strval($row['fid']), true);
-            if (!is_null($remapped)) {
+            if ($remapped !== null) {
                 continue;
             }
 
@@ -708,12 +708,12 @@ class Hook_import_mybb
                 }
 
                 $topic_id = import_id_remap_get('topic', strval($row['tid']), true);
-                if (is_null($topic_id)) {
+                if ($topic_id === null) {
                     import_id_remap_put('post', strval($row['pid']), -1);
                     continue;
                 }
                 $member_id = import_id_remap_get('member', strval($row['uid']), true);
-                if (is_null($member_id)) {
+                if ($member_id === null) {
                     $member_id = db_get_first_id();
                 }
 
@@ -724,7 +724,7 @@ class Hook_import_mybb
                 $first_post = $row['dateline'];
                 if ($first_post) {
                     $title = $topics[0]['subject'];
-                } elseif (!is_null($row['subject'])) {
+                } elseif ($row['subject'] !== null) {
                     $title = $row['subject'];
                 }
 
@@ -918,7 +918,7 @@ class Hook_import_mybb
             }
 
             $topic_id = import_id_remap_get('topic', strval($row['tid']), true);
-            if (is_null($topic_id)) {
+            if ($topic_id === null) {
                 import_id_remap_put('poll', strval($row['pid']), -1);
                 continue;
             }
@@ -946,7 +946,7 @@ class Hook_import_mybb
 
             foreach ($rows2 as $row2) {
                 $member_id = $row2['uid'];
-                if ((!is_null($member_id)) && ($member_id != 0)) {
+                if (($member_id !== null) && ($member_id != 0)) {
                     if ($row2['voteoption'] == 0) {
                         $answer = -1;
                     } else {
@@ -996,11 +996,11 @@ class Hook_import_mybb
 
             // Create topic
             $from_id = import_id_remap_get('member', strval($row['fromid']), true);
-            if (is_null($from_id)) {
+            if ($from_id === null) {
                 $from_id = $GLOBALS['CNS_DRIVER']->get_guest_id();
             }
             $to_id = import_id_remap_get('member', strval($row['toid']), true);
-            if (is_null($to_id)) {
+            if ($to_id === null) {
                 $to_id = $GLOBALS['CNS_DRIVER']->get_guest_id();
             }
             $topic_id = cns_make_topic(null, '', '', 1, 1, 0, 0, $from_id, $to_id, false);
@@ -1018,7 +1018,7 @@ class Hook_import_mybb
                 $post = $this->fix_links($_post['message'], $db, $table_prefix);
                 $validated = 1;
                 $from_id = import_id_remap_get('member', strval($_post['fromid']), true);
-                if (is_null($from_id)) {
+                if ($from_id === null) {
                     $from_id = $GLOBALS['CNS_DRIVER']->get_guest_id();
                 }
                 $poster_name_if_guest = $GLOBALS['CNS_DRIVER']->get_username($from_id);
@@ -1094,11 +1094,11 @@ class Hook_import_mybb
                 }
 
                 $member_id = import_id_remap_get('member', strval($row['uid']), true);
-                if (is_null($member_id)) {
+                if ($member_id === null) {
                     continue;
                 }
                 $topic_id = import_id_remap_get('topic', strval($row['tid']), true);
-                if (is_null($topic_id)) {
+                if ($topic_id === null) {
                     continue;
                 }
                 enable_notifications('cns_topic', strval($topic_id), $member_id);
@@ -1157,7 +1157,7 @@ class Hook_import_mybb
 
             global $VALID_COMCODE_TAGS;
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('custom_comcode', 'tag_tag', array('tag_tag' => $custom_tag));
-            if ((array_key_exists($custom_tag, $VALID_COMCODE_TAGS)) || (!is_null($test))) {
+            if ((array_key_exists($custom_tag, $VALID_COMCODE_TAGS)) || ($test !== null)) {
                 import_id_remap_put('custom_comcode', strval($row['cid']), 1);
                 continue;
             }
@@ -1201,14 +1201,14 @@ class Hook_import_mybb
             }
 
             $id_new = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('cf_name') => $row['name']));
-            if (is_null($id_new)) {
+            if ($id_new === null) {
                 $id_new = cns_make_custom_field($row['name'], 0, $row['description'], '', 1 - $row['hidden'], 1 - $row['hidden'], $row['editable'], 0, $type, $row['required'], 0, 0, $row['disporder'], '', 0, '', true);
             }
 
             foreach ($members as $member) {
                 $v = $member['fid' . strval($row['fid'])];
                 $member_id = import_id_remap_get('member', strval($member['ufid']), true);
-                if (($v != '') && (!is_null($member_id))) {
+                if (($v != '') && ($member_id !== null)) {
                     cns_set_custom_field($member_id, $id_new, $v);
                 }
             }
@@ -1235,7 +1235,7 @@ class Hook_import_mybb
             }
 
             $submitter = import_id_remap_get('member', strval($row['uid']), true);
-            if (is_null($submitter)) {
+            if ($submitter === null) {
                 $submitter = $GLOBALS['CNS_DRIVER']->get_guest_id();
             }
 

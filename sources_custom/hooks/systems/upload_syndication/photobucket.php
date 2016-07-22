@@ -48,7 +48,7 @@ class Hook_upload_syndication_photobucket
 
     protected function _get_api()
     {
-        if (is_null($this->_api)) {
+        if ($this->_api === null) {
             safe_ini_set('ocproducts.type_strictness', '0');
             require_code('photobucket/PBAPI');
             $api = new PBAPI(get_option('photobucket_client_id'), get_option('photobucket_client_secret'));
@@ -120,7 +120,7 @@ class Hook_upload_syndication_photobucket
             attach_message(do_lang_tempcode('PHOTOBUCKET_ERROR', escape_html($e->getCode()), escape_html($e->getMessage()), escape_html(get_site_name())), 'warn', false, true);
 
             // Tidy out old incomplete request tokens
-            if (is_null(get_value_newer_than('photobucket_oauth_key__' . strval(get_member()), time() - 60 * 60, true))) {
+            if (get_value_newer_than('photobucket_oauth_key__' . strval(get_member()), time() - 60 * 60, true) === null) {
                 set_value('photobucket_oauth_key__' . strval(get_member()), null, true);
                 set_value('photobucket_oauth_secret__' . strval(get_member()), null, true);
             }

@@ -70,7 +70,7 @@ if (uninstall_check_master_password(post_param_string('given_password', null))) 
  */
 function uninstall_check_master_password($password_given)
 {
-    if (is_null($password_given)) {
+    if ($password_given === null) {
         return false;
     }
 

@@ -414,7 +414,7 @@ function init__global2()
 
     // Reduce down memory limit / raise if requested
     $default_memory_limit = get_value('memory_limit');
-    if ((is_null($default_memory_limit)) || ($default_memory_limit == '') || ($default_memory_limit == '0') || ($default_memory_limit == '-1')) {
+    if (($default_memory_limit === null) || ($default_memory_limit == '') || ($default_memory_limit == '0') || ($default_memory_limit == '-1')) {
         $default_memory_limit = '64M';
         if ($GLOBALS['RELATIVE_PATH'] == 'adminzone' || $GLOBALS['RELATIVE_PATH'] == 'cms') {
             $default_memory_limit = '128M';
@@ -698,7 +698,7 @@ function catch_fatal_errors()
 
     $error = error_get_last();
 
-    if (!is_null($error)) {
+    if ($error !== null) {
         if (!array_key_exists('message', $error)) {
             return; // Needed for HHVM
         }
@@ -1732,7 +1732,7 @@ function sync_file($filename)
 {
     global $FILE_BASE, $_MODIFIED_FILES;
     static $has_sync_script = null;
-    if (is_null($has_sync_script)) {
+    if ($has_sync_script === null) {
         $has_sync_script = is_file($FILE_BASE . '/data_custom/sync_script.php');
     }
     if ((!$has_sync_script) && (!isset($_MODIFIED_FILES))) {

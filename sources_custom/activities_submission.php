@@ -40,7 +40,7 @@ function activities_addon_syndicate_described_activity($a_language_string_code =
     }
 
     $stored_id = 0;
-    if (is_null($a_member_id)) {
+    if ($a_member_id === null) {
         $a_member_id = get_member();
     }
     if (is_guest($a_member_id)) {
@@ -125,7 +125,7 @@ function activities_ajax_submit_handler()
 
             if (strlen(strip_tags($map['STATUS'])) < strlen($map['STATUS'])) {
                 $help_zone = get_comcode_zone('userguide_comcode', false);
-                if (is_null($help_zone)) {
+                if ($help_zone === null) {
                     $response .= '<success>0</success><feedback><![CDATA[No HTML allowed. Use Comcode.]]></feedback>';
                 } else {
                     $cc_guide = build_url(array('page' => 'userguide_comcode'), $help_zone);
@@ -172,7 +172,7 @@ function activities_ajax_update_list_handler()
 
     $map['max'] = $GLOBALS['SITE_DB']->query_select_value_if_there('values', 'the_value', array('the_name' => get_zone_name() . '_' . get_page_name() . '_update_max'));
 
-    if (is_null($map['max'])) {
+    if ($map['max'] === null) {
         $map['max'] = '10';
     }
 
@@ -212,7 +212,7 @@ function activities_ajax_update_list_handler()
                 list($message, $member_avatar, $timestamp, $member_url, $is_public) = render_activity($row);
 
                 $username = $GLOBALS['FORUM_DRIVER']->get_username($row['a_member_id']);
-                if (is_null($username)) {
+                if ($username === null) {
                     $username = do_lang('UNKNOWN');
                 }
 
@@ -276,7 +276,7 @@ function activities_ajax_removal_handler()
     $stat_id = post_param_integer('removal_id', -1);
     $stat_owner = ($stat_id != -1) ? $GLOBALS['SITE_DB']->query_select_value_if_there('activities', 'a_member_id', array('id' => $stat_id)) : null;
 
-    if (($is_guest !== true) && (!is_null($stat_owner))) {
+    if (($is_guest !== true) && ($stat_owner !== null)) {
         if (($stat_owner != $viewer_id) && ($can_remove_others !== true)) {
             $response .= '<success>0</success><err>perms</err>';
             $response .= '<feedback>You do not have permission to remove this status message.</feedback><status_id>' . strval($stat_id) . '</status_id>';
@@ -285,7 +285,7 @@ function activities_ajax_removal_handler()
 
             $response .= '<success>1</success><feedback>Message deleted.</feedback><status_id>' . strval($stat_id) . '</status_id>';
         }
-    } elseif (is_null($stat_owner)) {
+    } elseif ($stat_owner === null) {
         $response .= '<success>0</success><err>missing</err><feedback>Missing ID for status removal or ID does not exist.</feedback>';
     } else {
         $response .= '<success>0</success><feedback>Login expired, you must log in again to post</feedback>';

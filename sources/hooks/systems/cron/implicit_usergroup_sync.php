@@ -30,14 +30,14 @@ class Hook_cron_implicit_usergroup_sync
     {
         if (get_value('implicit_usergroup_sync') === '1') {
             $last = get_value('last_implicit_sync', null, true);
-            if ((is_null($last)) || (intval($last) < time() - 60 * 60)) {
+            if (($last === null) || (intval($last) < time() - 60 * 60)) {
                 $hooks = find_all_hook_obs('systems', 'cns_implicit_usergroups', 'Hook_implicit_usergroups_');
                 foreach ($hooks as $ob) {
                     $group_ids = $ob->get_bound_group_ids();
                     foreach ($group_ids as $group_id) {
                         $GLOBALS['FORUM_DB']->query_delete('f_group_members', array('gm_group_id' => $group_id));
                         $list = $ob->get_member_list($group_id);
-                        if (!is_null($list)) {
+                        if ($list !== null) {
                             foreach ($list as $member_row) {
                                 $GLOBALS['FORUM_DB']->query_insert('f_group_members', array('gm_group_id' => $group_id, 'gm_member_id' => $member_row['id'], 'gm_validated' => 1));
                             }

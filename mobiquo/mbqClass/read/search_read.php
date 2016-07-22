@@ -62,25 +62,25 @@ class CMSSearchRead
             $where .= ' AND t_validated=1';
         }
 
-        if (!is_null($userid)) {
+        if ($userid !== null) {
             $where .= ' AND t_cache_first_member_id=' . strval($userid);
-        } elseif (!is_null($searchuser)) {
+        } elseif ($searchuser !== null) {
             $_userid = $GLOBALS['FORUM_DRIVER']->get_member_from_username($searchuser);
-            if (is_null($_userid)) {
+            if ($_userid === null) {
                 warn_exit(do_lang_tempcode('_USER_NO_EXIST', escape_html($searchuser)));
             }
             $where .= ' AND t_cache_first_member_id=' . strval($_userid);
         }
 
-        if (!is_null($forumid)) {
+        if ($forumid !== null) {
             $where .= ' AND t_forum_id=' . strval($forumid);
         }
 
-        if (!is_null($searchtime)) {
+        if ($searchtime !== null) {
             $where .= ' AND t_cache_last_time>' . strval(time() - $searchtime);
         }
 
-        if (!is_null($only_in)) {
+        if ($only_in !== null) {
             if (count($only_in) == 0) {
                 $where .= ' AND 1=0';
             } else {
@@ -88,7 +88,7 @@ class CMSSearchRead
             }
         }
 
-        if (!is_null($not_in)) {
+        if ($not_in !== null) {
             if (count($not_in) == 0) {
                 $where .= ' AND 1=1';
             } else {
@@ -202,29 +202,29 @@ class CMSSearchRead
             $sql .= ' AND (p_intended_solely_for IS NULL OR p_intended_solely_for=' . strval(get_member()) . ' OR p_poster=' . strval(get_member()) . ')';
         }
 
-        if (!is_null($userid)) {
+        if ($userid !== null) {
             $sql .= ' AND p_poster=' . strval($userid);
-        } elseif (!is_null($searchuser)) {
+        } elseif ($searchuser !== null) {
             $_userid = $GLOBALS['FORUM_DRIVER']->get_member_from_username($searchuser);
-            if (is_null($_userid)) {
+            if ($_userid === null) {
                 warn_exit(do_lang_tempcode('_USER_NO_EXIST', escape_html($searchuser)));
             }
             $sql .= ' AND p_poster=' . strval($_userid);
         }
 
-        if (!is_null($forumid)) {
+        if ($forumid !== null) {
             $sql .= ' AND p_cache_forum_id=' . strval($forumid);
         }
 
-        if (!is_null($topicid)) {
+        if ($topicid !== null) {
             $sql .= ' AND p_topic_id=' . strval($topicid);
         }
 
-        if (!is_null($searchtime)) {
+        if ($searchtime !== null) {
             $sql .= ' AND p_time>' . strval(time() - $searchtime);
         }
 
-        if (!is_null($only_in)) {
+        if ($only_in !== null) {
             if (count($only_in) == 0) {
                 $sql .= ' AND 1=0';
             } else {
@@ -232,7 +232,7 @@ class CMSSearchRead
             }
         }
 
-        if (!is_null($not_in)) {
+        if ($not_in !== null) {
             if (count($not_in) == 0) {
                 $sql .= ' AND 1=1';
             } else {

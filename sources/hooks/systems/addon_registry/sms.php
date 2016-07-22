@@ -133,7 +133,7 @@ class Hook_addon_registry_sms
      */
     public function install($upgrade_from = null)
     {
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->create_table('sms_log', array(
                 'id' => '*AUTO',
                 's_member_id' => 'MEMBER',

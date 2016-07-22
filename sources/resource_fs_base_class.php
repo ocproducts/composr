@@ -56,7 +56,7 @@ abstract class Resource_fs_base
      */
     public function is_folder_type($resource_type)
     {
-        $folder_types = is_array($this->folder_resource_type) ? $this->folder_resource_type : (is_null($this->folder_resource_type) ? array() : array($this->folder_resource_type));
+        $folder_types = is_array($this->folder_resource_type) ? $this->folder_resource_type : (($this->folder_resource_type === null) ? array() : array($this->folder_resource_type));
         return in_array($resource_type, $folder_types);
     }
 
@@ -68,7 +68,7 @@ abstract class Resource_fs_base
      */
     public function is_file_type($resource_type)
     {
-        $file_types = is_array($this->file_resource_type) ? $this->file_resource_type : (is_null($this->file_resource_type) ? array() : array($this->file_resource_type));
+        $file_types = is_array($this->file_resource_type) ? $this->file_resource_type : (($this->file_resource_type === null) ? array() : array($this->file_resource_type));
         return in_array($resource_type, $file_types);
     }
 
@@ -99,10 +99,10 @@ abstract class Resource_fs_base
         }
 
         $ret = array();
-        if (!is_null($this->folder_resource_type)) {
+        if ($this->folder_resource_type !== null) {
             $ret = array_merge($ret, is_array($this->folder_resource_type) ? $this->folder_resource_type : array($this->folder_resource_type));
         }
-        if (!is_null($this->folder_resource_type)) {
+        if ($this->folder_resource_type !== null) {
             $ret = array_merge($ret, is_array($this->file_resource_type) ? $this->file_resource_type : array($this->file_resource_type));
         }
         return $ret;
@@ -123,7 +123,7 @@ abstract class Resource_fs_base
 
         if ($is_file) {
             // If no folder types, files are top level
-            if ((is_null($this->folder_resource_type)) && (is_null($above))) {
+            if (($this->folder_resource_type === null) && ($above === null)) {
                 return array(
                     'cat_field' => null,
                     'linker_table' => null,
@@ -134,7 +134,7 @@ abstract class Resource_fs_base
             }
 
             // If there are folder types, files can not be top level
-            if ((!is_null($this->folder_resource_type)) && (is_null($above))) {
+            if (($this->folder_resource_type !== null) && ($above === null)) {
                 return null;
             }
         }
@@ -143,19 +143,19 @@ abstract class Resource_fs_base
             $sub_info['parent_category_field'] = $sub_info['parent_category_field__resource_fs'];
         }
         if (!$is_file) {
-            if ((is_null($sub_info['parent_category_field'])) && (!is_null($sub_info['parent_spec__field_name']))) { // Some fiddling, as we are smart enough to detect need for linker table
+            if (($sub_info['parent_category_field'] === null) && ($sub_info['parent_spec__field_name'] !== null)) { // Some fiddling, as we are smart enough to detect need for linker table
                 $sub_info['parent_category_field'] = $sub_info['parent_spec__parent_name'];
             }
         }
 
         // If there is no category for $under, then it can only be top-level
-        if ((!array_key_exists('parent_category_field', $sub_info)) || (is_null($sub_info['parent_category_field']))) {
-            if (!is_null($above)) {
+        if ((!array_key_exists('parent_category_field', $sub_info)) || ($sub_info['parent_category_field'] === null)) {
+            if ($above !== null) {
                 return null;
             }
         }
 
-        $folder_info = is_null($above) ? $sub_info : $this->_get_cma_info($above);
+        $folder_info = ($above === null) ? $sub_info : $this->_get_cma_info($above);
         return array(
             'cat_field' => $sub_info['parent_category_field'],
             'linker_table' => $is_file ? null : $sub_info['parent_spec__table_name'],
@@ -293,7 +293,7 @@ abstract class Resource_fs_base
     public function file_convert_id_to_filename($resource_type, $resource_id)
     {
         $moniker = find_moniker_via_id($resource_type, $resource_id);
-        if (is_null($moniker)) {
+        if ($moniker === null) {
             return null;
         }
         return $moniker . '.' . RESOURCE_FS_DEFAULT_EXTENSION;
@@ -320,7 +320,7 @@ abstract class Resource_fs_base
      */
     public function file_convert_filename_to_id($filename, $resource_type = null)
     {
-        if (is_null($resource_type)) {
+        if ($resource_type === null) {
             $resource_type = $this->file_resource_type;
         }
 
@@ -328,7 +328,7 @@ abstract class Resource_fs_base
 
         $moniker = basename($filename, '.' . RESOURCE_FS_DEFAULT_EXTENSION); // Remove file extension from filename
         $resource_id = find_id_via_moniker($resource_type, $moniker);
-        if (is_null($resource_id)) {
+        if ($resource_id === null) {
             $resource_id = find_id_via_label($resource_type, $moniker);
         }
         return array($resource_type, $resource_id);
@@ -343,7 +343,7 @@ abstract class Resource_fs_base
      */
     public function folder_convert_filename_to_id($filename, $resource_type = null)
     {
-        if (is_null($resource_type)) {
+        if ($resource_type === null) {
             $resource_type = $this->folder_resource_type;
         }
 
@@ -393,7 +393,7 @@ abstract class Resource_fs_base
         if (!array_key_exists($property, $properties)) {
             return 0;
         }
-        if (is_null($properties[$property])) {
+        if ($properties[$property] === null) {
             return 0;
         }
         if (is_integer($properties[$property])) {
@@ -414,7 +414,7 @@ abstract class Resource_fs_base
         if (!array_key_exists($property, $properties)) {
             return null;
         }
-        if (is_null($properties[$property])) {
+        if ($properties[$property] === null) {
             return null;
         }
         if (is_integer($properties[$property])) {
@@ -431,7 +431,7 @@ abstract class Resource_fs_base
      */
     protected function _integer_category($category)
     {
-        if (is_null($category)) {
+        if ($category === null) {
             return null;
         }
         return ($category == '') ? null : intval($category);
@@ -449,7 +449,7 @@ abstract class Resource_fs_base
      */
     protected function _default_property_int_modeavg($properties, $property, $table, $default, $db_property = null)
     {
-        if (is_null($db_property)) {
+        if ($db_property === null) {
             $db_property = $property;
         }
 
@@ -468,7 +468,7 @@ abstract class Resource_fs_base
         $db = $GLOBALS[(substr($table, 0, 2) == 'f_') ? 'FORUM_DB' : 'SITE_DB'];
         $val = $db->query_value_if_there('SELECT ' . $db_property . ',count(' . $db_property . ') AS qty FROM ' . get_table_prefix() . $table . ' GROUP BY ' . $db_property . ' ORDER BY qty DESC', false, true); // We need the mode here, not the mean
         $ret = $default;
-        if (!is_null($val)) {
+        if ($val !== null) {
             $ret = $val;
         }
 
@@ -547,7 +547,7 @@ abstract class Resource_fs_base
         }
 
         $test = remap_portable_as_resource_id('member', $properties[$property]);
-        if (is_null($test)) {
+        if ($test === null) {
             return $test;
         }
         return intval($test);
@@ -587,7 +587,7 @@ abstract class Resource_fs_base
         }
 
         $test = remap_portable_as_resource_id('group', $properties[$property]);
-        if (is_null($test)) {
+        if ($test === null) {
             return $test;
         }
         return intval($test);
@@ -763,12 +763,12 @@ abstract class Resource_fs_base
         // Find resource
         require_code('content');
         list(, , $cma_info, $content_row) = content_get_details($resource_type, $resource_id, true);
-        if (is_null($content_row)) {
+        if ($content_row === null) {
             return null;
         }
 
         // Okay, exists, but what if no categories for this?
-        if (is_null($this->folder_resource_type)) {
+        if ($this->folder_resource_type === null) {
             return '';
         }
 
@@ -778,16 +778,16 @@ abstract class Resource_fs_base
         $cat_resource_types[] = null;
         foreach ($cat_resource_types as $cat_resource_type) {
             $relationship = $this->_has_parent_child_relationship($cat_resource_type, $resource_type);
-            if (is_null($relationship)) {
+            if ($relationship === null) {
                 continue;
             }
 
-            if (is_null($cat_resource_type)) {
+            if ($cat_resource_type === null) {
                 return ''; // Exists in root
             }
 
             // Do we need to load up a linker table for getting the category?
-            if ((!is_null($relationship['linker_table'])) && ($cma_info['table'] != $relationship['linker_table'])) {
+            if (($relationship['linker_table'] !== null) && ($cma_info['table'] != $relationship['linker_table'])) {
                 $where = array($relationship['id_field_linker'] => $content_row[$cma_info['id_field']]);
                 $categories = $cma_info['db']->query_select($relationship['linker_table'], array($relationship['cat_field']), $where);
             } else {
@@ -797,11 +797,11 @@ abstract class Resource_fs_base
             foreach ($categories as $category) {
                 // Find category
                 $_category_id = $category[$relationship['cat_field']];
-                $category_id = is_string($_category_id) ? $_category_id : (is_null($_category_id) ? '' : strval($_category_id));
+                $category_id = is_string($_category_id) ? $_category_id : (($_category_id === null) ? '' : strval($_category_id));
 
                 // Convert category to path
                 $subpath = $this->folder_convert_id_to_filename($cat_resource_type, $category_id);
-                if (is_null($subpath)) {
+                if ($subpath === null) {
                     continue; // Weird, some kind of broken category. We'll have to say we cannot find, as it won't be linked into the folder tree.
                 }
 
@@ -834,7 +834,7 @@ abstract class Resource_fs_base
     {
         $label = cms_mb_substr($label, 0, 255);
         $resource_id = $this->convert_label_to_id($label, $subpath, $resource_type, $must_already_exist, $use_guid_for_new);
-        if (is_null($resource_id)) {
+        if ($resource_id === null) {
             return null;
         }
         return find_commandr_fs_filename_via_id($resource_type, $resource_id);
@@ -855,7 +855,7 @@ abstract class Resource_fs_base
         $label = cms_mb_substr($_label, 0, 255);
 
         $resource_id = find_id_via_label($resource_type, $label, $subpath);
-        if (is_null($resource_id)) {
+        if ($resource_id === null) {
             if (!$must_already_exist) {
                 // Not found, create...
                 resource_fs_logging('Auto-creating an unmatched ' . $resource_type . ' label reference, "' . $_label . '", under "' . $subpath . '"', 'notice');
@@ -876,21 +876,21 @@ abstract class Resource_fs_base
                         }
 
                         list(, $subpath_id) = $this->folder_convert_filename_to_id($subpath_bit);
-                        if (is_null($subpath_id)) { // Missing, find via moniker that doesn't match a label due to prefixing
+                        if ($subpath_id === null) { // Missing, find via moniker that doesn't match a label due to prefixing
                             if (preg_match('#^[A-Z]+-#', $subpath_bit) != 0) {
                                 $_subpath_bit = preg_replace('#^[A-Z]+-#', '', $subpath_bit);
                                 $detected_resource_type = strtolower(preg_replace('#-.*$#', '', $subpath_bit));
                                 $subpath_id = find_id_via_label($detected_resource_type, $_subpath_bit, $subpath_above);
                             }
                         }
-                        if (is_null($subpath_id)) { // Missing, find via monikerised label
+                        if ($subpath_id === null) { // Missing, find via monikerised label
                             $_subpath_bit = $this->_create_name_from_label($subpath_bit);
                             list(, $subpath_id) = $this->folder_convert_filename_to_id($_subpath_bit);
                         }
-                        if (is_null($subpath_id)) { // Missing, find via label
+                        if ($subpath_id === null) { // Missing, find via label
                             $subpath_id = find_id_via_label($folder_resource_type, $subpath_bit, $subpath_above);
                         }
-                        if (is_null($subpath_id)) { // Still missing, create folder
+                        if ($subpath_id === null) { // Still missing, create folder
                             $subpath_id = $this->folder_add($subpath_bit, $subpath_above, array());
                         }
 
@@ -902,11 +902,11 @@ abstract class Resource_fs_base
                 }
 
                 // Create main resource
-                $resource_id = $this->resource_add($resource_type, is_null($_label) ? uniqid('arbitrary', true) : $_label, $subpath, array());
+                $resource_id = $this->resource_add($resource_type, ($_label === null) ? uniqid('arbitrary', true) : $_label, $subpath, array());
                 if ($resource_id === false) {
                     return null;
                 }
-                if (!is_null($use_guid_for_new)) {
+                if ($use_guid_for_new !== null) {
                     generate_resource_fs_moniker($resource_type, $resource_id, $label, $use_guid_for_new);
                 }
             }
@@ -963,7 +963,7 @@ abstract class Resource_fs_base
      */
     public function resource_save($resource_type, $label, $path, $properties = null, $search_label_as = null, $search_path = null)
     {
-        if (is_null($properties)) {
+        if ($properties === null) {
             $properties = array();
         }
 
@@ -986,7 +986,7 @@ abstract class Resource_fs_base
      */
     public function resource_add($resource_type, $label, $path, $properties = null)
     {
-        if (is_null($properties)) {
+        if ($properties === null) {
             $properties = array();
         }
 
@@ -1071,11 +1071,11 @@ abstract class Resource_fs_base
      */
     public function reset_resource_access($filename, $resource_type = null, $category = null)
     {
-        if ((is_null($filename)) && ((is_null($resource_type)) || (is_null($category)))) {
+        if (($filename === null) && (($resource_type === null) || ($category === null))) {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
 
-        if (is_null($resource_type)) {
+        if ($resource_type === null) {
             list($resource_type, $category) = $this->folder_convert_filename_to_id($filename);
         }
 
@@ -1111,11 +1111,11 @@ abstract class Resource_fs_base
      */
     public function set_resource_access($filename, $groups, $resource_type = null, $category = null)
     {
-        if ((is_null($filename)) && ((is_null($resource_type)) || (is_null($category)))) {
+        if (($filename === null) && (($resource_type === null) || ($category === null))) {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
 
-        if (is_null($resource_type)) {
+        if ($resource_type === null) {
             list($resource_type, $category) = $this->folder_convert_filename_to_id($filename);
         }
 
@@ -1177,11 +1177,11 @@ abstract class Resource_fs_base
      */
     public function get_resource_access($filename, $resource_type = null, $category = null)
     {
-        if ((is_null($filename)) && ((is_null($resource_type)) || (is_null($category)))) {
+        if (($filename === null) && (($resource_type === null) || ($category === null))) {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
 
-        if (is_null($resource_type)) {
+        if ($resource_type === null) {
             list($resource_type, $category) = $this->folder_convert_filename_to_id($filename);
         }
 
@@ -1228,11 +1228,11 @@ abstract class Resource_fs_base
      */
     public function set_resource_access__members($filename, $members, $resource_type = null, $category = null)
     {
-        if ((is_null($filename)) && ((is_null($resource_type)) || (is_null($category)))) {
+        if (($filename === null) && (($resource_type === null) || ($category === null))) {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
 
-        if (is_null($resource_type)) {
+        if ($resource_type === null) {
             list($resource_type, $category) = $this->folder_convert_filename_to_id($filename);
         }
 
@@ -1288,11 +1288,11 @@ abstract class Resource_fs_base
      */
     public function get_resource_access__members($filename, $resource_type = null, $category = null)
     {
-        if ((is_null($filename)) && ((is_null($resource_type)) || (is_null($category)))) {
+        if (($filename === null) && (($resource_type === null) || ($category === null))) {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
 
-        if (is_null($resource_type)) {
+        if ($resource_type === null) {
             list($resource_type, $category) = $this->folder_convert_filename_to_id($filename);
         }
 
@@ -1329,11 +1329,11 @@ abstract class Resource_fs_base
      */
     public function reset_resource_privileges($filename, $resource_type = null, $category = null)
     {
-        if ((is_null($filename)) && ((is_null($resource_type)) || (is_null($category)))) {
+        if (($filename === null) && (($resource_type === null) || ($category === null))) {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
 
-        if (is_null($resource_type)) {
+        if ($resource_type === null) {
             list($resource_type, $category) = $this->folder_convert_filename_to_id($filename);
         }
 
@@ -1361,11 +1361,11 @@ abstract class Resource_fs_base
      */
     protected function _compute_privilege_preset_scheme($filename, $resource_type = null, $category = null)
     {
-        if ((is_null($filename)) && ((is_null($resource_type)) || (is_null($category)))) {
+        if (($filename === null) && (($resource_type === null) || ($category === null))) {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
 
-        if (is_null($resource_type)) {
+        if ($resource_type === null) {
             list($resource_type, $category) = $this->folder_convert_filename_to_id($filename);
         }
 
@@ -1382,7 +1382,7 @@ abstract class Resource_fs_base
         $page = $cma_info['cms_page'];
         require_code('zones2');
         $_overridables = extract_module_functions_page(get_module_zone($page), $page, array('get_privilege_overrides'));
-        if (is_null($_overridables[0])) {
+        if ($_overridables[0] === null) {
             $overridables = array();
         } else {
             $overridables = is_array($_overridables[0]) ? call_user_func_array($_overridables[0][0], $_overridables[0][1]) : eval($_overridables[0]);
@@ -1414,12 +1414,12 @@ abstract class Resource_fs_base
      */
     public function set_resource_privileges_from_preset($filename, $group_presets, $resource_type = null, $category = null)
     {
-        if ((is_null($filename)) && ((is_null($resource_type)) || (is_null($category)))) {
+        if (($filename === null) && (($resource_type === null) || ($category === null))) {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
 
         $privileges_scheme = $this->_compute_privilege_preset_scheme($filename, $resource_type, $category);
-        if (is_null($privileges_scheme)) {
+        if ($privileges_scheme === null) {
             return;
         }
 
@@ -1445,11 +1445,11 @@ abstract class Resource_fs_base
      */
     public function set_resource_privileges($filename, $group_settings, $resource_type = null, $category = null)
     {
-        if ((is_null($filename)) && ((is_null($resource_type)) || (is_null($category)))) {
+        if (($filename === null) && (($resource_type === null) || ($category === null))) {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
 
-        if (is_null($resource_type)) {
+        if ($resource_type === null) {
             list($resource_type, $category) = $this->folder_convert_filename_to_id($filename);
         }
 
@@ -1490,11 +1490,11 @@ abstract class Resource_fs_base
      */
     public function get_resource_privileges($filename, $resource_type = null, $category = null)
     {
-        if ((is_null($filename)) && ((is_null($resource_type)) || (is_null($category)))) {
+        if (($filename === null) && (($resource_type === null) || ($category === null))) {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
 
-        if (is_null($resource_type)) {
+        if ($resource_type === null) {
             list($resource_type, $category) = $this->folder_convert_filename_to_id($filename);
         }
 
@@ -1511,7 +1511,7 @@ abstract class Resource_fs_base
         $page = $cma_info['cms_page'];
         require_code('zones2');
         $_overridables = extract_module_functions_page(get_module_zone($page), $page, array('get_privilege_overrides'));
-        if (is_null($_overridables[0])) {
+        if ($_overridables[0] === null) {
             $overridables = array();
         } else {
             $overridables = is_array($_overridables[0]) ? call_user_func_array($_overridables[0][0], $_overridables[0][1]) : eval($_overridables[0]);
@@ -1550,12 +1550,12 @@ abstract class Resource_fs_base
      */
     public function set_resource_privileges_from_preset__members($filename, $member_presets, $resource_type = null, $category = null)
     {
-        if ((is_null($filename)) && ((is_null($resource_type)) || (is_null($category)))) {
+        if (($filename === null) && (($resource_type === null) || ($category === null))) {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
 
         $privileges_scheme = $this->_compute_privilege_preset_scheme($filename, $resource_type, $category);
-        if (is_null($privileges_scheme)) {
+        if ($privileges_scheme === null) {
             return;
         }
 
@@ -1581,11 +1581,11 @@ abstract class Resource_fs_base
      */
     public function set_resource_privileges__members($filename, $member_settings, $resource_type = null, $category = null)
     {
-        if ((is_null($filename)) && ((is_null($resource_type)) || (is_null($category)))) {
+        if (($filename === null) && (($resource_type === null) || ($category === null))) {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
 
-        if (is_null($resource_type)) {
+        if ($resource_type === null) {
             list($resource_type, $category) = $this->folder_convert_filename_to_id($filename);
         }
 
@@ -1619,11 +1619,11 @@ abstract class Resource_fs_base
      */
     public function get_resource_privileges__members($filename, $resource_type = null, $category = null)
     {
-        if ((is_null($filename)) && ((is_null($resource_type)) || (is_null($category)))) {
+        if (($filename === null) && (($resource_type === null) || ($category === null))) {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
 
-        if (is_null($resource_type)) {
+        if ($resource_type === null) {
             list($resource_type, $category) = $this->folder_convert_filename_to_id($filename);
         }
 
@@ -1710,7 +1710,7 @@ abstract class Resource_fs_base
      */
     public function file_save($filename, $path, $properties, $search_label_as = null, $search_path = null)
     {
-        if (is_null($search_path)) {
+        if ($search_path === null) {
             $search_path = $path;
         }
 
@@ -1770,7 +1770,7 @@ abstract class Resource_fs_base
      */
     public function folder_save($filename, $path, $properties, $search_label_as = null, $search_path = null)
     {
-        if (is_null($search_path)) {
+        if ($search_path === null) {
             $search_path = $path;
         }
 
@@ -1849,7 +1849,7 @@ abstract class Resource_fs_base
         }
 
         // Attachments
-        if (!is_null($cma_info['attachment_hook'])) {
+        if ($cma_info['attachment_hook'] !== null) {
             $attachment_refs_rows = collapse_1d_complexity('a_id', $db->query_select('attachment_refs', array('a_id'), array('r_referer_type' => $cma_info['attachment_hook'], 'r_referer_id' => $resource_id)));
             $properties['attachments'] = array();
             foreach ($attachment_refs_rows as $attachment_id) {
@@ -1871,14 +1871,14 @@ abstract class Resource_fs_base
             $properties['content_reviews'] = table_to_portable_rows('content_reviews', /*skip*/array(), array('content_type' => $resource_type, 'content_id' => $resource_id), $db);
         }
 
-        if (!is_null($cma_info['feedback_type_code'])) {
+        if ($cma_info['feedback_type_code'] !== null) {
             if (get_forum_type() == 'cns') {
                 // Comments & Reviews
                 require_code('feedback');
                 $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(find_overridden_comment_forum($cma_info['feedback_type_code']), $cma_info['feedback_type_code'] . '_' . $resource_id, do_lang('COMMENT'));
-                if (!is_null($topic_id)) {
+                if ($topic_id !== null) {
                     $comments = get_resource_fs_record('topic', strval($topic_id));
-                    if (!is_null($comments)) {
+                    if ($comments !== null) {
                         $properties['comments'] = json_decode($comments[0], true);
 
                         $properties['comments']['posts'] = array();
@@ -1907,7 +1907,7 @@ abstract class Resource_fs_base
         }
 
         // Permissions
-        if (!is_null($cma_info['permissions_type_code']) && $cma_info['is_category'] && $cma_info['category_field'] == $cma_info['id_field']) {
+        if (($cma_info['permissions_type_code'] !== null) && $cma_info['is_category'] && $cma_info['category_field'] == $cma_info['id_field']) {
             $properties['access'] = $this->get_resource_access(null, $resource_type, $resource_id);
 
             $properties['access__members'] = $this->get_resource_access__members(null, $resource_type, $resource_id);
@@ -1942,10 +1942,10 @@ abstract class Resource_fs_base
         $db = $cma_info['db'];
 
         // New Attachment IDs need generating and substituting
-        if (!is_null($cma_info['attachment_hook'])) {
+        if ($cma_info['attachment_hook'] !== null) {
             if (isset($properties['attachments'])) {
                 $new_id = $db->query_select_value_if_there('attachments', 'MAX(id)');
-                if (is_null($new_id)) {
+                if ($new_id === null) {
                     $new_id = db_get_first_id();
                 } else {
                     $new_id++;
@@ -2001,7 +2001,7 @@ abstract class Resource_fs_base
         }
 
         // Attachments
-        if (!is_null($cma_info['attachment_hook'])) {
+        if ($cma_info['attachment_hook'] !== null) {
             if (isset($properties['attachments'])) {
                 $attachments = $properties['attachments'];
 
@@ -2046,7 +2046,7 @@ abstract class Resource_fs_base
             }
         }
 
-        if (!is_null($cma_info['feedback_type_code'])) {
+        if ($cma_info['feedback_type_code'] !== null) {
             if (get_forum_type() == 'cns') {
                 // Comments & Reviews
                 if (isset($properties['comments'])) {
@@ -2056,7 +2056,7 @@ abstract class Resource_fs_base
                     $forum_name = find_overridden_comment_forum($cma_info['feedback_type_code']);
                     require_code('feedback');
                     $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier($forum_name, $cma_info['feedback_type_code'] . '_' . $resource_id, do_lang('COMMENT'));
-                    if (is_null($topic_id)) {
+                    if ($topic_id === null) {
                         $forum_id = $GLOBALS['FORUM_DRIVER']->forum_id_from_name($forum_name);
                         $resource_fs_path = $comments['comment__path'] . '/' . $comments['comment__filename'];
                     } else {
@@ -2103,7 +2103,7 @@ abstract class Resource_fs_base
         }
 
         // Permissions
-        if (!is_null($cma_info['permissions_type_code']) && $cma_info['is_category'] && $cma_info['category_field'] == $cma_info['id_field']) {
+        if (($cma_info['permissions_type_code'] !== null) && $cma_info['is_category'] && $cma_info['category_field'] == $cma_info['id_field']) {
             if (isset($properties['access'])) {
                 $groups = $properties['access'];
                 $this->set_resource_access(null, $groups, $resource_type, $resource_id);
@@ -2210,7 +2210,7 @@ abstract class Resource_fs_base
         require_code('catalogues');
 
         $catalogue_entry_id = get_bound_content_entry($type, $id);
-        if (!is_null($catalogue_entry_id)) {
+        if ($catalogue_entry_id !== null) {
             $special_fields = get_catalogue_entry_field_values('_' . $type, $catalogue_entry_id);
         } else {
             $special_fields = $db->query_select('catalogue_fields', array('*'), array('c_name' => '_' . $type), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
@@ -2272,7 +2272,7 @@ abstract class Resource_fs_base
 
         require_code('catalogues2');
 
-        if (!is_null($existing)) {
+        if ($existing !== null) {
             actual_edit_catalogue_entry($existing, $first_cat, 1, '', 0, 0, 0, $map);
         } else {
             $catalogue_entry_id = actual_add_catalogue_entry($first_cat, 1, '', 0, 0, 0, $map);
@@ -2305,14 +2305,14 @@ abstract class Resource_fs_base
 
         $listing = array();
 
-        $folder_types = is_array($this->folder_resource_type) ? $this->folder_resource_type : (is_null($this->folder_resource_type) ? array() : array($this->folder_resource_type));
-        $file_types = is_array($this->file_resource_type) ? $this->file_resource_type : (is_null($this->file_resource_type) ? array() : array($this->file_resource_type));
+        $folder_types = is_array($this->folder_resource_type) ? $this->folder_resource_type : (($this->folder_resource_type === null) ? array() : array($this->folder_resource_type));
+        $file_types = is_array($this->file_resource_type) ? $this->file_resource_type : (($this->file_resource_type === null) ? array() : array($this->file_resource_type));
 
         // Find where we're at
         $cat_id = '';
         $cat_resource_type = mixed();
         if (count($meta_dir) != 0) {
-            if (is_null($this->folder_resource_type)) {
+            if ($this->folder_resource_type === null) {
                 return false; // Should not be possible
             }
 
@@ -2322,7 +2322,7 @@ abstract class Resource_fs_base
         // Find folders
         foreach ($folder_types as $resource_type) {
             $relationship = $this->_has_parent_child_relationship($cat_resource_type, $resource_type);
-            if (is_null($relationship)) {
+            if ($relationship === null) {
                 continue;
             }
 
@@ -2332,15 +2332,15 @@ abstract class Resource_fs_base
 
             $select = array('main.*');
             $table = $folder_info['table'] . ' main';
-            if ((!is_null($relationship['linker_table'])) && ($relationship['linker_table'] != $folder_info['table'])) {
-                if ((!is_null($_cat_id)) && ($_cat_id !== '')) {
+            if (($relationship['linker_table'] !== null) && ($relationship['linker_table'] != $folder_info['table'])) {
+                if (($_cat_id !== null) && ($_cat_id !== '')) {
                     $table = $folder_info['table'] . ' main JOIN ' . $folder_info['db']->get_table_prefix() . $relationship['linker_table'] . ' cats ON cats.' . $relationship['id_field_linker'] . '=main.' . $relationship['id_field'];
                 }
             }
-            if (!is_null($folder_info['add_time_field'])) {
+            if ($folder_info['add_time_field'] !== null) {
                 $select[] = 'main.' . $folder_info['add_time_field'];
             }
-            if (!is_null($folder_info['edit_time_field'])) {
+            if ($folder_info['edit_time_field'] !== null) {
                 $select[] = 'main.' . $folder_info['edit_time_field'];
             }
             if (!is_array($folder_info['id_field'])) {
@@ -2351,10 +2351,10 @@ abstract class Resource_fs_base
                 $extra .= 'GROUP BY main.' . $relationship['id_field'] . ' '; // In case it's not a real category table, just an implied one by self-categorisation of entries
             }
             $extra .= 'ORDER BY main.' . $relationship['id_field'];
-            if (is_null($relationship['cat_field'])) {
+            if ($relationship['cat_field'] === null) {
                 $where = array();
             } else {
-                if (((is_null($_cat_id)) || ($_cat_id === '')) && ($relationship['linker_table'] != $folder_info['table'])) {
+                if ((($_cat_id === null) || ($_cat_id === '')) && ($relationship['linker_table'] != $folder_info['table'])) {
                     $where = array($relationship['id_field'] => ($folder_info['id_field_numeric'] ? db_get_first_id() : '')); // Don't go through the linker table for the root category
                 } else {
                     $where = array($relationship['cat_field'] => $_cat_id);
@@ -2370,12 +2370,12 @@ abstract class Resource_fs_base
                 if (method_exists($this, '_get_folder_edit_date')) {
                     $filetime = $this->_get_folder_edit_date($folder, end($meta_dir));
                 }
-                if (is_null($filetime)) {
-                    if (!is_null($folder_info['edit_time_field'])) {
+                if ($filetime === null) {
+                    if ($folder_info['edit_time_field'] !== null) {
                         $filetime = $folder[$folder_info['edit_time_field']];
                     }
-                    if (is_null($filetime)) {
-                        if (!is_null($folder_info['add_time_field'])) {
+                    if ($filetime === null) {
+                        if ($folder_info['add_time_field'] !== null) {
                             $filetime = $folder[$folder_info['add_time_field']];
                         }
                     }
@@ -2393,23 +2393,23 @@ abstract class Resource_fs_base
         // Find files
         foreach ($file_types as $resource_type) {
             $relationship = $this->_has_parent_child_relationship($cat_resource_type, $resource_type);
-            if (is_null($relationship)) {
+            if ($relationship === null) {
                 continue;
             }
 
             $file_info = $this->_get_cma_info($resource_type);
             $where = array();
-            if (!is_null($this->folder_resource_type)) {
+            if ($this->folder_resource_type !== null) {
                 $_cat_id = ($relationship['cat_field_numeric'] ? (($cat_id == '') ? null : intval($cat_id)) : $cat_id);
                 $where[$relationship['cat_field']] = $_cat_id;
             }
 
             $select = array();
             append_content_select_for_id($select, $file_info);
-            if (!is_null($file_info['add_time_field'])) {
+            if ($file_info['add_time_field'] !== null) {
                 $select[] = $file_info['add_time_field'];
             }
-            if (!is_null($file_info['edit_time_field'])) {
+            if ($file_info['edit_time_field'] !== null) {
                 $select[] = $file_info['edit_time_field'];
             }
             if (!is_array($file_info['id_field'])) {
@@ -2425,12 +2425,12 @@ abstract class Resource_fs_base
                 if (method_exists($this, '_get_file_edit_date')) {
                     $filetime = $this->_get_file_edit_date($file, end($meta_dir));
                 }
-                if (is_null($filetime)) {
-                    if (!is_null($file_info['edit_time_field'])) {
+                if ($filetime === null) {
+                    if ($file_info['edit_time_field'] !== null) {
                         $filetime = $file[$file_info['edit_time_field']];
                     }
-                    if (is_null($filetime)) {
-                        if (!is_null($file_info['add_time_field'])) {
+                    if ($filetime === null) {
+                        if ($file_info['add_time_field'] !== null) {
                             $filetime = $file[$file_info['add_time_field']];
                         }
                     }
@@ -2455,12 +2455,12 @@ abstract class Resource_fs_base
             if (method_exists($this, '_get_file_edit_date')) {
                 $filetime = $this->_get_folder_edit_date($folder, end($meta_dir));
             }
-            if (is_null($filetime)) {
-                if (!is_null($folder_info['edit_time_field'])) {
+            if ($filetime === null) {
+                if ($folder_info['edit_time_field'] !== null) {
                     $filetime = $folder[$folder_info['edit_time_field']];
                 }
-                if (is_null($filetime)) {
-                    if (!is_null($folder_info['add_time_field'])) {
+                if ($filetime === null) {
+                    if ($folder_info['add_time_field'] !== null) {
                         $filetime = $folder[$folder_info['add_time_field']];
                     }
                 }
@@ -2488,7 +2488,7 @@ abstract class Resource_fs_base
      */
     public function make_directory($meta_dir, $meta_root_node, $new_dir_name, &$commandr_fs)
     {
-        if (is_null($this->folder_resource_type)) {
+        if ($this->folder_resource_type === null) {
             return false;
         }
         return $this->folder_add($new_dir_name, implode('/', $meta_dir), array());
@@ -2505,7 +2505,7 @@ abstract class Resource_fs_base
      */
     public function remove_directory($meta_dir, $meta_root_node, $dir_name, &$commandr_fs)
     {
-        if (is_null($this->folder_resource_type)) {
+        if ($this->folder_resource_type === null) {
             return false;
         }
         return $this->folder_delete($dir_name, implode('/', $meta_dir));

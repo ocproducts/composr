@@ -41,24 +41,24 @@ class Hook_ajax_tree_choose_download
                 do {
                     $str = 'Version ' . float_to_raw_string($id_float, 1, true);
                     $_id = $GLOBALS['SITE_DB']->query_select_value_if_there('download_categories', 'id', array('parent_id' => 3, $GLOBALS['SITE_DB']->translate_field_ref('category') => $str));
-                    if (is_null($_id)) {
+                    if ($_id === null) {
                         $id_float -= 0.1;
                     }
-                } while ((is_null($_id)) && ($id_float > 0.0));
+                } while (($_id === null) && ($id_float > 0.0));
             } else {
                 $_id = $GLOBALS['SITE_DB']->query_select_value_if_there('download_categories', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('category') => $id));
             }
-            if (is_null($_id)) {
+            if ($_id === null) {
                 warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'download_category'));
             }
             $id = strval($_id);
         }
 
-        $only_owned = array_key_exists('only_owned', $options) ? (is_null($options['only_owned']) ? null : intval($options['only_owned'])) : null;
+        $only_owned = array_key_exists('only_owned', $options) ? (($options['only_owned'] === null) ? null : intval($options['only_owned'])) : null;
         $shun = array_key_exists('shun', $options) ? $options['shun'] : null;
         $editable_filter = array_key_exists('editable_filter', $options) ? ($options['editable_filter']) : false;
         $tar_filter = array_key_exists('tar_filter', $options) ? ($options['original_filename']) : false;
-        $tree = get_downloads_tree($only_owned, is_null($id) ? null : intval($id), null, null, $shun, (get_param_integer('full_depth', 0) == 1) ? null : (is_null($id) ? 0 : 1), false, $editable_filter, $tar_filter);
+        $tree = get_downloads_tree($only_owned, ($id === null) ? null : intval($id), null, null, $shun, (get_param_integer('full_depth', 0) == 1) ? null : (($id === null) ? 0 : 1), false, $editable_filter, $tar_filter);
 
         $levels_to_expand = array_key_exists('levels_to_expand', $options) ? ($options['levels_to_expand']) : intval(get_value('levels_to_expand__' . substr(get_class($this), 5), null, true));
         $options['levels_to_expand'] = max(0, $levels_to_expand - 1);
@@ -149,9 +149,9 @@ class Hook_ajax_tree_choose_download
         }
 
         // Mark parent cats for pre-expansion
-        if ((!is_null($default)) && ($default != '')) {
+        if (($default !== null) && ($default != '')) {
             $cat = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'category_id', array('id' => intval($default)));
-            while (!is_null($cat)) {
+            while ($cat !== null) {
                 $out .= '<expand>' . strval($cat) . '</expand>';
                 $cat = $GLOBALS['SITE_DB']->query_select_value_if_there('download_categories', 'parent_id', array('id' => $cat));
             }
@@ -172,9 +172,9 @@ class Hook_ajax_tree_choose_download
     {
         require_code('downloads');
 
-        $only_owned = array_key_exists('only_owned', $options) ? (is_null($options['only_owned']) ? null : intval($options['only_owned'])) : null;
+        $only_owned = array_key_exists('only_owned', $options) ? (($options['only_owned'] === null) ? null : intval($options['only_owned'])) : null;
         $shun = array_key_exists('shun', $options) ? $options['shun'] : null;
         $editable_filter = array_key_exists('editable_filter', $options) ? ($options['editable_filter']) : false;
-        return create_selection_list_downloads_tree(is_null($it) ? null : intval($it), $only_owned, $shun, false, $editable_filter);
+        return create_selection_list_downloads_tree(($it === null) ? null : intval($it), $only_owned, $shun, false, $editable_filter);
     }
 }

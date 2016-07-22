@@ -49,17 +49,17 @@ function get_currency()
 
     // keep_currency
     $currency = get_param_string('keep_currency', null);
-    if (is_null($currency)) {
+    if ($currency === null) {
         // a specially named custom profile field for the currency.
         $currency = get_cms_cpf('currency');
         if ($currency === '') {
             $currency = null;
         }
-        if (is_null($currency)) {
+        if ($currency === null) {
             require_code('locations');
 
             $country = get_country();
-            if (is_null($country)) {
+            if ($country === null) {
                 $currency = get_option('currency');
             } else {
                 $currency = country_to_currency($country);
@@ -88,7 +88,7 @@ function currency_convert($amount, $from_currency, $to_currency = null, $string 
         return null;
     }
 
-    if (is_null($to_currency)) {
+    if ($to_currency === null) {
         $to_currency = get_currency();
     }
 
@@ -100,8 +100,8 @@ function currency_convert($amount, $from_currency, $to_currency = null, $string 
     } else {
         $cache_key = 'currency_' . $from_currency . '_' . $to_currency . (is_float($amount) ? float_to_raw_string($amount) : strval($amount));
         $_new_amount = get_value_newer_than($cache_key, time() - 60 * 60 * 24 * 2, true);
-        $new_amount = is_null($_new_amount) ? null : floatval($_new_amount);
-        if (is_null($new_amount)) {
+        $new_amount = ($_new_amount === null) ? null : floatval($_new_amount);
+        if ($new_amount === null) {
             $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'values_elective WHERE the_name LIKE \'' . db_encode_like('currency_%') . '\' AND date_and_time<' . strval(time() - 60 * 60 * 24 * 2)); // Cleanup
 
             $google_url = 'http://www.google.com/finance/converter?a=' . (is_float($amount) ? float_to_raw_string($amount) : strval($amount)) . '&from=' . $from_currency . '&to=' . strtoupper($to_currency);

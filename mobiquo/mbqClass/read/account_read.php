@@ -67,7 +67,7 @@ class CMSAccountRead
     public function prefetch_account($email)
     {
         $user_id = $GLOBALS['FORUM_DRIVER']->get_member_from_email_address($email);
-        if (is_null($user_id)) {
+        if ($user_id === null) {
             return null;
         }
 

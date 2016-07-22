@@ -34,10 +34,10 @@ function send_recommendation_email($name, $email_address, $message, $is_invite =
     if (!is_array($email_address)) {
         $email_address = array($email_address);
     }
-    if (is_null($recommender_email)) {
+    if ($recommender_email === null) {
         $recommender_email = $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member());
     }
-    if (is_null($subject)) {
+    if ($subject === null) {
         $subject = do_lang('RECOMMEND_MEMBER_SUBJECT', get_site_name());
     }
 
@@ -46,7 +46,7 @@ function send_recommendation_email($name, $email_address, $message, $is_invite =
         $message = '(' . do_lang('NONE') . ')';
     }
 
-    dispatch_mail(do_lang('RECOMMEND_MEMBER_SUBJECT', get_site_name()), $message, $email_address, is_null($names) ? $email_address : $names, $recommender_email, $name);
+    dispatch_mail(do_lang('RECOMMEND_MEMBER_SUBJECT', get_site_name()), $message, $email_address, ($names === null) ? $email_address : $names, $recommender_email, $name);
 }
 
 /**

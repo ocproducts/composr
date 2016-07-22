@@ -111,7 +111,7 @@ function publish_addon($addon, $version_branch, $cat_id)
     $fsize = filesize(get_file_base() . '/' . urldecode($addon_url));
 
     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'url', array('url' => $addon_url));
-    if (is_null($test)) {
+    if ($test === null) {
         $tar = tar_open($from, 'rb');
         $info_file = tar_get_file($tar, 'addon.inf', true);
         $info = better_parse_ini_file(null, $info_file['data']);
@@ -140,7 +140,7 @@ function publish_addon($addon, $version_branch, $cat_id)
         }
 
         $download_owner = $GLOBALS['FORUM_DRIVER']->get_member_from_username($author);
-        if (is_null($download_owner)) {
+        if ($download_owner === null) {
             $download_owner = DOWNLOAD_OWNER;
         }
         $download_id = add_download($cat_id, $name, $addon_url, $description, $author, '', null, 1, 1, 2, 1, '', $addon . '.tar', $fsize, 0, 0, null, null, 0, 0, $download_owner);
@@ -164,7 +164,7 @@ function publish_theme($file, $version_branch, $cat_id)
     $fsize = filesize(get_file_base() . '/' . urldecode($addon_url));
 
     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'url', array('url' => $addon_url));
-    if (is_null($test)) {
+    if ($test === null) {
         $tar = tar_open($from, 'rb');
         $info_file = tar_get_file($tar, 'addon.inf', true);
         $info = better_parse_ini_file(null, $info_file['data']);
@@ -175,7 +175,7 @@ function publish_theme($file, $version_branch, $cat_id)
         $author = $info['author'];
 
         $download_owner = $GLOBALS['FORUM_DRIVER']->get_member_from_username($author);
-        if (is_null($download_owner)) {
+        if ($download_owner === null) {
             $download_owner = DOWNLOAD_OWNER;
         }
         $download_id = add_download($cat_id, $name, $addon_url, $description, $author, '', null, 1, 1, 2, 1, '', $new_file, $fsize, 0, 0, null, null, 0, 0, $download_owner);

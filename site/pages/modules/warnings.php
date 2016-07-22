@@ -194,7 +194,7 @@ class Module_warnings extends Standard_crud_module
 
             $is_warning = escape_html($row['w_is_warning'] ? do_lang_tempcode('YES') : do_lang_tempcode('NO'));
 
-            $changed_usergroup_from = escape_html((is_null($row['p_changed_usergroup_from']) ? do_lang_tempcode('NO') : do_lang_tempcode('YES')));
+            $changed_usergroup_from = escape_html((($row['p_changed_usergroup_from'] === null) ? do_lang_tempcode('NO') : do_lang_tempcode('YES')));
             $charged_points = ($row['p_charged_points'] == 0) ? new Tempcode() : div(hyperlink(build_url(array('page' => '_SELF', 'type' => 'undo_charge'), '_SELF'), do_lang_tempcode('RESTORE_POINTS', escape_html(integer_format($row['p_charged_points']))), false, true, '', null, form_input_hidden('id', strval($row['id']))), 'dsgsgdfgddgdf');
             $undoing = new Tempcode();
             if ($row['p_probation'] == 0) {
@@ -213,10 +213,10 @@ class Module_warnings extends Standard_crud_module
             if ($row['p_banned_member'] == 1) {
                 $undoing->attach(div(hyperlink(build_url(array('page' => '_SELF', 'type' => 'undo_banned_member'), '_SELF'), do_lang_tempcode('UNBAN_MEMBER'), false, true, '', null, form_input_hidden('id', strval($row['id']))), '56ytryrtyhrtyrt'));
             }
-            if (!is_null($row['p_silence_from_topic'])) {
+            if ($row['p_silence_from_topic'] !== null) {
                 $undoing->attach(div(hyperlink(build_url(array('page' => '_SELF', 'type' => 'undo_silence_from_topic'), '_SELF'), do_lang_tempcode('UNSILENCE_TOPIC'), false, true, '', null, form_input_hidden('id', strval($row['id']))), 'rgergdfhfhg'));
             }
-            if (!is_null($row['p_silence_from_forum'])) {
+            if ($row['p_silence_from_forum'] !== null) {
                 $undoing->attach(div(hyperlink(build_url(array('page' => '_SELF', 'type' => 'undo_silence_from_forum'), '_SELF'), do_lang_tempcode('UNSILENCE_FORUM'), false, true, '', null, form_input_hidden('id', strval($row['id']))), 'ghgfhfghggf'));
             }
             if ($undoing->is_empty()) {
@@ -278,7 +278,7 @@ class Module_warnings extends Standard_crud_module
         $member_id = $GLOBALS['FORUM_DB']->query_select_value('f_warnings', 'w_member_id', array('id' => $id));
         $probation = $GLOBALS['FORUM_DB']->query_select_value('f_warnings', 'p_probation', array('id' => $id));
         $on_probation_until = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_on_probation_until');
-        if (!is_null($on_probation_until)) {
+        if ($on_probation_until !== null) {
             $GLOBALS['FORUM_DB']->query_update('f_members', array('m_on_probation_until' => $on_probation_until - $probation * 60 * 60 * 24), array('id' => $member_id), '', 1);
         }
         $GLOBALS['FORUM_DB']->query_update('f_warnings', array('p_probation' => 0), array('id' => $id), '', 1);
@@ -395,7 +395,7 @@ class Module_warnings extends Standard_crud_module
      */
     public function get_form_fields($new = true, $explanation = '', $is_warning = 0, $member_id = null)
     {
-        if (is_null($member_id)) {
+        if ($member_id === null) {
             $member_id = get_param_integer('member_id', get_member());
         }
 
@@ -430,9 +430,9 @@ class Module_warnings extends Standard_crud_module
         if ($new) {
             $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '322a026b7a56a3e4e9ac58e4979add35', 'TITLE' => do_lang_tempcode('PUNITIVE_ACTIONS'))));
 
-            if (!is_null($post_id)) {
+            if ($post_id !== null) {
                 $topic_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_posts', 'p_topic_id', array('id' => $post_id));
-                if (!is_null($topic_id)) {
+                if ($topic_id !== null) {
                     $forum_id = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_forum_id', array('id' => $topic_id));
                     $hidden->attach(form_input_hidden('topic_id', strval($topic_id)));
                     $hidden->attach(form_input_hidden('forum_id', strval($forum_id)));
@@ -445,7 +445,7 @@ class Module_warnings extends Standard_crud_module
                         'module_the_name' => 'topics',
                         'category_name' => strval($topic_id),
                     ));
-                    if (!is_null($active_until)) {
+                    if ($active_until !== null) {
                         $silence_topic_time = $active_until;
                     }
                     $active_until = $GLOBALS['SITE_DB']->query_select_value_if_there('member_privileges', 'active_until', array(
@@ -455,7 +455,7 @@ class Module_warnings extends Standard_crud_module
                         'module_the_name' => 'forums',
                         'category_name' => strval($forum_id),
                     ));
-                    if (!is_null($active_until)) {
+                    if ($active_until !== null) {
                         $silence_forum_time = $active_until;
                     }
                     $fields->attach(form_input_date(do_lang_tempcode('SILENCE_FROM_TOPIC'), do_lang_tempcode('DESCRIPTION_SILENCE_FROM_TOPIC'), 'silence_from_topic', false, true, true, $silence_topic_time, 2));
@@ -472,11 +472,11 @@ class Module_warnings extends Standard_crud_module
                 }
 
                 $stopforumspam_api_key = get_option('stopforumspam_api_key');
-                if (is_null($stopforumspam_api_key)) {
+                if ($stopforumspam_api_key === null) {
                     $stopforumspam_api_key = '';
                 }
                 $tornevall_api_username = get_option('tornevall_api_username');
-                if (is_null($tornevall_api_username)) {
+                if ($tornevall_api_username === null) {
                     $tornevall_api_username = '';
                 }
                 if ($stopforumspam_api_key . $tornevall_api_username != '') {
@@ -513,9 +513,9 @@ class Module_warnings extends Standard_crud_module
         $fields->attach(form_input_line_comcode(do_lang_tempcode('EXPLANATION'), do_lang_tempcode('DESCRIPTION_EXPLANATION'), 'explanation', $explanation, true));
         if ($new) {
             $message = '';
-            if (!is_null($post_id)) {
+            if ($post_id !== null) {
                 $_postdetails_text = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_posts', 'p_post', array('id' => $post_id));
-                if (!is_null($_postdetails_text)) {
+                if ($_postdetails_text !== null) {
                     $message = '[quote="' . $username . '"]' . "\n" . get_translated_text($_postdetails_text) . "\n" . '[/quote]';
                 }
             }
@@ -639,7 +639,7 @@ class Module_warnings extends Standard_crud_module
         $member_id = post_param_integer('member_id');
         $message = post_param_string('message', '');
         $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
-        if (is_null($username)) {
+        if ($username === null) {
             warn_exit(do_lang_tempcode('_MEMBER_NO_EXIST', escape_html($username)));
         }
 
@@ -670,7 +670,7 @@ class Module_warnings extends Standard_crud_module
 
         // Topic silencing
         $silence_from_topic = post_param_integer('topic_id', null);
-        if (!is_null($silence_from_topic)) {
+        if ($silence_from_topic !== null) {
             $_silence_from_topic = post_param_date('silence_from_topic');
             $GLOBALS['SITE_DB']->query_delete('member_privileges', array(
                 'member_id' => $member_id,
@@ -685,7 +685,7 @@ class Module_warnings extends Standard_crud_module
         } else {
             $_silence_from_topic = null;
         }
-        if (!is_null($_silence_from_topic)) {
+        if ($_silence_from_topic !== null) {
             $GLOBALS['SITE_DB']->query_insert('member_privileges', array(
                 'active_until' => $_silence_from_topic,
                 'member_id' => $member_id,
@@ -701,7 +701,7 @@ class Module_warnings extends Standard_crud_module
 
         // Forum silencing
         $silence_from_forum = post_param_integer('forum_id', null);
-        if (!is_null($silence_from_forum)) {
+        if ($silence_from_forum !== null) {
             $GLOBALS['SITE_DB']->query_delete('member_privileges', array(
                 'member_id' => $member_id,
                 'privilege' => 'submit_lowrange_content',
@@ -723,7 +723,7 @@ class Module_warnings extends Standard_crud_module
         } else {
             $_silence_from_forum = null;
         }
-        if (!is_null($_silence_from_forum)) {
+        if ($_silence_from_forum !== null) {
             $GLOBALS['SITE_DB']->query_insert('member_privileges', array(
                 'active_until' => $_silence_from_forum,
                 'member_id' => $member_id,
@@ -751,7 +751,7 @@ class Module_warnings extends Standard_crud_module
         if (has_privilege(get_member(), 'probate_members')) {
             if ($probation != 0) {
                 $on_probation_until = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_on_probation_until');
-                if ((is_null($on_probation_until)) || ($on_probation_until < time())) {
+                if (($on_probation_until === null) || ($on_probation_until < time())) {
                     $on_probation_until = time();
                 }
                 $on_probation_until += $probation * 60 * 60 * 24;
@@ -809,7 +809,7 @@ class Module_warnings extends Standard_crud_module
             } else {
                 $_changed_usergroup_from = intval($__changed_usergroup_from);
             }
-            if ((!is_null($_changed_usergroup_from)) && ($_changed_usergroup_from != -1)) {
+            if (($_changed_usergroup_from !== null) && ($_changed_usergroup_from != -1)) {
                 $changed_usergroup_from = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_primary_group');
                 $GLOBALS['FORUM_DB']->query_update('f_members', array('m_primary_group' => $_changed_usergroup_from), array('id' => $member_id), '', 1);
             }

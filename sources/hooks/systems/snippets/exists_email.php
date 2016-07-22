@@ -33,7 +33,7 @@ class Hook_snippet_exists_email
         $val = get_param_string('name');
 
         $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', 'id', array('m_email_address' => $val));
-        if (is_null($test)) {
+        if ($test === null) {
             return new Tempcode();
         }
 

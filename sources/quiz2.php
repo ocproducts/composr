@@ -159,7 +159,7 @@ function _save_available_quiz_answers($id, $text, $type)
 
     // Reassign DB slots for existing questions that were left unused, to new ones that were not matched
     foreach ($existing as $i => $e) {
-        if (is_null($e)) {
+        if ($e === null) {
             $existing[$i] = array_shift($_existing);
         }
     }
@@ -193,7 +193,7 @@ function _save_available_quiz_answers($id, $text, $type)
         $question_extra_text = $_q[1];
         list($question, $type, $required, $marked, $question_extra_text) = parse_quiz_question_line($question, $as, $question_extra_text);
 
-        if (is_null($existing[$i])) { // We're adding a new question on the end
+        if ($existing[$i] === null) { // We're adding a new question on the end
             $map = array(
                 'q_quiz' => $id,
                 'q_type' => $type,
@@ -257,7 +257,7 @@ function _save_available_quiz_answers($id, $text, $type)
                 $existing_a[] = null;
             }
             foreach ($existing_a as $_x => $e) {
-                if (is_null($e)) {
+                if ($e === null) {
                     $existing_a[$_x] = array_shift($_existing_a);
                 }
             }
@@ -270,7 +270,7 @@ function _save_available_quiz_answers($id, $text, $type)
                 $is_correct = ((($x == 0) && (strpos($qs2[$i], ' [*]') === false)) || (strpos($a, ' [*]') !== false)) ? 1 : 0;
                 $a = str_replace(' [*]', '', $a);
 
-                if (!is_null($existing_a[$x])) {
+                if ($existing_a[$x] !== null) {
                     $map = array(
                         'q_is_correct' => $is_correct,
                         'q_order' => $x,
@@ -342,10 +342,10 @@ function add_quiz($name, $timeout, $start_text, $end_text, $end_text_fail, $note
     require_code('global4');
     prevent_double_submit('ADD_QUIZ', null, $name);
 
-    if (is_null($submitter)) {
+    if ($submitter === null) {
         $submitter = get_member();
     }
-    if (is_null($add_time)) {
+    if ($add_time === null) {
         $add_time = time();
     }
 
@@ -470,10 +470,10 @@ function edit_quiz($id, $name, $timeout, $start_text, $end_text, $end_text_fail,
     $update_map += lang_remap_comcode('q_end_text', $_end_text, $end_text);
     $update_map += lang_remap_comcode('q_end_text_fail', $_end_text_fail, $end_text_fail);
 
-    if (!is_null($add_time)) {
+    if ($add_time !== null) {
         $update_map['q_add_date'] = $add_time;
     }
-    if (!is_null($submitter)) {
+    if ($submitter !== null) {
         $update_map['q_submitter'] = $submitter;
     }
 

@@ -99,7 +99,7 @@ class Forum_driver_base
         if ($_username == '') {
             $_username = $this->get_username($id, $use_displayname);
         }
-        if (is_null($_username)) {
+        if ($_username === null) {
             return do_lang_tempcode('UNKNOWN');
         }
         $url = $this->member_profile_url($id, true);
@@ -314,7 +314,7 @@ class Forum_driver_base
     {
         global $IN_MINIKERNEL_VERSION;
         static $moderator_group_cache = null;
-        if ((!is_null($moderator_group_cache)) && ((!$IN_MINIKERNEL_VERSION) || ($moderator_group_cache != array()))) {
+        if (($moderator_group_cache !== null) && ((!$IN_MINIKERNEL_VERSION) || ($moderator_group_cache != array()))) {
             return $moderator_group_cache;
         }
 
@@ -337,13 +337,13 @@ class Forum_driver_base
     public function get_usergroup_list($hide_hidden = false, $only_permissive = false, $force_show_all = false, $force_find = null, $for_member = null, $skip_hidden = false)
     {
         static $usergroup_list_cache = null;
-        if ((!is_null($usergroup_list_cache)) && (isset($usergroup_list_cache[$hide_hidden][$only_permissive][$force_show_all][serialize($force_find)][$for_member][$skip_hidden]))) {
+        if (($usergroup_list_cache !== null) && (isset($usergroup_list_cache[$hide_hidden][$only_permissive][$force_show_all][serialize($force_find)][$for_member][$skip_hidden]))) {
             return $usergroup_list_cache[$hide_hidden][$only_permissive][$force_show_all][serialize($force_find)][$for_member][$skip_hidden];
         }
 
         $ret = $this->_get_usergroup_list($hide_hidden, $only_permissive, $force_show_all, $force_find, $for_member, $skip_hidden);
         if (count($ret) != 0) { // Conditional is for when installing... can't cache at point of there being no usergroups
-            if (is_null($usergroup_list_cache)) {
+            if ($usergroup_list_cache === null) {
                 $usergroup_list_cache = array();
             }
             $usergroup_list_cache[$hide_hidden][$only_permissive][$force_show_all][serialize($force_find)][$for_member][$skip_hidden] = $ret;

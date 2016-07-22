@@ -417,7 +417,7 @@ class Module_cms_comcode_pages
             }
 
             // Work out metadata
-            if (is_null($db_row)) {
+            if ($db_row === null) {
                 $page_title = titleify($page);
                 $order = null;
                 $parent_page = '';
@@ -516,19 +516,19 @@ class Module_cms_comcode_pages
 
             $parent_page = $row['parent_page'];
 
-            if (is_null($row['submitter'])) {
+            if ($row['submitter'] === null) {
                 $username = do_lang('UNKNOWN');
             } else {
                 $username = protect_from_escaping($GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($row['submitter']));
             }
 
-            if (is_null($row['add_date'])) {
+            if ($row['add_date'] === null) {
                 $add_date = get_timezoned_date(filectime(get_file_base() . '/index.php'));
             } else {
                 $add_date = get_timezoned_date($row['add_date']);
             }
 
-            if (is_null($row['validated'])) {
+            if ($row['validated'] === null) {
                 $validated = do_lang_tempcode('YES');
             } else {
                 $validated = ($row['validated'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('YES');
@@ -639,7 +639,7 @@ class Module_cms_comcode_pages
         }
 
         $resource_owner = $GLOBALS['SITE_DB']->query_select_value_if_there('comcode_pages', 'p_submitter', array('the_zone' => $zone, 'the_page' => $file));
-        if (is_null($resource_owner)) { // Add
+        if ($resource_owner === null) { // Add
             if (!has_add_comcode_page_permission($zone)) {
                 access_denied('ADD_COMCODE_PAGE');
             }
@@ -654,7 +654,7 @@ class Module_cms_comcode_pages
         // Check no redirects in our way
         if (addon_installed('redirects_editor')) {
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('redirects', 'r_to_zone', array('r_from_page' => $file, 'r_from_zone' => $zone));
-            if (!is_null($test)) {
+            if ($test !== null) {
                 $redirect_url = build_url(array('page' => 'admin_redirects'), get_module_zone('admin_redirects'));
                 attach_message(do_lang_tempcode('BLOCKING_REDIRECT_IN_PLACE', escape_html($redirect_url->evaluate())), 'notice');
             }
@@ -757,7 +757,7 @@ class Module_cms_comcode_pages
             $show_as_edit = false;
             $owner = get_member();
             $order = $GLOBALS['SITE_DB']->query_select_value_if_there('comcode_pages', 'MAX(p_order)');
-            if (is_null($order)) {
+            if ($order === null) {
                 $order = -1;
             }
             $order++;
@@ -912,7 +912,7 @@ class Module_cms_comcode_pages
 
         // Some general CRUD maintenance that we don't do within the save_comcode_page function
         $resource_owner = $GLOBALS['SITE_DB']->query_select_value_if_there('comcode_pages', 'p_submitter', array('the_zone' => $zone, 'the_page' => $file));
-        if (is_null($resource_owner)) { // Add
+        if ($resource_owner === null) { // Add
             if (!has_add_comcode_page_permission($zone)) {
                 access_denied('ADD_COMCODE_PAGE');
             }
@@ -1034,7 +1034,7 @@ class Module_cms_comcode_pages
         }
         $pages = array();
         foreach ($_pages as $_page) {
-            if ((!is_null($zone)) && ($_page['the_zone'] != $zone)) {
+            if (($zone !== null) && ($_page['the_zone'] != $zone)) {
                 continue;
             }
 
@@ -1153,10 +1153,10 @@ class Module_cms_comcode_pages
                 do {
                     $menu_path_components[] = get_translated_text($menu_branch_temp['i_caption']);
                     $parent = $menu_branch_temp['i_parent'];
-                    if (!is_null($parent)) {
+                    if ($parent !== null) {
                         $menu_branch_temp = $menu_branches_by_id[$parent];
                     }
-                } while (!is_null($parent));
+                } while ($parent !== null);
 
                 $menu_url = build_url(array('page' => 'admin_menus', 'type' => 'edit', 'id' => $menu_branch['i_menu']), get_module_zone('admin_menus'));
                 $menu_paths[] = array(

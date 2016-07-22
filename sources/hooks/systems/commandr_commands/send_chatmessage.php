@@ -49,12 +49,12 @@ class Hook_commandr_command_send_chatmessage
                 $chatroom = $parameters[0];
             } elseif ($parameters[0] == 'first-watched') {
                 $_chatroom = get_value('commandr_watched_chatroom');
-                $chatroom = is_null($_chatroom) ? $GLOBALS['SITE_DB']->query_select_value_if_there('chat_rooms', 'id', null, 'ORDER BY id') : intval($_chatroom);
+                $chatroom = ($_chatroom === null) ? $GLOBALS['SITE_DB']->query_select_value_if_there('chat_rooms', 'id', null, 'ORDER BY id') : intval($_chatroom);
             } else {
                 $chatroom = get_chatroom_id($parameters[0]);
             }
 
-            if (is_null($chatroom)) {
+            if ($chatroom === null) {
                 return array('', '', '', do_lang('MISSING_RESOURCE'));
             }
 
