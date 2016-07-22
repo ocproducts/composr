@@ -4,7 +4,7 @@
  * Licensed under Creative Commons Public Domain license (CC0).  You are free to copy, use, distribute, and modify as you wish.
  */
 
-/*EXTRA FUNCTIONS: json_decode|DateTime|DateInterval*/
+/*EXTRA FUNCTIONS: DateTime|DateInterval*/
 
 /**
  * Block class.

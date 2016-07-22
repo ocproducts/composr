@@ -79,7 +79,6 @@ class AndroidPushNotifications
             'Authorization' => 'key=' . $api_access_key,
         );
         $url = 'https://android.googleapis.com/gcm/send';
-        require_code('json');
         $post_params = json_encode($fields);
         http_download_file($url, null, true, false, 'Composr', array($post_params), null, null, null, null, null, null, null, 6.0, true, null, $extra_headers, null, 'application/json');
     }

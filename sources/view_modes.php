@@ -863,11 +863,7 @@ function display_webstandards_results($out, $error, $preview_mode = false, $ret 
  */
 function attach_message_memory_usage(&$messages_bottom)
 {
-    if (function_exists('memory_get_peak_usage')) {
-        $memory_usage = memory_get_peak_usage();
-    } else {
-        $memory_usage = memory_get_usage();
-    }
+    $memory_usage = memory_get_peak_usage();
     $messages_bottom->attach(do_template('MESSAGE', array(
         '_GUID' => 'd605c0d111742a8cd2d4ef270a1e5fe1',
         'TYPE' => 'inform',

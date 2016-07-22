@@ -46,7 +46,6 @@ function init__resource_fs()
     require_code('commandr');
     require_code('database_relations');
     require_code('resource_fs_base_class');
-    require_code('json');
     require_code('content');
 
     define('RESOURCE_FS_DEFAULT_EXTENSION', 'cms');

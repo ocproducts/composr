@@ -538,7 +538,6 @@ function newsletter_who_send_to($send_details, $language, $start, $max, $get_raw
 
     // From CSV
     if ($csv_data != '') {
-        require_code('json');
         $_csv_data = json_decode($csv_data, true);
 
         $email_index = 0;

@@ -13,8 +13,6 @@
  * @package    cns_tapatalk
  */
 
-/*EXTRA FUNCTIONS: json_encode|json_decode|var_export*/
-
 /**
  * Mobiquo server implementation.
  */

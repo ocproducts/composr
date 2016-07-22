@@ -444,7 +444,6 @@ function _check_stopforumspam($user_ip, $username = null, $email = null)
     }
     $_result = http_download_file($url, null, false);
 
-    require_code('json');
     $result = @json_decode($_result, true);
     if ($result !== false) {
         if ($result['success']) {

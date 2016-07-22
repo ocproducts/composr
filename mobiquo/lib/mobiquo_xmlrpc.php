@@ -13,7 +13,7 @@
  * @package    cns_tapatalk
  */
 
-/*EXTRA FUNCTIONS: .*xmlrpc.*|var_export*/
+/*EXTRA FUNCTIONS: .*xmlrpc.**/
 
 /**
  * Mobiquo server implementation.

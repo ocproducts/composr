@@ -182,7 +182,6 @@ class Module_newsletter
 
         if (($upgrade_from !== null) && ($upgrade_from < 13)) {
             // We've switched to JSON for CSV data
-            require_code('json');
             $periodic = $GLOBALS['SITE_DB']->query_select('newsletter_periodic', array('id', 'np_csv_data'));
             foreach ($periodic as $p) {
                 if ($p['np_csv_data'] != '') {

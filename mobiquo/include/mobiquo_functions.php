@@ -13,8 +13,6 @@
  * @package    cns_tapatalk
  */
 
-/*EXTRA FUNCTIONS: file_put_contents*/
-
 /**
  * Bootstrap some Mobiquo framework stuff.
  */

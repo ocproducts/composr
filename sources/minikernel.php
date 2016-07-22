@@ -12,8 +12,6 @@
 
 */
 
-/*EXTRA FUNCTIONS: error_get_last*/
-
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
@@ -66,9 +64,7 @@ function init__minikernel()
     $XSS_DETECT = false;
 
     set_error_handler('composr_error_handler');
-    if (function_exists('error_get_last')) {
-        register_shutdown_function('catch_fatal_errors');
-    }
+    register_shutdown_function('catch_fatal_errors');
     safe_ini_set('track_errors', '1');
     global $SUPPRESS_ERROR_DEATH;
     $SUPPRESS_ERROR_DEATH = array(false);
@@ -299,14 +295,10 @@ function get_webservice_result($error_message)
 }
 
 /**
- * Composr error catcher for fatal versions. This is hooked in only on PHP5.2 as error_get_last() only works on these versions.
+ * Composr error catcher for fatal versions.
  */
 function catch_fatal_errors()
 {
-    if (!function_exists('error_get_last')) {
-        return;
-    }
-
     $error = error_get_last();
 
     if ($error !== null) {

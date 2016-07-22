@@ -12,7 +12,7 @@
 
 */
 
-/*EXTRA FUNCTIONS: var_export|debug_print_backtrace|memory_get_usage|get_php_file_api|test_fail_php_type_check*/
+/*EXTRA FUNCTIONS: get_php_file_api|test_fail_php_type_check*/
 
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License

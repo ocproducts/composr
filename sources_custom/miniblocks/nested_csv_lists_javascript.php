@@ -13,8 +13,6 @@
  * @package    nested_cpf_csv_lists
  */
 
-/*EXTRA FUNCTIONS: json_encode*/
-
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
 require_code('nested_csv');
@@ -38,8 +36,6 @@ foreach ($csv_structure['csv_files'] as $csv_filename => $csv_file) {
         }
     }
 }
-
-require_code('json');
 
 // Output JavaScript
 echo "

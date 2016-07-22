@@ -270,7 +270,7 @@ function member_befriended($member_id, $member_id_current = null)
     static $cache = array();
     if ($cache === null) {
         $_cache = collapse_1d_complexity('member_liked', $GLOBALS['SITE_DB']->query_select('chat_friends', array('member_liked'), array('member_likes' => $member_id_current), '', 100));
-        $cache = array_combine($_cache, array_fill(0, count($_cache), true));
+        $cache = array_fill_keys($_cache, true);
     }
     if (isset($cache[$member_id])) {
         return $cache[$member_id];

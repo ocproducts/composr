@@ -65,7 +65,6 @@ function php_return_bytes($val)
     $last = strtolower($val[strlen($val) - 1]);
     $_val = intval($val);
     switch ($last) {
-        // The 'G' modifier is available since PHP 5.1.0
         case 'g':
             $_val *= 1024;
         case 'm':

@@ -46,7 +46,6 @@ class Hook_commandr_fs_extended_config__privileges
     public function read_file($meta_dir, $meta_root_node, $file_name, &$commandr_fs)
     {
         require_code('resource_fs');
-        require_code('json');
 
         $tables = array(
             'group_privileges' => array('category_name' => ''),

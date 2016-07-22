@@ -18,8 +18,6 @@
  * @package    core
  */
 
-/*EXTRA FUNCTIONS: memory_get_usage|memory_get_peak_usage*/
-
 /**
  * Standard code module initialisation function.
  *

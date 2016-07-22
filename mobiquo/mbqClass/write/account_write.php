@@ -13,7 +13,7 @@
  * @package    cns_tapatalk
  */
 
-/*EXTRA FUNCTIONS: json_decode|classTTConnection|member_acl*/
+/*EXTRA FUNCTIONS: classTTConnection|member_acl*/
 
 /**
  * Composr API helper class.

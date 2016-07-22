@@ -140,7 +140,7 @@ function get_all_innodb_tables()
 function get_innodb_tables_by_addon()
 {
     $tables = collapse_1d_complexity('m_table', $GLOBALS['SITE_DB']->query_select('db_meta', array('DISTINCT m_table')));
-    $tables = array_combine($tables, array_fill(0, count($tables), '1'));
+    $tables = array_fill_keys($tables, '1');
 
     $hooks = find_all_hooks('systems', 'addon_registry');
     $tables_by = array();

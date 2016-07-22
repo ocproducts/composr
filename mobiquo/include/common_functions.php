@@ -13,8 +13,6 @@
  * @package    cns_tapatalk
  */
 
-/*EXTRA FUNCTIONS: json_encode*/
-
 if (!defined('IN_MOBIQUO') && !function_exists('get_base_url')) {
     exit('May not call this directly');
 }

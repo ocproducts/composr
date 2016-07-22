@@ -33,7 +33,6 @@ class Hook_task_find_orphaned_lang_strings
     public function run($table = null, $fix = true)
     {
         require_lang('cleanup');
-        require_code('json');
 
         push_db_scope_check(false);
 

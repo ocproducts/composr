@@ -52,7 +52,6 @@ class Hook_task_send_newsletter
         require_code('newsletter');
         require_lang('newsletter');
         require_code('mail');
-        require_code('json');
 
         $last_cron = get_value('last_cron');
 

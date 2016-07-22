@@ -155,8 +155,6 @@ class Block_side_weather
             return do_template('INLINE_WIP_MESSAGE', array('_GUID' => '046c437a5c3799838155b5c5fbe3be26', 'MESSAGE' => htmlentities($GLOBALS['HTTP_MESSAGE_B'])));
         }
 
-        require_code('json');
-
         $data = @json_decode($json, true);
 
         if (!isset($data['query']['results']['channel']['location'])) {

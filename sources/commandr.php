@@ -29,7 +29,6 @@ function init__commandr()
     require_code('users_active_actions');
     require_code('commandr_fs');
     require_code('xml');
-    require_code('json');
 }
 
 /**

@@ -13,8 +13,6 @@
  * @package    google_similar_sites
  */
 
-/*EXTRA FUNCTIONS: json_decode*/
-
 /**
  * Block class.
  */

@@ -255,9 +255,10 @@ function array_splice(&$input, $offset, $length = null, $replacement = null)
  * Removes duplicate values from an array. Equivalence determined by string comparison.
  *
  * @param  array $array Input array.
+ * @param  integer $compare_flags An integer flag defining how to compare values.
  * @return array Output array.
  */
-function array_unique($array)
+function array_unique($array, $compare_flags = 0)
 {
     return array();
 }
@@ -473,18 +474,6 @@ function cos($angle)
 function count($var, $mode = 0)
 {
     return 0;
-}
-
-/**
- * One-way string hashing (not encryption, as not reversible).
- *
- * @param  string $string The string to hash.
- * @param  ?string $salt The salt (null: generate a random salt).
- * @return string The hash. The start of the hash determines parameters (encoding, salt).
- */
-function crypt($string, $salt = null)
-{
-    return '';
 }
 
 /**
@@ -893,39 +882,6 @@ function get_class($obj)
 }
 
 /**
- * Gets the class methods' names.
- *
- * @param  mixed $class_name The class name or an object instance.
- * @return ?array An array of method names defined (null: error).
- */
-function get_class_methods($class_name)
-{
-    return array();
-}
-
-/**
- * Get the default properties of the class.
- *
- * @param  string $class_name The class name.
- * @return ~array An associative array of declared properties visible from the current scope, with their default value (false: error).
- */
-function get_class_vars($class_name)
-{
-    return array();
-}
-
-/**
- * Gets the properties of the given object.
- *
- * @param  object $object An object instance.
- * @return array An associative array of defined object accessible non-static properties.
- */
-function get_object_vars($object)
-{
-    return array();
-}
-
-/**
  * Returns the translation table used by htmlspecialchars and htmlentities.
  *
  * @param  integer $table The table to select (HTML_ENTITIES or HTML_SPECIALCHARS).
@@ -990,42 +946,6 @@ function getenv($string)
 function gmdate($format, $timestamp = null)
 {
     return '';
-}
-
-/**
- * Close an open gz-file pointer.
- *
- * @param  resource $handle The handle.
- * @return boolean Success status.
- */
-function gzclose($handle)
-{
-    return false;
-}
-
-/**
- * Open gz-file. {{creates-file}}
- *
- * @param  PATH $filename The filename.
- * @param  string $mode The mode (e.g. b).
- * @return ~resource The handle (false: error).
- */
-function gzopen($filename, $mode)
-{
-    return array();
-}
-
-/**
- * Binary-safe gz-file write.
- *
- * @param  resource $handle The file handle.
- * @param  string $string The string to write to the file.
- * @param  ?integer $length The length of data to write (null: full length of input string).
- * @return ~integer The number of bytes written (false: error).
- */
-function gzwrite($handle, $string, $length = null)
-{
-    return 0;
 }
 
 /**
@@ -1229,6 +1149,17 @@ function imagecreatefrompng($path)
 }
 
 /**
+ * Create a new image from a GIF file on disk.
+ *
+ * @param  PATH $path The GIF file.
+ * @return ~resource The image handle (false: error).
+ */
+function imagecreatefromgif($path)
+{
+    return array();
+}
+
+/**
  * Create a new image from a JPEG file on disk.
  *
  * @param  PATH $path The JPEG file.
@@ -1357,6 +1288,18 @@ function imagepng($image, $filename = null, $quality = 0)
 }
 
 /**
+ * Output image to browser or file as GIF.
+ *
+ * @param  resource $image The image handle.
+ * @param  ?string $filename The filename (null: output to browser).
+ * @return boolean Success status.
+ */
+function imagegif($image, $filename = null)
+{
+    return true;
+}
+
+/**
  * Set the flag to save full alpha channel information (as opposed to single-color transparency) when saving PNG images.
  *
  * @param  resource $image The image handle.
@@ -1471,208 +1414,6 @@ function imagetypes()
 }
 
 /**
- * Draw a partial ellipse.
- *
- * @param  resource $image The image involved.
- * @param  integer $cx X@top-left.
- * @param  integer $cy Y@top-left.
- * @param  integer $w width.
- * @param  integer $h height.
- * @param  integer $s start degrees (0 degrees=3 o clock).
- * @param  integer $e end degrees (0 degrees=3 o clock).
- * @param  integer $color Colour code.
- * @return boolean Success status.
- */
-function imagearc($image, $cx, $cy, $w, $h, $s, $e, $color)
-{
-    return true;
-}
-
-/**
- * Draw a partial ellipse and fill it.
- *
- * @param  resource $image The image involved.
- * @param  integer $cx X@top-left.
- * @param  integer $cy Y@top-left.
- * @param  integer $w width.
- * @param  integer $h height.
- * @param  integer $s start degrees (0 degrees=3 o clock).
- * @param  integer $e end degrees (0 degrees=3 o clock).
- * @param  integer $color Style, bitwise of IMG_ARC_PIE, IMG_ARC_CHORD, IMG_ARC_NOFILL, IMG_ARC_EDGED.
- * @param  integer $style Colour code.
- * @return boolean Success status.
- */
-function imagefilledarc($image, $cx, $cy, $w, $h, $s, $e, $color, $style)
-{
-    return true;
-}
-
-/**
- * Copy and merge part of an image with gray scale.
- *
- * @param  resource $dst_im Destination image handle.
- * @param  resource $src_im Source image handle.
- * @param  integer $dst_x Destination X-ordinate.
- * @param  integer $dst_y Destination Y-ordinate.
- * @param  integer $src_x Source X-ordinate.
- * @param  integer $src_y Source Y-ordinate.
- * @param  integer $src_w Width to copy.
- * @param  integer $src_h Height to copy.
- * @param  integer $pct Opacity value.
- */
-function imagecopymergegray($dst_im, $src_im, $dst_x, $dst_y, $src_x, $src_y, $src_w, $src_h, $pct)
-{
-}
-
-/**
- * Draw a line.
- *
- * @param  resource $image The image involved.
- * @param  integer $x1 Start-X.
- * @param  integer $y1 Start-Y.
- * @param  integer $x2 End-X.
- * @param  integer $y2 End-Y.
- * @param  integer $color The colour.
- */
-function imageline($image, $x1, $y1, $x2, $y2, $color)
-{
-}
-
-/**
- * Draw an ellipse.
- *
- * @param  resource $image The image involved.
- * @param  integer $cx Centre-X.
- * @param  integer $cy Centre-Y.
- * @param  integer $w Width.
- * @param  integer $h Height.
- * @param  integer $color Colour.
- * @return boolean Success status.
- */
-function imageellipse($image, $cx, $cy, $w, $h, $color)
-{
-    return true;
-}
-
-/**
- * Draw a filled ellipse.
- *
- * @param  resource $image The image involved.
- * @param  integer $cx Centre-X.
- * @param  integer $cy Centre-Y.
- * @param  integer $w Width.
- * @param  integer $h Height.
- * @param  integer $color Colour.
- * @return boolean Success status.
- */
-function imagefilledellipse($image, $cx, $cy, $w, $h, $color)
-{
-    return true;
-}
-
-/**
- * Draw a character horizontally.
- *
- * @param  resource $image The image involved.
- * @param  integer $font Font number.
- * @param  integer $x X.
- * @param  integer $y Y.
- * @param  string $c What to write.
- * @param  integer $color Colour number.
- */
-function imagechar($image, $font, $x, $y, $c, $color)
-{
-}
-
-/**
- * Draw a filled polygon.
- *
- * @param  resource $image The image involved.
- * @param  array $points Array of pairs.
- * @param  integer $num_points Number of points in array.
- * @param  integer $colour Colour number.
- */
-function imagefilledpolygon($image, $points, $num_points, $colour)
-{
-}
-
-/**
- * Draw a polygon.
- *
- * @param  resource $image The image involved.
- * @param  array $points Array of pairs.
- * @param  integer $num_points Number of points in array.
- * @param  integer $colour Colour number.
- */
-function imagepolygon($image, $points, $num_points, $colour)
-{
-}
-
-/**
- * Draw a filled rectangle.
- *
- * @param  resource $image The image involved.
- * @param  integer $x1 First-X.
- * @param  integer $y1 First-Y.
- * @param  integer $x2 Second-X.
- * @param  integer $y2 Second-Y.
- * @param  integer $col Colour number.
- */
-function imagefilledrectangle($image, $x1, $y1, $x2, $y2, $col)
-{
-}
-
-/**
- * Draw a rectangle.
- *
- * @param  resource $image The image involved.
- * @param  integer $x1 First-X.
- * @param  integer $y1 First-Y.
- * @param  integer $x2 Second-X.
- * @param  integer $y2 Second-Y.
- * @param  integer $col Colour number.
- */
-function imagerectangle($image, $x1, $y1, $x2, $y2, $col)
-{
-}
-
-/**
- * Flood fill to specific color.
- *
- * @param  resource $image The image involved.
- * @param  integer $x Origin X.
- * @param  integer $y Origin Y.
- * @param  integer $border Border colour number.
- * @param  integer $color Fill colour number.
- */
-function imagefilltoborder($image, $x, $y, $border, $color)
-{
-}
-
-/**
- * Apply a gamma correction to a GD image.
- *
- * @param  resource $image The image involved.
- * @param  float $in Input gamma.
- * @param  float $out Output gamma.
- */
-function imagegammacorrect($image, $in, $out)
-{
-}
-
-/**
- * Enable or disable interlace / progressive-save.
- *
- * @param  resource $image The image involved.
- * @param  BINARY $interlace On/Off.
- * @return boolean Whether interlace is set.
- */
-function imageinterlace($image, $interlace)
-{
-    return true;
-}
-
-/**
  * Load a new font.
  *
  * @param  PATH $file File.
@@ -1684,62 +1425,6 @@ function imageloadfont($file)
 }
 
 /**
- * Copy the palette from one image to another.
- *
- * @param  resource $destination The image the palette is from.
- * @param  resource $source The image the palette is to.
- */
-function imagepalettecopy($destination, $source)
-{
-}
-
-/**
- * Set the brush image for line drawing.
- *
- * @param  resource $image The image involved.
- * @param  resource $brush The brush image.
- * @return boolean Success status.
- */
-function imagesetbrush($image, $brush)
-{
-    return true;
-}
-
-/**
- * Set the style for line drawing.
- *
- * @param  resource $image The image involved.
- * @param  integer $style Style number (IMG_COLOR_STYLED or IMG_COLOR_STYLEDBRUSHED).
- */
-function imagesetstyle($image, $style)
-{
-}
-
-/**
- * Set the thickness for line drawing.
- *
- * @param  resource $image The image involved.
- * @param  integer $thickness Thickness in pixels.
- * @return boolean Success status.
- */
-function imagesetthickness($image, $thickness)
-{
-    return true;
-}
-
-/**
- * Set the tile image for filling.
- *
- * @param  resource $image The image involved.
- * @param  resource $tile The tile image.
- * @return boolean Success status.
- */
-function imagesettile($image, $tile)
-{
-    return true;
-}
-
-/**
  * Convert a truecolor image to a palette image.
  *
  * @param  resource $image The image involved.
@@ -1747,20 +1432,6 @@ function imagesettile($image, $tile)
  * @param  integer $ncolors The maximum number of colors that should be retained in the palette.
  */
 function imagetruecolortopalette($image, $dither, $ncolors)
-{
-}
-
-/**
- * Draw a character vertically.
- *
- * @param  resource $image The image involved.
- * @param  integer $font Font number.
- * @param  integer $x X.
- * @param  integer $y Y.
- * @param  string $c What to write.
- * @param  integer $color Colour number.
- */
-function imagecharup($image, $font, $x, $y, $c, $color)
 {
 }
 
@@ -1789,20 +1460,6 @@ function imagecolorclosest($image, $red, $green, $blue)
  * @return integer Colour number.
  */
 function imagecolorclosestalpha($image, $red, $green, $blue, $alpha)
-{
-    return 0;
-}
-
-/**
- * Get the index of the color which has the hue, white and blackness nearest to the given color .
- *
- * @param  resource $image The image involved.
- * @param  integer $red Red.
- * @param  integer $green Green.
- * @param  integer $blue Blue.
- * @return integer Colour number.
- */
-function imagecolorclosesthwb($image, $red, $green, $blue)
 {
     return 0;
 }
@@ -2633,19 +2290,6 @@ function preg_match($pattern, $subject, $matches = null, $flags = 0, $offset = 0
 }
 
 /**
- * Array entries that match the pattern.
- *
- * @param  string $pattern The pattern.
- * @param  array $subject The subject strings.
- * @param  integer $flags Either 0, or PREG_GREP_INVERT.
- * @return array Matches.
- */
-function preg_grep($pattern, $subject, $flags = 0)
-{
-    return array();
-}
-
-/**
  * Perform a global regular expression match.
  *
  * @param  string $pattern The pattern.
@@ -2926,9 +2570,10 @@ function set_exception_handler($exception_handler)
  * @param  ?string $path Path (null: current URL path).
  * @param  ?string $domain Domain (null: current URL domain).
  * @param  BINARY $secure Whether the cookie is only for HTTPS.
+ * @param  boolean $httponly Whether the cookie will not be available to JavaScript.
  * @return ?boolean Success status (fails if output already started) (null: failed also).
  */
-function setcookie($name, $value = null, $expire = null, $path = null, $domain = null, $secure = 0)
+function setcookie($name, $value = null, $expire = null, $path = null, $domain = null, $secure = 0, $httponly = false)
 {
     return false;
 }
@@ -3013,15 +2658,6 @@ function sprintf($format, $arg1 = null, $arg2 = null, $arg3 = null, $arg4 = null
 function fprintf($handle, $format, $arg1 = null, $arg2 = null, $arg3 = null, $arg4 = null, $arg5 = null, $arg6 = null, $arg7 = null, $arg8 = null)
 {
     return '';
-}
-
-/**
- * Seed the random number generator.
- *
- * @param  integer $seed The seed.
- */
-function srand($seed)
-{
 }
 
 /**
@@ -3181,6 +2817,18 @@ function stripos($haystack, $needle, $offset = 0)
  * @return ~integer The offset it is found at (false: not found).
  */
 function strrpos($haystack, $needle)
+{
+    return 0;
+}
+
+/**
+ * Find position of last occurrence of a char in a string (case-insensitive).
+ *
+ * @param  string $haystack Haystack.
+ * @param  string $needle Needle.
+ * @return ~integer The offset it is found at (false: not found).
+ */
+function strripos($haystack, $needle)
 {
     return 0;
 }
@@ -3718,17 +3366,6 @@ function fileatime($filename)
 }
 
 /**
- * Gets last access time of file.
- *
- * @param  PATH $filename The filename.
- * @return ~integer Inode number of the file (false: error).
- */
-function fileinode($filename)
-{
-    return 0;
-}
-
-/**
  * Portable advisory file locking.
  *
  * @param  resource $handle File handle.
@@ -3894,6 +3531,29 @@ function md5_file($filename)
 function next($array)
 {
     return 0;
+}
+
+/**
+ * Returns the JSON representation of a value.
+ *
+ * @param  mixed $value The value being encoded. Can be any type except a resource.
+ * @return string Encoded data
+ */
+function json_encode($value)
+{
+    return '';
+}
+
+/**
+ * Decodes a JSON string.
+ *
+ * @param  string $json The JSON string being decoded.
+ * @param  boolean $assoc Whether returned objects will be converted into associative arrays.
+ * @return ~mixed Decoded data (false: error)
+ */
+function json_decode($json, $assoc = false)
+{
+    return array();
 }
 
 /**
@@ -4293,17 +3953,6 @@ function usleep($sec)
 }
 
 /**
- * Calculate the soundex key of a string.
- *
- * @param  string $input Input.
- * @return string Soundex.
- */
-function soundex($input)
-{
-    return '';
-}
-
-/**
  * Un-quote string quoted with addcslashes.
  *
  * @param  string $in In.
@@ -4312,17 +3961,6 @@ function soundex($input)
 function stripcslashes($in)
 {
     return '';
-}
-
-/**
- * Output a gz-file.
- *
- * @param  PATH $filename Path to read from.
- * @return ~integer Number of uncompressed bytes handled (false: error).
- */
-function readgzfile($filename)
-{
-    return 0;
 }
 
 /**
@@ -4344,37 +3982,6 @@ function rewind($handle)
 }
 
 /**
- * Rewind directory handle.
- *
- * @param  resource $handle Directory handle.
- */
-function rewinddir($handle)
-{
-}
-
-/**
- * Convert a quoted-printable string to an 8 bit string.
- *
- * @param  string $in In.
- * @return string Out.
- */
-function quoted_printable_decode($in)
-{
-    return '';
-}
-
-/**
- * Quote meta characters. Returns a version of str with a backslash character (\) before every character that is among these: . \ + * ? [ ^ ] ( $ ).
- *
- * @param  string $in In.
- * @return string Out.
- */
-function quotemeta($in)
-{
-    return '';
-}
-
-/**
  * Calculates the exponent of e.
  *
  * @param  float $arg Arg.
@@ -4383,17 +3990,6 @@ function quotemeta($in)
 function exp($arg)
 {
     return 0.0;
-}
-
-/**
- * Calculate the hash value needed by EZMLM mailing lists in a MySQL database.
- *
- * @param  string $addr The email address that's being hashed.
- * @return integer Hash.
- */
-function ezmlm_hash($addr)
-{
-    return 0;
 }
 
 /**
@@ -4580,17 +4176,6 @@ function fgetss($handle, $length = null, $allowable_tags = '')
 }
 
 /**
- * Gets file type.
- *
- * @param  PATH $file Filename.
- * @return ~string Result (fifo, char, dir, block, link, file, and unknown) (false: error).
- */
-function filetype($file)
-{
-    return '';
-}
-
-/**
  * Parses input from a file according to a format.
  *
  * @param  resource $handle File handle.
@@ -4690,17 +4275,6 @@ function parse_str($str, &$arr)
 }
 
 /**
- * Tells whether the filename is executable.
- *
- * @param  PATH $filename Filename.
- * @return boolean Whether it is.
- */
-function is_executable($filename)
-{
-    return true;
-}
-
-/**
  * Finds whether a variable is a scalar (integer, float, string or boolean).
  *
  * @param  mixed $var Variable.
@@ -4709,30 +4283,6 @@ function is_executable($filename)
 function is_scalar($var)
 {
     return true;
-}
-
-/**
- * Find whether the object has this class as one of its parents.
- *
- * @param  mixed $object Object to check whether is an instance.
- * @param  string $class_name Class name to check against.
- * @return boolean Whether it is.
- */
-function is_subclass_of($object, $class_name)
-{
-    return true;
-}
-
-/**
- * Calculate the metaphone key of a string.
- *
- * @param  string $string String to do.
- * @param  integer $value Phones value.
- * @return string Metaphone key.
- */
-function metaphone($string, $value)
-{
-    return '';
 }
 
 /**
@@ -4785,19 +4335,6 @@ function printf($format, $arg1 = null, $arg2 = null, $arg3 = null, $arg4 = null,
 }
 
 /**
- * Convert from one Cyrillic character set to another.
- *
- * @param  string $in Input.
- * @param  string $from From.
- * @param  string $to To.
- * @return string Output.
- */
-function convert_cyr_string($in, $from, $to)
-{
-    return '';
-}
-
-/**
  * Hyperbolic cosine.
  *
  * @param  float $arg Argument.
@@ -4806,19 +4343,6 @@ function convert_cyr_string($in, $from, $to)
 function cosh($arg)
 {
     return 0.0;
-}
-
-/**
- * Return information about characters used in a string.
- *
- * @param  string $string The string which to work within.
- * @param  integer $mode Operation mode.
- * @set    0 1 2 3 4
- * @return mixed Result, depending on mode used.
- */
-function count_chars($string, $mode = 0)
-{
-    return '';
 }
 
 /**
@@ -4842,17 +4366,6 @@ function create_function($args, $code)
 function eval($code)
 {
     return 0;
-}
-
-/**
- * Get a list of IP addresses corresponding to a given Internet host name.
- *
- * @param  string $hostname Hostname.
- * @return ~array List of IP addresses (false: could not resolve).
- */
-function gethostbynamel($hostname)
-{
-    return array();
 }
 
 /**
@@ -4907,145 +4420,6 @@ function get_cfg_var($varname)
 function get_magic_quotes_runtime()
 {
     return true;
-}
-
-/**
- * Extracts all meta tag content attributes from a file and returns an array.
- *
- * @param  PATH $filename Filename.
- * @return ~array Map of meta information (false: error).
- */
-function get_meta_tags($filename)
-{
-    return array();
-}
-
-/**
- * Retrieves the parent class name for object or class.
- *
- * @param  object $object Object to check.
- * @return string Classname.
- */
-function get_parent_class($object)
-{
-    return '';
-}
-
-/**
- * Returns an array with the names of included or required files.
- *
- * @return array Included files.
- */
-function get_included_files()
-{
-    return array();
-}
-
-/**
- * Returns the resource type.
- *
- * @param  resource $handle Resource to check.
- * @return string The resource type.
- */
-function get_resource_type($handle)
-{
-    return '';
-}
-
-/**
- * Compress a string.
- *
- * @param  string $data Data to compress.
- * @param  integer $level Compression level.
- * @return string Compressed data.
- */
-function gzcompress($data, $level)
-{
-    return '';
-}
-
-/**
- * Deflate a string.
- *
- * @param  string $data Compressed data.
- * @param  integer $level Compression level.
- * @return ~string Uncompressed data (false: error).
- */
-function gzdeflate($data, $level)
-{
-    return '';
-}
-
-/**
- * Create a gzip compressed string.
- *
- * @param  string $data In.
- * @param  integer $level How much compression.
- * @range  1 9
- * @return string Out.
- */
-function gzencode($data, $level)
-{
-    return '';
-}
-
-/**
- * Read entire gz-file into an array.
- *
- * @param  PATH $filename The filename.
- * @return ~array An array containing the file, one line per cell (false: error).
- */
-function gzfile($filename)
-{
-    return array();
-}
-
-/**
- * Inflate a deflated string.
- *
- * @param  string $data The data compressed by gzdeflate().
- * @param  integer $length Maximum length to read in.
- * @return string Inflated (uncompressed) data.
- */
-function gzinflate($data, $length = 0)
-{
-    return '';
-}
-
-/**
- * Uncompress a compressed string.
- *
- * @param  string $data The data compressed by gzcompress().
- * @param  integer $length Maximum length to read in.
- * @return string Uncompressed data.
- */
-function gzuncompress($data, $length = 0)
-{
-    return '';
-}
-
-/**
- * Convert logical Hebrew text to visual text.
- *
- * @param  string $hebrew_text In.
- * @param  ?integer $max_chars_per_line Maximum number of characters per line (null: no limit).
- * @return string Out.
- */
-function hebrev($hebrew_text, $max_chars_per_line = null)
-{
-    return '';
-}
-
-/**
- * Convert logical Hebrew text to visual text with newline conversion.
- *
- * @param  string $hebrew_text In.
- * @param  ?integer $max_chars_per_line Maximum number of characters per line (null: no limit).
- * @return string Out.
- */
-function hebrevc($hebrew_text, $max_chars_per_line = null)
-{
-    return '';
 }
 
 /**
@@ -5126,54 +4500,6 @@ function array_combine($keys, $values)
 }
 
 /**
- * Computes the difference of arrays with additional index check which is performed by a user supplied callback function.
- *
- * @param  array $a Array 1.
- * @param  array $b Array 2.
- * @return array Result.
- */
-function array_diff_uassoc($a, $b)
-{
-    return array();
-}
-
-/**
- * Computes the difference of arrays by using a callback function for data comparison.
- *
- * @param  array $a Array 1.
- * @param  array $b Array 2.
- * @return array Result.
- */
-function array_udiff($a, $b)
-{
-    return array();
-}
-
-/**
- * Computes the difference of arrays with additional index check. The data is compared by using a callback function.
- *
- * @param  array $a Array 1.
- * @param  array $b Array 2.
- * @return array Result.
- */
-function array_udiff_assoc($a, $b)
-{
-    return array();
-}
-
-/**
- * Computes the difference of arrays with additional index check. The data is compared by using a callback function. The index check is done by a callback function also.
- *
- * @param  array $a Array 1.
- * @param  array $b Array 2.
- * @return array Result.
- */
-function array_udiff_uassoc($a, $b)
-{
-    return array();
-}
-
-/**
  * Apply a user function recursively to every member of an array.
  *
  * @param  array $input The input array.
@@ -5184,42 +4510,6 @@ function array_udiff_uassoc($a, $b)
 function array_walk_recursive($input, $funcname, $userdata = null)
 {
     return true;
-}
-
-/**
- * Computes the intersection of arrays with additional index check. The data is compared by using a callback function.
- *
- * @param  array $a Array 1.
- * @param  array $b Array 2.
- * @return array Result.
- */
-function array_uintersect_assoc($a, $b)
-{
-    return array();
-}
-
-/**
- * Computes the intersection of arrays with additional index check. Both the data and the indexes are compared by using separate callback functions.
- *
- * @param  array $a Array 1.
- * @param  array $b Array 2.
- * @return array Result.
- */
-function array_uintersect_uassoc($a, $b)
-{
-    return array();
-}
-
-/**
- * Computes the intersection of arrays. The data is compared by using a callback function.
- *
- * @param  array $a Array 1.
- * @param  array $b Array 2.
- * @return array Result.
- */
-function array_uintersect($a, $b)
-{
-    return array();
 }
 
 /**
@@ -5309,34 +4599,6 @@ function http_build_query($query_data)
 }
 
 /**
- * Get file extension for image-type returned by .
- *
- * @param  integer $imagetype One of the IMAGETYPE_XXX constants.
- * @param  boolean $include_dot Whether to prepend a dot to the extension or not.
- * @return string A string with the extension corresponding to the given image type.
- */
-function image_type_to_extension($imagetype, $include_dot = true)
-{
-    return '';
-}
-
-/**
- * Applies a filter to an image using custom arguments.
- *
- * @param  resource $image Image.
- * @param  integer $filtertype A constant indicating the filter type.
- * @param  ?mixed $arg1 Parameter (null: don't read).
- * @param  ?mixed $arg2 Parameter (null: don't read).
- * @param  ?mixed $arg3 Parameter (null: don't read).
- * @param  ?mixed $arg4 Parameter (null: don't read).
- * @return boolean Success status.
- */
-function imagefilter($image, $filtertype, $arg1 = null, $arg2 = null, $arg3 = null, $arg4 = null)
-{
-    return true;
-}
-
-/**
  * List files and directories inside the specified path.
  *
  * @param  PATH $directory Directory.
@@ -5359,14 +4621,23 @@ function str_shuffle($in)
 }
 
 /**
- * Get Mime-Type for image-type returned by getimagesize, exif_read_data, exif_thumbnail, exif_imagetype.
+ * Finds the path of the directory PHP stores temporary files in by default.
  *
- * @param  integer $image_type Image type.
- * @return string Mime type.
+ * @return string The path of the temporary directory.
  */
-function image_type_to_mime_type($image_type)
+function sys_get_temp_dir()
 {
     return '';
+}
+
+/**
+ * Get the last occurred error.
+ *
+ * @return ?array Details of the last occurred error (map with 'type', 'message', 'file', 'line') (null: none).
+ */
+function error_get_last()
+{
+    return array();
 }
 
 /**
@@ -5384,9 +4655,10 @@ function glob($pattern, $flags = 0)
 /**
  * Generates a backtrace.
  *
+ * @param  boolean $provide_object Provide object part in results.
  * @return array Backtrace.
  */
-function debug_backtrace()
+function debug_backtrace($provide_object = true)
 {
     return array();
 }
@@ -5440,43 +4712,6 @@ function array_diff_key($array1, $array2)
 function inet_pton($address)
 {
     return '';
-}
-
-/**
- * Calculate the product of values in an array.
- *
- * @param  array $array Input.
- * @return float Result.
- */
-function array_product($array)
-{
-    return 0.0;
-}
-
-/**
- * Computes the difference of arrays using a callback function on the keys for comparison.
- *
- * @param  array $array1 Array 1.
- * @param  array $array2 Array 2.
- * @param  mixed $callback Callback.
- * @return array Result.
- */
-function array_diff_ukey($array1, $array2, $callback)
-{
-    return array();
-}
-
-/**
- * Computes the intersection of arrays using a callback function on the keys for comparison.
- *
- * @param  array $array1 Array 1.
- * @param  array $array2 Array 2.
- * @param  mixed $callback Callback.
- * @return array Result.
- */
-function array_intersect_ukey($array1, $array2, $callback)
-{
-    return array();
 }
 
 /**
@@ -5564,6 +4799,18 @@ function array_fill($start_index, $num, $value)
 }
 
 /**
+ * Fill an array with values, specifying keys.
+ *
+ * @param  array $input Keys.
+ * @param  mixed $value Value to fill with.
+ * @return array Filled array.
+ */
+function array_fill_keys($keys, $value)
+{
+    return array();
+}
+
+/**
  * Changes all keys in an array.
  *
  * @param  array $input The array to work on.
@@ -5602,11 +4849,166 @@ function stream_context_create($options = null, $params = null)
 /**
  * Returns the amount of memory allocated to PHP.
  *
+ * @param  boolean $real_usage Get total memory allocated, including unused pages.
  * @return integer The amount of memory, in bytes, that's currently being allocated to your PHP script.
  */
-function memory_get_usage()
+function memory_get_usage($real_usage = false)
 {
     return 0;
+}
+
+/**
+ * Returns the amount of memory allocated to PHP at peak.
+ *
+ * @param  boolean $real_usage Get total memory allocated, including unused pages.
+ * @return integer The amount of memory, in bytes, at peak.
+ */
+function memory_get_peak_usage($real_usage = false)
+{
+    return 0;
+}
+
+/**
+ * Parse a binary IPTC block into single tags..
+ *
+ * @param  string $iptcblock A binary IPTC block.
+ * @return array Returns an array using the tagmarker as an index and the value as the value. It returns FALSE on error or if no IPTC data was found.
+ */
+function iptcparse($iptcblock)
+{
+    return array();
+}
+
+/**
+ * Creates a stream context.
+ *
+ * @param  string $iptcdata The data to be written.
+ * @param  PATH $jpeg_file_name Path to the JPEG image.
+ * @param  integer $spool Spool flag. If the spool flag is less than 2 then the JPEG will be returned as a string. Otherwise the JPEG will be printed to STDOUT.
+ * @return mixed If spool is less than 2, the JPEG will be returned, or FALSE on failure. Otherwise returns TRUE on success or FALSE on failure.
+ */
+function iptcembed($iptcdata, $jpeg_file_name, $spool = 0)
+{
+    return null;
+}
+
+/**
+ * Close an open gz-file pointer.
+ *
+ * @param  resource $handle The handle.
+ * @return boolean Success status.
+ */
+function gzclose($handle)
+{
+    return false;
+}
+
+/**
+ * Open gz-file. {{creates-file}}
+ *
+ * @param  PATH $filename The filename.
+ * @param  string $mode The mode (e.g. b).
+ * @return ~resource The handle (false: error).
+ */
+function gzopen($filename, $mode)
+{
+    return array();
+}
+
+/**
+ * Binary-safe gz-file write.
+ *
+ * @param  resource $handle The file handle.
+ * @param  string $string The string to write to the file.
+ * @param  ?integer $length The length of data to write (null: full length of input string).
+ * @return ~integer The number of bytes written (false: error).
+ */
+function gzwrite($handle, $string, $length = null)
+{
+    return 0;
+}
+
+/**
+ * Output a gz-file.
+ *
+ * @param  PATH $filename Path to read from.
+ * @return ~integer Number of uncompressed bytes handled (false: error).
+ */
+function readgzfile($filename)
+{
+    return 0;
+}
+
+/**
+ * Compress a string.
+ *
+ * @param  string $data Data to compress.
+ * @param  integer $level Compression level.
+ * @return string Compressed data.
+ */
+function gzcompress($data, $level)
+{
+    return '';
+}
+
+/**
+ * Deflate a string.
+ *
+ * @param  string $data Compressed data.
+ * @param  integer $level Compression level.
+ * @return ~string Uncompressed data (false: error).
+ */
+function gzdeflate($data, $level)
+{
+    return '';
+}
+
+/**
+ * Create a gzip compressed string.
+ *
+ * @param  string $data In.
+ * @param  integer $level How much compression.
+ * @range  1 9
+ * @return string Out.
+ */
+function gzencode($data, $level)
+{
+    return '';
+}
+
+/**
+ * Read entire gz-file into an array.
+ *
+ * @param  PATH $filename The filename.
+ * @return ~array An array containing the file, one line per cell (false: error).
+ */
+function gzfile($filename)
+{
+    return array();
+}
+
+/**
+ * Inflate a deflated string.
+ *
+ * @param  string $data The data compressed by gzdeflate().
+ * @param  integer $length Maximum length to read in.
+ * @return string Inflated (uncompressed) data.
+ */
+function gzinflate($data, $length = 0)
+{
+    return '';
+}
+
+/**
+ * Uncompress a compressed string.
+ *
+ * @param  string $data The data compressed by gzcompress().
+ * @param  integer $length Maximum length to read in.
+ * @return string Uncompressed data.
+ */
+function gzuncompress($data, $length = 0)
+{
+    return '';
 }
 
 /*
@@ -5620,6 +5022,7 @@ gc_enable
 gc_disable
 phpversion
 php_sapi_name
+gethostname (Google AppEngine disallows)
 
 Disabled due to too much general weirdness or just generally a bad idea to use...
 
@@ -5640,6 +5043,7 @@ get_extension_funcs
 php_ini_scanned_files
 php_ini_loaded_file
 dl
+srand
 rand
 convert_uuencode
 convert_uudecode
@@ -5660,6 +5064,7 @@ compact
 str_rot13
 output_add_rewrite_var
 output_reset_rewrite_vars
+crypt
 
 Disabled due to multi-OS compatibility...
 
@@ -5670,15 +5075,6 @@ getprotobynumber
 virtual
 apache_*
 getallheaders
-posix_uname
-posix_kill
-posix_mkfifo
-posix_setpgid
-posix_setsid
-posix_setuid
-posix_setuid
-posix_getpwuid
-posix_getuid
 syslog
 openlog
 closelog
@@ -5698,6 +5094,7 @@ getmygid
 get_current_user
 fnmatch
 money_format
+ftok
 
 Disabled various legacy synonyms (aliases), such as...
 
@@ -5721,6 +5118,12 @@ strchr
 pos
 sizeof
 die
+dns_check_record
+dns_get_mx
+set_file_buffer
+socket_set_timeout
+socket_get_status
+gzputs
 
 Disabled due to very commonly being disabled on hosts...
 
@@ -5771,16 +5174,21 @@ sql_regcase
 
 Disabled simply as we don't feel a need to use them (can enable if we find a use)...
 
+idate
+get_called_class
 property_exists
 interface_exists
+trait_exists
+class_alias
 restore_exception_handler
+get_declared_traits
 get_declared_interfaces
 get_defined_constants
 strptime
 htmlspecialchars_decode
 sha1_file
-strripos
 nl_langinfo
+preg_last_error
 vfprintf
 asinh
 acosh
@@ -5796,18 +5204,167 @@ ob_get_level
 ob_get_status
 ob_list_handlers
 array_intersect_uassoc
+forward_static_call
+forward_static_call_array
+header_remove
+gc_enabled
+date_create
+date_create_immutable
+date_create_from_format
+date_create_immutable_from_format
+date_parse
+date_parse_from_format
+date_get_last_errors
+date_format
+date_modify
+date_add
+date_sub
+date_timezone_get
+date_timezone_set
+date_offset_get
+date_diff
+date_time_set
+date_date_set
+date_isodate_set
+date_timestamp_set
+date_timestamp_get
+timezone_open
+timezone_name_get
+timezone_name_from_abbr
+timezone_offset_get
+timezone_transitions_get
+timezone_location_get
+timezone_identifiers_list
+timezone_abbreviations_list
+timezone_version_get
+date_interval_create_from_date_string
+date_interval_format
+date_sunrise
+date_sunset
+date_sun_info
+preg_filter
+imagecreatefromwbmp
+imagecreatefromxbm
+imagecreatefromgd
+imagecreatefromgd2
+imagecreatefromgd2part
+imagewbmp
+imagegd
+imagegd2
+imagedashedline
+jpeg2wbmp
+png2wbmp
+image2wbmp
+imagearc
+imagefilledarc
+imagecopymergegray
+imageline
+imageellipse
+imagefilledellipse
+imagechar
+imagefilledpolygon
+imagepolygon
+imagefilledrectangle
+imagerectangle
+imagefilltoborder
+imagegammacorrect
+imageinterlace
+imagepalettecopy
+imagesetbrush
+imagesetstyle
+imagesetthickness
+imagesettile
+imagecharup
+imagecolorclosesthwb
+preg_grep
+fileinode
+soundex
+rewinddir
+quotemeta
+ezmlm_hash
+filetype
+is_executable
+is_subclass_of
+metaphone
+convert_cyr_string
+count_chars
+get_meta_tags
+get_parent_class
+get_included_files
+get_resource_type
+hebrev
+hebrevc
+array_diff_uassoc
+array_udiff
+array_udiff_assoc
+array_udiff_uassoc
+array_uintersect_assoc
+array_uintersect_uassoc
+array_uintersect
+array_intersect_ukey
+array_diff_ukey
+array_product
+image_type_to_mime_type
+imagefilter
+image_type_to_extension
+imagerotate
+imageflip
+imageantialias
+imagecrop
+imagecropauto
+imagescale
+imageaffine
+imageaffinematrixconcat
+imageaffinematrixget
+imagesetinterpolation
+imagelayereffect
+imagexbm
+imagecolormatch
+imageconvolution
+json_last_error
+json_last_error_msg
+class_parents
+class_implements
+class_uses
+spl_object_hash
+iterator_to_array
+iterator_count
+iterator_apply
+hex2bin
+lcfirst
+header_register_callback
+parse_ini_string
+checkdnsrr
+getmxrr
+gethostbynamel
+dns_get_record
+boolval
+realpath_cache_size
+realpath_cache_get
+array_replace
+array_replace_recursive
+cli_set_process_title
+cli_get_process_title
+get_class_methods
+get_class_vars
+get_object_vars
+quoted_printable_decode
+quoted_printable_encode
+gzrewind
+gzeof
+gzgetc
+gzgets
+gzgetss
+gzread
+gzpassthru
+gzseek
+gztell
+gzdecode
+zlib_encode
+zlib_decode
+zlib_get_coding_type
 
 // ---
-
-Not yet in our compatibility list (<=PHP5.1), but would be disabled if they were...
-gethostname (Google AppEngine disallows)
-
-In newer PHP so we will add at some point...
-memory_get_peak_usage
-error_get_last
-array_fill_keys
-sys_get_temp_dir
-preg_last_error
 
 NOT disabled...
 GD functions - we TRY to be conditional with them, but they are in our minimum specs and we don't want dirty code

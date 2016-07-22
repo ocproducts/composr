@@ -13,8 +13,6 @@
  * @package    cns_tapatalk
  */
 
-/*EXTRA FUNCTIONS: var_export*/
-
 define('MBQ_PUSH_BLOCK_TIME', 60); /* push block time(minutes) */
 
 require_once(dirname(__FILE__) . '/TapatalkBasePush.php');

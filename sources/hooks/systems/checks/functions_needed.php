@@ -44,8 +44,7 @@ class Hook_check_functions_needed
             file_get_contents filectime filegroup filemtime fileowner fileperms filesize floatval floor
             get_defined_vars get_declared_classes get_defined_functions fopen fread fseek ftell
             function_exists fwrite get_class get_html_translation_table get_magic_quotes_gpc getcwd
-            getdate getenv gmdate gzclose gzopen gzwrite header headers_sent hexdec
-            htmlentities is_float
+            getdate getenv gmdate header headers_sent hexdec htmlentities is_float
             implode in_array include include_once ini_get ini_set intval is_a is_array is_bool
             is_integer is_null is_numeric is_object is_readable is_resource is_string is_uploaded_file
             isset krsort ksort localeconv ltrim mail max md5 method_exists microtime min is_writable
@@ -65,31 +64,27 @@ class Hook_check_functions_needed
             levenshtein log log10 long2ip md5_file pow preg_quote prev rad2deg
             range readfile shuffle similar_text sqrt strcasecmp strcoll strcspn stristr strnatcasecmp
             strnatcmp strncasecmp strncmp strrchr strrev strspn substr_replace tan unpack version_compare
-            gettype var_dump vprintf vsprintf touch tanh sinh sleep soundex stripcslashes
-            readgzfile restore_error_handler rewind rewinddir quoted_printable_decode
-            quotemeta exp ezmlm_hash lcg_value localtime addcslashes
+            gettype var_dump vprintf vsprintf touch tanh sinh sleep stripcslashes
+            restore_error_handler rewind rewinddir exp lcg_value localtime addcslashes
             array_filter array_map array_merge_recursive array_multisort array_pad array_reduce array_walk
             atan2 fgetc fgetcsv fgetss filetype fscanf fstat array_change_key_case
             date_default_timezone_get ftruncate func_get_arg func_get_args func_num_args
             parse_ini_file parse_str is_executable memory_get_usage
-            is_scalar is_subclass_of metaphone natcasesort natsort nl2br ob_get_length ob_gzhandler
-            ob_implicit_flush ob_clean printf convert_cyr_string cosh count_chars
-            gethostbynamel getlastmod fpassthru create_function
-            gettimeofday get_cfg_var get_magic_quotes_runtime get_meta_tags get_parent_class
-            get_included_files get_resource_type gzcompress gzdeflate gzencode gzfile gzinflate
-            gzuncompress hypot ignore_user_abort hebrev hebrevc array_intersect_assoc
+            is_scalar natcasesort natsort nl2br ob_get_length ob_implicit_flush
+            ob_clean printf cosh count_chars gethostbynamel getlastmod fpassthru create_function
+            gettimeofday get_cfg_var get_magic_quotes_runtime
+            get_resource_type hypot ignore_user_abort array_intersect_assoc
             is_link is_callable debug_print_backtrace stream_context_create next usleep array_sum
-            gzclose gzopen gzwrite file_get_contents str_word_count html_entity_decode
-            array_combine array_diff_uassoc array_udiff array_uintersect_uassoc
-            array_udiff_assoc array_udiff_uassoc array_walk_recursive array_uintersect_assoc
-            array_uintersect str_split strpbrk substr_compare file_put_contents get_headers headers_list
+            file_get_contents str_word_count html_entity_decode
+            array_combine array_walk_recursive
+            str_split strpbrk substr_compare file_put_contents get_headers headers_list
             http_build_query scandir str_shuffle
             ob_get_clean array_diff_assoc glob debug_backtrace date_default_timezone_set sha1
-            array_diff_key inet_pton array_product array_diff_ukey array_intersect_ukey
+            array_diff_key inet_pton array_product json_encode json_decode
             inet_ntop fputcsv is_nan is_finite is_infinite ob_flush array_chunk array_fill
-            var_export array_intersect_key end fileinode get_class_methods get_class_vars
-            get_object_vars gethostbyname htmlspecialchars stat str_ireplace stripos
-            key pi print set_exception_handler acos
+            var_export array_intersect_key end sys_get_temp_dir error_get_last
+            gethostbyname htmlspecialchars stat str_ireplace stripos key pi print set_exception_handler acos
+            readgzfile ob_gzhandler gzcompress gzdeflate gzencode gzfile gzinflate gzuncompress gzclose gzopen gzwrite
 END;
 
         if (function_exists('imagecreatefromstring')) {

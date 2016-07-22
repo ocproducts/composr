@@ -182,11 +182,7 @@ function cms_get_temp_dir()
         mkdir($local_path, 0777);
         fix_permissions($local_path);
     }
-    if (function_exists('sys_get_temp_dir')) {
-        $server_path = sys_get_temp_dir();
-    } else {
-        $server_path = '/tmp';
-    }
+    $server_path = sys_get_temp_dir();
     $problem_saving = ((str_replace(array('on', 'true', 'yes'), array('1', '1', '1'), strtolower(ini_get('safe_mode'))) == '1') || (get_option('force_local_temp_dir') == '1') || ((@strval(ini_get('open_basedir')) != '') && (preg_match('#(^|:|;)' . preg_quote($server_path, '#') . '($|:|;|/)#', ini_get('open_basedir')) == 0)));
     $path = ($problem_saving ? $local_path : $server_path) . '/';
     return array($path, $problem_saving, $server_path, $local_path);

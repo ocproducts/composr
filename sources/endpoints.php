@@ -127,7 +127,6 @@ function endpoint_script()
     // Output
     switch ($response_type) {
         case 'json':
-            require_code('json');
             header('Content-type: application/json');
             echo json_encode($return_data);
             break;

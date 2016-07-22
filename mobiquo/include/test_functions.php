@@ -13,7 +13,7 @@
  * @package    cns_tapatalk
  */
 
-/*EXTRA FUNCTIONS: .*xmlrpc.*|json_.**/
+/*EXTRA FUNCTIONS: .*xmlrpc.**/
 
 /*
 XML-RPC library documentation:

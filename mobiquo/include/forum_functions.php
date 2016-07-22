@@ -13,8 +13,6 @@
  * @package    cns_tapatalk
  */
 
-/*EXTRA FUNCTIONS: file_put_contents*/
-
 define('TAPATALK_POST_LIVE', 0);
 define('TAPATALK_POST_NEEDS_VALIDATION', 1);
 

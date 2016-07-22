@@ -457,7 +457,6 @@ function ajax_tree_script()
 
     // NB: We use ajax_tree hooks to power this. Those hooks may or may not use the Sitemap API to get the tree structure. However, the default ones are hard-coded, for better performance.
 
-    require_code('json');
     require_code('xml');
 
     header('Content-Type: text/xml');

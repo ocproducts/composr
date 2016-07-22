@@ -89,7 +89,6 @@ function get_upload_syndication_json($file_handling_types)
         }
     }
 
-    require_code('json');
     if (count($struct) > 0) {
         return array(json_encode($struct), $syndicatable_filetypes);
     }

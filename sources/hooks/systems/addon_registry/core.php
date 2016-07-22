@@ -516,8 +516,6 @@ class Hook_addon_registry_core
             'themes/default/css/install.css',
             'lang/EN/installer.ini',
             'lang/EN/encryption.ini',
-            'sources/json.php',
-            'sources/json_inner.php',
             'sources/locations.php',
             'sources/locations_geocoding.php',
             'sources/locations_cpfs.php',

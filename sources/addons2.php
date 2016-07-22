@@ -472,7 +472,6 @@ function create_addon($file, $files, $addon, $incompatibilities, $dependencies, 
             $mode = fileperms($themed_version);
             $mtime = 0;
             //if ((file_exists(get_file_base() . '/.git')) && (filemtime($themed_version) > 60 * 60 * 24 - 31 * 4/*If newer than 4 months it is likely git has garbled the modification date during a checkout*/)) {
-            //    require_code('json');
             //    $_themed_version = dirname($val) . '/' . $themed_suffix . basename($val);
             //    $json_data = @json_decode(http_download_file('http://github.com/api/v2/json/commits/list/ocproducts/composr/master/' . $_themed_version));
             //    if (isset($json_data->commits[0]->committed_date)) {
@@ -490,7 +489,6 @@ function create_addon($file, $files, $addon, $incompatibilities, $dependencies, 
             $mode = fileperms($full);
             $mtime = 0;
             //if ((file_exists(get_file_base() . '/.git')) && (filemtime($full) > 60 * 60 * 24 - 31 * 4/*If newer than 4 months it is likely git has garbled the modification date during a checkout*/)) {
-            //    require_code('json');
             //    $json_data = @json_decode(http_download_file('http://github.com/api/v2/json/commits/list/ocproducts/composr/master/' . $val));
             //    if (isset($json_data->commits[0]->committed_date)) {
             //        $mtime = strtotime($json_data->commits[0]->committed_date);

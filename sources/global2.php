@@ -12,8 +12,6 @@
 
 */
 
-/*EXTRA FUNCTIONS: memory_get_peak_usage|error_get_last*/
-
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
@@ -315,9 +313,7 @@ function init__global2()
     global $SUPPRESS_ERROR_DEATH;
     $SUPPRESS_ERROR_DEATH = array(false);
     set_error_handler('composr_error_handler');
-    if (function_exists('error_get_last')) {
-        register_shutdown_function('catch_fatal_errors');
-    }
+    register_shutdown_function('catch_fatal_errors');
     $HAS_SET_ERROR_HANDLER = true;
 
     // Initialise members
@@ -686,16 +682,12 @@ function peek_suppress_error_death()
 }
 
 /**
- * Composr error catcher for fatal versions. This is hooked in only on PHP5.2 as error_get_last() only works on these versions.
+ * Composr error catcher for fatal versions.
  *
  * @ignore
  */
 function catch_fatal_errors()
 {
-    if (!function_exists('error_get_last')) {
-        return;
-    }
-
     $error = error_get_last();
 
     if ($error !== null) {

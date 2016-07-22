@@ -57,7 +57,6 @@ header('Content-type: text/plain; charset=' . get_charset());
 
 safe_ini_set('ocproducts.xss_detect', '0');
 
-require_code('json');
 $location = get_param_string('location', null, true);
 if ($location !== null) {
     echo json_encode(geocode($location));

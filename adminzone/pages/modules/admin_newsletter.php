@@ -1067,13 +1067,11 @@ class Module_admin_newsletter extends Standard_crud_module
                 }
             }
             if (count($_csv_data) > 1) {
-                require_code('json');
                 $csv_data = json_encode($_csv_data);
             }
         }
         if ($csv_data !== null) {
             $hidden->attach(form_input_hidden('csv_data', $csv_data));
-            require_code('json');
             $_csv_data = json_decode($csv_data, true);
             $num_csv_data = count($_csv_data) - 1;
             $send_to_help = do_lang_tempcode('SOME_NEWSLETTER_TARGETS_KNOWN', escape_html(integer_format($num_csv_data)));
@@ -1259,7 +1257,6 @@ class Module_admin_newsletter extends Standard_crud_module
                 }
                 fclose($myfile);
 
-                require_code('json');
                 $extra_post_data['csv_data'] = json_encode($__csv_data);
             }
         }
@@ -1307,7 +1304,6 @@ class Module_admin_newsletter extends Standard_crud_module
         $spam_report = null;
         $spam_score = null;
         if ($mail_dispatcher->mime_data !== null) {
-            require_code('json');
             $_spam_test = http_download_file(
                 'http://spamcheck.postmarkapp.com/filter',
                 null,

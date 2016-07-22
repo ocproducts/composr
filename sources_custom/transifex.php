@@ -18,8 +18,6 @@
  * @package    addon_publish
  */
 
-/*EXTRA FUNCTIONS: json_decode,json_encode*/
-
 function init__transifex()
 {
     define('TRANSLATE_PRIORITY_NORMAL', 0);

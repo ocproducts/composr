@@ -85,8 +85,6 @@ function get_keyset_pagination_settings($max_name, $max_default, $start_name, $c
 
     // Support overriding from the compound parameter...
 
-    require_code('json');
-
     if ($compound_name !== null) {
         global $COMPOUND_PARAMS_TO_SKIP;
         $COMPOUND_PARAMS_TO_SKIP[$compound_name] = true;

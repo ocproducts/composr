@@ -45,7 +45,6 @@ function get_latest_version_pretty()
 function server__public__get_tracker_categories()
 {
     $categories = collapse_1d_complexity('name', $GLOBALS['SITE_DB']->query('SELECT DISTINCT name FROM mantis_category_table WHERE status=0'));
-    require_code('json');
     echo json_encode($categories);
 }
 
