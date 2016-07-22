@@ -49,5 +49,5 @@ foreach ($products as $p => $v) {
     );
 }
 
-$tpl = do_template('BLOCK_CREDIT_EXPS_INNER', array('_GUID' => '6c6134a1b7157637dae280b54e90a877', 'CREDIT_KINDS' => $credit_kinds, 'LABEL_BUY' => $label_buy));
+$tpl = do_template('BLOCK_CREDIT_EXPS_INNER', array('_GUID' => '6c6134a1b7157637dae280b54e90a877', 'CREDIT_KINDS' => $credit_kinds));
 $tpl->evaluate_echo();
