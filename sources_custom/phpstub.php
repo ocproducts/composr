@@ -3549,9 +3549,10 @@ function json_encode($value)
  *
  * @param  string $json The JSON string being decoded.
  * @param  boolean $assoc Whether returned objects will be converted into associative arrays.
+ * @param  int $depth User specified recursion depth.
  * @return ~mixed Decoded data (false: error)
  */
-function json_decode($json, $assoc = false)
+function json_decode($json, $assoc = false, $depth = 512)
 {
     return array();
 }
@@ -4311,9 +4312,10 @@ function natsort(&$array)
  * Inserts HTML line breaks before all newlines in a string.
  *
  * @param  string $in In.
+ * @param  boolean $is_xhtml Whether to use XHTML compatible line breaks or not.
  * @return string Out.
  */
-function nl2br($in)
+function nl2br($in, $is_xhtml = true)
 {
     return '';
 }
@@ -5124,6 +5126,10 @@ set_file_buffer
 socket_set_timeout
 socket_get_status
 gzputs
+set_​socket_​blocking
+socket_setopt
+socket_getopt
+stream_register_wrapper
 
 Disabled due to very commonly being disabled on hosts...
 
@@ -5363,6 +5369,52 @@ gzdecode
 zlib_encode
 zlib_decode
 zlib_get_coding_type
+stream_​bucket_​append
+stream_​bucket_​make_​writeable
+stream_​bucket_​new
+stream_​bucket_​prepend
+stream_​context_​create
+stream_​context_​get_​default
+stream_​context_​get_​options
+stream_​context_​get_​params
+stream_​context_​set_​default
+stream_​context_​set_​option
+stream_​context_​set_​params
+stream_​copy_​to_​stream
+stream_​encoding
+stream_​filter_​append
+stream_​filter_​prepend
+stream_​filter_​register
+stream_​filter_​remove
+stream_​get_​contents
+stream_​get_​filters
+stream_​get_​line
+stream_​get_​meta_​data
+stream_​get_​transports
+stream_​get_​wrappers
+stream_​is_​local
+stream_​notification_​callback
+stream_​register_​wrapper
+stream_​resolve_​include_​path
+stream_​select
+stream_​set_​blocking
+stream_​set_​chunk_​size
+stream_​set_​read_​buffer
+stream_​set_​timeout
+stream_​set_​write_​buffer
+stream_​socket_​accept
+stream_​socket_​client
+stream_​socket_​enable_​crypto
+stream_​socket_​get_​name
+stream_​socket_​pair
+stream_​socket_​recvfrom
+stream_​socket_​sendto
+stream_​socket_​server
+stream_​socket_​shutdown
+stream_​supports_​lock
+stream_​wrapper_​register
+stream_​wrapper_​restore
+stream_​wrapper_​unregister
 
 // ---
 
