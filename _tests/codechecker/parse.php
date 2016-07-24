@@ -284,10 +284,15 @@ function _parse_command_actual($no_term_needed = false)
             }
             break;
 
-        case 'IDENTIFIER': // Direct function call
+        case 'IDENTIFIER': // Direct function call, or jump label
             pparse__parser_next();
             $identifier = $next[1];
             $next_2 = pparse__parser_peek();
+            if ($next_2 == 'COLON') {
+                pparse__parser_next();
+                $command = array('GOTO_LABEL', $GLOBALS['I']);
+                break;
+            }
             if ($next_2 == 'SCOPE') {
                 pparse__parser_next();
                 $command = _parse_command_actual();
@@ -534,6 +539,43 @@ function _parse_command_actual($no_term_needed = false)
             if (!$no_term_needed) {
                 _test_command_end();
             }
+            break;
+
+        case 'GOTO':
+            pparse__parser_next();
+            $label = pparse__parser_expect('IDENTIFIER');
+            $command = array('GOTO', $label, $GLOBALS['I']);
+            break;
+
+        case 'CONST':
+            do {
+                pparse__parser_next();
+                $identifier = pparse__parser_peek(true);
+                if (($identifier[0] != 'IDENTIFIER') && ($identifier[0] != 'variable')) {
+                    parser_error('Expected IDENTIFIER or variable but got ' . $identifier[0]);
+                }
+                $identifier = pparse__parser_next(true);
+                $next_2 = pparse__parser_peek();
+                if ($next_2 == 'EQUAL') {
+                    pparse__parser_next();
+                    if (pparse__parser_peek() == 'ARRAY') {
+                        pparse__parser_next();        // Skip over the ARRAY
+                        pparse__parser_expect('BRACKET_OPEN');
+                        $details = _parse_create_array();
+                        pparse__parser_expect('BRACKET_CLOSE');
+                        $literal = array('CREATE_ARRAY', $details, $GLOBALS['I']);
+                    } else {
+                        $literal = _parse_literal();
+                    }
+                    $command = array('CONST', $identifier[1], $literal, $GLOBALS['I']);
+                } else {
+                    $command = array('CONST', $identifier[1], array('SOLO', array('LITERAL', array('null'))), $GLOBALS['I']);
+                }
+
+                $next_2 = pparse__parser_peek();
+            } while ($next_2 == 'COMMA');
+
+            pparse__parser_expect('COMMAND_TERMINATE');
             break;
 
         default:
@@ -870,7 +912,7 @@ function _parse_class_dec($modifiers = null)
     return $class;
 }
 
-function _parse_function_dec($function_modifiers = null)
+function _parse_function_dec($function_modifiers = null, $is_closure = false)
 {
     if ($function_modifiers === null) {
         $function_modifiers = array();
@@ -882,7 +924,9 @@ function _parse_function_dec($function_modifiers = null)
     if (pparse__parser_peek() == 'REFERENCE') {
         pparse__parser_next();
     }
-    $function['name'] = pparse__parser_expect('IDENTIFIER');
+    if (!$is_closure) {
+        $function['name'] = pparse__parser_expect('IDENTIFIER');
+    }
     pparse__parser_expect('BRACKET_OPEN');
     $function['parameters'] = _parse_comma_parameters();
     pparse__parser_expect('BRACKET_CLOSE');
@@ -915,7 +959,12 @@ function _parse_expression()
     while (in_array($next, $OPS)) {
         pparse__parser_next();
         if ($next == 'QUESTION') {
-            $expression_2 = _parse_expression();
+            $next_next = pparse__parser_peek();
+            if ($next_next == 'COLON') {
+                $expression_2 = $expression;
+            } else {
+                $expression_2 = _parse_expression();
+            }
             pparse__parser_expect('COLON');
             $expression_3 = _parse_expression();
             $op_list[] = 'TERNARY_IF';
@@ -985,6 +1034,15 @@ function _parse_expression_inner()
         $next = pparse__parser_peek();
     }
     switch ($next) {
+        case 'STATIC':
+            pparse__parser_next();
+            pparse__parser_expect('FUNCTION');
+            $GLOBALS['I']--;
+        case 'FUNCTION':
+            $_function = _parse_function_dec(null, true);
+            $expression = array('CLOSURE', $_function, ($next == 'STATIC'), $GLOBALS['I']);
+            break;
+
         case 'BW_NOT':
             pparse__parser_next();
             $_expression = _parse_expression_inner();

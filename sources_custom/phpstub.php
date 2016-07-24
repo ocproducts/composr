@@ -2838,9 +2838,23 @@ function strripos($haystack, $needle)
  *
  * @param  string $haystack Haystack.
  * @param  string $needle Needle.
+ * @param  boolean $before_needle The part of the haystack before the first occurrence of the needle (excluding the needle).
  * @return ~string The answer (false: does not occur).
  */
-function strstr($haystack, $needle)
+function strstr($haystack, $needle, $before_needle = false)
+{
+    return '';
+}
+
+/**
+ * Case-insensitive strstr.
+ *
+ * @param  string $haystack Haystack.
+ * @param  string $needle Needle.
+ * @param  boolean $before_needle The part of the haystack before the first occurrence of the needle (excluding the needle).
+ * @return string All of haystack from the first occurrence of needle to the end.
+ */
+function stristr($haystack, $needle, $before_needle = false)
 {
     return '';
 }
@@ -3709,18 +3723,6 @@ function strcspn($str1, $str2)
 }
 
 /**
- * Case-insensitive strstr.
- *
- * @param  string $haystack Haystack.
- * @param  string $needle Needle.
- * @return string All of haystack from the first occurrence of needle to the end.
- */
-function stristr($haystack, $needle)
-{
-    return '';
-}
-
-/**
  * Case insensitive string comparisons using a "natural order" algorithm.
  *
  * @param  string $str1 The first string.
@@ -4156,9 +4158,25 @@ function fgetc($handle)
  * @param  resource $handle File handle.
  * @param  ?integer $length The maximum length of the line (null: no limit).
  * @param  string $delimiter Delimiter.
+ * @param  string $enclosure Set the field enclosure character (one character only).
+ * @param  string $escape Set the escape character (one character only).
  * @return ~array Line (false: error).
  */
-function fgetcsv($handle, $length = null, $delimiter = ',')
+function fgetcsv($handle, $length = null, $delimiter = ',', $enclosure = '"', $escape = '\\')
+{
+    return array();
+}
+
+/**
+ * Parse a CSV string into an array.
+ *
+ * @param  string $input The string to parse.
+ * @param  string $delimiter Delimiter (one character only).
+ * @param  string $enclosure Set the field enclosure character (one character only).
+ * @param  string $escape Set the escape character (one character only).
+ * @return array An indexed array containing the fields read.
+ */
+function str_getcsv($input, $delimiter = ',', $enclosure = '"', $escape = '\\')
 {
     return array();
 }
@@ -4258,9 +4276,10 @@ function func_num_args()
  *
  * @param  PATH $filename The file path.
  * @param  boolean $process_sections Whether to process sections.
+ * @param  integer $scanner_mode Any INI_SCANNER_* constant.
  * @return ~array Map of Ini file data (2d if processed sections) (false: error).
  */
-function parse_ini_file($filename, $process_sections = false)
+function parse_ini_file($filename, $process_sections = false, $scanner_mode = INI_SCANNER_NORMAL)
 {
     return array();
 }
@@ -5126,7 +5145,7 @@ set_file_buffer
 socket_set_timeout
 socket_get_status
 gzputs
-set_​socket_​blocking
+set_socket_blocking
 socket_setopt
 socket_getopt
 stream_register_wrapper
@@ -5144,7 +5163,6 @@ passthru
 pfsockopen
 escapeshellcmd
 escapeshellarg
-define_syslog_variables
 exec
 system
 shell_exec
@@ -5177,6 +5195,7 @@ ereg_replace
 eregi
 eregi_replace
 sql_regcase
+define_syslog_variables
 
 Disabled simply as we don't feel a need to use them (can enable if we find a use)...
 
@@ -5369,52 +5388,52 @@ gzdecode
 zlib_encode
 zlib_decode
 zlib_get_coding_type
-stream_​bucket_​append
-stream_​bucket_​make_​writeable
-stream_​bucket_​new
-stream_​bucket_​prepend
-stream_​context_​create
-stream_​context_​get_​default
-stream_​context_​get_​options
-stream_​context_​get_​params
-stream_​context_​set_​default
-stream_​context_​set_​option
-stream_​context_​set_​params
-stream_​copy_​to_​stream
-stream_​encoding
-stream_​filter_​append
-stream_​filter_​prepend
-stream_​filter_​register
-stream_​filter_​remove
-stream_​get_​contents
-stream_​get_​filters
-stream_​get_​line
-stream_​get_​meta_​data
-stream_​get_​transports
-stream_​get_​wrappers
-stream_​is_​local
-stream_​notification_​callback
-stream_​register_​wrapper
-stream_​resolve_​include_​path
-stream_​select
-stream_​set_​blocking
-stream_​set_​chunk_​size
-stream_​set_​read_​buffer
-stream_​set_​timeout
-stream_​set_​write_​buffer
-stream_​socket_​accept
-stream_​socket_​client
-stream_​socket_​enable_​crypto
-stream_​socket_​get_​name
-stream_​socket_​pair
-stream_​socket_​recvfrom
-stream_​socket_​sendto
-stream_​socket_​server
-stream_​socket_​shutdown
-stream_​supports_​lock
-stream_​wrapper_​register
-stream_​wrapper_​restore
-stream_​wrapper_​unregister
+stream_bucket_append
+stream_bucket_make_writeable
+stream_bucket_new
+stream_bucket_prepend
+stream_context_create
+stream_context_get_default
+stream_context_get_options
+stream_context_get_params
+stream_context_set_default
+stream_context_set_option
+stream_context_set_params
+stream_copy_to_stream
+stream_encoding
+stream_filter_append
+stream_filter_prepend
+stream_filter_register
+stream_filter_remove
+stream_get_contents
+stream_get_filters
+stream_get_line
+stream_get_meta_data
+stream_get_transports
+stream_get_wrappers
+stream_is_local
+stream_notification_callback
+stream_register_wrapper
+stream_resolve_include_path
+stream_select
+stream_set_blocking
+stream_set_chunk_size
+stream_set_read_buffer
+stream_set_timeout
+stream_set_write_buffer
+stream_socket_accept
+stream_socket_client
+stream_socket_enable_crypto
+stream_socket_get_name
+stream_socket_pair
+stream_socket_recvfrom
+stream_socket_sendto
+stream_socket_server
+stream_socket_shutdown
+stream_supports_lock
+stream_wrapper_register
+stream_wrapper_restore
+stream_wrapper_unregister
 
 // ---
 

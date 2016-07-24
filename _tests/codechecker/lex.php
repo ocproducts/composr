@@ -117,6 +117,7 @@ $PTOKENS['DOUBLE_ARROW'] = '=>';
 $PTOKENS['LIST'] = 'list';
 $PTOKENS['ARRAY'] = 'array';
 // Other
+$PTOKENS['GOTO'] = 'goto';
 $PTOKENS['ECHO'] = 'echo';
 $PTOKENS['GLOBAL'] = 'global';
 $PTOKENS['STATIC'] = 'static';
@@ -133,7 +134,7 @@ $PTOKENS['null'] = 'null';
 // Loaded lexer tokens that change the lexing state
 // ================================================
 $PTOKENS['DOLLAR_OPEN_CURLY_BRACES'] = '${';
-$PTOKENS['START_HEREDOC'] = '<<<'; // Ending it with "END;" is implicit in the PLEXER_HEREDOC state
+$PTOKENS['START_HEREDOC'] = '<<<'; // Ending it with "END;" (or whatever) is implicit in the PLEXER_HEREDOC state
 $PTOKENS['START_ML_COMMENT'] = '/*'; // Ending it with "* /" is implicit in the PLEXER_ML_COMMENT state
 $PTOKENS['COMMENT'] = '//'; // Ending it with a new-line is implicit in the PLEXER_COMMENT state
 $PTOKENS['VARIABLE'] = '$'; // Ending it with a non-variable-character is implicit in the PLEXER_VARIABLE state
@@ -381,8 +382,8 @@ function lex($text = null)
                     } elseif ($token_found == 'START_HEREDOC') {
                         $lex_state = PLEXER_HEREDOC;
                         $matches = array();
-                        preg_match('#[A-Za-z0-9\_]*#', $TEXT, $matches, 0, $i);
-                        $heredoc_symbol = $matches[0];
+                        preg_match('#(["\'])?([A-Za-z0-9\_]*)\\1#', $TEXT, $matches, 0, $i);
+                        $heredoc_symbol = $matches[2];
                         $i += strlen($heredoc_symbol);
                         break;
                     } elseif ($token_found == 'START_ML_COMMENT') {

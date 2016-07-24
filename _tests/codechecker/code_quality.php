@@ -754,10 +754,12 @@ function check($structure)
     check_variable_list($GLOBAL_VARIABLES);
 }
 
-function check_function($function)
+function check_function($function, $is_closure = false)
 {
     global $GLOBAL_VARIABLES, $LOCAL_VARIABLES, $CURRENT_CLASS;
-    $LOCAL_VARIABLES = reinitialise_local_variables(); // Map (by name) of maps : is_global, types. Note there is boolean-false and null types: boolean_false is when we KNOW a boolean is false, so it might map to ~
+    if (!$is_closure) {
+        $LOCAL_VARIABLES = reinitialise_local_variables(); // Map (by name) of maps : is_global, types. Note there is boolean-false and null types: boolean_false is when we KNOW a boolean is false, so it might map to ~
+    }
 
     //if (isset($GLOBALS['PEDANTIC'])) if (strlen(serialize($function)) > 30000) log_warning('Function ' . $function['name'] . ' is too big', $function['offset']);
 
@@ -1789,6 +1791,12 @@ function check_expression($e, $assignment = false, $equate_false = false, $funct
     }
     $inner = $e;
     switch ($inner[0]) {
+        case 'CLOSURE':
+            global $LOCAL_VARIABLES;
+            $temp = $LOCAL_VARIABLES;
+            $ret = check_function($inner[1] + array('name' => '(closure)'));
+            $LOCAL_VARIABLES = $temp;
+            return $ret;
         case 'EMBEDDED_ASSIGNMENT':
             $ret = check_assignment($inner, $c_pos, $function_guard);
             return $ret;

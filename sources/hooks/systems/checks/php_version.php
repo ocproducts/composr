@@ -32,7 +32,7 @@ class Hook_check_php_version
     {
         $warning = array();
         $phpv = PHP_VERSION;
-        if ((substr($phpv, 0, 2) == '3.') || (substr($phpv, 0, 2) == '4.') || (substr($phpv, 0, 4) == '5.0.') || (substr($phpv, 0, 4) == '5.1.')) {
+        if ((substr($phpv, 0, 2) == '3.') || (substr($phpv, 0, 2) == '4.') || (substr($phpv, 0, 4) == '5.0.') || (substr($phpv, 0, 4) == '5.1.') || (substr($phpv, 0, 4) == '5.2.')) {
             $warning[] = do_lang_tempcode('PHP_OLD');
         }
         return $warning;
