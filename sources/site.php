@@ -735,9 +735,12 @@ function process_url_monikers($page, $redirect_if_non_canonical = true)
                     continue;
                 }
                 $ob_info = $ob->info();
+                if (($ob_info['view_page_link_pattern'] === null) || (!$ob_info['support_url_monikers'])) {
+                    continue;
+                }
                 $ob_info['view_page_link_pattern'] = preg_replace('#:[^:]*$#', ':_WILD', $ob_info['view_page_link_pattern']);
 
-                if (($ob_info['view_page_link_pattern'] == $looking_for) && ($ob_info['support_url_monikers'])) {
+                if ($ob_info['view_page_link_pattern'] == $looking_for) {
                     if (is_numeric($url_id)) { // Lookup and redirect to moniker
                         $correct_moniker = find_id_moniker(array('page' => $page, 'type' => get_param_string('type', 'browse'), 'id' => $url_id), $zone);
                         if (($correct_moniker !== null) && ($correct_moniker != $url_id) && (get_param_integer('keep_failover', null) !== 0) && (cms_srv('REQUEST_METHOD') != 'POST')) { // test is very unlikely to fail. Will only fail if the title of the resource was numeric - in which case the moniker was chosen to be the ID (NOT the number in the title, as that would have created ambiguity).

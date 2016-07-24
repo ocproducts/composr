@@ -22,6 +22,7 @@
 						{+START,INCLUDE,CNS_MEMBER_DIRECTORY_SCREEN_FILTER}
 							NAME={_loop_key}
 							LABEL={_loop_var}
+							BLOCK_ID={BLOCK_ID}
 						{+END}
 					{+END}
 				</div>
@@ -36,6 +37,7 @@
 							{+START,INCLUDE,CNS_MEMBER_DIRECTORY_SCREEN_FILTER}
 								NAME={_loop_key}
 								LABEL={_loop_var}
+								BLOCK_ID={BLOCK_ID}
 							{+END}
 						{+END}
 					</div>

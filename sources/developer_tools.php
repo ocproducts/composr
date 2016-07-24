@@ -178,10 +178,14 @@ function restrictify()
         }
     }
     if (($GLOBALS['DEV_MODE']) && (strpos(cms_srv('SCRIPT_NAME'), '_tests') === false)) {
-        safe_ini_set('ocproducts.type_strictness', '1');
+        if (get_param_integer('keep_type_strictness', null) !== 0) {
+            safe_ini_set('ocproducts.type_strictness', '1');
+        }
 
-        global $PREVIOUS_XSS_STATE;
-        safe_ini_set('ocproducts.xss_detect', array_pop($PREVIOUS_XSS_STATE));
+        if (get_param_integer('keep_xss_detect', null) !== 0) {
+            global $PREVIOUS_XSS_STATE;
+            safe_ini_set('ocproducts.xss_detect', array_pop($PREVIOUS_XSS_STATE));
+        }
     }
     if (!GOOGLE_APPENGINE) {
         safe_ini_set('include_path', '');

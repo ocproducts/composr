@@ -368,14 +368,14 @@ function cms_setcookie($name, $value, $session = false, $http_only = false, $day
         }
     }
 
-    $time = $session ? null : (time() + (($days === null) ? get_cookie_days() : $days) * 24 * 60 * 60);
+    $time = $session ? 0 : (time() + (($days === null) ? get_cookie_days() : $days) * 24 * 60 * 60);
     if ($cookie_domain == '') {
         $output = @setcookie($name, $value, $time, $path);
     } else {
         if (!$http_only) {
             $output = @setcookie($name, $value, $time, $path, $cookie_domain);
         } else {
-            $output = @setcookie($name, $value, $time, $path, $cookie_domain, 0, true);
+            $output = @setcookie($name, $value, $time, $path, $cookie_domain, false, true);
         }
     }
     if ($name != 'has_cookies') {

@@ -1761,7 +1761,7 @@ function ecv_HEADER_TEXT($lang, $escaped, $param)
 
         // Strip site name off it it's there (it'll be put on in the templates, so we don't want it twice)
         $stub = get_site_name() . ' - ';
-        if (substr($value, strlen($stub)) == $stub) {
+        if (substr($value, strlen($stub)) === $stub) {
             $value = substr($value, strlen($stub));
         }
         if ($value == get_site_name()) {

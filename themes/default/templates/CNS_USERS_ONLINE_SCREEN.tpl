@@ -50,7 +50,7 @@
 					{MEMBER}
 				</td>
 				<td>
-					{!MINUTES_AGO,{DATE*}}
+					{!MINUTES_AGO,{TIME*}}
 
 					{+START,IF,{$MOBILE}}
 						{+START,IF,{$HAS_PRIVILEGE,show_user_browsing}}

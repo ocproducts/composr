@@ -190,8 +190,12 @@ function init__global2()
         if (php_function_allowed('set_time_limit')) {
             set_time_limit(10);
         }
-        safe_ini_set('ocproducts.type_strictness', '1');
-        safe_ini_set('ocproducts.xss_detect', '1');
+        if (get_param_integer('keep_type_strictness', null) !== 0) {
+            safe_ini_set('ocproducts.type_strictness', '1');
+        }
+        if (get_param_integer('keep_xss_detect', null) !== 0) {
+            safe_ini_set('ocproducts.xss_detect', '1');
+        }
     }
     if ($DEV_MODE || $SEMI_DEV_MODE) {
         require_code('developer_tools');
@@ -971,6 +975,9 @@ function log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_b
  */
 function cms_version()
 {
+    if (!function_exists('cms_version_number')) {
+        return -1;
+    }
     return intval(cms_version_number());
 }
 
@@ -982,6 +989,9 @@ function cms_version()
  */
 function cms_version_pretty()
 {
+    if (!function_exists('cms_version_minor')) {
+        return 'unknown';
+    }
     $minor = cms_version_minor();
     $dotted = strval(cms_version()) . (($minor == '') ? '' : '.' . $minor);
     return preg_replace('#\.(alpha|beta|RC)#', ' ${1}', $dotted);
@@ -1101,13 +1111,13 @@ function get_cookie_path()
 /**
  * Get the Composr cookie domain.
  *
- * @return ?string The Composr cookie domain (null: current domain)
+ * @return string The Composr cookie domain (blank: current domain)
  */
 function get_cookie_domain()
 {
     global $SITE_INFO;
-    $ret = array_key_exists('cookie_domain', $SITE_INFO) ? $SITE_INFO['cookie_domain'] : null;
-    return ($ret == '') ? null : $ret;
+    $ret = array_key_exists('cookie_domain', $SITE_INFO) ? $SITE_INFO['cookie_domain'] : '';
+    return ($ret == '') ? '' : $ret;
 }
 
 /**

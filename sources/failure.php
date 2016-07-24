@@ -388,10 +388,12 @@ function _generic_exit($text, $template, $support_match_key_messages = false, $l
         $text = _sanitise_error_msg($text);
     }
 
-    if (has_privilege(get_member(), 'see_php_errors')) {
+    $see_php_errors = ($GLOBALS['DEV_MODE'] || function_exists('has_privilege') && has_privilege(get_member(), 'see_php_errors'));
+
+    if ($see_php_errors) {
         if ($template == 'FATAL_SCREEN') {
             // Supplement error message with some useful info
-            if ((function_exists('cms_version_pretty')) && (function_exists('cms_srv'))) {
+            if ((function_exists('cms_version_pretty')) && (function_exists('get_self_url_easy')) && (function_exists('cms_srv'))) {
                 $sup = ' (version: ' . cms_version_pretty() . ', PHP version: ' . PHP_VERSION . ', URL: ' . get_self_url_easy(true) . ')';
             } else {
                 $sup = '';
@@ -409,7 +411,7 @@ function _generic_exit($text, $template, $support_match_key_messages = false, $l
 
     $text_eval = is_object($text) ? $text->evaluate() : $text;
 
-    if (has_privilege(get_member(), 'see_php_errors')) {
+    if ($see_php_errors) {
         if (!headers_sent()) {
             require_code('firephp');
             if (function_exists('fb')) {

@@ -161,7 +161,7 @@ function render_member_box($member_id, $preview = false, $show_avatar = true, $e
         'SECONDARY_GROUPS' => array_values($member_info['secondary_groups_named']),
         'CUSTOM_FIELDS' => $custom_fields,
         'ONLINE' => $member_info['online'],
-        'AVATAR_URL' => $show_avatar ? $member_info['avatar'] : '',
+        'AVATAR_URL' => ($show_avatar && isset($member_info['avatar'])) ? $member_info['avatar'] : '',
         'IP_ADDRESS' => ((has_privilege(get_member(), 'see_ip')) && (isset($member_info['ip_address']))) ? $member_info['ip_address'] : null,
         'NUM_WARNINGS' => integer_format($member_info['num_warnings']),
         'GALLERIES' => isset($member_info['galleries']) ? $member_info['galleries'] : null,

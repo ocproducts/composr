@@ -1031,8 +1031,7 @@ As mentioned above, the developers maintain an internally developed code quality
 
 These tools may now be downloaded:
  - [url="Code Quality Checker"]{$BRAND_BASE_URL}/docs/codechecker.zip[/url] which requires a recent Java, and the command-line PHP interpreter -- [i]this is primarily maintained inside the Composr github repository[/i])
- - [url="ocProducts PHP"]{$BRAND_BASE_URL}/docs/php-5.2.4-ocproducts.zip[/url] (The source code tree for our special version of PHP -- confirmed to work on Mac and Linux; optional, but useful for auto-detecting some common development mistakes)
- - [url="ocProducts PHP, Windows build"]{$BRAND_BASE_URL}/docs/php-windows-ocproducts.zip[/url] (The Windows build of our special version of PHP -- to transplant into a vanilla PHP 5.2.4 install)
+ - [url="ocProducts PHP"]https://github.com/ocproducts/ocp-php[/url] (The source code tree for our special version of PHP; optional, but useful for auto-detecting some common development mistakes)
 
 [title="3"]Software for editing code[/title]
 

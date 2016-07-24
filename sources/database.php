@@ -326,7 +326,10 @@ function get_db_type()
     } else {
         $ret = 'mysqli';
     }
-    if ($ret === 'mysqli' && !function_exists('mysqli_connect')) {
+    if ($ret === 'mysql' && !function_exists('mysql_connect')) {
+        $ret = 'mysqli';
+    }
+    elseif ($ret === 'mysqli' && !function_exists('mysqli_connect')) {
         $ret = 'mysql';
     }
     return $ret;

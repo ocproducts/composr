@@ -207,7 +207,7 @@ class Module_shopping
 
         if ($type == 'browse') {
             if ($ecom_catalogue_count == 1) {
-                breadcrumb_set_parents(array(array('_SELF:catalogues:category:=' . $ecom_catalogue_id, do_lang_tempcode('DEFAULT_CATALOGUE_PRODUCTS_TITLE'))));
+                breadcrumb_set_parents(array(array('_SELF:catalogues:category:=' . strval($ecom_catalogue_id), do_lang_tempcode('DEFAULT_CATALOGUE_PRODUCTS_TITLE'))));
             } else {
                 breadcrumb_set_parents(array(array('_SELF:catalogues:browse:ecommerce=1', do_lang_tempcode('CATALOGUES'))));
             }
