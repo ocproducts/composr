@@ -197,8 +197,8 @@ function init__global2()
         if (php_function_allowed('set_time_limit')) {
             set_time_limit(10);
         }
-        safe_ini_set('ocproducts.type_strictness', '1');
-        safe_ini_set('ocproducts.xss_detect', '1');
+        //safe_ini_set('ocproducts.type_strictness', '1');  Disabled due to incompatibility with ocP PHP7. v11 will turn back on.
+        //safe_ini_set('ocproducts.xss_detect', '1');  Disabled due to incompatibility with ocP PHP7. v11 will turn back on.
     }
     if ($DEV_MODE || $SEMI_DEV_MODE) {
         require_code('developer_tools');

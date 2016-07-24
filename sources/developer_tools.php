@@ -170,10 +170,10 @@ function restrictify()
         $GLOBALS['SITE_DB']->query('SET sql_mode=STRICT_ALL_TABLES', null, null, true);
     }
     if (($GLOBALS['DEV_MODE']) && (strpos(cms_srv('SCRIPT_NAME'), '_tests') === false)) {
-        safe_ini_set('ocproducts.type_strictness', '1');
+        //safe_ini_set('ocproducts.type_strictness', '1');
 
         global $PREVIOUS_XSS_STATE;
-        safe_ini_set('ocproducts.xss_detect', array_pop($PREVIOUS_XSS_STATE));
+        //safe_ini_set('ocproducts.xss_detect', array_pop($PREVIOUS_XSS_STATE));
     }
     if (!GOOGLE_APPENGINE) {
         safe_ini_set('include_path', '');
