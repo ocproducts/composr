@@ -421,7 +421,6 @@ class Module_admin_setupwizard
 
         $addon_list_advanced_off_by_default = array( // Hint that these must go under advanced (as they default as visible). Note that presence of an addon in an 'on' list gives it precedence.
                                                      'installer',
-                                                     'textbased_persistent_caching',
                                                      'rootkit_detector',
                                                      'failover',
                                                      'msn',

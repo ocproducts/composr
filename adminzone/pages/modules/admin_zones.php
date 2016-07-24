@@ -245,9 +245,6 @@ class Module_admin_zones
      */
     public function editor()
     {
-        require_code('input_filter_2');
-        modsecurity_workaround_enable();
-
         return $this->edit_zone('_editor', get_screen_title('ZONE_EDITOR'));
     }
 

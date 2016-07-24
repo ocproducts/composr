@@ -555,7 +555,7 @@ function ticket_incoming_message($from_email, $subject, $body, $attachments)
         $attachment_id = $GLOBALS['SITE_DB']->query_insert('attachments', array(
             'a_member_id' => $member_id,
             'a_file_size' => strlen($filedata),
-            'a_url' => $new_url,
+            'a_url' => 'uploads/attachments/' . rawurlencode($new_filename),
             'a_thumb_url' => '',
             'a_original_filename' => $filename,
             'a_num_downloads' => 0,

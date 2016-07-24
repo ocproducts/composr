@@ -55,6 +55,5 @@ $tpl = do_template('BLOCK_CREDIT_EXPS_INNER', array(
     '_GUID' => '6c6134a1b7157637dae280b54e90a877',
     'BLOCK_ID' => $block_id,
     'CREDIT_KINDS' => $credit_kinds,
-    'LABEL_BUY' => $label_buy,
 ));
 $tpl->evaluate_echo();

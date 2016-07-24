@@ -99,7 +99,11 @@ class Module_members
             if (is_numeric($username)) {
                 $member_id_of = get_param_integer('id', get_member());
                 if (is_guest($member_id_of)) {
-                    access_denied('NOT_AS_GUEST');
+                    if (is_guest()) {
+                        access_denied('NOT_AS_GUEST');
+                    } else {
+                        warn_exit(do_lang_tempcode('MEMBER_NO_EXIST'));
+                    }
                 }
                 $username = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_username');
                 if (($username === null) || (is_guest($member_id_of))) {
@@ -109,6 +113,13 @@ class Module_members
                 $member_id_of = $GLOBALS['FORUM_DRIVER']->get_member_from_username($username);
                 if ($member_id_of === null) {
                     warn_exit(do_lang_tempcode('_MEMBER_NO_EXIST', escape_html($username)));
+                }
+                if (is_guest($member_id_of)) {
+                    if (is_guest()) {
+                        access_denied('NOT_AS_GUEST');
+                    } else {
+                        warn_exit(do_lang_tempcode('MEMBER_NO_EXIST'));
+                    }
                 }
             }
 

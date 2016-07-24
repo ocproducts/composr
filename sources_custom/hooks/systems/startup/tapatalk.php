@@ -112,7 +112,7 @@ class Hook_startup_tapatalk
 
             attach_to_screen_header($app_head_include);
 
-            ini_set('ocproducts.type_strictness', '1');
+            //ini_set('ocproducts.type_strictness', '1');
         }
     }
 }

@@ -119,11 +119,9 @@ function create_session($member, $session_confirmed = 0, $invisible = false)
             'the_type' => cms_mb_substr(get_param_string('type', '', true), 0, 80),
             'the_id' => cms_mb_substr(get_param_string('id', ''), 0, 80),
         );
-        if (!$GLOBALS['SITE_DB']->table_is_locked('sessions')) { // Better to have no session than a 5+ second loading page
-            $GLOBALS['SITE_DB']->query_insert('sessions', $new_session_row, false, true);
-            if ((get_forum_type() == 'cns') && (!$GLOBALS['FORUM_DB']->table_is_locked('f_members'))) {
-                $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members SET m_total_sessions=m_total_sessions+1 WHERE id=' . strval($member), 1, null, true);
-            }
+        $GLOBALS['SITE_DB']->query_insert('sessions', $new_session_row, false, true);
+        if ((get_forum_type() == 'cns') && (!$GLOBALS['FORUM_DB']->table_is_locked('f_members'))) {
+            $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members SET m_total_sessions=m_total_sessions+1 WHERE id=' . strval($member), 1, null, true);
         }
 
         $SESSION_CACHE[$new_session] = $new_session_row;
@@ -144,9 +142,7 @@ function create_session($member, $session_confirmed = 0, $invisible = false)
         );
         $big_change = ($prior_session_row['last_activity'] < time() - 10) || ($prior_session_row['session_confirmed'] != $session_confirmed) || ($prior_session_row['ip'] != $new_session_row['ip']);
         if ($big_change) {
-            if (!$GLOBALS['SITE_DB']->table_is_locked('sessions')) { // Better to have wrong session than a 5+ second loading page
-                $GLOBALS['SITE_DB']->query_update('sessions', $new_session_row, array('the_session' => $new_session), '', 1, null, false, true);
-            }
+            $GLOBALS['SITE_DB']->query_update('sessions', $new_session_row, array('the_session' => $new_session), '', 1, null, false, true);
         }
 
         $SESSION_CACHE[$new_session] = array_merge($SESSION_CACHE[$new_session], $new_session_row);

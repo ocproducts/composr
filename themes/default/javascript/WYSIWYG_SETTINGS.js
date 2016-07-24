@@ -56,5 +56,6 @@ var editor_settings={
 	browserContextMenuOnCtrl: true,
 	comcodeXMLBlockTags: '{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_BLOCK}}',
 	comcodeXMLInlineTags: '{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_INLINE}}',
-	magicline_everywhere: true
+	magicline_everywhere: true,
+	autoGrow_onStartup: true
 };

@@ -5,7 +5,7 @@
 	{$HIDDENS_FOR_GET_FORM,{$GET,purchase_url}}
 
 	<div class="selCdt">
-		<label for="type_code">{LABEL_BUY}</label>
+		<label for="type_code">{!SUPPORT_CREDITS_BUY}</label>
 		<select name="type_code" id="type_code" onchange="update_product_info_display();">
 			{+START,LOOP,CREDIT_KINDS}
 				<option{+START,IF,{$EQ,{NUM_CREDITS},50}} selected="selected"{+END} value="{NUM_CREDITS*}_CREDITS">{$NUMBER_FORMAT*,{NUM_CREDITS}} credits</option>

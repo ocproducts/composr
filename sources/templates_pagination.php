@@ -109,7 +109,8 @@ function get_keyset_pagination_settings($max_name, $max_default, $start_name, $c
     if ($keyset_field !== null) {
         if ($keyset_param !== null) {
             $altered_start = 0;
-            $keyset_clause = str_replace(array('\'X\'', 'X'), array('\'' . db_escape_string($keyset_param) . '\'', strval(intval($keyset_param))), $keyset_field);
+            $keyset_clause = str_replace(array('\'XXX\'', 'XXX'), array('\'' . db_escape_string($keyset_param) . '\'', strval(intval($keyset_param))), $keyset_field);
+            $keyset_clause = preg_replace('#MAX\(([^\(\)]*)\)#', '$1', $keyset_clause);
             $sql_sup .= ' AND ' . $keyset_clause;
         } elseif ($start > 0) {
             $altered_start = 0; // We want to discourage this anyway! Hurts performance

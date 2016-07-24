@@ -315,7 +315,14 @@ function cron_bridge_script($caller)
             fwrite($log_file, date('Y-m-d H:i:s') . '  STARTING ' . $hook . "\n");
         }
 
-        $object->run();
+        // Run, with basic locking support
+        if ($GLOBALS['DEV_MODE'] || get_value_newer_than('cron_currently_running__' . $hook, time() - 60 * 5, true) !== '1') {
+            set_value('cron_currently_running__' . $hook, '1', true);
+
+            $object->run();
+
+            set_value('cron_currently_running__' . $hook, '0', true);
+        }
 
         if ($log_file !== null) {
             fwrite($log_file, date('Y-m-d H:i:s') . '  FINISHED ' . $hook . "\n");

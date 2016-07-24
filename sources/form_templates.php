@@ -2429,6 +2429,10 @@ function handle_conflict_resolution($id = null, $only_staff = false)
         return array(null, null);
     }
 
+    if (get_param_integer('refreshing', 0) == 1) {
+        return array(null, null);
+    }
+
     if ($id === null) {
         $id = get_param_string('id', post_param_string('id', null), true);
         if ($id === null) {
