@@ -44,7 +44,7 @@ function list_tutorial_tags($skip_addons_and_specials = false)
         }
     }
     $tags = array_unique($tags);
-    natcasesort($tags);
+    sort($tags, SORT_NATURAL | SORT_FLAG_CASE);
     return $tags;
 }
 

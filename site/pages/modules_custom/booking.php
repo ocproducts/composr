@@ -376,7 +376,7 @@ class Module_booking
             //Wrong - we're sorting by sort_order  sort_maps_by($categories[$category]['BOOKABLES'], 'BOOKABLE_TITLE');
         }
 
-        ksort($categories);
+        ksort($categories, SORT_NATURAL | SORT_FLAG_CASE);
 
         // Messages shared by all bookables will be transferred so as to avoid repetition
         $shared_messages = array();

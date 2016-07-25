@@ -102,7 +102,7 @@ class Block_side_tag_cloud
             }
             $tags[$keyword] = $mr['cnt'];
         }
-        arsort($tags);
+        arsort($tags, SORT_NATURAL | SORT_FLAG_CASE);
         $_tags = $tags;
         $tags = array();
         foreach ($_tags as $tag => $count) {
@@ -114,7 +114,7 @@ class Block_side_tag_cloud
                 break;
             }
         }
-        ksort($tags);
+        ksort($tags, SORT_NATURAL | SORT_FLAG_CASE);
 
         if (count($tags) == 0) {
             return new Tempcode();

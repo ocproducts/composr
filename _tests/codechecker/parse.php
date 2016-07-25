@@ -243,42 +243,63 @@ function _parse_command_actual($no_term_needed = false)
         case 'STATIC': // Moves past
             pparse__parser_next();
             $is_static = true;
+            $static_set = array();
 
         case 'variable':
-            $target = _parse_target();
-            $next_2 = pparse__parser_peek();
-            switch ($next_2) {
-                case 'DEC':
-                    if (($target[0] == 'LIST') || ($target[0] == 'ARRAY_APPEND')) {
-                        parser_error('LIST is only a one way type'); // We needed to read a target (for assignment), but we really wanted a variable (subset of target) -- we ended up with something that WAS target but NOT variable (we couldn't have known till now)
-                    }
-                    pparse__parser_next();
-                    $command = array('DEC', $target, $GLOBALS['I']);
-                    break;
+            do{
+                $target = _parse_target();
+                $next_2 = pparse__parser_peek();
+                switch ($next_2) {
+                    case 'DEC':
+                        if ($is_static) parser_error('Cannot decrement during static initialisation');
 
-                case 'INC':
-                    if (($target[0] == 'LIST') || ($target[0] == 'ARRAY_APPEND')) {
-                        parser_error('LIST is only a one way type'); // We needed to read a target (for assignment), but we really wanted a variable (subset of target) -- we ended up with something that WAS target but NOT variable (we couldn't have known till now)
-                    }
-                    pparse__parser_next();
-                    $command = array('INC', $target, $GLOBALS['I']);
-                    break;
-
-                default: // Either an assignment or an indirect function call or a method call
-                    $command = $target;
-                    // We should be at the end of a chain by here.
-                    // We may still be an assignment, despire the $next_3 branch
-                    // above. Handle this if so:
-                    if (in_array(pparse__parser_peek(), array('EQUAL', 'CONCAT_EQUAL', 'DIV_EQUAL', 'MINUS_EQUAL', 'MUL_EQUAL', 'PLUS_EQUAL', 'BOR_EQUAL'), true)) {
-                        $assignment = _parse_assignment_operator();
-                        $expression = _parse_expression();
-                        if ($is_static && $expression[0] != 'LITERAL' && $expression[0] != 'NEGATE' && $expression[0] != 'CREATE_ARRAY') {
-                            parser_error('Can only use static with a literal (scalar) expression.');
+                        if (($target[0] == 'LIST') || ($target[0] == 'ARRAY_APPEND')) {
+                            parser_error('LIST is only a one way type'); // We needed to read a target (for assignment), but we really wanted a variable (subset of target) -- we ended up with something that WAS target but NOT variable (we couldn't have known till now)
                         }
-                        $command = array('ASSIGNMENT', $assignment, $command, $expression, $GLOBALS['I']);
+                        pparse__parser_next();
+                        $command = array('DEC', $target, $GLOBALS['I']);
+                        break;
+
+                    case 'INC':
+                        if ($is_static) parser_error('Cannot increment during static initialisation');
+
+                        if (($target[0] == 'LIST') || ($target[0] == 'ARRAY_APPEND')) {
+                            parser_error('LIST is only a one way type'); // We needed to read a target (for assignment), but we really wanted a variable (subset of target) -- we ended up with something that WAS target but NOT variable (we couldn't have known till now)
+                        }
+                        pparse__parser_next();
+                        $command = array('INC', $target, $GLOBALS['I']);
+                        break;
+
+                    default: // Either an assignment or an indirect function call or a method call
+                        $command = $target;
+                        // We should be at the end of a chain by here.
+                        // We may still be an assignment, despire the $next_3 branch
+                        // above. Handle this if so:
+                        if (in_array(pparse__parser_peek(), array('EQUAL', 'CONCAT_EQUAL', 'DIV_EQUAL', 'MINUS_EQUAL', 'MUL_EQUAL', 'PLUS_EQUAL', 'BOR_EQUAL'), true)) {
+                            $assignment = _parse_assignment_operator();
+                            $expression = _parse_expression();
+                            if ($is_static && $expression[0] != 'LITERAL' && $expression[0] != 'NEGATE' && $expression[0] != 'CREATE_ARRAY') {
+                                parser_error('Can only use static with a literal (scalar) expression.');
+                            }
+                            $command = array('ASSIGNMENT', $assignment, $command, $expression, $GLOBALS['I']);
+                            if ($is_static) {
+                                $static_set[] = $command;
+                            }
+                        }
+                        break;
+                }
+
+                if ($is_static) {
+                    if (pparse__parser_peek() == 'COMMA') {
+                        pparse__parser_next();
+                        continue;
+                    } else {
+                        $command = array('INITIALISATION_STATIC', $static_set, $GLOBALS['I']);
+                        break;
                     }
-                    break;
+                }
             }
+            while ($is_static);
             if (!$no_term_needed) {
                 _test_command_end();
             }
@@ -1112,6 +1133,13 @@ function _parse_expression_inner()
             pparse__parser_next();
             $variable = _parse_variable($suppress_error);
             $expression = array('CLONE_OBJECT', $variable, $GLOBALS['I']);
+            break;
+
+        case 'EXTRACT_OPEN': // Short array syntax
+            pparse__parser_next();
+            $details = _parse_create_array();
+            pparse__parser_expect('EXTRACT_CLOSE');
+            $expression = array('CREATE_ARRAY', $details, $GLOBALS['I']);
             break;
 
         case 'ARRAY':

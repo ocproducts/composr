@@ -269,7 +269,7 @@ function _seo_meta_find_data($keyword_sources, $description = '')
         }
     }
 
-    arsort($keywords);
+    arsort($keywords, SORT_NATURAL | SORT_FLAG_CASE);
 
     $imp = '';
     foreach (array_keys($keywords_must_use) as $keyword) {

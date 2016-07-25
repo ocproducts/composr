@@ -850,7 +850,7 @@ function _find_all_pages($zone, $type, $ext = 'php', $keep_ext_on = false, $cuto
         $out += _find_all_pages('site', $type, $ext, $keep_ext_on);
     }
 
-    ksort($out);
+    ksort($out, SORT_NATURAL | SORT_FLAG_CASE);
     return $out;
 }
 

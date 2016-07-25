@@ -183,7 +183,7 @@ class Module_admin_actionlog
                 $_action_type_list[$row['the_type']] = $lang;
             }
         }
-        asort($_action_type_list);
+        asort($_action_type_list, SORT_NATURAL | SORT_FLAG_CASE);
         $action_type_list = new Tempcode();
         $action_type_list->attach(form_input_list_entry('', true, do_lang_tempcode('_ALL')));
         foreach ($_action_type_list as $lang_id => $lang) {

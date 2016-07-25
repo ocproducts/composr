@@ -117,9 +117,9 @@ class Hook_admin_stats_downloads
         }
 
         if ($sort_order == 'ASC') {
-            asort($downloads);
+            asort($downloads, SORT_NATURAL | SORT_FLAG_CASE);
         } else {
-            arsort($downloads);
+            arsort($downloads, SORT_NATURAL | SORT_FLAG_CASE);
         }
 
         require_code('templates_results_table');

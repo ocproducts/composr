@@ -3185,8 +3185,9 @@ function asin($arg)
  * Checks if assertion is FALSE.
  *
  * @param  string $assertion The expression to assert on.
+ * @param  string $description message.
  */
-function assert($assertion)
+function assert($assertion, $description = '')
 {
 }
 
@@ -4296,28 +4297,6 @@ function is_scalar($var)
 }
 
 /**
- * Sort an array using a case insensitive "natural order" algorithm .
- *
- * @param  array $array Array to sort.
- * @return boolean Success status.
- */
-function natcasesort(&$array)
-{
-    return true;
-}
-
-/**
- * Sort an array using a "natural order" algorithm.
- *
- * @param  array $array Array to sort.
- * @return boolean Success status.
- */
-function natsort(&$array)
-{
-    return true;
-}
-
-/**
  * Inserts HTML line breaks before all newlines in a string.
  *
  * @param  string $in In.
@@ -4680,17 +4659,21 @@ function glob($pattern, $flags = 0)
  * Generates a backtrace.
  *
  * @param  boolean $provide_object Provide object part in results.
+ * @param  integer $limit Maximum stack frames to return (0: no limit).
  * @return array Backtrace.
  */
-function debug_backtrace($provide_object = true)
+function debug_backtrace($provide_object = true, $limit = 0)
 {
     return array();
 }
 
 /**
  * Generates a backtrace to the output.
+ *
+ * @param  boolean $provide_object Provide object part in results.
+ * @param  integer $limit Maximum stack frames to return (0: no limit).
  */
-function debug_print_backtrace()
+function debug_print_backtrace($provide_object = true, $limit = 0)
 {
 }
 
@@ -5152,6 +5135,11 @@ set_socket_blocking
 socket_setopt
 socket_getopt
 stream_register_wrapper
+
+Disabed due to being effectively aliases...
+
+natcasesort
+natsort
 
 Disabled due to very commonly being disabled on hosts...
 

@@ -576,7 +576,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
                 $_list[$id] = $text;
             }
         }
-        asort($_list);
+        asort($_list, SORT_NATURAL | SORT_FLAG_CASE);
         foreach ($_list as $id => $text) {
             $list->attach(form_input_list_entry(strval($id), false, $text));
         }

@@ -92,7 +92,7 @@ class Hook_sitemap_config_category extends Hook_sitemap_base
                 }
             }
         }
-        uksort($categories, 'strnatcasecmp');
+        ksort($categories, SORT_NATURAL | SORT_FLAG_CASE);
 
         if ($child_cutoff !== null) {
             if (count($categories) > $child_cutoff) {

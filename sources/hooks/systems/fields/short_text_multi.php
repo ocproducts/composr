@@ -84,7 +84,7 @@ class Hook_fields_short_text_multi
         $exploded = ($ev == '') ? array() : explode("\n", $ev);
         $auto_sort = option_value_from_field_array($field, 'auto_sort', 'off');
         if ($auto_sort == 'on') {
-            natsort($exploded);
+            sort($exploded, SORT_NATURAL | SORT_FLAG_CASE);
         }
 
         $ret = new Tempcode();

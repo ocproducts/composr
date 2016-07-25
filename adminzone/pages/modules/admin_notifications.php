@@ -214,7 +214,7 @@ class Module_admin_notifications
         }
 
         // Sort labels
-        ksort($notification_sections);
+        ksort($notification_sections, SORT_NATURAL | SORT_FLAG_CASE);
         foreach (array_keys($notification_sections) as $i) {
             sort_maps_by($notification_sections[$i]['NOTIFICATION_CODES'], 'NOTIFICATION_LABEL');
         }

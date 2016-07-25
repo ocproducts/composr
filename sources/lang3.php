@@ -191,7 +191,7 @@ function _create_selection_list_langs($select_lang = null, $show_unset = false)
     if ($show_unset) {
         global $LANGS_MAP_CACHE;
         if ($LANGS_MAP_CACHE !== null) {
-            asort($LANGS_MAP_CACHE);
+            asort($LANGS_MAP_CACHE, SORT_NATURAL | SORT_FLAG_CASE);
             foreach ($LANGS_MAP_CACHE as $lang => $full) {
                 if (!array_key_exists($lang, $_langs)) {
                     $_full = make_string_tempcode($full);

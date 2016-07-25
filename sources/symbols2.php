@@ -469,7 +469,7 @@ function ecv2_VALID_FILE_TYPES($lang, $escaped, $param)
         ocp_mark_as_escaped($value);
     }
 
-    ksort($types);
+    ksort($types, SORT_NATURAL | SORT_FLAG_CASE);
     foreach (array_flip($types) as $val) {
         $value .= $val . ',';
     }

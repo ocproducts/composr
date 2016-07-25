@@ -328,7 +328,7 @@ function find_countries()
     foreach ($COUNTRY_LIST as $continent => $_countries) {
         $countries += $_countries;
     }
-    asort($countries);
+    asort($countries, SORT_NATURAL | SORT_FLAG_CASE);
     return $countries;
 }
 

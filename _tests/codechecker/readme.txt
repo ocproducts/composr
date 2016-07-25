@@ -132,8 +132,8 @@ The skipped aspects are:
  - written AND or OR or XOR (REASON: bad style)
  - unused variable check imperfect for loops (REASON: can't check)
  - dynamic variable referencing ($$foo) (REASON: sloppy, a likely bug)
+ - PHP 5.4 Class::{expr}() Syntax (REASON: sloppy, a likely bug)
  - expressions as commands, unless they are bracketed (REASON: sloppy)
- - comma separated variables declared with 'static' keyword (REASON: not used much by people)
  - certain functions, including insecure or platform-dependant ones
 
 The PHP checker is very much set up to enforce compatibility across different PHP platforms. It is only assumed that a small number of extensions will be present:

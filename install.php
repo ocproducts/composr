@@ -529,7 +529,7 @@ function step_3()
     $forums = get_dir_contents('sources/forum', true);
     unset($forums['none']);
     ksort($forums);
-    $forums = array_merge(array('none' => 1), $forums);
+    $forums = array_merge(array('none' => 'sources/forum'), $forums);
     $forum_info = better_parse_ini_file(get_file_base() . '/sources/forum/forums.ini');
     $tforums = new Tempcode();
     $classes = array();

@@ -167,7 +167,7 @@ function namelike_script()
             if (count($names) > 10) {
                 $names = array();
             }
-            sort($names);
+            sort($names, SORT_NATURAL | SORT_FLAG_CASE);
         }
 
         foreach ($names as $name) {
@@ -225,7 +225,7 @@ function namelike_script()
             }
         }
 
-        sort($names);
+        sort($names, SORT_NATURAL | SORT_FLAG_CASE);
         $names = array_unique($names);
     }
 

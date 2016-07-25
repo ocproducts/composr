@@ -28,10 +28,6 @@ Not doing (from CodeLobster Errors):
 Not doing (from PhpStorm Code Inspector):
  - Many (lots of false positives in here)
  - "Missing return statement" (this is useful, but if we have like a warn_exit at the end of a function, this would trigger the error)
-
-Unsupported syntax:
- static $foo = 1,$bar = 2;
-  Not documented in PHP manual, so may be unreliable.
 */
 
 ini_set('memory_limit', '-1');
@@ -977,6 +973,11 @@ function check_command($command, $depth, $function_guard = '', $nogo_parameters 
                         }
                     }
                     check_command($case[1], $depth + 1, $function_guard, $nogo_parameters);
+                }
+                break;
+            case 'STATIC_ASSIGNMENT':
+                foreach ($c[1] as $_c) {
+                    check_assignment($_c, $c_pos, $function_guard);
                 }
                 break;
             case 'ASSIGNMENT':

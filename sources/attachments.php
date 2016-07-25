@@ -347,7 +347,7 @@ function attachment_popup_script()
             $members[$_member['a_member_id']] = $GLOBALS['FORUM_DRIVER']->get_username($_member['a_member_id']);
         }
     }
-    asort($members);
+    asort($members, SORT_NATURAL | SORT_FLAG_CASE);
 
     $member_now = post_param_integer('member_id', get_member());
     if (!array_key_exists($member_now, $members)) {

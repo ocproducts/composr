@@ -27,7 +27,7 @@ $files = file_exists($basedir) ? get_directory_contents($basedir) : array();
 if (count($files) == 0) {
     echo '<p class="nothing_here">No files have been uploaded for you yet.</p>';
 } else {
-    natsort($files);
+    sort($files);
     echo '<div class="wide_table_wrap"><table class="wide_table columned_table results_table autosized_table">';
     echo '<thead><tr><th>Filename</th><th>Description</th><th>File size</th></tr></thead>';
     echo '<tbody>';

@@ -57,7 +57,7 @@ class Hook_ajax_tree_choose_filedump_file
 
         if ((has_actual_page_access(null, 'filedump')) && (file_exists($full_path))) {
             $files = get_directory_contents($full_path, '', false, false);
-            natsort($files);
+            sort($files, SORT_NATURAL | SORT_FLAG_CASE);
             foreach ($files as $f) {
                 $description = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'description', array('name' => basename($f), 'path' => $id . '/'));
 

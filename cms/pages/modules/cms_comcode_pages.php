@@ -785,7 +785,7 @@ class Module_cms_comcode_pages
 
         if (get_option('is_on_comcode_page_children') == '1') {
             $_pages = find_all_pages_wrap($zone);
-            ksort($_pages);
+            ksort($_pages, SORT_NATURAL | SORT_FLAG_CASE);
             $pages = form_input_list_entry('', false, do_lang_tempcode('NA_EM'));
             foreach (array_keys($_pages) as $page) {
                 if (!is_string($page)) {

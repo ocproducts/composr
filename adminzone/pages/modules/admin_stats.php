@@ -907,9 +907,9 @@ class Module_admin_stats
         }
 
         if ($sort_order == 'ASC') {
-            asort($keywords);
+            asort($keywords, SORT_NATURAL | SORT_FLAG_CASE);
         } else {
-            arsort($keywords);
+            arsort($keywords, SORT_NATURAL | SORT_FLAG_CASE);
         }
 
         require_code('templates_results_table');
@@ -1682,7 +1682,7 @@ class Module_admin_stats
         }
 
         if ($sortable == 'views') {
-            asort($data1);
+            asort($data1, SORT_NATURAL | SORT_FLAG_CASE);
             if ($sort_order == 'DESC') {
                 $data1 = array_reverse($data1);
             }

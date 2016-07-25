@@ -171,7 +171,7 @@ class Hook_fields_content_link
             $_list[$id] = $text;
         }
         if (count($_list) < 2000) {
-            asort($_list);
+            asort($_list, SORT_NATURAL | SORT_FLAG_CASE);
         }
 
         $list_tpl = new Tempcode();

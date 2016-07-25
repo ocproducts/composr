@@ -219,7 +219,7 @@ class Hook_fields_list_multi
 
         $auto_sort = option_value_from_field_array($field, 'auto_sort', 'off');
         if ($auto_sort == 'backend' || $auto_sort == 'both') {
-            natsort($list);
+            sort($list, SORT_NATURAL | SORT_FLAG_CASE);
         }
 
         $custom_name = $input_name . '_other';
