@@ -1272,7 +1272,7 @@ function check_call($c, $c_pos, $class = null, $function_guard = '')
         }
     }
 
-    if (($function == 'isset' || $function == 'empty') && (@$c[2][0][0] != 'VARIABLE')) {
+    if (($function == 'isset') && (@$c[2][0][0] != 'VARIABLE')) {
         log_warning('Can only pass variables to ' . $function, $c_pos);
     }
 
