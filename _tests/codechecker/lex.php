@@ -96,8 +96,11 @@ $PTOKENS['EXPONENTIATION'] = '**';
 $PTOKENS['DIVIDE'] = '/';
 $PTOKENS['REMAINDER'] = '%';
 // Classes/objects
+$PTOKENS['USE'] = 'use';
+$PTOKENS['INSTEADOF'] = 'insteadof';
 $PTOKENS['SCOPE'] = '::';
 $PTOKENS['CLASS'] = 'class';
+$PTOKENS['TRAIT'] = 'trait';
 $PTOKENS['VAR'] = 'var';
 $PTOKENS['CONST'] = 'const';
 $PTOKENS['EXTENDS'] = 'extends';

@@ -66,7 +66,7 @@ function _parse_php()
                 $class = _parse_class_dec($modifiers);
                 foreach ($program['classes'] as $_) {
                     if ($_['name'] == $class['name']) {
-                        log_warning('Duplicated class ' . $class['name']);
+                        log_warning('Duplicated class/interface/trait ' . $class['name']);
                     }
                 }
                 $program['classes'][] = $class;
@@ -76,15 +76,6 @@ function _parse_php()
             case 'INTERFACE':
                 $class = array('is_interface' => true);
                 if (count($modifiers) > 0) {
-                    if (in_array('abstract', $modifiers)) {
-                        log_warning('Interfaces are inherently abstract, do not use the abstract keyword');
-                    }
-                    if (in_array('protected', $modifiers)) {
-                        log_warning('Interfaces cannot be protected. The point of an interface is that it is public');
-                    }
-                    if (in_array('private', $modifiers)) {
-                        log_warning('Interfaces cannot be private. The point of an interface is that it is public');
-                    }
                     $class['modifiers'] = $modifiers;
                 }
                 pparse__parser_next();
@@ -102,10 +93,34 @@ function _parse_php()
                     log_warning('Interfaces cannot implement each other, they can only extend each other');
                 }
                 pparse__parser_expect('CURLY_OPEN');
-                $_class = _parse_class_contents($modifiers, $class['is_interface']);
+                $_class = _parse_class_contents($modifiers, true, false);
                 foreach ($program['classes'] as $_) {
                     if ($_['name'] == $class['name']) {
-                        log_warning('Duplicated class ' . $class['name']);
+                        log_warning('Duplicated class/interface/trait ' . $class['name']);
+                    }
+                }
+                $class = array_merge($class, $_class);
+                pparse__parser_expect('CURLY_CLOSE');
+                $program['classes'][] = $class;
+                $modifiers = array();
+                break;
+
+            case 'TRAIT':
+                $class = array('is_trait' => true);
+                if (count($modifiers) > 0) {
+                    $class['modifiers'] = $modifiers;
+                }
+                pparse__parser_next();
+                $class['name'] = pparse__parser_expect('IDENTIFIER');
+                $next = pparse__parser_peek();
+                if ($next == 'IMPLEMENTS' || $next == 'EXTENDS') {
+                    log_warning('Traits cannot extend/implement anything, they can only mixin other traits using use');
+                }
+                pparse__parser_expect('CURLY_OPEN');
+                $_class = _parse_class_contents($modifiers, false, true);
+                foreach ($program['classes'] as $_) {
+                    if ($_['name'] == $class['name']) {
+                        log_warning('Duplicated class/interface/trait ' . $class['name']);
                     }
                 }
                 $class = array_merge($class, $_class);
@@ -121,11 +136,12 @@ function _parse_php()
                 pparse__parser_next();
                 switch (pparse__parser_peek()) {
                     case 'CLASS':
+                    case 'TRAIT':
                         $modifiers[] = 'abstract';
                         break;
                     default:
                         // This is an invalid token to appear after "abstract"
-                        log_warning('Only classes and their methods can be abstract, not ' . pparse__parser_peek());
+                        log_warning('Only classes/traits and their methods can be abstract, not ' . pparse__parser_peek());
                         $modifiers = array();
                         break;
                 }
@@ -624,7 +640,7 @@ function _parse_command_actual($no_term_needed = false)
                 if (($identifier[0] != 'IDENTIFIER') && ($identifier[0] != 'variable')) {
                     parser_error('Expected IDENTIFIER or variable but got ' . $identifier[0]);
                 }
-                $identifier = pparse__parser_next(true);
+                $identifier = pparse__parser_expect('IDENTIFIER');
                 $next_2 = pparse__parser_peek();
                 if ($next_2 == 'EQUAL') {
                     pparse__parser_next();
@@ -637,9 +653,9 @@ function _parse_command_actual($no_term_needed = false)
                     } else {
                         $literal = _parse_literal();
                     }
-                    $command = array('CONST', $identifier[1], $literal, $GLOBALS['I']);
+                    $command = array('CONST', $identifier, $literal, $GLOBALS['I']);
                 } else {
-                    $command = array('CONST', $identifier[1], array('SOLO', array('LITERAL', array('null'))), $GLOBALS['I']);
+                    $command = array('CONST', $identifier, array('SOLO', array('LITERAL', array('null'))), $GLOBALS['I']);
                 }
 
                 $next_2 = pparse__parser_peek();
@@ -785,7 +801,7 @@ function _parse_cases()
     return $cases;
 }
 
-function _parse_class_contents($class_modifiers = null, $is_interface = false)
+function _parse_class_contents($class_modifiers = null, $is_interface = false, $is_trait = false)
 {
     // Choice{"VAR" "IDENTIFIER" "EQUAL" literal "COMMAND_TERMINATE" | "VAR" "IDENTIFIER" "COMMAND_TERMINATE" | function_dec}*
 
@@ -794,10 +810,52 @@ function _parse_class_contents($class_modifiers = null, $is_interface = false)
     }
 
     $next = pparse__parser_peek();
-    $class = array('functions' => array(), 'vars' => array(), 'i' => $GLOBALS['I']);
+    $class = array('functions' => array(), 'vars' => array(), 'traits' => array(), 'traits_details_insteadof' => array(), 'traits_details_as' => array(), 'i' => $GLOBALS['I']);
     $modifiers = array();
-    while (($next == 'CONST') || ($next == 'VAR') || ($next == 'FUNCTION') || ($next == 'PUBLIC') || ($next == 'PRIVATE') || ($next == 'PROTECTED') || ($next == 'ABSTRACT') || ($next == 'STATIC')) {
+    while (($next == 'CONST') || ($next == 'USE') || ($next == 'VAR') || ($next == 'FUNCTION') || ($next == 'PUBLIC') || ($next == 'PRIVATE') || ($next == 'PROTECTED') || ($next == 'ABSTRACT') || ($next == 'STATIC')) {
         switch ($next) {
+            case 'USE':
+                if ($is_interface) {
+                    log_warning('Interfaces cannot use traits');
+                }
+
+                do {
+                    pparse__parser_next();
+                    $class['traits'][] = pparse__parser_expect('IDENTIFIER');
+                }
+                while (pparse__parser_peek() == 'COMMA');
+
+                if (pparse__parser_peek() == 'CURLY_OPEN') {
+                    pparse__parser_next();
+                    do {
+                        $identifier_in_class = pparse__parser_expect('IDENTIFIER');
+                        if (!in_array($identifier_in_class, $class['traits'])) {
+                            log_warning('No trait for ' . $identifier_in_class);
+                        }
+                        pparse__parser_expect('SCOPE');
+                        $identifier_method = pparse__parser_expect('IDENTIFIER');
+                        if (pparse__parser_peek() == 'INSTEADOF') {
+                            pparse__parser_expect('INSTEADOF');
+                            $identifier_out_class = pparse__parser_expect('IDENTIFIER');
+                            if (!in_array($identifier_out_class, $class['traits'])) {
+                                log_warning('No trait for ' . $identifier_out_class);
+                            }
+                            $class['traits_details_insteadof'][] = array($identifier_in_class, $identifier_method, $identifier_out_class);
+                        } else {
+                            pparse__parser_expect('AS');
+                            $identifier_in_method = pparse__parser_expect('IDENTIFIER');
+                            $class['traits_details_as'][] = array($identifier_in_class, $identifier_method, $identifier_in_method);
+                        }
+
+                        pparse__parser_expect('COMMAND_TERMINATE');
+                    }
+                    while (pparse__parser_peek() != 'CURLY_CLOSE');
+                    pparse__parser_expect('CURLY_CLOSE');
+                } else {
+                    pparse__parser_expect('COMMAND_TERMINATE');
+                }
+                break;
+
             case 'PRIVATE':
             case 'PROTECTED':
                 if ($is_interface) {
@@ -833,7 +891,7 @@ function _parse_class_contents($class_modifiers = null, $is_interface = false)
                     if (($identifier[0] != 'IDENTIFIER') && ($identifier[0] != 'variable')) {
                         parser_error('Expected IDENTIFIER or variable but got ' . $identifier[0]);
                     }
-                    $identifier = pparse__parser_next(true);
+                    $identifier = pparse__parser_expect('IDENTIFIER');
                     $next_2 = pparse__parser_peek();
                     if ($next_2 == 'EQUAL') {
                         pparse__parser_next();
@@ -846,9 +904,9 @@ function _parse_class_contents($class_modifiers = null, $is_interface = false)
                         } else {
                             $literal = _parse_literal();
                         }
-                        $class['vars'][] = array($identifier[1], $literal);
+                        $class['vars'][] = array($identifier, $literal);
                     } else {
-                        $class['vars'][] = array($identifier[1], array('SOLO', array('LITERAL', array('null')), $GLOBALS['I']));
+                        $class['vars'][] = array($identifier, array('SOLO', array('LITERAL', array('null')), $GLOBALS['I']));
                     }
 
                     $next_2 = pparse__parser_peek();
@@ -890,6 +948,10 @@ function _parse_class_contents($class_modifiers = null, $is_interface = false)
                     if ($is_interface) {
                         log_warning('Everything in an interface is inherently abstract. Do not use the abstract keyword');
                     }
+                    if ($is_trait) {
+                        log_warning('Traits are inherently abstract, do not use the abstract keyword');
+                    }
+
                     $modifiers[] = 'abstract';
                     if (!in_array('abstract', $class_modifiers)) {
                         log_warning('Abstract keyword found in a non-abstract class.');
@@ -955,7 +1017,7 @@ function _parse_class_dec($modifiers = null)
         $modifiers = array();
     }
 
-    $class = array('is_interface' => false);        // Classes and interfaces aren't different enough to justify separate handlers
+    $class = array('is_interface' => false); // Classes and interfaces aren't different enough to justify separate handlers
     if (count($modifiers) > 0) {
         $class['modifiers'] = $modifiers;
     }
@@ -975,7 +1037,7 @@ function _parse_class_dec($modifiers = null)
         $class['interfaces'][] = pparse__parser_expect('IDENTIFIER');
     }
     pparse__parser_expect('CURLY_OPEN');
-    $_class = _parse_class_contents($modifiers, $class['is_interface']);
+    $_class = _parse_class_contents($modifiers, false, false);
     $class = array_merge($class, $_class);
     pparse__parser_expect('CURLY_CLOSE');
 
