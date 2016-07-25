@@ -253,9 +253,6 @@ function read_in_chat_perm_fields()
         if ($key == 'allow_list_groups') {
             continue;
         }
-        if (get_magic_quotes_gpc()) {
-            $_x = stripslashes($_x);
-        }
         if ($_x == '') {
             continue;
         }
@@ -283,9 +280,6 @@ function read_in_chat_perm_fields()
         }
         if ($key == 'disallow_list_groups') {
             continue;
-        }
-        if (get_magic_quotes_gpc()) {
-            $_x = stripslashes($_x);
         }
         if ($_x == '') {
             continue;

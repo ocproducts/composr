@@ -1134,9 +1134,6 @@ function step_5()
             continue;
         }
 
-        if (get_magic_quotes_gpc()) {
-            $val = stripslashes($val);
-        }
         if ($key == 'master_password') {
             if (function_exists('password_hash')) { // PHP5.5+
                 $val = password_hash($val, PASSWORD_BCRYPT, array('cost' => 12));
@@ -1682,9 +1679,6 @@ if (!function_exists(\'git_repos\')) {
             continue;
         }
 
-        if (get_magic_quotes_gpc()) {
-            $val = stripslashes($val);
-        }
         if ($key == 'master_password') {
             if (function_exists('password_hash')) { // PHP5.5+
                 $val = password_hash($val, PASSWORD_BCRYPT, array('cost' => 12));

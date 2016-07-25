@@ -76,7 +76,7 @@ class MobiquoServerJSON extends MobiquoServer
             }
         }
 
-        $get = get_magic_quotes_gpc() ? array_map('stripslashes', $_GET) : $_GET;
+        $get = $_GET;
         unset($get['method_name']);
 
         $params = @array_merge(array_values(json_decode($data, true)), $get);

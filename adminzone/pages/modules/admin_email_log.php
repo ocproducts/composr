@@ -404,11 +404,6 @@ class Module_admin_email_log
                 $extra_cc_addresses = array();
                 $extra_bcc_addresses = array();
                 foreach ($_POST as $key => $input_value) {
-                    //stripslashes if necessary
-                    if (get_magic_quotes_gpc()) {
-                        $input_value = stripslashes($input_value);
-                    }
-
                     if (substr($key, 0, 8) == 'to_name_') {
                         $to_name[] = $input_value;
                     }

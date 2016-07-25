@@ -249,10 +249,6 @@ class Module_admin_redirects
                 continue;
             }
 
-            if (get_magic_quotes_gpc()) {
-                $val = stripslashes($val);
-            }
-
             if ((substr($key, 0, 10) == 'from_page_') && ($val != '')) {
                 $their_i = array_search($val, $found);
                 $i = substr($key, 10);

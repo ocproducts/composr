@@ -496,10 +496,6 @@ class Module_admin_lang
 
             $lang_id = intval(substr($key, 6));
 
-            if (get_magic_quotes_gpc()) {
-                $val = stripslashes($val);
-            }
-
             if ($val != '') {
                 $GLOBALS['SITE_DB']->query_delete('translate', array('language' => $lang, 'id' => $lang_id), '', 1);
                 $importance_level = $GLOBALS['SITE_DB']->query_select_value_if_there('translate', 'importance_level', array('id' => $lang_id));

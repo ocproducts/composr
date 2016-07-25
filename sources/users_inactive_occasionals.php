@@ -378,25 +378,16 @@ function try_cookie_login()
             $real_pass_cookie = substr(get_pass_cookie(), $colon_pos + 1);
 
             $the_cookie = $_COOKIE[$base];
-            if (get_magic_quotes_gpc()) {
-                $the_cookie = stripslashes($_COOKIE[$base]);
-            }
 
             $unserialize = @unserialize($the_cookie);
 
             if (is_array($unserialize)) {
                 if (array_key_exists($real_member_cookie, $unserialize)) {
                     $the_member = $unserialize[$real_member_cookie];
-                    if (get_magic_quotes_gpc()) {
-                        $the_member = addslashes(@strval($the_member));
-                    }
                     $_COOKIE[get_member_cookie()] = $the_member;
                 }
                 if (array_key_exists($real_pass_cookie, $unserialize)) {
                     $the_pass = $unserialize[$real_pass_cookie];
-                    if (get_magic_quotes_gpc()) {
-                        $the_pass = addslashes($the_pass);
-                    }
                     $_COOKIE[get_pass_cookie()] = $the_pass;
                 }
             }
@@ -406,10 +397,6 @@ function try_cookie_login()
     if ((array_key_exists(get_member_cookie(), $_COOKIE)) && (array_key_exists(get_pass_cookie(), $_COOKIE))) {
         $store = $_COOKIE[get_member_cookie()];
         $pass = $_COOKIE[get_pass_cookie()];
-        if (get_magic_quotes_gpc()) {
-            $store = stripslashes($store);
-            $pass = stripslashes($pass);
-        }
         if ($GLOBALS['FORUM_DRIVER']->is_cookie_login_name()) {
             $username = $store;
             $store = strval($GLOBALS['FORUM_DRIVER']->get_member_from_username($store));

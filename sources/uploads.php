@@ -775,9 +775,6 @@ function _get_upload_url($member_id, $attach_name, $upload_folder, $upload_folde
     get_upload_filearray($attach_name, $filearrays);
 
     $file = $filearrays[$attach_name]['name'];
-    if (get_magic_quotes_gpc()) {
-        $file = stripslashes($file);
-    }
 
     if (!check_extension($file, $obfuscate == 2, null, $accept_errors)) {
         if ($obfuscate == 3) { // We'll try again, with obfuscation to see if this would get through

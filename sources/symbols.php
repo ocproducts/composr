@@ -1114,17 +1114,8 @@ function keep_symbol($param)
         $get_vars['keep_session'] = get_session_id();
     }
 
-    static $gpc = null;
-    if ($gpc === null) {
-        $gpc = get_magic_quotes_gpc();
-    }
-
     $first = ((isset($param[0])) && ($param[0] === '1'));
     foreach ($get_vars as $key => $val) {
-        if (($gpc) && (is_string($val))) {
-            $val = stripslashes($val);
-        }
-
         if ((@$key[0] == 'k') && (substr($key, 0, 5) === 'keep_') && ((!skippable_keep($key, $val)) || (($key === 'keep_session') && (get_bot_type() === null) && (isset($param[1])) && ($param[1] === '1'))) && (is_string($val))) {
             $value .= ($first ? '?' : '&') . urlencode($key) . '=' . cms_url_encode($val);
             $first = false;

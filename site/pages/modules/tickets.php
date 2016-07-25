@@ -1006,9 +1006,6 @@ class Module_tickets
                 continue;
             }
 
-            if (get_magic_quotes_gpc()) {
-                $username = stripslashes($username);
-            }
             $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($username);
             if ($member_id === null) {
                 continue;

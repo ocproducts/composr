@@ -895,16 +895,6 @@ function get_html_translation_table($table, $quote_style = ENT_COMPAT, $charset 
 }
 
 /**
- * Gets the current active configuration setting of magic quotes gpc (Note: it actually returns a BINARY, but lets make it cleaner, it won't hurt)
- *
- * @return boolean Whether magic quotes gpc is on.
- */
-function get_magic_quotes_gpc()
-{
-    return false;
-}
-
-/**
  * Gets the current working directory.
  *
  * @return PATH The cwd.
@@ -4457,16 +4447,6 @@ function get_cfg_var($varname)
 }
 
 /**
- * Gets the current active configuration setting of magic_quotes_runtime.
- *
- * @return boolean Current value (Actually BINARY, but boolean will work).
- */
-function get_magic_quotes_runtime()
-{
-    return true;
-}
-
-/**
  * Calculate the length of the hypotenuse of a right-angle triangle.
  *
  * @param  float $x X.
@@ -5209,6 +5189,8 @@ tempnam
 Disabled due to being removed/deprecated from PHP...
 
 set_magic_quotes_runtime
+get_magic_quotes_runtime
+get_magic_quotes_gpc
 call_user_method
 call_user_method_array
 split

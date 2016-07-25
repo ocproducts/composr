@@ -694,9 +694,6 @@ function __param($array, $name, $default, $must_integer = false, $is_post = fals
         return $default;
     }
     $val = trim($array[$name]);
-    if (get_magic_quotes_gpc()) {
-        $val = stripslashes($val);
-    }
 
     return $val;
 }

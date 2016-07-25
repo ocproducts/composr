@@ -109,12 +109,8 @@ function _build_keep_form_fields($page = '', $keep_all = false, $exclude = null)
                 continue;
             }
 
-    		if (is_integer($key)) {
+            if (is_integer($key)) {
                 $key = strval($key);
-            }
-
-            if (get_magic_quotes_gpc()) {
-                $val = stripslashes($val);
             }
 
             if (((substr($key, 0, 5) == 'keep_') || ($keep_all)) && (!in_array($key, $exclude)) && ($key != 'page') && (!skippable_keep($key, $val))) {
@@ -154,10 +150,6 @@ function _fixed_post_parser($key, $value)
             }
         }
     } else {
-        if (get_magic_quotes_gpc()) {
-            $value = stripslashes($value);
-        }
-
         $out .= static_evaluate_tempcode(form_input_hidden($key, is_string($value) ? $value : strval($value)));
     }
 

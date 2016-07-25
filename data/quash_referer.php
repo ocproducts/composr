@@ -50,9 +50,6 @@ function qr_get_domain()
 }
 
 $target = $_GET['url'];
-if (get_magic_quotes_gpc()) {
-    $target = stripslashes($target);
-}
 $target = str_replace(array("\r", "\n"), array('', ''), $target);
 
 // Only allows redirections from our own server

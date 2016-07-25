@@ -476,10 +476,6 @@ function sitemap_script_saving()
     // Build a map of every page link we are setting permissions for
     $map = array();
     foreach (array_merge($_GET, $_POST) as $i => $page_link) {
-        if (get_magic_quotes_gpc()) {
-            $page_link = stripslashes($page_link);
-        }
-
         if (substr($i, 0, 4) == 'map_') {
             $map[intval(substr($i, 4))] = $page_link;
         }

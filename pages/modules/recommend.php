@@ -246,10 +246,6 @@ class Module_recommend
                 continue;
             }
 
-            if (get_magic_quotes_gpc()) {
-                $email_address = stripslashes($email_address);
-            }
-
             $already[] = $email_address;
         }
 
@@ -381,10 +377,6 @@ class Module_recommend
         $already = array();
         $email_counter = 0;
         foreach ($_POST as $key => $input_value) {
-            if (get_magic_quotes_gpc()) {
-                $input_value = stripslashes($input_value);
-            }
-
             if (substr($key, 0, 14) == 'email_address_') {
                 $already[] = $input_value; //email address
                 $email_counter++;
@@ -639,10 +631,6 @@ class Module_recommend
                 continue;
             }
 
-            if (get_magic_quotes_gpc()) {
-                $email_address = stripslashes($email_address);
-            }
-
             if (!is_email_address($email_address)) {
                 attach_message(do_lang_tempcode('INVALID_EMAIL_ADDRESS'), 'warn');
                 return $this->gui();
@@ -664,10 +652,6 @@ class Module_recommend
                 continue;
             }
             if (preg_match('#details_email_#', $key) != 0) {
-                if (get_magic_quotes_gpc()) {
-                    $email_address = stripslashes($email_address);
-                }
-
                 if (is_email_address($email_address)) {
                     $curr_num = intval(preg_replace('#details_email_#', '', $key));
                     $adrbook_emails[$curr_num] = $email_address;
@@ -700,10 +684,6 @@ class Module_recommend
         }
 
         foreach ($email_adrs_to_send as $key => $email_address) {
-            if (get_magic_quotes_gpc()) {
-                $email_address = stripslashes($email_address);
-            }
-
             if (post_param_integer('wrap_message', 0) == 1) {
                 $referring_username = is_guest() ? null : get_member();
                 $_url = (post_param_integer('invite', 0) == 1) ? build_url(array('page' => 'join', 'email_address' => $email_address, 'keep_referrer' => $referring_username), get_module_zone('join')) : build_url(array('page' => '', 'keep_referrer' => $referring_username), '');

@@ -79,16 +79,13 @@ END;
     // Load POSTed settings
     $settings = array();
     foreach ($_POST as $key => $val) {
-        if (get_magic_quotes_gpc()) {
-            $val = stripslashes($val);
-        }
         $settings[$key] = $val;
     }
 
     // Google App Engine
     if (isset($_SERVER['APPLICATION_ID'])) {
         if (isset($_GET['settings'])) { // Running out of the task queue
-            $settings = unserialize(get_magic_quotes_gpc() ? stripslashes($_GET['settings']) : $_GET['settings']);
+            $settings = unserialize($_GET['settings']);
         } else { // Put into the task queue
             require_once('google/appengine/api/taskqueue/PushTask.php');
 

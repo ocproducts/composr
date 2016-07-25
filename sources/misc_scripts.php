@@ -32,9 +32,6 @@ function gd_text_script()
     }
 
     $text = get_param_string('text', false, true);
-    if (get_magic_quotes_gpc()) {
-        $text = stripslashes($text);
-    }
 
     $direction = array_key_exists('direction', $_GET) ? $_GET['direction'] : 'vertical';
 

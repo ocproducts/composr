@@ -122,10 +122,6 @@ $next_offset_url = '';
 if ($file_offset + $per_cycle < count($todo)) {
     $next_offset_url = 'upgrader2.php?';
     foreach ($_GET as $key => $val) {
-        if (get_magic_quotes_gpc()) {
-            $val = stripslashes($val);
-        }
-
         if ($key != 'file_offset') {
             $next_offset_url .= urlencode($key) . '=' . urlencode($val) . '&';
         }

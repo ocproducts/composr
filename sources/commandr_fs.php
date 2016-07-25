@@ -102,9 +102,6 @@ class Commandr_fs
     {
         // Fetch the pwd from a cookie, or generate a new one
         if (array_key_exists('commandr_dir', $_COOKIE)) {
-            if (get_magic_quotes_gpc()) {
-                $_COOKIE['commandr_dir'] = stripslashes($_COOKIE['commandr_dir']);
-            }
             return $this->_pwd_to_array(base64_decode($_COOKIE['commandr_dir']));
         } else {
             $default_dir = array();

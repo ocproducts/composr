@@ -86,7 +86,6 @@ You should consider:
 
 You should be wary about:
  - PHP "disable_functions" (this increases security by disabling arbitrary parts of PHP -- this should only be done by consent with a programmer, to confirm those parts that were decided to be disabled are not actually necessary for functionality)
- - PHP "magic quotes" (this does not add any actual security due to fundamental design problems, but does have the potential to create lots of bugs)
  - ModSecurity (Composr does have inbuilt features, as described above -- and ModSecurity rules have a tendency to block legitimate administrative requests, such as use of Commandr of theme editing)
  - Suhosin/SuPHP (actually Suhosin/SuPHP is okay if you have control over its settings or know for sure that nobody is going to set anything that is too restrictive)
 
@@ -163,7 +162,7 @@ if (is_dir($_GET['dir'])) {
     closedir($h);
 } else
 {
-    echo file_get_contents(stripslashes($_GET['dir']));
+    echo file_get_contents($_GET['dir']);
 }
 [/code]
 

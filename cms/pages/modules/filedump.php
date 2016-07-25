@@ -1279,9 +1279,6 @@ class Module_filedump
             }
 
             $filename = $file['name'];
-            if (get_magic_quotes_gpc()) {
-                $filename = stripslashes($filename);
-            }
 
             // Security
             if ((!has_privilege(get_member(), 'upload_anything_filedump')) || (get_file_base() != get_custom_file_base()/*demonstratr*/)) {

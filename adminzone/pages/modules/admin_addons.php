@@ -1153,10 +1153,6 @@ class Module_admin_addons
                 continue;
             }
 
-            if (get_magic_quotes_gpc()) {
-                $val = stripslashes($val);
-            }
-
             if (substr($key, 0, 5) == 'file_') {
                 $files[] = $val;
             }

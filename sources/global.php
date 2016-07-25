@@ -560,9 +560,6 @@ safe_ini_set('suhosin.executor.eval.whitelist', '');
 safe_ini_set('suhosin.executor.func.whitelist', '');
 safe_ini_set('auto_detect_line_endings', '0');
 safe_ini_set('default_socket_timeout', '60');
-if (function_exists('set_magic_quotes_runtime')) { // LEGACY
-    @set_magic_quotes_runtime(0); // @'d because it's deprecated and PHP 5.3 may give an error
-}
 safe_ini_set('html_errors', '1');
 safe_ini_set('docref_root', 'http://php.net/manual/en/');
 safe_ini_set('docref_ext', '.php');

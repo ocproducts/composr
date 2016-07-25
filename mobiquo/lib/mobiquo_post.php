@@ -57,9 +57,9 @@ class MobiquoServerPOST extends MobiquoServer
             header('Content-type: text/plain');
         }
 
-        $get = get_magic_quotes_gpc() ? array_map('stripslashes', $_GET) : $_GET;
+        $get = $_GET;
         unset($get['method_name']);
-        $post = get_magic_quotes_gpc() ? array_map('stripslashes', $_POST) : $_POST;
+        $post = $_POST;
         unset($post['method_name']);
 
         $params = array_merge($post, $get);

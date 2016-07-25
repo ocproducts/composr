@@ -143,17 +143,10 @@ function get_self_url($evaluate = false, $root_if_posted = false, $extra_params 
     }
 
     if ($posted_too) {
-        static $mq = null;
-        if ($mq === null) {
-            $mq = get_magic_quotes_gpc();
-        }
         $post_array = array();
         foreach ($_POST as $key => $val) {
             if (is_array($val)) {
                 continue;
-            }
-            if ($mq) {
-                $val = stripslashes($val);
             }
             $post_array[$key] = $val;
         }
@@ -585,11 +578,6 @@ function _build_url($vars, $zone_name = '', $skip = null, $keep_all = false, $av
     // Things we need to keep in the url
     $keep_actual = array();
     if (($HAS_KEEP_IN_URL_CACHE === null) || ($HAS_KEEP_IN_URL_CACHE) || ($keep_all)) {
-        static $mc = null;
-        if ($mc === null) {
-            $mc = get_magic_quotes_gpc();
-        }
-
         $keep_cant_use = array();
         $HAS_KEEP_IN_URL_CACHE = false;
         foreach ($_GET as $key => $val) {
@@ -611,18 +599,12 @@ function _build_url($vars, $zone_name = '', $skip = null, $keep_all = false, $av
                 $HAS_KEEP_IN_URL_CACHE = true;
             }
             if (((($keep_all) && (!$appears_keep)) || ($is_keep)) && (!array_key_exists($key, $vars)) && (!isset($skip[$key]))) {
-                if ($mc) {
-                    $val = stripslashes($val);
-                }
                 if ($is_keep) {
                     $keep_actual[$key] = $val;
                 } else {
                     $vars[$key] = $val;
                 }
             } elseif ($is_keep) {
-                if ($mc) {
-                    $val = stripslashes($val);
-                }
                 $keep_cant_use[$key] = $val;
             }
         }
@@ -752,9 +734,6 @@ function _handle_array_var_append($key, $val, &$vars)
     $val2 = mixed();
 
     foreach ($val as $key2 => $val2) {
-        if (get_magic_quotes_gpc()) {
-            $val2 = stripslashes($val2);
-        }
         if (!is_string($key2)) {
             $key2 = strval($key2);
         }

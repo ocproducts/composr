@@ -59,13 +59,7 @@ if (!has_zone_access(get_member(), 'adminzone')) {
 
 $max_width = 800;
 $large_image_location = $_GET['file'];
-if (get_magic_quotes_gpc()) {
-    $large_image_location = stripslashes($large_image_location);
-}
 $thumb_image_location = $_GET['thumb'];
-if (get_magic_quotes_gpc()) {
-    $thumb_image_location = stripslashes($thumb_image_location);
-}
 if (substr($large_image_location, 0, strlen('uploads/attachments/')) != 'uploads/attachments/') {
     exit('Security error');
 }

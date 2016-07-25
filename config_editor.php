@@ -25,19 +25,6 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 }
 @chdir($FILE_BASE);
 
-if (get_magic_quotes_gpc()) {
-    foreach ($_POST as $key => $val) {
-        if (is_array($val)) {
-            $_POST[$key] = array_map('stripslashes', $val);
-        } else {
-            $_POST[$key] = stripslashes($val);
-        }
-    }
-    foreach ($_GET as $key => $val) {
-        $_GET[$key] = stripslashes($val);
-    }
-}
-
 require_once($FILE_BASE . '/_config.php');
 if (isset($GLOBALS['SITE_INFO']['admin_password'])) { // LEGACY
     $GLOBALS['SITE_INFO']['master_password'] = $GLOBALS['SITE_INFO']['admin_password'];

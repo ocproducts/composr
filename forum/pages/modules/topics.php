@@ -2132,10 +2132,6 @@ class Module_topics
                     continue;
                 }
 
-                if (get_magic_quotes_gpc()) {
-                    $_invited_member = stripslashes($_invited_member);
-                }
-
                 $invited_member = $GLOBALS['FORUM_DRIVER']->get_member_from_username($_invited_member);
                 if ($invited_member === null) {
                     attach_message(do_lang_tempcode('_MEMBER_NO_EXIST', $_invited_member), 'warn');
@@ -2898,9 +2894,6 @@ END;
             }
 
             if (substr($key, 0, 7) == 'answer_') {
-                if (get_magic_quotes_gpc()) {
-                    $val = stripslashes($val);
-                }
                 if ($val != '') {
                     $answers[] = array($val, 0);
                 }
@@ -3619,9 +3612,6 @@ END;
                 }
 
                 if (substr($key, 0, 7) == 'answer_') {
-                    if (get_magic_quotes_gpc()) {
-                        $val = stripslashes($val);
-                    }
                     if ($val != '') {
                         $answers[] = $val;
                     }
@@ -4055,9 +4045,6 @@ END;
             return redirect_screen($title, $url, do_lang_tempcode('REDIRECTING_TO_BIRTHDAY_TOPIC'));
         }
         $_POST['title'] = do_lang('HAPPY_BIRTHDAY_PERSON', $id);
-        if (get_magic_quotes_gpc()) {
-            $_POST['title'] = addslashes($_POST['title']);
-        }
         $forum_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forums', 'id', array('f_name' => get_option('main_forum_name')));
         if ($forum_id === null) {
             $forum_id = db_get_first_id();

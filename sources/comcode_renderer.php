@@ -521,9 +521,6 @@ function test_url($url_full, $tag_type, $given_url, $source_member)
                     if (is_array($_POST)) {
                         continue;
                     }
-                    if (get_magic_quotes_gpc()) {
-                        $val = stripslashes($val);
-                    }
                     if ((is_string($val)) && (strpos($val, $given_url) !== false)) {
                         $found_in_post = true;
                     }
@@ -2076,9 +2073,6 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                     }//warn_exit(do_lang_tempcode('ERROR_UPLOADING'));  Can't do this, because this might not be post-calculated if something went wrong once
                     $_size = $_FILES['file' . $_id]['size'];
                     $original_filename = $_FILES['file' . $_id]['name'];
-                    if (get_magic_quotes_gpc()) {
-                        $original_filename = stripslashes($original_filename);
-                    }
 
                     require_code('upload_syndication');
                     $urls[0] = handle_upload_syndication('file' . $_id, '', array_key_exists('description', $attributes) ? $attributes['description'] : '', $urls[0], $original_filename, true);

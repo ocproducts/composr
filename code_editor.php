@@ -27,15 +27,6 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 }
 @chdir($FILE_BASE);
 
-if (get_magic_quotes_gpc()) {
-    foreach ($_POST as $key => $val) {
-        $_POST[$key] = stripslashes($val);
-    }
-    foreach ($_GET as $key => $val) {
-        $_GET[$key] = stripslashes($val);
-    }
-}
-
 /**
  * Escape HTML text. Heavily optimised! Ended up with preg_replace after trying lots of things.
  *

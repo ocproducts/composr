@@ -49,9 +49,6 @@ require_code('composr_homesite');
 header('Content-type: text/plain; charset=' . get_charset());
 
 $parameters = isset($_POST['parameters']) ? $_POST['parameters'] : array();
-if (get_magic_quotes_gpc()) {
-    $parameters = array_map('stripslashes', $parameters);
-}
 
 $password_given = post_param_string('password', null);
 if ($password_given === null) {

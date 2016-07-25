@@ -313,9 +313,6 @@ class Hook_paypal
         if ((!ecommerce_test_mode()) && (!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())/*allow debugging if your test IP was intentionally back-doored*/)) {
             require_code('files');
             $pure_post = isset($GLOBALS['PURE_POST']) ? $GLOBALS['PURE_POST'] : $_POST;
-            if (get_magic_quotes_gpc()) {
-                $pure_post = array_map('stripslashes', $pure_post);
-            }
             $x = 0;
             $res = mixed();
             do { // Try up to 3 times

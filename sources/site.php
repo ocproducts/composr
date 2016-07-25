@@ -1274,7 +1274,7 @@ function request_page($codename, $required, $zone = null, $page_type = null, $be
 
                 foreach ($bits[1] as $key => $val) {
                     if ($key != 'page') {
-                        $_GET[$key] = get_magic_quotes_gpc() ? addslashes($val) : $val;
+                        $_GET[$key] = $val;
                     }
                 }
                 if (($redirect['r_to_page'] != $codename) || ($redirect['r_to_zone'] != $zone)) {

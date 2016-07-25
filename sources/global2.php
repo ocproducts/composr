@@ -1550,14 +1550,6 @@ function __param($array, $name, $default, $integer = false, $posted = false)
         $val = implode(',', $val);
     }
 
-    static $mq = null;
-    if ($mq === null) {
-        $mq = get_magic_quotes_gpc();
-    }
-    if ($mq) {
-        $val = stripslashes($val);
-    }
-
     return $val;
 }
 

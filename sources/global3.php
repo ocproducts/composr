@@ -1744,12 +1744,10 @@ function collapse_1d_complexity($key, $list)
 function cms_srv($key)
 {
     if (isset($_SERVER[$key])) {
-        return /*stripslashes*/
-            ($_SERVER[$key]);
+        return ($_SERVER[$key]);
     }
     if ((isset($_ENV)) && (isset($_ENV[$key]))) {
-        return /*stripslashes*/
-            ($_ENV[$key]);
+        return ($_ENV[$key]);
     }
 
     if ($key == 'HTTP_HOST') {
@@ -2726,10 +2724,6 @@ function flatten_slashed_array($array, $already_stripped = false)
     foreach ($array as $key => $val) {
         if (is_array($val)) {
             $val = flatten_slashed_array($val);
-        }
-
-        if (!$already_stripped && get_magic_quotes_gpc()) {
-            $val = stripslashes($val);
         }
 
         $ret .= '<param>' . (is_integer($key) ? strval($key) : $key) . '=' . $val . '</param>' . "\n"; // $key may be integer, due to recursion line for list fields, above

@@ -43,7 +43,7 @@ class Hook_check_functions_needed
             deg2rad error_reporting eval exit explode fclose feof fgets file file_exists
             file_get_contents filectime filegroup filemtime fileowner fileperms filesize floatval floor
             get_defined_vars get_declared_classes get_defined_functions fopen fread fseek ftell
-            function_exists fwrite get_class get_html_translation_table get_magic_quotes_gpc getcwd
+            function_exists fwrite get_class get_html_translation_table getcwd
             getdate getenv gmdate header headers_sent hexdec htmlentities is_float
             implode in_array include include_once ini_get ini_set intval is_a is_array is_bool
             is_integer is_null is_numeric is_object is_readable is_resource is_string is_uploaded_file
@@ -72,8 +72,7 @@ class Hook_check_functions_needed
             parse_ini_file parse_str is_executable memory_get_usage
             is_scalar natcasesort natsort nl2br ob_get_length ob_implicit_flush
             ob_clean printf cosh count_chars gethostbynamel getlastmod fpassthru create_function
-            gettimeofday get_cfg_var get_magic_quotes_runtime
-            get_resource_type hypot ignore_user_abort array_intersect_assoc
+            gettimeofday get_cfg_var get_resource_type hypot ignore_user_abort array_intersect_assoc
             is_link is_callable debug_print_backtrace stream_context_create next usleep array_sum
             file_get_contents str_word_count html_entity_decode
             array_combine array_walk_recursive

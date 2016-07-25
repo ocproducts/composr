@@ -1839,10 +1839,6 @@ class Module_cms_catalogues_alt extends Standard_crud_module
                 continue;
             }
 
-            if (get_magic_quotes_gpc()) {
-                $val = stripslashes($val);
-            }
-
             $matches = array();
             if (preg_match('#new_field_(\d*)_(.*)#A', $key, $matches) != 0) {
                 $new[$matches[1]][$matches[2]] = $val;
@@ -2005,10 +2001,6 @@ class Module_cms_catalogues_alt extends Standard_crud_module
             foreach ($_POST as $key => $val) {
                 if (!is_string($val)) {
                     continue;
-                }
-
-                if (get_magic_quotes_gpc()) {
-                    $val = stripslashes($val);
                 }
 
                 $matches = array();

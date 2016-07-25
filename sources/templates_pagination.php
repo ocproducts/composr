@@ -163,9 +163,6 @@ function pagination($title, $start, $start_name, $max, $max_name, $max_rows, $ke
             if (is_array($val)) {
                 continue;
             }
-            if (get_magic_quotes_gpc()) {
-                $val = stripslashes($val);
-            }
             $post_array[$key] = $val;
         }
     }
