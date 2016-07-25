@@ -1706,12 +1706,7 @@ function list_to_map($map_value, $list)
  */
 function collapse_2d_complexity($key, $value, $list)
 {
-    $new_map = array();
-    foreach ($list as $map) {
-        $new_map[$map[$key]] = $map[$value];
-    }
-
-    return $new_map;
+    return array_column($list, $value, $key);
 }
 
 /**
@@ -1723,6 +1718,10 @@ function collapse_2d_complexity($key, $value, $list)
  */
 function collapse_1d_complexity($key, $list)
 {
+    if ($key !== null) {
+        return array_column($list, $key); // Faster
+    }
+
     $new_array = array();
     foreach ($list as $map) {
         if ($key === null) {

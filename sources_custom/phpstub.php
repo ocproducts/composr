@@ -27,6 +27,19 @@ The code quality checker automatically parses and uses this file, to build up th
 */
 
 /**
+ * Return the values from a single column in the input array
+ *
+ * @param  array $input A multi-dimensional array or an array of objects from which to pull a column of values from
+ * @param  mixed $column_key The column of values to return
+ * @param  ?mixed $index_key The column to use as the index/keys for the returned array (null: numeric sequential indices)
+ * @return array Collapsed values
+ */
+function array_column($input, $column_key, $index_key = null)
+{
+    return array();
+}
+
+/**
  * Hash the password using the specified algorithm
  *
  * @param  string $password The password to hash
