@@ -177,7 +177,7 @@ function createsubfile()
 
     global $fp;
 
-    $fp = fopen (get_file_base() . "/safe_mode_temp/subs.inc", "w+");
+    $fp = fopen (get_file_base() . "/temp/subs.inc", "w+");
 
 }
 

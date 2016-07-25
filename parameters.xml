@@ -398,8 +398,13 @@
   </parameter> 
 
   <parameter
-    name="SetAclParameter10" description="Sets the ACL on the right file" defaultValue="{Application Path}/safe_mode_temp" tags="Hidden">
-    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/safe_mode_temp" />
+    name="SetAclParameter9" description="Sets the ACL on the right file" defaultValue="{Application Path}/caches/http" tags="Hidden">
+    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/caches/http" />
+  </parameter> 
+
+  <parameter
+    name="SetAclParameter10" description="Sets the ACL on the right file" defaultValue="{Application Path}/temp" tags="Hidden">
+    <parameterEntry type="ProviderPath" scope="setAcl" match="composr/temp" />
   </parameter> 
 
   <parameter

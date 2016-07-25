@@ -190,7 +190,7 @@ function make_backup_2($file, $b_type, $max_size) // This is called as a shutdow
             'lang', 'lang_custom',
             'caches',
             'pages',
-            'safe_mode_temp',
+            'temp',
             'sources', 'sources_custom',
             'text', 'text_custom',
             'themes',

@@ -87,7 +87,7 @@ function cache_and_carry($func, $args, $timeout = null)
 
     $ret = mixed();
 
-    $path = get_custom_file_base() . '/safe_mode_temp/' . md5(serialize($args)) . '.dat';
+    $path = get_custom_file_base() . '/caches/http/' . md5(serialize($args)) . '.dat';
     if (!file_exists(dirname($path))) {
         mkdir(dirname($path), 0777);
         fix_permissions(dirname($path));
@@ -177,7 +177,7 @@ function _intelligent_write_error_inline($path)
  */
 function cms_get_temp_dir()
 {
-    $local_path = get_custom_file_base() . '/safe_mode_temp';
+    $local_path = get_custom_file_base() . '/temp';
     if (!file_exists($local_path)) {
         mkdir($local_path, 0777);
         fix_permissions($local_path);

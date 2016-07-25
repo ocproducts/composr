@@ -6,7 +6,7 @@ rm -f themes/*/templates_cached/*/*.cache
 rm -f themes/*/templates_cached/*/*.js
 rm -f themes/*/templates_cached/*/*.css
 rm -f themes/*/templates_cached/*/*.gz
-rm -f safe_mode_temp/*.dat
+rm -f caches/http/*.dat
 rm -f caches/lang/*.lcd
 rm -f caches/lang/*/*.lcd
 find caches -name "*.gcd" -exec rm -f {} \;

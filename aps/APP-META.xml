@@ -215,6 +215,9 @@
           <mapping url="caches/self_learning">
             <php:permissions writable="true"/>
           </mapping>
+          <mapping url="caches/http">
+            <php:permissions writable="true"/>
+          </mapping>
           <mapping url="cms/pages/comcode_custom/EN">
             <php:permissions writable="true"/>
           </mapping>
@@ -278,7 +281,7 @@
           <mapping url="pages/html_custom/EN">
             <php:permissions writable="true"/>
           </mapping>
-          <mapping url="safe_mode_temp">
+          <mapping url="temp">
             <php:permissions writable="true"/>
           </mapping>
           <mapping url="site/pages/comcode_custom/EN">

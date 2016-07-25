@@ -5,7 +5,7 @@ SecFilterScanPOST Off
 SecRuleRemoveById 300018 340147 340014 950119 950120 973331
 </IfModule>
 
-<IfModule mod_php5.c>
+<IfModule mod_php7.c>
 # Composr needs uploads; many hosts leave these low
 php_value post_max_size "500M"
 php_value upload_max_filesize "500M"
@@ -40,9 +40,6 @@ php_flag suhosin.upload.remove_binary off
 php_value auto_prepend_file none
 php_value auto_append_file none
 </IfModule>
-
-# This unavoidably kills filedump folder creation, and stops us controlling our script execution time
-# php_flag safe_mode off		But unfortunately we can't control it except from php.ini
 
 # Sandbox Composr to its own directory
 # php_value open_basedir "/tmp:/home/blah/public_html/composr/"		But needs customising for your server and only works outside php.ini in PHP6+

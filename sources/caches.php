@@ -477,12 +477,12 @@ function erase_persistent_cache()
     }
     $done_once = true;
 
-    $path = get_custom_file_base() . '/safe_mode_temp';
+    $path = get_custom_file_base() . '/caches/http';
     if (is_dir($path)) {
         $d = opendir($path);
         while (($e = readdir($d)) !== false) {
             if (substr($e, -4) == '.dat') {
-                @unlink(get_custom_file_base() . '/safe_mode_temp/' . $e);
+                @unlink(get_custom_file_base() . '/caches/http/' . $e);
             }
         }
         closedir($d);

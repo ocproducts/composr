@@ -301,9 +301,6 @@ memory_limit=128M
 max_input_time=60
 max_input_vars=2000
 
-; This unavoidably kills filedump folder creation, and stops us controlling our script execution time
-safe_mode=off
-
 ; This causes unstability (and is known/documented to) but some hosts turn it on
 mbstring.func_overload=0
 

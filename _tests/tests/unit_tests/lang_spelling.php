@@ -140,6 +140,9 @@ class lang_spelling_test_set extends cms_test_case
         if (stripos($string, 'add-on') !== false) {
             $this->assertTrue(false, 'The word \'add-on\' was used in ' . $file . '. This should be changed to \'addon\'.');
         }
+        if (stripos($string, 'safe-mode') !== false) {
+            $this->assertTrue(false, 'The word \'safe-mode\' was used in ' . $file . '. This should be changed to \'safe mode\'.');
+        }
 
         // No space or hyphen wanted (we want our canonical way)
         if (stripos($string, 'user[ -]group') !== false) {

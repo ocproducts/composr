@@ -324,8 +324,8 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
 
         // Temporary files
         'tmp' => '.*',
-        'inc' => 'safe_mode_temp',
-        'dat' => 'safe_mode_temp',
+        'inc' => 'temp',
+        'dat' => 'caches/http',
         'bak' => '.*',
         'old' => '.*',
         'cms' => '.*', // Installers and upgraders

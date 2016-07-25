@@ -79,7 +79,7 @@ Composr requires:
 
 [media float="right" thumb="0" framed="0"]data_custom/images/docs/tip.png[/media]
 Composr recommends:
- - A PHP versions that hasn't reached end-of-life status
+ - A PHP version that hasn't reached end-of-life status; PHP 7 is better than PHP 5.6 due to significant performance improvements
  - A PHP environment with the following PHP extensions/build-options and matching system software:
   - FTP &dagger;
   - pSpell or Enchant, with matching aspell/hunspell installs and dictionaries (spellchecking)

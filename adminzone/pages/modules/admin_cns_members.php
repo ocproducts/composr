@@ -761,7 +761,7 @@ class Module_admin_cns_members
                 }
             }
 
-            $target_path = get_custom_file_base() . '/safe_mode_temp/' . basename($_FILES['file']['tmp_name']);
+            $target_path = get_custom_file_base() . '/temp/' . basename($_FILES['file']['tmp_name']);
             if (!file_exists(dirname($target_path))) {
                 mkdir(dirname($target_path), 0777);
                 fix_permissions(dirname($target_path));

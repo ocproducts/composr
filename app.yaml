@@ -100,7 +100,7 @@ skip_files:
 - ^uploads/(?<!website_specific/).*
 - ^caches/.*
 - ^data_custom/errorlog.php$
-- ^safe_mode_temp/.*
+- ^temp/.*
 - ^\.git/.*
 - ^data_custom/modules/google_appengine/.*
 - ^dump.sql

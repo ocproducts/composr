@@ -793,7 +793,7 @@ class classTTConnection
             }
 
             /**
-             * Cannot set this when safe_mode or open_basedir is enabled
+             * Cannot set this when open_basedir is enabled
              *
              * @link http://forums.invisionpower.com/index.php?autocom=tracker&showissue=11334
              */
