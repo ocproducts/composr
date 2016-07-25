@@ -492,13 +492,44 @@ function _parse_command_actual($no_term_needed = false)
                         break;
                 }
             } while (pparse__parser_peek() == 'CATCH');
-            $command = array('TRY', $try, $catches, $try_position);
+            if (pparse__parser_peek() == 'FINALLY') {
+                pparse__parser_expect('FINALLY');
+                $_finally = _parse_command(true);
+                $finally_position = $GLOBALS['I'];
+                $finally = array($_finally, $finally_position);
+            } else {
+                $finally = null;
+            }
+            $command = array('TRY', $try, $catches, $finally, $try_position);
             break;
 
         case 'THROW':
             pparse__parser_next();        // Consume the "throw"
             $expr = _parse_expression();
             $command = array('THROW', $expr, $GLOBALS['I']);
+            break;
+
+        case 'YIELD':
+            pparse__parser_next();
+            $next_2 = pparse__parser_peek();
+            switch ($next_2) {
+                case 'COMMAND_TERMINATE':
+                    $command = array('YIELD_0', $GLOBALS['I']);
+                    break;
+
+                default:
+                    $expr = _parse_expression();
+                    if (pparse__parser_peek() == 'DOUBLE_ARROW') {
+                        pparse__parser_next();
+                        $expr2 = _parse_expression();
+                        $command = array('YIELD_2', $expr, $expr2, $GLOBALS['I']);
+                    } else {
+                        $command = array('YIELD_1', $expr, $GLOBALS['I']);
+                    }
+            }
+            if (!$no_term_needed) {
+                _test_command_end();
+            }
             break;
 
         case 'RETURN':

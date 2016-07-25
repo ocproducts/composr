@@ -842,6 +842,15 @@ function check_command($command, $depth, $function_guard = '', $nogo_parameters 
                     $LOCAL_VARIABLES[$v[1]]['unused_value'] = true;
                 }
                 break;
+            case 'YIELD_0':
+                break;
+            case 'YIELD_1':
+                check_expression($c[1], false, false, $function_guard);
+                break;
+            case 'YIELD_2':
+                check_expression($c[1], false, false, $function_guard);
+                check_expression($c[2], false, false, $function_guard);
+                break;
             case 'RETURN':
                 $ret_type = check_expression($c[1], false, false, $function_guard);
                 add_variable_reference('__return', $c_pos);
@@ -927,6 +936,9 @@ function check_command($command, $depth, $function_guard = '', $nogo_parameters 
                 foreach ($c[2] as $catch) {
                     add_variable_reference($catch[1][0][1], $c_pos, false);
                     check_command($catch[2], $depth + 1, $function_guard); // Goes first so that we get local variables defined inside loop for use in our loop conditional
+                }
+                if ($c[3] !== null) {
+                    check_command($c[3], $depth + 1, $function_guard, $nogo_parameters); // Finally
                 }
                 break;
             case 'FOREACH_map':

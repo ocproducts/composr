@@ -112,6 +112,7 @@ $PTOKENS['IMPLEMENTS'] = 'implements';
 // Functions
 $PTOKENS['FUNCTION'] = 'function';
 $PTOKENS['RETURN'] = 'return';
+$PTOKENS['YIELD'] = 'yield';
 // Arrays
 $PTOKENS['DOUBLE_ARROW'] = '=>';
 $PTOKENS['LIST'] = 'list';
@@ -124,6 +125,7 @@ $PTOKENS['STATIC'] = 'static';
 $PTOKENS['TRY'] = 'try';
 $PTOKENS['CATCH'] = 'catch';
 $PTOKENS['THROW'] = 'throw';
+$PTOKENS['FINALLY'] = 'finally';
 // Simple types
 $PTOKENS['true'] = 'true';
 $PTOKENS['false'] = 'false';
