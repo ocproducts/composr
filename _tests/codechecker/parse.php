@@ -393,20 +393,38 @@ function _parse_command_actual($no_term_needed = false)
             pparse__parser_expect('AS');
             // Choice{"variable" "DOUBLE_ARROW" "variable" | "variable"}
             $next = pparse__parser_peek();
-            $is_reference = ($next == 'REFERENCE');
-            if ($is_reference) {
+            if ($next == 'LIST') {
                 pparse__parser_next();
-            }
-            $variable = _parse_variable($suppress_error);
-            $after_variable = pparse__parser_peek();
-            if ($after_variable == 'DOUBLE_ARROW') {
-                pparse__parser_next();
-                $next = pparse__parser_peek();
+                pparse__parser_expect('BRACKET_OPEN');
+                $variable = array('LIST', _parse_comma_variables(true), $GLOBALS['I']);
+                pparse__parser_expect('BRACKET_CLOSE');
+            } else {
                 $is_reference = ($next == 'REFERENCE');
                 if ($is_reference) {
                     pparse__parser_next();
                 }
-                $_foreach = array($variable, _parse_variable($suppress_error));
+                $variable = _parse_variable($suppress_error);
+            }
+            $after_variable = pparse__parser_peek();
+            if ($after_variable == 'DOUBLE_ARROW') {
+                if ($variable[0] == 'LIST') {
+                    parser_error('list must be on RHS of =>');
+                }
+
+                pparse__parser_next();
+                $next = pparse__parser_peek();
+                if ($next == 'LIST') {
+                    pparse__parser_next();
+                    pparse__parser_expect('BRACKET_OPEN');
+                    $_foreach = array($variable, array('LIST', _parse_comma_variables(true), $GLOBALS['I']));
+                    pparse__parser_expect('BRACKET_CLOSE');
+                } else {
+                    $is_reference = ($next == 'REFERENCE');
+                    if ($is_reference) {
+                        pparse__parser_next();
+                    }
+                    $_foreach = array($variable, _parse_variable($suppress_error));
+                }
             } else {
                 $_foreach = $variable;
             }
@@ -995,7 +1013,7 @@ function _parse_function_dec($function_modifiers = null, $is_closure = false)
 
 // In precendence order. Note REFERENCE==BW_AND (it gets converted, for clarity). Ditto QUESTION==TERNARY_IF
 global $OPS;
-$OPS = array('QUESTION', 'TERNARY_IF', 'BOOLEAN_XOR', 'BOOLEAN_OR', 'BOOLEAN_AND', 'BW_OR', 'BW_XOR', 'REFERENCE', 'BW_AND', 'IS_EQUAL', 'IS_NOT_EQUAL', 'IS_IDENTICAL', 'IS_NOT_IDENTICAL', 'IS_SMALLER', 'IS_SMALLER_OR_EQUAL', 'IS_GREATER', 'IS_GREATER_OR_EQUAL', 'SL', 'SR', 'ADD', 'SUBTRACT', 'CONC', 'MULTIPLY', 'DIVIDE', 'REMAINDER');
+$OPS = array('QUESTION', 'TERNARY_IF', 'BOOLEAN_XOR', 'BOOLEAN_OR', 'BOOLEAN_AND', 'BW_OR', 'BW_XOR', 'REFERENCE', 'BW_AND', 'IS_EQUAL', 'IS_NOT_EQUAL', 'IS_IDENTICAL', 'IS_NOT_IDENTICAL', 'IS_SMALLER', 'IS_SMALLER_OR_EQUAL', 'IS_GREATER', 'IS_GREATER_OR_EQUAL', 'SL', 'SR', 'ADD', 'SUBTRACT', 'CONC', 'MULTIPLY', 'DIVIDE', 'REMAINDER', 'EXPONENTIATION');
 
 function _parse_expression()
 {

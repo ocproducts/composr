@@ -947,7 +947,15 @@ function check_command($command, $depth, $function_guard = '', $nogo_parameters 
                     infer_expression_type_to_variable_type('array', $c[1]);
                 }
                 add_variable_reference($c[2][1], $c_pos, false);
-                add_variable_reference($c[3][1], $c_pos, false);
+                if ($c[3][0] == 'LIST') {
+                    foreach ($c[3][1] as $var) {
+                        if (count($var[2]) == 0) {
+                            add_variable_reference($var[1], $c_pos, false);
+                        }
+                    }
+                } else {
+                    add_variable_reference($c[3][1], $c_pos, false);
+                }
 
                 if (in_array($c[2][1], $nogo_parameters)) {
                     log_warning('Re-using a loop variable, ' . $c[2][1], $c_pos);
@@ -963,7 +971,15 @@ function check_command($command, $depth, $function_guard = '', $nogo_parameters 
                 if ($passes) {
                     infer_expression_type_to_variable_type('array', $c[1]);
                 }
-                add_variable_reference($c[2][1], $c_pos, false);
+                if ($c[2][0] == 'LIST') {
+                    foreach ($c[2][1] as $var) {
+                        if (count($var[2]) == 0) {
+                            add_variable_reference($var[1], $c_pos, false);
+                        }
+                    }
+                } else {
+                    add_variable_reference($c[2][1], $c_pos, false);
+                }
 
                 if (in_array($c[2][1], $nogo_parameters)) {
                     log_warning('Re-using a loop variable, ' . $c[2][1], $c_pos);
@@ -1638,7 +1654,7 @@ function check_expression($e, $assignment = false, $equate_false = false, $funct
         }
         return 'string';
     }
-    if (in_array($e[0], array('SUBTRACT', 'MULTIPLY', 'DIVIDE'))) {
+    if (in_array($e[0], array('SUBTRACT', 'MULTIPLY', 'DIVIDE', 'EXPONENTIATION'))) {
         $type_a = check_expression($e[1], false, false, $function_guard);
         $t = check_expression($e[2], false, false, $function_guard);
         ensure_type(array('integer', 'float'), $type_a, $c_pos - 1, 'Can only use arithmetical combinators with numbers (1) (not ' . $type_a . ')');

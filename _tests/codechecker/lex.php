@@ -92,6 +92,7 @@ $PTOKENS['CONC'] = '.';
 $PTOKENS['ADD'] = '+';
 $PTOKENS['SUBTRACT'] = '-';
 $PTOKENS['MULTIPLY'] = '*';
+$PTOKENS['EXPONENTIATION'] = '**';
 $PTOKENS['DIVIDE'] = '/';
 $PTOKENS['REMAINDER'] = '%';
 // Classes/objects
