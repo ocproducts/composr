@@ -42,41 +42,6 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 }
 @chdir($FILE_BASE);
 
-if (str_replace(array('on', 'true', 'yes'), array('1', '1', '1'), strtolower(ini_get('register_globals'))) == '1') {
-    foreach ($_GET as $key => $_) {
-        if ((array_key_exists($key, $GLOBALS)) && ($GLOBALS[$key] == $_GET[$key])) {
-            $GLOBALS[$key] = null;
-        }
-    }
-    foreach ($_POST as $key => $_) {
-        if ((array_key_exists($key, $GLOBALS)) && ($GLOBALS[$key] == $_POST[$key])) {
-            $GLOBALS[$key] = null;
-        }
-    }
-    foreach ($_COOKIE as $key => $_) {
-        if ((array_key_exists($key, $GLOBALS)) && ($GLOBALS[$key] == $_COOKIE[$key])) {
-            $GLOBALS[$key] = null;
-        }
-    }
-    foreach ($_ENV as $key => $_) {
-        if ((array_key_exists($key, $GLOBALS)) && ($GLOBALS[$key] == $_ENV[$key])) {
-            $GLOBALS[$key] = null;
-        }
-    }
-    foreach ($_SERVER as $key => $_) {
-        if ((array_key_exists($key, $GLOBALS)) && ($GLOBALS[$key] == $_SERVER[$key])) {
-            $GLOBALS[$key] = null;
-        }
-    }
-    if ((isset($_SESSION)) && (is_array($_SESSION))) {
-        foreach ($_SESSION as $key => $_) {
-            if ((array_key_exists($key, $GLOBALS)) && ($GLOBALS[$key] == $_SESSION[$key])) {
-                $GLOBALS[$key] = null;
-            }
-        }
-    }
-}
-
 $hashed_password = $_GET['hashed_password'];
 global $SITE_INFO;
 require_once(is_file($FILE_BASE . '/_config.php') ? $FILE_BASE . '/_config.php' : $FILE_BASE . '/info.php'); // LEGACY

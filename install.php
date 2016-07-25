@@ -2860,12 +2860,6 @@ END;
 
     if ($php_value_ok) {
         $clauses[] = <<<END
-php_flag register_globals off
-END;
-    }
-
-    if ($php_value_ok) {
-        $clauses[] = <<<END
 php_value max_input_vars "2000"
 php_value mbstring.func_overload "0"
 

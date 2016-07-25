@@ -528,19 +528,6 @@ function hhvm_include($path)
 global $PAGE_START_TIME;
 $PAGE_START_TIME = microtime(true);
 
-// Unregister globals (sanitisation)
-if (str_replace(array('on', 'true', 'yes'), array('1', '1', '1'), strtolower(ini_get('register_globals'))) == '1') {
-    foreach (array('_GET', '_POST', '_COOKIE', '_ENV', '_SERVER', '_SESSION') as $superglobal) {
-        if ((isset($GLOBALS[$superglobal])) && (is_array($GLOBALS[$superglobal]))) {
-            foreach ($GLOBALS[$superglobal] as $key => $_) {
-                if ((array_key_exists($key, $GLOBALS)) && ($GLOBALS[$key] == $GLOBALS[$superglobal][$key])) {
-                    $GLOBALS[$key] = null;
-                }
-            }
-        }
-    }
-}
-
 // Are we in a special version of PHP?
 define('HHVM', strpos(PHP_VERSION, 'hiphop') !== false);
 define('GOOGLE_APPENGINE', isset($_SERVER['APPLICATION_ID']));

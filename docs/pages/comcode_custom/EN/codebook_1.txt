@@ -1263,7 +1263,6 @@ There are a number of notorious ways PHP scripts such as Composr can be attacked
  - Header poisoning
  - Code uploading
  - File accessing
- - Code inclusion
  - Jumping-in
  - Cross-Site-Request-Forgery
  - Eval-poisoning
@@ -1303,8 +1302,6 @@ Code uploading is when malicious programs are placed on the server using Composr
 Also, never allow file paths to be given for editing or viewing in a URL without sanitising them. For example, the download system doesn't allow you to specify the local URL of a file that is not publicly downloadable.
 
 If any kind of file path component comes in from a taintable source (e.g. user input) it creates a potential for a file accessing vulnerability. Make sure anything untrustable that goes into a file path is filtered via the [tt]filter_naughty[/tt] or [tt]filter_naughty_harsh[/tt] functions.
-
-Code inclusion is usually performed as part of a register_globals hack. Whenever you include code from a path given in a variable, you run the risk that that variable is poisoned. Remember that the code included by a poisoned variable might not even be on your own server!
 
 Jumping-in is a term I just coined for this guide to refer to when a [tt].php[/tt] file is accessed by URL that was only designed to be included. Never put code outside functions in Composr, unless that script is intended to be called by URL. Composr has an init__<file> function naming convention to handle the situation where included files need to run some startup code -- the [tt]require_code[/tt] function runs these functions automatically, simulating the effect of loose code.
 

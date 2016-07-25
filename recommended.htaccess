@@ -12,7 +12,6 @@ php_value upload_max_filesize "500M"
 
 # Turn insecure things off
 php_flag allow_url_fopen off
-php_flag register_globals off
 
 # Put some limits up. Composr is stable enough not to cause problems- it'll only use higher limits when it really needs them
 php_value memory_limit "128M"

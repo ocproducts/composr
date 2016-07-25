@@ -294,7 +294,6 @@ upload_max_filesize=500M
 
 ; Turn insecure things off
 allow_url_fopen=off
-register_globals=off
 
 ; Put some limits up. Composr is stable enough not to cause problems- it'll only use higher limits when it really needs them
 memory_limit=128M
