@@ -27,6 +27,55 @@ The code quality checker automatically parses and uses this file, to build up th
 */
 
 /**
+ * Hash the password using the specified algorithm
+ *
+ * @param  string $password The password to hash
+ * @param  integer $algo The algorithm to use (Defined by PASSWORD_* constants)
+ * @param  array $options The options for the algorithm to use
+ * @return ~string The hashed password (false: error)
+ */
+function password_hash($password, $algo, $options)
+{
+    return false;
+}
+
+/**
+ * Verify a password against a hash using a timing attack resistant approach
+ *
+ * @param  string $password The password to verify
+ * @param  string $hash The hash to verify against
+ * @return boolean If the password matches the hash
+ */
+function password_verify($password, $hash)
+{
+    return false;
+}
+
+/**
+ * Checks if the given hash matches the given options
+ *
+ * @param  string $hash The password hash
+ * @param  integer $algo The algorithm wanted (Defined by PASSWORD_* constants)
+ * @param  array $options The options for the algorithm wanted
+ * @return boolean Whether rehash is needed
+ */
+function password_needs_rehash($hash, $algo, $options = null)
+{
+    return false;
+}
+
+/**
+ * Returns information about the given hash
+ *
+ * @param  string $hash The password hash
+ * @return array A map of info, include algo, algoName, options
+ */
+function password_get_info($hash)
+{
+    return array();
+}
+
+/**
  * Absolute value.
  *
  * @param  mixed $number The number to get the absolute value of.
@@ -1139,6 +1188,17 @@ function imagecreatefrompng($path)
 }
 
 /**
+ * Create a new image from a WEBP file on disk.
+ *
+ * @param  PATH $path The WEBP file.
+ * @return ~resource The image handle (false: error).
+ */
+function imagecreatefromwebp($path)
+{
+    return array();
+}
+
+/**
  * Create a new image from a GIF file on disk.
  *
  * @param  PATH $path The GIF file.
@@ -1167,6 +1227,17 @@ function imagecreatefromjpeg($path)
  * @return boolean Whether the image is truecolor.
  */
 function imageistruecolor($image)
+{
+    return true;
+}
+
+/**
+ * Make an image truecolor
+ *
+ * @param  resource $image The image handle.
+ * @return boolean False on some kind of error, e.g. $image is invalid resource. Will return true if image is already truecolor.
+ */
+function imagepalettetotruecolor(&$image)
 {
     return true;
 }
@@ -1273,6 +1344,18 @@ function imagejpeg($image, $filename = null, $quality = null)
  * @return boolean Success status.
  */
 function imagepng($image, $filename = null, $quality = 0)
+{
+    return true;
+}
+
+/**
+ * Output image to browser or file as WEBP.
+ *
+ * @param  resource $image The image handle.
+ * @param  ?string $filename The filename (null: output to browser).
+ * @return boolean Success status.
+ */
+function imagewebp($image, $filename = null, $quality = 0)
 {
     return true;
 }
@@ -4739,9 +4822,10 @@ function inet_ntop($in_addr)
  * @param  array $fields An array of values.
  * @param  string $delimiter The optional delimiter parameter sets the field delimiter (one character only).
  * @param  string $enclosure The optional enclosure parameter sets the field enclosure (one character only).
+ * @param  string $escape Set the escape character (one character only).
  * @return ~integer The length of the written string (false: error).
  */
-function fputcsv($handle, $fields, $delimiter = ',', $enclosure = '"')
+function fputcsv($handle, $fields, $delimiter = ',', $enclosure = '"', $escape = '\\')
 {
     return 0;
 }

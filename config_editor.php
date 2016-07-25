@@ -319,11 +319,7 @@ function do_set()
                 if ($val == '') {
                     $val = $given_password;
                 }
-                if (function_exists('password_hash')) { // PHP5.5+
-                    $val = password_hash($val, PASSWORD_BCRYPT, array('cost' => 12));
-                } else {
-                    $val = '!' . md5($val . 'cms');
-                }
+                $val = password_hash($val, PASSWORD_BCRYPT, array('cost' => 12));
             }
             $new[$key] = $val;
         }

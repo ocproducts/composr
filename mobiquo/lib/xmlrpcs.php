@@ -604,16 +604,7 @@ class xmlrpc_server
 	{
 		if ($data===NULL)
 		{
-			// workaround for a known bug in php ver. 5.2.2 that broke $HTTP_RAW_POST_DATA
-			$ver=phpversion();
-			if (intval($ver[0])>=5)
-			{
-				$data=@file_get_contents('php://input');
-			}
-			else
-			{
-				$data=isset($GLOBALS['HTTP_RAW_POST_DATA'])?$GLOBALS['HTTP_RAW_POST_DATA']:'';
-			}
+			$data=@file_get_contents('php://input');
 		}
 		$raw_data=$data;
 		// reset internal debug info
@@ -935,12 +926,6 @@ class xmlrpc_server
 	 */
 	function parseRequest($data,$req_encoding='')
 	{
-		// 2005/05/07 commented and moved into caller function code
-		//if($data=='')
-		//{
-		//	$data=$GLOBALS['HTTP_RAW_POST_DATA'];
-		//}
-
 		// G. Giunta 2005/02/13: we do NOT expect to receive html entities
 		// so we do not try to convert them into xml character entities
 		//$data = xmlrpc_html_entity_xlate($data);
@@ -1234,15 +1219,5 @@ class xmlrpc_server
 		{
 			return "<?xml version=\"1.0\"?".">\n";
 		}
-	}
-
-	/**
-	 * A debugging routine: just echoes back the input packet as a string value
-	 * DEPRECATED!
-	 */
-	function echoInput()
-	{
-		$r=new xmlrpcresp(new xmlrpcval("'Aha said I: '".$GLOBALS['HTTP_RAW_POST_DATA'],'string'));
-		print $r->serialize();
 	}
 }

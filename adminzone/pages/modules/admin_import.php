@@ -226,7 +226,7 @@ class Module_admin_import
             $info = $object->info();
             $__hooks[$hook] = $info['product'];
         }
-        uasort($__hooks, 'strnatcmp');
+        asort($__hooks, SORT_NATURAL | SORT_FLAG_CASE);
         foreach ($__hooks as $hook => $hook_title) {
             $hooks->attach(form_input_list_entry($hook, false, $hook_title));
         }

@@ -55,28 +55,25 @@ class Hook_config_crypt_ratchet
 
         // We don't use the below code, because switching from a dev server to a slower live server could be very traumatic
 
-        /*if (function_exists('password_hash')) {
-            / **
-             * This code will benchmark your server to determine how high of a cost you can
-             * afford. You want to set the highest cost that you can without slowing down
-             * you server too much. 10 is a good baseline, and more is good if your servers
-             * are fast enough. The code below aims for <= 50 milliseconds stretching time,
-             * which is a good baseline for systems handling interactive logins.
-             * /
-            $time_target = 0.05; // 50 milliseconds
+        /*
+        / **
+         * This code will benchmark your server to determine how high of a cost you can
+         * afford. You want to set the highest cost that you can without slowing down
+         * you server too much. 10 is a good baseline, and more is good if your servers
+         * are fast enough. The code below aims for <= 50 milliseconds stretching time,
+         * which is a good baseline for systems handling interactive logins.
+         * /
+        $time_target = 0.05; // 50 milliseconds
 
-            $cost = 10;
-            do {
-                $start = microtime(true);
-                password_hash('test', PASSWORD_BCRYPT, array('cost' => $cost));
-                $end = microtime(true);
-                $time_dif = ($end - $start);
-                $cost++;
-            } while (($time_dif < $time_target) && ($cost <= 31));
-            $cost--;
-        } else {
-            $cost = 10;
-        }
+        $cost = 10;
+        do {
+            $start = microtime(true);
+            password_hash('test', PASSWORD_BCRYPT, array('cost' => $cost));
+            $end = microtime(true);
+            $time_dif = ($end - $start);
+            $cost++;
+        } while (($time_dif < $time_target) && ($cost <= 31));
+        $cost--;
 
         return strval($cost);*/
     }

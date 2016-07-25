@@ -100,7 +100,7 @@ class Hook_fields_upload_multi
 
         $auto_sort = option_value_from_field_array($field, 'auto_sort', 'off');
         if ($auto_sort == 'on') {
-            @uasort($out, 'strnatcmp');
+            @asort($out, SORT_NATURAL | SORT_FLAG_CASE);
         }
 
         $ret = new Tempcode();

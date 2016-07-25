@@ -1243,6 +1243,8 @@ function watermark_gallery_image($gallery, $file_path, $filename)
         imagejpeg($source, $file_path, intval(get_option('jpeg_quality')));
     } elseif ((function_exists('imagegif')) && ($ext == 'gif')) {
         imagegif($source, $file_path);
+    } elseif ((function_exists('imagewebp')) && ($ext == 'webp')) {
+        imagewebp($source, $file_path);
     }
 
     // Clean up

@@ -117,8 +117,11 @@ function output_inventory_screen($member_id)
             if ($ext == '.png') {
                 $mypic = @imagecreatefrompng($pic_url);
             }
-            if ((function_exists('imagecreatefromgif')) && ($ext == '.gif')) {
+            if ($ext == '.gif') {
                 $mypic = @imagecreatefromgif($pic_url);
+            }
+            if ($ext == 'webp') {
+                $mypic = @imagecreatefromwebp($pic_url);
             }
             if (($mypic === false) || (imagesx($mypic) > 200)) {
                 $width = 'width: 200px';
@@ -206,8 +209,11 @@ function output_room_screen($member_id)
         if ($ext == '.png') {
             $mypic = @imagecreatefrompng($pic_url);
         }
-        if ((function_exists('imagecreatefromgif')) && ($ext == '.gif')) {
+        if ($ext == '.gif') {
             $mypic = @imagecreatefromgif($pic_url);
+        }
+        if ($ext == 'webp') {
+            $mypic = @imagecreatefromwebp($pic_url);
         }
         if (($mypic === false) || (imagesx($mypic) > 430)) {
             $width = 'width: 430px';

@@ -53,9 +53,10 @@ If a random commercial [concept]PHP[/concept]/[concept]MySQL[/concept]-supportin
 The remainder of this section details Composr's requirements. If you have trouble ascertaining a webhosts compliance, you may wish to contact them with this information.
 
 Composr requires:
- - A web server that runs PHP. PHP is software which provides the environment that Composr is written for. Composr requires PHP version 5.3 or higher. If a webhost has a PHP version older than this, it is not just out-dated, but also insecure: no competent webhosts still do (at the time of writing, anything less than PHP 5.5 is unsupported by the PHP developers)
+ - A web server that runs PHP. PHP is software which provides the environment that Composr is written for.
+  - Composr requires PHP version 5.6 or higher
+  - We have tested up to and including PHP 7.0
   - Other non-bundled addons may have different dependencies
-  - If you install with PHP 5.5 or newer, you may not then down-grade to anything older than PHP 5.5 (as Composr will have already made use of PHP 5.5's password security features for saved passwords)
  - A PHP environment with the following (a competent webhost geared towards running PHP web applications should be able to provide this):
   - GD2 extension (including PNG and JPEG support). GD is used by PHP for image generation, e.g. to generate thumbnails.
   - file uploads with at least 5MB (or higher, depending on your particular needs)
@@ -79,7 +80,10 @@ Composr requires:
 
 [media float="right" thumb="0" framed="0"]data_custom/images/docs/tip.png[/media]
 Composr recommends:
- - A PHP version that hasn't reached end-of-life status; PHP 7 is better than PHP 5.6 due to significant performance improvements
+ - PHP versions:
+  - PHP 7 is better than PHP 5.6 due to very significant performance improvements
+  - Don't accept EOL. If a webhost or Linux distribution has a PHP version that is EOL ("end of life"), it is not just out-dated, but also insecure do (at the time of writing, anything less than PHP 5.6 is unsupported by the PHP developers)
+  - Make sure your PHP version is updated with security fixes, even if you haven't updated to the latest major version
  - A PHP environment with the following PHP extensions/build-options and matching system software:
   - FTP &dagger;
   - pSpell or Enchant, with matching aspell/hunspell installs and dictionaries (spellchecking)

@@ -31,14 +31,7 @@ function png_compress($path, $lossy = false)
     }
 
     $img = imagecreatefrompng($path);
-    if (!imageistruecolor($img)) {
-        if (function_exists('imagepalettetotruecolor')) {
-            imagepalettetotruecolor($img);
-        } else {
-            imagedestroy($img);
-            return;
-        }
-    }
+    imagepalettetotruecolor($img);
 
     // Has alpha?
     $width = imagesx($img);

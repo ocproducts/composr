@@ -67,12 +67,7 @@ function endpoint_script()
             // POST data may need switching about
             if (count($_POST) == 0) {
                 if (cms_srv('REQUEST_METHOD') != 'HEAD' && cms_srv('REQUEST_METHOD') != 'GET') { // i.e. not a simple CSRF case
-                    $ver = PHP_VERSION;
-                    if (intval($ver[0]) >= 5) {
-                        $_POST['data'] = @file_get_contents('php://input');
-                    } else {
-                        $_POST['data'] = isset($GLOBALS['HTTP_RAW_POST_DATA']) ? $GLOBALS['HTTP_RAW_POST_DATA'] : '';
-                    }
+                    $_POST['data'] = @file_get_contents('php://input');
                 }
             }
 

@@ -107,6 +107,9 @@ function resizeImage($image, $width, $height, $scale)
         case "image/x-png":
             $source = imagecreatefrompng($image);
             break;
+        case "image/webp":
+            $source = imagecreatefromwebp($image);
+            break;
     }
     imagecopyresampled($newImage, $source, 0, 0, 0, 0, $newImageWidth, $newImageHeight, $width, $height);
 
@@ -124,6 +127,9 @@ function resizeImage($image, $width, $height, $scale)
             imagepng($newImage, $image, 9);
             require_code('images_png');
             png_compress($image);
+            break;
+        case "image/webp":
+            imagewebp($newImage, $image);
             break;
     }
 
@@ -153,6 +159,9 @@ function resizeThumbnailImage($thumb_image_name, $image, $width, $height, $start
         case "image/x-png":
             $source = imagecreatefrompng($image);
             break;
+        case "image/webp":
+            $source = imagecreatefromwebp($image);
+            break;
     }
     imagecopyresampled($newImage, $source, 0, 0, $start_width, $start_height, $newImageWidth, $newImageHeight, $width, $height);
     switch ($imageType) {
@@ -169,6 +178,9 @@ function resizeThumbnailImage($thumb_image_name, $image, $width, $height, $start
             imagepng($newImage, $thumb_image_name, 9);
             require_code('images_png');
             png_compress($thumb_image_name);
+            break;
+        case "image/webp":
+            imagewebp($newImage, $thumb_image_name);
             break;
     }
     chmod($thumb_image_name, 0777);

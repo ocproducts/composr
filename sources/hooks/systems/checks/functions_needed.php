@@ -70,7 +70,7 @@ class Hook_check_functions_needed
             atan2 fgetc fgetcsv fgetss filetype fscanf fstat array_change_key_case
             date_default_timezone_get ftruncate func_get_arg func_get_args func_num_args
             parse_ini_file parse_str is_executable memory_get_usage
-            is_scalar natcasesort natsort nl2br ob_get_length ob_implicit_flush
+            is_scalar nl2br ob_get_length ob_implicit_flush
             ob_clean printf cosh count_chars gethostbynamel getlastmod fpassthru create_function
             gettimeofday get_cfg_var get_resource_type hypot ignore_user_abort array_intersect_assoc
             is_link is_callable debug_print_backtrace stream_context_create next usleep array_sum
@@ -84,6 +84,7 @@ class Hook_check_functions_needed
             var_export array_intersect_key end sys_get_temp_dir error_get_last
             gethostbyname htmlspecialchars stat str_ireplace stripos key pi print set_exception_handler acos
             readgzfile ob_gzhandler gzcompress gzdeflate gzencode gzfile gzinflate gzuncompress gzclose gzopen gzwrite
+            imagepalettetotruecolor
 END;
 
         if (function_exists('imagecreatefromstring')) {

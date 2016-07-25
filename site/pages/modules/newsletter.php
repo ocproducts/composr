@@ -425,7 +425,7 @@ class Module_newsletter
             }
             $salt = produce_salt();
             if ($old_confirm === null) {
-                add_newsletter_subscriber($email, time(), $code_confirm, ratchet_hash($password, $salt, PASSWORD_SALT), $salt, $language, $forename, $surname);
+                add_newsletter_subscriber($email, time(), $code_confirm, ratchet_hash($password, $salt), $salt, $language, $forename, $surname);
 
                 $this->_send_confirmation($email, $code_confirm, $password, $forename, $surname);
             } else {
@@ -484,7 +484,7 @@ class Module_newsletter
         $language = $GLOBALS['SITE_DB']->query_select_value('newsletter_subscribers', 'language', array('email' => $email));
         $salt = $GLOBALS['SITE_DB']->query_select_value('newsletter_subscribers', 'pass_salt', array('email' => $email));
         $new_password = produce_salt();
-        $GLOBALS['SITE_DB']->query_update('newsletter_subscribers', array('the_password' => ratchet_hash($new_password, $salt, PASSWORD_SALT)), array('email' => $email), '', 1);
+        $GLOBALS['SITE_DB']->query_update('newsletter_subscribers', array('the_password' => ratchet_hash($new_password, $salt)), array('email' => $email), '', 1);
 
         $message = do_lang('NEWSLETTER_PASSWORD_CHANGE', comcode_escape(get_ip_address()), comcode_escape($new_password), null, $language);
 

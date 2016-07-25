@@ -617,51 +617,34 @@ function _convert_image($from, &$to, $width, $height, $box_width = -1, $exit_on_
             $to .= '.png';
         }
         $test = @imagepng($dest, $to, 9);
-        if (!$test) {
-            if ($exit_on_error) {
-                warn_exit(do_lang_tempcode('ERROR_IMAGE_SAVE', @strval($php_errormsg)), false, true);
-            }
-            require_code('site');
-            attach_message(do_lang_tempcode('ERROR_IMAGE_SAVE', @strval($php_errormsg)), 'warn', false, true);
-            return $from;
-        } else {
+        if ($test) {
             require_code('images_png');
             png_compress($to, $width <= 300 && $width != -1 || $height <= 300 && $height != -1 || $box_width <= 300 && $box_width != -1);
-            fix_permissions($to);
-            sync_file($to);
         }
     } elseif ((function_exists('imagejpeg')) && (($ext2 == 'jpg') || ($ext2 == 'jpeg'))) {
         $test = @imagejpeg($dest, $to, intval(get_option('jpeg_quality')));
-        if (!$test) {
-            if ($exit_on_error) {
-                warn_exit(do_lang_tempcode('ERROR_IMAGE_SAVE', @strval($php_errormsg)), false, true);
-            }
-            require_code('site');
-            attach_message(do_lang_tempcode('ERROR_IMAGE_SAVE', @strval($php_errormsg)), 'warn', false, true);
-            return $from;
-        } else {
-            fix_permissions($to);
-            sync_file($to);
-        }
     } elseif ((function_exists('imagegif')) && ($ext2 == 'gif')) {
         $test = @imagegif($dest, $to);
-        if (!$test) {
-            if ($exit_on_error) {
-                warn_exit(do_lang_tempcode('ERROR_IMAGE_SAVE', @strval($php_errormsg)), false, true);
-            }
-            require_code('site');
-            attach_message(do_lang_tempcode('ERROR_IMAGE_SAVE', @strval($php_errormsg)), 'warn', false, true);
-            return $from;
-        } else {
-            fix_permissions($to);
-            sync_file($to);
-        }
+    } elseif ((function_exists('imagewebp')) && ($ext2 == 'webp')) {
+        $test = @imagewebp($dest, $to);
     } else {
         if ($exit_on_error) {
             warn_exit(do_lang_tempcode('UNKNOWN_FORMAT', escape_html($ext2)), false, true);
         }
         require_code('site');
         attach_message(do_lang_tempcode('UNKNOWN_FORMAT', escape_html($ext2)), 'warn', false, true);
+        return $from;
+    }
+
+    if ($test) {
+        fix_permissions($to);
+        sync_file($to);
+    } else {
+        if ($exit_on_error) {
+            warn_exit(do_lang_tempcode('ERROR_IMAGE_SAVE', @strval($php_errormsg)), false, true);
+        }
+        require_code('site');
+        attach_message(do_lang_tempcode('ERROR_IMAGE_SAVE', @strval($php_errormsg)), 'warn', false, true);
         return $from;
     }
 

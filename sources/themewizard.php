@@ -31,11 +31,8 @@ function init__themewizard()
     $THEME_DARK_CACHE = array();
 
     global $THEME_WIZARD_IMAGES, $THEME_WIZARD_IMAGES_NO_WILD;
-    $THEME_WIZARD_IMAGES = array();
+    $THEME_WIZARD_IMAGES = array('');
     $THEME_WIZARD_IMAGES_NO_WILD = array();
-    if (function_exists('imagecreatefromgif')) {
-        $THEME_WIZARD_IMAGES[] = '';
-    }
 
     $hooks = find_all_hook_obs('modules', 'admin_themewizard', 'Hook_admin_themewizard_');
     foreach ($hooks as $ob) {
@@ -116,29 +113,6 @@ function load_themewizard_params_from_theme($theme, $guess_images_if_needed = fa
     global $THEME_WIZARD_IMAGES, $THEME_WIZARD_IMAGES_NO_WILD;
     $THEME_WIZARD_IMAGES = explode(',', $map['theme_wizard_images']);
     $THEME_WIZARD_IMAGES_NO_WILD = explode(',', $map['theme_wizard_images_no_wild']);
-
-    // Remove gifs if we do not support them
-    if (!function_exists('imagecreatefromgif')) {
-        global $THEME_IMAGES_CACHE;
-
-        $temporary_default = isset($_GET['keep_theme_seed']);
-        if ($temporary_default) { // To stop an infinite loop, with find_theme_image trying to load up the theme wizard subsystem
-            $tseed = $_GET['keep_theme_seed'];
-            unset($_GET['keep_theme_seed']);
-            $img_codes_bak = $THEME_IMAGES_CACHE;
-        }
-        $new = array();
-        foreach ($THEME_WIZARD_IMAGES as $theme_image) {
-            if (substr(find_theme_image($theme_image, true, false, $theme), -4) != '.gif') {
-                $new[] = $theme_image;
-            }
-        }
-        $THEME_WIZARD_IMAGES = $new;
-        if ($temporary_default) {
-            $_GET['keep_theme_seed'] = $tseed;
-            $THEME_IMAGES_CACHE = $img_codes_bak;
-        }
-    }
 
     $THEME_WIZARD_IMAGES_CACHE[$theme] = $THEME_WIZARD_IMAGES;
 }
@@ -1382,65 +1356,28 @@ function re_hue_image($path, $seed, $source_theme, $also_s_and_v = false, $inver
     $val_dif = $seed_v - $composr_v;
 
     if (is_string($path)) {
-        if ((function_exists('imagecreatefromgif')) && (substr($path, -4) == '.gif')) {
-            $_image = @imagecreatefromgif($path);
+        if (substr($path, -4) == '.gif') {
+            $image = @imagecreatefromgif($path);
         } elseif (substr($path, -4) == '.jpg') {
-            $_image = @imagecreatefromjpeg($path);
+            $image = @imagecreatefromjpeg($path);
+        } elseif (substr($path, -5) == '.webp') {
+            $image = @imagecreatefromwebp($path);
         } else {
-            $_image = @imagecreatefrompng($path);
+            $image = @imagecreatefrompng($path);
 
             // GD may have a bug with not loading up non-alpha transparency properly
-            if (function_exists('imageistruecolor')) {
-                if (function_exists('imagecreatetruecolor')) {
-                    if (php_function_allowed('shell_exec')) {
-                        if (php_function_allowed('escapeshellarg')) {
-                            if (!imageistruecolor($_image)) {
-                                require_code('images2');
-                                $imagemagick = find_imagemagick();
-                                if ($imagemagick !== null) {
-                                    $tempnam = cms_tempnam();
-                                    shell_exec($imagemagick . ' -depth 32 ' . escapeshellarg($path) . ' PNG32:' . $tempnam);
-                                    if (is_file($tempnam)) {
-                                        $_image = @imagecreatefrompng($tempnam);
-                                        @unlink($tempnam);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            imagepalettetotruecolor($img);
         }
         if ($_image === false) {
             warn_exit(do_lang_tempcode('CORRUPT_FILE', escape_html($path)), false, true);
         }
     } else {
-        $_image = $path;
+        $image = $path;
     }
 
-    $width = imagesx($_image);
-    $height = imagesy($_image);
-    if (function_exists('imageistruecolor')) {
-        if (function_exists('imagecreatetruecolor')) {
-            $trans_colour = imagecolortransparent($_image); // Even a truecolor one can have a transparency currency, if 24 bit
-
-            if (!imageistruecolor($_image)) {
-                $image = imagecreatetruecolor($width, $height);
-                imagecopy($image, $_image, 0, 0, 0, 0, $width, $height);
-            } else {
-                $image = $_image;
-            }
-        } else {
-            $image = $_image;
-            $trans_colour = imagecolortransparent($_image);
-        }
-    } else {
-        $image = $_image;
-        $trans_colour = imagecolortransparent($_image);
-    }
-    if ($trans_colour === -1 || $trans_colour === false) {
-        $trans_colour = null;
-    }
+    $width = imagesx($image);
+    $height = imagesy($image);
+    imagepalettetotruecolor($image);
     imagealphablending($image, false);
     imagesavealpha($image, true);
 
@@ -1448,12 +1385,6 @@ function re_hue_image($path, $seed, $source_theme, $also_s_and_v = false, $inver
         for ($x = 0; $x < $width; $x++) {
             $_existing_colour = imagecolorat($image, $x, $y);
             $existing_colour = imagecolorsforindex($image, $_existing_colour);
-            if ($trans_colour !== null) {
-                $__existing_colour = imagecolorat($_image, $x, $y);
-                if ($__existing_colour == $trans_colour) {
-                    $existing_colour['alpha'] = 127;
-                }
-            }
 
             $r = $existing_colour['red'];
             $g = $existing_colour['green'];
@@ -1578,43 +1509,24 @@ function generate_recoloured_image($path, $colour_a_orig, $colour_a_new, $colour
     }
 
     if (is_string($path)) {
-        if ((function_exists('imagecreatefromgif')) && (substr($path, -4) == '.gif')) {
-            $_image = @imagecreatefromgif($path);
+        if (substr($path, -4) == '.gif') {
+            $image = @imagecreatefromgif($path);
         } elseif (substr($path, -4) == '.jpg') {
-            $_image = @imagecreatefromjpeg($path);
+            $image = @imagecreatefromjpeg($path);
+        } elseif (substr($path, -5) == '.webp') {
+            $image = @imagecreatefromwebp($path);
         } else {
-            $_image = @imagecreatefrompng($path);
+            $image = @imagecreatefrompng($path);
         }
-        if ($_image === false) {
+        if ($image === false) {
             warn_exit(do_lang_tempcode('CORRUPT_FILE', escape_html($path)), false, true);
         }
     } else {
-        $_image = $path;
+        $image = $path;
     }
-    $width = imagesx($_image);
-    $height = imagesy($_image);
-    if (function_exists('imageistruecolor')) {
-        if (function_exists('imagecreatetruecolor')) {
-            if (!imageistruecolor($_image)) {
-                $image = imagecreatetruecolor($width, $height);
-                imagealphablending($image, false);
-                imagesavealpha($image, true);
-                imagecopy($image, $_image, 0, 0, 0, 0, $width, $height);
-            } else {
-                $image = $_image;
-                imagealphablending($image, false);
-                imagesavealpha($image, true);
-            }
-        } else {
-            $image = $_image;
-            imagealphablending($image, false);
-            imagesavealpha($image, true);
-        }
-    } else {
-        $image = $_image;
-        imagealphablending($image, false);
-        imagesavealpha($image, true);
-    }
+    $width = imagesx($image);
+    $height = imagesy($image);
+    imagepalettetotruecolor($image);
 
     if ($colour_b2_new === null) {
         $colour_b_orig_r = $colour_b1_orig_r;
@@ -1627,19 +1539,7 @@ function generate_recoloured_image($path, $colour_a_orig, $colour_a_new, $colour
         $colour_b_new = $colour_b1_new;
     }
 
-    if (function_exists('imageistruecolor')) {
-        if (function_exists('imagecreatetruecolor')) {
-            if (!imageistruecolor($_image)) {
-                $trans_colour = imagecolortransparent($_image);
-            } else {
-                $trans_colour = null;
-            }
-        } else {
-            $trans_colour = imagecolortransparent($_image);
-        }
-    } else {
-        $trans_colour = imagecolortransparent($_image);
-    }
+    imagepalettetotruecolor($_image);
 
     $gh = floatval($height - $gradient_offset);
     $gw = floatval($width - $gradient_offset);
@@ -1672,12 +1572,6 @@ function generate_recoloured_image($path, $colour_a_orig, $colour_a_new, $colour
         for (; $x < $end; $x++) {
             $_existing_colour = imagecolorat($image, $x, $y);
             $existing_colour = imagecolorsforindex($image, $_existing_colour);
-            if ($trans_colour !== null) {
-                $__existing_colour = imagecolorat($_image, $x, $y);
-                if ($__existing_colour == $trans_colour) {
-                    $existing_colour['alpha'] = 127;
-                }
-            }
 
             if ($colour_b2_new !== null) {
                 if ($vertical) {

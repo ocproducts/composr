@@ -1068,7 +1068,7 @@ class Module_cms_comcode_pages
         }
 
         // Sort zones
-        uasort($zones, 'strnatcasecmp');
+        asort($zones, SORT_NATURAL | SORT_FLAG_CASE);
         if (isset($zones[''])) // Move welcome zone to start of list
         {
             $zones = array_merge(array('' => $zones['']), $zones);

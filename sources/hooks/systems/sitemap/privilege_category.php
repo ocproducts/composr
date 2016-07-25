@@ -88,7 +88,7 @@ class Hook_sitemap_privilege_category extends Hook_sitemap_base
                 unset($_sections[$i]);
             }
         }
-        uasort($_sections, 'strnatcasecmp');
+        asort($_sections, SORT_NATURAL | SORT_FLAG_CASE);
 
         if ($child_cutoff !== null) {
             if (count($_sections) > $child_cutoff) {

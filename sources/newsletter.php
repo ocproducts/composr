@@ -74,7 +74,7 @@ function basic_newsletter_join($email, $language = null, $get_confirm_mail = fal
         $password = get_rand_password();
         $salt = produce_salt();
         $code_confirm = $get_confirm_mail ? mt_rand(1, 9999999) : 0;
-        add_newsletter_subscriber($email, time(), $code_confirm, ratchet_hash($password, $salt, PASSWORD_SALT), $salt, $language, $forename, $surname);
+        add_newsletter_subscriber($email, time(), $code_confirm, ratchet_hash($password, $salt), $salt, $language, $forename, $surname);
     } else {
         if ($code_confirm > 0) {
             // Was not confirmed, allow confirm mail to go again as if this was new, and update their details
