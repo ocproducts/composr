@@ -42,15 +42,15 @@ function ratchet_hash($password, $salt)
  */
 function ratchet_hash_verify($password, $salt, $pass_hash_salted, $legacy_style = 0)
 {
-    if ((function_exists('password_verify')) && (preg_match('#^\w+$#', $pass_hash_salted) == 0)) {
+    if (strpos($pass_hash_salted, '$') !== false) {
         return password_verify($salt . md5($password), $pass_hash_salted);
     }
 
-    // Old-style md5'd password
+    // LEGACY: Old-style md5'd password
     if ($legacy_style == PASSWORD_SALT) {
-        return (md5($password . $salt) == $pass_hash_salted);
+        return hash_equals($pass_hash_salted, md5($password . $salt));
     }
-    return (md5($salt . md5($password)) == $pass_hash_salted);
+    return hash_equals($pass_hash_salted, md5($salt . md5($password)));
 }
 
 /**
@@ -62,7 +62,9 @@ function produce_salt()
 {
     // md5 used in all the below so that we get nice ASCII characters
 
-    if ((function_exists('openssl_random_pseudo_bytes')) && (get_value('disable_openssl') !== '1')) {
+    if (function_exists('random_bytes')) {
+        $u = substr(md5(random_bytes(13)), 0, 13);
+    } elseif ((function_exists('openssl_random_pseudo_bytes')) && (get_value('disable_openssl') !== '1')) {
         $u = substr(md5(openssl_random_pseudo_bytes(13)), 0, 13);
     } elseif (function_exists('password_hash')) { // password_hash will include a randomised component
         return substr(md5(password_hash(uniqid('', true), PASSWORD_BCRYPT, array('cost' => intval(get_option('crypt_ratchet'))))), 0, 13);
@@ -84,8 +86,6 @@ function get_site_salt()
         $site_salt = produce_salt();
         set_value('site_salt', $site_salt);
     }
-    //global $SITE_INFO; This is unstable on some sites, as the array can be prepopulated on the fly
-    //$site_salt.=serialize($SITE_INFO);
     return md5($site_salt);
 }
 
@@ -107,7 +107,9 @@ function get_rand_password()
 function get_secure_random_number()
 {
     // 2147483647 is from MySQL limit http://dev.mysql.com/doc/refman/5.0/en/integer-types.html ; PHP_INT_MAX is higher on 64bit machines
-    if ((function_exists('openssl_random_pseudo_bytes')) && (get_value('disable_openssl') !== '1')) {
+    if (function_exists('random_bytes')) {
+        $code = random_int(0, PHP_INT_MAX);
+    } elseif ((function_exists('openssl_random_pseudo_bytes')) && (get_value('disable_openssl') !== '1')) {
         $code = intval(2147483647 * (hexdec(bin2hex(openssl_random_pseudo_bytes(4))) / 0xffffffff));
         if ($code < 0) {
             $code = -$code;
@@ -139,9 +141,11 @@ function check_master_password($password_given)
         exit('No master password defined in _config.php currently so cannot authenticate');
     }
     $actual_password_hashed = $SITE_INFO['master_password'];
-    if ((function_exists('password_verify')) && (strpos($actual_password_hashed, '$') !== false)) {
+    if (strpos($actual_password_hashed, '$') !== false) {
         return password_verify($password_given, $actual_password_hashed);
     }
+
+    // LEGACY
     $salt = '';
     if ((substr($actual_password_hashed, 0, 1) == '!') && (strlen($actual_password_hashed) == 33)) {
         $actual_password_hashed = substr($actual_password_hashed, 1);
@@ -152,5 +156,5 @@ function check_master_password($password_given)
             $salt = 'ocp';
         }
     }
-    return (((strlen($password_given) != 32) && ($actual_password_hashed == $password_given)) || ($actual_password_hashed == md5($password_given . $salt)));
+    return (((strlen($password_given) != 32) && (hash_equals($actual_password_hashed, $password_given))) || (hash_equals($actual_password_hashed, md5($password_given . $salt))));
 }

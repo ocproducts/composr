@@ -1173,8 +1173,8 @@ class Forum_driver_smf2 extends Forum_driver_base
         if (!array_key_exists(1, $bits)) {
             $bits[1] = $bits[0];
         }
-        $test1 = ((!$GLOBALS['SMF_NEW'])) && ((($from_cookie) && ($this->forum_md5($row['passwd'], 'ys', true) == $bits[0])) || ((!$from_cookie) && ($row['passwd'] == $bits[0])));
-        $test2 = ($GLOBALS['SMF_NEW']) && ((($from_cookie) && (sha1($row['passwd'] . $row['password_salt']) == $bits[1])) || ((!$from_cookie) && ($row['passwd'] == $bits[1])));
+        $test1 = ((!$GLOBALS['SMF_NEW'])) && ((($from_cookie) && (hash_equals($this->forum_md5($row['passwd'], 'ys', true), $bits[0]))) || ((!$from_cookie) && (hash_equals($row['passwd'], $bits[0]))));
+        $test2 = ($GLOBALS['SMF_NEW']) && ((($from_cookie) && (hash_equals(sha1($row['passwd'] . $row['password_salt']), $bits[1]))) || ((!$from_cookie) && (hash_equals($row['passwd'], $bits[1]))));
         if ((!$test1) && (!$test2)) {
             $out['error'] = (do_lang_tempcode('MEMBER_BAD_PASSWORD'));
             return $out;

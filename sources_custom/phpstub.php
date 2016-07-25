@@ -40,6 +40,18 @@ function array_column($input, $column_key, $index_key = null)
 }
 
 /**
+ * Timing attack safe string comparison
+ *
+ * @param  string $known_string The string of known length to compare against
+ * @param  string $user_string The user-supplied string
+ * @return boolean If the strings are equal
+ */
+function hash_equals($known_string, $user_string)
+{
+    return false;
+}
+
+/**
  * Hash the password using the specified algorithm
  *
  * @param  string $password The password to hash

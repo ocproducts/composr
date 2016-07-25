@@ -161,7 +161,7 @@ function _forum_authorise_login($this_ref, $username, $userid, $password_hashed,
             case '': // Composr style salted MD5 algorithm
             case 'temporary': // as above, but forced temporary password
                 if ($cookie_login) {
-                    if ($password_hashed !== $row['m_pass_hash_salted']) {
+                    if (!hash_equals($row['m_pass_hash_salted'], $password_hashed)) {
                         require_code('tempcode'); // This can be incidental even in fast AJAX scripts, if an old invalid cookie is present, so we need Tempcode for do_lang_tempcode
                         $out['error'] = do_lang_tempcode('MEMBER_BAD_PASSWORD');
                         return $out;
@@ -176,14 +176,14 @@ function _forum_authorise_login($this_ref, $username, $userid, $password_hashed,
                 break;
 
             case 'plain':
-                if ($password_hashed !== md5($row['m_pass_hash_salted'])) {
+                if (!hash_equals(md5($row['m_pass_hash_salted']), $password_hashed)) {
                     $out['error'] = do_lang_tempcode('MEMBER_BAD_PASSWORD');
                     return $out;
                 }
                 break;
 
             case 'md5': // Old style plain md5     (also works if both are unhashed: used for LDAP)
-                if (($password_hashed !== $row['m_pass_hash_salted']) && ($password_hashed !== '!!!')) { // The !!! bit would never be in a hash, but for plain text checks using this same code, we sometimes use '!!!' to mean 'Error'.
+                if ((!hash_equals($row['m_pass_hash_salted'], $password_hashed)) && ($password_hashed !== '!!!')) { // The !!! bit would never be in a hash, but for plain text checks using this same code, we sometimes use '!!!' to mean 'Error'.
                     $out['error'] = do_lang_tempcode('MEMBER_BAD_PASSWORD');
                     return $out;
                 }
@@ -196,7 +196,7 @@ function _forum_authorise_login($this_ref, $username, $userid, $password_hashed,
             */
 
             case 'ldap':
-                if ($password_hashed !== $row['m_pass_hash_salted']) {
+                if (!hash_equals($row['m_pass_hash_salted'], $password_hashed)) {
                     $out['error'] = do_lang_tempcode('MEMBER_BAD_PASSWORD');
                     return $out;
                 }

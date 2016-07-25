@@ -1231,8 +1231,8 @@ class Forum_driver_vb3 extends Forum_driver_base
         }
 
         global $SITE_INFO;
-        if (!(((md5($row['password'] . $SITE_INFO['vb_unique_id']) == $password_hashed) && ($cookie_login))
-              || ((!$cookie_login) && ($row['password'] == md5($password_hashed . $row['salt']))))
+        if (!((hash_equals(md5($row['password'] . $SITE_INFO['vb_unique_id']), $password_hashed) && ($cookie_login))
+              || ((!$cookie_login) && (hash_equals($row['password'], md5($password_hashed . $row['salt'])))))
         ) {
             $out['error'] = (do_lang_tempcode('MEMBER_BAD_PASSWORD'));
             return $out;
