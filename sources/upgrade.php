@@ -588,7 +588,7 @@ function up_do_login($message = null)
     if ($ftp_username === null) {
         if (empty($SITE_INFO['ftp_username'])) {
             if (php_function_allowed('posix_getpwuid')) {
-                $u_info = posix_getpwuid(fileowner(get_file_base() . '/index.php'));
+                $u_info = posix_getpwuid(website_file_owner());
                 $ftp_username = $u_info['name'];
             } else {
                 $ftp_username = '';

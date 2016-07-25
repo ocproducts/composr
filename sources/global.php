@@ -324,7 +324,7 @@ function require_code_no_override($codename)
  */
 function appengine_is_live()
 {
-    return ((GOOGLE_APPENGINE) && (!is_writable(get_file_base() . '/index.php')));
+    return ((GOOGLE_APPENGINE) && (!is_writable(get_file_base() . '/sources/global.php')));
 }
 
 /**

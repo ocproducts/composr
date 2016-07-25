@@ -3483,3 +3483,33 @@ function get_login_url()
 
     return array($full_url, $login_url, $join_url);
 }
+
+/**
+ * Find the filesystem owner of the website.
+ *
+ * @return integer Owner
+ */
+function website_file_owner()
+{
+    return fileowner(get_file_base() . '/sources/global.php');
+}
+
+/**
+ * Find the filesystem group of the website.
+ *
+ * @return integer Group
+ */
+function website_file_group()
+{
+    return filegroup(get_file_base() . '/sources/global.php');
+}
+
+/**
+ * Find the creation time of the website.
+ *
+ * @return TIME Time
+ */
+function website_creation_time()
+{
+    return filemtime(get_file_base() . '/sources/global.php');
+}

@@ -148,7 +148,7 @@ class Module_admin_phpinfo
         $out .= '<p><strong>Your IP address</strong>: ' . escape_html(get_ip_address()) . '</p>';
         if ((php_function_allowed('posix_getuid')) && (php_function_allowed('posix_getpwuid'))) {
             $user = posix_getuid();
-            $suexec = ($user == fileowner(get_file_base() . '/index.php'));
+            $suexec = ($user == website_file_owner());
             $dets = posix_getpwuid($user);
             $out .= '<p><strong>Running as user</strong>: ' . escape_html($dets['name']) . ' (' . ($suexec ? 'suEXEC or similar' : 'Not suEXEC') . ')</p>';
         } elseif (php_function_allowed('shell_exec')) {
@@ -165,7 +165,7 @@ class Module_admin_phpinfo
             $tmp = cms_tempnam();
             $user = @fileowner($tmp);
             @unlink($tmp);
-            $suexec = ($user == fileowner(get_file_base() . '/index.php'));
+            $suexec = ($user == website_file_owner());
             $out .= '<p><strong>Running as user</strong>: ' . escape_html((($suexec) && (php_function_allowed('get_current_user'))) ? get_current_user() : ('#' . strval($user))) . ' (' . ($suexec ? 'suEXEC or similar' : 'Not suEXEC') . ')</p>';
         }
         if (php_function_allowed('php_sapi_name')) {

@@ -525,7 +525,7 @@ class Module_cms_comcode_pages
             }
 
             if ($row['add_date'] === null) {
-                $add_date = get_timezoned_date(filectime(get_file_base() . '/index.php'));
+                $add_date = get_timezoned_date(website_creation_time());
             } else {
                 $add_date = get_timezoned_date($row['add_date']);
             }

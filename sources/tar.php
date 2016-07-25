@@ -574,11 +574,11 @@ function tar_add_file(&$resource, $target_path, $data, $_mode = 0644, $_mtime = 
     }
 
     $mode = sprintf('%7s ', decoct($_mode));
-    $uid = sprintf('%7s ', decoct(fileowner(get_file_base() . '/index.php')));
+    $uid = sprintf('%7s ', decoct(website_file_owner()));
     if (strlen($uid) > 8) {
         $uid = '        ';
     }
-    $gid = sprintf('%7s ', decoct(filegroup(get_file_base() . '/index.php')));
+    $gid = sprintf('%7s ', decoct(website_file_group()));
     if (strlen($gid) > 8) {
         $gid = '        ';
     }
