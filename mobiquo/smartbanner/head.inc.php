@@ -109,10 +109,10 @@ if (preg_match('/googlebot|twitterbot/i', $useragent))
 
 // display smart banner and welcome page
 $app_banner_head = '';
-$tapatalk_dir_name = isset($tapatalk_dir_name) ? $tapatalk_dir_name : basename(dirname(dirname(__FILE__)));
-if (file_exists(dirname(__FILE__) . '/appbanner.js') &&
-    file_exists(dirname(__FILE__) . '/app.php') &&
-    file_exists(dirname(__FILE__) . '/appbanner.css'))
+$tapatalk_dir_name = isset($tapatalk_dir_name) ? $tapatalk_dir_name : basename(dirname(__DIR__));
+if (file_exists(__DIR__ . '/appbanner.js') &&
+    file_exists(__DIR__ . '/app.php') &&
+    file_exists(__DIR__ . '/appbanner.css'))
 {
     if(!$is_byo)
     {

@@ -60,7 +60,7 @@ if ($phpversion[0]=='4' && $phpversion[2]<2)
 	// give an opportunity to user to specify where to include other files from
 	if (!defined('PHP_XMLRPC_COMPAT_DIR'))
 	{
-		define('PHP_XMLRPC_COMPAT_DIR',dirname(__FILE__).'/compat/');
+		define('PHP_XMLRPC_COMPAT_DIR',__DIR__.'/compat/');
 	}
 	if ($phpversion[2]=='0')
 	{

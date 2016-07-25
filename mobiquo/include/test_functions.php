@@ -27,7 +27,7 @@ http://gggeek.github.io/phpxmlrpc/doc-2/
  */
 function call_mobiquo_test($method)
 {
-    $mobiquo = basename(dirname(dirname(__FILE__)));
+    $mobiquo = basename(dirname(__DIR__));
 
     require_code('character_sets');
 
@@ -39,7 +39,7 @@ function call_mobiquo_test($method)
     require_once(get_file_base() . '/' . $mobiquo . '/include/server_define.php');
 
     $filename = request_helper_get_file($method);
-    require_once(dirname(dirname(__FILE__)) . '/tests/' . $filename . '.php');
+    require_once(dirname(__DIR__) . '/tests/' . $filename . '.php');
 
     call_user_func($method . '_test');
 }
@@ -56,7 +56,7 @@ function mobiquo_xmlrpc_simple_call($method, $params, $username = null)
 {
     ini_set('ocproducts.xss_detect', '0');
 
-    $mobiquo = basename(dirname(dirname(__FILE__)));
+    $mobiquo = basename(dirname(__DIR__));
 
     $url = get_base_url() . '/' . $mobiquo . '/mobiquo.php?';
     if ($username !== null) {
@@ -65,8 +65,8 @@ function mobiquo_xmlrpc_simple_call($method, $params, $username = null)
     $url .= static_evaluate_tempcode(symbol_tempcode('KEEP', array()));
 
     // We need this to have the XML-RPC parameter encoding code as available
-    require(dirname(dirname(__FILE__)) . '/lib/mobiquo.php');
-    require(dirname(dirname(__FILE__)) . '/lib/mobiquo_xmlrpc.php');
+    require(dirname(__DIR__) . '/lib/mobiquo.php');
+    require(dirname(__DIR__) . '/lib/mobiquo_xmlrpc.php');
     global $MOBIQUO_SERVER;
     $MOBIQUO_SERVER = new MobiquoServerXMLRPC();
 
@@ -100,7 +100,7 @@ function mobiquo_post_simple_call($method, $params, $username = null, $files = n
 {
     ini_set('ocproducts.xss_detect', '0');
 
-    $mobiquo = basename(dirname(dirname(__FILE__)));
+    $mobiquo = basename(dirname(__DIR__));
 
     $url = get_base_url() . '/' . $mobiquo . '/mobiquo.php?';
     if ($username !== null) {
@@ -139,7 +139,7 @@ function mobiquo_json_simple_call($method, $params, $username = null)
 {
     ini_set('ocproducts.xss_detect', '0');
 
-    $mobiquo = basename(dirname(dirname(__FILE__)));
+    $mobiquo = basename(dirname(__DIR__));
 
     $url = get_base_url() . '/' . $mobiquo . '/mobiquo.php?method_name=' . rawurlencode($method);
     if ($username !== null) {

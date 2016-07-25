@@ -123,28 +123,22 @@ Certain aspects of the PHP language have been left out of the subset supported b
 
 The skipped aspects are:
  - checking whether variables exist before considering heredoc/quote-embedded variable references (REASON: can't check)
- - protected, private, public, abstract, static (REASON: PHP5+)
- - other spellings of "false" "true" and "NULL" and "GLOBAL" and probably others (REASON: bad style)
+ - other spellings of "false" "true" and "null" and "GLOBAL" and probably others (REASON: bad style)
  - @ is handled differently to PHP: it is tagged onto string-extraction, array-extraction, and function-calls (REASON: sloppy)
  - Embedded assignments are limited (REASON: sloppy). You can get around this by wrapping the assignment operation in brackets
- - clone (REASON: PHP5+)
- - try catch throw (REASON: PHP5+)
  - if..endif (etc) style (REASON: bad style)
  - non-functional style of include include_once require require_once print unset empty isset declare exit die (REASON: bad style)
  - certain duplicated cast identifiers (REASON: bad style)
  - written AND or OR or XOR (REASON: bad style)
  - unused variable check imperfect for loops (REASON: can't check)
- - dynamic variable referencing ($$foo) (REASON: sloppy)
+ - dynamic variable referencing ($$foo) (REASON: sloppy, a likely bug)
  - expressions as commands, unless they are bracketed (REASON: sloppy)
  - comma separated variables declared with 'static' keyword (REASON: not used much by people)
  - certain functions, including insecure or platform-dependant ones
 
 The PHP checker is very much set up to enforce compatibility across different PHP platforms. It is only assumed that a small number of extensions will be present:
- - mysql
  - gd2
- - ftp
  - gzip
- - xml (this is no longer an extension in fact)
 For all of these, you should use function_exists at some point before using these function sets.
 For other functions you can use function_exists too. The checker is smart about function_exists, but not very smart. You can do:
 function_exists('foo')?foo():bar()
@@ -196,7 +190,7 @@ Errors being outputted is by far the most common. Unfortunately it's rather diff
 If the PHP checker is asked to do 'checks' then it will check against a number of functions that should either be "@'d" or wrapped with a custom error handler. In the cases when there is no @ing, a warning will be shown stating that the wrapping should happen.
 
 The following cases demonstrate when for which functions the PHP checker will require custom error handling:
- - When we need to catch system-configuration problems (e.g. safe mode, bad tmp path permissions, mail not set up)
+ - When we need to catch system-configuration problems (e.g. bad tmp path permissions, mail not set up)
  - When we need to catch problems with untrustable dependencies (e.g. corrupt file , or even corrupt database structure)
  - BUT NOT just to catch things like type errors -- it is assumed typing is correct, and typically this can be picked up by the checker before the code is even run
 

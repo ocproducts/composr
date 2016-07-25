@@ -970,10 +970,7 @@ class Module_admin_themes
         $use_all_themes = post_param_integer('use_all_themes', 0);
         $use_all_langs = post_param_integer('use_all_langs', 0);
 
-        $target_dir = 'themes/' . (($use_all_themes == 1) ? 'default' : $theme) . '/images_custom';
-        if (str_replace(array('on', 'true', 'yes'), array('1', '1', '1'), strtolower(ini_get('safe_mode'))) != '1') {
-            $target_dir .= '/' . dirname($id);
-        }
+        $target_dir = 'themes/' . (($use_all_themes == 1) ? 'default' : $theme) . '/images_custom/' . dirname($id);
         $path = get_url('path', 'file', $target_dir);
         if ($path[0] == '') {
             return warn_screen($this->title, do_lang_tempcode('IMPROPERLY_FILLED_IN_UPLOAD'));
@@ -1115,9 +1112,7 @@ class Module_admin_themes
             }
 
             $target_dir = 'themes/' . $theme . '/images_custom';
-            if (str_replace(array('on', 'true', 'yes'), array('1', '1', '1'), strtolower(ini_get('safe_mode'))) != '1') {
-                $target_dir .= '/' . dirname($id);
-            }
+            $target_dir .= '/' . dirname($id);
             $path = get_url('path', 'file', $target_dir);
 
             if ((url_is_local($path[0])) && (!file_exists(((substr($path[0], 0, 15) == 'themes/default/') ? get_file_base() : get_custom_file_base()) . '/' . rawurldecode($path[0])))) {

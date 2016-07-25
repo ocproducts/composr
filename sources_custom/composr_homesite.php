@@ -334,7 +334,7 @@ if (!function_exists('git_repos')) {
      */
     function git_repos()
     {
-     	\$path = dirname(__FILE__).'/.git/HEAD';
+     	\$path = __DIR__.'/.git/HEAD';
         if (!is_file(\$path)) return '';
         \$lines = file(\$path);
         \$parts = explode('/', \$lines[0]);
@@ -371,7 +371,7 @@ if (!function_exists('git_repos')) {
 \$SITE_INFO['base_url'] = 'http://'.\$_SERVER['HTTP_HOST'];
 
 \$SITE_INFO['custom_base_url_stub'] = 'http://'.\$_SERVER['HTTP_HOST'].'/sites';
-\$SITE_INFO['custom_file_base_stub'] = dirname(__FILE__) . '/sites';
+\$SITE_INFO['custom_file_base_stub'] = __DIR__ . '/sites';
 \$SITE_INFO['custom_share_domain'] = 'composr.info';
 \$SITE_INFO['custom_share_path'] = 'sites';
 

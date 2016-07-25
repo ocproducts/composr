@@ -1357,7 +1357,7 @@ function check_call($c, $c_pos, $class = null, $function_guard = '')
     }
 
     if (($function == 'tempnam') && (@$c[2][0][0] == 'LITERAL') && (substr(@$c[2][0][1][1], 0, 4) == '/tmp')) {
-        log_warning('Don\'t assume you can write to the shared temp directory -- safe mode won\'t tolerate it', $c_pos);
+        log_warning('Don\'t assume you can write to the shared temp directory', $c_pos);
     }
     if (($function == 'strpos') && (@$c[2][0][0] == 'LITERAL') && (@$c[2][1][0] != 'LITERAL')) {
         log_warning('Looks like strpos parameters are the wrong way around; you fell for a common API anomaly: unlike most functions like in_array, strpos is haystack followed by needle', $c_pos);

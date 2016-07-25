@@ -431,7 +431,7 @@ class Mail_dispatcher_manualproc extends Mail_dispatcher_base
      * @param  string $subject The subject.
      * @param  string $message The message.
      * @param  string $additional_headers Additional headers.
-     * @param  string $additional_flags Additional stuff to send to sendmail executable (if appropriate, only works when safe mode is off).
+     * @param  string $additional_flags Additional stuff to send to sendmail executable.
      * @return boolean Success status.
      */
     protected function manualproc_mail($to, $subject, $message, $additional_headers, $additional_flags = '')

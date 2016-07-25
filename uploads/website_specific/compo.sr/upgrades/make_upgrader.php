@@ -49,12 +49,12 @@ function make_upgrade_get_path($from_version_dotted, $to_version_dotted)
 
     // Find out path/filenames for the upgrade file we're making
     $filename = $from_version_dotted . '-' . $to_version_dotted . '.cms';
-    $tar_path = dirname(__FILE__) . '/tars/' . $filename;
-    $wip_path = dirname(__FILE__) . '/tar_build/' . $filename;
+    $tar_path = __DIR__ . '/tars/' . $filename;
+    $wip_path = __DIR__ . '/tar_build/' . $filename;
 
     // Find out paths for the directories holding untarred full manual installers
-    $old_base_path = dirname(__FILE__) . '/full/' . $from_version_dotted;
-    $new_base_path = dirname(__FILE__) . '/full/' . $to_version_dotted;
+    $old_base_path = __DIR__ . '/full/' . $from_version_dotted;
+    $new_base_path = __DIR__ . '/full/' . $to_version_dotted;
 
     // Find corresponding download rows
     $old_download_row = ($from_version_dotted == '') ? null : find_download($from_version_pretty);
@@ -110,7 +110,7 @@ function make_upgrade_get_path($from_version_dotted, $to_version_dotted)
     @mkdir($wip_path, 0777);
     make_upgrader_do_dir($wip_path, $new_base_path, $old_base_path);
     @copy($old_base_path . '/data/files.dat', $wip_path . '/data/files_previous.dat');
-    $log_file = fopen(dirname(__FILE__) . '/tarring.log', GOOGLE_APPENGINE ? 'wb' : 'wt');
+    $log_file = fopen(__DIR__ . '/tarring.log', GOOGLE_APPENGINE ? 'wb' : 'wt');
     $tar_handle = tar_open($tar_path . '.new', 'wb');
     tar_add_folder($tar_handle, $log_file, $wip_path, null, '', null, null, false, true);
     tar_close($tar_handle);

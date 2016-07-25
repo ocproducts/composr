@@ -19,7 +19,7 @@ Parse PHPdoc in all scripts under project directory
 
 global $COMPOSR_PATH;
 
-require(dirname(__FILE__) . '/lib.php');
+require(__DIR__ . '/lib.php');
 
 if (isset($_SERVER['argv'])) {
     $extra = array();

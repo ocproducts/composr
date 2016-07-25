@@ -1902,7 +1902,7 @@ function ltrim($string, $characters = " \t\n\r\0\x0B")
  * @param  string $subject The subject.
  * @param  string $message The message.
  * @param  string $additional_headers Additional headers.
- * @param  string $additional_flags Additional stuff to send to sendmail executable (if appropriate, only works when safe mode is off).
+ * @param  string $additional_flags Additional stuff to send to sendmail executable.
  * @return boolean Success status.
  */
 function mail($to, $subject, $message, $additional_headers = '', $additional_flags = '')
@@ -4390,6 +4390,17 @@ function eval($code)
 }
 
 /**
+ * Get or Set the HTTP response code.
+ *
+ * @param  ?int $response_code Response codee to set (null: don't set).
+ * @return mixed The previous response code if $response_code was set / current response mode if $response_code is not set / false if CLI / true if CLI but $response_code was set.
+ */
+function http_response_code($response_code = null)
+{
+    return false;
+}
+
+/**
  * Get the size of an image.
  *
  * @param  PATH $filename Filename.
@@ -4397,6 +4408,18 @@ function eval($code)
  * @return ~array List of details: $width, $height, $type, $attr (false: error).
  */
 function getimagesize($filename, $image_info = null)
+{
+    return array();
+}
+
+/**
+ * Get the size of an image from a string.
+ *
+ * @param  string $imagedata The image data.
+ * @param  ?array $image_info Extra details will be put here (null: return-only). Note that this is actually passed by reference, but is also optional.
+ * @return ~array List of details: $width, $height, $type, $attr (false: error).
+ */
+function getimagesizefromstring($imagedata, $image_info = null)
 {
     return array();
 }

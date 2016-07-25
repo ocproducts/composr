@@ -14,9 +14,9 @@
  */
 
 define('IN_MOBIQUO', true);
-define('FORUM_ROOT', dirname(__FILE__));
+define('FORUM_ROOT', __DIR__);
 
-define('COMMON_CLASS_PATH_INCLUDE', dirname(__FILE__) . '/include');
+define('COMMON_CLASS_PATH_INCLUDE', __DIR__ . '/include');
 
 include(COMMON_CLASS_PATH_INCLUDE . '/common_functions.php');
 

@@ -42,7 +42,7 @@ if (!function_exists('apache_request_headers')) {
 function initialise_composr()
 {
     global $FILE_BASE, $RELATIVE_PATH;
-    $FILE_BASE = dirname(dirname(dirname(__FILE__)));
+    $FILE_BASE = dirname(dirname(__DIR__));
     $RELATIVE_PATH = 'data_custom';
 
     global $FORCE_INVISIBLE_GUEST;

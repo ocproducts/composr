@@ -2510,7 +2510,6 @@ function string_scan($lang, $do_guessing = false)
         CONFIG_OPTION_is_on_comments
         CONFIG_OPTION_is_on_coppa
         CONFIG_OPTION_is_on_emoticon_choosers
-        CONFIG_OPTION_is_on_folder_create
         CONFIG_OPTION_is_on_forw_buy
         CONFIG_OPTION_is_on_gambling_buy
         CONFIG_OPTION_is_on_highlight_name_buy
@@ -4262,7 +4261,6 @@ function string_scan($lang, $do_guessing = false)
         FLOOD_CONTROL_SUBMIT_SECS
         FLOOD_TIMELIMIT
         FLOW_MODE_INTERFACE
-        FOLDER_CREATE
         FOLDER_DELETE_ERROR
         FOLDER_OVERWRITE_ERROR
         FOOTER_LINKS

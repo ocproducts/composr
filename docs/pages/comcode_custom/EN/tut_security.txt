@@ -85,7 +85,6 @@ You should consider:
  - Using [url="CloudFlare"]https://www.cloudflare.com/[/url] for the free DDOS protection, or a more advanced service such as [url="SiteLock"]https://www.sitelock.com/[/url] or [url="Sucuri"]https://sucuri.net/[/url]
 
 You should be wary about:
- - PHP "Safe Mode" (the name is very misleading, at best this introduces bugs and mitigates the problems on shared hosting environments that are already fundamentally insecure)
  - PHP "disable_functions" (this increases security by disabling arbitrary parts of PHP -- this should only be done by consent with a programmer, to confirm those parts that were decided to be disabled are not actually necessary for functionality)
  - PHP "magic quotes" (this does not add any actual security due to fundamental design problems, but does have the potential to create lots of bugs)
  - ModSecurity (Composr does have inbuilt features, as described above -- and ModSecurity rules have a tendency to block legitimate administrative requests, such as use of Commandr of theme editing)
@@ -103,7 +102,7 @@ If you run a website with particularly privileged information, or security is cr
 
 The main issue with shared hosting, is that, unless either:
 [list="1"]
-[*] the environment for hosting accounts is restricted to being PHP-only, with safe-mode (which limits PHP and hence Composr in a negative way) or [tt]open_basedir[/tt] (which we advise) enabled
+[*] the environment for hosting accounts is restricted to being PHP-only, with very strong directory limit permissions (which limits PHP and hence Composr in a negative way) or [tt]open_basedir[/tt] (which we advise) enabled
 [*] or, the server is set to run web scripts on different hosting accounts using the account holder usernames (suEXEC)
 [/list]
 then every web-server-created/writable file, and your database, is fully writable to by any other account holder.

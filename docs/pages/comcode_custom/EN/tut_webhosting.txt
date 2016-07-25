@@ -64,7 +64,7 @@ Composr requires:
   - [tt]max_input_vars[/tt] of at least 2000 (most hosts let you raise the setting)
   - key functions may not be disabled with disable_functions (PHP can be stripped down heavily by disreputable webhosts) -- the installer will warn if any critical functions have been
   - no other explicit disabling of standard functionality that we require. Commonly webhosts do this using ModSecurity, Suhosin, suPHP or their own modified PHP versions. We do our best to workaround such issues for common recoverable cases, but ultimately if arbitrary standard functionality has been disabled the software cannot function.
-  - memory limit of at least 32MB (bare minimum -- you may see errors if caches are disabled, while caches fill, if you are doing imports, if you are doing Admin Zone searches, or if you are a programmer with dev mode on).
+  - memory limit of at least 128MB (as this is PHP's default memory limit since 2009).
  - At least 50MB of disk space, plus your needs for space for downloads, images, etc. No maximum file size limit under 25MB or file type whitelists (some free webhosts will impose these limits -- which explains why [tt]data.cms[/tt] might disappear when you try to upload it)
  - A web server that runs MySQL (*), version 5.5.3 (&dagger;) or higher. MySQL is the database software (software which allows creation of a number of separate databases) which Composr uses to store the majority of its data. Often webhosts will quote a number of databases that webhosting comes with: Composr only requires a single MySQL database to function. At least 5MB of database storage space is required, which should be available on any reputable webhost
  - A web server running Apache (the common Linux web server) or IIS7+ (the Microsoft web server). It is very unlikely you will find a webhost that provides something else. Other servers might work but are not supported (for example nginx should work, but you would need significant expertise to get the URL schemes functionality working)
@@ -90,8 +90,7 @@ Composr recommends:
   - XML
   - cURL
   - APC (PHP 5.6 or lower only), or Memcache, or Memcached, or Wincache
- - A PHP environment with Safe Mode disabled, but [tt]open_basedir[/tt] enabled -- or a suEXEC/IIS server (explained further down)
- - A PHP memory limit of 64MB
+ - A PHP environment with [tt]open_basedir[/tt] enabled -- or a suEXEC/IIS server (explained further down)
  - At least 100MB of disk space
 
 &dagger; If you do not have the PHP FTP extension, then you will need either:

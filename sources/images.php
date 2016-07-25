@@ -54,7 +54,7 @@ function cms_getimagesize($path)
     if ($_path === null) {
         $data = http_download_file($path, 1024 * 1024 * 20/*reasonable limit*/, false);
     } else {
-        if ((function_exists('getimagesize')) && (is_image($_path, IMAGE_CRITERIA_GD_READ))) {
+        if (function_exists('getimagesize')) {
             $details = @getimagesize($_path);
             if ($details !== false) {
                 return array($details[0], $details[1]);
@@ -62,24 +62,23 @@ function cms_getimagesize($path)
             return false;
         }
 
+        // Should never actually get here
         $data = file_get_contents($_path);
     }
 
-    if (function_exists('imagecreatefromstring')) {
-        $source = @imagecreatefromstring($data);
-        if ($source !== false) {
-            if (get_file_extension($path) == 'gif') { // Workaround problem with animated gifs
-                $header = unpack('@6/' . 'vwidth/' . 'vheight', $data);
-                $sx = $header['width'];
-                $sy = $header['height'];
-            } else {
-                $sx = imagesx($source);
-                $sy = imagesy($source);
-            }
+    if (function_exists('getimagesizefromstring')) {
+        if (get_file_extension($path) == 'gif') { // Workaround problem with animated gifs
+            $header = unpack('@6/' . 'vwidth/' . 'vheight', $data);
+            $sx = $header['width'];
+            $sy = $header['height'];
+        } else {
+            $sx = imagesx($source);
+            $sy = imagesy($source);
+        }
 
-            imagedestroy($source);
-
-            return array($sx, $sy);
+        $details = @getimagesizefromstring($data);
+        if ($details !== false) {
+            return array($details[0], $details[1]);
         }
     }
 

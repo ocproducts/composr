@@ -45,7 +45,7 @@ if ((!$undo) && (!$do)) {
     exit('Must give do or undo parameter');
 }
 
-$file_base = dirname(dirname(__FILE__));
+$file_base = dirname(__DIR__);
 $files = get_directory_contents($file_base, '');
 
 foreach ($files as $file) {

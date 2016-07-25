@@ -15,10 +15,10 @@
 
 define('MBQ_PUSH_BLOCK_TIME', 60); /* push block time(minutes) */
 
-require_once(dirname(__FILE__) . '/TapatalkBasePush.php');
-require_once(dirname(dirname(__FILE__)) . '/include/mobiquo_functions.php');
-require_once(dirname(dirname(__FILE__)) . '/include/common_functions.php');
-require_once(dirname(dirname(__FILE__)) . '/include/permission_functions.php');
+require_once(__DIR__ . '/TapatalkBasePush.php');
+require_once(dirname(__DIR__) . '/include/mobiquo_functions.php');
+require_once(dirname(__DIR__) . '/include/common_functions.php');
+require_once(dirname(__DIR__) . '/include/permission_functions.php');
 
 initialise_mobiquo();
 

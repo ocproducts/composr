@@ -31,7 +31,7 @@ class Hook_check_memory
     public function run()
     {
         $warning = array();
-        if ((@ini_get('memory_limit') != '') && (@ini_get('memory_limit') != '-1') && (@ini_get('memory_limit') != '0') && (intval(trim(str_replace('M', '', @ini_get('memory_limit')))) < 64)) {
+        if ((@ini_get('memory_limit') != '') && (@ini_get('memory_limit') != '-1') && (@ini_get('memory_limit') != '0') && (intval(trim(str_replace('M', '', @ini_get('memory_limit')))) < 128)) {
             $warning[] = do_lang_tempcode('LOW_MEMORY_LIMIT');
         }
         return $warning;

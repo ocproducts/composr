@@ -22,7 +22,7 @@ if (isset($_SERVER['argv'][0]) && strpos($_SERVER['argv'][0], 'critical_errors.p
     $cli = ((function_exists('php_sapi_name')) && (strpos(@ini_get('disable_functions'), 'php_sapi_name') === false) && (php_sapi_name() == 'cli') && (empty($_SERVER['REMOTE_ADDR'])) && (empty($_ENV['REMOTE_ADDR'])));
     if ($cli) {
         // Critical error monitoring mode
-        chdir(dirname(dirname(__FILE__)));
+        chdir(dirname(__DIR__));
         if (is_dir('critical_errors')) {
             if (function_exists('set_time_limit')) {
                 @set_time_limit(0);

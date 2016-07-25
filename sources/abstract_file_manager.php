@@ -103,9 +103,7 @@ function get_afm_form()
     $submit_name = do_lang_tempcode('PROCEED');
     $hidden = build_keep_post_fields();
     $hidden->attach(form_input_hidden('got_ftp_details', '1'));
-    if (str_replace(array('on', 'true', 'yes'), array('1', '1', '1'), strtolower(ini_get('safe_mode'))) == '1') {
-        $hidden->attach(form_input_hidden('uses_ftp', '1'));
-    }
+
     $javascript = "var ftp_ticker=function() { var uses_ftp=document.getElementById('uses_ftp'); if (!uses_ftp) return; var form=uses_ftp.form; form.elements['ftp_domain'].disabled=!uses_ftp.checked; form.elements['ftp_directory'].disabled=!uses_ftp.checked; form.elements['ftp_username'].disabled=!uses_ftp.checked; form.elements['ftp_password'].disabled=!uses_ftp.checked; form.elements['remember_password'].disabled=!uses_ftp.checked; }; ftp_ticker(); document.getElementById('uses_ftp').onclick=ftp_ticker;";
 
     $middle = do_template('FORM_SCREEN', array('_GUID' => 'c47a31fca47a7b22eeef3a6269cc2407', 'JAVASCRIPT' => $javascript, 'SKIP_WEBSTANDARDS' => true, 'HIDDEN' => $hidden, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'TITLE' => $title, 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => paragraph(do_lang_tempcode('TEXT_ABSTRACT_FILE_MANAGEMENT'))));
@@ -197,9 +195,7 @@ function get_afm_form_fields()
     }
 
     $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '671ec3d1ffd376766450b36d718f1c60', 'TITLE' => do_lang_tempcode('SETTINGS'))));
-    if (str_replace(array('on', 'true', 'yes'), array('1', '1', '1'), strtolower(ini_get('safe_mode'))) != '1') {
-        $fields->attach(form_input_tick(do_lang_tempcode('NEED_FTP'), do_lang_tempcode('DESCRIPTION_NEED_FTP'), 'uses_ftp', $uses_ftp));
-    }
+    $fields->attach(form_input_tick(do_lang_tempcode('NEED_FTP'), do_lang_tempcode('DESCRIPTION_NEED_FTP'), 'uses_ftp', $uses_ftp));
     $fields->attach(form_input_line(do_lang_tempcode('FTP_DOMAIN'), '', 'ftp_domain', $ftp_domain, false));
     $fields->attach(form_input_line(do_lang_tempcode('FTP_DIRECTORY'), do_lang_tempcode('FTP_FOLDER'), 'ftp_directory', $ftp_directory, false));
     $fields->attach(form_input_line(do_lang_tempcode('FTP_USERNAME'), '', 'ftp_username', $ftp_username, false));

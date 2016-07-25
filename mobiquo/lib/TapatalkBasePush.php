@@ -121,7 +121,7 @@ Abstract Class TapatalkBasePush {
             //if (!defined('IN_MOBIQUO')){
             //    define('IN_MOBIQUO', true);
             //}
-            include_once(dirname(__FILE__) . '/classTTConnection.php');
+            include_once(__DIR__ . '/classTTConnection.php');
         }
 
         if($pushTest){

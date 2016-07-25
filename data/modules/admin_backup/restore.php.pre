@@ -102,7 +102,7 @@ require_lang('version');
 
 $time_start = time();
 
-$myfile = fopen(dirname(__FILE__) . '/restore_data.php', 'rb');
+$myfile = fopen(__DIR__ . '/restore_data.php', 'rb');
 $i = 0;
 $offset = get_param_integer('start_offset', 0);
 if ($offset != 0) {

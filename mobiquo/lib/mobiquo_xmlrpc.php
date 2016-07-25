@@ -27,8 +27,8 @@ class MobiquoServerXMLRPC extends MobiquoServer
      */
     public function __construct()
     {
-        require_once(dirname(__FILE__) . '/xmlrpc.php');
-        require_once(dirname(__FILE__) . '/xmlrpcs.php');
+        require_once(__DIR__ . '/xmlrpc.php');
+        require_once(__DIR__ . '/xmlrpcs.php');
 
         global $SERVER_DEFINE;
         $this->rpc_server = new xmlrpc_server($SERVER_DEFINE, false);

@@ -106,10 +106,10 @@ class MobiquoServerPOST extends MobiquoServer
 
         switch ($format) {
             case 'json':
-                require_once(dirname(__FILE__) . '/mobiquo_json.php');
+                require_once(__DIR__ . '/mobiquo_json.php');
                 return new MobiquoServerJSON();
             case 'xmlrpc':
-                require_once(dirname(__FILE__) . '/mobiquo_xmlrpc.php');
+                require_once(__DIR__ . '/mobiquo_xmlrpc.php');
                 return new MobiquoServerXMLRPC();
             case 'serialize':
                 return null;

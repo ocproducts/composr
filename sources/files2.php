@@ -183,7 +183,7 @@ function cms_get_temp_dir()
         fix_permissions($local_path);
     }
     $server_path = sys_get_temp_dir();
-    $problem_saving = ((str_replace(array('on', 'true', 'yes'), array('1', '1', '1'), strtolower(ini_get('safe_mode'))) == '1') || (get_option('force_local_temp_dir') == '1') || ((@strval(ini_get('open_basedir')) != '') && (preg_match('#(^|:|;)' . preg_quote($server_path, '#') . '($|:|;|/)#', ini_get('open_basedir')) == 0)));
+    $problem_saving = ((get_option('force_local_temp_dir') == '1') || ((@strval(ini_get('open_basedir')) != '') && (preg_match('#(^|:|;)' . preg_quote($server_path, '#') . '($|:|;|/)#', ini_get('open_basedir')) == 0)));
     $path = ($problem_saving ? $local_path : $server_path) . '/';
     return array($path, $problem_saving, $server_path, $local_path);
 }
@@ -1243,7 +1243,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                 curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
                                                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
                                             }
-                                            //if (!$no_redirect) @curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); // May fail with safe mode, meaning we can't follow Location headers. But we can do better ourselves anyway and protect against file:// exploits.
+                                            //if (!$no_redirect) @curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); // we can do better ourselves anyway and protect against file:// exploits.
                                             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, intval($timeout));
                                             curl_setopt($ch, CURLOPT_TIMEOUT, intval($timeout));
                                             curl_setopt($ch, CURLOPT_USERAGENT, $ua);

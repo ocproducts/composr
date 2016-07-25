@@ -90,9 +90,9 @@ if (!file_exists($tmp_path)) {
     header('Content-type: text/plain');
     exit('Temp file has disappeared (' . $tmp_path . ')');
 }
-$tmp_path = dirname(dirname(__FILE__)) . '/data_custom/upgrader.cms.tmp'; // Actually for security, we will not allow it to be configurable (in case someone managed to steal the hash we can't let them extract arbitrary archives)
+$tmp_path = dirname(__DIR__) . '/data_custom/upgrader.cms.tmp'; // Actually for security, we will not allow it to be configurable (in case someone managed to steal the hash we can't let them extract arbitrary archives)
 if (!is_file($tmp_path)) {
-    $tmp_path = dirname(dirname(__FILE__)) . '/data_custom/upgrader.tar.tmp';  // LEGACY. Some old ocPortal upgraders versions overwrite upgrader2.php early, so Composr needs to support the ocPortal temporary name.
+    $tmp_path = dirname(__DIR__) . '/data_custom/upgrader.tar.tmp';  // LEGACY. Some old ocPortal upgraders versions overwrite upgrader2.php early, so Composr needs to support the ocPortal temporary name.
 }
 if (!is_file($tmp_path)) {
     exit('Could not find data_custom/upgrader.cms.tmp');

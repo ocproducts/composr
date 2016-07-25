@@ -684,29 +684,7 @@ function set_http_status_code($code)
     $HTTP_STATUS_CODE = $code; // So we can keep track
 
     if ((!headers_sent()) && (function_exists('browser_matches')) && (!browser_matches('ie')) && (strpos(cms_srv('SERVER_SOFTWARE'), 'IIS') === false)) {
-        switch ($code) {
-            case '301':
-                header('HTTP/1.0 301 Moved Permanently');
-                break;
-            case '400':
-                header('HTTP/1.0 400 Bad Request');
-                break;
-            case '401':
-                header('HTTP/1.0 401 Unauthorized');
-                break;
-            case '403':
-                header('HTTP/1.0 403 Forbidden');
-                break;
-            case '404':
-                header('HTTP/1.0 404 Not Found');
-                break;
-            case '429':
-                header('HTTP/1.0 429 Too Many Requests');
-                break;
-            case '500':
-                header('HTTP/1.0 500 Internal server error');
-                break;
-        }
+        http_response_code(intval($code));
     }
 }
 

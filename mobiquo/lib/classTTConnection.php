@@ -797,7 +797,7 @@ class classTTConnection
              *
              * @link http://forums.invisionpower.com/index.php?autocom=tracker&showissue=11334
              */
-            if (!ini_get('open_basedir') AND !ini_get('safe_mode'))
+            if (!ini_get('open_basedir'))
             {
                 curl_setopt($ch,CURLOPT_FOLLOWLOCATION,1);
             }

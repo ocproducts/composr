@@ -717,7 +717,7 @@ function create_data_mash($url, $data = null, $extension = null, $direct_path = 
             }
             break;
         case 'pdf':
-            if ((str_replace(array('on', 'true', 'yes'), array('1', '1', '1'), strtolower(ini_get('safe_mode'))) != '1') && (php_function_allowed('shell_exec')) && ($tmp_file !== null)) {
+            if ((php_function_allowed('shell_exec')) && ($tmp_file !== null)) {
                 $enc = (get_charset() == 'utf-8') ? ' -enc UTF-8' : '';
                 $path = 'pdftohtml -i -noframes -stdout -hidden' . $enc . ' -q -xml ' . escapeshellarg_wrap($tmp_file);
                 if (stripos(PHP_OS, 'win') !== false) {

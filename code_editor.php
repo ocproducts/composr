@@ -501,7 +501,7 @@ END;
                 @flock($myfile, LOCK_UN);
                 fclose($myfile);
             } else { // Via FTP
-                $path2 = tempnam((((str_replace(array('on', 'true', 'yes'), array('1', '1', '1'), strtolower(ini_get('safe_mode'))) == '1') || ((@strval(ini_get('open_basedir')) != '') && (preg_match('#(^|:|;)/tmp($|:|;|/)#', ini_get('open_basedir')) == 0))) ? get_custom_file_base() . '/safe_mode_temp/' : '/tmp/'), 'cmsce');
+                $path2 = tempnam((((@strval(ini_get('open_basedir')) != '') && (preg_match('#(^|:|;)/tmp($|:|;|/)#', ini_get('open_basedir')) == 0)) ? get_custom_file_base() . '/safe_mode_temp/' : '/tmp/'), 'cmsce');
                 if ($path2 === false) {
                     $path2 = tempnam(get_custom_file_base() . '/safe_mode_temp/', 'cmsce');
                 }
@@ -706,7 +706,7 @@ function ce_check_master_password($password_given)
 function ce_cms_tempnam($prefix = '')
 {
     global $FILE_BASE;
-    $problem_saving = ((str_replace(array('on', 'true', 'yes'), array('1', '1', '1'), strtolower(ini_get('safe_mode'))) == '1') || ((function_exists('get_option')) && (get_option('force_local_temp_dir') == '1')) || ((@strval(ini_get('open_basedir')) != '') && (preg_match('#(^|:|;)/tmp($|:|;|/)#', ini_get('open_basedir')) == 0)));
+    $problem_saving = ((function_exists('get_option')) && (get_option('force_local_temp_dir') == '1')) || ((@strval(ini_get('open_basedir')) != '') && (preg_match('#(^|:|;)/tmp($|:|;|/)#', ini_get('open_basedir')) == 0));
     $local_path = $FILE_BASE . '/safe_mode_temp/';
     $server_path = '/tmp/';
     $tmp_path = $problem_saving ? $local_path : $server_path;

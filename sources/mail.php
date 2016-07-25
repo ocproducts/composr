@@ -171,11 +171,7 @@ class Mail_dispatcher_php extends Mail_dispatcher_base
                 $to_line = '"' . $_to_name . '" <' . $_to_email . '>';
             }
             $php_errormsg = mixed();
-            if ((str_replace(array('on', 'true', 'yes'), array('1', '1', '1'), strtolower(ini_get('safe_mode'))) == '1') || ($additional == '')) {
-                $_worked = mail($to_line, $subject_wrapped, $sending_message, $headers);
-            } else {
-                $_worked = mail($to_line, $subject_wrapped, $sending_message, $headers, $additional);
-            }
+            $_worked = mail($to_line, $subject_wrapped, $sending_message, $headers, $additional);
             if ((!$worked) && (isset($php_errormsg))) {
                 $error = $php_errormsg;
                 $worked = false;

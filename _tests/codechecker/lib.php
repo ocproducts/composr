@@ -23,7 +23,7 @@ if (function_exists('set_time_limit')) {
     @set_time_limit(1000);
 }
 global $COMPOSR_PATH;
-$COMPOSR_PATH = dirname(dirname(dirname(__FILE__)));
+$COMPOSR_PATH = dirname(dirname(__DIR__));
 
 function parse_file($to_use, $verbose = false, $very_verbose = false, $i = null, $count = null)
 {
@@ -320,7 +320,7 @@ function do_lang_tempcode($x, $a = null, $b = null, $c = null)
 {
     global $PARSED;
     if (!isset($PARSED)) {
-        $temp = file_get_contents(dirname(__FILE__) . '/../../lang_custom/EN/phpdoc.ini') . file_get_contents(dirname(__FILE__) . '/../../lang/EN/webstandards.ini') . file_get_contents(dirname(__FILE__) . '/../../lang/EN/global.ini');
+        $temp = file_get_contents(__DIR__ . '/../../lang_custom/EN/phpdoc.ini') . file_get_contents(__DIR__ . '/../../lang/EN/webstandards.ini') . file_get_contents(__DIR__ . '/../../lang/EN/global.ini');
         $temp_2 = explode("\n", $temp);
         $PARSED = array();
         foreach ($temp_2 as $p) {
