@@ -130,6 +130,98 @@ $TABLE_FIELDS['db_meta_indices'] = array(
     )
 );
 
+global $KNOWN_EXTRA_FUNCTIONS;
+$KNOWN_EXTRA_FUNCTIONS = array(
+    'critical_error' => true,
+    'file_array_exists' => true,
+    'file_array_get' => true,
+    'file_array_count' => true,
+    'file_array_get_at' => true,
+    'master__sync_file' => true,
+    'master__sync_file_move' => true,
+    '__construct' => true,
+);
+
+global $KNOWN_EXTRA_CLASSES;
+$KNOWN_EXTRA_CLASSES = array(
+    'stdClass' => true,
+
+    'Exception' => true,
+    'ErrorException' => true,
+    'Error' => true,
+    'ParseError' => true,
+    'TypeError' => true,
+    'ArithmeticError' => true,
+    'DivisionByZeroError' => true,
+    'LogicException' => true,
+    'BadFunctionCallException' => true,
+    'BadMethodCallException' => true,
+    'DomainException' => true,
+    'InvalidArgumentException' => true,
+    'LengthException' => true,
+    'OutOfRangeException' => true,
+    'RuntimeException' => true,
+    'OutOfBoundsException' => true,
+    'OverflowException' => true,
+    'RangeException' => true,
+    'UnderflowException' => true,
+    'UnexpectedValueException' => true,
+    'AssertionError' => true,
+
+    'Closure' => true,
+    'Generator' => true,
+    'ClosedGeneratorException' => true,
+
+    'DateTime' => true,
+    'DateTimeImmutable' => true,
+    'DateTimeZone' => true,
+    'DateInterval' => true,
+    'DatePeriod' => true,
+
+    'RecursiveIteratorIterator' => true,
+    'IteratorIterator' => true,
+    'FilterIterator' => true,
+    'RecursiveFilterIterator' => true,
+    'CallbackFilterIterator' => true,
+    'RecursiveCallbackFilterIterator' => true,
+    'ParentIterator' => true,
+    'LimitIterator' => true,
+    'CachingIterator' => true,
+    'RecursiveCachingIterator' => true,
+    'NoRewindIterator' => true,
+    'AppendIterator' => true,
+    'InfiniteIterator' => true,
+    'RegexIterator' => true,
+    'RecursiveRegexIterator' => true,
+    'EmptyIterator' => true,
+    'RecursiveTreeIterator' => true,
+    'ArrayIterator' => true,
+    'RecursiveArrayIterator' => true,
+    'DirectoryIterator' => true,
+    'FilesystemIterator' => true,
+    'RecursiveDirectoryIterator' => true,
+    'GlobIterator' => true,
+    'MultipleIterator' => true,
+    'ArrayObject' => true,
+
+    'SplFileInfo' => true,
+    'SplFileObject' => true,
+    'SplTempFileObject' => true,
+    'SplDoublyLinkedList' => true,
+    'SplQueue' => true,
+    'SplStack' => true,
+    'SplHeap' => true,
+    'SplMinHeap' => true,
+    'SplMaxHeap' => true,
+    'SplPriorityQueue' => true,
+    'SplFixedArray' => true,
+    'SplObjectStorage' => true,
+
+    'php_user_filter' => true,
+
+    'Directory' => true,
+);
+
 // Special funcs (these may have been defined with stubs, but this says to mark them as requiring guards anyway)...
 global $EXT_FUNCS;
 $EXT_FUNCS = array(
@@ -1340,7 +1432,28 @@ function check_call($c, $c_pos, $class = null, $function_guard = '')
     }
     if (!$found) {
         if (isset($GLOBALS['API'])) {
-            if ((($GLOBALS['OK_EXTRA_FUNCTIONS'] === null) || (preg_match('#^(' . $GLOBALS['OK_EXTRA_FUNCTIONS'] . ')#', $function) == 0) && (preg_match('#^(' . $GLOBALS['OK_EXTRA_FUNCTIONS'] . ')#', $class) == 0)) && (strpos($function_guard, ',' . $function . ',') === false) && (strpos($function_guard, ',' . $class . ',') === false) && (!in_array($function, array('critical_error', 'file_array_exists', 'file_array_get', 'file_array_count', 'file_array_get_at', 'master__sync_file', 'master__sync_file_move', '__construct'))) && (!in_array($class, array('mixed', '?mixed', 'object', '?object', ''/*Dynamic*/)))) {
+            if (
+                (
+                    ($GLOBALS['OK_EXTRA_FUNCTIONS'] === null) ||
+                    (
+                        (preg_match('#^(' . $GLOBALS['OK_EXTRA_FUNCTIONS'] . ')#', $function) == 0) &&
+                        (($class === null) || (preg_match('#^(' . $GLOBALS['OK_EXTRA_FUNCTIONS'] . ')#', $class) == 0))
+                    )
+                )
+                &&
+                (strpos($function_guard, ',' . $function . ',') === false) &&
+                (!isset($GLOBALS['KNOWN_EXTRA_FUNCTIONS'][$function]))
+                &&
+                (
+                    ($class === null)
+                    ||
+                    (
+                        (strpos($function_guard, ',' . $class . ',') === false) &&
+                        (!in_array($class, array('mixed', '?mixed', 'object', '?object', ''/*Dynamic*/))) &&
+                        (!isset($GLOBALS['KNOWN_EXTRA_CLASSES'][$class]))
+                    )
+                )
+            ) {
                 if (($class === null) || ($class == '__global')) {
                     if ($function != '' && $function != 'ocp_mark_as_escaped' && $function != 'ocp_is_escaped'/*These aren't checked with function_exists, checked with a global, for performance reasons*/) {
                         log_warning('Could not find function \'' . $function . '\'', $c_pos);
@@ -1798,8 +1911,10 @@ function check_expression($e, $assignment = false, $equate_false = false, $funct
             global $FUNCTION_SIGNATURES;
             if ((!isset($FUNCTION_SIGNATURES[$inner[1]])) && ($FUNCTION_SIGNATURES != array()) && (strpos($function_guard, ',' . $inner[1] . ',') === false)) {
                 if ((($GLOBALS['OK_EXTRA_FUNCTIONS'] === null) || (preg_match('#^' . $GLOBALS['OK_EXTRA_FUNCTIONS'] . '#', $inner[1]) == 0))) {
-                    if ($inner[1] !== null) {
-                        log_warning('Unknown class, ' . $inner[1], $c_pos);
+                    if (!isset($GLOBALS['KNOWN_EXTRA_CLASSES'][$inner[1]])) {
+                        if ($inner[1] !== null) {
+                            log_warning('Unknown class, ' . $inner[1], $c_pos);
+                        }
                     }
                 }
             }
