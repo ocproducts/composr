@@ -120,7 +120,7 @@ function destrictify($change_content_type = true, $mysql_too = false)
     $GLOBALS['TITLE_CALLED'] = true;
     error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT & ~E_NOTICE);
     if (php_function_allowed('set_time_limit')) {
-        set_time_limit(200);
+        @set_time_limit(200);
     }
     if ((get_forum_type() == 'cns') && ($mysql_too) && (substr(get_db_type(), 0, 5) == 'mysql')) {
         $GLOBALS['SITE_DB']->query('SET sql_mode=\'\'', null, null, true);
@@ -164,16 +164,16 @@ function restrictify()
     // Put back strictness
     error_reporting(E_ALL);
     if (php_function_allowed('set_time_limit')) {
-        set_time_limit(isset($SITE_INFO['max_execution_time']) ? intval($SITE_INFO['max_execution_time']) : 60);
+        @set_time_limit(isset($SITE_INFO['max_execution_time']) ? intval($SITE_INFO['max_execution_time']) : 60);
     }
     if ((get_forum_type() == 'cns') && (substr(get_db_type(), 0, 5) == 'mysql')) {
         $GLOBALS['SITE_DB']->query('SET sql_mode=STRICT_ALL_TABLES', null, null, true);
     }
     if (($GLOBALS['DEV_MODE']) && (strpos(cms_srv('SCRIPT_NAME'), '_tests') === false)) {
-        safe_ini_set('ocproducts.type_strictness', '1');
+        //safe_ini_set('ocproducts.type_strictness', '1');
 
         global $PREVIOUS_XSS_STATE;
-        safe_ini_set('ocproducts.xss_detect', array_pop($PREVIOUS_XSS_STATE));
+        //safe_ini_set('ocproducts.xss_detect', array_pop($PREVIOUS_XSS_STATE));
     }
     if (!GOOGLE_APPENGINE) {
         safe_ini_set('include_path', '');

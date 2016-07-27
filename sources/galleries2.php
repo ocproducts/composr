@@ -1609,7 +1609,7 @@ function delete_gallery($name)
 
     // Images and videos are deleted, because we are deleting the _gallery_, not just a category (nobody is going to be deleting galleries with the expectation of moving the image to a different one in bulk - unlike download categories, for example).
     if (php_function_allowed('set_time_limit')) {
-        set_time_limit(0);
+        @set_time_limit(0);
     }
     do {
         $images = $GLOBALS['SITE_DB']->query_select('images', array('id'), array('cat' => $name), '', 200);

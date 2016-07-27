@@ -73,7 +73,7 @@ function init__minikernel()
     safe_ini_set('track_errors', '1');
     $GLOBALS['SUPPRESS_ERROR_DEATH'] = false;
 
-    safe_ini_set('ocproducts.type_strictness', '1');
+    //safe_ini_set('ocproducts.type_strictness', '1');
 
     safe_ini_set('date.timezone', 'UTC');
 

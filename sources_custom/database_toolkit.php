@@ -36,7 +36,7 @@ function xml_dump_script()
     }
 
     if (php_function_allowed('set_time_limit')) {
-        set_time_limit(0);
+        @set_time_limit(0);
     }
     $GLOBALS['DEV_MODE'] = false;
     $GLOBALS['SEMI_DEV_MODE'] = false;
@@ -191,7 +191,7 @@ function get_sql_dump($include_drops = false, $output_statuses = false, $from = 
 {
     disable_php_memory_limit();
     if (php_function_allowed('set_time_limit')) {
-        set_time_limit(0);
+        @set_time_limit(0);
     }
     $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
     $GLOBALS['NO_QUERY_LIMIT'] = true;

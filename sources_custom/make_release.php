@@ -96,7 +96,7 @@ function make_installers($skip_file_grab = false)
     $make_uni_upgrader = (post_param_integer('make_uni_upgrader', 0) == 1);
 
     if (php_function_allowed('set_time_limit')) {
-        set_time_limit(0);
+        @set_time_limit(0);
     }
     disable_php_memory_limit();
 
