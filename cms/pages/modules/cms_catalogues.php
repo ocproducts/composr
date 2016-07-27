@@ -1972,7 +1972,7 @@ class Module_cms_catalogues_alt extends Standard_crud_module
         if (!fractional_edit()) {
             if (post_param_integer('reset_category_permissions', 0) == 1) {
                 if (php_function_allowed('set_time_limit')) {
-                    set_time_limit(0);
+                    @set_time_limit(0);
                 }
 
                 $start = 0;

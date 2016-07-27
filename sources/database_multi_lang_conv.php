@@ -62,7 +62,7 @@ function disable_content_translation()
     }
 
     if (php_function_allowed('set_time_limit')) {
-        set_time_limit(0);
+        @set_time_limit(0);
     }
 
     reload_lang_fields(true);
@@ -146,7 +146,7 @@ function enable_content_translation()
     }
 
     if (php_function_allowed('set_time_limit')) {
-        set_time_limit(0);
+        @set_time_limit(0);
     }
 
     reload_lang_fields(true);

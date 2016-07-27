@@ -21,7 +21,7 @@ class cqc_database_test_set extends cms_test_case
     public function testDatabase()
     {
         if (php_function_allowed('set_time_limit')) {
-            set_time_limit(0);
+            @set_time_limit(0);
         }
         $result = http_download_file(get_base_url() . '/_tests/codechecker/code_quality.php?subdir=sources/database&api=1', null, true, false, 'Composr', null, null, null, null, null, null, null, null, 10000.0);
         foreach (explode('<br />', $result) as $line) {

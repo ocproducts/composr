@@ -1005,7 +1005,7 @@ class Module_cms_comcode_pages
 
         disable_php_memory_limit();
         if (php_function_allowed('set_time_limit')) {
-            set_time_limit(600);
+            @set_time_limit(600);
         }
         send_http_output_ping();
 

@@ -91,7 +91,7 @@ class Module_shopping
                 'session_id' => 'ID_TEXT',
                 'add_date' => 'TIME',
                 'tot_price' => 'REAL',
-                'order_status' => 'ID_TEXT',
+                'order_status' => 'ID_TEXT', // ORDER_STATUS_[awaiting_payment|payment_received|onhold|dispatched|cancelled|returned]
                 'notes' => 'LONG_TEXT',
                 'transaction_id' => 'SHORT_TEXT',
                 'purchase_through' => 'SHORT_TEXT',

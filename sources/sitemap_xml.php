@@ -231,7 +231,7 @@ function build_sitemap_cache_table()
     push_query_limiting(false);
 
     if (php_function_allowed('set_time_limit')) {
-        set_time_limit(0);
+        @set_time_limit(0);
     }
 
     $GLOBALS['MEMORY_OVER_SPEED'] = true;

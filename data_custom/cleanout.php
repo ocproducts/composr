@@ -98,7 +98,7 @@ function cleanup()
     /* Actioning code follows... */
 
     if (php_function_allowed('set_time_limit')) {
-        set_time_limit(0);
+        @set_time_limit(0);
     }
 
     $GLOBALS['SITE_INFO']['no_email_output'] = '1';

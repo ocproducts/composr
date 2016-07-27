@@ -29,7 +29,7 @@ function upgrade_script()
     require_code('database_action');
     require_code('config2');
     if (php_function_allowed('set_time_limit')) {
-        set_time_limit(180);
+        @set_time_limit(180);
     }
 
     if ((array_key_exists('given_password', $_POST))) {
@@ -237,7 +237,7 @@ function upgrade_script()
 
                     require_code('tar');
                     if (php_function_allowed('set_time_limit')) {
-                        set_time_limit(0);
+                        @set_time_limit(0);
                     }
                     if ((post_param_string('url', '') == '') && ((cms_srv('HTTP_HOST') == 'compo.sr') || ($GLOBALS['DEV_MODE']))) {
                         $temp_path = $_FILES['upload']['tmp_name'];
@@ -1741,7 +1741,7 @@ function perform_search_replace($reps)
 function fu_rename_zone($zone, $new_zone, $dont_bother_with_main_row = false)
 {
     if (php_function_allowed('set_time_limit')) {
-        set_time_limit(0);
+        @set_time_limit(0);
     }
 
     require_code('zones2');
@@ -1905,7 +1905,7 @@ function change_mysql_database_charset($new_charset, $db, $reencode = false)
     @ob_end_clean();
 
     if (php_function_allowed('set_time_limit')) {
-        set_time_limit(0);
+        @set_time_limit(0);
     }
 
     push_db_scope_check(false);
@@ -2395,7 +2395,7 @@ function upgrade_sharedinstall_sites($from = 0)
 
     foreach ($sites as $i => $site) {
         if (php_function_allowed('set_time_limit')) {
-            set_time_limit(0);
+            @set_time_limit(0);
         }
 
         if (($i < $from) && ($site != 'shareddemo')) {

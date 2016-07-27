@@ -102,7 +102,7 @@ function set_member_group_timeout($member_id, $group_id, $timestamp, $prefer_for
 function cleanup_member_timeouts()
 {
     if (php_function_allowed('set_time_limit')) {
-        set_time_limit(0);
+        @set_time_limit(0);
     }
 
     require_code('cns_groups_action');

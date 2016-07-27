@@ -314,6 +314,7 @@ function do_set()
 
     $new = array();
     foreach ($_POST as $key => $val) {
+<<<<<<< HEAD
         if ($key != 'given_password') {
             if (($key == 'master_password') || ($key == 'confirm_master_password')) {
                 if ($val == '') {
@@ -322,13 +323,35 @@ function do_set()
                 $val = password_hash($val, PASSWORD_BCRYPT, array('cost' => 12));
             }
             $new[$key] = $val;
+=======
+        // Non-saved fields
+        if ($key == 'given_password') {
+            continue;
         }
+
+        // If new password is blank use existing one
+        if ((($key == 'master_password') || ($key == 'confirm_master_password')) && ($val == '')) {
+            $val = $given_password;
+>>>>>>> master
+        }
+
+        // Save into $new array
+        $new[$key] = $val;
     }
+
+    // Check confirm password matches
     if ($new['confirm_master_password'] != $new['master_password']) {
         echo '<hr /><p><strong>Your passwords do not match up.</strong></p>';
         return;
     }
     unset($new['confirm_master_password']);
+
+    // Encrypt password
+    if (function_exists('password_hash')) { // PHP5.5+
+        $new['master_password'] = password_hash($new['master_password'], PASSWORD_BCRYPT, array('cost' => 12));
+    } else {
+        $new['master_password'] = '!' . md5($new['master_password'] . 'cms');
+    }
 
     // Test cookie settings. BASED ON CODE FROM INSTALL.PHP
     $base_url = $new['base_url'];

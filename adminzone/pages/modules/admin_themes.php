@@ -1002,6 +1002,71 @@ class Module_admin_themes
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * The UI to select a theme image to edit.
+     *
+     * @return Tempcode The UI
+     */
+    public function manage_images()
+    {
+        if (php_function_allowed('set_time_limit')) {
+            @set_time_limit(300);
+        }
+        send_http_output_ping();
+
+        $lang = choose_language($this->title, true, true);
+        if (is_object($lang)) {
+            return $lang;
+        }
+
+        $GLOBALS['NO_QUERY_LIMIT'] = true;
+
+        $theme = get_param_string('theme', '');
+        if ($theme == '') {
+            return $this->choose_theme($this->title, true);
+        }
+
+        require_code('themes3');
+        regen_theme_images($theme, array($lang => 1));
+        if ($theme != 'default') {
+            regen_theme_images('default', array($lang => 1), $theme);
+        }
+
+        require_code('form_templates');
+        require_code('themes2');
+
+        $skip = array(
+            'icons', // Too many of these to show
+        );
+        $ids = get_all_image_ids_type('', true, $GLOBALS['SITE_DB'], $theme, false, true, $skip); // The final 'true' stops new theme images being detected, as we know regen_theme_images did that (and more conservatively - it won't scan images_custom dirs for NEW codes which an unbridled get_all_image_ids_type call would)
+
+        single_field__start();
+        $fields = form_input_theme_image(do_lang_tempcode('CODENAME'), '', 'id', $ids, null, null, null, false, null, $theme, $lang, true, true);
+        single_field__end();
+
+        $hidden = form_input_hidden('theme', $theme);
+
+        $post_url = build_url(array('page' => '_SELF', 'type' => 'edit_image', 'lang' => $lang), '_SELF');
+
+        $edit_form = do_template('FORM_SINGLE_FIELD', array(
+            '_GUID' => '48b3218750fcea21e0bf3be31ae58296',
+            'HIDDEN' => $hidden,
+            'TEXT' => do_lang_tempcode('CHOOSE_EDIT_LIST'),
+            'GET' => true,
+            'URL' => $post_url,
+            'FIELD' => $fields,
+            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_NAME' => has_js() ? new Tempcode() : do_lang_tempcode('EDIT'), // We don't want a button if JS is on because clicking on images takes you through
+        ));
+
+        $add_url = build_url(array('page' => '_SELF', 'type' => 'add_image', 'theme' => $theme, 'lang' => $lang), '_SELF');
+
+        return do_template('THEME_IMAGE_MANAGE_SCREEN', array('_GUID' => '4e760b0aa59b1bbb6fcf289c0b93ec46', 'ADD_URL' => $add_url, 'TITLE' => $this->title, 'FORM' => $edit_form));
+    }
+
+    /**
+>>>>>>> master
      * The UI to edit a theme image.
      *
      * @return Tempcode The UI
@@ -1138,7 +1203,7 @@ class Module_admin_themes
     public function screen_previews()
     {
         if (php_function_allowed('set_time_limit')) {
-            set_time_limit(120);
+            @set_time_limit(120);
         }
         send_http_output_ping();
 

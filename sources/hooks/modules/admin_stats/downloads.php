@@ -101,7 +101,7 @@ class Hook_admin_stats_downloads
         $csv = get_param_integer('csv', 0) == 1;
         if ($csv) {
             if (php_function_allowed('set_time_limit')) {
-                set_time_limit(0);
+                @set_time_limit(0);
             }
             $start = 0;
             $max = 10000;

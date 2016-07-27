@@ -358,7 +358,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
     $len = strlen($comcode);
 
     if ((php_function_allowed('set_time_limit')) && (ini_get('max_execution_time') != '0')) {
-        set_time_limit(300);
+        @set_time_limit(300);
     }
 
     $allowed_html_seqs = array(

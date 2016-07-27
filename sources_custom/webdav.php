@@ -56,6 +56,9 @@ function webdav_script()
     $server = new DAV\Server($root_dir);
 
     $parsed = parse_url(get_base_url());
+    if (!isset($parsed['path'])) {
+        $parsed['path'] = '';
+    }
     if (substr($parsed['path'], -1) != '/') {
         $parsed['path'] .= '/';
     }

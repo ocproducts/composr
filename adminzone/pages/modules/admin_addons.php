@@ -333,7 +333,7 @@ class Module_admin_addons
     public function gui()
     {
         if (php_function_allowed('set_time_limit')) {
-            set_time_limit(180); // So it can scan inside addons
+            @set_time_limit(180); // So it can scan inside addons
         }
         send_http_output_ping();
 
@@ -628,7 +628,7 @@ class Module_admin_addons
         appengine_live_guard();
 
         if (php_function_allowed('set_time_limit')) {
-            set_time_limit(0);
+            @set_time_limit(0);
         }
         send_http_output_ping();
 

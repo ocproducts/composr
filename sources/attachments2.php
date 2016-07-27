@@ -41,7 +41,7 @@ function do_comcode_attachments($comcode, $type, $id, $previewing_only = false, 
     require_code('comcode_compiler');
 
     if (php_function_allowed('set_time_limit')) {
-        set_time_limit(600); // Thumbnail generation etc can take some time
+        @set_time_limit(600); // Thumbnail generation etc can take some time
     }
 
     global $COMCODE_ATTACHMENTS;

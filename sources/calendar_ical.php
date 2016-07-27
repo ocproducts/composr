@@ -48,7 +48,7 @@ function output_ical()
     }
 
     if (php_function_allowed('set_time_limit')) {
-        set_time_limit(0);
+        @set_time_limit(0);
     }
 
     $filter = get_param_integer('type_filter', null);

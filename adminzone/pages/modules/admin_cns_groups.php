@@ -578,7 +578,7 @@ class Module_admin_cns_groups extends Standard_crud_module
     public function copy_members_into($g)
     {
         if (php_function_allowed('set_time_limit')) {
-            set_time_limit(0);
+            @set_time_limit(0);
         }
         send_http_output_ping();
 

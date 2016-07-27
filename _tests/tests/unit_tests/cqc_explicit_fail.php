@@ -21,7 +21,7 @@ class cqc_explicit_fail_test_set extends cms_test_case
     public function testDatabase()
     {
         if (php_function_allowed('set_time_limit')) {
-            set_time_limit(0);
+            @set_time_limit(0);
         }
         $path = get_file_base() . '/temp/temp.php';
         file_put_contents($path, '<?php echo foo().1+\'\';');

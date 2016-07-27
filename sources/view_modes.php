@@ -66,7 +66,7 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
     global $RECORDED_TEMPLATES_USED;
 
     if (php_function_allowed('set_time_limit')) {
-        set_time_limit(280);
+        @set_time_limit(280);
     }
 
     $middle_spt = new Tempcode();
@@ -583,7 +583,7 @@ function display_webstandards_results($out, $error, $preview_mode = false, $ret 
     $XHTML_SPIT_OUT = true;
 
     if (php_function_allowed('set_time_limit')) {
-        set_time_limit(280);
+        @set_time_limit(280);
     }
 
     require_css('webstandards');

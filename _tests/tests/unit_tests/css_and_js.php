@@ -21,7 +21,7 @@ class css_and_js_test_set extends cms_test_case
     public function setUp()
     {
         if (php_function_allowed('set_time_limit')) {
-            set_time_limit(0);
+            @set_time_limit(0);
         }
 
         $_GET['keep_no_minify'] = '1';

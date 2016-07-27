@@ -62,5 +62,7 @@ When you add a new language pack in Composr you have to enter the codename. If y
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_intl"]Localisation and internationalisation[/page]
+ - [page="_SEARCH:tut_intl_maintenance"]International support communities[/page]
+ - [page="_SEARCH:tut_intl_content"]Translating Composr content[/page]
 
 {$SET,tutorial_tags,core_language_editing,Internationalisation,Contributing,expert}{$SET,tutorial_add_date,Aug 2015}{$SET,tutorial_summary,Some technical matters relating to how Composr's translation system is defined.}[block]main_tutorial_rating[/block]

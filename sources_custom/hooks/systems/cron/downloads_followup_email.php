@@ -74,7 +74,7 @@ class Hook_cron_downloads_followup_email
         }
 
         if (php_function_allowed('set_time_limit')) {
-            set_time_limit(0);
+            @set_time_limit(0);
         }
 
         // Set the templates names to use. Use CUSTOM template if it exists, else use the default template.

@@ -126,7 +126,7 @@ function make_backup_2($file, $b_type, $max_size) // This is called as a shutdow
     }
 
     if (php_function_allowed('set_time_limit')) {
-        set_time_limit(0);
+        @set_time_limit(0);
     }
     $logfile_path = get_custom_file_base() . '/exports/backups/' . $file . '.txt';
     $logfile = @fopen($logfile_path, GOOGLE_APPENGINE ? 'wb' : 'wt') or intelligent_write_error($logfile_path); // .txt file because IIS doesn't allow .log download

@@ -827,7 +827,7 @@ class Module_admin_setupwizard
         force_have_afm_details();
 
         if (php_function_allowed('set_time_limit')) {
-            set_time_limit(600);
+            @set_time_limit(600);
         }
         send_http_output_ping();
 
@@ -1048,7 +1048,7 @@ class Module_admin_setupwizard
 
         // Rules
         if (post_param_integer('skip_7', 0) == 0) {
-            $full_path = get_custom_file_base() . '/pages/comcode_custom/' . get_site_default_lang() . '/rules.txt';
+            $full_path = get_custom_file_base() . '/pages/comcode_custom/' . get_site_default_lang() . '/_rules.txt';
             if (!file_exists(dirname($full_path))) {
                 require_code('files2');
                 make_missing_directory(dirname($full_path));
@@ -1058,7 +1058,7 @@ class Module_admin_setupwizard
                 fix_permissions($full_path . '.' . strval(time()));
                 sync_file($full_path . '.' . strval(time()));
             }
-            $myfile = @fopen($full_path, GOOGLE_APPENGINE ? 'wb' : 'wt') or intelligent_write_error(get_custom_file_base() . '/pages/comcode_custom/' . get_site_default_lang() . '/rules.txt');
+            $myfile = @fopen($full_path, GOOGLE_APPENGINE ? 'wb' : 'wt') or intelligent_write_error($full_path);
             $rf = $this->get_rules_file(post_param_string('rules'));
             if (fwrite($myfile, $rf) < strlen($rf)) {
                 warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);

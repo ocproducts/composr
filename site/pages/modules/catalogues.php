@@ -425,7 +425,7 @@ class Module_catalogues
 
             // Move floats and integers into their own new tables
             if (php_function_allowed('set_time_limit')) {
-                set_time_limit(0);
+                @set_time_limit(0);
             }
             $sql_integer = db_string_equal_to('cf_type', 'integer') . ' OR ' . db_string_equal_to('cf_type', 'member') . ' OR ' . db_string_equal_to('cf_type', 'tick');
             $sql_float = db_string_equal_to('cf_type', 'float');

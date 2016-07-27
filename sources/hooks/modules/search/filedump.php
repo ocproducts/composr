@@ -166,7 +166,7 @@ class Hook_search_filedump extends FieldsSearchHook
                     ));
                 } else {
                     if (php_function_allowed('set_time_limit')) {
-                        set_time_limit(5);
+                        @set_time_limit(5);
                     }
 
                     $tpl = do_image_thumb($url, $caption, true, false, null, null, true);

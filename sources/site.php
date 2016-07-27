@@ -102,7 +102,7 @@ function init__site()
     if (running_script('index')) {
         global $SITE_INFO;
         $access_host = preg_replace('#:.*#', '', cms_srv('HTTP_HOST'));
-        if (($access_host != '') && ((isset($_SERVER['HTTP_HOST'])) || (isset($_ENV['HTTP_HOST']))) && (!$GLOBALS['EXTERNAL_CALL'])) {
+        if (($access_host != '') && ((isset($_SERVER['HTTP_HOST'])) || (isset($_ENV['HTTP_HOST']))) && (empty($GLOBALS['EXTERNAL_CALL']))) {
             $parsed_base_url = parse_url(get_base_url());
 
             if ((array_key_exists('host', $parsed_base_url)) && (strtolower($parsed_base_url['host']) != strtolower($access_host))) {

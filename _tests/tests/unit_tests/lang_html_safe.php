@@ -36,7 +36,7 @@ class lang_html_safe_test_set extends cms_test_case
         require_code('files');
 
         if (php_function_allowed('set_time_limit')) {
-            set_time_limit(0);
+            @set_time_limit(0);
         }
 
         global $LANGUAGE_STRINGS, $LANGUAGE_HTML, $LANGUAGE_LITERAL, $LANGUAGE_CURRENT, $FILE, $FIND_NO_GO_HTML_SPOTS;

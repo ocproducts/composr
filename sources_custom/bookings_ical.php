@@ -28,7 +28,7 @@ function bookables_ical_script()
     //header('Content-Disposition: inline; filename="bookables_export.ics"');
 
     if (php_function_allowed('set_time_limit')) {
-        set_time_limit(0);
+        @set_time_limit(0);
     }
 
     if (cms_srv('REQUEST_METHOD') == 'HEAD') {
@@ -171,7 +171,7 @@ function bookings_ical_script()
     }
 
     if (php_function_allowed('set_time_limit')) {
-        set_time_limit(0);
+        @set_time_limit(0);
     }
 
     $time = get_param_integer('from', time());
