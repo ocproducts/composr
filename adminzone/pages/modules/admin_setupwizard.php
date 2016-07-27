@@ -835,7 +835,7 @@ class Module_admin_setupwizard
         force_have_afm_details();
 
         if (php_function_allowed('set_time_limit')) {
-            set_time_limit(600);
+            @set_time_limit(600);
         }
         send_http_output_ping();
 

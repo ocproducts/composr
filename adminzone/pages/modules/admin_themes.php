@@ -2012,7 +2012,7 @@ class Module_admin_themes
     public function manage_images()
     {
         if (php_function_allowed('set_time_limit')) {
-            set_time_limit(300);
+            @set_time_limit(300);
         }
         send_http_output_ping();
 
@@ -2207,7 +2207,7 @@ class Module_admin_themes
     public function list_screen_previews()
     {
         if (php_function_allowed('set_time_limit')) {
-            set_time_limit(120);
+            @set_time_limit(120);
         }
         send_http_output_ping();
 

@@ -738,6 +738,10 @@ class classTTConnection
         }
 
         $tmp=preg_split("/\r\n\r\n/",$data,2);
+        if (!isset($tmp[1]))
+        {
+            return false;
+        }
         $data=trim($tmp[1]);
 
         $this->raw_headers=trim($tmp[0]);

@@ -17,7 +17,7 @@ i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_
 
 disable_php_memory_limit();
 if (php_function_allowed('set_time_limit')) {
-    set_time_limit(0);
+    @set_time_limit(0);
 }
 $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
 

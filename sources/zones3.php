@@ -169,7 +169,7 @@ function actual_delete_zone($zone, $force = false, $skip_afm = false)
 
     if (!$force) {
         if (php_function_allowed('set_time_limit')) {
-            set_time_limit(0);
+            @set_time_limit(0);
         }
         disable_php_memory_limit();
 

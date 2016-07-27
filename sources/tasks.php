@@ -67,7 +67,7 @@ function execute_task_background($task_row)
 
     disable_php_memory_limit();
     if (php_function_allowed('set_time_limit')) {
-        set_time_limit(0);
+        @set_time_limit(0);
     }
 
     $hook = $task_row['t_hook'];
@@ -184,7 +184,7 @@ function call_user_func_array__long_task($plain_title, $title, $hook, $args = nu
         // Disable limits, as tasks can be resource-intensive
         disable_php_memory_limit();
         if (php_function_allowed('set_time_limit')) {
-            set_time_limit(0);
+            @set_time_limit(0);
         }
 
         // Run task

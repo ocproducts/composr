@@ -222,7 +222,7 @@ function actual_add_catalogue_field($c_name, $name, $description = '', $type = '
     $ob = get_fields_hook($type);
 
     if (php_function_allowed('set_time_limit')) {
-        set_time_limit(0);
+        @set_time_limit(0);
     }
 
     // Now add field values for all pre-existing entries (in the ideal world, there would be none yet)
@@ -372,7 +372,7 @@ function actual_delete_catalogue($name)
 
     // Delete anything involved (ha ha destruction!)
     if (php_function_allowed('set_time_limit')) {
-        set_time_limit(0);
+        @set_time_limit(0);
     }
     do {
         $entries = collapse_1d_complexity('id', $GLOBALS['SITE_DB']->query_select('catalogue_entries', array('id'), array('c_name' => $name), '', 500));
@@ -603,7 +603,7 @@ function actual_add_catalogue_category($catalogue_name, $title, $description, $n
 function rebuild_catalogue_cat_treecache()
 {
     if (php_function_allowed('set_time_limit')) {
-        set_time_limit(0);
+        @set_time_limit(0);
     }
 
     $GLOBALS['SITE_DB']->query_delete('catalogue_cat_treecache');
@@ -838,7 +838,7 @@ function actual_delete_catalogue_category($id, $deleting_all = false)
 
     if (!$deleting_all) { // If not deleting the whole catalogue
         if (php_function_allowed('set_time_limit')) {
-            set_time_limit(0);
+            @set_time_limit(0);
         }
 
         if ($myrow['c_is_tree'] == 1) {
@@ -850,7 +850,7 @@ function actual_delete_catalogue_category($id, $deleting_all = false)
             // If we're not in a tree...
 
             if (php_function_allowed('set_time_limit')) {
-                set_time_limit(0);
+                @set_time_limit(0);
             }
 
             $GLOBALS['SITE_DB']->query_delete('catalogue_categories', array('cc_parent_id' => $id)); // Does nothing, in theory, as it's not a tree!

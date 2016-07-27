@@ -40,7 +40,7 @@ function commandr_script()
 
     if ($cli) {
         if (php_function_allowed('set_time_limit')) {
-            set_time_limit(0);
+            @set_time_limit(0);
         }
     }
 

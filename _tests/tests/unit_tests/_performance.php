@@ -69,7 +69,7 @@ class _performance_test_set extends cms_test_case
 
     public function _test_screen_performance($node)
     {
-        set_time_limit(0);
+        @set_time_limit(0);
 
         $page_link = $node['page_link'];
 

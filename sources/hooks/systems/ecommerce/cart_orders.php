@@ -83,7 +83,7 @@ class Hook_ecommerce_cart_orders
         require_lang('shopping');
 
         if (php_function_allowed('set_time_limit')) {
-            set_time_limit(0);
+            @set_time_limit(0);
         }
 
         if (!is_null($search)) {

@@ -93,7 +93,7 @@ function init__database__xml()
     }
 
     if (php_function_allowed('set_time_limit')) {
-        set_time_limit(100); // XML DB is *slow*
+        @set_time_limit(100); // XML DB is *slow*
     }
 }
 

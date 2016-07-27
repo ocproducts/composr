@@ -77,7 +77,7 @@ function init__m_zip()
             global $M_ZIP_DIR_HANDLES, $M_ZIP_DIR_OPEN_PATHS;
 
             if (php_function_allowed('set_time_limit')) {
-                set_time_limit(200);
+                @set_time_limit(200);
             }
 
             list($usec, $sec) = explode(' ', microtime(false));

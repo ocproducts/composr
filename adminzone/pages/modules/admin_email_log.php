@@ -133,7 +133,7 @@ class Module_admin_email_log
         require_code('mail');
 
         if (php_function_allowed('set_time_limit')) {
-            set_time_limit(60);
+            @set_time_limit(60);
         }
         send_http_output_ping();
 

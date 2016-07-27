@@ -577,7 +577,7 @@ function do_backup_script()
         }
     }
     header('Content-Length: ' . strval($new_length));
-    set_time_limit(0);
+    @set_time_limit(0);
     error_reporting(0);
 
     // Send actual data

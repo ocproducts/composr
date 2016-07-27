@@ -365,6 +365,9 @@ function object_factory($class, $failure_ok = false)
 /**
  * Find whether a particular PHP function is blocked.
  *
+ * Note that you still need to put "@" before set_time_limit, as some web host(s) have their own non-detectable block:
+ *  "Cannot set max execution time limit due to system policy"
+ *
  * @param  string $function Function name.
  * @return boolean Whether it is.
  */

@@ -240,7 +240,7 @@ function store_transcoding_failure($transcoder_id)
 function store_transcoding_success($transcoder_id, $new_url = null)
 {
     if (php_function_allowed('set_time_limit')) {
-        set_time_limit(0);
+        @set_time_limit(0);
     }
 
     // Stuff about the transcoding

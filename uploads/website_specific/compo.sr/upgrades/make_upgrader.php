@@ -42,7 +42,7 @@ function make_upgrade_get_path($from_version_dotted, $to_version_dotted)
     }
 
     if (php_function_allowed('set_time_limit')) {
-        set_time_limit(0);
+        @set_time_limit(0);
     }
     require_code('tar');
     require_code('m_zip');

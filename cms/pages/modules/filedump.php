@@ -1255,7 +1255,7 @@ class Module_filedump
         }
 
         if (php_function_allowed('set_time_limit')) {
-            set_time_limit(0); // Slowly uploading a file can trigger time limit, on some servers
+            @set_time_limit(0); // Slowly uploading a file can trigger time limit, on some servers
         }
 
         $place = filter_naughty(post_param_string('place'));

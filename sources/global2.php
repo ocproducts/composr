@@ -191,11 +191,11 @@ function init__global2()
      */
     $SEMI_DEV_MODE = (((!array_key_exists('dev_mode', $SITE_INFO) || ($SITE_INFO['dev_mode'] == '1')) && (is_dir(get_file_base() . '/.git') || (function_exists('ocp_mark_as_escaped')))));
     if (php_function_allowed('set_time_limit')) {
-        set_time_limit(isset($SITE_INFO['max_execution_time']) ? intval($SITE_INFO['max_execution_time']) : 60);
+        @set_time_limit(isset($SITE_INFO['max_execution_time']) ? intval($SITE_INFO['max_execution_time']) : 60);
     }
     if ($DEV_MODE) {
         if (php_function_allowed('set_time_limit')) {
-            set_time_limit(10);
+            @set_time_limit(10);
         }
         //safe_ini_set('ocproducts.type_strictness', '1');  Disabled due to incompatibility with ocP PHP7. v11 will turn back on.
         //safe_ini_set('ocproducts.xss_detect', '1');  Disabled due to incompatibility with ocP PHP7. v11 will turn back on.

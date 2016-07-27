@@ -145,7 +145,7 @@ if (strlen($httprange) > 0) {
 }
 header('Content-Length: ' . strval($new_length));
 if (php_function_allowed('set_time_limit')) {
-    set_time_limit(0);
+    @set_time_limit(0);
 }
 error_reporting(0);
 

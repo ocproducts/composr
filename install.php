@@ -1045,7 +1045,7 @@ function step_5()
     }
 
     if (php_function_allowed('set_time_limit')) {
-        set_time_limit(180);
+        @set_time_limit(180);
     }
 
     $url = 'install.php?step=6';
@@ -2092,7 +2092,7 @@ function step_5_core_2()
 function step_6()
 {
     if (php_function_allowed('set_time_limit')) {
-        set_time_limit(180);
+        @set_time_limit(180);
     }
 
     if (count($_POST) == 0) {
@@ -2127,7 +2127,7 @@ function step_6()
 function big_installation_common()
 {
     if (php_function_allowed('set_time_limit')) {
-        set_time_limit(180);
+        @set_time_limit(180);
     }
 
     if (count($_POST) == 0) {
