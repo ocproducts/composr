@@ -339,7 +339,13 @@ function get_php_file_api($filename, $include_code = true)
                 }
             }
 
-            $function = array('filename' => $filename, 'parameters' => $parameters, 'name' => $function_name, 'description' => $description, 'flags' => $flags);
+            $function = array(
+                'filename' => $filename,
+                'parameters' => $parameters,
+                'name' => $function_name,
+                'description' => $description,
+                'flags' => $flags,
+            );
             if ($include_code) {
                 $function['code'] = $code;
             }
@@ -423,6 +429,7 @@ function _read_php_function_line($_line)
     $arg_default = '';
     $arg_name = '';
     $ref = false;
+    $is_variadic = false;
 
     for ($k = 0; $k < strlen($_line); $k++) {
         $char = $_line[$k];
@@ -458,7 +465,7 @@ function _read_php_function_line($_line)
                     if (!isset($default)) {
                         $default = null; // Fix for HHVM, #1161
                     }
-                    $parameters[] = array('name' => $arg_name, 'default' => $default, 'default_raw' => $default_raw, 'ref' => $ref);
+                    $parameters[] = array('name' => $arg_name, 'default' => $default, 'default_raw' => $default_raw, 'ref' => $ref, 'is_variadic' => $is_variadic);
                     $arg_name = '';
                     $arg_default = '';
                     $parse = 'in_args';
@@ -475,7 +482,7 @@ function _read_php_function_line($_line)
                     if (!isset($default)) {
                         $default = null; // Fix for HHVM, #1161
                     }
-                    $parameters[] = array('name' => $arg_name, 'default' => $default, 'default_raw' => $default_raw, 'ref' => $ref);
+                    $parameters[] = array('name' => $arg_name, 'default' => $default, 'default_raw' => $default_raw, 'ref' => $ref, 'is_variadic' => $is_variadic);
                     $parse = 'done';
                 } else {
                     $arg_default .= $char;
@@ -483,14 +490,17 @@ function _read_php_function_line($_line)
                 break;
 
             case 'in_args':
-                if (($char == '/') && ($_line[$k + 1] == '*')) {
+                if (($char == '.') && ($_line[$k + 1] == '.') && ($_line[$k + 2] == '.')) {
+                    $k += 2;
+                    $is_variadic = true;
+                } elseif (($char == '/') && ($_line[$k + 1] == '*')) {
                     $parse = 'in_comment';
                 } elseif (is_alphanumeric($char)) {
                     $arg_name .= $char;
                 } elseif ($char == '&') {
                     $ref = true;
                 } elseif ($char == ',') {
-                    $parameters[] = array('name' => $arg_name, 'ref' => $ref);
+                    $parameters[] = array('name' => $arg_name, 'ref' => $ref, 'is_variadic' => $is_variadic);
                     $ref = false;
                     $arg_name = '';
                 } elseif ($char == '=') {
@@ -498,7 +508,7 @@ function _read_php_function_line($_line)
                     $arg_default = '';
                 } elseif ($char == ')') {
                     if ($arg_name != '') {
-                        $parameters[] = array('name' => $arg_name, 'ref' => $ref);
+                        $parameters[] = array('name' => $arg_name, 'ref' => $ref, 'is_variadic' => $is_variadic);
                     }
                     $parse = 'done';
                 }
@@ -837,208 +847,4 @@ function _fail_php_type_check($type, $function_name, $name, $value, $echo = fals
     } else {
         attach_message(do_lang_tempcode('TYPE_MISMATCH', escape_html($function_name), escape_html($name), is_string($value) ? $value : strval($value)/*, $type*/), 'warn');
     }
-}
-
-/**
- * Render a PHP function to display in a template.
- *
- * @param  array $function The map of function information
- * @param  array $class The map of class information
- * @param  boolean $show_filename Show filenames in the function description
- * @return array A pair: The rendered function, The rendered summary (for a TOC)
- */
-function render_php_function($function, $class, $show_filename = false)
-{
-    $parameters = new Tempcode();
-    $full_parameters = new Tempcode();
-    foreach ($function['parameters'] as $parameter) {
-        //if (!array_key_exists('type', $parameter)) exit($function['name']);
-
-        $parameters->attach(do_template('PHP_PARAMETER_LIST', array('_GUID' => '03e76c19ec2cf9cb7f283db72728fc13', 'TYPE' => $parameter['type'], 'NAME' => $parameter['name'])));
-
-        $bits = render_php_function_do_bits($parameter);
-
-        $full_parameters->attach(do_template('PHP_PARAMETER', array('_GUID' => 'fa1f59637723d35da5e210e4efa0e27c', 'BITS' => $bits)));
-    }
-
-    if (array_key_exists('return', $function)) {
-        $return = render_php_function_do_bits($function['return']);
-        $return_type = $function['return']['type'];
-    } else {
-        $return = new Tempcode();
-        $return_type = 'void';
-    }
-
-    $description = comcode_to_tempcode($function['description']);
-
-    if ((php_function_allowed('highlight_string')) && (array_key_exists('code', $function)) && ($function['filename'] != 'sources/phpstub.php')) {
-        $_code = "<" . "?php\n" . $function['code'] . "\n?" . ">";
-
-        ob_start();
-        highlight_string($_code);
-        $code = ob_get_clean();
-        $code = str_replace('&lt;?php<br />', '', $code);
-        $code = str_replace('?&gt;', '', $code);
-        require_code('xhtml');
-        $code = xhtmlise_html($code);
-    } else {
-        $code = '';
-    }
-
-    $filename = $show_filename ? $function['filename'] : '';
-    if (!isset($class['name'])) {
-        $class['name'] = '';
-    }
-
-    $a = do_template('PHP_FUNCTION', array(
-        '_GUID' => 'f01224ffadc5cde023a1777b9267da61',
-        'FILENAME' => $filename,
-        'CODE' => $code,
-        'RETURN_TYPE' => $return_type,
-        'FUNCTION' => $function['name'],
-        'CLASS' => $class['name'],
-        'PARAMETERS' => $parameters,
-        'DESCRIPTION' => $description,
-        'FULL_PARAMETERS' => $full_parameters,
-        'RETURN' => $return,
-    ));
-    $b = do_template('PHP_FUNCTION_SUMMARY', array('_GUID' => 'ac91501d0fcef2f17c7f068f0d506d42', 'FILENAME' => $filename, 'RETURN_TYPE' => $return_type, 'CLASS' => $class['name'], 'FUNCTION' => $function['name'], 'PARAMETERS' => $parameters));
-
-    return array($a, $b);
-}
-
-/**
- * Get a PHP function parameter line.
- *
- * @param  array $parameter A map containing: name, description, default, type, set, range
- * @return Tempcode The line
- */
-function render_php_function_do_bits($parameter)
-{
-    $bits = new Tempcode();
-
-    if (array_key_exists('name', $parameter)) { // Name
-        $bits->attach(do_template('PHP_PARAMETER_BIT', array('_GUID' => '81bd29ddf7c9b4d2ae03ca870575cb18', 'NAME' => do_lang_tempcode('NAME'), 'VALUE' => $parameter['name'])));
-    }
-    if (array_key_exists('description', $parameter)) { // Description
-        $description = comcode_to_tempcode($parameter['description']);
-        $bits->attach(do_template('PHP_PARAMETER_BIT', array('_GUID' => 'c1e8627fa77c26b15d4346948c623fd3', 'NAME' => do_lang_tempcode('DESCRIPTION'), 'VALUE' => $description)));
-    }
-    if (array_key_exists('default', $parameter)) { // Default
-        $value = '';
-        if (!is_string($parameter['default'])) {
-            if ($parameter['default'] !== null) {
-                $value = strval($parameter['default']);
-            }
-        } else {
-            $value = $parameter['default'];
-        }
-        $bits->attach(do_template('PHP_PARAMETER_BIT', array('_GUID' => 'b5fc6eb98568ca4e36e25cb15d3e26b5', 'NAME' => do_lang_tempcode('DEFAULT_VALUE'), 'VALUE' => $value)));
-    }
-    if (array_key_exists('type', $parameter)) { // Type
-        $bits->attach(do_template('PHP_PARAMETER_BIT', array('_GUID' => 'dd638a63173699326a8f856e931354d5', 'NAME' => do_lang_tempcode('TYPE'), 'VALUE' => $parameter['type'])));
-    }
-    if (array_key_exists('set', $parameter)) { // Set
-        $bits->attach(do_template('PHP_PARAMETER_BIT', array('_GUID' => 'd647ace9bdd0150dac1b02e3b1cf12c9', 'NAME' => do_lang_tempcode('POSSIBLE_VALUES'), 'VALUE' => $parameter['set'])));
-    }
-    if (array_key_exists('range', $parameter)) { // Range
-        $bits->attach(do_template('PHP_PARAMETER_BIT', array('_GUID' => '845d1a0286323342bc4e011b178d4ac1', 'NAME' => do_lang_tempcode('VALUE_RANGE'), 'VALUE' => $parameter['range'])));
-    }
-
-    return $bits;
-}
-
-/**
- * Convert a code file to HHVM's hack language (i.e. strict typing).
- *
- * @param  PATH $filename The file path
- * @return string The new code
- */
-function convert_from_php_to_hhvm_hack($filename)
-{
-    $code = file_get_contents(get_file_base() . '/' . $filename);
-    if (substr($code, 0, 5) == '<' . '?php') {
-        $code = '<' . '?hh' . substr($code, 5);
-
-        require_code('php');
-        $classes = get_php_file_api($filename, false);
-        if (!isset($classes['__global']['functions'])) {
-            return $code;
-        }
-        foreach ($classes['__global']['functions'] as $function) {
-            $func_start = 'function ' . $function['name'] . '(';
-            $pos = strpos($code, "\n" . $func_start);
-            $pos2 = strpos($code, "\n", $pos + 1);
-            if ($pos2 === false) {
-                $pos2 = strlen($code);
-            }
-            if ($pos !== false) {
-                $new_header = $func_start;
-                foreach ($function['parameters'] as $i => $parameter) {
-                    if ($i != 0) {
-                        $new_header .= ',';
-                    }
-
-                    $new_header .= cms_type_to_hhvm_type($parameter['type']) . ' ';
-
-                    if ($parameter['ref']) {
-                        $new_header .= '&';
-                    }
-
-                    $new_header .= '$' . $parameter['name'];
-                    if (array_key_exists('default', $parameter)) {
-                        $new_header .= '=';
-                        $new_header .= $parameter['default_raw'];
-                    }
-                }
-                $new_header .= ')';
-
-                if (isset($function['return'])) {
-                    $new_header .= ' : ' . cms_type_to_hhvm_type($function['return']['type']);
-                }
-
-                $code = substr($code, 0, $pos) . "\n" . $new_header . substr($code, $pos2);
-            } else {
-                // Should not get here
-            }
-        }
-    }
-    return $code;
-}
-
-/**
- * Convert a Composr type to an HHVM hack type.
- *
- * @param  ID_TEXT $t Composr type
- * @return ID_TEXT HHVM type
- */
-function cms_type_to_hhvm_type($t)
-{
-    if ($t[0] == '~') {
-        return 'mixed';
-    }
-    $nullable = false;
-    if ($t[0] == '@') {
-        $nullable = true;
-        $t = substr($t, 1);
-    }
-    if (substr($t, 0, 6) == 'object') {
-        $t = 'mixed';
-    }
-    if ($t == 'REAL') {
-        $t = 'float';
-    }
-    if (in_array($t, array('MEMBER', 'SHORT_INTEGER', 'UINTEGER', 'AUTO_LINK', 'BINARY', 'GROUP', 'TIME'))) {
-        $t = 'integer';
-    }
-    if (in_array($t, array('LONG_TEXT', 'SHORT_TEXT', 'MINIID_TEXT', 'ID_TEXT', 'LANGUAGE_NAME', 'URLPATH', 'PATH', 'IP', 'EMAIL'))) {
-        $t = 'string';
-    }
-    if (in_array($t, array('Tempcode'))) {
-        $t = 'Tempcode';
-    }
-    if (in_array($t, array('list', 'map'))) {
-        $t = 'array';
-    }
-    return ($nullable ? '?' : '') . $t;
 }

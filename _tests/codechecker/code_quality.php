@@ -1074,10 +1074,10 @@ function check_method($c, $c_pos, $function_guard = '')
 {
     global $LOCAL_VARIABLES, $FUNCTION_SIGNATURES;
 
+    $params = $c[2];
+
     if ($c[1] !== null) {
         check_variable($c[1], false, $function_guard);
-
-        $params = $c[2];
 
         // Special rule for 'this->db'
         if (($c[1][1] == 'this') && ($c[1][2][1][1] == 'db') && ((!isset($c[1][2][2][0])) || ($c[1][2][2][0] != 'DEREFERENCE'))) {
@@ -1111,7 +1111,7 @@ function check_method($c, $c_pos, $function_guard = '')
             } else {
                 // Parameters
                 foreach ($params as $e) {
-                    check_expression($e, false, false, $function_guard);
+                    check_expression($e[0], false, false, $function_guard);
                 }
 
                 return 'mixed';
@@ -1121,8 +1121,8 @@ function check_method($c, $c_pos, $function_guard = '')
         scan_extractive_expressions($c[1][2]);
     }
     // Parameters
-    foreach ($c[2] as $e) {
-        check_expression($e, false, false, $function_guard);
+    foreach ($params as $e) {
+        check_expression($e[0], false, false, $function_guard);
     }
 
     return 'mixed';
@@ -1147,7 +1147,7 @@ function actual_check_method($class, $method, $params, $c_pos, $function_guard =
 
         // Parameters
         foreach ($params as $e) {
-            check_expression($e, false, false, $function_guard);
+            check_expression($e[0], false, false, $function_guard);
         }
 
         return $ret;
@@ -1163,8 +1163,10 @@ function check_call($c, $c_pos, $class = null, $function_guard = '')
     }
     $class = preg_replace('#^(\?|~|object-)*#', '', $class);
 
+    $params = $c[2];
+
     if ((isset($GLOBALS['PEDANTIC'])) && (array_key_exists(3, $c)) && (!$c[3])) {
-        if (((isset($GLOBALS['VAR_ERROR_FUNCS'][$c[1]])) && (@$c[2][1][0] == 'VARIABLE')) || (isset($GLOBALS['ERROR_FUNCS'][$c[1]]))) {
+        if (((isset($GLOBALS['VAR_ERROR_FUNCS'][$c[1]])) && (@$params[1][0][0] == 'VARIABLE')) || (isset($GLOBALS['ERROR_FUNCS'][$c[1]]))) {
             log_warning('Check this call is error-caught', $c_pos);
         }
     }
@@ -1201,35 +1203,34 @@ function check_call($c, $c_pos, $class = null, $function_guard = '')
     }
 
     if ($class == 'DatabaseConnector') {
-        $param = $c[2];
-        if ((count($param) >= 2) && ($param[0][0] == 'LITERAL')) {
-            $table = $param[0][1][1];
+        if ((count($params) >= 2) && ($params[0][0][0] == 'LITERAL')) {
+            $table = $params[0][0][1][1];
             if ($function == 'query_insert') {
-                $map = check_db_map($table, $param[1], $c_pos, true);
+                $map = check_db_map($table, $params[1][0], $c_pos, true);
             }
             if ($function == 'query_update') {
-                check_db_map($table, $param[1], $c_pos);
-                if (isset($param[2])) {
-                    check_db_map($table, $param[2], $c_pos);
+                check_db_map($table, $params[1][0], $c_pos);
+                if (isset($params[2][0])) {
+                    check_db_map($table, $params[2][0], $c_pos);
                 }
             }
             if ($function == 'query_select') {
-                check_db_fields($table, $param[1], $c_pos);
-                if (isset($param[2])) {
-                    check_db_map($table, $param[2], $c_pos);
+                check_db_fields($table, $params[1][0], $c_pos);
+                if (isset($params[2][0])) {
+                    check_db_map($table, $params[2][0], $c_pos);
                 }
             }
             if (($function == 'query_select_value') || ($function == 'query_select_value_if_there')) {
-                check_db_field($table, $param[1], $c_pos);
-                if (isset($param[2])) {
-                    check_db_map($table, $param[2], $c_pos);
+                check_db_field($table, $params[1][0], $c_pos);
+                if (isset($params[2][0])) {
+                    check_db_map($table, $params[2][0], $c_pos);
                 }
             }
         }
     }
 
-    foreach ($c[2] as $param) {
-        if ($param[0] == 'VARIABLE_REFERENCE') {
+    foreach ($params as $param) {
+        if ($param[0][0] == 'VARIABLE_REFERENCE') {
             log_warning('Call by reference to function \'' . $function . '\'', $c_pos);
         }
     }
@@ -1240,12 +1241,12 @@ function check_call($c, $c_pos, $class = null, $function_guard = '')
             $ret = $potential['return'];
         }
         foreach ($potential['parameters'] as $i => $param) {
-            if ((!isset($c[2][$i])) && (!array_key_exists('default', $param))) {
+            if ((!isset($params[$i])) && (($i > 0) || (!$params[$i - 1]['is_variadic'])) && (!array_key_exists('default', $param))) {
                 log_warning('Insufficient parameters to function \'' . $function . '\'', $c_pos);
                 break;
             }
-            if (isset($c[2][$i])) {
-                $temp = $c[2][$i];
+            if (isset($params[$i])) {
+                $temp = $params[$i][0];
 
                 // Can't pass references
                 if (($temp[0] == 'SOLO') && (is_array($temp[1])) && ($temp[1][0] == 'VARIABLE_REFERENCE')) {
@@ -1254,51 +1255,51 @@ function check_call($c, $c_pos, $class = null, $function_guard = '')
                 }
 
                 // If it is a referenced parameter then we must pass a variable expression not a general expression
-                if ((@$param['ref']) && ($c[2][$i][0] != 'VARIABLE')) {
+                if ((@$param['ref']) && ($temp[0] != 'VARIABLE')) {
                     log_warning('A referenced parameter for \'' . $function . '\' was given a non-variable expression', $c_pos);
                     break;
                 }
 
-                $t = check_expression($c[2][$i], false, false, $function_guard);
+                $t = check_expression($temp, false, false, $function_guard);
                 $passes = ensure_type(array($param['type']), $t, $c_pos, 'Parameter type error for ' . $function . '/' . ($i + 1) . ' (should be ' . $param['type'] . ' not ' . $t . ')');
                 if (($t === 'float') && ($function === 'strval')) {
                     log_warning('Floats should not be used with strval, use float_to_raw_string or float_format', $c_pos);
                 }
                 if ($passes) {
-                    infer_expression_type_to_variable_type($param['type'], $c[2][$i]);
+                    infer_expression_type_to_variable_type($param['type'], $temp);
                 }
             } else {
                 break;
             }
         }
-        if (count($potential['parameters']) < count($c[2])) {
+        if ((count($potential['parameters']) < count($params)) && (!$potential['parameters'][count($potential['parameters']) - 1][4]/*not a variadic function*/)) {
             log_warning('Too many parameters to function \'' . $function . '\'', $c_pos);
         }
 
         // Look for file-creators, and give notice that chmoding might be required to allow it to be deleted via FTP
         if (in_array('creates-file', $potential['flags'])) {
             if (isset($GLOBALS['CHECKS'])) {
-                if (($function == 'fopen') && (in_array(@$c[2][1][1][1][0], array('w', 'a')))) {
+                if (($function == 'fopen') && (in_array(@$params[1][0][1][1][0], array('w', 'a')))) {
                     log_warning('Call to \'' . $function . '\' that may create a file/folder. Check that the code chmods it so that FTP can delete it.', $c_pos);
                 }
             }
         }
     }
 
-    if (($function == 'isset') && (@$c[2][0][0] != 'VARIABLE')) {
+    if (($function == 'isset') && (@$params[0][0][0] != 'VARIABLE')) {
         log_warning('Can only pass variables to ' . $function, $c_pos);
     }
 
-    if (($function == 'tempnam') && (@$c[2][0][0] == 'LITERAL') && (substr(@$c[2][0][1][1], 0, 4) == '/tmp')) {
+    if (($function == 'tempnam') && (@$params[0][0][0] == 'LITERAL') && (substr(@$params[0][0][1][1], 0, 4) == '/tmp')) {
         log_warning('Don\'t assume you can write to the shared temp directory', $c_pos);
     }
-    if (($function == 'strpos') && (@$c[2][0][0] == 'LITERAL') && (@$c[2][1][0] != 'LITERAL')) {
+    if (($function == 'strpos') && (@$params[0][0][0] == 'LITERAL') && (@$params[1][0][0] != 'LITERAL')) {
         log_warning('Looks like strpos parameters are the wrong way around; you fell for a common API anomaly: unlike most functions like in_array, strpos is haystack followed by needle', $c_pos);
     }
-    if ((($function == 'sprintf') || ($function == 'printf')) && (@$c[2][0][0] == 'LITERAL')) {
+    if ((($function == 'sprintf') || ($function == 'printf')) && (@$params[0][0][0] == 'LITERAL')) {
         $matches = array();
-        $num_matches = preg_match_all('#\%[+-]?.?-?\d*(\.\d+)?[%bcdefuFodsxX]#', $c[2][0][1][1], $matches);
-        if ($num_matches + 1 != count($c[2])) {
+        $num_matches = preg_match_all('#\%[+-]?.?-?\d*(\.\d+)?[%bcdefuFodsxX]#', $params[0][0][1][1], $matches);
+        if ($num_matches + 1 != count($params)) {
             log_warning('Looks like the wrong number of parameters were sent to this [s]printf function', $c_pos);
         }
     }
@@ -1306,7 +1307,7 @@ function check_call($c, $c_pos, $class = null, $function_guard = '')
         log_warning('Make sure temporary files are deleted', $c_pos);
     }
     //if ((isset($GLOBALS['CHECKS'])) && ($function == 'fopen')) log_warning('Make sure opened files are closed', $c_pos);  Not going to actually cause problems, as PHP'll close it when the script finishes
-    if ((isset($GLOBALS['CHECKS'])) && ($function == 'get_username') && (@$c[2][0][1] != 'get_member')) {
+    if ((isset($GLOBALS['CHECKS'])) && ($function == 'get_username') && (@$params[0][0][1] != 'get_member')) {
         log_warning('Make sure guests/deleted-members are handled properly', $c_pos);
     }
     if ((isset($GLOBALS['CHECKS'])) && ($function == 'get_url')) {
@@ -1315,14 +1316,14 @@ function check_call($c, $c_pos, $class = null, $function_guard = '')
     if ((isset($GLOBALS['CHECKS'])) && (in_array($function, array('query_insert', 'insert_lang', 'insert_lang_comcode')))) {
         log_warning('Make sure that deleting the entry (or uninstalling) for this row deletes the row (if applicable)', $c_pos);
     }
-    if ((isset($GLOBALS['CHECKS'])) && ($function == 'query_delete') && (!array_key_exists(2, $c[2]))) {
+    if ((isset($GLOBALS['CHECKS'])) && ($function == 'query_delete') && (!array_key_exists(2, $params))) {
         log_warning('Check that non-singular modification is wanted for this query', $c_pos);
     }
-    if ((isset($GLOBALS['CHECKS'])) && ($function == 'query_update') && (!array_key_exists(3, $c[2]))) {
+    if ((isset($GLOBALS['CHECKS'])) && ($function == 'query_update') && (!array_key_exists(3, $params))) {
         log_warning('Check that non-singular modification is wanted for this query', $c_pos);
     }
     if (($function == 'implode' || $function == 'explode')) {
-        if ($c[2][0][0] != 'LITERAL' && $c[2][1][0] == 'LITERAL') {
+        if ($params[0][0][0] != 'LITERAL' && $params[1][0][0] == 'LITERAL') {
             log_warning('You have almost certainly got the ' . $function . ' parameters the wrong way around', $c_pos);
         }
     }
@@ -1358,7 +1359,7 @@ function check_call($c, $c_pos, $class = null, $function_guard = '')
                 }
             }
         }
-        foreach ($c[2] as $param) {
+        foreach ($params as $param) {
             check_expression($param, false, false, $function_guard);
         }
         return 'mixed';

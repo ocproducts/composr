@@ -116,6 +116,7 @@ $PTOKENS['ABSTRACT'] = 'abstract';
 $PTOKENS['INTERFACE'] = 'interface';
 $PTOKENS['IMPLEMENTS'] = 'implements';
 // Functions
+$PTOKENS['VARIADIC'] = '...';
 $PTOKENS['FUNCTION'] = 'function';
 $PTOKENS['RETURN'] = 'return';
 $PTOKENS['YIELD'] = 'yield';
