@@ -1419,12 +1419,19 @@ function _parse_expression_inner()
         default: // By elimination: Must be a variable or a call chained to a variable
             $expression = _parse_variable($suppress_error, true);
     }
+
+    $variable_chain = _parse_variable_dereferencing_chain_segment(false);
+    if ($variable_chain !== array()) {
+        $expression = array('EXPRESSION_CHAINING', $expression, $variable_chain, $GLOBALS['I']);
+    }
+
     if (in_array($expression[0], array('CALL_DIRECT', 'CALL_INDIRECT', 'CALL_METHOD'), true)) {
         while (pparse__parser_peek() == 'OBJECT_OPERATOR' || pparse__parser_peek() == 'SCOPE') {
             pparse__parser_next();
             $expression = _parse_call_chain($expression, $suppress_error);
         }
     }
+
     return $expression;
 }
 

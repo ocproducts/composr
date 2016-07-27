@@ -1222,28 +1222,11 @@ function check_method($c, $c_pos, $function_guard = '')
 
 function actual_check_method($class, $method, $params, $c_pos, $function_guard = '')
 {
-    // Special rule for $_->object_factory(...) and $_->controller(...) etc
-    if (($method == 'object_factory') || ($method == 'controller') || ($method == 'sys_model')) {
-        // $_->object_factory(...) and $_->class(...) are used to load and
-        // instantiate classes. This makes them pretty crucial for type
-        // checking.
-        // There is a strict coding standard such that files called foo.php
-        // must define a class CMS_Foo, thus we can infer the class from the
-        // include path.
-        if (!isset($params[0][1][1])) {
-            return 'object';
-        }
-        $ret = $params[0][1][1]; // Grab the path (first argument)
-        $ret = array_pop(explode('/', $ret)); // Only keep the filename, not the whole path
-        $ret = 'object-' . ucfirst($ret); // Turn the filename into the class name, and prefix with 'object-'
-
-        // Parameters
-        foreach ($params as $e) {
-            check_expression($e[0], false, false, $function_guard);
-        }
-
-        return $ret;
+    // Parameters
+    foreach ($params as $e) {
+        check_expression($e[0], false, false, $function_guard);
     }
+
     return check_call(array('CALL_DIRECT', $method, $params), $c_pos, $class, $function_guard);
 }
 
@@ -1581,15 +1564,17 @@ function _check_db_field($table, $field, $c_pos, $type = null)
 
 function get_insecure_functions()
 {
-    return array('eval',
-                 'ldap_search', 'ldap_list',
-                 'register_shutdown_function', 'register_tick_function', 'create_function', 'call_user_method_array', 'call_user_func_array', 'call_user_method', 'call_user_func',
-                 'fsockopen', 'chroot', 'chdir', 'chgrp', 'chmod', 'copy', 'delete', 'fopen', 'file', 'file_get_contents', 'fpassthru', 'mkdir', 'move_uploaded_file', 'popen', 'readfile', 'rename', 'rmdir', 'unlink', 'imagepng', 'imagejpeg', 'imagegif',
-                 'mail', 'header',
-                 'better_parse_ini_file', 'deldir_contents',
-                 'include', 'include_once', 'require', 'require_once',
-                 'escapeshellarg', 'escapeshellcmd', 'exec', 'passthru', 'proc_open', 'shell_exec', 'system',
-                 'DatabaseConnector.query', 'DatabaseConnector._query', 'DatabaseConnector.query_value_if_there');
+    return array(
+        'eval',
+         'ldap_search', 'ldap_list',
+         'register_shutdown_function', 'register_tick_function', 'create_function', 'call_user_method_array', 'call_user_func_array', 'call_user_method', 'call_user_func',
+         'fsockopen', 'chroot', 'chdir', 'chgrp', 'chmod', 'copy', 'delete', 'fopen', 'file', 'file_get_contents', 'fpassthru', 'mkdir', 'move_uploaded_file', 'popen', 'readfile', 'rename', 'rmdir', 'unlink', 'imagepng', 'imagejpeg', 'imagegif',
+         'mail', 'header',
+         'better_parse_ini_file', 'deldir_contents',
+         'include', 'include_once', 'require', 'require_once',
+         'escapeshellarg', 'escapeshellcmd', 'exec', 'passthru', 'proc_open', 'shell_exec', 'system',
+         'DatabaseConnector.query', 'DatabaseConnector._query', 'DatabaseConnector.query_value_if_there',
+     );
 }
 
 /*
@@ -1710,6 +1695,9 @@ function check_expression($e, $assignment = false, $equate_false = false, $funct
     if ($e[0] == 'SOLO') {
         $type = check_expression($e[1], false, false, $function_guard);
         return $type;
+    }
+    if ($e[0] == 'EXPRESSION_CHAINING') {
+        return check_variable($e, false, $function_guard);
     }
     if ((in_array($e[0], array('DIVIDE', 'REMAINDER', 'DIV_EQUAL'))) && ($e[2][0] != 'LITERAL')) {
         if (($assignment) && (@count($e[2][1][2]) == 0)) {
@@ -1836,6 +1824,7 @@ function check_expression($e, $assignment = false, $equate_false = false, $funct
         }
         return 'boolean';
     }
+
     $inner = $e;
     switch ($inner[0]) {
         case 'CLOSURE':
@@ -1946,25 +1935,25 @@ function check_expression($e, $assignment = false, $equate_false = false, $funct
 function check_variable($variable, $reference = false, $function_guard = '')
 {
     $identifier = $variable[1];
-    if (is_array($identifier)) {
-        return null;
-    }
+    if (!is_array($identifier)) {
+        global $LOCAL_VARIABLES;
+        if ((!isset($LOCAL_VARIABLES[$identifier])) && ($identifier != 'this') && !((is_array($identifier) && (in_array($identifier[0], array('CALL_METHOD')))))) {
+            // We skip this check if the "variable" is coming from a function/method
+            // (in which case we have a function/method call rather than a variable)
+            log_warning('Variable \'' . $identifier . '\' referenced before initialised', $variable[3]);
+        }
 
-    global $LOCAL_VARIABLES;
-    if ((!isset($LOCAL_VARIABLES[$identifier])) && ($identifier != 'this') && !((is_array($identifier) && (in_array($identifier[0], array('CALL_METHOD')))))) {
-        // We skip this check if the "variable" is coming from a function/method
-        // (in which case we have a function/method call rather than a variable)
-        log_warning('Variable \'' . $identifier . '\' referenced before initialised', $variable[3]);
-    }
+        // Add to reference count if: this specifically is a reference, or it's complex therefore the base is explicitly a reference, or we are forced to add it because it is yet unseen
+        if (($reference) || (count($variable[2]) != 0) || (!isset($LOCAL_VARIABLES[$identifier]))) {
+            add_variable_reference($identifier, $variable[count($variable) - 1], ($reference) || (count($variable[2]) != 0));
+        }
 
-    // Add to reference count if: this specifically is a reference, or it's complex therefore the base is explicitly a reference, or we are forced to add it because it is yet unseen
-    if (($reference) || (count($variable[2]) != 0) || (!isset($LOCAL_VARIABLES[$identifier]))) {
-        add_variable_reference($identifier, $variable[count($variable) - 1], ($reference) || (count($variable[2]) != 0));
+        $variable_stem = $variable;
+        $variable_stem[2] = array();
+        $type = get_variable_type($variable_stem);
+    } else {
+        $type = check_expression($variable[1]);
     }
-
-    $variable_stem = $variable;
-    $variable_stem[2] = array();
-    $type = get_variable_type($variable_stem);
 
     $next = $variable[2];
     while ($next != array()) { // Complex: we must perform checks to make sure the base is of the correct type for the complexity to be valid. We must also note any deep variable references used in array index / string extract expressions
