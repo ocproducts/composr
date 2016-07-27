@@ -33,18 +33,6 @@ When looping over results, we always have to skip non-numeric keys, which are fo
 */
 
 /**
- * Standard code module initialisation function.
- *
- * @ignore
- */
-function init__cns_ldap()
-{
-    if (!defined('LDAP_OPT_DIAGNOSTIC_MESSAGE')) {
-        define('LDAP_OPT_DIAGNOSTIC_MESSAGE', 0x0032);
-    }
-}
-
-/**
  * Escape, ready for an LDAP query.
  *
  * @param  string $str The value.

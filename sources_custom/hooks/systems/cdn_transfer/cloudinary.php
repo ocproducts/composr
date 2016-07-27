@@ -46,10 +46,6 @@ class Hook_cdn_transfer_cloudinary
      */
     public function transfer_upload($path, $upload_folder, $filename, $obfuscate = 0, $accept_errors = false)
     {
-        if (version_compare(PHP_VERSION, '5.3.0') < 0) {
-            return null;
-        }
-
         $cloud_name = get_option('cloudinary_cloud_name');
         $api_key = get_option('cloudinary_api_key');
         $api_secret = get_option('cloudinary_api_secret');

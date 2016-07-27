@@ -9,52 +9,6 @@ if (!class_exists('TT_Cipher')) {
     {
         function encrypt($plaintxt, $password, $forcesoftware = FALSE)
         {
-            
-            // PHP4 compatibility functions
-            if (!function_exists('str_split')) {
-                function str_split($string, $string_length = 1)
-                {
-                    if (strlen($string) > $string_length || !$string_length) {
-                        do {
-                            $c       = strlen($string);
-                            $parts[] = substr($string, 0, $string_length);
-                            $string  = substr($string, $string_length);
-                        } while ($string !== false);
-                    } else {
-                        $parts = array(
-                            $string
-                        );
-                    }
-                    return $parts;
-                }
-            }
-            
-            if (!function_exists('hex2bin')) {                
-
-                if (!defined('HEX2BIN_WS')) {
-                    define('HEX2BIN_WS', " \t\n\r");                
-                }
-
-                function hex2bin($hex_string)
-                {
-                    $pos    = 0;
-                    $result = '';
-                    
-                    while ($pos < strlen($hex_string)) {
-                        if (strpos(HEX2BIN_WS, $hex_string{$pos}) !== FALSE) {
-                            $pos++;
-                        } else {
-                            $code = hexdec(substr($hex_string, $pos, 2));
-                            $pos  = $pos + 2;
-                            
-                            $result .= chr($code);
-                        }
-                    }
-                    return $result;
-                }
-            }
-            
-            
             if (!$plaintxt) {
                 return null;
             }

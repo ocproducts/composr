@@ -541,21 +541,6 @@ if (!GOOGLE_APPENGINE) {
     safe_ini_set('include_path', '');
     safe_ini_set('allow_url_fopen', '0');
 }
-if (!defined('E_STRICT')) { // LEGACY
-    define('E_STRICT', 2048);
-}
-if (!defined('E_RECOVERABLE_ERROR')) { // LEGACY
-    define('E_RECOVERABLE_ERROR', 4096);
-}
-if (!defined('E_DEPRECATED')) { // LEGACY
-    define('E_DEPRECATED', 8192);
-}
-if (!defined('E_USER_DEPRECATED')) { // LEGACY
-    define('E_USER_DEPRECATED', 16384);
-}
-if (!defined('ENT_SUBSTITUTE')) { // LEGACY
-    define('ENT_SUBSTITUTE', 0);
-}
 safe_ini_set('suhosin.executor.disable_emodifier', '1'); // Extra security if suhosin is available
 safe_ini_set('suhosin.executor.multiheader', '1'); // Extra security if suhosin is available
 safe_ini_set('suhosin.executor.disable_eval', '0');

@@ -27,10 +27,6 @@
  */
 function make_csv($data, $filename = 'data.csv', $headers = true, $output_and_exit = true, $outfile_path = null, $callback = null, $metadata = null)
 {
-    if (version_compare(PHP_VERSION, '5.3.0') < 0) {
-        return non_overridden__make_csv($data, $filename, $headers, $output_and_exit, $outfile_path, $callback, $metadata);
-    }
-
     require_code('files_spout');
 
     require_code('character_sets');

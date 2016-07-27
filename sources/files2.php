@@ -1230,15 +1230,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                 curl_setopt($ch, CURLOPT_CAINFO, $crt_path);
                                                 curl_setopt($ch, CURLOPT_CAPATH, $crt_path);
                                             }
-                                            if (defined('CURL_SSLVERSION_TLSv1')) {
-                                                curl_setopt($ch, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1);
-                                            } else {
-                                                if ((!is_array($curl_version)) || (!isset($curl_version['ssl_version'])) || (strpos($curl_version['ssl_version'], 'NSS') === false) || (version_compare($curl_version['version'], '7.36.0') >= 0)) {
-                                                    curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, 'TLSv1');
-                                                } else {
-                                                    curl_setopt($ch, CURLOPT_SSLVERSION, 1); // the above fails on old NSS, so we use numeric equivalent to the CURL_SSLVERSION_TLSv1 constant here
-                                                }
-                                            }
+                                            curl_setopt($ch, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1);
                                             if ($do_ip_forwarding) {
                                                 curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
                                                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -1287,9 +1279,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                 $curl_headers[] = 'Host: ' . $url_parts['host'] . "\r\n";
                                             }
                                             if ((count($curl_headers) != 0) && ((($files === null)/*Breaks file uploads for some reason*/) || ($extra_headers !== null))) {
-                                                if (defined('CURLINFO_HEADER_OUT')) {
-                                                    curl_setopt($ch, CURLINFO_HEADER_OUT, true);
-                                                }
+                                                curl_setopt($ch, CURLINFO_HEADER_OUT, true);
                                                 curl_setopt($ch, CURLOPT_HTTPHEADER, $curl_headers);
                                             }
                                             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

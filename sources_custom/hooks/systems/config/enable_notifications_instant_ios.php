@@ -45,10 +45,6 @@ class Hook_config_enable_notifications_instant_ios
      */
     public function get_default()
     {
-        if (version_compare(PHP_VERSION, '5.3.0') < 0) {
-            return null;
-        }
-
         if (!is_file(get_custom_file_base() . '/data_custom/modules/ios/server_certificates.pem')) {
             return null;
         }

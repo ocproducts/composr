@@ -1023,7 +1023,7 @@ function get_domain()
         if (!empty($_ENV['HTTP_HOST'])) {
             return preg_replace('#^www\.#', '', $_ENV['HTTP_HOST']);
         }
-        if (function_exists('gethostname')) {
+        if (php_function_allowed('gethostname')) {
             return preg_replace('#^www\.#', '', gethostname());
         }
         if (!empty($_SERVER['SERVER_ADDR'])) {

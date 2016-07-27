@@ -372,9 +372,10 @@ function asort(&$array, $sort_flags = 0)
  * Decodes data encoded with MIME base64.
  *
  * @param  string $encoded_data Encoded data.
+ * @param  boolean $strict Return FALSE if input contains character from outside the base64 alphabet.
  * @return ~string Decoded data (false: error).
  */
-function base64_decode($encoded_data)
+function base64_decode($encoded_data, $strict = false)
 {
     return '';
 }
@@ -489,8 +490,11 @@ function class_exists($class_name)
 
 /**
  * Clears file status cache.
+ *
+ * @param  boolean $clear_realpath_cache Whether to clear the realpath cache or not.
+ * @param  ?PATH $filename Clear the realpath and the stat cache for a specific filename only; only used if clear_realpath_cache is true. (null: no filter)
  */
-function clearstatcache()
+function clearstatcache($clear_realpath_cache = false, $filename = null)
 {
 }
 
@@ -2172,9 +2176,12 @@ function number_format($number, $decimals = 0, $dec_point = '.', $thousands_sep 
 /**
  * Turn on output buffering.
  *
+ * @param  ?mixed $output_callback Callback after output is going to flush, works as a filter (null: none).
+ * @param  integer $chunk_size Buffer will be auto-flushed after this amount (0: no limit).
+ * @param  integer $flags A PHP_OUTPUT_HANDLER_* constant.
  * @return boolean Success status.
  */
-function ob_start()
+function ob_start($output_callback = null, $chunk_size = 0, $flags = PHP_OUTPUT_HANDLER_STDFLAGS)
 {
     return false;
 }
@@ -2596,9 +2603,10 @@ function rmdir($dirname, $context = null)
  *
  * @param  float $val Value to round.
  * @param  integer $precision Number of decimal points of precision required (-ve allowed).
+ * @param  integer $mode Rounding mode, a PHP_ROUND_* constant.
  * @return float Rounded value.
  */
-function round($val, $precision = 0)
+function round($val, $precision = 0, $mode = PHP_ROUND_HALF_UP)
 {
     return 0.0;
 }
@@ -2638,7 +2646,7 @@ function serialize($value)
 /**
  * Sets a user-defined error handler function.
  *
- * @param  mixed $error_handler The call back.
+ * @param  ?mixed $error_handler The call back (null: reset to default).
  * @return mixed The previously defined error handler.
  */
 function set_error_handler($error_handler)
@@ -2649,7 +2657,7 @@ function set_error_handler($error_handler)
 /**
  * Sets a user-defined exception handler function.
  *
- * @param  mixed $exception_handler The call back.
+ * @param  ?mixed $exception_handler The call back (null: reset to default).
  * @return mixed The previously defined error handler.
  */
 function set_exception_handler($exception_handler)

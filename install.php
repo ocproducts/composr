@@ -62,10 +62,6 @@ $CURRENT_SHARE_USER = null;
 $GLOBALS['DEV_MODE'] = false;
 $GLOBALS['SEMI_DEV_MODE'] = true;
 
-if (!defined('ENT_SUBSTITUTE')) { // LEGACY
-    define('ENT_SUBSTITUTE', 0);
-}
-
 @ob_end_clean(); // Reset to have no output buffering by default (we'll use it internally, taking complete control)
 
 // Are we in a special version of PHP?
@@ -147,7 +143,7 @@ handle_self_referencing_embedment();
 
 // Requirements check
 $phpv = PHP_VERSION;
-if ((substr($phpv, 0, 2) == '3.') || (substr($phpv, 0, 2) == '4.') || (substr($phpv, 0, 4) == '5.0.')) {
+if ((substr($phpv, 0, 2) == '3.') || (substr($phpv, 0, 2) == '4.') || (substr($phpv, 0, 4) == '5.0.') || (substr($phpv, 0, 4) == '5.1.') || (substr($phpv, 0, 4) == '5.2.') || (substr($phpv, 0, 4) == '5.3.') || (substr($phpv, 0, 4) == '5.4.') || (substr($phpv, 0, 4) == '5.5.')) {
     exit(do_lang('PHP_OLD'));
 }
 
