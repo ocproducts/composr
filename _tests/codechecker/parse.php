@@ -39,18 +39,117 @@ global $CLASSES;
 $CLASSES = array();
 global $MAIN;
 
-function _parse_php()
+function _parse_php($inside_namespace = false)
 {
     // Choice{"FUNCTION" "IDENTIFIER "BRACKET_OPEN" comma_parameters "BRACKET_CLOSE" command | "CLASS" "IDENTIFIER" ("EXTENDS" "IDENTIFIER")? "CURLY_OPEN" class_contents "CURLY_CLOSE" | command}*
 
     $next = pparse__parser_peek();
     $program = array();
+    $program['declares'] = array();
     $program['functions'] = array();
     $program['classes'] = array();
     $program['main'] = array();
+    $program['uses'] = array();
+    $found_namespace = false;
     $modifiers = array();
     while ($next !== null) {
         switch ($next) {
+            case 'DECLARE':
+                if (count($program['functions']) + count($program['classes']) + count($program['main']) + count($program['uses']) > 0 || $found_namespace) {
+                    log_warning('Declare rules must come first');
+                }
+
+                pparse__parser_next();
+                pparse__parser_expect('BRACKET_OPEN');
+                $key = pparse__parser_expect('IDENTIFIER', true);
+                pparse__parser_expect('EQUAL');
+                if (in_array($key, array('encoding'))) {
+                    $value = pparse__parser_expect('string_literal');
+                } else {
+                    $value = pparse__parser_expect('integer_literal');
+                }
+                pparse__parser_expect('BRACKET_CLOSE');
+                pparse__parser_expect('COMMAND_TERMINATE');
+                if (isset($program['declares'][$key])) {
+                    log_warning('Repeated declare for ' . $key);
+                }
+                if (!in_array($key, array('ticks', 'strict_types', 'encoding'))) {
+                    log_warning('Unknown declare, ' . $key);
+                }
+                $program['declares'][$key] = $value;
+                break;
+
+            case 'NAMESPACE':
+                if (count($program['functions']) + count($program['classes']) + count($program['main']) + count($program['uses']) > 0) {
+                    log_warning('Namespaces must come first');
+                }
+
+                pparse__parser_next();
+                if (pparse__parser_peek() == 'COMMAND_TERMINATE') {
+                    // namespace;
+                    $key = null;
+                    pparse__parser_expect('COMMAND_TERMINATE');
+                } else {
+                    if (pparse__parser_peek() == 'IDENTIFIER') {
+                        $key = pparse__parser_expect('IDENTIFIER', true);
+                        if (pparse__parser_peek() == 'COMMAND_TERMINATE') {
+                            // namespace my\name;
+                            pparse__parser_expect('COMMAND_TERMINATE');
+                        } else {
+                            // namespace my\name { }
+                            pparse__parser_expect('CURLY_OPEN');
+                            $temp = _parse_php(true);
+                            if (count($temp['declares']) > 0) {
+                                log_warning('Declare cannot be done within a namespace');
+                            }
+                            $program['functions'] = array_merge($program['functions'], $temp['functions']);
+                            $program['classes'] = array_merge($program['classes'], $temp['classes']);
+                            $program['main'] = array_merge($program['main'], $temp['main']);
+                            $program['uses'] = array_merge($program['uses'], $temp['uses']);
+                            pparse__parser_expect('CURLY_CLOSE');
+                        }
+                    } else {
+                        // namespace {}
+                        $key = null;
+                        pparse__parser_expect('CURLY_OPEN');
+                        $temp = _parse_php(true);
+                        if (count($temp['declares']) > 0) {
+                            log_warning('Declare cannot be done within a namespace');
+                        }
+                        $program['functions'] = array_merge($program['functions'], $temp['functions']);
+                        $program['classes'] = array_merge($program['classes'], $temp['classes']);
+                        $program['main'] = array_merge($program['main'], $temp['main']);
+                        $program['uses'] = array_merge($program['uses'], $temp['uses']);
+                        pparse__parser_expect('CURLY_CLOSE');
+                    }
+                }
+
+                $found_namespace = true;
+
+                // We don't actually process/check namespaces currently, just parse them
+
+                break;
+
+            case 'USE':
+                pparse__parser_next();
+                $next = pparse__parser_peek();
+                if (in_array($next, array('FUNCTION', 'CONST'))) {
+                    pparse__parser_next();
+                    $type = $next;
+                } else {
+                    $type = 'namespace';
+                }
+                $key = pparse__parser_expect('IDENTIFIER', true);
+                if (pparse__parser_peek() == 'AS' && $next == 'FUNCTION') {
+                    pparse__parser_next();
+                    $key_new = pparse__parser_expect('IDENTIFIER', true);
+                } else {
+                    $key_new = null;
+                }
+                $program['uses'][] = array($type, $key, $key_new);
+                pparse__parser_expect('COMMAND_TERMINATE');
+                break;
+
             case 'FUNCTION':
                 $_function = _parse_function_dec();
                 foreach ($program['functions'] as $_) {
@@ -146,6 +245,11 @@ function _parse_php()
                         break;
                 }
                 break;
+
+            case 'CURLY_CLOSE':
+                if ($inside_namespace) {
+                    return $program;
+                }
 
             default:
                 $program['main'] = array_merge($program['main'], _parse_command());
