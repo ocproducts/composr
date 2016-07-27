@@ -230,7 +230,7 @@ function save_zone_base_url($zone, $base_url)
             $path = $base_url;
         } else {
             $parsed = @parse_url($base_url);
-            if ($parsed === false) {
+            if ($parsed === false || !isset($parsed['host'])) {
                 warn_exit(do_lang_tempcode('INVALID_ZONE_BASE_URL'));
             }
             $domain = $parsed['host'];
