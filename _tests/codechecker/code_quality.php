@@ -634,6 +634,14 @@ function check($structure)
             $LOCAL_VARIABLES['this'] = array('is_global' => false, 'conditioner' => array(), 'conditioned_zero' => false, 'conditioned_false' => false, 'conditioned_null' => false, 'types' => array('object'), 'references' => 0, 'object_type' => $CURRENT_CLASS, 'unused_value' => false, 'first_mention' => 0, 'mixed_tag' => false);
             check_function($function);
         }
+
+        foreach ($class['vars'] as $var) {
+            check_expression($var[1]);
+        }
+
+        foreach ($class['constants'] as $constant) {
+            check_expression($constant[1]);
+        }
     }
     check_variable_list($local_variables, 0);
 
@@ -815,6 +823,11 @@ function check_command($command, $depth, $function_guard = '', $nogo_parameters 
         }
 
         switch ($c[0]) {
+            case 'CONST':
+                foreach ($c[1] as $const) {
+                    check_expression($const);
+                }
+                break;
             case 'CALL_METHOD':
                 check_method($c, $c_pos, $function_guard);
                 break;
@@ -1128,9 +1141,9 @@ function actual_check_method($class, $method, $params, $c_pos, $function_guard =
         if (!isset($params[0][1][1])) {
             return 'object';
         }
-        $ret = $params[0][1][1];        // Grab the path (first argument)
-        $ret = array_pop(explode('/', $ret));        // Only keep the filename, not the whole path
-        $ret = 'object-' . ucfirst($ret);        // Turn the filename into the class name, and prefix with 'object-'
+        $ret = $params[0][1][1]; // Grab the path (first argument)
+        $ret = array_pop(explode('/', $ret)); // Only keep the filename, not the whole path
+        $ret = 'object-' . ucfirst($ret); // Turn the filename into the class name, and prefix with 'object-'
 
         // Parameters
         foreach ($params as $e) {
@@ -2082,7 +2095,7 @@ function ensure_type($_allowed_types, $actual_type, $pos, $alt_error = null, $ex
 
     // Special cases for our actual type
     if ($actual_type[0] == '?') {
-        //     if (isset($allowed_types['null'])) return true;    We can afford not to give this liberty due to is_null
+        //if (isset($allowed_types['null'])) return true;    We can afford not to give this liberty due to is_null
         $actual_type = substr($actual_type, 1);
     }
     if ($actual_type[0] == '~') {

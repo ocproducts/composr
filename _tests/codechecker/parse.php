@@ -598,7 +598,7 @@ function _parse_command_actual($no_term_needed = false)
             break;
 
         case 'TRY':
-            pparse__parser_next();        // Consume the "try"
+            pparse__parser_next(); // Consume the "try"
             $try_position = $GLOBALS['I'];
             if (pparse__parser_peek() != 'CURLY_OPEN') {
                 parser_error('Expected code block after "try".');
@@ -642,7 +642,7 @@ function _parse_command_actual($no_term_needed = false)
             break;
 
         case 'THROW':
-            pparse__parser_next();        // Consume the "throw"
+            pparse__parser_next(); // Consume the "throw"
             $expr = _parse_expression();
             $command = array('THROW', $expr, $GLOBALS['I']);
             break;
@@ -738,6 +738,8 @@ function _parse_command_actual($no_term_needed = false)
             break;
 
         case 'CONST':
+            $constants = array();
+
             do {
                 pparse__parser_next();
                 $identifier = pparse__parser_peek(true);
@@ -748,8 +750,12 @@ function _parse_command_actual($no_term_needed = false)
                 $next_2 = pparse__parser_peek();
                 if ($next_2 == 'EQUAL') {
                     pparse__parser_next();
+
+                    $expression = _parse_expression();
+
+                    /* Previously only literals were allowed
                     if (pparse__parser_peek() == 'ARRAY') {
-                        pparse__parser_next();        // Skip over the ARRAY
+                        pparse__parser_next(); // Skip over the ARRAY
                         pparse__parser_expect('BRACKET_OPEN');
                         $details = _parse_create_array();
                         pparse__parser_expect('BRACKET_CLOSE');
@@ -757,15 +763,19 @@ function _parse_command_actual($no_term_needed = false)
                     } else {
                         $literal = _parse_literal();
                     }
-                    $command = array('CONST', $identifier, $literal, $GLOBALS['I']);
+                    $expression = $literal;
+                    */
                 } else {
-                    $command = array('CONST', $identifier, array('SOLO', array('LITERAL', array('null'))), $GLOBALS['I']);
+                    $expression = array('SOLO', array('LITERAL', array('null')));
                 }
+                $constants[$identifier] = $expression;
 
                 $next_2 = pparse__parser_peek();
             } while ($next_2 == 'COMMA');
 
             pparse__parser_expect('COMMAND_TERMINATE');
+
+            $command = array('CONST', $constants, $GLOBALS['I']);
             break;
 
         default:
@@ -780,12 +790,12 @@ function _parse_call_chain($command = null, $suppress_error = false)
         $command = array();
     }
 
-    $i = pparse__parser_expect('IDENTIFIER');        // Silly PHP syntax makes $scoped_variables and scoped_functions() different, but member_variables and member_functions() the same...
+    $i = pparse__parser_expect('IDENTIFIER'); // Silly PHP syntax makes $scoped_variables and scoped_functions() different, but member_variables and member_functions() the same...
     switch (pparse__parser_peek()) {
         case 'BRACKET_OPEN':
-            pparse__parser_next();        // Consume the "("
+            pparse__parser_next(); // Consume the "("
             $args = _parse_comma_expressions();
-            pparse__parser_expect('BRACKET_CLOSE');        // Consume the ")"
+            pparse__parser_expect('BRACKET_CLOSE'); // Consume the ")"
             $expression = $command; // Actually the 'command' was an expression, on which we will call our object
             $command = array('CALL_METHOD', $expression, $args, $suppress_error, $GLOBALS['I']);
             break;
@@ -914,7 +924,7 @@ function _parse_class_contents($class_modifiers = null, $is_interface = false, $
     }
 
     $next = pparse__parser_peek();
-    $class = array('functions' => array(), 'vars' => array(), 'traits' => array(), 'traits_details_insteadof' => array(), 'traits_details_as' => array(), 'i' => $GLOBALS['I']);
+    $class = array('functions' => array(), 'vars' => array(), 'constants' => array(), 'traits' => array(), 'traits_details_insteadof' => array(), 'traits_details_as' => array(), 'i' => $GLOBALS['I']);
     $modifiers = array();
     while (($next == 'CONST') || ($next == 'USE') || ($next == 'VAR') || ($next == 'FUNCTION') || ($next == 'PUBLIC') || ($next == 'PRIVATE') || ($next == 'PROTECTED') || ($next == 'ABSTRACT') || ($next == 'STATIC')) {
         switch ($next) {
@@ -979,7 +989,7 @@ function _parse_class_contents($class_modifiers = null, $is_interface = false, $
                     }
 
                     // Variables fall through to VAR, function's don't
-                    pparse__parser_next();        // VAR does this in its do-while loop
+                    pparse__parser_next(); // VAR does this in its do-while loop
                     break;
                 }
 
@@ -991,16 +1001,20 @@ function _parse_class_contents($class_modifiers = null, $is_interface = false, $
             case 'CONST':
                 do {
                     pparse__parser_next();
-                    $identifier = pparse__parser_peek(true);
-                    if (($identifier[0] != 'IDENTIFIER') && ($identifier[0] != 'variable')) {
-                        parser_error('Expected IDENTIFIER or variable but got ' . $identifier[0]);
+                    if ($next == 'VAR') {
+                        $identifier = pparse__parser_expect('variable');
+                    } else {
+                        $identifier = pparse__parser_expect('IDENTIFIER');
                     }
-                    $identifier = pparse__parser_expect('IDENTIFIER');
                     $next_2 = pparse__parser_peek();
                     if ($next_2 == 'EQUAL') {
                         pparse__parser_next();
+
+                        $expression =  _parse_expression();
+
+                        /* Previously only literals were allowed
                         if (pparse__parser_peek() == 'ARRAY') {
-                            pparse__parser_next();        // Skip over the ARRAY
+                            pparse__parser_next(); // Skip over the ARRAY
                             pparse__parser_expect('BRACKET_OPEN');
                             $details = _parse_create_array();
                             pparse__parser_expect('BRACKET_CLOSE');
@@ -1008,9 +1022,12 @@ function _parse_class_contents($class_modifiers = null, $is_interface = false, $
                         } else {
                             $literal = _parse_literal();
                         }
-                        $class['vars'][] = array($identifier, $literal);
+                        $expression = array('CONST', $identifier, $literal, $GLOBALS['I']);
+                        */
+
+                        $class[($next == 'CONST') ? 'constants' : 'vars'][] = array($identifier, $expression);
                     } else {
-                        $class['vars'][] = array($identifier, array('SOLO', array('LITERAL', array('null')), $GLOBALS['I']));
+                        $class[($next == 'CONST') ? 'constants' : 'vars'][] = array($identifier, array('SOLO', array('LITERAL', array('null')), $GLOBALS['I']));
                     }
 
                     $next_2 = pparse__parser_peek();
@@ -1031,7 +1048,7 @@ function _parse_class_contents($class_modifiers = null, $is_interface = false, $
                 if ($is_interface && in_array('abstract', $modifiers)) {
                     log_warning('Everything in an interface is inherently abstract. Do not use the abstract keyword');
                 }
-                $_function = _parse_function_dec(array_merge($modifiers, $is_interface ? array('abstract') : array()));        // Interface methods are inherently abstract
+                $_function = _parse_function_dec(array_merge($modifiers, $is_interface ? array('abstract') : array())); // Interface methods are inherently abstract
                 foreach ($class['functions'] as $_) {
                     if ($_['name'] == $_function['name']) {
                         log_warning('Duplicated method \'' . $_function['name'] . '\'');
@@ -1066,7 +1083,7 @@ function _parse_class_contents($class_modifiers = null, $is_interface = false, $
                     }
                     $modifiers[] = 'static';
                 }
-                pparse__parser_next();        // Consume the abstract keyword
+                pparse__parser_next(); // Consume the abstract keyword
                 // Peek ahead to make sure the next token can be abstract
                 switch (pparse__parser_peek()) {
                     case 'PUBLIC':
@@ -1522,9 +1539,9 @@ function _parse_variable_dereferencing_chain_segment($suppress_error)
             break;
 
         case 'BRACKET_OPEN':
-            pparse__parser_next();        // Consume the "("
+            pparse__parser_next(); // Consume the "("
             $args = _parse_comma_expressions();
-            pparse__parser_expect('BRACKET_CLOSE');        // Consume the ")"
+            pparse__parser_expect('BRACKET_CLOSE'); // Consume the ")"
             $tunnel = array();
             $next_3 = pparse__parser_peek();
             $next_4 = pparse__parser_peek_dist(1);
@@ -1784,10 +1801,10 @@ function _parse_parameter()
                 $var = pparse__parser_expect('variable');
                 if (pparse__parser_peek() == 'EQUAL') {
                     // Variable with type hint and default value. This can only be null
-                    pparse__parser_next();        // Consume the EQUAL
+                    pparse__parser_next(); // Consume the EQUAL
                     if (pparse__parser_peek() == 'null') {
                         // If the default value is null, the hint is extended to allow null
-                        pparse__parser_next();        // Consume the null
+                        pparse__parser_next(); // Consume the null
                         // 'RECEIVE_BY_REFERENCE' and 'RECEIVE_BY_VALUE' aren't actually used for anything specifically.
                         $parameter = array('RECEIVE_BY_VALUE', $var, null, $GLOBALS['I']);
                         $parameter['HINT'] = '?' . $hint;
@@ -1808,10 +1825,10 @@ function _parse_parameter()
             // 'RECEIVE_BY_REFERENCE' and 'RECEIVE_BY_VALUE' aren't actually used for anything specifically.
             if (pparse__parser_peek() == 'EQUAL') {
                 // Variable with type hint and default value. This can only be null
-                pparse__parser_next();        // Consume the EQUAL
+                pparse__parser_next(); // Consume the EQUAL
                 if (pparse__parser_peek() == 'null') {
                     // If the default value is null, the hint is extended to allow null
-                    pparse__parser_next();        // Consume the null
+                    pparse__parser_next(); // Consume the null
                     // 'RECEIVE_BY_REFERENCE' and 'RECEIVE_BY_VALUE' aren't actually used for anything specifically.
                     $parameter = array('RECEIVE_BY_REFERENCE', $variable, null, $GLOBALS['I']);
                     $parameter['HINT'] = '?' . $hint;
