@@ -86,23 +86,12 @@ class Hook_ecommerce_cart_orders
             @set_time_limit(0);
         }
 
-<<<<<<< HEAD
         if ($search !== null) {
-            $where = '1=1';
-            if (!$search_item_names) {
-                $l = do_lang('CART_ORDER', '', null, null, $site_lang ? get_site_default_lang() : user_lang());
-                if (substr($search, 0, strlen($l)) != $l) {
-                    return array();
-                }
-                $where .= ' AND id=' . strval(intval(substr($search, strlen($l))));
-=======
-        if (!is_null($search)) {
             $l = do_lang('CART_ORDER', '', null, null, $site_lang ? get_site_default_lang() : user_lang());
             if (substr($search, 0, strlen($l)) != $l) {
                 return array();
->>>>>>> master
             }
-            $where = 'id=' . strval(intval(substr($search, strlen($l))));
+            $where .= ' AND id=' . strval(intval(substr($search, strlen($l))));
             // NB: $search_item_names is ignored because codename is the same as item name for this hook
         } else {
             $where = '(' . db_string_equal_to('order_status', 'ORDER_STATUS_awaiting_payment') . ' OR ' . db_string_equal_to('order_status', 'ORDER_STATUS_payment_received') . ')';

@@ -27,7 +27,7 @@ function compile_all_templates()
     require_code('web_resources');
 
     if (php_function_allowed('set_time_limit')) {
-        set_time_limit(0);
+        @set_time_limit(0);
     }
 
     $themes = array(
