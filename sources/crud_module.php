@@ -50,9 +50,9 @@ abstract class Standard_crud_module
     public $permissions_cat_name_b = null; // E.g. 'cat'
     public $add_text = '';
     public $edit_text = '';
-    public $extra_donext_entries = null;
-    public $extra_donext_categories = null;
-    public $extra_donext_whatever = null;
+    public $extra_donext_entries = array();
+    public $extra_donext_categories = array();
+    public $extra_donext_whatever = array();
     public $extra_donext_whatever_title = null;
     public $do_next_editing_categories = false;
     public $special_edit_frontend = false;
@@ -682,8 +682,10 @@ abstract class Standard_crud_module
         }
 
         require_code('templates_donext');
-        return do_next_manager($title, $description,
-            null,
+        return do_next_manager(
+            $title,
+            $description,
+            array(),
             null,
             /* TYPED-ORDERED LIST OF 'LINKS'  */
             $this->do_next_editing_categories ? null : array('_SELF', array('type' => $this->get_screen_type_for('add', $this->type_code)), '_SELF', ($this->add_one_label !== null) ? $this->add_one_label : null), // Add one
@@ -755,7 +757,7 @@ abstract class Standard_crud_module
 
         require_code('form_templates');
         $fields = form_input_huge_list(do_lang_tempcode('CATALOGUE'), '', 'catalogue_name', $tree, null, true);
-        $post_url = get_self_url(false, false, null, false, true);
+        $post_url = get_self_url(false, false, array(), false, true);
         $submit_name = do_lang_tempcode('PROCEED');
         $hidden = build_keep_post_fields();
 
@@ -1081,12 +1083,12 @@ abstract class Standard_crud_module
      *
      * @param  boolean $recache Whether to force a recache
      * @param  ?ID_TEXT $orderer Order to use (null: automatic)
-     * @param  ?array $where Extra where clauses (null: none)
+     * @param  array $where Extra where clauses
      * @param  boolean $force_site_db Whether to always access using the site database
      * @param  string $join Extra join clause for our query (blank: none)
      * @return array A pair: Rows for selection from, Total results
      */
-    public function get_entry_rows($recache = false, $orderer = null, $where = null, $force_site_db = false, $join = '')
+    public function get_entry_rows($recache = false, $orderer = null, $where = array(), $force_site_db = false, $join = '')
     {
         if ((!$recache) && ($orderer !== null) && ($where !== null)) {
             if (isset($this->cached_entry_rows)) {
@@ -1619,7 +1621,7 @@ abstract class Standard_crud_module
 
             $description = ($this->do_next_description === null) ? do_lang_tempcode($this->success_message_str) : $this->do_next_description;
 
-            return $this->do_next_manager($this->title, $description, null);
+            return $this->do_next_manager($this->title, $description);
         } else {
             if ($this->permissions_require !== null) {
                 check_edit_permission($this->permissions_require, $submitter, array($this->permissions_cat_require, ($this->permissions_cat_name === null) ? null : $this->get_cat($id), $this->permissions_cat_require_b, ($this->permissions_cat_name_b === null) ? null : $this->get_cat_b($id)), $this->privilege_page_name);
@@ -1749,7 +1751,7 @@ abstract class Standard_crud_module
 
             $description = do_lang_tempcode('SUCCESS');
 
-            return $this->do_next_manager($this->title, $description, null);
+            return $this->do_next_manager($this->title, $description);
         }
 
         // Not top level

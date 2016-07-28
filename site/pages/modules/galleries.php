@@ -349,7 +349,7 @@ class Module_galleries
             }
             $title_to_use = do_lang_tempcode('_GALLERY', make_fractionable_editable('gallery', $cat, $fullname));
             $title_to_use_2 = do_lang('_GALLERY', $fullname);
-            $this->title = get_screen_title($title_to_use, false, null, null, $awards);
+            $this->title = get_screen_title($title_to_use, false, array(), null, $awards);
 
             // Metadata
             seo_meta_load_for('gallery', $cat, $title_to_use_2);
@@ -950,7 +950,7 @@ class Module_galleries
             require_code('cns_members');
             require_code('cns_members2');
         }
-        $member_details = (($member_id === null) || (get_forum_type() != 'cns')) ? new Tempcode() : render_member_box($member_id, true, true, null, false);
+        $member_details = (($member_id === null) || (get_forum_type() != 'cns')) ? new Tempcode() : render_member_box($member_id, true, true, array(), false);
 
         // Rep-image
         $rep_image_url = '';
@@ -1044,7 +1044,7 @@ class Module_galleries
             require_code('cns_members');
             require_code('cns_members2');
         }
-        $member_details = (($member_id === null) || (get_forum_type() != 'cns')) ? new Tempcode() : render_member_box($member_id, true, true, null, false);
+        $member_details = (($member_id === null) || (get_forum_type() != 'cns')) ? new Tempcode() : render_member_box($member_id, true, true, array(), false);
 
         // Render
         return do_template('GALLERY_REGULAR_MODE_SCREEN', array(
@@ -1151,7 +1151,7 @@ class Module_galleries
             require_code('cns_members');
             require_code('cns_members2');
         }
-        $member_details = (($member_id === null) || (get_forum_type() != 'cns')) ? new Tempcode() : render_member_box($member_id, true, true, null, false);
+        $member_details = (($member_id === null) || (get_forum_type() != 'cns')) ? new Tempcode() : render_member_box($member_id, true, true, array(), false);
 
         return do_template('GALLERY_ENTRY_SCREEN', array(
             '_GUID' => '332a19b6a72505f8e1eb4d288df247ce',
@@ -1271,7 +1271,7 @@ class Module_galleries
             require_code('cns_members');
             require_code('cns_members2');
         }
-        $member_details = (($member_id === null) || (get_forum_type() != 'cns')) ? new Tempcode() : render_member_box($member_id, true, true, null, false);
+        $member_details = (($member_id === null) || (get_forum_type() != 'cns')) ? new Tempcode() : render_member_box($member_id, true, true, array(), false);
 
         $video_details = show_video_details($myrow);
 

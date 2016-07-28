@@ -175,7 +175,9 @@ class Module_admin_ecommerce extends Standard_crud_module
     public function browse()
     {
         require_code('templates_donext');
-        return do_next_manager($this->title, comcode_lang_string('DOC_USERGROUP_SUBSCRIPTION'),
+        return do_next_manager(
+            $this->title,
+            comcode_lang_string('DOC_USERGROUP_SUBSCRIPTION'),
             array(
                 ((get_forum_type() != 'cns') && (get_value('unofficial_ecommerce') !== '1')) ? null : array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_USERGROUP_SUBSCRIPTION')),
                 ((get_forum_type() != 'cns') && (get_value('unofficial_ecommerce') !== '1')) ? null : array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_USERGROUP_SUBSCRIPTION')),
@@ -200,11 +202,11 @@ class Module_admin_ecommerce extends Standard_crud_module
      * @param  ?LONG_TEXT $mail_start The text of the e-mail to send out when a subscription is start (null: default)
      * @param  ?LONG_TEXT $mail_end The text of the e-mail to send out when a subscription is ended (null: default)
      * @param  ?LONG_TEXT $mail_uhoh The text of the e-mail to send out when a subscription cannot be renewed because the subproduct is gone (null: default)
-     * @param  ?array $mails Other e-mails to send (null: none)
+     * @param  array $mails Other e-mails to send
      * @param  ?AUTO_LINK $id ID of existing subscription (null: new)
      * @return array Tuple: The input fields, The hidden fields, The delete fields
      */
-    public function get_form_fields($title = '', $description = '', $cost = '9.99', $length = 12, $length_units = 'm', $auto_recur = 1, $group_id = null, $uses_primary = 0, $enabled = 1, $mail_start = null, $mail_end = null, $mail_uhoh = null, $mails = null, $id = null)
+    public function get_form_fields($title = '', $description = '', $cost = '9.99', $length = 12, $length_units = 'm', $auto_recur = 1, $group_id = null, $uses_primary = 0, $enabled = 1, $mail_start = null, $mail_end = null, $mail_uhoh = null, $mails = array(), $id = null)
     {
         if (($title == '') && (get_forum_type() == 'cns')) {
             $add_usergroup_url = build_url(array('page' => 'admin_cns_groups', 'type' => 'add'), get_module_zone('admin_cns_groups'));
@@ -274,9 +276,6 @@ class Module_admin_ecommerce extends Standard_crud_module
         $fields->attach(form_input_text_comcode(do_lang_tempcode('MAIL_UHOH'), do_lang_tempcode('DESCRIPTION_USERGROUP_SUBSCRIPTION_MAIL_UHOH'), 'mail_uhoh', $mail_uhoh, false, null, true));
 
         // Extra mails
-        if ($mails === null) {
-            $mails = array();
-        }
         if (get_forum_type() == 'cns') {
             for ($i = 0; $i < count($mails) + 3/*Allow adding 3 on each edit*/; $i++) {
                 $subject = isset($mails[$i]) ? $mails[$i]['subject'] : '';

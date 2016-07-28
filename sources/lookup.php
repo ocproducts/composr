@@ -189,10 +189,10 @@ function get_stats_track($member, $ip, $start = 0, $max = 50, $sortable = 'date_
 /**
  * Get a results table showing security alerts matching WHERE constraints.
  *
- * @param  ?array $where WHERE constraints (null: none)
+ * @param  array $where WHERE constraints
  * @return array A pair: The results table, The number
  */
-function find_security_alerts($where)
+function find_security_alerts($where = array())
 {
     // Alerts
     $start = get_param_integer('alert_start', 0);

@@ -21,7 +21,7 @@ function do_install_to($database, $username, $password, $table_prefix, $safe_mod
 
     if ($success && $do_index_test) {
         $url = get_base_url() . '/index.php';
-        $data = http_download_file($url, null, false, false, 'Composr', null, null, null, null, null, null, null, null, 20.0);
+        $data = http_download_file($url, null, false, false, 'Composr', null, array(), null, null, null, null, null, null, 20.0);
         $success = ($GLOBALS['HTTP_MESSAGE'] == '200');
     }
 

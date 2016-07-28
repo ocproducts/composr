@@ -197,7 +197,9 @@ class Module_admin_cns_welcome_emails extends Standard_crud_module
         }
 
         require_code('templates_donext');
-        return do_next_manager(get_screen_title('WELCOME_EMAILS'), comcode_lang_string('DOC_WELCOME_EMAILS'),
+        return do_next_manager(
+            get_screen_title('WELCOME_EMAILS'),
+            comcode_lang_string('DOC_WELCOME_EMAILS'),
             array(
                 array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_WELCOME_EMAIL')),
                 array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_WELCOME_EMAIL')),

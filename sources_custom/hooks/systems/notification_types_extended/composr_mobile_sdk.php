@@ -131,7 +131,7 @@ class Hook_notification_types_extended_composr_mobile_sdk
      * @param  integer $priority The message priority (1=urgent, 3=normal, 5=low)
      * @range  1 5
      * @param  boolean $no_cc Whether to NOT CC to the CC address
-     * @param  ?array $attachments An list of attachments (each attachment being a map, path=>filename) (null: none)
+     * @param  array $attachments An list of attachments (each attachment being a map, path=>filename)
      * @param  boolean $use_real_from Whether we will make a "reply to" direct -- we only do this if we're allowed to disclose email addresses for this particular notification type (i.e. if it's a direct contact)
      * @return boolean New $no_cc setting
      */
@@ -145,7 +145,7 @@ class Hook_notification_types_extended_composr_mobile_sdk
                 require_code('tasks');
                 $args = array($to_member_id, $notification_code, $code_category, $subject, $message, $properties, $from_member_id, $priority, $no_cc, $attachments, $use_real_from);
                 require_lang('composr_mobile_sdk');
-                call_user_func_array__long_task(do_lang('NOTIFICATIONS_INSTANT_ANDROID'), get_screen_title('NOTIFICATIONS_INSTANT_ANDROID', true, null, null, null, false), 'ios_notification', $args, false, false, false);
+                call_user_func_array__long_task(do_lang('NOTIFICATIONS_INSTANT_ANDROID'), get_screen_title('NOTIFICATIONS_INSTANT_ANDROID', true, array(), null, null, false), 'ios_notification', $args, false, false, false);
             }
         }
 
@@ -157,7 +157,7 @@ class Hook_notification_types_extended_composr_mobile_sdk
                 require_code('tasks');
                 $args = array($to_member_id, $notification_code, $code_category, $subject, $message, $properties, $from_member_id, $priority, $no_cc, $attachments, $use_real_from);
                 require_lang('composr_mobile_sdk');
-                call_user_func_array__long_task(do_lang('NOTIFICATIONS_INSTANT_IOS'), get_screen_title('NOTIFICATIONS_INSTANT_IOS', true, null, null, null, false), 'android_notification', $args, false, false, false);
+                call_user_func_array__long_task(do_lang('NOTIFICATIONS_INSTANT_IOS'), get_screen_title('NOTIFICATIONS_INSTANT_IOS', true, array(), null, null, false), 'android_notification', $args, false, false, false);
             }
         }
 

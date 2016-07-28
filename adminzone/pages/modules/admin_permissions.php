@@ -522,10 +522,10 @@ class Module_admin_permissions
         require_lang('zones');
 
         require_code('zones3');
-        $zones = create_selection_list_zones(null, null, array('', 'site'));
+        $zones = create_selection_list_zones(null, array(), array('', 'site'));
         $fields->attach(form_input_huge_list(do_lang_tempcode('ZONE'), '', 'zone', $zones, null, true));
 
-        $post_url = get_self_url(false, false, null, false, true);
+        $post_url = get_self_url(false, false, array(), false, true);
 
         return do_template('FORM_SCREEN', array('_GUID' => '457a5b8200991996b383bf75515382ab', 'GET' => true, 'SKIP_WEBSTANDARDS' => true, 'HIDDEN' => '', 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => do_lang_tempcode('CHOOSE'), 'TITLE' => $title, 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => ''));
     }
@@ -836,7 +836,7 @@ class Module_admin_permissions
             $sections->attach(form_input_list_group(do_lang_tempcode('OTHER'), $sections_uncommon));
             $fields->attach(form_input_huge_list(do_lang_tempcode('SECTION'), '', 'id', $sections, null, true));
 
-            $post_url = get_self_url(false, false, null, false, true);
+            $post_url = get_self_url(false, false, array(), false, true);
 
             return do_template('FORM_SCREEN', array('_GUID' => 'e5d457a49a76706afebc92da3d846e74', 'GET' => true, 'SKIP_WEBSTANDARDS' => true, 'HIDDEN' => '', 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => do_lang_tempcode('CHOOSE'), 'TITLE' => $this->title, 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => ''));
         }

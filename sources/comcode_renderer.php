@@ -269,13 +269,13 @@ function _custom_comcode_import($db)
  * @param  ?string $pass_id A special identifier that can identify this resource in a sea of our resources of this class; usually this can be ignored, but may be used to provide a binding between JavaScript in evaluated Comcode, and the surrounding environment (null: no explicit binding)
  * @param  ?object $db The database connector to use (null: standard site connector)
  * @param  integer $flags A bitmask of COMCODE_* flags
- * @param  ?array $highlight_bits A list of words to highlight (null: none)
+ * @param  array $highlight_bits A list of words to highlight
  * @param  ?MEMBER $on_behalf_of_member The member we are running on behalf of, with respect to how attachments are handled; we may use this members attachments that are already within this post, and our new attachments will be handed to this member (null: member evaluating)
  * @return Tempcode The Tempcode generated
  *
  * @ignore
  */
-function _comcode_to_tempcode($comcode, $source_member = null, $as_admin = false, $pass_id = null, $db = null, $flags = 0, $highlight_bits = null, $on_behalf_of_member = null)
+function _comcode_to_tempcode($comcode, $source_member = null, $as_admin = false, $pass_id = null, $db = null, $flags = 0, $highlight_bits = array(), $on_behalf_of_member = null)
 {
     $structure_sweep = ($flags & COMCODE_STRUCTURE_SWEEP) != 0;
 
@@ -554,7 +554,7 @@ function test_url($url_full, $tag_type, $given_url, $source_member)
  * @param  string $comcode The whole chunk of Comcode
  * @param  boolean $structure_sweep Whether this is only a structure sweep
  * @param  boolean $semiparse_mode Whether we are in semi-parse-mode (some tags might convert differently)
- * @param  ?array $highlight_bits A list of words to highlight (null: none)
+ * @param  array $highlight_bits A list of words to highlight
  * @param  ?MEMBER $on_behalf_of_member The member we are running on behalf of, with respect to how attachments are handled; we may use this members attachments that are already within this post, and our new attachments will be handed to this member (null: member evaluating)
  * @param  boolean $in_semihtml Whether what we have came from inside a semihtml tag
  * @param  boolean $is_all_semihtml Whether what we have came from semihtml mode
@@ -563,7 +563,7 @@ function test_url($url_full, $tag_type, $given_url, $source_member)
  *
  * @ignore
  */
-function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_id, $marker, $source_member, $as_admin, $db, &$comcode, $structure_sweep, $semiparse_mode, $highlight_bits = null, $on_behalf_of_member = null, $in_semihtml = false, $is_all_semihtml = false, $html_errors = false)
+function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_id, $marker, $source_member, $as_admin, $db, &$comcode, $structure_sweep, $semiparse_mode, $highlight_bits = array(), $on_behalf_of_member = null, $in_semihtml = false, $is_all_semihtml = false, $html_errors = false)
 {
     if (($structure_sweep) && ($tag != 'title')) {
         return new Tempcode();
@@ -1465,7 +1465,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 foreach ($pages as $pg_name => $pg_type) {
                     if (substr($pg_name, 0, strlen($prefix)) == $prefix) {
                         $i = count($STRUCTURE_LIST);
-                        comcode_to_tempcode(file_get_contents(zone_black_magic_filterer(get_file_base() . '/' . $s_zone . '/pages/' . $pg_type . '/' . $pg_name . '.txt')), $source_member, $as_admin, null, $db, COMCODE_NORMAL, null, $on_behalf_of_member);
+                        comcode_to_tempcode(file_get_contents(zone_black_magic_filterer(get_file_base() . '/' . $s_zone . '/pages/' . $pg_type . '/' . $pg_name . '.txt')), $source_member, $as_admin, null, $db, COMCODE_NORMAL, array(), $on_behalf_of_member);
                         $page_url = build_url(array('page' => $pg_name), $s_zone);
                         while (array_key_exists($i, $STRUCTURE_LIST)) {
                             $urls_for[] = $page_url;
@@ -1478,7 +1478,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             } else {
                 require_code('comcode_compiler');
 
-                __comcode_to_tempcode($comcode, $source_member, $as_admin, null, $db, COMCODE_NORMAL, null, $on_behalf_of_member);
+                __comcode_to_tempcode($comcode, $source_member, $as_admin, null, $db, COMCODE_NORMAL, array(), $on_behalf_of_member);
 
                 $base = array_key_exists('base', $attributes) ? intval($attributes['base']) : 1;
             }

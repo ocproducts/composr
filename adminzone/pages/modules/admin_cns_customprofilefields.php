@@ -147,7 +147,9 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
     public function browse()
     {
         require_code('templates_donext');
-        return do_next_manager(get_screen_title('CUSTOM_PROFILE_FIELDS'), comcode_lang_string('DOC_CUSTOM_PROFILE_FIELDS'),
+        return do_next_manager(
+            get_screen_title('CUSTOM_PROFILE_FIELDS'),
+            comcode_lang_string('DOC_CUSTOM_PROFILE_FIELDS'),
             array(
                 array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_CUSTOM_PROFILE_FIELD')),
                 array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_CUSTOM_PROFILE_FIELD')),
@@ -393,7 +395,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
             }
             select_submit.style.display=\'none\';
         ';
-        return array(results_table(do_lang($this->menu_label), get_param_integer('start', 0), 'start', either_param_integer('max', 20), 'max', $max_rows, $header_row, $fields, $sortables, $sortable, $sort_order, 'sort', null, null, null, 8, 'gdfg43tfdgdfgdrfgd', true), true);
+        return array(results_table(do_lang($this->menu_label), get_param_integer('start', 0), 'start', either_param_integer('max', 20), 'max', $max_rows, $header_row, $fields, $sortables, $sortable, $sort_order, 'sort', null, array(), null, 8, 'gdfg43tfdgdfgdrfgd', true), true);
     }
 
     /**

@@ -568,18 +568,14 @@ function get_field_restrict_property($property, $field, $page = null, $type = nu
  * @param  boolean $required Whether this is a required input field
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
  * @param  ?integer $_maxlength The maximum length of the field (null: default 80)
- * @param  ?array $extra_chars List of extra characters to allow (null: none)
+ * @param  array $extra_chars List of extra characters to allow
  * @param  ?string $placeholder The placeholder value for this input field (null: none)
  * @return Tempcode The input field
  */
-function form_input_codename($pretty_name, $description, $name, $default, $required, $tabindex = null, $_maxlength = 40, $extra_chars = null, $placeholder = null)
+function form_input_codename($pretty_name, $description, $name, $default, $required, $tabindex = null, $_maxlength = 40, $extra_chars = array(), $placeholder = null)
 {
     if ($default === null) {
         $default = '';
-    }
-
-    if ($extra_chars === null) {
-        $extra_chars = array();
     }
 
     $default = filter_form_field_default($name, $default);

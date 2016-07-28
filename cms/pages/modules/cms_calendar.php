@@ -329,7 +329,9 @@ class Module_cms_calendar extends Standard_crud_module
     {
         require_code('templates_donext');
         require_code('fields');
-        return do_next_manager(get_screen_title('MANAGE_CALENDARS'), comcode_lang_string('DOC_CALENDAR'),
+        return do_next_manager(
+            get_screen_title('MANAGE_CALENDARS'),
+            comcode_lang_string('DOC_CALENDAR'),
             array_merge(array(
                 has_privilege(get_member(), 'submit_cat_highrange_content', 'cms_calendar') ? array('menu/_generic_admin/add_one_category', array('_SELF', array('type' => 'add_category'), '_SELF'), do_lang('ADD_EVENT_TYPE')) : null,
                 has_privilege(get_member(), 'edit_own_cat_highrange_content', 'cms_calendar') ? array('menu/_generic_admin/edit_one_category', array('_SELF', array('type' => 'edit_category'), '_SELF'), do_lang('EDIT_EVENT_TYPE')) : null,
@@ -457,10 +459,10 @@ class Module_cms_calendar extends Standard_crud_module
      * @param  ?SHORT_INTEGER $allow_comments Whether comments are allowed (0=no, 1=yes, 2=review style) (null: decide statistically, based on existing choices)
      * @param  ?BINARY $allow_trackbacks Whether trackbacks are allowed (null: decide statistically, based on existing choices)
      * @param  LONG_TEXT $notes Notes
-     * @param  ?array $regions The regions (empty: not region-limited) (null: same as empty)
+     * @param  array $regions The regions (empty: not region-limited)
      * @return array A tuple of: (fields, hidden-fields, delete-fields, edit-text, whether all delete fields are specified, posting form text, more fields)
      */
-    public function get_form_fields($id = null, $type = null, $start_year = null, $start_month = null, $start_day = null, $start_monthly_spec_type = 'day_of_month', $start_hour = null, $start_minute = null, $title = '', $content = '', $recurrence = 'none', $recurrences = null, $seg_recurrences = 0, $priority = 3, $end_year = null, $end_month = null, $end_day = null, $end_monthly_spec_type = 'day_of_month', $end_hour = null, $end_minute = null, $timezone = null, $do_timezone_conv = 0, $member_calendar = null, $validated = 1, $allow_rating = null, $allow_comments = null, $allow_trackbacks = null, $notes = '', $regions = null)
+    public function get_form_fields($id = null, $type = null, $start_year = null, $start_month = null, $start_day = null, $start_monthly_spec_type = 'day_of_month', $start_hour = null, $start_minute = null, $title = '', $content = '', $recurrence = 'none', $recurrences = null, $seg_recurrences = 0, $priority = 3, $end_year = null, $end_month = null, $end_day = null, $end_monthly_spec_type = 'day_of_month', $end_hour = null, $end_minute = null, $timezone = null, $do_timezone_conv = 0, $member_calendar = null, $validated = 1, $allow_rating = null, $allow_comments = null, $allow_trackbacks = null, $notes = '', $regions = array())
     {
         list($allow_rating, $allow_comments, $allow_trackbacks) = $this->choose_feedback_fields_statistically($allow_rating, $allow_comments, $allow_trackbacks);
 
@@ -645,7 +647,7 @@ class Module_cms_calendar extends Standard_crud_module
         $seo_fields = seo_get_fields($this->seo_type, ($id === null) ? null : strval($id), false);
         require_code('feedback2');
         $feedback_fields = feedback_fields($this->content_type, $allow_rating == 1, $allow_comments == 1, $allow_trackbacks == 1, false, $notes, $allow_comments == 2, false, true, false);
-        $fields2->attach(metadata_get_fields('event', ($id === null) ? null : strval($id), false, null, ($seo_fields->is_empty() && $feedback_fields->is_empty()) ? METADATA_HEADER_YES : METADATA_HEADER_FORCE));
+        $fields2->attach(metadata_get_fields('event', ($id === null) ? null : strval($id), false, array(), ($seo_fields->is_empty() && $feedback_fields->is_empty()) ? METADATA_HEADER_YES : METADATA_HEADER_FORCE));
         $fields2->attach($seo_fields);
         $fields2->attach($feedback_fields);
 
@@ -1579,8 +1581,10 @@ class Module_cms_calendar_cat extends Standard_crud_module
         }
 
         if (($id === null) && ($type === null)) {
-            return do_next_manager($title, $description,
-                null,
+            return do_next_manager(
+                $title,
+                $description,
+                array(),
                 null,
                 /* TYPED-ORDERED LIST OF 'LINKS'    */
                 array('_SELF', array('type' => 'add'), '_SELF', do_lang_tempcode('ADD_CALENDAR_EVENT')), // Add one
@@ -1593,9 +1597,9 @@ class Module_cms_calendar_cat extends Standard_crud_module
                 has_privilege(get_member(), 'edit_own_cat_highrange_content', 'cms_calendar') ? array('_SELF', array('type' => 'edit_category') + $extra, '_SELF', do_lang_tempcode('EDIT_EVENT_TYPE')) : null, // Edit one category
                 null, // Edit this category
                 null, // View this category
-                null,
-                null,
-                null,
+                array(),
+                array(),
+                array(),
                 null,
                 null,
                 null,
@@ -1605,8 +1609,10 @@ class Module_cms_calendar_cat extends Standard_crud_module
             );
         }
 
-        return do_next_manager($title, $description,
-            null,
+        return do_next_manager(
+            $title,
+            $description,
+            array(),
             null,
             /* TYPED-ORDERED LIST OF 'LINKS'  */
             array('_SELF', array('type' => 'add', 'e_type' => $type) + $extra, '_SELF', do_lang_tempcode('ADD_CALENDAR_EVENT')), // Add one
@@ -1619,9 +1625,9 @@ class Module_cms_calendar_cat extends Standard_crud_module
             has_privilege(get_member(), 'edit_own_cat_highrange_content', 'cms_calendar') ? array('_SELF', array('type' => 'edit_category') + $extra, '_SELF', do_lang_tempcode('EDIT_EVENT_TYPE')) : null, // Edit one category
             has_privilege(get_member(), 'edit_own_cat_highrange_content', 'cms_calendar', array('calendar', 'type') + $extra) ? array('_SELF', array('type' => '_edit_category', 'id' => $type) + $extra, '_SELF', do_lang_tempcode('EDIT_THIS_EVENT_TYPE')) : null, // Edit this category
             null, // View this category
-            null,
-            null,
-            null,
+            array(),
+            array(),
+            array(),
             null,
             null,
             null,

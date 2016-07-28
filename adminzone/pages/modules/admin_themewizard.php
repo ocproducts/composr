@@ -355,8 +355,10 @@ class Module_admin_themewizard
         $message = do_lang_tempcode('THEMEWIZARD_4_DESCRIBE', escape_html('#' . $seed), escape_html($themename));
 
         require_code('templates_donext');
-        return do_next_manager($this->title, $message,
-            null,
+        return do_next_manager(
+            $this->title,
+            $message,
+            array(),
             null,
             /* TYPED-ORDERED LIST OF 'LINKS'  */
             null, // Add one

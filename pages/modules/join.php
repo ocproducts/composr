@@ -253,7 +253,7 @@ class Module_join
                 'GET' => true,
                 'SKIP_WEBSTANDARDS' => true,
                 'HIDDEN' => '',
-                'URL' => get_self_url(false, false, null, false, true),
+                'URL' => get_self_url(false, false, array(), false, true),
                 'FIELDS' => $fields,
                 'TEXT' => do_lang_tempcode('MISSING_CONFIRM_CODE'),
                 'SUBMIT_ICON' => 'buttons__proceed',

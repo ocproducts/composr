@@ -62,7 +62,7 @@ function autoprobe_cdns()
         if (preg_match('#^' . preg_quote($t, '#') . '($|\.|/|:)#', $domain_name) == 0) { // Don't use it if it is in the base URL
             $test_url = 'http://' . $t . $parsed['path'] . '/themes/default/images/icons/16x16/editor/comcode.png';
 
-            $test_result = http_download_file($test_url, null, false, false, 'Composr', null, null, null, null, null, null, null, null, 0.25, false, null);
+            $test_result = http_download_file($test_url, null, false, false, 'Composr', null, array(), null, null, null, null, null, null, 0.25);
 
             if (($test_result !== null) && ($test_result == $expected)) {
                 if ($detected_cdns != '') {
@@ -608,10 +608,10 @@ function find_images_do_dir($theme, $subdir, $langs)
  * @param  ?ID_TEXT $theme The theme to search in, in addition to the default theme (null: current theme)
  * @param  boolean $dirs_only Whether to only return directories (advanced option, rarely used)
  * @param  boolean $db_only Whether to only return from the database (advanced option, rarely used)
- * @param  ?array $skip The list of files/directories to skip (null: none)
+ * @param  array $skip The list of files/directories to skip
  * @return array The list of image IDs
  */
-function get_all_image_ids_type($type, $recurse = false, $db = null, $theme = null, $dirs_only = false, $db_only = false, $skip = null)
+function get_all_image_ids_type($type, $recurse = false, $db = null, $theme = null, $dirs_only = false, $db_only = false, $skip = array())
 {
     if ($db === null) {
         $db = $GLOBALS['SITE_DB'];
@@ -632,9 +632,6 @@ function get_all_image_ids_type($type, $recurse = false, $db = null, $theme = nu
 
     if ($theme === null) {
         $theme = $GLOBALS['FORUM_DRIVER']->get_theme();
-    }
-    if ($skip === null) {
-        $skip = array();
     }
 
     if ((substr($type, 0, 4) == 'cns_') && (file_exists(get_file_base() . '/themes/default/images/avatars/index.html'))) { // Allow debranding of theme img dirs

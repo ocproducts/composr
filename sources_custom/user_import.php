@@ -46,7 +46,7 @@ function do_user_import()
         require_code('files');
         safe_ini_set('auto_detect_line_endings', '1');
         $infile = fopen(get_custom_file_base() . '/' . USER_IMPORT_TEMP_PATH, 'wb');
-        $test = http_download_file(USER_IMPORT_URL, null, false, false, 'Composr', null, null, null, null, null, $infile);
+        $test = http_download_file(USER_IMPORT_URL, null, false, false, 'Composr', null, array(), null, null, null, $infile);
         fclose($infile);
         if ($test === null) {
             return;

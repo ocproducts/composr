@@ -93,7 +93,7 @@ function render_post_box($row, $use_post_title = false, $give_context = true, $i
         // Poster details
         if ((!is_guest($row['p_poster'])) && ($primary_group !== null)) {
             require_code('cns_members2');
-            $poster_details = render_member_box($row['p_poster'], false, false, null, false);
+            $poster_details = render_member_box($row['p_poster'], false, false, array(), false);
         } else {
             $poster_details = new Tempcode();
         }

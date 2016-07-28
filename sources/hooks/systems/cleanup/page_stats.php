@@ -63,7 +63,7 @@ class Hook_cleanup_page_stats
                 $fields->attach(form_input_tick(do_lang_tempcode('DELETE_SEARCH_STATS'), do_lang_tempcode('DESCRIPTION_DELETE_SEARCH_STATS'), 'search_stats', false));
             }
 
-            $post_url = get_self_url(false, false, null, false, true);
+            $post_url = get_self_url(false, false, array(), false, true);
             $submit_name = do_lang_tempcode('DELETE');
             $hidden = build_keep_post_fields();
 

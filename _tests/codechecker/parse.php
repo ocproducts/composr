@@ -755,19 +755,6 @@ function _parse_command_actual($no_term_needed = false)
                     pparse__parser_next();
 
                     $expression = _parse_expression();
-
-                    /* Previously only literals were allowed
-                    if (pparse__parser_peek() == 'ARRAY') {
-                        pparse__parser_next(); // Skip over the ARRAY
-                        pparse__parser_expect('BRACKET_OPEN');
-                        $details = _parse_create_array();
-                        pparse__parser_expect('BRACKET_CLOSE');
-                        $literal = array('CREATE_ARRAY', $details, $GLOBALS['I']);
-                    } else {
-                        $literal = _parse_literal();
-                    }
-                    $expression = $literal;
-                    */
                 } else {
                     $expression = array('SOLO', array('LITERAL', array('null')));
                 }
@@ -787,12 +774,8 @@ function _parse_command_actual($no_term_needed = false)
     return $command;
 }
 
-function _parse_call_chain($command = null, $suppress_error = false)
+function _parse_call_chain($command = array(), $suppress_error = false)
 {
-    if ($command === null) {
-        $command = array();
-    }
-
     $i = pparse__parser_expect('IDENTIFIER'); // Silly PHP syntax makes $scoped_variables and scoped_functions() different, but member_variables and member_functions() the same...
     switch (pparse__parser_peek()) {
         case 'BRACKET_OPEN':
@@ -918,13 +901,9 @@ function _parse_cases()
     return $cases;
 }
 
-function _parse_class_contents($class_modifiers = null, $is_interface = false, $is_trait = false)
+function _parse_class_contents($class_modifiers = array(), $is_interface = false, $is_trait = false)
 {
     // Choice{"VAR" "IDENTIFIER" "EQUAL" literal "COMMAND_TERMINATE" | "VAR" "IDENTIFIER" "COMMAND_TERMINATE" | function_dec}*
-
-    if ($class_modifiers === null) {
-        $class_modifiers = array();
-    }
 
     $next = pparse__parser_peek();
     $class = array('functions' => array(), 'vars' => array(), 'constants' => array(), 'traits' => array(), 'traits_details_insteadof' => array(), 'traits_details_as' => array(), 'i' => $GLOBALS['I']);
@@ -1014,19 +993,6 @@ function _parse_class_contents($class_modifiers = null, $is_interface = false, $
                         pparse__parser_next();
 
                         $expression =  _parse_expression();
-
-                        /* Previously only literals were allowed
-                        if (pparse__parser_peek() == 'ARRAY') {
-                            pparse__parser_next(); // Skip over the ARRAY
-                            pparse__parser_expect('BRACKET_OPEN');
-                            $details = _parse_create_array();
-                            pparse__parser_expect('BRACKET_CLOSE');
-                            $literal = array('CREATE_ARRAY', $details, $GLOBALS['I']);
-                        } else {
-                            $literal = _parse_literal();
-                        }
-                        $expression = array('CONST', $identifier, $literal, $GLOBALS['I']);
-                        */
 
                         $class[($next == 'CONST') ? 'constants' : 'vars'][] = array($identifier, $expression);
                     } else {
@@ -1135,12 +1101,8 @@ function _parse_class_contents($class_modifiers = null, $is_interface = false, $
     return $class;
 }
 
-function _parse_class_def($modifiers = null)
+function _parse_class_def($modifiers = array())
 {
-    if ($modifiers === null) {
-        $modifiers = array();
-    }
-
     $class = array('is_interface' => false); // Classes and interfaces aren't different enough to justify separate handlers
     if (count($modifiers) > 0) {
         $class['modifiers'] = $modifiers;
@@ -1168,12 +1130,8 @@ function _parse_class_def($modifiers = null)
     return $class;
 }
 
-function _parse_function_def($function_modifiers = null, $is_closure = false)
+function _parse_function_def($function_modifiers = array(), $is_closure = false)
 {
-    if ($function_modifiers === null) {
-        $function_modifiers = array();
-    }
-
     $function = array();
     $function['offset'] = $GLOBALS['I'];
     pparse__parser_expect('FUNCTION');
@@ -1684,6 +1642,14 @@ function _parse_literal()
                 _warning('Lower case constant, breaks convention. Likely a variable with a missing $');
             }
             $literal = array('CONSTANT', $_literal[1], $GLOBALS['I']);
+            break;
+
+        case 'ARRAY':
+            pparse__parser_next(); // Skip over the ARRAY
+            pparse__parser_expect('BRACKET_OPEN');
+            $details = _parse_create_array();
+            pparse__parser_expect('BRACKET_CLOSE');
+            $literal = array('CREATE_ARRAY', $details, $GLOBALS['I']);
             break;
 
         default:

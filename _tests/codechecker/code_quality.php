@@ -896,12 +896,8 @@ function check_variable_list($LOCAL_VARIABLES, $offset = -1)
     }
 }
 
-function check_command($command, $depth, $function_guard = '', $nogo_parameters = null)
+function check_command($command, $depth, $function_guard = '', $nogo_parameters = array())
 {
-    if ($nogo_parameters === null) {
-        $nogo_parameters = array();
-    }
-
     global $LOCAL_VARIABLES, $CURRENT_CLASS, $FUNCTION_SIGNATURES;
     foreach ($command as $i => $c) {
         if ($c == array()) {

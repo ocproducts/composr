@@ -212,18 +212,15 @@ function convert_template_tree_metadata_to_screen_tree($metadata)
  *
  * @param  integer $type Tree node type (a TEMPLATE_TREE_NODE__* constant)
  * @param  mixed $identifier Identifier (Tempcode or string)
- * @param  ?mixed $children Child nodes (array) or Tempcode node to get children from (Tempcode) (null: none)
+ * @param  mixed $children Child nodes (array) or Tempcode node to get children from (Tempcode)
  * @return array Metadata structure
  */
-function create_template_tree_metadata($type = 0, $identifier = '', $children = null)
+function create_template_tree_metadata($type = 0, $identifier = '', $children = array())
 {
     if (is_object($identifier)) {
         $identifier = $identifier->evaluate();
     }
 
-    if ($children === null) {
-        $children = array();
-    }
     if (is_object($children)) {
         if (isset($children->metadata)) {
             $children->handle_symbol_preprocessing();

@@ -717,7 +717,7 @@ function calendar_matches($auth_member_id, $member_id, $restrict, $period_start,
             $temp_file_path = cms_tempnam();
             require_code('files');
             $write_to_file = fopen($temp_file_path, 'wb');
-            http_download_file($feed_url, 1024 * 512, false, false, 'Composr', null, null, null, null, null, $write_to_file);
+            http_download_file($feed_url, 1024 * 512, false, false, 'Composr', null, array(), null, null, null, $write_to_file);
 
             if (($GLOBALS['HTTP_DOWNLOAD_MIME_TYPE'] == 'text/calendar') || ($GLOBALS['HTTP_DOWNLOAD_MIME_TYPE'] == 'application/octet-stream')) {
                 $data = file_get_contents($temp_file_path);

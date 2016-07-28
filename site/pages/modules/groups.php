@@ -577,7 +577,7 @@ class Module_groups
                 $primary_members->attach(results_entry(array($temp), false));
             }
             $fields_title = results_field_title(array(do_lang_tempcode('PRIMARY_MEMBERS')), $sortables, 'p_sort', $sortable . ' ' . $sort_order);
-            $primary_members = results_table(do_lang_tempcode('PRIMARY_MEMBERS'), $start, 'p_start', $max, 'p_max', $max_rows, $fields_title, $primary_members, $sortables, $sortable, $sort_order, 'p_sort', null, null, null, 6);
+            $primary_members = results_table(do_lang_tempcode('PRIMARY_MEMBERS'), $start, 'p_start', $max, 'p_max', $max_rows, $fields_title, $primary_members, $sortables, $sortable, $sort_order, 'p_sort', null, array(), null, 6);
         } else {
             $primary_members = new Tempcode();
         }
@@ -625,11 +625,11 @@ class Module_groups
         }
         if (!$secondary_members->is_empty()) {
             $fields_title = results_field_title(array(do_lang_tempcode('SECONDARY_MEMBERS')), $sortables, 'p_sort', $sortable . ' ' . $sort_order);
-            $secondary_members = results_table(do_lang_tempcode('SECONDARY_MEMBERS'), $s_start, 's_start', $s_max, 's_max', $s_max_rows, $fields_title, $secondary_members, $sortables, $sortable, $sort_order, 's_sort', null, null, null, 6);
+            $secondary_members = results_table(do_lang_tempcode('SECONDARY_MEMBERS'), $s_start, 's_start', $s_max, 's_max', $s_max_rows, $fields_title, $secondary_members, $sortables, $sortable, $sort_order, 's_sort', null, array(), null, 6);
         }
         if (!$prospective_members->is_empty()) {
             $fields_title = results_field_title(array(do_lang_tempcode('PROSPECTIVE_MEMBERS')), $sortables, 'p_sort', $sortable . ' ' . $sort_order);
-            $prospective_members = results_table(do_lang_tempcode('PROSPECTIVE_MEMBERS'), $s_start, 's_start', $s_max, 's_max', $d_max_rows, $fields_title, $prospective_members, $sortables, $sortable, $sort_order, 'd_sort', null, null, null, 6);
+            $prospective_members = results_table(do_lang_tempcode('PROSPECTIVE_MEMBERS'), $s_start, 's_start', $s_max, 's_max', $d_max_rows, $fields_title, $prospective_members, $sortables, $sortable, $sort_order, 'd_sort', null, array(), null, 6);
         } elseif (has_actual_page_access(get_member(), 'cms_cns_groups', get_module_zone('cms_cns_groups'))) {
             $is_super_admin = $group['g_is_super_admin'];
             if ((!has_privilege(get_member(), 'control_usergroups')) || ($is_super_admin == 1)) {

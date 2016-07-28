@@ -138,7 +138,9 @@ class Module_admin_community_billboard extends Standard_crud_module
     public function browse()
     {
         require_code('templates_donext');
-        return do_next_manager(get_screen_title('COMMUNITY_BILLBOARD'), comcode_lang_string('DOC_COMMUNITY_BILLBOARD'),
+        return do_next_manager(
+            get_screen_title('COMMUNITY_BILLBOARD'),
+            comcode_lang_string('DOC_COMMUNITY_BILLBOARD'),
             array(
                 array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_COMMUNITY_BILLBOARD')),
                 array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_COMMUNITY_BILLBOARD')),

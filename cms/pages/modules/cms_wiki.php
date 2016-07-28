@@ -206,7 +206,9 @@ class Module_cms_wiki
     {
         require_code('templates_donext');
         require_code('fields');
-        return do_next_manager(get_screen_title('MANAGE_WIKI'), comcode_lang_string('DOC_WIKI'),
+        return do_next_manager(
+            get_screen_title('MANAGE_WIKI'),
+            comcode_lang_string('DOC_WIKI'),
             array_merge(array(
                 array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add_page'), '_SELF'), do_lang('WIKI_ADD_PAGE')),
                 array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'choose_page_to_edit'), '_SELF'), do_lang('WIKI_EDIT_PAGE')),

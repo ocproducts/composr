@@ -269,7 +269,9 @@ class Module_cms_galleries extends Standard_crud_module
 
         require_code('templates_donext');
         require_code('fields');
-        return do_next_manager(get_screen_title('MANAGE_GALLERIES'), comcode_lang_string('DOC_GALLERIES'),
+        return do_next_manager(
+            get_screen_title('MANAGE_GALLERIES'),
+            comcode_lang_string('DOC_GALLERIES'),
             array_merge(array(
                 has_privilege(get_member(), 'submit_cat_midrange_content', 'cms_galleries') ? array('menu/_generic_admin/add_one_category', array('_SELF', array('type' => 'add_category'), '_SELF'), do_lang('ADD_GALLERY')) : null,
                 has_privilege(get_member(), 'edit_own_cat_midrange_content', 'cms_galleries') ? array('menu/_generic_admin/edit_one_category', array('_SELF', array('type' => 'edit_category'), '_SELF'), do_lang('EDIT_GALLERY')) : null,
@@ -856,10 +858,10 @@ class Module_cms_galleries extends Standard_crud_module
      * @param  ?SHORT_INTEGER $allow_comments Whether comments are allowed (0=no, 1=yes, 2=review style) (null: decide statistically, based on existing choices)
      * @param  ?BINARY $allow_trackbacks Whether trackbacks are allowed (null: decide statistically, based on existing choices)
      * @param  LONG_TEXT $notes Notes for the image
-     * @param  ?array $regions The regions (empty: not region-limited) (null: same as empty)
+     * @param  array $regions The regions (empty: not region-limited)
      * @return array A pair: the Tempcode for the visible fields, and the Tempcode for the hidden fields
      */
-    public function get_form_fields($id = null, $title = '', $cat = '', $description = '', $url = '', $thumb_url = '', $validated = 1, $allow_rating = null, $allow_comments = null, $allow_trackbacks = null, $notes = '', $regions = null)
+    public function get_form_fields($id = null, $title = '', $cat = '', $description = '', $url = '', $thumb_url = '', $validated = 1, $allow_rating = null, $allow_comments = null, $allow_trackbacks = null, $notes = '', $regions = array())
     {
         list($allow_rating, $allow_comments, $allow_trackbacks) = $this->choose_feedback_fields_statistically($allow_rating, $allow_comments, $allow_trackbacks);
 
@@ -967,7 +969,7 @@ class Module_cms_galleries extends Standard_crud_module
             $hidden->attach(form_input_hidden('allow_trackbacks', strval($allow_trackbacks)));
             $feedback_fields = new Tempcode();
         }
-        $fields->attach(metadata_get_fields('image', ($id === null) ? null : strval($id), false, null, ($seo_fields->is_empty() && $feedback_fields->is_empty()) ? METADATA_HEADER_YES : METADATA_HEADER_FORCE));
+        $fields->attach(metadata_get_fields('image', ($id === null) ? null : strval($id), false, array(), ($seo_fields->is_empty() && $feedback_fields->is_empty()) ? METADATA_HEADER_YES : METADATA_HEADER_FORCE));
         $fields->attach($seo_fields);
         $fields->attach($feedback_fields);
 
@@ -1396,7 +1398,7 @@ class Module_cms_galleries_alt extends Standard_crud_module
                     if ($url != '') {
                         $temp_path = cms_tempnam();
                         $write_to_file = fopen($temp_path, 'wb');
-                        $download_test = http_download_file($url, 1024 * 50, false, false, 'Composr', null, null, null, null, null, $write_to_file);
+                        $download_test = http_download_file($url, 1024 * 50, false, false, 'Composr', null, array(), null, null, null, $write_to_file);
                         rewind($write_to_file);
                         fclose($write_to_file);
                     }
@@ -1470,10 +1472,10 @@ class Module_cms_galleries_alt extends Standard_crud_module
      * @param  ?integer $video_length The length of the video (null: not yet added, so not yet known)
      * @param  ?integer $video_width The width of the video (null: not yet added, so not yet known)
      * @param  ?integer $video_height The height of the video (null: not yet added, so not yet known)
-     * @param  ?array $regions The regions (empty: not region-limited) (null: same as empty)
+     * @param  array $regions The regions (empty: not region-limited)
      * @return array A pair: the Tempcode for the visible fields, and the Tempcode for the hidden fields
      */
-    public function get_form_fields($id = null, $title = '', $cat = '', $description = '', $url = '', $thumb_url = '', $validated = 1, $allow_rating = null, $allow_comments = null, $allow_trackbacks = null, $notes = '', $video_length = null, $video_width = null, $video_height = null, $regions = null)
+    public function get_form_fields($id = null, $title = '', $cat = '', $description = '', $url = '', $thumb_url = '', $validated = 1, $allow_rating = null, $allow_comments = null, $allow_trackbacks = null, $notes = '', $video_length = null, $video_width = null, $video_height = null, $regions = array())
     {
         list($allow_rating, $allow_comments, $allow_trackbacks) = $this->choose_feedback_fields_statistically($allow_rating, $allow_comments, $allow_trackbacks);
 
@@ -1586,7 +1588,7 @@ class Module_cms_galleries_alt extends Standard_crud_module
             $hidden->attach(form_input_hidden('allow_trackbacks', strval($allow_trackbacks)));
             $feedback_fields = new Tempcode();
         }
-        $fields->attach(metadata_get_fields('video', ($id === null) ? null : strval($id), false, null, ($seo_fields->is_empty() && $feedback_fields->is_empty()) ? METADATA_HEADER_YES : METADATA_HEADER_FORCE));
+        $fields->attach(metadata_get_fields('video', ($id === null) ? null : strval($id), false, array(), ($seo_fields->is_empty() && $feedback_fields->is_empty()) ? METADATA_HEADER_YES : METADATA_HEADER_FORCE));
         $fields->attach($seo_fields);
         $fields->attach($feedback_fields);
 
@@ -2067,7 +2069,7 @@ class Module_cms_galleries_cat extends Standard_crud_module
             $hidden->attach(form_input_hidden('allow_comments', strval($allow_comments)));
             $feedback_fields = new Tempcode();
         }
-        $fields->attach(metadata_get_fields('gallery', ($name == '') ? null : $name, true, null, ($seo_fields->is_empty() && $feedback_fields->is_empty()) ? METADATA_HEADER_YES : METADATA_HEADER_FORCE));
+        $fields->attach(metadata_get_fields('gallery', ($name == '') ? null : $name, true, array(), ($seo_fields->is_empty() && $feedback_fields->is_empty()) ? METADATA_HEADER_YES : METADATA_HEADER_FORCE));
         $fields->attach($seo_fields);
         $fields->attach($feedback_fields);
 
@@ -2204,7 +2206,7 @@ class Module_cms_galleries_cat extends Standard_crud_module
         $allow_rating = post_param_integer('allow_rating', fractional_edit() ? INTEGER_MAGIC_NULL : 0);
         $allow_comments = post_param_integer('allow_comments', fractional_edit() ? INTEGER_MAGIC_NULL : 0);
 
-        $metadata = actual_metadata_get_fields('gallery', $id, null, $name);
+        $metadata = actual_metadata_get_fields('gallery', $id, array(), $name);
 
         edit_gallery(
             $id,
@@ -2303,8 +2305,10 @@ class Module_cms_galleries_cat extends Standard_crud_module
         require_code('templates_donext');
 
         if (($id === null) && ($cat === null)) {
-            return do_next_manager($title, $description,
-                null,
+            return do_next_manager(
+                $title,
+                $description,
+                array(),
                 null,
                 /* TYPED-ORDERED LIST OF 'LINKS'    */
                 null, // Add one
@@ -2324,8 +2328,8 @@ class Module_cms_galleries_cat extends Standard_crud_module
                     has_privilege(get_member(), 'edit_own_midrange_content', 'cms_galleries') ? array('menu/cms/galleries/edit_one_image', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_IMAGE')) : null,
                     has_privilege(get_member(), 'edit_own_midrange_content', 'cms_galleries') ? array('menu/cms/galleries/edit_one_video', array('_SELF', array('type' => 'edit_other'), '_SELF'), do_lang('EDIT_VIDEO')) : null,
                 )),
-                null,
-                null,
+                array(),
+                array(),
                 null,
                 null,
                 null,
@@ -2349,8 +2353,10 @@ class Module_cms_galleries_cat extends Standard_crud_module
             }
         }
 
-        return do_next_manager($title, $description,
-            null,
+        return do_next_manager(
+            $title,
+            $description,
+            array(),
             null,
             /* TYPED-ORDERED LIST OF 'LINKS'  */
             null, // Add one
@@ -2371,8 +2377,8 @@ class Module_cms_galleries_cat extends Standard_crud_module
                 (has_privilege(get_member(), 'edit_own_midrange_content', 'cms_galleries') ? array($video ? 'menu/cms/galleries/edit_one_image' : 'menu/cms/galleries/edit_one_video', array('_SELF', array('type' => $video ? 'edit' : 'edit_other'), '_SELF'), do_lang($video ? 'EDIT_IMAGE' : 'EDIT_VIDEO')) : null), // Edit one
                 has_privilege(get_member(), 'mass_import', 'cms_galleries') ? array('menu/_generic_admin/import', array('_SELF', array('type' => '_import', 'name' => $cat), '_SELF'), do_lang('GALLERY_IMPORT')) : null
             )),
-            null,
-            null,
+            array(),
+            array(),
             null,
             null,
             null,

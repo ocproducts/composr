@@ -4921,11 +4921,11 @@ function var_export($expression, $return = false)
 /**
  * Creates a stream context.
  *
- * @param  ?array $options Options (null: none).
- * @param  ?array $params Parameters (null: none). Usually options is used, parameters not needed and refers to standard parameters for all context types.
+ * @param  array $options Options.
+ * @param  array $params Parameters. Usually options is used, parameters not needed and refers to standard parameters for all context types.
  * @return resource Stream context.
  */
-function stream_context_create($options = null, $params = null)
+function stream_context_create($options = array(), $params = array())
 {
     return array();
 }

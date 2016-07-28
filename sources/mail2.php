@@ -356,9 +356,9 @@ class Mail_dispatcher_manualproc extends Mail_dispatcher_base
     /**
      * Construct e-mail dispatcher.
      *
-     * @param  ?array $advanced_parameters List of advanced parameters (null: none)
+     * @param  array $advanced_parameters List of advanced parameters
      */
-    public function __construct($advanced_parameters = null)
+    public function __construct($advanced_parameters = array())
     {
         $this->line_term = "\n";
 
@@ -368,7 +368,7 @@ class Mail_dispatcher_manualproc extends Mail_dispatcher_base
     /**
      * Find whether the dispatcher instance is capable of sending e-mails.
      *
-     * @param  ?array $advanced_parameters List of advanced parameters (null: none)
+     * @param  array $advanced_parameters List of advanced parameters
      * @return boolean Whether the dispatcher instance is capable of sending e-mails
      */
     public function is_dispatcher_available($advanced_parameters)

@@ -608,12 +608,12 @@ function load_minimodule_page($string, &$out = null)
  * The returned/output result is returned, in Tempcode form.
  *
  * @param  PATH $string The relative path to the code file
- * @param  ?array $map The block parameters (null: none)
+ * @param  array $map The block parameters
  * @return Tempcode The result of executing the code
  *
  * @ignore
  */
-function _load_mini_code($string, $map = null)
+function _load_mini_code($string, $map = array())
 {
     require_code('developer_tools');
     destrictify();
@@ -1071,17 +1071,13 @@ function get_block_id($map)
  * Get the processed Tempcode for the specified block. Please note that you pass multiple parameters in as an array, but single parameters go in as a string or other flat variable.
  *
  * @param  ID_TEXT $codename The block name
- * @param  ?array $map The block parameter map (null: no parameters)
+ * @param  array $map The block parameter map
  * @param  ?integer $ttl The TTL to use in minutes (null: block default)
  * @return Tempcode The generated Tempcode
  */
-function do_block($codename, $map = null, $ttl = null)
+function do_block($codename, $map = array(), $ttl = null)
 {
     global $LANGS_REQUESTED, $JAVASCRIPTS, $CSSS, $DO_NOT_CACHE_THIS, $SMART_CACHE;
-
-    if ($map === null) {
-        $map = array();
-    }
 
     $map['block'] = $codename;
 
@@ -1452,7 +1448,7 @@ function do_block_hunt_file($codename, $map = null)
                     persistent_cache_set('BLOCKS_AT', $BLOCKS_AT_CACHE);
                 }
             }
-        } elseif (($map === null) || (!isset($map['failsafe'])) || ($map['failsafe'] !== '1')) {
+        } elseif ((!isset($map['failsafe'])) || ($map['failsafe'] !== '1')) {
             $temp = do_template('WARNING_BOX', array('_GUID' => '09f1bd6e117693a85fb69bfb52ea1799', 'WARNING' => do_lang_tempcode('MISSING_BLOCK_FILE', escape_html($codename))));
             $object = $temp->evaluate();
         } else {
@@ -1639,17 +1635,13 @@ function find_all_modules($zone)
  *
  * @param  PATH $path The path to the module (or any PHP file with a class)
  * @param  array $functions Array of functions to be executing
- * @param  ?array $params A list of parameters to pass to our functions (null: none)
+ * @param  array $params A list of parameters to pass to our functions
  * @param  boolean $prefer_direct_code_call Whether to do this "properly" (via proper OOP), which will consume more memory
  * @param  ?string $class_name Class name to use (null: autodetect, which is a little slower)
  * @return array A list of pieces of code to do the equivalent of executing the requested functions with the requested parameters
  */
-function extract_module_functions($path, $functions, $params = null, $prefer_direct_code_call = false, $class_name = null)
+function extract_module_functions($path, $functions, $params = array(), $prefer_direct_code_call = false, $class_name = null)
 {
-    if ($params === null) {
-        $params = array();
-    }
-
     global $SITE_INFO;
     $prefer_direct_code_call = $prefer_direct_code_call || ((isset($SITE_INFO['prefer_direct_code_call'])) && ($SITE_INFO['prefer_direct_code_call'] === '1'));
     if ((HHVM) || ($prefer_direct_code_call)) {

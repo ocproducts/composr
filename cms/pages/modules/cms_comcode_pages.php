@@ -557,7 +557,7 @@ class Module_cms_comcode_pages
         if ($show_helper_panel) {
             $widths = array('33%', '19%', '28%', '20%');
         } else {
-            $widths = null;
+            $widths = array();
         }
         $table = results_table(do_lang('COMCODE_PAGES'), $start, 'start', $max, 'max', $max_rows, $header_row, $table_rows, $sortables, $sortable, $sort_order, 'sort', null, $widths, null, 8, 'fdgfdfdfdggfd', true);
 
@@ -905,7 +905,7 @@ class Module_cms_comcode_pages
         $order = post_param_order_field();
         $show_as_edit = post_param_integer('show_as_edit', 0);
         $text_raw = post_param_string('post');
-        $metadata = actual_metadata_get_fields('comcode_page', $zone . ':' . $file, null, $new_file);
+        $metadata = actual_metadata_get_fields('comcode_page', $zone . ':' . $file, array(), $new_file);
 
         // Handle attachments
         require_code('attachments2');

@@ -155,7 +155,9 @@ class Module_admin_cns_emoticons extends Standard_crud_module
     public function browse()
     {
         require_code('templates_donext');
-        return do_next_manager(get_screen_title('EMOTICONS'), comcode_lang_string('DOC_EMOTICONS'),
+        return do_next_manager(
+            get_screen_title('EMOTICONS'),
+            comcode_lang_string('DOC_EMOTICONS'),
             array(
                 array('menu/_generic_admin/import', array('_SELF', array('type' => 'import'), '_SELF'), do_lang('IMPORT_EMOTICONS')),
                 array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_EMOTICON')),
@@ -228,7 +230,7 @@ class Module_admin_cns_emoticons extends Standard_crud_module
 
         log_it('IMPORT_EMOTICONS');
 
-        return $this->do_next_manager($this->title, do_lang_tempcode('SUCCESS'), null);
+        return $this->do_next_manager($this->title, do_lang_tempcode('SUCCESS'));
     }
 
     /**

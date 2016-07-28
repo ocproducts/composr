@@ -229,7 +229,9 @@ class Module_admin_zones
     public function browse()
     {
         require_code('templates_donext');
-        return do_next_manager(get_screen_title('ZONES'), comcode_lang_string('DOC_ZONES'),
+        return do_next_manager(
+            get_screen_title('ZONES'),
+            comcode_lang_string('DOC_ZONES'),
             array(
                 array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_ZONE')),
                 array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_ZONE')),

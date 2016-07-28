@@ -137,7 +137,9 @@ class Module_admin_cns_multi_moderations extends Standard_crud_module
     public function browse()
     {
         require_code('templates_donext');
-        return do_next_manager(get_screen_title('MULTI_MODERATIONS'), comcode_lang_string('DOC_MULTI_MODERATIONS'),
+        return do_next_manager(
+            get_screen_title('MULTI_MODERATIONS'),
+            comcode_lang_string('DOC_MULTI_MODERATIONS'),
             array(
                 array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_MULTI_MODERATION')),
                 array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_MULTI_MODERATION')),
@@ -273,7 +275,7 @@ class Module_admin_cns_multi_moderations extends Standard_crud_module
 
         log_it('IMPORT_STOCK_RESPONSES');
 
-        return $this->do_next_manager($this->title, do_lang_tempcode('SUCCESS'), null);
+        return $this->do_next_manager($this->title, do_lang_tempcode('SUCCESS'));
     }
 
     /**

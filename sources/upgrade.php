@@ -97,7 +97,7 @@ function upgrade_script()
                     if ($news_id !== null) {
                         require_code('files');
                         $fetch_url = 'http://compo.sr/uploads/website_specific/compo.sr/scripts/fetch_release_details.php?format=json&news_id=' . strval($news_id) . '&from_version=' . urlencode(strval(cms_version()) . '.' . cms_version_minor());
-                        $news = http_download_file($fetch_url, null, true, false, 'Composr', null, null, null, null, null, null, null, null, 30.0);
+                        $news = http_download_file($fetch_url, null, true, false, 'Composr', null, array(), null, null, null, null, null, null, 30.0);
 
                         $details = json_decode($news, true);
                         if ($details[0] != '') {
@@ -248,7 +248,7 @@ function upgrade_script()
 
                         $temp_path = cms_tempnam();
                         $myfile = fopen($temp_path, 'wb');
-                        http_download_file(post_param_string('url'), null, true, false, 'Composr', null, null, null, null, null, $myfile);
+                        http_download_file(post_param_string('url'), null, true, false, 'Composr', null, array(), null, null, null, $myfile);
                         fclose($myfile);
                     }
                     if (substr(strtolower($temp_path), -4) == '.zip') {

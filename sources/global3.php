@@ -226,7 +226,7 @@ function fix_permissions($path, $perms = null)
  * @param  boolean $no_redirect Whether to block redirects (returns null when found)
  * @param  string $ua The user-agent to identify as
  * @param  ?array $post_params An optional array of POST parameters to send; if this is null, a GET request is used (null: none). If $raw_post is set, it should be array($data)
- * @param  ?array $cookies An optional array of cookies to send (null: none)
+ * @param  array $cookies An optional array of cookies to send
  * @param  ?string $accept 'accept' header value (null: don't pass one)
  * @param  ?string $accept_charset 'accept-charset' header value (null: don't pass one)
  * @param  ?string $accept_language 'accept-language' header value (null: don't pass one)
@@ -235,13 +235,13 @@ function fix_permissions($path, $perms = null)
  * @param  ?array $auth A pair: authentication username and password (null: none)
  * @param  float $timeout The timeout
  * @param  boolean $raw_post Whether to treat the POST parameters as a raw POST (rather than using MIME)
- * @param  ?array $files Files to send. Map between field to file path (null: none)
- * @param  ?array $extra_headers Extra headers to send (null: none)
+ * @param  array $files Files to send. Map between field to file path
+ * @param  array $extra_headers Extra headers to send
  * @param  ?string $http_verb HTTP verb (null: auto-decide based on other parameters)
  * @param  string $raw_content_type The content type to use if a raw HTTP post
  * @return ?string The data downloaded (null: error)
  */
-function http_download_file($url, $byte_limit = null, $trigger_error = true, $no_redirect = false, $ua = 'Composr', $post_params = null, $cookies = null, $accept = null, $accept_charset = null, $accept_language = null, $write_to_file = null, $referer = null, $auth = null, $timeout = 6.0, $raw_post = false, $files = null, $extra_headers = null, $http_verb = null, $raw_content_type = 'application/xml')
+function http_download_file($url, $byte_limit = null, $trigger_error = true, $no_redirect = false, $ua = 'Composr', $post_params = null, $cookies = array(), $accept = null, $accept_charset = null, $accept_language = null, $write_to_file = null, $referer = null, $auth = null, $timeout = 6.0, $raw_post = false, $files = array(), $extra_headers = array(), $http_verb = null, $raw_content_type = 'application/xml')
 {
     require_code('files2');
     cms_profile_start_for('http_download_file');
@@ -375,15 +375,11 @@ function push_output_state($just_tempcode = false, $true_blank = false)
  *
  * @param  boolean $just_tempcode Whether to only restore the Tempcode execution part of the state.
  * @param  boolean $merge_current Whether to merge the current output state in.
- * @param  ?array $keep Settings to keep / merge if possible (null: none).
+ * @param  array $keep Settings to keep / merge if possible.
  */
-function restore_output_state($just_tempcode = false, $merge_current = false, $keep = null)
+function restore_output_state($just_tempcode = false, $merge_current = false, $keep = array())
 {
     global $OUTPUT_STATE_STACK;
-
-    if ($keep === null) {
-        $keep = array();
-    }
 
     $mergeable_arrays = array('METADATA' => true, 'JAVASCRIPTS' => true, 'CSSS' => true, 'TEMPCODE_SETGET' => true, 'CYCLES' => true);
     $mergeable_tempcode = array('EXTRA_HEAD' => true, 'EXTRA_FOOT' => true, 'JAVASCRIPT' => true);

@@ -347,7 +347,7 @@ class Module_shopping
                     do_lang_tempcode('SHIPPING_PRICE'),
                     do_lang_tempcode('TOTAL_PRICE'),
                     do_lang_tempcode('REMOVE')
-                ), null
+                )
             );
 
             $i = 1;
@@ -387,9 +387,9 @@ class Module_shopping
                 $i++;
             }
 
-            $width = null;//array('50','100%','85','85','85','85','85','85','85');
+            $widths = array();//array('50','100%','85','85','85','85','85','85','85');
 
-            $results_table = results_table(do_lang_tempcode('SHOPPING'), 0, 'cart_start', $max_rows, 'cart_max', $max_rows, $fields_title, $shopping_cart, null, null, null, 'sort', null, $width, 'cart');
+            $results_table = results_table(do_lang_tempcode('SHOPPING'), 0, 'cart_start', $max_rows, 'cart_max', $max_rows, $fields_title, $shopping_cart, null, null, null, 'sort', null, $widths, 'cart');
 
             $update_cart_url = build_url(array('page' => '_SELF', 'type' => 'update_cart'), '_SELF');
             $empty_cart_url = build_url(array('page' => '_SELF', 'type' => 'empty_cart'), '_SELF');

@@ -32,7 +32,7 @@ class Hook_whatsnew_comcode_pages
     public function choose_categories($updated_since)
     {
         require_code('zones3');
-        $cats = create_selection_list_zones(null, null, null, $updated_since);
+        $cats = create_selection_list_zones(null, array(), null, $updated_since);
         return array($cats, do_lang('PAGES'));
     }
 

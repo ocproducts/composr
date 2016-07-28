@@ -1032,11 +1032,11 @@ class Database_Static_xml extends DatabaseDriver
      *
      * @param  PATH $path The file path
      * @param  ?array $schema Schema to type-set against (null: do not do type-setting)
-     * @param  ?array $must_contain_strings Substrings to check it is in, used for performance (null: none)
+     * @param  array $must_contain_strings Substrings to check it is in, used for performance
      * @param  boolean $include_unused_fields Whether to include fields that are present in the actual records but not in our schema
      * @return ?array The record map (null: does not contain requested substrings)
      */
-    protected function _read_record($path, $schema = null, $must_contain_strings = null, $include_unused_fields = false)
+    protected function _read_record($path, $schema = null, $must_contain_strings = array(), $include_unused_fields = false)
     {
         if (file_exists($path . '.mine')) {
             $path .= '.mine';
@@ -1046,32 +1046,30 @@ class Database_Static_xml extends DatabaseDriver
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
 
-        if ($must_contain_strings !== null) {
-            foreach ($must_contain_strings as $match) {
-                if (is_array($match)) {
-                    $found = 0;
-                    $possible_matches = $match;
-                    foreach ($possible_matches as $match2) {
-                        if ($match2 == '') {
-                            continue;
-                        }
-
-                        if (strpos($file_contents, xmlentities($match2)) !== false) {
-                            $found++;
-                            break;
-                        }
-                    }
-                    if ($found == 0) {
-                        return null;
-                    }
-                } else {
-                    if ($match == '') {
+        foreach ($must_contain_strings as $match) {
+            if (is_array($match)) {
+                $found = 0;
+                $possible_matches = $match;
+                foreach ($possible_matches as $match2) {
+                    if ($match2 == '') {
                         continue;
                     }
 
-                    if (strpos($file_contents, xmlentities($match)) === false) {
-                        return null;
+                    if (strpos($file_contents, xmlentities($match2)) !== false) {
+                        $found++;
+                        break;
                     }
+                }
+                if ($found == 0) {
+                    return null;
+                }
+            } else {
+                if ($match == '') {
+                    continue;
+                }
+
+                if (strpos($file_contents, xmlentities($match)) === false) {
+                    return null;
                 }
             }
         }

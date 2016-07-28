@@ -124,7 +124,9 @@ class Module_admin_chat extends Standard_crud_module
         $this->edit_one_label = do_lang_tempcode('EDIT_CHATROOM');
 
         require_code('templates_donext');
-        return do_next_manager(get_screen_title('MANAGE_CHATROOMS'), comcode_lang_string('DOC_CHAT'),
+        return do_next_manager(
+            get_screen_title('MANAGE_CHATROOMS'),
+            comcode_lang_string('DOC_CHAT'),
             array(
                 array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_CHATROOM')),
                 array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_CHATROOM')),
@@ -300,7 +302,7 @@ class Module_admin_chat extends Standard_crud_module
         } else {
             delete_all_chatrooms();
 
-            return $this->do_next_manager($this->title, do_lang_tempcode('SUCCESS'), null);
+            return $this->do_next_manager($this->title, do_lang_tempcode('SUCCESS'));
         }
     }
 }

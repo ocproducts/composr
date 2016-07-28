@@ -57,10 +57,10 @@ http://people.dsv.su.se/~jpalme/ietf/ietf-mail-attributes.html
  * @param  ?mixed $to_names The recipient name(s). Array or string. (null: site name)
  * @param  EMAIL $from_email The from address (blank: site staff address)
  * @param  string $from_name The from name (blank: site name)
- * @param  ?array $advanced_parameters A map of additional parameters. See comments within this function implementation to know what can be sent. (null: none)
+ * @param  array $advanced_parameters A map of additional parameters. See comments within this function implementation to know what can be sent.
  * @return object Our dispatcher object, which may contain some result data
  */
-function dispatch_mail($subject_line, $message_raw, $to_emails = null, $to_names = null, $from_email = '', $from_name = '', $advanced_parameters = null)
+function dispatch_mail($subject_line, $message_raw, $to_emails = null, $to_names = null, $from_email = '', $from_name = '', $advanced_parameters = array())
 {
     $dispatcher = null;
 
@@ -112,9 +112,9 @@ class Mail_dispatcher_php extends Mail_dispatcher_base
     /**
      * Construct e-mail dispatcher.
      *
-     * @param  ?array $advanced_parameters List of advanced parameters (null: none)
+     * @param  array $advanced_parameters List of advanced parameters
      */
-    public function __construct($advanced_parameters = null)
+    public function __construct($advanced_parameters = array())
     {
         // Line termination is tricky. SMTP requires \r\n (PHP uses SMTP on Windows), while CLI interface must use \n.
         if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
@@ -129,7 +129,7 @@ class Mail_dispatcher_php extends Mail_dispatcher_base
     /**
      * Find whether the dispatcher instance is capable of sending e-mails.
      *
-     * @param  ?array $advanced_parameters List of advanced parameters (null: none)
+     * @param  array $advanced_parameters List of advanced parameters
      * @return boolean Whether the dispatcher instance is capable of sending e-mails
      */
     public function is_dispatcher_available($advanced_parameters)
@@ -201,9 +201,9 @@ class Mail_dispatcher_smtp extends Mail_dispatcher_base
     /**
      * Construct e-mail dispatcher.
      *
-     * @param  ?array $advanced_parameters List of advanced parameters (null: none)
+     * @param  array $advanced_parameters List of advanced parameters
      */
-    public function __construct($advanced_parameters = null)
+    public function __construct($advanced_parameters = array())
     {
         $this->smtp_sockets_use = true;
         $this->smtp_sockets_host = get_option('smtp_sockets_host');
@@ -244,7 +244,7 @@ class Mail_dispatcher_smtp extends Mail_dispatcher_base
     /**
      * Find whether the dispatcher instance is capable of sending e-mails.
      *
-     * @param  ?array $advanced_parameters List of advanced parameters (null: none)
+     * @param  array $advanced_parameters List of advanced parameters
      * @return boolean Whether the dispatcher instance is capable of sending e-mails
      */
     public function is_dispatcher_available($advanced_parameters)
@@ -433,9 +433,9 @@ abstract class Mail_dispatcher_base
     /**
      * Construct e-mail dispatcher.
      *
-     * @param  ?array $advanced_parameters List of advanced parameters (null: none)
+     * @param  array $advanced_parameters List of advanced parameters
      */
-    public function __construct($advanced_parameters = null)
+    public function __construct($advanced_parameters = array())
     {
         require_code('site');
         require_code('mime_types');
@@ -1073,7 +1073,7 @@ abstract class Mail_dispatcher_base
     /**
      * Find whether the dispatcher instance is capable of sending e-mails.
      *
-     * @param  ?array $advanced_parameters List of advanced parameters (null: none)
+     * @param  array $advanced_parameters List of advanced parameters
      * @return boolean Whether the dispatcher instance is capable of sending e-mails
      */
     public function is_dispatcher_available($advanced_parameters)

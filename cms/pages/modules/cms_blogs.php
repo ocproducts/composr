@@ -140,7 +140,9 @@ class Module_cms_blogs extends Standard_crud_module
     public function browse()
     {
         require_code('templates_donext');
-        return do_next_manager(get_screen_title('MANAGE_BLOGS'), comcode_lang_string('DOC_BLOGS'),
+        return do_next_manager(
+            get_screen_title('MANAGE_BLOGS'),
+            comcode_lang_string('DOC_BLOGS'),
             array(
                 has_privilege(get_member(), 'submit_midrange_content', 'cms_news') ? array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_NEWS_BLOG')) : null,
                 has_privilege(get_member(), 'edit_own_midrange_content', 'cms_news') ? array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_NEWS_BLOG')) : null,
@@ -581,7 +583,7 @@ class Module_cms_blogs extends Standard_crud_module
 
         $metadata = actual_metadata_get_fields('news', strval($id));
 
-        edit_news(intval($id), $title, post_param_string('news', STRING_MAGIC_NULL), post_param_string('author', STRING_MAGIC_NULL), $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $news_article, $main_news_category, $news_category, post_param_string('meta_keywords', STRING_MAGIC_NULL), post_param_string('meta_description', STRING_MAGIC_NULL), $url, $metadata['add_time'], $metadata['edit_time'], $metadata['views'], $metadata['submitter'], null, true);
+        edit_news(intval($id), $title, post_param_string('news', STRING_MAGIC_NULL), post_param_string('author', STRING_MAGIC_NULL), $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $news_article, $main_news_category, $news_category, post_param_string('meta_keywords', STRING_MAGIC_NULL), post_param_string('meta_description', STRING_MAGIC_NULL), $url, $metadata['add_time'], $metadata['edit_time'], $metadata['views'], $metadata['submitter'], array(), true);
     }
 
     /**
@@ -610,8 +612,10 @@ class Module_cms_blogs extends Standard_crud_module
 
         require_code('templates_donext');
 
-        return do_next_manager($this->title, $description,
-            null,
+        return do_next_manager(
+            $this->title,
+            $description,
+            array(),
             null,
             /* TYPED-ORDERED LIST OF 'LINKS'  */
             array('_SELF', array('type' => 'add', 'cat' => $cat), '_SELF'), // Add one
@@ -624,9 +628,9 @@ class Module_cms_blogs extends Standard_crud_module
             has_privilege(get_member(), 'edit_own_cat_midrange_content', 'cms_news') ? array('cms_news', array('type' => 'edit_category'), '_SELF') : null, // Edit one category
             ($cat === null) ? null : has_privilege(get_member(), 'edit_own_cat_midrange_content', 'cms_news') ? array('cms_news', array('type' => '_edit_category', 'id' => $cat), '_SELF') : null, // Edit this category
             null, // View this category
-            null,
-            null,
-            null,
+            array(),
+            array(),
+            array(),
             null,
             null,
             null,

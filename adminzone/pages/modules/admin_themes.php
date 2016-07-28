@@ -1319,8 +1319,10 @@ class Module_admin_themes
         }
 
         require_code('templates_donext');
-        return do_next_manager($title, $description,
-            null,
+        return do_next_manager(
+            $title,
+            $description,
+            array(),
             null,
             /* TYPED-ORDERED LIST OF 'LINKS'  */
             $add_one, // Add one

@@ -91,7 +91,7 @@ class Module_cms_iotds extends Standard_crud_module
         }
         if ($type == '_delete') {
             $this->delete_actualisation(post_param_integer('id'));
-            return $this->do_next_manager($this->title, do_lang_tempcode('SUCCESS'), null);
+            return $this->do_next_manager($this->title, do_lang_tempcode('SUCCESS'));
         }
 
         return new Tempcode();
@@ -132,7 +132,9 @@ class Module_cms_iotds extends Standard_crud_module
     public function browse()
     {
         require_code('templates_donext');
-        return do_next_manager(get_screen_title('MANAGE_IOTDS'), comcode_lang_string('DOC_IOTDS'),
+        return do_next_manager(
+            get_screen_title('MANAGE_IOTDS'),
+            comcode_lang_string('DOC_IOTDS'),
             array(
                 has_privilege(get_member(), 'submit_midrange_content', 'cms_iotds') ? array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_IOTD')) : null,
                 has_privilege(get_member(), 'edit_own_midrange_content', 'cms_iotds') ? array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_OR_CHOOSE_IOTD')) : null,
@@ -189,7 +191,7 @@ class Module_cms_iotds extends Standard_crud_module
         // Metadata
         require_code('feedback2');
         $feedback_fields = feedback_fields($this->content_type, $allow_rating == 1, $allow_comments == 1, $allow_trackbacks == 1, false, $notes, $allow_comments == 2, false, true, false);
-        $fields->attach(metadata_get_fields('iotd', ($id === null) ? null : strval($id), false, null, ($feedback_fields->is_empty()) ? METADATA_HEADER_YES : METADATA_HEADER_FORCE));
+        $fields->attach(metadata_get_fields('iotd', ($id === null) ? null : strval($id), false, array(), ($feedback_fields->is_empty()) ? METADATA_HEADER_YES : METADATA_HEADER_FORCE));
         $fields->attach($feedback_fields);
 
         if (addon_installed('content_reviews')) {

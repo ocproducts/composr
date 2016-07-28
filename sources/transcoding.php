@@ -79,7 +79,7 @@ function transcode_video($url, $table, $local_id, $local_id_field, $url_field, $
                             </outputs>
                     </api-request>
             ';
-            $response = http_download_file('https://app.zencoder.com/api/jobs', null, true, false, 'Composr', array($xml), null, null, null, null, null, null, null, 12.0, true);
+            $response = http_download_file('https://app.zencoder.com/api/jobs', null, true, false, 'Composr', array($xml), array(), null, null, null, null, null, null, 12.0, true);
 
             $matches = array();
             if (preg_match('#<id[^>]*>(\d+)</id>#', $response, $matches) != 0) {

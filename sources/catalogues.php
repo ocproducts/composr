@@ -1849,7 +1849,7 @@ function render_catalogue_entry_screen($id, $no_title = false, $attach_to_url_fi
         } else {
             $awards = array();
         }
-        $map['TITLE'] = get_screen_title($title_to_use, false, null, null, $awards);
+        $map['TITLE'] = get_screen_title($title_to_use, false, array(), null, $awards);
     }
     $map['SUBMITTER'] = strval($entry['ce_submitter']);
 

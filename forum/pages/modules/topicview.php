@@ -161,7 +161,7 @@ class Module_topicview
             $title = get_screen_title('INLINE_PERSONAL_POSTS');
         } else {
             if ($topic_info['forum_id'] === null) {
-                $title = get_screen_title(do_lang_tempcode('NAMED_PRIVATE_TOPIC', escape_html($topic_info['title'])), false, null, do_lang_tempcode('READING_PRIVATE_TOPIC'));
+                $title = get_screen_title(do_lang_tempcode('NAMED_PRIVATE_TOPIC', escape_html($topic_info['title'])), false, array(), do_lang_tempcode('READING_PRIVATE_TOPIC'));
             } else {
                 if ((get_value('no_awards_in_titles') !== '1') && (addon_installed('awards'))) {
                     require_code('awards');
@@ -170,7 +170,7 @@ class Module_topicview
                     $awards = array();
                 }
 
-                $title = get_screen_title(do_lang_tempcode('NAMED_TOPIC', make_fractionable_editable('topic', $id, $topic_info['title'])), false, null, null, $awards);
+                $title = get_screen_title(do_lang_tempcode('NAMED_TOPIC', make_fractionable_editable('topic', $id, $topic_info['title'])), false, array(), null, $awards);
             }
         }
 
@@ -396,7 +396,7 @@ class Module_topicview
                     if (!$is_spacer_post) {
                         if (!is_guest($_postdetails['poster'])) {
                             require_code('cns_members2');
-                            $poster_details = render_member_box($_postdetails['poster'], false, false, null, false);
+                            $poster_details = render_member_box($_postdetails['poster'], false, false, array(), false);
                         } else {
                             $custom_fields = new Tempcode();
                             if (array_key_exists('ip_address', $_postdetails)) {

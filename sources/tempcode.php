@@ -231,11 +231,11 @@ function missing_template_parameter($origin)
  * @param  integer $type The type of symbol this is (TC_SYMBOL, TC_LANGUAGE_REFERENCE)
  * @set    0 2
  * @param  ID_TEXT $name The name of the symbol
- * @param  ?array $parameters Parameters to the symbol (null: none). In same format as expected by ecv.
- * @param  ?array $escaping Escaping for the symbol (null: none)
+ * @param  array $parameters Parameters to the symbol. In same format as expected by ecv.
+ * @param  array $escaping Escaping for the symbol
  * @return Tempcode Tempcode object.
  */
-function build_closure_tempcode($type, $name, $parameters, $escaping = null)
+function build_closure_tempcode($type, $name, $parameters, $escaping = array())
 {
     if ($escaping === null) {
         $_escaping = 'array()';
@@ -283,16 +283,14 @@ function build_closure_tempcode($type, $name, $parameters, $escaping = null)
         }
     } else {
         $_parameters = '';
-        if ($parameters !== null) {
-            foreach ($parameters as $parameter) {
-                if ($_parameters !== '') {
-                    $_parameters .= ',';
-                }
-                if (is_bool($parameter)) {
-                    $_parameters .= "\\\"" . ($parameter ? '1' : '0') . "\\\"";
-                } else {
-                    $_parameters .= "\\\"" . php_addslashes_twice($parameter) . "\\\"";
-                }
+        foreach ($parameters as $parameter) {
+            if ($_parameters !== '') {
+                $_parameters .= ',';
+            }
+            if (is_bool($parameter)) {
+                $_parameters .= "\\\"" . ($parameter ? '1' : '0') . "\\\"";
+            } else {
+                $_parameters .= "\\\"" . php_addslashes_twice($parameter) . "\\\"";
             }
         }
 
@@ -324,7 +322,7 @@ function build_closure_tempcode($type, $name, $parameters, $escaping = null)
         }
     }
 
-    $ret = new Tempcode(array(array($myfunc => $funcdef), array(array(array($myfunc, ($parameters === null) ? array() : $parameters, $type, $name, '')))));
+    $ret = new Tempcode(array(array($myfunc => $funcdef), array(array(array($myfunc, $parameters, $type, $name, '')))));
     if ($type === TC_LANGUAGE_REFERENCE) {
         $ret->pure_lang = true;
     }
@@ -335,16 +333,12 @@ function build_closure_tempcode($type, $name, $parameters, $escaping = null)
  * This will create a new Tempcode object that is containing a single specifed symbol
  *
  * @param  ID_TEXT $symbol The ID of the symbol to use
- * @param  ?array $parameters Symbol parameters (null: none)
- * @param  ?array $escape Escaping (null: none)
+ * @param  array $parameters Symbol parameters
+ * @param  array $escape Escaping
  * @return Tempcode A symbol Tempcode object
  */
-function symbol_tempcode($symbol, $parameters = null, $escape = null)
+function symbol_tempcode($symbol, $parameters = array(), $escape = array())
 {
-    if ($parameters === null) {
-        $parameters = array();
-    }
-
     return build_closure_tempcode(TC_SYMBOL, $symbol, $parameters, $escape);
 }
 
@@ -353,14 +347,11 @@ function symbol_tempcode($symbol, $parameters = null, $escape = null)
  *
  * @param  ID_TEXT $directive The ID of the directive to use
  * @param  mixed $content The contents (Tempcode or string)
- * @param  ?array $parameters Directive parameters (null: none)
+ * @param  array $parameters Directive parameters
  * @return Tempcode A directive Tempcode object
  */
-function directive_tempcode($directive, $content, $parameters = null)
+function directive_tempcode($directive, $content, $parameters = array())
 {
-    if ($parameters === null) {
-        $parameters = array();
-    }
     $parameters[] = $content;
 
     return build_closure_tempcode(TC_DIRECTIVE, $directive, $parameters);

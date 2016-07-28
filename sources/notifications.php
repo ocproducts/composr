@@ -131,9 +131,9 @@ function do_notification_template($codename, $parameters = null, $lang = null, $
  * @param  LONG_TEXT $message Message body (in Comcode)
  * @param  ?array $to_member_ids List of enabled members to limit sending to (null: everyone)
  * @param  ?integer $from_member_id The member ID doing the sending. Either a MEMBER or a negative number (e.g. A_FROM_SYSTEM_UNPRIVILEGED) (null: current member)
- * @param  ?array $advanced_parameters A map of additional parameters. See comments within this function implementation to know what can be sent. (null: none)
+ * @param  array $advanced_parameters A map of additional parameters. See comments within this function implementation to know what can be sent.
  */
-function dispatch_notification($notification_code, $code_category, $subject, $message, $to_member_ids = null, $from_member_id = null, $advanced_parameters = null)
+function dispatch_notification($notification_code, $code_category, $subject, $message, $to_member_ids = null, $from_member_id = null, $advanced_parameters = array())
 {
     $priority = isset($advanced_parameters['priority']) ? $advanced_parameters['priority'] : 3; // The message priority (1=urgent, 3=normal, 5=low)
     $store_in_staff_messaging_system = isset($advanced_parameters['store_in_staff_messaging_system']) ? $advanced_parameters['store_in_staff_messaging_system'] : false; // Whether to create a topic for discussion (ignored if the staff_messaging addon not installed)
@@ -181,7 +181,7 @@ function dispatch_notification($notification_code, $code_category, $subject, $me
     } else {
         require_code('tasks');
         global $CSSS;
-        call_user_func_array__long_task(do_lang('_SEND_NOTIFICATION'), get_screen_title('_SEND_NOTIFICATION', true, null, null, null, false), 'dispatch_notification', array($dispatcher, array_keys($CSSS)), true, false, false);
+        call_user_func_array__long_task(do_lang('_SEND_NOTIFICATION'), get_screen_title('_SEND_NOTIFICATION', true, array(), null, array(), false), 'dispatch_notification', array($dispatcher, array_keys($CSSS)), true, false, false);
     }
 
     global $LAST_NOTIFICATION_LANG_CALL;
@@ -238,7 +238,7 @@ class Notification_dispatcher
     public $subject_suffix = '';
     public $body_prefix = '';
     public $body_suffix = '';
-    public $attachments = null;
+    public $attachments = array();
     public $use_real_from = false;
 
     /**
@@ -352,7 +352,7 @@ class Notification_dispatcher
      * @param  integer $priority The message priority (1=urgent, 3=normal, 5=low)
      * @range  1 5
      * @param  boolean $no_cc Whether to NOT CC to the CC address
-     * @param  ?array $attachments An list of attachments (each attachment being a map, path=>filename) (null: none)
+     * @param  array $attachments An list of attachments (each attachment being a map, path=>filename)
      * @param  boolean $use_real_from Whether we will make a "reply to" direct -- we only do this if we're allowed to disclose email addresses for this particular notification type (i.e. if it's a direct contact)
      * @return boolean New $no_cc setting
      *

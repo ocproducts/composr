@@ -946,13 +946,13 @@ function nl_delim_match_sql($field, $i, $type = 'short', $param = null)
  * @param  string $content_where The WHERE clause that applies specifically for content (this will be duplicated to check against multiple fields). ? refers to the yet-unknown field name
  * @param  ID_TEXT $order What to order by
  * @param  string $select What to select
- * @param  ?array $raw_fields The non-translateable fields to search over (null: there are none)
+ * @param  array $raw_fields The non-translateable fields to search over
  * @param  ?string $permissions_module The permission module to check category access for (null: none)
  * @param  ?string $permissions_field The field that specifies the permissions ID to check category access for (null: none)
  * @param  boolean $permissions_field_is_string Whether the permissions field is a string
  * @return array The rows found
  */
-function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, $boolean_operator, $only_search_meta, $direction, $max, $start, $only_titles, $table, $fields, $where_clause, $content_where, $order, $select = '*', $raw_fields = null, $permissions_module = null, $permissions_field = null, $permissions_field_is_string = false)
+function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, $boolean_operator, $only_search_meta, $direction, $max, $start, $only_titles, $table, $fields, $where_clause, $content_where, $order, $select = '*', $raw_fields = array(), $permissions_module = null, $permissions_field = null, $permissions_field_is_string = false)
 {
     if (multi_lang_content()) {
         @ignore_user_abort(false); // If the user multi-submits a search, we don't want to run parallel searches (very slow!). That said, this currently doesn't work in PHP, because PHP does not realise the connection has died until way too late :(. So we also use a different tact (dedupe_mode) but hope PHP will improve with time.
@@ -980,10 +980,6 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
         if (($only_titles) && (count($fields) != 0)) {
             return array();
         }
-    }
-
-    if ($raw_fields === null) {
-        $raw_fields = array();
     }
 
     $db = (substr($table, 0, 2) != 'f_') ? $GLOBALS['SITE_DB'] : $GLOBALS['FORUM_DB'];

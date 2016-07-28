@@ -571,7 +571,7 @@ class Module_catalogues
             } else {
                 $awards = array();
             }
-            $this->title = get_screen_title($title_to_use, false, null, null, $awards);
+            $this->title = get_screen_title($title_to_use, false, array(), null, $awards);
 
             // Check access
             if (!has_category_access(get_member(), 'catalogues_catalogue', $catalogue_name)) {
@@ -639,7 +639,7 @@ class Module_catalogues
                 $awards = array_merge($awards, find_awards_for('catalogue', $catalogue_name));
                 $awards = array_merge($awards, find_awards_for('catalogue_category', strval($id)));
             }
-            $this->title = get_screen_title($title_to_use, false, null, null, $awards);
+            $this->title = get_screen_title($title_to_use, false, array(), null, $awards);
 
             // Metadata
             if (is_object($title_to_use_2)) {

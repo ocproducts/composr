@@ -411,10 +411,10 @@ function find_country_name_from_iso($iso)
 /**
  * Get a nice, formatted XHTML list of regions
  *
- * @param  ?array $regions The currently selected regions (null: none selected)
+ * @param  array $regions The currently selected regions
  * @return Tempcode The list of regions
  */
-function create_region_selection_list($regions = null)
+function create_region_selection_list($regions = array())
 {
     require_code('locations');
     $continents_and_countries = find_continents_and_countries();
@@ -423,7 +423,7 @@ function create_region_selection_list($regions = null)
     foreach ($continents_and_countries as $continent => $countries) {
         $list = new Tempcode();
         foreach ($countries as $country_code => $country_name) {
-            $list->attach(form_input_list_entry($country_code, $regions !== null && in_array($country_code, $regions), $country_name));
+            $list->attach(form_input_list_entry($country_code, in_array($country_code, $regions), $country_name));
         }
         $list_groups->attach(form_input_list_group($continent, $list));
     }
@@ -521,10 +521,10 @@ function geolocate_ip($ip = null)
 /**
  * Get a region inputter
  *
- * @param  ?array $regions The currently selected regions (null: none selected)
+ * @param  array $regions The currently selected regions
  * @return Tempcode The region inputter
  */
-function form_input_regions($regions = null)
+function form_input_regions($regions = array())
 {
     require_code('form_templates');
     $list_groups = create_region_selection_list($regions);

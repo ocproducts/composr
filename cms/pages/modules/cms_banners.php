@@ -194,7 +194,9 @@ class Module_cms_banners extends Standard_crud_module
     public function browse()
     {
         require_code('templates_donext');
-        return do_next_manager(get_screen_title('MANAGE_BANNERS'), comcode_lang_string('DOC_BANNERS'),
+        return do_next_manager(
+            get_screen_title('MANAGE_BANNERS'),
+            comcode_lang_string('DOC_BANNERS'),
             array(
                 has_privilege(get_member(), 'submit_cat_highrange_content', 'cms_banners') ? array('menu/_generic_admin/add_one_category', array('_SELF', array('type' => 'add_category'), '_SELF'), do_lang('ADD_BANNER_TYPE')) : null,
                 has_privilege(get_member(), 'edit_cat_highrange_content', 'cms_banners') ? array('menu/_generic_admin/edit_one_category', array('_SELF', array('type' => 'edit_category'), '_SELF'), do_lang('EDIT_BANNER_TYPE')) : null,
@@ -338,12 +340,12 @@ class Module_cms_banners extends Standard_crud_module
      * @param  ?MEMBER $submitter The banners submitter (null: current member)
      * @param  BINARY $validated Whether the banner has been validated
      * @param  ID_TEXT $b_type The banner type (can be anything, where blank means 'normal')
-     * @param  ?array $b_types The secondary banner types (empty: no secondary banner types) (null: same as empty)
-     * @param  ?array $regions The regions (empty: not region-limited) (null: same as empty)
+     * @param  array $b_types The secondary banner types (empty: no secondary banner types)
+     * @param  array $regions The regions (empty: not region-limited)
      * @param  SHORT_TEXT $title_text The title text for the banner (only used for text banners, and functions as the 'trigger text' if the banner type is shown inline)
      * @return array Bits
      */
-    public function get_form_fields($name = '', $image_url = '', $site_url = '', $caption = '', $direct_code = '', $notes = '', $importancemodulus = 3, $campaignremaining = 50, $the_type = 0, $expiry_date = null, $submitter = null, $validated = 1, $b_type = '', $b_types = null, $regions = null, $title_text = '')
+    public function get_form_fields($name = '', $image_url = '', $site_url = '', $caption = '', $direct_code = '', $notes = '', $importancemodulus = 3, $campaignremaining = 50, $the_type = 0, $expiry_date = null, $submitter = null, $validated = 1, $b_type = '', $b_types = array(), $regions = array(), $title_text = '')
     {
         if ($b_type == '') {
             $b_type = get_param_string('b_type', '');
@@ -483,7 +485,7 @@ class Module_cms_banners extends Standard_crud_module
 
         $new_id = post_param_string('name');
 
-        $metadata = actual_metadata_get_fields('banner', $id, null, $new_id);
+        $metadata = actual_metadata_get_fields('banner', $id, array(), $new_id);
 
         edit_banner($id, $new_id, $url, $title_text, post_param_string('caption'), $direct_code, post_param_integer('campaignremaining', 0), fixup_protocolless_urls(post_param_string('site_url')), post_param_integer('importancemodulus'), post_param_string('notes', ''), post_param_integer('the_type', 1), post_param_date('expiry_date'), $metadata['submitter'], $validated, $b_type, $b_types, $regions, $metadata['edit_time'], $metadata['add_time'], true);
 
@@ -817,7 +819,7 @@ class Module_cms_banners_cat extends Standard_crud_module
 
         $new_id = post_param_string('new_id');
 
-        $metadata = actual_metadata_get_fields('banner_type', $id, null, $new_id);
+        $metadata = actual_metadata_get_fields('banner_type', $id, array(), $new_id);
 
         edit_banner_type($id, $new_id, $is_textual, $image_width, $image_height, $max_file_size, $comcode_inline);
 
@@ -867,8 +869,10 @@ class Module_cms_banners_cat extends Standard_crud_module
         require_code('templates_donext');
 
         if (($id === null) && ($type === null)) {
-            return do_next_manager($title, $description,
-                null,
+            return do_next_manager(
+                $title,
+                $description,
+                array(),
                 null,
                 /* TYPED-ORDERED LIST OF 'LINKS'    */
                 array('_SELF', array('type' => 'add'), '_SELF', do_lang_tempcode('ADD_BANNER')), // Add one
@@ -881,9 +885,9 @@ class Module_cms_banners_cat extends Standard_crud_module
                 has_privilege(get_member(), 'edit_cat_highrange_content', 'cms_banners') ? array('_SELF', array('type' => 'edit_category'), '_SELF', do_lang_tempcode('EDIT_BANNER_TYPE')) : null, // Edit one category
                 null, // Edit this category
                 null, // View this category
-                null,
-                null,
-                null,
+                array(),
+                array(),
+                array(),
                 null,
                 null,
                 null,
@@ -893,8 +897,10 @@ class Module_cms_banners_cat extends Standard_crud_module
             );
         }
 
-        return do_next_manager($title, $description,
-            null,
+        return do_next_manager(
+            $title,
+            $description,
+            array(),
             null,
             /* TYPED-ORDERED LIST OF 'LINKS'  */
             array('_SELF', array('type' => 'add', 'b_type' => $type), '_SELF', do_lang_tempcode('ADD_BANNER')), // Add one
@@ -908,9 +914,9 @@ class Module_cms_banners_cat extends Standard_crud_module
             has_privilege(get_member(), 'edit_cat_highrange_content', 'cms_banners') ? array('_SELF', array('type' => 'edit_category'), '_SELF', do_lang_tempcode('EDIT_BANNER_TYPE')) : null, // Edit one category
             has_privilege(get_member(), 'edit_cat_highrange_content', 'cms_banners') ? array('_SELF', array('type' => '_edit_category', 'id' => $type), '_SELF', do_lang_tempcode('EDIT_THIS_BANNER_TYPE')) : null, // Edit this category
             null, // View this category
-            null,
-            null,
-            null,
+            array(),
+            array(),
+            array(),
             null,
             null,
             null,

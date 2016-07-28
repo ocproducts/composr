@@ -91,7 +91,7 @@ function _decache($cached_for, $identifier = null, $member = null)
  * Request that CRON loads up a block's caching in the background.
  *
  * @param  ID_TEXT $codename The codename of the block
- * @param  ?array $map Parameters to call up block with if we have to defer caching (null: none)
+ * @param  array $map Parameters to call up block with if we have to defer caching
  * @param  integer $special_cache_flags Flags representing how we should cache
  * @param  boolean $tempcode Whether we are caching Tempcode (needs special care)
  */
@@ -129,14 +129,14 @@ function request_via_cron($codename, $map, $special_cache_flags, $tempcode)
  * @param  ?BINARY $is_bot Bot status to limit to (null: Not limiting by this)
  * @param  MINIID_TEXT $timezone Timezone to limit to (blank: Not limiting by this)
  * @param  mixed $cache The result we are caching
- * @param  ?array $_langs_required A list of the language files that need loading to use Tempcode embedded in the cache (null: none required)
- * @param  ?array $_javascripts_required A list of the javascript files that need loading to use Tempcode embedded in the cache (null: none required)
- * @param  ?array $_csss_required A list of the css files that need loading to use Tempcode embedded in the cache (null: none required)
+ * @param  array $_langs_required A list of the language files that need loading to use Tempcode embedded in the cache
+ * @param  array $_javascripts_required A list of the javascript files that need loading to use Tempcode embedded in the cache
+ * @param  array $_csss_required A list of the css files that need loading to use Tempcode embedded in the cache
  * @param  boolean $tempcode Whether we are caching Tempcode (needs special care)
  * @param  ?ID_TEXT $theme The theme this is being cached for (null: current theme)
  * @param  ?LANGUAGE_NAME $lang The language this is being cached for (null: current language)
  */
-function put_into_cache($codename, $ttl, $cache_identifier, $staff_status, $member, $groups, $is_bot, $timezone, $cache, $_langs_required = null, $_javascripts_required = null, $_csss_required = null, $tempcode = false, $theme = null, $lang = null)
+function put_into_cache($codename, $ttl, $cache_identifier, $staff_status, $member, $groups, $is_bot, $timezone, $cache, $_langs_required = array(), $_javascripts_required = array(), $_csss_required = array(), $tempcode = false, $theme = null, $lang = null)
 {
     if ($theme === null) {
         $theme = $GLOBALS['FORUM_DRIVER']->get_theme();
@@ -150,11 +150,11 @@ function put_into_cache($codename, $ttl, $cache_identifier, $staff_status, $memb
         return;
     }
 
-    $dependencies = ($_langs_required === null) ? '' : implode(':', $_langs_required);
+    $dependencies = implode(':', $_langs_required);
     $dependencies .= '!';
-    $dependencies .= ($_javascripts_required === null) ? '' : implode(':', $_javascripts_required);
+    $dependencies .= implode(':', $_javascripts_required);
     $dependencies .= '!';
-    $dependencies .= ($_csss_required === null) ? '' : implode(':', $_csss_required);
+    $dependencies .= implode(':', $_csss_required);
 
     $big_mainstream_cache = false;//($codename != 'menu') && ($ttl > 60 * 5) && (get_users_timezone(get_member()) == get_site_timezone());
     if ($big_mainstream_cache) {

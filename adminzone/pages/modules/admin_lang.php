@@ -225,7 +225,7 @@ class Module_admin_lang
             $fields->attach(alternate_fields_set__end($set_name, $set_title, '', $field_set, $required));
         }
 
-        $post_url = get_self_url(false, false, null, false, true);
+        $post_url = get_self_url(false, false, array(), false, true);
 
         return do_template('FORM_SCREEN', array(
             '_GUID' => 'ee6bdea3661cb4736173cac818a769e5',

@@ -187,7 +187,9 @@ class Module_admin_quiz
         require_lang('quiz');
 
         require_code('templates_donext');
-        return do_next_manager(get_screen_title('MANAGE_QUIZZES'), comcode_lang_string('DOC_QUIZZES'),
+        return do_next_manager(
+            get_screen_title('MANAGE_QUIZZES'),
+            comcode_lang_string('DOC_QUIZZES'),
             array(
                 array('menu/cms/quiz/find_winners', array('_SELF', array('type' => 'find_winner'), '_SELF'), do_lang('FIND_WINNERS')),
                 array('menu/cms/quiz/quiz_results', array('_SELF', array('type' => 'quiz_results'), '_SELF'), do_lang('QUIZ_RESULTS')),

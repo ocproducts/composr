@@ -748,12 +748,8 @@ function _pull_strings_file_to_transifex($project_slug, $tar_file, $lang, $_f, &
     }
 }
 
-function _transifex($call, $http_verb, $params = null, $trigger_error = true)
+function _transifex($call, $http_verb, $params = array(), $trigger_error = true)
 {
-    if ($params === null) {
-        $params = array();
-    }
-
     $username = get_param_string('username', get_value('transifex_username', null, true));
     $password = get_param_string('password', get_value('transifex_password', null, true));
 

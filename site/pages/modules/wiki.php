@@ -273,7 +273,7 @@ class Module_wiki
             } else {
                 $awards = array();
             }
-            $this->title = get_screen_title($title_to_use, false, null, null, $awards);
+            $this->title = get_screen_title($title_to_use, false, array(), null, $awards);
 
             if (!has_category_access(get_member(), 'wiki_page', strval($page['id']))) {
                 access_denied('CATEGORY_ACCESS');

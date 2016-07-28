@@ -324,7 +324,7 @@ class Module_downloads
             } else {
                 $awards = array();
             }
-            $this->title = get_screen_title($title_to_use_tempcode, false, null, null, $awards);
+            $this->title = get_screen_title($title_to_use_tempcode, false, array(), null, $awards);
 
             // SEO
             seo_meta_load_for('downloads_download', strval($id), $title_to_use);

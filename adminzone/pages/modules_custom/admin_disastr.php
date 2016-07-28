@@ -187,7 +187,9 @@ class Module_admin_disastr extends Standard_crud_module
     public function browse()
     {
         require_code('templates_donext');
-        return do_next_manager(get_screen_title('DISASTR_TITLE'), comcode_lang_string('DOC_DISASTR'),
+        return do_next_manager(
+            get_screen_title('DISASTR_TITLE'),
+            comcode_lang_string('DOC_DISASTR'),
             array(
                 array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_DISEASE')),
                 array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_DISEASE')),

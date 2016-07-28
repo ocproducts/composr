@@ -168,7 +168,9 @@ class Module_cms_authors
     {
         require_code('fields');
         require_code('templates_donext');
-        return do_next_manager(get_screen_title('AUTHOR_MANAGE'), comcode_lang_string('DOC_AUTHORS'),
+        return do_next_manager(
+            get_screen_title('AUTHOR_MANAGE'),
+            comcode_lang_string('DOC_AUTHORS'),
             array_merge(array(
                 has_privilege(get_member(), 'set_own_author_profile') ? array('menu/cms/author_set_own_profile', array('_SELF', array('type' => '_add'), '_SELF'), do_lang('EDIT_MY_AUTHOR_PROFILE')) : null,
                 has_privilege(get_member(), 'edit_midrange_content', 'cms_authors') ? array('menu/_generic_admin/add_one', array('_SELF', array('type' => '_add'), '_SELF'), do_lang('ADD_AUTHOR')) : null,
@@ -370,8 +372,10 @@ class Module_cms_authors
     public function do_next_manager($title, $description, $author = null)
     {
         require_code('templates_donext');
-        return do_next_manager($title, $description,
-            null,
+        return do_next_manager(
+            $title,
+            $description,
+            array(),
             null,
             /* TYPED-ORDERED LIST OF 'LINKS'  */
             has_privilege(get_member(), 'edit_midrange_content', 'cms_authors') ? array('_SELF', array('type' => '_add'), '_SELF') : null, // Add one
@@ -388,8 +392,8 @@ class Module_cms_authors
             array(
                 has_privilege(get_member(), 'delete_midrange_content', 'cms_authors') ? array('menu/_generic_admin/merge', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('MERGE_AUTHORS')) : null
             ),
-            null,
-            null,
+            array(),
+            array(),
             null,
             null,
             null,

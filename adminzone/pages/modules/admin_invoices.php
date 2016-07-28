@@ -172,7 +172,9 @@ class Module_admin_invoices
     public function browse()
     {
         require_code('templates_donext');
-        return do_next_manager(get_screen_title('INVOICES'), comcode_lang_string('DOC_ECOMMERCE'),
+        return do_next_manager(
+            get_screen_title('INVOICES'),
+            comcode_lang_string('DOC_ECOMMERCE'),
             array(
                 array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('CREATE_INVOICE')),
                 array('menu/adminzone/audit/ecommerce/outstanding_invoices', array('_SELF', array('type' => 'outstanding'), '_SELF'), do_lang('OUTSTANDING_INVOICES')),

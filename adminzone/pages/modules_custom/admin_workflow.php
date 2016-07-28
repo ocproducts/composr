@@ -204,7 +204,9 @@ class Module_admin_workflow extends Standard_crud_module
     public function browse()
     {
         require_code('templates_donext');
-        return do_next_manager(get_screen_title('MANAGE_WORKFLOWS'), comcode_to_tempcode(do_lang('DOC_WORKFLOWS'), null, true),
+        return do_next_manager(
+            get_screen_title('MANAGE_WORKFLOWS'),
+            comcode_to_tempcode(do_lang('DOC_WORKFLOWS'), null, true),
             array(
                 /*  type                     page    params                                       zone   */
                 array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_WORKFLOW')),
@@ -648,7 +650,7 @@ class Module_admin_workflow extends Standard_crud_module
 
             $description = do_lang_tempcode('SUCCESS');
 
-            return $this->do_next_manager($this->title, $description, null);
+            return $this->do_next_manager($this->title, $description);
         } else {
             $test = $this->handle_confirmations($this->title);
             if ($test !== null) {

@@ -415,17 +415,14 @@ function _get_mov_details_do_atom_list($file, $atom_size = null)
  * @param  ?AUTO_LINK $id Force an ID (null: don't force an ID)
  * @param  ?SHORT_TEXT $meta_keywords Meta keywords for this resource (null: do not edit) (blank: implicit)
  * @param  ?LONG_TEXT $meta_description Meta description for this resource (null: do not edit) (blank: implicit)
- * @param  ?array $regions The regions (empty: not region-limited) (null: same as empty)
+ * @param  array $regions The regions (empty: not region-limited)
  * @return AUTO_LINK The ID of the new entry
  */
-function add_image($title, $cat, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $submitter = null, $add_date = null, $edit_date = null, $views = 0, $id = null, $meta_keywords = '', $meta_description = '', $regions = null)
+function add_image($title, $cat, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $submitter = null, $add_date = null, $edit_date = null, $views = 0, $id = null, $meta_keywords = '', $meta_description = '', $regions = array())
 {
     require_code('global4');
     prevent_double_submit('ADD_IMAGE', null, $title);
 
-    if ($regions === null) {
-        $regions = array();
-    }
     if ($submitter === null) {
         $submitter = get_member();
     }
@@ -526,14 +523,11 @@ function add_image($title, $cat, $description, $url, $thumb_url, $validated, $al
  * @param  ?TIME $add_time Add time (null: do not change)
  * @param  ?integer $views Number of views (null: do not change)
  * @param  ?MEMBER $submitter Submitter (null: do not change)
- * @param  ?array $regions The regions (empty: not region-limited) (null: same as empty)
+ * @param  array $regions The regions (empty: not region-limited)
  * @param  boolean $null_is_literal Determines whether some nulls passed mean 'use a default' or literally mean 'set to null'
  */
-function edit_image($id, $title, $cat, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $meta_keywords, $meta_description, $edit_time = null, $add_time = null, $views = null, $submitter = null, $regions = null, $null_is_literal = false)
+function edit_image($id, $title, $cat, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $meta_keywords, $meta_description, $edit_time = null, $add_time = null, $views = null, $submitter = null, $regions = array(), $null_is_literal = false)
 {
-    if ($regions === null) {
-        $regions = array();
-    }
     if ($edit_time === null) {
         $edit_time = $null_is_literal ? null : time();
     }
@@ -719,7 +713,7 @@ function create_video_thumb($src_url, $expected_output_path = null)
                     }
                     require_code('files');
                     $_expected_output_path = fopen($expected_output_path, 'wb');
-                    http_download_file($ret, null, true, false, 'Composr', null, null, null, null, null, $_expected_output_path);
+                    http_download_file($ret, null, true, false, 'Composr', null, array(), null, null, null, $_expected_output_path);
                     fclose($_expected_output_path);
 
                     return $ret;
@@ -744,7 +738,7 @@ function create_video_thumb($src_url, $expected_output_path = null)
                 require_code('files');
                 $_expected_output_path = @fopen($expected_output_path, 'wb');
                 if ($_expected_output_path !== false) {
-                    http_download_file($ret, null, true, false, 'Composr', null, null, null, null, null, $_expected_output_path);
+                    http_download_file($ret, null, true, false, 'Composr', null, array(), null, null, null, $_expected_output_path);
                     fclose($_expected_output_path);
                 }
             }
@@ -843,7 +837,7 @@ function create_video_thumb($src_url, $expected_output_path = null)
         if ($expected_output_path !== null) {
             require_code('files');
             $_expected_output_path = fopen($expected_output_path, 'wb');
-            http_download_file($ret, null, true, false, 'Composr', null, null, null, null, null, $_expected_output_path);
+            http_download_file($ret, null, true, false, 'Composr', null, array(), null, null, null, $_expected_output_path);
             fclose($_expected_output_path);
         }
     }
@@ -873,17 +867,14 @@ function create_video_thumb($src_url, $expected_output_path = null)
  * @param  ?AUTO_LINK $id Force an ID (null: don't force an ID)
  * @param  ?SHORT_TEXT $meta_keywords Meta keywords for this resource (null: do not edit) (blank: implicit)
  * @param  ?LONG_TEXT $meta_description Meta description for this resource (null: do not edit) (blank: implicit)
- * @param  ?array $regions The regions (empty: not region-limited) (null: same as empty)
+ * @param  array $regions The regions (empty: not region-limited)
  * @return AUTO_LINK The ID of the new entry
  */
-function add_video($title, $cat, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $video_length, $video_width, $video_height, $submitter = null, $add_date = null, $edit_date = null, $views = 0, $id = null, $meta_keywords = '', $meta_description = '', $regions = null)
+function add_video($title, $cat, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $video_length, $video_width, $video_height, $submitter = null, $add_date = null, $edit_date = null, $views = 0, $id = null, $meta_keywords = '', $meta_description = '', $regions = array())
 {
     require_code('global4');
     prevent_double_submit('ADD_VIDEO', null, $title);
 
-    if ($regions === null) {
-        $regions = array();
-    }
     if ($submitter === null) {
         $submitter = get_member();
     }
@@ -999,14 +990,11 @@ function add_video($title, $cat, $description, $url, $thumb_url, $validated, $al
  * @param  ?TIME $add_time Add time (null: do not change)
  * @param  ?integer $views Number of views (null: do not change)
  * @param  ?MEMBER $submitter Submitter (null: do not change)
- * @param  ?array $regions The regions (empty: not region-limited) (null: same as empty)
+ * @param  array $regions The regions (empty: not region-limited)
  * @param  boolean $null_is_literal Determines whether some nulls passed mean 'use a default' or literally mean 'set to null'
  */
-function edit_video($id, $title, $cat, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $video_length, $video_width, $video_height, $meta_keywords, $meta_description, $edit_time = null, $add_time = null, $views = null, $submitter = null, $regions = null, $null_is_literal = false)
+function edit_video($id, $title, $cat, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $video_length, $video_width, $video_height, $meta_keywords, $meta_description, $edit_time = null, $add_time = null, $views = null, $submitter = null, $regions = array(), $null_is_literal = false)
 {
-    if ($regions === null) {
-        $regions = array();
-    }
     if ($edit_time === null) {
         $edit_time = $null_is_literal ? null : time();
     }

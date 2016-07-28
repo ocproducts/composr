@@ -230,7 +230,9 @@ class Module_admin_cns_members
         require_lang('group_member_timeouts');
 
         require_code('templates_donext');
-        return do_next_manager(get_screen_title('MEMBERS'), comcode_lang_string('DOC_MEMBERS'),
+        return do_next_manager(
+            get_screen_title('MEMBERS'),
+            comcode_lang_string('DOC_MEMBERS'),
             array(
                 array('menu/adminzone/tools/users/member_add', array('admin_cns_members', array('type' => 'step1'), get_module_zone('admin_cns_members')), do_lang_tempcode('ADD_MEMBER'), 'DOC_ADD_MEMBER'),
                 (!has_privilege(get_member(), 'member_maintenance')) ? null : array('menu/adminzone/tools/users/member_edit', array('members', array('type' => 'browse'), get_module_zone('members'), do_lang_tempcode('SWITCH_ZONE_WARNING')), do_lang_tempcode('EDIT_MEMBER'), 'DOC_EDIT_MEMBER'),
@@ -360,8 +362,10 @@ class Module_admin_cns_members
         }
 
         require_code('templates_donext');
-        return do_next_manager($this->title, do_lang_tempcode('SUCCESS'),
-            null,
+        return do_next_manager(
+            $this->title,
+            do_lang_tempcode('SUCCESS'),
+            array(),
             null,
             /* TYPED-ORDERED LIST OF 'LINKS'  */
             array('_SELF', array('type' => 'step1'), '_SELF'), // Add one
@@ -376,8 +380,8 @@ class Module_admin_cns_members
             null, // View this category
             /* SPECIALLY TYPED 'LINKS' */
             $special_links,
-            null,
-            null,
+            array(),
+            array(),
             null,
             null,
             do_lang_tempcode('MEMBERS'),

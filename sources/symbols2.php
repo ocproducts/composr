@@ -2466,7 +2466,7 @@ function ecv2_CNS_MEMBER_HTML($lang, $escaped, $param)
     if (get_forum_type() == 'cns') {
         require_code('cns_members');
         require_code('cns_members2');
-        $_value = render_member_box(isset($param[0]) ? intval($param[0]) : get_member(), false, true, null, false);
+        $_value = render_member_box(isset($param[0]) ? intval($param[0]) : get_member(), false, true, array(), false);
         $value = $_value->evaluate();
     }
 

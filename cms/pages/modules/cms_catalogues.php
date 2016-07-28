@@ -277,7 +277,9 @@ class Module_cms_catalogues extends Standard_crud_module
 
         require_code('fields');
 
-        return do_next_manager(($catalogue_name != '') ? get_screen_title(escape_html(get_translated_text($cat_title)), false) : get_screen_title('MANAGE_CATALOGUES'), ($catalogue_name != '') ? get_translated_tempcode('catalogues', $cat_rows[0], 'c_description') : comcode_lang_string('DOC_CATALOGUES'),
+        return do_next_manager(
+            ($catalogue_name != '') ? get_screen_title(escape_html(get_translated_text($cat_title)), false) : get_screen_title('MANAGE_CATALOGUES'),
+            ($catalogue_name != '') ? get_translated_tempcode('catalogues', $cat_rows[0], 'c_description') : comcode_lang_string('DOC_CATALOGUES'),
             array_merge(array(
                 (has_privilege(get_member(), 'submit_cat_highrange_content', 'cms_catalogues') && ($catalogue_name == '')) ? array('menu/cms/catalogues/add_one_catalogue', array('_SELF', array_merge($extra_map, array('type' => 'add_catalogue')), '_SELF'), do_lang('ADD_CATALOGUE')) : null,
                 has_privilege(get_member(), 'edit_cat_highrange_content', 'cms_catalogues') ? array('menu/cms/catalogues/edit_one_catalogue', array('_SELF', array_merge($extra_map_2, array('type' => ($catalogue_name == '') ? 'edit_catalogue' : '_edit_catalogue')), '_SELF'), do_lang('EDIT_CATALOGUE')) : null,
@@ -575,7 +577,7 @@ class Module_cms_catalogues extends Standard_crud_module
         $seo_fields = seo_get_fields($this->seo_type, ($id === null) ? null : strval($id), false);
         require_code('feedback2');
         $feedback_fields = feedback_fields($this->content_type, $allow_rating == 1, $allow_comments == 1, $allow_trackbacks == 1, false, $notes, $allow_comments == 2, false, true, false);
-        $fields->attach(metadata_get_fields('catalogue_entry', ($id === null) ? null : strval($id), false, null, ($seo_fields->is_empty() && $feedback_fields->is_empty()) ? METADATA_HEADER_YES : METADATA_HEADER_FORCE));
+        $fields->attach(metadata_get_fields('catalogue_entry', ($id === null) ? null : strval($id), false, array(), ($seo_fields->is_empty() && $feedback_fields->is_empty()) ? METADATA_HEADER_YES : METADATA_HEADER_FORCE));
         $fields->attach($seo_fields);
         $fields->attach($feedback_fields);
 
@@ -930,8 +932,10 @@ class Module_cms_catalogues extends Standard_crud_module
         $category_id = $this->donext_category_id;
 
         require_code('templates_donext');
-        return do_next_manager($title, $description,
-            null,
+        return do_next_manager(
+            $title,
+            $description,
+            array(),
             null,
             /* TYPED-ORDERED LIST OF 'LINKS'  */
             array('_SELF', array('type' => 'add_entry', 'catalogue_name' => $c_name, 'category_id' => $category_id), '_SELF'), // Add one
@@ -1506,8 +1510,10 @@ class Module_cms_catalogues_cat extends Standard_crud_module
         $catalogue_name = $this->donext_catalogue_name;
 
         require_code('templates_donext');
-        return do_next_manager($title, $description,
-            null,
+        return do_next_manager(
+            $title,
+            $description,
+            array(),
             null,
             /* TYPED-ORDERED LIST OF 'LINKS'  */
             ($id !== null) ? null : array('_SELF', array('type' => 'add_entry', 'catalogue_name' => $catalogue_name), '_SELF'),// Add one
@@ -1522,7 +1528,8 @@ class Module_cms_catalogues_cat extends Standard_crud_module
             ($id === null) ? null : array('catalogues', array('type' => 'category', 'id' => $id), get_module_zone('catalogues')),// View this category
 
             /* SPECIALLY TYPED 'LINKS' */
-            array(), array(),
+            array(),
+            array(),
             array(
                 has_privilege(get_member(), 'submit_cat_highrange_content', 'cms_catalogues') ? array('menu/cms/catalogues/add_one_catalogue', array('_SELF', array('type' => 'add_catalogue'), '_SELF')) : null,
                 has_privilege(get_member(), 'edit_own_cat_highrange_content', 'cms_catalogues') ? array('menu/cms/catalogues/edit_this_catalogue', array('_SELF', array('type' => '_edit_catalogue', 'id' => $catalogue_name), '_SELF')) : null,
@@ -2039,7 +2046,7 @@ class Module_cms_catalogues_alt extends Standard_crud_module
         }
         $this->is_tree_catalogue = ($is_tree == 1);
 
-        $metadata = actual_metadata_get_fields('catalogue', $old_name, null, $name);
+        $metadata = actual_metadata_get_fields('catalogue', $old_name, array(), $name);
 
         actual_edit_catalogue($old_name, $name, $title, $description, $display_type, $notes, $submit_points, $ecommerce, $send_view_reports, $default_review_freq, $metadata['add_time']);
 
@@ -2184,8 +2191,10 @@ class Module_cms_catalogues_alt extends Standard_crud_module
         $is_custom_fields = ($name !== null) && (substr($name, 0, 1) == '_');
 
         require_code('templates_donext');
-        return do_next_manager($title, $description,
-            null,
+        return do_next_manager(
+            $title,
+            $description,
+            array(),
             null,
             /* TYPED-ORDERED LIST OF 'LINKS'  */
             (($name === null) || (!$has_categories)) ? null : array('_SELF', array('type' => 'add_entry', 'catalogue_name' => $name), '_SELF'), // Add one

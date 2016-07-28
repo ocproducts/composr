@@ -648,10 +648,10 @@ function uninstall_block($block)
  * @param  ID_TEXT $zone The zone it is in
  * @param  ID_TEXT $page The page name
  * @param  array $functions Array of functions to be executing
- * @param  ?array $params A list of parameters to pass to our functions (null: none)
+ * @param  array $params A list of parameters to pass to our functions
  * @return array A list of pieces of code to do the equivalent of executing the requested functions with the requested parameters
  */
-function extract_module_functions_page($zone, $page, $functions, $params = null)
+function extract_module_functions_page($zone, $page, $functions, $params = array())
 {
     $path = zone_black_magic_filterer(get_file_base() . '/' . filter_naughty_harsh($zone) . (($zone == '') ? '' : '/') . 'pages/modules_custom/' . filter_naughty_harsh($page) . '.php');
     if (file_exists($path)) {

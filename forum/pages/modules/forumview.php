@@ -126,7 +126,7 @@ class Module_forumview
             $forum_name = $forum_info['f_name'];
             $ltitle = do_lang_tempcode('NAMED_FORUM', make_fractionable_editable('forum', $id, $forum_name));
 
-            $this->title = get_screen_title($ltitle, false, null, null, $awards);
+            $this->title = get_screen_title($ltitle, false, array(), null, $awards);
 
             if (($forum_info['f_redirection'] != '') && (looks_like_url($forum_info['f_redirection']))) {
                 require_code('site2');

@@ -183,7 +183,9 @@ class Module_admin_aggregate_types extends Standard_crud_module
     public function browse()
     {
         require_code('templates_donext');
-        return do_next_manager(get_screen_title('AGGREGATE_TYPES'), comcode_lang_string('DOC_AGGREGATE_TYPES'),
+        return do_next_manager(
+            get_screen_title('AGGREGATE_TYPES'),
+            comcode_lang_string('DOC_AGGREGATE_TYPES'),
             array(
                 array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_AGGREGATE_TYPE_INSTANCE')),
                 array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_AGGREGATE_TYPE_INSTANCE')),
@@ -199,10 +201,10 @@ class Module_admin_aggregate_types extends Standard_crud_module
      *
      * @param  ID_TEXT $aggregate_type The aggregate type (blank: ask first)
      * @param  SHORT_TEXT $aggregate_label The label for the instance
-     * @param  ?array $other_parameters Other parameters (null: no values known yet)
+     * @param  array $other_parameters Other parameters
      * @return mixed Either Tempcode; or a tuple: form fields, hidden fields, delete fields.
      */
-    public function get_form_fields($aggregate_type = '', $aggregate_label = '', $other_parameters = null)
+    public function get_form_fields($aggregate_type = '', $aggregate_label = '', $other_parameters = array())
     {
         if ($aggregate_type == '') {
             $aggregate_type = get_param_string('aggregate_type', '');
@@ -220,10 +222,6 @@ class Module_admin_aggregate_types extends Standard_crud_module
                 $url = get_self_url();
                 return do_template('FORM_SCREEN', array('_GUID' => '8bd97d858f2ab1dc885a7453b3dd781c', 'TITLE' => $this->title, 'SKIP_WEBSTANDARDS' => true, 'HIDDEN' => '', 'GET' => true, 'URL' => $url, 'FIELDS' => $fields, 'TEXT' => '', 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name));
             }
-        }
-
-        if ($other_parameters === null) {
-            $other_parameters = array();
         }
 
         $fields = new Tempcode();

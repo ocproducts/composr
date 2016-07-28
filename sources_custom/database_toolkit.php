@@ -179,13 +179,13 @@ function find_all_tables($db)
  * @param  boolean $include_drops Whether to include 'DROP' statements
  * @param  boolean $output_statuses Whether to output status as we go
  * @param  ?ID_TEXT $from Table to start from (null: first table)
- * @param  ?array $skip Array of table names to skip (null: none)
+ * @param  array $skip Array of table names to skip
  * @param  ?array $only Array of only table names to do (null: all)
  * @param  boolean $echo Whether to echo out
  * @param  ?object $conn Database connector to use (null: site database)
  * @return array The SQL statements
  */
-function get_sql_dump($include_drops = false, $output_statuses = false, $from = null, $skip = null, $only = null, $echo = false, $conn = null)
+function get_sql_dump($include_drops = false, $output_statuses = false, $from = null, $skip = array(), $only = null, $echo = false, $conn = null)
 {
     disable_php_memory_limit();
     if (php_function_allowed('set_time_limit')) {
@@ -193,10 +193,6 @@ function get_sql_dump($include_drops = false, $output_statuses = false, $from = 
     }
     push_db_scope_check(false);
     push_query_limiting(false);
-
-    if ($skip === null) {
-        $skip = array();
-    }
 
     if ($conn === null) {
         $conn = $GLOBALS['SITE_DB'];

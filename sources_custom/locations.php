@@ -16,15 +16,11 @@
 /**
  * Get a nice, formatted XHTML list of regions
  *
- * @param  ?array $regions The currently selected regions (null: none selected)
+ * @param  array $regions The currently selected regions
  * @return Tempcode The list of regions
  */
-function create_region_selection_list($regions = null)
+function create_region_selection_list($regions = array())
 {
-    if ($regions === null) {
-        $regions = array();
-    }
-
     require_code('locations/us');
 
     require_code('locations');

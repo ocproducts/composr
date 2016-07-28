@@ -38,7 +38,7 @@ class Hook_check_no_ad_script
             $url = find_script('blank');
         }
 
-        if (http_download_file($url, null, false, false, 'Composr', null, null, null, null, null, null, null, null, 1.0) != '') {
+        if (http_download_file($url, null, false, false, 'Composr', null, array(), null, null, null, null, null, null, 1.0) != '') {
             $warning[] = do_lang_tempcode('INTERFERING_AD_SCRIPT');
         }
 

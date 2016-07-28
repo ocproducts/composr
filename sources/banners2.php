@@ -167,20 +167,13 @@ function create_selection_list_banners($it = null, $only_owned = null)
  * @param  ?MEMBER $submitter The banners submitter (null: current member)
  * @param  BINARY $validated Whether the banner has been validated
  * @param  ID_TEXT $b_type The banner type (can be anything, where blank means 'normal')
- * @param  ?array $b_types The secondary banner types (empty: no secondary banner types) (null: same as empty)
- * @param  ?array $regions The regions (empty: not region-limited) (null: same as empty)
+ * @param  array $b_types The secondary banner types (empty: no secondary banner types)
+ * @param  array $regions The regions (empty: not region-limited)
  * @param  SHORT_TEXT $title_text The title text for the banner (only used for text banners, and functions as the 'trigger text' if the banner type is shown inline)
  * @return array A pair: The input field Tempcode, JavaScript code
  */
-function get_banner_form_fields($simplified = false, $name = '', $image_url = '', $site_url = '', $caption = '', $direct_code = '', $notes = '', $importancemodulus = 3, $campaignremaining = 50, $the_type = 1, $expiry_date = null, $submitter = null, $validated = 1, $b_type = '', $b_types = null, $regions = null, $title_text = '')
+function get_banner_form_fields($simplified = false, $name = '', $image_url = '', $site_url = '', $caption = '', $direct_code = '', $notes = '', $importancemodulus = 3, $campaignremaining = 50, $the_type = 1, $expiry_date = null, $submitter = null, $validated = 1, $b_type = '', $b_types = array(), $regions = array(), $title_text = '')
 {
-    if ($b_types === null) {
-        $b_types = array();
-    }
-    if ($regions === null) {
-        $regions = array();
-    }
-
     require_code('images');
 
     $fields = new Tempcode();
@@ -296,12 +289,12 @@ function get_banner_form_fields($simplified = false, $name = '', $image_url = ''
  * @param  SHORT_TEXT $title_text The title text for the banner (only used for text banners, and functions as the 'trigger text' if the banner type is shown inline)
  * @param  LONG_TEXT $direct_code Complete HTML/PHP for the banner
  * @param  ID_TEXT $b_type The banner type (can be anything, where blank means 'normal')
- * @param  ?array $b_types The secondary banner types (empty: no secondary banner types) (null: same as empty)
+ * @param  array $b_types The secondary banner types (empty: no secondary banner types)
  * @param  string $url_param_name Param name for possible URL field
  * @param  string $file_param_name Param name for possible upload field
  * @return array A pair: The URL, and the title text
  */
-function check_banner($title_text = '', $direct_code = '', $b_type = '', $b_types = null, $url_param_name = 'image_url', $file_param_name = 'file')
+function check_banner($title_text = '', $direct_code = '', $b_type = '', $b_types = array(), $url_param_name = 'image_url', $file_param_name = 'file')
 {
     require_code('uploads');
     $is_upload = (is_plupload()) || (array_key_exists($file_param_name, $_FILES)) && (array_key_exists('tmp_name', $_FILES[$file_param_name]) && (is_uploaded_file($_FILES[$file_param_name]['tmp_name'])));
@@ -417,8 +410,8 @@ function check_banner($title_text = '', $direct_code = '', $b_type = '', $b_type
  * @param  ?MEMBER $submitter The banners submitter (null: current member)
  * @param  BINARY $validated Whether the banner has been validated
  * @param  ID_TEXT $b_type The banner type (can be anything, where blank means 'normal')
- * @param  ?array $b_types The secondary banner types (empty: no secondary banner types) (null: same as empty)
- * @param  ?array $regions The regions (empty: not region-limited) (null: same as empty)
+ * @param  array $b_types The secondary banner types (empty: no secondary banner types)
+ * @param  array $regions The regions (empty: not region-limited)
  * @param  ?TIME $time The time the banner was added (null: now)
  * @param  integer $hits_from The number of return hits from this banners site
  * @param  integer $hits_to The number of banner hits to this banners site
@@ -428,15 +421,8 @@ function check_banner($title_text = '', $direct_code = '', $b_type = '', $b_type
  * @param  boolean $uniqify Whether to force the name as unique, if there's a conflict
  * @return ID_TEXT The name
  */
-function add_banner($name, $imgurl, $title_text, $caption, $direct_code, $campaignremaining, $site_url, $importancemodulus, $notes, $the_type, $expiry_date, $submitter, $validated = 0, $b_type = '', $b_types = null, $regions = null, $time = null, $hits_from = 0, $hits_to = 0, $views_from = 0, $views_to = 0, $edit_date = null, $uniqify = false)
+function add_banner($name, $imgurl, $title_text, $caption, $direct_code, $campaignremaining, $site_url, $importancemodulus, $notes, $the_type, $expiry_date, $submitter, $validated = 0, $b_type = '', $b_types = array(), $regions = array(), $time = null, $hits_from = 0, $hits_to = 0, $views_from = 0, $views_to = 0, $edit_date = null, $uniqify = false)
 {
-    if ($b_types === null) {
-        $b_types = array();
-    }
-    if ($regions === null) {
-        $regions = array();
-    }
-
     if ($campaignremaining === null) {
         $campaignremaining = 0;
     }
@@ -529,23 +515,16 @@ function add_banner($name, $imgurl, $title_text, $caption, $direct_code, $campai
  * @param  ?MEMBER $submitter The banners submitter (null: leave unchanged)
  * @param  BINARY $validated Whether the banner has been validated
  * @param  ID_TEXT $b_type The banner type (can be anything, where blank means 'normal')
- * @param  ?array $b_types The secondary banner types (empty: no secondary banner types) (null: same as empty)
- * @param  ?array $regions The regions (empty: not region-limited) (null: same as empty)
+ * @param  array $b_types The secondary banner types (empty: no secondary banner types)
+ * @param  array $regions The regions (empty: not region-limited)
  * @param  ?TIME $edit_time Edit time (null: either means current time, or if $null_is_literal, means reset to to null)
  * @param  ?TIME $add_time Add time (null: do not change)
  * @param  boolean $null_is_literal Determines whether some nulls passed mean 'use a default' or literally mean 'set to null'
  * @param  boolean $uniqify Whether to force the name as unique, if there's a conflict
  * @return ID_TEXT The name
  */
-function edit_banner($old_name, $name, $imgurl, $title_text, $caption, $direct_code, $campaignremaining, $site_url, $importancemodulus, $notes, $the_type, $expiry_date, $submitter, $validated, $b_type, $b_types = null, $regions = null, $edit_time = null, $add_time = null, $null_is_literal = false, $uniqify = false)
+function edit_banner($old_name, $name, $imgurl, $title_text, $caption, $direct_code, $campaignremaining, $site_url, $importancemodulus, $notes, $the_type, $expiry_date, $submitter, $validated, $b_type, $b_types = array(), $regions = array(), $edit_time = null, $add_time = null, $null_is_literal = false, $uniqify = false)
 {
-    if ($b_types === null) {
-        $b_types = array();
-    }
-    if ($regions === null) {
-        $regions = array();
-    }
-
     if ($old_name != $name) {
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('banners', 'name', array('name' => $name));
         if ($test !== null) {

@@ -95,13 +95,13 @@ function put_in_standard_box($content, $title = '', $type = 'default', $width = 
  *
  * @param  mixed $title The title to use (usually, a language string ID, see below)
  * @param  boolean $dereference_lang Whether the given title is actually a language string ID, and hence gets dereferenced
- * @param  ?array $params Parameters sent to the language string (null: none)
+ * @param  array $params Parameters sent to the language string
  * @param  ?Tempcode $user_online_title Separate title to put into the 'currently viewing' data (null: use $title)
- * @param  ?array $awards Awards to say this has won (null: none)
+ * @param  array $awards Awards to say this has won
  * @param  boolean $save_as_metadata Whether to use this as metadata for the screen
  * @return Tempcode The title Tempcode
  */
-function get_screen_title($title, $dereference_lang = true, $params = null, $user_online_title = null, $awards = null, $save_as_metadata = true)
+function get_screen_title($title, $dereference_lang = true, $params = array(), $user_online_title = null, $awards = array(), $save_as_metadata = true)
 {
     global $TITLE_CALLED;
     $TITLE_CALLED = true;
@@ -113,10 +113,6 @@ function get_screen_title($title, $dereference_lang = true, $params = null, $use
 
     if (($dereference_lang) && (strpos($title, ' ') !== false)) {
         $dereference_lang = false;
-    }
-
-    if ($params === null) {
-        $params = array();
     }
 
     if ($dereference_lang) {
@@ -154,10 +150,6 @@ function get_screen_title($title, $dereference_lang = true, $params = null, $use
     if ($save_as_metadata) {
         global $DISPLAYED_TITLE;
         $DISPLAYED_TITLE = $_title;
-    }
-
-    if ($awards === null) {
-        $awards = array();
     }
 
     return do_template('SCREEN_TITLE', array('_GUID' => '847ffbe4823eca6d2d5eac42828ee552', 'AWARDS' => $awards, 'TITLE' => $_title));

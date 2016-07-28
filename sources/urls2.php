@@ -87,17 +87,13 @@ function remove_url_mistakes($url)
  *
  * @param  ID_TEXT $page The page for the form to go to (blank: don't attach)
  * @param  boolean $keep_all Whether to keep all elements of the current URL represented in this form (rather than just the keep_ fields, and page)
- * @param  ?array $exclude A list of parameters to exclude (null: don't exclude any)
+ * @param  array $exclude A list of parameters to exclude
  * @return Tempcode The builtup hidden form fields
  *
  * @ignore
  */
-function _build_keep_form_fields($page = '', $keep_all = false, $exclude = null)
+function _build_keep_form_fields($page = '', $keep_all = false, $exclude = array())
 {
-    if ($exclude === null) {
-        $exclude = array();
-    }
-
     if ($page == '_SELF') {
         $page = get_page_name();
     }

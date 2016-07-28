@@ -127,21 +127,17 @@ function post_param_order_field($order_field = 'order')
  * @param  ID_TEXT $content_type The type of resource (e.g. download)
  * @param  ?ID_TEXT $content_id The ID of the resource (null: adding)
  * @param  boolean $allow_no_owner Whether to allow owner to be left blank (meaning no owner)
- * @param  ?array $fields_to_skip List of fields to NOT take in (null: empty list)
+ * @param  array $fields_to_skip List of fields to NOT take in
  * @param  integer $show_header Whether to show a header (a METADATA_HEADER_* constant)
  * @return Tempcode Form page Tempcode fragment
  */
-function metadata_get_fields($content_type, $content_id, $allow_no_owner = false, $fields_to_skip = null, $show_header = 1)
+function metadata_get_fields($content_type, $content_id, $allow_no_owner = false, $fields_to_skip = array(), $show_header = 1)
 {
     require_lang('metadata');
 
     $fields = new Tempcode();
 
     if (has_privilege(get_member(), 'edit_meta_fields')) {
-        if ($fields_to_skip === null) {
-            $fields_to_skip = array();
-        }
-
         require_code('content');
         $ob = get_content_object($content_type);
         $info = $ob->info();
@@ -238,17 +234,13 @@ function metadata_get_fields($content_type, $content_id, $allow_no_owner = false
  *
  * @param  ID_TEXT $content_type The type of resource (e.g. download)
  * @param  ?ID_TEXT $content_id The old ID of the resource (null: adding)
- * @param  ?array $fields_to_skip List of fields to NOT take in (null: empty list)
+ * @param  array $fields_to_skip List of fields to NOT take in
  * @param  ?ID_TEXT $new_content_id The new ID of the resource (null: not being renamed)
  * @return array A map of standard metadata fields (name to value). If adding, this map is accurate for adding. If editing, nulls mean do-not-edit or non-editable.
  */
-function actual_metadata_get_fields($content_type, $content_id, $fields_to_skip = null, $new_content_id = null)
+function actual_metadata_get_fields($content_type, $content_id, $fields_to_skip = array(), $new_content_id = null)
 {
     require_lang('metadata');
-
-    if ($fields_to_skip === null) {
-        $fields_to_skip = array();
-    }
 
     if (fractional_edit()) {
         return array(
@@ -351,16 +343,12 @@ function actual_metadata_get_fields($content_type, $content_id, $fields_to_skip 
  *
  * @param  ID_TEXT $content_type The type of resource (e.g. download)
  * @param  ID_TEXT $content_id The old ID of the resource
- * @param  ?array $fields_to_skip List of fields to NOT take in (null: empty list)
+ * @param  array $fields_to_skip List of fields to NOT take in
  * @param  ?ID_TEXT $new_content_id The new ID of the resource (null: not being renamed)
  */
-function set_url_moniker($content_type, $content_id, $fields_to_skip = null, $new_content_id = null)
+function set_url_moniker($content_type, $content_id, $fields_to_skip = array(), $new_content_id = null)
 {
     require_lang('metadata');
-
-    if ($fields_to_skip === null) {
-        $fields_to_skip = array();
-    }
 
     require_code('content');
     $ob = get_content_object($content_type);

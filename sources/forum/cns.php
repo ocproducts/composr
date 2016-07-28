@@ -1386,12 +1386,12 @@ class Forum_driver_cns extends Forum_driver_base
      * @param  boolean $hide_hidden Whether to obscure the name of hidden usergroups
      * @param  boolean $only_permissive Whether to only grab permissive usergroups
      * @param  boolean $force_show_all Do not limit things even if there are huge numbers of usergroups
-     * @param  ?array $force_find Usergroups that must be included in the results (null: no extras must be)
+     * @param  array $force_find Usergroups that must be included in the results
      * @param  ?MEMBER $for_member Always return usergroups of this member (null: current member)
      * @param  boolean $skip_hidden Whether to completely skip hidden usergroups
      * @return array The usergroup list, a map of usergroup ID to usergroup name
      */
-    protected function _get_usergroup_list($hide_hidden = false, $only_permissive = false, $force_show_all = false, $force_find = null, $for_member = null, $skip_hidden = false)
+    protected function _get_usergroup_list($hide_hidden = false, $only_permissive = false, $force_show_all = false, $force_find = array(), $for_member = null, $skip_hidden = false)
     {
         if (($hide_hidden) && (has_privilege(get_member(), 'see_hidden_groups'))) {
             $hide_hidden = false;
@@ -1424,9 +1424,6 @@ class Forum_driver_cns extends Forum_driver_base
                 $for_member = get_member();
             }
             $where = ' WHERE g_is_private_club=0';
-            if ($force_find === null) {
-                $force_find = array();
-            }
             $force_find = array_merge($force_find, $this->_get_members_groups($for_member));
             foreach ($force_find as $gid) {
                 $where .= ' OR g.id=' . strval($gid);

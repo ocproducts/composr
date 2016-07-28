@@ -331,7 +331,7 @@ class Module_news
             }
             $_title = get_translated_tempcode('news', $myrow, 'title');
             $title_to_use = do_lang_tempcode(($blog === 1) ? 'BLOG__NEWS' : '_NEWS', make_fractionable_editable('news', $id, $_title));
-            $this->title = get_screen_title($title_to_use, false, null, null, $awards);
+            $this->title = get_screen_title($title_to_use, false, array(), null, $awards);
 
             // SEO
             seo_meta_load_for('news', strval($id), do_lang(($blog === 1) ? 'BLOG__NEWS' : '_NEWS', get_translated_text($myrow['title'])));

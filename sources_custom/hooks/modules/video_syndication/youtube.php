@@ -273,7 +273,7 @@ class Hook_video_syndication_youtube
         if (substr($url, 0, strlen(get_custom_base_url())) != get_custom_base_url()) {
             $temppath = cms_tempnam();
             $tempfile = fopen($temppath, 'wb');
-            http_download_file($url, 1024 * 1024 * 1024 * 5, true, false, 'Composr', null, null, null, null, null, $tempfile);
+            http_download_file($url, 1024 * 1024 * 1024 * 5, true, false, 'Composr', null, array(), null, null, null, $tempfile);
 
             $is_temp_file = true;
 
@@ -442,7 +442,7 @@ class Hook_video_syndication_youtube
         return ($this->_access_token !== null);
     }
 
-    protected function _http($url, $params, $http_verb = 'GET', $xml = null, $timeout = 6.0, $extra_headers = null, $file_to_upload = null, $content_type = 'application/atom+xml')
+    protected function _http($url, $params, $http_verb = 'GET', $xml = null, $timeout = 6.0, $extra_headers = array(), $file_to_upload = null, $content_type = 'application/atom+xml')
     {
         $youtube_developer_key = get_option('youtube_developer_key');
 
@@ -456,10 +456,6 @@ class Hook_video_syndication_youtube
             $full_url = $url . '?strict=1&v=2.1&' . http_build_query($params);
         } else {
             $full_url = $url;
-        }
-
-        if ($extra_headers === null) {
-            $extra_headers = array();
         }
 
         if ($this->_access_token !== null) {

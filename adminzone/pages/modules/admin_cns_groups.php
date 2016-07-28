@@ -148,7 +148,9 @@ class Module_admin_cns_groups extends Standard_crud_module
     {
         require_code('templates_donext');
         require_code('fields');
-        return do_next_manager(get_screen_title('MANAGE_USERGROUPS'), comcode_lang_string('DOC_GROUPS'),
+        return do_next_manager(
+            get_screen_title('MANAGE_USERGROUPS'),
+            comcode_lang_string('DOC_GROUPS'),
             array_merge(array(
                 array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_GROUP')),
                 array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_GROUP')),
@@ -466,7 +468,7 @@ class Module_admin_cns_groups extends Standard_crud_module
         $search_url = null; //build_url(array('page' => 'search', 'id' => 'cns_clubs'), get_module_zone('search'));
         $archive_url = build_url(array('page' => 'groups'), get_module_zone('groups'));
 
-        return array(results_table(do_lang($this->menu_label), get_param_integer('start', 0), 'start', either_param_integer('max', 20), 'max', $max_rows, $header_row, $fields, $sortables, $sortable, $sort_order, 'sort', null, null, null, 8, 'gdfg43tfdgdfgdrfgd', true), true, $search_url, $archive_url);
+        return array(results_table(do_lang($this->menu_label), get_param_integer('start', 0), 'start', either_param_integer('max', 20), 'max', $max_rows, $header_row, $fields, $sortables, $sortable, $sort_order, 'sort', null, array(), null, 8, 'gdfg43tfdgdfgdrfgd', true), true, $search_url, $archive_url);
     }
 
     /**

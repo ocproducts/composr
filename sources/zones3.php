@@ -279,7 +279,9 @@ function sitemap_do_next_manager($title, $page, $zone, $completion_text)
             array('menu/adminzone/structure/sitemap/sitemap_editor', array('admin_sitemap', array('type' => 'sitemap'), get_module_zone('admin_sitemap')), do_lang_tempcode('SITEMAP_EDITOR')),
         ));
     }
-    return do_next_manager($title, $completion_text,
+    return do_next_manager(
+        $title,
+        $completion_text,
         $special,
         do_lang('PAGES'),
         /* TYPED-ORDERED LIST OF 'LINKS'   */
@@ -300,17 +302,13 @@ function sitemap_do_next_manager($title, $page, $zone, $completion_text)
  * Get a list of zones.
  *
  * @param  ?ID_TEXT $sel The zone in the list to select by default (null: use first)
- * @param  ?array $no_go A list of zone to not put into the list (null: none to skip)
+ * @param  array $no_go A list of zone to not put into the list
  * @param  ?array $reorder A reordering (null: no reordering)
  * @param  ?TIME $updated_since Time from which content must be updated (null: no limit).
  * @return Tempcode The list
  */
-function create_selection_list_zones($sel = null, $no_go = null, $reorder = null, $updated_since = null)
+function create_selection_list_zones($sel = null, $no_go = array(), $reorder = null, $updated_since = null)
 {
-    if ($no_go === null) {
-        $no_go = array();
-    }
-
     if (($sel === 'site') && (get_option('collapse_user_zones') == '1')) {
         $sel = '';
     }
@@ -344,22 +342,6 @@ function create_selection_list_zones($sel = null, $no_go = null, $reorder = null
             $content->attach(form_input_list_entry($zone, (($sel !== null) && ($zone == $sel)), $title));
         }
     }
-    return $content;
-}
-
-/**
- * Get a zone chooser interface.
- *
- * @param  boolean $inline Whether the zone chooser will be shown inline to something else (as opposed to providing its own borderings)
- * @param  ?array $no_go A list of zone to not put into the list (null: none to skip)
- * @param  ?array $reorder A reordering (null: no reordering)
- * @return Tempcode The zone chooser
- */
-function get_zone_chooser($inline = false, $no_go = null, $reorder = null)
-{
-    $content = create_selection_list_zones(get_zone_name(), $no_go, $reorder);
-
-    $content = do_template('ZONE_CHOOSE' . ($inline ? '_INLINE' : ''), array('CONTENT' => $content));
     return $content;
 }
 

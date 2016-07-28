@@ -2751,7 +2751,7 @@ END;
      * Get Tempcode for a poll adding/editing form.
      *
      * @param  SHORT_TEXT $question The poll question
-     * @param  ?array $answers A list of current answers for the poll (null: none yet)
+     * @param  array $answers A list of current answers for the poll
      * @param  BINARY $is_private Whether it is a private poll (blind poll, where the results aren't visible until made public)
      * @param  BINARY $is_open Whether the poll is open for voting
      * @param  BINARY $requires_reply Whether a reply to the poll topic is required before voting
@@ -2759,13 +2759,9 @@ END;
      * @param  BINARY $maximum_selections The maximum number of selections for voters
      * @return Tempcode The Tempcode for the fields
      */
-    public function get_poll_form_fields($question = '', $answers = null, $is_private = 0, $is_open = 1, $requires_reply = 0, $minimum_selections = 1, $maximum_selections = 1)
+    public function get_poll_form_fields($question = '', $answers = array(), $is_private = 0, $is_open = 1, $requires_reply = 0, $minimum_selections = 1, $maximum_selections = 1)
     {
         require_lang('polls');
-
-        if ($answers === null) {
-            $answers = array();
-        }
 
         $fields = new Tempcode();
         $fields->attach(form_input_line(do_lang_tempcode('QUESTION'), do_lang_tempcode('DESCRIPTION_QUESTION'), 'question', $question, true));

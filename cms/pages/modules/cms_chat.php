@@ -556,8 +556,10 @@ class Module_cms_chat
             decache('side_shoutbox');
 
             require_code('templates_donext');
-            return do_next_manager($this->title, do_lang_tempcode('SUCCESS'),
-                null,
+            return do_next_manager(
+                $this->title,
+                do_lang_tempcode('SUCCESS'),
+                array(),
                 null,
                 /* TYPED-ORDERED LIST OF 'LINKS'    */
                 null, // Add one
@@ -619,8 +621,10 @@ class Module_cms_chat
         log_it('DELETE_MESSAGE', strval($message_id), $message2->evaluate());
 
         require_code('templates_donext');
-        return do_next_manager($this->title, do_lang_tempcode('SUCCESS'),
-            null,
+        return do_next_manager(
+            $this->title,
+            do_lang_tempcode('SUCCESS'),
+            array(),
             null,
             /* TYPED-ORDERED LIST OF 'LINKS'  */
             null, // Add one
@@ -637,8 +641,8 @@ class Module_cms_chat
             array(
                 has_actual_page_access(get_member(), 'admin_chat') ? array('menu/social/chat/chat', array('admin_chat', array('type' => 'browse'), get_module_zone('admin_chat')), do_lang('SETUP')) : null,
             ),
-            null,
-            null,
+            array(),
+            array(),
             null,
             null,
             null,

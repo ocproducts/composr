@@ -142,7 +142,9 @@ class Module_cms_quiz extends Standard_crud_module
     {
         require_code('templates_donext');
         require_code('fields');
-        return do_next_manager(get_screen_title('MANAGE_QUIZZES'), comcode_lang_string('DOC_QUIZZES'),
+        return do_next_manager(
+            get_screen_title('MANAGE_QUIZZES'),
+            comcode_lang_string('DOC_QUIZZES'),
             array_merge(array(
                 array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_QUIZ')),
                 array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_QUIZ')),

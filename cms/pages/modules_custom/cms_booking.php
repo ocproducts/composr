@@ -219,23 +219,13 @@ class Module_cms_booking extends Standard_crud_module
      * Get a form for entering a bookable.
      *
      * @param  ?array $details Details of the bookable (null: new).
-     * @param  ?array $supplements List of supplements (null: new).
-     * @param  ?array $blacks List of blacks (null: new).
-     * @param  ?array $codes List of codes (null: new).
+     * @param  array $supplements List of supplements.
+     * @param  array $blacks List of blacks.
+     * @param  array $codes List of codes.
      * @return array Tuple: form fields, hidden fields.
      */
-    public function get_form_fields($details = null, $supplements = null, $blacks = null, $codes = null)
+    public function get_form_fields($details = null, $supplements = array(), $blacks = array(), $codes = array())
     {
-        if ($supplements === null) {
-            $supplements = array();
-        }
-        if ($blacks === null) {
-            $blacks = array();
-        }
-        if ($codes === null) {
-            $codes = array();
-        }
-
         if ($details === null) {
             $max_sort_order = $GLOBALS['SITE_DB']->query_select_value('bookable', 'MAX(sort_order)');
             if ($max_sort_order === null) {
@@ -468,15 +458,11 @@ class Module_cms_booking_supplements extends Standard_crud_module
      * Get a form for entering a bookable supplement.
      *
      * @param  ?array $details Details of the supplement (null: new).
-     * @param  ?array $bookables List of bookables this is for (null: new).
+     * @param  array $bookables List of bookables this is for.
      * @return array Tuple: form fields, hidden fields.
      */
-    public function get_form_fields($details = null, $bookables = null)
+    public function get_form_fields($details = null, $bookables = array())
     {
-        if ($bookables === null) {
-            $bookables = array();
-        }
-
         if ($details === null) {
             $max_sort_order = $GLOBALS['SITE_DB']->query_select_value('bookable_supplement', 'MAX(sort_order)');
             if ($max_sort_order === null) {
@@ -666,15 +652,11 @@ class Module_cms_booking_blacks extends Standard_crud_module
      * Get a form for entering a bookable black.
      *
      * @param  ?array $details Details of the black (null: new).
-     * @param  ?array $bookables List of bookables this is for (null: new).
+     * @param  array $bookables List of bookables this is for.
      * @return array Tuple: form fields, hidden fields.
      */
-    public function get_form_fields($details = null, $bookables = null)
+    public function get_form_fields($details = null, $bookables = array())
     {
-        if ($bookables === null) {
-            $bookables = array();
-        }
-
         if ($details === null) {
             $details = array(
                 'blacked_from_day' => intval(date('d')),
@@ -806,14 +788,14 @@ class Module_cms_booking_bookings extends Standard_crud_module
      *
      * @param  boolean $recache Whether to force a recache
      * @param  ?ID_TEXT $orderer Order to use (null: automatic)
-     * @param  ?array $where Extra where clauses (null: none)
+     * @param  ?array $where Extra where clauses
      * @param  boolean $force_site_db Whether to always access using the site database
      * @param  string $join Extra join clause for our query (blank: none)
      * @return array A pair: Rows for selection from, Total results
      */
-    public function get_entry_rows($recache = false, $orderer = null, $where = null, $force_site_db = false, $join = '')
+    public function get_entry_rows($recache = false, $orderer = null, $where = array(), $force_site_db = false, $join = '')
     {
-        if ((!$recache) && ($orderer !== null) && ($where !== null)) {
+        if ((!$recache) && ($orderer !== null) && ($where !== array())) {
             if (isset($this->cached_entry_rows)) {
                 return array($this->cached_entry_rows, $this->cached_max_rows);
             }
@@ -873,7 +855,7 @@ class Module_cms_booking_bookings extends Standard_crud_module
             $_entries[] = $row;
         }
 
-        if (($orderer !== null) && ($where !== null)) {
+        if (($orderer !== null) && ($where !== array())) {
             $this->cached_entry_rows = $_entries;
             $this->cached_max_rows = count($request);
         }
@@ -968,7 +950,7 @@ class Module_cms_booking_bookings extends Standard_crud_module
                 }
 
                 $fields = form_input_huge_list(do_lang_tempcode('BOOKABLE'), '', 'bookable_id', $bookables_list, null, true);
-                $post_url = get_self_url(false, false, null, false, true);
+                $post_url = get_self_url(false, false, array(), false, true);
                 $submit_name = do_lang_tempcode('PROCEED');
                 $hidden = build_keep_post_fields();
 

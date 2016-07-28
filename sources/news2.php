@@ -217,7 +217,7 @@ function delete_news_category($id)
  * @param  LONG_TEXT $notes Notes for the news
  * @param  LONG_TEXT $news_article The news entry (blank means no entry)
  * @param  ?AUTO_LINK $main_news_category The primary news category (null: personal)
- * @param  ?array $news_categories The IDs of the news categories that this is in (null: none)
+ * @param  array $news_categories The IDs of the news categories that this is in
  * @param  ?TIME $time The time of submission (null: now)
  * @param  ?MEMBER $submitter The news submitter (null: current member)
  * @param  integer $views The number of views the article has had
@@ -226,19 +226,13 @@ function delete_news_category($id)
  * @param  URLPATH $image URL to the image for the news entry (blank: use cat image)
  * @param  ?SHORT_TEXT $meta_keywords Meta keywords for this resource (null: do not edit) (blank: implicit)
  * @param  ?LONG_TEXT $meta_description Meta description for this resource (null: do not edit) (blank: implicit)
- * @param  ?array $regions The regions (empty: not region-limited) (null: same as empty)
+ * @param  array $regions The regions (empty: not region-limited)
  * @return AUTO_LINK The ID of the news just added
  */
-function add_news($title, $news, $author = null, $validated = 1, $allow_rating = 1, $allow_comments = 1, $allow_trackbacks = 1, $notes = '', $news_article = '', $main_news_category = null, $news_categories = null, $time = null, $submitter = null, $views = 0, $edit_date = null, $id = null, $image = '', $meta_keywords = '', $meta_description = '', $regions = null)
+function add_news($title, $news, $author = null, $validated = 1, $allow_rating = 1, $allow_comments = 1, $allow_trackbacks = 1, $notes = '', $news_article = '', $main_news_category = null, $news_categories = array(), $time = null, $submitter = null, $views = 0, $edit_date = null, $id = null, $image = '', $meta_keywords = '', $meta_description = '', $regions = array())
 {
     if ($author === null) {
         $author = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
-    }
-    if ($news_categories === null) {
-        $news_categories = array();
-    }
-    if ($regions === null) {
-        $regions = array();
     }
     if ($time === null) {
         $time = time();
@@ -466,14 +460,11 @@ function send_rss_ping($show_errors = true)
  * @param  ?TIME $edit_time Edit time (null: either means current time, or if $null_is_literal, means reset to to null)
  * @param  ?integer $views Number of views (null: do not change)
  * @param  ?MEMBER $submitter Submitter (null: do not change)
- * @param  ?array $regions The regions (empty: not region-limited) (null: same as empty)
+ * @param  array $regions The regions (empty: not region-limited)
  * @param  boolean $null_is_literal Determines whether some nulls passed mean 'use a default' or literally mean 'set to null'
  */
-function edit_news($id, $title, $news, $author, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $news_article, $main_news_category, $news_categories, $meta_keywords, $meta_description, $image, $add_time = null, $edit_time = null, $views = null, $submitter = null, $regions = null, $null_is_literal = false)
+function edit_news($id, $title, $news, $author, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $news_article, $main_news_category, $news_categories, $meta_keywords, $meta_description, $image, $add_time = null, $edit_time = null, $views = null, $submitter = null, $regions = array(), $null_is_literal = false)
 {
-    if ($regions === null) {
-        $regions = array();
-    }
     if ($edit_time === null) {
         $edit_time = $null_is_literal ? null : time();
     }
@@ -904,7 +895,7 @@ function _news_import_grab_image(&$data, $url)
     }
 
     $target_handle = fopen($target_path, 'wb') or intelligent_write_error($target_path);
-    $result = http_download_file($url, null, false, false, 'Composr', null, null, null, null, null, $target_handle);
+    $result = http_download_file($url, null, false, false, 'Composr', null, array(), null, null, null, $target_handle);
     fclose($target_handle);
     sync_file($target_path);
     fix_permissions($target_path);

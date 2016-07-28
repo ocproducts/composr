@@ -836,20 +836,13 @@ function uninstall_addon($addon, $clear_caches = true)
  * Get information for the user relating to an addon that they are intending to install.
  *
  * @param  string $file Filename of the addon TAR file
- * @param  ?array $also_uninstalling List of addons that we're currently uninstalling (so dependencies from these are irrelevant). (null: none)
- * @param  ?array $also_installing List of addons that we're currently installing (so dependencies to these are irrelevant). (null: none)
+ * @param  array $also_uninstalling List of addons that we're currently uninstalling (so dependencies from these are irrelevant).
+ * @param  array $also_installing List of addons that we're currently installing (so dependencies to these are irrelevant).
  * @param  boolean $always_return Whether to make sure we always return, rather than possibly bombing out with a dependency management UI
  * @return array Triple: warnings, files, addon info array
  */
-function inform_about_addon_install($file, $also_uninstalling = null, $also_installing = null, $always_return = false)
+function inform_about_addon_install($file, $also_uninstalling = array(), $also_installing = array(), $always_return = false)
 {
-    if ($also_uninstalling === null) {
-        $also_uninstalling = array();
-    }
-    if ($also_installing === null) {
-        $also_installing = array();
-    }
-
     $full = get_custom_file_base() . '/imports/addons/' . $file;
 
     // Look in the tar
@@ -1121,17 +1114,13 @@ function has_feature($dependency)
  * Get information for the user relating to an addon that they are intending to uninstall.
  *
  * @param  string $addon Name of the addon
- * @param  ?array $also_uninstalling List of addons that we're currently uninstalling (so dependencies from these are irrelevant). (null: none)
+ * @param  array $also_uninstalling List of addons that we're currently uninstalling (so dependencies from these are irrelevant).
  * @param  ?array $addon_info Addon details. (null: load in function)
  * @param  boolean $always_return Whether to make sure we always return, rather than possibly bombing out with a dependency management UI
  * @return array Pair: warnings, files
  */
-function inform_about_addon_uninstall($addon, $also_uninstalling = null, $addon_info = null, $always_return = false)
+function inform_about_addon_uninstall($addon, $also_uninstalling = array(), $addon_info = null, $always_return = false)
 {
-    if ($also_uninstalling === null) {
-        $also_uninstalling = array();
-    }
-
     // Read/show info
     if ($addon_info === null) {
         $addon_info = read_addon_info($addon, true);

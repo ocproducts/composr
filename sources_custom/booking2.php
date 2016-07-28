@@ -27,7 +27,9 @@ function booking_do_next()
     require_lang('calendar');
     require_code('templates_donext');
     require_code('fields');
-    return do_next_manager(get_screen_title('BOOKINGS'), comcode_lang_string('DOC_BOOKING'),
+    return do_next_manager(
+        get_screen_title('BOOKINGS'),
+        comcode_lang_string('DOC_BOOKING'),
         array(
             has_privilege(get_member(), 'submit_cat_highrange_content', 'cms_booking') ? array('menu/bookable', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_BOOKABLE')) : null,
             has_privilege(get_member(), 'edit_cat_highrange_content', 'cms_booking') ? array('menu/bookable', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_BOOKABLE')) : null,
@@ -353,21 +355,14 @@ function get_bookable_blacked_details_from_form()
  *
  * @param  array $bookable_details Bookable details.
  * @param  array $codes List of codes.
- * @param  ?array $blacked List of black-outs (null: none).
- * @param  ?array $supplements List of supplements (null: none).
+ * @param  array $blacked List of black-outs.
+ * @param  array $supplements List of supplements.
  * @param  ?TIME $add_date Add date (null: now).
  * @param  ?MEMBER $submitter Submitting user (null: current user).
  * @return AUTO_LINK Bookable ID.
  */
-function add_bookable($bookable_details, $codes, $blacked = null, $supplements = null, $add_date = null, $submitter = null)
+function add_bookable($bookable_details, $codes, $blacked = array(), $supplements = array(), $add_date = null, $submitter = null)
 {
-    if ($blacked === null) {
-        $blacked = array();
-    }
-    if ($supplements === null) {
-        $supplements = array();
-    }
-
     if ($add_date === null) {
         $add_date = time();
     }
@@ -541,17 +536,13 @@ function delete_bookable($bookable_id)
  * Add a bookable supplement.
  *
  * @param  array $details Supplement details.
- * @param  ?array $bookables List of bookables to associate to (null: none).
+ * @param  array $bookables List of bookables to associate to.
  * @return AUTO_LINK Supplement ID.
  */
-function add_bookable_supplement($details, $bookables = null)
+function add_bookable_supplement($details, $bookables = array())
 {
     /*require_code('global4');   $title is not actually unique enough to do this
     prevent_double_submit('ADD_BOOKABLE_SUPPLEMENT', null, $title);*/
-
-    if ($bookables === null) {
-        $bookables = array();
-    }
 
     $title = $details['title'];
 
@@ -576,14 +567,10 @@ function add_bookable_supplement($details, $bookables = null)
  *
  * @param  AUTO_LINK $supplement_id Supplement ID.
  * @param  array $details Supplement details.
- * @param  ?array $bookables List of bookables to associate to (null: no change).
+ * @param  array $bookables List of bookables to associate to.
  */
-function edit_bookable_supplement($supplement_id, $details, $bookables = null)
+function edit_bookable_supplement($supplement_id, $details, $bookables = array())
 {
-    if ($bookables === null) {
-        $bookables = array();
-    }
-
     $title = $details['title'];
 
     $_old_supplement = $GLOBALS['SITE_DB']->query_select('bookable_supplement', array('*'), array('id' => $supplement_id), '', 1);
@@ -636,15 +623,11 @@ function delete_bookable_supplement($supplement_id)
  * Add a bookable blacked.
  *
  * @param  array $details Blacked details.
- * @param  ?array $bookables List of bookables to associate to (null: none).
+ * @param  array $bookables List of bookables to associate to.
  * @return AUTO_LINK Blacked ID.
  */
-function add_bookable_blacked($details, $bookables = null)
+function add_bookable_blacked($details, $bookables = array())
 {
-    if ($bookables === null) {
-        $bookables = array();
-    }
-
     $blacked_explanation = $details['blacked_explanation'];
 
     $details = insert_lang_comcode('blacked_explanation', $details['blacked_explanation'], 1) + $details;

@@ -257,12 +257,12 @@ function tar_add_folder_incremental(&$resource, $logfile, $path, $threshold, $ma
  * @param  PATH $path The full path to the folder to add
  * @param  ?integer $max_size The maximum file size to add (null: no limit)
  * @param  PATH $subpath The subpath relative to the path (should be left as the default '', as this is used for the recursion to distinguish the adding base path from where it's currently looking)
- * @param  ?array $avoid_backing_up A map (filename=>true) of files to not back up (null: none)
+ * @param  array $avoid_backing_up A map (filename=>true) of files to not back up
  * @param  ?array $root_only_dirs A list of directories ONLY to back up from the root (null: no restriction)
  * @param  boolean $tick Whether to output spaces as we go to keep the connection alive
  * @param  boolean $all_files Whether to not skip "special files" (ones not normally archive)
  */
-function tar_add_folder(&$resource, $logfile, $path, $max_size = null, $subpath = '', $avoid_backing_up = null, $root_only_dirs = null, $tick = false, $all_files = false) // Note we cannot modify $resource unless we pass it by reference
+function tar_add_folder(&$resource, $logfile, $path, $max_size = null, $subpath = '', $avoid_backing_up = array(), $root_only_dirs = null, $tick = false, $all_files = false) // Note we cannot modify $resource unless we pass it by reference
 {
     require_code('files');
 
@@ -304,7 +304,7 @@ function tar_add_folder(&$resource, $logfile, $path, $max_size = null, $subpath 
                         tar_add_folder($resource, $logfile, $path, $max_size, $_subpath, $avoid_backing_up, null, $tick, $all_files);
                     }
                 } else {
-                    if ((($full != $resource['full']) && (($max_size === null) || (filesize($full) < $max_size * 1024 * 1024))) && (($avoid_backing_up === null) || (!array_key_exists($_subpath, $avoid_backing_up)))) {
+                    if ((($full != $resource['full']) && (($max_size === null) || (filesize($full) < $max_size * 1024 * 1024))) && (!array_key_exists($_subpath, $avoid_backing_up))) {
                         tar_add_file($resource, $_subpath, $full, fileperms($full), filemtime($full), true);
                         if ($logfile !== null && fwrite($logfile, 'Backed up file ' . $_subpath . ' (' . clean_file_size(filesize($full)) . ')' . "\n") == 0) {
                             warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);

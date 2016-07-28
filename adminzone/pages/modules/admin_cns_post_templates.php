@@ -137,7 +137,9 @@ class Module_admin_cns_post_templates extends Standard_crud_module
     public function browse()
     {
         require_code('templates_donext');
-        return do_next_manager(get_screen_title('POST_TEMPLATES'), comcode_lang_string('DOC_POST_TEMPLATES'),
+        return do_next_manager(
+            get_screen_title('POST_TEMPLATES'),
+            comcode_lang_string('DOC_POST_TEMPLATES'),
             array(
                 array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_POST_TEMPLATE')),
                 array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_POST_TEMPLATE')),
@@ -273,7 +275,7 @@ class Module_admin_cns_post_templates extends Standard_crud_module
 
         log_it('IMPORT_STOCK_RESPONSES_PT');
 
-        return $this->do_next_manager($this->title, do_lang_tempcode('SUCCESS'), null);
+        return $this->do_next_manager($this->title, do_lang_tempcode('SUCCESS'));
     }
 
     /**

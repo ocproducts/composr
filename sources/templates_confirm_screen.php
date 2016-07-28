@@ -25,16 +25,12 @@
  * @param  Tempcode $preview The preview that's being confirmed for actualisation
  * @param  mixed $url_type The URL type to confirm through to OR a full URL OR a full URL (if long, or if Tempcode)
  * @param  ?mixed $back_url_type The URL type if we click back OR a full URL (if long, or if Tempcode) (null: none)
- * @param  ?array $sup_post A map of supplementary post data to get passed through upon confirmation (null: none)
+ * @param  array $sup_post A map of supplementary post data to get passed through upon confirmation
  * @param  ?Tempcode $fields Form fields to pass through as post data on confirmation (null: none)
  * @return Tempcode The confirmation page
  */
-function confirm_screen($title, $preview, $url_type, $back_url_type = null, $sup_post = null, $fields = null)
+function confirm_screen($title, $preview, $url_type, $back_url_type = null, $sup_post = array(), $fields = null)
 {
-    if ($sup_post === null) {
-        $sup_post = array();
-    }
-
     if ((is_string($back_url_type)) && (strlen($back_url_type) < 10)) {
         $back_url = build_url(array('page' => '_SELF', 'type' => $back_url_type), '_SELF', null, true);
     } else {

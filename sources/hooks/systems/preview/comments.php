@@ -57,7 +57,7 @@ class Hook_preview_comments
 
         // Conversr renderings of poster
         require_code('cns_members2');
-        $poster_details = render_member_box(get_member(), false, false, null, false);
+        $poster_details = render_member_box(get_member(), false, false, array(), false);
         if (addon_installed('cns_forum')) {
             if (is_guest()) {
                 $poster = do_template('CNS_POSTER_MEMBER', array('_GUID' => 'adbfe268015ca904c3f61020a7b0adde', 'ONLINE' => true, 'ID' => strval(get_member()), 'POSTER_DETAILS' => $poster_details, 'PROFILE_URL' => $GLOBALS['FORUM_DRIVER']->member_profile_url(get_member(), true), 'POSTER_USERNAME' => $poster_name));

@@ -259,12 +259,12 @@ class Module_vforums
      * @param  mixed $condition The condition (a fragment of an SQL query that gets embedded in the context of a topic selection query). May be string, or array of strings (separate queries to run and merge; done for performance reasons relating to DB indexing)
      * @param  string $order The ordering of the results
      * @param  boolean $no_pin Whether to not show pinning in a separate section
-     * @param  ?array $extra_tpl_map Extra template parameters to pass through (null: none)
+     * @param  array $extra_tpl_map Extra template parameters to pass through
      * @param  ?string $initial_table The table to query (null: topic table)
      * @param  string $extra_select Extra SQL for select clause
      * @return Tempcode The UI
      */
-    public function _vforum($title, $condition, $order, $no_pin = false, $extra_tpl_map = null, $initial_table = null, $extra_select = '')
+    public function _vforum($title, $condition, $order, $no_pin = false, $extra_tpl_map = array(), $initial_table = null, $extra_select = '')
     {
         require_code('templates_pagination');
         list($max, $start, , $sql_sup, $sql_sup_order_by, $true_start, , $keyset_field_stripped) = get_keyset_pagination_settings('forum_max', intval(get_option('forum_topics_per_page')), 'forum_start', null, null, $order, 'get_forum_sort_order_simplified');
@@ -409,10 +409,7 @@ class Module_vforums
             'BUTTONS' => $_buttons,
             'TOPIC_WRAPPER' => $topic_wrapper,
             'FORUM_GROUPINGS' => '',
-        );
-        if ($extra_tpl_map !== null) {
-            $tpl_map += $extra_tpl_map;
-        }
+        ) + $extra_tpl_map;
         return do_template('CNS_FORUM', $tpl_map);
     }
 }

@@ -82,7 +82,7 @@ function do_next_manager_hooked($title, $text, $type, $main_title = null)
  *
  * @param  ?Tempcode $title The title of what we just did (should have been passed through get_screen_title already) (null: don't do full page)
  * @param  Tempcode $text The 'text' (actually, a full XHTML lump) to show on the page
- * @param  ?array $main An array of entry types, with each array entry being -- an array consisting of the type codename and a URL array as per following parameters (null: none)
+ * @param  array $main An array of entry types, with each array entry being -- an array consisting of the type codename and a URL array as per following parameters
  * @param  ?string $main_title The title to use for the main links (null: none)
  * @param  ?array $url_add_one The URL used to 'add-one' (null: impossible)  (format: array of page, param, zone[, custom label])
  * @param  ?array $url_edit_this The URL used to 'edit-this' (null: impossible)  (format: array of page, param, zone[, custom label])
@@ -94,9 +94,9 @@ function do_next_manager_hooked($title, $text, $type, $main_title = null)
  * @param  ?array $url_edit_one_category The URL used to 'edit-one-category' (null: impossible)  (format: array of page, param, zone[, custom label])
  * @param  ?array $url_edit_this_category The URL used to 'edit-this-category' (null: impossible)  (format: array of page, param, zone[, custom label])
  * @param  ?array $url_view_this_category The URL used to 'view-this-category' (null: impossible)  (format: array of page, param, zone[, custom label])
- * @param  ?array $entry_extras An array of additional entry types, with each array entry being -- an array of type codename and a URL array as before (null: none)
- * @param  ?array $category_extras As before, but with category types (null: none)
- * @param  ?array $additional_extras As before, but for an 'extra types' box of do next actions (null: none)
+ * @param  array $entry_extras An array of additional entry types, with each array entry being -- an array of type codename and a URL array as before
+ * @param  array $category_extras As before, but with category types
+ * @param  array $additional_extras As before, but for an 'extra types' box of do next actions
  * @param  ?mixed $additional_title The title to use for the extra types (null: none)
  * @param  ?Tempcode $intro Introductory text (null: none)
  * @param  ?Tempcode $entries_title Entries section title (null: default, Entries)
@@ -105,7 +105,7 @@ function do_next_manager_hooked($title, $text, $type, $main_title = null)
  * @param  ?string $category_content_type Category content type (null: unknown)
  * @return Tempcode The do next manager
  */
-function do_next_manager($title, $text, $main = null, $main_title = null, $url_add_one = null, $url_edit_this = null, $url_edit_one = null, $url_view_this = null, $url_view_archive = null, $url_add_to_category = null, $url_add_one_category = null, $url_edit_one_category = null, $url_edit_this_category = null, $url_view_this_category = null, $entry_extras = null, $category_extras = null, $additional_extras = null, $additional_title = null, $intro = null, $entries_title = null, $categories_title = null, $entry_content_type = null, $category_content_type = null)
+function do_next_manager($title, $text, $main = array(), $main_title = null, $url_add_one = null, $url_edit_this = null, $url_edit_one = null, $url_view_this = null, $url_view_archive = null, $url_add_to_category = null, $url_add_one_category = null, $url_edit_one_category = null, $url_edit_this_category = null, $url_view_this_category = null, $entry_extras = array(), $category_extras = array(), $additional_extras = array(), $additional_title = null, $intro = null, $entries_title = null, $categories_title = null, $entry_content_type = null, $category_content_type = null)
 {
     if ($intro === null) {
         $intro = new Tempcode();
@@ -126,9 +126,7 @@ function do_next_manager($title, $text, $main = null, $main_title = null, $url_a
     $sections = new Tempcode();
 
     // Main section stuff (the "Main" section is not always shown - it is shown when the do-next screen is being used as a traditional menu, not as a followup-action screen)
-    if ($main !== null) {
-        $sections->attach(_do_next_section($main, make_string_tempcode($main_title), $entry_content_type, $category_content_type));
-    }
+    $sections->attach(_do_next_section($main, make_string_tempcode($main_title), $entry_content_type, $category_content_type));
 
     $current_page_type = get_param_string('type', '');
 
@@ -191,9 +189,6 @@ function do_next_manager($title, $text, $main = null, $main_title = null, $url_a
             $entry_passed_2[] = $map;
         }
     }
-    if ($entry_extras !== null) {
-        $entry_passed_2 = array_merge($entry_passed_2, $entry_extras);
-    }
     $sections->attach(_do_next_section($entry_passed_2, ($entries_title === null) ? do_lang_tempcode('ENTRIES') : $entries_title, $entry_content_type, $category_content_type));
 
     // Category stuff
@@ -248,15 +243,11 @@ function do_next_manager($title, $text, $main = null, $main_title = null, $url_a
             $category_passed_2[] = $map;
         }
     }
-    if ($category_extras !== null) {
-        $category_passed_2 = array_merge($category_passed_2, $category_extras);
-    }
+    $category_passed_2 = array_merge($category_passed_2, $category_extras);
     $sections->attach(_do_next_section($category_passed_2, ($categories_title === null) ? do_lang_tempcode('CATEGORIES') : $categories_title, $entry_content_type, $category_content_type));
 
     // Additional section stuff
-    if ($additional_extras !== null) {
-        $sections->attach(_do_next_section($additional_extras, is_object($additional_title) ? $additional_title : make_string_tempcode($additional_title), $entry_content_type, $category_content_type));
-    }
+    $sections->attach(_do_next_section($additional_extras, is_object($additional_title) ? $additional_title : make_string_tempcode($additional_title), $entry_content_type, $category_content_type));
 
     if (($main === null) && (get_option('global_donext_icons') == '1')) { // What-next
         // These go on a new row

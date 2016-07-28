@@ -141,10 +141,9 @@ class Virtual_shell
      * Constructor function. Starts command parsing on the supplied command.
      *
      * @param  string $inputted_command The inputted command, unparsed
-     * @param  ?array $prior_output An array of prior output to be prepended (null: none)
-     * @param  ?array $parameters An array of prior parameters (null: none)
+     * @param  array $parameters An array of prior parameters
      */
-    public function __construct($inputted_command, $prior_output = null, $parameters = null)
+    public function __construct($inputted_command, $parameters = array())
     {
         if (!defined('MODE_NORMAL')) {
             define('MODE_NORMAL', 0); // Not in quotes
@@ -182,10 +181,8 @@ class Virtual_shell
         $this->output = array(STREAM_STDCOMMAND => '', STREAM_STDHTML => '', STREAM_STDOUT => '', STREAM_STDERR => '');
         $this->input_parameters = array();
 
-        if ($parameters !== null) {
-            foreach ($parameters as $parameter_key => $parameter_value) {
-                $this->input_parameters['{P' . $parameter_key . '}'] = $parameter_value;
-            }
+        foreach ($parameters as $parameter_key => $parameter_value) {
+            $this->input_parameters['{P' . $parameter_key . '}'] = $parameter_value;
         }
 
         $this->parse_input();

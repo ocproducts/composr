@@ -208,7 +208,9 @@ class Module_admin_ecommerce_logs
     public function browse()
     {
         require_code('templates_donext');
-        return do_next_manager($this->title, new Tempcode(),
+        return do_next_manager(
+            $this->title,
+            new Tempcode(),
             array(
                 array('menu/adminzone/audit/ecommerce/cash_flow', array('_SELF', array('type' => 'cash_flow'), '_SELF'), do_lang('CASH_FLOW')),
                 array('menu/adminzone/audit/ecommerce/profit_loss', array('_SELF', array('type' => 'profit_loss'), '_SELF'), do_lang('PROFIT_LOSS')),
@@ -539,7 +541,7 @@ class Module_admin_ecommerce_logs
             'FIELDS' => $fields,
             'TEXT' => '',
             'HIDDEN' => '',
-            'URL' => get_self_url(false, false, null, false, true),
+            'URL' => get_self_url(false, false, array(), false, true),
             'SUBMIT_ICON' => 'buttons__proceed',
             'SUBMIT_NAME' => do_lang_tempcode('PROCEED'),
         ));

@@ -956,17 +956,13 @@ abstract class Resource_fs_base
      * @param  ID_TEXT $resource_type The resource type
      * @param  ID_TEXT $label Filename OR Resource label
      * @param  string $path The path (blank: root / not applicable)
-     * @param  ?array $properties Properties (null: none)
+     * @param  array $properties Properties
      * @param  ?ID_TEXT $search_label_as Whether to look for existing records using $filename as a label and this resource type (null: $filename is a strict file name)
      * @param  ?ID_TEXT $search_path Search path (null: the same as the path saving at)
      * @return ~ID_TEXT The resource ID (false: error, could not create via these properties / here)
      */
-    public function resource_save($resource_type, $label, $path, $properties = null, $search_label_as = null, $search_path = null)
+    public function resource_save($resource_type, $label, $path, $properties = array(), $search_label_as = null, $search_path = null)
     {
-        if ($properties === null) {
-            $properties = array();
-        }
-
         if ($this->is_folder_type($resource_type)) {
             $resource_id = $this->folder_save($label, $path, $properties, $search_label_as, $search_path);
         } else {
@@ -981,15 +977,11 @@ abstract class Resource_fs_base
      * @param  ID_TEXT $resource_type Resource type
      * @param  LONG_TEXT $label Filename OR Resource label
      * @param  string $path The path (blank: root / not applicable)
-     * @param  ?array $properties Properties (may be empty, properties given are open to interpretation by the hook but generally correspond to database fields) (null: none)
+     * @param  array $properties Properties (may be empty, properties given are open to interpretation by the hook but generally correspond to database fields)
      * @return ~ID_TEXT The resource ID (false: error, could not create via these properties / here)
      */
-    public function resource_add($resource_type, $label, $path, $properties = null)
+    public function resource_add($resource_type, $label, $path, $properties = array())
     {
-        if ($properties === null) {
-            $properties = array();
-        }
-
         if ($this->is_folder_type($resource_type)) {
             $resource_id = $this->folder_add($label, $path, $properties, $resource_type);
             $this->_log_if_save_matchup($resource_type, $resource_id, $path, $properties);

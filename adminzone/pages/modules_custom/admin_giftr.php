@@ -214,7 +214,9 @@ class Module_admin_giftr extends Standard_crud_module
     {
         require_code('templates_donext');
 
-        return do_next_manager(get_screen_title('GIFTR_TITLE'), comcode_lang_string('DOC_GIFTR'),
+        return do_next_manager(
+            get_screen_title('GIFTR_TITLE'),
+            comcode_lang_string('DOC_GIFTR'),
             array(
                 array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_GIFT')),
                 array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_GIFT')),

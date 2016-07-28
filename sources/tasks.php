@@ -150,18 +150,14 @@ function execute_task_background($task_row)
  * @param  string $plain_title Title to use for completion notification subject lines
  * @param  ?Tempcode $title Title to use if there is no queueing or a queue message (null: don't return a full screen)
  * @param  ID_TEXT $hook The task hook
- * @param  ?array $args Arguments for the task (null: no arguments)
+ * @param  array $args Arguments for the task
  * @param  boolean $run_at_end_of_script Whether to run the task at the end of the script (if it's not going to be put into the task queue)
  * @param  boolean $force_immediate Whether to forcibly bypass the task queue (because we've determined somehow it will be a quick task)
  * @param  boolean $send_notification Whether to send a notification of the task having come out of the queue
  * @return Tempcode UI (function may not return if the task is immediate and doesn't have a text/html result)
  */
-function call_user_func_array__long_task($plain_title, $title, $hook, $args = null, $run_at_end_of_script = false, $force_immediate = false, $send_notification = true)
+function call_user_func_array__long_task($plain_title, $title, $hook, $args = array(), $run_at_end_of_script = false, $force_immediate = false, $send_notification = true)
 {
-    if ($args === null) {
-        $args = array();
-    }
-
     if (
         (get_param_integer('keep_debug_tasks', 0) == 1) ||
         (get_option('tasks_background') == '0') ||

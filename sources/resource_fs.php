@@ -514,11 +514,11 @@ TABLE LEVEL
  * Transfer a table's contents to JSON format.
  *
  * @param  string $table Table name
- * @param  ?array $fields_to_skip Fields to not include in the table dump (null: none). Any keys from $where_map will also be skipped, as these are obviously constant for all rows returned.
- * @param  ?array $where_map Extra WHERE constraints (null: none)
+ * @param  array $fields_to_skip Fields to not include in the table dump. Any keys from $where_map will also be skipped, as these are obviously constant for all rows returned.
+ * @param  array $where_map Extra WHERE constraints
  * @return string JSON data
  */
-function table_to_json($table, $fields_to_skip = null, $where_map = null)
+function table_to_json($table, $fields_to_skip = array(), $where_map = array())
 {
     return json_encode(table_to_portable_rows($table, $fields_to_skip, $where_map));
 }
@@ -527,17 +527,13 @@ function table_to_json($table, $fields_to_skip = null, $where_map = null)
  * Transfer a table's contents to portable rows.
  *
  * @param  string $table Table name
- * @param  ?array $fields_to_skip Fields to not include in the table dump (null: none). Any keys from $where_map will also be skipped, as these are obviously constant for all rows returned.
- * @param  ?array $where_map Extra WHERE constraints (null: none)
+ * @param  array $fields_to_skip Fields to not include in the table dump. Any keys from $where_map will also be skipped, as these are obviously constant for all rows returned.
+ * @param  array $where_map Extra WHERE constraints
  * @param  ?object $db Database connector to look up from (null: work out from table name)
  * @return array Portable rows
  */
-function table_to_portable_rows($table, $fields_to_skip = null, $where_map = null, $db = null)
+function table_to_portable_rows($table, $fields_to_skip = array(), $where_map = array(), $db = null)
 {
-    if ($where_map === null) {
-        $where_map = array();
-    }
-
     if ($db === null) {
         $db = (substr($table, 0, 2) == 'f_' && get_forum_type() == 'cns') ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
     }
@@ -548,9 +544,6 @@ function table_to_portable_rows($table, $fields_to_skip = null, $where_map = nul
 
     $relation_map = get_relation_map_for_table($table);
 
-    if ($fields_to_skip === null) {
-        $fields_to_skip = array();
-    }
     $fields_to_skip = array_merge($fields_to_skip, array_keys($where_map));
 
     foreach ($rows as &$row) {

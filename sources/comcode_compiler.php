@@ -322,13 +322,13 @@ function add_wysiwyg_comcode_markup($tag, $attributes, $embed, $semihtml, $metho
  * @param  ?string $pass_id A special identifier that can identify this resource in a sea of our resources of this class; usually this can be ignored, but may be used to provide a binding between JavaScript in evaluated Comcode, and the surrounding environment (null: no explicit binding)
  * @param  object $db The database connector to use
  * @param  integer $flags A bitmask of COMCODE_* flags
- * @param  ?array $highlight_bits A list of words to highlight (null: none)
+ * @param  array $highlight_bits A list of words to highlight
  * @param  ?MEMBER $on_behalf_of_member The member we are running on behalf of, with respect to how attachments are handled; we may use this members attachments that are already within this post, and our new attachments will be handed to this member (null: member evaluating)
  * @return Tempcode The Tempcode generated
  *
  * @ignore
  */
-function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $db, $flags = 0, $highlight_bits = null, $on_behalf_of_member = null)
+function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $db, $flags = 0, $highlight_bits = array(), $on_behalf_of_member = null)
 {
     init_valid_comcode_tags();
     init_potential_js_naughty_array();
@@ -1462,21 +1462,19 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                                 }
 
                                 // Search highlighting lookahead
-                                if ($highlight_bits !== null) {
-                                    foreach ($highlight_bits as $highlight_bit) {
-                                        if (strtolower($next) === strtolower($highlight_bit[0])) { // optimisation
-                                            if (strtolower(substr($comcode, $pos - 1, strlen($highlight_bit))) === strtolower($highlight_bit)) {
-                                                if ($GLOBALS['XSS_DETECT']) {
-                                                    ocp_mark_as_escaped($continuation);
-                                                }
-                                                $tag_output->attach($continuation);
-                                                $continuation = '';
-                                                $differented = true;
-                                                $embed_output = _do_tags_comcode('highlight', array(), escape_html(substr($comcode, $pos - 1, strlen($highlight_bit))), $comcode_dangerous, $pass_id, $pos, $source_member, $as_admin, $db, $comcode, $structure_sweep, $semiparse_mode, $highlight_bits, null, false, false, $html_errors);
-                                                $pos += strlen($highlight_bit) - 1;
-                                                $tag_output->attach($embed_output);
-                                                break;
+                                foreach ($highlight_bits as $highlight_bit) {
+                                    if (strtolower($next) === strtolower($highlight_bit[0])) { // optimisation
+                                        if (strtolower(substr($comcode, $pos - 1, strlen($highlight_bit))) === strtolower($highlight_bit)) {
+                                            if ($GLOBALS['XSS_DETECT']) {
+                                                ocp_mark_as_escaped($continuation);
                                             }
+                                            $tag_output->attach($continuation);
+                                            $continuation = '';
+                                            $differented = true;
+                                            $embed_output = _do_tags_comcode('highlight', array(), escape_html(substr($comcode, $pos - 1, strlen($highlight_bit))), $comcode_dangerous, $pass_id, $pos, $source_member, $as_admin, $db, $comcode, $structure_sweep, $semiparse_mode, $highlight_bits, null, false, false, $html_errors);
+                                            $pos += strlen($highlight_bit) - 1;
+                                            $tag_output->attach($embed_output);
+                                            break;
                                         }
                                     }
                                 }
@@ -1639,7 +1637,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                                     return comcode_parse_error($preparse_mode, array('CCP_NO_CLOSE_MATCH', $current_tag, $_last[0]), $pos, $comcode, $check_only);
                                 }
                                 do {
-                                    $embed_output = _do_tags_comcode($_last[0], $_last[1], $tag_output, $comcode_dangerous, $pass_id, $pos, $source_member, $as_admin, $db, $comcode, $structure_sweep, $semiparse_mode, null, null, $in_semihtml, $is_all_semihtml, $html_errors);
+                                    $embed_output = _do_tags_comcode($_last[0], $_last[1], $tag_output, $comcode_dangerous, $pass_id, $pos, $source_member, $as_admin, $db, $comcode, $structure_sweep, $semiparse_mode, array(), null, $in_semihtml, $is_all_semihtml, $html_errors);
                                     $in_code_tag = false;
                                     $white_space_area = $_last[3];
                                     $in_separate_parse_section = $_last[4];
@@ -1962,7 +1960,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
         } else {
             while (count($tag_stack) > 0) {
                 $_last = array_pop($tag_stack);
-                $embed_output = _do_tags_comcode($_last[0], $_last[1], $tag_output, $comcode_dangerous, $pass_id, $pos, $source_member, $as_admin, $db, $comcode, $structure_sweep, $semiparse_mode, null, null, $in_semihtml, $is_all_semihtml, $html_errors);
+                $embed_output = _do_tags_comcode($_last[0], $_last[1], $tag_output, $comcode_dangerous, $pass_id, $pos, $source_member, $as_admin, $db, $comcode, $structure_sweep, $semiparse_mode, array(), null, $in_semihtml, $is_all_semihtml, $html_errors);
                 $in_code_tag = false;
                 $white_space_area = $_last[3];
                 $in_separate_parse_section = $_last[4];

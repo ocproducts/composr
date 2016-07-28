@@ -115,7 +115,7 @@ function points_profile($member_id_of, $member_id_viewing)
 
             $charges->attach(results_entry(array($date, integer_format($amount), $from_name, $to_name, $reason), true));
         }
-        $chargelog_details = results_table(do_lang_tempcode('CHARGES'), $start, 'charge_start', $max, 'charge_max', $max_rows, $fields_title, $charges, $sortables, $sortable, $sort_order, 'charge_sort', null, null, null, 8, 'fgfdgfdgfdgfdger4gtrhg', false, 'tab__points');
+        $chargelog_details = results_table(do_lang_tempcode('CHARGES'), $start, 'charge_start', $max, 'charge_max', $max_rows, $fields_title, $charges, $sortables, $sortable, $sort_order, 'charge_sort', null, array(), null, 8, 'fgfdgfdgfdgfdger4gtrhg', false, 'tab__points');
     }
 
     // Show giving form
@@ -254,5 +254,5 @@ function points_get_transactions($type, $member_id_of, $member_id_viewing)
 
         $out->attach(results_entry(array(escape_html($date), escape_html(integer_format($amount)), $_from_name, $_to_name, $reason), false));
     }
-    return results_table(do_lang_tempcode('_POINTS', escape_html($viewing_name)), $start, 'gift_start_' . $type, $max, 'gift_max_' . $type, $max_rows, $fields_title, $out, $sortables, $sortable, $sort_order, 'gift_sort_' . $type, null, null, null, 8, 'gfhfghtrhhjghgfhfgf', false, 'tab__points');
+    return results_table(do_lang_tempcode('_POINTS', escape_html($viewing_name)), $start, 'gift_start_' . $type, $max, 'gift_max_' . $type, $max_rows, $fields_title, $out, $sortables, $sortable, $sort_order, 'gift_sort_' . $type, null, array(), null, 8, 'gfhfghtrhhjghgfhfgf', false, 'tab__points');
 }

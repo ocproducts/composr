@@ -351,7 +351,9 @@ class Module_admin_stats
 
         $actions[] = array('menu/adminzone/audit/statistics/clear_stats', array('_SELF', array('type' => 'clear'), '_SELF'), do_lang('CLEAR_STATISTICS'), do_lang_tempcode('DESCRIPTION_CLEAR_STATISTICS'));
 
-        return do_next_manager(get_screen_title('SITE_STATISTICS'), comcode_lang_string('DOC_STATISTICS'),
+        return do_next_manager(
+            get_screen_title('SITE_STATISTICS'),
+            comcode_lang_string('DOC_STATISTICS'),
             $actions,
             do_lang('SITE_STATISTICS')
         );

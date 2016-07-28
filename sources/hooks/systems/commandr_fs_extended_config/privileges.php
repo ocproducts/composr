@@ -56,7 +56,7 @@ class Hook_commandr_fs_extended_config__privileges
 
         $all = array();
         foreach ($tables as $table => $map) {
-            $all[$table] = table_to_portable_rows($table, null, $map);
+            $all[$table] = table_to_portable_rows($table, array(), $map);
         }
         return json_encode($all);
     }

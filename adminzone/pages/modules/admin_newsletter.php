@@ -253,7 +253,9 @@ class Module_admin_newsletter extends Standard_crud_module
         ));
 
         require_code('templates_donext');
-        return do_next_manager(get_screen_title('MANAGE_NEWSLETTER'), $newsletter_intro,
+        return do_next_manager(
+            get_screen_title('MANAGE_NEWSLETTER'),
+            $newsletter_intro,
             array_merge(array(
                 array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_NEWSLETTER')),
                 array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_NEWSLETTER')),
@@ -1314,7 +1316,7 @@ class Module_admin_newsletter extends Standard_crud_module
                     'email' => $mail_dispatcher->mime_data,
                     'options' => 'long',
                 ))),
-                null,
+                array(),
                 null,
                 null,
                 null,
@@ -1323,8 +1325,8 @@ class Module_admin_newsletter extends Standard_crud_module
                 null,
                 6.0,
                 true,
-                null,
-                null,
+                array(),
+                array(),
                 null,
                 'application/json'
             );

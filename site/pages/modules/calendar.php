@@ -332,7 +332,7 @@ class Module_calendar
                 $title_to_use = do_lang_tempcode('_CALENDAR_EVENT_VCAL', escape_html($username), make_fractionable_editable('event', $id, $_title));
             }
             $title_to_use_2 = do_lang('CALENDAR_EVENT', $_title);
-            $this->title = get_screen_title($title_to_use, false, null, null, $awards);
+            $this->title = get_screen_title($title_to_use, false, array(), null, $awards);
             seo_meta_load_for('event', strval($id), $title_to_use_2);
 
             set_extra_request_metadata(array(

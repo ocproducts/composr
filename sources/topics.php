@@ -864,7 +864,7 @@ class CMS_Topic
                 if (!$is_spacer_post) {
                     if (!is_guest($post['member'])) {
                         require_code('cns_members2');
-                        $poster_details = render_member_box($post['member'], false, false, null, false);
+                        $poster_details = render_member_box($post['member'], false, false, array(), false);
                     } else {
                         $custom_fields = new Tempcode();
                         if ((array_key_exists('ip_address', $post)) && (addon_installed('cns_forum'))) {
@@ -1006,14 +1006,10 @@ class CMS_Topic
      * with a boolean value for every parent post and the post itself containing whether it has an adjacent sibling
      *
      * @param array $posts An array of posts
-     * @param ?array $level_has_adjacent_sibling For internal use only (null: none)
+     * @param array $level_has_adjacent_sibling For internal use only
      */
-    protected function set_level_has_adjacent_sibling(&$posts, $level_has_adjacent_sibling = null)
+    protected function set_level_has_adjacent_sibling(&$posts, $level_has_adjacent_sibling = array())
     {
-        if ($level_has_adjacent_sibling === null) {
-            $level_has_adjacent_sibling = array();
-        }
-
         foreach ($posts as $i => &$post) {
             $post['level_has_adjacent_sibling'] = $level_has_adjacent_sibling;
             $post['level_has_adjacent_sibling'][] = array_key_exists($i + 1, $posts);

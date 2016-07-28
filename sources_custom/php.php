@@ -462,15 +462,12 @@ function _read_php_function_line($_line)
                     } else {
                         $default = @eval('return ' . $arg_default . ';'); // Could be unprocessable by php.php in standalone mode
                     }
-                    if (!isset($default)) {
-                        $default = null; // Fix for HHVM, #1161
-                    }
                     $parameters[] = array('name' => $arg_name, 'default' => $default, 'default_raw' => $default_raw, 'ref' => $ref, 'is_variadic' => $is_variadic);
                     $arg_name = '';
                     $arg_default = '';
                     $parse = 'in_args';
                     $ref = false;
-                } elseif ($char == ')') {
+                } elseif ($char == ')' && preg_match('#^array\([^\)]*$#', $arg_default) == 0) {
                     $default_raw = $arg_default;
                     if ($arg_default === 'true') {
                         $default = 'boolean-true'; // hack, to stop booleans coming out of arrays as integers
@@ -478,9 +475,6 @@ function _read_php_function_line($_line)
                         $default = 'boolean-false';
                     } else {
                         $default = @eval('return ' . $arg_default . ';'); // Could be unprocessable by php.php in standalone mode
-                    }
-                    if (!isset($default)) {
-                        $default = null; // Fix for HHVM, #1161
                     }
                     $parameters[] = array('name' => $arg_name, 'default' => $default, 'default_raw' => $default_raw, 'ref' => $ref, 'is_variadic' => $is_variadic);
                     $parse = 'done';

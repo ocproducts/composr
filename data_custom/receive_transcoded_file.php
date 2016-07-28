@@ -61,7 +61,7 @@ function run()
 
     require_code('files');
     $file_handle = @fopen(get_custom_file_base() . '/uploads/' . $type . '/' . $file, 'wb') or intelligent_write_error(get_custom_file_base() . '/uploads/' . $type . '/' . $file);
-    http_download_file($_GET['url'], null, false, false, 'Composr', null, null, null, null, null, $file_handle, null, null, 6.0);
+    http_download_file($_GET['url'], null, false, false, 'Composr', null, array(), null, null, null, $file_handle, null, null, 6.0);
     fclose($file_handle);
 
     // move the old media file to the archive directory - '/uploads/' . $type . '/archive/'

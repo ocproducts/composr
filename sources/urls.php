@@ -121,17 +121,13 @@ function get_self_url_easy($script_name_if_cli = false)
  *
  * @param  boolean $evaluate Whether to evaluate the URL (so as we don't return Tempcode)
  * @param  boolean $root_if_posted Whether to direct to the default page if there was a POST request leading to where we are now (i.e. to avoid missing post fields when we go to this URL)
- * @param  ?array $extra_params A map of extra parameters for the URL (null: none)
+ * @param  array $extra_params A map of extra parameters for the URL
  * @param  boolean $posted_too Whether to also keep POSTed data, in the GET request (useful if either_param_string is used to get the data instead of post_param_string - of course the POST data must be of the not--persistent-state-changing variety)
  * @param  boolean $avoid_remap Whether to avoid URL Schemes (sometimes essential so we can assume the standard URL parameter addition scheme in templates)
  * @return mixed The URL (Tempcode or string)
  */
-function get_self_url($evaluate = false, $root_if_posted = false, $extra_params = null, $posted_too = false, $avoid_remap = false)
+function get_self_url($evaluate = false, $root_if_posted = false, $extra_params = array(), $posted_too = false, $avoid_remap = false)
 {
-    if ($extra_params === null) {
-        $extra_params = array();
-    }
-
     global $SELF_URL_CACHED, $IN_SELF_ROUTING_SCRIPT;
     $cacheable = ($evaluate) && (!$root_if_posted) && ($extra_params === array()) && (!$posted_too) && (!$avoid_remap);
     if (($cacheable) && ($SELF_URL_CACHED !== null)) {
@@ -1210,7 +1206,7 @@ function load_moniker_hooks()
                 continue;
             }
 
-            $info_function = extract_module_functions(get_file_base() . '/' . $sources_dir . '/hooks/systems/content_meta_aware/' . $hook . '.php', array('info'), null, false, 'Hook_content_meta_aware_' . $hook);
+            $info_function = extract_module_functions(get_file_base() . '/' . $sources_dir . '/hooks/systems/content_meta_aware/' . $hook . '.php', array('info'), array(), false, 'Hook_content_meta_aware_' . $hook);
             if ($info_function[0] !== null) {
                 $ob_info = is_array($info_function[0]) ? call_user_func_array($info_function[0][0], $info_function[0][1]) : eval($info_function[0]);
 

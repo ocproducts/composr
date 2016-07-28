@@ -180,7 +180,9 @@ class Module_admin_sitemap
     public function browse()
     {
         require_code('templates_donext');
-        return do_next_manager(get_screen_title('PAGES'), comcode_lang_string('DOC_PAGES'),
+        return do_next_manager(
+            get_screen_title('PAGES'),
+            comcode_lang_string('DOC_PAGES'),
             array(
                 array('menu/cms/comcode_page_edit', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('COMCODE_PAGE_EDIT')),
                 array('menu/adminzone/structure/sitemap/page_delete', array('_SELF', array('type' => 'delete'), '_SELF'), do_lang('DELETE_PAGES')),
@@ -246,10 +248,10 @@ class Module_admin_sitemap
 
         require_code('zones2');
         require_code('zones3');
-        $zones = create_selection_list_zones(null, ($no_go === null) ? null : array($no_go));
+        $zones = create_selection_list_zones(null, ($no_go === null) ? array() : array($no_go));
         $fields->attach(form_input_list(do_lang_tempcode('ZONE'), '', 'zone', $zones, null, true));
 
-        $post_url = get_self_url(false, false, null, false, true);
+        $post_url = get_self_url(false, false, array(), false, true);
 
         return do_template('FORM_SCREEN', array('_GUID' => 'df58e16290a783d24f9f81fc9227e6ff', 'GET' => true, 'SKIP_WEBSTANDARDS' => true, 'HIDDEN' => '', 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => do_lang_tempcode('CHOOSE'), 'TITLE' => $title, 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => ''));
     }

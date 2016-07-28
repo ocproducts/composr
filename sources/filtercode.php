@@ -55,12 +55,12 @@ function read_filtercode_parameter_from_env($field_name, $field_type = null)
  * Get a form for inputting unknown variables within a filter.
  *
  * @param  string $filter String-based search filter (blank: make one up to cover everything, but only works if $table is known)
- * @param  ?array $labels Labels for field names (null: none, use auto-generated)
+ * @param  array $labels Labels for field names (empty array: use auto-generated)
  * @param  ?ID_TEXT $content_type Content-type to auto-probe from (null: none, use string inputs)
- * @param  ?array $types Field types (null: none, use string inputs / defaults for table)
+ * @param  array $types Field types (empty array: use string inputs / defaults for table)
  * @return array The form fields, The modded filter, Merger links
  */
-function form_for_filtercode($filter, $labels = null, $content_type = null, $types = null)
+function form_for_filtercode($filter, $labels = array(), $content_type = null, $types = array())
 {
     $table = mixed();
     $db = $GLOBALS['SITE_DB'];
@@ -74,13 +74,6 @@ function form_for_filtercode($filter, $labels = null, $content_type = null, $typ
         if (($content_type == 'post') || ($content_type == 'topic') || ($content_type == 'member') || ($content_type == 'group') || ($content_type == 'forum')) {
             $db = $GLOBALS['FORUM_DB'];
         }
-    }
-
-    if ($labels === null) {
-        $labels = array();
-    }
-    if ($types === null) {
-        $types = array();
     }
 
     $fields_needed = array();

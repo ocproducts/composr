@@ -440,7 +440,7 @@ class Module_admin_ip_ban
 
         if (post_param_integer('confirm', 0) == 0) {
             $preview = do_lang_tempcode('DESCRIPTION_SYNDICATE_TO_STOPFORUMSPAM');
-            $url = get_self_url(false, false, null, true);
+            $url = get_self_url(false, false, array(), true);
             return do_template('CONFIRM_SCREEN', array('_GUID' => '5dcc3d19a71be9e948d7d3668325ef90', 'TITLE' => $this->title, 'PREVIEW' => $preview, 'FIELDS' => form_input_hidden('confirm', '1'), 'URL' => $url));
         }
 

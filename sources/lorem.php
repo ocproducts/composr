@@ -511,7 +511,7 @@ function placeholder_breadcrumbs()
  * Lorem version of do_template. It will reprocess the template into something that is "stable XHTML" and thus can work inside an XHTML editor
  *
  * @param  ID_TEXT $codename The codename of the template being loaded
- * @param  ?array $parameters A map of parameters for the template (key to value) (null: no parameters)
+ * @param  array $parameters A map of parameters for the template (key to value)
  * @param  ?LANGUAGE_NAME $lang The language to load the template in (templates can embed language references) (null: users own language)
  * @param  boolean $light_error Whether to not produce a stack dump if the template is missing
  * @param  ?ID_TEXT $fallback Alternate template to use if the primary one does not exist (null: none)
@@ -520,12 +520,8 @@ function placeholder_breadcrumbs()
  * @set    templates css javascript xml text
  * @return Tempcode The Tempcode for this template
  */
-function do_lorem_template($codename, $parameters = null, $lang = null, $light_error = false, $fallback = null, $suffix = '.tpl', $directory = 'templates')
+function do_lorem_template($codename, $parameters = array(), $lang = null, $light_error = false, $fallback = null, $suffix = '.tpl', $directory = 'templates')
 {
-    if ($parameters === null) {
-        $parameters = array();
-    }
-
     global $KNOWN_TEMPLATE_PARAMETERS;
     $KNOWN_TEMPLATE_PARAMETERS[$codename] = array_keys($parameters);
 

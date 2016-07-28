@@ -102,7 +102,9 @@ class Module_cms_tutorials extends Standard_crud_module
     {
         require_code('templates_donext');
         require_code('fields');
-        return do_next_manager(get_screen_title('TUTORIALS'), new Tempcode(),
+        return do_next_manager(
+            get_screen_title('TUTORIALS'),
+            new Tempcode(),
             array(
                 has_privilege(get_member(), 'submit_lowrange_content', 'cms_tutorials') ? array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_TUTORIAL')) : null,
                 has_privilege(get_member(), 'edit_own_lowrange_content', 'cms_tutorials') ? array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_TUTORIAL')) : null,
@@ -128,16 +130,13 @@ class Module_cms_tutorials extends Standard_crud_module
      * @param  array $tags List of tags
      * @return array A pair: the Tempcode for the visible fields, and the Tempcode for the hidden fields
      */
-    public function get_form_fields($id = null, $url = '', $title = '', $summary = '', $icon = '', $media_type = 'document', $difficulty_level = 'regular', $pinned = 0, $author = '', $tags = null)
+    public function get_form_fields($id = null, $url = '', $title = '', $summary = '', $icon = '', $media_type = 'document', $difficulty_level = 'regular', $pinned = 0, $author = '', $tags = array())
     {
         if ($author == '') {
             $author = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
             if ($GLOBALS['FORUM_DRIVER']->is_staff(get_member())) {
                 $author .= ', ocProducts';
             }
-        }
-        if ($tags === null) {
-            $tags = array();
         }
 
         $fields = new Tempcode();

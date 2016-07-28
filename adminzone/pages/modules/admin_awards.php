@@ -172,7 +172,9 @@ class Module_admin_awards extends Standard_crud_module
     public function browse()
     {
         require_code('templates_donext');
-        return do_next_manager(get_screen_title('MANAGE_AWARDS'), comcode_lang_string('DOC_AWARDS'),
+        return do_next_manager(
+            get_screen_title('MANAGE_AWARDS'),
+            comcode_lang_string('DOC_AWARDS'),
             array(
                 array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_AWARD_TYPE')),
                 array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_AWARD_TYPE')),

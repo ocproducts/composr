@@ -181,7 +181,9 @@ class Module_cms_news extends Standard_crud_module
     {
         require_code('templates_donext');
         require_code('fields');
-        return do_next_manager(get_screen_title('MANAGE_NEWS'), comcode_lang_string('DOC_NEWS'),
+        return do_next_manager(
+            get_screen_title('MANAGE_NEWS'),
+            comcode_lang_string('DOC_NEWS'),
             array_merge(array(
                 has_privilege(get_member(), 'submit_cat_highrange_content', 'cms_news') ? array('menu/_generic_admin/add_one_category', array('_SELF', array('type' => 'add_category'), '_SELF'), do_lang('ADD_NEWS_CATEGORY')) : null,
                 has_privilege(get_member(), 'edit_own_cat_highrange_content', 'cms_news') ? array('menu/_generic_admin/edit_one_category', array('_SELF', array('type' => 'edit_category'), '_SELF'), do_lang('EDIT_NEWS_CATEGORY')) : null,
@@ -300,10 +302,10 @@ class Module_cms_news extends Standard_crud_module
      * @param  LONG_TEXT $notes Notes for the video
      * @param  URLPATH $image URL to the image for the news entry (blank: use cat image)
      * @param  ?array $scheduled Scheduled go-live time (null: N/A)
-     * @param  ?array $regions The regions (empty: not region-limited) (null: same as empty)
+     * @param  array $regions The regions (empty: not region-limited)
      * @return array A tuple of lots of info (fields, hidden fields, trailing fields, tabindex for posting form)
      */
-    public function get_form_fields($id = null, $main_news_category = null, $news_category = null, $title = '', $news = '', $author = '', $validated = 1, $allow_rating = null, $allow_comments = null, $allow_trackbacks = null, $send_trackbacks = 1, $notes = '', $image = '', $scheduled = null, $regions = null)
+    public function get_form_fields($id = null, $main_news_category = null, $news_category = null, $title = '', $news = '', $author = '', $validated = 1, $allow_rating = null, $allow_comments = null, $allow_trackbacks = null, $send_trackbacks = 1, $notes = '', $image = '', $scheduled = null, $regions = array())
     {
         if ($id === null) {
             // Cloning support
@@ -412,7 +414,7 @@ class Module_cms_news extends Standard_crud_module
         $seo_fields = seo_get_fields($this->seo_type, ($id === null) ? null : strval($id), false);
         require_code('feedback2');
         $feedback_fields = feedback_fields($this->content_type, $allow_rating == 1, $allow_comments == 1, $allow_trackbacks == 1, $send_trackbacks == 1, $notes, $allow_comments == 2, false, true, false);
-        $fields2->attach(metadata_get_fields('news', ($id === null) ? null : strval($id), false, null, ($seo_fields->is_empty() && $feedback_fields->is_empty()) ? METADATA_HEADER_YES : METADATA_HEADER_FORCE));
+        $fields2->attach(metadata_get_fields('news', ($id === null) ? null : strval($id), false, array(), ($seo_fields->is_empty() && $feedback_fields->is_empty()) ? METADATA_HEADER_YES : METADATA_HEADER_FORCE));
         $fields2->attach($seo_fields);
         $fields2->attach($feedback_fields);
 
@@ -1061,7 +1063,7 @@ class Module_cms_news_cat extends Standard_crud_module
      */
     public function do_next_manager($title, $description, $id)
     {
-        return $this->_do_next_manager($title, $description, null, ($id === null) ? null : intval($id));
+        return $this->_do_next_manager($title, $description, array(), ($id === null) ? null : intval($id));
     }
 
     /**
@@ -1078,8 +1080,10 @@ class Module_cms_news_cat extends Standard_crud_module
         require_code('templates_donext');
 
         if (($id === null) && ($cat === null)) {
-            return do_next_manager($title, $description,
-                null,
+            return do_next_manager(
+                $title,
+                $description,
+                array(),
                 null,
                 /* TYPED-ORDERED LIST OF 'LINKS'    */
                 array('_SELF', array('type' => 'add'), '_SELF'), // Add one
@@ -1092,9 +1096,9 @@ class Module_cms_news_cat extends Standard_crud_module
                 has_privilege(get_member(), 'edit_own_cat_highrange_content', 'cms_news') ? array('_SELF', array('type' => 'edit_category'), '_SELF') : null, // Edit one category
                 null, // Edit this category
                 null, // View this category
-                null,
-                null,
-                null,
+                array(),
+                array(),
+                array(),
                 null,
                 null,
                 null,
@@ -1104,8 +1108,10 @@ class Module_cms_news_cat extends Standard_crud_module
             );
         }
 
-        return do_next_manager($title, $description,
-            null,
+        return do_next_manager(
+            $title,
+            $description,
+            array(),
             null,
             /* TYPED-ORDERED LIST OF 'LINKS'  */
             array('_SELF', array('type' => 'add', 'cat' => $cat), '_SELF'), // Add one
@@ -1118,9 +1124,9 @@ class Module_cms_news_cat extends Standard_crud_module
             has_privilege(get_member(), 'edit_own_cat_highrange_content', 'cms_news') ? array('_SELF', array('type' => 'edit_category'), '_SELF') : null, // Edit one category
             ($cat === null) ? null : has_privilege(get_member(), 'edit_own_cat_highrange_content', 'cms_news') ? array('_SELF', array('type' => '_edit_category', 'id' => $cat), '_SELF') : null, // Edit this category
             null, // View this category
-            null,
-            null,
-            null,
+            array(),
+            array(),
+            array(),
             null,
             null,
             null,

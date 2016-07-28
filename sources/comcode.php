@@ -182,11 +182,11 @@ function apply_emoticons($text)
  * @param  ?string $pass_id A special identifier that can identify this resource in a sea of our resources of this class; usually this can be ignored, but may be used to provide a binding between JavaScript in evaluated Comcode, and the surrounding environment (null: no explicit binding)
  * @param  ?object $db The database connector to use (null: standard site connector)
  * @param  integer $flags A bitmask of COMCODE_* flags
- * @param  ?array $highlight_bits A list of words to highlight (null: none)
+ * @param  array $highlight_bits A list of words to highlight
  * @param  ?MEMBER $on_behalf_of_member The member we are running on behalf of, with respect to how attachments are handled; we may use this members attachments that are already within this post, and our new attachments will be handed to this member (null: member evaluating)
  * @return Tempcode The Tempcode generated
  */
-function comcode_to_tempcode($comcode, $source_member = null, $as_admin = false, $pass_id = null, $db = null, $flags = 0, $highlight_bits = null, $on_behalf_of_member = null)
+function comcode_to_tempcode($comcode, $source_member = null, $as_admin = false, $pass_id = null, $db = null, $flags = 0, $highlight_bits = array(), $on_behalf_of_member = null)
 {
     $matches = array();
     if (preg_match('#^\{\!([A-Z\_]+)\}$#', $comcode, $matches) != 0) {
@@ -230,16 +230,12 @@ function comcode_to_tempcode($comcode, $source_member = null, $as_admin = false,
  *
  * @param  string $in Plain-text/Comcode
  * @param  boolean $for_extract Whether this is for generating an extract that does not need to be fully comprehended (i.e. favour brevity)
- * @param  ?array $tags_to_preserve List of tags to preserve (null: none)
+ * @param  array $tags_to_preserve List of tags to preserve
  * @return string Purified plain-text
  */
-function strip_comcode($in, $for_extract = false, $tags_to_preserve = null)
+function strip_comcode($in, $for_extract = false, $tags_to_preserve = array())
 {
     $text = $in;
-
-    if ($tags_to_preserve === null) {
-        $tags_to_preserve = array();
-    }
 
     if ($text == '') {
         return '';

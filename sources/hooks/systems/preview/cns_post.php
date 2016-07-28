@@ -123,7 +123,7 @@ class Hook_preview_cns_post
         // Poster box
         if (!is_guest($post_owner)) {
             require_code('cns_members2');
-            $poster_details = render_member_box($post_owner, false, false, null, false);
+            $poster_details = render_member_box($post_owner, false, false, array(), false);
             $poster_username = $GLOBALS['FORUM_DRIVER']->get_username($post_owner);
             if ($poster_username === null) {
                 $poster_username = do_lang('UNKNOWN');

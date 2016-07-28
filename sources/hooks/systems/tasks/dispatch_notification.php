@@ -27,18 +27,16 @@ class Hook_task_dispatch_notification
      * Run the task hook.
      *
      * @param  object $dispatcher The notification dispatch object (pre-filled with details of the notification to send)
-     * @param  ?array $csss List of CSS files to require (null: none)
+     * @param  array $csss List of CSS files to require
      * @return ?array A tuple of at least 2: Return mime-type, content (either Tempcode, or a string, or a filename and file-path pair to a temporary file), map of HTTP headers if transferring immediately, map of ini_set commands if transferring immediately (null: show standard success message)
      */
-    public function run($dispatcher, $csss = null)
+    public function run($dispatcher, $csss = array())
     {
         require_code('notifications');
         require_lang('notifications');
 
-        if ($csss !== null) {
-            foreach ($csss as $css) {
-                require_css($css);
-            }
+        foreach ($csss as $css) {
+            require_css($css);
         }
 
         $dispatcher->dispatch();

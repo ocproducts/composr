@@ -217,7 +217,9 @@ class Module_admin_orders
     public function browse()
     {
         require_code('templates_donext');
-        return do_next_manager(get_screen_title('ORDERS'), comcode_lang_string('DOC_ECOMMERCE'),
+        return do_next_manager(
+            get_screen_title('ORDERS'),
+            comcode_lang_string('DOC_ECOMMERCE'),
             array(
                 array('menu/adminzone/audit/ecommerce/orders', array('_SELF', array('type' => 'show_orders'), '_SELF'), do_lang('SHOW_ORDERS')),
                 array('menu/adminzone/audit/ecommerce/undispatched_orders', array('_SELF', array('type' => 'show_orders', 'filter' => 'undispatched'), '_SELF'), do_lang('SHOW_UNDISPATCHED_ORDERS')),
@@ -430,7 +432,7 @@ class Module_admin_orders
                     ), false, null)
             );
         }
-        $results_table = results_table(do_lang_tempcode('PRODUCTS'), 0, 'start', $max_rows, 'max', $max_rows, $fields_title, $product_entries, $sortables, $sortable, $sort_order, 'sort', null, null);
+        $results_table = results_table(do_lang_tempcode('PRODUCTS'), 0, 'start', $max_rows, 'max', $max_rows, $fields_title, $product_entries, $sortables, $sortable, $sort_order, 'sort', null, array());
 
         // Pagination
         require_code('templates_pagination');

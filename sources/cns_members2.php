@@ -86,12 +86,12 @@ function _members_filtercode($db, $info, $context, &$extra_join, &$extra_select,
  * @param  MEMBER $member_id Member ID
  * @param  boolean $preview Whether only to show 'preview' details
  * @param  boolean $show_avatar Whether to show the avatar
- * @param  ?array $extra_fields Map of extra fields to show (null: none)
+ * @param  array $extra_fields Map of extra fields to show
  * @param  boolean $give_context Whether to include context (i.e. say WHAT this is, not just show the actual content)
  * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
  * @return Tempcode The member box
  */
-function render_member_box($member_id, $preview = false, $show_avatar = true, $extra_fields = null, $give_context = true, $guid = '')
+function render_member_box($member_id, $preview = false, $show_avatar = true, $extra_fields = array(), $give_context = true, $guid = '')
 {
     if ($member_id === null) { // Should never happen, but we need to be defensive
         return new Tempcode();
@@ -134,14 +134,12 @@ function render_member_box($member_id, $preview = false, $show_avatar = true, $e
         }
     }
 
-    if ($extra_fields !== null) {
-        foreach ($extra_fields as $key => $val) {
-            if (is_integer($key)) {
-                $key = strval($key);
-            }
-
-            $custom_fields->attach(do_template('CNS_MEMBER_BOX_CUSTOM_FIELD', array('_GUID' => ($guid != '') ? $guid : '530f049d3b3065df2d1b69270aa93490', 'MEMBER_ID' => strval($member_id), 'NAME' => $key, 'VALUE' => $val)));
+    foreach ($extra_fields as $key => $val) {
+        if (is_integer($key)) {
+            $key = strval($key);
         }
+
+        $custom_fields->attach(do_template('CNS_MEMBER_BOX_CUSTOM_FIELD', array('_GUID' => ($guid != '') ? $guid : '530f049d3b3065df2d1b69270aa93490', 'MEMBER_ID' => strval($member_id), 'NAME' => $key, 'VALUE' => $val)));
     }
 
     foreach ($member_info['custom_data'] as $hook_result) {

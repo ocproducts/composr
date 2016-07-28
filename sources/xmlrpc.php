@@ -57,7 +57,7 @@ END;
 </methodCall>
 END;
 
-    $result = http_download_file($url, null, true, false, 'Composr', array($rpc), null, null, null, null, null, null, null, 6.0, true, null, null, null, 'text/xml');
+    $result = http_download_file($url, null, true, false, 'Composr', array($rpc), array(), null, null, null, null, null, null, 6.0, true, array(), array(), null, 'text/xml');
     return $result;
 }
 

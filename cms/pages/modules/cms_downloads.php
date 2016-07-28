@@ -188,7 +188,9 @@ class Module_cms_downloads extends Standard_crud_module
     {
         require_code('templates_donext');
         require_code('fields');
-        return do_next_manager(get_screen_title('MANAGE_DOWNLOADS'), comcode_lang_string('DOC_DOWNLOADS'),
+        return do_next_manager(
+            get_screen_title('MANAGE_DOWNLOADS'),
+            comcode_lang_string('DOC_DOWNLOADS'),
             array_merge(array(
                 has_privilege(get_member(), 'submit_cat_midrange_content', 'cms_downloads') ? array('menu/_generic_admin/add_one_category', array('_SELF', array('type' => 'add_category'), '_SELF'), do_lang('ADD_DOWNLOAD_CATEGORY')) : null,
                 has_privilege(get_member(), 'edit_own_cat_midrange_content', 'cms_downloads') ? array('menu/_generic_admin/edit_one_category', array('_SELF', array('type' => 'edit_category'), '_SELF'), do_lang('EDIT_DOWNLOAD_CATEGORY')) : null,
@@ -441,7 +443,7 @@ class Module_cms_downloads extends Standard_crud_module
         $seo_fields = seo_get_fields($this->seo_type, ($id === null) ? null : strval($id), false);
         require_code('feedback2');
         $feedback_fields = feedback_fields($this->content_type, $allow_rating == 1, $allow_comments == 1, $allow_trackbacks == 1, false, $notes, $allow_comments == 2, false, true, false);
-        $fields->attach(metadata_get_fields('download', ($id === null) ? null : strval($id), false, null, ($seo_fields->is_empty() && $feedback_fields->is_empty()) ? METADATA_HEADER_YES : METADATA_HEADER_FORCE));
+        $fields->attach(metadata_get_fields('download', ($id === null) ? null : strval($id), false, array(), ($seo_fields->is_empty() && $feedback_fields->is_empty()) ? METADATA_HEADER_YES : METADATA_HEADER_FORCE));
         if (has_privilege(get_member(), 'edit_meta_fields')) {
             $fields->attach(form_input_integer(do_lang_tempcode('NUM_DOWNLOADS'), do_lang_tempcode('DESCRIPTION_META_NUM_DOWNLOADS'), 'meta_num_downloads', null, false));
         }
@@ -1063,8 +1065,10 @@ class Module_cms_downloads_cat extends Standard_crud_module
         require_code('templates_donext');
 
         if (($id === null) && ($category_id === null)) {
-            return do_next_manager($title, $description,
-                null,
+            return do_next_manager(
+                $title,
+                $description,
+                array(),
                 null,
                 /* TYPED-ORDERED LIST OF 'LINKS'    */
                 array('_SELF', array('type' => 'add'), '_SELF'), // Add one
@@ -1102,8 +1106,10 @@ class Module_cms_downloads_cat extends Standard_crud_module
             $special_links[] = (has_privilege(get_member(), 'submit_midrange_content', 'cms_galleries', array('galleries', 'download_' . strval($id))) && ($id !== null)) ? array('menu/cms/galleries/add_one_image', array('cms_galleries', array('type' => 'add', 'cat' => 'download_' . strval($id)), get_module_zone('cms_galleries'))) : null;
         }
 
-        return do_next_manager($title, $description,
-            null,
+        return do_next_manager(
+            $title,
+            $description,
+            array(),
             null,
             /* TYPED-ORDERED LIST OF 'LINKS'  */
             ($id === null) ? null : array('_SELF', array('type' => 'add', 'cat' => $category_id), '_SELF'), // Add one

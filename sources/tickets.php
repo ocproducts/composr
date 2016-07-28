@@ -61,15 +61,11 @@ function find_ticket_assigned_to($ticket_id)
  * Build a list of ticket types.
  *
  * @param  ?AUTO_LINK $selected_ticket_type_id The current selected ticket type (null: none)
- * @param  ?array $ticket_types_to_let_through List of ticket types to show regardless of access permissions (null: none)
+ * @param  array $ticket_types_to_let_through List of ticket types to show regardless of access permissions
  * @return array A map between ticket types, and template-ready details about them
  */
-function build_types_list($selected_ticket_type_id, $ticket_types_to_let_through = null)
+function build_types_list($selected_ticket_type_id, $ticket_types_to_let_through = array())
 {
-    if ($ticket_types_to_let_through === null) {
-        $ticket_types_to_let_through = array();
-    }
-
     $_types = $GLOBALS['SITE_DB']->query_select('ticket_types', array('id', 'ticket_type_name', 'cache_lead_time'), null, 'ORDER BY ' . $GLOBALS['SITE_DB']->translate_field_ref('ticket_type_name'));
     $types = array();
     foreach ($_types as $type) {

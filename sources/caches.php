@@ -612,10 +612,10 @@ function find_cache_on($codename)
  * @param  integer $ttl The TTL for the cache entry. Defaults to a very big ttl
  * @param  boolean $tempcode Whether we are caching Tempcode (needs special care)
  * @param  boolean $caching_via_cron Whether to defer caching to CRON. Note that this option only works if the block's defined cache signature depends only on $map (timezone and bot-type are automatically considered)
- * @param  ?array $map Parameters to call up block with if we have to defer caching (null: none)
+ * @param  array $map Parameters to call up block with if we have to defer caching
  * @return ?mixed The cached result (null: no cached result)
  */
-function get_cache_entry($codename, $cache_identifier, $special_cache_flags, $ttl = 10000, $tempcode = false, $caching_via_cron = false, $map = null)
+function get_cache_entry($codename, $cache_identifier, $special_cache_flags, $ttl = 10000, $tempcode = false, $caching_via_cron = false, $map = array())
 {
     $det = array($codename, $cache_identifier, md5($cache_identifier), $special_cache_flags, $ttl, $tempcode, $caching_via_cron, $map);
 

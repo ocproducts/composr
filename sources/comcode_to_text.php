@@ -23,16 +23,12 @@
  *
  * @param  string $in Comcode text to change
  * @param  boolean $for_extract Whether this is for generating an extract that does not need to be fully comprehended (i.e. favour brevity)
- * @param  ?array $tags_to_preserve List of tags to preserve (null: none)
+ * @param  array $tags_to_preserve List of tags to preserve
  * @return string Clean text
  */
-function _strip_comcode($in, $for_extract = false, $tags_to_preserve = null)
+function _strip_comcode($in, $for_extract = false, $tags_to_preserve = array())
 {
     $text = $in;
-
-    if ($tags_to_preserve === null) {
-        $tags_to_preserve = array();
-    }
 
     //$text = str_replace("\n", '', $text);
 

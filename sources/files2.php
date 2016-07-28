@@ -883,7 +883,7 @@ function check_shared_space_usage($extra)
  * @param  boolean $no_redirect Whether to block redirects (returns null when found)
  * @param  string $ua The user-agent to identify as
  * @param  ?array $post_params An optional array of POST parameters to send; if this is null, a GET request is used (null: none). If $raw_post is set, it should be array($data)
- * @param  ?array $cookies An optional array of cookies to send (null: none)
+ * @param  array $cookies An optional array of cookies to send
  * @param  ?string $accept 'accept' header value (null: don't pass one)
  * @param  ?string $accept_charset 'accept-charset' header value (null: don't pass one)
  * @param  ?string $accept_language 'accept-language' header value (null: don't pass one)
@@ -892,14 +892,14 @@ function check_shared_space_usage($extra)
  * @param  ?array $auth A pair: authentication username and password (null: none)
  * @param  float $timeout The timeout
  * @param  boolean $raw_post Whether to treat the POST parameters as a raw POST (rather than using MIME)
- * @param  ?array $files Files to send. Map between field to file path (null: none)
- * @param  ?array $extra_headers Extra headers to send (null: none)
+ * @param  array $files Files to send. Map between field to file path
+ * @param  array $extra_headers Extra headers to send
  * @param  ?string $http_verb HTTP verb (null: auto-decide based on other parameters)
  * @param  string $raw_content_type The content type to use if a raw HTTP post
  * @return ?string The data downloaded (null: error)
  * @ignore
  */
-function _http_download_file($url, $byte_limit = null, $trigger_error = true, $no_redirect = false, $ua = 'Composr', $post_params = null, $cookies = null, $accept = null, $accept_charset = null, $accept_language = null, $write_to_file = null, $referer = null, $auth = null, $timeout = 6.0, $raw_post = false, $files = null, $extra_headers = null, $http_verb = null, $raw_content_type = 'application/xml')
+function _http_download_file($url, $byte_limit = null, $trigger_error = true, $no_redirect = false, $ua = 'Composr', $post_params = null, $cookies = array(), $accept = null, $accept_charset = null, $accept_language = null, $write_to_file = null, $referer = null, $auth = null, $timeout = 6.0, $raw_post = false, $files = array(), $extra_headers = array(), $http_verb = null, $raw_content_type = 'application/xml')
 {
     // Normalise the URL
     require_code('urls');
@@ -992,7 +992,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
 
     // File-system/shell_exec method, for local calls
     $faux = function_exists('get_value') ? get_value('http_faux_loopback') : null;
-    if (($faux !== null) && ($faux != '') && ($post_params === null) && ($files === null)) { // NB: Does not support cookies, accept headers, referers
+    if (($faux !== null) && ($faux != '') && ($post_params === null) && ($files == array())) { // NB: Does not support cookies, accept headers, referers
         if (substr($faux, 0, 1) != '#') {
             $faux = '#' . $faux . '#i';
         }
@@ -1051,7 +1051,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
     $put = mixed();
     $put_path = mixed();
     $put_no_delete = false;
-    if (($post_params !== null) || ($raw_post) || (count($files) != 0)) {
+    if (($post_params !== null) || ($raw_post) || ($files != array())) {
         if ($post_params === null) {
             $post_params = array(); // POST is implied
         }
@@ -1069,7 +1069,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
             }
         }
 
-        if ($files === null) { // If no files, use simple application/x-www-form-urlencoded
+        if ($files == array()) { // If no files, use simple application/x-www-form-urlencoded
             if (!$use_curl) {
                 if ($raw_post) {
                     if (!isset($extra_headers['Content-Type'])) {
@@ -1178,7 +1178,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
     }
 
     // Prep cookies
-    if (($cookies !== null) && (count($cookies) != 0)) {
+    if ($cookies != array()) {
         $_cookies = '';
         $done_one_cookie = false;
         foreach ($cookies as $key => $val) {
@@ -1204,7 +1204,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
     }
 
     if ($http_verb === null) {
-        $http_verb = ((($post_params === null) && ($files === null)) ? (($byte_limit === 0) ? 'HEAD' : 'GET') : 'POST');
+        $http_verb = ((($post_params === null) && ($files == array())) ? (($byte_limit === 0) ? 'HEAD' : 'GET') : 'POST');
     }
 
     // CURL method
@@ -1221,7 +1221,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                         if (((is_string($curl_version)) && (strpos($curl_version, 'OpenSSL') !== false)) || ((is_array($curl_version)) && (array_key_exists('ssl_version', $curl_version)))) {
                                             $ch = curl_init($do_ip_forwarding ? $_url : $url);
                                             $curl_headers = array();
-                                            if (($cookies !== null) && (count($cookies) != 0)) {
+                                            if ($cookies != array()) {
                                                 curl_setopt($ch, CURLOPT_COOKIE, $_cookies);
                                             }
                                             $crt_path = get_file_base() . '/data/curl-ca-bundle.crt';
@@ -1249,12 +1249,10 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                             if ($accept_language !== null) {
                                                 $curl_headers[] = 'Accept-Language: ' . $accept_language;
                                             }
-                                            if ($extra_headers !== null) {
-                                                foreach ($extra_headers as $key => $val) {
-                                                    $curl_headers[] = $key . ': ' . $val;
-                                                }
+                                            foreach ($extra_headers as $key => $val) {
+                                                $curl_headers[] = $key . ': ' . $val;
                                             }
-                                            if (($raw_post) && (($files === null) || ($put !== null))) {
+                                            if (($raw_post) && (($files == array()) || ($put !== null))) {
                                                 if (!isset($extra_headers['Content-Type'])) {
                                                     $curl_headers[] = 'Content-Type: ' . $raw_content_type;
                                                 }
@@ -1270,7 +1268,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                 } else {
                                                     curl_setopt($ch, CURLOPT_POST, true);
                                                     curl_setopt($ch, CURLOPT_POSTFIELDS, $raw_payload);
-                                                    if ($files !== null) {
+                                                    if ($files != array()) {
                                                         $curl_headers[] = 'Content-Type: multipart/form-data; boundary="--cms' . $divider . '"; charset=' . get_charset();
                                                     }
                                                 }
@@ -1278,7 +1276,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                             if ($do_ip_forwarding) {
                                                 $curl_headers[] = 'Host: ' . $url_parts['host'] . "\r\n";
                                             }
-                                            if ((count($curl_headers) != 0) && ((($files === null)/*Breaks file uploads for some reason*/) || ($extra_headers !== null))) {
+                                            if ((count($curl_headers) != 0) && ((($files == array())/*Breaks file uploads for some reason*/) || ($extra_headers != array()))) {
                                                 curl_setopt($ch, CURLINFO_HEADER_OUT, true);
                                                 curl_setopt($ch, CURLOPT_HTTPHEADER, $curl_headers);
                                             }
@@ -1304,7 +1302,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                 curl_setopt($ch, CURLOPT_RANGE, '0-' . strval(($byte_limit == 0) ? 0 : ($byte_limit - 1)));
                                             }
                                             $line = curl_exec($ch);
-                                            /*if ((count($curl_headers)!=0) && (($files !== null))) { // Useful for debugging
+                                            /*if ((count($curl_headers)!=0) && (($files != array()))) { // Useful for debugging
                                                 var_dump(curl_getinfo($ch,CURLINFO_HEADER_OUT));exit();
                                             }*/
                                             if ($line === false) {
@@ -1414,17 +1412,15 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
 
     // Direct sockets method
     $headers = '';
-    if (($cookies !== null) && (count($cookies) != 0)) {
+    if ($cookies != array()) {
         $headers .= 'Cookie: ' . $_cookies . "\r\n";
     }
     $headers .= 'User-Agent: ' . rawurlencode($ua) . "\r\n";
     if ($auth !== null) {
         $headers .= 'Authorization: Basic ' . base64_encode(implode(':', $auth)) . "==\r\n";
     }
-    if ($extra_headers !== null) {
-        foreach ($extra_headers as $key => $val) {
-            $headers .= $key . ': ' . rawurlencode($val) . "\r\n";
-        }
+    foreach ($extra_headers as $key => $val) {
+        $headers .= $key . ': ' . rawurlencode($val) . "\r\n";
     }
     if ($accept !== null) {
         $headers .= 'Accept: ' . rawurlencode($accept) . "\r\n";
@@ -2006,7 +2002,7 @@ function get_webpage_meta_details($url)
         return $meta_details;
     }
 
-    $result = cache_and_carry('http_download_file', array($url, 1024 * 10, false, false, 'Composr', null, null, null, null, null, null, null, null, 2.0));
+    $result = cache_and_carry('http_download_file', array($url, 1024 * 10, false, false, 'Composr', null, array(), null, null, null, null, null, null, 2.0));
     if ((is_array($result)) && ($result[1] !== null) && (strpos($result[1], 'html') !== false) && $result[4] == '200') {
         $html = $result[0];
 
