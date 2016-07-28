@@ -19,7 +19,7 @@
 	{!TEMPLATE_EDITOR_ACCESSIBILITY_HELP}
 </noscript>
 
-<form title="{!PRIMARY_PAGE_FORM}" method="post" action="#" target="_blank">
+<form title="{!PRIMARY_PAGE_FORM}" method="post" action="#" autocomplete="off">
 	{$,Instruct Composr to pull in template data dynamically from the POST environment, i.e. do a live preview}
 	<input type="hidden" name="template_preview_op" value="1" />
 

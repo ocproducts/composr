@@ -254,7 +254,7 @@ function string_scan($lang, $do_guessing = false)
         ADMIN
         ADMINGUIDE
         ADMINGUIDE_DEFAULT_TRAINING
-        ADMINSTART_PAGE
+        ADMIN_DASHBOARD
         ADMINZONE_SEARCH_RESULTS
         ADMINZONE_SEARCH_TIP
         ADMIN_BANNERS
@@ -1397,11 +1397,12 @@ function string_scan($lang, $do_guessing = false)
         BYPASS_VALIDATION_POLL
         BYPASS_VALIDATION_QUIZ
         BYPASS_WIKI_VALIDATION
+        DATABASE_ERROR
         CACHES
-        CACHES_PAGE
-        CACHES_PAGE_CACHES
-        CACHES_PAGE_EXP_CACHES
-        CACHES_PAGE_EXP_OPTIMISERS
+        CLEANUP_PAGE_CACHES
+        CLEANUP_PAGE_EXP_CACHES
+        CLEANUP_PAGE_EXP_OPTIMISERS
+        CLEANUP_PAGE_OPTIMISERS
         CACHE_FORUMS
         CACHE_MEMBERS
         CACHE_NOT_READY_YET
@@ -3149,7 +3150,7 @@ function string_scan($lang, $do_guessing = false)
         DESCRIPTION_ADD_THEME_MANUAL
         DESCRIPTION_ADD_TO_OWN_ACCOUNT
         DESCRIPTION_ADMINGUIDE
-        DESCRIPTION_ADMINSTART_PAGE
+        DESCRIPTION_ADMIN_DASHBOARD
         DESCRIPTION_ADMIN_USERNAME
         DESCRIPTION_ADMIN_USERS_PASSWORD
         DESCRIPTION_ALLOWS_ANONYMOUS_POSTS
@@ -4943,7 +4944,6 @@ function string_scan($lang, $do_guessing = false)
         MEMBER_CHARGED_POINTS
         MEMBER_EXPORT_ORDER
         MEMBER_FILES
-        MEMBER_FILTER
         MEMBER_GIVEN_POINTS
         MEMBER_GIVEN_POINTS_FOR
         MEMBER_ID
@@ -5174,10 +5174,12 @@ function string_scan($lang, $do_guessing = false)
         NEWSLETTER_DESCRIPTION_TITLE
         NEWSLETTER_DRIP_SEND_QUEUE
         NEWSLETTER_HASH
-        NEWSLETTER_IMPORT
         NEWSLETTER_IMPORTED_THIS
         NEWSLETTER_PEOPLE_ON_LEVEL
         NEWSLETTER_SEND_TO
+        DESCRIPTION_NEWSLETTER_SEND_TO
+        DESCRIPTION_SUBSCRIPTION_STATUS
+        EMAIL_ADDRESS_FOR_NEWSLETTER
         NEWSLETTER_PREVIEW_SUBJECT
         NEWSLETTER_REGULARITY
         NEWSLETTER_REMOVED_THIS
@@ -5227,7 +5229,6 @@ function string_scan($lang, $do_guessing = false)
         NEXT_ITEM_view_this_category
         NEXT_REVIEW_DATE
         NICE_BLOCK_NAME
-        NNR
         NONPRESENT_EXTENSION_FUNCTION
         NON_COMMAND
         NON_RECOGNISED_CSS_FILE
@@ -5344,7 +5345,6 @@ function string_scan($lang, $do_guessing = false)
         NO_LEVEL_1_HEADERS
         NO_LEVEL_2_HEADERS
         NO_LURKERS_FOUND
-        NO_MEMBER_SYSTEM_INSTALLED
         NO_MYSQL_QUERY_CHANGES_MAKE
         NO_NOTE_GUEST
         NO_PAGES_FOUND
@@ -6389,7 +6389,6 @@ function string_scan($lang, $do_guessing = false)
         URL_TO_PREVIEW_WITH
         ZONE_IS
         _EDIT_TEMPLATES
-        SYNCHRONISATION
         SYNCHRONISE_AGGREGATE_TYPES
         SYNDICATED_IP_BAN
         SYNDICATE_TO_STOPFORUMSPAM
@@ -6674,6 +6673,9 @@ function string_scan($lang, $do_guessing = false)
         UPDATE_HANDLING_OVERWRITE
         UPDATE_HANDLING_SKIP
         UPDATE_TIME
+        NEWSLETTER_SUBSCRIBE
+        NEWSLETTER_UNSUBSCRIBE
+        PRIVILEGE_see_query_errors
         UPGRADE_MODULE
         UPGRADE_TO
         UPLOADED_FILES
@@ -7320,7 +7322,6 @@ function string_scan($lang, $do_guessing = false)
         BLUE
         BODY_CONTENT
         BODY_TICKET_REROUTED
-        BOOKMARK_THIS
         BOOLEAN_HELP
         BOOLEAN_SEARCH
         BREADCRUMBS
@@ -7601,7 +7602,6 @@ function string_scan($lang, $do_guessing = false)
         DAY
         DAYS
         DAYS_AGO
-        DAYS_LAST_VISIT
         DECEMBER
         DECIDE_PER_CATEGORY_NOTIFICATIONS
         DECISION_TREE_SCREEN_NEEDS_PARAMETER
@@ -7976,8 +7976,6 @@ function string_scan($lang, $do_guessing = false)
         EXPLAINED_BLOCK_MEMBER
         EXPLAINED_UNBLOCK_MEMBER
         EXPLANATION
-        EXTRACTED_FILE
-        EXTRACTED_FILE_PATH
         EXT_NO_PASSWORD_CHANGE
         FAILED
         FAILED_TO_OPEN_POPUP
@@ -8184,6 +8182,7 @@ function string_scan($lang, $do_guessing = false)
         INVALID_EMAIL_PREFIX
         INVALID_FILE_TYPE
         INVALID_FILE_TYPE_GENERAL
+        INVALID_FILE_TYPE_VERY_GENERAL
         INVALID_GAMBLE_AMOUNT
         INVALID_OPERATION
         INVALID_SECURITY_CODE_ENTERED
@@ -8535,7 +8534,6 @@ function string_scan($lang, $do_guessing = false)
         NEW_COMMENT_SUBJECT
         NEW_MEMBER_NOTIFICATION_MAIL
         NEW_MEMBER_NOTIFICATION_MAIL_SUBJECT
-        NEW_MESSAGES
         NEW_PASSWORD
         NEW_PASSWORD_MAILED
         NEW_PERSONAL_GALLERY_OF
@@ -8645,7 +8643,6 @@ function string_scan($lang, $do_guessing = false)
         NOT_NEWSLETTER_SUBSCRIBER
         NOT_ON_NEWSLETTER
         NOT_OPEN_THIS
-        NOT_SPECIFIED
         NOT_USERNAME
         NOT_VALID_ATTACHMENT
         NOT_VIDEO
@@ -9107,7 +9104,6 @@ function string_scan($lang, $do_guessing = false)
         RICH_CONTENT
         ROLE
         ROOT
-        ROOT_EM
         ROOT_FORUM
         RSS
         RSS_SOURCE_FROM
@@ -9362,7 +9358,6 @@ function string_scan($lang, $do_guessing = false)
         TICKETS_MERGED_TITLE
         TICKETS_STAFF
         TICKET_ACTIVITY_BODY
-        TICKET_ACTIVITY_OVERVIEW
         TICKET_ACTIVITY_SUBJECT
         TICKET_ASSIGN
         TICKET_ASSIGNED_BODY
@@ -9406,7 +9401,6 @@ function string_scan($lang, $do_guessing = false)
         TOGGLE_WYSIWYG_ERROR
         TOO_LONG_ON_SCREEN
         TOO_MANY_ATTACHMENTS
-        TOO_MANY_FILES_TO_EXTRACT
         TOO_MANY_USERS_ONLINE
         TOP
         TOPICS_PARTICIPATED_IN
@@ -9712,7 +9706,6 @@ function string_scan($lang, $do_guessing = false)
         _NEW
         _NEWS
         _NEWSLETTER_JOIN
-        _NEW_MESSAGES
         _NOT_FILE_TYPE
         _NO_FRIEND_ENTRIES
         _ONLINE_NOW_NO_DAYS

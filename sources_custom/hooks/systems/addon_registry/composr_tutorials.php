@@ -1486,10 +1486,8 @@ The documentation is primarily maintained on our website, and this archive is on
             'themes/default/images_custom/tutorial_icons/internet_technology.png',
             'themes/default/images_custom/tutorial_icons/mobile.png',
             'docs/codebook_data_dictionary.docx',
-            'docs/custom_modules_example__pty.zip',
             'docs/erd_rendered__by_addon.zip',
             'docs/erd_sql__by_addon.zip',
-            'docs/league_standings__example_addon.zip',
             'docs/making_a_theme.pdf',
             'docs/standards-checklist.xls',
         );

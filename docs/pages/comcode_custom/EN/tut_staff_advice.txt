@@ -55,4 +55,4 @@ Composr has special 'conflict detection' support implemented throughout. If a me
  - [page="_SEARCH:tut_legal"]Legal and social responsibilities[/page]
  - [page="_SEARCH:tut_staff"]Coordination between staff and staff/members[/page]
 
-{$SET,tutorial_tags,staff,Advice & Guidance,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,A short tutorial with tips for choosing staff, written for community websites run by volunteers.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Advice & Guidance,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,A short tutorial with tips for choosing staff, written for community websites run by volunteers.}[block]main_tutorial_rating[/block]

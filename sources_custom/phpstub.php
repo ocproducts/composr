@@ -1187,17 +1187,6 @@ function imagecreatefrompng($path)
 }
 
 /**
- * Create a new image from a WEBP file on disk.
- *
- * @param  PATH $path The WEBP file.
- * @return ~resource The image handle (false: error).
- */
-function imagecreatefromwebp($path)
-{
-    return array();
-}
-
-/**
  * Create a new image from a GIF file on disk.
  *
  * @param  PATH $path The GIF file.
@@ -1343,18 +1332,6 @@ function imagejpeg($image, $filename = null, $quality = null)
  * @return boolean Success status.
  */
 function imagepng($image, $filename = null, $quality = 0)
-{
-    return true;
-}
-
-/**
- * Output image to browser or file as WEBP.
- *
- * @param  resource $image The image handle.
- * @param  ?string $filename The filename (null: output to browser).
- * @return boolean Success status.
- */
-function imagewebp($image, $filename = null)
 {
     return true;
 }
@@ -5504,6 +5481,11 @@ stream_supports_lock
 stream_wrapper_register
 stream_wrapper_restore
 stream_wrapper_unregister
+
+GD stuff that's not on by default...
+
+imagecreatefromwebp
+imagewebp
 
 PHP7, so cannot use yet...
 

@@ -4492,14 +4492,13 @@ function ecv_COMMENT_COUNT($lang, $escaped, $param)
  */
 function ecv_SELF_URL($lang, $escaped, $param)
 {
-    $extra_params = null;
+    $extra_params = array();
     $value = '';
     if ($GLOBALS['XSS_DETECT']) {
         ocp_mark_as_escaped($value);
     }
 
     if (isset($param[3])) {
-        $extra_params = array();
         $i = 3;
         while (isset($param[$i])) {
             $bits = explode('=', $param[$i], 2);

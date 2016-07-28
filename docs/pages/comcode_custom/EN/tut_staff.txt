@@ -121,4 +121,4 @@ When members use the Conversr whisper feature to make inline-personal-posts, the
  - [page="_SEARCH:tut_msn"]Advanced techniques for multi-site-networks[/page]
  - [page="_SEARCH:tut_repository"]The Composr Enterprise Repository[/page]
 
-{$SET,tutorial_tags,staff,cns_warnings,cns_reported_posts,Collaboration,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,A discussion on the features Composr provides for members, and for staff - and how permissions divide them.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,cns_warnings,cns_reported_posts,Collaboration,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,A discussion on the features Composr provides for members, and for staff - and how permissions divide them.}[block]main_tutorial_rating[/block]

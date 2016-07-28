@@ -31,7 +31,7 @@ class Hook_check_suhosin_eval
     public function run()
     {
         $warning = array();
-        if (ini_get('suhosin.executor.disable_eval') == '1') {
+        if (ini_get('suhosin.executor.disable_eval') === '1') {
             $warning[] = do_lang_tempcode('DISABLED_FUNCTION', 'eval');
         }
         return $warning;

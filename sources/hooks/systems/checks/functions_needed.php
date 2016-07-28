@@ -91,7 +91,7 @@ END;
 
         if (function_exists('imagecreatefromstring')) {
             $baseline_functions .= <<<END
-                imagecreatefromgif imagecreatefromwebp imagegif imagewebp
+                imagecreatefromgif imagegif
                 imagepalettetotruecolor iptcembed iptcparse
                 imagecolorallocatealpha imageistruecolor imagealphablending imagecolorallocate imagecolortransparent imagecopy
                 imagecopyresampled imagecopyresized imagecreate imagecreatefrompng

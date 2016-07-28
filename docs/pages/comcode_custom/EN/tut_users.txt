@@ -120,4 +120,4 @@ That should do it!
  - [page="_SEARCH:tut_authors"]Authors[/page]
  - [page="_SEARCH:tut_staff"]Coordination between staff and staff/members[/page]
 
-{$SET,tutorial_tags,Members,staff,core_cns,authors,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Find out the difference between the 12 terms we use for describing the people who interact with a Composr website.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Members,core_cns,authors,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Find out the difference between the 12 terms we use for describing the people who interact with a Composr website.}[block]main_tutorial_rating[/block]

@@ -133,6 +133,7 @@ The skipped aspects are:
  - dynamic variable referencing ($$foo) (REASON: sloppy, a likely bug)
  - PHP 5.4 Class::{expr}() Syntax (REASON: sloppy, a likely bug)
  - certain functions, including insecure or platform-dependant ones (these can be white-listed per-file though)
+ - namespace resolution is not implemented, we just match on class names (REASON: to simplify the code)
 
 The PHP checker is very much set up to enforce compatibility across different PHP platforms. It is only assumed that a small number of extensions will be present:
  - gd2

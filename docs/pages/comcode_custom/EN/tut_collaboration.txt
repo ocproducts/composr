@@ -67,4 +67,4 @@ Most members will only be able to delete their own files, but all files are view
 
  - [page="_SEARCH:tut_users"]People in their roles[/page]
 
-{$SET,tutorial_tags,Collaboration,filedump,collaboration_zone,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Composr includes many features that allow your website to function, in whole or in part, as an on-line collaboration tool.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Collaboration,filedump,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Composr includes many features that allow your website to function, in whole or in part, as an on-line collaboration tool.}[block]main_tutorial_rating[/block]

@@ -1,3 +1,7 @@
+{+START,IF_PASSED_AND_TRUE,OWN_FORM}
+<form title="{!PRIMARY_PAGE_FORM}" method="post" action="#" autocomplete="off">
+{+END}
+
 {$,Toolbarish}
 
 {+START,IF,{INCLUDE_CSS_EDITING}}
@@ -507,7 +511,7 @@
 							</td>
 							<td>
 								{+START,IF,{$ADDON_INSTALLED,code_editor}}
-									<a target="_blank" title="{LINE*} {!LINK_NEW_WINDOW}" href="{$BASE_URL*}/code_editor.php?path={FILENAME*}&amp;line={LINE*}">{GUID_LINE*}</a>
+									<a target="_blank" title="{GUID_LINE*} {!LINK_NEW_WINDOW}" href="{$BASE_URL*}/code_editor.php?path={GUID_FILENAME*}&amp;line={GUID_LINE*}">{GUID_LINE*}</a>
 								{+END}
 								{+START,IF,{$NOT,{$ADDON_INSTALLED,code_editor}}}
 									{GUID_LINE*}
@@ -594,3 +598,7 @@
 		{+END}
 	});
 //]]></script>
+
+{+START,IF_PASSED_AND_TRUE,OWN_FORM}
+</form>
+{+END}

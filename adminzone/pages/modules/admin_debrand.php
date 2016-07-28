@@ -142,7 +142,7 @@ class Module_admin_debrand
         $fields->attach(form_input_line(do_lang_tempcode('REBRAND_BASE_URL'), do_lang_tempcode('DESCRIPTION_BRAND_BASE_URL', escape_html('docs' . strval(cms_version()))), 'rebrand_base_url', $rebrand_base_url, true));
         $fields->attach(form_input_line(do_lang_tempcode('COMPANY_NAME'), '', 'company_name', $company_name, true));
         $fields->attach(form_input_text_comcode(do_lang_tempcode('ADMINGUIDE'), do_lang_tempcode('DESCRIPTION_ADMINGUIDE'), 'adminguide', $adminguide, true));
-        $fields->attach(form_input_text_comcode(do_lang_tempcode('ADMINDASHBOARD'), do_lang_tempcode('DESCRIPTION_ADMINDASHBOARD'), 'dashboard', $dashboard, true));
+        $fields->attach(form_input_text_comcode(do_lang_tempcode('ADMIN_DASHBOARD'), do_lang_tempcode('DESCRIPTION_ADMIN_DASHBOARD'), 'dashboard', $dashboard, true));
         $fields->attach(form_input_text_comcode(do_lang_tempcode('KEYBOARD_MAP'), '', 'keyboard_map', $keyboard_map, true));
         $fields->attach(form_input_tick(do_lang_tempcode('DELETE_UN_PC'), do_lang_tempcode('DESCRIPTION_DELETE_UN_PC'), 'churchy', false));
         $fields->attach(form_input_tick(do_lang_tempcode('SHOW_DOCS'), do_lang_tempcode('DESCRIPTION_SHOW_DOCS'), 'show_docs', get_option('show_docs') == '1'));

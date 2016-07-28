@@ -1894,12 +1894,13 @@ function check_expression($e, $assignment = false, $equate_false = false, $funct
             $type = check_literal($inner[1]);
             return $type;
         case 'NEW_OBJECT':
+            $class = preg_replace('#^.*\\#', '', $inner[1]); // We strip out namespaces from the name, and just look at the actual class name
             global $FUNCTION_SIGNATURES;
-            if ((!isset($FUNCTION_SIGNATURES[$inner[1]])) && ($FUNCTION_SIGNATURES != array()) && (strpos($function_guard, ',' . $inner[1] . ',') === false)) {
-                if ((($GLOBALS['OK_EXTRA_FUNCTIONS'] === null) || (preg_match('#^' . $GLOBALS['OK_EXTRA_FUNCTIONS'] . '#', $inner[1]) == 0))) {
-                    if (!isset($GLOBALS['KNOWN_EXTRA_CLASSES'][$inner[1]])) {
-                        if ($inner[1] !== null) {
-                            log_warning('Unknown class, ' . $inner[1], $c_pos);
+            if ((!isset($FUNCTION_SIGNATURES[$class])) && ($FUNCTION_SIGNATURES != array()) && (strpos($function_guard, ',' . $class . ',') === false)) {
+                if ((($GLOBALS['OK_EXTRA_FUNCTIONS'] === null) || (preg_match('#^' . $GLOBALS['OK_EXTRA_FUNCTIONS'] . '#', $class) == 0))) {
+                    if (!isset($GLOBALS['KNOWN_EXTRA_CLASSES'][$class])) {
+                        if ($class !== null) {
+                            log_warning('Unknown class, ' . $class, $c_pos);
                         }
                     }
                 }

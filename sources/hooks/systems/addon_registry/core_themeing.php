@@ -358,6 +358,8 @@ class Hook_addon_registry_core_themeing
                 'LOGICAL_SYMBOLS' => new Tempcode(),
 
                 'INCLUDE_CSS_EDITING' => false,
+
+                'OWN_FORM' => true,
             )), null, '', true)
         );
     }
