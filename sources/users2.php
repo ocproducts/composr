@@ -26,6 +26,10 @@
  */
 function member_is_online($member_id)
 {
+    if (is_guest($member_id)) {
+        return false;
+    }
+
     if (get_option('session_prudence') == '0') {
         // If we have all sessions loaded, use that...
 
@@ -37,10 +41,6 @@ function member_is_online($member_id)
             }
         }
         return false;
-
-        if (is_guest($member_id)) {
-            return false;
-        }
     }
 
     // Otherwise a manual query...

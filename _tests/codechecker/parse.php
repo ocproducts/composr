@@ -366,12 +366,14 @@ function _parse_command_actual($no_term_needed = false)
             $static_set = array();
 
         case 'variable':
-            do{
+            do {
                 $target = _parse_target();
                 $next_2 = pparse__parser_peek();
                 switch ($next_2) {
                     case 'DEC':
-                        if ($is_static) parser_error('Cannot decrement during static initialisation');
+                        if ($is_static) {
+                            parser_error('Cannot decrement during static initialisation');
+                        }
 
                         if (($target[0] == 'LIST') || ($target[0] == 'ARRAY_APPEND')) {
                             parser_error('LIST is only a one way type'); // We needed to read a target (for assignment), but we really wanted a variable (subset of target) -- we ended up with something that WAS target but NOT variable (we couldn't have known till now)
@@ -381,7 +383,9 @@ function _parse_command_actual($no_term_needed = false)
                         break;
 
                     case 'INC':
-                        if ($is_static) parser_error('Cannot increment during static initialisation');
+                        if ($is_static) {
+                            parser_error('Cannot increment during static initialisation');
+                        }
 
                         if (($target[0] == 'LIST') || ($target[0] == 'ARRAY_APPEND')) {
                             parser_error('LIST is only a one way type'); // We needed to read a target (for assignment), but we really wanted a variable (subset of target) -- we ended up with something that WAS target but NOT variable (we couldn't have known till now)
@@ -418,8 +422,7 @@ function _parse_command_actual($no_term_needed = false)
                         break;
                     }
                 }
-            }
-            while ($is_static);
+            } while ($is_static);
             if (!$no_term_needed) {
                 _test_command_end();
             }
@@ -1416,7 +1419,58 @@ function _parse_expression_inner()
             $expression = array('VARIABLE_REFERENCE', $variable, $GLOBALS['I']);
             break;
 
-        default: // By elimination: Must be a variable or a call chained to a variable
+        case 'DEC':
+            pparse__parser_next();
+            $variable = _parse_variable($suppress_error);
+            $expression = array('PRE_DEC', $variable, $GLOBALS['I']);
+            log_warning('Decrement used within expression is messy, put brackets around it');
+            break;
+
+        case 'INC':
+            pparse__parser_next();
+            $variable = _parse_variable($suppress_error);
+            $expression = array('PRE_INC', $variable, $GLOBALS['I']);
+            log_warning('Increment used within expression is messy, put brackets around it');
+            break;
+
+        case 'variable':
+            $target = _parse_target();
+            $next_2 = pparse__parser_peek();
+            switch ($next_2) {
+                case 'DEC':
+                    if (($target[0] == 'LIST') || ($target[0] == 'ARRAY_APPEND')) {
+                        parser_error('LIST is only a one way type'); // We needed to read a target (for assignment), but we really wanted a variable (subset of target) -- we ended up with something that WAS target but NOT variable (we couldn't have known till now)
+                    }
+                    pparse__parser_next();
+                    $expression = array('DEC', $target, $GLOBALS['I']);
+                    log_warning('Decrement used within expression is messy, put brackets around it');
+                    break;
+
+                case 'INC':
+                    if (($target[0] == 'LIST') || ($target[0] == 'ARRAY_APPEND')) {
+                        parser_error('LIST is only a one way type'); // We needed to read a target (for assignment), but we really wanted a variable (subset of target) -- we ended up with something that WAS target but NOT variable (we couldn't have known till now)
+                    }
+                    pparse__parser_next();
+                    $expression = array('INC', $target, $GLOBALS['I']);
+                    log_warning('Increment used within expression is messy, put brackets around it');
+                    break;
+
+                default: // Either an assignment or an indirect function call or a method call
+                    $expression = $target;
+                    // We should be at the end of a chain by here.
+                    // We may still be an assignment, despire the $next_3 branch
+                    // above. Handle this if so:
+                    if (in_array(pparse__parser_peek(), array('EQUAL', 'CONCAT_EQUAL', 'DIV_EQUAL', 'MINUS_EQUAL', 'MUL_EQUAL', 'PLUS_EQUAL', 'BOR_EQUAL'), true)) {
+                        $assignment = _parse_assignment_operator();
+                        $expression_inner = _parse_expression();
+                        $expression = array('ASSIGNMENT', $assignment, $expression, $expression_inner, $GLOBALS['I']);
+                        log_warning('Assignment used within expression is messy, put brackets around it');
+                    }
+                    break;
+            }
+            break;
+
+        default: // By elimination: Must be a variable or a call chained to a variable. Actually this branch should not run due to 'variable' above being added in.
             $expression = _parse_variable($suppress_error, true);
     }
 

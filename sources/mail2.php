@@ -12,13 +12,13 @@
 
 */
 
-/*EXTRA FUNCTIONS: imap\_.+|proc\_.+|stream_set_blocking|stream_get_contents|stream_set_timeout*/
-
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
  * @package    core
  */
+
+/*EXTRA FUNCTIONS: imap\_.+|proc\_.+|stream_set_blocking|stream_get_contents|stream_set_timeout*/
 
 /**
  * Get an IMAP/POP3 connection string.

@@ -12,13 +12,13 @@
 
 */
 
-/*EXTRA FUNCTIONS: get_php_file_api|test_fail_php_type_check*/
-
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
  * @package    core
  */
+
+/*EXTRA FUNCTIONS: get_php_file_api|test_fail_php_type_check*/
 
 /*
 Some basic developer tools for Composr PHP development.

@@ -12,13 +12,13 @@
 
 */
 
-/*EXTRA FUNCTIONS: symlink*/
-
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
  * @package    core_themeing
  */
+
+/*EXTRA FUNCTIONS: symlink*/
 
 /**
  * Standard code module initialisation function.

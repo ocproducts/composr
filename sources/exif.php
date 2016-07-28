@@ -12,13 +12,13 @@
 
 */
 
-/*EXTRA FUNCTIONS: exif_read_data*/
-
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
  * @package    core
  */
+
+/*EXTRA FUNCTIONS: exif_read_data*/
 
 /**
  * Get metadata from an image, using EXIF primarily, but also XMP and IPTC to get image descriptions.

@@ -11,7 +11,7 @@
  * @param  boolean $accept_errors Whether to accept upload errors
  * @return ?URLPATH URL on syndicated server (null: did not syndicate)
  */
-public function cloudinary_transfer_upload($path, $upload_folder, $filename, $obfuscate = 0, $accept_errors = false)
+function cloudinary_transfer_upload($path, $upload_folder, $filename, $obfuscate = 0, $accept_errors = false)
 {
     require_code('Cloudinary/Uploader');
 

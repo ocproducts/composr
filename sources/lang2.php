@@ -12,13 +12,13 @@
 
 */
 
-/*EXTRA FUNCTIONS: get_included_files*/
-
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
  * @package    core
  */
+
+/*EXTRA FUNCTIONS: get_included_files*/
 
 /**
  * Edit a language string direct from something saved into the code.

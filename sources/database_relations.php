@@ -515,5 +515,6 @@ function get_relation_map()
         'wiki_children.child_id' => 'wiki_pages.id',
         'wiki_children.parent_id' => 'wiki_pages.id',
         'wiki_posts.page_id' => 'wiki_pages.id',
+        'newsletter_drip_send.d_message_id' => 'newsletter_archive.id',
     );
 }

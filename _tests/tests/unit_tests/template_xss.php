@@ -62,6 +62,7 @@ class template_xss_test_set extends cms_test_case
     {
         // Strip parameters inside symbols, language strings and Tempcode portions
         do {
+            $matches = array();
             $num_matches = preg_match('#\{[\$\!\+]#', $file, $matches, PREG_OFFSET_CAPTURE);
             if ($num_matches != 0) {
                 $posa = $matches[0][1];

@@ -161,18 +161,6 @@ class Mail_dispatcher_override extends Mail_dispatcher_base
             $error = 'Unknown error';
         }
 
-        // Attachment cleanup
-        foreach ($this->real_attachments as $r) {
-            if ($r['temp']) {
-                @unlink($r['path']);
-            }
-        }
-        foreach ($cid_attachments as $r) {
-            if ($r['temp']) {
-                @unlink($r['path']);
-            }
-        }
-
         return array($worked, $error);
     }
 }

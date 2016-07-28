@@ -12,13 +12,13 @@
 
 */
 
-/*EXTRA FUNCTIONS: glob*/
-
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
  * @package    core_database_drivers
  */
+
+/*EXTRA FUNCTIONS: glob*/
 
 /*
     Known (intentional) issues in SQL support (we are targetting MySQL-4.0 compatibility, similar to SQL-92)

@@ -9898,7 +9898,7 @@ function string_scan($lang, $do_guessing = false)
     $just_lang_strings_non_admin = array_diff($lang_strings_non_admin, $lang_strings_admin);
     $lang_strings_shared = array_intersect($lang_strings_non_admin, $lang_strings_admin);
 
-    return array($just_lang_strings_admin, $just_lang_strings_non_admin, $lang_strings_shared, $lang_strings_unknown, $all_strings_in_lang);
+    return array($just_lang_strings_admin, $just_lang_strings_non_admin, $lang_strings_shared, $lang_strings_unknown, $all_strings_in_lang, $strings_files);
 }
 
 function find_files_in_dir($dir)

@@ -18,6 +18,8 @@
  * @package    commandr
  */
 
+/*EXTRA FUNCTIONS: preg_grep*/
+
 /**
  * Hook class.
  */

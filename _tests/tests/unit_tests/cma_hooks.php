@@ -55,7 +55,9 @@ class cma_hooks_test_set extends cms_test_case
 
         foreach ($this->all_cma_info as $content_type => $cma_info) {
             foreach ($this->all_keys as $key) {
-                if (in_array($key, $may_be_unset_properties)) continue;
+                if (in_array($key, $may_be_unset_properties)) {
+                    continue;
+                }
 
                 $this->assertTrue(array_key_exists($key, $cma_info), $key . ' not defined for ' . $content_type);
             }

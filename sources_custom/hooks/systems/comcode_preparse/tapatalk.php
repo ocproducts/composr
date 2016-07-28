@@ -18,7 +18,7 @@
  */
 class Hook_comcode_preparse_tapatalk
 {
-    function preparse(&$comcode)
+    public function preparse(&$comcode)
     {
         if (!defined('IN_MOBIQUO')) {
             $protocol = tacit_https() ? 'https:' : 'http:';

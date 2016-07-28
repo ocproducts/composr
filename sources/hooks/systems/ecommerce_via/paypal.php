@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_paypal
+class Hook_ecommerce_via_paypal
 {
     /**
      * Get the PayPal payment address.

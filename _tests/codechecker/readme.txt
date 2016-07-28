@@ -123,18 +123,16 @@ Certain aspects of the PHP language have been left out of the subset supported b
 
 The skipped aspects are:
  - checking whether variables exist before considering heredoc/quote-embedded variable references (REASON: can't check)
- - other spellings of "false" "true" and "null" and "GLOBAL" and probably others (REASON: bad style)
  - @ is handled differently to PHP: it is tagged onto string-extraction, array-extraction, and function-calls (REASON: sloppy)
- - Embedded assignments are limited (REASON: sloppy). You can get around this by wrapping the assignment operation in brackets
  - if..endif (etc) style (REASON: bad style)
  - non-functional style of include include_once require require_once print unset empty isset declare exit die (REASON: bad style)
  - certain duplicated cast identifiers (REASON: bad style)
+ - expressions used as pure commands (REASON: bad style)
  - written AND or OR or XOR (REASON: bad style)
  - unused variable check imperfect for loops (REASON: can't check)
  - dynamic variable referencing ($$foo) (REASON: sloppy, a likely bug)
  - PHP 5.4 Class::{expr}() Syntax (REASON: sloppy, a likely bug)
- - expressions as commands, unless they are bracketed (REASON: sloppy)
- - certain functions, including insecure or platform-dependant ones
+ - certain functions, including insecure or platform-dependant ones (these can be white-listed per-file though)
 
 The PHP checker is very much set up to enforce compatibility across different PHP platforms. It is only assumed that a small number of extensions will be present:
  - gd2

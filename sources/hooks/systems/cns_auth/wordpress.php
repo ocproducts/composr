@@ -12,15 +12,15 @@
 
 */
 
-/*EXTRA FUNCTIONS: crypt*/
-
-/*NO_API_CHECK*/
-
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
  * @package    import
  */
+
+/*EXTRA FUNCTIONS: crypt*/
+
+/*NO_API_CHECK*/
 
 /**
  * Hook class.

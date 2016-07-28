@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_worldpay
+class Hook_ecommerce_via_worldpay
 {
     // Requires:
     //  the "Payment Response URL" set in control panel should be set to "http://<WPDISPLAY ITEM=MC_callback>"

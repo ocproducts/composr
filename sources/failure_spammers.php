@@ -12,13 +12,13 @@
 
 */
 
-/*EXTRA FUNCTIONS: TornUserinfoClass|SoapClient*/
-
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
  * @package    core
  */
+
+/*EXTRA FUNCTIONS: TornUserinfoClass|SoapClient*/
 
 /*
 This code is not in failure.php due to the dynamic class declaration, triggering: https://bugs.php.net/bug.php?id=35634

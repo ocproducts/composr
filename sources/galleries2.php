@@ -12,13 +12,13 @@
 
 */
 
-/*EXTRA FUNCTIONS: shell_exec*/
-
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
  * @package    galleries
  */
+
+/*EXTRA FUNCTIONS: shell_exec*/
 
 /**
  * Get width,height,length of a video file. Note: unfortunately mpeg is not possible without huge amounts of code.

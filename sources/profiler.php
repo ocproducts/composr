@@ -12,13 +12,13 @@
 
 */
 
-/*EXTRA FUNCTIONS: shell_exec*/
-
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
  * @package    core
  */
+
+/*EXTRA FUNCTIONS: shell_exec*/
 
 /*
 This is a basic profiler for Composr, for use on live servers where performance must be maintained yet we need live performance data gathering.

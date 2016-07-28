@@ -64,7 +64,7 @@ class _performance_test_set extends cms_test_case
     public function testSitemapNodes()
     {
         require_code('sitemap');
-        retrieve_sitemap_node($this->start_page_link, array($this, '_test_screen_performance'), null,null, null, SITEMAP_GEN_CHECK_PERMS);
+        retrieve_sitemap_node($this->start_page_link, array($this, '_test_screen_performance'), null, null, null, SITEMAP_GEN_CHECK_PERMS);
     }
 
     public function _test_screen_performance($node)

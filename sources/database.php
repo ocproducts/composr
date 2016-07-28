@@ -12,13 +12,13 @@
 
 */
 
-/*EXTRA FUNCTIONS: fb*/
-
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
  * @package    core
  */
+
+/*EXTRA FUNCTIONS: fb*/
 
 /**
  * Standard code module initialisation function.

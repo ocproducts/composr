@@ -552,6 +552,18 @@ abstract class Mail_dispatcher_base
         list($_to_emails, $_to_names, $subject_wrapped, $headers, $sending_message, $charset, $html_evaluated, $message_plain) = $this->build_mail_components($subject_line, $message_raw, $to_emails, $to_names, $from_email, $from_name, $lang, $theme);
         list($worked, $error) = $this->_dispatch($to_emails, $to_names, $from_email, $from_name, $subject_wrapped, $headers, $sending_message, $charset, $html_evaluated, $message_plain);
 
+        // Attachment cleanup
+        foreach ($this->real_attachments as $r) {
+            if ($r['temp']) {
+                @unlink($r['path']);
+            }
+        }
+        foreach ($this->cid_attachments as $r) {
+            if ($r['temp']) {
+                @unlink($r['path']);
+            }
+        }
+
         // Profiling (end)
         if (!$this->coming_out_of_queue) {
             cms_profile_end_for('dispatch_mail', $subject_line);
@@ -954,9 +966,9 @@ abstract class Mail_dispatcher_base
         $this->clean_parameter($from_name);
 
         // Language
-        if ($to_emails[0] != $staff_address) {
+        if (!isset($to_emails[0]) || $to_emails[0] != $staff_address) {
             $lang = user_lang();
-            if (method_exists($GLOBALS['FORUM_DRIVER'], 'get_member_from_email_address')) {
+            if (isset($to_emails[0]) && method_exists($GLOBALS['FORUM_DRIVER'], 'get_member_from_email_address')) {
                 $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_email_address($to_emails[0]);
                 if ($member_id !== null) {
                     $lang = get_lang($member_id);

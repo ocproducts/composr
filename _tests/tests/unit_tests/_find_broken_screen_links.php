@@ -26,6 +26,7 @@ class _find_broken_screen_links_test_set extends cms_test_case
         foreach ($files as $file) {
             $c = file_get_contents($file);
             $matches = array();
+            $found = array();
             $num_matches = preg_match_all("#build_url\(array\('page'\s*=>\s*'(\w+)',\s*'type'\s*=>\s*'(\w+)'#", $c, $matches);
             for ($i = 0; $i < $num_matches; $i++) {
                 $page = $matches[1][$i];

@@ -12,13 +12,13 @@
 
 */
 
-/*EXTRA FUNCTIONS: curl_.**/
-
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
  * @package    core
  */
+
+/*EXTRA FUNCTIONS: curl_.*|imagefilledrectangle*/
 
 /**
  * Script to make a nice textual image, vertical writing.

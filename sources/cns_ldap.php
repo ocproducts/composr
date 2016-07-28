@@ -12,13 +12,13 @@
 
 */
 
-/*EXTRA FUNCTIONS: ldap\_.+|crypt*/
-
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
  * @package    ldap
  */
+
+/*EXTRA FUNCTIONS: ldap\_.+|crypt*/
 
 /*
 Note: when we say 'cn' we mean whatever member_property() is. It might not actually be the 'cn' (isn't for Active Directory).

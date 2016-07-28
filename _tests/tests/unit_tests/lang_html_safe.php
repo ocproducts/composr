@@ -24,7 +24,7 @@ Note that this script can't find everything due to dynamicness of Composr langua
  */
 class lang_html_safe_test_set extends cms_test_case
 {
-    function setUp()
+    public function setUp()
     {
         parent::setUp();
 

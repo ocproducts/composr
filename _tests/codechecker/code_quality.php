@@ -622,7 +622,7 @@ if (isset($_GET['test'])) {
             continue; // Set to largest number we know so far work
         }
 
-        if (strpos(file_get_contents($to_use), '/*CQC: No check*/') !== false) {
+        if (strpos(file_get_contents($to_use), '/*CQC:' . ' No check*/') !== false) {
             //echo 'SKIP: ' . $to_use;
             continue;
         }
@@ -655,7 +655,7 @@ if (isset($_GET['test'])) {
     foreach ($to_use_multi as $to_use) {
         $full_path = (($COMPOSR_PATH == '') ? '' : ($COMPOSR_PATH . ((substr($COMPOSR_PATH, -1) == DIRECTORY_SEPARATOR) ? '' : DIRECTORY_SEPARATOR))) . $to_use;
 
-        if (strpos(file_get_contents($full_path), '/*CQC: No check*/') !== false) {
+        if (strpos(file_get_contents($full_path), '/*CQC:' . ' No check*/') !== false) {
             echo 'SKIP: ' . $to_use . cnl();
             continue;
         }
@@ -709,8 +709,10 @@ function check($structure)
         check_function($function);
     }
     foreach ($structure['classes'] as $class) {
-        if (substr($class['name'], 0, 1) == strtolower(substr($class['name'], 0, 1))) {
-            log_warning('Class names should start with an upper case letter, \'' . $class['name'] . '\'');
+        if (isset($GLOBALS['API'])) {
+            if (substr($class['name'], 0, 1) == strtolower(substr($class['name'], 0, 1))) {
+                log_warning('Class names should start with an upper case letter, \'' . $class['name'] . '\'');
+            }
         }
 
         /*if (substr($class['name'], 1) != strtolower(substr($class['name'], 1))) {     Too Composr-specific
@@ -1871,7 +1873,6 @@ function check_expression($e, $assignment = false, $equate_false = false, $funct
                 }
             }
             return $ret;
-            break;
         case 'CASTED':
             check_expression($inner[2], false, false, $function_guard);
             return strtolower($inner[1]);
@@ -1926,6 +1927,21 @@ function check_expression($e, $assignment = false, $equate_false = false, $funct
                 }
             }
             return 'array';
+        case 'ASSIGNMENT':
+            check_assignment($inner, $c_pos, $function_guard);
+            break;
+        case 'PRE_DEC':
+            ensure_type(array('integer', 'float'), check_variable($inner[1], false, $function_guard), $c_pos, 'Can only decrement numbers');
+            break;
+        case 'PRE_INC':
+            ensure_type(array('integer', 'float'), check_variable($inner[1], false, $function_guard), $c_pos, 'Can only increment numbers');
+            break;
+        case 'DEC':
+            ensure_type(array('integer', 'float'), check_variable($inner[1], false, $function_guard), $c_pos, 'Can only decrement numbers');
+            break;
+        case 'INC':
+            ensure_type(array('integer', 'float'), check_variable($inner[1], false, $function_guard), $c_pos, 'Can only increment numbers');
+            break;
         case 'VARIABLE':
             return check_variable($inner, true, $function_guard);
     }

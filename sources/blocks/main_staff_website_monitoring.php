@@ -12,13 +12,13 @@
 
 */
 
-/*NO_API_CHECK*/
-
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
  * @package    core_adminzone_dashboard
  */
+
+/*NO_API_CHECK*/
 
 /**
  * Block class.
