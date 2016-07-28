@@ -392,7 +392,7 @@ function lex($text = null)
                     } elseif ($token_found == 'START_HEREDOC') {
                         $lex_state = PLEXER_HEREDOC;
                         $matches = array();
-                        preg_match('#(["\'])?([A-Za-z0-9\_]*)\\1#', $TEXT, $matches, 0, $i);
+                        preg_match('#(["\']?)([A-Za-z0-9\_]*)\\1#', $TEXT, $matches, 0, $i);
                         $heredoc_symbol = $matches[2];
                         $i += strlen($heredoc_symbol);
                         break;
