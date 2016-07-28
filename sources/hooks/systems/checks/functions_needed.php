@@ -84,11 +84,15 @@ class Hook_check_functions_needed
             var_export array_intersect_key end sys_get_temp_dir error_get_last
             gethostbyname htmlspecialchars stat str_ireplace stripos key pi print set_exception_handler acos
             readgzfile ob_gzhandler gzcompress gzdeflate gzencode gzfile gzinflate gzuncompress gzclose gzopen gzwrite
-            imagepalettetotruecolor
+            array_column array_fill_keys getimagesizefromstring hash_equals
+            http_response_code memory_get_peak_usage password_get_info password_hash
+            password_needs_rehash password_verify str_getcsv strripos
 END;
 
         if (function_exists('imagecreatefromstring')) {
             $baseline_functions .= <<<END
+                imagecreatefromgif imagecreatefromwebp imagegif imagewebp
+                imagepalettetotruecolor iptcembed iptcparse
                 imagecolorallocatealpha imageistruecolor imagealphablending imagecolorallocate imagecolortransparent imagecopy
                 imagecopyresampled imagecopyresized imagecreate imagecreatefrompng
                 imagecreatefromjpeg imagecreatetruecolor imagecolorat imagecolorsforindex

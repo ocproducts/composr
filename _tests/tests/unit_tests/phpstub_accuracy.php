@@ -20,9 +20,9 @@ class phpstub_accuracy_test_set extends cms_test_case
 {
     public function testFunctionsNeeded()
     {
-        $c = file_get_contents(get_file_base() . '/sources_custom/phpstub.php');
+        $phpstub = file_get_contents(get_file_base() . '/sources_custom/phpstub.php');
         $matches = array();
-        $num_matches = preg_match_all('#^function (\w+)\(#m', $c, $matches);
+        $num_matches = preg_match_all('#^function (\w+)\(#m', $phpstub, $matches);
         $declared_functions = array();
         for ($i = 0; $i < $num_matches; $i++) {
             $function = $matches[1][$i];
@@ -46,7 +46,7 @@ class phpstub_accuracy_test_set extends cms_test_case
         }
 
         foreach ($required_functions as $function) {
-            $this->assertTrue(in_array($function, $declared_functions), 'Missing from phpstub.php? ' . $function);
+            $this->assertTrue((in_array($function, $declared_functions)) || (strpos($phpstub, "\n" . $function . "\n") !== false), 'Missing from phpstub.php? ' . $function);
         }
 
         if (get_param_integer('dev_check', 0) == 1) { // This extra switch let's us automatically find new functions in PHP we aren't coding for

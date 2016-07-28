@@ -81,7 +81,7 @@ function password_verify($password, $hash)
  *
  * @param  string $hash The password hash
  * @param  integer $algo The algorithm wanted (Defined by PASSWORD_* constants)
- * @param  array $options The options for the algorithm wanted
+ * @param  ?array $options The options for the algorithm wanted (null: no options)
  * @return boolean Whether rehash is needed
  */
 function password_needs_rehash($hash, $algo, $options = null)
@@ -1384,7 +1384,7 @@ function imagepng($image, $filename = null, $quality = 0)
  * @param  ?string $filename The filename (null: output to browser).
  * @return boolean Success status.
  */
-function imagewebp($image, $filename = null, $quality = 0)
+function imagewebp($image, $filename = null)
 {
     return true;
 }
@@ -2679,7 +2679,7 @@ function set_exception_handler($exception_handler)
  * @param  boolean $httponly Whether the cookie will not be available to JavaScript.
  * @return ?boolean Success status (fails if output already started) (null: failed also).
  */
-function setcookie($name, $value = null, $expire = null, $path = null, $domain = null, $secure = false, $httponly = false)
+function setcookie($name, $value = null, $expire = 0, $path = null, $domain = null, $secure = false, $httponly = false)
 {
     return false;
 }
@@ -3670,7 +3670,7 @@ function json_encode($value)
  *
  * @param  string $json The JSON string being decoded.
  * @param  boolean $assoc Whether returned objects will be converted into associative arrays.
- * @param  int $depth User specified recursion depth.
+ * @param  integer $depth User specified recursion depth.
  * @return ~mixed Decoded data (false: error)
  */
 function json_decode($json, $assoc = false, $depth = 512)
@@ -4477,7 +4477,7 @@ function eval($code)
 /**
  * Get or Set the HTTP response code.
  *
- * @param  ?int $response_code Response codee to set (null: don't set).
+ * @param  ?integer $response_code Response codee to set (null: don't set).
  * @return mixed The previous response code if $response_code was set / current response mode if $response_code is not set / false if CLI / true if CLI but $response_code was set.
  */
 function http_response_code($response_code = null)
@@ -4925,7 +4925,7 @@ function array_fill($start_index, $num, $value)
 /**
  * Fill an array with values, specifying keys.
  *
- * @param  array $input Keys.
+ * @param  array $keys Keys.
  * @param  mixed $value Value to fill with.
  * @return array Filled array.
  */
@@ -5502,7 +5502,6 @@ stream_bucket_append
 stream_bucket_make_writeable
 stream_bucket_new
 stream_bucket_prepend
-stream_context_create
 stream_context_get_default
 stream_context_get_options
 stream_context_get_params

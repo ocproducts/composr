@@ -47,27 +47,27 @@ Most companies competing on price may appear to be good if you compare features/
 [title="2"]Requirements and recommendations[/title]
 
 [media width="480" thumb="1" framed="1" description="Easy-reference summary of the key hosting recommendations." float="right"]data_custom/images/docs/tut_webhosting/image.png[/media]
-When choosing a webhost, you need to make sure that they meet all the requirements of Composr. Composr is intentionally designed to have very low requirements, but like when making virtually any choice in life, there are various different kinds of product that companies may try and sell.
-If a random commercial [concept]PHP[/concept]/[concept]MySQL[/concept]-supporting webhost was chosen, it is very likely that they would support these requirements: however the developers cannot be held accountable for incompatibilities with systems that do not.
+When choosing a webhost, you need to make sure that they meet all the requirements of Composr. Composr is intentionally designed to have very low requirements, so most [concept]PHP[/concept]/[concept]MySQL[/concept]-supporting webhosts should be compatible.
 
-The remainder of this section details Composr's requirements. If you have trouble ascertaining a webhosts compliance, you may wish to contact them with this information.
+The remainder of this section details Composr's requirements. If you have trouble ascertaining a webhosts compliance, you may wish to contact them with this information. These requirements only apply to bundled functionality; non-bundled addons may have their own requirements.
 
 Composr requires:
  - A web server that runs PHP. PHP is software which provides the environment that Composr is written for.
-  - Composr requires PHP version 5.6 or higher
-  - We have tested up to and including PHP 7.0
-  - Other non-bundled addons may have different dependencies
- - A PHP environment with the following (a competent webhost geared towards running PHP web applications should be able to provide this):
+  - version 5.6 or higher
+  - we have tested up to and including PHP 7.0, although newer versions usually do work or are quickly fixed to work
   - GD2 extension (including PNG and JPEG support). GD is used by PHP for image generation, e.g. to generate thumbnails.
   - file uploads with at least 5MB (or higher, depending on your particular needs)
   - MySQL extension ([tt]mysql[/tt] or [tt]mysqli[/tt])
   - a maximum execution time of at least 30 seconds
-  - [tt]max_input_vars[/tt] of at least 2000 (most hosts let you raise the setting)
+  - [tt]max_input_vars[/tt] of at least 1000 (most hosts let you raise the setting)
   - key functions may not be disabled with disable_functions (PHP can be stripped down heavily by disreputable webhosts) -- the installer will warn if any critical functions have been
   - no other explicit disabling of standard functionality that we require. Commonly webhosts do this using ModSecurity, Suhosin, suPHP or their own modified PHP versions. We do our best to workaround such issues for common recoverable cases, but ultimately if arbitrary standard functionality has been disabled the software cannot function.
   - memory limit of at least 128MB (as this is PHP's default memory limit since 2009).
  - At least 50MB of disk space, plus your needs for space for downloads, images, etc. No maximum file size limit under 25MB or file type whitelists (some free webhosts will impose these limits -- which explains why [tt]data.cms[/tt] might disappear when you try to upload it)
- - A web server that runs MySQL (*), version 5.5.3 (&dagger;) or higher. MySQL is the database software (software which allows creation of a number of separate databases) which Composr uses to store the majority of its data. Often webhosts will quote a number of databases that webhosting comes with: Composr only requires a single MySQL database to function. At least 5MB of database storage space is required, which should be available on any reputable webhost
+ - A database server that runs MySQL (*)
+  - MySQL is the database software (software which allows creation of a number of separate databases) which Composr uses to store the majority of its data. Often webhosts will quote a number of databases that webhosting comes with: Composr only requires a single MySQL database to function.
+  - version 5.5.3 (&dagger;) or higher
+  - at least 10MB of database storage space is required, which should be available on any reputable webhost
  - A web server running Apache (the common Linux web server) or IIS7+ (the Microsoft web server). It is very unlikely you will find a webhost that provides something else. Other servers might work but are not supported (for example nginx should work, but you would need significant expertise to get the URL schemes functionality working)
   - If running Windows, you should use an NTFS partition not a FAT32 partition, as FAT32 cannot support file locking
   - If running Apache using a [tt]mod_php[/tt] (as opposed to a CGI version of PHP), the server configuration needs to have [tt]AllowOverride All[/tt] or at least [tt]AllowOverride Options FileInfo Limit[/tt] (because we use distributed [tt].htaccess[/tt] files containing settings to increase security)
@@ -82,19 +82,19 @@ Composr requires:
 Composr recommends:
  - PHP versions:
   - PHP 7 is better than PHP 5.6 due to very significant performance improvements
-  - Don't accept EOL. If a webhost or Linux distribution has a PHP version that is EOL ("end of life"), it is not just out-dated, but also insecure do (at the time of writing, anything less than PHP 5.6 is unsupported by the PHP developers)
+  - Don't accept EOL ("end of life"). If a webhost or Linux distribution has a PHP version that is EOL, it is not just out-dated, but also insecure do (at the time of writing, anything less than PHP 5.6 is unsupported by the PHP developers)
   - Make sure your PHP version is updated with security fixes, even if you haven't updated to the latest major version
  - A PHP environment with the following PHP extensions/build-options and matching system software:
   - FTP &dagger;
   - pSpell or Enchant, with matching aspell/hunspell installs and dictionaries (spellchecking)
   - iconv or mbstring (Unicode support)
   - FreeType (with the build-option for GD). FreeType allows us to draw text onto graphics using TrueType fonts.
-  - OpenSSL (raises security, strongly recommended)
   - ZIP
   - XML
   - cURL
   - APC (PHP 5.6 or lower only), or Memcache, or Memcached, or Wincache
- - A PHP environment with [tt]open_basedir[/tt] enabled -- or a suEXEC/IIS server (explained further down)
+ - A PHP environment with [tt]open_basedir[/tt] enabled
+ - A suEXEC/IIS server (explained further down)
  - At least 100MB of disk space
 
 &dagger; If you do not have the PHP FTP extension, then you will need either:
