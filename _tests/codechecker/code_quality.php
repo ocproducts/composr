@@ -1316,7 +1316,7 @@ function check_call($c, $c_pos, $class = null, $function_guard = '')
             $ret = $potential['return'];
         }
         foreach ($potential['parameters'] as $i => $param) {
-            if ((!isset($params[$i])) && (($i == 0) || (!$params[$i - 1][1]/*not a vadiadic call*/)) && (!array_key_exists('default', $param))) {
+            if ((!isset($params[$i])) && ((count($params) == 0) || (!$params[count($params) - 1][1]/*not a vadiadic call*/)) && (!$param['is_variadic']/*not variadic parameter spot*/) && (!array_key_exists('default', $param))) {
                 log_warning('Insufficient parameters to function \'' . $function . '\'', $c_pos);
                 break;
             }
@@ -1707,8 +1707,8 @@ function check_expression($e, $assignment = false, $equate_false = false, $funct
         }
     }
     if ($e[0] == 'TERNARY_IF') {
-        if (($e[1][0] == 'CALL_DIRECT') && ($e[1][1] == 'php_function_allowed' || strpos($e[1][1], '_exists') !== false/*function_exists or method_exists or class_exists*/) && ($e[1][2][0][0] == 'LITERAL') && ($e[1][2][0][1][0] == 'STRING')) {
-            $function_guard .= ',' . $e[1][2][0][1][1] . ',';
+        if (($e[1][0] == 'CALL_DIRECT') && ($e[1][1] == 'php_function_allowed' || strpos($e[1][1], '_exists') !== false/*function_exists or method_exists or class_exists*/) && ($e[1][2][0][0][0] == 'LITERAL') && ($e[1][2][0][0][1][0] == 'STRING')) {
+            $function_guard .= ',' . $e[1][2][0][0][1][1] . ',';
         }
         $passes = ensure_type(array('boolean'), check_expression($e[1], false, false, $function_guard), $c_pos, 'Conditionals must be boolean (ternary)');
         if ($passes) {

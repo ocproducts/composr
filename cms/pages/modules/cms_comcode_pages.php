@@ -536,7 +536,7 @@ class Module_cms_comcode_pages
                 $validated = ($row['validated'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('YES');
             }
 
-            $edit_url = build_url(array('page' => '_SELF', 'type' => '_edit', 'page_link' => $row['page_link'],, 'lang' => $lang), '_SELF');
+            $edit_url = build_url(array('page' => '_SELF', 'type' => '_edit', 'page_link' => $row['page_link'], 'lang' => $lang), '_SELF');
             $clone_url = build_url(array('page' => '_SELF', 'type' => '_edit', 'page_link' => /*new page-link only has zone specified initially*/$row['zone'] . ':', 'restore_from_path' => $page_path . '.txt', 'lang' => $lang), '_SELF');
             $actions = do_template('COMCODE_PAGE_EDIT_ACTIONS', array('_GUID' => '6cc8c492ba9ae4035c394fbe28a56c26', 'EDIT_URL' => $edit_url, 'CLONE_URL' => $clone_url));
 

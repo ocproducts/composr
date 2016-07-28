@@ -12,7 +12,7 @@
 
 */
 
-/*EXTRA FUNCTIONS: shell_exec*/
+/*EXTRA FUNCTIONS: shell_exec|imagefilledrectangle*/
 
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License

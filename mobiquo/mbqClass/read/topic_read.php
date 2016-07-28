@@ -262,14 +262,14 @@ class CMSTopicRead
 
             $participant_id = $method_data;
 
-            $array_push($conditions, 'pp.p_poster=' . strval($participant_id));
+            array_push($conditions, 'pp.p_poster=' . strval($participant_id));
 
             // Run query
             $table_prefix = $GLOBALS['FORUM_DB']->get_table_prefix();
             $sql = $table_prefix . 'f_posts pp JOIN ' . $table_prefix . 'f_topics t ON t.id=pp.p_topic_id JOIN ' . $table_prefix . 'f_posts p ON t.t_cache_first_post_id=p.id JOIN ' . $table_prefix . 'f_forums f ON f.id=t.t_forum_id WHERE ' . implode(' AND ', $conditions);
             $total_forum_topics = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . $sql . ' GROUP BY t.id');
             $sql .= implode(' AND ', $conditions_full);
-            $sql .=' GROUP BY t.id ORDER BY t_cache_last_time DESC,t.id DESC';
+            $sql .= ' GROUP BY t.id ORDER BY t_cache_last_time DESC,t.id DESC';
             $forum_topics = $GLOBALS['FORUM_DB']->query('SELECT *,t.id AS topic_id,p.id AS post_id,f.id AS forum_id FROM ' . $sql, $max, $start);
 
             return array($total_forum_topics, $forum_topics);
@@ -281,7 +281,7 @@ class CMSTopicRead
         $total_forum_topics = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . $sql);
         $sql = $table_prefix . 'f_topics t JOIN ' . $table_prefix . 'f_posts p ON t.t_cache_first_post_id=p.id JOIN ' . $table_prefix . 'f_forums f ON f.id=t.t_forum_id WHERE ' . implode(' AND ', $conditions);
         $sql .= ' AND ' . implode(' AND ', $conditions_full);
-        $sql .=' ORDER BY t_cache_last_time DESC,t.id DESC';
+        $sql .= ' ORDER BY t_cache_last_time DESC,t.id DESC';
         $forum_topics = $GLOBALS['FORUM_DB']->query('SELECT *,t.id AS topic_id,p.id AS post_id,f.id AS forum_id FROM ' . $sql, $max, $start);
 
         return array($total_forum_topics, $forum_topics);

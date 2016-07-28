@@ -33,7 +33,7 @@ class CMSModerationWrite
         }
 
         require_code('cns_topics_action2');
-        cns_edit_topic($topic_id, null, null, null, null, 1, null, null, ''); // NB: Checks perms implicitly
+        cns_edit_topic($topic_id, null, null, null, null, 1, null, ''); // NB: Checks perms implicitly
         return true;
     }
 
@@ -52,7 +52,7 @@ class CMSModerationWrite
         }
 
         require_code('cns_topics_action2');
-        cns_edit_topic($topic_id, null, null, null, null, 0, null, null, ''); // NB: Checks perms implicitly
+        cns_edit_topic($topic_id, null, null, null, null, 0, null, ''); // NB: Checks perms implicitly
         return true;
     }
 
@@ -71,7 +71,7 @@ class CMSModerationWrite
         }
 
         require_code('cns_topics_action2');
-        cns_edit_topic($topic_id, null, null, null, 0, null, null, null, ''); // NB: Checks perms implicitly
+        cns_edit_topic($topic_id, null, null, null, 0, null, null, ''); // NB: Checks perms implicitly
         return true;
     }
 
@@ -90,7 +90,7 @@ class CMSModerationWrite
         }
 
         require_code('cns_topics_action2');
-        cns_edit_topic($topic_id, null, null, null, 1, null, null, null, ''); // NB: Checks perms implicitly
+        cns_edit_topic($topic_id, null, null, null, 1, null, null, ''); // NB: Checks perms implicitly
         return true;
     }
 
@@ -175,7 +175,7 @@ class CMSModerationWrite
         }
 
         require_code('cns_topics_action2');
-        cns_edit_topic($topic_id, null, null, null, null, null, null, null, do_lang('REASON_TAPATALK_RENAMING_TOPIC'), $new_title); // NB: Checks perms implicitly
+        cns_edit_topic($topic_id, null, null, null, null, null, null, do_lang('REASON_TAPATALK_RENAMING_TOPIC'), $new_title); // NB: Checks perms implicitly
         return true;
     }
 

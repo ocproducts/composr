@@ -337,7 +337,7 @@ class Module_cms_galleries extends Standard_crud_module
         // To choose to batch import from multiple attached files
         $post_url = build_url(array('page' => '_SELF', 'type' => '__import', 'cat' => $cat, 'uploading' => 1, 'redirect' => get_param_string('redirect', null)), '_SELF');
         $fields = new Tempcode();
-        $fields->attach(form_input_upload_multi(do_lang_tempcode('UPLOAD'), do_lang_tempcode('DESCRIPTION_ARCHIVE_MEDIA', escape_html(str_replace(',', ', ', get_option('valid_images') . ',' . get_allowed_video_file_types()))), 'file', true, null, null, true, str_replace(' ', '', get_option('valid_images') . ',' . $supported)));
+        $fields->attach(form_input_upload_multi(do_lang_tempcode('UPLOAD'), do_lang_tempcode('DESCRIPTION_ARCHIVE_MEDIA', escape_html(str_replace(',', ', ', get_option('valid_images') . ',' . get_allowed_video_file_types()))), 'file', true, null, null, true, str_replace(' ', '', get_option('valid_images'))));
         $fields->attach(form_input_line(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_GALLERY_IMPORT_TITLE'), 'set_title', '', false/*Is multi-upload and may get from EXIF [besides, this is set_title not title] get_option('gallery_media_title_required') == '1'*/));
         $hidden = new Tempcode();
         handle_max_file_size($hidden);
@@ -463,9 +463,9 @@ class Module_cms_galleries extends Standard_crud_module
                 $tmp_name_2 = cms_tempnam();
 
                 if ($__file['type'] != 'plupload') {
-                    $test = @move_uploaded_file($tmp_name, $tmp_name_2);
+                    @move_uploaded_file($tmp_name, $tmp_name_2);
                 } else {
-                    $test = @copy($tmp_name, $tmp_name_2); // We could rename, but it would hurt integrity of refreshes
+                    @copy($tmp_name, $tmp_name_2); // We could rename, but it would hurt integrity of refreshes
                 }
 
                 list($new_path, $new_url, $new_filename) = find_unique_path('uploads/galleries', filter_naughty($file), true);

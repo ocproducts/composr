@@ -71,9 +71,7 @@ function cms_getimagesize($path)
             $header = unpack('@6/' . 'vwidth/' . 'vheight', $data);
             $sx = $header['width'];
             $sy = $header['height'];
-        } else {
-            $sx = imagesx($source);
-            $sy = imagesy($source);
+            return array($sx, $sy);
         }
 
         $details = @getimagesizefromstring($data);

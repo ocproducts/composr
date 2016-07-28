@@ -1625,8 +1625,10 @@ if (!function_exists(\'git_repos\')) {
      */
     function git_repos()
     {
-        $path = __DIR__.\'/.git/HEAD\';
-        if (!is_file($path)) return \'\';
+        $path = __DIR__ . \'/.git/HEAD\';
+        if (!is_file($path)) {
+            return \'\';
+            }
         $lines = file($path);
         $parts = explode(\'/\', $lines[0]);
         return trim(end($parts));

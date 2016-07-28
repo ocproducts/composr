@@ -180,7 +180,7 @@ class Module_admin_cns_emoticons extends Standard_crud_module
 
         $post_url = build_url(array('page' => '_SELF', 'type' => '_import', 'uploading' => 1), '_SELF');
         $fields = new Tempcode();
-        $fields->attach(form_input_upload_multi(do_lang_tempcode('UPLOAD'), do_lang_tempcode('DESCRIPTION_ARCHIVE_IMAGES', escape_html(str_replace(',', ', ', get_option('valid_images')))), 'file', true, null, null, true, str_replace(' ', '', get_option('valid_images') . ',' . $supported)));
+        $fields->attach(form_input_upload_multi(do_lang_tempcode('UPLOAD'), do_lang_tempcode('DESCRIPTION_ARCHIVE_IMAGES', escape_html(str_replace(',', ', ', get_option('valid_images')))), 'file', true, null, null, true, str_replace(' ', '', get_option('valid_images'))));
 
         $text = paragraph(do_lang_tempcode('IMPORT_EMOTICONS_WARNING'));
         require_code('images');

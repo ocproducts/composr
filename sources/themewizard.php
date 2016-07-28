@@ -1364,11 +1364,8 @@ function re_hue_image($path, $seed, $source_theme, $also_s_and_v = false, $inver
             $image = @imagecreatefromwebp($path);
         } else {
             $image = @imagecreatefrompng($path);
-
-            // GD may have a bug with not loading up non-alpha transparency properly
-            imagepalettetotruecolor($img);
         }
-        if ($_image === false) {
+        if ($image === false) {
             warn_exit(do_lang_tempcode('CORRUPT_FILE', escape_html($path)), false, true);
         }
     } else {
@@ -1538,8 +1535,6 @@ function generate_recoloured_image($path, $colour_a_orig, $colour_a_new, $colour
         $colour_b_new_b = $colour_b1_new_b;
         $colour_b_new = $colour_b1_new;
     }
-
-    imagepalettetotruecolor($_image);
 
     $gh = floatval($height - $gradient_offset);
     $gw = floatval($width - $gradient_offset);

@@ -91,7 +91,7 @@ class Hook_ecommerce_cart_orders
             if (substr($search, 0, strlen($l)) != $l) {
                 return array();
             }
-            $where .= ' AND id=' . strval(intval(substr($search, strlen($l))));
+            $where = 'id=' . strval(intval(substr($search, strlen($l))));
             // NB: $search_item_names is ignored because codename is the same as item name for this hook
         } else {
             $where = '(' . db_string_equal_to('order_status', 'ORDER_STATUS_awaiting_payment') . ' OR ' . db_string_equal_to('order_status', 'ORDER_STATUS_payment_received') . ')';

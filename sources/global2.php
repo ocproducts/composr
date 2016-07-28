@@ -167,6 +167,24 @@ function init__global2()
     $HAS_SET_ERROR_HANDLER = false;
     $DYING_BADLY = false; // If Composr is bailing out uncontrollably, setting this will make sure the error hander does not try and suppress
 
+    if (!function_exists('git_repos')) {
+        /**
+         * Find the git branch name. This is useful for making this config file context-adaptive (i.e. dev settings vs production settings).
+         *
+         * @return ?ID_TEXT Branch name (null: not in git)
+         */
+        function git_repos()
+        {
+            $path = __DIR__ . '/.git/HEAD';
+            if (!is_file($path)) {
+                return '';
+            }
+            $lines = file($path);
+            $parts = explode('/', $lines[0]);
+            return trim(end($parts));
+        }
+    }
+
     // Dev mode stuff
     /** Whether the ocProducts version of PHP is running, and hence whether XSS-detection is enabled, and hence whether we may need to carry through additional metadata to make sure it operates correctly. Stored in a global for quick check (good performance).
      *

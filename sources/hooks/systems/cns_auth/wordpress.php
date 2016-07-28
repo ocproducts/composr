@@ -12,6 +12,8 @@
 
 */
 
+/*EXTRA FUNCTIONS: crypt*/
+
 /*NO_API_CHECK*/
 
 /**

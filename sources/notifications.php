@@ -452,7 +452,7 @@ class Notification_dispatcher
                     if (get_option('pt_notifications_as_web') == '0') {
                         if (
                             ($notification_code == 'cns_new_pt') ||
-                            ($notification_code == 'cns_topic' && is_numeric($code_category) && ($GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 't_forum_id', array('id' => intval($code_category)) === null)))
+                            ($notification_code == 'cns_topic' && is_numeric($code_category) && ($GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 't_forum_id', array('id' => intval($code_category))) === null))
                         ) {
                             continue;
                         }

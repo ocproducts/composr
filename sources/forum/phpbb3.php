@@ -18,6 +18,8 @@
  * @package    core_forum_drivers
  */
 
+/*EXTRA FUNCTIONS: crypt*/
+
 /**
  * phpBB: Encode hash
  *

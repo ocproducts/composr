@@ -1343,18 +1343,9 @@ class Module_tickets
             $message,
             array($member_id),
             null,
-            3,
-            false,
-            false,
-            null,
-            null,
-            '',
-            '',
-            '',
-            '',
-            null,
-            false,
-            true
+            array(
+                'use_real_from' => true
+            )
         );
 
         disable_notifications('ticket_assigned_staff', $ticket_id, $member_id);

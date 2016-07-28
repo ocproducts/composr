@@ -643,8 +643,8 @@ function install_cns($upgrade_from = null)
         $GLOBALS['FORUM_DB']->create_index('f_forums', 'subforum_parenting', array('f_parent_forum'));
         $GLOBALS['FORUM_DB']->create_index('f_forums', 'findnamedforum', array('f_name'));
         $GLOBALS['FORUM_DB']->create_index('f_forums', 'f_position', array('f_position'));
-        $typical_access = array($guest_group => 4, $administrator_group => 5, $super_moderator_group => 5, $probation_group => 2, $super_member_group => 4, $member_group_0 => 4, $member_group_1 => 4, $member_group_2 => 4, $member_group_3 => 4, $member_group_4 => 4);
-        $staff_post_access = array($guest_group => 1, $administrator_group => 5, $super_moderator_group => 5, $probation_group => 1, $super_member_group => 2, $member_group_0 => 1, $member_group_1 => 1, $member_group_2 => 1, $member_group_3 => 1, $member_group_4 => 1);
+        $typical_access = array($guest_group => 4, $administrator_group => 5, $super_moderator_group => 5, $probation_group => 2, $member_group_0 => 4, $member_group_1 => 4, $member_group_2 => 4, $member_group_3 => 4, $member_group_4 => 4);
+        $staff_post_access = array($guest_group => 1, $administrator_group => 5, $super_moderator_group => 5, $probation_group => 1, $member_group_0 => 1, $member_group_1 => 1, $member_group_2 => 1, $member_group_3 => 1, $member_group_4 => 1);
         $staff_access = array($administrator_group => 5, $super_moderator_group => 5);
         $root_forum = cns_make_forum(do_lang('ROOT_FORUM'), '', null, $staff_post_access, null);
         cns_make_forum(do_lang('DEFAULT_FORUM_TITLE'), '', $forum_grouping_id, $typical_access, $root_forum);

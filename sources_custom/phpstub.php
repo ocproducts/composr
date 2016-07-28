@@ -223,16 +223,12 @@ function array_intersect_assoc($array1, $array2, $array3 = null)
 }
 
 /**
- * Merge two or more arrays.
+ * Merge arrays together.
  *
- * @param  array $array1 First array.
- * @param  array $array2 Second array.
- * @param  ?array $array3 Third array (null: only 2).
- * @param  ?array $array4 Fourth array to merge (null: not this one).
- * @param  ?array $array5 Fifth array to merge (null: not this one).
+ * @param  array $arrays Arrays to merge.
  * @return array Merged array.
  */
-function array_merge($array1, $array2, $array3 = null, $array4 = null, $array5 = null)
+function array_merge(...$arrays)
 {
     return array();
 }
@@ -252,13 +248,10 @@ function array_pop(&$array)
  * Push one or more elements onto the end of array.
  *
  * @param  array $array The array.
- * @param  mixed $var1 Element to append.
- * @param  ?mixed $var2 Element to append (null: no more - actually pass nothing for this).
- * @param  ?mixed $var3 Element to append (null: no more - actually pass nothing for this).
- * @param  ?mixed $var4 Element to append (null: no more - actually pass nothing for this).
+ * @param  mixed $vars Elements to append.
  * @return integer The new number of elements in the array.
  */
-function array_push(&$array, $var1, $var2 = null, $var3 = null, $var4 = null)
+function array_push(&$array, ...$vars)
 {
     return 0;
 }
@@ -349,26 +342,6 @@ function array_values($array)
 }
 
 /**
- * Sort an array in reverse order and maintain index association.
- *
- * @param  array $array Array.
- * @param  integer $sort_flags Sort flags.
- */
-function arsort(&$array, $sort_flags = 0)
-{
-}
-
-/**
- * Sort an array and maintain index association.
- *
- * @param  array $array Array.
- * @param  integer $sort_flags Sort flags.
- */
-function asort(&$array, $sort_flags = 0)
-{
-}
-
-/**
  * Decodes data encoded with MIME base64.
  *
  * @param  string $encoded_data Encoded data.
@@ -395,13 +368,10 @@ function base64_encode($data)
  * Call a user function given by the first parameter.
  *
  * @param  mixed $function Function callback.
- * @param  ?mixed $param_a Optional parameter (null: none).
- * @param  ?mixed $param_b Optional parameter (null: none).
- * @param  ?mixed $param_c Optional parameter (null: none).
- * @param  ?mixed $param_d Optional parameter (null: none).
+ * @param  mixed $param Parameters.
  * @return mixed Whatever the function returns.
  */
-function call_user_func($function, $param_a = null, $param_b = null, $param_c = null, $param_d = null)
+function call_user_func($function, ...$param)
 {
     return 0;
 }
@@ -1958,24 +1928,6 @@ function isset(&$path)
 }
 
 /**
- * Sort an array by key in reverse order.
- *
- * @param  array $array The array to sort.
- */
-function krsort(&$array)
-{
-}
-
-/**
- * Sort an array by key.
- *
- * @param  array $array The array to sort.
- */
-function ksort(&$array)
-{
-}
-
-/**
  * Get numeric formatting information.
  *
  * @return array Array of formatting information.
@@ -2319,39 +2271,10 @@ function ord($string)
  * Pack data into binary string.
  *
  * @param  string $format The formatting string.
- * @param  ?mixed $arg1 Argument that binds to the formatting string (null: none).
- * @param  ?mixed $arg2 Argument that binds to the formatting string (null: none).
- * @param  ?mixed $arg3 Argument that binds to the formatting string (null: none).
- * @param  ?mixed $arg4 Argument that binds to the formatting string (null: none).
- * @param  ?mixed $arg5 Argument that binds to the formatting string (null: none).
- * @param  ?mixed $arg6 Argument that binds to the formatting string (null: none).
- * @param  ?mixed $arg7 Argument that binds to the formatting string (null: none).
- * @param  ?mixed $arg8 Argument that binds to the formatting string (null: none).
- * @param  ?mixed $arg9 Argument that binds to the formatting string (null: none).
- * @param  ?mixed $arg10 Argument that binds to the formatting string (null: none).
- * @param  ?mixed $arg11 Argument that binds to the formatting string (null: none).
- * @param  ?mixed $arg12 Argument that binds to the formatting string (null: none).
- * @param  ?mixed $arg13 Argument that binds to the formatting string (null: none).
- * @param  ?mixed $arg14 Argument that binds to the formatting string (null: none).
- * @param  ?mixed $arg15 Argument that binds to the formatting string (null: none).
- * @param  ?mixed $arg16 Argument that binds to the formatting string (null: none).
- * @param  ?mixed $arg17 Argument that binds to the formatting string (null: none).
- * @param  ?mixed $arg18 Argument that binds to the formatting string (null: none).
- * @param  ?mixed $arg19 Argument that binds to the formatting string (null: none).
- * @param  ?mixed $arg20 Argument that binds to the formatting string (null: none).
- * @param  ?mixed $arg21 Argument that binds to the formatting string (null: none).
- * @param  ?mixed $arg22 Argument that binds to the formatting string (null: none).
- * @param  ?mixed $arg23 Argument that binds to the formatting string (null: none).
- * @param  ?mixed $arg24 Argument that binds to the formatting string (null: none).
- * @param  ?mixed $arg25 Argument that binds to the formatting string (null: none).
- * @param  ?mixed $arg26 Argument that binds to the formatting string (null: none).
- * @param  ?mixed $arg27 Argument that binds to the formatting string (null: none).
- * @param  ?mixed $arg28 Argument that binds to the formatting string (null: none).
- * @param  ?mixed $arg29 Argument that binds to the formatting string (null: none).
- * @param  ?mixed $arg30 Argument that binds to the formatting string (null: none).
+ * @param  mixed $args Argument that binds to the formatting string.
  * @return string The binary string.
  */
-function pack($format, $arg1 = null, $arg2 = null, $arg3 = null, $arg4 = null, $arg5 = null, $arg6 = null, $arg7 = null, $arg8 = null, $arg9 = null, $arg10 = null, $arg11 = null, $arg12 = null, $arg13 = null, $arg14 = null, $arg15 = null, $arg16 = null, $arg17 = null, $arg18 = null, $arg19 = null, $arg20 = null, $arg21 = null, $arg22 = null, $arg23 = null, $arg24 = null, $arg25 = null, $arg26 = null, $arg27 = null, $arg28 = null, $arg29 = null, $arg30 = null)
+function pack($format, ...$args)
 {
     return '';
 }
@@ -2406,6 +2329,19 @@ function preg_match($pattern, $subject, $matches = null, $flags = 0, $offset = 0
 function preg_match_all($pattern, $subject, &$matches, $flags = 0)
 {
     return 0;
+}
+
+/**
+ * Array entries that match the pattern.
+ *
+ * @param  string $pattern The pattern.
+ * @param  array $subject The subject strings.
+ * @param  integer $flags Either 0, or PREG_GREP_INVERT.
+ * @return array Matches.
+ */
+function preg_grep($pattern, $subject, $flags = 0)
+{
+    return array();
 }
 
 /**
@@ -2612,15 +2548,6 @@ function round($val, $precision = 0, $mode = PHP_ROUND_HALF_UP)
 }
 
 /**
- * Sort an array in reverse order.
- *
- * @param  array $array The array to sort.
- */
-function rsort(&$array)
-{
-}
-
-/**
  * Strip whitespace from the end of a string.
  *
  * @param  string $str String to trim from.
@@ -2719,29 +2646,13 @@ function sin($arg)
 }
 
 /**
- * Sort an array.
- *
- * @param  array $array The array.
- */
-function sort(&$array)
-{
-}
-
-/**
  * Return a formatted string.
  *
  * @param  string $format Formatting string.
- * @param  ?mixed $arg1 Argument for the formatting string (null: none required).
- * @param  ?mixed $arg2 Argument for the formatting string (null: none required).
- * @param  ?mixed $arg3 Argument for the formatting string (null: none required).
- * @param  ?mixed $arg4 Argument for the formatting string (null: none required).
- * @param  ?mixed $arg5 Argument for the formatting string (null: none required).
- * @param  ?mixed $arg6 Argument for the formatting string (null: none required).
- * @param  ?mixed $arg7 Argument for the formatting string (null: none required).
- * @param  ?mixed $arg8 Argument for the formatting string (null: none required).
+ * @param  mixed $args Arguments for the formatting string.
  * @return string Formatted string.
  */
-function sprintf($format, $arg1 = null, $arg2 = null, $arg3 = null, $arg4 = null, $arg5 = null, $arg6 = null, $arg7 = null, $arg8 = null)
+function sprintf($format, ...$args)
 {
     return '';
 }
@@ -2751,17 +2662,10 @@ function sprintf($format, $arg1 = null, $arg2 = null, $arg3 = null, $arg4 = null
  *
  * @param  resource $handle File to write to.
  * @param  string $format Formatting string.
- * @param  ?mixed $arg1 Argument for the formatting string (null: none required).
- * @param  ?mixed $arg2 Argument for the formatting string (null: none required).
- * @param  ?mixed $arg3 Argument for the formatting string (null: none required).
- * @param  ?mixed $arg4 Argument for the formatting string (null: none required).
- * @param  ?mixed $arg5 Argument for the formatting string (null: none required).
- * @param  ?mixed $arg6 Argument for the formatting string (null: none required).
- * @param  ?mixed $arg7 Argument for the formatting string (null: none required).
- * @param  ?mixed $arg8 Argument for the formatting string (null: none required).
+ * @param  mixed $args Arguments for the formatting string.
  * @return string Formatted string.
  */
-function fprintf($handle, $format, $arg1 = null, $arg2 = null, $arg3 = null, $arg4 = null, $arg5 = null, $arg6 = null, $arg7 = null, $arg8 = null)
+function fprintf($handle, $format, ...$args)
 {
     return '';
 }
@@ -3095,16 +2999,6 @@ function trigger_error($error_msg, $error_type)
 }
 
 /**
- * Sort an array with a user-defined comparison function and maintain index association.
- *
- * @param  array $array The array.
- * @param  mixed $cmp_function Comparison function.
- */
-function uasort(&$array, $cmp_function)
-{
-}
-
-/**
  * Make a string's first character uppercase.
  *
  * @param  string $str Subject.
@@ -3124,16 +3018,6 @@ function ucfirst($str)
 function ucwords($str)
 {
     return '';
-}
-
-/**
- * Sort an array by keys using a user-defined comparison function.
- *
- * @param  array $array The array.
- * @param  mixed $cmp_function Comparison function.
- */
-function uksort(&$array, $cmp_function)
-{
 }
 
 /**
@@ -3200,16 +3084,6 @@ function urldecode($str)
 function urlencode($str)
 {
     return '';
-}
-
-/**
- * Sort an array by values using a user-defined comparison function.
- *
- * @param  array $array The array.
- * @param  mixed $cmp_function Comparison function.
- */
-function usort(&$array, $cmp_function)
-{
 }
 
 /**
@@ -4191,12 +4065,102 @@ function array_merge_recursive($array1, $array2, $array3 = null, $array4 = null,
  * Sort multiple or multi-dimensional array.
  *
  * @param  array $array Array to sort.
- * @param  ?integer $args Argument code (null: none given).
+ * @param  mixed $args Other arguments.
  * @return array Result.
  */
-function array_multisort($array, $args = null)
+function array_multisort($array, ...$args)
 {
     return array();
+}
+
+/**
+ * Sort an array in reverse order and maintain index association.
+ *
+ * @param  array $array Array.
+ * @param  integer $sort_flags Sort flags.
+ */
+function arsort(&$array, $sort_flags = 0)
+{
+}
+
+/**
+ * Sort an array and maintain index association.
+ *
+ * @param  array $array Array.
+ * @param  integer $sort_flags Sort flags.
+ */
+function asort(&$array, $sort_flags = 0)
+{
+}
+
+/**
+ * Sort an array by values using a user-defined comparison function.
+ *
+ * @param  array $array The array.
+ * @param  mixed $cmp_function Comparison function.
+ */
+function usort(&$array, $cmp_function)
+{
+}
+
+/**
+ * Sort an array by keys using a user-defined comparison function.
+ *
+ * @param  array $array The array.
+ * @param  mixed $cmp_function Comparison function.
+ */
+function uksort(&$array, $cmp_function)
+{
+}
+
+/**
+ * Sort an array with a user-defined comparison function and maintain index association.
+ *
+ * @param  array $array The array.
+ * @param  mixed $cmp_function Comparison function.
+ */
+function uasort(&$array, $cmp_function)
+{
+}
+
+/**
+ * Sort an array.
+ *
+ * @param  array $array The array.
+ * @param  integer $sort_flags Sort flags.
+ */
+function sort(&$array, $sort_flags = 0)
+{
+}
+
+/**
+ * Sort an array in reverse order.
+ *
+ * @param  array $array The array to sort.
+ * @param  integer $sort_flags Sort flags.
+ */
+function rsort(&$array, $sort_flags = 0)
+{
+}
+
+/**
+ * Sort an array by key in reverse order.
+ *
+ * @param  array $array The array to sort.
+ * @param  integer $sort_flags Sort flags.
+ */
+function krsort(&$array, $sort_flags = 0)
+{
+}
+
+/**
+ * Sort an array by key.
+ *
+ * @param  array $array The array to sort.
+ * @param  integer $sort_flags Sort flags.
+ */
+function ksort(&$array, $sort_flags = 0)
+{
 }
 
 /**
@@ -4428,14 +4392,10 @@ function nl2br($in, $is_xhtml = true)
  * Output a formatted string.
  *
  * @param  string $format Formatting string.
- * @param  ?mixed $arg1 Argument (null: not given).
- * @param  ?mixed $arg2 Argument (null: not given).
- * @param  ?mixed $arg3 Argument (null: not given).
- * @param  ?mixed $arg4 Argument (null: not given).
- * @param  ?mixed $arg5 Argument (null: not given).
+ * @param  mixed $args Arguments for the formatting string.
  * @return string Assembled string.
  */
-function printf($format, $arg1 = null, $arg2 = null, $arg3 = null, $arg4 = null, $arg5 = null)
+function printf($format, ...$args)
 {
     return '';
 }
@@ -5413,7 +5373,6 @@ imagesetthickness
 imagesettile
 imagecharup
 imagecolorclosesthwb
-preg_grep
 fileinode
 soundex
 rewinddir
