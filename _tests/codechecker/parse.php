@@ -414,7 +414,7 @@ function _parse_command_actual($no_term_needed = false)
                         pparse__parser_next();
                         continue;
                     } else {
-                        $command = array('INITIALISATION_STATIC', $static_set, $GLOBALS['I']);
+                        $command = array('STATIC_ASSIGNMENT', $static_set, $GLOBALS['I']);
                         break;
                     }
                 }
@@ -1001,10 +1001,10 @@ function _parse_class_contents($class_modifiers = null, $is_interface = false, $
             case 'CONST':
                 do {
                     pparse__parser_next();
-                    if ($next == 'VAR') {
-                        $identifier = pparse__parser_expect('variable');
-                    } else {
+                    if ($next == 'CONST') {
                         $identifier = pparse__parser_expect('IDENTIFIER');
+                    } else {
+                        $identifier = pparse__parser_expect('variable');
                     }
                     $next_2 = pparse__parser_peek();
                     if ($next_2 == 'EQUAL') {
@@ -1816,10 +1816,12 @@ function _parse_comma_parameters($for_function_definition = false)
         }
     } while ($next_2 == 'COMMA');
 
-    foreach ($parameters as $i => $parameter) {
-        $last = !isset($parameters[$i + 1]);
-        if ($parameter[4] && !$last) {
-            log_warning('Only the final parameter may be variadic');
+    if ($for_function_definition) {
+        foreach ($parameters as $i => $parameter) {
+            $last = !isset($parameters[$i + 1]);
+            if ($parameter[4] && !$last) {
+                log_warning('Only the final parameter may be variadic');
+            }
         }
     }
 
@@ -1865,7 +1867,7 @@ function _parse_parameter($for_function_definition = false)
                         // If the default value is null, the hint is extended to allow null
                         pparse__parser_next(); // Consume the null
                         // 'RECEIVE_BY_REFERENCE' and 'RECEIVE_BY_VALUE' aren't actually used for anything specifically.
-                        $parameter = array('RECEIVE_BY_REFERENCE', $variable, null, $GLOBALS['I']);
+                        $parameter = array('RECEIVE_BY_REFERENCE', $variable, null, $hint, $is_variadic, $GLOBALS['I']);
                         $parameter['HINT'] = '?' . $hint;
                     } else {
                         parser_error('Default arguments for referenced parameters can only be null');

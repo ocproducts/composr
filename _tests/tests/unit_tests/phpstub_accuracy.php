@@ -51,12 +51,27 @@ class phpstub_accuracy_test_set extends cms_test_case
 
         if (get_param_integer('dev_check', 0) == 1) { // This extra switch let's us automatically find new functions in PHP we aren't coding for
             $will_never_define = array(
+                // Extensions, inconsistent prefix
+                'read_exif_data',
+                'hash',
+
+                // FreeType needed
+                'imagefttext',
+                'imageftbbox',
             );
 
             $defined = get_defined_functions();
             foreach ($defined['internal'] as $function) {
                 if (!in_array($function, $will_never_define)) {
-                    $this->assertTrue(in_array($function, $declared_functions), 'Should be defined? ' . $function);
+                    // Extensions
+                    if (preg_match('#^(pdo|dom|exif|token|apache|zip|xmlwriter|xml|ocp|simplexml|session|pspell|posix|spl|mysqli|imap|hash|ftp|filter|finfo|curl|ctype|libxml)_#', $function) != 0) {
+                        continue;
+                    }
+                    if (preg_match('#^(bz|mb)#', $function) != 0) {
+                        continue;
+                    }
+
+                    $this->assertTrue((in_array($function, $declared_functions)) || (strpos($phpstub, "\n" . $function . "\n") !== false), 'Should be defined? ' . $function);
                 }
             }
         }

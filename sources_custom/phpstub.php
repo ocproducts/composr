@@ -5219,6 +5219,7 @@ get_current_user
 fnmatch
 money_format
 ftok
+mime_content_type
 
 Disabled various legacy synonyms (aliases), such as...
 
@@ -5252,6 +5253,7 @@ set_socket_blocking
 socket_setopt
 socket_getopt
 stream_register_wrapper
+socket_set_blocking
 
 Disabed due to being effectively aliases...
 
@@ -5543,6 +5545,22 @@ stream_supports_lock
 stream_wrapper_register
 stream_wrapper_restore
 stream_wrapper_unregister
+
+PHP7, so cannot use yet...
+
+get_resources
+gc_mem_caches
+preg_replace_callback_array
+deflate_init
+deflate_add
+inflate_init
+inflate_add
+random_bytes
+random_int
+intdiv
+error_clear_last
+gethostname
+
 
 // ---
 
