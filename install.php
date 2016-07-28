@@ -21,7 +21,7 @@ if (!function_exists('preg_match')) {
 }
 $functions = array('fopen');
 foreach ($functions as $function) {
-    if (preg_match('#[^,\s]' . $function . '[$,\s]#', @ini_get('disable_functions')) != 0) {
+    if (preg_match('#[^,\s]' . $function . '[$,\s]#', ini_get('disable_functions')) != 0) {
         header('Content-type: text/plain');
         exit('The ' . $function . ' function appears to have been manually disabled in your PHP installation. This is a basic and necessary function, required for Composr.');
     }
@@ -2411,7 +2411,7 @@ function object_factory($class)
  */
 function safe_ini_set($var, $value)
 {
-    if (@preg_match('#(\s|,|^)' . str_replace('#', '\#', preg_quote('ini_set')) . '(\s|$|,)#', strtolower(@ini_get('disable_functions') . ',' . ini_get('suhosin.executor.func.blacklist') . ',' . ini_get('suhosin.executor.include.blacklist') . ',' . ini_get('suhosin.executor.eval.blacklist'))) != 0) {
+    if (@preg_match('#(\s|,|^)' . str_replace('#', '\#', preg_quote('ini_set')) . '(\s|$|,)#', strtolower(ini_get('disable_functions') . ',' . ini_get('suhosin.executor.func.blacklist') . ',' . ini_get('suhosin.executor.include.blacklist') . ',' . ini_get('suhosin.executor.eval.blacklist'))) != 0) {
         return false;
     }
 

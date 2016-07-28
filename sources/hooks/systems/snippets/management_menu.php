@@ -32,7 +32,7 @@ class Hook_snippet_management_menu
     {
         if (has_zone_access(get_member(), 'adminzone')) {
             require_code('menus');
-            return build_menu('popup', 'adminzone:' . DEFAULT_ZONE_PAGE_NAME . ',include=node,title=' . do_lang('menus:DASHBOARD') . ',icon=menu/adminzone/start + adminzone:,include=children,max_recurse_depth=4,use_page_groupings=1 + cms:,include=node,max_recurse_depth=3,use_page_groupings=1');
+            return build_menu('popup', 'adminzone:' . DEFAULT_ZONE_PAGE_NAME . ',include=node,title=' . do_lang('menus:DASHBOARD') . ',icon=menu/adminzone/home + adminzone:,include=children,max_recurse_depth=4,use_page_groupings=1 + cms:,include=node,max_recurse_depth=3,use_page_groupings=1');
         }
         return new Tempcode();
     }

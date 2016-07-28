@@ -981,7 +981,7 @@ function do_site()
 
         // Track very basic details of what sites use Composr
         if ((!running_locally()) && (get_option('call_home') == '1')) {
-            $timeout_before = @ini_get('default_socket_timeout');
+            $timeout_before = ini_get('default_socket_timeout');
             safe_ini_set('default_socket_timeout', '3');
             require_code('version2');
             require_code('files2');

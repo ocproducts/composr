@@ -1177,7 +1177,7 @@ class Module_admin_setupwizard
             do_lang_tempcode('SUCCESS'),
             array(
                 array('menu/cms/comcode_page_edit', array('cms_comcode_pages', array('type' => 'edit'), get_module_zone('cms_comcode_pages')), do_lang('COMCODE_PAGE_ADD')),
-                array('menu/start', array(null, array(), '')),
+                array('menu/home', array(null, array(), '')),
                 array('menu/cms/cms', array(null, array(), 'cms')),
                 array('menu/adminzone/adminzone', array(null, array(), 'adminzone')),
             ),

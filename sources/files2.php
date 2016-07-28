@@ -183,7 +183,7 @@ function cms_get_temp_dir()
         fix_permissions($local_path);
     }
     $server_path = sys_get_temp_dir();
-    $problem_saving = ((get_option('force_local_temp_dir') == '1') || ((@strval(ini_get('open_basedir')) != '') && (preg_match('#(^|:|;)' . preg_quote($server_path, '#') . '($|:|;|/)#', ini_get('open_basedir')) == 0)));
+    $problem_saving = ((get_option('force_local_temp_dir') == '1') || ((ini_get('open_basedir') != '') && (preg_match('#(^|:|;)' . preg_quote($server_path, '#') . '($|:|;|/)#', ini_get('open_basedir')) == 0)));
     $path = ($problem_saving ? $local_path : $server_path) . '/';
     return array($path, $problem_saving, $server_path, $local_path);
 }
@@ -1825,10 +1825,10 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
         return _detect_character_encoding($input);
     } else {
         // PHP streams method
-        if (($errno != 110) && (($errno != 10060) || (@ini_get('default_socket_timeout') == '1')) && ((@ini_get('allow_url_fopen')) || (php_function_allowed('ini_set')))) {
+        if (($errno != 110) && (($errno != 10060) || (ini_get('default_socket_timeout') == '1')) && ((ini_get('allow_url_fopen') == '1') || (php_function_allowed('ini_set')))) {
             // Perhaps fsockopen is restricted... try fread/file_get_contents
             safe_ini_set('allow_url_fopen', '1');
-            $timeout_before = @ini_get('default_socket_timeout');
+            $timeout_before = ini_get('default_socket_timeout');
             safe_ini_set('default_socket_timeout', strval(intval($timeout)));
             if ($put !== null) {
                 $raw_payload .= file_get_contents($put_path);

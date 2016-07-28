@@ -39,7 +39,7 @@ class Hook_page_groupings_core
         }
 
         return array(
-            array('', 'menu/adminzone/start', array('start', array(), 'adminzone'), do_lang_tempcode('menus:DASHBOARD'), $extensive_docs ? 'menus:DOC_DASHBOARD' : 'menus:MM_TOOLTIP_DASHBOARD'),
+            array('', 'menu/adminzone/home', array('home', array(), 'adminzone'), do_lang_tempcode('menus:DASHBOARD'), $extensive_docs ? 'menus:DOC_DASHBOARD' : 'menus:MM_TOOLTIP_DASHBOARD'),
             array('', 'menu/adminzone/audit', array('admin', array('type' => 'audit'), get_module_zone('admin')), do_lang_tempcode('menus:AUDIT'), $extensive_docs ? 'menus:DOC_AUDIT' : 'menus:MM_TOOLTIP_AUDIT'),
             array('', 'menu/adminzone/security', array('admin', array('type' => 'security'), get_module_zone('admin')), do_lang_tempcode('SECURITY'), $extensive_docs ? 'menus:DOC_SECURITY' : 'menus:MM_TOOLTIP_SECURITY'),
             array('', 'menu/adminzone/setup', array('admin', array('type' => 'setup'), get_module_zone('admin')), do_lang_tempcode('menus:SETUP'), $extensive_docs ? 'menus:DOC_SETUP' : 'menus:MM_TOOLTIP_SETUP'),

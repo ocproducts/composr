@@ -31,7 +31,7 @@ class Hook_check_max_execution_time
     public function run()
     {
         $warning = array();
-        if ((is_numeric(@ini_get('max_execution_time'))) && (intval(@ini_get('max_execution_time')) > 0) && (intval(@ini_get('max_execution_time')) < 10)) {
+        if ((is_numeric(ini_get('max_execution_time'))) && (intval(ini_get('max_execution_time')) > 0) && (intval(ini_get('max_execution_time')) < 10)) {
             $warning[] = do_lang_tempcode('WARNING_MAX_EXECUTION_TIME');
         }
         return $warning;

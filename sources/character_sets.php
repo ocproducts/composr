@@ -39,18 +39,11 @@ function _convert_data_encodings($known_utf8 = false)
 
     $done_something = false;
 
+    safe_ini_set('default_charset', $charset);
+
     // Conversion of parameters that might be in the wrong character encoding (e.g. JavaScript uses UTF to make requests regardless of document encoding, so the stuff needs converting)
     //  If we don't have any PHP extensions (mbstring etc) that can perform the detection/conversion, our code will take this into account and use utf8_decode at points where it knows that it's being communicated with by JavaScript.
-    if (@strlen(ini_get('unicode.runtime_encoding')) > 0) {
-        safe_ini_set('default_charset', $charset);
-        safe_ini_set('unicode.runtime_encoding', $charset);
-        safe_ini_set('unicode.output_encoding', $charset);
-        safe_ini_set('unicode.semantics', '1');
-
-        $done_something = true;
-    } elseif (($known_utf8) && /*test method works...*/
-              (will_be_unicode_neutered(serialize($_GET) . serialize($_POST))) && (in_array(strtolower($charset), array('iso-8859-1', 'iso-8859-15', 'koi8-r', 'big5', 'gb2312', 'big5-hkscs', 'shift_jis', 'euc-jp')))
-    ) { // Preferred as it will sub entities where there's no equivalent character
+    if (($known_utf8) && /*test method works...*/(will_be_unicode_neutered(serialize($_GET) . serialize($_POST))) && (in_array(strtolower($charset), array('iso-8859-1', 'iso-8859-15', 'koi8-r', 'big5', 'gb2312', 'big5-hkscs', 'shift_jis', 'euc-jp')))) { // Preferred as it will sub entities where there's no equivalent character
         do_environment_utf8_conversion($charset);
 
         $done_something = true;

@@ -117,7 +117,7 @@ class Hook_sitemap_zone extends Hook_sitemap_base
         switch ($zone) {
             case '':
             case 'site':
-                $icon = 'menu/start';
+                $icon = 'menu/home';
                 break;
             case 'adminzone':
                 $icon = 'menu/adminzone/adminzone';

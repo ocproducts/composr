@@ -252,7 +252,7 @@ function do_next_manager($title, $text, $main = array(), $main_title = null, $ur
     if (($main === null) && (get_option('global_donext_icons') == '1')) { // What-next
         // These go on a new row
         $disjunct_items = array(
-            array('menu/start', array(null, array(), '')),
+            array('menu/home', array(null, array(), '')),
             array('menu/cms/cms', array(null, array(), 'cms')),
             array('menu/adminzone/adminzone', array(null, array(), 'adminzone')),
         );

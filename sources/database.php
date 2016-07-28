@@ -692,7 +692,7 @@ class DatabaseDriver
         }
 
         $restricted = false;
-        if (!$GLOBALS['DEV_MODE'] && !$GLOBALS['IS_ACTUALLY_ADMIN']) {
+        if (!$GLOBALS['DEV_MODE'] && empty($GLOBALS['IS_ACTUALLY_ADMIN']) && (!running_script('install')) && (!running_script('upgrader'))) {
             if (function_exists('get_member') && !function_exists('has_privilege')) {
                 require_code('permissions'); // Due to $MICRO_BOOTUP, or some error during bootup
             }

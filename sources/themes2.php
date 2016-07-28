@@ -149,7 +149,7 @@ function find_all_themes($full_details = false)
     if ($full_details) {
         sort_maps_by($themes, 'title');
     } else {
-        sort($themes, SORT_NATURAL | SORT_FLAG_CASE);
+        asort($themes, SORT_NATURAL | SORT_FLAG_CASE);
     }
 
     return $themes;

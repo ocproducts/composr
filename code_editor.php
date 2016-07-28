@@ -135,7 +135,7 @@ function code_editor_do_login()
     global $SITE_INFO;
     $ftp_domain = array_key_exists('ftp_domain', $SITE_INFO) ? $SITE_INFO['ftp_domain'] : 'localhost';
     if (!array_key_exists('ftp_username', $SITE_INFO)) {
-        if ((function_exists('posix_getpwuid')) && (strpos(@ini_get('disable_functions'), 'posix_getpwuid') === false)) {
+        if ((function_exists('posix_getpwuid')) && (strpos(ini_get('disable_functions'), 'posix_getpwuid') === false)) {
             $file_owner = fileowner($GLOBALS['FILE_BASE'] . '/code_editor.php');
             if ($file_owner !== false) {
                 $u_info = posix_getpwuid($file_owner);
@@ -294,7 +294,7 @@ END;
 function ce_fix_permissions($path, $perms = 0666) // We call this function assuming we are giving world permissions
 {
     // If the file user is different to the FTP user, we need to make it world writeable
-    if ((!function_exists('posix_getuid')) || (strpos(@ini_get('disable_functions'), 'posix_getuid') !== false) || (@posix_getuid() != @fileowner($GLOBALS['FILE_BASE'] . '/index.php'))) {
+    if ((!function_exists('posix_getuid')) || (strpos(ini_get('disable_functions'), 'posix_getuid') !== false) || (@posix_getuid() != @fileowner($GLOBALS['FILE_BASE'] . '/index.php'))) {
         @chmod($path, $perms);
     } else { // Otherwise we do not
         if ($perms == 0666) {
@@ -492,7 +492,7 @@ END;
                 @flock($myfile, LOCK_UN);
                 fclose($myfile);
             } else { // Via FTP
-                $path2 = tempnam((((@strval(ini_get('open_basedir')) != '') && (preg_match('#(^|:|;)/tmp($|:|;|/)#', ini_get('open_basedir')) == 0)) ? get_custom_file_base() . '/temp/' : '/tmp/'), 'cmsce');
+                $path2 = tempnam((((ini_get('open_basedir') != '') && (preg_match('#(^|:|;)/tmp($|:|;|/)#', ini_get('open_basedir')) == 0)) ? get_custom_file_base() . '/temp/' : '/tmp/'), 'cmsce');
                 if ($path2 === false) {
                     $path2 = tempnam(get_custom_file_base() . '/temp/', 'cmsce');
                 }
@@ -699,11 +699,11 @@ function ce_check_master_password($password_given)
 function ce_cms_tempnam($prefix = '')
 {
     global $FILE_BASE;
-    $problem_saving = ((function_exists('get_option')) && (get_option('force_local_temp_dir') == '1')) || ((@strval(ini_get('open_basedir')) != '') && (preg_match('#(^|:|;)/tmp($|:|;|/)#', ini_get('open_basedir')) == 0));
+    $problem_saving = ((function_exists('get_option')) && (get_option('force_local_temp_dir') == '1')) || ((ini_get('open_basedir') != '') && (preg_match('#(^|:|;)/tmp($|:|;|/)#', ini_get('open_basedir')) == 0));
     $local_path = $FILE_BASE . '/temp/';
     $server_path = '/tmp/';
     $tmp_path = $problem_saving ? $local_path : $server_path;
-    if ((function_exists('tempnam')) && (strpos(@ini_get('disable_functions'), 'tempnam') === false)) {
+    if ((function_exists('tempnam')) && (strpos(ini_get('disable_functions'), 'tempnam') === false)) {
         $tempnam = tempnam($tmp_path, 'tmpfile__' . $prefix);
         if (($tempnam === false) && (!$problem_saving)) {
             $tempnam = tempnam($local_path, $prefix);
