@@ -125,7 +125,7 @@ This section is not actively maintained. Package names may change, but it is des
 [title="4"]Ubuntu/Debian[/title]
 
 [code="Bash"]
-apt-get install apache2 libapache2-mod-php5 php5 php5-common php5-cli php5-apcu php5-curl php5-enchant php5-ffmpeg php5-gd php5-imap php5-mysql php5-mysqlnd php5-pspell openssl mysql-server mysql-client postfix nano wget lynx hunspell git openssh-server nano
+apt-get install apache2 libapache2-mod-php5 php5 php5-common php5-cli php5-apcu php5-curl php5-enchant php5-ffmpeg php5-gd php5-imap php5-mysqlnd php5-pspell openssl mysql-server mysql-client postfix nano wget lynx hunspell git openssh-server nano
 [/code]
 
 Some lines in the default PHP ini ([tt]/etc/php5/apache2/php.ini[/tt]) file need changing:

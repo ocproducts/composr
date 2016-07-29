@@ -81,7 +81,7 @@ function notifications_ui($member_id_of)
 
     $lockdown = collapse_2d_complexity('l_notification_code', 'l_setting', $GLOBALS['SITE_DB']->query_select('notification_lockdown', array('*')));
 
-    $has_interesting_post_fields = !has_interesting_post_fields();
+    $has_interesting_post_fields = has_interesting_post_fields();
 
     $notification_sections = array();
     $hooks = find_all_hooks('systems', 'notifications');

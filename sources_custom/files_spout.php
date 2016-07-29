@@ -18,8 +18,6 @@ use Box\Spout\Common\Type;
 
 function spreadsheet_export__spout($ext, $data, $filename, $headers, $output_and_exit, $outfile_path, $callback, $metadata)
 {
-    require_code('spout/vendor/autoload');
-
     ini_set('default_charset', get_charset());
 
     switch ($ext) {

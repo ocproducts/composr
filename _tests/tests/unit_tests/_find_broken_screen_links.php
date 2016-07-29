@@ -21,6 +21,7 @@ class _find_broken_screen_links_test_set extends cms_test_case
     // This test is not necessarily required to pass, but it may hint at issues; best just to make it pass anyway (it does at the time at writing)
     public function testScreenLinks()
     {
+        $found = array();
         require_code('files');
         $files = $this->do_dir(get_file_base(), '', 'php');
         foreach ($files as $file) {
