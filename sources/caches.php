@@ -65,7 +65,7 @@ function init__caches()
             $PERSISTENT_CACHE = new Persistent_caching_wincache();
         } elseif ((file_exists(get_custom_file_base() . '/caches/persistent/')) && (($SITE_INFO['use_persistent_cache'] == 'filesystem') || ($SITE_INFO['use_persistent_cache'] == '1'))) {
             require_code('persistent_caching/filesystem');
-            $PERSISTENT_CACHE = new Persistent_caching_filecache();
+            $PERSISTENT_CACHE = new Persistent_caching_filesystem();
         }
         // NB: sources/hooks/systems/checks/persistent_cache.php also references some of this ^
     }
