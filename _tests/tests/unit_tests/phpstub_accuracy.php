@@ -64,7 +64,7 @@ class phpstub_accuracy_test_set extends cms_test_case
             foreach ($defined['internal'] as $function) {
                 if (!in_array($function, $will_never_define)) {
                     // Extensions
-                    if (preg_match('#^(pdo|dom|exif|token|apache|zip|xmlwriter|xml|ocp|simplexml|session|pspell|posix|spl|mysqli|imap|hash|ftp|filter|finfo|curl|ctype|libxml)_#', $function) != 0) {
+                    if (preg_match('#^(pdo|dom|exif|token|apache|zip|xmlwriter|xml|ocp|simplexml|session|pspell|posix|mysqli|imap|hash|ftp|filter|finfo|curl|ctype|libxml)_#', $function) != 0) {
                         continue;
                     }
                     if (preg_match('#^(bz|mb)#', $function) != 0) {

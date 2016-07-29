@@ -86,7 +86,7 @@ class Hook_check_functions_needed
             readgzfile ob_gzhandler gzcompress gzdeflate gzencode gzfile gzinflate gzuncompress gzclose gzopen gzwrite
             array_column array_fill_keys getimagesizefromstring hash_equals
             http_response_code memory_get_peak_usage password_get_info password_hash
-            password_needs_rehash password_verify str_getcsv strripos
+            password_needs_rehash password_verify str_getcsv strripos spl_autoload_register
 END;
 
         if (function_exists('imagecreatefromstring')) {

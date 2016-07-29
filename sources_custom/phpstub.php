@@ -451,9 +451,10 @@ function chunk_split($body, $chunklen = 76, $splitter = "\r\n")
  * Checks if the class has been defined.
  *
  * @param  string $class_name The class identifier.
+ * @param  boolean $autoload Whether to cosnider autoloading.
  * @return boolean Whether the class has been defined.
  */
-function class_exists($class_name)
+function class_exists($class_name, $autoload = true)
 {
     return false;
 }
@@ -5072,6 +5073,19 @@ function gzuncompress($data, $length = 0)
     return '';
 }
 
+/**
+ * Register given function as __autoload() implementation.
+ *
+ * @param  mixed $autoload_function The autoload function being registered.
+ * @param  boolean $throw Throw error if cannot register.
+ * @param  boolean $prepend Prepend to queue rather than append.
+ * @return boolean Success status.
+ */
+function spl_autoload_register($autoload_function, $throw = true, $prepend = false)
+{
+    return true;
+}
+
 /*
 
 Various things are disabled for various reasons. You may use them, if you use php_function_allowed
@@ -5400,6 +5414,12 @@ class_parents
 class_implements
 class_uses
 spl_object_hash
+spl_classes
+spl_autoload
+spl_autoload_functions
+spl_autoload_extensions
+spl_autoload_call
+spl_autoload_unregister
 iterator_to_array
 iterator_count
 iterator_apply
