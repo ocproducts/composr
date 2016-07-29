@@ -80,7 +80,7 @@ class tutorial_quality_test_set extends cms_test_case
 
                 $has_image = (strpos($c, '[media') !== false) || (strpos($c, '[img') !== false) || (strpos($c, '[code') !== false);
 
-                $this->assertTrue($has_image, $f . ' has no images or code samples');
+                $this->assertTrue($has_image, $f . ' has no images or code samples (pixabay.com has public domain no-attribution images)');
             }
         }
     }
