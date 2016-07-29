@@ -99,21 +99,20 @@ function _build_keep_form_fields($page = '', $keep_all = false, $exclude = array
     }
     $out = new Tempcode();
 
-    if (count($_GET) > 0) {
-        foreach ($_GET as $key => $val) {
-            if (!is_string($val)) {
-                continue;
-            }
+    foreach ($_GET as $key => $val) {
+        if (!is_string($val)) {
+            continue;
+        }
 
-            if (is_integer($key)) {
-                $key = strval($key);
-            }
+        if (is_integer($key)) {
+            $key = strval($key);
+        }
 
-            if (((substr($key, 0, 5) == 'keep_') || ($keep_all)) && (!in_array($key, $exclude)) && ($key != 'page') && (!skippable_keep($key, $val))) {
-                $out->attach(form_input_hidden($key, $val));
-            }
+        if (((substr($key, 0, 5) == 'keep_') || ($keep_all)) && (!in_array($key, $exclude)) && ($key != 'page') && (!skippable_keep($key, $val))) {
+            $out->attach(form_input_hidden($key, $val));
         }
     }
+
     if ($page != '') {
         $out->attach(form_input_hidden('page', $page));
     }

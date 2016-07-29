@@ -97,7 +97,6 @@ class Block_main_staff_tips
         );
 
         // Load up tips by searching for the correctly named language files; also choose level
-        require_lang('tips');
         $tips = array();
         $level = 0;
         $letters = array('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z');

@@ -95,8 +95,6 @@ class Block_main_staff_website_monitoring
      */
     public function getAlexaRank($url)
     {
-        require_lang('staff_checklist');
-
         require_code('files');
         $p = array();
         $result = http_download_file('http://data.alexa.com/data?cli=10&dat=s&url=' . $url, null, false, false, 'Composr', null, array(), null, null, null, null, null, null, 1.0);
@@ -249,6 +247,8 @@ class Block_main_staff_website_monitoring
      */
     public function run($map)
     {
+        require_lang('staff_checklist');
+
         $block_id = get_block_id($map);
 
         define('GOOGLE_MAGIC', 0xE6359A60);
@@ -289,22 +289,20 @@ class Block_main_staff_website_monitoring
 
         $sites_being_watched = array();
         $grid_data = array();
-        if (count($rows) > 0) {
-            foreach ($rows as $r) {
-                $alex = $this->getAlexaRank(($r['site_url']));
-                $sites_being_watched[$r['site_url']] = $r['site_name'];
-                $google_ranking = integer_format(intval($this->getPageRank($r['site_url'])));
-                $alexa_ranking = $alex[0];
-                $alexa_traffic = $alex[1];
+        foreach ($rows as $r) {
+            $alex = $this->getAlexaRank(($r['site_url']));
+            $sites_being_watched[$r['site_url']] = $r['site_name'];
+            $google_ranking = integer_format(intval($this->getPageRank($r['site_url'])));
+            $alexa_ranking = $alex[0];
+            $alexa_traffic = $alex[1];
 
-                $grid_data[] = array(
-                    'URL' => $r['site_url'],
-                    'GOOGLE_RANKING' => $google_ranking,
-                    'ALEXA_RANKING' => $alexa_ranking,
-                    'ALEXA_TRAFFIC' => $alexa_traffic,
-                    'SITE_NAME' => $r['site_name'],
-                );
-            }
+            $grid_data[] = array(
+                'URL' => $r['site_url'],
+                'GOOGLE_RANKING' => $google_ranking,
+                'ALEXA_RANKING' => $alexa_ranking,
+                'ALEXA_TRAFFIC' => $alexa_traffic,
+                'SITE_NAME' => $r['site_name'],
+            );
         }
 
         $map_comcode = get_block_ajax_submit_map($map);

@@ -3765,6 +3765,9 @@ function ecv2_WHILE(&$value, $lang, $escaped, $param)
  */
 function ecv2_LOOP(&$value, $lang, $escaped, $param)
 {
+    // This code is mostly defunct, as the closure_loop function is normally used for performance reasons
+    // (no need to keep re-binding, as closure_loop runs at a lower level)
+
     if (isset($param[0])) {
         if (!array_key_exists($param[0]->evaluate(), $param['vars'])) {
             trigger_error(do_lang('MISSING_TEMPLATE_PARAMETER', $param[0]->evaluate(), '???'), E_USER_NOTICE);

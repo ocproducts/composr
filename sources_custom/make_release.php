@@ -550,18 +550,16 @@ function copy_r($path, $dest)
         @mkdir($dest, 0777);
         fix_permissions($dest);
         $objects = scandir($path);
-        if (count($objects) > 0) {
-            foreach ($objects as $file) {
-                if (($file == '.') || ($file == '..')) {
-                    continue;
-                }
+        foreach ($objects as $file) {
+            if (($file == '.') || ($file == '..')) {
+                continue;
+            }
 
-                if (is_dir($path . '/' . $file)) {
-                    copy_r($path . '/' . $file, $dest . '/' . $file);
-                } else {
-                    copy($path . '/' . $file, $dest . '/' . $file);
-                    fix_permissions($dest . '/' . $file);
-                }
+            if (is_dir($path . '/' . $file)) {
+                copy_r($path . '/' . $file, $dest . '/' . $file);
+            } else {
+                copy($path . '/' . $file, $dest . '/' . $file);
+                fix_permissions($dest . '/' . $file);
             }
         }
         return true;

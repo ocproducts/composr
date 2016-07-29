@@ -356,56 +356,54 @@ class Hook_sitemap_zone extends Hook_sitemap_base
                 $consider_validation = (($options & SITEMAP_GEN_CONSIDER_VALIDATION) != 0);
 
                 // Any remaining orphaned pages (we have to tag these on as there was no catch-all page grouping in this zone)
-                if (count($orphaned_pages) > 0) {
-                    foreach ($orphaned_pages as $page => $page_type) {
-                        if (is_integer($page)) {
-                            $page = strval($page);
-                        }
+                foreach ($orphaned_pages as $page => $page_type) {
+                    if (is_integer($page)) {
+                        $page = strval($page);
+                    }
 
-                        if ($page == $zone_default_page) {
+                    if ($page == $zone_default_page) {
+                        continue;
+                    }
+
+                    if (strpos($page, ':') !== false) {
+                        list($_zone, $page) = explode(':', $page, 2);
+                    } else {
+                        $_zone = $zone;
+                    }
+
+                    $child_page_link = $_zone . ':' . $page;
+
+                    if (strpos($page_type, 'comcode') !== false) {
+                        if (($valid_node_types !== null) && (!in_array('comcode_page', $valid_node_types))) {
                             continue;
                         }
 
-                        if (strpos($page, ':') !== false) {
-                            list($_zone, $page) = explode(':', $page, 2);
-                        } else {
-                            $_zone = $zone;
+                        if (($consider_validation) && (isset($root_comcode_pages[$child_page_link])) && ($root_comcode_pages[$child_page_link] == 0)) {
+                            continue;
                         }
 
-                        $child_page_link = $_zone . ':' . $page;
-
-                        if (strpos($page_type, 'comcode') !== false) {
-                            if (($valid_node_types !== null) && (!in_array('comcode_page', $valid_node_types))) {
-                                continue;
-                            }
-
-                            if (($consider_validation) && (isset($root_comcode_pages[$child_page_link])) && ($root_comcode_pages[$child_page_link] == 0)) {
-                                continue;
-                            }
-
-                            $child_node = $comcode_page_sitemap_ob->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level + 1, $options, $_zone, $meta_gather);
-                        } else {
-                            if (($valid_node_types !== null) && (!in_array('page', $valid_node_types))) {
-                                continue;
-                            }
-
-                            $child_node = $page_sitemap_ob->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level + 1, $options, $_zone, $meta_gather);
+                        $child_node = $comcode_page_sitemap_ob->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level + 1, $options, $_zone, $meta_gather);
+                    } else {
+                        if (($valid_node_types !== null) && (!in_array('page', $valid_node_types))) {
+                            continue;
                         }
 
-                        if ($child_node !== null) {
-                            if (preg_match('#^redirect:#', $page_type) != 0) {
-                                if (($options & SITEMAP_GEN_LABEL_CONTENT_TYPES) != 0) {
-                                    list(, $redir_zone, $redir_page) = explode(':', $page_type);
-                                    $struct['title'] = make_string_tempcode(strip_html(str_replace(array('<kbd>', '</kbd>'), array('"', '"'), do_lang('REDIRECT_PAGE_TO', xmlentities($redir_zone), xmlentities($redir_page)))) . ': ' . (is_string($page) ? $page : strval($page)));
-                                }
-                            }
+                        $child_node = $page_sitemap_ob->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level + 1, $options, $_zone, $meta_gather);
+                    }
 
-                            if (($_zone == 'site' || $_zone == 'adminzone') && (($options & SITEMAP_GEN_USE_PAGE_GROUPINGS) != 0)) {
-                                $child_node['is_unexpected_orphan'] = true; // This should never be set, it indicates a page not in a page grouping
+                    if ($child_node !== null) {
+                        if (preg_match('#^redirect:#', $page_type) != 0) {
+                            if (($options & SITEMAP_GEN_LABEL_CONTENT_TYPES) != 0) {
+                                list(, $redir_zone, $redir_page) = explode(':', $page_type);
+                                $struct['title'] = make_string_tempcode(strip_html(str_replace(array('<kbd>', '</kbd>'), array('"', '"'), do_lang('REDIRECT_PAGE_TO', xmlentities($redir_zone), xmlentities($redir_page)))) . ': ' . (is_string($page) ? $page : strval($page)));
                             }
-
-                            $children_orphaned[] = $child_node;
                         }
+
+                        if (($_zone == 'site' || $_zone == 'adminzone') && (($options & SITEMAP_GEN_USE_PAGE_GROUPINGS) != 0)) {
+                            $child_node['is_unexpected_orphan'] = true; // This should never be set, it indicates a page not in a page grouping
+                        }
+
+                        $children_orphaned[] = $child_node;
                     }
                 }
             } else { // 1 page group exactly

@@ -485,29 +485,26 @@ class Module_shopping
 
         $product_details = array();
 
-        if (count($pids) > 0) {
-            foreach ($pids as $pid) {
-                $qty = post_param_integer('quantity_' . $pid);
+        foreach ($pids as $pid) {
+            $qty = post_param_integer('quantity_' . $pid);
 
-                $object = find_product($pid);
+            $object = find_product($pid);
 
-                if (method_exists($object, 'get_available_quantity')) {
-                    $available_qty = $object->get_available_quantity($pid);
+            if (method_exists($object, 'get_available_quantity')) {
+                $available_qty = $object->get_available_quantity($pid);
 
-                    if (($available_qty !== null) && ($available_qty <= $qty)) {
-                        $qty = $available_qty;
+                if (($available_qty !== null) && ($available_qty <= $qty)) {
+                    $qty = $available_qty;
 
-                        attach_message(do_lang_tempcode('PRODUCT_QUANTITY_CHANGED', strval($pid)), 'warn');
-                    }
+                    attach_message(do_lang_tempcode('PRODUCT_QUANTITY_CHANGED', strval($pid)), 'warn');
                 }
+            }
 
-                $product_details[] = array('product_id' => $pid, 'quantity' => $qty);
+            $product_details[] = array('product_id' => $pid, 'quantity' => $qty);
 
-                $remove = post_param_integer('remove_' . $pid, 0);
-
-                if ($remove == 1) {
-                    $product_to_remove[] = $pid;
-                }
+            $remove = post_param_integer('remove_' . $pid, 0);
+            if ($remove == 1) {
+                $product_to_remove[] = $pid;
             }
         }
 

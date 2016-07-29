@@ -303,7 +303,11 @@ function get_option($name, $missing_ok = false)
 function get_value($name, $default = null, $elective_or_lengthy = false, $env_also = false)
 {
     if ($elective_or_lengthy) {
-        return $GLOBALS['SITE_DB']->query_select_value_if_there('values_elective', 'the_value', array('the_name' => $name), '', running_script('install') || running_script('upgrader'));
+        static $cache = array();
+        if (!array_key_exists($name, $cache)) {
+            $cache[$name] = $GLOBALS['SITE_DB']->query_select_value_if_there('values_elective', 'the_value', array('the_name' => $name), '', running_script('install') || running_script('upgrader'));
+        }
+        return $cache[$name];
     }
 
     global $IN_MINIKERNEL_VERSION, $VALUE_OPTIONS_CACHE, $SMART_CACHE;

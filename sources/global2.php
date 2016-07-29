@@ -1290,7 +1290,7 @@ function get_base_url($https = null, $zone_for = null)
 
     global $SITE_INFO;
     if ((!isset($SITE_INFO)) || (empty($SITE_INFO['base_url']))) { // Try and autodetect the base URL if it's not configured
-        $domain = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : (isset($_ENV['HTTP_HOST']) ? $_ENV['HTTP_HOST'] : '');
+        $domain = get_domain();
         $script_name = isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : (isset($_ENV['SCRIPT_NAME']) ? $_ENV['SCRIPT_NAME'] : '');
         $php_self = dirname(cms_srv('PHP_SELF'));
         if (($GLOBALS['RELATIVE_PATH'] === '') || (strpos($php_self, $GLOBALS['RELATIVE_PATH']) !== false)) {

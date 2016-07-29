@@ -699,38 +699,37 @@ class Forum_driver_mybb extends Forum_driver_base
             arsort($datetimes);
             $i = 0;
             $out = array();
-            if (count($datetimes) > 0) {
-                foreach ($datetimes as $id => $datetime) {
-                    $r = $rs[$id];
 
-                    $out[$i] = array();
-                    $out[$i]['id'] = $id;
-                    $out[$i]['num'] = $r['replies'] + 1;
-                    $out[$i]['title'] = $r['subject'];
-                    $out[$i]['description'] = $r['subject'];
-                    $out[$i]['firsttime'] = $r['dateline'];
-                    $out[$i]['firstusername'] = $r['username'];
-                    $out[$i]['lastusername'] = $r['lastposter'];
-                    $out[$i]['firstmemberid'] = $r['uid'];
-                    $out[$i]['lastmemberid'] = $r['lastposteruid'];
-                    $out[$i]['lasttime'] = $r['lastpost'];
-                    $out[$i]['closed'] = ($r['visible'] == 1);
+            foreach ($datetimes as $id => $datetime) {
+                $r = $rs[$id];
 
-                    $fp_rows = $this->db->query('SELECT subject,message,uid FROM ' . $this->db->get_table_prefix() . 'posts p WHERE message NOT LIKE \'' . db_encode_like(substr(do_lang('SPACER_POST', '', '', '', get_site_default_lang()), 0, 20) . '%') . '\' AND dateline=' . strval($firsttime[$id]) . ' AND tid=' . strval($id), 1);
+                $out[$i] = array();
+                $out[$i]['id'] = $id;
+                $out[$i]['num'] = $r['replies'] + 1;
+                $out[$i]['title'] = $r['subject'];
+                $out[$i]['description'] = $r['subject'];
+                $out[$i]['firsttime'] = $r['dateline'];
+                $out[$i]['firstusername'] = $r['username'];
+                $out[$i]['lastusername'] = $r['lastposter'];
+                $out[$i]['firstmemberid'] = $r['uid'];
+                $out[$i]['lastmemberid'] = $r['lastposteruid'];
+                $out[$i]['lasttime'] = $r['lastpost'];
+                $out[$i]['closed'] = ($r['visible'] == 1);
 
-                    if (!array_key_exists(0, $fp_rows)) {
-                        unset($out[$i]);
-                        continue;
-                    }
-                    $out[$i]['firsttitle'] = $fp_rows[0]['subject'];
-                    if ($show_first_posts) {
-                        $out[$i]['firstpost'] = $fp_rows[0]['message'];
-                    }
+                $fp_rows = $this->db->query('SELECT subject,message,uid FROM ' . $this->db->get_table_prefix() . 'posts p WHERE message NOT LIKE \'' . db_encode_like(substr(do_lang('SPACER_POST', '', '', '', get_site_default_lang()), 0, 20) . '%') . '\' AND dateline=' . strval($firsttime[$id]) . ' AND tid=' . strval($id), 1);
 
-                    $i++;
-                    if ($i == $limit) {
-                        break;
-                    }
+                if (!array_key_exists(0, $fp_rows)) {
+                    unset($out[$i]);
+                    continue;
+                }
+                $out[$i]['firsttitle'] = $fp_rows[0]['subject'];
+                if ($show_first_posts) {
+                    $out[$i]['firstpost'] = $fp_rows[0]['message'];
+                }
+
+                $i++;
+                if ($i == $limit) {
+                    break;
                 }
             }
 

@@ -836,39 +836,38 @@ class Forum_driver_phpbb3 extends Forum_driver_base
             arsort($datetimes);
             $i = 0;
             $out = array();
-            if (count($datetimes) > 0) {
-                foreach ($datetimes as $id => $datetime) {
-                    $r = $rs[$id];
 
-                    $out[$i] = array();
-                    $out[$i]['id'] = $id;
-                    $out[$i]['num'] = $r['topic_replies_real'] + 1;
-                    $out[$i]['title'] = $r['topic_title'];
-                    $out[$i]['description'] = $r['topic_title'];
-                    $out[$i]['firsttime'] = $r['topic_time'];
-                    $out[$i]['firstusername'] = $this->get_username($r['topic_poster']);
-                    $out[$i]['lastusername'] = $username[$id];
-                    $out[$i]['firstmemberid'] = $r['topic_poster'];
-                    $out[$i]['lastmemberid'] = $memberid[$id];
-                    $out[$i]['lasttime'] = $datetime;
-                    $out[$i]['closed'] = ($r['topic_status'] == 1);
+            foreach ($datetimes as $id => $datetime) {
+                $r = $rs[$id];
 
-                    $fp_rows = $this->db->query('SELECT post_subject,post_text,bbcode_uid,poster_id FROM ' . $this->db->get_table_prefix() . 'posts p WHERE post_text NOT LIKE \'' . db_encode_like(substr(do_lang('SPACER_POST', '', '', '', get_site_default_lang()), 0, 20) . '%') . '\' AND post_time=' . strval($firsttime[$id]) . ' AND topic_id=' . strval($id), 1);
-                    if (!array_key_exists(0, $fp_rows)) {
-                        unset($out[$i]);
-                        continue;
-                    }
-                    $out[$i]['firsttitle'] = $fp_rows[0]['post_subject'];
-                    if ($show_first_posts) {
-                        push_lax_comcode(true);
-                        $out[$i]['firstpost'] = comcode_to_tempcode($this->_cleanup_post($fp_rows[0]['bbcode_uid'], $fp_rows[0]['post_text']), $fp_rows[0]['poster_id']);
-                        pop_lax_comcode();
-                    }
+                $out[$i] = array();
+                $out[$i]['id'] = $id;
+                $out[$i]['num'] = $r['topic_replies_real'] + 1;
+                $out[$i]['title'] = $r['topic_title'];
+                $out[$i]['description'] = $r['topic_title'];
+                $out[$i]['firsttime'] = $r['topic_time'];
+                $out[$i]['firstusername'] = $this->get_username($r['topic_poster']);
+                $out[$i]['lastusername'] = $username[$id];
+                $out[$i]['firstmemberid'] = $r['topic_poster'];
+                $out[$i]['lastmemberid'] = $memberid[$id];
+                $out[$i]['lasttime'] = $datetime;
+                $out[$i]['closed'] = ($r['topic_status'] == 1);
 
-                    $i++;
-                    if ($i == $limit) {
-                        break;
-                    }
+                $fp_rows = $this->db->query('SELECT post_subject,post_text,bbcode_uid,poster_id FROM ' . $this->db->get_table_prefix() . 'posts p WHERE post_text NOT LIKE \'' . db_encode_like(substr(do_lang('SPACER_POST', '', '', '', get_site_default_lang()), 0, 20) . '%') . '\' AND post_time=' . strval($firsttime[$id]) . ' AND topic_id=' . strval($id), 1);
+                if (!array_key_exists(0, $fp_rows)) {
+                    unset($out[$i]);
+                    continue;
+                }
+                $out[$i]['firsttitle'] = $fp_rows[0]['post_subject'];
+                if ($show_first_posts) {
+                    push_lax_comcode(true);
+                    $out[$i]['firstpost'] = comcode_to_tempcode($this->_cleanup_post($fp_rows[0]['bbcode_uid'], $fp_rows[0]['post_text']), $fp_rows[0]['poster_id']);
+                    pop_lax_comcode();
+                }
+
+                $i++;
+                if ($i == $limit) {
+                    break;
                 }
             }
 

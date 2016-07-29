@@ -406,7 +406,6 @@ function closure_eval($code, $parameters)
 function closure_loop($param, $args, $main_function)
 {
     $value = '';
-
     if (isset($param[0])) {
         $array_key = $param[0];
         if ((is_numeric($array_key)) || (strpos($array_key, ',') !== false) || (strpos($array_key, '=') !== false)) {

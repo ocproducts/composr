@@ -538,7 +538,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                         if (tc_is_all_static($_opener_params)) { // Optimise out for simple case?
                             $tpl_funcs = array();
                             $looked_up = debug_eval('return ' . $new_line . ';', $tpl_funcs, array(), $cl);
-                            if ($looked_up !== null) {
+                            if (!empty($looked_up)) {
                                 $new_line = '"' . php_addslashes($looked_up) . '"';
                             }
                         }
@@ -818,6 +818,15 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
 
                             case 'LOOP':
                                 $current_level_data[] = 'closure_loop(array(' . $directive_params . ',\'vars\'=>$parameters),array($parameters,$cl),' . "\n" . 'recall_named_function(\'' . uniqid('', true) . '\',\'$parameters,$cl\',"extract(\$parameters,EXTR_PREFIX_ALL,\'bound\'); return ' . php_addslashes($directive_internal) . ';"))';
+
+                                $parameter = debug_eval('return ' . $first_directive_param . ';', $tpl_funcs, array(), $cl);
+                                if (!is_string($parameter)) {
+                                    $parameter = '';
+                                }
+                                if ($parameters_used !== null) {
+                                    $parameters_used[$parameter] = true;
+                                }
+
                                 break;
 
                             case 'PHP':
