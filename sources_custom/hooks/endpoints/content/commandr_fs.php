@@ -101,7 +101,7 @@ class Hook_endpoint_content_commandr_fs
                 require_code('resource_fs');
                 if (strpos($id, '/') === false) {
                     $details = $GLOBALS['SITE_DB']->query_select('alternative_ids', array('*'), array(
-                        'resource_guid' => $resource_guid,
+                        'resource_guid' => $id,
                     ), '', 1);
                     if (!array_key_exists(0, $details)) {
                         warn_exit(do_lang_tempcode('MISSING_RESOURCE'));

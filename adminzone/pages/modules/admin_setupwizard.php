@@ -403,6 +403,7 @@ class Module_admin_setupwizard
             'users_online_block',
             'news_shared',
             'filedump',
+            'textbased_persistent_caching',
             'getid3', // this will be downloaded as it is not bundled, for licencing reasons
         ));
         // ... unless the install profile really is shunning them

@@ -2,7 +2,7 @@
 
 There is a commercial opportunity for individuals or organisations that want to take responsibility for the translation and support of Composr in their native language.
 
-(For details on how Composr translation works, see the [page="_SEARCH:tut_intl_intl"]Localisation and internationalisation[/page] tutorial)
+(For details on how Composr translation works, see the [page="_SEARCH:tut_intl"]Localisation and internationalisation[/page] tutorial)
 
 It works like this:[list="1"]
 [*] Join the translation team on [url="Transifex"]https://www.transifex.com/ocproducts/[/url]
@@ -36,6 +36,6 @@ As a privilege of maintaining the translation and doing basic support, you'll be
  - [page="_SEARCH:tut_intl_users"]Changing the site language[/page]
  - [page="_SEARCH:tut_intl_content"]Translating Composr content[/page]
  - [page="_SEARCH:tut_intl_code_philosophy"]Translations code philosophy[/page]
- - [page="_SEARCH:tut_intl_intl"]Localisation and internationalisation[/page]
+ - [page="_SEARCH:tut_intl"]Localisation and internationalisation[/page]
 
 {$SET,tutorial_tags,language_block,core_language_editing,Internationalisation,Contributing,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,How to translate Composr into different languages, and how to configure your date/time settings.}[block]main_tutorial_rating[/block]

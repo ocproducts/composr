@@ -153,7 +153,7 @@ function mobiquo_json_simple_call($method, $params, $username = null)
     );
 
     $post = json_encode($params);
-    $data = http_download_file($url, null, true, false, 'Composr', $post, null, null, null, null, null, null, null, 6.0, true, null, array());
+    $data = http_download_file($url, null, true, false, 'Composr', array($post), null, null, null, null, null, null, null, 6.0, true, null, array());
     echo 'RAW: ' . $data;
     return json_decode($data, true);
 }

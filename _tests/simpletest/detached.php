@@ -52,7 +52,7 @@ class DetachedTestCase {
      *    @returns boolean                   True if no failures.
      *    @access public
      */
-    function run(&$reporter) {
+    function run($reporter) {
         $shell = new SimpleShell();
         $shell->execute($this->_command);
         $parser = &$this->_createParser($reporter);

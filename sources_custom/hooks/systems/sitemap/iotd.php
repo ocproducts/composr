@@ -66,6 +66,8 @@ class Hook_sitemap_iotd extends Hook_sitemap_content
 
         $page = $this->_make_zone_concrete($zone, $page_link);
 
+        $consider_validation = (($options & SITEMAP_GEN_CONSIDER_VALIDATION) != 0);
+
         $start = 0;
         do {
             $rows = $GLOBALS['SITE_DB']->query_select('iotd', array('*'), $consider_validation ? array('used' => 1) : array(), 'ORDER BY date_and_time', SITEMAP_MAX_ROWS_PER_LOOP, $start);

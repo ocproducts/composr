@@ -64,6 +64,7 @@ class Hook_addon_registry_language_block
         return array(
             'tut_intl',
             'tut_intl_users',
+            'tut_intl_maintenance',
         );
     }
 

@@ -32,7 +32,7 @@ class SimpleErrorTrappingInvoker extends SimpleInvokerDecorator {
      *    Stores the invoker to wrap.
      *    @param SimpleInvoker $invoker  Test method runner.
      */
-    function __construct(&$invoker) {
+    function __construct($invoker) {
         parent::__construct($invoker);
     }
 

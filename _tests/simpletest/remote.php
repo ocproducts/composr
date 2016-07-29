@@ -53,7 +53,7 @@ class RemoteTestCase {
      *    @returns boolean                   True if no failures.
      *    @access public
      */
-    function run(&$reporter) {
+    function run($reporter) {
         $browser = &$this->_createBrowser();
         $xml = $browser->get($this->_url);
         if (! $xml) {
