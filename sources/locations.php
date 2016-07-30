@@ -548,9 +548,9 @@ function sql_region_filter($content_type, $field_name_to_join, $region = null)
     	return '';
     }
     $ret = ' AND (';
-    $ret .= 'NOT EXISTS(SELECT * FROM ' . get_table_prefix() . 'content_regions cr WHERE ' . $field_name_to_join . '=cr.content_id AND ' . db_string_equal_to('content_type', $content_type) . ')';
+    $ret .= 'NOT EXISTS(SELECT * FROM ' . get_table_prefix() . 'content_regions cr WHERE CAST(' . $field_name_to_join . ' AS varchar(255))=cr.content_id AND ' . db_string_equal_to('content_type', $content_type) . ')';
     $ret .= ' OR ';
-    $ret .= 'EXISTS(SELECT * FROM ' . get_table_prefix() . 'content_regions cr WHERE ' . $field_name_to_join . '=cr.content_id AND ' . db_string_equal_to('cr.region', $region) . ' AND ' . db_string_equal_to('content_type', $content_type) . ')';
+    $ret .= 'EXISTS(SELECT * FROM ' . get_table_prefix() . 'content_regions cr WHERE CAST(' . $field_name_to_join . ' AS varchar(255))=cr.content_id AND ' . db_string_equal_to('cr.region', $region) . ' AND ' . db_string_equal_to('content_type', $content_type) . ')';
     $ret .= ')';
     return $ret;
 }
