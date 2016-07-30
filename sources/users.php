@@ -490,6 +490,10 @@ function delete_expired_sessions_or_recover($member = null)
             continue; // Workaround to HHVM weird bug
         }
 
+        if (is_integer($_session)) {
+            $_session = strval($_session);
+        }
+
         // Delete expiry from cache
         if ($row['last_activity'] < time() - intval(60.0 * 60.0 * max(0.017, floatval(get_option('session_expiry_time'))))) {
             $dirty_session_cache = true;

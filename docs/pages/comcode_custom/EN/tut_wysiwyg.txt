@@ -17,6 +17,13 @@ The Composr WYSIWYG editor is CKEditor. It is enabled by default via the "Enable
 
 [i]For programmers[/i]: Composr can, in principle, support almost any WYSIWYG editor component. Composr binds itself to the editor via JavaScript code stored in Composr's [tt]WYSIWYG_LOAD.tpl[/tt], [tt]WYSIWYG_SETTINGS.tpl[/tt], and [tt]posting.js[/tt] templates. The editor itself is stored in [tt]data/ckeditor[/tt].
 
+[title="2"]Link parsing[/title]
+
+Automatic link parsing, and some other minor Comcode features, are not guaranteed to work when using the WYSIWYG editor. This is due to a complex set of conditions for what depth/type of Comcode parsing Composr goes into. These conditions are designed to minimalise corruption through incorrect or unnecessary assumptions made by Composr.
+You should use the features of the editor to explicitly mark up your content as you want it and think of it as mainly an alternative to writing Comcode, rather than a supplement to it.
+
+One scenario where automatic link detection runs is when an explicit anchor tag has already been added. Composr will assume you want any written URLs to display literally and that you'll use anchor tags explicitly when you want them.
+
 [title="2"]Highlighting of Comcode tags[/title]
 
 Comcode tags that can not be represented visually in the editor will be shown either as:
