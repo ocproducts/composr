@@ -442,7 +442,7 @@ function delete_menu_branch(ob)
 {
 	var id=ob.id.substring(4,ob.id.length);
 
-	if ((typeof window.showModalDialog!='undefined'{+START,IF,{$CONFIG_OPTION,js_overlays}} || true{+END}) || (ob.form.elements['branch_type_'+id]!='page'))
+	if ((typeof window.showModalDialog!='undefined'/*{+START,IF,{$CONFIG_OPTION,js_overlays}}*/ || true/*{+END}*/) || (ob.form.elements['branch_type_'+id]!='page'))
 	{
 		var choices={buttons__cancel: '{!INPUTSYSTEM_CANCEL;^}',menu___generic_admin__delete: '{!DELETE;^}',buttons__move: '{!menus:MOVETO_MENU;^}'};
 		generate_question_ui(
@@ -480,7 +480,7 @@ function delete_menu_branch(ob)
 										if (ob.nodeName.toLowerCase()=='select')
 										{
 											value=ob.form.elements[i].value;
-											myValue=ob.options[ob.selectedIndex].value;
+											window.myValue=ob.options[ob.selectedIndex].value;
 										} else
 										{
 											if ((ob.type.toLowerCase()=='checkbox') && (!ob.checked)) continue;

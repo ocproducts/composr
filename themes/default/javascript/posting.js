@@ -798,9 +798,9 @@ function init_form_saving(form_id)
 {
 	window.last_autosave=new Date();
 
-	{+START,IF,{$DEV_MODE}}
+	/*{+START,IF,{$DEV_MODE}}*/
 		if (typeof console.log!='undefined') console.log('Initialising auto-save subsystem');
-	{+END}
+	/*{+END}*/
 
 	// Go through all forms/elements
 	var form=document.getElementById(form_id);
@@ -843,14 +843,14 @@ function init_form_saving(form_id)
 						biggest_length_data=value;
 					}
 
-					{+START,IF,{$DEV_MODE}}
+					/*{+START,IF,{$DEV_MODE}}*/
 						if (typeof console.log!='undefined') console.log('+ Has autosave for '+element_name+' ('+autosave_name+')');
-					{+END}
+					/*{+END}*/
 				} else
 				{
-					{+START,IF,{$DEV_MODE}}
+					/*{+START,IF,{$DEV_MODE}}*/
 						//if (typeof console.log!='undefined') console.log('- Has no autosave for '+element_name);
-					{+END}
+					/*{+END}*/
 				}
 			}
 
@@ -860,32 +860,32 @@ function init_form_saving(form_id)
 				return; // If we had it locally, we won't let it continue on to try via AJAX
 			} else
 			{
-				{+START,IF,{$DEV_MODE}}
+				/*{+START,IF,{$DEV_MODE}}*/
 					if (typeof console.log!='undefined') console.log('No auto-save, fields found was '+fields_to_do_counter+', largest length was '+biggest_length_data.length);
-				{+END}
+				/*{+END}*/
 			}
 		}
 	} else
 	{
-		{+START,IF,{$DEV_MODE}}
+		/*{+START,IF,{$DEV_MODE}}*/
 			if (typeof console.log!='undefined') console.log('Nothing in local storage');
-		{+END}
+		/*{+END}*/
 	}
 
 	// Load via AJAX (if issue happened on another machine, or if we do not support local storage)
 	if (navigator.onLine)
 	{
-		{+START,IF,{$DEV_MODE}}
+		/*{+START,IF,{$DEV_MODE}}*/
 			if (typeof console.log!='undefined') console.log('Searching AJAX for auto-save');
-		{+END}
+		/*{+END}*/
 
 		var url='{$FIND_SCRIPT;,autosave}?type=retrieve';
 		url+='&stem='+window.encodeURIComponent(get_autosave_url_stem());
 		url+=keep_stub();
 		var callback=function(form) { return function(result) {
-			{+START,IF,{$DEV_MODE}}
+			/*{+START,IF,{$DEV_MODE}}*/
 				if (typeof console.log!='undefined') console.log('AJAX says',result);
-			{+END}
+			/*{+END}*/
 
 			_retrieve_form_autosave(result,form);
 		} }(form);
@@ -932,9 +932,9 @@ function _retrieve_form_autosave(result,form)
 		_restore_form_autosave(form,fields_to_do,biggest_length_data);
 	} else
 	{
-		{+START,IF,{$DEV_MODE}}
+		/*{+START,IF,{$DEV_MODE}}*/
 			if (typeof console.log!='undefined') console.log('No auto-save, fields found was '+fields_to_do_counter+', largest length was '+biggest_length_data.length);
-		{+END}
+		/*{+END}*/
 	}
 }
 
@@ -1073,9 +1073,9 @@ function handle_form_saving_explicit(event,form)
 {
 	if (event.keyCode==83/*s*/ && (navigator.platform.match('Mac')?event.metaKey:event.ctrlKey) && (!navigator.platform.match('Mac')?event.ctrlKey:event.metaKey) && (!event.altKey))
 	{
-		{+START,IF,{$DEV_MODE}}
+		/*{+START,IF,{$DEV_MODE}}*/
 			if (typeof console.log!='undefined') console.log('Doing explicit auto-save');
-		{+END}
+		/*{+END}*/
 
 		event.preventDefault(); // Prevent browser save dialog
 
@@ -1125,9 +1125,9 @@ function handle_form_saving(event,element,force)
 		// Save remotely
 		if (navigator.onLine)
 		{
-			{+START,IF,{$DEV_MODE}}
+			/*{+START,IF,{$DEV_MODE}}*/
 				if (typeof console.log!='undefined') console.log('Doing AJAX auto-save');
-			{+END}
+			/*{+END}*/
 
 			post=modsecurity_workaround_ajax(post);
 			do_ajax_request('{$FIND_SCRIPT_NOHTTP;,autosave}?type=store'+keep_stub(),function() { },post);
@@ -1172,9 +1172,9 @@ function _handle_form_saving(event,element,force)
 	// Save locally
 	if (typeof window.localStorage!='undefined')
 	{
-		{+START,IF,{$DEV_MODE}}
+		/*{+START,IF,{$DEV_MODE}}*/
 			if (typeof console.log!='undefined') console.log('Doing local storage auto-save for '+element_name+' ('+autosave_name+')');
-		{+END}
+		/*{+END}*/
 
 		localStorage.setItem(autosave_name,value);
 	}

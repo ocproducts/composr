@@ -13,7 +13,7 @@ function facebook_init(app_id,channel_url,just_logged_out,serverside_fbuid,home_
 
 		// Ignore floods of "Unsafe JavaScript attempt to access frame with URL" errors in Chrome they are benign
 
-		{+START,IF,{$CONFIG_OPTION,facebook_allow_signups}}
+		/*{+START,IF,{$CONFIG_OPTION,facebook_allow_signups}}*/
 			// Calling this effectively waits until the login is active on the client side, which we must do before we can do anything (including calling a log out)
 			FB.getLoginStatus(function(response) {
 				if ((response.status=='connected') && (response.authResponse))
@@ -68,7 +68,7 @@ function facebook_init(app_id,channel_url,just_logged_out,serverside_fbuid,home_
 					}
 				});
 			}
-		{+END}
+		/*{+END}*/
 	};
 
 	// Load the SDK Asynchronously

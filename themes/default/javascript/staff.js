@@ -67,7 +67,7 @@ function script_load_stuff_staff()
 	];
 	var cells=document.getElementsByTagName('td');
 	var links=[];
-	if (window.location.href.replace('{$BASE_URL_NOHTTP;}','').indexOf('/cms/')!=-1{+START,IF,{$DEV_MODE}} || true{+END})
+	if (window.location.href.replace('{$BASE_URL_NOHTTP;}','').indexOf('/cms/')!=-1/*{+START,IF,{$DEV_MODE}}*/ || true/*{+END}*/)
 	{
 		for (var i=0;i<cells.length;i++)
 		{
