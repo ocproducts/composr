@@ -1017,23 +1017,6 @@ function read_cookie(cookie_name)
 	return window.decodeURIComponent(theCookie.substring(ind+cookie_name.length+1,ind1));
 }
 
-/* Filtering class names */
-// LEGACY: IE8/IE9; https://developer.mozilla.org/en-US/docs/Web/API/Element.classList
-function first_class_name(class_name)
-{
-	var p=class_name.indexOf(' ');
-	if (p!=-1)
-	{
-		return class_name.substr(0,p);
-	}
-	return class_name;
-}
-function element_has_class(element,class_name)
-{
-	if (typeof element.className=='undefined') return false; // Probably a text node
-	return (element.className.match(new RegExp('(^|\\s)'+class_name+'($|\\s)')));
-}
-
 // LEGACY: IE8
 /* Finding elements by class name */
 function get_elements_by_class_name(node,class_name)

@@ -1,8 +1,8 @@
 "use strict";
 
 // Constants
-window.MESSAGE_CHECK_INTERVAL={$ROUND%,{$CONFIG_OPTION,chat_message_check_interval}};
-window.TRANSITORY_ALERT_TIME={$ROUND%,{$CONFIG_OPTION,chat_transitory_alert_time}};
+window.MESSAGE_CHECK_INTERVAL='{$ROUND%,{$CONFIG_OPTION,chat_message_check_interval}}';
+window.TRANSITORY_ALERT_TIME='{$ROUND%,{$CONFIG_OPTION,chat_transitory_alert_time}}';
 window.LOGS_DOWNLOAD_INTERVAL=3000;
 
 // Tracking variables

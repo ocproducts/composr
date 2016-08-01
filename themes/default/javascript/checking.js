@@ -409,7 +409,7 @@ function check_field(the_element,the_form,for_preview)
 	var i,the_class,required,my_value,erroneous=false,error_msg='',regexp,total_file_size=0,alerted=false;
 
 	// No checking for hidden elements
-	if (((the_element.type=='hidden') || (((the_element.style.display=='none') || (the_element.parentNode.style.display=='none') || (the_element.parentNode.parentNode.style.display=='none') || (the_element.parentNode.parentNode.parentNode.style.display=='none')) && ((typeof window.is_wysiwyg_field=='undefined') || (!is_wysiwyg_field(the_element))))) && ((!the_element.className) || (element_has_class(the_element,'hidden_but_needed'))==null))
+	if (((the_element.type=='hidden') || (((the_element.style.display=='none') || (the_element.parentNode.style.display=='none') || (the_element.parentNode.parentNode.style.display=='none') || (the_element.parentNode.parentNode.parentNode.style.display=='none')) && ((typeof window.is_wysiwyg_field=='undefined') || (!is_wysiwyg_field(the_element))))) && ((!the_element.className) || (the_element.classList.contains('hidden_but_needed'))==null))
 	{
 		return null;
 	}
@@ -450,7 +450,7 @@ function check_field(the_element,the_form,for_preview)
 	}
 
 	// Class name
-	the_class=first_class_name(the_element.className);
+	the_class=the_element.classList[0];
 
 	// Find whether field is required and value of it
 	if (the_element.type=='radio')
@@ -537,7 +537,7 @@ function check_field(the_element,the_form,for_preview)
 function check_form(the_form,for_preview)
 {
 	var delete_element=document.getElementById('delete');
-	if ((!for_preview) && (delete_element!=null) && (((first_class_name(delete_element.className)=='input_radio') && (the_element.value!='0')) || (first_class_name(delete_element.className)=='input_tick')) && (delete_element.checked))
+	if ((!for_preview) && (delete_element!=null) && (((delete_element.classList[0]=='input_radio') && (the_element.value!='0')) || (delete_element.classList[0]=='input_tick')) && (delete_element.checked))
 	{
 		return true;
 	}
@@ -951,11 +951,11 @@ function toggle_subordinate_fields(pic,help_id)
 
 	var next=field_input.nextSibling;
 	if (!next) return;
-	while (element_has_class(next,'field_input')!==null) // Sometimes divs or whatever may have errornously been put in a table by a programmer, skip past them
+	while (next.classList.contains('field_input')) // Sometimes divs or whatever may have errornously been put in a table by a programmer, skip past them
 	{
 		next=next.nextSibling;
 		if (!next) break;
-		if (element_has_class(next,'form_table_field_spacer')) // End of section, so no need to keep going
+		if (next.classList.contains('form_table_field_spacer')) // End of section, so no need to keep going
 		{
 			next=null;
 			break;
@@ -992,7 +992,7 @@ function toggle_subordinate_fields(pic,help_id)
 		if (typeof field_input.className=='undefined') continue; // E.g. a #text node
 
 		/* Start of next section? */
-		if (element_has_class(field_input,'form_table_field_spacer')) break; // End of section
+		if (field_input.classList.contains('form_table_field_spacer')) break; // End of section
 
 		/* Ok to proceed */
 		field_input.style.display=new_state;
@@ -1181,7 +1181,7 @@ function find_if_children_set(container)
 	{
 		if (!elements[i]) continue;
 		the_element=elements[i];
-		if (((the_element.type=='hidden') || ((the_element.style.display=='none') && ((typeof window.is_wysiwyg_field=='undefined') || (!is_wysiwyg_field(the_element))))) && ((!the_element.className) || (!element_has_class(the_element,'hidden_but_needed')))) continue;
+		if (((the_element.type=='hidden') || ((the_element.style.display=='none') && ((typeof window.is_wysiwyg_field=='undefined') || (!is_wysiwyg_field(the_element))))) && ((!the_element.className) || (!the_element.classList.contains('hidden_but_needed')))) continue;
 		value=clever_find_value(the_element.form,the_element);
 		blank=blank && (value=='');
 	}
