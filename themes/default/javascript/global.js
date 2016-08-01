@@ -2633,30 +2633,17 @@ function add_event_listener_abstract(element,the_event,func,capture)
 			element.simulated_events[the_event].push(func);
 		}
 
-		if (typeof element.addEventListener!='undefined')
+		// W3C
+		if (the_event=='load') // Try and be smarter
 		{
-			// W3C
-			if (the_event=='load') // Try and be smarter
-			{
-				element.addEventListener('DOMContentLoaded',function() { window.page_loaded=true; window.has_DOMContentLoaded=true; window.setTimeout(func,0); },capture);
-				return element.addEventListener(the_event,function() { window.page_loaded=true; if (!window.has_DOMContentLoaded) window.setTimeout(func,0); },capture);
-			}
-			if (the_event=='real_load')
-			{
-				return element.addEventListener('load',function() { window.page_fully_loaded=true; func(); },capture);
-			}
-			return element.addEventListener(the_event,func,capture);
+			element.addEventListener('DOMContentLoaded',function() { window.page_loaded=true; window.has_DOMContentLoaded=true; window.setTimeout(func,0); },capture);
+			return element.addEventListener(the_event,function() { window.page_loaded=true; if (!window.has_DOMContentLoaded) window.setTimeout(func,0); },capture);
 		}
-		else if (typeof element.attachEvent!='undefined') // LEGACY: IE8
+		if (the_event=='real_load')
 		{
-			// Microsoft - no capturing :(
-			if ((the_event=='load') || (the_event=='real_load'))
-			{
-				return element.attachEvent('onload',function() { window.page_loaded=true; window.page_fully_loaded=true; func(); });
-			}
-			return element.attachEvent('on'+the_event,func);
+			return element.addEventListener('load',function() { window.page_fully_loaded=true; func(); },capture);
 		}
-		else return false;
+		return element.addEventListener(the_event,func,capture);
 	}
 	else return false;
 }
@@ -3556,15 +3543,7 @@ function force_reload_on_back()
 	var func=function() {
 		window.location.reload();
 	};
-
-	if (typeof window.addEventListener!='undefined')
-	{
 		window.addEventListener(showevent,func,false);
-	}
-	else if (typeof window.attachEvent!='undefined')
-	{
-		window.attachEvent('on'+showevent,func);
-	}
 }
 
 /* Reply to a topic using AJAX */

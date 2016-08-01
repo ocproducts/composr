@@ -134,7 +134,7 @@
 					ob.bind('Error',shutdown_overlay);
 
 					// Keep copying the upload indicator
-					var progress=get_inner_html(target_window.document.getElementById('fsUploadProgress_'+field));
+					var progress = target_window.document.getElementById('fsUploadProgress_'+field).innerHTML;
 					window.setInterval(function() {
 						if (progress!='')
 						{
