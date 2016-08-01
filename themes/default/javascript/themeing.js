@@ -27,7 +27,7 @@ function file_id_to_file(file_id)
 
 function template_editor_assign_unload_event()
 {
-	add_event_listener_abstract(window,'beforeunload',function(event) {
+	window.addEventListener('beforeunload',function(event) {
 		if (!event) event=window.event;
 
 		if (document.querySelectorAll('.file_changed').length>0)
@@ -298,7 +298,7 @@ function template_editor_tab_loaded_content(ajax_result,file)
 			});
 		} else
 		{
-			add_event_listener_abstract(get_file_textbox(file),'change',function() {
+			get_file_textbox(file).addEventListener('change',function() {
 				template_editor_tab_mark_changed_content(file);
 			});
 		}
@@ -907,7 +907,7 @@ function set_up_parent_page_highlighting(file,file_id)
 		{
 			element=elements[j];
 
-			add_event_listener_abstract(element,'mouseover',function(a,element) { return function(event) {
+			element.addEventListener('mouseover',function(a,element) { return function(event) {
 				if (typeof event=='undefined') event=window.event;
 
 				if ((window) && (!event.ctrlKey) && (!event.metaKey))
@@ -932,7 +932,7 @@ function set_up_parent_page_highlighting(file,file_id)
 						a.style.color='black';
 				}
 			} }(a,element) );
-			add_event_listener_abstract(element,'mouseout',function(a) { return function(event) {
+			element.addEventListener('mouseout',function(a) { return function(event) {
 				if (typeof event=='undefined') event=window.event;
 
 				if ((window) && (!event.ctrlKey) && (!event.metaKey))
@@ -1094,7 +1094,7 @@ function css_equation_helper(file_id,theme)
 window.done_cleanup_template_markers=false;
 if (window.location.href.indexOf('keep_template_magic_markers=1')!=-1)
 {
-	add_event_listener_abstract(window,'load',function() {
+	$(function() {
 		cleanup_template_markers(window);
 	});
 }

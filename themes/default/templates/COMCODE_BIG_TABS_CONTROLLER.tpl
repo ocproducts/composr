@@ -29,7 +29,7 @@
 		}
 	{+END}
 
-	add_event_listener_abstract(window,'load',function() {
+	$(function() {
 		big_tabs_init();
 
 		window.a{PASS_ID|}_{$GET%,big_tab_sets}_big_tab=[];

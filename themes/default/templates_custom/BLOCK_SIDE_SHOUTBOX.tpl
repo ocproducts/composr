@@ -21,7 +21,7 @@
 
 	<script>// <![CDATA[
 		var sb_room_id={CHATROOM_ID%};
-		add_event_listener_abstract(window,'load',function() {
+		$(function() {
 			{+START,IF_NON_EMPTY,{LAST_MESSAGE_ID}}
 				sb_chat_check({LAST_MESSAGE_ID%},-1);
 			{+END}

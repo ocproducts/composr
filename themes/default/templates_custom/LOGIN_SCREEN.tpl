@@ -104,7 +104,7 @@
 </div>
 
 <script>// <![CDATA[
-	add_event_listener_abstract(window,'real_load',function() {
+	after_window_load(function() {
 		if ((typeof document.activeElement=='undefined') || (document.activeElement!=document.getElementById('password')))
 			document.getElementById('login_username').focus();
 	});

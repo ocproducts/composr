@@ -575,7 +575,7 @@
 {+END}
 
 <script>// <![CDATA[
-	add_event_listener_abstract(window,'load',function() {
+	$(function() {
 		// Allow searching via URL hash
 		if (window.location.hash)
 		{

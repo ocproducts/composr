@@ -11,7 +11,7 @@
 {FORM}
 
 <script>// <![CDATA[
-	add_event_listener_abstract(window,'load',function() {
+	$(function() {
 		var submit_button=document.getElementById('submit_button');
 		submit_button.old_onclick=submit_button.onclick;
 		submit_button.onclick=function(event) {

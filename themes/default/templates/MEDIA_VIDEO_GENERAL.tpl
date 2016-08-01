@@ -37,7 +37,7 @@
 	{$,API: http://developer.apple.com/library/safari/#documentation/QuickTime/Conceptual/QTScripting_JavaScript/bQTScripting_JavaScri_Document/QuickTimeandJavaScri.html}
 	{$,API: http://msdn.microsoft.com/en-us/library/windows/desktop/dd563945(v=vs.85).aspx}
 	<script>// <![CDATA[
-		add_event_listener_abstract(window,'real_load',function() {
+		after_window_load(function() {
 			if (document.getElementById('next_slide'))
 			{
 				stop_slideshow_timer();
@@ -46,10 +46,10 @@
 					var player=document.getElementById('{$GET;,player_id}');
 
 					{$,WMP}
-					add_event_listener_abstract(player,'playstatechange',function(newState) { if (newState==1) { player_stopped(); } });
+					player.addEventListener('playstatechange',function(newState) { if (newState==1) { player_stopped(); } });
 
 					{$,Quicktime}
-					add_event_listener_abstract(player,'qt_ended',function() { player_stopped(); });
+					player.addEventListener('qt_ended',function() { player_stopped(); });
 
 					try { player.Play(); } catch (e) {}
 					try { player.controls.play(); } catch (e) {}

@@ -35,7 +35,7 @@
 </div>
 
 <script>//<![CDATA[
-	add_event_listener_abstract(window,'load',function() {
+	$(function() {
 		if ($('#fp_status_form').length!=0) {
 			$('textarea','#fp_status_form').bind('focus',s_update_focus);
 			$('textarea','#fp_status_form').bind('blur',s_update_blur);

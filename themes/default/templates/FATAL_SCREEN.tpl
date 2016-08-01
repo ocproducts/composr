@@ -38,7 +38,7 @@
 {+END}
 
 <script>// <![CDATA[
-	add_event_listener_abstract(window,'load',function() {
+	$(function() {
 		if ((typeof window.trigger_resize!='undefined') && (window.top!=window)) trigger_resize();
 	});
 //]]></script>

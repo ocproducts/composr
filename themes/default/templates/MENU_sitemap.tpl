@@ -24,7 +24,7 @@
 	</nav>
 
 	<script>// <![CDATA[
-		add_event_listener_abstract(window,'load',function() {
+		$(function() {
 			generate_menu_sitemap('{$GET;/,menu_sitemap_id}',[{CONTENT/}],0);
 		});
 	//]]></script>

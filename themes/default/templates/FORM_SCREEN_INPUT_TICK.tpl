@@ -3,7 +3,7 @@
 
 {+START,IF,{$EQ,{NAME},delete}}
 	<script>// <![CDATA[
-		add_event_listener_abstract(window,'load',function() {
+		$(function() {
 			assign_tick_deletion_confirm('{NAME;/}');
 		});
 	//]]></script>

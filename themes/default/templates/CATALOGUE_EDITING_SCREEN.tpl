@@ -29,7 +29,7 @@
 		{FIELDS_NEW}
 
 		<script>// <![CDATA[
-			add_event_listener_abstract(window,'load',function() {
+			$(function() {
 				catalogue_field_change_watching();
 			});
 		//]]></script>

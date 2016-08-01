@@ -62,7 +62,7 @@ function decrypt_data(encrypted_data)
 	button.className='buttons__cancel button_screen_item';
 	button.value='{!INPUTSYSTEM_CANCEL;^}';
 	// Remove the form when it's cancelled
-	add_event_listener_abstract(button,'click',function() { document.getElementsByTagName('body')[0].removeChild(container); return false; });
+	button.addEventListener('click',function() { document.getElementsByTagName('body')[0].removeChild(container); return false; });
 	proceed_div.appendChild(button);
 
 	// Submit button
@@ -71,7 +71,7 @@ function decrypt_data(encrypted_data)
 	button.className='buttons__proceed button_screen_item';
 	button.value='{!encryption:DECRYPT;^}';
 	// Hide the form upon submission
-	add_event_listener_abstract(button,'click',function() { container.style.display='none'; return true; });
+	button.addEventListener('click',function() { container.style.display='none'; return true; });
 	proceed_div.appendChild(button);
 
 	form.appendChild(proceed_div);

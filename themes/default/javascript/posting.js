@@ -809,14 +809,14 @@ function init_form_saving(form_id)
 		if (field_supports_autosave(form.elements[i]))
 		{
 			// Register events for auto-save
-			add_event_listener_abstract(form.elements[i],'keypress',handle_form_saving);
-			add_event_listener_abstract(form.elements[i],'blur',handle_form_saving);
+			form.elements[i].addEventListener('keypress',handle_form_saving);
+			form.elements[i].addEventListener('blur',handle_form_saving);
 			form.elements[i].externalOnKeyPress=handle_form_saving;
 		}
 	}
 
 	// Register event for explicit draft save
-	add_event_listener_abstract(document.body,'keydown',function(form) { return function(event) { handle_form_saving_explicit(event,form); } }(form) );
+	document.body.addEventListener('keydown',function(form) { return function(event) { handle_form_saving_explicit(event,form); } }(form) );
 
 	// Load via local storage
 	var autosave_value=read_cookie(encodeURIComponent(get_autosave_url_stem()));

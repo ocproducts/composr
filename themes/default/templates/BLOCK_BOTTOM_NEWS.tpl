@@ -13,7 +13,7 @@
 <div class="ticker_wrap" role="marquee" id="ticktickticker_news{$GET%,bottom_news_id}"></div>
 <script>// <![CDATA[
 	var tick_pos=[];
-	add_event_listener_abstract(window,'load',function() {
+	$(function() {
 		var ticktickticker=document.getElementById('ticktickticker_news{$GET%,bottom_news_id}');
 		if (typeof document.createElement('marquee').scrolldelay=='undefined') // Slower, but chrome does not support marquee's
 		{
@@ -21,8 +21,8 @@
 			tick_pos[my_id]=400;
 			set_inner_html(ticktickticker,'<div onmouseover="this.mouseisover=true;" onmouseout="this.mouseisover=false;" class="ticker" style="text-indent: 400px; width: 400px;" id="'+my_id+'"><span>{$GET;~/,news_ticker_text}<\/span><\/div>');
 			window.focused=true;
-			add_event_listener_abstract(window,"focus",function() { window.focused=true; });
-			add_event_listener_abstract(window,"blur",function() { window.focused=false; });
+			window.addEventListener("focus",function() { window.focused=true; });
+			window.addEventListener("blur",function() { window.focused=false; });
 			window.setInterval(function() { ticker_tick(my_id,400); }, 50);
 		} else
 		{

@@ -1,5 +1,5 @@
 <script>// <![CDATA[
-	add_event_listener_abstract(window,'load',function() {
+	$(function() {
 		replace_comments_form_with_ajax('{OPTIONS;^/}','{HASH;^/}','comments_form','comments_wrapper');
 
 		var url_stem='{$FIND_SCRIPT;/,post_comment}?options={OPTIONS&;^/}&hash={HASH&;^/}';
@@ -14,10 +14,10 @@
 					var wrapper=document.getElementById('comments_wrapper');
 					internalise_infinite_scrolling(url_stem,wrapper);
 				};
-				add_event_listener_abstract(window,'scroll',infinite_scrolling_comments_wrapper);
-				add_event_listener_abstract(window,'keydown',infinite_scrolling_block);
-				add_event_listener_abstract(window,'mousedown',infinite_scrolling_block_hold);
-				add_event_listener_abstract(window,'mousemove',function() { infinite_scrolling_block_unhold(infinite_scrolling_comments_wrapper); }); // mouseup/mousemove does not work on scrollbar, so best is to notice when mouse moves again (we know we're off-scrollbar then)
+				window.addEventListener('scroll',infinite_scrolling_comments_wrapper);
+				window.addEventListener('keydown',infinite_scrolling_block);
+				window.addEventListener('mousedown',infinite_scrolling_block_hold);
+				window.addEventListener('mousemove',function() { infinite_scrolling_block_unhold(infinite_scrolling_comments_wrapper); }); // mouseup/mousemove does not work on scrollbar, so best is to notice when mouse moves again (we know we're off-scrollbar then)
 				infinite_scrolling_comments_wrapper();
 			{+END}
 		{+END}

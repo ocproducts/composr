@@ -22,7 +22,7 @@
 		<script>// <![CDATA[
 			if (window.parent)
 			{
-				add_event_listener_abstract(window,'real_load',function() {
+				after_window_load(function() {
 					document.body.className+=' frame';
 
 					try

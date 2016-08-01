@@ -1,7 +1,7 @@
 {$SET,RAND_ID_OVERLAY,overlay_{$RAND}}
 
 <script>// <![CDATA[
-	add_event_listener_abstract(window,'load',function() {
+	$(function() {
 		{+START,IF_NON_EMPTY,{ID}}
 		if (read_cookie('og_{ID;/}')!='1')
 		{

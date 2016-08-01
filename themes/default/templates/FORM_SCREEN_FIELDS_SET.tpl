@@ -11,7 +11,7 @@
 </fieldset>
 
 <script>// <![CDATA[
-	add_event_listener_abstract(window,'load',function() {
+	$(function() {
 		standard_alternate_fields_within('{SET_NAME;/}',{$?,{REQUIRED},true,false});
 	});
 //]]></script>

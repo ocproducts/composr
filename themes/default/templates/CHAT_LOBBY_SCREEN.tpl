@@ -122,7 +122,7 @@
 					{CHAT_SOUND}
 					<script>
 					// <![CDATA[
-						add_event_listener_abstract(window,'load',prepare_chat_sounds);
+						$(prepare_chat_sounds);
 					// ]]>
 					</script>
 

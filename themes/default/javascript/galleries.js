@@ -12,9 +12,9 @@ function initialise_slideshow()
 	reset_slideshow_countdown();
 	start_slideshow_timer();
 
-	add_event_listener_abstract(window,'keypress',toggle_slideshow_timer);
+	window.addEventListener('keypress', toggle_slideshow_timer);
 
-	add_event_listener_abstract(document.getElementById('gallery_entry_screen'),'click',function(event) {
+	document.getElementById('gallery_entry_screen').addEventListener('click',function(event) {
 		if (typeof event=='undefined') event=window.event;
 
 		if (event.altKey || event.metaKey)

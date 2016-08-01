@@ -756,13 +756,13 @@ function __standard_alternate_field_create_listeners(field,refreshFunction)
 	if (!radio_button) radio_button=document.getElementById('choose_'+field.name.replace(/\_\d+$/,'_'));
 	if (radio_button) // Radio button handles field alternation
 	{
-		add_event_listener_abstract(radio_button,'change',refreshFunction);
+		radio_button.addEventListener('change', refreshFunction);
 	} else // Filling/blanking out handles field alternation
 	{
 		if (field)
 		{
-			add_event_listener_abstract(field,'keyup',refreshFunction);
-			add_event_listener_abstract(field,'change',refreshFunction);
+			field.addEventListener('keyup', refreshFunction);
+			field.addEventListener('change', refreshFunction);
 			field.fakeonchange=refreshFunction;
 		}
 	}
@@ -1168,8 +1168,9 @@ function _set_up_change_monitor(container,input,container2)
 				if (container2) container2.className=container2.className.replace(/ filledin$/,'');
 			}
 		};
-		add_event_listener_abstract(elements[i],'blur',func );
-		add_event_listener_abstract(elements[i],'change',func );
+
+		elements[i].addEventListener('blur', func);
+		elements[i].addEventListener('change', func);
 	}
 }
 

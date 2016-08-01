@@ -23,7 +23,7 @@ function notification_poller_init(time_barrier)
 
 	var web_notifications_button=document.getElementById('web_notifications_button');
 	if (web_notifications_button)
-		add_event_listener_abstract(web_notifications_button,'click',explicit_notifications_enable_request);
+		web_notifications_button.addEventListener('click',explicit_notifications_enable_request);
 }
 
 function notifications_mark_all_read(event)
@@ -161,7 +161,7 @@ function display_alert(notification)
 			var notification_wrapper=window.notify.createNotification(title,{'icon': icon,'body': body,'tag': '{$SITE_NAME;}__'+id});
 			if (notification_wrapper)
 			{
-				add_event_listener_abstract(window,'focus',function() { notification_wrapper.close(); });
+				window.addEventListener('focus',function() { notification_wrapper.close(); });
 
 				notification_wrapper.notification.onclick=function() {
 					try
@@ -230,8 +230,8 @@ function _toggle_messaging_box(event,name,hide)
 		e.parentNode.removeChild(e);
 		body.appendChild(e);
 
-		add_event_listener_abstract(e,'click',function(event) { if (typeof event=='undefined') event=window.event; event.within_message_box=true; });
-		add_event_listener_abstract(body,'click',function(event) { if (typeof event=='undefined') event=window.event; if (typeof event.within_message_box!='undefined') return; _toggle_messaging_box(event,'top_personal_stats',true); _toggle_messaging_box(event,'web_notifications',true); _toggle_messaging_box(event,'pts',true); });
+		e.addEventListener('click',function(event) { if (typeof event=='undefined') event=window.event; event.within_message_box=true; });
+		body.addEventListener('click',function(event) { if (typeof event=='undefined') event=window.event; if (typeof event.within_message_box!='undefined') return; _toggle_messaging_box(event,'top_personal_stats',true); _toggle_messaging_box(event,'web_notifications',true); _toggle_messaging_box(event,'pts',true); });
 	}
 
 	var button=document.getElementById(name+'_button');

@@ -36,7 +36,7 @@
 </noscript>
 
 <script>// <![CDATA[
-	add_event_listener_abstract(window,'load',function() {
+	$(function() {
 		var data={};
 		initialise_image_fader(data,'{$GET%,RAND_FADER_IMAGE}');
 

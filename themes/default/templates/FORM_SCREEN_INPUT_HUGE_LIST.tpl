@@ -30,7 +30,7 @@
 			<script>// <![CDATA[
 				set_up_change_monitor('form_table_field_input__{$GET,randomised_id}');
 
-				add_event_listener_abstract(window,'load',function() {
+				$(function() {
 					$("#{NAME#/}").select2({
 						dropdownAutoWidth: true,
 						containerCssClass: 'wide_field'

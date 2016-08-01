@@ -9,7 +9,7 @@
 {CHAT_SOUND}
 <script>
 // <![CDATA[
-	add_event_listener_abstract(window,'load',prepare_chat_sounds);
+$(prepare_chat_sounds);
 // ]]>
 </script>
 
@@ -135,7 +135,7 @@
 </div>
 
 <script>// <![CDATA[
-	add_event_listener_abstract(window,'real_load',function() {
+	after_window_load(function() {
 		chat_load({CHATROOM_ID%});
 	});
 // ]]></script>

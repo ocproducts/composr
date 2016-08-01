@@ -5,7 +5,7 @@ function script_load_stuff_staff()
 	// Navigation loading screen
 	/*{+START,IF,{$CONFIG_OPTION,enable_animations}}*/
 		if ((window.parent==window) && ((window.location+'').indexOf('js_cache=1')==-1) && (((window.location+'').indexOf('/cms/')!=-1) || ((window.location+'').indexOf('/adminzone/')!=-1)))
-			add_event_listener_abstract(window,'beforeunload',function() { staff_unload_action(); });
+			window.addEventListener('beforeunload',function() { staff_unload_action(); });
 	/*{+END}*/
 
 	// Theme image editing hovers
@@ -21,15 +21,15 @@ function script_load_stuff_staff()
 				if (!elements[j].onclick)
 				{
 					elements[j].src=document.images[i].src;
-					add_event_listener_abstract(elements[j],'click',handle_image_click,false);
+					elements[j].addEventListener('click',handle_image_click,false);
 				}
 			}
 		}
 		if (document.images[i].className.indexOf('no_theme_img_click')==-1)
 		{
-			add_event_listener_abstract(document.images[i],'mouseover',handle_image_mouse_over,false);
-			add_event_listener_abstract(document.images[i],'mouseout',handle_image_mouse_out,false);
-			add_event_listener_abstract(document.images[i],'click',handle_image_click,false);
+			document.images[i].addEventListener('mouseover',handle_image_mouse_over,false);
+			document.images[i].addEventListener('mouseout',handle_image_mouse_out,false);
+			document.images[i].addEventListener('click',handle_image_click,false);
 		}
 	}
 	var inputs=document.getElementsByTagName('input');
@@ -37,9 +37,9 @@ function script_load_stuff_staff()
 	{
 		if ((inputs[i].className.indexOf('no_theme_img_click')==-1) && (inputs[i].type=='image'))
 		{
-			add_event_listener_abstract(inputs[i],'mouseover',handle_image_mouse_over,false);
-			add_event_listener_abstract(inputs[i],'mouseout',handle_image_mouse_out,false);
-			add_event_listener_abstract(inputs[i],'click',handle_image_click,false);
+			inputs[i].addEventListener('mouseover',handle_image_mouse_over,false);
+			inputs[i].addEventListener('mouseout',handle_image_mouse_out,false);
+			inputs[i].addEventListener('click',handle_image_click,false);
 		}
 	}
 	var all_e=document.getElementsByTagName('*');
@@ -49,9 +49,9 @@ function script_load_stuff_staff()
 		bg=abstract_get_computed_style(all_e[i],'background-image');
 		if ((all_e[i].className.indexOf('no_theme_img_click')==-1) && (bg!='none') && (bg.indexOf('url')!=-1))
 		{
-			add_event_listener_abstract(all_e[i],'mouseover',handle_image_mouse_over,false);
-			add_event_listener_abstract(all_e[i],'mouseout',handle_image_mouse_out,false);
-			add_event_listener_abstract(all_e[i],'click',handle_image_click,false);
+			all_e[i].addEventListener('mouseover',handle_image_mouse_over,false);
+			all_e[i].addEventListener('mouseout',handle_image_mouse_out,false);
+			all_e[i].addEventListener('click',handle_image_click,false);
 		}
 	}
 
@@ -102,15 +102,15 @@ TOOLTIPS FOR THUMBNAILS TO CONTENT, AS DISPLAYED IN CMS ZONE
 
 function apply_comcode_tooltip(hook,id,link)
 {
-	add_event_listener_abstract(link,'mouseout',function(event) {
+	link.addEventListener('mouseout',function(event) {
 		if (typeof event=='undefined') event=window.event;
 		if (typeof window.deactivate_tooltip!='undefined') deactivate_tooltip(link);
 	});
-	add_event_listener_abstract(link,'mousemove',function(event) {
+	link.addEventListener('mousemove',function(event) {
 		if (typeof event=='undefined') event=window.event;
 		if (typeof window.activate_tooltip!='undefined') reposition_tooltip(link,event,false,false,null,true);
 	});
-	add_event_listener_abstract(link,'mouseover',function(event) {
+	link.addEventListener('mouseover',function(event) {
 		if (typeof event=='undefined') event=window.event;
 
 		if (typeof window.activate_tooltip!='undefined')
@@ -139,7 +139,7 @@ function apply_comcode_tooltip(hook,id,link)
 			}
 		}
 	});
-};
+}
 
 /*
 STAFF ACTIONS LINKS

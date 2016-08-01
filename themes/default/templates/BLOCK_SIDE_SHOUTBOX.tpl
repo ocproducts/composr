@@ -23,7 +23,7 @@
 	{$REQUIRE_JAVASCRIPT,checking}
 
 	<script>// <![CDATA[
-		add_event_listener_abstract(window,'load',function() {
+		$(function() {
 			internalise_ajax_block_wrapper_links('{$FACILITATE_AJAX_BLOCK_CALL;,{BLOCK_PARAMS}}',document.getElementById('{$GET;,wrapper_id}'),[],{ },false,true);
 		});
 	//]]></script>

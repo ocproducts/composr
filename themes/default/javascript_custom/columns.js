@@ -1,10 +1,10 @@
 // Based on http://welcome.totheinter.net/columnizer-jquery-plugin/
 //  But with fixes and better flexibility, and pure CSS-based activation
 
-add_event_listener_abstract(window,'real_load',function () {
+after_window_load(function () {
 	$('.column_wrapper').columnize({ columns: 3 });
 	$('.column_wrapper_2').columnize({ columns: 2 });
-} );
+});
 
 // version 1.5.0
 // http://welcome.totheinter.net/columnizer-jquery-plugin/

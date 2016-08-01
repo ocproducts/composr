@@ -241,7 +241,7 @@ class DecisionTree
                                 e=[e];
                             }
                             for (var i=0;i<e.length;i++) {
-                                add_event_listener_abstract(e[i],\'click\',function(_e) { return function() {
+                                e[i].addEventListener(\'click\',function(_e) { return function() {
                                     var selected=false;
                                     if (_e.type!=\'undefined\' && _e.type==\'checkbox\')
                                     {

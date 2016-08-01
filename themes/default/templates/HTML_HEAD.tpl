@@ -155,6 +155,8 @@
 {$,CSS includes from Composr page}
 {$CSS_TEMPCODE}
 
+{$REQUIRE_JAVASCRIPT,jquery_lite}
+
 {$,jQuery fan? Just uncomment the below and start using all the jQuery plugins you love in the normal way}
 {$,{$REQUIRE_JAVASCRIPT,jquery}}
 

@@ -7,7 +7,7 @@
 
 				{+START,IF_PASSED_AND_TRUE,SECTION_HIDDEN}
 					<script>// <![CDATA[
-						add_event_listener_abstract(window,'load',function (event) {
+						$(function (event) {
 							document.getElementById('fes{TITLE|}').onclick(event);
 						});
 					//]]></script>

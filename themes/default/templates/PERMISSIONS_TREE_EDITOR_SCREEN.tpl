@@ -45,7 +45,7 @@
 					<!-- List put in here -->
 				</div>
 				<script>// <![CDATA[
-					add_event_listener_abstract(window,'load',function() {
+					$(function() {
 						window.sitemap=new tree_list('tree_list','data/sitemap.php?start_links=1&get_perms=1&label_content_types=1&keep_full_structure=1{$KEEP;/}',null,'',true);
 					});
 					var column_color='{COLOR;/}';

@@ -70,7 +70,7 @@
 		var old_hash=window.location.hash;
 		window.location.hash='#';
 
-		add_event_listener_abstract(window,'load',function() {
+		$(function() {
 			window.location.hash='#';
 
 			find_url_tab(old_hash);

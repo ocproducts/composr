@@ -43,14 +43,14 @@
 	</table></div>
 
 	<script>// <![CDATA[
-		add_event_listener_abstract(window,'load',function() {
+		$(function() {
 			preinit_file_input('attachment_multi','file{I;/}',null,'{POSTING_FIELD_NAME;/}'{+START,IF_PASSED,FILTER},'{FILTER;/}'{+END});
 		});
 	//]]></script>
 
 	{+START,IF_PASSED,SYNDICATION_JSON}
 		<script>// <![CDATA[
-			add_event_listener_abstract(window,'load',function() {
+			$(function() {
 				show_upload_syndication_options('file{I;/}','{SYNDICATION_JSON;/}'{+START,IF_PASSED_AND_TRUE,NO_QUOTA},true{+END});
 			});
 		//]]></script>

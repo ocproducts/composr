@@ -155,7 +155,7 @@ function initialise_carousel(id)
 	main.appendChild(carousel_ns);
 	carousel.style.display='block';
 
-	add_event_listener_abstract(window,'real_load',function() {
+	after_window_load(function() {
 		var h=find_height(main)+'px';
 		carousel.querySelectorAll('.move_left')[0].style.height=h;
 		carousel.querySelectorAll('.move_right')[0].style.height=h;

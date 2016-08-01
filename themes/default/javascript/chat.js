@@ -23,8 +23,14 @@ var all_conversations={};
 // Code...
 
 window.has_focus=true;
-add_event_listener_abstract(window,'blur',function() { window.has_focus=false; });
-add_event_listener_abstract(window,'focus',function() { window.has_focus=true; });
+
+window.addEventListener('blur', function () {
+	window.has_focus=true;
+});
+
+window.addEventListener('focus', function () {
+	window.has_focus=true;
+});
 
 function play_sound_url(url) // Used for testing different sounds
 {

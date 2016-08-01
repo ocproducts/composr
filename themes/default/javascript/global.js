@@ -119,7 +119,7 @@ function script_load_stuff()
 	var stuck_navs=document.querySelectorAll('.stuck_nav');
 	if (stuck_navs.length>0)
 	{
-		add_event_listener_abstract(window,'scroll',function() {
+		window.addEventListener('scroll',function() {
 			for (var i=0;i<stuck_navs.length;i++)
 			{
 				var stuck_nav=stuck_navs[i];
@@ -169,7 +169,7 @@ function script_load_stuff()
 	}
 
 	// Tooltips close on browser resize
-	add_event_listener_abstract(window,'resize',function() {
+	window.addEventListener('resize',function() {
 		clear_out_tooltips(null);
 	});
 
@@ -247,9 +247,8 @@ function script_load_stuff()
 
 	window.page_loaded=true;
 
-	add_event_listener_abstract(window,'real_load',function() { // When images etc have loaded
+	after_window_load(function() { // When images etc have loaded
 		script_page_rendered();
-		window.page_fully_loaded=true;
 	});
 
 	if ((typeof window.cms_is_staff!='undefined') && (window.cms_is_staff) && (typeof window.script_load_stuff_staff!='undefined')) script_load_stuff_staff();
@@ -390,7 +389,7 @@ function new_html__initialise(element)
 
 			// Remove tooltips from forms for mouse users as they are for screenreader accessibility only
 			if (element.getAttribute('target')!='_blank')
-				add_event_listener_abstract(element,'mouseover',function() { try {element.setAttribute('title','');element.title='';}catch(e){}/*IE6 does not like*/ });
+				element.addEventListener('mouseover',function() { try {element.setAttribute('title','');element.title='';}catch(e){}/*IE6 does not like*/ });
 
 			// Convert a/img title attributes into Composr tooltips
 			/*{+START,IF,{$CONFIG_OPTION,js_overlays}}*/
@@ -469,14 +468,14 @@ function initialise_error_mechanism()
 			}
 			return false;
 		};
-	add_event_listener_abstract(window,'beforeunload',function() { window.onerror=null; });
+	window.addEventListener('beforeunload',function() { window.onerror=null; });
 }
 if ((typeof window.take_errors!='undefined') && (window.take_errors)) initialise_error_mechanism();
 if (typeof window.unloaded=='undefined')
 {
 	window.unloaded=false; // Serves as a flag to indicate any new errors are probably due to us transitioning
 }
-add_event_listener_abstract(window,'beforeunload',function() { window.unloaded=true; });
+window.addEventListener('beforeunload',function() { window.unloaded=true; });
 
 /* Screen transition, for staff */
 function staff_unload_action()
@@ -519,9 +518,9 @@ function staff_unload_action()
 	document.body.appendChild(div);
 
 	// Allow unloading of the animation
-	add_event_listener_abstract(window,'pageshow',undo_staff_unload_action);
-	add_event_listener_abstract(window,'keydown',undo_staff_unload_action);
-	add_event_listener_abstract(window,'click',undo_staff_unload_action);
+	window.addEventListener('pageshow',undo_staff_unload_action);
+	window.addEventListener('keydown',undo_staff_unload_action);
+	window.addEventListener('click',undo_staff_unload_action);
 }
 function undo_staff_unload_action()
 {
@@ -650,7 +649,7 @@ function disable_button_just_clicked(input,permanent)
 		window.setTimeout(goback,5000);
 	} else input.under_timer=false;
 
-	add_event_listener_abstract(window,'pagehide',goback);
+	window.addEventListener('pagehide', goback);
 }
 
 /* Making the height of a textarea match its contents */
@@ -984,9 +983,9 @@ function create_rollover(rand,rollover)
 	{
 		img.setAttribute('src',img.old_src);
 	};
-	add_event_listener_abstract(img,'mouseover',activate);
-	add_event_listener_abstract(img,'click',deactivate);
-	add_event_listener_abstract(img,'mouseout',deactivate);
+	img.addEventListener('mouseover',activate);
+	img.addEventListener('click',deactivate);
+	img.addEventListener('mouseout',deactivate);
 }
 
 /* Cookies */
@@ -1713,7 +1712,7 @@ function register_mouse_listener(e)
 	if (!window.mouse_listener_enabled)
 	{
 		window.mouse_listener_enabled=true;
-		add_event_listener_abstract(document.body,'mousemove',get_mouse_xy);
+		document.body.addEventListener('mousemove',get_mouse_xy);
 		if (typeof e!='undefined') get_mouse_xy(e);
 	}
 }
@@ -1964,7 +1963,7 @@ function key_pressed(event,key,no_error_if_bad)
 
 function menu_active_selection(menu_id)
 {
-	add_event_listener_abstract(window,'load',function() {
+	$(function() {
 		_menu_active_selection(menu_id);
 	});
 }
@@ -2161,29 +2160,17 @@ function convert_tooltip(element)
 
 			element.cms_tooltip_title=escape_html(title);
 
-			win.add_event_listener_abstract(
-				element,
-				'mouseover',
-				function(event) {
-					win.activate_tooltip(element,event,element.cms_tooltip_title,'auto','',null,false,false,false,false,win);
-				}
-			);
+			element.addEventListener('mouseover', function(event) {
+				win.activate_tooltip(element,event,element.cms_tooltip_title,'auto','',null,false,false,false,false,win);
+			});
 
-			win.add_event_listener_abstract(
-				element,
-				'mousemove',
-				function(event) {
-					win.reposition_tooltip(element,event,false,false,null,false,win);
-				}
-			);
+			element.addEventListener('mousemove', function(event) {
+				win.reposition_tooltip(element,event,false,false,null,false,win);
+			});
 
-			win.add_event_listener_abstract(
-				element,
-				'mouseout',
-				function(event) {
-					win.deactivate_tooltip(element);
-				}
-			);
+			element.addEventListener('mouseout', function(event) {
+				win.deactivate_tooltip(element);
+			});
 		}
 	}
 }
@@ -2613,30 +2600,20 @@ function set_opacity(element,fraction)
 }
 
 /* Event listeners */
-// Note that the 'this' object cannot be relied on, as it will not work in IE - pass it in implicitly bound into the scope of your defined func via a pre-called surrounder function
-function add_event_listener_abstract(element,the_event,func,capture)
-{
-	if (!element) return false;
 
-	if ((element==window) && ((the_event=='load') && ((page_fully_loaded) || (document.readyState=='complete'))) || ((the_event=='real_load') && (document.readyState=='complete')))
-	{
-		window.setTimeout(func,0);
-		return true;
+function after_window_load(callback) {
+	if (document.readyState === 'complete') {
+		window.page_fully_loaded = true;
 	}
 
-	// W3C
-	if (the_event=='load') // Try and be smarter
-	{
-		element.addEventListener('DOMContentLoaded',function() { window.page_loaded=true; window.has_DOMContentLoaded=true; window.setTimeout(func,0); },capture);
-		return element.addEventListener(the_event,function() { window.page_loaded=true; if (!window.has_DOMContentLoaded) window.setTimeout(func,0); },capture);
+	if (window.page_fully_loaded) {
+		setTimeout(callback, 0);
+	} else {
+		window.addEventListener('load', function () {
+			window.page_fully_loaded = true;
+			setTimeout(callback, 0);
+		});
 	}
-
-	if (the_event=='real_load')
-	{
-		return element.addEventListener('load',function() { window.page_fully_loaded=true; func(); },capture);
-	}
-
-	return element.addEventListener(the_event,func,capture);
 }
 
 function cancel_bubbling(event,for_element)
@@ -3589,8 +3566,8 @@ function add_captcha_checking(form)
 			if (typeof form.old_submit!='undefined' && form.old_submit) return form.old_submit();
 			return true;
 		};
-	var showevent=(typeof window.onpageshow!='undefined')?'pageshow':'load';
-	add_event_listener_abstract(window,showevent,function() {
+
+	window.addEventListener('pageshow',function() {
 		form.elements['captcha'].src+='&'; // Force it to reload latest captcha
 	});
 }
@@ -3598,7 +3575,7 @@ function add_captcha_checking(form)
 /* Set it up so a form field is known and can be monitored for changes */
 function set_up_change_monitor(id)
 {
-	add_event_listener_abstract(window,'load',function() {
+	$(function() {
 		if (typeof window._set_up_change_monitor!='undefined')
 		{
 			var ch=(typeof id=='string')?document.getElementById(id):id;

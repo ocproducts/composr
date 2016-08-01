@@ -53,7 +53,7 @@
 		{+END}
 	{+END}{+END}{+END}
 
-	add_event_listener_abstract(window,'load',function() {
+	$(function() {
 		{+START,IF_PASSED,JAVASCRIPT}
 			{JAVASCRIPT/}
 		{+END}

@@ -259,7 +259,7 @@ function update_ajax_member_list_response(result,list_contents)
 		return null;
 	};
 
-	add_event_listener_abstract(list,browser_matches('ios')?'change':'click',make_selection,false);
+	list.addEventListener(browser_matches('ios')?'change':'click',make_selection,false);
 
 	window.current_list_for=null;
 }
