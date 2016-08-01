@@ -13230,12 +13230,10 @@ function fire_fake_upload_field_change(name,value)
 		if ((typeof element.onchange!='undefined') && (element.onchange)) element.onchange();
 		element.value=value;
 		element.virtual_value=value;
-		if ((typeof element.simulated_events!='undefined') && (typeof element.simulated_events['change']!='undefined'))
-		{
-			var e=element.simulated_events['change'];
-			var length=e.length;
-			for (var i=0;i<length;i++)
-				e[i]();
+
+		element.dispatchEvent(new Event('change'));
+		if (element.oldElement){
+			element.oldElement.dispatchEvent(new Event('change'))
 		}
 	} else
 	{
@@ -13470,7 +13468,7 @@ function replace_file_input(page_type,name,_btn_submit_id,posting_field_name,fil
 	rep.id=name+'_old';
 	var rep2=document.createElement('input');
 	rep2.type='text';
-	rep2.simulated_events=rep.simulated_events;
+	rep2.oldElement=rep;
 	rep2.style.display='none';
 	rep2.disabled=true;
 	rep2.name=name;
