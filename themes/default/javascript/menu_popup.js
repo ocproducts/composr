@@ -15,7 +15,7 @@ function clean_menus()
 
 	var m=document.getElementById('r_'+window.last_active_menu);
 	if (!m) return;
-	var tags=get_elements_by_class_name(m,'nlevel');
+	var tags=m.querySelectorAll('.nlevel');
 	var e=(window.active_menu==null)?null:document.getElementById(window.active_menu),t;
 	var i,hideable;
 	for (i=tags.length-1;i>=0;i--)

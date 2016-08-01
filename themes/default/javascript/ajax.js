@@ -55,7 +55,7 @@ function internalise_infinite_scrolling(url_stem,wrapper)
 {
 	if (window.infinite_scroll_blocked || window.infinite_scroll_pending) return false; // Already waiting for a result
 
-	var _pagination=get_elements_by_class_name(wrapper,'pagination');
+	var _pagination=wrapper.querySelectorAll('.pagination');
 
 	if (_pagination.length==0) return false;
 
@@ -82,7 +82,7 @@ function internalise_infinite_scrolling(url_stem,wrapper)
 
 			// Add AJAX load more link before where the last pagination control was
 				// Remove old pagination_load_more's
-				var pagination_load_more=get_elements_by_class_name(wrapper,'pagination_load_more');
+				var pagination_load_more=wrapper.querySelectorAll('.pagination_load_more');
 				if (pagination_load_more.length>0) pagination_load_more[0].parentNode.removeChild(pagination_load_more[0]);
 
 				// Add in new one
@@ -133,7 +133,7 @@ function internalise_infinite_scrolling(url_stem,wrapper)
 	if (!found_rel) // Ah, no more scrolling possible
 	{
 		// Remove old pagination_load_more's
-		var pagination_load_more=get_elements_by_class_name(wrapper,'pagination_load_more');
+		var pagination_load_more=wrapper.querySelectorAll('.pagination_load_more');
 		if (pagination_load_more.length>0) pagination_load_more[0].parentNode.removeChild(pagination_load_more[0]);
 
 		return;
@@ -200,7 +200,7 @@ function internalise_ajax_block_wrapper_links(url_stem,block_element,look_for,ex
 		scroll_to_top=false;
 	}
 
-	var _link_wrappers=get_elements_by_class_name(block_element,'ajax_block_wrapper_links');
+	var _link_wrappers=block_element.querySelectorAll('.ajax_block_wrapper_links');
 	if (_link_wrappers.length==0) _link_wrappers=[block_element];
 	var links=[];
 	for (var i=0;i<_link_wrappers.length;i++)
@@ -335,7 +335,7 @@ function call_block(url,new_block_params,target_div,append,callback,scroll_to_to
 	var loading_wrapper=target_div;
 	if ((loading_wrapper.id.indexOf('carousel_')==-1) && (get_inner_html(loading_wrapper).indexOf('ajax_loading_block')==-1) && (show_loading_animation))
 	{
-		var raw_ajax_grow_spot=get_elements_by_class_name(target_div,'raw_ajax_grow_spot');
+		var raw_ajax_grow_spot=target_div.querySelectorAll('.raw_ajax_grow_spot');
 		if (typeof raw_ajax_grow_spot[0]!='undefined' && append) loading_wrapper=raw_ajax_grow_spot[0]; // If we actually are embedding new results a bit deeper
 		var loading_wrapper_inner=document.createElement('div');
 		var position_type=abstract_get_computed_style(loading_wrapper,'position');
@@ -387,10 +387,9 @@ function _call_block_render(raw_ajax_result,ajax_url,target_div,append,callback,
 	block_data_cache[ajax_url]=new_html;
 
 	// Remove loading animation if there is one
-	var ajax_loading=get_elements_by_class_name(target_div,'ajax_loading_block');
-	if (typeof ajax_loading[0]!='undefined')
-	{
-		ajax_loading[0].parentNode.parentNode.removeChild(ajax_loading[0].parentNode);
+	var ajax_loading=target_div.querySelector('.ajax_loading_block');
+	if (ajax_loading) {
+		ajax_loading.parentNode.parentNode.removeChild(ajax_loading.parentNode);
 	}
 	window.document.body.style.cursor='';
 
@@ -413,7 +412,7 @@ function _call_block_render(raw_ajax_result,ajax_url,target_div,append,callback,
 
 function show_block_html(new_html,target_div,append,inner)
 {
-	var raw_ajax_grow_spot=get_elements_by_class_name(target_div,'raw_ajax_grow_spot');
+	var raw_ajax_grow_spot=target_div.querySelectorAll('.raw_ajax_grow_spot');
 	if (typeof raw_ajax_grow_spot[0]!='undefined' && append) target_div=raw_ajax_grow_spot[0]; // If we actually are embedding new results a bit deeper
 	if (append)
 	{

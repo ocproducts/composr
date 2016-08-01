@@ -217,7 +217,7 @@ function clear_cl()
 {
 	// Clear all results from the CL
 	var command_line=document.getElementById('commands_go_here');
-	var elements=get_elements_by_class_name(command_line,'command');
+	var elements=command_line.querySelectorAll('.command');
 
 	for (var i=0;i<elements.length;i++)
 	{

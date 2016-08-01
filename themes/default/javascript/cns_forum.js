@@ -23,8 +23,8 @@ function ignore_cns_notification(ignore_url,ob)
 		var o=ob.parentNode.parentNode.parentNode.parentNode;
 		o.parentNode.removeChild(o);
 
-		var nots=get_elements_by_class_name(document,'cns_member_column_pts');
-		if ((nots[0]) && (get_elements_by_class_name(document,'cns_notification').length==0))
+		var nots=document.querySelectorAll('.cns_member_column_pts');
+		if ((nots[0]) && (document.querySelectorAll('.cns_notification').length==0))
 			nots[0].parentNode.removeChild(nots[0]);
 	});
 

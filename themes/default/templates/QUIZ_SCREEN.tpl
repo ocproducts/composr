@@ -85,7 +85,7 @@
 </form>
 
 <script>// <![CDATA[
-	var e=get_elements_by_class_name(document.getElementById('quiz_form'),'field_input');
+	var e=document.getElementById('quiz_form').querySelectorAll('.field_input');
 	for (var i=0;i<e.length;i++)
 		set_up_change_monitor(e[i].childNodes[0]);
 //]]></script>

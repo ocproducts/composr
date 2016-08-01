@@ -760,7 +760,7 @@ function create_overlay_event(skip_incoming_sound,member_id,message,click_event,
 	div.className='im_event';
 	//div.style.left=(get_window_width()/2-140)+'px';
 	div.style.right='1em';
-	div.style.bottom=((get_elements_by_class_name(document.body,'im_event').length)*185+20)+'px';
+	div.style.bottom=((document.body.querySelectorAll('.im_event').length)*185+20)+'px';
 	var links=document.createElement('ul');
 	links.className='actions_list';
 

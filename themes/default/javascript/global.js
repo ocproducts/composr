@@ -112,7 +112,7 @@ function script_load_stuff()
 	}
 
 	// Pinning to top if scroll out
-	var stuck_navs=get_elements_by_class_name(document,'stuck_nav');
+	var stuck_navs=document.querySelectorAll('.stuck_nav');
 	if (stuck_navs.length>0)
 	{
 		add_event_listener_abstract(window,'scroll',function() {
@@ -521,7 +521,7 @@ function staff_unload_action()
 }
 function undo_staff_unload_action()
 {
-	var pre=get_elements_by_class_name(document.body,'unload_action');
+	var pre=document.body.querySelectorAll('.unload_action');
 	for (var i=0;i<pre.length;i++)
 	{
 		pre[i].parentNode.removeChild(pre[i]);
@@ -851,11 +851,11 @@ function script_page_rendered()
 				var divs=panel_right.getElementsByTagName('div');
 				if ((divs[0]) && (divs[0].className.indexOf('global_helper_panel')!=-1))
 				{
-					var middle=get_elements_by_class_name(panel_right.parentNode,'global_middle')[0];
+					var middle=panel_right.parentNode.querySelectorAll('.global_middle')[0];
 					if (middle)
 					{
 						middle.style.marginRight='0';
-						var boxes=get_elements_by_class_name(panel_right,'standardbox_curved'),i;
+						var boxes=panel_right.querySelectorAll('.standardbox_curved'),i;
 						for (i=0;i<boxes.length;i++)
 						{
 							boxes[i].style.width='auto';
@@ -864,7 +864,7 @@ function script_page_rendered()
 						panel_right.parentNode.removeChild(panel_right);
 						middle.parentNode.appendChild(panel_right);
 						document.getElementById('helper_panel_toggle').style.display='none';
-						get_elements_by_class_name(panel_right,'global_helper_panel')[0].style.minHeight='0';
+						panel_right.querySelectorAll('.global_helper_panel')[0].style.minHeight='0';
 					}
 				}
 			}
@@ -876,7 +876,7 @@ function script_page_rendered()
 function helper_panel(show)
 {
 	var panel_right=document.getElementById('panel_right');
-	var middles=get_elements_by_class_name(document,'global_middle');
+	var middles=document.querySelectorAll('.global_middle');
 	var global_message=document.getElementById('global_message');
 	var helper_panel_contents=document.getElementById('helper_panel_contents');
 	var helper_panel_toggle=document.getElementById('helper_panel_toggle');
@@ -1015,28 +1015,6 @@ function read_cookie(cookie_name)
 	var ind1=theCookie.indexOf(';',ind);
 	if (ind1==-1) ind1=theCookie.length;
 	return window.decodeURIComponent(theCookie.substring(ind+cookie_name.length+1,ind1));
-}
-
-// LEGACY: IE8
-/* Finding elements by class name */
-function get_elements_by_class_name(node,class_name)
-{
-	//	if (typeof node.getElementsByClassName!='undefined') return node.getElementsByClassName(class_name);
-
-	if (node)
-	{
-		var a=[];
-		var re=new RegExp('(^|\\s)'+class_name+'($|\\s)');
-		var els=node.getElementsByTagName('*');
-
-		for (var i=0,j=els.length;i<j;i++)
-		{
-			if (re.test(els[i].className)) a.push(els[i]);
-		}
-
-		return a;
-	}
-	return []; // Error actually, but to avoid typing error, we will just return an empty list
 }
 
 /* Type checking */
@@ -1366,7 +1344,7 @@ function toggleable_tray(element,no_animate,cookie_id_name)
 
 	if (element.className.indexOf('toggleable_tray')==-1) // Suspicious, maybe we need to probe deeper
 	{
-		var toggleables=get_elements_by_class_name(element,'toggleable_tray');
+		var toggleables=element.querySelectorAll('.toggleable_tray');
 		if (typeof toggleables[0]!='undefined') element=toggleables[0];
 	}
 
@@ -1383,7 +1361,7 @@ function toggleable_tray(element,no_animate,cookie_id_name)
 		no_animate=true;
 	/*{+END}*/
 
-	var _pic=get_elements_by_class_name(element.parentNode,'toggleable_tray_button');
+	var _pic=element.parentNode.querySelectorAll('.toggleable_tray_button');
 	var pic;
 	if (typeof _pic[0]!='undefined')
 	{
@@ -1537,7 +1515,7 @@ function handle_tray_cookie_setting(id)
 
 	if (element.className.indexOf('toggleable_tray')==-1) // Suspicious, maybe we need to probe deeper
 	{
-		var toggleables=get_elements_by_class_name(element,'toggleable_tray');
+		var toggleables=element.querySelectorAll('.toggleable_tray');
 		if (typeof toggleables[0]!='undefined') element=toggleables[0];
 	}
 
@@ -2022,7 +2000,7 @@ function _menu_active_selection(menu_id)
 		}
 	} else
 	{
-		var menu_items=get_elements_by_class_name(menu_element,'non_current'),a;
+		var menu_items=menu_element.querySelectorAll('.non_current'),a;
 		for (var i=0;i<menu_items.length;i++)
 		{
 			a=null;
@@ -2209,7 +2187,7 @@ function convert_tooltip(element)
 function clear_out_tooltips(tooltip_being_opened)
 {
 	// Delete other tooltips, which due to browser bugs can get stuck
-	var existing_tooltips=get_elements_by_class_name(document.body,'tooltip');
+	var existing_tooltips=document.body.querySelectorAll('.tooltip');
 	for (var i=0;i<existing_tooltips.length;i++)
 	{
 		if (existing_tooltips[i].id!==tooltip_being_opened)
@@ -3503,7 +3481,7 @@ function replace_comments_form_with_ajax(options,hash,comments_form_id,comments_
 			if (submit_button) disable_button_just_clicked(submit_button);
 
 			// Note what posts are shown now
-			var known_posts=get_elements_by_class_name(comments_wrapper,'post');
+			var known_posts=comments_wrapper.querySelectorAll('.post');
 			var known_times=[];
 			for (var i=0;i<known_posts.length;i++)
 			{
@@ -3549,7 +3527,7 @@ function replace_comments_form_with_ajax(options,hash,comments_form_id,comments_
 						toggleable_tray('comments_posting_form_outer');
 
 					// Set fade for posts not shown before
-					var known_posts=get_elements_by_class_name(comments_wrapper,'post');
+					var known_posts=comments_wrapper.querySelectorAll('.post');
 					for (var i=0;i<known_posts.length;i++)
 					{
 						if (known_times.indexOf(known_posts[i].className.replace(/^post /,''))==-1)

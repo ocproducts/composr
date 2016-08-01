@@ -2,7 +2,7 @@
 
 function accordion(e)
 {
-	var i,nodes=get_elements_by_class_name(e.parentNode.parentNode,'toggleable_tray');
+	var i,nodes=e.parentNode.parentNode.querySelectorAll('.toggleable_tray');
 	for (i=0;i<nodes.length;i++)
 	{
 		if ((nodes[i].parentNode!=e) && (nodes[i].style.display!='none') && (nodes[i].parentNode.className.indexOf('accordion_trayitem')!=-1))
@@ -149,7 +149,7 @@ function countdown(id,direction,tailing)
 function initialise_carousel(id)
 {
 	var carousel=document.getElementById('carousel_'+id);
-	var main=get_elements_by_class_name(carousel,'main')[0];
+	var main=carousel.querySelectorAll('.main')[0];
 	var carousel_ns=document.getElementById('carousel_ns_'+id);
 	carousel_ns.parentNode.removeChild(carousel_ns);
 	main.appendChild(carousel_ns);
@@ -157,8 +157,8 @@ function initialise_carousel(id)
 
 	add_event_listener_abstract(window,'real_load',function() {
 		var h=find_height(main)+'px';
-		get_elements_by_class_name(carousel,'move_left')[0].style.height=h;
-		get_elements_by_class_name(carousel,'move_right')[0].style.height=h;
+		carousel.querySelectorAll('.move_left')[0].style.height=h;
+		carousel.querySelectorAll('.move_right')[0].style.height=h;
 
 		_create_faders(main);
 		_update_faders(main);
@@ -174,7 +174,7 @@ function carousel_move(id,amount)
 
 function _carousel_move(carousel,amount)
 {
-	var main=get_elements_by_class_name(carousel,'main')[0];
+	var main=carousel.querySelectorAll('.main')[0];
 
 	if (amount>0)
 	{

@@ -32,7 +32,6 @@ function toggle_wysiwyg(name)
 
 	if (typeof window.do_ajax_request=='undefined') return false;
 	if (typeof window.merge_text_nodes=='undefined') return false;
-	if (typeof window.get_elements_by_class_name=='undefined') return false;
 
 	var is_wysiwyg_on=wysiwyg_on();
 	if (is_wysiwyg_on)
@@ -491,7 +490,7 @@ function find_tags_in_editor(editor,element)
 	if (typeof editor.document.$=='undefined') return;
 	if (!editor.document.$) return;
 
-	var comcodes=get_elements_by_class_name(editor.document.$.getElementsByTagName('body')[0],'cms_keep_ui_controlled');
+	var comcodes=editor.document.$.getElementsByTagName('body')[0].querySelectorAll('.cms_keep_ui_controlled');
 
 	for (var i=0;i<comcodes.length;i++)
 	{

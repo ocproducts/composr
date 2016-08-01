@@ -22,15 +22,15 @@
 
 			if (!document.getElementById('cse')) // Not on the results page, so we need to direct the search to it
 			{
-				get_elements_by_class_name(cse_form,'gsc-search-box')[0].action='{$PAGE_LINK;/,_SEARCH:{PAGE_NAME}}';
-				get_elements_by_class_name(cse_form,'gsc-search-box')[0].method='post';
-				get_elements_by_class_name(cse_form,'gsc-search-box')[0].innerHTML+='{$INSERT_SPAMMER_BLACKHOLE;^/}';
-				get_elements_by_class_name(cse_form,'gsc-search-button')[0].onclick=function() {
-					get_elements_by_class_name(cse_form,'gsc-search-box')[0].submit();
+				cse_form.querySelectorAll('.gsc-search-box')[0].action='{$PAGE_LINK;/,_SEARCH:{PAGE_NAME}}';
+				cse_form.querySelectorAll('.gsc-search-box')[0].method='post';
+				cse_form.querySelectorAll('.gsc-search-box')[0].innerHTML+='{$INSERT_SPAMMER_BLACKHOLE;^/}';
+				cse_form.querySelectorAll('.gsc-search-button')[0].onclick=function() {
+					cse_form.querySelectorAll('.gsc-search-box')[0].submit();
 				};
 			} else // On result page, so normal operation
 			{
-				get_elements_by_class_name(cse_form,'gsc-search-button')[0].onclick=function() {
+				cse_form.querySelectorAll('.gsc-search-button')[0].onclick=function() {
 					var no_search_entered=document.getElementById('no_search_entered');
 					if (no_search_entered) no_search_entered.parentNode.removeChild(no_search_entered);
 				};

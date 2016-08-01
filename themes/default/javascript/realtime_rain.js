@@ -132,7 +132,7 @@ function received_events(ajax_result_frame,ajax_result)
 						if ((typeof cloned_message.icon_multiplicity!='undefined') && (!browser_matches('ie')/*Too slow on IE*/))
 						{
 							var num=cloned_message.icon_multiplicity;
-							var main_icon=get_elements_by_class_name(cloned_message,'email-icon')[0];
+							var main_icon=cloned_message.querySelectorAll('.email-icon')[0];
 							var next_icon;
 							var icon_spot=document.getElementById('real_time_surround');
 							if (find_pos_y(icon_spot,true)>0) icon_spot=icon_spot.parentNode;
@@ -197,7 +197,7 @@ function animate_down(e,avoid_remove)
 		{
 			if (e.parentNode)
 			{
-				var lines=get_elements_by_class_name(e,'line');
+				var lines=e.querySelectorAll('.line');
 				window.total_lines-=lines.length;
 				e.parentNode.removeChild(e);
 			}
@@ -209,7 +209,7 @@ function animate_down(e,avoid_remove)
 	// Also animate any lines too
 	/*if (e.className!='line')		No need, they are defined relative to bubbles
 	{
-		var lines=get_elements_by_class_name(e,'line');
+		var lines=e.querySelectorAll('.line');
 		for (var i=0;i<lines.length;i++)
 			animate_down(lines[i],true);
 	}*/
@@ -244,7 +244,7 @@ function bubbles_tidy_up()
 {
 	var bubbles_go_here=document.getElementById('bubbles_go_here');
 	if (!bubbles_go_here) return;
-	var bubbles=get_elements_by_class_name(document.getElementById('real_time_surround').parentNode,'bubble_wrap');
+	var bubbles=document.getElementById('real_time_surround').parentNode.querySelectorAll('.bubble_wrap');
 	for (var i=0;i<bubbles.length;i++)
 	{
 		if (bubbles[i].timer)
@@ -256,7 +256,7 @@ function bubbles_tidy_up()
 	set_inner_html(bubbles_go_here,'');
 	window.bubble_groups=[];
 	window.total_lines=0;
-	var icons=get_elements_by_class_name(document.getElementById('real_time_surround').parentNode,'email_icon');
+	var icons=document.getElementById('real_time_surround').parentNode.querySelectorAll('.email_icon');
 	for (var i=0;i<icons.length;i++)
 	{
 		if (icons[i].animation_timer)

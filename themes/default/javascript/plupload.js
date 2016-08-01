@@ -13562,7 +13562,7 @@ function prepare_simplified_file_input(page_type,name,_btn_submit_id,posting_fie
 	}
 
 	// Remove shiv code from old instances too
-	var shivs=get_elements_by_class_name(main_div,'moxie-shim-html5');
+	var shivs=main_div.querySelectorAll('.moxie-shim-html5');
 	for (var i=0;i<shivs.length;i++)
 	{
 		shivs[i].parentNode.removeChild(shivs[i]);

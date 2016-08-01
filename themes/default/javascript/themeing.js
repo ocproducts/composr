@@ -30,7 +30,7 @@ function template_editor_assign_unload_event()
 	add_event_listener_abstract(window,'beforeunload',function(event) {
 		if (!event) event=window.event;
 
-		if (get_elements_by_class_name(document,'file_changed').length>0)
+		if (document.querySelectorAll('.file_changed').length>0)
 		{
 			undo_staff_unload_action();
 			window.unloaded=false;

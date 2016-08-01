@@ -34,7 +34,7 @@ function permissions_toggle(cell)
 
 function fade_icons_out()
 {
-	var icons=get_elements_by_class_name(document,'perm_icon');
+	var icons=document.querySelectorAll('.perm_icon');
 	for (var i=0;i<icons.length;i++)
 	{
 		set_opacity(icons[i],1.0);
@@ -44,7 +44,7 @@ function fade_icons_out()
 
 function fade_icons_in()
 {
-	var icons=get_elements_by_class_name(document,'perm_icon');
+	var icons=document.querySelectorAll('.perm_icon');
 	for (var i=0;i<icons.length;i++)
 	{
 		if (typeof window.fade_transition!='undefined') fade_transition(icons[i],100,50,10);

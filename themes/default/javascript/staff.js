@@ -225,7 +225,7 @@ function handle_image_mouse_over(event)
 
 	/*{+START,IF,{$CONFIG_OPTION,enable_theme_img_buttons}}*/
 		// Remove other edit links
-		var old=get_elements_by_class_name(document,'magic_image_edit_link');
+		var old=document.querySelectorAll('.magic_image_edit_link');
 		for (var i=old.length-1;i>=0;i--)
 		{
 			old[i].parentNode.removeChild(old[i]);
@@ -385,7 +385,7 @@ function set_task_hiding(hide_done)
 	new Image().src='{$IMG;,checklist/cross2}';
 	new Image().src='{$IMG;,checklist/toggleicon2}';
 
-	var checklist_rows=get_elements_by_class_name(document,'checklist_row'),row_imgs,src;
+	var checklist_rows=document.querySelectorAll('.checklist_row'),row_imgs,src;
 	for (var i=0;i<checklist_rows.length;i++)
 	{
 		row_imgs=checklist_rows[i].getElementsByTagName('img');
