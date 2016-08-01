@@ -4,6 +4,6 @@
 
 /*{$REQUIRE_CSS,autocomplete}*/
 
-$(function() {
-	set_up_comcode_autocomplete('{NAME;/}'/*{+START,IF_PASSED_AND_TRUE,WYSIWYG}*/,true/*{+END}*/);
+$(function () {
+    set_up_comcode_autocomplete('{NAME;/}'/*{+START,IF_PASSED_AND_TRUE,WYSIWYG}*/, true/*{+END}*/);
 });
