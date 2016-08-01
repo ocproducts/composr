@@ -6,9 +6,6 @@
 {$,The character set of the page}
 <meta http-equiv="Content-Type" content="text/html; charset={$CHARSET*}" />
 
-{$,Force IE to not use compatiblity mode}
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-
 {$,Page title}
 <title>{+START,IF_NON_PASSED,TITLE}{+START,IF_NON_EMPTY,{$HEADER_TEXT}}{$HEADER_TEXT*} &ndash; {+END}{$SITE_NAME*}{+END}{+START,IF_PASSED,TITLE}{TITLE}{+END}</title>
 
