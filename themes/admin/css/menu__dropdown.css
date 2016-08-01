@@ -17,7 +17,7 @@ For example:
 	float: {!en_left};
 	border-{!en_left}: 1px solid #cacaca;
 	margin-bottom: 0;
-	{$BETA_CSS_PROPERTY,transition: color\,background-color 0.5s linear;}
+	transition: color, background-color 0.5s linear;
 	{+START,IF,{$EQ,{$LANG},EN}}
 		font-size: 0.9em;
 	{+END}
@@ -25,7 +25,7 @@ For example:
 		font-size: 0.72em;
 	{+END}
 	padding: 0.5em 0.25em;
-	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+	box-sizing: border-box;
 	width: {$DIV_FLOAT*,100,9}%;
 }
 
@@ -45,7 +45,7 @@ For example:
 }
 
 .menu_type__dropdown li.toplevel.current, .menu_type__dropdown li.toplevel:hover {
-	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, #ffffff\, #cbdbeb);}
+	background-image: linear-gradient(to bottom, #ffffff, #cbdbeb);
 }
 
 .menu_type__dropdown a.toplevel_link {
@@ -72,7 +72,7 @@ For example:
 
 
 .menu_type__dropdown ul.nlevel, .menu_type__dropdown div.nlevel {
-	{$BETA_CSS_PROPERTY,box-shadow: 3px 5px 13px #c9c9c9;}
+	box-shadow: 3px 5px 13px #c9c9c9;
 	line-height: 1.4em;
 }
 
@@ -93,7 +93,7 @@ For example:
 
 .menu_type__dropdown .nlevel li, .menu_type__dropdown div.nlevel, .menu_type__dropdown .nlevel .menu_spacer {
 	background-color: {$GET,dropdown_menu_background};
-	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, #cbdaed\, #d8e4f0);}
+	background-image: linear-gradient(to bottom, #cbdaed, #d8e4f0);
 	font-weight: normal;
 	border-bottom: 1px solid #e7eef8;
 	min-height: 20px;

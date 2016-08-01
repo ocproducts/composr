@@ -31,8 +31,8 @@
 	right: 2px;
 	top: 2px;
 	{$BETA_CSS_PROPERTY,backface-visibility: hidden;} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
-	{$BETA_CSS_PROPERTY,opacity: 0.0;}
-	{$BETA_CSS_PROPERTY,transition: opacity 0.2s linear !important;}
+	opacity: 0.0;
+	transition: opacity 0.2s linear !important;
 }
 .gallery_regular_thumb .mass_select_marker,
 .flow_mode_thumb .mass_select_marker {
@@ -51,14 +51,14 @@
 .flow_mode_thumb:hover .delete_cross_button input,
 .gallery_regular_thumb:hover .mass_select_marker,
 .flow_mode_thumb:hover .mass_select_marker {
-	{$BETA_CSS_PROPERTY,opacity: 0.5;}
-	{$BETA_CSS_PROPERTY,transform: scale(1);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
+	opacity: 0.5;
+	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 }
 .gallery_regular_thumb .delete_cross_button input:hover,
 .flow_mode_thumb .delete_cross_button input:hover,
 .gallery_regular_thumb .mass_select_marker:hover,
 .flow_mode_thumb .mass_select_marker:hover {
-	{$BETA_CSS_PROPERTY,opacity: 1.0;}
+	opacity: 1.0;
 }
 
 /* Non flow-mode only */
@@ -87,7 +87,7 @@
 	font-size: 0.85em;
 	border: 1px solid {$GET,standard_border};
 	background-color: {$GET,area_background};
-	{$BETA_CSS_PROPERTY,box-shadow: 3px 3px 10px {$GET,standard_border};}
+	box-shadow: 3px 3px 10px {$GET,standard_border};
 	/*{+START,IF,{$MOBILE}}*/
 		display: inline-block;
 	/*{+END}*/
@@ -100,7 +100,7 @@
 	max-width: 120px;
 	display: inline-block;
 	white-space: nowrap;
-	{$BETA_CSS_PROPERTY,text-overflow: ellipsis;}
+	text-overflow: ellipsis;
 	overflow: hidden;
 }
 
@@ -164,7 +164,7 @@
 }
 
 .flow_mode_thumb {
-	{$BETA_CSS_PROPERTY,opacity: 0.7;}
+	opacity: 0.7;
 	display: inline-block;
 	/*{+START,IF,{$MOBILE}}*/
 		margin: 0.5em;
@@ -172,15 +172,15 @@
 	/*{+START,IF,{$NOT,{$MOBILE}}}*/
 		margin: 0 1em;
 	/*{+END}*/
-	{$BETA_CSS_PROPERTY,transform: scale(1);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
+	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 }
 .flow_mode_thumb:hover, body.touch_enabled .flow_mode_thumb {
-	{$BETA_CSS_PROPERTY,opacity: 1.0;}
-	{$BETA_CSS_PROPERTY,transition: opacity 0.2s linear !important;}
+	opacity: 1.0;
+	transition: opacity 0.2s linear !important;
 }
 .flow_mode_thumb .img_thumb {
-	{$BETA_CSS_PROPERTY,opacity: 1.0;}
-	{$BETA_CSS_PROPERTY,transform: scale(1);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
+	opacity: 1.0;
+	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 }
 
 .flow_mode_thumb img {
@@ -293,7 +293,7 @@
 		width: 40em;
 	/*{+END}*/
 	margin: 0 auto;
-	{$BETA_CSS_PROPERTY,box-shadow: 3px 3px 10px {$GET,point_of_interest_border};}
+	box-shadow: 3px 3px 10px {$GET,point_of_interest_border};
 }
 
 .gallery_tease_pic_pic {
@@ -303,7 +303,7 @@
 }
 
 .gallery_tease_pic>.box {
-	{$BETA_CSS_PROPERTY,border-bottom-right-radius: 0;}
+	border-bottom-right-radius: 0;
 }
 
 #tease_scrolling_text {

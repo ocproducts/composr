@@ -16,7 +16,7 @@
 	overflow-y: auto;
 	background-color: {$GET,commandr_background};
 	border: 2px solid {$GET,commandr_border_color};
-	{$BETA_CSS_PROPERTY,box-shadow: 2px 2px {$GET,commandr_border_color};}
+	box-shadow: 2px 2px {$GET,commandr_border_color};
 	padding: 0.5em;
 	color: {$GET,commandr_text};
 	font-family: monospace;

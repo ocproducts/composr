@@ -16,7 +16,7 @@
 .chat_rooms {
 	width: 50%;
 	padding-left: 1em;
-	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+	box-sizing: border-box;
 }
 
 .chat_rooms .associated_details:last-child {
@@ -28,7 +28,7 @@
 	width: 50%;
 	padding-left: 1em;
 	border-left: 1px solid {$GET,pale_border};
-	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+	box-sizing: border-box;
 	padding-bottom: 1em;
 }
 
@@ -55,7 +55,7 @@
 .chat_posting_area {
 	border: 1px solid {$GET,pale_border};
 	padding: 0.5em;
-	{$BETA_CSS_PROPERTY,border-radius: 5px;}
+	border-radius: 5px;
 }
 
 .chat_posting_area textarea, .chat_posting_area input, .chat_posting_area img {
@@ -90,19 +90,19 @@
 
 	.chat_room_options {
 		padding: 0.5em;
-		{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+		box-sizing: border-box;
 	}
 
 	.chat_room_actions {
 		padding-left: 1em;
 		border-left: 1px solid {$GET,pale_border};
-		{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+		box-sizing: border-box;
 	}
 
 	.chat_colour_option, .chat_font_option {
 		float: {!en_left};
 		width: 50%;
-		{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+		box-sizing: border-box;
 	}
 
 	.chat_colour_option {
@@ -152,12 +152,12 @@
 
 .chat_message {
 	border: 1px solid {$GET,pale_border};
-	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,area_background}\, {$GET,area_2_background});}
+	background-image: linear-gradient(to bottom, {$GET,area_background}, {$GET,area_2_background});
 	background-color: {$GET,area_background};
 	padding: 0.5em;
 	margin: 1em 0;
 	overflow: hidden;
-	{$BETA_CSS_PROPERTY,border-radius: 5px;}
+	border-radius: 5px;
 }
 
 .chat_lobby_convos_area_messages .chat_message {
@@ -192,16 +192,16 @@
 	margin: 0.5em 0.5em 0.5em -0.5em;
 	padding: 0.2em;
 	font-size: 0.9em;
-	{$BETA_CSS_PROPERTY,opacity: 0.5;}
-	{$BETA_CSS_PROPERTY,transition: opacity 0.2s linear !important;}
-	{$BETA_CSS_PROPERTY,transform: scale(1);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
+	opacity: 0.5;
+	transition: opacity 0.2s linear !important;
+	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 	margin-right: 60px;
 }
 .chat_lobby_convos_area_messages .chat_message>div {
 	margin-right: 40px;
 }
 .chat_message>div:hover, body.touch_enabled .chat_message>div {
-	{$BETA_CSS_PROPERTY,opacity: 1;}
+	opacity: 1;
 }
 .chat_operator_staff a, .chat_operator_staff a:visited, .chat_operator_staff a:hover {
 	color: {$GET,red_highlight_text};
@@ -237,7 +237,7 @@
 		float: {!en_left};
 		width: 16.5em;
 	/*{+END}*/
-	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+	box-sizing: border-box;
 }
 
 .chat_lobby_friends input {
@@ -255,7 +255,7 @@
 	/*{+END}*/
 	margin-top: 1em;
 	margin-{!en_left}: 0.75em;
-	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+	box-sizing: border-box;
 }
 
 .chat_lobby_convos_tabs {
@@ -359,10 +359,10 @@
 }
 
 .friend_active {
-	{$BETA_CSS_PROPERTY,opacity: 1.0;}
+	opacity: 1.0;
 }
 .friend_inactive {
-	{$BETA_CSS_PROPERTY,opacity: 0.4;}
+	opacity: 0.4;
 }
 
 .friend_actions {
@@ -373,7 +373,7 @@
 	width: 100%;
 	text-align: left;
 	margin: 0.2em 0 !important;
-	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+	box-sizing: border-box;
 }
 
 .chat_lobby_convos_area_bar {
@@ -419,8 +419,8 @@
 	background-color: {$GET,floating_alert_background};
 	color: {$GET,native_ui_foreground};
 	border: 1px solid {$GET,pale_border};
-	{$BETA_CSS_PROPERTY,box-shadow: 0px 0px 20px {$GET,dark_shadow};}
-	{$BETA_CSS_PROPERTY,border-radius: 5px;}
+	box-shadow: 0px 0px 20px {$GET,dark_shadow};
+	border-radius: 5px;
 	padding: 1em;
 }
 

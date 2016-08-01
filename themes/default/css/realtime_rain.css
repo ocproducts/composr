@@ -29,7 +29,7 @@
 	background: {$GET,bubblescape};
 	overflow: hidden;
 	width: 100%;
-	{$BETA_CSS_PROPERTY,opacity: 0.95;}
+	opacity: 0.95;
 }
 #real_time {
 	height: 100%;
@@ -89,12 +89,12 @@
 }
 
 #news_ticker, #time_line:hover {
-	{$BETA_CSS_PROPERTY,opacity: 0.5;}
-	{$BETA_CSS_PROPERTY,transform: scale(1);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
+	opacity: 0.5;
+	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 }
 
 #news_ticker:hover, #time_line {
-	{$BETA_CSS_PROPERTY,opacity: 1.0;}
+	opacity: 1.0;
 }
 
 #timer_outer {
@@ -150,15 +150,15 @@
 }
 #pause_but, #pre_but, #next_but, #time_line {
 	cursor: pointer;
-	{$BETA_CSS_PROPERTY,transform: scale(1);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
+	transform: scale(1);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 }
 
 #next_but, #pre_but, #pause_but, #timer_inner:hover {
-	{$BETA_CSS_PROPERTY,opacity: 1.0;}
+	opacity: 1.0;
 }
 
 #next_but:hover, #pre_but:hover, #pause_but:hover, #pause_but.paused, #timer_inner {
-	{$BETA_CSS_PROPERTY,opacity: 0.7;}
+	opacity: 0.7;
 }
 
 .attitude_ecommerce_positive {
@@ -191,7 +191,7 @@
 }
 
 .activated_quote_button {
-	{$BETA_CSS_PROPERTY,opacity: 0.4;}
+	opacity: 0.4;
 }
 
 .bubble {
@@ -356,5 +356,5 @@
 }
 
 .bubble_wrap {
-	{$BETA_CSS_PROPERTY,opacity: 0.9;}
+	opacity: 0.9;
 }

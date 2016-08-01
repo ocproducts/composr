@@ -91,8 +91,8 @@
 }
 
 .results_table[summary*="{!buildr:W_MOVEMENT_TABLE}"]>tbody>tr:first-child>*:first-child {
-	{$BETA_CSS_PROPERTY,border-top-left-radius: 0px;}
+	border-top-left-radius: 0px;
 }
 .results_table[summary*="{!buildr:W_MOVEMENT_TABLE}"]>tbody>tr:first-child>*:last-child {
-	{$BETA_CSS_PROPERTY,border-top-right-radius: 0px;}
+	border-top-right-radius: 0px;
 }

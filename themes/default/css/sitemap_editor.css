@@ -10,7 +10,7 @@
 
 .sitemap_left {
 	width: 50%;
-	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+	box-sizing: border-box;
 	padding-right: 1em;
 }
 
@@ -22,7 +22,7 @@
 .sitemap_right {
 	float: {!en_right};
 	width: 50%;
-	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+	box-sizing: border-box;
 }
 
 

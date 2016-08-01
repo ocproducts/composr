@@ -26,8 +26,8 @@
 	border-right: 0;
 }
 .box___block_menu_embossed nav, .box___block_menu_embossed li:last-child {
-	{$BETA_CSS_PROPERTY,border-bottom-left-radius: 5px;}
-	{$BETA_CSS_PROPERTY,border-bottom-right-radius: 5px;}
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
 	border-bottom: 0;
 }
 
@@ -53,7 +53,7 @@
 
 .menu_type__embossed li:hover {
 	background-color: {$GET,area_highlight_right_complement_background} !important;
-	{$BETA_CSS_PROPERTY,transition: color\,background-color 0.5s linear;}
+	transition: color,background-color 0.5s linear;
 }
 
 .menu_type__embossed a {

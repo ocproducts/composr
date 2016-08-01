@@ -16,7 +16,7 @@
 	font-size: 12px;
 	display: inline-block;
 	padding: 0.5em;
-	{$BETA_CSS_PROPERTY,box-sizing: border-box;} /* Exact percentage widths are chosen to match the per_row block parameter */
+	box-sizing: border-box; /* Exact percentage widths are chosen to match the per_row block parameter */
 	min-width: 30em;
 }
 .block_main_members>div>.box {

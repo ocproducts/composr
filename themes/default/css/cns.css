@@ -119,16 +119,16 @@ This file defines styles for Conversr (abbreviated as CNS).
 
 /*{+START,IF,{$NOT,{$MOBILE}}}*/
 	.cns_forum_box_left {
-		{$BETA_CSS_PROPERTY,border-top-left-radius: 10px;}
+		border-top-left-radius: 10px;
 	}
 	.cns_forum_box_right {
-		{$BETA_CSS_PROPERTY,border-top-right-radius: 10px;}
+		border-top-right-radius: 10px;
 	}
 	.cns_left_post_buttons, .cns_forum_box_bleft {
-		{$BETA_CSS_PROPERTY,border-bottom-left-radius: 10px;}
+		border-bottom-left-radius: 10px;
 	}
 	.post_buttons, .cns_forum_box_bright {
-		{$BETA_CSS_PROPERTY,border-bottom-right-radius: 10px;}
+		border-bottom-right-radius: 10px;
 	}
 /*{+END}*/
 
@@ -188,7 +188,7 @@ div.cns_table_footer>div>div {
 .cns_join_rules {
 	max-height: 30em;
 	overflow-y: auto;
-	{$BETA_CSS_PROPERTY,overflow-scrolling: touch;}
+	-webkit-overflow-scrolling: touch;
 }
 
 /*
@@ -254,7 +254,7 @@ div.cns_table_footer>div>div {
 
 .cns_topic .cns_forum_box_left, .cns_post_details {
 	background-color: {$GET,box_title_background} !important;
-	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,lgrad}\, {$GET,dgrad});}
+	background-image: linear-gradient(to bottom, {$GET,lgrad}, {$GET,dgrad});
 	color: {$GET,box_title_text};
 }
 .cns_topic .cns_forum_box_left, .cns_post_details, .cns_post_details a, .cns_post_details a:hover {
@@ -312,7 +312,7 @@ div.cns_table_footer>div>div {
 .cns_topic_poll_radio, .cns_topic_poll_result {
 	text-align: {!en_right};
 	width: 50%;
-	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+	box-sizing: border-box;
 	padding: 0.5em;
 }
 
@@ -396,7 +396,7 @@ div.cns_table_footer>div>div {
 	text-align: center;
 	display: inline-block;
 	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		{$BETA_CSS_PROPERTY,word-wrap: break-word;}
+		word-wrap: break-word;
 	/*{+END}*/
 	margin: 1em 0;
 }
@@ -564,7 +564,7 @@ hr.cns_sig_barrier {
 
 .cns_topic_list th, .cns_forum_grouping th {
 	padding: 0.5em;
-	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,lgrad}\, {$GET,dgrad});}
+	background-image: linear-gradient(to bottom, {$GET,lgrad}, {$GET,dgrad});
 }
 
 /*{+START,IF,{$MOBILE}}*/
@@ -665,7 +665,7 @@ hr.cns_sig_barrier {
 .cns_forum_topic_row_preview_button {
 	border: 1px solid {$GET,standard_border};
 	background-color: {$GET,area_2_background};
-	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,area_background}\, {$GET,area_4_background});}
+	background-image: linear-gradient(to bottom, {$GET,area_background}, {$GET,area_4_background});
 	font-size: 0.85em;
 	padding: 0.5em !important;
 	float: {!en_right};
@@ -735,7 +735,7 @@ hr.cns_sig_barrier {
 		margin-bottom: 3em;
 		padding: 4em 2em 4em 4em;
 		width: 50%;
-		{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+		box-sizing: border-box;
 	/*{+END}*/
 }
 .cns_whisper_choose_box .box {

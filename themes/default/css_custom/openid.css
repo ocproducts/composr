@@ -42,7 +42,7 @@
 }
 
 #openid_highlight {
-	{$BETA_CSS_PROPERTY,border-radius: 10px;}
+	border-radius: 10px;
 	padding: 2px;
 	background-color: {$GET,area_background};
 	float: left;

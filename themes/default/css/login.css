@@ -4,7 +4,7 @@
 */
 
 .page_running_login #main_website_inner {
-	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to top right\, {$GET,main_background}\, {$GET,main_2_background});}
+	background-image: linear-gradient(to top right, {$GET,main_background}, {$GET,main_2_background});
 }
 
 .login_page {
@@ -74,7 +74,7 @@ table.login_page_form {
 
 .login_note {
 	font-size: 0.85em;
-	{$BETA_CSS_PROPERTY,opacity: 0.9;}
+	opacity: 0.9;
 }
 
 .login_note a {

@@ -208,7 +208,7 @@ abbr.dtstart, abbr.dtend {
 .calendar_date_span_link_inner {
 	border: 1px solid {$GET,standard_border};
 	background-color: {$GET,area_faded_background};
-	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,area_4_background}\, {$GET,area_5_background});}
+	background-image: linear-gradient(to bottom, {$GET,area_4_background}, {$GET,area_5_background});
 	color: {$GET,area_key_text};
 	padding: 0.3em;
 	margin-left: -1px; /* To stop the double borders at join points */
@@ -217,12 +217,12 @@ abbr.dtstart, abbr.dtend {
 }
 
 .calendar_date_span_link:first-child .calendar_date_span_link_inner {
-	{$BETA_CSS_PROPERTY,border-top-left-radius: 5px;}
-	{$BETA_CSS_PROPERTY,border-bottom-left-radius: 5px;}
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
 }
 .calendar_date_span_link:last-child .calendar_date_span_link_inner {
-	{$BETA_CSS_PROPERTY,border-top-right-radius: 5px;}
-	{$BETA_CSS_PROPERTY,border-bottom-right-radius: 5px;}
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
 }
 
 .calendar_date_span_link_inner>span {
@@ -237,7 +237,7 @@ abbr.dtstart, abbr.dtend {
 	.event_interest_box {
 		width: 50%;
 		padding: 0.5em;
-		{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+		box-sizing: border-box;
 	}
 /*{+END}*/
 

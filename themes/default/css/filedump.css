@@ -28,7 +28,7 @@
 }
 
 /*.filedump_thumbnails .box .box_inner:hover .meta {
-	{$BETA_CSS_PROPERTY,opacity: 0.3;}
+	opacity: 0.3;
 }*/
 
 .filedump_embed, .filedump_select {
@@ -66,8 +66,8 @@
 	width: 100%;
 	background-color: {$GET,WB};
 	background-color: rgba(255,255,255,0.7);
-	{$BETA_CSS_PROPERTY,word-wrap: break-word;}
-	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+	word-wrap: break-word;
+	box-sizing: border-box;
 	padding: 0.25em;
 }
 
@@ -83,7 +83,7 @@
 .filedump_generated_preview {
 	margin-left: 1em;
 	float: right;
-	{$BETA_CSS_PROPERTY,word-wrap: break-word;}
+	word-wrap: break-word;
 	max-width: 560px;
 }
 

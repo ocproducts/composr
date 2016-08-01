@@ -10,7 +10,7 @@ html>body#main_website {
 }
 
 header {
-	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, #f9f9f9\, #ebebeb);}
+	background-image: linear-gradient(to bottom, #f9f9f9, #ebebeb);
 	border-bottom: 3px solid #cacaca;
 }
 
@@ -24,7 +24,7 @@ header {
 
 #main_website #main_website_inner {
 	border: 0;
-	{$BETA_CSS_PROPERTY,box-shadow: none;}
+	box-shadow: none;
 	margin-top: 0;
 }
 
@@ -91,7 +91,7 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 }
 
 .page_running_login #main_website_inner {
-	{$BETA_CSS_PROPERTY,background-image: none !important;}
+	background-image: none !important;
 }
 
 footer .global_footer_left #special_page_type {
@@ -119,7 +119,7 @@ footer .global_minilinks {
 
 .menu_help_section {
 	max-width: none !important;
-	{$BETA_CSS_PROPERTY,border-bottom-left-radius: 10px;}
+	border-bottom-left-radius: 10px;
 }
 
 .adminzone_search {

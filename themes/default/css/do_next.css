@@ -17,10 +17,10 @@
 	/*{+END}*/
 	text-align: center;
 	border: 1px dotted {$GET,standard_border};
-	{$BETA_CSS_PROPERTY,border-radius: 15px;}
+	border-radius: 15px;
 	background: {$GET,area_background};
 	padding: 0.7em;
-	{$BETA_CSS_PROPERTY,box-shadow: 0px 0px 20px {$GET,standard_border};}
+	box-shadow: 0px 0px 20px {$GET,standard_border};
 }
 
 .do_next_section_wrap h2 {
@@ -40,8 +40,8 @@
 	border-bottom: 1px dotted {$GET,standard_border};
 	text-align: center;
 	font-size: 0.9em;
-	{$BETA_CSS_PROPERTY,transition: background-color 0.5s linear;}
-	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+	transition: background-color 0.5s linear;
+	box-sizing: border-box;
 	min-height: 110px;
 }
 

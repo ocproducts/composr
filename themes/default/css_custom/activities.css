@@ -70,7 +70,7 @@ form.activities_remove input.remove_cross::-moz-focus-inner { /* What's this all
 	float: none;
 	padding: 0.5em 0.5em 0.5em 45px;
 	font-size: 1.1em;
-	{$BETA_CSS_PROPERTY,word-wrap: break-word;}
+	word-wrap: break-word;
 }
 
 .activities_line .activity_name {
@@ -88,7 +88,7 @@ form.activities_remove input.remove_cross::-moz-focus-inner { /* What's this all
 .activities_line .activity_time {
 	float: right;
 	font-size: 0.80em;
-	{$BETA_CSS_PROPERTY,opacity: 0.8;}
+	opacity: 0.8;
 }
 
 .activities_line .activity_name, .activities_line .activity_time {
@@ -116,7 +116,7 @@ form.activities_remove input.remove_cross::-moz-focus-inner { /* What's this all
 	overflow: auto;
 	height: 2.3em;
 	font-size: 1.2em;
-	{$BETA_CSS_PROPERTY,box-sizing: content-box;}
+	box-sizing: content-box;
 }
 
 .status_controls {

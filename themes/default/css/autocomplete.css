@@ -9,7 +9,7 @@
 	background: {$GET,native_ui_background};
 	border: 1px solid {$GET,pale_border};
 	border-radius: 3px;
-	{$BETA_CSS_PROPERTY,box-shadow: 0 0 10px {$GET,standard_border};}
+	box-shadow: 0 0 10px {$GET,standard_border};
 	min-width: 15em;
 }
 

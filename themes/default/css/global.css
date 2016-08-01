@@ -370,7 +370,7 @@ iframe {
 	}
 	* {
 		white-space: normal !important;
-		{$BETA_CSS_PROPERTY,word-wrap: break-word !important;}
+		word-wrap: break-word !important;
 	}
 	/* Exceptions */
 	.ace_layer * {
@@ -422,7 +422,7 @@ body.website_body.frame {
 		position: relative;
 		margin: 15px auto 15px auto;
 		border: 1px solid {$GET,fixed_width_border};
-		{$BETA_CSS_PROPERTY,box-shadow: 0 0 20px {$GET,standard_border};}
+		box-shadow: 0 0 20px {$GET,standard_border};
 	}
 
 	/* Responsive design for tablets etc */
@@ -430,7 +430,7 @@ body.website_body.frame {
 		#main_website #main_website_inner {
 			margin: 0 0 0 0.5em;
 			border: 0;
-			{$BETA_CSS_PROPERTY,box-shadow: none;}
+			box-shadow: none;
 		}
 
 		.global_banner {
@@ -534,7 +534,7 @@ header h1 {
 	border-top: 1px solid {$GET,standard_border};
 	border-bottom: 1px solid {$GET,standard_border};
 	background-color: {$GET,lgrad};
-	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,lgrad}\, {$GET,dgrad}) !important;}
+	background-image: linear-gradient(to bottom, {$GET,lgrad}, {$GET,dgrad}) !important;
 	color: {$GET,WB};
 	/*{+START,IF,{$MOBILE}}*/
 		position: relative;
@@ -596,7 +596,7 @@ header h1 {
 
 /* .hero_section is specially designed to wrap around a title and some text, to give a 'hero' introduction for the front page of a site (standard marketing technique) */
 .hero_section {
-	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom right\, {$GET,main_background}\, {$GET,main_2_background});}
+	background-image: linear-gradient(to bottom right, {$GET,main_background}, {$GET,main_2_background});
 	font-size: 1.25em;
 	color: {$GET,slightly_seeded_text};
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; /* Choose better font for larger text */
@@ -624,7 +624,7 @@ header h1 {
 	background-image: none !important; /* Will be overridden below if linear-gradient supported by browser */
 	background-position: 0 0 !important;
 	margin-bottom: 1em;
-	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,lgrad}\, {$GET,dgrad}) !important;}
+	background-image: linear-gradient(to bottom, {$GET,lgrad}, {$GET,dgrad}) !important;
 	font-size: 0.9em;
 }
 
@@ -661,7 +661,7 @@ header h1 {
 	content: " \00A0\00BB " !important;
 	display: inline-block;
 	font-size: 0.9em;
-	{$BETA_CSS_PROPERTY,opacity: 0.5;}
+	opacity: 0.5;
 }
 .breadcrumbs .sep:last-child:after, .associated_breadcrumbs .sep:last-child:after {
 	content: "" !important;
@@ -747,12 +747,12 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 		padding-{!en_right}: 2px;
 		{$BETA_CSS_PROPERTY,text-size-adjust: none;}
 		width: 100% !important; /* Remove this line for 50:50 display of panels */
-		{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+		box-sizing: border-box;
 	}
 
 	body.overlay {
 		width: 100%;
-		{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+		box-sizing: border-box;
 	}
 
 	.overlay h1 {
@@ -797,7 +797,7 @@ body.popup_spacer h2 {
 	/*{+START,IF,{$MOBILE}}*/
 		padding-{!en_left}: 2px;
 		padding-{!en_right}: 1px;
-		{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+		box-sizing: border-box;
 	/*{+END}*/
 }
 
@@ -809,12 +809,12 @@ body.popup_spacer h2 {
 	/*{+START,IF,{$MOBILE}}*/
 		padding-{!en_right}: 2px;
 		padding-{!en_left}: 1px;
-		{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+		box-sizing: border-box;
 	/*{+END}*/
 }
 
-.global_side_panel {
-	{$BETA_CSS_PROPERTY,word-wrap: break-word;}
+.global_side_panel
+	word-wrap: break-word;}
 	/*{+START,IF,{$NOT,{$MOBILE}}}*/
 		width: 13em;
 	/*{+END}*/
@@ -891,11 +891,11 @@ body.popup_spacer h2 {
 footer {
 	background-color: {$GET,footer_background};
 	margin-top: 2em;
-	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,footer_background}\, {$GET,footer_2_background});}
+	background-image: linear-gradient(to bottom, {$GET,footer_background}, {$GET,footer_2_background});
 
 	color: {$GET,footer_text};
 	/*{+START,IF,{$NAND,{$CONFIG_OPTION,fixed_width},{$NEQ,{$THEME},admin}}}*/
-		{$BETA_CSS_PROPERTY,box-shadow: 0 0 2px 2px {$GET,footer_tinting};}
+		box-shadow: 0 0 2px 2px {$GET,footer_tinting};
 	/*{+END}*/
 	/*{+START,IF,{$NOT,{$MOBILE}}}*/
 		padding: 1.5em;
@@ -924,7 +924,7 @@ footer .global_footer_left {
 }
 
 footer .footer_button_loading {
-	{$BETA_CSS_PROPERTY,opacity: 0.4;} display: inline-block;/*Needed for IE8*/
+	opacity: 0.4; display: inline-block;/*Needed for IE8*/
 }
 
 footer .global_footer_left .horizontal_buttons {
@@ -1144,14 +1144,14 @@ div.edited {
 }
 .media_box>a>img, .media_box>img {
 	border: 1px solid {$GET,standard_border};
-	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
-	{$BETA_CSS_PROPERTY,box-shadow: 3px 3px 10px {$GET,standard_border};}
+	box-sizing: border-box;
+	box-shadow: 3px 3px 10px {$GET,standard_border};
 	max-width: 100%;
 }
 
 .scale_down { /* Membership of this class is used as a tag to turn on image scale-to-fit */
 	max-width: 100%;
-	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+	box-sizing: border-box;
 }
 
 /* Used in a few places to make member links stand out */
@@ -1220,11 +1220,11 @@ body input.button_hyperlink, body input.button_hyperlink:hover {
 
 .trinav_wrap {
 	overflow: hidden;
-	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,main_2_background}\, {$GET,main_background});}
+	background-image: linear-gradient(to bottom, {$GET,main_2_background}, {$GET,main_background});
 	/*{+START,IF,{$NOT,{$MOBILE}}}*/
 		margin-bottom: 2em;
 	/*{+END}*/
-	{$BETA_CSS_PROPERTY,border-radius: 20px;}
+	border-radius: 20px;
 	color: {$GET,heading_text};
 }
 .trinav_wrap.nograd {
@@ -1293,7 +1293,7 @@ span.red_alert, a.red_alert, strong.red_alert, em.red_alert {
 	font-weight: bold;
 }
 div.red_alert, p.red_alert, .inline_wip_message {
-	{$BETA_CSS_PROPERTY,border-radius: 5px;}
+	border-radius: 5px;
 	padding: 1em 1em 1em 40px;
 }
 div.red_alert, p.red_alert {
@@ -1391,12 +1391,12 @@ th.metadata_title {
 }
 
 .img_thumb { /* Membership of this class is used as a tag to turn on the thumbnail blend effect */
-	{$BETA_CSS_PROPERTY,opacity: 0.7;}
+	opacity: 0.7;
 	max-width: 100%;
 }
 .img_thumb:hover, body.touch_enabled .img_thumb {
-	{$BETA_CSS_PROPERTY,opacity: 1.0;}
-	{$BETA_CSS_PROPERTY,transition: opacity 0.2s linear !important;}
+	opacity: 1.0;
+	transition: opacity 0.2s linear !important;
 }
 
 /*
@@ -1409,7 +1409,7 @@ th.metadata_title {
 
 .box {
 	border: 1px solid {$GET,standard_border};
-	{$BETA_CSS_PROPERTY,border-radius: 5px;}
+	border-radius: 5px;
 
 	margin: 1em 0;
 
@@ -1420,7 +1420,7 @@ th.metadata_title {
 	background-image: url('{$IMG_INLINE;,block_background}');
 	background-color: {$GET,area_background};
 	/* If the browser supports gradients, we'll put a nice box-filling gradient in here instead */
-	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,area_background}\, {$GET,area_4_background});}
+	background-image: linear-gradient(to bottom, {$GET,area_background}, {$GET,area_4_background});
 
 	overflow: hidden;
 }
@@ -1462,12 +1462,12 @@ td>.box, .right>.box, .left>.box {
 }
 
 .box_inner>h1, .box_inner>h2, .box_inner>h3, .box_inner>h4, .box_inner>h5, .box_inner>h6, .toggleable_tray_title, #standalone_html_wrap .box .box .box_inner>h2, #standalone_html_wrap .box .box .box_inner>h3 {
-	{$BETA_CSS_PROPERTY,border-top-left-radius: 3px;}
-	{$BETA_CSS_PROPERTY,border-top-right-radius: 3px;}
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
 	background-color: {$GET,box_title_background};
 	background-image: url('{$IMG_INLINE;,gradient}');
 	background-repeat: repeat-x;
-	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,lgrad}\, {$GET,dgrad});}
+	background-image: linear-gradient(to bottom, {$GET,lgrad}, {$GET,dgrad});
 	color: {$GET,box_title_text};
 	text-align: center;
 	font-weight: bold;
@@ -1525,7 +1525,7 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 	border: none !important;
 	padding: 0;
 	margin: 1em 0; /* Big margin, necessary as the boxes have no border around them */
-	{$BETA_CSS_PROPERTY,border-radius: 0;}
+	border-radius: 0;
 }
 .frame>.boxless_space .box:first-child {
 	margin-top: 0; /* No top margin for boxes in a frame */
@@ -1550,7 +1550,7 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 	width: auto;
 	font-weight: bold;
 	text-transform: uppercase;
-	{$BETA_CSS_PROPERTY,border-radius: 0;}
+	border-radius: 0;
 }
 .global_side_panel .boxless_space .box>.box_inner>h1, .global_side_panel .boxless_space .box>.box_inner>h2, .global_side_panel .boxless_space .box>.box_inner>h3, .global_side_panel .boxless_space .box>.box_inner>h4, .global_side_panel .boxless_space .box>.box_inner>h5, .global_side_panel .boxless_space .box>.box_inner>h6,
 .boxless_space .box .box>.box_inner>h1, .boxless_space .box .box>.box_inner>h2, .boxless_space .box .box>.box_inner>h3, .boxless_space .box .box>.box_inner>h4, .boxless_space .box .box>.box_inner>h5, .boxless_space .box .box>.box_inner>h6 {
@@ -1638,7 +1638,7 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 }
 
 .toggleable_tray_button {
-	{$BETA_CSS_PROPERTY,transition: opacity 0.2s linear !important;}
+	transition: opacity 0.2s linear !important;
 	outline: 0;
 	font-weight: bold;
 	text-decoration: none;
@@ -1693,7 +1693,7 @@ h3 .toggleable_tray_button img {
 		margin: 1em 0;
 		max-width: 100%;
 	/*{+END}*/
-	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+	box-sizing: border-box;
 }
 
 .fp_col_block .pagination {
@@ -1765,7 +1765,7 @@ h3 .toggleable_tray_button img {
 /* Overlays are also based on boxes */
 
 .box.overlay {
-	{$BETA_CSS_PROPERTY,box-shadow: 0px 0px 20px {$GET,dark_shadow};}
+	box-shadow: 0px 0px 20px {$GET,dark_shadow};
 }
 .box.overlay.lightbox>.box_inner {
 	margin: 0;
@@ -1992,22 +1992,22 @@ table.scrollable_inside {
 }
 
 .results_table>thead:first-child>tr:first-child *:first-child, .results_table>thead:nth-child(2)/*after colspan*/>tr:first-child *:first-child, .results_table>tbody>tr:first-child>*:first-child {
-	{$BETA_CSS_PROPERTY,border-top-left-radius: 5px;}
+	border-top-left-radius: 5px;
 }
 .results_table>thead:first-child>tr:first-child *:last-child, .results_table>thead:nth-child(2)/*after colspan*/>tr:first-child *:last-child, .results_table>tbody>tr:first-child>*:last-child {
-	{$BETA_CSS_PROPERTY,border-top-right-radius: 5px;}
+	border-top-right-radius: 5px;
 }
 .results_table.columned_table>tbody>tr:first-child>*:first-child {
-	{$BETA_CSS_PROPERTY,border-top-left-radius: 0px;}
+	border-top-left-radius: 0px;
 }
 .results_table.columned_table>tbody>tr:first-child>*:last-child {
-	{$BETA_CSS_PROPERTY,border-top-right-radius: 0px;}
+	border-top-right-radius: 0px;
 }
 .results_table>tbody:last-child>tr:last-child>*:first-child, .results_table>tbody>tr.last>*:first-child {
-	{$BETA_CSS_PROPERTY,border-bottom-left-radius: 5px;}
+	border-bottom-left-radius: 5px;
 }
 .results_table>tbody:last-child>tr:last-child>*:last-child, .results_table>tbody>tr.last>*:last-child {
-	{$BETA_CSS_PROPERTY,border-bottom-right-radius: 5px;}
+	border-bottom-right-radius: 5px;
 }
 
 .results_table>*>tr>th {
@@ -2099,19 +2099,19 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 .tooltip {
 	font-size: 1em;
 	z-index: 10000;
-	{$BETA_CSS_PROPERTY,opacity: 0.9;}
-	{$BETA_CSS_PROPERTY,word-wrap: break-word;}
+	opacity: 0.9;
+	word-wrap: break-word;
 }
 .tooltip_ownlayout {
 	padding: 0.5em;
 	border: 1px solid {$GET,point_of_interest_border};
-	{$BETA_CSS_PROPERTY,box-shadow: 3px 3px 10px {$GET,point_of_interest_border};}
-	{$BETA_CSS_PROPERTY,border-radius: 10px;}
+	box-shadow: 3px 3px 10px {$GET,point_of_interest_border};
+	border-radius: 10px;
 	color: {$GET,area_text} !important;
 }
 .tooltip_ownlayout, .tooltip_nolayout th, .tooltip_nolayout td {
 	background-color: {$GET,area_faded_background};
-	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,area_faded_background}\, {$GET,area_background});}
+	background-image: linear-gradient(to bottom, {$GET,area_faded_background}, {$GET,area_background});
 }
 .tooltip .box {
 	margin: 0;
@@ -2168,7 +2168,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	padding-right: 30px;
 }
 .faded_tooltip_img {
-	{$BETA_CSS_PROPERTY,opacity: 0.2;} display: inline-block; /*Needed for IE8*/
+	opacity: 0.2; display: inline-block; /*Needed for IE8*/
 }
 
 .diff del {
@@ -2393,7 +2393,7 @@ div.wysiwyg_toolbar_color_finder {
 	display: inline-block;
 }
 .site_unloading {
-	{$BETA_CSS_PROPERTY,opacity: 0.2;}
+	opacity: 0.2;
 }
 
 .ajax_loading_block {
@@ -2401,7 +2401,7 @@ div.wysiwyg_toolbar_color_finder {
 	margin-top: -2em;
 	margin-left: -6em;
 	background: rgba(255,255,255,0.5);
-	{$BETA_CSS_PROPERTY,border-radius: 5px;}
+	border-radius: 5px;
 }
 
 div.ajax_loading, p.ajax_loading {
@@ -2538,11 +2538,11 @@ div.ajax_loading, p.ajax_loading {
 }
 
 .rating_star {
-	{$BETA_CSS_PROPERTY,opacity: 0.2;} display: inline-block;/*Needed for IE8*/
+	opacity: 0.2; display: inline-block;/*Needed for IE8*/
 	padding-right: 3px;
 }
 .rating_star_highlight {
-	{$BETA_CSS_PROPERTY,opacity: 1.0;} display: inline-block;/*Needed for IE8*/
+	opacity: 1.0; display: inline-block;/*Needed for IE8*/
 }
 
 .rating_likers a+a {
@@ -2613,18 +2613,18 @@ div.ajax_loading, p.ajax_loading {
 }
 
 div .post_buttons>*, div .buttons_group_faded>* {
-	{$BETA_CSS_PROPERTY,opacity: 0.25;} display: inline-block;/*Needed for IE8*/
-	{$BETA_CSS_PROPERTY,transition-property : opacity;}
-	{$BETA_CSS_PROPERTY,transition-duration : 0.5s;}
-	{$BETA_CSS_PROPERTY,transform: scale(1);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
+	opacity: 0.25; display: inline-block;/*Needed for IE8*/
+	transition-property : opacity;
+	transition-duration : 0.5s;
+	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 }
 
 .post_buttons>*[rel="add reply"], .post_buttons>a[rel="back_to_top"] {
-	{$BETA_CSS_PROPERTY,opacity: 1.0 !important;} display: inline-block;/*Needed for IE8*/
+	opacity: 1.0 !important; display: inline-block;/*Needed for IE8*/
 }
 
 .post_buttons:hover>*, body.touch_enabled .post_buttons>*, .buttons_group_faded:hover>*, body.touch_enabled .buttons_group_faded>* {
-	{$BETA_CSS_PROPERTY,opacity: 1.0 !important;} display: inline-block;/*Needed for IE8*/
+	opacity: 1.0 !important; display: inline-block;/*Needed for IE8*/
 }
 
 .post_show_more {
@@ -2657,7 +2657,7 @@ div .post_buttons>*, div .buttons_group_faded>* {
 
 .reviews_average {
 	font-size: 0.8em;
-	{$BETA_CSS_PROPERTY,opacity: 0.7;} display: inline-block;/*Needed for IE8*/
+	opacity: 0.7; display: inline-block;/*Needed for IE8*/
 }
 
 .comments_field_name_column {
@@ -2909,18 +2909,18 @@ dl.meta_details_list>dt, dl.meta_details_list>dd {
 	font-size: 0.8em;
 	text-align: center;
 	border: 1px solid {$GET,pale_border};
-	{$BETA_CSS_PROPERTY,border-radius: 5px;}
+	border-radius: 5px;
 	padding: 0.5em;
-	{$BETA_CSS_PROPERTY,opacity: 0.4;}
-	{$BETA_CSS_PROPERTY,transition: opacity 0.6s linear;}
+	opacity: 0.4;
+	transition: opacity 0.6s linear;
 	margin-top: 3em;
-	{$BETA_CSS_PROPERTY,transform: scale(1);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
+	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 }
 .quick_self_edit_link img, .quick_self_edit_link span {
 	vertical-align: middle;
 }
 .quick_self_edit_link:hover {
-	{$BETA_CSS_PROPERTY,opacity: 1.0;}
+	opacity: 1.0;
 }
 #panel_top .quick_self_edit_link {
 	display: none;
@@ -2929,12 +2929,12 @@ dl.meta_details_list>dt, dl.meta_details_list>dd {
 .staff_actions {
 	margin-top: 2em;
 	font-size: 0.95em;
-	{$BETA_CSS_PROPERTY,opacity: 0.4;}
-	{$BETA_CSS_PROPERTY,transition: opacity 0.6s linear;}
+	opacity: 0.4;
+	transition: opacity 0.6s linear;
 	background: url('{$IMG_INLINE;,icons/24x24/tabs/settings}') right 4px no-repeat;
 	padding-right: 5px;
 	background-origin: content-box;
-	{$BETA_CSS_PROPERTY,transform: scale(1);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
+	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 }
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	.staff_actions {
@@ -2943,7 +2943,7 @@ dl.meta_details_list>dt, dl.meta_details_list>dd {
 	}
 }
 .staff_actions:hover, body.touch_enabled .staff_actions {
-	{$BETA_CSS_PROPERTY,opacity: 1.0;}
+	opacity: 1.0;
 }
 .staff_actions .box_inner {
 	padding-right: 25px;
@@ -3003,14 +3003,14 @@ ul.associated_links_block_group.horizontal_links>li:first-child:before, p.associ
 	/*{+START,IF,{$NOT,{$MOBILE}}}*/
 		content: "( " !important;
 	/*{+END}*/
-	{$BETA_CSS_PROPERTY,opacity: 0.7;}
+	opacity: 0.7;
 	font-size: 0.8em;
 }
 ul.associated_links_block_group.horizontal_links>li:last-child:after, p.associated_link:after, div.associated_link:after {
 	/*{+START,IF,{$NOT,{$MOBILE}}}*/
 		content: " )" !important;
 	/*{+END}*/
-	{$BETA_CSS_PROPERTY,opacity: 0.7;}
+	opacity: 0.7;
 	font-size: 0.8em;
 }
 span.associated_link, a.associated_link, form.associated_link {
@@ -3020,7 +3020,7 @@ ul.associated_links_block_group>li:before, span.associated_link:before, a.associ
 	/*{+START,IF,{$NOT,{$MOBILE}}}*/
 		content: "(" !important;
 	/*{+END}*/
-	{$BETA_CSS_PROPERTY,opacity: 0.7;}
+	opacity: 0.7;
 }
 ul.associated_links_block_group>li:first-child:before, span.associated_link:first-child:before, a.associated_link:first-child:before, form.associated_link:first-child:before {
 	vertical-align: baseline !important;
@@ -3032,7 +3032,7 @@ ul.associated_links_block_group>li:after, span.associated_link:after, a.associat
 	/*{+START,IF,{$NOT,{$MOBILE}}}*/
 		content: ")" !important;
 	/*{+END}*/
-	{$BETA_CSS_PROPERTY,opacity: 0.7;}
+	opacity: 0.7;
 }
 
 ul.associated_links_block_group.horizontal_links>li:before,
@@ -3194,7 +3194,7 @@ ul.buttons_group, ul.associated_links_block_group {
 	padding-{!en_left}: 2em;
 	margin-top: -1.5em;
 	width: 100%;
-	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+	box-sizing: border-box;
 }
 
 .captcha_frame {
@@ -3232,7 +3232,7 @@ ul.buttons_group, ul.associated_links_block_group {
 
 .wide_field {
 	width: 100%;
-	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+	box-sizing: border-box;
 	margin-left: 0 !important;
 	margin-right: 0 !important;
 }
@@ -3264,18 +3264,18 @@ input.magic_image_edit_link {
 
 .button_micro, .button_screen, .button_screen_item, .hero_section .hero_button a, body .hero_section .hero_button>a.user_link {
 	display: inline-block;
-	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+	box-sizing: border-box;
 	border: 1px solid {$GET,dark_border};
-	{$BETA_CSS_PROPERTY,border-radius: 6px;}
+	border-radius: 6px;
 	margin: 0.25em;
-	{$BETA_CSS_PROPERTY,box-shadow: 0 0 5px {$GET,standard_border};}
+	box-shadow: 0 0 5px {$GET,standard_border};
 	text-shadow: 2px 1px 2px {$GET,dark_shadow};
 	background-color: {$GET,lgrad};
 	background-repeat: no-repeat;
 	background-position: 96% 3px; /*fallback*/
 	background-position: right 7px top 3px;
 	background-image: url('{$IMG_INLINE;,gradient}');
-	/*{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,lgrad}\, {$GET,dgrad});} If you want a CSS gradient instead of the above image, do something like this*/
+	/*background-image: linear-gradient(to bottom, {$GET,lgrad}, {$GET,dgrad}); If you want a CSS gradient instead of the above image, do something like this*/
 	color: {$GET,box_title_text} !important;
 	text-decoration: none !important;
 	-webkit-appearance: none;
@@ -3318,27 +3318,27 @@ div>.button_micro:first-child, div>.button_screen:first-child, div>.button_scree
 }
 div .button_micro {
 	background-image: none !important; /* Too loud for such a small space */
-	{$BETA_CSS_PROPERTY,border-radius: 1px;}
+	border-radius: 1px;
 }
 
 .button_screen, .button_screen_item, .button_micro, .toggleable_tray_button img {
-	{$BETA_CSS_PROPERTY,opacity: 0.85;}
-	{$BETA_CSS_PROPERTY,transform: scale(1);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
+	opacity: 0.85;
+	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 	display: inline-block;
 }
 .buttons__previous_none, .buttons__next_none {
-	{$BETA_CSS_PROPERTY,opacity: 0.85 !important;}
+	opacity: 0.85 !important;
 	cursor: not-allowed;
 }
 .button_micro:hover, .button_screen:hover, .button_screen_item:hover {
-	{$BETA_CSS_PROPERTY,opacity: 1.0;}
+	opacity: 1.0;
 }
 .button_screen:hover, .button_screen_item:hover, .button_micro:hover, .toggleable_tray_button:hover img,
 body.touch_enabled .button_screen, body.touch_enabled .button_screen_item, body.touch_enabled .button_micro, body.touch_enabled .toggleable_tray_button img {
-	{$BETA_CSS_PROPERTY,opacity: 1.0;} /* Needed for Opera */
+	opacity: 1.0; /* Needed for Opera */
 }
 .button_micro:disabled, .button_screen:disabled, .button_screen_item:disabled {
-	{$BETA_CSS_PROPERTY,opacity: 0.4 !important;}
+	opacity: 0.4 !important;
 	cursor: default;
 }
 
@@ -3379,7 +3379,7 @@ div.proceed_button_left_2 {
 	z-index: 2000;
 }
 .global_button_ref_point .box {
-	{$BETA_CSS_PROPERTY,box-shadow: 3px 3px 10px {$GET,standard_border};}
+	box-shadow: 3px 3px 10px {$GET,standard_border};
 }
 
 .global_button_ref_point .associated_links_block_group, .notification+.notification {
@@ -3797,7 +3797,7 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 	width: 100%;
 	height: 0;
 	float: left; /* Stops it breaking up margin collapsing */
-	{$BETA_CSS_PROPERTY,transform: scale(1);} /* Fixes bugginess in Chrome */
+	transform: scale(1); /* Fixes bugginess in Chrome */
 }
 
 /*
@@ -3811,10 +3811,10 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 	border-right: 1px solid;
 	border-bottom: 1px solid;
 	border-color: {$GET,tab_border};
-	{$BETA_CSS_PROPERTY,border-bottom-left-radius: 10px;}
-	{$BETA_CSS_PROPERTY,border-bottom-right-radius: 10px;}
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
 	padding: 0.5em;
-	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,main_2_background}\, {$GET,main_background});}
+	background-image: linear-gradient(to bottom, {$GET,main_2_background}, {$GET,main_background});
 }
 
 .tab_surround>div>.box:first-child {
@@ -3856,7 +3856,7 @@ a.tab, a.tab:visited, a.tab:hover {
 	text-align: center;
 	cursor: pointer;
 	line-height: 18px;
-	{$BETA_CSS_PROPERTY,opacity: 0.6;}
+	opacity: 0.6;
 	/*{+START,IF,{$NOT,{$MOBILE}}}*/
 		background-image: url('{$IMG;,tabs/tab}') !important;
 	/*{+END}*/
@@ -3891,11 +3891,11 @@ a.tab>span {
 
 .tab.tab_active {
 	text-shadow: 1px 0 1px {$GET,standard_border};
-	{$BETA_CSS_PROPERTY,opacity: 1.0 !important;}
+	opacity: 1.0 !important;
 }
 
 .tab:hover, body.touch_enabled .tab {
-	{$BETA_CSS_PROPERTY,opacity: 1.0;}
+	opacity: 1.0;
 }
 
 .tab strong {
@@ -3996,12 +3996,12 @@ ul.nl, .nl ul {
 
 /* We hide the inline edit menu links for design reasons, they fade in on top of stuff when hovering the menu */
 .edit_menu_link_inline, .edit_page_link_inline {
-	{$BETA_CSS_PROPERTY,opacity: 0 !important;} display: inline-block;/*Needed for IE8*/
-	{$BETA_CSS_PROPERTY,transition: opacity 0.5s linear;}
-	{$BETA_CSS_PROPERTY,transform: scale(1);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
+	opacity: 0 !important; display: inline-block;/*Needed for IE8*/
+	transition: opacity 0.5s linear;
+	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 }
 div:hover>.edit_menu_link_inline, div:hover>.edit_page_link_inline {
-	{$BETA_CSS_PROPERTY,opacity: 1.0 !important;} display: inline-block;/*Needed for IE8*/
+	opacity: 1.0 !important; display: inline-block;/*Needed for IE8*/
 }
 .edit_menu_link_inline {
 	position: absolute;
@@ -4253,7 +4253,7 @@ body div.comcode_table_of_contents>div.box_inner>ol>li {
 
 .comcode_member_link {
 	border: 1px solid {$GET,standard_border};
-	{$BETA_CSS_PROPERTY,border-radius: 5px;}
+	border-radius: 5px;
 	display: inline-block;
 	padding: 0.2em 0.25em;
 	vertical-align: middle;
@@ -4367,7 +4367,7 @@ a[rel="lightbox"] {
 	border: 1px solid {$GET,standard_border};
 	background-color: {$GET,area_background};
 	padding-bottom: 0.5em;
-	{$BETA_CSS_PROPERTY,border-radius: 5px;}
+	border-radius: 5px;
 }
 
 .media_set div {
@@ -4403,14 +4403,14 @@ a[rel="lightbox"] {
 */
 
 @keyframes greenPulse {
-	from { background-color: #749a02; {$BETA_CSS_PROPERTY,box-shadow: 0 0 9px #333333;} }
-	50% { background-color: #91bd09; {$BETA_CSS_PROPERTY,box-shadow: 0 0 18px #91bd09;} }
-	to { background-color: #749a02; {$BETA_CSS_PROPERTY,box-shadow: 0 0 9px #333333;} }
+	from { background-color: #749a02; box-shadow: 0 0 9px #333333; }
+	50% { background-color: #91bd09; box-shadow: 0 0 18px #91bd09; }
+	to { background-color: #749a02; box-shadow: 0 0 9px #333333; }
 }
 .glowing_node {
-	{$BETA_CSS_PROPERTY,animation-name: greenPulse;}
-	{$BETA_CSS_PROPERTY,animation-duration: 2s;}
-	{$BETA_CSS_PROPERTY,animation-iteration-count: infinite;}
+	animation-name: greenPulse;
+	animation-duration: 2s;
+	animation-iteration-count: infinite;
 }
 
 /*
@@ -4642,12 +4642,12 @@ a[title="{!VIRTUAL_ROOT}"]:hover {
 }
 
 .overlay .previous_button, .overlay .next_button {
-	{$BETA_CSS_PROPERTY,opacity: 0;}
-	{$BETA_CSS_PROPERTY,transition-property : opacity;}
-	{$BETA_CSS_PROPERTY,transition-duration : 0.5s;}
+	opacity: 0;
+	transition-property : opacity;
+	transition-duration : 0.5s;
 }
 .overlay .previous_button:hover, .overlay .next_button:hover, .overlay.mousemove .previous_button, .overlay.mousemove .next_button, body.touch_enabled .overlay.mousemove .previous_button, body.touch_enabled .overlay.mousemove .next_button {
-	{$BETA_CSS_PROPERTY,opacity: 1.0 !important;}
+	opacity: 1.0 !important;
 }
 
 .overlay .previous_button {

@@ -24,12 +24,12 @@
 	/*{+START,IF,{$NOT,{$MOBILE}}}*/
 		width: 11em;
 	/*{+END}*/
-	{$BETA_CSS_PROPERTY,border-radius: 5px;}
+	border-radius: 5px;
 	{$BETA_CSS_PROPERTY,user-select: none;} {$,To stop accidental touching on mobile form filling in}
 }
 
 .required_star {
-	{$BETA_CSS_PROPERTY,opacity: 0.4;}
+	opacity: 0.4;
 	color: {$GET,red_highlight_text};
 	{$BETA_CSS_PROPERTY,user-select: none;} {$,To stop accidental touching when touching inputs}
 }
@@ -48,7 +48,7 @@ div.comcode_supported {
 }
 
 .input_erroneous.container_for_wysiwyg {
-	{$BETA_CSS_PROPERTY,border-radius: 6px;} /* WYSISWYG is curved so this stops it creating an ugly clash */
+	border-radius: 6px; /* WYSISWYG is curved so this stops it creating an ugly clash */
 }
 
 .input_error_here {
@@ -57,7 +57,7 @@ div.comcode_supported {
 	padding: 1em 1em 1em 35px;
 	border: 1px solid {$GET,light_error_border};
 	background: url('{$IMG;,icons/24x24/status/notice}') 0.6em 0.75em no-repeat {$GET,light_error_background};
-	{$BETA_CSS_PROPERTY,border-radius: 5px;}
+	border-radius: 5px;
 	margin-top: 0.5em;
 }
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
@@ -73,7 +73,7 @@ span.form_field_name {
 }
 
 .locked_field {
-	{$BETA_CSS_PROPERTY,opacity: 0.3;}
+	opacity: 0.3;
 }
 
 /* Overrides .toggleable_tray_button */
@@ -101,21 +101,21 @@ table.form_table { /* Some people think tables for forms are bad semantics. You 
 /*
 Curved borders would be cool, but it does not work well with the carefully defined internal cell borders which we have
 .form_table>tbody>tr:first-child>:first-child {
-	{$BETA_CSS_PROPERTY,border-top-left-radius: 15px;}
+	border-top-left-radius: 15px;
 }
 .form_table>tbody>tr:first-child>:last-child {
-	{$BETA_CSS_PROPERTY,border-top-right-radius: 15px;}
+	border-top-right-radius: 15px;
 }
 .form_table>tbody>tr:last-child>:first-child {
-	{$BETA_CSS_PROPERTY,border-bottom-left-radius: 15px;}
+	border-bottom-left-radius: 15px;
 }
 .form_table>tbody>tr:last-child>:last-child {
-	{$BETA_CSS_PROPERTY,border-bottom-right-radius: 15px;}
+	border-bottom-right-radius: 15px;
 }
 */
 
 .form_table_field_name {
-	{$BETA_CSS_PROPERTY,word-wrap: break-word;}
+	word-wrap: break-word;
 	text-align: left;
 	color: {$GET,slightly_seeded_text};
 	padding-top: 0.95em !important;
@@ -159,7 +159,7 @@ th.form_table_field_name, /* Extra specificity to take precedence over th.de_th 
 	color: {$GET,slightly_seeded_text} !important;
 	padding: 0.5em 0.75em;
 	background-color: {$GET,area_background} !important; /* !important is so has priority over .de_th */
-	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,area_background}\, {$GET,area_2_background});}
+	background-image: linear-gradient(to bottom, {$GET,area_background}, {$GET,area_2_background});
 }
 .form_table_field_input>div:first-child>p:first-child {
 	margin-top: 0;
@@ -208,14 +208,14 @@ th.form_table_field_name a, /* Extra specificity to take precedence over th.de_t
 .form_table .required {
 	/*	Style rather extreme, but re-enable if you wish
 	background-color: {$GET,required_background} !important;
-	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,required_2_background}\, {$GET,required_background}) !important;}
+	background-image: linear-gradient(to bottom, {$GET,required_2_background}, {$GET,required_background}) !important;
 	*/
 }
 
 .form_table .filledin .required {
 	/*	Style rather extreme, but re-enable if you wish
 	background-color: {$GET,area_background} !important;
-	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,area_background}\, {$GET,area_2_background}) !important;}
+	background-image: linear-gradient(to bottom, {$GET,area_background}, {$GET,area_2_background}) !important;
 	*/
 }
 
@@ -344,7 +344,7 @@ span.validated_checkbox+input[name="validated"].input_tick {
 	padding-right: 0.5em;
 	z-index: 10000;
 	position: relative;
-	{$BETA_CSS_PROPERTY,opacity: 0;}
+	opacity: 0;
 }
 
 .date-datepicker-button {
@@ -416,7 +416,7 @@ span.validated_checkbox+input[name="validated"].input_tick {
 	margin: 1em;
 	border: 1px solid {$GET,standard_border};
 	min-height: auto;
-	{$BETA_CSS_PROPERTY,opacity: 1.0;}
+	opacity: 1.0;
 }
 
 .radio_list_picture img {
@@ -437,10 +437,10 @@ span.validated_checkbox+input[name="validated"].input_tick {
 }
 
 .radio_list_picture {
-	{$BETA_CSS_PROPERTY,opacity: 0.5;}
+	opacity: 0.5;
 }
 .radio_list_picture:hover, .radio_list_picture.selected {
-	{$BETA_CSS_PROPERTY,opacity: 1.0;}
+	opacity: 1.0;
 }
 
 .selectable_theme_image {
@@ -641,7 +641,7 @@ span.validated_checkbox+input[name="validated"].input_tick {
 
 	/* Fix for overhanging borders */
 	padding-right: 2px;
-	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+	box-sizing: border-box;
 }
 
 .permissions_matrix_wrap select {
@@ -696,7 +696,7 @@ span.validated_checkbox+input[name="validated"].input_tick {
 .fields_set_item {
 	background: {$GET,main_background};
 	padding: 0.75em 0.5em;
-	{$BETA_CSS_PROPERTY,border-radius: 5px;}
+	border-radius: 5px;
 	border: 1px solid {$GET,pale_border};
 }
 
@@ -720,7 +720,7 @@ span.validated_checkbox+input[name="validated"].input_tick {
 }
 
 .form_table input[type="text"], .form_table input[type="email"], .form_table input[type="password"], .form_table textarea {
-	{$BETA_CSS_PROPERTY,border-radius: 4px;}
+	border-radius: 4px;
 	border: 1px solid {$GET,standard_border};
 	padding: 0.2em;
 }
