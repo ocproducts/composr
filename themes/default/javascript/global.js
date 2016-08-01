@@ -15,6 +15,10 @@ function script_load_stuff()
 
 	var i;
 
+	if (typeof NodeList.prototype.forEach == 'undefined') { // Only Chrome has native support as of writing
+		NodeList.prototype.forEach = Array.prototype.forEach;
+	}
+
 	if (window==window.top && !window.opener || window.name=='') window.name='_site_opener';
 
 	// Are we dealing with a touch device?
@@ -2140,12 +2144,12 @@ function convert_tooltip(element)
 
 		if ((!element.onmouseover) && ((element.childNodes.length==0) || ((!element.childNodes[0].onmouseover) && ((!element.childNodes[0].title) || (element.childNodes[0].title==''))))) // Only put on new tooltip if there's nothing with a tooltip inside the element
 		{
-			if (element.innerText)
+			if (element.textContent)
 			{
-				var prefix=element.innerText+': ';
+				var prefix=element.textContent+': ';
 				if (title.substr(0,prefix.length)==prefix)
 					title=title.substring(prefix.length,title.length);
-				else if (title==element.innerText) return;
+				else if (title==element.textContent) return;
 			}
 
 			// Stop the tooltip code adding to these events, by defining our own (it will not overwrite existing events).
@@ -2612,41 +2616,29 @@ function set_opacity(element,fraction)
 // Note that the 'this' object cannot be relied on, as it will not work in IE - pass it in implicitly bound into the scope of your defined func via a pre-called surrounder function
 function add_event_listener_abstract(element,the_event,func,capture)
 {
-	if (element)
+	if (!element) return false;
+
+	if ((element==window) && ((the_event=='load') && ((page_fully_loaded) || (document.readyState=='complete'))) || ((the_event=='real_load') && (document.readyState=='complete')))
 	{
-		if ((element==window) && ((the_event=='load') && ((page_fully_loaded) || (document.readyState=='complete'))) || ((the_event=='real_load') && (document.readyState=='complete')))
-		{
-			window.setTimeout(func,0);
-			return true;
-		}
-
-		if (typeof element.simulated_events=='undefined') element.simulated_events=[];
-		try
-		{
-			if (typeof element.simulated_events[the_event]=='undefined') element.simulated_events[the_event]=[];
-			element.simulated_events[the_event].push(func);
-		}
-		catch (e) // If was created by closed popup window can make "callee is not available" error in IE
-		{
-			element.simulated_events=[];
-			element.simulated_events[the_event]=[];
-			element.simulated_events[the_event].push(func);
-		}
-
-		// W3C
-		if (the_event=='load') // Try and be smarter
-		{
-			element.addEventListener('DOMContentLoaded',function() { window.page_loaded=true; window.has_DOMContentLoaded=true; window.setTimeout(func,0); },capture);
-			return element.addEventListener(the_event,function() { window.page_loaded=true; if (!window.has_DOMContentLoaded) window.setTimeout(func,0); },capture);
-		}
-		if (the_event=='real_load')
-		{
-			return element.addEventListener('load',function() { window.page_fully_loaded=true; func(); },capture);
-		}
-		return element.addEventListener(the_event,func,capture);
+		window.setTimeout(func,0);
+		return true;
 	}
-	else return false;
+
+	// W3C
+	if (the_event=='load') // Try and be smarter
+	{
+		element.addEventListener('DOMContentLoaded',function() { window.page_loaded=true; window.has_DOMContentLoaded=true; window.setTimeout(func,0); },capture);
+		return element.addEventListener(the_event,function() { window.page_loaded=true; if (!window.has_DOMContentLoaded) window.setTimeout(func,0); },capture);
+	}
+
+	if (the_event=='real_load')
+	{
+		return element.addEventListener('load',function() { window.page_fully_loaded=true; func(); },capture);
+	}
+
+	return element.addEventListener(the_event,func,capture);
 }
+
 function cancel_bubbling(event,for_element)
 {
 	if ((typeof for_element=='undefined') || (!for_element)) var for_element='';
@@ -2755,90 +2747,14 @@ function get_session_id()
 /* Get an element's HTML, including the element itself */
 function get_outer_html(element)
 {
-	return get_inner_html(element,true);
+	return element.outerHTML;
 }
 
 /* Get an element's HTML */
 function get_inner_html(element,outer_too)
 {
 	if (typeof outer_too=='undefined') outer_too=false;
-	if (typeof element.innerHTML!='undefined') return outer_too?element.outerHTML:element.innerHTML;
-
-	// recursively copy the DOM into a string
-	function inner_html_copy(src_dom_node,level) {
-		var out='';
-
-		if (typeof level=='undefined') level=1;
-		if (level>1) {
-
-			if (src_dom_node.nodeType==1) {
-
-				// element node
-				var this_node=document.createElement(src_dom_node.nodeName);
-				out+='<'+this_node.nodeName;
-
-				// attributes
-				var cleaned_attributes=[];
-				for (var a=0,attr=src_dom_node.attributes.length;a<attr;a++) {
-					var a_name=src_dom_node.attributes[a].name,a_value=src_dom_node.attributes[a].value;
-					cleaned_attributes[a_name]=a_value;
-				}
-				for (var a=0,attr=src_dom_node.attributes.length;a<attr;a++) {
-					var a_name=src_dom_node.attributes[a].name,a_value=cleaned_attributes[a_name];
-					if (
-						(a_value!==null) &&
-						(a_name!='complete') &&
-						(a_name!='simulated_events') && // cms, expando
-						(((a_name.substr(0,2)!='on') && (a_name.substr(0,6)!='jQuery') && (a_name.substr(0,8)!='sizcache') && (a_name!='sizset') && (a_name!='nodeIndex') && (a_name!='cite') && (a_name!='nofocusrect') && (a_name!='width') && (a_name!='height') && (a_name!='cache') && (a_name!='dataFld') && (a_name!='dataFormatAs') && (a_name!='dataSrc') && (a_name!='implementation') && (a_name!='style')) || (a_value!='null')) &&
-						((a_name!='start') || (a_value!='fileopen')) &&
-						((a_name!='loop') || (a_value!='1')) &&
-						(((a_name!='width') && (a_name!='height') && (a_name!='tabIndex') && (a_name!='hspace') && (a_name!='vspace')) || (a_value!='0')) &&
-						(((a_name!='noWrap') && (a_name!='readOnly') && (a_name!='indeterminate') && (a_name!='hideFocus') && (a_name!='disabled') && (a_name!='isMap')) || (a_value!='false')) &&
-						((a_name!='contentEditable') || (a_value!='inherit')) &&
-						(((a_name.substr(0,6)!='border') && (a_name!='dateTime') && (a_name!='scope') && (a_name!='clear') && (a_name!='bgColor') && (a_name!='vAlign') && (a_name!='chOff') && (a_name!='ch') && (a_name!='height') && (a_name!='width') && (a_name!='axis') && (a_name!='headers') && (a_name!='background') && (a_name!='accept') && (a_name!='language') && (a_name!='longDesc') && (a_name!='border') && (a_name!='dataFld') && (a_name!='dataFormatAs') && (a_name!='dataSrc') && (a_name!='lang') && (a_name!='id') && (a_name!='name') && (a_name!='dir') && (a_name!='accessKey') && (a_name!='dynsrc') && (a_name!='vrml') && (a_name!='align') && (a_name!='useMap') && (a_name!='lowsrc')) || (a_value!=''))
-					)
-						out+=' '+a_name+'="'+escape_html(a_value)+'"';
-				}
-
-				if (src_dom_node.childNodes.length>0)
-				{
-					out+='>';
-
-					// do child nodes
-					for (var i=0,j=src_dom_node.childNodes.length;i<j;i++)
-					{
-						if ((src_dom_node.childNodes[i].id!='_firebugConsole') && (src_dom_node.childNodes[i].type!='application/x-googlegears'))
-							out+=inner_html_copy(src_dom_node.childNodes[i],level+1);
-					}
-
-					out+='</'+this_node.nodeName+'>';
-				} else
-				{
-					out+=' />';
-				}
-			}
-			else if (src_dom_node.nodeType==3) {
-				// text node
-				out+= (src_dom_node.nodeValue?src_dom_node.nodeValue:'');
-			}
-			else if (src_dom_node.nodeType==4) {
-				// text node
-				out+=(src_dom_node.nodeValue?'<![CDATA['+src_dom_node.nodeValue+']]':'');
-			}
-		} else
-		{
-			// do child nodes
-			for (var i=0,j=src_dom_node.childNodes.length;i<j;i++)
-			{
-				if ((src_dom_node.childNodes[i].id!='_firebugConsole') && (src_dom_node.childNodes[i].type!='application/x-googlegears'))
-					out+=inner_html_copy(src_dom_node.childNodes[i],level+1);
-			}
-		}
-
-		return out;
-	}
-
-	return inner_html_copy(element,outer_too?2:1);
+	return outer_too ? element.outerHTML : element.innerHTML;
 }
 
 /*  Originally written by Optimal Works, http://www.optimalworks.net/  */
