@@ -523,14 +523,8 @@ function do_ajax_request(url,callback__method,post) // Note: 'post' is not an ar
 	var index=window.AJAX_REQUESTS.length;
 	window.AJAX_METHODS[index]=callback__method;
 
-	var base=window.location.protocol+'//'+window.location.host+'/';
-	if ((url.substr(0,base.length)!=base) && (typeof window.XDomainRequest!='undefined') && ((typeof window.XMLHttpRequest!='undefined') && (typeof (new XMLHttpRequest().responseType)=='undefined')))
-	{
-		window.AJAX_REQUESTS[index]=new XDomainRequest(); // <IE10
-	} else
-	{
-		window.AJAX_REQUESTS[index]=new XMLHttpRequest();
-	}
+	window.AJAX_REQUESTS[index]=new XMLHttpRequest();
+
 	if (!synchronous) window.AJAX_REQUESTS[index].onreadystatechange=process_request_changes;
 	if (typeof post!='undefined' && post!==null)
 	{
@@ -616,23 +610,14 @@ function handle_errors_in_result(result)
 	{
 		// Try and parse again. Firefox can be weird.
 		var xml;
-		if (typeof DOMParser!='undefined')
-		{
-			try { xml=(new DOMParser()).parseFromString(result.responseText,'application/xml'); }
-			catch(e) {}
-		} else
-		{
-			var ieDOM=['MSXML2.DOMDocument','MSXML.DOMDocument','Microsoft.XMLDOM'];
-			for (var i=0;i<ieDOM.length && !xml;i++) {
-				try { xml=new ActiveXObject(ieDOM[i]);xml.loadXML(result.responseText); }
-				catch(e) {}
-			}
-		}
+		try {
+			xml=(new DOMParser()).parseFromString(result.responseText,'application/xml');
+		} catch(e) {}
+
 		if (xml) return xml;
 
-		if ((result.responseText) && (result.responseText!='') && (result.responseText.indexOf('<html')!=-1))
-		{
-			if (typeof window.console!='undefined') console.log(result);
+		if ((result.responseText) && (result.responseText!='') && (result.responseText.indexOf('<html')!=-1)) {
+			console.log(result);
 
 			fauxmodal_alert(result.responseText,null,'{!ERROR_OCCURRED;}',true);
 		}

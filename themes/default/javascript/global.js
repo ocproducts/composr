@@ -2592,11 +2592,7 @@ function set_opacity(element,fraction)
 		window.fade_transition_timers[element.fader_key]=null;
 	}
 
-	if (typeof element.style.opacity!='undefined')
-	{
-		element.style.opacity=fraction;
-		element.style.filter='alpha(opacity='+(fraction*100)+')';
-	}
+	element.style.opacity=fraction;
 }
 
 /* Event listeners */

@@ -25,7 +25,7 @@ var all_conversations={};
 window.has_focus=true;
 
 window.addEventListener('blur', function () {
-	window.has_focus=true;
+	window.has_focus=false;
 });
 
 window.addEventListener('focus', function () {
