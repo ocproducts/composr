@@ -160,10 +160,6 @@
 
 {$,JavaScript includes from Composr page}
 {$JS_TEMPCODE,header}
-{$,LEGACY: IE8}
-<!--[if lt IE 9]>
-<script src="{$BASE_URL*}/data/html5.js"></script>
-<![endif]-->
 
 {$,If the page is doing a refresh include the markup for that}
 {$REFRESH}
