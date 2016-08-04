@@ -1765,7 +1765,7 @@ class xmlrpc_client
 			foreach (curl_getinfo($curl) as $name=>$val)
 			{
 				if (is_scalar($val))
-    				print $name.': '.htmlentities($val)."\n";
+					print $name.': '.htmlentities($val)."\n";
 			}
 			print "---END---\n</PRE>";
 		}

@@ -82,7 +82,7 @@ foreach ($addons as $name => $place) {
 
     $done_addon = true;
 
-	echo nl2br(escape_html(update_addon_descriptions($file, $name, $addon_info['description'])));
+    echo nl2br(escape_html(update_addon_descriptions($file, $name, $addon_info['description'])));
 }
 if ($done_addon) {
     echo "<p>Addons have been exported to <kbd>export/addons/</kbd></p>\n";
@@ -179,7 +179,7 @@ if (get_param_integer('export_themes', 0) == 1) {
             'exports/addons'
         );
 
-		echo nl2br(escape_html(update_addon_descriptions($file, $name, $description)));
+        echo nl2br(escape_html(update_addon_descriptions($file, $name, $description)));
     }
 
     if ($only !== null) {
@@ -193,6 +193,6 @@ function update_addon_descriptions($file, $name, $description)
 {
     $_description = addslashes($description);
 return <<<END
-	:\$GLOBALS['SITE_DB']->query_update('download_downloads', array('description' => '{$_description}'), array('url' => 'uploads/downloads/' . rawurlencode('{$file}')));
+    :\$GLOBALS['SITE_DB']->query_update('download_downloads', array('description' => '{$_description}'), array('url' => 'uploads/downloads/' . rawurlencode('{$file}')));
 END;
 }

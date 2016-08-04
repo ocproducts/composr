@@ -126,7 +126,7 @@ function get_config_func($raw_params)
         'timezone' => get_site_timezone(),
         'disable_bbcode' => '0',
 
-        //'json_support' => '1',	Enable once JSON is tested. Test it if Tapatalk has stopped supporting XML-RPC.
+        //'json_support' => '1',    Enable once JSON is tested. Test it if Tapatalk has stopped supporting XML-RPC.
 
         'push' => '1',
         'push_type' => 'pm,sub,quote,newtopic,tag',
