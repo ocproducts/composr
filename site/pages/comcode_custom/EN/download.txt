@@ -7,7 +7,7 @@
 			[title]Download Composr[/title]
 
 			<!--
-			<p>If you don't have hosting yet, we recommend <a href="#">Arvixe</a>. Arvixe hosting comes with Composr pre-installed.</p>
+			<p>If you don't have hosting yet, we recommend <a href="http://www.arvixe.com/5256-223-3-122.html">Arvixe</a>. Arvixe hosting comes with Composr pre-installed.</p>
 
 			<p class="text-center"><a href="#"><img alt="Arvixe hosting preloaded with Composr" src="{$IMG*,composr_homesite/download/arvixe-banner}" /></a></p>
 
