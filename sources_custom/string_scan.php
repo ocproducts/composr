@@ -113,10 +113,19 @@ function string_scan($lang, $do_guessing = false)
     );
 
     $lang_strings_admin_initial = array_map('trim', explode("\n", trim('
+        OWNER
+        TICKETS_STAFF
+        NO_CNS
+        DOCS
+        HERE_SURVEY_RESULTS
+        HERE_TEST_RESULTS
+        METADATA
         ABOUT_DELETE_MENU
         ABOUT_REVISIONS
         ABRUPTED_DIRECTIVE_OR_BRACE
         ABSORB_PERMISSIONS
+        WHAT_NEXT
+        WHERE_NEXT
         ABSTRACTION_SYMBOL__BLOCK
         ABSTRACTION_SYMBOL__IMG
         ABSTRACTION_SYMBOL__LOAD_PAGE
@@ -126,6 +135,57 @@ function string_scan($lang, $do_guessing = false)
         ABSTRACTION_SYMBOL__THUMBNAIL
         ABSTRACT_FILE_MANAGEMENT
         ACCEPTED_MEDIA_TYPES
+        WORDFILTER
+        AUDIT
+        KA_CHING
+        PLEASE_STATE
+        VIDEO_WAS_AUTO_IMPORTED
+        CONTACT_US_NOTIFICATION_MESSAGE
+        CONTACT_US_NOTIFICATION_SUBJECT
+        WORD_SUBSTR
+        SCREEN_DEV_TOOLS
+        OR_ONE_OF_THE_BELOW
+        SALE_MADE
+        MERGE
+        MAIL_TEST_FAIL
+        MAIL_TEST_PASS
+        MAIL_TEST_UNKNOWN
+        EDIT_LIVE_POLL
+        DESCRIPTION_MAIL_DOMAIN
+        RSS
+        PGE_M
+        PGE_B
+        PGE_D
+        PGE_R
+        PGE_HASH
+        NO_SSL_SETUP
+        ADD_NOTE_TITLE
+        SUBSCRIPTION_CANCELLED_BODY
+        SUBSCRIPTION_CANCELLED_SUBJECT
+        ADBLOCKER
+        VIEW_THUMBNAILS
+        USER_ONLINE_TRACKING
+        ECOMMERCE_PRODUCT_MISSING
+        POST_FILES
+        GROUP_MEMBER_TIMEOUT_DATE
+        ENTER_PAGE
+        ENTER_ZONE
+        ENTER_ZONE_SPZ
+        WHETHER_CONVERT_COMCODE
+        MERGE_POSTS
+        VIEW_ALERT
+        ATTACHMENT_REFERENCES
+        MERGE_SUPPORT_TICKETS
+        NO_PARAMETER_SENT
+        CONFIRM_MERGE_TICKETS
+        DEFAULT_PERMISSION
+        ACCESS_DENIED__SUBMIT_HERE
+        TICKET_EMAILED_IN
+        TICKET_ASSIGN
+        TICKET_ASSIGNED_BODY
+        TICKET_ASSIGNED_SUBJECT
+        ACCESS_DENIED__ATTACHMENT_ACCESS
+        ACCESS_DENIED__ZONE_ACCESS_SESSION
         ACCEPT_IMAGES
         ACCEPT_VIDEOS
         ACCESSIB_COLONS_IN_PRE_LABELS
@@ -139,7 +199,22 @@ function string_scan($lang, $do_guessing = false)
         ACCESS_DENIED__I_ERROR
         ACCESS_DENIED__PRIVILEGE
         ACCESS_DENIED__STAFF_ONLY
+        TICKET_ACTIVITY_OVERVIEW
+        PARTNER_SITES
+        REFERRER
+        SUPPORT_TICKETS_MAIL
+        _COMCODE_PAGES
+        ERROR_UPLOADING
+        ERROR_UPLOADING_1
+        ERROR_UPLOADING_2
+        ERROR_UPLOADING_3
+        ERROR_UPLOADING_4
+        ERROR_UPLOADING_6
+        ERROR_UPLOADING_7
+        VOTE_CHEAT
         ACCESS_FOR
+        MISSING_CONFIRM_CODE
+        INVALID_DATE_GIVEN
         ACTIONLOG_NOTIFICATION_MAIL
         ACTIONLOG_NOTIFICATION_MAIL_SUBJECT
         ACTIONLOG_USERCOUNT
@@ -169,6 +244,18 @@ function string_scan($lang, $do_guessing = false)
         ADDING_CONTENT_IN_LANGUAGE_STAFF
         ADDING_THEME_IMAGE
         ADDITIONAL_ACCESS
+        TICKET_ACTIVITY_BODY
+        GUEST_TICKET_REPLY_LINK
+        BANNER_DESCRIPTION
+        BANNER_SHARING_END
+        BANNER_SHARING_START
+        BANNER_MISSING_SOURCE
+        BANNERS_A
+        BANNERS_ACTIVATE
+        BANNERS_B
+        BANNERS_C
+        BANNERS_D
+        BANNER_ADS
         ADDON
         ADDONS
         ADDONS_NOT_INSTALLED_IN_SETUPWIZARD
@@ -188,6 +275,8 @@ function string_scan($lang, $do_guessing = false)
         ADDON_WARNING_OVERWRITE
         ADDON_WARNING_PHP
         ADDON_WARNING_PRESENT_DEPENDENCIES
+        _ERROR_CHECKING_FOR_SPAMMERS
+        ERROR_CHECKING_FOR_SPAMMERS
         ADD_AGGREGATE_TYPE_INSTANCE
         ADD_AUTHOR
         ADD_AWARD_TYPE
@@ -252,12 +341,14 @@ function string_scan($lang, $do_guessing = false)
         ADD_WELCOME_EMAIL
         ADD_WORDFILTER
         ADD_ZONE
+        POST_ACCESS_IS_RESTRICTED
         ADMIN
         ADMINGUIDE
         ADMINGUIDE_DEFAULT_TRAINING
         ADMINSTART_PAGE
         ADMINZONE_SEARCH_RESULTS
         ADMINZONE_SEARCH_TIP
+        ENABLE_NOTIFICATIONS_RESOURCE_LONG_EXP
         ADMIN_BANNERS
         ADMIN_MODULES
         ADMIN_SCREENS
@@ -312,6 +403,8 @@ function string_scan($lang, $do_guessing = false)
         ANTISPAM_RESPONSE_ERROR
         ANTISPAM_RESPONSE_STALE
         ANTISPAM_RESPONSE_UNLISTED
+        NOTIFICATION_TYPE_content_reviews
+        NOTIFICATION_TYPE_content_reviews__own
         ANTI_LEECH
         API_ID
         ARCHIVE_PAGE_BACKUPS
@@ -324,6 +417,7 @@ function string_scan($lang, $do_guessing = false)
         ARITHMETICAL_SYMBOL__REM
         ARITHMETICAL_SYMBOL__ROUND
         ARITHMETICAL_SYMBOL__SUBTRACT
+        SPECIFYING_NEW_PAGE
         ASCII_ENTITY_URL_HACK
         ASSIGN_RANDOM_AVATARS
         ATTACHMENT_CLEANUP
@@ -359,6 +453,8 @@ function string_scan($lang, $do_guessing = false)
         BACKUPS
         BACKUP_FILE_COMPRESSED
         BACKUP_FILE_LOG
+        DECLINE_FROM_GROUP
+        ACCEPT_INTO_GROUP
         BACKUP_FILE_UNCOMPRESSED
         BACKUP_FILE_UNFINISHED
         BACKUP_FINISHED
@@ -379,6 +475,8 @@ function string_scan($lang, $do_guessing = false)
         BAD_INPUT
         BAD_PATH
         BAD_ZONE
+        CURRENT_BANNER_IS
+        SOURCE_MEDIA
         BANNED_ADDRESSES
         BANNERS
         BANNERS_DESCRIPTION
@@ -394,6 +492,19 @@ function string_scan($lang, $do_guessing = false)
         BANNER_HITS_LEFT
         BANNER_HITS_TO
         BANNER_HTML_NOT_RUN
+        TREE_LIST_FEEDBACK
+        TREE_LIST_HELP
+        TREE_LIST_HELP_DESELECT
+        TREE_LIST_HELP_MASS_EXPAND
+        TREE_LIST_SELECT
+        GREETING
+        BREADCRUMB_OVERRIDES
+        IMPORTANCE_BUY
+        IMPORTANCE_MODULUS
+        USER_INTERACTION
+        USER_INTERACTION_COMMENTING
+        USER_INTERACTION_RATING
+        IDEAL_DENSITY
         BANNER_INFORMATION
         BANNER_IS_TEXTUAL
         BANNER_LOOKS
@@ -447,6 +558,7 @@ function string_scan($lang, $do_guessing = false)
         BLOCK_CONFIGURATION__PANEL_YES
         BLOCK_CONFIGURATION__PANEL_YES_CELL
         BLOCK_HELPER
+        RESOURCE_NEW
         BLOCK_HELPER_1
         BLOCK_HELPER_1X
         BLOCK_HELPER_2
@@ -523,6 +635,13 @@ function string_scan($lang, $do_guessing = false)
         BLOCK_TRANS_NAME_menu
         BLOCK_TRANS_NAME_side_calendar
         BLOCK_TRANS_NAME_side_cns_private_topics
+        NEXT_ITEM_BACK
+        NEXT_ITEM_back
+        NEXT_ITEM_cms
+        NEXT_ITEM_edit_this
+        NEXT_ITEM_start
+        NEXT_ITEM_view_archive
+        NEXT_ITEM_view_this
         BLOCK_TRANS_NAME_side_forum_news
         BLOCK_TRANS_NAME_side_friends
         BLOCK_TRANS_NAME_side_galleries
@@ -766,6 +885,7 @@ function string_scan($lang, $do_guessing = false)
         BLOCK_main_count_PARAM_start_TITLE
         BLOCK_main_count_USE
         BLOCK_main_countdown_DESCRIPTION
+        MANUAL_CHECKS_TOO
         BLOCK_main_countdown_PARAM_param
         BLOCK_main_countdown_PARAM_param_TITLE
         BLOCK_main_countdown_PARAM_precision
@@ -1082,6 +1202,7 @@ function string_scan($lang, $do_guessing = false)
         BLOCK_main_notes_PARAM_title
         BLOCK_main_notes_PARAM_title_TITLE
         BLOCK_main_notes_USE
+        NO_DOWNLOAD_ACCESS
         BLOCK_main_only_if_match_DESCRIPTION
         BLOCK_main_only_if_match_PARAM_caption
         BLOCK_main_only_if_match_PARAM_caption_TITLE
@@ -1206,6 +1327,7 @@ function string_scan($lang, $do_guessing = false)
         BLOCK_menu_PARAM_type
         BLOCK_menu_PARAM_type_TITLE
         BLOCK_menu_USE
+        INDEX_DOWNLOAD
         BLOCK_side_calendar_DESCRIPTION
         BLOCK_side_calendar_PARAM_as_guest
         BLOCK_side_calendar_PARAM_as_guest_TITLE
@@ -1313,6 +1435,7 @@ function string_scan($lang, $do_guessing = false)
         BLOCK_side_tag_cloud_PARAM_title
         BLOCK_side_tag_cloud_PARAM_title_TITLE
         BLOCK_side_tag_cloud_PARAM_zone
+        ADD_TIME
         BLOCK_side_tag_cloud_PARAM_zone_TITLE
         BLOCK_side_tag_cloud_USE
         BLOCK_side_users_online_DESCRIPTION
@@ -1355,6 +1478,8 @@ function string_scan($lang, $do_guessing = false)
         BLOCK_top_search_PARAM_zone_TITLE
         BLOCK_top_search_USE
         BLOG_NEWS_ARTICLE
+        ORDER_AUTOMATED_CRITERIA
+        NOTIFICATION_TYPE_cns_username_changed_staff
         BLOG_NEWS_SUMMARY
         BLOG_REGULARITY
         BOARD_INSTALL_NUMBER
@@ -1403,6 +1528,9 @@ function string_scan($lang, $do_guessing = false)
         CACHES_PAGE_EXP_CACHES
         CACHES_PAGE_EXP_OPTIMISERS
         CACHE_FORUMS
+        FEEDS_TO_OVERLAY
+        PURCHASE_WRONG_CURRENCY
+        PURCHASE_WRONG_PRICE
         CACHE_MEMBERS
         CACHE_NOT_READY_YET
         CACHE_TOPICS
@@ -1476,6 +1604,7 @@ function string_scan($lang, $do_guessing = false)
         CHANGE
         CHANGED_USERGROUP
         CHANGE_BLOCK_BACKGROUND
+        EDIT_TIME
         CHANGE_FIXED_WIDTH
         CHANGE_FONT
         CHANGE_HEADER_IMAGE
@@ -1542,6 +1671,9 @@ function string_scan($lang, $do_guessing = false)
         CHOOSE_POLL
         CHOOSE_SAVED_WARNING
         CHOOSE_SEND_TO
+        PAYMENT_GATEWAY
+        DEFAULT_POST_CONTENT
+        DEFAULT_POST_TITLE
         CHOOSE_TEMPLATES
         CHOOSE_THEME_IMAGE
         CHOOSE_VIEW_LIST
@@ -2000,6 +2132,7 @@ function string_scan($lang, $do_guessing = false)
         COMCODE_TAG_media_PARAM_thumb_url__url_TITLE
         COMCODE_TAG_media_PARAM_type
         COMCODE_TAG_media_PARAM_type_TITLE
+        DEV_MODE_ON
         COMCODE_TAG_media_PARAM_width
         COMCODE_TAG_media_PARAM_width_TITLE
         COMCODE_TAG_media_PARAM_wysiwyg_editable
@@ -2184,6 +2317,7 @@ function string_scan($lang, $do_guessing = false)
         COMCODE_TAG_var_DESCRIPTION
         COMCODE_TAG_var_EMBED
         COMMANDR
+        HAVE_BLOG
         COMMANDR_BUTTON
         COMMANDR_CHAT_ANNOUNCE
         COMMANDR_DESCRIPTIVE_TITLE
@@ -2195,7 +2329,6 @@ function string_scan($lang, $do_guessing = false)
         COMMENT_TOPIC_SUBJECT
         COMMON_CSS_PROPERTIES
         COMPANY_NAME
-        COMPETITION
         COMPLETED
         COMPLETION_PERCENTAGE
         COMPLEX_FIRST_PARAMETER
@@ -2325,6 +2458,9 @@ function string_scan($lang, $do_guessing = false)
         CONFIG_OPTION_chat_transitory_alert_time
         CONFIG_OPTION_check_broken_urls
         CONFIG_OPTION_cleanup_files
+        DELETE_POSTS_DESCRIPTION
+        DELETE_POSTS_FROM_IP
+        DELETE_POSTS_FROM_IP_DESCRIPTION
         CONFIG_OPTION_closed
         CONFIG_OPTION_club_forum_parent_forum
         CONFIG_OPTION_club_forum_parent_forum_grouping
@@ -2512,6 +2648,9 @@ function string_scan($lang, $do_guessing = false)
         CONFIG_OPTION_is_on_comcode_page_children
         CONFIG_OPTION_is_on_comments
         CONFIG_OPTION_is_on_coppa
+        CNS_WAITING_CONFIRM_MAIL_COPPA
+        COPPA_JOIN_SUBJECT
+        COPPA_MAIL
         CONFIG_OPTION_is_on_emoticon_choosers
         CONFIG_OPTION_is_on_folder_create
         CONFIG_OPTION_is_on_forw_buy
@@ -2776,6 +2915,7 @@ function string_scan($lang, $do_guessing = false)
         CONFIG_OPTION_tasks_background
         CONFIG_OPTION_threaded_buttons
         CONFIG_OPTION_threaded_comments
+        INCORRECT_PASSWORD_RESET_CODE
         CONFIG_OPTION_threaded_topics_default
         CONFIG_OPTION_thumb_width
         CONFIG_OPTION_ticket_auto_assign
@@ -2850,7 +2990,6 @@ function string_scan($lang, $do_guessing = false)
         CONFIRM_DELETE_LINK
         CONFIRM_DELETE_LINK_NICE
         CONFIRM_MASTER_PASSWORD
-        CONFIRM_MERGE_TICKETS
         CONFIRM_MOVE
         CONFIRM_MOVE_LINK_NICE
         CONFIRM_REMOVE_PERIODIC
@@ -3104,6 +3243,7 @@ function string_scan($lang, $do_guessing = false)
         DELETE_PERIODIC_NEWSLETTER
         DELETE_POLL
         DELETE_POST_TEMPLATE
+        DELETE_CONTENTS
         DELETE_PRIVATE_CALENDAR_EVENT
         DELETE_PUBLIC_CALENDAR_EVENT
         DELETE_QUIZ
@@ -3990,7 +4130,6 @@ function string_scan($lang, $do_guessing = false)
         EDIT_THIS_QUIZ
         EDIT_THIS_USERGROUP_SUBSCRIPTION
         EDIT_THIS_WELCOME_EMAIL
-        EDIT_TIME
         EDIT_TIME_LIMIT
         EDIT_UNDER
         EDIT_USERGROUP_SUBSCRIPTION
@@ -4079,7 +4218,6 @@ function string_scan($lang, $do_guessing = false)
         ERROR_NOT_CORRECT_LINKING_POSSIBLY
         ERROR_NOT_CORRECT_VERSION
         ERROR_OCCURRED_SUBJECT
-        ERROR_UPLOADING
         EVAL_ERROR
         EVAL_HACK
         EVENTS
@@ -4733,7 +4871,6 @@ function string_scan($lang, $do_guessing = false)
         JS_OVERLAYS
         JUMP_TO_FOLDER
         JUST_PRESETS
-        KA_CHING
         KEEP_ADDING_QUESTION
         KEEP_BLOGS
         KEEP_PERSONAL_GALLERIES
@@ -5242,6 +5379,7 @@ function string_scan($lang, $do_guessing = false)
         NEXT_ITEM_view_this_category
         NEXT_REVIEW_DATE
         NICE_BLOCK_NAME
+        MODULE_TRANS_NAME_supermembers
         NNR
         NONPRESENT_EXTENSION_FUNCTION
         NON_COMMAND
@@ -5329,6 +5467,7 @@ function string_scan($lang, $do_guessing = false)
         NO_ACCESS_FOR_TAG
         NO_ACTION_REQUIRED
         NO_COMPACT
+        YES_COMPACT
         NO_DATA
         NO_DATA_IMPORTED
         NO_DATA_SPECIFIC
@@ -5429,8 +5568,6 @@ function string_scan($lang, $do_guessing = false)
         ORDERS
         ORDER_ACTIONS
         ORDER_DETAILS_TEXT
-        ORDER_DISPATCHED_MAIL_MESSAGE
-        ORDER_DISPATCHED_MAIL_SUBJECT
         ORDER_NUMBER
         ORDER_PLACED_MAIL_MESSAGE
         ORDER_PLACED_MAIL_SUBJECT
@@ -5465,7 +5602,6 @@ function string_scan($lang, $do_guessing = false)
         OVERVIEW_STATISTICS
         OVERWRITE_ERROR
         OVER_SMS_LIMIT
-        OWNER
         OWNER_SET
         OWNER_VIEW
         OWN_PARENT_ERROR
@@ -5860,7 +5996,6 @@ function string_scan($lang, $do_guessing = false)
         QUERY_FAILED
         QUERY_FAILED_TOO_BIG
         QUERY_NULL
-        QUESTIONS
         QUICK_CSS_CHANGE_LINKS
         QUIZ_ANSWER_RESULT
         QUIZ_END_TEXT
@@ -5868,11 +6003,6 @@ function string_scan($lang, $do_guessing = false)
         QUIZ_INVALID_LONG_HAS_ANSWERS
         QUIZ_INVALID_MULTI_NO_ANSWERS
         QUIZ_INVALID_UNMARKED_HAS_ANSWERS
-        QUIZ_MISTAKE_COMCODE
-        QUIZ_MISTAKE_EXPLAINED_COMCODE
-        QUIZ_MISTAKE_EXPLAINED_HTML
-        QUIZ_MISTAKE_HTML
-        QUIZ_RESULTS
         QUIZ_START_TEXT
         QUIZ_WAS_ENTERED_AS_FOLLOWS
         QUOTA
@@ -6057,12 +6187,6 @@ function string_scan($lang, $do_guessing = false)
         SET_ALL_PERMISSIONS_ON_ROW
         SET_REDIRECTS
         SHARED_INSTALL_PROHIBIT
-        SHIPPING_ADDRESS_CITY
-        SHIPPING_ADDRESS_COUNTRY
-        SHIPPING_ADDRESS_NAME
-        SHIPPING_ADDRESS_STATE
-        SHIPPING_ADDRESS_STREET
-        SHIPPING_ADDRESS_ZIP
         SHIPPING_COST_FACTOR
         SHOPPING_FORCE_DELETE
         SHOULD_HAVE_BEEN_POSTED
@@ -6216,12 +6340,12 @@ function string_scan($lang, $do_guessing = false)
         SUPER_ADMIN
         SUPER_DEBRAND
         SUPER_LOGGING
+        SEND_PM
         SUPER_MEMBERS
         SUPER_MODERATOR
         SUPPORTS_WIDE
         SUPPORT_OPERATOR
         SURE
-        SURVEY
         SU_2
         SU_CHATTING_AS
         SVG_EXPLANATION
@@ -6282,6 +6406,7 @@ function string_scan($lang, $do_guessing = false)
         TEMPLATES_HTML
         TEMPLATES_JAVASCRIPT
         TEMPLATES_TEXT
+        TEMPLATES_WITH_EDIT_LINKS_PARAMETERS
         TEMPLATES_WITH_EDIT_LINKS
         TEMPLATES_WITH_HTML_COMMENT_MARKERS
         TEMPLATES_XML
@@ -6293,7 +6418,6 @@ function string_scan($lang, $do_guessing = false)
         TEMPLATE_WILL_NEED_RESTORING
         TERMINAL_PROBLEM_ACCESSING_RESPONSE
         TERMS
-        TEST
         TEXTUAL_TAG
         TEXT_ABSTRACT_FILE_MANAGEMENT
         TEXT_PRIOR_TO_REVISION
@@ -6542,9 +6666,9 @@ function string_scan($lang, $do_guessing = false)
         URL_MONIKER_CONFLICT_PAGE
         URL_MONIKER_CONFLICT_ZONE
         URL_MONIKER_TAKEN
-        URL_REDIRECT
         URL_SCHEME
         USED_PREVIOUSLY
+        URL_REDIRECT
         USERGROUPS_WITH_NO_PERMISSIONS
         USERGROUP_APPLICATIONS
         USERGROUP_SETTINGS_SEARCH_GROUP
@@ -6605,7 +6729,6 @@ function string_scan($lang, $do_guessing = false)
         VIEW_LISTING
         VIEW_NEWSLETTER_SUBSCRIBERS
         VIEW_PAGE_QUERIES
-        VIEW_PAST_WINNERS
         VIEW_REPORTS
         VIEW_SENT_MESSAGE
         VIEW_SUBSCRIBERS
@@ -6857,7 +6980,6 @@ function string_scan($lang, $do_guessing = false)
         _EDIT_POP3_DOMAIN
         _EDIT_TEMPLATE
         _EDIT_THEME
-        _ERROR_CHECKING_FOR_SPAMMERS
         _EVENTS_THIS_MONTH
         _EVENTS_THIS_WEEK
         _EVENTS_THIS_YEAR
@@ -6921,6 +7043,7 @@ function string_scan($lang, $do_guessing = false)
         __WIKI_EDIT_TREE
         DESCRIPTION_DEFAULT_VALUE_CPF
         MANUAL
+        MULTI_MODERATIONS
     ')));
 
     $non_admin_files = array(
@@ -6970,10 +7093,8 @@ function string_scan($lang, $do_guessing = false)
         ABOUT_TO_APPLY_LEADER
         ABOUT_TO_APPLY_STAFF
         ACCEPTED_MESSAGE
-        ACCEPT_INTO_GROUP
         ACCESS_DENIED
         ACCESS_DENIED__ACCESS_DENIED
-        ACCESS_DENIED__ATTACHMENT_ACCESS
         ACCESS_DENIED__CATALOGUE_ACCESS
         ACCESS_DENIED__CATEGORY_ACCESS
         ACCESS_DENIED__CATEGORY_ACCESS_LEVEL
@@ -6984,9 +7105,7 @@ function string_scan($lang, $do_guessing = false)
         ACCESS_DENIED__PRIVACY_BREACH
         ACCESS_DENIED__REUSE_ATTACHMENT
         ACCESS_DENIED__SESSION
-        ACCESS_DENIED__SUBMIT_HERE
         ACCESS_DENIED__ZONE_ACCESS
-        ACCESS_DENIED__ZONE_ACCESS_SESSION
         ACCOUNT
         ACTION
         ACTIONS
@@ -7004,7 +7123,6 @@ function string_scan($lang, $do_guessing = false)
         ACTIVITY_LIKES_UNTITLED
         ACTIVITY_PASSED_TEST
         ACTIVITY_SUBSCRIBED_EVENT
-        ADBLOCKER
         ADD
         ADDED
         ADDED_COMCODE_ONLY
@@ -7035,12 +7153,10 @@ function string_scan($lang, $do_guessing = false)
         NEW_INLINE_PERSONAL_POST
         ADD_MEDIA
         ADD_NEW_PAGE
-        ADD_NOTE_TITLE
         ADD_POST
         ADD_PRIVATE_TOPIC
         ADD_SCHEDULED_TOPIC
         ADD_TICKET
-        ADD_TIME
         ADD_TOPIC
         ADD_TOPIC_POLL
         ADD_TO_CART
@@ -7065,6 +7181,7 @@ function string_scan($lang, $do_guessing = false)
         ALLOW_EMAILS
         ALLOW_EMAILS_FROM_STAFF
         ALLOW_LIST
+        VIEW_PAST_WINNERS
         ALLOW_LIST_GROUPS
         ALL_DAY_EVENT
         ALL_EM
@@ -7103,12 +7220,10 @@ function string_scan($lang, $do_guessing = false)
         ATTACHMENT_HELP_2
         ATTACHMENT_MULTI
         ATTACHMENT_POPUP
-        ATTACHMENT_REFERENCES
         ATTACHMENT_WOULD_NOT_UPLOAD
         AUDIO
         AUDIOS
         AUDIO_VERSION
-        AUDIT
         AUGUST
         AUTHOR
         AUTHORS
@@ -7144,17 +7259,7 @@ function string_scan($lang, $do_guessing = false)
         BANNED
         BANNED_FROM_CHAT
         BANNER
-        BANNERS_A
-        BANNERS_ACTIVATE
-        BANNERS_B
-        BANNERS_C
-        BANNERS_D
-        BANNER_ADS
         BANNER_CLICKED
-        BANNER_DESCRIPTION
-        BANNER_MISSING_SOURCE
-        BANNER_SHARING_END
-        BANNER_SHARING_START
         BAN_MEMBER_MAIL
         BAN_MEMBER_MAIL_SUBJECT
         BE_VISIBLE
@@ -7183,7 +7288,6 @@ function string_scan($lang, $do_guessing = false)
         BOOLEAN_HELP
         BOOLEAN_SEARCH
         BREADCRUMBS
-        BREADCRUMB_OVERRIDES
         BROWSE
         BROWSE_SENTENCE
         BROWSING_GALLERIES
@@ -7332,7 +7436,6 @@ function string_scan($lang, $do_guessing = false)
         CNS_PUBLICATION_TIME
         CNS_SIGNUP_TEXT
         CNS_WAITING_CONFIRM_MAIL
-        CNS_WAITING_CONFIRM_MAIL_COPPA
         CNS_WAITING_CONFIRM_MAIL_INSTANT
         CNS_WAITING_CONFIRM_MAIL_VALIDATED
         CODE
@@ -7395,8 +7498,6 @@ function string_scan($lang, $do_guessing = false)
         CONTACT_PHOTO
         CONTACT_STAFF_TO_JOIN_IF_IMPAIRED
         CONTACT_US
-        CONTACT_US_NOTIFICATION_MESSAGE
-        CONTACT_US_NOTIFICATION_SUBJECT
         CONTACT_WORKPHONE
         CONTENT
         CONTENT_BY
@@ -7410,8 +7511,6 @@ function string_scan($lang, $do_guessing = false)
         CONTRACT
         COOKIES_AS_GUEST
         COOKIE_NOTICE
-        COPPA_JOIN_SUBJECT
-        COPPA_MAIL
         COPY_EXISTING_POLL
         CORRECT
         CORRECT_ANSWER
@@ -7444,7 +7543,6 @@ function string_scan($lang, $do_guessing = false)
         CREATE_TICKET_MAKE_POST
         CURRENT
         CURRENTLY_AWARDED_TO
-        CURRENT_BANNER_IS
         CURRENT_POINTS
         CUSTOMER_OPTING_OUT_OF_TAX
         CUSTOMER_OPTING_OUT_OF_TAX_SHORT
@@ -7467,7 +7565,6 @@ function string_scan($lang, $do_guessing = false)
         DECISION_TREE_SCREEN_NEEDS_PARAMETER
         DECLARE_EVENT_INTEREST
         DECLINED_MESSAGE
-        DECLINE_FROM_GROUP
         DEFAULT_CALENDAR_TYPE__anniversary
         DEFAULT_CALENDAR_TYPE__appointment
         DEFAULT_CALENDAR_TYPE__birthday
@@ -7512,9 +7609,6 @@ function string_scan($lang, $do_guessing = false)
         DEFAULT_CPF_website_NAME
         DEFAULT_FORUM_TITLE
         DEFAULT_GROUPING_TITLE
-        DEFAULT_PERMISSION
-        DEFAULT_POST_CONTENT
-        DEFAULT_POST_TITLE
         DEFAULT_RANK_0
         DEFAULT_RANK_1
         DEFAULT_RANK_2
@@ -7525,14 +7619,10 @@ function string_scan($lang, $do_guessing = false)
         DEFAULT__CATALOGUE_ENTRY
         DEFAULT__CATALOGUE_INDEX
         DELETE
-        DELETE_CONTENTS
         DELETE_IF_EMPTY
         DELETE_PHOTO
         DELETE_POST
         DELETE_POSTS
-        DELETE_POSTS_DESCRIPTION
-        DELETE_POSTS_FROM_IP
-        DELETE_POSTS_FROM_IP_DESCRIPTION
         DELETE_SELECTION
         DELETE_TOPIC
         DELETE_TOPICS
@@ -7589,7 +7679,6 @@ function string_scan($lang, $do_guessing = false)
         DESCRIPTION_INTERESTS
         DESCRIPTION_INTERESTS_2
         DESCRIPTION_I_AGREE_RULES
-        DESCRIPTION_MAIL_DOMAIN
         DESCRIPTION_MAINTAINER
         DESCRIPTION_MAINTENANCE_PASSWORD
         DESCRIPTION_MARK_UNREAD
@@ -7638,7 +7727,6 @@ function string_scan($lang, $do_guessing = false)
         DESTINATION
         DETAILS
         DETAILS_LIST
-        DEV_MODE_ON
         DID_YOU_MEAN
         DIGEST_EMAIL_INDIVIDUAL_MESSAGE_WRAP
         DIGEST_EMAIL_MESSAGE_WRAP
@@ -7663,7 +7751,6 @@ function string_scan($lang, $do_guessing = false)
         DISCUSSION
         DISMISS
         DISPLAYED_REVIEW_STATUS
-        DOCS
         DOCUMENT
         DONATION
         DONE
@@ -7687,7 +7774,6 @@ function string_scan($lang, $do_guessing = false)
         DOWNLOAD_NOTIFICATION_MAIL_SUBJECT
         DOWNLOAD_NOUN
         DOWNLOAD_NOW
-        DOWNLOAD_THUMBNAIL
         DOWNLOAD_TITLE
         DPLU_DAYS
         DPLU_HOURS
@@ -7709,7 +7795,6 @@ function string_scan($lang, $do_guessing = false)
         ECARD_FOR_YOU_SUBJECT
         ECOMMERCE_PRODUCT_ALREADY_HAS
         ECOMMERCE_PRODUCT_DISABLED
-        ECOMMERCE_PRODUCT_MISSING
         ECOMMERCE_PRODUCT_OUT_OF_STOCK
         ECOMMERCE_PRODUCT_PROHIBITED
         EDIT
@@ -7719,7 +7804,6 @@ function string_scan($lang, $do_guessing = false)
         EDIT_BOOKMARK
         EDIT_EM
         EDIT_LINK
-        EDIT_LIVE_POLL
         EDIT_MEMBER_PROFILE
         EDIT_MENU
         EDIT_OWN_POST
@@ -7761,7 +7845,6 @@ function string_scan($lang, $do_guessing = false)
         ENABLE_NOTIFICATIONS_INSTANT_PT
         ENABLE_NOTIFICATIONS_INSTANT_SMS
         ENABLE_NOTIFICATIONS_MONTHLY_EMAIL_DIGEST
-        ENABLE_NOTIFICATIONS_RESOURCE_LONG_EXP
         ENABLE_NOTIFICATIONS_WEB_NOTIFICATION
         ENABLE_NOTIFICATIONS_WEEKLY_EMAIL_DIGEST
         ENABLE_NOTIFICATIONS__CHOICE
@@ -7770,6 +7853,11 @@ function string_scan($lang, $do_guessing = false)
         ENABLE_POPUPS
         ENABLE_WYSIWYG
         END_CHAT
+        QUIZ_MISTAKE_COMCODE
+        QUIZ_MISTAKE_EXPLAINED_COMCODE
+        QUIZ_MISTAKE_EXPLAINED_HTML
+        QUIZ_MISTAKE_HTML
+        QUIZ_RESULTS
         ENTER
         ENTERED_THE_CHATROOM
         ENTERED_THIS_QUIZ
@@ -7785,7 +7873,6 @@ function string_scan($lang, $do_guessing = false)
         ENTER_IMAGE_CAPTION
         ENTER_LINK_NAME
         ENTER_LIST_ENTRY
-        ENTER_PAGE
         ENTER_PAGE_NUMBER
         ENTER_PASSWORD_JS
         ENTER_PASSWORD_JS_2
@@ -7797,23 +7884,14 @@ function string_scan($lang, $do_guessing = false)
         ENTER_URL
         ENTER_WARNING
         ENTER_YOUR_BIRTHDAY
-        ENTER_ZONE
-        ENTER_ZONE_SPZ
         ENTRIES
         ENTRY
         EPHEMS
         ERRORS
-        ERROR_CHECKING_FOR_SPAMMERS
         ERROR_GUEST_EMAILS_MANDATORY
         ERROR_IMAGE_SAVE
         ERROR_NO_CONTACTS_SELECTED
         ERROR_OCCURRED
-        ERROR_UPLOADING_1
-        ERROR_UPLOADING_2
-        ERROR_UPLOADING_3
-        ERROR_UPLOADING_4
-        ERROR_UPLOADING_6
-        ERROR_UPLOADING_7
         ERROR_UPLOADING_ATTACHMENTS
         EVENT
         EVENTS_THIS_MONTH
@@ -7855,7 +7933,6 @@ function string_scan($lang, $do_guessing = false)
         FEED
         FEEDBACK
         FEEDS
-        FEEDS_TO_OVERLAY
         FILENAME
         FILE_SIZE
         FILE_TOO_BIG_QUOTA
@@ -7936,7 +8013,6 @@ function string_scan($lang, $do_guessing = false)
         GRAND_TOTAL
         GRAY
         GREEN
-        GREETING
         GROUP_ACCEPTED_MAIL
         GROUP_ACCEPTED_MAIL_SUBJECT
         GROUP_ADVANCE
@@ -7948,24 +8024,19 @@ function string_scan($lang, $do_guessing = false)
         GROUP_LED_BY
         GROUP_MEMBERS
         GROUP_MEMBERS_SPECIFIC
-        GROUP_MEMBER_TIMEOUT_DATE
         GROUP_NUM_MEMBERS
         GUEST
         GUESTS
         GUEST_NAME
-        GUEST_TICKET_REPLY_LINK
         HAPPY_BIRTHDAY_PERSON
         HAS_NOT_READ
         HAS_RATING
         HAS_READ
-        HAVE_BLOG
         HAVE_COSTED_THEM
         HEIGHT
         HELP
         HELP_OR_ADVICE
         HERE
-        HERE_SURVEY_RESULTS
-        HERE_TEST_RESULTS
         HIDE
         HIGHLIGHTED_NAME
         HIGHLIGHT_NAME_A
@@ -7975,7 +8046,6 @@ function string_scan($lang, $do_guessing = false)
         HOVER_FOR_FULL
         HOVER_MOUSE_IMPORTANT
         HOW_REMOVE_CHAT_NOTIFICATION
-        IDEAL_DENSITY
         IDENTIFIER
         ID_NUM
         IF_FORGOTTEN_PASSWORD
@@ -7988,8 +8058,6 @@ function string_scan($lang, $do_guessing = false)
         IMAGE_NOTIFICATION_MAIL
         IMAGE_NOTIFICATION_MAIL_SUBJECT
         IMAGE_TOO_LARGE_FOR_THUMB
-        IMPORTANCE_BUY
-        IMPORTANCE_MODULUS
         IMPORTANT
         IMPROPERLY_FILLED_IN
         IM_INFO_CHAT_WITH
@@ -8000,8 +8068,6 @@ function string_scan($lang, $do_guessing = false)
         INACTIVE
         INCORRECT_CONFIRMATION
         INCORRECT_CONFIRM_CODE
-        INCORRECT_PASSWORD_RESET_CODE
-        INDEX_DOWNLOAD
         INFO_CONFIRM
         INLINE_PERSONAL_POSTS
         INLINE_POSTS_MOVED_MESSAGE
@@ -8040,7 +8106,6 @@ function string_scan($lang, $do_guessing = false)
         INTRO_NOTICE
         INTRO_POST_DEFAULT
         INTRO_QUESTION
-        INVALID_DATE_GIVEN
         INVALID_EMAIL_ADDRESS
         INVALID_EMAIL_PREFIX
         INVALID_FILE_TYPE
@@ -8102,6 +8167,8 @@ function string_scan($lang, $do_guessing = false)
         LAST_POST_BY
         LAST_POST_BY_SIMPLE
         LAST_SLIDE
+        ORDER_DISPATCHED_MAIL_MESSAGE
+        ORDER_DISPATCHED_MAIL_SUBJECT
         LAST_SUBMIT_TIME
         LAST_VIEWED
         LAST_VISIT
@@ -8115,6 +8182,9 @@ function string_scan($lang, $do_guessing = false)
         LIFETIME_POINTS
         LIKED_BY
         LIKES
+        QUESTIONS
+        COMPETITION
+        SURVEY
         LINK_NEW_WINDOW
         LIST_SEP
         LOAD
@@ -8148,9 +8218,6 @@ function string_scan($lang, $do_guessing = false)
         MAIL_QUOTA_A
         MAIL_SENT
         MAIL_SENT_TEXT
-        MAIL_TEST_FAIL
-        MAIL_TEST_PASS
-        MAIL_TEST_UNKNOWN
         MAINTAINER
         MAKE_ANONYMOUS_POST
         MAKE_ANONYMOUS_POST_DESCRIPTION
@@ -8163,7 +8230,6 @@ function string_scan($lang, $do_guessing = false)
         MAKE_POST_SHORT
         MANAGE_BOOKMARKS
         MANUALLY_MARKED
-        MANUAL_CHECKS_TOO
         MAP_POSITION_FIELD
         MAP_TABLE
         MARCH
@@ -8204,6 +8270,12 @@ function string_scan($lang, $do_guessing = false)
         MEDIA_TYPE_video_websafe
         MEDIA_TYPE_vimeo
         MEDIA_TYPE_youtube
+        SHIPPING_ADDRESS_CITY
+        SHIPPING_ADDRESS_COUNTRY
+        SHIPPING_ADDRESS_NAME
+        SHIPPING_ADDRESS_STATE
+        SHIPPING_ADDRESS_STREET
+        SHIPPING_ADDRESS_ZIP
         MEMBER
         MEMBERS
         MEMBERSHIP_LENGTH
@@ -8244,21 +8316,16 @@ function string_scan($lang, $do_guessing = false)
         MEMBER_VALIDATED
         MEMBER_WARNING
         MENU
-        MERGE
-        MERGE_POSTS
-        MERGE_SUPPORT_TICKETS
         MERGE_WIKI_POSTS
         MESSAGE
         MESSAGE_POSTED
         MESSAGE_POSTING_ERROR
         MESSAGE_SENT
         MESSAGE_THEM
-        METADATA
         MINIMUM_SELECTIONS
         MINUTE
         MINUTES
         MINUTES_AGO
-        MISSING_CONFIRM_CODE
         MISSING_RESOURCE
         MISSING_RESOURCE_SUBSTRING
         MJG_NOTIFICATION_MAIL
@@ -8306,7 +8373,6 @@ function string_scan($lang, $do_guessing = false)
         MODULE_TRANS_NAME_search
         MODULE_TRANS_NAME_staff
         MODULE_TRANS_NAME_subscriptions
-        MODULE_TRANS_NAME_supermembers
         MODULE_TRANS_NAME_tickets
         MODULE_TRANS_NAME_topics
         MODULE_TRANS_NAME_topicview
@@ -8325,7 +8391,6 @@ function string_scan($lang, $do_guessing = false)
         MOVE
         MOVE_OR_DELETE_BOOKMARKS
         MULTIPLE
-        MULTI_MODERATIONS
         MUST_ADD_CONTACTS
         MUST_BE_REAL_ADDRESS
         MUST_LOGIN
@@ -8422,13 +8487,6 @@ function string_scan($lang, $do_guessing = false)
         NEW_WARNING_TO_YOU
         NEW_WINDOW
         NEXT
-        NEXT_ITEM_BACK
-        NEXT_ITEM_back
-        NEXT_ITEM_cms
-        NEXT_ITEM_edit_this
-        NEXT_ITEM_start
-        NEXT_ITEM_view_archive
-        NEXT_ITEM_view_this
         NO
         NOBODY_ONLINE
         NONE
@@ -8473,10 +8531,7 @@ function string_scan($lang, $do_guessing = false)
         NOTIFICATION_TYPE_cns_topic
         NOTIFICATION_TYPE_cns_topic_invite
         NOTIFICATION_TYPE_cns_username_changed
-        NOTIFICATION_TYPE_cns_username_changed_staff
         NOTIFICATION_TYPE_comment_posted
-        NOTIFICATION_TYPE_content_reviews
-        NOTIFICATION_TYPE_content_reviews__own
         NOTIFICATION_TYPE_content_validated
         NOTIFICATION_TYPE_download
         NOTIFICATION_TYPE_gallery_entry
@@ -8533,13 +8588,11 @@ function string_scan($lang, $do_guessing = false)
         NO_BLOCK_STAFF
         NO_CATEGORIES
         NO_CHILDREN
-        NO_CNS
         NO_COLOR_SELECTION
         NO_COMMENTS
         NO_DESCRIPTION
         NO_DOUBLE_POST
         NO_DOWNLOADS_FOUND
-        NO_DOWNLOAD_ACCESS
         NO_ENTRIES
         NO_ENTRIES_AWARDS
         NO_FONT_SELECTED
@@ -8562,7 +8615,6 @@ function string_scan($lang, $do_guessing = false)
         NO_NOTIFICATIONS
         NO_OF_THIS
         NO_PAGE_OUTPUT
-        NO_PARAMETER_SENT
         NO_PASSWORD_RESET_HTTPAUTH
         NO_PERMISSION_TO_USE_POINTS
         NO_POP3S
@@ -8574,7 +8626,6 @@ function string_scan($lang, $do_guessing = false)
         NO_RESULTS
         NO_RESULTS_DAYS
         NO_RESULTS_SEARCH
-        NO_SSL_SETUP
         NO_SUBJECT
         NO_SUCH_AUTHOR
         NO_SUCH_AUTHOR_CONFIGURE_ONE
@@ -8609,14 +8660,12 @@ function string_scan($lang, $do_guessing = false)
         OPTIONS
         OR
         ORANGE
-        ORDER_AUTOMATED_CRITERIA
         ORDER_FORWARDER_DONE
         ORDER_GENERAL_DONE
         ORDER_POP3_DONE
         ORDER_PRICE_AMT
         ORDER_QUOTA_DONE
         ORIGINAL_COMCODE
-        OR_ONE_OF_THE_BELOW
         OTHER
         OTHER_ACTIONS
         OTHER_DETAILS
@@ -8632,7 +8681,6 @@ function string_scan($lang, $do_guessing = false)
         PAID_SUBSCRIPTION_ENDED
         PAID_SUBSCRIPTION_STARTED
         PARTICIPANTS
-        PARTNER_SITES
         PASSED
         PASSWORD
         PASSWORD_ALREADY_RESET
@@ -8655,7 +8703,6 @@ function string_scan($lang, $do_guessing = false)
         PASSWORD_TOO_SHORT
         PATTERN_NOT_MATCHED
         PAUSE
-        PAYMENT_GATEWAY
         PAYMENT_HEADING
         PAYMENT_RECEIVED_BODY
         PAYMENT_RECEIVED_SUBJECT
@@ -8676,22 +8723,17 @@ function string_scan($lang, $do_guessing = false)
         PE_LACKING_GIFT_POINTS
         PE_NEGATIVE_GIFT
         PE_SELF
+        PGE_X
         PGE_A
-        PGE_B
         PGE_C
         PGE_COMM
-        PGE_D
         PGE_E
-        PGE_HASH
         PGE_I
-        PGE_M
         PGE_N
         PGE_P
-        PGE_R
         PGE_S
         PGE_T
         PGE_V
-        PGE_X
         PHONE_THEM_UP
         PHOTO
         PHOTO_CHANGE
@@ -8701,7 +8743,6 @@ function string_scan($lang, $do_guessing = false)
         PIN_TOPIC_A
         PLAY_AUDIO_VERSION
         PLEASE_SELECT_SOUND
-        PLEASE_STATE
         PLEASE_WAIT
         PLEASE_WAIT_WHILE_UPLOADING
         PLUPLOAD_CANCELLED
@@ -8757,10 +8798,8 @@ function string_scan($lang, $do_guessing = false)
         POSTS_SINCE_WEEKS
         POSTS_SPLIT_FROM
         POSTS_WITHIN_TOPIC
-        POST_ACCESS_IS_RESTRICTED
         POST_BY
         POST_COMMENT
-        POST_FILES
         POST_IN
         POST_INDICATOR_new_posts
         POST_INDICATOR_new_posts_redirect
@@ -8857,8 +8896,6 @@ function string_scan($lang, $do_guessing = false)
         PURCHASE_STAGE_pay
         PURCHASE_STAGE_terms
         PURCHASE_STORED_DETAILS
-        PURCHASE_WRONG_CURRENCY
-        PURCHASE_WRONG_PRICE
         PURCHASING
         PURCHASING_TITLE
         PURPLE
@@ -8866,6 +8903,7 @@ function string_scan($lang, $do_guessing = false)
         QUANTITY
         QUESTION
         QUICK_REPLY
+        TEST
         QUIZ
         QUIZZES
         QUIZ_AFFIRMATION_HTML
@@ -8931,7 +8969,6 @@ function string_scan($lang, $do_guessing = false)
         REDIRECT_TO_TOPIC
         REDO_TIME
         REFERENCE_SOURCE
-        REFERRER
         REFUND
         REINSTALL
         RELATED_FIELD
@@ -8962,7 +8999,6 @@ function string_scan($lang, $do_guessing = false)
         RESET_FILTER
         RESIGN_FROM_GROUP
         RESOLUTION
-        RESOURCE_NEW
         RESTORE_SAVED_FORM_DATA
         RESULTS
         RESULTS_LAUNCHER_ASK
@@ -8976,18 +9012,15 @@ function string_scan($lang, $do_guessing = false)
         ROOT
         ROOT_EM
         ROOT_FORUM
-        RSS
         RSS_SOURCE_FROM
         RSS_STREAM
         RSS_XSLT_INTRODUCTION
         RULES
         SAID
-        SALE_MADE
         SATURDAY
         SAVE
         SAVED_SEARCHES
         SAVE_COMPUTER_USING_COOKIE
-        SCREEN_DEV_TOOLS
         SEARCH
         SEARCH_ADMIN
         SEARCH_AND
@@ -9038,7 +9071,6 @@ function string_scan($lang, $do_guessing = false)
         SEND_EMAIL
         SEND_MESSAGE
         SEND_NOTIFICATION
-        SEND_PM
         SENT_SIMPLE
         SEPARATOR
         SEPTEMBER
@@ -9078,7 +9110,6 @@ function string_scan($lang, $do_guessing = false)
         SORT_BY
         SOUND_EFFECTS
         SOURCE
-        SOURCE_MEDIA
         SPACER_POST
         SPACER_POST_MATCHER
         SPACER_TOPIC_TITLE_WRAP
@@ -9116,7 +9147,6 @@ function string_scan($lang, $do_guessing = false)
         SPECIAL_REGISTRATION_FIELDS
         SPECIFIC_AVATAR
         SPECIFIC_FORUM_POSTS
-        SPECIFYING_NEW_PAGE
         SPEED_IN_SECS
         SPELLCHECK
         SPELLCHECKER_DISABLED
@@ -9162,8 +9192,6 @@ function string_scan($lang, $do_guessing = false)
         SUBSCRIPTION
         SUBSCRIPTIONS_SCREEN
         SUBSCRIPTION_CANCEL
-        SUBSCRIPTION_CANCELLED_BODY
-        SUBSCRIPTION_CANCELLED_SUBJECT
         SUBSCRIPTION_CANCEL_WARNING
         SUBSCRIPTION_CANCEL_WARNING_GENERAL
         SUBSCRIPTION_EXPIRY_DATE
@@ -9190,7 +9218,6 @@ function string_scan($lang, $do_guessing = false)
         SUPPORT_TICKETS
         SUPPORT_TICKETS_FOR_MEMBER
         SUPPORT_TICKETS_FOR_TYPE
-        SUPPORT_TICKETS_MAIL
         SURNAME
         SURVEYS
         SURVEY_THANKYOU
@@ -9201,7 +9228,6 @@ function string_scan($lang, $do_guessing = false)
         TAG_CONTENTS
         TAKEN_RANDOM_WIKI_PAGE
         TAX
-        TEMPLATES_WITH_EDIT_LINKS_PARAMETERS
         TEMPLATE_SEARCH_INFO
         TESTS
         TEST_FAIL
@@ -9230,14 +9256,7 @@ function string_scan($lang, $do_guessing = false)
         TICKETS_MERGED_INTO_SUBJECT
         TICKETS_MERGED_POST
         TICKETS_MERGED_TITLE
-        TICKETS_STAFF
-        TICKET_ACTIVITY_BODY
-        TICKET_ACTIVITY_OVERVIEW
         TICKET_ACTIVITY_SUBJECT
-        TICKET_ASSIGN
-        TICKET_ASSIGNED_BODY
-        TICKET_ASSIGNED_SUBJECT
-        TICKET_EMAILED_IN
         TICKET_IS_CLOSED
         TICKET_REPLY
         TICKET_REPLY_MESSAGE
@@ -9318,11 +9337,6 @@ function string_scan($lang, $do_guessing = false)
         TRANSACT_INFO
         TRANSCODING_IN_PROGRESS
         TREE
-        TREE_LIST_FEEDBACK
-        TREE_LIST_HELP
-        TREE_LIST_HELP_DESELECT
-        TREE_LIST_HELP_MASS_EXPAND
-        TREE_LIST_SELECT
         TT_COMPLAINT
         TT_OTHER
         TUESDAY
@@ -9380,10 +9394,6 @@ function string_scan($lang, $do_guessing = false)
         USERS_ONLINE_BLOCK
         USERS_ONLINE_RECORD
         USER_AGENT
-        USER_INTERACTION
-        USER_INTERACTION_COMMENTING
-        USER_INTERACTION_RATING
-        USER_ONLINE_TRACKING
         USER_OS
         USE_ALL_EXCEPT_SELECTED
         USE_ALL_SELECTED
@@ -9400,13 +9410,11 @@ function string_scan($lang, $do_guessing = false)
         VIDEO_DETAILS
         VIDEO_NOTIFICATION_MAIL
         VIDEO_NOTIFICATION_MAIL_SUBJECT
-        VIDEO_WAS_AUTO_IMPORTED
         VIEW
         VIEWING_POINTS_PROFILE_OF
         VIEWING_SLIDE
         VIEWS_SIGNATURES
         VIEWS_SIMPLE
-        VIEW_ALERT
         VIEW_ALL_QUIZZES
         VIEW_ALL_STAFF
         VIEW_ARCHIVE
@@ -9425,7 +9433,6 @@ function string_scan($lang, $do_guessing = false)
         VIEW_SLIDESHOW
         VIEW_SUPPORT_TICKET
         VIEW_THIS_GALLERY
-        VIEW_THUMBNAILS
         VIEW_TOPIC
         VIEW_USERGROUP
         VIEW_VIDEO
@@ -9441,7 +9448,6 @@ function string_scan($lang, $do_guessing = false)
         VOTE
         VOTES
         VOTES_ARE_IN
-        VOTE_CHEAT
         VOTE_DENIED
         VOTE_FORFEIGHT
         VOTE_IN_POLL
@@ -9459,9 +9465,6 @@ function string_scan($lang, $do_guessing = false)
         WELCOME_CHAT_LOBBY_USE_IM2_SITEWIDE
         WELCOME_TO_STRIPPABLE
         WHAT_IS_COMCODE
-        WHAT_NEXT
-        WHERE_NEXT
-        WHETHER_CONVERT_COMCODE
         WHETHER_SAVE_WYSIWYG_SELECTION
         WHISPER
         WHISPER_PP
@@ -9482,10 +9485,8 @@ function string_scan($lang, $do_guessing = false)
         WITH
         WITH_SIMPLE
         WITH_TITLING
-        WORDFILTER
         WORDFILTER_YOU
         WORDS
-        WORD_SUBSTR
         WYSIWYG_DISABLE_ALWAYS
         WYSIWYG_DISABLE_ONCE
         WYSIWYG_DISABLE_ONCE_AND_DONT_ASK
@@ -9494,7 +9495,6 @@ function string_scan($lang, $do_guessing = false)
         YELLOW
         YES
         YESTERDAY
-        YES_COMPACT
         YOURE_MY_FRIEND_BODY
         YOURE_MY_FRIEND_SUBJECT
         YOUR_ADDRESS
@@ -9544,7 +9544,6 @@ function string_scan($lang, $do_guessing = false)
         _CHATROOM
         _COLLABORATION
         _COMCODE
-        _COMCODE_PAGES
         _COMMENTS
         _COUNT_POSTS
         _DEFAULT

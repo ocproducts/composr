@@ -290,6 +290,10 @@ class Module_admin_ip_ban
                         ban_ip($ip, isset($matches[2]) ? trim($matches[2]) : '');
                         $old_bans[] = $ip;
                     }
+                } else {
+                    $GLOBALS['SITE_DB']->query_update('banned_ip', array(
+                        'i_descrip' => isset($matches[2]) ? $matches[2] : '',
+                    ), array('ip' => $ip), '', 1);
                 }
             }
         }
@@ -324,6 +328,10 @@ class Module_admin_ip_ban
                     ));
                     log_it('MADE_IP_UNBANNABLE', $matches[1]);
                     $unbannable_already[] = $ip;
+                } else {
+                    $GLOBALS['SITE_DB']->query_update('unbannable_ip', array(
+                        'note' => isset($matches[2]) ? $matches[2] : '',
+                    ), array('ip' => $ip), '', 1);
                 }
             }
         }
