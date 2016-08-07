@@ -29,7 +29,7 @@
 					</tr>
 
 					<tr>
-						<th class="tdBody">Back-burner/th>
+						<th class="tdBody">Back-burner</th>
 						<td class="tdBody">2 business weeks</td>
 						<td class="tdBody">[tooltip="Minimum ticket price:
 30 minutes &#8801; 3 credits &#8801; [currency]16.50[/currency]
