@@ -230,11 +230,11 @@ function save_zone_base_url($zone, $base_url)
             $path = $base_url;
         } else {
             $parsed = @parse_url($base_url);
-            if ($parsed === false) {
+            if ($parsed === false || !isset($parsed['host'])) {
                 warn_exit(do_lang_tempcode('INVALID_ZONE_BASE_URL'));
             }
             $domain = $parsed['host'];
-            $path = $parsed['path'];
+            $path = isset($parsed['path']) ? $parsed['path'] : '/';
         }
         $config_file .= "\n\$SITE_INFO['ZONE_MAPPING_" . addslashes($zone) . "'] = array('" . addslashes($domain) . "', '" . addslashes(trim($path, '/')) . "');\n";
     }

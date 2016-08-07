@@ -68,6 +68,7 @@ class Database_Static_sqlite
         if ($index_name[0] == '#') {
             return;
         }
+        $_fields = preg_replace('#\(\d+\)#', '', $_fields);
         $this->db_query('CREATE INDEX index' . $index_name . '_' . strval(mt_rand(0, mt_getrandmax())) . ' ON ' . $table_name . '(' . $_fields . ')', $db);
     }
 
@@ -347,7 +348,7 @@ class Database_Static_sqlite
         }
 
         $results = @sqlite_query($db, $query);
-        if ((($results === false) || ((strtoupper(substr($query, 0, 7)) == 'SELECT ') || (strtoupper(substr($query, 0, 8)) == '(SELECT ') && ($results === true))) && (!$fail_ok)) {
+        if ((($results === false) || (((strtoupper(substr($query, 0, 7)) == 'SELECT ') || (strtoupper(substr($query, 0, 8)) == '(SELECT ')) && ($results === true))) && (!$fail_ok)) {
             $err = sqlite_last_error($db);
             if (function_exists('ocp_mark_as_escaped')) {
                 ocp_mark_as_escaped($err);
@@ -364,7 +365,7 @@ class Database_Static_sqlite
             }
         }
 
-        if ((strtoupper(substr($query, 0, 7)) == 'SELECT ') || (strtoupper(substr($query, 0, 8)) == '(SELECT ') && ($results !== false) && ($results !== true)) {
+        if (((strtoupper(substr($query, 0, 7)) == 'SELECT ') || (strtoupper(substr($query, 0, 8)) == '(SELECT ')) && ($results !== false) && ($results !== true)) {
             return $this->db_get_query_rows($results);
         }
 

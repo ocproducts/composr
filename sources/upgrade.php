@@ -29,7 +29,7 @@ function upgrade_script()
     require_code('database_action');
     require_code('config2');
     if (php_function_allowed('set_time_limit')) {
-        set_time_limit(180);
+        @set_time_limit(180);
     }
 
     if ((array_key_exists('given_password', $_POST))) {
@@ -72,7 +72,11 @@ function upgrade_script()
                     $oc = (get_option('site_closed') == '0') ? do_lang('SITE_OPEN') : do_lang('SITE_CLOSED');
                     $a = float_to_raw_string(cms_version_number(), 10, true);
                     $b = get_value('version');
-                    $b = float_to_raw_string(floatval($b), 10, true); // Normalise decimal places
+                    if ($b === null) {
+                        $b = do_lang('UNKNOWN');
+                    } else {
+                        $b = float_to_raw_string(floatval($b), 10, true); // Normalise decimal places
+                    }
                     $l_up_info = do_lang('FU_UP_INFO' . (($a == $b) ? '_1' : '_2'), $a, $b);
                     $l_fu_closedness = do_lang('FU_CLOSENESS', $oc);
                     $l_maintenance = do_lang('FU_MAINTENANCE');
@@ -238,7 +242,7 @@ function upgrade_script()
 
                     require_code('tar');
                     if (php_function_allowed('set_time_limit')) {
-                        set_time_limit(0);
+                        @set_time_limit(0);
                     }
                     if ((post_param_string('url', '') == '') && ((cms_srv('HTTP_HOST') == 'compo.sr') || ($GLOBALS['DEV_MODE']))) {
                         $temp_path = $_FILES['upload']['tmp_name'];
@@ -460,10 +464,11 @@ function upgrade_script()
                     if (is_null($_version_database)) { // LEGACY
                         $_version_database = get_value('ocf_version');
                     }
-                    if (is_null($_version_database)) {
-                        $_version_database = '2.1';
+                    if ($_version_database === null) {
+                        $version_database = $version_files;
+                    } else {
+                        $version_database = floatval($_version_database);
                     }
-                    $version_database = floatval($_version_database);
                     if ($version_database < $version_files) {
                         echo do_lang('FU_MUST_UPGRADE_CNS', fu_link('upgrader.php?type=cns', do_lang('FU_UPGRADE_CNS')));
                     }
@@ -1519,8 +1524,8 @@ function version_specific()
     $version_files = cms_version_number();
     $_version_database = get_value('version');
     $version_database = floatval($_version_database);
-    if (is_null($_version_database)) {
-        $version_database = 2.1; // Either 2.0 or 2.1, and they are equivalent in terms of what we need to do
+    if ($_version_database === null) {
+        $version_database = $version_files;
     }
     if ($version_database < $version_files) {
         if ($version_database < 9.0) {
@@ -1750,7 +1755,7 @@ function perform_search_replace($reps)
 function fu_rename_zone($zone, $new_zone, $dont_bother_with_main_row = false)
 {
     if (php_function_allowed('set_time_limit')) {
-        set_time_limit(0);
+        @set_time_limit(0);
     }
 
     require_code('zones2');
@@ -1863,10 +1868,11 @@ function cns_upgrade()
         $_version_database = get_value('ocf_version');
         delete_value('ocf_version');
     }
-    if (is_null($_version_database)) {
-        $_version_database = '2.1';
+    if ($_version_database === null) {
+        $version_database = $version_files;
+    } else {
+        $version_database = floatval($_version_database);
     }
-    $version_database = floatval($_version_database);
 
     if ($version_files != $version_database) {
         global $SITE_INFO;
@@ -1914,7 +1920,7 @@ function change_mysql_database_charset($new_charset, $db, $reencode = false)
     @ob_end_clean();
 
     if (php_function_allowed('set_time_limit')) {
-        set_time_limit(0);
+        @set_time_limit(0);
     }
 
     $bak = $GLOBALS['NO_DB_SCOPE_CHECK'];
@@ -2404,7 +2410,7 @@ function upgrade_sharedinstall_sites($from = 0)
 
     foreach ($sites as $i => $site) {
         if (php_function_allowed('set_time_limit')) {
-            set_time_limit(0);
+            @set_time_limit(0);
         }
 
         if (($i < $from) && ($site != 'shareddemo')) {

@@ -326,7 +326,7 @@ class Module_catalogues
             set_global_category_access('catalogues_category', $cat_id);
 
             // Contacts
-            actual_add_catalogue('contacts', lang_code_to_default_content('c_title', 'CONTACTS', false, 2), lang_code_to_default_content('c_description', 'DEFAULT_CATALOGUE_CONTACTS_DESCRIPTION', false, 2), C_DT_FIELDMAPS, 0, '', 30);
+            actual_add_catalogue('contacts', lang_code_to_default_content('c_title', 'CONTACTS', false, 2), lang_code_to_default_content('c_description', 'DEFAULT_CATALOGUE_CONTACTS_DESCRIPTION', true, 2), C_DT_FIELDMAPS, 0, '', 30);
             $fields = array(
                 array('CONTACT_FIRST_NAME', '', 'short_text', 0, 1),
                 array('CONTACT_LAST_NAME', '', 'short_text', 1, 1),
@@ -425,7 +425,7 @@ class Module_catalogues
 
             // Move floats and integers into their own new tables
             if (php_function_allowed('set_time_limit')) {
-                set_time_limit(0);
+                @set_time_limit(0);
             }
             $sql_integer = db_string_equal_to('cf_type', 'integer') . ' OR ' . db_string_equal_to('cf_type', 'member') . ' OR ' . db_string_equal_to('cf_type', 'tick');
             $sql_float = db_string_equal_to('cf_type', 'float');

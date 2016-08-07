@@ -244,7 +244,7 @@ function install_cns($upgrade_from = null)
 
         // Initialise f_password_history with current data (we'll assume m_last_submit_time represents last password change, which is not true - but ok enough for early initialisation, and will scatter things quite nicely to break in the new rules gradually)
         if (php_function_allowed('set_time_limit')) {
-            set_time_limit(0);
+            @set_time_limit(0);
         }
         $max = 500;
         $start = 0;
@@ -301,6 +301,25 @@ function install_cns($upgrade_from = null)
 
         $GLOBALS['FORUM_DB']->delete_index_if_exists('f_posts', 'posts_since');
         $GLOBALS['FORUM_DB']->create_index('f_posts', 'posts_since', array('p_time', 'p_cache_forum_id')); // p_cache_forum_id is used to not count PT posts
+
+        // Fix up legacy issues with CPFs that we can no longer tolerate
+        $fields = $GLOBALS['FORUM_DB']->query_select('f_custom_fields', array('id', 'cf_type'));
+        foreach ($fields as $field) {
+            $type = $field['cf_type'];
+            list($_type, $index) = get_cpf_storage_for($type);
+
+            $id = $field['id'];
+
+            $GLOBALS['FORUM_DB']->delete_index_if_exists('f_member_custom_fields', 'mcf' . strval($id));
+            $GLOBALS['FORUM_DB']->delete_index_if_exists('f_member_custom_fields', '#mcf_ft_' . strval($id));
+
+            if (substr(get_db_type(), 0, 5) == 'mysql') {
+                $GLOBALS['SITE_DB']->query('SET sql_mode=\'\'', null, null, true); // Turn off strict mode
+            }
+            $GLOBALS['FORUM_DB']->alter_table_field('f_member_custom_fields', 'field_' . strval($id), $_type);
+
+            build_cpf_indices($id, $index, $type, $_type);
+        }
     }
 
     // If we have the forum installed to this db already, leave

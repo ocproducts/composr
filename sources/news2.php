@@ -353,7 +353,7 @@ function add_news($title, $news, $author = null, $validated = 1, $allow_rating =
 
     if (php_function_allowed('fsockopen')) {
         if (php_function_allowed('set_time_limit')) {
-            set_time_limit(0);
+            @set_time_limit(0);
         }
 
         // Send out on RSS cloud

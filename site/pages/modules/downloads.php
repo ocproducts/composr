@@ -466,16 +466,16 @@ class Module_downloads
             'num_downloads DESC' => 'MOST_DOWNLOADED',
         );
         if (get_option('is_on_rating') == '1') {
-            $_selectors = array(
+            $_selectors = array_merge($_selectors, array(
                 'average_rating DESC' => 'RATING',
                 'compound_rating DESC' => 'POPULARITY',
-            );
+            ));
         }
-        $_selectors = array(
+        $_selectors = array_merge($_selectors, array(
             'add_date ASC' => 'OLDEST_FIRST',
             'add_date DESC' => 'NEWEST_FIRST',
             'fixed_random ASC' => 'RANDOM',
-        );
+        ));
         $selectors = new Tempcode();
         foreach ($_selectors as $selector_value => $selector_name) {
             $selected = ($sort == $selector_value);

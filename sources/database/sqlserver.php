@@ -76,6 +76,8 @@ class Database_Static_sqlserver
      */
     public function db_create_index($table_name, $index_name, $_fields, $db, $unique_key_field = 'id')
     {
+        $_fields = preg_replace('#\(\d+\)#', '', $_fields);
+
         if ($index_name[0] == '#') {
             if (db_has_full_text($db)) {
                 $index_name = substr($index_name, 1);
@@ -421,7 +423,7 @@ class Database_Static_sqlserver
                 @mssql_data_seek($results, $start);
             }
         }
-        if ((($results === false) || ((strtoupper(substr($query, 0, 7)) == 'SELECT ') || (strtoupper(substr($query, 0, 8)) == '(SELECT ')) && ($results === true)) && (!$fail_ok)) {
+        if ((($results === false) || (((strtoupper(substr($query, 0, 7)) == 'SELECT ') || (strtoupper(substr($query, 0, 8)) == '(SELECT '))) && ($results === true)) && (!$fail_ok)) {
             if (function_exists('sqlsrv_errors')) {
                 $err = serialize(sqlsrv_errors());
             } else {
@@ -448,7 +450,7 @@ class Database_Static_sqlserver
             }
         }
 
-        if ((strtoupper(substr($query, 0, 7)) == 'SELECT ') || (strtoupper(substr($query, 0, 8)) == '(SELECT ') && ($results !== false) && ($results !== true)) {
+        if (((strtoupper(substr($query, 0, 7)) == 'SELECT ') || (strtoupper(substr($query, 0, 8)) == '(SELECT ')) && ($results !== false) && ($results !== true)) {
             return $this->db_get_query_rows($results);
         }
 

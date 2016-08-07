@@ -83,7 +83,7 @@ class Hook_fields_integer
     {
         if (($default !== null) && (strtoupper($default) == 'AUTO_INCREMENT') && (!is_null($field)) && (!is_null($field['id']))) { // We need to calculate a default even if not required, because the defaults are programmatic
             $default = is_null($field) ? '0' : $this->get_field_auto_increment($field['id'], intval($default));
-    	} else {
+        } else {
             if ($required !== null) {
                 if (($required) && ($default == '')) {
                     $default = '0';

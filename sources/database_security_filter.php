@@ -76,6 +76,11 @@ function is_simple_query($query)
  */
 function has_escaped_dynamic_sql($query)
 {
+    if (substr(get_db_type(), 0, 5) != 'mysql') {
+        // Our scanning may not work right on non-MySQL
+        return true;
+    }
+
     $query_call_strings = array('query(', 'query_value_if_there(');
 
     $strings = _get_quoted_substrings($query);

@@ -843,7 +843,7 @@ class Module_admin_newsletter extends Standard_crud_module
         require_code('global4');
 
         if (php_function_allowed('set_time_limit')) {
-            set_time_limit(180);
+            @set_time_limit(180);
         }
         send_http_output_ping();
         disable_php_memory_limit();

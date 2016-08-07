@@ -50,13 +50,13 @@ function get_forum_sort_order($_sort = 'first_post', $simplified = false)
     switch ($_sort) {
         case 'first_post':
             $sort .= 't_cache_first_time DESC';
-            $keyset_field = 't_cache_first_time<X';
+            $keyset_field = 't_cache_first_time<XXX';
             $keyset_field_stripped = 'first_time';
             break;
 
         case 'title':
             $sort .= 't_cache_first_title ASC';
-            $keyset_field = 't_cache_first_title>\'X\'';
+            $keyset_field = 't_cache_first_title>\'XXX\'';
             $keyset_field_stripped = 'first_title';
             break;
 
@@ -68,20 +68,20 @@ function get_forum_sort_order($_sort = 'first_post', $simplified = false)
 
         case 'post_time':
             $sort .= 'pos.p_time DESC';
-            $keyset_field = 'pos.p_time<X';
+            $keyset_field = 'pos.p_time<XXX';
             $keyset_field_stripped = 'p_time';
             break;
 
         case 'post_time_grouped':
             $sort .= 'MAX(pos.p_time) DESC';
-            $keyset_field = 'MAX(pos.p_time)<X';
+            $keyset_field = 'MAX(pos.p_time)<XXX';
             $keyset_field_stripped = 'p_time';
             break;
 
         case 'last_post':
         default:
             $sort .= 't_cache_last_time DESC';
-            $keyset_field = 't_cache_last_time<X';
+            $keyset_field = 't_cache_last_time<XXX';
             $keyset_field_stripped = 'last_time';
             break;
     }
@@ -691,7 +691,7 @@ function cns_render_topic($topic, $has_topic_marking, $pt = false, $show_forum =
     // Page jump
     $max = intval(get_option('forum_posts_per_page'));
     require_code('templates_result_launcher');
-    $pages = results_launcher(do_lang_tempcode('NAMED_TOPIC', escape_html($title)), 'topicview', $topic['id'], $max, $topic['num_posts'], 'view', 5);
+    $pages = results_launcher(do_lang_tempcode('NAMED_TOPIC', escape_html($title)), 'topicview', $topic['id'], $max, $topic['num_posts'], 'view', 5, 'topic_start');
 
     // Tpl
     $post = $topic['first_post'];

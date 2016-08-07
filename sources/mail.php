@@ -717,7 +717,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     }
 
     $theme = method_exists($GLOBALS['FORUM_DRIVER'], 'get_theme') ? $GLOBALS['FORUM_DRIVER']->get_theme() : 'default';
-    if ($theme == 'default') { // Sucks, probably due to sending from Admin Zone...
+    if ($theme == 'default' || $theme == 'admin') { // Sucks, probably due to sending from Admin Zone...
         $theme = $GLOBALS['FORUM_DRIVER']->get_theme(''); // ... So get theme of welcome zone
     }
 
@@ -1180,7 +1180,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
             $php_errormsg = mixed();
             if (get_value('manualproc_mail') === '1') {
                 require_code('mail2');
-                manualproc_mail($to_line, $tightened_subject, $sending_message, $headers, $additional);
+                $worked = manualproc_mail($to_line, $tightened_subject, $sending_message, $headers, $additional);
             } else {
                 if ((str_replace(array('on', 'true', 'yes'), array('1', '1', '1'), strtolower(ini_get('safe_mode'))) == '1') || ($additional == '')) {
                     $worked = mail($to_line, $tightened_subject, $sending_message, $headers);

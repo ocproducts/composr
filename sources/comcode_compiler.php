@@ -370,7 +370,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
     $len = strlen($comcode);
 
     if ((php_function_allowed('set_time_limit')) && (ini_get('max_execution_time') != '0')) {
-        set_time_limit(300);
+        @set_time_limit(300);
     }
 
     $allowed_html_seqs = array(
@@ -440,6 +440,12 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
         '<span style="font-size:\s*[\d\.]+(em|px|pt)?;?">',
         '</span>',
     );
+
+    $link_terminator_strs = array(' ', "\n", ']', '[', ')', '"', '>', '<', '}', '{', ".\n", ', ', '. ', "'", '&nbsp;');
+    if (get_charset() == 'utf-8') {
+        $nbsp = chr(hexdec('C2')) . chr(hexdec('A0'));
+        $link_terminator_strs[] = $nbsp;
+    }
 
     if ($as_admin) {
         $comcode_dangerous = true;
@@ -1530,7 +1536,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                             if ((($textual_area) || ($in_semihtml) && ($tag_stack[count($tag_stack) - 1][0] === 'semihtml'/*Only just HTML, so not an unsafe Comcode context*/)) && ((!$in_semihtml) || ((!$in_html_tag))) && (!$in_code_tag) && ($not_white_space) && (!$differented) && ($next === 'h') && ((substr($comcode, $pos - 1, strlen('http://')) === 'http://') || (substr($comcode, $pos - 1, strlen('https://')) === 'https://') || (substr($comcode, $pos - 1, strlen('ftp://')) === 'ftp://'))) {
                                 // Find the full link portion in the upcoming Comcode
                                 $link_end_pos = strlen($comcode);
-                                foreach (array(' ', "\n", ']', '[', ')', '"', '>', '<', '}', '{', ".\n", ', ', '. ', "'",) as $link_terminator_str) {
+                                foreach ($link_terminator_strs as $link_terminator_str) {
                                     $link_end_pos_x = strpos($comcode, $link_terminator_str, $pos - 1);
                                     if (($link_end_pos_x !== false) && ($link_end_pos_x < $link_end_pos)) {
                                         $link_end_pos = $link_end_pos_x;

@@ -443,7 +443,7 @@ function delete_chatroom($id)
 function delete_chat_messages($where)
 {
     if (php_function_allowed('set_time_limit')) {
-        set_time_limit(0);
+        @set_time_limit(0);
     }
     do {
         $messages = $GLOBALS['SITE_DB']->query_select('chat_messages', array('id', 'the_message'), $where, '', 400);
@@ -460,7 +460,7 @@ function delete_chat_messages($where)
 function delete_all_chatrooms()
 {
     if (php_function_allowed('set_time_limit')) {
-        set_time_limit(0);
+        @set_time_limit(0);
     }
     do {
         $c_welcomes = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('id', 'c_welcome'), array('is_im' => 0), '', 400);

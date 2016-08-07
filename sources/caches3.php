@@ -74,7 +74,7 @@ function composr_cleanup($caches = null)
     $max_time = intval(round(floatval(ini_get('max_execution_time')) / 1.5));
     if ($max_time < 60 * 4) {
         if (php_function_allowed('set_time_limit')) {
-            set_time_limit(0);
+            @set_time_limit(0);
         }
     }
     send_http_output_ping();

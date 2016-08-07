@@ -62,6 +62,7 @@ class Database_Static_postgresql
         if ($index_name[0] == '#') {
             return;
         }
+        $_fields = preg_replace('#\(\d+\)#', '', $_fields);
         $this->db_query('CREATE INDEX index' . $index_name . '_' . strval(mt_rand(0, mt_getrandmax())) . ' ON ' . $table_name . '(' . $_fields . ')', $db);
     }
 
@@ -271,7 +272,7 @@ class Database_Static_postgresql
 
         $db = $persistent ? @pg_pconnect('host=' . $db_host . ' dbname=' . $db_name . ' user=' . $db_user . ' password=' . $db_password) : @pg_connect('host=' . $db_host . ' dbname=' . $db_name . ' user=' . $db_user . ' password=' . $db_password);
         if ($db === false) {
-            $error = 'Could not connect to database-server (' . @pg_last_error() . ')';
+            $error = 'Could not connect to database-server (' . $php_errormsg . ')';
             if ($fail_ok) {
                 echo $error;
                 return null;
@@ -334,7 +335,7 @@ class Database_Static_postgresql
         }
 
         $results = @pg_query($db, $query);
-        if ((($results === false) || ((strtoupper(substr($query, 0, 7)) == 'SELECT ') || (strtoupper(substr($query, 0, 8)) == '(SELECT ') && ($results === true))) && (!$fail_ok)) {
+        if ((($results === false) || (((strtoupper(substr($query, 0, 7)) == 'SELECT ') || (strtoupper(substr($query, 0, 8)) == '(SELECT ')) && ($results === true))) && (!$fail_ok)) {
             $err = pg_last_error($db);
             if (function_exists('ocp_mark_as_escaped')) {
                 ocp_mark_as_escaped($err);
@@ -351,7 +352,7 @@ class Database_Static_postgresql
             }
         }
 
-        if ((strtoupper(substr($query, 0, 7)) == 'SELECT ') || (strtoupper(substr($query, 0, 8)) == '(SELECT ') && ($results !== false) && ($results !== true)) {
+        if (((strtoupper(substr($query, 0, 7)) == 'SELECT ') || (strtoupper(substr($query, 0, 8)) == '(SELECT ')) && ($results !== false) && ($results !== true)) {
             return $this->db_get_query_rows($results);
         }
 
@@ -398,9 +399,9 @@ class Database_Static_postgresql
             $newrow = array();
             foreach ($row as $v) {
                 $name = $names[$j];
-                $type = $types[$j];
+                $type = strtoupper($types[$j]);
 
-                if (($type == 'INTEGER') || ($type == 'SMALLINT') || ($type == 'SERIAL') || ($type == 'UINTEGER')) {
+                if ((substr($type, 0, 3) == 'INT') || ($type == 'SMALLINT') || ($type == 'SERIAL') || ($type == 'UINTEGER')) {
                     if (!is_null($v)) {
                         $newrow[$name] = intval($v);
                     } else {

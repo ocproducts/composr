@@ -107,7 +107,7 @@ class Database_Static_mysql extends Database_super_mysql
         if ((get_forum_type() == 'cns') && (!$GLOBALS['IN_MINIKERNEL_VERSION'])) {
             @mysql_query('SET sql_mode=\'STRICT_ALL_TABLES\'', $db);
         } else {
-            @mysql_query('SET sql_mode=\'MYSQL40\'', $db);
+            @mysql_query('SET sql_mode=\'MYSQL40\'', $db); // We may be in some legacy context, such as backup restoration, upgrader, or another forum driver
         }
         // NB: Can add ,ONLY_FULL_GROUP_BY for testing on what other DBs will do, but can_arbitrary_groupby() would need to be made to return false
 

@@ -333,7 +333,7 @@ class Module_admin_themewizard
 
         send_http_output_ping();
         if (php_function_allowed('set_time_limit')) {
-            set_time_limit(0);
+            @set_time_limit(0);
         }
 
         require_code('type_sanitisation');

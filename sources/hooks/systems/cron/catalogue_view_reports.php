@@ -77,7 +77,7 @@ class Hook_cron_catalogue_view_reports
         }
 
         if (php_function_allowed('set_time_limit')) {
-            set_time_limit(0);
+            @set_time_limit(0);
         }
 
         // Now for the intensive part

@@ -83,20 +83,18 @@ class Hook_ecommerce_cart_orders
         require_lang('shopping');
 
         if (php_function_allowed('set_time_limit')) {
-            set_time_limit(0);
+            @set_time_limit(0);
         }
 
         if (!is_null($search)) {
-            $where = '1=1';
-            if (!$search_item_names) {
-                $l = do_lang('CART_ORDER', '', null, null, $site_lang ? get_site_default_lang() : user_lang());
-                if (substr($search, 0, strlen($l)) != $l) {
-                    return array();
-                }
-                $where .= ' AND id=' . strval(intval(substr($search, strlen($l))));
+            $l = do_lang('CART_ORDER', '', null, null, $site_lang ? get_site_default_lang() : user_lang());
+            if (substr($search, 0, strlen($l)) != $l) {
+                return array();
             }
+            $where = 'id=' . strval(intval(substr($search, strlen($l))));
+            // NB: $search_item_names is ignored because codename is the same as item name for this hook
         } else {
-            $where = ('(' . db_string_equal_to('order_status', 'ORDER_STATUS_awaiting_payment') . ' OR ' . db_string_equal_to('order_status', 'ORDER_STATUS_payment_received') . ')');
+            $where = '(' . db_string_equal_to('order_status', 'ORDER_STATUS_awaiting_payment') . ' OR ' . db_string_equal_to('order_status', 'ORDER_STATUS_payment_received') . ')';
         }
 
         if (is_null($search)) {

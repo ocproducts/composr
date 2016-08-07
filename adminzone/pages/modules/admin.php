@@ -289,7 +289,7 @@ class Module_admin
         $GLOBALS['NO_QUERY_LIMIT'] = true;
 
         if (php_function_allowed('set_time_limit')) {
-            set_time_limit(100);
+            @set_time_limit(100);
         }
         send_http_output_ping();
 
@@ -592,8 +592,8 @@ class Module_admin
             $config_categories = array();
             $conf_found_count = 0;
             foreach ($all_options as $name => $p) {
-				$_n = do_lang($p['human_name'], null, null, null, null, false);
-				if (is_null($_n)) {
+                $_n = do_lang($p['human_name'], null, null, null, null, false);
+                if (is_null($_n)) {
                     continue;
                 }
                 $n = do_lang_tempcode($p['human_name']);
