@@ -957,12 +957,12 @@ function cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $
     // Set custom profile field values
     $all_fields_types = collapse_2d_complexity('id', 'cf_type', $all_fields);
     $changes = array();
-    foreach ($custom_fields as $field => $value) {
-        if (!array_key_exists($field, $all_fields_types)) {
+    foreach ($custom_fields as $field_id => $value) {
+        if (!array_key_exists($field_id, $all_fields_types)) {
             continue; // Trying to set a field we're not allowed to (doesn't apply to our group)
         }
 
-        $change = cns_set_custom_field($member_id, $field, $value, $all_fields_types[$field], true);
+        $change = cns_set_custom_field($member_id, $field_id, $value, $all_fields_types[$field_id], true);
         if (!is_null($change)) {
             $changes = array_merge($changes, $change);
         }
@@ -1361,6 +1361,8 @@ function cns_edit_custom_field($id, $name, $description, $default, $public_view,
 
     $GLOBALS['FORUM_DB']->query_update('f_custom_fields', $map, array('id' => $id), '', 1);
 
+    require_code('cns_members_action');
+
     list($_type, $index) = get_cpf_storage_for($type);
 
     require_code('database_action');
@@ -1371,9 +1373,8 @@ function cns_edit_custom_field($id, $name, $description, $default, $public_view,
     if (substr(get_db_type(), 0, 5) == 'mysql') {
         $GLOBALS['SITE_DB']->query('SET sql_mode=\'\'', null, null, true); // Turn off strict mode
     }
-    $GLOBALS['FORUM_DB']->alter_table_field('f_member_custom_fields', 'field_' . strval($id), $_type); // Field type should not have changed, but bugs can happen, especially between CMS versions, so we allow a CPF edit as a "fixup" op
+    $GLOBALS['FORUM_DB']->alter_table_field('f_member_custom_fields', 'field_' . strval($id), $_type); // LEGACY: Field type should not have changed, but bugs can happen, especially between CMS versions, so we allow a CPF edit as a "fixup" op
 
-    require_code('cns_members_action');
     build_cpf_indices($id, $index, $type, $_type);
 
     log_it('EDIT_CUSTOM_PROFILE_FIELD', strval($id), $name);
@@ -1443,25 +1444,25 @@ function cns_delete_custom_field($id)
  * Set a custom profile field for a member.
  *
  * @param  MEMBER $member_id The member.
- * @param  AUTO_LINK $field The field being set.
+ * @param  AUTO_LINK $field_id The field being set.
  * @param  mixed $value The value of the field. For a trans-type field, this can be either a lang-ID to be copied (from forum DB), or an actual string.
  * @param  ?ID_TEXT $type The field type (null: look it up).
  * @param  boolean $defer Whether to defer the change, by returning a result change rather than doing it right away.
  * @return ?array Mapping change (null: none / can't defer).
  */
-function cns_set_custom_field($member_id, $field, $value, $type = null, $defer = false)
+function cns_set_custom_field($member_id, $field_id, $value, $type = null, $defer = false)
 {
     if ($value === STRING_MAGIC_NULL) {
         return null;
     }
 
     if (is_null($type)) {
-        $type = $GLOBALS['FORUM_DB']->query_select_value('f_custom_fields', 'cf_type', array('id' => $field));
+        $type = $GLOBALS['FORUM_DB']->query_select_value('f_custom_fields', 'cf_type', array('id' => $field_id));
     }
 
     cns_get_custom_field_mappings($member_id); // This will do an auto-repair if CPF storage row is missing
 
-    $db_fieldname = 'field_' . strval($field);
+    $db_fieldname = 'field_' . strval($field_id);
 
     global $ANY_FIELD_ENCRYPTED;
     if ($ANY_FIELD_ENCRYPTED === null) {
@@ -1469,7 +1470,7 @@ function cns_set_custom_field($member_id, $field, $value, $type = null, $defer =
     }
 
     if ($ANY_FIELD_ENCRYPTED) {
-        $encrypted = $GLOBALS['FORUM_DB']->query_select_value('f_custom_fields', 'cf_encrypted', array('id' => $field));
+        $encrypted = $GLOBALS['FORUM_DB']->query_select_value('f_custom_fields', 'cf_encrypted', array('id' => $field_id));
         if ($encrypted) {
             require_code('encryption');
             $current = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_member_custom_fields', $db_fieldname, array('mf_member_id' => $member_id));
@@ -1487,7 +1488,7 @@ function cns_set_custom_field($member_id, $field, $value, $type = null, $defer =
 
     require_code('fields');
     $ob = get_fields_hook($type);
-    list(, , $storage_type) = $ob->get_field_value_row_bits(array('id' => $field, 'cf_default' => '', 'cf_type' => $type));
+    list(, , $storage_type) = $ob->get_field_value_row_bits(array('id' => $field_id, 'cf_default' => '', 'cf_type' => $type));
 
     if (strpos($storage_type, '_trans') !== false) {
         if (is_integer($value)) {
