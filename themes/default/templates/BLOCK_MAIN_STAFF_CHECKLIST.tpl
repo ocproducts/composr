@@ -56,7 +56,7 @@
 {$REQUIRE_JAVASCRIPT,staff}
 
 <script>// <![CDATA[
-	add_event_listener_abstract(window,'load',function() {
+	$(function() {
 		set_task_hiding(true);
 		{+START,IF,{$JS_ON}}
 			handle_tray_cookie_setting('{!CHECK_LIST|}');

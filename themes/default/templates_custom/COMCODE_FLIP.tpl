@@ -10,7 +10,7 @@
 </div>
 
 <script>// <![CDATA[
-	add_event_listener_abstract(window,'load',function() {
+	$(function() {
 		var _e=document.getElementById("flipbox_{$GET%,RAND_FLIP}");
 		_e.onclick=function() {
 			var e=$("#flipbox_{$GET%,RAND_FLIP}");

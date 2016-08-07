@@ -6,9 +6,6 @@
 {$,The character set of the page}
 <meta http-equiv="Content-Type" content="text/html; charset={$CHARSET*}" />
 
-{$,Force IE to not use compatiblity mode}
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-
 {$,Page title}
 <title>{+START,IF_NON_PASSED,TITLE}{+START,IF_NON_EMPTY,{$HEADER_TEXT}}{$HEADER_TEXT*} &ndash; {+END}{$SITE_NAME*}{+END}{+START,IF_PASSED,TITLE}{TITLE}{+END}</title>
 
@@ -158,15 +155,13 @@
 {$,CSS includes from Composr page}
 {$CSS_TEMPCODE}
 
+{$REQUIRE_JAVASCRIPT,jquery_lite}
+
 {$,jQuery fan? Just uncomment the below and start using all the jQuery plugins you love in the normal way}
 {$,{$REQUIRE_JAVASCRIPT,jquery}}
 
 {$,JavaScript includes from Composr page}
 {$JS_TEMPCODE,header}
-{$,LEGACY: IE8}
-<!--[if lt IE 9]>
-<script src="{$BASE_URL*}/data/html5.js"></script>
-<![endif]-->
 
 {$,If the page is doing a refresh include the markup for that}
 {$REFRESH}

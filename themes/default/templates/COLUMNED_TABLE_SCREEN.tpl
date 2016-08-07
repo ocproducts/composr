@@ -61,7 +61,7 @@
 
 {+START,IF_PASSED,JAVASCRIPT}
 	<script>// <![CDATA[
-		add_event_listener_abstract(window,"load",function() {
+		$(function() {
 			{JAVASCRIPT/}
 		});
 	//]]>

@@ -21,7 +21,7 @@
 				</select>
 			</div>
 			<script>// <![CDATA[
-				add_event_listener_abstract(window,'load',function() {
+				$(function() {
 					$("#resource_types").select2({
 						dropdownAutoWidth: true
 					});

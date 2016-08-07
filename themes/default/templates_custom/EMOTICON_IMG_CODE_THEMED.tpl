@@ -7,7 +7,7 @@
 	{$REQUIRE_JAVASCRIPT,dyn_comcode}
 	<div id="emoticoncrazy{$GET%,rndx}"></div>
 	<script>// <![CDATA[
-		add_event_listener_abstract(window,'load',function() {
+		$(function() {
 			if (typeof window.crazy_criters=='undefined')
 			{
 				window.crazy_criters=[];

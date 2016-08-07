@@ -22,7 +22,7 @@
 			}
 		{+END}
 
-		add_event_listener_abstract(window,'load',function() {
+		$(function() {
 			var element=document.getElementById("{NAME#/}");
 			if ((element.options.length>20)/*only for long lists*/ && (!element.options[0].value.match(/^\d+$/)/*not for lists of numbers*/))
 			{

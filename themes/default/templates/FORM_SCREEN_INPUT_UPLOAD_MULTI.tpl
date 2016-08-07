@@ -35,7 +35,7 @@
 
 	{+START,IF,{PLUPLOAD}}{+START,IF,{$NOT,{$IS_HTTPAUTH_LOGIN}}}
 		<script>// <![CDATA[
-			add_event_listener_abstract(window,'load',function() {
+			$(function() {
 				preinit_file_input('upload_multi','{NAME_STUB;/}_{I;/}',null,null,'{FILTER;/}');
 			});
 		//]]></script>
@@ -43,7 +43,7 @@
 
 	{+START,IF_PASSED,SYNDICATION_JSON}
 		<script>// <![CDATA[
-			add_event_listener_abstract(window,'load',function() {
+			$(function() {
 				show_upload_syndication_options('{NAME_STUB;/}','{SYNDICATION_JSON;/}');
 			});
 		//]]></script>

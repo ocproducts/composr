@@ -22,7 +22,7 @@ div.progressBars {
 	margin: 1em 0.5em;
 	display: none;
 	border-color: #D9E4FF;
-	{$BETA_CSS_PROPERTY,border-radius: 5px;}
+	border-radius: 5px;
 }
 
 /* Progressbar styles */

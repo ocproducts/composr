@@ -12,7 +12,7 @@
 /* Global */
 
 #installer_body {
-	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,installer_background_a}\, {$GET,installer_background_b});}
+	background-image: linear-gradient(to bottom, {$GET,installer_background_a}, {$GET,installer_background_b});
 	background-color: {$GET,installer_background_b}; {$,IE fallback}
 	background-repeat: no-repeat;
 }
@@ -24,12 +24,12 @@
 
 .installer_main img {
 	display: inline-block;
-	{$BETA_CSS_PROPERTY,box-shadow: 0 0 25px 2px {$GET,standard_border};}
+	box-shadow: 0 0 25px 2px {$GET,standard_border};
 	margin-bottom: 2.6em;
 }
 
 .installer_main_inner>.box {
-	{$BETA_CSS_PROPERTY,box-shadow: 0 0 25px 2px {$GET,standard_border};}
+	box-shadow: 0 0 25px 2px {$GET,standard_border};
 }
 
 .installer_main_inner {
@@ -92,7 +92,7 @@
 	background: {$GET,external_tool_background};
 	border: 1px solid {$GET,pale_border};
 	padding: 1em;
-	{$BETA_CSS_PROPERTY,border-radius: 5px;}
+	border-radius: 5px;
 }
 
 .installer_warning {
@@ -128,7 +128,7 @@ textarea.mono_textbox {
 #install_welcome {
 	background-color: {$GET,point_of_interest_background};
 	border: 1px solid {$GET,point_of_interest_border};
-	{$BETA_CSS_PROPERTY,border-radius: 5px;}
+	border-radius: 5px;
 	text-align: center;
 	padding: 0.5em 0;
 	margin: 2em 0;
@@ -136,7 +136,7 @@ textarea.mono_textbox {
 
 #install_newsletter {
 	border: 1px dotted {$GET,standard_border};
-	{$BETA_CSS_PROPERTY,border-radius: 5px;}
+	border-radius: 5px;
 	width: 22em;
 	float: {!en_right};
 	margin-left: 15px;

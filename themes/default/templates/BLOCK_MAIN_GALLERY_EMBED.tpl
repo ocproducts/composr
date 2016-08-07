@@ -37,7 +37,7 @@
 		</div>
 
 		<script>// <![CDATA[
-			add_event_listener_abstract(window,'load',function() {
+			$(function() {
 				initialise_carousel({$GET,carousel_id});
 			});
 

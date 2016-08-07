@@ -24,12 +24,12 @@
 	{$,Tie into callback event to see when finished, for our slideshows}
 	{$,API: http://service.real.com/help/library/guides/realone/ScriptingGuide/PDF/ScriptingGuide.pdf}
 	<script>// <![CDATA[
-		add_event_listener_abstract(window,'real_load',function() {
+		after_window_load(function() {
 			if (document.getElementById('next_slide'))
 			{
 				stop_slideshow_timer();
 				window.setTimeout(function() {
-					add_event_listener_abstract(document.getElementById('{$GET;,player_id}'),'stateChange',function(newState) { if (newState==0) { player_stopped(); } });
+					document.getElementById('{$GET;,player_id}').addEventListener('stateChange',function(newState) { if (newState==0) { player_stopped(); } });
 					document.getElementById('{$GET;,player_id}').DoPlay();
 				}, 1000);
 			}

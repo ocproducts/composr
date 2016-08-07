@@ -86,7 +86,7 @@
 						}
 
 						{+START,IF_PASSED,WORD_COUNTER}
-							add_event_listener_abstract(window,'load',function() {
+							$(function() {
 								setup_word_counter(document.getElementById('post'),document.getElementById('word_count_{$GET;,word_count_id}'));
 							});
 						{+END}
@@ -137,7 +137,7 @@
 			<input type="hidden" name="posting_ref_id" value="{$RAND%}" />
 
 			<script>// <![CDATA[
-				add_event_listener_abstract(window,'load',function() {
+				$(function() {
 					initialise_html5_dragdrop_upload('container_for_{NAME;/}','{NAME;/}');
 				});
 			//]]></script>
@@ -174,7 +174,7 @@
 			<input type="hidden" name="posting_ref_id" value="{$RAND%}" />
 
 			<script>// <![CDATA[
-				add_event_listener_abstract(window,'load',function() {
+				$(function() {
 					initialise_html5_dragdrop_upload('container_for_{NAME;/}','{NAME;/}');
 				});
 			//]]></script>

@@ -12,7 +12,7 @@
 
 .helper_panel {
 	width: 265px;
-	{$BETA_CSS_PROPERTY,transition: width 0.2s linear !important;}
+	transition: width 0.2s linear !important;
 }
 .helper_panel_hidden {
 	width: 30px !important;
@@ -35,8 +35,8 @@
 	position: relative;
 	margin-top: 1em;
 	margin-bottom: 1em;
-	{$BETA_CSS_PROPERTY,border-top-left-radius: 15px;}
-	{$BETA_CSS_PROPERTY,border-bottom-left-radius: 15px;}
+	border-top-left-radius: 15px;
+	border-bottom-left-radius: 15px;
 }
 
 .global_helper_panel {

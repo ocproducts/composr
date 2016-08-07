@@ -13,7 +13,7 @@
 	background: rgba(209,201,13,0.3);
 	{$BETA_CSS_PROPERTY,user-select: none;}
 	padding: 0.3em;
-	{$BETA_CSS_PROPERTY,border-radius: 5px;}
+	border-radius: 5px;
 }
 
 .quiz_form table {
@@ -68,7 +68,7 @@
 	content: " ";
 	/*content: "\221a"; Cool but misleading*/
 	color: {$GET,green_highlight_text};
-	{$BETA_CSS_PROPERTY,opacity: 0.6;}
+	opacity: 0.6;
 	background: url('{$IMG;,cns_emoticons/thumbs}') top right no-repeat; /* For IE8, which doesn't support CSS3 */
 }
 
@@ -101,15 +101,15 @@
 }
 
 .quiz_form tr.filledin.field_input th, .quiz_form tr.filledin.field_input td {
-	{$BETA_CSS_PROPERTY,opacity: 0.4;}
+	opacity: 0.4;
 }
 
 /*.quiz_form tr.field_input th, .quiz_form tr.field_input td {   Annoying assumption about mouse use
-	{$BETA_CSS_PROPERTY,opacity: 0.5;}
+	opacity: 0.5;
 }*/
 
 .quiz_form tr.field_input:hover th, .quiz_form tr.field_input:hover td, body.touch_enabled .quiz_form tr.field_input th, body.touch_enabled .quiz_form tr.field_input td {
-	{$BETA_CSS_PROPERTY,opacity: 1.0 !important;}
+	opacity: 1.0 !important;
 }
 
 .quiz_form td .input_radio {

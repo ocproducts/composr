@@ -11,12 +11,14 @@ a.top_left_toggleicon {
 	font-size: 0.8em;
 	float: left;
 	background: url('{$IMG;,checklist/toggleicon}') no-repeat 10px 1px !important;
-	{$BETA_CSS_PROPERTY,opacity: 0.7;} display: inline-block;/*Needed for IE8*/
+	opacity: 0.7;
+	display: inline-block;/*Needed for IE8*/
 }
 
 a.top_left_toggleicon:hover {
 	background: url('{$IMG;,checklist/toggleicon2}') no-repeat 10px 1px !important;
-	{$BETA_CSS_PROPERTY,opacity: 1.0;} display: inline-block;/*Needed for IE8*/
+	opacity: 1.0;
+	display: inline-block;/*Needed for IE8*/
 }
 
 .checklist_header {
@@ -44,7 +46,7 @@ a.top_left_toggleicon:hover {
 .checklist_other_maintenance .checklist_row {
 	float: left;
 	width: 50%;
-	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+	box-sizing: border-box;
 	min-height: 3.8em;
 }
 

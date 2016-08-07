@@ -23,7 +23,7 @@
 	</select>
 
 	<script>// <![CDATA[
-		add_event_listener_abstract(window,'load',function() {
+		$(function() {
 			setup_privilege_override_selector('access_{GROUP_ID%}',{DEFAULT_ACCESS%},'{PRIVILEGE%}','{TITLE;/}',{$?,{ALL_GLOBAL},true,false});
 		});
 	//]]></script>

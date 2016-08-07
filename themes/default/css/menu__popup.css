@@ -42,7 +42,7 @@
 
 .menu_type__popup li:hover {
 	background-color: {$GET,area_highlight_right_complement_background} !important;
-	{$BETA_CSS_PROPERTY,transition: color\,background-color 0.5s linear;}
+	transition: color,background-color 0.5s linear;
 }
 
 .menu_type__popup ul li a { /* ul li added to ensure precedence over ".nl li" selector, whilst not forcing us to use up our only !important */

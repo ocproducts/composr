@@ -14,7 +14,7 @@
 			</div>
 		</div>
 		<script>// <![CDATA[
-			add_event_listener_abstract(window,'load',function() {
+			$(function() {
 				make_colour_chooser('{NAME;/}','{DEFAULT;/}','',{TABINDEX%},' ','input_colour{_REQUIRED;/}');
 				do_color_chooser();
 			});
@@ -33,7 +33,7 @@
 				</div>
 			</div>
 			<script>// <![CDATA[
-				add_event_listener_abstract(window,'load',function() {
+				$(function() {
 					make_colour_chooser('{NAME;/}','{DEFAULT;/}','',{TABINDEX%},'{PRETTY_NAME;/}','input_colour{_REQUIRED;/}');
 					do_color_chooser();
 				});

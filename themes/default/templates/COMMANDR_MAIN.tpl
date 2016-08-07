@@ -16,7 +16,7 @@
 	</div>
 	<script>
 	// <![CDATA[
-		add_event_listener_abstract(window,'load',function() {
+		$(function() {
 			try { document.getElementById("commandr_command").focus(); } catch (e) { }
 		});
 	// ]]>

@@ -127,7 +127,7 @@ function open_link_as_overlay(ob,width,height,target)
 				set_inner_html(video,initial_img_url);
 				video.className='lightbox_image';
 				video.id='lightbox_image';
-				add_event_listener_abstract(video,'loadedmetadata',function() { _resize_lightbox_dimensions_img(modal,video,has_full_button,true); });
+				video.addEventListener('loadedmetadata',function() { _resize_lightbox_dimensions_img(modal,video,has_full_button,true); });
 			} else
 			{
 				var img=modal.top_window.document.createElement('img');
@@ -155,7 +155,7 @@ function open_link_as_overlay(ob,width,height,target)
 				set_inner_html(video,imgs[position][0]);
 				video.className='lightbox_image';
 				video.id='lightbox_image';
-				add_event_listener_abstract(video,'loadedmetadata',function() { _resize_lightbox_dimensions_img(modal,video,true,true); });
+				video.addEventListener('loadedmetadata',function() { _resize_lightbox_dimensions_img(modal,video,true,true); });
 			} else
 			{
 				var img=modal.top_window.document.createElement('img');
@@ -666,14 +666,14 @@ function ModalWindow()
 				this.box_wrapper.style.position='absolute';
 				this.box_wrapper.style.height=((dim.page_height>(detected_box_height+bottom_gap+_box_pos_left))?dim.page_height:(detected_box_height+bottom_gap+_box_pos_left))+'px';
 				this.top_window.document.body.style.overflow='';
-				{+START,IF,{$NOT,{$MOBILE}}}
+				/*{+START,IF,{$NOT,{$MOBILE}}}*/
 					this.box_wrapper.childNodes[0].style.position='absolute';
 					box_pos_top={$?,{$MOBILE},0,this.WINDOW_TOP_GAP}+'px';
 					this.box_wrapper.childNodes[0].style.top=box_pos_top;
-				{+END}
-				{+START,IF,{$MOBILE}}
-					{$,iOS/Android uses static anyway}
-				{+END}
+				/*{+END}*/
+				/*{+START,IF,{$MOBILE}}*/
+					// iOS/Android uses static anyway
+				/*{+END}*/
 
 				if ((init) || (was_fixed)) do_scroll=true;
 				if (/*maybe a navigation has happened and we need to scroll back up*/(typeof iframe[0]!='undefined') && (has_iframe_ownership(iframe[0])) && (typeof iframe[0].contentWindow.scrolled_up_for=='undefined'))

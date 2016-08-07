@@ -38,7 +38,7 @@
 			</div>
 
 			<script>// <![CDATA[
-				add_event_listener_abstract(window,'load',function() {
+				$(function() {
 					initialise_carousel({$GET,carousel_id});
 
 					var current_loading_from_pos_{$GET*,carousel_id}={START%};

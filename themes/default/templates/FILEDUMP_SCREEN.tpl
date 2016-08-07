@@ -22,7 +22,7 @@
 
 			{+START,IF_NON_EMPTY,{$_GET,filename}}
 				<script>// <![CDATA[
-					add_event_listener_abstract(window,'load',function() {
+					$(function() {
 						faux_open('{$PAGE_LINK;,_SELF:_SELF:embed:place={$_GET&,place}:file={$_GET&,filename}:wide_high=1}',null,'width=950;height=700','_top');
 					});
 				//]]></script>
@@ -127,7 +127,7 @@
 </div>
 
 <script>// <![CDATA[
-	add_event_listener_abstract(window,'load',function() {
+	$(function() {
 		find_url_tab();
 	});
 

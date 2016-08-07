@@ -26,7 +26,7 @@
 
 	<script>// <![CDATA[
 		{$,Carefully tuned to avoid this problem: http://www.longtailvideo.com/support/forums/jw-player/setup-issues-and-embedding/8439/sound-but-no-video}
-		add_event_listener_abstract(window,'load',function() {
+		$(function() {
 			jwplayer('{$GET%,player_id}').setup({
 				width: {WIDTH%},
 				height: {HEIGHT%},

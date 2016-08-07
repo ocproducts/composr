@@ -60,7 +60,7 @@
 		window.template_editor_live_preview_url='{LIVE_PREVIEW_URL;^/}';
 	{+END}
 
-	add_event_listener_abstract(window,'load',function() {
+	$(function() {
 		template_editor_clean_tabs();
 
 		window.sitemap=new tree_list('theme_files','data/ajax_tree.php?hook=choose_theme_files&theme={THEME;/}{$KEEP;/}',null,'',false,null,false,true);

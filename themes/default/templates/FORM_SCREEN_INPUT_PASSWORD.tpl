@@ -10,7 +10,7 @@
 	{+START,IF,{$AND,{$EQ,{VALUE},},{$EQ,{NAME},edit_password}}}
 		<script type="text/javascript">// <![CDATA[
 			// Work around annoying Firefox bug. It ignores autocomplete="off" if a password was already saved somehow
-			add_event_listener_abstract(window,'load',function () {
+			$(function () {
 				window.setTimeout(function() {
 					document.getElementById('{NAME;/}').value='';
 				},300);

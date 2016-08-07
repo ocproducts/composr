@@ -1,5 +1,5 @@
 <script>// <![CDATA[
-	add_event_listener_abstract(window,'load',function() {
+	$(function() {
 		if (window.location.hash.indexOf('redirected_once') == -1)
 		{
 			window.location.hash='redirected_once';

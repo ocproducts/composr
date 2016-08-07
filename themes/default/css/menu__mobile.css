@@ -39,7 +39,7 @@
 	top: 3.4em;
 	width: 100%;
 	z-index: 1000;
-	{$BETA_CSS_PROPERTY,box-shadow: 0px 20px 25px 0px {$GET,dark_border};}
+	box-shadow: 0px 20px 25px 0px {$GET,dark_border};
 }
 
 .menu_type__mobile>ul {

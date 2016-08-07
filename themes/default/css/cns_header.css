@@ -13,10 +13,10 @@
 }
 
 .cns_information_bar_outer .toggleable_tray_title img {
-	{$BETA_CSS_PROPERTY,opacity: 0.2;}
+	opacity: 0.2;
 }
 .cns_information_bar_outer .toggleable_tray_title:hover img, body.touch_enabled .cns_information_bar_outer body.touch_enabled .toggleable_tray_title img {
-	{$BETA_CSS_PROPERTY,opacity: 1.0;}
+	opacity: 1.0;
 }
 
 .cns_member_column>*:first-child, .cns_guest_column>*:first-child {
@@ -123,7 +123,7 @@
 	padding: 0 0.2em;
 	font-size: 0.95em;
 	border: 0px solid !important;
-	{$BETA_CSS_PROPERTY,border-radius: 15px !important;}
+	border-radius: 15px !important;
 }
 
 .cns_notification .associated_links_block_group {

@@ -8,7 +8,7 @@
 </div>
 
 <script>// <![CDATA[
-	add_event_listener_abstract(window,'load',function() {
+	$(function() {
 		initialise_input_theme_image_entry('{NAME|;}','{CODE|;}');
 	});
 //]]></script>

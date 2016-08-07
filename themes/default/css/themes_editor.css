@@ -60,7 +60,7 @@
 	padding-right: 16px;
 	float: left;
 	height: 45em;
-	{$BETA_CSS_PROPERTY,transform: scale(1);} /* Needed to stop Chrome rendering bug by forcing it as a layer at all times */
+	transform: scale(1); /* Needed to stop Chrome rendering bug by forcing it as a layer at all times */
 }
 
 .template_editor_file_selector>.inner {
@@ -172,7 +172,7 @@
 
 .theme_image__background_theme_image .radio_list_picture {
 	max-width: 50%;
-	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+	box-sizing: border-box;
 }
 .theme_image__logo_theme_image .radio_list_picture img, .theme_image__background_theme_image .radio_list_picture img {
 	max-width: 100%;
@@ -190,7 +190,7 @@
 	margin: 1px;
 	padding: 1px;
 	display: inline-block;
-	{$BETA_CSS_PROPERTY,border-radius: 5px 5px 5px 5px;}
+	border-radius: 5px 5px 5px 5px;
 	border: 1px solid;
 }
 

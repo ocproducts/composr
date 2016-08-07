@@ -25,7 +25,7 @@
 		</div>
 
 		<script>//<![CDATA[
-			add_event_listener_abstract(window,'load',function() {
+			$(function() {
 				window.activities_mode='{MODE;/}';
 				window.activities_member_ids='{MEMBER_IDS;/}';
 

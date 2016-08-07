@@ -14,7 +14,7 @@
 {+START,IF_NON_EMPTY,{WIDTH}}</div>{+END}
 
 <script>// <![CDATA[
-	add_event_listener_abstract(window,'load',function() {
+	$(function() {
 		$('#{SLIDER_ID;/}').unslider({
 			fluid: {$?,{FLUID},true,false},
 			dots: {$?,{BUTTONS},true,false},

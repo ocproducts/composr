@@ -3,7 +3,7 @@
 <img alt="{$STRIP_TAGS,{CAPTION}}"{+START,IF_PASSED,ROLLOVER} id="{$GET%,RAND_ID_IMG}"{+END} src="{$ENSURE_PROTOCOL_SUITABILITY*,{URL}}"{+START,IF_NON_EMPTY,{ALIGN}} style="vertical-align: {ALIGN|}"{+END} title="{+START,IF_PASSED,TOOLTIP}{$STRIP_TAGS,{TOOLTIP}}{+END}{+START,IF_NON_PASSED,TOOLTIP}{$STRIP_TAGS,{CAPTION}}{+END}" />
 {+START,IF_PASSED,ROLLOVER}
 	<script>// <![CDATA[
-		add_event_listener_abstract(window,'load',function() {
+		$(function() {
 			create_rollover('{$GET^/,RAND_ID_IMG}','{ROLLOVER;~/}');
 		});
 	//]]></script>

@@ -6,7 +6,7 @@
 
 <script>// <![CDATA[
 	var a{PASS_ID|}_sections=[];
-	add_event_listener_abstract(window,'load',function() {
+	$(function() {
 		{+START,LOOP,SECTIONS}
 			a{PASS_ID|}_sections.push('{_loop_var|;}');
 		{+END}

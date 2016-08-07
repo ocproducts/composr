@@ -11,7 +11,7 @@
 {+START,SET,comment}
 	Uncomment if you want to force jQuery-UI inputs even when there is native browser input support
 	<script>// <![CDATA[
-		add_event_listener_abstract(window,'load',function() {
+		$(function() {
 			$('#{NAME;/}').inputTime({});
 		});
 	//]]></script>

@@ -15,7 +15,7 @@
 
 	{+START,IF_PASSED,CODE}
 		<script>// <![CDATA[
-			add_event_listener_abstract(window,'load',function() {
+			$(function() {
 				choose_picture('j_{NAME|;}_{CODE|;}',null,'{NAME;/}',null);
 			});
 		//]]></script>
@@ -24,7 +24,7 @@
 	{$,If is for deletion}
 	{+START,IF,{$EQ,{NAME},delete}}
 		<script>// <![CDATA[
-			add_event_listener_abstract(window,'load',function() {
+			$(function() {
 				assign_radio_deletion_confirm('{NAME;/}');
 			});
 		//]]></script>

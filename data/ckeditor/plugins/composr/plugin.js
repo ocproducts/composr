@@ -8,7 +8,7 @@
 			var possibles = ['block', 'comcode', 'page', 'quote', 'box', 'code'];
 			for (var i = 0; i < possibles.length; i++) {
 				var buttonName = possibles[i];
-				var elements = get_elements_by_class_name(editor.element.$.parentNode.parentNode, 'comcode_button_' + buttonName);
+				var elements = editor.element.$.parentNode.parentNode.querySelectorAll('.comcode_button_' + buttonName);
 				if (typeof elements[0] != 'undefined') {
 					var func = {
 						exec: function (e) {

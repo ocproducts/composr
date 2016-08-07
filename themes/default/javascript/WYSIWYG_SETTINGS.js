@@ -1,5 +1,5 @@
 // Carefully work out toolbar
-var precision_editing=((typeof window.cms_is_staff!='undefined') && window.cms_is_staff) || (get_elements_by_class_name(document.body,'comcode_button_box').length>1); // Look to see if this Comcode button is here as a hint whether we are doing an advanced editor. Unfortunately we cannot put contextual Tempcode inside a JavaScript file, so this trick is needed.
+var precision_editing=((typeof window.cms_is_staff!='undefined') && window.cms_is_staff) || (document.body.querySelectorAll('.comcode_button_box').length>1); // Look to see if this Comcode button is here as a hint whether we are doing an advanced editor. Unfortunately we cannot put contextual Tempcode inside a JavaScript file, so this trick is needed.
 var toolbar=[];
 if (precision_editing)
 	toolbar.push(['Source','-']);

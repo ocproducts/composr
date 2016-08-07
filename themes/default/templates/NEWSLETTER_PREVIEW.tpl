@@ -7,7 +7,7 @@
 </noscript>
 
 <script>// <![CDATA[
-	add_event_listener_abstract(window,'load',function() {
+	$(function() {
 		newsletter_preview_into('preview_frame','{HTML_PREVIEW;^/}');
 	});
 //]]></script>

@@ -94,7 +94,7 @@
 <input class="button_micro buttons__search" type="button" value="{!FIND_ME}" onclick="geolocate_user_for_map_field(); return false;" />
 
 <script>// <![CDATA[
-	add_event_listener_abstract(window,'load',function() {
+	$(function() {
 		window.setTimeout(function() {
 			google.load('maps','3', {callback: google_map_users_initialize, other_params:''});
 		},0); // Timeout is needed, as if this form works in a member profile tab, the run-time set_inner_html handler may run the JavaScript in an odd-order

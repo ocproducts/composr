@@ -28,7 +28,7 @@
 
 {+START,IF,{$EQ,{SIZE},5}}
 	<script>// <![CDATA[
-		add_event_listener_abstract(window,'load',function() {
+		$(function() {
 			$("#{NAME#/}").select2({
 				dropdownAutoWidth: true,
 				containerCssClass: 'wide_field'

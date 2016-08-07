@@ -15,11 +15,11 @@
 	color: {$GET,footer_text};
 	cursor: pointer;
 	text-decoration: none;
-	{$BETA_CSS_PROPERTY,opacity: 0.7;}
+	opacity: 0.7;
 }
 .font_sizers a:hover, .font_sizers a.selected {
 	text-decoration: none;
-	{$BETA_CSS_PROPERTY,opacity: 1.0;}
+	opacity: 1.0;
 }
 .font_sizer_small {
 	font-size: 13px;

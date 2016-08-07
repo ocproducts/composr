@@ -2822,7 +2822,7 @@ END;
             }
             $fields->attach(form_input_list(do_lang_tempcode('EXISTING'), do_lang_tempcode('COPY_EXISTING_POLL'), 'existing', $list, null, false, false));
 
-            $javascript = 'var existing=document.getElementById(\'existing\'); var form=existing.form; var ch_func=function() { var disable_all=(existing.selectedIndex!=0); var i; for (i=0;i<form.elements.length;i++) if ((form.elements[i]!=existing) && (form.elements[i].id!=\'perform_keywordcheck\') && ((form.elements[i].getAttribute(\'type\')==\'checkbox\') || (form.elements[i].getAttribute(\'type\')==\'text\'))) { set_required(form.elements[i].name,(!disable_all) && ((form.elements[i].id==\'question\') || (form.elements[i].id==\'answer_0\'))); set_locked(form.elements[i],disable_all); } }; for (i=0;i<form.elements.length;i++) add_event_listener_abstract(form.elements[i],\'change\',ch_func);';
+            $javascript = 'var existing=document.getElementById(\'existing\'); var form=existing.form; var ch_func=function() { var disable_all=(existing.selectedIndex!=0); var i; for (i=0;i<form.elements.length;i++) if ((form.elements[i]!=existing) && (form.elements[i].id!=\'perform_keywordcheck\') && ((form.elements[i].getAttribute(\'type\')==\'checkbox\') || (form.elements[i].getAttribute(\'type\')==\'text\'))) { set_required(form.elements[i].name,(!disable_all) && ((form.elements[i].id==\'question\') || (form.elements[i].id==\'answer_0\'))); set_locked(form.elements[i],disable_all); } }; for (i=0;i<form.elements.length;i++) form.elements[i].addEventListener(\'change\',ch_func);';
         } else {
             $javascript = '';
         }
