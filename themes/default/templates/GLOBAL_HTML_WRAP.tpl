@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-
+{$REQUIRE_JAVASCRIPT,addon/core_primary_layout}
 <!--
 Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 {$BRAND_BASE_URL*}
@@ -251,11 +251,6 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 		{$EXTRA_FOOT}
 
 		{$JS_TEMPCODE,footer}
-		<script>// <![CDATA[
-			script_load_stuff();
-
-			{+START,IF,{$EQ,{$_GET,wide_print},1}}try { window.print(); } catch (e) {}{+END}
-		//]]></script>
 	</div>
 </body>
 </html>
