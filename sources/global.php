@@ -258,7 +258,7 @@ function require_code($codename, $light_exit = false)
             } else {
                 @include($path_orig);
             }
-            if ($php_errormsg === '') {
+            if ($php_errormsg == '' || stripos($php_errormsg, 'deprecated') !== false/*deprecated errors can leak through because even though we return true in our error handler, error handlers won't run recursively, so if this code is loaded during an error it'll stream through deprecated stuff here*/) {
                 $worked = true;
             }
         }
@@ -622,7 +622,7 @@ $SITE_INFO = array();
 if (count($SITE_INFO) == 0) {
     // LEGACY
     if ((!is_file($FILE_BASE . '/_config.php')) && (is_file($FILE_BASE . '/info.php'))) {
-        @rename($FILE_BASE . '/info.php', $FILE_BASE . '/_config.php');
+        @copy($FILE_BASE . '/info.php', $FILE_BASE . '/_config.php');
         if (is_file($FILE_BASE . '/_config.php')) {
             file_put_contents($FILE_BASE . '/_config.php', str_replace(array('ocf_table_prefix', 'use_mem_cache'), array('cns_table_prefix', 'use_persistent_cache'), file_get_contents($FILE_BASE . '/_config.php')));
         } else {
@@ -632,10 +632,13 @@ if (count($SITE_INFO) == 0) {
     }
 }
 if (count($SITE_INFO) == 0) {
-    if ((!is_file($FILE_BASE . '/_config.php')) || (filesize($FILE_BASE . '/_config.php') == 0)) {
-        critical_error('_CONFIG.PHP');
+    if (!is_file($FILE_BASE . '/_config.php')) {
+        critical_error('_CONFIG.PHP_MISSING');
+    } elseif (strlen(trim(file_get_contents($FILE_BASE . '/_config.php'))) == 0) {
+        critical_error('_CONFIG.PHP_EMPTY');
+    } else {
+        critical_error('_CONFIG.PHP_CORRUPTED');
     }
-    critical_error('_CONFIG.PHP_CORRUPTED');
 }
 
 // Rate limiter, to stop aggressive bots

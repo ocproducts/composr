@@ -177,7 +177,7 @@ function get_member($quick_only = false)
     if (!empty($SITE_INFO['backdoor_ip'])) {
         $backdoor_ip_address = normalise_ip_address($SITE_INFO['backdoor_ip']);
     }
-    if ((is_string($backdoor_ip_address)) && ($backdoor_ip_address != '') && (get_ip_address() == $backdoor_ip_address)) {
+    if ((is_string($backdoor_ip_address)) && ($backdoor_ip_address != '') && ((get_ip_address() == $backdoor_ip_address) || ((get_ip_address() == '0000:0000:0000:0000:0000:0000:0000:0001') && (($backdoor_ip_address == '::1') || ($backdoor_ip_address == '127.0.0.1'))))) {
         require_code('users_active_actions');
         if (function_exists('restricted_manually_enabled_backdoor')) { // May be trying to check in safe mode when doing above require_code, so recurse
             $MEMBER_CACHED = restricted_manually_enabled_backdoor();
@@ -488,6 +488,10 @@ function delete_expired_sessions_or_recover($member = null)
     foreach ($SESSION_CACHE as $_session => $row) {
         if (!array_key_exists('member_id', $row)) {
             continue; // Workaround to HHVM weird bug
+        }
+
+        if (is_integer($_session)) {
+            $_session = strval($_session);
         }
 
         // Delete expiry from cache

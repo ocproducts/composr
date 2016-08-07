@@ -28,9 +28,10 @@
  * @param  integer $max_rows The maximum number of rows in the entire dataset
  * @param  ID_TEXT $type The page type this browser is browsing through (e.g. 'category')
  * @param  integer $max_page_links The maximum number of quick-jump page-links to show
+ * @param  string $start_name GET parameter for start position
  * @return Tempcode The results launcher
  */
-function results_launcher($title, $page, $category_id, $max, $max_rows, $type, $max_page_links = 5)
+function results_launcher($title, $page, $category_id, $max, $max_rows, $type, $max_page_links = 5, $start_name = 'start')
 {
     if ($max < 1) {
         $max = 1;
@@ -44,7 +45,7 @@ function results_launcher($title, $page, $category_id, $max, $max_rows, $type, $
         $part = new Tempcode();
         $num_pages = ($max == 0) ? 0 : min(intval(ceil(floatval($max_rows) / floatval($max))), $max_page_links);
         for ($x = 0; $x < $num_pages; $x++) {
-            $cat_url = build_url(array('page' => $page, 'type' => $type, 'start' => ($x == 0) ? null : ($x * $max), 'id' => $category_id), get_module_zone($page));
+            $cat_url = build_url(array('page' => $page, 'type' => $type, $start_name => ($x == 0) ? null : ($x * $max), 'id' => $category_id), get_module_zone($page));
             $part->attach(do_template('RESULTS_LAUNCHER_PAGE_NUMBER_LINK', array('_GUID' => 'd19c001f3ecff62105f803d541f7d945', 'TITLE' => $title, 'URL' => $cat_url, 'P' => strval($x + 1))));
         }
 

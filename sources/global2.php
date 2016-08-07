@@ -719,7 +719,7 @@ function catch_fatal_errors()
  * @param  PATH $errstr The error message
  * @param  string $errfile The file the error occurred in
  * @param  integer $errline The line the error occurred on
- * @return boolean Bubble on to default PHP handler (i.e. output for staff or if display_php_errors is on); for errors we intercept we don't return at all so bubble on never happens in such a case
+ * @return boolean Mark error handled, so PHP's native error handling code does not execute. i.e. false => bubble, true => handled. For errors we intercept we don't return at all so bubbling never happens in such a case. $php_errormsg is only set if we bubble.
  *
  * @ignore
  */
@@ -1212,7 +1212,7 @@ function get_base_url($https = null, $zone_for = null)
 
     global $SITE_INFO;
     if ((!isset($SITE_INFO)) || (empty($SITE_INFO['base_url']))) { // Try and autodetect the base URL if it's not configured
-        $domain = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : (isset($_ENV['HTTP_HOST']) ? $_ENV['HTTP_HOST'] : '');
+        $domain = get_domain();
         $script_name = isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : (isset($_ENV['SCRIPT_NAME']) ? $_ENV['SCRIPT_NAME'] : '');
         $php_self = dirname(cms_srv('PHP_SELF'));
         if (($GLOBALS['RELATIVE_PATH'] === '') || (strpos($php_self, $GLOBALS['RELATIVE_PATH']) !== false)) {

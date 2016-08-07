@@ -151,7 +151,6 @@ class Hook_addon_registry_composr_homesite_support_credits
             'sources_custom/miniblocks/credit_exps.php',
             'sources_custom/miniblocks/show_credits.php',
             'themes/default/templates_custom/SHOW_CREDITS_BAR.tpl',
-            'themes/default/templates_custom/CUSTOMER_CREDIT_INFO.tpl',
             'themes/default/templates_custom/BLOCK_CREDIT_EXPS_INNER.tpl',
             'themes/default/templates_custom/SUPPORT_CREDITS_OUTSTANDING_SCREEN.tpl',
             'sources_custom/hooks/systems/config/support_priority_regular_minutes.php',

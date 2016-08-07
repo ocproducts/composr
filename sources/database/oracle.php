@@ -63,6 +63,7 @@ class Database_Static_oracle
      */
     public function db_create_index($table_name, $index_name, $_fields, $db)
     {
+        $_fields = preg_replace('#\(\d+\)#', '', $_fields);
         if ($index_name[0] == '#') {
             $index_name = substr($index_name, 1);
             $fields = explode(',', $_fields);
@@ -424,7 +425,7 @@ class Database_Static_oracle
 
         $stmt = ociparse($db, $query, 0);
         $results = @ociexecute($stmt);
-        if ((($results === false) || ((strtoupper(substr($query, 0, 7)) == 'SELECT ') || (strtoupper(substr($query, 0, 8)) == '(SELECT ') && ($results === true))) && (!$fail_ok)) {
+        if ((($results === false) || (((strtoupper(substr($query, 0, 7)) == 'SELECT ') || (strtoupper(substr($query, 0, 8)) == '(SELECT ')) && ($results === true))) && (!$fail_ok)) {
             $err = ocierror($db);
             if (function_exists('ocp_mark_as_escaped')) {
                 ocp_mark_as_escaped($err);

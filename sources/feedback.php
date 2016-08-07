@@ -193,7 +193,7 @@ function post_comment_script()
     if (!isset($_GET['options']) && !isset($_POST['options'])) {
         post_param_string('options'); // Trigger an error
     }
-    $options = isset($_POST['options']) ? $_POST['options'] : $_GET['options'];
+    $options = isset($_POST['options']) ? $_POST['options'] : (isset($_GET['options']) ? $_GET['options'] : array());
     secure_serialized_data($options);
     $_options = @unserialize($options);
     if (!is_array($_options)) {

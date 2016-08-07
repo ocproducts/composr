@@ -219,9 +219,10 @@ function get_lang_file_section($lang, $file = null, $section = 'descriptions')
  * @param  LANGUAGE_NAME $lang The language
  * @param  ID_TEXT $file The language file
  * @param  boolean $non_custom Force usage of original file
+ * @param  boolean $apply_filter Apply the language pack filter
  * @return array The language entries
  */
-function get_lang_file_map($lang, $file, $non_custom = false)
+function get_lang_file_map($lang, $file, $non_custom = false, $apply_filter = true)
 {
     $a = get_custom_file_base() . '/lang_custom/' . $lang . '/' . $file . '.ini';
     if ((get_custom_file_base() !== get_file_base()) && (!file_exists($a))) {
@@ -241,7 +242,7 @@ function get_lang_file_map($lang, $file, $non_custom = false)
     }
 
     $target = array();
-    _get_lang_file_map($a, $target, 'strings', false, true, $lang);
+    _get_lang_file_map($a, $target, 'strings', false, $apply_filter, $lang);
     return $target;
 }
 
