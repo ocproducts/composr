@@ -98,7 +98,7 @@ class sitemap_test_set extends cms_test_case
             }
 
             if (in_array($link[0], $applicable_page_groupings)) {
-                if (($link[0] == '') && (is_array($link[2])) && (!in_array($link[2][2]['type'], $applicable_page_groupings))) {
+                if (($link[0] == '') && (is_array($link[2][1])) && ((!isset($link[2][1]['type'])) || (!in_array($link[2][1]['type'], $applicable_page_groupings)))) {
                     continue;
                 }
 
@@ -114,7 +114,8 @@ class sitemap_test_set extends cms_test_case
                         $this->assertTrue(true, 'Cannot locate page ' . $link[2][0]);
                     } else {
                         if (strpos($test[0], '_CUSTOM') === false) {
-                            $this->assertTrue(isset($link[4]), 'No help defined for ' . $link[3]->evaluate());
+                            $has_help_defined = isset($link[4]);
+                            $this->assertTrue($has_help_defined, 'No help defined for ' . $link[3]->evaluate() . ' (' . $link[2][2] . ':' . $link[2][0] . ')');
                         }
                     }
                 }

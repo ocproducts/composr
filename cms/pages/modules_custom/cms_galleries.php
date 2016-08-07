@@ -21,6 +21,10 @@
  */
 function init__cms__pages__modules_custom__cms_galleries($code)
 {
+    if (!$GLOBALS['SITE_DB']->table_exists('workflow_content')) { // Not installed
+        return $code;
+    }
+
     // NOTE: There are many classes defined in the cms_galleries file. We need to
     // make all work.
 

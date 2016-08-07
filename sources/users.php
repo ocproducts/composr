@@ -482,9 +482,9 @@ function delete_expired_sessions_or_recover($member = null)
     }
 
     // Look through sessions
-    $new_session = null;
     $dirty_session_cache = false;
     global $SESSION_CACHE;
+    $_session = mixed();
     foreach ($SESSION_CACHE as $_session => $row) {
         if (!array_key_exists('member_id', $row)) {
             continue; // Workaround to HHVM weird bug

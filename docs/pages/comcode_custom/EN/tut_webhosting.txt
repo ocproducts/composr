@@ -142,7 +142,7 @@ yum install httpd php php-common php-cli php-pecl-apc php-pdo curl enchant freet
 [/code]
 
 You may have selinux installed, you can see if you do with [tt]sestatus[/tt]:
-[code]
+[quote]
 [root@localhost html]# sestatus
 SELinux status:                 enabled
 SELinuxfs mount:                /sys/fs/selinux
@@ -153,7 +153,7 @@ Mode from config file:          enforcing
 Policy MLS status:              enabled
 Policy deny_unknown status:     allowed
 Max kernel policy version:      28
-[/code]
+[/quote]
 
 If so, you need to set additional write permissions with something like:
 [tt]chcon -R -t httpd_sys_rw_content_t /var/www[/tt]
