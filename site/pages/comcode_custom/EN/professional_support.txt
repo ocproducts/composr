@@ -20,10 +20,6 @@
 					We are able to pass on savings by avoiding the need to manage invoicing etc for every small job.
 				</p>
 
-				<p>
-					As a thank you for supporting the Composr developers, each purchased support credit automatically leads to 50 points (so you get a position of respect in the Composr community).
-				</p>
-
 				<table class="comSr">
 					<tr>
 						<th class="hdr">Priority level</th>
@@ -33,7 +29,7 @@
 					</tr>
 
 					<tr>
-						<th class="tdBody">Budget priority</th>
+						<th class="tdBody">Back-burner/th>
 						<td class="tdBody">2 business weeks</td>
 						<td class="tdBody">[tooltip="Minimum ticket price:
 30 minutes &#8801; 3 credits &#8801; [currency]16.50[/currency]
@@ -43,7 +39,7 @@
 					</tr>
 
 					<tr>
-						<th class="tdBody">Normal priority</th>
+						<th class="tdBody">Regular</th>
 						<td class="tdBody">2 business days</td>
 						<td class="tdBody">[tooltip="Minimum ticket price:
 32 minutes &#8801; 4 credits &#8801; [currency]22.00[/currency]
@@ -79,9 +75,13 @@ Hourly cost (approx):
 	</div>
 
 	<div class="cntRow"{+START,IF,{$MOBILE}} style="margin-top: 30px;"{+END}>
-		<p><span class="colrRd">*</span> We have a minimum charge, but where possible we provide value by handling tickets in bunches.</p>
+		<p>
+			As a thank you for supporting the Composr developers, each purchased support credit automatically leads to 50 points (so you get a position of respect in the Composr community).
+		</p>
 
-		<p>&dagger; Response times aren't guaranteed, but if we miss a regular response time we will charge it at the back-burner rate. If you expect to be putting in tickets that will require an hour or more a day over an extended period of days, it is a good idea to arrange a staff secondment with us.</p>
+		<p>&dagger; Response times aren't guaranteed, but if we miss a regular response time we will charge it at the back-burner rate. If time is a factor and you are expecting to put through some complex queries, or a stream of queries, [page=":contact:support_notice"]please let us know[/page] as far in advance as possible so that we can arrange staff availability (we have to schedule primary staff assignments weeks or months in advance, and it can get extremely hectic). If you expect to be putting in tickets that will require an hour or more a day over an extended period of days, it is a good idea to arrange a staff secondment with us.</p>
+
+		<p><span class="colrRd">*</span> We have a minimum charge, but where possible we provide value by handling tickets in bunches.</p>
 
 		<!--<p>&dagger;&dagger; VAT applies for EU customers. VAT not included in figures quoted here.</p>-->
 	</div>
