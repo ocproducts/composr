@@ -52,7 +52,7 @@ class Hook_ajax_tree_choose_gallery
         $options['levels_to_expand'] = max(0, $levels_to_expand - 1);
 
         if (!has_actual_page_access(null, 'galleries')) {
-            $tree = array();
+            $tree = $compound_list ? array(array(), '') : array();
         }
 
         if ($compound_list) {

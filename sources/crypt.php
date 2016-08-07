@@ -28,7 +28,8 @@
 function ratchet_hash($password, $salt)
 {
     // NB: We don't pass the salt separately, we let password_hash generate its own internal salt also (that builds into the hash). So it is double salted.
-    return password_hash($salt . md5($password), PASSWORD_BCRYPT, array('cost' => intval(get_option('crypt_ratchet'))));
+    $ratchet = max(10, intval(get_option('crypt_ratchet')));
+    return password_hash($salt . md5($password), PASSWORD_BCRYPT, array('cost' => $ratchet));
 }
 
 /**
@@ -67,7 +68,8 @@ function produce_salt()
     } elseif ((function_exists('openssl_random_pseudo_bytes')) && (get_value('disable_openssl') !== '1')) {
         $u = substr(md5(openssl_random_pseudo_bytes(13)), 0, 13);
     } elseif (function_exists('password_hash')) { // password_hash will include a randomised component
-        return substr(md5(password_hash(uniqid('', true), PASSWORD_BCRYPT, array('cost' => intval(get_option('crypt_ratchet'))))), 0, 13);
+        $ratchet = max(10, intval(get_option('crypt_ratchet')));
+        return substr(md5(password_hash(uniqid('', true), PASSWORD_BCRYPT, array('cost' => $ratchet))), 0, 13);
     } else {
         $u = substr(md5(uniqid(strval(get_secure_random_number()), true)), 0, 13);
     }
@@ -115,7 +117,8 @@ function get_secure_random_number()
             $code = -$code;
         }
     } elseif (function_exists('password_hash')) { // password_hash will include a randomised component
-        $hash = password_hash(uniqid('', true), PASSWORD_BCRYPT, array('cost' => intval(get_option('crypt_ratchet'))));
+        $ratchet = max(10, intval(get_option('crypt_ratchet')));
+        $hash = password_hash(uniqid('', true), PASSWORD_BCRYPT, array('cost' => $ratchet));
         return crc32($hash);
     } else {
         $code = mt_rand(0, min(2147483647, mt_getrandmax()));

@@ -72,7 +72,11 @@ function upgrade_script()
                     $oc = (get_option('site_closed') == '0') ? do_lang('SITE_OPEN') : do_lang('SITE_CLOSED');
                     $a = float_to_raw_string(cms_version_number(), 10, true);
                     $b = get_value('version');
-                    $b = float_to_raw_string(floatval($b), 10, true); // Normalise decimal places
+                    if ($b === null) {
+                        $b = do_lang('UNKNOWN');
+                    } else {
+                        $b = float_to_raw_string(floatval($b), 10, true); // Normalise decimal places
+                    }
                     $l_up_info = do_lang('FU_UP_INFO' . (($a == $b) ? '_1' : '_2'), $a, $b);
                     $l_fu_closedness = do_lang('FU_CLOSENESS', $oc);
                     $l_maintenance = do_lang('FU_MAINTENANCE');
@@ -460,9 +464,10 @@ function upgrade_script()
                         $_version_database = get_value('ocf_version');
                     }
                     if ($_version_database === null) {
-                        $_version_database = '2.1';
+                        $version_database = $version_files;
+                    } else {
+                        $version_database = floatval($_version_database);
                     }
-                    $version_database = floatval($_version_database);
                     if ($version_database < $version_files) {
                         echo do_lang('FU_MUST_UPGRADE_CNS', fu_link('upgrader.php?type=cns', do_lang('FU_UPGRADE_CNS')));
                     }
@@ -1513,7 +1518,7 @@ function version_specific()
     $_version_database = get_value('version');
     $version_database = floatval($_version_database);
     if ($_version_database === null) {
-        $version_database = 2.1; // Either 2.0 or 2.1, and they are equivalent in terms of what we need to do
+        $version_database = $version_files;
     }
     if ($version_database < $version_files) {
         if ($version_database < 9.0) {
@@ -1855,9 +1860,10 @@ function cns_upgrade()
         delete_value('ocf_version');
     }
     if ($_version_database === null) {
-        $_version_database = '2.1';
+        $version_database = $version_files;
+    } else {
+        $version_database = floatval($_version_database);
     }
-    $version_database = floatval($_version_database);
 
     if ($version_files != $version_database) {
         global $SITE_INFO;

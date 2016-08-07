@@ -16,18 +16,18 @@ Before you can use any of the Facebook Support addon features you need to config
 [media thumb="0" framed="0" float="right"]data_custom/images/docs/tut_facebook/facebook.png[/media]
 Integration is done via configuring an app on Facebook; no actual app code needs writing, but this is how you get an API key.
 
-1) Go to [url="set up your app on Facebook"]https://developers.facebook.com/apps/[/url]
-2) Click on right upper corner "Add a New App" button
-3) Select "Website"
-4) Type your site name
-5) Click "Create New Facebook App ID"
-6) Choose a Category
-7) Click the button
-8) Enter the "Site URL". It's crucial that you give Facebook the correct base URL to your site. It absolutely will not allow things to integrate if it does not match exactly. Make sure you have the same case (i.e. all lower case) and the same use or non-use of 'www.' in the domain name.
-9) Scroll back up and click "Skip quickstart"
-10) Note down your App ID and your App Secret
-
-[i]Update[/i]: Facebook keep making the app process more and more complex. You may also want to enter:
+[list="1"]
+[*] Go to [url="set up your app on Facebook"]https://developers.facebook.com/apps/[/url]
+[*] Click on right upper corner "Add a New App" button
+[*] Select "Website"
+[*] Type your site name
+[*] Click "Create New Facebook App ID"
+[*] Choose a Category
+[*] Click the button
+[*] Enter the "Site URL". It's crucial that you give Facebook the correct base URL to your site. It absolutely will not allow things to integrate if it does not match exactly. Make sure you have the same case (i.e. all lower case) and the same use or non-use of 'www.' in the domain name.
+[*] Scroll back up and click "Skip quickstart"
+[*] Note down your App ID and your App Secret
+[*] You will now also need to enter the following:
  - Settings
   - your app domain name
   - a contact email
@@ -39,15 +39,19 @@ Integration is done via configuring an app on Facebook; no actual app code needs
   - a 16x16 app icon
   - a 1024x1024 app icon
   - a user support email
-If you want to allow admin publishing to a Facebook page, go to App Review and enabling (with explanations of why):
- - publish_pages
- - manage_pages
+[/list]
+
+If you want to allow admin publishing to a Facebook page, go to App Review and enable (with explanations of why):
+ - [tt]publish_pages[/tt]
+ - [tt]manage_pages[/tt]
+Facebook will likely make you record a screencast of how exactly the system works, which is likely to take you around half a day of work once everything's said and done. Unfortunately it's not easy anymore.
+
 And if you want to request additional member details for logging in users:
- - user_about_me
- - user_birthday
- - user_website
- - user_hometown
- - user_location
+ - [tt]user_about_me[/tt]
+ - [tt]user_birthday[/tt]
+ - [tt]user_website[/tt]
+ - [tt]user_hometown[/tt]
+ - [tt]user_location[/tt]
 
 [title="4"]Special case: Delegating access[/title]
 
@@ -149,7 +153,7 @@ You can either place this block manually within Comcode, similar to the standard
 
 [i]This section is relevant even if you are not using the Facebook Support addon.[/i]
 
-The [tt]main_screen_actions[/tt] block contains a Facebook share link if the Facebook Support addon is not installed. If the Facebook Support addon is installed it becomes a Like Button instead.
+The [tt]main_screen_actions[/tt] block contains a Facebook share link if the Facebook Support addon is not installed. If the Facebook Support addon is installed it (by default) becomes a Like Button instead (which associates to your Facebook Page, allowing ongoing flow of your content to said user).
 
 It is important to understand how the Facebook share button works. The button does not transfer the shared page's image/title to Facebook. Instead, Facebook comes back at the shared URL, and looks at the Open Graph meta tags. Open Graph is described in the next section.
 
@@ -342,7 +346,7 @@ You can (in theory) have content automatically syndicate to Facebook in 2 ways:
 1) Site level: All News & Calendar events, to the configured Facebook page/group/user
 2) Personal: Activity, to the wall of individual members
 
-This only applies if the 'Facebook activity syndication' option is enabled (it's not by default).
+This only applies if the 'Facebook activity syndication' option is enabled (it's not by default). Note that nowadays setting this up is onerous to say the least, as Facebook require you to apply along with screencasts of how your syndication will work -- which you need to produce yourself.
 
 [title="3"]Site level[/title]
 

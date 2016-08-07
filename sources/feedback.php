@@ -190,7 +190,7 @@ function post_comment_script()
     if (!isset($_GET['options']) && !isset($_POST['options'])) {
         post_param_string('options'); // Trigger an error
     }
-    $options = isset($_POST['options']) ? $_POST['options'] : $_GET['options'];
+    $options = isset($_POST['options']) ? $_POST['options'] : (isset($_GET['options']) ? $_GET['options'] : array());
     $_options = @json_decode($options, true);
     if (!is_array($_options)) {
         warn_exit(do_lang_tempcode('INTERNAL_ERROR'));

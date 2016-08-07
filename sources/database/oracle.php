@@ -114,7 +114,7 @@ class Database_Static_oracle extends DatabaseDriver
      */
     public function query($query, $connection, $max = null, $start = null, $fail_ok = false, $get_insert_id = false)
     {
-        if (($start !== null) && ($max !== null) && (strtoupper(substr($query, 0, 7)) == 'SELECT ') || (strtoupper(substr($query, 0, 8)) == '(SELECT ')) {
+        if (($start !== null) && ($max !== null) && ((strtoupper(substr($query, 0, 7)) == 'SELECT ') || (strtoupper(substr($query, 0, 8)) == '(SELECT '))) {
             $old_query = $query;
 
             if ($start === null) {
@@ -149,7 +149,7 @@ class Database_Static_oracle extends DatabaseDriver
 
         $stmt = ociparse($connection, $query, 0);
         $results = @ociexecute($stmt);
-        if ((($results === false) || ((strtoupper(substr($query, 0, 7)) == 'SELECT ') || (strtoupper(substr($query, 0, 8)) == '(SELECT ') && ($results === true))) && (!$fail_ok)) {
+        if ((($results === false) || (((strtoupper(substr($query, 0, 7)) == 'SELECT ') || (strtoupper(substr($query, 0, 8)) == '(SELECT ')) && ($results === true))) && (!$fail_ok)) {
             $err = ocierror($connection);
             if (function_exists('ocp_mark_as_escaped')) {
                 ocp_mark_as_escaped($err);
@@ -166,7 +166,7 @@ class Database_Static_oracle extends DatabaseDriver
             }
         }
 
-        if (($results !== true) && (strtoupper(substr($query, 0, 7)) == 'SELECT ') || (strtoupper(substr($query, 0, 8)) == '(SELECT ') && ($results !== false)) {
+        if (($results !== true) && ((strtoupper(substr($query, 0, 7)) == 'SELECT ') || (strtoupper(substr($query, 0, 8)) == '(SELECT ')) && ($results !== false)) {
             return $this->get_query_rows($stmt);
         }
 

@@ -15,6 +15,10 @@
 
 function init__galleries2($code)
 {
+    if (!$GLOBALS['SITE_DB']->table_exists('workflow_content')) { // Not installed
+        return $code;
+    }
+
     // We want to inject our workflow handling code into add_image...
     $code = str_replace(
         'log_it(\'ADD_IMAGE\', strval($id), $title);',

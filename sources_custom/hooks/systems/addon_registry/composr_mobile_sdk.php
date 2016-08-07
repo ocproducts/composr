@@ -88,7 +88,9 @@ class Hook_addon_registry_composr_mobile_sdk
      */
     public function get_description()
     {
-        return 'Server support for Composr Mobile SDK, including Composr mobile APIs and push notification support for iOS and Android.';
+        return 'Server support for Composr Mobile SDK, including Composr mobile APIs and push notification support for iOS and Android.
+
+The documentation for this addon is covered in a dedicated tutorial (' . get_brand_base_url() . '/docs/tut_mobile_sdk.htm).';
     }
 
     /**

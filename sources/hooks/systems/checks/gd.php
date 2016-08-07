@@ -33,15 +33,16 @@ class Hook_check_gd
         $warning = array();
         if (!function_exists('imagecreatefromstring')) {
             $warning[] = do_lang_tempcode('NO_GD_ON_SERVER');
-        }
-        if (!function_exists('imagepng')) {
-            $warning[] = do_lang_tempcode('NO_GD_ON_SERVER_PNG');
-        }
-        if (!function_exists('imagejpeg')) {
-            $warning[] = do_lang_tempcode('NO_GD_ON_SERVER_JPEG');
-        }
-        if (!function_exists('imagettfbbox')) {
-            $warning[] = do_lang_tempcode('NO_GD_ON_SERVER_TTF');
+        } else {
+            if (!function_exists('imagepng')) {
+                $warning[] = do_lang_tempcode('NO_GD_ON_SERVER_PNG');
+            }
+            if (!function_exists('imagejpeg')) {
+                $warning[] = do_lang_tempcode('NO_GD_ON_SERVER_JPEG');
+            }
+            if (!function_exists('imagettfbbox')) {
+                $warning[] = do_lang_tempcode('NO_GD_ON_SERVER_TTF');
+            }
         }
         return $warning;
     }
