@@ -36,7 +36,7 @@ function set_execution_context($new_get, $new_zone = '_SEARCH', $new_current_scr
     $old_current_script = current_script();
 
     foreach ($_GET as $key => $val) {
-		if (is_integer($key)) {
+        if (is_integer($key)) {
             $key = strval($key);
         }
 
@@ -99,17 +99,29 @@ function _build_keep_form_fields($page = '', $keep_all = false, $exclude = array
     }
     $out = new Tempcode();
 
-    foreach ($_GET as $key => $val) {
-        if (!is_string($val)) {
-            continue;
-        }
+    if (count($_GET) > 0) {
+        foreach ($_GET as $key => $val) {
+            $process_for_key = ((substr($key, 0, 5) == 'keep_') || ($keep_all)) && (!in_array($key, $exclude)) && ($key != 'page') && (!skippable_keep($key, $val));
 
-        if (is_integer($key)) {
-            $key = strval($key);
-        }
+            if (is_array($val)) {
+                foreach ($val as $_key => $_val) { // We'll only support one level deep. Also no keep parameter array support.
+                    if ($process_for_key) {
+                        $out->attach(form_input_hidden($key . '[' . $_key . ']', $_val));
+                    }
+                }
+            } else {
+                if (!is_string($val)) {
+                    continue;
+                }
 
-        if (((substr($key, 0, 5) == 'keep_') || ($keep_all)) && (!in_array($key, $exclude)) && ($key != 'page') && (!skippable_keep($key, $val))) {
-            $out->attach(form_input_hidden($key, $val));
+                if (is_integer($key)) {
+                    $key = strval($key);
+                }
+
+                if ($process_for_key) {
+                    $out->attach(form_input_hidden($key, $val));
+                }
+            }
         }
     }
 
@@ -164,7 +176,7 @@ function _build_keep_post_fields($exclude = null, $force_everything = false)
 {
     $out = '';
     foreach ($_POST as $key => $val) {
-		if (is_integer($key)) {
+        if (is_integer($key)) {
             $key = strval($key);
         }
 

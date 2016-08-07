@@ -260,7 +260,7 @@ class Database_Static_sqlserver extends DatabaseDriver
             }
         }
 
-        if ((strtoupper(substr($query, 0, 7)) == 'SELECT ') || (strtoupper(substr($query, 0, 8)) == '(SELECT ') && ($results !== false) && ($results !== true)) {
+        if (((strtoupper(substr($query, 0, 7)) == 'SELECT ') || (strtoupper(substr($query, 0, 8)) == '(SELECT ')) && ($results !== false) && ($results !== true)) {
             return $this->get_query_rows($results);
         }
 

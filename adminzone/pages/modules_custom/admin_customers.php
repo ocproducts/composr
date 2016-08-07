@@ -40,6 +40,10 @@ class Module_admin_customers
      */
     public function uninstall()
     {
+        if (substr(get_db_type(), 0, 5) != 'mysql') {
+            return;
+        }
+
         /* NB: Does not delete CPFs and multi-mods. But that doesn't actually matter */
         delete_config_option('support_credit_value');
         delete_config_option('support_priority_backburner_minutes');
@@ -91,6 +95,10 @@ class Module_admin_customers
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
+        if (substr(get_db_type(), 0, 5) != 'mysql') {
+            return;
+        }
+
         if (get_forum_type() != 'cns') {
             return; // Conversr only
         }

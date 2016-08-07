@@ -206,6 +206,7 @@ Ask us if you wanted to be listed as one of the [page=\"site:stars\"]Composr dev
                     'Request an installation',
                     'Hire for a project',
                     'Hire someone for ongoing work (secondment)',
+                    'Give advance notice of support needs',
                     'Technical support (single question support / very quick jobs)',
                     'Sponsor Composr enhancements',
                     'Request a website upgrade',
@@ -219,6 +220,7 @@ Ask us if you wanted to be listed as one of the [page=\"site:stars\"]Composr dev
             array('commercial_service_type',    'Request an installation',                                              'installation'),
             array('commercial_service_type',    'Hire for a project',                                                   'project'),
             array('commercial_service_type',    'Hire someone for ongoing work (secondment)',                           'secondment'),
+            array('commercial_service_type',    'Give advance notice of support needs',                                 'support_notice'),
             array('commercial_service_type',    'Technical support (single question support / very quick jobs)',        'support'),
             array('commercial_service_type',    'Sponsor Composr enhancements',                                         'sponsor'),
             array('commercial_service_type',    'Request a website upgrade',                                            'upgrade'),
@@ -1014,6 +1016,51 @@ Ask us if you wanted to be listed as one of the [page=\"site:stars\"]Composr dev
             ),
         ) + $extra_brief_details,
         'next' => build_url(array('page' => 'tickets', 'type' => 'post', 'ticket_type' => 'Secondment'), get_module_zone('tickets')),
+    ),
+
+    'support_notice' => array(
+        'title' => 'Give advance notice of support needs',
+        'text' => 'If time is a factor and you are expecting to put through some complex support queries, or a stream of support queries, let us know via this form as far in advance as possible. This helps us arrange staff availability (we have to schedule primary staff assignments weeks or months in advance, and it can get extremely hectic).',
+        'previous' => 'paid',
+        'form_method' => 'POST',
+        'hidden' => array(
+            'title' => 'Advance notice of support needs',
+        ),
+        'questions' => array(
+            'hours_per_week' => array(
+                'label' => 'Hours per week',
+                'description' => 'How many hours per week will be required (approximately).',
+                'type' => 'short_text',
+                'default' => '',
+                'options' => '',
+                'required' => false,
+            ),
+            'work_period' => array(
+                'label' => 'Work period',
+                'description' => 'How long the support will run for.',
+                'type' => 'list',
+                'default' => 'Permanent',
+                'default_list' => array(
+                    'Permanent',
+                    'Unknown',
+                    '4 months (approx)',
+                    '6 months (approx)',
+                    '9 months (approx)',
+                    '1 year (approx)',
+                ),
+                'options' => 'widget=radio',
+                'required' => false,
+            ),
+            'notes' => array(
+                'label' => 'Description of support',
+                'description' => 'A description of the support needed (to help us ensure availability of someone with the necessary skills).',
+                'type' => 'long_text',
+                'default' => '',
+                'options' => '',
+                'required' => false,
+            ),
+        ) + $extra_brief_details,
+        'next' => build_url(array('page' => 'tickets', 'type' => 'post', 'ticket_type' => 'Professional support'), '_SEARCH'),
     ),
 
     'support' => array(

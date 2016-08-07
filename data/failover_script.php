@@ -51,12 +51,12 @@ $required_settings = array(
     'fast_spider_cache',
     'any_guest_cached_too',
     'failover_mode',
-    //'failover_message',	Actually, may be blank
+    //'failover_message',   Actually, may be blank
     'failover_cache_miss_message',
-    //'failover_loadtime_threshold',	Actually, may be blank
-    //'failover_loadaverage_threshold',	Actually, may be blank
+    //'failover_loadtime_threshold',    Actually, may be blank
+    //'failover_loadaverage_threshold', Actually, may be blank
     'failover_email_contact',
-    //'failover_check_urls',	Actually, may be blank
+    //'failover_check_urls',    Actually, may be blank
     'base_url',
 );
 
@@ -304,7 +304,7 @@ function set_failover_mode($new_mode)
                 );
                 $regexp = '(' . str_replace(' ', '\ ', implode('|', $browsers)) . ')';
 
-                //$new_code .= 'RewriteMap failover_mode txt:' . $FILE_BASE . '/data_custom/failover_rewritemap.txt' . "\n";	Has to be defined in main Apache config
+                //$new_code .= 'RewriteMap failover_mode txt:' . $FILE_BASE . '/data_custom/failover_rewritemap.txt' . "\n";    Has to be defined in main Apache config
                 $new_code .= 'RewriteCond %{QUERY_STRING} !keep_failover [NC]' . "\n";
                 $new_code .= 'RewriteRule ^(.*) ${failover_mode:\$1} [L,QSA]' . "\n";
                 //$new_code .= 'RewriteMap failover_mode__mobile txt:' . $FILE_BASE . '/data_custom/failover_rewritemap__mobile.txt' . "\n";

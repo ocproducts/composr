@@ -94,7 +94,7 @@ function render_download_box($row, $pic = true, $include_breadcrumbs = true, $zo
             require_code('images');
             $full_img_url = $rows[0]['url'];
             $thumb_url = ensure_thumbnail($rows[0]['url'], $rows[0]['thumb_url'], 'galleries', 'images', $rows[0]['id']);
-            $imgcode = do_image_thumb($thumb_url, do_lang('DOWNLOAD_THUMBNAIL'));
+            $imgcode = do_image_thumb($thumb_url, do_lang('THUMBNAIL'));
         } else {
             $imgcode = new Tempcode();
         }

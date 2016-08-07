@@ -196,7 +196,7 @@ class Module_admin_ecommerce extends Standard_crud_module
      * @param  SHORT_TEXT $length_units The units for the length
      * @set    y m d w
      * @param  BINARY $auto_recur Auto-recur
-     * @param  ?GROUP $group_id The usergroup that purchasing gains membership to (null: unspecified)
+     * @param  ?GROUP $group_id The usergroup that purchasing gains membership to (null: not set)
      * @param  BINARY $uses_primary Whether this is applied to primary usergroup membership
      * @param  BINARY $enabled Whether this is currently enabled
      * @param  ?LONG_TEXT $mail_start The text of the e-mail to send out when a subscription is start (null: default)

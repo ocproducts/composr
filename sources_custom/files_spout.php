@@ -83,7 +83,7 @@ function spreadsheet_export__spout($ext, $data, $filename, $headers, $output_and
             $single_row[] = $val;
         }
         if (isset($metadata[$_i])) {
-            $writer->addRow($single_row, $metadata[$_i]);
+            $writer->addRow($single_row, empty($metadata[$_i]) ? array() : $metadata[$_i]);
         } else {
             $writer->addRow($single_row);
         }

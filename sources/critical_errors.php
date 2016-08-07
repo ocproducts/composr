@@ -115,20 +115,30 @@ if (!function_exists('critical_error')) {
             case 'DATABASE_FAIL':
                 $error = 'The website\'s first database query (checking the page request is not from a banned IP address or reading the site configuration) has failed. This almost always means that the database is not set up correctly, which in turns means that either backend database configuration has changed (perhaps the database has been emptied), or the configuration file (_config.php) has been incorrectly altered (perhaps to point to an empty database), or you have moved servers and not updated your _config.php settings properly or placed your database. It could also mean that the <kbd>' . get_table_prefix() . 'banned_ip</kbd> table or <kbd>' . get_table_prefix() . 'config</kbd> table alone is missing or corrupt, but this is unlikely. As this is an error due to the website\'s environment being externally altered by unknown means, the website cannot continue to function or solve the problem itself.';
                 break;
-            case '_CONFIG.PHP':
+            case '_CONFIG.PHP_MISSING':
                 $install_url = 'install.php';
                 if (!file_exists($install_url)) {
                     $install_url = '../install.php';
                 }
                 if (file_exists($install_url)) {
-                    $likely = 'Composr files have been placed, yet installation not completed. To install Composr, <a href="' . $install_url . '">run the installer</a>.';
+                    $error = 'The top-level configuration file (<kbd>_config.php</kbd>) is missing. You probably have not yet installed, so <a href="' . $install_url . '">run the installer</a>.';
                 } else {
-                    $likely = 'Composr files have been placed by direct copying from a non-standard source that included neither a configuration file nor installation script, or _config.php has become corrupt after installation. The installer (install.php) is not present: it is advised that you replace _config.php from backup, or if you have not yet installed, use an official ocProducts installation package.';
+                    $error = 'The top-level configuration file (<kbd>_config.php</kbd>) is missing. This file is created during installation. If you have not yet installed, use an official ocProducts installation package. If somehow <kbd>_config.php</kbd> was deleted then replace <kbd>_config.php</kbd> from backup.';
                 }
-                $error = 'The top-level configuration file (_config.php) is either not-present or empty. This file is created upon installation, and the likely cause of this error is that ' . $likely;
+                break;
+            case '_CONFIG.PHP_EMPTY':
+                $install_url = 'install.php';
+                if (!file_exists($install_url)) {
+                    $install_url = '../install.php';
+                }
+                if (file_exists($install_url)) {
+                    $error = 'The top-level configuration file (<kbd>_config.php</kbd>) is empty. You probably have not yet installed, so <a href="' . $install_url . '">run the installer</a>.';
+                } else {
+                    $error = 'The top-level configuration file (<kbd>_config.php</kbd>) is empty. This file is created during installation. If you have not yet installed, use an official ocProducts installation package. If somehow <kbd>_config.php</kbd> was blanked out then replace <kbd>_config.php</kbd> from backup.';
+                }
                 break;
             case '_CONFIG.PHP_CORRUPTED':
-                $error = 'The top-level configuration file (_config.php) appears to be corrupt. Perhaps it was incorrectly uploaded, or a typo was made. It must be valid PHP code.';
+                $error = 'The top-level configuration file (<kbd>_config.php</kbd>) appears to be corrupt. Perhaps it was incorrectly uploaded, or a typo was made. It must be valid PHP code.';
                 break;
             case 'CRIT_LANG':
                 $error = 'The most basic critical error language file (lang/' . fallback_lang() . '/critical_error.ini) is missing. It is likely that other files are also, for whatever reason, missing from this Composr installation.';

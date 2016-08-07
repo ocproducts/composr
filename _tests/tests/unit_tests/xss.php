@@ -103,17 +103,17 @@ class xss_test_set extends cms_test_case
 
         ob_start();
         @print(get_param_string('id')); // Print an unverified input parameter, but surpress our XSS error
-		ob_end_clean();
+        ob_end_clean();
 
-		safe_ini_set('ocproducts.xss_detect', '0');
+        safe_ini_set('ocproducts.xss_detect', '0');
 
-		set_error_handler($temp);
+        set_error_handler($temp);
 
-		$setting = ini_get('ocproducts.xss_detect');
+        $setting = ini_get('ocproducts.xss_detect');
         if (!empty($setting)) {
-    		$this->assertTrue(strpos($php_errormsg, 'XSS vulnerability') !== false, empty($setting) ? 'ocProducts PHP not running' : null);
+            $this->assertTrue(strpos($php_errormsg, 'XSS vulnerability') !== false, empty($setting) ? 'ocProducts PHP not running' : null);
         }
-	}
+    }
 
     public function testXSSDetectorOnAndWorkingComplex1()
     {

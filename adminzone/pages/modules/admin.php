@@ -579,8 +579,8 @@ class Module_admin
             $config_categories = array();
             $conf_found_count = 0;
             foreach ($all_options as $name => $p) {
-				$_n = do_lang($p['human_name'], null, null, null, null, false);
-				if ($_n === null) {
+                $_n = do_lang($p['human_name'], null, null, null, null, false);
+                if ($_n === null) {
                     continue;
                 }
                 $n = do_lang_tempcode($p['human_name']);

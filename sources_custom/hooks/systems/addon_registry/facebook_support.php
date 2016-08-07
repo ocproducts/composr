@@ -101,7 +101,9 @@ Features:
 
 For this addon to work you need to configure Composr\'s Facebook configuration settings, which includes getting a Facebook app ID.
 
-Please be aware that this addon overrides some common templates to add Facebook functionality to them, such as [tt]LOGIN_SCREEN.tpl[/tt] and [tt]BLOCK_SIDE_PERSONAL_STATS_NO.tpl[/tt].';
+Please be aware that this addon overrides some common templates to add Facebook functionality to them, such as [tt]LOGIN_SCREEN.tpl[/tt] and [tt]BLOCK_SIDE_PERSONAL_STATS_NO.tpl[/tt].
+
+The documentation for this addon is covered in a dedicated tutorial (' . get_brand_base_url() . '/docs/tut_facebook.htm).';
     }
 
     /**

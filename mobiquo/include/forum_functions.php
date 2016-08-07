@@ -697,7 +697,7 @@ function prepare_post_for_tapatalk($post, $return_html = false)
     ), null, false, null, '.txt', 'text'));
 
     if ($return_html) {
-        /*	The below works okay for Android. Unfortunately the Windows Mobile build has a very poor HTML rendered that can only do a handful of tags and entities.
+        /*  The below works okay for Android. Unfortunately the Windows Mobile build has a very poor HTML rendered that can only do a handful of tags and entities.
         So instead we render as text and convert that to 'HTML'.
 
         $content = strip_attachments_from_comcode($content, true);

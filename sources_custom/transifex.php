@@ -41,8 +41,19 @@ function init__transifex()
     list($JUST_LANG_STRINGS_ADMIN) = string_scan(fallback_lang(), true);
     $JUST_LANG_STRINGS_ADMIN = array_flip($JUST_LANG_STRINGS_ADMIN);
 
-    global $URGENT_PRIORITY_LANGUAGE_FILES;
-    $URGENT_PRIORITY_LANGUAGE_FILES = array('global.ini', 'cns.ini', 'news.ini');
+    global $OVERRIDE_PRIORITY_LANGUAGE_FILES;
+    $OVERRIDE_PRIORITY_LANGUAGE_FILES = array(
+        'global.ini' => TRANSLATE_PRIORITY_URGENT,
+        'cns.ini' => TRANSLATE_PRIORITY_URGENT,
+        'news.ini' => TRANSLATE_PRIORITY_URGENT,
+        'upload_syndication.ini' => TRANSLATE_PRIORITY_NORMAL,
+        'trackbacks.ini' => TRANSLATE_PRIORITY_NORMAL,
+        'sms.ini' => TRANSLATE_PRIORITY_NORMAL,
+        'rss.ini' => TRANSLATE_PRIORITY_NORMAL,
+        'import.ini' => TRANSLATE_PRIORITY_NORMAL,
+        'bookmarks.ini' => TRANSLATE_PRIORITY_NORMAL, // LEGACY
+        'staff.ini' => TRANSLATE_PRIORITY_NORMAL, // LEGACY
+    );
 
     // Extra files to send to Transifex (additional to .ini files)
     global $EXTRA_LANGUAGE_FILES;
@@ -328,7 +339,7 @@ function _push_cms_file_to_transifex($path, $resource_path, $project_slug, $prio
 
 function _push_strings_file_to_transifex($f, $project_slug, $custom, $administrative, $push_translations)
 {
-    global $JUST_LANG_STRINGS_ADMIN, $URGENT_PRIORITY_LANGUAGE_FILES, $LANGUAGE_STRING_DESCRIPTIONS, $LANGUAGE_FILES_ADDON;
+    global $JUST_LANG_STRINGS_ADMIN, $OVERRIDE_PRIORITY_LANGUAGE_FILES, $LANGUAGE_STRING_DESCRIPTIONS, $LANGUAGE_FILES_ADDON;
 
     if ($custom) {
         $category = TRANSLATE_ADDON;
@@ -336,8 +347,8 @@ function _push_strings_file_to_transifex($f, $project_slug, $custom, $administra
         $category = TRANSLATE_CORE;
     }
 
-    if ((in_array($f, $URGENT_PRIORITY_LANGUAGE_FILES)) && ($administrative != TRANSLATE_ADMINISTRATIVE_YES)) {
-        $priority = TRANSLATE_PRIORITY_URGENT;
+    if ((isset($OVERRIDE_PRIORITY_LANGUAGE_FILES[$f])) && ($administrative != TRANSLATE_ADMINISTRATIVE_YES)) {
+        $priority = $OVERRIDE_PRIORITY_LANGUAGE_FILES[$f];
     } else {
         if (($custom) || ($administrative == TRANSLATE_ADMINISTRATIVE_YES)) {
             $priority = TRANSLATE_PRIORITY_NORMAL;
@@ -355,12 +366,22 @@ function _push_strings_file_to_transifex($f, $project_slug, $custom, $administra
     }
 
     // Rebuild as a simpler .ini file
-    $map = get_lang_file_map(fallback_lang(), $_f, !$custom);
+    $map = get_lang_file_map(fallback_lang(), $_f, !$custom, false);
     $c = '';
     foreach ($map as $key => $val) {
-        if (($administrative != TRANSLATE_ADMINISTRATIVE_YES) || (isset($JUST_LANG_STRINGS_ADMIN[$key]))) {
-            $c .= $key . '=' . str_replace("\n", '\n', $val) . "\n";
+        if ($administrative == TRANSLATE_ADMINISTRATIVE_YES) {
+            if (!isset($JUST_LANG_STRINGS_ADMIN[$key])) {
+                continue;
+            }
         }
+
+        if ($administrative == TRANSLATE_ADMINISTRATIVE_NO) {
+            if (isset($JUST_LANG_STRINGS_ADMIN[$key])) {
+                continue;
+            }
+        }
+
+        $c .= $key . '=' . str_replace("\n", '\n', $val) . "\n";
     }
 
     // Upload
@@ -382,10 +403,19 @@ function _push_strings_file_to_transifex($f, $project_slug, $custom, $administra
         $args['categories'] = $categories;
     }
     if ($test[1] == '200') {
+        if ($c == '') {
+            $test = _transifex('/project/' . $project_slug . '/resource/' . $_f_extended . '/', 'DELETE');
+            return true; // Empty, so delete
+        }
+
         // Edit
         $test = _transifex('/project/' . $project_slug . '/resource/' . $_f_extended . '/', 'PUT', json_encode($args));
         $test = _transifex('/project/' . $project_slug . '/resource/' . $_f_extended . '/content/', 'PUT', json_encode(array('content' => $c)));
     } else {
+        if ($c == '') {
+            return true; // Empty, so don't add
+        }
+
         // Add
         $test = _transifex('/project/' . $project_slug . '/resources/', 'POST', json_encode($args + array('i18n_type' => 'INI', 'content' => $c)));
     }
