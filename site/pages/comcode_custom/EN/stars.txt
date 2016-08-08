@@ -156,7 +156,7 @@
 		<li>Haydn Maidment (former project manager for ocProducts)</li>
 		<li>Chris Warburton (former developer for ocProducts, made some key contributions to ocPortal)</li>
 		<li>Jim Davidson (written many tutorials via Arvixe)</li>
-		<li>[url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url] (sponsorship of Composr CMS tutorials)</li>
+		<li>[url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url] (sponsorship of Composr CMS tutorials)</li>
 		<li>All 20 or so former and current developers and managers for ocProducts</li>
 	</ul>
 </div>

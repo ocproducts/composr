@@ -21,7 +21,7 @@
 		<li><a class="roundBut" href="{$PAGE_LINK*,site:download}"><span class="txtUpper">Download</span> Composr CMS</a></li>
 		<li><a class="roundBut" href="{$PAGE_LINK*,docs:tutorials}">View <span class="txtUpper">Tutorial</span> Library</a></li>
 		<li><a class="roundBut" href="{$PAGE_LINK*,site:demo}">View Personal <span class="txtUpper">Demo</span></a></li>
-		<!--<li><a class="roundBut" href="http://www.arvixe.com/5256-223-3-122.html">Pro Web design & Hosting</a></li>-->
+		<!--<li><a class="roundBut" href="http://arvixe.evyy.net/c/302199/279421/3370">Pro Web design & Hosting</a></li>-->
 	</ul>
 
 
