@@ -23,6 +23,6 @@ The next 2 options deal with if you are using a custom template and styling for 
 
 The remaining options deal with how the block will display including whether it's centred and the size of the videos and other similar options.
 
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
 
 {$SET,tutorial_tags,Content,Galleries,Third Party Integration,novice}{$SET,tutorial_add_date,Oct 2013}{$SET,tutorial_summary,Composr offers an addon to be able to display videos from a specific YouTube channel on your website. This tutorial shows how it works.}[block]main_tutorial_rating[/block]

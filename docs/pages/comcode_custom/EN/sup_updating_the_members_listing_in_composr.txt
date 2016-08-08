@@ -36,6 +36,6 @@ Once the addon is installed and you are happy it is working how you would like i
 
 However I strongly recommend that unless you have a very good understanding of programming you don't make changes to the templates as changes here could cause serious issues for your website.
 
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
 
 {$SET,tutorial_tags,Members,Social,Members,regular}{$SET,tutorial_add_date,Jun 2014}{$SET,tutorial_summary,Once your Composr community-based site gets to a certain size you might want to change how your members list is displayed. This tutorial explains how to change the display options.}[block]main_tutorial_rating[/block]

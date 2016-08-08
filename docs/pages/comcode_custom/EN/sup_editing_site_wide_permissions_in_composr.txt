@@ -20,6 +20,6 @@ Within this and some other sections where these options are not always really cl
 
 Make sure you take note of the options you are setting because if these are set incorrectly you can lock members out of your site.
 
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
 
 {$SET,tutorial_tags,Security,Configuration,novice}{$SET,tutorial_add_date,Apr 2014}{$SET,tutorial_summary,When you are creating a new usergroup you will usually want to customise the permissions for all of the members within. This tutorial explains how privileges work.}[block]main_tutorial_rating[/block]

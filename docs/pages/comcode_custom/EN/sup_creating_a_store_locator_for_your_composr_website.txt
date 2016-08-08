@@ -66,6 +66,6 @@ You can change these options to suit your own Catalogue. The parameters you can 
 [/list]
 You should note that the preview of this page will not work for this block so I recommend creating the page not attached to a live site and making sure it works before you link it to your live site.
 
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
 
 {$SET,tutorial_tags,eCommerce,Third Party Integration,Catalogues,novice}{$SET,tutorial_add_date,Aug 2013}{$SET,tutorial_summary,A store locator is very useful for any retail business. This tutorial shows how to create one using catalogues.}[block]main_tutorial_rating[/block]
