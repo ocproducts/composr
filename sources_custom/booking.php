@@ -342,7 +342,7 @@ function find_booking_price($request)
                 $price += $_supplement[0]['price'] * $supplement_quantity * (($_supplement[0]['price_is_per_period'] == 1) ? count($days) : 1);
 
                 if (($supplement_quantity != 0) && ($_supplement[0]['supports_quantities'] == 0)) {
-                    fatal_exit('INTERNAL_ERROR');
+                    fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
                 }
             }
         }

@@ -380,7 +380,7 @@ class Database_super_mysql
                 break;
 
             default:
-                fatal_exit('INTERNAL_ERROR');
+                fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
 
         return 'CAST(' . $field . ' AS ' . $_type . ')';
