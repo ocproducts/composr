@@ -40,6 +40,6 @@ The final section relates to all of the images which make up your theme. These a
 
 From the above you can see Composr's themes can be pretty complex, but the developers have spent time making and refining these really powerful theme design features which you won't find in any other Open Source CMS. If you just want a different colour and a few minor changes to the default theme then Composr offers you the theme wizard to achieve this in a matter of seconds. If you want to make a massive conversion of the software you have all of the tools at your disposal to be able to efficiently find the individual elements you need to change.
 
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
 
 {$SET,tutorial_tags,Design & Themeing,novice}{$SET,tutorial_add_date,Apr 2013}{$SET,tutorial_summary,How knowledgeable you are in CSS and HTML will determine how detailed a customisation you will be able to make. This tutorial aims to make it easier to find your way around the files you need to edit.}[block]main_tutorial_rating[/block]

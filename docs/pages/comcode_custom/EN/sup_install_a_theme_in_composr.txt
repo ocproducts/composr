@@ -37,6 +37,6 @@ This page gives some information about the theme including who originally create
 
 Once you have put the theme live check through your site pages to make sure everything is displayed as you want it to. I find it useful to have the Admin Zone open in one tab and the live site in another so I can quickly change any settings I need to when making changes to my Composr websites.
 
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
 
 {$SET,tutorial_tags,Design & Themeing,novice}{$SET,tutorial_add_date,Feb 2014}{$SET,tutorial_summary,This tutorial shows how to install a third party theme on your website.}[block]main_tutorial_rating[/block]

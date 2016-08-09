@@ -320,6 +320,33 @@ function db_escape_string($string)
 }
 
 /**
+ * Create an SQL cast.
+ *
+ * @param $field string The field identifier
+ * @param $type string The type wanted
+ * @set CHAR INT
+ * @return string The database type
+ */
+function db_cast($field, $type)
+{
+    if (method_exists($GLOBALS['DB_STATIC_OBJECT'], 'db_cast')) {
+        return $GLOBALS['DB_STATIC_OBJECT']->db_cast($field, $type);
+    }
+
+    switch ($type) {
+        case 'CHAR':
+        case 'INT':
+            $_type = $type;
+            break;
+
+        default:
+            fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+    }
+
+    return 'CAST(' . $field . ' AS ' . $_type . ')';
+}
+
+/**
  * Get the type of database installed, such as MySQL, or Oracle.
  *
  * @return string The database type

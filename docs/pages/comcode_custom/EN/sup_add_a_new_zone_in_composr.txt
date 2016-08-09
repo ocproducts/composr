@@ -46,6 +46,6 @@ This section only has one option which is a checkbox. This option allows you to 
 
 The final part of the form deals with the permissions for the zone and whether members of each usergroup can see and have access to the zone. You may choose to set up a member's only zone which has the access limited to it for most usergroups. If this is the case you can simply untick (uncheck) the usergroups which you do not want to be able to access the new zone.
 
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
 
 {$SET,tutorial_tags,Structure and navigation,novice}{$SET,tutorial_add_date,Jul 2013}{$SET,tutorial_summary,Zones are a key element to the structure of any Composr built website and are a great way of sectioning off your content into different areas.}[block]main_tutorial_rating[/block]

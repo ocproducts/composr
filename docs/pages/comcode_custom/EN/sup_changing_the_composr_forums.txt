@@ -75,6 +75,6 @@ There is no limit to the amount of forums or sub-forums you can create but befor
 
 In my [page="_SEARCH:sup_add_a_sub_forum_to_your_composr_forum"]next tutorial I will add sub-forums[/page].
 
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
 
 {$SET,tutorial_tags,Forum,Social,novice}{$SET,tutorial_add_date,Nov 2014}{$SET,tutorial_summary,As my test site is going to be a community, we need somewhere to hang out and exchange views and ideas, the ideal place is a forum. I'll step through the setup.}[block]main_tutorial_rating[/block]

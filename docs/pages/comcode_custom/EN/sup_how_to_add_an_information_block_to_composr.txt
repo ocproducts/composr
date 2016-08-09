@@ -19,6 +19,6 @@ The Block construction assistant allows you to add any type of Composr block wit
 
 For example on the screenshot I have chosen to add a countdown block. Every Composr website is different and each website will need a different choice of information blocks on it. It is impossible to go through all of them on this tutorial and I recommend taking a look at the huge range of choices you can include on your website.
 
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
 
 {$SET,tutorial_tags,Content,novice}{$SET,tutorial_add_date,Apr 2013}{$SET,tutorial_summary,Composr websites, like most websites are made up of information. Composr achieves this through displaying a range of content blocks.}[block]main_tutorial_rating[/block]
