@@ -359,4 +359,30 @@ class Database_super_mysql
         $this->cache_db = array();
         $this->last_select_db = null;
     }
+
+    /**
+     * Create an SQL cast.
+     *
+     * @param $field string The field identifier
+     * @param $type string The type wanted
+     * @set CHAR INT
+     * @return string The database type
+     */
+    function db_cast($field, $type)
+    {
+        switch ($type) {
+            case 'CHAR':
+                $_type = $type;
+                break;
+
+            case 'INT':
+                $_type = 'SIGNED';
+                break;
+
+            default:
+                fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+
+        return 'CAST(' . $field . ' AS ' . $_type . ')';
+    }
 }

@@ -445,4 +445,28 @@ class Database_Static_access
         odbc_free_result($results);
         return $out;
     }
+
+    /**
+     * Create an SQL cast.
+     *
+     * @param $field string The field identifier
+     * @param $type string The type wanted
+     * @set CHAR INT
+     * @return string The database type
+     */
+    function db_cast($field, $type)
+    {
+        switch ($type) {
+            case 'CHAR':
+                return 'CSTR(' . $field . ')';
+
+            case 'INT':
+                return 'CINT(' . $field . ')';
+
+            default:
+                fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+
+        return $field;
+    }
 }
