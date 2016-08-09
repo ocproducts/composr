@@ -33,6 +33,10 @@ class Hook_pointstore_community_billboard
      */
     public function info()
     {
+        if (!$GLOBALS['SITE_DB']->table_exists('community_billboard')) {
+            return array();
+        }
+
         if (get_option('is_on_community_billboard_buy') == '1') {
             $community_billboard_url = build_url(array('page' => '_SELF', 'type' => 'community_billboard', 'id' => 'community_billboard'), '_SELF');
 

@@ -26,6 +26,10 @@ class Hook_topicview_buildr
      */
     public function run($member_id)
     {
+        if (!$GLOBALS['SITE_DB']->table_exists('w_realms')) {
+            return array();
+        }
+
         global $BUILDR_MEMBER_CACHE;
         if (!isset($BUILDR_MEMBER_CACHE)) {
             $BUILDR_MEMBER_CACHE = array();

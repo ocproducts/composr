@@ -29,6 +29,10 @@ class Hook_checklist_community_billboard
             return array();
         }
 
+        if (!$GLOBALS['SITE_DB']->table_exists('community_billboard')) {
+            return array();
+        }
+
         require_lang('community_billboard');
 
         $num_queue = $this->get_num_community_billboard_queue();

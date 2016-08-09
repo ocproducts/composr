@@ -30,6 +30,10 @@ class Hook_search_iotds extends FieldsSearchHook
             return null;
         }
 
+        if (!$GLOBALS['SITE_DB']->table_exists('iotd')) {
+            return null;
+        }
+
         if ($check_permissions) {
             if (!has_actual_page_access(get_member(), 'iotds')) {
                 return null;

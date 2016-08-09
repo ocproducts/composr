@@ -15,6 +15,10 @@
 
 function init__hooks__systems__ecommerce__cart_orders($in = null)
 {
+    if (!$GLOBALS['SITE_DB']->table_exists('referees_qualified_for')) {
+        return $in;
+    }
+
     require_code('referrals');
 
     return str_replace(
@@ -27,7 +31,7 @@ function init__hooks__systems__ecommerce__cart_orders($in = null)
             assign_referral_awards($member_id, \'misc_purchase\');
             $products = $GLOBALS[\'SITE_DB\']->query_select(\'shopping_order_details\', array(\'p_id\'), array(\'order_id\' => $purchase_id));
             foreach ($products as $p) {
-                    assign_referral_awards($member_id, \'purchase_\' . strval($p[\'p_id\']));
+                assign_referral_awards($member_id, \'purchase_\' . strval($p[\'p_id\']));
             }
         }
         ',

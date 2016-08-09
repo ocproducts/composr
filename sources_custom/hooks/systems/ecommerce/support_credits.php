@@ -59,6 +59,10 @@ class Hook_ecommerce_support_credits
      */
     public function get_products()
     {
+        if (!$GLOBALS['SITE_DB']->table_exists('credit_purchases')) {
+            return array();
+        }
+
         if (get_forum_type() != 'cns') {
             return array();
         }

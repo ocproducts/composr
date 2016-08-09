@@ -27,6 +27,10 @@ class Hook_cron_classifieds
             return;
         }
 
+        if (!$GLOBALS['SITE_DB']->table_exists('classifieds_prices')) {
+            return;
+        }
+
         $last = get_value('last_classified_refresh');
         $time = time();
         if ((!is_null($last)) && (intval($last) > $time - 60 * 60)) {
