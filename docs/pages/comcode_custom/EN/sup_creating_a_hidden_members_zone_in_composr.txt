@@ -37,6 +37,6 @@ Choose the menu you want to add the link to and add the link as normal.
 
 You'll also want to make sure it's not visible to guests or other usergroups. Therefore select the "Only display if has permission" option. I tend to always select this so if I later make an existing zone members only or change the permissions I won't have to edit the menu. If a user can access the zone they will see the relevant link.
 
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
 
 {$SET,tutorial_tags,Security,Members,novice}{$SET,tutorial_add_date,Feb 2014}{$SET,tutorial_summary,It's quite common for community sites to have a hidden member's area of the site where you can post private updates or information relating to things you don't want guests to see.}[block]main_tutorial_rating[/block]

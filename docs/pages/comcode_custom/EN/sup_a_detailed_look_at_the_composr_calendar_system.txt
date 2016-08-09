@@ -42,6 +42,6 @@ The next section deals with setting reminders both for the person creating the e
 
 The last two sections deal with allowing users to leave comments and ratings for the event and also the Search engine optimisation tagging.
 
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
 
 {$SET,tutorial_tags,Calendar,Content,calendar,novice}{$SET,tutorial_add_date,Oct 2013}{$SET,tutorial_summary,The Calendar in Composr has a wide range of different options which can be used for a wide range of purposes. As you can create many different event types, it allows you to use this for just about any purpose from displaying a list of fixtures for a sports club, a range of tour dates for a band or even a personal diary.}[block]main_tutorial_rating[/block]

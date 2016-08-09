@@ -314,6 +314,19 @@ function db_map_restrict($row, $fields)
 }
 
 /**
+ * Create an SQL cast.
+ *
+ * @param $field string The field identifier
+ * @param $type string The type wanted
+ * @set CHAR INT
+ * @return string The database type
+ */
+function db_cast($field, $type)
+{
+    return $GLOBALS['DB_STATIC_OBJECT']->cast($field, $type);
+}
+
+/**
  * Get the type of database installed, such as MySQL, or Oracle.
  *
  * @return string The database type
@@ -576,6 +589,33 @@ class DatabaseDriver
     public function get_first_id()
     {
         return 1;
+    }
+
+    /**
+     * Create an SQL cast.
+     *
+     * @param $field string The field identifier
+     * @param $type string The type wanted
+     * @set CHAR INT
+     * @return string The database type
+     */
+    public function cast($field, $type)
+    {
+        if (method_exists($GLOBALS['DB_STATIC_OBJECT'], 'db_cast')) {
+            return $GLOBALS['DB_STATIC_OBJECT']->db_cast($field, $type);
+        }
+
+        switch ($type) {
+            case 'CHAR':
+            case 'INT':
+                $_type = $type;
+                break;
+
+            default:
+                fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+
+        return 'CAST(' . $field . ' AS ' . $_type . ')';
     }
 
     /**

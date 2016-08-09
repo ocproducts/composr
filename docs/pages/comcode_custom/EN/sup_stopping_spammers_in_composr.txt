@@ -26,6 +26,6 @@ There is also support for [url="http://www.stopforumspam.com/"]http://www.stopfo
 
 Another option you have is to create a Usergroup which requires all of their actions to be validated by a moderator before they appear on site. The benefit of this is it should stop your users from seeing any spam whatsoever on your site. On the flip side it creates more work for you and your moderators who will need to validate far more content.
 
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
 
 {$SET,tutorial_tags,Security,Configuration,novice}{$SET,tutorial_add_date,Apr 2014}{$SET,tutorial_summary,One thing every website has to contend with eventually will be stopping spammers from making your user's life a misery. This tutorial goes over some features within Composr.}[block]main_tutorial_rating[/block]

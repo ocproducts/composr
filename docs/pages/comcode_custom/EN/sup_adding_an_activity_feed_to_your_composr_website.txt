@@ -69,6 +69,6 @@ To manually add the status update block you can use the following code or the Bl
 
 This will add a status update block with the title "Update your status".
 
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
 
 {$SET,tutorial_tags,Social,novice}{$SET,tutorial_add_date,May 2014}{$SET,tutorial_summary,There are a range of core and additional features in Composr which social media users will be familiar with. This tutorial deals with the Composr Activity feed addon which will be very familiar to most users of popular social media sites.}[block]main_tutorial_rating[/block]
