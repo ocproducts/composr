@@ -90,6 +90,7 @@ function form_for_filtercode($filter, $labels = null, $content_type = null, $typ
     $catalogue_name = mixed();
     if (preg_match('#^\w+$#', $filter) != 0) {
         $catalogue_name = $filter;
+        $filter = '';
     }
 
     $_links = array();
@@ -117,7 +118,7 @@ function form_for_filtercode($filter, $labels = null, $content_type = null, $typ
         require_code('content');
         $ob2 = get_content_object($content_type);
         $info2 = $ob2->info();
-        if ($info2['support_custom_fields']) {
+        if (($info2['support_custom_fields']) || ($content_type == 'catalogue_entry')) {
             require_code('fields');
             $catalogue_fields = list_to_map('id', get_catalogue_fields(($content_type == 'catalogue_entry') ? $catalogue_name : '_' . $content_type));
             foreach ($catalogue_fields as $catalogue_field) {
@@ -178,7 +179,17 @@ function form_for_filtercode($filter, $labels = null, $content_type = null, $typ
         $matches = array();
         if (preg_match('#^<([^<>]+)>$#', $filter_op, $matches) != 0) {
             $field_name = filter_naughty_harsh($matches[1]);
-            $field_title = array_key_exists($field_name, $labels) ? make_string_tempcode($labels[$field_name]) : do_lang_tempcode('OPERATOR_FOR', escape_html(titleify(preg_replace('#^filter\_#', '', preg_replace('#\_op$#', '', $field_name)))));
+            if (array_key_exists($field_name, $labels)) {
+                $field_title = make_string_tempcode($labels[$field_name]);
+            } else {
+                $target_name = preg_replace('#^filter\_#', '', preg_replace('#\_op$#', '', $field_name));
+                if (array_key_exists($target_name, $labels)) {
+                    $operator_target_label = make_string_tempcode($labels[$target_name]);
+                } else {
+                    $operator_target_label = escape_html(titleify($target_name));
+                }
+                $field_title = do_lang_tempcode('OPERATOR_FOR', $operator_target_label);
+            }
 
             $fields_needed[] = array(
                 'list',
