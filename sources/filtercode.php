@@ -222,7 +222,7 @@ function form_for_filtercode($filter, $labels = null, $content_type = null, $typ
             if (array_key_exists($field_name, $types)) {
                 $field_type = $types[$field_name];
 
-                if (($field_type == 'list') || ($field_type == 'linklist') || ($field_type == 'mulilist')) {
+                if (($field_type == 'list') || ($field_type == 'linklist') || ($field_type == 'list_multi')) {
                     // Work out what list values there are
                     $extra = array();
                     if ($table !== null) {

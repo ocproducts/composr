@@ -33,7 +33,7 @@ function make_upgrade_get_path($from_version_dotted, $to_version_dotted)
         warn_exit(do_lang_tempcode('NO_PARAMETER_SENT', 'from version'));
     }
     if ($to_version_dotted == '..') {
-        warn_exit(do_lang_tempcode('NO_PARAMETER_SENT', 'from version'));
+        warn_exit(do_lang_tempcode('NO_PARAMETER_SENT', 'to version'));
     }
 
     if ($from_version_dotted == $to_version_dotted) {
