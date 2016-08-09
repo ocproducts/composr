@@ -42,6 +42,7 @@
 <link rel="sitemap" href="{$BASE_URL*}/data_custom/sitemaps/index.xml" />
 <meta name="description" content="{+START,IF,{$NEQ,{$METADATA,meta_description},{!NA},???}}{$METADATA*,meta_description}{+END}" />
 <meta name="keywords" content="{$METADATA*,keywords}" />
+<meta name="composr-symbol-data" content="{$SYMBOL_DATA_AS_JSON*}" />
 {+START,COMMENT,Commented out by default to save bandwidth}
 	<meta name="GENERATOR" content="{$BRAND_NAME*}" />
 	<meta name="publisher" content="{$COPYRIGHT`}" />
@@ -139,6 +140,7 @@
 
 {$,Detecting of Timezones and JavaScript support}
 <script>// <![CDATA[
+	//@TODO (Salman): Refactor this stuff to Composr object
 	{+START,IF,{$CONFIG_OPTION,detect_javascript}}
 		{+START,IF,{$AND,{$EQ,,{$_GET,keep_has_js}},{$NOT,{$JS_ON}}}}
 			if ((window.location.href.indexOf('upgrader.php')==-1) && (window.location.href.indexOf('webdav.php')==-1) && (window.location.search.indexOf('keep_has_js')==-1)) {$,Redirect with JS on, and then hopefully we can remove keep_has_js after one click. This code only happens if JS is marked off, no infinite loops can happen.}
@@ -146,7 +148,7 @@
 		{+END}
 	{+END}
 	{+START,IF,{$NOT,{$BROWSER_MATCHES,ie}}}{+START,IF,{$HAS_PRIVILEGE,sees_javascript_error_alerts}}window.take_errors=true;{+END}{+END}
-	var {+START,IF,{$CONFIG_OPTION,is_on_timezone_detection}}server_timestamp={$FROM_TIMESTAMP%},{+END}cms_lang='{$LANG;/}',cms_theme='{$THEME;/}',cms_username='{$USERNAME;/}'{+START,IF,{$IS_STAFF}},cms_is_staff=true{+END};
+	var {+START,IF,{$CONFIG_OPTION,is_on_timezone_detection}}server_timestamp={$FROM_TIMESTAMP%},{+END}cms_ lang='{$LANG;/}',cms_theme='{$THEME;/}',cms_username='{$USERNAME;/}'{+START,IF,{$IS_STAFF}},cms_is_staff=true{+END};
 //]]></script>
 
 {$,JavaScript code (usually) from Composr page}
@@ -155,10 +157,10 @@
 {$,CSS includes from Composr page}
 {$CSS_TEMPCODE}
 
-{$REQUIRE_JAVASCRIPT,jquery_lite}
+{$,(commented out)REQUIRE_JAVASCRIPT,jquery_lite}
 
 {$,jQuery fan? Just uncomment the below and start using all the jQuery plugins you love in the normal way}
-{$,{$REQUIRE_JAVASCRIPT,jquery}}
+{$REQUIRE_JAVASCRIPT,jquery}
 
 {$,JavaScript includes from Composr page}
 {$JS_TEMPCODE,header}

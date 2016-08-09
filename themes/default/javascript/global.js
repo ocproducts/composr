@@ -2,6 +2,44 @@
 
 "use strict";
 
+
+var Composr = {};
+(function (){
+    var s = JSON.parse(document.getElementsByName('composr-symbol-data')[0].content);
+
+    Composr.$PAGE_TITLE = s.PAGE_TITLE;
+    Composr.$MEMBER = s.MEMBER;
+    Composr.$IS_GUEST = s.IS_GUEST;
+    Composr.$USERNAME = s.USERNAME;
+    Composr.$AVATAR = s.AVATAR;
+    Composr.$MEMBER_EMAIL = s.MEMBER_EMAIL;
+    Composr.$PHOTO = s.PHOTO;
+    Composr.$MEMBER_PROFILE_URL = s.MEMBER_PROFILE_URL;
+    Composr.$FROM_TIMESTAMP = s.FROM_TIMESTAMP;
+    Composr.$MOBILE = s.MOBILE;
+    Composr.$THEME = s.THEME;
+    Composr.$JS_ON = s.JS_ON;
+    Composr.$LANG = s.LANG;
+    Composr.$BROWSER_UA = s.BROWSER_UA;
+    Composr.$OS = s.OS;
+    Composr.$DEV_MODE = s.DEV_MODE;
+    Composr.$USER_AGENT = s.USER_AGENT;
+    Composr.$IP_ADDRESS = s.IP_ADDRESS;
+    Composr.$TIMEZONE = s.TIMEZONE;
+    Composr.$HTTP_STATUS_CODE = s.HTTP_STATUS_CODE;
+    Composr.$CHARSET = s.CHARSET;
+    Composr.$SITE_NAME = s.SITE_NAME;
+    Composr.$COPYRIGHT = s.COPYRIGHT;
+    Composr.$DOMAIN = s.DOMAIN;
+    Composr.$FORUM_BASE_URL = s.FORUM_BASE_URL;
+    Composr.$BASE_URL = s.BASE_URL;
+    Composr.$BRAND_NAME = s.BRAND_NAME;
+    Composr.$IS_STAFF = s.IS_STAFF;
+    Composr.$IS_ADMIN = s.IS_ADMIN;
+    Composr.$GROUP_ID = s.GROUP_ID;
+}());
+
+
 /* Startup */
 if (typeof window.page_loaded == 'undefined') // To stop problem if JS file loaded more than once
 {
@@ -983,6 +1021,18 @@ function browser_matches(code) {
 /* Safe way to get the base URL */
 function get_base_url() {
     return (window.location + '').replace(/(^.*:\/\/[^\/]*)\/.*/, '$1') + '{$BASE_URL_NOHTTP;}'.replace(/^.*:\/\/[^\/]*/, '');
+}
+
+/* Read query string parameters */
+
+function get_param(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
 /* Enforcing a session using AJAX */
