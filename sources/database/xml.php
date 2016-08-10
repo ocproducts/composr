@@ -21,11 +21,15 @@
  */
 
 /*
-    Known (intentional) issues in SQL support (we are targetting MySQL-4.0 compatibility, similar to SQL-92)
+    Things we don't support but are advisable for us to add (TODO, #2761)
+        Sub-query support is limited to the IN and EXISTS constructs
+        Expressions in ORDER BY clauses will be ignored
+        HAVING is not supported
+        We do not support CAST
+    Known (intentional) issues in SQL support (we are targeting MySQL-4.0 compatibility, similar to SQL-92)
         We support a few MySQL functions: REPLACE, LENGTH, CONCAT. These are not likely usable on all DB's.
         We do not support the range of standard SQL functions.
-        We do not support SQL data types or CAST, we use Composr ones instead. We don't support complex type-specific ops such as "+" for string concatenation.
-        HAVING is not supported
+        We do not support SQL data types, we use Composr ones instead. We don't support complex type-specific ops such as "+" for string concatenation.
         We do not support SQL functions (COUNT etc) outside of a SELECT clause
         We do not have any special table/field naming escaping support-- so you need to use names that aren't awkward
         MySQL-style auto-increment is supported, but actually done as key randomisation, once install has finished
@@ -42,11 +46,9 @@
         Special foreign key support is not supported
         INTERSECT and EXCEPT are not supported
         JOIN's are not supported in DELETE or UPDATE queries
-        Sub-query support is limited to the IN and EXISTS constructs
         Character set support is just whatever Composr is set to; there is no special supported
         SELECT INTO is not supported
         LIMIT's on UPDATE queries not supported
-        Expressions in ORDER BY clauses will be ignored
         Default values for fields are not supported
         Field naming for things like COUNT(*) will not be consistent with MySQL
         You must specify the field names in INSERT queries
@@ -3454,5 +3456,18 @@ class Database_Static_xml
     protected function _unescape_name($in)
     {
         return str_replace(array('!equals!', '!colon!', '!comma!', '!slash!', '!pipe!'), array('=', ':', ',', '/', '|'), $in);
+    }
+
+    /**
+     * Create an SQL cast.
+     *
+     * @param $field string The field identifier
+     * @param $type string The type wanted
+     * @set CHAR INT
+     * @return string The database type
+     */
+    function db_cast($field, $type)
+    {
+        return $field;
     }
 }
