@@ -264,7 +264,7 @@ class Database_Static_xml
 
         $path = $db[0] . '/' . $table_name;
 
-        if (($if_not_exists) && (!file_exists($path))) {
+        if (($if_not_exists) && (file_exists($path))) {
             return;
         }
 
@@ -755,6 +755,13 @@ class Database_Static_xml
         $schema = array();
         foreach ($fields as $f) {
             $schema[$f['m_name']] = $f['m_type'];
+
+            if (substr($f['m_type'], -9) == '__COMCODE') {
+                if (!multi_lang_content()) {
+                    $schema[$f['m_name'] . '__text_parsed'] = 'LONG_TEXT';
+                    $schema[$f['m_name'] . '__source_user'] = 'MEMBER';
+                }
+            }
         }
 
         if (count($schema) == 0) {
@@ -780,10 +787,20 @@ class Database_Static_xml
     protected function _type_check($schema, $record, $query)
     {
         foreach ($record as $key => $val) {
+            if (!isset($schema[$key])) {
+                fatal_exit('Unrecognised key, ' . $key);
+            }
             $schema_type = preg_replace('#[^\w]#', '', $schema[$key]);
 
             if (is_integer($val)) {
-                if (!in_array($schema_type, array('REAL', 'AUTO', 'AUTO_LINK', 'INTEGER', 'UINTEGER', 'SHORT_INTEGER', 'BINARY', 'MEMBER', 'GROUP', 'TIME', 'SHORT_TRANS', 'LONG_TRANS'))) {
+                $int_types = array('REAL', 'AUTO', 'AUTO_LINK', 'INTEGER', 'UINTEGER', 'SHORT_INTEGER', 'BINARY', 'MEMBER', 'GROUP', 'TIME');
+                if (multi_lang_content()) {
+                    $int_types[] = 'SHORT_TRANS';
+                    $int_types[] = 'LONG_TRANS';
+                    $int_types[] = 'SHORT_TRANS__COMCODE';
+                    $int_types[] = 'LONG_TRANS__COMCODE';
+                }
+                if (!in_array($schema_type, $int_types)) {
                     $this->_bad_query($query, false, 'Database type strictness error: ' . $schema_type . ' wanted for ' . $key . ' field, but integer was given');
                 }
 
@@ -805,6 +822,12 @@ class Database_Static_xml
                     'URLPATH' => 255,
                     'UINTEGER' => 10, // Fudge as we need to send in unsigned integers using strings, as PHP can't hold them
                 );
+                if (!multi_lang_content()) {
+                    $string_types['SHORT_TRANS'] = 255;
+                    $string_types['LONG_TRANS'] = null;
+                    $string_types['SHORT_TRANS__COMCODE'] = 255;
+                    $string_types['LONG_TRANS__COMCODE'] = null;
+                }
 
                 if (!in_array($schema_type, array_keys($string_types))) {
                     $this->_bad_query($query, false, 'Database type strictness error: ' . $schema_type . ' wanted for ' . $key . ' field, but string (' . $val . ') was given');
@@ -954,11 +977,15 @@ class Database_Static_xml
                 if (($file_exists_xml) || ($file_exists_xml_volatile)) {
                     $the_key = preg_replace('#\.[\w\-]+$#', '', $key_buildup);
                     $suffix = $file_exists_xml ? '.xml' : '.xml-volatile';
-                    $records[$the_key] = $this->_read_record($db[0] . '/' . $table_name . '/' . $key_buildup . $suffix, $schema, null, $include_unused_fields);
+                    $test = $this->_read_record($db[0] . '/' . $table_name . '/' . $key_buildup . $suffix, $schema, null, $include_unused_fields, $fail_ok);
+                    if ($test === null) {
+                        return array();
+                    }
+                    $records[$the_key] = $test;
                     if ($table_name == get_table_prefix() . 'translate') {
                         $sup_file = $db[0] . '/' . $table_name . '/sup/' . $key_buildup . '.xml-volatile';
                         if (file_exists($sup_file)) {
-                            $sup_record = $this->_read_record($sup_file, $schema, null, $include_unused_fields);
+                            $sup_record = $this->_read_record($sup_file, $schema, null, $include_unused_fields, $fail_ok);
                             $records[$the_key]['text_parsed'] = $sup_record['text_parsed'];
                         }
                     }
@@ -1010,7 +1037,7 @@ class Database_Static_xml
             if ((strlen($full_path) >= 255) && (stripos(PHP_OS, 'win') !== false)) {
                 continue; // :(
             }
-            $read = $this->_read_record($full_path, $schema, $must_contain, $include_unused_fields);
+            $read = $this->_read_record($full_path, $schema, $must_contain, $include_unused_fields, $fail_ok);
             if (!is_null($read)) {
                 $the_key = preg_replace('#\.[\w\-]+$#', '', $file);
                 $records[$the_key] = $read;
@@ -1018,7 +1045,10 @@ class Database_Static_xml
                 if ($table_name == get_table_prefix() . 'translate') {
                     $sup_file = $db[0] . '/' . $table_name . '/sup/' . preg_replace('#\.\w+$#', '', $file) . '.xml-volatile';
                     if (file_exists($sup_file)) {
-                        $records[$the_key] += $this->_read_record($sup_file, $schema, null, $include_unused_fields);
+                        $test = $this->_read_record($sup_file, $schema, null, $include_unused_fields, $fail_ok);
+                        if ($test !== null) {
+                            $records[$the_key] += $test;
+                        }
                     }
                 }
             }
@@ -1105,17 +1135,16 @@ class Database_Static_xml
      * @param  ?array $schema Schema to type-set against (null: do not do type-setting)
      * @param  ?array $must_contain_strings Substrings to check it is in, used for performance (null: none)
      * @param  boolean $include_unused_fields Whether to include fields that are present in the actual records but not in our schema
-     * @return ?array The record map (null: does not contain requested substrings)
+     * @param  boolean $fail_ok Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)
+     * @return ?array The record map (null: does not contain requested substrings / error)
      */
-    protected function _read_record($path, $schema = null, $must_contain_strings = null, $include_unused_fields = false)
+    protected function _read_record($path, $schema = null, $must_contain_strings = null, $include_unused_fields = false, $fail_ok = false)
     {
-        if (file_exists($path . '.mine')) {
-            $path .= '.mine';
+        if ($fail_ok && !is_file($path)) {
+            return null;
         }
-        $file_contents = @file_get_contents($path);
-        if ($file_contents === false) {
-            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
-        }
+
+        $file_contents = file_get_contents($path);
 
         if (!is_null($must_contain_strings)) {
             foreach ($must_contain_strings as $match) {
@@ -1279,9 +1308,6 @@ class Database_Static_xml
         }
 
         $path = $db[0] . '/' . $table_name . '/' . $guid . $suffix;
-        if (file_exists($path . '.mine')) {
-            $path .= '.mine';
-        }
 
         if ($table_name == get_table_prefix() . 'translate') { // Special code to store volatile text_parsed attribute externally
             $record_copy = $record;
@@ -1342,7 +1368,6 @@ class Database_Static_xml
             $new_path = $db[0] . '/' . $table_name . '/' . $new_guid . $suffix;
             if ($path != $new_path) {
                 rename($path, $new_path);
-                /*if (substr($path, -5) == '.mine') unlink();  Yuck, messy, we will ignore this potential problem - people should not edit stuff that is conflicted */
             }
         }
     }
@@ -1380,15 +1405,6 @@ class Database_Static_xml
             fclose($myfile);
             @unlink($path);
             sync_file($path);
-        }
-
-        if (file_exists($path . '.mine')) {
-            $myfile = fopen($path . '.mine', GOOGLE_APPENGINE ? 'wb' : 'ab');
-            @flock($myfile, LOCK_EX);
-            @flock($myfile, LOCK_UN);
-            fclose($myfile);
-            unlink($path . '.mine');
-            sync_file($path . '.mine');
         }
     }
 
@@ -1849,7 +1865,7 @@ class Database_Static_xml
                     if (substr($key, -10) == '__text_parsed') {
                         $record[$key] = '';
                     } elseif (substr($key, -13) == '__source_user') {
-                        $record[$key] = strval(db_get_first_id());
+                        $record[$key] = db_get_first_id();
                     } elseif (preg_replace('#[^\w]#', '', $val) == 'AUTO') {
                         $record[$key] = isset($TABLE_BASES[$table_name]) ? $TABLE_BASES[$table_name] : $this->db_get_first_id(); // We always want first record as '1', because we often reference it in a hard-coded way
                         while ((file_exists($db[0] . '/' . $table_name . '/' . strval($record[$key]) . '.xml')) || (file_exists($db[0] . '/' . $table_name . '/' . $this->_guid($schema, $record) . '.xml')) || (file_exists($db[0] . '/' . $table_name . '/' . strval($record[$key]) . '.xml-volatile')) || (file_exists($db[0] . '/' . $table_name . '/' . $this->_guid($schema, $record) . '.xml-volatile'))) {

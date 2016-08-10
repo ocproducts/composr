@@ -412,11 +412,48 @@ function _helper_rename_table($this_ref, $old, $new)
  * @param  ID_TEXT $table_name The table name
  * @param  ID_TEXT $name The field name
  * @param  ID_TEXT $_type The field type
- * @param  ?mixed $default The default value; for a translatable field should still be a string value (null: no default)
+ * @param  ?mixed $default The default value; for a translatable field should still be a string value (null: null default / default default)
  * @ignore
  */
 function _helper_add_table_field($this_ref, $table_name, $name, $_type, $default = null)
 {
+    if (($default === null) && (substr($_type, 0, 1) != '?')) {
+        switch ($_type) {
+            case 'AUTO':
+            case 'AUTO_LINK':
+            case 'INTEGER':
+            case 'UINTEGER':
+            case 'SHORT_INTEGER':
+            case 'BINARY':
+            case 'MEMBER':
+            case 'GROUP':
+                $default = 0;
+                break;
+
+            case 'REAL':
+                $default = 0.0;
+                break;
+
+            case 'TIME':
+                $default = time();
+                break;
+
+            case 'LONG_TRANS':
+            case 'SHORT_TRANS':
+            case 'LONG_TRANS__COMCODE':
+            case 'SHORT_TRANS__COMCODE':
+            case 'SHORT_TEXT':
+            case 'LONG_TEXT':
+            case 'ID_TEXT':
+            case 'MINIID_TEXT':
+            case 'IP':
+            case 'LANGUAGE_NAME':
+            case 'URLPATH':
+                $default = '';
+                break;
+        }
+    }
+
     list($query, $default_st) = _helper_add_table_field_sql($this_ref, $table_name, $name, $_type, $default);
     $this_ref->_query($query);
 
@@ -452,12 +489,12 @@ function _helper_add_table_field($this_ref, $table_name, $name, $_type, $default
     if ((!multi_lang_content()) && (strpos($_type, '__COMCODE') !== false)) {
         $type_remap = $this_ref->static_ob->db_get_type_remap();
 
-        foreach (array('text_parsed' => 'LONG_TEXT', 'source_user' => 'MEMBER') as $sub_name => $sub_type) {
-            $sub_name = $name . '__' . $sub_name;
+        foreach (array('text_parsed' => 'LONG_TEXT', 'source_user' => 'MEMBER') as $_sub_name => $sub_type) {
+            $sub_name = $name . '__' . $_sub_name;
             $query = 'ALTER TABLE ' . $this_ref->table_prefix . $table_name . ' ADD ' . $sub_name . ' ' . $type_remap[$sub_type];
-            if ($sub_name == 'text_parsed') {
+            if ($_sub_name == 'text_parsed') {
                 $query .= ' DEFAULT \'\'';
-            } elseif ($sub_name == 'source_user') {
+            } elseif ($_sub_name == 'source_user') {
                 $query .= ' DEFAULT ' . strval(db_get_first_id());
             }
             $query .= ' NOT NULL';
