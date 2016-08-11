@@ -26,6 +26,7 @@
         HAVING is not supported
         We do not support CAST
     Known (intentional) issues in SQL support (we are targeting MySQL-4.0 compatibility, similar to SQL-92)
+        Value and Table subqueries do not support variable binding from the wider query - i.e. inward-outward only (EXISTS and IN subqueries do though)
         We support a few MySQL functions: REPLACE, LENGTH, CONCAT. These are not likely usable on all DB's.
         We do not support the range of standard SQL functions.
         We do not support SQL data types, we use Composr ones instead. We don't support complex type-specific ops such as "+" for string concatenation.
@@ -1974,7 +1975,14 @@ class Database_Static_xml
                 break;
 
             case '(':
-                $expr = array('BRACKETED', $this->_parsing_read_expression($at, $tokens, $query, $db, true, true, $fail_ok));
+                $next_token = $this->_parsing_read($at, $tokens, $query);
+                $at--;
+                if ($next_token == 'SELECT') { // subquery
+                    $subquery = $this->_do_query_select($tokens, $query, $db, null, null, $fail_ok, $at, false);
+                    $expr = array('LITERAL', isset($subquery[0]) ? array_shift($subquery[0]) : null);
+                } else {
+                    $expr = array('BRACKETED', $this->_parsing_read_expression($at, $tokens, $query, $db, true, true, $fail_ok));
+                }
                 if (!$this->_parsing_expects($at, $tokens, ')', $query)) {
                     return null;
                 }
@@ -2010,6 +2018,9 @@ class Database_Static_xml
                             $expr = array('LITERAL', intval($token));
                         }
                     } else {
+                        if (substr($token, -1) == '.') {
+                            $token .= $this->_parsing_read($at, $tokens, $query);
+                        }
                         $expr = array('FIELD', $token);
                     }
                 } elseif ($token == '-') {
@@ -2431,6 +2442,8 @@ class Database_Static_xml
      */
     protected function _do_query_select($tokens, $query, $db, $max, $start, $fail_ok, &$at, $do_end_check = true)
     {
+        $all_keywords = _get_sql_keywords();
+
         // Parse
         if (!$this->_parsing_expects($at, $tokens, 'SELECT', $query)) {
             return null;
@@ -2438,16 +2451,17 @@ class Database_Static_xml
         $select = array();
         do {
             $token = $this->_parsing_read($at, $tokens, $query);
-
-            if ($token == '\'') {
+            if (substr($token, -1) == '.') {
                 $token .= $this->_parsing_read($at, $tokens, $query);
-                $this->_parsing_expects($at, $tokens, '\'', $query);
-                $token .= '\'';
             }
 
             if ($token == '*') {
                 $select[] = array('*');
+            } elseif (substr($token, -2) == '.*') {
+                $select[] = array('*', substr($token, 0, strlen($token) - 2));
             } else {
+                $expression = null;
+
                 switch ($token) {
                     case 'COALESCE':
                         if (!$this->_parsing_expects($at, $tokens, ')', $query)) {
@@ -2461,22 +2475,22 @@ class Database_Static_xml
                         if (!$this->_parsing_expects($at, $tokens, ')', $query)) {
                             return null;
                         }
-                        $token = array('COALESCE', $expr1, $expr2);
+                        $expression = array('COALESCE', $expr1, $expr2);
                         break;
                     case 'DISTINCT':
-                        $token = array('DISTINCT');
+                        $expression = array('DISTINCT', array());
                         $d = $this->_parsing_read($at, $tokens, $query);
                         if ($d == '(') {
                             $d = $this->_parsing_read($at, $tokens, $query);
                             if (!$this->_parsing_expects($at, $tokens, ')', $query)) {
                                 return null;
                             }
-                            $token[] = $d;
+                            $expression[1][] = $d;
                         } else {
                             $at--;
                             do {
                                 $d = $this->_parsing_read($at, $tokens, $query);
-                                $token[] = $d;
+                                $expression[1][] = $d;
                                 $_token = $this->_parsing_read($at, $tokens, $query);
                             } while ($_token == ',');
                             $at--;
@@ -2486,12 +2500,12 @@ class Database_Static_xml
                         if (!$this->_parsing_expects($at, $tokens, '(', $query)) {
                             return null;
                         }
-                        $token = array($token, $this->_parsing_read($at, $tokens, $query));
-                        if ($token[1] == 'DISTINCT') {
-                            $token[1] = array('DISTINCT');
+                        $expression = array($token, $this->_parsing_read($at, $tokens, $query));
+                        if ($expression[1] == 'DISTINCT') {
+                            $expression[1] = array('DISTINCT');
                             do {
                                 $d = $this->_parsing_read($at, $tokens, $query);
-                                $token[1][] = $d;
+                                $expression[1][] = $d;
                                 $_token = $this->_parsing_read($at, $tokens, $query);
                             } while ($_token == ',');
                             $at--;
@@ -2507,7 +2521,7 @@ class Database_Static_xml
                         if (!$this->_parsing_expects($at, $tokens, '(', $query)) {
                             return null;
                         }
-                        $token = array($token);
+                        $expression = array($token);
                         $next = $this->_parsing_read($at, $tokens, $query);
                         if ($next == 'DISTINCT') {
                             $distinct = true;
@@ -2517,28 +2531,37 @@ class Database_Static_xml
                         }
                         $expr = $this->_parsing_read_expression($at, $tokens, $query, $db, false, true, $fail_ok);
                         if ($distinct) {
-                            $token[1] = array('DISTINCT', $expr);
+                            $expression[1] = array('DISTINCT', $expr);
                         } else {
-                            $token[1] = $expr;
+                            $expression[1] = $expr;
                         }
                         if (!$this->_parsing_expects($at, $tokens, ')', $query)) {
                             return null;
                         }
                         break;
+
+                    default:
+                        $at--;
+                        $expression = $this->_parsing_read_expression($at, $tokens, $query, $db, true, true, $fail_ok);
+                        break;
                 }
 
                 $as_token = $this->_parsing_read($at, $tokens, $query, true);
-                if ($as_token == null) { // reached end of query
-                    $select[] = array('SIMPLE', $token);
+                if ($as_token === ')') {
+                    $at--;
+                    $as_token = null;
+                }
+                if ($as_token === null) { // reached end of query
+                    $select[] = $expression;
                 } else {
                     if ($as_token == 'AS') {
                         $as = $this->_parsing_read($at, $tokens, $query);
-                        $select[] = array('AS', $token, $as);
+                        $select[] = array('AS', $expression, $as);
                     } elseif (($as_token == '*') && (substr($token, -1) == '.')) {
                         $select[] = array('*', substr($token, 0, strlen($token) - 1));
                     } else {
                         $at--;
-                        $select[] = array('SIMPLE', $token);
+                        $select[] = $expression;
                     }
                 }
             }
@@ -2594,6 +2617,7 @@ class Database_Static_xml
             }
         } else {
             $joins = array();
+            $at--;
         }
 
         $token = $this->_parsing_read($at, $tokens, $query, true);
@@ -2696,19 +2720,18 @@ class Database_Static_xml
         if (count($joins) == 0) {
             $records = array(array());
         }
-        elseif ((count($joins) == 1) && (!is_array($joins[0][1])) && ($where_expr == array('LITERAL', true)) && ($select === array(array('SIMPLE', array('COUNT', '*'))))) { // Quick fudge to get fast table counts
+        elseif ((count($joins) == 1) && (!is_array($joins[0][1])) && ($where_expr == array('LITERAL', true)) && ($select === array(array('COUNT', '*')))) { // Quick fudge to get fast table counts
             global $DIR_CONTENTS_CACHE;
             if (!isset($DIR_CONTENTS_CACHE[$joins[0][1]])) {
-                @chdir($db[0] . '/' . $joins[0][1]);
-                $dh = @glob('{,.}*.{xml,xml-volatile}', GLOB_NOSORT | GLOB_BRACE);
-                if ($dh === false) {
+                if (is_dir($db[0] . '/' . $joins[0][1])) {
+                    chdir($db[0] . '/' . $joins[0][1]);
+                    $dh = @glob('{,.}*.{xml,xml-volatile}', GLOB_NOSORT | GLOB_BRACE);
+                    if ($dh === false) {
+                        $dh = array();
+                    }
+                    @chdir(get_file_base());
+                } else {
                     $dh = array();
-                }
-                @chdir(get_file_base());
-                if (file_exists($db[0] . '/' . $joins[0][1] . '/.xml')) {
-                    $dh[] = '.xml';
-                } elseif (file_exists($db[0] . '/' . $joins[0][1] . '/.xml-volatile')) {
-                    $dh[] = '.xml-volatile';
                 }
                 $DIR_CONTENTS_CACHE[$joins[0][1]] = $dh;
             } else {
@@ -2782,39 +2805,27 @@ class Database_Static_xml
             }
         } else {
             // Special handling for DISTINCT
-            foreach ($select as $s) {
-                if ((array_key_exists(1, $s)) && ($s[0] != '*')) {
-                    $s_term = $s[1];
-                    if ($s[0] == 'SIMPLE') {
-                        $s_as = $s[1];
-                    } else {
-                        $s_as = $s[2];
-                    }
-                    if (is_array($s_term)) {
-                        switch ($s_term[0]) {
-                            case 'DISTINCT':
-                                $index = array();
-                                foreach ($records as $set_item) {
-                                    $val = array();
-                                    for ($di = 1; $di < count($s_term); $di++) {
-                                        $val[] = $set_item[$s_term[$di]];
-                                    }
-                                    $index[serialize($val)] = $set_item;
-                                }
-                                $records = array_values($index);
-                                break;
+            foreach ($select as $s_term) {
+                switch ($s_term[0]) {
+                    case 'DISTINCT':
+                        $index = array();
+                        foreach ($records as $set_item) {
+                            $val = array();
+                            foreach ($s_term[1] as $di) {
+                                $val[] = $set_item[$di];
+                            }
+                            $index[serialize($val)] = $set_item;
                         }
-                    }
+                        $records = array_values($index);
+                        break;
                 }
             }
 
             // Now handle functions
             $single_result = false;
             foreach ($select as $s) {
-                if ((array_key_exists(1, $s)) && ($s[0] != '*') && (is_array($s[1]))) {
-                    if (($s[1][0] == 'MIN') || ($s[1][0] == 'MAX') || ($s[1][0] == 'SUM') || ($s[1][0] == 'COUNT') || ($s[1][0] == 'AVG')) {
-                        $single_result = true;
-                    }
+                if (($s[0] == 'MIN') || ($s[0] == 'MAX') || ($s[0] == 'SUM') || ($s[0] == 'COUNT') || ($s[0] == 'AVG')) {
+                    $single_result = true;
                 }
             }
             foreach ($records as $i => $record) {
@@ -2858,8 +2869,19 @@ class Database_Static_xml
         $results = array();
         foreach ($filtered_records as $record) {
             $_record = array();
-            foreach ($select as $want) {
+            foreach ($select as $i => $want) {
+                $as = null;
+
                 switch ($want[0]) { // NB: COUNT, SUM, etc, already have their values rolled out into $record and we do not need to consider it here
+                    case 'COALESCE':
+                    case 'MAX':
+                    case 'MIN':
+                    case 'COUNT':
+                    case 'SUM':
+                    case 'AVG':
+                        // Was already specially process, compound function
+                        break;
+
                     case '*':
                         if (array_key_exists(1, $want)) {
                             $filtered_record = array();
@@ -2880,42 +2902,26 @@ class Database_Static_xml
                         }
                         break;
 
-                    case 'SIMPLE':
-                        $param = is_array($want[1]) ? $want[1][0] : $want[1];
-                        if ($param == 'DISTINCT') {
-                            $val = array();
-                            $s_term = $want[1];
-                            for ($di = 1; $di < count($s_term); $di++) {
-                                $param = $s_term[$di];
-
-                                if (strpos($param, '.') === false) {
-                                    $_record[$param] = $record[$param];
-                                } else {
-                                    $_record[preg_replace('#^.*\.#', '', $param)] = $record[$param];
-                                }
-                            }
-                        } else {
-                            if ($param == 'NULL') {
-                                $_record[$param] = null;
-                            } elseif (preg_match('#^\'.*\'$#', $param) != 0) {
-                                $_record[$param] = $param;
-                            } elseif (is_numeric($param)) {
-                                if (strpos($param, '.') !== false) {
-                                    $_record[$param] = floatval($param);
-                                } else {
-                                    $_record[$param] = intval($param);
-                                }
-                            } elseif (strpos($param, '.') === false) {
+                    case 'DISTINCT':
+                        $val = array();
+                        foreach ($want[1] as $param) {
+                            if (strpos($param, '.') === false) {
                                 $_record[$param] = $record[$param];
                             } else {
                                 $_record[preg_replace('#^.*\.#', '', $param)] = $record[$param];
                             }
                         }
-
                         break;
 
                     case 'AS':
-                        $_record[$want[2]] = $record[is_array($want[1]) ? $want[1][0] : $want[1]];
+                        $as = $want[2];
+                        $want = $want[1];
+
+                    default:
+                        if ($as === null) {
+                            $as = $this->_param_name_for($want[1], $i);
+                        }
+                        $_record[preg_replace('#^.*\.#', '', $as)] = $this->_execute_expression($want, $record, $query);
                         break;
                 }
             }
@@ -2925,21 +2931,29 @@ class Database_Static_xml
         if ((count($results) == 0) && (is_null($group_by))) { // If there are no records, but some functions, we need to add a row
             $rep = $this->_function_set_scoping(array(), $select, array(), $query);
             if (count($rep) != 0) {
-                foreach ($select as $want) {
+                foreach ($select as $i => $want) {
+                    $as = null;
+                    if ($want[0] == 'AS') {
+                        $as = $want[2];
+                        $want = $want[1];
+                    }
                     switch ($want[0]) { // NB: COUNT, SUM, etc, already have their values rolled out into $record and we do not need to consider it here
-                        case 'AS':
-                            if (isset($rep[is_array($want[1]) ? $want[1][0] : $want[1]])) {
-                                $old = $rep[is_array($want[1]) ? $want[1][0] : $want[1]];
-                                unset($rep[is_array($want[1]) ? $want[1][0] : $want[1]]);
-                            } else {
-                                $old = null;
+                        case 'FIELD':
+                            $param = $this->_param_name_for($want[1], $i);
+
+                            if ($as === null) {
+                                $as = $param;
                             }
-                            $rep[$want[2]] = $old;
-                            break;
-                        case 'SIMPLE':
-                            if (!isset($rep[is_array($want[1]) ? $want[1][0] : $want[1]])) {
-                                $rep[is_array($want[1]) ? $want[1][0] : $want[1]] = null;
+
+                            if (!isset($rep[$param])) {
+                                $rep[$param] = null;
                             }
+
+                            if ($param != $as) {
+                                $rep[$as] = $rep[$param];
+                                unset($rep[$param]);
+                            }
+
                             break;
                     }
                 }
@@ -2985,6 +2999,24 @@ class Database_Static_xml
     }
 
     /**
+     * Extract a save parameter name from an expression.
+     *
+     * @param  mixed $param Expression
+     * @param  integer $i Offset in a field set
+     * @return string Parameter name
+     */
+    protected function _param_name_for($param, $i)
+    {
+        if (is_array($param)) {
+            $param = $param[1];
+        }
+        if (!is_string($param)) {
+            $param = 'val' . strval($i);
+        }
+        return $param;
+    }
+
+    /**
      * Run SQL data filter functions over a result set.
      *
      * @param  array $set The set of results we are operating on
@@ -2995,87 +3027,93 @@ class Database_Static_xml
      */
     protected function _function_set_scoping($set, $select, $rep, $query)
     {
-        foreach ($select as $s) {
-            if ((array_key_exists(1, $s)) && ($s[0] != '*')) {
-                $s_term = $s[1];
-                $chosen_param_name = is_array($s[1]) ? $s[1][0] : $s[1]; // "AS" is handled elsewhere, for now we just store
-                if ($chosen_param_name == 'DISTINCT') {
-                    $chosen_param_name = is_array($s[1]) ? $s[1][1] : $s[1];
-                }
-                if (is_array($s_term)) {
-                    switch ($s_term[0]) {
-                        case 'COALESCE':
-                            $val = $this->_execute_expression($s_term[1], $set[0], $query);
-                            if (is_null($val)) {
-                                $val = $this->_execute_expression($s_term[2], $set[0], $query);
-                            }
-                            $rep[$chosen_param_name] = $val;
-                            break;
-                        case 'MAX':
-                            $max = mixed();
-                            foreach ($set as $set_item) {
-                                $val = $this->_execute_expression($s_term[1], $set_item, $query);
-                                if ((is_null($max)) || ($val > $max)) {
-                                    $max = $val;
-                                }
-                            }
-                            $rep[$chosen_param_name] = $max;
-                            break;
-                        case 'MIN':
-                            $min = mixed();
-                            foreach ($set as $set_item) {
-                                $val = $this->_execute_expression($s_term[1], $set_item, $query);
-                                if ((is_null($min)) || ($val < $min)) {
-                                    $min = $val;
-                                }
-                            }
-                            $rep[$chosen_param_name] = $min;
-                            break;
-                        case 'COUNT':
-                            if ($s_term[1][0] == 'DISTINCT') {
-                                $index = array();
-                                foreach ($set as $set_item) {
-                                    $val = array();
-                                    for ($di = 1; $di < count($s_term[1]); $di++) {
-                                        $val[] = $set_item[$s_term[1][$di]];
-                                    }
-                                    $index[serialize($val)] = true;
-                                }
-                                $rep[$chosen_param_name] = count($index);
-                            } else {
-                                $rep[$chosen_param_name] = count($set);
-                            }
-                            break;
-                        case 'SUM':
-                            $temp = 0;
-                            foreach ($set as $set_item) {
-                                $val = $this->_execute_expression($s_term[1], $set_item, $query);
-                                $temp += $val;
-                            }
-                            if (is_integer($temp)) {
-                                $rep[$chosen_param_name] = floatval($temp);
-                            } else {
-                                $rep[$chosen_param_name] = $temp;
-                            }
-                            break;
-                        case 'AVG':
-                            if (count($set) == 0) {
-                                $rep[$chosen_param_name] = null;
-                            } else {
-                                $temp = 0;
-                                foreach ($set as $set_item) {
-                                    $val = $this->_execute_expression($s_term[1], $set_item, $query);
-                                    $temp += $val;
-                                }
-                                if (is_integer($temp)) {
-                                    $rep[$chosen_param_name] = floatval($temp) / floatval(count($set));
-                                } else {
-                                    $rep[$chosen_param_name] = $temp / floatval(count($set));
-                                }
-                            }
-                            break;
+        foreach ($select as $i => $s_term) {
+            $as = null;
+
+            if ($s_term[0] == 'AS') {
+                $as = $s_term[2];
+                $s_term = $s_term[1];
+            }
+
+            if (!isset($s_term[1])) {
+                continue;
+            }
+
+            if ($as === null) {
+                $as = $this->_param_name_for($s_term[1], $i);
+            }
+
+            switch ($s_term[0]) {
+                case 'COALESCE':
+                    $val = $this->_execute_expression($s_term[1], $set[0], $query);
+                    if (is_null($val)) {
+                        $val = $this->_execute_expression($s_term[2], $set[0], $query);
                     }
-                }
+                    $rep[$as] = $val;
+                    break;
+                case 'MAX':
+                    $max = mixed();
+                    foreach ($set as $set_item) {
+                        $val = $this->_execute_expression($s_term[1], $set_item, $query);
+                        if ((is_null($max)) || ($val > $max)) {
+                            $max = $val;
+                        }
+                    }
+                    $rep[$as] = $max;
+                    break;
+                case 'MIN':
+                    $min = mixed();
+                    foreach ($set as $set_item) {
+                        $val = $this->_execute_expression($s_term[1], $set_item, $query);
+                        if ((is_null($min)) || ($val < $min)) {
+                            $min = $val;
+                        }
+                    }
+                    $rep[$as] = $min;
+                    break;
+                case 'COUNT':
+                    if ($s_term[1][0] == 'DISTINCT') {
+                        $index = array();
+                        foreach ($set as $set_item) {
+                            $val = array();
+                            for ($di = 1; $di < count($s_term[1]); $di++) {
+                                $val[] = $set_item[$s_term[1][$di]];
+                            }
+                            $index[serialize($val)] = true;
+                        }
+                        $rep[$as] = count($index);
+                    } else {
+                        $rep[$as] = count($set);
+                    }
+                    break;
+                case 'SUM':
+                    $temp = 0;
+                    foreach ($set as $set_item) {
+                        $val = $this->_execute_expression($s_term[1], $set_item, $query);
+                        $temp += $val;
+                    }
+                    if (is_integer($temp)) {
+                        $rep[$as] = floatval($temp);
+                    } else {
+                        $rep[$as] = $temp;
+                    }
+                    break;
+                case 'AVG':
+                    if (count($set) == 0) {
+                        $rep[$as] = null;
+                    } else {
+                        $temp = 0;
+                        foreach ($set as $set_item) {
+                            $val = $this->_execute_expression($s_term[1], $set_item, $query);
+                            $temp += $val;
+                        }
+                        if (is_integer($temp)) {
+                            $rep[$as] = floatval($temp) / floatval(count($set));
+                        } else {
+                            $rep[$as] = $temp / floatval(count($set));
+                        }
+                    }
+                    break;
             }
         }
         return $rep;
