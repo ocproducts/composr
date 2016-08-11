@@ -22,7 +22,6 @@
 
 /*
     Things we don't support but are advisable for us to add (TODO, #2761)
-        Sub-query support is limited to the IN and EXISTS constructs
         Expressions in ORDER BY clauses will be ignored
         HAVING is not supported
         We do not support CAST
@@ -82,6 +81,31 @@ function init__database__xml()
 
     global $TABLE_BASES;
     $TABLE_BASES = array();
+
+    global $INT_TYPES, $STRING_TYPES;
+    $INT_TYPES = array('REAL', 'AUTO', 'AUTO_LINK', 'INTEGER', 'UINTEGER', 'SHORT_INTEGER', 'BINARY', 'MEMBER', 'GROUP', 'TIME');
+    if (multi_lang_content()) {
+        $INT_TYPES[] = 'SHORT_TRANS';
+        $INT_TYPES[] = 'LONG_TRANS';
+        $INT_TYPES[] = 'SHORT_TRANS__COMCODE';
+        $INT_TYPES[] = 'LONG_TRANS__COMCODE';
+    }
+    $STRING_TYPES = array(
+        'SHORT_TEXT' => 255,
+        'LONG_TEXT' => null,
+        'ID_TEXT' => 80,
+        'MINIID_TEXT' => 40,
+        'IP' => 40,
+        'LANGUAGE_NAME' => 5,
+        'URLPATH' => 255,
+        'UINTEGER' => 10, // Fudge as we need to send in unsigned integers using strings, as PHP can't hold them
+    );
+    if (!multi_lang_content()) {
+        $STRING_TYPES['SHORT_TRANS'] = 255;
+        $STRING_TYPES['LONG_TRANS'] = null;
+        $STRING_TYPES['SHORT_TRANS__COMCODE'] = 255;
+        $STRING_TYPES['LONG_TRANS__COMCODE'] = null;
+    }
 
     require_code('xml');
 
@@ -786,6 +810,8 @@ class Database_Static_xml
      */
     protected function _type_check($schema, $record, $query)
     {
+        global $INT_TYPES, $STRING_TYPES;
+
         foreach ($record as $key => $val) {
             if (!isset($schema[$key])) {
                 fatal_exit('Unrecognised key, ' . $key);
@@ -793,14 +819,7 @@ class Database_Static_xml
             $schema_type = preg_replace('#[^\w]#', '', $schema[$key]);
 
             if (is_integer($val)) {
-                $int_types = array('REAL', 'AUTO', 'AUTO_LINK', 'INTEGER', 'UINTEGER', 'SHORT_INTEGER', 'BINARY', 'MEMBER', 'GROUP', 'TIME');
-                if (multi_lang_content()) {
-                    $int_types[] = 'SHORT_TRANS';
-                    $int_types[] = 'LONG_TRANS';
-                    $int_types[] = 'SHORT_TRANS__COMCODE';
-                    $int_types[] = 'LONG_TRANS__COMCODE';
-                }
-                if (!in_array($schema_type, $int_types)) {
+                if (!in_array($schema_type, $INT_TYPES)) {
                     $this->_bad_query($query, false, 'Database type strictness error: ' . $schema_type . ' wanted for ' . $key . ' field, but integer was given');
                 }
 
@@ -812,28 +831,11 @@ class Database_Static_xml
                     $this->_bad_query($query, false, 'Database type strictness error: ' . $schema_type . ' wanted for ' . $key . ' field (number given was not 0 or 1)');
                 }
             } elseif (is_string($val)) {
-                $string_types = array(
-                    'SHORT_TEXT' => 255,
-                    'LONG_TEXT' => null,
-                    'ID_TEXT' => 80,
-                    'MINIID_TEXT' => 40,
-                    'IP' => 40,
-                    'LANGUAGE_NAME' => 5,
-                    'URLPATH' => 255,
-                    'UINTEGER' => 10, // Fudge as we need to send in unsigned integers using strings, as PHP can't hold them
-                );
-                if (!multi_lang_content()) {
-                    $string_types['SHORT_TRANS'] = 255;
-                    $string_types['LONG_TRANS'] = null;
-                    $string_types['SHORT_TRANS__COMCODE'] = 255;
-                    $string_types['LONG_TRANS__COMCODE'] = null;
-                }
-
-                if (!in_array($schema_type, array_keys($string_types))) {
+                if (!in_array($schema_type, array_keys($STRING_TYPES))) {
                     $this->_bad_query($query, false, 'Database type strictness error: ' . $schema_type . ' wanted for ' . $key . ' field, but string (' . $val . ') was given');
                 }
 
-                $max_length = $string_types[$schema_type];
+                $max_length = $STRING_TYPES[$schema_type];
                 if ((!is_null($max_length)) && (strlen($val) > $max_length)) {
                     $this->_bad_query($query, false, 'Database type strictness error: ' . $schema_type . ' wanted for ' . $key . ' field (text too long, maximum is ' . integer_format($max_length) . ')');
                 }
@@ -1214,6 +1216,7 @@ class Database_Static_xml
         if (is_null($schema)) {
             return $_record;
         } else {
+            global $INT_TYPES;
             $record = array();
             foreach ($_record as $key => $val) {
                 $new_val = mixed();
@@ -1223,7 +1226,7 @@ class Database_Static_xml
                 $type = $schema[$key];
                 $schema_type = preg_replace('#[^\w]#', '', $type);
 
-                if (in_array($schema_type, array('AUTO', 'AUTO_LINK', 'INTEGER', 'UINTEGER', 'SHORT_INTEGER', 'BINARY', 'MEMBER', 'GROUP', 'TIME', 'SHORT_TRANS', 'LONG_TRANS'))) {
+                if (in_array($schema_type, $INT_TYPES)) {
                     if (((is_null($val)) || ($val === '')) && (substr($type, 0, 1) == '?')) {
                         $new_val = null;
                     } else {
@@ -1244,10 +1247,11 @@ class Database_Static_xml
                 unset($schema[$key]);
             }
 
+            global $INT_TYPES;
             foreach ($schema as $key => $type) {
                 $schema_type = preg_replace('#[^\w]#', '', $type);
 
-                if (in_array($schema_type, array('AUTO', 'AUTO_LINK', 'INTEGER', 'UINTEGER', 'SHORT_INTEGER', 'BINARY', 'MEMBER', 'GROUP', 'TIME', 'SHORT_TRANS', 'LONG_TRANS'))) {
+                if (in_array($schema_type, $INT_TYPES)) {
                     if (substr($type, 0, 1) == '?') {
                         $record[$key] = null;
                     } else {
@@ -1570,13 +1574,7 @@ class Database_Static_xml
                     if ($allow_null) {
                         $default = null;
                     } else {
-                        if (in_array($data_type, array('AUTO', 'AUTO_LINK', 'INTEGER', 'UINTEGER', 'SHORT_INTEGER', 'BINARY', 'MEMBER', 'GROUP', 'TIME', 'SHORT_TRANS', 'LONG_TRANS'))) {
-                            return $this->_bad_query($query, false, 'No DEFAULT given and NULL not allowed');
-                        } elseif (in_array($data_type, array('REAL'))) {
-                            return $this->_bad_query($query, false, 'No DEFAULT given and NULL not allowed');
-                        } else {
-                            $default = '';
-                        }
+                        return $this->_bad_query($query, false, 'No DEFAULT given and NULL not allowed');
                     }
                 }
 
@@ -2440,6 +2438,13 @@ class Database_Static_xml
         $select = array();
         do {
             $token = $this->_parsing_read($at, $tokens, $query);
+
+            if ($token == '\'') {
+                $token .= $this->_parsing_read($at, $tokens, $query);
+                $this->_parsing_expects($at, $tokens, '\'', $query);
+                $token .= '\'';
+            }
+
             if ($token == '*') {
                 $select[] = array('*');
             } else {
@@ -2522,65 +2527,73 @@ class Database_Static_xml
                         break;
                 }
 
-                $as_token = $this->_parsing_read($at, $tokens, $query);
-                if ($as_token == 'AS') {
-                    $as = $this->_parsing_read($at, $tokens, $query);
-                    $select[] = array('AS', $token, $as);
-                } elseif (($as_token == '*') && (substr($token, -1) == '.')) {
-                    $select[] = array('*', substr($token, 0, strlen($token) - 1));
-                } else {
-                    $at--;
+                $as_token = $this->_parsing_read($at, $tokens, $query, true);
+                if ($as_token == null) { // reached end of query
                     $select[] = array('SIMPLE', $token);
+                } else {
+                    if ($as_token == 'AS') {
+                        $as = $this->_parsing_read($at, $tokens, $query);
+                        $select[] = array('AS', $token, $as);
+                    } elseif (($as_token == '*') && (substr($token, -1) == '.')) {
+                        $select[] = array('*', substr($token, 0, strlen($token) - 1));
+                    } else {
+                        $at--;
+                        $select[] = array('SIMPLE', $token);
+                    }
                 }
             }
 
-            $token = $this->_parsing_read($at, $tokens, $query);
-        } while ($token == ',');
-        $at--;
-
-        if (!$this->_parsing_expects($at, $tokens, 'FROM', $query)) {
-            return null;
+            $token = $this->_parsing_read($at, $tokens, $query, true);
+        } while ($token === ',');
+        if ($token !== null) {
+            $at--;
         }
-        $table_name = $this->_parsing_read($at, $tokens, $query);
-        if ($table_name == '(') {
-            $closing_brackets_needed = 1;
-            $table_name = $this->_parsing_read($at, $tokens, $query);
-        } else {
+
+        if ($this->_parsing_expects($at, $tokens, 'FROM', $query, true)) {
             $closing_brackets_needed = 0;
-        }
-        $as_test = $this->_parsing_read($at, $tokens, $query, true);
-        if ((!is_null($as_test)) && ($as_test != 'ON') && ($as_test != ')') && ($as_test != 'LIMIT') && ($as_test != 'GROUP') && ($as_test != 'ORDER') && ($as_test != 'WHERE') && ($as_test != 'LEFT') && ($as_test != 'RIGHT') && ($as_test != 'INNER') && ($as_test != 'JOIN')) {
-            $as = $as_test;
-        } else {
-            $as = $table_name;
-            if (!is_null($as_test)) {
-                $at--;
+            $table_name = $this->_parsing_read($at, $tokens, $query);
+            if ($table_name == '(') { // subquery
+                $table_name = $this->_do_query_select($tokens, $query, $db, null, null, $fail_ok, $at, false);
+                if (!$this->_parsing_expects($at, $tokens, ')', $query)) {
+                    return null;
+                }
             }
-        }
-
-        for ($i = 0; $i < $closing_brackets_needed; $i++) {
-            $br = $this->_parsing_read($at, $tokens, $query, true);
-            if ($br === ')') {
-                $i--;
-                $closing_brackets_needed--;
+            $as_test = $this->_parsing_read($at, $tokens, $query, true);
+            if ((!is_null($as_test)) && ($as_test != 'ON') && ($as_test != ')') && ($as_test != 'LIMIT') && ($as_test != 'GROUP') && ($as_test != 'ORDER') && ($as_test != 'WHERE') && ($as_test != 'LEFT') && ($as_test != 'RIGHT') && ($as_test != 'INNER') && ($as_test != 'JOIN')) {
+                $as = $as_test;
             } else {
-                $at--;
-                break;
+                $as = is_array($table_name) ? 'x' : $table_name;
+                if (!is_null($as_test)) {
+                    $at--;
+                }
             }
-        }
 
-        $joins = array(array('SIMPLE', $table_name, $as));
-        do {
-            $test = $this->_read_join($at, $tokens, $query, $db, $fail_ok, $closing_brackets_needed);
-            if (!is_null($test)) {
-                $joins[] = $test;
+            for ($i = 0; $i < $closing_brackets_needed; $i++) {
+                $br = $this->_parsing_read($at, $tokens, $query, true);
+                if ($br === ')') {
+                    $i--;
+                    $closing_brackets_needed--;
+                } else {
+                    $at--;
+                    break;
+                }
             }
-        } while (!is_null($test));
 
-        for ($i = 0; $i < $closing_brackets_needed; $i++) {
-            if (!$this->_parsing_expects($at, $tokens, ')', $query)) {
-                return null;
+            $joins = array(array('SIMPLE', $table_name, $as));
+            do {
+                $test = $this->_read_join($at, $tokens, $query, $db, $fail_ok, $closing_brackets_needed);
+                if (!is_null($test)) {
+                    $joins[] = $test;
+                }
+            } while (!is_null($test));
+
+            for ($i = 0; $i < $closing_brackets_needed; $i++) {
+                if (!$this->_parsing_expects($at, $tokens, ')', $query)) {
+                    return null;
+                }
             }
+        } else {
+            $joins = array();
         }
 
         $token = $this->_parsing_read($at, $tokens, $query, true);
@@ -2680,7 +2693,10 @@ class Database_Static_xml
 
         // Execute
         $done = 0;
-        if ((count($joins) == 1) && ($where_expr == array('LITERAL', true)) && ($select === array(array('SIMPLE', array('COUNT', '*'))))) { // Quick fudge to get fast table counts
+        if (count($joins) == 0) {
+            $records = array(array());
+        }
+        elseif ((count($joins) == 1) && (!is_array($joins[0][1])) && ($where_expr == array('LITERAL', true)) && ($select === array(array('SIMPLE', array('COUNT', '*'))))) { // Quick fudge to get fast table counts
             global $DIR_CONTENTS_CACHE;
             if (!isset($DIR_CONTENTS_CACHE[$joins[0][1]])) {
                 @chdir($db[0] . '/' . $joins[0][1]);
@@ -2707,18 +2723,24 @@ class Database_Static_xml
                 if ($join[0] == 'SIMPLE') {
                     $joined_as = $join[2];
 
-                    $schema = $this->_read_schema($db, $join[1], $fail_ok);
+                    if (is_array($join[1])) {
+                        $schema = array();
 
-                    if (is_null($schema)) {
-                        return null;
-                    }
-                    $records = $this->_read_all_records($db, $join[1], $joined_as, $schema, $where_expr, $fail_ok, $query);
-                    if (is_null($records)) {
-                        return null;
-                    }
+                        $records = $join[1];
+                    } else {
+                        $schema = $this->_read_schema($db, $join[1], $fail_ok);
 
-                    foreach ($schema as $k => $v) {
-                        $schema[$joined_as . '.' . $k] = $v; // Needed so all scoped variables can be put in place as NULL's in a right variable
+                        if (is_null($schema)) {
+                            return null;
+                        }
+                        $records = $this->_read_all_records($db, $join[1], $joined_as, $schema, $where_expr, $fail_ok, $query);
+                        if (is_null($records)) {
+                            return null;
+                        }
+
+                        foreach ($schema as $k => $v) {
+                            $schema[$joined_as . '.' . $k] = $v; // Needed so all scoped variables can be put in place as NULL's in a right variable
+                        }
                     }
 
                     // Handle the join as condition
@@ -2873,7 +2895,17 @@ class Database_Static_xml
                                 }
                             }
                         } else {
-                            if (strpos($param, '.') === false) {
+                            if ($param == 'NULL') {
+                                $_record[$param] = null;
+                            } elseif (preg_match('#^\'.*\'$#', $param) != 0) {
+                                $_record[$param] = $param;
+                            } elseif (is_numeric($param)) {
+                                if (strpos($param, '.') !== false) {
+                                    $_record[$param] = floatval($param);
+                                } else {
+                                    $_record[$param] = intval($param);
+                                }
+                            } elseif (strpos($param, '.') === false) {
                                 $_record[$param] = $record[$param];
                             } else {
                                 $_record[preg_replace('#^.*\.#', '', $param)] = $record[$param];
