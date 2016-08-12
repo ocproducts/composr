@@ -77,16 +77,16 @@ function pop_up_menu(id, place, menu, event, outside_fixed_width) {
     var p = e.parentNode;
 
     // Our own position computation as we are positioning relatively, as things expand out
-    if (abstract_get_computed_style(p.parentNode, 'position') == 'absolute') {
+    if (window.getComputedStyle(p.parentNode).getPropertyValue('position') == 'absolute') {
         l += p.offsetLeft;
         t += p.offsetTop;
     } else {
         while (p) {
-            if ((p) && (abstract_get_computed_style(p, 'position') == 'relative')) break;
+            if ((p) && (window.getComputedStyle(p).getPropertyValue('position') == 'relative')) break;
             l += p.offsetLeft;
             t += p.offsetTop - sts(p.style.borderTop);
             p = p.offsetParent;
-            if ((p) && (abstract_get_computed_style(p, 'position') == 'absolute')) break;
+            if ((p) && (window.getComputedStyle(p).getPropertyValue('position') == 'absolute')) break;
         }
     }
     if (place == 'below') {

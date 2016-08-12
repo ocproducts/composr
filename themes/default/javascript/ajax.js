@@ -308,7 +308,7 @@ function call_block(url, new_block_params, target_div, append, callback, scroll_
         var raw_ajax_grow_spot = target_div.querySelectorAll('.raw_ajax_grow_spot');
         if (typeof raw_ajax_grow_spot[0] != 'undefined' && append) loading_wrapper = raw_ajax_grow_spot[0]; // If we actually are embedding new results a bit deeper
         var loading_wrapper_inner = document.createElement('div');
-        var position_type = abstract_get_computed_style(loading_wrapper, 'position');
+        var position_type = window.getComputedStyle(loading_wrapper).getPropertyValue('position');
         if ((position_type != 'relative') && (position_type != 'absolute')) {
             if (append) {
                 loading_wrapper_inner.style.position = 'relative';

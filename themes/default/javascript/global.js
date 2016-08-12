@@ -115,7 +115,7 @@ var Composr = {
         }
     }
 
-}(jQuery || Zepto));
+}(window.jQuery || window.Zepto));
 
 
 /* Startup */
@@ -235,7 +235,7 @@ function script_load_stuff() {
                         var width = find_width(stuck_nav, true);
                         var height = find_height(stuck_nav, true);
                         var stuck_nav_width = find_width(stuck_nav, true);
-                        if (!abstract_get_computed_style(stuck_nav, 'width')) // May be centered or something, we should be careful
+                        if (!window.getComputedStyle(stuck_nav).getPropertyValue('width')) // May be centered or something, we should be careful
                         {
                             stuck_nav.parentNode.style.width = width + 'px';
                         }
@@ -1576,30 +1576,6 @@ function smooth_scroll(dest_y, expected_scroll_y, dir, event_after) {
     }, 30);
 }
 
-/* Get what an elements current style is for a particular CSS property */
-function abstract_get_computed_style(obj, property) {
-    // LEGACY: IE8
-    if (obj.currentStyle) {
-        var index = property.indexOf('-');
-        if (index != -1) {
-            property = property.substring(0, index) + property.substring(index + 1, index + 2).toUpperCase() + property.substring(index + 2, property.length);
-        }
-        return obj.currentStyle[property];
-    }
-
-    var ret = null;
-    try {
-        ret = document.defaultView.getComputedStyle(obj, null).getPropertyValue(property);
-    }
-    catch (e) {
-    }
-    if (ret === null) ret = '';
-
-    if (ret === null) ret = '';
-
-    return ret;
-}
-
 /* Helper to change class on checkbox check */
 function change_class(box, theId, to, from) {
     var cell = document.getElementById(theId);
@@ -1709,7 +1685,7 @@ function find_pos_x(obj, not_relative) /* if not_relative is true it gets the po
     if (!not_relative) {
         var position;
         while (obj != null) {
-            position = abstract_get_computed_style(obj, 'position');
+            position = window.getComputedStyle(obj).getPropertyValue('position');
             if (position == 'absolute' || position == 'relative') {
                 ret -= find_pos_x(obj, true);
                 break;
@@ -1725,7 +1701,7 @@ function find_pos_y(obj, not_relative) /* if not_relative is true it gets the po
     if (!not_relative) {
         var position;
         while (obj != null) {
-            position = abstract_get_computed_style(obj, 'position');
+            position = window.getComputedStyle(obj).getPropertyValue('position');
             if (position == 'absolute' || position == 'relative') {
                 ret -= find_pos_y(obj, true);
                 break;
@@ -1743,10 +1719,10 @@ function find_width(obj, take_padding_and_border) // if take_padding_and_border 
 
     var ret = obj.offsetWidth;
     if (take_padding_and_border) {
-        ret -= sts(abstract_get_computed_style(obj, 'padding-left'));
-        ret -= sts(abstract_get_computed_style(obj, 'padding-right'));
-        ret -= sts(abstract_get_computed_style(obj, 'border-left-width'));
-        ret -= sts(abstract_get_computed_style(obj, 'border-right-width'));
+        ret -= sts(window.getComputedStyle(obj).getPropertyValue('padding-left'));
+        ret -= sts(window.getComputedStyle(obj).getPropertyValue('padding-right'));
+        ret -= sts(window.getComputedStyle(obj).getPropertyValue('border-left-width'));
+        ret -= sts(window.getComputedStyle(obj).getPropertyValue('border-right-width'));
     }
     return ret;
 }
@@ -1757,10 +1733,10 @@ function find_height(obj, take_padding_and_border) {
 
     var ret = obj.offsetHeight;
     if (take_padding_and_border) {
-        ret -= sts(abstract_get_computed_style(obj, 'padding-top'));
-        ret -= sts(abstract_get_computed_style(obj, 'padding-bottom'));
-        ret -= sts(abstract_get_computed_style(obj, 'border-top-width'));
-        ret -= sts(abstract_get_computed_style(obj, 'border-bottom-width'));
+        ret -= sts(window.getComputedStyle(obj).getPropertyValue('padding-top'));
+        ret -= sts(window.getComputedStyle(obj).getPropertyValue('padding-bottom'));
+        ret -= sts(window.getComputedStyle(obj).getPropertyValue('border-top-width'));
+        ret -= sts(window.getComputedStyle(obj).getPropertyValue('border-bottom-width'));
     }
     return ret;
 }
@@ -1800,7 +1776,7 @@ function key_pressed(event, key, no_error_if_bad) {
         if (typeof event.target != 'undefined') targ = event.target;
         else targ = event.srcElement;
         if (!no_error_if_bad) {
-            var current_bg = abstract_get_computed_style(targ, 'background');
+            var current_bg = window.getComputedStyle(targ).getPropertyValue('background');
             if ((typeof current_bg == 'undefined') || (current_bg)) current_bg = 'white';
             if (current_bg != '#FF8888')
                 window.setTimeout(function () {

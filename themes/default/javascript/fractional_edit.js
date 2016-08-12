@@ -78,7 +78,7 @@ function fractional_edit(event, object, url, raw_text, edit_param_name, was_doub
             to_copy.push('border-left');
         }
         for (var i = 0; i < to_copy.length; i++) {
-            var style = abstract_get_computed_style(object.parentNode, to_copy[i]);
+            var style = window.getComputedStyle(object.parentNode).getPropertyValue(to_copy[i]);
             if (typeof style != 'undefined') input.style[to_copy[i]] = style;
         }
         input.name = edit_param_name;
