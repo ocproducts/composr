@@ -130,7 +130,7 @@ function internalise_infinite_scrolling(url_stem, wrapper) {
     var wrapper_bottom = wrapper_pos_y + wrapper_height;
     var window_height = get_window_height();
     var page_height = get_window_scroll_height();
-    var scroll_y = get_window_scroll_y();
+    var scroll_y = window.pageYOffset;
 
     // Scroll down -- load
     if ((scroll_y + window_height > wrapper_bottom - window_height * 2) && (scroll_y + window_height < page_height - 30)) // If within window_height*2 pixels of load area and not within 30 pixels of window bottom (so you can press End key)
@@ -179,7 +179,7 @@ function internalise_ajax_block_wrapper_links(url_stem, block_element, look_for,
     if (typeof scroll_to_top == 'undefined') scroll_to_top = true;
 
     var block_pos_y = find_pos_y(block_element, true);
-    if (block_pos_y > get_window_scroll_y()) {
+    if (block_pos_y > window.pageYOffset) {
         scroll_to_top = false;
     }
 

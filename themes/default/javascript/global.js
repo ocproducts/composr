@@ -3,8 +3,8 @@
 "use strict";
 
 var Composr = {
-    windowLoaded: false,
-    polyfillsLoaded: false
+    _windowLoaded: false,
+    _polyfillsLoaded: false
 };
 
 (function ($){
@@ -13,7 +13,7 @@ var Composr = {
     loadPolyfills();
 
     Composr.onReady = function onReady(callback) {
-        if (Composr.polyfillsLoaded) {
+        if (Composr._polyfillsLoaded) {
             $(callback);
         } else {
             window.addEventListener('composr.polyfillsloaded', function (){
@@ -23,12 +23,12 @@ var Composr = {
     };
 
     Composr.onWindowLoad = function onWindowLoad(callback) {
-        if (Composr.windowLoaded || (document.readyState === 'complete')) {
-            Composr.windowLoaded = true;
+        if (Composr._windowLoaded || (document.readyState === 'complete')) {
+            Composr._windowLoaded = true;
             setTimeout(callback, 0);
         } else {
             window.addEventListener('load', function () {
-                Composr.windowLoaded = true;
+                Composr._windowLoaded = true;
                 setTimeout(callback, 0);
             });
         }
@@ -78,7 +78,7 @@ var Composr = {
     var scriptsToLoad = 0;
     var scriptsLoaded = 0;
     function loadPolyfills() {
-        if (Composr.polyfillsLoaded) {
+        if (Composr._polyfillsLoaded) {
             return;
         }
 
@@ -91,7 +91,7 @@ var Composr = {
             scriptsLoaded++;
 
             if (scriptsToLoad === scriptsLoaded) {
-                Composr.polyfillsLoaded = true;
+                Composr._polyfillsLoaded = true;
                 window.dispatchEvent(new Event('composr.polyfillsloaded'));
             }
         }
@@ -110,7 +110,7 @@ var Composr = {
         }
 
         if (scriptsToLoad === 0) {
-            Composr.polyfillsLoaded = true;
+            Composr._polyfillsLoaded = true;
             window.dispatchEvent(new Event('composr.polyfillsloaded'));
         }
     }
@@ -230,7 +230,7 @@ function script_load_stuff() {
                 if (panel_bottom) footer_height += find_height(panel_bottom);
                 if (stuck_nav_height < get_window_height() - footer_height) // If there's space in the window to make it "float" between header/footer
                 {
-                    var extra_height = (get_window_scroll_y() - pos_y);
+                    var extra_height = (window.pageYOffset - pos_y);
                     if (extra_height > 0) {
                         var width = find_width(stuck_nav, true);
                         var height = find_height(stuck_nav, true);
@@ -1544,7 +1544,7 @@ function smooth_scroll(dest_y, expected_scroll_y, dir, event_after) {
     return;
     /*{+END}*/
 
-    var scroll_y = get_window_scroll_y();
+    var scroll_y = window.pageYOffset;
     if (typeof dest_y == 'string') dest_y = find_pos_y(document.getElementById(dest_y), true);
     if (dest_y < 0) dest_y = 0;
     if ((typeof expected_scroll_y != 'undefined') && (expected_scroll_y != null) && (expected_scroll_y != scroll_y)) return; // We must terminate, as the user has scrolled during our animation and we do not want to interfere with their action -- or because our last scroll failed, due to us being on the last scroll screen already
@@ -1608,7 +1608,7 @@ function get_mouse_x(event, win) // Usually use window.mouse_x after calling reg
         if ((typeof event.pageX != 'undefined') && (event.pageX)) {
             return event.pageX;
         } else if ((typeof event.clientX != 'undefined') && (event.clientX)) {
-            return event.clientX + get_window_scroll_x(win)
+            return event.clientX + win.pageXOffset
         }
     }
     catch (err) {
@@ -1622,7 +1622,7 @@ function get_mouse_y(event, win) // Usually use window.mouse_y after calling reg
         if ((typeof event.pageY != 'undefined') && (event.pageY)) {
             return event.pageY;
         } else if ((typeof event.clientY != 'undefined') && (event.clientY)) {
-            return event.clientY + get_window_scroll_y(win)
+            return event.clientY + win.pageYOffset
         }
     }
     catch (err) {
@@ -1659,29 +1659,10 @@ function get_window_scroll_height(win) {
 
     return b;
 }
-function get_window_scroll_x(win) {
-    if (typeof win == 'undefined') win = window;
-    if (typeof win.pageXOffset != 'undefined') return win.pageXOffset;
 
-    // LEGACY: IE8
-    if ((win.document.documentElement) && (win.document.documentElement.scrollLeft)) return win.document.documentElement.scrollLeft;
-    if ((win.document.body) && (win.document.body.scrollLeft)) return win.document.body.scrollLeft;
-    if (typeof win.scrollX != 'undefined') return win.scrollX;
-    return 0;
-}
-function get_window_scroll_y(win) {
-    if (typeof win == 'undefined') win = window;
-    if (typeof win.pageYOffset != 'undefined') return win.pageYOffset;
-
-    // LEGACY: IE8
-    if ((win.document.documentElement) && (win.document.documentElement.scrollTop)) return win.document.documentElement.scrollTop;
-    if ((win.document.body) && (win.document.body.scrollTop)) return win.document.body.scrollTop;
-    if (typeof win.scrollTop != 'undefined') return win.scrollTop;
-    return 0;
-}
-function find_pos_x(obj, not_relative) /* if not_relative is true it gets the position relative to the browser window, else it will be relative to the most recent position:absolute/relative going up the element tree */ {
+function find_pos_x(obj, not_relative) {/* if not_relative is true it gets the position relative to the browser window, else it will be relative to the most recent position:absolute/relative going up the element tree */
     if (typeof not_relative == 'undefined') not_relative = false;
-    var ret = obj.getBoundingClientRect().left + get_window_scroll_x();
+    var ret = obj.getBoundingClientRect().left + window.pageXOffset;
     if (!not_relative) {
         var position;
         while (obj != null) {
@@ -1695,9 +1676,9 @@ function find_pos_x(obj, not_relative) /* if not_relative is true it gets the po
     }
     return ret;
 }
-function find_pos_y(obj, not_relative) /* if not_relative is true it gets the position relative to the browser window, else it will be relative to the most recent position:absolute/relative going up the element tree */ {
+function find_pos_y(obj, not_relative) {/* if not_relative is true it gets the position relative to the browser window, else it will be relative to the most recent position:absolute/relative going up the element tree */
     if (typeof not_relative == 'undefined') not_relative = false;
-    var ret = obj.getBoundingClientRect().top + get_window_scroll_y();
+    var ret = obj.getBoundingClientRect().top + window.pageYOffset;
     if (!not_relative) {
         var position;
         while (obj != null) {
@@ -1711,10 +1692,7 @@ function find_pos_y(obj, not_relative) /* if not_relative is true it gets the po
     }
     return ret;
 }
-function find_width(obj, take_padding_and_border) // if take_padding_and_border is not set returns contentWidth+padding+border, else just contentWidth; margin never included
-{
-    if (typeof take_padding_and_border == 'undefined') take_padding_and_border = false;
-
+function find_width(obj, take_padding_and_border) {// if take_padding_and_border is not set returns contentWidth+padding+border, else just contentWidth; margin never included
     if (!obj) return 0;
 
     var ret = obj.offsetWidth;
@@ -1727,8 +1705,6 @@ function find_width(obj, take_padding_and_border) // if take_padding_and_border 
     return ret;
 }
 function find_height(obj, take_padding_and_border) {
-    if (typeof take_padding_and_border == 'undefined') take_padding_and_border = false;
-
     if (!obj) return 0;
 
     var ret = obj.offsetHeight;
@@ -2225,8 +2201,8 @@ function reposition_tooltip(ac, event, bottom, starting, tooltip_element, force_
             if (typeof event.type != 'undefined') {
                 if (event.type != 'focus') ac.done_none_focus = true;
                 if ((event.type == 'focus') && (ac.done_none_focus)) return;
-                x = (event.type == 'focus') ? (get_window_scroll_x(win) + get_window_width(win) / 2) : (window.mouse_x + style__offset_x);
-                y = (event.type == 'focus') ? (get_window_scroll_y(win) + get_window_height(win) / 2 - 40) : (window.mouse_y + style__offset_y);
+                x = (event.type == 'focus') ? (win.pageXOffset + get_window_width(win) / 2) : (window.mouse_x + style__offset_x);
+                y = (event.type == 'focus') ? (win.pageYOffset + get_window_height(win) / 2 - 40) : (window.mouse_y + style__offset_y);
             }
         }
         catch (ignore) {
@@ -2249,7 +2225,7 @@ function reposition_tooltip(ac, event, bottom, starting, tooltip_element, force_
             if (width < 200) width = 200; // Give some breathing room, as might already have painfully-wrapped when it found there was not much space
         }
         var height = find_height(tooltip_element);
-        var x_excess = x - get_window_width(win) - get_window_scroll_x(win) + width + 10/*magic tolerance factor*/;
+        var x_excess = x - get_window_width(win) - win.pageXOffset + width + 10/*magic tolerance factor*/;
         if (x_excess > 0) // Either we explicitly gave too much width, or the width auto-calculated exceeds what we THINK is the maximum width in which case we have to re-compensate with an extra contingency to stop CSS/JS vicious disagreement cycles
         {
             var x_before = x;
@@ -2260,9 +2236,9 @@ function reposition_tooltip(ac, event, bottom, starting, tooltip_element, force_
         if (bottom) {
             tooltip_element.style.top = (y - height) + 'px';
         } else {
-            var y_excess = y - get_window_height(win) - get_window_scroll_y(win) + height + style__offset_y;
+            var y_excess = y - get_window_height(win) - win.pageYOffset + height + style__offset_y;
             if (y_excess > 0) y -= y_excess;
-            var scroll_y = get_window_scroll_y(win);
+            var scroll_y = win.pageYOffset;
             if (y < scroll_y) y = scroll_y;
             tooltip_element.style.top = y + 'px';
         }

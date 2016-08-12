@@ -17,7 +17,7 @@ function build_ghost_func(div, counter, limit) {
     return function () {
         div.style.fontSize = (1 + 0.05 * counter) + 'em';
         set_opacity(div, 1.0 - counter / limit / 1.3);
-        div.style.left = ((get_window_width() - find_width(div)) / 2 + get_window_scroll_x()) + 'px';
-        div.style.top = ((get_window_height() - find_height(div)) / 2 - 20 + get_window_scroll_y()) + 'px';
+        div.style.left = ((get_window_width() - find_width(div)) / 2 + window.pageXOffset) + 'px';
+        div.style.top = ((get_window_height() - find_height(div)) / 2 - 20 + window.pageYOffset) + 'px';
     }
 }

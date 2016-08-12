@@ -370,7 +370,7 @@ tree_list.prototype.render_tree = function (xml, html, element) {
             };
             node_self.ondrag = function (event) {
                 if (!event.clientY) return;
-                var hit = find_overlapping_selectable(event.clientY + get_window_scroll_y(), this, this.object.tree_list_data, this.object.name);
+                var hit = find_overlapping_selectable(event.clientY + window.pageYOffset, this, this.object.tree_list_data, this.object.name);
                 if (this.last_hit != null) {
                     this.last_hit.parentNode.parentNode.style.border = '0px';
                 }

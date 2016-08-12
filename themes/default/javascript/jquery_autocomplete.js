@@ -447,8 +447,8 @@ $(function() {
 				var sel = cke.getSelection(); // text selection
 				var obj = sel.getStartElement().$; // the element the selected text resides in
 
-				var x = find_pos_x(obj,true) - get_window_scroll_x() + get_window_scroll_x(cke.window.$) + find_pos_x(iframe,true);
-				var y = find_pos_y(obj,true) - get_window_scroll_y() + get_window_scroll_y(cke.window.$) + find_pos_y(iframe,true) + 20;
+				var x = find_pos_x(obj,true) - window.pageXOffset + cke.window.$.pageXOffset + find_pos_x(iframe,true);
+				var y = find_pos_y(obj,true) - window.pageYOffset + cke.window.$.pageYOffset + find_pos_y(iframe,true) + 20;
 				// NB: The get_window_scroll_x/get_window_scroll_y is because calculation happened on wrong window object
 
 				var text = _this.getText().substring(0, this.startPos);
