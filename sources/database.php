@@ -322,8 +322,8 @@ function db_escape_string($string)
 /**
  * Create an SQL cast.
  *
- * @param $field string The field identifier
- * @param $type string The type wanted
+ * @param string $field The field identifier
+ * @param string $type The type wanted
  * @set CHAR INT
  * @return string The database type
  */

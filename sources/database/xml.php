@@ -1544,7 +1544,7 @@ class Database_Static_xml
                 $next = $this->_parsing_read($at, $tokens, $query, true);
                 if ($next == 'DEFAULT') {
                     $_default = $this->_parsing_read_expression($at, $tokens, $query, $db, false, false, $fail_ok);
-                    $default = $this->_execute_expression($_default, array(), $query);
+                    $default = $this->_execute_expression($_default, array(), $query, $db, $fail_ok);
                 } else {
                     $default = false;
 
@@ -1802,7 +1802,7 @@ class Database_Static_xml
             $i = 0;
             do {
                 $expr = $this->_parsing_read_expression($at, $tokens, $query, $db, true, true, $fail_ok);
-                $result = $this->_execute_expression($expr, array(), $query);
+                $result = $this->_execute_expression($expr, array(), $query, $db, $fail_ok);
                 $record[$reverse_index[$i]] = $result;
                 $i++;
                 $token = $this->_parsing_read($at, $tokens, $query);
@@ -1962,7 +1962,10 @@ class Database_Static_xml
                 if (!$this->_parsing_expects($at, $tokens, '(', $query)) {
                     return null;
                 }
-                $results = $this->_do_query_select($tokens, $query, $db, 1, 0, $fail_ok, $at, false);
+                $results = $this->_parse_query_select($tokens, $query, $db, 1, 0, $fail_ok, $at, false);
+                if ($results === null) {
+                    return null;
+                }
                 if (!$this->_parsing_expects($at, $tokens, ')', $query)) {
                     return null;
                 }
@@ -1973,8 +1976,11 @@ class Database_Static_xml
                 $next_token = $this->_parsing_read($at, $tokens, $query);
                 $at--;
                 if ($next_token == 'SELECT') { // subquery
-                    $subquery = $this->_do_query_select($tokens, $query, $db, null, null, $fail_ok, $at, false);
-                    $expr = array('LITERAL', isset($subquery[0]) ? array_shift($subquery[0]) : null);
+                    $subquery = $this->_parse_query_select($tokens, $query, $db, null, null, $fail_ok, $at, false);
+                    if ($subquery === null) {
+                        return null;
+                    }
+                    $expr = array('SUBQUERY', $subquery);
                 } else {
                     $expr = array('BRACKETED', $this->_parsing_read_expression($at, $tokens, $query, $db, true, true, $fail_ok));
                 }
@@ -2082,16 +2088,20 @@ class Database_Static_xml
                             if (!$this->_parsing_expects($at, $tokens, '(', $query)) {
                                 return null;
                             }
+
                             $token = $this->_parsing_read($at, $tokens, $query);
+
                             $at--;
-                            $or_list = array();
+
                             if ($token == 'SELECT') {
-                                $results = $this->_do_query_select($tokens, $query, $db, null, 0, $fail_ok, $at, false);
-                                foreach ($results as $result) {
-                                    $result = array_values($result);
-                                    $or_list[] = $result[0];
+                                $test = $this->_parse_query_select($tokens, $query, $db, null, 0, $fail_ok, $at, false);
+                                if ($test === null) {
+                                    return null;
                                 }
+
+                                $expr = array('IN_SUBQUERY', $expr, $test);
                             } else {
+                                $or_list = array();
                                 do {
                                     $expr_in = $this->_parsing_read_expression($at, $tokens, $query, $db, true, true, $fail_ok);
                                     if (is_null($expr_in)) { // Force an exit
@@ -2101,11 +2111,12 @@ class Database_Static_xml
                                     $token = $this->_parsing_read($at, $tokens, $query);
                                 } while ($token == ',');
                                 $at--;
+
+                                $expr = array('IN', $expr, $or_list);
                             }
                             if (!$this->_parsing_expects($at, $tokens, ')', $query)) {
                                 return null;
                             }
-                            $expr = array('IN', $expr, $or_list);
                             break;
 
                         default:
@@ -2151,13 +2162,15 @@ class Database_Static_xml
      * @param  array $expr The expression
      * @param  array $bindings Bindings available in the execution scope
      * @param  string $query Query that was executed
+     * @param  array $db Database connection
+     * @param  boolean $fail_ok Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)
      * @return ?mixed The result (null: error/NULL)
      */
-    protected function _execute_expression($expr, $bindings, $query)
+    protected function _execute_expression($expr, $bindings, $query, $db, $fail_ok)
     {
         switch ($expr[0]) {
             case 'BRACKETED':
-                return $this->_execute_expression($expr[1], $bindings, $query);
+                return $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok);
 
             case 'LITERAL':
                 return $expr[1];
@@ -2170,32 +2183,32 @@ class Database_Static_xml
                 return $bindings[$expr[1]];
 
             case '+':
-                return $this->_execute_expression($expr[1], $bindings, $query) + $this->_execute_expression($expr[2], $bindings, $query);
+                return $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok) + $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok);
 
             case '-':
-                return $this->_execute_expression($expr[1], $bindings, $query) - $this->_execute_expression($expr[2], $bindings, $query);
+                return $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok) - $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok);
 
             case '*':
-                return $this->_execute_expression($expr[1], $bindings, $query) * $this->_execute_expression($expr[2], $bindings, $query);
+                return $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok) * $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok);
 
             case '/':
-                return $this->_execute_expression($expr[1], $bindings, $query) / $this->_execute_expression($expr[2], $bindings, $query);
+                return $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok) / $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok);
 
             case '>':
-                return $this->_execute_expression($expr[1], $bindings, $query) > $this->_execute_expression($expr[2], $bindings, $query);
+                return $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok) > $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok);
 
             case '<':
-                return $this->_execute_expression($expr[1], $bindings, $query) < $this->_execute_expression($expr[2], $bindings, $query);
+                return $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok) < $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok);
 
             case '>=':
-                return $this->_execute_expression($expr[1], $bindings, $query) >= $this->_execute_expression($expr[2], $bindings, $query);
+                return $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok) >= $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok);
 
             case '<=':
-                return $this->_execute_expression($expr[1], $bindings, $query) <= $this->_execute_expression($expr[2], $bindings, $query);
+                return $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok) <= $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok);
 
             case '=':
-                $a = $this->_execute_expression($expr[1], $bindings, $query);
-                $b = $this->_execute_expression($expr[2], $bindings, $query);
+                $a = $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok);
+                $b = $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok);
                 if (($expr[1][0] == 'FIELD') && ($expr[1][0] == 'FIELD')) { // Joins between non-equiv-typed fields
                     if ((is_integer($a)) && (!is_integer($b))) {
                         $a = strval($a);
@@ -2206,47 +2219,79 @@ class Database_Static_xml
                 return $a == $b;
 
             case '<>':
-                return $this->_execute_expression($expr[1], $bindings, $query) != $this->_execute_expression($expr[2], $bindings, $query);
+                return $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok) != $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok);
 
             case 'LIKE':
-                $value = $this->_execute_expression($expr[1], $bindings, $query);
-                $expr_eval = $this->_execute_expression($expr[2], $bindings, $query);
+                $value = $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok);
+                $expr_eval = $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok);
                 return simulated_wildcard_match($value, $expr_eval, true);
 
             case 'EXISTS':
-                return count($expr[1]) != 0;
+                list($exists_select, $exists_as, $exists_joins, $exists_where_expr, $exists_group_by, $exists_orders, $exists_start, $exists_max) = $expr[1];
+                $exists_results = $this->_execute_query_select($exists_select, $exists_as, $exists_joins, $exists_where_expr, $exists_group_by, $exists_orders, $query, $db, $exists_max, $exists_start, $fail_ok);
+                if ($exists_results === null) {
+                    return null;
+                }
+                return count($exists_results) != 0;
 
             case 'NOT':
-                return !$this->_execute_expression($expr[1], $bindings, $query);
+                return !$this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok);
 
             case 'AND':
-                return $this->_execute_expression($expr[1], $bindings, $query) && $this->_execute_expression($expr[2], $bindings, $query);
+                return $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok) && $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok);
 
             case 'OR':
-                return $this->_execute_expression($expr[1], $bindings, $query) || $this->_execute_expression($expr[2], $bindings, $query);
+                return $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok) || $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok);
 
             case 'IS_NULL':
-                return is_null($this->_execute_expression($expr[1], $bindings, $query));
+                return is_null($this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok));
 
             case 'IS_NOT_NULL':
-                return !is_null($this->_execute_expression($expr[1], $bindings, $query));
+                return !is_null($this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok));
 
             case 'BETWEEN':
-                $comp = $this->_execute_expression($expr[1], $bindings, $query);
-                return $comp >= $this->_execute_expression($expr[2], $bindings, $query) && $comp <= $this->_execute_expression($expr[3], $bindings, $query);
+                $comp = $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok);
+                return $comp >= $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok) && $comp <= $this->_execute_expression($expr[3], $bindings, $query, $db, $fail_ok);
 
             case 'REPLACE':
-                return str_replace($this->_execute_expression($expr[2], $bindings, $query), $this->_execute_expression($expr[3], $bindings, $query), $this->_execute_expression($expr[1], $bindings, $query));
+                return str_replace($this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok), $this->_execute_expression($expr[3], $bindings, $query, $db, $fail_ok), $this->_execute_expression($expr[1], $bindings, $query, $fail_ok));
 
             case 'CONCAT':
-                return $this->_execute_expression($expr[1], $bindings, $query) . $this->_execute_expression($expr[2], $bindings, $query);
+                return $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok) . $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok);
 
             case 'LENGTH':
-                return strlen($this->_execute_expression($expr[1], $bindings, $query));
+                return strlen($this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok));
+
+            case 'SUBQUERY':
+                list($subquery_select, $subquery_as, $subquery_joins, $subquery_where_expr, $subquery_group_by, $subquery_orders, $subquery_start, $subquery_max) = $expr[1];
+                $subquery = $this->_execute_query_select($subquery_select, $subquery_as, $subquery_joins, $subquery_where_expr, $subquery_group_by, $subquery_orders, $query, $db, $subquery_max, $subquery_start, $fail_ok);
+                if ($subquery === null) {
+                    return null;
+                }
+                return isset($subquery[0]) ? array_shift($subquery[0]) : null;
 
             case 'IN':
-                $val = $this->_execute_expression($expr[1], $bindings, $query);
+                $val = $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok);
                 foreach ($expr[2] as $in) {
+                    if ($val == $this->_execute_expression($in, $bindings, $query, $db, $fail_ok)) {
+                        return true;
+                    }
+                }
+                return false;
+
+            case 'IN_SUBQUERY':
+                $val = $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok);
+
+                list($subquery_select, $subquery_as, $subquery_joins, $subquery_where_expr, $subquery_group_by, $subquery_orders, $subquery_start, $subquery_max) = $expr[2];
+                $results = $this->_execute_query_select($subquery_select, $subquery_as, $subquery_joins, $subquery_where_expr, $subquery_group_by, $subquery_orders, $query, $db, $subquery_max, $subquery_start, $fail_ok);
+
+                $or_list = array();
+                foreach ($results as $result) {
+                    $result = array_values($result);
+                    $or_list[] = $result[0];
+                }
+
+                foreach ($or_list as $in) {
                     if ($val == $in) {
                         return true;
                     }
@@ -2324,12 +2369,12 @@ class Database_Static_xml
             if (!is_string($guid)) {
                 $guid = strval($guid); // As PHP can use type for array keys
             }
-            $test = $this->_execute_expression($where_expr, $record, $query);
+            $test = $this->_execute_expression($where_expr, $record, $query, $db, $fail_ok);
             if ($test) {
                 if ($i >= $start) {
                     $record_new = array();
                     foreach ($set as $column_name => $expr) {
-                        $record_new[$column_name] = $this->_execute_expression($expr, $record, $query);
+                        $record_new[$column_name] = $this->_execute_expression($expr, $record, $query, $db, $fail_ok);
                     }
                     $this->_type_check($schema, $record_new, $query);
                     $record = $record_new + $record;
@@ -2399,7 +2444,7 @@ class Database_Static_xml
             if (!is_string($guid)) {
                 $guid = strval($guid); // As PHP can use type for array keys
             }
-            $test = $this->_execute_expression($where_expr, $record, $query);
+            $test = $this->_execute_expression($where_expr, $record, $query, $db, $fail_ok);
             if ($test) {
                 if ($i >= $start) {
                     $path = $db[0] . '/' . $table_name . '/' . $guid . '.xml-volatile';
@@ -2441,8 +2486,8 @@ class Database_Static_xml
         if ($test === null) {
             return null;
         }
-        list($select, $as, $joins, $where_expr, $group_by, $orders, $start, $max) = $test;
-        return $this->_execute_query_select($select, $as, $joins, $where_expr, $group_by, $orders, $tokens, $query, $db, $max, $start, $fail_ok, $at, $do_end_check);
+        list($select, $as, $joins, $where_expr, $group_by, $orders, $unions, $start, $max) = $test;
+        return $this->_execute_query_select($select, $as, $joins, $where_expr, $group_by, $orders, $unions, $query, $db, $max, $start, $fail_ok);
     }
 
     /**
@@ -2456,7 +2501,7 @@ class Database_Static_xml
      * @param  boolean $fail_ok Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)
      * @param  integer $at Our offset counter
      * @param  boolean $do_end_check Whether to not do the check to make sure we've parsed everything
-     * @return array A tuple of query parts
+     * @return ?array A tuple of query parts (null: error)
      */
     protected function _parse_query_select($tokens, $query, $db, $max, $start, $fail_ok, &$at, $do_end_check = true)
     {
@@ -2594,7 +2639,10 @@ class Database_Static_xml
             $closing_brackets_needed = 0;
             $table_name = $this->_parsing_read($at, $tokens, $query);
             if ($table_name == '(') { // subquery
-                $table_name = $this->_do_query_select($tokens, $query, $db, null, null, $fail_ok, $at, false);
+                $table_name = $this->_parse_query_select($tokens, $query, $db, null, null, $fail_ok, $at, false);
+                if ($table_name === null) {
+                    return null;
+                }
                 if (!$this->_parsing_expects($at, $tokens, ')', $query)) {
                     return null;
                 }
@@ -2733,7 +2781,36 @@ class Database_Static_xml
             }
         }
 
-        return array($select, $as, $joins, $where_expr, $group_by, $orders, $start, $max);
+        // UNION clause?
+        $unions = array();
+        $token = $this->_parsing_read($at, $tokens, $query, true);
+        if ($token === 'UNION') {
+            $token = $this->_parsing_read($at, $tokens, $query);
+            if ($token == 'ALL') {
+                $de_dupe = false;
+            } else {
+                $de_dupe = true;
+                $at--;
+            }
+
+            $test = $this->_parse_query_select($tokens, $query, $db, $max, $start, $fail_ok, $at);
+            if ($test === null) {
+                return null;
+            }
+
+            $unions[] = array($test, $de_dupe);
+        } else {
+            if (!is_null($token)) {
+                $at--;
+            }
+            if ($do_end_check) {
+                if (!$this->_parsing_check_ended($at, $tokens, $query)) {
+                    return null;
+                }
+            }
+        }
+
+        return array($select, $as, $joins, $where_expr, $group_by, $orders, $unions, $start, $max);
     }
 
     /**
@@ -2745,17 +2822,15 @@ class Database_Static_xml
      * @param  array $where_expr Where constructs
      * @param  ?array $group_by Grouping by constructs (null: none)
      * @param  ?string $orders Ordering string for sort_maps_by (null: none)
-     * @param  array $tokens Tokens
+     * @param  array $unions Union constructs
      * @param  string $query Query that was executed
      * @param  array $db Database connection
      * @param  ?integer $max The maximum number of rows to affect (null: no limit)
      * @param  ?integer $start The start row to affect (null: no specification)
      * @param  boolean $fail_ok Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)
-     * @param  integer $at Our offset counter
-     * @param  boolean $do_end_check Whether to not do the check to make sure we've parsed everything
      * @return ?mixed The results (null: no results)
      */
-    protected function _execute_query_select($select, $as, $joins, $where_expr, $group_by, $orders, $tokens, $query, $db, $max, $start, $fail_ok, &$at, $do_end_check = true)
+    protected function _execute_query_select($select, $as, $joins, $where_expr, $group_by, $orders, $unions, $query, $db, $max, $start, $fail_ok)
     {
         // Execute
         $done = 0;
@@ -2791,7 +2866,8 @@ class Database_Static_xml
                     if (is_array($join[1])) {
                         $schema = array();
 
-                        $records = $join[1];
+                        list($join_select, $join_as, $join_joins, $join_where_expr, $join_group_by, $join_orders, $join_start, $join_max) = $join[1];
+                        $records = $this->_execute_query_select($join_select, $join_as, $join_joins, $join_where_expr, $join_group_by, $join_orders, $query, $db, $join_max, $join_start, $fail_ok);
                     } else {
                         $schema = $this->_read_schema($db, $join[1], $fail_ok);
 
@@ -2842,7 +2918,7 @@ class Database_Static_xml
             }
             $records = array();
             foreach ($record_sets as $set) { // Functions have special meaning in GROUP BY, and we need to compute them in the group-aware scope
-                $rep = $this->_function_set_scoping($set, $select, $set[0], $query);
+                $rep = $this->_function_set_scoping($set, $select, $set[0], $query, $db, $fail_ok);
                 $records[] = $rep;
             }
         } else {
@@ -2871,7 +2947,7 @@ class Database_Static_xml
                 }
             }
             foreach ($records as $i => $record) {
-                $records[$i] = $this->_function_set_scoping($records, $select, $record, $query);
+                $records[$i] = $this->_function_set_scoping($records, $select, $record, $query, $db, $fail_ok);
                 if ($single_result) {
                     $records = array($i => $records[$i]);
                     break;
@@ -2882,7 +2958,7 @@ class Database_Static_xml
         // Filter
         $pre_filtered_records = array();
         foreach ($records as $record) {
-            $test = $this->_execute_expression($where_expr, $record, $query);
+            $test = $this->_execute_expression($where_expr, $record, $query, $db, $fail_ok);
             if ($test) {
                 $pre_filtered_records[] = $record;
             }
@@ -2963,7 +3039,7 @@ class Database_Static_xml
                         if ($as === null) {
                             $as = $this->_param_name_for($want[1], $i);
                         }
-                        $_record[preg_replace('#^.*\.#', '', $as)] = $this->_execute_expression($want, $record, $query);
+                        $_record[preg_replace('#^.*\.#', '', $as)] = $this->_execute_expression($want, $record, $query, $db, $fail_ok);
                         break;
                 }
             }
@@ -2971,7 +3047,7 @@ class Database_Static_xml
         }
 
         if ((count($results) == 0) && (is_null($group_by))) { // If there are no records, but some functions, we need to add a row
-            $rep = $this->_function_set_scoping(array(), $select, array(), $query);
+            $rep = $this->_function_set_scoping(array(), $select, array(), $query, $db, $fail_ok);
             if (count($rep) != 0) {
                 foreach ($select as $i => $want) {
                     $as = null;
@@ -3004,18 +3080,15 @@ class Database_Static_xml
             }
         }
 
-        // UNION clause?
-        $token = $this->_parsing_read($at, $tokens, $query, true);
-        if ($token === 'UNION') {
-            $token = $this->_parsing_read($at, $tokens, $query);
-            if ($token == 'ALL') {
-                $de_dupe = false;
-            } else {
-                $de_dupe = true;
-                $at--;
-            }
+        // UNION clauses
+        foreach ($unions as $union) {
+            list($test, $de_dupe) = $union;
+            list($union_select, $union_as, $union_joins, $union_where_expr, $union_group_by, $union_orders, $union_start, $union_max) = $test;
 
-            $results_b = $this->_do_query_select($tokens, $query, $db, $max, $start, $fail_ok, $at);
+            $results_b = $this->_execute_query_select($union_select, $union_as, $union_joins, $union_where_expr, $union_group_by, $union_orders, $query, $db, $union_max, $union_start, $fail_ok);
+            if ($results_b === null) {
+                return null;
+            }
 
             if ($de_dupe) {
                 foreach ($results_b as $r) {
@@ -3025,15 +3098,6 @@ class Database_Static_xml
                 }
             } else {
                 $results = array_merge($results, $results_b);
-            }
-        } else {
-            if (!is_null($token)) {
-                $at--;
-            }
-            if ($do_end_check) {
-                if (!$this->_parsing_check_ended($at, $tokens, $query)) {
-                    return null;
-                }
             }
         }
 
@@ -3065,9 +3129,11 @@ class Database_Static_xml
      * @param  array $select Parse tree of what we are selecting
      * @param  array $rep Record we are copying the function results into
      * @param  string $query Query that was executed
+     * @param  array $db Database connection
+     * @param  boolean $fail_ok Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)
      * @return array The result row based on the set
      */
-    protected function _function_set_scoping($set, $select, $rep, $query)
+    protected function _function_set_scoping($set, $select, $rep, $query, $db, $fail_ok)
     {
         foreach ($select as $i => $s_term) {
             $as = null;
@@ -3087,16 +3153,16 @@ class Database_Static_xml
 
             switch ($s_term[0]) {
                 case 'COALESCE':
-                    $val = $this->_execute_expression($s_term[1], $set[0], $query);
+                    $val = $this->_execute_expression($s_term[1], $set[0], $query, $db, $fail_ok);
                     if (is_null($val)) {
-                        $val = $this->_execute_expression($s_term[2], $set[0], $query);
+                        $val = $this->_execute_expression($s_term[2], $set[0], $query, $db, $fail_ok);
                     }
                     $rep[$as] = $val;
                     break;
                 case 'MAX':
                     $max = mixed();
                     foreach ($set as $set_item) {
-                        $val = $this->_execute_expression($s_term[1], $set_item, $query);
+                        $val = $this->_execute_expression($s_term[1], $set_item, $query, $db, $fail_ok);
                         if ((is_null($max)) || ($val > $max)) {
                             $max = $val;
                         }
@@ -3106,7 +3172,7 @@ class Database_Static_xml
                 case 'MIN':
                     $min = mixed();
                     foreach ($set as $set_item) {
-                        $val = $this->_execute_expression($s_term[1], $set_item, $query);
+                        $val = $this->_execute_expression($s_term[1], $set_item, $query, $db, $fail_ok);
                         if ((is_null($min)) || ($val < $min)) {
                             $min = $val;
                         }
@@ -3131,7 +3197,7 @@ class Database_Static_xml
                 case 'SUM':
                     $temp = 0;
                     foreach ($set as $set_item) {
-                        $val = $this->_execute_expression($s_term[1], $set_item, $query);
+                        $val = $this->_execute_expression($s_term[1], $set_item, $query, $db, $fail_ok);
                         $temp += $val;
                     }
                     if (is_integer($temp)) {
@@ -3146,7 +3212,7 @@ class Database_Static_xml
                     } else {
                         $temp = 0;
                         foreach ($set as $set_item) {
-                            $val = $this->_execute_expression($s_term[1], $set_item, $query);
+                            $val = $this->_execute_expression($s_term[1], $set_item, $query, $db, $fail_ok);
                             $temp += $val;
                         }
                         if (is_integer($temp)) {
@@ -3350,7 +3416,7 @@ class Database_Static_xml
                                 $join_scope[$key] = $val;
                             }
                         }
-                        $test = $this->_execute_expression($join[3], $join_scope, $query);
+                        $test = $this->_execute_expression($join[3], $join_scope, $query, $db, $fail_ok);
                         if ($test) {
                             $records_results[] = $r2 + $r1;
                         }
@@ -3370,7 +3436,7 @@ class Database_Static_xml
                                 $join_scope[$key] = $val;
                             }
                         }
-                        $test = $this->_execute_expression($join[3], $join_scope, $query);
+                        $test = $this->_execute_expression($join[3], $join_scope, $query, $db, $fail_ok);
                         if ($test) {
                             $records_results[] = $r2 + $r1;
                             $matched = true;
@@ -3397,7 +3463,7 @@ class Database_Static_xml
                                 $join_scope[$key] = $val;
                             }
                         }
-                        $test = $this->_execute_expression($join[3], $join_scope, $query);
+                        $test = $this->_execute_expression($join[3], $join_scope, $query, $db, $fail_ok);
                         if ($test) {
                             $records_results[] = $r2 + $r1;
                             $matched = true;
@@ -3589,12 +3655,12 @@ class Database_Static_xml
     /**
      * Create an SQL cast.
      *
-     * @param $field string The field identifier
-     * @param $type string The type wanted
+     * @param string $field The field identifier
+     * @param string $type The type wanted
      * @set CHAR INT
      * @return string The database type
      */
-    function db_cast($field, $type)
+    protected function db_cast($field, $type)
     {
         return $field;
     }
