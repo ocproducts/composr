@@ -857,12 +857,13 @@ class Database_Static_xml
      * @param  string $table_as What the table will be renamed to (blank: N/A)
      * @param  ?array $schema Schema to type-set against (null: do not do type-setting)
      * @param  ?array $where_expr Expression filtering results (used for optimisation, seeing if we can get a quick key match) (null: no data to filter with)
+     * @param  array $bindings Bindings available in the execution scope
      * @param  boolean $fail_ok Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)
      * @param  string $query Query that was executed
      * @param  boolean $include_unused_fields Whether to include fields that are present in the actual records but not in our schema
      * @return ?array The collected records (null: error)
      */
-    protected function _read_all_records($db, $table_name, $table_as, $schema, $where_expr, $fail_ok, $query, $include_unused_fields = false)
+    protected function _read_all_records($db, $table_name, $table_as, $schema, $where_expr, $bindings, $fail_ok, $query, $include_unused_fields = false)
     {
         $records = array();
         $key_fragments = ''; // We can do a filename substring search to stop us having to parse ALL
@@ -1576,7 +1577,7 @@ class Database_Static_xml
 
                 // Execute
                 if ($op == 'ADD') {
-                    $records = $this->_read_all_records($db, $table_name, '', null, null, $fail_ok, $query);
+                    $records = $this->_read_all_records($db, $table_name, '', null, null, array(), $fail_ok, $query);
                     if (is_null($records)) {
                         return null;
                     }
@@ -1597,7 +1598,7 @@ class Database_Static_xml
                     }
 
                     if ($new_column_name != $column_name) {
-                        $records = $this->_read_all_records($db, $table_name, '', null, null, $fail_ok, $query, true);
+                        $records = $this->_read_all_records($db, $table_name, '', null, null, array(), $fail_ok, $query, true);
                         if (is_null($records)) {
                             return null;
                         }
@@ -1623,7 +1624,7 @@ class Database_Static_xml
                 $column_name = $this->_parsing_read($at, $tokens, $query);
 
                 // Execute
-                $records = $this->_read_all_records($db, $table_name, '', null, null, $fail_ok, $query);
+                $records = $this->_read_all_records($db, $table_name, '', null, null, array(), $fail_ok, $query);
                 if (is_null($records)) {
                     return null;
                 }
@@ -1980,7 +1981,7 @@ class Database_Static_xml
                     if ($subquery === null) {
                         return null;
                     }
-                    $expr = array('SUBQUERY', $subquery);
+                    $expr = array('SUBQUERY_VALUE', $subquery);
                 } else {
                     $expr = array('BRACKETED', $this->_parsing_read_expression($at, $tokens, $query, $db, true, true, $fail_ok));
                 }
@@ -2227,8 +2228,8 @@ class Database_Static_xml
                 return simulated_wildcard_match($value, $expr_eval, true);
 
             case 'EXISTS':
-                list($exists_select, $exists_as, $exists_joins, $exists_where_expr, $exists_group_by, $exists_orders, $exists_start, $exists_max) = $expr[1];
-                $exists_results = $this->_execute_query_select($exists_select, $exists_as, $exists_joins, $exists_where_expr, $exists_group_by, $exists_orders, $query, $db, $exists_max, $exists_start, $fail_ok);
+                list($exists_select, $exists_as, $exists_joins, $exists_where_expr, $exists_group_by, $exists_orders, $exists_unions, $exists_start, $exists_max) = $expr[1];
+                $exists_results = $this->_execute_query_select($exists_select, $exists_as, $exists_joins, $exists_where_expr, $exists_group_by, $exists_orders, $exists_unions, $query, $db, $exists_max, $exists_start, $bindings, $fail_ok);
                 if ($exists_results === null) {
                     return null;
                 }
@@ -2262,9 +2263,9 @@ class Database_Static_xml
             case 'LENGTH':
                 return strlen($this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok));
 
-            case 'SUBQUERY':
-                list($subquery_select, $subquery_as, $subquery_joins, $subquery_where_expr, $subquery_group_by, $subquery_orders, $subquery_start, $subquery_max) = $expr[1];
-                $subquery = $this->_execute_query_select($subquery_select, $subquery_as, $subquery_joins, $subquery_where_expr, $subquery_group_by, $subquery_orders, $query, $db, $subquery_max, $subquery_start, $fail_ok);
+            case 'SUBQUERY_VALUE':
+                list($subquery_select, $subquery_as, $subquery_joins, $subquery_where_expr, $subquery_group_by, $subquery_orders, $subquery_unions, $subquery_start, $subquery_max) = $expr[1];
+                $subquery = $this->_execute_query_select($subquery_select, $subquery_as, $subquery_joins, $subquery_where_expr, $subquery_group_by, $subquery_orders, $subquery_unions, $query, $db, $subquery_max, $subquery_start, $bindings, $fail_ok);
                 if ($subquery === null) {
                     return null;
                 }
@@ -2282,8 +2283,8 @@ class Database_Static_xml
             case 'IN_SUBQUERY':
                 $val = $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok);
 
-                list($subquery_select, $subquery_as, $subquery_joins, $subquery_where_expr, $subquery_group_by, $subquery_orders, $subquery_start, $subquery_max) = $expr[2];
-                $results = $this->_execute_query_select($subquery_select, $subquery_as, $subquery_joins, $subquery_where_expr, $subquery_group_by, $subquery_orders, $query, $db, $subquery_max, $subquery_start, $fail_ok);
+                list($subquery_select, $subquery_as, $subquery_joins, $subquery_where_expr, $subquery_group_by, $subquery_orders, $subquery_unions, $subquery_start, $subquery_max) = $expr[2];
+                $results = $this->_execute_query_select($subquery_select, $subquery_as, $subquery_joins, $subquery_where_expr, $subquery_group_by, $subquery_orders, $subquery_unions, $query, $db, $subquery_max, $subquery_start, $bindings, $fail_ok);
 
                 $or_list = array();
                 foreach ($results as $result) {
@@ -2359,7 +2360,7 @@ class Database_Static_xml
         if (is_null($schema)) {
             return null;
         }
-        $records = $this->_read_all_records($db, $table_name, '', $schema, $where_expr, $fail_ok, $query);
+        $records = $this->_read_all_records($db, $table_name, '', $schema, $where_expr, array(), $fail_ok, $query);
         if (is_null($records)) {
             return null;
         }
@@ -2434,7 +2435,7 @@ class Database_Static_xml
         if (is_null($schema)) {
             return null;
         }
-        $records = $this->_read_all_records($db, $table_name, '', $schema, $where_expr, $fail_ok, $query);
+        $records = $this->_read_all_records($db, $table_name, '', $schema, $where_expr, array(), $fail_ok, $query);
         if (is_null($records)) {
             return null;
         }
@@ -2487,7 +2488,7 @@ class Database_Static_xml
             return null;
         }
         list($select, $as, $joins, $where_expr, $group_by, $orders, $unions, $start, $max) = $test;
-        return $this->_execute_query_select($select, $as, $joins, $where_expr, $group_by, $orders, $unions, $query, $db, $max, $start, $fail_ok);
+        return $this->_execute_query_select($select, $as, $joins, $where_expr, $group_by, $orders, $unions, $query, $db, $max, $start, array(), $fail_ok);
     }
 
     /**
@@ -2817,7 +2818,7 @@ class Database_Static_xml
      * Execute a parsed SELECT query.
      *
      * @param  array $select Select constructs
-     * @param  string $as The renaming of our table, so we can recognise it in the join condition
+     * @param  ?string $as The renaming of our table, so we can recognise it in the join condition (null: no renaming)
      * @param  array $joins Join constructs
      * @param  array $where_expr Where constructs
      * @param  ?array $group_by Grouping by constructs (null: none)
@@ -2827,10 +2828,11 @@ class Database_Static_xml
      * @param  array $db Database connection
      * @param  ?integer $max The maximum number of rows to affect (null: no limit)
      * @param  ?integer $start The start row to affect (null: no specification)
+     * @param  array $bindings Bindings available in the execution scope
      * @param  boolean $fail_ok Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)
      * @return ?mixed The results (null: no results)
      */
-    protected function _execute_query_select($select, $as, $joins, $where_expr, $group_by, $orders, $unions, $query, $db, $max, $start, $fail_ok)
+    protected function _execute_query_select($select, $as, $joins, $where_expr, $group_by, $orders, $unions, $query, $db, $max, $start, $bindings, $fail_ok)
     {
         // Execute
         $done = 0;
@@ -2866,15 +2868,15 @@ class Database_Static_xml
                     if (is_array($join[1])) {
                         $schema = array();
 
-                        list($join_select, $join_as, $join_joins, $join_where_expr, $join_group_by, $join_orders, $join_start, $join_max) = $join[1];
-                        $records = $this->_execute_query_select($join_select, $join_as, $join_joins, $join_where_expr, $join_group_by, $join_orders, $query, $db, $join_max, $join_start, $fail_ok);
+                        list($join_select, $join_as, $join_joins, $join_where_expr, $join_group_by, $join_orders, $join_unions, $join_start, $join_max) = $join[1];
+                        $records = $this->_execute_query_select($join_select, $join_as, $join_joins, $join_where_expr, $join_group_by, $join_orders, $join_unions, $query, $db, $join_max, $join_start, $bindings, $fail_ok);
                     } else {
                         $schema = $this->_read_schema($db, $join[1], $fail_ok);
 
                         if (is_null($schema)) {
                             return null;
                         }
-                        $records = $this->_read_all_records($db, $join[1], $joined_as, $schema, $where_expr, $fail_ok, $query);
+                        $records = $this->_read_all_records($db, $join[1], $joined_as, $schema, $where_expr, $bindings, $fail_ok, $query);
                         if (is_null($records)) {
                             return null;
                         }
@@ -2896,7 +2898,7 @@ class Database_Static_xml
                         $records[$guid] = $new_record;
                     }
                 } else {
-                    $result = $this->_execute_join($db, $as, $join, $query, $records, $schema, $where_expr, $fail_ok);
+                    $result = $this->_execute_join($db, $as, $join, $query, $records, $schema, $where_expr, $bindings, $fail_ok);
                     if (is_null($result)) {
                         return null;
                     }
@@ -3083,9 +3085,9 @@ class Database_Static_xml
         // UNION clauses
         foreach ($unions as $union) {
             list($test, $de_dupe) = $union;
-            list($union_select, $union_as, $union_joins, $union_where_expr, $union_group_by, $union_orders, $union_start, $union_max) = $test;
+            list($union_select, $union_as, $union_joins, $union_where_expr, $union_group_by, $union_orders, $union_unions, $union_start, $union_max) = $test;
 
-            $results_b = $this->_execute_query_select($union_select, $union_as, $union_joins, $union_where_expr, $union_group_by, $union_orders, $query, $db, $union_max, $union_start, $fail_ok);
+            $results_b = $this->_execute_query_select($union_select, $union_as, $union_joins, $union_where_expr, $union_group_by, $union_orders, $union_unions, $query, $db, $union_max, $union_start, $bindings, $fail_ok);
             if ($results_b === null) {
                 return null;
             }
@@ -3362,10 +3364,11 @@ class Database_Static_xml
      * @param  array $records Records so far
      * @param  array $schema Schema so far
      * @param  array $where_expr Expression filtering results (used for optimisation, seeing if we can get a quick key match)
+     * @param  array $bindings Bindings available in the execution scope
      * @param  boolean $fail_ok Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)
      * @return ?array A pair: an array of results, an array of the schema for what has been joined (null: error)
      */
-    protected function _execute_join($db, $joined_as_prior, $join, $query, $records, $schema, $where_expr, $fail_ok = false)
+    protected function _execute_join($db, $joined_as_prior, $join, $query, $records, $schema, $where_expr, $bindings, $fail_ok = false)
     {
         $joined_as = $join[2];
 
@@ -3384,7 +3387,7 @@ class Database_Static_xml
         } else {
             $where_expr_combined = array('AND', $where_expr, $join_condition);
         }
-        $records_b = $this->_read_all_records($db, $join[1], $joined_as, $schema_b, $where_expr_combined, $fail_ok, $query);
+        $records_b = $this->_read_all_records($db, $join[1], $joined_as, $schema_b, $where_expr_combined, $bindings, $fail_ok, $query);
         if (is_null($records_b)) {
             return null;
         }
@@ -3416,7 +3419,7 @@ class Database_Static_xml
                                 $join_scope[$key] = $val;
                             }
                         }
-                        $test = $this->_execute_expression($join[3], $join_scope, $query, $db, $fail_ok);
+                        $test = $this->_execute_expression($join[3], $join_scope + $bindings, $query, $db, $fail_ok);
                         if ($test) {
                             $records_results[] = $r2 + $r1;
                         }
@@ -3436,7 +3439,7 @@ class Database_Static_xml
                                 $join_scope[$key] = $val;
                             }
                         }
-                        $test = $this->_execute_expression($join[3], $join_scope, $query, $db, $fail_ok);
+                        $test = $this->_execute_expression($join[3], $join_scope + $bindings, $query, $db, $fail_ok);
                         if ($test) {
                             $records_results[] = $r2 + $r1;
                             $matched = true;
@@ -3463,7 +3466,7 @@ class Database_Static_xml
                                 $join_scope[$key] = $val;
                             }
                         }
-                        $test = $this->_execute_expression($join[3], $join_scope, $query, $db, $fail_ok);
+                        $test = $this->_execute_expression($join[3], $join_scope + $bindings, $query, $db, $fail_ok);
                         if ($test) {
                             $records_results[] = $r2 + $r1;
                             $matched = true;
