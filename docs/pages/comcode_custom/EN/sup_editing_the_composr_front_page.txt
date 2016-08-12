@@ -110,6 +110,6 @@ Permission control who can see the page. As this page is our main join sign up p
 
 Phew! We have done some small adjustments, learned a lot about pages and preparing content, and have started to take ownership of our site.
 
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
 
 {$SET,tutorial_tags,Structure and navigation,Content,novice}{$SET,tutorial_add_date,Nov 2014}{$SET,tutorial_summary,In this tutorial I show how to make some edits to the Composr front page, while crossing into many important techniques and concepts for Composr and in general.}[block]main_tutorial_rating[/block]

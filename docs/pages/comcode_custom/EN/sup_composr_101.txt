@@ -127,6 +127,6 @@ Composr has created the following for us:
 
 It's easy to see from this initial install just how powerful and flexible Composr is, however the initial install includes so much more than listed above and I will work my way through these in other tutorials.
 
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
 
 {$SET,tutorial_tags,Introduction,novice}{$SET,tutorial_add_date,Nov 2014}{$SET,tutorial_summary,Composr is a very comprehensive Content management system "CMS" That can be set up and used by just about anyone. I'll go over some of the basics of setup.}[block]main_tutorial_rating[/block]

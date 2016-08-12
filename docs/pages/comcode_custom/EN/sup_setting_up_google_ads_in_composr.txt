@@ -47,6 +47,6 @@ To place the code in a template edit the template and paste in the code. To repl
 {+END}
 [/code]
 
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
 
 {$SET,tutorial_tags,Banners,eCommerce,Third Party Integration,novice}{$SET,tutorial_add_date,Jul 2014}{$SET,tutorial_summary,In this tutorial I go through the process of setting up Google AdSense without Composr's own banners system.}[block]main_tutorial_rating[/block]

@@ -89,6 +89,32 @@ class Database_super_mysql extends DatabaseDriver
     }
 
     /**
+     * Create an SQL cast.
+     *
+     * @param $field string The field identifier
+     * @param $type string The type wanted
+     * @set CHAR INT
+     * @return string The database type
+     */
+    public function cast($field, $type)
+    {
+        switch ($type) {
+            case 'CHAR':
+                $_type = $type;
+                break;
+
+            case 'INT':
+                $_type = 'SIGNED';
+                break;
+
+            default:
+                fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+
+        return 'CAST(' . $field . ' AS ' . $_type . ')';
+    }
+
+    /**
      * Get queries needed to initialise the DB connection.
      *
      * @return array List of queries

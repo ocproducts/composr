@@ -52,6 +52,6 @@ To install a new addon you need to follow this simple process:
 
 There may be further instructions for each specific addon which can be found in the full addon description (which can be conveniently viewed on the [url="Composr addon directory"]http://compos.sr/downloads/browse/addons.htm[/url]).
 
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
 
 {$SET,tutorial_tags,Structure and navigation,Addon,novice}{$SET,tutorial_add_date,Apr 2013}{$SET,tutorial_summary,Some extra features have been kept as non-bundled addons so the core Composr software doesn't suffer from being bloated. This tutorial shows how to install them.}[block]main_tutorial_rating[/block]

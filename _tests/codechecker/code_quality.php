@@ -1894,7 +1894,7 @@ function check_expression($e, $assignment = false, $equate_false = false, $funct
             $type = check_literal($inner[1]);
             return $type;
         case 'NEW_OBJECT':
-            $class = preg_replace('#^.*\\#', '', $inner[1]); // We strip out namespaces from the name, and just look at the actual class name
+            $class = preg_replace('#^.*\\\\#', '', $inner[1]); // We strip out namespaces from the name, and just look at the actual class name
             global $FUNCTION_SIGNATURES;
             if ((!isset($FUNCTION_SIGNATURES[$class])) && ($FUNCTION_SIGNATURES != array()) && (strpos($function_guard, ',' . $class . ',') === false)) {
                 if ((($GLOBALS['OK_EXTRA_FUNCTIONS'] === null) || (preg_match('#^' . $GLOBALS['OK_EXTRA_FUNCTIONS'] . '#', $class) == 0))) {

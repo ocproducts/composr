@@ -36,7 +36,7 @@ There is a huge amount of bundled addons which make up the most common component
 
 There are lots of bundled features in Composr, and additionally there is another set of non-bundled features which can be added from within your software.
 
-When you install Composr all of the standard features are available to you. This includes if you install using a system like Softaculous on [url="http://www.arvixe.com/5256-223-3-122.html"]Arvixe hosting[/url]. Of course you may decide that you do not need all of the features for your website and many of the standard features can be removed with just three clicks from the Admin Zone homepage.
+When you install Composr all of the standard features are available to you. This includes if you install using a system like Softaculous on [url="http://arvixe.evyy.net/c/302199/279421/3370"]Arvixe hosting[/url]. Of course you may decide that you do not need all of the features for your website and many of the standard features can be removed with just three clicks from the Admin Zone homepage.
 
 In the [page="_SEARCH:sup_finding_your_way_around_the_composr_adminzone"]next tutorial[/page] I will be giving a brief tour of all the Admin Zone sections but here is a quick guide of how to remove an addon.
 
@@ -62,6 +62,6 @@ It has been said that the feature set for Composr can be a little overwhelming f
 
 The [page="_SEARCH:sup_finding_your_way_around_the_composr_adminzone"]next tutorial[/page] will be a tour of the Composr Admin Zone in detail to help you to find your way around the key elements when setting up a new website.
 
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
 
 {$SET,tutorial_tags,Introduction,Security,novice}{$SET,tutorial_add_date,Mar 2013}{$SET,tutorial_summary,In this first Composr tutorial of mine I give a brief overview of Composr.}[block]main_tutorial_rating[/block]

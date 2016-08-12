@@ -110,8 +110,8 @@ class xss_test_set extends cms_test_case
         set_error_handler($temp);
 
         $setting = ini_get('ocproducts.xss_detect');
-        if (!empty($setting)) {
-            $this->assertTrue(strpos($php_errormsg, 'XSS vulnerability') !== false, empty($setting) ? 'ocProducts PHP not running' : null);
+        if ($setting !== false) {
+            $this->assertTrue(strpos($php_errormsg, 'XSS vulnerability') !== false, ($setting === false) ? 'ocProducts PHP not running' : '%s');
         }
     }
 
@@ -133,8 +133,8 @@ class xss_test_set extends cms_test_case
         set_error_handler($temp);
 
         $setting = ini_get('ocproducts.xss_detect');
-        if (!empty($setting)) {
-            $this->assertTrue(strpos($this->found_error, 'XSS vulnerability') !== false, empty($setting) ? 'ocProducts PHP not running' : null);
+        if ($setting !== false) {
+            $this->assertTrue(strpos($this->found_error, 'XSS vulnerability') !== false, ($setting === false) ? 'ocProducts PHP not running' : '%s');
         }
     }
 
@@ -157,8 +157,8 @@ class xss_test_set extends cms_test_case
         set_error_handler($temp);
 
         $setting = ini_get('ocproducts.xss_detect');
-        if (!empty($setting)) {
-            $this->assertTrue(strpos($this->found_error, 'XSS vulnerability') !== false, empty($setting) ? 'ocProducts PHP not running' : null);
+        if ($setting !== false) {
+            $this->assertTrue(strpos($this->found_error, 'XSS vulnerability') !== false, ($setting === false) ? 'ocProducts PHP not running' : '%s');
         }
     }
 
@@ -182,8 +182,8 @@ class xss_test_set extends cms_test_case
         set_error_handler($temp);
 
         $setting = ini_get('ocproducts.xss_detect');
-        if (!empty($setting)) {
-            $this->assertTrue(strpos($this->found_error, 'XSS vulnerability') !== false, empty($setting) ? 'ocProducts PHP not running' : null);
+        if ($setting !== false) {
+            $this->assertTrue(strpos($this->found_error, 'XSS vulnerability') !== false, ($setting === false) ? 'ocProducts PHP not running' : '%s');
         }
     }
 }

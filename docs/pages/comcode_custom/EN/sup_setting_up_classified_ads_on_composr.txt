@@ -32,6 +32,6 @@ For each pricing option you need to set 4 different elements. You need to choose
 
 Now your users should have the option to buy ads in your catalogues!
 
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
 
 {$SET,tutorial_tags,Catalogues,eCommerce,Content,novice}{$SET,tutorial_add_date,Jun 2014}{$SET,tutorial_summary,Depending on the purpose behind your Composr website, it may be you will want to generate revenue from your site. Classified ads is one way to do this.}[block]main_tutorial_rating[/block]
