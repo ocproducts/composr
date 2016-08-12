@@ -45,6 +45,7 @@
         Default values for fields are not supported
         Field naming for things like COUNT(*) will not be consistent with MySQL
         You must specify the field names in INSERT queries
+        Expressions in ORDER BY clauses will be ignored
     This database system is intended only for Composr, and not as a general purpose database. In Composr our philosophy is to write logic in PHP, not SQL, hence the subset supported.
     Also as we have to target MySQL-4.3 we can't implement some more sophisticated featured, in case programmers rely on them!
 */
@@ -2999,7 +3000,9 @@ class Database_Static_xml
                     case 'COUNT':
                     case 'SUM':
                     case 'AVG':
-                        // Was already specially process, compound function
+                        // Was already specially process, compound function - just copy through
+                        $as = $this->_param_name_for($want[1], $i);
+                        $_record[preg_replace('#^.*\.#', '', $as)] = $record[$as];
                         break;
 
                     case '*':
@@ -3036,6 +3039,17 @@ class Database_Static_xml
                     case 'AS':
                         $as = $want[2];
                         $want = $want[1];
+                        switch ($want[0]) {
+                            case 'COALESCE':
+                            case 'MAX':
+                            case 'MIN':
+                            case 'COUNT':
+                            case 'SUM':
+                            case 'AVG':
+                                // Was already specially process, compound function - just copy through
+                                $_record[preg_replace('#^.*\.#', '', $as)] = $record[$as];
+                                break 2;
+                            }
 
                     default:
                         if ($as === null) {
