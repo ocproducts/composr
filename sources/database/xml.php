@@ -1915,6 +1915,21 @@ class Database_Static_xml
         $expr = array();
         $doing_not = false;
         switch ($token) {
+            case 'CAST':
+                if (!$this->_parsing_expects($at, $tokens, '(', $query)) {
+                    return null;
+                }
+                $expr = $this->_parsing_read_expression($at, $tokens, $query, $db, false, true, $fail_ok);
+                if (!$this->_parsing_expects($at, $tokens, 'AS', $query)) {
+                    return null;
+                }
+                $type = $this->_parsing_read($at, $tokens, $query);
+                if (!$this->_parsing_expects($at, $tokens, ')', $query)) {
+                    return null;
+                }
+                $expr = array('CAST', $expr, $type);
+                break;
+
             case 'DISTINCT':
                 $expr = array('DISTINCT', array());
                 $d = $this->_parsing_read($at, $tokens, $query);
@@ -2256,7 +2271,23 @@ class Database_Static_xml
                 $temp = array_values($temp);
                 return $temp[count($temp) - 1];
 
-            // Regular expressions...
+            // Conventional expressions...
+
+            case 'CAST':
+                $result = $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set);
+                switch ($expr[2]) {
+                    case 'CHAR':
+                        $result = strval($result);
+                        break;
+
+                    case 'INT':
+                        $result = intval($result);
+                        break;
+
+                    default:
+                        return $this->_bad_query($query, $fail_ok, 'Unrecognised CAST type' . $expr[2]);
+                }
+                return $result;
 
             case 'BRACKETED':
                 return $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set);
@@ -2733,6 +2764,10 @@ class Database_Static_xml
                 $having = $this->_parsing_read_expression($at, $tokens, $query, $db, true, true, $fail_ok);
                 if ($having === null) {
                     return null;
+                }
+            } else {
+                if ($token !== null) {
+                    $at--;
                 }
             }
         } else {
@@ -3613,7 +3648,7 @@ class Database_Static_xml
             $token = $this->_parsing_read($at, $tokens, $query, true);
         } while ($token === ';');
         if (!is_null($token)) {
-            $this->_bad_query($query, $fail_ok, 'Extra unexpected tokens in query at token #' . strval($at + 1) . ', "' . $token . '"');
+            $this->_bad_query($query, $fail_ok, 'Extra unexpected tokens in query at token #' . strval($at + 1) . ', "' . $token . '", up to ' . implode(' ',array_slice($tokens,0,$at)));
             return false;
         }
         return true;
@@ -3718,18 +3753,5 @@ class Database_Static_xml
     protected function _unescape_name($in)
     {
         return str_replace(array('!equals!', '!colon!', '!comma!', '!slash!', '!pipe!'), array('=', ':', ',', '/', '|'), $in);
-    }
-
-    /**
-     * Create an SQL cast.
-     *
-     * @param string $field The field identifier
-     * @param string $type The type wanted
-     * @set CHAR INT
-     * @return string The database type
-     */
-    protected function db_cast($field, $type)
-    {
-        return $field;
     }
 }
