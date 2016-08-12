@@ -21,21 +21,14 @@
  */
 
 /*
-    Things we don't support but are advisable for us to add (TODO, #2761)
-        Expressions in ORDER BY clauses will be ignored
-        HAVING is not supported
-        We do not support CAST
     Known (intentional) issues in SQL support (we are targeting MySQL-4.0 compatibility, similar to SQL-92)
-        Value and Table subqueries do not support variable binding from the wider query - i.e. inward-outward only (EXISTS and IN subqueries do though)
         We support a few MySQL functions: REPLACE, LENGTH, CONCAT. These are not likely usable on all DB's.
         We do not support the range of standard SQL functions.
         We do not support SQL data types, we use Composr ones instead. We don't support complex type-specific ops such as "+" for string concatenation.
-        We do not support SQL functions (COUNT etc) outside of a SELECT clause
         We do not have any special table/field naming escaping support-- so you need to use names that aren't awkward
         MySQL-style auto-increment is supported, but actually done as key randomisation, once install has finished
         Indexes are not supported
         We ARE type strict, unlike MySQL (even MySQL strict mode won't complain if a type conversion is always lossless, such as integer to string)
-        We only really support expressions in certain places in a query
         Data Control Language (DCL) is not supported
         Semi-colons to split queries are not supported at the driver level
         Temporary tables are not supported
@@ -52,9 +45,8 @@
         Default values for fields are not supported
         Field naming for things like COUNT(*) will not be consistent with MySQL
         You must specify the field names in INSERT queries
-        Expressions are not supported in the SELECT clause, except inside aggregate functions
     This database system is intended only for Composr, and not as a general purpose database. In Composr our philosophy is to write logic in PHP, not SQL, hence the subset supported.
-    Also as we have to target MySQL-4.0 we can't implement some more sophisticated featured, in case programmers rely on them!
+    Also as we have to target MySQL-4.3 we can't implement some more sophisticated featured, in case programmers rely on them!
 */
 
 /**
@@ -566,8 +558,8 @@ class Database_Static_xml
 
         $query = substr($query, 0, $len - 1);
 
-        // PARSING/EXECUTION STAGE
-        // -----------------------
+        // CHAINING
+        // --------
 
         $random_key = mt_rand(0, min(2147483647, mt_getrandmax())); // Generated later, passed by reference. We will assume we only need one; multi inserts will need to each specify the key in full
 
@@ -663,6 +655,9 @@ class Database_Static_xml
                     return $GLOBALS['XML_CHAIN_DB']->static_ob->db_query($query, $chain_connection, $max, $start, $fail_ok, $get_insert_id);
             }
         }
+
+        // PARSING/EXECUTION STAGE
+        // -----------------------
 
         switch ($tokens[0]) {
             case 'ALTER':
@@ -2442,6 +2437,29 @@ class Database_Static_xml
      */
     protected function _do_query_select($tokens, $query, $db, $max, $start, $fail_ok, &$at, $do_end_check = true)
     {
+        $test = $this->_parse_query_select($tokens, $query, $db, $max, $start, $fail_ok, $at, $do_end_check);
+        if ($test === null) {
+            return null;
+        }
+        list($select, $as, $joins, $where_expr, $group_by, $orders, $start, $max) = $test;
+        return $this->_execute_query_select($select, $as, $joins, $where_expr, $group_by, $orders, $tokens, $query, $db, $max, $start, $fail_ok, $at, $do_end_check);
+    }
+
+    /**
+     * Parse a SELECT query.
+     *
+     * @param  array $tokens Tokens
+     * @param  string $query Query that was executed
+     * @param  array $db Database connection
+     * @param  ?integer $max The maximum number of rows to affect (null: no limit)
+     * @param  ?integer $start The start row to affect (null: no specification)
+     * @param  boolean $fail_ok Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)
+     * @param  integer $at Our offset counter
+     * @param  boolean $do_end_check Whether to not do the check to make sure we've parsed everything
+     * @return array A tuple of query parts
+     */
+    protected function _parse_query_select($tokens, $query, $db, $max, $start, $fail_ok, &$at, $do_end_check = true)
+    {
         $all_keywords = _get_sql_keywords();
 
         // Parse
@@ -2715,6 +2733,30 @@ class Database_Static_xml
             }
         }
 
+        return array($select, $as, $joins, $where_expr, $group_by, $orders, $start, $max);
+    }
+
+    /**
+     * Execute a parsed SELECT query.
+     *
+     * @param  array $select Select constructs
+     * @param  string $as The renaming of our table, so we can recognise it in the join condition
+     * @param  array $joins Join constructs
+     * @param  array $where_expr Where constructs
+     * @param  ?array $group_by Grouping by constructs (null: none)
+     * @param  ?string $orders Ordering string for sort_maps_by (null: none)
+     * @param  array $tokens Tokens
+     * @param  string $query Query that was executed
+     * @param  array $db Database connection
+     * @param  ?integer $max The maximum number of rows to affect (null: no limit)
+     * @param  ?integer $start The start row to affect (null: no specification)
+     * @param  boolean $fail_ok Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)
+     * @param  integer $at Our offset counter
+     * @param  boolean $do_end_check Whether to not do the check to make sure we've parsed everything
+     * @return ?mixed The results (null: no results)
+     */
+    protected function _execute_query_select($select, $as, $joins, $where_expr, $group_by, $orders, $tokens, $query, $db, $max, $start, $fail_ok, &$at, $do_end_check = true)
+    {
         // Execute
         $done = 0;
         if (count($joins) == 0) {
