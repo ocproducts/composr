@@ -17,13 +17,7 @@
 		{
 			stop_slideshow_timer();
 			window.setTimeout(function() {
-				if (typeof window.addEventListener!='undefined')
-				{
-					window.addEventListener('message',player_stopped,false);
-				} else
-				{
-					window.attachEvent('onmessage',player_stopped,false);
-				}
+				window.addEventListener('message',player_stopped,false);
 
 				var player=document.getElementById('{$GET*,player_id}');
 				player.contentWindow.postMessage(JSON.stringify({ method: 'addEventListener', value: 'finish' }),'https://player.vimeo.com/video/{REMOTE_ID;/}');

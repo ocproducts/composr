@@ -2,9 +2,9 @@
 
 "use strict";
 
-
 var Composr = {};
-(function (){
+
+(function ($){
     var s = JSON.parse(document.getElementsByName('composr-symbol-data')[0].content);
 
     Composr.$PAGE_TITLE = s.PAGE_TITLE;
@@ -36,8 +36,19 @@ var Composr = {};
     Composr.$BRAND_NAME = s.BRAND_NAME;
     Composr.$IS_STAFF = s.IS_STAFF;
     Composr.$IS_ADMIN = s.IS_ADMIN;
+    Composr.$VERSION = s.VERSION;
+    Composr.$COOKIE_PATH = s.COOKIE_PATH;
+    Composr.$COOKIE_DOMAIN = s.COOKIE_DOMAIN;
+    Composr.$IS_A_COOKIE_LOGIN = s.IS_A_COOKIE_LOGIN;
+    Composr.$SESSION_COOKIE_NAME = s.SESSION_COOKIE_NAME;
     Composr.$GROUP_ID = s.GROUP_ID;
-}());
+
+    Composr.ready = function ready(callback) {
+        $(callback);
+    };
+
+    Composr.utils = {};
+}(jQuery || Zepto));
 
 
 /* Startup */
@@ -199,48 +210,6 @@ function script_load_stuff() {
     if (font_size != '') {
         set_font_size(font_size);
     }
-
-    /*
-     // Fake onmouseout events for DOM elements removed (fixes issues with stuck tooltips)
-     if (typeof window.MutationObserver!='undefined')
-     {
-     var observer=new MutationObserver(function(mutations) {
-     mutations.forEach(function(mutation) {
-     if (mutation.type=='childList')
-     {
-     var node,child_node,i,j,k;
-     for (i=0;i<mutation.removedNodes.length;i++)
-     {
-     node=mutation.removedNodes[i];
-     if (node.onmouseout) node.onmouseout();
-     if (typeof node.getElementsByTagName!='undefined')
-     {
-     var child_nodes=node.getElementsByTagName('*');
-     for (j=0;j<child_nodes.length;j++)
-     {
-     child_node=child_nodes[j];
-     if (child_node.onmouseout)
-     {
-     child_node.onmouseout.call(child_node);
-     }
-     if (typeof child_node.simulated_events!='undefined' && typeof child_node.simulated_events.mouseout!='undefined')
-     {
-     for (k=0;k<child_node.simulated_events.mouseout.length;k++)
-     {
-     child_node.simulated_events.mouseout[k].call(child_node);
-     }
-     }
-     }
-     }
-     }
-     }
-     });
-     });
-     observer.observe(document.body,{childList: true,subtree: true});
-     }
-
-     ^ Disabled this because it is not reliable and possibly non-performant. Instead we will manually call clear_out_tooltips(null); at appropriate places.
-     */
 
     // Fix Flashes own cleanup code so if the SWFMovie was removed from the page it doesn't display errors.
     window["__flash__removeCallback"] = function (instance, name) {
@@ -1025,7 +994,7 @@ function get_base_url() {
 
 /* Read query string parameters */
 
-function get_param(name, url) {
+function query_string_param(name, url) {
     if (!url) url = window.location.href;
     name = name.replace(/[\[\]]/g, "\\$&");
     var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
@@ -2495,11 +2464,11 @@ function keep_stub(starting_query_string, skip_session, context) // starting_que
 }
 
 function get_csrf_token() {
-    return read_cookie('{$SESSION_COOKIE_NAME;}'); // Session also works as a CSRF-token, as client-side knows it (AJAX)
+    return read_cookie(Composr.$SESSION_COOKIE_NAME); // Session also works as a CSRF-token, as client-side knows it (AJAX)
 }
 
 function get_session_id() {
-    return read_cookie('{$SESSION_COOKIE_NAME;}');
+    return read_cookie(Composr.$SESSION_COOKIE_NAME);
 }
 
 /* Get an element's HTML, including the element itself */
@@ -2795,31 +2764,20 @@ function entities_to_unicode(din) {
 /* load the HTML as XHTML */
 function inner_html_load(xml_string) {
     var xml;
-    if (typeof DOMParser != 'undefined') {
-        try {
-            xml = (new DOMParser()).parseFromString(xml_string, "application/xml");
-        }
-        catch (e) {
-            xml = null;
-        }
 
-        if ((xml === null) || ((typeof xml.documentElement != 'undefined') && (typeof xml.documentElement.childNodes[0] != 'undefined') && (xml.documentElement.childNodes[0].nodeName == 'parsererror'))) // HTML method then
-        {
-            xml = document.implementation.createHTMLDocument('');
-            var doc_elt = xml.documentElement;
-            doc_elt.innerHTML = xml_string;
-            xml = xml.getElementsByTagName('root')[0];
-        }
-    } else {
-        var ieDOM = ["MSXML2.DOMDocument", "MSXML.DOMDocument", "Microsoft.XMLDOM"];
-        for (var i = 0; i < ieDOM.length && !xml; i++) {
-            try {
-                xml = new ActiveXObject(ieDOM[i]);
-                xml.loadXML(xml_string);
-            }
-            catch (e) {
-            }
-        }
+    try {
+        xml = (new DOMParser()).parseFromString(xml_string, "application/xml");
+    }
+    catch (e) {
+        xml = null;
+    }
+
+    if ((xml === null) || ((typeof xml.documentElement != 'undefined') && (typeof xml.documentElement.childNodes[0] != 'undefined') && (xml.documentElement.childNodes[0].nodeName == 'parsererror'))) // HTML method then
+    {
+        xml = document.implementation.createHTMLDocument('');
+        var doc_elt = xml.documentElement;
+        doc_elt.innerHTML = xml_string;
+        xml = xml.getElementsByTagName('root')[0];
     }
 
     return xml;
@@ -3018,11 +2976,8 @@ function set_inner_html(element, target_html, append, force_dom) {
                             if (!scripts[i].src) // i.e. if it is inline JS
                             {
                                 var text = (scripts[i].nodeValue ? scripts[i].nodeValue : (scripts[i].textContent ? scripts[i].textContent : (scripts[i].text ? scripts[i].text.replace(/^<script[^>]*>/, '') : '')));
-                                if (typeof window.execScript != 'undefined') {
-                                    window.execScript(text);
-                                } else {
-                                    eval.call(window, text);
-                                }
+
+                                eval.call(window, text);
                             }
                         }
                         window['js_runs_test_' + r_id] = true;
