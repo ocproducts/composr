@@ -31,7 +31,7 @@
 
 	<script>// <![CDATA[
 		window.setTimeout(function() { /* Needed for IE */
-			Composr.windowLoad(function() {
+			Composr.onWindowLoad(function() {
 				try
 				{
 					document.getElementById('post_{CHATROOM_ID;/}').focus();

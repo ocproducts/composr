@@ -2,67 +2,119 @@
 
 "use strict";
 
-var Composr = {};
+var Composr = {
+    windowLoaded: false,
+    polyfillsLoaded: false
+};
 
 (function ($){
-    var s = JSON.parse(document.getElementsByName('composr-symbol-data')[0].content);
 
-    Composr.$PAGE_TITLE = s.PAGE_TITLE;
-    Composr.$MEMBER = s.MEMBER;
-    Composr.$IS_GUEST = s.IS_GUEST;
-    Composr.$USERNAME = s.USERNAME;
-    Composr.$AVATAR = s.AVATAR;
-    Composr.$MEMBER_EMAIL = s.MEMBER_EMAIL;
-    Composr.$PHOTO = s.PHOTO;
-    Composr.$MEMBER_PROFILE_URL = s.MEMBER_PROFILE_URL;
-    Composr.$FROM_TIMESTAMP = s.FROM_TIMESTAMP;
-    Composr.$MOBILE = s.MOBILE;
-    Composr.$THEME = s.THEME;
-    Composr.$JS_ON = s.JS_ON;
-    Composr.$LANG = s.LANG;
-    Composr.$BROWSER_UA = s.BROWSER_UA;
-    Composr.$OS = s.OS;
-    Composr.$DEV_MODE = s.DEV_MODE;
-    Composr.$USER_AGENT = s.USER_AGENT;
-    Composr.$IP_ADDRESS = s.IP_ADDRESS;
-    Composr.$TIMEZONE = s.TIMEZONE;
-    Composr.$HTTP_STATUS_CODE = s.HTTP_STATUS_CODE;
-    Composr.$CHARSET = s.CHARSET;
-    Composr.$SITE_NAME = s.SITE_NAME;
-    Composr.$COPYRIGHT = s.COPYRIGHT;
-    Composr.$DOMAIN = s.DOMAIN;
-    Composr.$FORUM_BASE_URL = s.FORUM_BASE_URL;
-    Composr.$BASE_URL = s.BASE_URL;
-    Composr.$BRAND_NAME = s.BRAND_NAME;
-    Composr.$IS_STAFF = s.IS_STAFF;
-    Composr.$IS_ADMIN = s.IS_ADMIN;
-    Composr.$VERSION = s.VERSION;
-    Composr.$COOKIE_PATH = s.COOKIE_PATH;
-    Composr.$COOKIE_DOMAIN = s.COOKIE_DOMAIN;
-    Composr.$IS_A_COOKIE_LOGIN = s.IS_A_COOKIE_LOGIN;
-    Composr.$SESSION_COOKIE_NAME = s.SESSION_COOKIE_NAME;
-    Composr.$GROUP_ID = s.GROUP_ID;
+    bindSymbols();
+    loadPolyfills();
 
-    Composr.ready = function ready(callback) {
-        $(callback);
+    Composr.onReady = function onReady(callback) {
+        if (Composr.polyfillsLoaded) {
+            $(callback);
+        } else {
+            window.addEventListener('composr.polyfillsloaded', function (){
+                $(callback);
+            });
+        }
     };
 
-    Composr.windowLoad = function windowLoaded (callback) {
-        if (document.readyState === 'complete') {
-            window.page_fully_loaded = true;
-        }
-
-        if (window.page_fully_loaded) {
+    Composr.onWindowLoad = function onWindowLoad(callback) {
+        if (Composr.windowLoaded || (document.readyState === 'complete')) {
+            Composr.windowLoaded = true;
             setTimeout(callback, 0);
         } else {
             window.addEventListener('load', function () {
-                window.page_fully_loaded = true;
+                Composr.windowLoaded = true;
                 setTimeout(callback, 0);
             });
         }
     };
 
     Composr.utils = {};
+
+    function bindSymbols() {
+        var symbol = JSON.parse(document.getElementsByName('composr-symbol-data')[0].content);
+        Composr.$PAGE_TITLE = symbol.PAGE_TITLE;
+        Composr.$MEMBER = symbol.MEMBER;
+        Composr.$IS_GUEST = symbol.IS_GUEST;
+        Composr.$USERNAME = symbol.USERNAME;
+        Composr.$AVATAR = symbol.AVATAR;
+        Composr.$MEMBER_EMAIL = symbol.MEMBER_EMAIL;
+        Composr.$PHOTO = symbol.PHOTO;
+        Composr.$MEMBER_PROFILE_URL = symbol.MEMBER_PROFILE_URL;
+        Composr.$FROM_TIMESTAMP = symbol.FROM_TIMESTAMP;
+        Composr.$MOBILE = symbol.MOBILE;
+        Composr.$THEME = symbol.THEME;
+        Composr.$JS_ON = symbol.JS_ON;
+        Composr.$LANG = symbol.LANG;
+        Composr.$BROWSER_UA = symbol.BROWSER_UA;
+        Composr.$OS = symbol.OS;
+        Composr.$DEV_MODE = symbol.DEV_MODE;
+        Composr.$USER_AGENT = symbol.USER_AGENT;
+        Composr.$IP_ADDRESS = symbol.IP_ADDRESS;
+        Composr.$TIMEZONE = symbol.TIMEZONE;
+        Composr.$HTTP_STATUS_CODE = symbol.HTTP_STATUS_CODE;
+        Composr.$CHARSET = symbol.CHARSET;
+        Composr.$SITE_NAME = symbol.SITE_NAME;
+        Composr.$COPYRIGHT = symbol.COPYRIGHT;
+        Composr.$DOMAIN = symbol.DOMAIN;
+        Composr.$FORUM_BASE_URL = symbol.FORUM_BASE_URL;
+        Composr.$BASE_URL = symbol.BASE_URL;
+        Composr.$BRAND_NAME = symbol.BRAND_NAME;
+        Composr.$IS_STAFF = symbol.IS_STAFF;
+        Composr.$IS_ADMIN = symbol.IS_ADMIN;
+        Composr.$VERSION = symbol.VERSION;
+        Composr.$COOKIE_PATH = symbol.COOKIE_PATH;
+        Composr.$COOKIE_DOMAIN = symbol.COOKIE_DOMAIN;
+        Composr.$IS_A_COOKIE_LOGIN = symbol.IS_A_COOKIE_LOGIN;
+        Composr.$SESSION_COOKIE_NAME = symbol.SESSION_COOKIE_NAME;
+        Composr.$GROUP_ID = symbol.GROUP_ID;
+    }
+
+    var scriptsToLoad = 0;
+    var scriptsLoaded = 0;
+    function loadPolyfills() {
+        if (Composr.polyfillsLoaded) {
+            return;
+        }
+
+        if (typeof NodeList.prototype.forEach === 'undefined') {
+            // Only Chrome has native support as of writing
+            NodeList.prototype.forEach = Array.prototype.forEach;
+        }
+
+        function onload() {
+            scriptsLoaded++;
+
+            if (scriptsToLoad === scriptsLoaded) {
+                Composr.polyfillsLoaded = true;
+                window.dispatchEvent(new Event('composr.polyfillsloaded'));
+            }
+        }
+
+        function loadScript(src) {
+            scriptsToLoad++;
+            var s = document.createElement('script');
+            s.onload = onload;
+            s.async = true;
+            s.src = src;
+            document.head.appendChild(s);
+        }
+
+        if (typeof window.URLSearchParams === 'undefined') {
+            loadScript(Composr.$BASE_URL + '/data/polyfills/url-search-params.max.js');
+        }
+
+        if (scriptsToLoad === 0) {
+            Composr.polyfillsLoaded = true;
+            window.dispatchEvent(new Event('composr.polyfillsloaded'));
+        }
+    }
+
 }(jQuery || Zepto));
 
 
@@ -70,17 +122,12 @@ var Composr = {};
 if (typeof window.page_loaded == 'undefined') // To stop problem if JS file loaded more than once
 {
     window.page_loaded = false;
-    window.page_fully_loaded = false;
     window.is_doing_a_drag = false;
 }
 function script_load_stuff() {
     if (window.page_loaded) return; // Been called twice for some reason
 
     var i;
-
-    if (typeof NodeList.prototype.forEach == 'undefined') { // Only Chrome has native support as of writing
-        NodeList.prototype.forEach = Array.prototype.forEach;
-    }
 
     if (window == window.top && !window.opener || window.name == '') window.name = '_site_opener';
 
@@ -251,7 +298,7 @@ function script_load_stuff() {
 
     window.page_loaded = true;
 
-    Composr.windowLoad(function () { // When images etc have loaded
+    Composr.onWindowLoad(function () { // When images etc have loaded
         script_page_rendered();
     });
 

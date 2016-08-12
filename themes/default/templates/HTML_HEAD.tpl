@@ -148,7 +148,7 @@
 		{+END}
 	{+END}
 	{+START,IF,{$NOT,{$BROWSER_MATCHES,ie}}}{+START,IF,{$HAS_PRIVILEGE,sees_javascript_error_alerts}}window.take_errors=true;{+END}{+END}
-	var {+START,IF,{$CONFIG_OPTION,is_on_timezone_detection}}server_timestamp={$FROM_TIMESTAMP%},{+END}cms_ lang='{$LANG;/}',cms_theme='{$THEME;/}',cms_username='{$USERNAME;/}'{+START,IF,{$IS_STAFF}},cms_is_staff=true{+END};
+	var {+START,IF,{$CONFIG_OPTION,is_on_timezone_detection}}server_timestamp={$FROM_TIMESTAMP%},{+END}cms_lang='{$LANG;/}',cms_theme='{$THEME;/}',cms_username='{$USERNAME;/}'{+START,IF,{$IS_STAFF}},cms_is_staff=true{+END};
 //]]></script>
 
 {$,JavaScript code (usually) from Composr page}

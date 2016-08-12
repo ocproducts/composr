@@ -135,7 +135,7 @@ $(prepare_chat_sounds);
 </div>
 
 <script>// <![CDATA[
-	Composr.windowLoad(function() {
+	Composr.onWindowLoad(function() {
 		chat_load({CHATROOM_ID%});
 	});
 // ]]></script>

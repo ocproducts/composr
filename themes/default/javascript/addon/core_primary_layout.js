@@ -1,5 +1,5 @@
 
-Composr.ready(function () {
+Composr.onReady(function () {
     // GLOBAL_HTML_WRAP.tpl
     script_load_stuff();
 
