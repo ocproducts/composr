@@ -180,7 +180,13 @@ function javascript_tempcode($position = null)
         'fractional_edit' => true,
         'transitions' => true,
     ) + $JAVASCRIPT_BOTTOM; // These are all framework ones that add niceities
+
+    $loaded = array();
     foreach ($JAVASCRIPTS as $j => $do_enforce) {
+        if (in_array($j, $loaded)) {
+            continue;
+        }
+
         if ($do_enforce === null) {
             continue; // Has already been included in a merger
         }
@@ -194,6 +200,8 @@ function javascript_tempcode($position = null)
                 continue;
             }
         }
+
+        $loaded[] = $j;
 
         _javascript_tempcode($j, $js, $minify, $https, $mobile, $do_enforce);
     }
