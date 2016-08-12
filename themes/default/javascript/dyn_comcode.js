@@ -133,7 +133,7 @@ function initialise_carousel(id) {
     main.appendChild(carousel_ns);
     carousel.style.display = 'block';
 
-    after_window_load(function () {
+    Composr.windowLoad(function () {
         var h = find_height(main) + 'px';
         carousel.querySelectorAll('.move_left')[0].style.height = h;
         carousel.querySelectorAll('.move_right')[0].style.height = h;

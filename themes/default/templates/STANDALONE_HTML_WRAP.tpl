@@ -22,7 +22,7 @@
 		<script>// <![CDATA[
 			if (window.parent)
 			{
-				after_window_load(function() {
+				Composr.windowLoad(function() {
 					document.body.className+=' frame';
 
 					try

@@ -37,7 +37,7 @@
 	{$,API: http://developer.apple.com/library/safari/#documentation/QuickTime/Conceptual/QTScripting_JavaScript/bQTScripting_JavaScri_Document/QuickTimeandJavaScri.html}
 	{$,API: http://msdn.microsoft.com/en-us/library/windows/desktop/dd563945(v=vs.85).aspx}
 	<script>// <![CDATA[
-		after_window_load(function() {
+		Composr.windowLoad(function() {
 			if (document.getElementById('next_slide'))
 			{
 				stop_slideshow_timer();

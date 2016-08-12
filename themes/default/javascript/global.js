@@ -47,6 +47,21 @@ var Composr = {};
         $(callback);
     };
 
+    Composr.windowLoad = function windowLoaded (callback) {
+        if (document.readyState === 'complete') {
+            window.page_fully_loaded = true;
+        }
+
+        if (window.page_fully_loaded) {
+            setTimeout(callback, 0);
+        } else {
+            window.addEventListener('load', function () {
+                window.page_fully_loaded = true;
+                setTimeout(callback, 0);
+            });
+        }
+    };
+
     Composr.utils = {};
 }(jQuery || Zepto));
 
@@ -236,7 +251,7 @@ function script_load_stuff() {
 
     window.page_loaded = true;
 
-    after_window_load(function () { // When images etc have loaded
+    Composr.windowLoad(function () { // When images etc have loaded
         script_page_rendered();
     });
 
@@ -2366,21 +2381,6 @@ function set_opacity(element, fraction) {
 }
 
 /* Event listeners */
-
-function after_window_load(callback) {
-    if (document.readyState === 'complete') {
-        window.page_fully_loaded = true;
-    }
-
-    if (window.page_fully_loaded) {
-        setTimeout(callback, 0);
-    } else {
-        window.addEventListener('load', function () {
-            window.page_fully_loaded = true;
-            setTimeout(callback, 0);
-        });
-    }
-}
 
 function cancel_bubbling(event, for_element) {
     if ((typeof for_element == 'undefined') || (!for_element)) var for_element = '';

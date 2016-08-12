@@ -24,7 +24,7 @@
 	{$,Tie into callback event to see when finished, for our slideshows}
 	{$,API: http://service.real.com/help/library/guides/realone/ScriptingGuide/PDF/ScriptingGuide.pdf}
 	<script>// <![CDATA[
-		after_window_load(function() {
+		Composr.windowLoad(function() {
 			if (document.getElementById('next_slide'))
 			{
 				stop_slideshow_timer();
