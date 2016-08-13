@@ -2947,28 +2947,14 @@ function set_inner_html(element, target_html, append, force_dom) {
             }, 0); // Delayed so we know DOM has loaded
 
             if (target_html.toLowerCase().indexOf('<script') != -1) {
-                var r_id = 'js_' + Math.random();
-                window['js_runs_test_' + r_id] = false;
-                element.innerHTML += '<script id="' + r_id + '">window[\'js_runs_test_' + r_id + '\']=true; var t=document.getElementById(\'' + r_id + '\'); if (t) t.parentNode.removeChild(t);</script>';
+                var scripts = element.getElementsByTagName('script');
+                for (var i = scripts_jump; i < scripts.length; i++) {
+                    if (!scripts[i].src) {// i.e. if it is inline JS
+                        var text = (scripts[i].nodeValue ? scripts[i].nodeValue : (scripts[i].textContent ? scripts[i].textContent : (scripts[i].text ? scripts[i].text.replace(/^<script[^>]*>/, '') : '')));
 
-                window.setTimeout(function () {
-                    if (!window['js_runs_test_' + r_id]) // If JS was not run by the above op
-                    {
-                        var scripts = element.getElementsByTagName('script');
-                        for (var i = scripts_jump; i < scripts.length; i++) {
-                            if (!scripts[i].src) // i.e. if it is inline JS
-                            {
-                                var text = (scripts[i].nodeValue ? scripts[i].nodeValue : (scripts[i].textContent ? scripts[i].textContent : (scripts[i].text ? scripts[i].text.replace(/^<script[^>]*>/, '') : '')));
-
-                                eval.call(window, text);
-                            }
-                        }
-                        window['js_runs_test_' + r_id] = true;
-                    } else {
-                        var r = document.getElementById(r_id);
-                        if (r && r.parentNode) r.parentNode.removeChild(r);
+                        eval.call(window, text);
                     }
-                }, 0); // Delayed so we know DOM has loaded
+                }
             }
 
             return;
