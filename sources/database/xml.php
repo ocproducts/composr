@@ -1915,20 +1915,7 @@ class Database_Static_xml
         $expr = array();
         $doing_not = false;
         switch ($token) {
-            case 'CAST':
-                if (!$this->_parsing_expects($at, $tokens, '(', $query)) {
-                    return null;
-                }
-                $expr = $this->_parsing_read_expression($at, $tokens, $query, $db, false, true, $fail_ok);
-                if (!$this->_parsing_expects($at, $tokens, 'AS', $query)) {
-                    return null;
-                }
-                $type = $this->_parsing_read($at, $tokens, $query);
-                if (!$this->_parsing_expects($at, $tokens, ')', $query)) {
-                    return null;
-                }
-                $expr = array('CAST', $expr, $type);
-                break;
+            // Aggregate expressions...
 
             case 'DISTINCT':
                 $expr = array('DISTINCT', array());
@@ -1984,15 +1971,32 @@ class Database_Static_xml
                     $at--;
                     $distinct = false;
                 }
-                $expr = $this->_parsing_read_expression($at, $tokens, $query, $db, false, true, $fail_ok);
+                $_expr = $this->_parsing_read_expression($at, $tokens, $query, $db, false, true, $fail_ok);
                 if ($distinct) {
-                    $expr[1] = array('DISTINCT', $expr);
+                    $expr[1] = array('DISTINCT', $_expr);
                 } else {
-                    $expr[1] = $expr;
+                    $expr[1] = $_expr;
                 }
                 if (!$this->_parsing_expects($at, $tokens, ')', $query)) {
                     return null;
                 }
+                break;
+
+            // Conventional expressions...
+
+            case 'CAST':
+                if (!$this->_parsing_expects($at, $tokens, '(', $query)) {
+                    return null;
+                }
+                $expr = $this->_parsing_read_expression($at, $tokens, $query, $db, false, true, $fail_ok);
+                if (!$this->_parsing_expects($at, $tokens, 'AS', $query)) {
+                    return null;
+                }
+                $type = $this->_parsing_read($at, $tokens, $query);
+                if (!$this->_parsing_expects($at, $tokens, ')', $query)) {
+                    return null;
+                }
+                $expr = array('CAST', $expr, $type);
                 break;
 
             case 'REPLACE':
@@ -3218,7 +3222,7 @@ class Database_Static_xml
      */
     protected function _param_name_for($param, $i)
     {
-        if (is_array($param)) {
+        if (is_array($param) && isset($param[1])) {
             $param = $param[1];
         }
         if (!is_string($param)) {
@@ -3648,7 +3652,7 @@ class Database_Static_xml
             $token = $this->_parsing_read($at, $tokens, $query, true);
         } while ($token === ';');
         if (!is_null($token)) {
-            $this->_bad_query($query, $fail_ok, 'Extra unexpected tokens in query at token #' . strval($at + 1) . ', "' . $token . '", up to ' . implode(' ',array_slice($tokens,0,$at)));
+            $this->_bad_query($query, $fail_ok, 'Extra unexpected tokens in query at token #' . strval($at + 1) . ', "' . $token . '", up to ' . implode(' ', array_slice($tokens, 0, $at)));
             return false;
         }
         return true;

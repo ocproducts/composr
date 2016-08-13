@@ -361,6 +361,9 @@ function payment_form()
         }
 
         $temp = $object->get_products(false, $type_code);
+        if (!isset($temp[$type_code])) {
+            continue;
+        }
 
         if ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) {
             continue;

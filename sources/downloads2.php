@@ -1022,7 +1022,7 @@ function set_download_gallery_permissions($id, $submitter = null)
     // If they were able to submit the download, they should be able to submit extra images
     $GLOBALS['SITE_DB']->query_delete('member_privileges', array('module_the_name' => 'galleries', 'category_name' => 'download_' . strval($id)));
     foreach (array('submit_midrange_content') as $privilege) {
-        $GLOBALS['SITE_DB']->query_insert('member_privileges', array('active_until' => null, 'member_id' => $submitter, 'privilege' => $privilege, 'the_page' => '', 'module_the_name' => 'galleries', 'category_name' => 'download_' . strval($id), 'the_value' => '1'));
+        $GLOBALS['SITE_DB']->query_insert('member_privileges', array('active_until' => null, 'member_id' => $submitter, 'privilege' => $privilege, 'the_page' => '', 'module_the_name' => 'galleries', 'category_name' => 'download_' . strval($id), 'the_value' => 1));
     }
 }
 

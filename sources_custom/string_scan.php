@@ -160,6 +160,7 @@ function string_scan($lang, $do_guessing = false)
         PGE_HASH
         NO_SSL_SETUP
         ADD_NOTE_TITLE
+        CONFIG_OPTION_points_RECOMMEND_SITE
         SUBSCRIPTION_CANCELLED_BODY
         SUBSCRIPTION_CANCELLED_SUBJECT
         ADBLOCKER
