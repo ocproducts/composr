@@ -366,8 +366,8 @@ function payment_form()
         }
 
         if ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) {
-            continue;
-        }    //Subscription type skipped.
+            continue; // Subscription type skipped
+        }
 
         $price = $temp[$type_code][1];
 

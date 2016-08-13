@@ -85,8 +85,6 @@ class shopping_test_set extends cms_test_case
 
         $catalogue_name = 'storetesting' . strval(get_member());
 
-        //Set Sample post values
-
         $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name));
 
         foreach ($fields as $key => $val) {
@@ -98,16 +96,16 @@ class shopping_test_set extends cms_test_case
                 case 'integer':
                     $_POST['field_' . strval($id)] = '4';
                     break;
-                case    'short_trans':
+                case 'short_trans':
                     $_POST['field_' . strval($id)] = 'Test field value';
                     break;
-                case    'long_trans':
+                case 'long_trans':
                     $_POST['field_' . strval($id)] = 'Test field value';
                     break;
-                case    'float':
+                case 'float':
                     $_POST['field_' . strval($id)] = '68.35';
                     break;
-                case    'list':
+                case 'list':
                     if ($val['cf_order'] == 6) {//Order 6 is tax
                         $_POST['field_' . strval($id)] = 'Arizona=7.8%';
                     } elseif ($val['cf_order'] == 5) {//Order 5 yes keep stock "yes/no"
@@ -120,12 +118,6 @@ class shopping_test_set extends cms_test_case
         $map = $this->cms_cat->get_set_field_map($catalogue_name, get_member());
 
         $this->product_id = actual_add_catalogue_entry($this->category_id, 0, 'test note', 1, 1, 1, $map);
-    }
-
-    public function tearDown()
-    {
-        actual_delete_catalogue('storetesting' . strval(get_member()));
-        parent::tearDown();
     }
 
     public function testAddtoCart()
@@ -154,5 +146,11 @@ class shopping_test_set extends cms_test_case
         $via = 'paypal';
 
         handle_confirmed_transaction($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, $period, $via);
+    }
+
+    public function tearDown()
+    {
+        actual_delete_catalogue('storetesting' . strval(get_member()));
+        parent::tearDown();
     }
 }

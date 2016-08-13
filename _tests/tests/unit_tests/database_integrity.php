@@ -25,6 +25,11 @@ class database_integrity_test_set extends cms_test_case
         parent::setUp();
     }
 
+    public function testIsMySQL()
+    {
+        $this->assertTrue(strpos(get_db_type(), 'mysql') !== false, 'Test can only run with MySQL');
+    }
+
     public function testNoErrors()
     {
         if (strpos(get_db_type(), 'mysql') !== false) {

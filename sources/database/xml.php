@@ -937,6 +937,7 @@ class Database_Static_xml
                     if (is_array($val)) {
                         if (count($val) == 1) {
                             $val = $val[0];
+                            $where_expr_compressed[$key] = $val;
                         } else {
                             $key_lookup = false;
                             $key_fragments .= '(';
@@ -969,6 +970,7 @@ class Database_Static_xml
                     $key_fragments .= preg_quote($this->_escape_name($new_val), '#');
                 }
             }
+
             $key_buildup = $this->_guid($schema, $where_expr_compressed);
 
             if (($key_lookup) && ($key_buildup != '')) {
@@ -1336,10 +1338,10 @@ class Database_Static_xml
             if (is_integer($val)) {
                 $val = strval($val);
             }
-            if (is_float($val)) {
+            elseif (is_float($val)) {
                 $val = float_to_raw_string($val);
             }
-            if (is_null($val)) {
+            elseif (is_null($val)) {
                 $val = '';
             }
             fwrite($myfile, "\t<" . $key . ">" . xmlentities($val) . "</" . $key . ">\n");
@@ -3424,6 +3426,7 @@ class Database_Static_xml
 
     /**
      * Optimize a join condition into a join scope set, if possible.
+     * This is destructive.
      *
      * @param  array $join_condition Join condition (parsed WHERE-style clause)
      * @param  array $schema Schema so far
@@ -3440,10 +3443,10 @@ class Database_Static_xml
         } else {
             if ($join_condition[0] == '=') {
                 foreach (array(1, 2) as $i) {
-                    if (($join_condition[$i][0] == 'FIELD') && ($join_condition[3 - $i][0] == 'FIELD')) {
-                        $var = preg_replace('#^' . $joined_as . '\.#', '', $join_condition[$i][1]);
-                        if (array_key_exists($var, $schema)) {
-                            $join_condition[$i][1] = array();
+                    if (($join_condition[$i][0] == 'FIELD') && ($join_condition[3 - $i][0] == 'FIELD')) { // If this and other-side expression are both FIELD's
+                        $var = preg_replace('#^' . $joined_as . '\.#', '', $join_condition[$i][1]); // Find field reference
+                        if (array_key_exists($var, $schema)) { // If this side is in the schema
+                            $join_condition[$i][1] = array(); // We'll make it a list instead of a field reference
                             foreach ($records as $r) {
                                 $join_condition[$i][1][] = $r[$var];
                             }
@@ -3477,11 +3480,12 @@ class Database_Static_xml
         $joined_as = $join[2];
 
         $schema_b = $this->_read_schema($db, $join[1], $fail_ok);
-        foreach ($schema_b as $k => $v) {
-            $schema_b[$join[2] . '.' . $k] = $v; // Needed so all scoped variables can be put in place as NULL's in a right variable
-        }
         if (is_null($schema_b)) {
             return null;
+        }
+        $schema_b_plus = $schema_b;
+        foreach ($schema_b as $k => $v) {
+            $schema_b_plus[$join[2] . '.' . $k] = $v; // Needed so all scoped variables can be put in place as NULL's in a right variable
         }
         $join_condition = $join[3];
         $join_condition = $this->_setify_join_condition_for_optimisation($join_condition, $schema, $records, $joined_as_prior);
@@ -3509,12 +3513,12 @@ class Database_Static_xml
         }
 
         $records_results = array();
-
         switch ($join[0]) {
             case 'JOIN':
             case 'INNER_JOIN':
                 foreach ($records as $r1) {
                     foreach ($records_b as $r2) {
+
                         $join_scope = $r1;
                         foreach ($r2 as $key => $val) {
                             if (array_key_exists($key, $join_scope)) { // Don't allow anything ambiguous
@@ -3578,7 +3582,7 @@ class Database_Static_xml
                     }
                     if (!$matched) {
                         $null_padded = $r1;
-                        foreach (array_keys($schema_b) as $field) {
+                        foreach (array_keys($schema_b_plus) as $field) {
                             $null_padded[$field] = null;
                         }
                         $records_results[] = $null_padded;
@@ -3587,7 +3591,7 @@ class Database_Static_xml
                 break;
         }
 
-        foreach ($schema_b as $k => $v) {
+        foreach ($schema_b_plus as $k => $v) {
             $schema[$k] = $v;
         }
 
