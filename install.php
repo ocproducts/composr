@@ -706,6 +706,7 @@ function step_4()
     $js->attach("\n");
     $js->attach(do_template('ajax', null, null, false, null, '.js', 'javascript'));
 
+    require_code('database');
     require_code('database/' . post_param_string('db_type'));
     $GLOBALS['DB_STATIC_OBJECT'] = object_factory('Database_Static_' . post_param_string('db_type'));
 

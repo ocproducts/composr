@@ -18,10 +18,6 @@
  */
 class shopping_test_set extends cms_test_case
 {
-    public $category_id;
-    public $access_mapping;
-    public $cms_cat;
-    public $shopping_cart;
     public $product_id;
 
     public function setUp()
@@ -32,26 +28,31 @@ class shopping_test_set extends cms_test_case
         require_code('catalogues');
         require_code('catalogues2');
         require_code('shopping');
+        require_code('lorem');
         require_lang('catalogues');
         require_lang('shopping');
         require_lang('ecommerce');
+
+        // Cleanup if needed...
 
         if (!is_null($GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_name', array('c_name' => 'storetesting' . strval(get_member()))))) {
             actual_delete_catalogue('storetesting' . strval(get_member()));
         }
 
-        $this->access_mapping = array(db_get_first_id() => 4);
-        // Creating cms catalogues object
-        require_code('cms/pages/modules/cms_catalogues.php');
-        $this->cms_cat = new Module_cms_catalogues();
-        //Creating Shopping cart object
-        require_code('site/pages/modules/shopping.php');
-        $this->shopping_cart = new Module_shopping();
+        $GLOBALS['SITE_DB']->query_delete('shopping_order');
+        $GLOBALS['SITE_DB']->query_delete('shopping_order_details');
+        $GLOBALS['SITE_DB']->query_delete('shopping_cart');
 
-        $username = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
+        // Create module...
+
+        require_code('cms/pages/modules/cms_catalogues.php');
+        $cms_module = new Module_cms_catalogues();
+
+        // Create an eCommerce catalogue...
+
         $c_name = 'storetesting' . strval(get_member());
         actual_add_catalogue($c_name, insert_lang('c_title', do_lang('DEFAULT_CATALOGUE_PRODUCTS_TITLE'), 2), '', 0, 1, '', 0, 1);
-        $this->category_id = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'id', array('c_name' => $c_name));
+        $category_id = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'id', array('c_name' => $c_name));
 
         $fields = array(
             //    Name                     Description         Type          Defines order  Required  Visible  Searchable
@@ -87,58 +88,62 @@ class shopping_test_set extends cms_test_case
 
         $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name));
 
-        foreach ($fields as $key => $val) {
+        foreach ($fields as $val) {
             $type = $val['cf_type'];
 
             $id = $val['id'];
 
             switch ($type) {
                 case 'integer':
-                    $_POST['field_' . strval($id)] = '4';
+                    $_POST['field_' . strval($id)] = '500'; // Stock
                     break;
                 case 'short_trans':
-                    $_POST['field_' . strval($id)] = 'Test field value';
+                    $_POST['field_' . strval($id)] = lorem_phrase();
                     break;
                 case 'long_trans':
-                    $_POST['field_' . strval($id)] = 'Test field value';
+                    $_POST['field_' . strval($id)] = lorem_paragraph();
                     break;
                 case 'float':
-                    $_POST['field_' . strval($id)] = '68.35';
+                    $_POST['field_' . strval($id)] = '68.35'; // Price
                     break;
                 case 'list':
-                    if ($val['cf_order'] == 6) {//Order 6 is tax
-                        $_POST['field_' . strval($id)] = 'Arizona=7.8%';
-                    } elseif ($val['cf_order'] == 5) {//Order 5 yes keep stock "yes/no"
-                        $_POST['field_' . strval($id)] = 'yes';
+                    if ($val['cf_order'] == 6) { // Tax
+                        $_POST['field_' . strval($id)] = '5%';
+                    } elseif ($val['cf_order'] == 5) { // Keep Stock
+                        $_POST['field_' . strval($id)] = '1';
                     }
                     break;
             }
         }
 
-        $map = $this->cms_cat->get_set_field_map($catalogue_name, get_member());
-
-        $this->product_id = actual_add_catalogue_entry($this->category_id, 0, 'test note', 1, 1, 1, $map);
+        $map = $cms_module->get_set_field_map($catalogue_name, get_member());
+        $this->product_id = actual_add_catalogue_entry($category_id, 0, 'test note', 1, 1, 1, $map);
     }
 
     public function testAddtoCart()
     {
-        $this->shopping_cart->empty_cart();
+        require_code('site/pages/modules/shopping.php');
+        $shopping_module = new Module_shopping();
+
+        $shopping_module->empty_cart();
+
         $_POST['product_id'] = $this->product_id;
         $_GET['hook'] = 'catalogue_items';
-        $this->shopping_cart->add_item_to_cart();
-        $_GET['page'] = 'shopping';    // Static setting to indentify the module in payment form
-        payment_form();
+        $shopping_module->add_item_to_cart();
+
+        $_GET['page'] = 'shopping'; // Static setting to identify the module in payment form
+        render_cart_payment_form();
     }
 
     public function testHandleTransaction()
     {
-        $purchase_id = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'max(id)', array());
-        $item_name = 'Test field value';
+        $purchase_id = strval($GLOBALS['SITE_DB']->query_select_value('shopping_order', 'max(id)', array()));
+        $item_name = lorem_phrase();
         $payment_status = 'Completed';
         $reason_code = '';
         $pending_reason = 'bar';
         $memo = 'foo';
-        $mc_gross = '68.35';
+        $mc_gross = '71.40';
         $mc_currency = get_option('currency');
         $txn_id = '0';
         $parent_txn_id = '0';

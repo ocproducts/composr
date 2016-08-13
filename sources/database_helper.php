@@ -593,7 +593,7 @@ function _helper_add_table_field_sql($this_ref, $table_name, $name, $_type, $def
     }
     $final_type = str_replace(array('*', '?'), array('', ''), $_final_type);
     $extra = '';
-    if (($final_type != 'LONG_TEXT') || (get_db_type() == 'postgresql')) {
+    if (($final_type != 'LONG_TEXT') || (strpos(get_db_type(), 'mysql') === false)) {
         $extra = is_null($default) ? 'DEFAULT NULL' : ('DEFAULT ' . (is_string($default) ? ('\'' . db_escape_string($default) . '\'') : strval($default)));
     }
     $query = 'ALTER TABLE ' . $this_ref->table_prefix . $table_name;

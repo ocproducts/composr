@@ -80,7 +80,7 @@ class Hook_ecommerce_catalogue_items
 
                 $tax = 0.0;
                 if (array_key_exists(6, $map)) {
-                    $tax = floatval(is_object($map[6]['effective_value']) ? $map[6]['effective_value']->evaluate() : $map[6]['effective_value']);
+                    $tax = floatval(preg_replace('#[^\d\.]#', '', is_object($map[6]['effective_value']) ? $map[6]['effective_value']->evaluate() : $map[6]['effective_value']));
                 }
 
                 $product_weight = 0.0;
@@ -296,12 +296,12 @@ class Hook_ecommerce_catalogue_items
     }
 
     /**
-     * Add an order.
+     * Add an item to the cart.
      *
      * @param  array $product_det Array of product details.
      * @return AUTO_LINK Order ID of newly added order.
      */
-    public function add_order($product_det)
+    public function add_to_cart($product_det)
     {
         if ($this->is_available($product_det['product_id'], get_member(), 1) != ECOMMERCE_PRODUCT_AVAILABLE) {
             require_lang('shopping');
@@ -317,22 +317,21 @@ class Hook_ecommerce_catalogue_items
         $qty = $GLOBALS['SITE_DB']->query_select_value_if_there('shopping_cart', 'quantity', $where);
 
         if ($qty == 0) {
-            $id = $GLOBALS['SITE_DB']->query_insert('shopping_cart',
-                array(
-                    'session_id' => get_session_id(),
-                    'ordered_by' => get_member(),
-                    'product_id' => $product_det['product_id'],
-                    'product_name' => $product_det['product_name'],
-                    'product_code' => $product_det['product_code'],
-                    'quantity' => $product_det['quantity'],
-                    'price' => round(floatval($product_det['price']), 2),
-                    'price_pre_tax' => round(floatval($product_det['tax']), 2),
-                    'product_description' => $product_det['description'],
-                    'product_type' => $product_det['product_type'],
-                    'product_weight' => $product_det['product_weight'],
-                    'is_deleted' => 0,
-                )
+            $cart_map = array(
+                'session_id' => get_session_id(),
+                'ordered_by' => get_member(),
+                'product_id' => $product_det['product_id'],
+                'product_name' => $product_det['product_name'],
+                'product_code' => $product_det['product_code'],
+                'quantity' => $product_det['quantity'],
+                'price' => round(floatval($product_det['price']), 2),
+                'price_pre_tax' => round(floatval($product_det['tax']), 2),
+                'product_description' => $product_det['description'],
+                'product_type' => $product_det['product_type'],
+                'product_weight' => $product_det['product_weight'],
+                'is_deleted' => 0,
             );
+            $id = $GLOBALS['SITE_DB']->query_insert('shopping_cart', $cart_map, true);
         } else {
             $where = array('product_name' => $product_det['product_name'], 'product_code' => $product_det['product_code']);
             if (is_guest()) {

@@ -22,7 +22,7 @@
 
 /*
     Known (intentional) issues in SQL support (we are targeting MySQL-4.0 compatibility, similar to SQL-92)
-        We support a few MySQL functions: REPLACE, LENGTH, CONCAT. These are not likely usable on all DB's.
+        We support a few MySQL functions: LEFT, RIGHT, REPLACE, LENGTH, CONCAT, COALESCE. These are not likely usable on all DB's.
         We do not support the range of standard SQL functions.
         We do not support SQL data types, we use Composr ones instead. We don't support complex type-specific ops such as "+" for string concatenation.
         We do not have any special table/field naming escaping support-- so you need to use names that aren't awkward
@@ -127,15 +127,15 @@ function init__database__xml()
 function _get_sql_keywords()
 {
     return array(
-        'CONCAT', 'LENGTH', 'REPLACE',
+        'LEFT', 'RIGHT', 'CONCAT', 'LENGTH', 'REPLACE', 'COALESCE',
         'WHERE',
         'SELECT', 'FROM', 'AS', 'UNION', 'ALL', 'DISTINCT',
         'INSERT', 'INTO', 'VALUES', 'UPDATE', 'SET', 'DELETE',
         'ALTER', 'CREATE', 'DROP', 'ADD', 'CHANGE', 'RENAME', 'DEFAULT', 'TABLE', 'PRIMARY', 'KEY',
         'LIKE', 'IF', 'NOT', 'IS', 'NULL', 'AND', 'OR', 'BETWEEN', 'IN', 'EXISTS',
         'GROUP', 'BY', 'ORDER', 'ASC', 'DESC',
-        'JOIN', 'OUTER', 'INNER', 'LEFT', 'RIGHT', 'ON',
-        'COUNT', 'SUM', 'AVG', 'COALESCE', 'MAX', 'MIN',
+        'JOIN', 'OUTER', 'INNER', 'ON',
+        'COUNT', 'SUM', 'AVG', 'MAX', 'MIN',
         'LIMIT',
         '+', '-', '*', '/',
         '<>', '>', '<', '>=', '<=', '=',
@@ -1986,6 +1986,21 @@ class Database_Static_xml
 
             // Conventional expressions...
 
+            case 'COALESCE':
+                if (!$this->_parsing_expects($at, $tokens, '(', $query)) {
+                    return null;
+                }
+                $expr1 = $this->_parsing_read_expression($at, $tokens, $query, $db, false, true, $fail_ok);
+                if (!$this->_parsing_expects($at, $tokens, ',', $query)) {
+                    return null;
+                }
+                $expr2 = $this->_parsing_read_expression($at, $tokens, $query, $db, false, true, $fail_ok);
+                if (!$this->_parsing_expects($at, $tokens, ')', $query)) {
+                    return null;
+                }
+                $expr = array('COALESCE', $expr1, $expr2);
+                break;
+
             case 'CAST':
                 if (!$this->_parsing_expects($at, $tokens, '(', $query)) {
                     return null;
@@ -2278,6 +2293,14 @@ class Database_Static_xml
                 return $temp[count($temp) - 1];
 
             // Conventional expressions...
+
+            case 'COALESCE':
+                $val = $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set);
+                if ($val === null) {
+                    $val = $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set);
+                }
+                return $val;
+                break;
 
             case 'CAST':
                 $result = $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set);
