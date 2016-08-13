@@ -152,7 +152,7 @@ function give_submit_points($type, $member = null)
             return '';
         }
         require_code('points2');
-        system_gift_transfer(do_lang($type), intval($points), get_member());
+        system_gift_transfer(do_lang($type), intval($points), $member);
         return do_lang('SUBMIT_AWARD', integer_format(intval($points)));
     }
     return null;

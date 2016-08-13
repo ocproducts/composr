@@ -2240,19 +2240,25 @@ class Database_Static_xml
         // More connectives?
         if ($look_for_connectives) {
             $token = $this->_parsing_read($at, $tokens, $query, true);
-            if (!is_null($token)) {
+            $tail = &$expr;
+            while (!is_null($token)) {
                 switch ($token) {
                     case 'AND':
-                        $expr = array($token, $expr, $this->_parsing_read_expression($at, $tokens, $query, $db, true, true, $fail_ok));
+                        $next_expr = $this->_parsing_read_expression($at, $tokens, $query, $db, false, true, $fail_ok);
+                        $tail = array('AND', $tail, $next_expr);
                         break;
 
                     case 'OR':
-                        return array($token, $expr, $this->_parsing_read_expression($at, $tokens, $query, $db, true, true, $fail_ok)); // A bit of precedence, causes a fork
+                        $next_expr = $this->_parsing_read_expression($at, $tokens, $query, $db, false, true, $fail_ok);
+                        $expr = array('OR', $expr, $next_expr);
+                        $tail = &$next_expr;
+                        break;
 
                     default:
                         $at--;
-                        break;
+                        break 2;
                 }
+                $token = $this->_parsing_read($at, $tokens, $query, true);
             }
         }
 
