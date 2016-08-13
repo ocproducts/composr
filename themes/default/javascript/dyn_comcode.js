@@ -63,7 +63,7 @@ function initialise_image_fader_image(data, v, k, mill, total) {
             set_opacity(data.fp_animation, 0.0);
             fade_transition(data.fp_animation, 100, period_in_msecs, increment);
             data.fp_animation.src = data['url' + k];
-            data.fp_animation_fader.style.left = ((find_width(data.fp_animation_fader.parentNode) - find_width(data.fp_animation_fader)) / 2) + 'px';
+            data.fp_animation_fader.style.left = ((data.fp_animation_fader.parentNode.offsetWidth - data.fp_animation_fader.offsetWidth) / 2) + 'px';
             data.fp_animation_fader.style.top = ((data.fp_animation_fader.parentNode.offsetHeight - data.fp_animation_fader.offsetHeight) / 2) + 'px';
             if (data.tease_title) {
                 set_inner_html(data.tease_title, data['title' + k]);
@@ -197,7 +197,7 @@ function _update_faders(main) {
     if (left.style.position == 'absolute') // Check it really is a fader (stops bugs in other areas making bigger weirdness)
         left.style.visibility = (main.scrollLeft == 0) ? 'hidden' : 'visible';
     if (right.style.position == 'absolute') // Ditto
-        right.style.visibility = (main.scrollLeft + find_width(main) >= main.scrollWidth - 1) ? 'hidden' : 'visible';
+        right.style.visibility = (main.scrollLeft + main.offsetWidth >= main.scrollWidth - 1) ? 'hidden' : 'visible';
 }
 
 function flip_page(to, pass_id, sections) {
@@ -254,7 +254,7 @@ function flip_page(to, pass_id, sections) {
         x = document.getElementById(pass_id + '_section_' + sections[i]);
         var current_place = document.getElementById(pass_id + '_section_' + sections[current_pos]);
         //var width=current_place?'100%':null;
-        var width = current_place ? find_width(current_place, true) : null;
+        var width = current_place ? Composr.dom.contentWidth(current_place) : null;
         if (x) {
             if (x.className == 'comcode_big_tab') {
                 if (i == current_pos) {
@@ -271,7 +271,7 @@ function flip_page(to, pass_id, sections) {
                     if (x.style.position != 'static') set_opacity(x, 0.0); else set_opacity(x, 1.0);
                     if ((typeof x.fader_key == 'undefined') || (!window.fade_transition_timers[x.fader_key]))
                         fade_transition(x, 0, 30, -5);
-                    x.style.width = (find_width(x) - 24) + 'px'; // 24=lhs padding+rhs padding+lhs border+rhs border
+                    x.style.width = (x.offsetWidth - 24) + 'px'; // 24=lhs padding+rhs padding+lhs border+rhs border
                     x.style.position = 'absolute';
                     x.style.zIndex = -10;
                     x.style.top = '0';
@@ -338,7 +338,7 @@ function ticker_tick(id, width) {
     if (e.mouseisover) return;
     e.style.textIndent = window.tick_pos[id] + 'px';
     window.tick_pos[id]--;
-    if (window.tick_pos[id] < -1.1 * find_width(e.childNodes[0])) window.tick_pos[id] = width;
+    if (window.tick_pos[id] < -1.1 * e.childNodes[0].offsetWidth) window.tick_pos[id] = width;
 }
 
 if (typeof window.jumper_pos == 'undefined') {

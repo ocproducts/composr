@@ -53,7 +53,7 @@ function start_realtime_rain() {
 
     var news_ticker = document.getElementById('news_ticker');
     news_ticker.style.top = '20px';
-    news_ticker.style.left = (get_window_width() / 2 - find_width(news_ticker) / 2) + 'px';
+    news_ticker.style.left = (get_window_width() / 2 - news_ticker.offsetWidth / 2) + 'px';
 
     document.getElementById('loading_icon').style.display = 'block';
 
@@ -318,7 +318,7 @@ function draw_line(group_id, bubble_id) {
         var ob = document.getElementById(bubble_id + '_main'), ob2;
         if (!ob) return;
         if (!ob.parentNode) return;
-        var width = find_width(ob);
+        var width = ob.offsetWidth;
         var height = ob.offsetHeight;
         var line;
         var x = find_pos_x(ob, true);

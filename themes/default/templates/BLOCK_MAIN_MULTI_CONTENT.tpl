@@ -47,7 +47,7 @@
 					{
 						var ob=document.getElementById('carousel_ns_'+carousel_id);
 
-						if (ob.parentNode.scrollLeft+find_width(ob)*2<ob.scrollWidth) return; // Not close enough to need more results
+						if (ob.parentNode.scrollLeft + ob.offsetWidth * 2 < ob.scrollWidth) return; // Not close enough to need more results
 
 						current_loading_from_pos_{$GET*,carousel_id}+={MAX%};
 

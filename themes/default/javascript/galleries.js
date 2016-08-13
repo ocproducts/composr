@@ -149,7 +149,7 @@ function slideshow_show_slide(slide) {
             var fade_elements_old = document.body.querySelectorAll('.scale_down');
             if (typeof fade_elements_old[0] != 'undefined') {
                 var fade_element_old = fade_elements_old[0];
-                var left_pos = find_width(fade_element_old.parentNode) / 2 - find_width(fade_element_old) / 2;
+                var left_pos = fade_element_old.parentNode.offsetWidth / 2 - fade_element_old.offsetWidth / 2;
                 fade_element_old.style.left = left_pos + 'px';
                 fade_element_old.style.position = 'absolute';
             } // else probably a video

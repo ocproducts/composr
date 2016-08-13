@@ -230,7 +230,7 @@ Sphere.prototype = new DisplayObject3D();
 function load_tag_cloud(container) {
     register_mouse_listener();
 
-    var width = find_width(container);
+    var width = container.offsetWidth;
     var height = container.offsetHeight;
 
     // Make sure that the links are actually clickable
@@ -273,7 +273,7 @@ function load_tag_cloud(container) {
     var animateIt = function () {
         var offsetX = find_pos_x(container, true);
         var offsetY = find_pos_y(container, true);
-        var width = find_width(container);
+        var width = container.offsetWidth;
         var height = container.offsetHeight;
 
         var mouseX = window.mouse_x - offsetX - (width / 2);

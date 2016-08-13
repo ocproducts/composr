@@ -216,7 +216,7 @@ function handle_image_mouse_over(event)
 
 	var target=event.target || event.srcElement;
 	if (target.previousSibling && (typeof target.previousSibling.className!='undefined') && (typeof target.previousSibling.className.indexOf!='undefined') && (target.previousSibling.className.indexOf('magic_image_edit_link')!=-1)) return;
-	if (find_width(target)<130) return;
+	if (target.offsetWidth<130) return;
 
 	var src=(typeof target.src=='undefined')?window.getComputedStyle(target).getPropertyValue('background-image'):target.src;
 	if ((typeof target.src=='undefined') && (!event.ctrlKey) && (!event.metaKey) && (!event.altKey)) return; // Needs ctrl key for background images

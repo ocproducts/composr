@@ -12,7 +12,7 @@ function fractional_edit(event, object, url, raw_text, edit_param_name, was_doub
         if (typeof event.preventDefault != 'undefined') event.preventDefault();
 
         // Position form
-        var width = find_width(object);
+        var width = object.offsetWidth;
         if (width < 160) width = 160;
         var x = find_pos_x(object, true);
         var y = find_pos_y(object, true) - 8;

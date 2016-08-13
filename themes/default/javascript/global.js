@@ -34,7 +34,26 @@ var Composr = {
         }
     };
 
-    Composr.utils = {};
+    /* DOM helper methods */
+    Composr.dom = {};
+
+    /* Returns the provided element's width excluding padding and borders */
+    Composr.dom.contentWidth = function contentWidth(element) {
+        var cs = getComputedStyle(element),
+            padding = parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight),
+            border = parseFloat(cs.borderLeftWidth) + parseFloat(cs.borderRightWidth);
+
+        return element.offsetWidth - padding - border;
+    };
+
+    /* Returns the provided element's height excluding padding and border */
+    Composr.dom.contentHeight = function contentHeigt(element) {
+        var cs = getComputedStyle(element),
+            padding = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom),
+            border = parseFloat(cs.borderTopWidth) + parseFloat(cs.borderBottomWidth);
+
+        return element.offsetHeight - padding - border;
+    };
 
     function bindSymbols() {
         var symbol = JSON.parse(document.getElementsByName('composr-symbol-data')[0].content);
@@ -220,7 +239,7 @@ function script_load_stuff() {
         window.addEventListener('scroll', function () {
             for (var i = 0; i < stuck_navs.length; i++) {
                 var stuck_nav = stuck_navs[i];
-                var stuck_nav_height = (typeof stuck_nav.real_height == 'undefined') ? find_height(stuck_nav, true) : stuck_nav.real_height;
+                var stuck_nav_height = (typeof stuck_nav.real_height == 'undefined') ? Composr.dom.contentHeight(stuck_nav) : stuck_nav.real_height;
                 stuck_nav.real_height = stuck_nav_height;
                 var pos_y = find_pos_y(stuck_nav.parentNode, true);
                 var footer_height = document.getElementsByTagName('footer')[0].offsetHeight;
@@ -232,9 +251,9 @@ function script_load_stuff() {
                 {
                     var extra_height = (window.pageYOffset - pos_y);
                     if (extra_height > 0) {
-                        var width = find_width(stuck_nav, true);
-                        var height = find_height(stuck_nav, true);
-                        var stuck_nav_width = find_width(stuck_nav, true);
+                        var width = Composr.dom.contentWidth(stuck_nav);
+                        var height = Composr.dom.contentHeight(stuck_nav);
+                        var stuck_nav_width = Composr.dom.contentWidth(stuck_nav);
                         if (!window.getComputedStyle(stuck_nav).getPropertyValue('width')) // May be centered or something, we should be careful
                         {
                             stuck_nav.parentNode.style.width = width + 'px';
@@ -356,7 +375,7 @@ function new_html__initialise(element) {
                     span_proxy.style.visibility = 'hidden';
                     document.body.appendChild(span_proxy);
                     window.setTimeout(function () {
-                        var width = find_width(span_proxy) + 15;
+                        var width = span_proxy.offsetWidth + 15;
                         span_proxy.parentNode.removeChild(span_proxy);
                         if (element.parentNode.nodeName.toLowerCase() == 'th' || element.parentNode.nodeName.toLowerCase() == 'td') {
                             element.parentNode.style.height = width + 'px';
@@ -1305,7 +1324,7 @@ function toggleable_tray(element, no_animate, cookie_id_name) {
         element.style.display = type;
         if ((type == 'block') && (element.nodeName.toLowerCase() == 'div') && (!no_animate) && ((!pic) || (pic.src.indexOf('themewizard.php') == -1))) {
             element.style.visibility = 'hidden';
-            element.style.width = find_width(element) + 'px';
+            element.style.width = element.offsetWidth + 'px';
             element.style.position = 'absolute'; // So things do not just around now it is visible
             if (pic) {
                 set_tray_theme_image(pic, 'expand', 'expcon', '{$IMG;,1x/trays/expand}', '{$IMG;,1x/trays/expcon}', '{$IMG;,2x/trays/expcon}', '{$IMG;,1x/trays/expcon2}', '{$IMG;,2x/trays/expcon2}');
@@ -1347,7 +1366,7 @@ function toggleable_tray(element, no_animate, cookie_id_name) {
     return false;
 }
 function begin_toggleable_tray_animation(element, animate_dif, animate_ticks, final_height, pic) {
-    var full_height = find_height(element, true);
+    var full_height = Composr.dom.contentHeight(element);
     if (final_height == -1) // We are animating to full height - not a fixed height
     {
         final_height = full_height;
@@ -1680,30 +1699,6 @@ function find_pos_y(obj, not_relative) {/* if not_relative is true it gets the p
             }
             obj = obj.parentNode;
         }
-    }
-    return ret;
-}
-function find_width(obj, take_padding_and_border) {// if take_padding_and_border is not set returns contentWidth+padding+border, else just contentWidth; margin never included
-    if (!obj) return 0;
-
-    var ret = obj.offsetWidth;
-    if (take_padding_and_border) {
-        ret -= sts(window.getComputedStyle(obj).getPropertyValue('padding-left'));
-        ret -= sts(window.getComputedStyle(obj).getPropertyValue('padding-right'));
-        ret -= sts(window.getComputedStyle(obj).getPropertyValue('border-left-width'));
-        ret -= sts(window.getComputedStyle(obj).getPropertyValue('border-right-width'));
-    }
-    return ret;
-}
-function find_height(obj, take_padding_and_border) {
-    if (!obj) return 0;
-
-    var ret = obj.offsetHeight;
-    if (take_padding_and_border) {
-        ret -= sts(window.getComputedStyle(obj).getPropertyValue('padding-top'));
-        ret -= sts(window.getComputedStyle(obj).getPropertyValue('padding-bottom'));
-        ret -= sts(window.getComputedStyle(obj).getPropertyValue('border-top-width'));
-        ret -= sts(window.getComputedStyle(obj).getPropertyValue('border-bottom-width'));
     }
     return ret;
 }
@@ -2152,7 +2147,7 @@ function activate_tooltip(ac, event, tooltip, width, pic, height, bottom, no_del
         ac.tooltip_on = true;
         tooltip_element.style.display = 'block';
         if (tooltip_element.style.width == 'auto')
-            tooltip_element.style.width = (find_width(tooltip_element, true) + 1/*for rounding issues from em*/) + 'px'; // Fix it, to stop the browser retroactively reflowing ambiguous layer widths on mouse movement
+            tooltip_element.style.width = (Composr.dom.contentWidth(tooltip_element) + 1/*for rounding issues from em*/) + 'px'; // Fix it, to stop the browser retroactively reflowing ambiguous layer widths on mouse movement
 
         if (!no_delay) {
             // If delayed we will sub in what the currently known global mouse coordinate is
@@ -2211,7 +2206,7 @@ function reposition_tooltip(ac, event, bottom, starting, tooltip_element, force_
         }
 
         // Work out which direction to render in
-        var width = find_width(tooltip_element, true);
+        var width = Composr.dom.contentWidth(tooltip_element);
         if (tooltip_element.style.width == 'auto') {
             if (width < 200) width = 200; // Give some breathing room, as might already have painfully-wrapped when it found there was not much space
         }

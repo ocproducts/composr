@@ -322,7 +322,7 @@ function call_block(url, new_block_params, target_div, append, callback, scroll_
         loading_image.src = '{$IMG;,loading}'.replace(/^https?:/, window.location.protocol);
         loading_image.style.position = 'absolute';
         loading_image.style.zIndex = '1000';
-        loading_image.style.left = (find_width(target_div) / 2 - 10) + 'px';
+        loading_image.style.left = (target_div.offsetWidth / 2 - 10) + 'px';
         if (!append) {
             loading_image.style.top = (target_div.offsetHeight / 2 - 20) + 'px';
         } else {

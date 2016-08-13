@@ -107,13 +107,13 @@ function pop_up_menu(id, place, menu, event, outside_fixed_width) {
     /*{+START,IF,{$CONFIG_OPTION,fixed_width}}*/
     if (!outside_fixed_width) {
         var main_website_inner = document.getElementById('main_website_inner');
-        if (main_website_inner) full_width = find_width(main_website_inner);
+        if (main_website_inner) full_width = main_website_inner.offsetWidth;
     }
     /*{+END}*/
-    var e_parent_width = find_width(e.parentNode);
+    var e_parent_width = e.parentNode.offsetWidth;
     e.style.minWidth = e_parent_width + 'px';
     var e_parent_height = e.parentNode.offsetHeight;
-    var e_width = find_width(e);
+    var e_width = e.offsetWidth;
     var position_l = function () {
         var pos_left = l;
         if (place == 'below') // Top-level of drop-down
@@ -131,7 +131,7 @@ function pop_up_menu(id, place, menu, event, outside_fixed_width) {
     var position_t = function () {
         var pos_top = t;
         if (pos_top + e.offsetHeight + 10 > full_height) {
-            var above_pos_top = pos_top - find_height(e, true) + e_parent_height - 10;
+            var above_pos_top = pos_top - Composr.dom.contentHeight(e) + e_parent_height - 10;
             if (above_pos_top > 0) pos_top = above_pos_top;
         }
         e.style.top = pos_top + 'px';
