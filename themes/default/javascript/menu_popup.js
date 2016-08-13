@@ -112,7 +112,7 @@ function pop_up_menu(id, place, menu, event, outside_fixed_width) {
     /*{+END}*/
     var e_parent_width = find_width(e.parentNode);
     e.style.minWidth = e_parent_width + 'px';
-    var e_parent_height = find_height(e.parentNode);
+    var e_parent_height = e.parentNode.offsetHeight;
     var e_width = find_width(e);
     var position_l = function () {
         var pos_left = l;
@@ -130,7 +130,7 @@ function pop_up_menu(id, place, menu, event, outside_fixed_width) {
     window.setTimeout(position_l, 0);
     var position_t = function () {
         var pos_top = t;
-        if (pos_top + find_height(e) + 10 > full_height) {
+        if (pos_top + e.offsetHeight + 10 > full_height) {
             var above_pos_top = pos_top - find_height(e, true) + e_parent_height - 10;
             if (above_pos_top > 0) pos_top = above_pos_top;
         }

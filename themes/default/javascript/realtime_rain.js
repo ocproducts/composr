@@ -88,7 +88,7 @@ function received_events(ajax_result_frame, ajax_result) {
 
     var bubbles = document.getElementById('bubbles_go_here');
 
-    var max_height = find_height(bubbles.parentNode);
+    var max_height = bubbles.parentNode.offsetHeight;
     var total_vertical_slots = max_height / 183;
     var height_per_second = max_height / 10;
     var frame_delay = (1000 / height_per_second) / 1.1; // 1.1 is a fudge factor to reduce chance of overlap (creates slight inaccuracy in spacing though)
@@ -116,7 +116,7 @@ function received_events(ajax_result_frame, ajax_result) {
                 cloned_message.style.left = left_pos + 'px';
                 bubbles.appendChild(cloned_message);
                 vertical_slot = Math.round(total_vertical_slots * cloned_message.time_offset / window.time_window);
-                cloned_message.style.top = (-(vertical_slot + 1) * find_height(cloned_message)) + 'px';
+                cloned_message.style.top = (-(vertical_slot + 1) * cloned_message.offsetHeight) + 'px';
 
                 // JS events, for pausing and changing z-index
                 cloned_message.onmouseover = function () {
@@ -206,7 +206,7 @@ function animate_down(e, avoid_remove) {
     if (window.paused) return;
 
     var bubbles = document.getElementById('bubbles_go_here');
-    var max_height = find_height(bubbles.parentNode);
+    var max_height = bubbles.parentNode.offsetHeight;
     var jump_speed = 1;
     var new_pos = sts(e.style.top) + jump_speed;
     e.style.top = new_pos + 'px';
@@ -319,7 +319,7 @@ function draw_line(group_id, bubble_id) {
         if (!ob) return;
         if (!ob.parentNode) return;
         var width = find_width(ob);
-        var height = find_height(ob);
+        var height = ob.offsetHeight;
         var line;
         var x = find_pos_x(ob, true);
         var y = find_pos_y(ob, true);

@@ -182,11 +182,11 @@ function script_load_stuff() {
 
     // Column height balancing
     var cols = document.getElementsByClassName('col_balance_height');
-    for (var i = 0; i < cols.length; i++) {
+    for (i = 0; i < cols.length; i++) {
         var max = null;
         for (var j = 0; j < cols.length; j++) {
             if (cols[i].className == cols[j].className) {
-                var height = find_height(cols[j]);
+                var height = fcols[j].offsetHeight;
                 if (max === null || height > max) max = height;
             }
             cols[i].style.height = max + 'px';
@@ -201,8 +201,8 @@ function script_load_stuff() {
     window.alt_pressed = false;
     window.meta_pressed = false;
     window.shift_pressed = false;
-    if (typeof window.addEventListener != 'undefined')
-        window.addEventListener('click', capture_click_key_states, true); // Workaround for a dodgy firefox extension
+
+    window.addEventListener('click', capture_click_key_states, true); // Workaround for a dodgy firefox extension
 
     // So we can change base tag especially when on debug mode
     if (document.getElementsByTagName('base')[0]) {
@@ -223,11 +223,11 @@ function script_load_stuff() {
                 var stuck_nav_height = (typeof stuck_nav.real_height == 'undefined') ? find_height(stuck_nav, true) : stuck_nav.real_height;
                 stuck_nav.real_height = stuck_nav_height;
                 var pos_y = find_pos_y(stuck_nav.parentNode, true);
-                var footer_height = find_height(document.getElementsByTagName('footer')[0]);
+                var footer_height = document.getElementsByTagName('footer')[0].offsetHeight;
                 var panel_bottom = document.getElementById('panel_bottom');
-                if (panel_bottom) footer_height += find_height(panel_bottom);
+                if (panel_bottom) footer_height += panel_bottom.offsetHeight;
                 panel_bottom = document.getElementById('global_messages_2');
-                if (panel_bottom) footer_height += find_height(panel_bottom);
+                if (panel_bottom) footer_height += panel_bottom.offsetHeight;
                 if (stuck_nav_height < get_window_height() - footer_height) // If there's space in the window to make it "float" between header/footer
                 {
                     var extra_height = (window.pageYOffset - pos_y);
@@ -273,17 +273,6 @@ function script_load_stuff() {
         set_font_size(font_size);
     }
 
-    // Fix Flashes own cleanup code so if the SWFMovie was removed from the page it doesn't display errors.
-    window["__flash__removeCallback"] = function (instance, name) {
-        try {
-            if (instance) {
-                instance[name] = null;
-            }
-        } catch (flashEx) {
-
-        }
-    };
-
     // If back button pressed back from an AJAX-generated page variant we need to refresh page because we aren't doing full JS state management
     window.has_js_state = false;
     window.onpopstate = function (event) {
@@ -292,9 +281,9 @@ function script_load_stuff() {
                 window.location.reload();
             }
         }, 0);
-    }
+    };
 
-    if (typeof window.script_load_stuff_b != 'undefined') window.script_load_stuff_b(); // This is designed to allow you to easily define additional initialisation code in JAVASCRIPT_CUSTOM_GLOBALS.tpl
+    if (typeof window.script_load_stuff_b !== 'undefined') window.script_load_stuff_b(); // This is designed to allow you to easily define additional initialisation code in JAVASCRIPT_CUSTOM_GLOBALS.tpl
 
     window.page_loaded = true;
 
@@ -302,7 +291,9 @@ function script_load_stuff() {
         script_page_rendered();
     });
 
-    if ((typeof window.cms_is_staff != 'undefined') && (window.cms_is_staff) && (typeof window.script_load_stuff_staff != 'undefined')) script_load_stuff_staff();
+    if (Composr.$IS_STAFF && (typeof window.script_load_stuff_staff !== 'undefined')) {
+       script_load_stuff_staff()
+    }
 }
 
 function merge_global_messages() {
@@ -671,7 +662,7 @@ function disable_button_just_clicked(input, permanent) {
 /* Making the height of a textarea match its contents */
 function manage_scroll_height(ob) {
     var height = ob.scrollHeight;
-    if ((height > 5) && (sts(ob.style.height) < height) && (find_height(ob) < height)) {
+    if ((height > 5) && (sts(ob.style.height) < height) && (ob.offsetHeight < height)) {
         ob.style.height = height + 'px';
         ob.style.boxSizing = 'border-box';
         ob.style.overflowY = 'hidden';
@@ -1388,7 +1379,7 @@ function begin_toggleable_tray_animation(element, animate_dif, animate_ticks, fi
     }, animate_ticks);
 }
 function toggleable_tray_animate(element, final_height, animate_dif, orig_overflow, animate_ticks, pic) {
-    var current_height = ((element.style.height == 'auto') || (element.style.height == '')) ? (find_height(element)) : sts(element.style.height);
+    var current_height = ((element.style.height == 'auto') || (element.style.height == '')) ? element.offsetHeight : sts(element.style.height);
     /*if (Math.max(current_height-final_height,final_height-current_height)<70)
      {
      if (animate_dif<0) animate_dif=Math.min(animate_dif*0.8,-3);
@@ -1429,7 +1420,7 @@ function handle_tray_cookie_setting(id) {
     if (!element) element = document.getElementById(id);
     if (!element) return;
 
-    if (element.className.indexOf('toggleable_tray') == -1) // Suspicious, maybe we need to probe deeper
+    if (!element.classList.has('toggleable_tray')) // Suspicious, maybe we need to probe deeper
     {
         var toggleables = element.querySelectorAll('.toggleable_tray');
         if (typeof toggleables[0] != 'undefined') element = toggleables[0];
@@ -2224,7 +2215,7 @@ function reposition_tooltip(ac, event, bottom, starting, tooltip_element, force_
         if (tooltip_element.style.width == 'auto') {
             if (width < 200) width = 200; // Give some breathing room, as might already have painfully-wrapped when it found there was not much space
         }
-        var height = find_height(tooltip_element);
+        var height = tooltip_element.offsetHeight;
         var x_excess = x - get_window_width(win) - win.pageXOffset + width + 10/*magic tolerance factor*/;
         if (x_excess > 0) // Either we explicitly gave too much width, or the width auto-calculated exceeds what we THINK is the maximum width in which case we have to re-compensate with an extra contingency to stop CSS/JS vicious disagreement cycles
         {
@@ -2472,7 +2463,6 @@ function get_session_id() {
 
 /* Get an element's HTML */
 function get_inner_html(element, outer_too) {
-    if (typeof outer_too == 'undefined') outer_too = false;
     return outer_too ? element.outerHTML : element.innerHTML;
 }
 
@@ -2921,15 +2911,15 @@ function set_outer_html(element, target_html) {
 // Note that embedded JavaScript IS run unlike the normal .innerHTML - in fact we go to effort to guarantee it - even onload attached JavaScript
 function set_inner_html(element, target_html, append, force_dom) {
     // Parser hint: .innerHTML okay
-    if (typeof target_html == 'number') target_html = target_html + '';
+    target_html = target_html.toString();
 
-    if (((typeof force_dom == 'undefined') || (!force_dom)) && (document.write) && (typeof element.innerHTML != 'undefined') && (!document.xmlVersion) && (target_html.toLowerCase().indexOf('<script src="') == -1) && (target_html.toLowerCase().indexOf('<link') == -1)) {
+    if ((!force_dom) && (document.write) && (typeof element.innerHTML != 'undefined') && (!document.xmlVersion) && (target_html.toLowerCase().indexOf('<script src="') == -1) && (target_html.toLowerCase().indexOf('<link') == -1)) {
         try {
             var scripts_jump = 0, already_offset = 0;
             if (append) {
                 scripts_jump = element.getElementsByTagName('script').length;
                 element.innerHTML += target_html;
-                already_offset = element.getElementsByTagName('*').length
+                already_offset = element.getElementsByTagName('*').length;
             } else {
                 element.innerHTML = target_html;
             }
@@ -2938,28 +2928,24 @@ function set_inner_html(element, target_html, append, force_dom) {
                 try {
                     var elements = element.getElementsByTagName('*');
                     var length = elements.length;
-                    for (var i = already_offset; i < length; i++) {
+                    for (let i = already_offset; i < length; i++) {
                         new_html__initialise(elements[i]);
                     }
                 }
                 catch (e) {
                 } // In case its an iframe with changed access in the interim
-            }, 0); // Delayed so we know DOM has loaded
 
-            if (target_html.toLowerCase().indexOf('<script') != -1) {
+                // Execute any newly inserted inline script tags
                 var scripts = element.getElementsByTagName('script');
-                for (var i = scripts_jump; i < scripts.length; i++) {
+                for (let i = scripts_jump; i < scripts.length; i++) {
                     if (!scripts[i].src) {// i.e. if it is inline JS
-                        var text = (scripts[i].nodeValue ? scripts[i].nodeValue : (scripts[i].textContent ? scripts[i].textContent : (scripts[i].text ? scripts[i].text.replace(/^<script[^>]*>/, '') : '')));
-
-                        eval.call(window, text);
+                        eval.call(window, scripts[i].textContent);
                     }
                 }
-            }
+            }, 0); // Delayed so we know DOM has loaded
 
             return;
-        }
-        catch (ignore) {
+        } catch (ignore) {
         }
     }
 

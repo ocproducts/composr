@@ -231,7 +231,7 @@ function _toggle_messaging_box(event, name, hide) {
             x = 0;
         }
         e.style.left = x + 'px';
-        e.style.top = (find_pos_y(button, true) + find_height(button)) + 'px';
+        e.style.top = (find_pos_y(button, true) + button.offsetHeight) + 'px';
         try {
             e.style.opacity = '1.0';
         }

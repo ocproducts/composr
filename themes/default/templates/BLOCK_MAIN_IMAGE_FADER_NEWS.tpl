@@ -128,8 +128,8 @@
 			fade_transition(fp_animation,100,30,4);
 			fp_animation.src=data[i].image_url;
 			window.setTimeout(function() { {$,Will know dimensions by the time the timeout happens}
-				fp_animation_news.style.left=((find_width(fp_animation_news.parentNode)-find_width(fp_animation_news))/2)+'px';
-				fp_animation_news.style.top=((find_height(fp_animation_news.parentNode)-find_height(fp_animation_news))/2)+'px';
+				fp_animation_news.style.left=((fp_animation_news.parentNode.offsetHeight-find_width(fp_animation_news))/2)+'px';
+				fp_animation_news.style.top=((fp_animation_news.parentNode.offsetHeight-fp_animation_news.offsetHeight)/2)+'px';
 			},0);
 
 			{$,Set up timer for next time}

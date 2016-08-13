@@ -126,7 +126,7 @@ function internalise_infinite_scrolling(url_stem, wrapper) {
 
     // Used for calculating if we need to scroll down
     var wrapper_pos_y = find_pos_y(wrapper);
-    var wrapper_height = find_height(wrapper);
+    var wrapper_height = wrapper.offsetHeight;
     var wrapper_bottom = wrapper_pos_y + wrapper_height;
     var window_height = get_window_height();
     var page_height = get_window_scroll_height();
@@ -324,7 +324,7 @@ function call_block(url, new_block_params, target_div, append, callback, scroll_
         loading_image.style.zIndex = '1000';
         loading_image.style.left = (find_width(target_div) / 2 - 10) + 'px';
         if (!append) {
-            loading_image.style.top = (find_height(target_div) / 2 - 20) + 'px';
+            loading_image.style.top = (target_div.offsetHeight / 2 - 20) + 'px';
         } else {
             loading_image.style.top = 0;
             loading_wrapper_inner.style.height = '30px';

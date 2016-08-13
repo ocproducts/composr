@@ -92,7 +92,7 @@ function update_ajax_member_list_response(result, list_contents) {
         }
         list.style.position = 'absolute';
         list.style.left = (find_pos_x(window.current_list_for)) + 'px';
-        list.style.top = (find_pos_y(window.current_list_for) + find_height(window.current_list_for)) + 'px';
+        list.style.top = (find_pos_y(window.current_list_for) + window.current_list_for.offsetHeight) + 'px';
     }
     setTimeout(function () {
         list.style.zIndex++;

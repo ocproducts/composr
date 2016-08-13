@@ -467,7 +467,7 @@ function find_overlapping_selectable(mouse_y, element, node, name) // Find drop 
     if (node.getAttribute('droppable') == element.cms_draggable) {
         child_node_element = document.getElementById(name + 'tree_list_' + ((node.nodeName.toLowerCase() == 'category') ? 'c' : 'e') + '_' + node.getAttribute('id'));
         y = find_pos_y(child_node_element.parentNode.parentNode, true);
-        height = find_height(child_node_element.parentNode.parentNode);
+        height = child_node_element.parentNode.parentNode.offsetHeight;
         if ((y < mouse_y) && (y + height > mouse_y)) {
             return child_node_element;
         }

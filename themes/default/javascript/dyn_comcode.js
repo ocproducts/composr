@@ -64,7 +64,7 @@ function initialise_image_fader_image(data, v, k, mill, total) {
             fade_transition(data.fp_animation, 100, period_in_msecs, increment);
             data.fp_animation.src = data['url' + k];
             data.fp_animation_fader.style.left = ((find_width(data.fp_animation_fader.parentNode) - find_width(data.fp_animation_fader)) / 2) + 'px';
-            data.fp_animation_fader.style.top = ((find_height(data.fp_animation_fader.parentNode) - find_height(data.fp_animation_fader)) / 2) + 'px';
+            data.fp_animation_fader.style.top = ((data.fp_animation_fader.parentNode.offsetHeight - data.fp_animation_fader.offsetHeight) / 2) + 'px';
             if (data.tease_title) {
                 set_inner_html(data.tease_title, data['title' + k]);
             }
@@ -134,7 +134,7 @@ function initialise_carousel(id) {
     carousel.style.display = 'block';
 
     Composr.onWindowLoad(function () {
-        var h = find_height(main) + 'px';
+        var h = main.offsetHeight + 'px';
         carousel.querySelectorAll('.move_left')[0].style.height = h;
         carousel.querySelectorAll('.move_right')[0].style.height = h;
 
