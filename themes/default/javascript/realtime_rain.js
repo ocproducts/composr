@@ -357,19 +357,11 @@ function create_line(x1, y1, x2, y2, margin) {
     line.style.marginRight = margin + 'px';
     line.style.height = '1px';
 
-    if (browser_matches('ie')) {
-        line.style.top = (y2 > y1) ? y1 + 'px' : y2 + 'px';
-        line.style.left = x1 + 'px';
-        var nCos = (x2 - x1) / length;
-        var nSin = (y2 - y1) / length;
-        line.style.filter = 'progid:DXImageTransform.Microsoft.Matrix(sizingMethod=\'auto expand\', M11=' + nCos + ', M12=' + -1 * nSin + ', M21=' + nSin + ', M22=' + nCos + ')';
-    }
-    else {
-        var angle = ((x2 - x1) == 0) ? 1.57 : Math.atan((y2 - y1) / (x2 - x1));
-        line.style.top = Math.round(y1 + 0.5 * length * Math.sin(angle)) + 'px';
-        line.style.left = Math.round(x1 - 0.5 * length * (1 - Math.cos(angle))) + 'px';
-        if (!line.style.left) line.style.left = 0;
-        line.style.MozTransform = line.style.WebkitTransform = line.style.OTransform = line.style.transform = 'rotate(' + angle + 'rad)';
-    }
+    var angle = ((x2 - x1) == 0) ? 1.57 : Math.atan((y2 - y1) / (x2 - x1));
+    line.style.top = Math.round(y1 + 0.5 * length * Math.sin(angle)) + 'px';
+    line.style.left = Math.round(x1 - 0.5 * length * (1 - Math.cos(angle))) + 'px';
+    if (!line.style.left) line.style.left = 0;
+    line.style.transform = line.style.WebkitTransform = 'rotate(' + angle + 'rad)';
+
     return line;
 }

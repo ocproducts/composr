@@ -2470,11 +2470,6 @@ function get_session_id() {
     return read_cookie(Composr.$SESSION_COOKIE_NAME);
 }
 
-/* Get an element's HTML, including the element itself */
-function get_outer_html(element) {
-    return element.outerHTML;
-}
-
 /* Get an element's HTML */
 function get_inner_html(element, outer_too) {
     if (typeof outer_too == 'undefined') outer_too = false;
@@ -2766,8 +2761,7 @@ function inner_html_load(xml_string) {
 
     try {
         xml = (new DOMParser()).parseFromString(xml_string, "application/xml");
-    }
-    catch (e) {
+    } catch (e) {
         xml = null;
     }
 
@@ -2792,11 +2786,7 @@ function inner_html_copy(dom_node, xml_doc, level, script_tag_dependencies) {
             var text = (xml_doc.nodeValue ? xml_doc.nodeValue : (xml_doc.textContent ? xml_doc.textContent : (xml_doc.text ? xml_doc.text : '')));
             if (script_tag_dependencies['to_load'].length == 0) {
                 window.setTimeout(function () {
-                    if (typeof window.execScript != 'undefined') {
-                        window.execScript(text);
-                    } else {
-                        eval.call(window, text);
-                    }
+                    eval.call(window, text);
                 }, 0);
             } else {
                 script_tag_dependencies['to_run'].push(text); // Has to wait until all scripts are loaded
@@ -2846,18 +2836,14 @@ function inner_html_copy(dom_node, xml_doc, level, script_tag_dependencies) {
                             if (found == 0) // Now we know all to_loads are loaded, we do the to_runs
                             {
                                 for (i = 0; i < script_tag_dependencies['to_run'].length; i++) {
-                                    if (typeof window.execScript != 'undefined') {
-                                        window.execScript(script_tag_dependencies['to_run'][i]);
-                                    } else {
-                                        eval.call(window, script_tag_dependencies['to_run'][i]);
-                                    }
+                                    eval.call(window, script_tag_dependencies['to_run'][i]);
                                 }
                                 script_tag_dependencies['to_run'] = []; // So won't run again, if both onreadystatechange and onload implemented in browser
                             }
                         }
                     };
                 }
-                dom_node = document.getElementsByTagName('head')[0].appendChild(this_node);
+                dom_node = document.head.appendChild(this_node);
             } else {
                 dom_node = dom_node.appendChild(this_node);
                 var _new_html__initialise = function () {
@@ -2881,8 +2867,7 @@ function inner_html_copy(dom_node, xml_doc, level, script_tag_dependencies) {
                 };
                 window.setTimeout(_new_html__initialise, 0);
             }
-        }
-        else if (xml_doc.nodeType == 3) {
+        }  else if (xml_doc.nodeType == 3) {
             // text node
             var text = (xml_doc.nodeValue ? xml_doc.nodeValue : (xml_doc.textContent ? xml_doc.textContent : (xml_doc.text ? xml_doc.text : '')));
             var test = text.replace(/^\s*|\s*$/g, '');
@@ -2895,8 +2880,7 @@ function inner_html_copy(dom_node, xml_doc, level, script_tag_dependencies) {
                 }
                 dom_node = null;
             }
-        }
-        else if (xml_doc.nodeType == 4) {
+        } else if (xml_doc.nodeType == 4) {
             // CDATA node
             var text = (xml_doc.nodeValue ? xml_doc.nodeValue : (xml_doc.textContent ? xml_doc.textContent : (xml_doc.text ? xml_doc.text : '')));
             if ((dom_node.nodeName == 'STYLE') && (!dom_node.ownerDocument.createCDATASection)) {
@@ -3143,19 +3127,14 @@ function click_link(link) {
         cancel_bubbling(e);
     };
 
-    if ((typeof document.createEvent != 'undefined') && (document.createEvent)) {
-        var event = document.createEvent('MouseEvents');
-        event.initMouseEvent('click', true, true, window,
-            0, 0, 0, 0, 0,
-            false, false, false, false,
-            0, null
-        );
-        cancelled = !link.dispatchEvent(event);
-    }
-    else if (typeof link.fireEvent != 'undefined') {
-        // IE8
-        cancelled = !link.fireEvent('onclick');
-    }
+    var event = document.createEvent('MouseEvents');
+    event.initMouseEvent('click', true, true, window,
+        0, 0, 0, 0, 0,
+        false, false, false, false,
+        0, null
+    );
+    cancelled = !link.dispatchEvent(event);
+
     link.onclick = backup;
 
     if ((!cancelled) && (link.href)) {
@@ -3453,29 +3432,26 @@ function set_up_change_monitor(id) {
     });
 }
 
-/* Used by audio CAPTCHA. Wave files won't play inline anymore on Firefox (https://bugzilla.mozilla.org/show_bug.cgi?id=890516) */
+/* Used by audio CAPTCHA. */
 function play_self_audio_link(ob) {
-    if (browser_matches('gecko') || true/*actually it works well generally*/) {
-        require_javascript('sound', window.SoundManager);
+    require_javascript('sound', window.SoundManager);
 
-        var timer = window.setInterval(function () {
-            if (typeof window.soundManager == 'undefined') return;
+    var timer = window.setInterval(function () {
+        if (typeof window.soundManager == 'undefined') return;
 
-            window.clearInterval(timer);
+        window.clearInterval(timer);
 
-            window.soundManager.setup({
-                url: get_base_url() + '/data',
-                debugMode: false,
-                onready: function () {
-                    var sound_object = window.soundManager.createSound({url: ob.href});
-                    if (sound_object) sound_object.play();
-                }
-            });
-        }, 50);
+        window.soundManager.setup({
+            url: get_base_url() + '/data',
+            debugMode: false,
+            onready: function () {
+                var sound_object = window.soundManager.createSound({url: ob.href});
+                if (sound_object) sound_object.play();
+            }
+        });
+    }, 50);
 
-        return false;
-    }
-    return null;
+    return false;
 }
 
 /* Used by MASS_SELECT_MARKER.tpl */
