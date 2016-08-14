@@ -113,7 +113,7 @@ class Hook_task_find_broken_urls
         $temp = $LAX_COMCODE;
         $LAX_COMCODE = true;
 
-        $sql = 'SELECT m_name,m_table FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'db_meta WHERE m_type LIKE \'' . db_encode_like('%LONG_TRANS__COMCODE%') . '\'';
+        $sql = 'SELECT m_name,m_table FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'db_meta WHERE m_type LIKE \'' . db_encode_like('%LONG\_TRANS\_\_COMCODE%') . '\'';
         $possible_comcode_fields = $GLOBALS['SITE_DB']->query($sql);
         foreach ($possible_comcode_fields as $field) {
             if ($field['m_table'] == 'seo_meta') {

@@ -348,7 +348,7 @@ class Database_super_mysql
      */
     public function db_encode_like($pattern)
     {
-        return $this->db_escape_string($pattern);
+        return str_replace('\\\\_'/*MySQL escaped underscores*/, '\\_', $this->db_escape_string($pattern));
     }
 
     /**

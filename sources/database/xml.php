@@ -46,6 +46,7 @@
         Field naming for things like COUNT(*) will not be consistent with MySQL
         You must specify the field names in INSERT queries
         Expressions in ORDER BY clauses will be ignored
+        GROUP_CONCAT not implemented
     This database system is intended only for Composr, and not as a general purpose database. In Composr our philosophy is to write logic in PHP, not SQL, hence the subset supported.
     Also as we have to target MySQL-4.3 we can't implement some more sophisticated featured, in case programmers rely on them!
 */

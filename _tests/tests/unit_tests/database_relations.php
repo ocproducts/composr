@@ -56,7 +56,7 @@ class database_relations_test_set extends cms_test_case
             return;
         }
 
-        $all_links = $GLOBALS['SITE_DB']->query('SELECT m_table,m_name FROM ' . get_table_prefix() . 'db_meta WHERE m_type LIKE \'' . db_encode_like('%AUTO_LINK%') . '\' ORDER BY m_table');
+        $all_links = $GLOBALS['SITE_DB']->query('SELECT m_table,m_name FROM ' . get_table_prefix() . 'db_meta WHERE m_type LIKE \'' . db_encode_like('%AUTO\_LINK%') . '\' ORDER BY m_table');
         $links = get_relation_map();
 
         foreach ($all_links as $l) {

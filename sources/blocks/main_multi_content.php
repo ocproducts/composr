@@ -231,7 +231,7 @@ class Block_main_multi_content
         $where = '1=1';
         $query = 'FROM ' . get_table_prefix() . $info['table'] . ' r';
         if ($info['table'] == 'catalogue_entries') {
-            $where .= ' AND r.c_name NOT LIKE \'' . db_encode_like('_%') . '\'';
+            $where .= ' AND r.c_name NOT LIKE \'' . db_encode_like('\_%') . '\'';
         }
         if ((!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) && (!$efficient)) {
             $_groups = $GLOBALS['FORUM_DRIVER']->get_members_groups(get_member(), false, true);
@@ -329,7 +329,7 @@ class Block_main_multi_content
         if ($filter != '') {
             // Convert the filters to SQL
             require_code('filtercode');
-            list($extra_select, $extra_join, $extra_where) = filtercode_to_sql($info['connection'], parse_filtercode($filter), $content_type, '');
+            list($extra_select, $extra_join, $extra_where) = filtercode_to_sql($info['connection'], parse_filtercode($filter), $content_type);
             $extra_select_sql .= implode('', $extra_select);
             $query .= implode('', $extra_join);
             $where .= $extra_where;

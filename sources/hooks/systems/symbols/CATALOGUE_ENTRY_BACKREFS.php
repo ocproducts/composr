@@ -44,7 +44,7 @@ class Hook_symbol_CATALOGUE_ENTRY_BACKREFS
             }
 
             $done = 0;
-            $table = 'catalogue_fields f JOIN ' . get_table_prefix() . 'catalogue_efv_short s ON f.id=s.cf_id AND ' . db_string_equal_to('cf_type', 'reference') . ' OR cf_type LIKE \'' . db_encode_like('ck_%') . '\'';
+            $table = 'catalogue_fields f JOIN ' . get_table_prefix() . 'catalogue_efv_short s ON f.id=s.cf_id AND ' . db_string_equal_to('cf_type', 'reference') . ' OR cf_type LIKE \'' . db_encode_like('ck\_%') . '\'';
             $select = array('ce_id');
             $order_by = '';
             if ($resolve != '') {
