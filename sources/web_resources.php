@@ -180,7 +180,8 @@ function javascript_tempcode($position = null)
         'fractional_edit' => true,
         'transitions' => true,
     ) + $JAVASCRIPT_BOTTOM; // These are all framework ones that add niceities
-    foreach ($JAVASCRIPTS as $j => $do_enforce) {
+    $javascripts_to_do = $JAVASCRIPTS;
+    foreach ($javascripts_to_do as $j => $do_enforce) {
         if ($do_enforce === null) {
             continue; // Has already been included in a merger
         }

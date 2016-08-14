@@ -1294,7 +1294,7 @@ function request_page($codename, $required, $zone = null, $page_type = null, $be
 function _request_page($codename, $zone, $page_type = null, $lang = null, $no_redirect_check = false)
 {
     $details = persistent_cache_get(array('PAGE_INFO', $codename, $zone, $page_type, $lang, $no_redirect_check));
-    if ($details === null) {
+    if ($details === null || $details === false/*caching negativity breaks things if the page subsequently appears - even adding a page does a pre-check so would net a cached false*/) {
         $details = __request_page($codename, $zone, $page_type, null, $no_redirect_check);
         persistent_cache_set(array('PAGE_INFO', $codename, $zone, $page_type, $lang, $no_redirect_check), $details);
     }
