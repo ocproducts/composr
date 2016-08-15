@@ -26,6 +26,10 @@ class Hook_member_boxes_buildr
      */
     public function run($member_id)
     {
+        if (!$GLOBALS['SITE_DB']->table_exists('w_realms')) {
+            return null;
+        }
+
         $zone = get_page_zone('buildr', false);
         if ($zone === null) {
             return array();

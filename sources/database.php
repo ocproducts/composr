@@ -316,8 +316,8 @@ function db_map_restrict($row, $fields)
 /**
  * Create an SQL cast.
  *
- * @param $field string The field identifier
- * @param $type string The type wanted
+ * @param string $field The field identifier
+ * @param string $type The type wanted
  * @set CHAR INT
  * @return string The database type
  */
@@ -562,6 +562,26 @@ class DatabaseDriver
     }
 
     /**
+     * Find whether auto-increment IDs are sequential.
+     *
+     * @return boolean Whether it does
+     */
+    public function has_sequential_auto_increment()
+    {
+        return true;
+    }
+
+    /**
+     * Find whether text fields can/should have default values.
+     *
+     * @return boolean Whether they do
+     */
+    public function has_default_for_text_fields()
+    {
+        return true;
+    }
+
+    /**
      * This function is internal to the database system, allowing SQL statements to be build up appropriately. Some databases require IS NULL to be used to check for blank strings.
      *
      * @return boolean Whether a blank string IS NULL
@@ -592,10 +612,20 @@ class DatabaseDriver
     }
 
     /**
+     * Get the character used to surround fields to protect from keyword status.
+     *
+     * @return string Character (blank: has none defined)
+     */
+    public function get_field_encapsulator()
+    {
+        return '';
+    }
+
+    /**
      * Create an SQL cast.
      *
-     * @param $field string The field identifier
-     * @param $type string The type wanted
+     * @param string $field The field identifier
+     * @param string $type The type wanted
      * @set CHAR INT
      * @return string The database type
      */
@@ -1851,7 +1881,7 @@ class DatabaseConnector
      * @param  ID_TEXT $table_name The table name
      * @param  ID_TEXT $name The field name
      * @param  ID_TEXT $_type The field type
-     * @param  ?mixed $default The default value; for a translatable field should still be a string value (null: no default)
+     * @param  ?mixed $default The default value; for a translatable field should still be a string value (null: null default / default default)
      */
     public function add_table_field($table_name, $name, $_type, $default = null)
     {

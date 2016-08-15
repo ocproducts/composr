@@ -2161,7 +2161,6 @@ class Module_topics
         $is_reported_post = false;
 
         $anonymous = post_param_integer('anonymous', 0);
-
         $poster_name_if_guest = cns_get_safe_specified_poster_name();
 
         $new_topic = ($topic_id == -1);
@@ -2293,6 +2292,14 @@ END;
             }
             $forum_id = $topic_info[0]['t_forum_id'];
             $topic_title = $topic_info[0]['t_cache_first_title'];
+
+            if ($anonymous == 1) {
+                if (cns_forum_allows_anonymous_posts($forum_id)) {
+                    $poster_name_if_guest = null;
+                } else {
+                    $anonymous = 0;
+                }
+            }
 
             if ($topic_info[0]['t_is_open'] == 0) {
                 $may_moderate_forum = cns_may_moderate_forum($forum_id);

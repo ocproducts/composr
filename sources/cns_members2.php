@@ -139,7 +139,7 @@ function render_member_box($member_id, $preview = false, $show_avatar = true, $e
             $key = strval($key);
         }
 
-        $custom_fields->attach(do_template('CNS_MEMBER_BOX_CUSTOM_FIELD', array('_GUID' => ($guid != '') ? $guid : '530f049d3b3065df2d1b69270aa93490', 'MEMBER_ID' => strval($member_id), 'NAME' => $key, 'VALUE' => $val)));
+        $custom_fields->attach(do_template('CNS_MEMBER_BOX_CUSTOM_FIELD', array('_GUID' => ($guid != '') ? $guid : '530f049d3b3065df2d1b69270aa93491', 'MEMBER_ID' => strval($member_id), 'NAME' => $key, 'VALUE' => $val)));
     }
 
     foreach ($member_info['custom_data'] as $hook_result) {

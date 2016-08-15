@@ -30,6 +30,10 @@ class Hook_symbol_COMMUNITY_BILLBOARD
             return '';
         }
 
+        if (!$GLOBALS['SITE_DB']->table_exists('community_billboard')) {
+            return '';
+        }
+
         require_css('community_billboard');
 
         $system = (mt_rand(0, 1) == 0);

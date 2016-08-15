@@ -1381,10 +1381,10 @@ class Module_cms_galleries_alt extends Standard_crud_module
                 if ($oembed_ob->recognises_mime_type($meta_details['t_mime_type'], $meta_details) || $oembed_ob->recognises_url($url)) {
                     $oembed = $oembed_ob->get_oembed_data_result($url, array('width' => get_option('video_width_setting'), 'height' => get_option('video_height_setting')));
                     if (isset($oembed['width'])) {
-                        $_video_width = $oembed['width'];
+                        $_video_width = intval($oembed['width']);
                     }
                     if (isset($oembed['height'])) {
-                        $_video_height = $oembed['height'];
+                        $_video_height = intval($oembed['height']);
                     }
                     $_video_length = null;
                 }

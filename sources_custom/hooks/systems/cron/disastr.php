@@ -23,7 +23,9 @@ class Hook_cron_disastr
      */
     public function run()
     {
-        //if (!addon_installed('disastr')) return;
+        if (!$GLOBALS['SITE_DB']->table_exists('diseases')) {
+            return;
+        }
 
         // ensure it is done once per week
         $time = time();

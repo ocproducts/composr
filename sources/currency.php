@@ -102,7 +102,7 @@ function currency_convert($amount, $from_currency, $to_currency = null, $string 
         $_new_amount = get_value_newer_than($cache_key, time() - 60 * 60 * 24 * 2, true);
         $new_amount = ($_new_amount === null) ? null : floatval($_new_amount);
         if ($new_amount === null) {
-            $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'values_elective WHERE the_name LIKE \'' . db_encode_like('currency_%') . '\' AND date_and_time<' . strval(time() - 60 * 60 * 24 * 2)); // Cleanup
+            $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'values_elective WHERE the_name LIKE \'' . db_encode_like('currency\_%') . '\' AND date_and_time<' . strval(time() - 60 * 60 * 24 * 2)); // Cleanup
 
             $google_url = 'http://www.google.com/finance/converter?a=' . (is_float($amount) ? float_to_raw_string($amount) : strval($amount)) . '&from=' . $from_currency . '&to=' . strtoupper($to_currency);
             $result = http_download_file($google_url, null, false);

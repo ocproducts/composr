@@ -219,7 +219,7 @@ class Hook_task_import_wordpress
                             'import__news_article' => $news_article,
                         );
 
-                        $topic_identifer = 'news_' . strval($id);
+                        $topic_identifier = 'news_' . strval($id);
                     } elseif ($post['post_type'] == 'page') { // Page/articles
                         // If we don't have permission to write comcode pages, skip the page
                         if (!has_submit_permission('high', get_member(), get_ip_address(), null, null)) {
