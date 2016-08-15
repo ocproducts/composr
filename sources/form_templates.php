@@ -176,6 +176,10 @@ function take_param_int_modeavg($setting, $db_property, $table, $default)
         return $setting;
     }
 
+    if (running_script('install')) {
+        return $default;
+    }
+
     $db = $GLOBALS[(substr($table, 0, 2) == 'f_') ? 'FORUM_DB' : 'SITE_DB'];
     $val = $db->query_value_if_there('SELECT ' . $db_property . ',count(' . $db_property . ') AS qty FROM ' . $db->get_table_prefix() . $table . ' GROUP BY ' . $db_property . ' ORDER BY qty DESC', false, true); // We need the mode here, not the mean
     if (!is_null($val)) {

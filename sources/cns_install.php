@@ -281,13 +281,13 @@ function install_cns($upgrade_from = null)
 
         rename_config_option('post_history_days', 'post_read_history_days');
 
-        $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members SET m_avatar_url=REPLACE(m_avatar_url,\'ocf_\',\'cns_\') WHERE m_avatar_url LIKE \'%ocf_%\'');
+        $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members SET m_avatar_url=REPLACE(m_avatar_url,\'ocf_\',\'cns_\') WHERE m_avatar_url LIKE \'%ocf\_%\'');
 
-        $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_emoticons SET e_theme_img_code=REPLACE(e_theme_img_code,\'ocf_\',\'cns_\') WHERE e_theme_img_code LIKE \'%ocf_%\'');
+        $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_emoticons SET e_theme_img_code=REPLACE(e_theme_img_code,\'ocf_\',\'cns_\') WHERE e_theme_img_code LIKE \'%ocf\_%\'');
 
-        $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_groups SET g_rank_image=REPLACE(g_rank_image,\'ocf_\',\'cns_\') WHERE g_rank_image LIKE \'%ocf_%\'');
+        $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_groups SET g_rank_image=REPLACE(g_rank_image,\'ocf_\',\'cns_\') WHERE g_rank_image LIKE \'%ocf\_%\'');
 
-        $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics SET t_emoticon=REPLACE(t_emoticon,\'ocf_\',\'cns_\') WHERE t_emoticon LIKE \'%ocf_%\'');
+        $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics SET t_emoticon=REPLACE(t_emoticon,\'ocf_\',\'cns_\') WHERE t_emoticon LIKE \'%ocf\_%\'');
 
         $GLOBALS['FORUM_DB']->change_primary_key('f_multi_moderations', array('id'));
 
@@ -347,7 +347,7 @@ function install_cns($upgrade_from = null)
             'id' => '*AUTO',
             'cf_locked' => 'BINARY',  // Can't be deleted
             'cf_name' => 'SHORT_TRANS',
-            'cf_description' => 'SHORT_TRANS',
+            'cf_description' => 'LONG_TRANS',
             'cf_default' => 'LONG_TEXT',
             'cf_public_view' => 'BINARY',
             'cf_owner_view' => 'BINARY',

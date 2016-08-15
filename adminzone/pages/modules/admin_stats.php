@@ -744,8 +744,8 @@ class Module_admin_stats
 
         $this->title = get_screen_title('TOP_REFERRERS_RANGE', true, array(escape_html(get_timezoned_date($time_start, false)), escape_html(get_timezoned_date($time_end, false))));
 
-        $non_local_filter = 'referer NOT LIKE \'' . db_encode_like(preg_replace('#^https?://#', 'http://', get_base_url()) . '%') . '\'';
-        $non_local_filter .= ' AND referer NOT LIKE \'' . db_encode_like(preg_replace('#^https?://#', 'https://', get_base_url()) . '%') . '\'';
+        $non_local_filter = 'referer NOT LIKE \'' . db_encode_like(str_replace('_', '\\_', preg_replace('#^https?://#', 'http://', get_base_url())) . '%') . '\'';
+        $non_local_filter .= ' AND referer NOT LIKE \'' . db_encode_like(str_replace('_', '\\_', preg_replace('#^https?://#', 'https://', get_base_url())) . '%') . '\'';
         if (get_param_integer('debug', 0) == 1) {
             $non_local_filter = '1=1';
         }

@@ -1055,7 +1055,7 @@ function cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $
         // Reassign personal galleries
         if (addon_installed('galleries')) {
             require_lang('galleries');
-            $personal_galleries = $GLOBALS['SITE_DB']->query('SELECT name,fullname,parent_id FROM ' . get_table_prefix() . 'galleries WHERE name LIKE \'member_' . strval($member_id) . '_%\'');
+            $personal_galleries = $GLOBALS['SITE_DB']->query('SELECT name,fullname,parent_id FROM ' . get_table_prefix() . 'galleries WHERE name LIKE \'member\_' . strval($member_id) . '\_%\'');
             foreach ($personal_galleries as $gallery) {
                 $parent_title = get_translated_text($GLOBALS['SITE_DB']->query_select_value('galleries', 'fullname', array('name' => $gallery['parent_id'])));
                 if (get_translated_text($gallery['fullname']) == do_lang('PERSONAL_GALLERY_OF', $old_username, $parent_title)) {

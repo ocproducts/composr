@@ -322,8 +322,8 @@ function db_escape_string($string)
 /**
  * Create an SQL cast.
  *
- * @param $field string The field identifier
- * @param $type string The type wanted
+ * @param string $field The field identifier
+ * @param string $type The type wanted
  * @set CHAR INT
  * @return string The database type
  */
@@ -1563,7 +1563,7 @@ class DatabaseConnector
      * @param  ID_TEXT $table_name The table name
      * @param  ID_TEXT $name The field name
      * @param  ID_TEXT $_type The field type
-     * @param  ?mixed $default The default value; for a translatable field should still be a string value (null: no default)
+     * @param  ?mixed $default The default value; for a translatable field should still be a string value (null: null default / default default)
      */
     public function add_table_field($table_name, $name, $_type, $default = null)
     {

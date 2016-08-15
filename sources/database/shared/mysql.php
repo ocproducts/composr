@@ -348,7 +348,7 @@ class Database_super_mysql
      */
     public function db_encode_like($pattern)
     {
-        return $this->db_escape_string($pattern);
+        return str_replace('\\\\_'/*MySQL escaped underscores*/, '\\_', $this->db_escape_string($pattern));
     }
 
     /**
@@ -363,12 +363,12 @@ class Database_super_mysql
     /**
      * Create an SQL cast.
      *
-     * @param $field string The field identifier
-     * @param $type string The type wanted
+     * @param string $field The field identifier
+     * @param string $type The type wanted
      * @set CHAR INT
      * @return string The database type
      */
-    function db_cast($field, $type)
+    public function db_cast($field, $type)
     {
         switch ($type) {
             case 'CHAR':

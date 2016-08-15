@@ -98,10 +98,11 @@ function init__site()
         exit();
     }
 
-    // Detect bad access domain
     if (running_script('index')) {
-        global $SITE_INFO;
         $access_host = preg_replace('#:.*#', '', cms_srv('HTTP_HOST'));
+
+        // Detect bad access domain
+        global $SITE_INFO;
         if (($access_host != '') && ((isset($_SERVER['HTTP_HOST'])) || (isset($_ENV['HTTP_HOST']))) && (empty($GLOBALS['EXTERNAL_CALL']))) {
             $parsed_base_url = parse_url(get_base_url());
 
@@ -113,6 +114,25 @@ function init__site()
 
                     header('Location: ' . get_self_url(true, false));
                     exit();
+                }
+            }
+        }
+
+        if (get_value('disable_cookie_checks') !== '1') {
+            // Detect bad cookie domain (reasonable approximation)
+            $cookie_domain = ltrim(get_cookie_domain(), '.');
+            if (!empty($cookie_domain) && !empty($access_host)) {
+                if (substr($access_host, -strlen($cookie_domain)) != $cookie_domain) {
+                    attach_message(do_lang_tempcode('INCORRECT_COOKIE_DOMAIN', escape_html($cookie_domain), escape_html($access_host)), 'warn');
+                }
+            }
+
+            // Detect bad cookie path
+            $cookie_path = get_cookie_path();
+            $access_path = cms_srv('SCRIPT_NAME');
+            if (!empty($cookie_path) && !empty($access_path)) {
+                if (substr($access_path, 0, strlen($cookie_path)) != $cookie_path) {
+                    attach_message(do_lang_tempcode('INCORRECT_COOKIE_PATH', escape_html($cookie_path), escape_html($access_path)), 'warn');
                 }
             }
         }
@@ -1274,7 +1294,7 @@ function request_page($codename, $required, $zone = null, $page_type = null, $be
 function _request_page($codename, $zone, $page_type = null, $lang = null, $no_redirect_check = false)
 {
     $details = persistent_cache_get(array('PAGE_INFO', $codename, $zone, $page_type, $lang, $no_redirect_check));
-    if ($details === null) {
+    if ($details === null || $details === false/*caching negativity breaks things if the page subsequently appears - even adding a page does a pre-check so would net a cached false*/) {
         $details = __request_page($codename, $zone, $page_type, null, $no_redirect_check);
         persistent_cache_set(array('PAGE_INFO', $codename, $zone, $page_type, $lang, $no_redirect_check), $details);
     }

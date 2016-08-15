@@ -490,6 +490,7 @@ We have the following which are either unlikely to be useful, or potentially uns
   - [tt]disable_openssl[/tt] -- set this to '1' if you are on Windows and PHP<5.3.4, which has a bug in [tt]openssl_random_pseudo_bytes[/tt]. It is much better to upgrade PHP though, for better security.
   - [tt]disable_ssl_for__<domain>[/tt] -- set this to '1' to disable SSL certificate checking for the given domain name. This is not a great idea, but may be necessary if a required service has a broken certificate yet it only supports HTTPS.
   - [tt]manualproc_mail[/tt] -- set this to '1' to debug problems with the PHP mail command (the PHP mail command won't relay error information from the sendmail process, this will replace it with something that does); it only works on servers that allow PHP process control
+  - [tt]disable_cookie_checks[/tt] -- set this to '1' if you are somehow proxying traffic into your web server with an incorrect hostname header, so cookie checks must be skipped
  - Used internally by Composr
   - [tt]cdn[/tt] -- this is used for storage of autodetected CDNs, prior to the config option for them being properly filled in
   - [tt]brand_base_url[/tt] -- the base URL to the brand site (by default this is {$BRAND_BASE_URL} but may be changed)

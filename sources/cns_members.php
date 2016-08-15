@@ -168,7 +168,7 @@ function cns_get_all_custom_fields_match($groups = null, $public_view = null, $o
             $where .= ' AND cf_show_in_post_previews=' . strval($show_in_post_previews);
         }
         if ($special_start == 1) {
-            $where .= ' AND ' . $GLOBALS['SITE_DB']->translate_field_ref('cf_name') . ' LIKE \'' . db_encode_like('cms_%') . '\'';
+            $where .= ' AND ' . $GLOBALS['SITE_DB']->translate_field_ref('cf_name') . ' LIKE \'' . db_encode_like('cms\_%') . '\'';
         }
         if ($show_on_join_form !== null) {
             $where .= ' AND cf_show_on_join_form=' . strval($show_on_join_form);
