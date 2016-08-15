@@ -143,7 +143,7 @@ class shopping_test_set extends cms_test_case
         $reason_code = '';
         $pending_reason = 'bar';
         $memo = 'foo';
-        $mc_gross = '71.40';
+        $mc_gross = (get_db_type() == 'xml'/*rounding difference*/) ? '71.40' : '71.77';
         $mc_currency = get_option('currency');
         $txn_id = '0';
         $parent_txn_id = '0';

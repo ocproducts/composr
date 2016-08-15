@@ -454,7 +454,7 @@ class Database_Static_access
      * @set CHAR INT
      * @return string The database type
      */
-    function db_cast($field, $type)
+    public function db_cast($field, $type)
     {
         switch ($type) {
             case 'CHAR':

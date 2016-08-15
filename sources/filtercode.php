@@ -180,11 +180,11 @@ function form_for_filtercode($filter, $labels = null, $content_type = null, $typ
         if (preg_match('#^<([^<>]+)>$#', $filter_op, $matches) != 0) {
             $field_name = filter_naughty_harsh($matches[1]);
             if (array_key_exists($field_name, $labels)) {
-                $field_title = make_string_tempcode($labels[$field_name]);
+                $field_title = escape_html($labels[$field_name]);
             } else {
                 $target_name = preg_replace('#^filter\_#', '', preg_replace('#\_op$#', '', $field_name));
                 if (array_key_exists($target_name, $labels)) {
-                    $operator_target_label = make_string_tempcode($labels[$target_name]);
+                    $operator_target_label = escape_html($labels[$target_name]);
                 } else {
                     $operator_target_label = escape_html(titleify($target_name));
                 }
@@ -744,7 +744,7 @@ function _default_conv_func($db, $info, $catalogue_name, &$extra_join, &$extra_s
  *
  * @param  object $db Database object to use
  * @param  array $filters Parsed Filtercode structure
- * @param  ID_TEXT $content_type The content type (null: no function needed, direct in-table mapping always works)
+ * @param  ?ID_TEXT $content_type The content type (null: no function needed, direct in-table mapping always works)
  * @param  ?string $context First parameter to send to the conversion function, may mean whatever that function wants it to. If we have no conversion function, this is the name of a table to read field metadata from (null: none)
  * @param  string $table_join_code What MySQL will join the table with
  * @return array Tuple: array of extra select, array of extra join, string of extra where

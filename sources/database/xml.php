@@ -2307,7 +2307,6 @@ class Database_Static_xml
                     $val = $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set);
                 }
                 return $val;
-                break;
 
             case 'CAST':
                 $result = $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set);

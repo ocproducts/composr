@@ -26,9 +26,9 @@
 	function onYouTubeIframeAPIReady()
 	{
 		{$GET%,player_id}=new YT.Player('{$GET%,player_id}', {
-			width: '{WIDTH;}',
-			height: '{HEIGHT;}',
-			videoId: '{REMOTE_ID;}',
+			width: '{WIDTH;/}',
+			height: '{HEIGHT;/}',
+			videoId: '{REMOTE_ID;/}',
 			events: {
 				'onReady': function() {
 					if (slideshow_mode) {
