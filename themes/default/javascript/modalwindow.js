@@ -463,7 +463,7 @@ function ModalWindow()
 {
 	return {
 		// Constants
-		WINDOW_SIDE_GAP: {$?,{$MOBILE},5,25},
+		WINDOW_SIDE_GAP: Composr.$MOBILE ? 5 : 25,
 		WINDOW_TOP_GAP: 25, // Will also be used for bottom gap for percentage heights
 		BOX_EAST_PERIPHERARY: 4,
 		BOX_WEST_PERIPHERARY: 4,
@@ -551,7 +551,7 @@ function ModalWindow()
 			var dim=this.get_page_size();
 
 			var bottom_gap=this.WINDOW_TOP_GAP;
-			if (this.button_container.childNodes.length>0) bottom_gap+=find_height(this.button_container);
+			if (this.button_container.childNodes.length>0) bottom_gap+=this.button_container.offsetHeight;
 
 			if (!force_height)
 				height='auto'; // Actually we always want auto heights, no reason to not for overlays
@@ -630,7 +630,7 @@ function ModalWindow()
 			}
 
 			// Work out box position
-			if (!detected_box_height) detected_box_height=find_height(this.box_wrapper.childNodes[0]);
+			if (!detected_box_height) detected_box_height=this.box_wrapper.childNodes[0].offsetHeight;
 			var _box_pos_top,_box_pos_left,box_pos_top,box_pos_left;
 			if (box_height=='auto')
 			{

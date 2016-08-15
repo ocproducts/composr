@@ -416,7 +416,7 @@ function process_chat_xml_messages(ajax_result, skip_incoming_sound) {
 
             // Clone the node so that we may insert it
             cloned_message = doc.createElement('div');
-            set_inner_html(cloned_message, (typeof messages[i].xml != 'undefined') ? messages[i].xml/*IE-only optimisation*/ : get_outer_html(messages[i].childNodes[0]));
+            set_inner_html(cloned_message, (typeof messages[i].xml != 'undefined') ? messages[i].xml/*IE-only optimisation*/ : messages[i].childNodes[0].outerHTML);
             cloned_message = cloned_message.childNodes[0];
             cloned_message.id = 'chat_message__' + id;
 

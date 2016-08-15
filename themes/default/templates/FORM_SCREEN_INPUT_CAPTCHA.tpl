@@ -20,14 +20,8 @@
 			document.getElementById('captcha_readable').src+='&'; // Force it to reload latest captcha
 		};
 
-		if (typeof window.addEventListener!='undefined')
-		{
-			window.addEventListener(showevent,func,false);
-		}
-		else if (typeof window.attachEvent!='undefined')
-		{
-			window.attachEvent('on'+showevent,func);
-		}
+		window.addEventListener(showevent,func,false);
+
 	//]]></script>
 {+END}
 

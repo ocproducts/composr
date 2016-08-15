@@ -49,7 +49,7 @@ var editor_settings={
 	language : (window.cms_lang)?cms_lang.toLowerCase():'en',
 	emailProtection : false,
 	resize_enabled : true,
-	width : (find_width(element)-15),
+	width : (element.offsetWidth-15),
 	height : (window.location.href.indexOf('cms_comcode_pages')==-1)?250:500,
 	toolbar : toolbar,
 	allowedContent: true,

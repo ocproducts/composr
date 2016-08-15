@@ -318,7 +318,7 @@ function wysiwyg_editor_init_for(element, id) {
     document.body.appendChild(test_div);
     test_div.className = 'wysiwyg_toolbar_color_finder';
     var matches;
-    var wysiwyg_color = abstract_get_computed_style(test_div, 'color');
+    var wysiwyg_color = window.getComputedStyle(test_div).getPropertyValue('color');
     test_div.parentNode.removeChild(test_div);
     matches = wysiwyg_color.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/, matches);
     if (matches) {

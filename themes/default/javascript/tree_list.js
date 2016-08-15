@@ -370,7 +370,7 @@ tree_list.prototype.render_tree = function (xml, html, element) {
             };
             node_self.ondrag = function (event) {
                 if (!event.clientY) return;
-                var hit = find_overlapping_selectable(event.clientY + get_window_scroll_y(), this, this.object.tree_list_data, this.object.name);
+                var hit = find_overlapping_selectable(event.clientY + window.pageYOffset, this, this.object.tree_list_data, this.object.name);
                 if (this.last_hit != null) {
                     this.last_hit.parentNode.parentNode.style.border = '0px';
                 }
@@ -467,7 +467,7 @@ function find_overlapping_selectable(mouse_y, element, node, name) // Find drop 
     if (node.getAttribute('droppable') == element.cms_draggable) {
         child_node_element = document.getElementById(name + 'tree_list_' + ((node.nodeName.toLowerCase() == 'category') ? 'c' : 'e') + '_' + node.getAttribute('id'));
         y = find_pos_y(child_node_element.parentNode.parentNode, true);
-        height = find_height(child_node_element.parentNode.parentNode);
+        height = child_node_element.parentNode.parentNode.offsetHeight;
         if ((y < mouse_y) && (y + height > mouse_y)) {
             return child_node_element;
         }

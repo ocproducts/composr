@@ -25,7 +25,7 @@
 			prepare_simplified_file_input('attachment_multi','file'+window.num_attachments,null,'{POSTING_FIELD_NAME;/}',{+START,IF_PASSED,FILTER}'{FILTER;/}'{+END}{+START,IF_NON_PASSED,FILTER}null{+END},window.attachment_upload_button);
 		}
 
-		after_window_load(function() {
+		Composr.onWindowLoad(function() {
 			if (document.getElementById('attachment_upload_button'))
 			{
 				$(function () {

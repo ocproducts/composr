@@ -1,7 +1,7 @@
 // Based on http://welcome.totheinter.net/columnizer-jquery-plugin/
 //  But with fixes and better flexibility, and pure CSS-based activation
 
-after_window_load(function () {
+Composr.onWindowLoad(function () {
     $('.column_wrapper').columnize({columns: 3});
     $('.column_wrapper_2').columnize({columns: 2});
 });

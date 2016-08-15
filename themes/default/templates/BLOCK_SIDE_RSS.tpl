@@ -54,8 +54,8 @@
 				window.setInterval(function() {
 					var scroller=document.getElementById('news_scroller{$GET%,side_news_id}');
 					if (scroller.paused) return;
-					if (scroller.scrollTop+find_height(scroller)>=scroller.scrollHeight-1)
-						scroller.scrollTop=0;
+					if (scroller.scrollTop + scroller.offsetHeight >= scroller.scrollHeight-1)
+						scroller.scrollTop = 0;
 					else
 						scroller.scrollTop++;
 				} , scroll_speed);

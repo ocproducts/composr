@@ -223,15 +223,15 @@ function _toggle_messaging_box(event, name, hide) {
     button.title = '';
     var set_position = function () {
         var button_x = find_pos_x(button, true);
-        var button_width = find_width(button);
-        var x = (button_x + button_width - find_width(e));
+        var button_width = button.offsetWidth;
+        var x = (button_x + button_width - e.offsetWidth);
         if (x < 0) {
             var span = e.getElementsByTagName('span')[0];
             span.style.marginLeft = (button_x + button_width / 4) + 'px';
             x = 0;
         }
         e.style.left = x + 'px';
-        e.style.top = (find_pos_y(button, true) + find_height(button)) + 'px';
+        e.style.top = (find_pos_y(button, true) + button.offsetHeight) + 'px';
         try {
             e.style.opacity = '1.0';
         }

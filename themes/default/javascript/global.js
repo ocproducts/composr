@@ -2,59 +2,151 @@
 
 "use strict";
 
+var Composr = {
+    _windowLoaded: false,
+    _polyfillsLoaded: false
+};
 
-var Composr = {};
-(function (){
-    var s = JSON.parse(document.getElementsByName('composr-symbol-data')[0].content);
+(function ($){
 
-    Composr.$PAGE_TITLE = s.PAGE_TITLE;
-    Composr.$MEMBER = s.MEMBER;
-    Composr.$IS_GUEST = s.IS_GUEST;
-    Composr.$USERNAME = s.USERNAME;
-    Composr.$AVATAR = s.AVATAR;
-    Composr.$MEMBER_EMAIL = s.MEMBER_EMAIL;
-    Composr.$PHOTO = s.PHOTO;
-    Composr.$MEMBER_PROFILE_URL = s.MEMBER_PROFILE_URL;
-    Composr.$FROM_TIMESTAMP = s.FROM_TIMESTAMP;
-    Composr.$MOBILE = s.MOBILE;
-    Composr.$THEME = s.THEME;
-    Composr.$JS_ON = s.JS_ON;
-    Composr.$LANG = s.LANG;
-    Composr.$BROWSER_UA = s.BROWSER_UA;
-    Composr.$OS = s.OS;
-    Composr.$DEV_MODE = s.DEV_MODE;
-    Composr.$USER_AGENT = s.USER_AGENT;
-    Composr.$IP_ADDRESS = s.IP_ADDRESS;
-    Composr.$TIMEZONE = s.TIMEZONE;
-    Composr.$HTTP_STATUS_CODE = s.HTTP_STATUS_CODE;
-    Composr.$CHARSET = s.CHARSET;
-    Composr.$SITE_NAME = s.SITE_NAME;
-    Composr.$COPYRIGHT = s.COPYRIGHT;
-    Composr.$DOMAIN = s.DOMAIN;
-    Composr.$FORUM_BASE_URL = s.FORUM_BASE_URL;
-    Composr.$BASE_URL = s.BASE_URL;
-    Composr.$BRAND_NAME = s.BRAND_NAME;
-    Composr.$IS_STAFF = s.IS_STAFF;
-    Composr.$IS_ADMIN = s.IS_ADMIN;
-    Composr.$GROUP_ID = s.GROUP_ID;
-}());
+    bindSymbols();
+    loadPolyfills();
+
+    Composr.onReady = function onReady(callback) {
+        if (Composr._polyfillsLoaded) {
+            $(callback);
+        } else {
+            window.addEventListener('composr.polyfillsloaded', function (){
+                $(callback);
+            });
+        }
+    };
+
+    Composr.onWindowLoad = function onWindowLoad(callback) {
+        if (Composr._windowLoaded || (document.readyState === 'complete')) {
+            Composr._windowLoaded = true;
+            setTimeout(callback, 0);
+        } else {
+            window.addEventListener('load', function () {
+                Composr._windowLoaded = true;
+                setTimeout(callback, 0);
+            });
+        }
+    };
+
+    /* DOM helper methods */
+    Composr.dom = {};
+
+    /* Returns the provided element's width excluding padding and borders */
+    Composr.dom.contentWidth = function contentWidth(element) {
+        var cs = getComputedStyle(element),
+            padding = parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight),
+            border = parseFloat(cs.borderLeftWidth) + parseFloat(cs.borderRightWidth);
+
+        return element.offsetWidth - padding - border;
+    };
+
+    /* Returns the provided element's height excluding padding and border */
+    Composr.dom.contentHeight = function contentHeigt(element) {
+        var cs = getComputedStyle(element),
+            padding = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom),
+            border = parseFloat(cs.borderTopWidth) + parseFloat(cs.borderBottomWidth);
+
+        return element.offsetHeight - padding - border;
+    };
+
+    function bindSymbols() {
+        var symbol = JSON.parse(document.getElementsByName('composr-symbol-data')[0].content);
+        Composr.$PAGE_TITLE = symbol.PAGE_TITLE;
+        Composr.$MEMBER = symbol.MEMBER;
+        Composr.$IS_GUEST = symbol.IS_GUEST;
+        Composr.$USERNAME = symbol.USERNAME;
+        Composr.$AVATAR = symbol.AVATAR;
+        Composr.$MEMBER_EMAIL = symbol.MEMBER_EMAIL;
+        Composr.$PHOTO = symbol.PHOTO;
+        Composr.$MEMBER_PROFILE_URL = symbol.MEMBER_PROFILE_URL;
+        Composr.$FROM_TIMESTAMP = symbol.FROM_TIMESTAMP;
+        Composr.$MOBILE = symbol.MOBILE;
+        Composr.$THEME = symbol.THEME;
+        Composr.$JS_ON = symbol.JS_ON;
+        Composr.$LANG = symbol.LANG;
+        Composr.$BROWSER_UA = symbol.BROWSER_UA;
+        Composr.$OS = symbol.OS;
+        Composr.$DEV_MODE = symbol.DEV_MODE;
+        Composr.$USER_AGENT = symbol.USER_AGENT;
+        Composr.$IP_ADDRESS = symbol.IP_ADDRESS;
+        Composr.$TIMEZONE = symbol.TIMEZONE;
+        Composr.$HTTP_STATUS_CODE = symbol.HTTP_STATUS_CODE;
+        Composr.$CHARSET = symbol.CHARSET;
+        Composr.$SITE_NAME = symbol.SITE_NAME;
+        Composr.$COPYRIGHT = symbol.COPYRIGHT;
+        Composr.$DOMAIN = symbol.DOMAIN;
+        Composr.$FORUM_BASE_URL = symbol.FORUM_BASE_URL;
+        Composr.$BASE_URL = symbol.BASE_URL;
+        Composr.$BRAND_NAME = symbol.BRAND_NAME;
+        Composr.$IS_STAFF = symbol.IS_STAFF;
+        Composr.$IS_ADMIN = symbol.IS_ADMIN;
+        Composr.$VERSION = symbol.VERSION;
+        Composr.$COOKIE_PATH = symbol.COOKIE_PATH;
+        Composr.$COOKIE_DOMAIN = symbol.COOKIE_DOMAIN;
+        Composr.$IS_A_COOKIE_LOGIN = symbol.IS_A_COOKIE_LOGIN;
+        Composr.$SESSION_COOKIE_NAME = symbol.SESSION_COOKIE_NAME;
+        Composr.$GROUP_ID = symbol.GROUP_ID;
+    }
+
+    var scriptsToLoad = 0;
+    var scriptsLoaded = 0;
+    function loadPolyfills() {
+        if (Composr._polyfillsLoaded) {
+            return;
+        }
+
+        if (typeof NodeList.prototype.forEach === 'undefined') {
+            // Only Chrome has native support as of writing
+            NodeList.prototype.forEach = Array.prototype.forEach;
+        }
+
+        function onload() {
+            scriptsLoaded++;
+
+            if (scriptsToLoad === scriptsLoaded) {
+                Composr._polyfillsLoaded = true;
+                window.dispatchEvent(new Event('composr.polyfillsloaded'));
+            }
+        }
+
+        function loadScript(src) {
+            scriptsToLoad++;
+            var s = document.createElement('script');
+            s.onload = onload;
+            s.async = true;
+            s.src = src;
+            document.head.appendChild(s);
+        }
+
+        if (typeof window.URLSearchParams === 'undefined') {
+            loadScript(Composr.$BASE_URL + '/data/polyfills/url-search-params.max.js');
+        }
+
+        if (scriptsToLoad === 0) {
+            Composr._polyfillsLoaded = true;
+            window.dispatchEvent(new Event('composr.polyfillsloaded'));
+        }
+    }
+
+}(window.jQuery || window.Zepto));
 
 
 /* Startup */
 if (typeof window.page_loaded == 'undefined') // To stop problem if JS file loaded more than once
 {
     window.page_loaded = false;
-    window.page_fully_loaded = false;
     window.is_doing_a_drag = false;
 }
 function script_load_stuff() {
     if (window.page_loaded) return; // Been called twice for some reason
 
     var i;
-
-    if (typeof NodeList.prototype.forEach == 'undefined') { // Only Chrome has native support as of writing
-        NodeList.prototype.forEach = Array.prototype.forEach;
-    }
 
     if (window == window.top && !window.opener || window.name == '') window.name = '_site_opener';
 
@@ -109,11 +201,11 @@ function script_load_stuff() {
 
     // Column height balancing
     var cols = document.getElementsByClassName('col_balance_height');
-    for (var i = 0; i < cols.length; i++) {
+    for (i = 0; i < cols.length; i++) {
         var max = null;
         for (var j = 0; j < cols.length; j++) {
             if (cols[i].className == cols[j].className) {
-                var height = find_height(cols[j]);
+                var height = fcols[j].offsetHeight;
                 if (max === null || height > max) max = height;
             }
             cols[i].style.height = max + 'px';
@@ -128,8 +220,8 @@ function script_load_stuff() {
     window.alt_pressed = false;
     window.meta_pressed = false;
     window.shift_pressed = false;
-    if (typeof window.addEventListener != 'undefined')
-        window.addEventListener('click', capture_click_key_states, true); // Workaround for a dodgy firefox extension
+
+    window.addEventListener('click', capture_click_key_states, true); // Workaround for a dodgy firefox extension
 
     // So we can change base tag especially when on debug mode
     if (document.getElementsByTagName('base')[0]) {
@@ -147,22 +239,22 @@ function script_load_stuff() {
         window.addEventListener('scroll', function () {
             for (var i = 0; i < stuck_navs.length; i++) {
                 var stuck_nav = stuck_navs[i];
-                var stuck_nav_height = (typeof stuck_nav.real_height == 'undefined') ? find_height(stuck_nav, true) : stuck_nav.real_height;
+                var stuck_nav_height = (typeof stuck_nav.real_height == 'undefined') ? Composr.dom.contentHeight(stuck_nav) : stuck_nav.real_height;
                 stuck_nav.real_height = stuck_nav_height;
                 var pos_y = find_pos_y(stuck_nav.parentNode, true);
-                var footer_height = find_height(document.getElementsByTagName('footer')[0]);
+                var footer_height = document.getElementsByTagName('footer')[0].offsetHeight;
                 var panel_bottom = document.getElementById('panel_bottom');
-                if (panel_bottom) footer_height += find_height(panel_bottom);
+                if (panel_bottom) footer_height += panel_bottom.offsetHeight;
                 panel_bottom = document.getElementById('global_messages_2');
-                if (panel_bottom) footer_height += find_height(panel_bottom);
+                if (panel_bottom) footer_height += panel_bottom.offsetHeight;
                 if (stuck_nav_height < get_window_height() - footer_height) // If there's space in the window to make it "float" between header/footer
                 {
-                    var extra_height = (get_window_scroll_y() - pos_y);
+                    var extra_height = (window.pageYOffset - pos_y);
                     if (extra_height > 0) {
-                        var width = find_width(stuck_nav, true);
-                        var height = find_height(stuck_nav, true);
-                        var stuck_nav_width = find_width(stuck_nav, true);
-                        if (!abstract_get_computed_style(stuck_nav, 'width')) // May be centered or something, we should be careful
+                        var width = Composr.dom.contentWidth(stuck_nav);
+                        var height = Composr.dom.contentHeight(stuck_nav);
+                        var stuck_nav_width = Composr.dom.contentWidth(stuck_nav);
+                        if (!window.getComputedStyle(stuck_nav).getPropertyValue('width')) // May be centered or something, we should be careful
                         {
                             stuck_nav.parentNode.style.width = width + 'px';
                         }
@@ -200,59 +292,6 @@ function script_load_stuff() {
         set_font_size(font_size);
     }
 
-    /*
-     // Fake onmouseout events for DOM elements removed (fixes issues with stuck tooltips)
-     if (typeof window.MutationObserver!='undefined')
-     {
-     var observer=new MutationObserver(function(mutations) {
-     mutations.forEach(function(mutation) {
-     if (mutation.type=='childList')
-     {
-     var node,child_node,i,j,k;
-     for (i=0;i<mutation.removedNodes.length;i++)
-     {
-     node=mutation.removedNodes[i];
-     if (node.onmouseout) node.onmouseout();
-     if (typeof node.getElementsByTagName!='undefined')
-     {
-     var child_nodes=node.getElementsByTagName('*');
-     for (j=0;j<child_nodes.length;j++)
-     {
-     child_node=child_nodes[j];
-     if (child_node.onmouseout)
-     {
-     child_node.onmouseout.call(child_node);
-     }
-     if (typeof child_node.simulated_events!='undefined' && typeof child_node.simulated_events.mouseout!='undefined')
-     {
-     for (k=0;k<child_node.simulated_events.mouseout.length;k++)
-     {
-     child_node.simulated_events.mouseout[k].call(child_node);
-     }
-     }
-     }
-     }
-     }
-     }
-     });
-     });
-     observer.observe(document.body,{childList: true,subtree: true});
-     }
-
-     ^ Disabled this because it is not reliable and possibly non-performant. Instead we will manually call clear_out_tooltips(null); at appropriate places.
-     */
-
-    // Fix Flashes own cleanup code so if the SWFMovie was removed from the page it doesn't display errors.
-    window["__flash__removeCallback"] = function (instance, name) {
-        try {
-            if (instance) {
-                instance[name] = null;
-            }
-        } catch (flashEx) {
-
-        }
-    };
-
     // If back button pressed back from an AJAX-generated page variant we need to refresh page because we aren't doing full JS state management
     window.has_js_state = false;
     window.onpopstate = function (event) {
@@ -261,17 +300,19 @@ function script_load_stuff() {
                 window.location.reload();
             }
         }, 0);
-    }
+    };
 
-    if (typeof window.script_load_stuff_b != 'undefined') window.script_load_stuff_b(); // This is designed to allow you to easily define additional initialisation code in JAVASCRIPT_CUSTOM_GLOBALS.tpl
+    if (typeof window.script_load_stuff_b !== 'undefined') window.script_load_stuff_b(); // This is designed to allow you to easily define additional initialisation code in JAVASCRIPT_CUSTOM_GLOBALS.tpl
 
     window.page_loaded = true;
 
-    after_window_load(function () { // When images etc have loaded
+    Composr.onWindowLoad(function () { // When images etc have loaded
         script_page_rendered();
     });
 
-    if ((typeof window.cms_is_staff != 'undefined') && (window.cms_is_staff) && (typeof window.script_load_stuff_staff != 'undefined')) script_load_stuff_staff();
+    if (Composr.$IS_STAFF && (typeof window.script_load_stuff_staff !== 'undefined')) {
+       script_load_stuff_staff()
+    }
 }
 
 function merge_global_messages() {
@@ -334,7 +375,7 @@ function new_html__initialise(element) {
                     span_proxy.style.visibility = 'hidden';
                     document.body.appendChild(span_proxy);
                     window.setTimeout(function () {
-                        var width = find_width(span_proxy) + 15;
+                        var width = span_proxy.offsetWidth + 15;
                         span_proxy.parentNode.removeChild(span_proxy);
                         if (element.parentNode.nodeName.toLowerCase() == 'th' || element.parentNode.nodeName.toLowerCase() == 'td') {
                             element.parentNode.style.height = width + 'px';
@@ -640,7 +681,7 @@ function disable_button_just_clicked(input, permanent) {
 /* Making the height of a textarea match its contents */
 function manage_scroll_height(ob) {
     var height = ob.scrollHeight;
-    if ((height > 5) && (sts(ob.style.height) < height) && (find_height(ob) < height)) {
+    if ((height > 5) && (sts(ob.style.height) < height) && (ob.offsetHeight < height)) {
         ob.style.height = height + 'px';
         ob.style.boxSizing = 'border-box';
         ob.style.overflowY = 'hidden';
@@ -1025,7 +1066,7 @@ function get_base_url() {
 
 /* Read query string parameters */
 
-function get_param(name, url) {
+function query_string_param(name, url) {
     if (!url) url = window.location.href;
     name = name.replace(/[\[\]]/g, "\\$&");
     var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
@@ -1283,7 +1324,7 @@ function toggleable_tray(element, no_animate, cookie_id_name) {
         element.style.display = type;
         if ((type == 'block') && (element.nodeName.toLowerCase() == 'div') && (!no_animate) && ((!pic) || (pic.src.indexOf('themewizard.php') == -1))) {
             element.style.visibility = 'hidden';
-            element.style.width = find_width(element) + 'px';
+            element.style.width = element.offsetWidth + 'px';
             element.style.position = 'absolute'; // So things do not just around now it is visible
             if (pic) {
                 set_tray_theme_image(pic, 'expand', 'expcon', '{$IMG;,1x/trays/expand}', '{$IMG;,1x/trays/expcon}', '{$IMG;,2x/trays/expcon}', '{$IMG;,1x/trays/expcon2}', '{$IMG;,2x/trays/expcon2}');
@@ -1325,7 +1366,7 @@ function toggleable_tray(element, no_animate, cookie_id_name) {
     return false;
 }
 function begin_toggleable_tray_animation(element, animate_dif, animate_ticks, final_height, pic) {
-    var full_height = find_height(element, true);
+    var full_height = Composr.dom.contentHeight(element);
     if (final_height == -1) // We are animating to full height - not a fixed height
     {
         final_height = full_height;
@@ -1357,7 +1398,7 @@ function begin_toggleable_tray_animation(element, animate_dif, animate_ticks, fi
     }, animate_ticks);
 }
 function toggleable_tray_animate(element, final_height, animate_dif, orig_overflow, animate_ticks, pic) {
-    var current_height = ((element.style.height == 'auto') || (element.style.height == '')) ? (find_height(element)) : sts(element.style.height);
+    var current_height = ((element.style.height == 'auto') || (element.style.height == '')) ? element.offsetHeight : sts(element.style.height);
     /*if (Math.max(current_height-final_height,final_height-current_height)<70)
      {
      if (animate_dif<0) animate_dif=Math.min(animate_dif*0.8,-3);
@@ -1398,7 +1439,7 @@ function handle_tray_cookie_setting(id) {
     if (!element) element = document.getElementById(id);
     if (!element) return;
 
-    if (element.className.indexOf('toggleable_tray') == -1) // Suspicious, maybe we need to probe deeper
+    if (!element.classList.has('toggleable_tray')) // Suspicious, maybe we need to probe deeper
     {
         var toggleables = element.querySelectorAll('.toggleable_tray');
         if (typeof toggleables[0] != 'undefined') element = toggleables[0];
@@ -1513,7 +1554,7 @@ function smooth_scroll(dest_y, expected_scroll_y, dir, event_after) {
     return;
     /*{+END}*/
 
-    var scroll_y = get_window_scroll_y();
+    var scroll_y = window.pageYOffset;
     if (typeof dest_y == 'string') dest_y = find_pos_y(document.getElementById(dest_y), true);
     if (dest_y < 0) dest_y = 0;
     if ((typeof expected_scroll_y != 'undefined') && (expected_scroll_y != null) && (expected_scroll_y != scroll_y)) return; // We must terminate, as the user has scrolled during our animation and we do not want to interfere with their action -- or because our last scroll failed, due to us being on the last scroll screen already
@@ -1543,30 +1584,6 @@ function smooth_scroll(dest_y, expected_scroll_y, dir, event_after) {
     window.setTimeout(function () {
         smooth_scroll(dest_y, scroll_y + dist, dir, event_after);
     }, 30);
-}
-
-/* Get what an elements current style is for a particular CSS property */
-function abstract_get_computed_style(obj, property) {
-    // LEGACY: IE8
-    if (obj.currentStyle) {
-        var index = property.indexOf('-');
-        if (index != -1) {
-            property = property.substring(0, index) + property.substring(index + 1, index + 2).toUpperCase() + property.substring(index + 2, property.length);
-        }
-        return obj.currentStyle[property];
-    }
-
-    var ret = null;
-    try {
-        ret = document.defaultView.getComputedStyle(obj, null).getPropertyValue(property);
-    }
-    catch (e) {
-    }
-    if (ret === null) ret = '';
-
-    if (ret === null) ret = '';
-
-    return ret;
 }
 
 /* Helper to change class on checkbox check */
@@ -1601,7 +1618,7 @@ function get_mouse_x(event, win) // Usually use window.mouse_x after calling reg
         if ((typeof event.pageX != 'undefined') && (event.pageX)) {
             return event.pageX;
         } else if ((typeof event.clientX != 'undefined') && (event.clientX)) {
-            return event.clientX + get_window_scroll_x(win)
+            return event.clientX + win.pageXOffset
         }
     }
     catch (err) {
@@ -1615,7 +1632,7 @@ function get_mouse_y(event, win) // Usually use window.mouse_y after calling reg
         if ((typeof event.pageY != 'undefined') && (event.pageY)) {
             return event.pageY;
         } else if ((typeof event.clientY != 'undefined') && (event.clientY)) {
-            return event.clientY + get_window_scroll_y(win)
+            return event.clientY + win.pageYOffset
         }
     }
     catch (err) {
@@ -1652,33 +1669,14 @@ function get_window_scroll_height(win) {
 
     return b;
 }
-function get_window_scroll_x(win) {
-    if (typeof win == 'undefined') win = window;
-    if (typeof win.pageXOffset != 'undefined') return win.pageXOffset;
 
-    // LEGACY: IE8
-    if ((win.document.documentElement) && (win.document.documentElement.scrollLeft)) return win.document.documentElement.scrollLeft;
-    if ((win.document.body) && (win.document.body.scrollLeft)) return win.document.body.scrollLeft;
-    if (typeof win.scrollX != 'undefined') return win.scrollX;
-    return 0;
-}
-function get_window_scroll_y(win) {
-    if (typeof win == 'undefined') win = window;
-    if (typeof win.pageYOffset != 'undefined') return win.pageYOffset;
-
-    // LEGACY: IE8
-    if ((win.document.documentElement) && (win.document.documentElement.scrollTop)) return win.document.documentElement.scrollTop;
-    if ((win.document.body) && (win.document.body.scrollTop)) return win.document.body.scrollTop;
-    if (typeof win.scrollTop != 'undefined') return win.scrollTop;
-    return 0;
-}
-function find_pos_x(obj, not_relative) /* if not_relative is true it gets the position relative to the browser window, else it will be relative to the most recent position:absolute/relative going up the element tree */ {
+function find_pos_x(obj, not_relative) {/* if not_relative is true it gets the position relative to the browser window, else it will be relative to the most recent position:absolute/relative going up the element tree */
     if (typeof not_relative == 'undefined') not_relative = false;
-    var ret = obj.getBoundingClientRect().left + get_window_scroll_x();
+    var ret = obj.getBoundingClientRect().left + window.pageXOffset;
     if (!not_relative) {
         var position;
         while (obj != null) {
-            position = abstract_get_computed_style(obj, 'position');
+            position = window.getComputedStyle(obj).getPropertyValue('position');
             if (position == 'absolute' || position == 'relative') {
                 ret -= find_pos_x(obj, true);
                 break;
@@ -1688,48 +1686,19 @@ function find_pos_x(obj, not_relative) /* if not_relative is true it gets the po
     }
     return ret;
 }
-function find_pos_y(obj, not_relative) /* if not_relative is true it gets the position relative to the browser window, else it will be relative to the most recent position:absolute/relative going up the element tree */ {
+function find_pos_y(obj, not_relative) {/* if not_relative is true it gets the position relative to the browser window, else it will be relative to the most recent position:absolute/relative going up the element tree */
     if (typeof not_relative == 'undefined') not_relative = false;
-    var ret = obj.getBoundingClientRect().top + get_window_scroll_y();
+    var ret = obj.getBoundingClientRect().top + window.pageYOffset;
     if (!not_relative) {
         var position;
         while (obj != null) {
-            position = abstract_get_computed_style(obj, 'position');
+            position = window.getComputedStyle(obj).getPropertyValue('position');
             if (position == 'absolute' || position == 'relative') {
                 ret -= find_pos_y(obj, true);
                 break;
             }
             obj = obj.parentNode;
         }
-    }
-    return ret;
-}
-function find_width(obj, take_padding_and_border) // if take_padding_and_border is not set returns contentWidth+padding+border, else just contentWidth; margin never included
-{
-    if (typeof take_padding_and_border == 'undefined') take_padding_and_border = false;
-
-    if (!obj) return 0;
-
-    var ret = obj.offsetWidth;
-    if (take_padding_and_border) {
-        ret -= sts(abstract_get_computed_style(obj, 'padding-left'));
-        ret -= sts(abstract_get_computed_style(obj, 'padding-right'));
-        ret -= sts(abstract_get_computed_style(obj, 'border-left-width'));
-        ret -= sts(abstract_get_computed_style(obj, 'border-right-width'));
-    }
-    return ret;
-}
-function find_height(obj, take_padding_and_border) {
-    if (typeof take_padding_and_border == 'undefined') take_padding_and_border = false;
-
-    if (!obj) return 0;
-
-    var ret = obj.offsetHeight;
-    if (take_padding_and_border) {
-        ret -= sts(abstract_get_computed_style(obj, 'padding-top'));
-        ret -= sts(abstract_get_computed_style(obj, 'padding-bottom'));
-        ret -= sts(abstract_get_computed_style(obj, 'border-top-width'));
-        ret -= sts(abstract_get_computed_style(obj, 'border-bottom-width'));
     }
     return ret;
 }
@@ -1769,7 +1738,7 @@ function key_pressed(event, key, no_error_if_bad) {
         if (typeof event.target != 'undefined') targ = event.target;
         else targ = event.srcElement;
         if (!no_error_if_bad) {
-            var current_bg = abstract_get_computed_style(targ, 'background');
+            var current_bg = window.getComputedStyle(targ).getPropertyValue('background');
             if ((typeof current_bg == 'undefined') || (current_bg)) current_bg = 'white';
             if (current_bg != '#FF8888')
                 window.setTimeout(function () {
@@ -2178,7 +2147,7 @@ function activate_tooltip(ac, event, tooltip, width, pic, height, bottom, no_del
         ac.tooltip_on = true;
         tooltip_element.style.display = 'block';
         if (tooltip_element.style.width == 'auto')
-            tooltip_element.style.width = (find_width(tooltip_element, true) + 1/*for rounding issues from em*/) + 'px'; // Fix it, to stop the browser retroactively reflowing ambiguous layer widths on mouse movement
+            tooltip_element.style.width = (Composr.dom.contentWidth(tooltip_element) + 1/*for rounding issues from em*/) + 'px'; // Fix it, to stop the browser retroactively reflowing ambiguous layer widths on mouse movement
 
         if (!no_delay) {
             // If delayed we will sub in what the currently known global mouse coordinate is
@@ -2218,8 +2187,8 @@ function reposition_tooltip(ac, event, bottom, starting, tooltip_element, force_
             if (typeof event.type != 'undefined') {
                 if (event.type != 'focus') ac.done_none_focus = true;
                 if ((event.type == 'focus') && (ac.done_none_focus)) return;
-                x = (event.type == 'focus') ? (get_window_scroll_x(win) + get_window_width(win) / 2) : (window.mouse_x + style__offset_x);
-                y = (event.type == 'focus') ? (get_window_scroll_y(win) + get_window_height(win) / 2 - 40) : (window.mouse_y + style__offset_y);
+                x = (event.type == 'focus') ? (win.pageXOffset + get_window_width(win) / 2) : (window.mouse_x + style__offset_x);
+                y = (event.type == 'focus') ? (win.pageYOffset + get_window_height(win) / 2 - 40) : (window.mouse_y + style__offset_y);
             }
         }
         catch (ignore) {
@@ -2237,12 +2206,12 @@ function reposition_tooltip(ac, event, bottom, starting, tooltip_element, force_
         }
 
         // Work out which direction to render in
-        var width = find_width(tooltip_element, true);
+        var width = Composr.dom.contentWidth(tooltip_element);
         if (tooltip_element.style.width == 'auto') {
             if (width < 200) width = 200; // Give some breathing room, as might already have painfully-wrapped when it found there was not much space
         }
-        var height = find_height(tooltip_element);
-        var x_excess = x - get_window_width(win) - get_window_scroll_x(win) + width + 10/*magic tolerance factor*/;
+        var height = tooltip_element.offsetHeight;
+        var x_excess = x - get_window_width(win) - win.pageXOffset + width + 10/*magic tolerance factor*/;
         if (x_excess > 0) // Either we explicitly gave too much width, or the width auto-calculated exceeds what we THINK is the maximum width in which case we have to re-compensate with an extra contingency to stop CSS/JS vicious disagreement cycles
         {
             var x_before = x;
@@ -2253,9 +2222,9 @@ function reposition_tooltip(ac, event, bottom, starting, tooltip_element, force_
         if (bottom) {
             tooltip_element.style.top = (y - height) + 'px';
         } else {
-            var y_excess = y - get_window_height(win) - get_window_scroll_y(win) + height + style__offset_y;
+            var y_excess = y - get_window_height(win) - win.pageYOffset + height + style__offset_y;
             if (y_excess > 0) y -= y_excess;
-            var scroll_y = get_window_scroll_y(win);
+            var scroll_y = win.pageYOffset;
             if (y < scroll_y) y = scroll_y;
             tooltip_element.style.top = y + 'px';
         }
@@ -2398,21 +2367,6 @@ function set_opacity(element, fraction) {
 
 /* Event listeners */
 
-function after_window_load(callback) {
-    if (document.readyState === 'complete') {
-        window.page_fully_loaded = true;
-    }
-
-    if (window.page_fully_loaded) {
-        setTimeout(callback, 0);
-    } else {
-        window.addEventListener('load', function () {
-            window.page_fully_loaded = true;
-            setTimeout(callback, 0);
-        });
-    }
-}
-
 function cancel_bubbling(event, for_element) {
     if ((typeof for_element == 'undefined') || (!for_element)) var for_element = '';
 
@@ -2495,21 +2449,15 @@ function keep_stub(starting_query_string, skip_session, context) // starting_que
 }
 
 function get_csrf_token() {
-    return read_cookie('{$SESSION_COOKIE_NAME;}'); // Session also works as a CSRF-token, as client-side knows it (AJAX)
+    return read_cookie(Composr.$SESSION_COOKIE_NAME); // Session also works as a CSRF-token, as client-side knows it (AJAX)
 }
 
 function get_session_id() {
-    return read_cookie('{$SESSION_COOKIE_NAME;}');
-}
-
-/* Get an element's HTML, including the element itself */
-function get_outer_html(element) {
-    return element.outerHTML;
+    return read_cookie(Composr.$SESSION_COOKIE_NAME);
 }
 
 /* Get an element's HTML */
 function get_inner_html(element, outer_too) {
-    if (typeof outer_too == 'undefined') outer_too = false;
     return outer_too ? element.outerHTML : element.innerHTML;
 }
 
@@ -2795,31 +2743,19 @@ function entities_to_unicode(din) {
 /* load the HTML as XHTML */
 function inner_html_load(xml_string) {
     var xml;
-    if (typeof DOMParser != 'undefined') {
-        try {
-            xml = (new DOMParser()).parseFromString(xml_string, "application/xml");
-        }
-        catch (e) {
-            xml = null;
-        }
 
-        if ((xml === null) || ((typeof xml.documentElement != 'undefined') && (typeof xml.documentElement.childNodes[0] != 'undefined') && (xml.documentElement.childNodes[0].nodeName == 'parsererror'))) // HTML method then
-        {
-            xml = document.implementation.createHTMLDocument('');
-            var doc_elt = xml.documentElement;
-            doc_elt.innerHTML = xml_string;
-            xml = xml.getElementsByTagName('root')[0];
-        }
-    } else {
-        var ieDOM = ["MSXML2.DOMDocument", "MSXML.DOMDocument", "Microsoft.XMLDOM"];
-        for (var i = 0; i < ieDOM.length && !xml; i++) {
-            try {
-                xml = new ActiveXObject(ieDOM[i]);
-                xml.loadXML(xml_string);
-            }
-            catch (e) {
-            }
-        }
+    try {
+        xml = (new DOMParser()).parseFromString(xml_string, "application/xml");
+    } catch (e) {
+        xml = null;
+    }
+
+    if ((xml === null) || ((typeof xml.documentElement != 'undefined') && (typeof xml.documentElement.childNodes[0] != 'undefined') && (xml.documentElement.childNodes[0].nodeName == 'parsererror'))) // HTML method then
+    {
+        xml = document.implementation.createHTMLDocument('');
+        var doc_elt = xml.documentElement;
+        doc_elt.innerHTML = xml_string;
+        xml = xml.getElementsByTagName('root')[0];
     }
 
     return xml;
@@ -2835,11 +2771,7 @@ function inner_html_copy(dom_node, xml_doc, level, script_tag_dependencies) {
             var text = (xml_doc.nodeValue ? xml_doc.nodeValue : (xml_doc.textContent ? xml_doc.textContent : (xml_doc.text ? xml_doc.text : '')));
             if (script_tag_dependencies['to_load'].length == 0) {
                 window.setTimeout(function () {
-                    if (typeof window.execScript != 'undefined') {
-                        window.execScript(text);
-                    } else {
-                        eval.call(window, text);
-                    }
+                    eval.call(window, text);
                 }, 0);
             } else {
                 script_tag_dependencies['to_run'].push(text); // Has to wait until all scripts are loaded
@@ -2889,18 +2821,14 @@ function inner_html_copy(dom_node, xml_doc, level, script_tag_dependencies) {
                             if (found == 0) // Now we know all to_loads are loaded, we do the to_runs
                             {
                                 for (i = 0; i < script_tag_dependencies['to_run'].length; i++) {
-                                    if (typeof window.execScript != 'undefined') {
-                                        window.execScript(script_tag_dependencies['to_run'][i]);
-                                    } else {
-                                        eval.call(window, script_tag_dependencies['to_run'][i]);
-                                    }
+                                    eval.call(window, script_tag_dependencies['to_run'][i]);
                                 }
                                 script_tag_dependencies['to_run'] = []; // So won't run again, if both onreadystatechange and onload implemented in browser
                             }
                         }
                     };
                 }
-                dom_node = document.getElementsByTagName('head')[0].appendChild(this_node);
+                dom_node = document.head.appendChild(this_node);
             } else {
                 dom_node = dom_node.appendChild(this_node);
                 var _new_html__initialise = function () {
@@ -2924,8 +2852,7 @@ function inner_html_copy(dom_node, xml_doc, level, script_tag_dependencies) {
                 };
                 window.setTimeout(_new_html__initialise, 0);
             }
-        }
-        else if (xml_doc.nodeType == 3) {
+        }  else if (xml_doc.nodeType == 3) {
             // text node
             var text = (xml_doc.nodeValue ? xml_doc.nodeValue : (xml_doc.textContent ? xml_doc.textContent : (xml_doc.text ? xml_doc.text : '')));
             var test = text.replace(/^\s*|\s*$/g, '');
@@ -2938,8 +2865,7 @@ function inner_html_copy(dom_node, xml_doc, level, script_tag_dependencies) {
                 }
                 dom_node = null;
             }
-        }
-        else if (xml_doc.nodeType == 4) {
+        } else if (xml_doc.nodeType == 4) {
             // CDATA node
             var text = (xml_doc.nodeValue ? xml_doc.nodeValue : (xml_doc.textContent ? xml_doc.textContent : (xml_doc.text ? xml_doc.text : '')));
             if ((dom_node.nodeName == 'STYLE') && (!dom_node.ownerDocument.createCDATASection)) {
@@ -2980,15 +2906,15 @@ function set_outer_html(element, target_html) {
 // Note that embedded JavaScript IS run unlike the normal .innerHTML - in fact we go to effort to guarantee it - even onload attached JavaScript
 function set_inner_html(element, target_html, append, force_dom) {
     // Parser hint: .innerHTML okay
-    if (typeof target_html == 'number') target_html = target_html + '';
+    target_html = target_html.toString();
 
-    if (((typeof force_dom == 'undefined') || (!force_dom)) && (document.write) && (typeof element.innerHTML != 'undefined') && (!document.xmlVersion) && (target_html.toLowerCase().indexOf('<script src="') == -1) && (target_html.toLowerCase().indexOf('<link') == -1)) {
+    if ((!force_dom) && (document.write) && (typeof element.innerHTML != 'undefined') && (!document.xmlVersion) && (target_html.toLowerCase().indexOf('<script src="') == -1) && (target_html.toLowerCase().indexOf('<link') == -1)) {
         try {
             var scripts_jump = 0, already_offset = 0;
             if (append) {
                 scripts_jump = element.getElementsByTagName('script').length;
                 element.innerHTML += target_html;
-                already_offset = element.getElementsByTagName('*').length
+                already_offset = element.getElementsByTagName('*').length;
             } else {
                 element.innerHTML = target_html;
             }
@@ -2997,45 +2923,24 @@ function set_inner_html(element, target_html, append, force_dom) {
                 try {
                     var elements = element.getElementsByTagName('*');
                     var length = elements.length;
-                    for (var i = already_offset; i < length; i++) {
+                    for (let i = already_offset; i < length; i++) {
                         new_html__initialise(elements[i]);
                     }
                 }
                 catch (e) {
                 } // In case its an iframe with changed access in the interim
+
+                // Execute any newly inserted inline script tags
+                var scripts = element.getElementsByTagName('script');
+                for (let i = scripts_jump; i < scripts.length; i++) {
+                    if (!scripts[i].src) {// i.e. if it is inline JS
+                        eval.call(window, scripts[i].textContent);
+                    }
+                }
             }, 0); // Delayed so we know DOM has loaded
 
-            if (target_html.toLowerCase().indexOf('<script') != -1) {
-                var r_id = 'js_' + Math.random();
-                window['js_runs_test_' + r_id] = false;
-                element.innerHTML += '<script id="' + r_id + '">window[\'js_runs_test_' + r_id + '\']=true; var t=document.getElementById(\'' + r_id + '\'); if (t) t.parentNode.removeChild(t);</script>';
-
-                window.setTimeout(function () {
-                    if (!window['js_runs_test_' + r_id]) // If JS was not run by the above op
-                    {
-                        var scripts = element.getElementsByTagName('script');
-                        for (var i = scripts_jump; i < scripts.length; i++) {
-                            if (!scripts[i].src) // i.e. if it is inline JS
-                            {
-                                var text = (scripts[i].nodeValue ? scripts[i].nodeValue : (scripts[i].textContent ? scripts[i].textContent : (scripts[i].text ? scripts[i].text.replace(/^<script[^>]*>/, '') : '')));
-                                if (typeof window.execScript != 'undefined') {
-                                    window.execScript(text);
-                                } else {
-                                    eval.call(window, text);
-                                }
-                            }
-                        }
-                        window['js_runs_test_' + r_id] = true;
-                    } else {
-                        var r = document.getElementById(r_id);
-                        if (r && r.parentNode) r.parentNode.removeChild(r);
-                    }
-                }, 0); // Delayed so we know DOM has loaded
-            }
-
             return;
-        }
-        catch (ignore) {
+        } catch (ignore) {
         }
     }
 
@@ -3189,19 +3094,14 @@ function click_link(link) {
         cancel_bubbling(e);
     };
 
-    if ((typeof document.createEvent != 'undefined') && (document.createEvent)) {
-        var event = document.createEvent('MouseEvents');
-        event.initMouseEvent('click', true, true, window,
-            0, 0, 0, 0, 0,
-            false, false, false, false,
-            0, null
-        );
-        cancelled = !link.dispatchEvent(event);
-    }
-    else if (typeof link.fireEvent != 'undefined') {
-        // IE8
-        cancelled = !link.fireEvent('onclick');
-    }
+    var event = document.createEvent('MouseEvents');
+    event.initMouseEvent('click', true, true, window,
+        0, 0, 0, 0, 0,
+        false, false, false, false,
+        0, null
+    );
+    cancelled = !link.dispatchEvent(event);
+
     link.onclick = backup;
 
     if ((!cancelled) && (link.href)) {
@@ -3499,29 +3399,26 @@ function set_up_change_monitor(id) {
     });
 }
 
-/* Used by audio CAPTCHA. Wave files won't play inline anymore on Firefox (https://bugzilla.mozilla.org/show_bug.cgi?id=890516) */
+/* Used by audio CAPTCHA. */
 function play_self_audio_link(ob) {
-    if (browser_matches('gecko') || true/*actually it works well generally*/) {
-        require_javascript('sound', window.SoundManager);
+    require_javascript('sound', window.SoundManager);
 
-        var timer = window.setInterval(function () {
-            if (typeof window.soundManager == 'undefined') return;
+    var timer = window.setInterval(function () {
+        if (typeof window.soundManager == 'undefined') return;
 
-            window.clearInterval(timer);
+        window.clearInterval(timer);
 
-            window.soundManager.setup({
-                url: get_base_url() + '/data',
-                debugMode: false,
-                onready: function () {
-                    var sound_object = window.soundManager.createSound({url: ob.href});
-                    if (sound_object) sound_object.play();
-                }
-            });
-        }, 50);
+        window.soundManager.setup({
+            url: get_base_url() + '/data',
+            debugMode: false,
+            onready: function () {
+                var sound_object = window.soundManager.createSound({url: ob.href});
+                if (sound_object) sound_object.play();
+            }
+        });
+    }, 50);
 
-        return false;
-    }
-    return null;
+    return false;
 }
 
 /* Used by MASS_SELECT_MARKER.tpl */

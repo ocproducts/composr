@@ -10,15 +10,8 @@
 
 			<div id="command_prompt">
 				<label for="commandr_command">{PROMPT*}</label>
-				<input type="text" id="commandr_command" name="command" onkeyup="return commandr_handle_history(this,event.keyCode?event.keyCode:event.charCode,event);" value="" /><input class="button_micro buttons__proceed" type="submit" value="{$STRIP_TAGS,{!PROCEED_SHORT}}" role="textbox" />
+				<input type="text" id="commandr_command" name="command" autofocus onkeyup="return commandr_handle_history(this,event.keyCode?event.keyCode:event.charCode,event);" value="" /><input class="button_micro buttons__proceed" type="submit" value="{$STRIP_TAGS,{!PROCEED_SHORT}}" role="textbox" />
 			</div>
 		</form>
 	</div>
-	<script>
-	// <![CDATA[
-		$(function() {
-			try { document.getElementById("commandr_command").focus(); } catch (e) { }
-		});
-	// ]]>
-	</script>
 </div>

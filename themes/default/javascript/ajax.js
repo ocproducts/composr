@@ -126,11 +126,11 @@ function internalise_infinite_scrolling(url_stem, wrapper) {
 
     // Used for calculating if we need to scroll down
     var wrapper_pos_y = find_pos_y(wrapper);
-    var wrapper_height = find_height(wrapper);
+    var wrapper_height = wrapper.offsetHeight;
     var wrapper_bottom = wrapper_pos_y + wrapper_height;
     var window_height = get_window_height();
     var page_height = get_window_scroll_height();
-    var scroll_y = get_window_scroll_y();
+    var scroll_y = window.pageYOffset;
 
     // Scroll down -- load
     if ((scroll_y + window_height > wrapper_bottom - window_height * 2) && (scroll_y + window_height < page_height - 30)) // If within window_height*2 pixels of load area and not within 30 pixels of window bottom (so you can press End key)
@@ -179,7 +179,7 @@ function internalise_ajax_block_wrapper_links(url_stem, block_element, look_for,
     if (typeof scroll_to_top == 'undefined') scroll_to_top = true;
 
     var block_pos_y = find_pos_y(block_element, true);
-    if (block_pos_y > get_window_scroll_y()) {
+    if (block_pos_y > window.pageYOffset) {
         scroll_to_top = false;
     }
 
@@ -308,7 +308,7 @@ function call_block(url, new_block_params, target_div, append, callback, scroll_
         var raw_ajax_grow_spot = target_div.querySelectorAll('.raw_ajax_grow_spot');
         if (typeof raw_ajax_grow_spot[0] != 'undefined' && append) loading_wrapper = raw_ajax_grow_spot[0]; // If we actually are embedding new results a bit deeper
         var loading_wrapper_inner = document.createElement('div');
-        var position_type = abstract_get_computed_style(loading_wrapper, 'position');
+        var position_type = window.getComputedStyle(loading_wrapper).getPropertyValue('position');
         if ((position_type != 'relative') && (position_type != 'absolute')) {
             if (append) {
                 loading_wrapper_inner.style.position = 'relative';
@@ -322,9 +322,9 @@ function call_block(url, new_block_params, target_div, append, callback, scroll_
         loading_image.src = '{$IMG;,loading}'.replace(/^https?:/, window.location.protocol);
         loading_image.style.position = 'absolute';
         loading_image.style.zIndex = '1000';
-        loading_image.style.left = (find_width(target_div) / 2 - 10) + 'px';
+        loading_image.style.left = (target_div.offsetWidth / 2 - 10) + 'px';
         if (!append) {
-            loading_image.style.top = (find_height(target_div) / 2 - 20) + 'px';
+            loading_image.style.top = (target_div.offsetHeight / 2 - 20) + 'px';
         } else {
             loading_image.style.top = 0;
             loading_wrapper_inner.style.height = '30px';

@@ -53,7 +53,7 @@ function start_realtime_rain() {
 
     var news_ticker = document.getElementById('news_ticker');
     news_ticker.style.top = '20px';
-    news_ticker.style.left = (get_window_width() / 2 - find_width(news_ticker) / 2) + 'px';
+    news_ticker.style.left = (get_window_width() / 2 - news_ticker.offsetWidth / 2) + 'px';
 
     document.getElementById('loading_icon').style.display = 'block';
 
@@ -88,7 +88,7 @@ function received_events(ajax_result_frame, ajax_result) {
 
     var bubbles = document.getElementById('bubbles_go_here');
 
-    var max_height = find_height(bubbles.parentNode);
+    var max_height = bubbles.parentNode.offsetHeight;
     var total_vertical_slots = max_height / 183;
     var height_per_second = max_height / 10;
     var frame_delay = (1000 / height_per_second) / 1.1; // 1.1 is a fudge factor to reduce chance of overlap (creates slight inaccuracy in spacing though)
@@ -116,7 +116,7 @@ function received_events(ajax_result_frame, ajax_result) {
                 cloned_message.style.left = left_pos + 'px';
                 bubbles.appendChild(cloned_message);
                 vertical_slot = Math.round(total_vertical_slots * cloned_message.time_offset / window.time_window);
-                cloned_message.style.top = (-(vertical_slot + 1) * find_height(cloned_message)) + 'px';
+                cloned_message.style.top = (-(vertical_slot + 1) * cloned_message.offsetHeight) + 'px';
 
                 // JS events, for pausing and changing z-index
                 cloned_message.onmouseover = function () {
@@ -206,7 +206,7 @@ function animate_down(e, avoid_remove) {
     if (window.paused) return;
 
     var bubbles = document.getElementById('bubbles_go_here');
-    var max_height = find_height(bubbles.parentNode);
+    var max_height = bubbles.parentNode.offsetHeight;
     var jump_speed = 1;
     var new_pos = sts(e.style.top) + jump_speed;
     e.style.top = new_pos + 'px';
@@ -318,8 +318,8 @@ function draw_line(group_id, bubble_id) {
         var ob = document.getElementById(bubble_id + '_main'), ob2;
         if (!ob) return;
         if (!ob.parentNode) return;
-        var width = find_width(ob);
-        var height = find_height(ob);
+        var width = ob.offsetWidth;
+        var height = ob.offsetHeight;
         var line;
         var x = find_pos_x(ob, true);
         var y = find_pos_y(ob, true);
@@ -357,19 +357,11 @@ function create_line(x1, y1, x2, y2, margin) {
     line.style.marginRight = margin + 'px';
     line.style.height = '1px';
 
-    if (browser_matches('ie')) {
-        line.style.top = (y2 > y1) ? y1 + 'px' : y2 + 'px';
-        line.style.left = x1 + 'px';
-        var nCos = (x2 - x1) / length;
-        var nSin = (y2 - y1) / length;
-        line.style.filter = 'progid:DXImageTransform.Microsoft.Matrix(sizingMethod=\'auto expand\', M11=' + nCos + ', M12=' + -1 * nSin + ', M21=' + nSin + ', M22=' + nCos + ')';
-    }
-    else {
-        var angle = ((x2 - x1) == 0) ? 1.57 : Math.atan((y2 - y1) / (x2 - x1));
-        line.style.top = Math.round(y1 + 0.5 * length * Math.sin(angle)) + 'px';
-        line.style.left = Math.round(x1 - 0.5 * length * (1 - Math.cos(angle))) + 'px';
-        if (!line.style.left) line.style.left = 0;
-        line.style.MozTransform = line.style.WebkitTransform = line.style.OTransform = line.style.transform = 'rotate(' + angle + 'rad)';
-    }
+    var angle = ((x2 - x1) == 0) ? 1.57 : Math.atan((y2 - y1) / (x2 - x1));
+    line.style.top = Math.round(y1 + 0.5 * length * Math.sin(angle)) + 'px';
+    line.style.left = Math.round(x1 - 0.5 * length * (1 - Math.cos(angle))) + 'px';
+    if (!line.style.left) line.style.left = 0;
+    line.style.transform = line.style.WebkitTransform = 'rotate(' + angle + 'rad)';
+
     return line;
 }

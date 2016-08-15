@@ -46,7 +46,7 @@ function script_load_stuff_staff()
 	var bg;
 	for (i=0;i<all_e.length;i++)
 	{
-		bg=abstract_get_computed_style(all_e[i],'background-image');
+		bg=window.getComputedStyle(all_e[i]).getPropertyValue('background-image');
 		if ((all_e[i].className.indexOf('no_theme_img_click')==-1) && (bg!='none') && (bg.indexOf('url')!=-1))
 		{
 			all_e[i].addEventListener('mouseover',handle_image_mouse_over,false);
@@ -216,9 +216,9 @@ function handle_image_mouse_over(event)
 
 	var target=event.target || event.srcElement;
 	if (target.previousSibling && (typeof target.previousSibling.className!='undefined') && (typeof target.previousSibling.className.indexOf!='undefined') && (target.previousSibling.className.indexOf('magic_image_edit_link')!=-1)) return;
-	if (find_width(target)<130) return;
+	if (target.offsetWidth<130) return;
 
-	var src=(typeof target.src=='undefined')?abstract_get_computed_style(target,'background-image'):target.src;
+	var src=(typeof target.src=='undefined')?window.getComputedStyle(target).getPropertyValue('background-image'):target.src;
 	if ((typeof target.src=='undefined') && (!event.ctrlKey) && (!event.metaKey) && (!event.altKey)) return; // Needs ctrl key for background images
 	if (src.indexOf('/themes/')==-1) return;
 	if (window.location.href.indexOf('admin_themes')!=-1) return;
@@ -293,7 +293,7 @@ function handle_image_click(event,ob,force)
 	if (typeof event=='undefined') event=window.event;
 	if ((typeof ob=='undefined') || (!ob)) var ob=this;
 
-	var src=ob.origsrc?ob.origsrc:((typeof ob.src=='undefined')?abstract_get_computed_style(ob,'background-image').replace(/.*url\(['"]?(.*)['"]?\).*/,'$1'):ob.src);
+	var src=ob.origsrc?ob.origsrc:((typeof ob.src=='undefined')?window.getComputedStyle(ob).getPropertyValue('background-image').replace(/.*url\(['"]?(.*)['"]?\).*/,'$1'):ob.src);
 	if ((src) && ((force) || (magic_keypress(event))))
 	{
 		// Bubbling needs to be stopped because shift+click will open a new window on some lower event handler (in firefox anyway)

@@ -13131,7 +13131,7 @@ function begin_form_uploading(e,ob,recurse)
 		ob.start();
 		smooth_scroll(find_pos_y(filename_field,true));
 
-		if (find_height(btn_submit.form)>get_window_height()) // If possibly cannot see upload progress bars
+		if (btn_submit.form.offsetHeight > get_window_height()) // If possibly cannot see upload progress bars
 			window.fauxmodal_alert('{!javascript:PLEASE_WAIT_WHILE_UPLOADING;}');
 	} else
 	{

@@ -42,7 +42,7 @@
 
 		<div class="trinav_mid text"><span>
 			<script>// <![CDATA[
-				after_window_load(function() {
+				Composr.onWindowLoad(function() {
 					window.slideshow_current_position={_X%}-1;
 					window.slideshow_total_slides={_N%};
 
