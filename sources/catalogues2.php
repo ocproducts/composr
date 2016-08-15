@@ -1309,7 +1309,7 @@ function actual_delete_catalogue_entry($id)
     require_code('notifications');
     delete_all_notifications_on('comment_posted', 'catalogues_' . strval($id));
 
-    $GLOBALS['SITE_DB']->query_update('catalogue_fields f JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'catalogue_efv_short v ON v.cf_id=f.id', array('cv_value' => ''), array('cv_value' => strval($id), 'cf_type' => 'ck_' . $catalogue_name));
+    update_catalogue_content_ref('ck_' . $catalogue_name, strval($id), '');
     update_catalogue_content_ref('catalogue_entry', strval($id), '');
 
     require_code('seo2');

@@ -141,13 +141,13 @@ class Block_main_gallery_embed
             $map['video_filter'] = '';
         }
         if ($map['filter'] != '') {
-            list($extra_filter, $extra_join, $extra_where) = filtercode_to_sql($GLOBALS['SITE_DB'], parse_filtercode($map['filter']), 'image', '');
+            list($extra_filter, $extra_join, $extra_where) = filtercode_to_sql($GLOBALS['SITE_DB'], parse_filtercode($map['filter']), 'image');
             $extra_filter_sql .= implode('', $extra_filter);
             $extra_join_sql .= implode('', $extra_join);
             $where_sup .= $extra_where;
         }
         if ($map['video_filter'] != '') {
-            list($extra_filter, $extra_join, $extra_where) = filtercode_to_sql($GLOBALS['SITE_DB'], parse_filtercode($map['video_filter']), 'video', '');
+            list($extra_filter, $extra_join, $extra_where) = filtercode_to_sql($GLOBALS['SITE_DB'], parse_filtercode($map['video_filter']), 'video');
             $extra_filter_sql .= implode('', $extra_filter);
             $extra_join_sql .= implode('', $extra_join);
             $where_sup .= $extra_where;

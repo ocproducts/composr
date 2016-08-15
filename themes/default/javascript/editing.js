@@ -702,6 +702,8 @@ function set_textbox(element,text,html)
 
 		window.wysiwyg_editors[element.id].setData(html);
 
+		window.wysiwyg_editors[element.id].updateElement();
+
 		window.setTimeout(function() {
 			find_tags_in_editor(window.wysiwyg_editors[element.id],element);
 		}, 100);
@@ -776,6 +778,8 @@ function insert_textbox(element,text,sel,plain_insert,html)
 			if (after==before) // Could have just been a window.scrollBy popup-blocker exception, so only do this if the op definitely failed
 				editor.document.getBody().appendHtml(insert);
 		}
+
+		editor.updateElement();
 
 		return;
 	}
@@ -894,6 +898,8 @@ function insert_textbox_wrapping(element,before_wrap_tag,after_wrap_tag)
 		{
 			editor.insertHtml(new_html);
 		}
+
+		editor.updateElement();
 
 		find_tags_in_editor(editor,element);
 

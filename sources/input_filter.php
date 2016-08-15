@@ -137,7 +137,7 @@ function check_posted_field($name, $val)
             $canonical_referer_domain = strip_url_to_representative_domain($referer);
             $canonical_baseurl_domain = strip_url_to_representative_domain(get_base_url());
             if ($canonical_referer_domain != $canonical_baseurl_domain) {
-                if (!in_array($name, array('login_username', 'password', 'remember', 'login_invisible'))) {
+                if ((has_interesting_post_fields()) && (!in_array($name, array('login_username', 'password', 'remember', 'login_invisible')))) {
                     $allowed_partners = get_allowed_partner_sites();
                     $found = false;
                     foreach ($allowed_partners as $partner) {

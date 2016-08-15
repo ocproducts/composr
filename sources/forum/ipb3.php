@@ -241,7 +241,7 @@ class Forum_driver_ipb3 extends forum_driver_ipb_shared
      */
     public function get_custom_fields($member)
     {
-        $rows = $this->connection->query('SELECT pf_id,pf_title FROM ' . $this->connection->get_table_prefix() . 'pfields_data WHERE pf_title LIKE \'' . db_encode_like('cms_%') . '\'');
+        $rows = $this->connection->query('SELECT pf_id,pf_title FROM ' . $this->connection->get_table_prefix() . 'pfields_data WHERE pf_title LIKE \'' . db_encode_like('cms\_%') . '\'');
         $values = $this->connection->query_select('pfields_content', array('*'), array('member_id' => $member), '', 1);
         if (!array_key_exists(0, $values)) {
             return null;

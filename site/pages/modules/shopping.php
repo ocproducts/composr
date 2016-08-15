@@ -394,7 +394,7 @@ class Module_shopping
             $update_cart_url = build_url(array('page' => '_SELF', 'type' => 'update_cart'), '_SELF');
             $empty_cart_url = build_url(array('page' => '_SELF', 'type' => 'empty_cart'), '_SELF');
 
-            $payment_form = payment_form();
+            $payment_form = render_cart_payment_form();
 
             $proceed_box = do_template('ECOM_SHOPPING_CART_PROCEED', array(
                 '_GUID' => '02c90b68ca06620d39a42727766ce8b0',
@@ -448,7 +448,7 @@ class Module_shopping
     }
 
     /**
-     * Function to add item to cart.
+     * Add an item to the cart.
      *
      * @return Tempcode The UI
      */
@@ -471,7 +471,7 @@ class Module_shopping
     }
 
     /**
-     * Function to Update cart
+     * Update the cart.
      *
      * @return Tempcode The UI
      */
@@ -525,7 +525,7 @@ class Module_shopping
     }
 
     /**
-     * Function to empty shopping cart
+     * Empty the shopping cart.
      *
      * @return Tempcode The UI
      */

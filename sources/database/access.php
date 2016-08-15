@@ -449,12 +449,12 @@ class Database_Static_access
     /**
      * Create an SQL cast.
      *
-     * @param $field string The field identifier
-     * @param $type string The type wanted
+     * @param string $field The field identifier
+     * @param string $type The type wanted
      * @set CHAR INT
      * @return string The database type
      */
-    function db_cast($field, $type)
+    public function db_cast($field, $type)
     {
         switch ($type) {
             case 'CHAR':

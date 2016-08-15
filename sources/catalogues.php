@@ -1068,7 +1068,7 @@ function get_catalogue_entry_map($entry, $catalogue, $view_type, $tpl_set, $root
  * @param  mixed $entry_id The ID of the entry we are getting OR the row
  * @param  ?array $only_fields A list of fields that we are limiting ourselves to (null: get ALL fields)
  * @param  ?array $fields The database rows for the fields for this catalogue (null: find them)
- * @param  boolean $natural_order Whether to order the fields in their natural database order
+ * @param  boolean $natural_order Whether to order the fields in their natural database order. This is only used for shopping catalogues as a defence against webmaster field reordering and not a strong guarantee
  * @param  ID_TEXT $view_type The view type we're doing
  * @set    PAGE SEARCH CATEGORY
  * @return array A list of maps (each field for the entry gets a map), where each map contains 'effective_value' (the value for the field). Some maps get additional fields (effective_value_pure), depending on the field type
@@ -1084,7 +1084,8 @@ function get_catalogue_entry_field_values($catalogue_name, $entry_id, $only_fiel
         if ((isset($CAT_FIELDS_CACHE[$catalogue_name])) && (!$natural_order)) {
             $fields = $CAT_FIELDS_CACHE[$catalogue_name];
         } else {
-            $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name), 'ORDER BY ' . ($natural_order ? 'id' : 'cf_order'));
+            $order_by = (($natural_order && (strpos(get_db_type(), 'mysql')/*assumption about sequential order*/ !== false)) ? 'id' : 'cf_order');
+            $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name), 'ORDER BY ' . $order_by);
         }
     }
     if (!$natural_order) {

@@ -857,7 +857,7 @@ class Forum_driver_wbb_shared extends Forum_driver_base
      */
     public function get_custom_fields($member)
     {
-        $rows = $this->connection->query('SELECT profilefieldid,title FROM ' . $this->connection->get_table_prefix() . 'profilefields WHERE title LIKE \'' . db_encode_like('cms_%') . '\'');
+        $rows = $this->connection->query('SELECT profilefieldid,title FROM ' . $this->connection->get_table_prefix() . 'profilefields WHERE title LIKE \'' . db_encode_like('cms\_%') . '\'');
         $values = $this->connection->query_select('userfields', array('*'), array('userid' => $member), '', 1);
         if (!array_key_exists(0, $values)) {
             return null;

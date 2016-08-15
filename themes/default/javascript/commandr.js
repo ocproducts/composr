@@ -65,7 +65,7 @@ function commandr_form_submission(command,form)
 		document.getElementById('commandr_command').focus();
 		document.getElementById('commandr_command').disabled=true;
 
-		var post='command='+window.encodeURIComponent(command.value);
+		var post='command='+window.encodeURIComponent(command);
 		post=modsecurity_workaround_ajax(post);
 		do_ajax_request('{$FIND_SCRIPT;,commandr}'+keep_stub(true),commandr_command_response,post);
 

@@ -483,13 +483,13 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
     // Check price, if one defined
     if (($mc_gross != $found[1]) && ($found[1] != '?')) {
         if (($payment_status == 'Completed') && ($via != 'manual')) {
-            fatal_ipn_exit(do_lang('PURCHASE_WRONG_PRICE', $item_name), $is_subscription);
+            fatal_ipn_exit(do_lang('PURCHASE_WRONG_PRICE', $item_name, $mc_gross, $found[1]), $is_subscription);
         }
     }
     $expected_currency = isset($found[5]) ? $found[5] : get_option('currency');
     if ($mc_currency != $expected_currency) {
         if (($payment_status != 'SCancelled') && ($via != 'manual')) {
-            fatal_ipn_exit(do_lang('PURCHASE_WRONG_CURRENCY'));
+            fatal_ipn_exit(do_lang('PURCHASE_WRONG_CURRENCY', $item_name, $mc_currency, $expected_currency));
         }
     }
 
@@ -537,7 +537,7 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
         $price = $GLOBALS['SITE_DB']->query_select_value('invoices', 'i_amount', array('id' => intval($purchase_id)));
         if ($price != $mc_gross) {
             if ($via != 'manual') {
-                fatal_ipn_exit(do_lang('PURCHASE_WRONG_PRICE', $item_name));
+                fatal_ipn_exit(do_lang('PURCHASE_WRONG_PRICE', $item_name, $mc_gross, $price));
             }
         }
     }
