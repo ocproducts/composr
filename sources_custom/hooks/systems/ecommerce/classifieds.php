@@ -51,6 +51,10 @@ class Hook_ecommerce_classifieds
      */
     public function get_products()
     {
+        if (!$GLOBALS['SITE_DB']->table_exists('classifieds_prices')) {
+            return array();
+        }
+
         require_lang('classifieds');
 
         $num_products_for_sale = $GLOBALS['SITE_DB']->query_select_value('catalogue_entries e JOIN ' . get_table_prefix() . 'classifieds_prices c ON c.c_catalogue_name=e.c_name', 'COUNT(*)');

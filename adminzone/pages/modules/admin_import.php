@@ -313,8 +313,8 @@ class Module_admin_import
                 $GLOBALS['SITE_DB']->query_delete('import_parts_done');
                 $GLOBALS['SITE_DB']->query_delete('import_id_remap');
             } else {
-                $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'import_parts_done WHERE imp_id NOT LIKE \'' . db_encode_like('cns_%') . '\'');
-                $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'import_id_remap WHERE (id_type NOT LIKE \'' . db_encode_like('cns_%') . '\'' . ') AND ' . db_string_not_equal_to('id_type', 'category') . ' AND ' . db_string_not_equal_to('id_type', 'forum') . ' AND ' . db_string_not_equal_to('id_type', 'topic') . ' AND ' . db_string_not_equal_to('id_type', 'post') . ' AND ' . db_string_not_equal_to('id_type', 'f_poll') . ' AND ' . db_string_not_equal_to('id_type', 'group') . ' AND ' . db_string_not_equal_to('id_type', 'member'));
+                $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'import_parts_done WHERE imp_id NOT LIKE \'' . db_encode_like('cns\_%') . '\'');
+                $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'import_id_remap WHERE (id_type NOT LIKE \'' . db_encode_like('cns\_%') . '\'' . ') AND ' . db_string_not_equal_to('id_type', 'category') . ' AND ' . db_string_not_equal_to('id_type', 'forum') . ' AND ' . db_string_not_equal_to('id_type', 'topic') . ' AND ' . db_string_not_equal_to('id_type', 'post') . ' AND ' . db_string_not_equal_to('id_type', 'f_poll') . ' AND ' . db_string_not_equal_to('id_type', 'group') . ' AND ' . db_string_not_equal_to('id_type', 'member'));
             }
 
             $session = get_session_id();
@@ -672,7 +672,7 @@ class Module_admin_import
             $count = 0;
 
             $extra = ($field_name_also === null) ? '' : (' OR ' . db_string_equal_to('m_name', $field_name_also));
-            $fields = $GLOBALS['SITE_DB']->query('SELECT m_table,m_name FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'db_meta WHERE (NOT (m_table LIKE \'' . db_encode_like('f_%') . '\')) AND (' . db_string_equal_to('m_type', $db_abstraction) . ' OR ' . db_string_equal_to('m_type', '*' . $db_abstraction) . ' OR ' . db_string_equal_to('m_type', '?' . $db_abstraction) . $extra . ')');
+            $fields = $GLOBALS['SITE_DB']->query('SELECT m_table,m_name FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'db_meta WHERE (NOT (m_table LIKE \'' . db_encode_like('f\_%') . '\')) AND (' . db_string_equal_to('m_type', $db_abstraction) . ' OR ' . db_string_equal_to('m_type', '*' . $db_abstraction) . ' OR ' . db_string_equal_to('m_type', '?' . $db_abstraction) . $extra . ')');
             foreach ($fields as $field) {
                 if ($field['m_table'] == 'stats') {
                     continue; // Lots of data and it's not important

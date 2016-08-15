@@ -1058,6 +1058,7 @@ function inform_about_addon_install($file, $also_uninstalling = array(), $also_i
  */
 function has_feature($dependency)
 {
+    // Normalise
     $dependency = str_replace(' ', '', strtolower(preg_replace('# (enabled|needed|required)$#', '', $dependency)));
 
     $remapping = array(// Useful for carrying legacy remappings, currently there are none
@@ -1084,7 +1085,7 @@ function has_feature($dependency)
     if (($dependency == 'cron') && (cron_installed())) {
         return true;
     }
-    if ((($dependency == 'cns') || ($dependency == 'Conversr')) && (get_forum_type() == 'cns')) {
+    if ((($dependency == 'cns') || ($dependency == 'conversr')) && (get_forum_type() == 'cns')) {
         return true;
     }
     if ((strtolower($dependency) == 'gd') && (function_exists('imagetypes'))) {

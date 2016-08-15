@@ -235,7 +235,7 @@ class Module_pointstore
         if (get_option('is_on_forw_buy') == '1') {
             $forwarding_url = build_url(array('page' => '_SELF', 'type' => 'newforwarding', 'id' => 'forwarding'), '_SELF');
 
-            if ($GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'prices WHERE name LIKE \'' . db_encode_like('forw_%') . '\'') > 0) {
+            if ($GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'prices WHERE name LIKE \'' . db_encode_like('forw\_%') . '\'') > 0) {
                 $_pointstore_mail_forwarding_url = $forwarding_url;
             } else {
                 $_pointstore_mail_forwarding_url = null;
@@ -247,7 +247,7 @@ class Module_pointstore
         if (get_option('is_on_pop3_buy') == '1') {
             $pop3_url = build_url(array('page' => '_SELF', 'type' => 'pop3info', 'id' => 'pop3'), '_SELF');
 
-            if ($GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'prices WHERE name LIKE \'' . db_encode_like('pop3_%') . '\'') > 0) {
+            if ($GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'prices WHERE name LIKE \'' . db_encode_like('pop3\_%') . '\'') > 0) {
                 $_pointstore_mail_pop3_url = $pop3_url;
             } else {
                 $_pointstore_mail_pop3_url = null;

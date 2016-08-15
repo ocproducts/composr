@@ -89,6 +89,7 @@ class Block_main_content_filtering
             'FIELDS' => $fields,
             'ACTIVE_FILTER' => $filter,
             'LINKS' => $links,
+            'SUBMIT_ICON' => 'buttons__filter',
         ));
     }
 

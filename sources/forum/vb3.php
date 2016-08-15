@@ -859,9 +859,9 @@ class Forum_driver_vb3 extends Forum_driver_base
     public function get_custom_fields($member)
     {
         if ((!isset($GLOBALS['SITE_INFO']['vb_version'])) || ($GLOBALS['SITE_INFO']['vb_version'] >= 3.6)) {
-            $rows = $this->db->query('SELECT f.profilefieldid,p.text AS title FROM ' . $this->db->get_table_prefix() . 'profilefield f LEFT JOIN ' . $this->db->get_table_prefix() . 'phrase p ON (' . db_string_equal_to('product', 'vbulletin') . ' AND p.varname=CONCAT(\'field\',f.profilefieldid,\'_title\')) WHERE p.text LIKE \'' . db_encode_like('cms_%') . '\'');
+            $rows = $this->db->query('SELECT f.profilefieldid,p.text AS title FROM ' . $this->db->get_table_prefix() . 'profilefield f LEFT JOIN ' . $this->db->get_table_prefix() . 'phrase p ON (' . db_string_equal_to('product', 'vbulletin') . ' AND p.varname=CONCAT(\'field\',f.profilefieldid,\'_title\')) WHERE p.text LIKE \'' . db_encode_like('cms\_%') . '\'');
         } else {
-            $rows = $this->db->query('SELECT profilefieldid,title FROM ' . $this->db->get_table_prefix() . 'profilefield WHERE title LIKE \'' . db_encode_like('cms_%') . '\'');
+            $rows = $this->db->query('SELECT profilefieldid,title FROM ' . $this->db->get_table_prefix() . 'profilefield WHERE title LIKE \'' . db_encode_like('cms\_%') . '\'');
         }
         $values = $this->db->query_select('userfield', array('*'), array('userid' => $member), '', 1);
         if (!array_key_exists(0, $values)) {
