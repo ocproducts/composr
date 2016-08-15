@@ -15,17 +15,12 @@
 </tr>
 
 <tr class="field_input">
-	<td id="form_table_field_input__{$GET,randomised_id}"{+START,IF,{$NOT,{$MOBILE}}} colspan="2"{+END} class="form_table_huge_field {+START,IF,{REQUIRED}} required{+END}">
+	<td id="form_table_field_input__{$GET,randomised_id}" data-cms-call="set_up_change_monitor" {+START,IF,{$NOT,{$MOBILE}}} colspan="2"{+END} class="form_table_huge_field {+START,IF,{REQUIRED}} required{+END}">
 		<div id="container_for_{NAME*}" class="constrain_field">
-			<textarea{+START,IF,{$NOT,{$MOBILE}}} onchange="manage_scroll_height(this);" onkeyup="manage_scroll_height(this);"{+END} tabindex="{TABINDEX*}" class="{+START,IF,{SCROLLS}}textarea_scroll{+END} input_text{_REQUIRED} wide_field" cols="70" rows="{ROWS*}" id="{NAME*}" name="{NAME*}">{DEFAULT*}</textarea>
+			<textarea tabindex="{TABINDEX*}" class="{+START,IF,{SCROLLS}}textarea_scroll{+END} input_text{_REQUIRED} wide_field" cols="70" rows="{ROWS*}" id="{NAME*}" name="{NAME*}" data-cms-call="manage_scroll_height" {+START,IF,{$NOT,{$MOBILE}}} onchange="manage_scroll_height(this);" onkeyup="manage_scroll_height(this);"{+END}>{DEFAULT*}</textarea>
 
 			{+START,IF_PASSED_AND_TRUE,RAW}<input type="hidden" name="pre_f_{NAME*}" value="1" />{+END}
 		</div>
-
-		<script>// <![CDATA[
-			set_up_change_monitor('form_table_field_input__{$GET,randomised_id}');
-			manage_scroll_height(document.getElementById('{NAME;/}'));
-		//]]></script>
 	</td>
 </tr>
 

@@ -1,3 +1,4 @@
+{$REQUIRE_JAVASCRIPT,addon/core_notifications}
 {TITLE}
 
 <form title="{!NOTIFICATIONS}" method="post" action="{ACTION_URL*}" autocomplete="off">
@@ -23,7 +24,4 @@
 			<label for="sound_off">{!DISABLE_NOTIFICATION_SOUND} <input onclick="set_cookie('sound','off');" type="radio" name="sound" id="sound_off" /></label>
 		</p>
 	</form>
-	<script>// <![CDATA[
-		document.getElementById('sound_'+read_cookie('sound','off')).checked=true;
-	//]]></script>
 {+END}

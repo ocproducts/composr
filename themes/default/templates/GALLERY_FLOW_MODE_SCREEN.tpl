@@ -27,7 +27,7 @@
 
 			{$SET,carousel_id,{$RAND}}
 
-			<div id="carousel_{$GET*,carousel_id}" class="carousel" style="display: none">
+			<div id="carousel_{$GET*,carousel_id}" class="carousel" data-cms-call="initialise_carousel" style="display: none">
 				<div class="move_left" onmousedown="carousel_move({$GET*,carousel_id},-100); return false;"></div>
 				<div class="move_right" onmousedown="carousel_move({$GET*,carousel_id},+100); return false;"></div>
 
@@ -38,12 +38,6 @@
 			<div class="carousel_temp" id="carousel_ns_{$GET*,carousel_id}">
 				{ENTRIES}
 			</div>
-
-			<script>// <![CDATA[
-				$(function() {
-					initialise_carousel({$GET,carousel_id});
-				});
-			//]]></script>
 
 			<hr />
 
