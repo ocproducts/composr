@@ -46,6 +46,7 @@ function commandr_handle_history(element, key_code, e) {
 }
 
 // Submit an Commandr command
+<<<<<<< HEAD
 function commandr_form_submission(command, form) {
     // Catch the data being submitted by the form, and send it through XMLHttpRequest if possible. Stop the form submission if this is achieved.
     // var command=document.getElementById('commandr_command').value;
@@ -74,6 +75,40 @@ function commandr_form_submission(command, form) {
         // Let the form be submitted the old-fashioned way.
         return modsecurity_workaround(form);
     }
+=======
+function commandr_form_submission(command,form)
+{
+	// Catch the data being submitted by the form, and send it through XMLHttpRequest if possible. Stop the form submission if this is achieved.
+	// var command=document.getElementById('commandr_command').value;
+
+	if ((window.do_ajax_request) && (typeof window.do_ajax_request!='undefined'))
+	{
+		// Send it through XMLHttpRequest, and append the results.
+		document.getElementById('commandr_command').focus();
+		document.getElementById('commandr_command').disabled=true;
+
+		var post='command='+window.encodeURIComponent(command);
+		post=modsecurity_workaround_ajax(post);
+		do_ajax_request('{$FIND_SCRIPT;,commandr}'+keep_stub(true),commandr_command_response,post);
+
+		window.disable_timeout=window.setTimeout( function() {
+			document.getElementById('commandr_command').disabled=false;
+			document.getElementById('commandr_command').focus();
+			if (window.disable_timeout)
+			{
+				window.clearTimeout(window.disable_timeout);
+				window.disable_timeout=null;
+			}
+		} , 5000);
+		window.previous_commands.push(command.value);
+
+		return false;
+	} else if (typeof form!='undefined')
+	{
+		// Let the form be submitted the old-fashioned way.
+		return modsecurity_workaround(form);
+	}
+>>>>>>> master
 }
 
 // Deal with the response to a command

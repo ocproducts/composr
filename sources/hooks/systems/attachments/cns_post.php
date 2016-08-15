@@ -42,11 +42,9 @@ class Hook_attachments_cns_post
             return false;
         }
         $forum_id = $info[0]['p_cache_forum_id'];
-        $forum_id_parent = ($forum_id === null) ? null : $GLOBALS['FORUM_DB']->query_select_value('f_forums', 'f_parent_forum', array('id' => $forum_id));
-        $forum_id_parent_parent = ($forum_id_parent === null) ? null : $GLOBALS['FORUM_DB']->query_select_value('f_forums', 'f_parent_forum', array('id' => $forum_id_parent));
+        $forum_id_parent = ($forum_id === null) ? null : $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forums', 'f_parent_forum', array('id' => $forum_id));
+        $forum_id_parent_parent = ($forum_id_parent === null) ? null : $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forums', 'f_parent_forum', array('id' => $forum_id_parent));
         $poster = $info[0]['p_poster'];
-        $forum_id_parent = ($forum_id === null) ? null : $GLOBALS['FORUM_DB']->query_select_value('f_forums', 'f_parent_forum', array('id' => $forum_id));
-        $forum_id_parent_parent = ($forum_id_parent === null) ? null : $GLOBALS['FORUM_DB']->query_select_value('f_forums', 'f_parent_forum', array('id' => $forum_id_parent));
         $intended_solely_for = $info[0]['p_intended_solely_for'];
         if (($intended_solely_for !== null) && ($poster != get_member()) && ($intended_solely_for != get_member())) {
             return false;

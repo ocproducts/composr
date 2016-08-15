@@ -13174,11 +13174,11 @@ CREATE TABLE `cms_quiz_questions` (
   FULLTEXT KEY `q_question_text` (`q_question_text`)
 ) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
 
-insert into `cms_quiz_questions` values('1','1','1','1','1','MULTIMULTIPLE','','Does Romeo love Juliet at the beginning of the play?'),
- ('2','1','1','1','1','MULTIMULTIPLE','','Where is the play set?'),
- ('3','1','1','1','1','MULTIMULTIPLE','','Who does Tybalt fight in place of Romeo?'),
- ('4','1','1','1','1','MULTIMULTIPLE','','Which scene is the play\'s most famous?'),
- ('5','1','1','1','1','MULTIMULTIPLE','','Who marries the couple?');
+insert into `cms_quiz_questions` values('1','1','1','1','1','MULTIMULTIPLE','','Does Romeo love Juliet at the beginning of the play?','',1,'',1),
+ ('2','1','1','1','1','MULTIMULTIPLE','','Where is the play set?','',1,'',1),
+ ('3','1','1','1','1','MULTIMULTIPLE','','Who does Tybalt fight in place of Romeo?','',1,'',1),
+ ('4','1','1','1','1','MULTIMULTIPLE','','Which scene is the play\'s most famous?','',1,'',1),
+ ('5','1','1','1','1','MULTIMULTIPLE','','Who marries the couple?','',1,'',1);
 
 DROP TABLE IF EXISTS `cms_quiz_winner`;
 

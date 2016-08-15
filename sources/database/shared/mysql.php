@@ -89,10 +89,30 @@ class Database_super_mysql extends DatabaseDriver
     }
 
     /**
+     * Find whether text fields can/should have default values.
+     *
+     * @return boolean Whether they do
+     */
+    public function has_default_for_text_fields()
+    {
+        return false;
+    }
+
+    /**
+     * Get the character used to surround fields to protect from keyword status.
+     *
+     * @return string Character (blank: has none defined)
+     */
+    public function get_field_encapsulator()
+    {
+        return '`';
+    }
+
+    /**
      * Create an SQL cast.
      *
-     * @param $field string The field identifier
-     * @param $type string The type wanted
+     * @param string $field The field identifier
+     * @param string $type The type wanted
      * @set CHAR INT
      * @return string The database type
      */
@@ -185,6 +205,17 @@ class Database_super_mysql extends DatabaseDriver
         }
 
         return true;
+    }
+
+    /**
+     * Encode a LIKE string comparision fragement for the database system. The pattern is a mixture of characters and ? and % wildcard symbols.
+     *
+     * @param  string $pattern The pattern
+     * @return string The encoded pattern
+     */
+    public function encode_like($pattern)
+    {
+        return str_replace('\\\\_'/*MySQL escaped underscores*/, '\\_', $this->escape_string($pattern));
     }
 
     /**

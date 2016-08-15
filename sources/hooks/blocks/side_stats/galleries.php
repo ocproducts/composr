@@ -39,7 +39,7 @@ class Hook_stats_galleries
         $bits = new Tempcode();
 
         if (get_option('galleries_show_stats_count_galleries') == '1') {
-            $bits->attach(do_template('BLOCK_SIDE_STATS_SUBLINE', array('_GUID' => '979bcf993db7c01ced08d8f8a696fec0', 'KEY' => do_lang_tempcode('GALLERIES'), 'VALUE' => integer_format($GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'galleries WHERE name NOT LIKE \'' . db_encode_like('download_%') . '\'')))));
+            $bits->attach(do_template('BLOCK_SIDE_STATS_SUBLINE', array('_GUID' => '979bcf993db7c01ced08d8f8a696fec0', 'KEY' => do_lang_tempcode('GALLERIES'), 'VALUE' => integer_format($GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'galleries WHERE name NOT LIKE \'' . db_encode_like('download\_%') . '\'')))));
         }
         if (get_option('galleries_show_stats_count_images') == '1') {
             $bits->attach(do_template('BLOCK_SIDE_STATS_SUBLINE', array('_GUID' => '0f06d6a5e1632bae0101a531912b1c29', 'KEY' => do_lang_tempcode('IMAGES'), 'VALUE' => integer_format($GLOBALS['SITE_DB']->query_select_value('images', 'COUNT(*)')))));

@@ -3413,6 +3413,7 @@ function has_interesting_post_fields()
         'login_username',
         'password',
         'remember_me',
+        'login_invisible',
         'redirect',
         'redirect_passon',
     );

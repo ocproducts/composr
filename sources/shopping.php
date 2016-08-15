@@ -18,42 +18,88 @@
  * @package    shopping
  */
 
+/*
+FOR CART MANAGEMENT
+*/
+
 /**
- * Get product details array, according to the hook specified in the 'hook' GET parameter
+ * Get product details array, according to the hook specified in the 'hook' GET parameter.
  *
  * @return array Product details
  */
 function get_product_details()
 {
     $_hook = get_param_string('hook');
-
     require_code('hooks/systems/ecommerce/' . filter_naughty_harsh($_hook));
-
     $object = object_factory('Hook_ecommerce_' . filter_naughty_harsh($_hook));
-
     $products = $object->get_product_details();
 
     return $products;
 }
 
 /**
- * Function to add new item to cart.
+ * Show cart link
+ *
+ * @return Tempcode
+ */
+function show_cart_link()
+{
+    $cart_url = build_url(array('page' => 'shopping', 'type' => 'browse'), get_module_zone('shopping'));
+
+    $where = array('is_deleted' => 0);
+    if (is_guest()) {
+        $where['session_id'] = get_session_id();
+    } else {
+        $where['ordered_by'] = get_member();
+    }
+    $item_count = $GLOBALS['SITE_DB']->query_select_value_if_there('shopping_cart', 'count(*)', $where);
+
+    if ($item_count > 0) {
+        $title = do_lang_tempcode('BUTTON_CART_ITEMS', strval($item_count));
+    } else {
+        $title = do_lang_tempcode('BUTTON_CART_EMPTY');
+    }
+
+    return do_template('ECOM_CART_LINK', array('_GUID' => '46ae00c8a605b84fee1b1c68fc57cd32', 'URL' => $cart_url, 'ITEMS' => strval($item_count), 'TITLE' => $title));
+}
+
+/**
+ * Find products in cart
+ *
+ * @return array Product details in cart
+ */
+function find_products_in_cart()
+{
+    $where = array('is_deleted' => 0);
+    if (is_guest()) {
+        $where['session_id'] = get_session_id();
+    } else {
+        $where['ordered_by'] = get_member();
+    }
+    $cart = $GLOBALS['SITE_DB']->query_select('shopping_cart', array('*'), $where);
+
+    if (!array_key_exists(0, $cart)) {
+        return array();
+    }
+
+    return $cart;
+}
+
+/**
+ * Add new item to the cart.
  *
  * @param  array $product_det Product details
  */
 function add_to_cart($product_det)
 {
     $_hook = get_param_string('hook');
-
     require_code('hooks/systems/ecommerce/' . filter_naughty_harsh($_hook));
-
     $object = object_factory('Hook_ecommerce_' . filter_naughty_harsh($_hook));
-
-    $object->add_order($product_det);
+    $object->add_to_cart($product_det);
 }
 
 /**
- * Update cart
+ * Update cart quantities etc.
  *
  * @param  array $product_det Product details
  */
@@ -84,13 +130,17 @@ function update_cart($product_det)
     // Update tax opt out status to the current order
     if (get_option('allow_opting_out_of_tax') == '1') {
         $order_id = get_current_order_id();
+        if ($order_id === null) {
+            fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+
         $tax_opted_out = post_param_integer('tax_opted_out', 0);
         $GLOBALS['SITE_DB']->query_update('shopping_order', array('tax_opted_out' => $tax_opted_out), array('id' => $order_id), '', 1);
     }
 }
 
 /**
- * Remove from cart.
+ * Remove particular items from the cart.
  *
  * @param  array $product_to_remove Products to remove
  */
@@ -109,6 +159,26 @@ function remove_from_cart($product_to_remove)
             array('is_deleted' => 1),
             $where
         );
+    }
+}
+
+/**
+ * Delete cart contents for the current user.
+ *
+ * @param  boolean $soft_delete Whether to just do a soft delete, i.e. mark as deleted.
+ */
+function empty_cart($soft_delete = false)
+{
+    $where = array();
+    if (is_guest()) {
+        $where['session_id'] = get_session_id();
+    } else {
+        $where['ordered_by'] = get_member();
+    }
+    if ($soft_delete) {
+        $GLOBALS['SITE_DB']->query_update('shopping_cart', array('is_deleted' => 1), $where);
+    } else {
+        $GLOBALS['SITE_DB']->query_delete('shopping_cart', $where);
     }
 }
 
@@ -150,142 +220,20 @@ function log_cart_actions($action)
     }
 }
 
+/*
+FOR ORDER MANAGEMENT
+*/
+
 /**
  * Delete incomplete orders from ages ago.
  */
 function delete_incomplete_orders()
 {
-    // Delete any 2-week+ old orders
-    $GLOBALS['SITE_DB']->query("DELETE t1,t2 FROM " . get_table_prefix() . "shopping_order t1, " . get_table_prefix() . "shopping_order_details t2 WHERE t1.id=t2.order_id AND t1.order_status='ORDER_STATUS_awaiting_payment' AND add_date<" . strval(time() - 60 * 60 * 24 * 14));
-}
-
-/**
- * Show cart link
- *
- * @return Tempcode
- */
-function show_cart_link()
-{
-    $cart_url = build_url(array('page' => 'shopping', 'type' => 'browse'), get_module_zone('shopping'));
-
-    $where = array('is_deleted' => 0);
-    if (is_guest()) {
-        $where['session_id'] = get_session_id();
-    } else {
-        $where['ordered_by'] = get_member();
-    }
-    $item_count = $GLOBALS['SITE_DB']->query_select_value_if_there('shopping_cart', 'count(*)', $where);
-
-    if ($item_count > 0) {
-        $title = do_lang_tempcode('BUTTON_CART_ITEMS', strval($item_count));
-    } else {
-        $title = do_lang_tempcode('BUTTON_CART_EMPTY');
-    }
-
-    return do_template('ECOM_CART_LINK', array('_GUID' => '46ae00c8a605b84fee1b1c68fc57cd32', 'URL' => $cart_url, 'ITEMS' => strval($item_count), 'TITLE' => $title));
-}
-
-/**
- * Tell the staff the shopping order was placed
- *
- * @param  AUTO_LINK $order_id Order ID
- */
-function purchase_done_staff_mail($order_id)
-{
-    $member_id = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'c_member', array('id' => $order_id));
-    $displayname = $GLOBALS['FORUM_DRIVER']->get_username($member_id, true);
-    $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
-
-    require_code('notifications');
-
-    $subject = do_lang('ORDER_PLACED_MAIL_SUBJECT', get_site_name(), strval($order_id), array($displayname, $username), get_site_default_lang());
-    $message = do_notification_lang('ORDER_PLACED_MAIL_MESSAGE', comcode_escape(get_site_name()), comcode_escape($displayname), array(strval($order_id), strval($member_id), comcode_escape($username)), get_site_default_lang());
-
-    dispatch_notification('new_order', null, $subject, $message);
-}
-
-/**
- * Find products in cart
- *
- * @return array Product details in cart
- */
-function find_products_in_cart()
-{
-    $where = array('is_deleted' => 0);
-    if (is_guest()) {
-        $where['session_id'] = get_session_id();
-    } else {
-        $where['ordered_by'] = get_member();
-    }
-    $cart = $GLOBALS['SITE_DB']->query_select('shopping_cart', array('*'), $where);
-
-    if (!array_key_exists(0, $cart)) {
-        return array();
-    }
-
-    return $cart;
-}
-
-/**
- * Stock maintain warning mail
- *
- * @param  SHORT_TEXT $product_name Product name
- * @param  AUTO_LINK $product_id Product ID
- */
-function stock_maintain_warn_mail($product_name, $product_id)
-{
-    $product_info_url = build_url(array('page' => 'catalogues', 'type' => 'entry', 'id' => $product_id), get_module_zone('catalogues'));
-
-    require_code('notifications');
-
-    $subject = do_lang('STOCK_LEVEL_MAIL_SUBJECT', get_site_name(), $product_name, null, get_site_default_lang());
-    $message = do_notification_lang('STOCK_MAINTENANCE_WARN_MAIL', comcode_escape(get_site_name()), comcode_escape($product_name), array($product_info_url->evaluate()), get_site_default_lang());
-
-    dispatch_notification('low_stock', null, $subject, $message, null, null, A_FROM_SYSTEM_PRIVILEGED);
-}
-
-/**
- * Stock reduction
- *
- * @param  AUTO_LINK $order_id The ID
- */
-function update_stock($order_id)
-{
-    $rows = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('order_id' => $order_id), '', 1);
-
-    foreach ($rows as $ordered_items) {
-        $hook = $ordered_items['p_type'];
-
-        require_code('hooks/systems/ecommerce/' . filter_naughty_harsh($hook), true);
-
-        $object = object_factory('Hook_ecommerce_' . $hook, true);
-        if ($object === null) {
-            continue;
-        }
-
-        if (method_exists($object, 'update_stock')) {
-            $object->update_stock($ordered_items['p_id'], $ordered_items['p_quantity']);
-        }
-    }
-}
-
-/**
- * Delete cart contents for the current user.
- *
- * @param  boolean $soft_delete Whether to just do a soft delete, i.e. mark as deleted.
- */
-function empty_cart($soft_delete = false)
-{
-    $where = array();
-    if (is_guest()) {
-        $where['session_id'] = get_session_id();
-    } else {
-        $where['ordered_by'] = get_member();
-    }
-    if ($soft_delete) {
-        $GLOBALS['SITE_DB']->query_update('shopping_cart', array('is_deleted' => 1), $where);
-    } else {
-        $GLOBALS['SITE_DB']->query_delete('shopping_cart', $where);
+    $where = db_string_equal_to('t1.order_status', 'ORDER_STATUS_awaiting_payment') . ' AND add_date<' . strval(time() - 60 * 60 * 24 * 14/*2 weeks*/);
+    $rows = $GLOBALS['SITE_DB']->query('SELECT id FROM ' . get_table_prefix() . 'shopping_order WHERE ' . $where);
+    foreach ($rows as $row) {
+        $GLOBALS['SITE_DB']->query_delete('shopping_order_details', array('order_id' => $row['id']));
+        $GLOBALS['SITE_DB']->query_delete('shopping_order', array('id' => $row['id']), '', 1);
     }
 }
 
@@ -307,12 +255,16 @@ function delete_pending_orders_for_current_user()
     }
 }
 
+/*
+FOR MAKING PURCHASE
+*/
+
 /**
  * Payment step.
  *
  * @return Tempcode The result of execution.
  */
-function payment_form()
+function render_cart_payment_form()
 {
     require_code('ecommerce');
 
@@ -361,10 +313,13 @@ function payment_form()
         }
 
         $temp = $object->get_products(false, $type_code);
+        if (!isset($temp[$type_code])) {
+            continue;
+        }
 
         if ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) {
-            continue;
-        }    //Subscription type skipped.
+            continue; // Subscription type skipped
+        }
 
         $price = $temp[$type_code][1];
 
@@ -442,7 +397,7 @@ function payment_form()
 }
 
 /**
- * Find current order tax opt out status
+ * Find current order tax opt out status.
  *
  * @return  BINARY      Tax opt out status of current order
  */
@@ -458,19 +413,19 @@ function get_order_tax_opt_out_status()
     } else {
         $where['c_member'] = get_member();
     }
-    $row = $GLOBALS['SITE_DB']->query_select('shopping_order', array('tax_opted_out'), $where, 'ORDER BY add_date DESC', 1);
+    $rows = $GLOBALS['SITE_DB']->query_select('shopping_order', array('tax_opted_out'), $where, 'ORDER BY add_date DESC', 1);
 
-    if (!array_key_exists(0, $row)) {
+    if (!array_key_exists(0, $rows)) {
         return 0;
     } else {
-        return $row[0]['tax_opted_out'];
+        return $rows[0]['tax_opted_out'];
     }
 }
 
 /**
- * Find current order ID
+ * Find current order ID.
  *
- * @return  AUTO_LINK      Order ID
+ * @return  ?AUTO_LINK      Order ID (null: none)
  */
 function get_current_order_id()
 {
@@ -480,17 +435,77 @@ function get_current_order_id()
     } else {
         $where['c_member'] = get_member();
     }
-    $row = $GLOBALS['SITE_DB']->query_select('shopping_order', array('id'), $where, 'ORDER BY add_date DESC', 1);
+    return $GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order', 'id', $where, 'ORDER BY add_date DESC');
+}
 
-    if (!array_key_exists(0, $row)) {
-        return 0;
-    } else {
-        return $row[0]['id'];
+/**
+ * Tell the staff the shopping order was placed
+ *
+ * @param  AUTO_LINK $order_id Order ID
+ */
+function purchase_done_staff_mail($order_id)
+{
+    $member_id = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'c_member', array('id' => $order_id));
+    $displayname = $GLOBALS['FORUM_DRIVER']->get_username($member_id, true);
+    $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
+
+    require_code('notifications');
+
+    $subject = do_lang('ORDER_PLACED_MAIL_SUBJECT', get_site_name(), strval($order_id), array($displayname, $username), get_site_default_lang());
+    $message = do_notification_lang('ORDER_PLACED_MAIL_MESSAGE', comcode_escape(get_site_name()), comcode_escape($displayname), array(strval($order_id), strval($member_id), comcode_escape($username)), get_site_default_lang());
+
+    dispatch_notification('new_order', null, $subject, $message);
+}
+
+/**
+ * Stock maintain warning mail
+ *
+ * @param  SHORT_TEXT $product_name Product name
+ * @param  AUTO_LINK $product_id Product ID
+ */
+function stock_maintain_warn_mail($product_name, $product_id)
+{
+    $product_info_url = build_url(array('page' => 'catalogues', 'type' => 'entry', 'id' => $product_id), get_module_zone('catalogues'));
+
+    require_code('notifications');
+
+    $subject = do_lang('STOCK_LEVEL_MAIL_SUBJECT', get_site_name(), $product_name, null, get_site_default_lang());
+    $message = do_notification_lang('STOCK_MAINTENANCE_WARN_MAIL', comcode_escape(get_site_name()), comcode_escape($product_name), array($product_info_url->evaluate()), get_site_default_lang());
+
+    dispatch_notification('low_stock', null, $subject, $message, null, null, A_FROM_SYSTEM_PRIVILEGED);
+}
+
+/*
+FOR ADMIN_ORDERS
+*/
+
+/**
+ * Stock reduction.
+ *
+ * @param  AUTO_LINK $order_id The ID
+ */
+function update_stock($order_id)
+{
+    $rows = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('order_id' => $order_id), '', 1);
+
+    foreach ($rows as $ordered_items) {
+        $hook = $ordered_items['p_type'];
+
+        require_code('hooks/systems/ecommerce/' . filter_naughty_harsh($hook), true);
+
+        $object = object_factory('Hook_ecommerce_' . $hook, true);
+        if ($object === null) {
+            continue;
+        }
+
+        if (method_exists($object, 'update_stock')) {
+            $object->update_stock($ordered_items['p_id'], $ordered_items['p_quantity']);
+        }
     }
 }
 
 /**
- * Return list entry of common order statuses of orders
+ * Return list entry of common order statuses of orders.
  *
  * @return  Tempcode    Order status list entries
  */
@@ -515,7 +530,7 @@ function get_order_status_list()
 }
 
 /**
- * Return a string of order products to export as csv
+ * Get a string of ordered products for display.
  *
  * @param  AUTO_LINK $order_id Order ID
  * @return LONG_TEXT Products names and quantity
@@ -525,7 +540,6 @@ function get_ordered_product_list_string($order_id)
     $product_det = array();
 
     $rows = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('order_id' => $order_id), 'ORDER BY p_name');
-
     foreach ($rows as $key => $product) {
         $product_det[] = $product['p_name'] . ' x ' . integer_format($product['p_quantity']) . ' @ ' . do_lang('UNIT_PRICE') . '=' . float_format($product['p_price']);
     }

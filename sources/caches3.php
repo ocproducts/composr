@@ -180,7 +180,7 @@ function erase_comcode_cache()
  */
 function erase_thumb_cache()
 {
-    $thumb_fields = $GLOBALS['SITE_DB']->query('SELECT m_name,m_table FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'db_meta WHERE m_name LIKE \'' . db_encode_like('%thumb_url') . '\'');
+    $thumb_fields = $GLOBALS['SITE_DB']->query('SELECT m_name,m_table FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'db_meta WHERE m_name LIKE \'' . db_encode_like('%thumb\_url') . '\'');
     foreach ($thumb_fields as $field) {
         if ($field['m_table'] == 'videos') {
             continue;
