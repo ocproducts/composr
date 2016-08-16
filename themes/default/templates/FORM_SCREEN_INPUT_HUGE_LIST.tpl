@@ -21,7 +21,7 @@
 		<select size="{+START,IF_PASSED,SIZE}{SIZE*}{+END}{+START,IF_NON_PASSED,SIZE}15{+END}" tabindex="{TABINDEX*}" class="input_list{REQUIRED*} wide_field" id="{NAME*}" name="{NAME*}">
 		{+END}
 		{+START,IF,{$NOT,{INLINE_LIST}}}
-		<select tabindex="{TABINDEX*}" class="input_list" id="{NAME*}" name="{NAME*}">
+		<select tabindex="{TABINDEX*}" class="input_list" id="{NAME*}" name="{NAME*}" data-cms-select2='{"dropdownAutoWidth": true, "containerCssClass": "wide_field"}'>
 		{+END}
 		{CONTENT}
 		</select>
@@ -29,13 +29,6 @@
 		{+START,IF,{$NOT,{INLINE_LIST}}}
 			<script>// <![CDATA[
 				set_up_change_monitor('form_table_field_input__{$GET,randomised_id}');
-
-				$(function() {
-					$("#{NAME#/}").select2({
-						dropdownAutoWidth: true,
-						containerCssClass: 'wide_field'
-					});
-				});
 			//]]></script>
 		{+END}
 	</td>

@@ -13,13 +13,13 @@ var Composr = {
     loadPolyfills();
 
     Composr.onReady = function onReady(callback) {
-        if (Composr._polyfillsLoaded) {
+        //if (Composr._polyfillsLoaded) {
             $(callback);
-        } else {
-            window.addEventListener('composr.polyfillsloaded', function (){
-                $(callback);
-            });
-        }
+        //} else {
+        //    window.addEventListener('composr.polyfillsloaded', function (){
+        //        $(callback);
+        //    });
+        //}
     };
 
     Composr.onWindowLoad = function onWindowLoad(callback) {
@@ -31,6 +31,60 @@ var Composr = {
                 Composr._windowLoaded = true;
                 setTimeout(callback, 0);
             });
+        }
+    };
+
+
+    /**
+     * Helper to rethrow errors asynchronously.
+     *
+     * This way Errors bubbles up outside of the original callstack, making it
+     * easier to debug errors in the browser.
+     *
+     * @param Error|string error
+     *   The error to be thrown.
+     */
+    Composr.throwError = function (error) {
+        setTimeout(function () { throw error; }, 0);
+    };
+
+    var composrSettings = {};
+
+    Composr.behaviors = {};
+
+    Composr.attachBehaviors = function (context, settings) {
+        context = context || document;
+        settings = settings || composrSettings;
+        var behaviors = Composr.behaviors;
+        // Execute all of them.
+        for (var i in behaviors) {
+            if (behaviors.hasOwnProperty(i) && typeof behaviors[i].attach === 'function') {
+                // Don't stop the execution of behaviors in case of an error.
+                try {
+                    behaviors[i].attach(context, settings);
+                } catch (e) {
+                    Composr.throwError(e);
+                }
+            }
+        }
+    };
+
+    Composr.detachBehaviors = function (context, settings, trigger) {
+        context = context || document;
+        settings = settings || composrSettings;
+        trigger = trigger || 'unload';
+        var behaviors = Composr.behaviors;
+        // Execute all of them.
+        for (var i in behaviors) {
+            if (behaviors.hasOwnProperty(i) && typeof behaviors[i].detach === 'function') {
+                // Don't stop the execution of behaviors in case of an error.
+                try {
+                    behaviors[i].detach(context, settings, trigger);
+                }
+                catch (e) {
+                    Composr.throwError(e);
+                }
+            }
         }
     };
 
@@ -78,6 +132,7 @@ var Composr = {
         Composr.$TIMEZONE = symbol.TIMEZONE;
         Composr.$HTTP_STATUS_CODE = symbol.HTTP_STATUS_CODE;
         Composr.$CHARSET = symbol.CHARSET;
+        Composr.$KEEP = symbol.KEEP;
         Composr.$SITE_NAME = symbol.SITE_NAME;
         Composr.$COPYRIGHT = symbol.COPYRIGHT;
         Composr.$DOMAIN = symbol.DOMAIN;
@@ -136,6 +191,49 @@ var Composr = {
 
 }(window.jQuery || window.Zepto));
 
+
+Composr.onReady(function () {
+    console.log('Composr.onReady running in global.js');
+
+    $('[data-cms-call]').each(function () {
+        var funcName = this.dataset.cmsCall.trim(),
+            args = [];
+
+        if (this.dataset.cmsCallOpts) {
+            let _args = JSON.parse(this.dataset.cmsCallOpts);
+
+            if (_args) {
+                args = _args;
+            }
+
+            if (!Array.isArray(args)) {
+                args = [args];
+            }
+        }
+
+        var parts = funcName.split('.');
+
+        if (!parts.length) {
+            return;
+        }
+
+        var func = window;
+
+        for (let i = 0; i < parts.length; i++) {
+            func = func[parts[i]];
+        }
+
+        func.apply(this, args);
+    });
+
+    $('[data-cms-select2]').each(function () {
+        var options = JSON.parse(this.dataset.cmsSelect2) || {};
+
+        $(this).select2(options);
+    });
+
+    Composr.attachBehaviors(document, {});
+});
 
 /* Startup */
 if (typeof window.page_loaded == 'undefined') // To stop problem if JS file loaded more than once
@@ -680,6 +778,10 @@ function disable_button_just_clicked(input, permanent) {
 
 /* Making the height of a textarea match its contents */
 function manage_scroll_height(ob) {
+    if (!ob && (this instanceof HTMLElement)) {
+        ob = this;
+    }
+
     var height = ob.scrollHeight;
     if ((height > 5) && (sts(ob.style.height) < height) && (ob.offsetHeight < height)) {
         ob.style.height = height + 'px';
@@ -985,11 +1087,11 @@ function set_cookie(cookie_name, cookie_value, num_days) {
         window.done_cookie_alert = true;
     }
 }
-function read_cookie(cookie_name) {
+function read_cookie(cookie_name, defaultValue) {
     var theCookie = '' + document.cookie;
     var ind = theCookie.indexOf(' ' + cookie_name + '=');
     if ((ind == -1) && (theCookie.substr(0, cookie_name.length + 1) == cookie_name + '=')) ind = 0; else if (ind != -1) ind++;
-    if (ind == -1 || cookie_name == '') return '';
+    if (ind == -1 || cookie_name == '') return defaultValue;
     var ind1 = theCookie.indexOf(';', ind);
     if (ind1 == -1) ind1 = theCookie.length;
     return window.decodeURIComponent(theCookie.substring(ind + cookie_name.length + 1, ind1));
@@ -1439,7 +1541,7 @@ function handle_tray_cookie_setting(id) {
     if (!element) element = document.getElementById(id);
     if (!element) return;
 
-    if (!element.classList.has('toggleable_tray')) // Suspicious, maybe we need to probe deeper
+    if (!element.classList.contains('toggleable_tray')) // Suspicious, maybe we need to probe deeper
     {
         var toggleables = element.querySelectorAll('.toggleable_tray');
         if (typeof toggleables[0] != 'undefined') element = toggleables[0];
@@ -2159,6 +2261,8 @@ function activate_tooltip(ac, event, tooltip, width, pic, height, bottom, no_del
     }, no_delay ? 0 : 666);
 }
 function reposition_tooltip(ac, event, bottom, starting, tooltip_element, force_width, win) {
+    if (typeof win === 'undefined') { win = window; }
+
     if (!starting) // Real JS mousemove event, so we assume not a screen reader and have to remove natural tooltip
     {
         if (ac.getAttribute('title')) ac.setAttribute('title', '');
@@ -2287,7 +2391,7 @@ function trigger_resize(and_subframes) {
     var frames = window.parent.document.getElementsByTagName('iframe');
     var done = false;
 
-    for (var i = 0; i < frames.length; i++) {
+    for (let i = 0; i < frames.length; i++) {
         if ((frames[i].src == window.location.href) || (frames[i].contentWindow == window) || ((frames[i].id != '') && (typeof window.parent.frames[frames[i].id] != 'undefined') && (window.parent.frames[frames[i].id] == window))) {
             if (frames[i].style.height == '900px') frames[i].style.height = 'auto';
             window.parent.resize_frame(frames[i].name);
@@ -2296,8 +2400,9 @@ function trigger_resize(and_subframes) {
 
     if (and_subframes) {
         frames = document.getElementsByTagName('iframe');
-        for (var i = 0; i < frames.length; i++)
+        for (let i = 0; i < frames.length; i++) {
             if ((frames[i].name != '') && ((frames[i].className.indexOf('expandable_iframe') != -1) || (frames[i].className.indexOf('dynamic_iframe') != -1))) resize_frame(frames[i].name);
+        }
     }
 }
 
@@ -3394,6 +3499,9 @@ function set_up_change_monitor(id) {
     $(function () {
         if (typeof window._set_up_change_monitor != 'undefined') {
             var ch = (typeof id == 'string') ? document.getElementById(id) : id;
+            if (!ch && this instanceof HTMLElement) {
+                ch = this;
+            }
             if (ch) _set_up_change_monitor(ch.parentNode);
         }
     });

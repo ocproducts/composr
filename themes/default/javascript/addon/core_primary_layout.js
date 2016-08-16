@@ -1,9 +1,17 @@
+(function ($, Composr) {
 
-Composr.onReady(function () {
     // GLOBAL_HTML_WRAP.tpl
-    script_load_stuff();
+    var globalHtmlWrap = _.once(function () {
+        script_load_stuff();
 
-    if (query_string_param('wide_print')) {
-        try { window.print(); } catch (e) {}
-    }
-});
+        if (query_string_param('wide_print')) {
+            try { window.print(); } catch (e) {}
+        }
+    });
+
+    Composr.behaviors.corePrimaryLayout = {
+        attach: function (context) {
+            globalHtmlWrap();
+        }
+    };
+})(window.jQuery || window.Zepto, Composr);

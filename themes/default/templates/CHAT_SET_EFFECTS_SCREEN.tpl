@@ -1,13 +1,8 @@
 {TITLE}
 
 {CHAT_SOUND}
-<script>
-// <![CDATA[
-$(prepare_chat_sounds);
-// ]]>
-</script>
 
-<p>
+<p data-cms-call="prepare_chat_sounds">
 	{!CHOOSE_SOUND_EFFECTS}
 </p>
 

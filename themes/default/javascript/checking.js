@@ -1051,13 +1051,20 @@ function get_all_form_elements(container) {
 }
 
 function assign_tick_deletion_confirm(name) {
-    document.getElementById(name).onchange = function () {
+    var el;
+
+    if (!name && (this instanceof HTMLElement)) {
+        el = this;
+    } else {
+        el = document.getElementById(name);
+    }
+
+    el.onchange = function () {
         if (this.checked) {
             window.fauxmodal_confirm(
                 '{!ARE_YOU_SURE_DELETE;^}',
                 function (result) {
-                    var e = document.getElementById(name);
-                    if (e) {
+                    if (el) {
                         if (result) {
                             var form = e.form;
                             if (form.action.indexOf('_post') == -1) // Remove redirect if redirecting back, IF it's not just deleting an on-page post (Wiki+)

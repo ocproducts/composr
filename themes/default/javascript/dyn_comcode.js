@@ -126,7 +126,13 @@ function countdown(id, direction, tailing) {
 }
 
 function initialise_carousel(id) {
-    var carousel = document.getElementById('carousel_' + id);
+    var carousel;
+    if (!id && (this instanceof HTMLElement)){
+        carousel = this;
+    } else {
+        carousel = document.getElementById('carousel_' + id);
+    }
+
     var main = carousel.querySelectorAll('.main')[0];
     var carousel_ns = document.getElementById('carousel_ns_' + id);
     carousel_ns.parentNode.removeChild(carousel_ns);
