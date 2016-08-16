@@ -18,26 +18,13 @@
 		window.done_youtube_player_init=true;
 	}
 
-<<<<<<< HEAD
-	$(function() {
-		if (document.getElementById('next_slide'))
-		{
-			stop_slideshow_timer();
-			window.setTimeout(function() {
-				document.getElementById('{$GET;,player_id}').addEventListener('onStateChange','youtubeStateChanged');
-				document.getElementById('{$GET;,player_id}').playVideo();
-			}, 1000);
-		}
-	});
-//]]></script>
-=======
-	var slideshow_mode=document.getElementById('next_slide');
-
 	{$,Tie into callback event to see when finished, for our slideshows}
 	{$,API: https://developers.google.com/youtube/iframe_api_reference}
 	var {$GET%,player_id};
 	function onYouTubeIframeAPIReady()
 	{
+		var slideshow_mode=document.getElementById('next_slide');
+
 		{$GET%,player_id}=new YT.Player('{$GET%,player_id}', {
 			width: '{WIDTH;}',
 			height: '{HEIGHT;}',
@@ -57,4 +44,3 @@
 		});
 	}
 </script>
->>>>>>> master
