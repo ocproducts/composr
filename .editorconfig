@@ -34,7 +34,6 @@ quote_type = double
 tab_width = 3
 
 [*.js]
-indent_style = tab  
 quote_type = single
 tab_width = 3
 
