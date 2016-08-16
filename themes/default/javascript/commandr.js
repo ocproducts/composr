@@ -78,7 +78,7 @@ function commandr_form_submission(command,form)
 				window.disable_timeout=null;
 			}
 		} , 5000);
-		window.previous_commands.push(command.value);
+		window.previous_commands.push(command);
 
 		return false;
 	} else if (typeof form!='undefined')
