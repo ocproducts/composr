@@ -26,10 +26,6 @@ class Hook_notification_classifieds extends Hook_Notification
      */
     public function list_handled_codes()
     {
-        if (!$GLOBALS['SITE_DB']->table_exists('classifieds_prices')) {
-            return array();
-        }
-
         $list = array();
         $catalogues = $GLOBALS['SITE_DB']->query_select('classifieds_prices', array('DISTINCT c_catalogue_name'), null, '', null, null, true);
         if ($catalogues === null) {

@@ -1360,7 +1360,7 @@ function re_hue_image($path, $seed, $source_theme, $also_s_and_v = false, $inver
             $image = @imagecreatefromgif($path);
         } elseif (substr($path, -4) == '.jpg') {
             $image = @imagecreatefromjpeg($path);
-        } elseif (function_exists('imagecreatefromwebp') && substr($path, -5) == '.webp') {
+        } elseif (substr($path, -5) == '.webp') {
             $image = @imagecreatefromwebp($path);
         } else {
             $image = @imagecreatefrompng($path);

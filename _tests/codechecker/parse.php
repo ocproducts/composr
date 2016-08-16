@@ -1330,7 +1330,7 @@ function _parse_expression_inner()
 
         case 'EXTRACT_OPEN': // Short array syntax
             pparse__parser_next();
-            $details = _parse_create_array('EXTRACT_CLOSE');
+            $details = _parse_create_array();
             pparse__parser_expect('EXTRACT_CLOSE');
             $expression = array('CREATE_ARRAY', $details, $GLOBALS['I']);
             break;
@@ -1338,7 +1338,7 @@ function _parse_expression_inner()
         case 'ARRAY':
             pparse__parser_next();
             pparse__parser_expect('BRACKET_OPEN');
-            $details = _parse_create_array('BRACKET_CLOSE');
+            $details = _parse_create_array();
             pparse__parser_expect('BRACKET_CLOSE');
             $expression = array('CREATE_ARRAY', $details, $GLOBALS['I']);
             break;
@@ -1647,7 +1647,7 @@ function _parse_literal()
         case 'ARRAY':
             pparse__parser_next(); // Skip over the ARRAY
             pparse__parser_expect('BRACKET_OPEN');
-            $details = _parse_create_array('BRACKET_CLOSE');
+            $details = _parse_create_array();
             pparse__parser_expect('BRACKET_CLOSE');
             $literal = array('CREATE_ARRAY', $details, $GLOBALS['I']);
             break;
@@ -1658,12 +1658,12 @@ function _parse_literal()
     return $literal;
 }
 
-function _parse_create_array($closes_with)
+function _parse_create_array()
 {
     // Choice{list | map}?
 
     $next = pparse__parser_peek();
-    if ($next == $closes_with) {
+    if ($next == 'BRACKET_CLOSE') {
         return array();
     }
 
@@ -1682,7 +1682,7 @@ function _parse_create_array($closes_with)
         while ($next == 'COMMA') {
             pparse__parser_next();
             $next_2 = pparse__parser_peek();
-            if ($next_2 == $closes_with) {
+            if ($next_2 == 'BRACKET_CLOSE') {
                 break;
             }
             $expression = _parse_expression();
@@ -1705,7 +1705,7 @@ function _parse_create_array($closes_with)
         while ($next == 'COMMA') {
             pparse__parser_next();
             $next_2 = pparse__parser_peek();
-            if ($next_2 == $closes_with) {
+            if ($next_2 == 'BRACKET_CLOSE') {
                 break;
             }
             $expression = _parse_expression();

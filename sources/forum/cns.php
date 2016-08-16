@@ -1349,11 +1349,7 @@ class Forum_driver_cns extends Forum_driver_base
         $ret = function_exists('persistent_cache_get') ? persistent_cache_get('SUPER_ADMIN_GROUPS') : null;
 
         if ($ret === null) {
-            $_ret = $this->db->query_select('f_groups', array('id'), array('g_is_super_admin' => 1), '', null, null, running_script('install')/*may not be installed yet*/);
-            if ($_ret === null) {
-                return array();
-            }
-            $ret = collapse_1d_complexity('id', $_ret);
+            $ret = collapse_1d_complexity('id', $this->db->query_select('f_groups', array('id'), array('g_is_super_admin' => 1)));
 
             if (function_exists('persistent_cache_set')) {
                 persistent_cache_set('SUPER_ADMIN_GROUPS', $ret);
@@ -1374,11 +1370,7 @@ class Forum_driver_cns extends Forum_driver_base
         $ret = function_exists('persistent_cache_get') ? persistent_cache_get('SUPER_MODERATOR_GROUPS') : null;
 
         if ($ret === null) {
-            $_ret = $this->db->query_select('f_groups', array('id'), array('g_is_super_moderator' => 1), '', null, null, running_script('install')/*may not be installed yet*/);
-            if ($_ret === null) {
-                return array();
-            }
-            $ret = collapse_1d_complexity('id', $_ret);
+            $ret = collapse_1d_complexity('id', $this->db->query_select('f_groups', array('id'), array('g_is_super_moderator' => 1)));
 
             if (function_exists('persistent_cache_set')) {
                 persistent_cache_set('SUPER_MODERATOR_GROUPS', $ret);
@@ -1419,7 +1411,7 @@ class Forum_driver_cns extends Forum_driver_base
             $count = persistent_cache_get('GROUPS_COUNT' . ($only_permissive ? '_PO' : ''));
             if ($count === null) {
                 $groups_count_sql = 'SELECT COUNT(*) FROM ' . $this->db->get_table_prefix() . 'f_groups g' . $where;
-                $count = $this->db->query_value_if_there($groups_count_sql, running_script('install')/*maybe no table yet*/, true);
+                $count = $this->db->query_value_if_there($groups_count_sql, false, true);
                 $cnt_cache[$where] = $count;
                 persistent_cache_set('GROUPS_COUNT' . ($only_permissive ? '_PO' : ''), $cnt_cache[$where]);
             } else {
@@ -1450,10 +1442,7 @@ class Forum_driver_cns extends Forum_driver_base
             if (isset($rows_cache[$where]) && !running_script('install')) {
                 $rows = $rows_cache[$where];
             } else {
-                $rows = $this->db->query($query, null, null, running_script('install')/*maybe no table yet*/, true, array('g_name' => 'SHORT_TRANS'));
-                if (!is_array($rows)) {
-                    $rows = array();
-                }
+                $rows = $this->db->query($query, null, null, false, true, array('g_name' => 'SHORT_TRANS'));
                 $rows_cache[$where] = $rows;
                 if (!$too_many) {
                     persistent_cache_set('GROUPS' . ($only_permissive ? '_PO' : ''), $rows);

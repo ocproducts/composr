@@ -47,7 +47,7 @@ class blocks_test_set extends cms_test_case
             }
 
             $test = do_block($block, array());
-            $this->assertTrue(is_object($test), 'Failed block ' . $block);
+            $this->assertTrue(is_object($test));
         }
     }
 }

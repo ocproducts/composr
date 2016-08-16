@@ -95,10 +95,6 @@ class Hook_notification_types_extended_composr_mobile_sdk
      */
     public function _notification_setting_available($setting, $member_id, &$system_wide, &$for_member)
     {
-        if (!$GLOBALS['SITE_DB']->table_exists('device_token_details')) {
-            return;
-        }
-
         switch ($setting) {
             case A_INSTANT_IOS:
                 if (get_option('enable_notifications_instant_ios') === '1') {

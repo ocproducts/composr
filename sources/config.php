@@ -78,8 +78,7 @@ function init__config()
     $MULTI_LANG_CACHE = null;
 
     // Enforce XML db synching
-    global $SITE_INFO;
-    if ((get_db_type() == 'xml') && (running_script('index')) && (isset($SITE_INFO['db_chain_type'])) && (is_file(get_file_base() . '/data_custom/xml_db_import.php')) && (is_dir(get_file_base() . '/.git'))) {
+    if ((get_db_type() == 'xml') && (!running_script('xml_db_import')) && (is_file(get_file_base() . '/data_custom/xml_db_import.php')) && (is_dir(get_file_base() . '/.git'))) {
         $last_xml_import = get_value('last_xml_import');
         $mod_time = filemtime(get_file_base() . '/.git');
         if (($last_xml_import === null) || (intval($last_xml_import) < $mod_time)) {

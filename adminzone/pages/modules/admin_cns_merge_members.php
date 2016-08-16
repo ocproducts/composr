@@ -192,7 +192,7 @@ class Module_admin_cns_merge_members
 
         // Reassign personal galleries
         if (addon_installed('galleries')) {
-            $personal_galleries = $GLOBALS['SITE_DB']->query('SELECT name FROM ' . get_table_prefix() . 'galleries WHERE name LIKE \'member_' . strval($from_id) . '\_%\'');
+            $personal_galleries = $GLOBALS['SITE_DB']->query('SELECT name FROM ' . get_table_prefix() . 'galleries WHERE name LIKE \'member_' . strval($from_id) . '_%\'');
             foreach ($personal_galleries as $gallery) {
                 $old_gallery_name = $gallery['name'];
                 $new_gallery_name = preg_replace('#^member_\d+_#', 'member_' . strval($to_id) . '_', $old_gallery_name);

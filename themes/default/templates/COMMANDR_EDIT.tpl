@@ -1,6 +1,6 @@
 {$SET,rndx,{$RAND}}
 
-<form title="{!EDIT}" action="{SUBMIT_URL*}" method="post" onsubmit="var command='write &quot;{FILE*}&quot; &quot;'+this.elements['edit_content'].value.replace(/\\/g,'\\\\').replace(/&lt;/g,'\\&lt;').replace(/&gt;/g,'\\&gt;').replace(/&quot;/g,'\\&quot;')+'&quot;'; return commandr_form_submission(command,this);" autocomplete="off">
+<form title="{!EDIT}" action="{SUBMIT_URL*}" method="post" onsubmit="var command='write &quot;{FILE*}&quot; &quot;'+this.elements['edit_content'].value.replace(/\\/g,'\\\\').replace(/&lt;/g,'\\&lt;').replace(/&gt;/g,'\\&gt;').replace(/&quot;/g,'\\&quot;')+'&quot;'; return commandr_form_submission(command);" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<div>

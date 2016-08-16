@@ -450,11 +450,8 @@ class RevisionEngineFiles
         ));
 
         if ($restore_from_path !== null) {
-            $has_access = (dirname(filter_naughty($restore_from_path)) == $directory) || ((has_actual_page_access(get_member(), 'cms_comcode_pages')) && (strpos($restore_from_path, 'pages/comcode') !== false));
-            $full_path = get_custom_file_base() . '/' . filter_naughty($restore_from_path);
-            $exists = file_exists($full_path);
-            if ($has_access && $exists) {
-                $text = file_get_contents($full_path);
+            if (dirname(filter_naughty($restore_from_path)) == $directory && file_exists(get_custom_file_base() . '/' . filter_naughty($restore_from_path))) {
+                $text = file_get_contents(get_custom_file_base() . '/' . filter_naughty($restore_from_path));
                 $revision_loaded = true;
 
                 $revisions_tpl->attach(do_template('REVISION_UNDO'));

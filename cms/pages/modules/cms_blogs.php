@@ -55,10 +55,6 @@ class Module_cms_blogs extends Standard_crud_module
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
-        if (!has_privilege(get_member(), 'have_personal_category', 'cms_news')) {
-            return null;
-        }
-
         $ret = array(
             'browse' => array('MANAGE_BLOGS', 'tabs/member_account/blog'),
         );

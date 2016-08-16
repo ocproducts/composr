@@ -33,10 +33,6 @@ class Hook_pointstore_giftr
      */
     public function info()
     {
-        if (!$GLOBALS['SITE_DB']->table_exists('giftr')) {
-            return array();
-        }
-
         $class = str_replace('hook_pointstore_', '', strtolower(get_class($this)));
 
         $next_url = build_url(array('page' => '_SELF', 'type' => 'action', 'id' => $class), '_SELF');

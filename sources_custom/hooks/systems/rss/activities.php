@@ -31,10 +31,6 @@ class Hook_rss_activities
      */
     public function run($_filters, $cutoff, $prefix, $date_string, $max)
     {
-        if (!$GLOBALS['SITE_DB']->table_exists('activities')) {
-            return null;
-        }
-
         require_lang('activities');
         require_code('activities');
 

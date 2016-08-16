@@ -1898,7 +1898,7 @@ function check_expression($e, $assignment = false, $equate_false = false, $funct
             global $FUNCTION_SIGNATURES;
             if ((!isset($FUNCTION_SIGNATURES[$class])) && ($FUNCTION_SIGNATURES != array()) && (strpos($function_guard, ',' . $class . ',') === false)) {
                 if ((($GLOBALS['OK_EXTRA_FUNCTIONS'] === null) || (preg_match('#^' . $GLOBALS['OK_EXTRA_FUNCTIONS'] . '#', $class) == 0))) {
-                    if (!isset($GLOBALS['KNOWN_EXTRA_CLASSES'][$class]) && $class != '') {
+                    if (!isset($GLOBALS['KNOWN_EXTRA_CLASSES'][$class])) {
                         if ($class !== null) {
                             log_warning('Unknown class, ' . $class, $c_pos);
                         }

@@ -71,7 +71,7 @@ function disable_content_translation()
 
     $type_remap = $db->static_ob->get_type_remap();
 
-    $_table_lang_fields = $db->query('SELECT m_table,m_name,m_type FROM ' . $db->get_table_prefix() . 'db_meta WHERE m_type LIKE \'' . db_encode_like('%\_TRANS%') . '\' ORDER BY m_table,m_name');
+    $_table_lang_fields = $db->query('SELECT m_table,m_name,m_type FROM ' . $db->get_table_prefix() . 'db_meta WHERE m_type LIKE \'' . db_encode_like('%_TRANS%') . '\' ORDER BY m_table,m_name');
     foreach ($_table_lang_fields as $field) {
         if (running_script('execute_temp')) {
             @var_dump($field);
@@ -155,7 +155,7 @@ function enable_content_translation()
 
     $type_remap = $db->static_ob->get_type_remap();
 
-    $_table_lang_fields = $db->query('SELECT m_table,m_name,m_type FROM ' . $db->get_table_prefix() . 'db_meta WHERE m_type LIKE \'' . db_encode_like('%\_TRANS%') . '\' ORDER BY m_table,m_name');
+    $_table_lang_fields = $db->query('SELECT m_table,m_name,m_type FROM ' . $db->get_table_prefix() . 'db_meta WHERE m_type LIKE \'' . db_encode_like('%_TRANS%') . '\' ORDER BY m_table,m_name');
     foreach ($_table_lang_fields as $field) {
         if (running_script('execute_temp')) {
             @var_dump($field);

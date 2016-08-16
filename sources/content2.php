@@ -282,14 +282,8 @@ function actual_metadata_get_fields($content_type, $content_id, $fields_to_skip 
     $submitter = mixed();
     $submitter_field = in_array('submitter', $fields_to_skip) ? null : $info['submitter_field'];
     if ($submitter_field !== null) {
-        $_submitter = post_param_string('meta_submitter', '');
-        if ($_submitter == '') {
-            if (is_null($content_id)) {
-                $submitter = get_member();
-            } else {
-                $submitter = INTEGER_MAGIC_NULL;
-            }
-        } else {
+        $_submitter = post_param_string('meta_submitter', $GLOBALS['FORUM_DRIVER']->get_username(get_member()));
+        if ($_submitter != '') {
             $submitter = $GLOBALS['FORUM_DRIVER']->get_member_from_username($_submitter);
             if ($submitter === null) {
                 $submitter = null; // Leave alone, we did not recognise the user
@@ -300,6 +294,8 @@ function actual_metadata_get_fields($content_type, $content_id, $fields_to_skip 
                     $submitter = get_member();
                 }
             }
+        } else {
+            $submitter = null;
         }
     }
 
@@ -311,7 +307,7 @@ function actual_metadata_get_fields($content_type, $content_id, $fields_to_skip 
             if ($content_id === null) {
                 $add_time = time();
             } else {
-                $add_time = INTEGER_MAGIC_NULL;
+                $add_time = INTEGER_MAGIC_NULL; // This code branch should actually be impossible to reach
             }
         }
     }

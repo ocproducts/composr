@@ -165,7 +165,8 @@ class Block_main_members
         }
         if ($filter != '') {
             require_code('filtercode');
-            list($filter_extra_select, $filter_extra_join, $filter_extra_where) = filtercode_to_sql($GLOBALS['FORUM_DB'], parse_filtercode($filter), 'member');
+            $content_type = 'member';
+            list($filter_extra_select, $filter_extra_join, $filter_extra_where) = filtercode_to_sql($GLOBALS['FORUM_DB'], parse_filtercode($filter), $content_type, '');
             $extra_select_sql = implode('', $filter_extra_select);
             $extra_join_sql = implode('', $filter_extra_join);
         } else {

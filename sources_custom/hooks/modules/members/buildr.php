@@ -30,10 +30,6 @@ class Hook_members_buildr
             return array();
         }
 
-        if (!$GLOBALS['SITE_DB']->table_exists('w_members')) {
-            return array();
-        }
-
         $zone = get_page_zone('buildr', false);
         if ($zone === null) {
             return array();

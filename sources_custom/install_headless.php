@@ -13,11 +13,11 @@
  * @package    meta_toolkit
  */
 
-function do_install_to($database, $username, $password, $table_prefix, $safe_mode, $forum_driver = 'cns', $board_path = null, $forum_base_url = null, $database_forums = null, $username_forums = null, $password_forums = null, $extra_settings = null, $do_index_test = true, $db_type = null)
+function do_install_to($database, $username, $password, $table_prefix, $safe_mode, $forum_driver = 'cns', $board_path = null, $forum_base_url = null, $database_forums = null, $username_forums = null, $password_forums = null, $extra_settings = null, $do_index_test = true)
 {
     rename(get_file_base() . '/_config.php', get_file_base() . '/_config.php.bak');
 
-    $success = _do_install_to($database, $username, $password, $table_prefix, $safe_mode, $forum_driver, $board_path, $forum_base_url, $database_forums, $username_forums, $password_forums, $extra_settings, $db_type);
+    $success = _do_install_to($database, $username, $password, $table_prefix, $safe_mode, $forum_driver, $board_path, $forum_base_url, $database_forums, $username_forums, $password_forums, $extra_settings);
 
     if ($success && $do_index_test) {
         $url = get_base_url() . '/index.php';
@@ -31,11 +31,8 @@ function do_install_to($database, $username, $password, $table_prefix, $safe_mod
     return $success;
 }
 
-function _do_install_to($database, $username, $password, $table_prefix, $safe_mode, $forum_driver, $board_path, $forum_base_url, $database_forums, $username_forums, $password_forums, $extra_settings, $db_type)
+function _do_install_to($database, $username, $password, $table_prefix, $safe_mode, $forum_driver, $board_path, $forum_base_url, $database_forums, $username_forums, $password_forums, $extra_settings)
 {
-    if ($db_type === null) {
-        $db_type = get_db_type();
-    }
     if ($board_path === null) {
         $board_path = get_file_base() . '/forums';
     }
@@ -60,7 +57,7 @@ function _do_install_to($database, $username, $password, $table_prefix, $safe_mo
         'advertise_on' => '0',
         'use_multi_db' => '0',
         'use_msn' => '0',
-        'db_type' => $db_type,
+        'db_type' => get_db_type(),
         'forum_type' => $forum_driver,
         'board_path' => $board_path,
         'forum_base_url' => $forum_base_url,

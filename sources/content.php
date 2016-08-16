@@ -420,10 +420,10 @@ function content_language_string($content_type, $string)
 
     $string_custom = str_replace('\w+', $string, $regexp);
     $test = do_lang($string_custom, null, null, null, null, false);
-    if ($test === null) {
-        $test = do_lang($string);
+    if ($test !== null) {
+        $string = $string_custom;
     }
 
-    //return do_lang_tempcode($string_custom); // Assumes that the lang string stays memory resident, but our probing only guarantees it's resident NOW
+    //return do_lang_tempcode($string); // Assumes that the lang string stays memory resident, but our probing only guarantees it's resident NOW
     return protect_from_escaping($test); // But this should work as the string is rolled into the Tempcode permanently
 }

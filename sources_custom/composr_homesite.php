@@ -184,41 +184,19 @@ function demonstratr_add_site($codename, $name, $email_address, $password, $desc
 
 function demonstratr_add_site_raw($server, $codename, $email_address, $password)
 {
-    global $SITE_INFO;
-
-    // Create database
-    $master_conn = new DatabaseConnector(get_db_site(), 'localhost'/*$server*/, 'root', $SITE_INFO['mysql_root_password'], 'cms_');
+    // Create database, set title and description and domain
+    $master_conn = new DatabaseConnector(get_db_site(), 'localhost'/*$server*/, 'root', $GLOBALS['SITE_INFO']['mysql_root_password'], 'cms_');
     $master_conn->query('DROP DATABASE `demonstratr_site_' . $codename . '`', null, null, true);
     $master_conn->query('CREATE DATABASE `demonstratr_site_' . $codename . '`', null, null, true);
     $user = substr(md5('demonstratr_site_' . $codename), 0, 16);
-    $master_conn->query('GRANT ALL ON `demonstratr_site_' . $codename . '`.* TO \'' . $user . '\'@\'%\' IDENTIFIED BY \'' . db_escape_string($SITE_INFO['mysql_demonstratr_password']) . '\''); // tcp/ip
-    $master_conn->query('GRANT ALL ON `demonstratr_site_' . $codename . '`.* TO \'' . $user . '\'@\'localhost\' IDENTIFIED BY \'' . db_escape_string($SITE_INFO['mysql_demonstratr_password']) . '\''); // local socket
-
-    // Import database contents
-    $cmd = '/usr/local/bin/mysql';
-    if (!is_file($cmd)) {
-        $cmd = '/usr/bin/mysql';
+    $master_conn->query('GRANT ALL ON `demonstratr_site_' . $codename . '`.* TO \'' . $user . '\'@\'%\' IDENTIFIED BY \'' . db_escape_string($GLOBALS['SITE_INFO']['mysql_demonstratr_password']) . '\''); // tcp/ip
+    $master_conn->query('GRANT ALL ON `demonstratr_site_' . $codename . '`.* TO \'' . $user . '\'@\'localhost\' IDENTIFIED BY \'' . db_escape_string($GLOBALS['SITE_INFO']['mysql_demonstratr_password']) . '\''); // local socket
+    $cmd = 'mysql -h' . /*$server*/'localhost' . ' -Ddemonstratr_site_' . $codename . ' -u' . $user . ' -p' . $GLOBALS['SITE_INFO']['mysql_demonstratr_password'] . ' < ' . special_demonstratr_dir() . '/template.sql';
+    if (get_member() == 6) {
+        attach_message($cmd, 'inform');
     }
-    $cmd .= ' -h' . /*$server*/'localhost';
-    $cmd .= ' -Ddemonstratr_site_' . $codename;
-    $cmd .= ' -u' . $user;
-    if ($SITE_INFO['mysql_demonstratr_password'] != '') {
-        $cmd .= ' -p' . $SITE_INFO['mysql_demonstratr_password'];
-    }
-    $cmd .= ' < ' . special_demonstratr_dir() . '/template.sql';
-    $cmd .= ' 2>&1'; // We want to gather error messages
-    if ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) {
-        attach_message('Running import command... ' . $cmd, 'inform');
-    }
-    $output = '';
-    $return_var = 0;
-    $last_line = exec($cmd, $output, $return_var);
-    if ($return_var != 0) {
-        fatal_exit('Failed to create database, ' . implode("\n", $output) . "\n" . $last_line);
-    }
-
-    // Set some default config
-    $db_conn = new DatabaseConnector('demonstratr_site_' . $codename, 'localhost'/*$server*/, $user, $SITE_INFO['mysql_demonstratr_password'], 'cms_');
+    shell_exec($cmd);
+    $db_conn = new DatabaseConnector('demonstratr_site_' . $codename, 'localhost'/*$server*/, $user, $GLOBALS['SITE_INFO']['mysql_demonstratr_password'], 'cms_');
     $db_conn->query_update('config', array('c_value' => $email_address), array('c_name' => 'staff_address'), '', 1);
     $pass = md5($password);
     $salt = '';
@@ -338,8 +316,6 @@ function find_all_servers()
  */
 function reset_base_config_file($server)
 {
-    global $SITE_INFO;
-
     $path = special_demonstratr_dir() . '/servers/' . filter_naughty($server) . '/_config.php';
     $myfile = fopen($path, GOOGLE_APPENGINE ? 'wb' : 'at');
     @flock($myfile, LOCK_EX);
@@ -380,7 +356,7 @@ if (!function_exists('git_repos')) {
 \$SITE_INFO['self_learning_cache'] = '1';
 
 \$SITE_INFO['db_site_user'] = 'demonstratr_site';
-\$SITE_INFO['db_site_password'] = '" . $SITE_INFO['mysql_demonstratr_password'] . "';
+\$SITE_INFO['db_site_password'] = '" . $GLOBALS['SITE_INFO']['mysql_demonstratr_password'] . "';
 \$SITE_INFO['db_site'] = 'demonstratr_site';
 \$SITE_INFO['table_prefix'] = 'cms_';
 
@@ -563,14 +539,12 @@ function do_backup_script()
     }
     $server = $sites[0]['s_server'];
 
-    global $SITE_INFO;
-
     // Create data
     require_code('zip');
     $file_array = zip_scan_folder(special_demonstratr_dir() . '/servers/' . filter_naughty($server) . '/sites/' . filter_naughty($id));
     $tmp_path = cms_tempnam();
     $user = substr(md5('demonstratr_site_' . $id), 0, 16);
-    shell_exec('mysqldump -h' . /*$server*/'localhost' . ' -u' . $user . ' -p' . $SITE_INFO['mysql_demonstratr_password'] . ' demonstratr_site_' . $id . ' --skip-opt > ' . $tmp_path);
+    shell_exec('mysqldump -h' . /*$server*/'localhost' . ' -u' . $user . ' -p' . $GLOBALS['SITE_INFO']['mysql_demonstratr_password'] . ' demonstratr_site_' . $id . ' --skip-opt > ' . $tmp_path);
     $file_array[] = array('full_path' => $tmp_path, 'name' => 'database.sql', 'time' => time());
     $data = create_zip_file($file_array);
     unlink($tmp_path);
@@ -650,10 +624,8 @@ function demonstratr_delete_old_sites()
  */
 function demonstratr_delete_site($server, $codename, $bulk = false)
 {
-    global $SITE_INFO;
-
     // Database
-    $master_conn = new DatabaseConnector(get_db_site(), 'localhost'/*$server*/, 'root', $SITE_INFO['mysql_root_password'], 'cms_');
+    $master_conn = new DatabaseConnector(get_db_site(), 'localhost'/*$server*/, 'root', $GLOBALS['SITE_INFO']['mysql_root_password'], 'cms_');
     $master_conn->query('DROP DATABASE IF EXISTS `demonstratr_site_' . $codename . '`');
     $user = substr(md5('demonstratr_site_' . $codename), 0, 16);
     $master_conn->query('REVOKE ALL ON `demonstratr_site_' . $codename . '`.* FROM \'' . $user . '\'', null, null, true);

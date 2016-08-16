@@ -131,7 +131,7 @@
 {+END}{+END}
 
 {$,Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent}
-{+START,IF,{$AND,{$CONFIG_OPTION,cookie_notice},{$RUNNING_SCRIPT,index}}}
+{+START,IF,{$CONFIG_OPTION,cookie_notice}}
 	<script type="text/javascript">
 		window.cookieconsent_options={'message':'{!COOKIE_NOTICE;,{$SITE_NAME}}','dismiss':'{!INPUTSYSTEM_OK;}','learnMore':'{!READ_MORE;}','link':'{$PAGE_LINK;,:privacy}','theme':'dark-top'};
 	</script>

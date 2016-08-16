@@ -53,7 +53,7 @@ class Hook_profiles_tabs_galleries
     {
         static $result = array();
         if (!isset($result[$member_id_of])) {
-            $sql = 'SELECT COUNT(*) FROM ' . get_table_prefix() . 'galleries WHERE name LIKE \'' . db_encode_like('member\_' . strval($member_id_of) . '\_%') . '\'';
+            $sql = 'SELECT COUNT(*) FROM ' . get_table_prefix() . 'galleries WHERE name LIKE \'' . db_encode_like('member_' . strval($member_id_of) . '_%') . '\'';
             $result[$member_id_of] = $GLOBALS['SITE_DB']->query_value_if_there($sql);
         }
         return $result[$member_id_of];

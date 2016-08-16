@@ -612,30 +612,9 @@ function get_textbox(element) {
     return element.value;
 }
 
-<<<<<<< HEAD
 function set_textbox(element, text, html) {
     if (is_wysiwyg_field(element)) {
         if (typeof html == 'undefined') html = escape_html(text).replace(new RegExp('\\\\n', 'gi'), '<br />');
-=======
-function set_textbox(element,text,html)
-{
-	if (is_wysiwyg_field(element))
-	{
-		if (typeof html=='undefined') html=escape_html(text).replace(new RegExp('\\\\n','gi'),'<br />');
-
-		window.wysiwyg_editors[element.id].setData(html);
-
-		window.wysiwyg_editors[element.id].updateElement();
-
-		window.setTimeout(function() {
-			find_tags_in_editor(window.wysiwyg_editors[element.id],element);
-		}, 100);
-	} else
-	{
-		element.value=text;
-	}
-}
->>>>>>> master
 
         window.wysiwyg_editors[element.id].setData(html);
 
@@ -647,7 +626,6 @@ function set_textbox(element,text,html)
     }
 }
 
-<<<<<<< HEAD
 /*
  Insert some text, with WYSIWYG support...
 
@@ -745,109 +723,6 @@ function insert_textbox(element, text, sel, plain_insert, html) {
         element.value += text;
         set_selection_range(element, from + text.length, from + text.length);
     }
-=======
-(Use insert_textbox_wrapping to wrap Comcode tags around a selection)
-*/
-function insert_textbox(element,text,sel,plain_insert,html)
-{
-	if (typeof plain_insert=='undefined') plain_insert=false;
-	if (typeof html=='undefined') html=null;
-
-	if (is_wysiwyg_field(element))
-	{
-		var editor=window.wysiwyg_editors[element.id];
-
-		var insert='';
-		if (plain_insert)
-		{
-			insert=get_selected_html(editor)+(html?html:escape_html(text).replace(new RegExp('\\\\n','gi'),'<br />'));
-		} else
-		{
-			var url=maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1'+keep_stub());
-			if (window.location.href.indexOf('topics')!=-1) url+='&forum_db=1';
-			var request=do_ajax_request(url,null,'data='+window.encodeURIComponent(text.replace(new RegExp(String.fromCharCode(8203),'g'),'')));
-			if ((request.responseXML) && (request.responseXML.documentElement.getElementsByTagName('result')[0]))
-			{
-				var result_tags=request.responseXML.documentElement.getElementsByTagName('result');
-				var result=result_tags[0];
-				insert=merge_text_nodes(result.childNodes).replace(/\s*$/,'');
-			}
-		}
-
-		var before=editor.getData();
-
-		try
-		{
-			editor.focus(); // Needed on some browsers
-			var selected_html=get_selected_html(editor);
-
-			if ((editor.getSelection()) && (editor.getSelection().getStartElement().getName()=='kbd')) // Danger Danger - don't want to insert into another Comcode tag. Put it after. They can cut+paste back if they need.
-			{
-				editor.document.getBody().appendHtml(insert);
-			} else
-			{
-				//editor.insertHtml(insert); Actually may break up the parent tag, we want it to nest nicely
-				var element_for_inserting=CKEDITOR.dom.element.createFromHtml(insert);
-				editor.insertElement(element_for_inserting);
-			}
-
-			var after=editor.getData();
-			if (after==before) throw 'Failed to insert';
-
-			find_tags_in_editor(editor,element);
-		}
-		catch (e) // Sometimes happens on Firefox in Windows, appending is a bit tamer (e.g. you cannot insert if you have the start of a h1 at cursor)
-		{
-			var after=editor.getData();
-			if (after==before) // Could have just been a window.scrollBy popup-blocker exception, so only do this if the op definitely failed
-				editor.document.getBody().appendHtml(insert);
-		}
-
-		editor.updateElement();
-
-		return;
-	}
-
-	var from=element.value.length,to;
-
-	element.focus();
-
-	if (typeof sel=='undefined') sel=null;
-	if (sel===null) sel=document.selection?document.selection:null;
-
-	if (typeof element.selectionEnd!='undefined') // Mozilla style
-	{
-		from=element.selectionStart;
-		to=element.selectionEnd;
-
-		var start=element.value.substring(0,from);
-		var end=element.value.substring(to,element.value.length);
-
-		element.value=start+element.value.substring(from,to)+text+end;
-		set_selection_range(element,from+text.length,from+text.length);
-	} else
-	if (sel) // IE style
-	{
-		var ourRange=sel.createRange();
-		if ((ourRange.moveToElementText) || (ourRange.parentElement()==element))
-		{
-			if (ourRange.parentElement()!=element) ourRange.moveToElementText(element);
-			ourRange.text=ourRange.text+text;
-		} else
-		{
-			element.value+=text;
-			from+=2;
-			set_selection_range(element,from+text.length,from+text.length);
-		}
-	}
-	else
-	{
-		// :(
-		from+=2;
-		element.value+=text;
-		set_selection_range(element,from+text.length,from+text.length);
-	}
->>>>>>> master
 }
 function insert_textbox_opener(element, text, sel, plain_insert, html) {
     if ((typeof sel == 'undefined') || (!sel)) var sel = get_main_cms_window().document.selection ? get_main_cms_window().document.selection : null;
@@ -879,7 +754,6 @@ function get_selected_html(editor) {
 }
 
 // Insert into the editor such as to *wrap* the current selection with something new (typically a new Comcode tag)
-<<<<<<< HEAD
 function insert_textbox_wrapping(element, before_wrap_tag, after_wrap_tag) {
     var from, to;
 
@@ -951,91 +825,6 @@ function insert_textbox_wrapping(element, before_wrap_tag, after_wrap_tag) {
         element.value += before_wrap_tag + after_wrap_tag;
         set_selection_range(element, from, to + before_wrap_tag.length + after_wrap_tag.length);
     }
-=======
-function insert_textbox_wrapping(element,before_wrap_tag,after_wrap_tag)
-{
-	var from,to;
-
-	if (after_wrap_tag=='')
-	{
-		after_wrap_tag='[/'+before_wrap_tag+']';
-		before_wrap_tag='['+before_wrap_tag+']';
-	}
-
-	if (is_wysiwyg_field(element))
-	{
-		var editor=window.wysiwyg_editors[element.id];
-
-		editor.focus(); // Needed on some browsers, but on Opera will defocus our selection
-		var selected_html=get_selected_html(editor);
-
-		if (selected_html=='') selected_html='{!comcode:TEXT_OR_COMCODE_GOES_HERE;}'.toUpperCase();
-
-		var new_html='';
-
-		var url=maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1'+keep_stub());
-		if (window.location.href.indexOf('topics')!=-1) url+='&forum_db=1';
-		var request=do_ajax_request(url,null,'data='+window.encodeURIComponent((before_wrap_tag+selected_html+after_wrap_tag).replace(new RegExp(String.fromCharCode(8203),'g'),'')));
-		if ((request.responseXML) && (request.responseXML.documentElement.getElementsByTagName('result')[0]))
-		{
-			var result_tags=request.responseXML.documentElement.getElementsByTagName('result');
-			var result=result_tags[0];
-			new_html=merge_text_nodes(result.childNodes).replace(/\s*$/,''); /* result is an XML-escaped string of HTML, so we get via looking at the node text */
-		} else
-		{
-			new_html = selected_html;
-		}
-
-		if ((editor.getSelection()) && (editor.getSelection().getStartElement().getName()=='kbd')) // Danger Danger - don't want to insert into another Comcode tag. Put it after. They can cut+paste back if they need.
-		{
-			editor.document.getBody().appendHtml(new_html);
-		} else
-		{
-			editor.insertHtml(new_html);
-		}
-
-		editor.updateElement();
-
-		find_tags_in_editor(editor,element);
-
-		return;
-	}
-
-	if (typeof element.selectionEnd!='undefined') // Mozilla style
-	{
-		from=element.selectionStart;
-		to=element.selectionEnd;
-
-		var start=element.value.substring(0,from);
-		var end=element.value.substring(to,element.value.length);
-
-		if (to>from)
-		{
-			element.value=start+before_wrap_tag+element.value.substring(from,to)+after_wrap_tag+end;
-		} else
-		{
-			element.value=start+before_wrap_tag+after_wrap_tag+end;
-		}
-		set_selection_range(element,from,to+before_wrap_tag.length+after_wrap_tag.length);
-	} else
-	if (typeof document.selection!='undefined') // IE style
-	{
-		element.focus();
-		var sel=document.selection;
-		var ourRange=sel.createRange();
-		if ((ourRange.moveToElementText) || (ourRange.parentElement()==element))
-		{
-			if (ourRange.parentElement()!=element) ourRange.moveToElementText(element);
-			ourRange.text=before_wrap_tag+ourRange.text+after_wrap_tag;
-		} else element.value+=before_wrap_tag+after_wrap_tag;
-	}
-	else
-	{
-		// :(
-		element.value+=before_wrap_tag+after_wrap_tag;
-		set_selection_range(element,from,to+before_wrap_tag.length+after_wrap_tag.length);
-	}
->>>>>>> master
 }
 
 // From http://www.faqts.com/knowledge_base/view.phtml/aid/13562

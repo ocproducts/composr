@@ -21,13 +21,13 @@ Composr uses "page-links" for internal configuration instead of URLs because of 
 The available URL Schemes are:
  - Use /pg/ to identify CMS pages (e.g. [tt]/pg/start[/tt])
  - Use .htm to identify CMS pages (e.g. [tt]/start.htm[/tt])
- - Very simple unadorned URLs (e.g. [tt]/start[/tt])
+ - Very simple unadorned URLs (e.g. [tt]/index.php?page=start[/tt])
 
 "Use /pg/ to identify CMS pages" is recommended for novice users because it is unambiguous and simple to set up.
 
 "Use .htm to identify CMS pages" requires the [tt].htaccess[/tt] file to have an awareness of each Composr zone, so it can disambiguate requests and thus route them to the correct zone.
 
-"Very simple unadorned URLs" is great, but the webmaster may need to be very skilled at web server administration if they have other software packages installed in the same directory as Composr. The redirect rules for this are commented out in the default [tt].htaccess[/tt] files.
+"Very simple unadorned URLs" is great, but the webmaster may need to be very skilled at web server administration if they have other software packages installed in the same directory as Composr.
 
 [title="3"]An example: linking to your own member profile[/title]
 
