@@ -9,14 +9,8 @@
 			{$BLOCK,block=top_search,failsafe=1}
 		</div>
 
-		<ul class="nl" id="r_{MENU|*}_d">
+		<ul class="nl" id="r_{MENU|*}_d"{+START,IF_PASSED_AND_TRUE,JAVASCRIPT_HIGHLIGHTING} data-cms-call="menu_active_selection"{+END}>
 			{CONTENT}
 		</ul>
-
-	{+START,IF_PASSED_AND_TRUE,JAVASCRIPT_HIGHLIGHTING}
-		<script>// <![CDATA[
-			menu_active_selection('r_{MENU|}_d');
-		//]]></script>
-	{+END}
 	</nav>
 {+END}

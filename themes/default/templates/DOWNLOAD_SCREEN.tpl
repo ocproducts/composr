@@ -150,7 +150,7 @@
 
 			{$SET,carousel_id,{$RAND}}
 
-			<div id="carousel_{$GET*,carousel_id}" class="carousel" style="display: none">
+			<div id="carousel_{$GET*,carousel_id}" class="carousel" style="display: none" data-cms-call="initialise_carousel">
 				<div class="move_left" onmousedown="carousel_move({$GET*,carousel_id},-100); return false;"></div>
 				<div class="move_right" onmousedown="carousel_move({$GET*,carousel_id},+100); return false;"></div>
 
@@ -161,12 +161,6 @@
 			<div class="carousel_temp" id="carousel_ns_{$GET*,carousel_id}">
 				{IMAGES_DETAILS}
 			</div>
-
-			<script>// <![CDATA[
-				$(function() {
-					initialise_carousel({$GET,carousel_id});
-				});
-			//]]></script>
 
 			{$,<p class="download_start_slideshow"><span class="associated_link"><a target="_blank" title="\{!galleries:_SLIDESHOW\}: \{!LINK_NEW_WINDOW\}" href="\{$PAGE_LINK*,_SEARCH:galleries:image:\{$GET*,FIRST_IMAGE_ID\}:slideshow=1:wide_high=1\}">\{!galleries:_SLIDESHOW\}</a></span></p>}
 		</div></div>

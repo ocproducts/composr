@@ -1,5 +1,49 @@
 "use strict";
 
+(function ($, Composr) {
+    Composr.templates.realtimeRain = {
+        realtimeRainOverlay: function realtimeRainOverlay(options) {
+            window.min_time = options.minTime;
+            window.paused = false;
+            window.bubble_groups = {};
+            window.total_lines = 0;
+            window.bubble_timer_1 = null;
+            window.bubble_timer_2 = null;
+
+            start_realtime_rain();
+        },
+
+        realtimeRainBubble: function realtimeRainBubble(options) {
+            window.pending_eval_function = function (ob) { // In webkit you can't get a node until it's been closed, so we need to set our code into a function and THEN run it
+                if (typeof options.tickerText !== 'undefined') {
+                    window.setTimeout(function () {
+                        set_inner_html(document.getElementById('news_go_here'), options.tickerText);
+                    }, options.relativeTimestamp * 1000);
+                }
+                // Set up extra attributes
+                ob.time_offset = options.relativeTimestamp;
+                ob.lines_for = [];
+
+                if (typeof options.groupId !== 'undefined'){
+                    ob.lines_for.push(options.groupId);
+                }
+
+                if ((typeof options.specialIcon !== 'undefined') && (options.specialIcon === 'email-icon')) {
+                    ob.icon_multiplicity = options.multiplicity;
+                }
+            };
+        }
+    };
+
+    Composr.behaviors.realtimeRain = {
+        initialize: {
+            attach: function (context) {
+                Composr.initializeTemplates(context, 'realtime_rain');
+            }
+        }
+    };
+})(window.jQuery || window.Zepto, Composr);
+
 // Handle the realtime_rain button on the bottom bar
 function realtime_rain_button_load_handler() {
     var img = document.getElementById('realtime_rain_img');

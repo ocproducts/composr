@@ -210,10 +210,6 @@ THEME IMAGE CLICKING
 
 function handle_image_mouse_over(event)
 {
-	if (typeof window.cms_theme=='undefined') window.cms_theme='{$THEME;}';
-	if (typeof window.cms_lang=='undefined') window.cms_lang='{$LANG;}';
-	if (typeof window.cms_theme=='undefined') return;
-
 	var target=event.target || event.srcElement;
 	if (target.previousSibling && (typeof target.previousSibling.className!='undefined') && (typeof target.previousSibling.className.indexOf!='undefined') && (target.previousSibling.className.indexOf('magic_image_edit_link')!=-1)) return;
 	if (target.offsetWidth<130) return;
@@ -302,7 +298,7 @@ function handle_image_click(event,ob,force)
 		if (typeof event.preventDefault!='undefined') event.preventDefault();
 
 		if (src.indexOf('{$BASE_URL_NOHTTP;}/themes/')!=-1)
-			ob.edit_window=window.open('{$BASE_URL;,0}/adminzone/index.php?page=admin_themes&type=edit_image&lang='+window.encodeURIComponent(window.cms_lang)+'&theme='+window.encodeURIComponent(window.cms_theme)+'&url='+window.encodeURIComponent(src.replace('{$BASE_URL;,0}/',''))+keep_stub(),'edit_theme_image_'+ob.id);
+			ob.edit_window=window.open('{$BASE_URL;,0}/adminzone/index.php?page=admin_themes&type=edit_image&lang='+window.encodeURIComponent(Composr.$LANG)+'&theme='+window.encodeURIComponent(Composr.$THEME)+'&url='+window.encodeURIComponent(src.replace('{$BASE_URL;,0}/',''))+keep_stub(),'edit_theme_image_'+ob.id);
 		else window.fauxmodal_alert('{!NOT_THEME_IMAGE;^}');
 
 		return false;
@@ -321,11 +317,9 @@ function load_software_chat(event)
 	if (typeof event.preventDefault!='undefined') event.preventDefault();
 
 	var url='https://kiwiirc.com/client/irc.kiwiirc.com/?nick=';
-	if (typeof window.cms_username!='undefined' && window.cms_username!='admin')
-	{
-		url+=window.encodeURIComponent(window.cms_username.replace(/[^a-zA-Z0-9\_\-\\\[\]\{\}\^`|]/g,''));
-	} else
-	{
+	if (Composr.$USERNAME != 'admin') {
+		url+=window.encodeURIComponent(Composr.$USERNAME.replace(/[^a-zA-Z0-9\_\-\\\[\]\{\}\^`|]/g,''));
+	} else {
 		url+=window.encodeURIComponent('{$SITE_NAME;}'.replace(/[^a-zA-Z0-9\_\-\\\[\]\{\}\^`|]/g,''));
 	}
 	url+='#composrcms';

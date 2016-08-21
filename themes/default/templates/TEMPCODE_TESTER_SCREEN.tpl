@@ -1,4 +1,4 @@
-{$REQUIRE_JAVASCRIPT,addon/core_themeing}
+{$REQUIRE_JAVASCRIPT,core_themeing}
 {TITLE}
 
 <noscript>
@@ -7,7 +7,7 @@
 
 <p>{!TEMPCODE_TESTER_HELP}</p>
 
-<form title="{!PRIMARY_PAGE_FORM}" method="post" action="#" autocomplete="off">
+<form title="{!PRIMARY_PAGE_FORM}" method="post" action="#" autocomplete="off" data-tpl-core-themeing="tempcodeTesterScreen">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<h2><label for="tempcode">Tempcode</label></h2>
@@ -28,7 +28,7 @@
 	{+END}
 
 	<p class="proceed_button">
-		<input onclick="return do_tempcode_tester_preview(this.form);" accesskey="p" class="button_screen tabs__preview" type="submit" value="{!PREVIEW}" />
+		<input accesskey="p" class="button_screen tabs__preview js-btn-do-preview" type="submit" value="{!PREVIEW}" />
 	</p>
 </form>
 

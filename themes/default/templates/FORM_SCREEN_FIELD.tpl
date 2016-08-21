@@ -37,7 +37,7 @@
 		<tr class="field_input">
 	{+END}
 
-	<td id="form_table_field_input__{$GET,randomised_id}" class="form_table_field_input{+START,IF,{REQUIRED}} required{+END}">
+	<td id="form_table_field_input__{$GET,randomised_id}" class="form_table_field_input{+START,IF,{REQUIRED}} required{+END}" data-cms-call="set_up_change_monitor">
 		{+START,IF,{$NOT,{$MOBILE}}}{+START,IF,{$NOT,{$_GET,overlay}}}
 			{COMCODE}
 		{+END}{+END}
@@ -64,10 +64,6 @@
 		{+START,IF_NON_EMPTY,{NAME}}
 			<input type="hidden" id="required_posted__{$GET,randomised_id}" name="require__{NAME*}" value="{$?,{REQUIRED*},1,0}" />
 		{+END}
-
-		<script>// <![CDATA[
-			set_up_change_monitor('form_table_field_input__{$GET,randomised_id}');
-		//]]></script>
 	</td>
 </tr>
 

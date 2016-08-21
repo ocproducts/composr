@@ -1,4 +1,4 @@
-{$REQUIRE_JAVASCRIPT,addon/galleries}
+{$REQUIRE_JAVASCRIPT,galleries}
 {TITLE}
 
 {+START,IF_NON_EMPTY,{FORM2}}

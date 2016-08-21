@@ -1,6 +1,7 @@
 {$REQUIRE_JAVASCRIPT,jquery}
 {$REQUIRE_JAVASCRIPT,widget_color}
 {$REQUIRE_JAVASCRIPT,theme_colours}
+{$REQUIRE_JAVASCRIPT,core_form_interfaces}
 {$REQUIRE_CSS,widget_color}
 
 {+START,IF,{RAW_FIELD}}
@@ -13,12 +14,6 @@
 				</div>
 			</div>
 		</div>
-		<script>// <![CDATA[
-			$(function() {
-				make_colour_chooser('{NAME;/}','{DEFAULT;/}','',{TABINDEX%},' ','input_colour{_REQUIRED;/}');
-				do_color_chooser();
-			});
-		//]]></script>
 	</div>
 {+END}
 {+START,IF,{$NOT,{RAW_FIELD}}}
@@ -32,14 +27,9 @@
 					</div>
 				</div>
 			</div>
-			<script>// <![CDATA[
-				$(function() {
-					make_colour_chooser('{NAME;/}','{DEFAULT;/}','',{TABINDEX%},'{PRETTY_NAME;/}','input_colour{_REQUIRED;/}');
-					do_color_chooser();
-				});
-			//]]></script>
-
 			{+START,INCLUDE,FORM_SCREEN_FIELD_DESCRIPTION}{+END}
 		</td>
 	</tr>
 {+END}
+
+<script type="application/json" data-tpl-core-form-interfaces="formScreenInputColour">{+START,PARAMS_JSON,RAW_FIELD,NAME,DEFAULT,TABINDEX,PRETTY_NAME,_REQUIRED}{_/}{+END}</script>

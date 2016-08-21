@@ -6,7 +6,7 @@
 		var lobby_link='{$PAGE_LINK;,_SEARCH:chat:browse:enter_im=!!}';
 		var participants='';
 
-		Composr.onWindowLoad(function () {
+		Composr.loadWindow.then(function () {
 			if (!window.load_from_room_id) // Only if not in chat lobby or chatroom, so as to avoid conflicts
 			{
 				function begin_im_chatting()

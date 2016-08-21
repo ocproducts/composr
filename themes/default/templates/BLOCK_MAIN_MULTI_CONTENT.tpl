@@ -23,7 +23,7 @@
 		{$SET,carousel_id,{$RAND}}
 
 		{+START,IF_NON_EMPTY,{CONTENT}}
-			<div id="carousel_{$GET*,carousel_id}" class="carousel" style="display: none">
+			<div id="carousel_{$GET*,carousel_id}" class="carousel" style="display: none" data-cms-call="initialise_carousel">
 				<div class="move_left" onkeypress="this.onmousedown(event);" onmousedown="carousel_move({$GET*,carousel_id},-30); return false;"></div>
 				<div class="move_right" onkeypress="this.onmousedown(event);" onmousedown="carousel_move({$GET*,carousel_id},+30); return false;"></div>
 
@@ -36,30 +36,6 @@
 					{_loop_var}
 				{+END}
 			</div>
-
-			<script>// <![CDATA[
-				$(function() {
-					initialise_carousel({$GET,carousel_id});
-
-					var current_loading_from_pos_{$GET*,carousel_id}={START%};
-
-					function carousel_prepare_load_more_{$GET*,carousel_id}(carousel_id)
-					{
-						var ob=document.getElementById('carousel_ns_'+carousel_id);
-
-						if (ob.parentNode.scrollLeft + ob.offsetWidth * 2 < ob.scrollWidth) return; // Not close enough to need more results
-
-						current_loading_from_pos_{$GET*,carousel_id}+={MAX%};
-
-						call_block(
-							'{$FACILITATE_AJAX_BLOCK_CALL;,{BLOCK_PARAMS},raw=.*\,cache=.*}'+'&{START_PARAM%}='+current_loading_from_pos_{$GET*,carousel_id},
-							'raw=1,cache=0',
-							ob,
-							true
-						);
-					}
-				});
-			//]]></script>
 		{+END}
 
 		{+START,IF_EMPTY,{CONTENT}}

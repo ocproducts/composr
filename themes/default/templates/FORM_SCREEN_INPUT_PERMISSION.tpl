@@ -1,4 +1,5 @@
-<tr id="access_{GROUP_ID*}_privilege_container" class="{$CYCLE,permissions_zebra,zebra_0,zebra_1}">
+{$REQUIRE_JAVASCRIPT,core_form_interfaces}
+<tr id="access_{GROUP_ID*}_privilege_container" class="{$CYCLE,permissions_zebra,zebra_0,zebra_1}" data-tpl-core-form-interfaces="formScreenInputPermission" data-tpl-args="{+START,PARAMS_JSON,ALL_GLOBAL,GROUP_ID}{_*}{+END}">
 	<th class="form_table_field_name">
 		<p class="form_field_name field_name">{GROUP_NAME*}</p>
 		{+START,IF,{$OR,{FORCE_PRESETS},{$IS_NON_EMPTY,{OVERRIDES}}}}
@@ -41,17 +42,6 @@
 
 		{+START,IF_EMPTY,{OVERRIDES}}
 			{PINTERFACE_VIEW*}</label>
-		{+END}
-
-		{+START,IF,{$NOT,{ALL_GLOBAL}}}
-			<script>// <![CDATA[
-				var list=document.getElementById('access_{GROUP_ID;/}_presets');
-				// Test to see what we wouldn't have to make a change to get - and that is what we're set at
-				if (!copy_permission_presets('access_{GROUP_ID;/}','0',true)) list.selectedIndex=list.options.length-4;
-				else if (!copy_permission_presets('access_{GROUP_ID;/}','1',true)) list.selectedIndex=list.options.length-3;
-				else if (!copy_permission_presets('access_{GROUP_ID;/}','2',true)) list.selectedIndex=list.options.length-2;
-				else if (!copy_permission_presets('access_{GROUP_ID;/}','3',true)) list.selectedIndex=list.options.length-1;
-			//]]></script>
 		{+END}
 	</td>
 

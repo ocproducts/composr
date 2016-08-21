@@ -13398,9 +13398,16 @@ function preinit_file_input(page_type,name,_btn_submit_id,posting_field_name,fil
 
 	if (!posting_field_name) posting_field_name='post';
 
-	var rep=document.getElementById(name);
-	rep.originally_disabled=rep.disabled;
-	rep.disabled=true;
+	var rep;
+
+	if (!name && (this instanceof HTMLElement)) {
+		rep = this;
+	} else {
+		rep = document.getElementById(name);
+	}
+
+	rep.originally_disabled = rep.disabled;
+	rep.disabled = true;
 
 	replace_file_input(page_type,name,_btn_submit_id,posting_field_name,filter,button_type);
 }

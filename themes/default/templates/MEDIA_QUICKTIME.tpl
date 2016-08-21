@@ -28,7 +28,7 @@
 	{$,Tie into callback event to see when finished, for our slideshows}
 	{$,API: http://developer.apple.com/library/safari/#documentation/QuickTime/Conceptual/QTScripting_JavaScript/bQTScripting_JavaScri_Document/QuickTimeandJavaScri.html}
 	<script>// <![CDATA[
-		Composr.onWindowLoad(function() {
+		Composr.loadWindow.then(function() {
 			if (document.getElementById('next_slide'))
 			{
 				stop_slideshow_timer();

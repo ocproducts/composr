@@ -44,8 +44,4 @@
 	</p>
 {+END}{+END}{+END}
 
-<script>// <![CDATA[
-	$(function() {
-		if ((typeof window.trigger_resize!='undefined') && (window.top!=window)) trigger_resize();
-	});
-//]]></script>
+<script type="application/json" data-tpl-core-abstract-interfaces="warnScreen"></script>

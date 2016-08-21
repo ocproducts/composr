@@ -1,4 +1,4 @@
-<fieldset id="set_wrapper_{SET_NAME*}" class="innocuous_fieldset{+START,IF_PASSED,EXISTING_IMAGE_PREVIEW_URL}{+START,IF_NON_EMPTY,{EXISTING_IMAGE_PREVIEW_URL}} has_preview{+END}{+END}">
+<fieldset id="set_wrapper_{SET_NAME*}" data-cms-call="standard_alternate_fields_within" data-cms-call-args="[null, {$?,{REQUIRED},true,false}]" class="innocuous_fieldset{+START,IF_PASSED,EXISTING_IMAGE_PREVIEW_URL}{+START,IF_NON_EMPTY,{EXISTING_IMAGE_PREVIEW_URL}} has_preview{+END}{+END}">
 	<legend class="accessibility_hidden">{PRETTY_NAME*}</legend>
 
 	{+START,IF_PASSED,EXISTING_IMAGE_PREVIEW_URL}{+START,IF_NON_EMPTY,{EXISTING_IMAGE_PREVIEW_URL}}
@@ -9,9 +9,3 @@
 
 	{FIELDS}
 </fieldset>
-
-<script>// <![CDATA[
-	$(function() {
-		standard_alternate_fields_within('{SET_NAME;/}',{$?,{REQUIRED},true,false});
-	});
-//]]></script>

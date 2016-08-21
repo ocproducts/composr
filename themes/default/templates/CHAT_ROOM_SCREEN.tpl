@@ -7,13 +7,8 @@
 {+START,IF_NON_EMPTY,{INTRODUCTION}}<p>{INTRODUCTION}</p>{+END}
 
 {CHAT_SOUND}
-<script>
-// <![CDATA[
-$(prepare_chat_sounds);
-// ]]>
-</script>
 
-<div class="chat_posting_area">
+<div class="chat_posting_area" data-cms-call="prepare_chat_sounds">
 	<div class="float_surrounder">
 		<div class="left">
 			<form title="{!MESSAGE}" action="{MESSAGES_PHP*}?action=post&amp;room_id={CHATROOM_ID*}" method="post" class="inline" autocomplete="off">
@@ -135,7 +130,7 @@ $(prepare_chat_sounds);
 </div>
 
 <script>// <![CDATA[
-	Composr.onWindowLoad(function() {
+	Composr.loadWindow.then(function() {
 		chat_load({CHATROOM_ID%});
 	});
 // ]]></script>

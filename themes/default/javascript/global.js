@@ -1,239 +1,44 @@
 /* Ideally this template should not be edited. See the note at the bottom of how JAVASCRIPT_CUSTOM_GLOBALS.tpl is appended to this template */
 
-"use strict";
+/*{$REQUIRE_JAVASCRIPT,composr}*/
 
-var Composr = {
-    _windowLoaded: false,
-    _polyfillsLoaded: false
-};
-
-(function ($){
-
-    bindSymbols();
-    loadPolyfills();
-
-    Composr.onReady = function onReady(callback) {
-        //if (Composr._polyfillsLoaded) {
-            $(callback);
-        //} else {
-        //    window.addEventListener('composr.polyfillsloaded', function (){
-        //        $(callback);
-        //    });
-        //}
+// jQuery once plugin
+// https://github.com/RobLoach/jquery-once
+(function ($) {
+    var checkId = function (id) {
+        id = id || 'once';
+        if (typeof id !== 'string') {
+            throw new Error('The jQuery Once id parameter must be a string');
+        }
+        return id;
     };
 
-    Composr.onWindowLoad = function onWindowLoad(callback) {
-        if (Composr._windowLoaded || (document.readyState === 'complete')) {
-            Composr._windowLoaded = true;
-            setTimeout(callback, 0);
-        } else {
-            window.addEventListener('load', function () {
-                Composr._windowLoaded = true;
-                setTimeout(callback, 0);
-            });
-        }
+    $.fn.once = function (id) {
+        // Build the jQuery Once data name from the provided ID.
+        var name = 'jquery-once-' + checkId(id);
+
+        // Find elements that don't have the jQuery Once data applied to them yet.
+        return this.filter(function () {
+            return $(this).data(name) !== true;
+        }).data(name, true);
     };
 
-
-    /**
-     * Helper to rethrow errors asynchronously.
-     *
-     * This way Errors bubbles up outside of the original callstack, making it
-     * easier to debug errors in the browser.
-     *
-     * @param Error|string error
-     *   The error to be thrown.
-     */
-    Composr.throwError = function (error) {
-        setTimeout(function () { throw error; }, 0);
+    $.fn.removeOnce = function (id) {
+        // Filter through the elements to find the once'd elements.
+        return this.findOnce(id).removeData('jquery-once-' + checkId(id));
     };
 
-    var composrSettings = {};
+    $.fn.findOnce = function (id) {
+        // Filter the elements by which do have the data.
+        var name = 'jquery-once-' + checkId(id);
 
-    Composr.behaviors = {};
-
-    Composr.attachBehaviors = function (context, settings) {
-        context = context || document;
-        settings = settings || composrSettings;
-        var behaviors = Composr.behaviors;
-        // Execute all of them.
-        for (var i in behaviors) {
-            if (behaviors.hasOwnProperty(i) && typeof behaviors[i].attach === 'function') {
-                // Don't stop the execution of behaviors in case of an error.
-                try {
-                    behaviors[i].attach(context, settings);
-                } catch (e) {
-                    Composr.throwError(e);
-                }
-            }
-        }
+        return this.filter(function () {
+            return $(this).data(name) === true;
+        });
     };
-
-    Composr.detachBehaviors = function (context, settings, trigger) {
-        context = context || document;
-        settings = settings || composrSettings;
-        trigger = trigger || 'unload';
-        var behaviors = Composr.behaviors;
-        // Execute all of them.
-        for (var i in behaviors) {
-            if (behaviors.hasOwnProperty(i) && typeof behaviors[i].detach === 'function') {
-                // Don't stop the execution of behaviors in case of an error.
-                try {
-                    behaviors[i].detach(context, settings, trigger);
-                }
-                catch (e) {
-                    Composr.throwError(e);
-                }
-            }
-        }
-    };
-
-    /* DOM helper methods */
-    Composr.dom = {};
-
-    /* Returns the provided element's width excluding padding and borders */
-    Composr.dom.contentWidth = function contentWidth(element) {
-        var cs = getComputedStyle(element),
-            padding = parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight),
-            border = parseFloat(cs.borderLeftWidth) + parseFloat(cs.borderRightWidth);
-
-        return element.offsetWidth - padding - border;
-    };
-
-    /* Returns the provided element's height excluding padding and border */
-    Composr.dom.contentHeight = function contentHeigt(element) {
-        var cs = getComputedStyle(element),
-            padding = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom),
-            border = parseFloat(cs.borderTopWidth) + parseFloat(cs.borderBottomWidth);
-
-        return element.offsetHeight - padding - border;
-    };
-
-    function bindSymbols() {
-        var symbol = JSON.parse(document.getElementsByName('composr-symbol-data')[0].content);
-        Composr.$PAGE_TITLE = symbol.PAGE_TITLE;
-        Composr.$MEMBER = symbol.MEMBER;
-        Composr.$IS_GUEST = symbol.IS_GUEST;
-        Composr.$USERNAME = symbol.USERNAME;
-        Composr.$AVATAR = symbol.AVATAR;
-        Composr.$MEMBER_EMAIL = symbol.MEMBER_EMAIL;
-        Composr.$PHOTO = symbol.PHOTO;
-        Composr.$MEMBER_PROFILE_URL = symbol.MEMBER_PROFILE_URL;
-        Composr.$FROM_TIMESTAMP = symbol.FROM_TIMESTAMP;
-        Composr.$MOBILE = symbol.MOBILE;
-        Composr.$THEME = symbol.THEME;
-        Composr.$JS_ON = symbol.JS_ON;
-        Composr.$LANG = symbol.LANG;
-        Composr.$BROWSER_UA = symbol.BROWSER_UA;
-        Composr.$OS = symbol.OS;
-        Composr.$DEV_MODE = symbol.DEV_MODE;
-        Composr.$USER_AGENT = symbol.USER_AGENT;
-        Composr.$IP_ADDRESS = symbol.IP_ADDRESS;
-        Composr.$TIMEZONE = symbol.TIMEZONE;
-        Composr.$HTTP_STATUS_CODE = symbol.HTTP_STATUS_CODE;
-        Composr.$CHARSET = symbol.CHARSET;
-        Composr.$KEEP = symbol.KEEP;
-        Composr.$SITE_NAME = symbol.SITE_NAME;
-        Composr.$COPYRIGHT = symbol.COPYRIGHT;
-        Composr.$DOMAIN = symbol.DOMAIN;
-        Composr.$FORUM_BASE_URL = symbol.FORUM_BASE_URL;
-        Composr.$BASE_URL = symbol.BASE_URL;
-        Composr.$BRAND_NAME = symbol.BRAND_NAME;
-        Composr.$IS_STAFF = symbol.IS_STAFF;
-        Composr.$IS_ADMIN = symbol.IS_ADMIN;
-        Composr.$VERSION = symbol.VERSION;
-        Composr.$COOKIE_PATH = symbol.COOKIE_PATH;
-        Composr.$COOKIE_DOMAIN = symbol.COOKIE_DOMAIN;
-        Composr.$IS_A_COOKIE_LOGIN = symbol.IS_A_COOKIE_LOGIN;
-        Composr.$SESSION_COOKIE_NAME = symbol.SESSION_COOKIE_NAME;
-        Composr.$GROUP_ID = symbol.GROUP_ID;
-    }
-
-    var scriptsToLoad = 0;
-    var scriptsLoaded = 0;
-    function loadPolyfills() {
-        if (Composr._polyfillsLoaded) {
-            return;
-        }
-
-        if (typeof NodeList.prototype.forEach === 'undefined') {
-            // Only Chrome has native support as of writing
-            NodeList.prototype.forEach = Array.prototype.forEach;
-        }
-
-        function onload() {
-            scriptsLoaded++;
-
-            if (scriptsToLoad === scriptsLoaded) {
-                Composr._polyfillsLoaded = true;
-                window.dispatchEvent(new Event('composr.polyfillsloaded'));
-            }
-        }
-
-        function loadScript(src) {
-            scriptsToLoad++;
-            var s = document.createElement('script');
-            s.onload = onload;
-            s.async = true;
-            s.src = src;
-            document.head.appendChild(s);
-        }
-
-        if (typeof window.URLSearchParams === 'undefined') {
-            loadScript(Composr.$BASE_URL + '/data/polyfills/url-search-params.max.js');
-        }
-
-        if (scriptsToLoad === 0) {
-            Composr._polyfillsLoaded = true;
-            window.dispatchEvent(new Event('composr.polyfillsloaded'));
-        }
-    }
-
-}(window.jQuery || window.Zepto));
+})(window.jQuery || window.Zepto);
 
 
-Composr.onReady(function () {
-    console.log('Composr.onReady running in global.js');
-
-    $('[data-cms-call]').each(function () {
-        var funcName = this.dataset.cmsCall.trim(),
-            args = [];
-
-        if (this.dataset.cmsCallOpts) {
-            let _args = JSON.parse(this.dataset.cmsCallOpts);
-
-            if (_args) {
-                args = _args;
-            }
-
-            if (!Array.isArray(args)) {
-                args = [args];
-            }
-        }
-
-        var parts = funcName.split('.');
-
-        if (!parts.length) {
-            return;
-        }
-
-        var func = window;
-
-        for (let i = 0; i < parts.length; i++) {
-            func = func[parts[i]];
-        }
-
-        func.apply(this, args);
-    });
-
-    $('[data-cms-select2]').each(function () {
-        var options = JSON.parse(this.dataset.cmsSelect2) || {};
-
-        $(this).select2(options);
-    });
-
-    Composr.attachBehaviors(document, {});
-});
 
 /* Startup */
 if (typeof window.page_loaded == 'undefined') // To stop problem if JS file loaded more than once
@@ -280,10 +85,11 @@ function script_load_stuff() {
     /*{+END}*/
     if ((!window.parent) || (window.parent == window)) {
         //set_cookie('screen_width',get_window_width(),120);	Violation of EU Cookie Guidelines :(
-        if (typeof window.server_timestamp != 'undefined') {
+
+        /*{+START,IF,{$CONFIG_OPTION,is_on_timezone_detection}}*/
             set_cookie('client_time', new Date().toString(), 120);
-            set_cookie('client_time_ref', window.server_timestamp, 120);
-        }
+            set_cookie('client_time_ref', Composr.$FROM_TIMESTAMP, 120);
+        /*{+END}*/
     }
 
     // General HTML initialisation
@@ -404,7 +210,7 @@ function script_load_stuff() {
 
     window.page_loaded = true;
 
-    Composr.onWindowLoad(function () { // When images etc have loaded
+    Composr.loadWindow.then(function () { // When images etc have loaded
         script_page_rendered();
     });
 
@@ -1270,12 +1076,12 @@ function require_javascript(script, detector) {
     if (typeof detector != 'undefined') return; // Some object reference into the file passed in was defined, so the file must have been loaded already
 
     // Load it
-    var link = document.createElement('script');
-    link.setAttribute('id', 'loading_js_' + script);
-    link.setAttribute('type', 'text/javascript');
+    var s = document.createElement('script');
+    s.setAttribute('id', 'loading_js_' + script);
+    s.setAttribute('type', 'text/javascript');
     var url = '{$FIND_SCRIPT_NOHTTP;,javascript}?script=' + script + keep_stub();
-    link.setAttribute('src', url);
-    document.getElementsByTagName('head')[0].appendChild(link);
+    s.src = url;
+    document.head.appendChild(s);
 }
 
 /* Tabs */
@@ -1536,9 +1342,14 @@ function toggleable_tray_done(element, final_height, animate_dif, orig_overflow,
     trigger_resize(true);
 }
 function handle_tray_cookie_setting(id) {
-    var cookie_value = read_cookie('tray_' + id);
-    var element = document.getElementById('tray_' + id);
-    if (!element) element = document.getElementById(id);
+    if (!id && (this instanceof HTMLElement)){
+        id = this.id;
+    } else {
+        id = 'tray_' + id;
+    }
+
+    var cookie_value = read_cookie(id);
+    var element = document.getElementById(id);
     if (!element) return;
 
     if (!element.classList.contains('toggleable_tray')) // Suspicious, maybe we need to probe deeper
@@ -1885,13 +1696,13 @@ function key_pressed(event, key, no_error_if_bad) {
 }
 
 function menu_active_selection(menu_id) {
-    $(function () {
-        _menu_active_selection(menu_id);
-    });
-}
+    var menu_element;
 
-function _menu_active_selection(menu_id) {
-    var menu_element = document.getElementById(menu_id);
+    if (!menu_id && (this instanceof HTMLElement)) {
+        menu_element = this;
+    } else {
+        menu_element = document.getElementById(menu_id);
+    }
     var possibilities = [], is_selected, url;
     if (menu_element.nodeName.toLowerCase() == 'select') {
         for (var i = 0; i < menu_element.options.length; i++) {
@@ -1909,7 +1720,7 @@ function _menu_active_selection(menu_id) {
         if (possibilities.length > 0) {
             possibilities.sort(function (a, b) {
                 return a.score - b.score
-            })
+            });
 
             var min_score = possibilities[0].score;
             for (var i = 0; i < possibilities.length; i++) {
@@ -2496,11 +2307,9 @@ function maintain_theme_in_link(url) {
     if (url.indexOf('&keep_theme=') != -1) return url;
     if (url.indexOf('?keep_theme=') != -1) return url;
 
-    if (typeof window.cms_theme == 'undefined') window.cms_theme = '{$THEME;}';
-    if (typeof window.cms_theme != 'undefined') {
-        if (url.indexOf('?') == -1) url += '?'; else url += '&';
-        url += 'utheme=' + window.encodeURIComponent(window.cms_theme);
-    }
+    if (url.indexOf('?') == -1) url += '?'; else url += '&';
+    url += 'utheme=' + window.encodeURIComponent(Composr.$THEME);
+
     return url;
 }
 
@@ -3011,6 +2820,10 @@ function set_outer_html(element, target_html) {
 // Note that embedded JavaScript IS run unlike the normal .innerHTML - in fact we go to effort to guarantee it - even onload attached JavaScript
 function set_inner_html(element, target_html, append, force_dom) {
     // Parser hint: .innerHTML okay
+    if (typeof element === 'string') {
+        element = document.getElementById(element);
+    }
+
     target_html = target_html.toString();
 
     if ((!force_dom) && (document.write) && (typeof element.innerHTML != 'undefined') && (!document.xmlVersion) && (target_html.toLowerCase().indexOf('<script src="') == -1) && (target_html.toLowerCase().indexOf('<link') == -1)) {
@@ -3475,6 +3288,10 @@ function setup_word_counter(post, count_element) {
 
 /* Set up a form to have its CAPTCHA checked upon submission using AJAX */
 function add_captcha_checking(form) {
+    if (!form && (this instanceof HTMLElement)) {
+        form = this;
+    }
+
     form.old_submit = form.onsubmit;
     form.onsubmit = function () {
         form.elements['submit_button'].disabled = true;
@@ -3496,12 +3313,13 @@ function add_captcha_checking(form) {
 
 /* Set it up so a form field is known and can be monitored for changes */
 function set_up_change_monitor(id) {
+    if (!id &&(this instanceof HTMLElement)) {
+        id = this;
+    }
+
     $(function () {
-        if (typeof window._set_up_change_monitor != 'undefined') {
+        if (typeof window._set_up_change_monitor !== 'undefined') {
             var ch = (typeof id == 'string') ? document.getElementById(id) : id;
-            if (!ch && this instanceof HTMLElement) {
-                ch = this;
-            }
             if (ch) _set_up_change_monitor(ch.parentNode);
         }
     });

@@ -1,5 +1,5 @@
 // Carefully work out toolbar
-var precision_editing=((typeof window.cms_is_staff!='undefined') && window.cms_is_staff) || (document.body.querySelectorAll('.comcode_button_box').length>1); // Look to see if this Comcode button is here as a hint whether we are doing an advanced editor. Unfortunately we cannot put contextual Tempcode inside a JavaScript file, so this trick is needed.
+var precision_editing = Composr.$IS_STAFF || (document.body.querySelectorAll('.comcode_button_box').length>1); // Look to see if this Comcode button is here as a hint whether we are doing an advanced editor. Unfortunately we cannot put contextual Tempcode inside a JavaScript file, so this trick is needed.
 var toolbar=[];
 if (precision_editing)
 	toolbar.push(['Source','-']);
@@ -33,9 +33,9 @@ var editor_settings={
 	fontSize_sizes : '0.6em;0.85em;1em;1.1em;1.2em;1.3em;1.4em;1.5em;1.6em;1.7em;1.8em;2em',
 	removePlugins: '',
 	extraPlugins: 'showcomcodeblocks,imagepaste,spellchecktoggle'+(use_composr_toolbar?',composr':''),
-	{+START,IF,{$NEQ,{$CKEDITOR_PATH},data_custom/ckeditor}}
+	/*{+START,IF,{$NEQ,{$CKEDITOR_PATH},data_custom/ckeditor}}*/
 		customConfig: '',
-	{+END}
+	/*{+END}*/
 	bodyId : 'wysiwyg_editor',
 	baseHref : get_base_url()+'/',
 	linkShowAdvancedTab : {$?,{$CONFIG_OPTION,eager_wysiwyg},false,true},
@@ -46,7 +46,7 @@ var editor_settings={
 	contentsCss : page_stylesheets,
 	cssStatic : css,
 	startupOutlineBlocks : true,
-	language : (window.cms_lang)?cms_lang.toLowerCase():'en',
+	language : Composr.$LANG ? Composr.$LANG.toLowerCase() : 'en',
 	emailProtection : false,
 	resize_enabled : true,
 	width : (element.offsetWidth-15),

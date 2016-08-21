@@ -16,7 +16,7 @@
 </tr>
 
 <tr class="field_input">
-	<td id="form_table_field_input__{$GET,randomised_id}"{+START,IF,{$NOT,{$MOBILE}}} colspan="2"{+END} class="form_table_huge_field{+START,IF,{REQUIRED}} required{+END}">
+	<td id="form_table_field_input__{$GET,randomised_id}"{+START,IF,{$NOT,{$MOBILE}}} colspan="2"{+END} class="form_table_huge_field{+START,IF,{REQUIRED}} required{+END}" {+START,IF,{$NOT,{INLINE_LIST}}}data-cms-call="set_up_change_monitor"{+END}>
 		{+START,IF,{INLINE_LIST}}
 		<select size="{+START,IF_PASSED,SIZE}{SIZE*}{+END}{+START,IF_NON_PASSED,SIZE}15{+END}" tabindex="{TABINDEX*}" class="input_list{REQUIRED*} wide_field" id="{NAME*}" name="{NAME*}">
 		{+END}
@@ -25,12 +25,6 @@
 		{+END}
 		{CONTENT}
 		</select>
-
-		{+START,IF,{$NOT,{INLINE_LIST}}}
-			<script>// <![CDATA[
-				set_up_change_monitor('form_table_field_input__{$GET,randomised_id}');
-			//]]></script>
-		{+END}
 	</td>
 </tr>
 

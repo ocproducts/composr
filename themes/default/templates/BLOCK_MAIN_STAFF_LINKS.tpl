@@ -1,7 +1,7 @@
 {$SET,RAND_STAFF_LINKS,{$RAND}}
 
 <div class="form_ajax_target">
-	<section id="tray_{!EXTERNAL_LINKS|}" class="box box___block_main_staff_links">
+	<section id="tray_{!EXTERNAL_LINKS|}" class="box box___block_main_staff_links"{+START,IF,{$JS_ON}} data-cms-call="handle_tray_cookie_setting"{+END}>
 		<h3 class="toggleable_tray_title">
 			<a title="{!EDIT}: {!EXTERNAL_LINKS}" href="#" class="top_left_toggleicon" onclick="return staff_block_flip_over('staff_links_list_{$GET%,RAND_STAFF_LINKS}');">{!EDIT}</a>
 
@@ -35,8 +35,3 @@
 	</section>
 </div>
 
-{+START,IF,{$JS_ON}}
-	<script>// <![CDATA[
-		handle_tray_cookie_setting('{!EXTERNAL_LINKS|}');
-	//]]></script>
-{+END}

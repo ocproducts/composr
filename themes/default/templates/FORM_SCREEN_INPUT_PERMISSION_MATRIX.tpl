@@ -1,8 +1,4 @@
-<script>// <![CDATA[
-	window.perm_serverid='{SERVER_ID;/}';
-//]]></script>
-
-<div class="permissions_matrix_wrap" id="enter_the_matrix">
+<div class="permissions_matrix_wrap" id="enter_the_matrix" data-cms-globals='{"perm_serverid": "{SERVER_ID*#}"}'>
 	<table class="columned_table autosized_table results_table">
 		<thead>
 			<tr>

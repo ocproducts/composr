@@ -4,7 +4,8 @@
 
 <div class="upload_field inline_block">
 	<div class="vertical_alignment inline_block">
-		<input tabindex="{TABINDEX*}" class="input_upload{REQUIRED*}" type="file" id="{NAME*}" name="{NAME*}" />
+		<input tabindex="{TABINDEX*}" class="input_upload{REQUIRED*}" type="file" id="{NAME*}" name="{NAME*}"
+			   {+START,IF,{PLUPLOAD}}{+START,IF,{$NOT,{$IS_HTTPAUTH_LOGIN}}} data-cms-call="preinit_file_input" data-cms-call-args='["upload", "{NAME*#}", null, null, "{FILTER*#}"]' {+END}{+END}/>
 		{+START,IF,{EDIT}}
 			<p class="upload_field_msg inline_block">
 				<input type="checkbox" id="i_{NAME*}_unlink" name="{NAME*}_unlink" value="1" />
@@ -23,22 +24,7 @@
 	</div>
 
 	{+START,IF_PASSED,SYNDICATION_JSON}
-		<div id="{NAME*}_syndication_options" class="syndication_options"></div>
-	{+END}
-
-	{+START,IF,{PLUPLOAD}}{+START,IF,{$NOT,{$IS_HTTPAUTH_LOGIN}}}
-		<script>// <![CDATA[
-			$(function() {
-				preinit_file_input('upload','{NAME;/}',null,null,'{FILTER;/}');
-			});
-		//]]></script>
-	{+END}{+END}
-
-	{+START,IF_PASSED,SYNDICATION_JSON}
-		<script>// <![CDATA[
-			$(function() {
-				show_upload_syndication_options('{NAME;/}','{SYNDICATION_JSON;/}');
-			});
-		//]]></script>
+		<div id="{NAME*}_syndication_options" class="syndication_options"
+			 data-cms-call="show_upload_syndication_options" data-cms-call-args='["{NAME*#}", "{SYNDICATION_JSON*#}"]'></div>
 	{+END}
 </div>

@@ -22,7 +22,7 @@
 		<script>// <![CDATA[
 			if (window.parent)
 			{
-				Composr.onWindowLoad(function() {
+				Composr.loadWindow.then(function() {
 					document.body.className+=' frame';
 
 					try
@@ -30,7 +30,7 @@
 						if (typeof window.trigger_resize!='undefined') trigger_resize();
 					}
 					catch (e) {}
-					window.setTimeout(function() { {$,Needed for IE10}
+					window.setTimeout(function() { // Needed for IE10
 						try
 						{
 							if (typeof window.trigger_resize!='undefined') trigger_resize();

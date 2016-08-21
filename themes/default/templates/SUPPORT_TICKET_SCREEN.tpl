@@ -91,13 +91,6 @@
 		{COMMENTS}
 	</div>
 
-	{+START,IF_PASSED,SERIALIZED_OPTIONS}{+START,IF_PASSED,HASH}
-		<script>// <![CDATA[
-			window.comments_serialized_options='{SERIALIZED_OPTIONS;/}';
-			window.comments_hash='{HASH;/}';
-		//]]></script>
-	{+END}{+END}
-
 	{+START,IF_PASSED,PAGINATION}
 		<div class="float_surrounder">
 			{PAGINATION}
@@ -243,3 +236,5 @@
 {+END}
 
 {$SET,ticket_merge_into,}
+
+<script type="application/json" data-tpl-tickets="supportTicketScreen">{+START,PARAMS_JSON,SERIALIZED_OPTIONS,HASH}{_/}{+END}</script>

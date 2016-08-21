@@ -1,3 +1,4 @@
+{$REQUIRE_JAVASCRIPT,core_form_interfaces}
 {+START,IF_NON_EMPTY,{SPELLING}}
 	<div class="box box___preview_script"><div class="box_inner">
 		<h2>{!SPELLCHECK}</h2>
@@ -29,22 +30,13 @@
 	<section class="box box___preview_script global_middle_faux"><div class="box_inner">
 		<h2>{!PREVIEW}</h2>
 
-		<div class="preview_box{+START,IF,{$AND,{$NOT,{$MOBILE,1}},{$MOBILE}}}{+END}">
-			<div id="preview_box_inner" class="preview_box_inner">
+		<div class="preview_box">
+			<div id="preview_box_inner" class="preview_box_inner {+START,IF,{HAS_DEVICE_PREVIEW_MODES}}{+START,IF,{$AND,{$NOT,{$MOBILE,1}},{$MOBILE}}}js-preview-box-scroll{+END}{+END}">
 				{$TRIM,{OUTPUT}}
 			</div>
 		</div>
 
 		{+START,IF,{HAS_DEVICE_PREVIEW_MODES}}
-			{+START,IF,{$NOT,{$MOBILE,1}}}
-				{+START,IF,{$MOBILE}}
-					<script>// <![CDATA[
-						var inner=document.getElementById('preview_box_inner');
-						inner.addEventListener(browser_matches('gecko')?'DOMMouseScroll':'mousewheel',function(event) { inner.scrollTop-=event.wheelDelta?event.wheelDelta:event.detail; cancel_bubbling(event); if (typeof event.preventDefault!='undefined') event.preventDefault(); return false; });
-					//]]></script>
-				{+END}
-			{+END}
-
 			{+START,IF,{$JS_ON}}
 				<hr class="spaced_rule" />
 
@@ -68,3 +60,4 @@
 		{+END}
 	</div></section>
 {+END}
+<script type="application/json" data-tpl-core-form-interfaces="previewScript"></script>

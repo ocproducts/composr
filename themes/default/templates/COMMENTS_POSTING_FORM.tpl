@@ -23,7 +23,7 @@
 {+END}
 
 {+START,IF_NON_EMPTY,{COMMENT_URL}}
-<form role="form" title="{TITLE*}" class="comments_form" id="comments_form" onsubmit="return ({+START,IF_PASSED,MORE_URL}(this.getAttribute('action')=='{MORE_URL;*}') || {+END}(check_field_for_blankness(this.elements['post'],event)){+START,IF,{$AND,{GET_EMAIL},{$NOT,{EMAIL_OPTIONAL}}}} &amp;&amp; (check_field_for_blankness(this.elements['email'],event)){+END});" action="{COMMENT_URL*}{+START,IF_NON_EMPTY,{$GET,current_anchor}}#{$GET,current_anchor}{+END}{+START,IF_EMPTY,{$GET,current_anchor}}{+START,IF_PASSED_AND_TRUE,COMMENTS}#last_comment{+END}{+END}" method="post" enctype="multipart/form-data" autocomplete="off">
+<form role="form" title="{TITLE*}" class="comments_form" id="comments_form" {+START,IF_PASSED,USE_CAPTCHA}{+START,IF,{USE_CAPTCHA}}data-cms-call="comments_form"{+END}{+END} onsubmit="return ({+START,IF_PASSED,MORE_URL}(this.getAttribute('action')=='{MORE_URL;*}') || {+END}(check_field_for_blankness(this.elements['post'],event)){+START,IF,{$AND,{GET_EMAIL},{$NOT,{EMAIL_OPTIONAL}}}} &amp;&amp; (check_field_for_blankness(this.elements['email'],event)){+END});" action="{COMMENT_URL*}{+START,IF_NON_EMPTY,{$GET,current_anchor}}#{$GET,current_anchor}{+END}{+START,IF_EMPTY,{$GET,current_anchor}}{+START,IF_PASSED_AND_TRUE,COMMENTS}#last_comment{+END}{+END}" method="post" enctype="multipart/form-data" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
 	<input type="hidden" name="_comment_form_post" value="1" />
 {+END}
@@ -237,10 +237,7 @@
 										<noscript>{!JAVASCRIPT_REQUIRED}</noscript>
 
 										{+START,IF_NON_EMPTY,{$TRIM,{$GET,CAPTCHA}}}
-											<div id="captcha_spot"></div>
-											<script>// <![CDATA[
-												set_inner_html(document.getElementById('captcha_spot'),'{$GET;^/,CAPTCHA}');
-											//]]></script>
+											<div id="captcha_spot" data-cms-call="set_inner_html" data-cms-call-args='["captcha_spot", "{$GET*^#,CAPTCHA}"]'></div>
 										{+END}
 									{+END}
 									{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}
@@ -315,11 +312,4 @@
 	<iframe{$?,{$BROWSER_MATCHES,ie}, frameBorder="0" scrolling="no"} title="{!PREVIEW}" name="preview_iframe" id="preview_iframe" src="{$BASE_URL*}/uploads/index.html" class="hidden_preview_frame">{!PREVIEW}</iframe>
 {+END}{+END}{+END}
 
-{+START,IF_PASSED,USE_CAPTCHA}
-	{+START,IF,{USE_CAPTCHA}}
-		<script>// <![CDATA[
-			var form=document.getElementById('comments_form');
-			add_captcha_checking(form);
-		//]]></script>
-	{+END}
-{+END}
+

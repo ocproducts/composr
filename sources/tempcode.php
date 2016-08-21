@@ -494,6 +494,84 @@ function closure_loop($param, $args, $main_function)
 }
 
 /**
+ * Serialize the passed parameter names as JSON
+ *
+ * @param  array $param The template bound parameters
+ * @param  array $args The loop directive parameters
+ * @param  string $main_function The loop execution function
+ * @return string Result
+ */
+function closure_params_json($param, $args, $main_function)
+{
+    global $TEMPCODE_SETGET;
+
+    $output = array();
+    $template_params = $param['vars'];
+    unset($param['vars']);
+
+    foreach ($param as $param_name) {
+        $param_name = is_object($param_name) ? $param_name->evaluate() : strval($param_name);
+
+        if ($param_name === '') {
+            continue;
+        }
+
+        if (array_key_exists($param_name, $template_params)) {
+            $output[$param_name] = $template_params[$param_name];
+        } else if (array_key_exists($param_name, $TEMPCODE_SETGET)) {
+            $output[$param_name] = $TEMPCODE_SETGET[$param_name];
+        }
+    }
+
+    $output = evaluate_tempcode_elements($output);
+    $output = camel_case_array_keys($output);
+    $output = json_encode($output);
+
+    $ps = ['_' => $output]; // "{_}" paremeter inside the directive block represents the JSON output
+    $args[0] = $ps + $args[0];
+    $args[0]['vars'] = $args[0];
+    $value = call_user_func_array($main_function, $args);
+
+    return $value;
+}
+
+function evaluate_tempcode_elements(array $arr) {
+    foreach ($arr as $k => $v) {
+        if (is_array($v)) {
+            $arr[$k] = evaluate_tempcode_elements($v);
+            continue;
+        }
+
+        if ($v instanceof Tempcode) {
+            $arr[$k] = $v->evaluate();
+        }
+    }
+
+    return $arr;
+}
+
+function camel_case_array_keys(array $arr) {
+    $new_arr = [];
+
+    foreach ($arr as $k => $v) {
+        $leading_underscore = $k[0] === '_';
+        $k = lcfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', strtolower($k))))); // camelCase the key
+
+        if ($leading_underscore) {
+            $k = '_' . $k;
+        }
+
+        if (is_array($v)) {
+            $v = camel_case_array_keys($v);
+        }
+
+        $new_arr[$k] = $v;
+    }
+
+    return $new_arr;
+}
+
+/**
  * Convert a string to Tempcode.
  *
  * @param  string $string String

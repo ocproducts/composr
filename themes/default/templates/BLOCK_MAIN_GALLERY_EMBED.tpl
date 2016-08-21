@@ -24,7 +24,7 @@
 
 		{$SET,carousel_id,{$RAND}}
 
-		<div id="carousel_{$GET*,carousel_id}" class="carousel" style="display: none">
+		<div id="carousel_{$GET*,carousel_id}" class="carousel" style="display: none" data-cms-call="initialise_carousel">
 			<div class="move_left" onkeypress="this.onmousedown(event);" onmousedown="carousel_move({$GET*,carousel_id},-47); return false;"></div>
 			<div class="move_right" onkeypress="this.onmousedown(event); this.onclick(event);" onclick="carousel_prepare_load_more_{$GET*,carousel_id}({$GET*,carousel_id});" onmousedown="carousel_move({$GET*,carousel_id},+47); return false;"></div>
 
@@ -37,10 +37,6 @@
 		</div>
 
 		<script>// <![CDATA[
-			$(function() {
-				initialise_carousel({$GET,carousel_id});
-			});
-
 			var current_loading_from_pos_{$GET*,carousel_id}={START%};
 
 			function carousel_prepare_load_more_{$GET*,carousel_id}(carousel_id)

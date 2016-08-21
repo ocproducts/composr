@@ -104,7 +104,7 @@
 </div>
 
 <script>// <![CDATA[
-	Composr.onWindowLoad(function() {
+	Composr.loadWindow.then(function() {
 		if ((typeof document.activeElement=='undefined') || (document.activeElement!=document.getElementById('password')))
 			document.getElementById('login_username').focus();
 	});

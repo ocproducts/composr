@@ -4,7 +4,7 @@
 {$SET,carousel_id,{$RAND}}
 
 <div class="xhtml_substr_no_break">
-	<div id="carousel_{$GET*,carousel_id}" class="carousel" style="display: none">
+	<div id="carousel_{$GET*,carousel_id}" class="carousel" style="display: none" data-cms-call="initialise_carousel">
 		<div class="move_left" onkeypress="this.onmousedown(event);" onmousedown="carousel_move({$GET*,carousel_id},-{SCROLL_AMOUNT%}); return false;"></div>
 		<div class="move_right" onkeypress="this.onmousedown(event);" onmousedown="carousel_move({$GET*,carousel_id},+{SCROLL_AMOUNT%}); return false;"></div>
 
@@ -15,10 +15,4 @@
 	<div class="carousel_temp" id="carousel_ns_{$GET*,carousel_id}">
 		{CONTENT}
 	</div>
-
-	<script>// <![CDATA[
-		$(function() {
-			initialise_carousel({$GET,carousel_id});
-		});
-	//]]></script>
 </div>

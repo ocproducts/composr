@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-{$REQUIRE_JAVASCRIPT,addon/core_primary_layout}
+{$REQUIRE_JAVASCRIPT,core_primary_layout}
 <!--
 Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 {$BRAND_BASE_URL*}
@@ -135,10 +135,9 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 
 		{$,Late messages happen if something went wrong during outputting everything (i.e. too late in the process to show the error in the normal place)}
 		{+START,IF_NON_EMPTY,{$LATE_MESSAGES}}
-			<div class="global_messages" id="global_messages_2">
+			<div class="global_messages" id="global_messages_2" data-cms-call="merge_global_messages">
 				{$LATE_MESSAGES}
 			</div>
-			<script>merge_global_messages();</script>
 		{+END}
 
 		{$,This is the main site footer}

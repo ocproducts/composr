@@ -1,4 +1,5 @@
-<div class="webstandards_checker_off">
+{$REQUIRE_JAVASCRIPT,realtime_rain}
+<div class="webstandards_checker_off" data-tpl-realtime-rain="realtimeRainOverlay" data-tpl-args="{+START,PARAMS_JSON,MIN_TIME}{_*}{+END}">
 	<div id="real_time_surround">
 		<div id="real_time">
 			<div id="news_ticker" onmouseover="if (!window.paused) { this.pausing=true; window.paused=true; }" onmouseout="if (this.pausing) { this.pausing=false; window.paused=false; }">
@@ -35,16 +36,4 @@
 			</div>
 		</div></div>
 	</div>
-
-	<script>// <![CDATA[
-		$(function() {
-			start_realtime_rain();
-		});
-		window.min_time={MIN_TIME%};
-		window.paused=false;
-		window.bubble_groups={};
-		window.total_lines=0;
-		window.bubble_timer_1=null;
-		window.bubble_timer_2=null;
-	//]]></script>
 </div>

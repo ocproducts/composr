@@ -1,4 +1,80 @@
-"use strict";
+(function ($, Composr) {
+    'use strict';
+    Composr.templates.chat = {
+        chatSound: function (options) {
+            if (typeof window.prepared_chat_sounds !== 'undefined') return;
+            window.prepared_chat_sounds = true;
+
+            if (typeof window.soundManager !== 'undefined') {
+                window.soundManager.setup({
+                    url: get_base_url() + '/data',
+                    debugMode: false,
+                    onready: function () {
+                        var soundEffects = options.soundEffects;
+
+                        for (var i in soundEffects) {
+                            if (soundEffects.hasOwnProperty(i)) {
+                                window.soundManager.createSound(soundEffects[i].key, soundEffects[i].value);
+                            }
+                        }
+                    }
+                });
+            }
+        },
+
+        chatFriends: function (options) {
+            var friends = options.friends, friend;
+
+            for (var i = 0; i < friends.length; i++) {
+                friend = friends[i];
+
+                if (friend.onlineText !== '{!ACTIVE}') {
+                    document.getElementById('friend_img_' + friend.memberId).className = 'friend_inactive';
+                }
+            }
+        },
+
+        chatLobbyImArea: function chatLobbyImArea(options) {
+            window.setTimeout(function () { /* Needed for IE */
+                Composr.loadWindow.then(function () {
+                    try {
+                        document.getElementById('post_' + options.chatroomId).focus();
+                    } catch (e) {
+                    }
+                    document.getElementById('post_' + options.chatroomId).value = read_cookie('last_chat_msg_' + options.chatroomId);
+                });
+            }, 1000);
+        },
+
+        chatLobbyScreen: function chatLobbyScreen(options) {
+            if (Composr.$IS_GUEST) { return; }
+
+            window.im_area_template = options.imAreaTemplate;
+            window.im_participant_template = options.imParticipantTemplate;
+            window.top_window = window;
+
+            function begin_im_chatting() {
+                window.load_from_room_id = -1;
+                if ((window.chat_check) && (window.do_ajax_request)) {
+                    chat_check(true, 0);
+                } else {
+                    window.setTimeout(begin_im_chatting, 500);
+                }
+            }
+
+            begin_im_chatting();
+        }
+    };
+
+    Composr.behaviors.chat = {
+        initialize: {
+            attach: function (context) {
+                Composr.initializeTemplates(context, 'chat');
+            }
+        }
+    };
+})(window.jQuery || window.Zepto, window.Composr);
+
 
 // Constants
 window.MESSAGE_CHECK_INTERVAL = '{$ROUND%,{$CONFIG_OPTION,chat_message_check_interval}}';

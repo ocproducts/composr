@@ -1,7 +1,7 @@
 {$SET,RAND_WEBSITE_MONITORING,{$RAND}}
 
 <div class="form_ajax_target">
-	<section id="tray_{!SITE_WATCHLIST|}" class="box box___block_main_staff_website_monitoring">
+	<section id="tray_{!SITE_WATCHLIST|}" class="box box___block_main_staff_website_monitoring"{+START,IF,{$JS_ON}} data-cms-call="handle_tray_cookie_setting"{+END}>
 		<h3 class="toggleable_tray_title">
 			<a title="{!EDIT}: {!SITE_WATCHLIST}" class="top_left_toggleicon" href="#" onclick="return staff_block_flip_over('website_monitoring_list_{$GET%,RAND_WEBSITE_MONITORING}');">{!EDIT}</a>
 
@@ -55,9 +55,3 @@
 		</div>
 	</section>
 </div>
-
-{+START,IF,{$JS_ON}}
-	<script>// <![CDATA[
-		handle_tray_cookie_setting('{!SITE_WATCHLIST|}');
-	//]]></script>
-{+END}

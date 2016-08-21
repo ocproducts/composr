@@ -559,7 +559,14 @@ function check_form(the_form, for_preview) {
 }
 
 function standard_alternate_fields_within(set_name, something_required) {
-    var form = document.getElementById('set_wrapper_' + set_name);
+    var form;
+
+    if (!set_name && (this instanceof HTMLElement)) {
+        form = this;
+    } else {
+        form = document.getElementById('set_wrapper_' + set_name);
+    }
+
     while (form.nodeName.toLowerCase() != 'form') {
         form = form.parentNode;
     }
@@ -969,7 +976,13 @@ function preview_mobile_button(ob) {
 }
 
 function disable_preview_scripts(under) {
-    if (typeof under == 'undefined') under = document;
+    if (typeof under === 'undefined') {
+        if (this instanceof HTMLElement) {
+            under = this;
+        } else {
+            under = document;
+        }
+    }
 
     var elements, i;
     var no_go = function () {

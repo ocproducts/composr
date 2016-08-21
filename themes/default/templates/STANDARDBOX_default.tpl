@@ -1,4 +1,4 @@
-<div{+START,IF_NON_EMPTY,{TITLE}} id="{TITLE|}"{+END} class="box box___standardbox_default{+START,IF_PASSED,CLASS} {CLASS*}{+END}"{+START,IF_NON_EMPTY,{WIDTH}} style="width: {WIDTH*}"{+END}>
+<div{+START,IF_NON_EMPTY,{TITLE}} id="{TITLE|}"{+END} class="box box___standardbox_default{+START,IF_PASSED,CLASS} {CLASS*}{+END}"{+START,IF_NON_EMPTY,{WIDTH}} style="width: {WIDTH*}"{+END}{+START,IF_IN_ARRAY,OPTIONS,tray_open,tray_closed}{+START,IF,{$JS_ON}} data-cms-call="handle_tray_cookie_setting"{+END}{+END}>
 	{+START,IF_NON_EMPTY,{TITLE}}
 		{+START,IF_IN_ARRAY,OPTIONS,tray_open,tray_closed}
 			<h3 class="toggleable_tray_title">
@@ -54,9 +54,3 @@
 		{+END}
 	</div>
 </div>
-
-{+START,IF_IN_ARRAY,OPTIONS,tray_open,tray_closed}{+START,IF,{$JS_ON}}
-	<script>// <![CDATA[
-		handle_tray_cookie_setting('{TITLE|}');
-	//]]></script>
-{+END}{+END}

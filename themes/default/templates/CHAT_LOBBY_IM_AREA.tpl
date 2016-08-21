@@ -1,4 +1,5 @@
-<div id="room_{CHATROOM_ID*}" class="chat_lobby_convos_area">
+{$REQUIRE_JAVASCRIPT,chat}
+<div id="room_{CHATROOM_ID*}" class="chat_lobby_convos_area" data-tpl-chat="chatLobbyImArea" data-tpl-args="{+START,PARAMS_JSON,CHATROOM_ID}{_*}{+END}">
 	<form title="{!MESSAGE}" action="{MESSAGES_PHP*}?action=post" method="post" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
@@ -28,19 +29,5 @@
 			<div class="chat_lobby_convos_area_messages messages_window" id="messages_window_{CHATROOM_ID*}"></div>
 		</div>
 	</form>
-
-	<script>// <![CDATA[
-		window.setTimeout(function() { /* Needed for IE */
-			Composr.onWindowLoad(function() {
-				try
-				{
-					document.getElementById('post_{CHATROOM_ID;/}').focus();
-				} catch (e)
-				{
-				}
-				document.getElementById('post_{CHATROOM_ID;/}').value=read_cookie('last_chat_msg_{CHATROOM_ID;/}');
-			});
-		}, 1000);
-	// ]]></script>
 </div>
 

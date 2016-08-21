@@ -14,7 +14,7 @@
 </div>
 
 <script>// <![CDATA[
-	Composr.onWindowLoad(function() {
+	Composr.loadWindow.then(function() {
 		call_block('{$FACILITATE_AJAX_BLOCK_CALL;,{BLOCK_PARAMS}}','',document.getElementById('{$GET%,js_block_id}'),false,null,false,null,false,false);
 	});
 //]]></script>

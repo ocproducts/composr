@@ -117,6 +117,11 @@
 	{+START,IF_NON_EMPTY,{$METADATA,opensearch_itemsperpage}}<meta name="itemsPerPage" content="{$METADATA*,opensearch_itemsperpage}" />{+END}
 {+END}{+END}
 
+{$, Load ES6 Promise polyfill for Internet Explorer}
+{+START,IF,{$BROWSER_MATCHES,ie}}
+<script src="{$BASE_URL}/data/polyfills/promise.js"></script>
+{+END}
+
 {$,Google Analytics account, if one set up}
 {+START,IF_NON_EMPTY,{$CONFIG_OPTION,google_analytics}}{+START,IF,{$NOR,{$IS_STAFF},{$IS_ADMIN}}}
 	<script>
@@ -140,15 +145,17 @@
 
 {$,Detecting of Timezones and JavaScript support}
 <script>// <![CDATA[
-	//@TODO (Salman): Refactor this stuff to Composr object
-	{+START,IF,{$CONFIG_OPTION,detect_javascript}}
-		{+START,IF,{$AND,{$EQ,,{$_GET,keep_has_js}},{$NOT,{$JS_ON}}}}
-			if ((window.location.href.indexOf('upgrader.php')==-1) && (window.location.href.indexOf('webdav.php')==-1) && (window.location.search.indexOf('keep_has_js')==-1)) {$,Redirect with JS on, and then hopefully we can remove keep_has_js after one click. This code only happens if JS is marked off, no infinite loops can happen.}
-				window.location=window.location.href+((window.location.search=='')?(((window.location.href.indexOf('.htm')==-1)&&(window.location.href.indexOf('.php')==-1))?(((window.location.href.substr(window.location.href.length-1)!='/')?'/':'')+'index.php?'):'?'):'&')+'keep_has_js=1{+START,IF,{$DEV_MODE}}&keep_devtest=1{+END}';
-		{+END}
-	{+END}
-	{+START,IF,{$NOT,{$BROWSER_MATCHES,ie}}}{+START,IF,{$HAS_PRIVILEGE,sees_javascript_error_alerts}}window.take_errors=true;{+END}{+END}
-	var {+START,IF,{$CONFIG_OPTION,is_on_timezone_detection}}server_timestamp={$FROM_TIMESTAMP%},{+END}cms_lang='{$LANG;/}',cms_theme='{$THEME;/}',cms_username='{$USERNAME;/}'{+START,IF,{$IS_STAFF}},cms_is_staff=true{+END};
+	/*{+START,IF,{$CONFIG_OPTION,detect_javascript}}*/
+	/*{+START,IF,{$AND,{$EQ,,{$_GET,keep_has_js}},{$NOT,{$JS_ON}}}}*/
+	if ((window.location.href.indexOf('upgrader.php') == -1) && (window.location.href.indexOf('webdav.php') == -1) && (window.location.search.indexOf('keep_has_js') == -1)) {
+		window.location = window.location.href + ((window.location.search == '') ? (((window.location.href.indexOf('.htm') == -1) && (window.location.href.indexOf('.php') == -1)) ? (((window.location.href.substr(window.location.href.length - 1) != '/') ? '/' : '') + 'index.php?') : '?') : '&') + 'keep_has_js=1{+START,IF,{$DEV_MODE}}&keep_devtest=1{+END}';
+	}// Redirect with JS on, and then hopefully we can remove keep_has_js after one click. This code only happens if JS is marked off, no infinite loops can happen.
+	/*{+END}*/
+	/*{+END}*/
+
+	/*{+START,IF,{$NOT,{$BROWSER_MATCHES,ie}}}{+START,IF,{$HAS_PRIVILEGE,sees_javascript_error_alerts}}*/
+	window.take_errors=true;
+	/*{+END}{+END}*/
 //]]></script>
 
 {$,JavaScript code (usually) from Composr page}

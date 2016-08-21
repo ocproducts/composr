@@ -1,3 +1,4 @@
+{$REQUIRE_JAVASCRIPT,chat}
 {TITLE}
 
 {+START,IF,{$HAS_FORUM,1}}
@@ -56,7 +57,7 @@
 </div></div>
 
 {+START,IF,{$NOT,{$IS_GUEST}}}
-	<div class="chat_im_convos_wrap">
+	<div class="chat_im_convos_wrap" data-cms-call="prepare_chat_sounds">
 		<div class="box box___chat_lobby_screen_im box_prominent"><div class="box_inner">
 			<h2>{!INSTANT_MESSAGING}</h2>
 
@@ -68,19 +69,6 @@
 							{!NO_IM_CONVERSATIONS}
 						</p>
 					</div>
-
-					<script> // <![CDATA[
-						var im_area_template='{IM_AREA_TEMPLATE;^/}';
-						var im_participant_template='{IM_PARTICIPANT_TEMPLATE;^/}';
-						var top_window=window;
-
-						function begin_im_chatting()
-						{
-							window.load_from_room_id=-1;
-							if ((window.chat_check) && (window.do_ajax_request)) chat_check(true,0); else window.setTimeout(begin_im_chatting,500);
-						}
-						begin_im_chatting();
-					// ]]></script>
 				</div>
 
 				<div class="chat_lobby_friends">
@@ -120,11 +108,6 @@
 					<h3 class="chat_lobby_options_header">{!OPTIONS}</h3>
 
 					{CHAT_SOUND}
-					<script>
-					// <![CDATA[
-						$(prepare_chat_sounds);
-					// ]]>
-					</script>
 
 					<form title="{!SOUND_EFFECTS}" action="index.php" method="post" class="inline sound_effects_form" autocomplete="off">
 						{$INSERT_SPAMMER_BLACKHOLE}
@@ -146,3 +129,5 @@
 		</div></div>
 	</div>
 {+END}
+
+<script type="application/json" data-tpl-chat="chatLobbyScreen">{+START,PARAMS_JSON,IM_AREA_TEMPLATE,IM_PARTICIPANT_TEMPLATE}{_/}{+END}</script>

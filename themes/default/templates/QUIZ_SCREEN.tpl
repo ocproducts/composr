@@ -1,3 +1,4 @@
+{$REQUIRE_JAVASCRIPT,quizzes}
 {TITLE}
 
 {WARNING_DETAILS}
@@ -19,39 +20,6 @@
 	<p class="quiz_timer">
 		{!TIME_REMAINING,<strong><span id="quiz_timer" style="display: none">{TIMEOUT*}</span><span id="quiz_timer_minutes_and_seconds"></span></strong>}
 	</p>
-
-	<script>// <![CDATA[
-		setTimeout(function() {
-			document.getElementById('quiz_form').submit();
-		},{TIMEOUT%}*1000);
-
-		setInterval(function() { iterate_countdown(-1); },1000);
-
-		function iterate_countdown(dif)
-		{
-			var st=document.getElementById('quiz_timer');
-			var new_value=window.parseInt(get_inner_html(st))+dif;
-			if (new_value>=0)
-			{
-				set_inner_html(st,new_value);
-			}
-
-			var st2=document.getElementById('quiz_timer_minutes_and_seconds');
-			if (st2)
-			{
-				if (new_value>=0)
-				{
-					var v='';
-					v+=Math.floor(new_value/60);
-					v+=':';
-					if (new_value%60<10) v+='0';
-					v+=new_value%60;
-					set_inner_html(st2,v);
-				}
-			}
-		}
-		iterate_countdown(0); // Because quiz_timer_minutes_and_seconds needs setting correctly
-	//]]></script>
 {+END}
 
 {$SET,no_required_stars,{ALL_REQUIRED}}
@@ -84,12 +52,6 @@
 	</div>
 </form>
 
-<script>// <![CDATA[
-	var e=document.getElementById('quiz_form').querySelectorAll('.field_input');
-	for (var i=0;i<e.length;i++)
-		set_up_change_monitor(e[i].childNodes[0]);
-//]]></script>
-
 {$REVIEW_STATUS,quiz,{ID}}
 
 {+START,IF,{$CONFIG_OPTION,show_content_tagging}}{TAGS}{+END}
@@ -103,3 +65,4 @@
 	1_ICON=menu/_generic_admin/edit_this
 {+END}
 
+<script type="application/json" data-tpl-quizzes="quizScreen">{+START,PARAMS_JSON,TIMEOUT}{_/}{+END}</script>

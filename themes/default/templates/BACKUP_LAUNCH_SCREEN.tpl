@@ -1,4 +1,4 @@
-{$REQUIRE_JAVASCRIPT,addon/backup}
+{$REQUIRE_JAVASCRIPT,backup}
 {TITLE}
 
 <h2>{!PREVIOUS}</h2>

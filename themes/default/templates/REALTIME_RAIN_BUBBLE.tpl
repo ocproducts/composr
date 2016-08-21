@@ -1,4 +1,5 @@
-<div class="webstandards_checker_off">
+{$REQUIRE_JAVASCRIPT,realtime_rain}
+<div class="webstandards_checker_off" data-tpl-realtime-rain="realtimeRainBubble" data-tpl-args="{+START,PARAMS_JSON,TICKER_TEXT,RELATIVE_TIMESTAMP,GROUP_ID,SPECIAL_ICON,MULTIPLICITY}{_*}{+END}">
 	{$SET,RAND_ID,bubble_id_{$RAND}}
 
 	<div id="{$GET,RAND_ID}" class="bubble_wrap attitude_{TYPE%}{$?,{IS_POSITIVE},_positive,}{$?,{IS_NEGATIVE},_negative,}">
@@ -25,35 +26,5 @@
 				{+END}
 			</div>
 		</div>
-
-		<script>// <![CDATA[
-			window.pending_eval_function=function(ob) { // In webkit you can't get a node until it's been closed, so we need to set our code into a function and THEN run it
-				{+START,IF_PASSED,TICKER_TEXT}
-					window.setTimeout( function() {
-						set_inner_html(document.getElementById('news_go_here'),'{TICKER_TEXT;^/}');
-					} , {RELATIVE_TIMESTAMP%}*1000 );
-				{+END}
-
-				// Set up extra attributes
-				ob.time_offset={RELATIVE_TIMESTAMP%};
-				ob.lines_for=[];
-				/*	We'll only do the group's, not the member lines, for performance
-				{+START,IF_PASSED,FROM_ID}
-					ob.lines_for.push('{FROM_ID;^/}');
-				{+END}
-				{+START,IF_PASSED,TO_ID}
-					ob.lines_for.push('{TO_ID;^/}');
-				{+END}
-				*/
-				{+START,IF_PASSED,GROUP_ID}
-					ob.lines_for.push('{GROUP_ID;^/}');
-				{+END}
-				{+START,IF_PASSED,SPECIAL_ICON}
-					{+START,IF,{$EQ,{SPECIAL_ICON},email-icon}}
-						ob.icon_multiplicity={MULTIPLICITY%};
-					{+END}
-				{+END}
-			};
-		//]]></script>
 	</div>
 </div>

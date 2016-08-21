@@ -35,7 +35,7 @@ function init__tempcode_compiler()
     define('PARSE_DIRECTIVE_INNER', 5);
 
     global $DIRECTIVES_NEEDING_VARS;
-    $DIRECTIVES_NEEDING_VARS = array('IF_PASSED_AND_TRUE' => true, 'IF_NON_PASSED_OR_FALSE' => true, 'PARAM_INFO' => true, 'IF_NOT_IN_ARRAY' => true, 'IF_IN_ARRAY' => true, 'IMPLODE' => true, 'COUNT' => true, 'IF_ARRAY_EMPTY' => true, 'IF_ARRAY_NON_EMPTY' => true, 'OF' => true, 'INCLUDE' => true, 'LOOP' => true, 'SET_NOPREEVAL' => true);
+    $DIRECTIVES_NEEDING_VARS = array('IF_PASSED_AND_TRUE' => true, 'IF_NON_PASSED_OR_FALSE' => true, 'PARAM_INFO' => true, 'IF_NOT_IN_ARRAY' => true, 'IF_IN_ARRAY' => true, 'IMPLODE' => true, 'COUNT' => true, 'IF_ARRAY_EMPTY' => true, 'IF_ARRAY_NON_EMPTY' => true, 'OF' => true, 'INCLUDE' => true, 'LOOP' => true, 'SET_NOPREEVAL' => true, 'PARAMS_JSON' => true);
 
     // Work out what symbols may be compiled out (look at patterns at top of caches3.php if changing this)...
 
@@ -831,6 +831,10 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
 
                             case 'PHP':
                                 $current_level_data[] = 'closure_eval(' . $directive_internal . ',$parameters)';
+                                break;
+
+                            case 'PARAMS_JSON':
+                                $current_level_data[] = 'closure_params_json(array(' . $directive_params . ',\'vars\'=>$parameters),array($parameters,$cl),' . "\n" . 'recall_named_function(\'' . uniqid('', true) . '\',\'$parameters,$cl\',"extract(\$parameters,EXTR_PREFIX_ALL,\'bound\'); return ' . php_addslashes($directive_internal) . ';"))';
                                 break;
 
                             case 'INCLUDE':

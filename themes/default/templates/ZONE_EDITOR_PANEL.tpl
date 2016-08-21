@@ -17,17 +17,13 @@
 {$,Actual tab' contents follows}
 
 {+START,IF_PASSED,PREVIEW}
-	<div id="view_{ID*}" style="display: block" aria-labeledby="view_tab_{ID*}" role="tabpanel">
+	<div id="view_{ID*}" style="display: block" aria-labeledby="view_tab_{ID*}" role="tabpanel" data-cms-call="disable_preview_scripts">
 		{+START,IF_EMPTY,{PREVIEW}}
 			<p class="nothing_here">{!NONE}</p>
 		{+END}
 		{+START,IF_NON_EMPTY,{PREVIEW}}
 			{$PARAGRAPH,{PREVIEW}}
 		{+END}
-
-		<script>// <![CDATA[
-			disable_preview_scripts(document.getElementById('view_{ID;/}'));
-		//]]></script>
 	</div>
 {+END}
 

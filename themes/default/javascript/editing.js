@@ -592,7 +592,7 @@ function ensure_true_id(element, field_name) // Works around IE bug
     var form = element.form;
     var i;
     for (i = 0; i < form.elements.length; i++) {
-        if ((form.elements[i].id == field_name)/* || (form.elements[i].name==field_name)*/) {
+        if ((form.elements[i].id == field_name)) {
             return form.elements[i];
         }
     }

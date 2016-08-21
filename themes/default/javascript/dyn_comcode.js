@@ -90,7 +90,7 @@ function big_tabs_init() {
 }
 
 function countdown(id, direction, tailing) {
-    var countdown = document.getElementById(id);
+    var countdown = id instanceof HTMLElement ? id : document.getElementById(id);
     var inside = get_inner_html(countdown);
     var multiples = [];
     if (tailing >= 4) multiples.push(365);
@@ -139,7 +139,7 @@ function initialise_carousel(id) {
     main.appendChild(carousel_ns);
     carousel.style.display = 'block';
 
-    Composr.onWindowLoad(function () {
+    Composr.loadWindow.then(function () {
         var h = main.offsetHeight + 'px';
         carousel.querySelectorAll('.move_left')[0].style.height = h;
         carousel.querySelectorAll('.move_right')[0].style.height = h;
