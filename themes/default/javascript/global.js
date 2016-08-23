@@ -392,23 +392,17 @@ function new_html__initialise(element)
 			/*{+START,IF,{$CONFIG_OPTION,js_overlays}}*/
 				//convert_tooltip(element);	Not useful
 
-				// Convert a/img title attributes into Composr tooltips
+				// Convert form element title attributes into Composr tooltips
 				var elements,j;
 				elements=element.elements;
 				for (j=0;j<elements.length;j++)
 				{
-					if (typeof elements[j].title!='undefined')
-					{
-						convert_tooltip(elements[j]);
-					}
+					if (typeof elements[j].title!='undefined' && typeof elements[j]['original-title']=='undefined'/*check tipsy not used*/ && elements[j].className.indexOf('no_tooltip')==-1) convert_tooltip(elements[j]);
 				}
 				elements=element.getElementsByTagName('input'); // Lame, but JS DOM does not include type="image" ones in form.elements
 				for (j=0;j<elements.length;j++)
 				{
-					if ((elements[j].type=='image') && (typeof elements[j].title!='undefined'))
-					{
-						convert_tooltip(elements[j]);
-					}
+					if (elements[j].type=='image' && typeof elements[j].title!='undefined' && typeof elements[j]['original-title']=='undefined'/*check tipsy not used*/ && elements[j].className.indexOf('no_tooltip')==-1) convert_tooltip(elements[j]);
 				}
 			/*{+END}*/
 
