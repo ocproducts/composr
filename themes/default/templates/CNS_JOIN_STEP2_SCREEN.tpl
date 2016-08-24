@@ -11,9 +11,3 @@
 {+END}
 
 {FORM}
-
-{+START,IF_PASSED,JAVASCRIPT}
-	<script>// <![CDATA[
-		{JAVASCRIPT/}
-	//]]></script>
-{+END}

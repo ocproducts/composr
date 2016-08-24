@@ -106,91 +106,22 @@ function cns_join_form($url, $captcha_if_enabled = true, $intro_message_if_enabl
 
     $submit_name = do_lang_tempcode('PROCEED');
 
-    require_javascript('ajax');
-
-    $script = find_script('username_check');
-    $javascript = "
-        var form=document.getElementById('username').form;
-        form.elements['username'].onchange=function()
-        {
-            if (form.elements['intro_title'])
-                    form.elements['intro_title'].value='" . addslashes(do_lang('INTRO_POST_DEFAULT')) . "'.replace(/\{1\}/g,form.elements['username'].value);
-        }
-        form.old_submit=form.onsubmit;
-        form.onsubmit=function() {
-            if ((typeof form.elements['confirm']!='undefined') && (form.elements['confirm'].type=='checkbox') && (!form.elements['confirm'].checked))
-            {
-                window.fauxmodal_alert('" . php_addslashes(do_lang('DESCRIPTION_I_AGREE_RULES')) . "');
-                return false;
-            }
-            if ((typeof form.elements['email_address_confirm']!='undefined') && (form.elements['email_address_confirm'].value!=form.elements['email_address'].value))
-            {
-                window.fauxmodal_alert('" . php_addslashes(do_lang('EMAIL_ADDRESS_MISMATCH')) . "');
-                return false;
-            }
-            if ((typeof form.elements['password_confirm']!='undefined') && (form.elements['password_confirm'].value!=form.elements['password'].value))
-            {
-                window.fauxmodal_alert('" . php_addslashes(do_lang('PASSWORD_MISMATCH')) . "');
-                return false;
-            }
-            document.getElementById('submit_button').disabled=true;
-            var url='" . addslashes($script) . "?username='+window.encodeURIComponent(form.elements['username'].value);
-            if (!do_ajax_field_test(url,'password='+window.encodeURIComponent(form.elements['password'].value)))
-            {
-                document.getElementById('submit_button').disabled=false;
-                return false;
-            }
-    ";
-    $script = find_script('snippet');
-    if ($invites_if_enabled) {
-        if (get_option('is_on_invites') == '1') {
-            $javascript .= "
-            url='" . addslashes($script) . "?snippet=invite_missing&name='+window.encodeURIComponent(form.elements['email_address'].value);
-            if (!do_ajax_field_test(url))
-            {
-                document.getElementById('submit_button').disabled=false;
-                return false;
-            }
-            ";
-        }
-    }
-    if ($one_per_email_address_if_enabled) {
-        if (get_option('one_per_email_address') == '1') {
-            $javascript .= "
-            url='" . addslashes($script) . "?snippet=exists_email&name='+window.encodeURIComponent(form.elements['email_address'].value);
-            if (!do_ajax_field_test(url))
-            {
-                document.getElementById('submit_button').disabled=false;
-                return false;
-            }
-            ";
-        }
-    }
-    if ($captcha_if_enabled) {
-        if (addon_installed('captcha')) {
-            require_code('captcha');
-            if (use_captcha()) {
-                $javascript .= "
-                    url='" . addslashes($script) . "?snippet=captcha_wrong&name='+window.encodeURIComponent(form.elements['captcha'].value);
-                    if (!do_ajax_field_test(url))
-                    {
-                        document.getElementById('submit_button').disabled=false;
-                        return false;
-                    }
-                    ";
-            }
-        }
-    }
-    $javascript .= "
-            document.getElementById('submit_button').disabled=false;
-            if (typeof form.old_submit!='undefined' && form.old_submit) return form.old_submit();
-            return true;
-        };
-    ";
-
-    $form = do_template('FORM', array('_GUID' => 'f6dba5638ae50a04562df50b1f217311', 'TEXT' => '', 'HIDDEN' => $hidden, 'FIELDS' => $fields, 'SUBMIT_ICON' => 'menu__site_meta__user_actions__join', 'SUBMIT_NAME' => $submit_name, 'URL' => $url));
-
-    return array($javascript, $form);
+    return do_template('FORM', array(
+        '_GUID' => 'f6dba5638ae50a04562df50b1f217311',
+        'TEXT' => '',
+        'HIDDEN' => $hidden,
+        'FIELDS' => $fields,
+        'SUBMIT_ICON' => 'menu__site_meta__user_actions__join',
+        'SUBMIT_NAME' => $submit_name,
+        'URL' => $url,
+        // Only used by the join form:
+        'IS_JOIN_FORM' => true,
+        'USERNAME_CHECK_SCRIPT' => find_script('username_check'),
+        'SNIPPET_SCRIPT' => find_script('snippet'),
+        'INVITES_ENABLED' => $invites_if_enabled && (get_option('is_on_invites') === '1'),
+        'ONE_PER_EMAIL_ADDRESS' => $one_per_email_address_if_enabled && (get_option('one_per_email_address') === '1'),
+        'USE_CAPTCHA' => $captcha_if_enabled && addon_installed('captcha') && use_captcha(),
+    ));
 }
 
 /**

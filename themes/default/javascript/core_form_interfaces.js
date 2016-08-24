@@ -1,7 +1,25 @@
-(function ($, Composr, undefined) {
+(function ($, Composr) {
+    Composr.behaviors.coreFormInterfaces = {
+        initialize: {
+            attach: function (context) {
+                Composr.initializeTemplates(context, 'core_form_interfaces');
+            }
+        }
+    };
+
     Composr.templates.coreFormInterfaces = {
+        form: function (options) {
+            options = options || {};
+
+            if (Composr.isNotEmptyOrZero(options.isJoinForm)) {
+                joinForm(options);
+            }
+        },
+
         formScreen: function formScreen(options) {
             var nonIframeUrl, iframeUrl;
+
+            options = options || {};
 
             if (window.try_to_simplify_iframe_form !== undefined) {
                 try_to_simplify_iframe_form();
@@ -87,9 +105,10 @@
         },
 
         formScreenFieldSpacer: function formScreenFieldSpaces(options) {
-            var title = Composr.filters.identifier(options.title);
+            options = options || {};
 
-            if ((typeof options.sectionHidden === 'string') && (options.sectionHidden === '1')) {
+            if (Composr.areNotEmptyOrZero(options.title, options.sectionHidden)) {
+                var title = Composr.filters.identifier(options.title);
                 document.getElementById('fes' + title).click();
             }
         },
@@ -409,12 +428,72 @@
         }
     };
 
-    Composr.behaviors.coreFormInterfaces = {
-        initialize: {
-            attach: function (context) {
-                Composr.initializeTemplates(context, 'core_form_interfaces');
+    function joinForm(options) {
+        var form = document.getElementById('username').form;
+
+        form.elements['username'].onchange = function () {
+            if (form.elements['intro_title'])
+                form.elements['intro_title'].value = '{!cns:INTRO_POST_DEFAULT;}'.replace(/\{1\}/g, form.elements['username'].value);
+        };
+
+        form.old_submit = form.onsubmit;
+        form.onsubmit = function () {
+            if ((typeof form.elements['confirm'] !== 'undefined') && (form.elements['confirm'].type == 'checkbox') && (!form.elements['confirm'].checked)) {
+                window.fauxmodal_alert('{!cns:DESCRIPTION_I_AGREE_RULES;}');
+                return false;
             }
-        }
-    };
+
+            if ((typeof form.elements['email_address_confirm'] !== 'undefined') && (form.elements['email_address_confirm'].value != form.elements['email_address'].value)) {
+                window.fauxmodal_alert('{!cns:EMAIL_ADDRESS_MISMATCH;}');
+                return false;
+            }
+
+            if ((typeof form.elements['password_confirm'] !== 'undefined') && (form.elements['password_confirm'].value != form.elements['password'].value)) {
+                window.fauxmodal_alert('{!cns:PASSWORD_MISMATCH;}');
+                return false;
+            }
+
+            document.getElementById('submit_button').disabled = true;
+
+            var url = options.usernameCheckScript + '?username=' + window.encodeURIComponent(form.elements['username'].value);
+
+            if (!do_ajax_field_test(url, 'password=' + window.encodeURIComponent(form.elements['password'].value))) {
+                document.getElementById('submit_button').disabled = false;
+                return false;
+            }
+
+            if (Composr.isNotEmptyOrZero(options.invitesEnabled)) {
+                url = options.snippetScript + '?snippet=invite_missing&name=' + window.encodeURIComponent(form.elements['email_address'].value);
+                if (!do_ajax_field_test(url)) {
+                    document.getElementById('submit_button').disabled = false;
+                    return false;
+                }
+            }
+
+            if (Composr.isNotEmptyOrZero(options.onePerEmailAddress)) {
+                url = options.snippetScript + '?snippet=exists_email&name=' + window.encodeURIComponent(form.elements['email_address'].value);
+                if (!do_ajax_field_test(url)) {
+                    document.getElementById('submit_button').disabled = false;
+                    return false;
+                }
+            }
+
+            if (Composr.isNotEmptyOrZero(options.useCaptcha)) {
+                url = options.snippetScript + '?snippet=captcha_wrong&name=' + window.encodeURIComponent(form.elements['captcha'].value);
+                if (!do_ajax_field_test(url)) {
+                    document.getElementById('submit_button').disabled = false;
+                    return false;
+                }
+            }
+
+            document.getElementById('submit_button').disabled = false;
+
+            if (typeof form.old_submit !== 'undefined' && form.old_submit) {
+                return form.old_submit();
+            }
+
+            return true;
+        };
+    }
 
 })(window.jQuery || window.Zepto, Composr);

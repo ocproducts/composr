@@ -1,3 +1,5 @@
+{$REQUIRE_JAVASCRIPT,core_form_interfaces}
+
 {+START,IF_NON_EMPTY,{TEXT}}
 	{$PARAGRAPH,{TEXT}}
 {+END}
@@ -51,3 +53,8 @@
 	</div>
 </form>
 
+<script type="application/json" data-tpl-core-form-interfaces="form">
+	{+START,IF_PASSED_AND_TRUE,IS_JOIN_FORM}
+		{+START,PARAMS_JSON,IS_JOIN_FORM,USERNAME_CHECK_SCRIPT,SNIPPET_SCRIPT,INVITES_ENABLED,ONE_PER_EMAIL_ADDRESS,USE_CAPTCHA}{_/}{+END}
+	{+END}
+</script>

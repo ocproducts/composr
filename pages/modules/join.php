@@ -192,9 +192,9 @@ class Module_join
         }
         $url = build_url($map, '_SELF');
 
-        list($javascript, $form) = cns_join_form($url);
+        $form = cns_join_form($url);
 
-        return do_template('CNS_JOIN_STEP2_SCREEN', array('_GUID' => '5879db5cf331526a999371f76868233d', 'JAVASCRIPT' => $javascript, 'TITLE' => $this->title, 'FORM' => $form));
+        return do_template('CNS_JOIN_STEP2_SCREEN', array('_GUID' => '5879db5cf331526a999371f76868233d', 'TITLE' => $this->title, 'FORM' => $form));
     }
 
     /**

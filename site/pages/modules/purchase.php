@@ -640,14 +640,13 @@ class Module_purchase
 
                 $url = get_self_url();
 
-                list($javascript, $form) = cns_join_form($url, true, false, false, false);
+                $form = cns_join_form($url, true, false, false, false);
 
                 $hidden = build_keep_post_fields();
 
                 $join_screen = do_template('PURCHASE_WIZARD_STAGE_GUEST', array(
                     '_GUID' => 'accf475a1457f73d7280b14d774acc6e',
                     'TEXT' => do_lang_tempcode('PURCHASE_NOT_LOGGED_IN', escape_html(get_site_name())),
-                    'JAVASCRIPT' => $javascript,
                     'FORM' => $form,
                     'HIDDEN' => $hidden,
                 ));

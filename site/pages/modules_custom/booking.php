@@ -555,13 +555,12 @@ class Module_booking
             $fields->attach(form_input_line(do_lang_tempcode('YOUR_PHONE_NUMBER'), '', 'customer_phone', '', true));
             $submit_name = do_lang_tempcode('BOOK');
             $form = do_template('FORM', array('_GUID' => '18e831a00ac918b06c7f761c7d7d5fb0', 'TEXT' => do_lang_tempcode('A_FEW_DETAILS'), 'HIDDEN' => $hidden, 'FIELDS' => $fields, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'URL' => $url));
-            $javascript = '';
         } else {
             // Integrated signup
-            list($javascript, $form) = cns_join_form($url, true, false, false, false);
+            $form = cns_join_form($url, true, false, false, false);
         }
 
-        return do_template('BOOKING_JOIN_OR_LOGIN_SCREEN', array('_GUID' => 'b6e499588de8e2136122949478bac2e7', 'TITLE' => $this->title, 'JAVASCRIPT' => $javascript, 'FORM' => $form, 'HIDDEN' => $hidden));
+        return do_template('BOOKING_JOIN_OR_LOGIN_SCREEN', array('_GUID' => 'b6e499588de8e2136122949478bac2e7', 'TITLE' => $this->title, 'FORM' => $form, 'HIDDEN' => $hidden));
     }
 
     /**
