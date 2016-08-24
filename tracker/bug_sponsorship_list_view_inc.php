@@ -161,7 +161,7 @@
 			<?php } else { ?>
 			<form method="post" action="bug_set_sponsorship.php">
 				<?php if ($hours!=0) { ?>
-				<p><?php echo sprintf(lang_get('cms_sponsor_first_message'), number_format($f_hours), number_format($f_hours_by_credits), $cash_needed_string, $alternate_currencies_links, $cms_sc_business_name, $cms_sc_product_name);?></p>
+				<p><?php echo sprintf(lang_get('cms_sponsor_first_message'), intval($f_hours), intval($f_hours_by_credits), $cash_needed_string, $alternate_currencies_links, $cms_sc_business_name, $cms_sc_product_name);?></p>
 				<?php } ?>
 				<p><?php echo sprintf(lang_get('cms_sponsor_second_message'), $cms_sc_site_url . '/contact/sponsor.htm'); ?></p>
 
