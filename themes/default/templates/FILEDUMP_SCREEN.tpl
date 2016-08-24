@@ -20,14 +20,6 @@
 
 			{+START,INCLUDE,FILEDUMP_SEARCH}I=1{+END}
 
-			{+START,IF_NON_EMPTY,{$_GET,filename}}
-				<script>// <![CDATA[
-					$(function() {
-						faux_open('{$PAGE_LINK;,_SELF:_SELF:embed:place={$_GET&,place}:file={$_GET&,filename}:wide_high=1}',null,'width=950;height=700','_top');
-					});
-				//]]></script>
-			{+END}
-
 			<form title="{!ACTION}" action="{POST_URL*}" method="post" onsubmit="return check_filedump_selections(this);" autocomplete="off">
 				{$INSERT_SPAMMER_BLACKHOLE}
 
@@ -126,36 +118,6 @@
 	</div>
 </div>
 
-<script>// <![CDATA[
-	$(function() {
-		find_url_tab();
-	});
-
-	function check_filedump_selections(form)
-	{
-		var action=form.elements['action'].options[form.elements['action'].selectedIndex].value;
-
-		if (action=='')
-		{
-			fauxmodal_alert('{!SELECT_AN_ACTION;}');
-			return false;
-		}
-
-		if (action=='edit') return true;
-
-		for (var i=0;i<form.elements.length;i++)
-		{
-			if ((form.elements[i].name.match(/^select_\d+$/)) && (form.elements[i].checked))
-			{
-				return true;
-			}
-		}
-
-		fauxmodal_alert('{!NOTHING_SELECTED_YET;}');
-		return false;
-	}
-//]]></script>
-
 {$,Load up the staff actions template to display staff actions uniformly (we relay our parameters to it)...}
 {+START,IF,{$AND,{$SHOW_DOCS},{$HAS_PRIVILEGE,see_software_docs}}}
 	{+START,INCLUDE,STAFF_ACTIONS}
@@ -173,3 +135,10 @@
 		{+END}
 	{+END}
 {+END}
+
+{$SET,file_link}
+{+START,IF_NON_EMPTY,{$_GET,filename}}
+{$SET,file_link,{$PAGE_LINK;,_SELF:_SELF:embed:place={$_GET&,place}:file={$_GET&,filename}:wide_high=1}}
+{+END}
+
+<script type="application/json" data-tpl-filedump="filedumpScreen">{+START,PARAMS_JSON,file_link}{_/}{+END}</script>

@@ -1,5 +1,24 @@
 "use strict";
 
+(function ($, Composr) {
+    Composr.templates.cnsForum = {
+        cnsTopicScreen: function cnsTopicScreen(options) {
+            if ((typeof options.serializedOptions !== 'undefined') && (typeof options.hash !== 'undefined')) {
+                window.comments_serialized_options = options.serializedOptions;
+                window.comments_hash = options.hash;
+            }
+        }
+    };
+
+    Composr.behaviors.cnsForum = {
+        initialize: {
+            attach: function (context) {
+                Composr.initializeTemplates(context, 'cns_forum');
+            }
+        }
+    };
+})(window.jQuery || window.Zepto, Composr);
+
 function cns_check_poll(form, min, max, error) {
     var j = 0;
     for (var i = 0; i < form.elements.length; i++)

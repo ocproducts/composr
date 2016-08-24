@@ -1,4 +1,5 @@
-<div class="permissions_matrix_wrap" id="enter_the_matrix" data-cms-globals='{"perm_serverid": "{SERVER_ID*#}"}'>
+{$REQUIRE_JAVASCRIPT,core_form_interfaces}
+<div class="permissions_matrix_wrap" id="enter_the_matrix" data-tpl-core-form-interfaces="formScreenInputPermissionMatrix" data-tpl-args="{+START,PARAMS_JSON,SERVER_ID}{_*}{+END}">
 	<table class="columned_table autosized_table results_table">
 		<thead>
 			<tr>

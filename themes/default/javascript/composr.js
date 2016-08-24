@@ -1,12 +1,54 @@
 (function ($){
     'use strict';
 
-    var Composr = {};
+    var data = JSON.parse(document.getElementsByName('composr-symbol-data')[0].content);
 
-    bindSymbols();
+    var Composr = {
+        $PAGE_TITLE: data.PAGE_TITLE,
+        $MEMBER: data.MEMBER,
+        $IS_GUEST: data.IS_GUEST,
+        $USERNAME: data.USERNAME,
+        $AVATAR: data.AVATAR,
+        $MEMBER_EMAIL: data.MEMBER_EMAIL,
+        $PHOTO: data.PHOTO,
+        $MEMBER_PROFILE_URL: data.MEMBER_PROFILE_URL,
+        $FROM_TIMESTAMP: data.FROM_TIMESTAMP,
+        $MOBILE: data.MOBILE,
+        $THEME: data.THEME,
+        $JS_ON: data.JS_ON,
+        $LANG: data.LANG,
+        $BROWSER_UA: data.BROWSER_UA,
+        $OS: data.OS,
+        $DEV_MODE: data.DEV_MODE,
+        $USER_AGENT: data.USER_AGENT,
+        $IP_ADDRESS: data.IP_ADDRESS,
+        $TIMEZONE: data.TIMEZONE,
+        $HTTP_STATUS_CODE: data.HTTP_STATUS_CODE,
+        $CHARSET: data.CHARSET,
+        $KEEP: data.KEEP,
+        $SITE_NAME: data.SITE_NAME,
+        $COPYRIGHT: data.COPYRIGHT,
+        $DOMAIN: data.DOMAIN,
+        $FORUM_BASE_URL: data.FORUM_BASE_URL,
+        $BASE_URL: data.BASE_URL,
+        $BRAND_NAME: data.BRAND_NAME,
+        $IS_STAFF: data.IS_STAFF,
+        $IS_ADMIN: data.IS_ADMIN,
+        $VERSION: data.VERSION,
+        $COOKIE_PATH: data.COOKIE_PATH,
+        $COOKIE_DOMAIN: data.COOKIE_DOMAIN,
+        $IS_HTTPAUTH_LOGIN: data.IS_HTTPAUTH_LOGIN,
+        $IS_A_COOKIE_LOGIN: data.IS_A_COOKIE_LOGIN,
+        $SESSION_COOKIE_NAME: data.SESSION_COOKIE_NAME,
+        $GROUP_ID: data.GROUP_ID
+    };
 
     var loadPolyfillsPromise = new Promise(function(resolve) {
         loadPolyfills(resolve);
+    });
+
+    loadPolyfillsPromise.then(function () {
+        Composr.queryString = new URLSearchParams(window.location.search);
     });
 
     var domReadyPromise = new Promise(function(resolve) {
@@ -32,6 +74,30 @@
     Composr.ready = Promise.all([loadPolyfillsPromise, domReadyPromise]);
     Composr.loadWindow = Promise.all([Composr.ready, windowLoadPromise]);
 
+    Composr.noop = function noop() {};
+
+    /* Used to check strings */
+    Composr.isEmptyOrZero = function isEmptyOrZero(str) {
+        if (!str || !str.trim() || (str.trim() === '0')) {
+            return true;
+        }
+
+        return false;
+    };
+
+    /* Used for specifying required arguments */
+    Composr.required = function (obj, keys) {
+        if (!Array.isArray(keys)) {
+            throw new Error('Parameter \'keys\' must be an array.');
+        }
+
+        for (var i = 0; i < keys.length; i++) {
+            if (!obj.hasOwnProperty(keys[i])) {
+                throw new Error('Object is missing a required key: \''+ keys[i] + '\'.');
+            }
+        }
+    };
+
     /**
      * Helper to rethrow errors asynchronously.
      *
@@ -51,9 +117,11 @@
     Composr.behaviors = {};
 
     Composr.attachBehaviors = function (context, settings) {
+        var addons = Composr.behaviors;
+
         context = context || document;
         settings = settings || composrSettings;
-        var addons = Composr.behaviors;
+
         // Execute all of them.
         for (var i in addons) {
             if (!addons.hasOwnProperty(i) || (typeof addons[i] !== 'object')) {
@@ -80,19 +148,32 @@
     };
 
     Composr.detachBehaviors = function (context, settings, trigger) {
+        var addons = Composr.behaviors;
+
         context = context || document;
         settings = settings || composrSettings;
         trigger = trigger || 'unload';
-        var behaviors = Composr.behaviors;
+
         // Execute all of them.
-        for (var i in behaviors) {
-            if (behaviors.hasOwnProperty(i) && typeof behaviors[i].detach === 'function') {
-                // Don't stop the execution of behaviors in case of an error.
-                try {
-                    behaviors[i].detach(context, settings, trigger);
+        for (var i in addons) {
+            if (!addons.hasOwnProperty(i) || (typeof addons[i] !== 'object')) {
+                continue;
+            }
+
+            var behaviors = addons[i];
+
+            for (var j in behaviors) {
+                if (!behaviors.hasOwnProperty(j) || (typeof behaviors[j] !== 'object')) {
+                    continue;
                 }
-                catch (e) {
-                    Composr.throwError(e);
+
+                if (typeof behaviors[j].detach === 'function') {
+                    // Don't stop the execution of behaviors in case of an error.
+                    try {
+                        behaviors[j].detach(context, settings, trigger);
+                    } catch (e) {
+                        Composr.throwError(e);
+                    }
                 }
             }
         }
@@ -113,7 +194,7 @@
             if (typeof this.dataset.tplArgs === 'string') { // Arguments provided in the data-tpl-args attribute
                 addonArgs = this.dataset.tplArgs.trim();
             } else if ((this.nodeName === 'SCRIPT') && (this.type === 'application/json')) { // Arguments provided inside the <script> tag
-                addonArgs = this.innerHTML.trim();
+                addonArgs = this.textContent.trim();
             }
 
             if (addonArgs !== '') {
@@ -146,8 +227,109 @@
     /* Addons will add Backbone.View subclasses under this object */
     Composr.views = {};
 
+    /* Tempcode filters ported to JS */
+
+    Composr.filter = function (filterSymbol, str) {
+        switch (filterSymbol) {
+            case '~':
+                return Composr.filters.stripNewLines(str);
+
+            case '|':
+                return Composr.filters.identifier(str);
+
+            default:
+                throw new Error('Invalid value provided for argument \'filterChar\'.');
+        }
+    };
+
+    Composr.filters = {};
+
+    Composr.filters.stripNewLines = function (str) {
+        if (typeof str !== 'string') {
+            throw new Error('Invalid argument type: \'str\' must be a string.');
+        }
+
+        return str.replace(/[\r\n]/g, '');
+    };
+
+    Composr.filters.identifier = function (str) {
+        var length, out, i, char, ascii;
+
+        if (typeof str !== 'string') {
+            throw new Error('Invalid argument type: \'str\' must be a string.');
+        }
+
+        length = str.length;
+        out = '';
+
+        for (i = 0; i < length; i++) {
+            char = str[i];
+
+            switch (char) {
+                case '[':
+                    out += '_opensquare_';
+                    break;
+                case ']':
+                    out += '_closesquare_';
+                    break;
+                case '&#039;':
+                case '\'':
+                    out += '_apostophe_';
+                    break;
+                case '-':
+                    out += '_minus_';
+                    break;
+                case ' ':
+                    out += '_space_';
+                    break;
+                case '+':
+                    out += '_plus_';
+                    break;
+                case '*':
+                    out += '_star_';
+                    break;
+                case '/':
+                    out += '__';
+                    break;
+                default:
+                    ascii = char.charCodeAt(0);
+
+                    if (((i !== 0) && (char === '_')) || ((ascii >= 48) && (ascii <= 57)) || ((ascii >= 65) && (ascii <= 90)) || ((ascii >= 97) && (ascii <= 122))) {
+                        out += char;
+                    } else {
+                        out += '_' + ascii + '_';
+                    }
+                    break;
+            }
+        }
+
+        if (out === '') {
+            out = 'zero_length';
+        }
+
+        if (out[0] === '_') {
+            out = 'und_' + out;
+        }
+
+        return out;
+    };
+
     /* General utility methods */
     Composr.utils = {};
+
+    // Returns a random integer between min (inclusive) and max (inclusive)
+    // Using Math.round() will give you a non-uniform distribution!
+    Composr.utils.random = function random(min, max) {
+        if (typeof min === 'undefined') {
+            min = 0;
+        }
+
+        if (typeof max === 'undefined') {
+            max = 4294967295;
+        }
+
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    };
 
     // Credit: http://stackoverflow.com/a/32604073/362006
     Composr.utils.camelCase = function camelCase(str) {
@@ -184,46 +366,6 @@
 
         return element.offsetHeight - padding - border;
     };
-
-    function bindSymbols() {
-        var data = JSON.parse(document.getElementsByName('composr-symbol-data')[0].content);
-        Composr.$PAGE_TITLE = data.PAGE_TITLE;
-        Composr.$MEMBER = data.MEMBER;
-        Composr.$IS_GUEST = data.IS_GUEST;
-        Composr.$USERNAME = data.USERNAME;
-        Composr.$AVATAR = data.AVATAR;
-        Composr.$MEMBER_EMAIL = data.MEMBER_EMAIL;
-        Composr.$PHOTO = data.PHOTO;
-        Composr.$MEMBER_PROFILE_URL = data.MEMBER_PROFILE_URL;
-        Composr.$FROM_TIMESTAMP = data.FROM_TIMESTAMP;
-        Composr.$MOBILE = data.MOBILE;
-        Composr.$THEME = data.THEME;
-        Composr.$JS_ON = data.JS_ON;
-        Composr.$LANG = data.LANG;
-        Composr.$BROWSER_UA = data.BROWSER_UA;
-        Composr.$OS = data.OS;
-        Composr.$DEV_MODE = data.DEV_MODE;
-        Composr.$USER_AGENT = data.USER_AGENT;
-        Composr.$IP_ADDRESS = data.IP_ADDRESS;
-        Composr.$TIMEZONE = data.TIMEZONE;
-        Composr.$HTTP_STATUS_CODE = data.HTTP_STATUS_CODE;
-        Composr.$CHARSET = data.CHARSET;
-        Composr.$KEEP = data.KEEP;
-        Composr.$SITE_NAME = data.SITE_NAME;
-        Composr.$COPYRIGHT = data.COPYRIGHT;
-        Composr.$DOMAIN = data.DOMAIN;
-        Composr.$FORUM_BASE_URL = data.FORUM_BASE_URL;
-        Composr.$BASE_URL = data.BASE_URL;
-        Composr.$BRAND_NAME = data.BRAND_NAME;
-        Composr.$IS_STAFF = data.IS_STAFF;
-        Composr.$IS_ADMIN = data.IS_ADMIN;
-        Composr.$VERSION = data.VERSION;
-        Composr.$COOKIE_PATH = data.COOKIE_PATH;
-        Composr.$COOKIE_DOMAIN = data.COOKIE_DOMAIN;
-        Composr.$IS_A_COOKIE_LOGIN = data.IS_A_COOKIE_LOGIN;
-        Composr.$SESSION_COOKIE_NAME = data.SESSION_COOKIE_NAME;
-        Composr.$GROUP_ID = data.GROUP_ID;
-    }
 
     function loadPolyfills(callback) {
         var scriptsToLoad = 0,
@@ -293,28 +435,10 @@
         window.CustomEvent = CustomEvent;
     }
 
-    Composr.ready.then(function () {
-        Composr.attachBehaviors(document, {});
-    });
-
     Composr.behaviors.composr = {
         initialize: {
             attach: function (context) {
-                // Set global variables (into the window object)
-                $('[data-cms-globals]', context).each(function () {
-                    var globals = this.dataset.cmsGlobals.trim();
-                    if (globals) {
-                        globals = JSON.parse(globals);
-
-                        for (var name in globals) {
-                            if (globals.hasOwnProperty(name)) {
-                                window[name] = globals[name];
-                            }
-                        }
-                    }
-                });
-
-                // Call a global function, optionally with arguments. Inside the function, "this" will be the element calling that function.
+                // Call a global function, optionally with arguments. Inside the function scope, "this" will be the element calling that function.
                 $('[data-cms-call]', context).each(function () {
                     var funcName = this.dataset.cmsCall.trim(),
                         cmsCallArgs = typeof this.dataset.cmsCallArgs === 'string' ? this.dataset.cmsCallArgs.trim() : '',
@@ -369,6 +493,10 @@
             }
         }
     };
+
+    Composr.ready.then(function () {
+        Composr.attachBehaviors(document, {});
+    });
 
     return window.Composr = Composr;
 })(window.jQuery || window.Zepto);

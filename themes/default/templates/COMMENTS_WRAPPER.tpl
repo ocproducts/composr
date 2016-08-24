@@ -1,4 +1,5 @@
-<div id="comments_wrapper" class="comments_wrapper" role="complementary">
+<div id="comments_wrapper" class="comments_wrapper" role="complementary"
+	 data-tpl-core-feeedback-features="commentsWrapper" data-tpl-args="{+START,PARAMS_JSON,SERIALIZED_OPTIONS,HASH}{_*}{+END}">
 	{+START,SET,REVIEWS_TITLE}
 		<span class="field_title">{!_REVIEWS,{$METADATA*,numcomments}}:</span>
 
@@ -96,13 +97,6 @@
 
 			{FORM}
 		{+END}
-
-		{+START,IF_PASSED,SERIALIZED_OPTIONS}{+START,IF_PASSED,HASH}
-			<script>// <![CDATA[
-				window.comments_serialized_options='{SERIALIZED_OPTIONS;/}';
-				window.comments_hash='{HASH;/}';
-			//]]></script>
-		{+END}{+END}
 	</div>
 
 	{$,Load up the staff actions template to display staff actions uniformly (we relay our parameters to it)...}

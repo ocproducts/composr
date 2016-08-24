@@ -2,29 +2,9 @@
 
 {$REQUIRE_JAVASCRIPT,dyn_comcode}
 
-<div class="ticker_wrap" role="marquee" id="ticktickticker{$GET,RAND_ID_TICKER}"></div>
-
-<script>// <![CDATA[
-	var tick_pos=[];
-	$(function() {
-		var ticktickticker=document.getElementById('ticktickticker{$GET,RAND_ID_TICKER}');
-		if (typeof document.createElement('marquee').scrolldelay=='undefined') // Slower, but chrome does not support marquee's
-		{
-			var my_id=parseInt(Math.random()*10000);
-			tick_pos[my_id]={WIDTH%};
-			set_inner_html(ticktickticker,'<div onmouseover="this.mouseisover=true;" onmouseout="this.mouseisover=false;" class="ticker" style="text-indent: {WIDTH|}px; width: {WIDTH|}px;" id="'+my_id+'"><span>{TEXT;~/}<\/span><\/div>');
-			window.focused=true;
-			window.addEventListener("focus",function() { window.focused=true; });
-			window.addEventListener("blur",function() { window.focused=false; });
-			window.setInterval(function() { ticker_tick(my_id,{WIDTH%}); },100/{SPEED%});
-		} else
-		{
-			set_inner_html(ticktickticker,'<marquee style="display: block" class="ticker" onmouseover="this.setAttribute(\'scrolldelay\',\'10000\');" onmouseout="this.setAttribute(\'scrolldelay\',(100/{SPEED%}));" scrollamount="2" scrolldelay="'+(100/{SPEED%})+'" width="{WIDTH|}">{TEXT;~/}<\/marquee>');
-		}
-	});
-//]]></script>
+<div class="ticker_wrap" role="marquee" id="ticktickticker{$GET,RAND_ID_TICKER}" data-tpl-core-rich-media="comcodeTicker"
+	 data-tpl-args="{+START,PARAMS_JSON,RAND_ID_TICKER,WIDTH,SPEED,TEXT}{_*}{+END}"></div>
 
 <noscript>
 	{TEXT}
 </noscript>
-

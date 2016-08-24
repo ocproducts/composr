@@ -1,4 +1,5 @@
-<div>
+{$REQUIRE_JAVASCRIPT,chat}
+<div data-tpl-chat="chatSetEffectsSettingBlock" data-tpl-args="{+START,PARAMS_JSON,KEY,MEMBER_ID}{_*}{+END}">
 	{+START,IF_PASSED,USERNAME}{+START,IF_PASSED,MEMBER_ID}
 		<div class="toggleable_tray_title">
 			{!OVERRIDES_FOR_FRIEND,{USERNAME*}}
@@ -69,12 +70,6 @@
 								<input name="upload_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" id="upload_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" type="file" />
 
 								<input type="hidden" name="clear_button_upload_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" id="clear_button_upload_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" />
-								{+START,IF,{$NOT,{$IS_HTTPAUTH_LOGIN}}}
-									<script>// <![CDATA[
-										$(function() {
-											preinit_file_input('chat_effect_settings','upload_{KEY;/}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID;/}{+END}',null,null,'mp3','button_micro');
-										});
-									//]]></script>
 								{+END}
 							</div>
 						</td>

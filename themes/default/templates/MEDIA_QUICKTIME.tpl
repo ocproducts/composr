@@ -1,4 +1,7 @@
-{+START,SET,media}
+{+START,IF_PASSED_AND_TRUE,FRAMED}
+<figure>
+{+END}
+
 	{$SET,player_id,player_{$RAND}}
 
 	{+START,IF_NON_PASSED_OR_FALSE,WYSIWYG_EDITABLE}
@@ -25,21 +28,6 @@
 		></embed>
 	</div>
 
-	{$,Tie into callback event to see when finished, for our slideshows}
-	{$,API: http://developer.apple.com/library/safari/#documentation/QuickTime/Conceptual/QTScripting_JavaScript/bQTScripting_JavaScri_Document/QuickTimeandJavaScri.html}
-	<script>// <![CDATA[
-		Composr.loadWindow.then(function() {
-			if (document.getElementById('next_slide'))
-			{
-				stop_slideshow_timer();
-				window.setTimeout(function() {
-					document.getElementById('{$GET;,player_id}').addEventListener('qt_ended',function() { player_stopped(); });
-					document.getElementById('{$GET;,player_id}').Play();
-				}, 1000);
-			}
-		});
-	//]]></script>
-
 	{+START,IF_NON_EMPTY,{DESCRIPTION}}
 		<figcaption class="associated_details">
 			{$PARAGRAPH,{DESCRIPTION}}
@@ -47,12 +35,9 @@
 	{+END}
 
 	{$,Uncomment for a download link \{+START,INCLUDE,MEDIA__DOWNLOAD_LINK\}\{+END\}}
-{+END}
+
 {+START,IF_PASSED_AND_TRUE,FRAMED}
-	<figure>
-		{$GET,media}
-	</figure>
+</figure>
 {+END}
-{+START,IF_NON_PASSED_OR_FALSE,FRAMED}
-	{$GET,media}
-{+END}
+
+<script type="application/json" data-tpl-core-rich-media="mediaQuicktime">{+START,PARAMS_JSON,player_id}{_/}{+END}</script>

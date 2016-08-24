@@ -15,13 +15,3 @@
 	<label class="accessibility_hidden" for="{NAME*}_time">{!TIME}</label>
 	<input name="{NAME*}_time" id="{NAME*}_time" type="time" size="5"{+START,IF_PASSED,TABINDEX} tabindex="{TABINDEX*}"{+END} value="{+START,IF_NON_EMPTY,{HOUR}}{$GET*,time_value}{+END}" class="input_time{$?,{REQUIRED},_required}" />
 {+END}
-
-{+START,SET,comment}
-	Uncomment if you want to force jQuery-UI inputs even when there is native browser input support
-	<script>// <![CDATA[
-		$(function() {
-			$('#{NAME;/}').inputDate({});
-			$('#{NAME;/}_time').inputTime({});
-		});
-	//]]></script>
-{+END}

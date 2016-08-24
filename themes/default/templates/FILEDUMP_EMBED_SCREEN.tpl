@@ -20,18 +20,6 @@
 			</form>
 		</div>
 	</div>
-
-	<script>// <![CDATA[
-		$(function() {
-			var e=document.getElementById('generated_comcode');
-			try
-			{
-				e.focus();
-			}
-			catch (e) {}
-			e.select();
-		});
-	//]]></script>
 {+END}
 
 {+START,IF_NON_PASSED,GENERATED}
@@ -58,3 +46,5 @@
 {+END}
 
 {FORM}
+
+<script type="application/json" data-tpl-filedump="filedumpEmbedScreen">{+START,PARAMS_JSON,GENERATED}{_/}{+END}</script>

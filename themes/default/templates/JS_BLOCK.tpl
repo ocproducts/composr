@@ -13,8 +13,5 @@
 	</div>
 </div>
 
-<script>// <![CDATA[
-	Composr.loadWindow.then(function() {
-		call_block('{$FACILITATE_AJAX_BLOCK_CALL;,{BLOCK_PARAMS}}','',document.getElementById('{$GET%,js_block_id}'),false,null,false,null,false,false);
-	});
-//]]></script>
+{$SET,block_call_url,{$FACILITATE_AJAX_BLOCK_CALL,{BLOCK_PARAMS}}}
+<script type="application/json" data-tpl-core="jsBlock">{+START,PARAMS_JSON,js_block_id,block_call_url}{_/}{+END}</script>

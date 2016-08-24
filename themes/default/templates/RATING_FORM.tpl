@@ -1,3 +1,4 @@
+{$REQUIRE_JAVASCRIPT,core_feedback_features}
 {$,If may rate}
 {+START,IF_EMPTY,{ERROR}}
 	{+START,IF,{$JS_ON}}
@@ -23,10 +24,6 @@
 					{+START,IF,{$NOT,{LIKES}}}
 						<img id="rating_bar_2__{$GET,identifier}" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" /><img id="rating_bar_4__{$GET,identifier}" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" /><img id="rating_bar_6__{$GET,identifier}" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" /><img id="rating_bar_8__{$GET,identifier}" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" /><img id="rating_bar_10__{$GET,identifier}" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" />
 					{+END}
-
-					<script>// <![CDATA[
-						apply_rating_highlight_and_ajax_code({LIKES%}==1,{RATING%},'{CONTENT_TYPE%}','{ID%}','{TYPE%}',{RATING%},'{CONTENT_URL;/}','{CONTENT_TITLE;/}',true);
-					//]]></script>
 				</div>
 			</div>
 		{+END}
@@ -72,3 +69,7 @@
 		{+END}
 	{+END}
 {+END}
+
+<script type="application/json" data-tpl-core-feedback-features="ratingForm">
+{+START,PARAMS_JSON,ERROR,ALL_RATING_CRITERIA}{_/}{+END}
+</script>

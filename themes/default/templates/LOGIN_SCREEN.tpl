@@ -2,7 +2,7 @@
 
 {$SET,login_screen,1}
 
-<div class="login_page">
+<div class="login_page" data-tpl-core="loginScreen">
 	{+START,IF,{$HAS_FORUM,1}}
 		<div class="box box___login_screen"><div class="box_inner">
 			{!LOGIN_TEXT,<a href="{JOIN_URL*}"><strong>{!JOIN_HERE}</strong></a>}
@@ -85,15 +85,3 @@
 	{+END}
 </div>
 
-<script>// <![CDATA[
-	$(function() {
-		if ((typeof document.activeElement=='undefined') || (document.activeElement!=document.getElementById('password')))
-		{
-			try
-			{
-				document.getElementById('login_username').focus();
-			}
-			catch (e){};
-		}
-	});
-//]]></script>

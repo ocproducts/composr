@@ -1,3 +1,4 @@
+{$REQUIRE_JAVASCRIPT,galleries}
 {$SET,support_mass_select,cms_galleries}
 
 {+START,IF,{$NEQ,{$COMMA_LIST_GET,{BLOCK_PARAMS},raw},1}}
@@ -23,6 +24,7 @@
 		{$REQUIRE_CSS,carousels}
 
 		{$SET,carousel_id,{$RAND}}
+		{$SET,block_call_url,{$FACILITATE_AJAX_BLOCK_CALL,{BLOCK_PARAMS},raw=.*\,cache=.*,{START_PARAM}=.*}&{START_PARAM}=current_loading_from_pos_{$GET,carousel_id}}
 
 		<div id="carousel_{$GET*,carousel_id}" class="carousel" style="display: none" data-cms-call="initialise_carousel">
 			<div class="move_left" onkeypress="this.onmousedown(event);" onmousedown="carousel_move({$GET*,carousel_id},-47); return false;"></div>
@@ -35,26 +37,6 @@
 		<div class="carousel_temp" id="carousel_ns_{$GET*,carousel_id}">
 			{ENTRIES}
 		</div>
-
-		<script>// <![CDATA[
-			var current_loading_from_pos_{$GET*,carousel_id}={START%};
-
-			function carousel_prepare_load_more_{$GET*,carousel_id}(carousel_id)
-			{
-				var ob=document.getElementById('carousel_ns_'+carousel_id);
-
-				if (ob.parentNode.scrollLeft+ob.offsetWidth*2<ob.scrollWidth) return; // Not close enough to need more results
-
-				current_loading_from_pos_{$GET*,carousel_id}+={MAX%};
-
-				call_block(
-					'{$FACILITATE_AJAX_BLOCK_CALL;,{BLOCK_PARAMS},raw=.*\,cache=.*,{START_PARAM%}=.*}'+'&{START_PARAM%}='+current_loading_from_pos_{$GET*,carousel_id},
-					'raw=1,cache=0',
-					ob,
-					true
-				);
-			}
-		//]]></script>
 	{+END}
 
 	{+START,INCLUDE,MASS_SELECT_DELETE_FORM}
@@ -68,3 +50,5 @@
 {+END}
 
 {$SET,support_mass_select,}
+
+<script type="application/json" data-galleries="blockMainGalleryEmbed">{+START,PARAMS_JSON,carousel_id,START,MAX,block_call_url}{_/}{+END}</script>

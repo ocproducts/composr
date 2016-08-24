@@ -12,27 +12,15 @@
 	</div>
 	<div class="accessibility_hidden"><label for="captcha">{!captcha:AUDIO_CAPTCHA}</label></div>
 	<input{+START,IF_PASSED,TABINDEX} tabindex="{TABINDEX*}"{+END} maxlength="6" size="7" class="input_text_required" value="" type="text" id="captcha" name="captcha" />
-
-	<script>// <![CDATA[
-		var showevent=(typeof window.onpageshow!='undefined')?'pageshow':'load';
-
-		var func=function() {
-			document.getElementById('captcha_readable').src+='&'; // Force it to reload latest captcha
-		};
-
-		window.addEventListener(showevent,func,false);
-
-	//]]></script>
 {+END}
 
 {+START,IF,{$CONFIG_OPTION,js_captcha}}
 	<noscript>{!JAVASCRIPT_REQUIRED}</noscript>
 
 	<div id="captcha_spot"></div>
-	<script>// <![CDATA[
-		set_inner_html(document.getElementById('captcha_spot'),'{$GET;^/,CAPTCHA}');
-	//]]></script>
 {+END}
 {+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}
 	{$GET,CAPTCHA}
 {+END}
+
+<script type="application/json" data-tpl-core-form-interfaces="formScreenInputCaptcha">[{+START,PARAMS_JSON,CAPTCHA}{_/}{+END}, {$CONFIG_OPTION,js_captcha}]</script>

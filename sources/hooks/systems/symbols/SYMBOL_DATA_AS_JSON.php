@@ -72,6 +72,7 @@ class Hook_symbol_SYMBOL_DATA_AS_JSON
             'VERSION'             => ecv2_VERSION($lang, [], []),
             'COOKIE_PATH'         => ecv2_COOKIE_PATH($lang, [], []),
             'COOKIE_DOMAIN'       => ecv2_COOKIE_DOMAIN($lang, [], []),
+            'IS_HTTPAUTH_LOGIN'   => ecv_IS_HTTPAUTH_LOGIN($lang, [], []) === '1',
             'IS_A_COOKIE_LOGIN'   => ecv2_IS_A_COOKIE_LOGIN($lang, [], []) === '1',
             'SESSION_COOKIE_NAME' => ecv2_SESSION_COOKIE_NAME($lang, [], []),
             'GROUP_ID'            => ecv2_GROUP_ID($lang, [], []),

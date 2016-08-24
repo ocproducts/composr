@@ -10,18 +10,4 @@
 	</figcaption>
 {+END}
 
-{$,Tie into callback event to see when finished, for our slideshows}
-<script>// <![CDATA[
-	$(function() {
-		if (document.getElementById('next_slide'))
-		{
-			stop_slideshow_timer();
-			window.setTimeout(function() {
-				window.addEventListener('message',player_stopped,false);
-
-				var player=document.getElementById('{$GET*,player_id}');
-				player.contentWindow.postMessage(JSON.stringify({ method: 'addEventListener', value: 'finish' }),'https://player.vimeo.com/video/{REMOTE_ID;/}');
-			}, 1000);
-		}
-	});
-//]]></script>
+<script type="application/json" data-tpl-core-rich-media="mediaVimeo">{+START,PARAMS_JSON,player_id,REMOTE_ID}{_/}{+END}</script>

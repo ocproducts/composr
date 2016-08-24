@@ -10,3 +10,5 @@
 <h2>{!NEW}</h2>
 
 {FORM}
+
+<script type="application/json" data-tpl-backup="backupLaunchScreen"></script>

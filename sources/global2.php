@@ -68,7 +68,7 @@ function init__global2()
     }
 
     // Initialise some globals
-    $JAVASCRIPTS_DEFAULT = array('underscore' => true, 'global' => true, 'transitions' => true, 'modalwindow' => true, 'custom_globals' => true);
+    $JAVASCRIPTS_DEFAULT = array('underscore' => true, 'jquery' => true, 'composr' => true, 'global' => true, 'transitions' => true, 'modalwindow' => true, 'custom_globals' => true);
     $JAVASCRIPT_BOTTOM = array();
     $RUNNING_SCRIPT_CACHE = array();
     $WHAT_IS_RUNNING_CACHE = current_script();

@@ -1,7 +1,13 @@
-{$SET,rand_donextitem,{$RAND}}
+{$SET,rand_do_next_item,{$RAND}}
 
-<div id="donext_item_{$GET,rand_donextitem}" class="do_next_item" style="width: {$DIV*,100,{$MIN,5,{NUM_SIBLINGS}}}%" onclick="var as=this.getElementsByTagName('a'); var a=as[as.length-1]; click_link(a);" onkeypress="if (enter_pressed(event)) this.onclick(event);" onmouseout="if (typeof window.doc_onmouseout!='undefined') doc_onmouseout();" onmouseover="if (typeof window.doc_onmouseover!='undefined') doc_onmouseover('{$GET,rand_donextitem}');">
-	{+START,IF_NON_EMPTY,{DOC}}<div id="doc_{$GET,rand_donextitem}" style="display: none">{DOC}</div>{+END}
+<div id="do_next_item_{$GET,rand_do_next_item}" class="do_next_item" style="width: {$DIV*,100,{$MIN,5,{NUM_SIBLINGS}}}%"
+	 data-tpl-core-abstract-interfaces="doNextItem" data-tpl-args="{+START,PARAMS_JSON,AUTO_ADD,rand_do_next_item}{_*}{+END}"
+	 onclick="var as=this.getElementsByTagName('a'); var a=as[as.length-1]; click_link(a);"
+	 onkeypress="if (enter_pressed(event)) this.onclick(event);"
+	 onmouseout="if (typeof window.doc_onmouseout!='undefined') doc_onmouseout();"
+	 onmouseover="if (typeof window.doc_onmouseover!='undefined') doc_onmouseover('{$GET,rand_do_next_item}');">
+
+	{+START,IF_NON_EMPTY,{DOC}}<div id="doc_{$GET,rand_do_next_item}" style="display: none">{DOC}</div>{+END}
 
 	<div>
 		<div>
@@ -21,34 +27,5 @@
 			</div>
 		</div>
 	</div>
-
-	{+START,IF_PASSED,AUTO_ADD}
-		<script>// <![CDATA[
-			$(function() {
-				var as=document.getElementById('donext_item_{$GET,rand_donextitem}').getElementsByTagName('a');
-				for (var i=0;i<as.length;i++)
-				{
-					as[i].onclick=function(_this) {
-						return function(event) {
-							if (typeof event.preventDefault!='undefined') event.preventDefault();
-							cancel_bubbling(event);
-							window.fauxmodal_confirm(
-								'{!KEEP_ADDING_QUESTION;}',
-								function(test)
-								{
-									if (test)
-									{
-										_this.href+=(_this.href.indexOf('?')!=-1)?'&':'?';
-										_this.href+='{AUTO_ADD;/}=1';
-									}
-									click_link(_this);
-								}
-							);
-							return false;
-						};
-					} (as[i]);
-				}
-			});
-		//]]></script>
-	{+END}
 </div>
+

@@ -4,29 +4,12 @@
 	<div id="error_{NAME*}" style="display: none" class="input_error_here"></div>
 {+END}
 
-<div class="radio_list">
+<div class="radio_list" data-tpl-core-form-interfaces="formScreenInputRadioList" data-tpl-args="{+START,PARAMS_JSON,NAME,CODE}{_*}{+END}">
 	{CONTENT}
 </div>
 
 {+START,IF_PASSED,NAME}
-	{+START,IF,{REQUIRED}}
-		<input type="hidden" name="require__{NAME*}" value="1" />
-	{+END}
-
-	{+START,IF_PASSED,CODE}
-		<script>// <![CDATA[
-			$(function() {
-				choose_picture('j_{NAME|;}_{CODE|;}',null,'{NAME;/}',null);
-			});
-		//]]></script>
-	{+END}
-
-	{$,If is for deletion}
-	{+START,IF,{$EQ,{NAME},delete}}
-		<script>// <![CDATA[
-			$(function() {
-				assign_radio_deletion_confirm('{NAME;/}');
-			});
-		//]]></script>
-	{+END}
+{+START,IF,{REQUIRED}}
+	<input type="hidden" name="require__{NAME*}" value="1" />
+{+END}
 {+END}

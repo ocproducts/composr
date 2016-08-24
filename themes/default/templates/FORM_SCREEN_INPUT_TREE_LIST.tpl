@@ -18,3 +18,7 @@ RIGHT=1
 		{!TREE_LIST_FEEDBACK,<span class="whitespace_visible" id="{NAME*}_mirror">{NICE_LABEL*}</span>}
 	</p>
 {+END}
+
+<script type="application/json" data-tpl-core-form-interfaces="formScreenInputTreeList">
+	{+START,PARAMS_JSON,NAME}{_/}{+END}
+</script>

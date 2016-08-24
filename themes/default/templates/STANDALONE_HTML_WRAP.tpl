@@ -19,37 +19,12 @@
 
 		{$JS_TEMPCODE,footer}
 
-		<script>// <![CDATA[
-			if (window.parent)
-			{
-				Composr.loadWindow.then(function() {
-					document.body.className+=' frame';
-
-					try
-					{
-						if (typeof window.trigger_resize!='undefined') trigger_resize();
-					}
-					catch (e) {}
-					window.setTimeout(function() { // Needed for IE10
-						try
-						{
-							if (typeof window.trigger_resize!='undefined') trigger_resize();
-						}
-						catch (e) {}
-					},1000);
-				});
-			}
-
-			script_load_stuff();
-
-			{+START,IF,{$RUNNING_SCRIPT,preview}}
-				disable_preview_scripts();
-			{+END}
-		//]]></script>
-
 		{+START,IF_NON_PASSED,POPUP}
 			{$EXTRA_FOOT}
 		{+END}
+
+		{$START,is_preview,{$RUNNING_SCRIPT,preview}}
+		<script type="application/json" data-tpl-core-html-abstractions="standaloneHtmlWrap">{+START,PARAMS_JSON,is_preview}{_/}{+END}</script>
 	</body>
 </html>
 

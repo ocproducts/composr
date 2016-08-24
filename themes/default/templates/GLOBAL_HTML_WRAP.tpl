@@ -12,7 +12,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 </head>
 
 {$,You can use main_website_inner to help you create fixed width designs; never put fixed-width stuff directly on ".website_body" or "body" because it will affects things like the preview or banner frames or popups/overlays}
-<body class="website_body zone_running_{$ZONE*} page_running_{$PAGE*}" id="main_website" itemscope="itemscope" itemtype="http://schema.org/WebPage">
+<body class="website_body zone_running_{$ZONE*} page_running_{$PAGE*}" id="main_website" itemscope="itemscope" itemtype="http://schema.org/WebPage" data-tpl-core-primary-layout="globalHtmlWrap">
 	<div id="main_website_inner">
 		{+START,IF,{$SHOW_HEADER}}
 			<header itemscope="itemscope" itemtype="http://schema.org/WPHeader" role="banner">

@@ -35,19 +35,4 @@
 	{+END}
 </noscript>
 
-<script>// <![CDATA[
-	$(function() {
-		var data={};
-		initialise_image_fader(data,'{$GET%,RAND_FADER_IMAGE}');
-
-		{+START,LOOP,TITLES}
-			initialise_image_fader_title(data,'{_loop_var;^/}',{_loop_key%});
-		{+END}
-		{+START,LOOP,HTML}
-			initialise_image_fader_html(data,'{_loop_var;^/}',{_loop_key%});
-		{+END}
-		{+START,LOOP,IMAGES}
-			initialise_image_fader_image(data,'{_loop_var;^/}',{_loop_key%},{MILL%},{IMAGES%});
-		{+END}
-	});
-//]]></script>
+<script type="application/json" data-tpl-galleries="blockMainImageFader">{+START,PARAMS_JSON,RAND_FADER_IMAGE,TITLES,HTML,IMAGES}{_/}{+END}</script>

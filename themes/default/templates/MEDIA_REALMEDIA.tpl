@@ -1,4 +1,6 @@
-{+START,SET,media}
+{+START,IF_PASSED_AND_TRUE,FRAMED}
+<figure>
+{+END}
 	{$SET,player_id,player_{$RAND}}
 
 	{+START,IF_NON_PASSED_OR_FALSE,WYSIWYG_EDITABLE}
@@ -21,21 +23,6 @@
 		></embed>
 	</div>
 
-	{$,Tie into callback event to see when finished, for our slideshows}
-	{$,API: http://service.real.com/help/library/guides/realone/ScriptingGuide/PDF/ScriptingGuide.pdf}
-	<script>// <![CDATA[
-		Composr.loadWindow.then(function() {
-			if (document.getElementById('next_slide'))
-			{
-				stop_slideshow_timer();
-				window.setTimeout(function() {
-					document.getElementById('{$GET;,player_id}').addEventListener('stateChange',function(newState) { if (newState==0) { player_stopped(); } });
-					document.getElementById('{$GET;,player_id}').DoPlay();
-				}, 1000);
-			}
-		});
-	//]]></script>
-
 	{+START,IF_NON_EMPTY,{DESCRIPTION}}
 		<figcaption class="associated_details">
 			{$PARAGRAPH,{DESCRIPTION}}
@@ -43,12 +30,9 @@
 	{+END}
 
 	{$,Uncomment for a download link \{+START,INCLUDE,MEDIA__DOWNLOAD_LINK\}\{+END\}}
-{+END}
+
 {+START,IF_PASSED_AND_TRUE,FRAMED}
-	<figure>
-		{$GET,media}
 	</figure>
 {+END}
-{+START,IF_NON_PASSED_OR_FALSE,FRAMED}
-	{$GET,media}
-{+END}
+
+<script type="application/json" data-tpl-core-rich-media="mediaRealmedia">{+START,PARAMS_JSON,player_id}{_/}{+END}</script>

@@ -1,8 +1,10 @@
+{$REQUIRE_JAVASCRIPT,chat}
 {$REQUIRE_JAVASCRIPT,checking}
 {$REQUIRE_CSS,cns_member_directory}
 
 {+START,IF,{$NEQ,{$COMMA_LIST_GET,{BLOCK_PARAMS},raw},1}}
 	{$SET,wrapper_id,ajax_block_wrapper_{$RAND%}}
+	{$SET,block_call_url,{$FACILITATE_AJAX_BLOCK_CALL,{BLOCK_PARAMS}}}
 	<div id="{$GET*,wrapper_id}">
 		<form target="_self" class="right" role="search" title="{!FRIENDS}, {!SEARCH}" action="{$URL_FOR_GET_FORM*,{$SELF_URL}}#tab__friends" method="get" autocomplete="off">
 			{$HIDDENS_FOR_GET_FORM,{$SELF_URL}}
@@ -32,9 +34,6 @@
 			<p class="nothing_here">{!_NO_FRIEND_ENTRIES}</p>
 		{+END}
 
-		<script>// <![CDATA[
-			internalise_ajax_block_wrapper_links('{$FACILITATE_AJAX_BLOCK_CALL;,{BLOCK_PARAMS}}',document.getElementById('{$GET;,wrapper_id}'),['.*'],{ },false,true);
-		//]]></script>
 		{+START,IF_NON_EMPTY,{PAGINATION}}
 			{+START,INCLUDE,AJAX_PAGINATION}ALLOW_INFINITE_SCROLL=1{+END}
 		{+END}
@@ -51,3 +50,4 @@
 	{PAGINATION}
 {+END}
 
+<script type="application/json" data-tpl-chat="blockMainFriendsList">{+START,PARAMS_JSON,wrapper_id,block_call_url}{_/}{+END}</script>

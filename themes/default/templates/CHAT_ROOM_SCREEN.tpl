@@ -2,6 +2,7 @@
 
 {$REQUIRE_JAVASCRIPT,jquery}
 {$REQUIRE_JAVASCRIPT,widget_color}
+{$REQUIRE_JAVASCRIPT,chat}
 {$REQUIRE_CSS,widget_color}
 
 {+START,IF_NON_EMPTY,{INTRODUCTION}}<p>{INTRODUCTION}</p>{+END}
@@ -129,10 +130,6 @@
 	{+END}
 </div>
 
-<script>// <![CDATA[
-	Composr.loadWindow.then(function() {
-		chat_load({CHATROOM_ID%});
-	});
-// ]]></script>
-
 {$REVIEW_STATUS,chat,{CHATROOM_ID}}
+
+<script type="application/json" data-tpl-chat="chatRoomScreen">{+START,PARAMS_JSON,CHATROOM_ID}{_/}{+END}</script>

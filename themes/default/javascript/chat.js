@@ -63,6 +63,69 @@
             }
 
             begin_im_chatting();
+        },
+
+        chatSitewideImPopup: function chatSitewideImPopup() {
+            window.detect_if_chat_window_closed_checker=window.setInterval(function() {
+                if (typeof detect_if_chat_window_closed!='undefined') detect_if_chat_window_closed();
+            },5);
+        },
+
+        blockMainFriendsList: function blockMainFriendsList(options) {
+            if (!options.wrapperId || !options.blockCallUrl) {
+                return;
+            }
+
+            internalise_ajax_block_wrapper_links(options.blockCallUrl, document.getElementById(options.wrapperId), ['.*'], {}, false, true);
+        },
+
+        blockSideShoutbox: function blockSideShoutbox(options) {
+            internalise_ajax_block_wrapper_links(options.blockCallUrl, document.getElementById(options.wrapperId), [], {}, false, true);
+        },
+
+        chatSitewideIm: function chatSitewideIm(options) {
+            if (options.matched !== '1') {
+                return;
+            }
+
+            window.im_area_template = options.imAreaTemplate;
+            window.im_participant_template = options.imParticipantTemplate;
+            window.top_window = window;
+            window.lobby_link = options.lobbyLink;
+            window.participants = '';
+
+            Composr.ready.then(function () {
+                if (!window.load_from_room_id) { // Only if not in chat lobby or chatroom, so as to avoid conflicts
+                    begin_im_chatting();
+                }
+            });
+
+            function begin_im_chatting() {
+                window.load_from_room_id = -1;
+                if ((window.chat_check) && (window.do_ajax_request)) {
+                    chat_check(true, 0);
+                } else {
+                    window.setTimeout(begin_im_chatting, 100);
+                }
+            }
+        },
+
+        chatRoomScreen: function chatRoomScreen(options) {
+            Composr.loadWindow.then(function() {
+                chat_load(options.chatroomId);
+            });
+        },
+
+        chatSetEffectsSettingBlock: function chatSetEffectsSettingBlock(options) {
+            if (!Composr.$IS_HTTPAUTH_LOGIN) {
+                var btnSubmitId = 'upload_' + options.key;
+
+                if (options.memberId) {
+                    btnSubmitId += '_' + options.memberId;
+                }
+
+                preinit_file_input('chat_effect_settings', btnSubmitId, null, null, 'mp3', 'button_micro');
+            }
         }
     };
 

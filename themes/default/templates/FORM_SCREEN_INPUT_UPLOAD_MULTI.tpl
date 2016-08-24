@@ -1,4 +1,6 @@
-<div class="upload_field inline_block">
+<div class="upload_field inline_block" data-tpl-core-form-interfaces="formScreenInputUploadMulti"
+	 data-tpl-args="{+START,PARAMS_JSON,SYNDICATION_JSON,PLUPLOAD,NAME_STUB,I,FILTER}{_*}{+END}">
+
 	<div class="accessibility_hidden"><label for="{NAME_STUB*}_{I*}">{!UPLOAD}</label></div>
 	<div class="vertical_alignment inline_block">
 		<input tabindex="{TABINDEX*}" class="input_upload{REQUIRED*}" onchange="if (!key_pressed(event,9)) ensure_next_field_upload(this);" type="file" id="{NAME_STUB*}_{I*}" name="{NAME_STUB*}_{I*}" />
@@ -31,21 +33,5 @@
 
 	{+START,IF_PASSED,SYNDICATION_JSON}
 		<div id="{NAME_STUB*}_syndication_options" class="syndication_options"></div>
-	{+END}
-
-	{+START,IF,{PLUPLOAD}}{+START,IF,{$NOT,{$IS_HTTPAUTH_LOGIN}}}
-		<script>// <![CDATA[
-			$(function() {
-				preinit_file_input('upload_multi','{NAME_STUB;/}_{I;/}',null,null,'{FILTER;/}');
-			});
-		//]]></script>
-	{+END}{+END}
-
-	{+START,IF_PASSED,SYNDICATION_JSON}
-		<script>// <![CDATA[
-			$(function() {
-				show_upload_syndication_options('{NAME_STUB;/}','{SYNDICATION_JSON;/}');
-			});
-		//]]></script>
 	{+END}
 </div>

@@ -1,17 +1,10 @@
-<div aria-labeledby="t_{$GET|*,tab_sets}_{TITLE|*}" role="tabpanel" id="g_{$GET|*,tab_sets}_{TITLE|*}" style="display: {$?,{$OR,{DEFAULT},{$NOT,{$JS_ON}}},block,none}">
-	{+START,IF_PASSED,PAGE_LINK}
-		<div class="spaced"><div class="ajax_tree_list_loading vertical_alignment"></div></div>
+{$SET,block_call_url}
 
-		<script>// <![CDATA[
-			function load_tab__{TITLE|/}()
-			{
-				call_block(
-					'{$FACILITATE_AJAX_BLOCK_CALL;,block=main_include_module\,param={PAGE_LINK},raw=.*}',
-					'',
-					document.getElementById('g_{TITLE|/}')
-				);
-			}
-		//]]></script>
+<div aria-labeledby="t_{$GET|*,tab_sets}_{TITLE|*}" role="tabpanel" id="g_{$GET|*,tab_sets}_{TITLE|*}" data-tpl-core-rich-media="comcodeTabBody"
+	 data-tpl-args="{+START,PARAMS_JSON,block_call_url,TITLE}{_*}{+END}" style="display: {$?,{$OR,{DEFAULT},{$NOT,{$JS_ON}}},block,none}">
+	{+START,IF_PASSED,PAGE_LINK}
+		{$SET,block_call_url,{$FACILITATE_AJAX_BLOCK_CALL,block=main_include_module\,param={PAGE_LINK},raw=.*}}
+		<div class="spaced"><div class="ajax_tree_list_loading vertical_alignment"></div></div>
 	{+END}
 
 	{+START,IF_PASSED,CONTENT}

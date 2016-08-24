@@ -6,13 +6,5 @@
 {$REQUIRE_CSS,widget_date}
 
 {$SET,time_value,{$PAD_LEFT,{HOUR},2,0}:{$PAD_LEFT,{MINUTE},2,0}}
-<input name="{NAME*}" id="{NAME*}" type="time" size="5"{+START,IF_PASSED,TABINDEX} tabindex="{TABINDEX*}"{+END} value="{+START,IF_NON_EMPTY,{HOUR}}{$GET*,time_value}{+END}" />
-
-{+START,SET,comment}
-	Uncomment if you want to force jQuery-UI inputs even when there is native browser input support
-	<script>// <![CDATA[
-		$(function() {
-			$('#{NAME;/}').inputTime({});
-		});
-	//]]></script>
-{+END}
+<input name="{NAME*}" id="{NAME*}" type="time" size="5"{+START,IF_PASSED,TABINDEX} tabindex="{TABINDEX*}"{+END} value="{+START,IF_NON_EMPTY,{HOUR}}{$GET*,time_value}{+END}"
+	data-tpl-core-form-interfaces="formScreenInputTime" data-tpl-args="{+START,PARAMS_JSON,NAME}{_*}{+END}" />

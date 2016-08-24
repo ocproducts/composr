@@ -1,4 +1,5 @@
-<div class="fields_set_item">
+{$REQUIRE_JAVASCRIPT,core_form_interfaces}
+<div class="fields_set_item" data-tpl-core-form-interfaces="formScreenFieldsSetItem" data-tpl-args="{+START,PARAMS_JSON,NAME}{_*}{+END}">
 	<div class="fields_set_radio">
 		<label class="accessibility_hidden" for="choose_{NAME*}">{!USE}: {PRETTY_NAME*}</label>
 		<input type="radio" name="{SET_NAME*}" id="choose_{NAME*}" />
@@ -19,9 +20,5 @@
 		<div id="error_{NAME*}" style="display: none" class="input_error_here"></div>
 
 		<input type="hidden" id="required_posted__{NAME*}" name="require__{NAME*}" value="{$?,{REQUIRED*},1,0}" />
-
-		<script>// <![CDATA[
-			set_up_change_monitor('form_table_field_input__{NAME;/}');
-		//]]></script>
 	</div>
 </div>

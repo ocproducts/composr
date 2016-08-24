@@ -1,3 +1,4 @@
+{$REQUIRE_JAVASCRIPT,core_rich_media}
 {$SET,IMAGE_TYPES,{IMAGE_TYPES}}
 
 {+START,IF,{$BROWSER_MATCHES,simplified_attachments_ui}}
@@ -9,31 +10,6 @@
 		<div id="fsUploadProgress" class="progressBars">
 		</div>
 	</div>
-
-	<script>// <![CDATA[
-		var attachment_template='{ATTACHMENT_TEMPLATE;^/}';
-		var max_attachments={MAX_ATTACHMENTS%};
-		var num_attachments=1;
-
-		function rebuild_attachment_button_for_next(posting_field_name,attachment_upload_button)
-		{
-			if (posting_field_name!='{POSTING_FIELD_NAME;/}') return false;
-
-			if (typeof attachment_upload_button=='undefined') attachment_upload_button=window.attachment_upload_button; {$,Use what was used last time}
-			window.attachment_upload_button=attachment_upload_button;
-
-			prepare_simplified_file_input('attachment_multi','file'+window.num_attachments,null,'{POSTING_FIELD_NAME;/}',{+START,IF_PASSED,FILTER}'{FILTER;/}'{+END}{+START,IF_NON_PASSED,FILTER}null{+END},window.attachment_upload_button);
-		}
-
-		Composr.loadWindow.then(function() {
-			if (document.getElementById('attachment_upload_button'))
-			{
-				$(function () {
-					rebuild_attachment_button_for_next('{POSTING_FIELD_NAME;/}','attachment_upload_button');
-				});
-			}
-		});
-	//]]></script>
 {+END}
 
 {+START,IF,{$NOT,{$BROWSER_MATCHES,simplified_attachments_ui}}}
@@ -43,20 +19,9 @@
 		</p>
 	{+END}{+END}{+END}
 
-	<script>// <![CDATA[
-		var attachment_template='{ATTACHMENT_TEMPLATE;^/}';
-	//]]></script>
-
 	<div id="attachment_store">
 		{ATTACHMENTS}
 	</div>
-
-	{+START,IF,{$JS_ON}}
-		<script>// <![CDATA[
-			var max_attachments={MAX_ATTACHMENTS%};
-			var num_attachments={NUM_ATTACHMENTS%};
-		//]]></script>
-	{+END}
 
 	{+START,IF_NON_EMPTY,{$_GET,id}}
 		<p>
@@ -64,3 +29,9 @@
 		</p>
 	{+END}
 {+END}
+
+{$SET,SIMPLE_UI,{$BROWSER_MATCHES,simplified_attachments_ui}}
+<script type="application/json" data-tpl-core-rich-media="attachments">
+	{+START,PARAMS_JSON,SIMPLE_UI,ATTACHMENT_TEMPLATE,POSTING_FIELD_NAME,MAX_ATTACHMENTS,FILTER,POSTING_FIELD_NAME}{_/}{+END}
+</script>
+

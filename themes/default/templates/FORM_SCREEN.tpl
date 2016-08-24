@@ -66,7 +66,8 @@
 	<div class="arrow_ruler">
 		<form action="#" method="post" autocomplete="off">
 			<div class="associated_link">
-				<input onclick="var f=document.getElementById('main_form'); f.action=this.checked?non_iframe_url:iframe_url; f.elements['opens_below'].value=this.checked?'0':'1'; f.target=this.checked?'_blank':'iframe_under';" type="checkbox" name="will_open_new" id="will_open_new" /> <label for="will_open_new">{!CHOOSE_OPEN_NEW_WINDOW}</label>
+				<input type="checkbox" name="will_open_new" id="will_open_new" class="js-checkbox-will-open-new" />
+				<label for="will_open_new">{!CHOOSE_OPEN_NEW_WINDOW}</label>
 			</div>
 		</form>
 
@@ -74,16 +75,5 @@
 	</div>
 
 	<iframe{$?,{$BROWSER_MATCHES,ie}, frameBorder="0" scrolling="no"} class="form_screen_iframe" title="{!EDIT}" name="iframe_under" id="iframe_under" src="{$BASE_URL*}/uploads/index.html">{!EDIT}</iframe>
-
-	<script>// <![CDATA[
-		if (typeof window.try_to_simplify_iframe_form!='undefined') try_to_simplify_iframe_form();
-		var non_iframe_url='{URL;/}';
-		var iframe_url='{IFRAME_URL;/}';
-		window.setInterval(function() { resize_frame('iframe_under'); },1500);
-	//]]></script>
 {+END}
-{+START,IF_NON_PASSED,IFRAME_URL}
-	<script>// <![CDATA[
-		if (typeof window.try_to_simplify_iframe_form!='undefined') try_to_simplify_iframe_form();
-	//]]></script>
-{+END}
+<script type="application/json" data-tpl-core-form-interfaces="formScreen">{+START,PARAMS_JSON,URL,IFRAME_URL}{_/}{+END}</script>

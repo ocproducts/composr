@@ -1,24 +1,10 @@
 {$REQUIRE_JAVASCRIPT,ajax}
-
-<script>// <![CDATA[
-	$(function() {
-		internalise_ajax_block_wrapper_links('{$FACILITATE_AJAX_BLOCK_CALL;,{BLOCK_PARAMS}}{+START,IF_PASSED,EXTRA_GET_PARAMS}{EXTRA_GET_PARAMS;/}{+END}&page={$PAGE&}',document.getElementById('{$GET;,wrapper_id}'),['[^_]*_start','[^_]*_max'], { });
-
-		{$,Infinite scrolling hides the pagination when it comes into view, and auto-loads the next link, appending below the current results}
-		{+START,IF,{$AND,{ALLOW_INFINITE_SCROLL},{$NEQ,{$_GET,keep_infinite_scroll},0}}}
-			{+START,IF,{$CONFIG_OPTION,infinite_scrolling}}
-				var infinite_scrolling_{$GET%,wrapper_id}=function (event) {
-					var url_stem='{$FACILITATE_AJAX_BLOCK_CALL;,{BLOCK_PARAMS}}{+START,IF_PASSED,EXTRA_GET_PARAMS}{EXTRA_GET_PARAMS;/}{+END}';
-					var wrapper=document.getElementById('{$GET;,wrapper_id}');
-					internalise_infinite_scrolling(url_stem,wrapper);
-				};
-				window.addEventListener('scroll',infinite_scrolling_{$GET%,wrapper_id});
-				window.addEventListener('touchmove',infinite_scrolling_{$GET%,wrapper_id});
-				window.addEventListener('keydown',infinite_scrolling_block);
-				window.addEventListener('mousedown',infinite_scrolling_block_hold);
-				window.addEventListener('mousemove',function() { infinite_scrolling_block_unhold(infinite_scrolling_{$GET%,wrapper_id}); }); // mouseup/mousemove does not work on scrollbar, so best is to notice when mouse moves again (we know we're off-scrollbar then)
-				infinite_scrolling_{$GET%,wrapper_id}();
-			{+END}
-		{+END}
-	});
-//]]></script>
+{$REQUIRE_JAVASCRIPT,core_abstract_interfaces}
+<script type="application/json" data-tpl-core-abstract-interfaces="ajaxPagination">
+[
+	{+START,PARAMS_JSON,ALLOW_INFINITE_SCROLL,wrapper_id}{_/}{+END},
+	"{$FACILITATE_AJAX_BLOCK_CALL#,{BLOCK_PARAMS}}{+START,IF_PASSED,EXTRA_GET_PARAMS}{EXTRA_GET_PARAMS#/}{+END}"
+	"&page={$PAGE&}",
+	{$CONFIG_OPTION,infinite_scrolling}
+]
+</script>

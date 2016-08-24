@@ -574,31 +574,11 @@
 	</div></section>
 {+END}
 
-<script>// <![CDATA[
-	$(function() {
-		// Allow searching via URL hash
-		if (window.location.hash)
-		{
-			window.setTimeout(function() {
-				var hash=window.location.hash.substr(1,window.location.hash.length-1);
-				editarea_do_search('e_{FILE_ID;^/}',hash);
-			},2000);
-		}
-
-		{+START,IF,{$CONFIG_OPTION,editarea}}
-			ace_composr_loader('e_{FILE_ID;^/}','{HIGHLIGHTER_TYPE;^/}',false);
-		{+END}
-
-		{+START,IF,{INCLUDE_CSS_EDITING}}
-			// If this is a contextual edit, start talking to the parent window
-			if ((window.opener) && (window.opener.document))
-			{
-				load_contextual_css_editor('{FILE;^/}','{FILE_ID;^/}');
-			}
-		{+END}
-	});
-//]]></script>
-
 {+START,IF_PASSED_AND_TRUE,OWN_FORM}
 </form>
 {+END}
+
+{$SET,editarea_config,{$CONFIG_OPTION,editarea}}
+<script type="application/json" data-tpl-core-themeing="themeTemplateEditorTab">
+	{+START,PARAMS_JSON,FILE,FILE_ID,HIGHLIGHTER_TYPE,INLUDE_CSS_EDITING,editarea_config}{_/}{+END}
+</script>

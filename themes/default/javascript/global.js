@@ -1,7 +1,5 @@
 /* Ideally this template should not be edited. See the note at the bottom of how JAVASCRIPT_CUSTOM_GLOBALS.tpl is appended to this template */
 
-/*{$REQUIRE_JAVASCRIPT,composr}*/
-
 // jQuery once plugin
 // https://github.com/RobLoach/jquery-once
 (function ($) {
@@ -37,8 +35,6 @@
         });
     };
 })(window.jQuery || window.Zepto);
-
-
 
 /* Startup */
 if (typeof window.page_loaded == 'undefined') // To stop problem if JS file loaded more than once

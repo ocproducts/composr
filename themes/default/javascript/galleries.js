@@ -1,5 +1,63 @@
 "use strict";
 
+(function ($, Composr) {
+    Composr.templates.galleries = {
+        blockMainGalleryEmbed: function blockMainGalleryEmbed(options) {
+            if (!options.carouselId || !options.blockCallUrl) {
+                return;
+            }
+
+            window['current_loading_from_pos_' + options.carouselId] = options.start || 0;
+
+            window['carousel_prepare_load_more_' + options.carouselId] = function () {
+                var ob = document.getElementById('carousel_ns_' + options.carouselId);
+
+                if (ob.parentNode.scrollLeft + ob.offsetWidth * 2 < ob.scrollWidth) return; // Not close enough to need more results
+
+                window['current_loading_from_pos_' + options.carouselId] += options.max;
+
+                call_block(options.blockCallUrl, 'raw=1,cache=0', ob, true);
+            };
+        },
+
+
+        blockMainImageFader: function blockMainImageFader(options) {
+            var data = {};
+
+            Composr.required(options, ['randFaderImage', 'titles', 'html', 'images', 'mill']);
+
+            initialise_image_fader(data, options.randFaderImage);
+
+            for (var key in options.titles) {
+                if (options.titles.hasOwnProperty(key)) {
+                    initialise_image_fader_title(data, options.titles[key], key);
+                }
+            }
+
+            for (var key in options.html) {
+                if (options.html.hasOwnProperty(key)) {
+                    initialise_image_fader_html(data, options.html[key], key);
+                }
+            }
+
+            for (var key in options.images) {
+                if (options.images.hasOwnProperty(key)) {
+                    initialise_image_fader_image(data, options.images[key], options.mill, options.images.length);
+                }
+            }
+        }
+    };
+
+    Composr.behaviors.galleries = {
+        initialize: {
+            attach: function (context) {
+                Composr.initializeTemplates(context, 'galleries');
+            }
+        }
+    };
+})(window.jQuery || window.Zepto, window.Composr);
+
+
 if (typeof window.slideshow_timer == 'undefined') {
     window.slideshow_timer = null;
     window.slideshow_slides = {};

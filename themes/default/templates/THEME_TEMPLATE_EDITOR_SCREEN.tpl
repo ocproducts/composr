@@ -50,29 +50,6 @@
 	</div>
 </form>
 
-<script>// <![CDATA[
-	window.template_editor_theme='{THEME;^/}';
-	{+START,IF_PASSED,ACTIVE_GUID}
-		window.template_editor_active_guid='{ACTIVE_GUID;^/}';
-	{+END}
-
-	{+START,IF_PASSED,LIVE_PREVIEW_URL}
-		window.template_editor_live_preview_url='{LIVE_PREVIEW_URL;^/}';
-	{+END}
-
-	$(function() {
-		template_editor_clean_tabs();
-
-		window.sitemap=new tree_list('theme_files','data/ajax_tree.php?hook=choose_theme_files&theme={THEME;/}{$KEEP;/}',null,'',false,null,false,true);
-
-		window.setTimeout(function() {
-			{+START,LOOP,FILES_TO_LOAD}
-				template_editor_add_tab('{_loop_var;^/}');
-			{+END}
-		},1000);
-
-		$('.template_editor_file_selector').resizable();
-
-		template_editor_assign_unload_event();
-	});
-//]]></script>
+<script type="application/json" data-tpl-core-themeing="themeTemplateEditorScreen">
+	{+START,PARAMS_JSON,THEME,ACTIVE_GUID,LIVE_PREVIEW_URL,FILES_TO_LOAD}{_/}{+END}
+</script>
