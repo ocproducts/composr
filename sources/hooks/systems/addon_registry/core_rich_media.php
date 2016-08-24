@@ -310,7 +310,6 @@ class Hook_addon_registry_core_rich_media
             'themes/default/templates/COMCODE_MEDIA_SET.tpl',
             'themes/default/javascript/jquery_autocomplete.js',
             'themes/default/css/autocomplete.css',
-            'themes/default/javascript/AUTOCOMPLETE_LOAD.js',
             'themes/default/images/mediaset_next.png',
             'themes/default/images/mediaset_previous.png',
         );
@@ -423,7 +422,6 @@ class Hook_addon_registry_core_rich_media
             'templates/MEDIA_DOWNLOAD.tpl' => 'media_download',
             'templates/MEDIA__DOWNLOAD_LINK.tpl' => 'media__download_link',
             'templates/COMCODE_MEMBER_LINK.tpl' => 'comcode_member_link',
-            'javascript/AUTOCOMPLETE_LOAD.js' => 'autocomplete_load',
             'templates/COMCODE_MEDIA_SET.tpl' => 'comcode_media_set',
         );
     }
@@ -2132,22 +2130,6 @@ class Hook_addon_registry_core_rich_media
                 'USERNAME' => lorem_phrase(),
                 'MEMBER_URL' => placeholder_url(),
             )), null, '', true)
-        );
-    }
-
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
-    public function tpl_preview__autocomplete_load()
-    {
-        return array(
-            do_lorem_template('AUTOCOMPLETE_LOAD', array(
-                'NAME' => 'field',
-            ), null, false, null, '.js', 'javascript')
         );
     }
 
