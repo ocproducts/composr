@@ -151,7 +151,7 @@
                     try {
                         behaviors[j].attach(context, settings);
                     } catch (e) {
-                        Composr.throwError(e);
+                        Composr.throwError(e + ' while attaching behavior ' + j + ' of addon ' + i);
                     }
                 }
             }
@@ -204,7 +204,7 @@
 
             if (typeof el.dataset.tplArgs === 'string') { // Arguments provided in the data-tpl-args attribute
                 addonArgs = el.dataset.tplArgs.trim();
-            } else if ((el.nodeName === 'SCRIPT') && (this.type === 'application/json')) { // Arguments provided inside the <script> tag
+            } else if ((el.nodeName === 'SCRIPT') && (el.type === 'application/json')) { // Arguments provided inside the <script> tag
                 addonArgs = el.textContent.trim();
             }
 
