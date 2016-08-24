@@ -64,9 +64,8 @@ class Hook_snippet_profile_tab
             $out = new Tempcode();
             $eval = $ret[1]->evaluate();
             $out->attach(symbol_tempcode('CSS_TEMPCODE'));
-            $out->attach(symbol_tempcode('JS_TEMPCODE'));
             $out->attach($eval);
-            $out->attach(symbol_tempcode('JS_TEMPCODE', array('footer')));
+            $out->attach(symbol_tempcode('JS_TEMPCODE'));
 
             call_user_func_array('set_execution_context', $former_context);
 
@@ -82,9 +81,8 @@ class Hook_snippet_profile_tab
             $out = new Tempcode();
             $eval = $ret->evaluate();
             $out->attach(symbol_tempcode('CSS_TEMPCODE'));
-            $out->attach(symbol_tempcode('JS_TEMPCODE'));
             $out->attach($eval);
-            $out->attach(symbol_tempcode('JS_TEMPCODE', array('footer')));
+            $out->attach(symbol_tempcode('JS_TEMPCODE'));
             return $out;
         }
 

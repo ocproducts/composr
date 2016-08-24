@@ -101,7 +101,6 @@ function init__global3()
         'JAVASCRIPT',
         'JAVASCRIPTS',
         'JS_OUTPUT_STARTED',
-        'JAVASCRIPT_BOTTOM',
         'CSSS',
         'CSS_OUTPUT_STARTED',
         'CYCLES',

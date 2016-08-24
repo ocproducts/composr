@@ -17,7 +17,7 @@
 
 		{CONTENT}
 
-		{$JS_TEMPCODE,footer}
+		{$JS_TEMPCODE}
 
 		{+START,IF_NON_PASSED,POPUP}
 			{$EXTRA_FOOT}

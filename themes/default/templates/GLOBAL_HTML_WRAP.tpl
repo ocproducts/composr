@@ -249,7 +249,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 
 		{$EXTRA_FOOT}
 
-		{$JS_TEMPCODE,footer}
+		{$JS_TEMPCODE}
 	</div>
 </body>
 </html>

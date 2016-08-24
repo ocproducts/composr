@@ -164,11 +164,6 @@
 {$,CSS includes from Composr page}
 {$CSS_TEMPCODE}
 
-{$,(commented out)REQUIRE_JAVASCRIPT,jquery_lite}
-
-{$,JavaScript includes from Composr page}
-{$JS_TEMPCODE,header}
-
 {$,If the page is doing a refresh include the markup for that}
 {$REFRESH}
 

@@ -81,9 +81,8 @@ class Hook_snippet_block
         $_eval = do_block($map['block'], $map);
         $eval = $_eval->evaluate();
         $out->attach(symbol_tempcode('CSS_TEMPCODE'));
-        $out->attach(symbol_tempcode('JS_TEMPCODE'));
         $out->attach($eval);
-        $out->attach(symbol_tempcode('JS_TEMPCODE', array('footer')));
+        $out->attach(symbol_tempcode('JS_TEMPCODE'));
         return $out;
     }
 }

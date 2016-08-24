@@ -38,7 +38,7 @@ function init__web_resources()
  */
 function require_javascript($javascript)
 {
-    global $JAVASCRIPTS, $SMART_CACHE, $JS_OUTPUT_STARTED_LIST, $JAVASCRIPT_BOTTOM;
+    global $JAVASCRIPTS, $SMART_CACHE, $JS_OUTPUT_STARTED_LIST;
 
     if (empty($javascript)) {
         return;
@@ -54,10 +54,6 @@ function require_javascript($javascript)
 
     if (strpos($javascript, 'merged__') === false) {
         $SMART_CACHE->append('JAVASCRIPTS', $javascript);
-    }
-
-    if ($GLOBALS['JS_OUTPUT_STARTED']) {
-        $JAVASCRIPT_BOTTOM[$javascript] = true;
     }
 }
 
@@ -146,9 +142,9 @@ function javascript_enforce($j, $theme = null)
  * @set null header footer
  * @return Tempcode The Tempcode to tie in the JavaScript files
  */
-function javascript_tempcode($position = null)
+function javascript_tempcode()
 {
-    global $JAVASCRIPTS, $JAVASCRIPT, $JAVASCRIPT_BOTTOM, $JS_OUTPUT_STARTED, $EARLY_SCRIPT_ORDER;
+    global $JAVASCRIPTS, $JAVASCRIPT, $JS_OUTPUT_STARTED, $EARLY_SCRIPT_ORDER;
 
     $JS_OUTPUT_STARTED = true;
 
@@ -156,51 +152,34 @@ function javascript_tempcode($position = null)
 
     list($minify, $https, $mobile) = _get_web_resources_env();
 
-    $grouping_codename = _handle_web_resource_merging('.js', $JAVASCRIPTS, $minify, $https, $mobile);
-
     // Fix order, so our main JavaScript, and jQuery, runs first
     if (isset($JAVASCRIPTS['global'])) {
         $arr_backup = $JAVASCRIPTS;
         $JAVASCRIPTS = array();
-        if ($grouping_codename == '') {
-            foreach ($EARLY_SCRIPT_ORDER as $important_script) {
-                if (isset($arr_backup[$important_script])) {
-                    $JAVASCRIPTS[$important_script] = true;
-                }
+
+        foreach ($EARLY_SCRIPT_ORDER as $important_script) {
+            if (isset($arr_backup[$important_script])) {
+                $JAVASCRIPTS[$important_script] = true;
             }
         }
-        $JAVASCRIPTS[($grouping_codename == '') ? 'global' : $grouping_codename] = ($grouping_codename == '');
+
+        $JAVASCRIPTS['global'] = true;
         $JAVASCRIPTS += $arr_backup;
     }
 
-    $bottom_ones = array(
-        'staff' => true,
-        'button_commandr' => true,
-        'button_realtime_rain' => true,
-        'fractional_edit' => true,
-        'transitions' => true,
-    ) + $JAVASCRIPT_BOTTOM; // These are all framework ones that add niceities
     $javascripts_to_do = $JAVASCRIPTS;
     foreach ($javascripts_to_do as $j => $do_enforce) {
         if ($do_enforce === null) {
             continue; // Has already been included in a merger
         }
 
-        if ($position !== null) {
-            $bottom = (isset($bottom_ones[$j]));
-            if (($position == 'header') && ($bottom)) {
-                continue;
-            }
-            if (($position == 'footer') && (!$bottom)) {
-                continue;
-            }
-        }
-
         _javascript_tempcode($j, $js, $minify, $https, $mobile, $do_enforce);
     }
+
     if ($JAVASCRIPT !== null) {
         $js->attach($JAVASCRIPT);
     }
+
     return $js;
 }
 

@@ -1175,11 +1175,6 @@ function ecv_REQUIRE_JAVASCRIPT($lang, $escaped, $param)
     if (isset($param[0])) {
         global $JAVASCRIPTS;
         if (!isset($JAVASCRIPTS[$param[0]])) {
-            if ((isset($param[1])) && ($param[1] == '1')) {
-                global $JAVASCRIPT_BOTTOM;
-                $JAVASCRIPT_BOTTOM[$param[0]] = true;
-            }
-
             require_javascript($param[0]);
             /*// Has to do this inline, as you're "hidden" id="include_sitemap allowed to reference scripts outside head
             if (!array_key_exists($param[0], $GLOBALS['JAVASCRIPTS'])) {
@@ -3283,7 +3278,7 @@ function ecv_JS_TEMPCODE($lang, $escaped, $param)
     $temp_array = array();
     handle_symbol_preprocessing(array($escaped, TC_SYMBOL, 'JS_TEMPCODE', $param), $temp_array); // Late preprocessing. Should not be needed in case of full screen output (as this was properly preprocessed), but is in other cases
 
-    $_value = javascript_tempcode(empty($param[0]) ? null : $param[0]);
+    $_value = javascript_tempcode();
     $value = $_value->evaluate();
 
     if ($escaped !== array()) {
