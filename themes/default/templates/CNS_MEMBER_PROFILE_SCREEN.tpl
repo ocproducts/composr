@@ -24,31 +24,6 @@
 						{+START,IF_PASSED,TAB_CONTENT}
 							{TAB_CONTENT}
 						{+END}
-
-						{+START,IF_NON_PASSED,TAB_CONTENT}
-							<p class="ajax_loading"><img class="vertical_alignment" src="{$IMG*,loading}" /></p>
-
-							<script>// <![CDATA[
-								function load_tab__{TAB_CODE%}(automated)
-								{
-									if (typeof window['load_tab__{TAB_CODE%}'].done!='undefined' && window['load_tab__{TAB_CODE%}'].done) return;
-
-									if (automated)
-									{
-										try { window.scrollTo(0,0); } catch (e) {};
-									}
-
-									// Self destruct loader after this first run
-									window['load_tab__{TAB_CODE%}'].done=true;
-
-									load_snippet('profile_tab&tab={TAB_CODE%}&member_id={MEMBER_ID%}'+window.location.search.replace('?','&'),null,function(result) {
-										set_inner_html(document.getElementById('g_{TAB_CODE%}'),result.responseText);
-
-										find_url_tab();
-									});
-								}
-							//]]></script>
-						{+END}
 					</div>
 				{+END}
 			</div>
@@ -64,16 +39,6 @@
 	{+END}
 </div>
 
-{+START,IF,{$GT,{TABS},1}}
-	<script>// <![CDATA[
-		// we do not want it to scroll down
-		var old_hash=window.location.hash;
-		window.location.hash='#';
-
-		$(function() {
-			window.location.hash='#';
-
-			find_url_tab(old_hash);
-		});
-	//]]></script>
-{+END}
+<script type="application/json" data-tpl-core-cns="cnsMemberProfileScreen">
+	{+START,PARAMS_JSON,TABS,TAB_CODE,TAB_CONTENT,MEMBER_ID}{_/}{+END}
+</script>

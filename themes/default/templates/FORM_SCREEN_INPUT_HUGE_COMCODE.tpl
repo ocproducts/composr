@@ -1,4 +1,11 @@
 {$REQUIRE_JAVASCRIPT,core_form_interfaces}
+
+{$, Template uses auto-complete}
+{$REQUIRE_JAVASCRIPT,jquery}
+{$REQUIRE_JAVASCRIPT,jquery_autocomplete}
+{$REQUIRE_JAVASCRIPT,ajax}
+{$REQUIRE_CSS,autocomplete}
+
 <tr>
 	{$SET,randomised_id,{$?,{$IS_EMPTY,{NAME*}},{$RAND},{NAME*}}}
 	<th id="form_table_field_name__{$GET,randomised_id}"{+START,IF,{$NOT,{$MOBILE}}} colspan="2"{+END} class="form_table_description_above_cell{+START,IF,{REQUIRED}} required{+END}">
@@ -25,11 +32,9 @@
 				<textarea aria-hidden="true" cols="1" rows="1" style="display: none" readonly="readonly" disabled="disabled" name="{NAME*}_parsed">{DEFAULT_PARSED*}</textarea>
 			{+END}
 		</div>
-
-		<script>// <![CDA));
-			{+START,INCLUDE,AUTOCOMPLETE_LOAD,.js,javascript}WYSIWYG={$IN_STR,{REQUIRED},wysiwyg}{+END}
-		//]]></script>
 	</td>
 </tr>
 
-<script type="application/json" data-tpl-core-form-interfaces="formScreenInputHugeComcode">{+START,PARAMS_JSON,REQUIRED,NAME,randomised_id}{_/}{+END}</script>
+<script type="application/json" data-tpl-core-form-interfaces="formScreenInputHugeComcode">
+	{+START,PARAMS_JSON,REQUIRED,NAME,randomised_id,REQUIRED}{_/}{+END}
+</script>

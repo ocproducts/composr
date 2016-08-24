@@ -16,6 +16,14 @@
             }
         },
 
+        commentsPostingForm: function (options) {
+            set_up_comcode_autocomplete('post', Composr.isNotEmptyOrZero(options.wysiwyg));
+
+            if (Composr.isNotEmptyOrZero(options.forcePreviews)) {
+                document.getElementById('submit_button').style.display='none';
+            }
+        },
+
         commentsWrapper: function commentsWrapper(options) {
             if ((typeof options.serializedOptions !== 'undefined') && (typeof options.hash !== 'undefined')) {
                 window.comments_serialized_options = options.serializedOptions;

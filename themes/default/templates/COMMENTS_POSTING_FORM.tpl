@@ -1,3 +1,9 @@
+{$, Template uses auto-complete}
+{$REQUIRE_JAVASCRIPT,jquery}
+{$REQUIRE_JAVASCRIPT,jquery_autocomplete}
+{$REQUIRE_JAVASCRIPT,ajax}
+{$REQUIRE_CSS,autocomplete}
+
 {+START,SET,CAPTCHA}
 	{+START,IF_PASSED,USE_CAPTCHA}
 		{+START,IF,{USE_CAPTCHA}}
@@ -217,7 +223,7 @@
 
 							<td>
 								<div class="constrain_field">
-									<textarea{+START,IF,{$NOT,{$MOBILE}}} onkeyup="manage_scroll_height(this);"{+END} accesskey="x" class="wide_field" onfocus="if ((this.value.replace(/\s/g,'')=='{POST_WARNING;^*}'.replace(/\s/g,'') &amp;&amp; '{POST_WARNING;^*}'!='') || (typeof this.strip_on_focus!='undefined' &amp;&amp; this.value==this.strip_on_focus)) this.value=''; this.className='field_input_filled';" cols="42" rows="{$?,{$IS_NON_EMPTY,{$GET,COMMENT_POSTING_ROWS}},{$GET,COMMENT_POSTING_ROWS},11}" name="post" id="post">{POST_WARNING*}{+START,IF_PASSED,DEFAULT_TEXT}{DEFAULT_TEXT*}{+END}</textarea>
+									<textarea name="post" id="post"{+START,IF,{$NOT,{$MOBILE}}} onkeyup="manage_scroll_height(this);"{+END} accesskey="x" class="wide_field" onfocus="if ((this.value.replace(/\s/g,'')=='{POST_WARNING;^*}'.replace(/\s/g,'') &amp;&amp; '{POST_WARNING;^*}'!='') || (typeof this.strip_on_focus!='undefined' &amp;&amp; this.value==this.strip_on_focus)) this.value=''; this.className='field_input_filled';" cols="42" rows="{$?,{$IS_NON_EMPTY,{$GET,COMMENT_POSTING_ROWS}},{$GET,COMMENT_POSTING_ROWS},11}">{POST_WARNING*}{+START,IF_PASSED,DEFAULT_TEXT}{DEFAULT_TEXT*}{+END}</textarea>
 								</div>
 
 								<div id="error_post" style="display: none" class="input_error_here"></div>
@@ -297,19 +303,16 @@
 </form>
 {+END}
 
-<script>// <![CDATA[
-	{$REQUIRE_CSS,autocomplete}
-	{+START,INCLUDE,AUTOCOMPLETE_LOAD,.js,javascript}NAME=post{+END}
-//]]></script>
-
+{$SET,force_previews,0}
 {+START,IF,{$JS_ON}}{+START,IF,{$CONFIG_OPTION,enable_previews}}{+START,IF,{$NOT,{$VALUE_OPTION,xhtml_strict}}}
 	{+START,IF,{$FORCE_PREVIEWS}}
-		<script>// <![CDATA[
-			document.getElementById('submit_button').style.display='none';
-		//]]></script>
+		{$SET,force_previews,1}
 	{+END}
 
 	<iframe{$?,{$BROWSER_MATCHES,ie}, frameBorder="0" scrolling="no"} title="{!PREVIEW}" name="preview_iframe" id="preview_iframe" src="{$BASE_URL*}/uploads/index.html" class="hidden_preview_frame">{!PREVIEW}</iframe>
 {+END}{+END}{+END}
 
 
+<script type="application/json" data-tpl-core-feedback-features="commentsPostingForm">
+	{+START,PARAMS_JSON,force_previews,WYSIWYG}{_/}{+END}
+</script>

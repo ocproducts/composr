@@ -43,6 +43,8 @@
         $GROUP_ID: data.GROUP_ID
     };
 
+    var arr = Array.prototype;
+
     var loadPolyfillsPromise = new Promise(function(resolve) {
         loadPolyfills(resolve);
     });
@@ -55,9 +57,9 @@
         if (document.readyState === 'interactive') {
             resolve();
         } else {
-            $(function () {
+            document.addEventListener('DOMContentLoaded', function () {
                 resolve();
-            });
+            })
         }
     });
 
@@ -76,6 +78,11 @@
 
     Composr.noop = function noop() {};
 
+    /* Generate url */
+    Composr.url = function (path) {
+        return Composr.$BASE_URL + '/' + path;
+    };
+
     /* Used to check strings */
     Composr.isEmptyOrZero = function isEmptyOrZero(str) {
         if (!str || !str.trim() || (str.trim() === '0')) {
@@ -83,6 +90,10 @@
         }
 
         return false;
+    };
+
+    Composr.isNotEmptyOrZero = function isntEmptyOrZero(str) {
+        return !Composr.isEmptyOrZero(str);
     };
 
     /* Used for specifying required arguments */
@@ -185,16 +196,16 @@
     Composr.initializeTemplates = function initializeTemplates(context, addonName) {
         addonName = addonName.replace('_', '-');
 
-        $('[data-tpl-' + addonName + ']', context).each(function () {
+        arr.forEach.call(context.querySelectorAll('[data-tpl-' + addonName + ']'), function (el) {
             var datasetProperty = Composr.utils.camelCase('tpl-' + addonName),
-                funcName = this.dataset[datasetProperty].trim(),
+                funcName = el.dataset[datasetProperty].trim(),
                 addonArgs = '',
                 args = [];
 
-            if (typeof this.dataset.tplArgs === 'string') { // Arguments provided in the data-tpl-args attribute
-                addonArgs = this.dataset.tplArgs.trim();
-            } else if ((this.nodeName === 'SCRIPT') && (this.type === 'application/json')) { // Arguments provided inside the <script> tag
-                addonArgs = this.textContent.trim();
+            if (typeof el.dataset.tplArgs === 'string') { // Arguments provided in the data-tpl-args attribute
+                addonArgs = el.dataset.tplArgs.trim();
+            } else if ((el.nodeName === 'SCRIPT') && (this.type === 'application/json')) { // Arguments provided inside the <script> tag
+                addonArgs = el.textContent.trim();
             }
 
             if (addonArgs !== '') {
@@ -219,7 +230,7 @@
             var func = Composr.templates[addonNameCamelCased] ? Composr.templates[addonNameCamelCased][funcName] : null;
 
             if (typeof func === 'function') {
-                func.apply(this, args);
+                func.apply(el, args);
             }
         });
     };
@@ -272,7 +283,6 @@
                 case ']':
                     out += '_closesquare_';
                     break;
-                case '&#039;':
                 case '\'':
                     out += '_apostophe_';
                     break;
@@ -386,11 +396,6 @@
             };
         }
 
-        if (typeof NodeList.prototype.forEach === 'undefined') {
-            // Only Chrome has native support as of writing
-            NodeList.prototype.forEach = Array.prototype.forEach;
-        }
-
         if (typeof window.CustomEvent !== 'function') {
             polyfillCustomEvent();
         }
@@ -439,16 +444,16 @@
         initialize: {
             attach: function (context) {
                 // Call a global function, optionally with arguments. Inside the function scope, "this" will be the element calling that function.
-                $('[data-cms-call]', context).each(function () {
-                    var funcName = this.dataset.cmsCall.trim(),
-                        cmsCallArgs = typeof this.dataset.cmsCallArgs === 'string' ? this.dataset.cmsCallArgs.trim() : '',
+                arr.forEach.call(context.querySelectorAll('[data-cms-call]'), function (el) {
+                    var funcName = el.dataset.cmsCall.trim(),
+                        cmsCallArgs = typeof el.dataset.cmsCallArgs === 'string' ? el.dataset.cmsCallArgs.trim() : '',
                         args = [];
 
                     if (cmsCallArgs !== '') {
                         let _args;
 
                         try {
-                            _args = JSON.parse(this.dataset.cmsCallArgs);
+                            _args = JSON.parse(el.dataset.cmsCallArgs);
                         } catch (e) {
                             Composr.throwError(e);
                         }
@@ -465,30 +470,29 @@
                     var func = window[funcName];
 
                     if (typeof func === 'function') {
-                        func.apply(this, args);
+                        func.apply(el, args);
                     }
                 });
 
                 // Select2 plugin hook
-                $('[data-cms-select2]', context).each(function () {
+                arr.forEach.call(context.querySelectorAll('[data-cms-select2]'), function (el) {
                     var options = {};
 
-                    if (this.dataset.cmsSelect2.trim()) {
-                        options = JSON.parse(this.dataset.cmsSelect2);
+                    if (el.dataset.cmsSelect2.trim()) {
+                        options = JSON.parse(el.dataset.cmsSelect2);
                     }
 
-                    $(this).select2(options);
+                    $(el).select2(options);
                 });
 
                 // TODO
                 // tree_list.js
-                $('[data-cms-tree-list]', context).each(function () {
+                arr.forEach.call(context.querySelectorAll('[data-cms-tree-list]'), function (el) {
                     var options = {}, defaults = {};
 
-                    if (this.dataset.cmsTreeList.trim()) {
-                        options = JSON.parse(this.dataset.cmsTreeList);
+                    if (el.dataset.cmsTreeList.trim()) {
+                        options = JSON.parse(el.dataset.cmsTreeList);
                     }
-
                 });
             }
         }

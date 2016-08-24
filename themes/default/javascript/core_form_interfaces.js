@@ -21,6 +21,10 @@
             });
         },
 
+        formScreenInputLine: function formScreenInputLine(options) {
+            set_up_comcode_autocomplete(options.name, Composr.isNotEmptyOrZero(options.wysiwyg));
+        },
+
         formScreenInputCombo: function formScreenInputCombo(options) {
             document.getElementById(options.name).onkeyup();
 
@@ -36,6 +40,8 @@
 
             set_up_change_monitor('form_table_field_input__' + options.randomisedId);
             manage_scroll_height(document.getElementById(options.name));
+
+            set_up_comcode_autocomplete(options.name, options.required.includes('wysiwyg'));
         },
 
         formScreenInputColour: function formScreenInputColour(options) {
@@ -143,6 +149,33 @@
                 if (typeof event.preventDefault != 'undefined') event.preventDefault();
                 return false;
             });
+        },
+
+        postingField: function postingField(options) {
+            var postEl = document.getElementById(options.name);
+
+            if (options.class.includes('wysiwyg')) {
+                if ((window.wysiwyg_on) && (wysiwyg_on())) {
+                    postEl.readOnly = true; // Stop typing while it loads
+
+                    window.setTimeout(function () {
+                        if (postEl.value === postEl.defaultValue) {
+                            postEl.readOnly = false; // Too slow, maybe WYSIWYG failed due to some network issue
+                        }
+                    }, 3000);
+                }
+
+                if (typeof options.wordCounter !== 'undefined') {
+                    setup_word_counter(document.getElementById('post'), document.getElementById('word_count_' + options.wordCountId));
+                }
+            }
+
+            manage_scroll_height(postEl);
+            set_up_comcode_autocomplete(options.name, true);
+
+            if (Composr.isNotEmptyOrZero(options.initDragDrop)) {
+                initialise_html5_dragdrop_upload('container_for_' + options.name, options.name);
+            }
         },
 
         previewScriptCode: function previewScriptCode(options) {

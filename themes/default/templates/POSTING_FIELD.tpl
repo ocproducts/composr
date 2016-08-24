@@ -1,3 +1,9 @@
+{$, Template uses auto-complete}
+{$REQUIRE_JAVASCRIPT,jquery}
+{$REQUIRE_JAVASCRIPT,jquery_autocomplete}
+{$REQUIRE_JAVASCRIPT,ajax}
+{$REQUIRE_CSS,autocomplete}
+
 <tr class="form_table_field_spacer">
 	{+START,SET,posting_field}
 		{+START,IF_PASSED,POST_COMMENT}
@@ -73,25 +79,6 @@
 					{$SET,word_count_id,{$RAND}}
 					<div class="word_count" id="word_count_{$GET*,word_count_id}"></div>
 				{+END}
-
-				{+START,IF,{$IN_STR,{CLASS},wysiwyg}}
-					<script>// <![CDATA[
-						if ((window.wysiwyg_on) && (wysiwyg_on()))
-						{
-							document.getElementById('{NAME;/}').readOnly=true; // Stop typing while it loads
-							window.setTimeout(function() {
-								if (document.getElementById('{NAME;/}').value==document.getElementById('{NAME;/}').defaultValue)
-									document.getElementById('{NAME;/}').readOnly=false; // Too slow, maybe WYSIWYG failed due to some network issue
-							},3000);
-						}
-
-						{+START,IF_PASSED,WORD_COUNTER}
-							$(function() {
-								setup_word_counter(document.getElementById('post'),document.getElementById('word_count_{$GET;,word_count_id}'));
-							});
-						{+END}
-					//]]></script>
-				{+END}
 			</div>
 		</div>
 
@@ -126,11 +113,6 @@
 			{+END}
 		{+END}
 
-		<script>// <![CDATA[
-			manage_scroll_height(document.getElementById('{NAME;/}'));
-			{+START,INCLUDE,AUTOCOMPLETE_LOAD,.js,javascript}WYSIWYG=1{+END}
-		//]]></script>
-
 		{+START,IF,{$AND,{$BROWSER_MATCHES,simplified_attachments_ui},{$IS_NON_EMPTY,{ATTACHMENTS}}}}
 			{ATTACHMENTS}
 
@@ -145,7 +127,9 @@
 	</td>
 </tr>
 
+{$SET,init_drag_drop,0}
 {+START,IF,{$AND,{$NOT,{$BROWSER_MATCHES,simplified_attachments_ui}},{$IS_NON_EMPTY,{ATTACHMENTS}}}}
+	{$SET,init_drag_drop,1}
 	<tr class="form_table_field_spacer">
 		<th{+START,IF,{$NOT,{$MOBILE}}} colspan="2"{+END} class="table_heading_cell">
 			{+START,IF,{$JS_ON}}
@@ -170,14 +154,11 @@
 	<tr style="display: none" class="field_input">
 		<td class="form_table_huge_field"{+START,IF,{$NOT,{$MOBILE}}} colspan="2"{+END}>
 			{ATTACHMENTS}
-
 			<input type="hidden" name="posting_ref_id" value="{$RAND%}" />
-
-			<script>// <![CDATA[
-				$(function() {
-					initialise_html5_dragdrop_upload('container_for_{NAME;/}','{NAME;/}');
-				});
-			//]]></script>
 		</td>
 	</tr>
 {+END}
+
+<script type="application/json" data-tpl-core-form-interfaces="postingField">
+	{+START,PARAMS_JSON,CLASS,WORD_COUNTER,word_count_id,init_drag_drop}{_/}{+END}
+</script>
