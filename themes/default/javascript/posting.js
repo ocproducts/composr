@@ -1176,7 +1176,11 @@ function _handle_form_saving(event,element,force)
 			if (typeof console.log!='undefined') console.log('Doing local storage auto-save for '+element_name+' ('+autosave_name+')');
 		{+END}
 
-		localStorage.setItem(autosave_name,value);
+		try
+		{
+			localStorage.setItem(autosave_name,value);
+		}
+		catch (e) {}; // Could have NS_ERROR_DOM_QUOTA_REACHED
 	}
 
 	return [autosave_name,value];
