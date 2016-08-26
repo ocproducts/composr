@@ -7,11 +7,6 @@ RIGHT=1
 <div class="ajax_tree_list" id="tree_list__root_{NAME*}" role="tree">
 	<!-- List put in here -->
 </div>
-<script>// <![CDATA[
-	$(function() {
-		new tree_list('{NAME;/}','data/ajax_tree.php?hook={HOOK&;/}{$KEEP;/}','{ROOT_ID&;/}','{OPTIONS&;/}',{$?,{MULTI_SELECT},true,false},{TABINDEX%},false{+START,IF,{USE_SERVER_ID}},true{+END});
-	});
-//]]></script>
 
 {+START,IF_NON_EMPTY,{DEFAULT}}
 	<p class="associated_details">
@@ -20,5 +15,5 @@ RIGHT=1
 {+END}
 
 <script type="application/json" data-tpl-core-form-interfaces="formScreenInputTreeList">
-	{+START,PARAMS_JSON,NAME}{_/}{+END}
+	{+START,PARAMS_JSON,NAME,HOOK,ROOT_ID,OPTIONS,MULTI_SELECT,TABINDEX,USE_SERVER_ID}{_/}{+END}
 </script>

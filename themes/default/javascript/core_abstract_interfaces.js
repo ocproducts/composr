@@ -1,5 +1,13 @@
 (function ($, Composr) {
 
+    Composr.behaviors.coreAbstractInterfaces = {
+        initialize: {
+            attach: function (context) {
+                Composr.initializeTemplates(context, 'core_abstract_interfaces');
+            }
+        }
+    };
+
     Composr.templates.coreAbstractInterfaces = {
         internalizedAjaxScreen: function (options) {
             var element = this;
@@ -42,9 +50,31 @@
             }
         },
 
-        warnScreen: function warnScreen(options) {
+        confirmScreen: function confirmScreen(options) {
+            options = options || {};
+
+            if (typeof options.javascript !== 'undefined') {
+                eval.call(window, options.javascript);
+            }
+        },
+
+        warnScreen: function warnScreen() {
             if ((typeof window.trigger_resize !== 'undefined') && (window.top != window)) {
                 trigger_resize();
+            }
+        },
+
+        fatalScreen: function fatalScreen() {
+            if ((typeof window.trigger_resize !== 'undefined') && (window.top !== window)) {
+                trigger_resize();
+            }
+        },
+
+        columnedTableScreen: function columnedTableScreen(options) {
+            options = options || {};
+
+            if (typeof options.javacsript !== 'undefined') {
+                eval.call(window, options.javascript);
             }
         },
 
@@ -73,14 +103,6 @@
                         return false;
                     };
                 }(as[i]);
-            }
-        }
-    };
-
-    Composr.behaviors.coreAbstractInterfaces = {
-        initialize: {
-            attach: function (context) {
-                Composr.initializeTemplates(context, 'core_abstract_interfaces');
             }
         }
     };

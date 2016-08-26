@@ -1,4 +1,4 @@
-<div class="menu_editor_branch" id="branch_wrap_{I*}">
+<div class="menu_editor_branch" id="branch_wrap_{I*}" data-tpl-core-menus="menuEditorBranchWrap" data-tpl-args="{+START,PARAMS_JSON,CLICKABLE_SECTIONS,BRANCH_TYPE,I}{_*}{+END}">
 	<div id="branch_{I*}">
 		<label id="label_caption_{I*}" for="caption_{I*}">{!CAPTION}: </label>
 		<input maxlength="255" onfocus="make_field_selected(this);" ondblclick="var e=document.getElementById('menu_editor_wrap'); if (e.className.indexOf(' docked')==-1) smooth_scroll(find_pos_y(document.getElementsByTagName('h2')[2]));" type="text" value="{CAPTION*}" id="caption_{I*}" name="caption_{I*}" />
@@ -27,9 +27,6 @@
 		<input class="menu___generic_admin__delete button_micro horiz_field_sep" value="{!DELETE}" type="button" id="del_{I*}" name="del_{I*}" onclick="delete_menu_branch(this);" />
 	</div>
 
-	<script>// <![CDATA[
-		document.getElementById('branch_type_{I%}').selectedIndex={+START,IF,{$NOT,{CLICKABLE_SECTIONS}}}{BRANCH_TYPE%}{+END}{+START,IF,{CLICKABLE_SECTIONS}}({BRANCH_TYPE%}==0)?0:({BRANCH_TYPE%}-1){+END};
-	//]]></script>
 	<div class="menu_editor_branch_indent" id="branch_{I*}_follow_1" style="{DISPLAY*}">
 		{BRANCH}
 	</div>

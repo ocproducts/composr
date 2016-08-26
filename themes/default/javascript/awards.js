@@ -1,6 +1,4 @@
 (function ($, Composr) {
-    Composr.templates.awards = {};
-
     Composr.behaviors.awards = {
         initialize: {
             attach: function (context) {
@@ -8,4 +6,6 @@
             }
         }
     };
+
+    Composr.templates.awards = {};
 })(window.jQuery || window.Zepto, window.Composr);

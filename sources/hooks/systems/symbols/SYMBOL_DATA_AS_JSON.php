@@ -78,6 +78,20 @@ class Hook_symbol_SYMBOL_DATA_AS_JSON
             'GROUP_ID'            => ecv2_GROUP_ID($lang, [], []),
         );
 
+        require_code('config');
+        $value['CONFIG_OPTION'] = [
+            'thumbWidth'        => get_option('thumb_width'),
+            'jsOverlays'        => get_option('js_overlays'),
+            'jsCaptcha'         => get_option('js_captcha'),
+            'googleAnalytics'   => get_option('google_analytics'),
+            'longGoogleCookies' => get_option('long_google_cookies'),
+        ];
+
+        require_code('urls');
+        $value['EXTRA'] = [
+            'canTryUrlSchemes' => can_try_url_schemes()
+        ];
+
         return json_encode($value);
     }
 }

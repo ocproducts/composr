@@ -125,22 +125,37 @@
 {$,Google Analytics account, if one set up}
 {+START,IF_NON_EMPTY,{$CONFIG_OPTION,google_analytics}}{+START,IF,{$NOR,{$IS_STAFF},{$IS_ADMIN}}}
 	<script>
-		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+		var opt = '{$CONFIG_OPTION,long_google_cookies}' === '1' ? 'auto' : { cookieExpires: 0 };
 
-		ga('create','{$TRIM;/,{$CONFIG_OPTION,google_analytics}}',{+START,IF,{$CONFIG_OPTION,long_google_cookies}}'auto'{+END}{+START,IF,{$NOT,{$CONFIG_OPTION,long_google_cookies}}}{cookieExpires:0}{+END});
+		(function (i, s, o, g, r, a, m) {
+			i['GoogleAnalyticsObject'] = r;
+			i[r] = i[r] || function () {
+						(i[r].q = i[r].q || []).push(arguments)
+					}, i[r].l = 1 * new Date();
+			a = s.createElement(o),
+			m = s.getElementsByTagName(o)[0];
+			a.async = 1;
+			a.src = g;
+			m.parentNode.insertBefore(a, m)
+		})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+		ga('create','{$TRIM;/,{$CONFIG_OPTION,google_analytics}}', opt);
 		ga('send','pageview');
 	</script>
 {+END}{+END}
 
 {$,Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent}
 {+START,IF,{$AND,{$CONFIG_OPTION,cookie_notice},{$RUNNING_SCRIPT,index}}}
-	<script type="text/javascript">
-		window.cookieconsent_options={'message':'{!COOKIE_NOTICE;,{$SITE_NAME}}','dismiss':'{!INPUTSYSTEM_OK;}','learnMore':'{!READ_MORE;}','link':'{$PAGE_LINK;,:privacy}','theme':'dark-top'};
+	<script>
+		window.cookieconsent_options = {
+			'message': '{!COOKIE_NOTICE;,{$SITE_NAME}}',
+			'dismiss': '{!INPUTSYSTEM_OK;}',
+			'learnMore': '{!READ_MORE;}',
+			'link': '{$PAGE_LINK;,:privacy}',
+			'theme': 'dark-top'
+		};
 	</script>
-	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js"></script>
 {+END}
 
 {$,Detecting of Timezones and JavaScript support}
@@ -152,10 +167,6 @@
 	}// Redirect with JS on, and then hopefully we can remove keep_has_js after one click. This code only happens if JS is marked off, no infinite loops can happen.
 	/*{+END}*/
 	/*{+END}*/
-
-	/*{+START,IF,{$NOT,{$BROWSER_MATCHES,ie}}}{+START,IF,{$HAS_PRIVILEGE,sees_javascript_error_alerts}}*/
-	window.take_errors=true;
-	/*{+END}{+END}*/
 //]]></script>
 
 {$,JavaScript code (usually) from Composr page}
@@ -169,3 +180,5 @@
 
 {$,Feeds}
 {$FEEDS}
+
+<script type="application/json" data-tpl-core-html-abstractions="htmlHead">{+START,PARAMS_JSON,}{_/}{+END}</script>

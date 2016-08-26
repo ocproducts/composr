@@ -78,6 +78,83 @@
             set_inner_html(comcoderandom, use);
         },
 
+        comcodeMediaSet: function comcodeMediaSet(options) {
+            var imgs, imgsThumbs, setImgWidthHeight = false,
+                imgsId = 'imgs_' + options.rand,
+                imgsThumbsId = 'imgs_thumbs_' + options.rand,
+                thumbWidthConfig = Composr.$CONFIG_OPTION.thumbWidth + 'x' + Composr.$CONFIG_OPTION.thumbWidth;
+
+            if (Composr.isFalsy(Composr.$CONFIG_OPTION.jsOverlays)) {
+                return;
+            }
+
+            if ((thumbWidthConfig !== 'x') && ((options.width + 'x' + options.height) !== 'x') ) {
+                setImgWidthHeight = true;
+            }
+
+            imgs = window[imgsId] = [];
+            imgsThumbs = window[imgsThumbsId] = [];
+
+            window.media_set = document.getElementById('media_set_' + options.rand);
+            window.as = media_set.querySelectorAll('a, video');
+            window.contains_video = false;
+
+            var x = 0;
+            for (var i = 0; i < as.length; i++) {
+                if (as[i].nodeName.toLowerCase() === 'video') {
+                    var span = as[i].getElementsByTagName('span');
+                    var title = '';
+                    if (span.length != 0) {
+                        title = get_inner_html(span[0]);
+                        span[0].parentNode.removeChild(span[0]);
+                    }
+
+                    imgs.push([get_inner_html(as[i]), title, true]);
+                    imgsThumbs.push((as[i].poster && as[i].poster != '') ? as[i].poster : '{$IMG;/,video_thumb}');
+
+                    contains_video = true;
+
+                    x++;
+                } else {
+                    if ((as[i].childNodes.length == 1) && (as[i].childNodes[0].nodeName.toLowerCase() == 'img')) {
+                        as[i].title = as[i].title.replace('{!LINK_NEW_WINDOW;/}', '').replace(/^\s+/, '');
+
+                        imgs.push([as[i].href, (as[i].title == '') ? as[i].childNodes[0].alt : as[i].title, false]);
+                        imgsThumbs.push(as[i].childNodes[0].src);
+
+                        as[i].onclick = function (x) {
+                            return function () {
+                                open_images_into_lightbox(imgs, x);
+                                return false;
+                            }
+                        }(x);
+                        if (as[i].rel) as[i].rel = as[i].rel.replace('lightbox', '');
+
+                        x++;
+                    }
+                }
+            }
+
+            // If you only want a single image-based thumbnail
+            if (contains_video) {// Remove this 'if' (so it always runs) if you do not want the grid-style layout (plus remove the media_set class from the outer div
+                var width = Composr.isTruthy(options.width) ? 'style="width: ' + Number(options.width) + 'px"' : '',
+                    imgWidthHeight = setImgWidthHeight ? ' width="' + Number(options.width) + '" height="' + Number(options.height) + '"' : '',
+                    media_set_html = '\
+					<figure class="attachment" ' + width + '>\
+						<figcaption>' + '{!comcode:MEDIA_SET^/,xxx}'.replace(/xxx/g, imgs.length) + '<\/figcaption>\
+						<div>\
+							<div class="attachment_details">\
+								<a onclick="open_images_into_lightbox(imgs); return false;" target="_blank" title="' + escape_html('{!comcode:MEDIA_SET^/,xxx}'.replace(/xxx/g, imgs.length)) + ' {!LINK_NEW_WINDOW^/}" href="#!">\
+                                    <img ' + imgWidthHeight + ' src="' + escape_html(imgsThumbs[0]) + '" />\
+                                <\/a>\
+							<\/div>\
+						<\/div>\
+					<\/figure>';
+
+                set_inner_html(media_set, media_set_html);
+            }
+        },
+
         comcodePulse: function comcodePulse(options) {
             var id = 'pulse_wave_' + options.randIdPulse;
 
@@ -201,7 +278,7 @@
         comcodeTabBody: function comcodeTabBody(options) {
             var title = Composr.filters.identifier(options.title);
 
-            if (!Composr.isEmptyOrZero(options.blockCallUrl)) {
+            if (Composr.isTruthy(options.blockCallUrl)) {
                 window['load_tab__' + title] = function () {
                     call_block(options.blockCallUrl, '', document.getElementById('g_' + title));
                 };

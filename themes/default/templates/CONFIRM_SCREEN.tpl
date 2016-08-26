@@ -51,9 +51,6 @@
 	</form>
 {+END}
 
-{+START,IF_PASSED,JAVASCRIPT}
-	<script>// <![CDATA[
-		{JAVASCRIPT/}
-	//]]></script>
-{+END}
-
+<script type="application/json" data-tpl-core-abstract-interfaces="confirmScreen">
+	{+START,PARAMS_JSON,JAVASCRIPT}{_/}{+END}
+</script>

@@ -1,4 +1,12 @@
 (function ($, Composr) {
+    Composr.behaviors.coreHtmlAbstractions = {
+        initialize: {
+            attach: function (context) {
+                Composr.initializeTemplates(context, 'core_html_abstractions');
+            }
+        }
+    };
+
     Composr.templates.coreHtmlAbstractions = {
         standaloneHtmlWrap: function standaloneHtmlWrap(options) {
             if (window.parent) {
@@ -34,14 +42,6 @@
                 document.getElementById(options.formName).submit();
             } else {
                 window.history.go(-2); // We've used back button, don't redirect forward again
-            }
-        }
-    };
-
-    Composr.behaviors.coreHtmlAbstractions = {
-        initialize: {
-            attach: function (context) {
-                Composr.initializeTemplates(context, 'core_html_abstractions');
             }
         }
     };

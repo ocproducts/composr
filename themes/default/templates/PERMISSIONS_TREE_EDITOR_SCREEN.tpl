@@ -44,17 +44,6 @@
 				<div id="tree_list__root_tree_list" class="tree_list__root_tree_list pt_editor">
 					<!-- List put in here -->
 				</div>
-				<script>// <![CDATA[
-					$(function() {
-						window.sitemap=new tree_list('tree_list','data/sitemap.php?start_links=1&get_perms=1&label_content_types=1&keep_full_structure=1{$KEEP;/}',null,'',true);
-					});
-					var column_color='{COLOR;/}';
-
-					window.usergroup_titles={};
-					{+START,LOOP,USERGROUPS}
-						window.usergroup_titles[{_loop_key%}]='{_loop_var;/}';
-					{+END}
-				//]]></script>
 			</div>
 		</div></div>
 	</div>
@@ -86,3 +75,4 @@
 		</form>
 	</div></div>
 </div>
+<script type="application/json" data-tpl-core-permission-management="permissionsTreeEditorScreen">{+START,PARAMS_JSON,COLOR,USERGROUPS}{_/}{+END}</script>

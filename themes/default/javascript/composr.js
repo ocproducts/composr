@@ -1,7 +1,5 @@
-(function ($){
+(function ($, data) {
     'use strict';
-
-    var data = JSON.parse(document.getElementsByName('composr-symbol-data')[0].content);
 
     var Composr = {
         $PAGE_TITLE: data.PAGE_TITLE,
@@ -40,38 +38,84 @@
         $IS_HTTPAUTH_LOGIN: data.IS_HTTPAUTH_LOGIN,
         $IS_A_COOKIE_LOGIN: data.IS_A_COOKIE_LOGIN,
         $SESSION_COOKIE_NAME: data.SESSION_COOKIE_NAME,
-        $GROUP_ID: data.GROUP_ID
-    };
+        $GROUP_ID: data.GROUP_ID,
+        $CONFIG_OPTION: data.CONFIG_OPTION,
+        // Just some additonal stuff, not a tempcode symbol
+        $EXTRA: data.EXTRA
+    },
+        arrProto = Array.prototype,
+        forEach = Function.bind.call(Function.call, arrProto.forEach),
 
-    var arr = Array.prototype;
-
-    var loadPolyfillsPromise = new Promise(function(resolve) {
-        loadPolyfills(resolve);
-    });
+        loadPolyfillsPromise = new Promise(function (resolve) {
+            loadPolyfills(resolve);
+        }),
+        domReadyPromise = new Promise(function (resolve) {
+            if (document.readyState === 'interactive') {
+                resolve();
+            } else {
+                document.addEventListener('DOMContentLoaded', function () {
+                    resolve();
+                });
+            }
+        }),
+        windowLoadPromise = new Promise(function (resolve) {
+            if (document.readyState === 'complete') {
+                resolve();
+            } else {
+                window.addEventListener('load', function () {
+                    resolve();
+                });
+            }
+        });
 
     loadPolyfillsPromise.then(function () {
-        Composr.queryString = new URLSearchParams(window.location.search);
+        Composr.queryString = new window.URLSearchParams(window.location.search);
     });
 
-    var domReadyPromise = new Promise(function(resolve) {
-        if (document.readyState === 'interactive') {
-            resolve();
-        } else {
-            document.addEventListener('DOMContentLoaded', function () {
-                resolve();
-            })
-        }
-    });
+    function loadPolyfills(callback) {
+        var scriptsToLoad = 0,
+            scriptsLoaded = 0;
 
-    var windowLoadPromise = new Promise(function (resolve) {
-        if (document.readyState === 'complete') {
-            resolve();
-        }  else {
-            window.addEventListener('load', function () {
-                resolve();
-            });
+        // Credit: https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/String/includes
+        if (typeof String.prototype.includes === 'undefined') {
+            String.prototype.includes = function (search, start) {
+                if (typeof start !== 'number') {
+                    start = 0;
+                }
+
+                if (start + search.length > this.length) {
+                    return false;
+                }
+
+                return this.indexOf(search, start) !== -1;
+            };
         }
-    });
+
+        function onload() {
+            scriptsLoaded++;
+
+            if (scriptsToLoad === scriptsLoaded) {
+                callback();
+            }
+        }
+
+        function loadScript(src) {
+            scriptsToLoad++;
+            var s = document.createElement('script');
+            s.onload = onload;
+            s.async = true;
+            s.src = src;
+            document.head.appendChild(s);
+        }
+
+        if (typeof window.URLSearchParams === 'undefined') {
+            loadScript(Composr.$BASE_URL + '/data/polyfills/url-search-params.max.js');
+        }
+
+        if (scriptsToLoad === 0) {
+            callback();
+        }
+    }
 
     Composr.ready = Promise.all([loadPolyfillsPromise, domReadyPromise]);
     Composr.loadWindow = Promise.all([Composr.ready, windowLoadPromise]);
@@ -83,31 +127,71 @@
         return Composr.$BASE_URL + '/' + path;
     };
 
-    /* Used to check strings */
-    Composr.isEmptyOrZero = function isEmptyOrZero(str) {
-        if (!str || !str.trim() || (str.trim() === '0')) {
-            return true;
-        }
-
-        return false;
+    /* Mainly used to check tempcode values, since in JavaScript '0' (string) is true */
+    Composr.isFalsy = function isFalsy(val) {
+        return !val || (val.length === 0) || !val.trim() || (val.trim() === '0');
     };
 
-    Composr.isNotEmptyOrZero = function isntEmptyOrZero(str) {
-        return !Composr.isEmptyOrZero(str);
+    Composr.areFalsy = function areFalsy() {
+        var i = 0, len = arguments.length;
+
+        while (i < len) {
+            if (Composr.isTruthy(arguments[i])) {
+                return false;
+            }
+            i++;
+        }
+
+        return true;
+    };
+
+    Composr.isTruthy = function isTruthy(val) {
+        return !Composr.isFalsy(val);
+    };
+
+    Composr.areTruthy = function areTruthy() {
+        var i = 0, len = arguments.length;
+
+        while (i < len) {
+            if (Composr.isFalsy(arguments[i])) {
+                return false;
+            }
+            i++;
+        }
+
+        return true;
+    };
+
+    Composr.areDefined = function areDefined() {
+        var i = 0, len = arguments.length;
+
+        while (i < len) {
+            if (arguments[i] === undefined) {
+                return false;
+            }
+            i++;
+        }
+
+        return true;
     };
 
     /* Used for specifying required arguments */
     Composr.required = function (obj, keys) {
+        var i, len;
+
         if (!Array.isArray(keys)) {
             throw new Error('Parameter \'keys\' must be an array.');
         }
 
-        for (var i = 0; i < keys.length; i++) {
+        for (i = 0, len = keys.length; i < len; i++) {
             if (!obj.hasOwnProperty(keys[i])) {
                 throw new Error('Object is missing a required key: \''+ keys[i] + '\'.');
             }
         }
     };
+
+    Composr.log    = Composr.$DEV_MODE ? console.log : noop;
+    Composr.assert = Composr.$DEV_MODE ? console.assert : noop;
 
     /**
      * Helper to rethrow errors asynchronously.
@@ -128,50 +212,50 @@
     Composr.behaviors = {};
 
     Composr.attachBehaviors = function (context, settings) {
-        var addons = Composr.behaviors;
+        var addons = Composr.behaviors, i, behaviors, j;
 
         context = context || document;
         settings = settings || composrSettings;
 
         // Execute all of them.
-        for (var i in addons) {
+        for (i in addons) {
             if (!addons.hasOwnProperty(i) || (typeof addons[i] !== 'object')) {
                 continue;
             }
 
-            var behaviors = addons[i];
+            behaviors = addons[i];
 
-            for (var j in behaviors) {
+            for (j in behaviors) {
                 if (!behaviors.hasOwnProperty(j) || (typeof behaviors[j] !== 'object')) {
                     continue;
                 }
 
                 if (typeof behaviors[j].attach === 'function') {
                     // Don't stop the execution of behaviors in case of an error.
-                    try {
-                        behaviors[j].attach(context, settings);
-                    } catch (e) {
-                        Composr.throwError(e + ' while attaching behavior ' + j + ' of addon ' + i);
-                    }
+                    //try {
+                    behaviors[j].attach(context, settings);
+                    //} catch (e) {
+                    //    Composr.throwError(e + ' while attaching behavior ' + j + ' of addon ' + i);
+                    //}
                 }
             }
         }
     };
 
     Composr.detachBehaviors = function (context, settings, trigger) {
-        var addons = Composr.behaviors;
+        var addons = Composr.behaviors, i, behaviors;
 
         context = context || document;
         settings = settings || composrSettings;
         trigger = trigger || 'unload';
 
         // Execute all of them.
-        for (var i in addons) {
+        for (i in addons) {
             if (!addons.hasOwnProperty(i) || (typeof addons[i] !== 'object')) {
                 continue;
             }
 
-            var behaviors = addons[i];
+            behaviors = addons[i];
 
             for (var j in behaviors) {
                 if (!behaviors.hasOwnProperty(j) || (typeof behaviors[j] !== 'object')) {
@@ -194,28 +278,31 @@
     Composr.templates = {};
 
     Composr.initializeTemplates = function initializeTemplates(context, addonName) {
-        addonName = addonName.replace('_', '-');
+        addonName = addonName.replace(/_/g, '-');
 
-        arr.forEach.call(context.querySelectorAll('[data-tpl-' + addonName + ']'), function (el) {
-            var datasetProperty = Composr.utils.camelCase('tpl-' + addonName),
-                funcName = el.dataset[datasetProperty].trim(),
+        forEach(context.querySelectorAll('[data-tpl-' + addonName + ']'), function (el) {
+            var funcName = el.dataset[Composr.utils.camelCase('tpl-' + addonName)].trim(),
                 addonArgs = '',
                 args = [];
 
-            if (typeof el.dataset.tplArgs === 'string') { // Arguments provided in the data-tpl-args attribute
-                addonArgs = el.dataset.tplArgs.trim();
-            } else if ((el.nodeName === 'SCRIPT') && (el.type === 'application/json')) { // Arguments provided inside the <script> tag
+            if ((el.nodeName === 'SCRIPT') && (el.type === 'application/json')) {
+                // Arguments provided inside the <script> tag.
                 addonArgs = el.textContent.trim();
+
+            } else {
+                // Arguments provided in the data-tpl-args attribute.
+                addonArgs = el.dataset.tplArgs ? el.dataset.tplArgs.trim() : '';
             }
+
 
             if (addonArgs !== '') {
                 var _args;
 
-                try {
+                //try {
                     _args = JSON.parse(addonArgs);
-                } catch (e) {
-                    Composr.throwError(e);
-                }
+                //} catch (e) {
+                //    Composr.throwError(e);
+                //}
 
                 if (_args) {
                     args = _args;
@@ -230,7 +317,9 @@
             var func = Composr.templates[addonNameCamelCased] ? Composr.templates[addonNameCamelCased][funcName] : null;
 
             if (typeof func === 'function') {
-                func.apply(el, args);
+                func.apply(el.nodeName !== 'SCRIPT' ? el : context, args);
+            } else if ((typeof func === 'object') && (func !== null)) {
+
             }
         });
     };
@@ -239,21 +328,66 @@
     Composr.views = {};
 
     /* Tempcode filters ported to JS */
+    Composr.filter = function (str, filterSymbols) {
+        var i;
 
-    Composr.filter = function (filterSymbol, str) {
-        switch (filterSymbol) {
-            case '~':
-                return Composr.filters.stripNewLines(str);
+        for (i = 0; i < filterSymbols.length; i++) {
+            switch (filterSymbols[i]) {
+                case '&':
+                    str = Composr.filters.urlEncode(str);
+                    break;
 
-            case '|':
-                return Composr.filters.identifier(str);
+                case '~':
+                    str = Composr.filters.stripNewLines(str);
+                    break;
 
-            default:
-                throw new Error('Invalid value provided for argument \'filterChar\'.');
+                case '|':
+                    str = Composr.filters.identifier(str);
+                    break;
+
+                default:
+                    throw new Error('Invalid value provided for argument \'filterSymbols\'.');
+            }
         }
+
+        return str;
     };
 
     Composr.filters = {};
+
+    // JS port of the cms_url_encode function used by the tempcode filter '&'
+    Composr.filters.urlEncode = function (urlPart, canTryUrlSchemes) {
+        var urlPartEncoded = urlencode(urlPart);
+
+        if (urlPartEncoded === urlPart) {
+            return urlPartEncoded;
+        }
+
+        if ((typeof canTryUrlSchemes === 'undefined') || (canTryUrlSchemes === null)) {
+            canTryUrlSchemes = Composr.$EXTRA.canTryUrlSchemes;
+        }
+
+        if (canTryUrlSchemes) {
+            // These interfere with URL Scheme processing because they get pre-decoded and make things ambiguous
+            urlPart = urlPart.replace(/\//g, ':slash:').replace(/&/g, ':amp:').replace(/#/g, ':uhash:');
+        }
+
+        return urlencode(urlPart);
+    };
+
+    // JavaScript port of php's urlencode function
+    // Credit: http://locutus.io/php/url/urlencode/
+    function urlencode(str) {
+        str = (str + '');
+        return encodeURIComponent(str)
+            .replace(/!/g, '%21')
+            .replace(/'/g, '%27')
+            .replace(/\(/g, '%28')
+            .replace(/\)/g, '%29')
+            .replace(/\*/g, '%2A')
+            .replace(/%20/g, '+')
+            .replace(/~/g, '%7E');
+    }
 
     Composr.filters.stripNewLines = function (str) {
         if (typeof str !== 'string') {
@@ -377,81 +511,30 @@
         return element.offsetHeight - padding - border;
     };
 
-    function loadPolyfills(callback) {
-        var scriptsToLoad = 0,
-            scriptsLoaded = 0;
+    Composr.dom.$$ = function (selector, context) {
+        return arrProto.slice.call((context || document).querySelectorAll(selector));
+    };
 
-        // Credit: https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/String/includes
-        if (typeof String.prototype.includes === 'undefined') {
-            String.prototype.includes = function(search, start) {
-                if (typeof start !== 'number') {
-                    start = 0;
-                }
+    // Get nearest parent (or itself) element matching selector
+    Composr.dom.closest = (function() {
+        var proto = HTMLElement.prototype,
+            matches = proto.matches || proto.webkitMatchesSelector || proto.mozMatchesSelector || proto.msMatchesSelector;
 
-                if (start + search.length > this.length) {
-                    return false;
-                } else {
-                    return this.indexOf(search, start) !== -1;
-                }
-            };
-        }
-
-        if (typeof window.CustomEvent !== 'function') {
-            polyfillCustomEvent();
-        }
-
-        function onload() {
-            scriptsLoaded++;
-
-            if (scriptsToLoad === scriptsLoaded) {
-                callback();
-            }
-        }
-
-        function loadScript(src) {
-            scriptsToLoad++;
-            var s = document.createElement('script');
-            s.onload = onload;
-            s.async = true;
-            s.src = src;
-            document.head.appendChild(s);
-        }
-
-        if (typeof window.URLSearchParams === 'undefined') {
-            loadScript(Composr.$BASE_URL + '/data/polyfills/url-search-params.max.js');
-        }
-
-        if (scriptsToLoad === 0) {
-            callback();
-        }
-    }
-
-    // Credit: https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/CustomEvent
-    function polyfillCustomEvent() {
-        function CustomEvent ( event, params ) {
-            params = params || { bubbles: false, cancelable: false, detail: undefined };
-            var evt = document.createEvent( 'CustomEvent' );
-            evt.initCustomEvent( event, params.bubbles, params.cancelable, params.detail );
-            return evt;
-        }
-
-        CustomEvent.prototype = window.Event.prototype;
-
-        window.CustomEvent = CustomEvent;
-    }
+        return function closest(el, selector) {
+            return (!el || matches.call(el, selector)) ? el : closest(el.parentElement, selector);
+        };
+    })();
 
     Composr.behaviors.composr = {
         initialize: {
             attach: function (context) {
                 // Call a global function, optionally with arguments. Inside the function scope, "this" will be the element calling that function.
-                arr.forEach.call(context.querySelectorAll('[data-cms-call]'), function (el) {
+                forEach(context.querySelectorAll('[data-cms-call]'), function (el) {
                     var funcName = el.dataset.cmsCall.trim(),
                         cmsCallArgs = typeof el.dataset.cmsCallArgs === 'string' ? el.dataset.cmsCallArgs.trim() : '',
-                        args = [];
+                        args = [], _args;
 
                     if (cmsCallArgs !== '') {
-                        let _args;
-
                         try {
                             _args = JSON.parse(el.dataset.cmsCallArgs);
                         } catch (e) {
@@ -475,7 +558,7 @@
                 });
 
                 // Select2 plugin hook
-                arr.forEach.call(context.querySelectorAll('[data-cms-select2]'), function (el) {
+                forEach(context.querySelectorAll('[data-cms-select2]'), function (el) {
                     var options = {};
 
                     if (el.dataset.cmsSelect2.trim()) {
@@ -484,23 +567,15 @@
 
                     $(el).select2(options);
                 });
-
-                // TODO
-                // tree_list.js
-                arr.forEach.call(context.querySelectorAll('[data-cms-tree-list]'), function (el) {
-                    var options = {}, defaults = {};
-
-                    if (el.dataset.cmsTreeList.trim()) {
-                        options = JSON.parse(el.dataset.cmsTreeList);
-                    }
-                });
             }
         }
     };
 
+    Composr.View = Backbone.View.extend({});
+
     Composr.ready.then(function () {
-        Composr.attachBehaviors(document, {});
+        Composr.attachBehaviors();
     });
 
-    return window.Composr = Composr;
-})(window.jQuery || window.Zepto);
+    window.Composr = Composr;
+})(window.jQuery || window.Zepto, JSON.parse(document.getElementsByName('composr-symbol-data')[0].content));

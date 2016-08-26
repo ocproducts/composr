@@ -1,4 +1,4 @@
-<div onkeypress="return null;">
+<div onkeypress="return null;" data-tpl-galleries="galleryNav" data-tpl-args="{+START,PARAMS_JSON,_X,_N,SLIDESHOW}{_*}{+END}">
 	{+START,IF,{SLIDESHOW}}
 		<label for="slideshow_from" class="slideshow_speed">
 			{!SPEED_IN_SECS}
@@ -41,17 +41,6 @@
 		</div>
 
 		<div class="trinav_mid text"><span>
-			<script>// <![CDATA[
-				Composr.loadWindow.then(function() {
-					window.slideshow_current_position={_X%}-1;
-					window.slideshow_total_slides={_N%};
-
-					{+START,IF,{SLIDESHOW}}
-						initialise_slideshow();
-					{+END}
-				});
-			//]]></script>
-
 			{+START,IF,{SLIDESHOW}}
 				{!VIEWING_SLIDE,{X*},{N*}}
 

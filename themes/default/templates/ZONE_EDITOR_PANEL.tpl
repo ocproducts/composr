@@ -52,11 +52,6 @@
 			<div class="constrain_field">
 				<textarea onchange="set_edited_panel(null,'{ID;*}');" rows="50" cols="20" class="{$?,{IS_PANEL},ze_textarea,ze_textarea_middle} textarea_scroll{CLASS*}" id="edit_{ID*}_textarea" name="{ID*}">{COMCODE*}</textarea>
 
-				{+START,IF,{$IN_STR,{CLASS},wysiwyg}}
-					<script>// <![CDATA[
-						if ((window.wysiwyg_on) && (wysiwyg_on())) document.getElementById('edit_{ID;/}_textarea').readOnly=true;
-					//]]></script>
-				{+END}
 				{+START,IF_PASSED,DEFAULT_PARSED}
 					<textarea cols="1" rows="1" style="display: none" readonly="readonly" disabled="disabled" name="edit_{ID*}_textarea_parsed">{DEFAULT_PARSED*}</textarea>
 				{+END}
@@ -128,3 +123,4 @@
 	</div>
 {+END}
 
+<script type="application/json" data-tpl-core-zone-editor="zoneEditorPanel">{+START,PARAMS_JSON,COMCODE,CLASS,ID}{_/}{+END}</script>

@@ -4603,3 +4603,21 @@ function ecv_ENSURE_PROTOCOL_SUITABILITY($lang, $escaped, $param)
     }
     return $value;
 }
+
+function ecv_JSON_ENCODE($lang, $escaped, $param) {
+    $value = json_encode($param[0]);
+
+    if ($escaped !== array()) {
+        apply_tempcode_escaping($escaped, $value);
+    }
+    return $value;
+}
+
+function ecv_JSON_DECODE($lang, $escaped, $param) {
+    $value = json_encode($param[0]);
+
+    if ($escaped !== array()) {
+        apply_tempcode_escaping($escaped, $value);
+    }
+    return $value;
+}

@@ -474,7 +474,7 @@ class Hook_addon_registry_core_menus
     {
         $child = new Tempcode();
         $content = new Tempcode();
-        foreach (placeholder_array(3) as $v) {
+        foreach (placeholder_array(3) as $k => $v) {
             $child->attach(do_lorem_template('MENU_BRANCH_dropdown', array(
                 'CAPTION' => lorem_word(),
                 'IMG' => '',
@@ -504,7 +504,7 @@ class Hook_addon_registry_core_menus
                 'THE_LEVEL' => '0',
             )));
         }
-        foreach (placeholder_array(3) as $v) {
+        foreach (placeholder_array(3) as $k => $v) {
             $content->attach(do_lorem_template('MENU_BRANCH_dropdown', array(
                 'CAPTION' => lorem_word(),
                 'IMG' => '',
@@ -551,7 +551,7 @@ class Hook_addon_registry_core_menus
     {
         $child = new Tempcode();
         $content = new Tempcode();
-        foreach (placeholder_array(3) as $v) {
+        foreach (placeholder_array(3) as $k => $v) {
             $child->attach(do_lorem_template('MENU_BRANCH_embossed', array(
                 'CAPTION' => lorem_word(),
                 'IMG' => '',
@@ -575,7 +575,7 @@ class Hook_addon_registry_core_menus
                 'CURRENT_ZONE' => false,
             )));
         }
-        foreach (placeholder_array(3) as $v) {
+        foreach (placeholder_array(3) as $k => $v) {
             $content->attach(do_lorem_template('MENU_BRANCH_embossed', array(
                 'CAPTION' => lorem_word(),
                 'IMG' => '',
@@ -637,7 +637,7 @@ class Hook_addon_registry_core_menus
     {
         $child = new Tempcode();
         $content = new Tempcode();
-        foreach (placeholder_array(3) as $v) {
+        foreach (placeholder_array(3) as $k => $v) {
             $child->attach(do_lorem_template('MENU_BRANCH_popup', array(
                 'CAPTION' => lorem_word(),
                 'IMG' => '',
@@ -661,7 +661,7 @@ class Hook_addon_registry_core_menus
                 'CURRENT_ZONE' => false,
             )));
         }
-        foreach (placeholder_array(3) as $v) {
+        foreach (placeholder_array(3) as $k => $v) {
             $content->attach(do_lorem_template('MENU_BRANCH_popup', array(
                 'CAPTION' => lorem_word(),
                 'IMG' => '',
@@ -723,7 +723,7 @@ class Hook_addon_registry_core_menus
     {
         $child = new Tempcode();
         $content = new Tempcode();
-        foreach (placeholder_array(3) as $v) {
+        foreach (placeholder_array(3) as $k => $v) {
             $child->attach(do_lorem_template('MENU_BRANCH_select', array(
                 'CAPTION' => lorem_word(),
                 'IMG' => '',
@@ -747,7 +747,7 @@ class Hook_addon_registry_core_menus
                 'CURRENT_ZONE' => false,
             )));
         }
-        foreach (placeholder_array(3) as $v) {
+        foreach (placeholder_array(3) as $k => $v) {
             $content->attach(do_lorem_template('MENU_BRANCH_select', array(
                 'CAPTION' => lorem_word(),
                 'IMG' => '',
@@ -809,7 +809,7 @@ class Hook_addon_registry_core_menus
     {
         $child = new Tempcode();
         $content = new Tempcode();
-        foreach (placeholder_array() as $v) {
+        foreach (placeholder_array(3) as $k => $v) {
             $child->attach(do_lorem_template('MENU_BRANCH_sitemap', array(
                 'CAPTION' => lorem_word(),
                 'IMG' => '',
@@ -825,45 +825,38 @@ class Hook_addon_registry_core_menus
                 'MENU' => lorem_word_2(),
                 'TOP_LEVEL' => false,
                 'THE_LEVEL' => '2',
-                'POSITION' => '1',
-                'FIRST' => false,
-                'LAST' => false,
+                'POSITION' => "$k",
+                'FIRST' => $k === 0,
+                'LAST' => $k === 2,
                 'BRETHREN_COUNT' => '3',
                 'CURRENT' => false,
                 'CURRENT_ZONE' => false,
             )));
         }
         foreach (placeholder_array(3) as $k => $v) {
-            if ($k == 1) {
-                $content->attach(do_lorem_template('MENU_SPACER_sitemap', array(
-                    'MENU' => lorem_word_2(),
-                    'TOP_LEVEL' => true,
-                    'THE_LEVEL' => '0',
-                )));
-            } else {
-                $content->attach(do_lorem_template('MENU_BRANCH_sitemap', array(
-                    'CAPTION' => lorem_word(),
-                    'IMG' => '',
-                    'IMG_2X' => '',
-                    'URL' => placeholder_url(),
-                    'PAGE_LINK' => placeholder_link(),
-                    'ACCESSKEY' => '',
-                    'NEW_WINDOW' => false,
-                    'TOOLTIP' => lorem_phrase(),
-                    'CHILDREN' => $child,
-                    'NUM_CHILDREN' => '1',
-                    'DISPLAY' => 'block',
-                    'MENU' => lorem_word_2(),
-                    'TOP_LEVEL' => true,
-                    'THE_LEVEL' => '0',
-                    'POSITION' => '2',
-                    'FIRST' => false,
-                    'LAST' => false,
-                    'BRETHREN_COUNT' => '3',
-                    'CURRENT' => false,
-                    'CURRENT_ZONE' => false,
-                )));
-            }
+            $content->attach(do_lorem_template('MENU_BRANCH_sitemap', array(
+                'CAPTION' => lorem_word(),
+                'IMG' => '',
+                'IMG_2X' => '',
+                'URL' => placeholder_url(),
+                'PAGE_LINK' => placeholder_link(),
+                'ACCESSKEY' => '',
+                'NEW_WINDOW' => false,
+                'TOOLTIP' => lorem_phrase(),
+                'CHILDREN' => $child,
+                'NUM_CHILDREN' => '1',
+                'DISPLAY' => 'block',
+                'MENU' => lorem_word_2(),
+                'TOP_LEVEL' => true,
+                'THE_LEVEL' => '0',
+                'POSITION' => "$k",
+                'FIRST' => $k === 0,
+                'LAST' => $k === 2,
+                'BRETHREN_COUNT' => '3',
+                'CURRENT' => false,
+                'CURRENT_ZONE' => false,
+            )));
+
         }
         $menu = do_lorem_template('MENU_sitemap', array(
             'CONTENT' => $content,

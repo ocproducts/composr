@@ -127,35 +127,6 @@
 									</th>
 
 									<td>
-										{+START,IF,{$JS_ON}}
-											<img id="review_bar_1__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" /><img id="review_bar_2__{TYPE*}__{REVIEW_TITLE|*}__{ID|*}" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" /><img id="review_bar_3__{TYPE*}__{REVIEW_TITLE|*}__{ID|*}" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" /><img id="review_bar_4__{TYPE*}__{REVIEW_TITLE|*}__{ID|*}" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" /><img id="review_bar_5__{TYPE*}__{REVIEW_TITLE|*}__{ID|*}" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" />
-											<script>// <![CDATA[
-												function new_review_highlight__{TYPE%}__{REVIEW_TITLE|}__{ID|}(review,first_time)
-												{
-													var i,bit;
-													for (i=1;i<=5;i++)
-													{
-														bit=document.getElementById('review_bar_'+i+'__{TYPE|}__{REVIEW_TITLE|}__{ID|}');
-														bit.className=((review!=0) && (review/2>=i))?'rating_star_highlight':'rating_star';
-														if (first_time) bit.onmouseover=function(i) { return function()
-														{
-															new_review_highlight__{TYPE%}__{REVIEW_TITLE|}__{ID|}(i*2,false);
-														} }(i);
-														if (first_time) bit.onmouseout=function(i) { return function()
-														{
-															new_review_highlight__{TYPE%}__{REVIEW_TITLE|}__{ID|}(window.parseInt(document.getElementById('review_rating__{TYPE|}__{REVIEW_TITLE|}__{ID|}').value),false);
-														} }(i);
-														if (first_time) bit.onclick=function(i) { return function()
-														{
-															document.getElementById('review_rating__{TYPE|}__{REVIEW_TITLE|}__{ID|}').value=i*2;
-														} }(i);
-													}
-												}
-												new_review_highlight__{TYPE%}__{REVIEW_TITLE|}__{ID|}(0,true);
-											//]]></script>
-											<input id="review_rating__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" type="hidden" name="review_rating__{REVIEW_TITLE|*}" value="" />
-										{+END}
-
 										{+START,IF,{$NOT,{$JS_ON}}}
 											<select id="review_rating__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" name="review_rating">
 												<option value="">{!NA}</option>
@@ -261,13 +232,6 @@
 					{+START,IF,{$NOT,{$MOBILE}}}
 						{+START,IF,{$CONFIG_OPTION,js_captcha}}
 							<noscript>{!JAVASCRIPT_REQUIRED}</noscript>
-
-							{+START,IF_NON_EMPTY,{$TRIM,{$GET,CAPTCHA}}}
-								<div id="captcha_spot"></div>
-								<script>// <![CDATA[
-									set_inner_html(document.getElementById('captcha_spot'),'{$GET;^/,CAPTCHA}');
-								//]]></script>
-							{+END}
 						{+END}
 						{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}
 							{$GET,CAPTCHA}
@@ -314,5 +278,5 @@
 
 
 <script type="application/json" data-tpl-core-feedback-features="commentsPostingForm">
-	{+START,PARAMS_JSON,force_previews,WYSIWYG}{_/}{+END}
+	{+START,PARAMS_JSON,force_previews,WYSIWYG,REVIEW_RATING_CRITERIA,CAPTCHA}{_/}{+END}
 </script>

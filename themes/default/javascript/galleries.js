@@ -1,7 +1,24 @@
-"use strict";
+'use strict';
 
 (function ($, Composr) {
+    Composr.behaviors.galleries = {
+        initialize: {
+            attach: function (context) {
+                Composr.initializeTemplates(context, 'galleries');
+            }
+        }
+    };
+
     Composr.templates.galleries = {
+        galleryNav: function galleryNav(options) {
+            window.slideshow_current_position = options._x -1;
+            window.slideshow_total_slides = options._n;
+
+            if (Composr.isTruthy(options.slideshow)) {
+                initialise_slideshow();
+            }
+        },
+
         blockMainGalleryEmbed: function blockMainGalleryEmbed(options) {
             if (!options.carouselId || !options.blockCallUrl) {
                 return;
@@ -20,38 +37,29 @@
             };
         },
 
-
         blockMainImageFader: function blockMainImageFader(options) {
-            var data = {};
+            var data = {}, key;
 
             Composr.required(options, ['randFaderImage', 'titles', 'html', 'images', 'mill']);
 
             initialise_image_fader(data, options.randFaderImage);
 
-            for (var key in options.titles) {
+            for (key in options.titles) {
                 if (options.titles.hasOwnProperty(key)) {
                     initialise_image_fader_title(data, options.titles[key], key);
                 }
             }
 
-            for (var key in options.html) {
+            for (key in options.html) {
                 if (options.html.hasOwnProperty(key)) {
                     initialise_image_fader_html(data, options.html[key], key);
                 }
             }
 
-            for (var key in options.images) {
+            for (key in options.images) {
                 if (options.images.hasOwnProperty(key)) {
                     initialise_image_fader_image(data, options.images[key], options.mill, options.images.length);
                 }
-            }
-        }
-    };
-
-    Composr.behaviors.galleries = {
-        initialize: {
-            attach: function (context) {
-                Composr.initializeTemplates(context, 'galleries');
             }
         }
     };

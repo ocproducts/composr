@@ -4,6 +4,8 @@
 {$REQUIRE_JAVASCRIPT,ajax}
 {$REQUIRE_CSS,autocomplete}
 
+{$SET,init_drag_drop,0}
+
 <tr class="form_table_field_spacer">
 	{+START,SET,posting_field}
 		{+START,IF_PASSED,POST_COMMENT}
@@ -114,20 +116,14 @@
 		{+END}
 
 		{+START,IF,{$AND,{$BROWSER_MATCHES,simplified_attachments_ui},{$IS_NON_EMPTY,{ATTACHMENTS}}}}
+			{$SET,init_drag_drop,1}
 			{ATTACHMENTS}
-
 			<input type="hidden" name="posting_ref_id" value="{$RAND%}" />
-
-			<script>// <![CDATA[
-				$(function() {
-					initialise_html5_dragdrop_upload('container_for_{NAME;/}','{NAME;/}');
-				});
-			//]]></script>
 		{+END}
 	</td>
 </tr>
 
-{$SET,init_drag_drop,0}
+
 {+START,IF,{$AND,{$NOT,{$BROWSER_MATCHES,simplified_attachments_ui}},{$IS_NON_EMPTY,{ATTACHMENTS}}}}
 	{$SET,init_drag_drop,1}
 	<tr class="form_table_field_spacer">

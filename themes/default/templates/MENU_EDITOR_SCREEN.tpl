@@ -49,12 +49,6 @@
 				<div id="tree_list__root_tree_list">
 					<!-- List put in here -->
 				</div>
-				<script>// <![CDATA[
-					$(function() {
-						window.current_selection='';
-						window.sitemap=new tree_list('tree_list','data/sitemap.php?get_perms=0{$KEEP;/}&start_links=1',null,'',false,null,false,true);
-					});
-				//]]></script>
 
 				<p class="associated_details">
 					{!CLICK_ENTRY_POINT_TO_USE}
@@ -111,14 +105,4 @@
 	</div>
 </div>
 
-<script>// <![CDATA[
-	var all_menus=[];
-	{+START,LOOP,ALL_MENUS}
-		all_menus.push('{_loop_var;/}');
-	{+END}
-
-	var cf=function() { var e=document.getElementById('menu_editor_wrap'); if (e.className.indexOf(' docked')==-1) smooth_scroll(find_pos_y(document.getElementById('caption_'+window.current_selection))); };
-	document.getElementById('url').ondblclick=cf;
-	document.getElementById('caption_long').ondblclick=cf;
-	document.getElementById('page_only').ondblclick=cf;
-//]]></script>
+<script type="application/json" data-tpl-core-menus="menuEditorScreen">{+START,PARAMS_JSON,ALL_MENUS}{_/}{+END}</script>

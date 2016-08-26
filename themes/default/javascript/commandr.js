@@ -1,4 +1,17 @@
-"use strict";
+'use strict';
+
+(function ($, Composr) {
+    Composr.behaviors.commandr = {
+        initialize: {
+            attach: function (context) {
+                Composr.initializeTemplates(context, 'commandr');
+            }
+        }
+    };
+
+    Composr.templates.commandr = {};
+})(window.jQuery || window.Zepto, window.Composr);
+
 
 if (typeof window.previous_commands == 'undefined') {
     window.previous_commands = [];

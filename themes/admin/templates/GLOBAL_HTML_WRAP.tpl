@@ -5,9 +5,9 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 {$BRAND_BASE_URL*}
 (admin theme)
 -->
-
+{$SET,bg_tpl_compilation,{$CONFIG_OPTION,background_template_compilation}}
 {$,We deploy as HTML5 but code and validate strictly to XHTML5}
-<html lang="{$LCASE*,{$LANG}}" dir="{!dir}">
+<html lang="{$LCASE*,{$LANG}}" dir="{!dir}" data-tpl-core="globalHtmlWrap" data-tpl-args="{+START,PARAMS_JSON,bg_tpl_compilation}{_*}{+END}">
 <head>
 	{+START,INCLUDE,HTML_HEAD}{+END}
 </head>
@@ -226,14 +226,5 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 	{$EXTRA_FOOT}
 
 	{$JS_TEMPCODE}
-	<script>// <![CDATA[
-		script_load_stuff();
-
-		{+START,IF,{$EQ,{$_GET,wide_print},1}}try { window.print(); } catch (e) {}{+END}
-
-		{+START,IF,{$CONFIG_OPTION,background_template_compilation}}
-			load_snippet('background_template_compilation&page={$PAGE&}','',function() {});
-		{+END}
-	//]]></script>
 </body>
 </html>

@@ -1,3 +1,7 @@
+{+START,IF_PASSED_AND_TRUE,SUPPORT_AUTOSAVE}{+START,IF_PASSED,FORM_NAME}
+{$REQUIRE_JAVASCRIPT,posting}
+{+END}{+END}
+
 {+START,IF_PASSED_AND_TRUE,PREVIEW}{+START,IF,{$JS_ON}}{+START,IF,{$CONFIG_OPTION,enable_previews}}
 	{+START,IF_NON_PASSED_OR_FALSE,SKIP_WEBSTANDARDS}{+START,IF,{$OR,{$CONFIG_OPTION,enable_markup_webstandards},{$CONFIG_OPTION,enable_spell_check},{$AND,{$HAS_PRIVILEGE,perform_keyword_check},{$CONFIG_OPTION,enable_keyword_density_check}}}}
 		<div class="preview_checking_box">
@@ -44,31 +48,6 @@
 	<input class="{SUBMIT_ICON*} button_screen" onclick="if (typeof this.form=='undefined') var form=window.form_submitting; else var form=this.form; return do_form_submit(form,event);"{+START,IF_NON_PASSED_OR_FALSE,SECONDARY_FORM} id="submit_button" accesskey="u"{+END} tabindex="{+START,IF_PASSED,TABINDEX}{TABINDEX}{+END}{+START,IF_NON_PASSED,TABINDEX}250{+END}"{+START,IF,{$JS_ON}} type="button"{+END}{+START,IF,{$NOT,{$JS_ON}}} type="submit"{+END} value="{SUBMIT_NAME*}" />
 </p>
 
-<script>// <![CDATA[
-	window.form_preview_url='{$PREVIEW_URL;/}{$KEEP;/}{+START,IF_PASSED,THEME}&utheme={THEME;/}{+END}';
-
-	{+START,IF_PASSED_AND_TRUE,PREVIEW}{+START,IF,{$JS_ON}}{+START,IF,{$CONFIG_OPTION,enable_previews}}
-		{+START,IF,{$FORCE_PREVIEWS}}
-			document.getElementById('submit_button').style.display='none';
-		{+END}
-	{+END}{+END}{+END}
-
-	$(function() {
-		{+START,IF_PASSED,JAVASCRIPT}
-			{JAVASCRIPT/}
-		{+END}
-		{+START,IF_NON_PASSED_OR_FALSE,SECONDARY_FORM}
-			if (typeof window.fix_form_enter_key!='undefined') fix_form_enter_key(document.getElementById('submit_button').form);
-		{+END}
-
-		{+START,IF_PASSED_AND_TRUE,SUPPORT_AUTOSAVE}{+START,IF_PASSED,FORM_NAME}
-			{$REQUIRE_JAVASCRIPT,posting}
-
-			if (typeof init_form_saving!='undefined') init_form_saving('{FORM_NAME;/}');
-		{+END}{+END}
-	});
-//]]></script>
-
 {+START,IF_PASSED_AND_TRUE,PREVIEW}{+START,IF,{$JS_ON}}{+START,IF,{$CONFIG_OPTION,enable_previews}}
 	<iframe{$?,{$BROWSER_MATCHES,ie}, frameBorder="0" scrolling="no"} title="{!PREVIEW}" name="preview_iframe" id="preview_iframe" src="{$BASE_URL*}/uploads/index.html" class="hidden_preview_frame">{!PREVIEW}</iframe>
 {+END}{+END}{+END}
@@ -84,3 +63,12 @@
 	{+END}
 {+END}{+END}{+END}
 
+{$SET,preview_url,{$PREVIEW_URL}{$KEEP}{+START,IF_PASSED,THEME}&utheme={THEME}{+END}}
+{$SET,force_previews,0}
+{+START,IF_PASSED_AND_TRUE,PREVIEW}{+START,IF,{$JS_ON}}{+START,IF,{$CONFIG_OPTION,enable_previews}}{+START,IF,{$FORCE_PREVIEWS}}
+{$SET,force_previews,1}
+{+END}{+END}{+END}{+END}
+
+<script type="application/json" data-tpl-core-form-interfaces="formStandardEnd">
+	{+START,PARAMS_JSON,preview_url,force_previews,JAVASCRIPT,SECONDARY_FORM,SUPPORT_AUTOSAVE,FORM_NAME}{_/}{+END}
+</script>

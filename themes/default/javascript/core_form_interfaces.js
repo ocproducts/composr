@@ -11,13 +11,37 @@
         form: function (options) {
             options = options || {};
 
-            if (Composr.isNotEmptyOrZero(options.isJoinForm)) {
+            if (Composr.isTruthy(options.isJoinForm)) {
                 joinForm(options);
             }
         },
 
+        formStandardEnd: function formStandardEnd(options) {
+            window.form_preview_url = options.previewUrl;
+
+            if (Composr.isTruthy(options.forcePreviews)) {
+                document.getElementById('submit_button').style.display = 'none';
+            }
+
+            if (Composr.isTruthy(options.javascript)) {
+                eval.call(window, options.javascript);
+            }
+
+            if (Composr.isFalsy(options.secondaryForm)) {
+                if (typeof window.fix_form_enter_key!=='undefined') {
+                    fix_form_enter_key(document.getElementById('submit_button').form);
+                }
+            }
+
+            if (Composr.areTruthy(options.supportAutosave, options.formName)) {
+                if (typeof init_form_saving!='undefined') {
+                    init_form_saving(options.formName);
+                }
+            }
+        },
+
         formScreen: function formScreen(options) {
-            var nonIframeUrl, iframeUrl;
+            var context = this, nonIframeUrl, iframeUrl;
 
             options = options || {};
 
@@ -31,16 +55,24 @@
                 window.setInterval(function() { resize_frame('iframe_under'); }, 1500);
             }
 
-            $('.js-checkbox-will-open-new').once('formScreenClick').on('click', function () {
-                var f = document.getElementById('main_form');
-                f.action = this.checked ? nonIframeUrl : iframeUrl;
-                f.elements['opens_below'].value = this.checked ? '0' : '1';
-                f.target = this.checked ? '_blank' : 'iframe_under';
-            });
+            if (context.dataset.onClickFormScreen !== '1') {
+                context.dataset.onClickFormScreen = '1';
+
+                context.addEventListener('click', function (e) {
+                    var chkBoxOpenNew = Composr.dom.closest(e.target, '.js-checkbox-will-open-new');
+
+                    if (chkBoxOpenNew) {
+                        var f = document.getElementById('main_form');
+                        f.action = this.checked ? nonIframeUrl : iframeUrl;
+                        f.elements['opens_below'].value = this.checked ? '0' : '1';
+                        f.target = this.checked ? '_blank' : 'iframe_under';
+                    }
+                });
+            }
         },
 
         formScreenInputLine: function formScreenInputLine(options) {
-            set_up_comcode_autocomplete(options.name, Composr.isNotEmptyOrZero(options.wysiwyg));
+            set_up_comcode_autocomplete(options.name, Composr.isTruthy(options.wysiwyg));
         },
 
         formScreenInputCombo: function formScreenInputCombo(options) {
@@ -68,6 +100,15 @@
 
             make_colour_chooser(options.name, options.default, '', options.tabindex, label, 'input_colour' + options._required);
             do_color_chooser();
+        },
+
+        formScreenInputTreeList: function formScreenInputTreeList(options) {
+            var hook = Composr.filters.urlEncode(options.hook),
+                rootId = Composr.filters.urlEncode(options.rootId),
+                opts =  Composr.filters.urlEncode(options.options),
+                multiSel = Composr.isTruthy(options.multiSelect);
+
+            new tree_list(options.name, 'data/ajax_tree.php?hook=' + hook + Composr.$KEEP, rootId, opts, multiSel, options.tabIndex, false, Composr.isTruthy(options.useServerId));
         },
 
         formScreenInputPermission: function formScreenInputPermission(options) {
@@ -107,7 +148,7 @@
         formScreenFieldSpacer: function formScreenFieldSpaces(options) {
             options = options || {};
 
-            if (Composr.areNotEmptyOrZero(options.title, options.sectionHidden)) {
+            if (Composr.areTruthy(options.title, options.sectionHidden)) {
                 var title = Composr.filters.identifier(options.title);
                 document.getElementById('fes' + title).click();
             }
@@ -192,7 +233,7 @@
             manage_scroll_height(postEl);
             set_up_comcode_autocomplete(options.name, true);
 
-            if (Composr.isNotEmptyOrZero(options.initDragDrop)) {
+            if (Composr.isTruthy(options.initDragDrop)) {
                 initialise_html5_dragdrop_upload('container_for_' + options.name, options.name);
             }
         },
@@ -412,6 +453,14 @@
             el.dispatchEvent(new Event('change'));
         },
 
+        formScreenInputVariousTricks: function formScreenInputVariousTricks(options) {
+            options || (options = {});
+
+            if ((typeof options.customName !== 'undefined') && Composr.isFalsy(options.customAcceptMultiple)) {
+                document.getElementById(options.customName + '_value').dispatchEvent(new Event('change'));
+            }
+        },
+
         formScreenInputText: function formScreenInputText(options) {
             if (options.required.includes('wysiwyg')) {
                 if ((window.wysiwyg_on) && (wysiwyg_on())) {
@@ -462,7 +511,7 @@
                 return false;
             }
 
-            if (Composr.isNotEmptyOrZero(options.invitesEnabled)) {
+            if (Composr.isTruthy(options.invitesEnabled)) {
                 url = options.snippetScript + '?snippet=invite_missing&name=' + window.encodeURIComponent(form.elements['email_address'].value);
                 if (!do_ajax_field_test(url)) {
                     document.getElementById('submit_button').disabled = false;
@@ -470,7 +519,7 @@
                 }
             }
 
-            if (Composr.isNotEmptyOrZero(options.onePerEmailAddress)) {
+            if (Composr.isTruthy(options.onePerEmailAddress)) {
                 url = options.snippetScript + '?snippet=exists_email&name=' + window.encodeURIComponent(form.elements['email_address'].value);
                 if (!do_ajax_field_test(url)) {
                     document.getElementById('submit_button').disabled = false;
@@ -478,7 +527,7 @@
                 }
             }
 
-            if (Composr.isNotEmptyOrZero(options.useCaptcha)) {
+            if (Composr.isTruthy(options.useCaptcha)) {
                 url = options.snippetScript + '?snippet=captcha_wrong&name=' + window.encodeURIComponent(form.elements['captcha'].value);
                 if (!do_ajax_field_test(url)) {
                     document.getElementById('submit_button').disabled = false;

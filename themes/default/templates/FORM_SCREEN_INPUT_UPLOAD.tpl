@@ -20,7 +20,7 @@
 			</p>
 		{+END}
 
-		{+START,IF,{$AND,{$JS_ON},{$BROWSER_MATCHES,gecko}}}<input class="button_micro buttons__clear" type="button" id="clear_button_{NAME*}" value="{!CLEAR}" onclick="var x=document.getElementById('{NAME;*}'); x.value=''; if (typeof x.fakeonchange!='undefined' &amp;&amp; x.fakeonchange) x.fakeonchange(event); return false;" title="{!CLEAR}{+START,IF_PASSED,PRETTY_NAME}: {PRETTY_NAME*}{+END}" />{+END}
+		{+START,IF,{$AND,{$JS_ON},{$BROWSER_MATCHES,gecko}}}<input class="button_micro buttons__clear" type="button" id="clear_button_{NAME*}" value="{!CLEAR}" onclick="var x=document.getElementById('{NAME;*}'); x.value=''; if (typeof x.fakeonchange!='undefined' && x.fakeonchange) x.fakeonchange(event); return false;" title="{!CLEAR}{+START,IF_PASSED,PRETTY_NAME}: {PRETTY_NAME*}{+END}" />{+END}
 	</div>
 
 	{+START,IF_PASSED,SYNDICATION_JSON}

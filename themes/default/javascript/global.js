@@ -1,40 +1,6 @@
 /* Ideally this template should not be edited. See the note at the bottom of how JAVASCRIPT_CUSTOM_GLOBALS.tpl is appended to this template */
 
-// jQuery once plugin
-// https://github.com/RobLoach/jquery-once
-(function ($) {
-    var checkId = function (id) {
-        id = id || 'once';
-        if (typeof id !== 'string') {
-            throw new Error('The jQuery Once id parameter must be a string');
-        }
-        return id;
-    };
-
-    $.fn.once = function (id) {
-        // Build the jQuery Once data name from the provided ID.
-        var name = 'jquery-once-' + checkId(id);
-
-        // Find elements that don't have the jQuery Once data applied to them yet.
-        return this.filter(function () {
-            return $(this).data(name) !== true;
-        }).data(name, true);
-    };
-
-    $.fn.removeOnce = function (id) {
-        // Filter through the elements to find the once'd elements.
-        return this.findOnce(id).removeData('jquery-once-' + checkId(id));
-    };
-
-    $.fn.findOnce = function (id) {
-        // Filter the elements by which do have the data.
-        var name = 'jquery-once-' + checkId(id);
-
-        return this.filter(function () {
-            return $(this).data(name) === true;
-        });
-    };
-})(window.jQuery || window.Zepto);
+window.take_errors = !browser_matches('ie') && ('{$HAS_PRIVILEGE;,sees_javascript_error_alerts}' === '1');
 
 /* Startup */
 if (typeof window.page_loaded == 'undefined') // To stop problem if JS file loaded more than once
@@ -201,8 +167,6 @@ function script_load_stuff() {
             }
         }, 0);
     };
-
-    if (typeof window.script_load_stuff_b !== 'undefined') window.script_load_stuff_b(); // This is designed to allow you to easily define additional initialisation code in JAVASCRIPT_CUSTOM_GLOBALS.tpl
 
     window.page_loaded = true;
 
@@ -419,7 +383,11 @@ function initialise_error_mechanism() {
         window.onerror = null;
     });
 }
-if ((typeof window.take_errors != 'undefined') && (window.take_errors)) initialise_error_mechanism();
+
+if (window.take_errors) {
+    initialise_error_mechanism();
+}
+
 if (typeof window.unloaded == 'undefined') {
     window.unloaded = false; // Serves as a flag to indicate any new errors are probably due to us transitioning
 }
@@ -2280,17 +2248,21 @@ function set_opacity(element, fraction) {
 /* Event listeners */
 
 function cancel_bubbling(event, for_element) {
-    if ((typeof for_element == 'undefined') || (!for_element)) var for_element = '';
+    if ((typeof for_element == 'undefined') || (!for_element)){
+        for_element = '';
+    }
 
-    if (typeof event == 'undefined') event = window.event;
-    if (typeof event == 'undefined' || !event) return false;
+    if (!event) {
+        return false;
+    }
 
     var src = (typeof event.srcElement != 'undefined' && event.srcElement) ? event.srcElement : event.target;
     if (!src) return false;
 
     if ((src.nodeName) && (src.nodeName.toLowerCase() == for_element) || (for_element == '')) {
-        if (typeof event.stopPropagation != 'undefined') event.stopPropagation();
-        event.cancelBubble = true;
+        if (typeof event.stopPropagation != 'undefined') {
+            event.stopPropagation();
+        }
         return true;
     }
     return false;

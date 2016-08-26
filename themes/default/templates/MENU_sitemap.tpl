@@ -1,4 +1,5 @@
 {$REQUIRE_CSS,menu__sitemap}
+{$REQUIRE_JAVASCRIPT,core_menus}
 {$REQUIRE_JAVASCRIPT,menu_sitemap}
 
 {$SET,js_menu,{$AND,{$NOT,{$BROWSER_MATCHES,bot}},{$JS_ON}}}
@@ -22,10 +23,6 @@
 			</div>
 		</div>
 	</nav>
-
-	<script>// <![CDATA[
-		$(function() {
-			generate_menu_sitemap('{$GET;/,menu_sitemap_id}',[{CONTENT/}],0);
-		});
-	//]]></script>
 {+END}
+
+<script type="application/json" data-tpl-core-menus="menuSitemap">{+START,PARAMS_JSON,menu_sitemap_id}[{_/}, {CONTENT/}]{+END}</script>

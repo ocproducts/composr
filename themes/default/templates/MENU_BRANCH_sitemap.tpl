@@ -20,13 +20,13 @@
 {+END}
 
 {+START,IF,{$GET,js_menu}}
-	{
-		caption: '{CAPTION;^}',
-		tooltip: '{TOOLTIP;^}',
-		url: '{URL;^}',
-		img: '{IMG;^}',
-		img_2x: '{IMG_2X;^}',
-		current: {$?,{CURRENT},true,false},
-		children: [{CHILDREN}],
-	},
+	{$?,{FIRST},[}{
+		"caption": "{CAPTION#^}",
+		"tooltip": "{TOOLTIP#^}",
+		"url": "{URL#^}",
+		"img": "{IMG#^}",
+		"img_2x": "{IMG_2X#^}",
+		"current": {$?,{CURRENT},true,false},
+		"children": {$?,{$IS_EMPTY,{CHILDREN}},[],{CHILDREN}}
+	}{$?,{LAST},],\,}
 {+END}

@@ -12,7 +12,7 @@
         },
 
         filedumpScreen: function filedumpScreen(options) {
-            if (!Composr.isEmptyOrZero(options.fileLink)) {
+            if (Composr.isTruthy(options.fileLink)) {
                 faux_open(options.fileLink, null, 'width=950;height=700', '_top');
             }
 

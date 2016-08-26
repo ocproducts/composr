@@ -18,11 +18,11 @@
                 }, 2000);
             }
 
-            if (!Composr.isEmptyOrZero(options.editareaConfig)) {
+            if (Composr.isTruthy(options.editareaConfig)) {
                 ace_composr_loader('e_' + options.fileId, options.highlighterType, false);
             }
 
-            if (!Composr.isEmptyOrZero(options.includeCssEditing) && window.opener && window.opener.document) {
+            if (Composr.isTruthy(options.includeCssEditing) && window.opener && window.opener.document) {
                 load_contextual_css_editor(options.file, options.fileId);
             }
         },

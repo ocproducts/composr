@@ -1,13 +1,15 @@
 (function ($, Composr) {
+    'use strict';
+
     Composr.templates.coreFeedbackFeatures = {
         ratingForm: function ratingForm(options) {
             var rating;
 
-            if (!Composr.isEmptyOrZero(options.error)) {
+            if (Composr.isTruthy(options.error)) {
                 return;
             }
 
-            if (!Composr.isEmptyOrZero(Composr.$JS_ON)) {
+            if (Composr.isTruthy(Composr.$JS_ON)) {
                 for (var i = 0, len = options.allRatingCriteria; i < len; i++) {
                     rating = options.allRatingCriteria[i];
 
@@ -17,10 +19,52 @@
         },
 
         commentsPostingForm: function (options) {
-            set_up_comcode_autocomplete('post', Composr.isNotEmptyOrZero(options.wysiwyg));
+            set_up_comcode_autocomplete('post', Composr.isTruthy(options.wysiwyg));
 
-            if (Composr.isNotEmptyOrZero(options.forcePreviews)) {
+            if (!Composr.$MOBILE && Composr.isTruthy(Composr.$CONFIG_OPTION.jsCaptcha) && Composr.isTruthy(options.captcha)) {
+                set_inner_html(document.getElementById('captcha_spot'), options.captcha);
+            }
+
+            if (Composr.isTruthy(options.forcePreviews)) {
                 document.getElementById('submit_button').style.display='none';
+            }
+
+            if (Composr.areDefined(options.reviewRatingCriteria, options.type, options.id) && Composr.$JS_ON) {
+                var i, id = Composr.filters.identifier(options.id),
+                    type = options.type,
+                    typeId = Composr.filters.identifier(type);
+
+                for (i = 0; i < options.reviewRatingCriteria; i++) {
+                    var reviewTitleId = Composr.filters.identifier(options.reviewRatingCriteria[i].reviewTitle),
+                        func = 'new_review_highlight__' + type + ' __' + reviewTitleId + '__' + id;
+
+                    window[func] = (function (func, reviewTitleId) {
+                        return function (review, first_time) {
+                            var i, bit;
+                            for (i = 1; i <= 5; i++) {
+                                bit = document.getElementById('review_bar_' + i + '__' + typeId + '__' + reviewTitleId + '__' + id);
+                                bit.className = ((review != 0) && (review / 2 >= i)) ? 'rating_star_highlight' : 'rating_star';
+                                if (first_time) bit.onmouseover = function (i) {
+                                    return function () {
+                                        window[func](i * 2, false);
+                                    }
+                                }(i);
+                                if (first_time) bit.onmouseout = function (i) {
+                                    return function () {
+                                        window[func](window.parseInt(document.getElementById('review_rating__' + typeId + '__' + reviewTitleId + '__' + id).value), false);
+                                    }
+                                }(i);
+                                if (first_time) bit.onclick = function (i) {
+                                    return function () {
+                                        document.getElementById('review_rating__' + typeId + '__' + reviewTitleId + '__' + id).value = i * 2;
+                                    }
+                                }(i);
+                            }
+                        }
+                    }(func, reviewTitleId));
+
+                    window[func](0, true);
+                }
             }
         },
 
