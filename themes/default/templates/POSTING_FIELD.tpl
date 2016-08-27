@@ -43,7 +43,7 @@
 					{+END}{+END}
 					{+START,IF,{$IN_STR,{CLASS},wysiwyg}}
 						{+START,IF,{$JS_ON}}
-							<li><a id="toggle_wysiwyg_{NAME*}" href="#" onclick="return toggle_wysiwyg('{NAME;*}');"><abbr title="{!TOGGLE_WYSIWYG_2}"><img src="{$IMG*,icons/16x16/editor/wysiwyg_on}" srcset="{$IMG*,icons/32x32/editor/wysiwyg_on} 2x" alt="{!comcode:ENABLE_WYSIWYG}" title="{!comcode:ENABLE_WYSIWYG}" /></abbr></a></li>
+							<li><a id="toggle_wysiwyg_{NAME*}" href="#!" onclick="return toggle_wysiwyg('{NAME;*}');"><abbr title="{!TOGGLE_WYSIWYG_2}"><img src="{$IMG*,icons/16x16/editor/wysiwyg_on}" srcset="{$IMG*,icons/32x32/editor/wysiwyg_on} 2x" alt="{!comcode:ENABLE_WYSIWYG}" title="{!comcode:ENABLE_WYSIWYG}" /></abbr></a></li>
 						{+END}
 					{+END}
 				</ul>
@@ -129,7 +129,7 @@
 	<tr class="form_table_field_spacer">
 		<th{+START,IF,{$NOT,{$MOBILE}}} colspan="2"{+END} class="table_heading_cell">
 			{+START,IF,{$JS_ON}}
-				<a class="toggleable_tray_button" id="fes_attachments" onclick="toggle_subordinate_fields(this.getElementsByTagName('img')[0]); return false;" href="#"><img alt="{!EXPAND}: {!ATTACHMENTS}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+				<a class="toggleable_tray_button" id="fes_attachments" onclick="toggle_subordinate_fields(this.getElementsByTagName('img')[0]); return false;" href="#!"><img alt="{!EXPAND}: {!ATTACHMENTS}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
 			{+END}
 
 			<span class="faux_h2{+START,IF,{$JS_ON}} toggleable_tray_button{+END}"{+START,IF,{$JS_ON}} onclick="/*Access-note: code has other activation*/ toggle_subordinate_fields(this.parentNode.getElementsByTagName('img')[0],'fes_attachments_help'); return false;"{+END}>

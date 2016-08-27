@@ -9,7 +9,7 @@
 			{+END}
 		</label>
 
-		<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{$?,{OPEN_DEFAULT},{!CONTRACT},{!EXPAND}}" title="{$?,{OPEN_DEFAULT},{!CONTRACT},{!EXPAND}}" src="{$IMG*,1x/trays/{$?,{OPEN_DEFAULT},contract,expand}}" srcset="{$IMG*,2x/trays/{$?,{OPEN_DEFAULT},contract,expand}} 2x" /></a>
+		<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{$?,{OPEN_DEFAULT},{!CONTRACT},{!EXPAND}}" title="{$?,{OPEN_DEFAULT},{!CONTRACT},{!EXPAND}}" src="{$IMG*,1x/trays/{$?,{OPEN_DEFAULT},contract,expand}}" srcset="{$IMG*,2x/trays/{$?,{OPEN_DEFAULT},contract,expand}} 2x" /></a>
 	</div>
 
 	<div class="toggleable_tray" style="display: {$JS_ON,{$?,{OPEN_DEFAULT},block,none},block}"{+START,IF,{$NOT,{OPEN_DEFAULT}}} aria-expanded="false"{+END}>

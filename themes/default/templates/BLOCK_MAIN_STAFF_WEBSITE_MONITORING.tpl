@@ -3,11 +3,11 @@
 <div class="form_ajax_target">
 	<section id="tray_{!SITE_WATCHLIST|}" class="box box___block_main_staff_website_monitoring"{+START,IF,{$JS_ON}} data-cms-call="handle_tray_cookie_setting"{+END}>
 		<h3 class="toggleable_tray_title">
-			<a title="{!EDIT}: {!SITE_WATCHLIST}" class="top_left_toggleicon" href="#" onclick="return staff_block_flip_over('website_monitoring_list_{$GET%,RAND_WEBSITE_MONITORING}');">{!EDIT}</a>
+			<a title="{!EDIT}: {!SITE_WATCHLIST}" class="top_left_toggleicon" href="#!" onclick="return staff_block_flip_over('website_monitoring_list_{$GET%,RAND_WEBSITE_MONITORING}');">{!EDIT}</a>
 
-			<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode,false,'{!SITE_WATCHLIST|}');"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!SITE_WATCHLIST}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" srcset="{$IMG*,2x/trays/contract2} 2x" /></a>
+			<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode,false,'{!SITE_WATCHLIST|}');"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!SITE_WATCHLIST}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" srcset="{$IMG*,2x/trays/contract2} 2x" /></a>
 
-			<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode,false,'{!SITE_WATCHLIST|}');">{!SITE_WATCHLIST}</a>
+			<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode,false,'{!SITE_WATCHLIST|}');">{!SITE_WATCHLIST}</a>
 		</h3>
 
 		<div class="toggleable_tray">

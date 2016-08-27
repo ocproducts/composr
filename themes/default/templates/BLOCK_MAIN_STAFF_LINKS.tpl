@@ -3,11 +3,11 @@
 <div class="form_ajax_target">
 	<section id="tray_{!EXTERNAL_LINKS|}" class="box box___block_main_staff_links"{+START,IF,{$JS_ON}} data-cms-call="handle_tray_cookie_setting"{+END}>
 		<h3 class="toggleable_tray_title">
-			<a title="{!EDIT}: {!EXTERNAL_LINKS}" href="#" class="top_left_toggleicon" onclick="return staff_block_flip_over('staff_links_list_{$GET%,RAND_STAFF_LINKS}');">{!EDIT}</a>
+			<a title="{!EDIT}: {!EXTERNAL_LINKS}" href="#!" class="top_left_toggleicon" onclick="return staff_block_flip_over('staff_links_list_{$GET%,RAND_STAFF_LINKS}');">{!EDIT}</a>
 
-			<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode,false,'{!EXTERNAL_LINKS|}');"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!EXTERNAL_LINKS}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" srcset="{$IMG*,2x/trays/contract2} 2x" /></a>
+			<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode,false,'{!EXTERNAL_LINKS|}');"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!EXTERNAL_LINKS}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" srcset="{$IMG*,2x/trays/contract2} 2x" /></a>
 
-			<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode,false,'{!EXTERNAL_LINKS|}');">{!EXTERNAL_LINKS}</a>
+			<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode,false,'{!EXTERNAL_LINKS|}');">{!EXTERNAL_LINKS}</a>
 		</h3>
 
 		<div class="toggleable_tray">

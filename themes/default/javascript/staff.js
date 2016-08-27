@@ -327,7 +327,7 @@ function load_software_chat(event)
 		<div class="software_chat"> \
 			<h2>{!CMS_COMMUNITY_HELP}</h2> \
 			<ul class="spaced_list">{!SOFTWARE_CHAT_EXTRA;}</ul> \
-			<p class="associated_link associated_links_block_group"><a title="{!SOFTWARE_CHAT_STANDALONE} {!LINK_NEW_WINDOW;}" target="_blank" href="'+escape_html(url)+'">{!SOFTWARE_CHAT_STANDALONE}</a> <a href="#" onclick="return load_software_chat(event);">{!HIDE}</a></p> \
+			<p class="associated_link associated_links_block_group"><a title="{!SOFTWARE_CHAT_STANDALONE} {!LINK_NEW_WINDOW;}" target="_blank" href="'+escape_html(url)+'">{!SOFTWARE_CHAT_STANDALONE}</a> <a href="#!" onclick="return load_software_chat(event);">{!HIDE}</a></p> \
 		</div> \
 		<iframe class="software_chat_iframe" style="border: 0" src="'+escape_html(url)+'"></iframe> \
 	'.replace(/\\{1\\}/,escape_html((window.location+'').replace(get_base_url(),'http://baseurl')));

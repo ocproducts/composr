@@ -76,7 +76,7 @@
 			</div>
 
 			<p class="lonely_label">
-				<a class="toggleable_tray_button" href="#" onclick="toggle_section('{!ADVANCED_DATABASE_SETUP;~|*}'); return false;">{!ADVANCED_DATABASE_SETUP}</a> <a class="toggleable_tray_button" href="#" onclick="toggle_section('{!ADVANCED_DATABASE_SETUP;~|*}'); return false;"><img id="img_{!ADVANCED_DATABASE_SETUP|*}" alt="{!EXPAND}: {$STRIP_TAGS,{!ADVANCED_DATABASE_SETUP}}" title="{!EXPAND}" src="{$BASE_URL*}/install.php?type=expand" /></a>
+				<a class="toggleable_tray_button" href="#!" onclick="toggle_section('{!ADVANCED_DATABASE_SETUP;~|*}'); return false;">{!ADVANCED_DATABASE_SETUP}</a> <a class="toggleable_tray_button" href="#!" onclick="toggle_section('{!ADVANCED_DATABASE_SETUP;~|*}'); return false;"><img id="img_{!ADVANCED_DATABASE_SETUP|*}" alt="{!EXPAND}: {$STRIP_TAGS,{!ADVANCED_DATABASE_SETUP}}" title="{!EXPAND}" src="{$BASE_URL*}/install.php?type=expand" /></a>
 			</p>
 
 			<div id="{!ADVANCED_DATABASE_SETUP|*}" style="display: {$JS_ON,none,block}">

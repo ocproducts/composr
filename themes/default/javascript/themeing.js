@@ -368,7 +368,7 @@ function template_editor_clean_tabs() {
     }
 
     if (num_tabs == 0) {
-        set_inner_html(headers, '<a href="#" id="t_default" class="tab" onclick="event.returnValue=false;"><span>&mdash;</span></a>');
+        set_inner_html(headers, '<a href="#!" id="t_default" class="tab" onclick="event.returnValue=false;"><span>&mdash;</span></a>');
         set_inner_html(bodies, '<div id="g_default"><p class="nothing_here">{!NA}</p></div>');
     }
 }

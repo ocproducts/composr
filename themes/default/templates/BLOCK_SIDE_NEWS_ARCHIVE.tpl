@@ -13,7 +13,7 @@
 
 			{+START,IF_NON_EMPTY,{TIMES}}
 				<li class="accordion_trayitem">
-					{+START,IF,{$JS_ON}}<a class="toggleable_tray_button" href="#" onclick="return accordion(this.parentNode);"><img{+START,IF,{$NOT,{$GET,is_current_year}}} alt="{!EXPAND}: {$STRIP_TAGS,{TITLE}}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x"{+END}{+START,IF,{$GET,is_current_year}} alt="{!CONTRACT}: {$STRIP_TAGS,{TITLE}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract}" srcset="{$IMG*,1x/trays/contract} 2x"{+END} /></a> {+END}
+					{+START,IF,{$JS_ON}}<a class="toggleable_tray_button" href="#!" onclick="return accordion(this.parentNode);"><img{+START,IF,{$NOT,{$GET,is_current_year}}} alt="{!EXPAND}: {$STRIP_TAGS,{TITLE}}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x"{+END}{+START,IF,{$GET,is_current_year}} alt="{!CONTRACT}: {$STRIP_TAGS,{TITLE}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract}" srcset="{$IMG*,1x/trays/contract} 2x"{+END} /></a> {+END}
 
 					<span onclick="/*Access-note: code has other activation*/ return accordion(this.parentNode);"><strong>{YEAR}</strong></span>:
 

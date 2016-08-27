@@ -3,8 +3,8 @@
 <div data-tpl-core-form-interfaces="formScreenInputVariousTricks" data-tpl-args="{+START,PARAMS_JSON,CUSTOM_NAME,CUSTOM_ACCEPT_MULTIPLE}{_*}{+END}">
 	{+START,IF_PASSED,EXPANDED}
 		<h3 class="toggleable_tray_title">
-			<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{$?,{EXPANDED},{!CONTRACT},{!EXPAND}}" title="{$?,{EXPANDED},{!CONTRACT},{!EXPAND}}" src="{$IMG*,1x/trays/{$?,{EXPANDED},contract,expand}}" srcset="{$IMG*,2x/trays/{$?,{EXPANDED},contract,expand}} 2x" /></a>
-			<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);">{SECTION_TITLE*}</a>
+			<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{$?,{EXPANDED},{!CONTRACT},{!EXPAND}}" title="{$?,{EXPANDED},{!CONTRACT},{!EXPAND}}" src="{$IMG*,1x/trays/{$?,{EXPANDED},contract,expand}}" srcset="{$IMG*,2x/trays/{$?,{EXPANDED},contract,expand}} 2x" /></a>
+			<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode);">{SECTION_TITLE*}</a>
 		</h3>
 		<div class="toggleable_tray" style="display: {$JS_ON,{$?,{EXPANDED},block,none},block}"{+START,IF,{$NOT,{EXPANDED}}} aria-expanded="false"{+END}>
 			<div>

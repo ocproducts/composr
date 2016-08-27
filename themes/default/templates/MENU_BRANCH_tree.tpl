@@ -13,7 +13,7 @@
 			<a class="drawer"{+START,INCLUDE,MENU_LINK_PROPERTIES}{+END}>{CAPTION}</a>
 		{+END}
 		{+START,IF_EMPTY,{URL}}
-			<a href="#" class="drawer" onclick="return toggleable_tray('{MENU|;*}_{$GET;*,RAND}');">{CAPTION}</a>
+			<a href="#!" class="drawer" onclick="return toggleable_tray('{MENU|;*}_{$GET;*,RAND}');">{CAPTION}</a>
 		{+END}
 	{+END}
 	{+START,IF,{$GET,HAS_CHILDREN}}

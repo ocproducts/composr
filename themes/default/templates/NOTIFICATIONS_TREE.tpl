@@ -6,7 +6,7 @@
 			{CATEGORY_TITLE*}
 
 			{+START,IF_NON_EMPTY,{$TRIM,{CHILDREN}}}
-				<span class="horiz_field_sep associated_link"><a onclick="advanced_notifications_copy_under(this.parentNode.parentNode.parentNode,{NUM_CHILDREN%}); return false;" href="#">{!NOTIFICATIONS_COPY_UNDER}</a></span>
+				<span class="horiz_field_sep associated_link"><a onclick="advanced_notifications_copy_under(this.parentNode.parentNode.parentNode,{NUM_CHILDREN%}); return false;" href="#!">{!NOTIFICATIONS_COPY_UNDER}</a></span>
 			{+END}
 		</th>
 

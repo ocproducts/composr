@@ -24,9 +24,9 @@
 {+END}
 	{+START,IF_PASSED,RESULTS}
 		<h2 class="toggleable_tray_title">
-			<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);">{!SETTINGS}</a>
+			<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode);">{!SETTINGS}</a>
 			{+START,IF_NON_EMPTY,{RESULTS}}
-				<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);"><img src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" alt="{!SHOW_SEARCH_FORM}" title="{!SHOW_SEARCH_FORM}" /></a>
+				<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode);"><img src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" alt="{!SHOW_SEARCH_FORM}" title="{!SHOW_SEARCH_FORM}" /></a>
 			{+END}
 		</h2>
 	{+END}

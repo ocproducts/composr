@@ -22,7 +22,7 @@
 			<a{+START,INCLUDE,MENU_LINK_PROPERTIES}{+END} onkeypress="this.onclick(event);" onclick="cancel_bubbling(event);" {+START,IF,{$GET,HAS_CHILDREN}} class="drawer"{+END}>{CAPTION}</a>{+START,IF,{$GET,HAS_CHILDREN}}&nbsp;<span>&rarr;</span>{+END}
 		{+END}
 		{+START,IF_EMPTY,{URL}}
-			<a onkeypress="this.onclick(event);" onclick="cancel_bubbling(event); return false;" class="non_link{+START,IF,{$GET,HAS_CHILDREN}} drawer{+END}" href="#">{CAPTION}</a>{+START,IF,{$GET,HAS_CHILDREN}}&nbsp;<span>&rarr;</span>{+END}
+			<a onkeypress="this.onclick(event);" onclick="cancel_bubbling(event); return false;" class="non_link{+START,IF,{$GET,HAS_CHILDREN}} drawer{+END}" href="#!">{CAPTION}</a>{+START,IF,{$GET,HAS_CHILDREN}}&nbsp;<span>&rarr;</span>{+END}
 		{+END}
 		{+START,IF,{$GET,HAS_CHILDREN}}
 			<ul aria-haspopup="true" onmouseover="if (active_menu==null) return set_active_menu(this.id,'{MENU|;*}_d'); else return false;" onmouseout="return deset_active_menu();" class="nlevel" id="{MENU|*}_dexpand_{$GET*,RAND}" style="display: none">{CHILDREN}</ul>

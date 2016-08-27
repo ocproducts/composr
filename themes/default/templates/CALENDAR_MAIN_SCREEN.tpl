@@ -65,8 +65,8 @@
 
 <div class="box box___calendar_main_screen_interests">
 	<h2 class="toggleable_tray_title">
-		<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{!EXPAND}: {!INTERESTS}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
-		<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);">{!INTERESTS}</a>
+		<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{!EXPAND}: {!INTERESTS}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
+		<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode);">{!INTERESTS}</a>
 	</h2>
 
 	<div class="toggleable_tray" style="{$JS_ON,display: none,}" aria-expanded="false">
@@ -115,8 +115,8 @@
 {+START,IF,{$ADDON_INSTALLED,syndication_blocks}}
 	<div class="box box___calendar_main_screen_feeds_to_overlay">
 		<h2 class="toggleable_tray_title">
-			<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{!EXPAND}: {!FEEDS_TO_OVERLAY}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
-			<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);">{!FEEDS_TO_OVERLAY}</a>
+			<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{!EXPAND}: {!FEEDS_TO_OVERLAY}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
+			<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode);">{!FEEDS_TO_OVERLAY}</a>
 		</h2>
 
 		<div class="toggleable_tray" style="{$JS_ON,display: none,}" aria-expanded="false">

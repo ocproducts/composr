@@ -2,12 +2,12 @@
 {$REQUIRE_JAVASCRIPT,core_adminzone_dashboard}
 <section id="tray_{!CHECK_LIST|}" class="box box___block_main_staff_checklist" data-tpl-core-adminzone-dashboard="blockMainStaffChecklist" {+START,IF,{$JS_ON}} data-cms-call="handle_tray_cookie_setting"{+END}>
 	<h3 class="toggleable_tray_title">
-		<a href="#" onclick="set_task_hiding(false); return false;" id="checklist_show_all_link" class="top_left_toggleicon" title="{!SHOW_ALL}: {!CHECK_LIST}">{!SHOW_ALL}</a>
-		<a href="#" onclick="set_task_hiding(true); return false;" id="checklist_hide_done_link" class="top_left_toggleicon">{!HIDE_DONE}</a>
+		<a href="#!" onclick="set_task_hiding(false); return false;" id="checklist_show_all_link" class="top_left_toggleicon" title="{!SHOW_ALL}: {!CHECK_LIST}">{!SHOW_ALL}</a>
+		<a href="#!" onclick="set_task_hiding(true); return false;" id="checklist_hide_done_link" class="top_left_toggleicon">{!HIDE_DONE}</a>
 
-		<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode,false,'{!CHECK_LIST|}');"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!CHECK_LIST}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" srcset="{$IMG*,2x/trays/contract2} 2x" /></a>
+		<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode,false,'{!CHECK_LIST|}');"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!CHECK_LIST}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" srcset="{$IMG*,2x/trays/contract2} 2x" /></a>
 
-		<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode,false,'{!CHECK_LIST|}');">{!CHECK_LIST}</a>
+		<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode,false,'{!CHECK_LIST|}');">{!CHECK_LIST}</a>
 	</h3>
 
 	<div class="toggleable_tray">

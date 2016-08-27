@@ -3,7 +3,7 @@
 	{+START,IF_PASSED,USERNAME}{+START,IF_PASSED,MEMBER_ID}
 		<div class="toggleable_tray_title">
 			{!OVERRIDES_FOR_FRIEND,{USERNAME*}}
-			<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{$?,{HAS_SOME},{!CONTRACT},{!EXPAND}}" title="{$?,{HAS_SOME},{!CONTRACT},{!EXPAND}}" src="{$IMG*,1x/trays/{$?,{HAS_SOME},contract,expand}}" srcset="{$IMG*,2x/trays/{$?,{HAS_SOME},contract,expand}} 2x" /></a>
+			<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{$?,{HAS_SOME},{!CONTRACT},{!EXPAND}}" title="{$?,{HAS_SOME},{!CONTRACT},{!EXPAND}}" src="{$IMG*,1x/trays/{$?,{HAS_SOME},contract,expand}}" srcset="{$IMG*,2x/trays/{$?,{HAS_SOME},contract,expand}} 2x" /></a>
 		</div>
 	{+END}{+END}
 

@@ -93,7 +93,7 @@ Martin Conte Mac Donell <Reflejo@gmail.com>
 		};
 
 		var getBox = function(provider, idx, box_size) {
-			var a = $('<a title="' + provider + '" href="#" id="btn_' + idx + 
+			var a = $('<a title="' + provider + '" href="#!" id="btn_' + idx +
 								'" class="openid_' + box_size + '_btn ' + provider + '" />');
 			return a.click(signIn);
 		};

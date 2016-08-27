@@ -17,7 +17,7 @@
 			{+START,IF,{$NOT,{$MATCH_KEY_MATCH,_WILD:members:view}}}
 				<li><a onmouseup="toggle_web_notifications(event); find_url_tab();" title="{!VIEW_ARCHIVE} {!notifications:NOTIFICATIONS}: {!SETTINGS}" href="{$PAGE_LINK*,{$?,{$CNS},_SEARCH:members:view#tab__edit__notifications,_SEARCH:notifications:overall}}">{!SETTINGS}</a></li>
 			{+END}
-			<li><a href="#" onclick="return notifications_mark_all_read(event);">{!NOTIFICATIONS_MARK_READ}</a></li>
+			<li><a href="#!" onclick="return notifications_mark_all_read(event);">{!NOTIFICATIONS_MARK_READ}</a></li>
 		</ul>
 	</div></div>
 </div>

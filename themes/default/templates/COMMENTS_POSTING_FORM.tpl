@@ -46,8 +46,8 @@
 					{TITLE*}
 				{+END}
 				{+START,IF_PASSED,EXPAND_TYPE}
-					<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{$?,{$EQ,{EXPAND_TYPE},contract},{!CONTRACT},{!EXPAND}}" title="{$?,{$EQ,{EXPAND_TYPE},contract},{!CONTRACT},{!EXPAND}}" src="{$IMG*,1x/trays/{EXPAND_TYPE}2}" srcset="{$IMG*,2x/trays/{EXPAND_TYPE}2} 2x" /></a>
-					<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);">{TITLE*}</a>
+					<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{$?,{$EQ,{EXPAND_TYPE},contract},{!CONTRACT},{!EXPAND}}" title="{$?,{$EQ,{EXPAND_TYPE},contract},{!CONTRACT},{!EXPAND}}" src="{$IMG*,1x/trays/{EXPAND_TYPE}2}" srcset="{$IMG*,2x/trays/{EXPAND_TYPE}2} 2x" /></a>
+					<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode);">{TITLE*}</a>
 				{+END}
 			</h3>
 		{+END}
@@ -183,7 +183,7 @@
 													{EM}
 
 													{+START,IF,{$CNS}}
-														<p class="associated_link associated_links_block_group"><a rel="nofollow" tabindex="5" href="#" onclick="window.faux_open(maintain_theme_in_link('{$FIND_SCRIPT;*,emoticons}?field_name=post{$KEEP;*}'),'site_emoticon_chooser','width=300,height=320,status=no,resizable=yes,scrollbars=no'); return false;">{!EMOTICONS_POPUP}</a></p>
+														<p class="associated_link associated_links_block_group"><a rel="nofollow" tabindex="5" href="#!" onclick="window.faux_open(maintain_theme_in_link('{$FIND_SCRIPT;*,emoticons}?field_name=post{$KEEP;*}'),'site_emoticon_chooser','width=300,height=320,status=no,resizable=yes,scrollbars=no'); return false;">{!EMOTICONS_POPUP}</a></p>
 													{+END}
 												</div>
 											</div></div>

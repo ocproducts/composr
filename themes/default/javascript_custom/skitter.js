@@ -206,8 +206,8 @@
 		theme: null, 
 
 		// Structure (internal)
-		structure: 	 			  '<a href="#" class="prev_button">prev</a>'
-								+ '<a href="#" class="next_button">next</a>'
+		structure: 	 			  '<a href="#!" class="prev_button">prev</a>'
+								+ '<a href="#!" class="next_button">next</a>'
 								+ '<span class="info_slide"></span>'
 								+ '<div class="container_skitter">'
 									+ '<div class="image">'
@@ -2888,7 +2888,7 @@
 		focusSkitter: function() {
 			var self = this;
 			
-			var focus_button = $('<a href="#" class="focus_button">focus</a>');
+			var focus_button = $('<a href="#!" class="focus_button">focus</a>');
 			self.box_skitter.append(focus_button);
 			
 			var _left = (self.settings.width_skitter - focus_button.width()) / 2;
@@ -2979,7 +2979,7 @@
 		setControls: function() {
 			var self = this;
 			
-			var play_pause_button = $('<a href="#" class="play_pause_button">pause</a>');
+			var play_pause_button = $('<a href="#!" class="play_pause_button">pause</a>');
 			self.box_skitter.append(play_pause_button);
 			
 			var _left = (self.settings.width_skitter - play_pause_button.width()) / 2;

@@ -16,7 +16,7 @@
 {+START,IF,{$JS_ON}}
 	<div class="float_surrounder">
 		<p class="right associated_link">
-			<a href="#" onclick="var as=document.getElementsByTagName('input'); for (var i=0;i&lt;as.length;i++) { if (as[i].name.substr(0,10)=='uninstall_') as[i].checked=true; } return false;">{!UNINSTALL}: {!USE_ALL}</a>
+			<a href="#!" onclick="var as=document.getElementsByTagName('input'); for (var i=0;i&lt;as.length;i++) { if (as[i].name.substr(0,10)=='uninstall_') as[i].checked=true; } return false;">{!UNINSTALL}: {!USE_ALL}</a>
 		</p>
 	</div>
 {+END}

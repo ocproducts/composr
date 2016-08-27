@@ -518,9 +518,12 @@ function disable_button_just_clicked(input, permanent) {
     if (typeof permanent == 'undefined') permanent = false;
 
     if (input.nodeName.toLowerCase() == 'form') {
-        for (var i = 0; i < input.elements.length; i++)
-            if ((input.elements[i].type == 'submit') || (input.elements[i].type == 'button') || (input.elements[i].type == 'image') || (input.elements[i].nodeName.toLowerCase() == 'button'))
+        for (var i = 0; i < input.elements.length; i++) {
+            if ((input.elements[i].type == 'submit') || (input.elements[i].type == 'button') || (input.elements[i].type == 'image') || (input.elements[i].nodeName.toLowerCase() == 'button')) {
                 disable_button_just_clicked(input.elements[i]);
+            }
+        }
+
         return;
     }
 

@@ -256,9 +256,9 @@
 
 	<div class="box box___w_main_screen">
 		<h2 class="toggleable_tray_title">
-			<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode); set_cookie('hideActions',(this.getElementsByTagName('img')[0].getAttribute('src')=='{$IMG;*,1x/trays/contract}')?'0':'1'); return false;">{!W_ENVIRONMENT_ACTIONS}</a>
+			<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode); set_cookie('hideActions',(this.getElementsByTagName('img')[0].getAttribute('src')=='{$IMG;*,1x/trays/contract}')?'0':'1'); return false;">{!W_ENVIRONMENT_ACTIONS}</a>
 			{+START,IF,{$JS_ON}}
-				<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode); set_cookie('hideActions',(this.getElementsByTagName('img')[0].getAttribute('src')=='{$IMG;*,1x/trays/contract}')?'0':'1'); return false;"><img alt="{!EXPAND}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
+				<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode); set_cookie('hideActions',(this.getElementsByTagName('img')[0].getAttribute('src')=='{$IMG;*,1x/trays/contract}')?'0':'1'); return false;"><img alt="{!EXPAND}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
 			{+END}
 		</h2>
 
@@ -709,9 +709,9 @@
 	{+START,IF,{MAY_DO_STUFF}}
 		<div class="box box___w_main_screen">
 			<h2 class="toggleable_tray_title">
-				<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode); set_cookie('hideAdditions',(this.getElementsByTagName('img')[0].getAttribute('src')=='{$IMG;*,1x/trays/contract}')?'0':'1'); return false;">{!W_ENVIRONMENT_ADDITIONS}</a>
+				<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode); set_cookie('hideAdditions',(this.getElementsByTagName('img')[0].getAttribute('src')=='{$IMG;*,1x/trays/contract}')?'0':'1'); return false;">{!W_ENVIRONMENT_ADDITIONS}</a>
 				{+START,IF,{$JS_ON}}
-					<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode); set_cookie('hideAdditions',(this.getElementsByTagName('img')[0].getAttribute('src')=='{$IMG;*,1x/trays/contract}')?'0':'1'); return false;"><img alt="{!EXPAND}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
+					<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode); set_cookie('hideAdditions',(this.getElementsByTagName('img')[0].getAttribute('src')=='{$IMG;*,1x/trays/contract}')?'0':'1'); return false;"><img alt="{!EXPAND}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
 				{+END}
 			</h2>
 
@@ -741,9 +741,9 @@
 
 	<div class="box box___w_main_screen">
 		<h2 class="toggleable_tray_title">
-			<a class="toggleable_tray_button" href="#" onclick="toggleable_tray(this.parentNode.parentNode); set_cookie('hideMod',(this.getElementsByTagName('img')[0].getAttribute('src')=='{$IMG;*,1x/trays/contract}')?'0':'1'); return false;">{!W_ENVIRONMENT_MODIFICATIONS}</a>
+			<a class="toggleable_tray_button" href="#!" onclick="toggleable_tray(this.parentNode.parentNode); set_cookie('hideMod',(this.getElementsByTagName('img')[0].getAttribute('src')=='{$IMG;*,1x/trays/contract}')?'0':'1'); return false;">{!W_ENVIRONMENT_MODIFICATIONS}</a>
 			{+START,IF,{$JS_ON}}
-				<a class="toggleable_tray_button" href="#" onclick="toggleable_tray(this.parentNode.parentNode); set_cookie('hideMod',(this.getElementsByTagName('img')[0].getAttribute('src')=='{$IMG;*,1x/trays/contract}')?'0':'1'); return false;"><img alt="{!EXPAND}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
+				<a class="toggleable_tray_button" href="#!" onclick="toggleable_tray(this.parentNode.parentNode); set_cookie('hideMod',(this.getElementsByTagName('img')[0].getAttribute('src')=='{$IMG;*,1x/trays/contract}')?'0':'1'); return false;"><img alt="{!EXPAND}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
 			{+END}
 		</h2>
 
