@@ -23,7 +23,7 @@
 
 						<ul class="horizontal_links associated_links_block_group horiz_field_sep">
 							<li><a href="{JOIN_URL*}">{!_JOIN}</a></li>
-							<li><a onclick="return open_link_as_overlay(this);" rel="nofollow" href="{FULL_LOGIN_URL*}" title="{!MORE}: {!_LOGIN}">{!MORE}</a></li>
+							<li><a data-open-as-overlay="1" rel="nofollow" href="{FULL_LOGIN_URL*}" title="{!MORE}: {!_LOGIN}">{!MORE}</a></li>
 						</ul>
 					</div>
 				</form>
@@ -37,8 +37,8 @@
 			<nav class="cns_guest_column cns_member_column_d">
 				{$,<p class="cns_member_column_title">{!VIEW}:</p>}
 				<ul class="actions_list">
-					<li><a onclick="return open_link_as_overlay(this);" href="{NEW_POSTS_URL*}">{!POSTS_SINCE}</a></li>
-					<li><a onclick="return open_link_as_overlay(this);" href="{UNANSWERED_TOPICS_URL*}">{!UNANSWERED_TOPICS}</a></li>
+					<li><a data-open-as-overlay="1" href="{NEW_POSTS_URL*}">{!POSTS_SINCE}</a></li>
+					<li><a data-open-as-overlay="1" href="{UNANSWERED_TOPICS_URL*}">{!UNANSWERED_TOPICS}</a></li>
 				</ul>
 			</nav>
 		</div>

@@ -200,19 +200,19 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 								<li><a accesskey="3" rel="site_map" href="{$PAGE_LINK*,_SEARCH:sitemap}">{!SITEMAP}</a></li>
 							{+END}
 							{+START,IF,{$CONFIG_OPTION,bottom_show_rules_link}}
-								<li><a onclick="return open_link_as_overlay(this);" rel="site_rules" accesskey="7" href="{$PAGE_LINK*,:rules}">{!RULES}</a></li>
+								<li><a data-open-as-overlay="1" rel="site_rules" accesskey="7" href="{$PAGE_LINK*,:rules}">{!RULES}</a></li>
 							{+END}
 							{+START,IF,{$CONFIG_OPTION,bottom_show_privacy_link}}
-								<li><a onclick="return open_link_as_overlay(this);" rel="site_privacy" accesskey="8" href="{$PAGE_LINK*,_SEARCH:privacy}">{!PRIVACY}</a></li>
+								<li><a data-open-as-overlay="1" rel="site_privacy" accesskey="8" href="{$PAGE_LINK*,_SEARCH:privacy}">{!PRIVACY}</a></li>
 							{+END}
 							{+START,IF,{$CONFIG_OPTION,bottom_show_feedback_link}}
-								<li><a onclick="return open_link_as_overlay(this);" rel="site_contact" accesskey="9" href="{$?,{$OR,{$ADDON_INSTALLED,staff_messaging},{$NOT,{$ADDON_INSTALLED,tickets}}},{$PAGE_LINK*,_SEARCH:feedback:redirect={$SELF_URL&,1}},{$PAGE_LINK*,_SEARCH:tickets}}">{!_FEEDBACK}</a></li>
+								<li><a data-open-as-overlay="1" rel="site_contact" accesskey="9" href="{$?,{$OR,{$ADDON_INSTALLED,staff_messaging},{$NOT,{$ADDON_INSTALLED,tickets}}},{$PAGE_LINK*,_SEARCH:feedback:redirect={$SELF_URL&,1}},{$PAGE_LINK*,_SEARCH:tickets}}">{!_FEEDBACK}</a></li>
 							{+END}
 							{+START,IF,{$NOR,{$IS_HTTPAUTH_LOGIN},{$IS_GUEST}}}
 								<li><form title="{!LOGOUT}" class="inline" method="post" action="{$PAGE_LINK*,_SELF:login:logout}" autocomplete="off"><input class="button_hyperlink" type="submit" title="{!_LOGOUT,{$USERNAME*}}" value="{!LOGOUT}" /></form></li>
 							{+END}
 							{+START,IF,{$OR,{$IS_HTTPAUTH_LOGIN},{$IS_GUEST}}}
-								<li><a onclick="return open_link_as_overlay(this);" href="{$PAGE_LINK*,_SELF:login{$?,{$NOR,{$GET,login_screen},{$_POSTED},{$EQ,{$PAGE},login,join}},:redirect={$SELF_URL&*,1}}}">{!_LOGIN}</a></li>
+								<li><a data-open-as-overlay="1" href="{$PAGE_LINK*,_SELF:login{$?,{$NOR,{$GET,login_screen},{$_POSTED},{$EQ,{$PAGE},login,join}},:redirect={$SELF_URL&*,1}}}">{!_LOGIN}</a></li>
 							{+END}
 							{+START,IF,{$CONFIG_OPTION,mobile_support}}
 								{+START,IF,{$MOBILE,1}}

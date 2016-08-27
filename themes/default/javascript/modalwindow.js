@@ -21,8 +21,7 @@ if (typeof window.overlay_zIndex=='undefined')
 	window.overlay_zIndex=999999; // Has to be higher than plupload, which is 99999
 }
 
-function open_link_as_overlay(ob,width,height,target)
-{
+function open_link_as_overlay(ob,width,height,target) {
 	/*{+START,IF,{$CONFIG_OPTION,js_overlays}}*/
 		if ((typeof width=='undefined') || (!width)) var width='800';
 		if ((typeof height=='undefined') || (!height)) var height='auto';

@@ -33,7 +33,7 @@
 			{$INSERT_SPAMMER_BLACKHOLE}
 
 			<p>
-				<label for="edit_{ID*}_textarea">{!COMCODE}:</label> <a onclick="return open_link_as_overlay(this);" class="link_exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SEARCH:userguide_comcode}"><img alt="" src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" class="vertical_alignment" /></a>
+				<label for="edit_{ID*}_textarea">{!COMCODE}:</label> <a data-open-as-overlay="1" class="link_exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SEARCH:userguide_comcode}"><img alt="" src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" class="vertical_alignment" /></a>
 				{+START,IF,{$IN_STR,{CLASS},wysiwyg}}
 					{+START,IF,{$JS_ON}}
 						<span class="horiz_field_sep associated_link"><a id="toggle_wysiwyg_edit_{ID*}_textarea" href="#!" onclick="return toggle_wysiwyg('edit_{ID*}_textarea');"><abbr title="{!TOGGLE_WYSIWYG_2}"><img src="{$IMG*,icons/16x16/editor/wysiwyg_on}" srcset="{$IMG*,icons/32x32/editor/wysiwyg_on} 2x" alt="{!comcode:ENABLE_WYSIWYG}" title="{!comcode:ENABLE_WYSIWYG}" class="vertical_alignment" /></abbr></a></span>

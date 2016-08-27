@@ -586,6 +586,22 @@
 
           'click [data-disable-after-click]': function (e) {
               disable_button_just_clicked(e.target);
+          },
+
+          'click [data-open-as-overlay]': function (e) {
+              var ob = e.target,
+                  url = (typeof ob.href === 'undefined') ? ob.action : ob.href;
+
+              if (Composr.isFalsy(Composr.$CONFIG_OPTION.jsOverlays)) {
+                  return;
+              }
+
+              if (/:\/\/(.[^/]+)/.exec(url)[1] != window.location.hostname) {
+                  return; // Cannot overlay, different domain
+              }
+
+              e.preventDefault();
+              open_link_as_overlay(e.target)
           }
         },
 
@@ -609,6 +625,24 @@
     });
 
     window.Composr = Composr;
+
+    function open_link_as_overlay(ob, width, height, target) {
+        var url = (typeof ob.href === 'undefined') ? ob.action : ob.href;
+
+        if ((typeof width === 'undefined') || (!width)) {
+            width = '800';
+        }
+        if ((typeof height === 'undefined') || (!height)) {
+            height = 'auto';
+        }
+        if ((typeof target === 'undefined') || (!target)) {
+            target = '_top';
+        }
+
+        var url_stripped = url.replace(/#.*/, '');
+        var new_url = url_stripped + ((url_stripped.indexOf('?') == -1) ? '?' : '&') + 'wide_high=1' + url.replace(/^[^\#]+/, '');
+        faux_open(new_url, null, 'width=' + width + ';height=' + height, target);
+    }
 
     function disable_button_just_clicked(input, permanent) {
         if (typeof permanent === 'undefined') {
