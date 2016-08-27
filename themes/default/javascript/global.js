@@ -1,13 +1,12 @@
 /* Ideally this template should not be edited. See the note at the bottom of how JAVASCRIPT_CUSTOM_GLOBALS.tpl is appended to this template */
 
-window.take_errors = !browser_matches('ie') && ('{$HAS_PRIVILEGE;,sees_javascript_error_alerts}' === '1');
-
 /* Startup */
 if (typeof window.page_loaded == 'undefined') // To stop problem if JS file loaded more than once
 {
     window.page_loaded = false;
     window.is_doing_a_drag = false;
 }
+
 function script_load_stuff() {
     if (window.page_loaded) return; // Been called twice for some reason
 

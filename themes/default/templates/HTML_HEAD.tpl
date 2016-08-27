@@ -167,6 +167,10 @@
 	}// Redirect with JS on, and then hopefully we can remove keep_has_js after one click. This code only happens if JS is marked off, no infinite loops can happen.
 	/*{+END}*/
 	/*{+END}*/
+
+	/*{+START,IF,{$NOT,{$BROWSER_MATCHES,ie}}}{+START,IF,{$HAS_PRIVILEGE,sees_javascript_error_alerts}}*/
+	window.take_errors = true;
+	/*{+END}{+END}*/
 //]]></script>
 
 {$,JavaScript code (usually) from Composr page}
