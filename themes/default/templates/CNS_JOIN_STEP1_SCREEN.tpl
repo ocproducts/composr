@@ -29,10 +29,10 @@
 
 	<p>
 		{+START,IF,{$JS_ON}}
-			<button onclick="disable_button_just_clicked(this); window.top.location='{$PAGE_LINK;*,:}'; return false;" class="button_screen buttons__no">{!I_DISAGREE}</button>
+			<button data-disable-after-click="1" onclick="window.top.location='{$PAGE_LINK;*,:}'; return false;" class="button_screen buttons__no">{!I_DISAGREE}</button>
 		{+END}
 
-		<input accesskey="u" onclick="disable_button_just_clicked(this);" class="button_screen buttons__yes" type="submit" value="{!PROCEED}"{+START,IF,{$JS_ON}} disabled="disabled"{+END} id="proceed_button" />
+		<input accesskey="u" data-disable-after-click="1" class="button_screen buttons__yes" type="submit" value="{!PROCEED}"{+START,IF,{$JS_ON}} disabled="disabled"{+END} id="proceed_button" />
 	</p>
 </form>
 

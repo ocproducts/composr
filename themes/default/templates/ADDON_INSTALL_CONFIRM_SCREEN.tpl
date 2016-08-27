@@ -20,7 +20,7 @@
 			<input class="button_screen buttons__back" type="button" onclick="history.back(); return false;" value="{!GO_BACK}" />
 		{+END}
 
-		<input onclick="disable_button_just_clicked(this);" class="button_screen buttons__proceed" type="submit" value="{!PROCEED}" />
+		<input data-disable-after-click="1" class="button_screen buttons__proceed" type="submit" value="{!PROCEED}" />
 	</p>
 
 	<h2>{!DETAILS}</h2>

@@ -8,7 +8,7 @@
 		</div>
 		{+START,IF,{$NOT,{$JS_ON}}}
 			<p class="proceed_button">
-				<input onclick="disable_button_just_clicked(this);" type="submit" value="{!PROCEED}" class="button_screen_item buttons__proceed" />
+				<input data-disable-after-click="1" type="submit" value="{!PROCEED}" class="button_screen_item buttons__proceed" />
 			</p>
 		{+END}
 	</div>

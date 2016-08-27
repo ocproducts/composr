@@ -527,7 +527,7 @@
 
     Composr.behaviors.composr = {
         initialize: {
-            attach: function (context) {
+            attach: function (context /** @type Document|HTMLElement */) {
                 // Call a global function, optionally with arguments. Inside the function scope, "this" will be the element calling that function.
                 forEach(context.querySelectorAll('[data-cms-call]'), function (el) {
                     var funcName = el.dataset.cmsCall.trim(),
@@ -571,11 +571,85 @@
         }
     };
 
-    Composr.View = Backbone.View.extend({});
+    Composr.views = {};
+
+    Composr.views.core = {};
+
+    Composr.views.core.View = Backbone.View.extend({});
+
+    Composr.views.core.Global = Composr.views.core.View.extend({
+        events: {
+          // Prevent url change for clicks on anchor tags with a placeholder href
+          'click a[href$="#!"]': function (e) {
+              e.preventDefault();
+          },
+
+          'click [data-disable-after-click]': function (e) {
+              disable_button_just_clicked(e.target);
+          }
+        },
+
+        options: null,
+
+        initialize: function initialize(viewOptions, options) {
+            this.options = options;
+        },
+
+        render: function render() {
+
+        }
+    });
 
     Composr.ready.then(function () {
+        var global = new Composr.views.core.Global({
+            el: document.documentElement
+        });
+
         Composr.attachBehaviors();
     });
 
     window.Composr = Composr;
+
+    function disable_button_just_clicked(input, permanent) {
+        if (typeof permanent === 'undefined') {
+            permanent = false;
+        }
+
+        if (input.nodeName === 'FORM') {
+            for (var i = 0; i < input.elements.length; i++) {
+                if ((input.elements[i].type === 'submit') || (input.elements[i].type === 'button') || (input.elements[i].type === 'image') || (input.elements[i].nodeName === 'BUTTON')) {
+                    disable_button_just_clicked(input.elements[i]);
+                }
+            }
+
+            return;
+        }
+
+        if (input.form.target === '_blank') {
+            return;
+        }
+
+        window.setTimeout(function () {
+            input.disabled = true;
+            input.under_timer = true;
+        }, 20);
+
+        input.style.cursor = 'wait';
+
+        if (!permanent) {
+            var goback = function () {
+                if (input.under_timer) {
+                    input.disabled = false;
+                    input.under_timer = false;
+                    input.style.cursor = 'default';
+                }
+            };
+
+            window.setTimeout(goback, 5000);
+        } else {
+            input.under_timer = false;
+        }
+
+        window.addEventListener('pagehide', goback);
+    }
 })(window.jQuery || window.Zepto, JSON.parse(document.getElementsByName('composr-symbol-data')[0].content));

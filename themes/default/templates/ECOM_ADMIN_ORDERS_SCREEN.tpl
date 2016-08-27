@@ -18,7 +18,7 @@
 
 		<label for="order_filter">
 			<span class="invisible_ref_point"></span>
-			<input maxlength="255" type="text" id="order_filter" name="search" value="{SEARCH_VAL*}" /><input onclick="disable_button_just_clicked(this);" class="button_micro buttons__search" type="submit" value="{!SEARCH}" /> ({!SEARCH_ORDERS})
+			<input maxlength="255" type="text" id="order_filter" name="search" value="{SEARCH_VAL*}" /><input data-disable-after-click="1" class="button_micro buttons__search" type="submit" value="{!SEARCH}" /> ({!SEARCH_ORDERS})
 		</label>
 	</div>
 </form>

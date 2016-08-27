@@ -19,6 +19,6 @@
 			<input class="button_screen buttons__back" type="button" onclick="history.back(); return false;" value="{!GO_BACK}" />
 		{+END}
 
-		<input accesskey="u" onclick="disable_button_just_clicked(this);" class="button_screen buttons__proceed" type="submit" value="{!PROCEED}" />
+		<input accesskey="u" data-disable-after-click="1" class="button_screen buttons__proceed" type="submit" value="{!PROCEED}" />
 	</p>
 </form>

@@ -52,7 +52,7 @@
 		</table></div>
 
 		<p class="proceed_button">
-			<input onmouseover="this.form.disable_size_change=true;" onmouseout="this.form.disable_size_change=false;" accesskey="u" onclick="disable_button_just_clicked(this);" class="button_screen buttons__save" type="submit" value="{!SAVE}" />
+			<input onmouseover="this.form.disable_size_change=true;" onmouseout="this.form.disable_size_change=false;" accesskey="u" data-disable-after-click="1" class="button_screen buttons__save" type="submit" value="{!SAVE}" />
 		</p>
 	</div>
 </form>

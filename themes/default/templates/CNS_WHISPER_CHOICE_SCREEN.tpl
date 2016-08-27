@@ -24,7 +24,7 @@
 						<input type="hidden" name="type" value="new_pt" />
 
 						<p class="proceed_button">
-							<input class="button_screen buttons__new_topic" type="submit" onclick="disable_button_just_clicked(this);" value="{!QUOTE_TO_PT}" />
+							<input class="button_screen buttons__new_topic" type="submit" data-disable-after-click="1" value="{!QUOTE_TO_PT}" />
 						</p>
 					</div>
 				</form>
@@ -45,7 +45,7 @@
 					<input type="hidden" name="type" value="new_post" />
 
 					<p class="proceed_button">
-						<input class="button_screen buttons__new_post_full" type="submit" onclick="disable_button_just_clicked(this);" value="{!IN_TOPIC_PP}" />
+						<input class="button_screen buttons__new_post_full" type="submit" data-disable-after-click="1" value="{!IN_TOPIC_PP}" />
 					</p>
 				</div>
 			</form>

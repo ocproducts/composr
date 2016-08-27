@@ -21,7 +21,7 @@
 	<input type="hidden" name="option" value="0" />
 
 	<div class="purchase_button">
-		<input onclick="disable_button_just_clicked(this);" class="button_screen menu__adminzone__audit__ecommerce__subscriptions" type="submit" value="{!MAKE_PAYMENT}" />
+		<input data-disable-after-click="1" class="button_screen menu__adminzone__audit__ecommerce__subscriptions" type="submit" value="{!MAKE_PAYMENT}" />
 	</div>
 </form>
 

@@ -83,7 +83,7 @@
 						</div>
 
 						<p class="proceed_button">
-							<input onclick="disable_button_just_clicked(this);" class="button_screen buttons__choose" type="submit" value="{!INTERESTS}" />
+							<input data-disable-after-click="1" class="button_screen buttons__choose" type="submit" value="{!INTERESTS}" />
 						</p>
 					</form>
 				</div></section></div>
@@ -102,7 +102,7 @@
 						</div>
 
 						<p class="proceed_button">
-							<input onclick="disable_button_just_clicked(this);" class="button_screen buttons__filter" type="submit" value="{!FILTER}" />
+							<input data-disable-after-click="1" class="button_screen buttons__filter" type="submit" value="{!FILTER}" />
 						</p>
 					</form>
 				</div></section></div>

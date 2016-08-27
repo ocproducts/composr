@@ -12,6 +12,6 @@
 	{POST_FIELDS}
 
 	<p class="proceed_button">
-		<input onclick="disable_button_just_clicked(this);" class="button_screen buttons__send" type="submit" value="{!MAKE_POST}" />
+		<input data-disable-after-click="1" class="button_screen buttons__send" type="submit" value="{!MAKE_POST}" />
 	</p>
 </form>

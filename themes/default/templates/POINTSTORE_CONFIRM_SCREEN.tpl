@@ -38,7 +38,7 @@
 
 				<div class="inline">
 					{KEEP}
-					<input accesskey="u" onclick="disable_button_just_clicked(this);" class="button_screen buttons__yes" type="submit" value="{!YES}" />
+					<input accesskey="u" data-disable-after-click="1" class="button_screen buttons__yes" type="submit" value="{!YES}" />
 				</div>
 			</form>
 		</div>

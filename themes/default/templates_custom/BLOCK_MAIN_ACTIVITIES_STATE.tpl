@@ -23,7 +23,7 @@
 			{+START,IF,{$NOT,{$ADDON_INSTALLED,chat}}}
 				<input type="hidden" name="privacy" value="{!PUBLIC}" />
 			{+END}
-			<input onclick="disable_button_just_clicked(this);" type="submit" class="button_screen_item buttons__save" name="button" id="button" value="{!UPDATE}" />
+			<input data-disable-after-click="1" type="submit" class="button_screen_item buttons__save" name="button" id="button" value="{!UPDATE}" />
 			<p id="activities_update_notify" class="activities_update_success">254 {!activities:CHARACTERS_LEFT}</p> {$,Do not remove; the AJAX notifications are inserted here.}
 		</div>
 
