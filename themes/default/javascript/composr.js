@@ -1,4 +1,4 @@
-(function ($, data) {
+(function ($, data, undefined) {
     'use strict';
 
     var Composr = {
@@ -40,15 +40,17 @@
         $SESSION_COOKIE_NAME: data.SESSION_COOKIE_NAME,
         $GROUP_ID: data.GROUP_ID,
         $CONFIG_OPTION: data.CONFIG_OPTION,
+        $VALUE_OPTION: data.VALUE_OPTION,
         // Just some additonal stuff, not a tempcode symbol
         $EXTRA: data.EXTRA
     },
         arrProto = Array.prototype,
-        forEach = Function.bind.call(Function.call, arrProto.forEach),
+        forEach = Function.bind.call(Function.call, Array.prototype.forEach),
 
         loadPolyfillsPromise = new Promise(function (resolve) {
             loadPolyfills(resolve);
         }),
+
         domReadyPromise = new Promise(function (resolve) {
             if (document.readyState === 'interactive') {
                 resolve();
@@ -58,6 +60,7 @@
                 });
             }
         }),
+
         windowLoadPromise = new Promise(function (resolve) {
             if (document.readyState === 'complete') {
                 resolve();
@@ -72,50 +75,6 @@
         Composr.queryString = new window.URLSearchParams(window.location.search);
     });
 
-    function loadPolyfills(callback) {
-        var scriptsToLoad = 0,
-            scriptsLoaded = 0;
-
-        // Credit: https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/String/includes
-        if (typeof String.prototype.includes === 'undefined') {
-            String.prototype.includes = function (search, start) {
-                if (typeof start !== 'number') {
-                    start = 0;
-                }
-
-                if (start + search.length > this.length) {
-                    return false;
-                }
-
-                return this.indexOf(search, start) !== -1;
-            };
-        }
-
-        function onload() {
-            scriptsLoaded++;
-
-            if (scriptsToLoad === scriptsLoaded) {
-                callback();
-            }
-        }
-
-        function loadScript(src) {
-            scriptsToLoad++;
-            var s = document.createElement('script');
-            s.onload = onload;
-            s.async = true;
-            s.src = src;
-            document.head.appendChild(s);
-        }
-
-        if (typeof window.URLSearchParams === 'undefined') {
-            loadScript(Composr.$BASE_URL + '/data/polyfills/url-search-params.max.js');
-        }
-
-        if (scriptsToLoad === 0) {
-            callback();
-        }
-    }
 
     Composr.ready = Promise.all([loadPolyfillsPromise, domReadyPromise]);
     Composr.loadWindow = Promise.all([Composr.ready, windowLoadPromise]);
@@ -192,6 +151,7 @@
 
     Composr.log    = Composr.$DEV_MODE ? console.log : noop;
     Composr.assert = Composr.$DEV_MODE ? console.assert : noop;
+    Composr.error  = Composr.$DEV_MODE ? console.error : noop;
 
     /**
      * Helper to rethrow errors asynchronously.
@@ -294,19 +254,8 @@
                 addonArgs = el.dataset.tplArgs ? el.dataset.tplArgs.trim() : '';
             }
 
-
             if (addonArgs !== '') {
-                var _args;
-
-                //try {
-                    _args = JSON.parse(addonArgs);
-                //} catch (e) {
-                //    Composr.throwError(e);
-                //}
-
-                if (_args) {
-                    args = _args;
-                }
+                args = JSON.parse(addonArgs);
 
                 if (!Array.isArray(args)) {
                     args = [args];
@@ -318,14 +267,26 @@
 
             if (typeof func === 'function') {
                 func.apply(el.nodeName !== 'SCRIPT' ? el : context, args);
-            } else if ((typeof func === 'object') && (func !== null)) {
-
             }
         });
     };
 
-    /* Addons will add Backbone.View subclasses under this object */
-    Composr.views = {};
+    Composr.initializeViews = function (context, addonName) {
+        var View, addonNameKibab = addonName.replace(/_/g, '-'),
+            addonNameCamelCase = Composr.utils.camelCase(addonName);
+
+        forEach(context.querySelectorAll('[data-view-' + addonNameKibab + ']'), function (el) {
+            var viewClasses = Composr.views[addonNameCamelCase],
+                viewClassName = el.dataset[Composr.utils.camelCase('view-' + addonNameKibab)].trim(),
+                options = Composr.parseDataObject(el.dataset.viewArgs);
+
+            if (viewClasses && viewClasses[viewClassName]) {
+                View = viewClasses[viewClassName];
+
+                new View({el: el}, options);
+            }
+        });
+    };
 
     /* Tempcode filters ported to JS */
     Composr.filter = function (str, filterSymbols) {
@@ -398,52 +359,36 @@
     };
 
     Composr.filters.identifier = function (str) {
-        var length, out, i, char, ascii;
+        var out, i, char, ascii, remap = {
+            '[': '_opensquare_',
+            ']': '_closesquare_',
+            '\'': '_apostophe_',
+            '-': '_minus_',
+            ' ': '_space_',
+            '+': '_plus_',
+            '*': '_star_',
+            '/': '__'
+        };
 
         if (typeof str !== 'string') {
             throw new Error('Invalid argument type: \'str\' must be a string.');
         }
 
-        length = str.length;
         out = '';
 
-        for (i = 0; i < length; i++) {
+        for (i = 0; i < str.length; i++) {
             char = str[i];
 
-            switch (char) {
-                case '[':
-                    out += '_opensquare_';
-                    break;
-                case ']':
-                    out += '_closesquare_';
-                    break;
-                case '\'':
-                    out += '_apostophe_';
-                    break;
-                case '-':
-                    out += '_minus_';
-                    break;
-                case ' ':
-                    out += '_space_';
-                    break;
-                case '+':
-                    out += '_plus_';
-                    break;
-                case '*':
-                    out += '_star_';
-                    break;
-                case '/':
-                    out += '__';
-                    break;
-                default:
-                    ascii = char.charCodeAt(0);
+            if (remap[char] !== undefined) {
+                out += remap[char];
+            } else {
+                ascii = char.charCodeAt(0);
 
-                    if (((i !== 0) && (char === '_')) || ((ascii >= 48) && (ascii <= 57)) || ((ascii >= 65) && (ascii <= 90)) || ((ascii >= 97) && (ascii <= 122))) {
-                        out += char;
-                    } else {
-                        out += '_' + ascii + '_';
-                    }
-                    break;
+                if (((i !== 0) && (char === '_')) || ((ascii >= 48) && (ascii <= 57)) || ((ascii >= 65) && (ascii <= 90)) || ((ascii >= 97) && (ascii <= 122))) {
+                    out += char;
+                } else {
+                    out += '_' + ascii + '_';
+                }
             }
         }
 
@@ -511,10 +456,6 @@
         return element.offsetHeight - padding - border;
     };
 
-    Composr.dom.$$ = function (selector, context) {
-        return arrProto.slice.call((context || document).querySelectorAll(selector));
-    };
-
     // Get nearest parent (or itself) element matching selector
     Composr.dom.closest = (function() {
         var proto = HTMLElement.prototype,
@@ -527,8 +468,89 @@
 
     Composr.behaviors.composr = {
         initialize: {
-            attach: function (context /** @type Document|HTMLElement */) {
+            attach: function (context) {
+                if (context.childElementCount === 0) { // NB: Property undefined on the Document object in IE & Safari
+                    return;
+                }
+
+                forEach(context.querySelectorAll('a'), function (el) {
+                    if (Composr.isTruthy(Composr.$CONFIG_OPTION.jsOverlays)) {
+                        // Lightboxes
+                        if (el.rel && el.rel.match(/lightbox/)) {
+                            el.title = el.title.replace('{!LINK_NEW_WINDOW;}', '').trim();
+                        }
+
+                        // Convert a/img title attributes into Composr tooltips
+                        if ((el['original-title'] === undefined/*check tipsy not used*/) && !el.classList.contains('no_tooltip')) {
+                            convert_tooltip(el);
+                        }
+                    }
+
+                    // Keep parameters need propagating
+                    if  (Composr.$VALUE_OPTION.jsKeepParams) {
+                        if (el.href && el.href.indexOf(Composr.$BASE_URL + '/') === 0) {
+                            el.href += keep_stub(el.href.indexOf('?') === -1, true, el.href);
+                        }
+                    }
+                });
+
+                forEach(context.querySelectorAll('img'), function (el) {
+                    if (el.classList.contains('gd_text')) {
+                        gdImageTransform(el);
+                    }
+
+                    // Convert a/img title attributes into Composr tooltips
+                    if (Composr.isTruthy(Composr.$CONFIG_OPTION.jsOverlays)) {
+                        if (!el.classList.contains('activate_rich_semantic_tooltip')) {
+                            convert_tooltip(el);
+                        }
+                    }
+                });
+
+                forEach(context.querySelectorAll('form'), function (el) {
+                    // HTML editor
+                    if (window.load_html_edit !== undefined) {
+                        load_html_edit(el);
+                    }
+
+                    el.title = '';
+
+                    // Remove tooltips from forms for mouse users as they are for screenreader accessibility only
+                    if (el.getAttribute('target') !== '_blank') {
+                        el.addEventListener('mouseover', function () {
+                            el.setAttribute('title', '');
+                            el.title = '';
+                        });
+                    }
+
+                    // Convert a/img title attributes into Composr tooltips
+                    if (Composr.isTruthy(Composr.$CONFIG_OPTION.jsOverlays)) {
+                        // Convert a/img title attributes into Composr tooltips
+                        var elements, j;
+                        elements = el.elements;
+
+                        for (j = 0; j < elements.length; j++) {
+                            if (elements[j].title !== undefined) {
+                                convert_tooltip(elements[j]);
+                            }
+                        }
+
+                        elements = el.querySelectorAll('input[type="image"][title]'); // JS DOM does not include type="image" ones in form.elements
+                        for (j = 0; j < elements.length; j++) {
+                            convert_tooltip(elements[j]);
+                        }
+                    }
+
+                    if (Composr.isTruthy(Composr.$VALUE_OPTION.jsKeepParams)) {
+                        /* Keep parameters need propagating */
+                        if (el.action && el.action.indexOf(Composr.$BASE_URL + '/') === 0) {
+                            el.action += keep_stub(el.action.indexOf('?') === -1, true, el.action);
+                        }
+                    }
+                });
+
                 // Call a global function, optionally with arguments. Inside the function scope, "this" will be the element calling that function.
+                // @TODO: To be killed
                 forEach(context.querySelectorAll('[data-cms-call]'), function (el) {
                     var funcName = el.dataset.cmsCall.trim(),
                         cmsCallArgs = typeof el.dataset.cmsCallArgs === 'string' ? el.dataset.cmsCallArgs.trim() : '',
@@ -571,48 +593,131 @@
         }
     };
 
+    Composr.parseDataObject = function (data, defaults) {
+        data = data.trim();
+        defaults = defaults || {};
+
+        if (data && (data !== '{}')) {
+            try {
+                data = JSON.parse(data);
+
+                if (data && (typeof data === 'object')) {
+                    return _.defaults(data, defaults);
+                }
+            } catch (ex) {
+                Composr.error('Composr.parseDataArgs(), error parsing JSON: ' + data, ex);
+                return defaults;
+            }
+        }
+
+        return defaults;
+    };
+
+    Composr.widgets = {};
+
+    Composr.ui = {};
+
+    Composr.ui.disableButton = function (input, permanent) {
+        if (permanent === undefined) {
+            permanent = false;
+        }
+
+        if (input.form && (input.form.target === '_blank')) {
+            return;
+        }
+
+        window.setTimeout(function (){
+            input.disabled = true;
+            input.under_timer = true;
+        }, 20);
+
+        input.style.cursor = 'wait';
+
+        if (!permanent) {
+            window.setTimeout(goback, 5000);
+            window.addEventListener('pagehide', goback);
+        } else {
+            input.under_timer = false;
+        }
+
+        function goback() {
+            if (input.under_timer) {
+                input.disabled = false;
+                input.under_timer = false;
+                input.style.cursor = 'default';
+            }
+        }
+    };
+
+    Composr.ui.disableFormButtons = function (form, permanent) {
+        var buttons = form.querySelectorAll('input[type="submit"], input[type="button"], input[type="image"], button');
+
+        forEach(buttons, function (btn) {
+            Composr.ui.disableButton(btn, permanent);
+        });
+    };
+
+    /* Addons will add Backbone.View subclasses under this object */
+
+    Composr.View = Backbone.View.extend({});
+
     Composr.views = {};
-
     Composr.views.core = {};
-
-    Composr.views.core.View = Backbone.View.extend({});
-
-    Composr.views.core.Global = Composr.views.core.View.extend({
+    Composr.views.core.Global = Composr.View.extend({
         events: {
-          // Prevent url change for clicks on anchor tags with a placeholder href
-          'click a[href$="#!"]': function (e) {
-              e.preventDefault();
-          },
+            // Prevent url change for clicks on anchor tags with a placeholder href
+            'click a[href$="#!"]': function (e) {
+                e.preventDefault();
+            },
 
-          'click [data-disable-after-click]': function (e) {
-              disable_button_just_clicked(e.target);
-          },
+            'click [data-disable-on-click]': function (e) {
+                Composr.ui.disableButton(e.target);
+            },
 
-          'click [data-open-as-overlay]': function (e) {
-              var ob = e.target,
-                  url = (typeof ob.href === 'undefined') ? ob.action : ob.href;
+            'submit form[data-disable-buttons-on-submit]': function (e) {
+                Composr.ui.disableFormButtons(e.target);
+            },
 
-              if (Composr.isFalsy(Composr.$CONFIG_OPTION.jsOverlays)) {
-                  return;
-              }
+            'click [data-open-as-overlay]': function (e) {
+                var el = e.target, args,
+                    url = (el.href === undefined) ? el.action : el.href;
 
-              if (/:\/\/(.[^/]+)/.exec(url)[1] != window.location.hostname) {
-                  return; // Cannot overlay, different domain
-              }
+                if (Composr.isFalsy(Composr.$CONFIG_OPTION.jsOverlays)) {
+                    return;
+                }
 
-              e.preventDefault();
-              open_link_as_overlay(e.target)
-          }
+                if (/:\/\/(.[^/]+)/.exec(url)[1] !== window.location.hostname) {
+                    return; // Cannot overlay, different domain
+                }
+
+                e.preventDefault();
+
+                args = Composr.parseDataObject(el.dataset.openAsOverlay);
+                args.el = el;
+
+                openLinkAsOverlay(args);
+            },
+
+            // Lightboxes
+            'click a[rel*="lightbox"]': function (e) {
+                var el = e.target;
+
+                if (Composr.isFalsy(Composr.$CONFIG_OPTION.jsOverlays)) {
+                    return;
+                }
+
+                e.preventDefault();
+
+                if (el.querySelectorAll('img').length > 0 || el.querySelectorAll('video').length > 0) {
+                    open_image_into_lightbox(el);
+                } else {
+                    openLinkAsOverlay({el: el})
+                }
+            }
         },
-
-        options: null,
 
         initialize: function initialize(viewOptions, options) {
-            this.options = options;
-        },
-
-        render: function render() {
-
+            this.options = options || {};
         }
     });
 
@@ -626,64 +731,156 @@
 
     window.Composr = Composr;
 
-    function open_link_as_overlay(ob, width, height, target) {
-        var url = (typeof ob.href === 'undefined') ? ob.action : ob.href;
+    function loadPolyfills(callback) {
+        var scriptsToLoad = 0,
+            scriptsLoaded = 0;
 
-        if ((typeof width === 'undefined') || (!width)) {
-            width = '800';
-        }
-        if ((typeof height === 'undefined') || (!height)) {
-            height = 'auto';
-        }
-        if ((typeof target === 'undefined') || (!target)) {
-            target = '_top';
+        // Credit: https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/String/includes
+        if (String.prototype.includes === undefined) {
+            String.prototype.includes = function (search, start) {
+                if (typeof start !== 'number') {
+                    start = 0;
+                }
+
+                if (start + search.length > this.length) {
+                    return false;
+                }
+
+                return this.indexOf(search, start) !== -1;
+            };
         }
 
-        var url_stripped = url.replace(/#.*/, '');
-        var new_url = url_stripped + ((url_stripped.indexOf('?') == -1) ? '?' : '&') + 'wide_high=1' + url.replace(/^[^\#]+/, '');
-        faux_open(new_url, null, 'width=' + width + ';height=' + height, target);
+        function onload() {
+            scriptsLoaded++;
+
+            if (scriptsToLoad === scriptsLoaded) {
+                callback();
+            }
+        }
+
+        function loadScript(src) {
+            scriptsToLoad++;
+            var s = document.createElement('script');
+            s.onload = onload;
+            s.async = true;
+            s.src = src;
+            document.head.appendChild(s);
+        }
+
+        if (window.URLSearchParams === undefined) {
+            loadScript(Composr.$BASE_URL + '/data/polyfills/url-search-params.max.js');
+        }
+
+        if (scriptsToLoad === 0) {
+            callback();
+        }
     }
 
-    function disable_button_just_clicked(input, permanent) {
-        if (typeof permanent === 'undefined') {
-            permanent = false;
-        }
+    function gdImageTransform(el) {
+        /* GD text maybe can do with transforms */
+        var span = document.createElement('span');
+        if (typeof span.style.writingMode === 'string') {// IE (which has buggy rotation space reservation, but a decent writing-mode instead)
+            el.style.display = 'none';
+            span.style.writingMode = 'tb-lr';
+            if (span.style.writingMode !== 'tb-lr') {
+                span.style.writingMode = 'vertical-lr';
+            }
+            span.style.webkitWritingMode = 'vertical-lr';
+            span.style.whiteSpace = 'nowrap';
+            span.textContent = el.alt;
+            el.parentNode.insertBefore(span, el);
+        } else if (typeof span.style.transform === 'string') {
+            el.style.display = 'none';
+            span.style.transform = 'rotate(90deg)';
+            span.style.transformOrigin = 'bottom left';
+            span.style.top = '-1em';
+            span.style.left = '0.5em';
+            span.style.position = 'relative';
+            span.style.display = 'inline-block';
+            span.style.whiteSpace = 'nowrap';
+            span.style.paddingRight = '0.5em';
+            el.parentNode.style.textAlign = 'left';
+            el.parentNode.style.width = '1em';
+            el.parentNode.style.overflow = 'hidden'; // Needed due to https://bugzilla.mozilla.org/show_bug.cgi?id=456497
+            el.parentNode.style.verticalAlign = 'top';
+            span.textContent = el.alt;
 
-        if (input.nodeName === 'FORM') {
-            for (var i = 0; i < input.elements.length; i++) {
-                if ((input.elements[i].type === 'submit') || (input.elements[i].type === 'button') || (input.elements[i].type === 'image') || (input.elements[i].nodeName === 'BUTTON')) {
-                    disable_button_just_clicked(input.elements[i]);
+            el.parentNode.insertBefore(span, el);
+            var span_proxy = span.cloneNode(true); // So we can measure width even with hidden tabs
+            span_proxy.style.position = 'absolute';
+            span_proxy.style.visibility = 'hidden';
+            document.body.appendChild(span_proxy);
+
+            window.setTimeout(function () {
+                var width = span_proxy.offsetWidth + 15;
+                span_proxy.parentNode.removeChild(span_proxy);
+                if (el.parentNode.nodeName === 'TH' || el.parentNode.nodeName === 'TD') {
+                    el.parentNode.style.height = width + 'px';
+                } else {
+                    el.parentNode.style.minHeight = width + 'px';
                 }
+            }, 0);
+        }
+    }
+
+    function openLinkAsOverlay(options) {
+        var defaults = {
+                width: '800',
+                height: 'auto',
+                target: '_top'
+            },
+            opts = _.defaults(options, defaults),
+            el = opts.el,
+            url = (el.href === undefined) ? el.action : el.href,
+            url_stripped = url.replace(/#.*/, ''),
+            new_url = url_stripped + ((url_stripped.indexOf('?') == -1) ? '?' : '&') + 'wide_high=1' + url.replace(/^[^\#]+/, '');
+
+        faux_open(new_url, null, 'width=' + opts.width + ';height=' + opts.height, opts.target);
+    }
+
+    function convert_tooltip(el) {
+        var title = el.title;
+
+        if ((title !== '') && !el.classList.contains('leave_native_tooltip') && !document.body.classList.contains('touch_enabled')) {
+            // Remove old tooltip
+            if (el.nodeName === 'IMG' && el.alt === '') {
+                el.alt = el.title;
             }
 
-            return;
-        }
+            el.title = '';
 
-        if (input.form.target === '_blank') {
-            return;
-        }
-
-        window.setTimeout(function () {
-            input.disabled = true;
-            input.under_timer = true;
-        }, 20);
-
-        input.style.cursor = 'wait';
-
-        if (!permanent) {
-            var goback = function () {
-                if (input.under_timer) {
-                    input.disabled = false;
-                    input.under_timer = false;
-                    input.style.cursor = 'default';
+            if ((!el.onmouseover) && ((el.childNodes.length == 0) || ((!el.childNodes[0].onmouseover) && ((!el.childNodes[0].title) || (el.childNodes[0].title == ''))))) {
+                // ^ Only put on new tooltip if there's nothing with a tooltip inside the element
+                if (el.textContent) {
+                    var prefix = el.textContent + ': ';
+                    if (title.substr(0, prefix.length) == prefix)
+                        title = title.substring(prefix.length, title.length);
+                    else if (title == el.textContent) return;
                 }
-            };
 
-            window.setTimeout(goback, 5000);
-        } else {
-            input.under_timer = false;
+                // Stop the tooltip code adding to these events, by defining our own (it will not overwrite existing events).
+                if (!el.onmouseout) el.onmouseout = function () {
+                };
+                if (!el.onmousemove) el.onmouseover = function () {
+                };
+
+                // And now define nice listeners for it all...
+                var win = get_main_cms_window(true);
+
+                el.cms_tooltip_title = escape_html(title);
+
+                el.addEventListener('mouseover', function (event) {
+                    win.activate_tooltip(el, event, el.cms_tooltip_title, 'auto', '', null, false, false, false, false, win);
+                });
+
+                el.addEventListener('mousemove', function (event) {
+                    win.reposition_tooltip(el, event, false, false, null, false, win);
+                });
+
+                el.addEventListener('mouseout', function (event) {
+                    win.deactivate_tooltip(el);
+                });
+            }
         }
-
-        window.addEventListener('pagehide', goback);
     }
 })(window.jQuery || window.Zepto, JSON.parse(document.getElementsByName('composr-symbol-data')[0].content));

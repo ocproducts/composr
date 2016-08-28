@@ -467,7 +467,7 @@
 {$,Buttons}
 
 <div class="float_surrounder buttons_group">
-	<input onclick="disable_button_just_clicked(this); template_editor_tab_save_content('{FILE;^*}'); return false;" class="button_screen buttons__save" type="submit" value="{!SAVE}" />
+	<input data-disable-on-click="{}" onclick="template_editor_tab_save_content('{FILE;^*}'); return false;" class="button_screen buttons__save" type="submit" value="{!SAVE}" />
 
 	{+START,SET,preview_buttons}
 		{+START,IF_PASSED,LIVE_PREVIEW_URL}

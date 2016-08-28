@@ -115,7 +115,7 @@
 								<option value="first_post"{$?,{$EQ,{ORDER},first_post}, selected="selected",}>{!FORUM_ORDER_BY_FIRST_POST}</option>
 								<option value="title"{$?,{$EQ,{ORDER},title}, selected="selected",}>{!FORUM_ORDER_BY_TITLE}</option>
 							</select>
-							{+START,IF,{$NOT,{$JS_ON}}}<input data-disable-after-click="1" class="button_micro buttons__sort" type="submit" value="{!SORT}" />{+END}
+							{+START,IF,{$NOT,{$JS_ON}}}<input data-disable-on-click="{}" class="button_micro buttons__sort" type="submit" value="{!SORT}" />{+END}
 						</div>
 					</form>
 				{+END}

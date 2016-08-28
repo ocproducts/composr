@@ -32,7 +32,7 @@
 								{+END}
 
 								{+START,IF_PASSED,EMBED_URL}
-									<p class="filedump_embed"><a id="embed_link_{FILENAME|*}" href="{EMBED_URL*}" onclick="return open_link_as_overlay(this,950,680);" class="link_exempt">{!_FILEDUMP_EMBED}</a></p>
+									<p class="filedump_embed"><a id="embed_link_{FILENAME|*}" href="{EMBED_URL*}" data-open-as-overlay='{"width": 950, "height": 680}' class="link_exempt">{!_FILEDUMP_EMBED}</a></p>
 								{+END}
 
 								<p><a{+START,IF,{IS_IMAGE}} rel="lightbox"{+END} href="{URL*}">{THUMBNAIL}</a></p>

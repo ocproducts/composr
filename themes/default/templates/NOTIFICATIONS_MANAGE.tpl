@@ -53,7 +53,7 @@
 
 					<td class="associated_details">
 						{+START,IF,{SUPPORTS_CATEGORIES}}
-							<span class="associated_link"><a onclick="return open_link_as_overlay(this,null,null,'_self');" href="{$PAGE_LINK*,_SEARCH:notifications:advanced:notification_code={NOTIFICATION_CODE}{$?,{$NEQ,{MEMBER_ID},{$MEMBER}},:keep_su={$USERNAME&,{MEMBER_ID}}}}">{$?,{$MOBILE},{!MORE},{!ADVANCED}}</a></span>
+							<span class="associated_link"><a data-open-as-overlay='{"target": "_self"}' href="{$PAGE_LINK*,_SEARCH:notifications:advanced:notification_code={NOTIFICATION_CODE}{$?,{$NEQ,{MEMBER_ID},{$MEMBER}},:keep_su={$USERNAME&,{MEMBER_ID}}}}">{$?,{$MOBILE},{!MORE},{!ADVANCED}}</a></span>
 						{+END}
 					</td>
 				</tr>

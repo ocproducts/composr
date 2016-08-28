@@ -190,7 +190,7 @@
 			</table></div>
 
 			<p class="proceed_button">
-				<input data-disable-after-click="1" accesskey="u" class="button_screen buttons__search" type="submit" value="{!SEARCH_TITLE}" />
+				<input data-disable-on-click="{}" accesskey="u" class="button_screen buttons__search" type="submit" value="{!SEARCH_TITLE}" />
 			</p>
 		</form>
 	</div>

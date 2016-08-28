@@ -45,7 +45,7 @@
 				</div>
 
 				<div class="buttons_group">
-					<input onclick="disable_button_just_clicked(this);{+START,IF,{$HAS_PRIVILEGE,comcode_dangerous}} return ajax_form_submit__admin__headless(event,this.form,'{BLOCK_NAME;~*}','{MAP;~*}');{+END}" class="button_screen_item buttons__save" type="submit" value="{!SAVE}" />
+					<input data-disable-on-click="{}" onclick="{+START,IF,{$HAS_PRIVILEGE,comcode_dangerous}} return ajax_form_submit__admin__headless(event,this.form,'{BLOCK_NAME;~*}','{MAP;~*}');{+END}" class="button_screen_item buttons__save" type="submit" value="{!SAVE}" />
 				</div>
 			</form>
 

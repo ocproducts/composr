@@ -62,7 +62,7 @@
 					{+START,LOOP,CATEGORIES}
 						<option{+START,IF,{$EQ,{_loop_var},{CATEGORY}}} selected="selected"{+END}>{_loop_var*}</option>
 					{+END}
-				</select><input data-disable-after-click="1" class="button_micro buttons__filter" type="submit" value="{!FILTER}" />
+				</select><input data-disable-on-click="{}" class="button_micro buttons__filter" type="submit" value="{!FILTER}" />
 			</p>
 		</form>
 

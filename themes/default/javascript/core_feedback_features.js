@@ -1,5 +1,85 @@
 (function ($, Composr) {
     'use strict';
+    Composr.behaviors.coreFeedbackFeatures = {
+        initialize: {
+            attach: function (context) {
+                Composr.initializeViews(context, 'core_feedback_features');
+                Composr.initializeTemplates(context, 'core_feedback_features');
+            }
+        }
+    };
+
+    var CommentsPostingForm = Composr.View.extend({
+        initialize: function (viewOptions, options) {
+            this.options = options || {};
+
+            this.setup();
+        },
+
+        events: {
+            'submit .js-comments-form': function (e) {
+                if (this.options.moreUrl !== undefined) {
+
+                }
+            }
+        },
+
+        setup: function (options) {
+            options = this.options;
+
+            set_up_comcode_autocomplete('post', Composr.isTruthy(options.wysiwyg));
+
+            if (!Composr.$MOBILE && Composr.isTruthy(Composr.$CONFIG_OPTION.jsCaptcha) && Composr.isTruthy(options.captcha)) {
+                set_inner_html(document.getElementById('captcha_spot'), options.captcha);
+            }
+
+            if (Composr.isTruthy(options.forcePreviews)) {
+                document.getElementById('submit_button').style.display = 'none';
+            }
+
+            if (Composr.areDefined(options.reviewRatingCriteria, options.type, options.id) && Composr.$JS_ON) {
+                var i, reviewTitleId, func,
+                    id = Composr.filters.identifier(options.id),
+                    type = options.type,
+                    typeId = Composr.filters.identifier(type);
+
+                for (i = 0; i < options.reviewRatingCriteria; i++) {
+                    reviewTitleId = Composr.filters.identifier(options.reviewRatingCriteria[i].reviewTitle);
+                    func = 'new_review_highlight__' + type + ' __' + reviewTitleId + '__' + id;
+
+                    window[func] = (function (func, reviewTitleId) {
+                        return function (review, first_time) {
+                            var j, bit;
+                            for (j = 1; j <= 5; j++) {
+                                bit = document.getElementById('review_bar_' + j + '__' + typeId + '__' + reviewTitleId + '__' + id);
+                                bit.className = ((review != 0) && (review / 2 >= j)) ? 'rating_star_highlight' : 'rating_star';
+                                if (first_time) bit.onmouseover = function (i) {
+                                    return function () {
+                                        window[func](i * 2, false);
+                                    }
+                                }(j);
+                                if (first_time) bit.onmouseout = function (i) {
+                                    return function () {
+                                        window[func](window.parseInt(document.getElementById('review_rating__' + typeId + '__' + reviewTitleId + '__' + id).value), false);
+                                    }
+                                }(j);
+                                if (first_time) bit.onclick = function (i) {
+                                    return function () {
+                                        document.getElementById('review_rating__' + typeId + '__' + reviewTitleId + '__' + id).value = i * 2;
+                                    }
+                                }(j);
+                            }
+                        }
+                    }(func, reviewTitleId));
+
+                    window[func](0, true);
+                }
+            }
+        }
+    });
+
+    Composr.views.coreFeedbackFeatures = {};
+    Composr.views.coreFeedbackFeatures.CommentsPostingForm = CommentsPostingForm;
 
     Composr.templates.coreFeedbackFeatures = {
         ratingForm: function ratingForm(options) {
@@ -14,56 +94,6 @@
                     rating = options.allRatingCriteria[i];
 
                     apply_rating_highlight_and_ajax_code(rating.likes === '1', rating.rating, rating.contentType, rating.id, rating.type, rating.rating, rating.contentUrl, rating.contentTitle, true);
-                }
-            }
-        },
-
-        commentsPostingForm: function (options) {
-            set_up_comcode_autocomplete('post', Composr.isTruthy(options.wysiwyg));
-
-            if (!Composr.$MOBILE && Composr.isTruthy(Composr.$CONFIG_OPTION.jsCaptcha) && Composr.isTruthy(options.captcha)) {
-                set_inner_html(document.getElementById('captcha_spot'), options.captcha);
-            }
-
-            if (Composr.isTruthy(options.forcePreviews)) {
-                document.getElementById('submit_button').style.display='none';
-            }
-
-            if (Composr.areDefined(options.reviewRatingCriteria, options.type, options.id) && Composr.$JS_ON) {
-                var i, id = Composr.filters.identifier(options.id),
-                    type = options.type,
-                    typeId = Composr.filters.identifier(type);
-
-                for (i = 0; i < options.reviewRatingCriteria; i++) {
-                    var reviewTitleId = Composr.filters.identifier(options.reviewRatingCriteria[i].reviewTitle),
-                        func = 'new_review_highlight__' + type + ' __' + reviewTitleId + '__' + id;
-
-                    window[func] = (function (func, reviewTitleId) {
-                        return function (review, first_time) {
-                            var i, bit;
-                            for (i = 1; i <= 5; i++) {
-                                bit = document.getElementById('review_bar_' + i + '__' + typeId + '__' + reviewTitleId + '__' + id);
-                                bit.className = ((review != 0) && (review / 2 >= i)) ? 'rating_star_highlight' : 'rating_star';
-                                if (first_time) bit.onmouseover = function (i) {
-                                    return function () {
-                                        window[func](i * 2, false);
-                                    }
-                                }(i);
-                                if (first_time) bit.onmouseout = function (i) {
-                                    return function () {
-                                        window[func](window.parseInt(document.getElementById('review_rating__' + typeId + '__' + reviewTitleId + '__' + id).value), false);
-                                    }
-                                }(i);
-                                if (first_time) bit.onclick = function (i) {
-                                    return function () {
-                                        document.getElementById('review_rating__' + typeId + '__' + reviewTitleId + '__' + id).value = i * 2;
-                                    }
-                                }(i);
-                            }
-                        }
-                    }(func, reviewTitleId));
-
-                    window[func](0, true);
                 }
             }
         },
@@ -103,11 +133,4 @@
         }
     };
 
-    Composr.behaviors.coreFeedbackFeatures = {
-        initialize: {
-            attach: function (context) {
-                Composr.initializeTemplates(context, 'core_feedback_features');
-            }
-        }
-    };
 })(window.jQuery || window.Zepto, window.Composr);
