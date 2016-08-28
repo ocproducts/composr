@@ -2043,17 +2043,13 @@ function set_opacity(element, fraction) {
 
 /* Event listeners */
 
-function cancel_bubbling(event, for_element) {
-    for_element = for_element || '';
-
+function cancel_bubbling(event) {
     if (!event || !event.target) {
         return false;
     }
 
-    if (event.target.nodeName && (event.target.nodeName.toLowerCase() === for_element) || (for_element === '')) {
-        if (event.stopPropagation !== undefined) {
-            event.stopPropagation();
-        }
+    if (event.stopPropagation !== undefined) {
+        event.stopPropagation();
 
         return true;
     }

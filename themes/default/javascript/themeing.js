@@ -961,7 +961,7 @@ function receive_compiled_css(ajax_result_frame, file, win) {
 }
 
 function css_equation_helper(file_id, theme) {
-    cancel_bubbling(event, this);
+    cancel_bubbling(event);
 
     var url = 'themewizard_equation';
     url += '&theme=' + window.encodeURIComponent(theme);

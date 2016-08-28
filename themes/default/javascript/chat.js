@@ -349,7 +349,7 @@ function chat_post(event, current_room_id, field_name, font_name, font_colour) {
     // Catch the data being submitted by the form, and send it through XMLHttpRequest if possible. Stop the form submission if this is achieved.
     if ((window.do_ajax_request) && (typeof window.do_ajax_request != 'undefined')) {
         var element = document.getElementById(field_name);
-        cancel_bubbling(event, element);
+        cancel_bubbling(event);
         var message_text = element.value;
 
         if (message_text != '') {
