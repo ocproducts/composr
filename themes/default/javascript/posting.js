@@ -884,7 +884,7 @@ function init_form_saving(form_id)
 		url+=keep_stub();
 		var callback=function(form) { return function(result) {
 			{+START,IF,{$DEV_MODE}}
-				if (typeof console.log!='undefined') console.log('AJAX says',result);
+				if (typeof console.log!='undefined') console.log('Auto-save AJAX says',result);
 			{+END}
 
 			_retrieve_form_autosave(result,form);

@@ -878,7 +878,7 @@ function step_4()
     $options->attach(make_option(do_lang_tempcode('MASTER_PASSWORD'), example('', 'CHOOSE_MASTER_PASSWORD'), 'master_password', $master_password, true));
     require_lang('config');
     $options->attach(make_tick(do_lang_tempcode('SEND_ERROR_EMAILS_OCPRODUCTS'), example('', 'CONFIG_OPTION_send_error_emails_ocproducts'), 'send_error_emails_ocproducts', 1));
-    $options->attach(make_tick(do_lang_tempcode('MULTI_LANG_CONTENT'), example('', 'MULTI_LANG_CONTENT_TEXT'), 'multi_lang_content', 0));
+    $options->attach(make_tick(do_lang_tempcode('MULTI_LANG_CONTENT'), example('', 'MULTI_LANG_CONTENT_TEXT'), 'multi_lang_content', file_exists(get_file_base() . '/.git')/*randomise in dev mode*/ ? mt_rand(0, 1) : 0));
     $sections->attach(do_template('INSTALLER_STEP_4_SECTION', array('_GUID' => 'f051465e86a7a53ec078e0d9de773993', 'HIDDEN' => $hidden, 'TITLE' => $title, 'TEXT' => $text, 'OPTIONS' => $options)));
     $hidden->attach(form_input_hidden('self_learning_cache', '1'));
 
