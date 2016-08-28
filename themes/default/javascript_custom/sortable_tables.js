@@ -994,8 +994,7 @@ var SortableTable = (function(){
    * A util function to cancel bubbling of clicks on filter dropdowns
    */
   table.cancelBubble = function(e) {
-    e = e || window.event;
-    if (typeof(e.stopPropagation)=="function") { e.stopPropagation(); } 
+    if (typeof(e.stopPropagation)=="function") { e.stopPropagation(); }
     if (def(e.cancelBubble)) { e.cancelBubble = true; }
   };
 

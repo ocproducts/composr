@@ -171,21 +171,18 @@ function explicit_notifications_enable_request() {
 }
 
 function toggle_top_personal_stats(event) {
-    if (typeof event == 'undefined') event = window.event;
     _toggle_messaging_box(event, 'pts', true);
     _toggle_messaging_box(event, 'web_notifications', true);
     return _toggle_messaging_box(event, 'top_personal_stats');
 }
 
 function toggle_web_notifications(event) {
-    if (typeof event == 'undefined') event = window.event;
     _toggle_messaging_box(event, 'top_personal_stats', true);
     _toggle_messaging_box(event, 'pts', true);
     return _toggle_messaging_box(event, 'web_notifications');
 }
 
 function toggle_pts(event) {
-    if (typeof event == 'undefined') event = window.event;
     _toggle_messaging_box(event, 'top_personal_stats', true);
     _toggle_messaging_box(event, 'web_notifications', true);
     return _toggle_messaging_box(event, 'pts');
@@ -207,11 +204,9 @@ function _toggle_messaging_box(event, name, hide) {
         body.appendChild(e);
 
         e.addEventListener('click', function (event) {
-            if (typeof event == 'undefined') event = window.event;
             event.within_message_box = true;
         });
         body.addEventListener('click', function (event) {
-            if (typeof event == 'undefined') event = window.event;
             if (typeof event.within_message_box != 'undefined') return;
             _toggle_messaging_box(event, 'top_personal_stats', true);
             _toggle_messaging_box(event, 'web_notifications', true);

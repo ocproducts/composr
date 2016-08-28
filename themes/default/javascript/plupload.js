@@ -13059,14 +13059,14 @@ function plupload_loaded(ob)
 	var old_onclick=btn_submit.onclick;
 	if (!old_onclick) old_onclick=function() {};
 	ob.original_click_handler=old_onclick;
-	btn_submit.onclick=function(event,_ob,form,recurse) { if (typeof event=='undefined') event=window.event; ob.original_click_handler=old_onclick; return begin_form_uploading(event,ob,recurse); };
+	btn_submit.onclick=function(event,_ob,form,recurse) { ob.original_click_handler=old_onclick; return begin_form_uploading(event,ob,recurse); };
 
 	// Preview button too
 	var btn_submit2=document.getElementById('preview_button');
 	if (btn_submit2)
 	{
 		var old_onclick2=btn_submit2.onclick;
-		btn_submit2.onclick=function(event,_ob,form,recurse) { if (typeof event=='undefined') event=window.event; ob.original_click_handler=old_onclick2; return begin_form_uploading(event,ob,recurse); };
+		btn_submit2.onclick=function(event,_ob,form,recurse) { ob.original_click_handler=old_onclick2; return begin_form_uploading(event,ob,recurse); };
 	}
 }
 
@@ -13107,7 +13107,6 @@ function begin_form_uploading(e,ob,recurse)
 		return ret && ret2;
 	}
 
-	e=e || window.event;
 	if ((typeof e!='undefined') && (e))
 	{
 		cancel_bubbling(e);
@@ -13822,12 +13821,10 @@ function initialise_html5_dragdrop_upload(key,key2)
 	var ob=document.getElementById(key);
 
 	ob.ondragover=function(event) {
-		if (typeof event=='undefined') event=window.event;
 		html5_upload_event_drag_over(event,ob,key2);
 	};
 
 	ob.ondrop=function(event) {
-		if (typeof event=='undefined') event=window.event;
 		html5_upload_event_drop(event,ob,key2);
 	};
 }
@@ -13838,7 +13835,6 @@ function html5_upload_event_drag_over(event,ob,key2)
 	{
 		cancel_bubbling(event);
 		if (typeof event.preventDefault!='undefined') event.preventDefault();
-		event.returnValue=false;
 	}
 
 	// NB: don't use dropEffect, prevents drop on Firefox.
@@ -13897,7 +13893,6 @@ function html5_upload(event,field_name,files)
 			name: file.name
 		};
 		file_upload.addEventListener('progress',function(e) {
-			if (typeof e=='undefined') e=window.event;
 			html5_upload_progress(e,field_name);
 		},false);
 

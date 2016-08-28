@@ -1428,15 +1428,12 @@ function find_pos_y(obj, not_relative) {/* if not_relative is true it gets the p
 function enter_pressed(event, alt_char) {
     if (typeof alt_char == 'undefined') alt_char = false;
 
-    if (typeof event == 'undefined') event = window.event;
     if ((alt_char) && (((event.which) && (event.which == alt_char.charCodeAt(0))) || ((event.keyCode) && (event.keyCode == alt_char.charCodeAt(0))))) return true;
     return (((event.which) && (event.which == 13)) || ((event.keyCode) && (event.keyCode == 13)));
 }
 
 /* Takes literal or list of unicode key character codes or case insensitive letters as characters or numbers as characters or supported lower case symbols */
 function key_pressed(event, key, no_error_if_bad) {
-    if (typeof event == 'undefined') event = window.event;
-
     if (typeof window.anykeyokay == 'undefined') window.anykeyokay = false;
 
     if (key.constructor == Array) {
@@ -1457,7 +1454,7 @@ function key_pressed(event, key, no_error_if_bad) {
 
         var targ;
         if (typeof event.target != 'undefined') targ = event.target;
-        else targ = event.srcElement;
+
         if (!no_error_if_bad) {
             var current_bg = window.getComputedStyle(targ).getPropertyValue('background');
             if ((typeof current_bg == 'undefined') || (current_bg)) current_bg = 'white';
@@ -1715,13 +1712,11 @@ function activate_tooltip(ac, event, tooltip, width, pic, height, bottom, no_del
             win.deactivate_tooltip(ac);
         };
         if (!ac.onmousemove) ac.onmousemove = function (event) {
-            if (!event) var event = window.event;
             win.reposition_tooltip(ac, event, false, false, null, false, win);
         };
     } else {
         ac.old_onclick = ac.onclick;
         ac.onclick = function (event) {
-            if (!event) var event = window.event;
             win.deactivate_tooltip(ac);
         };
     }
@@ -1876,8 +1871,8 @@ function reposition_tooltip(ac, event, bottom, starting, tooltip_element, force_
         }
         // Maybe mouse position actually needs to be in parent document?
         try {
-            if ((typeof event.target != 'undefined') || (typeof event.srcElement != 'undefined')) {
-                if (((typeof event.target != 'undefined') ? event.target : event.srcElement).ownerDocument != win.document) {
+            if (event.target !== undefined) {
+                if (event.target.ownerDocument !== win.document) {
                     x = win.mouse_x + style__offset_x;
                     y = win.mouse_y + style__offset_y;
                 }
@@ -1948,7 +1943,6 @@ function resize_frame(name, min_height) {
                 }, 0);
                 frame_element.scrolling = 'no';
                 frame_window.onscroll = function (event) {
-                    if (typeof event == 'undefined') event = window.event;
                     if (event == null) return false;
                     try {
                         frame_window.scrollTo(0, 0);
@@ -2691,8 +2685,6 @@ function apply_rating_highlight_and_ajax_code(likes, initial_rating, content_typ
 
             if (!visual_only) bit.onclick = function (i) {
                 return function (event) {
-                    if (typeof event == 'undefined') event = window.event;
-                    event.returnValue = false;
                     if (typeof event.preventDefault != 'undefined') event.preventDefault();
 
                     // Find where the rating replacement will go
@@ -2775,7 +2767,6 @@ function click_link(link) {
     var backup = link.onclick;
 
     link.onclick = function (e) {
-        if (typeof e == 'undefined') e = window.event;
         cancel_bubbling(e);
     };
 
@@ -2868,8 +2859,6 @@ function replace_comments_form_with_ajax(options, hash, comments_form_id, commen
             if ((typeof is_preview != 'undefined') && (is_preview)) return true;
 
             // Cancel the event from running
-            if (typeof event == 'undefined') event = window.event;
-            event.returnValue = false;
             if (typeof event.preventDefault != 'undefined') event.preventDefault();
 
             if (!comments_form.old_onsubmit(event)) return false;

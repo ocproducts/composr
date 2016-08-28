@@ -78,8 +78,10 @@
         }
     });
 
-    Composr.views.coreFeedbackFeatures = {};
-    Composr.views.coreFeedbackFeatures.CommentsPostingForm = CommentsPostingForm;
+    // Expose the views
+    Composr.views.coreFeedbackFeatures = {
+        CommentsPostingForm: CommentsPostingForm
+    };
 
     Composr.templates.coreFeedbackFeatures = {
         ratingForm: function ratingForm(options) {

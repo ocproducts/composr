@@ -127,8 +127,7 @@ function copy_fields_into_bottom(i, changed) {
 }
 
 function menu_editor_handle_keypress(e) {
-    if (typeof e == 'undefined') e = window.event;
-    var t = e.srcElement ? e.srcElement : e.target;
+    var t = e.target;
 
     var up = (e.keyCode ? e.keyCode : e.charCode) == 38;
     var down = (e.keyCode ? e.keyCode : e.charCode) == 40;

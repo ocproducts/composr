@@ -24,8 +24,6 @@ function file_id_to_file(file_id) {
 
 function template_editor_assign_unload_event() {
     window.addEventListener('beforeunload', function (event) {
-        if (!event) event = window.event;
-
         if (document.querySelectorAll('.file_changed').length > 0) {
             undo_staff_unload_action();
             window.unloaded = false;
@@ -119,10 +117,6 @@ function template_editor_add_tab(file) {
     header.id = 't_' + file_id;
     header.className = 'tab file_nonchanged';
     header.onclick = function (event) {
-        if (typeof event == 'undefined') event = window.event;
-
-        event.returnValue = false;
-
         select_tab('g', file_id);
 
         template_editor_show_tab(file_id);
@@ -168,7 +162,6 @@ function template_editor_add_tab(file) {
     close_button.style.height = '16px';
     close_button.style.verticalAlign = 'middle';
     close_button.onclick = function (event) {
-        if (typeof event == 'undefined') event = window.event;
         cancel_bubbling(event);
         if (typeof event.preventDefault != 'undefined') event.preventDefault();
 
@@ -368,7 +361,7 @@ function template_editor_clean_tabs() {
     }
 
     if (num_tabs == 0) {
-        set_inner_html(headers, '<a href="#!" id="t_default" class="tab" onclick="event.returnValue=false;"><span>&mdash;</span></a>');
+        set_inner_html(headers, '<a href="#!" id="t_default" class="tab"><span>&mdash;</span></a>');
         set_inner_html(bodies, '<div id="g_default"><p class="nothing_here">{!NA}</p></div>');
     }
 }
@@ -770,16 +763,13 @@ function set_up_parent_page_highlighting(file, file_id) {
             css_text = css_text.toLowerCase().replace(/; /, ';<br />\n');
         }
         li.onmouseout = function (event) {
-            if (typeof event == 'undefined') event = window.event;
             if (typeof window.deactivate_tooltip != 'undefined') deactivate_tooltip(this);
         };
         li.onmousemove = function (event) {
-            if (typeof event == 'undefined') event = window.event;
             if (typeof window.activate_tooltip != 'undefined') reposition_tooltip(this, event);
         };
         li.onmouseover = function (css_text) {
             return function (event) {
-                if (typeof event == 'undefined') event = window.event;
                 if (typeof window.activate_tooltip != 'undefined') activate_tooltip(this, event, css_text, 'auto');
             }
         }(css_text);
@@ -799,8 +789,6 @@ function set_up_parent_page_highlighting(file, file_id) {
         // Highlighting on parent page
         a.onmouseover = function (selector) {
             return function (event) {
-                if (typeof event == 'undefined') event = window.event;
-
                 if ((window.opener) && (!event.ctrlKey) && (!event.metaKey)) {
                     var elements = find_selectors_for(window.opener, selector);
                     for (var i = 0; i < elements.length; i++) {
@@ -812,8 +800,6 @@ function set_up_parent_page_highlighting(file, file_id) {
         }(selector);
         a.onmouseout = function (selector) {
             return function (event) {
-                if (typeof event == 'undefined') event = window.event;
-
                 if ((window.opener) && (!event.ctrlKey) && (!event.metaKey)) {
                     var elements = find_selectors_for(window.opener, selector);
                     for (var i = 0; i < elements.length; i++) {
@@ -831,10 +817,9 @@ function set_up_parent_page_highlighting(file, file_id) {
 
             element.addEventListener('mouseover', function (a, element) {
                 return function (event) {
-                    if (typeof event == 'undefined') event = window.event;
 
                     if ((window) && (!event.ctrlKey) && (!event.metaKey)) {
-                        var target = event.target || event.srcElement;
+                        var target = event.target;
                         var target_distance = 0;
                         var element_recurse = element;
                         do
@@ -857,8 +842,6 @@ function set_up_parent_page_highlighting(file, file_id) {
             }(a, element));
             element.addEventListener('mouseout', function (a) {
                 return function (event) {
-                    if (typeof event == 'undefined') event = window.event;
-
                     if ((window) && (!event.ctrlKey) && (!event.metaKey)) {
                         a.style.outline = '';
                         a.style.background = '';

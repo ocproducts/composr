@@ -31,7 +31,6 @@ if (window.overlay_zIndex === undefined) {
 		previous_button.className='previous_button';
 		previous_button.src='{$IMG;,mediaset_previous}'.replace(/^https?:/,window.location.protocol);
 		var previous=function(e) {
-			if (typeof e=='undefined') e=window.event;
 			cancel_bubbling(e);
 
 			var new_position=modal.positionInSet-1;
@@ -48,7 +47,6 @@ if (window.overlay_zIndex === undefined) {
 		next_button.className='next_button';
 		next_button.src='{$IMG;,mediaset_next}'.replace(/^https?:/,window.location.protocol);
 		var next=function(e) {
-			if (typeof e=='undefined') e=window.event;
 			cancel_bubbling(e);
 
 			var new_position=modal.positionInSet+1;
@@ -765,7 +763,6 @@ function ModalWindow()
 			};
 
 			this.keyup=function(e) {
-				if (!e) e=window.event;
 				var key_code=(e)?(e.which || e.keyCode):null;
 
 				if (key_code==37) // Left arrow
@@ -790,7 +787,6 @@ function ModalWindow()
 			};
 
 			this.mousemove=function(e) {
-				if (!e) e=window.event;
 				if (_this.box_wrapper && _this.box_wrapper.childNodes[0].className.indexOf(' mousemove')==-1)
 				{
 					_this.box_wrapper.childNodes[0].className+=' mousemove';

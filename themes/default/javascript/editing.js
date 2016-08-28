@@ -479,7 +479,6 @@ function find_tags_in_editor(editor, element) {
                 comcodes[i].ondblclick = function (event) {
                     if (this.onmouseout) this.onmouseout();
                     var field_name = editor.name;
-                    if ((typeof window.event != 'undefined') && (window.event)) window.event.returnValue = false;
                     if (this.id == '') this.id = 'comcode_tag_' + Math.round(Math.random() * 10000000);
                     var tag_type = this.title.replace(/^\[/, '').replace(/[= \]](.|\n)*$/, '');
                     if (tag_type == 'block') {

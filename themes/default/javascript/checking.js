@@ -42,7 +42,6 @@ function fix_form_enter_key(form) {
             && (typeof submit.onclick != 'undefined') && (submit.onclick)
             && ((typeof inputs[i].onkeypress == 'undefined') || (!inputs[i].onkeypress)))
             inputs[i].onkeypress = function (event) {
-                if (typeof event == 'undefined') event = window.event;
                 if (enter_pressed(event)) submit.onclick(event);
             };
     }
@@ -899,16 +898,12 @@ function initialise_input_theme_image_entry(name, code) {
     var form = input.form;
 
     e.onkeypress = function (event) {
-        if (!event) event = window.event;
-
         if (entered_pressed(event))
             return e.onclick.call([event]);
         return null;
     };
 
     var click_func = function (event) {
-        if (!event) event = window.event;
-
         choose_picture('j_' + stem, img, name, event);
 
         if (typeof window.main_form_very_simple != 'undefined') form.submit();
