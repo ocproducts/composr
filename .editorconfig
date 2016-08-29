@@ -35,7 +35,6 @@ tab_width = 3
 
 [*.js]
 quote_type = single
-tab_width = 3
 
 [*.sh]
 indent_style = tab  

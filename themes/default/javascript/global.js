@@ -308,7 +308,7 @@ function new_html__initialise(element) {
                     /*IE6 does not like*/
                 });
 
-            // Convert a/img title attributes into Composr tooltips
+            // Convert form element title attributes into Composr tooltips
             /*{+START,IF,{$CONFIG_OPTION,js_overlays}}*/
             //convert_tooltip(element);	Not useful
 
@@ -316,13 +316,13 @@ function new_html__initialise(element) {
             var elements, j;
             elements = element.elements;
             for (j = 0; j < elements.length; j++) {
-                if (typeof elements[j].title != 'undefined') {
+                if (typeof elements[j].title != 'undefined' && typeof elements[j]['original-title'] == 'undefined'/*check tipsy not used*/ && elements[j].className.indexOf('no_tooltip') == -1) {
                     convert_tooltip(elements[j]);
                 }
             }
             elements = element.getElementsByTagName('input'); // Lame, but JS DOM does not include type="image" ones in form.elements
             for (j = 0; j < elements.length; j++) {
-                if ((elements[j].type == 'image') && (typeof elements[j].title != 'undefined')) {
+                if (elements[j].type == 'image' && typeof elements[j].title != 'undefined' && typeof elements[j]['original-title'] == 'undefined'/*check tipsy not used*/ && elements[j].className.indexOf('no_tooltip') == -1) {
                     convert_tooltip(elements[j]);
                 }
             }
@@ -2704,6 +2704,9 @@ function inner_html_copy(dom_node, xml_doc, level, script_tag_dependencies) {
                             }
                             if (found == 0) // Now we know all to_loads are loaded, we do the to_runs
                             {
+                                if (typeof window.console != 'undefined') {
+                                    console.log('All AJAX-injected script tags loaded');
+                                }
                                 for (i = 0; i < script_tag_dependencies['to_run'].length; i++) {
                                     eval.call(window, script_tag_dependencies['to_run'][i]);
                                 }

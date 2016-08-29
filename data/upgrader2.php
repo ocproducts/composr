@@ -152,9 +152,7 @@ echo '<script>// <![CDATA[
         window.scrollTo(0,document.getElementById("file_' . strval(min(count($todo) - 1, $file_offset + $per_cycle)) . '").offsetTop-50);
     },200);
 //]]></script>';
-if ($next_offset_url == '') {
-    echo '<p><strong>' . htmlentities($_GET['done']) . '!</strong></p>';
-} else {
+if ($next_offset_url != '') {
     echo '<hr /><p>Continuing in 3 seconds. If you have meta-refresh disabled, <a href="' . htmlentities($next_offset_url) . '">force continue</a>.</p>';
 }
 up2_do_footer();

@@ -369,15 +369,7 @@ function cms_setcookie($name, $value, $session = false, $http_only = false, $day
     }
 
     $time = $session ? 0 : (time() + (($days === null) ? get_cookie_days() : $days) * 24 * 60 * 60);
-    if ($cookie_domain == '') {
-        $output = @setcookie($name, $value, $time, $path);
-    } else {
-        if (!$http_only) {
-            $output = @setcookie($name, $value, $time, $path, $cookie_domain);
-        } else {
-            $output = @setcookie($name, $value, $time, $path, $cookie_domain, false, true);
-        }
-    }
+    $output = @setcookie($name, $value, $time, $path, $cookie_domain, substr(get_base_url(null), 0, 7) == 'http://', $http_only);
     if ($name != 'has_cookies') {
         $_COOKIE[$name] = $value;
     }

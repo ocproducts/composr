@@ -4,18 +4,8 @@
 	</th>
 
 	<td class="form_table_field_input">
-		{+START,IF_NON_EMPTY,{OVERRIDES}}
-			<div class="accessibility_hidden"><label for="access_{GROUP_ID*}">{PINTERFACE_VIEW*} ({GROUP_NAME*})</label></div>
-			<input id="access_{GROUP_ID*}" name="_ignore" type="checkbox" checked="checked" disabled="disabled" /> <span class="right float_separation">(<em>{!ADMIN}</em>)</span>
-		{+END}
-
-		{+START,IF_EMPTY,{OVERRIDES}}
-			<label for="access_{GROUP_ID*}">
-				<div class="accessibility_hidden"><label for="access_{GROUP_ID*}">{PINTERFACE_VIEW*} ({GROUP_NAME*})</label></div>
-				<input id="access_{GROUP_ID*}" name="_ignore" type="checkbox" checked="checked" disabled="disabled" /> <span class="right float_separation">(<em>{!ADMIN}</em>)</span>
-				{PINTERFACE_VIEW*}
-			</label>
-		{+END}
+		<div class="accessibility_hidden"><label for="access_{GROUP_ID*}">{PINTERFACE_VIEW*} ({GROUP_NAME*})</label></div>
+		<input id="access_{GROUP_ID*}" title="{PINTERFACE_VIEW*} ({!ADMIN})" name="_ignore" type="checkbox" checked="checked" disabled="disabled" class="no_tooltip" />
 	</td>
 
 	{+START,LOOP,OVERRIDES}
