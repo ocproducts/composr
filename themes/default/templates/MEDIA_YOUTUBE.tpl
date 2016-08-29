@@ -8,7 +8,7 @@
 	</figcaption>
 {+END}
 
-<script>
+<script>// <![CDATA[
 	if (typeof window.done_youtube_player_init=='undefined')
 	{
 		var tag=document.createElement('script');
@@ -43,4 +43,4 @@
 			}
 		});
 	}
-</script>
+//]]></script>
