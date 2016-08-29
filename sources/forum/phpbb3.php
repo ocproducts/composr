@@ -389,7 +389,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     public function get_mrow($name)
     {
-        $rows = $this->db->query_select('users', array('*'), array('username' => strtolower($name)), '', 1);
+        $rows = $this->db->query_select('users', array('*'), array('username_clean' => strtolower($name)), '', 1);
         if (!array_key_exists(0, $rows)) {
             return null;
         }
@@ -1242,7 +1242,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     public function get_member_from_username($name)
     {
-        return $this->db->query_select_value_if_there('users', 'user_id', array('username' => strtolower($name)));
+        return $this->db->query_select_value_if_there('users', 'user_id', array('username_clean' => strtolower($name)));
     }
 
     /**
@@ -1318,7 +1318,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
     public function forum_md5($data, $key, $just_first = false)
     {
         $itoa64 = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-        $hash = $GLOBALS['FORUM_DB']->query_select_value_if_there('users', 'user_password', array('username' => strtolower($key)));
+        $hash = $GLOBALS['FORUM_DB']->query_select_value_if_there('users', 'user_password', array('username_clean' => strtolower($key)));
         if ($hash === null) {
             return '';
         }
@@ -1407,7 +1407,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
         $out['id'] = null;
 
         if ($userid === null) {
-            $rows = $this->db->query_select('users', array('*'), array('username' => strtolower($username)), '', 1);
+            $rows = $this->db->query_select('users', array('*'), array('username_clean' => strtolower($username)), '', 1);
             if (array_key_exists(0, $rows)) {
                 $this->MEMBER_ROWS_CACHED[$rows[0]['user_id']] = $rows[0];
             }

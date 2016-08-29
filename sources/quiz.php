@@ -143,8 +143,10 @@ function render_quiz($questions)
     $fields = new Tempcode();
     foreach ($questions as $i => $q) {
         $name = 'q_' . strval($q['id']);
-        $question = protect_from_escaping((is_string($q['q_question_text']) && !isset($q['q_question_text__text_parsed'])) ? comcode_to_tempcode($q['q_question_text']) : get_translated_tempcode('quiz_questions', $q, 'q_question_text'));
-        $description = protect_from_escaping((is_string($q['q_question_extra_text']) && !isset($q['q_question_extra_text__text_parsed'])) ? comcode_to_tempcode($q['q_question_extra_text']) : get_translated_tempcode('quiz_questions', $q, 'q_question_extra_text'));
+
+        $just_quiz_row = db_map_restrict($q, array('id', 'q_question_text', 'q_question_extra_text'));
+        $question = protect_from_escaping((is_string($q['q_question_text']) && !isset($q['q_question_text__text_parsed'])) ? comcode_to_tempcode($q['q_question_text']) : get_translated_tempcode('quiz_questions', $just_quiz_row, 'q_question_text'));
+        $description = protect_from_escaping((is_string($q['q_question_extra_text']) && !isset($q['q_question_extra_text__text_parsed'])) ? comcode_to_tempcode($q['q_question_extra_text']) : get_translated_tempcode('quiz_questions', $just_quiz_row, 'q_question_extra_text'));
 
         switch ($q['q_type']) {
             case 'MULTIPLECHOICE':

@@ -2493,6 +2493,10 @@ function inner_html_copy(dom_node, xml_doc, level, script_tag_dependencies) {
                             }
                             if (found == 0) // Now we know all to_loads are loaded, we do the to_runs
                             {
+                                if (typeof window.console != 'undefined') {
+                                    console.log('All AJAX-injected script tags loaded');
+                                }
+
                                 for (i = 0; i < script_tag_dependencies['to_run'].length; i++) {
                                     eval.call(window, script_tag_dependencies['to_run'][i]);
                                 }

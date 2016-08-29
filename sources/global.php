@@ -287,8 +287,10 @@ function require_code($codename, $light_exit = false)
             $codename .= '... "' . $php_errormsg . '"';
         }
     }
+    $error_string = (is_file($path_orig) || is_file($path_custom)) ? 'MISSING_SOURCE_FILE' : 'CORRUPT_SOURCE_FILE';
+    $error_message = do_lang_tempcode($error_string, escape_html($codename), escape_html($path_orig));
     if ($light_exit) {
-        warn_exit(do_lang_tempcode('MISSING_SOURCE_FILE', escape_html($codename), escape_html($path_orig)), false, true);
+        warn_exit($error_message, false, true);
     }
     if (!function_exists('do_lang')) {
         if ($codename === 'critical_errors') {
@@ -296,7 +298,7 @@ function require_code($codename, $light_exit = false)
         }
         critical_error('MISSING_SOURCE', $codename);
     }
-    fatal_exit(do_lang_tempcode('MISSING_SOURCE_FILE', escape_html($codename), escape_html($path_orig)));
+    fatal_exit($error_message);
 }
 
 /**

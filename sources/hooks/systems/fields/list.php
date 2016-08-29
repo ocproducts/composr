@@ -46,6 +46,10 @@ class Hook_fields_list
         $display = array_key_exists('trans_name', $field) ? $field['trans_name'] : get_translated_text($field['cf_name']); // 'trans_name' may have been set in CPF retrieval API, might not correspond to DB lookup if is an internal field
         $list = $this->get_input_list_map($field, true);
         foreach ($list as $l => $written) {
+            if (is_integer($l)) {
+                $l = strval($l);
+            }
+
             $special->attach(form_input_list_entry($l, $current != '' && $current === $l, $written));
         }
         return array('NAME' => strval($field['id']), 'DISPLAY' => $display, 'TYPE' => $type, 'SPECIAL' => $special);
@@ -211,6 +215,10 @@ class Hook_fields_list
                 }
 
                 foreach ($list as $l => $l_nice) {
+                    if (is_integer($l)) {
+                        $l = strval($l);
+                    }
+
                     $list_tpl->attach(form_input_radio_entry($input_name, $l, $l === $actual_value, protect_from_escaping(comcode_to_tempcode($l_nice, null, true))));
                 }
 
@@ -238,6 +246,10 @@ class Hook_fields_list
                     }
 
                     foreach ($list as $l => $l_nice) {
+                        if (is_integer($l)) {
+                            $l = strval($l);
+                        }
+
                         $list_tpl->attach(form_input_list_entry($l, false, protect_from_escaping(comcode_to_tempcode($l_nice, null, true))));
                     }
 
@@ -252,7 +264,12 @@ class Hook_fields_list
                     }
 
                     foreach ($list as $l => $l_nice) {
+                        if (is_integer($l)) {
+                            $l = strval($l);
+                        }
+
                         $selected = ($l === $actual_value || ($actual_value === null) && $l == do_lang('OTHER') && $field['cf_required'] == 1);
+
                         $list_tpl->attach(form_input_list_entry($l, $selected, protect_from_escaping(comcode_to_tempcode($l_nice, null, true))));
                     }
 

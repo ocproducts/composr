@@ -5153,6 +5153,7 @@ function string_scan($lang, $do_guessing = false)
         MISSING_PHOTO
         MISSING_RESOURCE_COMCODE
         MISSING_SOURCE_FILE
+        CORRUPT_SOURCE_FILE
         MISSING_SYMBOL
         MISSING_TEMPLATE_FILE
         MISSING_TEMPLATE_PARAMETER

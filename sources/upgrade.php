@@ -332,8 +332,7 @@ function upgrade_script()
                             }
 
                             // Install if either of the following is true:
-                            //  - it's some file not in an addon (shouldn't actually happen)
-                            //  - it's a new addon (addon that is not installed or uninstalled i.e. does not have an exported addon file, and not showing up as uninstalled in log)
+                            //  - it's some file not in any addon (shouldn't actually happen)
                             //  - it's a file in an addon we have installed
                             if (($found === null) || (file_exists(get_file_base() . '/sources/hooks/systems/addon_registry/' . $found . '.php'))) {
                                 if (substr($upgrade_file['path'], -1) == '/') {

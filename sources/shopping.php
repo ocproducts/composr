@@ -229,7 +229,7 @@ FOR ORDER MANAGEMENT
  */
 function delete_incomplete_orders()
 {
-    $where = db_string_equal_to('t1.order_status', 'ORDER_STATUS_awaiting_payment') . ' AND add_date<' . strval(time() - 60 * 60 * 24 * 14/*2 weeks*/);
+    $where = db_string_equal_to('order_status', 'ORDER_STATUS_awaiting_payment') . ' AND add_date<' . strval(time() - 60 * 60 * 24 * 14/*2 weeks*/);
     $rows = $GLOBALS['SITE_DB']->query('SELECT id FROM ' . get_table_prefix() . 'shopping_order WHERE ' . $where);
     foreach ($rows as $row) {
         $GLOBALS['SITE_DB']->query_delete('shopping_order_details', array('order_id' => $row['id']));
