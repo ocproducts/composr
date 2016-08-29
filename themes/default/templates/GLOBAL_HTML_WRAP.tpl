@@ -238,10 +238,6 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 						{$,Uncomment to show user's time {$DATE} {$TIME}}
 
 						{$COPYRIGHT`}
-
-						{+START,IF,{$NOT,{$MOBILE}}}
-							{+START,INCLUDE,FONT_SIZER}{+END}
-						{+END}
 					</div>
 				</div>
 			</footer>

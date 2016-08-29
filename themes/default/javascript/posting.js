@@ -654,20 +654,6 @@ function do_input_font(field_name) {
     insert_textbox_wrapping(document.getElementById(field_name), '[font=\"' + escape_comcode(face.value) + '\" color=\"' + escape_comcode(colour.value) + '\" size=\"' + escape_comcode(size.value) + '\"]', '[/font]');
 }
 
-function set_font_sizes(list) {
-    var i = 0;
-    for (i = 1; i < list.options.length; i++) {
-        list.options[i].style.fontSize = list.options[i].value + 'em';
-    }
-}
-
-function deset_font_sizes(list) {
-    var i = 0;
-    for (i = 1; i < list.options.length; i++) {
-        list.options[i].style.fontSize = '';
-    }
-}
-
 // ==================
 // Auto-saving/drafts
 // ==================

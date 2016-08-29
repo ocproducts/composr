@@ -138,12 +138,6 @@ function script_load_stuff() {
         clear_out_tooltips(null);
     });
 
-    // Font size
-    var font_size = read_cookie('font_size');
-    if (font_size !== '') {
-        set_font_size(font_size);
-    }
-
     // If back button pressed back from an AJAX-generated page variant we need to refresh page because we aren't doing full JS state management
     window.has_js_state = false;
     window.onpopstate = function (event) {
@@ -301,18 +295,6 @@ function placeholder_blur(ob, def) {
     if (ob.value == def) {
         ob.className = ob.className.replace('field_input_filled', 'field_input_non_filled');
     }
-}
-
-function set_font_size(size) {
-    var old_size = read_cookie('font_size');
-    var old_sizer = document.getElementById('font_size_' + old_size);
-    if (old_sizer) old_sizer.className = old_sizer.className.replace(/ selected/g, '');
-
-    document.body.style.fontSize = size + 'px';
-    set_cookie('font_size', size, 120);
-
-    var new_sizer = document.getElementById('font_size_' + size);
-    if (new_sizer) new_sizer.className += ' selected';
 }
 
 /* Very simple form control flow */

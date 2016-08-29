@@ -911,7 +911,6 @@ function get_text_templates()
         'templates/HANDLE_CONFLICT_RESOLUTION.tpl',
         'templates/TRACKBACK_XML.tpl',
         'templates/POLL_RSS_SUMMARY.tpl',
-        'templates/FONT_SIZER.tpl',
         'templates/FORM_SCREEN_FIELD_DESCRIPTION.tpl',
         'templates/FORM_SCREEN_ARE_REQUIRED.tpl',
         'templates/GALLERY_POPULAR.tpl',

@@ -1,4 +1,14 @@
 (function ($, Composr) {
+    'use strict';
+
+    Composr.behaviors.coreRichMedia = {
+        initialize: {
+            attach: function (context) {
+                Composr.initializeTemplates(context, 'core_rich_media');
+            }
+        }
+    };
+
     Composr.templates.coreRichMedia = {
         attachments: function attachments(options) {
             window.attachment_template = options.attachmentTemplate;
@@ -19,13 +29,13 @@
             }
 
             window.rebuild_attachment_button_for_next = function rebuild_attachment_button_for_next(posting_field_name, attachment_upload_button) {
-                var filter = typeof options.filter !== 'undefined' ? options.filter : null;
+                var filter = options.filter !== undefined ? options.filter : null;
 
                 if (posting_field_name !== options.postingFieldName) {
                     return false;
                 }
 
-                if (typeof attachment_upload_button === 'undefined') {
+                if (attachment_upload_button === undefined) {
                     attachment_upload_button = window.attachment_upload_button; // Use what was used last time
                 }
                 window.attachment_upload_button = attachment_upload_button;
@@ -112,7 +122,7 @@
                     imgs.push([Composr.dom.html(as[i]), title, true]);
                     imgsThumbs.push((as[i].poster && as[i].poster != '') ? as[i].poster : '{$IMG;/,video_thumb}');
 
-                    contains_video = true;
+                    window.contains_video = true;
 
                     x++;
                 } else {
@@ -532,14 +542,4 @@
             jwplayer(options.playerId).setup(playerOptions);
         }
     };
-
-    Composr.behaviors.coreRichMedia = {
-        initialize: {
-            attach: function (context) {
-                Composr.initializeTemplates(context, 'core_rich_media');
-            }
-        }
-    };
-
-
 })(window.jQuery || window.Zepto, Composr);

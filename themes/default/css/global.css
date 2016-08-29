@@ -446,7 +446,7 @@ body.website_body.frame {
 /*{+END}*/
 
 body.website_body, #wysiwyg_editor {
-	font-size: 13px; /* Note that the font sizer may override this (FONT_SIZER.tpl) */
+	font-size: 13px;
 }
 #wysiwyg_editor {
 	margin: 0;

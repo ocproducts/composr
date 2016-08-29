@@ -78,7 +78,6 @@ class template_no_unused_test_set extends cms_test_case
             'EMOTICON_IMG_CODE_THEMED',
             'FILEDUMP_FOOTER',
             'FILEDUMP_SEARCH',
-            'FONT_SIZER',
             'FORM_SCREEN_ARE_REQUIRED',
             'FORM_SCREEN_FIELD_DESCRIPTION',
             'FORM_SCREEN_INPUT_DATE',

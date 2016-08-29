@@ -171,10 +171,6 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 				<div class="global_footer_right">
 					<div class="global_copyright">
 						{$,Uncomment to show user's time {$DATE} {$TIME}}
-
-						{+START,IF,{$NOT,{$MOBILE}}}
-							{+START,INCLUDE,FONT_SIZER}{+END}
-						{+END}
 					</div>
 
 					<nav class="global_minilinks">

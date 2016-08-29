@@ -49,7 +49,8 @@
         arrProto  = Array.prototype,
         toArray   = Function.bind.call(Function.call, arrProto.slice),
         forEach   = Function.bind.call(Function.call, arrProto.forEach),
-        noop      = function () { return; },
+        defined   = function (v) { return v !== undefined; },
+        noop      = function () { return undefined; },
 
         loadPolyfillsPromise = new Promise(function (resolve) {
             loadPolyfills(resolve);
@@ -421,6 +422,7 @@
     /* DOM helper methods */
     Composr.dom = {};
 
+    // Returns a single matching element
     Composr.dom.$ = function (el, selector) {
         if (arguments.length === 1) {
             selector = el;
@@ -430,6 +432,7 @@
         return el.querySelector(selector);
     };
 
+    // Returns an array with matching elements
     Composr.dom.$$ = function (el, selector) {
         if (arguments.length === 1) {
             selector = el;
@@ -437,6 +440,23 @@
         }
 
         return toArray(el.querySelectorAll(selector));
+    };
+
+    // This one (3 dollars) also includes the parent element (at offset 0) if it matches the selector
+    Composr.dom.$$$ = function (el, selector) {
+        var els;
+
+        if (!defined(el) || !defined(selector)) {
+            throw new Error('Composr.dom.$$$() requires two arguments.');
+        }
+
+        els = toArray(el.querySelectorAll(selector));
+
+        if (Composr.dom.matches(el, selector)) {
+            els.unshift(el);
+        }
+
+        return els;
     };
 
     Composr.dom.html = function (el, html) {
@@ -556,11 +576,7 @@
 
         initializeAnchors: {
             attach: function (context) {
-                var anchors = Composr.dom.$$(context, 'a');
-
-                if (context.nodeName.toLowerCase() === 'a') {
-                    anchors.unshift(context);
-                }
+                var anchors = Composr.dom.$$$(context, 'a');
 
                 anchors.forEach(function (anchor) {
                     if (Composr.isTruthy(Composr.$CONFIG_OPTION.jsOverlays)) {
@@ -587,11 +603,7 @@
 
         initializeForms: {
             attach: function (context) {
-                var forms = Composr.dom.$$(context, 'form');
-
-                if (context.nodeName.toLowerCase() === 'form') {
-                    forms.unshift(context);
-                }
+                var forms = Composr.dom.$$$(context, 'form');
 
                 forms.forEach(function (form) {
                     // HTML editor
@@ -633,18 +645,11 @@
         // Convert img title attributes into Composr tooltips
         imageTooltips: {
             attach: function (context) {
-                var selector = 'img:not(.activate_rich_semantic_tooltip)';
-
                 if (Composr.isFalsy(Composr.$CONFIG_OPTION.jsOverlays)) {
                     return;
                 }
 
-                if (Composr.dom.matches(context, selector)) {
-                    convert_tooltip(context);
-                    return;
-                }
-
-                Composr.dom.$$(context, selector).forEach(function (img) {
+                Composr.dom.$$$(context, 'img:not(.activate_rich_semantic_tooltip)').forEach(function (img) {
                     convert_tooltip(img);
                 });
             }
@@ -654,11 +659,7 @@
         // @TODO: To be killed
         functionCalls: {
             attach: function (context) {
-                var els = Composr.dom.$$(context, '[data-cms-call]');
-
-                if (Composr.dom.matches(context, '[data-cms-call]')) {
-                    els.unshift(context);
-                }
+                var els = Composr.dom.$$$(context, '[data-cms-call]');
 
                 els.forEach(function (el) {
                     var funcName = el.dataset.cmsCall.trim(),
@@ -692,11 +693,7 @@
 
         select2Plugin: {
             attach: function (context) {
-                var els = Composr.dom.$$(context, '[data-cms-select2]');
-
-                if (Composr.dom.matches(context, '[data-cms-select2]')) {
-                    els.unshift(context);
-                }
+                var els = Composr.dom.$$$(context, '[data-cms-select2]');
 
                 // Select2 plugin hook
                 els.forEach(function (el) {
@@ -713,11 +710,7 @@
 
         gdTextImages: {
             attach: function (context) {
-                var els = Composr.dom.$$(context, 'img[data-gd-text]');
-
-                if (Composr.dom.matches(context, 'img[data-gd-text]')) {
-                    els.unshift(context);
-                }
+                var els = Composr.dom.$$$(context, 'img[data-gd-text]');
 
                 els.forEach(function (img) {
                     gdImageTransform(img);
