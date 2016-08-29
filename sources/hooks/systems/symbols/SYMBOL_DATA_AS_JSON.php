@@ -87,6 +87,10 @@ class Hook_symbol_SYMBOL_DATA_AS_JSON
             'longGoogleCookies' => get_option('long_google_cookies'),
         ];
 
+        $value['VALUE_OPTION'] = [
+            'jsKeepParams' => get_value('js_keep_params'),
+        ];
+
         require_code('urls');
         $value['EXTRA'] = [
             'canTryUrlSchemes' => can_try_url_schemes()

@@ -1,7 +1,7 @@
 <div class="float_surrounder">
 	{+START,IF,{$ADDON_INSTALLED,search}}
 		{$SET,search_url,{$SELF_URL}}
-		<form class="filedump_filter" role="search" title="{!SEARCH}" onsubmit="disable_button_just_clicked(this); action.href+=window.location.hash; if (this.elements['search'].value=='{!SEARCH;*}') this.elements['search'].value='';" action="{$URL_FOR_GET_FORM*,{$GET,search_url},search,type_filter,sort,place,recurse}" method="get" autocomplete="off">
+		<form class="filedump_filter" role="search" title="{!SEARCH}" data-disable-buttons-on-submit="{}" onsubmit="action.href+=window.location.hash; if (this.elements['search'].value=='{!SEARCH;*}') this.elements['search'].value='';" action="{$URL_FOR_GET_FORM*,{$GET,search_url},search,type_filter,sort,place,recurse}" method="get" autocomplete="off">
 			{$HIDDENS_FOR_GET_FORM,{$GET,search_url},search,type_filter,sort,place,recurse}
 
 			<p class="left">

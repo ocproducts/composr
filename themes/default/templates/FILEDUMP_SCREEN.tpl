@@ -2,16 +2,16 @@
 
 <div>
 	<div class="float_surrounder"><div class="tabs" role="tablist">
-		<a aria-controls="g_thumbnails" role="tab" href="#!" id="t_thumbnails" class="tab tab_active tab_first" onclick="event.returnValue=false; select_tab('g','thumbnails'); return false;"><span>{!VIEW_THUMBNAILS}</span></a>
+		<a aria-controls="g_thumbnails" role="tab" href="#!" id="t_thumbnails" class="tab tab_active tab_first" onclick="select_tab('g','thumbnails'); return false;"><span>{!VIEW_THUMBNAILS}</span></a>
 
-		<a aria-controls="g_listing" role="tab" href="#!" id="t_listing" class="tab{+START,IF_EMPTY,{CREATE_FOLDER_FORM}{UPLOAD_FORM}} tab_last{+END}" onclick="event.returnValue=false; select_tab('g','listing'); return false;"><span>{!VIEW_LISTING}</span></a>
+		<a aria-controls="g_listing" role="tab" href="#!" id="t_listing" class="tab{+START,IF_EMPTY,{CREATE_FOLDER_FORM}{UPLOAD_FORM}} tab_last{+END}" onclick="select_tab('g','listing'); return false;"><span>{!VIEW_LISTING}</span></a>
 
 		{+START,IF_NON_EMPTY,{CREATE_FOLDER_FORM}}
-			<a aria-controls="g_create_folder" role="tab" href="#!" id="t_create_folder" class="tab{+START,IF_EMPTY,{UPLOAD_FORM}} tab_last{+END}" onclick="event.returnValue=false; select_tab('g','create_folder'); return false;"><span>{!FILEDUMP_CREATE_FOLDER}</span></a>
+			<a aria-controls="g_create_folder" role="tab" href="#!" id="t_create_folder" class="tab{+START,IF_EMPTY,{UPLOAD_FORM}} tab_last{+END}" onclick="select_tab('g','create_folder'); return false;"><span>{!FILEDUMP_CREATE_FOLDER}</span></a>
 		{+END}
 
 		{+START,IF_NON_EMPTY,{UPLOAD_FORM}}
-			<a aria-controls="g_upload" role="tab" href="#!" id="t_upload" class="tab tab_last" onclick="event.returnValue=false; select_tab('g','upload'); return false;"><span>{!UPLOAD}</span></a>
+			<a aria-controls="g_upload" role="tab" href="#!" id="t_upload" class="tab tab_last" onclick="select_tab('g','upload'); return false;"><span>{!UPLOAD}</span></a>
 		{+END}
 	</div></div>
 	<div class="tab_surround">
@@ -32,7 +32,7 @@
 								{+END}
 
 								{+START,IF_PASSED,EMBED_URL}
-									<p class="filedump_embed"><a id="embed_link_{FILENAME|*}" href="{EMBED_URL*}" onclick="return open_link_as_overlay(this,950,680);" class="link_exempt">{!_FILEDUMP_EMBED}</a></p>
+									<p class="filedump_embed"><a id="embed_link_{FILENAME|*}" href="{EMBED_URL*}" data-open-as-overlay='{"width": 950, "height": 680}' class="link_exempt">{!_FILEDUMP_EMBED}</a></p>
 								{+END}
 
 								<p><a{+START,IF,{IS_IMAGE}} rel="lightbox"{+END} href="{URL*}">{THUMBNAIL}</a></p>

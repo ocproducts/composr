@@ -37,7 +37,7 @@
 				{+END}
 			{+END}
 
-			<input data-disable-after-click="1" accesskey="u" class="button_screen buttons__proceed" type="submit" value="{!PROCEED}" />
+			<input data-disable-on-click="{}" accesskey="u" class="button_screen buttons__proceed" type="submit" value="{!PROCEED}" />
 		</p>
 	</div>
 </form>

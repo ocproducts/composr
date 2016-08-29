@@ -1,7 +1,10 @@
 (function ($, Composr) {
+    'use strict';
+
     Composr.behaviors.core = {
         initialize: {
             attach: function (context) {
+                Composr.initializeViews(context, 'core');
                 Composr.initializeTemplates(context, 'core');
             }
         }
@@ -37,9 +40,9 @@
                 context.dataset.onClickMassSelectFormButtons = '1';
 
                 context.addEventListener('click', function (e) {
-                    var btn = Composr.dom.closest(e.target, '.js-btn-mass-delete');
-                    if (btn !== null) {
-                        massDeleteClick(btn);
+                    var delBtn = Composr.dom.closest(e.target, '.js-btn-mass-delete');
+                    if (delBtn) {
+                        massDeleteClick(delBtn);
                     }
                 });
             }

@@ -238,9 +238,7 @@ tree_list.prototype.render_tree = function (xml, html, element) {
             expand_button.onclick = function (expand_button) {
                 return function (event, automated) {
                     if (document.getElementById('choose_' + _this.name)) click_link(document.getElementById('choose_' + _this.name));
-                    if (!event) var event = window.event;
                     if (event) {
-                        event.returnValue = false;
                         if (typeof event.preventDefault != 'undefined') event.preventDefault();
                     }
                     _this.handle_tree_click.call(expand_button, event, automated);
@@ -250,7 +248,6 @@ tree_list.prototype.render_tree = function (xml, html, element) {
             var a = node_self.getElementsByTagName('label')[0];
             expand_button.onkeypress = a.onkeypress = a.childNodes[0].onkeypress = function (expand_button) {
                 return function (event) {
-                    if (typeof event == 'undefined') event = window.event;
                     if (((event.keyCode ? event.keyCode : event.charCode) == 13) || ['+', '-', '='].indexOf(String.fromCharCode(event.keyCode ? event.keyCode : event.charCode)) != -1)
                         expand_button.onclick(event);
                 }
@@ -271,7 +268,6 @@ tree_list.prototype.render_tree = function (xml, html, element) {
             a.object = this;
             a.onmousedown = function (event) { // To disable selection of text when holding shift or control
                 if (event.ctrlKey || event.metaKey || event.shiftKey) {
-                    if (typeof event == 'undefined') event = window.event;
                     if (typeof event.preventDefault != 'undefined') event.preventDefault();
                 }
             };
@@ -344,7 +340,6 @@ tree_list.prototype.render_tree = function (xml, html, element) {
             a.object = this;
             a.onmousedown = function (event) { // To disable selection of text when holding shift or control
                 if (event.ctrlKey || event.metaKey || event.shiftKey) {
-                    if (typeof event == 'undefined') event = window.event;
                     if (typeof event.preventDefault != 'undefined') event.preventDefault();
                 }
             };
@@ -556,7 +551,6 @@ tree_list.prototype.handle_tree_click = function (event, automated) // Not calle
 
 tree_list.prototype.handle_selection = function (event, assume_ctrl) // Not called as a method
 {
-    if (typeof event == 'undefined') event = window.event;
     if (typeof assume_ctrl == 'undefined') assume_ctrl = false;
 
     var element = document.getElementById(this.object.name);

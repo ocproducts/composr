@@ -1,4 +1,12 @@
 (function ($, Composr) {
+    Composr.behaviors.backup = {
+        initialize: {
+            attach: function (context) {
+                Composr.initializeTemplates(context, 'backup');
+            }
+        }
+    };
+
     Composr.templates.backup = {
         backupLaunchScreen: function backupLaunchScreen() {
             var submit_button = document.querySelector('#submit_button'),
@@ -28,14 +36,6 @@
             };
 
             max_size_field.parentNode.appendChild(button, max_size_field);
-        }
-    };
-
-    Composr.behaviors.backup = {
-        initialize: {
-            attach: function (context) {
-                Composr.initializeTemplates(context, 'backup');
-            }
         }
     };
 })(window.jQuery || window.Zepto, window.Composr);

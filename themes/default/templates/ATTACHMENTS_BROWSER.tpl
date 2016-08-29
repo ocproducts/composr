@@ -5,7 +5,7 @@
 			{LIST}
 		</select></label>
 
-		<input data-disable-after-click="1" class="button_screen_item buttons__proceed" type="submit" value="{!PROCEED}" />
+		<input data-disable-on-click="{}" class="button_screen_item buttons__proceed" type="submit" value="{!PROCEED}" />
 	</form>
 
 	<hr class="spaced_rule" />

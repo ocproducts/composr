@@ -103,16 +103,12 @@ TOOLTIPS FOR THUMBNAILS TO CONTENT, AS DISPLAYED IN CMS ZONE
 function apply_comcode_tooltip(hook,id,link)
 {
 	link.addEventListener('mouseout',function(event) {
-		if (typeof event=='undefined') event=window.event;
 		if (typeof window.deactivate_tooltip!='undefined') deactivate_tooltip(link);
 	});
 	link.addEventListener('mousemove',function(event) {
-		if (typeof event=='undefined') event=window.event;
 		if (typeof window.activate_tooltip!='undefined') reposition_tooltip(link,event,false,false,null,true);
 	});
 	link.addEventListener('mouseover',function(event) {
-		if (typeof event=='undefined') event=window.event;
-
 		if (typeof window.activate_tooltip!='undefined')
 		{
 			var id_chopped=id[1];
@@ -210,7 +206,7 @@ THEME IMAGE CLICKING
 
 function handle_image_mouse_over(event)
 {
-	var target=event.target || event.srcElement;
+	var target=event.target;
 	if (target.previousSibling && (typeof target.previousSibling.className!='undefined') && (typeof target.previousSibling.className.indexOf!='undefined') && (target.previousSibling.className.indexOf('magic_image_edit_link')!=-1)) return;
 	if (target.offsetWidth<130) return;
 
@@ -254,9 +250,7 @@ function handle_image_mouse_over(event)
 
 function handle_image_mouse_out(event)
 {
-	if (typeof event=='undefined') event=window.event;
-
-	var target=event.target || event.srcElement;
+	var target=event.target;
 
 	/*{+START,IF,{$CONFIG_OPTION,enable_theme_img_buttons}}*/
 		if (target.previousSibling && (typeof target.previousSibling.className!='undefined') && (typeof target.previousSibling.className.indexOf!='undefined') && (target.previousSibling.className.indexOf('magic_image_edit_link')!=-1))
@@ -286,7 +280,6 @@ function handle_image_mouse_out(event)
 
 function handle_image_click(event,ob,force)
 {
-	if (typeof event=='undefined') event=window.event;
 	if ((typeof ob=='undefined') || (!ob)) var ob=this;
 
 	var src=ob.origsrc?ob.origsrc:((typeof ob.src=='undefined')?window.getComputedStyle(ob).getPropertyValue('background-image').replace(/.*url\(['"]?(.*)['"]?\).*/,'$1'):ob.src);

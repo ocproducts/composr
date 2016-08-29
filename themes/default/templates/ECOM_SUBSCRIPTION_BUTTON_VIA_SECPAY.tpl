@@ -15,7 +15,7 @@
 	<input type="hidden" name="repeat" value="{FIRST_REPEAT*}/{LENGTH_UNITS_2*}/0/{PRICE*}" />
 
 	<div>
-		<input data-disable-after-click="1" class="button_screen menu__adminzone__audit__ecommerce__subscriptions" type="submit" value="{!START_SUBSCRIPTION}" />
+		<input data-disable-on-click="{}" class="button_screen menu__adminzone__audit__ecommerce__subscriptions" type="submit" value="{!START_SUBSCRIPTION}" />
 	</div>
 </form>
 

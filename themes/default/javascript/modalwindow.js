@@ -16,32 +16,12 @@ It provides a function to open an image link as a 'lightbox' (we use the term li
 
 */
 
-if (typeof window.overlay_zIndex=='undefined')
-{
+if (window.overlay_zIndex === undefined) {
 	window.overlay_zIndex=999999; // Has to be higher than plupload, which is 99999
 }
 
-function open_link_as_overlay(ob,width,height,target) {
-	/*{+START,IF,{$CONFIG_OPTION,js_overlays}}*/
-		if ((typeof width=='undefined') || (!width)) var width='800';
-		if ((typeof height=='undefined') || (!height)) var height='auto';
-		var url=(typeof ob.href=='undefined')?ob.action:ob.href;
-		if (/:\/\/(.[^/]+)/.exec(url)[1]!=window.location.hostname) return true; // Cannot overlay, different domain
-		if ((typeof target=='undefined') || (!target)) var target='_top';
-		var url_stripped=url.replace(/#.*/,'');
-		var new_url=url_stripped+((url_stripped.indexOf('?')==-1)?'?':'&')+'wide_high=1'+url.replace(/^[^\#]+/,'');
-		faux_open(new_url,null,'width='+width+';height='+height,target);
-		return false;
-	/*{+END}*/
-
-	/*{+START,IF,{$NOT,{$CONFIG_OPTION,js_overlays}}}*/
-		return true;
-	/*{+END}*/
-}
-
 /*{+START,IF,{$CONFIG_OPTION,js_overlays}}*/
-	function open_images_into_lightbox(imgs,start)
-	{
+	function open_images_into_lightbox(imgs,start) {
 		if (typeof start=='undefined') start=0;
 
 		var modal=_open_image_into_lightbox(imgs[start][0],imgs[start][1],start+1,imgs.length,true,imgs[start][2]);
@@ -51,7 +31,6 @@ function open_link_as_overlay(ob,width,height,target) {
 		previous_button.className='previous_button';
 		previous_button.src='{$IMG;,mediaset_previous}'.replace(/^https?:/,window.location.protocol);
 		var previous=function(e) {
-			if (typeof e=='undefined') e=window.event;
 			cancel_bubbling(e);
 
 			var new_position=modal.positionInSet-1;
@@ -68,7 +47,6 @@ function open_link_as_overlay(ob,width,height,target) {
 		next_button.className='next_button';
 		next_button.src='{$IMG;,mediaset_next}'.replace(/^https?:/,window.location.protocol);
 		var next=function(e) {
-			if (typeof e=='undefined') e=window.event;
 			cancel_bubbling(e);
 
 			var new_position=modal.positionInSet+1;
@@ -785,7 +763,6 @@ function ModalWindow()
 			};
 
 			this.keyup=function(e) {
-				if (!e) e=window.event;
 				var key_code=(e)?(e.which || e.keyCode):null;
 
 				if (key_code==37) // Left arrow
@@ -810,7 +787,6 @@ function ModalWindow()
 			};
 
 			this.mousemove=function(e) {
-				if (!e) e=window.event;
 				if (_this.box_wrapper && _this.box_wrapper.childNodes[0].className.indexOf(' mousemove')==-1)
 				{
 					_this.box_wrapper.childNodes[0].className+=' mousemove';

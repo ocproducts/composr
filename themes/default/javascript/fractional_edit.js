@@ -157,8 +157,6 @@ function fractional_edit(event, object, url, raw_text, edit_param_name, was_doub
 
         // If we activate it again, we actually treat this as a cancellation
         object.onclick = object.ondblclick = function (event) {
-            if (typeof event == 'undefined') event = window.event;
-
             cancel_bubbling(event);
             if (typeof event.preventDefault != 'undefined') event.preventDefault();
 
@@ -170,7 +168,6 @@ function fractional_edit(event, object, url, raw_text, edit_param_name, was_doub
         // Cancel or save actions
         if (type == 'line') input.onkeyup = function (event) // Not using onkeypress because that only works for actual represented characters in the input box
         {
-            if (typeof event == 'undefined') event = window.event;
             if (key_pressed(event, [27], true)) // Cancel (escape key)
             {
                 var tmp = input.onblur;

@@ -773,7 +773,7 @@ function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $render
             $_title_full = new Tempcode();
             $_title_full->attach(do_lang_tempcode('REPORT_POST'));
             $_title_full->attach(do_lang_tempcode('ID_NUM', strval($_postdetails['id'])));
-            $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => 'f81cbe84f524b4ed9e089c6e89a7c717', 'REL' => 'report nofollow', 'IMMEDIATE' => false, 'IMG' => 'buttons__report', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $action_url, 'JAVASCRIPT' => 'return open_link_as_overlay(this,null,\'100%\');')));
+            $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => 'f81cbe84f524b4ed9e089c6e89a7c717', 'REL' => 'report nofollow', 'IMMEDIATE' => false, 'IMG' => 'buttons__report', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $action_url, 'EXTRA_ATTRS' => ' data-open-as-overlay=\'{"height": "100%"}\' ')));
         }
 
         if ((array_key_exists('may_warn_members', $topic_info)) && ($_postdetails['poster'] != $GLOBALS['CNS_DRIVER']->get_guest_id()) && (addon_installed('cns_warnings'))) {

@@ -10,7 +10,7 @@
 			</select>
 			{+START,IF,{$NOT,{$JS_ON}}}
 				<p class="proceed_button">
-					<input data-disable-after-click="1" type="submit" value="{!PROCEED}" class="button_screen_item buttons__proceed" />
+					<input data-disable-on-click="{}" type="submit" value="{!PROCEED}" class="button_screen_item buttons__proceed" />
 				</p>
 			{+END}
 		</div>

@@ -32,7 +32,7 @@
 			{+START,IF,{$NOT,{$MOBILE}}}
 				{+START,IF_NON_EMPTY,{MODERATOR_ACTIONS}}{+START,IF_NON_EMPTY,{MODERATOR_ACTIONS}}{+START,IF,{$NOT,{$_GET,overlay}}}
 					<th class="cns_forum_box_right">
-						<a href="#!" onclick="event.returnValue=false; mark_all_topics(event); return false;"><img src="{$IMG*,icons/14x14/cns_topic_modifiers/unvalidated}" srcset="{$IMG*,icons/28x28/cns_topic_modifiers/unvalidated} 2x" alt="{!TOGGLE_SELECTION}" title="{!TOGGLE_SELECTION}" /></a>
+						<a href="#!" onclick="mark_all_topics(event); return false;"><img src="{$IMG*,icons/14x14/cns_topic_modifiers/unvalidated}" srcset="{$IMG*,icons/28x28/cns_topic_modifiers/unvalidated} 2x" alt="{!TOGGLE_SELECTION}" title="{!TOGGLE_SELECTION}" /></a>
 					</th>
 				{+END}{+END}{+END}
 			{+END}
@@ -115,7 +115,7 @@
 								<option value="first_post"{$?,{$EQ,{ORDER},first_post}, selected="selected",}>{!FORUM_ORDER_BY_FIRST_POST}</option>
 								<option value="title"{$?,{$EQ,{ORDER},title}, selected="selected",}>{!FORUM_ORDER_BY_TITLE}</option>
 							</select>
-							{+START,IF,{$NOT,{$JS_ON}}}<input data-disable-after-click="1" class="button_micro buttons__sort" type="submit" value="{!SORT}" />{+END}
+							{+START,IF,{$NOT,{$JS_ON}}}<input data-disable-on-click="{}" class="button_micro buttons__sort" type="submit" value="{!SORT}" />{+END}
 						</div>
 					</form>
 				{+END}

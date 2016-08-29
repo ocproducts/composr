@@ -1,19 +1,20 @@
 (function ($, Composr) {
-
-    Composr.templates.corePrimaryLayout = {
-        globalHtmlWrap: function () {
-            script_load_stuff();
-
-            if (query_string_param('wide_print')) {
-                try { window.print(); } catch (e) {}
-            }
-        }
-    };
+    'use strict';
 
     Composr.behaviors.corePrimaryLayout = {
         initialize: {
             attach: function (context) {
                 Composr.initializeTemplates(context, 'core_primary_layout');
+            }
+        }
+    };
+
+    Composr.templates.corePrimaryLayout = {
+        globalHtmlWrap: function () {
+            script_load_stuff();
+
+            if (Composr.queryString.has('wide_print')) {
+                try { window.print(); } catch (ignore) {}
             }
         }
     };

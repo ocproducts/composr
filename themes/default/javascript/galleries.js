@@ -79,8 +79,6 @@ function initialise_slideshow() {
     window.addEventListener('keypress', toggle_slideshow_timer);
 
     document.getElementById('gallery_entry_screen').addEventListener('click', function (event) {
-        if (typeof event == 'undefined') event = window.event;
-
         if (event.altKey || event.metaKey) {
             var b = document.getElementById('gallery_entry_screen');
             if (typeof b.webkitRequestFullScreen != 'undefined') b.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
@@ -263,19 +261,16 @@ function slideshow_show_slide(slide) {
 // GALLERY_IMPORT_SCREEN:
 function preview_generator_mouseover(event)
 {
-    if (typeof event=='undefined') event=window.event;
     if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,'<img width="500" src="{$BASE_URL*}/uploads/galleries/'+window.encodeURI(this.value)+'" \/>','auto');
 }
 
 function preview_generator_mousemove(event)
 {
-    if (typeof event=='undefined') event=window.event;
     if (typeof window.activate_tooltip!='undefined') reposition_tooltip(this,event);
 }
 
 function preview_generator_mouseout(event)
 {
-    if (typeof event=='undefined') event=window.event;
     if (typeof window.deactivate_tooltip!='undefined') deactivate_tooltip(this);
 }
 

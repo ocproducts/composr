@@ -187,155 +187,7 @@ function merge_global_messages() {
 }
 
 function new_html__initialise(element) {
-    switch (element.nodeName.toLowerCase()) {
-        case 'img':
-            /* GD text maybe can do with transforms */
-            if (element.className == 'gd_text') {
-                var span = document.createElement('span');
-                if (typeof span.style.writingMode == 'string') // IE (which has buggy rotation space reservation, but a decent writing-mode instead)
-                {
-                    element.style.display = 'none';
-                    span.style.writingMode = 'tb-lr';
-                    if (span.style.writingMode != 'tb-lr')
-                        span.style.writingMode = 'vertical-lr';
-                    span.style.webkitWritingMode = 'vertical-lr';
-                    span.style.mozWritingMode = 'vertical-lr';
-                    span.style.whiteSpace = 'nowrap';
-                    if (typeof span.textContent != 'undefined') {
-                        span.textContent = element.alt;
-                    } else {
-                        set_inner_html(span, escape_html(element.alt));
-                    }
-                    element.parentNode.insertBefore(span, element);
-                } else if (typeof span.style.msTransform == 'string' || typeof span.style.webkitTransform == 'string' || typeof span.style.MozTransform == 'string' || typeof span.style.transform == 'string') {
-                    element.style.display = 'none';
-                    span.style.msTransform = 'rotate(90deg)';
-                    span.style.webkitTransform = 'rotate(90deg)';
-                    span.style.MozTransform = 'rotate(90deg)';
-                    span.style.transform = 'rotate(90deg)';
-                    span.style.msTransformOrigin = 'bottom left';
-                    span.style.webkitTransformOrigin = 'bottom left';
-                    span.style.MozTransformOrigin = 'bottom left';
-                    span.style.transformOrigin = 'bottom left';
-                    span.style.top = '-1em';
-                    span.style.left = '0.5em';
-                    span.style.position = 'relative';
-                    span.style.display = 'inline-block';
-                    span.style.whiteSpace = 'nowrap';
-                    span.style.paddingRight = '0.5em';
-                    element.parentNode.style.textAlign = 'left';
-                    element.parentNode.style.width = '1em';
-                    element.parentNode.style.overflow = 'hidden'; // Needed due to https://bugzilla.mozilla.org/show_bug.cgi?id=456497
-                    element.parentNode.style.verticalAlign = 'top';
-                    if (typeof span.textContent != 'undefined') {
-                        span.textContent = element.alt;
-                    } else {
-                        set_inner_html(span, escape_html(element.alt));
-                    }
-                    element.parentNode.insertBefore(span, element);
-                    var span_proxy = span.cloneNode(true); // So we can measure width even with hidden tabs
-                    span_proxy.style.position = 'absolute';
-                    span_proxy.style.visibility = 'hidden';
-                    document.body.appendChild(span_proxy);
-                    window.setTimeout(function () {
-                        var width = span_proxy.offsetWidth + 15;
-                        span_proxy.parentNode.removeChild(span_proxy);
-                        if (element.parentNode.nodeName.toLowerCase() == 'th' || element.parentNode.nodeName.toLowerCase() == 'td') {
-                            element.parentNode.style.height = width + 'px';
-                        } else {
-                            element.parentNode.style.minHeight = width + 'px';
-                        }
-                    }, 0);
-                }
-            }
-
-            // Convert a/img title attributes into Composr tooltips
-            /*{+START,IF,{$CONFIG_OPTION,js_overlays}}*/
-            if (element.className.indexOf('activate_rich_semantic_tooltip') == -1) convert_tooltip(element);
-            /*{+END}*/
-
-            break;
-
-        case 'a':
-            // Lightboxes
-            /*{+START,IF,{$CONFIG_OPTION,js_overlays}}*/
-            var rel = element.getAttribute('rel');
-            if (rel && rel.match(/(^|\s)lightbox($|\s)/)) {
-                element.onclick = function (element) {
-                    return function () {
-                        if (element.getElementsByTagName('img').length > 0 || element.getElementsByTagName('video').length > 0) {
-                            open_image_into_lightbox(element);
-                        } else {
-                            open_link_as_overlay(element);
-                        }
-                        return false;
-                    }
-                }(element);
-                element.title = element.title.replace('{!LINK_NEW_WINDOW;}', '');
-                if (element.title == ' ') element.title = '';
-            }
-            /*{+END}*/
-
-            // Convert a/img title attributes into Composr tooltips
-            /*{+START,IF,{$CONFIG_OPTION,js_overlays}}*/
-            if (typeof element['original-title'] == 'undefined'/*check tipsy not used*/ && element.className.indexOf('no_tooltip') == -1) convert_tooltip(element);
-            /*{+END}*/
-
-            /*{+START,IF,{$VALUE_OPTION,js_keep_params}}*/
-            /* Keep parameters need propagating */
-            if (element.href && element.href.indexOf('{$BASE_URL;}/') == 0)
-                element.href += keep_stub(element.href.indexOf('?') == -1, true, element.href);
-            /*{+END}*/
-
-            break;
-
-        case 'form':
-            // HTML editor
-            if (typeof window.load_html_edit != 'undefined') {
-                load_html_edit(element);
-            }
-
-            element.title = '';
-
-            // Remove tooltips from forms for mouse users as they are for screenreader accessibility only
-            if (element.getAttribute('target') != '_blank')
-                element.addEventListener('mouseover', function () {
-                    try {
-                        element.setAttribute('title', '');
-                        element.title = '';
-                    } catch (e) {
-                    }
-                    /*IE6 does not like*/
-                });
-
-            // Convert form element title attributes into Composr tooltips
-            /*{+START,IF,{$CONFIG_OPTION,js_overlays}}*/
-            //convert_tooltip(element);	Not useful
-
-            // Convert a/img title attributes into Composr tooltips
-            var elements, j;
-            elements = element.elements;
-            for (j = 0; j < elements.length; j++) {
-                if (typeof elements[j].title != 'undefined' && typeof elements[j]['original-title'] == 'undefined'/*check tipsy not used*/ && elements[j].className.indexOf('no_tooltip') == -1) {
-                    convert_tooltip(elements[j]);
-                }
-            }
-            elements = element.getElementsByTagName('input'); // Lame, but JS DOM does not include type="image" ones in form.elements
-            for (j = 0; j < elements.length; j++) {
-                if (elements[j].type == 'image' && typeof elements[j].title != 'undefined' && typeof elements[j]['original-title'] == 'undefined'/*check tipsy not used*/ && elements[j].className.indexOf('no_tooltip') == -1) {
-                    convert_tooltip(elements[j]);
-                }
-            }
-            /*{+END}*/
-
-            /*{+START,IF,{$VALUE_OPTION,js_keep_params}}*/
-            /* Keep parameters need propagating */
-            if (element.action && element.action.indexOf('{$BASE_URL;}/') == 0)
-                element.action += keep_stub(element.action.indexOf('?') == -1, true, element.action);
-            /*{+END}*/
-
-            break;
-    }
+    // @TODO Add Composr.attachBehaviors() calls wherever this function is used
 }
 
 /* Staff JS error display */
@@ -494,7 +346,7 @@ function check_field_for_blankness(field, event) {
 
     var ee = document.getElementById('error_' + field.id);
 
-    if ((value.replace(/\s/g, '') == '') || (value == '****') || (value == '{!POST_WARNING;^}') || (value == '{!THREADED_REPLY_NOTICE;^,{!POST_WARNING}}')) {
+    if ((value.replace(/\s/g, '') === '') || (value === '****') || (value === '{!POST_WARNING;^}') || (value === '{!THREADED_REPLY_NOTICE;^,{!POST_WARNING}}')) {
         if (event) {
             cancel_bubbling(event);
         }
@@ -663,7 +515,9 @@ function generate_question_ui(message, button_set, window_title, fallback_messag
 
 /* Find the main Composr window */
 function get_main_cms_window(any_large_ok) {
-    if (typeof any_large_ok == 'undefined') any_large_ok = false;
+    if (typeof any_large_ok == 'undefined') {
+        any_large_ok = false;
+    }
 
     if (document.getElementById('main_website')) return window;
 
@@ -936,18 +790,6 @@ function browser_matches(code) {
 /* Safe way to get the base URL */
 function get_base_url() {
     return (window.location + '').replace(/(^.*:\/\/[^\/]*)\/.*/, '$1') + '{$BASE_URL_NOHTTP;}'.replace(/^.*:\/\/[^\/]*/, '');
-}
-
-/* Read query string parameters */
-
-function query_string_param(name, url) {
-    if (!url) url = window.location.href;
-    name = name.replace(/[\[\]]/g, "\\$&");
-    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-        results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
 /* Enforcing a session using AJAX */
@@ -1586,15 +1428,12 @@ function find_pos_y(obj, not_relative) {/* if not_relative is true it gets the p
 function enter_pressed(event, alt_char) {
     if (typeof alt_char == 'undefined') alt_char = false;
 
-    if (typeof event == 'undefined') event = window.event;
     if ((alt_char) && (((event.which) && (event.which == alt_char.charCodeAt(0))) || ((event.keyCode) && (event.keyCode == alt_char.charCodeAt(0))))) return true;
     return (((event.which) && (event.which == 13)) || ((event.keyCode) && (event.keyCode == 13)));
 }
 
 /* Takes literal or list of unicode key character codes or case insensitive letters as characters or numbers as characters or supported lower case symbols */
 function key_pressed(event, key, no_error_if_bad) {
-    if (typeof event == 'undefined') event = window.event;
-
     if (typeof window.anykeyokay == 'undefined') window.anykeyokay = false;
 
     if (key.constructor == Array) {
@@ -1615,7 +1454,7 @@ function key_pressed(event, key, no_error_if_bad) {
 
         var targ;
         if (typeof event.target != 'undefined') targ = event.target;
-        else targ = event.srcElement;
+
         if (!no_error_if_bad) {
             var current_bg = window.getComputedStyle(targ).getPropertyValue('background');
             if ((typeof current_bg == 'undefined') || (current_bg)) current_bg = 'white';
@@ -1808,48 +1647,6 @@ function _modsecurity_workaround(data) {
     return out;
 }
 
-function convert_tooltip(element) {
-    var title = element.title;
-    if ((title != '') && (element.className.indexOf('leave_native_tooltip') == -1) && (document.body.className.indexOf(' touch_enabled') == -1)) {
-        // Remove old tooltip
-        if (element.nodeName == 'img' && element.alt == '') element.alt = element.title;
-        element.title = '';
-
-        if ((!element.onmouseover) && ((element.childNodes.length == 0) || ((!element.childNodes[0].onmouseover) && ((!element.childNodes[0].title) || (element.childNodes[0].title == ''))))) // Only put on new tooltip if there's nothing with a tooltip inside the element
-        {
-            if (element.textContent) {
-                var prefix = element.textContent + ': ';
-                if (title.substr(0, prefix.length) == prefix)
-                    title = title.substring(prefix.length, title.length);
-                else if (title == element.textContent) return;
-            }
-
-            // Stop the tooltip code adding to these events, by defining our own (it will not overwrite existing events).
-            if (!element.onmouseout) element.onmouseout = function () {
-            };
-            if (!element.onmousemove) element.onmouseover = function () {
-            };
-
-            // And now define nice listeners for it all...
-            var win = get_main_cms_window(true);
-
-            element.cms_tooltip_title = escape_html(title);
-
-            element.addEventListener('mouseover', function (event) {
-                win.activate_tooltip(element, event, element.cms_tooltip_title, 'auto', '', null, false, false, false, false, win);
-            });
-
-            element.addEventListener('mousemove', function (event) {
-                win.reposition_tooltip(element, event, false, false, null, false, win);
-            });
-
-            element.addEventListener('mouseout', function (event) {
-                win.deactivate_tooltip(element);
-            });
-        }
-    }
-}
-
 function clear_out_tooltips(tooltip_being_opened) {
     // Delete other tooltips, which due to browser bugs can get stuck
     var existing_tooltips = document.body.querySelectorAll('.tooltip');
@@ -1915,13 +1712,11 @@ function activate_tooltip(ac, event, tooltip, width, pic, height, bottom, no_del
             win.deactivate_tooltip(ac);
         };
         if (!ac.onmousemove) ac.onmousemove = function (event) {
-            if (!event) var event = window.event;
             win.reposition_tooltip(ac, event, false, false, null, false, win);
         };
     } else {
         ac.old_onclick = ac.onclick;
         ac.onclick = function (event) {
-            if (!event) var event = window.event;
             win.deactivate_tooltip(ac);
         };
     }
@@ -2076,8 +1871,8 @@ function reposition_tooltip(ac, event, bottom, starting, tooltip_element, force_
         }
         // Maybe mouse position actually needs to be in parent document?
         try {
-            if ((typeof event.target != 'undefined') || (typeof event.srcElement != 'undefined')) {
-                if (((typeof event.target != 'undefined') ? event.target : event.srcElement).ownerDocument != win.document) {
+            if (event.target !== undefined) {
+                if (event.target.ownerDocument !== win.document) {
                     x = win.mouse_x + style__offset_x;
                     y = win.mouse_y + style__offset_y;
                 }
@@ -2148,7 +1943,6 @@ function resize_frame(name, min_height) {
                 }, 0);
                 frame_element.scrolling = 'no';
                 frame_window.onscroll = function (event) {
-                    if (typeof event == 'undefined') event = window.event;
                     if (event == null) return false;
                     try {
                         frame_window.scrollTo(0, 0);
@@ -2250,23 +2044,20 @@ function set_opacity(element, fraction) {
 /* Event listeners */
 
 function cancel_bubbling(event, for_element) {
-    if ((typeof for_element == 'undefined') || (!for_element)){
-        for_element = '';
-    }
+    for_element = for_element || '';
 
-    if (!event) {
+    if (!event || !event.target) {
         return false;
     }
 
-    var src = (typeof event.srcElement != 'undefined' && event.srcElement) ? event.srcElement : event.target;
-    if (!src) return false;
-
-    if ((src.nodeName) && (src.nodeName.toLowerCase() == for_element) || (for_element == '')) {
-        if (typeof event.stopPropagation != 'undefined') {
+    if (event.target.nodeName && (event.target.nodeName.toLowerCase() === for_element) || (for_element === '')) {
+        if (event.stopPropagation !== undefined) {
             event.stopPropagation();
         }
+
         return true;
     }
+
     return false;
 }
 
@@ -2707,6 +2498,7 @@ function inner_html_copy(dom_node, xml_doc, level, script_tag_dependencies) {
                                 if (typeof window.console != 'undefined') {
                                     console.log('All AJAX-injected script tags loaded');
                                 }
+
                                 for (i = 0; i < script_tag_dependencies['to_run'].length; i++) {
                                     eval.call(window, script_tag_dependencies['to_run'][i]);
                                 }
@@ -2897,8 +2689,6 @@ function apply_rating_highlight_and_ajax_code(likes, initial_rating, content_typ
 
             if (!visual_only) bit.onclick = function (i) {
                 return function (event) {
-                    if (typeof event == 'undefined') event = window.event;
-                    event.returnValue = false;
                     if (typeof event.preventDefault != 'undefined') event.preventDefault();
 
                     // Find where the rating replacement will go
@@ -2981,7 +2771,6 @@ function click_link(link) {
     var backup = link.onclick;
 
     link.onclick = function (e) {
-        if (typeof e == 'undefined') e = window.event;
         cancel_bubbling(e);
     };
 
@@ -3074,8 +2863,6 @@ function replace_comments_form_with_ajax(options, hash, comments_form_id, commen
             if ((typeof is_preview != 'undefined') && (is_preview)) return true;
 
             // Cancel the event from running
-            if (typeof event == 'undefined') event = window.event;
-            event.returnValue = false;
             if (typeof event.preventDefault != 'undefined') event.preventDefault();
 
             if (!comments_form.old_onsubmit(event)) return false;

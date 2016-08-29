@@ -53,7 +53,7 @@
 	</div>
 
 	<p class="proceed_button">
-		<input data-disable-after-click="1" class="button_screen buttons__proceed" type="submit" value="{!INSTALL_AND_UNINSTALL}" />
+		<input data-disable-on-click="{}" class="button_screen buttons__proceed" type="submit" value="{!INSTALL_AND_UNINSTALL}" />
 	</p>
 </form>
 

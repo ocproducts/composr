@@ -13,12 +13,12 @@
 			<option value="2">1</option>
 		</select>
 		{+START,IF,{SIMPLISTIC}}
-			<input data-disable-after-click="1" class="button_micro feedback__rate" type="submit" value="{!RATE}" />
+			<input data-disable-on-click="{}" class="button_micro feedback__rate" type="submit" value="{!RATE}" />
 		{+END}
 	{+END}
 	{+START,IF,{$NOT,{SIMPLISTIC}}}
 		<div>
-			<input data-disable-after-click="1" class="button_micro feedback__rate" type="submit" value="{!RATE}" />
+			<input data-disable-on-click="{}" class="button_micro feedback__rate" type="submit" value="{!RATE}" />
 		</div>
 	{+END}
 {+END}

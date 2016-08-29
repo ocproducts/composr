@@ -1,3 +1,4 @@
+{$REQUIRE_JAVASCRIPT,core_feedback_features}
 {$, Template uses auto-complete}
 {$REQUIRE_JAVASCRIPT,jquery}
 {$REQUIRE_JAVASCRIPT,jquery_autocomplete}
@@ -28,8 +29,10 @@
 	{+END}
 {+END}
 
+<div  class="view view-comments-posting-form" data-view-core-feedback-features="CommentsPostingForm"
+	  data-view-args="{+START,PARAMS_JSON,force_previews,WYSIWYG,REVIEW_RATING_CRITERIA,CAPTCHA}{_*}{+END}">
 {+START,IF_NON_EMPTY,{COMMENT_URL}}
-<form role="form" title="{TITLE*}" class="comments_form" id="comments_form" {+START,IF_PASSED,USE_CAPTCHA}{+START,IF,{USE_CAPTCHA}}data-cms-call="comments_form"{+END}{+END} onsubmit="return ({+START,IF_PASSED,MORE_URL}(this.getAttribute('action')=='{MORE_URL;*}') || {+END}(check_field_for_blankness(this.elements['post'],event)){+START,IF,{$AND,{GET_EMAIL},{$NOT,{EMAIL_OPTIONAL}}}} &amp;&amp; (check_field_for_blankness(this.elements['email'],event)){+END});" action="{COMMENT_URL*}{+START,IF_NON_EMPTY,{$GET,current_anchor}}#{$GET,current_anchor}{+END}{+START,IF_EMPTY,{$GET,current_anchor}}{+START,IF_PASSED_AND_TRUE,COMMENTS}#last_comment{+END}{+END}" method="post" enctype="multipart/form-data" autocomplete="off">
+<form role="form" title="{TITLE*}" class="comments_form js-comments-form" id="comments_form" onsubmit="return ({+START,IF_PASSED,MORE_URL}(this.getAttribute('action')=='{MORE_URL;*}') || {+END}(check_field_for_blankness(this.elements['post'],event)){+START,IF,{$AND,{GET_EMAIL},{$NOT,{EMAIL_OPTIONAL}}}} &amp;&amp; (check_field_for_blankness(this.elements['email'],event)){+END});" action="{COMMENT_URL*}{+START,IF_NON_EMPTY,{$GET,current_anchor}}#{$GET,current_anchor}{+END}{+START,IF_EMPTY,{$GET,current_anchor}}{+START,IF_PASSED_AND_TRUE,COMMENTS}#last_comment{+END}{+END}" method="post" enctype="multipart/form-data" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
 	<input type="hidden" name="_comment_form_post" value="1" />
 {+END}
@@ -151,7 +154,7 @@
 								{$SET,needs_msg_label,{$OR,{$GET,GET_TITLE},{GET_EMAIL},{$AND,{$IS_GUEST},{$CNS}}}}
 								{+START,IF,{$GET,needs_msg_label}}
 									<div class="vertical_alignment">
-										<a data-open-as-overlay="1" class="link_exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SEARCH:userguide_comcode}"><img alt="" src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" /></a>
+										<a data-open-as-overlay="{}" class="link_exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SEARCH:userguide_comcode}"><img alt="" src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" /></a>
 										<label for="post">{!POST_COMMENT}:</label>
 									</div>
 								{+END}
@@ -170,7 +173,7 @@
 
 								{+START,IF,{$NOT,{$GET,needs_msg_label}}}
 									<div>
-										<a data-open-as-overlay="1" class="link_exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SEARCH:userguide_comcode}"><img alt="" src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" class="vertical_alignment" /></a>
+										<a data-open-as-overlay="{}" class="link_exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SEARCH:userguide_comcode}"><img alt="" src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" class="vertical_alignment" /></a>
 										<label for="post" class="vertical_alignment">{!POST_COMMENT}:</label>
 									</div>
 								{+END}
@@ -276,7 +279,4 @@
 	<iframe{$?,{$BROWSER_MATCHES,ie}, frameBorder="0" scrolling="no"} title="{!PREVIEW}" name="preview_iframe" id="preview_iframe" src="{$BASE_URL*}/uploads/index.html" class="hidden_preview_frame">{!PREVIEW}</iframe>
 {+END}{+END}{+END}
 
-
-<script type="application/json" data-tpl-core-feedback-features="commentsPostingForm">
-	{+START,PARAMS_JSON,force_previews,WYSIWYG,REVIEW_RATING_CRITERIA,CAPTCHA}{_/}{+END}
-</script>
+</div>
