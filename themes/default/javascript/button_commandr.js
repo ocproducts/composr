@@ -51,7 +51,7 @@ function load_commandr() {
                     commandr_box.style.width = '800px';
                     commandr_box.style.height = '500px';
                     document.body.appendChild(commandr_box);
-                    set_inner_html(commandr_box, load_snippet('commandr'));
+                    Composr.dom.html(commandr_box, load_snippet('commandr'));
                 }
 
                 if (commandr_box.style.display == 'none') // Showing Commandr again

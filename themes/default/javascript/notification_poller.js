@@ -59,7 +59,7 @@ function _poll_for_notifications(raw_ajax_result) {
         return; // Some kind of error
 
     var time_node = raw_ajax_result.getElementsByTagName('time')[0];
-    window.notifications_time_barrier = window.parseInt(get_inner_html(time_node));
+    window.notifications_time_barrier = window.parseInt(Composr.dom.html(time_node));
 
     // HTML5 notification API
 
@@ -85,9 +85,9 @@ function _poll_for_notifications(raw_ajax_result) {
         button = document.getElementById('web_notifications_button');
         if ((typeof display[0] != 'undefined') && (display[0])) {
             unread = raw_ajax_result.getElementsByTagName('unread_web_notifications');
-            set_inner_html(spot, get_inner_html(display[0]));
-            set_inner_html(button.childNodes[0], get_inner_html(unread[0]));
-            button.className = 'count_' + get_inner_html(unread[0]);
+            Composr.dom.html(spot, Composr.dom.html(display[0]));
+            Composr.dom.html(button.childNodes[0], Composr.dom.html(unread[0]));
+            button.className = 'count_' + Composr.dom.html(unread[0]);
         }
     }
 
@@ -97,9 +97,9 @@ function _poll_for_notifications(raw_ajax_result) {
         button = document.getElementById('pts_button');
         if ((typeof display[0] != 'undefined') && (display[0])) {
             unread = raw_ajax_result.getElementsByTagName('unread_pts');
-            set_inner_html(spot, get_inner_html(display[0]));
-            set_inner_html(button.childNodes[0], get_inner_html(unread[0]));
-            button.className = 'count_' + get_inner_html(unread[0]);
+            Composr.dom.html(spot, Composr.dom.html(display[0]));
+            Composr.dom.html(button.childNodes[0], Composr.dom.html(unread[0]));
+            button.className = 'count_' + Composr.dom.html(unread[0]);
         }
     }
 }

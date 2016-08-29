@@ -52,7 +52,7 @@ function fractional_edit(event, object, url, raw_text, edit_param_name, was_doub
                 var list_option;
                 for (var i = 0; i < list_options.length; i++) {
                     list_option = document.createElement('option');
-                    set_inner_html(list_option, escape_html(list_options[i]));
+                    Composr.dom.html(list_option, escape_html(list_options[i]));
                     list_option.selected = (populated_value == list_options[i]);
                     input.appendChild(list_option);
                 }
@@ -85,7 +85,7 @@ function fractional_edit(event, object, url, raw_text, edit_param_name, was_doub
         form.onsubmit = function (event) {
             return false;
         };
-        if (control_button) set_inner_html(control_button, '{!SAVE;}');
+        if (control_button) Composr.dom.html(control_button, '{!SAVE;}');
 
         var cleanup_function = function () {
             object.onclick = object.old_onclick;
@@ -98,7 +98,7 @@ function fractional_edit(event, object, url, raw_text, edit_param_name, was_doub
             }
 
             if (control_button) {
-                set_inner_html(control_button, '{!EDIT;}');
+                Composr.dom.html(control_button, '{!EDIT;}');
 
                 // To stop it instantly re-clicking
                 var backup = control_button.onclick;
@@ -147,7 +147,7 @@ function fractional_edit(event, object, url, raw_text, edit_param_name, was_doub
             } else // Success
             {
                 object.raw_text = input.value;
-                set_inner_html(object, response.responseText);
+                Composr.dom.html(object, response.responseText);
 
                 cleanup_function();
             }

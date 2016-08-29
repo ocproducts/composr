@@ -13191,7 +13191,7 @@ function upload_dialog_completed(ob,files)
 
 	if (filename_field.value!='-1')
 	{
-		set_inner_html(document.getElementById(ob.settings.progress_target),''); // Remove old progress indicators
+		Composr.dom.html(document.getElementById(ob.settings.progress_target),''); // Remove old progress indicators
 		ob.stop();
 	}
 
@@ -13705,7 +13705,7 @@ function FileProgress(file,targetID)
 
 		var progressStatus=document.createElement('div');
 		progressStatus.className='progressBarStatus';
-		set_inner_html(progressStatus,'&nbsp;');
+		Composr.dom.html(progressStatus,'&nbsp;');
 
 		this.fileProgressElement.appendChild(progressCancel);
 		this.fileProgressElement.appendChild(progressText);
@@ -13721,7 +13721,7 @@ function FileProgress(file,targetID)
 	} else {
 		this.fileProgressElement=this.fileProgressWrapper.firstChild;
 		if (file && typeof file.name!='undefined')
-			set_inner_html(this.fileProgressElement.childNodes[1],file.name);
+			Composr.dom.html(this.fileProgressElement.childNodes[1],file.name);
 	}
 
 	this.completed=this.fileProgressElement.completed;
@@ -13764,7 +13764,7 @@ FileProgress.prototype.setCancelled=function () {
 	},2000);
 };
 FileProgress.prototype.setStatus=function (status) {
-	set_inner_html(this.fileProgressElement.childNodes[2],status);
+	Composr.dom.html(this.fileProgressElement.childNodes[2],status);
 };
 
 // Makes sure the FileProgress box is visible

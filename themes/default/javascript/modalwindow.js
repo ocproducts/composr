@@ -101,7 +101,7 @@ if (window.overlay_zIndex === undefined) {
 				var video=document.createElement('video');
 				video.controls='controls';
 				video.autoplay='autoplay';
-				set_inner_html(video,initial_img_url);
+				Composr.dom.html(video,initial_img_url);
 				video.className='lightbox_image';
 				video.id='lightbox_image';
 				video.addEventListener('loadedmetadata',function() { _resize_lightbox_dimensions_img(modal,video,has_full_button,true); });
@@ -129,7 +129,7 @@ if (window.overlay_zIndex === undefined) {
 				var video=document.createElement('video');
 				video.controls='controls';
 				video.autoplay='autoplay';
-				set_inner_html(video,imgs[position][0]);
+				Composr.dom.html(video,imgs[position][0]);
 				video.className='lightbox_image';
 				video.id='lightbox_image';
 				video.addEventListener('loadedmetadata',function() { _resize_lightbox_dimensions_img(modal,video,true,true); });
@@ -147,8 +147,8 @@ if (window.overlay_zIndex === undefined) {
 
 			var lightbox_description=modal.top_window.document.getElementById('lightbox_description');
 			var lightbox_position_in_set_x=modal.top_window.document.getElementById('lightbox_position_in_set_x');
-			if (lightbox_description) set_inner_html(lightbox_description,imgs[position][1]);
-			if (lightbox_position_in_set_x) set_inner_html(lightbox_position_in_set_x,position+1);
+			if (lightbox_description) Composr.dom.html(lightbox_description,imgs[position][1]);
+			if (lightbox_position_in_set_x) Composr.dom.html(lightbox_position_in_set_x,position+1);
 		},0);
 	}
 
@@ -841,7 +841,7 @@ function ModalWindow()
 						{
 							if (iframe.contentWindow.document.title!='')
 							{
-								set_inner_html(overlay_header,escape_html(iframe.contentWindow.document.title));
+								Composr.dom.html(overlay_header,escape_html(iframe.contentWindow.document.title));
 								overlay_header.style.display='block';
 							}
 						}
@@ -923,7 +923,7 @@ function ModalWindow()
 								};
 							}
 
-							if (get_inner_html(iframe.contentWindow.document.body).length>300) // Loaded now
+							if (Composr.dom.html(iframe.contentWindow.document.body).length>300) // Loaded now
 							{
 								iframe.contentWindow.document.body.done_popup_trans=true;
 							}
@@ -1089,7 +1089,7 @@ function ModalWindow()
 							this.set_styles(el,value);
 						} else if (name=='html')
 						{
-							set_inner_html(el,value);
+							Composr.dom.html(el,value);
 						} else if (attributes[name])
 						{
 							el[attributes[name]]=value;

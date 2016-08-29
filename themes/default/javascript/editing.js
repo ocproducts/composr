@@ -180,7 +180,7 @@ function disable_wysiwyg(forms, so, so2, discard) {
                     if ((textarea.value.indexOf('{\$,page hint: no_wysiwyg}') == -1) && (textarea.value != '')) textarea.value += '{\$,page hint: no_wysiwyg}';
                 }
                 if (document.getElementById('toggle_wysiwyg_' + id))
-                    set_inner_html(document.getElementById('toggle_wysiwyg_' + id), '<img src="{$IMG*;^,icons/16x16/editor/wysiwyg_on}" srcset="{$IMG;^,icons/16x16/editor/wysiwyg_on} 2x" alt="{!comcode:ENABLE_WYSIWYG;^}" title="{!comcode:ENABLE_WYSIWYG;^}" class="vertical_alignment" />');
+                    Composr.dom.html(document.getElementById('toggle_wysiwyg_' + id), '<img src="{$IMG*;^,icons/16x16/editor/wysiwyg_on}" srcset="{$IMG;^,icons/16x16/editor/wysiwyg_on} 2x" alt="{!comcode:ENABLE_WYSIWYG;^}" title="{!comcode:ENABLE_WYSIWYG;^}" class="vertical_alignment" />');
 
                 // Unload editor
                 try {
@@ -273,7 +273,7 @@ function load_html_edit(posting_form, ajax_copy) {
 
             count++;
             if (document.getElementById('toggle_wysiwyg_' + id))
-                set_inner_html(document.getElementById('toggle_wysiwyg_' + id), '<img src="{$IMG*;^,icons/16x16/editor/wysiwyg_off}" srcset="{$IMG;^,icons/32x32/editor/wysiwyg_off} 2x" alt="{!comcode:DISABLE_WYSIWYG;^}" title="{!comcode:DISABLE_WYSIWYG;^}" class="vertical_alignment" />');
+                Composr.dom.html(document.getElementById('toggle_wysiwyg_' + id), '<img src="{$IMG*;^,icons/16x16/editor/wysiwyg_off}" srcset="{$IMG;^,icons/32x32/editor/wysiwyg_off} 2x" alt="{!comcode:DISABLE_WYSIWYG;^}" title="{!comcode:DISABLE_WYSIWYG;^}" class="vertical_alignment" />');
 
             window.wysiwyg_original_comcode[id] = e.value;
             if (!ajax_copy) {
@@ -357,7 +357,7 @@ function wysiwyg_editor_init_for(element, id) {
     linked_sheets = document.getElementsByTagName('style');
     var css = '';
     for (counter = 0; counter < linked_sheets.length; counter++) {
-        css += get_inner_html(linked_sheets[counter]);
+        css += Composr.dom.html(linked_sheets[counter]);
     }
     window.CKEDITOR.addCss(css);
 
@@ -503,7 +503,7 @@ function find_tags_in_editor(editor, element) {
                     if (this.nodeName.toLowerCase() == 'input') {
                         tag_text = this.orig_title;
                     } else {
-                        tag_text = get_inner_html(this);
+                        tag_text = Composr.dom.html(this);
                     }
 
                     this.style.cursor = 'pointer';
@@ -566,9 +566,9 @@ function do_emoticon(field_name, p, _opener) {
     var text = ' ' + title + ' ';
 
     if (_opener) {
-        insert_textbox_opener(element, text, null, true, get_inner_html(p));
+        insert_textbox_opener(element, text, null, true, Composr.dom.html(p));
     } else {
-        insert_textbox(element, text, null, true, get_inner_html(p));
+        insert_textbox(element, text, null, true, Composr.dom.html(p));
     }
 }
 
@@ -747,7 +747,7 @@ function get_selected_html(editor) {
         } else // IE9 / standards (HTMLSelection object)
         {
             try {
-                selected_text = get_inner_html(my_selection.getNative().getRangeAt(0).cloneContents());
+                selected_text = Composr.dom.html(my_selection.getNative().getRangeAt(0).cloneContents());
             }
             catch (e) {
             }
@@ -911,7 +911,7 @@ function show_upload_syndication_options(name, syndication_json, no_quota) {
 
     html = '<div>' + html + '</div>';
 
-    set_inner_html(html_spot, html);
+    Composr.dom.html(html_spot, html);
 }
 
 function clear_attachment(i, post_field) {

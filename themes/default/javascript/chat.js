@@ -555,7 +555,7 @@ function process_chat_xml_messages(ajax_result, skip_incoming_sound) {
 
             // Clone the node so that we may insert it
             cloned_message = doc.createElement('div');
-            set_inner_html(cloned_message, (typeof messages[i].xml != 'undefined') ? messages[i].xml/*IE-only optimisation*/ : messages[i].childNodes[0].outerHTML);
+            Composr.dom.html(cloned_message, (typeof messages[i].xml != 'undefined') ? messages[i].xml/*IE-only optimisation*/ : messages[i].childNodes[0].outerHTML);
             cloned_message = cloned_message.childNodes[0];
             cloned_message.id = 'chat_message__' + id;
 
@@ -572,7 +572,7 @@ function process_chat_xml_messages(ajax_result, skip_incoming_sound) {
                 }
             } else // First message
             {
-                set_inner_html(message_container, '');
+                Composr.dom.html(message_container, '');
                 message_container.appendChild(cloned_message);
                 first_set = true; // Let the code know the first set of messages has started, squashing any extra sounds for this event update
                 if (!skip_incoming_sound) {
@@ -588,7 +588,7 @@ function process_chat_xml_messages(ajax_result, skip_incoming_sound) {
         else if (messages[i].nodeName == 'chat_members_update') // UPDATE MEMBERS LIST IN ROOM
         {
             var members_element = document.getElementById('chat_members_update');
-            if (members_element) set_inner_html(members_element, merge_text_nodes(messages[i].childNodes));
+            if (members_element) Composr.dom.html(members_element, merge_text_nodes(messages[i].childNodes));
         }
 
         else if ((messages[i].nodeName == 'chat_event') && (typeof window.im_participant_template != 'undefined')) // Some kind of transitory event
@@ -606,14 +606,14 @@ function process_chat_xml_messages(ajax_result, skip_incoming_sound) {
                     flashable_alert = true;
                     tmp_element = document.getElementById('online_' + member_id);
                     if (tmp_element) {
-                        if (get_inner_html(tmp_element).toLowerCase() == '{!ACTIVE;^}'.toLowerCase()) break;
-                        set_inner_html(tmp_element, '{!ACTIVE;^}');
+                        if (Composr.dom.html(tmp_element).toLowerCase() == '{!ACTIVE;^}'.toLowerCase()) break;
+                        Composr.dom.html(tmp_element, '{!ACTIVE;^}');
                         var friend_img = document.getElementById('friend_img_' + member_id);
                         if (friend_img) friend_img.className = 'friend_active';
                         var alert_box_wrap = document.getElementById('alert_box_wrap');
                         if (alert_box_wrap) alert_box_wrap.style.display = 'block';
                         var alert_box = document.getElementById('alert_box');
-                        if (alert_box) set_inner_html(alert_box, '{!NOW_ONLINE;^}'.replace('{' + '1}', username));
+                        if (alert_box) Composr.dom.html(alert_box, '{!NOW_ONLINE;^}'.replace('{' + '1}', username));
                         window.setTimeout(function () {
                             if (document.getElementById('alert_box')) // If the alert box is still there, remove it
                                 alert_box_wrap.style.display = 'none';
@@ -639,7 +639,7 @@ function process_chat_xml_messages(ajax_result, skip_incoming_sound) {
                         }
                         tmp_element = doc.getElementById('participant_online__' + room_id + '__' + member_id);
                         if (tmp_element) {
-                            set_inner_html(tmp_element, '{!ACTIVE;^}');
+                            Composr.dom.html(tmp_element, '{!ACTIVE;^}');
                         }
                     }
                     break;
@@ -648,8 +648,8 @@ function process_chat_xml_messages(ajax_result, skip_incoming_sound) {
                     var friend_being_tracked = false;
                     tmp_element = document.getElementById('online_' + member_id);
                     if (tmp_element) {
-                        if (get_inner_html(tmp_element).toLowerCase() == '{!INACTIVE;^}'.toLowerCase()) break;
-                        set_inner_html(tmp_element, '{!INACTIVE;^}');
+                        if (Composr.dom.html(tmp_element).toLowerCase() == '{!INACTIVE;^}'.toLowerCase()) break;
+                        Composr.dom.html(tmp_element, '{!INACTIVE;^}');
                         document.getElementById('friend_img_' + member_id).className = 'friend_inactive';
                         friend_being_tracked = true;
                     }
@@ -663,7 +663,7 @@ function process_chat_xml_messages(ajax_result, skip_incoming_sound) {
                             doc = opened_popups['room_' + room_id].document;
                         }
                         tmp_element = doc.getElementById('participant_online__' + room_id + '__' + member_id);
-                        if (tmp_element) set_inner_html(tmp_element, '{!INACTIVE;^}');
+                        if (tmp_element) Composr.dom.html(tmp_element, '{!INACTIVE;^}');
                         friend_being_tracked = true;
                     }
 
@@ -683,8 +683,8 @@ function process_chat_xml_messages(ajax_result, skip_incoming_sound) {
                     }
                     tmp_element = doc.getElementById('participant_online__' + room_id + '__' + member_id);
                     if (tmp_element) {
-                        if (get_inner_html(tmp_element).toLowerCase() == '{!ACTIVE;^}'.toLowerCase()) break;
-                        set_inner_html(tmp_element, '{!ACTIVE;^}');
+                        if (Composr.dom.html(tmp_element).toLowerCase() == '{!ACTIVE;^}'.toLowerCase()) break;
+                        Composr.dom.html(tmp_element, '{!ACTIVE;^}');
                         document.getElementById('friend_img_' + member_id).className = 'friend_active';
                     }
 
@@ -715,8 +715,8 @@ function process_chat_xml_messages(ajax_result, skip_incoming_sound) {
                          tmp_element=doc.getElementById('participant_online__'+room_id+'__'+member_id);
                          if (tmp_element)
                          {
-                         if (get_inner_html(tmp_element).toLowerCase()=='{!INACTIVE;^}'.toLowerCase()) break;
-                         set_inner_html(tmp_element,'{!INACTIVE;^}');
+                         if (Composr.dom.html(tmp_element).toLowerCase()=='{!INACTIVE;^}'.toLowerCase()) break;
+                         Composr.dom.html(tmp_element,'{!INACTIVE;^}');
                          }
                          } else*/
                         {
@@ -724,7 +724,7 @@ function process_chat_xml_messages(ajax_result, skip_incoming_sound) {
                         }
                         /*if (parent.childNodes.length==0)		Don't set to none, as we want to allow the 'force_invite' IM re-activation feature, to draw the other guy back -- above we pretended they're merely 'away', not just left
                          {
-                         set_inner_html(parent,'<em class="none">{!NONE;^}</em>');
+                         Composr.dom.html(parent,'<em class="none">{!NONE;^}</em>');
                          }*/
 
                         if (!skip_incoming_sound) {
@@ -880,7 +880,7 @@ function create_overlay_event(skip_incoming_sound, member_id, message, click_eve
 
     // Message
     var p_message = document.createElement('p');
-    set_inner_html(p_message, message);
+    Composr.dom.html(p_message, message);
     div.appendChild(p_message);
 
     // Open link
@@ -894,7 +894,7 @@ function create_overlay_event(skip_incoming_sound, member_id, message, click_eve
             return false;
         };
         a_popup_open.href = '#';
-        set_inner_html(a_popup_open, '{!OPEN_IM_POPUP;^}');
+        Composr.dom.html(a_popup_open, '{!OPEN_IM_POPUP;^}');
         var li_popup_open = document.createElement('li');
         li_popup_open.appendChild(a_popup_open);
         links.appendChild(li_popup_open);
@@ -905,7 +905,7 @@ function create_overlay_event(skip_incoming_sound, member_id, message, click_eve
     a_goto_lobby.href = window.lobby_link.replace('%21%21', member_id);
     a_goto_lobby.onclick = close_popup;
     a_goto_lobby.target = '_blank';
-    set_inner_html(a_goto_lobby, '{!GOTO_CHAT_LOBBY;^}');
+    Composr.dom.html(a_goto_lobby, '{!GOTO_CHAT_LOBBY;^}');
     var li_goto_lobby = document.createElement('li');
     li_goto_lobby.appendChild(a_goto_lobby);
     links.appendChild(li_goto_lobby);
@@ -956,7 +956,7 @@ function start_im(people, just_refocus) {
 function _start_im(people, may_recycle) {
     var div = document.createElement('div');
     div.className = 'loading_overlay';
-    set_inner_html(div, '{!LOADING;^}');
+    Composr.dom.html(div, '{!LOADING;^}');
     document.body.appendChild(div);
     do_ajax_request(maintain_theme_in_link('{$FIND_SCRIPT;,messages}?action=start_im&message_id=' + window.encodeURIComponent((window.top_window.last_message_id === null) ? -1 : window.top_window.last_message_id) + '&may_recycle=' + (may_recycle ? '1' : '0') + '&event_id=' + window.encodeURIComponent(window.top_window.last_event_id) + keep_stub(false)), function (result) {
         var responses = result.getElementsByTagName('result');
@@ -1037,7 +1037,7 @@ function deinvolve_im(room_id, logs, is_popup) // is_popup means that we show a 
         var body = document.getElementsByTagName('body');
         if (typeof body[0] != 'undefined') {
             body[0].className += ' site_unloading';
-            set_inner_html(body[0], '<div class="spaced"><div aria-busy="true" class="ajax_loading vertical_alignment"><img src="' + '{$IMG*;,loading}'.replace(/^https?:/, window.location.protocol) + '" alt="{!LOADING;^}" /> <span>{!LOADING;^}<\/span><\/div><\/div>');
+            Composr.dom.html(body[0], '<div class="spaced"><div aria-busy="true" class="ajax_loading vertical_alignment"><img src="' + '{$IMG*;,loading}'.replace(/^https?:/, window.location.protocol) + '" alt="{!LOADING;^}" /> <span>{!LOADING;^}<\/span><\/div><\/div>');
         }
     }
 
@@ -1077,9 +1077,9 @@ function deinvolve_im(room_id, logs, is_popup) // is_popup means that we show a 
             // All gone?
             var count = count_im_convos();
             if (count == 0) {
-                set_inner_html(tabs, '&nbsp;');
+                Composr.dom.html(tabs, '&nbsp;');
                 document.getElementById('chat_lobby_convos_tabs').style.display = 'none';
-                set_inner_html(document.getElementById('chat_lobby_convos_areas'), no_im_html);
+                Composr.dom.html(document.getElementById('chat_lobby_convos_areas'), no_im_html);
                 if (document.getElementById('invite_ongoing_im_button')) document.getElementById('invite_ongoing_im_button').disabled = true;
             } else {
                 chat_select_tab(document.getElementById('tab_' + find_im_convo_room_ids().pop()));
@@ -1105,9 +1105,9 @@ function detected_conversation(room_id, room_name, participants) // Assumes conv
         var count = count_im_convos();
         // First one?
         if (count == 0) {
-            window.no_im_html = get_inner_html(areas);
-            set_inner_html(areas, '');
-            set_inner_html(tabs, '');
+            window.no_im_html = Composr.dom.html(areas);
+            Composr.dom.html(areas, '');
+            Composr.dom.html(tabs, '');
         }
 
         lobby = true;
@@ -1126,13 +1126,13 @@ function detected_conversation(room_id, room_name, participants) // Assumes conv
     if (lobby) {
         var new_div;
         new_div = document.createElement('div');
-        set_inner_html(new_div, new_one);
+        Composr.dom.html(new_div, new_one);
         areas.appendChild(new_div);
 
         // Add tab
         new_div = document.createElement('div');
         new_div.className = 'chat_lobby_convos_tab_uptodate' + ((count == 0) ? ' chat_lobby_convos_tab_first' : '');
-        set_inner_html(new_div, escape_html(room_name));
+        Composr.dom.html(new_div, escape_html(room_name));
         new_div.setAttribute('id', 'tab_' + room_id);
         new_div.participants = participants;
         new_div.onclick = function () {
@@ -1194,7 +1194,7 @@ function detected_conversation(room_id, room_name, participants) // Assumes conv
                     // Set title
                     var dom_title = new_window.document.getElementsByTagName('title')[0];
                     if (dom_title != null)
-                        new_window.document.title = get_inner_html(dom_title).replace(/<.*?>/g, ''); // For Safari
+                        new_window.document.title = Composr.dom.html(dom_title).replace(/<.*?>/g, ''); // For Safari
 
                 }, 500);
                 /* Could be 60 except for Firefox which is slow */
@@ -1213,7 +1213,7 @@ function add_im_member(room_id, member_id, username, away, avatar_url) {
         }
         if (away) {
             var tmp_element = doc.getElementById('online_' + member_id);
-            if ((tmp_element) && (get_inner_html(tmp_element).toLowerCase() == '{!ACTIVE;^}'.toLowerCase())) away = false;
+            if ((tmp_element) && (Composr.dom.html(tmp_element).toLowerCase() == '{!ACTIVE;^}'.toLowerCase())) away = false;
         }
         if (doc.getElementById('participant__' + room_id + '__' + member_id)) return; // They're already put in it
         var new_participant = doc.createElement('div');
@@ -1223,15 +1223,15 @@ function add_im_member(room_id, member_id, username, away, avatar_url) {
         new_participant_inner = new_participant_inner.replace(/\_\_avatar\_url\_\_/g, avatar_url);
         if (avatar_url == '') new_participant_inner = new_participant_inner.replace('style="display: block" id="avatar__', 'style="display: none" id="avatar__');
         new_participant_inner = new_participant_inner.replace(/\_\_online\_\_/g, away ? '{!INACTIVE;^}' : '{!ACTIVE;^}');
-        set_inner_html(new_participant, new_participant_inner);
+        Composr.dom.html(new_participant, new_participant_inner);
         new_participant.setAttribute('id', 'participant__' + room_id + '__' + member_id);
         var element = doc.getElementById('participants__' + room_id);
         if (element) // If we've actually got the HTML for the room setup
         {
-            var p_list = get_inner_html(element).toLowerCase();
+            var p_list = Composr.dom.html(element).toLowerCase();
 
             if ((p_list.indexOf('<em class="none">') != -1) || (p_list.indexOf('<em class="loading">') != -1))
-                set_inner_html(element, '');
+                Composr.dom.html(element, '');
             element.appendChild(new_participant);
             if (doc.getElementById('friend_img_' + member_id)) doc.getElementById('friend__' + member_id).style.display = 'none';
         }

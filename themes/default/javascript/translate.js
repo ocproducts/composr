@@ -16,7 +16,7 @@ function translate(name, old, lang_from, lang_to) {
         var element = document.getElementById('rexp_' + name);
         if (element.style.display != 'none') {
             element = document.getElementById('exp_' + name);
-            set_inner_html(element, '<iframe src="{$BASE_URL_NOHTTP*;}/data/empty.html" id="iframe_' + name + '" name="iframe_' + name + '" class="translate_iframe">{!IGNORE^}</iframe>');
+            Composr.dom.html(element, '<iframe src="{$BASE_URL_NOHTTP*;}/data/empty.html" id="iframe_' + name + '" name="iframe_' + name + '" class="translate_iframe">{!IGNORE^}</iframe>');
             var form = document.getElementById('hack_form');
             form.setAttribute('target', 'iframe_' + name);
             var input_text = document.getElementById('hack_input');

@@ -9,7 +9,7 @@ function update_details_box(element) {
 
     var target = document.getElementById('details_target');
     if (element.value == '') {
-        set_inner_html(target, '{!zones:NO_ENTRY_POINT_SELECTED;^}');
+        Composr.dom.html(target, '{!zones:NO_ENTRY_POINT_SELECTED;^}');
         return;
     }
 
@@ -90,15 +90,15 @@ function update_details_box(element) {
     }
 
     // Output
-    set_inner_html(target, '');
+    Composr.dom.html(target, '');
     if (action_buildup != '') {
         var actions = document.createElement('div');
-        set_inner_html(actions, window.actions_tpl.replace(/\[1\]/, action_buildup));
+        Composr.dom.html(actions, window.actions_tpl.replace(/\[1\]/, action_buildup));
         target.appendChild(actions);
     }
     if (info_buildup != '') {
         var info = document.createElement('div');
-        set_inner_html(info, window.info_tpl.replace(/\[1\]/, info_buildup));
+        Composr.dom.html(info, window.info_tpl.replace(/\[1\]/, info_buildup));
         target.appendChild(info);
     }
 }

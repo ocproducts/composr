@@ -1150,7 +1150,7 @@ function _do_template($theme, $directory, $codename, $_codename, $lang, $suffix,
 
     // Special case: JavaScript file
     if (($GLOBALS['SEMI_DEV_MODE']) && ($suffix === '.js') && (strpos($template_contents, '.innerHTML') !== false) && (!running_script('install')) && (strpos($template_contents, 'Parser hint: .innerHTML okay') === false)) {
-        attach_message($codename . ': Do not use the .innerHTML property in your JavaScript because it will not work in true XHTML (when the browsers real XML parser is in action). Use Composr\'s global set_inner_html/get_inner_html functions.', 'warn', false, true);
+        attach_message($codename . ': Do not use the .innerHTML property in your JavaScript because it will not work in true XHTML (when the browsers real XML parser is in action). Use Composr\'s global Composr.dom.html() function.', 'warn', false, true);
     }
 
     // Strip off trailing final lines from single lines templates. Editors often put these in, and it causes annoying "visible space" issues

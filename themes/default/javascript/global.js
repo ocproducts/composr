@@ -1,43 +1,39 @@
 /* Ideally this template should not be edited. See the note at the bottom of how JAVASCRIPT_CUSTOM_GLOBALS.tpl is appended to this template */
+'use strict';
 
 var forEach = Function.bind.call(Function.call, Array.prototype.forEach);
 
 /* Startup */
-if (typeof window.page_loaded == 'undefined') // To stop problem if JS file loaded more than once
-{
+if (window.page_loaded === undefined) {// To stop problem if JS file loaded more than once
     window.page_loaded = false;
     window.is_doing_a_drag = false;
 }
 
 function script_load_stuff() {
-    if (window.page_loaded) return; // Been called twice for some reason
+    if (window.page_loaded) {
+        // Been called twice for some reason
+        return;
+    }
 
     var i;
 
-    if (window == window.top && !window.opener || window.name == '') window.name = '_site_opener';
+    if ((window === window.top && !window.opener) || (window.name === '')) {
+        window.name = '_site_opener';
+    }
 
     // Are we dealing with a touch device?
-    if (typeof document.documentElement.ontouchstart != 'undefined') document.body.className += ' touch_enabled';
+    if (document.documentElement.ontouchstart !== undefined) {
+        document.body.className += ' touch_enabled';
+    }
 
     // Dynamic images need preloading
     var preloader = new Image();
     var images = [];
-    /*	Menu type no longer on by default
-     images.push('{$IMG;,1x/menus/menu_bullet_hover}'.replace(/^https?:/,window.location.protocol));
-     images.push('{$IMG;,1x/menus/menu_bullet_expand_hover}'.replace(/^https?:/,window.location.protocol));
-     images.push('{$IMG;,2x/menus/menu_bullet_hover}'.replace(/^https?:/,window.location.protocol));
-     images.push('{$IMG;,2x/menus/menu_bullet_expand_hover}'.replace(/^https?:/,window.location.protocol));
-     */
-    /* Expanders and contracters no longer prominent in UI
-     images.push('{$IMG;,1x/trays/expand}'.replace(/^https?:/,window.location.protocol));
-     images.push('{$IMG;,1x/trays/contract}'.replace(/^https?:/,window.location.protocol));
-     images.push('{$IMG;,1x/trays/expcon}'.replace(/^https?:/,window.location.protocol));
-     images.push('{$IMG;,2x/trays/expand}'.replace(/^https?:/,window.location.protocol));
-     images.push('{$IMG;,2x/trays/contract}'.replace(/^https?:/,window.location.protocol));
-     images.push('{$IMG;,2x/trays/expcon}'.replace(/^https?:/,window.location.protocol));
-     */
+
     images.push('{$IMG;,loading}'.replace(/^https?:/, window.location.protocol));
-    for (i = 0; i < images.length; i++) preloader.src = images[i];
+    for (i = 0; i < images.length; i++) {
+        preloader.src = images[i];
+    }
 
     // Textarea scroll support
     handle_textarea_scrolling();
@@ -53,17 +49,6 @@ function script_load_stuff() {
             set_cookie('client_time', new Date().toString(), 120);
             set_cookie('client_time_ref', Composr.$FROM_TIMESTAMP, 120);
         /*{+END}*/
-    }
-
-    // General HTML initialisation
-    for (i = 0; i < document.forms.length; i++) {
-        new_html__initialise(document.forms[i]);
-    }
-    for (i = 0; i < document.links.length; i++) {
-        new_html__initialise(document.links[i]);
-    }
-    for (i = 0; i < document.images.length; i++) {
-        new_html__initialise(document.images[i]);
     }
 
     // Column height balancing
@@ -155,7 +140,7 @@ function script_load_stuff() {
 
     // Font size
     var font_size = read_cookie('font_size');
-    if (font_size != '') {
+    if (font_size !== '') {
         set_font_size(font_size);
     }
 
@@ -184,12 +169,8 @@ function merge_global_messages() {
     var m1 = document.getElementById('global_messages');
     if (!m1) return;
     var m2 = document.getElementById('global_messages_2');
-    set_inner_html(m1, get_inner_html(m2), true);
+    Composr.dom.appendHtml(m1, Composr.dom.html(m2));
     m2.parentNode.removeChild(m2);
-}
-
-function new_html__initialise(element) {
-    // @TODO Add Composr.attachBehaviors() calls wherever this function is used
 }
 
 /* Staff JS error display */
@@ -279,7 +260,7 @@ function staff_unload_action() {
     div.style.position = 'fixed';
     div.style.zIndex = 10000;
     div.style.textAlign = 'center';
-    set_inner_html(div, '<div aria-busy="true" class="loading_box box"><h2>{!LOADING;^}</h2><img id="loading_image" alt="" src="' + '{$IMG_INLINE*;,loading}'.replace(/^https?:/, window.location.protocol) + '" /></div>');
+    Composr.dom.html(div, '<div aria-busy="true" class="loading_box box"><h2>{!LOADING;^}</h2><img id="loading_image" alt="" src="' + '{$IMG_INLINE*;,loading}'.replace(/^https?:/, window.location.protocol) + '" /></div>');
     window.setTimeout(function () {
         if (document.getElementById('loading_image')) document.getElementById('loading_image').src += '';
     }, 100); // Stupid workaround for Google Chrome not loading an image on unload even if in cache
@@ -355,7 +336,7 @@ function check_field_for_blankness(field, event) {
 
         if (ee !== null) {
             ee.style.display = 'block';
-            set_inner_html(ee, '{!REQUIRED_NOT_FILLED_IN;^}');
+            Composr.dom.html(ee, '{!REQUIRED_NOT_FILLED_IN;^}');
         }
 
         window.fauxmodal_alert('{!IMPROPERLY_FILLED_IN;^}');
@@ -543,7 +524,7 @@ function doc_onmouseout() {
     if (typeof window.orig_helper_text != 'undefined') {
         var help = document.getElementById('help');
         if (!help) return; // In zone editor, probably
-        set_inner_html(help, window.orig_helper_text);
+        Composr.dom.html(help, window.orig_helper_text);
         if (typeof window.fade_transition != 'undefined') {
             set_opacity(help, 0.0);
             fade_transition(help, 100, 30, 4);
@@ -553,11 +534,11 @@ function doc_onmouseout() {
 }
 function doc_onmouseover(i) {
     var doc = document.getElementById('doc_' + i);
-    if ((doc) && (get_inner_html(doc) != '')) {
+    if ((doc) && (Composr.dom.html(doc) != '')) {
         var help = document.getElementById('help');
         if (!help) return; // In zone editor, probably
-        window.orig_helper_text = get_inner_html(help);
-        set_inner_html(help, get_inner_html(doc));
+        window.orig_helper_text = Composr.dom.html(help);
+        Composr.dom.html(help, Composr.dom.html(doc));
         if (typeof window.fade_transition != 'undefined') {
             set_opacity(help, 0.0);
             fade_transition(help, 100, 30, 4);
@@ -851,7 +832,7 @@ function _confirm_session(callback, username, url) {
 
 /* Dynamic inclusion */
 function load_snippet(snippet_hook, post, callback) {
-    var title = get_inner_html(document.getElementsByTagName('title')[0]);
+    var title = Composr.dom.html(document.getElementsByTagName('title')[0]);
     title = title.replace(/ \u2013 .*/, '');
     var metas = document.getElementsByTagName('link');
     var i;
@@ -1230,7 +1211,7 @@ function illustrate_frame_load(pf, frame) {
     if (!de) return;
     var body = de.getElementsByTagName('body');
     if (body.length == 0) {
-        set_inner_html(de, '<head>' + head + '<\/head><body aria-busy="true" class="website_body main_website_faux"><div class="spaced"><div class="ajax_loading vertical_alignment"><img id="loading_image" src="' + '{$IMG_INLINE*;,loading}'.replace(/^https?:/, window.location.protocol) + '" alt="{!LOADING;^}" /> <span class="vertical_alignment">{!LOADING;^}<\/span><\/div><\/div><\/body>');
+        Composr.dom.html(de, '<head>' + head + '<\/head><body aria-busy="true" class="website_body main_website_faux"><div class="spaced"><div class="ajax_loading vertical_alignment"><img id="loading_image" src="' + '{$IMG_INLINE*;,loading}'.replace(/^https?:/, window.location.protocol) + '" alt="{!LOADING;^}" /> <span class="vertical_alignment">{!LOADING;^}<\/span><\/div><\/div><\/body>');
     } else {
         body[0].className = 'website_body main_website_faux';
 
@@ -1241,8 +1222,8 @@ function illustrate_frame_load(pf, frame) {
         }
 
         if (de.getElementsByTagName('style').length == 0) // The conditional is needed for Firefox - for some odd reason it is unable to parse any head tags twice
-            set_inner_html(head_element, head);
-        set_inner_html(body[0], '<div aria-busy="true" class="spaced"><div class="ajax_loading"><img id="loading_image" class="vertical_alignment" src="' + '{$IMG_INLINE*;,loading}'.replace(/^https?:/, window.location.protocol) + '" alt="{!LOADING;^}" /> <span class="vertical_alignment">{!LOADING;^}<\/span><\/div><\/div>');
+            Composr.dom.html(head_element, head);
+        Composr.dom.html(body[0], '<div aria-busy="true" class="spaced"><div class="ajax_loading"><img id="loading_image" class="vertical_alignment" src="' + '{$IMG_INLINE*;,loading}'.replace(/^https?:/, window.location.protocol) + '" alt="{!LOADING;^}" /> <span class="vertical_alignment">{!LOADING;^}<\/span><\/div><\/div>');
     }
     var the_frame = window.frames[frame];
     window.setTimeout( // Stupid workaround for Google Chrome not loading an image on unload even if in cache
@@ -1738,7 +1719,7 @@ function activate_tooltip(ac, event, tooltip, width, pic, height, bottom, no_del
     if ((typeof ac.tooltip_id != 'undefined') && (document.getElementById(ac.tooltip_id))) {
         tooltip_element = win.document.getElementById(ac.tooltip_id);
         tooltip_element.style.display = 'none';
-        set_inner_html(tooltip_element, '');
+        Composr.dom.html(tooltip_element, '');
         window.setTimeout(function () {
             reposition_tooltip(ac, event, bottom, true, tooltip_element, force_width);
         }, 0);
@@ -1818,7 +1799,7 @@ function activate_tooltip(ac, event, tooltip, width, pic, height, bottom, no_del
         if (!ac.is_over) return;
 
         if ((!ac.tooltip_on) || (tooltip_element.childNodes.length == 0)) // Some other tooltip jumped in and wiped out tooltip on a delayed-show yet never triggers due to losing focus during that delay
-            set_inner_html(tooltip_element, tooltip, true);
+            Composr.dom.appendHtml(tooltip_element, tooltip);
 
         ac.tooltip_on = true;
         tooltip_element.style.display = 'block';
@@ -2129,538 +2110,13 @@ function get_session_id() {
     return read_cookie(Composr.$SESSION_COOKIE_NAME);
 }
 
-/* Get an element's HTML */
-function get_inner_html(element, outer_too) {
-    return outer_too ? element.outerHTML : element.innerHTML;
-}
-
-/*  Originally written by Optimal Works, http://www.optimalworks.net/  */
-/* Remove common XHTML entities so they can be placed into an XML parser that will not support non-recognised ones */
-function entities_to_unicode(din) {
-    if ((!din.replace) || (din.indexOf('&') == -1)) return din;
-
-    if (typeof window.entity_rep_reg == 'undefined') {
-        var reps = {
-            'amp': 38,
-            'gt': 62,
-            'lt': 60,
-            'quot': 34,
-            'hellip': 8230,
-            'middot': 183,
-            'ldquo': 8220,
-            'lsquo': 8216,
-            'rdquo': 8221,
-            'rsquo': 8217,
-            'mdash': 8212,
-            'ndash': 8211,
-            'nbsp': 160,
-            'times': 215,
-            'harr': 8596,
-            'lsaquo': 8249,
-            'rsaquo': 8250,
-            'euro': 8364,
-            'pound': 163,
-            'bull': 8226,
-            'copy': 169,
-            'trade': 8482,
-            'dagger': 8224,
-            'yen': 165,
-            'laquo': 171,
-            'raquo': 187,
-            'larr': 8592,
-            'rarr': 8594,
-            'uarr': 8593,
-            'darr': 8595,
-            'acute': 180,
-            'cedil': 184,
-            'circ': 710,
-            'macr': 175,
-            'tilde': 732,
-            'uml': 168,
-            'Aacute': 193,
-            'aacute': 225,
-            'Acirc': 194,
-            'acirc': 226,
-            'AElig': 198,
-            'aelig': 230,
-            'Agrave': 192,
-            'agrave': 224,
-            'Aring': 197,
-            'aring': 229,
-            'Atilde': 195,
-            'atilde': 227,
-            'Auml': 196,
-            'auml': 228,
-            'Ccedil': 199,
-            'ccedil': 231,
-            'Eacute': 201,
-            'eacute': 233,
-            'Ecirc': 202,
-            'ecirc': 234,
-            'Egrave': 200,
-            'egrave': 232,
-            'ETH': 208,
-            'eth': 240,
-            'Euml': 203,
-            'euml': 235,
-            'Iacute': 205,
-            'iacute': 237,
-            'Icirc': 206,
-            'icirc': 238,
-            'Igrave': 204,
-            'igrave': 236,
-            'Iuml': 207,
-            'iuml': 239,
-            'Ntilde': 209,
-            'ntilde': 241,
-            'Oacute': 211,
-            'oacute': 243,
-            'Ocirc': 212,
-            'ocirc': 244,
-            'OElig': 338,
-            'oelig': 339,
-            'Ograve': 210,
-            'ograve': 242,
-            'Oslash': 216,
-            'oslash': 248,
-            'Otilde': 213,
-            'otilde': 245,
-            'Ouml': 214,
-            'ouml': 246,
-            'Scaron': 352,
-            'scaron': 353,
-            'szlig': 223,
-            'THORN': 222,
-            'thorn': 254,
-            'Uacute': 218,
-            'uacute': 250,
-            'Ucirc': 219,
-            'ucirc': 251,
-            'Ugrave': 217,
-            'ugrave': 249,
-            'Uuml': 220,
-            'uuml': 252,
-            'Yacute': 221,
-            'yacute': 253,
-            'yuml': 255,
-            'Yuml': 376,
-            'cent': 162,
-            'curren': 164,
-            'brvbar': 166,
-            'Dagger': 8225,
-            'frasl': 8260,
-            'iexcl': 161,
-            'image': 8465,
-            'iquest': 191,
-            'lrm': 8206,
-            'not': 172,
-            'oline': 8254,
-            'ordf': 170,
-            'ordm': 186,
-            'para': 182,
-            'permil': 8240,
-            'prime': 8242,
-            'Prime': 8243,
-            'real': 8476,
-            'reg': 174,
-            'rlm': 8207,
-            'sect': 167,
-            'shy': 173,
-            'sup1': 185,
-            'weierp': 8472,
-            'bdquo': 8222,
-            'sbquo': 8218,
-            'emsp': 8195,
-            'ensp': 8194,
-            'thinsp': 8201,
-            'zwj': 8205,
-            'zwnj': 8204,
-            'deg': 176,
-            'divide': 247,
-            'frac12': 189,
-            'frac14': 188,
-            'frac34': 190,
-            'ge': 8805,
-            'le': 8804,
-            'minus': 8722,
-            'sup2': 178,
-            'sup3': 179,
-            'alefsym': 8501,
-            'and': 8743,
-            'ang': 8736,
-            'asymp': 8776,
-            'cap': 8745,
-            'cong': 8773,
-            'cup': 8746,
-            'empty': 8709,
-            'equiv': 8801,
-            'exist': 8707,
-            'fnof': 402,
-            'forall': 8704,
-            'infin': 8734,
-            'int': 8747,
-            'isin': 8712,
-            'lang': 9001,
-            'lceil': 8968,
-            'lfloor': 8970,
-            'lowast': 8727,
-            'micro': 181,
-            'nabla': 8711,
-            'ne': 8800,
-            'ni': 8715,
-            'notin': 8713,
-            'nsub': 8836,
-            'oplus': 8853,
-            'or': 8744,
-            'otimes': 8855,
-            'part': 8706,
-            'perp': 8869,
-            'plusmn': 177,
-            'prod': 8719,
-            'prop': 8733,
-            'radic': 8730,
-            'rang': 9002,
-            'rceil': 8969,
-            'rfloor': 8971,
-            'sdot': 8901,
-            'sim': 8764,
-            'sub': 8834,
-            'sube': 8838,
-            'sum': 8721,
-            'sup': 8835,
-            'supe': 8839,
-            'there4': 8756,
-            'Alpha': 913,
-            'alpha': 945,
-            'Beta': 914,
-            'beta': 946,
-            'Chi': 935,
-            'chi': 967,
-            'Delta': 916,
-            'delta': 948,
-            'Epsilon': 917,
-            'epsilon': 949,
-            'Eta': 919,
-            'eta': 951,
-            'Gamma': 915,
-            'gamma': 947,
-            'Iota': 921,
-            'iota': 953,
-            'Kappa': 922,
-            'kappa': 954,
-            'Lambda': 923,
-            'lambda': 955,
-            'Mu': 924,
-            'mu': 956,
-            'Nu': 925,
-            'nu': 957,
-            'Omega': 937,
-            'omega': 969,
-            'Omicron': 927,
-            'omicron': 959,
-            'Phi': 934,
-            'phi': 966,
-            'Pi': 928,
-            'pi': 960,
-            'piv': 982,
-            'Psi': 936,
-            'psi': 968,
-            'Rho': 929,
-            'rho': 961,
-            'Sigma': 931,
-            'sigma': 963,
-            'sigmaf': 962,
-            'Tau': 932,
-            'tau': 964,
-            'Theta': 920,
-            'theta': 952,
-            'thetasym': 977,
-            'upsih': 978,
-            'Upsilon': 933,
-            'upsilon': 965,
-            'Xi': 926,
-            'xi': 958,
-            'Zeta': 918,
-            'zeta': 950,
-            'crarr': 8629,
-            'dArr': 8659,
-            'hArr': 8660,
-            'lArr': 8656,
-            'rArr': 8658,
-            'uArr': 8657,
-            'clubs': 9827,
-            'diams': 9830,
-            'hearts': 9829,
-            'spades': 9824,
-            'loz': 9674
-        };
-
-        window.entity_rep_reg = {};
-        for (var i in reps) {
-            window.entity_rep_reg['&#' + reps[i] + ';'] = i;
-        }
-    }
-
-    var i;
-    for (var x in window.entity_rep_reg) {
-        i = window.entity_rep_reg[x];
-        if (typeof i == 'string') {
-            if ((i == 'acute') && (!din.match(/&\w+;/))) break; // No need to go further usually
-            i = new RegExp('&' + i + ';', 'g');
-            window.entity_rep_reg[x] = i;
-        }
-        din = din.replace(window.entity_rep_reg[x], x);
-    }
-    return din;
-}
-/* load the HTML as XHTML */
-function inner_html_load(xml_string) {
-    var xml;
-
-    try {
-        xml = (new DOMParser()).parseFromString(xml_string, "application/xml");
-    } catch (e) {
-        xml = null;
-    }
-
-    if ((xml === null) || ((typeof xml.documentElement != 'undefined') && (typeof xml.documentElement.childNodes[0] != 'undefined') && (xml.documentElement.childNodes[0].nodeName == 'parsererror'))) // HTML method then
-    {
-        xml = document.implementation.createHTMLDocument('');
-        var doc_elt = xml.documentElement;
-        doc_elt.innerHTML = xml_string;
-        xml = xml.getElementsByTagName('root')[0];
-    }
-
-    return xml;
-}
-
-/* recursively copy the XML (from xml_doc) into the DOM (under dom_node) */
-function inner_html_copy(dom_node, xml_doc, level, script_tag_dependencies) {
-    if (typeof level == 'undefined') level = 1;
-    if (level > 1) {
-        var node_upper = xml_doc.nodeName.toUpperCase();
-
-        if ((node_upper == 'SCRIPT') && (!xml_doc.getAttribute('src'))) {
-            var text = (xml_doc.nodeValue ? xml_doc.nodeValue : (xml_doc.textContent ? xml_doc.textContent : (xml_doc.text ? xml_doc.text : '')));
-            if (script_tag_dependencies['to_load'].length == 0) {
-                window.setTimeout(function () {
-                    eval.call(window, text);
-                }, 0);
-            } else {
-                script_tag_dependencies['to_run'].push(text); // Has to wait until all scripts are loaded
-            }
-
-            return;
-        }
-
-        if (xml_doc.nodeType == 1) {
-            // element node
-            var this_node = dom_node.ownerDocument.createElement(xml_doc.nodeName);
-
-            // attributes
-            for (var a = 0, attr = xml_doc.attributes.length; a < attr; a++) {
-                var a_name = xml_doc.attributes[a].name, a_value = xml_doc.attributes[a].value, evt = (a_name.substr(0, 2) == 'on');
-                if (!evt) {
-                    switch (a_name) {
-                        case 'class':
-                            this_node.className = a_value;
-                            break;
-                        case 'for':
-                            this_node.htmlFor = a_value;
-                            break;
-                        default:
-                            this_node.setAttribute(a_name, a_value);
-                    }
-                } else {
-                    this_node[a_name] = eval('var x=function(event) { ' + a_value + ' }; x;');
-                }
-            }
-
-            // append node
-            if ((node_upper == 'SCRIPT') || (node_upper == 'LINK')/* || (node_upper=='STYLE') Causes weird IE bug*/) {
-                if (node_upper == 'SCRIPT') {
-                    script_tag_dependencies['to_load'].push(this_node);
-                    this_node.async = false;
-                    this_node.onload = this_node.onreadystatechange = function () {
-                        // Once this <script src="..."> has loaded, we need to execute any <script>...</script> code. So we need to tie into load state for this
-                        if ((typeof this_node.readyState == 'undefined') || (this_node.readyState == 'complete') || (this_node.readyState == 'loaded')) {
-                            var found = 0, i;
-
-                            for (i = 0; i < script_tag_dependencies['to_load'].length; i++) {
-                                if (script_tag_dependencies['to_load'][i] === this_node)
-                                    delete script_tag_dependencies['to_load'][i];
-                                else if (typeof script_tag_dependencies['to_load'][i] !== 'undefined') found++;
-                            }
-                            if (found == 0) // Now we know all to_loads are loaded, we do the to_runs
-                            {
-                                if (typeof window.console != 'undefined') {
-                                    console.log('All AJAX-injected script tags loaded');
-                                }
-
-                                for (i = 0; i < script_tag_dependencies['to_run'].length; i++) {
-                                    eval.call(window, script_tag_dependencies['to_run'][i]);
-                                }
-                                script_tag_dependencies['to_run'] = []; // So won't run again, if both onreadystatechange and onload implemented in browser
-                            }
-                        }
-                    };
-                }
-                dom_node = document.head.appendChild(this_node);
-            } else {
-                dom_node = dom_node.appendChild(this_node);
-                var _new_html__initialise = function () {
-                    var found = 0, i;
-
-                    for (i = 0; i < script_tag_dependencies['to_load'].length; i++) {
-                        if (script_tag_dependencies['to_load'][i] === this_node)
-                            delete script_tag_dependencies['to_load'][i];
-                        else if (typeof script_tag_dependencies['to_load'][i] !== 'undefined') found++;
-                    }
-
-                    if (found == 0) {
-                        try {
-                            new_html__initialise(this_node);
-                        }
-                        catch (e) {
-                        } // Could be some kind of access error (been seen in IE)
-                    }
-                    else
-                        window.setTimeout(_new_html__initialise, 0); // Can't do it yet
-                };
-                window.setTimeout(_new_html__initialise, 0);
-            }
-        }  else if (xml_doc.nodeType == 3) {
-            // text node
-            var text = (xml_doc.nodeValue ? xml_doc.nodeValue : (xml_doc.textContent ? xml_doc.textContent : (xml_doc.text ? xml_doc.text : '')));
-            var test = text.replace(/^\s*|\s*$/g, '');
-
-            if (test.indexOf('<!--') != 0 && (test.length <= 3 || test.indexOf('-->') != (test.length - 3))) {
-                if ((dom_node.nodeName == 'STYLE') && (!dom_node.ownerDocument.createCDATASection)) {
-                    dom_node.cssText = text; // needed for IE
-                } else {
-                    dom_node.appendChild(dom_node.ownerDocument.createTextNode(text));
-                }
-                dom_node = null;
-            }
-        } else if (xml_doc.nodeType == 4) {
-            // CDATA node
-            var text = (xml_doc.nodeValue ? xml_doc.nodeValue : (xml_doc.textContent ? xml_doc.textContent : (xml_doc.text ? xml_doc.text : '')));
-            if ((dom_node.nodeName == 'STYLE') && (!dom_node.ownerDocument.createCDATASection)) {
-                dom_node.cssText = text; // needed for IE
-            } else {
-                dom_node.appendChild(dom_node.ownerDocument./*createCDATASection*/createTextNode(text)); // use of createCDATASection causes weird bug in Firefox (sibling DOM nodes skipped)
-            }
-            dom_node = null;
-        }
-    }
-
-    // do child nodes
-    if (dom_node) {
-        for (var i = 0, j = xml_doc.childNodes.length; i < j; i++) {
-            if (xml_doc.childNodes[i].id !== '_firebugConsole'){
-                inner_html_copy.call(window, dom_node, xml_doc.childNodes[i], level + 1, script_tag_dependencies);
-            }
-        }
-    }
-}
-
-/* Put some new HTML around the given element */
-function set_outer_html(element, target_html) {
-    var p = element.parentNode;
-    var ref = element.nextSibling;
-    p.removeChild(element);
-
-    set_inner_html(element, target_html, false, true);
-
-    var c = element.childNodes, ci;
-    while (c.length > 0) {
-        ci = c[0];
-        element.removeChild(ci);
-        p.insertBefore(ci, ref);
-    }
-}
-
-/* Put some new HTML into the given element */
-// Note that embedded JavaScript IS run unlike the normal .innerHTML - in fact we go to effort to guarantee it - even onload attached JavaScript
-function set_inner_html(element, target_html, append, force_dom) {
-    // Parser hint: .innerHTML okay
-    if (typeof element === 'string') {
-        element = document.getElementById(element);
-    }
-
-    target_html = target_html.toString();
-
-    if ((!force_dom) && (document.write) && (typeof element.innerHTML != 'undefined') && (!document.xmlVersion) && (target_html.toLowerCase().indexOf('<script src="') == -1) && (target_html.toLowerCase().indexOf('<link') == -1)) {
-        try {
-            var scripts_jump = 0, already_offset = 0;
-            if (append) {
-                scripts_jump = element.getElementsByTagName('script').length;
-                element.innerHTML += target_html;
-                already_offset = element.getElementsByTagName('*').length;
-            } else {
-                element.innerHTML = target_html;
-            }
-
-            window.setTimeout(function () {
-                try {
-                    var elements = element.getElementsByTagName('*');
-                    var length = elements.length;
-                    for (let i = already_offset; i < length; i++) {
-                        new_html__initialise(elements[i]);
-                    }
-                }
-                catch (e) {
-                } // In case its an iframe with changed access in the interim
-
-                // Execute any newly inserted inline script tags
-                var scripts = element.getElementsByTagName('script');
-                for (var i = scripts_jump; i < scripts.length; i++) {
-                    // Check if it is inline JS
-                    if (!scripts[i].src && (!scripts[i].type || scripts[i].type === 'application/javascript')) {
-                        eval.call(window, scripts[i].textContent);
-                    }
-                }
-            }, 0); // Delayed so we know DOM has loaded
-
-            return;
-        } catch (ignore) {
-        }
-    }
-
-    target_html = entities_to_unicode(target_html);
-
-    // load the XML and copies to DOM
-    target_html = '<root>' + target_html.replace(/^\s*\<\!DOCTYPE[^<>]*\>/, '') + '</root>';
-    var xml_doc = inner_html_load(target_html);
-    if (element && xml_doc) {
-        if (!append) {
-            if (element.lastChild && element.lastChild.parentNode != element) {// Workaround IE bug
-                element.innerHTML = '';
-            } else {
-                while (element.lastChild) {
-                    element.removeChild(element.lastChild);
-                }
-            }
-        }
-
-        var script_tag_dependencies = {
-            'to_run': [],
-            'to_load': []
-        };
-
-        inner_html_copy.call(window, element, xml_doc.documentElement === undefined ? xml_doc : xml_doc.documentElement, 1, script_tag_dependencies);
-    }
-}
-
 /* Import an XML node into the current document */
 function careful_import_node(node) {
-    var imported;
     try {
-        imported = (document.importNode) ? document.importNode(node, true) : null;
+        return document.importNode(node, true);
     } catch (e) {
+        return node;
     }
-    if (!imported) imported = node;
-    return imported;
 }
 
 function apply_rating_highlight_and_ajax_code(likes, initial_rating, content_type, id, type, rating, content_url, content_title, initialisation_phase, visual_only) {
@@ -2717,7 +2173,7 @@ function apply_rating_highlight_and_ajax_code(likes, initial_rating, content_typ
                     var _replace_spot = (template == '') ? bit.parentNode.parentNode.parentNode.parentNode : replace_spot;
 
                     // Show loading animation
-                    set_inner_html(_replace_spot, '');
+                    Composr.dom.html(_replace_spot, '');
                     var loading_image = document.createElement('img');
                     loading_image.className = 'ajax_loading';
                     loading_image.src = '{$IMG;,loading}'.replace(/^https?:/, window.location.protocol);
@@ -2728,7 +2184,7 @@ function apply_rating_highlight_and_ajax_code(likes, initial_rating, content_typ
                     var snippet_request = 'rating&type=' + window.encodeURIComponent(type) + '&id=' + window.encodeURIComponent(id) + '&content_type=' + window.encodeURIComponent(content_type) + '&template=' + window.encodeURIComponent(template) + '&content_url=' + window.encodeURIComponent(content_url) + '&content_title=' + window.encodeURIComponent(content_title);
                     var message = load_snippet(snippet_request, 'rating=' + window.encodeURIComponent(i), function (ajax_result) {
                         var message = ajax_result.responseText;
-                        set_outer_html(_replace_spot, (template == '') ? ('<strong>' + message + '</strong>') : message);
+                        Composr.dom.outerHtml(_replace_spot, (template == '') ? ('<strong>' + message + '</strong>') : message);
                     });
 
                     return false;
@@ -2766,8 +2222,8 @@ function ga_track(ob, category, action) {
 function click_link(link) {
     var cancelled = false;
 
-    if ((link.nodeName.toLowerCase() != 'a') && (link.nodeName.toLowerCase() != 'input')) {
-        link = link.getElementsByTagName('a')[0];
+    if ((link.nodeName.toLowerCase() !== 'a') && (link.nodeName.toLowerCase() !== 'input')) {
+        link = link.querySelector('a');
     }
 
     var backup = link.onclick;
@@ -2787,7 +2243,10 @@ function click_link(link) {
     link.onclick = backup;
 
     if ((!cancelled) && (link.href)) {
-        if (link.getAttribute('target')) window.open(link.href, link.getAttribute('target'));
+        if (link.getAttribute('target')) {
+            window.open(link.href, link.getAttribute('target'));
+        }
+
         window.location = link.href;
     }
 }
@@ -2842,7 +2301,7 @@ function replace_comments_form_with_ajax(options, hash, comments_form_id, commen
                 if ((ajax_result.responseText != '') && (ajax_result.status != 500)) {
                     // Display
                     var old_action = comments_form.action;
-                    set_outer_html(comments_wrapper, ajax_result.responseText);
+                    Composr.dom.outerHtml(comments_wrapper, ajax_result.responseText);
                     comments_form = document.getElementById(comments_form_id);
                     old_action = comments_form.action = old_action; // AJAX will have mangled URL (as was not running in a page context), this will fix it back
 
@@ -2869,7 +2328,7 @@ function replace_comments_form_with_ajax(options, hash, comments_form_id, commen
                         }
                     }
 
-                    // And re-attach this code (got killed by set_outer_html)
+                    // And re-attach this code (got killed by Composr.dom.outerHtml)
                     replace_comments_form_with_ajax(options, hash);
                 } else // Error: do a normal post so error can be seen
                 {
@@ -2950,7 +2409,7 @@ function threaded_load_more(ob, ids, id) {
         }
         ob.parentNode.removeChild(ob);
 
-        set_inner_html(wrapper, ajax_result.responseText, true);
+        Composr.dom.appendHtml(wrapper, ajax_result.responseText);
 
         window.setTimeout(function () {
             if (typeof window.fade_transition != 'undefined') {
@@ -2978,7 +2437,7 @@ function setup_word_counter(post, count_element) {
                 var matches = text_value.replace(/<[^<|>]+?>|&nbsp;/gi, ' ').match(/\b/g);
                 var count = 0;
                 if (matches) count = matches.length / 2;
-                set_inner_html(count_element, '{!WORDS;}'.replace('\\{1\\}', count));
+                Composr.dom.html(count_element, '{!WORDS;}'.replace('\\{1\\}', count));
             }
             catch (e) {
             }

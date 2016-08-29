@@ -154,13 +154,7 @@ function commandr_command_response(ajax_result_frame, ajax_result) {
             child_node = stdhtml.childNodes[i];
             new_child = careful_import_node(child_node);
             cloned_node = new_child.cloneNode(true);
-            /*if (typeof past_command.insertAdjacentHTML!='undefined')		Stopped working in Chrome :S
-             {
-             past_command.insertAdjacentHTML('beforeEnd',(typeof cloned_node.xml!='undefined')?cloned_node.xml:get_inner_html(cloned_node,true));
-             } else*/
-            {
-                past_command.appendChild(cloned_node);
-            }
+            past_command.appendChild(cloned_node);
         }
     }
 

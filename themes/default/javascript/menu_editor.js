@@ -92,7 +92,7 @@ function copy_fields_into_bottom(i, changed) {
         document.getElementById('check_perms_' + i).disabled = !this.checked;
     };
 
-    //set_inner_html(form.elements['branch_type'],get_inner_html(document.getElementById('branch_type_'+i))); Breaks in IE due to strict container rules
+    //Composr.dom.html(form.elements['branch_type'],Composr.dom.html(document.getElementById('branch_type_'+i))); Breaks in IE due to strict container rules
     form.elements['branch_type'].selectedIndex = document.getElementById('branch_type_' + i).selectedIndex;
     form.elements['branch_type'].onchange = function (event) {
         document.getElementById('branch_type_' + i).selectedIndex = this.selectedIndex;
@@ -333,7 +333,7 @@ function add_new_menu_item(parent_id, clickable_sections) {
         elements_bak.push([_elements_bak[i].name, _elements_bak[i].value]);
     }
 
-    set_inner_html(before, template2, true); // Technically we are actually putting after "branches_go_before_XXX", but it makes no difference. It only needs to act as a divider.
+    Composr.dom.appendHtml(before, template2); // Technically we are actually putting after "branches_go_before_XXX", but it makes no difference. It only needs to act as a divider.
 
     // Restore form branches
     for (i = 0; i < elements_bak.length; i++) {

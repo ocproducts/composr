@@ -82,7 +82,7 @@ function permissions_overridden(select) {
     var element = document.getElementById(select + '_presets');
     if (element.options[0].id != select + '_custom_option') {
         var new_option = document.createElement('option');
-        set_inner_html(new_option, '{!permissions:PINTERFACE_LEVEL_CUSTOM;^}');
+        Composr.dom.html(new_option, '{!permissions:PINTERFACE_LEVEL_CUSTOM;^}');
         new_option.id = select + '_custom_option';
         new_option.value = '';
         element.insertBefore(new_option, element.options[0]);
@@ -217,7 +217,7 @@ function update_permission_box(setting) {
     if (setting.value == '') {
         document.getElementById('selection_form_fields').style.display = 'none';
         document.getElementById('selection_button').disabled = true;
-        set_inner_html(document.getElementById('selection_message'), '{!permissions:PERMISSIONS_TREE_EDITOR_NONE_SELECTED;^}');
+        Composr.dom.html(document.getElementById('selection_message'), '{!permissions:PERMISSIONS_TREE_EDITOR_NONE_SELECTED;^}');
     } else {
         // Go through and set maximum permissions/override from those selected
         var values = setting.value.split(',');
@@ -249,7 +249,7 @@ function update_permission_box(setting) {
                     element = document.getElementById('access_' + group + '_presets');
                     if (element.options[0].id != 'access_' + group + '_custom_option') {
                         new_option = document.createElement('option');
-                        set_inner_html(new_option, '{!permissions:PINTERFACE_LEVEL_CUSTOM;^}');
+                        Composr.dom.html(new_option, '{!permissions:PINTERFACE_LEVEL_CUSTOM;^}');
                         new_option.id = 'access_' + group + '_custom_option';
                         new_option.value = '';
                         element.insertBefore(new_option, element.options[0]);
@@ -317,7 +317,7 @@ function update_permission_box(setting) {
                                 row = rows[0];
                                 new_cell = row.insertBefore(document.createElement('th'), row.cells[row.cells.length]);
                                 new_cell.className = 'privilege_header';
-                                set_inner_html(new_cell, '<img class="gd_text" data-gd-text="{}" src="' + '{$BASE_URL*;,0}'.replace(/^https?:/, window.location.protocol) + '/data/gd_text.php?color=' + window.column_color + '&amp;text=' + window.encodeURIComponent(privilege_title) + escape_html(keep_stub()) + '" title="' + escape_html(privilege_title) + '" alt="' + escape_html(privilege_title) + '" />');
+                                Composr.dom.html(new_cell, '<img class="gd_text" data-gd-text="{}" src="' + '{$BASE_URL*;,0}'.replace(/^https?:/, window.location.protocol) + '/data/gd_text.php?color=' + window.column_color + '&amp;text=' + window.encodeURIComponent(privilege_title) + escape_html(keep_stub()) + '" title="' + escape_html(privilege_title) + '" alt="' + escape_html(privilege_title) + '" />');
 
                                 rows[rows.length - 1].appendChild(document.createElement('td')).className = 'form_table_field_input privilege_footer'; // Footer cell
 
@@ -331,7 +331,7 @@ function update_permission_box(setting) {
                             new_cell = row.insertBefore(document.createElement('td'), row.cells[row.cells.length - 1]);
                             new_cell.className = 'form_table_field_input privilege_cell';
                             if (document.getElementById('access_' + group).name != '_ignore') {
-                                set_inner_html(new_cell, '<div class="accessibility_hidden"><label for="access_' + group + '_privilege_' + privilege + '">{!permissions:OVERRIDE;^}</label></div><select title="' + escape_html(privilege_title) + '" onmouseover="if (this.options[this.selectedIndex].value==\'-1\') show_permission_setting(this,event);" id="access_' + group + '_privilege_' + privilege + '" name="access_' + group + '_privilege_' + privilege + '"><option selected="selected" value="-1">/</option><option value="0">{!permissions:NO_COMPACT;^}</option><option value="1">{!permissions:YES_COMPACT;^}</option></select>');
+                                Composr.dom.html(new_cell, '<div class="accessibility_hidden"><label for="access_' + group + '_privilege_' + privilege + '">{!permissions:OVERRIDE;^}</label></div><select title="' + escape_html(privilege_title) + '" onmouseover="if (this.options[this.selectedIndex].value==\'-1\') show_permission_setting(this,event);" id="access_' + group + '_privilege_' + privilege + '" name="access_' + group + '_privilege_' + privilege + '"><option selected="selected" value="-1">/</option><option value="0">{!permissions:NO_COMPACT;^}</option><option value="1">{!permissions:YES_COMPACT;^}</option></select>');
 
                                 element = document.getElementById('access_' + group + '_privilege_' + privilege);
 
@@ -379,14 +379,14 @@ function update_permission_box(setting) {
 
             // Hide certain things if we only have view settings here, else show them
             if (num_privilege_total == 0) {
-                set_inner_html(matrix.getElementsByTagName('tr')[0].cells[0], '{!USERGROUP;^}');
+                Composr.dom.html(matrix.getElementsByTagName('tr')[0].cells[0], '{!USERGROUP;^}');
                 for (k = 0; k < known_groups.length; k++) {
                     document.getElementById('access_' + known_groups[k] + '_presets').style.display = 'none';
                     var button = document.getElementById('access_' + known_groups[k] + '_privilege_container').getElementsByTagName('button')[0];
                     if (typeof button != 'undefined') button.disabled = true;
                 }
             } else {
-                set_inner_html(matrix.getElementsByTagName('tr')[0].cells[0], '<span class="heading_group">{!USERGROUP;^}</span> <span class="heading_presets">{!permissions:PINTERFACE_PRESETS;^}</span>');
+                Composr.dom.html(matrix.getElementsByTagName('tr')[0].cells[0], '<span class="heading_group">{!USERGROUP;^}</span> <span class="heading_presets">{!permissions:PINTERFACE_PRESETS;^}</span>');
                 for (k = 0; k < known_groups.length; k++) {
                     document.getElementById('access_' + known_groups[k] + '_presets').style.display = 'block';
                     var button = document.getElementById('access_' + known_groups[k] + '_privilege_container').getElementsByTagName('button')[0];
@@ -414,7 +414,7 @@ function update_permission_box(setting) {
 
         document.getElementById('selection_form_fields').style.display = 'block';
         document.getElementById('selection_button').disabled = false;
-        set_inner_html(document.getElementById('selection_message'), (values.length <= 1) ? '{!permissions:PERMISSIONS_TREE_EDITOR_ONE_SELECTED;^}' : '{!permissions:PERMISSIONS_TREE_EDITOR_MULTI_SELECTED;^}');
+        Composr.dom.html(document.getElementById('selection_message'), (values.length <= 1) ? '{!permissions:PERMISSIONS_TREE_EDITOR_ONE_SELECTED;^}' : '{!permissions:PERMISSIONS_TREE_EDITOR_MULTI_SELECTED;^}');
     }
 }
 
@@ -479,7 +479,7 @@ function set_permissions(setting) {
                 }
 
                 // Update UI indicators
-                set_inner_html(document.getElementById('tree_listextra_' + id), permissions_img_func_1(node, id) + permissions_img_func_2(node, id));
+                Composr.dom.html(document.getElementById('tree_listextra_' + id), permissions_img_func_1(node, id) + permissions_img_func_2(node, id));
             }
 
             if (set_request_b != '') set_request = set_request + '&map_' + i + '=' + window.encodeURIComponent(serverid) + set_request_b;
@@ -550,9 +550,9 @@ function permissions_img_func_2_b(node, id) {
 function update_group_displayer(setting) {
     if (typeof window.sitemap == 'undefined') return;
 
-    set_inner_html(document.getElementById('group_name'), escape_html(window.usergroup_titles[setting.options[setting.selectedIndex].value]));
+    Composr.dom.html(document.getElementById('group_name'), escape_html(window.usergroup_titles[setting.options[setting.selectedIndex].value]));
     var html = document.getElementById('tree_list__root_tree_list');
-    set_inner_html(html, '');
+    Composr.dom.html(html, '');
     window.sitemap.render_tree(window.sitemap.tree_list_data, html);
 }
 

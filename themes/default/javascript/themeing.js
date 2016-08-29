@@ -250,7 +250,7 @@ function template_editor_show_tab(file_id) {
 function template_editor_tab_loaded_content(ajax_result, file) {
     var file_id = file_to_file_id(file);
 
-    set_inner_html(document.getElementById('g_' + file_id), ajax_result.responseText);
+    Composr.dom.html(document.getElementById('g_' + file_id), ajax_result.responseText);
 
     window.setTimeout(function () {
         var textarea_id = 'e_' + file_id;
@@ -361,8 +361,8 @@ function template_editor_clean_tabs() {
     }
 
     if (num_tabs == 0) {
-        set_inner_html(headers, '<a href="#!" id="t_default" class="tab"><span>&mdash;</span></a>');
-        set_inner_html(bodies, '<div id="g_default"><p class="nothing_here">{!NA}</p></div>');
+        Composr.dom.html(headers, '<a href="#!" id="t_default" class="tab"><span>&mdash;</span></a>');
+        Composr.dom.html(bodies, '<div id="g_default"><p class="nothing_here">{!NA}</p></div>');
     }
 }
 
@@ -740,7 +740,7 @@ function set_up_parent_page_highlighting(file, file_id) {
     var selectors = window.opener.find_active_selectors(doing_css_for, window.opener);
 
     var list = document.getElementById('selector_list_' + file_id);
-    set_inner_html(list, '');
+    Composr.dom.html(list, '');
 
     for (var i = 0; i < selectors.length; i++) {
         selector = selectors[i].selectorText;
@@ -751,7 +751,7 @@ function set_up_parent_page_highlighting(file, file_id) {
         li.appendChild(a);
         a.href = '#';
         a.id = 'selector_' + i;
-        set_inner_html(a, escape_html(selector));
+        Composr.dom.html(a, escape_html(selector));
         list.appendChild(li);
 
         // Add tooltip so we can see what the CSS text is in when hovering the selector

@@ -3,7 +3,7 @@ DESCRIPTION={+START,IF_NON_EMPTY,{DESCRIPTION}}{DESCRIPTION}<br /><br />{+END}{!
 RIGHT=1
 {+END}
 
-<input style="display: none" type="text" class="input_line{REQUIRED*} hidden_but_needed" id="{NAME*}" name="{NAME*}" value="{DEFAULT*}" onchange="var ob=document.getElementById('{NAME;*}_mirror'); if (ob) { ob.parentNode.style.display=(this.selected_title=='')?'none':'block'; set_inner_html(ob,(this.selected_title=='')?'{!NA_EM;=}':escape_html(this.selected_title)); }" />
+<input style="display: none" type="text" class="input_line{REQUIRED*} hidden_but_needed" id="{NAME*}" name="{NAME*}" value="{DEFAULT*}" onchange="var ob=document.getElementById('{NAME;*}_mirror'); if (ob) { ob.parentNode.style.display=(this.selected_title=='')?'none':'block'; Composr.dom.html(ob,(this.selected_title=='')?'{!NA_EM;=}':escape_html(this.selected_title)); }" />
 <div class="ajax_tree_list" id="tree_list__root_{NAME*}" role="tree">
 	<!-- List put in here -->
 </div>

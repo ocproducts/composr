@@ -4,7 +4,7 @@ function newsletter_preview_into(frame_id, html) {
         var de = window.frames[frame_id].document.documentElement;
         var body = de.getElementsByTagName('body');
         if (body.length == 0) {
-            set_inner_html(de, adjusted_preview);
+            Composr.dom.html(de, adjusted_preview);
         } else {
             var head_element = de.getElementsByTagName('head')[0];
             if (!head_element) {
@@ -12,8 +12,8 @@ function newsletter_preview_into(frame_id, html) {
                 de.appendChild(head_element);
             }
             if (de.getElementsByTagName('style').length == 0 && adjusted_preview.indexOf('<head') != -1) /*{$,The conditional is needed for Firefox - for some odd reason it is unable to parse any head tags twice}*/
-                set_inner_html(head_element, adjusted_preview.replace(/^(.|\n)*<head[^>]*>((.|\n)*)<\/head>(.|\n)*$/i, '$2'));
-            set_inner_html(body[0], adjusted_preview.replace(/^(.|\n)*<body[^>]*>((.|\n)*)<\/body>(.|\n)*$/i, '$2'));
+                Composr.dom.html(head_element, adjusted_preview.replace(/^(.|\n)*<head[^>]*>((.|\n)*)<\/head>(.|\n)*$/i, '$2'));
+            Composr.dom.html(body[0], adjusted_preview.replace(/^(.|\n)*<body[^>]*>((.|\n)*)<\/body>(.|\n)*$/i, '$2'));
         }
 
         resize_frame(frame_id, 300);

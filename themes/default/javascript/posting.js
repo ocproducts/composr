@@ -19,7 +19,7 @@ function add_attachment(start_num, posting_field_name) {
     // Add new file input, if we are using naked file inputs
     if (window.attachment_template.replace(/\s/, '') != '') {
         var new_div = document.createElement('div');
-        set_inner_html(new_div, window.attachment_template.replace(/\_\_num_attachments\_\_/g, window.num_attachments));
+        Composr.dom.html(new_div, window.attachment_template.replace(/\_\_num_attachments\_\_/g, window.num_attachments));
         add_to.appendChild(new_div);
     }
 
@@ -326,7 +326,7 @@ function do_input_comcode(field_name, tag) {
                             }
                         }
 
-                        default_embed = get_inner_html(comcode_element);
+                        default_embed = Composr.dom.html(comcode_element);
 
                         if (comcode_element.id == '') {
                             comcode_element.id = 'comcode_' + Date.now();

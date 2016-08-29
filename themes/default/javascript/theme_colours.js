@@ -62,7 +62,11 @@ function make_colour_chooser(name, color, context, tabindex, label, className) {
     t = t + '</div>';
     if (context != '') t = t + '<div class="css_colour_chooser_context">' + context + '</div>';
 
-    set_inner_html(p, t, p.id == 'colours_go_here');
+    if (p.id === 'colours_go_here') {
+        Composr.dom.appendHtml(p, t);
+    } else {
+        Composr.dom.html(p, t);
+    }
 
     /*
      Uncomment if you want to force spectrum widget even when there is native browser input support
@@ -135,7 +139,7 @@ function do_color_chooser_element(element) {
             if (selected) style += 'outline: 3px solid gray; position: relative;';
             innert = innert + '<div onclick="do_color_change(event);" class="css_colour_strip" style="' + style + '" id="' + tid + '"></div>';
         }
-        set_inner_html(c[d], innert);
+        Composr.dom.html(c[d], innert);
     }
 }
 

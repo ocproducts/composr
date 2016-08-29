@@ -20,7 +20,7 @@
                     window[tabFunc].done = true;
 
                     load_snippet('profile_tab&tab=' + options.tabCode + '&member_id=' + options.memberId + window.location.search.replace('?', '&'), null, function (result) {
-                        set_inner_html(document.getElementById('g_' + options.tabCode), result.responseText);
+                        Composr.dom.html(document.getElementById('g_' + options.tabCode), result.responseText);
 
                         find_url_tab();
                     });

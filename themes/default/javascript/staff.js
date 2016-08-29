@@ -350,7 +350,7 @@ function load_software_chat(event)
 		var top_temp=100;
 		box.style.top=top_temp+'px';
 
-		set_inner_html(box,html);
+		Composr.dom.html(box,html);
 		document.body.appendChild(box);
 
 		smooth_scroll(0);
@@ -419,7 +419,7 @@ function submit_custom_task(form)
 	form.elements['recur_interval'].value='';
 	form.elements['new_task'].value='';
 
-	set_inner_html(document.getElementById('custom_tasks_go_here'),new_task,true);
+	Composr.dom.appendHtml(document.getElementById('custom_tasks_go_here'),new_task);
 
 	return false;
 }

@@ -133,10 +133,10 @@ class Module_cms_banners extends Standard_crud_module
                     var _im_total=document.getElementById("im_total");
                     var im_here=window.parseInt(document.getElementById("importancemodulus").value);
                     var im_total=window.parseInt(_im_total.className.replace("im_",""))+im_here;
-                    set_inner_html(_im_here,im_here);
-                    set_inner_html(document.getElementById("im_here_2"),im_here);
-                    set_inner_html(_im_total,im_total);
-                    set_inner_html(document.getElementById("im_total_2"),im_total);
+                    Composr.dom.html(_im_here,im_here);
+                    Composr.dom.html(document.getElementById("im_here_2"),im_here);
+                    Composr.dom.html(_im_total,im_total);
+                    Composr.dom.html(document.getElementById("im_total_2"),im_total);
                 }
             }
         ';

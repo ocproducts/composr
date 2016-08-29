@@ -17,7 +17,7 @@
             window.pending_eval_function = function (ob) { // In webkit you can't get a node until it's been closed, so we need to set our code into a function and THEN run it
                 if (typeof options.tickerText !== 'undefined') {
                     window.setTimeout(function () {
-                        set_inner_html(document.getElementById('news_go_here'), options.tickerText);
+                        Composr.dom.html(document.getElementById('news_go_here'), options.tickerText);
                     }, options.relativeTimestamp * 1000);
                 }
                 // Set up extra attributes
@@ -76,7 +76,7 @@ function realtime_rain_button_load_handler() {
 
     var x = document.createElement('div');
     document.body.appendChild(x);
-    set_inner_html(x, load_snippet('realtime_rain_load'));
+    Composr.dom.html(x, load_snippet('realtime_rain_load'));
     e = document.getElementById('real_time_surround');
     e.style.position = 'absolute';
     e.style.zIndex = 100;
@@ -148,7 +148,7 @@ function received_events(ajax_result_frame, ajax_result) {
             cloned_message = document.createElement('div');
             cloned_message.id = _cloned_message.getAttribute('id');
             cloned_message.className = _cloned_message.getAttribute('class');
-            set_inner_html(cloned_message, get_inner_html(_cloned_message));
+            Composr.dom.html(cloned_message, Composr.dom.html(_cloned_message));
             left_pos += 200;
             if (left_pos >= window_width) break; // Too much!
             window.setTimeout(function () {
@@ -199,7 +199,7 @@ function received_events(ajax_result_frame, ajax_result) {
                                         return function () {
                                             next_icon = document.createElement('div');
                                             next_icon.className = main_icon.className;
-                                            set_inner_html(next_icon, get_inner_html(main_icon));
+                                            Composr.dom.html(next_icon, Composr.dom.html(main_icon));
                                             next_icon.style.position = 'absolute';
                                             next_icon.style.left = find_pos_x(main_icon, true) + 'px';
                                             next_icon.style.top = find_pos_y(main_icon, true) + 'px';
@@ -289,8 +289,8 @@ function timeline_click(timeline, prospective) {
     if (!prospective) {
         window.current_time = time;
         bubbles_tidy_up();
-        set_inner_html(document.getElementById('real_time_date'), '{!SET}');
-        set_inner_html(document.getElementById('real_time_time'), '');
+        Composr.dom.html(document.getElementById('real_time_date'), '{!SET}');
+        Composr.dom.html(document.getElementById('real_time_time'), '');
         document.getElementById('loading_icon').style.display = 'block';
     } else {
         set_time_line_position(time);
@@ -307,7 +307,7 @@ function bubbles_tidy_up() {
             bubbles[i].timer = null;
         }
     }
-    set_inner_html(bubbles_go_here, '');
+    Composr.dom.html(bubbles_go_here, '');
     window.bubble_groups = [];
     window.total_lines = 0;
     var icons = document.getElementById('real_time_surround').parentNode.querySelectorAll('.email_icon');
@@ -337,8 +337,8 @@ function set_time_line_position(time) {
     var realtimedate = document.getElementById('real_time_date');
     var realtimetime = document.getElementById('real_time_time');
     if (!realtimedate) return;
-    set_inner_html(realtimedate, date_object.getFullYear() + '/' + ('' + date_object.getMonth()) + '/' + ('' + date_object.getDate()));
-    set_inner_html(realtimetime, ('' + date_object.getHours()) + ':' + ('' + date_object.getMinutes()) + ':' + ('' + date_object.getSeconds()));
+    Composr.dom.html(realtimedate, date_object.getFullYear() + '/' + ('' + date_object.getMonth()) + '/' + ('' + date_object.getDate()));
+    Composr.dom.html(realtimetime, ('' + date_object.getHours()) + ':' + ('' + date_object.getMinutes()) + ':' + ('' + date_object.getSeconds()));
 }
 
 function toggle_window_pausing(button) {

@@ -8,7 +8,7 @@ function generate_menu_sitemap(save_to, structure, the_level) {
     var target = document.getElementById(save_to);
 
     if (the_level == 0) {
-        set_inner_html(target, '');
+        Composr.dom.html(target, '');
 
         var ul = document.createElement('ul');
 
@@ -48,7 +48,7 @@ function _generate_menu_sitemap(target, node, the_level) {
         a.href = node.url;
     }
     span.appendChild(a);
-    set_inner_html(a, node.caption);
+    Composr.dom.html(a, node.caption);
 
     target.appendChild(li);
 

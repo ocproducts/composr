@@ -49,6 +49,7 @@
         arrProto  = Array.prototype,
         toArray   = Function.bind.call(Function.call, arrProto.slice),
         forEach   = Function.bind.call(Function.call, arrProto.forEach),
+        noop      = function () { return; },
 
         loadPolyfillsPromise = new Promise(function (resolve) {
             loadPolyfills(resolve);
@@ -81,8 +82,6 @@
 
     Composr.ready = Promise.all([loadPolyfillsPromise, domReadyPromise]);
     Composr.loadWindow = Promise.all([Composr.ready, windowLoadPromise]);
-
-    Composr.noop = function noop() {};
 
     /* Generate url */
     Composr.url = function (path) {
@@ -274,6 +273,12 @@
         });
     };
 
+
+    Composr.View = Backbone.View.extend({});
+
+    /* Addons will add Composr.View subclasses under this object */
+    Composr.views = {};
+
     Composr.initializeViews = function (context, addonName) {
         var View, addonNameKibab = addonName.replace(/_/g, '-'),
             addonNameCamelCase = Composr.utils.camelCase(addonName);
@@ -416,32 +421,104 @@
     /* DOM helper methods */
     Composr.dom = {};
 
-    Composr.dom.html = function (el, opts) {
+    Composr.dom.$ = function (el, selector) {
+        if (arguments.length === 1) {
+            selector = el;
+            el = document;
+        }
+
+        return el.querySelector(selector);
+    };
+
+    Composr.dom.$$ = function (el, selector) {
+        if (arguments.length === 1) {
+            selector = el;
+            el = document;
+        }
+
+        return toArray(el.querySelectorAll(selector));
+    };
+
+    Composr.dom.html = function (el, html) {
         // Parser hint: .innerHTML okay
-        var html = opts, startIndex, i;
+        var i, len;
 
-        if (opts && (typeof opts === 'object')) {
-            html = opts.append;
+        if (html === undefined) {
+            return el.innerHTML;
         }
 
-        startIndex = opts.append ? el.children.length : 0;
-
-        if (opts.append) {
-            el.insertAdjacentHTML('beforeend', html);
-        } else {
-            el.innerHTML = html;
+        if (el.children.length !== 0) {
+            for (i = 0, len = el.children.length; i < len; i++) {
+                // Detach behaviors from the elements to be deleted
+                Composr.detachBehaviors(el.children[i]);
+            }
         }
 
-        if (!el.children.length || (opts.append && (startIndex === el.children.length))) {
+        el.innerHTML = html;
+
+        if (el.children.length === 0) {
             // No new child elements added.
             return;
         }
 
-        for (i = startIndex; i < el.children.length; i++) {
+        for (i = 0, len = el.children.length; i < len; i++) {
             Composr.attachBehaviors(el.children[i]);
         }
     };
 
+    Composr.dom.prependHtml = function (el, html) {
+        // Parser hint: .innerHTML okay
+        var prevChildrenLength = el.children.length, newChildrenLength, i, len;
+
+        el.insertAdjacentHTML('afterbegin', html);
+
+        newChildrenLength = el.children.length;
+
+        if (prevChildrenLength === newChildrenLength) {
+            // No new child elements added.
+            return;
+        }
+
+        for (i = 0, len = (prevChildrenLength - newChildrenLength); i < len; i++) {
+            Composr.attachBehaviors(el.children[i]);
+        }
+    };
+
+    Composr.dom.appendHtml = function (el, html) {
+        // Parser hint: .innerHTML okay
+        var startIndex = el.children.length, newChildrenLength, i;
+
+        el.insertAdjacentHTML('beforeend', html);
+
+        newChildrenLength = el.children.length;
+
+        if (startIndex === newChildrenLength) {
+            // No new child elements added.
+            return;
+        }
+
+        for (i = startIndex; i < newChildrenLength; i++) {
+            Composr.attachBehaviors(el.children[i]);
+        }
+    };
+
+    /* Put some new HTML around the given element */
+    Composr.dom.outerHtml = function (el, html) {
+        var p   = el.parentNode,
+            ref = el.nextSibling, c, ci;
+
+        p.removeChild(el);
+
+        Composr.dom.html(el, html);
+
+        c = el.childNodes;
+
+        while (c.length > 0) {
+            ci = c[0];
+            el.removeChild(ci);
+            p.insertBefore(ci, ref);
+        }
+    };
 
     /* Returns the provided element's width excluding padding and borders */
     Composr.dom.contentWidth = function contentWidth(element) {
@@ -463,11 +540,11 @@
 
     // Check if the given element matches selector
     Composr.dom.matches = function(el, selector) {
-        return elMatches(el, selector);
+        return (el instanceof HTMLElement) && elMatches(el, selector);
     };
 
     // Get nearest parent (or itself) element matching selector
-    Composr.dom.closest = function (el, selector) {
+    Composr.dom.closest = function closest(el, selector) {
         return (!el || Composr.dom.matches(el, selector)) ? el : closest(el.parentElement, selector);
     };
 
@@ -479,7 +556,7 @@
 
         initializeAnchors: {
             attach: function (context) {
-                var anchors = toArray(context.querySelectorAll('a'));
+                var anchors = Composr.dom.$$(context, 'a');
 
                 if (context.nodeName.toLowerCase() === 'a') {
                     anchors.unshift(context);
@@ -510,7 +587,7 @@
 
         initializeForms: {
             attach: function (context) {
-                var forms = toArray(context.querySelectorAll('form'));
+                var forms = Composr.dom.$$(context, 'form');
 
                 if (context.nodeName.toLowerCase() === 'form') {
                     forms.unshift(context);
@@ -567,7 +644,7 @@
                     return;
                 }
 
-                forEach(context.querySelectorAll(selector), function (img) {
+                Composr.dom.$$(context, selector).forEach(function (img) {
                     convert_tooltip(img);
                 });
             }
@@ -577,7 +654,7 @@
         // @TODO: To be killed
         functionCalls: {
             attach: function (context) {
-                var els = toArray(context.querySelectorAll('[data-cms-call]'));
+                var els = Composr.dom.$$(context, '[data-cms-call]');
 
                 if (Composr.dom.matches(context, '[data-cms-call]')) {
                     els.unshift(context);
@@ -615,7 +692,7 @@
 
         select2Plugin: {
             attach: function (context) {
-                var els = toArray(context.querySelectorAll('[data-cms-select2]'));
+                var els = Composr.dom.$$(context, '[data-cms-select2]');
 
                 if (Composr.dom.matches(context, '[data-cms-select2]')) {
                     els.unshift(context);
@@ -636,7 +713,7 @@
 
         gdTextImages: {
             attach: function (context) {
-                var els = toArray(context.querySelectorAll('img[data-gd-text]'));
+                var els = Composr.dom.$$(context, 'img[data-gd-text]');
 
                 if (Composr.dom.matches(context, 'img[data-gd-text]')) {
                     els.unshift(context);
@@ -726,11 +803,7 @@
         });
     };
 
-    /* Addons will add Backbone.View subclasses under this object */
 
-    Composr.View = Backbone.View.extend({});
-
-    Composr.views = {};
     Composr.views.core = {};
     Composr.views.core.Global = Composr.View.extend({
         initialize: function initialize(viewOptions, options) {

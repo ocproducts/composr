@@ -76,7 +76,7 @@ function internalise_infinite_scrolling(url_stem, wrapper) {
             var load_more_link = document.createElement('div');
             load_more_link.className = 'pagination_load_more';
             var load_more_link_a = document.createElement('a');
-            set_inner_html(load_more_link_a, '{!LOAD_MORE;}');
+            Composr.dom.html(load_more_link_a, '{!LOAD_MORE;}');
             load_more_link_a.href = '#';
             load_more_link_a.onclick = function () {
                 internalise_infinite_scrolling_go(url_stem, wrapper, more_links);
@@ -290,7 +290,7 @@ function call_block(url, new_block_params, target_div, append, callback, scroll_
     if (typeof inner == 'undefined') inner = false;
     if (typeof show_loading_animation == 'undefined') show_loading_animation = true;
     if ((typeof block_data_cache[url] == 'undefined') && (new_block_params != ''))
-        block_data_cache[url] = get_inner_html(target_div); // Cache start position. For this to be useful we must be smart enough to pass blank new_block_params if returning to fresh state
+        block_data_cache[url] = Composr.dom.html(target_div); // Cache start position. For this to be useful we must be smart enough to pass blank new_block_params if returning to fresh state
 
     var ajax_url = url;
     if (new_block_params != '') ajax_url += '&block_map_sup=' + window.encodeURIComponent(new_block_params);
@@ -304,7 +304,7 @@ function call_block(url, new_block_params, target_div, append, callback, scroll_
 
     // Show loading animation
     var loading_wrapper = target_div;
-    if ((loading_wrapper.id.indexOf('carousel_') == -1) && (get_inner_html(loading_wrapper).indexOf('ajax_loading_block') == -1) && (show_loading_animation)) {
+    if ((loading_wrapper.id.indexOf('carousel_') == -1) && (Composr.dom.html(loading_wrapper).indexOf('ajax_loading_block') == -1) && (show_loading_animation)) {
         var raw_ajax_grow_spot = target_div.querySelectorAll('.raw_ajax_grow_spot');
         if (typeof raw_ajax_grow_spot[0] != 'undefined' && append) loading_wrapper = raw_ajax_grow_spot[0]; // If we actually are embedding new results a bit deeper
         var loading_wrapper_inner = document.createElement('div');
@@ -377,12 +377,12 @@ function show_block_html(new_html, target_div, append, inner) {
     var raw_ajax_grow_spot = target_div.querySelectorAll('.raw_ajax_grow_spot');
     if (typeof raw_ajax_grow_spot[0] != 'undefined' && append) target_div = raw_ajax_grow_spot[0]; // If we actually are embedding new results a bit deeper
     if (append) {
-        set_inner_html(target_div, new_html, true, true);
+        Composr.dom.appendHtml(target_div, new_html);
     } else {
         if (inner) {
-            set_inner_html(target_div, new_html);
+            Composr.dom.html(target_div, new_html);
         } else {
-            set_outer_html(target_div, new_html);
+            Composr.dom.outerHtml(target_div, new_html);
         }
     }
 }
@@ -417,7 +417,7 @@ function ajax_form_submit__admin__headless(event, form, block_name, map) {
                     if (!element_replace) return true; // Oh dear, target not found
                 }
 
-                set_inner_html(element_replace, xhtml);
+                Composr.dom.html(element_replace, xhtml);
 
                 window.fauxmodal_alert('{!SUCCESS;}');
 

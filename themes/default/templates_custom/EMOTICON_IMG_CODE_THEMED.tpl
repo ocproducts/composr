@@ -15,7 +15,7 @@
 			}
 
 			var my_id=parseInt(Math.random()*10000),emoticoncrazy=document.getElementById('emoticoncrazy{$GET%,rndx}');
-			set_inner_html(emoticoncrazy,'<img id="'+my_id+'" style="position: relative" alt="{!EMOTICON;}" src="{$IMG*,{SRC},1}" />');
+			Composr.dom.html(emoticoncrazy,'<img id="'+my_id+'" style="position: relative" alt="{!EMOTICON;}" src="{$IMG*,{SRC},1}" />');
 			crazy_criters.push(my_id);
 		});
 	//]]></script>

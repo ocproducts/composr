@@ -90,14 +90,14 @@
 
 			function do_forum_choose(object,versions)
 			{
-				set_inner_html(document.getElementById('versions'),versions);
+				Composr.dom.html(document.getElementById('versions'),versions);
 
 				var type='none';
 				if ((object.id!='none') && (object.id!='cns'))
 				{
 					type='block';
 					var label=document.getElementById('sep_forum');
-					if (label) set_inner_html(label,object.nextSibling.nodeValue);
+					if (label) Composr.dom.html(label,object.nextSibling.nodeValue);
 				}
 
 				document.getElementById('forum_database_info').style.display=type;

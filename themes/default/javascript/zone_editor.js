@@ -155,7 +155,7 @@ function reload_preview(id) {
     var edit_element = document.getElementById('edit_' + id + '_textarea');
     if (!edit_element) return; // Nothing interatively edited
 
-    set_inner_html(element, '<div aria-busy="true" class="ajax_loading vertical_alignment"><img src="' + '{$IMG;,loading}'.replace(/^https?:/, window.location.protocol) + '" /> <span>{!LOADING;^}</span></div>');
+    Composr.dom.html(element, '<div aria-busy="true" class="ajax_loading vertical_alignment"><img src="' + '{$IMG;,loading}'.replace(/^https?:/, window.location.protocol) + '" /> <span>{!LOADING;^}</span></div>');
 
     window.loading_preview_of = id;
 
@@ -170,7 +170,7 @@ function reload_preview(id) {
 function reloaded_preview(ajax_result_frame, ajax_result) {
     if (typeof window.loading_preview_of == 'undefined') return;
     var element = document.getElementById('view_' + window.loading_preview_of);
-    set_inner_html(element, merge_text_nodes(ajax_result.childNodes).replace(/^((\s)|(\<br\s*\>)|(&nbsp;))*/, '').replace(/((\s)|(\<br\s*\>)|(&nbsp;))*$/, ''));
+    Composr.dom.html(element, merge_text_nodes(ajax_result.childNodes).replace(/^((\s)|(\<br\s*\>)|(&nbsp;))*/, '').replace(/((\s)|(\<br\s*\>)|(&nbsp;))*$/, ''));
 
     disable_preview_scripts(element);
 }

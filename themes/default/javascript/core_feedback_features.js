@@ -57,10 +57,6 @@
 
             set_up_comcode_autocomplete('post', Composr.isTruthy(options.wysiwyg));
 
-            if (!Composr.$MOBILE && Composr.isTruthy(Composr.$CONFIG_OPTION.jsCaptcha) && Composr.isTruthy(options.captcha)) {
-                set_inner_html(document.getElementById('captcha_spot'), options.captcha);
-            }
-
             if (Composr.isTruthy(options.forcePreviews)) {
                 document.getElementById('submit_button').style.display = 'none';
             }

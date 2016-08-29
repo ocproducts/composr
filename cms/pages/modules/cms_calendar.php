@@ -212,7 +212,7 @@ class Module_cms_calendar extends Standard_crud_module
                     {
                         tr=tr.parentNode;
                     }
-                    set_inner_html(tr,new_data.replace(/<tr [^>]*>/,'').replace(/<\/tr>/,''));
+                    Composr.dom.html(tr,new_data.replace(/<tr [^>]*>/,'').replace(/<\/tr>/,''));
                 }
                 var monthly_recurrence=form.elements['recurrence'][3].checked;
                 for (var i=0;i<form.elements['monthly_spec_type'].length;i++)

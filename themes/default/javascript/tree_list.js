@@ -15,7 +15,7 @@ window.tree_list = function (name, ajax_url, root_id, options, multi_selection, 
     this.use_server_id = use_server_id;
 
     var element = document.getElementById('tree_list__root_' + name);
-    set_inner_html(element, '<div class="ajax_loading vertical_alignment"><img src="' + '{$IMG*;,loading}'.replace(/^https?:/, window.location.protocol) + '" alt="" /> <span>{!LOADING;^}</span></div>');
+    Composr.dom.html(element, '<div class="ajax_loading vertical_alignment"><img src="' + '{$IMG*;,loading}'.replace(/^https?:/, window.location.protocol) + '" alt="" /> <span>{!LOADING;^}</span></div>');
 
     // Initial rendering
     var url = '{$BASE_URL_NOHTTP;}/' + ajax_url;
@@ -76,7 +76,7 @@ tree_list.prototype.response = function (ajax_result_frame, ajax_result, expandi
     if (!expanding_id) // Root
     {
         html = document.getElementById('tree_list__root_' + this.name);
-        set_inner_html(html, '');
+        Composr.dom.html(html, '');
 
         this.tree_list_data = ajax_result.cloneNode(true);
         xml = this.tree_list_data;
@@ -155,21 +155,21 @@ tree_list.prototype.render_tree = function (xml, html, element) {
 
         // Special handling of 'options' nodes, inject new options
         if (node.nodeName == 'options') {
-            this.options = window.encodeURIComponent(get_inner_html(node));
+            this.options = window.encodeURIComponent(Composr.dom.html(node));
             continue;
         }
 
         // Special handling of 'expand' nodes, which say to pre-expand some categories as soon as the page loads
         if (node.nodeName == 'expand') {
-            var e = document.getElementById(this.name + 'texp_c_' + get_inner_html(node));
+            var e = document.getElementById(this.name + 'texp_c_' + Composr.dom.html(node));
             if (e) {
-                var html_node = document.getElementById(this.name + 'tree_list_c_' + get_inner_html(node));
+                var html_node = document.getElementById(this.name + 'tree_list_c_' + Composr.dom.html(node));
                 var expanding = (html_node.style.display != 'block');
                 if (expanding)
                     e.onclick(null, true);
             } else {
                 // Now try against serverid
-                var xml_node = this.getElementByIdHack(get_inner_html(node), 'c', null, true);
+                var xml_node = this.getElementByIdHack(Composr.dom.html(node), 'c', null, true);
                 if (xml_node) {
                     var e = document.getElementById(this.name + 'texp_c_' + xml_node.getAttribute('id'));
                     if (e) {
@@ -221,7 +221,7 @@ tree_list.prototype.render_tree = function (xml, html, element) {
                 img_url = node.getAttribute('img_url');
                 img_url_2 = node.getAttribute('img_url_2');
             }
-            set_inner_html(node_self, ' \
+            Composr.dom.html(node_self, ' \
 				<div> \
 					<input class="ajax_tree_expand_icon"' + (this.tabindex ? (' tabindex="' + this.tabindex + '"') : '') + ' type="image" alt="' + ((!initially_expanded) ? '{!EXPAND;^}' : '{!CONTRACT;^}') + ': ' + escaped_title + '" title="' + ((!initially_expanded) ? '{!EXPAND;^}' : '{!CONTRACT;^}') + '" id="' + this.name + 'texp_c_' + node.getAttribute('id') + '" src="' + ((!initially_expanded) ? '{$IMG*;,1x/treefield/expand}' : '{$IMG*;,1x/treefield/collapse}').replace(/^https?:/, window.location.protocol) + '" /> \
 					<img class="ajax_tree_cat_icon" alt="{!CATEGORY;^}" src="' + escape_html(img_url) + '" srcset="' + escape_html(img_url_2) + ' 2x" /> \
@@ -325,7 +325,7 @@ tree_list.prototype.render_tree = function (xml, html, element) {
                 img_url = node.getAttribute('img_url');
                 img_url_2 = node.getAttribute('img_url_2');
             }
-            set_inner_html(node_self, '<div><img alt="{!ENTRY;^}" src="' + escape_html(img_url) + '" srcset="' + escape_html(img_url_2) + ' 2x" style="width: 14px; height: 14px" /> <label id="' + this.name + 'tsel_e_' + node.getAttribute('id') + '" class="ajax_tree_magic_button ' + colour + '" for="' + this.name + 'tsel_s_' + node.getAttribute('id') + '" onmouseover="if (typeof window.activate_tooltip!=\'undefined\') activate_tooltip(this,event,' + (node.getAttribute('description_html') ? '' : 'escape_html') + '(\'' + (description_in_use.replace(/\n/g, '').replace(/'/g, '\\' + '\'')) + '\'),\'800px\');"><input' + (this.tabindex ? (' tabindex="' + this.tabindex + '"') : '') + ' id="' + this.name + 'tsel_s_' + node.getAttribute('id') + '" style="position: absolute; left: -10000px" type="radio" name="_' + this.name + '" value="1" />' + escaped_title + '</label>' + extra + '</div>');
+            Composr.dom.html(node_self, '<div><img alt="{!ENTRY;^}" src="' + escape_html(img_url) + '" srcset="' + escape_html(img_url_2) + ' 2x" style="width: 14px; height: 14px" /> <label id="' + this.name + 'tsel_e_' + node.getAttribute('id') + '" class="ajax_tree_magic_button ' + colour + '" for="' + this.name + 'tsel_s_' + node.getAttribute('id') + '" onmouseover="if (typeof window.activate_tooltip!=\'undefined\') activate_tooltip(this,event,' + (node.getAttribute('description_html') ? '' : 'escape_html') + '(\'' + (description_in_use.replace(/\n/g, '').replace(/'/g, '\\' + '\'')) + '\'),\'800px\');"><input' + (this.tabindex ? (' tabindex="' + this.tabindex + '"') : '') + ' id="' + this.name + 'tsel_s_' + node.getAttribute('id') + '" style="position: absolute; left: -10000px" type="radio" name="_' + this.name + '" value="1" />' + escaped_title + '</label>' + extra + '</div>');
             var a = node_self.getElementsByTagName('label')[0];
             a.handle_selection = this.handle_selection;
             a.childNodes[0].onfocus = function () {
@@ -387,7 +387,7 @@ tree_list.prototype.render_tree = function (xml, html, element) {
                         var target_xml_node = this.object.getElementByIdHack(this.last_hit.id.substr(12 + this.object.name.length));
 
                         if ((this.last_hit.childNodes.length == 1) && (this.last_hit.childNodes[0].nodeName == '#text')) {
-                            set_inner_html(this.last_hit, '');
+                            Composr.dom.html(this.last_hit, '');
                             this.object.render_tree(target_xml_node, this.last_hit);
                         }
 
@@ -421,7 +421,7 @@ tree_list.prototype.render_tree = function (xml, html, element) {
         if (initially_expanded) {
             this.render_tree(node, new_html, element);
         } else {
-            if (new_html) set_inner_html(new_html, '{!PLEASE_WAIT;^}', true);
+            if (new_html) Composr.dom.appendHtml(new_html, '{!PLEASE_WAIT;^}');
         }
     }
 
@@ -503,10 +503,10 @@ tree_list.prototype.handle_tree_click = function (event, automated) // Not calle
             var url = '{$BASE_URL_NOHTTP;}/' + this.object.ajax_url + '&id=' + window.encodeURIComponent(real_clicked_id) + '&options=' + this.object.options + '&default=' + window.encodeURIComponent(element.value);
             var ob = this.object;
             do_ajax_request(url, function (ajax_result_frame, ajax_result) {
-                set_inner_html(html_node, '');
+                Composr.dom.html(html_node, '');
                 ob.response(ajax_result_frame, ajax_result, clicked_id);
             });
-            set_inner_html(html_node, '<div aria-busy="true" class="vertical_alignment"><img src="' + '{$IMG*;,loading}'.replace(/^https?:/, window.location.protocol) + '" alt="" /> <span>{!LOADING;^}</span></div>');
+            Composr.dom.html(html_node, '<div aria-busy="true" class="vertical_alignment"><img src="' + '{$IMG*;,loading}'.replace(/^https?:/, window.location.protocol) + '" alt="" /> <span>{!LOADING;^}</span></div>');
             var container = document.getElementById('tree_list__root_' + ob.name);
             if ((automated) && (container) && (container.style.overflowY == 'auto')) {
                 window.setTimeout(function () {

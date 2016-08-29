@@ -156,7 +156,7 @@
 
         formScreenInputCaptcha: function formScreenInputCaptcha(options, jsCaptcha) {
             if (jsCaptcha === '1') {
-                set_inner_html(document.getElementById('captcha_spot'), options.captcha);
+                Composr.dom.html(document.getElementById('captcha_spot'), options.captcha);
             } else {
                 window.addEventListener('pageshow', function () {
                     document.getElementById('captcha_readable').src += '&r=' + Composr.utils.random(); // Force it to reload latest captcha
@@ -327,7 +327,7 @@
                         ob.parentNode.removeChild(ob);
                     } else {
                         var input_container = document.createElement('div');
-                        set_inner_html(input_container, comcode_semihtml.replace(/^\s*/, ''));
+                        Composr.dom.html(input_container, comcode_semihtml.replace(/^\s*/, ''));
                         ob.parentNode.replaceChild(input_container.childNodes[0], ob);
                     }
 
@@ -408,7 +408,7 @@
                         var progress = target_window.document.getElementById('fsUploadProgress_' + field).innerHTML;
                         window.setInterval(function () {
                             if (progress != '') {
-                                set_inner_html(loading_space, progress);
+                                Composr.dom.html(loading_space, progress);
                                 loading_space.className = 'spaced flash';
                             }
                         }, 100);

@@ -97,7 +97,7 @@
 					{+START,IF_NON_EMPTY,{URL_ADD_FRIEND}}
 						<p>{!MUST_ADD_CONTACTS}</p>
 
-						<form onsubmit="var _this=this; load_snippet('im_friends_rejig&amp;member_id={MEMBER_ID%}','add='+window.encodeURIComponent(this.elements['friend_username'].value),function(ajax_result) { set_inner_html(document.getElementById('friends_wrap'),ajax_result.responseText); _this.elements['friend_username'].value=''; }); return false;" title="{!ADD}: {!FRIEND_LIST}" method="post" action="{URL_ADD_FRIEND*}" autocomplete="off">
+						<form onsubmit="var _this=this; load_snippet('im_friends_rejig&amp;member_id={MEMBER_ID%}','add='+window.encodeURIComponent(this.elements['friend_username'].value),function(ajax_result) { Composr.dom.html(document.getElementById('friends_wrap'),ajax_result.responseText); _this.elements['friend_username'].value=''; }); return false;" title="{!ADD}: {!FRIEND_LIST}" method="post" action="{URL_ADD_FRIEND*}" autocomplete="off">
 							{$INSERT_SPAMMER_BLACKHOLE}
 
 							<label class="accessibility_hidden" for="friend_username">{!USERNAME}: </label>

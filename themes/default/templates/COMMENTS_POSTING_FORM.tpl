@@ -217,7 +217,10 @@
 										<noscript>{!JAVASCRIPT_REQUIRED}</noscript>
 
 										{+START,IF_NON_EMPTY,{$TRIM,{$GET,CAPTCHA}}}
-											<div id="captcha_spot" data-cms-call="set_inner_html" data-cms-call-args='["captcha_spot", "{$GET*^#,CAPTCHA}"]'></div>
+                                            <div id="captcha_spot"></div>
+                                            <script>// <![CDATA[
+												Composr.dom.html(document.getElementById('captcha_spot'),'{$GET;^/,CAPTCHA}');
+                                            //]]></script>
 										{+END}
 									{+END}
 									{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}
@@ -235,6 +238,13 @@
 					{+START,IF,{$NOT,{$MOBILE}}}
 						{+START,IF,{$CONFIG_OPTION,js_captcha}}
 							<noscript>{!JAVASCRIPT_REQUIRED}</noscript>
+
+                            {+START,IF_NON_EMPTY,{$TRIM,{$GET,CAPTCHA}}}
+                                <div id="captcha_spot"></div>
+                                <script>// <![CDATA[
+                                    Composr.dom.html(document.getElementById('captcha_spot'),'{$GET;^/,CAPTCHA}');
+                            //]]></script>
+                            {+END}
 						{+END}
 						{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}
 							{$GET,CAPTCHA}

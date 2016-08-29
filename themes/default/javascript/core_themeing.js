@@ -76,12 +76,12 @@
         }
 
         do_ajax_request('{$FIND_SCRIPT;,tempcode_tester}' + keep_stub(true), function (ajax_result) {
-            set_inner_html(document.getElementById('preview_raw'), escape_html(ajax_result.responseText));
-            set_inner_html(document.getElementById('preview_html'), ajax_result.responseText);
+            Composr.dom.html(document.getElementById('preview_raw'), escape_html(ajax_result.responseText));
+            Composr.dom.html(document.getElementById('preview_html'), ajax_result.responseText);
         }, request);
 
         do_ajax_request('{$FIND_SCRIPT;,tempcode_tester}?comcode=1' + keep_stub(), function (ajax_result) {
-            set_inner_html(document.getElementById('preview_comcode'), ajax_result.responseText);
+            Composr.dom.html(document.getElementById('preview_comcode'), ajax_result.responseText);
         }, request);
 
         return false;

@@ -72,8 +72,8 @@ function set_field_error(the_element, error_msg) {
             errormsg_element.style.display = (error_msg == '') ? 'none' : 'block';
 
             // Changed error message
-            if (get_inner_html(errormsg_element) != escape_html(error_msg)) {
-                set_inner_html(errormsg_element, '');
+            if (Composr.dom.html(errormsg_element) != escape_html(error_msg)) {
+                Composr.dom.html(errormsg_element, '');
                 if (error_msg != '') // If there actually an error
                 {
                     the_element.setAttribute('aria-invalid', 'true');
@@ -741,7 +741,7 @@ function set_locked(field, is_locked, chosen_ob) {
         }
         if (!radio_button) {
             if (label) {
-                var label_nice = get_inner_html(label).replace('&raquo;', '').replace(/^\s*/, '').replace(/\s*$/, '');
+                var label_nice = Composr.dom.html(label).replace('&raquo;', '').replace(/^\s*/, '').replace(/\s*$/, '');
                 if (field.type == 'file') {
                     set_field_error(field, '{!DISABLED_FORM_FIELD_ENCHANCEDMSG_UPLOAD;^}'.replace(/\\{1\\}/, label_nice));
                 } else {
@@ -1119,7 +1119,7 @@ function geolocate_address_fields() {
                     if (parsed === null) return;
                     var labels = document.getElementsByTagName('label'), label, field_name, field;
                     for (var i = 0; i < labels.length; i++) {
-                        label = get_inner_html(labels[i]);
+                        label = Composr.dom.html(labels[i]);
                         for (var j = 0; j < fields.length; j++) {
                             if (fields[j].replace(/^.*: /, '') == label) {
                                 if (parsed[j + 1] === null) parsed[j + 1] = '';

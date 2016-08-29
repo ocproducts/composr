@@ -32,9 +32,9 @@
 
     function iterateCountdown(dif) {
         var st = document.getElementById('quiz_timer');
-        var new_value = window.parseInt(get_inner_html(st)) + dif;
+        var new_value = window.parseInt(Composr.dom.html(st)) + dif;
         if (new_value >= 0) {
-            set_inner_html(st, new_value);
+            Composr.dom.html(st, new_value);
         }
 
         var st2 = document.getElementById('quiz_timer_minutes_and_seconds');
@@ -45,7 +45,7 @@
                 v += ':';
                 if (new_value % 60 < 10) v += '0';
                 v += new_value % 60;
-                set_inner_html(st2, v);
+                Composr.dom.html(st2, v);
             }
         }
     }

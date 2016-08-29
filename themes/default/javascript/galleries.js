@@ -110,7 +110,7 @@ function start_slideshow_timer() {
 
 function show_current_slideshow_time() {
     var changer = document.getElementById('changer_wrap');
-    if (changer) set_inner_html(changer, '{!galleries:CHANGING_IN,xxx}'.replace('xxx', (window.slideshow_time < 0) ? 0 : window.slideshow_time));
+    if (changer) Composr.dom.html(changer, '{!galleries:CHANGING_IN,xxx}'.replace('xxx', (window.slideshow_time < 0) ? 0 : window.slideshow_time));
 }
 
 function reset_slideshow_countdown() {
@@ -135,7 +135,7 @@ function toggle_slideshow_timer() {
 function stop_slideshow_timer(message) {
     if (typeof message == 'undefined') message = '{!galleries:STOPPED;}';
     var changer = document.getElementById('changer_wrap');
-    if (changer) set_inner_html(changer, message);
+    if (changer) Composr.dom.html(changer, message);
     if (window.slideshow_timer) window.clearInterval(window.slideshow_timer);
     window.slideshow_timer = null;
     document.getElementById('gallery_entry_screen').style.cursor = '';
@@ -174,7 +174,7 @@ function slideshow_ensure_loaded(slide, callback) {
 
     if (window.slideshow_current_position == slide) // Ah, it's where we are, so save that in
     {
-        window.slideshow_slides[slide] = get_inner_html(document.getElementById('gallery_entry_screen'));
+        window.slideshow_slides[slide] = Composr.dom.html(document.getElementById('gallery_entry_screen'));
         return;
     }
 
@@ -219,7 +219,7 @@ function slideshow_show_slide(slide) {
             } // else probably a video
 
             var cleaned_slide_html = window.slideshow_slides[slide].replace(/<!DOCTYPE [^>]*>/i, '').replace(/<script[^>]*>(.|\n)*?<\/script>/gi, '');
-            set_inner_html(document.getElementById('gallery_entry_screen'), cleaned_slide_html);
+            Composr.dom.html(document.getElementById('gallery_entry_screen'), cleaned_slide_html);
 
             var fade_elements = document.body.querySelectorAll('.scale_down');
             if ((typeof fade_elements[0] != 'undefined') && (typeof fade_elements_old[0] != 'undefined')) {

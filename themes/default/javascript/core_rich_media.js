@@ -75,7 +75,7 @@
             }
 
             comcoderandom = document.getElementById('comcoderandom' + options.randIdRandom);
-            set_inner_html(comcoderandom, use);
+            Composr.dom.html(comcoderandom, use);
         },
 
         comcodeMediaSet: function comcodeMediaSet(options) {
@@ -105,11 +105,11 @@
                     var span = as[i].getElementsByTagName('span');
                     var title = '';
                     if (span.length != 0) {
-                        title = get_inner_html(span[0]);
+                        title = Composr.dom.html(span[0]);
                         span[0].parentNode.removeChild(span[0]);
                     }
 
-                    imgs.push([get_inner_html(as[i]), title, true]);
+                    imgs.push([Composr.dom.html(as[i]), title, true]);
                     imgsThumbs.push((as[i].poster && as[i].poster != '') ? as[i].poster : '{$IMG;/,video_thumb}');
 
                     contains_video = true;
@@ -151,7 +151,7 @@
 						<\/div>\
 					<\/figure>';
 
-                set_inner_html(media_set, media_set_html);
+                Composr.dom.html(media_set, media_set_html);
             }
         },
 
@@ -294,7 +294,7 @@
             if (typeof document.createElement('marquee').scrolldelay === 'undefined') { // Slower, but chrome does not support marquee's
                 var my_id = parseInt(Math.random() * 10000);
                 window.tick_pos[my_id] = options.width;
-                set_inner_html(el, '<div onmouseover="this.mouseisover=true;" onmouseout="this.mouseisover=false;" class="ticker" ' +
+                Composr.dom.html(el, '<div onmouseover="this.mouseisover=true;" onmouseout="this.mouseisover=false;" class="ticker" ' +
                     'style="text-indent: ' + width + 'px; width: ' + width + 'px;" id="' + my_id + '"><span>' +
                     Composr.filters.stripNewLines(options.text) + '<\/span><\/div>'
                 );
@@ -309,7 +309,7 @@
                     ticker_tick(my_id, options.width);
                 }, 100 / options.speed);
             } else {
-                set_inner_html(el, '<marquee style="display: block" class="ticker" onmouseover="this.setAttribute(\'scrolldelay\',\'10000\');" ' +
+                Composr.dom.html(el, '<marquee style="display: block" class="ticker" onmouseover="this.setAttribute(\'scrolldelay\',\'10000\');" ' +
                     'onmouseout="this.setAttribute(\'scrolldelay\',' + (100 / options.speed) + ');" scrollamount="2" scrolldelay="' + (100 / options.speed) + '" ' +
                     'width="' + width + '">' + Composr.filters.stripNewLines(options.text) + '<\/marquee>');
             }
@@ -328,7 +328,7 @@
             }
 
             var comcodejumping = document.getElementById('comcodejumping' + options.randIdJumping);
-            set_inner_html(comcodejumping, '<span id="' + id + '">' + jumper_parts[id][0] + '<\/span>');
+            Composr.dom.html(comcodejumping, '<span id="' + id + '">' + jumper_parts[id][0] + '<\/span>');
 
             window.setInterval(function () {
                 jumper_tick(id);

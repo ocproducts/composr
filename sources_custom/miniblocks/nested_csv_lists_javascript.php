@@ -110,7 +110,7 @@ echo "
             {
                     option=document.createElement('option');
                     element.add(option,null);
-                    set_inner_html(option,'" . addslashes(do_lang('SELECT_OTHER_FIRST', 'xxx')) . "'.replace(/xxx/g,cpf_fields[cpf_field.csv_parent_heading].label));
+                    Composr.dom.html(option,'" . addslashes(do_lang('SELECT_OTHER_FIRST', 'xxx')) . "'.replace(/xxx/g,cpf_fields[cpf_field.csv_parent_heading].label));
                     option.value='';
             } else // Parent is set, so we need to filter possibilities
             {
@@ -158,7 +158,7 @@ echo "
                     {
                             option=document.createElement('option');
                             element.add(option,null);
-                            set_inner_html(option,'" . addslashes(do_lang('PLEASE_SELECT')) . "');
+                            Composr.dom.html(option,'" . addslashes(do_lang('PLEASE_SELECT')) . "');
                             option.value='';
                     }
                     var previous_one=null;
@@ -170,7 +170,7 @@ echo "
                             { // not a dupe
                                         option=document.createElement('option');
                                         element.add(option,null);
-                                        set_inner_html(option,escape_html(possibilities[i]));
+                                        Composr.dom.html(option,escape_html(possibilities[i]));
                                         option.value=possibilities[i];
                                         if (current_value.length==0)
                                         {
