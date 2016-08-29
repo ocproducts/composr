@@ -89,7 +89,7 @@ function catalogue_file_script()
         if ((strpos($original_filename, "\n") !== false) || (strpos($original_filename, "\r") !== false)) {
             log_hack_attack_and_exit('HEADER_SPLIT_HACK');
         }
-        if (get_option('immediate_downloads', true) === '1') {
+        if (get_option('immediate_downloads', true) === '1' || get_param_integer('inline', 0) == 1) {
             require_code('mime_types');
             header('Content-Type: ' . get_mime_type(get_file_extension($original_filename), has_privilege($GLOBALS['SITE_DB']->query_select_value('catalogue_entries', 'ce_submitter', array('id' => $entry_id)), 'comcode_dangerous')) . '; authoritative=true;');
             header('Content-Disposition: inline; filename="' . escape_header($original_filename) . '"');

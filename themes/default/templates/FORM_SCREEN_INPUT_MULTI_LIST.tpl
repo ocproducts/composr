@@ -29,10 +29,17 @@
 {+START,IF,{$EQ,{SIZE},5}}
 	<script>// <![CDATA[
 		add_event_listener_abstract(window,'load',function() {
-			$("#{NAME#/}").select2({
-				dropdownAutoWidth: true,
-				containerCssClass: 'wide_field'
-			});
+			if (typeof $("#{NAME#/}").select2!='undefined')
+			{
+				$("#{NAME#/}").select2({
+					dropdownAutoWidth: true,
+					containerCssClass: 'wide_field'
+				});
+			} else
+			{
+				if (typeof window.console!='undefined')
+					console.log('select2 is missing');
+			}
 		});
 	//]]></script>
 {+END}

@@ -16,6 +16,10 @@
 	{$BETA_CSS_PROPERTY,border-radius: 5px;}
 }
 
+.quiz_form {
+	position: relative;
+}
+
 .quiz_form table {
 	counter-reset: quiz_num;
 }

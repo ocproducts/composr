@@ -44,6 +44,10 @@ class Hook_fields_list_multi
         $display = array_key_exists('trans_name', $field) ? $field['trans_name'] : get_translated_text($field['cf_name']); // 'trans_name' may have been set in CPF retrieval API, might not correspond to DB lookup if is an internal field
         $list = $this->get_input_list_map($field, true);
         foreach ($list as $l) {
+            if (is_integer($l)) {
+                $l = strval($l);
+            }
+
             $special->attach(form_input_list_entry($l, get_param_string('option_' . strval($field['id']), '') == $l));
         }
         return array('NAME' => strval($field['id']), 'DISPLAY' => $display, 'TYPE' => $type, 'SPECIAL' => $special);

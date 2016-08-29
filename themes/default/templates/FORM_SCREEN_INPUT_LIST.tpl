@@ -26,13 +26,20 @@
 			var element=document.getElementById("{NAME#/}");
 			if ((element.options.length>20)/*only for long lists*/ && (!element.options[0].value.match(/^\d+$/)/*not for lists of numbers*/))
 			{
-				$(element).select2({
-					{+START,IF_PASSED,IMAGES}
-						formatResult: format_select_image,
-					{+END}
-					dropdownAutoWidth: true,
-					containerCssClass: 'wide_field'
-				});
+				if (typeof $(element).select2!='undefined')
+				{
+					$(element).select2({
+						{+START,IF_PASSED,IMAGES}
+							formatResult: format_select_image,
+						{+END}
+						dropdownAutoWidth: true,
+						containerCssClass: 'wide_field'
+					});
+				} else
+				{
+					if (typeof window.console!='undefined')
+						console.log('select2 is missing');
+				}
 			}
 		});
 	//]]></script>
