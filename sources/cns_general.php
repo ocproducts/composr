@@ -332,7 +332,10 @@ function cns_read_in_member_profile($member_id, $need = null, $include_encrypted
         }
         $member_info['custom_data'] = array();
         foreach ($hook_objects as $hook_object) {
-            $member_info['custom_data'] += $hook_object->run($member_id);
+            $_temp = $hook_object->run($member_id);
+            if (is_array($_temp)) {
+                $member_info['custom_data'] += $hook_object->run($member_id);
+            }
         }
     }
 

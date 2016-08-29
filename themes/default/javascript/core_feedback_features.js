@@ -12,14 +12,42 @@
     var CommentsPostingForm = Composr.View.extend({
         initialize: function (viewOptions, options) {
             this.options = options || {};
-
+            this.form = this.el.querySelector('.js-form-comments');
             this.setup();
         },
 
         events: {
-            'submit .js-comments-form': function (e) {
-                if (this.options.moreUrl !== undefined) {
+            'click .js-btn-full-editor': 'moveToFullEditor',
 
+            'click .js-btn-submit-comments': function (e) {
+                var form = this.form, button = e.target;
+
+                form.setAttribute('target', '_self');
+
+                if (form.old_action !== undefined) {
+                    form.setAttribute('action', form.old_action);
+                }
+
+                if (form.onsubmit.call(form, event)) {
+                    disable_button_just_clicked(button);
+                    form.submit();
+                }
+            },
+
+            'submit .js-form-comments': function (e) {
+                var form = e.target;
+
+                if ((this.options.moreUrl !== undefined) && (form.action === this.options.moreUrl)) {
+                    return;
+                }
+
+                if (!check_field_for_blankness(form.elements.post, e)) {
+                    e.preventDefault();
+                    return;
+                }
+
+                if (Composr.isTruthy(this.options.getEmail) && Composr.isFalsy(this.options.emailOptional) && !check_field_for_blankness(form.elements.email, e)) {
+                    e.preventDefault();
                 }
             }
         },
@@ -75,6 +103,47 @@
                     window[func](0, true);
                 }
             }
+        },
+
+        moveToFullEditor: function (e) {
+            var button = e.target,
+                moreUrl = options.moreUrl,
+                form = this.form;
+
+            // Tell next screen what the stub to trim is
+            if (typeof form.elements['post'].default_substring_to_strip != 'undefined') {
+                if (typeof form.elements['stub'] != 'undefined') {
+                    form.elements['stub'].value = form.elements['post'].default_substring_to_strip;
+                } else {
+                    if (moreUrl.indexOf('?') == -1) {
+                        moreUrl += '?';
+                    } else {
+                        moreUrl += '&';
+                    }
+                    moreUrl += 'stub=' + window.encodeURIComponent(form.elements['post'].default_substring_to_strip);
+                }
+            }
+
+            // Try and make post reply a GET parameter
+            if (typeof form.elements['parent_id'] != 'undefined') {
+                if (moreUrl.indexOf('?') == -1) {
+                    moreUrl += '?';
+                } else {
+                    moreUrl += '&';
+                }
+                moreUrl += 'parent_id=' + window.encodeURIComponent(form.elements['parent_id'].value);
+            }
+
+            // Reset form target
+            form.setAttribute('target', '_top');
+            if (typeof form.old_action != 'undefined') form.old_action = form.getAttribute('action');
+            form.setAttribute('action', moreUrl);
+
+            // Handle threaded strip-on-focus
+            if ((typeof form.elements['post'].strip_on_focus != 'undefined') && (form.elements['post'].value == form.elements['post'].strip_on_focus))
+                form.elements['post'].value = '';
+
+            form.submit();
         }
     });
 

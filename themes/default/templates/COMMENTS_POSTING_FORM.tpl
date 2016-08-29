@@ -29,10 +29,10 @@
 	{+END}
 {+END}
 
-<div  class="view view-comments-posting-form" data-view-core-feedback-features="CommentsPostingForm"
-	  data-view-args="{+START,PARAMS_JSON,force_previews,WYSIWYG,REVIEW_RATING_CRITERIA,CAPTCHA}{_*}{+END}">
+<div class="view view-comments-posting-form" data-view-core-feedback-features="CommentsPostingForm"
+	  data-view-args="{+START,PARAMS_JSON,MORE_URL,GET_EMAIL,EMAIL_OPTIONAL,force_previews,WYSIWYG,REVIEW_RATING_CRITERIA,CAPTCHA}{_*}{+END}">
 {+START,IF_NON_EMPTY,{COMMENT_URL}}
-<form role="form" title="{TITLE*}" class="comments_form js-comments-form" id="comments_form" onsubmit="return ({+START,IF_PASSED,MORE_URL}(this.getAttribute('action')=='{MORE_URL;*}') || {+END}(check_field_for_blankness(this.elements['post'],event)){+START,IF,{$AND,{GET_EMAIL},{$NOT,{EMAIL_OPTIONAL}}}} &amp;&amp; (check_field_for_blankness(this.elements['email'],event)){+END});" action="{COMMENT_URL*}{+START,IF_NON_EMPTY,{$GET,current_anchor}}#{$GET,current_anchor}{+END}{+START,IF_EMPTY,{$GET,current_anchor}}{+START,IF_PASSED_AND_TRUE,COMMENTS}#last_comment{+END}{+END}" method="post" enctype="multipart/form-data" autocomplete="off">
+<form role="form" title="{TITLE*}" class="comments_form js-form-comments" id="comments_form" action="{COMMENT_URL*}{+START,IF_NON_EMPTY,{$GET,current_anchor}}#{$GET,current_anchor}{+END}{+START,IF_EMPTY,{$GET,current_anchor}}{+START,IF_PASSED_AND_TRUE,COMMENTS}#last_comment{+END}{+END}" method="post" enctype="multipart/form-data" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
 	<input type="hidden" name="_comment_form_post" value="1" />
 {+END}
@@ -244,13 +244,13 @@
 					<div class="proceed_button buttons_group">
 						{+START,IF,{$NOT,{$MOBILE}}}
 							{+START,IF,{$JS_ON}}{+START,IF,{$CONFIG_OPTION,enable_previews}}{+START,IF,{$NOT,{$VALUE_OPTION,xhtml_strict}}}
-								<input onclick="if (typeof this.form=='undefined') var form=window.form_submitting; else var form=this.form; if (do_form_preview(event,form,maintain_theme_in_link('{$PREVIEW_URL;*}{$KEEP;*}'))) form.submit();" id="preview_button" accesskey="p" tabindex="250" class="tabs__preview {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item}" type="button" value="{!PREVIEW}" />
+								<input onclick="if (typeof this.form=='undefined') var form=window.form_submitting; else var form=this.form; if (do_form_preview(event,form,maintain_theme_in_link('{$PREVIEW_URL;*}{$KEEP;*}'))) form.submit();" id="preview_button" accesskey="p" tabindex="250" class="tabs__preview {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item} js-btn-preview" type="button" value="{!PREVIEW}" />
 							{+END}{+END}{+END}
 						{+END}
 
 						{+START,IF_PASSED,MORE_URL}
 							{+START,IF,{$JS_ON}}
-								<input tabindex="6" accesskey="y" onclick="move_to_full_editor(this,'{MORE_URL;*}');" class="buttons__new_post_full {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item}" type="button" value="{$?,{$MOBILE},{!MORE},{!FULL_EDITOR}}" />
+								<input tabindex="6" accesskey="y" class="buttons__new_post_full {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item} js-btn-full-editor" type="button" value="{$?,{$MOBILE},{!MORE},{!FULL_EDITOR}}" />
 							{+END}
 						{+END}
 
@@ -259,7 +259,7 @@
 						{+END}
 
 						{+START,SET,button_title}{+START,IF_PASSED,SUBMIT_NAME}{SUBMIT_NAME*}{+END}{+START,IF_NON_PASSED,SUBMIT_NAME}{+START,IF_NON_EMPTY,{TITLE}}{TITLE*}{+END}{+START,IF_EMPTY,{TITLE}}{!SEND}{+END}{+END}{+END}
-						<input onclick="handle_comments_posting_form_submit(this,event);" tabindex="8" accesskey="u" id="submit_button" class="{+START,IF_NON_PASSED,MORE_URL}buttons__new_comment{+END}{+START,IF_PASSED,MORE_URL}buttons__new_reply{+END} {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item}"{+START,IF,{$JS_ON}} type="button"{+END}{+START,IF,{$NOT,{$JS_ON}}} type="submit"{+END} value="{$?,{$MOBILE},{$REPLACE,{!cns:REPLY},{!_REPLY},{$GET,button_title}},{$GET,button_title}}" />
+						<input tabindex="8" accesskey="u" id="submit_button" class="{+START,IF_NON_PASSED,MORE_URL}buttons__new_comment{+END}{+START,IF_PASSED,MORE_URL}buttons__new_reply{+END} {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item} js-btn-submit-comments"{+START,IF,{$JS_ON}} type="button"{+END}{+START,IF,{$NOT,{$JS_ON}}} type="submit"{+END} value="{$?,{$MOBILE},{$REPLACE,{!cns:REPLY},{!_REPLY},{$GET,button_title}},{$GET,button_title}}" />
 					</div>
 				</div>
 			</div>

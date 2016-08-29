@@ -13124,8 +13124,7 @@ function begin_form_uploading(e,ob,recurse)
 	}
 	if (!all_done)
 	{
-		disable_buttons_just_clicked(document.getElementsByTagName('input'),true);
-		disable_buttons_just_clicked(document.getElementsByTagName('button'),true);
+		Composr.ui.disableSubmitAndPreviewButtons(true);
 
 		ob.start();
 		smooth_scroll(find_pos_y(filename_field,true));

@@ -1,4 +1,4 @@
-(function ($, data, undefined) {
+(function ($, data) {
     'use strict';
 
     var Composr = {
@@ -44,8 +44,11 @@
         // Just some additonal stuff, not a tempcode symbol
         $EXTRA: data.EXTRA
     },
-        arrProto = Array.prototype,
-        forEach = Function.bind.call(Function.call, Array.prototype.forEach),
+        elProto   = HTMLElement.prototype,
+        elMatches = Function.bind.call(Function.call, elProto.matches || elProto.webkitMatchesSelector || elProto.msMatchesSelector),
+        arrProto  = Array.prototype,
+        toArray   = Function.bind.call(Function.call, arrProto.slice),
+        forEach   = Function.bind.call(Function.call, arrProto.forEach),
 
         loadPolyfillsPromise = new Promise(function (resolve) {
             loadPolyfills(resolve);
@@ -289,31 +292,6 @@
     };
 
     /* Tempcode filters ported to JS */
-    Composr.filter = function (str, filterSymbols) {
-        var i;
-
-        for (i = 0; i < filterSymbols.length; i++) {
-            switch (filterSymbols[i]) {
-                case '&':
-                    str = Composr.filters.urlEncode(str);
-                    break;
-
-                case '~':
-                    str = Composr.filters.stripNewLines(str);
-                    break;
-
-                case '|':
-                    str = Composr.filters.identifier(str);
-                    break;
-
-                default:
-                    throw new Error('Invalid value provided for argument \'filterSymbols\'.');
-            }
-        }
-
-        return str;
-    };
-
     Composr.filters = {};
 
     // JS port of the cms_url_encode function used by the tempcode filter '&'
@@ -438,6 +416,33 @@
     /* DOM helper methods */
     Composr.dom = {};
 
+    Composr.dom.html = function (el, opts) {
+        // Parser hint: .innerHTML okay
+        var html = opts, startIndex, i;
+
+        if (opts && (typeof opts === 'object')) {
+            html = opts.append;
+        }
+
+        startIndex = opts.append ? el.children.length : 0;
+
+        if (opts.append) {
+            el.insertAdjacentHTML('beforeend', html);
+        } else {
+            el.innerHTML = html;
+        }
+
+        if (!el.children.length || (opts.append && (startIndex === el.children.length))) {
+            // No new child elements added.
+            return;
+        }
+
+        for (i = startIndex; i < el.children.length; i++) {
+            Composr.attachBehaviors(el.children[i]);
+        }
+    };
+
+
     /* Returns the provided element's width excluding padding and borders */
     Composr.dom.contentWidth = function contentWidth(element) {
         var cs = getComputedStyle(element),
@@ -456,78 +461,75 @@
         return element.offsetHeight - padding - border;
     };
 
-    // Get nearest parent (or itself) element matching selector
-    Composr.dom.closest = (function() {
-        var proto = HTMLElement.prototype,
-            matches = proto.matches || proto.webkitMatchesSelector || proto.mozMatchesSelector || proto.msMatchesSelector;
+    // Check if the given element matches selector
+    Composr.dom.matches = function(el, selector) {
+        return elMatches(el, selector);
+    };
 
-        return function closest(el, selector) {
-            return (!el || matches.call(el, selector)) ? el : closest(el.parentElement, selector);
-        };
-    })();
+    // Get nearest parent (or itself) element matching selector
+    Composr.dom.closest = function (el, selector) {
+        return (!el || Composr.dom.matches(el, selector)) ? el : closest(el.parentElement, selector);
+    };
 
     Composr.behaviors.composr = {
         initialize: {
             attach: function (context) {
-                if (context.childElementCount === 0) { // NB: Property undefined on the Document object in IE & Safari
-                    return;
+            }
+        },
+
+        initializeAnchors: {
+            attach: function (context) {
+                var anchors = toArray(context.querySelectorAll('a'));
+
+                if (context.nodeName.toLowerCase() === 'a') {
+                    anchors.unshift(context);
                 }
 
-                forEach(context.querySelectorAll('a'), function (el) {
+                anchors.forEach(function (anchor) {
                     if (Composr.isTruthy(Composr.$CONFIG_OPTION.jsOverlays)) {
                         // Lightboxes
-                        if (el.rel && el.rel.match(/lightbox/)) {
-                            el.title = el.title.replace('{!LINK_NEW_WINDOW;}', '').trim();
+                        if (anchor.rel && anchor.rel.match(/lightbox/)) {
+                            anchor.title = anchor.title.replace('{!LINK_NEW_WINDOW;}', '').trim();
                         }
 
-                        // Convert a/img title attributes into Composr tooltips
-                        if ((el['original-title'] === undefined/*check tipsy not used*/) && !el.classList.contains('no_tooltip')) {
-                            convert_tooltip(el);
+                        // Convert <a> title attributes into Composr tooltips
+                        if (!anchor.classList.contains('no_tooltip')) {
+                            convert_tooltip(anchor);
                         }
                     }
 
                     // Keep parameters need propagating
                     if  (Composr.$VALUE_OPTION.jsKeepParams) {
-                        if (el.href && el.href.indexOf(Composr.$BASE_URL + '/') === 0) {
-                            el.href += keep_stub(el.href.indexOf('?') === -1, true, el.href);
+                        if (anchor.href && anchor.href.indexOf(Composr.$BASE_URL + '/') === 0) {
+                            anchor.href += keep_stub(!anchor.href.includes('?'), true, anchor.href);
                         }
                     }
                 });
+            }
+        },
 
-                forEach(context.querySelectorAll('img'), function (el) {
-                    if (el.classList.contains('gd_text')) {
-                        gdImageTransform(el);
-                    }
+        initializeForms: {
+            attach: function (context) {
+                var forms = toArray(context.querySelectorAll('form'));
 
-                    // Convert a/img title attributes into Composr tooltips
-                    if (Composr.isTruthy(Composr.$CONFIG_OPTION.jsOverlays)) {
-                        if (!el.classList.contains('activate_rich_semantic_tooltip')) {
-                            convert_tooltip(el);
-                        }
-                    }
-                });
+                if (context.nodeName.toLowerCase() === 'form') {
+                    forms.unshift(context);
+                }
 
-                forEach(context.querySelectorAll('form'), function (el) {
+                forms.forEach(function (form) {
                     // HTML editor
                     if (window.load_html_edit !== undefined) {
-                        load_html_edit(el);
+                        load_html_edit(form);
                     }
 
-                    el.title = '';
-
-                    // Remove tooltips from forms for mouse users as they are for screenreader accessibility only
-                    if (el.getAttribute('target') !== '_blank') {
-                        el.addEventListener('mouseover', function () {
-                            el.setAttribute('title', '');
-                            el.title = '';
-                        });
-                    }
+                    // Remove tooltips from forms as they are for screenreader accessibility only
+                    form.title = '';
 
                     // Convert a/img title attributes into Composr tooltips
                     if (Composr.isTruthy(Composr.$CONFIG_OPTION.jsOverlays)) {
-                        // Convert a/img title attributes into Composr tooltips
+                        // Convert title attributes into Composr tooltips
                         var elements, j;
-                        elements = el.elements;
+                        elements = form.elements;
 
                         for (j = 0; j < elements.length; j++) {
                             if (elements[j].title !== undefined) {
@@ -535,7 +537,7 @@
                             }
                         }
 
-                        elements = el.querySelectorAll('input[type="image"][title]'); // JS DOM does not include type="image" ones in form.elements
+                        elements = form.querySelectorAll('input[type="image"][title]'); // JS DOM does not include type="image" ones in form.elements
                         for (j = 0; j < elements.length; j++) {
                             convert_tooltip(elements[j]);
                         }
@@ -543,15 +545,45 @@
 
                     if (Composr.isTruthy(Composr.$VALUE_OPTION.jsKeepParams)) {
                         /* Keep parameters need propagating */
-                        if (el.action && el.action.indexOf(Composr.$BASE_URL + '/') === 0) {
-                            el.action += keep_stub(el.action.indexOf('?') === -1, true, el.action);
+                        if (form.action && form.action.indexOf(Composr.$BASE_URL + '/') === 0) {
+                            form.action += keep_stub(form.action.indexOf('?') === -1, true, form.action);
                         }
                     }
                 });
+            }
+        },
 
-                // Call a global function, optionally with arguments. Inside the function scope, "this" will be the element calling that function.
-                // @TODO: To be killed
-                forEach(context.querySelectorAll('[data-cms-call]'), function (el) {
+        // Convert img title attributes into Composr tooltips
+        imageTooltips: {
+            attach: function (context) {
+                var selector = 'img:not(.activate_rich_semantic_tooltip)';
+
+                if (Composr.isFalsy(Composr.$CONFIG_OPTION.jsOverlays)) {
+                    return;
+                }
+
+                if (Composr.dom.matches(context, selector)) {
+                    convert_tooltip(context);
+                    return;
+                }
+
+                forEach(context.querySelectorAll(selector), function (img) {
+                    convert_tooltip(img);
+                });
+            }
+        },
+
+        // Calls a global function, optionally with arguments. Inside the function scope, "this" will be the element calling that function.
+        // @TODO: To be killed
+        functionCalls: {
+            attach: function (context) {
+                var els = toArray(context.querySelectorAll('[data-cms-call]'));
+
+                if (Composr.dom.matches(context, '[data-cms-call]')) {
+                    els.unshift(context);
+                }
+
+                els.forEach(function (el) {
                     var funcName = el.dataset.cmsCall.trim(),
                         cmsCallArgs = typeof el.dataset.cmsCallArgs === 'string' ? el.dataset.cmsCallArgs.trim() : '',
                         args = [], _args;
@@ -578,9 +610,19 @@
                         func.apply(el, args);
                     }
                 });
+            }
+        },
+
+        select2Plugin: {
+            attach: function (context) {
+                var els = toArray(context.querySelectorAll('[data-cms-select2]'));
+
+                if (Composr.dom.matches(context, '[data-cms-select2]')) {
+                    els.unshift(context);
+                }
 
                 // Select2 plugin hook
-                forEach(context.querySelectorAll('[data-cms-select2]'), function (el) {
+                els.forEach(function (el) {
                     var options = {};
 
                     if (el.dataset.cmsSelect2.trim()) {
@@ -588,6 +630,20 @@
                     }
 
                     $(el).select2(options);
+                });
+            }
+        },
+
+        gdTextImages: {
+            attach: function (context) {
+                var els = toArray(context.querySelectorAll('img[data-gd-text]'));
+
+                if (Composr.dom.matches(context, 'img[data-gd-text]')) {
+                    els.unshift(context);
+                }
+
+                els.forEach(function (img) {
+                    gdImageTransform(img);
                 });
             }
         }
@@ -617,34 +673,31 @@
 
     Composr.ui = {};
 
-    Composr.ui.disableButton = function (input, permanent) {
+    Composr.ui.disableButton = function (btn, permanent) {
         if (permanent === undefined) {
             permanent = false;
         }
 
-        if (input.form && (input.form.target === '_blank')) {
+        if (btn.form && (btn.form.target === '_blank')) {
             return;
         }
 
-        window.setTimeout(function (){
-            input.disabled = true;
-            input.under_timer = true;
+        window.setTimeout(function () {
+            btn.style.cursor = 'wait';
+            btn.disabled = true;
+            btn.under_timer = true;
         }, 20);
 
-        input.style.cursor = 'wait';
-
         if (!permanent) {
-            window.setTimeout(goback, 5000);
-            window.addEventListener('pagehide', goback);
-        } else {
-            input.under_timer = false;
+            window.setTimeout(enable, 5000);
+            window.addEventListener('pagehide', enable);
         }
 
-        function goback() {
-            if (input.under_timer) {
-                input.disabled = false;
-                input.under_timer = false;
-                input.style.cursor = 'default';
+        function enable() {
+            if (btn.under_timer) {
+                btn.disabled = false;
+                btn.under_timer = false;
+                btn.style.cursor = 'default';
             }
         }
     };
@@ -657,6 +710,22 @@
         });
     };
 
+    // This is kinda dumb, ported from checking.js, originally named as disable_buttons_just_clicked()
+    Composr.ui.disableSubmitAndPreviewButtons = function (permanent) {
+        // [accesskey="u"] identifies submit button, [accesskey="p"] identifies preview button
+        var buttons = document.querySelectorAll('input[accesskey="u"], button[accesskey="u"], input[accesskey="p"], button[accesskey="p"]');
+
+        if (permanent === undefined) {
+            permanent = false;
+        }
+
+        forEach(buttons, function (btn) {
+            if (!btn.disabled && !btn.under_timer) {// We do not want to interfere with other code potentially operating
+                Composr.ui.disableButton(btn, permanent);
+            }
+        });
+    };
+
     /* Addons will add Backbone.View subclasses under this object */
 
     Composr.View = Backbone.View.extend({});
@@ -664,6 +733,10 @@
     Composr.views = {};
     Composr.views.core = {};
     Composr.views.core.Global = Composr.View.extend({
+        initialize: function initialize(viewOptions, options) {
+            this.options = options || {};
+        },
+
         events: {
             // Prevent url change for clicks on anchor tags with a placeholder href
             'click a[href$="#!"]': function (e) {
@@ -714,10 +787,6 @@
                     openLinkAsOverlay({el: el})
                 }
             }
-        },
-
-        initialize: function initialize(viewOptions, options) {
-            this.options = options || {};
         }
     });
 

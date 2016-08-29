@@ -1,5 +1,7 @@
 /* Ideally this template should not be edited. See the note at the bottom of how JAVASCRIPT_CUSTOM_GLOBALS.tpl is appended to this template */
 
+var forEach = Function.bind.call(Function.call, Array.prototype.forEach);
+
 /* Startup */
 if (typeof window.page_loaded == 'undefined') // To stop problem if JS file loaded more than once
 {
@@ -338,7 +340,7 @@ function check_field_for_blankness(field, event) {
     if (typeof field.nodeName == 'undefined') return true; // Also bizarre
 
     var value;
-    if (field.nodeName.toLowerCase() == 'select') {
+    if (field.nodeName.toLowerCase() === 'select') {
         value = field.options[field.selectedIndex].value;
     } else {
         value = field.value;
@@ -2551,8 +2553,9 @@ function inner_html_copy(dom_node, xml_doc, level, script_tag_dependencies) {
     // do child nodes
     if (dom_node) {
         for (var i = 0, j = xml_doc.childNodes.length; i < j; i++) {
-            if (xml_doc.childNodes[i].id != '_firebugConsole')
+            if (xml_doc.childNodes[i].id !== '_firebugConsole'){
                 inner_html_copy.call(window, dom_node, xml_doc.childNodes[i], level + 1, script_tag_dependencies);
+            }
         }
     }
 }
@@ -2607,8 +2610,9 @@ function set_inner_html(element, target_html, append, force_dom) {
 
                 // Execute any newly inserted inline script tags
                 var scripts = element.getElementsByTagName('script');
-                for (let i = scripts_jump; i < scripts.length; i++) {
-                    if (!scripts[i].src) {// i.e. if it is inline JS
+                for (var i = scripts_jump; i < scripts.length; i++) {
+                    // Check if it is inline JS
+                    if (!scripts[i].src && (!scripts[i].type || scripts[i].type === 'application/javascript')) {
                         eval.call(window, scripts[i].textContent);
                     }
                 }
@@ -2626,11 +2630,12 @@ function set_inner_html(element, target_html, append, force_dom) {
     var xml_doc = inner_html_load(target_html);
     if (element && xml_doc) {
         if (!append) {
-            if (element.lastChild && element.lastChild.parentNode != element) // Workaround IE bug
-            {
+            if (element.lastChild && element.lastChild.parentNode != element) {// Workaround IE bug
                 element.innerHTML = '';
             } else {
-                while (element.lastChild) element.removeChild(element.lastChild);
+                while (element.lastChild) {
+                    element.removeChild(element.lastChild);
+                }
             }
         }
 
@@ -2638,7 +2643,8 @@ function set_inner_html(element, target_html, append, force_dom) {
             'to_run': [],
             'to_load': []
         };
-        inner_html_copy.call(window, element, (typeof xml_doc.documentElement == 'undefined') ? xml_doc : xml_doc.documentElement, 1, script_tag_dependencies);
+
+        inner_html_copy.call(window, element, xml_doc.documentElement === undefined ? xml_doc : xml_doc.documentElement, 1, script_tag_dependencies);
     }
 }
 
@@ -2782,68 +2788,6 @@ function click_link(link) {
     }
 }
 
-/* Next two functions are used by COMMENTS_POSTING_FORM.tpl */
-
-function handle_comments_posting_form_submit(button, event) {
-    var form;
-    if (typeof button.form == 'undefined') {
-        form = window.form_submitting;
-    } else {
-        form = button.form;
-    }
-
-    form.setAttribute('target', '_self');
-    if (typeof form.old_action != 'undefined') form.setAttribute('action', form.old_action);
-    if (form.onsubmit.call(form, event)) {
-        var submit_button = document.getElementById('submit_button');
-        if (submit_button) disable_button_just_clicked(submit_button);
-        form.submit();
-    }
-}
-
-function move_to_full_editor(button, more_url) {
-    var form;
-    if (typeof button.form == 'undefined') {
-        form = window.form_submitting;
-    } else {
-        form = button.form;
-    }
-
-    // Tell next screen what the stub to trim is
-    if (typeof form.elements['post'].default_substring_to_strip != 'undefined') {
-        if (typeof form.elements['stub'] != 'undefined') {
-            form.elements['stub'].value = form.elements['post'].default_substring_to_strip;
-        } else {
-            if (more_url.indexOf('?') == -1) {
-                more_url += '?';
-            } else {
-                more_url += '&';
-            }
-            more_url += 'stub=' + window.encodeURIComponent(form.elements['post'].default_substring_to_strip);
-        }
-    }
-
-    // Try and make post reply a GET parameter
-    if (typeof form.elements['parent_id'] != 'undefined') {
-        if (more_url.indexOf('?') == -1) {
-            more_url += '?';
-        } else {
-            more_url += '&';
-        }
-        more_url += 'parent_id=' + window.encodeURIComponent(form.elements['parent_id'].value);
-    }
-
-    // Reset form target
-    form.setAttribute('target', '_top');
-    if (typeof form.old_action != 'undefined') form.old_action = form.getAttribute('action');
-    form.setAttribute('action', more_url);
-
-    // Handle threaded strip-on-focus
-    if ((typeof form.elements['post'].strip_on_focus != 'undefined') && (form.elements['post'].value == form.elements['post'].strip_on_focus))
-        form.elements['post'].value = '';
-
-    form.submit();
-}
 
 /* Update a normal comments topic with AJAX replying */
 function replace_comments_form_with_ajax(options, hash, comments_form_id, comments_wrapper_id) {
