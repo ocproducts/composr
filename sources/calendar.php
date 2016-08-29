@@ -408,7 +408,7 @@ function find_periods_recurrence($timezone, $do_timezone_conv, $start_year, $sta
             $end_year = null;
         }
 
-        if ($i == 300) {
+        if ($i == intval(get_option('general_safety_listing_limit'))) {
             break; // Let's be reasonable
         }
     } while (($recurrence != '') && ($recurrence != 'none') && ($a < $period_end) && ((is_null($recurrences)) || ($happened_count < $recurrences)));

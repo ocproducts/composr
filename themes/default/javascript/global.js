@@ -392,23 +392,17 @@ function new_html__initialise(element)
 			/*{+START,IF,{$CONFIG_OPTION,js_overlays}}*/
 				//convert_tooltip(element);	Not useful
 
-				// Convert a/img title attributes into Composr tooltips
+				// Convert form element title attributes into Composr tooltips
 				var elements,j;
 				elements=element.elements;
 				for (j=0;j<elements.length;j++)
 				{
-					if (typeof elements[j].title!='undefined')
-					{
-						convert_tooltip(elements[j]);
-					}
+					if (typeof elements[j].title!='undefined' && typeof elements[j]['original-title']=='undefined'/*check tipsy not used*/ && elements[j].className.indexOf('no_tooltip')==-1) convert_tooltip(elements[j]);
 				}
 				elements=element.getElementsByTagName('input'); // Lame, but JS DOM does not include type="image" ones in form.elements
 				for (j=0;j<elements.length;j++)
 				{
-					if ((elements[j].type=='image') && (typeof elements[j].title!='undefined'))
-					{
-						convert_tooltip(elements[j]);
-					}
+					if (elements[j].type=='image' && typeof elements[j].title!='undefined' && typeof elements[j]['original-title']=='undefined'/*check tipsy not used*/ && elements[j].className.indexOf('no_tooltip')==-1) convert_tooltip(elements[j]);
 				}
 			/*{+END}*/
 
@@ -2644,7 +2638,7 @@ function add_event_listener_abstract(element,the_event,func,capture)
 {
 	if (element)
 	{
-		if ((element==window) && ((the_event=='load') && ((page_fully_loaded) || (document.readyState=='complete'))) || ((the_event=='real_load') && (document.readyState=='complete')))
+		if ((element==window) && ((the_event=='load') && ((page_fully_loaded) || (document.readyState=='interactive') || (document.readyState=='complete'))) || ((the_event=='real_load') && (document.readyState=='complete')))
 		{
 			window.setTimeout(func,0);
 			return true;
@@ -3045,6 +3039,9 @@ function inner_html_copy(dom_node,xml_doc,level,script_tag_dependencies) {
 							}
 							if (found==0) // Now we know all to_loads are loaded, we do the to_runs
 							{
+								if (typeof window.console!='undefined')
+										console.log('All AJAX-injected script tags loaded');
+
 								for (i=0;i<script_tag_dependencies['to_run'].length;i++)
 								{
 									if (typeof window.execScript!='undefined')

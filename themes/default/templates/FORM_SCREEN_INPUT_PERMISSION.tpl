@@ -25,23 +25,9 @@
 	</th>
 
 	<td class="form_table_field_input">
-		{+START,IF_EMPTY,{OVERRIDES}}
-			<label for="access_{GROUP_ID*}">
-		{+END}
-		{+START,IF_NON_EMPTY,{OVERRIDES}}
-			<div class="accessibility_hidden"><label for="access_{GROUP_ID*}">{PINTERFACE_VIEW*} ({GROUP_NAME*})</label></div>
-		{+END}
+		<div class="accessibility_hidden"><label for="access_{GROUP_ID*}">{PINTERFACE_VIEW*} ({GROUP_NAME*})</label></div>
 
-		{+START,IF,{$NOT,{VIEW_ACCESS}}}
-			<input tabindex="{TABINDEX*}" class="input_tick" type="checkbox" id="access_{GROUP_ID*}" name="access_{GROUP_ID*}" value="1" />
-		{+END}
-		{+START,IF,{VIEW_ACCESS}}
-			<input tabindex="{TABINDEX*}" class="input_tick" type="checkbox" id="access_{GROUP_ID*}" name="access_{GROUP_ID*}" value="1" checked="checked" />
-		{+END}
-
-		{+START,IF_EMPTY,{OVERRIDES}}
-			{PINTERFACE_VIEW*}</label>
-		{+END}
+		<input tabindex="{TABINDEX*}" class="input_tick" type="checkbox" id="access_{GROUP_ID*}" name="access_{GROUP_ID*}" title="{PINTERFACE_VIEW*}" value="1"{+START,IF,{VIEW_ACCESS}} checked="checked"{+END} />
 
 		{+START,IF,{$NOT,{ALL_GLOBAL}}}
 			<script>// <![CDATA[

@@ -884,7 +884,7 @@ function init_form_saving(form_id)
 		url+=keep_stub();
 		var callback=function(form) { return function(result) {
 			{+START,IF,{$DEV_MODE}}
-				if (typeof console.log!='undefined') console.log('AJAX says',result);
+				if (typeof console.log!='undefined') console.log('Auto-save AJAX says',result);
 			{+END}
 
 			_retrieve_form_autosave(result,form);
@@ -1176,7 +1176,11 @@ function _handle_form_saving(event,element,force)
 			if (typeof console.log!='undefined') console.log('Doing local storage auto-save for '+element_name+' ('+autosave_name+')');
 		{+END}
 
-		localStorage.setItem(autosave_name,value);
+		try
+		{
+			localStorage.setItem(autosave_name,value);
+		}
+		catch (e) {}; // Could have NS_ERROR_DOM_QUOTA_REACHED
 	}
 
 	return [autosave_name,value];

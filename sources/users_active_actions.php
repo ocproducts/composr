@@ -383,7 +383,7 @@ function cms_setcookie($name, $value, $session = false, $http_only = false, $day
             if (PHP_VERSION < 5.2) {
                 $output = @setcookie($name, $value, $time, $path, $cookie_domain . '; HttpOnly');
             } else {
-                $output = @call_user_func_array('setcookie', array($name, $value, $time, $path, $cookie_domain, 0, true)); // For Phalanger
+                $output = @call_user_func_array('setcookie', array($name, $value, $time, $path, $cookie_domain, substr(get_base_url(null), 0, 7) == 'http://', true)); // For Phalanger
                 //$output = @setcookie($name, $value, $time, $path, $cookie_domain, 0, true);
             }
         }

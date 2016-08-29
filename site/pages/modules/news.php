@@ -516,6 +516,7 @@ class Module_news
 
         // Get category contents
         $inline = get_param_integer('inline', 0) == 1;
+        $filter = either_param_string('active_filter', '');
         $content = do_block('main_news', array(
             'param' => '0',
             'title' => '',
@@ -531,6 +532,7 @@ class Module_news
             'pagination' => '1',
             'attach_to_url_filter' => '1',
             'block_id' => 'module',
+            'filter' => $filter,
         ));
 
         // Management links

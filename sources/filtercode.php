@@ -44,7 +44,11 @@ function read_filtercode_parameter_from_env($field_name, $field_type = null)
         $_default_value = post_param_date('filter_' . $field_name, true);
         $default_value = ($_default_value === null) ? '' : strval($_default_value);
     } elseif ($field_type == 'list_multi') {
-        $default_value = array_key_exists('filter_' . $field_name, $env) ? implode(',', $env['filter_' . $field_name]) : '';
+        if (array_key_exists('filter_' . $field_name, $env)) {
+            $default_value = implode(',', is_array($env['filter_' . $field_name]) ? $env['filter_' . $field_name] : array($env['filter_' . $field_name]));
+        } else {
+            $default_value = '';
+        }
     } else {
         $default_value = either_param_string('filter_' . $field_name, '');
     }
@@ -324,11 +328,11 @@ function form_for_filtercode($filter, $labels = null, $content_type = null, $typ
 
         switch ($field_type) { // NB: These type codes also vaguelly correspond to field hooks, just for convention (we don't use them)
             case 'time':
-                $form_fields->attach(form_input_date($field_label, '', $field_name, false, $default_value == '', true, ($default_value == '') ? null : intval($default_value)));
+                $form_fields->attach(form_input_date($field_label, '', 'filter_' . $field_name, false, $default_value == '', true, ($default_value == '') ? null : intval($default_value)));
                 break;
 
             case 'date':
-                $form_fields->attach(form_input_date($field_label, '', $field_name, false, $default_value == '', false, ($default_value == '') ? null : intval($default_value)));
+                $form_fields->attach(form_input_date($field_label, '', 'filter_' . $field_name, false, $default_value == '', false, ($default_value == '') ? null : intval($default_value)));
                 break;
 
             case 'days':
@@ -341,7 +345,7 @@ function form_for_filtercode($filter, $labels = null, $content_type = null, $typ
                 foreach ($days_options as $key => $val) {
                     $list_options->attach(form_input_list_entry($key, $default_value == $key, $val));
                 }
-                $form_fields->attach(form_input_list($field_label, '', $field_name, $list_options, null, false, false));
+                $form_fields->attach(form_input_list($field_label, '', 'filter_' . $field_name, $list_options, null, false, false));
                 break;
 
             case 'tick':
@@ -349,7 +353,7 @@ function form_for_filtercode($filter, $labels = null, $content_type = null, $typ
                 foreach (array('' => '', '0' => do_lang_tempcode('NO'), '1' => do_lang_tempcode('YES')) as $key => $val) {
                     $list_options->attach(form_input_list_entry($key, $default_value == $key, $val));
                 }
-                $form_fields->attach(form_input_list($field_label, '', $field_name, $list_options, null, false, false));
+                $form_fields->attach(form_input_list($field_label, '', 'filter_' . $field_name, $list_options, null, false, false));
                 break;
 
             case 'rating':
@@ -358,7 +362,7 @@ function form_for_filtercode($filter, $labels = null, $content_type = null, $typ
                 foreach (array(1 => '&#10025;', 4 => '&#10025;&#10025;', 6 => '&#10025;&#10025;&#10025;', 8 => '&#10025;&#10025;&#10025;&#10025;', 10 => '&#10025;&#10025;&#10025;&#10025;&#10025;') as $rating => $rating_label) {
                     $list_options->attach(form_input_list_entry(strval($rating), $default_value == strval($rating), protect_from_escaping($rating_label)));
                 }
-                $form_fields->attach(form_input_list($field_label, '', $field_name, $list_options, null, false, false));
+                $form_fields->attach(form_input_list($field_label, '', 'filter_' . $field_name, $list_options, null, false, false));
                 break;
 
             case 'list':
@@ -367,7 +371,7 @@ function form_for_filtercode($filter, $labels = null, $content_type = null, $typ
                 foreach ($extra as $key => $val) {
                     $list_options->attach(form_input_list_entry($key, $default_value == $key, $val));
                 }
-                $form_fields->attach(form_input_list($field_label, '', $field_name, $list_options, null, false, false));
+                $form_fields->attach(form_input_list($field_label, '', 'filter_' . $field_name, $list_options, null, false, false));
                 break;
 
             case 'list_multi':
@@ -375,7 +379,7 @@ function form_for_filtercode($filter, $labels = null, $content_type = null, $typ
                 foreach ($extra as $key => $val) {
                     $list_options->attach(form_input_list_entry($key, preg_match('#(^|,)' . preg_quote($key, '#') . '(,|$)#', $default_value) != 0, $val));
                 }
-                $form_fields->attach(form_input_multi_list($field_label, '', $field_name, $list_options, null, 5, false));
+                $form_fields->attach(form_input_multi_list($field_label, '', 'filter_' . $field_name, $list_options, null, 5, false));
                 break;
 
             case 'linklist':
@@ -385,32 +389,32 @@ function form_for_filtercode($filter, $labels = null, $content_type = null, $typ
                 break;
 
             case 'float':
-                $form_fields->attach(form_input_float($field_label, '', $field_name, ($default_value == '') ? null : floatval($default_value), false));
+                $form_fields->attach(form_input_float($field_label, '', 'filter_' . $field_name, ($default_value == '') ? null : floatval($default_value), false));
                 break;
 
             case 'integer':
-                $form_fields->attach(form_input_integer($field_label, '', $field_name, ($default_value == '') ? null : intval($default_value), false));
+                $form_fields->attach(form_input_integer($field_label, '', 'filter_' . $field_name, ($default_value == '') ? null : intval($default_value), false));
                 break;
 
             case 'email':
-                $form_fields->attach(form_input_email($field_label, '', $field_name, $default_value, false));
+                $form_fields->attach(form_input_email($field_label, '', 'filter_' . $field_name, $default_value, false));
                 break;
 
             case 'author':
-                $form_fields->attach(form_input_author($field_label, '', $field_name, $default_value, false));
+                $form_fields->attach(form_input_author($field_label, '', 'filter_' . $field_name, $default_value, false));
                 break;
 
             case 'username':
-                $form_fields->attach(form_input_username($field_label, '', $field_name, $default_value, false));
+                $form_fields->attach(form_input_username($field_label, '', 'filter_' . $field_name, $default_value, false));
                 break;
 
             case 'codename':
-                $form_fields->attach(form_input_codename($field_label, '', $field_name, $default_value, false));
+                $form_fields->attach(form_input_codename($field_label, '', 'filter_' . $field_name, $default_value, false));
                 break;
 
             case 'line':
             default:
-                $form_fields->attach(form_input_line($field_label, '', $field_name, $default_value, false));
+                $form_fields->attach(form_input_line($field_label, '', 'filter_' . $field_name, $default_value, false));
                 break;
         }
     }
@@ -734,9 +738,13 @@ function _default_conv_func($db, $info, $catalogue_name, &$extra_join, &$extra_s
         return null;
     }
 
-    // $filter_key is exactly as said in most cases
+    if (strpos($filter_key, '.') !== false) {
+        $new_filter_key = $filter_key;
+    } else {
+        $new_filter_key = $table_join_code . '.' . $filter_key;
+    }
 
-    return array($table_join_code . '.' . $filter_key, $field_type, $filter_val);
+    return array($new_filter_key, $field_type, $filter_val);
 }
 
 /**

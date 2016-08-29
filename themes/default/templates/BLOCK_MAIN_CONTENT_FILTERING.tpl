@@ -2,9 +2,7 @@
 
 {+START,IF_NON_EMPTY,{FIELDS}}
 	<form title="{!PRIMARY_PAGE_FORM}" method="get" action="{$URL_FOR_GET_FORM*,{$SELF_URL}}" autocomplete="off">
-		{+START,IF_NON_PASSED_OR_FALSE,GET}{$INSERT_SPAMMER_BLACKHOLE}{+END}
-
-		{+START,IF_PASSED_AND_TRUE,GET}{$HIDDENS_FOR_GET_FORM,{$SELF_URL,0,0,0,active_filter=<null>}}{+END}
+		{$HIDDENS_FOR_GET_FORM,{$SELF_URL,0,0,0,active_filter=<null>}}
 
 		<div>
 			<input type="hidden" name="active_filter" value="{ACTIVE_FILTER*}" />

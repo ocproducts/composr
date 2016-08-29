@@ -340,7 +340,7 @@ function update_permission_box(setting)
 				element=form.elements[j];
 				if (element.id.substr(0,7)=='access_')
 				{
-					element.parentNode.style.display=((values.length==1) && (no_view_settings))?'none':'inline';
+					element.style.display=((values.length==1) && (no_view_settings))?'none':'inline';
 					element.disabled=(element.name=='_ignore') || ((values.length==1) && (no_view_settings));
 				}
 			}
