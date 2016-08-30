@@ -1,18 +1,29 @@
 (function ($, Composr) {
     'use strict';
+
+    Composr.behaviors.chat = {
+        initialize: {
+            attach: function (context) {
+                Composr.initializeTemplates(context, 'chat');
+            }
+        }
+    };
+
     Composr.templates.chat = {
-        chatSound: function (options) {
-            if (typeof window.prepared_chat_sounds !== 'undefined') return;
+        chatSound: function (options) { // Prepares chat sounds
+            if (window.prepared_chat_sounds !== undefined) {
+                return;
+            }
             window.prepared_chat_sounds = true;
 
-            if (typeof window.soundManager !== 'undefined') {
+            if (window.soundManager !== undefined) {
                 window.soundManager.setup({
                     url: get_base_url() + '/data',
                     debugMode: false,
                     onready: function () {
-                        var soundEffects = options.soundEffects;
+                        var soundEffects = options.soundEffects, i;
 
-                        for (var i in soundEffects) {
+                        for (i in soundEffects) {
                             if (soundEffects.hasOwnProperty(i)) {
                                 window.soundManager.createSound(soundEffects[i].key, soundEffects[i].value);
                             }
@@ -63,6 +74,8 @@
             }
 
             begin_im_chatting();
+
+            prepare_chat_sounds();
         },
 
         chatSitewideImPopup: function chatSitewideImPopup() {
@@ -129,13 +142,6 @@
         }
     };
 
-    Composr.behaviors.chat = {
-        initialize: {
-            attach: function (context) {
-                Composr.initializeTemplates(context, 'chat');
-            }
-        }
-    };
 })(window.jQuery || window.Zepto, window.Composr);
 
 

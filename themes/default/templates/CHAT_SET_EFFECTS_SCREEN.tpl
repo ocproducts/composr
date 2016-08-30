@@ -2,7 +2,7 @@
 
 {CHAT_SOUND}
 
-<p data-cms-call="prepare_chat_sounds">
+<p>
 	{!CHOOSE_SOUND_EFFECTS}
 </p>
 

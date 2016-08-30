@@ -57,7 +57,7 @@
 </div></div>
 
 {+START,IF,{$NOT,{$IS_GUEST}}}
-	<div class="chat_im_convos_wrap" data-cms-call="prepare_chat_sounds">
+	<div class="chat_im_convos_wrap">
 		<div class="box box___chat_lobby_screen_im box_prominent"><div class="box_inner">
 			<h2>{!INSTANT_MESSAGING}</h2>
 

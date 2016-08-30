@@ -9,7 +9,7 @@
 
 {CHAT_SOUND}
 
-<div class="chat_posting_area" data-cms-call="prepare_chat_sounds">
+<div class="chat_posting_area">
 	<div class="float_surrounder">
 		<div class="left">
 			<form title="{!MESSAGE}" action="{MESSAGES_PHP*}?action=post&amp;room_id={CHATROOM_ID*}" method="post" class="inline" autocomplete="off">
