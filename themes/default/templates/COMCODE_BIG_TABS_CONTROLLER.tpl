@@ -1,7 +1,6 @@
 {$INC,big_tab_sets}
 
 {$REQUIRE_JAVASCRIPT,core_rich_media}
-{$REQUIRE_JAVASCRIPT,dyn_comcode}
 {$REQUIRE_CSS,big_tabs}
 
 <div class="comcode_big_tab_controller" role="tablist" data-tpl-core-rich-media="comcodeBigTabsController" data-tpl-args="{+START,PARAMS_JSON,SWITCH_TIME,PASS_ID,big_tab_sets,tabs}{_*}{+END}">

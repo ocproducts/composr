@@ -239,12 +239,9 @@
     };
 
     Composr.View = Backbone.View.extend({
-        /**
-         * @type Array
-         */
         options: null,
         initialize: function (viewOptions, options) {
-            this.options = options;
+            this.options = options || {};
         }
     });
 
@@ -616,6 +613,8 @@
         });
     };
 
+    Composr.audio = {};
+
     var Global = Composr.View.extend({
         initialize: function initialize(viewOptions, options) {
             this.options = options || {};
@@ -668,7 +667,7 @@
                 if (el.querySelectorAll('img').length > 0 || el.querySelectorAll('video').length > 0) {
                     open_image_into_lightbox(el);
                 } else {
-                    openLinkAsOverlay({el: el})
+                    openLinkAsOverlay({el: el});
                 }
             }
         }

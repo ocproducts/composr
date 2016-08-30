@@ -23,7 +23,7 @@ $id = $map['id'];
 require_code('images');
 require_code('downloads');
 require_lang('downloads');
-require_javascript('dyn_comcode');
+require_javascript('core_rich_media');
 require_css('carousels');
 
 $subdownloads = new Tempcode();
@@ -48,9 +48,9 @@ if ($subdownloads->is_empty()) {
     $carousel_id = strval(mt_rand(0, mt_getrandmax()));
 
     $content = '
-        <div id="carousel_' . $carousel_id . '" class="carousel" style="display: none">
-            <div class="move_left" onkeypress="this.onmousedown(event);" onmousedown="carousel_move(' . $carousel_id . ',-100); return false;"></div>
-            <div class="move_right" onkeypress="this.onmousedown(event);" onmousedown="carousel_move(' . $carousel_id . ',+100); return false;"></div>
+        <div id="carousel_' . $carousel_id . '" class="carousel" style="display: none" data-view-core-rich-media="Carousel" data-view-args=\'{"carouselId":"'. $carousel_id . '"}\'>
+            <div class="move_left js-btn-car-move" data-move-amount="-100"></div>
+            <div class="move_right js-btn-car-move" data-move-amount="+100"></div>
 
             <div class="main">
             </div>
@@ -59,12 +59,6 @@ if ($subdownloads->is_empty()) {
         <div class="carousel_temp" id="carousel_ns_' . $carousel_id . '">
             ' . $subdownloads->evaluate() . '
         </div>
-
-        <script>// <![CDATA[
-            $(function() {
-                initialise_carousel(' . $carousel_id . ');
-            });
-        //]]></script>
     ';
 }
 

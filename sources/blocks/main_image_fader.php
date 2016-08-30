@@ -69,7 +69,7 @@ class Block_main_image_fader
         require_css('galleries');
         require_lang('galleries');
         require_code('galleries');
-        require_javascript('dyn_comcode');
+        require_javascript('core_rich_media');
 
         $block_id = get_block_id($map);
 

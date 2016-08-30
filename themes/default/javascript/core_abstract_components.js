@@ -9,6 +9,8 @@
 
     Composr.templates.coreAbstractComponents = {
         handleConflictResolution: function handleConflictResolution(options) {
+            options = options || {};
+
             if (Composr.isTruthy(options.pingUrl)) {
                 do_ajax_request(options.pingUrl);
 

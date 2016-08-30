@@ -1,5 +1,5 @@
 {$REQUIRE_CSS,news}
-{$REQUIRE_JAVASCRIPT,dyn_comcode}
+{$REQUIRE_JAVASCRIPT,core_rich_media}
 
 {$,Try and set to year of currently viewed item or otherwise the current year}
 {$SET,news_archive_year,{$?,{$IS_EMPTY,{$_GET,year}},{$?,{$IS_EMPTY,{$METADATA,created}},{$FROM_TIMESTAMP,Y},{$PREG_REPLACE,-.*$,,{$METADATA,created}}},{$_GET,year}}}

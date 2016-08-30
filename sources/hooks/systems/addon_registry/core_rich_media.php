@@ -111,7 +111,7 @@ class Hook_addon_registry_core_rich_media
             'themes/default/images/icons/16x16/editor/index.html',
             'themes/default/images/icons/32x32/editor/index.html',
             'sources/hooks/systems/addon_registry/core_rich_media.php',
-            'themes/default/javascript/dyn_comcode.js',
+            'themes/default/javascript/core_rich_media.js',
             'themes/default/templates/EMOTICON_CLICK_CODE.tpl',
             'themes/default/templates/EMOTICON_IMG_CODE_DIR.tpl',
             'themes/default/templates/EMOTICON_IMG_CODE_THEMED.tpl',

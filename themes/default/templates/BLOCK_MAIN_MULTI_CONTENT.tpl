@@ -17,15 +17,15 @@
 	{$,Example carousel layout if the 'carousel' GUID was passed}
 	{$,With some basic templating you could also achieve simple lists or tables}
 	{+START,IF,{$EQ,{_GUID},carousel}}
-		{$REQUIRE_JAVASCRIPT,dyn_comcode}
+		{$REQUIRE_JAVASCRIPT,core_rich_media}
 		{$REQUIRE_CSS,carousels}
 
 		{$SET,carousel_id,{$RAND}}
 
 		{+START,IF_NON_EMPTY,{CONTENT}}
-			<div id="carousel_{$GET*,carousel_id}" class="carousel" style="display: none" data-cms-call="initialise_carousel">
-				<div class="move_left" onkeypress="this.onmousedown(event);" onmousedown="carousel_move({$GET*,carousel_id},-30); return false;"></div>
-				<div class="move_right" onkeypress="this.onmousedown(event);" onmousedown="carousel_move({$GET*,carousel_id},+30); return false;"></div>
+			<div id="carousel_{$GET*,carousel_id}" class="carousel" style="display: none" data-view-core-rich-media="Carousel" data-view-args="{+START,PARAMS_JSON,carousel_id}{_*}{+END}">
+				<div class="move_left js-btn-car-move" data-move-amount="-30"></div>
+				<div class="move_right js-btn-car-move" data-move-amount="+30"></div>
 
 				<div class="main raw_ajax_grow_spot">
 				</div>

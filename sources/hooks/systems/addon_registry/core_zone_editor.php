@@ -107,7 +107,7 @@ class Hook_addon_registry_core_zone_editor
             'sources/hooks/systems/addon_registry/core_zone_editor.php',
             'themes/default/templates/ZONE_EDITOR_SCREEN.tpl',
             'themes/default/templates/ZONE_EDITOR_PANEL.tpl',
-            'themes/default/javascript/zone_editor.js',
+            'themes/default/javascript/core_zone_editor.js',
             'adminzone/pages/modules/admin_zones.php',
         );
     }

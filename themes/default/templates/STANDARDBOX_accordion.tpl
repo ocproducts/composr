@@ -1,4 +1,4 @@
-{$REQUIRE_JAVASCRIPT,dyn_comcode}
+{$REQUIRE_JAVASCRIPT,core_rich_media}
 
 <div class="box box___standardbox_accordion accordion_trayitem{+START,IF_PASSED,CLASS} {CLASS*}{+END}"{+START,IF_NON_EMPTY,{WIDTH}} style="width: {WIDTH*}"{+END}>
 	{+START,IF_NON_EMPTY,{TITLE}}

@@ -4,7 +4,7 @@
 	<img alt="{EMOTICON*}" src="{$IMG*,{SRC},1}" />
 {+END}
 {+START,IF,{$IS_IN_GROUP,{$CONFIG_OPTION,jestr_emoticon_magnet_shown_for}}}
-	{$REQUIRE_JAVASCRIPT,dyn_comcode}
+	{$REQUIRE_JAVASCRIPT,core_rich_media}
 	<div id="emoticoncrazy{$GET%,rndx}"></div>
 	<script>// <![CDATA[
 		$(function() {

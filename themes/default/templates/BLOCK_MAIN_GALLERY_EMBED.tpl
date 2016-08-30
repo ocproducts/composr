@@ -20,15 +20,15 @@
 	{+END}
 
 	{+START,IF,{$EQ,{_GUID},carousel}}
-		{$REQUIRE_JAVASCRIPT,dyn_comcode}
+		{$REQUIRE_JAVASCRIPT,core_rich_media}
 		{$REQUIRE_CSS,carousels}
 
 		{$SET,carousel_id,{$RAND}}
 		{$SET,block_call_url,{$FACILITATE_AJAX_BLOCK_CALL,{BLOCK_PARAMS},raw=.*\,cache=.*,{START_PARAM}=.*}&{START_PARAM}=current_loading_from_pos_{$GET,carousel_id}}
 
-		<div id="carousel_{$GET*,carousel_id}" class="carousel" style="display: none" data-cms-call="initialise_carousel">
-			<div class="move_left" onkeypress="this.onmousedown(event);" onmousedown="carousel_move({$GET*,carousel_id},-47); return false;"></div>
-			<div class="move_right" onkeypress="this.onmousedown(event); this.onclick(event);" onclick="carousel_prepare_load_more_{$GET*,carousel_id}({$GET*,carousel_id});" onmousedown="carousel_move({$GET*,carousel_id},+47); return false;"></div>
+		<div id="carousel_{$GET*,carousel_id}" class="carousel" style="display: none" data-view-core-rich-media="Carousel" data-view-args="{+START,PARAMS_JSON,carousel_id}{_*}{+END}">
+			<div class="move_left js-btn-car-move" data-move-amount="-47"></div>
+			<div class="move_right js-btn-car-move" data-move-amount="+47" onclick="carousel_prepare_load_more_{$GET*,carousel_id}({$GET*,carousel_id});"></div>
 
 			<div class="main raw_ajax_grow_spot" id="carousel_{$GET*,carousel_id}_container">
 			</div>

@@ -1,4 +1,4 @@
-{$REQUIRE_JAVASCRIPT,dyn_comcode}
+{$REQUIRE_JAVASCRIPT,core_rich_media}
 {$REQUIRE_JAVASCRIPT,counting_blocks}
 
 {$SET,countdown_id,countdown_{$RAND}}

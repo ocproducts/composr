@@ -268,7 +268,7 @@ class Module_admin_zones
             return $lang;
         }
 
-        require_javascript('zone_editor');
+        require_javascript('core_zone_editor');
         require_javascript('ajax');
         require_javascript('posting');
         require_javascript('editing');

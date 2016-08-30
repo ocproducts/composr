@@ -1,3 +1,4 @@
+<div data-view-core-zone-editor="ZoneEditorScreen">
 {TITLE}
 
 {+START,INCLUDE,HANDLE_CONFLICT_RESOLUTION}{+END}
@@ -26,17 +27,18 @@
 
 <hr class="spaced_rule" />
 
-<form title="{!SAVE}" action="{URL*}" method="post" target="_self" autocomplete="off" onsubmit="return modsecurity_workaround(this);">
+<form title="{!SAVE}" action="{URL*}" method="post" target="_self" autocomplete="off" class="js-form-ze-save">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<div id="edit_field_store" style="display: none">
 	</div>
 
 	<p class="proceed_button vertical_alignment">
-		<input class="button_screen buttons__save" type="button" value="{!SAVE}" onclick="fetch_more_fields(); this.form.submit();" /> <span class="associated_details">{!ZE_CLICK_TO_EDIT}</span>
+		<input class="button_screen buttons__save js-btn-fetch-and-submit" type="button" value="{!SAVE}" /> <span class="associated_details">{!ZE_CLICK_TO_EDIT}</span>
 	</p>
 </form>
 
 <p class="vertical_alignment">
 	<img src="{$IMG*,icons/16x16/help}" srcset="{$IMG*,icons/32x32/help} 2x" alt="" /> <span>{!MANY_PANEL_TYPES,{$PAGE_LINK*,cms:cms_comcode_pages:_edit:lang={LANG}:page_link={ID}%3Apanel_top},{$PAGE_LINK*,cms:cms_comcode_pages:_edit:lang={LANG}:page_link={ID}%3Apanel_bottom}}</span>
 </p>
+</div>

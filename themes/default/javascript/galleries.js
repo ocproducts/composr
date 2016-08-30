@@ -11,7 +11,7 @@
 
     Composr.templates.galleries = {
         galleryNav: function galleryNav(options) {
-            window.slideshow_current_position = options._x -1;
+            window.slideshow_current_position = options._x - 1;
             window.slideshow_total_slides = options._n;
 
             if (Composr.isTruthy(options.slideshow)) {
@@ -29,7 +29,9 @@
             window['carousel_prepare_load_more_' + options.carouselId] = function () {
                 var ob = document.getElementById('carousel_ns_' + options.carouselId);
 
-                if (ob.parentNode.scrollLeft + ob.offsetWidth * 2 < ob.scrollWidth) return; // Not close enough to need more results
+                if (ob.parentNode.scrollLeft + ob.offsetWidth * 2 < ob.scrollWidth) {
+                    return; // Not close enough to need more results
+                }
 
                 window['current_loading_from_pos_' + options.carouselId] += options.max;
 

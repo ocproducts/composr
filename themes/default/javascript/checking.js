@@ -948,12 +948,8 @@ function preview_mobile_button(ob) {
 }
 
 function disable_preview_scripts(under) {
-    if (typeof under === 'undefined') {
-        if (this instanceof HTMLElement) {
-            under = this;
-        } else {
-            under = document;
-        }
+    if (under === undefined) {
+        under = document;
     }
 
     var elements, i;

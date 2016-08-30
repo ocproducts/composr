@@ -1,4 +1,4 @@
-{$REQUIRE_JAVASCRIPT,dyn_comcode}
+{$REQUIRE_JAVASCRIPT,core_rich_media}
 
 {+START,SET,news_ticker_text}
 	<ol class="horizontal_ticker">

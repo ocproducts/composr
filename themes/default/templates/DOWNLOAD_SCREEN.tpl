@@ -145,14 +145,14 @@
 		<div class="box box___download_screen"><div class="box_inner">
 			<h2>{!IMAGES}</h2>
 
-			{$REQUIRE_JAVASCRIPT,dyn_comcode}
+			{$REQUIRE_JAVASCRIPT,core_rich_media}
 			{$REQUIRE_CSS,carousels}
 
 			{$SET,carousel_id,{$RAND}}
 
-			<div id="carousel_{$GET*,carousel_id}" class="carousel" style="display: none" data-cms-call="initialise_carousel">
-				<div class="move_left" onmousedown="carousel_move({$GET*,carousel_id},-100); return false;"></div>
-				<div class="move_right" onmousedown="carousel_move({$GET*,carousel_id},+100); return false;"></div>
+			<div id="carousel_{$GET*,carousel_id}" class="carousel" style="display: none" data-view-core-rich-media="Carousel" data-view-args="{+START,PARAMS_JSON,carousel_id}{_*}{+END}">
+				<div class="move_left js-btn-car-move" data-move-amount="-100"></div>
+				<div class="move_right js-btn-car-move" data-move-amount="+100"></div>
 
 				<div class="main">
 				</div>

@@ -22,14 +22,14 @@
 		<div class="box box___gallery_flow_mode_screen__other"><div class="box_inner">
 			<h2>{!OTHER_IMAGES_IN_GALLERY}</h2>
 
-			{$REQUIRE_JAVASCRIPT,dyn_comcode}
+			{$REQUIRE_JAVASCRIPT,core_rich_media}
 			{$REQUIRE_CSS,carousels}
 
 			{$SET,carousel_id,{$RAND}}
 
-			<div id="carousel_{$GET*,carousel_id}" class="carousel" data-cms-call="initialise_carousel" style="display: none">
-				<div class="move_left" onmousedown="carousel_move({$GET*,carousel_id},-100); return false;"></div>
-				<div class="move_right" onmousedown="carousel_move({$GET*,carousel_id},+100); return false;"></div>
+			<div id="carousel_{$GET*,carousel_id}" class="carousel" data-view-core-rich-media="Carousel" data-view-args="{+START,PARAMS_JSON,carousel_id}{_*}{+END}">
+				<div class="move_left js-btn-car-move" data-move-amount="-100"></div>
+				<div class="move_right js-btn-car-move" data-move-amount="+100"></div>
 
 				<div class="main" itemprop="significantLinks">
 				</div>
