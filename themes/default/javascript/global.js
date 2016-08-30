@@ -340,7 +340,6 @@ function disable_button_just_clicked(input, permanent) {
                 disable_button_just_clicked(input.elements[i]);
             }
         }
-
         return;
     }
 

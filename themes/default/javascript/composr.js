@@ -50,7 +50,8 @@
         toArray   = Function.bind.call(Function.call, arrProto.slice),
         forEach   = Function.bind.call(Function.call, arrProto.forEach),
         defined   = function (v) { return v !== undefined; },
-        noop      = function () { return undefined; },
+        undef     = function (v) { return v === undefined; },
+        noop      = function () {},
 
         loadPolyfillsPromise = new Promise(function (resolve) {
             loadPolyfills(resolve);
@@ -274,8 +275,12 @@
         });
     };
 
-
-    Composr.View = Backbone.View.extend({});
+    Composr.View = Backbone.View.extend({
+        options: null,
+        initialize: function (viewOptions, options) {
+            this.options = options;
+        }
+    });
 
     /* Addons will add Composr.View subclasses under this object */
     Composr.views = {};
@@ -422,7 +427,7 @@
     /* DOM helper methods */
     Composr.dom = {};
 
-    // Returns a single matching element
+    // Returns a single matching child element
     Composr.dom.$ = function (el, selector) {
         if (arguments.length === 1) {
             selector = el;
@@ -432,7 +437,7 @@
         return el.querySelector(selector);
     };
 
-    // Returns an array with matching elements
+    // Returns an array with matching child elements
     Composr.dom.$$ = function (el, selector) {
         if (arguments.length === 1) {
             selector = el;
@@ -442,7 +447,7 @@
         return toArray(el.querySelectorAll(selector));
     };
 
-    // This one (3 dollars) also includes the parent element (at offset 0) if it matches the selector
+    // This one (3 dollarydoos) also includes the parent element (at offset 0) if it matches the selector
     Composr.dom.$$$ = function (el, selector) {
         var els;
 
@@ -488,7 +493,7 @@
 
     Composr.dom.prependHtml = function (el, html) {
         // Parser hint: .innerHTML okay
-        var prevChildrenLength = el.children.length, newChildrenLength, i, len;
+        var prevChildrenLength = el.children.length, newChildrenLength, i, stop;
 
         el.insertAdjacentHTML('afterbegin', html);
 
@@ -499,7 +504,7 @@
             return;
         }
 
-        for (i = 0, len = (prevChildrenLength - newChildrenLength); i < len; i++) {
+        for (i = 0, stop = (prevChildrenLength - newChildrenLength); i < stop; i++) {
             Composr.attachBehaviors(el.children[i]);
         }
     };
@@ -723,7 +728,7 @@
         data = data.trim();
         defaults = defaults || {};
 
-        if (data && (data !== '{}')) {
+        if (data && (data !== '{}') && (data !== '1')) {
             try {
                 data = JSON.parse(data);
 
@@ -796,9 +801,7 @@
         });
     };
 
-
-    Composr.views.core = {};
-    Composr.views.core.Global = Composr.View.extend({
+    var Global = Composr.View.extend({
         initialize: function initialize(viewOptions, options) {
             this.options = options || {};
         },
@@ -855,6 +858,10 @@
             }
         }
     });
+
+    Composr.views.core = {
+        Global: Global
+    };
 
     Composr.ready.then(function () {
         var global = new Composr.views.core.Global({

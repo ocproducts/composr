@@ -1,1 +1,2 @@
-<span data-cms-call="notification_poller_init" data-cms-call-args='[{$FROM_TIMESTAMP%}]'></span>
+{$SET,timestamp,{$FROM_TIMESTAMP}}
+<script type="application/json" data-tpl-core-notifications="notificationPoller">{+START,PARAMS_JSON,timestamp}{_/}{+END}</script>

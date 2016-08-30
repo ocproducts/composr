@@ -85,6 +85,7 @@ class Hook_symbol_SYMBOL_DATA_AS_JSON
             'jsCaptcha'         => get_option('js_captcha'),
             'googleAnalytics'   => get_option('google_analytics'),
             'longGoogleCookies' => get_option('long_google_cookies'),
+            'editarea'          => get_option('editarea'),
         ];
 
         $value['VALUE_OPTION'] = [

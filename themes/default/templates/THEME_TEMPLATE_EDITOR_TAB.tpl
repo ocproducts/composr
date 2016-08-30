@@ -1,3 +1,5 @@
+<div data-view-core-themeing="ThemeTemplateEditorTab" data-view-args="{+START,PARAMS_JSON,FILE,FILE_ID,HIGHLIGHTER_TYPE,INLUDE_CSS_EDITING,THEME,LIVE_PREVIEW_URL,SCREEN_PREVIEW_URL}{_*}{+END}">
+
 {+START,IF_PASSED_AND_TRUE,OWN_FORM}
 <form title="{!PRIMARY_PAGE_FORM}" method="post" action="#" autocomplete="off">
 {+END}
@@ -409,23 +411,23 @@
 						<h3>{!QUICK_CSS_CHANGE_LINKS}:</h3>
 						<ul>
 							<li>
-								<a onclick="editarea_do_search('e_{FILE_ID;^/}','font-family'); return false;" href="#!">{!CHANGE_FONT}</a>
+								<a href="#!" class="js-a-editarea-search" data-ea-search="font-family">{!CHANGE_FONT}</a>
 							</li>
 							<li>
-								<a onclick="editarea_do_search('e_{FILE_ID;^/}','inner_background'); return false;" href="#!">{!CHANGE_INNER_BACKGROUND}</a>
+								<a href="#!" class="js-a-editarea-search" data-ea-search="inner_background">{!CHANGE_INNER_BACKGROUND}</a>
 							</li>
 							<li>
-								<a onclick="editarea_do_search('e_{FILE_ID;^/}','block_background'); return false;" href="#!">{!CHANGE_BLOCK_BACKGROUND}</a>
+								<a href="#!" class="js-a-editarea-search" data-ea-search="block_background">{!CHANGE_BLOCK_BACKGROUND}</a>
 							</li>
 							{+START,IF,{$CONFIG_OPTION,fixed_width}}
 								<li>
-									<a onclick="editarea_do_search('e_{FILE_ID;^/}','outer_background'); return false;" href="#!">{!CHANGE_OUTER_BACKGROUND}</a>
+									<a href="#!" class="js-a-editarea-search" data-ea-search="outer_background">{!CHANGE_OUTER_BACKGROUND}</a>
 								</li>
 								<li>
-									<a onclick="editarea_do_search('e_{FILE_ID;^/}','\n.logo_outer {'); return false;" href="#!">{!CHANGE_HEADER_IMAGE}</a>
+									<a href="#!" class="js-a-editarea-search" data-ea-search="&#10;.logo_outer {">{!CHANGE_HEADER_IMAGE}</a>
 								</li>
 								<li>
-									<a onclick="editarea_do_search('e_{FILE_ID;^/}','#main_website #main_website_inner {'); return false;" href="#!">{!CHANGE_FIXED_WIDTH}</a>
+									<a href="#!" class="js-a-editarea-search" data-search="#main_website #main_website_inner {">{!CHANGE_FIXED_WIDTH}</a>
 								</li>
 							{+END}
 						</ul>
@@ -460,23 +462,23 @@
 
 	<label class="accessibility_hidden" for="e_{FILE_ID*}">{!TEMPLATE}</label>
 	<div class="constrain_field">
-		<textarea onkeydown="return template_editor_keypress(event);" id="e_{FILE_ID*}" name="e_{FILE_ID*}" cols="70" rows="22" class="wide_field textarea_scroll">{CONTENTS*}</textarea>
+		<textarea id="e_{FILE_ID*}" name="e_{FILE_ID*}" cols="70" rows="22" class="wide_field textarea_scroll js-ta-tpl-editor">{CONTENTS*}</textarea>
 	</div>
 </div>
 
 {$,Buttons}
 
 <div class="float_surrounder buttons_group">
-	<input data-disable-on-click="{}" onclick="template_editor_tab_save_content('{FILE;^*}'); return false;" class="button_screen buttons__save" type="submit" value="{!SAVE}" />
+	<input data-disable-on-click="{}" class="button_screen buttons__save js-btn-save-content" type="submit" value="{!SAVE}" />
 
 	{+START,SET,preview_buttons}
 		{+START,IF_PASSED,LIVE_PREVIEW_URL}
 			<!-- Preview in live rendering -->
-			<input onclick="return template_editor_preview('{FILE_ID;*}','{LIVE_PREVIEW_URL;*}',this,true);" class="button_screen tabs__preview" type="submit" value="{!LIVE_PREVIEW}" />
+			<input class="button_screen tabs__preview js-btn-live-preview" type="submit" value="{!LIVE_PREVIEW}" />
 		{+END}
 		{+START,IF_PASSED,SCREEN_PREVIEW_URL}
 			<!-- Preview in screen preview (Lorem ipsum) -->
-			<input onclick="return template_editor_preview('{FILE_ID;*}','{SCREEN_PREVIEW_URL;*}',this);" class="button_screen tabs__preview" type="submit" value="{!LOREM_PREVIEW}" />
+			<input class="button_screen tabs__preview js-btn-screen-preview" type="submit" value="{!LOREM_PREVIEW}" />
 		{+END}
 	{+END}
 	{+START,IF_NON_EMPTY,{$TRIM,{$GET,preview_buttons}}}
@@ -518,7 +520,7 @@
 								{+END}
 							</td>
 							<td>
-								<a onclick="return insert_guid('{FILE;/*}','{GUID_GUID;/*}');" href="#!">{$?,{GUID_IS_LIVE},<strong>{GUID_GUID*}</strong>,{GUID_GUID*}}</a>
+								<a href="#!" class="js-a-insert-guid" data-insert-guid="{GUID_GUID*}">{$?,{GUID_IS_LIVE},<strong>{GUID_GUID*}</strong>,{GUID_GUID*}}</a>
 							</td>
 						</tr>
 					{+END}
@@ -540,7 +542,7 @@
 			<ul>
 				{+START,LOOP,RELATED}
 					<li>
-						<a onclick="template_editor_add_tab('{_loop_var;^*}'); return false;" href="#!">{_loop_var*}</a>
+						<a href="#!" class="js-a-tpl-editor-add-tab" data-template-file="{_loop_var*}">{_loop_var*}</a>
 					</li>
 				{+END}
 			</ul>
@@ -564,7 +566,7 @@
 			<label for="css_equation">{!CSS_EQUATION_HELPER}</label>
 			<input name="css_equation" id="css_equation_{FILE_ID*}" type="text" value="100% seed" />
 
-			<input onclick="return css_equation_helper('{FILE_ID;^*}','{THEME;^*}');" class="button_screen_item buttons__calculate" type="submit" value="{!CALCULATE}" />
+			<input class="button_screen_item buttons__calculate js-btn-equation-helper" type="submit" value="{!CALCULATE}" />
 
 			&rarr;
 
@@ -578,7 +580,4 @@
 </form>
 {+END}
 
-{$SET,editarea_config,{$CONFIG_OPTION,editarea}}
-<script type="application/json" data-tpl-core-themeing="themeTemplateEditorTab">
-	{+START,PARAMS_JSON,FILE,FILE_ID,HIGHLIGHTER_TYPE,INLUDE_CSS_EDITING,editarea_config}{_/}{+END}
-</script>
+</div>

@@ -1,15 +1,17 @@
 (function ($, Composr) {
-    Composr.templates.coreThemeing = {
-        tempcodeTesterScreen: function tempcodeTesterScreen(options) {
-            var form = this,
-                button = form.querySelector('.js-btn-do-preview');
+    Composr.behaviors.coreThemeing = {
+        initialize: {
+            attach: function (context) {
+                Composr.initializeViews(context, 'core_themeing');
+                Composr.initializeTemplates(context, 'core_themeing');
+            }
+        }
+    };
 
-            button.addEventListener('click', function () {
-                doTempcodeTesterPreview(form);
-            });
-        },
+    var ThemeTemplateEditorTab = Composr.View.extend({
+        initialize: function (viewOptions, options) {
+            this.options = options;
 
-        themeTemplateEditorTab: function themeTemplateEditorTab(options) {
             // Allow searching via URL hash
             if (window.location.hash) {
                 window.setTimeout(function () {
@@ -18,13 +20,101 @@
                 }, 2000);
             }
 
-            if (Composr.isTruthy(options.editareaConfig)) {
+            if (Composr.isTruthy(Composr.$CONFIG_OPTION.editarea)) {
                 ace_composr_loader('e_' + options.fileId, options.highlighterType, false);
             }
 
             if (Composr.isTruthy(options.includeCssEditing) && window.opener && window.opener.document) {
                 load_contextual_css_editor(options.file, options.fileId);
             }
+        },
+
+        events: {
+            'keydown .js-ta-tpl-editor': 'editorKeyPress',
+            'click .js-btn-save-content': 'saveContent',
+            'click .js-btn-live-preview': 'livePreview',
+            'click .js-btn-screen-preview': 'screenPreview',
+            'click .js-a-editarea-search': 'editareaSearch',
+            'click .js-a-insert-guid': 'insertGuid',
+            'click .js-a-tpl-editor-add-tab' : 'addEditorTab',
+            'click .js-btn-equation-helper': 'cssEquationHelper'
+        },
+
+        editorKeyPress: function (e) {
+            if (!template_editor_keypress(e)) {
+                e.preventDefault();
+            }
+        },
+
+        saveContent: function (e) {
+            e.preventDefault();
+            template_editor_tab_save_content(this.options.file);
+        },
+
+        livePreview: function (e) {
+            var opts = this.options;
+            if (!template_editor_preview(opts.fileId, opts.livePreviewUrl, e.target, true)) {
+                e.preventDefault();
+            }
+        },
+
+        screenPreview: function (e) {
+            var opts = this.options;
+            if (!template_editor_preview(opts.fileId, opts.screenPreviewUrl, e.target)) {
+                e.preventDefault();
+            }
+        },
+
+        editareaSearch: function (e) {
+            var regexp = e.target.dataset.eaSearch;
+
+            editarea_do_search('e_' + this.options.fileId, regexp);
+        },
+
+        insertGuid: function (e) {
+            var guid = e.target.dataset.insertGuid;
+
+            insert_guid(this.options.file, guid);
+        },
+
+        addEditorTab: function (e) {
+            var file = e.target.dataset.templateFile;
+
+            template_editor_add_tab(file);
+        },
+
+        cssEquationHelper: function (e) {
+            var opts = this.options,
+                url = 'themewizard_equation',
+                result;
+
+            e.preventDefault();
+
+            url += '&theme=' + window.encodeURIComponent(opts.theme);
+            url += '&css_equation=' + window.encodeURIComponent(document.getElementById('css_equation_' + opts.fileId).value);
+
+            result = load_snippet(url);
+
+            if (!result || result.includes('<html')) {
+                window.fauxmodal_alert('{!ERROR_OCCURRED;}');
+            } else {
+                document.getElementById('css_result_' + opts.fileId).value = result;
+            }
+        }
+    });
+
+    Composr.views.coreThemeing = {
+        ThemeTemplateEditorTab: ThemeTemplateEditorTab
+    };
+
+    Composr.templates.coreThemeing = {
+        tempcodeTesterScreen: function tempcodeTesterScreen(options) {
+            var form = this,
+                button = form.querySelector('.js-btn-do-preview');
+
+            button.addEventListener('click', function () {
+                doTempcodeTesterPreview(form);
+            });
         },
 
         themeTemplateEditorScreen: function themeTemplateEditorScreen(options) {
@@ -57,14 +147,6 @@
 
         themeImageManageScreen: function themeImageManageScreen() {
             window.main_form_very_simple = true;
-        }
-    };
-
-    Composr.behaviors.coreThemeing = {
-        initialize: {
-            attach: function (context) {
-                Composr.initializeTemplates(context, 'core_themeing');
-            }
         }
     };
 

@@ -198,6 +198,10 @@
             }
         },
 
+        formScreenFieldsSet: function (options) {
+            standard_alternate_fields_within(options.setName, Composr.isTruthy(options.required));
+        },
+
         previewScript: function previewScript(options) {
             var inner = document.querySelector('.js-preview-box-scroll');
 

@@ -4,9 +4,34 @@
     Composr.behaviors.coreRichMedia = {
         initialize: {
             attach: function (context) {
+                Composr.initializeViews(context, 'core_rich_media');
                 Composr.initializeTemplates(context, 'core_rich_media');
             }
         }
+    };
+
+    var Attachment = Composr.View.extend({
+        initialize: function (viewOptions, options) {
+            Composr.View.prototype.initialize.apply(this, arguments);
+
+            preinit_file_input("attachment_multi", "file" + options.i, null, options.postingFieldName, options.filter);
+
+            if (options.syndicationJson !== undefined) {
+                show_upload_syndication_options("file" + options.i, options.syndicationJson, Composr.isTruthy(options.noQuota));
+            }
+        },
+
+        events: {
+            'change .js-inp-file-attachment': 'setAttachment'
+        },
+
+        setAttachment: function () {
+            set_attachment('post', this.options.i, '');
+        }
+    });
+
+    Composr.views.coreRichMedia = {
+        Attachment: Attachment
     };
 
     Composr.templates.coreRichMedia = {
@@ -18,12 +43,12 @@
                 window.num_attachments = options.numAttachments;
             }
 
-            if (options.simpleUi === '1'){
+            if (options.simpleUi === '1') {
                 window.num_attachments = 1;
 
-                Composr.loadWindow.then(function() {
+                Composr.loadWindow.then(function () {
                     if (document.getElementById('attachment_upload_button')) {
-                        rebuild_attachment_button_for_next(options.postingFieldName,'attachment_upload_button');
+                        rebuild_attachment_button_for_next(options.postingFieldName, 'attachment_upload_button');
                     }
                 });
             }

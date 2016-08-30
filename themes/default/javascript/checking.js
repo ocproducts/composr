@@ -541,13 +541,7 @@ function check_form(the_form, for_preview) {
 }
 
 function standard_alternate_fields_within(set_name, something_required) {
-    var form;
-
-    if (!set_name && (this instanceof HTMLElement)) {
-        form = this;
-    } else {
-        form = document.getElementById('set_wrapper_' + set_name);
-    }
+    var form = document.getElementById('set_wrapper_' + set_name);
 
     while (form.nodeName.toLowerCase() != 'form') {
         form = form.parentNode;
@@ -983,9 +977,8 @@ function disable_preview_scripts(under) {
                     elements[i].target = 'false_blank'; // Real _blank would trigger annoying CSS. This is better anyway.
                 }
             }
-            catch (e) {
+            catch (e) { // IE can have security exceptions
             }
-            ; // IE can have security exceptions
         }
     }
 }
@@ -995,7 +988,7 @@ function _set_up_change_monitor(container, input, container2) {
     if (input) {
         elements = [document.getElementById(input)];
     } else {
-        elements = get_all_form_elements(container);
+        elements = Composr.dom.$$(container, 'input, select, textarea');
     }
     if (elements.length > 300) return;
     for (var i = 0; i < elements.length; i++) {
@@ -1018,7 +1011,7 @@ function _set_up_change_monitor(container, input, container2) {
 
 function find_if_children_set(container) {
     var value, blank = true, the_element;
-    var elements = get_all_form_elements(container);
+    var elements = Composr.dom.$$(container, 'input, select, textarea');
     for (var i = 0; i < elements.length; i++) {
         if (!elements[i]) continue;
         the_element = elements[i];
@@ -1027,18 +1020,6 @@ function find_if_children_set(container) {
         blank = blank && (value == '');
     }
     return !blank;
-}
-
-function get_all_form_elements(container) {
-    var i;
-    var elements1 = container.getElementsByTagName('input');
-    var elements2 = container.getElementsByTagName('select');
-    var elements3 = container.getElementsByTagName('textarea');
-    var elements = [];
-    for (i = 0; i < elements1.length; i++) elements.push(elements1[i]);
-    for (i = 0; i < elements2.length; i++) elements.push(elements2[i]);
-    for (i = 0; i < elements3.length; i++) elements.push(elements3[i]);
-    return elements;
 }
 
 function assign_tick_deletion_confirm(name) {

@@ -961,18 +961,17 @@ function receive_compiled_css(ajax_result_frame, file, win) {
 }
 
 function css_equation_helper(file_id, theme) {
-    cancel_bubbling(event);
-
     var url = 'themewizard_equation';
     url += '&theme=' + window.encodeURIComponent(theme);
     url += '&css_equation=' + window.encodeURIComponent(document.getElementById('css_equation_' + file_id).value);
 
     var result = load_snippet(url);
 
-    if (result == '' || result.indexOf('<html') != -1)
+    if (result == '' || result.indexOf('<html') != -1) {
         window.fauxmodal_alert('{!ERROR_OCCURRED;}');
-    else
+    } else {
         document.getElementById('css_result_' + file_id).value = result;
+    }
 
     return false;
 }

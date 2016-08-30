@@ -1,7 +1,19 @@
 (function ($, Composr) {
     'use strict';
 
+    Composr.behaviors.coreNotificatons = {
+        initialize: {
+            attach: function (context) {
+                Composr.initializeTemplates(context, 'core_notifications');
+            }
+        }
+    };
+
     Composr.templates.coreNotificatons = {
+        notificationPoller: function (options) {
+            notification_poller_init(options.timestamp);
+        },
+
         blockTopNotifications: function blockTopNotifications(options) {
             window.max_notifications_to_show = options.max;
         },
@@ -34,14 +46,6 @@
                         }
                     });
                 }
-            }
-        }
-    };
-
-    Composr.behaviors.coreNotificatons = {
-        initialize: {
-            attach: function (context) {
-                Composr.initializeTemplates(context, 'core_notifications');
             }
         }
     };

@@ -1,4 +1,46 @@
 (function ($, Composr) {
+    Composr.behaviors.coreMenus = {
+        initialize: {
+            attach: function (context) {
+                Composr.initializeTemplates(context, 'core_menus');
+            }
+        }
+    };
+
+    var Menu = Composr.View.extend({
+        initialize: function (viewOptions, options) {
+            Composr.View.prototype.initialize.apply(this, arguments);
+        }
+    });
+
+    // Templates:
+    // MENU_dropdown
+    // - MENU_BRANCH_dropdown
+    var DropdownMenu = Menu.extend({
+        initialize: function (viewOptions, options) {
+            Menu.prototype.initialize.apply(this, arguments);
+
+            this.menuId = 'r_' + Composr.filters.identifier(options.menu) + '_d';
+
+            if (Composr.isTruthy(options.javascriptHighlighting)) {
+                menu_active_selection(this.menuId);
+            }
+        },
+
+        events: {
+            'mouseout .js-ul-menu': 'desetActiveMenu'
+        },
+
+        desetActiveMenu: function () {
+            deset_active_menu();
+        }
+    });
+
+    Composr.views.coreMenus = {
+        Menu: Menu,
+        DropdownMenu: DropdownMenu
+    };
+
     Composr.templates.coreMenus = {
         menuEditorScreen: function menuEditorScreen(options) {
             window.all_menus = options.allMenus;
@@ -38,14 +80,6 @@
             }
 
             new tree_list(options.name, ajax_url, '', '', false, null, false, true);
-        }
-    };
-
-    Composr.behaviors.coreMenus = {
-        initialize: {
-            attach: function (context) {
-                Composr.initializeTemplates(context, 'core_menus');
-            }
         }
     };
 })(window.jQuery || window.Zepto, Composr);
