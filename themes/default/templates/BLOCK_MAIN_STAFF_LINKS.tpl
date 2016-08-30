@@ -24,7 +24,7 @@
 				<div class="constrain_field"><label for="staff_links_edit" class="accessibility_hidden">{!EDIT}</label><textarea cols="100" rows="30" id="staff_links_edit" name="staff_links_edit" class="wide_field">{+START,LOOP,UNFORMATTED_LINKS}{LINKS*}&#10;&#10;{+END}</textarea></div>
 
 				<div class="buttons_group">
-					<input data-disable-on-click="{}" onclick="{+START,IF,{$HAS_PRIVILEGE,comcode_dangerous}} return ajax_form_submit__admin__headless(event,this.form,'{BLOCK_NAME;~*}','{MAP;~*}');{+END}" class="button_screen_item buttons__save" type="submit" value="{!SAVE}" />
+					<input data-disable-on-click="1" onclick="{+START,IF,{$HAS_PRIVILEGE,comcode_dangerous}} return ajax_form_submit__admin__headless(event,this.form,'{BLOCK_NAME;~*}','{MAP;~*}');{+END}" class="button_screen_item buttons__save" type="submit" value="{!SAVE}" />
 				</div>
 			</form>
 

@@ -30,7 +30,7 @@
 				<input class="button_screen buttons__back" type="button" onclick="history.back(); return false;" value="{!GO_BACK}" />
 			{+END}
 
-			<input data-disable-on-click="{}" class="button_screen buttons__proceed" type="submit" value="{!PROCEED}" />
+			<input data-disable-on-click="1" class="button_screen buttons__proceed" type="submit" value="{!PROCEED}" />
 		</p>
 	</form>
 </div>

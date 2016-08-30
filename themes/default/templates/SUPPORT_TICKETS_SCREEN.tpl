@@ -26,7 +26,7 @@
 				</div>
 
 				<div class="inline spaced">
-					<input data-disable-on-click="{}" class="button_screen_item buttons__filter" type="submit" value="{!FILTER}" />
+					<input data-disable-on-click="1" class="button_screen_item buttons__filter" type="submit" value="{!FILTER}" />
 				</div>
 			</div>
 		</form>

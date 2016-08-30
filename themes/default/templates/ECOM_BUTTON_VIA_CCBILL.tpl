@@ -20,6 +20,6 @@
 	<input type="hidden" name="customIsSubscription" value="0" /> {$,Custom variable}
 
 	<div class="purchase_button">
-		<input data-disable-on-click="{}" type="submit" value="{!MAKE_PAYMENT}" />
+		<input data-disable-on-click="1" type="submit" value="{!MAKE_PAYMENT}" />
 	</div>
 </form>

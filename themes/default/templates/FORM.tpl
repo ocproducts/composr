@@ -23,7 +23,7 @@
 			<div class="skip_step_button_wrap">
 				<input type="hidden" id="{SKIPPABLE*}" name="{SKIPPABLE*}" value="0" />
 				<div>
-					<input onclick="document.getElementById('{SKIPPABLE;*}').value='1';" data-disable-on-click="{}" tabindex="151" class="button_screen_item buttons__skip" type="submit" value="{!SKIP}" />
+					<input onclick="document.getElementById('{SKIPPABLE;*}').value='1';" data-disable-on-click="1" tabindex="151" class="button_screen_item buttons__skip" type="submit" value="{!SKIP}" />
 				</div>
 			</div>
 		{+END}

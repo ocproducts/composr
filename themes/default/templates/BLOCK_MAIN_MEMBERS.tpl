@@ -15,7 +15,7 @@
 
 				<div class="search_fields float_surrounder">
 					<div class="search_button">
-						<input data-disable-on-click="{}" accesskey="u" class="button_screen_item buttons__filter" type="submit" value="{!FILTER}{+START,IF_NON_EMPTY,{FILTERS_ROW_B}} &#9745;{+END}" />
+						<input data-disable-on-click="1" accesskey="u" class="button_screen_item buttons__filter" type="submit" value="{!FILTER}{+START,IF_NON_EMPTY,{FILTERS_ROW_B}} &#9745;{+END}" />
 					</div>
 
 					{+START,LOOP,{FILTERS_ROW_A}}

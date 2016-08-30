@@ -2,10 +2,9 @@
 <img class="upload_field_image_preview" src="{$ENSURE_PROTOCOL_SUITABILITY*,{EXISTING_URL}}" title="" alt="{!EXISTING;^}" />
 {+END}
 
-<div class="upload_field inline_block">
+<div class="upload_field inline_block" data-view-core-form-interfaces="FromScreenInputUpload" data-view-args="{+START,PARAMS_JSON,NAME,PLUPLOAD,FILTER,SYNDICATION_JSON}{_*}{+END}">
 	<div class="vertical_alignment inline_block">
-		<input tabindex="{TABINDEX*}" class="input_upload{REQUIRED*}" type="file" id="{NAME*}" name="{NAME*}"
-			   {+START,IF,{PLUPLOAD}}{+START,IF,{$NOT,{$IS_HTTPAUTH_LOGIN}}} data-cms-call="preinit_file_input" data-cms-call-args='["upload", "{NAME*#}", null, null, "{FILTER*#}"]' {+END}{+END}/>
+		<input tabindex="{TABINDEX*}" class="input_upload{REQUIRED*}" type="file" id="{NAME*}" name="{NAME*}" />
 		{+START,IF,{EDIT}}
 			<p class="upload_field_msg inline_block">
 				<input type="checkbox" id="i_{NAME*}_unlink" name="{NAME*}_unlink" value="1" />
@@ -19,12 +18,9 @@
 				</label>
 			</p>
 		{+END}
-
-		{+START,IF,{$AND,{$JS_ON},{$BROWSER_MATCHES,gecko}}}<input class="button_micro buttons__clear" type="button" id="clear_button_{NAME*}" value="{!CLEAR}" onclick="var x=document.getElementById('{NAME;*}'); x.value=''; if (typeof x.fakeonchange!='undefined' && x.fakeonchange) x.fakeonchange(event); return false;" title="{!CLEAR}{+START,IF_PASSED,PRETTY_NAME}: {PRETTY_NAME*}{+END}" />{+END}
 	</div>
 
 	{+START,IF_PASSED,SYNDICATION_JSON}
-		<div id="{NAME*}_syndication_options" class="syndication_options"
-			 data-cms-call="show_upload_syndication_options" data-cms-call-args='["{NAME*#}", "{SYNDICATION_JSON*#}"]'></div>
+		<div id="{NAME*}_syndication_options" class="syndication_options"></div>
 	{+END}
 </div>

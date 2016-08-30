@@ -34,7 +34,7 @@
 					<!-- List put in here -->
 				</div>
 
-				<p><input data-disable-on-click="{}" onclick="return add_template();" class="button_screen_item menu___generic_admin__add_one" type="submit" title="{!ADD_TEMPLATE_HELP}" value="{!ADD_TEMPLATE}" /></p>
+				<p><input data-disable-on-click="1" onclick="return add_template();" class="button_screen_item menu___generic_admin__add_one" type="submit" title="{!ADD_TEMPLATE_HELP}" value="{!ADD_TEMPLATE}" /></p>
 			</div>
 		</div>
 

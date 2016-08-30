@@ -55,14 +55,14 @@
 							</select>
 
 							{+START,IF,{SIMPLISTIC}}
-								<input data-disable-on-click="{}" class="button_micro feedback__rate" type="submit" value="{!RATE}" />
+								<input data-disable-on-click="1" class="button_micro feedback__rate" type="submit" value="{!RATE}" />
 							{+END}
 						</div>
 					</div>
 				{+END}
 				{+START,IF,{$NOT,{SIMPLISTIC}}}
 					<div>
-						<input data-disable-on-click="{}" class="button_micro feedback__rate" type="submit" value="{!RATE}" />
+						<input data-disable-on-click="1" class="button_micro feedback__rate" type="submit" value="{!RATE}" />
 					</div>
 				{+END}
 			</form>

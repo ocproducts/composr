@@ -20,7 +20,7 @@
 				</div>
 
 				<div class="buttons_group">
-					<input data-disable-on-click="{}" onclick="{+START,IF,{$HAS_PRIVILEGE,comcode_dangerous}} return ajax_form_submit__admin__headless(event,this.form,'{BLOCK_NAME;~*}','{MAP;~*}');{+END}" class="button_screen_item buttons__save" type="submit" onmouseover="this.form.disable_size_change=true;" onmouseout="this.form.disable_size_change=false;" value="{!SAVE}" />
+					<input data-disable-on-click="1" onclick="{+START,IF,{$HAS_PRIVILEGE,comcode_dangerous}} return ajax_form_submit__admin__headless(event,this.form,'{BLOCK_NAME;~*}','{MAP;~*}');{+END}" class="button_screen_item buttons__save" type="submit" onmouseover="this.form.disable_size_change=true;" onmouseout="this.form.disable_size_change=false;" value="{!SAVE}" />
 				</div>
 			</form>
 		</div>

@@ -77,6 +77,6 @@
 	</table></div>
 
 	<p class="proceed_button">
-		<input accesskey="u" data-disable-on-click="{}" class="button_screen buttons__save" type="submit" value="{!SAVE}" />
+		<input accesskey="u" data-disable-on-click="1" class="button_screen buttons__save" type="submit" value="{!SAVE}" />
 	</p>
 </form>

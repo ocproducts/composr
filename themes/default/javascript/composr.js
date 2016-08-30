@@ -2,48 +2,48 @@
     'use strict';
 
     var Composr = {
-        $PAGE_TITLE: data.PAGE_TITLE,
-        $MEMBER: data.MEMBER,
-        $IS_GUEST: data.IS_GUEST,
-        $USERNAME: data.USERNAME,
-        $AVATAR: data.AVATAR,
-        $MEMBER_EMAIL: data.MEMBER_EMAIL,
-        $PHOTO: data.PHOTO,
-        $MEMBER_PROFILE_URL: data.MEMBER_PROFILE_URL,
-        $FROM_TIMESTAMP: data.FROM_TIMESTAMP,
-        $MOBILE: data.MOBILE,
-        $THEME: data.THEME,
-        $JS_ON: data.JS_ON,
-        $LANG: data.LANG,
-        $BROWSER_UA: data.BROWSER_UA,
-        $OS: data.OS,
-        $DEV_MODE: data.DEV_MODE,
-        $USER_AGENT: data.USER_AGENT,
-        $IP_ADDRESS: data.IP_ADDRESS,
-        $TIMEZONE: data.TIMEZONE,
-        $HTTP_STATUS_CODE: data.HTTP_STATUS_CODE,
-        $CHARSET: data.CHARSET,
-        $KEEP: data.KEEP,
-        $SITE_NAME: data.SITE_NAME,
-        $COPYRIGHT: data.COPYRIGHT,
-        $DOMAIN: data.DOMAIN,
-        $FORUM_BASE_URL: data.FORUM_BASE_URL,
-        $BASE_URL: data.BASE_URL,
-        $BRAND_NAME: data.BRAND_NAME,
-        $IS_STAFF: data.IS_STAFF,
-        $IS_ADMIN: data.IS_ADMIN,
-        $VERSION: data.VERSION,
-        $COOKIE_PATH: data.COOKIE_PATH,
-        $COOKIE_DOMAIN: data.COOKIE_DOMAIN,
-        $IS_HTTPAUTH_LOGIN: data.IS_HTTPAUTH_LOGIN,
-        $IS_A_COOKIE_LOGIN: data.IS_A_COOKIE_LOGIN,
-        $SESSION_COOKIE_NAME: data.SESSION_COOKIE_NAME,
-        $GROUP_ID: data.GROUP_ID,
-        $CONFIG_OPTION: data.CONFIG_OPTION,
-        $VALUE_OPTION: data.VALUE_OPTION,
-        // Just some additonal stuff, not a tempcode symbol
-        $EXTRA: data.EXTRA
-    },
+            $PAGE_TITLE: data.PAGE_TITLE,
+            $MEMBER: data.MEMBER,
+            $IS_GUEST: data.IS_GUEST,
+            $USERNAME: data.USERNAME,
+            $AVATAR: data.AVATAR,
+            $MEMBER_EMAIL: data.MEMBER_EMAIL,
+            $PHOTO: data.PHOTO,
+            $MEMBER_PROFILE_URL: data.MEMBER_PROFILE_URL,
+            $FROM_TIMESTAMP: data.FROM_TIMESTAMP,
+            $MOBILE: data.MOBILE,
+            $THEME: data.THEME,
+            $JS_ON: data.JS_ON,
+            $LANG: data.LANG,
+            $BROWSER_UA: data.BROWSER_UA,
+            $OS: data.OS,
+            $DEV_MODE: data.DEV_MODE,
+            $USER_AGENT: data.USER_AGENT,
+            $IP_ADDRESS: data.IP_ADDRESS,
+            $TIMEZONE: data.TIMEZONE,
+            $HTTP_STATUS_CODE: data.HTTP_STATUS_CODE,
+            $CHARSET: data.CHARSET,
+            $KEEP: data.KEEP,
+            $SITE_NAME: data.SITE_NAME,
+            $COPYRIGHT: data.COPYRIGHT,
+            $DOMAIN: data.DOMAIN,
+            $FORUM_BASE_URL: data.FORUM_BASE_URL,
+            $BASE_URL: data.BASE_URL,
+            $BRAND_NAME: data.BRAND_NAME,
+            $IS_STAFF: data.IS_STAFF,
+            $IS_ADMIN: data.IS_ADMIN,
+            $VERSION: data.VERSION,
+            $COOKIE_PATH: data.COOKIE_PATH,
+            $COOKIE_DOMAIN: data.COOKIE_DOMAIN,
+            $IS_HTTPAUTH_LOGIN: data.IS_HTTPAUTH_LOGIN,
+            $IS_A_COOKIE_LOGIN: data.IS_A_COOKIE_LOGIN,
+            $SESSION_COOKIE_NAME: data.SESSION_COOKIE_NAME,
+            $GROUP_ID: data.GROUP_ID,
+            $CONFIG_OPTION: data.CONFIG_OPTION,
+            $VALUE_OPTION: data.VALUE_OPTION,
+            // Just some additonal stuff, not a tempcode symbol
+            $EXTRA: data.EXTRA
+        },
         elProto   = HTMLElement.prototype,
         elMatches = Function.bind.call(Function.call, elProto.matches || elProto.webkitMatchesSelector || elProto.msMatchesSelector),
         arrProto  = Array.prototype,
@@ -81,7 +81,6 @@
         Composr.queryString = new window.URLSearchParams(window.location.search);
     });
 
-
     Composr.ready = Promise.all([loadPolyfillsPromise, domReadyPromise]);
     Composr.loadWindow = Promise.all([Composr.ready, windowLoadPromise]);
 
@@ -99,7 +98,7 @@
         var i = 0, len = arguments.length;
 
         while (i < len) {
-            if (Composr.isTruthy(arguments[i])) {
+            if (!Composr.isFalsy(arguments[i])) {
                 return false;
             }
             i++;
@@ -113,16 +112,7 @@
     };
 
     Composr.areTruthy = function areTruthy() {
-        var i = 0, len = arguments.length;
-
-        while (i < len) {
-            if (Composr.isFalsy(arguments[i])) {
-                return false;
-            }
-            i++;
-        }
-
-        return true;
+        return !Composr.areFalsy.apply(this, arguments);
     };
 
     Composr.areDefined = function areDefined() {
@@ -157,20 +147,7 @@
     Composr.assert = Composr.$DEV_MODE ? console.assert : noop;
     Composr.error  = Composr.$DEV_MODE ? console.error : noop;
 
-    /**
-     * Helper to rethrow errors asynchronously.
-     *
-     * This way Errors bubbles up outside of the original callstack, making it
-     * easier to debug errors in the browser.
-     *
-     * @param Error|string error
-     *   The error to be thrown.
-     */
-    Composr.throwError = function (error) {
-        setTimeout(function () { throw error; }, 0);
-    };
-
-    var composrSettings = {};
+    Composr.settings = {};
 
     /* Addons will add "behaviors" under this object */
     Composr.behaviors = {};
@@ -179,59 +156,45 @@
         var addons = Composr.behaviors, i, behaviors, j;
 
         context = context || document;
-        settings = settings || composrSettings;
+        settings = settings || Composr.settings;
 
         // Execute all of them.
         for (i in addons) {
-            if (!addons.hasOwnProperty(i) || (typeof addons[i] !== 'object')) {
-                continue;
-            }
+            if (addons.hasOwnProperty(i) && (typeof addons[i] === 'object')) {
+                behaviors = addons[i];
 
-            behaviors = addons[i];
-
-            for (j in behaviors) {
-                if (!behaviors.hasOwnProperty(j) || (typeof behaviors[j] !== 'object')) {
-                    continue;
-                }
-
-                if (typeof behaviors[j].attach === 'function') {
-                    // Don't stop the execution of behaviors in case of an error.
-                    //try {
-                    behaviors[j].attach(context, settings);
-                    //} catch (e) {
-                    //    Composr.throwError(e + ' while attaching behavior ' + j + ' of addon ' + i);
-                    //}
+                for (j in behaviors) {
+                    if (behaviors.hasOwnProperty(j) && (typeof behaviors[j] === 'object') && (typeof behaviors[j].attach === 'function')) {
+                        try {
+                            behaviors[j].attach(context, settings);
+                        } catch (e) {
+                            Composr.error('Error while attaching behavior ' + j + ' of addon ' + i, e);
+                        }
+                    }
                 }
             }
         }
     };
 
     Composr.detachBehaviors = function (context, settings, trigger) {
-        var addons = Composr.behaviors, i, behaviors;
+        var addons = Composr.behaviors, i, behaviors, j;
 
         context = context || document;
-        settings = settings || composrSettings;
+        settings = settings || Composr.settings;
         trigger = trigger || 'unload';
 
         // Execute all of them.
         for (i in addons) {
-            if (!addons.hasOwnProperty(i) || (typeof addons[i] !== 'object')) {
-                continue;
-            }
+            if (addons.hasOwnProperty(i) && (typeof addons[i] === 'object')) {
+                behaviors = addons[i];
 
-            behaviors = addons[i];
-
-            for (var j in behaviors) {
-                if (!behaviors.hasOwnProperty(j) || (typeof behaviors[j] !== 'object')) {
-                    continue;
-                }
-
-                if (typeof behaviors[j].detach === 'function') {
-                    // Don't stop the execution of behaviors in case of an error.
-                    try {
-                        behaviors[j].detach(context, settings, trigger);
-                    } catch (e) {
-                        Composr.throwError(e);
+                for (j in behaviors) {
+                    if (behaviors.hasOwnProperty(j) && (typeof behaviors[j] === 'object') && (typeof behaviors[j].detach === 'function')) {
+                        try {
+                            behaviors[j].detach(context, settings, trigger);
+                        } catch (e) {
+                            Composr.error(e);
+                        }
                     }
                 }
             }
@@ -276,6 +239,9 @@
     };
 
     Composr.View = Backbone.View.extend({
+        /**
+         * @type Array
+         */
         options: null,
         initialize: function (viewOptions, options) {
             this.options = options;
@@ -573,6 +539,156 @@
         return (!el || Composr.dom.matches(el, selector)) ? el : closest(el.parentElement, selector);
     };
 
+    Composr.parseDataObject = function (data, defaults) {
+        data = data.trim();
+        defaults = defaults || {};
+
+        if (data && (data !== '{}') && (data !== '1')) {
+            try {
+                data = JSON.parse(data);
+
+                if (data && (typeof data === 'object')) {
+                    return _.defaults(data, defaults);
+                }
+            } catch (ex) {
+                Composr.error('Composr.parseDataArgs(), error parsing JSON: ' + data, ex);
+                return defaults;
+            }
+        }
+
+        return defaults;
+    };
+
+    Composr.widgets = {};
+
+    Composr.ui = {};
+
+    Composr.ui.disableButton = function (btn, permanent) {
+        if (permanent === undefined) {
+            permanent = false;
+        }
+
+        if (btn.form && (btn.form.target === '_blank')) {
+            return;
+        }
+
+        window.setTimeout(function () {
+            btn.style.cursor = 'wait';
+            btn.disabled = true;
+            btn.under_timer = true;
+        }, 20);
+
+        if (!permanent) {
+            window.setTimeout(enable, 5000);
+            window.addEventListener('pagehide', enable);
+        }
+
+        function enable() {
+            if (btn.under_timer) {
+                btn.disabled = false;
+                btn.under_timer = false;
+                btn.style.cursor = 'default';
+            }
+        }
+    };
+
+    Composr.ui.disableFormButtons = function (form, permanent) {
+        var buttons = form.querySelectorAll('input[type="submit"], input[type="button"], input[type="image"], button');
+
+        forEach(buttons, function (btn) {
+            Composr.ui.disableButton(btn, permanent);
+        });
+    };
+
+    // This is kinda dumb, ported from checking.js, originally named as disable_buttons_just_clicked()
+    Composr.ui.disableSubmitAndPreviewButtons = function (permanent) {
+        // [accesskey="u"] identifies submit button, [accesskey="p"] identifies preview button
+        var buttons = document.querySelectorAll('input[accesskey="u"], button[accesskey="u"], input[accesskey="p"], button[accesskey="p"]');
+
+        if (permanent === undefined) {
+            permanent = false;
+        }
+
+        forEach(buttons, function (btn) {
+            if (!btn.disabled && !btn.under_timer) {// We do not want to interfere with other code potentially operating
+                Composr.ui.disableButton(btn, permanent);
+            }
+        });
+    };
+
+    var Global = Composr.View.extend({
+        initialize: function initialize(viewOptions, options) {
+            this.options = options || {};
+        },
+
+        events: {
+            // Prevent url change for clicks on anchor tags with a placeholder href
+            'click a[href$="#!"]': function (e) {
+                e.preventDefault();
+            },
+
+            'click [data-disable-on-click]': function (e) {
+                Composr.ui.disableButton(e.target);
+            },
+
+            'submit form[data-disable-buttons-on-submit]': function (e) {
+                Composr.ui.disableFormButtons(e.target);
+            },
+
+            'click [data-open-as-overlay]': function (e) {
+                var el = e.target, args,
+                    url = (el.href === undefined) ? el.action : el.href;
+
+                if (Composr.isFalsy(Composr.$CONFIG_OPTION.jsOverlays)) {
+                    return;
+                }
+
+                if (/:\/\/(.[^/]+)/.exec(url)[1] !== window.location.hostname) {
+                    return; // Cannot overlay, different domain
+                }
+
+                e.preventDefault();
+
+                args = Composr.parseDataObject(el.dataset.openAsOverlay);
+                args.el = el;
+
+                openLinkAsOverlay(args);
+            },
+
+            // Lightboxes
+            'click a[rel*="lightbox"]': function (e) {
+                var el = e.target;
+
+                if (Composr.isFalsy(Composr.$CONFIG_OPTION.jsOverlays)) {
+                    return;
+                }
+
+                e.preventDefault();
+
+                if (el.querySelectorAll('img').length > 0 || el.querySelectorAll('video').length > 0) {
+                    open_image_into_lightbox(el);
+                } else {
+                    openLinkAsOverlay({el: el})
+                }
+            }
+        }
+    });
+
+    Composr.views.core = {
+        Global: Global
+    };
+
+    Composr.ready.then(function () {
+        var global = new Composr.views.core.Global({
+            el: document.documentElement
+        });
+
+        Composr.attachBehaviors();
+    });
+
+    window.Composr = Composr;
+
+
     Composr.behaviors.composr = {
         initialize: {
             attach: function (context) {
@@ -723,155 +839,6 @@
             }
         }
     };
-
-    Composr.parseDataObject = function (data, defaults) {
-        data = data.trim();
-        defaults = defaults || {};
-
-        if (data && (data !== '{}') && (data !== '1')) {
-            try {
-                data = JSON.parse(data);
-
-                if (data && (typeof data === 'object')) {
-                    return _.defaults(data, defaults);
-                }
-            } catch (ex) {
-                Composr.error('Composr.parseDataArgs(), error parsing JSON: ' + data, ex);
-                return defaults;
-            }
-        }
-
-        return defaults;
-    };
-
-    Composr.widgets = {};
-
-    Composr.ui = {};
-
-    Composr.ui.disableButton = function (btn, permanent) {
-        if (permanent === undefined) {
-            permanent = false;
-        }
-
-        if (btn.form && (btn.form.target === '_blank')) {
-            return;
-        }
-
-        window.setTimeout(function () {
-            btn.style.cursor = 'wait';
-            btn.disabled = true;
-            btn.under_timer = true;
-        }, 20);
-
-        if (!permanent) {
-            window.setTimeout(enable, 5000);
-            window.addEventListener('pagehide', enable);
-        }
-
-        function enable() {
-            if (btn.under_timer) {
-                btn.disabled = false;
-                btn.under_timer = false;
-                btn.style.cursor = 'default';
-            }
-        }
-    };
-
-    Composr.ui.disableFormButtons = function (form, permanent) {
-        var buttons = form.querySelectorAll('input[type="submit"], input[type="button"], input[type="image"], button');
-
-        forEach(buttons, function (btn) {
-            Composr.ui.disableButton(btn, permanent);
-        });
-    };
-
-    // This is kinda dumb, ported from checking.js, originally named as disable_buttons_just_clicked()
-    Composr.ui.disableSubmitAndPreviewButtons = function (permanent) {
-        // [accesskey="u"] identifies submit button, [accesskey="p"] identifies preview button
-        var buttons = document.querySelectorAll('input[accesskey="u"], button[accesskey="u"], input[accesskey="p"], button[accesskey="p"]');
-
-        if (permanent === undefined) {
-            permanent = false;
-        }
-
-        forEach(buttons, function (btn) {
-            if (!btn.disabled && !btn.under_timer) {// We do not want to interfere with other code potentially operating
-                Composr.ui.disableButton(btn, permanent);
-            }
-        });
-    };
-
-    var Global = Composr.View.extend({
-        initialize: function initialize(viewOptions, options) {
-            this.options = options || {};
-        },
-
-        events: {
-            // Prevent url change for clicks on anchor tags with a placeholder href
-            'click a[href$="#!"]': function (e) {
-                e.preventDefault();
-            },
-
-            'click [data-disable-on-click]': function (e) {
-                Composr.ui.disableButton(e.target);
-            },
-
-            'submit form[data-disable-buttons-on-submit]': function (e) {
-                Composr.ui.disableFormButtons(e.target);
-            },
-
-            'click [data-open-as-overlay]': function (e) {
-                var el = e.target, args,
-                    url = (el.href === undefined) ? el.action : el.href;
-
-                if (Composr.isFalsy(Composr.$CONFIG_OPTION.jsOverlays)) {
-                    return;
-                }
-
-                if (/:\/\/(.[^/]+)/.exec(url)[1] !== window.location.hostname) {
-                    return; // Cannot overlay, different domain
-                }
-
-                e.preventDefault();
-
-                args = Composr.parseDataObject(el.dataset.openAsOverlay);
-                args.el = el;
-
-                openLinkAsOverlay(args);
-            },
-
-            // Lightboxes
-            'click a[rel*="lightbox"]': function (e) {
-                var el = e.target;
-
-                if (Composr.isFalsy(Composr.$CONFIG_OPTION.jsOverlays)) {
-                    return;
-                }
-
-                e.preventDefault();
-
-                if (el.querySelectorAll('img').length > 0 || el.querySelectorAll('video').length > 0) {
-                    open_image_into_lightbox(el);
-                } else {
-                    openLinkAsOverlay({el: el})
-                }
-            }
-        }
-    });
-
-    Composr.views.core = {
-        Global: Global
-    };
-
-    Composr.ready.then(function () {
-        var global = new Composr.views.core.Global({
-            el: document.documentElement
-        });
-
-        Composr.attachBehaviors();
-    });
-
-    window.Composr = Composr;
 
     function loadPolyfills(callback) {
         var scriptsToLoad = 0,

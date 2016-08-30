@@ -32,7 +32,7 @@
 			<div class="skip_step_button_wrap{+START,IF,{$IN_STR,{FIELDS},required_star}} skip_step_button_wrap_with_req_note{+END}">
 				<div>
 					<input type="hidden" id="{SKIPPABLE*}" name="{SKIPPABLE*}" value="0" />
-					<input onclick="document.getElementById('{SKIPPABLE;*}').value='1';" data-disable-on-click="{}" tabindex="151" class="button_screen_item buttons__skip" type="submit" value="{!SKIP}" />
+					<input onclick="document.getElementById('{SKIPPABLE;*}').value='1';" data-disable-on-click="1" tabindex="151" class="button_screen_item buttons__skip" type="submit" value="{!SKIP}" />
 				</div>
 			</div>
 		{+END}

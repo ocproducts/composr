@@ -2,9 +2,28 @@
     Composr.behaviors.coreFormInterfaces = {
         initialize: {
             attach: function (context) {
+                Composr.initializeViews(context, 'core_form_interfaces');
                 Composr.initializeTemplates(context, 'core_form_interfaces');
             }
         }
+    };
+
+    var FromScreenInputUpload = Composr.View.extend({
+        initialize: function (v, options) {
+            Composr.View.prototype.initialize.apply(this, arguments);
+
+            if (Composr.isTruthy(options.plupload) && Composr.isFalsy(Composr.$IS_HTTPAUTH_LOGIN)) {
+                preinit_file_input('upload', options.name, null, null, options.filter);
+            }
+
+            if (options.syndicationJson !== undefined) {
+                show_upload_syndication_options(options.name, options.syndicationJson);
+            }
+        }
+    });
+
+    Composr.views.coreFormInterfaces = {
+        FromScreenInputUpload: FromScreenInputUpload
     };
 
     Composr.templates.coreFormInterfaces = {
@@ -199,7 +218,7 @@
         },
 
         formScreenFieldsSet: function (options) {
-            standard_alternate_fields_within(options.setName, Composr.isTruthy(options.required));
+            standard_alternate_fields_within(options.setName, Composr.isTruthy());
         },
 
         previewScript: function previewScript(options) {

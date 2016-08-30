@@ -469,7 +469,7 @@
 {$,Buttons}
 
 <div class="float_surrounder buttons_group">
-	<input data-disable-on-click="{}" class="button_screen buttons__save js-btn-save-content" type="submit" value="{!SAVE}" />
+	<input data-disable-on-click="1" class="button_screen buttons__save js-btn-save-content" type="submit" value="{!SAVE}" />
 
 	{+START,SET,preview_buttons}
 		{+START,IF_PASSED,LIVE_PREVIEW_URL}

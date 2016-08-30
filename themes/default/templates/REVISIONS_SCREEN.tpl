@@ -38,7 +38,7 @@
 			</div>
 
 			<div class="revisions_filter_item_button">
-				<input data-disable-on-click="{}" accesskey="u" class="button_screen_item buttons__filter" type="submit" value="{!FILTER}" />
+				<input data-disable-on-click="1" accesskey="u" class="button_screen_item buttons__filter" type="submit" value="{!FILTER}" />
 			</div>
 		</form>
 	</div></div>
