@@ -43,13 +43,16 @@
             // Just some additonal stuff, not a tempcode symbol
             $EXTRA: data.EXTRA
         },
+        objProto  = Object.prototype,
+        toString  = Function.bind.call(Function.call, objProto.toString),
         elProto   = HTMLElement.prototype,
         elMatches = Function.bind.call(Function.call, elProto.matches || elProto.webkitMatchesSelector || elProto.msMatchesSelector),
         arrProto  = Array.prototype,
         toArray   = Function.bind.call(Function.call, arrProto.slice),
         forEach   = Function.bind.call(Function.call, arrProto.forEach),
         defined   = function (v) { return v !== undefined; },
-        noop      = function () {},
+        isA = function (obj, name) { return toString(obj) === '[object ' + name + ']'; },
+        noop = function () {},
 
         loadPolyfillsPromise = new Promise(function (resolve) {
             loadPolyfills(resolve);
@@ -150,6 +153,7 @@
     };
 
     Composr.log    = Composr.$DEV_MODE ? console.log : noop;
+    Composr.dir    = Composr.$DEV_MODE ? console.dir : noop;
     Composr.assert = Composr.$DEV_MODE ? console.assert : noop;
     Composr.error  = Composr.$DEV_MODE ? console.error : noop;
 
@@ -161,8 +165,8 @@
     Composr.attachBehaviors = function (context, settings) {
         var addons = Composr.behaviors, i, behaviors, j;
 
-        if (!(context instanceof HTMLDocument) && !(context instanceof HTMLElement)) {
-            throw new Error('Invalid argument type: \'context\' must be of type HTMLDocument or HTMLElement');
+        if (!context || (typeof context !== 'object') || ((context.nodeType !== Node.DOCUMENT_NODE) && (context.nodeType !== Node.ELEMENT_NODE))) {
+            throw new Error(Composr.str("Invalid argument type: 'context' must be of type HTMLDocument or HTMLElement, '{0}' supplied.", context));
         }
 
         settings = settings || Composr.settings;
@@ -174,11 +178,11 @@
 
                 for (j in behaviors) {
                     if (behaviors.hasOwnProperty(j) && (typeof behaviors[j] === 'object') && (typeof behaviors[j].attach === 'function')) {
-                        try {
+                        //try {
                             behaviors[j].attach(context, settings);
-                        } catch (e) {
-                            Composr.error('Error while attaching behavior \'' + j + '\' of addon \'' + i + '\'', e);
-                        }
+                        //} catch (e) {
+                        //    Composr.error('Error while attaching behavior \'' + j + '\' of addon \'' + i + '\'', e);
+                        //}
                     }
                 }
             }
@@ -188,8 +192,8 @@
     Composr.detachBehaviors = function (context, settings, trigger) {
         var addons = Composr.behaviors, i, behaviors, j;
 
-        if (!(context instanceof HTMLDocument) && !(context instanceof HTMLElement)) {
-            throw new Error('Invalid argument type: \'context\' must be of type HTMLDocument or HTMLElement');
+        if (!context || (typeof context !== 'object') || ((context.nodeType !== Node.DOCUMENT_NODE) && (context.nodeType !== Node.ELEMENT_NODE))) {
+            throw new Error(Composr.str("Invalid argument type: 'context' must be of type HTMLDocument or HTMLElement, '{0}' supplied.", context));
         }
 
         settings = settings || Composr.settings;
@@ -219,7 +223,7 @@
     Composr.initializeTemplates = function initializeTemplates(context, addonName) {
         addonName = addonName.replace(/_/g, '-');
 
-        forEach(context.querySelectorAll('[data-tpl-' + addonName + ']'), function (el) {
+        Composr.dom.$$$(context, '[data-tpl-' + addonName + ']').forEach(function (el) {
             var funcName = el.dataset[Composr.utils.camelCase('tpl-' + addonName)].trim(),
                 addonArgs = '',
                 args = [];
@@ -264,7 +268,7 @@
         var View, addonNameKibab = addonName.replace(/_/g, '-'),
             addonNameCamelCase = Composr.utils.camelCase(addonName);
 
-        forEach(context.querySelectorAll('[data-view-' + addonNameKibab + ']'), function (el) {
+        Composr.dom.$$$(context, '[data-view-' + addonNameKibab + ']').forEach(function (el) {
             var viewClasses = Composr.views[addonNameCamelCase],
                 viewClassName = el.dataset[Composr.utils.camelCase('view-' + addonNameKibab)].trim(),
                 options = Composr.parseDataObject(el.dataset.viewArgs);
@@ -538,7 +542,7 @@
 
     // Check if the given element matches selector
     Composr.dom.matches = function (el, selector) {
-        return (el instanceof HTMLElement) && elMatches(el, selector);
+        return _.isElement(el) && elMatches(el, selector);
     };
 
     // Get nearest parent (or itself) element matching selector

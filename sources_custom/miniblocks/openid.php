@@ -22,7 +22,7 @@ require_javascript('openid');
 $url = build_url(array('page' => ''), '');
 echo '
     <script>// <![CDATA[
-    $(function() {
+    window.addEventListener("load", function() {
       $("#openid").openid({
         img_path: "{{ MEDIA_URL }}img/openid/",
         txt: {

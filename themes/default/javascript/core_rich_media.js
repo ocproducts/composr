@@ -727,7 +727,7 @@ function big_tabs_init() {
 }
 
 function countdown(id, direction, tailing) {
-    var countdown = id instanceof HTMLElement ? id : document.getElementById(id);
+    var countdown = typeof id === 'object' ? id : document.getElementById(id);
     var inside = Composr.dom.html(countdown);
     var multiples = [];
     if (tailing >= 4) multiples.push(365);

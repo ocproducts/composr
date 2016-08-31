@@ -1017,7 +1017,7 @@ function find_if_children_set(container) {
 function assign_tick_deletion_confirm(name) {
     var el;
 
-    if (!name && (this instanceof HTMLElement)) {
+    if (!name && _.isElement(this)) {
         el = this;
     } else {
         el = document.getElementById(name);

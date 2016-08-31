@@ -379,8 +379,6 @@
 
         forumsEmbed: function () {
             var frame = this;
-            Composr.assert(frame.dataset.tplCore === 'forumsEmbed', 'Template core.forumsEmbed must not be called with a script tag.');
-
             window.setInterval(function() { resize_frame(frame.name); }, 500);
         },
 
@@ -436,7 +434,7 @@
         },
 
         loginScreen: function loginScreen() {
-            if ((typeof document.activeElement === 'undefined') || (document.activeElement !== document.getElementById('password'))) {
+            if ((document.activeElement === undefined) || (document.activeElement !== document.getElementById('password'))) {
                 try {
                     document.getElementById('login_username').focus();
                 } catch (e){}

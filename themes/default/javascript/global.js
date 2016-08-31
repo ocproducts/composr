@@ -944,7 +944,7 @@ function toggleable_tray_done(element, final_height, animate_dif, orig_overflow,
     trigger_resize(true);
 }
 function handle_tray_cookie_setting(id) {
-    if (!id && (this instanceof HTMLElement)){
+    if (!id && _.isElement(this)){
         id = this.id;
     } else {
         id = 'tray_' + id;
@@ -2170,10 +2170,6 @@ function setup_word_counter(post, count_element) {
 
 /* Set up a form to have its CAPTCHA checked upon submission using AJAX */
 function add_captcha_checking(form) {
-    if (!form && (this instanceof HTMLElement)) {
-        form = this;
-    }
-
     form.old_submit = form.onsubmit;
     form.onsubmit = function () {
         form.elements['submit_button'].disabled = true;
@@ -2195,10 +2191,6 @@ function add_captcha_checking(form) {
 
 /* Set it up so a form field is known and can be monitored for changes */
 function set_up_change_monitor(id) {
-    if (!id &&(this instanceof HTMLElement)) {
-        id = this;
-    }
-
     $(function () {
         var ch = (typeof id === 'string') ? document.getElementById(id) : id;
         if (ch) {

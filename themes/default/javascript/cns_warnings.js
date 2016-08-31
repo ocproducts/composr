@@ -1,4 +1,14 @@
 (function ($, Composr) {
+    'use strict';
+
+    Composr.behaviors.cnsWarnings = {
+        initialize: {
+            attach: function (context) {
+                Composr.initializeTemplates(context, 'cns_warnings');
+            }
+        }
+    };
+
     Composr.templates.cnsWarnings = {
         cnsSavedWarning: function cnsSavedWarning(options) {
             var id = Composr.templates.identifier(options.title);
@@ -34,14 +44,6 @@
 
                 return false;
             };
-        }
-    };
-
-    Composr.behaviors.cnsWarnings = {
-        initialize: {
-            attach: function (context) {
-                Composr.initializeTemplates(context, 'cns_warnings');
-            }
         }
     };
 })(window.jQuery || window.Zepto, Composr);
