@@ -29,9 +29,7 @@
                 });
             }
 
-            script_load_stuff();
-
-            if (options.isPreview === '1') {
+            if (Composr.isTruthy(options.isPreview)) {
                 disable_preview_scripts();
             }
         },

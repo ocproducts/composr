@@ -6,7 +6,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 -->
 
 {$,We deploy as HTML5 but code and conform strictly to XHTML5}
-<html lang="{$LCASE*,{$LANG}}" dir="{!dir}">
+<html lang="{$LCASE*,{$LANG}}" dir="{!dir}" data-view-core="Global">
 <head>
 	{+START,INCLUDE,HTML_HEAD}{+END}
 </head>
@@ -135,7 +135,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 
 		{$,Late messages happen if something went wrong during outputting everything (i.e. too late in the process to show the error in the normal place)}
 		{+START,IF_NON_EMPTY,{$LATE_MESSAGES}}
-			<div class="global_messages" id="global_messages_2" data-cms-call="merge_global_messages">
+			<div class="global_messages" id="global_messages_2">
 				{$LATE_MESSAGES}
 			</div>
 		{+END}

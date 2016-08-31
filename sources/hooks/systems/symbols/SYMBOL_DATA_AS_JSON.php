@@ -86,7 +86,9 @@ class Hook_symbol_SYMBOL_DATA_AS_JSON
             'googleAnalytics'   => get_option('google_analytics'),
             'longGoogleCookies' => get_option('long_google_cookies'),
             'editarea'          => get_option('editarea'),
-            'enable_animations' => get_option('enable_animations'),
+            'enableAnimations'  => get_option('enable_animations'),
+            'detectJavascript'  => get_option('detect_javascript'),
+            'isOnTimezoneDetection' => get_option('is_on_timezone_detection'),
         ];
 
         $value['VALUE_OPTION'] = [

@@ -26,7 +26,7 @@
 function init__web_resources()
 {
     global $EARLY_SCRIPT_ORDER;
-    $EARLY_SCRIPT_ORDER = array('underscore', 'jquery', 'backbone', 'modernizr', 'composr');
+    $EARLY_SCRIPT_ORDER = array('underscore', 'jquery', 'backbone', 'modernizr', 'composr', 'global', 'core');
 }
 
 /**

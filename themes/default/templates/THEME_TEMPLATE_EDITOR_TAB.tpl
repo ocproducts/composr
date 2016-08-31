@@ -462,7 +462,7 @@
 
 	<label class="accessibility_hidden" for="e_{FILE_ID*}">{!TEMPLATE}</label>
 	<div class="constrain_field">
-		<textarea id="e_{FILE_ID*}" name="e_{FILE_ID*}" cols="70" rows="22" class="wide_field textarea_scroll js-ta-tpl-editor">{CONTENTS*}</textarea>
+		<textarea id="e_{FILE_ID*}" name="e_{FILE_ID*}" cols="70" rows="22" class="wide_field js-ta-tpl-editor" wrap="off">{CONTENTS*}</textarea>
 	</div>
 </div>
 

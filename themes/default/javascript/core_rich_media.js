@@ -110,7 +110,7 @@
                 window.num_attachments = options.numAttachments;
             }
 
-            if (options.simpleUi === '1') {
+            if (Composr.isTruthy(options.simpleUi)) {
                 window.num_attachments = 1;
 
                 Composr.loadWindow.then(function () {
@@ -779,15 +779,17 @@ function _create_faders(main) {
 }
 
 function _update_faders(main) {
-    var imgs = main.parentNode.getElementsByTagName('img');
+    var imgs = main.parentNode.getElementsByTagName('img'),
+        left = imgs[imgs.length - 2],
+        right = imgs[imgs.length - 1];
 
-    var left = imgs[imgs.length - 2];
-    var right = imgs[imgs.length - 1];
-
-    if (left.style.position == 'absolute') // Check it really is a fader (stops bugs in other areas making bigger weirdness)
+    if (left.style.position === 'absolute') {// Check it really is a fader (stops bugs in other areas making bigger weirdness)
         left.style.visibility = (main.scrollLeft == 0) ? 'hidden' : 'visible';
-    if (right.style.position == 'absolute') // Ditto
+    }
+
+    if (right.style.position === 'absolute'){// Ditto
         right.style.visibility = (main.scrollLeft + main.offsetWidth >= main.scrollWidth - 1) ? 'hidden' : 'visible';
+    }
 }
 
 function flip_page(to, pass_id, sections) {

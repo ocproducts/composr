@@ -1,7 +1,7 @@
 {$,This template is used for things like iframes used for previewing or for creating independent navigation areas in the site, or popups / overlays}
 <!DOCTYPE html>
 
-<html lang="{$LCASE*,{$LANG}}" dir="{!dir}">
+<html lang="{$LCASE*,{$LANG}}" dir="{!dir}" data-view-core="Global">
 	<head>
 		{+START,INCLUDE,HTML_HEAD}{+END}
 	</head>

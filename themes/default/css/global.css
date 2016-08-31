@@ -1054,9 +1054,6 @@ footer .global_minilinks a:hover, footer .global_minilinks .button_hyperlink:hov
 	width: 100%;
 }
 
-.textarea_scroll { /* Turns off word-wrapping for a textarea: this has to be done using JavaScript so that the invalid 'wrap' property isn't written into the XHTML */
-}
-
 .leave_native_tooltip { /* No automatic tooltips on this element */
 }
 
@@ -3166,6 +3163,23 @@ ul.buttons_group, ul.associated_links_block_group {
 .field_input_non_filled {
 	color: {$GET,unfilled_input_text} !important;
 }
+
+::placeholder { /* W3C */
+	color: {$GET,unfilled_input_text} !important;
+}
+
+::-webkit-input-placeholder { /* Webkit, Blink, Edge */
+	color: {$GET,unfilled_input_text} !important;
+}
+
+::-moz-placeholder { /* Firefox */
+	color: {$GET,unfilled_input_text} !important;
+}
+
+:-ms-input-placeholder { /* IE */
+	color: {$GET,unfilled_input_text} !important;
+}
+
 .field_input_filled {
 	color: {$GET,native_ui_foreground};
 }

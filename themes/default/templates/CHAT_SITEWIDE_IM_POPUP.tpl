@@ -1,6 +1,6 @@
 {CONTENT}
 
-<form class="chat_sound_effects_checkbox inline" title="{!SOUND_EFFECTS}" action="index.php" method="post" autocomplete="off" data-cms-call="prepare_chat_sounds">
+<form class="chat_sound_effects_checkbox inline" title="{!SOUND_EFFECTS}" action="index.php" method="post" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<p>

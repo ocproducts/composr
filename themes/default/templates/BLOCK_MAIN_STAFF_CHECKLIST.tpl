@@ -1,6 +1,6 @@
 {$REQUIRE_JAVASCRIPT,staff}
 {$REQUIRE_JAVASCRIPT,core_adminzone_dashboard}
-<section id="tray_{!CHECK_LIST|}" class="box box___block_main_staff_checklist" data-tpl-core-adminzone-dashboard="blockMainStaffChecklist" {+START,IF,{$JS_ON}} data-cms-call="handle_tray_cookie_setting"{+END}>
+<section id="tray_{!CHECK_LIST|}" class="box box___block_main_staff_checklist" data-tpl-core-adminzone-dashboard="blockMainStaffChecklist" {+START,IF,{$JS_ON}}data-cms-call="handle_tray_cookie_setting"{+END}>
 	<h3 class="toggleable_tray_title">
 		<a href="#!" onclick="set_task_hiding(false); return false;" id="checklist_show_all_link" class="top_left_toggleicon" title="{!SHOW_ALL}: {!CHECK_LIST}">{!SHOW_ALL}</a>
 		<a href="#!" onclick="set_task_hiding(true); return false;" id="checklist_hide_done_link" class="top_left_toggleicon">{!HIDE_DONE}</a>

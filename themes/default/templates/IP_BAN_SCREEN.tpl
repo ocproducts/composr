@@ -1,3 +1,4 @@
+<div data-tpl-core="ipBanScreen">
 {TITLE}
 
 {+START,INCLUDE,HANDLE_CONFLICT_RESOLUTION}{+END}
@@ -15,20 +16,21 @@
 
 	<p class="lonely_label"><label for="bans">{!BANNED_ADDRESSES}:</label></p>
 	<div class="constrain_field">
-		<textarea cols="30" rows="14" class="wide_field textarea_scroll" id="bans" name="bans" data-cms-call="manage_scroll_height" {+START,IF,{$NOT,{$MOBILE}}} onkeyup="manage_scroll_height(this);"{+END}>{BANS*}</textarea>
+		<textarea cols="30" rows="14" class="wide_field" id="bans" name="bans" wrap="off">{BANS*}</textarea>
 	</div>
 
 	<p class="lonely_label"><label for="locked_bans">{!EXTERNALLY_BANNED_ADDRESSES}:</label></p>
 	<div class="constrain_field">
-		<textarea readonly="readonly" cols="30" rows="14" class="wide_field textarea_scroll" id="locked_bans" name="locked_bans">{LOCKED_BANS*}</textarea>
+		<textarea readonly="readonly" cols="30" rows="14" class="wide_field" id="locked_bans" name="locked_bans" wrap="off">{LOCKED_BANS*}</textarea>
 	</div>
 
 	<p class="lonely_label"><label for="unbannable">{!UNBANNABLE_IP_ADDRESSES}:</label></p>
 	<div class="constrain_field">
-		<textarea cols="30" rows="14" class="wide_field textarea_scroll" id="unbannable" name="unbannable">{UNBANNABLE*}</textarea>
+		<textarea cols="30" rows="14" class="wide_field" id="unbannable" name="unbannable" wrap="off">{UNBANNABLE*}</textarea>
 	</div>
 
 	<p class="proceed_button">
 		<input accesskey="u" data-disable-on-click="1" class="button_screen buttons__save" type="submit" value="{!SAVE}" />
 	</p>
 </form>
+</div>

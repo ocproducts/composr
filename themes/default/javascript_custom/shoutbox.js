@@ -17,7 +17,12 @@ function sb_chat_check_response(ajax_result_frame, ajax_result) {
         window.clearTimeout(window.sb_cc_timer);
         window.sb_cc_timer = null;
     }
-    window.sb_cc_timer = window.setTimeout("sb_chat_check(" + window.sb_last_message_id + ",-1);", 10000);
+    window.sb_cc_timer = window.setTimeout(function () {
+        var messageId = window.sb_last_message_id;
+        return function () {
+            sb_chat_check(messageId, -1)
+        }
+    }(), 10000);
 }
 
 

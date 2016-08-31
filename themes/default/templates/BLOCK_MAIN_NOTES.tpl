@@ -16,7 +16,7 @@
 
 				<div class="accessibility_hidden"><label for="n_block_{TITLE|}">{!NOTES}</label></div>
 				<div class="constrain_field">
-					<textarea onfocus="this.setAttribute('rows','23');" onblur="if (!this.form.disable_size_change) this.setAttribute('rows','10');" class="wide_field{+START,IF,{SCROLLS}} textarea_scroll{+END}" cols="80" id="n_block_{TITLE|}" rows="10" name="new">{CONTENTS*}</textarea>
+					<textarea onfocus="this.setAttribute('rows','23');" onblur="if (!this.form.disable_size_change) this.setAttribute('rows','10');" class="wide_field" cols="80" id="n_block_{TITLE|}" rows="10" name="new" {+START,IF,{SCROLLS}}wrap="off"{+END}>{CONTENTS*}</textarea>
 				</div>
 
 				<div class="buttons_group">

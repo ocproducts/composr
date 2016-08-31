@@ -317,7 +317,7 @@ function add_new_menu_item(parent_id, clickable_sections) {
     var template = document.getElementById('template').value;
 
     var before = document.getElementById(insert_before_id);
-    var new_id = Math.floor(Math.random() * 10000);
+    var new_id = 'm_' + Math.floor(Math.random() * 10000);
     var template2 = template.replace(/replace\_me\_with\_random/gi, new_id);
     var highest_order_element = document.getElementById('highest_order');
     var new_order = highest_order_element.value + 1;

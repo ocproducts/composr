@@ -1,6 +1,5 @@
 (function ($, data) {
     'use strict';
-
     var Composr = {
             $PAGE_TITLE: data.PAGE_TITLE,
             $MEMBER: data.MEMBER,
@@ -50,7 +49,6 @@
         toArray   = Function.bind.call(Function.call, arrProto.slice),
         forEach   = Function.bind.call(Function.call, arrProto.forEach),
         defined   = function (v) { return v !== undefined; },
-        undef     = function (v) { return v === undefined; },
         noop      = function () {},
 
         loadPolyfillsPromise = new Promise(function (resolve) {
@@ -83,6 +81,14 @@
 
     Composr.ready = Promise.all([loadPolyfillsPromise, domReadyPromise]);
     Composr.loadWindow = Promise.all([Composr.ready, windowLoadPromise]);
+
+    /* String interpolation */
+    Composr.str = function (format) {
+        var args = arrProto.slice.call(arguments, 1);
+        return format.replace(/\{(\d+)\}/g, function (match, number) {
+            return args[number] !== undefined ? args[number] : match;
+        });
+    };
 
     /* Generate url */
     Composr.url = function (path) {
@@ -155,7 +161,10 @@
     Composr.attachBehaviors = function (context, settings) {
         var addons = Composr.behaviors, i, behaviors, j;
 
-        context = context || document;
+        if (!(context instanceof HTMLDocument) && !(context instanceof HTMLElement)) {
+            throw new Error('Invalid argument type: \'context\' must be of type HTMLDocument or HTMLElement');
+        }
+
         settings = settings || Composr.settings;
 
         // Execute all of them.
@@ -168,7 +177,7 @@
                         try {
                             behaviors[j].attach(context, settings);
                         } catch (e) {
-                            Composr.error('Error while attaching behavior ' + j + ' of addon ' + i, e);
+                            Composr.error('Error while attaching behavior \'' + j + '\' of addon \'' + i + '\'', e);
                         }
                     }
                 }
@@ -179,7 +188,10 @@
     Composr.detachBehaviors = function (context, settings, trigger) {
         var addons = Composr.behaviors, i, behaviors, j;
 
-        context = context || document;
+        if (!(context instanceof HTMLDocument) && !(context instanceof HTMLElement)) {
+            throw new Error('Invalid argument type: \'context\' must be of type HTMLDocument or HTMLElement');
+        }
+
         settings = settings || Composr.settings;
         trigger = trigger || 'unload';
 
@@ -193,7 +205,7 @@
                         try {
                             behaviors[j].detach(context, settings, trigger);
                         } catch (e) {
-                            Composr.error(e);
+                            Composr.error('Error while detaching behavior \'' + j + '\' of addon \'' + i + '\'', e);
                         }
                     }
                 }
@@ -310,7 +322,7 @@
         return str.replace(/[\r\n]/g, '');
     };
 
-    Composr.filters.identifier = function (str) {
+    Composr.filters.id = Composr.filters.identifier = function (str) {
         var out, i, char, ascii, remap = {
             '[': '_opensquare_',
             ']': '_closesquare_',
@@ -361,11 +373,11 @@
     // Returns a random integer between min (inclusive) and max (inclusive)
     // Using Math.round() will give you a non-uniform distribution!
     Composr.utils.random = function random(min, max) {
-        if (typeof min === 'undefined') {
+        if (min === undefined) {
             min = 0;
         }
 
-        if (typeof max === 'undefined') {
+        if (max === undefined) {
             max = 4294967295;
         }
 
@@ -382,7 +394,7 @@
             .replace( /[^\w\s]/g, '')
             // Uppercases the first character in each group immediately following a space
             // (delimited by spaces)
-            .replace( / (.)/g, function($1) { return $1.toUpperCase(); })
+            .replace( / (.)/g, function ($1) { return $1.toUpperCase(); })
             // Removes spaces
             .replace( / /g, '' );
     };
@@ -455,7 +467,6 @@
     };
 
     Composr.dom.prependHtml = function (el, html) {
-        // Parser hint: .innerHTML okay
         var prevChildrenLength = el.children.length, newChildrenLength, i, stop;
 
         el.insertAdjacentHTML('afterbegin', html);
@@ -473,7 +484,6 @@
     };
 
     Composr.dom.appendHtml = function (el, html) {
-        // Parser hint: .innerHTML okay
         var startIndex = el.children.length, newChildrenLength, i;
 
         el.insertAdjacentHTML('beforeend', html);
@@ -527,7 +537,7 @@
     };
 
     // Check if the given element matches selector
-    Composr.dom.matches = function(el, selector) {
+    Composr.dom.matches = function (el, selector) {
         return (el instanceof HTMLElement) && elMatches(el, selector);
     };
 
@@ -537,10 +547,10 @@
     };
 
     Composr.parseDataObject = function (data, defaults) {
-        data = data.trim();
+        data = typeof data === 'string' ? data.trim() : '';
         defaults = defaults || {};
 
-        if (data && (data !== '{}') && (data !== '1')) {
+        if ((data !== '') && (data !== '{}') && (data !== '1')) {
             try {
                 data = JSON.parse(data);
 
@@ -615,229 +625,7 @@
 
     Composr.audio = {};
 
-    var Global = Composr.View.extend({
-        initialize: function initialize(viewOptions, options) {
-            this.options = options || {};
-        },
-
-        events: {
-            // Prevent url change for clicks on anchor tags with a placeholder href
-            'click a[href$="#!"]': function (e) {
-                e.preventDefault();
-            },
-
-            'click [data-disable-on-click]': function (e) {
-                Composr.ui.disableButton(e.target);
-            },
-
-            'submit form[data-disable-buttons-on-submit]': function (e) {
-                Composr.ui.disableFormButtons(e.target);
-            },
-
-            'click [data-open-as-overlay]': function (e) {
-                var el = e.target, args,
-                    url = (el.href === undefined) ? el.action : el.href;
-
-                if (Composr.isFalsy(Composr.$CONFIG_OPTION.jsOverlays)) {
-                    return;
-                }
-
-                if (/:\/\/(.[^/]+)/.exec(url)[1] !== window.location.hostname) {
-                    return; // Cannot overlay, different domain
-                }
-
-                e.preventDefault();
-
-                args = Composr.parseDataObject(el.dataset.openAsOverlay);
-                args.el = el;
-
-                openLinkAsOverlay(args);
-            },
-
-            // Lightboxes
-            'click a[rel*="lightbox"]': function (e) {
-                var el = e.target;
-
-                if (Composr.isFalsy(Composr.$CONFIG_OPTION.jsOverlays)) {
-                    return;
-                }
-
-                e.preventDefault();
-
-                if (el.querySelectorAll('img').length > 0 || el.querySelectorAll('video').length > 0) {
-                    open_image_into_lightbox(el);
-                } else {
-                    openLinkAsOverlay({el: el});
-                }
-            }
-        }
-    });
-
-    Composr.views.core = {
-        Global: Global
-    };
-
-    Composr.ready.then(function () {
-        var global = new Composr.views.core.Global({
-            el: document.documentElement
-        });
-
-        Composr.attachBehaviors();
-    });
-
     window.Composr = Composr;
-
-
-    Composr.behaviors.composr = {
-        initialize: {
-            attach: function (context) {
-            }
-        },
-
-        initializeAnchors: {
-            attach: function (context) {
-                var anchors = Composr.dom.$$$(context, 'a');
-
-                anchors.forEach(function (anchor) {
-                    if (Composr.isTruthy(Composr.$CONFIG_OPTION.jsOverlays)) {
-                        // Lightboxes
-                        if (anchor.rel && anchor.rel.match(/lightbox/)) {
-                            anchor.title = anchor.title.replace('{!LINK_NEW_WINDOW;}', '').trim();
-                        }
-
-                        // Convert <a> title attributes into Composr tooltips
-                        if (!anchor.classList.contains('no_tooltip')) {
-                            convert_tooltip(anchor);
-                        }
-                    }
-
-                    // Keep parameters need propagating
-                    if  (Composr.$VALUE_OPTION.jsKeepParams) {
-                        if (anchor.href && anchor.href.indexOf(Composr.$BASE_URL + '/') === 0) {
-                            anchor.href += keep_stub(!anchor.href.includes('?'), true, anchor.href);
-                        }
-                    }
-                });
-            }
-        },
-
-        initializeForms: {
-            attach: function (context) {
-                var forms = Composr.dom.$$$(context, 'form');
-
-                forms.forEach(function (form) {
-                    // HTML editor
-                    if (window.load_html_edit !== undefined) {
-                        load_html_edit(form);
-                    }
-
-                    // Remove tooltips from forms as they are for screenreader accessibility only
-                    form.title = '';
-
-                    // Convert a/img title attributes into Composr tooltips
-                    if (Composr.isTruthy(Composr.$CONFIG_OPTION.jsOverlays)) {
-                        // Convert title attributes into Composr tooltips
-                        var elements, j;
-                        elements = form.elements;
-
-                        for (j = 0; j < elements.length; j++) {
-                            if (elements[j].title !== undefined) {
-                                convert_tooltip(elements[j]);
-                            }
-                        }
-
-                        elements = form.querySelectorAll('input[type="image"][title]'); // JS DOM does not include type="image" ones in form.elements
-                        for (j = 0; j < elements.length; j++) {
-                            convert_tooltip(elements[j]);
-                        }
-                    }
-
-                    if (Composr.isTruthy(Composr.$VALUE_OPTION.jsKeepParams)) {
-                        /* Keep parameters need propagating */
-                        if (form.action && form.action.indexOf(Composr.$BASE_URL + '/') === 0) {
-                            form.action += keep_stub(form.action.indexOf('?') === -1, true, form.action);
-                        }
-                    }
-                });
-            }
-        },
-
-        // Convert img title attributes into Composr tooltips
-        imageTooltips: {
-            attach: function (context) {
-                if (Composr.isFalsy(Composr.$CONFIG_OPTION.jsOverlays)) {
-                    return;
-                }
-
-                Composr.dom.$$$(context, 'img:not(.activate_rich_semantic_tooltip)').forEach(function (img) {
-                    convert_tooltip(img);
-                });
-            }
-        },
-
-        // Calls a global function, optionally with arguments. Inside the function scope, "this" will be the element calling that function.
-        // @TODO: To be killed
-        functionCalls: {
-            attach: function (context) {
-                var els = Composr.dom.$$$(context, '[data-cms-call]');
-
-                els.forEach(function (el) {
-                    var funcName = el.dataset.cmsCall.trim(),
-                        cmsCallArgs = typeof el.dataset.cmsCallArgs === 'string' ? el.dataset.cmsCallArgs.trim() : '',
-                        args = [], _args;
-
-                    if (cmsCallArgs !== '') {
-                        try {
-                            _args = JSON.parse(el.dataset.cmsCallArgs);
-                        } catch (e) {
-                            Composr.throwError(e);
-                        }
-
-                        if (_args) {
-                            args = _args;
-                        }
-
-                        if (!Array.isArray(args)) {
-                            args = [args];
-                        }
-                    }
-
-                    var func = window[funcName];
-
-                    if (typeof func === 'function') {
-                        func.apply(el, args);
-                    }
-                });
-            }
-        },
-
-        select2Plugin: {
-            attach: function (context) {
-                var els = Composr.dom.$$$(context, '[data-cms-select2]');
-
-                // Select2 plugin hook
-                els.forEach(function (el) {
-                    var options = {};
-
-                    if (el.dataset.cmsSelect2.trim()) {
-                        options = JSON.parse(el.dataset.cmsSelect2);
-                    }
-
-                    $(el).select2(options);
-                });
-            }
-        },
-
-        gdTextImages: {
-            attach: function (context) {
-                var els = Composr.dom.$$$(context, 'img[data-gd-text]');
-
-                els.forEach(function (img) {
-                    gdImageTransform(img);
-                });
-            }
-        }
-    };
 
     function loadPolyfills(callback) {
         var scriptsToLoad = 0,
@@ -881,114 +669,6 @@
 
         if (scriptsToLoad === 0) {
             callback();
-        }
-    }
-
-    function gdImageTransform(el) {
-        /* GD text maybe can do with transforms */
-        var span = document.createElement('span');
-        if (typeof span.style.writingMode === 'string') {// IE (which has buggy rotation space reservation, but a decent writing-mode instead)
-            el.style.display = 'none';
-            span.style.writingMode = 'tb-lr';
-            if (span.style.writingMode !== 'tb-lr') {
-                span.style.writingMode = 'vertical-lr';
-            }
-            span.style.webkitWritingMode = 'vertical-lr';
-            span.style.whiteSpace = 'nowrap';
-            span.textContent = el.alt;
-            el.parentNode.insertBefore(span, el);
-        } else if (typeof span.style.transform === 'string') {
-            el.style.display = 'none';
-            span.style.transform = 'rotate(90deg)';
-            span.style.transformOrigin = 'bottom left';
-            span.style.top = '-1em';
-            span.style.left = '0.5em';
-            span.style.position = 'relative';
-            span.style.display = 'inline-block';
-            span.style.whiteSpace = 'nowrap';
-            span.style.paddingRight = '0.5em';
-            el.parentNode.style.textAlign = 'left';
-            el.parentNode.style.width = '1em';
-            el.parentNode.style.overflow = 'hidden'; // Needed due to https://bugzilla.mozilla.org/show_bug.cgi?id=456497
-            el.parentNode.style.verticalAlign = 'top';
-            span.textContent = el.alt;
-
-            el.parentNode.insertBefore(span, el);
-            var span_proxy = span.cloneNode(true); // So we can measure width even with hidden tabs
-            span_proxy.style.position = 'absolute';
-            span_proxy.style.visibility = 'hidden';
-            document.body.appendChild(span_proxy);
-
-            window.setTimeout(function () {
-                var width = span_proxy.offsetWidth + 15;
-                span_proxy.parentNode.removeChild(span_proxy);
-                if (el.parentNode.nodeName === 'TH' || el.parentNode.nodeName === 'TD') {
-                    el.parentNode.style.height = width + 'px';
-                } else {
-                    el.parentNode.style.minHeight = width + 'px';
-                }
-            }, 0);
-        }
-    }
-
-    function openLinkAsOverlay(options) {
-        var defaults = {
-                width: '800',
-                height: 'auto',
-                target: '_top'
-            },
-            opts = _.defaults(options, defaults),
-            el = opts.el,
-            url = (el.href === undefined) ? el.action : el.href,
-            url_stripped = url.replace(/#.*/, ''),
-            new_url = url_stripped + ((url_stripped.indexOf('?') == -1) ? '?' : '&') + 'wide_high=1' + url.replace(/^[^\#]+/, '');
-
-        faux_open(new_url, null, 'width=' + opts.width + ';height=' + opts.height, opts.target);
-    }
-
-    function convert_tooltip(el) {
-        var title = el.title;
-
-        if ((title !== '') && !el.classList.contains('leave_native_tooltip') && !document.body.classList.contains('touch_enabled')) {
-            // Remove old tooltip
-            if (el.nodeName === 'IMG' && el.alt === '') {
-                el.alt = el.title;
-            }
-
-            el.title = '';
-
-            if ((!el.onmouseover) && ((el.childNodes.length == 0) || ((!el.childNodes[0].onmouseover) && ((!el.childNodes[0].title) || (el.childNodes[0].title == ''))))) {
-                // ^ Only put on new tooltip if there's nothing with a tooltip inside the element
-                if (el.textContent) {
-                    var prefix = el.textContent + ': ';
-                    if (title.substr(0, prefix.length) == prefix)
-                        title = title.substring(prefix.length, title.length);
-                    else if (title == el.textContent) return;
-                }
-
-                // Stop the tooltip code adding to these events, by defining our own (it will not overwrite existing events).
-                if (!el.onmouseout) el.onmouseout = function () {
-                };
-                if (!el.onmousemove) el.onmouseover = function () {
-                };
-
-                // And now define nice listeners for it all...
-                var win = get_main_cms_window(true);
-
-                el.cms_tooltip_title = escape_html(title);
-
-                el.addEventListener('mouseover', function (event) {
-                    win.activate_tooltip(el, event, el.cms_tooltip_title, 'auto', '', null, false, false, false, false, win);
-                });
-
-                el.addEventListener('mousemove', function (event) {
-                    win.reposition_tooltip(el, event, false, false, null, false, win);
-                });
-
-                el.addEventListener('mouseout', function (event) {
-                    win.deactivate_tooltip(el);
-                });
-            }
         }
     }
 })(window.jQuery || window.Zepto, JSON.parse(document.getElementsByName('composr-symbol-data')[0].content));

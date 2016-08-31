@@ -90,6 +90,10 @@
             }
         },
 
+        formScreenField_input: function (options) {
+            set_up_change_monitor('form_table_field_input__' + options.randomisedId);
+        },
+
         formScreenInputLine: function formScreenInputLine(options) {
             set_up_comcode_autocomplete(options.name, Composr.isTruthy(options.wysiwyg));
         },
@@ -173,6 +177,20 @@
             }
         },
 
+        formScreenInputTick: function (options) {
+            var el = this;
+
+            if (Composr.$JS_ON && (options.name === 'validated')) {
+                $(el).on('click', function () {
+                    el.previousSibling.className = 'validated_checkbox' + (el.checked ? ' checked' : '');
+                })
+            }
+
+            if (options.name === 'delete') {
+                assign_tick_deletion_confirm(options.name);
+            }
+        },
+
         formScreenInputCaptcha: function formScreenInputCaptcha(options, jsCaptcha) {
             if (jsCaptcha === '1') {
                 Composr.dom.html(document.getElementById('captcha_spot'), options.captcha);
@@ -219,6 +237,29 @@
 
         formScreenFieldsSet: function (options) {
             standard_alternate_fields_within(options.setName, Composr.isTruthy());
+        },
+
+        formScreenInputThemeImageEntry: function (options) {
+            initialise_input_theme_image_entry(Composr.filters.id(options.name), Composr.filters.id(options.code));
+        },
+
+        formScreenInputHuge_input: function (options) {
+            var textArea = document.getElementById(options.name);
+
+            set_up_change_monitor('form_table_field_input__' + options.randomisedId);
+            manage_scroll_height(textArea);
+
+            if (Composr.isFalsy(Composr.$MOBILE)) {
+                $(textArea).on('change keyup', function () {
+                    manage_scroll_height(textArea);
+                });
+            }
+        },
+
+        formScreenInputHugeList_input: function (options) {
+            if (Composr.isFalsy(options.inlineList)) {
+                set_up_change_monitor('form_table_field_input__' + options.randomisedId);
+            }
         },
 
         previewScript: function previewScript(options) {

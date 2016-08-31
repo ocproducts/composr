@@ -1,4 +1,59 @@
-"use strict";
+(function ($, Composr) {
+    'use strict';
+
+    Composr.behaviors.catalogues = {
+        initialize: {
+            attach: function (context) {
+                Composr.initializeViews(context, 'catalogues');
+                Composr.initializeTemplates(context, 'catalogues');
+            }
+        }
+    };
+
+    var CatalogueAddingScreen = Composr.View.extend({
+        initialize: function (v, options) {
+            Composr.View.prototype.initialize.apply(this, arguments);
+            catalogue_field_change_watching();
+        },
+
+        events: {
+            'submit .js-form-catalogue-add': 'submit'
+        },
+
+        submit: function (e) {
+            var form = e.target;
+            e.preventDefault();
+            modsecurity_workaround(form);
+        }
+    });
+
+    var CatalogueEditingScreen = Composr.View.extend({
+        initialize: function (v, options) {
+            Composr.View.prototype.initialize.apply(this, arguments);
+
+            catalogue_field_change_watching();
+        },
+
+        events: {
+            'submit .js-form-catalogue-edit': 'submit'
+        },
+
+        submit: function (e) {
+            var form = e.target;
+            e.preventDefault();
+            modsecurity_workaround(form);
+        }
+    });
+
+    Composr.views.catalogues = {
+        CatalogueAddingScreen: CatalogueAddingScreen,
+        CatalogueEditingScreen: CatalogueEditingScreen
+    };
+
+    Composr.templates.catalogues = {};
+
+})(window.jQuery || window.Zepto, Composr);
+
 
 function catalogue_field_change_watching() {
     // Find all our ordering fields

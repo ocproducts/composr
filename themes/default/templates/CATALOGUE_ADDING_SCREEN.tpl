@@ -1,10 +1,11 @@
+<div data-view-catalogues="CatalogueAddingScreen">
 {TITLE}
 
 {$PARAGRAPH,{TEXT}}
 
 {+START,INCLUDE,FORM_SCREEN_ARE_REQUIRED}{+END}
 
-<form title="{!PRIMARY_PAGE_FORM}" method="post" action="{URL*}" target="_top" id="catalogue_form" autocomplete="off" onsubmit="return modsecurity_workaround(this);" data-cms-call="catalogue_field_change_watching">
+<form title="{!PRIMARY_PAGE_FORM}" method="post" action="{URL*}" target="_top" id="catalogue_form" autocomplete="off" class="js-form-catalogue-add">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<div>
@@ -36,4 +37,4 @@
 		{+END}
 	</div>
 </form>
-
+</div>

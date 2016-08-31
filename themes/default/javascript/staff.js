@@ -1,7 +1,6 @@
 "use strict";
 
-function script_load_stuff_staff()
-{
+function script_load_stuff_staff() {
 	// Navigation loading screen
 	/*{+START,IF,{$CONFIG_OPTION,enable_animations}}*/
 		if ((window.parent==window) && ((window.location+'').indexOf('js_cache=1')==-1) && (((window.location+'').indexOf('/cms/')!=-1) || ((window.location+'').indexOf('/adminzone/')!=-1)))

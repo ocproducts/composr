@@ -7,7 +7,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 -->
 {$SET,bg_tpl_compilation,{$CONFIG_OPTION,background_template_compilation}}
 {$,We deploy as HTML5 but code and validate strictly to XHTML5}
-<html lang="{$LCASE*,{$LANG}}" dir="{!dir}" data-tpl-core="globalHtmlWrap" data-tpl-args="{+START,PARAMS_JSON,bg_tpl_compilation}{_*}{+END}">
+<html lang="{$LCASE*,{$LANG}}" dir="{!dir}" data-view-core="Global" data-tpl-core="globalHtmlWrap" data-tpl-args="{+START,PARAMS_JSON,bg_tpl_compilation}{_*}{+END}">
 <head>
 	{+START,INCLUDE,HTML_HEAD}{+END}
 </head>
@@ -126,7 +126,6 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 			<div class="global_messages" id="global_messages_2">
 				{$LATE_MESSAGES}
 			</div>
-			<script>merge_global_messages();</script>
 		{+END}
 	</div>
 

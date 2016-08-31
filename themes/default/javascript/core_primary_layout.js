@@ -11,7 +11,9 @@
 
     Composr.templates.corePrimaryLayout = {
         globalHtmlWrap: function () {
-            script_load_stuff();
+            if (document.getElementById('global_messages_2')) {
+                merge_global_messages();
+            }
 
             if (Composr.queryString.has('wide_print')) {
                 try { window.print(); } catch (ignore) {}

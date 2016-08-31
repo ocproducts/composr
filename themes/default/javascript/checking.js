@@ -801,14 +801,12 @@ function toggle_subordinate_fields(pic, help_id) {
     var new_state, new_state_2, new_state_3, i;
     var field_input = pic.parentNode.parentNode.parentNode;
 
-    var next = field_input.nextSibling;
+    var next = field_input.nextElementSibling;
     if (!next) return;
-    while (next.classList.contains('field_input')) // Sometimes divs or whatever may have errornously been put in a table by a programmer, skip past them
-    {
-        next = next.nextSibling;
+    while (next.classList.contains('field_input')) { // Sometimes divs or whatever may have errornously been put in a table by a programmer, skip past them
+        next = next.nextElementSibling;
         if (!next) break;
-        if (next.classList.contains('form_table_field_spacer')) // End of section, so no need to keep going
-        {
+        if (next.classList.contains('form_table_field_spacer')) {// End of section, so no need to keep going
             next = null;
             break;
         }
@@ -838,9 +836,8 @@ function toggle_subordinate_fields(pic, help_id) {
 
     // Hide everything until we hit end of section
     var count = 0;
-    while (field_input.nextSibling !== null) {
-        field_input = field_input.nextSibling;
-        if (typeof field_input.className == 'undefined') continue; // E.g. a #text node
+    while (field_input.nextElementSibling) {
+        field_input = field_input.nextElementSibling;
 
         /* Start of next section? */
         if (field_input.classList.contains('form_table_field_spacer')) break; // End of section
@@ -979,7 +976,7 @@ function disable_preview_scripts(under) {
     }
 }
 
-function _set_up_change_monitor(container, input, container2) {
+function _set_up_change_monitor(container, input) {
     var elements = [];
     if (input) {
         elements = [document.getElementById(input)];
@@ -987,16 +984,15 @@ function _set_up_change_monitor(container, input, container2) {
         elements = Composr.dom.$$(container, 'input, select, textarea');
     }
     if (elements.length > 300) return;
+
     for (var i = 0; i < elements.length; i++) {
         if (!elements[i]) continue;
         if ((typeof elements[0] == 'undefined') || (elements[0].id.indexOf('choose_') != -1)) continue;
         var func = function () {
             if (find_if_children_set(input ? document.getElementById(input).parentNode : container)) {
-                if (container.className.indexOf(' filledin') == -1) container.className += ' filledin';
-                if (container2) if (container2.className.indexOf(' filledin') == -1) container2.className += ' filledin';
+                container.classList.add('filledin');
             } else {
-                container.className = container.className.replace(/ filledin$/, '');
-                if (container2) container2.className = container2.className.replace(/ filledin$/, '');
+                container.classList.remove('filledin')
             }
         };
 

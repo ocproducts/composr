@@ -4,12 +4,12 @@
 {+START,IF_NON_EMPTY,{CONTENT}}
 	<a href="{$PAGE_LINK*,:sitemap}" class="mobile_menu_button" onclick="return mobile_menu_button('{MENU|;*}');"><img src="{$IMG*,mobile_menu}" alt="{!MENU}" /> <span>{!MENU}</span></a>
 
-	<nav class="menu_type__mobile" style="display: none" aria-expanded="false">
+	<nav class="menu_type__mobile" style="display: none" aria-expanded="false" data-view-core-menus="Menu" data-view-args="{+START,PARAMS_JSON,MENU,JAVASCRIPT_HIGHLIGHTING}{_*}{+END}">
 		<div class="mobile_search">
 			{$BLOCK,block=top_search,failsafe=1}
 		</div>
 
-		<ul class="nl" id="r_{MENU|*}_d"{+START,IF_PASSED_AND_TRUE,JAVASCRIPT_HIGHLIGHTING} data-cms-call="menu_active_selection"{+END}>
+		<ul class="nl" id="r_{MENU|*}_d">
 			{CONTENT}
 		</ul>
 	</nav>

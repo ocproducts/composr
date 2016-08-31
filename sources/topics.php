@@ -487,7 +487,6 @@ class CMS_Topic
         }
 
         require_javascript('ajax');
-        require_javascript('transitions');
 
         // Precache member/group details in one fell swoop
         if (get_forum_type() == 'cns') {

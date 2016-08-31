@@ -807,7 +807,6 @@ class Hook_addon_registry_core
             'themes/default/templates/JAVASCRIPT_NEED.tpl',
             'themes/default/templates/JAVASCRIPT_NEED_INLINE.tpl',
             'themes/default/javascript/staff.js',
-            'themes/default/javascript/transitions.js',
             'themes/default/javascript/tree_list.js',
             'themes/default/javascript/xsl_mopup.js',
             'themes/default/templates/BLOCK_SIDE_PERSONAL_STATS.tpl',

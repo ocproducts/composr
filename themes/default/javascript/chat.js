@@ -1,12 +1,24 @@
 (function ($, Composr) {
     'use strict';
+    var BlockSideShoutbox;
 
     Composr.behaviors.chat = {
         initialize: {
             attach: function (context) {
+                Composr.initializeViews(context, 'chat');
                 Composr.initializeTemplates(context, 'chat');
             }
         }
+    };
+
+    BlockSideShoutbox = Composr.View.extend({
+        initialize: function () {
+            Composr.View.prototype.initialize.apply(this, arguments);
+        }
+    });
+
+    Composr.views.chat = {
+        BlockSideShoutbox: BlockSideShoutbox
     };
 
     Composr.templates.chat = {
@@ -74,8 +86,6 @@
             }
 
             begin_im_chatting();
-
-            prepare_chat_sounds();
         },
 
         chatSitewideImPopup: function chatSitewideImPopup() {

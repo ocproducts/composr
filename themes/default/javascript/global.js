@@ -1,164 +1,6 @@
 /* Ideally this template should not be edited. See the note at the bottom of how JAVASCRIPT_CUSTOM_GLOBALS.tpl is appended to this template */
 'use strict';
 
-var forEach = Function.bind.call(Function.call, Array.prototype.forEach);
-
-/* Startup */
-if (window.page_loaded === undefined) {// To stop problem if JS file loaded more than once
-    window.page_loaded = false;
-    window.is_doing_a_drag = false;
-}
-
-function script_load_stuff() {
-    if (window.page_loaded) {
-        // Been called twice for some reason
-        return;
-    }
-
-    var i;
-
-    if ((window === window.top && !window.opener) || (window.name === '')) {
-        window.name = '_site_opener';
-    }
-
-    // Are we dealing with a touch device?
-    if (document.documentElement.ontouchstart !== undefined) {
-        document.body.className += ' touch_enabled';
-    }
-
-    // Dynamic images need preloading
-    var preloader = new Image();
-    var images = [];
-
-    images.push('{$IMG;,loading}'.replace(/^https?:/, window.location.protocol));
-    for (i = 0; i < images.length; i++) {
-        preloader.src = images[i];
-    }
-
-    // Textarea scroll support
-    handle_textarea_scrolling();
-
-    // Tell the server we have JavaScript, so do not degrade things for reasons of compatibility - plus also set other things the server would like to know
-    /*{+START,IF,{$CONFIG_OPTION,detect_javascript}}*/
-    set_cookie('js_on', 1, 120);
-    /*{+END}*/
-    if ((!window.parent) || (window.parent == window)) {
-        //set_cookie('screen_width',get_window_width(),120);	Violation of EU Cookie Guidelines :(
-
-        /*{+START,IF,{$CONFIG_OPTION,is_on_timezone_detection}}*/
-            set_cookie('client_time', new Date().toString(), 120);
-            set_cookie('client_time_ref', Composr.$FROM_TIMESTAMP, 120);
-        /*{+END}*/
-    }
-
-    // Column height balancing
-    var cols = document.getElementsByClassName('col_balance_height');
-    for (i = 0; i < cols.length; i++) {
-        var max = null;
-        for (var j = 0; j < cols.length; j++) {
-            if (cols[i].className == cols[j].className) {
-                var height = fcols[j].offsetHeight;
-                if (max === null || height > max) max = height;
-            }
-            cols[i].style.height = max + 'px';
-        }
-    }
-
-    // Mouse/keyboard listening
-    window.mouse_x = 0;
-    window.mouse_y = 0;
-    window.mouse_listener_enabled = false;
-    window.ctrl_pressed = false;
-    window.alt_pressed = false;
-    window.meta_pressed = false;
-    window.shift_pressed = false;
-
-    window.addEventListener('click', capture_click_key_states, true); // Workaround for a dodgy firefox extension
-
-    // So we can change base tag especially when on debug mode
-    if (document.getElementsByTagName('base')[0]) {
-        for (i = 0; i < document.links.length; i++) {
-            var href = document.links[i].getAttribute('href');
-            if ((href) && (href.substr(0, 1) == '#')) {
-                document.links[i].setAttribute('href', window.location.href.replace(/#.*$/, '') + href);
-            }
-        }
-    }
-
-    // Pinning to top if scroll out
-    var stuck_navs = document.querySelectorAll('.stuck_nav');
-    if (stuck_navs.length > 0) {
-        window.addEventListener('scroll', function () {
-            for (var i = 0; i < stuck_navs.length; i++) {
-                var stuck_nav = stuck_navs[i];
-                var stuck_nav_height = (typeof stuck_nav.real_height == 'undefined') ? Composr.dom.contentHeight(stuck_nav) : stuck_nav.real_height;
-                stuck_nav.real_height = stuck_nav_height;
-                var pos_y = find_pos_y(stuck_nav.parentNode, true);
-                var footer_height = document.getElementsByTagName('footer')[0].offsetHeight;
-                var panel_bottom = document.getElementById('panel_bottom');
-                if (panel_bottom) footer_height += panel_bottom.offsetHeight;
-                panel_bottom = document.getElementById('global_messages_2');
-                if (panel_bottom) footer_height += panel_bottom.offsetHeight;
-                if (stuck_nav_height < get_window_height() - footer_height) // If there's space in the window to make it "float" between header/footer
-                {
-                    var extra_height = (window.pageYOffset - pos_y);
-                    if (extra_height > 0) {
-                        var width = Composr.dom.contentWidth(stuck_nav);
-                        var height = Composr.dom.contentHeight(stuck_nav);
-                        var stuck_nav_width = Composr.dom.contentWidth(stuck_nav);
-                        if (!window.getComputedStyle(stuck_nav).getPropertyValue('width')) // May be centered or something, we should be careful
-                        {
-                            stuck_nav.parentNode.style.width = width + 'px';
-                        }
-                        stuck_nav.parentNode.style.height = height + 'px';
-                        stuck_nav.style.position = 'fixed';
-                        stuck_nav.style.top = '0px';
-                        stuck_nav.style.zIndex = '1000';
-                        stuck_nav.style.width = stuck_nav_width + 'px';
-                    } else {
-                        stuck_nav.parentNode.style.width = '';
-                        stuck_nav.parentNode.style.height = '';
-                        stuck_nav.style.position = '';
-                        stuck_nav.style.top = '';
-                        stuck_nav.style.width = '';
-                    }
-                } else {
-                    stuck_nav.parentNode.style.width = '';
-                    stuck_nav.parentNode.style.height = '';
-                    stuck_nav.style.position = '';
-                    stuck_nav.style.top = '';
-                    stuck_nav.style.width = '';
-                }
-            }
-        });
-    }
-
-    // Tooltips close on browser resize
-    window.addEventListener('resize', function () {
-        clear_out_tooltips(null);
-    });
-
-    // If back button pressed back from an AJAX-generated page variant we need to refresh page because we aren't doing full JS state management
-    window.has_js_state = false;
-    window.onpopstate = function (event) {
-        window.setTimeout(function () {
-            if (window.location.hash == '' && window.has_js_state) {
-                window.location.reload();
-            }
-        }, 0);
-    };
-
-    window.page_loaded = true;
-
-    Composr.loadWindow.then(function () { // When images etc have loaded
-        script_page_rendered();
-    });
-
-    if (Composr.$IS_STAFF && (typeof window.script_load_stuff_staff !== 'undefined')) {
-       script_load_stuff_staff()
-    }
-}
-
 function merge_global_messages() {
     var m1 = document.getElementById('global_messages');
     if (!m1) return;
@@ -265,6 +107,7 @@ function staff_unload_action() {
     window.addEventListener('keydown', undo_staff_unload_action);
     window.addEventListener('click', undo_staff_unload_action);
 }
+
 function undo_staff_unload_action() {
     var pre = document.body.querySelectorAll('.unload_action');
     for (var i = 0; i < pre.length; i++) {
@@ -287,6 +130,7 @@ function placeholder_focus(ob, def) {
     }
     ob.className = ob.className.replace('field_input_non_filled', 'field_input_filled');
 }
+
 function placeholder_blur(ob, def) {
     if (typeof def == 'undefined') def = ob.defaultValue;
     if (ob.value == '') {
@@ -366,26 +210,12 @@ function disable_button_just_clicked(input, permanent) {
 
 /* Making the height of a textarea match its contents */
 function manage_scroll_height(ob) {
-    if (!ob && (this instanceof HTMLElement)) {
-        ob = this;
-    }
-
     var height = ob.scrollHeight;
     if ((height > 5) && (sts(ob.style.height) < height) && (ob.offsetHeight < height)) {
         ob.style.height = height + 'px';
         ob.style.boxSizing = 'border-box';
         ob.style.overflowY = 'hidden';
         trigger_resize();
-    }
-}
-function handle_textarea_scrolling() {
-    var i;
-    var elements = document.getElementsByTagName('textarea');
-    for (i = 0; i < elements.length; i++) {
-        if (elements[i].className.indexOf('textarea_scroll') != -1) {
-            elements[i].setAttribute('wrap', 'off');
-            elements[i].style.overflow = 'auto'; // This just forces a redraw, might not be needed for its own property
-        }
     }
 }
 
@@ -1464,90 +1294,6 @@ function key_pressed(event, key, no_error_if_bad) {
     return ((typeof event.keyCode != 'undefined') && (event.keyCode == key)); // Whether we have a match to what was pressed
 }
 
-function menu_active_selection(menu_id) {
-    var menu_element;
-
-    if (!menu_id && (this instanceof HTMLElement)) {
-        menu_element = this;
-    } else {
-        menu_element = document.getElementById(menu_id);
-    }
-    var possibilities = [], is_selected, url;
-    if (menu_element.nodeName.toLowerCase() == 'select') {
-        for (var i = 0; i < menu_element.options.length; i++) {
-            url = menu_element.options[i].value;
-            is_selected = menu_item_is_selected(url);
-            if (is_selected !== null) {
-                possibilities.push({
-                    url: url,
-                    score: is_selected,
-                    element: menu_element.options[i]
-                });
-            }
-        }
-
-        if (possibilities.length > 0) {
-            possibilities.sort(function (a, b) {
-                return a.score - b.score
-            });
-
-            var min_score = possibilities[0].score;
-            for (var i = 0; i < possibilities.length; i++) {
-                if (possibilities[i].score != min_score) break;
-                possibilities[i].element.selected = true;
-            }
-        }
-    } else {
-        var menu_items = menu_element.querySelectorAll('.non_current'), a;
-        for (var i = 0; i < menu_items.length; i++) {
-            a = null;
-            for (var j = 0; j < menu_items[i].childNodes.length; j++) {
-                if (menu_items[i].childNodes[j].nodeName.toLowerCase() == 'a') {
-                    a = menu_items[i].childNodes[j];
-                }
-            }
-            if (a == null) {
-                continue;
-            }
-
-            url = a.href;
-            is_selected = menu_item_is_selected(url);
-            if (is_selected !== null) {
-                possibilities.push({
-                    url: url,
-                    score: is_selected,
-                    element: menu_items[i]
-                });
-            }
-        }
-
-        if (possibilities.length > 0) {
-            possibilities.sort(function (a, b) {
-                return a.score - b.score
-            })
-
-            var min_score = possibilities[0].score;
-            for (var i = 0; i < possibilities.length; i++) {
-                if (possibilities[i].score != min_score) break;
-                possibilities[i].element.className = possibilities[i].element.className.replace('non_current', 'current');
-            }
-        }
-    }
-}
-
-function menu_item_is_selected(url) {
-    var current_url = window.location.toString();
-    if (current_url == url) return 0;
-    var global_breadcrumbs = document.getElementById('global_breadcrumbs');
-    if (global_breadcrumbs) {
-        var links = global_breadcrumbs.getElementsByTagName('a');
-        for (var i = 0; i < links.length; i++) {
-            if (url == links[links.length - 1 - i].href) return i + 1;
-        }
-    }
-    return null;
-}
-
 function modsecurity_workaround(form) {
     var temp_form = document.createElement('form');
     temp_form.method = 'post';
@@ -1613,12 +1359,10 @@ function _modsecurity_workaround(data) {
 
 function clear_out_tooltips(tooltip_being_opened) {
     // Delete other tooltips, which due to browser bugs can get stuck
-    var existing_tooltips = document.body.querySelectorAll('.tooltip');
-    for (var i = 0; i < existing_tooltips.length; i++) {
-        if (existing_tooltips[i].id !== tooltip_being_opened) {
-            deactivate_tooltip(existing_tooltips[i].ac, existing_tooltips[i]);
-        }
-    }
+    var selector = tooltip_being_opened ? '.tooltip:not(#' + tooltip_being_opened + ')' : '.tooltip';
+    Composr.dom.$$(selector).forEach(function(el) {
+        deactivate_tooltip(el.ac, el);
+    });
 }
 
 function preactivate_rich_semantic_tooltip(ob, event, have_links) {
@@ -1663,7 +1407,7 @@ function activate_tooltip(ac, event, tooltip, width, pic, height, bottom, no_del
     if (typeof win == 'undefined') win = window;
     if (typeof have_links == 'undefined') have_links = false;
 
-    if (!page_loaded) return;
+    if (!window.page_loaded) return;
     if ((typeof tooltip != 'function') && (tooltip == '')) return;
 
     register_mouse_listener(event);
@@ -1731,7 +1475,7 @@ function activate_tooltip(ac, event, tooltip, width, pic, height, bottom, no_del
             tooltip_element.style.overflow = 'auto';
         }
         tooltip_element.style.position = 'absolute';
-        tooltip_element.id = Math.floor(Math.random() * 1000);
+        tooltip_element.id = 't_' + Math.floor(Math.random() * 1000);
         ac.tooltip_id = tooltip_element.id;
         reposition_tooltip(ac, event, bottom, true, tooltip_element, force_width);
         document.body.appendChild(tooltip_element);
@@ -1806,7 +1550,7 @@ function reposition_tooltip(ac, event, bottom, starting, tooltip_element, force_
             ac.parentNode.setAttribute('title', ''); // Do not want second tooltips that are not useful
     }
 
-    if (!page_loaded) return;
+    if (!window.page_loaded) return;
     if (!ac.tooltip_id) {
         if ((typeof ac.onmouseover != 'undefined') && (ac.onmouseover)) ac.onmouseover(event);
         return;
@@ -1992,12 +1736,10 @@ function mark_all_topics(event) {
 
 /* Set opacity, without interfering with the thumbnail timer */
 function set_opacity(element, fraction) {
-    if ((typeof element.fader_key != 'undefined') && (element.fader_key) && (typeof window.fade_transition_timers != 'undefined') && (window.fade_transition_timers[element.fader_key])) {
-        try // Cross-frame issues may cause error
-        {
+    if (element.fader_key && (window.fade_transition_timers !== undefined) && (window.fade_transition_timers[element.fader_key])) {
+        try { // Cross-frame issues may cause error
             window.clearTimeout(window.fade_transition_timers[element.fader_key]);
-        }
-        catch (e) {
+        } catch (e) {
         }
         window.fade_transition_timers[element.fader_key] = null;
     }
@@ -2458,9 +2200,9 @@ function set_up_change_monitor(id) {
     }
 
     $(function () {
-        if (typeof window._set_up_change_monitor !== 'undefined') {
-            var ch = (typeof id == 'string') ? document.getElementById(id) : id;
-            if (ch) _set_up_change_monitor(ch.parentNode);
+        var ch = (typeof id === 'string') ? document.getElementById(id) : id;
+        if (ch) {
+            _set_up_change_monitor(ch.parentNode);
         }
     });
 }
@@ -2487,23 +2229,6 @@ function play_self_audio_link(ob) {
     return false;
 }
 
-/* Used by MASS_SELECT_MARKER.tpl */
-function prepare_mass_select_marker(set, type, id, checked) {
-    var mass_delete_form = document.getElementById('mass_select_form__' + set);
-    if (!mass_delete_form) mass_delete_form = document.getElementById('mass_select_button').form;
-    var key = type + '_' + id;
-    var hidden;
-    if (typeof mass_delete_form.elements[key] == 'undefined') {
-        hidden = document.createElement('input');
-        hidden.type = 'hidden';
-        hidden.name = key;
-        mass_delete_form.appendChild(hidden);
-    } else {
-        hidden = mass_delete_form.elements[key];
-    }
-    hidden.value = checked ? '1' : '0';
-    mass_delete_form.style.display = 'block';
-}
 
 function confirm_delete(form, multi, callback) {
     if (typeof multi == 'undefined') multi = false;
@@ -2532,4 +2257,56 @@ function has_iframe_ownership(iframe) {
     }
     ;
     return has_ownership;
+}
+
+if (window.fade_transition_timers === undefined) {
+    window.fade_transition_timers = {};
+}
+
+function fade_transition(fade_element, dest_percent_opacity, period_in_msecs, increment, destroy_after) {
+    if (!fade_element) return;
+
+    /*{+START,IF,{$NOT,{$CONFIG_OPTION,enable_animations}}}*/
+    set_opacity(fade_element, dest_percent_opacity / 100.0);
+    return;
+    /*{+END}*/
+
+    if (typeof window.fade_transition_timers == 'undefined') return;
+    if (typeof fade_element.fader_key == 'undefined') fade_element.fader_key = fade_element.id + '_' + Math.round(Math.random() * 1000000);
+
+    if (window.fade_transition_timers[fade_element.fader_key]) {
+        window.clearTimeout(window.fade_transition_timers[fade_element.fader_key]);
+        window.fade_transition_timers[fade_element.fader_key] = null;
+    }
+
+    var again;
+
+    if (fade_element.style.opacity) {
+        var diff = (dest_percent_opacity / 100.0) - fade_element.style.opacity;
+        var direction = 1;
+        if (increment > 0) {
+            if (fade_element.style.opacity > dest_percent_opacity / 100.0) {
+                direction = -1;
+            }
+            var new_increment = Math.min(direction * diff, increment / 100.0);
+        } else {
+            if (fade_element.style.opacity < dest_percent_opacity / 100.0) {
+                direction = -1;
+            }
+            var new_increment = Math.max(direction * diff, increment / 100.0);
+        }
+        var temp = parseFloat(fade_element.style.opacity) + direction * new_increment;
+        if (temp < 0.0) temp = 0.0;
+        if (temp > 1.0) temp = 1.0;
+        fade_element.style.opacity = temp;
+        again = (Math.round(temp * 100) != Math.round(dest_percent_opacity));
+    } else again = true; // Opacity not set yet, need to call back in an event timer
+
+    if (again) {
+        window.fade_transition_timers[fade_element.fader_key] = window.setTimeout(function () {
+            fade_transition(fade_element, dest_percent_opacity, period_in_msecs, increment, destroy_after);
+        }, period_in_msecs);
+    } else {
+        if (destroy_after && fade_element.parentNode) fade_element.parentNode.removeChild(fade_element);
+    }
 }
