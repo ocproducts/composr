@@ -126,16 +126,16 @@ function try_to_simplify_iframe_form() {
     for (i = 0; i < textareas.length; i++) elements.push(textareas[i]);
     for (i = 0; i < elements.length; i++) {
         element = elements[i];
-        if (((element.nodeName.toLowerCase() == 'input') && (element.getAttribute('type') != 'hidden') && (element.getAttribute('type') != 'button') && (element.getAttribute('type') != 'image') && (element.getAttribute('type') != 'submit')) || (element.nodeName.toLowerCase() == 'select') || (element.nodeName.toLowerCase() == 'textarea')) {
+        if (((element.localName == 'input') && (element.getAttribute('type') != 'hidden') && (element.getAttribute('type') != 'button') && (element.getAttribute('type') != 'image') && (element.getAttribute('type') != 'submit')) || (element.localName == 'select') || (element.localName == 'textarea')) {
             found = element;
             count++;
         }
-        if (((element.nodeName.toLowerCase() == 'input') && ((element.getAttribute('type') == 'button') || (element.getAttribute('type') == 'image') || (element.getAttribute('type') == 'submit'))) || (element.nodeName.toLowerCase() == 'button')) {
+        if (((element.localName == 'input') && ((element.getAttribute('type') == 'button') || (element.getAttribute('type') == 'image') || (element.getAttribute('type') == 'submit'))) || (element.localName == 'button')) {
             foundButton = element;
         }
     }
 
-    if ((count == 1) && (found.nodeName.toLowerCase() == 'select')) {
+    if ((count == 1) && (found.localName == 'select')) {
         var iframe = document.getElementById('iframe_under');
         found.onchange = function () {
             if (iframe) {
@@ -277,7 +277,7 @@ function clever_find_value(form, element) {
     }
 
     var value;
-    switch (element.nodeName.toLowerCase()) {
+    switch (element.localName) {
         case 'textarea':
             value = (typeof window.get_textbox == 'undefined') ? element.value : get_textbox(element);
             break;
@@ -364,7 +364,7 @@ function check_field(the_element, the_form, for_preview) {
     }
 
     // Fix up bad characters
-    if ((browser_matches('ie')) && (the_element.value) && (the_element.nodeName.toLowerCase() != 'select')) {
+    if ((browser_matches('ie')) && (the_element.value) && (the_element.localName != 'select')) {
         var bad_word_chars = [8216, 8217, 8220, 8221];
         var fixed_word_chars = ['\'', '\'', '"', '"'];
         for (i = 0; i < bad_word_chars.length; i++) {
@@ -454,7 +454,7 @@ function check_form(the_form, for_preview) {
     for (j = 0; j < the_form.elements.length; j++) {
         if (!the_form.elements[j]) continue;
 
-        if (the_form.elements[j].nodeName.toLowerCase() == 'object') continue; // IE9 being weird!
+        if (the_form.elements[j].localName == 'object') continue; // IE9 being weird!
 
         the_element = the_form.elements[j];
 
@@ -543,7 +543,7 @@ function check_form(the_form, for_preview) {
 function standard_alternate_fields_within(set_name, something_required) {
     var form = document.getElementById('set_wrapper_' + set_name);
 
-    while (form.nodeName.toLowerCase() != 'form') {
+    while (form.localName != 'form') {
         form = form.parentNode;
     }
     var fields = form.elements[set_name];
@@ -819,7 +819,7 @@ function toggle_subordinate_fields(pic, help_id) {
             pic.srcset = ((pic.srcset.indexOf('themewizard.php') != -1) ? pic.srcset.replace('expand', 'contract') : '{$IMG;,2x/trays/contract} 2x').replace(/^https?:/, window.location.protocol);
         pic.setAttribute('alt', '{!CONTRACT;}');
         pic.setAttribute('title', '{!CONTRACT;}');
-        new_state = (field_input.nodeName.toLowerCase() == 'tr') ? 'table-row' : 'block';
+        new_state = (field_input.localName == 'tr') ? 'table-row' : 'block';
         new_state_2 = 'block';
         new_state_3 = '1px dashed';
     } else /* Contracting now */
@@ -856,7 +856,7 @@ function toggle_subordinate_fields(pic, help_id) {
     while (help !== null) {
         help.style.display = new_state_2;
         help = help.nextSibling;
-        if ((help) && (help.nodeName.toLowerCase() != 'p')) break;
+        if ((help) && (help.localName != 'p')) break;
     }
 
     trigger_resize();
@@ -1099,7 +1099,7 @@ function geolocate_address_fields() {
 
                                 field_name = labels[i].getAttribute('for');
                                 field = document.getElementById(field_name);
-                                if (field.nodeName.toLowerCase() == 'select') {
+                                if (field.localName == 'select') {
                                     field.value = parsed[j + 1];
                                     if (typeof $(field).select2 != 'undefined') {
                                         $(field).trigger('change');

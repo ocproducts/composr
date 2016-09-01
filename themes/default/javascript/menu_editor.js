@@ -401,7 +401,7 @@ function delete_menu_branch(ob) {
     var id = ob.id.substring(4, ob.id.length);
 
     if ((typeof window.showModalDialog != 'undefined'/*{+START,IF,{$CONFIG_OPTION,js_overlays}}*/ || true/*{+END}*/) || (ob.form.elements['branch_type_' + id] != 'page')) {
-        var choices = {buttons__cancel: '{!INPUTSYSTEM_CANCEL;^}', menu___generic_admin__delete: '{!DELETE;^}', buttons__move: '{!menus:MOVETO_MENU;^}'};
+        var choices = { buttons__cancel: '{!INPUTSYSTEM_CANCEL;^}', menu___generic_admin__delete: '{!DELETE;^}', buttons__move: '{!menus:MOVETO_MENU;^}' };
         generate_question_ui(
             '{!CONFIRM_DELETE_LINK_NICE;^,xxxx}'.replace('xxxx', document.getElementById('caption_' + id).value),
             choices,
@@ -426,7 +426,7 @@ function delete_menu_branch(ob) {
                                 for (var i = 0; i < ob.form.elements.length; i++) {
                                     name = ob.form.elements[i].name;
                                     if (name.substr(name.length - (('_' + id).length)) == '_' + id) {
-                                        if (ob.nodeName.toLowerCase() == 'select') {
+                                        if (ob.localName == 'select') {
                                             value = ob.form.elements[i].value;
                                             window.myValue = ob.options[ob.selectedIndex].value;
                                         } else {

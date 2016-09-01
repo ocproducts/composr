@@ -53,13 +53,13 @@ tree_list.prototype.getElementByIdHack = function (id, type, ob, serverid) {
     }
     if (!done) {
         for (i = 0; i < ob.childNodes.length; i++) {
-            if (ob.childNodes[i].nodeName.toLowerCase() == 'category') {
+            if (ob.childNodes[i].localName === 'category') {
                 test = this.getElementByIdHack(id, type, ob.childNodes[i], serverid);
                 if (test) {
                     return test;
                 }
             }
-            if ((ob.childNodes[i].nodeName.toLowerCase() == ((type == 'c') ? 'category' : 'entry')) && (ob.childNodes[i].getAttribute(serverid ? 'serverid' : 'id') == id))
+            if ((ob.childNodes[i].localName === ((type == 'c') ? 'category' : 'entry')) && (ob.childNodes[i].getAttribute(serverid ? 'serverid' : 'id') == id))
                 return ob.childNodes[i];
         }
     }
@@ -119,7 +119,7 @@ function attributes_full_fixup(xml) {
 
         if (node.nodeName == '#text') continue; // A text-node
 
-        if ((node.nodeName.toLowerCase() == 'category') || (node.nodeName.toLowerCase() == 'entry')) {
+        if ((node.localName === 'category') || (node.localName === 'entry')) {
             attributes_full_fixup(node);
         }
     }
@@ -200,7 +200,7 @@ tree_list.prototype.render_tree = function (xml, html, element) {
         node_self.object = this;
         colour = (node.getAttribute('selectable') == 'true' || this.all_nodes_selectable) ? 'native_ui_foreground' : 'locked_input_field';
         selectable = (node.getAttribute('selectable') == 'true' || this.all_nodes_selectable);
-        if (node.nodeName.toLowerCase() == 'category') {
+        if (node.localName === 'category') {
             // Render self
             node_self.className = (node.getAttribute('highlighted') == 'true') ? 'tree_list_highlighted' : 'tree_list_nonhighlighted';
             initially_expanded = (node.getAttribute('has_children') != 'true') || (node.getAttribute('expanded') == 'true');
@@ -460,7 +460,7 @@ function find_overlapping_selectable(mouse_y, element, node, name) // Find drop 
     }
 
     if (node.getAttribute('droppable') == element.cms_draggable) {
-        child_node_element = document.getElementById(name + 'tree_list_' + ((node.nodeName.toLowerCase() == 'category') ? 'c' : 'e') + '_' + node.getAttribute('id'));
+        child_node_element = document.getElementById(name + 'tree_list_' + ((node.localName === 'category') ? 'c' : 'e') + '_' + node.getAttribute('id'));
         y = find_pos_y(child_node_element.parentNode.parentNode, true);
         height = child_node_element.parentNode.parentNode.offsetHeight;
         if ((y < mouse_y) && (y + height > mouse_y)) {

@@ -637,14 +637,14 @@
 })(window.jQuery || window.Zepto, Composr);
 
 
-function accordion(e) {
-    var i, nodes = e.parentNode.parentNode.querySelectorAll('.toggleable_tray');
+function accordion(el) {
+    var i, nodes = el.parentNode.parentNode.querySelectorAll('.toggleable_tray');
     for (i = 0; i < nodes.length; i++) {
-        if ((nodes[i].parentNode != e) && (nodes[i].style.display != 'none') && (nodes[i].parentNode.className.indexOf('accordion_trayitem') != -1)) {
+        if ((nodes[i].parentNode !== el) && (nodes[i].style.display !== 'none') && nodes[i].parentNode.classList.contains('accordion_trayitem')) {
             toggleable_tray(nodes[i].parentNode, true);
         }
     }
-    return toggleable_tray(e);
+    return toggleable_tray(el);
 }
 
 // ======================

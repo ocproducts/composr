@@ -248,7 +248,7 @@ Composr.loadWindow.then(function () {
                                 }
                             } else {
                                 // Case where explicit break might be at end of list item, we need to not copy over shell of this list item
-                                if ((options.explicitBreaks) && ($cloneMe[0].nodeName.toLowerCase() == 'li') && ($cloneMe[0].childNodes.length == 1) && ($cloneMe[0].childNodes[0].nodeType == 3) && ($cloneMe[0].childNodes[0].nodeValue.replace(/\s*/g, '') == ''))
+                                if ((options.explicitBreaks) && ($cloneMe[0].localName === 'li') && ($cloneMe[0].childNodes.length == 1) && ($cloneMe[0].childNodes[0].nodeType == 3) && ($cloneMe[0].childNodes[0].nodeValue.replace(/\s*/g, '') == ''))
                                     $cloneMe.first().remove();
                             }
                             if ($clone.get(0).childNodes.length == 0) {

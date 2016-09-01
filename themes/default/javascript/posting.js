@@ -316,7 +316,7 @@ function do_input_comcode(field_name, tag) {
                 var comcode_element = ranges[0].startContainer.$;
                 do
                 {
-                    var matches = comcode_element.nodeName.toLowerCase().match(/^comcode-(\w+)/);
+                    var matches = comcode_element.localName.match(/^comcode-(\w+)/);
                     if (matches !== null) {
                         tag = matches[1];
 
@@ -852,7 +852,7 @@ function field_supports_autosave(element) {
 
     if (element.disabled) return false;
 
-    switch (element.nodeName.toLowerCase()) {
+    switch (element.localName) {
         case 'textarea':
         case 'select':
             return true;

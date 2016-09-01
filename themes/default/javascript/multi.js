@@ -48,7 +48,7 @@ function ensure_next_field(this_field) {
         var next_field_wrap = document.createElement('div');
         next_field_wrap.className = this_field.parentNode.className;
         var next_field;
-        if (this_field.nodeName.toLowerCase() == 'textarea') {
+        if (this_field.localName == 'textarea') {
             next_field = document.createElement('textarea');
         } else {
             next_field = document.createElement('input');
@@ -72,7 +72,7 @@ function ensure_next_field(this_field) {
         };
         if (this_field.onchange) next_field.onchange = this_field.onchange;
         if (typeof this_field.onrealchange != 'undefined') next_field.onchange = this_field.onrealchange;
-        if (this_field.nodeName.toLowerCase() != 'textarea') {
+        if (this_field.localName != 'textarea') {
             next_field.type = this_field.type;
         }
         next_field.value = '';

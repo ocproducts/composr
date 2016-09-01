@@ -160,7 +160,7 @@ function staff_actions_select(ob)
 {
 	var form;
 
-	var is_form_submit=(ob.nodeName.toLowerCase()=='form'); // If it already is a form submission, i.e. we don't need to trigger a form.submit() ourselves
+	var is_form_submit=(ob.localName==='form'); // If it already is a form submission, i.e. we don't need to trigger a form.submit() ourselves
 	if (is_form_submit)
 	{
 		form=ob;

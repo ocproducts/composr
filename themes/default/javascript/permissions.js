@@ -3,7 +3,7 @@
 function permissions_toggle(cell) {
     var index = cell.cellIndex;
     var table = cell.parentNode.parentNode;
-    if (table.nodeName.toLowerCase() != 'table') table = table.parentNode;
+    if (table.localName !== 'table') table = table.parentNode;
     var state_list = null, state_checkbox = null;
     for (var i = 0; i < table.rows.length; i++) {
         if (i >= 1) {

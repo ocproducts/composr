@@ -147,7 +147,7 @@ function check_field_for_blankness(field, event) {
     if (typeof field.nodeName == 'undefined') return true; // Also bizarre
 
     var value;
-    if (field.nodeName.toLowerCase() === 'select') {
+    if (field.localName === 'select') {
         value = field.options[field.selectedIndex].value;
     } else {
         value = field.value;
@@ -178,9 +178,9 @@ function check_field_for_blankness(field, event) {
 function disable_button_just_clicked(input, permanent) {
     if (typeof permanent == 'undefined') permanent = false;
 
-    if (input.nodeName.toLowerCase() == 'form') {
+    if (input.localName === 'form') {
         for (var i = 0; i < input.elements.length; i++) {
-            if ((input.elements[i].type == 'submit') || (input.elements[i].type == 'button') || (input.elements[i].type == 'image') || (input.elements[i].nodeName.toLowerCase() == 'button')) {
+            if ((input.elements[i].type == 'submit') || (input.elements[i].type == 'button') || (input.elements[i].type == 'image') || (input.elements[i].localName === 'button')) {
                 disable_button_just_clicked(input.elements[i]);
             }
         }
@@ -794,22 +794,25 @@ function set_tray_theme_image(pic, before_theme_img, after_theme_img, before1_ur
     }
 }
 function toggleable_tray(element, no_animate, cookie_id_name) {
-    if (typeof element == 'string') element = document.getElementById(element);
-    if (!element) return;
+    if (typeof element === 'string') {
+        element = document.getElementById(element);
+    }
+    if (!element) {
+        return;
+    }
 
-    if (element.className.indexOf('toggleable_tray') == -1) // Suspicious, maybe we need to probe deeper
-    {
+    if (element.className.indexOf('toggleable_tray') == -1) {// Suspicious, maybe we need to probe deeper
         var toggleables = element.querySelectorAll('.toggleable_tray');
         if (typeof toggleables[0] != 'undefined') element = toggleables[0];
     }
 
-    if (typeof cookie_id_name != 'undefined') {
+    if (cookie_id_name !== undefined) {
         set_cookie('tray_' + cookie_id_name, (element.style.display == 'none') ? 'open' : 'closed');
     }
 
     var type = 'block';
-    if (element.nodeName.toLowerCase() == 'table') type = 'table';
-    if (element.nodeName.toLowerCase() == 'tr') type = 'table-row';
+    if (element.localName === 'table') type = 'table';
+    if (element.localName === 'tr') type = 'table-row';
 
     /*{+START,IF,{$NOT,{$CONFIG_OPTION,enable_animations}}}*/
     no_animate = true;
@@ -832,7 +835,7 @@ function toggleable_tray(element, no_animate, cookie_id_name) {
 
     if (element.style.display == 'none') {
         element.style.display = type;
-        if ((type == 'block') && (element.nodeName.toLowerCase() == 'div') && (!no_animate) && ((!pic) || (pic.src.indexOf('themewizard.php') == -1))) {
+        if ((type == 'block') && (element.localName === 'div') && (!no_animate) && ((!pic) || (pic.src.indexOf('themewizard.php') == -1))) {
             element.style.visibility = 'hidden';
             element.style.width = element.offsetWidth + 'px';
             element.style.position = 'absolute'; // So things do not just around now it is visible
@@ -853,7 +856,7 @@ function toggleable_tray(element, no_animate, cookie_id_name) {
             }
         }
     } else {
-        if ((type == 'block') && (element.nodeName.toLowerCase() == 'div') && (!no_animate) && ((!pic) || (pic.src.indexOf('themewizard.php') == -1))) {
+        if ((type == 'block') && (element.localName === 'div') && (!no_animate) && ((!pic) || (pic.src.indexOf('themewizard.php') == -1))) {
             if (pic) {
                 set_tray_theme_image(pic, 'contract', 'expcon', '{$IMG;,1x/trays/contract}', '{$IMG;,1x/trays/expcon}', '{$IMG;,2x/trays/expcon}', '{$IMG;,1x/trays/expcon2}', '{$IMG;,2x/trays/expcon2}');
             }
@@ -1546,7 +1549,7 @@ function reposition_tooltip(ac, event, bottom, starting, tooltip_element, force_
     if (!starting) // Real JS mousemove event, so we assume not a screen reader and have to remove natural tooltip
     {
         if (ac.getAttribute('title')) ac.setAttribute('title', '');
-        if ((ac.parentNode.nodeName.toLowerCase() == 'a') && (ac.parentNode.getAttribute('title')) && ((ac.nodeName.toLowerCase() == 'abbr') || (ac.parentNode.getAttribute('title').indexOf('{!LINK_NEW_WINDOW;^}') != -1)))
+        if ((ac.parentNode.localName === 'a') && (ac.parentNode.getAttribute('title')) && ((ac.localName === 'abbr') || (ac.parentNode.getAttribute('title').indexOf('{!LINK_NEW_WINDOW;^}') != -1)))
             ac.parentNode.setAttribute('title', ''); // Do not want second tooltips that are not useful
     }
 
@@ -1945,7 +1948,7 @@ function ga_track(ob, category, action) {
 function click_link(link) {
     var cancelled = false;
 
-    if ((link.nodeName.toLowerCase() !== 'a') && (link.nodeName.toLowerCase() !== 'input')) {
+    if ((link.localName !== 'a') && (link.localName !== 'input')) {
         link = link.querySelector('a');
     }
 

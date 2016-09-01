@@ -17,7 +17,7 @@ function clean_menus() {
     var e = (window.active_menu == null) ? null : document.getElementById(window.active_menu), t;
     var i, hideable;
     for (i = tags.length - 1; i >= 0; i--) {
-        if (tags[i].nodeName.toLowerCase() != 'ul' && tags[i].nodeName.toLowerCase() != 'div') continue;
+        if (tags[i].localName != 'ul' && tags[i].localName != 'div') continue;
 
         hideable = true;
         if (e) {

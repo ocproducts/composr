@@ -9,7 +9,7 @@ function advanced_notifications_copy_under(row, num_children) {
     var child_depth = null;
     while (true) {
         row = row.nextSibling;
-        while (row.nodeName.toLowerCase() != 'tr') {
+        while (row.localName !== 'tr') {
             row = row.nextSibling;
             if (!row) return; // Should not happen
         }
