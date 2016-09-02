@@ -1,11 +1,11 @@
 {+START,IF_NON_EMPTY,{CATEGORIES}}
-	<div>
-		<h2>
-			<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{!EXPAND}: {!TEST_RESULTS}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
-			<span onclick="/*Access-note: code has other activation*/ return toggleable_tray(this.parentNode.parentNode);">{!TEST_RESULTS}</span>
+	<div data-view-core="ToggleableTray">
+		<h2 class="js-tray-header">
+			<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!EXPAND}: {!TEST_RESULTS}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+			<span class="js-btn-tray-toggle">{!TEST_RESULTS}</span>
 		</h2>
 
-		<div class="toggleable_tray" style="display: none" aria-expanded="false">
+		<div class="toggleable_tray js-tray-content" style="display: none" aria-expanded="false">
 			{+START,LOOP,CATEGORIES}
 				{$,If more than one category of quiz entered then show headers}
 				{+START,IF,{$OR,{$GET,want_sections},{$NEQ,{CATEGORIES},1}}}

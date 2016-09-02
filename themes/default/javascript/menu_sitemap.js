@@ -30,6 +30,7 @@ function _generate_menu_sitemap(target, node, the_level) {
     li.className = Composr.isTruthy(node.current) ? 'current' : 'non_current';
     li.className += ' ' + ((node.img == '') ? 'has_no_img' : 'has_img');
     li.id = 'sitemap_menu_branch_' + Math.round(Math.random() * 100000000000);
+    li.dataset.viewCore = 'ToggleableTray';
 
     var span = document.createElement('span');
     li.appendChild(span);
@@ -60,11 +61,8 @@ function _generate_menu_sitemap(target, node, the_level) {
         span.appendChild(document.createTextNode(' '));
 
         var expand = document.createElement('a');
-        expand.className = 'toggleable_tray_button';
-        expand.href = '#';
-        expand.onclick = function () {
-            return toggleable_tray(li);
-        };
+        expand.className = 'toggleable_tray_button js-btn-tray-toggle';
+        expand.href = '#!';
 
         var expand_img = document.createElement('img');
         if (the_level < 2) // High-levels start expanded

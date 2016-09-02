@@ -1,12 +1,12 @@
-<div>
-	<h2>
-		<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{!EXPAND}: {!GIFTR_TITLE}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
-		<span onclick="/*Access-note: code has other activation*/ return toggleable_tray(this.parentNode.parentNode);">{!GIFTR_TITLE}</span>
+<div data-view-core="ToggleableTray">
+	<h2 class="js-tray-header">
+		<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!EXPAND}: {!GIFTR_TITLE}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+		<span class="js-btn-tray-toggle">{!GIFTR_TITLE}</span>
 	</h2>
 
 	{$REQUIRE_CSS,gifts}
 
-	<div class="toggleable_tray" style="display: {$JS_ON,none,block}" aria-expanded="false">
+	<div class="toggleable_tray js-tray-content" style="display: {$JS_ON,none,block}" aria-expanded="false">
 		{+START,LOOP,GIFTS}
 			<div class="box box___cns_member_screen_gifts_wrap"><div class="box_inner">
 				<div class="float_surrounder">

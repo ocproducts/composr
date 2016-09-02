@@ -22,7 +22,7 @@
         },
 
         submit: function (e) {
-            var form = e.target;
+            var form = e.currentTarget;
             e.preventDefault();
             modsecurity_workaround(form);
         }

@@ -1,11 +1,11 @@
-<section id="tray_{!MODULE_TRANS_NAME_admin_actionlog|}" class="box box___block_main_staff_actions">
-	<h3 class="toggleable_tray_title">
-		<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode,false,'{!MODULE_TRANS_NAME_admin_actionlog|}');"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!MODULE_TRANS_NAME_admin_actionlog}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" srcset="{$IMG*,2x/trays/contract2} 2x" /></a>
+<section id="tray_{!MODULE_TRANS_NAME_admin_actionlog|}" data-view-core="ToggleableTray" data-tray-cookie="{!MODULE_TRANS_NAME_admin_actionlog|}" class="box box___block_main_staff_actions">
+	<h3 class="toggleable_tray_title js-tray-header">
+		<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!MODULE_TRANS_NAME_admin_actionlog}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" srcset="{$IMG*,2x/trays/contract2} 2x" /></a>
 
-		<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode,false,'{!MODULE_TRANS_NAME_admin_actionlog|}');">{!MODULE_TRANS_NAME_admin_actionlog}</a>
+		<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!MODULE_TRANS_NAME_admin_actionlog}</a>
 	</h3>
 
-	<div class="toggleable_tray">
+	<div class="toggleable_tray js-tray-content">
 		{$SET,wrapper_id,ajax_block_wrapper_{$RAND%}}
 		<div id="{$GET*,wrapper_id}">
 			{CONTENT}

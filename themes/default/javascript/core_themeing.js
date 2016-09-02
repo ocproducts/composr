@@ -53,32 +53,32 @@
 
         livePreview: function (e) {
             var opts = this.options;
-            if (!template_editor_preview(opts.fileId, opts.livePreviewUrl, e.target, true)) {
+            if (!template_editor_preview(opts.fileId, opts.livePreviewUrl, e.currentTarget, true)) {
                 e.preventDefault();
             }
         },
 
         screenPreview: function (e) {
             var opts = this.options;
-            if (!template_editor_preview(opts.fileId, opts.screenPreviewUrl, e.target)) {
+            if (!template_editor_preview(opts.fileId, opts.screenPreviewUrl, e.currentTarget)) {
                 e.preventDefault();
             }
         },
 
         editareaSearch: function (e) {
-            var regexp = e.target.dataset.eaSearch;
+            var regexp = e.currentTarget.dataset.eaSearch;
 
             editarea_do_search('e_' + this.options.fileId, regexp);
         },
 
         insertGuid: function (e) {
-            var guid = e.target.dataset.insertGuid;
+            var guid = e.currentTarget.dataset.insertGuid;
 
             insert_guid(this.options.file, guid);
         },
 
         addEditorTab: function (e) {
-            var file = e.target.dataset.templateFile;
+            var file = e.currentTarget.dataset.templateFile;
 
             template_editor_add_tab(file);
         },

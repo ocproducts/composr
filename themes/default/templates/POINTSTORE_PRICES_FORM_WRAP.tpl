@@ -1,10 +1,11 @@
 <h3>{TITLE*}</h3>
 
-<div class="box">
-	<h4 class="toggleable_tray_title">
-		<a class="toggleable_tray_button" title="{!SETTINGS}: {!EXPAND}" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{!EXPAND}: {TITLE*}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a> <a class="toggleable_tray_button" title="{!SETTINGS}: {!EXPAND}" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode);">{!SETTINGS}</a>
+<div class="box" data-view-core="ToggleableTray">
+	<h4 class="toggleable_tray_title js-tray-header">
+		<a class="toggleable_tray_button js-btn-tray-toggle" title="{!SETTINGS}: {!EXPAND}" href="#!"><img alt="{!EXPAND}: {TITLE*}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
+		<a class="toggleable_tray_button js-btn-tray-toggle" title="{!SETTINGS}: {!EXPAND}" href="#!">{!SETTINGS}</a>
 	</h4>
-	<div class="toggleable_tray" style="display: {$JS_ON,none,block}" aria-expanded="false">
+	<div class="toggleable_tray js-tray-content" style="display: {$JS_ON,none,block}" aria-expanded="false">
 		{FORM}
 	</div>
 </div>

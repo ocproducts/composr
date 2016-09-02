@@ -32,13 +32,13 @@
 				{+END}
 			{+END}
 			{+START,IF_NON_EMPTY,{ACTIONS_contact}{$GET,messenger_fields}}
-				<div>
-					<h2>
-						<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{!CONTRACT}: {!CONTACT}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract}" srcset="{$IMG*,2x/trays/contract} 2x" /></a>
-						<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode);">{!CONTACT}</a>
+				<div data-view-core="ToggleableTray">
+					<h2 class="js-tray-header">
+						<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!CONTRACT}: {!CONTACT}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract}" srcset="{$IMG*,2x/trays/contract} 2x" /></a>
+						<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!CONTACT}</a>
 					</h2>
 
-					<nav class="toggleable_tray" style="display: block">
+					<nav class="toggleable_tray js-tray-content" style="display: block">
 						<ul class="nl">
 							{ACTIONS_contact}
 							{$GET,messenger_fields}
@@ -48,13 +48,13 @@
 			{+END}
 
 			{+START,IF_NON_EMPTY,{ACTIONS_content}}
-				<div>
-					<h2>
-						<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{!EXPAND}: {!CONTENT}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
-						<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode);">{!CONTENT}</a>
+				<div data-view-core="ToggleableTray">
+					<h2 class="js-tray-header">
+						<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!EXPAND}: {!CONTENT}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+						<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!CONTENT}</a>
 					</h2>
 
-					<nav class="toggleable_tray" style="display: {$JS_ON,none,block}" aria-expanded="false">
+					<nav class="toggleable_tray js-tray-content" style="display: {$JS_ON,none,block}" aria-expanded="false">
 						<ul class="nl">
 							{ACTIONS_content}
 						</ul>
@@ -63,13 +63,13 @@
 			{+END}
 
 			{+START,IF_NON_EMPTY,{ACTIONS_views}{ACTIONS_profile}}
-				<div>
-					<h2>
-						<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{!EXPAND}: {!ACCOUNT}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
-						<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode);">{!ACCOUNT}</a>
+				<div data-view-core="ToggleableTray">
+					<h2 class="js-tray-header">
+						<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!EXPAND}: {!ACCOUNT}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+						<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!ACCOUNT}</a>
 					</h2>
 
-					<nav class="toggleable_tray" style="display: {$JS_ON,none,block}" aria-expanded="false">
+					<nav class="toggleable_tray js-tray-content" style="display: {$JS_ON,none,block}" aria-expanded="false">
 						<ul class="nl">
 							{ACTIONS_views}
 							{ACTIONS_profile}
@@ -79,13 +79,13 @@
 			{+END}
 
 			{+START,IF_NON_EMPTY,{ACTIONS_audit}}
-				<div>
-					<h2>
-						<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{!EXPAND}: {!AUDIT}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
-						<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode);">{!AUDIT}</a>
+				<div data-view-core="ToggleableTray">
+					<h2 class="js-tray-header">
+						<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!EXPAND}: {!AUDIT}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+						<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!AUDIT}</a>
 					</h2>
 
-					<nav class="toggleable_tray" style="display: {$JS_ON,none,block}" aria-expanded="false">
+					<nav class="toggleable_tray js-tray-content" style="display: {$JS_ON,none,block}" aria-expanded="false">
 						<ul class="nl">
 							{ACTIONS_audit}
 						</ul>

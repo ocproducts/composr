@@ -1,3 +1,4 @@
+<div data-view-chat="ChatRoomScreen" data-view-args="{+START,PARAMS_JSON,CHATROOM_ID}{_*}{+END}">
 {TITLE}
 
 {$REQUIRE_JAVASCRIPT,jquery}
@@ -37,7 +38,7 @@
 			{+END}
 		</div>
 		<div class="right">
-			<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray('chat_comcode_panel');"><img id="e_chat_comcode_panel" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" alt="{!CHAT_TOGGLE_COMCODE_BOX}" title="{!CHAT_TOGGLE_COMCODE_BOX}" /></a>
+			<a class="toggleable_tray_button js-btn-toggle-chat-comcode-panel" href="#!"><img id="e_chat_comcode_panel" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" alt="{!CHAT_TOGGLE_COMCODE_BOX}" title="{!CHAT_TOGGLE_COMCODE_BOX}" /></a>
 		</div>
 	</div>
 
@@ -132,4 +133,4 @@
 
 {$REVIEW_STATUS,chat,{CHATROOM_ID}}
 
-<script type="application/json" data-tpl-chat="chatRoomScreen">{+START,PARAMS_JSON,CHATROOM_ID}{_/}{+END}</script>
+</div>

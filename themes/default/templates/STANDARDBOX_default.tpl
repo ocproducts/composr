@@ -1,13 +1,13 @@
-<div{+START,IF_NON_EMPTY,{TITLE}} id="{TITLE|}"{+END} class="box box___standardbox_default{+START,IF_PASSED,CLASS} {CLASS*}{+END}"{+START,IF_NON_EMPTY,{WIDTH}} style="width: {WIDTH*}"{+END}{+START,IF_IN_ARRAY,OPTIONS,tray_open,tray_closed}{+START,IF,{$JS_ON}} data-cms-call="handle_tray_cookie_setting"{+END}{+END}>
+<div data-view-core="ToggleableTray" {+START,IF_NON_EMPTY,{TITLE}} id="{TITLE|}"{+END} class="box box___standardbox_default{+START,IF_PASSED,CLASS} {CLASS*}{+END}" {+START,IF_NON_EMPTY,{WIDTH}} style="width: {WIDTH*}"{+END}{+START,IF_IN_ARRAY,OPTIONS,tray_open,tray_closed}{+START,IF,{$JS_ON}} data-tray-cookie="{TITLE|}"{+END}{+END}>
 	{+START,IF_NON_EMPTY,{TITLE}}
 		{+START,IF_IN_ARRAY,OPTIONS,tray_open,tray_closed}
-			<h3 class="toggleable_tray_title">
+			<h3 class="toggleable_tray_title js-tray-header">
 				{+START,IF,{$JS_ON}}
 					{+START,IF_IN_ARRAY,OPTIONS,tray_open}
-						<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode,false,'{TITLE|}');"><img alt="{!CONTRACT}: {$STRIP_TAGS,{TITLE}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" srcset="{$IMG*,2x/trays/contract2} 2x" /></a>
+						<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{TITLE}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" srcset="{$IMG*,2x/trays/contract2} 2x" /></a>
 					{+END}
 					{+START,IF_IN_ARRAY,OPTIONS,tray_closed}
-						<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode,false,'{TITLE|}');"><img alt="{!EXPAND}: {$STRIP_TAGS,{TITLE}}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
+						<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!EXPAND}: {$STRIP_TAGS,{TITLE}}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
 					{+END}
 				{+END}
 
@@ -15,19 +15,19 @@
 					{TOP_LINKS}
 				{+END}{+END}
 
-				<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode,false,'{TITLE|}');">{TITLE}</a>
+				<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{TITLE}</a>
 			</h3>
 		{+END}
 	{+END}
 
 	{+START,IF_IN_ARRAY,OPTIONS,tray_open}
-	<div class="toggleable_tray">
+	<div class="toggleable_tray js-tray-content">
 	{+END}
 	{+START,IF_IN_ARRAY,OPTIONS,tray_closed}
-	<div class="toggleable_tray" style="display: none" aria-expanded="false">
+	<div class="toggleable_tray js-tray-content" style="display: none" aria-expanded="false">
 	{+END}
 	{+START,IF_NOT_IN_ARRAY,OPTIONS,tray_open,tray_closed}
-	<div class="box_inner">
+	<div class="box_inner js-tray-content">
 	{+END}
 		{+START,IF_NOT_IN_ARRAY,OPTIONS,tray_open,tray_closed}{+START,IF_NON_EMPTY,{TITLE}}
 			<h3>{TITLE}</h3>

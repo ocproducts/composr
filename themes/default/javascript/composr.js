@@ -100,7 +100,7 @@
 
     /* Mainly used to check tempcode values, since in JavaScript '0' (string) is true */
     Composr.isFalsy = function isFalsy(val) {
-        return !val || (val.length === 0) || !val.trim() || (val.trim() === '0');
+        return !val || (val.length === 0) || ((typeof val === 'string') && ((val.trim() === '') || (val.trim() === '0')));
     };
 
     Composr.areFalsy = function areFalsy() {
@@ -443,11 +443,40 @@
         return els;
     };
 
+    Composr.dom.on = function (el, eventName, callbackOrSelector, callback) {
+        var selector;
+
+        if (arguments.length < 4) {
+            callback = callbackOrSelector;
+            el.addEventListener(eventName, callback);
+        } else { // Event delegation
+            selector = callbackOrSelector;
+            el.addEventListener(eventName, function (e) {
+                var match;
+
+                if ((el === e.target) || !el.contains(e.target)) {
+                    return;
+                }
+
+                match = Composr.dom.closest(e.target, selector, el);
+
+                if (match) {
+                    e.currentTarget = match;
+                    callback.call(match, e);
+                }
+            });
+        }
+    };
+
+    Composr.dom.off = function (el, eventName, callback) {
+        el.removeEventListener(eventName, callback);
+    };
+
     Composr.dom.html = function (el, html) {
         // Parser hint: .innerHTML okay
         var i, len;
 
-        if (html === undefined) {
+        if (arguments.length === 1) {
             return el.innerHTML;
         }
 
@@ -460,7 +489,7 @@
 
         el.innerHTML = html;
 
-        if (el.children.length === 0) {
+        if ((html === '') || (el.children.length === 0)) {
             // No new child elements added.
             return;
         }
@@ -509,6 +538,10 @@
         var p   = el.parentNode,
             ref = el.nextSibling, c, ci;
 
+        if (arguments.length === 1) {
+            return el.outerHTML;
+        }
+
         p.removeChild(el);
 
         Composr.dom.html(el, html);
@@ -546,8 +579,16 @@
     };
 
     // Get nearest parent (or itself) element matching selector
-    Composr.dom.closest = function closest(el, selector) {
-        return (!el || Composr.dom.matches(el, selector)) ? el : closest(el.parentElement, selector);
+    Composr.dom.closest = function closest(el, selector, untilParent) {
+        if (!_.isElement(el) || (el === untilParent)) {
+            return null;
+        }
+
+        if (Composr.dom.matches(el, selector)) {
+            return el;
+        }
+
+        return Composr.dom.closest(el.parentElement, selector, untilParent);
     };
 
     Composr.parseDataObject = function (data, defaults) {
@@ -614,13 +655,13 @@
     // This is kinda dumb, ported from checking.js, originally named as disable_buttons_just_clicked()
     Composr.ui.disableSubmitAndPreviewButtons = function (permanent) {
         // [accesskey="u"] identifies submit button, [accesskey="p"] identifies preview button
-        var buttons = document.querySelectorAll('input[accesskey="u"], button[accesskey="u"], input[accesskey="p"], button[accesskey="p"]');
+        var buttons = Composr.dom.$$('input[accesskey="u"], button[accesskey="u"], input[accesskey="p"], button[accesskey="p"]');
 
         if (permanent === undefined) {
             permanent = false;
         }
 
-        forEach(buttons, function (btn) {
+        buttons.forEach(function (btn) {
             if (!btn.disabled && !btn.under_timer) {// We do not want to interfere with other code potentially operating
                 Composr.ui.disableButton(btn, permanent);
             }

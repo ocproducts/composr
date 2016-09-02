@@ -797,13 +797,21 @@ function toggleable_tray(element, no_animate, cookie_id_name) {
     if (typeof element === 'string') {
         element = document.getElementById(element);
     }
+
     if (!element) {
         return;
     }
 
-    if (element.className.indexOf('toggleable_tray') == -1) {// Suspicious, maybe we need to probe deeper
-        var toggleables = element.querySelectorAll('.toggleable_tray');
-        if (typeof toggleables[0] != 'undefined') element = toggleables[0];
+    if (Composr.isFalsy(Composr.$CONFIG_OPTION.enableAnimations)) {
+        no_animate = true;
+    }
+
+    if (!element.classList.contains('toggleable_tray')) {// Suspicious, maybe we need to probe deeper
+        element = Composr.dom.$(element, '.toggleable_tray') || element;
+    }
+
+    if (element.dataset.trayCookie !== undefined) {
+        cookie_id_name = element.dataset.trayCookie;
     }
 
     if (cookie_id_name !== undefined) {
@@ -811,31 +819,26 @@ function toggleable_tray(element, no_animate, cookie_id_name) {
     }
 
     var type = 'block';
-    if (element.localName === 'table') type = 'table';
-    if (element.localName === 'tr') type = 'table-row';
-
-    /*{+START,IF,{$NOT,{$CONFIG_OPTION,enable_animations}}}*/
-    no_animate = true;
-    /*{+END}*/
-
-    var _pic = element.parentNode.querySelectorAll('.toggleable_tray_button');
-    var pic;
-    if (typeof _pic[0] != 'undefined') {
-        pic = _pic[0].getElementsByTagName('img')[0];
-    } else {
-        pic = document.getElementById('e_' + element.id);
+    if (element.localName === 'table') {
+        type = 'table';
     }
-    if (pic) // Currently in action?
-    {
+
+    if (element.localName === 'tr') {
+        type = 'table-row';
+    }
+
+    var pic = Composr.dom.$(element.parentNode, '.toggleable_tray_button img') || Composr.dom.$('#e_' + element.id);
+
+    if (pic) {// Currently in action?
         if (matches_theme_image(pic.src, '{$IMG;,1x/trays/expcon}')) return;
         if (matches_theme_image(pic.src, '{$IMG;,1x/trays/expcon2}')) return;
     }
 
-    element.setAttribute('aria-expanded', (type == 'none') ? 'false' : 'true');
+    element.setAttribute('aria-expanded', (type === 'none') ? 'false' : 'true');
 
-    if (element.style.display == 'none') {
+    if (element.style.display === 'none') {
         element.style.display = type;
-        if ((type == 'block') && (element.localName === 'div') && (!no_animate) && ((!pic) || (pic.src.indexOf('themewizard.php') == -1))) {
+        if ((type === 'block') && (element.localName === 'div') && (!no_animate) && ((!pic) || (pic.src.indexOf('themewizard.php') == -1))) {
             element.style.visibility = 'hidden';
             element.style.width = element.offsetWidth + 'px';
             element.style.position = 'absolute'; // So things do not just around now it is visible
@@ -846,17 +849,15 @@ function toggleable_tray(element, no_animate, cookie_id_name) {
                 begin_toggleable_tray_animation(element, 20, 70, -1, pic);
             }, 20);
         } else {
-            if (typeof window.fade_transition != 'undefined') {
-                set_opacity(element, 0.0);
-                fade_transition(element, 100, 30, 4);
-            }
+            set_opacity(element, 0.0);
+            fade_transition(element, 100, 30, 4);
 
             if (pic) {
                 set_tray_theme_image(pic, 'expand', 'contract', '{$IMG;,1x/trays/expand}', '{$IMG;,1x/trays/contract}', '{$IMG;,2x/trays/contract}', '{$IMG;,1x/trays/contract2}', '{$IMG;,2x/trays/contract2}');
             }
         }
     } else {
-        if ((type == 'block') && (element.localName === 'div') && (!no_animate) && ((!pic) || (pic.src.indexOf('themewizard.php') == -1))) {
+        if ((type === 'block') && (element.localName === 'div') && (!no_animate) && ((!pic) || (pic.src.indexOf('themewizard.php') == -1))) {
             if (pic) {
                 set_tray_theme_image(pic, 'contract', 'expcon', '{$IMG;,1x/trays/contract}', '{$IMG;,1x/trays/expcon}', '{$IMG;,2x/trays/expcon}', '{$IMG;,1x/trays/expcon2}', '{$IMG;,2x/trays/expcon2}');
             }
@@ -912,11 +913,6 @@ function begin_toggleable_tray_animation(element, animate_dif, animate_ticks, fi
 }
 function toggleable_tray_animate(element, final_height, animate_dif, orig_overflow, animate_ticks, pic) {
     var current_height = ((element.style.height == 'auto') || (element.style.height == '')) ? element.offsetHeight : sts(element.style.height);
-    /*if (Math.max(current_height-final_height,final_height-current_height)<70)
-     {
-     if (animate_dif<0) animate_dif=Math.min(animate_dif*0.8,-3);
-     else animate_dif=Math.max(animate_dif*0.85,3);
-     }*/
     if (((current_height > final_height) && (animate_dif < 0)) || ((current_height < final_height) && (animate_dif > 0))) {
         var num = Math.max(current_height + animate_dif, 0);
         if (animate_dif > 0) num = Math.min(num, final_height);
@@ -946,26 +942,7 @@ function toggleable_tray_done(element, final_height, animate_dif, orig_overflow,
     }
     trigger_resize(true);
 }
-function handle_tray_cookie_setting(id) {
-    if (!id && _.isElement(this)){
-        id = this.id;
-    } else {
-        id = 'tray_' + id;
-    }
 
-    var cookie_value = read_cookie(id);
-    var element = document.getElementById(id);
-    if (!element) return;
-
-    if (!element.classList.contains('toggleable_tray')) // Suspicious, maybe we need to probe deeper
-    {
-        var toggleables = element.querySelectorAll('.toggleable_tray');
-        if (typeof toggleables[0] != 'undefined') element = toggleables[0];
-    }
-
-    if (((element.style.display == 'none') && (cookie_value == 'open')) || ((element.style.display != 'none') && (cookie_value == 'closed')))
-        toggleable_tray(element, true);
-}
 
 /* Animate the loading of a frame */
 function animate_frame_load(pf, frame, leave_gap_top, leave_height) {
@@ -2247,10 +2224,9 @@ function has_iframe_ownership(iframe) {
     var has_ownership = false;
     try {
         has_ownership = (iframe) && (iframe.contentWindow.location.host == window.location.host) && (iframe.contentWindow.document);
+    } catch (e) {
     }
-    catch (e) {
-    }
-    ;
+
     return has_ownership;
 }
 

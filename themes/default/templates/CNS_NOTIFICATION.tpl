@@ -1,14 +1,17 @@
 {$REQUIRE_JAVASCRIPT,cns_forum}
 {$REQUIRE_JAVASCRIPT,ajax}
 
-<div class="box cns_notification"><div class="box_inner">
-	<p onclick="/*Access-note: code has other activation*/ return toggleable_tray(this.parentNode,false);" class="cns_notification_intro_line">
-		<a class="toggleable_tray_button" href="#!" onclick="return false;"><img alt="{!EXPAND}: {TYPE*}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
+<div class="box cns_notification">
+<div class="box_inner" data-view-core="ToggleableTray">
+	<p class="cns_notification_intro_line js-btn-tray-toggle">
+		<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">
+			<img alt="{!EXPAND}: {TYPE*}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" />
+		</a>
 
 		{!cns:NEW_PT_NOTIFICATION_DETAILS,<span class="cns_notification_type">{TYPE*}</span>,<span class="cns_notification_type_title">{U_TITLE*}</span>,<span class="cns_notification_by">{$?,{$IS_EMPTY,{PROFILE_URL}},{$DISPLAYED_USERNAME*,{BY}},<a href="{PROFILE_URL*}">{$DISPLAYED_USERNAME*,{BY}}</a>}</span>,<span class="cns_notification_time">{DATE*}</span>}
 	</p>
 
-	<div class="toggleable_tray" style="display: none" aria-expanded="false">
+	<div class="toggleable_tray js-tray-content" style="display: none" aria-expanded="false">
 		<div class="cns_notification_post">
 			{$TRUNCATE_LEFT,{POST},1000,0,1}
 		</div>
@@ -19,5 +22,6 @@
 			<li><a onclick="return ignore_cns_notification('{IGNORE_URL_2;*}',this);" href="{IGNORE_URL*}" title="{!MARK_READ}: {!FORUM_POST} #{ID*}">{!IGNORE}</a></li>
 		</ul>
 	</div>
-</div></div>
+</div>
+</div>
 

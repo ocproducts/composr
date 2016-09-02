@@ -20,7 +20,7 @@
             'click .js-btn-full-editor': 'moveToFullEditor',
 
             'click .js-btn-submit-comments': function (e) {
-                var form = this.form, button = e.target;
+                var form = this.form, button = e.currentTarget;
 
                 form.setAttribute('target', '_self');
 
@@ -35,7 +35,7 @@
             },
 
             'submit .js-form-comments': function (e) {
-                var form = e.target;
+                var form = e.currentTarget;
 
                 if ((this.options.moreUrl !== undefined) && (form.action === this.options.moreUrl)) {
                     return;
@@ -102,7 +102,7 @@
         },
 
         moveToFullEditor: function (e) {
-            var button = e.target,
+            var button = e.currentTarget,
                 moreUrl = options.moreUrl,
                 form = this.form;
 

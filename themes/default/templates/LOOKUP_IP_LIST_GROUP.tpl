@@ -1,7 +1,7 @@
 {$SET,rndx,{$RAND}}
 
-<li class="float_surrounder">
-	<div>
+<li class="float_surrounder" data-view-core="ToggleableTray">
+	<div class="js-tray-header">
 		<label for="banned_{$GET*,rndx}">
 			<kbd>{MASK*}</kbd>
 			{+START,IF,{$ADDON_INSTALLED,securitylogging}}
@@ -9,10 +9,10 @@
 			{+END}
 		</label>
 
-		<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{$?,{OPEN_DEFAULT},{!CONTRACT},{!EXPAND}}" title="{$?,{OPEN_DEFAULT},{!CONTRACT},{!EXPAND}}" src="{$IMG*,1x/trays/{$?,{OPEN_DEFAULT},contract,expand}}" srcset="{$IMG*,2x/trays/{$?,{OPEN_DEFAULT},contract,expand}} 2x" /></a>
+		<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{$?,{OPEN_DEFAULT},{!CONTRACT},{!EXPAND}}" title="{$?,{OPEN_DEFAULT},{!CONTRACT},{!EXPAND}}" src="{$IMG*,1x/trays/{$?,{OPEN_DEFAULT},contract,expand}}" srcset="{$IMG*,2x/trays/{$?,{OPEN_DEFAULT},contract,expand}} 2x" /></a>
 	</div>
 
-	<div class="toggleable_tray" style="display: {$JS_ON,{$?,{OPEN_DEFAULT},block,none},block}"{+START,IF,{$NOT,{OPEN_DEFAULT}}} aria-expanded="false"{+END}>
+	<div class="toggleable_tray js-tray-content" style="display: {$JS_ON,{$?,{OPEN_DEFAULT},block,none},block}"{+START,IF,{$NOT,{OPEN_DEFAULT}}} aria-expanded="false"{+END}>
 		<ul>
 			{GROUP}
 		</ul>

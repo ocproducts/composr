@@ -7,13 +7,13 @@
 </p>
 
 {+START,IF_NON_EMPTY,{TPL}}
-	<div class="box">
-		<h3 class="toggleable_tray_title">
-			<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{!EXPAND}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
-			<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode);">{!PROCEED}</a>
+	<div class="box" data-view-core="ToggleableTray">
+		<h3 class="toggleable_tray_title js-tray-header">
+			<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!EXPAND}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
+			<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!PROCEED}</a>
 		</h3>
 
-		<div class="toggleable_tray" style="display: {$JS_ON,none,block}" aria-expanded="false">
+		<div class="toggleable_tray js-tray-content" style="display: {$JS_ON,none,block}" aria-expanded="false">
 			{TPL}
 		</div>
 	</div>

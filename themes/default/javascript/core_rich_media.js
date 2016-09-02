@@ -61,7 +61,7 @@
 
         move: function (e) {
             var that = this,
-                btn = e.target,
+                btn = e.currentTarget,
                 amount = btn.dataset.moveAmount;
 
             window.setTimeout(function () {
@@ -636,16 +636,6 @@
     };
 })(window.jQuery || window.Zepto, Composr);
 
-
-function accordion(el) {
-    var i, nodes = el.parentNode.parentNode.querySelectorAll('.toggleable_tray');
-    for (i = 0; i < nodes.length; i++) {
-        if ((nodes[i].parentNode !== el) && (nodes[i].style.display !== 'none') && nodes[i].parentNode.classList.contains('accordion_trayitem')) {
-            toggleable_tray(nodes[i].parentNode, true);
-        }
-    }
-    return toggleable_tray(el);
-}
 
 // ======================
 // main_image_fader block

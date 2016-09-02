@@ -1,11 +1,10 @@
-<section id="tray_{!MEMBER|}" class="box cns_information_bar_outer"{+START,IF,{$JS_ON}} data-cms-call="handle_tray_cookie_setting"{+END}>
-	<h2 class="toggleable_tray_title">
-		<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode,false,'{!MEMBER|}');"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!MEMBER}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" srcset="{$IMG*,2x/trays/contract2} 2x" /></a>
-
-		<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode,false,'{!MEMBER|}');">{!MEMBER_INFORMATION,{$USERNAME*,{$MEMBER},1}}{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,search}} / {!SEARCH}{+END}</a>
+<section id="tray_{!MEMBER|}" data-view-core="ToggleableTray" data-tray-cookie="{!MEMBER|}" class="box cns_information_bar_outer">
+	<h2 class="toggleable_tray_title js-tray-header">
+		<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!MEMBER}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" srcset="{$IMG*,2x/trays/contract2} 2x" /></a>
+		<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!MEMBER_INFORMATION,{$USERNAME*,{$MEMBER},1}}{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,search}} / {!SEARCH}{+END}</a>
 	</h2>
 
-	<div class="toggleable_tray">
+	<div class="toggleable_tray js-tray-content">
 		<div class="cns_information_bar float_surrounder">
 			{+START,IF_NON_EMPTY,{AVATAR_URL}}
 				<div{+START,IF,{$NOT,{$MOBILE}}} style="min-height: {$MAX,100,{MAX_AVATAR_HEIGHT|}}px"{+END} class="cns_member_column cns_member_column_a">

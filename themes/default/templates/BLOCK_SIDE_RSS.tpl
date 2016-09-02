@@ -1,15 +1,15 @@
 {$REQUIRE_JAVASCRIPT,syndication_blocks}
 {+START,IF,{$NOT,{TICKER}}}
-	<section id="tray_{TITLE|}" class="box box___block_side_rss"{+START,IF,{$JS_ON}} data-cms-call="handle_tray_cookie_setting"{+END}>
-		<h3 class="toggleable_tray_title">
-			<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode,false,'{TITLE|}');"><img alt="{!CONTRACT}: {$STRIP_TAGS,{TITLE`}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" srcset="{$IMG*,2x/trays/contract2} 2x" /></a>
+	<section id="tray_{TITLE|}" data-view-core="ToggleableTray" data-tray-cookie="{TITLE|}" class="box box___block_side_rss">
+		<h3 class="toggleable_tray_title js-tray-header">
+			<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{TITLE`}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" srcset="{$IMG*,2x/trays/contract2} 2x" /></a>
 
 			{+START,IF_NON_EMPTY,{TITLE}}
-				<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode,false,'{TITLE|}');">{TITLE`}</a>
+				<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{TITLE`}</a>
 			{+END}
 		</h3>
 
-		<div class="toggleable_tray">
+		<div class="toggleable_tray js-tray-content">
 			{+START,IF_EMPTY,{CONTENT}}
 				<p class="nothing_here">{!NO_NEWS}</p>
 			{+END}

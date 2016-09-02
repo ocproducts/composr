@@ -99,42 +99,6 @@
             }
         },
 
-        // Calls a global function, optionally with arguments. Inside the function scope, "this" will be the element calling that function.
-        // @TODO: To be killed
-        functionCalls: {
-            attach: function (context) {
-                var els = Composr.dom.$$$(context, '[data-cms-call]');
-
-                els.forEach(function (el) {
-                    var funcName = el.dataset.cmsCall.trim(),
-                        cmsCallArgs = typeof el.dataset.cmsCallArgs === 'string' ? el.dataset.cmsCallArgs.trim() : '',
-                        args = [], _args;
-
-                    if (cmsCallArgs !== '') {
-                        try {
-                            _args = JSON.parse(el.dataset.cmsCallArgs);
-                        } catch (e) {
-                            Composr.throwError(e);
-                        }
-
-                        if (_args) {
-                            args = _args;
-                        }
-
-                        if (!Array.isArray(args)) {
-                            args = [args];
-                        }
-                    }
-
-                    var func = window[funcName];
-
-                    if (typeof func === 'function') {
-                        func.apply(el, args);
-                    }
-                });
-            }
-        },
-
         select2Plugin: {
             attach: function (context) {
                 var els = Composr.dom.$$$(context, '[data-cms-select2]');
@@ -299,25 +263,20 @@
 
         events: {
             // Prevent url change for clicks on anchor tags with a placeholder href
-            'click a[href$="#!"]': function (e) {
-                e.preventDefault();
-            },
-
+            'click a[href$="#!"]': 'preventDefault',
             // Prevent form submission for forms with a placeholder action
-            'submit form[action$="#!"]': function (e) {
-                e.preventDefault();
-            },
+            'submit form[action$="#!"]': 'preventDefault',
 
             'click [data-disable-on-click]': function (e) {
-                Composr.ui.disableButton(e.target);
+                Composr.ui.disableButton(e.currentTarget);
             },
 
             'submit form[data-disable-buttons-on-submit]': function (e) {
-                Composr.ui.disableFormButtons(e.target);
+                Composr.ui.disableFormButtons(e.currentTarget);
             },
 
             'click [data-open-as-overlay]': function (e) {
-                var el = e.target, args,
+                var el = e.currentTarget, args,
                     url = (el.href === undefined) ? el.action : el.href;
 
                 if (Composr.isFalsy(Composr.$CONFIG_OPTION.jsOverlays)) {
@@ -338,7 +297,7 @@
 
             // Lightboxes
             'click a[rel*="lightbox"]': function (e) {
-                var el = e.target;
+                var el = e.currentTarget;
 
                 if (Composr.isFalsy(Composr.$CONFIG_OPTION.jsOverlays)) {
                     return;
@@ -352,11 +311,74 @@
                     openLinkAsOverlay({el: el});
                 }
             }
+        },
+
+        preventDefault: function (e) {
+            e.preventDefault();
+        }
+    });
+
+    var ToggleableTray = Composr.View.extend({
+        contentEl: null,
+        // cookieId is null for trays not saving a cookie
+        cookieId: null,
+        initialize: function () {
+            Composr.View.prototype.initialize.apply(this, arguments);
+
+            this.contentEl = this.el.querySelector('.toggleable_tray');
+            this.cookieId  = this.el.dataset.trayCookie || null;
+
+            if (this.cookieId) {
+                this.handleTrayCookie(this.cookieId);
+            }
+        },
+
+        events: {
+            'click .js-btn-tray-toggle': 'toggle',
+            'click .js-btn-tray-accordion': 'toggleAccordionItems'
+        },
+
+        toggle: function () {
+            if (this.cookieId) {
+                toggleable_tray(this.el, false, this.cookieId);
+            } else {
+                toggleable_tray(this.el);
+            }
+        },
+
+        accordion: function (el) {
+            var i, nodes = Composr.dom.$$(el.parentNode.parentNode, '.toggleable_tray');
+
+            nodes.forEach(function (node) {
+                if ((node.parentNode !== el) && (node.style.display !== 'none') && node.parentNode.classList.contains('js-tray-accordion-item')) {
+                    toggleable_tray(node, true);
+                }
+            });
+
+            return toggleable_tray(el);
+        },
+
+        toggleAccordionItems: function (e) {
+            var btn = e.currentTarget,
+                accordionItem = Composr.dom.closest(btn, '.js-tray-accordion-item');
+
+            if (accordionItem) {
+                this.accordion(accordionItem);
+            }
+        },
+
+        handleTrayCookie: function () {
+            var cookieValue = read_cookie('tray_' + this.cookieId);
+
+            if (((this.contentEl.style.display === 'none') && (cookieValue === 'open')) || ((this.contentEl.style.display !== 'none') && (cookieValue === 'closed'))) {
+                toggleable_tray(this.contentEl, true);
+            }
         }
     });
 
     Composr.views.core = {
-        Global: Global
+        Global: Global,
+        ToggleableTray: ToggleableTray
     };
 
     Composr.templates.core = {
@@ -452,7 +474,7 @@
             }
         },
 
-        jsBlock: function jsBlock() {
+        jsBlock: function jsBlock(options) {
             call_block(options.blockCallUrl, '', document.getElementById(options.jsBlockId), false, null, false, null, false, false);
         },
 

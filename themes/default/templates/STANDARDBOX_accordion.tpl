@@ -1,20 +1,20 @@
 {$REQUIRE_JAVASCRIPT,core_rich_media}
 
-<div class="box box___standardbox_accordion accordion_trayitem{+START,IF_PASSED,CLASS} {CLASS*}{+END}"{+START,IF_NON_EMPTY,{WIDTH}} style="width: {WIDTH*}"{+END}>
+<div data-view-core="ToggleableTray" class="box box___standardbox_accordion accordion_trayitem js-tray-accordion-item{+START,IF_PASSED,CLASS} {CLASS*}{+END}"{+START,IF_NON_EMPTY,{WIDTH}} style="width: {WIDTH*}"{+END}>
 	{+START,IF_NON_EMPTY,{TITLE}}
-		<h3 class="toggleable_tray_title" onkeypress="this.onclick(event);" onclick="this.getElementsByTagName('a')[0].onclick(event);">
+		<h3 class="toggleable_tray_title js-btn-tray-accordion">
 			{+START,IF_NOT_IN_ARRAY,OPTIONS,tray_open}
-				{+START,IF,{$JS_ON}}<a class="toggleable_tray_button" href="#!" onclick="return accordion(this.parentNode.parentNode);"><img alt="{!EXPAND}: {$STRIP_TAGS,{TITLE}}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a> {+END}
+				{+START,IF,{$JS_ON}}<a class="toggleable_tray_button js-btn-tray-accordion" href="#!"><img alt="{!EXPAND}: {$STRIP_TAGS,{TITLE}}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a> {+END}
 			{+END}
 			{+START,IF_IN_ARRAY,OPTIONS,tray_open}
-				{+START,IF,{$JS_ON}}<a class="toggleable_tray_button" href="#!" onclick="return accordion(this.parentNode.parentNode);"><img alt="{!CONTRACT}: {$STRIP_TAGS,{TITLE}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" srcset="{$IMG*,2x/trays/contract2} 2x" /></a> {+END}
+				{+START,IF,{$JS_ON}}<a class="toggleable_tray_button js-btn-tray-accordion" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{TITLE}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" srcset="{$IMG*,2x/trays/contract2} 2x" /></a> {+END}
 			{+END}
 
 			{+START,IF_NON_EMPTY,{TOP_LINKS}}{+START,IF,{$JS_ON}}
 				{TOP_LINKS}
 			{+END}{+END}
 
-			{+START,IF,{$JS_ON}}<a class="toggleable_tray_button" href="#!" onclick="return accordion(this.parentNode.parentNode);">{TITLE}</a>{+END}
+			{+START,IF,{$JS_ON}}<a class="toggleable_tray_button js-btn-tray-accordion" href="#!">{TITLE}</a>{+END}
 			{+START,IF,{$NOT,{$JS_ON}}}{TITLE}{+END}
 		</h3>
 	{+END}

@@ -21,11 +21,12 @@
         },
 
         submit: function (e) {
-            modsecurity_workaround(e.target) || e.preventDefault();
+            modsecurity_workaround(e.currentTarget);
+            e.preventDefault();
         },
 
         fetchAndSubmit: function (e) {
-            var btn = e.target;
+            var btn = e.currentTarget;
             fetch_more_fields();
             btn.form.submit();
         }
@@ -34,6 +35,8 @@
     var ZoneEditorPanel = Composr.View.extend({
         initialize: function (v, options) {
             Composr.View.prototype.initialize.apply(this, arguments);
+
+            this.id = options.id;
 
             if (options.preview !== undefined) {
                 disable_preview_scripts(document.getElementById('view_' + options.id));
@@ -53,16 +56,17 @@
         },
 
         submitComcode: function (e) {
-            modsecurity_workaround(e.target) || e.preventDefault();
+            modsecurity_workaround(e.currentTarget);
+            e.preventDefault();
         },
 
-        toggleWysiwyg: function (e) {
+        toggleWysiwyg: function () {
             toggle_wysiwyg('edit_' + this.options.id + '_textarea');
         },
 
         setEditedPanel: function (e) {
             var opts = this.options,
-                field = e.target,
+                field = e.currentTarget,
                 editor = document.getElementById('edit_tab_' + opts.id);
 
             set_edited_panel(opts.id);

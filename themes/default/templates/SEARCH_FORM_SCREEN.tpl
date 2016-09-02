@@ -20,18 +20,18 @@
 {+END}
 
 {+START,IF_PASSED,RESULTS}
-<div class="box">
+<div class="box" data-view-core="ToggleableTray">
 {+END}
 	{+START,IF_PASSED,RESULTS}
-		<h2 class="toggleable_tray_title">
-			<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode);">{!SETTINGS}</a>
+		<h2 class="toggleable_tray_title js-tray-header">
+			<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!SETTINGS}</a>
 			{+START,IF_NON_EMPTY,{RESULTS}}
-				<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode);"><img src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" alt="{!SHOW_SEARCH_FORM}" title="{!SHOW_SEARCH_FORM}" /></a>
+				<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" alt="{!SHOW_SEARCH_FORM}" title="{!SHOW_SEARCH_FORM}" /></a>
 			{+END}
 		</h2>
 	{+END}
 
-	<div{+START,IF_PASSED,RESULTS}{+START,IF_NON_EMPTY,{RESULTS}} style="display: {$JS_ON,none,block}"{+END}{+END} id="search_form" class="toggleable_tray" aria-expanded="false">
+	<div id="search_form" class="toggleable_tray js-tray-content" {+START,IF_PASSED,RESULTS}{+START,IF_NON_EMPTY,{RESULTS}} style="display: {$JS_ON,none,block}"{+END}{+END} aria-expanded="false">
 		<p>
 			{!SEARCH_HELP}
 		</p>

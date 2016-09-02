@@ -74,20 +74,16 @@
                 window.setInterval(function() { resize_frame('iframe_under'); }, 1500);
             }
 
-            if (context.dataset.onClickFormScreen !== '1') {
-                context.dataset.onClickFormScreen = '1';
+            context.addEventListener('click', function (e) {
+                var chkBoxOpenNew = Composr.dom.closest(e.currentTarget, '.js-checkbox-will-open-new');
 
-                context.addEventListener('click', function (e) {
-                    var chkBoxOpenNew = Composr.dom.closest(e.target, '.js-checkbox-will-open-new');
-
-                    if (chkBoxOpenNew) {
-                        var f = document.getElementById('main_form');
-                        f.action = this.checked ? nonIframeUrl : iframeUrl;
-                        f.elements['opens_below'].value = this.checked ? '0' : '1';
-                        f.target = this.checked ? '_blank' : 'iframe_under';
-                    }
-                });
-            }
+                if (chkBoxOpenNew) {
+                    var f = document.getElementById('main_form');
+                    f.action = this.checked ? nonIframeUrl : iframeUrl;
+                    f.elements['opens_below'].value = this.checked ? '0' : '1';
+                    f.target = this.checked ? '_blank' : 'iframe_under';
+                }
+            });
         },
 
         formScreenField_input: function (options) {

@@ -1,5 +1,5 @@
 {$REQUIRE_CSS,menu__dropdown}
-{$REQUIRE_JAVASCRIPT,menu_popup}
+{$REQUIRE_JAVASCRIPT,core_menus}
 
 {+START,IF_NON_EMPTY,{CONTENT}}
 	<nav class="menu_type__dropdown" data-view-core-menus="DropdownMenu" data-view-args="{+START,PARAMS_JSON,MENU,JAVASCRIPT_HIGHLIGHTING}{_*}{+END}">

@@ -63,13 +63,13 @@
 	</p>
 {+END}
 
-<div class="box box___calendar_main_screen_interests">
-	<h2 class="toggleable_tray_title">
-		<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{!EXPAND}: {!INTERESTS}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
-		<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode);">{!INTERESTS}</a>
+<div class="box box___calendar_main_screen_interests" data-view-core="ToggleableTray">
+	<h2 class="toggleable_tray_title js-tray-header">
+		<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!EXPAND}: {!INTERESTS}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
+		<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!INTERESTS}</a>
 	</h2>
 
-	<div class="toggleable_tray" style="{$JS_ON,display: none,}" aria-expanded="false">
+	<div class="toggleable_tray js-tray-content" style="{$JS_ON,display: none,}" aria-expanded="false">
 		<div class="float_surrounder">
 			{+START,IF_NON_EMPTY,{EVENT_TYPES_1}}
 				<div class="right event_interest_box"><section class="box"><div class="box_inner">
@@ -113,13 +113,13 @@
 
 {$, Commented out... bloat
 {+START,IF,{$ADDON_INSTALLED,syndication_blocks}}
-	<div class="box box___calendar_main_screen_feeds_to_overlay">
-		<h2 class="toggleable_tray_title">
-			<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{!EXPAND}: {!FEEDS_TO_OVERLAY}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
-			<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode);">{!FEEDS_TO_OVERLAY}</a>
+	<div class="box box___calendar_main_screen_feeds_to_overlay" data-view-core="ToggleableTray">
+		<h2 class="toggleable_tray_title js-tray-header">
+			<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!EXPAND}: {!FEEDS_TO_OVERLAY}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
+			<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!FEEDS_TO_OVERLAY}</a>
 		</h2>
 
-		<div class="toggleable_tray" style="{$JS_ON,display: none,}" aria-expanded="false">
+		<div class="toggleable_tray js-tray-content" style="{$JS_ON,display: none,}" aria-expanded="false">
 			{RSS_FORM}
 		</div>
 	</div>

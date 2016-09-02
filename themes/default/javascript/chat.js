@@ -1,6 +1,6 @@
 (function ($, Composr) {
     'use strict';
-    var BlockSideShoutbox;
+    var BlockSideShoutbox, ChatRoomScreen;
 
     Composr.behaviors.chat = {
         initialize: {
@@ -17,8 +17,27 @@
         }
     });
 
+    ChatRoomScreen = Composr.View.extend({
+        initialize: function (v, options) {
+            Composr.View.prototype.initialize.apply(this, arguments);
+
+            Composr.loadWindow.then(function () {
+                chat_load(options.chatroomId);
+            });
+        },
+
+        events: {
+            'click .js-btn-toggle-chat-comcode-panel': 'toggleChatPanel'
+        },
+
+        toggleChatPanel: function () {
+            toggleable_tray('chat_comcode_panel');
+        }
+    });
+
     Composr.views.chat = {
-        BlockSideShoutbox: BlockSideShoutbox
+        BlockSideShoutbox: BlockSideShoutbox,
+        ChatRoomScreen: ChatRoomScreen
     };
 
     Composr.templates.chat = {
@@ -131,12 +150,6 @@
                     window.setTimeout(begin_im_chatting, 100);
                 }
             }
-        },
-
-        chatRoomScreen: function chatRoomScreen(options) {
-            Composr.loadWindow.then(function() {
-                chat_load(options.chatroomId);
-            });
         },
 
         chatSetEffectsSettingBlock: function chatSetEffectsSettingBlock(options) {

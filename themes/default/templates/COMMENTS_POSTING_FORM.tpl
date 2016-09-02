@@ -42,19 +42,19 @@
 	<input type="hidden" name="comcode__post" value="1" />
 	<input type="hidden" name="stub" value="" />
 
-	<div class="box box___comments_posting_form">
+	<div class="box box___comments_posting_form" {+START,IF_PASSED,EXPAND_TYPE} data-view-core="ToggleableTray" {+END}>
 		{+START,IF_NON_EMPTY,{TITLE}}
-			<h3 class="toggleable_tray_title">
+			<h3 class="toggleable_tray_title js-tray-header">
 				{+START,IF_NON_PASSED,EXPAND_TYPE}
 					{TITLE*}
 				{+END}
 				{+START,IF_PASSED,EXPAND_TYPE}
-					<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{$?,{$EQ,{EXPAND_TYPE},contract},{!CONTRACT},{!EXPAND}}" title="{$?,{$EQ,{EXPAND_TYPE},contract},{!CONTRACT},{!EXPAND}}" src="{$IMG*,1x/trays/{EXPAND_TYPE}2}" srcset="{$IMG*,2x/trays/{EXPAND_TYPE}2} 2x" /></a>
-					<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode);">{TITLE*}</a>
+					<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{$?,{$EQ,{EXPAND_TYPE},contract},{!CONTRACT},{!EXPAND}}" title="{$?,{$EQ,{EXPAND_TYPE},contract},{!CONTRACT},{!EXPAND}}" src="{$IMG*,1x/trays/{EXPAND_TYPE}2}" srcset="{$IMG*,2x/trays/{EXPAND_TYPE}2} 2x" /></a>
+					<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{TITLE*}</a>
 				{+END}
 			</h3>
 		{+END}
-		<div class="comments_posting_form_outer {+START,IF_PASSED,EXPAND_TYPE} toggleable_tray{+END}"{+START,IF_PASSED,EXPAND_TYPE} aria-expanded="false"{+END} id="comments_posting_form_outer" style="{$JS_ON,display: {DISPLAY*},}">
+		<div class="comments_posting_form_outer {+START,IF_PASSED,EXPAND_TYPE} toggleable_tray js-tray-content{+END}"{+START,IF_PASSED,EXPAND_TYPE} aria-expanded="false"{+END} id="comments_posting_form_outer" style="{$JS_ON,display: {DISPLAY*},}">
 			<div class="comments_posting_form_inner">
 				<div class="wide_table_wrap"><table class="map_table wide_table">
 					{+START,IF,{$NOT,{$MOBILE}}}

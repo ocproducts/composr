@@ -56,12 +56,12 @@
 	{+END}
 
 	{+START,IF,{$AND,{$NOT,{$PREG_MATCH,(^|&|\?)te\_\d+=1,{$QUERY_STRING}}},{HIDE_POSTS}}}
-		<div>
-			<p class="toggleable_tray_title">
-				<a class="toggleable_tray_button" title="{!DISCUSSION}: {!EXPAND}/{!CONTRACT}" href="#!" onclick="return toggleable_tray('hidden_posts');"><img alt="{!EXPAND}: {!DISCUSSION}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
-				<a class="toggleable_tray_button" title="{!DISCUSSION}: {!EXPAND}/{!CONTRACT}" href="#!" onclick="return toggleable_tray('hidden_posts');">{!DISCUSSION}</a> ({!POST_PLU,{NUM_POSTS*}})
+		<div data-view-core="ToggleableTray">
+			<p class="toggleable_tray_title js-tray-header">
+				<a class="toggleable_tray_button js-btn-tray-toggle" title="{!DISCUSSION}: {!EXPAND}/{!CONTRACT}" href="#!"><img alt="{!EXPAND}: {!DISCUSSION}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+				<a class="toggleable_tray_button js-btn-tray-toggle" title="{!DISCUSSION}: {!EXPAND}/{!CONTRACT}" href="#!">{!DISCUSSION}</a> ({!POST_PLU,{NUM_POSTS*}})
 			</p>
-			<div class="toggleable_tray" id="hidden_posts" style="display: {$JS_ON,none,block}" aria-expanded="false">
+			<div class="toggleable_tray js-tray-content" id="hidden_posts" style="display: {$JS_ON,none,block}" aria-expanded="false">
 	{+END}
 
 	{+START,IF_EMPTY,{POSTS}}

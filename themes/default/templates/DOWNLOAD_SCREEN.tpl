@@ -12,18 +12,18 @@
 	<div class="float_surrounder">
 		<div class="download_metadata">
 			<div class="download_now_wrapper">
-				<div class="box box___download_screen">
+				<div class="box box___download_screen" data-view-core="ToggleableTray">
 					{+START,IF_PASSED,LICENCE_HYPERLINK}
 					<p class="download_licence">
 						{!D_BEFORE_PROCEED_AGREE,{LICENCE_HYPERLINK}}
 					</p>
 
-					<div class="toggleable_tray_title">
-						<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{!EXPAND}: {!I_AGREE}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
-						<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode);">{!I_AGREE}</a>
+					<div class="toggleable_tray_title js-tray-header">
+						<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!EXPAND}: {!I_AGREE}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
+						<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!I_AGREE}</a>
 					</div>
 
-					<div class="toggleable_tray" style="display: {$JS_ON,none,block}" aria-expanded="false">
+					<div class="toggleable_tray js-tray-content" style="display: {$JS_ON,none,block}" aria-expanded="false">
 					{+END}
 					{+START,IF_NON_PASSED,LICENCE_HYPERLINK}
 					<div class="box_inner">

@@ -1,10 +1,10 @@
-<div>
-	<h2>
-		<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{!EXPAND}: {!MODULE_TRANS_NAME_subscriptions}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract}" srcset="{$IMG*,2x/trays/contract} 2x" /></a>
-		<span onclick="/*Access-note: code has other activation*/ return toggleable_tray(this.parentNode.parentNode);">{!MODULE_TRANS_NAME_subscriptions}</span>
+<div data-view-core="ToggleableTray">
+	<h2 class="js-tray-header">
+		<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!EXPAND}: {!MODULE_TRANS_NAME_subscriptions}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract}" srcset="{$IMG*,2x/trays/contract} 2x" /></a>
+		<span class="js-btn-tray-toggle">{!MODULE_TRANS_NAME_subscriptions}</span>
 	</h2>
 
-	<div class="toggleable_tray" style="display: block" aria-expanded="true">
+	<div class="toggleable_tray js-tray-content" style="display: block" aria-expanded="true">
 		<div class="wide_table_wrap"><table class="columned_table wide_table results_table autosized_table" itemprop="significantLinks">
 			<thead>
 				<tr>

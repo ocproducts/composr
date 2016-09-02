@@ -82,13 +82,13 @@
 		<input type="hidden" name="confirm" value="1" />
 	</form>
 
-	<div class="box box___menu_editor_screen">
+	<div class="box box___menu_editor_screen" data-view-core="ToggleableTray">
 		<h2 class="toggleable_tray_title">
-			<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{!EXPAND}: {!DELETE_MENU}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
-			<a class="toggleable_tray_button" href="#!" onclick="return toggleable_tray(this.parentNode.parentNode);">{!DELETE_MENU}</a>
+			<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!EXPAND}: {!DELETE_MENU}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
+			<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!DELETE_MENU}</a>
 		</h2>
 
-		<div class="toggleable_tray" id="delete_menu" style="{$JS_ON,display: none,}" aria-expanded="false">
+		<div class="toggleable_tray js-tray-content" id="delete_menu" style="{$JS_ON,display: none,}" aria-expanded="false">
 			<p>{!ABOUT_DELETE_MENU}</p>
 
 			<form title="{!DELETE}" action="{DELETE_URL*}" method="post" autocomplete="off">

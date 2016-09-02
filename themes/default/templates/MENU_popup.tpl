@@ -1,9 +1,10 @@
 {$REQUIRE_CSS,menu__popup}
-{$REQUIRE_JAVASCRIPT,menu_popup}
+{$REQUIRE_JAVASCRIPT,core_menus}
 
 {+START,IF_NON_EMPTY,{CONTENT}}
-	<nav class="menu_type__popup" data-view-core-menus="PopupMenu" data-view-args="{+START,PARAMS_JSON,MENU,JAVASCRIPT_HIGHLIGHTING}{_*}{+END}">
-		<ul class="nl js-ul-menu-items" id="r_{MENU|*}_p">
+	{$SET,menu_id,r_{MENU|}_p}
+	<nav class="menu_type__popup" data-view-core-menus="PopupMenu" data-view-args="{+START,PARAMS_JSON,MENU,JAVASCRIPT_HIGHLIGHTING,menu_id}{_*}{+END}">
+		<ul class="nl js-ul-menu-items" id="{$GET*,menu_id}">
 			{CONTENT}
 		</ul>
 	</nav>
