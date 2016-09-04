@@ -163,7 +163,7 @@ function template_editor_add_tab(file) {
     close_button.style.verticalAlign = 'middle';
     close_button.onclick = function (event) {
         cancel_bubbling(event);
-        if (typeof event.preventDefault != 'undefined') event.preventDefault();
+        if (event.cancelable) event.preventDefault();
 
         if (window.template_editor_open_files[file].unsaved_changes) {
             fauxmodal_confirm('{!themes:UNSAVED_CHANGES;^}'.replace('\{1\}', file), function (result) {
@@ -420,7 +420,7 @@ function get_file_textbox(file) {
 }
 
 function template_editor_keypress(event) {
-    if (key_pressed(event, 9)) {
+    if (Composr.dom.keyPressed(event) === 'Tab') {
         insert_textbox(this, "\t");
         return false;
     }
@@ -749,7 +749,7 @@ function set_up_parent_page_highlighting(file, file_id) {
         li = document.createElement('li');
         a = document.createElement('a');
         li.appendChild(a);
-        a.href = '#';
+        a.href = '#!';
         a.id = 'selector_' + i;
         Composr.dom.html(a, escape_html(selector));
         list.appendChild(li);

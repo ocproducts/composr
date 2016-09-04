@@ -30,14 +30,14 @@ function fade_icons_out() {
     var icons = document.querySelectorAll('.perm_icon');
     for (var i = 0; i < icons.length; i++) {
         set_opacity(icons[i], 1.0);
-        if (typeof window.fade_transition != 'undefined') fade_transition(icons[i], 20, 50, -10);
+        fade_transition(icons[i], 20, 50, -10);
     }
 }
 
 function fade_icons_in() {
     var icons = document.querySelectorAll('.perm_icon');
     for (var i = 0; i < icons.length; i++) {
-        if (typeof window.fade_transition != 'undefined') fade_transition(icons[i], 100, 50, 10);
+        fade_transition(icons[i], 100, 50, 10);
     }
 }
 

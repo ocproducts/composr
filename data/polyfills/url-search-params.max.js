@@ -316,8 +316,8 @@ var
 
   }
 ;
-upgradeClass(HTMLAnchorElement);
-if (/^function|object$/.test(typeof URL)) upgradeClass(URL);
+//upgradeClass(HTMLAnchorElement);
+//if (/^function|object$/.test(typeof URL)) upgradeClass(URL);
 
 /*
 

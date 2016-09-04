@@ -1,4 +1,12 @@
 (function ($, Composr) {
+    Composr.behaviors.coreCns = {
+        initialize: {
+            attach: function (context) {
+                Composr.initializeTemplates(context, 'core_cns');
+            }
+        }
+    };
+
     Composr.templates.coreCns = {
         cnsMemberProfileScreen: function cnsMemberProfileScreen(options) {
             var tabFunc = 'load_tab__' + options.tabCode;
@@ -32,14 +40,6 @@
                 var old_hash = window.location.hash;
                 window.location.hash = '#';
                 find_url_tab(old_hash);
-            }
-        }
-    };
-
-    Composr.behaviors.coreCns = {
-        initialize: {
-            attach: function (context) {
-                Composr.initializeTemplates(context, 'core_cns');
             }
         }
     };

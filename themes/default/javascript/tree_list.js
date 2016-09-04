@@ -139,10 +139,9 @@ tree_list.prototype.render_tree = function (xml, html, element) {
     var initially_expanded, selectable, extra, url, title, func, temp, master_html, node, node_self_wrap, node_self;
     if ((typeof element == 'undefined') || (!element)) var element = document.getElementById(this.name);
 
-    if (typeof window.fade_transition != 'undefined') {
-        set_opacity(html, 0.0);
-        fade_transition(html, 100, 30, 4);
-    }
+    set_opacity(html, 0.0);
+    fade_transition(html, 100, 30, 4);
+
 
     html.style.display = 'block';
     if (!has_child_nodes(xml)) {
@@ -239,7 +238,7 @@ tree_list.prototype.render_tree = function (xml, html, element) {
                 return function (event, automated) {
                     if (document.getElementById('choose_' + _this.name)) click_link(document.getElementById('choose_' + _this.name));
                     if (event) {
-                        if (typeof event.preventDefault != 'undefined') event.preventDefault();
+                        if (event.cancelable) event.preventDefault();
                     }
                     _this.handle_tree_click.call(expand_button, event, automated);
                     return false;
@@ -268,7 +267,7 @@ tree_list.prototype.render_tree = function (xml, html, element) {
             a.object = this;
             a.onmousedown = function (event) { // To disable selection of text when holding shift or control
                 if (event.ctrlKey || event.metaKey || event.shiftKey) {
-                    if (typeof event.preventDefault != 'undefined') event.preventDefault();
+                    if (event.cancelable) event.preventDefault();
                 }
             };
             html.appendChild(node_self_wrap);
@@ -340,7 +339,7 @@ tree_list.prototype.render_tree = function (xml, html, element) {
             a.object = this;
             a.onmousedown = function (event) { // To disable selection of text when holding shift or control
                 if (event.ctrlKey || event.metaKey || event.shiftKey) {
-                    if (typeof event.preventDefault != 'undefined') event.preventDefault();
+                    if (event.cancelable) event.preventDefault();
                 }
             };
             html.appendChild(node_self_wrap);
@@ -410,10 +409,10 @@ tree_list.prototype.render_tree = function (xml, html, element) {
 
         if ((node.getAttribute('droppable')) && (node.getAttribute('droppable') != 'false')) {
             node_self.ondragover = function (event) {
-                if (typeof event.preventDefault != 'undefined') event.preventDefault();
+                if (event.cancelable) event.preventDefault();
             };
             node_self.ondrop = function (event) {
-                if (typeof event.preventDefault != 'undefined') event.preventDefault();
+                if (event.cancelable) event.preventDefault();
                 // ondragend will call with last_hit set, we don't track the drop spots using this event handler, we track it in real time using mouse coordinate analysis
             };
         }
@@ -516,10 +515,9 @@ tree_list.prototype.handle_tree_click = function (event, automated) // Not calle
         }
 
         html_node.style.display = 'block';
-        if (typeof window.fade_transition != 'undefined') {
-            set_opacity(html_node, 0.0);
-            fade_transition(html_node, 100, 30, 4);
-        }
+        set_opacity(html_node, 0.0);
+        fade_transition(html_node, 100, 30, 4);
+
 
         expand_button.src = '{$IMG;,1x/treefield/collapse}'.replace(/^https?:/, window.location.protocol);
         expand_button.title = expand_button.title.replace('{!EXPAND;^}', '{!CONTRACT;^}');
@@ -559,7 +557,7 @@ tree_list.prototype.handle_selection = function (event, assume_ctrl) // Not call
     var selected_before = (element.value == '') ? [] : (this.object.multi_selection ? element.value.split(',') : [element.value]);
 
     cancel_bubbling(event);
-    if (typeof event.preventDefault != 'undefined') event.preventDefault();
+    if (event.cancelable) event.preventDefault();
 
     if ((!assume_ctrl) && (event.shiftKey) && (this.object.multi_selection)) {
         // We're holding down shift so we need to force selection of everything bounded between our last click spot and here

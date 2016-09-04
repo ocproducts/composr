@@ -29,7 +29,9 @@ function update_ajax_member_list(target, special, delayed, e) {
     //if (!e) target.onkeyup=function (e2) { update_ajax_member_list(target,special,delayed,e2); } ; // Make sure we get the event next time
     //if ((e) && (e.keyCode==8)) return; // No back key allowed
 
-    if (e && enter_pressed(e)) return null;
+    if (e && enter_pressed(e)) {
+        return null;
+    }
 
     if (target.disabled) return;
 
@@ -82,8 +84,7 @@ function update_ajax_member_list_response(result, list_contents) {
     if (data_list) {
         window.current_list_for.setAttribute('list', 'ajax_list');
     } else {
-        if (list_contents.childNodes.length == 1) // We need to make sure it is not a dropdown. Normally we'd use size (multiple isn't correct, but we'll try this for 1 as it may be more stable on some browsers with no side effects)
-        {
+        if (list_contents.childNodes.length == 1) {// We need to make sure it is not a dropdown. Normally we'd use size (multiple isn't correct, but we'll try this for 1 as it may be more stable on some browsers with no side effects)
             list.setAttribute('multiple', 'multiple');
         } else {
             list.setAttribute('size', list_contents.childNodes.length + 1);
@@ -118,10 +119,8 @@ function update_ajax_member_list_response(result, list_contents) {
 
     if (data_list) return;
 
-    if (typeof window.fade_transition != 'undefined') {
-        set_opacity(list, 0.0);
-        fade_transition(list, 100, 30, 8);
-    }
+    set_opacity(list, 0.0);
+    fade_transition(list, 100, 30, 8);
 
     var current_list_for_copy = window.current_list_for;
 
@@ -149,8 +148,7 @@ function update_ajax_member_list_response(result, list_contents) {
 
     window.current_list_for.down_once = false;
     var handle_arrow_usage = function (event) {
-        if (!event.shiftKey && key_pressed(event, 40, true)) // DOWN
-        {
+        if (!event.shiftKey && (Composr.dom.keyPressed(event) === 'ArrowDown')) {// DOWN
             current_list_for_copy.disabled = true;
             window.setTimeout(function () {
                 current_list_for_copy.disabled = false;
@@ -170,8 +168,7 @@ function update_ajax_member_list_response(result, list_contents) {
             list.options[list.selectedIndex].selected = true;
             return cancel_bubbling(event);
         }
-        if (!event.shiftKey && key_pressed(event, 38, true)) // UP
-        {
+        if (!event.shiftKey && (Composr.dom.keyPressed(event) === 'ArrowUp')) {// UP
             current_list_for_copy.disabled = true;
             window.setTimeout(function () {
                 current_list_for_copy.disabled = false;
@@ -206,8 +203,7 @@ function update_ajax_member_list_response(result, list_contents) {
     list.onkeyup = function (event) {
         var ret = handle_arrow_usage(event);
         if (ret != null) return ret;
-        if (enter_pressed(event)) // ENTER
-        {
+        if (enter_pressed(event)) {// ENTER
             make_selection(event);
             current_list_for_copy.disabled = true;
             window.setTimeout(function () {
@@ -216,22 +212,23 @@ function update_ajax_member_list_response(result, list_contents) {
 
             return cancel_bubbling(event);
         }
-        if (!event.shiftKey && key_pressed(event, [40, 38], true)) {
-            if (typeof event.preventDefault != 'undefined') event.preventDefault();
+        if (!event.shiftKey && (['ArrowUp', 'ArrowDown'].indexOf(Composr.dom.keyPressed(event)) !== -1)) {
+            if (event.cancelable) event.preventDefault();
             return cancel_bubbling(event);
         }
         return null;
     };
+
     window.current_list_for.onkeypress = function (event) {
-        if (!event.shiftKey && key_pressed(event, [40, 38], true)) {
-            if (typeof event.preventDefault != 'undefined') event.preventDefault();
+        if (!event.shiftKey && (['ArrowUp', 'ArrowDown'].indexOf(Composr.dom.keyPressed(event)) !== -1)) {
+            if (event.cancelable) event.preventDefault();
             return cancel_bubbling(event);
         }
         return null;
     };
     list.onkeypress = function (event) {
-        if (!event.shiftKey && key_pressed(event, [40, 38, 13], true)) {
-            if (typeof event.preventDefault != 'undefined') event.preventDefault();
+        if (!event.shiftKey && (['Enter', 'ArrowUp', 'ArrowDown'].indexOf(Composr.dom.keyPressed(event)) !== -1)) {
+            if (event.cancelable) event.preventDefault();
             return cancel_bubbling(event);
         }
         return null;

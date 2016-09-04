@@ -68,19 +68,15 @@ function load_commandr() {
                     smooth_scroll(0, null, null, function () {
                         document.getElementById('commandr_command').focus();
                     });
-                    if (typeof window.fade_transition != 'undefined') {
-                        set_opacity(document.getElementById('command_line'), 0.0);
-                        fade_transition(document.getElementById('command_line'), 90, 30, 5);
-                    }
+
+                    set_opacity(document.getElementById('command_line'), 0.0);
+                    fade_transition(document.getElementById('command_line'), 90, 30, 5);
+
 
                     var bi = document.getElementById('main_website_inner');
                     if (bi) {
-                        if (typeof window.fade_transition != 'undefined') {
-                            set_opacity(bi, 1.0);
-                            fade_transition(bi, 30, 30, -5);
-                        } else {
-                            set_opacity(bi, 0.3);
-                        }
+                        set_opacity(bi, 1.0);
+                        fade_transition(bi, 30, 30, -5);
                     }
 
                     document.getElementById('commandr_command').focus();
@@ -97,11 +93,7 @@ function load_commandr() {
                     commandr_box.style.display = 'none';
                     var bi = document.getElementById('main_website_inner');
                     if (bi) {
-                        if (typeof window.fade_transition != 'undefined') {
-                            fade_transition(bi, 100, 30, 5);
-                        } else {
-                            set_opacity(bi, 1.0);
-                        }
+                        fade_transition(bi, 100, 30, 5);
                     }
                 }
             }

@@ -1200,78 +1200,11 @@ function find_pos_y(obj, not_relative) {/* if not_relative is true it gets the p
 
 /* See if a key event was an enter key being pressed */
 function enter_pressed(event, alt_char) {
-    if (typeof alt_char == 'undefined') alt_char = false;
-
-    if ((alt_char) && (((event.which) && (event.which == alt_char.charCodeAt(0))) || ((event.keyCode) && (event.keyCode == alt_char.charCodeAt(0))))) return true;
-    return (((event.which) && (event.which == 13)) || ((event.keyCode) && (event.keyCode == 13)));
-}
-
-/* Takes literal or list of unicode key character codes or case insensitive letters as characters or numbers as characters or supported lower case symbols */
-function key_pressed(event, key, no_error_if_bad) {
-    if (typeof window.anykeyokay == 'undefined') window.anykeyokay = false;
-
-    if (key.constructor == Array) {
-        for (var i = 0; i < key.length; i++) {
-            if (key[i] == null) // This specifies that control characters allowed (arrow keys, backspace, etc)
-            {
-                if ((event.keyCode) && ((window.anykeyokay) || (event.keyCode < 48) || (event.keyCode == 86) || (event.keyCode == 91) || (event.keyCode == 224)) && (event.keyCode != 32)) {
-                    window.anykeyokay = true;
-                    window.setTimeout(function () {
-                        window.anykeyokay = false;
-                    }, 5); // In case of double event for same keypress
-                    return true;
-                }
-            } else {
-                if (key_pressed(event, key[i])) return true;
-            }
-        }
-
-        var targ;
-        if (typeof event.target != 'undefined') targ = event.target;
-
-        if (!no_error_if_bad) {
-            var current_bg = window.getComputedStyle(targ).getPropertyValue('background');
-            if ((typeof current_bg == 'undefined') || (current_bg)) current_bg = 'white';
-            if (current_bg != '#FF8888')
-                window.setTimeout(function () {
-                    targ.style.background = current_bg;
-                }, 400);
-            targ.style.background = '#FF8888';
-        }
-        return false;
+    if ((alt_char !== undefined) && (event.which && (event.which === alt_char.charCodeAt(0))))  {
+        return true;
     }
 
-    /* Special cases, we remap what we accept if we detect an alternative was pressed */
-    if ((key == '-') && (event.keyCode == 173)) key = 173;
-    /* Firefox '-' */
-    if ((key == '-') && (event.keyCode == 189)) key = 189;
-    /* Safari '-' */
-    if (key == '-') key = 109;
-    /* Other browsers '-' */
-    if (key == '/') key = 191;
-    /* Normal '/' */
-    if ((key == '.') && (event.keyCode == 190)) key = 190;
-    /* Normal '.' */
-    if ((key == '.') && (event.keyCode == 110)) key = 110;
-    /* Keypad '.' */
-    if ((key == '_') && (event.keyCode == 173) && (event.shiftKey)) key = 173;
-    /* Firefox '_' */
-    if ((key == '_') && (event.keyCode == 189) && (event.shiftKey)) key = 189;
-    /* Safari '_' */
-    if (key == '_') key = 0;
-    /* Other browsers '_'; This one is a real shame as the key code 0 is shared by lots of symbols */
-
-    // Where we have an ASCII correspondance or can automap to one
-    if (key.constructor == String) // NB we are not case sensitive on letters. And we cannot otherwise pass in characters that need shift pressed.
-    {
-        if ((event.shiftKey) && (key.toUpperCase() == key.toLowerCase())) return false; // We are not case sensitive on letters but otherwise we have no way to map the shift key. As we have to assume shift is not pressed for any ASCII based symbol conversion (keycode is same whether shift pressed or not) we cannot handle shifted ones.
-
-        key = key.toUpperCase().charCodeAt(0); // Convert accepted key into ASCII
-
-        if ((event.keyCode) && (event.keyCode >= 96) && (event.keyCode < 106) && (key >= 48) && (key < 58)) key += 48; // Numeric keypad special case
-    }
-
-    return ((typeof event.keyCode != 'undefined') && (event.keyCode == key)); // Whether we have a match to what was pressed
+    return event.which && (event.which === 13);
 }
 
 function modsecurity_workaround(form) {
@@ -1719,7 +1652,7 @@ function set_opacity(element, fraction) {
     if (element.fader_key && (window.fade_transition_timers !== undefined) && (window.fade_transition_timers[element.fader_key])) {
         try { // Cross-frame issues may cause error
             window.clearTimeout(window.fade_transition_timers[element.fader_key]);
-        } catch (e) {
+        } catch (ignore) {
         }
         window.fade_transition_timers[element.fader_key] = null;
     }
@@ -1730,27 +1663,22 @@ function set_opacity(element, fraction) {
 /* Event listeners */
 
 function cancel_bubbling(event) {
-    if (!event || !event.target) {
+    if (!event || !event.target || (event.stopPropagation === undefined)) {
         return false;
     }
 
-    if (event.stopPropagation !== undefined) {
-        event.stopPropagation();
-
-        return true;
-    }
-
-    return false;
+    event.stopPropagation();
+    return true;
 }
 
 /* Update a URL to maintain the current theme into it */
 function maintain_theme_in_link(url) {
-    if (url.indexOf('&utheme=') != -1) return url;
-    if (url.indexOf('?utheme=') != -1) return url;
-    if (url.indexOf('&keep_theme=') != -1) return url;
-    if (url.indexOf('?keep_theme=') != -1) return url;
+    if (url.includes('&utheme=')) return url;
+    if (url.includes('?utheme=')) return url;
+    if (url.includes('&keep_theme=')) return url;
+    if (url.includes('?keep_theme=')) return url;
 
-    if (url.indexOf('?') == -1) url += '?'; else url += '&';
+    url += (url.includes('?') ? '&' : '?');
     url += 'utheme=' + window.encodeURIComponent(Composr.$THEME);
 
     return url;
@@ -1850,7 +1778,7 @@ function apply_rating_highlight_and_ajax_code(likes, initial_rating, content_typ
 
             if (!visual_only) bit.onclick = function (i) {
                 return function (event) {
-                    if (typeof event.preventDefault != 'undefined') event.preventDefault();
+                    if (event.cancelable) event.preventDefault();
 
                     // Find where the rating replacement will go
                     var template = '';
@@ -1945,9 +1873,9 @@ function click_link(link) {
 
     link.onclick = backup;
 
-    if ((!cancelled) && (link.href)) {
-        if (link.getAttribute('target')) {
-            window.open(link.href, link.getAttribute('target'));
+    if (!cancelled && link.href) {
+        if (link.target) {
+            window.open(link.href, link.target);
         }
 
         window.location = link.href;
@@ -1965,7 +1893,7 @@ function replace_comments_form_with_ajax(options, hash, comments_form_id, commen
             if ((typeof is_preview != 'undefined') && (is_preview)) return true;
 
             // Cancel the event from running
-            if (typeof event.preventDefault != 'undefined') event.preventDefault();
+            if (event.cancelable) event.preventDefault();
 
             if (!comments_form.old_onsubmit(event)) return false;
 
@@ -2193,7 +2121,9 @@ function play_self_audio_link(ob) {
             debugMode: false,
             onready: function () {
                 var sound_object = window.soundManager.createSound({url: ob.href});
-                if (sound_object) sound_object.play();
+                if (sound_object) {
+                    sound_object.play();
+                }
             }
         });
     }, 50);
@@ -2235,15 +2165,22 @@ if (window.fade_transition_timers === undefined) {
 }
 
 function fade_transition(fade_element, dest_percent_opacity, period_in_msecs, increment, destroy_after) {
-    if (!fade_element) return;
+    if (!_.isElement(fade_element)) {
+        return;
+    }
 
-    /*{+START,IF,{$NOT,{$CONFIG_OPTION,enable_animations}}}*/
-    set_opacity(fade_element, dest_percent_opacity / 100.0);
-    return;
-    /*{+END}*/
+    if (Composr.isFalsy(Composr.$CONFIG_OPTION.enableAnimations)) {
+        set_opacity(fade_element, dest_percent_opacity / 100.0);
+        return;
+    }
 
-    if (typeof window.fade_transition_timers == 'undefined') return;
-    if (typeof fade_element.fader_key == 'undefined') fade_element.fader_key = fade_element.id + '_' + Math.round(Math.random() * 1000000);
+    if (window.fade_transition_timers === undefined) {
+        return;
+    }
+
+    if (fade_element.fader_key === undefined) {
+        fade_element.fader_key = fade_element.id + '_' + Math.round(Math.random() * 1000000);
+    }
 
     if (window.fade_transition_timers[fade_element.fader_key]) {
         window.clearTimeout(window.fade_transition_timers[fade_element.fader_key]);
@@ -2271,7 +2208,10 @@ function fade_transition(fade_element, dest_percent_opacity, period_in_msecs, in
         if (temp > 1.0) temp = 1.0;
         fade_element.style.opacity = temp;
         again = (Math.round(temp * 100) != Math.round(dest_percent_opacity));
-    } else again = true; // Opacity not set yet, need to call back in an event timer
+    } else {
+        // Opacity not set yet, need to call back in an event timer
+        again = true;
+    }
 
     if (again) {
         window.fade_transition_timers[fade_element.fader_key] = window.setTimeout(function () {

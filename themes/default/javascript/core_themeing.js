@@ -8,6 +8,14 @@
         }
     };
 
+    var ThemeManageScreen = Composr.View.extend({
+        initialize: function (v, options) {
+            Composr.View.prototype.initialize.apply(this, arguments);
+
+
+        }
+    });
+
     var ThemeTemplateEditorTab = Composr.View.extend({
         initialize: function (viewOptions, options) {
             this.options = options;
@@ -104,6 +112,7 @@
     });
 
     Composr.views.coreThemeing = {
+        ThemeManageScreen: ThemeManageScreen,
         ThemeTemplateEditorTab: ThemeTemplateEditorTab
     };
 

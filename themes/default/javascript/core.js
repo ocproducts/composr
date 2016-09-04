@@ -128,8 +128,112 @@
     };
 
     var Global = Composr.View.extend({
+        _stripPatternCache: null,
+
         initialize: function initialize() {
             Composr.View.prototype.initialize.apply(this, arguments);
+            this._stripPatternCache = {};
+
+
+        },
+
+        events: {
+            // Prevent url change for clicks on anchor tags with a placeholder href
+            'click a[href$="#!"]': 'preventDefault',
+            // Prevent form submission for forms with a placeholder action
+            'submit form[action$="#!"]': 'preventDefault',
+
+            // Disable button after click
+            'click [data-disable-on-click]': 'disableButton',
+
+            // Disable form buttons
+            'submit form[data-disable-buttons-on-submit]': 'disableFormButtons',
+
+            // Prevents input of matching characters
+            'input input[data-cms-invalid-pattern]': 'invalidPattern',
+            'keydown input[data-cms-invalid-pattern]': 'invalidPattern',
+            'keypress input[data-cms-invalid-pattern]': 'invalidPattern',
+
+            // Open page in overlay
+            'click [data-open-as-overlay]': 'openOverlay',
+
+            // Lightboxes
+            'click a[rel*="lightbox"]': 'lightBoxes'
+        },
+
+        preventDefault: function (e) {
+            e.preventDefault();
+        },
+
+        disableButton: function (e) {
+            Composr.ui.disableButton(e.currentTarget);
+        },
+
+        disableFormButtons: function (e) {
+            Composr.ui.disableFormButtons(e.currentTarget);
+        },
+
+        invalidPattern: function (e) {
+            var input = e.currentTarget,
+                pattern = input.dataset.cmsInvalidPattern,
+                regex;
+
+            regex = this._stripPatternCache[pattern] || (this._stripPatternCache[pattern] = new RegExp(pattern, 'g'));
+
+            if (e.type === 'input') {
+                // value.length is also 0 if invalid value is provided for input[type=number] et al.
+                if (input.value.length === 0) {
+                    input.value = '';
+                } else if (regex.test(input.value)) {
+                    input.value = input.value.replace(regex, '');
+                }
+                return;
+            }
+
+            // keydown/keypress event
+            if (regex.test(Composr.dom.keyOutput(e))) {
+                // pattern matched, prevent input
+                e.preventDefault();
+            }
+        },
+
+        openOverlay: function (e) {
+            var el = e.currentTarget, args,
+                url = (el.href === undefined) ? el.action : el.href;
+
+            if (Composr.isFalsy(Composr.$CONFIG_OPTION.jsOverlays)) {
+                return;
+            }
+
+            if (/:\/\/(.[^/]+)/.exec(url)[1] !== window.location.hostname) {
+                return; // Cannot overlay, different domain
+            }
+
+            e.preventDefault();
+
+            args = Composr.parseDataObject(el.dataset.openAsOverlay);
+            args.el = el;
+
+            openLinkAsOverlay(args);
+        },
+
+        lightBoxes: function (e) {
+            var el = e.currentTarget;
+
+            if (Composr.isFalsy(Composr.$CONFIG_OPTION.jsOverlays)) {
+                return;
+            }
+
+            e.preventDefault();
+
+            if (el.querySelectorAll('img').length > 0 || el.querySelectorAll('video').length > 0) {
+                open_image_into_lightbox(el);
+            } else {
+                openLinkAsOverlay({el: el});
+            }
+        },
+
+        setup: function () {
             var i;
 
             if ((window === window.top && !window.opener) || (window.name === '')) {
@@ -259,62 +363,6 @@
             if (Composr.$IS_STAFF && (window.script_load_stuff_staff !== undefined)) {
                 script_load_stuff_staff()
             }
-        },
-
-        events: {
-            // Prevent url change for clicks on anchor tags with a placeholder href
-            'click a[href$="#!"]': 'preventDefault',
-            // Prevent form submission for forms with a placeholder action
-            'submit form[action$="#!"]': 'preventDefault',
-
-            'click [data-disable-on-click]': function (e) {
-                Composr.ui.disableButton(e.currentTarget);
-            },
-
-            'submit form[data-disable-buttons-on-submit]': function (e) {
-                Composr.ui.disableFormButtons(e.currentTarget);
-            },
-
-            'click [data-open-as-overlay]': function (e) {
-                var el = e.currentTarget, args,
-                    url = (el.href === undefined) ? el.action : el.href;
-
-                if (Composr.isFalsy(Composr.$CONFIG_OPTION.jsOverlays)) {
-                    return;
-                }
-
-                if (/:\/\/(.[^/]+)/.exec(url)[1] !== window.location.hostname) {
-                    return; // Cannot overlay, different domain
-                }
-
-                e.preventDefault();
-
-                args = Composr.parseDataObject(el.dataset.openAsOverlay);
-                args.el = el;
-
-                openLinkAsOverlay(args);
-            },
-
-            // Lightboxes
-            'click a[rel*="lightbox"]': function (e) {
-                var el = e.currentTarget;
-
-                if (Composr.isFalsy(Composr.$CONFIG_OPTION.jsOverlays)) {
-                    return;
-                }
-
-                e.preventDefault();
-
-                if (el.querySelectorAll('img').length > 0 || el.querySelectorAll('video').length > 0) {
-                    open_image_into_lightbox(el);
-                } else {
-                    openLinkAsOverlay({el: el});
-                }
-            }
-        },
-
-        preventDefault: function (e) {
-            e.preventDefault();
         }
     });
 

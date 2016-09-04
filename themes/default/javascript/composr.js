@@ -228,7 +228,7 @@
                 addonArgs = '',
                 args = [];
 
-            if ((el.nodeName === 'SCRIPT') && (el.type === 'application/json')) {
+            if ((el.localName === 'script') && (el.type === 'application/json')) {
                 // Arguments provided inside the <script> tag.
                 addonArgs = el.textContent.trim();
 
@@ -249,7 +249,7 @@
             var func = Composr.templates[addonNameCamelCased] ? Composr.templates[addonNameCamelCased][funcName] : null;
 
             if (typeof func === 'function') {
-                func.apply(el.nodeName !== 'SCRIPT' ? el : context, args);
+                func.apply(el.localName !== 'script' ? el : context, args);
             }
         });
     };
@@ -442,7 +442,6 @@
 
         return els;
     };
-
     Composr.dom.on = function (el, eventName, callbackOrSelector, callback) {
         var selector;
 
@@ -454,7 +453,7 @@
             el.addEventListener(eventName, function (e) {
                 var match;
 
-                if ((el === e.target) || !el.contains(e.target)) {
+                if (el === e.target) {
                     return;
                 }
 
@@ -470,6 +469,31 @@
 
     Composr.dom.off = function (el, eventName, callback) {
         el.removeEventListener(eventName, callback);
+    };
+
+    Composr.dom.keyPressed = function (keyboardEvent, checkKey) {
+        var key = keyboardEvent.key;
+
+        if (arguments.length === 2) {
+            return Array.isArray(checkKey) ? (checkKey.indexOf(key) !== -1) : key === checkKey;
+        }
+
+        return key;
+    };
+
+    /**
+     * Returns the output produced by a KeyboardEvent, or empty string if none
+     * @param keyboardEvent { KeyboardEvent }
+     * @return string
+     */
+    Composr.dom.keyOutput = function (keyboardEvent) {
+        var key = keyboardEvent.key;
+
+        if ((typeof key === 'string') && (key.length === 1)) {
+            return key;
+        }
+
+        return '';
     };
 
     Composr.dom.html = function (el, html) {
@@ -691,6 +715,37 @@
             };
         }
 
+        if (window.onfocusin === undefined) { // Polyfill Firefox not supporting foucsin and focusout
+            // Credit: https://github.com/Financial-Times/polyfill-service/blob/master/polyfills/Event/focusin/polyfill.js
+            window.addEventListener('focus', function (event) {
+                event.target.dispatchEvent(new Event('focusin', {
+                    bubbles: true,
+                    cancelable: true
+                }));
+            }, true);
+
+            window.addEventListener('blur', function (event) {
+                event.target.dispatchEvent(new Event('focusout', {
+                    bubbles: true,
+                    cancelable: true
+                }));
+            }, true);
+        }
+
+        // Add CustomEvent to Internet Explorer
+        if (typeof window.CustomEvent !== 'function') {
+            // Code from: https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent
+            function CustomEvent(event, options) {
+                options = options || { bubbles: false, cancelable: false, detail: undefined };
+                var e = document.createEvent('CustomEvent');
+                e.initCustomEvent(event, !!options.bubbles, !!options.cancelable, options.detail);
+                return e;
+            }
+
+            CustomEvent.prototype = window.Event.prototype;
+            window.CustomEvent = CustomEvent;
+        }
+
         function onload() {
             scriptsLoaded++;
 
@@ -712,8 +767,12 @@
             loadScript(Composr.$BASE_URL + '/data/polyfills/url-search-params.max.js');
         }
 
+        if (!('key' in window.KeyboardEvent.prototype)) {
+            loadScript(Composr.$BASE_URL + '/data/polyfills/keyboardevent-key-polyfill.js');
+        }
+
         if (scriptsToLoad === 0) {
             callback();
         }
     }
-})(window.jQuery || window.Zepto, JSON.parse(document.getElementsByName('composr-symbol-data')[0].content));
+}(window.jQuery || window.Zepto, JSON.parse(document.getElementsByName('composr-symbol-data')[0].content)));

@@ -319,10 +319,9 @@
                         set_opacity(bi, 0.4);
                     }
 
-                    if (typeof window.fade_transition != 'undefined') {
-                        set_opacity(element, 0.0);
-                        fade_transition(element, 100, 30, 3);
-                    }
+                    set_opacity(element, 0.0);
+                    fade_transition(element, 100, 30, 3);
+
 
                     if (options.timeout !== '-1') {
                         window.setTimeout(function () {

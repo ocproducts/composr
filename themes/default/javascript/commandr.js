@@ -23,7 +23,7 @@ function commandr_handle_history(element, key_code, e) {
     if ((key_code == 38) && (window.previous_commands.length > 0)) // Up button
     {
         cancel_bubbling(e);
-        if (typeof e.preventDefault != 'undefined') e.preventDefault();
+        if (e.cancelable) e.preventDefault();
 
         if (window.current_command == null) {
             window.current_command = window.previous_commands.length - 1;
@@ -38,7 +38,7 @@ function commandr_handle_history(element, key_code, e) {
     else if ((key_code == 40) && (window.previous_commands.length > 0)) // Down button
     {
         cancel_bubbling(e);
-        if (typeof e.preventDefault != 'undefined') e.preventDefault();
+        if (e.cancelable) e.preventDefault();
 
         if (window.current_command != null) {
             if (window.current_command < window.previous_commands.length - 1) {

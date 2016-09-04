@@ -11,8 +11,11 @@ function deselect_alt_url(form) {
 }
 
 function _ensure_next_field(event, ob) {
-    if (enter_pressed(event)) goto_next_field(ob);
-    else if (!key_pressed(event, 9)) ensure_next_field(ob);
+    if (Composr.dom.keyPressed(event) === 'Enter') {
+        goto_next_field(ob);
+    } else if (Composr.dom.keyPressed(event) !== 'Tab') {
+        ensure_next_field(ob);
+    }
 }
 
 function goto_next_field(this_field) {
@@ -83,7 +86,9 @@ function ensure_next_field(this_field) {
 }
 
 function _ensure_next_field_upload(event) {
-    if (!key_pressed(event, 9)) ensure_next_field_upload(this);
+    if (Composr.dom.keyPressed(event) !== 'Tab') {
+        ensure_next_field_upload(this);
+    }
 }
 
 function ensure_next_field_upload(this_field) {

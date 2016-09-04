@@ -15,7 +15,7 @@
 
 		<div>
 			<label class="accessibility_hidden" for="give_amount">{!AMOUNT}</label>
-			<input maxlength="8" onkeydown="if (!key_pressed(event,[null,'-','0','1','2','3','4','5','6','7','8','9','.'])) return false; return null;" size="7" id="give_amount" class="input_integer_required field_input_non_filled" value="{!AMOUNT}" onfocus="placeholder_focus(this);" onblur="placeholder_blur(this);" type="text" name="amount" />
+			<input maxlength="8" data-cms-invalid-pattern="[^\-\d\.]" size="7" id="give_amount" class="input_integer_required field_input_non_filled" value="{!AMOUNT}" onfocus="placeholder_focus(this);" onblur="placeholder_blur(this);" type="text" name="amount" />
 
 			<label class="accessibility_hidden" for="give_reason">{!REASON}</label>
 			<input maxlength="255" size="26" id="give_reason" class="input_line_required field_input_non_filled" value="{!REASON}" onfocus="placeholder_focus(this);" onblur="placeholder_blur(this);" type="text" name="reason" />
@@ -45,7 +45,7 @@
 		<div>
 			<div class="points_give_shared_options">
 				<label class="accessibility_hidden" for="give_amount">{!AMOUNT}</label>
-				<input maxlength="10" onkeydown="if (!key_pressed(event,[null,'-','0','1','2','3','4','5','6','7','8','9','.'])) return false; return null;" size="7" id="give_amount" class="input_integer_required field_input_non_filled" value="{!AMOUNT}" onfocus="placeholder_focus(this);" onblur="placeholder_blur(this);" type="text" name="amount" />
+				<input maxlength="10" data-cms-invalid-pattern="[^\-\d\.]" size="7" id="give_amount" class="input_integer_required field_input_non_filled" value="{!AMOUNT}" onfocus="placeholder_focus(this);" onblur="placeholder_blur(this);" type="text" name="amount" />
 
 				<label class="accessibility_hidden" for="give_reason">{!REASON}</label>
 				<input maxlength="255" size="18" id="give_reason" class="input_line_required field_input_non_filled" value="{!REASON}" onfocus="placeholder_focus(this);" onblur="placeholder_blur(this);" type="text" name="reason" />

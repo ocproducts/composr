@@ -3,7 +3,6 @@
 <div id="do_next_item_{$GET,rand_do_next_item}" class="do_next_item" style="width: {$DIV*,100,{$MIN,5,{NUM_SIBLINGS}}}%"
 	 data-tpl-core-abstract-interfaces="doNextItem" data-tpl-args="{+START,PARAMS_JSON,AUTO_ADD,rand_do_next_item}{_*}{+END}"
 	 onclick="var as=this.getElementsByTagName('a'); var a=as[as.length-1]; click_link(a);"
-	 onkeypress="if (enter_pressed(event)) this.onclick(event);"
 	 onmouseout="if (typeof window.doc_onmouseout!='undefined') doc_onmouseout();"
 	 onmouseover="if (typeof window.doc_onmouseover!='undefined') doc_onmouseover('{$GET,rand_do_next_item}');">
 

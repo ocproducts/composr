@@ -9,7 +9,7 @@ function fractional_edit(event, object, url, raw_text, edit_param_name, was_doub
 
     if ((magic_keypress(event)) || (was_double_click) || (object != event.target)) {
         cancel_bubbling(event);
-        if (typeof event.preventDefault != 'undefined') event.preventDefault();
+        if (event.cancelable) event.preventDefault();
 
         // Position form
         var width = object.offsetWidth;
@@ -158,7 +158,7 @@ function fractional_edit(event, object, url, raw_text, edit_param_name, was_doub
         // If we activate it again, we actually treat this as a cancellation
         object.onclick = object.ondblclick = function (event) {
             cancel_bubbling(event);
-            if (typeof event.preventDefault != 'undefined') event.preventDefault();
+            if (event.cancelable) event.preventDefault();
 
             if (magic_keypress(event)) cleanup_function();
 
@@ -168,8 +168,7 @@ function fractional_edit(event, object, url, raw_text, edit_param_name, was_doub
         // Cancel or save actions
         if (type == 'line') input.onkeyup = function (event) // Not using onkeypress because that only works for actual represented characters in the input box
         {
-            if (key_pressed(event, [27], true)) // Cancel (escape key)
-            {
+            if (Composr.dom.keyPressed(event) === 'Escape') {// Cancel (escape key)
                 var tmp = input.onblur;
                 input.onblur = null;
                 fauxmodal_confirm('{!javascript:FRACTIONAL_EDIT_CANCEL_CONFIRM;}', function (result) {

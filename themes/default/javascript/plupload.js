@@ -13229,9 +13229,9 @@ function fire_fake_upload_field_change(name,value)
 		element.value=value;
 		element.virtual_value=value;
 
-		element.dispatchEvent(new Event('change'));
+		element.dispatchEvent(new CustomEvent('change', { bubbles: true }));
 		if (element.oldElement){
-			element.oldElement.dispatchEvent(new Event('change'))
+			element.oldElement.dispatchEvent(new CustomEvent('change', { bubbles: true }))
 		}
 	} else
 	{

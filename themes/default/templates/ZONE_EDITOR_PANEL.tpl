@@ -3,14 +3,14 @@
 	<div class="float_surrounder">
 		<div class="ze_tabs tabs" role="tablist">
 			{+START,IF_PASSED,PREVIEW}
-				<a aria-controls="view_{ID*}" role="tab" title="{!PREVIEW}: {ID*}" href="#!" id="view_tab_{ID*}" class="tab tab_first tab_selected" onkeypress="if (enter_pressed(event)) this.onclick(event);" onclick="select_ze_tab('{ID;*}','view'); reload_preview('{ID;*}'); return false;"><img alt="" src="{$IMG*,icons/24x24/tabs/preview}" srcset="{$IMG*,icons/48x48/tabs/preview} 2x" /> <span>{!PREVIEW}</span></a>
+				<a aria-controls="view_{ID*}" role="tab" title="{!PREVIEW}: {ID*}" href="#!" id="view_tab_{ID*}" class="tab tab_first tab_selected" onclick="select_ze_tab('{ID;*}','view'); reload_preview('{ID;*}'); return false;"><img alt="" src="{$IMG*,icons/24x24/tabs/preview}" srcset="{$IMG*,icons/48x48/tabs/preview} 2x" /> <span>{!PREVIEW}</span></a>
 			{+END}
 			{+START,IF_PASSED,COMCODE}
-				<a aria-controls="edit_{ID*}" role="tab" title="{!EDIT}: {ID*}" href="#!" id="edit_tab_{ID*}" class="tab{+START,IF_NON_PASSED,PREVIEW} tab_first{+END}" onkeypress="if (enter_pressed(event)) this.onclick(event);" onclick="select_ze_tab('{ID;*}','edit'); return false;"><img alt="" src="{$IMG*,icons/24x24/tabs/edit}" srcset="{$IMG*,icons/48x48/tabs/edit} 2x" /> <span>{!EDIT}</span></a>
+				<a aria-controls="edit_{ID*}" role="tab" title="{!EDIT}: {ID*}" href="#!" id="edit_tab_{ID*}" class="tab{+START,IF_NON_PASSED,PREVIEW} tab_first{+END}" onclick="select_ze_tab('{ID;*}','edit'); return false;"><img alt="" src="{$IMG*,icons/24x24/tabs/edit}" srcset="{$IMG*,icons/48x48/tabs/edit} 2x" /> <span>{!EDIT}</span></a>
 			{+END}
-			<a aria-controls="info_{ID*}" role="tab" title="{!DETAILS}: {ID*}" href="#!" id="info_tab_{ID*}" class="tab{+START,IF_NON_PASSED,SETTINGS} tab_last{+END}{+START,IF_NON_PASSED,PREVIEW}{+START,IF_NON_PASSED,COMCODE} tab_first{+END}{+END}" onkeypress="if (enter_pressed(event)) this.onclick(event);" onclick="select_ze_tab('{ID;*}','info'); return false;"><img alt="" src="{$IMG*,icons/24x24/menu/_generic_spare/page}" srcset="{$IMG*,icons/48x48/menu/_generic_spare/page} 2x" /> <span>{!DETAILS}</span></a>
+			<a aria-controls="info_{ID*}" role="tab" title="{!DETAILS}: {ID*}" href="#!" id="info_tab_{ID*}" class="tab{+START,IF_NON_PASSED,SETTINGS} tab_last{+END}{+START,IF_NON_PASSED,PREVIEW}{+START,IF_NON_PASSED,COMCODE} tab_first{+END}{+END}" onclick="select_ze_tab('{ID;*}','info'); return false;"><img alt="" src="{$IMG*,icons/24x24/menu/_generic_spare/page}" srcset="{$IMG*,icons/48x48/menu/_generic_spare/page} 2x" /> <span>{!DETAILS}</span></a>
 			{+START,IF_PASSED,SETTINGS}
-				<a aria-controls="settings_{ID*}" role="tab" title="{!SETTINGS}: {ID*}" href="#!" id="settings_tab_{ID*}" class="tab tab_last" onkeypress="if (enter_pressed(event)) this.onclick(event);" onclick="select_ze_tab('{ID;*}','settings'); return false;"><img alt="" src="{$IMG*,icons/24x24/tabs/settings}" srcset="{$IMG*,icons/48x48/tabs/settings} 2x" /> <span>{!SETTINGS}</span></a>
+				<a aria-controls="settings_{ID*}" role="tab" title="{!SETTINGS}: {ID*}" href="#!" id="settings_tab_{ID*}" class="tab tab_last" onclick="select_ze_tab('{ID;*}','settings'); return false;"><img alt="" src="{$IMG*,icons/24x24/tabs/settings}" srcset="{$IMG*,icons/48x48/tabs/settings} 2x" /> <span>{!SETTINGS}</span></a>
 			{+END}
 		</div>
 	</div>

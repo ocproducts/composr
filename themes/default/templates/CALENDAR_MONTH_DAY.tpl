@@ -1,5 +1,5 @@
 {+START,IF,{$AND,{$IS_NON_EMPTY,{DAY}},{$JS_ON}}}
-<td class="calendar_month_day calendar_{CLASS*}{+START,IF,{CURRENT}} calendar_current{+END}" onkeypress="if (enter_pressed(event)) this.onclick(event);" onclick="window.location.href='{DAY_URL;*}'">
+<td class="calendar_month_day calendar_{CLASS*}{+START,IF,{CURRENT}} calendar_current{+END}" onclick="window.location.href='{DAY_URL;*}'">
 {+END}
 {+START,IF,{$NOT,{$AND,{$IS_NON_EMPTY,{DAY}},{$JS_ON}}}}
 <td class="calendar_month_day calendar_{CLASS*}{+START,IF,{CURRENT}} calendar_current{+END}">

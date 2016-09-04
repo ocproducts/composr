@@ -94,10 +94,9 @@ function set_field_error(the_element, error_msg) {
                     errormsg_element.setAttribute('role', 'alert');
 
                     // Fade in
-                    if (typeof window.fade_transition != 'undefined') {
-                        set_opacity(errormsg_element, 0.0);
-                        fade_transition(errormsg_element, 100, 30, 4);
-                    }
+                    set_opacity(errormsg_element, 0.0);
+                    fade_transition(errormsg_element, 100, 30, 4);
+
                 } else {
                     the_element.setAttribute('aria-invalid', 'false');
                     errormsg_element.setAttribute('role', '');

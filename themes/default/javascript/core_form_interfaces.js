@@ -266,7 +266,7 @@
             inner.addEventListener(browser_matches('gecko') ? 'DOMMouseScroll' : 'mousewheel', function (event) {
                 inner.scrollTop -= event.wheelDelta ? event.wheelDelta : event.detail;
                 cancel_bubbling(event);
-                if (typeof event.preventDefault != 'undefined') event.preventDefault();
+                if (event.cancelable) event.preventDefault();
                 return false;
             });
         },
@@ -510,14 +510,14 @@
 
         formScreenInputRadioListComboEntry: function formScreenInputRadioListComboEntry(options) {
             var el = document.getElementById('j_' + Composr.filters.identifier(options.name) + '_other');
-            el.dispatchEvent(new Event('change'));
+            el.dispatchEvent(new CustomEvent('change', { bubbles: true }));
         },
 
         formScreenInputVariousTricks: function formScreenInputVariousTricks(options) {
             options || (options = {});
 
             if ((typeof options.customName !== 'undefined') && Composr.isFalsy(options.customAcceptMultiple)) {
-                document.getElementById(options.customName + '_value').dispatchEvent(new Event('change'));
+                document.getElementById(options.customName + '_value').dispatchEvent(new CustomEvent('change', { bubbles: true }));
             }
         },
 
