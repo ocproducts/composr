@@ -12,7 +12,7 @@ Composr is supplied in English as standard. Any other languages will need new la
 
 ([i]If you have a web designer, you will want to ask them to perform the translation installation for you, if they haven't already done them[/i])
 
-We use the Transifex platform for organising community translation. Transifex is an online system were multiple users can translate the same software, which can then be used by everyone. It is possible also to translate directly within Composr, but we discourage this. Through community translation on Transifex effort can be pooled, and translation quality maintained indefinitely.
+We use the Transifex platform for organising community translation. Transifex is an online system where multiple users can translate the same software, which can then be used by everyone. It is possible also to translate directly within Composr, but we discourage this. Through community translation on Transifex effort can be pooled, and translation quality maintained indefinitely.
 
 [title="3"]From addons[/title]
 

@@ -786,7 +786,7 @@ function actualise_post_comment($allow_comments, $content_type, $content_id, $co
         $poster_name_if_guest = post_param_string('poster_name_if_guest', '');
     }
     list($topic_id, $is_hidden) = $GLOBALS['FORUM_DRIVER']->make_post_forum_topic(
-    // Define scope
+        // Define scope
         $forum,
         $content_type . '_' . $content_id,
 

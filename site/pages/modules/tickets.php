@@ -470,9 +470,6 @@ class Module_tickets
             $ticket_owner = intval($_temp[0]);
             $ticket_id = $_temp[1];
 
-            if (is_guest()) {
-                access_denied('NOT_AS_GUEST');
-            }
             check_ticket_access($id);
         } else { // New ticket, generate an ID
             if (has_privilege(get_member(), 'support_operator')) {
@@ -807,7 +804,13 @@ class Module_tickets
         @ignore_user_abort(true); // Must keep going till completion
 
         $id = get_param_string('id', strval(get_member()) . '_' . uniqid('', false)/*random new ticket ID*/);
-        check_ticket_access($id);
+
+        $ticket_type_id = $this->get_ticket_type_id();
+
+        if ($ticket_type_id === null) {
+            // If existing ticket, check access
+            check_ticket_access($id);
+        }
 
         $_title = post_param_string('title');
 
@@ -821,8 +824,6 @@ class Module_tickets
                 warn_exit(do_lang_tempcode('NO_PARAMETER_SENT', 'post'));
             }
         }
-
-        $ticket_type_id = $this->get_ticket_type_id();
 
         $staff_only = post_param_integer('staff_only', 0) == 1;
 
