@@ -830,9 +830,9 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
         if ($found === null) {
             if ($fallback === null) {
                 if ($light_error) {
-                    return paragraph(do_lang_tempcode('MISSING_TEMPLATE_FILE', escape_html($codename)), '34rwefwfdee');
+                    return paragraph(do_lang_tempcode('MISSING_TEMPLATE_FILE', escape_html($directory . '/' . $codename . $suffix)), '34rwefwfdee');
                 }
-                fatal_exit(do_lang_tempcode('MISSING_TEMPLATE_FILE', escape_html($codename)));
+                fatal_exit(do_lang_tempcode('MISSING_TEMPLATE_FILE', escape_html($directory . '/' . $codename . $suffix)));
             } else {
                 $result = do_template($fallback, $parameters, $lang);
                 return $result;
