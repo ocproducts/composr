@@ -66,15 +66,19 @@ Composr's SMTP-connection code is configured from the Configuration module (Admi
 
 When a website sends out e-mail there is always a risk that it could get blocked by spam filters. Whether this happens largely depends on the configuration of spam filters at ISPs and on user's own computers, but there also some general causes.
 
-General causes are:
+Specific issues can be:
  - If your server is on a spamlist. A good tool to check for this is: http://www.mxtoolbox.com/blacklists.aspx. Also check to see if any bounce messages come back that talk about your server being blocked as a spammer.
  - If your "Website e-mail address" is for an e-mail address hosted on another server and an SPF record exists for the domain does not grant your web server permission to use the address for sending out mail. Common e-mail services like gmail often have this problem. If this might be the case, you either need to get the SPF record amended to cover your server (impossible for a common service), or use a different "Website e-mail address". Note that Composr uses the "Website e-mail address" as the "From" address in all outgoing e-mails, but the reply addresses depend on context (often they are the "Staff address", but they could also be the address of the member who caused the e-mail to be sent.
- - Ensure you have reverse DNS available on your server's IP address.
+ - Ensure you have reverse DNS available on your server's IP address. This is the address outbound SMTP connections are made from.
+ - Ensure your server is giving a valid [tt]HELO[/tt] DNS address when it makes outbound SMTP connections, not something generic like [tt]localhost[/tt]. Preferably it will use your actual domain name, or a subdomain there-of, but this is not mandatory.
+ - Ensure the PHP [tt]mail.add_x_header[/tt] option is set to off (it flags up on SpamAssassin).
  - If your messages look like spam, which sometimes can happen inadvertently. Very carefully check your spam folder. Spam filters typically run a complex set of calculations to detect if something is 'spam'. It could well by a domain SPF setting is wrong, and combined with Composr e-mails being more complex than some other software, that knocking it over a spam threshold. That is just one of many possibilities that should be looked into if it is indeed a spam-filtering issue. A good tool to check spam filtering scores is: http://www.softexsw.com/en/tools/online-spam-score-check/
  - It's unlikely, but it could be some host/software-specific bug. You can open a bug report if you're willing to give the developers access to run tests on your server, after you've checked it's not a spam folder, and only if you're not on a low-quality free webhost.
+ - If you've customised the [tt]MAIL.tpl[/tt] template ensure you've also customised the [tt]MAIL.txt[/tt] template to have the same text (it flags up on SpamAssassin if the words are inconsistent).
+ - Make sure the Return-Path in e-mails is correct and a valid account, so that bounce/receipt emails don't themselves bounce. You may need to enable the "Pass website e-mail address to 'sendmail'" option.
 
 Positive advice:
- - Generally it is advisable to set up SPF, as it provides a positive signal that your server is not a spammer.
+ - Generally it is advisable to set up SPF, as it provides a positive signal that your server is not a spammer. Set both [tt]SPF[/tt] and [tt]TXT[/tt] record types for maximum compatibility (set them to the same values).
  - One very effective way to stop your messages being marked as spam is to persuade your visitors to add your staff address to their contacts list. Spam checkers usually will not block mail sent from someone on their contacts list. If their e-mail provider has a "Safe senders" list, that's even better -- Microsoft's e-mail services have this. Microsoft's e-mail services do over-block unknown e-mail servers or if users aren't reading your e-mails for long. If you're blocked, your message may not even go into the user's spam folder.
  - Get DKIM configured on your server.
  - If you're really stuck with your e-mail server being blocked, you could use a service like [url="Mandrill"]https://www.mandrill.com/[/url]. Mandrill may require the "Enable Blind CC (BCC)" option to be turned off, as we have had a report of it not working on Mandrill, but that they provide an account setting to make CC behave like BCC.

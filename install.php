@@ -2893,6 +2893,7 @@ END;
         $clauses[] = <<<END
 php_value max_input_vars "2000"
 php_value mbstring.func_overload "0"
+php_flag mail.add_x_header off
 
 # Suhosin can cause problems on configuration and Catalogue forms, which use a lot of fields
 php_value suhosin.post.max_vars "2000"
