@@ -1,0 +1,134 @@
+[title sub="Written by Jason Verhagen"]Composr Supplementary: YouTube Channel Integration Block Addon Documentation[/title]
+
+This YouTube Channel Integration Block addon will allow you to integrate the contents of individual YouTube channels and playlists with your Composr website. This documentation supplements the [page="_SEARCH:sup_integrating_a_youtube_channel_to_composr"]Integrating a YouTube Channel to Composr[/page] tutorial by providing the step-by-step details needed to get a YouTube API key as well as providing the details needed to create custom templates.
+
+[title="2"]Prerequisite[/title]
+
+First, if you don't already have one, you must get a YouTube API Key to use with this addon on your website.  Please note, Google changes up these APIs and admin pages fairly regularly so these instructions may not be 100% correct. If you find these instructions are no longer correct, please leave a comment or forum post so we can keep this updated.
+
+Getting Your YouTube API v3 Key:
+[list="1"]
+	[*] If you don't have a Google account (i.e. GMail/Google+), I think you will need one.
+	[*] Go to http://console.developers.google.com/project
+	[*] From there you will click the [i]Create Project[/i] button to create a new project.
+	[*] On the New Project popup, give your project a name. Something like [i]YourWebSite[/i] YouTube Channel Block is good. The Project ID is not important, but you can change it if you want. And then click the Create button.
+	[*] Once created, it should take you to the Project Dashboard for your newly created project. Above the left hand menu, click the [i]GoogleAPIs[/i] logo near the upper left of the page to open the API Manager.
+	[*] On the API Manager Dashboard page, click the [i]ENABLE API[/i] link.
+	[*] On the right hand side of the page you should see a list of popular APIs. Select the [i]YouTube Data API[/i] or type [i]YouTube[/i] into the search box and select [i]YouTube Data API v3[/i].
+	[*] On the [i]YouTube Data API v3[/i] page, you should now click the the [i]Enable[/i] link to enable the YouTube Data API v3 for your project.
+	[*] Next, on the left hand [i]API Manager[/i] menu, click Credentials.
+	[*] On the right hand side of the page, click the [i]Create credentials[/i] button and select the [i]API key[/i] option.
+	[*] On the [i]Create a new key[/i] popup, click the [i]Server key[/i] button.
+	[*] On the [i]Create a server key[/i] page, you can just click the Create button. If you are creating multiple keys, you can give the key a unique name here. You can also enter your web server IP(s) in the box there to restrict your API key access to requests only coming from your web server. This would prevent other people from stealing and using your key on their server. Not configuring your server IP(s) shouldn't be a problem if you don't share your key, but it may cause problems with shared hosting since their servers are more likely to change IP addresses without warning and may result in failed API requests until you update the IPs.
+	[*] That's it. You should now see an API key listed in the [i]API Key[/i] section of the [i]Credentials[/i] page in the [i]API Manager[/i] for your project.
+[/list]
+
+The YouTube Data API has a quota system that restricts the amount of data that can be requested. To monitor quota usage, go back to your project API Manager Dashboard by clicking the [i]Dashboard[/i] menu option of the [i]API Manager[/i] menu. Then select the [i]YouTube Data API v3[/i] link in the API section of the Dashboard. This quota page will have an Overview and Quotas tabs that can be used to track your API usage. Please note that each API call is a assigned a Unit value and each individual call typically costs several Units. If you have a small personal web site linking to your personal YouTube channel, you probably won't run into any quota issues. But if you are building a complete web site around the extensive use of many YouTube channels or playlists, then you may run into quota problems if you get a fair amount traffic.
+
+[title="2"]Installing the Block[/title]
+
+Now that you have your YouTube API key, you can begin installing the block:
+[list="1"]
+	[*] Login to your site as admin and go to [i]Adminzone>Structure>Addons[/i], scroll down to the bottom of the page and click the [i]Import non-bundled addon(s)[/i] link.
+	[*] On the [i]Import non-bundled addon(s)[/i] page, click the [i]Download[/i] radio button, then click the [b]+[/b] by [i]Third Party Integration[/i].
+	[*] Select [i]YouTube Channel Integration Block[/i] on the list and then click the [i]Import non-bundled addon(s)[/i] button at the bottom of the page.
+	[*] Follow the prompts through to the end.
+	[*] If you will be the only one using the YouTube Channel Integration Block, you can enter your API key in the block configuration setting so it doesn't have to be specified in the block parameters for each usage of the block. To do that, go to [i]Adminzone>Setup>Configuration>Block options[/i], scroll down to the YouTube Channel Integration Block options, and enter your YouTube API Key.
+[/list]
+
+If future updates to this block require special upgrade instructions, a note will be added to the block description.
+
+[title="2"]The Block Configuration Options[/title]
+
+You can find the block configuration options at [i]Adminzone>Setup>Configuration>Block options[/i]. This addon requires a YouTube API Key to be specified as a block parameter or as a block configuration option. If you choose to specify the YouTube API Key as a block parameter, it will override the YouTube API Key block configuration setting. If you allow other members to use this block, you should leave the YouTube API Key configuration option blank and have your members get their own YouTube API key and have them specify their own key as a block parameter. A 'Time between updates' block configuration option is also available to control how often the cached data for the block is generated. By default it is set to 60 minutes. This means the block will call the YouTube API to regenerate the block data no more often than once every 60 minutes. You can set this 'Time between updates' time to any value your want. A smaller value will keep things updated more often at the expense of more web site bandwidth and API quota usage. If you turn off the block caching in the advanced block parameter settings, this 'Time between updates' will have no effect and the block will call the YouTube API each time the block is called. Disabling the cache is good for testing, but keeping it disabled is highly discouraged since it will likely slow down your web site, possibly use up excessive amounts of your web site bandwidth with YouTube API calls, and use significantly more YouTube API quota usage.
+
+[title="2"]Using the Block and Templates[/title]
+
+And now that you have the YouTube Channel Integration Block installed and configured, it's time to use it. You can add it to any place on your site where you can add a Block. For this particular block, that will typically be on a comcode page. Logged in as an admin, you can click the [i]Edit page[/i] link on any comcode page or create a new page and use the Block Assistant by clicking the [i]Add Block[/i] button on the page editor screen. See the [page="_SEARCH:tut_comcode_pages"]Adding standalone pages of content (via Comcode)[/page] tutorial for instructions on how to create a new page. The Block Assistant will provide you with some documentation for each of the block parameters that are available and they are also listed below near the bottom of this documentation.
+
+The addon comes with a default set of template files. The style template is used to build the individual video and metadata layout, and the main template acts as a container for all of the videos. I have created a single template with four different styles that should give you a good start without having to mess around with coding up your own template. However, if you do want to stylize and integrate videos in other ways, you can create your own custom templates. To do this, you shouldn't modify the existing templates or they may be overwritten when updating the addon in the future. Instead, you will create a new template with a specific name in the template_custom directory. Start with the original template name and append an underscore and your custom template name to it. If the original template name is BLOCK_YOUTUBE_CHANNEL_STYLE.tpl, you would copy or create a new file named something like BLOCK_YOUTUBE_CHANNEL_STYLE_myvideostyle.tpl. Keep the original part of the file name in CAPS and add the underscore and custom name. Then alter this new template or clear it and start fresh. To use your new _myvideosyle template, in the block parameters, set the Template Style parameter to [i]myvideostyle[/i] (or whatever custom name you append to the original file name). Notice, for the Template Style parameter, you just use your template name and leave off the initial underscore character. Also, I'm pretty sure case matters. If you used lower case for your appended custom name, then use lower case for the Template Style parameter. If you appended something like _MyVideoStyle, then you would use MyVideoStyle as the Template Style parameter. The Style block parameter can be used as you wish in your custom templates. I used numbers 1, 2, 3, and 4 to define four different layouts in the default provided template, but you can change it to use text to define various layouts in a single custom template. If you're not too familiar with template logic code, you can ignore the Style parameter that is used by template logic code to control what html parts are visible. Instead, you can create as many custom templates as you want, each with a different layout.
+
+Here is the documentation for what tempcode [b]{VARIABLES}[/b] are used in the Style template (BLOCK_YOUTUBE_CHANNEL_STYLE.tpl). Each valid [b]{VARIABLE}[/b] used in any Style templates will be replaced with the data specified in the documentation below:
+[list="1"]
+	[*] [b]{CHANNEL_NAME}[/b] = This will be one of two values. If you specify a [i]name[/i] block parameter for a YouTube username, this will be set to that same username. If you specify a [i]playlist_id[/i] block parameter, this will be set to the channel title returned by the YouTube API for the channel that the playlist belongs to.
+	[*] [b]{CHANNEL_URL}[/b] =  As with the {CHANNEL_NAME}, this will be one of two values. It will either refer to the YouTube user page for the username specified or the YouTube channel page for the playlist ID specified.
+	[*] [b]{STYLE}[/b] = This is set with the [i]style[/i] block parameter. The default provided template takes 1, 2, 3, or 4 as values to choose a layout style for videos. 1 = Full video data above the player/thumbnail, player/thumbnail below data. 2 = Player/thumbnail to the left, full data to the right. 3 = Player/thumbnail to the left, minimal data to the right (suitable for front page summaries). 4 = Player/thumbnail above data, full data below player/thumbnail. You can use logic template code in your custom templates and use this variable to select your own layouts. For custom templates, you don't have to use numbers, you can use also use text for the [i]style[/i] block parameter.
+	[*] [b]{EMBED_ALLOWED}[/b] = This will allow you to honor the 'embed allowed' setting for each video. If set to 1, it means you want to honor the embed setting and embed the player only if it is allowed. If set to 0, it means you want the player to be embedded even if it isn't allowed. It won't allow non-embeddable video to play; the player will just play static and display a link to view the video on YouTube. This is mainly used for achieving a consistent look. If you want all videos to show as an embedded player or if you don't mind a mix of embedded players and thumbnail images.
+	[*] [b]{EMBEDPLAYER_ALLOWED}[/b] = If the video is allowed to be embedded outside of YouTube, this will be set to 1. If the video is not allowed to be embedded outside of YouTube, this will be set to 0.
+	[*] [b]{VIDEO_ID}[/b] = This is the video ID. For example, if the YouTube video URL is [no_parse]https://www.youtube.com/watch?v=aJNFrE4VzxU[/no_parse], then the video ID is aJNFrE4VzxU.
+	[*] [b]{MAX_VIDEOS}[/b] = This is the maximum number of videos specified with the [i]max_videos[/i] block parameter.
+	[*] [b]{COUNT}[/b] = This represents the count of the current video and can be used to add numbers for video # in the template if desired. This can be used if you want a '1' in front of the first video, '2' in front of the second video, etc. It can also be used to generate alternating colored rows in the output (i.e. odd numbers are one color, even numbers are another color).
+	[*] [b]{VIDEO_URL}[/b] = This is the URL to the YouTube watch page for the video.
+	[*] [b]{CHANNEL_TITLE}[/b] = This if from the [i]channel_title[/i] block parameter and is currently not used in the default BLOCK_YOUTUBE_CHANNEL.tpl template. You could use it to give your block a header title that is different from the YouTube username or channel name.
+	[*] [b]{VIDEO_TITLE}[/b] = The video title returned by the YouTube API.
+	[*] [b]{RATING_STARS}[/b] = This is a whole number rating of 1 to 5 for a video.
+	[*] [b]{RATING_LIKE_PERCENT}[/b] = This is a whole number of 0 to 100 for percentage of likes for a video. Percentage of likes = round((likes/(likes+dislikes))*100).
+	[*] [b]{RATING_NUM_RATES}[/b] = This is the total number of likes and dislikes for a video.
+	[*] [b]{RATING_LIKES}[/b] = This is the number of likes for a video.
+	[*] [b]{RATING_DISLIKES}[/b] = This is the number of dislikes for a video.
+	[*] [b]{RATING_NUMERIC}[/b] = This is a non-whole number version of {RATING_STARS} rounded to the nearest 100th (2nd decimal place). This is used in the default BLOCK_YOUTUBE_CHANNEL_STYLE.tpl template to display star ratings that include half stars.
+	[*] [b]{FAVORITE_COUNT}[/b] = This is the number of times a video is favorited.
+	[*] [b]{UPLOAD_DATE}[/b] = This is the upload date of the video. The default BLOCK_YOUTUBE_CHANNEL_STYLE.tpl template translates this to the correct time zone, assuming your Composr and web server timezone settings are correct.
+	[*] [b]{DESCRIPTION_TYPE}[/b] = This will either be long or short. This is used in the default BLOCK_YOUTUBE_CHANNEL_STYLE.tpl template with tempcode logic to display either a long full video description or a short description limited to a maximum of 250 characters.
+	[*] [b]{DESCRIPTION}[/b] = This is the long description and is the full and complete description for the video.
+	[*] [b]{DESCRIPTION_SHORT}[/b] = This is a short description and is no more than 250 characters.
+	[*] [b]{DESCRIPTION_SHORTENED}[/b] = This can be used along with {DESCRIPTION_SHORT} so you can add an ellipsis (...) to the short descriptions that have actually been shortened.
+	[*] [b]{PLAYERALIGN}[/b] = This is set by the [i]player_align[/i] block parameter and contains center, left, or right. This can be used by the template to set the alignment of the player.
+	[*] [b]{PLAYERHEIGHT}[/b] = This is set by the [i]player_height[/i] block parameter and is used to set the height (in pixels) of the video player.
+	[*] [b]{PLAYERWIDTH}[/b] = This is set by the [i]player_width[/i] block parameter and is used to set the width (in pixels) of the video player.
+	[*] [b]{EMBEDVIDEO}[/b] = This contains the URL of the embedded video player for the video.
+	[*] [b]{VIDEO_PLAYER}[/b] = This is the actual embedded video player HTML iframe code.
+	[*] [b]{SHOWPLAYER}[/b] = This will be set to 1 if an embedded player should be shown and will be set to 0 if an embedded player shouldn't be shown. Determined by the show_player block parameter. 
+	[*] [b]{NOTHUMBPLAYER}[/b] = Poorly named, but this will be set to 1 if a thumbnail should always be displayed along with the embedded player. This is set with the [b]nothumbplayer[/b] block parameter.
+	[*] [b]{FOR_MORE_LEAD}[/b] = This will contain the content of the [b]formorelead[/b] block parameter and can be used if you want a 'For more videos, click here.' line anywhere in the block. Using 'For more videos, click here.' as an example, you would pass 'For more videos, ' as the [b]formorelead[/b] block parameter. This isn't used in the default templates, but you can use these FOR_MORE_* tempcode variables to make custom links on a per-video or per-block basis instead of hardcoding it the template.
+	[*] [b]{FOR_MORE_TEXT}[/b] = This will contain the content of the [b]formoretext[/b] block parameter and can be used if you want a 'For more videos, click here.' line anywhere in the block. This will be the clickable text you would use in the template HTML code. Using 'For more videos, click here.' as an example, you would pass 'click here.' as the [b]formoretext[/b] block parameter. This isn't used in the default templates, but you can use these FOR_MORE_* tempcode variables to make custom links an a per-block basis instead of hardcoding it the template.
+	[*] [b]{FOR_MORE_URL}[/b] = This will contain the content of the [b]formoreurl[/b] block parameter and can be used if you want a 'For more videos, click here.' line anywhere in the block. This will be the URL that you can apply to the clickable text you would use in the template HTML code. Using 'For more videos, click here.' as an example, you would pass 'http://www.youtube.com/your_link_here' as the [b]formoreurl[/b] block parameter. This isn't used in the default templates, but you can use these FOR_MORE_* tempcode variables to make custom links an a per-block basis instead of hardcoding it the template.
+	[*] [b]{THUMBNAIL}[/b] = This contains the URL of the thumbnail provided by the YouTube Data API and is tied to the [i]thumbnail[/i] block parameter.
+	[*] [b]{THUMBWIDTH}[/b] = This is the width of the thumbnail provided by the YouTube Data API.
+	[*] [b]{THUMBHEIGHT}[/b] = This is the height of the thumbnail provided by the YouTube Data API.
+	[*] [b]{THUMBALT}[/b] = This is the codename for the size/quality of thumbnail image provided by the YouTube Data API.
+[/list]
+
+The main block template is simply just a container to hold the style template.
+
+Here is a list of [b]{VARIABLES}[/b] available in the main BLOCK_YOUTUBE_CHANNEL.tpl:
+[list="1"]
+	[*] [b]{CHANNEL_ERROR}[/b] = This is set with a text error message or list of error messages. Earlier error messages may result in additional error messages, so address the errors one at a time starting from the first one on the list.
+	[*] [b]{CHANNEL_TITLE}[/b] = Unused in the default template. You can set this with the [i]title[/i] block parameter and display it in your custom BLOCK_YOUTUBE_CHANNEL.tpl template.
+	[*] [b]{CONTENT}[/b] = This is all of the videos. All of the videos are styled with the Style template and then combined into this single variable.
+	[*] [b]{CHANNEL_NAME}[/b] = This will be one of two values. If you specify a [i]name[/i] block parameter for a YouTube username, this will be set to that same username. If you specify a [i]playlist_id[/i] block parameter, this will be set to the channel title returned by the YouTube API for the channel that the playlist belongs to.
+	[*] [b]{CHANNEL_URL}[/b] =  As with the {CHANNEL_NAME}, this will be one of two values. It will either refer to the YouTube user page for the username specified or the YouTube channel page for the playlist ID specified.
+[/list]
+
+Here is a list of block parameters:
+[list="1"]
+	[*] [b]name[/b] = The YouTube user name of the channel you want to embed. If your YouTube channel URL is [b][no_parse]https://www.youtube.com/user/[/no_parse][i]holleywoodstudio[/i]?feature=watch[/b], then the name would be [b]holleywoodstudio[/b]. This name parameter overrides the Playlist ID parameter. Leave this blank if you want to specify the Playlist ID directly. Default: ''.
+	[*] [b]api_key[/b] = A YouTube API Key is required either here as a block parameter or as a block configuration option at [i]Adminzone>Setup>Configuration>Block options[/i]. If specified as a block configuration option, it is not required as a block parameter. If specified as a block parameter, it will override the block configuration option. Default: ''.
+	[*] [b]playlist_id[/b] = Playlist ID of playlist you want to embed. You can use this parameter instead of the [i]name[/i] parameter to embed a playlist. The [i]name[/i] parameter overrides this parameter, so be sure to blank out the [i]name[/i] parameter if you are specifying a playlist ID here. If the playlist url is [b][no_parse]https://www.youtube.com/playlist?list=[/no_parse][i]PL-3mr0QREVv2nIQZmkWP2x-ExGfcc8-VG[/i][/b], then the playlist ID would be [b]PL-3mr0QREVv2nIQZmkWP2x-ExGfcc8-VG[/b]. Default: ''.
+	[*] [b]title[/b] = The title you want to give to your YouTube channel. (currently not used in the default templates) Default: ''.
+	[*] [b]template_main[/b] = If you create your own main template, you can enter the suffix name of your custom main template file. This is the main template where the style template will be added to. Example: if your custom template is named BLOCK_YOUTUBE_CHANNEL_MyCustomTemplate.tpl, you would enter MyCustomTemplate here. When creating the template, be sure to use the original template file name and append an underscore and your custom name to it. I'm sure it's case sensitive as well. Default: ''.
+	[*] [b]template_style[/b] = If you create your own style template, you can enter the suffix name of your custom style template file. This is the style template where the actual YouTube provided data will be layed out. Example: if your custom template is named BLOCK_YOUTUBE_CHANNEL_STYLE_MyCustomStyle.tpl, you would enter MyCustomStyle here. When creating the template, be sure to use the original template file name and append an underscore and your custom name to it. I'm sure it's case sensitive as well. Default: ''.
+	[*] [b]description_type[/b] = Set this to long or short to choose between long video description or short video description. Default: 'long'.
+	[*] [b]start_video[/b] = For multi-page use, you can specify which video to start at when fetching videos from YouTube. If start_video is set to 1 and max_videos is set to 25 for page one, set start_video to 26 for page two to continue where page one left off. Can be set up to 50. Default: '1'.
+	[*] [b]max_videos[/b] = You can specify the maximum number of videos to show. Minimum value is 1, maximum value is 50 (max allowed by YouTube API). Default: '25'.
+	[*] [b]orderby[/b] = ***THIS PARAMETER NO LONGER WORKS! IT WAS ONLY LEFT IN FOR BACKWARD COMPATIBILITY.*** Default: '1'.
+	[*] [b]show_player[/b] = Set this to 0 to not show the embedded player at all.  Any other number will show the embedded player for that many videos in your list.  For example, set to 1 will only show embedded video for first video in list, set to 5 will only show embedded video for first 5 videos in list, set to same value as max_videos parameter to show the embedded player for all videos. Default: '1'.
+	[*] [b]embed_allowed[/b] = Set this to 1 to honor embed player permission from channel feed and display a thumbnail instead of the embedded video player if embedding isn't allowed for video.  Set this to 0 to ignore embed permission and display the embedded video player anyway. Setting this to 0 won't allow embedded videos to play if they don't allow embedding. Instead, when pressing the play button in the video player, the player will display static and a link to view the video on the YouTube site. Default: '1'.
+	[*] [b]player_align[/b] = Set this to center, left, or right to align the embedded player accordingly. Default: 'center'.
+	[*] [b]player_width[/b] = Set this to the width, in pixels, you want the embedded player to be. Default: '480'.
+	[*] [b]player_height[/b] = Set this to the height, in pixels, you want the embedded player to be. Default: '270'.
+	[*] [b]style[/b] = Set this to the style of output you want. If no style template is manually defined, style can be chosen by one of three styles: 1 = Full data above, player below. 2 = Player left, full data right. 3 = Player left, minimal data right (suitable for front page summaries). 4 = Player above, full data below. If you create a simple template, this can be ignored. If you create an advanced template, you can set this to a number or name that is referenced in your custom template file. Default: '1'.
+	[*] [b]nothumbplayer[/b] = Disable thumbnails when using player.  0 = Don't show thumbnail when using embedded player. 1 = Always show thumbnails. Default: '0'.
+	[*] [b]thumbnail[/b] = Choose which thumbnail image to use. These are available through the YouTube API:   0 = default image, low res. 1 = default image, medium res. 2 = default image, higher res. 3 = first frame of vid, low res. 4 = middle frame, low res. 5 = last frame, low res. 6 = default standard definition image. 7 = default max resolution image. 0, 1, and 2, are the best thumbnails to use. 3 through 7 may not exist for all videos. Default: '0'.
+	[*] [b]formorelead[/b] = Set this to some text leading up to the formoretext/foremoreurl properties.  Example: 'For more videos'.  Default: ''.
+	[*] [b]formoretext[/b] = Set this to some text to attach the formoreurl property to.  Example: 'click here...'. Default:''.
+	[*] [b]formoreurl[/b] = Set this to a URL users can click for more videos. This URL will be attached to formoretext property defined text. For example, enter your YouTube channel URL, including the http:// or https:// at the beginning. Default: ''.
+[/list]
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_comcode_pages"]Adding standalone pages of content (via Comcode)[/page]
+ - [page="_SEARCH:tut_adv_comcode_pages"]Using blocks[/page]
+ - [page="_SEARCH:sup_integrating_a_youtube_channel_to_composr"]Integrating a YouTube Channel to Composr[/page]
+
+{$SET,tutorial_tags,Third Party Integration,Addon,regular}{$SET,tutorial_add_date,Aug 2016}{$SET,tutorial_summary,Documentation to setup and use the YouTube Channel Integration Block addon.}[block]main_tutorial_rating[/block]
