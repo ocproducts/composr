@@ -1,8 +1,8 @@
+{$SET,player_id,player_{$RAND}}
+<div data-tpl-core-rich-media="mediaRealmedia" data-tpl-args="{+START,PARAMS_JSON,player_id}{_*}{+END}">
 {+START,IF_PASSED_AND_TRUE,FRAMED}
 <figure>
 {+END}
-	{$SET,player_id,player_{$RAND}}
-
 	{+START,IF_NON_PASSED_OR_FALSE,WYSIWYG_EDITABLE}
 		{+START,IF_EMPTY,{$METADATA,video}}
 			{$METADATA,video,{URL}}
@@ -34,5 +34,4 @@
 {+START,IF_PASSED_AND_TRUE,FRAMED}
 	</figure>
 {+END}
-
-<script type="application/json" data-tpl-core-rich-media="mediaRealmedia">{+START,PARAMS_JSON,player_id}{_/}{+END}</script>
+</div>

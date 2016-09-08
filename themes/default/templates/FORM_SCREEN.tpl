@@ -1,3 +1,5 @@
+<div data-tpl-core-form-interfaces="formScreen" data-tpl-args="{+START,PARAMS_JSON,URL,IFRAME_URL}{_*}{+END}">
+
 {TITLE}
 
 {+START,INCLUDE,HANDLE_CONFLICT_RESOLUTION}{+END}
@@ -76,4 +78,4 @@
 
 	<iframe{$?,{$BROWSER_MATCHES,ie}, frameBorder="0" scrolling="no"} class="form_screen_iframe" title="{!EDIT}" name="iframe_under" id="iframe_under" src="{$BASE_URL*}/uploads/index.html">{!EDIT}</iframe>
 {+END}
-<script type="application/json" data-tpl-core-form-interfaces="formScreen">{+START,PARAMS_JSON,URL,IFRAME_URL}{_/}{+END}</script>
+</div>

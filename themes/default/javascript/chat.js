@@ -21,7 +21,7 @@
         initialize: function (v, options) {
             Composr.View.prototype.initialize.apply(this, arguments);
 
-            Composr.loadWindow.then(function () {
+            Composr.load.then(function () {
                 chat_load(options.chatroomId);
             });
         },
@@ -78,7 +78,7 @@
 
         chatLobbyImArea: function chatLobbyImArea(options) {
             window.setTimeout(function () { /* Needed for IE */
-                Composr.loadWindow.then(function () {
+                Composr.load.then(function () {
                     try {
                         document.getElementById('post_' + options.chatroomId).focus();
                     } catch (e) {
@@ -114,7 +114,8 @@
         },
 
         blockMainFriendsList: function blockMainFriendsList(options) {
-            if (!options.wrapperId || !options.blockCallUrl) {
+            options || (options = {});
+            if (Composr.not(options.wrapperId, options.blockCallUrl)) {
                 return;
             }
 
@@ -126,7 +127,7 @@
         },
 
         chatSitewideIm: function chatSitewideIm(options) {
-            if (options.matched !== '1') {
+            if (Composr.not(options.matched)) {
                 return;
             }
 

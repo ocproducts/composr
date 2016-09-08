@@ -117,8 +117,9 @@
 	{+START,IF_NON_EMPTY,{$METADATA,opensearch_itemsperpage}}<meta name="itemsPerPage" content="{$METADATA*,opensearch_itemsperpage}" />{+END}
 {+END}{+END}
 
-{$, Load ES6 Promise polyfill for Internet Explorer}
+{$, Load classList and ES6 Promise polyfill for Internet Explorer}
 {+START,IF,{$BROWSER_MATCHES,ie}}
+<script src="{$BASE_URL}/data/polyfills/class-list.js"></script>
 <script src="{$BASE_URL}/data/polyfills/promise.js"></script>
 {+END}
 
@@ -162,16 +163,23 @@
 <script>// <![CDATA[
 	/*{+START,IF,{$CONFIG_OPTION,detect_javascript}}*/
 	/*{+START,IF,{$AND,{$EQ,,{$_GET,keep_has_js}},{$NOT,{$JS_ON}}}}*/
-	if ((window.location.href.indexOf('upgrader.php') == -1) && (window.location.href.indexOf('webdav.php') == -1) && (window.location.search.indexOf('keep_has_js') == -1)) {
-		window.location = window.location.href + ((window.location.search == '') ? (((window.location.href.indexOf('.htm') == -1) && (window.location.href.indexOf('.php') == -1)) ? (((window.location.href.substr(window.location.href.length - 1) != '/') ? '/' : '') + 'index.php?') : '?') : '&') + 'keep_has_js=1{+START,IF,{$DEV_MODE}}&keep_devtest=1{+END}';
+	if ((window.location.href.indexOf('upgrader.php') === -1) && (window.location.href.indexOf('webdav.php') === -1) && (window.location.search.indexOf('keep_has_js') === -1)) {
+		window.location = window.location.href + ((window.location.search == '') ? (((window.location.href.indexOf('.htm') === -1) && (window.location.href.indexOf('.php') === -1)) ? (((window.location.href.substr(window.location.href.length - 1) != '/') ? '/' : '') + 'index.php?') : '?') : '&') + 'keep_has_js=1{+START,IF,{$DEV_MODE}}&keep_devtest=1{+END}';
 	}// Redirect with JS on, and then hopefully we can remove keep_has_js after one click. This code only happens if JS is marked off, no infinite loops can happen.
 	/*{+END}*/
 	/*{+END}*/
-
-	/*{+START,IF,{$NOT,{$BROWSER_MATCHES,ie}}}{+START,IF,{$HAS_PRIVILEGE,sees_javascript_error_alerts}}*/
-	window.take_errors = true;
-	/*{+END}{+END}*/
 //]]></script>
+
+<script>
+	// Early initialization to allow end-users not using CSP to add inline Composr.ready & Composr.load calls
+	var Composr = {};
+	Composr.ready = new Promise(function (resolve) {
+		Composr._resolveReady = resolve;
+	});
+	Composr.load = new Promise(function (resolve) {
+		Composr._resolveLoad = resolve;
+	});
+</script>
 
 {$,JavaScript code (usually) from Composr page}
 {$EXTRA_HEAD}
@@ -184,5 +192,3 @@
 
 {$,Feeds}
 {$FEEDS}
-
-<script type="application/json" data-tpl-core-html-abstractions="htmlHead">{+START,PARAMS_JSON,}{_/}{+END}</script>

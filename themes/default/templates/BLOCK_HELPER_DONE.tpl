@@ -1,10 +1,3 @@
-<div aria-busy="true" class="spaced" id="loading_space">
-	<div class="ajax_loading vertical_alignment">
-		<img id="loading_image" src="{$IMG*,loading}" title="{!LOADING}" alt="{!LOADING}" />
-		<span>{!LOADING}</span>
-	</div>
-</div>
-
 {$SET,sync_wysiwyg_attachments,0}
 
 {$,WYSIWYG-editable attachments must be synched}
@@ -13,7 +6,9 @@
 {$SET,sync_wysiwyg_attachments,1}
 {+END}{+END}
 
-<script type="application/json" data-tpl-core-form-interfaces="blockHelperDone">
-{+PARAMS_JSON,FIELD_NAME,COMCODE,COMCODE_SEMIHTML,SAVE_TO_ID,DELETE,PREFIX,sync_wysiwyg_attachments,TAG_CONTENTS}{_/}{+END}
-</script>
-
+<div aria-busy="true" class="spaced" id="loading_space" data-tpl-core-form-interfaces="blockHelperDone" data-tpl-args="{+PARAMS_JSON,FIELD_NAME,COMCODE,COMCODE_SEMIHTML,SAVE_TO_ID,DELETE,PREFIX,sync_wysiwyg_attachments,TAG_CONTENTS}{_*}{+END}">
+	<div class="ajax_loading vertical_alignment">
+		<img id="loading_image" src="{$IMG*,loading}" title="{!LOADING}" alt="{!LOADING}" />
+		<span>{!LOADING}</span>
+	</div>
+</div>

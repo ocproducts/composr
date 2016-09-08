@@ -17,7 +17,7 @@ It provides a function to open an image link as a 'lightbox' (we use the term li
 */
 
 if (window.overlay_zIndex === undefined) {
-	window.overlay_zIndex=999999; // Has to be higher than plupload, which is 99999
+	window.overlay_zIndex = 999999; // Has to be higher than plupload, which is 99999
 }
 
 /*{+START,IF,{$CONFIG_OPTION,js_overlays}}*/
@@ -263,8 +263,7 @@ function fauxmodal_confirm(question,callback,title,unescaped)
 	/*{+END}*/
 }
 
-function fauxmodal_alert(notice,callback,title,unescaped)
-{
+function fauxmodal_alert(notice,callback,title,unescaped) {
 	if ((typeof callback=='undefined') || (!callback)) var callback=function() {};
 
 	if (typeof title=='undefined' || title===null) var title='{!MESSAGE;}';
@@ -416,6 +415,16 @@ function faux_open(url,name,options,target,cancel_text)
 	/*{+END}*/
 }
 
+function has_iframe_ownership(iframe) {
+	var has_ownership = false;
+	try {
+		has_ownership = (iframe) && (iframe.contentWindow.location.host === window.location.host) && (iframe.contentWindow.document);
+	} catch (e) {
+	}
+
+	return has_ownership;
+}
+
 /*{+START,IF,{$CONFIG_OPTION,js_overlays}}*/
 /*
 Originally...
@@ -435,7 +444,7 @@ Code & Documentation:
 HEAVILY Modified by ocProducts for Composr.
 
 */
-
+// NB: only used in modalwindow.js
 function ModalWindow()
 {
 	return {
@@ -936,7 +945,7 @@ function ModalWindow()
 						}
 					};
 					window.setTimeout(function() {
-						illustrate_frame_load(iframe,'overlay_iframe');
+						illustrate_frame_load('overlay_iframe');
 						iframe.src=_this.href;
 						make_frame_like_popup();
 

@@ -3,8 +3,9 @@
 {$REQUIRE_CSS,cns_member_directory}
 
 {+START,IF,{$NEQ,{$COMMA_LIST_GET,{BLOCK_PARAMS},raw},1}}
-	{$SET,wrapper_id,ajax_block_wrapper_{$RAND%}}
-	{$SET,block_call_url,{$FACILITATE_AJAX_BLOCK_CALL,{BLOCK_PARAMS}}}
+{$SET,wrapper_id,ajax_block_wrapper_{$RAND%}}
+{$SET,block_call_url,{$FACILITATE_AJAX_BLOCK_CALL,{BLOCK_PARAMS}}}
+<div data-tpl-chat="blockMainFriendsList" data-tpl-args="{+START,PARAMS_JSON,wrapper_id,block_call_url}{_*}{+END}">
 	<div id="{$GET*,wrapper_id}">
 		<form target="_self" class="right" role="search" title="{!FRIENDS}, {!SEARCH}" action="{$URL_FOR_GET_FORM*,{$SELF_URL}}#tab__friends" method="get" autocomplete="off">
 			{$HIDDENS_FOR_GET_FORM,{$SELF_URL}}
@@ -38,9 +39,11 @@
 			{+START,INCLUDE,AJAX_PAGINATION}ALLOW_INFINITE_SCROLL=1{+END}
 		{+END}
 	</div>
+</div>
 {+END}
 
 {+START,IF,{$EQ,{$COMMA_LIST_GET,{BLOCK_PARAMS},raw},1}}
+<div data-tpl-chat="blockMainFriendsList">
 	{+START,LOOP,FRIENDS_FORWARD}
 		<div><div class="box"><div class="box_inner">
 			{BOX}
@@ -48,6 +51,5 @@
 	{+END}
 
 	{PAGINATION}
+</div>
 {+END}
-
-<script type="application/json" data-tpl-chat="blockMainFriendsList">{+START,PARAMS_JSON,wrapper_id,block_call_url}{_/}{+END}</script>

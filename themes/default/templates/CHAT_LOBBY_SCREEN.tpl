@@ -1,4 +1,6 @@
 {$REQUIRE_JAVASCRIPT,chat}
+
+<div data-tpl-chat="chatLobbyScreen" data-tpl-args="{+START,PARAMS_JSON,IM_AREA_TEMPLATE,IM_PARTICIPANT_TEMPLATE}{_/}{+END}">
 {TITLE}
 
 {+START,IF,{$HAS_FORUM,1}}
@@ -129,5 +131,4 @@
 		</div></div>
 	</div>
 {+END}
-
-<script type="application/json" data-tpl-chat="chatLobbyScreen">{+START,PARAMS_JSON,IM_AREA_TEMPLATE,IM_PARTICIPANT_TEMPLATE}{_/}{+END}</script>
+</div>

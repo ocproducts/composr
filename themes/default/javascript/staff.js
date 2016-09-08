@@ -1,58 +1,43 @@
 "use strict";
 
 function script_load_stuff_staff() {
-	// Navigation loading screen
-	/*{+START,IF,{$CONFIG_OPTION,enable_animations}}*/
-		if ((window.parent==window) && ((window.location+'').indexOf('js_cache=1')==-1) && (((window.location+'').indexOf('/cms/')!=-1) || ((window.location+'').indexOf('/adminzone/')!=-1)))
-			window.addEventListener('beforeunload',function() { staff_unload_action(); });
-	/*{+END}*/
+    // Navigation loading screen
+    if (Composr.is(Composr.$CONFIG_OPTION.enableAnimations)) {
+        if ((window.parent === window) && ((window.location + '').indexOf('js_cache=1') == -1) && (((window.location + '').indexOf('/cms/') != -1) || ((window.location + '').indexOf('/adminzone/') != -1))) {
+            window.addEventListener('beforeunload', function () {
+                staff_unload_action();
+            });
+        }
+    }
 
-	// Theme image editing hovers
-	var map,elements,i,j;
-	for (i=0;i<document.images.length;i++)
-	{
-		map=document.images[i].getAttribute('usemap');
-		if (map)
-		{
-			elements=document.getElementsByTagName('area');
-			for (j=0;j<elements.length;j++)
-			{
-				if (!elements[j].onclick)
-				{
-					elements[j].src=document.images[i].src;
-					elements[j].addEventListener('click',handle_image_click,false);
-				}
-			}
-		}
-		if (document.images[i].className.indexOf('no_theme_img_click')==-1)
-		{
-			document.images[i].addEventListener('mouseover',handle_image_mouse_over,false);
-			document.images[i].addEventListener('mouseout',handle_image_mouse_out,false);
-			document.images[i].addEventListener('click',handle_image_click,false);
-		}
-	}
-	var inputs=document.getElementsByTagName('input');
-	for (i=0;i<inputs.length;i++)
-	{
-		if ((inputs[i].className.indexOf('no_theme_img_click')==-1) && (inputs[i].type=='image'))
-		{
-			inputs[i].addEventListener('mouseover',handle_image_mouse_over,false);
-			inputs[i].addEventListener('mouseout',handle_image_mouse_out,false);
-			inputs[i].addEventListener('click',handle_image_click,false);
-		}
-	}
-	var all_e=document.getElementsByTagName('*');
-	var bg;
-	for (i=0;i<all_e.length;i++)
-	{
-		bg=window.getComputedStyle(all_e[i]).getPropertyValue('background-image');
-		if ((all_e[i].className.indexOf('no_theme_img_click')==-1) && (bg!='none') && (bg.indexOf('url')!=-1))
-		{
-			all_e[i].addEventListener('mouseover',handle_image_mouse_over,false);
-			all_e[i].addEventListener('mouseout',handle_image_mouse_out,false);
-			all_e[i].addEventListener('click',handle_image_click,false);
-		}
-	}
+    // Theme image editing hovers
+    var i, j;
+    for (i = 0; i < document.images.length; i++) {
+        if (document.images[i].className.indexOf('no_theme_img_click') == -1) {
+            document.images[i].addEventListener('mouseover', handle_image_mouse_over);
+            document.images[i].addEventListener('mouseout', handle_image_mouse_out);
+            document.images[i].addEventListener('click', handle_image_click);
+        }
+    }
+    var inputs = document.getElementsByTagName('input');
+    for (i = 0; i < inputs.length; i++) {
+        if ((inputs[i].className.indexOf('no_theme_img_click') == -1) && (inputs[i].type == 'image')) {
+            inputs[i].addEventListener('mouseover', handle_image_mouse_over);
+            inputs[i].addEventListener('mouseout', handle_image_mouse_out);
+            inputs[i].addEventListener('click', handle_image_click);
+        }
+    }
+
+    var all_e = document.getElementsByTagName('*');
+    var bg;
+    for (i = 0; i < all_e.length; i++) {
+        bg = window.getComputedStyle(all_e[i]).getPropertyValue('background-image');
+        if ((all_e[i].className.indexOf('no_theme_img_click') == -1) && (bg != 'none') && (bg.indexOf('url') != -1)) {
+            all_e[i].addEventListener('mouseover', handle_image_mouse_over);
+            all_e[i].addEventListener('mouseout', handle_image_mouse_out);
+            all_e[i].addEventListener('click', handle_image_click);
+        }
+    }
 
 	// Thumbnail tooltips
 	var url_patterns=[
@@ -139,22 +124,6 @@ function apply_comcode_tooltip(hook,id,link)
 /*
 STAFF ACTIONS LINKS
 */
-
-function staff_actions_change(ob)
-{
-	var value=ob.options[ob.selectedIndex].value;
-	if (value=='templates' || value=='tree')
-	{
-		/*
-		This is not actually needed, see code in PHP has_caching_for function
-		var hidden=document.createElement('input');
-		hidden.type='hidden';
-		hidden.name='cache_templates';
-		hidden.value='0';
-		ob.form.appendChild(hidden);
-		*/
-	}
-}
 
 function staff_actions_select(ob)
 {
@@ -312,7 +281,7 @@ function load_software_chat(event)
 	if (Composr.$USERNAME != 'admin') {
 		url+=window.encodeURIComponent(Composr.$USERNAME.replace(/[^a-zA-Z0-9\_\-\\\[\]\{\}\^`|]/g,''));
 	} else {
-		url+=window.encodeURIComponent('{$SITE_NAME;}'.replace(/[^a-zA-Z0-9\_\-\\\[\]\{\}\^`|]/g,''));
+		url+=window.encodeURIComponent(Composr.$SITE_NAME.replace(/[^a-zA-Z0-9\_\-\\\[\]\{\}\^`|]/g,''));
 	}
 	url+='#composrcms';
 	var html=' \
@@ -349,14 +318,12 @@ function load_software_chat(event)
 		var top_temp=100;
 		box.style.top=top_temp+'px';
 
-		Composr.dom.html(box,html);
+		Composr.dom.html(box, html);
 		document.body.appendChild(box);
 
 		smooth_scroll(0);
 
 		set_opacity(document.getElementById('software_chat_img'),0.5);
-
-		//window.setTimeout( function() { try { window.frames[window.frames.length-1].documentElement.getElementById('texteditor').focus(); } catch (e) {} } ), 5000);		Unfortunately cannot do, JS security context issue
 	}
 
 	return false;
@@ -389,8 +356,7 @@ function set_task_hiding(hide_done)
 			}
 		} else
 		{
-			if ((typeof window.fade_transition!='undefined') && (checklist_rows[i].style.display=='none'))
-			{
+			if ((checklist_rows[i].style.display=='none')) {
 				set_opacity(checklist_rows[i],0.0);
 				fade_transition(checklist_rows[i],100,30,4);
 			}

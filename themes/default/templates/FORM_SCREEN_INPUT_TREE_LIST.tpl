@@ -1,3 +1,4 @@
+<div data-tpl-core-form-interfaces="formScreenInputTreeList" data-tpl-args="{+START,PARAMS_JSON,NAME,HOOK,ROOT_ID,OPTIONS,MULTI_SELECT,TABINDEX,USE_SERVER_ID}{_*}{+END}">
 {+START,INCLUDE,FORM_SCREEN_FIELD_DESCRIPTION}
 DESCRIPTION={+START,IF_NON_EMPTY,{DESCRIPTION}}{DESCRIPTION}<br /><br />{+END}{!TREE_LIST_HELP,{$?,{_REQUIRED},{!TREE_LIST_HELP_DESELECT}},{$?,{$EQ,{$PAGE},admin_sitemap,admin_permissions},{!TREE_LIST_HELP_MASS_EXPAND}},{CONTENT_TYPE}}
 RIGHT=1
@@ -13,7 +14,4 @@ RIGHT=1
 		{!TREE_LIST_FEEDBACK,<span class="whitespace_visible" id="{NAME*}_mirror">{NICE_LABEL*}</span>}
 	</p>
 {+END}
-
-<script type="application/json" data-tpl-core-form-interfaces="formScreenInputTreeList">
-	{+START,PARAMS_JSON,NAME,HOOK,ROOT_ID,OPTIONS,MULTI_SELECT,TABINDEX,USE_SERVER_ID}{_/}{+END}
-</script>
+</div>

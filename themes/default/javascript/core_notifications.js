@@ -32,7 +32,7 @@
             for (i = 0, len = types.length; i < len; i++) {
                 nt = types[i];
 
-                if (Composr.areTruthy(nt.available, nt.typeHasChildrenSet)) {
+                if (Composr.is(nt.available, nt.typeHasChildrenSet)) {
                     el = document.getElementById('notification_' + options.scope + '_' + options.ntype);
 
                     if (!el.checked) {
@@ -49,4 +49,4 @@
             }
         }
     };
-})(window.jQuery || window.Zepto, Composr);
+}(window.jQuery || window.Zepto, window.Composr));

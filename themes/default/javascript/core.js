@@ -25,7 +25,7 @@
                         anchor.href = window.location.href.replace(/#.*$/, '') + href;
                     }
 
-                    if (Composr.isTruthy(Composr.$CONFIG_OPTION.jsOverlays)) {
+                    if (Composr.is(Composr.$CONFIG_OPTION.jsOverlays)) {
                         // Lightboxes
                         if (anchor.rel && anchor.rel.match(/lightbox/)) {
                             anchor.title = anchor.title.replace('{!LINK_NEW_WINDOW;}', '').trim();
@@ -38,7 +38,7 @@
                     }
 
                     // Keep parameters need propagating
-                    if  (Composr.isTruthy(Composr.$VALUE_OPTION.jsKeepParams) && (href.indexOf(Composr.$BASE_URL + '/') === 0)) {
+                    if  (Composr.is(Composr.$VALUE_OPTION.jsKeepParams) && (href.indexOf(Composr.$BASE_URL + '/') === 0)) {
                         anchor.href += keep_stub(!anchor.href.includes('?'), true, href);
                     }
                 });
@@ -59,7 +59,7 @@
                     form.title = '';
 
                     // Convert a/img title attributes into Composr tooltips
-                    if (Composr.isTruthy(Composr.$CONFIG_OPTION.jsOverlays)) {
+                    if (Composr.is(Composr.$CONFIG_OPTION.jsOverlays)) {
                         // Convert title attributes into Composr tooltips
                         var elements, j;
                         elements = form.elements;
@@ -76,7 +76,7 @@
                         }
                     }
 
-                    if (Composr.isTruthy(Composr.$VALUE_OPTION.jsKeepParams)) {
+                    if (Composr.is(Composr.$VALUE_OPTION.jsKeepParams)) {
                         /* Keep parameters need propagating */
                         if (form.action && form.action.indexOf(Composr.$BASE_URL + '/') === 0) {
                             form.action += keep_stub(form.action.indexOf('?') === -1, true, form.action);
@@ -89,7 +89,7 @@
         // Convert img title attributes into Composr tooltips
         imageTooltips: {
             attach: function (context) {
-                if (Composr.isFalsy(Composr.$CONFIG_OPTION.jsOverlays)) {
+                if (Composr.not(Composr.$CONFIG_OPTION.jsOverlays)) {
                     return;
                 }
 
@@ -133,8 +133,7 @@
         initialize: function initialize() {
             Composr.View.prototype.initialize.apply(this, arguments);
             this._stripPatternCache = {};
-
-
+            this.setup();
         },
 
         events: {
@@ -142,6 +141,9 @@
             'click a[href$="#!"]': 'preventDefault',
             // Prevent form submission for forms with a placeholder action
             'submit form[action$="#!"]': 'preventDefault',
+            // Prevent default for JS-activated elements which have noscript fallbacks
+            'click [data-cms-js]': 'preventDefault',
+            'submit [data-cms-js]': 'preventDefault',
 
             // Disable button after click
             'click [data-disable-on-click]': 'disableButton',
@@ -158,7 +160,10 @@
             'click [data-open-as-overlay]': 'openOverlay',
 
             // Lightboxes
-            'click a[rel*="lightbox"]': 'lightBoxes'
+            'click a[rel*="lightbox"]': 'lightBoxes',
+
+            // Go back in history
+            'click [data-cms-btn-go-back]': 'goBackInHistory'
         },
 
         preventDefault: function (e) {
@@ -201,7 +206,7 @@
             var el = e.currentTarget, args,
                 url = (el.href === undefined) ? el.action : el.href;
 
-            if (Composr.isFalsy(Composr.$CONFIG_OPTION.jsOverlays)) {
+            if (Composr.not(Composr.$CONFIG_OPTION.jsOverlays)) {
                 return;
             }
 
@@ -220,7 +225,7 @@
         lightBoxes: function (e) {
             var el = e.currentTarget;
 
-            if (Composr.isFalsy(Composr.$CONFIG_OPTION.jsOverlays)) {
+            if (Composr.not(Composr.$CONFIG_OPTION.jsOverlays)) {
                 return;
             }
 
@@ -233,49 +238,39 @@
             }
         },
 
-        setup: function () {
-            var i;
+        goBackInHistory: function () {
+            window.history.back();
+        },
 
-            if ((window === window.top && !window.opener) || (window.name === '')) {
+        setup: function () {
+            var i, view = this;
+
+            if (((window === window.top) && !window.opener) || (window.name === '')) {
                 window.name = '_site_opener';
             }
 
             // Are we dealing with a touch device?
             if (document.documentElement.ontouchstart !== undefined) {
-                document.body.className += ' touch_enabled';
+                document.body.classList.add('touch_enabled');
+            }
+
+            if (Composr.is(Composr.$HAS_PRIVILEGE.seesJavascriptErrorAlerts)) {
+                this.initialiseErrorMechanism();
             }
 
             // Dynamic images need preloading
             var preloader = new Image();
-            var images = [];
-
-            images.push('{$IMG;,loading}'.replace(/^https?:/, window.location.protocol));
-            for (i = 0; i < images.length; i++) {
-                preloader.src = images[i];
-            }
+                preloader.src = '{$IMG;,loading}'.replace(/^https?:/, window.location.protocol);
 
             // Tell the server we have JavaScript, so do not degrade things for reasons of compatibility - plus also set other things the server would like to know
-            if (Composr.isTruthy(Composr.$CONFIG_OPTION.detectJavascript)) {
+            if (Composr.is(Composr.$CONFIG_OPTION.detectJavascript)) {
                 set_cookie('js_on', 1, 120);
             }
 
-            if (Composr.isTruthy(Composr.$CONFIG_OPTION.isOnTimezoneDetection)) {
+            if (Composr.is(Composr.$CONFIG_OPTION.isOnTimezoneDetection)) {
                 if (!window.parent || (window.parent === window)) {
                     set_cookie('client_time', new Date().toString(), 120);
                     set_cookie('client_time_ref', Composr.$FROM_TIMESTAMP, 120);
-                }
-            }
-
-            // Column height balancing
-            var cols = document.getElementsByClassName('col_balance_height');
-            for (i = 0; i < cols.length; i++) {
-                var max = null;
-                for (var j = 0; j < cols.length; j++) {
-                    if (cols[i].className == cols[j].className) {
-                        var height = fcols[j].offsetHeight;
-                        if (max === null || height > max) max = height;
-                    }
-                    cols[i].style.height = max + 'px';
                 }
             }
 
@@ -311,8 +306,7 @@
                                 var width = Composr.dom.contentWidth(stuck_nav);
                                 var height = Composr.dom.contentHeight(stuck_nav);
                                 var stuck_nav_width = Composr.dom.contentWidth(stuck_nav);
-                                if (!window.getComputedStyle(stuck_nav).getPropertyValue('width')) // May be centered or something, we should be careful
-                                {
+                                if (!window.getComputedStyle(stuck_nav).getPropertyValue('width')) {// May be centered or something, we should be careful
                                     stuck_nav.parentNode.style.width = width + 'px';
                                 }
                                 stuck_nav.parentNode.style.height = height + 'px';
@@ -356,13 +350,95 @@
             window.page_loaded = true;
             window.is_doing_a_drag = false;
 
-            Composr.loadWindow.then(function () { // When images etc have loaded
-                script_page_rendered();
+            /* Tidying up after the page is rendered */
+            Composr.load.then(function () {
+                // When images etc have loaded
+                // Move the help panel if needed
+                if (Composr.is(Composr.$CONFIG_OPTION.fixedWidth) || (get_window_width() > 990)) {
+                    return;
+                }
+
+                var panel_right = view.el.querySelector('#panel_right');
+                if (!panel_right) {
+                    return;
+                }
+
+                var helperPanel = panel_right.querySelector('.global_helper_panel');
+                if (!helperPanel) {
+                   return;
+                }
+
+                var middle = panel_right.parentNode.querySelector('.global_middle');
+                if (!middle) {
+                    return;
+                }
+
+                middle.style.marginRight = '0';
+                var boxes = panel_right.querySelectorAll('.standardbox_curved'), i;
+                for (i = 0; i < boxes.length; i++) {
+                    boxes[i].style.width = 'auto';
+                }
+                panel_right.classList.add('horiz_helper_panel');
+                panel_right.parentNode.removeChild(panel_right);
+                middle.parentNode.appendChild(panel_right);
+                document.getElementById('helper_panel_toggle').style.display = 'none';
+                helperPanel.style.minHeight = '0';
             });
 
             if (Composr.$IS_STAFF && (window.script_load_stuff_staff !== undefined)) {
                 script_load_stuff_staff()
             }
+        },
+        /* Staff JS error display */
+        initialiseErrorMechanism: function () {
+            window.onerror = function (msg, file, code) {
+                if (msg.indexOf === undefined) {
+                    return null;
+                }
+
+                if (document.readyState !== 'complete') {
+                    // Probably not loaded yet
+                    return null;
+                }
+
+                if (
+                    (msg.indexOf('AJAX_REQUESTS is not defined') != -1) || // Intermittent during page out-clicks
+
+                        // Internet Explorer false positives
+                    (((msg.indexOf("'null' is not an object") != -1) || (msg.indexOf("'undefined' is not a function") != -1)) && ((typeof file == 'undefined') || (file == 'undefined'))) || // Weird errors coming from outside
+                    ((code == '0') && (msg.indexOf('Script error.') != -1)) || // Too generic, can be caused by user's connection error
+
+                        // Firefox false positives
+                    (msg.indexOf("attempt to run compile-and-go script on a cleared scope") != -1) || // Intermittent buggyness
+                    (msg.indexOf('UnnamedClass.toString') != -1) || // Weirdness
+                    (msg.indexOf('ASSERT: ') != -1) || // Something too generic
+                    ((file) && (file.indexOf('TODO: FIXME') != -1)) || // Something too generic / Can be caused by extensions
+                    (msg.indexOf('TODO: FIXME') != -1) || // Something too generic / Can be caused by extensions
+                    (msg.indexOf('Location.toString') != -1) || // Buggy extensions may generate
+                    (msg.indexOf('Error loading script') != -1) || // User's connection error
+                    (msg.indexOf('NS_ERROR_FAILURE') != -1) || // Usually an internal error
+
+                        // Google Chrome false positives
+                    (msg.indexOf('can only be used in extension processes') != -1) || // Can come up with MeasureIt
+                    (msg.indexOf('extension.') != -1) || // E.g. "Uncaught Error: Invocation of form extension.getURL() doesn't match definition extension.getURL(string path) schema_generated_bindings"
+
+                    false // Just to allow above lines to be reordered
+                )
+                    return null; // Comes up on due to various Firefox/extension/etc bugs
+
+                if ((window.done_one_error === undefined) || (!window.done_one_error)) {
+                    window.done_one_error = true;
+                    var alert = '{!JAVASCRIPT_ERROR;^}\n\n' + code + ': ' + msg + '\n' + file;
+                    if (window.document.body) {// i.e. if loaded
+                        window.fauxmodal_alert(alert, null, '{!ERROR_OCCURRED;^}');
+                    }
+                }
+                return false;
+            };
+
+            window.addEventListener('beforeunload', function () {
+                window.onerror = null;
+            });
         }
     });
 
@@ -434,14 +510,18 @@
             options = options || {};
 
             if (document.getElementById('global_messages_2')) {
-                merge_global_messages();
+                var m1 = document.getElementById('global_messages');
+                if (!m1) return;
+                var m2 = document.getElementById('global_messages_2');
+                Composr.dom.appendHtml(m1, Composr.dom.html(m2));
+                m2.parentNode.removeChild(m2);
             }
 
-            if (Composr.isTruthy(Composr.queryString.get('wide_print'))) {
+            if (Composr.is(Composr.queryString.get('wide_print'))) {
                 try { window.print(); } catch (ignore) {}
             }
 
-            if (Composr.isTruthy(options.bgTplCompilation)) {
+            if (Composr.is(options.bgTplCompilation)) {
                 var page = Composr.filters.urlEncode(options.page);
                 load_snippet('background_template_compilation&page=' + page, '', function () {});
             }
@@ -452,11 +532,24 @@
             window.setInterval(function() { resize_frame(frame.name); }, 500);
         },
 
-        massSelectFormButtons: function massSelectFormButtons(options) {
-            var delBtn = this;
+        massSelectFormButtons: function (options) {
+            var delBtn = this,
+                form = delBtn.form;
 
-            $(delBtn).on('click', function () {
-                massDeleteClick(delBtn);
+            Composr.dom.on(delBtn, 'click', function () {
+                confirm_delete(form, true, function () {
+                    var id = document.getElementById('id');
+                    var ids = (id.value === '') ? [] : id.value.split(/,/);
+
+                    for (var i = 0; i < ids.length; i++) {
+                        prepareMassSelectMarker('', options.type, ids[i], true);
+                    }
+
+                    form.method = 'post';
+                    form.action = options.actionUrl;
+                    form.target = '_top';
+                    form.submit();
+                });
             });
 
             document.getElementById('id').fakeonchange = initialiseButtonVisibility;
@@ -469,22 +562,14 @@
                 document.getElementById('submit_button').disabled = (ids.length != 1);
                 document.getElementById('mass_select_button').disabled = (ids.length == 0);
             }
+        },
 
-            function massDeleteClick(el) {
-                confirm_delete(el.form, true, function () {
-                    var id = document.getElementById('id');
-                    var ids = (id.value === '') ? [] : id.value.split(/,/);
-
-                    for (var i = 0; i < ids.length; i++) {
-                        prepareMassSelectMarker('', options.type, ids[i], true);
-                    }
-
-                    ob.form.method = 'post';
-                    ob.form.action = options.actionUrl;
-                    ob.form.target = '_top';
-                    ob.form.submit();
-                });
-            }
+        massSelectDeleteForm: function () {
+            var form = this;
+            Composr.dom.on(form, 'submit', function (e) {
+                e.preventDefault();
+                confirm_delete(form, true);
+            });
         },
 
         uploadSyndicationSetupScreen: function (id) {
@@ -512,7 +597,7 @@
         },
 
         ipBanScreen: function () {
-            var textarea = this.getElementById('bans');
+            var textarea = this.querySelector('#bans');
             manage_scroll_height(textarea);
 
             if (!Composr.$MOBILE) {

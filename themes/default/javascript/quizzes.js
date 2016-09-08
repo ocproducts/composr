@@ -2,11 +2,12 @@
 
     Composr.templates.quizzes = {
         quizScreen: function quizScreen(options) {
-            var timeout = Number(options.timeout);
+            var form = Composr.dom.$('#quiz_form'),
+                timeout = Number(options.timeout);
 
             if (timeout > 0) {
                 setTimeout(function () {
-                    document.getElementById('quiz_form').submit();
+                    form.submit();
                 }, timeout * 1000);
 
                 setInterval(function () {
@@ -15,9 +16,9 @@
                 iterateCountdown(0); // Because quiz_timer_minutes_and_seconds needs setting correctly
             }
 
-            var e = document.getElementById('quiz_form').querySelectorAll('.field_input');
+            var e = Composr.dom.$$(form, '.field_input');
             for (var i = 0; i < e.length; i++) {
-                set_up_change_monitor(e[i].children[0]);
+                set_up_change_monitor(e[i]);
             }
         }
     };

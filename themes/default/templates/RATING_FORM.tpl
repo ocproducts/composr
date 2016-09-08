@@ -1,6 +1,7 @@
 {$REQUIRE_JAVASCRIPT,core_feedback_features}
 {$,If may rate}
 {+START,IF_EMPTY,{ERROR}}
+<div data-tpl-core-feedback-features="ratingForm" data-tpl-args="{+START,PARAMS_JSON,ERROR,ALL_RATING_CRITERIA}{_*}{+END}">
 	{+START,IF,{$JS_ON}}
 		{$REQUIRE_JAVASCRIPT,ajax}
 
@@ -68,8 +69,5 @@
 			</form>
 		{+END}
 	{+END}
+</div>
 {+END}
-
-<script type="application/json" data-tpl-core-feedback-features="ratingForm">
-{+START,PARAMS_JSON,ERROR,ALL_RATING_CRITERIA}{_/}{+END}
-</script>

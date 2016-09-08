@@ -14,6 +14,7 @@
 	<input{+START,IF_PASSED,TABINDEX} tabindex="{TABINDEX*}"{+END} maxlength="6" size="7" class="input_text_required" value="" type="text" id="captcha" name="captcha" />
 {+END}
 
+<div data-tpl-core-form-interfaces="formScreenInputCaptcha" data-tpl-args="{+START,PARAMS_JSON,CAPTCHA}{_*}{+END}">
 {+START,IF,{$CONFIG_OPTION,js_captcha}}
 	<noscript>{!JAVASCRIPT_REQUIRED}</noscript>
 
@@ -22,5 +23,4 @@
 {+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}
 	{$GET,CAPTCHA}
 {+END}
-
-<script type="application/json" data-tpl-core-form-interfaces="formScreenInputCaptcha">[{+START,PARAMS_JSON,CAPTCHA}{_/}{+END}, {$CONFIG_OPTION,js_captcha}]</script>
+</div>

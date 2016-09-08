@@ -13980,3 +13980,12 @@ function build_html5_upload_handler(request,file_progress,attachment_base,field_
 		}
 	};
 }
+
+function clear_attachment(i, post_field) {
+	var new_contents = get_textbox(post_field);
+	new_contents = new_contents.replace(new RegExp('\\[(attachment|attachment_safe)[^\\]]*\\]new_' + i + '\\[/(attachment|attachment_safe)\\]'), '');
+	new_contents = new_contents.replace(new RegExp('<input[^<>]* class="cms_keep_ui_controlled"[^<>]* title="[^<>]*" value="[^"]+"[^<>]* />'), ''); // Shell of the above
+	set_textbox(post_field, new_contents, new_contents);
+	document.getElementById('file' + i).value = '';
+	return false;
+}

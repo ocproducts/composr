@@ -1,57 +1,57 @@
-(function ($, data) {
+(function (Composr, _, Backbone, data) {
     'use strict';
-    var Composr = {
-            $PAGE_TITLE: data.PAGE_TITLE,
-            $MEMBER: data.MEMBER,
-            $IS_GUEST: data.IS_GUEST,
-            $USERNAME: data.USERNAME,
-            $AVATAR: data.AVATAR,
-            $MEMBER_EMAIL: data.MEMBER_EMAIL,
-            $PHOTO: data.PHOTO,
-            $MEMBER_PROFILE_URL: data.MEMBER_PROFILE_URL,
-            $FROM_TIMESTAMP: data.FROM_TIMESTAMP,
-            $MOBILE: data.MOBILE,
-            $THEME: data.THEME,
-            $JS_ON: data.JS_ON,
-            $LANG: data.LANG,
-            $BROWSER_UA: data.BROWSER_UA,
-            $OS: data.OS,
-            $DEV_MODE: data.DEV_MODE,
-            $USER_AGENT: data.USER_AGENT,
-            $IP_ADDRESS: data.IP_ADDRESS,
-            $TIMEZONE: data.TIMEZONE,
-            $HTTP_STATUS_CODE: data.HTTP_STATUS_CODE,
-            $CHARSET: data.CHARSET,
-            $KEEP: data.KEEP,
-            $SITE_NAME: data.SITE_NAME,
-            $COPYRIGHT: data.COPYRIGHT,
-            $DOMAIN: data.DOMAIN,
-            $FORUM_BASE_URL: data.FORUM_BASE_URL,
-            $BASE_URL: data.BASE_URL,
-            $BRAND_NAME: data.BRAND_NAME,
-            $IS_STAFF: data.IS_STAFF,
-            $IS_ADMIN: data.IS_ADMIN,
-            $VERSION: data.VERSION,
-            $COOKIE_PATH: data.COOKIE_PATH,
-            $COOKIE_DOMAIN: data.COOKIE_DOMAIN,
-            $IS_HTTPAUTH_LOGIN: data.IS_HTTPAUTH_LOGIN,
-            $IS_A_COOKIE_LOGIN: data.IS_A_COOKIE_LOGIN,
-            $SESSION_COOKIE_NAME: data.SESSION_COOKIE_NAME,
-            $GROUP_ID: data.GROUP_ID,
-            $CONFIG_OPTION: data.CONFIG_OPTION,
-            $VALUE_OPTION: data.VALUE_OPTION,
-            // Just some additonal stuff, not a tempcode symbol
-            $EXTRA: data.EXTRA
-        },
-        objProto  = Object.prototype,
+
+    Object.assign(Composr, {
+        $PAGE_TITLE: data.PAGE_TITLE,
+        $MEMBER: data.MEMBER,
+        $IS_GUEST: data.IS_GUEST,
+        $USERNAME: data.USERNAME,
+        $AVATAR: data.AVATAR,
+        $MEMBER_EMAIL: data.MEMBER_EMAIL,
+        $PHOTO: data.PHOTO,
+        $MEMBER_PROFILE_URL: data.MEMBER_PROFILE_URL,
+        $FROM_TIMESTAMP: data.FROM_TIMESTAMP,
+        $MOBILE: data.MOBILE,
+        $THEME: data.THEME,
+        $JS_ON: data.JS_ON,
+        $LANG: data.LANG,
+        $BROWSER_UA: data.BROWSER_UA,
+        $OS: data.OS,
+        $DEV_MODE: data.DEV_MODE,
+        $USER_AGENT: data.USER_AGENT,
+        $IP_ADDRESS: data.IP_ADDRESS,
+        $TIMEZONE: data.TIMEZONE,
+        $HTTP_STATUS_CODE: data.HTTP_STATUS_CODE,
+        $CHARSET: data.CHARSET,
+        $KEEP: data.KEEP,
+        $SITE_NAME: data.SITE_NAME,
+        $COPYRIGHT: data.COPYRIGHT,
+        $DOMAIN: data.DOMAIN,
+        $FORUM_BASE_URL: data.FORUM_BASE_URL,
+        $BASE_URL: data.BASE_URL,
+        $BRAND_NAME: data.BRAND_NAME,
+        $IS_STAFF: data.IS_STAFF,
+        $IS_ADMIN: data.IS_ADMIN,
+        $VERSION: data.VERSION,
+        $COOKIE_PATH: data.COOKIE_PATH,
+        $COOKIE_DOMAIN: data.COOKIE_DOMAIN,
+        $IS_HTTPAUTH_LOGIN: data.IS_HTTPAUTH_LOGIN,
+        $IS_A_COOKIE_LOGIN: data.IS_A_COOKIE_LOGIN,
+        $SESSION_COOKIE_NAME: data.SESSION_COOKIE_NAME,
+        $GROUP_ID: data.GROUP_ID,
+        $CONFIG_OPTION: data.CONFIG_OPTION,
+        $VALUE_OPTION: data.VALUE_OPTION,
+        $HAS_PRIVILEGE: data.HAS_PRIVILEGE,
+        // Just some additonal stuff, not a tempcode symbol
+        $EXTRA: data.EXTRA
+    });
+
+    var objProto  = Object.prototype,
         toString  = Function.bind.call(Function.call, objProto.toString),
         elProto   = HTMLElement.prototype,
         elMatches = Function.bind.call(Function.call, elProto.matches || elProto.webkitMatchesSelector || elProto.msMatchesSelector),
         arrProto  = Array.prototype,
         toArray   = Function.bind.call(Function.call, arrProto.slice),
-        forEach   = Function.bind.call(Function.call, arrProto.forEach),
-        defined   = function (v) { return v !== undefined; },
-        isA = function (obj, name) { return toString(obj) === '[object ' + name + ']'; },
         noop = function () {},
 
         loadPolyfillsPromise = new Promise(function (resolve) {
@@ -62,7 +62,8 @@
             if (document.readyState === 'interactive') {
                 resolve();
             } else {
-                document.addEventListener('DOMContentLoaded', function () {
+                document.addEventListener('DOMContentLoaded', function listener() {
+                    document.removeEventListener('DOMContentLoaded', listener);
                     resolve();
                 });
             }
@@ -72,24 +73,65 @@
             if (document.readyState === 'complete') {
                 resolve();
             } else {
-                window.addEventListener('load', function () {
+                window.addEventListener('load', function listener() {
+                    window.removeEventListener('load', listener);
                     resolve();
                 });
             }
         });
 
-    loadPolyfillsPromise.then(function () {
+    Promise.all([loadPolyfillsPromise, domReadyPromise]).then(function () {
         Composr.queryString = new window.URLSearchParams(window.location.search);
+
+        Composr._resolveReady();
+        delete Composr._resolveReady;
     });
 
-    Composr.ready = Promise.all([loadPolyfillsPromise, domReadyPromise]);
-    Composr.loadWindow = Promise.all([Composr.ready, windowLoadPromise]);
+    Promise.all([Composr.ready, windowLoadPromise]).then(function () {
+        Composr._resolveLoad();
+        delete Composr._resolveLoad;
+    });
+
+    function isA(obj, clazz) {
+        return toString(obj) === '[object ' + clazz + ']';
+    }
+
+    function defined() {
+        var i;
+        for (i = 0; i < arguments.length; i++) {
+            if (arguments[i] === undefined) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function nodeType(obj) {
+        return (!!obj) && (typeof obj === 'object') && ('nodeType' in obj) && obj.nodeType;
+    }
+
+    function isDocOrEl(obj) {
+        var nt = nodeType(obj);
+        return (nt === window.Node.DOCUMENT_NODE) || (nt === window.Node.ELEMENT_NODE);
+    }
+
+    function isEl(el) {
+        return nodeType(el) === window.Node.ELEMENT_NODE;
+    }
+
+    Composr.isA = isA;
+    Composr.defined = defined;
+    Composr.nodeType = nodeType;
+    Composr.isDocOrEl = isDocOrEl;
+    Composr.isEl = isEl;
+
 
     /* String interpolation */
     Composr.str = function (format) {
-        var args = arrProto.slice.call(arguments, 1);
+        var args = toArray(arguments); // Make a copy
+        args[0] = ''; // Replace 'format' with empty string
         return format.replace(/\{(\d+)\}/g, function (match, number) {
-            return args[number] !== undefined ? args[number] : match;
+            return (args[number] !== undefined) ? args[number] : match;
         });
     };
 
@@ -99,11 +141,11 @@
     };
 
     /* Mainly used to check tempcode values, since in JavaScript '0' (string) is true */
-    Composr.isFalsy = function isFalsy(val) {
+    Composr.isFalsy = function (val) {
         return !val || (val.length === 0) || ((typeof val === 'string') && ((val.trim() === '') || (val.trim() === '0')));
     };
 
-    Composr.areFalsy = function areFalsy() {
+    Composr.not = function () {
         var i = 0, len = arguments.length;
 
         while (i < len) {
@@ -116,19 +158,11 @@
         return true;
     };
 
-    Composr.isTruthy = function isTruthy(val) {
-        return !Composr.isFalsy(val);
-    };
-
-    Composr.areTruthy = function areTruthy() {
-        return !Composr.areFalsy.apply(this, arguments);
-    };
-
-    Composr.areDefined = function areDefined() {
+    Composr.is = function () {
         var i = 0, len = arguments.length;
 
         while (i < len) {
-            if (arguments[i] === undefined) {
+            if (Composr.isFalsy(arguments[i])) {
                 return false;
             }
             i++;
@@ -147,7 +181,7 @@
 
         for (i = 0, len = keys.length; i < len; i++) {
             if (!obj.hasOwnProperty(keys[i])) {
-                throw new Error('Object is missing a required key: \''+ keys[i] + '\'.');
+                throw new Error('Object is missing a required key: \'' + keys[i] + '\'.');
             }
         }
     };
@@ -156,6 +190,11 @@
     Composr.dir    = Composr.$DEV_MODE ? console.dir : noop;
     Composr.assert = Composr.$DEV_MODE ? console.assert : noop;
     Composr.error  = Composr.$DEV_MODE ? console.error : noop;
+    Composr.exception = function (ex) {
+        if (Composr.$DEV_MODE) {
+            throw ex;
+        }
+    };
 
     Composr.settings = {};
 
@@ -163,18 +202,18 @@
     Composr.behaviors = {};
 
     Composr.attachBehaviors = function (context, settings) {
-        var addons = Composr.behaviors, i, behaviors, j;
+        var i, behaviors, j;
 
-        if (!context || (typeof context !== 'object') || ((context.nodeType !== Node.DOCUMENT_NODE) && (context.nodeType !== Node.ELEMENT_NODE))) {
-            throw new Error(Composr.str("Invalid argument type: 'context' must be of type HTMLDocument or HTMLElement, '{0}' supplied.", context));
+        if (!isDocOrEl(context)) {
+            throw new Error(Composr.str("Invalid argument type: 'context' must be of type HTMLDocument or HTMLElement, '{1}' supplied.", toString(context)));
         }
 
         settings = settings || Composr.settings;
 
         // Execute all of them.
-        for (i in addons) {
-            if (addons.hasOwnProperty(i) && (typeof addons[i] === 'object')) {
-                behaviors = addons[i];
+        for (i in Composr.behaviors) {
+            if (Composr.behaviors.hasOwnProperty(i) && (typeof Composr.behaviors[i] === 'object')) {
+                behaviors = Composr.behaviors[i];
 
                 for (j in behaviors) {
                     if (behaviors.hasOwnProperty(j) && (typeof behaviors[j] === 'object') && (typeof behaviors[j].attach === 'function')) {
@@ -190,19 +229,19 @@
     };
 
     Composr.detachBehaviors = function (context, settings, trigger) {
-        var addons = Composr.behaviors, i, behaviors, j;
+        var i, behaviors, j;
 
-        if (!context || (typeof context !== 'object') || ((context.nodeType !== Node.DOCUMENT_NODE) && (context.nodeType !== Node.ELEMENT_NODE))) {
-            throw new Error(Composr.str("Invalid argument type: 'context' must be of type HTMLDocument or HTMLElement, '{0}' supplied.", context));
+        if (!isDocOrEl(context)) {
+            throw new Error(Composr.str("Invalid argument type: 'context' must be of type HTMLDocument or HTMLElement, '{1}' supplied.", toString(context)));
         }
 
         settings = settings || Composr.settings;
         trigger = trigger || 'unload';
 
         // Execute all of them.
-        for (i in addons) {
-            if (addons.hasOwnProperty(i) && (typeof addons[i] === 'object')) {
-                behaviors = addons[i];
+        for (i in Composr.behaviors) {
+            if (Composr.behaviors.hasOwnProperty(i) && (typeof Composr.behaviors[i] === 'object')) {
+                behaviors = Composr.behaviors[i];
 
                 for (j in behaviors) {
                     if (behaviors.hasOwnProperty(j) && (typeof behaviors[j] === 'object') && (typeof behaviors[j].detach === 'function')) {
@@ -224,14 +263,13 @@
         addonName = addonName.replace(/_/g, '-');
 
         Composr.dom.$$$(context, '[data-tpl-' + addonName + ']').forEach(function (el) {
-            var funcName = el.dataset[Composr.utils.camelCase('tpl-' + addonName)].trim(),
+            var tplName = el.dataset[Composr.util.camelCase('tpl-' + addonName)].trim(),
                 addonArgs = '',
                 args = [];
 
             if ((el.localName === 'script') && (el.type === 'application/json')) {
                 // Arguments provided inside the <script> tag.
                 addonArgs = el.textContent.trim();
-
             } else {
                 // Arguments provided in the data-tpl-args attribute.
                 addonArgs = el.dataset.tplArgs ? el.dataset.tplArgs.trim() : '';
@@ -245,11 +283,11 @@
                 }
             }
 
-            var addonNameCamelCased = Composr.utils.camelCase(addonName);
-            var func = Composr.templates[addonNameCamelCased] ? Composr.templates[addonNameCamelCased][funcName] : null;
+            var addonNameCamelCased = Composr.util.camelCase(addonName),
+                tplFunc = Composr.templates[addonNameCamelCased] ? Composr.templates[addonNameCamelCased][tplName] : null;
 
-            if (typeof func === 'function') {
-                func.apply(el.localName !== 'script' ? el : context, args);
+            if (typeof tplFunc === 'function') {
+                tplFunc.apply(el, args);
             }
         });
     };
@@ -258,6 +296,15 @@
         options: null,
         initialize: function (viewOptions, options) {
             this.options = options || {};
+        },
+        $: function (selector) {
+            return Composr.dom.$(this.el, selector);
+        },
+        $$: function (selector) {
+            return Composr.dom.$$(this.el, selector);
+        },
+        $$$: function (selector) {
+            return Composr.dom.$$$(this.el, selector);
         }
     });
 
@@ -265,13 +312,14 @@
     Composr.views = {};
 
     Composr.initializeViews = function (context, addonName) {
-        var View, addonNameKibab = addonName.replace(/_/g, '-'),
-            addonNameCamelCase = Composr.utils.camelCase(addonName);
+        var addonNameKibab = addonName.replace(/_/g, '-'),
+            addonNameCamelCase = Composr.util.camelCase(addonName);
 
         Composr.dom.$$$(context, '[data-view-' + addonNameKibab + ']').forEach(function (el) {
             var viewClasses = Composr.views[addonNameCamelCase],
-                viewClassName = el.dataset[Composr.utils.camelCase('view-' + addonNameKibab)].trim(),
-                options = Composr.parseDataObject(el.dataset.viewArgs);
+                viewClassName = el.dataset[Composr.util.camelCase('view-' + addonNameKibab)].trim(),
+                options = Composr.parseDataObject(el.dataset.viewArgs),
+                View;
 
             if (viewClasses && viewClasses[viewClassName]) {
                 View = viewClasses[viewClassName];
@@ -326,7 +374,7 @@
         return str.replace(/[\r\n]/g, '');
     };
 
-    Composr.filters.id = Composr.filters.identifier = function (str) {
+    Composr.filters.id = function (str) {
         var out, i, char, ascii, remap = {
             '[': '_opensquare_',
             ']': '_closesquare_',
@@ -372,11 +420,11 @@
     };
 
     /* General utility methods */
-    Composr.utils = {};
+    Composr.util = {};
 
     // Returns a random integer between min (inclusive) and max (inclusive)
     // Using Math.round() will give you a non-uniform distribution!
-    Composr.utils.random = function random(min, max) {
+    Composr.util.random = function random(min, max) {
         if (min === undefined) {
             min = 0;
         }
@@ -389,7 +437,7 @@
     };
 
     // Credit: http://stackoverflow.com/a/32604073/362006
-    Composr.utils.camelCase = function camelCase(str) {
+    Composr.util.camelCase = function camelCase(str) {
         // Lower cases the string
         return str.toLowerCase()
             // Replaces any - or _ characters with a space
@@ -403,38 +451,60 @@
             .replace( / /g, '' );
     };
 
+    Composr.util.dasherize = function (str) {
+        return str.replace(/::/g, '/')
+            .replace(/([A-Z]+)([A-Z][a-z])/g, '$1_$2')
+            .replace(/([a-z\d])([A-Z])/g, '$1_$2')
+            .replace(/_/g, '-')
+            .toLowerCase();
+
+    };
+
+    Composr.window = function (node) {
+        var type = nodeType(node);
+
+        if (!type) {
+            return null;
+        }
+
+        if (type === window.Node.DOCUMENT_NODE) {
+            return node.defaultView;
+        }
+
+        return node.ownerDocument.defaultView;
+    };
+
     /* DOM helper methods */
     Composr.dom = {};
 
-    // Returns a single matching child element
-    Composr.dom.$ = function (el, selector) {
+    // Returns a single matching child element, defaults to 'document' as parent
+    Composr.dom.id = function (context, id) {
+        return (arguments.length === 1) ? document.getElementById(context) : context.querySelector('#' + id);
+    };
+
+    // Returns a single matching child element, defaults to 'document' as parent
+    Composr.dom.$ = function (context, selector) {
         if (arguments.length === 1) {
-            selector = el;
-            el = document;
+            selector = context;
+            context = document;
         }
 
-        return el.querySelector(selector);
+        return context.querySelector(selector);
     };
 
     // Returns an array with matching child elements
-    Composr.dom.$$ = function (el, selector) {
+    Composr.dom.$$ = function (context, selector) {
         if (arguments.length === 1) {
-            selector = el;
-            el = document;
+            selector = context;
+            context = document;
         }
 
-        return toArray(el.querySelectorAll(selector));
+        return toArray(context.querySelectorAll(selector));
     };
 
     // This one (3 dollarydoos) also includes the parent element (at offset 0) if it matches the selector
     Composr.dom.$$$ = function (el, selector) {
-        var els;
-
-        if (!defined(el) || !defined(selector)) {
-            throw new Error('Composr.dom.$$$() requires two arguments.');
-        }
-
-        els = toArray(el.querySelectorAll(selector));
+        var els = toArray(el.querySelectorAll(selector));
 
         if (Composr.dom.matches(el, selector)) {
             els.unshift(el);
@@ -442,34 +512,140 @@
 
         return els;
     };
-    Composr.dom.on = function (el, eventName, callbackOrSelector, callback) {
-        var selector;
 
-        if (arguments.length < 4) {
-            callback = callbackOrSelector;
-            el.addEventListener(eventName, callback);
-        } else { // Event delegation
-            selector = callbackOrSelector;
-            el.addEventListener(eventName, function (e) {
-                var match;
+    // Simple abstraction layer for addEventListener, supports event delegation.
+    Composr.dom.on = function (el, eventNames, listenerOrSelectorsMap) {
+        var listener = listenerOrSelectorsMap;
 
-                if (el === e.target) {
-                    return;
+        if (typeof listenerOrSelectorsMap === 'object') {
+            // Event delegation, it's a map of selectors and their listener functions
+            listener = function (e) {
+                var selectors = listenerOrSelectorsMap,
+                    selector, callback, match;
+
+                for (selector in selectors) {
+                    if (selectors.hasOwnProperty(selector)) {
+                        callback = selectors[selector];
+                        match = Composr.dom.closest(e.target, selector, el);
+
+                        if (match) {
+                            callback.call(match, e);
+                        }
+                    }
                 }
+            };
+        }
 
-                match = Composr.dom.closest(e.target, selector, el);
+        if (typeof eventNames === 'string') {
+            eventNames = eventNames.trim().split(/\s+/);
+        }
 
-                if (match) {
-                    e.currentTarget = match;
-                    callback.call(match, e);
-                }
+        eventNames.forEach(function (eventName) {
+            el.addEventListener(eventName, listener);
+        });
+
+        return listener;
+    };
+
+    Composr.dom.off = function (el, eventNames, callback) {
+        if (typeof eventNames === 'string') {
+            eventNames = eventNames.trim().split(/\s+/);
+        }
+
+        eventNames.forEach(function (eventName) {
+            el.removeEventListener(eventName, callback);
+        });
+    };
+
+    // Creates an array from a NodeList or HTMLCollection or a single element
+    Composr.dom.array = function (elOrList) {
+        if (!elOrList || (typeof elOrList !== 'object')) {
+            return [];
+        }
+
+        if (Array.isArray(elOrList)) {
+            return elOrList;
+        }
+
+        if (isEl(elOrList)) {
+            return [elOrList];
+        }
+
+        if (isA(elOrList, 'HTMLCollection') || isA(elOrList, 'NodeList')) {
+            return toArray(elOrList);
+        }
+
+        return [];
+    };
+
+    Composr.dom.css = (function () {
+        function camelize(str) {
+            return str.replace(/-+(.)?/g, function (match, chr) {
+                return chr ? chr.toUpperCase() : '';
             });
         }
-    };
 
-    Composr.dom.off = function (el, eventName, callback) {
-        el.removeEventListener(eventName, callback);
-    };
+        function getStyles(el, propsArr) {
+            var props = {}, computedStyle = window.getComputedStyle(el, ''), i;
+
+            for (i = 0; i < propsArr.length; i++) {
+                props[propsArr[i]] = el.style[camelize(propsArr[i])] || computedStyle.getPropertyValue(Composr.util.dasherize(propsArr[i]));
+            }
+
+            return props;
+        }
+
+        function maybeAddPx(name, value) {
+            var cssNumber = {
+                'column-count': 1,
+                'columns': 1,
+                'font-weight': 1,
+                'line-height': 1,
+                'opacity': 1,
+                'z-index': 1,
+                'zoom': 1
+            };
+
+            return (typeof value === 'number' && !cssNumber[name]) ? (value + 'px') : value;
+        }
+
+        function setStyles(el, stylesMap) {
+            var key, dashedKey, css = '';
+
+            for (key in stylesMap) {
+                if (stylesMap.hasOwnProperty(key)) {
+                    dashedKey = Composr.util.dasherize(key);
+
+                    if (!stylesMap[key] && (stylesMap[key] !== 0)) {
+                        el.style.removeProperty(dashedKey);
+                    } else {
+                        css += dashedKey + ':' + maybeAddPx(dashedKey, stylesMap[key]) + ';';
+                    }
+                }
+            }
+
+            if (css.length) {
+                el.style.cssText += ';' + css;
+            }
+        }
+
+        return function (el, tbd) {
+            if (typeof tbd === 'string') {
+                // It's a CSS property name to retrieve
+                return getStyles(el, [tbd])[tbd];
+            }
+
+            if (Array.isArray(tbd)) {
+                // It's an array of CSS property names to retrieve
+                return getStyles(el, tbd);
+            }
+
+            if (typeof tbd === 'object') {
+                // It's a map of CSS property values to set
+                setStyles(el, tbd);
+            }
+        };
+    }());
 
     Composr.dom.keyPressed = function (keyboardEvent, checkKey) {
         var key = keyboardEvent.key;
@@ -560,7 +736,8 @@
     /* Put some new HTML around the given element */
     Composr.dom.outerHtml = function (el, html) {
         var p   = el.parentNode,
-            ref = el.nextSibling, c, ci;
+            ref = el.nextSibling,
+            c, ci;
 
         if (arguments.length === 1) {
             return el.outerHTML;
@@ -581,7 +758,7 @@
 
     /* Returns the provided element's width excluding padding and borders */
     Composr.dom.contentWidth = function contentWidth(element) {
-        var cs = getComputedStyle(element),
+        var cs = window.getComputedStyle(element),
             padding = parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight),
             border = parseFloat(cs.borderLeftWidth) + parseFloat(cs.borderRightWidth);
 
@@ -590,7 +767,7 @@
 
     /* Returns the provided element's height excluding padding and border */
     Composr.dom.contentHeight = function contentHeigt(element) {
-        var cs = getComputedStyle(element),
+        var cs = window.getComputedStyle(element),
             padding = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom),
             border = parseFloat(cs.borderTopWidth) + parseFloat(cs.borderBottomWidth);
 
@@ -599,12 +776,12 @@
 
     // Check if the given element matches selector
     Composr.dom.matches = function (el, selector) {
-        return _.isElement(el) && elMatches(el, selector);
+        return isEl(el) && elMatches(el, selector);
     };
 
     // Get nearest parent (or itself) element matching selector
-    Composr.dom.closest = function closest(el, selector, untilParent) {
-        if (!_.isElement(el) || (el === untilParent)) {
+    Composr.dom.closest = function (el, selector, untilParent) {
+        if (!isEl(el) || (el === untilParent)) {
             return null;
         }
 
@@ -624,11 +801,10 @@
                 data = JSON.parse(data);
 
                 if (data && (typeof data === 'object')) {
-                    return _.defaults(data, defaults);
+                    return Object.assign({}, defaults, data);
                 }
             } catch (ex) {
                 Composr.error('Composr.parseDataArgs(), error parsing JSON: ' + data, ex);
-                return defaults;
             }
         }
 
@@ -669,9 +845,9 @@
     };
 
     Composr.ui.disableFormButtons = function (form, permanent) {
-        var buttons = form.querySelectorAll('input[type="submit"], input[type="button"], input[type="image"], button');
+        var buttons = Composr.dom.$$(form, 'input[type="submit"], input[type="button"], input[type="image"], button');
 
-        forEach(buttons, function (btn) {
+        buttons.forEach(function (btn) {
             Composr.ui.disableButton(btn, permanent);
         });
     };
@@ -693,8 +869,6 @@
     };
 
     Composr.audio = {};
-
-    window.Composr = Composr;
 
     function loadPolyfills(callback) {
         var scriptsToLoad = 0,
@@ -775,4 +949,4 @@
             callback();
         }
     }
-}(window.jQuery || window.Zepto, JSON.parse(document.getElementsByName('composr-symbol-data')[0].content)));
+}(window.Composr, window._, window.Backbone, JSON.parse(document.getElementsByName('composr-symbol-data')[0].content)));

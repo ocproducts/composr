@@ -146,7 +146,7 @@
 	<div id="map_canvas" style="width: {WIDTH}; height: {HEIGHT}"></div>
 
 	<script>// <![CDATA[
-		$(function() {
+		Composr.ready.then(function() {
 			google.load('maps','3',{callback: google_map_users_initialize,other_params:''{+START,IF_NON_EMPTY,{REGION}},region:'{REGION;/}'{+END}});
 		});
 	//]]></script>

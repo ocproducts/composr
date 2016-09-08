@@ -1,3 +1,4 @@
+<div data-tpl-filedump="filedumpEmbedScreen" data-tpl-args="{+START,PARAMS_JSON,GENERATED}{_*}{+END}">
 {TITLE}
 
 {+START,IF_PASSED,GENERATED}
@@ -46,5 +47,4 @@
 {+END}
 
 {FORM}
-
-<script type="application/json" data-tpl-filedump="filedumpEmbedScreen">{+START,PARAMS_JSON,GENERATED}{_/}{+END}</script>
+</div>

@@ -1,3 +1,4 @@
+<div data-tpl-core-abstract-interfaces="fatalScreen">
 {TITLE}
 
 <p role="alert">
@@ -36,5 +37,4 @@
 		</ul>
 	{+END}
 {+END}
-
-<script type="application/json" data-tpl-core-abstract-interfaces="fatalScreen"></script>
+</div>

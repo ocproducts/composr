@@ -10,13 +10,9 @@ if (typeof window.CKEDITOR == 'undefined') {
     window.CKEDITOR = null;
 }
 
-function wysiwyg_cookie_says_on() {
-    var cookie = read_cookie('use_wysiwyg');
-    return ((cookie == '') || (cookie != '0')) && (browser_matches('wysiwyg') && ('{$MOBILE}' != '1'));
-}
-
 function wysiwyg_on() {
-    return wysiwyg_cookie_says_on();
+    var cookie = read_cookie('use_wysiwyg');
+    return (!cookie || (cookie !== '0')) && (browser_matches('wysiwyg') && !Composr.$MOBILE);
 }
 
 function toggle_wysiwyg(name) {
@@ -744,12 +740,10 @@ function get_selected_html(editor) {
         {
             my_selection.unlock(true);
             selected_text = my_selection.getNative().createRange().htmlText;
-        } else // IE9 / standards (HTMLSelection object)
-        {
+        } else {// IE9 / standards (HTMLSelection object)
             try {
                 selected_text = Composr.dom.html(my_selection.getNative().getRangeAt(0).cloneContents());
-            }
-            catch (e) {
+            } catch (e) {
             }
         }
     }
@@ -912,13 +906,4 @@ function show_upload_syndication_options(name, syndication_json, no_quota) {
     html = '<div>' + html + '</div>';
 
     Composr.dom.html(html_spot, html);
-}
-
-function clear_attachment(i, post_field) {
-    var new_contents = get_textbox(post_field);
-    new_contents = new_contents.replace(new RegExp('\\[(attachment|attachment_safe)[^\\]]*\\]new_' + i + '\\[/(attachment|attachment_safe)\\]'), '');
-    new_contents = new_contents.replace(new RegExp('<input[^<>]* class="cms_keep_ui_controlled"[^<>]* title="[^<>]*" value="[^"]+"[^<>]* />'), ''); // Shell of the above
-    set_textbox(post_field, new_contents, new_contents);
-    document.getElementById('file' + i).value = '';
-    return false;
 }

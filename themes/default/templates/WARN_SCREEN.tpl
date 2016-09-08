@@ -1,3 +1,4 @@
+<div data-tpl-core-abstract-interfaces="warnScreen">
 {TITLE}
 
 {$REQUIRE_CSS,messages}
@@ -40,8 +41,7 @@
 
 {+START,IF,{PROVIDE_BACK}}{+START,IF,{$JS_ON}}{+START,IF,{$NOT,{$RUNNING_SCRIPT,preview}}}
 	<p class="back_button">
-		<a href="#!" onclick="history.back(); return false;"><img title="{!NEXT_ITEM_BACK}" alt="{!NEXT_ITEM_BACK}" src="{$IMG*,icons/48x48/menu/_generic_admin/back}" /></a>
+		<a href="#!" data-cms-btn-go-back="1"><img title="{!NEXT_ITEM_BACK}" alt="{!NEXT_ITEM_BACK}" src="{$IMG*,icons/48x48/menu/_generic_admin/back}" /></a>
 	</p>
 {+END}{+END}{+END}
-
-<script type="application/json" data-tpl-core-abstract-interfaces="warnScreen"></script>
+</div>

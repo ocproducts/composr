@@ -49,26 +49,23 @@
 {+END}
 {+END}
 
-<section class="box box___block_main_image_fader_news">
+<section class="box box___block_main_image_fader_news" data-tpl-news="blockMainImageFaderNews" data-tpl-args="{+START,PARAMS_JSON,RAND_FADER_NEWS,NEWS,MILL}[{_*}, [{$GET*,news_items_html_json}]]{+END}">
 	<div class="box_inner">
 	{+START,IF_NON_EMPTY,{TITLE}}
 		<h2>{TITLE}</h2>
 	{+END}
 
-	<div class="image_fader_news_pic">
-		<div class="img_thumb_wrap">
-			<a id="image_fader_news_url_{$GET%,RAND_FADER_NEWS}" href="#!"><img id="image_fader_news_{$GET,RAND_FADER_NEWS}" src="{$IMG*,blank}" alt="" /></a>
+		<div class="image_fader_news_pic">
+			<div class="img_thumb_wrap">
+				<a id="image_fader_news_url_{$GET%,RAND_FADER_NEWS}" href="#!"><img id="image_fader_news_{$GET,RAND_FADER_NEWS}" src="{$IMG*,blank}" alt="" /></a>
+			</div>
+		</div>
+
+		<div class="image_fader_news_html" id="image_fader_news_html_{$GET%,RAND_FADER_NEWS}">
+			<span aria-busy="true"><img id="loading_image" alt="" src="{$IMG*,loading}" /></span>
 		</div>
 	</div>
-
-	<div class="image_fader_news_html" id="image_fader_news_html_{$GET%,RAND_FADER_NEWS}">
-		<span aria-busy="true"><img id="loading_image" alt="" src="{$IMG*,loading}" /></span>
-	</div>
-</div></section>
-
-<script type="application/json"  data-tpl-news="blockMainImageFaderNews">
-	{+START,PARAMS_JSON,RAND_FADER_NEWS,NEWS,MILL}[{_/}, [{$GET/,news_items_html_json}]]{+END}
-</script>
+</section>
 
 <noscript>
 	{+START,LOOP,NEWS}

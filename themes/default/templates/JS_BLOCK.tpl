@@ -1,6 +1,6 @@
 {$SET,js_block_id,js_block_{$RAND%}}
-
-<div>
+{$SET,block_call_url,{$FACILITATE_AJAX_BLOCK_CALL,{BLOCK_PARAMS}}}
+<div data-tpl-core="jsBlock" data-tpl-args="{+START,PARAMS_JSON,js_block_id,block_call_url}{_*}{+END}">
 	<div id="{$GET%,js_block_id}">
 		<div aria-busy="true" class="spaced">
 			<div class="ajax_loading vertical_alignment">
@@ -12,6 +12,3 @@
 		<!-- Block will load in here -->
 	</div>
 </div>
-
-{$SET,block_call_url,{$FACILITATE_AJAX_BLOCK_CALL,{BLOCK_PARAMS}}}
-<script type="application/json" data-tpl-core="jsBlock">{+START,PARAMS_JSON,js_block_id,block_call_url}{_/}{+END}</script>

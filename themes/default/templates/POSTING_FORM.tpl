@@ -1,8 +1,9 @@
+<div data-view-core-form-interfaces="PostingForm" data-view-args="{+START,PARAMS_JSON,MODSECURITY_WORKAROUND}{_*}{+END}">
 {+START,IF,{$IN_STR,{SPECIALISATION}{SPECIALISATION2},_required}}
 	{+START,INCLUDE,FORM_SCREEN_ARE_REQUIRED}{+END}
 {+END}
 
-<form title="{!PRIMARY_PAGE_FORM}" id="posting_form" method="post" enctype="multipart/form-data" action="{URL*}" autocomplete="off"{+START,IF_PASSED_AND_TRUE,MODSECURITY_WORKAROUND} onsubmit="return modsecurity_workaround(this);"{+END}>
+<form title="{!PRIMARY_PAGE_FORM}" id="posting_form" method="post" enctype="multipart/form-data" action="{URL*}" autocomplete="off" class="{+START,IF_PASSED_AND_TRUE,MODSECURITY_WORKAROUND}js-submit-modsec-workaround{+END}">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<div>
@@ -48,3 +49,4 @@
 {+START,IF_PASSED,EXTRA}
 	{EXTRA}
 {+END}
+</div>

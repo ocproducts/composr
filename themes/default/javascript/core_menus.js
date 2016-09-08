@@ -15,7 +15,7 @@
 
             this.menuId = options.menuId;
 
-            if (Composr.isTruthy(options.javascriptHighlighting) && this.menuId) {
+            if (Composr.is(options.javascriptHighlighting) && this.menuId) {
                 menuActiveSelection(this.menuId);
             }
         }
@@ -96,14 +96,14 @@
         menuEditorBranchWrap: function (options) {
             var sIndex = Number(options.branchType);
 
-            if (Composr.isTruthy(options.clickableSections)) {
+            if (Composr.is(options.clickableSections)) {
                 sIndex = sIndex === 0 ? 0 : sIndex - 1;
             }
 
             document.getElementById('branch_type_' + options.i).selectedIndex = sIndex;
         },
 
-        menuSitemap: function menuSitemap(options, content) {
+        menuSitemap: function (options, content) {
             generate_menu_sitemap(options.menuSitemapId, content, 0);
         },
 
@@ -298,10 +298,9 @@ function pop_up_menu(id, place, menu, event, outside_fixed_width) {
     e.style.position = 'absolute';
     e.style.left = '0'; // Setting this lets the browser calculate a more appropriate (larger) width, before we set the correct left for that width will fit
     e.style.display = 'block';
-    if (typeof window.fade_transition != 'undefined') {
-        set_opacity(e, 0.0);
-        fade_transition(e, 100, 30, 8);
-    }
+    set_opacity(e, 0.0);
+    fade_transition(e, 100, 30, 8);
+
     var full_width = (window.scrollX == 0) ? get_window_width() : get_window_scroll_width();
     /*{+START,IF,{$CONFIG_OPTION,fixed_width}}*/
     if (!outside_fixed_width) {

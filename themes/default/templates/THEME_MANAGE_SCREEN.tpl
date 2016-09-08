@@ -1,4 +1,4 @@
-<div data-view-core-themeing="ThemeManageScreen">
+<div data-view-core-themeing="ThemeManageScreen" data-view-args="{+START,PARAMS_JSON,NAME}{_*}{+END}">
 {TITLE}
 
 {+START,INCLUDE,HANDLE_CONFLICT_RESOLUTION}{+END}
@@ -22,7 +22,7 @@
 		<tbody>
 			{$SET,done_one_theme,0}
 			{+START,LOOP,THEMES}
-				<tr{+START,IF,{$GET,done_one_theme}} class="thick_border"{+END}>
+				<tr {+START,IF,{$GET,done_one_theme}} class="thick_border"{+END}>
 					<td role="note">
 						{+START,SET,TOOLTIP}
 							<kbd>{NAME*}</kbd>, {!BY_SIMPLE,<em>{AUTHOR`}</em>}

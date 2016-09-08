@@ -1,3 +1,4 @@
+<div data-tpl-core-menus="menuEditorScreen" data-tpl-args="{+START,PARAMS_JSON,ALL_MENUS}{_*}{+END}">
 {TITLE}
 
 {+START,INCLUDE,HANDLE_CONFLICT_RESOLUTION}{+END}
@@ -104,5 +105,4 @@
 		</div>
 	</div>
 </div>
-
-<script type="application/json" data-tpl-core-menus="menuEditorScreen">{+START,PARAMS_JSON,ALL_MENUS}{_/}{+END}</script>
+</div>

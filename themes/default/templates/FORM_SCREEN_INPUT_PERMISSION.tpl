@@ -1,12 +1,12 @@
 {$REQUIRE_JAVASCRIPT,core_form_interfaces}
-<tr id="access_{GROUP_ID*}_privilege_container" class="{$CYCLE,permissions_zebra,zebra_0,zebra_1}" data-tpl-core-form-interfaces="formScreenInputPermission" data-tpl-args="{+START,PARAMS_JSON,ALL_GLOBAL,GROUP_ID}{_*}{+END}">
+<tr id="access_{GROUP_ID*}_privilege_container" class="{$CYCLE,permissions_zebra,zebra_0,zebra_1}" data-view-core-form-interfaces="FormScreenInputPermission" data-view-args="{+START,PARAMS_JSON,ALL_GLOBAL,GROUP_ID}{_*}{+END}">
 	<th class="form_table_field_name">
 		<p class="form_field_name field_name">{GROUP_NAME*}</p>
 		{+START,IF,{$OR,{FORCE_PRESETS},{$IS_NON_EMPTY,{OVERRIDES}}}}
 			<label for="access_{GROUP_ID*}_presets">
 				<span class="accessibility_hidden">{!PINTERFACE_PRESETS} ({GROUP_NAME*})</span>
 
-				<select tabindex="{TABINDEX*}" id="access_{GROUP_ID*}_presets" name="access_{GROUP_ID*}_presets" onclick="this.onchange(event);" onchange="copy_permission_presets('access_{GROUP_ID;*}',this.options[this.selectedIndex].value); cleanup_permission_list('access_{GROUP_ID;*}')">
+				<select tabindex="{TABINDEX*}" id="access_{GROUP_ID*}_presets" name="access_{GROUP_ID*}_presets" class="js-click-copy-perm-presets js-change-copy-perm-presets">
 					{+START,IF,{ALL_GLOBAL}}
 						<option selected="selected" value="-1">{!PINTERFACE_LEVEL_GLOBAL}</option>
 					{+END}
@@ -36,7 +36,7 @@
 	{+START,IF,{$OR,{FORCE_PRESETS},{$IS_NON_EMPTY,{OVERRIDES}}}}
 		{+START,IF,{$JS_ON}}
 			<td class="form_table_field_input">
-				<button class="buttons__copy button_screen_item button_micro_tall" type="button" id="copy_button_access_{GROUP_ID*}" onclick="permission_repeating(this,'access_{GROUP_ID%}'); return false;">{!REPEAT_PERMISSION}</button>
+				<button class="buttons__copy button_screen_item button_micro_tall js-click-perm-repeating" type="button" id="copy_button_access_{GROUP_ID*}">{!REPEAT_PERMISSION}</button>
 			</td>
 		{+END}
 	{+END}

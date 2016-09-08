@@ -28,11 +28,11 @@
                 }, 2000);
             }
 
-            if (Composr.isTruthy(Composr.$CONFIG_OPTION.editarea)) {
+            if (Composr.is(Composr.$CONFIG_OPTION.editarea)) {
                 ace_composr_loader('e_' + options.fileId, options.highlighterType, false);
             }
 
-            if (Composr.isTruthy(options.includeCssEditing) && window.opener && window.opener.document) {
+            if (Composr.is(options.includeCssEditing) && window.opener && window.opener.document) {
                 load_contextual_css_editor(options.file, options.fileId);
             }
         },

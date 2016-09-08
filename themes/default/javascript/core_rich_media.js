@@ -17,7 +17,7 @@
             preinit_file_input("attachment_multi", "file" + options.i, null, options.postingFieldName, options.filter);
 
             if (options.syndicationJson !== undefined) {
-                show_upload_syndication_options("file" + options.i, options.syndicationJson, Composr.isTruthy(options.noQuota));
+                show_upload_syndication_options("file" + options.i, options.syndicationJson, Composr.is(options.noQuota));
             }
         },
 
@@ -44,7 +44,7 @@
             that.mainEl.appendChild(carousel_ns);
             that.el.style.display = 'block';
 
-            Composr.loadWindow.then(function () {
+            Composr.load.then(function () {
                 that.$('.js-btn-car-move').css({
                     height: that.mainEl.offsetHeight + 'px'
                 });
@@ -110,10 +110,10 @@
                 window.num_attachments = options.numAttachments;
             }
 
-            if (Composr.isTruthy(options.simpleUi)) {
+            if (Composr.is(options.simpleUi)) {
                 window.num_attachments = 1;
 
-                Composr.loadWindow.then(function () {
+                Composr.load.then(function () {
                     if (document.getElementById('attachment_upload_button')) {
                         rebuild_attachment_button_for_next(options.postingFieldName, 'attachment_upload_button');
                     }
@@ -186,7 +186,7 @@
                 imgsThumbsId = 'imgs_thumbs_' + options.rand,
                 thumbWidthConfig = Composr.$CONFIG_OPTION.thumbWidth + 'x' + Composr.$CONFIG_OPTION.thumbWidth;
 
-            if (Composr.isFalsy(Composr.$CONFIG_OPTION.jsOverlays)) {
+            if (Composr.not(Composr.$CONFIG_OPTION.jsOverlays)) {
                 return;
             }
 
@@ -239,7 +239,7 @@
 
             // If you only want a single image-based thumbnail
             if (contains_video) {// Remove this 'if' (so it always runs) if you do not want the grid-style layout (plus remove the media_set class from the outer div
-                var width = Composr.isTruthy(options.width) ? 'style="width: ' + Number(options.width) + 'px"' : '',
+                var width = Composr.is(options.width) ? 'style="width: ' + Number(options.width) + 'px"' : '',
                     imgWidthHeight = setImgWidthHeight ? ' width="' + Number(options.width) + '" height="' + Number(options.height) + '"' : '',
                     media_set_html = '\
 					<figure class="attachment" ' + width + '>\
@@ -302,7 +302,22 @@
         },
 
         comcodeOverlay: function comcodeOverlay(options) {
-            if ((typeof options.id !== 'string') || (options.id.trim() === '') || (read_cookie('og_' + options.id) !== '1')) {
+            var container = this, id = options.id;
+
+            Composr.dom.on(container, 'click', {'.js-click-dismiss-overlay': function () {
+                var bi = document.getElementById('main_website_inner');
+                if (bi) {
+                    set_opacity(bi, 1.0);
+                }
+
+                document.getElementById(options.randIdOverlay).style.display = 'none';
+
+                if (Composr.is(id)) {
+                    set_cookie('og_' + id, '1', 365);
+                }
+            }});
+
+            if (Composr.not(id) || (read_cookie('og_' + id) !== '1')) {
                 window.setTimeout(function() {
                     var element, bi;
 
@@ -339,7 +354,7 @@
         },
 
         comcodeBigTabsController: function comcodeBigTabsController(options) {
-            var passId = Composr.filters.identifier(options.passId),
+            var passId = Composr.filters.id(options.passId),
                 identifier = passId + '_' + options.bigTabSets,
                 tabs = options.tabs,
                 sections = [], i;
@@ -347,7 +362,7 @@
             big_tabs_init();
 
             for (i = 0; i < tabs.length; i++) {
-                sections.push(Composr.filters.identifier(tabs[i]));
+                sections.push(Composr.filters.id(tabs[i]));
             }
 
             window['a' + identifier + '_big_tab'] = sections;
@@ -377,9 +392,9 @@
         },
 
         comcodeTabBody: function comcodeTabBody(options) {
-            var title = Composr.filters.identifier(options.title);
+            var title = Composr.filters.id(options.title);
 
-            if (Composr.isTruthy(options.blockCallUrl)) {
+            if (Composr.is(options.blockCallUrl)) {
                 window['load_tab__' + title] = function () {
                     call_block(options.blockCallUrl, '', document.getElementById('g_' + title));
                 };
@@ -388,7 +403,7 @@
 
         comcodeTicker: function comcodeTicker(options) {
             var el = document.getElementById('ticktickticker' + options.randIdTicker),
-                width = Composr.filters.identifier(options.width);
+                width = Composr.filters.id(options.width);
 
             window.tick_pos = window.tick_pos || [];
 
@@ -474,7 +489,7 @@
         mediaRealmedia: function mediaRealmedia(options) {
             // Tie into callback event to see when finished, for our slideshows
             // API: http://service.real.com/help/library/guides/realone/ScriptingGuide/PDF/ScriptingGuide.pdf
-            Composr.loadWindow.then(function () {
+            Composr.load.then(function () {
                 if (document.getElementById('next_slide')) {
                     stop_slideshow_timer();
                     window.setTimeout(function () {
@@ -492,7 +507,7 @@
         mediaQuicktime: function mediaQuicktime(options) {
             // Tie into callback event to see when finished, for our slideshows
             // API: http://developer.apple.com/library/safari/#documentation/QuickTime/Conceptual/QTScripting_JavaScript/bQTScripting_JavaScri_Document/QuickTimeandJavaScri.html
-            Composr.loadWindow.then(function () {
+            Composr.load.then(function () {
                 if (document.getElementById('next_slide')) {
                     stop_slideshow_timer();
                     window.setTimeout(function () {
@@ -509,7 +524,7 @@
             // Tie into callback event to see when finished, for our slideshows
             // API: http://developer.apple.com/library/safari/#documentation/QuickTime/Conceptual/QTScripting_JavaScript/bQTScripting_JavaScri_Document/QuickTimeandJavaScri.html
             // API: http://msdn.microsoft.com/en-us/library/windows/desktop/dd563945(v=vs.85).aspx
-            Composr.loadWindow.then(function () {
+            Composr.load.then(function () {
                 if (document.getElementById('next_slide')) {
                     stop_slideshow_timer();
 
@@ -863,7 +878,7 @@ function flip_page(to, pass_id, sections) {
             } else {
                 x.style.display = (i == current_pos) ? 'block' : 'none';
 
-                if ((typeof window.fade_transition != 'undefined') && (i == current_pos)) {
+                if (i == current_pos) {
                     set_opacity(x, 0.0);
                     fade_transition(x, 100, 30, 4);
                 }
@@ -886,18 +901,16 @@ function shocker_tick(id, time, min_color, max_color) {
     if (!e_left) return;
     Composr.dom.html(e_left, window.shocker_parts[id][window.shocker_pos[id]][0]);
     set_opacity(e_left, 0.6);
-    if (typeof window.fade_transition != 'undefined') {
-        set_opacity(e_left, 0.0);
-        fade_transition(e_left, 100, time / 40, 5);
-    }
+    set_opacity(e_left, 0.0);
+    fade_transition(e_left, 100, time / 40, 5);
+
     var e_right = document.getElementById('comcodeshocker' + id + '_right');
     if (!e_right) return;
     Composr.dom.html(e_right, window.shocker_parts[id][window.shocker_pos[id]][1]);
     set_opacity(e_right, 0);
-    if (typeof window.fade_transition != 'undefined') {
-        set_opacity(e_right, 0.0);
-        fade_transition(e_right, 100, time / 20, 5);
-    }
+    set_opacity(e_right, 0.0);
+    fade_transition(e_right, 100, time / 20, 5);
+
     window.shocker_pos[id]++;
 
     window['comcodeshocker' + id + '_left'] = [0, min_color, max_color, time / 13, []];

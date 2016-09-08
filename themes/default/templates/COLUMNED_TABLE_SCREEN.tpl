@@ -1,3 +1,5 @@
+<div data-tpl-core-abstract-interfaces="columnedTableScreen" data-tpl-args="{+START,PARAMS_JSON,JAVASCRIPT}{_*}{+END}">
+
 {TITLE}
 
 {$SET,DEFER_RESULTS_TABLE_PAGINATION,1}
@@ -58,5 +60,4 @@
 
 	{EXTRA}
 {+END}
-
-<script type="application/json" data-tpl-core-abstract-interfaces="columnedTableScreen">{+START,PARAMS_JSON,JAVASCRIPT}{_/}{+END}</script>
+</div>

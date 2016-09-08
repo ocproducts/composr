@@ -1,3 +1,4 @@
+<div data-tpl-cns-forum="cnsTopicScreen" data-tpl-args="{+START,PARAMS_JSON,SERIALIZED_OPTIONS,HASH}{_*}{+END}">
 {TITLE}
 
 {WARNING_DETAILS}
@@ -173,7 +174,4 @@
 
 	{+START,IF,{$CONFIG_OPTION,show_screen_actions}}{+START,IF_PASSED,_TITLE}{$BLOCK,failsafe=1,block=main_screen_actions,title={_TITLE}}{+END}{+END}
 </div>
-
-<script type="application/json" data-tpl-cns-forum="cnsTopicScreen">
-	{+START,PARAMS_JSON,SERIALIZED_OPTIONS,HASH}{_/}{+END}
-</script>
+</div>

@@ -4,9 +4,10 @@
 {$REQUIRE_JAVASCRIPT,ajax}
 {$REQUIRE_CSS,autocomplete}
 
+{$SET,id,{$RAND}}
 {$SET,init_drag_drop,0}
 
-<tr class="form_table_field_spacer">
+<tr class="form_table_field_spacer" id="field-{$GET*,id}-label">
 	{+START,SET,posting_field}
 		{+START,IF_PASSED,POST_COMMENT}
 			{+START,IF_NON_EMPTY,{POST_COMMENT}}
@@ -56,7 +57,7 @@
 		</th>
 	{+END}
 </tr>
-<tr class="field_input">
+<tr class="field_input" id="field-{$GET*,id}-input">
 	<td class="{+START,IF,{REQUIRED}} required{+END} form_table_huge_field"{+START,IF,{$NOT,{$MOBILE}}} colspan="2"{+END}>
 		{+START,IF_PASSED,DEFAULT_PARSED}
 			<textarea cols="1" rows="1" style="display: none" readonly="readonly" disabled="disabled" name="{NAME*}_parsed">{DEFAULT_PARSED*}</textarea>
@@ -123,16 +124,15 @@
 	</td>
 </tr>
 
-
 {+START,IF,{$AND,{$NOT,{$BROWSER_MATCHES,simplified_attachments_ui}},{$IS_NON_EMPTY,{ATTACHMENTS}}}}
 	{$SET,init_drag_drop,1}
-	<tr class="form_table_field_spacer">
+	<tr class="form_table_field_spacer" id="field-{$GET*,id}-attachments-ui">
 		<th{+START,IF,{$NOT,{$MOBILE}}} colspan="2"{+END} class="table_heading_cell">
 			{+START,IF,{$JS_ON}}
-				<a class="toggleable_tray_button" id="fes_attachments" onclick="toggle_subordinate_fields(this.getElementsByTagName('img')[0]); return false;" href="#!"><img alt="{!EXPAND}: {!ATTACHMENTS}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+				<a class="toggleable_tray_button js-click-toggle-subord-fields" id="fes_attachments" onclick="toggle_subordinate_fields(this.getElementsByTagName('img')[0]);" href="#!"><img class="js-img-toggle-subord-fields" alt="{!EXPAND}: {!ATTACHMENTS}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
 			{+END}
 
-			<span class="faux_h2{+START,IF,{$JS_ON}} toggleable_tray_button{+END}"{+START,IF,{$JS_ON}} onclick="/*Access-note: code has other activation*/ toggle_subordinate_fields(this.parentNode.getElementsByTagName('img')[0],'fes_attachments_help'); return false;"{+END}>
+			<span class="faux_h2{+START,IF,{$JS_ON}} toggleable_tray_button js-click-toggle-subord-fields{+END}"{+START,IF,{$JS_ON}} onclick="/*Access-note: code has other activation*/ toggle_subordinate_fields(this.parentNode.getElementsByTagName('img')[0],'fes_attachments_help');"{+END}>
 				{!ATTACHMENTS}
 
 				{+START,IF,{$NOT,{$MOBILE}}}
@@ -147,7 +147,7 @@
 			{+END}
 		</th>
 	</tr>
-	<tr style="display: none" class="field_input">
+	<tr style="display: none" class="field_input" id="field-{$GET*,id}-attachments-ui-input">
 		<td class="form_table_huge_field"{+START,IF,{$NOT,{$MOBILE}}} colspan="2"{+END}>
 			{ATTACHMENTS}
 			<input type="hidden" name="posting_ref_id" value="{$RAND%}" />

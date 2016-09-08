@@ -9,7 +9,7 @@
 			<span class="faux_h2{+START,IF,{$JS_ON}}{+START,IF_NON_PASSED_OR_FALSE,FORCE_OPEN} toggleable_tray_button{+END}{+END}"{+START,IF,{$JS_ON}}{+START,IF_NON_PASSED_OR_FALSE,FORCE_OPEN} onkeypress="return this.onclick.call(this,event);" onclick="toggle_subordinate_fields(this.parentNode.getElementsByTagName('img')[0],'fes{TITLE|}_help'); return false;"{+END}{+END}>{TITLE*}</span>
 
 			{+START,IF,{$EQ,{TITLE},{!ADDRESS}}}
-				<input class="button_micro buttons__search" type="button" value="{!locations:FIND_ME}" onclick="geolocate_address_fields(); return false;" />
+				<input class="button_micro buttons__search js-click-geolocate-address-fields" type="button" value="{!locations:FIND_ME}" />
 			{+END}
 		{+END}
 

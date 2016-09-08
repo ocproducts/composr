@@ -1,6 +1,7 @@
 {$REQUIRE_JAVASCRIPT,galleries}
 {$SET,support_mass_select,cms_galleries}
 
+<div data-galleries="blockMainGalleryEmbed" data-tpl-args="{+START,PARAMS_JSON,carousel_id,START,MAX,block_call_url}{_*}{+END}">
 {+START,IF,{$NEQ,{$COMMA_LIST_GET,{BLOCK_PARAMS},raw},1}}
 	{+START,IF,{$NEQ,{_GUID},carousel}}
 		{$SET,wrapper_id,ajax_block_wrapper_{$RAND%}}
@@ -50,5 +51,4 @@
 {+END}
 
 {$SET,support_mass_select,}
-
-<script type="application/json" data-galleries="blockMainGalleryEmbed">{+START,PARAMS_JSON,carousel_id,START,MAX,block_call_url}{_/}{+END}</script>
+</div>

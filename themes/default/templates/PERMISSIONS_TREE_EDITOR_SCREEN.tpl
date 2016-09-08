@@ -1,3 +1,4 @@
+<div data-view-core-permission-management="PermissionsTreeEditorScreen" data-view-args="{+START,PARAMS_JSON,COLOR,USERGROUPS}{_*}{+END}">
 {TITLE}
 
 <p>{!PERMISSIONS_TREE_EDITOR_ABOUT_PRIVILEGE,{$PAGE_LINK*,adminzone:admin_permissions:specific}}</p>
@@ -24,12 +25,11 @@
 			<h2>{!SITEMAP}</h2>
 
 			<div class="pte_tree">
-				<!-- onmouseover="fade_icons_out();" onmouseout="fade_icons_in();" firefox too buggy -->
 				<div class="pte_icon_box">
 					<div class="box box___permissions_tree_editor_screen"><div class="box_inner">
 						<form title="{!CHOOSE} {!USERGROUP}" action="index.php" method="post" autocomplete="off">
 							<img alt="" src="{$IMG*,pte_view_help}" /><strong><label for="group">{!PERMISSIONS_TREE_EDITOR_ICON_LABEL}:</label></strong>
-							<select id="group" name="group" onclick="this.onchange(event);" onchange="update_group_displayer(this)">
+							<select id="group" name="group" class="js-click-update-group js-change-update-group">
 								{GROUPS}
 							</select>
 						</form>
@@ -39,7 +39,7 @@
 
 				<form title="{!PRIMARY_PAGE_FORM}" action="index.php" method="post" autocomplete="off">
 					<div class="accessibility_hidden"><label for="tree_list">{!ENTRY}</label></div>
-					<input onchange="update_permission_box(this)" style="display: none" type="text" id="tree_list" name="tree_list" value="{$_GET*,id}" />
+					<input class="js-change-update-perm-box" style="display: none" type="text" id="tree_list" name="tree_list" value="{$_GET*,id}" />
 				</form>
 				<div id="tree_list__root_tree_list" class="tree_list__root_tree_list pt_editor">
 					<!-- List put in here -->
@@ -69,10 +69,10 @@
 					<em>{!PERMISSIONS_TREE_EDITOR_NONE_SELECTED}</em>
 				</p>
 				<div>
-					<input type="button" class="button_screen_item buttons__save" id="selection_button" disabled="disabled" value="{!SET}" onclick="set_permissions(document.getElementById('tree_list'));" />
+					<input type="button" class="button_screen_item buttons__save js-click-set-permissions" id="selection_button" disabled="disabled" value="{!SET}" />
 				</div>
 			</div>
 		</form>
 	</div></div>
 </div>
-<script type="application/json" data-tpl-core-permission-management="permissionsTreeEditorScreen">{+START,PARAMS_JSON,COLOR,USERGROUPS}{_/}{+END}</script>
+</div>

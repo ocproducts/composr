@@ -1,6 +1,8 @@
 {$REQUIRE_JAVASCRIPT,core_rich_media}
 {$SET,IMAGE_TYPES,{IMAGE_TYPES}}
+{$SET,SIMPLE_UI,{$BROWSER_MATCHES,simplified_attachments_ui}}
 
+<div data-tpl-core-rich-media="attachments" data-tpl-args="{+START,PARAMS_JSON,SIMPLE_UI,ATTACHMENT_TEMPLATE,POSTING_FIELD_NAME,MAX_ATTACHMENTS,FILTER,POSTING_FIELD_NAME}{_*}{+END}">
 {+START,IF,{$BROWSER_MATCHES,simplified_attachments_ui}}
 	<div id="attachment_store" class="accessibility_hidden">
 		{$,plupload will attach upload code to here}
@@ -29,9 +31,4 @@
 		</p>
 	{+END}
 {+END}
-
-{$SET,SIMPLE_UI,{$BROWSER_MATCHES,simplified_attachments_ui}}
-<script type="application/json" data-tpl-core-rich-media="attachments">
-	{+START,PARAMS_JSON,SIMPLE_UI,ATTACHMENT_TEMPLATE,POSTING_FIELD_NAME,MAX_ATTACHMENTS,FILTER,POSTING_FIELD_NAME}{_/}{+END}
-</script>
-
+</div>

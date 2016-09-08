@@ -15,7 +15,7 @@
 {+START,IF,{$GET,js_menu}}
 	{$SET,menu_sitemap_id,menu_sitemap_{$RAND}}
 
-	<nav id="{$GET*,menu_sitemap_id}" class="menu_type__sitemap">
+	<nav id="{$GET*,menu_sitemap_id}" class="menu_type__sitemap" data-tpl-core-menus="menuSitemap" data-tpl-args="{+START,PARAMS_JSON,menu_sitemap_id}[{_*}, {CONTENT*}]{+END}">
 		<div aria-busy="true" class="spaced">
 			<div class="ajax_loading vertical_alignment">
 				<img src="{$IMG*,loading}" title="{!LOADING}" alt="{!LOADING}" />
@@ -24,5 +24,3 @@
 		</div>
 	</nav>
 {+END}
-
-<script type="application/json" data-tpl-core-menus="menuSitemap">{+START,PARAMS_JSON,menu_sitemap_id}[{_/}, {CONTENT/}]{+END}</script>

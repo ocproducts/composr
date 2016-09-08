@@ -1,7 +1,7 @@
 {$REQUIRE_JAVASCRIPT,cns_forum}
 {$REQUIRE_JAVASCRIPT,ajax}
 
-<div class="box cns_notification">
+<div class="box cns_notification" data-tpl-cns-forum="cnsNotification" data-tpl-args="{+START,PARAMS_JSON,IGNORE_URL_2}{_*}{+END}">
 <div class="box_inner" data-view-core="ToggleableTray">
 	<p class="cns_notification_intro_line js-btn-tray-toggle">
 		<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">
@@ -19,7 +19,7 @@
 		<ul class="horizontal_links associated_links_block_group force_margin">
 			<li><span><a href="{TOPIC_URL*}" title="{!VIEW}: {!FORUM_POST} #{ID*}">{!VIEW}</a></span>{+START,IF,{$NEQ,{_ADDITIONAL_POSTS},0}} <img onclick="this.onmouseover(event);" title="{!cns:ADDITIONAL_PT_POSTS,{ADDITIONAL_POSTS}}" onmouseover="activate_rich_semantic_tooltip(this,event);" alt="{!HELP}" src="{$IMG*,icons/16x16/help}" srcset="{$IMG*,icons/32x32/help} 2x" class="activate_rich_semantic_tooltip top_vertical_alignment help_icon" />{+END}</li>
 			<li><a href="{REPLY_URL*}" title="{!REPLY}: {!FORUM_POST} #{ID*}">{!REPLY}</a></li>
-			<li><a onclick="return ignore_cns_notification('{IGNORE_URL_2;*}',this);" href="{IGNORE_URL*}" title="{!MARK_READ}: {!FORUM_POST} #{ID*}">{!IGNORE}</a></li>
+			<li><a class="js-click-ignore-notification" data-cms-js="1" href="{IGNORE_URL*}" title="{!MARK_READ}: {!FORUM_POST} #{ID*}">{!IGNORE}</a></li>
 		</ul>
 	</div>
 </div>

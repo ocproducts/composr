@@ -1,5 +1,8 @@
+{$REQUIRE_JAVASCRIPT,ajax}
+{$REQUIRE_JAVASCRIPT,checking}
+{$SET,block_call_url,{$FACILITATE_AJAX_BLOCK_CALL,{BLOCK_PARAMS}}}
 {$SET,wrapper_id,ajax_block_wrapper_{$RAND%}}
-<div id="{$GET*,wrapper_id}" class="box_wrapper">
+<div id="{$GET*,wrapper_id}" class="box_wrapper" data-tpl-chat="blockSideShoutbox" data-tpl-args="{+START,PARAMS_JSON,wrapper_id,block_call_url}{_*}{+END}">
 	<section class="box box___block_side_shoutbox"><div class="box_inner">
 		<h3>{!SHOUTBOX}</h3>
 
@@ -18,10 +21,4 @@
 			</p>
 		</form>
 	</div></section>
-
-	{$REQUIRE_JAVASCRIPT,ajax}
-	{$REQUIRE_JAVASCRIPT,checking}
-
-	{$SET,block_call_url,{$FACILITATE_AJAX_BLOCK_CALL,{BLOCK_PARAMS}}}
-	<script type="application/json" data-tpl-chat="blockSideShoutbox">{+START,PARAMS_JSON,wrapper_id,block_call_url}{_/}{+END}</script>
 </div>

@@ -1,3 +1,9 @@
+{$SET,file_link,}
+{+START,IF_NON_EMPTY,{$_GET,filename}}
+{$SET,file_link,{$PAGE_LINK;,_SELF:_SELF:embed:place={$_GET&,place}:file={$_GET&,filename}:wide_high=1}}
+{+END}
+<div data-tpl-filedump="filedumpScreen" data-tpl-args="{+START,PARAMS_JSON,file_link}{_*}{+END}">
+
 {TITLE}
 
 <div>
@@ -135,10 +141,4 @@
 		{+END}
 	{+END}
 {+END}
-
-{$SET,file_link}
-{+START,IF_NON_EMPTY,{$_GET,filename}}
-{$SET,file_link,{$PAGE_LINK;,_SELF:_SELF:embed:place={$_GET&,place}:file={$_GET&,filename}:wide_high=1}}
-{+END}
-
-<script type="application/json" data-tpl-filedump="filedumpScreen">{+START,PARAMS_JSON,file_link}{_/}{+END}</script>
+</div>

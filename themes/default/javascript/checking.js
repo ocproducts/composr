@@ -111,65 +111,6 @@ function set_field_error(the_element, error_msg) {
     }
 }
 
-function try_to_simplify_iframe_form() {
-    var form_cat_selector = document.getElementById('main_form'), i, element, count = 0, found, foundButton;
-    if (!form_cat_selector) return;
-    var inputs = form_cat_selector.getElementsByTagName('input');
-    var buttons = form_cat_selector.getElementsByTagName('button');
-    var selects = form_cat_selector.getElementsByTagName('select');
-    var textareas = form_cat_selector.getElementsByTagName('select');
-    var elements = [];
-    for (i = 0; i < inputs.length; i++) elements.push(inputs[i]);
-    for (i = 0; i < buttons.length; i++) elements.push(buttons[i]);
-    for (i = 0; i < selects.length; i++) elements.push(selects[i]);
-    for (i = 0; i < textareas.length; i++) elements.push(textareas[i]);
-    for (i = 0; i < elements.length; i++) {
-        element = elements[i];
-        if (((element.localName == 'input') && (element.getAttribute('type') != 'hidden') && (element.getAttribute('type') != 'button') && (element.getAttribute('type') != 'image') && (element.getAttribute('type') != 'submit')) || (element.localName == 'select') || (element.localName == 'textarea')) {
-            found = element;
-            count++;
-        }
-        if (((element.localName == 'input') && ((element.getAttribute('type') == 'button') || (element.getAttribute('type') == 'image') || (element.getAttribute('type') == 'submit'))) || (element.localName == 'button')) {
-            foundButton = element;
-        }
-    }
-
-    if ((count == 1) && (found.localName == 'select')) {
-        var iframe = document.getElementById('iframe_under');
-        found.onchange = function () {
-            if (iframe) {
-                if ((iframe.contentDocument) && (iframe.contentDocument.getElementsByTagName('form').length != 0)) {
-                    window.fauxmodal_confirm(
-                        '{!Q_SURE_LOSE;^}',
-                        function (result) {
-                            if (result) {
-                                _simplified_form_continue_submit(iframe, form_cat_selector);
-                            }
-                        }
-                    );
-
-                    return null;
-                }
-            }
-
-            _simplified_form_continue_submit(iframe, form_cat_selector);
-
-            return null;
-        };
-        if ((found.getAttribute('size') > 1) || (found.multiple)) found.onclick = found.onchange;
-        if (iframe) {
-            foundButton.style.display = 'none';
-        }
-    }
-}
-
-function _simplified_form_continue_submit(iframe, form_cat_selector) {
-    if (check_form(form_cat_selector)) {
-        if (iframe) animate_frame_load(iframe, 'iframe_under');
-        form_cat_selector.submit();
-    }
-}
-
 function do_form_submit(form, event) {
     if (!check_form(form, false)) return false;
 
@@ -207,7 +148,7 @@ function do_form_submit(form, event) {
 }
 
 function do_form_preview(event, form, preview_url, has_separate_preview) {
-    if (typeof has_separate_preview == 'undefined') has_separate_preview = false;
+    if (has_separate_preview === undefined) has_separate_preview = false;
 
     if (!document.getElementById('preview_iframe')) {
         fauxmodal_alert('{!ADBLOCKER;}');
@@ -243,28 +184,16 @@ function do_form_preview(event, form, preview_url, has_separate_preview) {
     var pf = document.getElementById('preview_iframe');
 
     /* Do our loading-animation */
-    if ((typeof window.just_checking_requirements == 'undefined') || (!window.just_checking_requirements)) {
+    if (!window.just_checking_requirements) {
         window.setInterval(window.trigger_resize, 500);
         /* In case its running in an iframe itself */
-        illustrate_frame_load(pf, 'preview_iframe', 50);
+        illustrate_frame_load('preview_iframe');
     }
 
     Composr.ui.disableSubmitAndPreviewButtons();
 
-    /* input.value not readable on most modern web browsers, and this code is not maintained
-     var inputs=form.elements,input;
-     for (var i=0;i<inputs.length-1;i++)
-     {
-     input=inputs[i];
-     if ((input.type=='file') && (!input.name.match(/file\d*$/)) && (input.className.indexOf('previews')==-1) && (!input.disabled) && (input.value!=''))
-     {
-     input.disabled=true;
-     window.setTimeout(function() { document.getElementById(input.id).disabled=false; },500);
-     }
-     }*/
-
     // Turn main post editing back off
-    if (typeof wysiwyg_set_readonly != 'undefined') wysiwyg_set_readonly('post', true);
+    if (wysiwyg_set_readonly !== undefined) wysiwyg_set_readonly('post', true);
 
     return true;
 }
@@ -334,7 +263,7 @@ function clever_find_value(form, element) {
     return value;
 }
 
-function check_field(the_element, the_form, for_preview) {
+function check_field(the_element, the_form) {
     var i, the_class, required, my_value, erroneous = false, error_msg = '', regexp, total_file_size = 0, alerted = false;
 
     // No checking for hidden elements
@@ -639,8 +568,7 @@ function __standard_alternate_field_create_listeners(field, refreshFunction) {
     if (radio_button) // Radio button handles field alternation
     {
         radio_button.addEventListener('change', refreshFunction);
-    } else // Filling/blanking out handles field alternation
-    {
+    } else { // Filling/blanking out handles field alternation
         if (field) {
             field.addEventListener('keyup', refreshFunction);
             field.addEventListener('change', refreshFunction);
@@ -797,40 +725,40 @@ function set_required(field_name, is_required) {
 
 // Hide a 'tray' of trs in a form
 function toggle_subordinate_fields(pic, help_id) {
-    var new_state, new_state_2, new_state_3, i;
-    var field_input = pic.parentNode.parentNode.parentNode;
-
+    var new_state, new_state_2, field_input = pic.parentNode.parentNode.parentNode;
     var next = field_input.nextElementSibling;
-    if (!next) return;
+    if (!next) {
+        return;
+    }
     while (next.classList.contains('field_input')) { // Sometimes divs or whatever may have errornously been put in a table by a programmer, skip past them
         next = next.nextElementSibling;
-        if (!next) break;
+        if (!next) {
+            break;
+        }
         if (next.classList.contains('form_table_field_spacer')) {// End of section, so no need to keep going
             next = null;
             break;
         }
     }
 
-    if (((!next) && (pic.src.indexOf('expand') != -1)) || ((next) && (next.style.display == 'none'))) /* Expanding now */
-    {
-        pic.src = ((pic.src.indexOf('themewizard.php') != -1) ? pic.src.replace('expand', 'contract') : '{$IMG;,1x/trays/contract}').replace(/^https?:/, window.location.protocol);
-        if (typeof pic.srcset != 'undefined')
-            pic.srcset = ((pic.srcset.indexOf('themewizard.php') != -1) ? pic.srcset.replace('expand', 'contract') : '{$IMG;,2x/trays/contract} 2x').replace(/^https?:/, window.location.protocol);
-        pic.setAttribute('alt', '{!CONTRACT;}');
-        pic.setAttribute('title', '{!CONTRACT;}');
-        new_state = (field_input.localName == 'tr') ? 'table-row' : 'block';
+    if ((!next && (pic.src.includes('expand'))) || (next && (next.style.display === 'none'))) {/* Expanding now */
+        pic.src = (pic.src.includes('themewizard.php') ? pic.src.replace('expand', 'contract') : '{$IMG;,1x/trays/contract}').replace(/^https?:/, window.location.protocol);
+        if (pic.srcset !== undefined) {
+            pic.srcset = (pic.srcset.includes('themewizard.php') ? pic.srcset.replace('expand', 'contract') : '{$IMG;,2x/trays/contract} 2x').replace(/^https?:/, window.location.protocol);
+        }
+        pic.alt ='{!CONTRACT;}';
+        pic.title = '{!CONTRACT;}';
+        new_state = (field_input.localName === 'tr') ? 'table-row' : 'block';
         new_state_2 = 'block';
-        new_state_3 = '1px dashed';
-    } else /* Contracting now */
-    {
-        pic.src = ((pic.src.indexOf('themewizard.php') != -1) ? pic.src.replace('contract', 'expand') : '{$IMG;,1x/trays/expand}').replace(/^https?:/, window.location.protocol);
-        if (typeof pic.srcset != 'undefined')
-            pic.srcset = ((pic.src.indexOf('themewizard.php') != -1) ? pic.srcset.replace('contract', 'expand') : '{$IMG;,2x/trays/expand} 2x').replace(/^https?:/, window.location.protocol);
-        pic.setAttribute('alt', '{!EXPAND;}');
-        pic.setAttribute('title', '{!EXPAND;}');
+    } else { /* Contracting now */
+        pic.src = ((pic.src.includes('themewizard.php')) ? pic.src.replace('contract', 'expand') : '{$IMG;,1x/trays/expand}').replace(/^https?:/, window.location.protocol);
+        if (pic.srcset !== undefined) {
+            pic.srcset = (pic.src.includes('themewizard.php') ? pic.srcset.replace('contract', 'expand') : '{$IMG;,2x/trays/expand} 2x').replace(/^https?:/, window.location.protocol);
+        }
+        pic.alt = '{!EXPAND;}';
+        pic.title = '{!EXPAND;}';
         new_state = 'none';
         new_state_2 = 'none';
-        new_state_3 = '0';
     }
 
     // Hide everything until we hit end of section
@@ -839,23 +767,30 @@ function toggle_subordinate_fields(pic, help_id) {
         field_input = field_input.nextElementSibling;
 
         /* Start of next section? */
-        if (field_input.classList.contains('form_table_field_spacer')) break; // End of section
+        if (field_input.classList.contains('form_table_field_spacer')) {
+            break; // End of section
+        }
 
         /* Ok to proceed */
         field_input.style.display = new_state;
 
-        if ((typeof window.fade_transition != 'undefined') && (new_state_2 != 'none') && (count < 50/*Performance*/)) {
+        if ((new_state_2 !== 'none') && (count < 50/*Performance*/)) {
             set_opacity(field_input, 0.0);
             fade_transition(field_input, 100, 30, 20);
             count++;
         }
     }
-    if (typeof help_id == 'undefined') help_id = pic.parentNode.id + '_help';
+    if (help_id === undefined) {
+        help_id = pic.parentNode.id + '_help';
+    }
     var help = document.getElementById(help_id);
+
     while (help !== null) {
         help.style.display = new_state_2;
-        help = help.nextSibling;
-        if ((help) && (help.localName != 'p')) break;
+        help = help.nextElementSibling;
+        if (help && (help.localName !== 'p')) {
+            break;
+        }
     }
 
     trigger_resize();
@@ -876,7 +811,7 @@ function initialise_input_theme_image_entry(name, code) {
         return null;
     };
 
-    var click_func = function (event) {
+    function click_func(event) {
         choose_picture('j_' + stem, img, name, event);
 
         if (typeof window.main_form_very_simple != 'undefined') form.submit();
@@ -899,17 +834,21 @@ function initialise_input_theme_image_entry(name, code) {
 
 function choose_picture(j_id, img_ob, name, event) {
     var j = document.getElementById(j_id);
-    if (!j) return;
+    if (!j) {
+        return;
+    }
 
     if (!img_ob) {
         img_ob = document.getElementById('w_' + j_id.substring(2, j_id.length)).getElementsByTagName('img')[0];
-        if (typeof img_ob == 'undefined') return;
+        if (img_ob === undefined) {
+            return;
+        }
     }
 
     var e = j.form.elements[name];
     for (var i = 0; i < e.length; i++) {
         if (e[i].disabled) continue;
-        var img = e[i].parentNode.parentNode.getElementsByTagName('img')[0];
+        var img = e[i].parentNode.parentNode.querySelector('img');
         if ((img) && (img != img_ob)) {
             if (img.parentNode.className.indexOf(' selected') != -1) {
                 img.parentNode.className = img.parentNode.className.replace(/ selected/g, '');
@@ -919,7 +858,9 @@ function choose_picture(j_id, img_ob, name, event) {
         }
     }
 
-    if (j.disabled) return;
+    if (j.disabled) {
+        return;
+    }
     j.checked = true;
     //if (j.onclick) j.onclick(); causes loop
     if (typeof j.fakeonchange != 'undefined' && j.fakeonchange) j.fakeonchange(event);
@@ -932,8 +873,7 @@ function preview_mobile_button(ob) {
     if (window.parent) {
         try {
             window.parent.scrollTo(0, find_pos_y(window.parent.document.getElementById('preview_iframe')));
-        }
-        catch (e) {
+        } catch (e) {
         }
         window.parent.mobile_version_for_preview = ob.checked;
         window.parent.document.getElementById('preview_button').onclick(event);
@@ -975,144 +915,4 @@ function disable_preview_scripts(under) {
     }
 }
 
-function _set_up_change_monitor(container, input) {
-    var elements = [];
-    if (input) {
-        elements = [document.getElementById(input)];
-    } else {
-        elements = Composr.dom.$$(container, 'input, select, textarea');
-    }
-    if (elements.length > 300) return;
 
-    for (var i = 0; i < elements.length; i++) {
-        if (!elements[i]) continue;
-        if ((typeof elements[0] == 'undefined') || (elements[0].id.indexOf('choose_') != -1)) continue;
-        var func = function () {
-            if (find_if_children_set(input ? document.getElementById(input).parentNode : container)) {
-                container.classList.add('filledin');
-            } else {
-                container.classList.remove('filledin')
-            }
-        };
-
-        elements[i].addEventListener('blur', func);
-        elements[i].addEventListener('change', func);
-    }
-}
-
-function find_if_children_set(container) {
-    var value, blank = true, the_element;
-    var elements = Composr.dom.$$(container, 'input, select, textarea');
-    for (var i = 0; i < elements.length; i++) {
-        if (!elements[i]) continue;
-        the_element = elements[i];
-        if (((the_element.type == 'hidden') || ((the_element.style.display == 'none') && ((typeof window.is_wysiwyg_field == 'undefined') || (!is_wysiwyg_field(the_element))))) && ((!the_element.className) || (!the_element.classList.contains('hidden_but_needed')))) continue;
-        value = clever_find_value(the_element.form, the_element);
-        blank = blank && (value == '');
-    }
-    return !blank;
-}
-
-function assign_tick_deletion_confirm(name) {
-    var el;
-
-    if (!name && _.isElement(this)) {
-        el = this;
-    } else {
-        el = document.getElementById(name);
-    }
-
-    el.onchange = function () {
-        if (this.checked) {
-            window.fauxmodal_confirm(
-                '{!ARE_YOU_SURE_DELETE;^}',
-                function (result) {
-                    if (el) {
-                        if (result) {
-                            var form = e.form;
-                            if (form.action.indexOf('_post') == -1) // Remove redirect if redirecting back, IF it's not just deleting an on-page post (Wiki+)
-                                form.action = form.action.replace(/([&\?])redirect=[^&]*/, '$1');
-                        } else {
-                            e.checked = false;
-                        }
-                    }
-                }
-            );
-        }
-    }
-}
-
-function assign_radio_deletion_confirm(name) {
-    for (var i = 1; i < 3; i++) {
-        var e = document.getElementById('j_' + name + '_' + i);
-        if (e) {
-            e.onchange = function () {
-                if (this.checked) {
-                    window.fauxmodal_confirm(
-                        '{!ARE_YOU_SURE_DELETE;^}',
-                        function (result) {
-                            var e = document.getElementById('j_' + name + '_0');
-                            if (e) {
-                                if (result) {
-                                    var form = e.form;
-                                    form.action = form.action.replace(/([&\?])redirect=[^&]*/, '$1');
-                                } else {
-                                    e.checked = true; // Check first radio
-                                }
-                            }
-                        }
-                    );
-                }
-            }
-        }
-    }
-}
-
-/* Geolocation for address fields */
-function geolocate_address_fields() {
-    if (typeof navigator.geolocation != 'undefined') {
-        try {
-            navigator.geolocation.getCurrentPosition(function (position) {
-                var fields = [
-                    '{!cns_special_cpf:SPECIAL_CPF__cms_street_address;}',
-                    '{!cns_special_cpf:SPECIAL_CPF__cms_city;}',
-                    '{!cns_special_cpf:SPECIAL_CPF__cms_county;}',
-                    '{!cns_special_cpf:SPECIAL_CPF__cms_state;}',
-                    '{!cns_special_cpf:SPECIAL_CPF__cms_post_code;}',
-                    '{!cns_special_cpf:SPECIAL_CPF__cms_country;}'
-                ];
-
-                var geocode_url = '{$FIND_SCRIPT;,geocode}';
-                geocode_url += '?latitude=' + window.encodeURIComponent(position.coords.latitude) + '&longitude=' + window.encodeURIComponent(position.coords.longitude);
-                geocode_url += keep_stub();
-
-                do_ajax_request(geocode_url, function (ajax_result) {
-                    var parsed = JSON.parse(ajax_result.responseText);
-                    if (parsed === null) return;
-                    var labels = document.getElementsByTagName('label'), label, field_name, field;
-                    for (var i = 0; i < labels.length; i++) {
-                        label = Composr.dom.html(labels[i]);
-                        for (var j = 0; j < fields.length; j++) {
-                            if (fields[j].replace(/^.*: /, '') == label) {
-                                if (parsed[j + 1] === null) parsed[j + 1] = '';
-
-                                field_name = labels[i].getAttribute('for');
-                                field = document.getElementById(field_name);
-                                if (field.localName == 'select') {
-                                    field.value = parsed[j + 1];
-                                    if (typeof $(field).select2 != 'undefined') {
-                                        $(field).trigger('change');
-                                    }
-                                } else {
-                                    field.value = parsed[j + 1];
-                                }
-                            }
-                        }
-                    }
-                });
-            });
-        }
-        catch (e) {
-        }
-    }
-}

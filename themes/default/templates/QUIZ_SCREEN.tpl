@@ -1,4 +1,5 @@
 {$REQUIRE_JAVASCRIPT,quizzes}
+<div data-tpl-quizzes="quizScreen" data-tpl-args="{+START,PARAMS_JSON,TIMEOUT}{_*}{+END}">
 {TITLE}
 
 {WARNING_DETAILS}
@@ -64,5 +65,4 @@
 	1_REL=edit
 	1_ICON=menu/_generic_admin/edit_this
 {+END}
-
-<script type="application/json" data-tpl-quizzes="quizScreen">{+START,PARAMS_JSON,TIMEOUT}{_/}{+END}</script>
+</div>

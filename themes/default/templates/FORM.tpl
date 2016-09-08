@@ -1,5 +1,8 @@
 {$REQUIRE_JAVASCRIPT,core_form_interfaces}
+{$REQUIRE_JAVASCRIPT,checking}
+{$SET,form_name,form_{$RAND}}
 
+<div data-tpl-core-form-interfaces="form" data-tpl-args="{+START,PARAMS_JSON,IS_JOIN_FORM,USERNAME_CHECK_SCRIPT,SNIPPET_SCRIPT,INVITES_ENABLED,ONE_PER_EMAIL_ADDRESS,USE_CAPTCHA}{_*}{+END}">
 {+START,IF_NON_EMPTY,{TEXT}}
 	{$PARAGRAPH,{TEXT}}
 {+END}
@@ -10,9 +13,6 @@
 	{+END}
 {+END}
 
-{$SET,form_name,form_{$RAND}}
-
-{$REQUIRE_JAVASCRIPT,checking}
 <form title="{!PRIMARY_PAGE_FORM}"{+START,IF_PASSED,TARGET} target="{TARGET*}"{+END}{+START,IF_NON_PASSED_OR_FALSE,GET} method="post" action="{URL*}"{+START,IF,{$IN_STR,{FIELDS},"file"}} enctype="multipart/form-data"{+END}{+END}{+START,IF_PASSED_AND_TRUE,GET} method="get" action="{$URL_FOR_GET_FORM*,{URL}}"{+END}{+START,IF_NON_PASSED,TARGET} target="_top"{+END} id="{$GET*,form_name}" autocomplete="off"{+START,IF_PASSED_AND_TRUE,MODSECURITY_WORKAROUND} onsubmit="return modsecurity_workaround(this);"{+END}>
 	{+START,IF_NON_PASSED_OR_FALSE,GET}{$INSERT_SPAMMER_BLACKHOLE}{+END}
 
@@ -52,9 +52,4 @@
 		{+END}
 	</div>
 </form>
-
-<script type="application/json" data-tpl-core-form-interfaces="form">
-	{+START,IF_PASSED_AND_TRUE,IS_JOIN_FORM}
-		{+START,PARAMS_JSON,IS_JOIN_FORM,USERNAME_CHECK_SCRIPT,SNIPPET_SCRIPT,INVITES_ENABLED,ONE_PER_EMAIL_ADDRESS,USE_CAPTCHA}{_/}{+END}
-	{+END}
-</script>
+</div>

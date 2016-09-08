@@ -1,4 +1,5 @@
 {$REQUIRE_JAVASCRIPT,backup}
+<div data-tpl-backup="backupLaunchScreen">
 {TITLE}
 
 <h2>{!PREVIOUS}</h2>
@@ -10,5 +11,4 @@
 <h2>{!NEW}</h2>
 
 {FORM}
-
-<script type="application/json" data-tpl-backup="backupLaunchScreen"></script>
+</div>

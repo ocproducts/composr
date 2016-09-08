@@ -5,7 +5,7 @@
 {$REQUIRE_CSS,widget_color}
 
 {+START,IF,{RAW_FIELD}}
-	<div class="float_surrounder">
+	<div class="float_surrounder" data-tpl-core-form-interfaces="formScreenInputColour" data-tpl-args="{+START,PARAMS_JSON,RAW_FIELD,NAME,DEFAULT,TABINDEX,PRETTY_NAME,_REQUIRED}{_*}{+END}">
 		<div id="colours_go_here_{NAME*}">
 			<div aria-busy="true" class="spaced">
 				<div class="ajax_loading vertical_alignment">
@@ -17,7 +17,7 @@
 	</div>
 {+END}
 {+START,IF,{$NOT,{RAW_FIELD}}}
-	<tr class="field_input">
+	<tr class="field_input" data-tpl-core-form-interfaces="formScreenInputColour" data-tpl-args="{+START,PARAMS_JSON,RAW_FIELD,NAME,DEFAULT,TABINDEX,PRETTY_NAME,_REQUIRED}{_*}{+END}">
 		<td{+START,IF,{$NOT,{$MOBILE}}} colspan="2"{+END} class="form_table_huge_field_description_is_under form_table_huge_field{+START,IF,{REQUIRED}} required{+END}">
 			<div id="colours_go_here_{NAME*}">
 				<div aria-busy="true" class="spaced">
@@ -31,5 +31,3 @@
 		</td>
 	</tr>
 {+END}
-
-<script type="application/json" data-tpl-core-form-interfaces="formScreenInputColour">{+START,PARAMS_JSON,RAW_FIELD,NAME,DEFAULT,TABINDEX,PRETTY_NAME,_REQUIRED}{_/}{+END}</script>

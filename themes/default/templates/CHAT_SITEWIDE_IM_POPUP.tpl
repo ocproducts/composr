@@ -1,3 +1,4 @@
+<div data-tpl-chat="chatSitewideImPopup">
 {CONTENT}
 
 <form class="chat_sound_effects_checkbox inline" title="{!SOUND_EFFECTS}" action="index.php" method="post" autocomplete="off">
@@ -13,5 +14,4 @@
 </ul>
 
 {CHAT_SOUND}
-
-<script type="application/json" data-tpl-chat="chatSitewideImPopup"></script>
+</div>

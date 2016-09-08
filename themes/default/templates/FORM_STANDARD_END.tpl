@@ -2,6 +2,13 @@
 {$REQUIRE_JAVASCRIPT,posting}
 {+END}{+END}
 
+{$SET,preview_url,{$PREVIEW_URL}{$KEEP}{+START,IF_PASSED,THEME}&utheme={THEME}{+END}}
+{$SET,force_previews,0}
+{+START,IF_PASSED_AND_TRUE,PREVIEW}{+START,IF,{$JS_ON}}{+START,IF,{$CONFIG_OPTION,enable_previews}}{+START,IF,{$FORCE_PREVIEWS}}
+	{$SET,force_previews,1}
+{+END}{+END}{+END}{+END}
+
+<div data-tpl-core-form-interfaces="formStandardEnd" data-tpl-args="{+START,PARAMS_JSON,preview_url,force_previews,JAVASCRIPT,SECONDARY_FORM,SUPPORT_AUTOSAVE,FORM_NAME}{_*}{+END}">
 {+START,IF_PASSED_AND_TRUE,PREVIEW}{+START,IF,{$JS_ON}}{+START,IF,{$CONFIG_OPTION,enable_previews}}
 	{+START,IF_NON_PASSED_OR_FALSE,SKIP_WEBSTANDARDS}{+START,IF,{$OR,{$CONFIG_OPTION,enable_markup_webstandards},{$CONFIG_OPTION,enable_spell_check},{$AND,{$HAS_PRIVILEGE,perform_keyword_check},{$CONFIG_OPTION,enable_keyword_density_check}}}}
 		<div class="preview_checking_box">
@@ -34,7 +41,7 @@
 <p class="proceed_button{+START,IF_PASSED,SUBMIT_BUTTON_CLASS} {SUBMIT_BUTTON_CLASS*}{+END}">
 	{+START,IF,{$JS_ON}}
 		{+START,IF_PASSED_AND_TRUE,BACK}
-			<input class="button_screen buttons__back" type="button" onclick="history.back(); return false;" value="{!GO_BACK}" />
+			<input class="button_screen buttons__back" type="button" data-cms-btn-go-back="1" value="{!GO_BACK}" />
 		{+END}
 		{+START,IF_PASSED,BACK_URL}
 			<input class="button_screen buttons__back" type="button" onclick="if (form.method=='get') { window.location='{BACK_URL;^*}'; return false; } form.action='{BACK_URL;^*}'; form.submit(); return false;" value="{!GO_BACK}" />
@@ -62,13 +69,4 @@
 		1_ICON=menu/pages/help
 	{+END}
 {+END}{+END}{+END}
-
-{$SET,preview_url,{$PREVIEW_URL}{$KEEP}{+START,IF_PASSED,THEME}&utheme={THEME}{+END}}
-{$SET,force_previews,0}
-{+START,IF_PASSED_AND_TRUE,PREVIEW}{+START,IF,{$JS_ON}}{+START,IF,{$CONFIG_OPTION,enable_previews}}{+START,IF,{$FORCE_PREVIEWS}}
-{$SET,force_previews,1}
-{+END}{+END}{+END}{+END}
-
-<script type="application/json" data-tpl-core-form-interfaces="formStandardEnd">
-	{+START,PARAMS_JSON,preview_url,force_previews,JAVASCRIPT,SECONDARY_FORM,SUPPORT_AUTOSAVE,FORM_NAME}{_/}{+END}
-</script>
+</div>

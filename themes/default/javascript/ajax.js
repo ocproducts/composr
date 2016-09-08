@@ -390,8 +390,6 @@ function show_block_html(new_html, target_div, append, inner) {
 function ajax_form_submit__admin__headless(event, form, block_name, map) {
     if (typeof window.clever_find_value == 'undefined') return true;
 
-    cancel_bubbling(event);
-
     var post = '';
     if (typeof block_name != 'undefined') {
         if (typeof map == 'undefined') map = '';

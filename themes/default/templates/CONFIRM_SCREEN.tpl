@@ -1,3 +1,4 @@
+<div data-tpl-core-abstract-interfaces="confirmScreen" data-tpl-args="{+START,PARAMS_JSON,JAVASCRIPT}{_*}{+END}">
 {TITLE}
 
 {+START,IF_NON_PASSED,TEXT}
@@ -33,7 +34,7 @@
 		<p class="proceed_button">
 			{+START,IF_NON_PASSED,BACK_URL}
 				{+START,IF,{$JS_ON}}
-					<input class="button_screen buttons__back" type="button" onclick="history.back(); return false;" value="{!GO_BACK}" />
+					<input class="button_screen buttons__back" type="button" data-cms-btn-go-back="1" value="{!GO_BACK}" />
 				{+END}
 			{+END}
 
@@ -50,7 +51,4 @@
 		</div>
 	</form>
 {+END}
-
-<script type="application/json" data-tpl-core-abstract-interfaces="confirmScreen">
-	{+START,PARAMS_JSON,JAVASCRIPT}{_/}{+END}
-</script>
+</div>

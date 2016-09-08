@@ -14,7 +14,7 @@
 {+START,IF_NON_EMPTY,{WIDTH}}</div>{+END}
 
 <script>// <![CDATA[
-	$(function() {
+	Composr.ready.then(function() {
 		$('#{SLIDER_ID;/}').unslider({
 			fluid: {$?,{FLUID},true,false},
 			dots: {$?,{BUTTONS},true,false},

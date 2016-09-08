@@ -12,7 +12,11 @@
     Composr.templates.corePrimaryLayout = {
         globalHtmlWrap: function () {
             if (document.getElementById('global_messages_2')) {
-                merge_global_messages();
+                var m1 = document.getElementById('global_messages');
+                if (!m1) return;
+                var m2 = document.getElementById('global_messages_2');
+                Composr.dom.appendHtml(m1, Composr.dom.html(m2));
+                m2.parentNode.removeChild(m2);
             }
 
             if (Composr.queryString.has('wide_print')) {

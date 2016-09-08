@@ -1,4 +1,14 @@
 (function ($, Composr) {
+    'use strict';
+
+    Composr.behaviors.filedump = {
+        initialize: {
+            attach: function (context) {
+                Composr.initializeTemplates(context, 'filedump');
+            }
+        }
+    };
+
     Composr.templates.filedump = {
         filedumpEmbedScreen: function filedumpEmbedScreen(options) {
             if (typeof options.generated !== 'undefined') {
@@ -12,7 +22,7 @@
         },
 
         filedumpScreen: function filedumpScreen(options) {
-            if (Composr.isTruthy(options.fileLink)) {
+            if (Composr.is(options.fileLink)) {
                 faux_open(options.fileLink, null, 'width=950;height=700', '_top');
             }
 
@@ -36,14 +46,6 @@
 
                 fauxmodal_alert('{!NOTHING_SELECTED_YET;}');
                 return false;
-            }
-        }
-    };
-
-    Composr.behaviors.filedump = {
-        initialize: {
-            attach: function (context) {
-                Composr.initializeTemplates(context, 'filedump');
             }
         }
     };

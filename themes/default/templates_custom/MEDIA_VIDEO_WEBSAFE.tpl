@@ -27,7 +27,7 @@
 	<div class="webstandards_checker_off"></div>
 
 	<script>// <![CDATA[
-		$(function() {
+		Composr.ready.then(function() {
 			var player=new MediaElementPlayer('#{$GET%,player_id}',{
 				{$,Scale to a maximum width because we can always maximise - for object/embed players we can use max-width for this}
 				{+START,IF_NON_EMPTY,{WIDTH}}

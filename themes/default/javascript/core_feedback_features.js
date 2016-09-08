@@ -10,65 +10,35 @@
     };
 
     var CommentsPostingForm = Composr.View.extend({
-        initialize: function (viewOptions, options) {
-            this.options = options || {};
-            this.form = this.el.querySelector('.js-form-comments');
+        initialize: function (v, options) {
+            Composr.View.prototype.initialize.apply(this, arguments);
+            this.form = this.$('.js-form-comments');
             this.setup();
         },
 
         events: {
             'click .js-btn-full-editor': 'moveToFullEditor',
-
-            'click .js-btn-submit-comments': function (e) {
-                var form = this.form, button = e.currentTarget;
-
-                form.setAttribute('target', '_self');
-
-                if (form.old_action !== undefined) {
-                    form.setAttribute('action', form.old_action);
-                }
-
-                if (form.onsubmit.call(form, event)) {
-                    disable_button_just_clicked(button);
-                    form.submit();
-                }
-            },
-
-            'submit .js-form-comments': function (e) {
-                var form = e.currentTarget;
-
-                if ((this.options.moreUrl !== undefined) && (form.action === this.options.moreUrl)) {
-                    return;
-                }
-
-                if (!check_field_for_blankness(form.elements.post, e)) {
-                    e.preventDefault();
-                    return;
-                }
-
-                if (Composr.isTruthy(this.options.getEmail) && Composr.isFalsy(this.options.emailOptional) && !check_field_for_blankness(form.elements.email, e)) {
-                    e.preventDefault();
-                }
-            }
+            'click .js-btn-submit-comments': 'clickBtnSubmit',
+            'submit .js-form-comments': 'submitFormComments'
         },
 
-        setup: function (options) {
-            options = this.options;
+        setup: function () {
+            var options = this.options;
 
-            set_up_comcode_autocomplete('post', Composr.isTruthy(options.wysiwyg));
+            set_up_comcode_autocomplete('post', Composr.is(options.wysiwyg));
 
-            if (Composr.isTruthy(options.forcePreviews)) {
+            if (Composr.is(options.forcePreviews)) {
                 document.getElementById('submit_button').style.display = 'none';
             }
 
-            if (Composr.areDefined(options.reviewRatingCriteria, options.type, options.id) && Composr.$JS_ON) {
+            if (Composr.defined(options.reviewRatingCriteria, options.type, options.id) && Composr.$JS_ON) {
                 var i, reviewTitleId, func,
-                    id = Composr.filters.identifier(options.id),
+                    id = Composr.filters.id(options.id),
                     type = options.type,
-                    typeId = Composr.filters.identifier(type);
+                    typeId = Composr.filters.id(type);
 
                 for (i = 0; i < options.reviewRatingCriteria; i++) {
-                    reviewTitleId = Composr.filters.identifier(options.reviewRatingCriteria[i].reviewTitle);
+                    reviewTitleId = Composr.filters.id(options.reviewRatingCriteria[i].reviewTitle);
                     func = 'new_review_highlight__' + type + ' __' + reviewTitleId + '__' + id;
 
                     window[func] = (function (func, reviewTitleId) {
@@ -98,6 +68,42 @@
 
                     window[func](0, true);
                 }
+            }
+
+            if (Composr.is(options.useCaptcha)) {
+                this.addCaptchaChecking();
+            }
+        },
+
+        clickBtnSubmit: function (e) {
+            var form = this.form, button = e.currentTarget;
+
+            form.setAttribute('target', '_self');
+
+            if (form.old_action !== undefined) {
+                form.setAttribute('action', form.old_action);
+            }
+
+            if (form.onsubmit.call(form, event)) {
+                disable_button_just_clicked(button);
+                form.submit();
+            }
+        },
+
+        submitFormComments: function (e) {
+            var form = this.form;
+
+            if ((this.options.moreUrl !== undefined) && (form.action === this.options.moreUrl)) {
+                return;
+            }
+
+            if (!check_field_for_blankness(form.elements.post, e)) {
+                e.preventDefault();
+                return;
+            }
+
+            if (Composr.is(this.options.getEmail) && Composr.not(this.options.emailOptional) && !check_field_for_blankness(form.elements.email, e)) {
+                e.preventDefault();
             }
         },
 
@@ -140,6 +146,30 @@
                 form.elements['post'].value = '';
 
             form.submit();
+        },
+
+        /* Set up a form to have its CAPTCHA checked upon submission using AJAX */
+        addCaptchaChecking: function () {
+            var form = this.form;
+            form.old_submit = form.onsubmit;
+            form.onsubmit = function () {
+                form.elements['submit_button'].disabled = true;
+                var url = '{$FIND_SCRIPT;,snippet}?snippet=captcha_wrong&name=' + window.encodeURIComponent(form.elements['captcha'].value);
+                if (!do_ajax_field_test(url)) {
+                    form.elements['captcha'].src += '&'; // Force it to reload latest captcha
+                    document.getElementById('submit_button').disabled = false;
+                    return false;
+                }
+                form.elements['submit_button'].disabled = false;
+                if (form.old_submit) {
+                    return form.old_submit();
+                }
+                return true;
+            };
+
+            window.addEventListener('pageshow', function () {
+                form.elements['captcha'].src += '&'; // Force it to reload latest captcha
+            });
         }
     });
 
@@ -152,11 +182,11 @@
         ratingForm: function ratingForm(options) {
             var rating;
 
-            if (Composr.isTruthy(options.error)) {
+            if (Composr.is(options.error)) {
                 return;
             }
 
-            if (Composr.isTruthy(Composr.$JS_ON)) {
+            if (Composr.is(Composr.$JS_ON)) {
                 for (var i = 0, len = options.allRatingCriteria; i < len; i++) {
                     rating = options.allRatingCriteria[i];
 
@@ -199,5 +229,176 @@
             }
         }
     };
+
+    function force_reload_on_back() {
+        window.addEventListener('pageshow', function () {
+            window.location.reload();
+        });
+    }
+
+    /* Update a normal comments topic with AJAX replying */
+    function replace_comments_form_with_ajax(options, hash, comments_form_id, comments_wrapper_id) {
+        var comments_form = document.getElementById(comments_form_id);
+        if (comments_form) {
+            comments_form.old_onsubmit = comments_form.onsubmit;
+
+            comments_form.onsubmit = function (event, is_preview) {
+                if ((typeof is_preview != 'undefined') && (is_preview)) return true;
+
+                // Cancel the event from running
+                if (event.cancelable) event.preventDefault();
+
+                if (!comments_form.old_onsubmit(event)) return false;
+
+                var comments_wrapper = document.getElementById(comments_wrapper_id);
+                if (!comments_wrapper) // No AJAX, as stuff missing from template
+                {
+                    comments_form.submit();
+                    return true;
+                }
+
+                var submit_button = document.getElementById('submit_button');
+                if (submit_button) disable_button_just_clicked(submit_button);
+
+                // Note what posts are shown now
+                var known_posts = comments_wrapper.querySelectorAll('.post');
+                var known_times = [];
+                for (var i = 0; i < known_posts.length; i++) {
+                    known_times.push(known_posts[i].className.replace(/^post /, ''));
+                }
+
+                // Fire off AJAX request
+                var post = 'options=' + window.encodeURIComponent(options) + '&hash=' + window.encodeURIComponent(hash);
+                var post_element = comments_form.elements['post'];
+                var post_value = post_element.value;
+                if (typeof post_element.default_substring_to_strip != 'undefined') // Strip off prefix if unchanged
+                {
+                    if (post_value.substring(0, post_element.default_substring_to_strip.length) == post_element.default_substring_to_strip)
+                        post_value = post_value.substring(post_element.default_substring_to_strip.length, post_value.length);
+                }
+                for (var i = 0; i < comments_form.elements.length; i++) {
+                    if ((comments_form.elements[i].name) && (comments_form.elements[i].name != 'post'))
+                        post += '&' + comments_form.elements[i].name + '=' + window.encodeURIComponent(clever_find_value(comments_form, comments_form.elements[i]));
+                }
+                post += '&post=' + window.encodeURIComponent(post_value);
+                do_ajax_request('{$FIND_SCRIPT;,post_comment}' + keep_stub(true), function (ajax_result) {
+                    if ((ajax_result.responseText != '') && (ajax_result.status != 500)) {
+                        // Display
+                        var old_action = comments_form.action;
+                        Composr.dom.outerHtml(comments_wrapper, ajax_result.responseText);
+                        comments_form = document.getElementById(comments_form_id);
+                        old_action = comments_form.action = old_action; // AJAX will have mangled URL (as was not running in a page context), this will fix it back
+
+                        // Scroll back to comment
+                        window.setTimeout(function () {
+                            var comments_wrapper = document.getElementById(comments_wrapper_id); // outerhtml set will have broken the reference
+                            smooth_scroll(find_pos_y(comments_wrapper, true));
+                        }, 0);
+
+                        // Force reload on back button, as otherwise comment would be missing
+                        force_reload_on_back();
+
+                        // Collapse, so user can see what happening
+                        var outer = document.getElementById('comments_posting_form_outer');
+                        if (outer && outer.className.indexOf('toggleable_tray') != -1)
+                            toggleable_tray('comments_posting_form_outer');
+
+                        // Set fade for posts not shown before
+                        var known_posts = comments_wrapper.querySelectorAll('.post');
+                        for (var i = 0; i < known_posts.length; i++) {
+                            if (known_times.indexOf(known_posts[i].className.replace(/^post /, '')) == -1) {
+                                set_opacity(known_posts[i], 0.0);
+                                fade_transition(known_posts[i], 100, 20, 5);
+                            }
+                        }
+
+                        // And re-attach this code (got killed by Composr.dom.outerHtml)
+                        replace_comments_form_with_ajax(options, hash);
+                    } else // Error: do a normal post so error can be seen
+                    {
+                        comments_form.submit();
+                    }
+                }, post);
+
+                return false;
+            };
+        }
+    }
+
+    function apply_rating_highlight_and_ajax_code(likes, initial_rating, content_type, id, type, rating, content_url, content_title, initialisation_phase, visual_only) {
+        if (typeof visual_only == 'undefined') visual_only = false;
+
+        var i, bit;
+        for (i = 1; i <= 10; i++) {
+            bit = document.getElementById('rating_bar_' + i + '__' + content_type + '__' + type + '__' + id);
+            if (!bit) continue;
+
+            if (likes) {
+                bit.className = (rating == i) ? 'rating_star_highlight' : 'rating_star';
+            } else {
+                bit.className = (rating >= i) ? 'rating_star_highlight' : 'rating_star';
+            }
+
+            if (initialisation_phase) {
+                bit.onmouseover = function (i) {
+                    return function () {
+                        apply_rating_highlight_and_ajax_code(likes, initial_rating, content_type, id, type, i, content_url, content_title, false);
+                    }
+                }(i);
+                bit.onmouseout = function (i) {
+                    return function () {
+                        apply_rating_highlight_and_ajax_code(likes, initial_rating, content_type, id, type, initial_rating, content_url, content_title, false);
+                    }
+                }(i);
+
+                if (!visual_only) bit.onclick = function (i) {
+                    return function (event) {
+                        if (event.cancelable) event.preventDefault();
+
+                        // Find where the rating replacement will go
+                        var template = '';
+                        var bit = document.getElementById('rating_bar_' + i + '__' + content_type + '__' + type + '__' + id);
+                        var replace_spot = bit;
+                        while (replace_spot !== null) {
+                            replace_spot = replace_spot.parentNode;
+                            if (replace_spot !== null && replace_spot.className) {
+                                if (replace_spot.className.match(/(^| )RATING_BOX( |$)/)) {
+                                    template = 'RATING_BOX';
+                                    break;
+                                }
+                                if (replace_spot.className.match(/(^| )RATING_INLINE_STATIC( |$)/)) {
+                                    template = 'RATING_INLINE_STATIC';
+                                    break;
+                                }
+                                if (replace_spot.className.match(/(^| )RATING_INLINE_DYNAMIC( |$)/)) {
+                                    template = 'RATING_INLINE_DYNAMIC';
+                                    break;
+                                }
+                            }
+                        }
+                        var _replace_spot = (template == '') ? bit.parentNode.parentNode.parentNode.parentNode : replace_spot;
+
+                        // Show loading animation
+                        Composr.dom.html(_replace_spot, '');
+                        var loading_image = document.createElement('img');
+                        loading_image.className = 'ajax_loading';
+                        loading_image.src = '{$IMG;,loading}'.replace(/^https?:/, window.location.protocol);
+                        loading_image.style.height = '12px';
+                        _replace_spot.appendChild(loading_image);
+
+                        // AJAX call
+                        var snippet_request = 'rating&type=' + window.encodeURIComponent(type) + '&id=' + window.encodeURIComponent(id) + '&content_type=' + window.encodeURIComponent(content_type) + '&template=' + window.encodeURIComponent(template) + '&content_url=' + window.encodeURIComponent(content_url) + '&content_title=' + window.encodeURIComponent(content_title);
+                        var message = load_snippet(snippet_request, 'rating=' + window.encodeURIComponent(i), function (ajax_result) {
+                            var message = ajax_result.responseText;
+                            Composr.dom.outerHtml(_replace_spot, (template == '') ? ('<strong>' + message + '</strong>') : message);
+                        });
+
+                        return false;
+                    }
+                }(i);
+            }
+        }
+    }
+
 
 })(window.jQuery || window.Zepto, window.Composr);

@@ -1,4 +1,4 @@
-(function ($, Composr) {
+(function (Composr) {
 
     Composr.behaviors.coreAbstractInterfaces = {
         initialize: {
@@ -25,41 +25,39 @@
             }
         },
 
-        ajaxPagination: function (options, urlStem, extraQs, isInfiniteScrollEnabled) {
-            var wrapperEl = document.getElementById(options.wrapperId),
-                infiniteScrollConfigured = Number(isInfiniteScrollEnabled) === 1,
-                allowInfiniteScroll = Number(options.allowInfiniteScroll) === 1,
-                keepInfiniteScroll = Composr.queryString.has('keep_infinite_scroll') ?  Number(Composr.queryString.get('keep_infinite_scroll')) !== 0 : true;
+        ajaxPagination: function (options) {
+            var wrapperEl = Composr.dom.id(options.wrapperId),
+                blockCallUrl = options.blockCallUrl,
+                infiniteScrollCallUrl = options.infiniteScrollCallUrl,
+                infiniteScrollFunc;
 
-            internalise_ajax_block_wrapper_links(urlStem + extraQs, wrapperEl,['[^_]*_start','[^_]*_max'], {});
+            internalise_ajax_block_wrapper_links(blockCallUrl, wrapperEl, ['[^_]*_start', '[^_]*_max'], {});
 
-            // Infinite scrolling hides the pagination when it comes into view, and auto-loads the next link, appending below the current results
-            if (isInfiniteScrollEnabled && allowInfiniteScroll && keepInfiniteScroll) {
-                function infinite_scrolling() {
-                    internalise_infinite_scrolling(urlStem, wrapperEl);
-                }
+            if (infiniteScrollCallUrl) {
+                infiniteScrollFunc = internalise_infinite_scrolling.bind(undefined, infiniteScrollCallUrl, wrapperEl);
 
-                window.addEventListener('scroll', infinite_scrolling);
-                window.addEventListener('touchmove', infinite_scrolling);
-                window.addEventListener('keydown', infinite_scrolling_block);
-                window.addEventListener('mousedown', infinite_scrolling_block_hold);
-                window.addEventListener('mousemove', function () {
-                    infinite_scrolling_block_unhold(infinite_scrolling);
+                Composr.dom.on(window, 'scroll touchmove', infiniteScrollFunc);
+                Composr.dom.on(window, 'keydown', infinite_scrolling_block);
+                Composr.dom.on(window, 'mousedown', infinite_scrolling_block_hold);
+                Composr.dom.on(window, 'mousemove', function () {
+                    // mouseup/mousemove does not work on scrollbar, so best is to notice when mouse moves again (we know we're off-scrollbar then)
+                    infinite_scrolling_block_unhold(infiniteScrollFunc);
                 });
-                infinite_scrolling();
+
+                infiniteScrollFunc();
             }
         },
 
         confirmScreen: function confirmScreen(options) {
             options = options || {};
 
-            if (typeof options.javascript !== 'undefined') {
+            if (options.javascript !== undefined) {
                 eval.call(window, options.javascript);
             }
         },
 
         warnScreen: function warnScreen() {
-            if ((typeof window.trigger_resize !== 'undefined') && (window.top != window)) {
+            if ((typeof window.trigger_resize !== 'undefined') && (window.top !== window)) {
                 trigger_resize();
             }
         },
@@ -73,7 +71,7 @@
         columnedTableScreen: function columnedTableScreen(options) {
             options = options || {};
 
-            if (typeof options.javacsript !== 'undefined') {
+            if (options.javacsript !== undefined) {
                 eval.call(window, options.javascript);
             }
         },
@@ -107,6 +105,10 @@
         }
     };
 
+    function infiniteScrolling (callUrl, wrapperEl) {
+        internalise_infinite_scrolling(callUrl, wrapperEl);
+    }
+
     function detectChange(change_detection_url, refresh_if_changed, callback) {
         do_ajax_request(change_detection_url, function (result) {
             var response = result.responseText;
@@ -132,4 +134,4 @@
         }, 'refresh_if_changed=' + window.encodeURIComponent(refresh_if_changed));
     }
 
-})(window.jQuery || window.Zepto, Composr);
+}(window.Composr, window._));

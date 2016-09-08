@@ -1,3 +1,13 @@
+{$SET,edit_zone_url,{$PAGE_LINK,_SEARCH:admin_zones:_edit:!}};
+{$SET,add_zone_url,{$PAGE_LINK,_SEARCH:admin_zones:add}};
+{$SET,zone_editor_url,{$PAGE_LINK,_SEARCH:admin_zones:_editor:!}};
+{$SET,permission_tree_editor_url,{$PAGE_LINK,_SEARCH:admin_permissions:browse:!}};
+{$SET,edit_page_url,{$PAGE_LINK,cms:cms_comcode_pages:_edit:page_link=!}};
+{$SET,add_page_url,{$PAGE_LINK,_SEARCH:cms_comcode_pages:_edit:page_link=!:example}};
+{$SET,delete_url,{$PAGE_LINK,_SELF:_SELF:_delete:zone=[1]:page__[2]=1}};
+{$SET,stats_url,{+START,IF,{$ADDON_INSTALLED,stats}}{$PAGE_LINK,_SEARCH:admin_stats:_page:iscreen=!}{+END}};
+{$SET,move_url,{$PAGE_LINK,_SELF:_SELF:_move:zone=[1]:destination_zone=[3]:page__[2]=1}};
+<div data-tpl-page-management="sitemapEditorScreen" data-tpl-args="{+START,PARAMS_JSON,edit_zone_url,add_zone_url,zone_editor_url,permission_tree_editor_url,edit_page_url,add_page_url,delete_url,stats_url,move_url}{_*}{+END}">
 {TITLE}
 
 <div class="float_surrounder">
@@ -33,17 +43,4 @@
 		{!PAGE_DRAG,{$PAGE_LINK*,_SEARCH:admin_redirects}}
 	</p>
 {+END}
-
-{$SET,edit_zone_url,{$PAGE_LINK,_SEARCH:admin_zones:_edit:!}};
-{$SET,add_zone_url,{$PAGE_LINK,_SEARCH:admin_zones:add}};
-{$SET,zone_editor_url,{$PAGE_LINK,_SEARCH:admin_zones:_editor:!}};
-{$SET,permission_tree_editor_url,{$PAGE_LINK,_SEARCH:admin_permissions:browse:!}};
-{$SET,edit_page_url,{$PAGE_LINK,cms:cms_comcode_pages:_edit:page_link=!}};
-{$SET,add_page_url,{$PAGE_LINK,_SEARCH:cms_comcode_pages:_edit:page_link=!:example}};
-{$SET,delete_url,{$PAGE_LINK,_SELF:_SELF:_delete:zone=[1]:page__[2]=1}};
-{$SET,stats_url,{+START,IF,{$ADDON_INSTALLED,stats}}{$PAGE_LINK,_SEARCH:admin_stats:_page:iscreen=!}{+END}};
-{$SET,move_url,{$PAGE_LINK,_SELF:_SELF:_move:zone=[1]:destination_zone=[3]:page__[2]=1}};
-
-<script type="application/json" data-tpl-page-management="sitemapEditorScreen">
-	{+START,PARAMS_JSON,edit_zone_url,add_zone_url,zone_editor_url,permission_tree_editor_url,edit_page_url,add_page_url,delete_url,stats_url,move_url}{_/}{+END}
-</script>
+</div>

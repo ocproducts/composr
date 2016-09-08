@@ -1,3 +1,4 @@
+<div data-tpl-core-menus="pageLinkChooser" data-tpl-args="{+START,PARAMS_JSON,NAME,PAGE_TYPE}{_*}{+END}">
 {+START,IF_NON_PASSED_OR_FALSE,AS_FIELD}
 <form title="{!PRIMARY_PAGE_FORM}" action="{$BASE_URL*}/index.php" method="post" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
@@ -15,4 +16,4 @@
 {+START,IF_NON_PASSED_OR_FALSE,AS_FIELD}
 </form>
 {+END}
-<script type="application/json" data-tpl-core-menus="pageLinkChooser">{+START,PARAMS_JSON,NAME,PAGE_TYPE}{_/}{+END}</script>
+</div>

@@ -1,3 +1,4 @@
+<div data-view-core-addon-management="AddonInstallConfirmScreen">
 {TITLE}
 
 {WARNINGS}
@@ -17,7 +18,7 @@
 
 	<p class="proceed_button">
 		{+START,IF,{$JS_ON}}
-			<input class="button_screen buttons__back" type="button" onclick="history.back(); return false;" value="{!GO_BACK}" />
+			<input class="button_screen buttons__back" data-cms-btn-go-back="1" type="button" value="{!GO_BACK}" />
 		{+END}
 
 		<input data-disable-on-click="1" class="button_screen buttons__proceed" type="submit" value="{!PROCEED}" />
@@ -66,3 +67,4 @@
 
 	<input type="hidden" name="file" value="{FILE*}" />
 </form>
+</div>

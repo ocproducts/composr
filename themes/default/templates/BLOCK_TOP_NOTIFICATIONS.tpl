@@ -1,6 +1,6 @@
 {$REQUIRE_JAVASCRIPT,core_notifications}
 {$REQUIRE_CSS,notifications}
-
+<div data-tpl-core-notifications="blockTopNotifications" data-tpl-args="{+START,PARAMS_JSON,MAX}{_*}{+END}">
 <div class="global_button_ref_point" id="web_notifications_rel" style="display: none">
 	<div class="box box_arrow box__block_top_notifications_web"><span></span><div class="box_inner">
 		<div id="web_notifications_spot" role="log">
@@ -43,5 +43,4 @@
 	</div>
 	<a title="{!cns:PRIVATE_TOPICS}" id="pts_button" class="leave_native_tooltip count_{NUM_UNREAD_PTS%}" onclick="return toggle_pts(event);" href="{$PAGE_LINK*,_SEARCH:members:view#tab__pts}"><span aria-label="{!COUNT_TOTAL} {!cns:PRIVATE_TOPICS}">{NUM_UNREAD_PTS*}</span></a>
 {+END}{+END}
-
-<script type="application/json" data-tpl-core-notifications="blockTopNotifications">{+START,PARAMS_JSON,MAX}{_/}{+END}</script>
+</div>

@@ -1,4 +1,6 @@
-(function ($, Composr) {
+(function (Composr) {
+    'use strict';
+
     Composr.behaviors.coreHtmlAbstractions = {
         initialize: {
             attach: function (context) {
@@ -8,9 +10,9 @@
     };
 
     Composr.templates.coreHtmlAbstractions = {
-        standaloneHtmlWrap: function standaloneHtmlWrap(options) {
+        standaloneHtmlWrap: function (options) {
             if (window.parent) {
-                Composr.loadWindow.then(function () {
+                Composr.load.then(function () {
                     document.body.className += ' frame';
 
                     try {
@@ -29,7 +31,7 @@
                 });
             }
 
-            if (Composr.isTruthy(options.isPreview)) {
+            if (Composr.is(options.isPreview)) {
                 disable_preview_scripts();
             }
         },
@@ -43,4 +45,4 @@
             }
         }
     };
-})(window.jQuery || window.Zepto, window.Composr);
+}(window.Composr));

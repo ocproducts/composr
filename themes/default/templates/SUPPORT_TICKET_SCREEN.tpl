@@ -1,3 +1,4 @@
+<div data-tpl-tickets="supportTicketScreen" data-tpl-args="{+START,PARAMS_JSON,SERIALIZED_OPTIONS,HASH}{_*}{+END}">
 {TITLE}
 
 {$SET,ticket_merge_into,{ID}}
@@ -236,5 +237,4 @@
 {+END}
 
 {$SET,ticket_merge_into,}
-
-<script type="application/json" data-tpl-tickets="supportTicketScreen">{+START,PARAMS_JSON,SERIALIZED_OPTIONS,HASH}{_/}{+END}</script>
+</div>

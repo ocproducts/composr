@@ -42,7 +42,7 @@
                 disable_preview_scripts(document.getElementById('view_' + options.id));
             }
 
-            if (Composr.isTruthy(options.comcode) && options.class.includes('wysiwyg')) {
+            if (Composr.is(options.comcode) && options.class.includes('wysiwyg')) {
                 if ((window.wysiwyg_on) && (wysiwyg_on())) {
                     document.getElementById('edit_' + options.id + '_textarea').readOnly = true;
                 }
@@ -50,9 +50,21 @@
         },
 
         events: {
+            'click .js-click-select-tab': 'selectTab',
             'submit .js-form-zone-editor-comcode': 'submitComcode',
             'click .js-a-toggle-wysiwyg': 'toggleWysiwyg',
             'change .js-ta-ze-comcode, .js-sel-zones-draw, .js-inp-zones-draw': 'setEditedPanel'
+        },
+
+        selectTab: function (e) {
+            var id = this.options.id,
+                tab = e.currentTarget.dataset.jsTab;
+
+            select_ze_tab(id, tab);
+
+            if (tab === 'view') {
+                reload_preview(id);
+            }
         },
 
         submitComcode: function (e) {
@@ -73,9 +85,9 @@
 
             if (editor) {
                 if (field.localName === 'select') {
-                    editor.style.display = opts.currentZone === field.options[field.selectedIndex].value ? 'block' : 'none';
+                    editor.style.display = (opts.currentZone === field.options[field.selectedIndex].value) ? 'block' : 'none';
                 } else if (field.localName === 'input') {
-                    editor.style.display = opts.currentZone === field.value ? 'block' : 'none';
+                    editor.style.display = (opts.currentZone === field.value) ? 'block' : 'none';
                 }
             }
         }
@@ -177,7 +189,7 @@ function select_ze_tab(id, tab) {
                     }
                 }
             }
-            if ((typeof window.fade_transition != 'undefined') && (tabs[i] == tab)) {
+            if (tabs[i] === tab) {
                 set_opacity(element, 0.0);
                 fade_transition(element, 100, 30, 4);
 

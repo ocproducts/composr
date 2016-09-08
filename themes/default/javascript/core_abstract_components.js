@@ -11,7 +11,7 @@
         handleConflictResolution: function handleConflictResolution(options) {
             options = options || {};
 
-            if (Composr.isTruthy(options.pingUrl)) {
+            if (Composr.is(options.pingUrl)) {
                 do_ajax_request(options.pingUrl);
 
                 window.setInterval(function () {

@@ -1,3 +1,6 @@
+{$SET,type,{$PREG_REPLACE*,.*\.,,{$LCASE,{FILENAME}}}}
+{$SET,flashplayer,{$BASE_URL}/data/jwplayer.flash.swf{+START,IF,{$NOT,{$BROWSER_MATCHES,bot}}}?rand={$RAND}{+END}}
+{$SET,inline_stats,{$INLINE_STATS}}
 {+START,SET,media}
 	{$SET,player_id,player_{$RAND}}
 
@@ -30,6 +33,8 @@
 
 	{$,Uncomment for a download link \{+START,INCLUDE,MEDIA__DOWNLOAD_LINK\}\{+END\}}
 {+END}
+
+<div data-tpl-core-rich-media="mediaAudioWebsafe" data-tpl-args="{+START,PARAMS_JSON,player_id,WIDTH,HEIGHT,LENGTH,URL,THUMB_URL,type,flashplayer,inline_stats}{_*}{+END}">
 {+START,IF_PASSED_AND_TRUE,FRAMED}
 	<figure>
 		{$GET,media}
@@ -38,9 +43,4 @@
 {+START,IF_NON_PASSED_OR_FALSE,FRAMED}
 	{$GET,media}
 {+END}
-
-{$SET,type,{$PREG_REPLACE*,.*\.,,{$LCASE,{FILENAME}}}}
-{$SET,flashplayer,{$BASE_URL}/data/jwplayer.flash.swf{+START,IF,{$NOT,{$BROWSER_MATCHES,bot}}}?rand={$RAND}{+END}}
-{$SET,inline_stats,{$INLINE_STATS}}
-
-<script type="application/json" data-tpl-core-rich-media="mediaAudioWebsafe">{+START,PARAMS_JSON,player_id,WIDTH,HEIGHT,LENGTH,URL,THUMB_URL,type,flashplayer,inline_stats}{_/}{+END}</script>
+</div>

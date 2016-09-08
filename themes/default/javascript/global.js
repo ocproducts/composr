@@ -1,64 +1,7 @@
 /* Ideally this template should not be edited. See the note at the bottom of how JAVASCRIPT_CUSTOM_GLOBALS.tpl is appended to this template */
 'use strict';
 
-function merge_global_messages() {
-    var m1 = document.getElementById('global_messages');
-    if (!m1) return;
-    var m2 = document.getElementById('global_messages_2');
-    Composr.dom.appendHtml(m1, Composr.dom.html(m2));
-    m2.parentNode.removeChild(m2);
-}
-
-/* Staff JS error display */
-function initialise_error_mechanism() {
-    window.onerror = function (msg, file, code) {
-        if (typeof msg.indexOf == 'undefined') return null;
-
-        if (document.readyState != 'complete') return null; // Probably not loaded yet
-
-        if (
-            (msg.indexOf('AJAX_REQUESTS is not defined') != -1) || // Intermittent during page out-clicks
-
-                // Internet Explorer false positives
-            (((msg.indexOf("'null' is not an object") != -1) || (msg.indexOf("'undefined' is not a function") != -1)) && ((typeof file == 'undefined') || (file == 'undefined'))) || // Weird errors coming from outside
-            ((code == '0') && (msg.indexOf('Script error.') != -1)) || // Too generic, can be caused by user's connection error
-
-                // Firefox false positives
-            (msg.indexOf("attempt to run compile-and-go script on a cleared scope") != -1) || // Intermittent buggyness
-            (msg.indexOf('UnnamedClass.toString') != -1) || // Weirdness
-            (msg.indexOf('ASSERT: ') != -1) || // Something too generic
-            ((file) && (file.indexOf('TODO: FIXME') != -1)) || // Something too generic / Can be caused by extensions
-            (msg.indexOf('TODO: FIXME') != -1) || // Something too generic / Can be caused by extensions
-            (msg.indexOf('Location.toString') != -1) || // Buggy extensions may generate
-            (msg.indexOf('Error loading script') != -1) || // User's connection error
-            (msg.indexOf('NS_ERROR_FAILURE') != -1) || // Usually an internal error
-
-                // Google Chrome false positives
-            (msg.indexOf('can only be used in extension processes') != -1) || // Can come up with MeasureIt
-            (msg.indexOf('extension.') != -1) || // E.g. "Uncaught Error: Invocation of form extension.getURL() doesn't match definition extension.getURL(string path) schema_generated_bindings"
-
-            false // Just to allow above lines to be reordered
-        )
-            return null; // Comes up on due to various Firefox/extension/etc bugs
-
-        if ((typeof window.done_one_error == 'undefined') || (!window.done_one_error)) {
-            window.done_one_error = true;
-            var alert = '{!JAVASCRIPT_ERROR;^}\n\n' + code + ': ' + msg + '\n' + file;
-            if (window.document.body) // i.e. if loaded
-                window.fauxmodal_alert(alert, null, '{!ERROR_OCCURRED;^}');
-        }
-        return false;
-    };
-    window.addEventListener('beforeunload', function () {
-        window.onerror = null;
-    });
-}
-
-if (window.take_errors) {
-    initialise_error_mechanism();
-}
-
-if (typeof window.unloaded == 'undefined') {
+if (window.unloaded === undefined) {
     window.unloaded = false; // Serves as a flag to indicate any new errors are probably due to us transitioning
 }
 window.addEventListener('beforeunload', function () {
@@ -85,9 +28,7 @@ function staff_unload_action() {
     var bi = document.getElementById('main_website_inner');
     if (bi) {
         bi.className += ' site_unloading';
-        if (typeof window.fade_transition != 'undefined') {
-            fade_transition(bi, 20, 30, -4);
-        }
+        fade_transition(bi, 20, 30, -4);
     }
     var div = document.createElement('div');
     div.className = 'unload_action';
@@ -115,7 +56,7 @@ function undo_staff_unload_action() {
     }
     var bi = document.getElementById('main_website_inner');
     if (bi) {
-        if ((typeof window.fade_transition_timers != 'undefined') && (window.fade_transition_timers[bi.fader_key])) {
+        if (window.fade_transition_timers[bi.fader_key]) {
             window.clearTimeout(window.fade_transition_timers[bi.fader_key]);
             window.fade_transition_timers[bi.fader_key] = null;
         }
@@ -336,10 +277,8 @@ function doc_onmouseout() {
         var help = document.getElementById('help');
         if (!help) return; // In zone editor, probably
         Composr.dom.html(help, window.orig_helper_text);
-        if (typeof window.fade_transition != 'undefined') {
-            set_opacity(help, 0.0);
-            fade_transition(help, 100, 30, 4);
-        }
+        set_opacity(help, 0.0);
+        fade_transition(help, 100, 30, 4);
         help.className = 'global_helper_panel_text';
     }
 }
@@ -350,40 +289,11 @@ function doc_onmouseover(i) {
         if (!help) return; // In zone editor, probably
         window.orig_helper_text = Composr.dom.html(help);
         Composr.dom.html(help, Composr.dom.html(doc));
-        if (typeof window.fade_transition != 'undefined') {
-            set_opacity(help, 0.0);
-            fade_transition(help, 100, 30, 4);
-        }
+        set_opacity(help, 0.0);
+        fade_transition(help, 100, 30, 4);
+
         help.className = 'global_helper_panel_text_over';
     }
-}
-
-/* Tidying up after the page is rendered */
-function script_page_rendered() {
-    // Move the help panel if needed
-    /*{+START,IF,{$NOT,{$CONFIG_OPTION,fixed_width}}}*/
-    if (get_window_width() < 990) {
-        var panel_right = document.getElementById('panel_right');
-        if (panel_right) {
-            var divs = panel_right.getElementsByTagName('div');
-            if ((divs[0]) && (divs[0].className.indexOf('global_helper_panel') != -1)) {
-                var middle = panel_right.parentNode.querySelectorAll('.global_middle')[0];
-                if (middle) {
-                    middle.style.marginRight = '0';
-                    var boxes = panel_right.querySelectorAll('.standardbox_curved'), i;
-                    for (i = 0; i < boxes.length; i++) {
-                        boxes[i].style.width = 'auto';
-                    }
-                    panel_right.className += ' horiz_helper_panel';
-                    panel_right.parentNode.removeChild(panel_right);
-                    middle.parentNode.appendChild(panel_right);
-                    document.getElementById('helper_panel_toggle').style.display = 'none';
-                    panel_right.querySelectorAll('.global_helper_panel')[0].style.minHeight = '0';
-                }
-            }
-        }
-    }
-    /*{+END}*/
 }
 
 // The help panel
@@ -399,10 +309,9 @@ function helper_panel(show) {
 
         helper_panel_contents.setAttribute('aria-expanded', 'true');
         helper_panel_contents.style.display = 'block';
-        if (typeof window.fade_transition != 'undefined') {
-            set_opacity(helper_panel_contents, 0.0);
-            fade_transition(helper_panel_contents, 100, 30, 4);
-        }
+        set_opacity(helper_panel_contents, 0.0);
+        fade_transition(helper_panel_contents, 100, 30, 4);
+
         if (read_cookie('hide_helper_panel') == '1') set_cookie('hide_helper_panel', '0', 100);
         helper_panel_toggle.onclick = function () {
             return helper_panel(false);
@@ -451,7 +360,7 @@ function capture_click_key_states(event) {
 }
 function magic_keypress(event) {
     // Cmd+Shift works on Mac - cannot hold down control or alt in Mac firefox at least
-    if (typeof window.capture_event != 'undefined') event = window.capture_event;
+    if (window.capture_event !== undefined) event = window.capture_event;
     var count = 0;
     if (event.shiftKey) count++;
     if (event.ctrlKey) count++;
@@ -731,8 +640,8 @@ function select_tab(id, tab, from_url, automated) {
         if (element) {
             element.style.display = (tabs[i] == tab) ? 'block' : 'none';
 
-            if ((typeof window.fade_transition != 'undefined') && (tabs[i] == tab)) {
-                if (typeof window['load_tab__' + tab] == 'undefined') {
+            if (tabs[i] == tab) {
+                if (window['load_tab__' + tab] === undefined) {
                     set_opacity(element, 0.0);
                     fade_transition(element, 100, 30, 8);
                 }
@@ -802,7 +711,7 @@ function toggleable_tray(element, no_animate, cookie_id_name) {
         return;
     }
 
-    if (Composr.isFalsy(Composr.$CONFIG_OPTION.enableAnimations)) {
+    if (Composr.not(Composr.$CONFIG_OPTION.enableAnimations)) {
         no_animate = true;
     }
 
@@ -821,9 +730,7 @@ function toggleable_tray(element, no_animate, cookie_id_name) {
     var type = 'block';
     if (element.localName === 'table') {
         type = 'table';
-    }
-
-    if (element.localName === 'tr') {
+    } else if (element.localName === 'tr') {
         type = 'table-row';
     }
 
@@ -895,14 +802,12 @@ function begin_toggleable_tray_animation(element, animate_dif, animate_ticks, fi
     }
     element.style.outline = '1px dashed gray';
 
-    if (typeof window.fade_transition != 'undefined') {
-        if (final_height == 0) {
-            set_opacity(element, 1.0);
-            fade_transition(element, 0, 30, 4);
-        } else {
-            set_opacity(element, 0.0);
-            fade_transition(element, 100, 30, 4);
-        }
+    if (final_height == 0) {
+        set_opacity(element, 1.0);
+        fade_transition(element, 0, 30, 4);
+    } else {
+        set_opacity(element, 0.0);
+        fade_transition(element, 100, 30, 4);
     }
 
     var orig_overflow = element.style.overflow;
@@ -947,107 +852,107 @@ function toggleable_tray_done(element, final_height, animate_dif, orig_overflow,
 /* Animate the loading of a frame */
 function animate_frame_load(pf, frame, leave_gap_top, leave_height) {
     if (!pf) return;
-    if (typeof leave_gap_top == 'undefined') leave_gap_top = 0;
-    if (typeof leave_height == 'undefined') leave_height = false;
+    if (leave_gap_top === undefined) leave_gap_top = 0;
+    if (leave_height === undefined) leave_height = false;
 
-    if (!leave_height)
-        pf.style.height = window.top.get_window_height() + 'px'; // Enough to stop jumping around
+    if (!leave_height){
+        // Enough to stop jumping around
+        pf.style.height = window.top.get_window_height() + 'px';
+    }
 
-    illustrate_frame_load(pf, frame);
+    illustrate_frame_load(frame);
 
     var ifuob = window.top.document.getElementById('iframe_under');
     var extra = ifuob ? ((window != window.top) ? find_pos_y(ifuob) : 0) : 0;
-    if (ifuob) ifuob.scrolling = 'no';
+    if (ifuob) {
+        ifuob.scrolling = 'no';
+    }
 
-    if (window == window.top)
+    if (window === window.top) {
         window.top.smooth_scroll(find_pos_y(pf) + extra - leave_gap_top);
+    }
 }
-function illustrate_frame_load(pf, frame) {
-    /*{+START,IF,{$CONFIG_OPTION,enable_animations}}*/
-    var head = '<style>', cssText = '';
-    if (!browser_matches('ie8')) {
-        for (var i = 0; i < document.styleSheets.length; i++) {
-            try {
-                if ((typeof document.styleSheets[i].href != 'undefined') && (document.styleSheets[i].href) && (document.styleSheets[i].href.indexOf('/global') == -1) && (document.styleSheets[i].href.indexOf('/merged') == -1)) continue;
-                if (typeof document.styleSheets[i].cssText != 'undefined') {
-                    cssText += document.styleSheets[i].cssText;
-                } else {
-                    var rules = [];
-                    try {
-                        rules = document.styleSheets[i].cssRules ? document.styleSheets[i].cssRules : document.styleSheets[i].rules;
-                    }
-                    catch (e) {
-                    }
-                    if (rules) {
-                        for (var j = 0; j < rules.length; j++) {
-                            if (rules[j].cssText)
-                                cssText += rules[j].cssText + "\n\n";
-                            else
-                                cssText += rules[j].selectorText + '{ ' + rules[j].style.cssText + "}\n\n";
+
+function illustrate_frame_load(iframeId) {
+    var head, cssText = '', i, iframe = document.getElementById(iframeId), doc, de;
+
+    if (Composr.not(Composr.$CONFIG_OPTION.enableAnimations) || !iframe || !iframe.contentDocument || !iframe.contentDocument.documentElement) {
+        return;
+    }
+
+    doc = iframe.contentDocument;
+    de = doc.documentElement;
+
+    head = '<style>';
+
+    for (i = 0; i < document.styleSheets.length; i++) {
+        try {
+            if (document.styleSheets[i].href && !document.styleSheets[i].href.includes('/global') && !document.styleSheets[i].href.includes('/merged')) {
+                continue;
+            }
+
+            if (document.styleSheets[i].cssText !== undefined) {
+                cssText += document.styleSheets[i].cssText;
+            } else {
+                var rules = [];
+                try {
+                    rules = document.styleSheets[i].cssRules ? document.styleSheets[i].cssRules : document.styleSheets[i].rules;
+                } catch (ignore) {
+                }
+
+                if (rules) {
+                    for (var j = 0; j < rules.length; j++) {
+                        if (rules[j].cssText){
+                            cssText += rules[j].cssText + '\n\n';
+                        } else {
+                            cssText += rules[j].selectorText + '{ ' + rules[j].style.cssText + '}\n\n';
                         }
                     }
                 }
             }
-            catch (e) {
-            }
+        } catch (ignore) {
         }
     }
+
     head += cssText + '<\/style>';
 
-    if (!window.frames[frame]) return;
-    if (!window.frames[frame].document) return;
-    var doc = window.frames[frame].document;
-    if (!doc) return;
-    var de = doc.documentElement;
-    if (!de) return;
-    var body = de.getElementsByTagName('body');
-    if (body.length == 0) {
-        Composr.dom.html(de, '<head>' + head + '<\/head><body aria-busy="true" class="website_body main_website_faux"><div class="spaced"><div class="ajax_loading vertical_alignment"><img id="loading_image" src="' + '{$IMG_INLINE*;,loading}'.replace(/^https?:/, window.location.protocol) + '" alt="{!LOADING;^}" /> <span class="vertical_alignment">{!LOADING;^}<\/span><\/div><\/div><\/body>');
-    } else {
-        body[0].className = 'website_body main_website_faux';
+    doc.body.classList.add('website_body');
+    doc.body.classList.add('main_website_faux');
 
-        var head_element = de.getElementsByTagName('head')[0];
-        if (!head_element) {
-            head_element = document.createElement('head');
-            de.appendChild(head_element);
+    if (de.getElementsByTagName('style').length == 0) {// The conditional is needed for Firefox - for some odd reason it is unable to parse any head tags twice
+        Composr.dom.html(doc.head, head);
+    }
+
+    Composr.dom.html(doc.body, '<div aria-busy="true" class="spaced"><div class="ajax_loading"><img id="loading_image" class="vertical_alignment" src="' + '{$IMG_INLINE*;,loading}'.replace(/^https?:/, window.location.protocol) + '" alt="{!LOADING;^}" /> <span class="vertical_alignment">{!LOADING;^}<\/span><\/div><\/div>');
+
+    // Stupid workaround for Google Chrome not loading an image on unload even if in cache
+    window.setTimeout(function () {
+        if (!doc.getElementById('loading_image')) {
+            return;
         }
 
-        if (de.getElementsByTagName('style').length == 0) // The conditional is needed for Firefox - for some odd reason it is unable to parse any head tags twice
-            Composr.dom.html(head_element, head);
-        Composr.dom.html(body[0], '<div aria-busy="true" class="spaced"><div class="ajax_loading"><img id="loading_image" class="vertical_alignment" src="' + '{$IMG_INLINE*;,loading}'.replace(/^https?:/, window.location.protocol) + '" alt="{!LOADING;^}" /> <span class="vertical_alignment">{!LOADING;^}<\/span><\/div><\/div>');
-    }
-    var the_frame = window.frames[frame];
-    window.setTimeout( // Stupid workaround for Google Chrome not loading an image on unload even if in cache
-        function () {
-            if (the_frame.document && the_frame.document.getElementById('loading_image')) {
-                var i_new = document.createElement('img');
-                i_new.src = the_frame.document.getElementById('loading_image').src;
-                var i_default = the_frame.document.getElementById('loading_image');
-                if (i_default) {
-                    i_new.className = i_default.className;
-                    i_new.alt = i_default.alt;
-                    i_new.id = i_default.id;
-                    i_default.parentNode.replaceChild(i_new, i_default);
-                }
-            }
-        },
-        0
-    );
-    var style = de.getElementsByTagName('style')[0];
-    if ((style) && (style.styleSheet)) style.styleSheet.cssText = cssText; // For IE
-    /*{+END}*/
+        var i_new = doc.createElement('img');
+        i_new.src = doc.getElementById('loading_image').src;
+
+        var i_default = doc.getElementById('loading_image');
+        if (i_default) {
+            i_new.className = i_default.className;
+            i_new.alt = i_default.alt;
+            i_new.id = i_default.id;
+            i_default.parentNode.replaceChild(i_new, i_default);
+        }
+    }, 0);
 }
 
 /* Smoothly scroll to another position on the page */
 function smooth_scroll(dest_y, expected_scroll_y, dir, event_after) {
-    /*{+START,IF,{$NOT,{$CONFIG_OPTION,enable_animations}}}*/
-    try {
-        window.scrollTo(0, dest_y);
+    if (Composr.not(Composr.$CONFIG_OPTION.enableAnimations)) {
+        try {
+            window.scrollTo(0, dest_y);
+        } catch (e) {
+        }
+        return;
     }
-    catch (e) {
-    }
-    return;
-    /*{+END}*/
 
     var scroll_y = window.pageYOffset;
     if (typeof dest_y == 'string') dest_y = find_pos_y(document.getElementById(dest_y), true);
@@ -1069,12 +974,12 @@ function smooth_scroll(dest_y, expected_scroll_y, dir, event_after) {
         if (event_after) event_after();
         return;
     }
+
     try {
         window.scrollBy(0, dist);
+    } catch (e) {
+        return; // May be stopped by popup blocker
     }
-    catch (e) {
-        return;
-    } // May be stopped by popup blocker
 
     window.setTimeout(function () {
         smooth_scroll(dest_y, scroll_y + dist, dir, event_after);
@@ -1135,10 +1040,21 @@ function get_mouse_y(event, win) // Usually use window.mouse_y after calling reg
     return 0;
 }
 function get_window_width(win) {
-    if (typeof win == 'undefined') win = window;
-    if (typeof win.innerWidth != 'undefined') return win.innerWidth - 18;
-    if ((win.document.documentElement) && (win.document.documentElement.clientWidth)) return win.document.documentElement.clientWidth;
-    if ((win.document.body) && (win.document.body.clientWidth)) return win.document.body.clientWidth;
+    if ( win === undefined) {
+        win = window;
+    }
+    if (win.innerWidth !== undefined) {
+        return win.innerWidth - 18;
+    }
+
+    if ((win.document.documentElement) && (win.document.documentElement.clientWidth)) {
+        return win.document.documentElement.clientWidth;
+    }
+
+    if ((win.document.body) && (win.document.body.clientWidth)) {
+        return win.document.body.clientWidth;
+    }
+
     return 0;
 }
 function get_window_height(win) {
@@ -1210,7 +1126,9 @@ function enter_pressed(event, alt_char) {
 function modsecurity_workaround(form) {
     var temp_form = document.createElement('form');
     temp_form.method = 'post';
-    if (form.target != null && form.target != '') temp_form.target = form.target;
+    if (form.target != null && form.target != '') {
+        temp_form.target = form.target;
+    }
     temp_form.action = form.action;
 
     var data = $(form).serialize();
@@ -1636,16 +1554,7 @@ function add_form_marked_posts(work_on, prefix) {
     }
     return append != '';
 }
-function mark_all_topics(event) {
-    var e = document.getElementsByTagName('input');
-    var i;
-    for (i = 0; i < e.length; i++) {
-        if ((e[i].type == 'checkbox') && (e[i].name.substr(0, 5) == 'mark_')) {
-            e[i].checked = !e[i].checked;
-            e[i].onclick(event);
-        }
-    }
-}
+
 
 /* Set opacity, without interfering with the thumbnail timer */
 function set_opacity(element, fraction) {
@@ -1685,8 +1594,7 @@ function maintain_theme_in_link(url) {
 }
 
 /* Get URL stub to propagate keep_* parameters */
-function keep_stub(starting_query_string, skip_session, context) // starting_query_string means "Put a '?' for the first parameter"
-{
+function keep_stub(starting_query_string, skip_session, context) {// starting_query_string means "Put a '?' for the first parameter"
     if (!window) return '';
     if (typeof window.location == 'undefined') return ''; // Can happen, in a document.write'd popup
 
@@ -1750,81 +1658,6 @@ function careful_import_node(node) {
     }
 }
 
-function apply_rating_highlight_and_ajax_code(likes, initial_rating, content_type, id, type, rating, content_url, content_title, initialisation_phase, visual_only) {
-    if (typeof visual_only == 'undefined') visual_only = false;
-
-    var i, bit;
-    for (i = 1; i <= 10; i++) {
-        bit = document.getElementById('rating_bar_' + i + '__' + content_type + '__' + type + '__' + id);
-        if (!bit) continue;
-
-        if (likes) {
-            bit.className = (rating == i) ? 'rating_star_highlight' : 'rating_star';
-        } else {
-            bit.className = (rating >= i) ? 'rating_star_highlight' : 'rating_star';
-        }
-
-        if (initialisation_phase) {
-            bit.onmouseover = function (i) {
-                return function () {
-                    apply_rating_highlight_and_ajax_code(likes, initial_rating, content_type, id, type, i, content_url, content_title, false);
-                }
-            }(i);
-            bit.onmouseout = function (i) {
-                return function () {
-                    apply_rating_highlight_and_ajax_code(likes, initial_rating, content_type, id, type, initial_rating, content_url, content_title, false);
-                }
-            }(i);
-
-            if (!visual_only) bit.onclick = function (i) {
-                return function (event) {
-                    if (event.cancelable) event.preventDefault();
-
-                    // Find where the rating replacement will go
-                    var template = '';
-                    var bit = document.getElementById('rating_bar_' + i + '__' + content_type + '__' + type + '__' + id);
-                    var replace_spot = bit;
-                    while (replace_spot !== null) {
-                        replace_spot = replace_spot.parentNode;
-                        if (replace_spot !== null && replace_spot.className) {
-                            if (replace_spot.className.match(/(^| )RATING_BOX( |$)/)) {
-                                template = 'RATING_BOX';
-                                break;
-                            }
-                            if (replace_spot.className.match(/(^| )RATING_INLINE_STATIC( |$)/)) {
-                                template = 'RATING_INLINE_STATIC';
-                                break;
-                            }
-                            if (replace_spot.className.match(/(^| )RATING_INLINE_DYNAMIC( |$)/)) {
-                                template = 'RATING_INLINE_DYNAMIC';
-                                break;
-                            }
-                        }
-                    }
-                    var _replace_spot = (template == '') ? bit.parentNode.parentNode.parentNode.parentNode : replace_spot;
-
-                    // Show loading animation
-                    Composr.dom.html(_replace_spot, '');
-                    var loading_image = document.createElement('img');
-                    loading_image.className = 'ajax_loading';
-                    loading_image.src = '{$IMG;,loading}'.replace(/^https?:/, window.location.protocol);
-                    loading_image.style.height = '12px';
-                    _replace_spot.appendChild(loading_image);
-
-                    // AJAX call
-                    var snippet_request = 'rating&type=' + window.encodeURIComponent(type) + '&id=' + window.encodeURIComponent(id) + '&content_type=' + window.encodeURIComponent(content_type) + '&template=' + window.encodeURIComponent(template) + '&content_url=' + window.encodeURIComponent(content_url) + '&content_title=' + window.encodeURIComponent(content_title);
-                    var message = load_snippet(snippet_request, 'rating=' + window.encodeURIComponent(i), function (ajax_result) {
-                        var message = ajax_result.responseText;
-                        Composr.dom.outerHtml(_replace_spot, (template == '') ? ('<strong>' + message + '</strong>') : message);
-                    });
-
-                    return false;
-                }
-            }(i);
-        }
-    }
-}
-
 /* Google Analytics tracking for links; particularly useful if you have no server-side stat collection */
 function ga_track(ob, category, action) {
     /*{+START,IF_NON_EMPTY,{$CONFIG_OPTION,google_analytics}}{+START,IF,{$NOR,{$IS_STAFF},{$IS_ADMIN}}}*/
@@ -1880,104 +1713,6 @@ function click_link(link) {
 
         window.location = link.href;
     }
-}
-
-
-/* Update a normal comments topic with AJAX replying */
-function replace_comments_form_with_ajax(options, hash, comments_form_id, comments_wrapper_id) {
-    var comments_form = document.getElementById(comments_form_id);
-    if (comments_form) {
-        comments_form.old_onsubmit = comments_form.onsubmit;
-
-        comments_form.onsubmit = function (event, is_preview) {
-            if ((typeof is_preview != 'undefined') && (is_preview)) return true;
-
-            // Cancel the event from running
-            if (event.cancelable) event.preventDefault();
-
-            if (!comments_form.old_onsubmit(event)) return false;
-
-            var comments_wrapper = document.getElementById(comments_wrapper_id);
-            if (!comments_wrapper) // No AJAX, as stuff missing from template
-            {
-                comments_form.submit();
-                return true;
-            }
-
-            var submit_button = document.getElementById('submit_button');
-            if (submit_button) disable_button_just_clicked(submit_button);
-
-            // Note what posts are shown now
-            var known_posts = comments_wrapper.querySelectorAll('.post');
-            var known_times = [];
-            for (var i = 0; i < known_posts.length; i++) {
-                known_times.push(known_posts[i].className.replace(/^post /, ''));
-            }
-
-            // Fire off AJAX request
-            var post = 'options=' + window.encodeURIComponent(options) + '&hash=' + window.encodeURIComponent(hash);
-            var post_element = comments_form.elements['post'];
-            var post_value = post_element.value;
-            if (typeof post_element.default_substring_to_strip != 'undefined') // Strip off prefix if unchanged
-            {
-                if (post_value.substring(0, post_element.default_substring_to_strip.length) == post_element.default_substring_to_strip)
-                    post_value = post_value.substring(post_element.default_substring_to_strip.length, post_value.length);
-            }
-            for (var i = 0; i < comments_form.elements.length; i++) {
-                if ((comments_form.elements[i].name) && (comments_form.elements[i].name != 'post'))
-                    post += '&' + comments_form.elements[i].name + '=' + window.encodeURIComponent(clever_find_value(comments_form, comments_form.elements[i]));
-            }
-            post += '&post=' + window.encodeURIComponent(post_value);
-            do_ajax_request('{$FIND_SCRIPT;,post_comment}' + keep_stub(true), function (ajax_result) {
-                if ((ajax_result.responseText != '') && (ajax_result.status != 500)) {
-                    // Display
-                    var old_action = comments_form.action;
-                    Composr.dom.outerHtml(comments_wrapper, ajax_result.responseText);
-                    comments_form = document.getElementById(comments_form_id);
-                    old_action = comments_form.action = old_action; // AJAX will have mangled URL (as was not running in a page context), this will fix it back
-
-                    // Scroll back to comment
-                    window.setTimeout(function () {
-                        var comments_wrapper = document.getElementById(comments_wrapper_id); // outerhtml set will have broken the reference
-                        smooth_scroll(find_pos_y(comments_wrapper, true));
-                    }, 0);
-
-                    // Force reload on back button, as otherwise comment would be missing
-                    force_reload_on_back();
-
-                    // Collapse, so user can see what happening
-                    var outer = document.getElementById('comments_posting_form_outer');
-                    if (outer && outer.className.indexOf('toggleable_tray') != -1)
-                        toggleable_tray('comments_posting_form_outer');
-
-                    // Set fade for posts not shown before
-                    var known_posts = comments_wrapper.querySelectorAll('.post');
-                    for (var i = 0; i < known_posts.length; i++) {
-                        if (known_times.indexOf(known_posts[i].className.replace(/^post /, '')) == -1) {
-                            set_opacity(known_posts[i], 0.0);
-                            fade_transition(known_posts[i], 100, 20, 5);
-                        }
-                    }
-
-                    // And re-attach this code (got killed by Composr.dom.outerHtml)
-                    replace_comments_form_with_ajax(options, hash);
-                } else // Error: do a normal post so error can be seen
-                {
-                    comments_form.submit();
-                }
-            }, post);
-
-            return false;
-        };
-    }
-}
-
-function force_reload_on_back() {
-    var showevent = (typeof window.onpageshow != 'undefined') ? 'pageshow' : 'load';
-    var func = function () {
-        window.location.reload();
-    };
-    window.addEventListener(showevent, func, false);
 }
 
 /* Reply to a topic using AJAX */
@@ -2043,14 +1778,12 @@ function threaded_load_more(ob, ids, id) {
         Composr.dom.appendHtml(wrapper, ajax_result.responseText);
 
         window.setTimeout(function () {
-            if (typeof window.fade_transition != 'undefined') {
-                var _ids = ids.split(',');
-                for (var i = 0; i < _ids.length; i++) {
-                    var element = document.getElementById('post_wrap_' + _ids[i]);
-                    if (element) {
-                        set_opacity(element, 0);
-                        fade_transition(element, 100, 30, 10);
-                    }
+            var _ids = ids.split(',');
+            for (var i = 0; i < _ids.length; i++) {
+                var element = document.getElementById('post_wrap_' + _ids[i]);
+                if (element) {
+                    set_opacity(element, 0);
+                    fade_transition(element, 100, 30, 10);
                 }
             }
         }, 0);
@@ -2059,53 +1792,36 @@ function threaded_load_more(ob, ids, id) {
     return false;
 }
 
-/* Set up a word count for a form field */
-function setup_word_counter(post, count_element) {
-    window.setInterval(function () {
-        if (is_wysiwyg_field(post)) {
-            try {
-                var text_value = window.CKEDITOR.instances[post.name].getData();
-                var matches = text_value.replace(/<[^<|>]+?>|&nbsp;/gi, ' ').match(/\b/g);
-                var count = 0;
-                if (matches) count = matches.length / 2;
-                Composr.dom.html(count_element, '{!WORDS;}'.replace('\\{1\\}', count));
-            }
-            catch (e) {
-            }
-        }
-    }, 1000);
-}
-
-/* Set up a form to have its CAPTCHA checked upon submission using AJAX */
-function add_captcha_checking(form) {
-    form.old_submit = form.onsubmit;
-    form.onsubmit = function () {
-        form.elements['submit_button'].disabled = true;
-        var url = '{$FIND_SCRIPT;,snippet}?snippet=captcha_wrong&name=' + window.encodeURIComponent(form.elements['captcha'].value);
-        if (!do_ajax_field_test(url)) {
-            form.elements['captcha'].src += '&'; // Force it to reload latest captcha
-            document.getElementById('submit_button').disabled = false;
-            return false;
-        }
-        form.elements['submit_button'].disabled = false;
-        if (typeof form.old_submit != 'undefined' && form.old_submit) return form.old_submit();
-        return true;
-    };
-
-    window.addEventListener('pageshow', function () {
-        form.elements['captcha'].src += '&'; // Force it to reload latest captcha
-    });
-}
-
 /* Set it up so a form field is known and can be monitored for changes */
-function set_up_change_monitor(id) {
-    $(function () {
-        var ch = (typeof id === 'string') ? document.getElementById(id) : id;
-        if (ch) {
-            _set_up_change_monitor(ch.parentNode);
-        }
-    });
+function set_up_change_monitor(container) {
+    var firstInp = Composr.dom.$(container, 'input, select, textarea');
+
+    if (!firstInp || firstInp.id.includes('choose_')) {
+        return;
+    }
+
+    function check() {
+        container.classList.toggle('filledin', find_if_children_set(container));
+    }
+
+    Composr.dom.on(container, 'focusout change', check);
 }
+
+
+function find_if_children_set(container) {
+    var value, blank = true, el;
+    var elements = Composr.dom.$$(container, 'input, select, textarea');
+    for (var i = 0; i < elements.length; i++) {
+        el = elements[i];
+        if (((el.type === 'hidden') || ((el.style.display === 'none') && !is_wysiwyg_field(el))) && !el.classList.contains('hidden_but_needed')) {
+            continue;
+        }
+        value = clever_find_value(el.form, el);
+        blank = blank && (value == '');
+    }
+    return !blank;
+}
+
 
 /* Used by audio CAPTCHA. */
 function play_self_audio_link(ob) {
@@ -2150,16 +1866,6 @@ function confirm_delete(form, multi, callback) {
     return false;
 }
 
-function has_iframe_ownership(iframe) {
-    var has_ownership = false;
-    try {
-        has_ownership = (iframe) && (iframe.contentWindow.location.host == window.location.host) && (iframe.contentWindow.document);
-    } catch (e) {
-    }
-
-    return has_ownership;
-}
-
 if (window.fade_transition_timers === undefined) {
     window.fade_transition_timers = {};
 }
@@ -2169,7 +1875,7 @@ function fade_transition(fade_element, dest_percent_opacity, period_in_msecs, in
         return;
     }
 
-    if (Composr.isFalsy(Composr.$CONFIG_OPTION.enableAnimations)) {
+    if (Composr.not(Composr.$CONFIG_OPTION.enableAnimations)) {
         set_opacity(fade_element, dest_percent_opacity / 100.0);
         return;
     }

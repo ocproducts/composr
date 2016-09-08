@@ -1,7 +1,7 @@
 {$,This template is used for things like iframes used for previewing or for creating independent navigation areas in the site, or popups / overlays}
 <!DOCTYPE html>
-
-<html lang="{$LCASE*,{$LANG}}" dir="{!dir}" data-view-core="Global">
+{$SET,is_preview,{$RUNNING_SCRIPT,preview}}
+<html lang="{$LCASE*,{$LANG}}" dir="{!dir}" data-view-core="Global" data-tpl-core-html-abstractions="standaloneHtmlWrap" data-tpl-args="{+START,PARAMS_JSON,is_preview}{_*}{+END}">
 	<head>
 		{+START,INCLUDE,HTML_HEAD}{+END}
 	</head>
@@ -22,9 +22,6 @@
 		{+START,IF_NON_PASSED,POPUP}
 			{$EXTRA_FOOT}
 		{+END}
-
-		{$START,is_preview,{$RUNNING_SCRIPT,preview}}
-		<script type="application/json" data-tpl-core-html-abstractions="standaloneHtmlWrap">{+START,PARAMS_JSON,is_preview}{_/}{+END}</script>
 	</body>
 </html>
 

@@ -1,3 +1,4 @@
+<div data-view-cns-forum="CnsForumTopicWrapper">
 <div class="wide_table_wrap"><table class="columned_table wide_table cns_topic_list">
 	{+START,IF,{$NOT,{$MOBILE}}}
 		<colgroup>
@@ -32,7 +33,7 @@
 			{+START,IF,{$NOT,{$MOBILE}}}
 				{+START,IF_NON_EMPTY,{MODERATOR_ACTIONS}}{+START,IF_NON_EMPTY,{MODERATOR_ACTIONS}}{+START,IF,{$NOT,{$_GET,overlay}}}
 					<th class="cns_forum_box_right">
-						<a href="#!" onclick="mark_all_topics(event); return false;"><img src="{$IMG*,icons/14x14/cns_topic_modifiers/unvalidated}" srcset="{$IMG*,icons/28x28/cns_topic_modifiers/unvalidated} 2x" alt="{!TOGGLE_SELECTION}" title="{!TOGGLE_SELECTION}" /></a>
+						<a href="#!" class="js-click-mark-all-topics"><img src="{$IMG*,icons/14x14/cns_topic_modifiers/unvalidated}" srcset="{$IMG*,icons/28x28/cns_topic_modifiers/unvalidated} 2x" alt="{!TOGGLE_SELECTION}" title="{!TOGGLE_SELECTION}" /></a>
 					</th>
 				{+END}{+END}{+END}
 			{+END}
@@ -123,3 +124,4 @@
 		{+END}
 	{+END}
 {+END}
+</div>

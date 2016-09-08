@@ -181,13 +181,7 @@ function received_events(ajax_result_frame, ajax_result) {
                 // Draw lines and emails animation (after delay, so that we know it's rendered by then and hence knows full coordinates)
                 window.setTimeout(function (cloned_message) {
                     return function () {
-                        if (typeof cloned_message.lines_for != 'undefined') {
-                            if (!browser_matches('ie')) /* Too slow / inaccurate */
-                            {
-                                //for (var j=0;j<cloned_message.lines_for.length;j++)		Too slow even on Chrome
-                                //	draw_line(cloned_message.lines_for[j],cloned_message.id);
-                            }
-
+                        if (cloned_message.lines_for !== undefined) {
                             if ((typeof cloned_message.icon_multiplicity != 'undefined') && (!browser_matches('ie')/*Too slow on IE*/)) {
                                 var num = cloned_message.icon_multiplicity;
                                 var main_icon = cloned_message.querySelectorAll('.email-icon')[0];

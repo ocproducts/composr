@@ -14,7 +14,7 @@
             window.slideshow_current_position = options._x - 1;
             window.slideshow_total_slides = options._n;
 
-            if (Composr.isTruthy(options.slideshow)) {
+            if (Composr.is(options.slideshow)) {
                 initialise_slideshow();
             }
         },

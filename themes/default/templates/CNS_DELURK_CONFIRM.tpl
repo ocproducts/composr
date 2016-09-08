@@ -16,7 +16,7 @@
 
 	<p class="proceed_button">
 		{+START,IF,{$JS_ON}}
-			<input class="button_screen buttons__back" type="button" onclick="history.back(); return false;" value="{!GO_BACK}" />
+			<input class="button_screen buttons__back" type="button" data-cms-btn-go-back="1" value="{!GO_BACK}" />
 		{+END}
 
 		<input accesskey="u" data-disable-on-click="1" class="button_screen buttons__proceed" type="submit" value="{!PROCEED}" />

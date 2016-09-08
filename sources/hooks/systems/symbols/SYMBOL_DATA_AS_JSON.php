@@ -89,10 +89,16 @@ class Hook_symbol_SYMBOL_DATA_AS_JSON
             'enableAnimations'  => get_option('enable_animations'),
             'detectJavascript'  => get_option('detect_javascript'),
             'isOnTimezoneDetection' => get_option('is_on_timezone_detection'),
+            'fixedWidth' => get_option('fixed_width'),
+            'infiniteScrolling' => get_option('infinite_scrolling'),
         ];
 
         $value['VALUE_OPTION'] = [
             'jsKeepParams' => get_value('js_keep_params'),
+        ];
+
+        $value['HAS_PRIVILEGE'] = [
+            'seesJavascriptErrorAlerts' =>  has_privilege(get_member(), 'sees_javascript_error_alerts')
         ];
 
         require_code('urls');

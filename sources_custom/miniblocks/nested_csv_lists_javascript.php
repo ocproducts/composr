@@ -41,7 +41,7 @@ foreach ($csv_structure['csv_files'] as $csv_filename => $csv_file) {
 echo "
     window.nested_csv_structure=" . json_encode($csv_structure) . ";
 
-    $(function() {
+    Composr.ready.then(function() {
         var forms=document.getElementsByTagName('form');
         for (var i=0;i<forms.length;i++)
         {

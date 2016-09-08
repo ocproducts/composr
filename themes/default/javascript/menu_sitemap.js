@@ -27,7 +27,7 @@ function generate_menu_sitemap(save_to, structure, the_level) {
 
 function _generate_menu_sitemap(target, node, the_level) {
     var li = document.createElement('li');
-    li.className = Composr.isTruthy(node.current) ? 'current' : 'non_current';
+    li.className = Composr.is(node.current) ? 'current' : 'non_current';
     li.className += ' ' + ((node.img == '') ? 'has_no_img' : 'has_img');
     li.id = 'sitemap_menu_branch_' + Math.round(Math.random() * 100000000000);
     li.dataset.viewCore = 'ToggleableTray';

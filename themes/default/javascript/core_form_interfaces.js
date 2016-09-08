@@ -1,4 +1,6 @@
 (function ($, Composr) {
+    'use strict';
+
     Composr.behaviors.coreFormInterfaces = {
         initialize: {
             attach: function (context) {
@@ -8,11 +10,29 @@
         }
     };
 
+    // Templates:
+    // POSTING_FORM
+    // - POSTING_FIELD
+    var PostingForm = Composr.View.extend({
+        initialize: function () {
+            PostingForm.__super__.initialize.apply(this, arguments);
+        },
+
+        events: {
+            'submit .js-submit-modsec-workaround': 'workaround'
+        },
+
+        workaround: function (e) {
+            e.preventDefault();
+            modsecurity_workaround(e.currentTarget);
+        }
+    });
+
     var FromScreenInputUpload = Composr.View.extend({
         initialize: function (v, options) {
             Composr.View.prototype.initialize.apply(this, arguments);
 
-            if (Composr.isTruthy(options.plupload) && Composr.isFalsy(Composr.$IS_HTTPAUTH_LOGIN)) {
+            if (Composr.is(options.plupload) && Composr.not(Composr.$IS_HTTPAUTH_LOGIN)) {
                 preinit_file_input('upload', options.name, null, null, options.filter);
             }
 
@@ -22,15 +42,138 @@
         }
     });
 
+    var FormScreenInputPermission = Composr.View.extend({
+        groupId: null,
+        prefix: null,
+        initialize: function (v, options) {
+            FormScreenInputPermission.__super__.initialize.apply(this, arguments);
+            this.groupId = options.groupId;
+            this.prefix = 'access_' + this.groupId;
+            var prefix = this.prefix;
+
+            if (Composr.not(options.allGlobal)) {
+                var list = document.getElementById(prefix + '_presets');
+                // Test to see what we wouldn't have to make a change to get - and that is what we're set at
+                if (!copy_permission_presets(prefix, '0', true)) list.selectedIndex = list.options.length - 4;
+                else if (!copy_permission_presets(prefix, '1', true)) list.selectedIndex = list.options.length - 3;
+                else if (!copy_permission_presets(prefix, '2', true)) list.selectedIndex = list.options.length - 2;
+                else if (!copy_permission_presets(prefix, '3', true)) list.selectedIndex = list.options.length - 1;
+            }
+        },
+
+        events: {
+            'click .js-click-copy-perm-presets': 'copyPresets',
+            'change .js-change-copy-perm-presets': 'copyPresets',
+            'click .js-click-perm-repeating': 'permissionRepeating'
+        },
+
+        copyPresets: function (e) {
+            var select = e.currentTarget;
+            copy_permission_presets(this.prefix, select.options[select.selectedIndex].value);
+            cleanup_permission_list(this.prefix);
+        },
+
+        permissionRepeating: function (e) {
+            var button = e.currentTarget,
+                name = this.prefix,
+                old_permission_copying = window.permission_copying,
+                tr = button.parentNode.parentNode,
+                trs = tr.parentNode.getElementsByTagName('tr');
+
+            if (window.permission_copying) {// Undo current copying
+                document.getElementById('copy_button_' + window.permission_copying).style.textDecoration = 'none';
+                window.permission_copying = null;
+                for (var i = 0; i < trs.length; i++) {
+                    trs[i].onclick = function () {};
+                }
+            }
+
+            if (old_permission_copying !== name)  {// Starting a new copying session
+                button.style.textDecoration = 'blink';
+                window.permission_copying = name;
+                window.fauxmodal_alert('{!permissions:REPEAT_PERMISSION_NOTICE;^}');
+                for (var i = 0; i < trs.length; i++) {
+                    if (trs[i] != tr) trs[i].onclick = copy_permissions_function(trs[i], tr);
+                }
+            }
+
+            function copy_permissions_function(to_row, from_row) {
+                return function () {
+                    var inputs_to = to_row.getElementsByTagName('input');
+                    var inputs_from = from_row.getElementsByTagName('input');
+                    for (var i = 0; i < inputs_to.length; i++) {
+                        inputs_to[i].checked = inputs_from[i].checked;
+                    }
+                    var selects_to = to_row.getElementsByTagName('select');
+                    var selects_from = from_row.getElementsByTagName('select');
+                    for (var i = 0; i < selects_to.length; i++) {
+                        while (selects_to[i].options.length > 0) {
+                            selects_to[i].remove(0);
+                        }
+                        for (var j = 0; j < selects_from[i].options.length; j++) {
+                            selects_to[i].add(selects_from[i].options[j].cloneNode(true), null);
+                        }
+                        selects_to[i].selectedIndex = selects_from[i].selectedIndex;
+                        selects_to[i].disabled = selects_from[i].disabled;
+                    }
+                }
+            }
+        }
+    });
+
+    var FormScreenInputPermissionOverride = Composr.View.extend({
+        groupId: null,
+        prefix: null,
+        initialize: function (v, options) {
+            var prefix = 'access_' + options.groupId;
+
+            this.options = options;
+            this.groupId = options.groupId;
+            this.prefix  = prefix;
+
+            setup_privilege_override_selector(prefix, options.defaultAccess, options.privilege, options.title, Composr.is(options.allGlobal));
+
+            if (Composr.not(options.allGlobal)) {
+                var list = document.getElementById(prefix + '_presets');
+                // Test to see what we wouldn't have to make a change to get - and that is what we're set at
+                if (!copy_permission_presets(prefix, '0', true)) list.selectedIndex = list.options.length - 4;
+                else if (!copy_permission_presets(prefix, '1', true)) list.selectedIndex = list.options.length - 3;
+                else if (!copy_permission_presets(prefix, '2', true)) list.selectedIndex = list.options.length - 2;
+                else if (!copy_permission_presets(prefix, '3', true)) list.selectedIndex = list.options.length - 1;
+            }
+        },
+
+        events: {
+            'click .js-click-perms-overridden': 'permissionsOverridden',
+            'change .js-change-perms-overridden': 'permissionsOverridden',
+            'mouseover .js-mouseover-show-perm-setting': 'showPermissionSetting'
+        },
+
+        permissionsOverridden: function () {
+            permissions_overridden(this.prefix);
+        },
+
+        showPermissionSetting: function (e) {
+            var select = e.currentTarget;
+
+            if (select.options[select.selectedIndex].value === '-1') {
+                show_permission_setting(select);
+            }
+        }
+    });
+
     Composr.views.coreFormInterfaces = {
-        FromScreenInputUpload: FromScreenInputUpload
+        PostingForm: PostingForm,
+        FromScreenInputUpload: FromScreenInputUpload,
+        FormScreenInputPermission: FormScreenInputPermission,
+        FormScreenInputPermissionOverride: FormScreenInputPermissionOverride
     };
 
     Composr.templates.coreFormInterfaces = {
         form: function (options) {
             options = options || {};
 
-            if (Composr.isTruthy(options.isJoinForm)) {
+            if (Composr.is(options.isJoinForm)) {
                 joinForm(options);
             }
         },
@@ -38,63 +181,63 @@
         formStandardEnd: function formStandardEnd(options) {
             window.form_preview_url = options.previewUrl;
 
-            if (Composr.isTruthy(options.forcePreviews)) {
+            if (Composr.is(options.forcePreviews)) {
                 document.getElementById('submit_button').style.display = 'none';
             }
 
-            if (Composr.isTruthy(options.javascript)) {
+            if (Composr.is(options.javascript)) {
                 eval.call(window, options.javascript);
             }
 
-            if (Composr.isFalsy(options.secondaryForm)) {
+            if (Composr.not(options.secondaryForm)) {
                 if (typeof window.fix_form_enter_key!=='undefined') {
                     fix_form_enter_key(document.getElementById('submit_button').form);
                 }
             }
 
-            if (Composr.areTruthy(options.supportAutosave, options.formName)) {
+            if (Composr.is(options.supportAutosave, options.formName)) {
                 if (typeof init_form_saving!='undefined') {
                     init_form_saving(options.formName);
                 }
             }
         },
 
-        formScreen: function formScreen(options) {
-            var context = this, nonIframeUrl, iframeUrl;
+        formScreen: function (options) {
+            var container = this;
 
             options = options || {};
 
-            if (window.try_to_simplify_iframe_form !== undefined) {
-                try_to_simplify_iframe_form();
-            }
+            try_to_simplify_iframe_form();
 
-            if (options.iframeUrl !== undefined) {
-                nonIframeUrl = options.url;
-                iframeUrl = options.iframeUrl;
+            if (options.iframeUrl) {
                 window.setInterval(function() { resize_frame('iframe_under'); }, 1500);
             }
 
-            context.addEventListener('click', function (e) {
-                var chkBoxOpenNew = Composr.dom.closest(e.currentTarget, '.js-checkbox-will-open-new');
+            Composr.dom.on(container, 'click', function (e) {
+                var chkBoxOpenNew = Composr.dom.closest(e.target, '.js-checkbox-will-open-new', container);
 
-                if (chkBoxOpenNew) {
-                    var f = document.getElementById('main_form');
-                    f.action = this.checked ? nonIframeUrl : iframeUrl;
-                    f.elements['opens_below'].value = this.checked ? '0' : '1';
-                    f.target = this.checked ? '_blank' : 'iframe_under';
+                if (options.iframeUrl && chkBoxOpenNew) {
+                    var form = Composr.dom.id(container, 'main_form');
+
+                    form.action = chkBoxOpenNew.checked ? options.url : options.iframeUrl;
+                    form.elements.opens_below.value = chkBoxOpenNew.checked ? '0' : '1';
+                    form.target = chkBoxOpenNew.checked ? '_blank' : 'iframe_under';
                 }
             });
         },
 
         formScreenField_input: function (options) {
-            set_up_change_monitor('form_table_field_input__' + options.randomisedId);
+            var el = Composr.dom.$('#form_table_field_input__' + options.randomisedId);
+            if (el) {
+                set_up_change_monitor(el.parentElement);
+            }
         },
 
         formScreenInputLine: function formScreenInputLine(options) {
-            set_up_comcode_autocomplete(options.name, Composr.isTruthy(options.wysiwyg));
+            set_up_comcode_autocomplete(options.name, Composr.is(options.wysiwyg));
         },
 
-        formScreenInputCombo: function formScreenInputCombo(options) {
+        formScreenInputCombo: function (options) {
             document.getElementById(options.name).onkeyup();
 
             if (typeof window.HTMLDataListElement === 'undefined') {
@@ -102,20 +245,24 @@
             }
         },
 
-        formScreenInputHugeComcode: function formScreenInputHugeComcode(options) {
-            if ((typeof options.required === 'string') && options.required.includes('wysiwyg') && wysiwyg_on()) {
-                document.getElementById(options.name).readOnly = true;
+        formScreenInputHugeComcode: function (options) {
+            var textarea = Composr.dom.id(options.name),
+                input = Composr.dom.id('form_table_field_input__' + options.randomisedId);
+
+            if (options.required.includes('wysiwyg') && wysiwyg_on()) {
+                textarea.readOnly = true;
             }
 
-            set_up_change_monitor('form_table_field_input__' + options.randomisedId);
-            manage_scroll_height(document.getElementById(options.name));
+            if (input) {
+                set_up_change_monitor(input.parentElement);
+            }
 
+            manage_scroll_height(textarea);
             set_up_comcode_autocomplete(options.name, options.required.includes('wysiwyg'));
         },
 
-        formScreenInputColour: function formScreenInputColour(options) {
-            var isRawField = options.rawField === '1',
-                label = isRawField ? ' ' : options.prettyName;
+        formScreenInputColour: function (options) {
+            var label = Composr.is(options.rawField) ? ' ' : options.prettyName;
 
             make_colour_chooser(options.name, options.default, '', options.tabindex, label, 'input_colour' + options._required);
             do_color_chooser();
@@ -125,74 +272,112 @@
             var hook = Composr.filters.urlEncode(options.hook),
                 rootId = Composr.filters.urlEncode(options.rootId),
                 opts =  Composr.filters.urlEncode(options.options),
-                multiSel = Composr.isTruthy(options.multiSelect);
+                multiSel = Composr.is(options.multiSelect);
 
-            new tree_list(options.name, 'data/ajax_tree.php?hook=' + hook + Composr.$KEEP, rootId, opts, multiSel, options.tabIndex, false, Composr.isTruthy(options.useServerId));
+            new tree_list(options.name, 'data/ajax_tree.php?hook=' + hook + Composr.$KEEP, rootId, opts, multiSel, options.tabIndex, false, Composr.is(options.useServerId));
         },
 
-        formScreenInputPermission: function formScreenInputPermission(options) {
-            if (Number(options.allGlobal) === 0) {
-                var list = document.getElementById('access_' + options.groupId + '_presets');
-                // Test to see what we wouldn't have to make a change to get - and that is what we're set at
-                if (!copy_permission_presets('access_' + options.groupId, '0', true)) list.selectedIndex = list.options.length - 4;
-                else if (!copy_permission_presets('access_' + options.groupId, '1', true)) list.selectedIndex = list.options.length - 3;
-                else if (!copy_permission_presets('access_' + options.groupId, '2', true)) list.selectedIndex = list.options.length - 2;
-                else if (!copy_permission_presets('access_' + options.groupId, '3', true)) list.selectedIndex = list.options.length - 1;
-            }
-        },
-
-        formScreenInputPermissionOverride: function formScreenInputPermissionOverride(options) {
-            var allGlobal = Number(options.allGlobal) === 1;
-
-            setup_privilege_override_selector('access_' + options.groupId, options.defaultAccess, options.privilege, options.title, allGlobal);
-
-            if (!allGlobal) {
-                var list = document.getElementById('access_' + options.groupId + '_presets');
-                // Test to see what we wouldn't have to make a change to get - and that is what we're set at
-                if (!copy_permission_presets('access_' + options.groupId, '0', true)) list.selectedIndex = list.options.length - 4;
-                else if (!copy_permission_presets('access_' + options.groupId, '1', true)) list.selectedIndex = list.options.length - 3;
-                else if (!copy_permission_presets('access_' + options.groupId, '2', true)) list.selectedIndex = list.options.length - 2;
-                else if (!copy_permission_presets('access_' + options.groupId, '3', true)) list.selectedIndex = list.options.length - 1;
-            }
-        },
-
-        formScreenInputPermissionMatrix: function formScreenInputPermissionMatrix(options) {
+        formScreenInputPermissionMatrix: function (options) {
+            var container = this;
             window.perm_serverid = options.serverId;
+
+            Composr.dom.on(container, 'click', { '.js-click-permissions-toggle': function () {
+                permissions_toggle(this.parentNode)
+            }});
+
+            function permissions_toggle(cell) {
+                var index = cell.cellIndex;
+                var table = cell.parentNode.parentNode;
+                if (table.localName !== 'table') table = table.parentNode;
+                var state_list = null, state_checkbox = null;
+                for (var i = 0; i < table.rows.length; i++) {
+                    if (i >= 1) {
+                        var cell2 = table.rows[i].cells[index];
+                        var input = cell2.getElementsByTagName('input')[0];
+                        if (input) {
+                            if (!input.disabled) {
+                                if (state_checkbox == null) state_checkbox = input.checked;
+                                input.checked = !state_checkbox;
+                            }
+                        } else {
+                            input = cell2.getElementsByTagName('select')[0];
+                            if (state_list == null) state_list = input.selectedIndex;
+                            input.selectedIndex = ((state_list != input.options.length - 1) ? (input.options.length - 1) : (input.options.length - 2));
+                            input.disabled = false;
+
+                            permissions_overridden(table.rows[i].id.replace(/_privilege_container$/, ''));
+                        }
+                    }
+                }
+            }
         },
 
         formScreenFieldsSetItem: function formScreenFieldsSetItem(options) {
-            set_up_change_monitor('form_table_field_input__' + options.name);
+            var el = Composr.dom.$('#form_table_field_input__' + options.name);
+
+            if (el) {
+                set_up_change_monitor(el.parentElement);
+            }
         },
 
         formScreenFieldSpacer: function formScreenFieldSpaces(options) {
-            options = options || {};
+            var container = this;
+            options || (options = {});
 
-            if (Composr.areTruthy(options.title, options.sectionHidden)) {
-                var title = Composr.filters.identifier(options.title);
-                document.getElementById('fes' + title).click();
+            if (Composr.is(options.title, options.sectionHidden)) {
+                var title = Composr.filters.id(options.title);
+                Composr.dom.id('fes' + title).click();
             }
+
+            Composr.dom.on(container, 'click', {
+                '.js-click-geolocate-address-fields': function (e) {
+                    geolocate_address_fields();
+                }
+            });
         },
 
         formScreenInputTick: function (options) {
             var el = this;
 
             if (Composr.$JS_ON && (options.name === 'validated')) {
-                $(el).on('click', function () {
+                Composr.dom.on(el, 'click', function () {
                     el.previousSibling.className = 'validated_checkbox' + (el.checked ? ' checked' : '');
-                })
+                });
             }
 
             if (options.name === 'delete') {
                 assign_tick_deletion_confirm(options.name);
             }
+
+            function assign_tick_deletion_confirm(name) {
+                var el = document.getElementById(name);
+
+                el.onchange = function () {
+                    if (this.checked) {
+                        window.fauxmodal_confirm(
+                            '{!ARE_YOU_SURE_DELETE;^}',
+                            function (result) {
+                                if (result) {
+                                    var form = el.form;
+                                    if (!form.action.includes('_post')) {// Remove redirect if redirecting back, IF it's not just deleting an on-page post (Wiki+)
+                                        form.action = form.action.replace(/([&\?])redirect=[^&]*/, '$1');
+                                    }
+                                } else {
+                                    el.checked = false;
+                                }
+                            }
+                        );
+                    }
+                }
+            }
         },
 
-        formScreenInputCaptcha: function formScreenInputCaptcha(options, jsCaptcha) {
-            if (jsCaptcha === '1') {
+        formScreenInputCaptcha: function formScreenInputCaptcha(options) {
+            if (Composr.is(Composr.$CONFIG_OPTION.jsCaptcha)) {
                 Composr.dom.html(document.getElementById('captcha_spot'), options.captcha);
             } else {
                 window.addEventListener('pageshow', function () {
-                    document.getElementById('captcha_readable').src += '&r=' + Composr.utils.random(); // Force it to reload latest captcha
+                    document.getElementById('captcha_readable').src += '&r=' + Composr.util.random(); // Force it to reload latest captcha
                 });
             }
         },
@@ -200,9 +385,11 @@
         formScreenInputList: function formScreenInputList(options, images) {
             var el, selectOptions;
 
-            if (options.inlineList === '1') return;
+            if (Composr.is(options.inlineList)) {
+                return;
+            }
 
-            el = document.getElementById(options.name);
+            el = Composr.dom.id(options.name);
             selectOptions = {
                 dropdownAutoWidth: true,
                 containerCssClass: 'wide_field'
@@ -232,7 +419,7 @@
         },
 
         formScreenFieldsSet: function (options) {
-            standard_alternate_fields_within(options.setName, Composr.isTruthy());
+            standard_alternate_fields_within(options.setName, Composr.is());
         },
 
         formScreenInputThemeImageEntry: function (options) {
@@ -240,12 +427,17 @@
         },
 
         formScreenInputHuge_input: function (options) {
-            var textArea = document.getElementById(options.name);
+            var textArea = document.getElementById(options.name),
+                el = Composr.dom.$('#form_table_field_input__' + options.randomisedId);
 
-            set_up_change_monitor('form_table_field_input__' + options.randomisedId);
+            if (el) {
+                set_up_change_monitor(el.parentElement);
+            }
+
+
             manage_scroll_height(textArea);
 
-            if (Composr.isFalsy(Composr.$MOBILE)) {
+            if (Composr.not(Composr.$MOBILE)) {
                 $(textArea).on('change keyup', function () {
                     manage_scroll_height(textArea);
                 });
@@ -253,13 +445,14 @@
         },
 
         formScreenInputHugeList_input: function (options) {
-            if (Composr.isFalsy(options.inlineList)) {
-                set_up_change_monitor('form_table_field_input__' + options.randomisedId);
+            var el = Composr.dom.$('#form_table_field_input__' + options.randomisedId);
+            if (Composr.not(options.inlineList) && el) {
+                set_up_change_monitor(el.parentElement);
             }
         },
 
-        previewScript: function previewScript(options) {
-            var inner = document.querySelector('.js-preview-box-scroll');
+        previewScript: function previewScript() {
+            var inner = Composr.dom.$('.js-preview-box-scroll');
 
             if (!inner) { return; }
 
@@ -293,7 +486,7 @@
             manage_scroll_height(postEl);
             set_up_comcode_autocomplete(options.name, true);
 
-            if (Composr.isTruthy(options.initDragDrop)) {
+            if (Composr.is(options.initDragDrop)) {
                 initialise_html5_dragdrop_upload('container_for_' + options.name, options.name);
             }
         },
@@ -448,7 +641,7 @@
 
             var attached_event_action = false;
 
-            if (options.syncWysiwygAttachments === '1') {
+            if (Composr.is(options.syncWysiwygAttachments)) {
                 Composr.required(options, ['tagContents']);
 
                 // WYSIWYG-editable attachments must be synched
@@ -500,23 +693,49 @@
             }
 
             if (typeof options.code !== 'undefined') {
-                choose_picture('j_' + Composr.filters.identifier(options.name) + '_' + Composr.filters.identifier(options.code), null, options.name, null);
+                choose_picture('j_' + Composr.filters.id(options.name) + '_' + Composr.filters.id(options.code), null, options.name, null);
             }
 
             if (options.name === 'delete') {
                 assign_radio_deletion_confirm(options.name);
             }
+
+            function assign_radio_deletion_confirm(name) {
+                for (var i = 1; i < 3; i++) {
+                    var e = document.getElementById('j_' + name + '_' + i);
+                    if (e) {
+                        e.onchange = function () {
+                            if (this.checked) {
+                                window.fauxmodal_confirm(
+                                    '{!ARE_YOU_SURE_DELETE;^}',
+                                    function (result) {
+                                        var e = document.getElementById('j_' + name + '_0');
+                                        if (e) {
+                                            if (result) {
+                                                var form = e.form;
+                                                form.action = form.action.replace(/([&\?])redirect=[^&]*/, '$1');
+                                            } else {
+                                                e.checked = true; // Check first radio
+                                            }
+                                        }
+                                    }
+                                );
+                            }
+                        }
+                    }
+                }
+            }
         },
 
         formScreenInputRadioListComboEntry: function formScreenInputRadioListComboEntry(options) {
-            var el = document.getElementById('j_' + Composr.filters.identifier(options.name) + '_other');
+            var el = document.getElementById('j_' + Composr.filters.id(options.name) + '_other');
             el.dispatchEvent(new CustomEvent('change', { bubbles: true }));
         },
 
         formScreenInputVariousTricks: function formScreenInputVariousTricks(options) {
             options || (options = {});
 
-            if ((typeof options.customName !== 'undefined') && Composr.isFalsy(options.customAcceptMultiple)) {
+            if ((typeof options.customName !== 'undefined') && Composr.not(options.customAcceptMultiple)) {
                 document.getElementById(options.customName + '_value').dispatchEvent(new CustomEvent('change', { bubbles: true }));
             }
         },
@@ -536,6 +755,139 @@
             //$('#' + options.name).inputTime({});
         }
     };
+
+    /* Set up a word count for a form field */
+    function setup_word_counter(post, count_element) {
+        window.setInterval(function () {
+            if (is_wysiwyg_field(post)) {
+                try {
+                    var text_value = window.CKEDITOR.instances[post.name].getData();
+                    var matches = text_value.replace(/<[^<|>]+?>|&nbsp;/gi, ' ').match(/\b/g);
+                    var count = 0;
+                    if (matches) count = matches.length / 2;
+                    Composr.dom.html(count_element, '{!WORDS;}'.replace('\\{1\\}', count));
+                }
+                catch (e) {
+                }
+            }
+        }, 1000);
+    }
+
+    function permissions_overridden(select) {
+        var element = document.getElementById(select + '_presets');
+        if (element.options[0].id != select + '_custom_option') {
+            var new_option = document.createElement('option');
+            Composr.dom.html(new_option, '{!permissions:PINTERFACE_LEVEL_CUSTOM;^}');
+            new_option.id = select + '_custom_option';
+            new_option.value = '';
+            element.insertBefore(new_option, element.options[0]);
+        }
+        element.selectedIndex = 0;
+    }
+
+    function try_to_simplify_iframe_form() {
+        var form_cat_selector = document.getElementById('main_form'), elements, i, element, count = 0, found, foundButton;
+        if (!form_cat_selector) {
+            return;
+        }
+
+        elements = Composr.dom.$$(form_cat_selector, 'input, button, select, textarea');
+        for (i = 0; i < elements.length; i++) {
+            element = elements[i];
+            if (((element.localName === 'input') && (element.type !== 'hidden') && (element.type !== 'button') && (element.type !== 'image') && (element.type !== 'submit')) || (element.localName === 'select') || (element.localName === 'textarea')) {
+                found = element;
+                count++;
+            }
+            if (((element.localName === 'input') && ((element.type === 'button') || (element.type === 'image') || (element.type === 'submit'))) || (element.localName === 'button')) {
+                foundButton = element;
+            }
+        }
+
+        if ((count === 1) && (found.localName === 'select')) {
+            var iframe = document.getElementById('iframe_under');
+            found.onchange = function () {
+                if (iframe) {
+                    if ((iframe.contentDocument) && (iframe.contentDocument.getElementsByTagName('form').length != 0)) {
+                        window.fauxmodal_confirm(
+                            '{!Q_SURE_LOSE;^}',
+                            function (result) {
+                                if (result) {
+                                    _simplified_form_continue_submit(iframe, form_cat_selector);
+                                }
+                            }
+                        );
+
+                        return null;
+                    }
+                }
+
+                _simplified_form_continue_submit(iframe, form_cat_selector);
+
+                return null;
+            };
+            if ((found.getAttribute('size') > 1) || (found.multiple)) found.onclick = found.onchange;
+            if (iframe) {
+                foundButton.style.display = 'none';
+            }
+        }
+    }
+
+    function _simplified_form_continue_submit(iframe, form_cat_selector) {
+        if (check_form(form_cat_selector)) {
+            if (iframe) {
+                animate_frame_load(iframe, 'iframe_under');
+            }
+            form_cat_selector.submit();
+        }
+    }
+
+    /* Geolocation for address fields */
+    function geolocate_address_fields() {
+        if (!navigator.geolocation) {
+            return;
+        }
+        try {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                var fields = [
+                    '{!cns_special_cpf:SPECIAL_CPF__cms_street_address;}',
+                    '{!cns_special_cpf:SPECIAL_CPF__cms_city;}',
+                    '{!cns_special_cpf:SPECIAL_CPF__cms_county;}',
+                    '{!cns_special_cpf:SPECIAL_CPF__cms_state;}',
+                    '{!cns_special_cpf:SPECIAL_CPF__cms_post_code;}',
+                    '{!cns_special_cpf:SPECIAL_CPF__cms_country;}'
+                ];
+
+                var geocode_url = '{$FIND_SCRIPT;,geocode}';
+                geocode_url += '?latitude=' + window.encodeURIComponent(position.coords.latitude) + '&longitude=' + window.encodeURIComponent(position.coords.longitude);
+                geocode_url += keep_stub();
+
+                do_ajax_request(geocode_url, function (ajax_result) {
+                    var parsed = JSON.parse(ajax_result.responseText);
+                    if (parsed === null) return;
+                    var labels = document.getElementsByTagName('label'), label, field_name, field;
+                    for (var i = 0; i < labels.length; i++) {
+                        label = Composr.dom.html(labels[i]);
+                        for (var j = 0; j < fields.length; j++) {
+                            if (fields[j].replace(/^.*: /, '') == label) {
+                                if (parsed[j + 1] === null) parsed[j + 1] = '';
+
+                                field_name = labels[i].getAttribute('for');
+                                field = document.getElementById(field_name);
+                                if (field.localName === 'select') {
+                                    field.value = parsed[j + 1];
+                                    if (typeof $(field).select2 != 'undefined') {
+                                        $(field).trigger('change');
+                                    }
+                                } else {
+                                    field.value = parsed[j + 1];
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+        } catch (e) { }
+    }
 
     function joinForm(options) {
         var form = document.getElementById('username').form;
@@ -571,7 +923,7 @@
                 return false;
             }
 
-            if (Composr.isTruthy(options.invitesEnabled)) {
+            if (Composr.is(options.invitesEnabled)) {
                 url = options.snippetScript + '?snippet=invite_missing&name=' + window.encodeURIComponent(form.elements['email_address'].value);
                 if (!do_ajax_field_test(url)) {
                     document.getElementById('submit_button').disabled = false;
@@ -579,7 +931,7 @@
                 }
             }
 
-            if (Composr.isTruthy(options.onePerEmailAddress)) {
+            if (Composr.is(options.onePerEmailAddress)) {
                 url = options.snippetScript + '?snippet=exists_email&name=' + window.encodeURIComponent(form.elements['email_address'].value);
                 if (!do_ajax_field_test(url)) {
                     document.getElementById('submit_button').disabled = false;
@@ -587,7 +939,7 @@
                 }
             }
 
-            if (Composr.isTruthy(options.useCaptcha)) {
+            if (Composr.is(options.useCaptcha)) {
                 url = options.snippetScript + '?snippet=captcha_wrong&name=' + window.encodeURIComponent(form.elements['captcha'].value);
                 if (!do_ajax_field_test(url)) {
                     document.getElementById('submit_button').disabled = false;
@@ -597,7 +949,7 @@
 
             document.getElementById('submit_button').disabled = false;
 
-            if (typeof form.old_submit !== 'undefined' && form.old_submit) {
+            if (form.old_submit) {
                 return form.old_submit();
             }
 
@@ -605,4 +957,4 @@
         };
     }
 
-})(window.jQuery || window.Zepto, Composr);
+}(window.jQuery || window.Zepto, window.Composr));
