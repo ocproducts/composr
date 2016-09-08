@@ -1,10 +1,10 @@
-{TITLE*}
+{TITLE}
 {$SET,i,0}{+START,WHILE,{$LT,{$GET,i},{$LENGTH,{TITLE}}}}={$INC,i}{+END}
 
 {CONTENT}
 
 {$SET,i,0}{+START,WHILE,{$LT,{$GET,i},{$LENGTH,{$COPYRIGHT}}}}-{$INC,i}{+END}
 
-{$COPYRIGHT`}
+{$ENTITY_DECODE,{$COPYRIGHT}}
 
-{$PREG_REPLACE*,^.*://,,{$BASE_URL}}
+{$PREG_REPLACE,^.*://,,{$BASE_URL}}
