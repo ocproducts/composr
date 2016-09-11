@@ -351,10 +351,7 @@ function init__global2()
 
     // Register Internationalisation settings
     @header('Content-type: text/html; charset=' . get_charset());
-    $locales = explode(',', do_lang('locale'));
-    setlocale(LC_ALL, $locales[0]);
-    @setlocale(LC_ALL, $locales);
-    unset($locales);
+    setlocale(LC_ALL, explode(',', do_lang('locale')));
 
     // Check RBLs
     $spam_check_level = get_option('spam_check_level');

@@ -611,8 +611,6 @@ class Module_wiki
     public function _render_buttons($chain, $id, $include_expansion, $may_post = true)
     {
         $page_url = build_url(array('page' => '_SELF', 'type' => 'browse', 'id' => $chain), '_SELF');
-        $pos = strpos($chain, '/');
-        $id = intval(substr($chain, ($pos === false) ? 0 : ($pos + 1)));
 
         /*if ((addon_installed('search')) && (has_actual_page_access(get_member(),'search'))) { // Not enough space
             $search_url = build_url(array('page' => 'search', 'type' => 'browse', 'id' => 'wiki_posts', 'search_under' => $id), get_module_zone('search'));

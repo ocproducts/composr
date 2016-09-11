@@ -120,7 +120,7 @@ function _get_timezone_list()
         'Africa/El_Aaiun' => '(UTC+00:00) El Aaiun, St. Helena',
         'Atlantic/Madeira' => '(UTC+00:00) Madeira',
         'Europe/London' => '(UTC+00:00) Belfast, Dublin, Edinburgh, Lisbon, London',
-        'UTC' => '(UTC) No daylight saving',
+        'UTC' => '(UTC) ' . do_lang('NO_DAYLIGHT_SAVING'),
         'Africa/Abidjan' => '(UTC+00:00) Abidjan, Accra, Bamako, Banjul, Bissau, Conakry',
         'Africa/Dakar' => '(UTC+00:00) Dakar, Danmarkshavn, Freetown, Lome, Nouakchott, Ouagadougou',
         'Africa/Sao_Tome' => '(UTC+00:00) Sao Tome',

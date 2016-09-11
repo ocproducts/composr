@@ -10,7 +10,7 @@ You can make use of it via require_javascript('activities_state',window.s_update
 
 function s_update_focus(event)
 {
-	if ($(this).val().trim()=='{!activities:TYPE_HERE;}')
+	if ($(this).val().trim()=='{!activities:TYPE_HERE;^}')
 	{
 		$(this).val('');
 		this.className=this.className.replace(/ field_input_non_filled/g,' field_input_filled');
@@ -22,7 +22,7 @@ function s_update_blur(event)
 {
 	if ($(this).val().trim()=='')
 	{
-		$(this).val('{!activities:TYPE_HERE;}');
+		$(this).val('{!activities:TYPE_HERE;^}');
 		this.className=this.className.replace(/ field_input_filled/g,' field_input_non_filled');
 	}
 	$(this).addClass('fade_input');
@@ -36,9 +36,9 @@ function s_maintain_char_count(event)
 	var char_count=$('#activity_status').val().length;
 
 	if (char_count<255)
-		$('#activities_update_notify','#status_updates').attr('class','update_success').text((254-char_count)+' {!activities:CHARACTERS_LEFT;}');
+		$('#activities_update_notify','#status_updates').attr('class','update_success').text((254-char_count)+' {!activities:CHARACTERS_LEFT;^}');
 	else
-		$('#activities_update_notify','#status_updates').attr('class','update_error').text((char_count-254)+' {!activities:CHARACTERS_TOO_MANY;}');
+		$('#activities_update_notify','#status_updates').attr('class','update_error').text((char_count-254)+' {!activities:CHARACTERS_TOO_MANY;^}');
 }
 
 /**
@@ -57,9 +57,9 @@ function s_update_submit(event)
 		subject_text=$('textarea','#fp_status_form').val().trim();
 	}
 
-	if ((subject_text=='{!activities:TYPE_HERE;}') || (subject_text==''))
+	if ((subject_text=='{!activities:TYPE_HERE;^}') || (subject_text==''))
 	{
-		$('#activities_update_notify','#status_updates').attr('class','update_error').text('{!activities:PLEASE_ENTER_STATUS;}');
+		$('#activities_update_notify','#status_updates').attr('class','update_error').text('{!activities:PLEASE_ENTER_STATUS;^}');
 	} else
 	{
 		var url='{$BASE_URL;,0}/data_custom/activities_handler.php'+keep_stub(true);
@@ -89,9 +89,9 @@ function s_update_retrieve(data,tStat)
 	{
 		if ($('success',data).text()=='0')
 		{
-			if ($('feedback',data).text().substr(0,13)=='{!MUST_LOGIN;}')
+			if ($('feedback',data).text().substr(0,13)=='{!MUST_LOGIN;^}')
 			{ //if refusal is due to login expiry...
-				window.fauxmodal_alert('{!MUST_LOGIN;}');
+				window.fauxmodal_alert('{!MUST_LOGIN;^}');
 			} else
 			{
 				update_box.attr('class','update_error').html($('feedback',data).text());
@@ -106,17 +106,17 @@ function s_update_retrieve(data,tStat)
 			}
 			update_box.fadeIn(1200,function() { update_box.fadeOut(1200,function() {
 				var as=$('#activity_status');
-				update_box.attr('class','update_success').text('254 {!activities:CHARACTERS_LEFT;}');
+				update_box.attr('class','update_success').text('254 {!activities:CHARACTERS_LEFT;^}');
 				update_box.fadeIn(1200);
 				as.parent().height(as.parent().height());
-				as.val('{!activities:TYPE_HERE;}');
+				as.val('{!activities:TYPE_HERE;^}');
 				as[0].className=as[0].className.replace(/ field_input_filled/g,' field_input_non_filled');
 				as.fadeIn(1200,function() { as.parent().height(''); });
 			}); });
 		}
 	} else
 	{
-		var errText='{!activities:WENT_WRONG;}';
+		var errText='{!activities:WENT_WRONG;^}';
 		update_box.attr('class','').addClass('update_error').text(errText);
 		update_box.hide();
 		update_box.fadeIn(1200,function() { update_box.delay(2400).fadeOut(1200,function() {

@@ -2981,12 +2981,24 @@ function titleify($boring)
             $ret = preg_replace('#(^|\s)' . preg_quote($acronym, '#') . '(\s|$)#i', '$1' . $acronym . '$2', $ret);
         }
     }
-    $ret = str_replace('Ecommerce', 'eCommerce', $ret);
-    $ret = str_replace('Captcha', 'CAPTCHA', $ret);
+
+    if (strpos($ret, 'Ecommerce') !== false) {
+        $ret = str_replace('Ecommerce', addon_installed('ecommerce') ? do_lang('ecommerce:ECOMMERCE') : 'eCommerce', $ret);
+    }
+    if (strpos($ret, 'Cpfs') !== false) {
+        $ret = str_replace('Cpfs', do_lang('cns:CUSTOM_PROFILE_FIELDS'), $ret);
+    }
+    if (strpos($ret, 'Captcha') !== false) {
+        $ret = str_replace('Captcha', addon_installed('captcha') ? do_lang('captcha:CAPTCHA') : 'CAPTCHA', $ret);
+    }
+    $ret = str_replace('Emails', do_lang('EMAILS'), $ret);
     $ret = str_replace('Phpinfo', 'PHP-Info', $ret);
-    $ret = str_replace('Cpfs', 'CPFs', $ret);
-    $ret = str_replace('Emails', 'E-mails', $ret);
     $ret = str_replace('CNS', 'Conversr', $ret);
+    if (strpos($ret, 'Default Set') !== false) {
+        $ret = str_replace('Default Set/cartoons', do_lang('cns:AVATARS_CARTOONS'), $ret);
+        $ret = str_replace('Default Set/thematic', do_lang('cns:AVATARS_THEMATIC'), $ret);
+        $ret = str_replace('Default Set', do_lang('cns:AVATARS_MISC'), $ret);
+    }
 
     if ($GLOBALS['XSS_DETECT'] && ocp_is_escaped($boring)) {
         ocp_mark_as_escaped($ret);

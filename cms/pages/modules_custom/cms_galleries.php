@@ -22,6 +22,8 @@
 function init__cms__pages__modules_custom__cms_galleries($code)
 {
     if (!$GLOBALS['SITE_DB']->table_exists('workflow_content')) { // Not installed
+        i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
+
         return $code;
     }
 

@@ -113,6 +113,7 @@ function string_scan($lang, $do_guessing = false)
     );
 
     $lang_strings_admin_initial = array_map('trim', explode("\n", trim('
+        takes_lots_of_space
         OWNER
         TICKETS_STAFF
         NO_CNS
@@ -279,23 +280,18 @@ function string_scan($lang, $do_guessing = false)
         _ERROR_CHECKING_FOR_SPAMMERS
         ERROR_CHECKING_FOR_SPAMMERS
         ADD_AGGREGATE_TYPE_INSTANCE
-        ADD_AUTHOR
         ADD_AWARD_TYPE
         ADD_BANNER
         ADD_BANNER_TEMPLATING
         ADD_BANNER_TYPE
         ADD_BRANCH
-        ADD_CALENDAR_EVENT
         ADD_CATALOGUE
         ADD_CATALOGUE_CATEGORY
-        ADD_CATALOGUE_ENTRY
         ADD_CATALOGUE_FOR_CONTENT_TYPE
         ADD_CHATROOM
         ADD_CHILD_PAGE
-        ADD_CLUB
         ADD_CUSTOM_COMCODE_TAG
         ADD_CUSTOM_PROFILE_FIELD
-        ADD_DOWNLOAD
         ADD_DOWNLOAD_CATEGORY
         ADD_DOWNLOAD_LICENCE
         ADD_EMOTICON
@@ -303,18 +299,14 @@ function string_scan($lang, $do_guessing = false)
         ADD_EVENT_TYPE
         ADD_FORUM
         ADD_FORUM_GROUPING
-        ADD_GALLERY
         ADD_GALLERY_SELECTION
         ADD_GROUP
-        ADD_IMAGE
         ADD_MEMBER
         ADD_MEMBER_TO_GROUP
         ADD_MENU
         ADD_MENU_ITEM
         ADD_MULTI_MODERATION
-        ADD_NEWS
         ADD_NEWSLETTER
-        ADD_NEWS_BLOG
         ADD_NEWS_CATEGORY
         ADD_NEW_CUSTOM_PRODUCT
         ADD_NEW_FORWARDING_DOMAIN
@@ -324,11 +316,7 @@ function string_scan($lang, $do_guessing = false)
         ADD_NOTE_APPEND_TEXT
         ADD_ONE_AT_A_TIME
         ADD_PERIODIC_NEWSLETTER
-        ADD_POLL
         ADD_POST_TEMPLATE
-        ADD_PRIVATE_CALENDAR_EVENT
-        ADD_PUBLIC_CALENDAR_EVENT
-        ADD_QUIZ
         ADD_STAFF
         ADD_THEME
         ADD_THEME_IMAGE
@@ -337,7 +325,6 @@ function string_scan($lang, $do_guessing = false)
         ADD_TO_OWN_ACCOUNT
         ADD_USERGROUP_SUBSCRIPTION
         ADD_USER_GROUP_FIRST
-        ADD_VIDEO
         ADD_WARNING
         ADD_WELCOME_EMAIL
         ADD_WORDFILTER
@@ -3151,7 +3138,6 @@ function string_scan($lang, $do_guessing = false)
         DEEPER_ADMIN_BREADCRUMBS
         DEFAULT
         DEFAULT_COMMENT_SORT_ORDER
-        DEFAULT_CPF_about_NAME
         DEFAULT_GROUP
         DEFAULT_IMAGE
         DEFAULT_PAGE
@@ -3319,7 +3305,6 @@ function string_scan($lang, $do_guessing = false)
         DESCRIPTION_AUTHOR_URL
         DESCRIPTION_AUTO_FILL
         DESCRIPTION_AUTO_RECUR
-        DESCRIPTION_AWARD_OVERVIEW
         DESCRIPTION_AWARD_POINTS
         DESCRIPTION_AWARD_UPDATE_TIME_HOURS
         DESCRIPTION_BANNED_ADDRESSES_A
@@ -3416,7 +3401,6 @@ function string_scan($lang, $do_guessing = false)
         DESCRIPTION_DESTINATION_ZONE
         DESCRIPTION_DISPLAY_REVIEW_STATUS
         DESCRIPTION_DISPLAY_TYPE
-        DESCRIPTION_DOTW
         DESCRIPTION_DOWNLOADS_STATISTICS
         DESCRIPTION_DOWNLOAD_AS_CSV
         DESCRIPTION_DOWNLOAD_COMPOSR_HOMESITE
@@ -4001,7 +3985,6 @@ function string_scan($lang, $do_guessing = false)
         DUPLICATE_PAGE_REDIRECT
         DYNAMIC_FIREWALL
         EAGER_WYSIWYG
-        ECOMMERCE
         ECOMMERCE_TEST_MODE
         ECOM_ADDED_SUBSCRIP
         ECOM_CATD_image
@@ -5438,7 +5421,6 @@ function string_scan($lang, $do_guessing = false)
         NOTIFICATION_TYPE_low_stock
         NOTIFICATION_TYPE_messaging
         NOTIFICATION_TYPE_needs_validation
-        NOTIFICATION_TYPE_payment_received
         NOTIFICATION_TYPE_pointstore_request_custom
         NOTIFICATION_TYPE_pointstore_request_forwarding
         NOTIFICATION_TYPE_pointstore_request_pop3
@@ -6386,13 +6368,6 @@ function string_scan($lang, $do_guessing = false)
         TAKE_RESPONSIBILITY
         TARGET
         TASKS_BACKGROUND
-        TASK_COMPLETED
-        TASK_COMPLETED_BODY
-        TASK_COMPLETED_BODY_ATTACHMENT
-        TASK_COMPLETED_BODY_SIMPLE
-        TASK_COMPLETED_SUBJECT
-        TASK_FAILED_BODY
-        TASK_FAILED_SUBJECT
         TASK_LENGTH
         TASK_LENGTH_UNITS
         TAX_GENERAL
@@ -7059,6 +7034,38 @@ function string_scan($lang, $do_guessing = false)
     );
 
     $lang_strings_non_admin_initial = array_map('trim', explode("\n", trim('
+        DESCRIPTION_AWARD_OVERVIEW
+        EMAILS
+        AVATARS_CARTOONS
+        AVATARS_THEMATIC
+        AVATARS_MISC
+        ADD_AUTHOR
+        ADD_CALENDAR_EVENT
+        ADD_CATALOGUE_ENTRY
+        ADD_CLUB
+        ADD_DOWNLOAD
+        ADD_GALLERY
+        ADD_IMAGE
+        ADD_NEWS
+        ADD_NEWS_BLOG
+        ADD_POLL
+        ADD_PRIVATE_CALENDAR_EVENT
+        ADD_PUBLIC_CALENDAR_EVENT
+        ADD_QUIZ
+        ADD_VIDEO
+        COPYRIGHT
+        ECOMMERCE
+        DESCRIPTION_DOTW
+        DEFAULT_CPF_about_NAME
+        NO_DAYLIGHT_SAVING
+        NOTIFICATION_TYPE_payment_received
+        TASK_COMPLETED
+        TASK_COMPLETED_BODY
+        TASK_COMPLETED_BODY_ATTACHMENT
+        TASK_COMPLETED_BODY_SIMPLE
+        TASK_COMPLETED_SUBJECT
+        TASK_FAILED_BODY
+        TASK_FAILED_SUBJECT
         VIEWS
         ATTACHMENT_SAVED
         LOGIN_TEXT

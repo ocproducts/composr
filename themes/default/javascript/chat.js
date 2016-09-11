@@ -1109,7 +1109,7 @@ function detected_conversation(room_id,room_name,participants) // Assumes conver
 		var new_window=window.open('{$BASE_URL;,0}'.replace(/^https?:/,window.location.protocol)+'/data/empty.html?instant_messaging','room_'+room_id,im_popup_window_options); // The "?instant_messaging" is just to make the location bar less surprising to the user ;-) [modern browsers always show the location bar for security, even if we try and disable it]
 		if ((!new_window) || (typeof new_window.window=='undefined' /*BetterPopupBlocker for Chrome returns a fake new window but won't have this defined in it*/))
 		{
-			fauxmodal_alert('{!chat:_FAILED_TO_OPEN_POPUP;,{$PAGE_LINK*,_SEARCH:popup_blockers:failure=1,0,1}}',null,'{!chat:FAILED_TO_OPEN_POPUP;}',true);
+			fauxmodal_alert('{!chat:_FAILED_TO_OPEN_POPUP;,{$PAGE_LINK*,_SEARCH:popup_blockers:failure=1,0,1}}',null,'{!chat:FAILED_TO_OPEN_POPUP;^}',true);
 		}
 		window.setTimeout(function() // Needed for Safari to set the right domain, and also to give window an opportunity to attach itself on its own accord
 		{
@@ -1136,7 +1136,7 @@ function detected_conversation(room_id,room_name,participants) // Assumes conver
 					new_window.participants=participants;
 
 					new_window.onbeforeunload=function() {
-						return '{!CLOSE_VIA_END_CHAT_BUTTON;}';
+						return '{!CLOSE_VIA_END_CHAT_BUTTON;^}';
 						//new_window.close_chat_conversation(room_id);
 					};
 

@@ -115,7 +115,7 @@ function s_update_show(data,stat)
 		}
 		if (!succeeded)
 		{
-			$('#activities_general_notify').text('{!INTERNAL_ERROR;}');
+			$('#activities_general_notify').text('{!INTERNAL_ERROR;^}');
 		}
 		window.s_ajax_update_locking=0;
 	}

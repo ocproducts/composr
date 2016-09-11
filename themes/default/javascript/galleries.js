@@ -82,7 +82,7 @@ function toggle_slideshow_timer()
 
 function stop_slideshow_timer(message)
 {
-	if (typeof message=='undefined') message='{!galleries:STOPPED;}';
+	if (typeof message=='undefined') message='{!galleries:STOPPED;^}';
 	var changer=document.getElementById('changer_wrap');
 	if (changer) set_inner_html(changer,message);
 	if (window.slideshow_timer) window.clearInterval(window.slideshow_timer);
@@ -108,7 +108,7 @@ function slideshow_forward()
 {
 	if (window.slideshow_current_position==window.slideshow_total_slides-1)
 	{
-		stop_slideshow_timer('{!galleries:LAST_SLIDE;}');
+		stop_slideshow_timer('{!galleries:LAST_SLIDE;^}');
 		return false;
 	}
 

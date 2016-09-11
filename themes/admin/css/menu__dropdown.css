@@ -26,10 +26,10 @@ For example:
 	border-{!en_left}: 1px solid #cacaca;
 	margin-bottom: 0;
 	{$BETA_CSS_PROPERTY,transition: color\,background-color 0.5s linear;}
-	{+START,IF,{$EQ,{$LANG},EN}}
+	{+START,IF,{$NOT,{!takes_lots_of_space}}}
 		font-size: 0.9em;
 	{+END}
-	{+START,IF,{$NEQ,{$LANG},EN}}
+	{+START,IF,{!takes_lots_of_space}}
 		font-size: 0.72em;
 	{+END}
 	padding: 0.5em 0.25em;

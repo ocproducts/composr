@@ -15,16 +15,16 @@
 			<thead>
 				<tr>
 					{+START,IF,{$SSW}}
-					<th>{!FC_SUNDAY}</th>
+					<th title="{!SUNDAY}">{!FC_SUNDAY}</th>
 					{+END}
-					<th>{!FC_MONDAY}</th>
-					<th>{!FC_TUESDAY}</th>
-					<th>{!FC_WEDNESDAY}</th>
-					<th>{!FC_THURSDAY}</th>
-					<th>{!FC_FRIDAY}</th>
-					<th>{!FC_SATURDAY}</th>
+					<th title="{!MONDAY}">{!FC_MONDAY}</th>
+					<th title="{!TUESDAY}">{!FC_TUESDAY}</th>
+					<th title="{!WEDNESDAY}">{!FC_WEDNESDAY}</th>
+					<th title="{!THURSDAY}">{!FC_THURSDAY}</th>
+					<th title="{!FRIDAY}">{!FC_FRIDAY}</th>
+					<th title="{!SATURDAY}">{!FC_SATURDAY}</th>
 					{+START,IF,{$NOT,{$SSW}}}
-					<th>{!FC_SUNDAY}</th>
+					<th title="{!SUNDAY}">{!FC_SUNDAY}</th>
 					{+END}
 				</tr>
 			</thead>

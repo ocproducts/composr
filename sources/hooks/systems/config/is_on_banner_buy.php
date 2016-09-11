@@ -51,6 +51,6 @@ class Hook_config_is_on_banner_buy
      */
     public function get_default()
     {
-        return (!addon_installed('banners')) ? null : '1';
+        return (!addon_installed('banners')) ? null : ((get_site_default_lang() == fallback_lang()) ? '1' : '0');
     }
 }

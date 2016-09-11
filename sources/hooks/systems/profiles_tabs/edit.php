@@ -102,6 +102,12 @@ class Hook_profiles_tabs_edit
                         $title = $tab[0];
                     }
 
+                    if (!array_key_exists(7, $tab)) {
+                        $tab[7] = false;
+                    }
+
+                    $tab[8] = $hook;
+
                     $tabs[] = $tab;
                 }
             }
@@ -145,7 +151,7 @@ class Hook_profiles_tabs_edit
                 }
             }
 
-            $single_field = (array_key_exists(7, $tab) ? $tab[7] : false);
+            $single_field = $tab[7];
 
             if (isset($tab[5])) {
                 $hidden->attach($tab[5]);
@@ -153,6 +159,7 @@ class Hook_profiles_tabs_edit
 
             $_tabs[] = array(
                 'TAB_TITLE' => $tab[0],
+                'TAB_CODE' => $tab[8],
                 'TAB_FIELDS' => $tab[1],
                 'TAB_ICON' => $tab[6],
                 'TAB_TEXT' => $tab[2],

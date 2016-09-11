@@ -79,7 +79,7 @@ Language string codes that are in lower-case are special strings, that should no
 		</tr>
 		<tr class="zebra_1">
 			<th>locale</th>
-			<td>The locale: there are standard locale codes for unix, based on language codes, but they vary across operating system: use what works on your server.<br />The locale code is used to prepare certain operating system date strings, and number formatting. On Linux and MacOS you can find the list of locales via the <kbd>locale -a</kbd> command.</td>
+			<td>The locale: there are standard locale codes for unix, based on language codes, but they vary across operating system: use what works on your server.<br />The locale code is used to prepare certain operating system date strings, and number formatting. On Linux and MacOS you can find the list of locales via the <kbd>locale -a</kbd> command. You can separate multiple locales with commas; the first valid one will be used.</td>
 		</tr>
 		<tr class="zebra_0">
 			<th>dir</th>
@@ -101,15 +101,32 @@ Language string codes that are in lower-case are special strings, that should no
 			<th>dont_escape_trick</th>
 			<td>Ignore this string, it is purely used by code, and should never have its value be changed.</td>
 		</tr>
+		<tr class="zebra_0">
+			<th>dictionary</th>
+			<td>The name of the pspell/hunspell dictionary to use</td>
+		</tr>
+		<tr class="zebra_0">
+			<th>dictionary_variant</th>
+			<td>The variant of the pspell/hunspell dictionary</td>
+		</tr>
+		<tr class="zebra_0">
+			<th>takes_lots_of_space</th>
+			<td>Set this to 1 if the language tends to stretch out further horizontally; at the time of writing this is used to reduce menu font size so that stuff fits</td>
+		</tr>
 	</tbody>
 </table>
 [/html]
 
-[title="4"]"The software"[/title]
+[title="4"]Common points of confusion[/title]
 
-You may see the phrase "The software" come up a lot. We use this phase because of how we support debranding in Composr. A web design studio may have renamed the product to some other name to increase their own brand-strength. We therefore try and make the language strings generic where possible.
+[b]The software[/b]:
+You may see the phrase "The software" come up a lot. We use this phase because of how we support debranding in Composr. A web design studio may have renamed the product to some other name to increase their own brand-strength. We therefore try and make the language strings generic where possible. The EN language pack automatically replaces this with the configured brand name. i.e. it is usually converted back to "Composr" dynamically.
 
-The EN language pack automatically replaces this with the configured brand name.
+[b]Child[/b]:
+We often use a parent/child metaphor to talk about tree structures. This often does not translate well, so you may want to talk of parent and child branches instead.
+
+Nouns vs Verbs (e.g. [b]Download[/b]):
+Sometimes English will have a word that works both as a noun and a verb, but your language won't. Be careful. We try and clarify within string comments where it is unclear.
 
 [title="4"]Phrase variants[/title]
 
@@ -122,7 +139,7 @@ Never-the-less, here are some examples of what an underscore might mean differen
  - singular and plural forms
  - short and long forms
  - standalone words vs words that build in variables to give a combined state label (e.g. "post date" vs "posted: {1}")
- - words to use mid-sentence, vs to use on their own
+ - words to use mid-sentence, versus words to use on their own
  - slightly different contexts (for example, talking about similar but not identical things)
 
 [title="4"]Code within strings[/title]
@@ -141,7 +158,7 @@ These may come up in situations such as:
 
 Here's how the above sample cases would be translated:
 1) The [tt]{1}[/tt] bit represents a parameter to the string (something inserted dynamically) and should be left alone. Translation in French may look like [tt]Bonjour {1}[/tt].
-2) This is similar to above, but uses our pluralisation feature ([tt]{2}[/tt] would be a number in this case). Translation in French may look like [tt]Il existe {2} {2|pomme|pommes}[/tt].
+2) This is similar to above, but uses our pluralisation feature ([tt]{2}[/tt] would be a number in this case). Translation in French may look like [tt]Il existe {2} {2|pomme|pommes}[/tt]. You must not add extra spaces around the number when using this syntax.
 3) There is an HTML tag which must be left alone. Translation in French may look like [tt]Un <strong>bon</strong> jour[/tt].
 4) This is largely Comcode which must be left alone. Translation in French may look like [tt][block="quelque chose"]menu[/block][/tt].
 5) This is partly referring to a Composr directory. Translation in French may look like [tt]Le moteur de rendu &#xE0; utiliser (du type &#xE0; crochets: 'blocks/main_custom_gfx')[/tt].
@@ -192,7 +209,7 @@ Note that some of the strings will be re-used across different pages. Changing t
 
 [title="3"]Searching for language strings[/title]
 
-If you want to find where a language string is defined then you can put it into the Admin Zone search between quotes.
+If you want to find where a language string is defined then you can put it into the Admin Zone search between quotes. Additionally the contextual translation tool will say which file each string is from.
 
 [title="3"]Collaborative translations on Transifex[/title]
 
@@ -213,7 +230,7 @@ The process is as follows:
 7) (Wait until the team join request has been accepted -- it is a good idea to introduce yourself on the [page="forum:forumview:browse:internationalisation"]Internationalisation forum[/page] so we know who you are)
 8) Start translating individual resources (language files)
 
-The strings are split across about 150 core resources/files; often it works well to work with other people, each doing different files. The files are actually marked by priority -- the high priority or urgent priority ones are core, while files for non-bundled addons, or collections of strings only relevant to administrators, are marked normal priorities. Most users will want to ignore anything not on a high or urgent priority. Don't feel compelled to do it all for 'completeness'.
+The strings are split across about 250 core resources/files; often it works well to work with other people, each doing different files. The files are actually marked by priority -- the high priority or urgent priority ones are core, while files for non-bundled addons, or collections of strings only relevant to administrators, are marked normal priorities. Most users will want to ignore anything not on a urgent or high priority. Don't feel compelled to do it all for 'completeness'.
 
 We also have certain default Comcode pages and text files available as resources.
 
@@ -224,13 +241,27 @@ Please try and respect the translators who have worked before you, and negotiate
 
 Transifex is not being used for theme images. However for the great majority of sites, translating the language strings and default Comcode pages is enough. If you want to distribute translations for internationalised theme images (which are mostly just around Comcode/Chatcode editing toolbar at this point), you can do so in the [page="forum:forumview:browse:internationalisation"]Internationalisation forum[/page].
 
+[title="3"]Testing and Debugging tips[/title]
+
+Here are a few tips you may find useful:
+[list]
+[*] To find out which language is in use, view the HTML source. The language code will be given within the [tt]<html ...>[/tt] tag.
+[*] You can test multiple languages in parallel to compare using the [tt]&keep_lang=<code>[/tt] feature (which will be preserved while you navigate between pages). E.g. to compare the home page in English and French you could have these 2 URLs open in different tabs:[list="1"]
+ [*] [tt]http://yourbaseurl/index.php?keep_lang=EN[/tt] -- English version
+ [*] [tt]http://yourbaseurl/index.php?keep_lang=FR[/tt] -- French version
+[/list]
+[*] Similar to [tt]keep_lang[/tt], you can append [tt]&special_page_type=lang[/tt] to the URL to view all the language strings used to build up the page. You can edit them locally using this interface, but even if you are using Transifex the interface is useful to see what files and string names the strings are coming from. Transifex allows you to search by key name (which means Composr string name) if you select the correct resource file first. Just be aware that Composr itself doesn't divide split files into administrative and non-administrative, we only do that on Transifex -- so you may need to search both the [tt]whatever[/tt] and [tt]whatever__administrative[/tt] resource files to locate the string.
+[*] It is best to re-run the installer ([tt]install.php[/tt], not the Setup Wizard) after you have your language pack in place, and select your language during the installation process. This way you will have the pre-placed content installed using the translated strings from your language pack (such as root categories, default forums, and default news categories).
+[*] You will probably want to test using the default [tt]test[/tt] user account rather than an admin account -- unless you really are intending to translate all the administrative strings too. By using a regular account you will not be distracted by unexpected untranslated administrative strings integrated into the user interface.
+[/list]
+
 [title="3"]Downloading translations from Transifex[/title]
 
-&raquo; See the [page="_SEARCH:tut_intl_users"]Changing the site language[/page] tutorial.
+&raquo; See the [page="_SEARCH:tut_intl_users"]Changing the site language (for end users)[/page] tutorial.
 
 [title="3"]Turning on a different language[/title]
 
-&raquo; See the [page="_SEARCH:tut_intl_users"]Changing the site language[/page] tutorial.
+&raquo; See the [page="_SEARCH:tut_intl_users"]Changing the site language (for end users)[/page] tutorial.
 
 [title="3"]Criticising language packs[/title]
 
@@ -246,7 +277,7 @@ It is generally better to look at outstanding translation tasks via Transifex. W
 
 Composr has some built-in support for right-to-left languages. You need to change the 'dir', 'en_left' and 'en_right' language strings to activate it.
 
-However there are two issues where some extra consideration is needed.
+However there are two issues where some extra consideration is needed...
 
 [title="4"]Comcode editing[/title]
 
@@ -262,7 +293,7 @@ Uncommenting this makes text input areas work in left-to-right. You can choose t
 
 [title="4"]Theme layout[/title]
 
-We have tried to make our default theme support right-to-left nicely, but unfortunately there are many cases where we could not elegantly do it because we are setting things on a pixel-way instead of a left/right-way. For example, you may see list bullets displaying on the wrong side of a list element. It is caused by CSS like:
+In the past we have tried to make our default theme support right-to-left nicely, but it's a high maintenance burden for the developers and unfortunately there are many cases where we could not elegantly do it because we are setting things on a pixel-way instead of a left/right-way. For example, you may see list bullets displaying on the wrong side of a list element. It is caused by CSS like:
 [code="CSS"]
 ul.compact_list li {
 	margin: 0 0 0 17px;
@@ -280,7 +311,7 @@ Therefore to make things display neatly you will need to make a modified theme t
 
 If there are cases where our default theme can be improved without encumbering the left-to-right majority too much, please consider making a Pull Request on the Composr project on github. Only do this if you have brought things up to a default level and tested it. We would love regular users of right-to-left languages to contribute corrections, as it is too big and complex a task to integrate into the core development process.
 
-[title="3"]Things you can translate[/title]
+[title="3"]Additional things you can translate[/title]
 
 As well as the core [tt].ini[/tt] files, there are other things that may be translated.
 
@@ -321,32 +352,42 @@ Make sure you clear your theme image cache (Admin Zone > Tools > Website cleanup
 
 We have the PSD files (requires Adobe Photoshop or compatible software) for many of the images in our [page="site:downloads"]downloads database[/page].
 
+You may want to just skip translating images. The toolbar buttons that use images have translated tooltips anyway.
+
 [title="4"]WYSIWYG editor[/title]
 
 Composr uses a third-party WYSIWYG editor &ndash; CKEditor.
 It has its own translations which should automatically be linked to your own by the standard ISO language name.
+
+If there's no translation for CKEditor then you need to manually add one. The [tt]data/ckeditor/lang/ta.js[/tt] file provides a good example of the basic strings to translate (the ones we translated are obvious). However, you also need to make some technical code edits to [tt]data/ckeditor/ckeditor.js[/tt] to reference that the language exists; for this reason a language pack can't really include a custom CKEditor translation and we would need to take the translation via a pull request on github instead.
 
 [title="4"]Template/CSS editor[/title]
 
 Composr uses a third-party code editor &ndash; a modified version of EditArea.
 You need to make sure you have translated versions of all [tt]data/editarea/lang/<lang>.js[/tt] files. There are quite a few translations already in there.
 
-[title="4"]MySQL collations[/title]
+That said, only the administrators will see the code editor, so it's not a big deal to get this translated.
 
-MySQL has 'collations' which basically sets the MySQL character set. Composr does not handle these, it uses whatever is there.
-This generally does not matter a lot (because anything that you ask to store will be correctly stored and retrieved regardless of collation), but there are two special cases:
-1) It does make a small difference in searches. For example, in languages there are usually 'equivalent' characters (e.g. lower case and upper case), and the MySQL collation tells MySQL about those.
-2) If the charset Composr is using is not matching up with what MySQL is using in terms of unicode vs non-unicode (e.g. MySQL uses UTF-8 but Composr uses ISO-8859-1) then conversion errors can happen as there are character code sequences that non-Unicode text might use which are totally invalid in Unicode and hence won't be stored at all. Users of English (who have limited alphabet that is all in lower ASCII and thus interchangeably compatible with both latin1 and UTF-8) would likely not notice this problem, but it becomes a problem for anyone doing internationalisation who have such a unicode vs non-unicode conflict.
+[title="4"]MySQL collations (only applicable to ex-ocPortal users)[/title]
 
-Composr 10+ uses utf-8 tables by default and utf-8 internally, so none of this is an issue. It should work automatically, but you should still have a basic understanding of how collations work.
-
+[staff_note]LEGACY[/staff_note]If you are upgrading from an ocPortal release it is highly recommend to switch the database and software over to utf-8.
 [media width="150" description="phpMyAdmin exports" float="right"]data_custom/images/docs/tut_intl/intl_phpmyadmin_settings.png[/media]
-[staff_note]LEGACY[/staff_note]When ocPortal 9 or earlier installs, it will use latin1 (equivalent of ISO-8859-1) by default, because this is what the default English language pack uses. MySQL doesn't make it easy to convert the character set of the database, so the best way to do it is to export to an SQL dump, edit the dump in a text editor, and reimport into a new database:
+When ocPortal 9 or earlier installs, it will use latin1 (equivalent of ISO-8859-1) by default, because this is what the default English language pack uses. MySQL doesn't make it easy to convert the character set of the database, so the best way to do it is to export to an SQL dump, edit the dump in a text editor, and reimport into a new database:
  - Use phpMyAdmin to export all the tables to a [tt].sql[/tt] file on your computer; if it asks what character set to make the file, choose UTF-8
   - Make sure to not include multiple rows in each [tt]INSERT[/tt] statement, as MySQL may not be able to reimport it on some servers (see the screenshot to the right for how to set this on phpMyAdmin, although it may vary from one version to another)
  - Do whatever you would normally do to backup your database; that will usually mean keeping a copy of the above file (but ensure it is complete before relying on it, sometimes SQL dumps don't download correctly)
  - Use a text editor to replace all instances of [tt]latin1[/tt] with [tt]utf8mb4[/tt] in the file (note that it is [tt]utf8mb4[/tt] [i]not[/i] [tt]utf-8[/tt] -- MySQL doesn't want hyphens in its codenames, and we have to use the mb4 variant for full unicode support)
- - Specifically for the creation SQL for the [tt]addons[/tt]/[tt]f_emoticons[/tt]/[tt]f_saved_warnings[/tt]/[tt]group_privileges[/tt]/[tt]member_privileges[/tt]/[tt]newsletter_subscribe[/tt]/[tt]theme_images[/tt]/[tt]tickets[/tt]/[tt]url_id_monikers[/tt]/[tt]url_title_cache[/tt] tables, replace [tt]utf8mb4[/tt] to [tt]utf8[/tt]
+ - Specifically for the creation SQL for the following select tables replace [tt]utf8mb4[/tt] to [tt]utf8[/tt]:
+  - [tt]addons[/tt]
+  - [tt]f_emoticons[/tt]
+  - [tt]f_saved_warnings[/tt]
+  - [tt]group_privileges[/tt]
+  - [tt]member_privileges[/tt]
+  - [tt]newsletter_subscribe[/tt]
+  - [tt]theme_images[/tt]
+  - [tt]tickets[/tt]
+  - [tt]url_id_monikers[/tt]
+  - [tt]url_title_cache[/tt]
  - Save the edited file
  - Use phpMyAdmin to drop all tables in your database
  - Use phpMyAdmin to import the edited file
@@ -368,7 +409,9 @@ The solution to '2' is to upload [tt]Verdana.ttf[/tt] from your computer as [tt]
 
 [surround]
 [media width="150" description="Exporting an addon" float="right"]data_custom/images/docs/tut_intl/intl_pack.png[/media]
-If you wish to directly distribute your translation as an addon, you can export it as such. Most translators will not want to bother to do this, as having users actively using Transifex directly will have the side-effect of encouraging collaboration. For languages that have very high-quality release-ready translations an addon is a good thing to provide users -- but building the addons from Transifex is integrated into the development process anyway.
+If you wish to directly distribute your translation as an addon, you can export it as such. Most translators will not want to bother to do this, as having users actively using Transifex directly will have the side-effect of encouraging collaboration.
+
+For languages that have very high-quality release-ready translations an addon is a good thing to provide users -- but building the addons from Transifex is integrated into the development process anyway.
 [/surround]
 
 [concepts
@@ -382,7 +425,7 @@ If you wish to directly distribute your translation as an addon, you can export 
 
 [title="2"]See also[/title]
 
- - [page="_SEARCH:tut_intl_users"]Changing the site language[/page]
+ - [page="_SEARCH:tut_intl_users"]Changing the site language (for end users)[/page]
  - [page="_SEARCH:tut_intl_content"]Translating Composr content[/page]
  - [page="_SEARCH:tut_intl_code_philosophy"]Translations code philosophy[/page]
  - [page="_SEARCH:tut_intl_maintenance"]International support communities[/page]
