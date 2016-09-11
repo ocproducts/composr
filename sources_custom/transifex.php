@@ -586,7 +586,7 @@ function pull_lang_from_transifex($project_slug, $tar_file, $lang, $core_only, $
 /**
  * Hook class.
  */
-class Hook_addon_registry_addon_publish
+class Hook_addon_registry_language_{$lang}
 {
     /**
      * Get a list of file permissions to set

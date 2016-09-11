@@ -49,7 +49,15 @@ class Hook_cleanup_tags
         foreach (array_keys($hooks) as $hook) {
             require_code('hooks/systems/content_meta_aware/' . $hook);
             $ob = object_factory('Hook_content_meta_aware_' . $hook);
+            if (is_null($ob)) {
+                continue;
+            }
+
             $info = $ob->info();
+            if (is_null($info)) {
+                continue;
+            }
+
             $seo_type_code = $info['seo_type_code'];
             if (!is_null($seo_type_code)) {
                 $table = $info['table'];
