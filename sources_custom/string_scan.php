@@ -9494,6 +9494,7 @@ function string_scan($lang, $do_guessing = false)
         WILL_COST
         WITH
         WITH_SIMPLE
+        WITH_SIMPLE_LOWER
         WITH_TITLING
         WORDFILTER_YOU
         WORDS

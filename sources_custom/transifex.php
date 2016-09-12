@@ -656,7 +656,7 @@ class Hook_addon_registry_language_{$lang}
      */
     public function get_description()
     {
-        return 'Translation into {$language_name}. Completeness: {$percentage}%. This addon was automatically bundled from community contributions provided on Transifex and will be routinely updated alongside new Composr patch releases. Translations may also be downloaded directly from Transifex.';
+        return 'Translation into {$language_name}. Completeness: {$percentage}% (29% typically means translated fully apart from administrative strings). This addon was automatically bundled from community contributions provided on Transifex and will be routinely updated alongside new Composr patch releases. Translations may also be downloaded directly from Transifex.';
     }
 
     /**
@@ -690,7 +690,7 @@ class Hook_addon_registry_language_{$lang}
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/adminzone/style/language/language';
+        return 'themes/default/images/icons/48x48/menu/adminzone/style/language/language.png';
     }
 
     /**

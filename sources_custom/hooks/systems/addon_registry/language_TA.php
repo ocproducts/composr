@@ -120,7 +120,7 @@ class Hook_addon_registry_language_TA
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/adminzone/style/language/language';
+        return 'themes/default/images/icons/48x48/menu/adminzone/style/language/language.png';
     }
 
     /**

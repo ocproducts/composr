@@ -1939,9 +1939,9 @@ table.scrollable_inside {
 
 .wide_table {
 	width: 100%;
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+	/*{+START,IF,{$NOT,{$MOBILE}}}{+START,IF,{$EQ,{$LANG},EN}}*/
 		table-layout: fixed;
-	/*{+END}*/
+	/*{+END}{+END}*/
 }
 
 .spaced_table th, .spaced_table td {
@@ -3695,14 +3695,14 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 	.buttons__report {
 		background-image: url('{$IMG,icons/48x48/buttons/report}') !important;
 	}
-	{+START,IF,{$ADDON_INSTALLED,actionlog}}
+	/*{+START,IF,{$ADDON_INSTALLED,actionlog}}*/
 		.buttons__undo {
 			background-image: url('{$IMG,icons/48x48/buttons/undo}') !important;
 		}
 		.buttons__revisions {
 			background-image: url('{$IMG,icons/48x48/buttons/revisions}') !important;
 		}
-	{+END}
+	/*{+END}*/
 	.buttons__save {
 		background-image: url('{$IMG,icons/48x48/buttons/save}') !important;
 	}

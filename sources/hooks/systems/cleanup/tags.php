@@ -45,10 +45,12 @@ class Hook_cleanup_tags
      */
     public function run()
     {
+        require_code('content');
+
         $hooks = find_all_hooks('systems', 'content_meta_aware');
         foreach (array_keys($hooks) as $hook) {
             require_code('hooks/systems/content_meta_aware/' . $hook);
-            $ob = object_factory('Hook_content_meta_aware_' . $hook);
+            $ob = get_content_object($hook);
             if (is_null($ob)) {
                 continue;
             }

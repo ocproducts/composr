@@ -23,12 +23,12 @@ For example:
 	margin-{!en_right}: -1px;
 	margin-bottom: 0;
 	{$BETA_CSS_PROPERTY,transition: color\,background-color 0.5s linear;}
-	{+START,IF,{$NOT,{!takes_lots_of_space}}}
+	/*{+START,IF,{$NOT,{!takes_lots_of_space}}}*/
 		font-size: 0.9em;
-	{+END}
-	{+START,IF,{!takes_lots_of_space}}
+	/*{+END}*/
+	/*{+START,IF,{!takes_lots_of_space}}*/
 		font-size: 0.72em;
-	{+END}
+	/*{+END}*/
 	padding: 0.5em 0.25em;
 }
 

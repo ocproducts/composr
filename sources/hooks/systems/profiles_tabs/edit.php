@@ -98,6 +98,10 @@ class Hook_profiles_tabs_edit
                 if ($ob->is_active($member_id_of, $member_id_viewing)) {
                     $tab = $ob->render_tab($member_id_of, $member_id_viewing, $only_tab !== $hook && $leave_to_ajax_if_possible);
 
+                    if ($tab == null) {
+                        continue;
+                    }
+
                     if ($only_tab === $hook) {
                         $title = $tab[0];
                     }
@@ -135,10 +139,6 @@ class Hook_profiles_tabs_edit
         $_tabs = array();
         $tab_first = true;
         foreach ($tabs as $i => $tab) {
-            if (is_null($tab)) {
-                continue;
-            }
-
             $javascript .= $tab[3];
 
             $tab_last = true;
