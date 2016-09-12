@@ -353,7 +353,7 @@ function _push_strings_file_to_transifex($f, $project_slug, $custom, $administra
     if ((isset($OVERRIDE_PRIORITY_LANGUAGE_FILES[$f])) && ($administrative != TRANSLATE_ADMINISTRATIVE_YES)) {
         $priority = $OVERRIDE_PRIORITY_LANGUAGE_FILES[$f];
     } else {
-        if (($custom) || ($administrative == TRANSLATE_ADMINISTRATIVE_YES)) {
+        if (($custom) || ($administrative == TRANSLATE_ADMINISTRATIVE_YES) && (!in_array($f, array('content_privacy.ini', 'metadata.ini', 'do_next.ini')))) {
             $priority = TRANSLATE_PRIORITY_NORMAL;
         } else {
             $priority = TRANSLATE_PRIORITY_HIGH;

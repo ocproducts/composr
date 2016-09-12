@@ -2872,11 +2872,13 @@ function get_loaded_tags($limit_to = null, $the_tags = null)
         $search_limiter_no = array('all_defaults' => '1');
         if ($limit_to !== null) {
             $search_limiter_no['search_' . $limit_to] = '1';
+            $search_limiter_no['all_defaults'] = '0';
         }
 
         if ($limit_to !== null) {
             $search_limiter_yes = array();
             $search_limiter_yes['search_' . $limit_to] = '1';
+            $search_limiter_yes['all_defaults'] = '0';
         } else {
             $search_limiter_yes = $search_limiter_no;
         }

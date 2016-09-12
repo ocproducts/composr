@@ -7,8 +7,8 @@
 	margin-left: 1em !important;
 }
 
-#jump_to_1, #jump_to_2 {
-	max-width: 10em;
+.filedump_filter #type_filter_1, .filedump_filter #type_filter_2, .filedump_filter #jump_to_1, .filedump_filter #jump_to_2, .filedump_filter #sort_filedump_1, .filedump_filter #sort_filedump_2 {
+	max-width: 8em;
 }
 
 .filedump_thumbnails .box {

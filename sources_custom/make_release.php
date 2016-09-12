@@ -109,7 +109,7 @@ function make_installers($skip_file_grab = false)
         $offsets = array();
         $sizes = array();
         foreach ($MAKE_INSTALLERS__FILE_ARRAY as $path => $data) {
-            $offsets[$path] = tar_add_file($data_file, $path, $data, 0644, filemtime(get_file_base() . '/' . $path));
+            $offsets[$path] = tar_add_file($data_file, $path, $data, 0644, is_file(get_file_base() . '/' . $path) ? filemtime(get_file_base() . '/' . $path) : time());
             $sizes[$path] = strlen($data);
         }
         tar_close($data_file);

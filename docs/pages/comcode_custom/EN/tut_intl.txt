@@ -103,11 +103,11 @@ Language string codes that are in lower-case are special strings, that should no
 		</tr>
 		<tr class="zebra_0">
 			<th>dictionary</th>
-			<td>The name of the pspell/hunspell dictionary to use</td>
+			<td>The name of the pspell/hunspell dictionary to use.</td>
 		</tr>
 		<tr class="zebra_0">
 			<th>dictionary_variant</th>
-			<td>The variant of the pspell/hunspell dictionary</td>
+			<td>The variant of the pspell/hunspell dictionary. If you're not sure just set it the same as [tt]dictionary[/tt].</td>
 		</tr>
 		<tr class="zebra_0">
 			<th>takes_lots_of_space</th>
@@ -253,6 +253,8 @@ Here are a few tips you may find useful:
 [*] Similar to [tt]keep_lang[/tt], you can append [tt]&special_page_type=lang[/tt] to the URL to view all the language strings used to build up the page. You can edit them locally using this interface, but even if you are using Transifex the interface is useful to see what files and string names the strings are coming from. Transifex allows you to search by key name (which means Composr string name) if you select the correct resource file first. Just be aware that Composr itself doesn't divide split files into administrative and non-administrative, we only do that on Transifex -- so you may need to search both the [tt]whatever[/tt] and [tt]whatever__administrative[/tt] resource files to locate the string.
 [*] It is best to re-run the installer ([tt]install.php[/tt], not the Setup Wizard) after you have your language pack in place, and select your language during the installation process. This way you will have the pre-placed content installed using the translated strings from your language pack (such as root categories, default forums, and default news categories).
 [*] You will probably want to test using the default [tt]test[/tt] user account rather than an admin account -- unless you really are intending to translate all the administrative strings too. By using a regular account you will not be distracted by unexpected untranslated administrative strings integrated into the user interface.
+[*] Sometimes you may need to find shorter ways of saying things due to lack of space in the design for a language that is using very long words -- you may need to use abbreviations, for example.
+[*] Sometimes you can best get the intention of a language string name, which is shown as the 'Key' name on Transifex.
 [/list]
 
 [title="3"]Downloading translations from Transifex[/title]

@@ -113,7 +113,6 @@ function string_scan($lang, $do_guessing = false)
     );
 
     $lang_strings_admin_initial = array_map('trim', explode("\n", trim('
-        takes_lots_of_space
         OWNER
         TICKETS_STAFF
         NO_CNS
@@ -7034,6 +7033,7 @@ function string_scan($lang, $do_guessing = false)
     );
 
     $lang_strings_non_admin_initial = array_map('trim', explode("\n", trim('
+        takes_lots_of_space
         DESCRIPTION_AWARD_OVERVIEW
         EMAILS
         AVATARS_CARTOONS
@@ -7053,7 +7053,7 @@ function string_scan($lang, $do_guessing = false)
         ADD_PUBLIC_CALENDAR_EVENT
         ADD_QUIZ
         ADD_VIDEO
-        COPYRIGHT
+        COPYRIGHTED
         ECOMMERCE
         DESCRIPTION_DOTW
         DEFAULT_CPF_about_NAME
@@ -8650,7 +8650,6 @@ function string_scan($lang, $do_guessing = false)
         NUM_UNREAD
         NUM_WARNINGS
         OCTOBER
-        OF
         OFFLINE
         OLDER_NEWS
         OLDEST_FIRST

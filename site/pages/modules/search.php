@@ -205,8 +205,6 @@ class Module_search
 
         $_GET['type'] = 'results'; // To make it consistent for the purpose of URL generation (particularly how frames tie together)
 
-        require_code('templates_internalise_screen');
-
         if ($id != '') { // Specific screen, prepare
             $ob = $this->ob;
             $info = $this->info;
@@ -504,8 +502,9 @@ class Module_search
             'CUTOFF_TO_YEAR' => is_null($cutoff_to_year) ? '' : strval($cutoff_to_year),
         ));
 
-        require_code('templates_internalise_screen');
-        return internalise_own_screen($tpl);
+        //require_code('templates_internalise_screen');
+        //return internalise_own_screen($tpl); Annoying due to unreliable URLs
+        return $tpl;
     }
 
     /**
