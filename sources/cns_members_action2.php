@@ -293,7 +293,7 @@ function cns_member_external_linker($username, $password, $type, $email_check = 
     }
 
     // Check that the given address isn't already used (if one_per_email_address on)
-    if ((get_option('one_per_email_address') == '1') && ($email_address != '') && ($email_check)) {
+    if ((get_option('one_per_email_address') != '0') && ($email_address != '') && ($email_check)) {
         $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', 'm_username', array('m_email_address' => $email_address));
         if (!is_null($test)) {
             global $MEMBER_CACHED;
@@ -882,7 +882,7 @@ function cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $
             warn_exit(do_lang_tempcode('_INVALID_EMAIL_ADDRESS', escape_html($email_address)));
         }
 
-        if ((get_option('one_per_email_address') == '1') && ($email_address != ''))
+        if ((get_option('one_per_email_address') != '0') && ($email_address != ''))
         {
             $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', 'id', array('m_email_address' => $email_address));
             if ((!is_null($test)) && ($test != $member_id)) {

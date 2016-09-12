@@ -1264,12 +1264,12 @@ class Forum_driver_mybb extends Forum_driver_base
         }
 
         if (!array_key_exists(0, $rows) || $rows[0] === null) { // All hands to lifeboats
-            $out['error'] = (do_lang_tempcode('_MEMBER_NO_EXIST', $username));
+            $out['error'] = do_lang_tempcode((get_option('login_error_secrecy') == '1') ? 'MEMBER_INVALID_LOGIN' : '_MEMBER_NO_EXIST', $username);
             return $out;
         }
         $row = $rows[0];
         if ($this->is_banned($row['uid'])) { // All hands to the guns
-            $out['error'] = (do_lang_tempcode('YOU_ARE_BANNED'));
+            $out['error'] = do_lang_tempcode('YOU_ARE_BANNED');
             return $out;
         }
 
@@ -1285,12 +1285,12 @@ class Forum_driver_mybb extends Forum_driver_base
 
             $lookup = $this->connection->query_select_value_if_there('users', 'uid', array('loginkey' => $cookie_loginkey, 'uid' => $cookie_member));
             if ($row['uid'] !== $lookup) {
-                $out['error'] = (do_lang_tempcode('MEMBER_BAD_PASSWORD'));
+                $out['error'] = do_lang_tempcode((get_option('login_error_secrecy') == '1') ? 'MEMBER_INVALID_LOGIN' : 'MEMBER_BAD_PASSWORD');
                 return $out;
             }
         } else {
             if ($this->salt_password($password_hashed, $row['salt']) != $row['password']) {
-                $out['error'] = (do_lang_tempcode('MEMBER_BAD_PASSWORD'));
+                $out['error'] = do_lang_tempcode((get_option('login_error_secrecy') == '1') ? 'MEMBER_INVALID_LOGIN' : 'MEMBER_BAD_PASSWORD');
                 return $out;
             }
         }

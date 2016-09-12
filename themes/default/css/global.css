@@ -1939,9 +1939,7 @@ table.scrollable_inside {
 
 .wide_table {
 	width: 100%;
-	/*{+START,IF,{$NOT,{$MOBILE}}}{+START,IF,{$EQ,{$LANG},EN}}*/
-		table-layout: fixed;
-	/*{+END}{+END}*/
+	table-layout: fixed;
 }
 
 .spaced_table th, .spaced_table td {

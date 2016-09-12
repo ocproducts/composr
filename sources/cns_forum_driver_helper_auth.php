@@ -54,11 +54,17 @@ function _forum_authorise_login($this_ref, $username, $userid, $password_hashed,
     require_lang('cns');
     require_code('mail');
 
+    usleep(500000); // Wait for half a second, to reduce brute force potential
+
     $skip_auth = false;
 
     if ($userid === null) {
-        $rows = $this_ref->connection->query_select('f_members', array('*'), array('m_username' => $username), '', 1);
-        if ((!array_key_exists(0, $rows)) && (get_option('one_per_email_address') == '1')) {
+        if (get_option('one_per_email_address') == '2') {
+            $rows = array();
+        } else {
+            $rows = $this_ref->connection->query_select('f_members', array('*'), array('m_username' => $username), '', 1);
+        }
+        if ((!array_key_exists(0, $rows)) && (get_option('one_per_email_address') != '0')) {
             $rows = $this_ref->connection->query_select('f_members', array('*'), array('m_email_address' => $username), 'ORDER BY id ASC', 1);
         }
         if (array_key_exists(0, $rows)) {
@@ -75,13 +81,13 @@ function _forum_authorise_login($this_ref, $username, $userid, $password_hashed,
         // See if LDAP has it -- if so, we can add
         $test = cns_is_on_ldap($username);
         if (!$test) {
-            $out['error'] = is_null($username) ? do_lang_tempcode('MEMBER_NO_EXISTS') : do_lang_tempcode('_MEMBER_NO_EXIST', escape_html($username));
+            $out['error'] = is_null($username) ? do_lang_tempcode((get_option('login_error_secrecy') == '1') ? 'MEMBER_INVALID_LOGIN' : 'MEMBER_NO_EXISTS') : do_lang_tempcode('_MEMBER_NO_EXIST', escape_html($username));
             return $out;
         }
 
         $test_auth = cns_ldap_authorise_login($username, $password_raw);
         if ($test_auth['m_pass_hash_salted'] == '!!!') {
-            $out['error'] = do_lang_tempcode('MEMBER_BAD_PASSWORD');
+            $out['error'] = do_lang_tempcode((get_option('login_error_secrecy') == '1') ? 'MEMBER_INVALID_LOGIN' : 'MEMBER_BAD_PASSWORD');
             return $out;
         }
 
@@ -122,7 +128,7 @@ function _forum_authorise_login($this_ref, $username, $userid, $password_hashed,
             }
         }
 
-        $out['error'] = is_null($username) ? do_lang_tempcode('MEMBER_NO_EXIST') : do_lang_tempcode('_MEMBER_NO_EXIST', escape_html($username));
+        $out['error'] = is_null($username) ? do_lang_tempcode((get_option('login_error_secrecy') == '1') ? 'MEMBER_INVALID_LOGIN' : 'MEMBER_NO_EXIST') : do_lang_tempcode((get_option('login_error_secrecy') == '1') ? 'MEMBER_INVALID_LOGIN' : '_MEMBER_NO_EXIST', escape_html($username));
         return $out;
     }
     $row = $rows[0];
@@ -134,7 +140,7 @@ function _forum_authorise_login($this_ref, $username, $userid, $password_hashed,
         // Doesn't exist any more? This is a special case - the 'LDAP member' exists in our DB, but not LDAP. It has been deleted from LDAP or LDAP server has jumped
         /*if (is_null($rows[0]['m_pass_hash_salted']))
         {
-            $out['error'] = do_lang_tempcode('_MEMBER_NO_EXIST', $username);
+            $out['error'] = do_lang_tempcode((get_option('login_error_secrecy') == '1') ? 'MEMBER_INVALID_LOGIN' : '_MEMBER_NO_EXIST', $username);
             return $out;
         } No longer appropriate with new authentication mode - instead we just have to give an invalid password message */
 
@@ -168,13 +174,13 @@ function _forum_authorise_login($this_ref, $username, $userid, $password_hashed,
                 if ($cookie_login) {
                     if ($password_hashed !== $row['m_pass_hash_salted']) {
                         require_code('tempcode'); // This can be incidental even in fast AJAX scripts, if an old invalid cookie is present, so we need Tempcode for do_lang_tempcode
-                        $out['error'] = do_lang_tempcode('MEMBER_BAD_PASSWORD');
+                        $out['error'] = do_lang_tempcode((get_option('login_error_secrecy') == '1') ? 'MEMBER_INVALID_LOGIN' : 'MEMBER_BAD_PASSWORD');
                         return $out;
                     }
                 } else {
                     require_code('crypt');
                     if (!ratchet_hash_verify($password_raw, $row['m_pass_salt'], $row['m_pass_hash_salted'])) {
-                        $out['error'] = do_lang_tempcode('MEMBER_BAD_PASSWORD');
+                        $out['error'] = do_lang_tempcode((get_option('login_error_secrecy') == '1') ? 'MEMBER_INVALID_LOGIN' : 'MEMBER_BAD_PASSWORD');
                         return $out;
                     }
                 }
@@ -182,14 +188,14 @@ function _forum_authorise_login($this_ref, $username, $userid, $password_hashed,
 
             case 'plain':
                 if ($password_hashed !== md5($row['m_pass_hash_salted'])) {
-                    $out['error'] = do_lang_tempcode('MEMBER_BAD_PASSWORD');
+                    $out['error'] = do_lang_tempcode((get_option('login_error_secrecy') == '1') ? 'MEMBER_INVALID_LOGIN' : 'MEMBER_BAD_PASSWORD');
                     return $out;
                 }
                 break;
 
             case 'md5': // Old style plain md5     (also works if both are unhashed: used for LDAP)
                 if (($password_hashed !== $row['m_pass_hash_salted']) && ($password_hashed !== '!!!')) { // The !!! bit would never be in a hash, but for plain text checks using this same code, we sometimes use '!!!' to mean 'Error'.
-                    $out['error'] = do_lang_tempcode('MEMBER_BAD_PASSWORD');
+                    $out['error'] = do_lang_tempcode((get_option('login_error_secrecy') == '1') ? 'MEMBER_INVALID_LOGIN' : 'MEMBER_BAD_PASSWORD');
                     return $out;
                 }
                 break;
@@ -202,7 +208,7 @@ function _forum_authorise_login($this_ref, $username, $userid, $password_hashed,
 
             case 'ldap':
                 if ($password_hashed !== $row['m_pass_hash_salted']) {
-                    $out['error'] = do_lang_tempcode('MEMBER_BAD_PASSWORD');
+                    $out['error'] = do_lang_tempcode((get_option('login_error_secrecy') == '1') ? 'MEMBER_INVALID_LOGIN' : 'MEMBER_BAD_PASSWORD');
                     return $out;
                 }
                 break;

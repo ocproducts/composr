@@ -323,37 +323,3 @@ function get_secure_random_number()
     }
     return $code;
 }
-
-/**
- * Check the given master password is valid.
- *
- * @param  SHORT_TEXT $password_given Given master password
- * @return boolean Whether it is valid
- */
-function check_master_password($password_given)
-{
-    if (isset($GLOBALS['SITE_INFO']['admin_password'])) { // LEGACY
-        $GLOBALS['SITE_INFO']['master_password'] = $GLOBALS['SITE_INFO']['admin_password'];
-        unset($GLOBALS['SITE_INFO']['admin_password']);
-    }
-
-    global $SITE_INFO;
-    if (!array_key_exists('master_password', $SITE_INFO)) {
-        exit('No master password defined in _config.php currently so cannot authenticate');
-    }
-    $actual_password_hashed = $SITE_INFO['master_password'];
-    if ((function_exists('password_verify')) && (strpos($actual_password_hashed, '$') !== false)) {
-        return password_verify($password_given, $actual_password_hashed);
-    }
-    $salt = '';
-    if ((substr($actual_password_hashed, 0, 1) == '!') && (strlen($actual_password_hashed) == 33)) {
-        $actual_password_hashed = substr($actual_password_hashed, 1);
-        $salt = 'cms';
-
-        // LEGACY
-        if ($actual_password_hashed != md5($password_given . $salt)) {
-            $salt = 'ocp';
-        }
-    }
-    return (((strlen($password_given) != 32) && ($actual_password_hashed == $password_given)) || ($actual_password_hashed == md5($password_given . $salt)));
-}

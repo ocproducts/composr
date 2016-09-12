@@ -271,7 +271,7 @@ class Module_lost_password
             $_login_url = build_url(array('page' => 'login', 'type' => 'browse', 'username' => $GLOBALS['FORUM_DRIVER']->get_username($member_id)), get_module_zone('login'), null, false, false, true);
             $login_url = $_login_url->evaluate();
             $account_edit_url = build_url(array('page' => 'members', 'type' => 'view'), get_module_zone('members'), null, false, false, true, 'tab__edit');
-            if (get_option('one_per_email_address') == '1') {
+            if (get_option('one_per_email_address') != '0') {
                 $lang_string = 'MAIL_NEW_PASSWORD_EMAIL_LOGIN';
             } else {
                 $lang_string = 'MAIL_NEW_PASSWORD';

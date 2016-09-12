@@ -301,7 +301,7 @@ class Module_login
             if (get_forum_type() == 'cns') {
                 require_lang('cns');
 
-                if ($text->evaluate() == do_lang('MEMBER_BAD_PASSWORD')) {
+                if ($text->evaluate() == do_lang('MEMBER_BAD_PASSWORD') || $text->evaluate() == do_lang('MEMBER_INVALID_LOGIN')) {
                     $forgotten_link = build_url(array('page' => 'lost_password'), get_module_zone('lost_password'));
                     $extra = do_lang_tempcode('IF_FORGOTTEN_PASSWORD', escape_html($forgotten_link->evaluate()));
 

@@ -15,13 +15,13 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    core_cns
+ * @package    core_configuration
  */
 
 /**
  * Hook class.
  */
-class Hook_config_one_per_email_address
+class Hook_config_login_error_secrecy
 {
     /**
      * Gets the details relating to the config option.
@@ -31,16 +31,16 @@ class Hook_config_one_per_email_address
     public function get_details()
     {
         return array(
-            'human_name' => 'ONE_PER_EMAIL_ADDRESS',
-            'type' => 'list',
-            'category' => 'USERS',
-            'group' => 'JOINING',
-            'explanation' => 'CONFIG_OPTION_one_per_email_address',
-            'shared_hosting_restricted' => '0',
-            'list_options' => '0|1|2',
-            'order_in_category_group' => 2,
+            'human_name' => 'LOGIN_ERROR_SECRECY',
+            'type' => 'tick',
+            'category' => 'SECURITY',
+            'group' => 'GENERAL',
+            'explanation' => 'CONFIG_OPTION_login_error_secrecy',
+            'shared_hosting_restricted' => '1',
+            'list_options' => '',
+            'order_in_category_group' => 1,
 
-            'addon' => 'core_cns',
+            'addon' => 'core_configuration',
         );
     }
 
@@ -51,6 +51,6 @@ class Hook_config_one_per_email_address
      */
     public function get_default()
     {
-        return '1';
+        return '0';
     }
 }

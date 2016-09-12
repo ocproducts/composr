@@ -308,12 +308,12 @@ class Forum_driver_vb3 extends forum_driver_vb_shared
         }
 
         if (!array_key_exists(0, $rows) || $rows[0] === null) { // All hands to lifeboats
-            $out['error'] = (do_lang_tempcode('_MEMBER_NO_EXIST', $username));
+            $out['error'] = do_lang_tempcode((get_option('login_error_secrecy') == '1') ? 'MEMBER_INVALID_LOGIN' : '_MEMBER_NO_EXIST', $username);
             return $out;
         }
         $row = $rows[0];
         if ($this->is_banned($row['userid'])) { // All hands to the guns
-            $out['error'] = (do_lang_tempcode('YOU_ARE_BANNED'));
+            $out['error'] = do_lang_tempcode('YOU_ARE_BANNED');
             return $out;
         }
 
@@ -321,7 +321,7 @@ class Forum_driver_vb3 extends forum_driver_vb_shared
         if (!(((md5($row['password'] . $SITE_INFO['vb_unique_id']) == $password_hashed) && ($cookie_login))
               || ((!$cookie_login) && ($row['password'] == md5($password_hashed . $row['salt']))))
         ) {
-            $out['error'] = (do_lang_tempcode('MEMBER_BAD_PASSWORD'));
+            $out['error'] = do_lang_tempcode((get_option('login_error_secrecy') == '1') ? 'MEMBER_INVALID_LOGIN' : 'MEMBER_BAD_PASSWORD');
             return $out;
         }
 

@@ -4416,6 +4416,8 @@ function string_scan($lang, $do_guessing = false)
         FORMATTING_SYMBOL__WORDWRAP
         FORUM
         FORUMS_AND_MEMBERS
+        LOGIN_ERROR_SECRECY
+        CONFIG_OPTION_login_error_secrecy
         FORUM_BASE_URL_EXAMPLE
         FORUM_BASE_URL_INVALID
         FORUM_BASE_URL_UNCHANGED
@@ -8292,6 +8294,7 @@ function string_scan($lang, $do_guessing = false)
         MEMBERS_VIEWING
         MEMBER_ACCOUNT
         MEMBER_BAD_PASSWORD
+        MEMBER_INVALID_LOGIN
         MEMBER_BLOCKING
         MEMBER_CALENDAR
         MEMBER_CALENDAR_NOTIFICATION_DELETED_EVENT_BODY

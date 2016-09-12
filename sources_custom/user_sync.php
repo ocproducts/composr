@@ -156,7 +156,7 @@ function user_sync__inbound($since = null)
 
             // Bind to existing?
             $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($username);
-            if ((is_null($member_id)) && (get_option('one_per_email_address') == '1') && ($email_address != '')) {
+            if ((is_null($member_id)) && (get_option('one_per_email_address') != '0') && ($email_address != '')) {
                 $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_email_address($email_address);
             }
 

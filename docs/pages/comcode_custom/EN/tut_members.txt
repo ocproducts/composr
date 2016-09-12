@@ -94,7 +94,7 @@ Composr can also support automatic member joining via LDAP and http-auth. For mo
 
 Log in is normally done by username.
 
-However, if the "Restrict to one member per e-mail address" option is enabled then members will be able to log in with e-mail address also (because Composr knows that this will be a unique key for the user also).
+However, if the "Restrict to one member per e-mail address" option is not set to "No" then members will be able to log in with e-mail address also (because Composr knows that this will be a unique key for the user also).
 [/surround]
 
 [title="2"]Profiles[/title]
