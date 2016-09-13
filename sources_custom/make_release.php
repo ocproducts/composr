@@ -134,7 +134,7 @@ function make_installers($skip_file_grab = false)
         // Build install.php, which has to have all our data.cms file offsets put into it (data.cms is an uncompressed zip, but the quick installer cheats - it can't truly read arbitrary zips)
         $code = file_get_contents(get_file_base() . '/install.php');
         $auto_installer = fopen($builds_path . '/builds/' . $version_dotted . '/install.php', 'wb');
-        $installer_start = "<?php
+        $installer_start = "<" . "?php
             /* QUICK INSTALLER CODE starts */
 
             global \$FILE_ARRAY,\$SIZE_ARRAY,\$OFFSET_ARRAY,\$DIR_ARRAY,\$DATADOTCMS_FILE;
@@ -651,7 +651,7 @@ function populate_build_files_list($dir = '', $pretend_dir = '')
             } elseif ($pretend_dir . $file == 'data_custom/functions.dat') {
                 $MAKE_INSTALLERS__FILE_ARRAY[$pretend_dir . $file] = '';
             } elseif ($pretend_dir . $file == 'data_custom/errorlog.php') {
-                $MAKE_INSTALLERS__FILE_ARRAY[$pretend_dir . $file] = "<?php return; ?" . ">\n";
+                $MAKE_INSTALLERS__FILE_ARRAY[$pretend_dir . $file] = "<" . "?php return; ?" . ">\n";
             } elseif ($pretend_dir . $file == 'data_custom/execute_temp.php') { // So that code can't be executed
                 continue; // We'll add this back in later
             } // Update time of version in version.php
