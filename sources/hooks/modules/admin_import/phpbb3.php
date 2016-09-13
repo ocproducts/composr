@@ -153,7 +153,7 @@ class Hook_import_phpbb3
             );
         }
 
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'config');
+        $rows = $db->query_select('config', array('*'));
         $PROBED_FORUM_CONFIG = array();
         foreach ($rows as $row) {
             if ($row['config_name'] == 'require_activation') {
@@ -207,7 +207,7 @@ class Hook_import_phpbb3
         $row_start = 0;
         $rows = array();
         do {
-            $rows = $db->query('SELECT * FROM ' . $table_prefix . 'attachments ORDER BY attach_id', 200, $row_start);
+            $rows = $db->query_select('attachments', array('*'), null, 'ORDER BY attach_id', 200, $row_start);
             foreach ($rows as $row) {
                 if (import_check_if_imported('attachment', strval($row['attach_id']))) {
                     continue;
@@ -248,7 +248,7 @@ class Hook_import_phpbb3
      */
     public function import_cns_groups($db, $table_prefix, $file_base)
     {
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'config');
+        $rows = $db->query_select('config', array('*'));
         $PROBED_FORUM_CONFIG = array();
         foreach ($rows as $row) {
             $key = $row['config_name'];
@@ -286,10 +286,10 @@ class Hook_import_phpbb3
                 $id_new = cns_make_group($row['group_name'], 0, $is_super_admin, $is_super_moderator, '', '', null, null, $row_group_leader, null, null, null, null, $row['group_avatar_width'], $row['group_avatar_height'], null, $row['group_sig_chars']);
             }
 
-            $permissions = $db->query('SELECT * FROM ' . $table_prefix . 'acl_groups WHERE group_id=' . strval($row['group_id']));
+            $permissions = $db->query_select('acl_groups', array('*'), array('group_id' => $row['group_id']));
             foreach ($permissions as $p) {
                 if ($p['auth_role_id'] != 0) { // Do role
-                    $rp = $db->query('SELECT * FROM ' . $table_prefix . 'acl_roles_data WHERE role_id=' . strval($p['auth_role_id']));
+                    $rp = $db->query_select('acl_roles_data', array('*'), array('role_id' => $p['auth_role_id']));
                     foreach ($rp as $_p) {
                         $this->_import_permg($db, $table_prefix, $_p['auth_option_id'], $id_new, $_p['auth_setting']);
                     }
@@ -313,7 +313,7 @@ class Hook_import_phpbb3
      */
     protected function _import_permg($db, $table_prefix, $option_id, $group_id, $auth_setting)
     {
-        $_pp = $db->query('SELECT * FROM ' . $table_prefix . 'acl_options WHERE is_global=1 AND founder_only=0 AND auth_option_id=' . strval($option_id), 1);
+        $_pp = $db->query_select('acl_options', array('*'), array('is_global' => 1, 'founder_only' => 0, 'auth_option_id' => $option_id), '', 1);
         if (!array_key_exists(0, $_pp)) {
             return;
         }
@@ -364,7 +364,7 @@ class Hook_import_phpbb3
                 }
 
                 $primary_group = import_id_remap_get('group', strval($row['group_id']));
-                $rows2 = $db->query('SELECT * FROM ' . $table_prefix . 'user_group WHERE user_id=' . strval($row['user_id']), 200, $row_start);
+                $rows2 = $db->query_select('user_group', array('*'), array('user_id' => $row['user_id']), '', 200, $row_start);
                 $secondary_groups = array();
                 foreach ($rows2 as $row2) {
                     if ($row2['group_id'] != $row['group_id']) {
@@ -411,7 +411,7 @@ class Hook_import_phpbb3
 
                 // CPF values
                 $cpf_rows = collapse_2d_complexity('field_name', 'field_type', $db->query('SELECT field_name,field_type FROM ' . $table_prefix . 'profile_fields f'));
-                $rows2 = $db->query('SELECT * FROM ' . $table_prefix . 'profile_fields_data WHERE user_id=' . strval($row['user_id']), 1);
+                $rows2 = $db->query_select('profile_fields_data', array('*'), array('user_id' => $row['user_id']), '', 1);
                 $row2 = array();
                 if (array_key_exists(0, $rows2)) {
                     foreach ($rows2[0] as $key => $val) {
@@ -578,7 +578,7 @@ class Hook_import_phpbb3
     {
         require_code('cns_forums_action2');
 
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'forums');
+        $rows = $db->query_select('forums', array('*'));
         foreach ($rows as $row) {
             $remapped = import_id_remap_get('forum', strval($row['forum_id']), true);
             if ($remapped !== null) {
@@ -614,14 +614,14 @@ class Hook_import_phpbb3
 
             $id_new = cns_make_forum($name, $description, $category_id, null, $parent_forum, $position, $post_count_increment, 0, $rules, $answer, $row['forum_link']);
 
-            $permissions = $db->query('SELECT * FROM ' . $table_prefix . 'acl_groups WHERE forum_id=' . strval($row['forum_id']));
+            $permissions = $db->query_select('acl_groups', array('*'), array('forum_id' => $row['forum_id']));
             foreach ($permissions as $p) {
                 $group_id = import_id_remap_get('group', strval($p['group_id']), true);
                 if ($group_id === null) {
                     continue; // maybe bots group (6)
                 }
                 if ($p['auth_role_id'] != 0) { // Do role
-                    $rp = $db->query('SELECT * FROM ' . $table_prefix . 'acl_roles_data WHERE role_id=' . strval($p['auth_role_id']));
+                    $rp = $db->query_select('acl_roles_data', array('*'), array('role_id' => $p['auth_role_id']));
                     foreach ($rp as $_p) {
                         $this->_import_perm($db, $table_prefix, $_p['auth_option_id'], $group_id, $id_new, $_p['auth_setting']);
                     }
@@ -695,7 +695,7 @@ class Hook_import_phpbb3
      */
     protected function _import_perm($db, $table_prefix, $option_id, $group_id, $forum_id, $auth_setting)
     {
-        $_pp = $db->query('SELECT * FROM ' . $table_prefix . 'acl_options WHERE is_local=1 AND founder_only=0 AND auth_option_id=' . strval($option_id), 1);
+        $_pp = $db->query_select('acl_options', array('*'), array('is_local' => 1, 'founder_only' => 0, 'auth_option_id' => $option_id), '', 1);
         if (!array_key_exists(0, $_pp)) {
             return;
         }
@@ -769,7 +769,7 @@ class Hook_import_phpbb3
         $row_start = 0;
         $rows = array();
         do {
-            $rows = $db->query('SELECT * FROM ' . $table_prefix . 'topics WHERE topic_moved_id=0 ORDER BY topic_id', 200, $row_start);
+            $rows = $db->query_select('topics', array('*'), array('topic_moved_id' => 0), 'ORDER BY topic_id', 200, $row_start);
             foreach ($rows as $row) {
                 if (import_check_if_imported('topic', strval($row['topic_id']))) {
                     continue;
@@ -803,7 +803,7 @@ class Hook_import_phpbb3
         $row_start = 0;
         $rows = array();
         do {
-            $rows = $db->query('SELECT * FROM ' . $table_prefix . 'posts ORDER BY post_id', 200, $row_start);
+            $rows = $db->query_select('posts', array('*'), null, 'ORDER BY post_id', 200, $row_start);
             foreach ($rows as $row) {
                 if (import_check_if_imported('post', strval($row['post_id']))) {
                     continue;
@@ -822,7 +822,7 @@ class Hook_import_phpbb3
                 $forum_id = import_id_remap_get('forum', strval($row['forum_id']), true);
 
                 $title = '';
-                $topics = $db->query('SELECT topic_title,topic_time FROM ' . $table_prefix . 'topics WHERE topic_id=' . strval($row['topic_id']));
+                $topics = $db->query_select('topics', array('topic_title', 'topic_time'), array('topic_id' => $row['topic_id']));
                 $first_post = $topics[0]['topic_time'] == $row['post_time'];
                 if ($first_post) {
                     $title = @html_entity_decode($topics[0]['topic_title'], ENT_QUOTES);
@@ -989,14 +989,14 @@ class Hook_import_phpbb3
 
             $is_open = ($row['poll_start'] > time()) && (($row['poll_length'] == 0) || (($row['poll_start'] + $row['poll_length']) < time()));
 
-            $rows2 = $db->query('SELECT * FROM ' . $table_prefix . 'poll_options WHERE topic_id=' . strval($row['topic_id']) . ' ORDER BY poll_option_id');
+            $rows2 = $db->query_select('poll_options', array('*'), array('topic_id' => $row['topic_id']), 'ORDER BY poll_option_id');
             $answers = array();
             foreach ($rows2 as $answer) {
                 $answers[] = $answer['poll_option_text'];
             }
             $maximum = 1;
 
-            $rows2 = $db->query('SELECT * FROM ' . $table_prefix . 'poll_votes WHERE topic_id=' . strval($row['topic_id']));
+            $rows2 = $db->query_select('poll_votes', array('*'), array('topic_id' => $row['topic_id']));
             foreach ($rows2 as $row2) {
                 $row2['vote_user_id'] = import_id_remap_get('member', strval($row2['vote_user_id']), true);
             }
@@ -1030,7 +1030,7 @@ class Hook_import_phpbb3
      */
     public function import_cns_private_topics($db, $table_prefix, $old_base_dir)
     {
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'privmsgs ORDER BY message_time');
+        $rows = $db->query_select('privmsgs', array('*'), null, 'ORDER BY message_time');
 
         // Group them up into what will become topics
         $groups = array();
@@ -1171,7 +1171,7 @@ class Hook_import_phpbb3
         $row_start = 0;
         $rows = array();
         do {
-            $rows = $db->query('SELECT * FROM ' . $table_prefix . 'topics_track', 200, $row_start);
+            $rows = $db->query_select('topics_track', array('*'), null, '', 200, $row_start);
             foreach ($rows as $row) {
                 if (import_check_if_imported('topic_notification', strval($row['topic_id']) . '-' . strval($row['user_id']))) {
                     continue;
@@ -1196,7 +1196,7 @@ class Hook_import_phpbb3
         $row_start = 0;
         $rows = array();
         do {
-            $rows = $db->query('SELECT * FROM ' . $table_prefix . 'forums_track', 200, $row_start);
+            $rows = $db->query_select('forums_track', array('*'), null, '', 200, $row_start);
             foreach ($rows as $row) {
                 if (import_check_if_imported('forum_notification', strval($row['forum_id']) . '-' . strval($row['user_id']))) {
                     continue;
@@ -1228,7 +1228,7 @@ class Hook_import_phpbb3
      */
     public function import_custom_comcode($db, $table_prefix, $file_base)
     {
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'bbcodes');
+        $rows = $db->query_select('bbcodes', array('*'));
         foreach ($rows as $row) {
             $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('custom_comcode', 'tag_tag', array('tag_tag' => $row['bbcode_tag']));
             if ($test !== null) {
@@ -1274,7 +1274,7 @@ class Hook_import_phpbb3
      */
     public function import_wordfilter($db, $table_prefix, $file_base)
     {
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'words');
+        $rows = $db->query_select('words', array('*'));
         foreach ($rows as $row) {
             add_wordfilter_word($row['word'], $row['replacement']);
         }
@@ -1289,7 +1289,7 @@ class Hook_import_phpbb3
      */
     public function import_cns_custom_profile_fields($db, $table_prefix, $file_base)
     {
-        $rows = $db->query('SELECT f.*,lang_explain FROM ' . $table_prefix . 'profile_fields f LEFT JOIN ' . $table_prefix . 'profile_lang l ON l.field_id=f.field_id');
+        $rows = $db->query_select('profile_fields f LEFT JOIN ' . $table_prefix . 'profile_lang l ON l.field_id=f.field_id', array('f.*', 'lang_explain'));
         foreach ($rows as $row) {
             if (import_check_if_imported('cpf', $row['field_ident'])) {
                 continue;
@@ -1317,7 +1317,7 @@ class Hook_import_phpbb3
                     case FIELD_DROPDOWN:
                         $type = 'list';
 
-                        $values = collapse_1d_complexity('lang_default_value', $db->query('SELECT lang_default_value FROM ' . $table_prefix . 'profile_lang WHERE field_id=' . strval($row['field_id'])));
+                        $values = collapse_1d_complexity('lang_default_value', $db->query_select('profile_lang', array('lang_default_value'), array('field_id' => $row['field_id'])));
                         $_default = $default;
                         foreach ($values as $value) {
                             if ($value != $default) {
@@ -1350,7 +1350,7 @@ class Hook_import_phpbb3
      */
     public function import_cns_warnings($db, $table_prefix, $file_base)
     {
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'warnings');
+        $rows = $db->query_select('warnings', array('*'));
         foreach ($rows as $row) {
             $member_id = import_id_remap_get('member', $row['user_id'], true);
             $by = db_get_first_id() + 1;
@@ -1385,7 +1385,7 @@ class Hook_import_phpbb3
      */
     public function import_friends($db, $table_prefix, $file_base)
     {
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'zebra');
+        $rows = $db->query_select('zebra', array('*'));
         foreach ($rows as $row) {
             $likes = import_id_remap_get('member', $row['user_id'], true);
             $liked = import_id_remap_get('member', $row['zebra_id'], true);
@@ -1415,7 +1415,7 @@ class Hook_import_phpbb3
      */
     public function import_reported_posts_forum($db, $table_prefix, $file_base)
     {
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'reports');
+        $rows = $db->query_select('reports', array('*'));
         foreach ($rows as $row) {
             $forum_id = $GLOBALS['FORUM_DRIVER']->forum_id_from_name(get_option('reported_posts_forum'));
             if ($forum_id === null) {

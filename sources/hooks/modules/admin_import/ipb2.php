@@ -103,7 +103,7 @@ class Hook_import_ipb2
 
         init_valid_comcode_tags();
 
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'custom_bbcode');
+        $rows = $db->query_select('custom_bbcode', array('*'));
         foreach ($rows as $row) {
             if (import_check_if_imported('custom_comcode', strval($row['bbcode_id']))) {
                 continue;
@@ -142,7 +142,7 @@ class Hook_import_ipb2
      */
     public function import_cns_forum_groupings($db, $table_prefix, $old_base_dir)
     {
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'forums WHERE parent_id=-1 ORDER BY id');
+        $rows = $db->query_select('forums', array('*'), array('parent_id' => -1), 'ORDER BY id');
         foreach ($rows as $row) {
             if (import_check_if_imported('category', strval($row['id']))) {
                 continue;
@@ -198,7 +198,7 @@ class Hook_import_ipb2
             $description = strip_html($row['description']);
 
             // To determine whether parent_id specifies category or parent, we must check status of what it is pointing at
-            $parent_test = $db->query('SELECT use_ibc,parent_id FROM ' . $table_prefix . 'forums WHERE id=' . strval($row['parent_id']));
+            $parent_test = $db->query_select('forums', array('use_ibc,parent_id'), array('id' => $row['parent_id']));
             if ($parent_test[0]['parent_id'] != -1) { // Pointing to parent
                 $parent_forum = import_id_remap_get('forum', strval($row['parent_id']), true);
                 if ($parent_forum !== null) {
@@ -276,7 +276,7 @@ class Hook_import_ipb2
             //'show_max_msg_list' => 'forum_posts_per_page'
         );
 
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'conf_settings');
+        $rows = $db->query_select('conf_settings', array('*'));
         $PROBED_FORUM_CONFIG = array();
         foreach ($rows as $row) {
             if ($row['conf_value'] == '') {
@@ -444,26 +444,21 @@ class Hook_import_ipb2
      */
     public function import_cns_groups($db, $table_prefix, $file_base)
     {
-        if (either_param_string('importer') == 'ipb1') {
-            global $PROBED_FORUM_CONFIG;
-            require_once($file_base . '/conf_global.php');
-        } else {
-            $rows = $db->query('SELECT * FROM ' . $table_prefix . 'conf_settings');
-            $PROBED_FORUM_CONFIG = array();
-            foreach ($rows as $row) {
-                $key = $row['conf_key'];
-                $val = $row['conf_value'];
-                if ($val == '') {
-                    $val = $row['conf_default'];
-                }
-                $PROBED_FORUM_CONFIG[$key] = $val;
+        $rows = $db->query_select('conf_settings', array('*'));
+        $PROBED_FORUM_CONFIG = array();
+        foreach ($rows as $row) {
+            $key = $row['conf_key'];
+            $val = $row['conf_value'];
+            if ($val == '') {
+                $val = $row['conf_default'];
             }
+            $PROBED_FORUM_CONFIG[$key] = $val;
         }
         $max_post_length_comcode = $PROBED_FORUM_CONFIG['max_post_length'];
         $max_sig_length_comcode = $PROBED_FORUM_CONFIG['max_sig_length'];
         list($max_avatar_width, $max_avatar_height) = explode('x', $PROBED_FORUM_CONFIG['avatar_dims']);
 
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'groups');
+        $rows = $db->query_select('groups', array('*'));
         foreach ($rows as $row) {
             if (import_check_if_imported('group', strval($row['g_id']))) {
                 continue;
@@ -539,11 +534,7 @@ class Hook_import_ipb2
     {
         require_code('calendar2');
 
-        if (either_param_string('importer') == 'ipb1') {
-            $rows = $db->query('SELECT * FROM ' . $table_prefix . 'calendar_events');
-        } else {
-            $rows = $db->query('SELECT ce.event_id AS eventid, ce.event_member_id AS userid, ce.event_tz AS event_repeat, ce.event_recurring AS repeat_unit,ce.* FROM ' . $table_prefix . 'cal_events as ce');
-        }
+        $rows = $db->query_select('cal_events AS ce', array('ce.event_id AS eventid', 'ce.event_member_id AS userid', 'ce.event_tz AS event_repeat', 'ce.event_recurring AS repeat_unit', 'ce.*'));
         foreach ($rows as $row) {
             if (import_check_if_imported('event', strval($row['eventid']))) {
                 continue;
@@ -557,57 +548,30 @@ class Hook_import_ipb2
             $recurrence = 'none';
             $recurrences = null;
 
-            if (either_param_string('importer') == 'ipb1') {
-                if ($row['event_repeat'] != 0) {
-                    switch ($row['repeat_unit']) {
-                        case 'w':
-                            $recurrence = 'weekly';
-                            break;
-                        case 'm':
-                            $recurrence = 'monthly';
-                            break;
-                        case 'y':
-                            $recurrence = 'yearly';
-                            break;
-                    }
+            if ($row['event_repeat'] != 0) {
+                switch ($row['repeat_unit']) {
+                    case '1':
+                        $recurrence = 'weekly';
+                        break;
+                    case '2':
+                        $recurrence = 'monthly';
+                        break;
+                    case '3':
+                        $recurrence = 'yearly';
+                        break;
                 }
-
-                $event_title = $row['title'];
-                $event_text = $row['event_text'];
-                $private_event = $row['priv_event'];
-                $start_year = $row['year'];
-                $start_month = $row['month'];
-                $start_day = $row['mday'];
-
-                $end_year = $row['end_year'];
-                $end_month = $row['end_month'];
-                $end_day = $row['end_day'];
-            } else {
-                if ($row['event_repeat'] != 0) {
-                    switch ($row['repeat_unit']) {
-                        case '1':
-                            $recurrence = 'weekly';
-                            break;
-                        case '2':
-                            $recurrence = 'monthly';
-                            break;
-                        case '3':
-                            $recurrence = 'yearly';
-                            break;
-                    }
-                }
-
-                $event_title = $row['event_title'];
-                $event_text = $row['event_content'];
-                $private_event = $row['event_private'];
-                $start_year = date('Y', $row['event_unix_from']);
-                $start_month = date('n', $row['event_unix_from']);
-                $start_day = date('j', $row['event_unix_from']);
-
-                $end_year = date('Y', $row['event_unix_to']);
-                $end_month = date('n', $row['event_unix_to']);
-                $end_day = date('j', $row['event_unix_to']);
             }
+
+            $event_title = $row['event_title'];
+            $event_text = $row['event_content'];
+            $private_event = $row['event_private'];
+            $start_year = intval(date('Y', $row['event_unix_from']));
+            $start_month = intval(date('n', $row['event_unix_from']));
+            $start_day = intval(date('j', $row['event_unix_from']));
+
+            $end_year = intval(date('Y', $row['event_unix_to']));
+            $end_month = intval(date('n', $row['event_unix_to']));
+            $end_day = intval(date('j', $row['event_unix_to']));
 
             cns_over_msn();
 
@@ -642,10 +606,7 @@ class Hook_import_ipb2
         $row_start = 0;
         $rows = array();
         do {
-            $query = 'SELECT * FROM ' . $table_prefix . 'members ORDER BY id';
-            if (either_param_string('importer') == 'ipb2') {
-                $query = 'SELECT * FROM ' . $table_prefix . 'members m LEFT JOIN ' . $table_prefix . 'members_converge c ON c.converge_id=m.id ORDER BY id';
-            }
+            $query = 'SELECT * FROM ' . $table_prefix . 'members m LEFT JOIN ' . $table_prefix . 'members_converge c ON c.converge_id=m.id ORDER BY id';
             $rows = $db->query($query, 200, $row_start);
             foreach ($rows as $row) {
                 $row['name'] = @html_entity_decode($row['name'], ENT_QUOTES, get_charset());
@@ -673,20 +634,10 @@ class Hook_import_ipb2
                     $language = '';
                 }
 
-                if (either_param_string('importer') == 'ipb1') {
-                    $custom_fields = array(
-                        cns_make_boiler_custom_field('interests') => $row['interests'],
-                        cns_make_boiler_custom_field('location') => $row['location'],
-                    );
-                    if ($row['website'] != '') {
-                        $custom_fields[cns_make_boiler_custom_field('website')] = (strlen($row['website']) > 0) ? ('[url]' . $row['website'] . '[/url]') : '';
-                    }
-                } else {
-                    $custom_fields = array();
-                    $signature = '';
-                }
+                $custom_fields = array();
+                $signature = '';
 
-                $rows2 = $db->query('SELECT * FROM ' . $table_prefix . 'member_extra WHERE id=' . strval($row['id']));
+                $rows2 = $db->query_select('member_extra', array('*'), array('id' => $row['id']));
                 $notes = '';
                 if (array_key_exists(0, $rows2)) {
                     $row2 = $rows2[0];
@@ -694,35 +645,22 @@ class Hook_import_ipb2
                     $custom_fields[cns_make_boiler_custom_field('about')] = @html_entity_decode($row2['bio'], ENT_QUOTES, get_charset());
                     $notes = $row2['notes'];
 
-                    if (either_param_string('importer') == 'ipb2') {
-                        cns_over_msn();
-                        $signature = html_to_comcode($this->clean_ipb_post_2($row2['signature']));
-                        cns_over_local();
-                        $custom_fields = array(
-                            cns_make_boiler_custom_field('interests') => $row2['interests'],
-                            cns_make_boiler_custom_field('location') => $row2['location'],
-                        );
-                        if ($row2['website'] != '') {
-                            $custom_fields[cns_make_boiler_custom_field('website')] = (strlen($row2['website']) > 0) ? ('[url]' . $row2['website'] . '[/url]') : '';
-                        }
-                    }
-                }
-                if (either_param_string('importer') == 'ipb1') {
                     cns_over_msn();
-                    $signature = html_to_comcode($this->clean_ipb_post_2($row['signature']));
+                    $signature = html_to_comcode($this->clean_ipb_post_2($row2['signature']));
                     cns_over_local();
+                    $custom_fields = array(
+                        cns_make_boiler_custom_field('interests') => $row2['interests'],
+                        cns_make_boiler_custom_field('location') => $row2['location'],
+                    );
+                    if ($row2['website'] != '') {
+                        $custom_fields[cns_make_boiler_custom_field('website')] = (strlen($row2['website']) > 0) ? ('[url]' . $row2['website'] . '[/url]') : '';
+                    }
                 }
                 $validated = 1;
 
-                if (either_param_string('importer') == 'ipb2') {
-                    $password = $row['converge_pass_hash'];
-                    $type = 'converge';
-                    $salt = $row['converge_pass_salt'];
-                } else {
-                    $password = $row['password'];
-                    $type = 'md5';
-                    $salt = '';
-                }
+                $password = $row['converge_pass_hash'];
+                $type = 'converge';
+                $salt = $row['converge_pass_salt'];
                 if ($password === null) {
                     $password = '';
                 }
@@ -765,7 +703,7 @@ class Hook_import_ipb2
                 $photo_url = '';
                 $photo_thumb_url = '';
 
-                $rows2 = $db->query('SELECT * FROM ' . $table_prefix . 'member_extra WHERE id=' . strval($row['id']));
+                $rows2 = $db->query_select('member_extra', array('*'), array('id' => $row['id']));
                 if (array_key_exists(0, $rows2)) {
                     $row2 = $rows2[0];
 
@@ -793,15 +731,11 @@ class Hook_import_ipb2
                         $photo_thumb_url = convert_image($photo_url, $photo_thumb_path, -1, -1, intval(get_option('thumb_width')), false, null, true);
                     }
 
-                    if (either_param_string('importer') == 'ipb2') {
-                        $row['avatar'] = $row2['avatar_location'];
-                        $row['avatar_type'] = $row2['avatar_type'];
-                    }
+                    $row['avatar'] = $row2['avatar_location'];
+                    $row['avatar_type'] = $row2['avatar_type'];
                 }
-                if (either_param_string('importer') == 'ipb2') {
-                    if (!array_key_exists('avatar', $row)) {
-                        $row['avatar'] = null;
-                    }
+                if (!array_key_exists('avatar', $row)) {
+                    $row['avatar'] = null;
                 }
 
                 $avatar_url = '';
@@ -864,12 +798,17 @@ class Hook_import_ipb2
      */
     public function import_cns_custom_profile_fields($db, $table_prefix, $file_base)
     {
-        $where = '*';
-        if (either_param_string('importer') == 'ipb2') {
-            $where = 'pf_position as forder,pf_type as ftype,pf_id as fid,pf_title as ftitle,pf_desc as fdesc,pf_member_hide as fhide,pf_member_edit as fedit,pf_show_on_reg as freq';
-        }
-        $rows = $db->query('SELECT ' . $where . ' FROM ' . $table_prefix . 'pfields_data');
-        $members = $db->query('SELECT * FROM ' . $table_prefix . 'pfields_content');
+        $select = array('*');
+        $select[] = 'pf_position AS forder';
+        $select[] = 'pf_type AS ftype';
+        $select[] = 'pf_id AS fid';
+        $select[] = 'pf_title AS ftitle';
+        $select[] = 'pf_desc AS fdesc';
+        $select[] = 'pf_member_hide AS fhide';
+        $select[] = 'pf_member_edit AS fedit';
+        $select[] = 'pf_show_on_reg AS freq';
+        $rows = $db->query_select('pfields_data', $select);
+        $members = $db->query_select('pfields_content', array('*'));
         foreach ($rows as $row) {
             if (import_check_if_imported('cpf', strval($row['fid']))) {
                 continue;
@@ -907,7 +846,7 @@ class Hook_import_ipb2
         $row_start = 0;
         $rows = array();
         do {
-            $rows = $db->query('SELECT * FROM ' . $table_prefix . 'topics ORDER BY tid', 200, $row_start);
+            $rows = $db->query_select('topics', array('*'), null, 'ORDER BY tid', 200, $row_start);
             foreach ($rows as $row) {
                 if (import_check_if_imported('topic', strval($row['tid']))) {
                     continue;
@@ -988,7 +927,7 @@ class Hook_import_ipb2
         $row_start = 0;
         $rows = array();
         do {
-            $rows = $db->query('SELECT * FROM ' . $table_prefix . 'posts ORDER BY pid', 200, $row_start);
+            $rows = $db->query_select('posts', array('*'), null, 'ORDER BY pid', 200, $row_start);
             foreach ($rows as $row) {
                 if (import_check_if_imported('post', strval($row['pid']))) {
                     continue;
@@ -1018,7 +957,7 @@ class Hook_import_ipb2
 
                 $title = '';
                 if ($row['new_topic'] == 1) {
-                    $topics = $db->query('SELECT * FROM ' . $table_prefix . 'topics WHERE tid=' . strval($row['topic_id']));
+                    $topics = $db->query_select('topics', array('*'), array('tid' => $row['topic_id']));
                     $title = strip_html($topics[0]['title']);
                 } elseif ($row['post_title'] !== null) {
                     $title = @html_entity_decode($row['post_title'], ENT_QUOTES, get_charset());
@@ -1033,24 +972,22 @@ class Hook_import_ipb2
                     $last_edit_by = $GLOBALS['CNS_DRIVER']->get_member_from_username(@html_entity_decode($row['edit_name'], ENT_QUOTES, get_charset()));
                 }
 
-                if (either_param_string('importer') == 'ipb2') {
-                    $post = str_replace('style_emoticons/<#EMO_DIR#>', '[/html]{$BASE_URL}[html]/data/legacy_emoticons', $post);
+                $post = str_replace('style_emoticons/<#EMO_DIR#>', '[/html]{$BASE_URL}[html]/data/legacy_emoticons', $post);
 
-                    $end = 0;
-                    while (($pos = strpos($post, '[right]')) !== false) {
-                        $e_pos = strpos($post, '[/right]', $pos);
-                        if ($e_pos === false) {
-                            break;
-                        }
-                        $end = $e_pos + strlen('[/right]');
-                        $segment = substr($post, $pos, $end - $pos);
-                        push_lax_comcode(true);
-                        $_comcode = comcode_to_tempcode($segment, $member_id);
-                        pop_lax_comcode();
-                        $comcode = $_comcode->evaluate();
-                        $comcode = str_replace($comcode, get_base_url(), '{$BASE_URL}');
-                        $post = substr($post, 0, $pos) . $comcode . substr($post, $end);
+                $end = 0;
+                while (($pos = strpos($post, '[right]')) !== false) {
+                    $e_pos = strpos($post, '[/right]', $pos);
+                    if ($e_pos === false) {
+                        break;
                     }
+                    $end = $e_pos + strlen('[/right]');
+                    $segment = substr($post, $pos, $end - $pos);
+                    push_lax_comcode(true);
+                    $_comcode = comcode_to_tempcode($segment, $member_id);
+                    pop_lax_comcode();
+                    $comcode = $_comcode->evaluate();
+                    $comcode = str_replace($comcode, get_base_url(), '{$BASE_URL}');
+                    $post = substr($post, 0, $pos) . $comcode . substr($post, $end);
                 }
 
                 $id_new = cns_make_post($topic_id, $title, $post, 0, $row['new_topic'] == 1, 1 - $row['queued'], 0, @html_entity_decode($row['author_name'], ENT_QUOTES, get_charset()), $row['ip_address'], $row['post_date'], $member_id, null, $row['edit_time'], $last_edit_by, false, false, $forum_id, false);
@@ -1077,10 +1014,10 @@ class Hook_import_ipb2
         require_code('images');
 
         $row_start = 0;
-        $select = (either_param_string('importer') == 'ipb1') ? 'pid,attach_id,attach_file,attach_hits,post_date' : 'pid,post_date';
+        $select = array('pid', 'post_date');
         $rows = array();
         do {
-            $rows = $db->query('SELECT ' . $select . ' FROM ' . $table_prefix . 'posts ORDER BY pid', 200, $row_start);
+            $rows = $db->query('posts', $select, null, 'ORDER BY pid', 200, $row_start);
             foreach ($rows as $row) {
                 if (import_check_if_imported('post_files', strval($row['pid']))) {
                     continue;
@@ -1101,56 +1038,26 @@ class Hook_import_ipb2
                 $member_id = import_id_remap_get('member', $post_row[0]['p_poster']);
                 $post_date = $post_row[0]['p_time'];
 
-                if (either_param_string('importer') == 'ipb1') {
-                    $has_attachment = false;
-                    if ($row['attach_id'] != '') {
-                        $target_path = get_custom_file_base() . '/uploads/attachments/' . $row['attach_id'];
-                        if ((file_exists(get_custom_file_base() . '/uploads/attachments/' . $row['attach_id'])) || (@rename($file_base . '/uploads/' . $row['attach_id'], $target_path))) {
-                            $url = 'uploads/attachments/' . $row['attach_id'];
-                            sync_file($url);
-                            $thumb_url = '';
-                            $_a_id = $GLOBALS['SITE_DB']->query_insert('attachments', array('a_member_id' => $member_id, 'a_file_size' => @filesize($target_path), 'a_url' => $url, 'a_thumb_url' => $thumb_url, 'a_original_filename' => $row['attach_file'], 'a_num_downloads' => $row['attach_hits'], 'a_last_downloaded_time' => null, 'a_add_time' => $row['post_date'], 'a_description' => ''), true);
-                            $has_attachment = true;
-                        } else {
-                            if ($STRICT_FILE) {
-                                warn_exit(do_lang_tempcode('MISSING_ATTACHMENT', $row['attach_location']));
-                            }
-                        }
-                    }
-                } else {
-                    if (either_param_string('importer') == 'ipb1') {
-                        $attachments = $db->query('SELECT * FROM ' . $table_prefix . 'attachments WHERE attach_pid=' . strval($row['pid']) . ' AND attach_approved=1');
+                $attachments = $db->query_select('attachments', array('*'), array('attach_rel_id' => $row['pid'], 'attach_rel_module' => 'post'));
+                $i = 0;
+                $a_id = array();
+                foreach ($attachments as $attachment) {
+                    $target_path = get_custom_file_base() . '/uploads/attachments/' . $attachment['attach_location'];
+                    if ((file_exists(get_custom_file_base() . '/uploads/attachments/' . $attachment['attach_location'])) || (@rename($file_base . '/uploads/' . $attachment['attach_location'], $target_path))) {
+                        $url = 'uploads/attachments/' . $attachment['attach_location'];
+                        sync_file($url);
+                        $thumb_url = '';
+                        $a_id[$i] = $GLOBALS['SITE_DB']->query_insert('attachments', array('a_member_id' => $member_id, 'a_file_size' => $attachment['attach_filesize'], 'a_url' => $url, 'a_thumb_url' => $thumb_url, 'a_original_filename' => $attachment['attach_file'], 'a_num_downloads' => $attachment['attach_hits'], 'a_last_downloaded_time' => null, 'a_add_time' => $post_date, 'a_description' => ''), true);
+                        $has_attachment = true;
                     } else {
-                        $attachments = $db->query('SELECT * FROM ' . $table_prefix . 'attachments WHERE attach_rel_id=' . strval($row['pid']) . ' AND ' . db_string_equal_to('attach_rel_module', 'post'));
-                    }
-                    $i = 0;
-                    $a_id = array();
-                    foreach ($attachments as $attachment) {
-                        $target_path = get_custom_file_base() . '/uploads/attachments/' . $attachment['attach_location'];
-                        if ((file_exists(get_custom_file_base() . '/uploads/attachments/' . $attachment['attach_location'])) || (@rename($file_base . '/uploads/' . $attachment['attach_location'], $target_path))) {
-                            $url = 'uploads/attachments/' . $attachment['attach_location'];
-                            sync_file($url);
-                            $thumb_url = '';
-                            $a_id[$i] = $GLOBALS['SITE_DB']->query_insert('attachments', array('a_member_id' => $member_id, 'a_file_size' => $attachment['attach_filesize'], 'a_url' => $url, 'a_thumb_url' => $thumb_url, 'a_original_filename' => $attachment['attach_file'], 'a_num_downloads' => $attachment['attach_hits'], 'a_last_downloaded_time' => null, 'a_add_time' => $post_date, 'a_description' => ''), true);
-                            $has_attachment = true;
-                        } else {
-                            if ($STRICT_FILE) {
-                                warn_exit(do_lang_tempcode('MISSING_ATTACHMENT', $attachment['attach_location']));
-                            }
+                        if ($STRICT_FILE) {
+                            warn_exit(do_lang_tempcode('MISSING_ATTACHMENT', $attachment['attach_location']));
                         }
-                        $i++;
                     }
+                    $i++;
                 }
 
-                if (either_param_string('importer') == 'ipb1') {
-                    if ($has_attachment) {
-                        $GLOBALS['SITE_DB']->query_insert('attachment_refs', array('r_referer_type' => 'cns_post', 'r_referer_id' => strval($post_id), 'a_id' => $_a_id));
-                        $post .= "\n\n" . '[attachment]' . strval($_a_id) . '[/attachment]';
-                        cns_over_msn();
-                        $GLOBALS['FORUM_DB']->query_update('f_posts', update_lang_comcode_attachments('p_post', $lang_id, $post, 'cns_post', strval($post_id)), array('id' => $post_id), '', 1);
-                        cns_over_local();
-                    }
-                } elseif (count($a_id) != 0) {
+                if (count($a_id) != 0) {
                     $i = 0;
                     foreach ($attachments as $attachment) {
                         if (array_key_exists($i, $a_id)) {
@@ -1180,7 +1087,7 @@ class Hook_import_ipb2
      */
     public function import_cns_polls_and_votes($db, $table_prefix, $file_base)
     {
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'polls');
+        $rows = $db->query_select('polls', array('*'));
         foreach ($rows as $row) {
             if (import_check_if_imported('poll', strval($row['pid']))) {
                 continue;
@@ -1191,7 +1098,7 @@ class Hook_import_ipb2
                 continue;
             }
 
-            $topic = $db->query('SELECT * FROM ' . $table_prefix . 'topics WHERE tid=' . strval($row['tid']));
+            $topic = $db->query_select('topics', array('*'), array('tid' => $row['tid']));
             $is_open = ($topic[0]['poll_state'] == 'open') ? 1 : 0;
 
             $_answers = unserialize($row['choices']);
@@ -1200,7 +1107,7 @@ class Hook_import_ipb2
                 $answers[] = array(@html_entity_decode($answer[1], ENT_QUOTES, get_charset()), $answer[2]);
             }
 
-            $rows2 = $db->query('SELECT * FROM ' . $table_prefix . 'voters WHERE tid=' . strval($row['tid']));
+            $rows2 = $db->query_select('voters', array('*'), array('tid' => $row['tid']));
 
             $id_new = cns_make_poll($topic_id, @html_entity_decode($row['poll_question'], ENT_QUOTES, get_charset()), 0, $is_open, 1, 1, 0, $answers, false);
 
@@ -1242,7 +1149,7 @@ class Hook_import_ipb2
      */
     public function import_cns_multi_moderations($db, $table_prefix, $file_base)
     {
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'topic_mmod');
+        $rows = $db->query_select('topic_mmod', array('*'));
         foreach ($rows as $row) {
             if (import_check_if_imported('multi_moderation', strval($row['mm_id']))) {
                 continue;
@@ -1282,7 +1189,7 @@ class Hook_import_ipb2
     {
         require_code('notifications');
 
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'forum_tracker');
+        $rows = $db->query_select('forum_tracker', array('*'));
         foreach ($rows as $row) {
             if (import_check_if_imported('forum_notification', strval($row['frid']))) {
                 continue;
@@ -1302,7 +1209,7 @@ class Hook_import_ipb2
         }
         $row_start = 0;
         do {
-            $rows = $db->query('SELECT * FROM ' . $table_prefix . 'tracker', 200, $row_start);
+            $rows = $db->query_select('tracker', array('*'), null, '', 200, $row_start);
             foreach ($rows as $row) {
                 if (import_check_if_imported('topic_notification', strval($row['trid']))) {
                     continue;
@@ -1334,11 +1241,14 @@ class Hook_import_ipb2
      */
     public function import_cns_warnings($db, $table_prefix, $file_base)
     {
-        $select = '*';
-        if (either_param_string('importer') == 'ipb2') {
-            $select = 'wlog_id AS id,wlog_mid,wlog_notes,wlog_date,wlog_addedby,wlog_contact_content';
-        }
-        $rows = $db->query('SELECT ' . $select . ' FROM ' . $table_prefix . 'warn_logs');
+        $select = array('*');
+        $select[] = 'wlog_id AS id';
+        $select[] = 'wlog_mid';
+        $select[] = 'wlog_notes';
+        $select[] = 'wlog_date';
+        $select[] = 'wlog_addedby';
+        $select[] = 'wlog_contact_content';
+        $rows = $db->query_select('warn_logs', $select);
         foreach ($rows as $row) {
             if (import_check_if_imported('warning', strval($row['id']))) {
                 continue;
@@ -1364,7 +1274,7 @@ class Hook_import_ipb2
      */
     public function import_wordfilter($db, $table_prefix, $file_base)
     {
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'badwords');
+        $rows = $db->query_select('badwords', array('*'));
         $rows = remove_duplicate_rows($rows, 'type');
         foreach ($rows as $row) {
             add_wordfilter_word($row['type'], $row['swop'], $row['m_exact']);

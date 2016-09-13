@@ -1001,7 +1001,7 @@ class Module_topicview
         }
         if ((get_db_type() != 'xml') && (get_bot_type() === null)) {
             if (!$GLOBALS['SITE_DB']->table_is_locked('f_topics')) {
-                $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics SET t_num_views=(t_num_views+1) WHERE id=' . strval((integer)$this->id), 1, null, true);
+                $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics SET t_num_views=(t_num_views+1) WHERE id=' . strval($this->id), 1, null, true);
             }
         }
     }

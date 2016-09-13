@@ -99,7 +99,7 @@ class Forum_driver_vb3 extends Forum_driver_base
         if ((!isset($GLOBALS['SITE_INFO']['vb_version'])) || ($GLOBALS['SITE_INFO']['vb_version'] >= 3.6)) {
             $r = $this->db->query('SELECT f.profilefieldid FROM ' . $this->db->get_table_prefix() . 'profilefield f LEFT JOIN ' . $this->db->get_table_prefix() . 'phrase p ON (' . db_string_equal_to('product', 'vbulletin') . ' AND p.varname=CONCAT(\'field\',f.profilefieldid,\'_title\')) WHERE ' . db_string_equal_to('p.text', $name));
         } else {
-            $r = $this->db->query('SELECT profilefieldid FROM ' . $_POST['vb_table_prefix'] . 'profilefield WHERE ' . db_string_equal_to('title', $name) . '\'');
+            $r = $this->db->query_select('profilefield', array('profilefieldid'), array('title', $name));
         }
 
         if (!array_key_exists(0, $r)) {
@@ -108,8 +108,7 @@ class Forum_driver_vb3 extends Forum_driver_base
                 $this->db->query_insert('phrase', array('languageid' => 0, 'varname' => 'field' . strval($key) . '_title', 'fieldname' => 'cprofilefield', 'text' => $name, 'product' => 'vbulletin', 'username' => '', 'dateline' => 0, 'version' => ''));
             } else {
                 $this->db->query('INSERT INTO ' . $_POST['vb_table_prefix'] . 'profilefield (title,description,required,hidden,maxlength,size,editable) VALUES (\'' . db_escape_string($name) . '\',\'\',' . strval(intval($required)) . ',' . strval(intval(1 - $viewable)) . ',\'' . strval($length) . '\',\'' . strval($length) . '\',' . strval(intval($settable)) . ')');
-                $_key = $this->db->query('SELECT MAX(profilefieldid) AS v FROM ' . $_POST['vb_table_prefix'] . 'profilefield');
-                $key = $_key[0]['v'];
+                $key = $this->db->query_select_value('profilefield', 'MAX(profilefieldid)');
             }
             $this->db->query('ALTER TABLE ' . $_POST['vb_table_prefix'] . 'userfield ADD field' . strval($key) . ' TEXT', null, null, true);
             return true;

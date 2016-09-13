@@ -739,14 +739,14 @@ function _get_wordpress_db_data()
     $db_passwrod = post_param_string('wp_db_password');
     $db_table_prefix = post_param_string('wp_table_prefix');
 
-    if (substr($db_table_prefix, -1) == '_') {
-        $db_table_prefix = substr($db_table_prefix, 0, strlen($db_table_prefix) - 1);
+    if (substr($db_table_prefix, -1) != '_') {
+        $db_table_prefix .= '_';
     }
 
     // Create database connector
     $db = new DatabaseConnector($db_name, $host_name, $db_user, $db_passwrod, $db_table_prefix);
 
-    $users = $db->query('SELECT * FROM ' . db_escape_string($db_name) . '.' . db_escape_string($db_table_prefix) . '_users', null, null, true);
+    $users = $db->query_select('users', array('*'), null, '', null, null, true);
     if ($users === null) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
     }
@@ -757,20 +757,20 @@ function _get_wordpress_db_data()
         $data[$user_id] = $user;
 
         // Fetch user posts/pages
-        $posts = $db->query('SELECT * FROM ' . $db_table_prefix . '_posts WHERE post_author=' . strval($user_id) . ' AND (post_type=\'post\' OR post_type=\'page\') AND post_status<>\'auto-draft\'');
+        $posts = $db->query('SELECT * FROM ' . $db_table_prefix . 'posts WHERE post_author=' . strval($user_id) . ' AND (post_type=\'post\' OR post_type=\'page\') AND post_status<>\'auto-draft\'');
         foreach ($posts as $post) {
             $post_id = $post['ID'];
             $post['post_id'] = $post_id; // Consistency with XML feed
             $data[$user_id]['POSTS'][$post_id] = $post;
 
             // Get categories
-            $categories = $db->query('SELECT t1.slug,t1.name FROM ' . $db_table_prefix . '_terms t1 JOIN ' . db_escape_string($db_name) . '.' . db_escape_string($db_table_prefix) . '_term_taxonomy t2 ON t1.term_id=t2.term_id JOIN ' . db_escape_string($db_name) . '.' . db_escape_string($db_table_prefix) . '_term_relationships t3 ON t2.term_taxonomy_id=t3.term_taxonomy_id WHERE t3.object_id=' . strval($post_id) . ' ORDER BY t3.term_order');
+            $categories = $db->query_select('terms t1 JOIN ' . $db_table_prefix . 'term_taxonomy t2 ON t1.term_id=t2.term_id JOIN ' . $db_table_prefix . 'term_relationships t3 ON t2.term_taxonomy_id=t3.term_taxonomy_id', array('t1.slug', 't1.name'), array('t3.object_id' => $post_id), 'ORDER BY t3.term_order');
             foreach ($categories as $category) {
                 $data[$user_id]['POSTS'][$post_id]['category'][$category['slug']] = $category['name'];
             }
 
             // Comments
-            $comments = $db->query('SELECT * FROM ' . $db_table_prefix . '_comments WHERE comment_post_ID=' . strval($post_id) . ' ORDER BY comment_date_gmt');
+            $comments = $db->query_select('comments', array('*'), array('comment_post_ID' => $post_id), 'ORDER BY comment_date_gmt');
             foreach ($comments as $comment) {
                 $comment_id = $comment['comment_ID'];
                 $comment['author_ip'] = $comment['comment_author_IP']; // Consistency with XML feed

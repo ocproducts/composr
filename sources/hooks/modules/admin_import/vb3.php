@@ -151,7 +151,7 @@ class Hook_import_vb3
             'moderatenewmembers' => 'require_new_member_validation'
         );
 
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'setting');
+        $rows = $db->query_select('setting', array('*'));
         $PROBED_FORUM_CONFIG = array();
         foreach ($rows as $row) {
             if ($row['value'] == '') {
@@ -214,7 +214,7 @@ class Hook_import_vb3
      */
     public function import_cns_groups($db, $table_prefix, $file_base)
     {
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'setting');
+        $rows = $db->query_select('setting', array('*'));
         $PROBED_FORUM_CONFIG = array();
         foreach ($rows as $row) {
             $key = $row['varname'];
@@ -225,7 +225,7 @@ class Hook_import_vb3
             $PROBED_FORUM_CONFIG[$key] = $val;
         }
 
-        $rows = $db->query('SELECT *,g.usergroupid AS usergroupid FROM ' . $table_prefix . 'usergroup g LEFT JOIN ' . $table_prefix . 'usergroupleader l ON g.usergroupid=l.usergroupid LEFT JOIN ' . $table_prefix . 'userpromotion p ON g.usergroupid=p.usergroupid');
+        $rows = $db->query_select('usergroup g LEFT JOIN ' . $table_prefix . 'usergroupleader l ON g.usergroupid=l.usergroupid LEFT JOIN ' . $table_prefix . 'userpromotion p ON g.usergroupid=p.usergroupid', array('*', 'g.usergroupid AS usergroupid'));
         $remap_id = array();
         foreach ($rows as $row) {
             if (import_check_if_imported('group', strval($row['usergroupid']))) {
@@ -308,7 +308,7 @@ class Hook_import_vb3
         $row_start = 0;
         $rows = array();
         do {
-            $rows = $db->query('SELECT *,u.userid AS userid FROM ' . $table_prefix . 'user u LEFT JOIN ' . $table_prefix . 'administrator a ON u.userid=a.userid LEFT JOIN ' . $table_prefix . 'usertextfield t ON u.userid=t.userid ORDER BY u.userid', 200, $row_start);
+            $rows = $db->query('user u LEFT JOIN ' . $table_prefix . 'administrator a ON u.userid=a.userid LEFT JOIN ' . $table_prefix . 'usertextfield t ON u.userid=t.userid', array('*'), 'ORDER BY u.userid', 200, $row_start);
             foreach ($rows as $row) {
                 if (import_check_if_imported('member', strval($row['userid']))) {
                     continue;
@@ -322,7 +322,7 @@ class Hook_import_vb3
 
                 $language = '';
                 if ($row['languageid'] != 0) {
-                    $rows2 = $db->query('SELECT languagecode FROM ' . $table_prefix . 'language WHERE languageid=' . strval($row['languageid']));
+                    $rows2 = $db->query_select('language', array('languagecode'), array('languageid' => $row['languageid']));
                     if (array_key_exists(0, $rows2)) {
                         $language = strtoupper($rows2[0]['languagecode']);
                         if ((!file_exists(get_custom_file_base() . '/lang_custom/' . $language)) && (!file_exists(get_file_base() . '/lang/' . $language))) {
@@ -364,7 +364,7 @@ class Hook_import_vb3
                 $type = 'vb3';
                 $salt = $row['salt'];
 
-                $requests = $db->query('SELECT * FROM ' . $table_prefix . 'usergrouprequest WHERE userid=' . strval($row['userid']));
+                $requests = $db->query_select('usergrouprequest', array('*'), array('userid' => $row['userid']));
                 foreach ($requests as $i => $request) {
                     $requests[$i]['usergroupid'] = import_id_remap_get('group', strval($request['usergroupid']));
                 }
@@ -431,8 +431,8 @@ class Hook_import_vb3
                     list($avatar_url) = $this->data_to_disk($row['avatardata'], $row['a_filename'], 'cns_avatars', false);
                 } else {
                     if ($row['avatarid'] != 0) {
-                        $avatar_rows = $db->query('SELECT * FROM ' . $table_prefix . 'avatar WHERE avatarid=' . strval($row['avatarid']));
-                        $setting_row = $db->query('SELECT value,defaultvalue FROM ' . $table_prefix . 'setting WHERE varname=\'avatarpath\'');
+                        $avatar_rows = $db->query_select('avatar', array('*'), array('avatarid' => $row['avatarid']));
+                        $setting_row = $db->query_select('setting', array('value', 'defaultvalue'), array('varname' => 'avatarpath'));
                         $setting = ($setting_row[0]['value'] == '') ? $setting_row[0]['defaultvalue'] : $setting_row[0]['value'];
                         if (array_key_exists(0, $avatar_rows)) {
                             $avatar_row = $avatar_rows[0];
@@ -463,8 +463,8 @@ class Hook_import_vb3
      */
     public function import_cns_custom_profile_fields($db, $table_prefix, $file_base)
     {
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'profilefield');
-        $members = $db->query('SELECT * FROM ' . $table_prefix . 'userfield');
+        $rows = $db->query_select('profilefield', array('*'));
+        $members = $db->query_select('userfield', array('*'));
         foreach ($rows as $row) {
             if (import_check_if_imported('cpf', strval($row['profilefieldid']))) {
                 continue;
@@ -507,7 +507,7 @@ class Hook_import_vb3
      */
     public function import_cns_forum_groupings($db, $table_prefix, $old_base_dir)
     {
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'forum WHERE parentid=-1');
+        $rows = $db->query_select('forum', array('*'), array('parentid' => -1));
         foreach ($rows as $row) {
             if (import_check_if_imported('category', strval($row['forumid']))) {
                 continue;
@@ -558,7 +558,7 @@ class Hook_import_vb3
             }
             $parent_forum = db_get_first_id();
 
-            $permissions = $db->query('SELECT usergroupid,forumpermissions FROM ' . $table_prefix . 'forumpermission WHERE forumid=' . strval($row['forumid']));
+            $permissions = $db->query_select('forumpermission', array('usergroupid', 'forumpermissions'), array('forumid' => $row['forumid']));
             $access_mapping = array();
             foreach ($permissions as $p) {
                 $x = $p['forumpermissions'];
@@ -614,7 +614,7 @@ class Hook_import_vb3
         $row_start = 0;
         $rows = array();
         do {
-            $rows = $db->query('SELECT * FROM ' . $table_prefix . 'thread WHERE visible=1 ORDER BY threadid', 200, $row_start);
+            $rows = $db->query_select('thread', array('*'), array('visible' => 1), 'ORDER BY threadid', 200, $row_start);
             foreach ($rows as $row) {
                 if (import_check_if_imported('topic', strval($row['threadid']))) {
                     continue;
@@ -632,7 +632,7 @@ class Hook_import_vb3
             $row_start += 200;
         } while (count($rows) > 0);
 
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'announcement ORDER BY announcementid', 200, $row_start);
+        $rows = $db->query_select('announcement', array('*'), 'ORDER BY announcementid', 200, $row_start);
         foreach ($rows as $row) {
             if (import_check_if_imported('announcement', strval($row['announcementid']))) {
                 continue;
@@ -652,7 +652,7 @@ class Hook_import_vb3
         }
 
         // Read logs
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'threadread', null, null, true);
+        $rows = $db->query_select('threadread', array('*'), '', null, null, true);
         if ($rows !== null) {
             foreach ($rows as $row) {
                 $member_id = import_id_remap_get('member', $row['userid'], true);
@@ -684,7 +684,7 @@ class Hook_import_vb3
         $row_start = 0;
         $rows = array();
         do {
-            $rows = $db->query('SELECT * FROM ' . $table_prefix . 'post WHERE visible=1 ORDER BY postid', 200, $row_start);
+            $rows = $db->query_select('post', array('*'), array('visible' => 1), 'ORDER BY postid', 200, $row_start);
             foreach ($rows as $row) {
                 if (import_check_if_imported('post', strval($row['postid']))) {
                     continue;
@@ -714,7 +714,7 @@ class Hook_import_vb3
 
                 $title = '';
                 if ($row['parentid'] == 0) {
-                    $topics = $db->query('SELECT title FROM ' . $table_prefix . 'thread WHERE threadid=' . $row['threadid']);
+                    $topics = $db->query_select('thread', array('title'), array('threadid' => $row['threadid']));
                     $title = $topics[0]['title'];
                 } elseif ($row['title'] !== null) {
                     $title = $row['title'];
@@ -789,7 +789,7 @@ class Hook_import_vb3
     {
         global $OLD_BASE_URL;
         if ($OLD_BASE_URL === null) {
-            $rows = $db->query('SELECT value FROM ' . $table_prefix . 'setting WHERE ' . db_string_equal_to('varname', 'bburl'));
+            $rows = $db->query_select('setting', array('value'), array('varname' => 'bburl'));
             $OLD_BASE_URL = $rows[0]['value'];
         }
         $post = preg_replace_callback('#' . preg_quote($OLD_BASE_URL) . '/(showthread\.php\?t=)(\d*)(&page=\d+)?#', array($this, '_fix_links_callback_topic'), $post);
@@ -816,7 +816,7 @@ class Hook_import_vb3
         $row_start = 0;
         $rows = array();
         do {
-            $rows = $db->query('SELECT * FROM ' . $table_prefix . 'attachment ORDER BY attachmentid', 200, $row_start);
+            $rows = $db->query_select('attachment', array('*'), 'ORDER BY attachmentid', 200, $row_start);
             foreach ($rows as $row) {
                 if (import_check_if_imported('post_files', strval($row['attachmentid']))) {
                     continue;
@@ -924,7 +924,7 @@ class Hook_import_vb3
      */
     public function import_cns_polls_and_votes($db, $table_prefix, $file_base)
     {
-        $rows = $db->query('SELECT *,p.pollid AS pollid FROM ' . $table_prefix . 'poll p LEFT JOIN ' . $table_prefix . 'thread t ON p.pollid=t.pollid');
+        $rows = $db->query_select('poll p LEFT JOIN ' . $table_prefix . 'thread t ON p.pollid=t.pollid', array('*', 'p.pollid AS pollid'));
         foreach ($rows as $row) {
             if (import_check_if_imported('poll', strval($row['pollid']))) {
                 continue;
@@ -940,7 +940,7 @@ class Hook_import_vb3
             $answers = explode('|||', $row['options']);
             $maximum = ($row['multiple'] == 1) ? count($answers) : 1;
 
-            $rows2 = $db->query('SELECT * FROM ' . $table_prefix . 'pollvote WHERE pollid=' . $row['pollid']);
+            $rows2 = $db->query_select('pollvote', array('*'), array('pollid' => $row['pollid']));
             foreach ($rows2 as $i => $row2) {
                 $rows2[$i]['userid'] = import_id_remap_get('member', strval($row2['userid']), true);
             }
@@ -972,7 +972,7 @@ class Hook_import_vb3
     {
         require_code('calendar2');
 
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'event');
+        $rows = $db->query_select('event', array('*'));
         foreach ($rows as $row) {
             if (import_check_if_imported('event', strval($row['eventid']))) {
                 continue;
@@ -1169,7 +1169,7 @@ class Hook_import_vb3
 
         init_valid_comcode_tags();
 
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'bbcode');
+        $rows = $db->query_select('bbcode', array('*'));
         foreach ($rows as $row) {
             if (import_check_if_imported('custom_comcode', strval($row['bbcodeid']))) {
                 continue;
@@ -1210,7 +1210,7 @@ class Hook_import_vb3
     {
         require_code('notifications');
 
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'subscribeforum');
+        $rows = $db->query_select('subscribeforum', array('*'));
         foreach ($rows as $row) {
             if (import_check_if_imported('forum_notification', strval($row['subscribeforumid']))) {
                 continue;
@@ -1230,7 +1230,7 @@ class Hook_import_vb3
         }
         $row_start = 0;
         do {
-            $rows = $db->query('SELECT * FROM ' . $table_prefix . 'subscribethread', 200, $row_start);
+            $rows = $db->query_select('subscribethread', array('*'), '', 200, $row_start);
             foreach ($rows as $row) {
                 if (import_check_if_imported('topic_notification', strval($row['subscribethreadid']))) {
                     continue;
@@ -1264,7 +1264,7 @@ class Hook_import_vb3
     {
         require_code('cns_general_action2');
 
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'editlog');
+        $rows = $db->query_select('editlog', array('*'));
         foreach ($rows as $row) {
             if (import_check_if_imported('editlog', strval($row['postid']))) {
                 continue;
@@ -1274,7 +1274,7 @@ class Hook_import_vb3
 
             import_id_remap_put('editlog', strval($row['postid']), -1);
         }
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'deletionlog');
+        $rows = $db->query_select('deletionlog', array('*'));
         foreach ($rows as $row) {
             if (import_check_if_imported('deletionlog', strval($row['primaryid']))) {
                 continue;
@@ -1313,7 +1313,7 @@ class Hook_import_vb3
      */
     public function import_points_gifts_and_charges($db, $table_prefix, $file_base)
     {
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'reputation');
+        $rows = $db->query_select('reputation', array('*'));
         foreach ($rows as $row) {
             if (import_check_if_imported('points', strval($row['reputationid']))) {
                 continue;
@@ -1348,7 +1348,7 @@ class Hook_import_vb3
      */
     public function import_wordfilter($db, $table_prefix, $file_base)
     {
-        $rows = $db->query('SELECT value FROM ' . $table_prefix . 'setting WHERE ' . db_string_equal_to('varname', 'censorwords'));
+        $rows = $db->query_select('setting', array('value'), array('varname' => 'censorwords'));
         $censorwords = $rows[0]['value'];
         foreach (explode(' ', $censorwords) as $word) {
             if ($word != '') {

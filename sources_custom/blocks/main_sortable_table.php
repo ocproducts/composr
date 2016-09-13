@@ -246,7 +246,7 @@ class Block_main_sortable_table
                 return paragraph('Security filter disallows display of the ' . escape_html($file) . ' table.', 'red_alert');
             }
 
-            $records = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . $file);
+            $records = $GLOBALS['SITE_DB']->query_select($file, array('*'));
             if (count($records) == 0) {
                 return paragraph(do_lang('NO_ENTRIES'), 'red_alert');
             }

@@ -179,7 +179,7 @@ function create_tracker_post($tracker_id, $tracker_comment_message)
         )
     ", null, null, false, true, null, '', false);
 
-    $monitors = $GLOBALS['SITE_DB']->query('SELECT user_id FROM mantis_bug_monitor_table WHERE bug_id=' . strval($tracker_id));
+    $monitors = $GLOBALS['SITE_DB']->query_select('mantis_bug_monitor_table', array('user_id'), array('bug_id' => $tracker_id));
     foreach ($monitors as $m) {
         $to_name = $GLOBALS['FORUM_DRIVER']->get_username($m['user_id'], true);
         if ($to_name !== null) {

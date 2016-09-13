@@ -262,12 +262,12 @@ class Hook_import_smf2
         $max_attachments_upload = !empty($ADDITIONAL_DATA['maxattachments']) ? $ADDITIONAL_DATA['maxattachments'] : 10;
 
         $group_leaders = array();
-        $grps = $db->query('SELECT * FROM ' . $table_prefix . 'group_moderators ORDER BY id_group');
+        $grps = $db->query_select('group_moderators', array('*'), null, 'ORDER BY id_group');
         foreach ($grps as $grp) {
             $group_leaders[$grp['id_group']] = $grp['id_member'];
         }
 
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'membergroups ORDER BY id_group');
+        $rows = $db->query_select('membergroups', array('*'), null, 'ORDER BY id_group');
         foreach ($rows as $row) {
             if (import_check_if_imported('group', strval($row['id_group']))) {
                 continue;
@@ -316,7 +316,7 @@ class Hook_import_smf2
         // We willl us this to decide whether to update the default group or not.
         $updates = false;
 
-        $rows = $db->query('SELECT id_group,group_name,min_posts FROM ' . $table_prefix . 'membergroups WHERE min_posts > 0 ORDER BY min_posts DESC');
+        $rows = $db->query('SELECT id_group,group_name,min_posts FROM ' . $table_prefix . 'membergroups WHERE min_posts>0 ORDER BY min_posts DESC');
         // Lets check we are actually going to be performing some updates
         if (count($rows) > 0) {
             $updates = true;
@@ -431,10 +431,10 @@ class Hook_import_smf2
                 $id_new = cns_make_member($row['member_name'], $password, $row['email_address'], null, $bday_day, $bday_month, $bday_year, $custom_fields, ($row['time_offset'] == 0) ? '' : strval($row['time_offset']), $primary_group, $validated, $row['date_registered'], $row['last_login'], '', $avatar_url, $signature, 0, $preview_posts, $reveal_age, $title, $photo_url, $photo_thumb_url, $views_signatures, $track_posts, $language, $allow_emails, 1, '', '', false, $type, $salt, 1);
 
                 //cpf stuff
-                $cpf_rows = $db->query('SELECT id_field,col_name FROM ' . $table_prefix . 'custom_fields');
+                $cpf_rows = $db->query_select('custom_fields', array('id_field', 'col_name'));
                 foreach ($cpf_rows as $cpf_row) {
                     $cpf_id = import_id_remap_get('cpf', strval($cpf_row['id_field']));
-                    $cpf_value = $db->query('SELECT value FROM ' . $table_prefix . 'themes WHERE id_member=' . $row['id_member'] . ' AND variable=\'' . $cpf_row['col_name'] . '\'');
+                    $cpf_value = $db->query_select('themes', array('value'), array('id_member' => $row['id_member'], 'variable' => $cpf_row['col_name']));
                     if (!isset($cpf_value[0])) {
                         continue;
                     }
@@ -465,7 +465,7 @@ class Hook_import_smf2
      */
     public function import_cns_custom_profile_fields($db, $table_prefix)
     {
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'custom_fields');
+        $rows = $db->query_select('custom_fields', array('*'));
 
         foreach ($rows as $row) {
             if (import_check_if_imported('cpf', $row['id_field'])) {
@@ -713,7 +713,7 @@ class Hook_import_smf2
 
         require_code('failure');
 
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'ban_groups u LEFT JOIN ' . $table_prefix . 'ban_items b ON u.id_ban_group=b.id_ban_group');
+        $rows = $db->query_select('ban_groups u LEFT JOIN ' . $table_prefix . 'ban_items b ON u.id_ban_group=b.id_ban_group', array('*'));
 
         foreach ($rows as $row) {
             $ban_time = $row['ban_time']; //when is banned user
@@ -861,7 +861,7 @@ class Hook_import_smf2
                     // First let's get value
                     $v = $this->get_role_value((integer)$gid, $profile_id, $db, $table_prefix);
                     //get the mapped group id
-                    $new_gid = import_id_remap_get('group', strval((integer)$gid), true);
+                    $new_gid = import_id_remap_get('group', strval($gid), true);
                     //Now set Forum view access
                     if (!$done_all_groups && $new_gid !== null) {
                         $this->set_forum_view_accesss((integer)$new_gid, $id_new);
@@ -938,7 +938,7 @@ class Hook_import_smf2
         // Set default 0 as Read Only
         $v = 0;
         // Get the permission profile
-        $permissions = $db->query('SELECT * FROM ' . $table_prefix . 'board_permissions WHERE id_group=' . strval((integer)$gid) . ' AND id_profile=' . strval((integer)$pid));
+        $permissions = $db->query_select('board_permissions', array('*'), array('id_group' => $gid, 'id_profile' => $pid));
         // Loop it
         foreach ($permissions as $p) {
             // Close as we can guess to a Post Role
@@ -1002,7 +1002,7 @@ class Hook_import_smf2
         $row_start = 0;
         $rows = array();
         do {
-            $rows = $db->query('SELECT * FROM ' . $table_prefix . 'messages p ORDER BY p.id_msg', 200, $row_start);
+            $rows = $db->query_select('messages p', array('*'), null, 'ORDER BY p.id_msg', 200, $row_start);
             foreach ($rows as $row) {
                 if (import_check_if_imported('post', strval($row['id_msg']))) {
                     continue;
@@ -1200,13 +1200,13 @@ class Hook_import_smf2
      */
     public function import_cns_polls_and_votes($db, $table_prefix, $file_base)
     {
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'polls');
+        $rows = $db->query_select('polls', array('*'));
         foreach ($rows as $row) {
             if (import_check_if_imported('poll', strval($row['id_poll']))) {
                 continue;
             }
 
-            $poll_topic_id = $db->query('SELECT id_topic FROM ' . $table_prefix . 'topics WHERE id_poll=' . strval($row['id_poll']));
+            $poll_topic_id = $db->query_select('topics', array('id_topic'), array('id_poll' => $row['id_poll']));
             if (!isset($poll_topic_id[0]['id_topic'])) {
                 continue;
             }
@@ -1221,7 +1221,7 @@ class Hook_import_smf2
             $is_open = ($row['expire_time'] == 0 || $row['expire_time'] > time()) ? 1 : 0;
 
             $answers = array();
-            $poll_choices = $db->query('SELECT * FROM ' . $table_prefix . 'poll_choices WHERE id_poll=' . strval($row['id_poll']));
+            $poll_choices = $db->query_select('poll_choices', array('*'), array('id_poll' => $row['id_poll']));
 
             $answers_array = array();
             foreach ($poll_choices as $key => $value) {
@@ -1236,7 +1236,7 @@ class Hook_import_smf2
                 $maximum += $poll_choices[$key]['votes'];
             }
 
-            $rows2 = $db->query('SELECT * FROM ' . $table_prefix . 'log_polls WHERE id_poll=' . strval($row['id_poll']));
+            $rows2 = $db->query_select('log_polls', array('*'), array('id_poll' => $row['id_poll']));
             foreach ($rows2 as $row2) {
                 $row2['id_member'] = import_id_remap_get('member', strval($row2['id_member']), true);
             }
@@ -1271,7 +1271,7 @@ class Hook_import_smf2
      */
     public function import_cns_personal_topics($db, $table_prefix, $old_base_dir)
     {
-        $member_rows = $db->query('SELECT id_member FROM ' . $table_prefix . 'members');
+        $member_rows = $db->query_select('members', array('id_member'));
         foreach ($member_rows as $member_row) {
             $member_id = $member_row['id_member'];
             $rows = $db->query('SELECT * FROM ' . $table_prefix . 'personal_messages p LEFT JOIN ' . $table_prefix . 'pm_recipients r ON p.id_pm=r.id_pm WHERE r.id_member=' . strval($member_id) . ' OR id_member_from=' . strval($member_id) . ' ORDER BY msgtime');
@@ -1665,10 +1665,10 @@ class Hook_import_smf2
 
             $description = '';
             if ($row['id_topic'] != 0) {
-                $atts = $db->query('SELECT * FROM ' . $table_prefix . 'attachments WHERE id_msg=' . strval($row['id_topic']) . ' ORDER BY id_msg ASC');
+                $atts = $db->query_select('attachments', array('*'), array('id_msg' => $row['id_topic']), 'ORDER BY id_msg ASC');
                 $attid = isset($atts[0]['id_attach']) ? $atts[0]['id_attach'] : 0;
                 $att_imported = $attid > 0 && import_check_if_imported('post_files', strval($attid)) ? true : false;
-                $messages = $db->query('SELECT * FROM ' . $table_prefix . 'messages WHERE id_topic=' . strval($row['id_topic']) . ' ORDER BY id_topic ASC');
+                $messages = $db->query_select('messages', array('*'), array('id_topic' => $row['id_topic']), 'ORDER BY id_topic ASC');
                 $description = empty($messages[0]['body']) ? '' : str_replace(array('[html]', '[/html]'), array('', ''), html_to_comcode($messages[0]['body']));
             }
             if ($att_imported) {
@@ -1716,7 +1716,7 @@ class Hook_import_smf2
         require_code('banners');
         require_code('banners2');
 
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'ads', null, null, true);
+        $rows = $db->query_select('ads', array('*'), null, '', null, null, true);
         if ($rows === null) {
             return; // SMFAds addon not installed
         }

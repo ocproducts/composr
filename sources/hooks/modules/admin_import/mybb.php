@@ -276,7 +276,7 @@ class Hook_import_mybb
             $avatar_max_height = mixed();
         }
 
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'usergroups ORDER BY gid');
+        $rows = $db->query_select('usergroups', array('*'), null, 'ORDER BY gid');
         foreach ($rows as $row) {
             if (import_check_if_imported('group', strval($row['gid']))) {
                 continue;
@@ -512,7 +512,7 @@ class Hook_import_mybb
      */
     public function import_ip_bans($db, $table_prefix, $file_base)
     {
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'users u LEFT JOIN ' . $table_prefix . 'banned b ON u.uid=b.uid WHERE b.gid=7');
+        $rows = $db->query_select('users u LEFT JOIN ' . $table_prefix . 'banned b ON u.uid=b.uid', array('*'), array('b.gid' => 7));
 
         require_code('failure');
 
@@ -577,7 +577,7 @@ class Hook_import_mybb
      */
     public function import_cns_forum_groupings($db, $table_prefix, $old_base_dir)
     {
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'forums WHERE ' . db_string_equal_to('type', 'c'));
+        $rows = $db->query_select('forums', array('*'), array('type' => 'c'));
         foreach ($rows as $row) {
             if (import_check_if_imported('category', strval($row['fid']))) {
                 continue;
@@ -609,7 +609,7 @@ class Hook_import_mybb
     {
         require_code('cns_forums_action2');
 
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'forums WHERE ' . db_string_equal_to('type', 'f'));
+        $rows = $db->query_select('forums', array('*'), array('type' => 'f'));
         foreach ($rows as $row) {
             $remapped = import_id_remap_get('forum', strval($row['fid']), true);
             if ($remapped !== null) {
@@ -633,7 +633,7 @@ class Hook_import_mybb
 
             $access_mapping = array();
             if ($row['status'] == 1) {
-                $permissions = $db->query('SELECT * FROM ' . $table_prefix . 'forumpermissions WHERE fid=' . strval($row['fid']));
+                $permissions = $db->query_select('forumpermissions', array('*'), array('fid' => $row['fid']));
 
                 foreach ($permissions as $p) {
                     $v = 0;
@@ -670,7 +670,7 @@ class Hook_import_mybb
         $row_start = 0;
         $rows = array();
         do {
-            $rows = $db->query('SELECT * FROM ' . $table_prefix . 'threads WHERE visible=1 ORDER BY tid', 200, $row_start);
+            $rows = $db->query_select('threads', array('*'), array('visible' => 1), 'ORDER BY tid', 200, $row_start);
             foreach ($rows as $row) {
                 if (import_check_if_imported('topic', strval($row['tid']))) {
                     continue;
@@ -701,7 +701,7 @@ class Hook_import_mybb
         $row_start = 0;
         $rows = array();
         do {
-            $rows = $db->query('SELECT * FROM ' . $table_prefix . 'posts p ORDER BY p.pid', 200, $row_start);
+            $rows = $db->query_select('posts p', array('*'), null, 'ORDER BY p.pid', 200, $row_start);
             foreach ($rows as $row) {
                 if (import_check_if_imported('post', strval($row['pid']))) {
                     continue;
@@ -720,7 +720,7 @@ class Hook_import_mybb
                 $forum_id = import_id_remap_get('forum', strval($row['fid']), true);
 
                 $title = '';
-                $topics = $db->query('SELECT subject FROM ' . $table_prefix . 'threads WHERE tid=' . strval($row['tid']));
+                $topics = $db->query_select('threads', array('subject'), array('tid' => $row['tid']));
                 $first_post = $row['dateline'];
                 if ($first_post) {
                     $title = $topics[0]['subject'];
@@ -800,7 +800,7 @@ class Hook_import_mybb
      */
     public function fix_links($post, $db, $table_prefix)
     {
-        $options = $db->query('SELECT * FROM ' . $table_prefix . 'settings WHERE ' . db_string_equal_to('name', 'bburl'));
+        $options = $db->query_select('settings', array('*'), array('name' => 'bburl'));
 
         $OLD_BASE_URL = empty($options[0]['value']) ? '' : $options[0]['value'];
 
@@ -824,7 +824,7 @@ class Hook_import_mybb
      */
     public function data_to_disk($data, $filename, $sections, $db, $table_prefix = '', $output_filename = '')
     {
-        $options = $db->query('SELECT * FROM ' . $table_prefix . 'settings WHERE ' . db_string_equal_to('name', 'bburl'));
+        $options = $db->query_select('settings', array('*'), array('name' => 'bburl'));
 
         $homeurl = empty($options[0]['value']) ? '' : $options[0]['value'];
 
@@ -868,7 +868,7 @@ class Hook_import_mybb
         $row_start = 0;
         $rows = array();
         do {
-            $rows = $db->query('SELECT * FROM ' . $table_prefix . 'attachments ORDER BY aid', 200, $row_start);
+            $rows = $db->query_select('attachments', array('*'), null, 'ORDER BY aid', 200, $row_start);
             foreach ($rows as $row) {
                 if (import_check_if_imported('post_files', strval($row['aid']))) {
                     continue;
@@ -935,7 +935,7 @@ class Hook_import_mybb
             }
             $maximum = count($answers);
 
-            $rows2 = $db->query('SELECT * FROM ' . $table_prefix . 'pollvotes WHERE pid=' . strval($row['pid']));
+            $rows2 = $db->query_select('pollvotes', array('*'), array('pid' => $row['pid']));
             foreach ($rows2 as $row2) {
                 $row2['uid'] = import_id_remap_get('member', strval($row2['uid']), true);
             }
@@ -969,7 +969,7 @@ class Hook_import_mybb
      */
     public function import_cns_private_topics($db, $table_prefix, $old_base_dir)
     {
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'privatemessages p ORDER BY dateline');
+        $rows = $db->query_select('privatemessages p', array('*'), null, 'ORDER BY dateline');
 
         // Group them up into what will become topics
         $groups = array();
@@ -1087,7 +1087,7 @@ class Hook_import_mybb
         $row_start = 0;
         $rows = array();
         do {
-            $rows = $db->query('SELECT * FROM ' . $table_prefix . 'threadsubscriptions', 200, $row_start);
+            $rows = $db->query_select('threadsubscriptions', array('*'), null, '', 200, $row_start);
             foreach ($rows as $row) {
                 if (import_check_if_imported('topic_notification', strval($row['tid']) . '-' . strval($row['uid']))) {
                     continue;
@@ -1186,8 +1186,8 @@ class Hook_import_mybb
      */
     public function import_cns_custom_profile_fields($db, $table_prefix, $file_base)
     {
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'profilefields');
-        $members = $db->query('SELECT * FROM ' . $table_prefix . 'userfields');
+        $rows = $db->query_select('profilefields', array('*'));
+        $members = $db->query_select('userfields', array('*'));
         foreach ($rows as $row) {
             if (import_check_if_imported('cpf', strval($row['fid']))) {
                 continue;
@@ -1328,7 +1328,7 @@ class Hook_import_mybb
      */
     public function import_cns_multi_moderations($db, $table_prefix, $file_base)
     {
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'modtools WHERE ' . db_string_equal_to('type', 't'));
+        $rows = $db->query_select('modtools', array('*'), array('type' => 't'));
         foreach ($rows as $row) {
             $mm_forum_multi_code = (isset($row['forums']) && strlen($row['forums']) > 0) ? '+' . $row['forums'] : '*'; //'mm_forum_multi_code'
             $mm_name = $row['name'];
