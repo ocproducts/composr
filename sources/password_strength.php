@@ -18,6 +18,15 @@
  * @package    core
  */
 
+/*
+Examples...
+
+'hello' --> 1
+'t2D' --> 2
+'t2D$' --> 3
+'t2D$f3t4t412%$' --> 9
+*/
+
 /**
  * Test password strength.
  *
@@ -27,59 +36,47 @@
  */
 function test_password($password, $username = '')
 {
+    $strength = 1;
+
     if (strlen($password) == 0) {
-        return 1;
+        return $strength;
     }
 
     if (($username != '') && ($username == $password)) {
-        return 1;
+        return $strength;
     }
-
-    $strength = 0;
-
-    // Get the length of the password
-    $length = strlen($password);
 
     // Check if password is not all lower case
     if (strtolower($password) != $password) {
-        $strength += 1;
+        $strength += 5;
     }
 
     // Check if password is not all upper case
-    if (strtoupper($password) == $password) {
-        $strength += 1;
+    if (strtoupper($password) != $password) {
+        $strength += 5;
     }
 
-    // Check string length is 8 -15 chars
+    // Check string length
+    $length = strlen($password);
     if ($length >= 8 && $length <= 15) {
-        $strength += 1;
-    }
-
-    // Check if length is 16 - 35 chars
-    if ($length >= 16 && $length <= 35) {
-        $strength += 2; // Check if length greater than 35 chars
+        $strength += 16;
+    } elseif ($length >= 16 && $length <= 35) {
+        $strength += 32; // Check if length greater than 35 chars
     } elseif ($length > 35) {
-        $strength += 3;
+        $strength += 48;
     }
 
     // Get the numbers in the password
-    $numbers = array();
-    preg_match_all('/[0-9]/', $password, $numbers);
-    $strength += count($numbers[0]);
+    $strength += preg_match_all('#[0-9]#', $password) * 3;
 
     // Check for special chars
-    $specialchars = array();
-    preg_match_all('/[|!@#$%&*\/=?,;.:\-_+~^]/', $password, $specialchars);
-    $strength += count($specialchars[0]);
+    $strength += preg_match_all('#[^a-zA-Z0-9]#', $password) * 8;
 
     // Get the number of unique chars
     $chars = preg_split('#(.)#', $password, null, PREG_SPLIT_DELIM_CAPTURE);
     $num_unique_chars = count(array_unique($chars)) - 1;
-    $strength += $num_unique_chars * 2;
+    $strength += ($num_unique_chars - 1) * 2;
 
-    // Strength is a number 1-10
-    $strength = $strength > 99 ? 99 : $strength;
-    $strength = intval(ceil(floatval($strength) / 10.0 + 1.0));
-
-    return $strength;
+    // Strength must be a number 1-10
+    return min(10, intval(round(floatval($strength) / 10.0)));
 }
