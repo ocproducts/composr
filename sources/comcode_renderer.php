@@ -2139,8 +2139,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 // Check permission
                 require_code('attachments');
                 $already_referenced = array_key_exists($__id, $GLOBALS['ATTACHMENTS_ALREADY_REFERENCED']);
-                if (($already_referenced) || ($as_admin) || (/*(!is_guest($source_member)) && */
-                    ($source_member === $attachment_row['a_member_id'])) || ((has_privilege($source_member, 'reuse_others_attachments')) && (has_attachment_access($source_member, $__id)))
+                if (($already_referenced) || ($as_admin) || (/*(!is_guest($source_member)) && */($source_member === $attachment_row['a_member_id'])) || ((has_privilege($source_member, 'reuse_others_attachments')) && (has_attachment_access($source_member, $__id)))
                 ) {
                     if (!array_key_exists('type', $attributes)) {
                         $attributes['type'] = 'auto';

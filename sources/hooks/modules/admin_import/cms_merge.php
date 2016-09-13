@@ -794,8 +794,7 @@ class Hook_cms_merge
         foreach ($rows as $row) {
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('authors', 'author', array('author' => $row['author']));
             if (is_null($test)) {
-                add_author($row['author'], $row['url'], array_key_exists('forum_handle', $row) ?/*LEGACY*/
-                    $row['forum_handle'] : $row['member_id'], $this->get_lang_string($db, $row['description']), $this->get_lang_string($db, $row['skills']));
+                add_author($row['author'], $row['url'], array_key_exists('forum_handle', $row) ?/*LEGACY*/$row['forum_handle'] : $row['member_id'], $this->get_lang_string($db, $row['description']), $this->get_lang_string($db, $row['skills']));
             }
         }
         $this->_import_catalogue_entry_linkage($db, $table_prefix, 'author', null);

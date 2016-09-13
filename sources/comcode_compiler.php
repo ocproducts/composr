@@ -66,8 +66,7 @@ function init__comcode_compiler()
 
     // These tags have contents that are not interpreted as Comcode (so no HTML tags either), but are formatted for white-space
     global $CODE_TAGS;
-    $CODE_TAGS = array(/*'img' => true - no, can be a symbol,*/
-                       'flash' => true, 'media' => true, 'thumb' => true, 'menu' => true, 'no_parse' => true, 'code' => true, 'tt' => true, 'samp' => true, 'codebox' => true, 'staff_note' => true, 'section_controller' => true, 'big_tab_controller' => true);
+    $CODE_TAGS = array(/*'img' => true - no, can be a symbol,*/'flash' => true, 'media' => true, 'thumb' => true, 'menu' => true, 'no_parse' => true, 'code' => true, 'tt' => true, 'samp' => true, 'codebox' => true, 'staff_note' => true, 'section_controller' => true, 'big_tab_controller' => true);
 
     global $BUTTON_EDITED_TAGS;
     $BUTTON_EDITED_TAGS = array('attachment' => true, 'attachment_safe' => true, 'section_controller' => true, 'big_tab_controller' => true, 'currency' => true, 'block' => true, 'contents' => true, 'concepts' => true, 'media' => true, 'flash' => true, 'menu' => true, 'email' => true, 'reference' => true, 'page' => true, 'thumb' => true, 'snapback' => true, 'post' => true, 'topic' => true, 'include' => true, 'random' => true, 'jumping' => true, 'shocker' => true,);

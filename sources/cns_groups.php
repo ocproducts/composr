@@ -237,8 +237,10 @@ function cns_get_group_link($id, $hide_hidden = true)
 
     $name = cns_get_group_name($row['id'], $hide_hidden);
 
+    $members_groups = $GLOBALS['CNS_DRIVER']->get_members_groups(get_member());
+
     $see_hidden = has_privilege(get_member(), 'see_hidden_groups');
-    if ((!$see_hidden) && ($row['g_hidden'] == 1)) {
+    if ((!$see_hidden) && ($row['g_hidden'] == 1) && (!in_array($id, $members_groups))) {
         return make_string_tempcode(escape_html($name));
     }
 
@@ -275,7 +277,14 @@ function cns_get_group_property($group, $property, $hide_hidden = true)
     global $USER_GROUPS_CACHED;
 
     if ($hide_hidden) {
-        if (($property == 'name') && ($USER_GROUPS_CACHED[$group]['g_hidden'] == 1) && (!has_privilege(get_member(), 'see_hidden_groups'))) {
+        $members_groups = $GLOBALS['CNS_DRIVER']->get_members_groups(get_member());
+
+        if (
+            ($property == 'name') &&
+            ($USER_GROUPS_CACHED[$group]['g_hidden'] == 1) &&
+            (!has_privilege(get_member(), 'see_hidden_groups')) &&
+            (!in_array($group, $members_groups))
+        ) {
             return do_lang('UNKNOWN');
         }
     }
@@ -373,8 +382,11 @@ function cns_get_members_groups($member_id = null, $skip_secret = false, $handle
         }
     }
 
-    $skip_secret = (($skip_secret) && ((/*For installer*/
-                                       !function_exists('get_member')) || ($member_id != get_member())) && ((!function_exists('has_privilege')) || (!has_privilege(get_member(), 'see_hidden_groups'))));
+    $skip_secret = (
+        ($skip_secret) &&
+        ((/*For installer*/!function_exists('get_member')) || ($member_id != get_member())) &&
+        ((!function_exists('has_privilege')) || (!has_privilege(get_member(), 'see_hidden_groups')))
+    );
 
     global $GROUP_MEMBERS_CACHE;
     if (isset($GROUP_MEMBERS_CACHE[$member_id][$skip_secret][$handle_probation])) {

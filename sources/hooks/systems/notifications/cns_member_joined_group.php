@@ -46,11 +46,13 @@ class Hook_notification_cns_member_joined_group extends Hook_Notification
     {
         $page_links = array();
 
-        $map = array();
-        if (!has_privilege(get_member(), 'see_hidden_groups')) {
-            $map['g_hidden'] = 0;
+        $where = '1=1';
+        if (has_privilege(get_member(), 'see_hidden_groups')) {
+            $members_groups = $GLOBALS['CNS_DRIVER']->get_members_groups(get_member());
+            $where .= ' AND (g_hidden=0 OR g.id IN (' . implode(',', array_map('strval', $members_groups)) . '))';
         }
-        $types = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id', 'g_name'), $map);
+
+        $types = $GLOBALS['FORUM_DB']->query('SELECT id,g_name FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_groups g' . $where);
         foreach ($types as $type) {
             $page_links[] = array(
                 'id' => $type['id'],
@@ -106,9 +108,11 @@ class Hook_notification_cns_member_joined_group extends Hook_Notification
             $hidden = $GLOBALS['FORUM_DB']->query_select_value('f_groups', 'g_hidden', array('id' => intval($category)));
 
             if ($hidden == 1) {
+                $members_groups = $GLOBALS['CNS_DRIVER']->get_members_groups(get_member());
+
                 $members_new = array();
                 foreach ($members as $member_id => $setting) {
-                    if (has_privilege($member_id, 'see_hidden_groups')) {
+                    if ((has_privilege($member_id, 'see_hidden_groups')) || (in_array(intval($category), $members_groups))) {
                         $members_new[$member_id] = $setting;
                     }
                 }

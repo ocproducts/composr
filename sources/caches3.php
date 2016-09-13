@@ -328,9 +328,10 @@ function erase_cached_templates($preserve_some = false, $only_templates = null, 
     }
 
     foreach ($themes as $theme) {
-        $using_less = (addon_installed('less')) || /*LESS-regeneration is too intensive and assumed cache-safe anyway*/
-                      is_file(get_custom_file_base() . '/themes/' . $theme . '/css/global.less') || 
-                      is_file(get_custom_file_base() . '/themes/' . $theme . '/css_custom/global.less');
+        $using_less =
+            (addon_installed('less')) || /*LESS-regeneration is too intensive and assumed cache-safe anyway*/
+            is_file(get_custom_file_base() . '/themes/' . $theme . '/css/global.less') || 
+            is_file(get_custom_file_base() . '/themes/' . $theme . '/css_custom/global.less');
 
         foreach (array_keys($langs) as $lang) {
             $path = get_custom_file_base() . '/themes/' . $theme . '/templates_cached/' . $lang . '/';

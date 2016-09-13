@@ -902,8 +902,7 @@ class Module_cms_banners_cat extends Standard_crud_module
             array('_SELF', array('type' => 'add', 'b_type' => $type), '_SELF', do_lang_tempcode('ADD_BANNER')), // Add one
             (is_null($id) || (!has_privilege(get_member(), 'edit_own_lowrange_content', 'cms_banners'))) ? null : array('_SELF', array('type' => '_edit', 'id' => $id), '_SELF', do_lang_tempcode('EDIT_THIS_BANNER')), // Edit this
             has_privilege(get_member(), 'edit_own_lowrange_content', 'cms_banners') ? array('_SELF', array('type' => 'edit'), '_SELF', do_lang_tempcode('EDIT_BANNER')) : null, // Edit one
-            ((is_null($id)) || (/*Don't go direct to view if simplified do-next on as too unnatural*/
-                    get_option('simplified_donext') == '1')) ? null : array('banners', array('type' => 'view', 'source' => $id), get_module_zone('banners')), // View this
+            ((is_null($id)) || (/*Don't go direct to view if simplified do-next on as too unnatural*/get_option('simplified_donext') == '1')) ? null : array('banners', array('type' => 'view', 'source' => $id), get_module_zone('banners')), // View this
             array('admin_banners', array('type' => 'browse'), get_module_zone('admin_banners')), // View archive
             null, // Add to category
             has_privilege(get_member(), 'submit_cat_highrange_content', 'cms_banners') ? array('_SELF', array('type' => 'add_category'), '_SELF', do_lang_tempcode('ADD_BANNER_TYPE')) : null, // Add one category
