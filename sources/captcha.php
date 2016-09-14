@@ -237,7 +237,7 @@ function generate_captcha()
     $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'captchas WHERE si_time<' . strval(time() - 60 * 30) . ' OR ' . db_string_equal_to('si_session_id', $session));
 
     // Create code
-    $choices = array('3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'M', 'N', 'P', 'R', 'S', 'T', 'W', 'X', 'Y');
+    $choices = array('3', '4', '6', '7', '9', 'A', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'M', 'N', 'P', 'R', 'T', 'W', 'X', 'Y');
     $si_code = '';
     for ($i = 0; $i < 6; $i++) {
         $choice = mt_rand(0, count($choices) - 1);
@@ -282,8 +282,8 @@ function check_captcha($code_entered, $regenerate_on_error = true)
             if (get_option('captcha_single_guess') == '1') {
                 generate_captcha();
             }
-            set_http_status_code('500');
-            warn_exit(do_lang_tempcode('NO_SESSION_SECURITY_CODE'));
+            attach_message(do_lang_tempcode('NO_SESSION_SECURITY_CODE'), 'warn');
+            return false;
         }
         $passes = (strtolower($code_needed) == strtolower($code_entered));
         if ($regenerate_on_error) {

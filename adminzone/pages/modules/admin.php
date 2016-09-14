@@ -268,7 +268,7 @@ class Module_admin
         }
 
         foreach ($section_limitations as $l) {
-            if (stripos($results_type, $l) !== false) {
+            if (@stripos($results_type, $l) !== false) {
                 return true;
             }
         }

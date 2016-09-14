@@ -3713,7 +3713,9 @@ function add_captcha_checking(form)
 			var url='{$FIND_SCRIPT;,snippet}?snippet=captcha_wrong&name='+window.encodeURIComponent(form.elements['captcha'].value);
 			if (!do_ajax_field_test(url))
 			{
-				form.elements['captcha'].src+='&'; // Force it to reload latest captcha
+				var image=document.getElementById('captcha_image');
+				if (!image) image=document.getElementById('captcha_frame');
+				image.src+='&'; // Force it to reload latest captcha
 				document.getElementById('submit_button').disabled=false;
 				return false;
 			}

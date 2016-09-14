@@ -186,7 +186,7 @@ class Block_main_multi_content
         $object = get_content_object($content_type);
         $info = $object->info($zone, ($select_b == '') ? null : $select_b);
         if ($info === null) {
-            warn_exit(do_lang_tempcode('IMPOSSIBLE_TYPE_USED'));
+            return paragraph(do_lang_tempcode('IMPOSSIBLE_TYPE_USED'), '', 'red_alert');
         }
 
         $submit_url = $info['add_url'];
