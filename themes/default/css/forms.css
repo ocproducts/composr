@@ -11,6 +11,12 @@
 	}
 /*{+END}*/
 
+.required_field_warning_wrap {
+	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+		text-align: center;
+	/*{+END}*/
+}
+
 .required_field_warning {
 	border: 1px solid {$GET,standard_border};
 	overflow: hidden;
@@ -20,9 +26,9 @@
 	*/
 	font-weight: bold;
 	font-size: 0.85em;
-	margin: 1.5em auto 1em auto;
+	margin: 1.5em 0 1em 0;
 	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		width: 11em;
+		display: inline-block;
 	/*{+END}*/
 	{$BETA_CSS_PROPERTY,border-radius: 5px;}
 	{$BETA_CSS_PROPERTY,user-select: none;} {$,To stop accidental touching on mobile form filling in}
@@ -763,6 +769,16 @@ span.validated_checkbox+input[name="validated"].input_tick {
 .cke_widget_inline {
 	line-height: 1em !important;
 }
+
+/*{+START,IF,{!takes_lots_of_space}}*/
+	div span .cke_combo_text {
+		width: 70px !important;
+	}
+
+	div span .cke_combo__fontsize .cke_combo_text {
+		width: 50px !important;
+	}
+/*{+END}*/
 
 /* Icons for our custom plugins (we specify ours this way for greatest flexibility) */
 

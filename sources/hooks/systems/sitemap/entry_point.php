@@ -115,6 +115,8 @@ class Hook_sitemap_entry_point extends Hook_sitemap_base
             }
         }
 
+        require_all_lang();
+
         $orig_page_link = $page_link;
         $this->_make_zone_concrete($zone, $page_link);
 

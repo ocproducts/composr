@@ -7218,7 +7218,6 @@ function string_scan($lang, $do_guessing = false)
         ANSWER
         ANY_PROBLEMS_CAN
         APPLY_TO_GROUP
-        APRIL
         ARCHIVES
         ARE_YOU_SURE_DELETE
         ASCENDING
@@ -7236,7 +7235,6 @@ function string_scan($lang, $do_guessing = false)
         AUDIO
         AUDIOS
         AUDIO_VERSION
-        AUGUST
         AUTHOR
         AUTHORS
         AUTHOR_ABOUT
@@ -7572,7 +7570,30 @@ function string_scan($lang, $do_guessing = false)
         DAYS
         DAYS_AGO
         DAYS_LAST_VISIT
+        JANUARY
+        FEBRUARY
+        MARCH
+        APRIL
+        MAY
+        JUNE
+        JULY
+        AUGUST
+        SEPTEMBER
+        OCTOBER
+        NOVEMBER
         DECEMBER
+        JANUARY_SHORT
+        FEBRUARY_SHORT
+        MARCH_SHORT
+        APRIL_SHORT
+        MAY_SHORT
+        JUNE_SHORT
+        JULY_SHORT
+        AUGUST_SHORT
+        SEPTEMBER_SHORT
+        OCTOBER_SHORT
+        NOVEMBER_SHORT
+        DECEMBER_SHORT
         DECIDE_PER_CATEGORY_NOTIFICATIONS
         DECISION_TREE_SCREEN_NEEDS_PARAMETER
         DECLARE_EVENT_INTEREST
@@ -7941,7 +7962,6 @@ function string_scan($lang, $do_guessing = false)
         FC_TUESDAY
         FC_WEDNESDAY
         FEATURES
-        FEBRUARY
         FEED
         FEEDBACK
         FEEDS
@@ -8149,7 +8169,6 @@ function string_scan($lang, $do_guessing = false)
         IS_PUBLIC
         I_AGREE
         I_DISAGREE
-        JANUARY
         JOIN
         JOINED
         JOINED_AGO
@@ -8159,11 +8178,9 @@ function string_scan($lang, $do_guessing = false)
         JOIN_DISALLOW
         JOIN_HERE
         JOIN_OR_LOGIN
-        JULY
         JUMP
         JUMP_TO_FIRST_UNREAD
         JUMP_TO_PAGE
-        JUNE
         JUST_NEWS_CATEGORIES
         KEYBOARD_MAP
         KEYWORD
@@ -8244,7 +8261,6 @@ function string_scan($lang, $do_guessing = false)
         MANUALLY_MARKED
         MAP_POSITION_FIELD
         MAP_TABLE
-        MARCH
         MARKED_POST_ACTIONS
         MARKER
         MARKS
@@ -8254,7 +8270,6 @@ function string_scan($lang, $do_guessing = false)
         MARK_UNREAD_TOO_OLD
         MAXIMUM_SELECTIONS
         MAXIMUM_UPLOAD
-        MAY
         MAY_LEAVE_BLANK_ADVANCED
         MEC_NOTIFICATION_MAIL
         MEC_NOTIFICATION_MAIL_SUBJECT
@@ -8584,7 +8599,6 @@ function string_scan($lang, $do_guessing = false)
         NOT_USERNAME
         NOT_VALID_ATTACHMENT
         NOT_VIDEO
-        NOVEMBER
         NOVOTE
         NOW_ADDED_AS_FRIEND
         NOW_DISABLED_NOTIFICATIONS
@@ -8652,7 +8666,6 @@ function string_scan($lang, $do_guessing = false)
         NUM_RESULTS
         NUM_UNREAD
         NUM_WARNINGS
-        OCTOBER
         OFFLINE
         OLDER_NEWS
         OLDEST_FIRST
@@ -9085,7 +9098,6 @@ function string_scan($lang, $do_guessing = false)
         SEND_NOTIFICATION
         SENT_SIMPLE
         SEPARATOR
-        SEPTEMBER
         SERVICE_CANCELLED
         SERVICE_PAID_FOR
         SETTINGS

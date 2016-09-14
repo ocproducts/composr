@@ -761,8 +761,7 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
     }
     $_data = mixed();
     $_data = false;
-    if (($CACHE_TEMPLATES) && (/*the following relates to ensuring a full recompile for INCLUDEs except for CSS and JS*/($parameters === null) || ((!$RECORD_TEMPLATES_USED) && (!$RECORD_TEMPLATES_TREE))) && (!$IS_TEMPLATE_PREVIEW_OP_CACHE) && (!$RECORD_LANG_STRINGS/*Tempcode compilation embeds lang strings*/) && ((!$POSSIBLY_IN_SAFE_MODE_CACHE) || (isset($GLOBALS['SITE_INFO']['safe_mode'])) || (!in_safe_mode()))
-    ) {
+    if (($CACHE_TEMPLATES) && (/*the following relates to ensuring a full recompile for INCLUDEs except for CSS and JS*/($parameters === null) || ((!$RECORD_TEMPLATES_USED) && (!$RECORD_TEMPLATES_TREE))) && (!$IS_TEMPLATE_PREVIEW_OP_CACHE) && (!$RECORD_LANG_STRINGS/*Tempcode compilation embeds lang strings*/) && ((!$POSSIBLY_IN_SAFE_MODE_CACHE) || (isset($GLOBALS['SITE_INFO']['safe_mode'])) || (!in_safe_mode()))) {
         if (!isset($TEMPLATE_DISK_ORIGIN_CACHE[$codename][$lang][$theme][$suffix][$directory])) {
             $found = find_template_place($codename, $lang, $theme, $suffix, $directory);
             $TEMPLATE_DISK_ORIGIN_CACHE[$codename][$lang][$theme][$suffix][$directory] = $found;
@@ -772,7 +771,6 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
 
         if ($found !== null) {
             $tcp_path = $prefix . $theme . '/templates_cached/' . $lang . '/' . $codename . $found[2] . '.tcp';
-
             if ($loaded_this_once) {
                 if (isset($LOADED_TPL_CACHE[$codename][$theme])) {
                     $_data = $LOADED_TPL_CACHE[$codename][$theme];

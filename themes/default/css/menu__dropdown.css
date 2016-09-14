@@ -27,7 +27,7 @@ For example:
 		font-size: 0.9em;
 	/*{+END}*/
 	/*{+START,IF,{!takes_lots_of_space}}*/
-		font-size: 0.72em;
+		font-size: 0.8em;
 	/*{+END}*/
 	padding: 0.5em 0.25em;
 }

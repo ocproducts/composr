@@ -194,10 +194,10 @@ HTML5 Date polyfill | Jonathan Stipe | https://github.com/jonstipe/date-polyfill
         $calendarDiv.appendTo(calendarContainer);
         $calendarDiv.datepicker({
           dayNames: ['{!dates:SUNDAY;^}','{!dates:MONDAY;^}','{!dates:TUESDAY;^}','{!dates:WEDNESDAY;^}','{!dates:THURSDAY;^}','{!dates:FRIDAY;^}','{!dates:SATURDAY;^}'],
-          dayNamesMin: ['{$SUBSTR,{!dates:SUNDAY;^},0,2}','{$SUBSTR,{!dates:MONDAY;^},0,2}','{$SUBSTR,{!dates:TUESDAY;^},0,2}','{$SUBSTR,{!dates:WEDNESDAY;^},0,2}','{$SUBSTR,{!dates:THURSDAY;^},0,2}','{$SUBSTR,{!dates:FRIDAY;^},0,2}','{$SUBSTR,{!dates:SATURDAY;^},0,2}'],
-          dayNamesShort: ['{$SUBSTR,{!dates:SUNDAY;^},0,3}','{$SUBSTR,{!dates:MONDAY;^},0,3}','{$SUBSTR,{!dates:TUESDAY;^},0,3}','{$SUBSTR,{!dates:WEDNESDAY;^},0,3}','{$SUBSTR,{!dates:THURSDAY;^},0,3}','{$SUBSTR,{!dates:FRIDAY;^},0,3}','{$SUBSTR,{!dates:SATURDAY;^},0,3}'],
+          dayNamesMin: ['{!dates:SUNDAY_SHORT;^}','{!dates:MONDAY_SHORT;^}','{!dates:TUESDAY_SHORT;^}','{!dates:WEDNESDAY_SHORT;^}','{!dates:THURSDAY_SHORT;^}','{!dates:FRIDAY_SHORT;^}','{!dates:SATURDAY_SHORT;^}'],
+          dayNamesShort: ['{!dates:SUNDAY_SHORT;^}','{!dates:MONDAY_SHORT;^}','{!dates:TUESDAY_SHORT;^}','{!dates:WEDNESDAY_SHORT;^}','{!dates:THURSDAY_SHORT;^}','{!dates:FRIDAY_SHORT;^}','{!dates:SATURDAY_SHORT;^}'],
           monthNames: ['{!dates:JANUARY;^}','{!dates:FEBRUARY;^}','{!dates:MARCH;^}','{!dates:APRIL;^}','{!dates:MAY;^}','{!dates:JUNE;^}','{!dates:JULY;^}','{!dates:AUGUST;^}','{!dates:SEPTEMBER;^}','{!dates:OCTOBER;^}','{!dates:NOVEMBER;^}','{!dates:DECEMBER;^}'],
-          monthNamesShort: ['{$SUBSTR,{!dates:JANUARY;^},0,3}','{$SUBSTR,{!dates:FEBRUARY;^},0,3}','{$SUBSTR,{!dates:MARCH;^},0,3}','{$SUBSTR,{!dates:APRIL;^},0,3}','{$SUBSTR,{!dates:MAY;^},0,3}','{$SUBSTR,{!dates:JUNE;^},0,3}','{$SUBSTR,{!dates:JULY;^},0,3}','{$SUBSTR,{!dates:AUGUST;^},0,3}','{$SUBSTR,{!dates:SEPTEMBER;^},0,3}','{$SUBSTR,{!dates:OCTOBER;^},0,3}','{$SUBSTR,{!dates:NOVEMBER;^},0,3}','{$SUBSTR,{!dates:DECEMBER;^},0,3}'],
+          monthNamesShort: ['{!dates:JANUARY_SHORT;^}','{!dates:FEBRUARY_SHORT;^}','{!dates:MARCH_SHORT;^}','{!dates:APRIL_SHORT;^}','{!dates:MAY_SHORT;^}','{!dates:JUNE_SHORT;^}','{!dates:JULY_SHORT;^}','{!dates:AUGUST_SHORT;^}','{!dates:SEPTEMBER_SHORT;^}','{!dates:OCTOBER_SHORT;^}','{!dates:NOVEMBER_SHORT;^}','{!dates:DECEMBER_SHORT;^}'],
           prevText: '{!PREVIOUS;^}',
           nextText: '{!NEXT;^}',
           currentText: '{!TODAY;^}',
