@@ -16,7 +16,7 @@ It costs you nothing to try out Composr. You can set up a 30 day demo account wi
 
 It's very simple to set up your demo.
 
-[url="http://www.arvixe.com/9034-223-3-122.html" target="_blank"][media description="Composr free demo" thumb="0"]data_custom/images/docs/sup_composr_101/c39ff1c3e5a27fd34fe5ce06d6246036.png[/media][/url]
+[url="https://www.arvixe.com/ocportal_hosting" target="_blank"][media description="Composr free demo" thumb="0"]data_custom/images/docs/sup_composr_101/c39ff1c3e5a27fd34fe5ce06d6246036.png[/media][/url]
 
 [box="Note"]
 The username will be used for the name of your demo site.
@@ -126,7 +126,5 @@ Composr has created the following for us:
 [/list]
 
 It's easy to see from this initial install just how powerful and flexible Composr is, however the initial install includes so much more than listed above and I will work my way through these in other tutorials.
-
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
 
 {$SET,tutorial_tags,Introduction,novice}{$SET,tutorial_add_date,Nov 2014}{$SET,tutorial_summary,Composr is a very comprehensive Content management system "CMS" That can be set up and used by just about anyone. I'll go over some of the basics of setup.}[block]main_tutorial_rating[/block]

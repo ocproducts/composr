@@ -27,6 +27,4 @@ Now everything is complete you will need to take a look around your site to make
 
 When you have checked through and everything is okay then re-open your website.
 
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
-
 {$SET,tutorial_tags,Upgrading,Maintenance,novice}{$SET,tutorial_add_date,May 2013}{$SET,tutorial_summary,A regular task you will need to do is upgrading your Composr website to the latest version of the software. This tutorial explains the basic process.}[block]main_tutorial_rating[/block]

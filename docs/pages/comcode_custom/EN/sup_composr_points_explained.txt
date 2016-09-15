@@ -31,6 +31,4 @@ The Point Store is linked onto the default menus on the front-end of your site, 
 
 Go and try out all of the Point Store options and see what works best for you. It offers a great amount of customisability which you simply don't get from simple posts to rank systems.
 
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
-
 {$SET,tutorial_tags,Fun and Games,Social,points,novice}{$SET,tutorial_add_date,Apr 2014}{$SET,tutorial_summary,It's fairly common that many forums utilise a rank system based on forum posts, but Composr has a much better system: points.}[block]main_tutorial_rating[/block]

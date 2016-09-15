@@ -26,6 +26,4 @@ Once you have the chatroom which you want to add the shout box to. You can now f
 
 As you can see this is a very easy process and allows you to add an easy way for your site visitors to interact and convey messages without needing to log in to the forum or full chatroom.
 
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
-
 {$SET,tutorial_tags,Chatrooms,Social,novice}{$SET,tutorial_add_date,Oct 2013}{$SET,tutorial_summary,A shoutbox is a popular addition to many community websites and is very easy to add. This tutorial covers the process.}[block]main_tutorial_rating[/block]

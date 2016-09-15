@@ -53,6 +53,4 @@ Possibilities include:
 [/list]
 All these are via the [tt]main_multi_content[/tt] block, which is highly configurable.
 
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
-
 {$SET,tutorial_tags,Content,Downloads,downloads,novice}{$SET,tutorial_add_date,Nov 2013}{$SET,tutorial_summary,Composr offers a fully equipped and well-rounded system for uploading your files and sharing them to your website visitors.}[block]main_tutorial_rating[/block]

@@ -38,6 +38,4 @@ The remaining options on the form include:
 [/list]
 Once you have filled this in you can preview the quiz or click the Add quiz button.
 
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
-
 {$SET,tutorial_tags,Content,Feedback features,novice}{$SET,tutorial_add_date,Jul 2014}{$SET,tutorial_summary,Quizzes in Composr have multiple purposes. For example, collecting data, fun, giveaways and competitions.}[block]main_tutorial_rating[/block]

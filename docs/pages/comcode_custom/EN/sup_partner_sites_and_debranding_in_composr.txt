@@ -30,6 +30,4 @@ The first three options relate to the name of the product, name of the company a
 
 In this section you can edit the keyboard shortcuts associated with your site and add new favicons for your site.
 
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
-
 {$SET,tutorial_tags,Structure and navigation,debrand,novice}{$SET,tutorial_add_date,Jul 2014}{$SET,tutorial_summary,In this tutorial I will talk about a couple of slightly-related features that are useful to agencies deploying Composr on a large scale.}[block]main_tutorial_rating[/block]

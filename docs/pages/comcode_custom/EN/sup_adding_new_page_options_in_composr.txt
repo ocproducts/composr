@@ -30,6 +30,4 @@ This option is only shown if the page you are adding under has got the [tt]main_
 
 If you manually open up a URL like [tt]http://yourbaseurl/index.php?page=some_page_name[/tt] then Composr will invite you to add the missing page.
 
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
-
 {$SET,tutorial_tags,Structure and navigation,Content,novice}{$SET,tutorial_add_date,Aug 2013}{$SET,tutorial_summary,Adding a new page is one of the most common tasks you will need to do with any website. This process is quite simple and explained in this tutorial.}[block]main_tutorial_rating[/block]

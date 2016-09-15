@@ -24,6 +24,4 @@ This adds a link to the page you created to the wiki home page which stops it fr
 
 To add a new post simply click the Post button at the bottom of the page which the post will sit on and you'll be taken to a posting form.
 
-[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
-
 {$SET,tutorial_tags,Content,Wiki,wiki,novice}{$SET,tutorial_add_date,Sep 2013}{$SET,tutorial_summary, Wikis are great for large community driven websites for sharing information. This tutorial provides some basic information on Composr's Wiki+ system.}[block]main_tutorial_rating[/block]
