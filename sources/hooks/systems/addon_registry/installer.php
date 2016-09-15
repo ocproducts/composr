@@ -149,7 +149,8 @@ class Hook_addon_registry_installer
             'templates/INSTALLER_INPUT_PASSWORD.tpl' => 'administrative__installer_step_4',
             'templates/INSTALLER_STEP_4_SECTION_OPTION.tpl' => 'administrative__installer_step_4',
             'templates/INSTALLER_INPUT_LINE.tpl' => 'administrative__installer_step_4',
-            'templates/INSTALLER_INPUT_TICK.tpl' => 'administrative__installer_step_4'
+            'templates/INSTALLER_INPUT_TICK.tpl' => 'administrative__installer_step_4',
+            'templates/PASSWORD_CHECK_JS.tpl' => 'administrative__installer_wrap',
         );
     }
 

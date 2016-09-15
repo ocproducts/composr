@@ -181,7 +181,6 @@ class Hook_addon_registry_core_cns
             'sources/hooks/systems/config/minimum_username_length.php',
             'sources/hooks/systems/config/dobs.php',
             'sources/hooks/systems/config/one_per_email_address.php',
-            'sources/hooks/systems/config/login_error_secrecy.php',
             'sources/hooks/systems/config/privacy_fax.php',
             'sources/hooks/systems/config/privacy_postal_address.php',
             'sources/hooks/systems/config/probation_usergroup.php',

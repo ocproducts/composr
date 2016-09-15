@@ -2622,12 +2622,12 @@ function pathinfo($path)
  *
  * @param  string $pattern The pattern.
  * @param  string $subject The subject string.
- * @param  ?array $matches Where matches will be put (note that it is a list of maps, except the arrays are turned inside out) (null: do not store matches). Note that this is actually passed by reference, but is also optional.
+ * @param  ?array $matches Where matches will be put (note that it is a list of maps, except the arrays are turned inside out) (null: do not store matches). Note that this is actually passed by reference, but is also optional. (null: don't gather)
  * @param  integer $flags Either 0, or PREG_OFFSET_CAPTURE.
  * @param  integer $offset Offset to start from. Usually use with 'A' modifier to anchor it (using '^' in the pattern will not work)
  * @return ~integer The number of matches (false: error).
  */
-function preg_match($pattern, $subject, $matches = null, $flags = 0, $offset = 0)
+function preg_match($pattern, $subject, &$matches = null, $flags = 0, $offset = 0)
 {
     return 0;
 }
@@ -2650,11 +2650,11 @@ function preg_grep($pattern, $subject, $flags = 0)
  *
  * @param  string $pattern The pattern.
  * @param  string $subject The subject string.
- * @param  array $matches Where matches will be put (note that it is a list of maps, except the arrays are turned inside out). Note that this is actually passed by reference, but is also optional.
+ * @param  ?array $matches Where matches will be put (note that it is a list of maps, except the arrays are turned inside out). Note that this is actually passed by reference, but is also optional. (null: don't gather)
  * @param  integer $flags Either 0, or PREG_OFFSET_CAPTURE.
  * @return ~integer The number of matches (false: error).
  */
-function preg_match_all($pattern, $subject, &$matches, $flags = 0)
+function preg_match_all($pattern, $subject, &$matches = null, $flags = 0)
 {
     return 0;
 }

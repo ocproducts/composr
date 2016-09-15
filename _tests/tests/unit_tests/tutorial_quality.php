@@ -62,6 +62,16 @@ class tutorial_quality_test_set extends cms_test_case
         }
     }
 
+    public function skip_tutorial($f)
+    {
+        // Not subject to ocProducts coding standards
+        if (in_array(basename($f, '.txt'), array('sup_youtube_channel_integration_block_addon_documentation'))) {
+            return true;
+        }
+
+        return false;
+    }
+
     public function testHasImage()
     {
         $path = get_custom_file_base() . '/docs/pages/comcode_custom/EN';
@@ -73,6 +83,10 @@ class tutorial_quality_test_set extends cms_test_case
                 }
 
                 if (in_array(basename($f, '.txt'), array('sup_glossary', 'tut_addon_index'))) {
+                    continue;
+                }
+
+                if ($this->skip_tutorial($f)) {
                     continue;
                 }
 
@@ -94,6 +108,10 @@ class tutorial_quality_test_set extends cms_test_case
         while (($f = readdir($dh)) !== false) {
             if (substr($f, -4) == '.txt') {
                 if ($f == 'panel_top.txt') {
+                    continue;
+                }
+
+                if ($this->skip_tutorial($f)) {
                     continue;
                 }
 

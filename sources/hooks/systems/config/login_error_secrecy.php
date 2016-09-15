@@ -38,7 +38,7 @@ class Hook_config_login_error_secrecy
             'explanation' => 'CONFIG_OPTION_login_error_secrecy',
             'shared_hosting_restricted' => '1',
             'list_options' => '',
-            'order_in_category_group' => 1,
+            'order_in_category_group' => 9,
 
             'addon' => 'core_configuration',
         );

@@ -31,6 +31,7 @@ class template_no_unused_test_set extends cms_test_case
         }
 
         $exceptions = array(
+            'PASSWORD_CHECK_JS',
             'AJAX_PAGINATION',
             'BLOCK_SIDE_GALLERIES_LINE',
             'BLOCK_SIDE_GALLERIES_LINE_DEPTH',

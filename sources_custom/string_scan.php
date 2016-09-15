@@ -7023,6 +7023,12 @@ function string_scan($lang, $do_guessing = false)
         DESCRIPTION_DEFAULT_VALUE_CPF
         MANUAL
         MULTI_MODERATIONS
+        CONFIG_OPTION_one_per_email_address_VALUE_0
+        CONFIG_OPTION_one_per_email_address_VALUE_1
+        CONFIG_OPTION_one_per_email_address_VALUE_2
+        CONFIRM_REALLY
+        PASSWORDS_DO_NOT_REUSE
+        PASSWORD_INSECURE
     ')));
 
     $non_admin_files = array(
@@ -7954,13 +7960,27 @@ function string_scan($lang, $do_guessing = false)
         FAILED
         FAILED_TO_OPEN_POPUP
         FAILURE_UPLOAD_SYNDICATION_AUTH
-        FC_FRIDAY
         FC_MONDAY
-        FC_SATURDAY
-        FC_SUNDAY
-        FC_THURSDAY
         FC_TUESDAY
         FC_WEDNESDAY
+        FC_THURSDAY
+        FC_FRIDAY
+        FC_SATURDAY
+        FC_SUNDAY
+        MONDAY
+        TUESDAY
+        WEDNESDAY
+        THURSDAY
+        FRIDAY
+        SATURDAY
+        SUNDAY
+        MONDAY_SHORT
+        TUESDAY_SHORT
+        WEDNESDAY_SHORT
+        THURSDAY_SHORT
+        FRIDAY_SHORT
+        SATURDAY_SHORT
+        SUNDAY_SHORT
         FEATURES
         FEED
         FEEDBACK
@@ -8010,7 +8030,6 @@ function string_scan($lang, $do_guessing = false)
         FORWARDING
         FOUND_THIS_ON
         FREE_PURCHASE
-        FRIDAY
         FRIEND
         FRIENDS
         FRIEND_EMAIL_ADDRESS
@@ -8408,7 +8427,6 @@ function string_scan($lang, $do_guessing = false)
         MODULE_TRANS_NAME_vforums
         MODULE_TRANS_NAME_warnings
         MODULE_TRANS_NAME_wiki
-        MONDAY
         MONTH
         MONTHLY
         MORE
@@ -9042,7 +9060,6 @@ function string_scan($lang, $do_guessing = false)
         RSS_XSLT_INTRODUCTION
         RULES
         SAID
-        SATURDAY
         SAVE
         SAVED_SEARCHES
         SAVE_COMPUTER_USING_COOKIE
@@ -9233,7 +9250,6 @@ function string_scan($lang, $do_guessing = false)
         SUCCESS_SAVE
         SUCCESS_UPLOAD_SYNDICATION_AUTH
         SUGGESTIONS_ONLY
-        SUNDAY
         SUNK
         SUPER_MODERATORS
         SUPPORT_NO_TICKETS
@@ -9274,7 +9290,6 @@ function string_scan($lang, $do_guessing = false)
         THREADED_REPLY_NOTICE
         THUMBNAIL
         THUMB_OR_IMG_2
-        THURSDAY
         TICKETS_MEMBER
         TICKETS_MERGED_INTO_BODY
         TICKETS_MERGED_INTO_SUBJECT
@@ -9363,7 +9378,6 @@ function string_scan($lang, $do_guessing = false)
         TREE
         TT_COMPLAINT
         TT_OTHER
-        TUESDAY
         TUTORIALS
         TUTORIAL_ON_THIS
         TYPE
@@ -9477,7 +9491,6 @@ function string_scan($lang, $do_guessing = false)
         VOTE_IN_POLL
         WANT_TO_DOWNLOAD_LOGS
         WEBSITE
-        WEDNESDAY
         WEEK
         WEEKLY
         WELCOME

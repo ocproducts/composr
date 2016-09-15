@@ -118,9 +118,11 @@ function _master_password_check__result($result)
         }
     }
 
-    global $FILE_BASE;
-    @ini_set('error_log', $FILE_BASE . '/data_custom/errorlog.php');
-    if (!$result) {
-        @error_log('Incorrect master password given while logging into ' . $msg);
+    if (function_exists('error_log')) {
+        global $FILE_BASE;
+        @ini_set('error_log', $FILE_BASE . '/data_custom/errorlog.php');
+        if (!$result) {
+            @error_log('Incorrect master password given while logging into ' . $msg);
+        }
     }
 }

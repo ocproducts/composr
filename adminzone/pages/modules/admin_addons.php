@@ -871,7 +871,7 @@ class Module_admin_addons
         $all_langs = find_all_langs();
         ksort($all_langs);
         $i = 0;
-        $tpl_languages = new Tempcode();
+        $tpl_langs = new Tempcode();
         $_lang_file_map = get_custom_file_base() . '/lang_custom/langs.ini';
         if (!file_exists($_lang_file_map)) {
             $_lang_file_map = get_file_base() . '/lang/langs.ini';
@@ -881,8 +881,9 @@ class Module_admin_addons
             if ($dir == 'lang_custom') {
                 if ($lang != fallback_lang() || get_param_integer('test', 0) == 1) {
                     $nice_name = array_key_exists($lang, $lang_file_map) ? $lang_file_map[$lang] : $lang;
-                    $frm_themes->attach(form_input_hidden('lang', $lang));
-                    $tpl_languages->attach(do_template('ADDON_EXPORT_LINE', array('_GUID' => '4e2f56799bdb3c4930396315236e2383', 'NAME' => $nice_name, 'URL' => $url, 'FILES' => $frm_langs)));
+                    $frm_langs = new Tempcode();
+                    $frm_langs->attach(form_input_hidden('lang', $lang));
+                    $tpl_langs->attach(do_template('ADDON_EXPORT_LINE', array('_GUID' => '4e2f56799bdb3c4930396315236e2383', 'NAME' => $nice_name, 'URL' => $url, 'FILES' => $frm_langs)));
                 }
             }
         }
@@ -896,6 +897,7 @@ class Module_admin_addons
         $tpl_themes = new Tempcode();
         foreach ($all_themes as $theme => $theme_title) {
             if ($theme != 'default' && $theme != 'admin' || get_param_integer('test', 0) == 1) {
+                $frm_themes = new Tempcode();
                 $frm_themes->attach(form_input_hidden('theme', $theme));
                 $tpl_themes->attach(do_template('ADDON_EXPORT_LINE', array('_GUID' => '9c1dab6d6e6c13b5e01c86c83c3acde1', 'NAME' => $theme_title, 'URL' => $url, 'FILES' => $frm_themes)));
             }
@@ -916,7 +918,7 @@ class Module_admin_addons
             $i++;
         }
 
-        return do_template('ADDON_EXPORT_SCREEN', array('_GUID' => 'd89367c0bbc3d6b8bd19f736d9474dfa', 'TITLE' => $this->title, 'LANGUAGES' => $tpl_languages, 'URL' => $url, 'FILES' => $frm_files, 'THEMES' => $tpl_themes));
+        return do_template('ADDON_EXPORT_SCREEN', array('_GUID' => 'd89367c0bbc3d6b8bd19f736d9474dfa', 'TITLE' => $this->title, 'LANGUAGES' => $tpl_langs, 'URL' => $url, 'FILES' => $frm_files, 'THEMES' => $tpl_themes));
     }
 
     /**
@@ -972,10 +974,10 @@ class Module_admin_addons
         $hidden = build_keep_post_fields();
 
         $is_lang = (get_param_string('exp', 'custom') == 'lang');
-        $lang = either_param_string('lang', null, true);
+        $lang = either_param_string('lang', null);
 
         $is_theme = (get_param_string('exp', 'custom') == 'theme');
-        $theme = either_param_string('theme', null, true);
+        $theme = either_param_string('theme', null);
 
         require_code('files');
 

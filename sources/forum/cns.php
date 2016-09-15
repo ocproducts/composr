@@ -1497,7 +1497,7 @@ class Forum_driver_cns extends Forum_driver_base
             }
         }
         $out = array();
-        $members_groups = $GLOBALS['CNS_DRIVER']->get_members_groups(get_member());
+        $members_groups = function_exists('get_member') ? $GLOBALS['CNS_DRIVER']->get_members_groups(get_member()) : array();
         foreach ($rows as $row) {
             $name = get_translated_text($row['g_name'], $GLOBALS['FORUM_DB']);
 

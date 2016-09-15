@@ -98,7 +98,7 @@ class Hook_profiles_tabs_edit
                 if ($ob->is_active($member_id_of, $member_id_viewing)) {
                     $tab = $ob->render_tab($member_id_of, $member_id_viewing, $only_tab !== $hook && $leave_to_ajax_if_possible);
 
-                    if ($tab == null) {
+                    if ($tab === null) {
                         continue;
                     }
 

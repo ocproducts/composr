@@ -826,14 +826,14 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
 
             // Cleanup the Comcode a bit
             $message_plain = comcode_to_clean_text($message_raw);
-            $message_plain = do_template($mail_template, array(
+            $message_plain = static_evaluate_tempcode(do_template($mail_template, array(
                 '_GUID' => 'a23069c20202aa59b7450ebf8d49cde1',
                 'CSS' => '{CSS}',
                 'LOGOURL' => get_logo_url(''),
                 'LANG' => $lang,
                 'TITLE' => $subject,
                 'CONTENT' => $message_plain,
-            ), $lang, false, 'MAIL', '.txt', 'text', $theme);
+            ), $lang, false, 'MAIL', '.txt', 'text', $theme));
 
             $html_content_cache[$cache_sig] = array($html_evaluated, $message_plain, $EMAIL_ATTACHMENTS);
 

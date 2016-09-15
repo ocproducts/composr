@@ -54,6 +54,10 @@ class tutorials_all_linked_test_set extends cms_test_case
 
         $hooks = find_all_hooks('systems', 'addon_registry');
         foreach (array_keys($hooks) as $hook) {
+            if (preg_match('#^language\_[A-Z]+$#',  $hook) != 0) {
+                continue;
+            }
+
             require_code('hooks/systems/addon_registry/' . $hook);
             $ob = object_factory('Hook_addon_registry_' . $hook);
             $tutorials = $ob->get_applicable_tutorials();

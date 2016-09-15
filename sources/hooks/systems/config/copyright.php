@@ -51,6 +51,6 @@ class Hook_config_copyright
      */
     public function get_default()
     {
-        return do_lang('COPYRIGHT') . ' &copy; $CURRENT_YEAR=' . date('Y') . ' ' . get_site_name();
+        return do_lang('COPYRIGHTED') . ' &copy; $CURRENT_YEAR=' . date('Y') . ' ' . get_site_name();
     }
 }
