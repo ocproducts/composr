@@ -3011,9 +3011,9 @@ END;
 
     $clauses[] = <<<END
 order allow,deny
+allow from all
 # IP bans go here (leave this comment here! If this file is writeable, Composr will write in IP bans below, in sync with its own DB-based banning - this makes DOS/hack attack prevention stronger)
 # deny from xxx.xx.x.x (leave this comment here!)
-allow from all
 END;
 
     $base = str_replace('\\', '/', dirname(cms_srv('SCRIPT_NAME')));
