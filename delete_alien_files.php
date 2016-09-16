@@ -62,6 +62,7 @@ require_code('files2');
 $files_to_always_keep = array(
     'delete_alien_files.php',
     'themes/default/templates_custom/MAIL.tpl',
+    'themes/default/text_custom/MAIL.txt',
 );
 
 // **********

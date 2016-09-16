@@ -604,8 +604,8 @@ function require_all_lang($lang = null, $only_if_for_lang = false)
     if ($lang === null) {
         global $REQUIRED_ALL_LANG;
         if (array_key_exists($lang, $REQUIRED_ALL_LANG)) {
-            if ($support_smart_decaching) {
-                disable_smart_decaching_temporarily();
+            if ($support_smart_decaching && has_caching_for('block')) {
+                disable_smart_decaching_temporarily(); // Too many file checks doing this
             }
             return;
         }
@@ -615,6 +615,7 @@ function require_all_lang($lang = null, $only_if_for_lang = false)
     if ($lang === null) {
         $lang = user_lang();
     }
+    $REQUIRED_ALL_LANG[$lang] = true;
 
     require_code('lang2');
 
@@ -626,8 +627,8 @@ function require_all_lang($lang = null, $only_if_for_lang = false)
         }
     }
 
-    if ($support_smart_decaching) {
-        disable_smart_decaching_temporarily();
+    if ($support_smart_decaching && has_caching_for('block')) {
+        disable_smart_decaching_temporarily(); // Too many file checks doing this
     }
 }
 

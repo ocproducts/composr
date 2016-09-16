@@ -71,20 +71,30 @@ class CMSAccountWrite
             }
         } else {
             // Nothing to look up with or add against even though password provided
-            if (get_option('one_per_email_address') == '0') {
-                return array(
-                    'status' => self::SIGN_IN_USERNAME_NEEDED,
-                    'register' => false,
-                    'member_id' => null,
-                    'result_text' => do_lang('SIGN_IN_USERNAME_NEEDED'),
-                );
-            } else {
-                return array(
-                    'status' => self::SIGN_IN_USERNAME_OR_EMAIL_NEEDED,
-                    'register' => false,
-                    'member_id' => null,
-                    'result_text' => do_lang('SIGN_IN_USERNAME_OR_EMAIL_NEEDED'),
-                );
+            switch (get_option('one_per_email_address')) {
+                case '0':
+                    return array(
+                        'status' => self::SIGN_IN_USERNAME_NEEDED,
+                        'register' => false,
+                        'member_id' => null,
+                        'result_text' => do_lang('SIGN_IN_USERNAME_NEEDED'),
+                    );
+
+                case '1':
+                    return array(
+                        'status' => self::SIGN_IN_USERNAME_NEEDED,
+                        'register' => false,
+                        'member_id' => null,
+                        'result_text' => do_lang('SIGN_IN_USERNAME_OR_EMAIL_NEEDED'),
+                    );
+
+                case '2':
+                    return array(
+                        'status' => self::SIGN_IN_USERNAME_NEEDED,
+                        'register' => false,
+                        'member_id' => null,
+                        'result_text' => do_lang('SIGN_IN_EMAIL_NEEDED'),
+                    );
             }
         }
         $exists = $member_id !== null; // At this point either $exists and $username and $email is set, or !$exists

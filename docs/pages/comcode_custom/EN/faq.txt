@@ -302,6 +302,7 @@ max_input_vars=2000
 
 ; This causes unstability (and is known/documented to) but some hosts turn it on
 mbstring.func_overload=0
+mail.add_x_header=off
 
 ; Suhosin can cause problems on configuration and Catalogue forms, which use a lot of fields
 suhosin.post.max_vars=2000

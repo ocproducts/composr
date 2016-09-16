@@ -48,6 +48,10 @@ class Hook_cleanup_tags
         $hooks = find_all_hook_obs('systems', 'content_meta_aware', 'Hook_content_meta_aware_');
         foreach ($hooks as $hook => $ob) {
             $info = $ob->info();
+            if ($info === null) {
+                continue;
+            }
+
             $seo_type_code = $info['seo_type_code'];
             if ($seo_type_code !== null) {
                 $table = $info['table'];

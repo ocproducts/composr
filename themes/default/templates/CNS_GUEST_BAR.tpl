@@ -12,7 +12,7 @@
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					<div>
-						<div class="accessibility_hidden"><label for="member_bar_login_username">{!USERNAME}{+START,IF,{$AND,{$CNS},{$CONFIG_OPTION,one_per_email_address}}} / {!EMAIL_ADDRESS}{+END}</label></div>
+						<div class="accessibility_hidden"><label for="member_bar_login_username">{$LOGIN_LABEL}</label></div>
 						<div class="accessibility_hidden"><label for="member_bar_s_password">{!PASSWORD}</label></div>
 						<input maxlength="80" size="15" type="text" onfocus="placeholder_focus(this);" onblur="placeholder_blur(this);" class="field_input_non_filled" value="{!USERNAME}" id="member_bar_login_username" name="login_username" />
 						<input maxlength="255" size="15" type="password" placeholder="{!PASSWORD}" value="" name="password" id="member_bar_s_password" />

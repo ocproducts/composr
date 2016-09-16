@@ -69,8 +69,15 @@ class Hook_sitemap_group extends Hook_sitemap_content
 
         $page = $this->_make_zone_concrete($zone, $page_link);
 
+        $where = '1=1';
+        if (has_privilege(get_member(), 'see_hidden_groups')) {
+            $members_groups = $GLOBALS['CNS_DRIVER']->get_members_groups(get_member());
+            //May be cached so don't make member-specific $where .= ' AND (g_hidden=0 OR g.id IN (' . implode(',', array_map('strval', $members_groups)) . '))';
+            $where .= ' AND g_hidden=0';
+        }
+
         if ($child_cutoff !== null) {
-            $count = $GLOBALS['FORUM_DB']->query_select_value('f_groups', 'COUNT(*)', has_privilege(get_member(), 'see_hidden_groups') ? null : array('g_hidden' => 0));
+            $count = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_groups g WHERE ' . $where);
             if ($count > $child_cutoff) {
                 return $nodes;
             }
@@ -78,7 +85,7 @@ class Hook_sitemap_group extends Hook_sitemap_content
 
         $start = 0;
         do {
-            $rows = $GLOBALS['FORUM_DB']->query_select('f_groups', array('*'), has_privilege(get_member(), 'see_hidden_groups') ? null : array('g_hidden' => 0), '', SITEMAP_MAX_ROWS_PER_LOOP, $start);
+            $rows = $GLOBALS['FORUM_DB']->query('SELECT * FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_groups g WHERE ' . $where, SITEMAP_MAX_ROWS_PER_LOOP, $start);
             foreach ($rows as $row) {
                 if ($row['id'] == db_get_first_id()) {
                     continue;

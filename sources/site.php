@@ -755,6 +755,9 @@ function process_url_monikers($page, $redirect_if_non_canonical = true)
                     continue;
                 }
                 $ob_info = $ob->info();
+                if ($ob_info === null) {
+                    continue;
+                }
                 if (($ob_info['view_page_link_pattern'] === null) || (!$ob_info['support_url_monikers'])) {
                     continue;
                 }

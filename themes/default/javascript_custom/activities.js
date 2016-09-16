@@ -104,7 +104,7 @@ function s_update_show(data, stat) {
             }
         }
         if (!succeeded) {
-            $('#activities_general_notify').text('{!INTERNAL_ERROR;}');
+            $('#activities_general_notify').text('{!INTERNAL_ERROR;^}');
         }
         window.s_ajax_update_locking = 0;
     }
@@ -112,7 +112,7 @@ function s_update_show(data, stat) {
 
 function s_update_remove(event, id) {
     window.fauxmodal_confirm(
-        '{!activities:DELETE_CONFIRM}',
+        '{!activities:DELETE_CONFIRM;^}',
         function (result) {
             if (result) {
                 var url = '{$BASE_URL;,0}/data_custom/activities_removal.php' + keep_stub(true);

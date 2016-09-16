@@ -2615,7 +2615,7 @@ function make_option($nice_name, $description, $name, $value, $hidden = false, $
         $value = '';
     }
 
-    $_required = $required;
+    $_required = ($required ? '_required' : '');
 
     if ($hidden) {
         $input1 = do_template('INSTALLER_INPUT_PASSWORD', array('_GUID' => '373b85cea71837a30d146df387dc2a42', 'REQUIRED' => $_required, 'NAME' => $name, 'VALUE' => $value));
@@ -2846,6 +2846,7 @@ END;
         $clauses[] = <<<END
 php_value max_input_vars "2000"
 php_value mbstring.func_overload "0"
+php_flag mail.add_x_header off
 
 # Suhosin can cause problems on configuration and Catalogue forms, which use a lot of fields
 php_value suhosin.post.max_vars "2000"
@@ -2963,9 +2964,9 @@ END;
 
     $clauses[] = <<<END
 order allow,deny
+allow from all
 # IP bans go here (leave this comment here! If this file is writeable, Composr will write in IP bans below, in sync with its own DB-based banning - this makes DOS/hack attack prevention stronger)
 # deny from xxx.xx.x.x (leave this comment here!)
-allow from all
 END;
 
     $base = str_replace('\\', '/', dirname(cms_srv('SCRIPT_NAME')));

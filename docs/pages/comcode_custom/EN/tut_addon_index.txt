@@ -613,7 +613,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
             <td>Translate the software, or just change what it says for stylistic reasons.</td>
-            <td><a href="http://compo.sr/docs10/tut-intl.htm">Localisation and internationalisation</a><br /><br /><a href="http://compo.sr/docs10/tut-intl-users.htm">Changing the site language</a><br /><br /><a href="http://compo.sr/docs10/tut-intl-content.htm">Translating Composr content</a><br /><br /><a href="http://compo.sr/docs10/tut-intl-code-philosophy.htm">Translations code philosophy</a></td>
+            <td><a href="http://compo.sr/docs10/tut-intl.htm">Localisation and internationalisation</a><br /><br /><a href="http://compo.sr/docs10/tut-intl-users.htm">Changing the site language (for end users)</a><br /><br /><a href="http://compo.sr/docs10/tut-intl-content.htm">Translating Composr content</a><br /><br /><a href="http://compo.sr/docs10/tut-intl-code-philosophy.htm">Translations code philosophy</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=core_language_editing&amp;status_id=10">Link</a></td>
         </tr>
@@ -913,7 +913,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
             <td>A block to allow visitors to choose their language.</td>
-            <td><a href="http://compo.sr/docs10/tut-intl.htm">Localisation and internationalisation</a><br /><br /><a href="http://compo.sr/docs10/tut-intl-users.htm">Changing the site language</a></td>
+            <td><a href="http://compo.sr/docs10/tut-intl.htm">Localisation and internationalisation</a><br /><br /><a href="http://compo.sr/docs10/tut-intl-users.htm">Changing the site language (for end users)</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=language_block&amp;status_id=10">Link</a></td>
         </tr>

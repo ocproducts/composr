@@ -51,8 +51,6 @@ function init__transifex()
         'sms.ini' => TRANSLATE_PRIORITY_NORMAL,
         'rss.ini' => TRANSLATE_PRIORITY_NORMAL,
         'import.ini' => TRANSLATE_PRIORITY_NORMAL,
-        'bookmarks.ini' => TRANSLATE_PRIORITY_NORMAL, // LEGACY
-        'staff.ini' => TRANSLATE_PRIORITY_NORMAL, // LEGACY
     );
 
     // Extra files to send to Transifex (additional to .ini files)
@@ -350,7 +348,7 @@ function _push_strings_file_to_transifex($f, $project_slug, $custom, $administra
     if ((isset($OVERRIDE_PRIORITY_LANGUAGE_FILES[$f])) && ($administrative != TRANSLATE_ADMINISTRATIVE_YES)) {
         $priority = $OVERRIDE_PRIORITY_LANGUAGE_FILES[$f];
     } else {
-        if (($custom) || ($administrative == TRANSLATE_ADMINISTRATIVE_YES)) {
+        if (($custom) || ($administrative == TRANSLATE_ADMINISTRATIVE_YES) && (!in_array($f, array('content_privacy.ini', 'metadata.ini', 'do_next.ini')))) {
             $priority = TRANSLATE_PRIORITY_NORMAL;
         } else {
             $priority = TRANSLATE_PRIORITY_HIGH;
@@ -478,6 +476,7 @@ function transifex_pull_script()
 
     if ($output) {
         $GLOBALS['SCREEN_TEMPLATE_CALLED'] = '';
+        tar_close($tar_file);
         exit();
     } else {
         header('Content-type: text/plain; charset=' . get_charset());
@@ -533,7 +532,7 @@ function pull_lang_from_transifex($project_slug, $tar_file, $lang, $core_only, $
                 continue;
             }
 
-            _pull_cms_file_to_transifex($project_slug, $tar_file, $lang, $path, $extra_file, $files);
+            _pull_cms_file_from_transifex($project_slug, $tar_file, $lang, $path, $extra_file, $files);
         }
 
         // Grab translatable language files
@@ -542,7 +541,7 @@ function pull_lang_from_transifex($project_slug, $tar_file, $lang, $core_only, $
                 continue;
             }
 
-            _pull_strings_file_to_transifex($project_slug, $tar_file, $lang, $_f, $files);
+            _pull_strings_file_from_transifex($project_slug, $tar_file, $lang, $_f, $files);
         }
 
         // Write addon_registry hook
@@ -582,7 +581,7 @@ function pull_lang_from_transifex($project_slug, $tar_file, $lang, $core_only, $
 /**
  * Hook class.
  */
-class Hook_addon_registry_addon_publish
+class Hook_addon_registry_language_{$lang}
 {
     /**
      * Get a list of file permissions to set
@@ -652,7 +651,7 @@ class Hook_addon_registry_addon_publish
      */
     public function get_description()
     {
-        return 'Translation into {$language_name}. Completeness: {$percentage}%. This addon was automatically bundled from community contributions provided on Transifex and will be routinely updated alongside new Composr patch releases. Translations may also be downloaded directly from Transifex.';
+        return 'Translation into {$language_name}. Completeness: {$percentage}% (29% typically means translated fully apart from administrative strings). This addon was automatically bundled from community contributions provided on Transifex and will be routinely updated alongside new Composr patch releases. Translations may also be downloaded directly from Transifex.';
     }
 
     /**
@@ -686,7 +685,7 @@ class Hook_addon_registry_addon_publish
      */
     public function get_default_icon()
     {
-        return 'themes/default/images/icons/48x48/menu/adminzone/style/language/language';
+        return 'themes/default/images/icons/48x48/menu/adminzone/style/language/language.png';
     }
 
     /**
@@ -720,15 +719,28 @@ END;
     return true;
 }
 
-function _pull_cms_file_to_transifex($project_slug, $tar_file, $lang, $path, $extra_file, &$files)
+function _pull_cms_file_from_transifex($project_slug, $tar_file, $lang, $path, $extra_file, &$files)
 {
     $resource_path = $extra_file[0];
-    $trans_path = str_replace('/' . fallback_lang() . '/', '/' . $lang . '/', $resource_path);
+
+    $default_path = str_replace('__', '/', str_replace('__administrative', '', $resource_path)) . '.txt';
+
+    $trans_path = str_replace('/' . fallback_lang() . '/', '/' . $lang . '/', $default_path);
+    $trans_path = str_replace('/comcode/', '/comcode_custom/' , $trans_path);
+    $trans_path = preg_replace('#^text/#', 'text_custom/' , $trans_path);
+    $trans_path = preg_replace('#^data/#', 'data_custom/' , $trans_path);
+
     $trans_full_path = get_file_base() . '/' . $trans_path;
+
     $test = _transifex('/project/' . $project_slug . '/resource/' . $resource_path . '/translation/' . convert_lang_code_to_transifex($lang) . '/', 'GET', null, true);
     if ($test[1] == '200') {
         $data = json_decode($test[0], true);
         $c = $data['content'];
+        $c = str_replace('&quot;', '"', $c); // Transifex uses non-standard escaping within JSON
+
+        if (is_file($default_path) && trim($c) == trim(file_get_contents($default_path))) {
+            return; // Not changed
+        }
 
         if ($tar_file === null) {
             @mkdir(dirname($trans_full_path), 0777);
@@ -743,24 +755,26 @@ function _pull_cms_file_to_transifex($project_slug, $tar_file, $lang, $path, $ex
     }
 }
 
-function _pull_strings_file_to_transifex($project_slug, $tar_file, $lang, $_f, &$files)
+function _pull_strings_file_from_transifex($project_slug, $tar_file, $lang, $_f, &$files)
 {
     $test_a = _transifex('/project/' . $project_slug . '/resource/' . $_f . '/translation/' . convert_lang_code_to_transifex($lang) . '/', 'GET', null, true);
     $test_b = _transifex('/project/' . $project_slug . '/resource/' . $_f . '__administrative/translation/' . convert_lang_code_to_transifex($lang) . '/', 'GET', null, true);
     if ($test_a[1] == '200' || $test_b[1] == '200') {
         if ($test_a[1] == '200') {
             $data_a = json_decode($test_a[0], true);
+            $data_a['content'] = str_replace('&quot;', '"', $data_a['content']); // Transifex uses non-standard escaping within JSON
         } else {
             $data_a = array('content' => '');
         }
         if ($test_b[1] == '200') {
             $data_b = json_decode($test_b[0], true);
+            $data_b['content'] = str_replace('&quot;', '"', $data_b['content']); // Transifex uses non-standard escaping within JSON
         } else {
             $data_b = array('content' => '');
         }
 
         $write_out = preg_replace('#^\# .*\n#m', '', $data_a['content'] . "\n" . $data_b['content']);
-        $c = "[strings]\n" . $write_out;
+        $c = "[strings]\n" . trim($write_out) . "\n";
 
         $trans_path = 'lang_custom/' . $lang . '/' . $_f . '.ini';
         $trans_full_path = get_file_base() . '/' . $trans_path;

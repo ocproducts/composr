@@ -284,7 +284,7 @@ function actual_metadata_get_fields($content_type, $content_id, $fields_to_skip 
     if ($submitter_field !== null) {
         $_submitter = post_param_string('meta_submitter', '');
         if ($_submitter == '') {
-            if (is_null($content_id)) {
+            if ($content_id === null) {
                 $submitter = get_member();
             } else {
                 $submitter = INTEGER_MAGIC_NULL;

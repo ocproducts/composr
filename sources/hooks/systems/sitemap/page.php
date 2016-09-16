@@ -246,6 +246,7 @@ class Hook_sitemap_page extends Hook_sitemap_base
                         $struct['has_possible_children'] = true;
 
                         $entry_point_sitemap_ob = $this->_get_sitemap_object('entry_point');
+                        $comcode_page_sitemap_ob = $this->_get_sitemap_object('comcode_page');
 
                         $has_entry_points = true;
 
@@ -310,19 +311,39 @@ class Hook_sitemap_page extends Hook_sitemap_base
 
                         if (($max_recurse_depth === null) || ($recurse_level < $max_recurse_depth)) {
                             foreach ($entry_points as $entry_point => $entry_point_details) {
+                                $page_type = 'module';
+
                                 if (strpos($entry_point, ':') === false) {
                                     $child_page_link = $zone . ':' . $page . ':' . $entry_point;
                                 } else {
                                     $child_page_link = $entry_point;
+
+                                    require_code('site');
+                                    list($entry_point_zone, $entry_point_codename) = explode(':', $entry_point);
+                                    $_page_type = __request_page($entry_point_codename, $entry_point_zone);
+                                    if ($_page_type !== false) {
+                                        $page_type = strtolower($_page_type[0]);
+                                    }
                                 }
 
-                                if ((preg_match('#^([^:]*):([^:]*):([^:]*)(:.*|$)#', $child_page_link) != 0) || ($entry_point == '_SEARCH:topicview'/*special case*/)) {
-                                    if (strpos($extra, ':catalogue_name=') !== false) {
-                                        $child_page_link .= preg_replace('#^:\w+#', '', $extra);
+                                if (strpos($page_type, 'comcode') !== false) {
+                                    if (($valid_node_types !== null) && (!in_array('comcode_page', $valid_node_types))) {
+                                        continue;
                                     }
-                                    $child_node = $entry_point_sitemap_ob->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level + 1, $options, $zone, $meta_gather, $entry_point_details);
+                                    $child_node = $comcode_page_sitemap_ob->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level + 1, $options, $zone, $meta_gather);
                                 } else {
-                                    $child_node = $this->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level + 1, $options, $zone, $meta_gather);
+                                    if (($valid_node_types !== null) && (!in_array('page', $valid_node_types))) {
+                                        continue;
+                                    }
+
+                                    if ((preg_match('#^([^:]*):([^:]*):([^:]*)(:.*|$)#', $child_page_link) != 0) || ($entry_point == '_SEARCH:topicview'/*special case*/)) {
+                                        if (strpos($extra, ':catalogue_name=') !== false) {
+                                            $child_page_link .= preg_replace('#^:\w+#', '', $extra);
+                                        }
+                                        $child_node = $entry_point_sitemap_ob->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level + 1, $options, $zone, $meta_gather, $entry_point_details);
+                                    } else {
+                                        $child_node = $this->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level + 1, $options, $zone, $meta_gather);
+                                    }
                                 }
                                 if ($child_node !== null) {
                                     $children[$child_node['page_link']] = $child_node;

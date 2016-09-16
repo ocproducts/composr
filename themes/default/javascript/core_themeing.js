@@ -104,7 +104,7 @@
             result = load_snippet(url);
 
             if (!result || result.includes('<html')) {
-                window.fauxmodal_alert('{!ERROR_OCCURRED;}');
+                window.fauxmodal_alert('{!ERROR_OCCURRED;^}');
             } else {
                 document.getElementById('css_result_' + opts.fileId).value = result;
             }

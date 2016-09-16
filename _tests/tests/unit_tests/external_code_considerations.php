@@ -81,6 +81,10 @@ class external_code_considerations_test_set extends cms_test_case
                     continue;
                 }
 
+                if ($part == 'data_custom/ckeditor') {
+                    continue;
+                }
+
                 $this->assertTrue(file_exists(get_file_base() . '/' . $part), 'Missing file/directory: ' . $part);
             }
 

@@ -102,7 +102,7 @@ function apply_comcode_tooltip(hook,id,link)
 			{
 				link.is_over=true;
 
-				var request=do_ajax_request(maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&raw_output=1&box_title={!PREVIEW;&}'+keep_stub(false)),function(ajax_result_frame) {
+				var request=do_ajax_request(maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&raw_output=1&box_title={!PREVIEW&;^}'+keep_stub(false)),function(ajax_result_frame) {
 					if (ajax_result_frame && ajax_result_frame.responseText)
 					{
 						link.rendered_tooltip=ajax_result_frame.responseText;
@@ -196,7 +196,7 @@ function handle_image_mouse_over(event)
 		ml.onclick=function(event) { handle_image_click(event,target,true); };
 		ml.type='button';
 		ml.id='editimg_'+target.id;
-		ml.value='{!themes:EDIT_THEME_IMAGE;}';
+		ml.value='{!themes:EDIT_THEME_IMAGE;^}';
 		ml.className='magic_image_edit_link button_micro';
 		ml.style.position='absolute';
 		ml.style.left=find_pos_x(target)+'px';
@@ -213,7 +213,7 @@ function handle_image_mouse_over(event)
 	/*{+END}*/
 
 	window.old_status_img=window.status;
-	window.status='{!SPECIAL_CLICK_TO_EDIT;}';
+	window.status='{!SPECIAL_CLICK_TO_EDIT;^}';
 }
 
 function handle_image_mouse_out(event)
@@ -286,9 +286,9 @@ function load_software_chat(event)
 	url+='#composrcms';
 	var html=' \
 		<div class="software_chat"> \
-			<h2>{!CMS_COMMUNITY_HELP}</h2> \
-			<ul class="spaced_list">{!SOFTWARE_CHAT_EXTRA;}</ul> \
-			<p class="associated_link associated_links_block_group"><a title="{!SOFTWARE_CHAT_STANDALONE} {!LINK_NEW_WINDOW;}" target="_blank" href="'+escape_html(url)+'">{!SOFTWARE_CHAT_STANDALONE}</a> <a href="#!" onclick="return load_software_chat(event);">{!HIDE}</a></p> \
+			<h2>{!CMS_COMMUNITY_HELP;^}</h2> \
+			<ul class="spaced_list">{!SOFTWARE_CHAT_EXTRA;^}</ul> \
+			<p class="associated_link associated_links_block_group"><a title="{!SOFTWARE_CHAT_STANDALONE;^} {!LINK_NEW_WINDOW;^}" target="_blank" href="'+escape_html(url)+'">{!SOFTWARE_CHAT_STANDALONE;^}</a> <a href="#!" onclick="return load_software_chat(event);">{!HIDE;^}</a></p> \
 		</div> \
 		<iframe class="software_chat_iframe" style="border: 0" src="'+escape_html(url)+'"></iframe> \
 	'.replace(/\\{1\\}/,escape_html((window.location+'').replace(get_base_url(),'http://baseurl')));

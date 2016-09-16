@@ -28,7 +28,7 @@
                     if (Composr.is(Composr.$CONFIG_OPTION.jsOverlays)) {
                         // Lightboxes
                         if (anchor.rel && anchor.rel.match(/lightbox/)) {
-                            anchor.title = anchor.title.replace('{!LINK_NEW_WINDOW;}', '').trim();
+                            anchor.title = anchor.title.replace('{!LINK_NEW_WINDOW;^}', '').trim();
                         }
 
                         // Convert <a> title attributes into Composr tooltips

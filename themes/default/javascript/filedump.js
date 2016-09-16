@@ -32,7 +32,7 @@
                 var action = form.elements['action'].options[form.elements['action'].selectedIndex].value;
 
                 if (action == '') {
-                    fauxmodal_alert('{!SELECT_AN_ACTION;}');
+                    fauxmodal_alert('{!SELECT_AN_ACTION;^}');
                     return false;
                 }
 
@@ -44,7 +44,7 @@
                     }
                 }
 
-                fauxmodal_alert('{!NOTHING_SELECTED_YET;}');
+                fauxmodal_alert('{!NOTHING_SELECTED_YET;^}');
                 return false;
             }
         }

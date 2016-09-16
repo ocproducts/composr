@@ -4604,7 +4604,18 @@ function ecv_ENSURE_PROTOCOL_SUITABILITY($lang, $escaped, $param)
     return $value;
 }
 
-function ecv_JSON_ENCODE($lang, $escaped, $param) {
+/**
+ * Evaluate a particular Tempcode symbol.
+ *
+ * @ignore
+ *
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
+ * @param  array $escaped Array of escaping operations.
+ * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
+ * @return string The result.
+ */
+function ecv_JSON_ENCODE($lang, $escaped, $param)
+{
     $value = json_encode($param[0]);
 
     if ($escaped !== array()) {
@@ -4613,8 +4624,52 @@ function ecv_JSON_ENCODE($lang, $escaped, $param) {
     return $value;
 }
 
-function ecv_JSON_DECODE($lang, $escaped, $param) {
+/**
+ * Evaluate a particular Tempcode symbol.
+ *
+ * @ignore
+ *
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
+ * @param  array $escaped Array of escaping operations.
+ * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
+ * @return string The result.
+ */
+function ecv_JSON_DECODE($lang, $escaped, $param)
+{
     $value = json_encode($param[0]);
+
+    if ($escaped !== array()) {
+        apply_tempcode_escaping($escaped, $value);
+    }
+    return $value;
+}
+
+/**
+ * Evaluate a particular Tempcode symbol.
+ *
+ * @ignore
+ *
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
+ * @param  array $escaped Array of escaping operations.
+ * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
+ * @return string The result.
+ */
+function ecv_LOGIN_LABEL($lang, $escaped, $param)
+{
+    switch (get_option('one_per_email_address')) {
+        case '1':
+            $value = '<span class="must_show_together">' . do_lang('USERNAME') . '/' . do_lang('EMAIL_ADDRESS') . '</span>';
+            break;
+
+        case '2':
+            $value = do_lang('EMAIL_ADDRESS');
+            break;
+
+        default:
+        case '0':
+            $value = do_lang('USERNAME');
+            break;
+    }
 
     if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);

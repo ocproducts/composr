@@ -234,6 +234,9 @@ function _spellcheck_initialise($lang = null)
     $charset = function_exists('do_lang') ? do_lang('charset') : 'utf-8';
 
     $spelling = function_exists('do_lang') ? do_lang('dictionary_variant') : 'british';
+    if ($spelling == $lang) {
+        $spelling = '';
+    }
 
     $p_dict_path = sl_get_custom_file_base() . '/data_custom/spelling/personal_dicts';
 

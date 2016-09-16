@@ -75,6 +75,10 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 }
 require($FILE_BASE . '/sources/global.php');
 
+if (get_base_url() != 'http://shareddemo.composr.info') {
+    warn_exit('Must be called for shared demo');
+}
+
 require_code('upgrade');
 require_lang('upgrade');
 require_code('shared_installs');

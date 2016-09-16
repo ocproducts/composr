@@ -187,6 +187,7 @@ class lang_no_unused_test_set extends cms_test_case
             '_VIEW_IMAGE',
             '_VIEW_VIDEO',
             'EDIT_WARNING',
+            'takes_lots_of_space',
         );
 
         $dh = opendir(get_file_base() . '/lang/EN/');

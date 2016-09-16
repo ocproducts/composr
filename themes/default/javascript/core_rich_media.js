@@ -219,7 +219,7 @@
                     x++;
                 } else {
                     if ((as[i].childNodes.length == 1) && (as[i].childNodes[0].nodeName.toLowerCase() == 'img')) {
-                        as[i].title = as[i].title.replace('{!LINK_NEW_WINDOW;/}', '').replace(/^\s+/, '');
+                        as[i].title = as[i].title.replace('{!LINK_NEW_WINDOW;^}', '').replace(/^\s+/, '');
 
                         imgs.push([as[i].href, (as[i].title == '') ? as[i].childNodes[0].alt : as[i].title, false]);
                         imgsThumbs.push(as[i].childNodes[0].src);
@@ -243,10 +243,10 @@
                     imgWidthHeight = setImgWidthHeight ? ' width="' + Number(options.width) + '" height="' + Number(options.height) + '"' : '',
                     media_set_html = '\
 					<figure class="attachment" ' + width + '>\
-						<figcaption>' + '{!comcode:MEDIA_SET^/,xxx}'.replace(/xxx/g, imgs.length) + '<\/figcaption>\
+						<figcaption>' + '{!comcode:MEDIA_SET^,xxx}'.replace(/xxx/g, imgs.length) + '<\/figcaption>\
 						<div>\
 							<div class="attachment_details">\
-								<a onclick="open_images_into_lightbox(imgs); return false;" target="_blank" title="' + escape_html('{!comcode:MEDIA_SET^/,xxx}'.replace(/xxx/g, imgs.length)) + ' {!LINK_NEW_WINDOW^/}" href="#!">\
+								<a onclick="open_images_into_lightbox(imgs); return false;" target="_blank" title="' + escape_html('{!comcode:MEDIA_SET^;,xxx}'.replace(/xxx/g, imgs.length)) + ' {!LINK_NEW_WINDOW^;}" href="#!">\
                                     <img ' + imgWidthHeight + ' src="' + escape_html(imgsThumbs[0]) + '" />\
                                 <\/a>\
 							<\/div>\
@@ -598,7 +598,7 @@
 
             if (options.inlineStats === '0') {
                 playerOptions.events.onPlay = function () {
-                    ga_track(null,'{!AUDIO;/}', options.url);
+                    ga_track(null,'{!AUDIO;^}', options.url);
                 };
             }
 
@@ -641,7 +641,7 @@
 
             if (options.inlineStats === '0') {
                 playerOptions.events.onPlay = function () {
-                    ga_track(null,'{!VIDEO;/}', options.url);
+                    ga_track(null,'{!VIDEO;^}', options.url);
                 };
             }
 
@@ -681,7 +681,7 @@ function initialise_image_fader_html(data, v, k) {
     data['html' + k] = v;
     if (k == 0) {
         if (data.tease_scrolling_text) {
-            Composr.dom.html(data.tease_scrolling_text, (data['html' + k] == '') ? '{!MEDIA;}' : data['html' + k]);
+            Composr.dom.html(data.tease_scrolling_text, (data['html' + k] == '') ? '{!MEDIA;^}' : data['html' + k]);
         }
     }
 }

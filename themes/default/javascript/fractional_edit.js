@@ -85,7 +85,7 @@ function fractional_edit(event, object, url, raw_text, edit_param_name, was_doub
         form.onsubmit = function (event) {
             return false;
         };
-        if (control_button) Composr.dom.html(control_button, '{!SAVE;}');
+        if (control_button) Composr.dom.html(control_button, '{!SAVE;^}');
 
         var cleanup_function = function () {
             object.onclick = object.old_onclick;
@@ -98,7 +98,7 @@ function fractional_edit(event, object, url, raw_text, edit_param_name, was_doub
             }
 
             if (control_button) {
-                Composr.dom.html(control_button, '{!EDIT;}');
+                Composr.dom.html(control_button, '{!EDIT;^}');
 
                 // To stop it instantly re-clicking
                 var backup = control_button.onclick;
@@ -171,14 +171,14 @@ function fractional_edit(event, object, url, raw_text, edit_param_name, was_doub
             if (Composr.dom.keyPressed(event) === 'Escape') {// Cancel (escape key)
                 var tmp = input.onblur;
                 input.onblur = null;
-                fauxmodal_confirm('{!javascript:FRACTIONAL_EDIT_CANCEL_CONFIRM;}', function (result) {
+                fauxmodal_confirm('{!javascript:FRACTIONAL_EDIT_CANCEL_CONFIRM;^}', function (result) {
                     if (result) {
                         cancel_function();
                     } else {
                         input.focus();
                         input.onblur = tmp;
                     }
-                }, '{!CONFIRM_TEXT;}');
+                }, '{!CONFIRM_TEXT;^}');
                 return null;
             }
 

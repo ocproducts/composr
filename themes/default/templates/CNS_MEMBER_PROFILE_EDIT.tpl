@@ -19,8 +19,8 @@
 		<div class="{$?,{$MOBILE},modern_tabs,modern_subtabs}">
 			<div class="{$?,{$MOBILE},modern_tab_headers,modern_subtab_headers}">
 				{+START,LOOP,TABS}
-					<div id="t_edit__{$LCASE,{TAB_TITLE|*}}"{+START,IF,{TAB_FIRST}} class="tab_active tab_first{+END}{+START,IF,{TAB_LAST}} tab_last{+END}">
-						<a aria-controls="g_edit__{$LCASE,{TAB_TITLE|*}}" role="tab" href="#!" onclick="select_tab('g','edit__{$LCASE,{TAB_TITLE|*}}'); return false;">{+START,IF_NON_EMPTY,{TAB_ICON}}<img alt="" src="{$IMG*,icons/24x24/{TAB_ICON}}" srcset="{$IMG*,icons/48x48/{TAB_ICON}} 2x" /> {+END}<span>{TAB_TITLE*}</span></a>
+					<div id="t_edit__{$LCASE,{TAB_CODE|*}}"{+START,IF,{TAB_FIRST}} class="tab_active tab_first{+END}{+START,IF,{TAB_LAST}} tab_last{+END}">
+						<a aria-controls="g_edit__{$LCASE,{TAB_CODE|*}}" role="tab" href="#!" onclick="select_tab('g','edit__{$LCASE,{TAB_CODE|*}}'); return false;">{+START,IF_NON_EMPTY,{TAB_ICON}}<img alt="" src="{$IMG*,icons/24x24/{TAB_ICON}}" srcset="{$IMG*,icons/48x48/{TAB_ICON}} 2x" /> {+END}<span>{TAB_TITLE*}</span></a>
 					</div>
 				{+END}
 			</div>
@@ -28,8 +28,8 @@
 	{+END}
 				{+START,LOOP,TABS}
 					{+START,IF,{$GT,{TABS},1}}
-					<div aria-labeledby="t_edit__{$LCASE,{TAB_TITLE|*}}" role="tabpanel" id="g_edit__{$LCASE,{TAB_TITLE|*}}" style="display: {$?,{$OR,{TAB_FIRST},{$NOT,{$JS_ON}}},block,none}">
-						<a id="tab__edit__{$LCASE,{TAB_TITLE|*}}"></a>
+					<div aria-labeledby="t_edit__{$LCASE,{TAB_CODE|*}}" role="tabpanel" id="g_edit__{$LCASE,{TAB_CODE|*}}" style="display: {$?,{$OR,{TAB_FIRST},{$NOT,{$JS_ON}}},block,none}">
+						<a id="tab__edit__{$LCASE,{TAB_CODE|*}}"></a>
 					{+END}
 
 						{+START,IF_NON_EMPTY,{TAB_TEXT}}

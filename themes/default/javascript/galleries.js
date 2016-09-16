@@ -137,7 +137,7 @@ function start_slideshow_timer() {
 
 function show_current_slideshow_time() {
     var changer = document.getElementById('changer_wrap');
-    if (changer) Composr.dom.html(changer, '{!galleries:CHANGING_IN,xxx}'.replace('xxx', (window.slideshow_time < 0) ? 0 : window.slideshow_time));
+    if (changer) Composr.dom.html(changer, '{!galleries:CHANGING_IN;^,xxx}'.replace('xxx', (window.slideshow_time < 0) ? 0 : window.slideshow_time));
 }
 
 function reset_slideshow_countdown() {
@@ -160,7 +160,7 @@ function toggle_slideshow_timer() {
 }
 
 function stop_slideshow_timer(message) {
-    if (typeof message == 'undefined') message = '{!galleries:STOPPED;}';
+    if (typeof message == 'undefined') message = '{!galleries:STOPPED;^}';
     var changer = document.getElementById('changer_wrap');
     if (changer) Composr.dom.html(changer, message);
     if (window.slideshow_timer) window.clearInterval(window.slideshow_timer);
@@ -182,7 +182,7 @@ function player_stopped() {
 
 function slideshow_forward() {
     if (window.slideshow_current_position == window.slideshow_total_slides - 1) {
-        stop_slideshow_timer('{!galleries:LAST_SLIDE;}');
+        stop_slideshow_timer('{!galleries:LAST_SLIDE;^}');
         return false;
     }
 
@@ -274,7 +274,7 @@ function slideshow_show_slide(slide) {
             reset_slideshow_countdown();
         } else // Is video
         {
-            stop_slideshow_timer('{!galleries:WILL_CONTINUE_AFTER_VIDEO_FINISHED}');
+            stop_slideshow_timer('{!galleries:WILL_CONTINUE_AFTER_VIDEO_FINISHED;^}');
         }
 
         if (window.slideshow_current_position != window.slideshow_total_slides - 1)

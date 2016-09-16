@@ -112,8 +112,8 @@ function update_ajax_member_list_response(result, list_contents) {
     }
     item = document.createElement('option');
     item.disabled = true;
-    item.text = '{!javascript:SUGGESTIONS_ONLY;}'.toUpperCase();
-    item.innerText = '{!javascript:SUGGESTIONS_ONLY;}'.toUpperCase();
+    item.text = '{!javascript:SUGGESTIONS_ONLY;^}'.toUpperCase();
+    item.innerText = '{!javascript:SUGGESTIONS_ONLY;^}'.toUpperCase();
     list.appendChild(item);
     window.current_list_for.parentNode.appendChild(list);
 

@@ -78,7 +78,7 @@ if (window.overlay_zIndex === undefined) {
 				<p id="lightbox_meta" style="display: none" class="associated_link associated_links_block_group"> \
 					<span id="lightbox_description">'+description+'</span> \
 					'+((n===null)?'':('<span id="lightbox_position_in_set"><span id="lightbox_position_in_set_x">'+x+'</span> / <span id="lightbox_position_in_set_n">'+n+'</span></span>'))+' \
-					'+(is_video?'':('<span id="lightbox_full_link"><a href="'+escape_html(initial_img_url)+'" target="_blank" title="{$STRIP_TAGS;,{!SEE_FULL_IMAGE}} {!LINK_NEW_WINDOW;}">{!SEE_FULL_IMAGE;}</a></span>'))+' \
+					'+(is_video?'':('<span id="lightbox_full_link"><a href="'+escape_html(initial_img_url)+'" target="_blank" title="{$STRIP_TAGS;^,{!SEE_FULL_IMAGE}} {!LINK_NEW_WINDOW;^}">{!SEE_FULL_IMAGE;^}</a></span>'))+' \
 				</p> \
 			</div> \
 		';
@@ -236,7 +236,7 @@ if (window.overlay_zIndex === undefined) {
 
 function fauxmodal_confirm(question,callback,title,unescaped)
 {
-	if (typeof title=='undefined') title='{!Q_SURE;}';
+	if (typeof title=='undefined') title='{!Q_SURE;^}';
 	if (typeof unescaped=='undefined') unescaped=false;
 
 	/*{+START,IF,{$CONFIG_OPTION,js_overlays}}*/
@@ -266,7 +266,7 @@ function fauxmodal_confirm(question,callback,title,unescaped)
 function fauxmodal_alert(notice,callback,title,unescaped) {
 	if ((typeof callback=='undefined') || (!callback)) var callback=function() {};
 
-	if (typeof title=='undefined' || title===null) var title='{!MESSAGE;}';
+	if (typeof title=='undefined' || title===null) var title='{!MESSAGE;^}';
 	if (typeof unescaped=='undefined') unescaped=false;
 
 	/*{+START,IF,{$CONFIG_OPTION,js_overlays}}*/

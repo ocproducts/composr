@@ -133,6 +133,7 @@ class Hook_addon_registry_simplified_emails
         return array(
             'sources_custom/hooks/systems/addon_registry/simplified_emails.php',
             'themes/default/templates_custom/MAIL.tpl',
+            'themes/default/text_custom/MAIL.txt',
         );
     }
 }

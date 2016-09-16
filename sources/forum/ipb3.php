@@ -1394,7 +1394,7 @@ class Forum_driver_ipb3 extends Forum_driver_base
         }
 
         if (!array_key_exists(0, $rows) || $rows[0] === null) { // All hands to lifeboats
-            $out['error'] = do_lang_tempcode('_MEMBER_NO_EXIST', $username);
+            $out['error'] = do_lang_tempcode((get_option('login_error_secrecy') == '1') ? 'MEMBER_INVALID_LOGIN' : '_MEMBER_NO_EXIST', $username);
             return $out;
         }
         $row = $rows[0];
@@ -1404,7 +1404,7 @@ class Forum_driver_ipb3 extends Forum_driver_base
         }
         if ($cookie_login) {
             if ($password_hashed != $row['member_login_key']) {
-                $out['error'] = do_lang_tempcode('MEMBER_BAD_PASSWORD');
+                $out['error'] = do_lang_tempcode((get_option('login_error_secrecy') == '1') ? 'MEMBER_INVALID_LOGIN' : 'MEMBER_BAD_PASSWORD');
                 return $out;
             }
 
@@ -1430,7 +1430,7 @@ class Forum_driver_ipb3 extends Forum_driver_base
             }
         } else {
             if (!$this->_auth_hashed($row['member_id'], $password_hashed)) {
-                $out['error'] = do_lang_tempcode('MEMBER_BAD_PASSWORD');
+                $out['error'] = do_lang_tempcode((get_option('login_error_secrecy') == '1') ? 'MEMBER_INVALID_LOGIN' : 'MEMBER_BAD_PASSWORD');
                 return $out;
             }
         }

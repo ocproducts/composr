@@ -74,7 +74,6 @@ class Block_main_contact_us
 
         if ((post_param_integer('_comment_form_post', 0) == 1) && (post_param_string('_block_id', '') == $block_id) && ($post != '')) {
             $message = new Tempcode();/*Used to be written out here*/
-            attach_message(do_lang_tempcode('MESSAGE_SENT'), 'inform');
 
             // Check CAPTCHA
             if ((addon_installed('captcha')) && (get_option('captcha_on_feedback') == '1')) {
@@ -86,7 +85,7 @@ class Block_main_contact_us
             if ($email_from != '') {
                 require_code('type_sanitisation');
                 if (!is_email_address($email_from)) {
-                    warn_exit(do_lang_tempcode('INVALID_EMAIL_ADDRESS'));
+                    return paragraph(do_lang_tempcode('INVALID_EMAIL_ADDRESS'), '', 'red_alert');
                 }
             }
 
@@ -110,6 +109,8 @@ class Block_main_contact_us
             }
 
             decache('main_staff_checklist');
+
+            attach_message(do_lang_tempcode('MESSAGE_SENT'), 'inform');
         } else {
             $message = new Tempcode();
         }

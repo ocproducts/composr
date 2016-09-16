@@ -74,7 +74,7 @@ function cleanup()
     if ($password === null) {
         @exit('<form action="#" method="post"><label>Master password <input type="password" name="password" value="" /></label><input class="menu___generic_admin__delete button_screen" type="submit" value="Delete programmed data" /></form>');
     }
-    require_code('crypt');
+    require_code('crypt_master');
     if (!check_master_password($password)) {
         warn_exit('Access denied - you must pass the master password through correctly');
     }

@@ -52,7 +52,7 @@
 	</div></div>
 
 	<div class="float_surrounder">
-		<form style="float: left; margin-top: 3px" title="{!SORT_BY}" action="{$SELF_URL*,,,,category=<null>,start=0}" method="post" autocomplete="off">
+		<form style="float: left; margin-top: 3px" title="{!CATEGORY}" action="{$SELF_URL*,,,,category=<null>,start=0}" method="post" autocomplete="off">
 			{$INSERT_SPAMMER_BLACKHOLE}
 
 			<p>

@@ -663,7 +663,7 @@ abstract class Mail_dispatcher_base
                         'LANG' => $lang,
                         'TITLE' => $subject_line,
                         'CONTENT' => $_html_content,
-                    ), $lang, false, null, '.tpl', 'templates', $theme);
+                    ), $lang, false, 'MAIL', '.tpl', 'templates', $theme);
                 }
                 if ($derive_css) {
                     require_css('email');
@@ -680,6 +680,14 @@ abstract class Mail_dispatcher_base
 
                 // Cleanup the Comcode a bit
                 $message_plain = strip_comcode($message_raw);
+                $message_plain = static_evaluate_tempcode(do_template($mail_template, array(
+                     '_GUID' => 'a23069c20202aa59b7450ebf8d49cde1',
+                     'CSS' => '{CSS}',
+                     'LOGOURL' => get_logo_url(''),
+                     'LANG' => $lang,
+                     'TITLE' => $subject,
+                     'CONTENT' => $message_plain,
+                 ), $lang, false, 'MAIL', '.txt', 'text', $theme));
 
                 $html_content_cache[$cache_sig] = array($html_evaluated, $message_plain, $EMAIL_ATTACHMENTS);
 
@@ -1225,7 +1233,7 @@ function filter_css($c, $theme, $context)
         return $cache[$simple_sig];
     }
 
-    $_css = do_template($c, null, user_lang(), false, null, '.css', 'css', $theme);
+    $_css = do_template($c, null, user_lang(), true/*can't fail on this error because it could be an email from queue, with different addon state*/, null, '.css', 'css', $theme);
     $css = $_css->evaluate();
 
     // Find out all our IDs

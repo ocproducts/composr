@@ -1,7 +1,7 @@
 (function ($, Composr) {
     Composr.templates.pageManagement = {
         sitemapEditorScreen: function sitemapEditorScreen(options) {
-            window.actions_tpl = '{!ACTIONS;/}:<nav><ul class="actions_list">[1]<\/ul><\/nav><br />';
+            window.actions_tpl = '{!ACTIONS;^}:<nav><ul class="actions_list">[1]<\/ul><\/nav><br />';
             window.actions_tpl_item = '<li><a href="[2]">[1]<\/a><\/li>';
 
             window.info_tpl = '<div class="wide_table_wrap"><table class="map_table results_table wide_table autosized_table"><tbody>[1]<\/tbody><\/table><\/div>';

@@ -76,7 +76,7 @@ function internalise_infinite_scrolling(url_stem, wrapper) {
             var load_more_link = document.createElement('div');
             load_more_link.className = 'pagination_load_more';
             var load_more_link_a = document.createElement('a');
-            Composr.dom.html(load_more_link_a, '{!LOAD_MORE;}');
+            Composr.dom.html(load_more_link_a, '{!LOAD_MORE;^}');
             load_more_link_a.href = '#';
             load_more_link_a.onclick = function () {
                 internalise_infinite_scrolling_go(url_stem, wrapper, more_links);
@@ -417,7 +417,7 @@ function ajax_form_submit__admin__headless(event, form, block_name, map) {
 
                 Composr.dom.html(element_replace, xhtml);
 
-                window.fauxmodal_alert('{!SUCCESS;}');
+                window.fauxmodal_alert('{!SUCCESS;^}');
 
                 return false; // We've handled it internally
             }
@@ -439,7 +439,7 @@ function do_ajax_field_test(url, post) {
             if (xmlhttp.responseText.length > 1000) {
                 if (typeof window.console != 'undefined') console.log(xmlhttp.responseText);
 
-                fauxmodal_alert(xmlhttp.responseText, null, '{!ERROR_OCCURRED;}', true);
+                fauxmodal_alert(xmlhttp.responseText, null, '{!ERROR_OCCURRED;^}', true);
             } else {
                 window.fauxmodal_alert(xmlhttp.responseText);
             }
@@ -547,7 +547,7 @@ function handle_errors_in_result(result) {
         if ((result.responseText) && (result.responseText != '') && (result.responseText.indexOf('<html') != -1)) {
             console.log(result);
 
-            fauxmodal_alert(result.responseText, null, '{!ERROR_OCCURRED;}', true);
+            fauxmodal_alert(result.responseText, null, '{!ERROR_OCCURRED;^}', true);
         }
         return false;
     }

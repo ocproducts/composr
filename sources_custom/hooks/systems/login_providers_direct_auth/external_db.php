@@ -49,11 +49,25 @@ class Hook_login_providers_direct_auth_external_db
         $email_address_field = get_value('external_db_login__email_address_field', null, true);
 
         // Handle active login
-        $query = 'SELECT * FROM ' . $table . ' WHERE (' . $db->static_ob->string_equal_to($username_field, $username);
-        if (get_option('one_per_email_address') == '1') {
-            $query .= ' OR ' . $db->static_ob->string_equal_to($email_address_field, $username);
+        $query = 'SELECT * FROM ' . $table . ' WHERE ';
+        switch (get_option('one_per_email_address')) {
+            case '1':
+                $query .= '(';
+                $query .= $db->static_ob->string_equal_to($username_field, $username);
+                $query .= ' OR ';
+                $query .= $db->static_ob->string_equal_to($email_address_field, $username);
+                $query .= ')';
+                break;
+
+            case '2':
+                $query .= $db->static_ob->string_equal_to($email_address_field, $username);
+                break;
+
+            case '0':
+            default:
+                $query .= $db->static_ob->string_equal_to($username_field, $username);
+                break;
         }
-        $query .= ')';
         $query .= ' AND ' . $db->static_ob->string_equal_to($password_field, $password_raw);
         $records = $db->query($query);
         if (isset($records[0])) {

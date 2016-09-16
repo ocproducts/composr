@@ -515,7 +515,7 @@ function confirm_session(callback) {
 
         // But non blank tells us the username, and there is an implication that no session is confirmed for this login
 
-        if (ret.responseText == '{!GUEST;}') // Hmm, actually whole login was lost, so we need to ask for username too
+        if (ret.responseText == '{!GUEST;^}') // Hmm, actually whole login was lost, so we need to ask for username too
         {
             window.fauxmodal_prompt(
                 '{!USERNAME;^}',
@@ -523,7 +523,7 @@ function confirm_session(callback) {
                 function (promptt) {
                     _confirm_session(callback, promptt, url);
                 },
-                '{!_LOGIN;}'
+                '{!_LOGIN;^}'
             );
             return;
         }
@@ -545,7 +545,7 @@ function _confirm_session(callback, username, url) {
                 }, 'login_username=' + window.encodeURIComponent(username) + '&password=' + window.encodeURIComponent(promptt));
             } else callback(false);
         },
-        '{!_LOGIN;}',
+        '{!_LOGIN;^}',
         'password'
     );
 }
@@ -708,7 +708,7 @@ function toggleable_tray(element, no_animate, cookie_id_name) {
     }
 
     if (!element) {
-        return;
+        return false;
     }
 
     if (Composr.not(Composr.$CONFIG_OPTION.enableAnimations)) {
@@ -737,8 +737,8 @@ function toggleable_tray(element, no_animate, cookie_id_name) {
     var pic = Composr.dom.$(element.parentNode, '.toggleable_tray_button img') || Composr.dom.$('#e_' + element.id);
 
     if (pic) {// Currently in action?
-        if (matches_theme_image(pic.src, '{$IMG;,1x/trays/expcon}')) return;
-        if (matches_theme_image(pic.src, '{$IMG;,1x/trays/expcon2}')) return;
+        if (matches_theme_image(pic.src, '{$IMG;,1x/trays/expcon}')) return false;
+        if (matches_theme_image(pic.src, '{$IMG;,1x/trays/expcon2}')) return false;
     }
 
     element.setAttribute('aria-expanded', (type === 'none') ? 'false' : 'true');
@@ -774,9 +774,9 @@ function toggleable_tray(element, no_animate, cookie_id_name) {
         } else {
             if (pic) {
                 set_tray_theme_image(pic, 'contract', 'expand', '{$IMG;,1x/trays/contract}', '{$IMG;,1x/trays/expand}', '{$IMG;,2x/trays/expand}', '{$IMG;,1x/trays/expand2}', '{$IMG;,2x/trays/expand2}');
-                pic.setAttribute('alt', pic.getAttribute('alt').replace('{!CONTRACT;}', '{!EXPAND;}'));
-                pic.title = '{!EXPAND;}'; // Needs doing because convert_tooltip may not have run yet
-                pic.cms_tooltip_title = '{!EXPAND;}';
+                pic.setAttribute('alt', pic.getAttribute('alt').replace('{!CONTRACT;^}', '{!EXPAND;^}'));
+                pic.title = '{!EXPAND;^}'; // Needs doing because convert_tooltip may not have run yet
+                pic.cms_tooltip_title = '{!EXPAND;^}';
             }
             element.style.display = 'none';
         }
@@ -842,8 +842,8 @@ function toggleable_tray_done(element, final_height, animate_dif, orig_overflow,
         } else {
             set_tray_theme_image(pic, 'expcon', 'contract', '{$IMG;,1x/trays/expcon}', '{$IMG;,1x/trays/contract}', '{$IMG;,2x/trays/contract}', '{$IMG;,1x/trays/contract2}', '{$IMG;,2x/trays/contract2}');
         }
-        pic.setAttribute('alt', pic.getAttribute('alt').replace((animate_dif < 0) ? '{!CONTRACT;}' : '{!EXPAND;}', (animate_dif < 0) ? '{!EXPAND;}' : '{!CONTRACT;}'));
-        pic.cms_tooltip_title = (animate_dif < 0) ? '{!EXPAND;}' : '{!CONTRACT;}';
+        pic.setAttribute('alt', pic.getAttribute('alt').replace((animate_dif < 0) ? '{!CONTRACT;^}' : '{!EXPAND;^}', (animate_dif < 0) ? '{!EXPAND;^}' : '{!CONTRACT;^}'));
+        pic.cms_tooltip_title = (animate_dif < 0) ? '{!EXPAND;^}' : '{!CONTRACT;^}';
     }
     trigger_resize(true);
 }
@@ -1661,8 +1661,8 @@ function careful_import_node(node) {
 /* Google Analytics tracking for links; particularly useful if you have no server-side stat collection */
 function ga_track(ob, category, action) {
     /*{+START,IF_NON_EMPTY,{$CONFIG_OPTION,google_analytics}}{+START,IF,{$NOR,{$IS_STAFF},{$IS_ADMIN}}}*/
-    if (typeof category == 'undefined') category = '{!URL;}';
-    if (typeof action == 'undefined') action = ob ? ob.href : '{!UNKNOWN;}';
+    if (typeof category == 'undefined') category = '{!URL;^}';
+    if (typeof action == 'undefined') action = ob ? ob.href : '{!UNKNOWN;^}';
 
     try {
         ga('send', 'event', category, action);

@@ -193,13 +193,18 @@ class Module_cms_comcode_pages
      * Find all pages using a disk search.
      *
      * @param  LANGUAGE_NAME $lang The language we are searching for pages of
+     * @param  ?array $zone_filter List of zones to limit to (null: none)
      * @return array The map (page name => path/time)
      */
-    public function get_comcode_files_list_disk_search($lang)
+    public function get_comcode_files_list_disk_search($lang, $zone_filter)
     {
         $zones = find_all_zones();
         $out = array();
         foreach ($zones as $zone) {
+            if ($zone_filter !== null && !in_array($zone, $zone_filter)) {
+                continue;
+            }
+
             $_out = array();
             if ($lang != get_site_default_lang()) {
                 $_out += find_all_pages($zone, 'comcode_custom/' . get_site_default_lang(), 'txt', false, null, FIND_ALL_PAGES__NEWEST);
@@ -244,6 +249,13 @@ class Module_cms_comcode_pages
 
         $start = get_param_integer('start', 0);
         $max = get_param_integer('max', 25);
+
+        $_zone_filter = get_param_string('zone_filter', null);
+        if ($_zone_filter !== null) {
+            $zone_filter = explode(',', $_zone_filter);
+        } else {
+            $zone_filter = null;
+        }
 
         // Choose language
         $lang = choose_language($this->title, true);
@@ -316,7 +328,7 @@ class Module_cms_comcode_pages
 
         // Get file details
         $total_known_pages = $GLOBALS['SITE_DB']->query_select_value('cached_comcode_pages', 'COUNT(*)');
-        if ($total_known_pages >= $max) { // Oh dear, limits reached, try another tact
+        if ($total_known_pages >= $max && get_param_integer('force_test', 0) == 0) { // Oh dear, limits reached, try another tact
             // Sorting
             $orderer = 'p_add_date ASC';
             switch ($sortable) {
@@ -376,6 +388,10 @@ class Module_cms_comcode_pages
             // Put together meta-data
             $files_list = array();
             foreach ($page_rows as $row) {
+                if ($zone_filter !== null && !in_array($row['the_zone'], $zone_filter)) {
+                    continue;
+                }
+
                 $files_list[$row['the_zone'] . ':' . $row['the_page']] = array(
                     null, // page_path
                     $row, // row
@@ -384,7 +400,7 @@ class Module_cms_comcode_pages
 
             $found_via_query = true;
         } else {
-            $files_list = $this->get_comcode_files_list_disk_search($lang);
+            $files_list = $this->get_comcode_files_list_disk_search($lang, $zone_filter);
 
             $found_via_query = false;
         }
@@ -489,9 +505,9 @@ class Module_cms_comcode_pages
             }
 
             $page_path = $row['page_path'];
-            if ($page_path === null) {
+            if ($page_path === null || get_param_integer('force_test', 0) == 1) {
                 $located = _request_page($row['page'], $row['zone'], null, $lang);
-                if ($located !== false) {
+                if ($located !== false && $located[0] != 'REDIRECT') {
                     $page_path = (($row['zone'] == '') ? '' : ($row['zone'] . '/')) . 'pages/' . strtolower($located[0]) . '/' . $located[3] . '/' . $row['page'];
                 } else {
                     continue;

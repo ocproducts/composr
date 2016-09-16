@@ -89,7 +89,7 @@
                         if (typeof event.preventDefault !== 'undefined') event.preventDefault();
                         cancel_bubbling(event);
                         window.fauxmodal_confirm(
-                            '{!KEEP_ADDING_QUESTION;}',
+                            '{!KEEP_ADDING_QUESTION;^}',
                             function (test) {
                                 if (test) {
                                     _this.href += (_this.href.indexOf('?') != -1) ? '&' : '?';

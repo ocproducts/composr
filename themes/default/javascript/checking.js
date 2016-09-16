@@ -82,7 +82,7 @@ function set_field_error(the_element, error_msg) {
                     var p = errormsg_element;
                     while (p !== null) {
                         p = p.parentNode;
-                        if ((error_msg.substr(0, 5) != '{!DISABLED_FORM_FIELD;}'.substr(0, 5)) && (p) && (typeof p.getAttribute != 'undefined') && (p.getAttribute('id')) && (p.getAttribute('id').substr(0, 2) == 'g_') && (p.style.display == 'none')) {
+                        if ((error_msg.substr(0, 5) != '{!DISABLED_FORM_FIELD;^}'.substr(0, 5)) && (p) && (typeof p.getAttribute != 'undefined') && (p.getAttribute('id')) && (p.getAttribute('id').substr(0, 2) == 'g_') && (p.style.display == 'none')) {
                             select_tab('g', p.getAttribute('id').substr(2, p.id.length - 2), false, true);
                             break;
                         }
@@ -151,7 +151,7 @@ function do_form_preview(event, form, preview_url, has_separate_preview) {
     if (has_separate_preview === undefined) has_separate_preview = false;
 
     if (!document.getElementById('preview_iframe')) {
-        fauxmodal_alert('{!ADBLOCKER;}');
+        fauxmodal_alert('{!ADBLOCKER;^}');
         return false;
     }
 
@@ -746,8 +746,8 @@ function toggle_subordinate_fields(pic, help_id) {
         if (pic.srcset !== undefined) {
             pic.srcset = (pic.srcset.includes('themewizard.php') ? pic.srcset.replace('expand', 'contract') : '{$IMG;,2x/trays/contract} 2x').replace(/^https?:/, window.location.protocol);
         }
-        pic.alt ='{!CONTRACT;}';
-        pic.title = '{!CONTRACT;}';
+        pic.alt ='{!CONTRACT;^}';
+        pic.title = '{!CONTRACT;^}';
         new_state = (field_input.localName === 'tr') ? 'table-row' : 'block';
         new_state_2 = 'block';
     } else { /* Contracting now */
@@ -755,8 +755,8 @@ function toggle_subordinate_fields(pic, help_id) {
         if (pic.srcset !== undefined) {
             pic.srcset = (pic.src.includes('themewizard.php') ? pic.srcset.replace('contract', 'expand') : '{$IMG;,2x/trays/expand} 2x').replace(/^https?:/, window.location.protocol);
         }
-        pic.alt = '{!EXPAND;}';
-        pic.title = '{!EXPAND;}';
+        pic.alt = '{!EXPAND;^}';
+        pic.title = '{!EXPAND;^}';
         new_state = 'none';
         new_state_2 = 'none';
     }

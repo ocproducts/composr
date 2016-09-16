@@ -13,16 +13,16 @@
 		<thead>
 			<tr>
 				{+START,IF,{$SSW}}
-				<th><span>{$SUBSTR,{!SUNDAY},0,1}</span></th>
+				<th><span>{!FC_SUNDAY}</span></th>
 				{+END}
-				<th><span>{$SUBSTR,{!MONDAY},0,1}</span></th>
-				<th><span>{$SUBSTR,{!TUESDAY},0,1}</span></th>
-				<th><span>{$SUBSTR,{!WEDNESDAY},0,1}</span></th>
-				<th><span>{$SUBSTR,{!THURSDAY},0,1}</span></th>
-				<th><span>{$SUBSTR,{!FRIDAY},0,1}</span></th>
-				<th><span>{$SUBSTR,{!SATURDAY},0,1}</span></th>
+				<th><span>{!FC_MONDAY}</span></th>
+				<th><span>{!FC_TUESDAY}</span></th>
+				<th><span>{!FC_WEDNESDAY}</span></th>
+				<th><span>{!FC_THURSDAY}</span></th>
+				<th><span>{!FC_FRIDAY}</span></th>
+				<th><span>{!FC_SATURDAY}</span></th>
 				{+START,IF,{$NOT,{$SSW}}}
-				<th><span>{$SUBSTR,{!SUNDAY},0,1}</span></th>
+				<th><span>{!FC_SUNDAY}</span></th>
 				{+END}
 			</tr>
 		</thead>
