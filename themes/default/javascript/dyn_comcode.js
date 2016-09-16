@@ -50,7 +50,7 @@ function initialise_image_fader_html(data,v,k)
 	{
 		if (data.tease_scrolling_text)
 		{
-			set_inner_html(data.tease_scrolling_text,(data['html'+k]=='')?'{!MEDIA;}':data['html'+k]);
+			set_inner_html(data.tease_scrolling_text,(data['html'+k]=='')?'{!MEDIA;^}':data['html'+k]);
 		}
 	}
 }

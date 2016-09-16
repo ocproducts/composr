@@ -95,15 +95,16 @@ class Hook_search_cns_members extends FieldsSearchHook
             $fields[] = array('NAME' => '_age_range', 'DISPLAY' => do_lang_tempcode('AGE_RANGE'), 'TYPE' => '_TEXT', 'SPECIAL' => $age_range);
         }
 
-        $map = has_privilege(get_member(), 'see_hidden_groups') ? array() : array('g_hidden' => 0);
-        $group_count = $GLOBALS['FORUM_DB']->query_select_value('f_groups', 'COUNT(*)');
+        $where = '1=1';
+        if (!has_privilege(get_member(), 'see_hidden_groups')) {
+            $members_groups = $GLOBALS['CNS_DRIVER']->get_members_groups(get_member());
+            $where .= ' AND (g_hidden=0 OR g.id IN (' . implode(',', array_map('strval', $members_groups)) . '))';
+        }
+        $group_count = $GLOBALS['FORUM_DB']->query_select_value('f_groups g', 'COUNT(*)');
         if ($group_count > 300) {
-            $map['g_is_private_club'] = 0;
+            $where .= ' AND g_is_private_club=0';
         }
-        if ($map == array()) {
-            $map = null;
-        }
-        $rows = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id', 'g_name'), $map, 'ORDER BY g_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('g_name'));
+        $rows = $GLOBALS['FORUM_DB']->query('SELECT id,g_name FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_groups g WHERE ' . $where . ' ORDER BY g_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('g_name'), null, null, false, false, array('g_name' => 'SHORT_TRANS'));
         $groups = form_input_list_entry('', false, '---');
         $default_group = get_param_string('option__user_group', '');
         $group_titles = array();

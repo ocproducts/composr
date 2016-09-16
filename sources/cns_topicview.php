@@ -366,9 +366,12 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
                 $voted_already_map = array('pv_poll_id' => $topic_info['t_poll_id'], 'pv_member_id' => get_member());
             }
             $voted_already = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_poll_votes', 'pv_member_id', $voted_already_map);
-            $out['poll'] = cns_poll_get_results($topic_info['t_poll_id'], $view_poll_results || (!is_null($voted_already)));
-            $out['poll']['voted_already'] = $voted_already;
-            $out['poll_id'] = $topic_info['t_poll_id'];
+            $test = cns_poll_get_results($topic_info['t_poll_id'], $view_poll_results || (!is_null($voted_already)));
+            if ($test !== null) {
+                $out['poll'] = $test;
+                $out['poll']['voted_already'] = $voted_already;
+                $out['poll_id'] = $topic_info['t_poll_id'];
+            }
         }
 
         // Post query

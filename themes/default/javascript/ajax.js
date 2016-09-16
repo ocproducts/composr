@@ -89,7 +89,7 @@ function internalise_infinite_scrolling(url_stem,wrapper)
 				var load_more_link=document.createElement('div');
 				load_more_link.className='pagination_load_more';
 				var load_more_link_a=document.createElement('a');
-				set_inner_html(load_more_link_a,'{!LOAD_MORE;}');
+				set_inner_html(load_more_link_a,'{!LOAD_MORE;^}');
 				load_more_link_a.href='#';
 				load_more_link_a.onclick=function() { internalise_infinite_scrolling_go(url_stem,wrapper,more_links); return false; }; // Click link -- load
 				load_more_link.appendChild(load_more_link_a);
@@ -469,7 +469,7 @@ function ajax_form_submit__admin__headless(event,form,block_name,map)
 
 				set_inner_html(element_replace,xhtml);
 
-				window.fauxmodal_alert('{!SUCCESS;}');
+				window.fauxmodal_alert('{!SUCCESS;^}');
 
 				return false; // We've handled it internally
 			}
@@ -496,7 +496,7 @@ function do_ajax_field_test(url,post)
 			{
 				if (typeof window.console!='undefined') console.log(xmlhttp.responseText);
 
-				fauxmodal_alert(xmlhttp.responseText,null,'{!ERROR_OCCURRED;}',true);
+				fauxmodal_alert(xmlhttp.responseText,null,'{!ERROR_OCCURRED;^}',true);
 			} else
 			{
 				window.fauxmodal_alert(xmlhttp.responseText);
@@ -636,7 +636,7 @@ function handle_errors_in_result(result)
 		{
 			if (typeof window.console!='undefined') console.log(result);
 
-			fauxmodal_alert(result.responseText,null,'{!ERROR_OCCURRED;}',true);
+			fauxmodal_alert(result.responseText,null,'{!ERROR_OCCURRED;^}',true);
 		}
 		return false;
 	}

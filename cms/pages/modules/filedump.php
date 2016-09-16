@@ -76,6 +76,11 @@ class Module_filedump
             add_privilege('FILEDUMP', 'upload_anything_filedump', false);
             add_privilege('FILEDUMP', 'upload_filedump', true);
             add_privilege('FILEDUMP', 'delete_anything_filedump', false);
+
+            $usergroups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
+            foreach (array_keys($usergroups) as $id) {
+                $GLOBALS['SITE_DB']->query_insert('group_page_access', array('page_name' => 'filedump', 'zone_name' => 'cms', 'group_id' => $id)); // Don't want to let anyone do filedump stuff just because we let them manage content
+            }
         }
 
         if ((!is_null($upgrade_from)) && ($upgrade_from < 4)) {

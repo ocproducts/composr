@@ -109,6 +109,7 @@ class Hook_addon_registry_core_primary_layout
             'themes/default/templates/CLOSED_SITE.tpl',
             'themes/default/templates/SCREEN_TITLE.tpl',
             'themes/default/templates/MAIL.tpl',
+            'themes/default/text/MAIL.txt',
             'themes/default/text/MAIL_SUBJECT.txt',
             'themes/default/templates/BREADCRUMB_SEPARATOR.tpl',
             'themes/default/templates/BREADCRUMB_LONE_WRAP.tpl',

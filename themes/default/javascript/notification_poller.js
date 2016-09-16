@@ -152,7 +152,7 @@ function display_alert(notification)
 	if (window.notify.isSupported)
 	{
 		var icon='{$IMG;,favicon}'.replace(/^https?:/,window.location.protocol);
-		var title='{!notifications:DESKTOP_NOTIFICATION_SUBJECT;}';
+		var title='{!notifications:DESKTOP_NOTIFICATION_SUBJECT;^}';
 		title=title.replace(/\\{1\\}/,notification.getAttribute('subject'));
 		title=title.replace(/\\{2\\}/,notification.getAttribute('from_username'));
 		var body='';//notification.getAttribute('rendered'); Looks ugly

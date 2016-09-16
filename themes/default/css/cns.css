@@ -39,40 +39,42 @@ This file defines styles for Conversr (abbreviated as CNS).
 	width: 43px;
 }
 
-.cns_forum_topic_wrapper_column_column2, .cns_forum_grouping_column2 {
-	width: 100%;
-}
+/*{+START,IF,{$EQ,{$LANG},EN}}*/
+	.cns_forum_topic_wrapper_column_column2, .cns_forum_grouping_column2 {
+		width: 100%;
+	}
 
-.cns_forum_topic_wrapper_column_column3 {
-	word-wrap: break-word;
-	width: 100px;
-}
+	.cns_forum_topic_wrapper_column_column3 {
+		word-wrap: break-word;
+		width: 100px;
+	}
 
-.cns_forum_topic_wrapper_column_column4, .cns_forum_grouping_column3 {
-	word-wrap: break-word;
-	width: 5em;
-}
+	.cns_forum_topic_wrapper_column_column4, .cns_forum_grouping_column3 {
+		word-wrap: break-word;
+		width: 5em;
+	}
 
-.cns_forum_topic_wrapper_column_column5, .cns_forum_grouping_column4 {
-	word-wrap: break-word;
-	width: 5em;
-}
+	.cns_forum_topic_wrapper_column_column5, .cns_forum_grouping_column4 {
+		word-wrap: break-word;
+		width: 5em;
+	}
 
-.cns_forum_topic_wrapper_column_column6 {
-	width: 14em;
-}
+	.cns_forum_topic_wrapper_column_column6 {
+		width: 14em;
+	}
 
-.cns_forum_topic_wrapper_column_column6_shorter {
-	width: 9em;
-}
+	.cns_forum_topic_wrapper_column_column6_shorter {
+		width: 9em;
+	}
 
-.cns_forum_topic_wrapper_column_column7 {
-	width: 3.3em;
-}
+	.cns_forum_topic_wrapper_column_column7 {
+		width: 3.3em;
+	}
 
-.cns_forum_grouping_column5 {
-	width: 17em;
-}
+	.cns_forum_grouping_column5 {
+		width: 17em;
+	}
+/*{+END}*/
 
 .dropdown_actions {
 	width: 7.5em;
@@ -249,7 +251,9 @@ div.cns_table_footer>div>div {
 }
 
 .cns_topic {
-	table-layout: fixed !important; /* Needed to be able to lock in overflow scrolling to individual cells */
+	/*{+START,IF,{$EQ,{$LANG},EN}}*/
+		table-layout: fixed !important; /* Needed to be able to lock in overflow scrolling to individual cells */
+	/*{+END}*/
 }
 
 .cns_topic .cns_forum_box_left, .cns_post_details {
@@ -559,7 +563,9 @@ hr.cns_sig_barrier {
 }
 
 .cns_topic_list, .cns_forum_grouping {
-	table-layout: fixed;
+	/*{+START,IF,{$EQ,{$LANG},EN}}*/
+		table-layout: fixed;
+	/*{+END}*/
 }
 
 .cns_topic_list th, .cns_forum_grouping th {

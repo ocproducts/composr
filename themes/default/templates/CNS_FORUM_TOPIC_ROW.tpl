@@ -78,9 +78,11 @@
 		<td class="cns_forum_topic_row_num_posts cns_column4">
 			{$PREG_REPLACE,\,\d\d\d$,k,{NUM_POSTS*}}
 		</td>
-		<td class="cns_forum_topic_row_num_views cns_column5">
-			{$PREG_REPLACE,\,\d\d\d$,k,{NUM_VIEWS*}}
-		</td>
+		{+START,IF,{$OR,{$EQ,{$LANG},EN},{$LT,{$LENGTH,{!COUNT_POSTS}{!COUNT_VIEWS}},12}}}
+			<td class="cns_forum_topic_row_num_views cns_column5">
+				{$PREG_REPLACE,\,\d\d\d$,k,{NUM_VIEWS*}}
+			</td>
+		{+END}
 	{+END}
 
 	<td class="cns_forum_topic_row_last_post cns_column6">

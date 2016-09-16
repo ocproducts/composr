@@ -255,6 +255,10 @@ function try_su_login($member)
         $GLOBALS['FORUM_DRIVER']->forum_layer_initialise();
     }
     if (has_privilege($member, 'assume_any_member')) {
+        if ($ks == do_lang('GUEST', null, null, null, fallback_lang())) {
+            $ks = do_lang('GUEST');
+        }
+
         $su = $GLOBALS['FORUM_DRIVER']->get_member_from_username($ks);
         if ((is_null($su)) && (is_numeric($ks))) {
             $su = intval($ks);

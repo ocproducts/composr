@@ -72,7 +72,7 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
     $middle_spt = new Tempcode();
 
     if (is_null($out_evaluated)) {
-        $out->evaluate(); // False evaluation
+        $out_evaluated = $out->evaluate(); // False evaluation
     }
 
     // FUDGE: Yuck. We have to after-the-fact make it wide, and empty lots of internal caching to reset the state.
@@ -260,6 +260,8 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
         require_code('input_filter_2');
         modsecurity_workaround_enable();
 
+        require_javascript('editing');
+
         $map_a = get_file_base() . '/lang/langs.ini';
         $map_b = get_custom_file_base() . '/lang_custom/langs.ini';
         if (!file_exists($map_b)) {
@@ -333,6 +335,8 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
         require_code('input_filter_2');
         modsecurity_workaround_enable();
 
+        require_javascript('editing');
+
         $map_a = get_file_base() . '/lang/langs.ini';
         $map_b = get_custom_file_base() . '/lang_custom/langs.ini';
         if (!file_exists($map_b)) {
@@ -346,13 +350,14 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
             $lang_name = $map[$lang_name];
         }
 
-        global $RECORDED_LANG_STRINGS;
+        global $RECORDED_LANG_STRINGS, $LANGS_REQUESTED;
         require_lang('lang');
         require_code('form_templates');
         $GLOBALS['NO_DEV_MODE_FULLSTOP_CHECK'] = true;
         require_code('lang_compile');
         $fields = new Tempcode();
         $descriptions = get_lang_file_section(fallback_lang());
+        //ksort($RECORDED_LANG_STRINGS); Best to leave them in occurrence order
         foreach (array_keys($RECORDED_LANG_STRINGS) as $key) {
             $value_found = do_lang($key, null, null, null, null, false);
             $description = array_key_exists($key, $descriptions) ? make_string_tempcode($descriptions[$key]) : new Tempcode();
@@ -370,7 +375,20 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
                     ));
                 }
                 $description->attach($actions);
-                $fields->attach(form_input_text($key, $description, 'l_' . $key, str_replace('\n', "\n", $value_found), false));
+
+                $key_extended = $key;
+                foreach (array_keys(get_lang_files(fallback_lang())) as $lang_file) {
+                    $tmp_path = get_file_base() . '/lang/' . fallback_lang() . '/' . $lang_file . '.ini';
+                    if (!is_file($tmp_path)) {
+                        $tmp_path = get_file_base() . '/lang_custom/' . fallback_lang() . '/' . $lang_file . '.ini';
+                    }
+                    if (is_file($tmp_path) && strpos(file_get_contents($tmp_path), "\n{$key}=") !== false) {
+                        $key_extended .= ' (' . $lang_file . ')';
+                        break;
+                    }
+                }
+
+                $fields->attach(form_input_text($key_extended, $description, 'l_' . $key, str_replace('\n', "\n", $value_found), false));
             }
         }
         $title = get_screen_title('__TRANSLATE_CODE', true, array(escape_html($lang_name)));

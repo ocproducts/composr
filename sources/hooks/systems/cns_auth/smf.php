@@ -38,14 +38,14 @@ class Hook_cns_auth_smf
     {
         if ($cookie_login) {
             if ($row['m_pass_hash_salted'] != $password_hashed) {
-                return do_lang_tempcode('MEMBER_BAD_PASSWORD');
+                return do_lang_tempcode((get_option('login_error_secrecy') == '1') ? 'MEMBER_INVALID_LOGIN' : 'MEMBER_BAD_PASSWORD');
             }
         } else {
             $username = strtolower(post_param_string('login_username', null)); //prepare inputted username
             $password_given = strtr(post_param_string('password', ''), array_flip(get_html_translation_table(HTML_SPECIALCHARS, ENT_QUOTES)) + array('&#039;' => '\'', '&nbsp;' => ' ')); //prepare inputted password
 
             if (sha1($username . $password_given) != $row['m_pass_hash_salted']) {
-                return do_lang_tempcode('MEMBER_BAD_PASSWORD');
+                return do_lang_tempcode((get_option('login_error_secrecy') == '1') ? 'MEMBER_INVALID_LOGIN' : 'MEMBER_BAD_PASSWORD');
             }
         }
 

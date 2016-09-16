@@ -26,7 +26,9 @@
 			<th>{!STARTER}{STARTER_TITLE*}</th>
 			{+START,IF,{$NOT,{$MOBILE}}}
 				<th>{!COUNT_POSTS}</th>
-				<th>{!COUNT_VIEWS}</th>
+				{+START,IF,{$OR,{$EQ,{$LANG},EN},{$LT,{$LENGTH,{!COUNT_POSTS}{!COUNT_VIEWS}},12}}}
+					<th>{!COUNT_VIEWS}</th>
+				{+END}
 			{+END}
 			<th{+START,IF_EMPTY,{MODERATOR_ACTIONS}} class="cns_forum_box_right"{+END}>{!LAST_POST}</th>
 			{+START,IF,{$NOT,{$MOBILE}}}

@@ -357,7 +357,7 @@ function new_html__initialise(element)
 						}
 						return false;
 					} }(element);
-					element.title=element.title.replace('{!LINK_NEW_WINDOW;}','');
+					element.title=element.title.replace('{!LINK_NEW_WINDOW;^}','');
 					if (element.title==' ') element.title='';
 				}
 			/*{+END}*/
@@ -1145,7 +1145,7 @@ function confirm_session(callback)
 
 		// But non blank tells us the username, and there is an implication that no session is confirmed for this login
 
-		if (ret.responseText=='{!GUEST;}') // Hmm, actually whole login was lost, so we need to ask for username too
+		if (ret.responseText=='{!GUEST;^}') // Hmm, actually whole login was lost, so we need to ask for username too
 		{
 			window.fauxmodal_prompt(
 				'{!USERNAME;^}',
@@ -1154,7 +1154,7 @@ function confirm_session(callback)
 				{
 					_confirm_session(callback,promptt,url);
 				},
-				'{!_LOGIN;}'
+				'{!_LOGIN;^}'
 			);
 			return;
 		}
@@ -1179,7 +1179,7 @@ function _confirm_session(callback,username,url)
 				},'login_username='+window.encodeURIComponent(username)+'&password='+window.encodeURIComponent(promptt));
 			} else callback(false);
 		},
-		'{!_LOGIN;}',
+		'{!_LOGIN;^}',
 		'password'
 	);
 }
@@ -1373,7 +1373,7 @@ function set_tray_theme_image(pic,before_theme_img,after_theme_img,before1_url,a
 function toggleable_tray(element,no_animate,cookie_id_name)
 {
 	if (typeof element=='string') element=document.getElementById(element);
-	if (!element) return;
+	if (!element) return false;
 
 	if (element.className.indexOf('toggleable_tray')==-1) // Suspicious, maybe we need to probe deeper
 	{
@@ -1405,8 +1405,8 @@ function toggleable_tray(element,no_animate,cookie_id_name)
 	}
 	if (pic) // Currently in action?
 	{
-		if (matches_theme_image(pic.src,'{$IMG;,1x/trays/expcon}')) return;
-		if (matches_theme_image(pic.src,'{$IMG;,1x/trays/expcon2}')) return;
+		if (matches_theme_image(pic.src,'{$IMG;,1x/trays/expcon}')) return false;
+		if (matches_theme_image(pic.src,'{$IMG;,1x/trays/expcon2}')) return false;
 	}
 
 	element.setAttribute('aria-expanded',(type=='none')?'false':'true');
@@ -1451,9 +1451,9 @@ function toggleable_tray(element,no_animate,cookie_id_name)
 			if (pic)
 			{
 				set_tray_theme_image(pic,'contract','expand','{$IMG;,1x/trays/contract}','{$IMG;,1x/trays/expand}','{$IMG;,2x/trays/expand}','{$IMG;,1x/trays/expand2}','{$IMG;,2x/trays/expand2}');
-				pic.setAttribute('alt',pic.getAttribute('alt').replace('{!CONTRACT;}','{!EXPAND;}'));
-				pic.title='{!EXPAND;}'; // Needs doing because convert_tooltip may not have run yet
-				pic.cms_tooltip_title='{!EXPAND;}';
+				pic.setAttribute('alt',pic.getAttribute('alt').replace('{!CONTRACT;^}','{!EXPAND;^}'));
+				pic.title='{!EXPAND;^}'; // Needs doing because convert_tooltip may not have run yet
+				pic.cms_tooltip_title='{!EXPAND;^}';
 			}
 			element.style.display='none';
 		}
@@ -1534,8 +1534,8 @@ function toggleable_tray_done(element,final_height,animate_dif,orig_overflow,ani
 		{
 			set_tray_theme_image(pic,'expcon','contract','{$IMG;,1x/trays/expcon}','{$IMG;,1x/trays/contract}','{$IMG;,2x/trays/contract}','{$IMG;,1x/trays/contract2}','{$IMG;,2x/trays/contract2}');
 		}
-		pic.setAttribute('alt',pic.getAttribute('alt').replace((animate_dif<0)?'{!CONTRACT;}':'{!EXPAND;}',(animate_dif<0)?'{!EXPAND;}':'{!CONTRACT;}'));
-		pic.cms_tooltip_title=(animate_dif<0)?'{!EXPAND;}':'{!CONTRACT;}';
+		pic.setAttribute('alt',pic.getAttribute('alt').replace((animate_dif<0)?'{!CONTRACT;^}':'{!EXPAND;^}',(animate_dif<0)?'{!EXPAND;^}':'{!CONTRACT;^}'));
+		pic.cms_tooltip_title=(animate_dif<0)?'{!EXPAND;^}':'{!CONTRACT;^}';
 	}
 	trigger_resize(true);
 }
@@ -3341,8 +3341,8 @@ function apply_rating_highlight_and_ajax_code(likes,initial_rating,content_type,
 function ga_track(ob,category,action)
 {
 	/*{+START,IF_NON_EMPTY,{$CONFIG_OPTION,google_analytics}}{+START,IF,{$NOR,{$IS_STAFF},{$IS_ADMIN}}}*/
-		if (typeof category=='undefined') category='{!URL;}';
-		if (typeof action=='undefined') action=ob?ob.href:'{!UNKNOWN;}';
+		if (typeof category=='undefined') category='{!URL;^}';
+		if (typeof action=='undefined') action=ob?ob.href:'{!UNKNOWN;^}';
 
 		try
 		{ 
@@ -3696,7 +3696,7 @@ function setup_word_counter(post,count_element)
 				var matches=text_value.replace(/<[^<|>]+?>|&nbsp;/gi,' ').match(/\b/g);
 				var count=0;
 				if(matches) count=matches.length/2;
-				set_inner_html(count_element,'{!WORDS;}'.replace('\\{1\\}',count));
+				set_inner_html(count_element,'{!WORDS;^}'.replace('\\{1\\}',count));
 			}
 			catch (e) {}
 		}
@@ -3713,7 +3713,9 @@ function add_captcha_checking(form)
 			var url='{$FIND_SCRIPT;,snippet}?snippet=captcha_wrong&name='+window.encodeURIComponent(form.elements['captcha'].value);
 			if (!do_ajax_field_test(url))
 			{
-				form.elements['captcha'].src+='&'; // Force it to reload latest captcha
+				var image=document.getElementById('captcha_image');
+				if (!image) image=document.getElementById('captcha_frame');
+				image.src+='&'; // Force it to reload latest captcha
 				document.getElementById('submit_button').disabled=false;
 				return false;
 			}

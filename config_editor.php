@@ -88,7 +88,23 @@ function ce_do_header()
         a[target="_blank"], a[onclick$="window.open"] { padding-right: 0; }
     </style>
 
-    <meta name="robots" content="noindex, nofollow" />
+    <meta name="robots" content="noindex, nofollow" />';
+
+    global $FILE_BASE;
+    $password_check_js = file_get_contents($FILE_BASE . '/themes/default/templates/PASSWORD_CHECK_JS.tpl');
+    $ls_rep = array(
+        '{!ADMIN_USERS_PASSWORD;^/}' => 'Administration account password',
+        '{!MASTER_PASSWORD;^/}' => 'Master password',
+        '{!PASSWORDS_DO_NOT_MATCH;^/}' => 'The given {1} passwords do not match',
+        '{!PASSWORDS_DO_NOT_REUSE;^/}' => 'It is important that you do not re-use the database password for the {1} password, as the database password has to be stored as plain-text.',
+        '{!PASSWORD_INSECURE;^/}' => 'Are you sure you want such an insecure {1} password? This will leave your installation and web hosting wide open to attack. You should use at least 8 characters and a combination of lower case, upper case, digits, and punctuation symbols.',
+        '{!CONFIRM_REALLY;^/}' => 'REALLY?',
+        '{PASSWORD_PROMPT;/}' => '',
+    );
+    $password_check_js = str_replace(array_keys($ls_rep), array_values($ls_rep), $password_check_js);
+    @print($password_check_js);
+
+    echo '
 </head>
 <body class="website_body" style="margin: 1em"><div class="global_middle">
     <h1 class="screen_title">Composr Installation Options editor</h1>
@@ -242,7 +258,7 @@ function do_access($given_password)
     foreach ($settings as $key => $notes) {
         $val = array_key_exists($key, $SITE_INFO) ? $SITE_INFO[$key] : '';
 
-        if (($key == 'master_password') || ($key == 'confirm_master_password')) {
+        if (($key == 'master_password') || ($key == 'master_password_confirm')) {
             $val = '';
         }
 
@@ -285,7 +301,7 @@ function do_access($given_password)
                         &raquo; Confirm password
                     </th>
                     <td>
-                        <input type="' . $type . '" name="confirm_master_password" value="' . $_val . '" size="20" />
+                        <input type="' . $type . '" name="master_password_confirm" value="' . $_val . '" size="20" />
                     </td>
                     <td>
                     </td>
@@ -293,6 +309,10 @@ function do_access($given_password)
             ';
         }
     }
+
+    echo '
+        </table>
+    ';
 
     // Any other settings that we don't actually implicitly recognise need to be relayed
     foreach ($SITE_INFO as $key => $val) {
@@ -308,10 +328,8 @@ function do_access($given_password)
     }
 
     echo '
-        </table>
-
         <p class="proceed_button" style="text-align: center">
-            <input class="button_screen buttons__save" type="submit" value="Save" />
+            <input class="button_screen buttons__save" type="submit" value="Save" onclick="return check_passwords(this.form);" />
         </p>
 
         <input type="hidden" name="given_password" value="' . htmlentities($given_password) . '" />
@@ -333,7 +351,7 @@ function do_set()
         }
 
         // If new password is blank use existing one
-        if ((($key == 'master_password') || ($key == 'confirm_master_password')) && ($val == '')) {
+        if ((($key == 'master_password') || ($key == 'master_password_confirm')) && ($val == '')) {
             $val = $given_password;
         }
 
@@ -342,11 +360,11 @@ function do_set()
     }
 
     // Check confirm password matches
-    if ($new['confirm_master_password'] != $new['master_password']) {
+    if ($new['master_password_confirm'] != $new['master_password']) {
         echo '<hr /><p><strong>Your passwords do not match up.</strong></p>';
         return;
     }
-    unset($new['confirm_master_password']);
+    unset($new['master_password_confirm']);
 
     // Encrypt password
     if (function_exists('password_hash')) { // PHP5.5+
@@ -497,23 +515,7 @@ function co_sync_file_move($old, $new)
  */
 function co_check_master_password($password_given)
 {
-    global $SITE_INFO;
-    if (!array_key_exists('master_password', $SITE_INFO)) {
-        exit('No master password defined in _config.php currently so cannot authenticate');
-    }
-    $actual_password_hashed = $SITE_INFO['master_password'];
-    if ((function_exists('password_verify')) && (strpos($actual_password_hashed, '$') !== false)) {
-        return password_verify($password_given, $actual_password_hashed);
-    }
-    $salt = '';
-    if ((substr($actual_password_hashed, 0, 1) == '!') && (strlen($actual_password_hashed) == 33)) {
-        $actual_password_hashed = substr($actual_password_hashed, 1);
-        $salt = 'cms';
-
-        // LEGACY
-        if ($actual_password_hashed != md5($password_given . $salt)) {
-            $salt = 'ocp';
-        }
-    }
-    return (((strlen($password_given) != 32) && ($actual_password_hashed == $password_given)) || ($actual_password_hashed == md5($password_given . $salt)));
+    global $FILE_BASE;
+    require_once($FILE_BASE . '/sources/crypt_master.php');
+    return check_master_password($password_given);
 }

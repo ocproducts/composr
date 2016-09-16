@@ -193,7 +193,7 @@ function post_comment_script()
     if (!isset($_GET['options']) && !isset($_POST['options'])) {
         post_param_string('options'); // Trigger an error
     }
-    $options = isset($_POST['options']) ? $_POST['options'] : (isset($_GET['options']) ? $_GET['options'] : array());
+    $options = isset($_POST['options']) ? $_POST['options'] : (isset($_GET['options']) ? $_GET['options'] : '');
     secure_serialized_data($options);
     $_options = @unserialize($options);
     if (!is_array($_options)) {
@@ -786,7 +786,7 @@ function actualise_post_comment($allow_comments, $content_type, $content_id, $co
         $poster_name_if_guest = post_param_string('poster_name_if_guest', '');
     }
     list($topic_id, $is_hidden) = $GLOBALS['FORUM_DRIVER']->make_post_forum_topic(
-    // Define scope
+        // Define scope
         $forum,
         $content_type . '_' . $content_id,
 

@@ -170,7 +170,15 @@ function find_lang_content_names($ids)
                     foreach (array_keys($cma_hooks) as $hook) {
                         require_code('content');
                         $ob = get_content_object($hook);
+                        if (is_null($ob)) {
+                            continue;
+                        }
+
                         $info = $ob->info();
+                        if (is_null($info)) {
+                            continue;
+                        }
+
                         if ($info['table'] == $field['m_table']) {
                             if ($info['title_field_dereference']) {
                                 $ret[$id] = $field['m_table'] . ' \ ' . get_translated_text($test[$id][$info['title_field']]) . ' \ ' . $field['m_name'];

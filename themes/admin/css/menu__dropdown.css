@@ -14,10 +14,10 @@ For example:
 
 
 .menu_type__dropdown {
-	{+START,IF,{$CONFIG_OPTION,fixed_width}}{+START,IF,{$NOT,{$MOBILE}}}
+	/*{+START,IF,{$CONFIG_OPTION,fixed_width}}{+START,IF,{$NOT,{$MOBILE}}}*/
 		width: 980px;
 		margin: 0 auto;
-	{+END}{+END}
+	/*{+END}{+END}*/
 	overflow: hidden;
 }
 
@@ -26,20 +26,15 @@ For example:
 	border-{!en_left}: 1px solid #cacaca;
 	margin-bottom: 0;
 	{$BETA_CSS_PROPERTY,transition: color\,background-color 0.5s linear;}
-	{+START,IF,{$EQ,{$LANG},EN}}
-		font-size: 0.9em;
-	{+END}
-	{+START,IF,{$NEQ,{$LANG},EN}}
-		font-size: 0.72em;
-	{+END}
+	font-size: 0.9em;
 	padding: 0.5em 0.25em;
 	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
-	{+START,IF,{$AND,{$CONFIG_OPTION,fixed_width},{$NOT,{$MOBILE}}}}
+	/*{+START,IF,{$AND,{$CONFIG_OPTION,fixed_width},{$NOT,{$MOBILE}}}}*/
 		width: 109px;
-	{+END}
-	{+START,IF,{$NAND,{$CONFIG_OPTION,fixed_width},{$NOT,{$MOBILE}}}}
+	/*{+END}*/
+	/*{+START,IF,{$NAND,{$CONFIG_OPTION,fixed_width},{$NOT,{$MOBILE}}}}*/
 		width: {$DIV_FLOAT*,100,9}%;
-	{+END}
+	/*{+END}*/
 }
 
 .menu_type__dropdown li.toplevel.last {

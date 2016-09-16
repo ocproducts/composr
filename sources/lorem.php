@@ -913,6 +913,7 @@ function get_text_templates()
         'templates/TRACKBACK_XML_WRAPPER.tpl',
         'templates/HANDLE_CONFLICT_RESOLUTION.tpl',
         'templates/TRACKBACK_XML.tpl',
+        'templates/PASSWORD_CHECK_JS.tpl',
         'templates/POLL_RSS_SUMMARY.tpl',
         'templates/FONT_SIZER.tpl',
         'templates/FORM_SCREEN_FIELD_DESCRIPTION.tpl',

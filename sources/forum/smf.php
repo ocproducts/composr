@@ -1141,12 +1141,12 @@ class Forum_driver_smf extends Forum_driver_base
         }
 
         if (!array_key_exists(0, $rows) || $rows[0] === null) { // All hands to lifeboats
-            $out['error'] = (do_lang_tempcode('_MEMBER_NO_EXIST', $username));
+            $out['error'] = do_lang_tempcode((get_option('login_error_secrecy') == '1') ? 'MEMBER_INVALID_LOGIN' : '_MEMBER_NO_EXIST', $username);
             return $out;
         }
         $row = $rows[0];
         if ($this->is_banned($row['ID_MEMBER'])) { // All hands to the guns
-            $out['error'] = (do_lang_tempcode('YOU_ARE_BANNED'));
+            $out['error'] = do_lang_tempcode('YOU_ARE_BANNED');
             return $out;
         }
 
@@ -1160,7 +1160,7 @@ class Forum_driver_smf extends Forum_driver_base
         $test1 = (!$GLOBALS['SMF_NEW']) && ((($from_cookie) && ($this->forum_md5($row['passwd'], 'ys', true) == $bits[0])) || ((!$from_cookie) && ($row['passwd'] == $bits[0])));
         $test2 = ($GLOBALS['SMF_NEW']) && ((($from_cookie) && (sha1($row['passwd'] . $row['passwordSalt']) == $bits[1])) || ((!$from_cookie) && ($row['passwd'] == $bits[1])));
         if ((!$test1) && (!$test2)) {
-            $out['error'] = (do_lang_tempcode('MEMBER_BAD_PASSWORD'));
+            $out['error'] = do_lang_tempcode((get_option('login_error_secrecy') == '1') ? 'MEMBER_INVALID_LOGIN' : 'MEMBER_BAD_PASSWORD');
             return $out;
         }
 

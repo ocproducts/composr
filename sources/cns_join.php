@@ -155,7 +155,7 @@ function cns_join_form($url, $captcha_if_enabled = true, $intro_message_if_enabl
         }
     }
     if ($one_per_email_address_if_enabled) {
-        if (get_option('one_per_email_address') == '1') {
+        if (get_option('one_per_email_address') != '0') {
             $javascript .= "
             url='" . addslashes($script) . "?snippet=exists_email&name='+window.encodeURIComponent(form.elements['email_address'].value);
             if (!do_ajax_field_test(url))
@@ -304,7 +304,7 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
     // Check that the given address isn't already used (if one_per_email_address on)
     $member_id = null;
     if ($one_per_email_address_if_enabled) {
-        if (get_option('one_per_email_address') == '1') {
+        if (get_option('one_per_email_address') != '0') {
             $test = $GLOBALS['FORUM_DB']->query_select('f_members', array('id', 'm_username'), array('m_email_address' => $email_address), '', 1);
             if (array_key_exists(0, $test)) {
                 if ($test[0]['m_username'] != $username) {

@@ -255,6 +255,7 @@ class Hook_addon_registry_core_form_interfaces
             'data/ckeditor/lang/sr-latn.js',
             'data/ckeditor/lang/sr.js',
             'data/ckeditor/lang/sv.js',
+            'data/ckeditor/lang/ta.js',
             'data/ckeditor/lang/th.js',
             'data/ckeditor/lang/tr.js',
             'data/ckeditor/lang/ug.js',

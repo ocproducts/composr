@@ -94,7 +94,7 @@ function set_field_error(the_element,error_msg)
 					while (p!==null)
 					{
 						p=p.parentNode;
-						if ((error_msg.substr(0,5)!='{!DISABLED_FORM_FIELD;}'.substr(0,5)) && (p) && (typeof p.getAttribute!='undefined') && (p.getAttribute('id')) && (p.getAttribute('id').substr(0,2)=='g_') && (p.style.display=='none'))
+						if ((error_msg.substr(0,5)!='{!DISABLED_FORM_FIELD;^}'.substr(0,5)) && (p) && (typeof p.getAttribute!='undefined') && (p.getAttribute('id')) && (p.getAttribute('id').substr(0,2)=='g_') && (p.style.display=='none'))
 						{
 							select_tab('g',p.getAttribute('id').substr(2,p.id.length-2),false,true);
 							break;
@@ -268,7 +268,7 @@ function do_form_preview(event,form,preview_url,has_separate_preview)
 
 	if (!document.getElementById('preview_iframe'))
 	{
-		fauxmodal_alert('{!ADBLOCKER;}');
+		fauxmodal_alert('{!ADBLOCKER;^}');
 		return false;
 	}
 
@@ -422,7 +422,7 @@ function check_field(the_element,the_form,for_preview)
 	// Test file types
 	if ((the_element.type=='file') && (the_element.value) && (the_element.name!='file_anytype'))
 	{
-		var allowed_types='{$VALID_FILE_TYPES;}'.split(/,/);
+		var allowed_types='{$VALID_FILE_TYPES;^}'.split(/,/);
 		var type_ok=false;
 		var theFileType=the_element.value.indexOf('.')?the_element.value.substr(the_element.value.lastIndexOf('.')+1):'{!NONE;^}';
 		for (var k=0;k<allowed_types.length;k++)
@@ -967,8 +967,8 @@ function toggle_subordinate_fields(pic,help_id)
 		pic.src=((pic.src.indexOf('themewizard.php')!=-1)?pic.src.replace('expand','contract'):'{$IMG;,1x/trays/contract}').replace(/^https?:/,window.location.protocol);
 		if (typeof pic.srcset!='undefined')
 			pic.srcset=((pic.srcset.indexOf('themewizard.php')!=-1)?pic.srcset.replace('expand','contract'):'{$IMG;,2x/trays/contract} 2x').replace(/^https?:/,window.location.protocol);
-		pic.setAttribute('alt','{!CONTRACT;}');
-		pic.setAttribute('title','{!CONTRACT;}');
+		pic.setAttribute('alt','{!CONTRACT;^}');
+		pic.setAttribute('title','{!CONTRACT;^}');
 		new_state=(field_input.nodeName.toLowerCase()=='tr')?'table-row':'block';
 		new_state_2='block';
 		new_state_3='1px dashed';
@@ -977,8 +977,8 @@ function toggle_subordinate_fields(pic,help_id)
 		pic.src=((pic.src.indexOf('themewizard.php')!=-1)?pic.src.replace('contract','expand'):'{$IMG;,1x/trays/expand}').replace(/^https?:/,window.location.protocol);
 		if (typeof pic.srcset!='undefined')
 			pic.srcset=((pic.src.indexOf('themewizard.php')!=-1)?pic.srcset.replace('contract','expand'):'{$IMG;,2x/trays/expand} 2x').replace(/^https?:/,window.location.protocol);
-		pic.setAttribute('alt','{!EXPAND;}');
-		pic.setAttribute('title','{!EXPAND;}');
+		pic.setAttribute('alt','{!EXPAND;^}');
+		pic.setAttribute('title','{!EXPAND;^}');
 		new_state='none';
 		new_state_2='none';
 		new_state_3='0';
@@ -1274,12 +1274,12 @@ function geolocate_address_fields()
 		{
 			navigator.geolocation.getCurrentPosition(function(position) {
 				var fields=[
-					'{!cns_special_cpf:SPECIAL_CPF__cms_street_address;}',
-					'{!cns_special_cpf:SPECIAL_CPF__cms_city;}',
-					'{!cns_special_cpf:SPECIAL_CPF__cms_county;}',
-					'{!cns_special_cpf:SPECIAL_CPF__cms_state;}',
-					'{!cns_special_cpf:SPECIAL_CPF__cms_post_code;}',
-					'{!cns_special_cpf:SPECIAL_CPF__cms_country;}'
+					'{!cns_special_cpf:SPECIAL_CPF__cms_street_address;^}',
+					'{!cns_special_cpf:SPECIAL_CPF__cms_city;^}',
+					'{!cns_special_cpf:SPECIAL_CPF__cms_county;^}',
+					'{!cns_special_cpf:SPECIAL_CPF__cms_state;^}',
+					'{!cns_special_cpf:SPECIAL_CPF__cms_post_code;^}',
+					'{!cns_special_cpf:SPECIAL_CPF__cms_country;^}'
 				];
 
 				var geocode_url='{$FIND_SCRIPT;,geocode}';

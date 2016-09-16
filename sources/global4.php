@@ -511,7 +511,9 @@ function _log_it($type, $a = null, $b = null)
     if ((!get_mass_import_mode()) && ($ADMIN_LOGGING_ON)) {
         if ($logged < 10) { // Be extra sure it's not some kind of import, causing spam
             if (addon_installed('actionlog')) {
-                require_all_lang();
+                if (do_lang($type, null, null, null, null, false) === null) {
+                    require_all_lang();
+                }
                 if (is_null($a)) {
                     $a = do_lang('NA');
                 }

@@ -349,6 +349,14 @@ function get_pts($max = null, $start = 0)
         $with_username = $GLOBALS['FORUM_DRIVER']->get_username($with_poster_id);
         $with_member_url = $GLOBALS['CNS_DRIVER']->member_profile_url($with_poster_id, false, true);
 
+        $by_poster_id = $topic['t_pt_from'];
+        $by_username = $GLOBALS['FORUM_DRIVER']->get_username($by_poster_id);
+        $by_member_url = $GLOBALS['CNS_DRIVER']->member_profile_url($by_poster_id, false, true);
+
+        $to_poster_id = $topic['t_pt_to'];
+        $to_username = $GLOBALS['FORUM_DRIVER']->get_username($to_poster_id);
+        $to_member_url = $GLOBALS['CNS_DRIVER']->member_profile_url($to_poster_id, false, true);
+
         $is_unread = ($topic['t_cache_last_time'] > time() - 60 * 60 * 24 * intval(get_option('post_read_history_days'))) && ((is_null($topic['l_time'])) || ($topic['l_time'] < $topic['p_time']));
 
         $out->attach(do_template('CNS_PRIVATE_TOPIC_LINK', array(
@@ -363,6 +371,12 @@ function get_pts($max = null, $start = 0)
             'WITH_POSTER_URL' => $with_member_url,
             'WITH_USERNAME' => $with_username,
             'WITH_POSTER_ID' => strval($with_poster_id),
+            'BY_POSTER_URL' => $by_member_url,
+            'BY_USERNAME' => $by_username,
+            'BY_POSTER_ID' => strval($by_poster_id),
+            'TO_POSTER_URL' => $to_member_url,
+            'TO_USERNAME' => $to_username,
+            'TO_POSTER_ID' => strval($to_poster_id),
             'NUM_POSTS' => integer_format($num_posts),
             'HAS_READ' => !$is_unread,
         )));

@@ -327,8 +327,7 @@ class Module_calendar
             if ($private !== 1) {
                 $title_to_use = do_lang_tempcode('CALENDAR_EVENT_VCAL', make_fractionable_editable('event', $id, $_title));
             } else {
-                $username = $GLOBALS['FORUM_DRIVER']->get_username(/*is_null($event['e_member_calendar'])?$event['e_submitter']:$event['e_member_calendar']*/
-                    $event['e_submitter'], true);
+                $username = $GLOBALS['FORUM_DRIVER']->get_username(/*is_null($event['e_member_calendar'])?$event['e_submitter']:$event['e_member_calendar']*/$event['e_submitter'], true);
                 $title_to_use = do_lang_tempcode('_CALENDAR_EVENT_VCAL', escape_html($username), make_fractionable_editable('event', $id, $_title));
             }
             $title_to_use_2 = do_lang('CALENDAR_EVENT', $_title);
@@ -886,8 +885,7 @@ class Module_calendar
                             $add_url = build_url(array('page' => 'cms_calendar', 'type' => 'add', 'date' => date('Y-m-d H:i:s', $timestamp), 'e_type' => (count($and_filter) == 1) ? $and_filter[0] : null, 'private' => get_param_integer('private', null), 'member_id' => get_param_integer('member_id', null)), get_module_zone('cms_calendar'));
                         }
                     }
-                    $_streams->attach(/*XHTMLXHTML*/
-                        static_evaluate_tempcode(do_template('CALENDAR_DAY_STREAM_HOUR', array('_GUID' => '93a8fb53183a4225ec3bf7f2ea07cfc5', 'CURRENT' => date('Y-m-d H', utctime_to_usertime()) == date('Y-m-d H', $timestamp), 'ADD_URL' => $add_url, 'PRIORITY' => $priority, 'DOWN' => $down, 'ENTRY' => $entry))));
+                    $_streams->attach(/*XHTMLXHTML*/static_evaluate_tempcode(do_template('CALENDAR_DAY_STREAM_HOUR', array('_GUID' => '93a8fb53183a4225ec3bf7f2ea07cfc5', 'CURRENT' => date('Y-m-d H', utctime_to_usertime()) == date('Y-m-d H', $timestamp), 'ADD_URL' => $add_url, 'PRIORITY' => $priority, 'DOWN' => $down, 'ENTRY' => $entry))));
                 }
             }
 

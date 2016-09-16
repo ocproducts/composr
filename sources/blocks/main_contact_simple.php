@@ -79,7 +79,7 @@ class Block_main_contact_simple
             if ($email_from != '') {
                 require_code('type_sanitisation');
                 if (!is_email_address($email_from)) {
-                    warn_exit(do_lang_tempcode('INVALID_EMAIL_ADDRESS'));
+                    return paragraph(do_lang_tempcode('INVALID_EMAIL_ADDRESS'), '', 'red_alert');
                 }
             }
 
