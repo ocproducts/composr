@@ -2,11 +2,28 @@
 	{+START,IF,{$NOT,{$MOBILE}}}
 		<div class="ltNews">
 			<h4 class="ltNewsHead">
-				{TITLE*}
+				{TITLE*} <span class="associated_details">&ndash; <a href="{$PAGE_LINK*,site:news}">More</a></span>
 			</h4>
 
 			<div class="ltCnt">
 				{CONTENT}
+
+				{+START,IF_NON_EMPTY,{ARCHIVE_URL}{SUBMIT_URL}{RSS_URL}{ATOM_URL}}
+					<ul class="horizontal_links associated_links_block_group">
+						{+START,IF_NON_EMPTY,{ARCHIVE_URL}}
+							<li><a rel="archives" href="{ARCHIVE_URL*}">{!VIEW_ARCHIVE}</a></li>
+						{+END}
+						{+START,IF_NON_EMPTY,{SUBMIT_URL}}
+							<li><a rel="add" href="{SUBMIT_URL*}">{$?,{BLOG},{!ADD_NEWS_BLOG},{!ADD_NEWS}}</a></li>
+						{+END}
+						{+START,IF_NON_EMPTY,{RSS_URL}}
+							<li><a href="{RSS_URL*}"><abbr title="Really Simple Syndication">RSS</abbr></a></li>
+						{+END}
+						{+START,IF_NON_EMPTY,{ATOM_URL}}
+							<li><a href="{ATOM_URL*}">Atom</a></li>
+						{+END}
+					</ul>
+				{+END}
 			</div>
 		</div>
 	{+END}

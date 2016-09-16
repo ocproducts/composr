@@ -68,7 +68,7 @@
 
 		<div class="pageMenuHeader"><h2>News</h2></div>
 		<div class="accordionContent">
-			{$BLOCK,block=main_news,title=Latest News,fallback_full=3,fallback_archive=0,param=0}
+			{$BLOCK,block=main_news,title=Latest News,fallback_full=6,fallback_archive=0,param=0}
 		</div>
 
 		<div class="pageMenuHeader"><h2>Newsletter</h2></div>
