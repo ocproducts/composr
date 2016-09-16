@@ -66,11 +66,13 @@ This file defines styles for Conversr (abbreviated as CNS).
 	.cns_forum_topic_wrapper_column_column6_shorter {
 		width: 9em;
 	}
+/*{+END}*/
 
-	.cns_forum_topic_wrapper_column_column7 {
-		width: 3.3em;
-	}
+.cns_forum_topic_wrapper_column_column7 {
+	width: 3.3em;
+}
 
+/*{+START,IF,{$EQ,{$LANG},EN}}*/
 	.cns_forum_grouping_column5 {
 		width: 17em;
 	}

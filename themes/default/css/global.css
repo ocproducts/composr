@@ -169,11 +169,6 @@ html, body {
 body, .email_body, textarea, input, td, th {
 	/* 'Open Sans' is a Google font, and only will be enabled if uncommented in HTML_HEAD.tpl -- so normally it is Segoe UI (Windows, newer version of Tahoma) or Tahoma that is active (available on Windows and Mac since Leopard) or a similar humanist sans-serif font */
 	font-family: 'Open Sans', 'Segoe UI', Tahoma, Verdana, Arial, Helvetica, sans-serif;
-
-	{+START,IF,{$EQ,{$LANG},TA}}
-		{$,Windows text sizing is awful in other fonts when mixing Tamil and English}
-		font-family: Garamond;
-	{+END}
 }
 
 tt, kbd, samp {
@@ -443,10 +438,6 @@ body.website_body.frame {
 
 body.website_body, #wysiwyg_editor {
 	font-size: 13px; /* Note that the font sizer may override this (FONT_SIZER.tpl) */
-
-	{+START,IF,{$EQ,{$LANG},TA}}
-		font-size: 15px;
-	{+END}
 }
 #wysiwyg_editor {
 	margin: 0;
@@ -3315,7 +3306,9 @@ div>.button_micro:first-child, div>.button_screen:first-child, div>.button_scree
 	font-size: 12px;
 	margin: 1px 0.25em 0 0.25em; /* Push it up a bit due to confined space */
 	text-shadow: 1px 1px 1px {$GET,dark_shadow};
-	line-height: 0.9em;
+	/*{+START,IF,{$MOBILE}}*/
+		line-height: 0.9em;
+	/*{+END}*/
 }
 div .button_micro {
 	background-image: none !important; /* Too loud for such a small space */

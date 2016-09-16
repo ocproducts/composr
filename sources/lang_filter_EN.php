@@ -456,4 +456,16 @@ class LangFilter_EN extends LangFilter
 
         return $value;
     }
+
+    /**
+     * Do a compile-time filter of the CSS code.
+     *
+     * @param  string $name The name of the CSS file
+     * @param  string $code The CSS code
+     * @return string The filtered CSS code
+     */
+    public function filter_css($name, $code)
+    {
+        return $code;
+    }
 }

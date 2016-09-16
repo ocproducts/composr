@@ -242,6 +242,7 @@ class Hook_addon_registry_language_TA
             'lang_custom/TA/wiki.ini',
             'lang_custom/TA/wordfilter.ini',
             'lang_custom/TA/zones.ini',
+            'sources_custom/lang_filter_TA.php',
         );
     }
 }

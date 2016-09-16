@@ -92,14 +92,14 @@ function init__lang()
 
     global $LANG_FILTER_OB, $LANG_RUNTIME_PROCESSING;
     $lang_stripped = preg_replace('#[\-\_].*$#', '', user_lang());
+    require_code('lang_filter_' . fallback_lang());
     if (((is_file(get_file_base() . '/sources/lang_filter_' . $lang_stripped . '.php')) || (is_file(get_file_base() . '/sources_custom/lang_filter_' . $lang_stripped . '.php'))) && (!in_safe_mode())) {
         require_code('lang_filter_' . $lang_stripped);
         $LANG_FILTER_OB = object_factory('LangFilter_' . $lang_stripped);
     } else {
         /*$LANG_FILTER_OB = new LangFilter(); Actually it's better to just fall back to the English one, rather than an empty one*/
 
-        require_code('lang_filter_EN');
-        $LANG_FILTER_OB = object_factory('LangFilter_EN');
+        $LANG_FILTER_OB = object_factory('LangFilter_' . fallback_lang());
     }
     lang_load_runtime_processing();
 
