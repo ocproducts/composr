@@ -2,7 +2,7 @@
 	{+START,IF,{$NOT,{$MOBILE}}}
 		<div class="ltNews">
 			<h4 class="ltNewsHead">
-				{TITLE*} <span class="associated_details">&ndash; <a href="{$PAGE_LINK*,site:news}">More</a></span>
+				{TITLE*}
 			</h4>
 
 			<div class="ltCnt">
