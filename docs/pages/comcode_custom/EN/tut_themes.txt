@@ -144,7 +144,7 @@ body {
 If you find the CSS totally "corrupts", it is likely you have made a typo somewhere. For example, failing to close a comment.
 
 You can't effectively check the Composr CSS because it has lots of Tempcode in it. Additionally, the normal outputted CSS is minified, so hard to read and relate to.
-Fortunately there is a solution. If you go to [tt]http://yourbaseurl/index.php?keep_no_minify=1[/tt] then the CSS will not be minified. You may then look at your HTML source, locate the URL to your CSS, and then pass this onto a regular [url="http://jigsaw.w3.org/css-validator/"]CSS validator[/url].
+Fortunately there is a solution. If you go to [tt]http://yourbaseurl/index.php?keep_minify=0[/tt] then the CSS will not be minified. You may then look at your HTML source, locate the URL to your CSS, and then pass this onto a regular [url="http://jigsaw.w3.org/css-validator/"]CSS validator[/url].
 
 [title="3"]Screen previews[/title]
 

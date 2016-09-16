@@ -203,7 +203,7 @@ function init__global2()
      *
      * @global boolean $DEV_MODE
      */
-    $DEV_MODE = (((!array_key_exists('dev_mode', $SITE_INFO) || ($SITE_INFO['dev_mode'] == '1')) && (is_dir(get_file_base() . '/.git') || (function_exists('ocp_mark_as_escaped')))) && ((!array_key_exists('keep_no_dev_mode', $_GET) || ($_GET['keep_no_dev_mode'] == '0'))));
+    $DEV_MODE = (((!array_key_exists('dev_mode', $SITE_INFO) || ($SITE_INFO['dev_mode'] == '1')) && (is_dir(get_file_base() . '/.git') || (function_exists('ocp_mark_as_escaped')))) && ((!array_key_exists('keep_dev_mode', $_GET) || ($_GET['keep_dev_mode'] == '1'))));
     /** Whether Composr is running in a more limited development mode, which may make things a bit slower and more verbose, but won't run such severe standard enforcement tricks
      *
      * @global boolean $SEMI_DEV_MODE
@@ -456,7 +456,7 @@ function init__global2()
     safe_ini_set('memory_limit', $default_memory_limit);
     memory_limit_for_max_param('max');
     if ((isset($GLOBALS['FORUM_DRIVER'])) && ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()))) {
-        if (get_param_integer('keep_avoid_memory_limit', 0) == 1) {
+        if (get_param_integer('keep_memory_limit', null) === 0) {
             disable_php_memory_limit();
         } else {
             $memory_test = get_param_integer('keep_memory_limit_test', 0);

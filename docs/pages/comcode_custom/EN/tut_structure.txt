@@ -93,7 +93,7 @@ It is also worth understanding that page-links have a long-form and a short form
 
 If you do not want to hard-code what zone to use, you may specify either [tt]_SEARCH[/tt] or [tt]_SELF[/tt] as the zone name in the page-link. [tt]_SEARCH[/tt] will cause Composr to dynamically find the module involved, while [tt]_SELF[/tt] will use the same zone as the page-link is dynamically being interpreted in (e.g. If if it used on a menu in the site zone, [tt]_SELF[/tt] will be equivalent to [tt]site[/tt]).
 
-If you have a URL Scheme enabled it can be hard to find out what the URL parameters to a screen are. If you go to [tt]http://yourbaseurl/index.php?keep_no_url_scheme=1[/tt] then all URLs shown will reveal the raw parameter values (this just happens for you, via the [tt]keep_no_url_scheme=1[/tt] you temporarily set in your address bar).
+If you have a URL Scheme enabled it can be hard to find out what the URL parameters to a screen are. If you go to [tt]http://yourbaseurl/index.php?keep_url_scheme=0[/tt] then all URLs shown will reveal the raw parameter values (this just happens for you, via the [tt]keep_url_scheme=0[/tt] you temporarily set in your address bar).
 
 For more information on how page-links are turned into URLs, see the [page="_SEARCH:tut_short_urls"]URL Schemes in Composr[/page] tutorial. This tutorial also contains an example on how to link to the current logged in user's member profile (a common request), as a worked example of how page-links and URL Schemes work.
 

@@ -1281,7 +1281,7 @@ class DatabaseConnector
             fb('Query: ' . $query);
         }
 
-        if (($QUERY_COUNT === DEV_MODE_QUERY_LIMIT) && (get_param_integer('keep_no_query_limit', 0) === 0) && ($GLOBALS['RELATIVE_PATH'] !== '_tests') && (count($_POST) === 0) && (!$IN_MINIKERNEL_VERSION) && (get_param_string('special_page_type', '') !== 'query')) {
+        if (($QUERY_COUNT === DEV_MODE_QUERY_LIMIT) && (get_param_integer('keep_query_limit', null) !== 0) && ($GLOBALS['RELATIVE_PATH'] !== '_tests') && (count($_POST) === 0) && (!$IN_MINIKERNEL_VERSION) && (get_param_string('special_page_type', '') !== 'query')) {
             cms_profile_start_for('_query:HIGH_VOLUME_ALERT');
 
             push_query_limiting(false);

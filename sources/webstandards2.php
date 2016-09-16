@@ -1417,7 +1417,7 @@ function check_spelling($value)
  */
 function _check_externals($tag, $attributes, $self_close, $close)
 {
-    if ((function_exists('get_param_integer')) && (get_param_integer('keep_no_ext_check', 0) == 1)) {
+    if ((function_exists('get_param_integer')) && (get_param_integer('keep_ext_check', null) === 0)) {
         return null;
     }
 

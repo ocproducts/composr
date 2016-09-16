@@ -174,7 +174,7 @@ function pagination($title, $start, $start_name, $max, $max_name, $max_rows, $ke
         $_selectors = array(10, 25, 50, 80);
     }
     if (has_privilege(get_member(), 'remove_page_split')) {
-        if (get_param_integer('keep_avoid_memory_limit', 0) == 1) {
+        if (get_param_integer('keep_memory_limit', null) === 0) {
             $_selectors[] = $max_rows;
         }
     }

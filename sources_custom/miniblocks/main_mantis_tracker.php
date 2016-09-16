@@ -21,7 +21,7 @@ require_lang('customers');
 $block_id = get_block_id($map);
 
 // Defer to inner frame
-if (!running_script('tracker') && get_param_integer('keep_no_frames', 0) == 0) {
+if (!running_script('tracker') && get_param_integer('keep_frames', null) !== 0) {
     $params = '?' . http_build_query($map);
     $params .= static_evaluate_tempcode(symbol_tempcode('KEEP'));
 

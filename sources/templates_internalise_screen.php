@@ -34,7 +34,7 @@ function internalise_own_screen($screen_content, $refresh_time = null, $refresh_
     if (get_bot_type() !== null) {
         return $screen_content;
     }
-    if (get_param_integer('keep_no_frames', 0) == 1) {
+    if (get_param_integer('keep_frames', null) === 0) {
         return $screen_content;
     }
 
