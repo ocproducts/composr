@@ -40,13 +40,18 @@ class Hook_symbol_CPF_LIST
             }
 
             if (($param[0] == 'm_primary_group|gm_group_id') || ($param[0] == 'm_primary_group') || ($param[0] == 'gm_group_id')) {
-                $map = has_privilege(get_member(), 'see_hidden_groups') ? array() : array('g_hidden' => 0);
-                $group_count = $GLOBALS['FORUM_DB']->query_select_value('f_groups', 'COUNT(*)');
-                $map_extended = $map;
-                if ($group_count > 200) {
-                    $map_extended += array('g_is_private_club' => 0);
+                $where = '1=1';
+                if (has_privilege(get_member(), 'see_hidden_groups')) {
+                    $members_groups = $GLOBALS['CNS_DRIVER']->get_members_groups(get_member());
+                    $where .= ' AND (g_hidden=0 OR g.id IN (' . implode(',', array_map('strval', $members_groups)) . '))';
                 }
-                $_m = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id', 'g_name'), $map_extended, 'ORDER BY g_order');
+
+                $group_count = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_groups g');
+                $where_extended = $where;
+                if ($group_count > 200) {
+                    $where_extended .= ' AND g_is_private_club=0';
+                }
+                $_m = $GLOBALS['FORUM_DB']->query('SELECT id,g_name FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_groups g WHERE ' . $where_extended . ' ORDER BY g_order');
                 foreach ($_m as $i => $m) {
                     $_m[$i]['text'] = get_translated_text($m['g_name'], $GLOBALS['FORUM_DB']);
                 }

@@ -32,6 +32,7 @@
 				{$PREG_REPLACE*,^.*://,,{$BASE_URL}}
 			</div>
 		</div>
+		<br clear="all" />
 	</div>
 </body>
 </html>

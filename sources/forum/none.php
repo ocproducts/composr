@@ -851,13 +851,13 @@ class Forum_driver_none extends Forum_driver_base
         $out['id'] = null;
 
         if (($username != $this->get_admin_username()) && ($userid != 1)) { // All hands to lifeboats
-            $out['error'] = (do_lang_tempcode('_MEMBER_NO_EXIST', $username));
+            $out['error'] = do_lang_tempcode((get_option('login_error_secrecy') == '1') ? 'MEMBER_INVALID_LOGIN' : '_MEMBER_NO_EXIST', $username);
             return $out;
         }
 
-        require_code('crypt');
+        require_code('crypt_master');
         if (!check_master_password($password_raw)) {
-            $out['error'] = (do_lang_tempcode('MEMBER_BAD_PASSWORD'));
+            $out['error'] = do_lang_tempcode((get_option('login_error_secrecy') == '1') ? 'MEMBER_INVALID_LOGIN' : 'MEMBER_BAD_PASSWORD');
             return $out;
         }
 

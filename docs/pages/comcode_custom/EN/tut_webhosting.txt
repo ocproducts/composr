@@ -132,7 +132,7 @@ Some lines in the default PHP ini ([tt]/etc/php5/apache2/php.ini[/tt]) file need
 [tt]post_max_size = 8M[/tt] --> [tt]post_max_size = 500M[/tt]
 [tt];date.timezone = [/tt] --> [tt]date.timezone = "UTC"[/tt] (to avoid errors on PHP startup)
 [tt]; extension_dir = "./"[/tt] --> [tt]extension_dir = "usr/lib/php5/20121212"[/tt]
-[tt];opcache.enable=0[/tt] --> [tt];opcache.enable=1[/tt]
+[tt];opcache.enable=0[/tt] --> [tt]opcache.enable=1[/tt]
 
 (the extension_dir may actually be different on different versions, so check that)
 

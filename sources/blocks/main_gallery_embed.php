@@ -340,7 +340,7 @@ class Block_main_gallery_embed
         }
 
         // Empty? Bomb out somehow
-        if ($entries->is_empty()) {
+        if ($entries->is_empty_shell()) {
             if ((!isset($map['render_if_empty'])) || ($map['render_if_empty'] == '0')) {
                 $submit_url = new Tempcode();
                 $add_name = mixed();

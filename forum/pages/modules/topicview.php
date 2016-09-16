@@ -755,6 +755,8 @@ class Module_topicview
             if ($test_threaded !== null) {
                 $map['threaded'] = $test_threaded;
             }
+            $map['overlay'] = get_param_integer('overlay', null);
+            $map['wide_high'] = get_param_integer('wide_high', null);
             $_post_url = build_url($map, get_module_zone('topics'));
             $post_url = $_post_url->evaluate();
             $map = array('page' => 'topics', 'type' => 'new_post', 'id' => $id, 'timestamp' => time());

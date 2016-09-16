@@ -252,6 +252,7 @@ function find_addon_icon($addon_name, $pick_default = true, $tar_path = null)
                 }
             }
         }
+        tar_close($tar_file);
     } else {
         $addon_info = read_addon_info($addon_name);
 

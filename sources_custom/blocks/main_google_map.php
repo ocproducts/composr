@@ -32,8 +32,7 @@ class Block_main_google_map
         $info['hack_version'] = null;
         $info['version'] = 2;
         $info['locked'] = false;
-        $info['parameters'] = array('select', 'filter', 'title', 'region', 'cluster', 'geolocate_user', 'latfield', 'longfield', 'catalogue', 'width', 'height',/* 'api_key',*/
-                                    'zoom', 'center', 'latitude', 'longitude', 'show_links', 'min_latitude', 'max_latitude', 'min_longitude', 'max_longitude', 'star_entry', 'max_results', 'extra_sources', 'guid');
+        $info['parameters'] = array('select', 'filter', 'title', 'region', 'cluster', 'geolocate_user', 'latfield', 'longfield', 'catalogue', 'width', 'height',/* 'api_key',*/'zoom', 'center', 'latitude', 'longitude', 'show_links', 'min_latitude', 'max_latitude', 'min_longitude', 'max_longitude', 'star_entry', 'max_results', 'extra_sources', 'guid');
         return $info;
     }
 

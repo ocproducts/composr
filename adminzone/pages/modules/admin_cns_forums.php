@@ -322,7 +322,7 @@ class Module_admin_cns_forums extends Standard_crud_module
 
             if (is_null($i)) {
                 if (!is_null($forums)) {
-                    $forum_groupings->attach(do_template('CNS_EDIT_FORUM_SCREEN_GROUPING', array('_GUID' => '889173769e237b917b7e06eda0fb4350', 'ORDERINGS' => $orderings, 'GROUPING' => $C_TITLE[$forum_grouping_id], 'SUBFORUMS' => $forums)));
+                    $forum_groupings->attach(do_template('CNS_EDIT_FORUM_SCREEN_GROUPING', array('_GUID' => '889173769e237b917b7e06eda0fb4350', 'ORDERINGS' => $orderings, 'GROUPING' => isset($C_TITLE[$forum_grouping_id]) ? $C_TITLE[$forum_grouping_id] : do_lang('UNKNOWN'), 'SUBFORUMS' => $forums)));
                     $forum_grouping_position++;
                 }
                 $forums = new Tempcode();

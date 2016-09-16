@@ -102,8 +102,7 @@ class Block_main_staff_actions
 
         $start = get_param_integer('sa_start', 0);
         $max = array_key_exists('max', $map) ? intval($map['max']) : get_param_integer('sa_max', 10);
-        $sortables = array('date_and_time' => do_lang_tempcode('DATE_TIME'),/*Not enough space 'ip' => do_lang_tempcode('IP_ADDRESS'),*/
-                           'the_type' => do_lang_tempcode('ACTION'));
+        $sortables = array('date_and_time' => do_lang_tempcode('DATE_TIME'),/*Not enough space 'ip' => do_lang_tempcode('IP_ADDRESS'),*/'the_type' => do_lang_tempcode('ACTION'));
         $test = explode(' ', get_param_string('sa_sort', 'date_and_time DESC'), 2);
         if (count($test) == 1) {
             $test[1] = 'DESC';
@@ -115,8 +114,7 @@ class Block_main_staff_actions
         inform_non_canonical_parameter('sa_sort');
 
         require_code('templates_results_table');
-        $fields_title = results_field_title(array(do_lang_tempcode('USERNAME'),/* do_lang_tempcode('IP_ADDRESS'),*/
-                                                  do_lang_tempcode('DATE_TIME'), do_lang_tempcode('ACTION'), do_lang_tempcode('PARAMETER_A'), do_lang_tempcode('PARAMETER_B')), $sortables, 'sa_sort', $sortable . ' ' . $sort_order);
+        $fields_title = results_field_title(array(do_lang_tempcode('USERNAME'),/* do_lang_tempcode('IP_ADDRESS'),*/do_lang_tempcode('DATE_TIME'), do_lang_tempcode('ACTION'), do_lang_tempcode('PARAMETER_A'), do_lang_tempcode('PARAMETER_B')), $sortables, 'sa_sort', $sortable . ' ' . $sort_order);
 
         $max_rows = $max;//Don't want to encourage pagination (there's a better module they can go to) $GLOBALS['SITE_DB']->query_select_value('actionlogs','COUNT(*)');
         $rows = $GLOBALS['SITE_DB']->query_select('actionlogs', array('the_type', 'param_a', 'param_b', 'member_id', 'ip', 'date_and_time'), null, 'ORDER BY ' . $sortable . ' ' . $sort_order, $max, $start);

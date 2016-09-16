@@ -51,6 +51,6 @@ class Hook_config_probation_usergroup
      */
     public function get_default()
     {
-        return (get_forum_type() != 'cns') ? null : do_lang('PROBATION');
+        return (get_forum_type() != 'cns') ? null : do_lang('cns:PROBATION');
     }
 }

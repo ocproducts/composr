@@ -76,6 +76,10 @@ function read_text_file($codename, $lang = null, $missing_blank = false)
 
     $tmp = @fopen($path, 'rb');
     if ($tmp === false) {
+        if ($lang !== fallback_lang()) {
+            return read_text_file($codename, fallback_lang(), $missing_blank);
+        }
+
         if ($missing_blank) {
             return '';
         }

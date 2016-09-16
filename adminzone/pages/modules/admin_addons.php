@@ -143,7 +143,8 @@ class Module_admin_addons
         }
 
         if ($type == '_addon_export') {
-            if (get_param_string('exp', 'custom') == 'theme') {
+            $is_theme = (get_param_string('exp', 'custom') == 'theme');
+            if ($is_theme) {
                 set_helper_panel_tutorial('tut_releasing_themes');
             }
 
@@ -870,7 +871,7 @@ class Module_admin_addons
         $all_langs = find_all_langs();
         ksort($all_langs);
         $i = 0;
-        $tpl_languages = new Tempcode();
+        $tpl_langs = new Tempcode();
         $_lang_file_map = get_custom_file_base() . '/lang_custom/langs.ini';
         if (!file_exists($_lang_file_map)) {
             $_lang_file_map = get_file_base() . '/lang/langs.ini';
@@ -878,15 +879,12 @@ class Module_admin_addons
         $lang_file_map = better_parse_ini_file($_lang_file_map);
         foreach ($all_langs as $lang => $dir) {
             if ($dir == 'lang_custom') {
-                $files = $this->do_dir($dir . '/' . $lang);
-                $frm_langs = new Tempcode();
-                $frm_langs->attach(form_input_hidden('lang', $lang));
-                foreach (array_keys($files) as $file) {
-                    $frm_langs->attach(form_input_hidden('file_' . strval($i), $file));
-                    $i++;
+                if ($lang != fallback_lang() || get_param_integer('test', 0) == 1) {
+                    $nice_name = array_key_exists($lang, $lang_file_map) ? $lang_file_map[$lang] : $lang;
+                    $frm_langs = new Tempcode();
+                    $frm_langs->attach(form_input_hidden('lang', $lang));
+                    $tpl_langs->attach(do_template('ADDON_EXPORT_LINE', array('_GUID' => '4e2f56799bdb3c4930396315236e2383', 'NAME' => $nice_name, 'URL' => $url, 'FILES' => $frm_langs)));
                 }
-                $nice_name = array_key_exists($lang, $lang_file_map) ? $lang_file_map[$lang] : $lang;
-                $tpl_languages->attach(do_template('ADDON_EXPORT_LINE', array('_GUID' => '4e2f56799bdb3c4930396315236e2383', 'NAME' => $nice_name, 'URL' => $url, 'FILES' => $frm_langs)));
             }
         }
 
@@ -898,13 +896,9 @@ class Module_admin_addons
         $i = 0;
         $tpl_themes = new Tempcode();
         foreach ($all_themes as $theme => $theme_title) {
-            if ($theme != 'default') {
-                $files = $this->do_dir('themes/' . $theme);
+            if ($theme != 'default' && $theme != 'admin' || get_param_integer('test', 0) == 1) {
                 $frm_themes = new Tempcode();
-                foreach (array_keys($files) as $file) {
-                    $frm_themes->attach(form_input_hidden('file_' . strval($i), $file));
-                    $i++;
-                }
+                $frm_themes->attach(form_input_hidden('theme', $theme));
                 $tpl_themes->attach(do_template('ADDON_EXPORT_LINE', array('_GUID' => '9c1dab6d6e6c13b5e01c86c83c3acde1', 'NAME' => $theme_title, 'URL' => $url, 'FILES' => $frm_themes)));
             }
         }
@@ -916,11 +910,15 @@ class Module_admin_addons
         $frm_files = new Tempcode();
         $i = 0;
         foreach (array_keys($files) as $file) {
+            if (!is_string($file)) {
+                $file = strval($file);
+            }
+
             $frm_files->attach(do_template('ADDON_EXPORT_FILE_CHOICE', array('_GUID' => '77a91b947259c5e0cc7b5240b24425ca', 'ID' => strval($i), 'PATH' => $file)));
             $i++;
         }
 
-        return do_template('ADDON_EXPORT_SCREEN', array('_GUID' => 'd89367c0bbc3d6b8bd19f736d9474dfa', 'TITLE' => $this->title, 'LANGUAGES' => $tpl_languages, 'URL' => $url, 'FILES' => $frm_files, 'THEMES' => $tpl_themes));
+        return do_template('ADDON_EXPORT_SCREEN', array('_GUID' => 'd89367c0bbc3d6b8bd19f736d9474dfa', 'TITLE' => $this->title, 'LANGUAGES' => $tpl_langs, 'URL' => $url, 'FILES' => $frm_files, 'THEMES' => $tpl_themes));
     }
 
     /**
@@ -938,7 +936,7 @@ class Module_admin_addons
             require_code('files');
 
             while (false !== ($file = readdir($_dir))) {
-                if (!should_ignore_file((($dir == '') ? '' : ($dir . '/')) . $file, IGNORE_EDITFROM_FILES | IGNORE_REVISION_FILES | IGNORE_UPLOADS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS)) {
+                if (!should_ignore_file((($dir == '') ? '' : ($dir . '/')) . $file, IGNORE_EDITFROM_FILES | IGNORE_REVISION_FILES | IGNORE_UPLOADS | IGNORE_ACCESS_CONTROLLERS)) {
                     $temp[$file] = true;
                 }
             }
@@ -951,15 +949,13 @@ class Module_admin_addons
                 $file = strval($file);
             }
 
-            if (is_dir($full . $file)) { // If there is a custom equiv we don't do it: we only do custom, or indeterminate-custom
-                if ((!array_key_exists($file . '_custom', $temp)) || ((substr($dir, 0, 7) == 'themes/') && (substr($dir . '/', 0, 15) != 'themes/default/'))) {
+            if (is_dir($full . $file)) {
+                if ((!array_key_exists($file . '_custom', $temp)) || ((substr($dir, 0, 7) == 'themes/') && (substr($dir . '/', 0, 15) != 'themes/default/'))) { // If there is a custom equiv we don't do it: we only do custom, or indeterminate-custom
                     $under = $this->do_dir((($dir == '') ? '' : ($dir . '/')) . $file);
-                    if ((count($under) != 1) || (!array_key_exists((($dir == '') ? '' : ($dir . '/')) . $file . '/index.html', $under)) || (substr($dir, 0, 7) == 'themes/')) {
-                        $out = array_merge($out, $under);
-                    }
+                    $out = array_merge($out, $under);
                 }
             } else {
-                $out[($dir == '') ? '' : ($dir . '/') . $file] = true;
+                $out[(($dir == '') ? '' : ($dir . '/')) . $file] = true;
             }
         }
 
@@ -977,9 +973,11 @@ class Module_admin_addons
 
         $hidden = build_keep_post_fields();
 
-        $theme = get_param_string('theme', null, true);
+        $is_lang = (get_param_string('exp', 'custom') == 'lang');
+        $lang = either_param_string('lang', null);
 
-        $is_language = (get_param_string('exp', 'custom') == 'lang');
+        $is_theme = (get_param_string('exp', 'custom') == 'theme');
+        $theme = either_param_string('theme', null);
 
         require_code('files');
 
@@ -1010,7 +1008,7 @@ class Module_admin_addons
                 }
             }
         }
-        if ($is_language) {
+        if ($is_lang) {
             $lang = post_param_string('lang');
             $ini_file = get_custom_file_base() . '/lang_custom/langs.ini';
             if (!file_exists($ini_file)) {
@@ -1041,7 +1039,7 @@ class Module_admin_addons
             );
             $category = 'Themes';
         }
-        elseif ($is_language) {
+        elseif ($is_lang) {
             $categories = array(
                 'Translations',
             );
@@ -1076,41 +1074,64 @@ class Module_admin_addons
         $field = form_input_line(do_lang_tempcode('INCOMPATIBILITIES'), do_lang_tempcode('DESCRIPTION_INCOMPATIBILITIES'), 'incompatibilities', $incompatibilities, false);
         $fields .= $field->evaluate();
 
-        if (get_param_string('exp', 'custom') == 'theme') {
-            if (!is_null($theme)) {
-                // Option for selecting exactly what files are used
-                $field = do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '40cf0d0d5b6fee74fbd476e720a59675', 'SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('COUNT_FILES')));
-                $fields .= $field->evaluate();
+        if (($is_theme && !is_null($theme)) || ($is_lang && !is_null($lang))) {
+            // Option for selecting exactly what files are used
+            $field = do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '40cf0d0d5b6fee74fbd476e720a59675', 'SECTION_HIDDEN' => false, 'TITLE' => do_lang_tempcode('COUNT_FILES')));
+            $fields .= $field->evaluate();
+            $files = array();
+            if ($is_lang && !is_null($lang)) {
+                $files = $this->do_dir('lang_custom/' . $lang);
+                ksort($files);
+
+                $_files = $this->do_dir('');
+                foreach (array_keys($_files) as $file) {
+                    if (strpos($file, '/' . $lang . '/') !== false) {
+                        $files[$file] = true;
+                    }
+                }
+            }
+            if ($is_theme && !is_null($theme)) {
                 $files = $this->do_dir('themes/' . $theme);
-                $i = 0;
-                foreach (array_keys($files) as $file) {
-                    $field = form_input_tick(str_replace(array('/', '_'), array('/ ', '_ '), preg_replace('#^themes/' . preg_quote($theme, '#') . '/#', '', $file)), '', 'file_' . strval($i), true, null, $file);
-                    $fields .= $field->evaluate();
-                    $i++;
+                ksort($files);
+            }
+            $i = 0;
+            foreach (array_keys($files) as $file) {
+                if ($is_lang && !is_null($lang)) {
+                    $is_selected = (substr($file, 0, 12) == 'lang_custom/');
+                    $written_file = preg_replace('#^lang_custom/' . preg_quote($lang, '#') . '/#', '', $file);
+                } else {
+                    $is_selected = true;
+                    $written_file = preg_replace('#^themes/' . preg_quote($theme, '#') . '/#', '', $file);
                 }
 
-                // Option for selecting Comcode pages
-                require_lang('themes');
-                $field = do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'e3f8c43ac243a7666a318319e8b6dd60', 'SECTION_HIDDEN' => false, 'TITLE' => do_lang_tempcode('PAGES'), 'HELP' => do_lang_tempcode('THEME_ALSO_INCLUDE_PAGES')));
+                $field = form_input_tick($written_file, '', 'file_' . strval($i), $is_selected, null, $file);
                 $fields .= $field->evaluate();
+                $i++;
+            }
+
+            if ($is_theme && !is_null($theme)) {
+                // Option for selecting Comcode pages
+                $_fields = '';
+                $fields_after = '';
+                require_lang('themes');
                 $files = $this->do_dir('');
                 ksort($files);
-                $fields_after = '';
                 foreach (array_keys($files) as $file) {
                     if ((substr($file, 0, strlen($theme) + 2) == $theme . '__')) {
-                        $file = substr($file, strlen($theme) + 2);
+                        $file = substr($file, strlen($theme) + 2); // Per-theme Comcode page version
                     }
 
                     if ((substr($file, -4) == '.txt') && (strpos($file, '/comcode_custom/') !== false)) {
                         $matches = array();
-                        if ((preg_match('#^/((\w+)/)?pages/comcode_custom/[^/]*/(\w+)\.txt$#', $file, $matches) != 0) && ($matches[1] != 'docs' . strval(cms_version()))) {
+                        if ((preg_match('#^/((\w+)/)?pages/comcode_custom/[^/]*/(\w+)\.txt$#', $file, $matches) != 0) && ($matches[1] != 'docs')) {
                             $auto_ticked = false;
                             if ($matches[1] == '') {
                                 $auto_ticked = ($matches[3] == 'start') || (substr($matches[3], 0, 6) == 'panel_');
                             }
-                            $field = form_input_tick($matches[1] . ': ' . $matches[3], '', 'file_' . strval($i), $auto_ticked, null, $file);
+                            $page_link = $matches[1] . ':' . $matches[3];
+                            $field = form_input_tick($page_link, '', 'file_' . strval($i), $auto_ticked, null, $file);
                             if ($auto_ticked) {
-                                $fields .= $field->evaluate();
+                                $_fields .= $field->evaluate();
                             } else {
                                 $fields_after .= $field->evaluate();
                             }
@@ -1118,7 +1139,12 @@ class Module_admin_addons
                         }
                     }
                 }
-                $fields .= $fields_after;
+                if ($_fields != '' || $fields_after != '') {
+                    $field = do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'e3f8c43ac243a7666a318319e8b6dd60', 'SECTION_HIDDEN' => false, 'TITLE' => do_lang_tempcode('PAGES'), 'HELP' => do_lang_tempcode('THEME_ALSO_INCLUDE_PAGES')));
+                    $fields .= $field->evaluate();
+                    $fields .= $_fields;
+                    $fields .= $fields_after;
+                }
             }
         }
 

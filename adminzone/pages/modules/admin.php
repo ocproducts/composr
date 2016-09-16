@@ -268,7 +268,7 @@ class Module_admin
         }
 
         foreach ($section_limitations as $l) {
-            if (stripos($results_type, $l) !== false) {
+            if (@stripos($results_type, $l) !== false) {
                 return true;
             }
         }
@@ -794,6 +794,7 @@ class Module_admin
                             $tar = tar_open(get_custom_file_base() . '/imports/addons/' . $f, 'rb');
                             $directory = tar_get_directory($tar);
                             $info_file = tar_get_file($tar, 'addon.inf');
+                            tar_close($tar);
                             if (!is_null($info_file)) {
                                 $info = better_parse_ini_file(null, $info_file['data']);
 

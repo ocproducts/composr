@@ -35,7 +35,7 @@ As a privilege of maintaining the translation and doing basic support, you'll be
 
 [title="2"]See also[/title]
 
- - [page="_SEARCH:tut_intl_users"]Changing the site language[/page]
+ - [page="_SEARCH:tut_intl_users"]Changing the site language (for end users)[/page]
  - [page="_SEARCH:tut_intl_content"]Translating Composr content[/page]
  - [page="_SEARCH:tut_intl_code_philosophy"]Translations code philosophy[/page]
  - [page="_SEARCH:tut_intl"]Localisation and internationalisation[/page]

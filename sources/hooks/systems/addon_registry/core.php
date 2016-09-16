@@ -749,6 +749,7 @@ class Hook_addon_registry_core
             'sources_custom/hooks/systems/addon_registry/.htaccess',
             'sources/activities.php',
             'sources/crypt.php',
+            'sources/crypt_master.php',
             'data_custom/sitemaps/index.html',
             'themes/default/templates/JS_BLOCK.tpl',
             'themes/default/javascript/modernizr.js',
@@ -1373,6 +1374,7 @@ class Hook_addon_registry_core
             'sources/persistent_caching/.htaccess',
             'sources/deep_clean.php',
             'sources/hooks/systems/symbols/DEEP_CLEAN.php',
+            'themes/default/templates/PASSWORD_CHECK_JS.tpl',
 
             // External endpoints (API) - no actual endpoints defined in core (or even bundled at time of writing), but may be added by other addons
             'data/endpoint.php',

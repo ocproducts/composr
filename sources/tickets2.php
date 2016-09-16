@@ -133,18 +133,20 @@ function delete_ticket_type($ticket_type_id)
  * Get a map of properties for the given ticket type.
  *
  * @param  ?AUTO_LINK $ticket_type_id The ticket type (null: fallback for old tickets)
- * @return ?array Array of properties (null: ticket type not found)
+ * @return array Array of properties
  */
 function get_ticket_type($ticket_type_id)
 {
+    $default = array('ticket_type' => null, 'ticket_type_name' => do_lang('UNKNOWN'), 'guest_emails_mandatory' => 0, 'search_faq' => 0, 'cache_lead_time' => null);
+
     if (is_null($ticket_type_id)) {
         // LEGACY
-        return array('ticket_type' => null, 'ticket_type_name' => do_lang('UNKNOWN'), 'guest_emails_mandatory' => 0, 'search_faq' => 0, 'cache_lead_time' => null);
+        return $default;
     }
 
     $rows = $GLOBALS['SITE_DB']->query_select('ticket_types', null, array('id' => $ticket_type_id), '', 1);
     if (count($rows) == 0) {
-        return null;
+        return $default;
     }
     return $rows[0];
 }

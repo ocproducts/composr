@@ -91,7 +91,7 @@ function fractional_edit(event,object,url,raw_text,edit_param_name,was_double_cl
 		}
 		input.name=edit_param_name;
 		form.onsubmit=function(event) { return false; };
-		if (control_button) set_inner_html(control_button,'{!SAVE;}');
+		if (control_button) set_inner_html(control_button,'{!SAVE;^}');
 
 		var cleanup_function=function() {
 			object.onclick=object.old_onclick;
@@ -106,7 +106,7 @@ function fractional_edit(event,object,url,raw_text,edit_param_name,was_double_cl
 
 			if (control_button)
 			{
-				set_inner_html(control_button,'{!EDIT;}');
+				set_inner_html(control_button,'{!EDIT;^}');
 
 				// To stop it instantly re-clicking
 				var backup=control_button.onclick;
@@ -187,7 +187,7 @@ function fractional_edit(event,object,url,raw_text,edit_param_name,was_double_cl
 				{
 					var tmp=input.onblur;
 					input.onblur=null;
-					fauxmodal_confirm('{!javascript:FRACTIONAL_EDIT_CANCEL_CONFIRM;}',function(result) {
+					fauxmodal_confirm('{!javascript:FRACTIONAL_EDIT_CANCEL_CONFIRM;^}',function(result) {
 						if (result)
 						{
 							cancel_function();
@@ -196,7 +196,7 @@ function fractional_edit(event,object,url,raw_text,edit_param_name,was_double_cl
 							input.focus();
 							input.onblur=tmp;
 						}
-					},'{!CONFIRM_TEXT;}');
+					},'{!CONFIRM_TEXT;^}');
 					return null;
 				}
 

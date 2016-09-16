@@ -136,7 +136,10 @@ class Hook_sitemap_config_category extends Hook_sitemap_base
         $page = $matches[2];
         $category = $matches[4];
 
-        require_all_lang();
+        require_lang('config');
+        if (do_lang('CONFIG_CATEGORY_' . $category, null, null, null, null, false) === null) {
+            require_all_lang();
+        }
 
         $_category_name = do_lang_tempcode('CONFIG_CATEGORY_' . $category);
 
