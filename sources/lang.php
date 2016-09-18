@@ -90,6 +90,10 @@ function init__lang()
         }
     }
 
+    /** Used for filtering various things based on the language pack.
+     *
+     * @global boolean $LANG_FILTER_OB
+     */
     global $LANG_FILTER_OB, $LANG_RUNTIME_PROCESSING;
     $lang_stripped = preg_replace('#[\-\_].*$#', '', user_lang());
     require_code('lang_filter_' . fallback_lang());

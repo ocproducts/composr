@@ -260,6 +260,7 @@ Here are a few tips you may find useful:
 [*] Sometimes you may need to find shorter ways of saying things due to lack of space in the design for a language that is using very long words -- you may need to use abbreviations, for example.
 [*] Sometimes you can best get the intention of a language string name, which is shown as the 'Key' name on Transifex.
 [*] You may wish to occasionally search the language [tt].ini[/tt] files in Composr. If you are on Windows [url="AstroGrep"]http://astrogrep.sourceforge.net/[/url] is a nice tool that supports Unicode.
+[*] Don't manually change the URL in Transifex to quickly navigate between language files -- Transifex won't save stuff correctly if you do.
 [/list]
 
 [title="3"]Downloading translations from Transifex[/title]
