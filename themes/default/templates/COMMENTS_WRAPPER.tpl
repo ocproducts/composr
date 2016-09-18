@@ -30,34 +30,36 @@
 				<h2>{$?,{$IS_NON_EMPTY,{REVIEW_RATING_CRITERIA}},{$GET,REVIEWS_TITLE},{!COMMENTS}}</h2>
 			{+END}
 
-			<span class="{+START,IF,{$NOT,{$MOBILE}}}right {+END}float_separation">
-				{+START,INCLUDE,NOTIFICATION_BUTTONS}
-					NOTIFICATIONS_TYPE=comment_posted
-					NOTIFICATIONS_ID={TYPE}_{ID}
-					BUTTON_TYPE=button_screen_item
-					BUTTON_LABEL_ENABLE={!ENABLE_COMMENT_NOTIFICATIONS}
-					BUTTON_LABEL_DISABLE={!DISABLE_COMMENT_NOTIFICATIONS}
+			<div class="float_surrounder">
+				<span class="{+START,IF,{$NOT,{$MOBILE}}}right {+END}float_separation">
+					{+START,INCLUDE,NOTIFICATION_BUTTONS}
+						NOTIFICATIONS_TYPE=comment_posted
+						NOTIFICATIONS_ID={TYPE}_{ID}
+						BUTTON_TYPE=button_screen_item
+						BUTTON_LABEL_ENABLE={!ENABLE_COMMENT_NOTIFICATIONS}
+						BUTTON_LABEL_DISABLE={!DISABLE_COMMENT_NOTIFICATIONS}
+					{+END}
+				</span>
+
+				<div class="comments_sorting_box inline{+START,IF,{$NOT,{$MOBILE}}} right{+END}">
+					<form title="{!SORT}" class="inline" action="{$SELF_URL*}" method="post" autocomplete="off">
+						{$INSERT_SPAMMER_BLACKHOLE}
+
+						<label for="comments_sort">{!SORT_BY}</label>
+						<select onchange="/*guarded*/this.form.submit();" id="comments_sort" name="comments_sort">
+							<option{+START,IF,{$EQ,{SORT},relevance}} selected="selected"{+END} value="relevance">{!RELEVANCE}</option>
+							<option{+START,IF,{$EQ,{SORT},newest}} selected="selected"{+END} value="newest">{!NEWEST_FIRST}</option>
+							<option{+START,IF,{$EQ,{SORT},oldest}} selected="selected"{+END} value="oldest">{!OLDEST_FIRST}</option>
+							<option{+START,IF,{$EQ,{SORT},average_rating}} selected="selected"{+END} value="average_rating">{!RATING}</option>
+							<option{+START,IF,{$EQ,{SORT},compound_rating}} selected="selected"{+END} value="compound_rating">{!POPULARITY}</option>
+						</select>{+START,IF,{$NOT,{$JS_ON}}}<input type="submit" value="{!SORT}" class="button_micro buttons__sort" />{+END}
+					</form>
+				</div>
+
+				{+START,IF,{$NOT,{$MOBILE}}}
+					<h2>{$?,{$IS_NON_EMPTY,{REVIEW_RATING_CRITERIA}},{$GET,REVIEWS_TITLE},{!COMMENTS}}</h2>
 				{+END}
-			</span>
-
-			<div class="comments_sorting_box inline{+START,IF,{$NOT,{$MOBILE}}} right{+END}">
-				<form title="{!SORT}" class="inline" action="{$SELF_URL*}" method="post" autocomplete="off">
-					{$INSERT_SPAMMER_BLACKHOLE}
-
-					<label for="comments_sort">{!SORT_BY}</label>
-					<select onchange="/*guarded*/this.form.submit();" id="comments_sort" name="comments_sort">
-						<option{+START,IF,{$EQ,{SORT},relevance}} selected="selected"{+END} value="relevance">{!RELEVANCE}</option>
-						<option{+START,IF,{$EQ,{SORT},newest}} selected="selected"{+END} value="newest">{!NEWEST_FIRST}</option>
-						<option{+START,IF,{$EQ,{SORT},oldest}} selected="selected"{+END} value="oldest">{!OLDEST_FIRST}</option>
-						<option{+START,IF,{$EQ,{SORT},average_rating}} selected="selected"{+END} value="average_rating">{!RATING}</option>
-						<option{+START,IF,{$EQ,{SORT},compound_rating}} selected="selected"{+END} value="compound_rating">{!POPULARITY}</option>
-					</select>{+START,IF,{$NOT,{$JS_ON}}}<input type="submit" value="{!SORT}" class="button_micro buttons__sort" />{+END}
-				</form>
 			</div>
-
-			{+START,IF,{$NOT,{$MOBILE}}}
-				<h2>{$?,{$IS_NON_EMPTY,{REVIEW_RATING_CRITERIA}},{$GET,REVIEWS_TITLE},{!COMMENTS}}</h2>
-			{+END}
 
 			{+START,LOOP,REVIEW_RATING_CRITERIA}
 				{+START,IF_NON_EMPTY,{REVIEW_RATING}}

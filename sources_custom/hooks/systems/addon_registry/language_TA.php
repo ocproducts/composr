@@ -86,7 +86,7 @@ class Hook_addon_registry_language_TA
      */
     public function get_description()
     {
-        return 'Translation into Tamil. Completeness: 29%. This addon was automatically bundled from community contributions provided on Transifex and will be routinely updated alongside new Composr patch releases. Translations may also be downloaded directly from Transifex.';
+        return 'Translation into Tamil. Completeness: 29% (29% typically means translated fully apart from administrative strings). This addon was automatically bundled from community contributions provided on Transifex and will be routinely updated alongside new Composr patch releases. Translations may also be downloaded directly from Transifex.';
     }
 
     /**
@@ -242,6 +242,7 @@ class Hook_addon_registry_language_TA
             'lang_custom/TA/wiki.ini',
             'lang_custom/TA/wordfilter.ini',
             'lang_custom/TA/zones.ini',
+            'sources_custom/lang_filter_TA.php',
         );
     }
 }

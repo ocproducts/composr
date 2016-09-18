@@ -22,7 +22,7 @@ For example:
 	border-{!en_left}: 1px solid {$GET,standard_border};
 	margin-{!en_right}: -1px;
 	margin-bottom: 0;
-	transition: color, background-color 0.5s linear;
+	{$BETA_CSS_PROPERTY,transition: color\,background-color 0.5s linear;}
 	/*{+START,IF,{$NOT,{!takes_lots_of_space}}}*/
 		font-size: 0.9em;
 	/*{+END}*/
