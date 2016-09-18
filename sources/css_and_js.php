@@ -353,6 +353,12 @@ function _css_compile($active_theme, $theme, $c, $full_path, $minify = true)
     // Strip empty comments (would have encapsulated Tempcode comments)
     $out = preg_replace('#/\*\s*\*/#', '', $out);
 
+    // The language may need to filter it
+    global $LANG_FILTER_OB;
+    if (isset($LANG_FILTER_OB)) {
+        $out = $LANG_FILTER_OB->filter_css($c, $out);
+    }
+
     // Minification
     if ($minify) {
         $out = css_minify($out);

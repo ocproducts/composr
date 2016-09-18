@@ -8,7 +8,9 @@
 			<col class="cns_forum_topic_wrapper_column_column3" />
 			<col class="cns_forum_topic_wrapper_column_column4" />
 			<col class="cns_forum_topic_wrapper_column_column5" />
-			<col class="cns_forum_topic_wrapper_column_column6{$?,{$MATCH_KEY_MATCH,_WILD:members},_shorter}" />
+			{+START,IF,{$OR,{$EQ,{$LANG},EN},{$LT,{$LENGTH,{!COUNT_POSTS}{!COUNT_VIEWS}},12}}}
+				<col class="cns_forum_topic_wrapper_column_column6{$?,{$MATCH_KEY_MATCH,_WILD:members},_shorter}" />
+			{+END}
 			{+START,IF_NON_EMPTY,{MODERATOR_ACTIONS}}{+START,IF,{$NOT,{$_GET,overlay}}}
 				<col class="cns_forum_topic_wrapper_column_column7" />
 			{+END}{+END}
@@ -54,7 +56,9 @@
 			<td class="cns_column1"></td>
 			{+START,IF,{$NOT,{$MOBILE}}}
 				<td class="cns_column1"></td>
-				<td class="cns_column1"></td>
+				{+START,IF,{$OR,{$EQ,{$LANG},EN},{$LT,{$LENGTH,{!COUNT_POSTS}{!COUNT_VIEWS}},12}}}
+					<td class="cns_column1"></td>
+				{+END}
 			{+END}
 			<td class="cns_column1{+START,IF,{$OR,{$MOBILE},{$IS_EMPTY,{MODERATOR_ACTIONS}}}} cns_forum_box_bright{+END}"></td>
 			{+START,IF,{$NOT,{$MOBILE}}}

@@ -50,6 +50,6 @@ class Hook_config_enable_add_topic_btn_in_topic
      */
     public function get_default()
     {
-        return '1';
+        return (do_lang('takes_lots_of_space') == '1') ? '0' : '1';
     }
 }
