@@ -8238,7 +8238,7 @@ function string_scan($lang, $do_guessing = false)
         LOAD
         LOADING
         LOAD_MORE
-        LOCALE_SUBST
+        locale_subst
         LOCATED_IN
         LOCATION
         LOG

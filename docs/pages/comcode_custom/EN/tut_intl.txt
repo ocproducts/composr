@@ -82,22 +82,26 @@ Language string codes that are in lower-case are special strings, that should no
 			<td>The locale: there are standard locale codes for unix, based on language codes, but they vary across operating system: use what works on your server.<br />The locale code is used to prepare certain operating system date strings, and number formatting. On Linux and MacOS you can find the list of locales via the <kbd>locale -a</kbd> command. You can separate multiple locales with commas; the first valid one will be used.</td>
 		</tr>
 		<tr class="zebra_0">
+			<th>locale_subst>
+			<td>Set to something like <kbd>Jan=Wan,Feb=Jeb</kbd> to manually remap locale strings to something else. Usually you'll leave this as <kbd>(empty)</kbd>, but it is good for fixing problems with unreliable locale.</td>
+		</tr>
+		<tr class="zebra_1">
 			<th>dir</th>
 			<td>The direction of text (usually <kbd>ltr</kbd>, but sometimes <kbd>rtl</kbd> for languages such as Arabic). An "rtl" language would likely require many few template changes as well as language changes. If someone does this we would consider integrating the changes back into a future version of Composr.</td>
 		</tr>
-		<tr class="zebra_1">
+		<tr class="zebra_0">
 			<th>en_right</th>
 			<td>Sometimes templates have to apply CSS properties values of <kbd>left</kbd> or <kbd>right</kbd>, according to the text direction. For a rtl language, this becomes <kbd>left</kbd> instead of <kbd>right</kbd>. No other value than <kbd>left</kbd> or <kbd>right</kbd> may be used.</td>
 		</tr>
-		<tr class="zebra_0">
+		<tr class="zebra_1">
 			<th>en_left</th>
 			<td>As above, but opposite.</td>
 		</tr>
-		<tr class="zebra_1">
+		<tr class="zebra_0">
 			<th>date_* / time_* / calendar_*</th>
 			<td>Date/time formatting in one of the two PHP time formats ([/html][url="1"]http://php.net/manual/en/function.date.php[/url], [url="2"]http://php.net/manual/en/function.strftime.php[/url][html]). If there are no <kbd>%</kbd> signs it's <kbd>date</kbd>, if there are <kbd>%</kbd> signs it's <kbd>strftime</kbd>.</td>
 		</tr>
-		<tr class="zebra_0">
+		<tr class="zebra_1">
 			<th>dont_escape_trick</th>
 			<td>Ignore this string, it is purely used by code, and should never have its value be changed.</td>
 		</tr>
@@ -105,7 +109,7 @@ Language string codes that are in lower-case are special strings, that should no
 			<th>dictionary</th>
 			<td>The name of the pspell/hunspell dictionary to use.</td>
 		</tr>
-		<tr class="zebra_0">
+		<tr class="zebra_1">
 			<th>dictionary_variant</th>
 			<td>The variant of the pspell/hunspell dictionary. If you're not sure just set it the same as [tt]dictionary[/tt].</td>
 		</tr>

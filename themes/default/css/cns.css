@@ -483,6 +483,10 @@ hr.cns_sig_barrier {
 	margin: 0.25em 0;
 }
 
+.cns_topic_control_functions select {
+	max-width: 11em;
+}
+
 .cns_topic_control_functions label, .cns_topic_control_functions span, .cns_topic_control_functions input, .cns_topic_control_functions select {
 	vertical-align: middle;
 }
