@@ -433,7 +433,7 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
     // Convert URL Scheme path info into extra implied attribute data
     require_code('url_remappings');
     $does_match = false;
-    foreach (array('PG', 'HTM', 'SIMPLE') as $url_scheme) {
+    foreach (array('PG', 'HTM', 'SIMPLE', 'RAW') as $url_scheme) {
         $mappings = get_remappings($url_scheme);
         foreach ($mappings as $mapping) { // e.g. array(array('page' => 'wiki', 'id' => null), 'pg/s/ID', true),
             if (is_null($mapping)) {
@@ -443,31 +443,29 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
             list($params, $match_string,) = $mapping;
             $match_string_pattern = preg_replace('#[A-Z]+#', '[^\&\?]+', preg_quote($match_string)); // Turn match string into a regexp
 
-            switch ($url_scheme) {
-                case 'PG':
-                    $does_match = (preg_match('#^' . $match_string_pattern . '#', $parsed_url['path']) != 0);
-                    break;
-
-                case 'HTM':
-                case 'SIMPLE':
-                    $does_match = (preg_match('#^' . $match_string_pattern . '#', $parsed_url['path']) != 0);
-                    break;
-            }
+            $does_match = (preg_match('#^' . $match_string_pattern . '#', $parsed_url['path']) != 0);
             if ($does_match) {
                 $attributes = array_merge($attributes, $params);
 
-                switch ($url_scheme) {
-                    case 'PG':
-                    case 'SIMPLE':
-                        $bits_pattern = explode('/', $match_string);
-                        $bits_real = explode('/', $parsed_url['path'], count($bits_pattern));
-                        break;
+                if ($url_scheme == 'HTM') {
+                    if (strpos($parsed_url['path'], '.htm') === false) {
+                        continue;
+                    }
 
-                    case 'HTM':
-                        $bits_pattern = explode('/', preg_replace('#\.htm$#', '', $match_string));
-                        $bits_real = explode('/', preg_replace('#\.htm$#', '', $parsed_url['path']), count($bits_pattern));
-                        break;
+                    $_match_string = preg_replace('#\.htm$#', '', $match_string);
+                    $_path = preg_replace('#\.htm($|\?)#', '', $parsed_url['path']);
+                } else {
+                    if (strpos($parsed_url['path'], '.htm') !== false) {
+                        continue;
+                    }
+
+                    $_match_string = $match_string;
+                    $_path = $parsed_url['path'];
                 }
+
+                $bits_pattern = explode('/', $_match_string);
+                $bits_real = explode('/', $_path, count($bits_pattern));
+
                 foreach ($bits_pattern as $i => $bit) {
                     if ((strtoupper($bit) == $bit) && (array_key_exists(strtolower($bit), $params)) && (is_null($params[strtolower($bit)]))) {
                         $attributes[strtolower($bit)] = $bits_real[$i];

@@ -18,6 +18,21 @@
  */
 class url_management_test_set extends cms_test_case
 {
+    public function testUrlToPageLink()
+    {
+        $test = url_to_page_link('http://192.168.2.143/composr/site/pg/downloads/browse/test?foo=bar');
+        $this->assertTrue($test == 'site:downloads:browse:test:foo=bar', 'Got wrong page-link for decode on PG scheme (' . $test . ')');
+
+        $test = url_to_page_link('http://192.168.2.143/composr/site/downloads/browse/test?foo=bar');
+        $this->assertTrue($test == 'site:downloads:browse:test:foo=bar', 'Got wrong page-link for decode on SIMPLE scheme (' . $test . ')');
+
+        $test = url_to_page_link('http://192.168.2.143/composr/site/downloads/browse/test.htm?foo=bar');
+        $this->assertTrue($test == 'site:downloads:browse:test:foo=bar', 'Got wrong page-link for decode on HTM scheme (' . $test . ')');
+
+        $test = url_to_page_link('http://192.168.2.143/composr/site/index.php?page=downloads&type=browse&id=test&&foo=bar');
+        $this->assertTrue($test == 'site:downloads:browse:test:foo=bar', 'Got wrong page-link for decode on RAW scheme (' . $test . ')');
+    }
+
     public function testCycle()
     {
         $test_zone = 'adminzone';
