@@ -132,8 +132,6 @@ You can put inline images into your text easily and quickly, with the [tt][img][
 
 Long text which isn't naturally breakable into lines is forced into pieces.
 
-Normallythistextwouldbewrappedwhenthereisaspaceorafullstopbythebrowseriftexthasnoneoftheseitruinsthelayoutofthepagesitforciblywrapstextforyou.
-
 JavaScript script tags, onX handlers and URLs will all be filtered/blocked. Don't use them unless you want the staff to be alerted to a suspected hacking attempt!
 
 [title="2"]Links[/title]

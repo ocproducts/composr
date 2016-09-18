@@ -81,7 +81,7 @@ function display_time_period($seconds)
 function make_locale_filter()
 {
     global $LOCALE_FILTER_CACHE;
-    $LOCALE_FILTER_CACHE = explode(',', do_lang('LOCALE_SUBST'));
+    $LOCALE_FILTER_CACHE = explode(',', trim(do_lang('locale_subst')));
     foreach ($LOCALE_FILTER_CACHE as $i => $filter) {
         if ($filter == '') {
             unset($LOCALE_FILTER_CACHE[$i]);
