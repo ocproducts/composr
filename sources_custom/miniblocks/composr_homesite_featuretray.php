@@ -107,12 +107,12 @@ $featuretree = array(
             array(
                 array('Multiple campaigns', 'Each one can specify it\'s own width-by-height (e.g. skyscraper)'),
                 array('Smart banners', 'Integrate text-banners into your content via keyword detection'),
-                array('Wide support', 'Accepts image banners, flash banners, external banner rotations, and text banners'),
+                array('Broad media compatibility', 'Accepts image banners, flash banners, external banner rotations, and text banners'),
                 null, // divider
                 array('Determine which banners display most often'),
                 array('Run a cross-site banner network'),
                 array('Hit-balancing support', 'A site on a banner network gets as many inbound hits as it provides outbound clicks'),
-                array('Show different banners to different usergroups'),
+                array('Targeted advertising', 'Show different banners to different usergroups'),
                 array('Track banner performance'),
                 array('Use the banner system to display whole sets of sponsor logos'),
                 array('Geotargetting'),
@@ -135,12 +135,11 @@ $featuretree = array(
         'newsletters' => array(
             'Newsletters <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Newsletters" href="http://shareddemo.composr.info/adminzone/index.php?page=admin_newsletter&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>',
             array(
-                array('Automatically create newsletters showing off your latest content'),
+                array('Automatically create newsletter issues highlighting your latest content'),
                 array('Double opt-in', 'Prevent false sign-ups by asking subscribers to confirm their subscriptions'),
-                array('Users can set their own interest level', 'From &ldquo;all updates&rdquo; to &ldquo;important updates only&rdquo;'),
                 array('Host multiple newsletters'),
                 array('Flexible mailings', 'Send out mailings to all members, to different usergroups, or to subscribers of specific newsletters'),
-                array('Welcome e-mails', 'Send multiple welcome e-mails to new users automatically, on a configurable schedule'),
+                array('Welcome e-mails', 'Send multiple welcome e-mails to new users automatically, on a configurable schedule (Conversr-only)'),
                 array('Bounce cleanup', 'Automatically clean out bounces from your e-mail list'),
             ),
         ),
@@ -148,13 +147,12 @@ $featuretree = array(
             'Featured content <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Featured content" href="http://shareddemo.composr.info/site/index.php?page=featured_content"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>',
             array(
                 array('Random quotes', 'Put random quotes (e.g. testimonials) into your design'),
-                array('Image of the day', 'To have your website feeling fresh'),
                 array('Showcase popular content', 'Automatically feature links to your most popular downloads and galleries'),
+                array('Tags', 'Set tags for content and display tag clouds'),
                 null, // divider
-                array('Recent content', 'Automatically feature links to your most recent downloads, galleries, and catalogue entries'),
+                array('Recent content', 'Automatically feature links to your most recent content'),
                 array('Show website statistics to your visitors'),
                 array('Random content', 'Feature random content from your website, specified via a sophisticated filtering language'),
-                array('Tags', 'Set tags for content and display tag clouds'),
             ),
         ),
         'ecommerce' => array(
@@ -164,25 +162,27 @@ $featuretree = array(
                 array('Shopping cart for running an online store'),
                 array('Extendable framework', 'Programmers can easily add new product types to sell, or payment gateways'),
                 null, // divider
-                array('Multiple payment gateways', 'Accepts payments via PayPal, WorldPay, SecPay, and manual transactions (cash/cheque)'),
+                array('Multiple payment gateways', 'Accepts payments via PayPal, or other gateways developers may add (e.g. WorldPay, or CC-Bill), and manual transactions (cash/cheque)'),
                 array('Invoicing support', 'Including status tracking and online payment tracking'),
                 array('Basic accounting support', 'Input your incoming and outgoing transactions to get basic ledger, profit-and-loss, and cashflow charting'),
-                array('<abbr title="Secure Socket Layer">SSL</abbr>/<abbr title="Transport Layer Security">TLS</abbr>/HTTPS certificate support', 'Make key pages of your choice run over SSL (e.g. the join and payment pages)'),
                 array('Currency conversions', 'Perform automatic currency conversions within your website pages'),
             ),
         ),
         'support' => array(
-            'Support/user-to-staff messaging <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of ticket system" href="http://shareddemo.composr.info/site/index.php?page=tickets&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>',
+            'Support tickets <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of ticket system" href="http://shareddemo.composr.info/site/index.php?page=tickets&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>',
             array(
                 array('Support ticket system', 'Users can view and reply in private tickets to staff'),
-                array('Recommend-to-a-friend', 'Visitors can recommend your website to other visitors'),
-                array('Staff can manage feedback', 'Includes the ability for staff members to &ldquo;take ownership&rdquo; of raised issues, and for all staff to discuss them'),
-                null, // divider
-                array('Support ticket types', 'Set up different kinds of support ticket, with different access levels'),
+                array('Assign to individual staff', 'Includes the ability for staff members to &ldquo;take ownership&rdquo; of raised issues, and for all staff to discuss them'),
                 array('Allow users to e-mail in their tickets and replies'),
+                array('Expanded access granting', 'Grant third party members access to individual tickets'),
+                array('FAQ integration', 'Automatically search the FAQs before opening a ticket'),
+                null, // divider
+                array('Multiple ticket types', 'Set up different kinds of support ticket, with different access levels and fine-grained ticket notification settings'),
                 array('Receive SMS alerts for important tickets'),
-                array('Anonymous feedback', 'Any user can submit anonymous feedback'),
-                array('Users may review your content (optional)'),
+                array('Anonymous posting', 'Allow staff to post anonymously so that customers don\'t always expect the same employee to reply'),
+                array('Merging', 'If customers open multiple tickets for the same issue you can merge them'),
+                array('Closing', 'Let customers close tickets that are now resolved, or do it yourself'),
+                array('Filtering', 'Filter the tickets you see by status and ticket type'),
             ),
         ),
     ),
@@ -190,11 +190,12 @@ $featuretree = array(
         'polls' => array(
             'Polls <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Polls" href="http://shareddemo.composr.info/site/index.php?page=polls&amp;type=view&amp;id=what_type_of_books_do"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>',
             array(
-                array('Integrate polls into your website'),
+                array('Integrate polls into your website', 'Guage visitor opinion'),
                 array('Virtually cheat-proof'),
                 array('Community involvement', 'Users can submit polls, and comment and rate them'),
                 null, // divider
-                array('Have unlimited polls'),
+                array('Multiple polls', 'Showcase different polls on different areas of your website'),
+                array('Archive the data from unlimited polls'),
             ),
         ),
         'points' => array(
@@ -217,6 +218,8 @@ $featuretree = array(
                 array('Public awards', 'Give public awards to your choice of &ldquo;best content&rdquo; <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Awards" href="http://shareddemo.composr.info/site/index.php?page=awards&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Per-usergroup privileges', 'Give special members access to extra features, like file storage <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Permissions" href="http://shareddemo.composr.info/adminzone/index.php?page=admin_permissions&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Bookmarks', 'Users can bookmark their favourite pages to their account <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Bookmarks" href="http://shareddemo.composr.info/site/index.php?page=bookmarks&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
+                array('Recommend-to-a-friend', 'Visitors can recommend your website to other visitors'),
+                array('Users may review your content (optional)'),
             ),
         ),
         'chat' => array(
@@ -234,22 +237,13 @@ $featuretree = array(
                 array('Blocking', 'Choose to appear offline to certain members'),
             ),
         ),
-        'msn' => array(
-            'Multi-site networks',
-            array(
-                array('Shared membership', 'Share members between multiple Composr websites'),
-                null, // divider
-                array('Syndicated site list', 'Allows each member site to see an up-to-date list of sites in the network'),
-                array('Staff filter', 'Choose which members are staff on which sites'),
-            ),
-        ),
     ),
     'content' => array(
         'catalogues' => array(
             'Catalogues <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Catalogues" href="http://shareddemo.composr.info/site/index.php?page=catalogues&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>',
             array(
-                array('Unlimited data control', 'Set up multiple catalogues, each with it\'s own set of fields. There are 44 kinds of field, such as short text fields, description fields, and date fields'),
-                array('Different display modes', 'Display the contents of categories using tables, boxes, or lists'),
+                array('Flexible data control', 'Set up multiple catalogues, each with it\'s own set of fields. There are 44 kinds of field, such as short text fields, description fields, and date fields'),
+                array('Multiple display modes', 'Display the contents of categories using tables, boxes, or lists'),
                 null, // divider
                 array('Powerful structure', 'Each catalogue contains categories which contain entries. Catalogues can have a tree structure of categories and/or work from an index'),
                 array('Configurable searching', 'Choose which fields are shown on categories, and which can be used to perform searches (template searches)'),
@@ -257,7 +251,7 @@ $featuretree = array(
                 array('Classified ads', 'Entries can automatically expire and get archived. See view reports'),
                 array('Community interaction', 'Allow users to comment upon and rate entries'),
                 array('Import data from CSV files'),
-                array('Periodic content reviews', 'Helping you ensure ongoing accuracy of your content'),
+                array('Periodic content reviews', 'Helping you ensure ongoing accuracy of your data'),
             ),
             'Think &ldquo;databases on my website&rdquo;',
         ),
@@ -284,7 +278,8 @@ $featuretree = array(
                 null, // divider
                 array('Microformats support'),
                 array('Integrate a calendar month view, or an upcoming events view, onto your design'),
-                array('Different event types'),
+                array('Multiple event types'),
+                array('Multiple timezones', 'Have different events in different timezones, with configurable conversion settings'),
                 array('Sophisticated permissions'),
                 array('Priority flagging'),
                 array('Programmers can even use the calendar to schedule website cronjobs'),
@@ -302,10 +297,8 @@ $featuretree = array(
                 null, // divider
                 array('Ping support and <abbr title="Really Simple Syndication">RSS</abbr> Cloud support'),
                 array('Multiple news categories, and filtering'),
-                array('Chicklet support'),
                 array('Multiple ways to integrate news into your website'),
                 array('Import from RSS feeds <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of News" href="http://shareddemo.composr.info/cms/index.php?page=cms_news"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
-                array('Easily syndicate to Facebook and Twitter'),
                 array('Geotargetting'),
             ),
         ),
@@ -321,30 +314,30 @@ $featuretree = array(
         'galleries' => array(
             'Galleries <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Galleries" href="http://shareddemo.composr.info/site/index.php?page=galleries&amp;type=browse&amp;id=root&amp;root=root"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>',
             array(
-                array('Supports images, videos, and audio'),
+                array('Multimedia', 'Supports images, videos, audio, and more'),
                 array('Personal galleries', 'Allow your members to create their own galleries'),
                 //array('Transcoding', 'Upload any video format, have the server convert it'),  Optimistic, transcoding can be a PITA
-                array('Support for linking to YouTube videos', 'Save on bandwidth'),
+                array('Support for embedding YouTube videos', 'Save on bandwidth'),
                 null, // divider
                 array('Auto-detection of video length and resolution (most file formats)'),
                 array('Full tree-structure support'),
                 array('Two different display modes'),
                 array('e-cards'),
                 array('Slide-shows'),
-                array('Easily syndicate to Facebook'),
                 array('Automatic thumbnail generation'),
-                array('Import and export easily', 'With <kbd>.zip</kbd> and metadata support'),
+                array('Mass upload', 'Including metadata support'),
                 array('Optional watermarking', 'To guard against thieving swines ;)'),
                 array('Geotargetting'),
+                array('Adjustments', 'Automatic size and orientation adjustments'),
             ),
         ),
         'downloads' => array(
-            'Downloads database <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Downloads" href="http://shareddemo.composr.info/site/index.php?page=downloads&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>',
+            'Downloads/documents library <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Downloads" href="http://shareddemo.composr.info/site/index.php?page=downloads&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>',
             array(
                 array('Great organisation', 'Uses a tree structure for unlimited categorisation'),
                 array('&lsquo;Sell&rsquo; downloads using website points'),
                 array('Anti-leech protection'),
-                array('Community-centered', 'Allow users to comment upon and rate downloads'),
+                array('Community-centred', 'Allow users to comment upon and rate downloads'),
                 null, // divider
                 array('Many ways to add new files', 'Upload files. Link-to existing files. Copy existing files using a live URL. Batch import links from existing file stores'),
                 array('Author support', 'Assign your downloads to authors, so users can find other downloads by the same author'),
@@ -354,12 +347,15 @@ $featuretree = array(
             ),
         ),
         'pages' => array(
-            'Page support <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Page support" href="http://shareddemo.composr.info/site/index.php?page=comcode_page"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>',
+            'Web pages <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Page support" href="http://shareddemo.composr.info/site/index.php?page=comcode_page"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>',
             array(
                 array('Add unlimited pages'),
                 array('<abbr title="What You See Is What You Get">WYSIWYG</abbr> editor'),
                 array('Convenient edit links', 'Staff see &ldquo;edit this&rdquo; links at the bottom of every page'),
                 array('PHP support', 'Upload your PHP scripts and run them inside Composr (may require adjustments to the script code)'),
+                array('Hierarchical page structure'),
+                null, // divider
+                array('Periodic content reviews', 'Helping you ensure ongoing accuracy of your content'),
             ),
         ),
     ),
@@ -483,7 +479,6 @@ $featuretree = array(
                 array('Make changes to content titles inline'),
                 array('Easy text changes', 'Easily change the language strings used to build up any screen'),
                 array('Easily diagnose permission configuration problems', 'Log permission checks, or interactively display them in Firefox'),
-                array('Developers tool to add and manage test sets'),
             ),
         ),
         'richmedia' => array(
@@ -504,21 +499,34 @@ $featuretree = array(
         'security' => array(
             'Security',
             array(
-                array('Configurable swear filtering <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Word Filter" href="http://shareddemo.composr.info/adminzone/index.php?page=admin_wordfilter&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
-                array('IP address tools', 'Audit, check, and ban them <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Lookup Tools" href="http://shareddemo.composr.info/adminzone/index.php?page=admin_lookup"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
-                array('<abbr title="Completely Automated Public Turing test to tell Computers and Humans Apart">CAPTCHA</abbr>, to stop spammers'),
+                array('<abbr title="Secure Socket Layer">SSL</abbr>/<abbr title="Transport Layer Security">TLS</abbr>/HTTPS certificate support', 'Make key pages of your choice run over SSL (e.g. the join and payment pages)'),
                 array('Automatic detection and banning of hackers <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of IP Banning" href="http://shareddemo.composr.info/adminzone/index.php?page=admin_ip_ban&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
+                array('Punishment system', 'Warnings, probation, and silencing of members from forums/topics (Conversr-only) <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Punishments" href="http://shareddemo.composr.info/site/index.php?page=warnings&amp;type=add&amp;id=3&amp;post_id=11"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
+                array('2-factor-authentication', 'E-mail based 2-factor-authentication security when unrecognised IP addresses are used with staff groups (optional, Conversr-only)'),
+                array('Password strength', 'Enforce minimum password strengths (Conversr-only)'),
+                null, // divider
                 array('Architectural approaches to combat all major exploit techniques'),
                 array('Defence-in-depth', 'Multiple layers of built-in security'),
                 array('<abbr title="Cross-Site scripting">XSS</abbr> protection', 'Developed using unique technology to auto-detect XSS security holes before the software gets even released'),
-                null, // divider
+                array('Encrypted custom profile fields', 'Once set the CPF can\'t be read unless a key password is entered (Conversr-only, requires OpenSSL)'),
                 array('Track failed logins <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Security" href="http://shareddemo.composr.info/adminzone/index.php?page=admin_security&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
-                array('Integrate with known-spammer blacklists'),
-                array('Published e-mail addresses will be protected from spammers'),
-                array('Protection from spammers trying to use your website for their own <abbr title="Search Engine Optimisation">SEO</abbr>'),
                 array('<abbr title="HyperText Markup Language">HTML</abbr> filtering'),
                 array('Protection against <abbr title="Cross-Site Request-Forgery">CSRF</abbr> attacks', 'You can temporarily &lsquo;Concede&rsquo; your admin access for added protection'),
-                array('Root-kit detection kit for developers (developers developers!)'),
+                array('Root-kit detection kit for developers'),
+            ),
+        ),
+        'spam' => array(
+            'Spam protection and Moderation',
+            array(
+                array('Configurable swear filtering <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Word Filter" href="http://shareddemo.composr.info/adminzone/index.php?page=admin_wordfilter&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
+                array('IP address tools', 'Audit, check, and ban them <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Lookup Tools" href="http://shareddemo.composr.info/adminzone/index.php?page=admin_lookup"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
+                array('<abbr title="Completely Automated Public Turing test to tell Computers and Humans Apart">CAPTCHA</abbr>, to stop spammers'),
+                array('Integrate with known-spammer blacklists', 'Multiple configurable levels of enforcement'),
+                array('Honeypots and blackholes', 'Find and ban bots via automated traps'),
+                array('Heuristics', 'Clever ways to detect and block spammers based on behaviour'),
+                null, // divider
+                array('Published e-mail addresses will be protected from spammers'),
+                array('Protection from spammers trying to use your website for their own <abbr title="Search Engine Optimisation">SEO</abbr>'),
             ),
         ),
         'easeofuse' => array(
@@ -540,6 +548,7 @@ $featuretree = array(
                 null, // divider
                 array('Multiple levels of caching'),
                 array('Sophisticated template compiler'),
+                array('Self-learning optimisation system'),
             ),
         ),
         'webstandards' => array(
@@ -590,24 +599,19 @@ $featuretree = array(
         'cnsmembers' => array(
             'Membership',
             array(
+                array('Profiles', 'Browse through and search for members, and view member profiles <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Member Directory" href="http://shareddemo.composr.info/site/index.php?page=members&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Multiple usergroups', 'Members can be in an unlimited number of different usergroups. They can also &lsquo;apply&rsquo; to join new ones <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Usergroups" href="http://shareddemo.composr.info/adminzone/index.php?page=admin_cns_groups&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Social networking', 'Create and browse friendships'),
                 array('Custom profile fields', 'Allow your members to add extra information which is relevant to your website (or to their subcommunity) <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Custom Profile Fields" href="http://shareddemo.composr.info/adminzone/index.php?page=admin_cns_customprofilefields&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Promotion system', 'Members can &lsquo;advance the ranks&rsquo; by earning points'),
-                array('Punishment system', 'Warnings, probation, and silencing of members from forums/topics <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Punishments" href="http://shareddemo.composr.info/site/index.php?page=warnings&amp;type=add&amp;id=3&amp;post_id=11"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
-                array('Personal topics between 2 or more members', 'Better than the basic personal messages most forum software provides <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Personal Topics" href="http://shareddemo.composr.info/forum/index.php?page=forumview&amp;type=pt&amp;id=2"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
+                array('Private topics between 2 or more members', 'Better than the basic personal messages most forum software provides <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Private Topics" href="http://shareddemo.composr.info/forum/index.php?page=forumview&amp;type=pt&amp;id=2"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 null, // divider
                 array('Invitation-only websites', 'Existing members can invite others <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Recommendation &ndash; the demo does not have invites turned on though" href="http://shareddemo.composr.info/index.php?recommend"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Allow members to create and manage a club <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Clubs" href="http://shareddemo.composr.info/cms/index.php?page=cms_cns_groups&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Over 40 bundled avatars', 'Member\'s may also upload or link to their own <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Avatars" href="http://shareddemo.composr.info/site/index.php?page=members&type=view#tab__edit__avatar"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Member signatures, photos, and personal titles <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Personal Zone" href="http://shareddemo.composr.info/site/index.php?page=members&type=view#tab__edit"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
-                array('Profiles', 'Browse through and search for members, and view member profiles <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Member Directory" href="http://shareddemo.composr.info/site/index.php?page=members&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
-                array('Member e-mailing', 'Allow your members to e-mail other members through your website <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Member Contact Form" href="http://shareddemo.composr.info/site/index.php?page=contact_member&amp;type=browse&amp;id=3"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Users online', 'See which members are currently online, unless they logged in as invisible <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Online Members" href="http://shareddemo.composr.info/site/index.php?page=users_online"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
-                array('IP address lock-down', 'Extra (but optional) security for staff groups'),
-                array('Welcome e-mails', 'Set up multiple &ldquo;welcome e-mails&rdquo; to be sent out to new members on a schedule <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Welcome E-mails" href="http://shareddemo.composr.info/adminzone/index.php?page=admin_cns_welcome_emails"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Account pruning', 'Find and delete unused accounts, merge duplicate accounts <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Account Pruning" href="http://shareddemo.composr.info/adminzone/index.php?page=admin_cns_members&amp;type=delurk"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
-                array('Encrypted custom profile fields'),
                 array('Members may set privacy settings for individual fields <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Privacy Settings" href="http://shareddemo.composr.info/site/index.php?page=members&type=view#tab__edit__privacy"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('CSV files', 'Import and export members using CSV files, including support for automatic creation of custom profile fields and usergroups &ndash; great for migrating data <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Member CSV Import" href="http://shareddemo.composr.info/adminzone/index.php?page=admin_cns_members&amp;type=import_csv"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
             ),
@@ -617,7 +621,7 @@ $featuretree = array(
             'Forums',
             array(
                 array('The usual stuff', 'Categories, forums, topics, posts, polls <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Forum" href="http://shareddemo.composr.info/forum/index.php?page=topicview&amp;id=general_chat%2Fhere_is_a_topic_with_a"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
-                array('Forum and Topic tracking', 'Get alerted by e-mail when new posts are made'),
+                array('Forum and Topic tracking', 'Receive notifications when new posts are made'),
                 array('Password-protected forums <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Protected Forum" href="http://shareddemo.composr.info/forum/index.php?page=forumview&amp;id=feedback"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Full moderator control', 'Determine who may moderate what forums'),
                 array('Report posts', 'When users report a post, a topic is created for the staff to discuss it <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Post Reporting" href="http://shareddemo.composr.info/forum/index.php?page=forumview&amp;id=reported_posts_forum"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
@@ -641,8 +645,10 @@ $featuretree = array(
             array(
                 array('Find posts made since you last visited <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of New Posts" href="http://shareddemo.composr.info/forum/index.php?page=vforums&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Remembers your unread posts', 'Even if you frequently change computers <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Unread Posts" href="http://shareddemo.composr.info/forum/index.php?page=vforums&amp;type=unread"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
-                array('<abbr title="Really Simple Syndication">RSS</abbr> and Atom support <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of RSS Feeds" href="http://shareddemo.composr.info/backend.php"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Recent activity', 'See what topics you recently read or posted in <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Recent Posts" href="http://shareddemo.composr.info/forum/index.php?page=vforums&amp;type=recently_read"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
+                array('Unanswered topics', 'Find which topics have not yet been answered <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Unanswered Posts" href="http://shareddemo.composr.info/forum/index.php?page=vforums&amp;type=unanswered"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
+                null, // divider
+                array('<abbr title="Really Simple Syndication">RSS</abbr> and Atom support <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of RSS Feeds" href="http://shareddemo.composr.info/backend.php"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
             ),
             'Conversr-only',
         ),

@@ -32,12 +32,12 @@
 		{+START,IF,{$MOBILE}}
 			<h2><a href="#">Content types</a></h2>
 			<div>
-				[block="catalogues|quizzes|galleries|wiki,calendar|downloads|news|pages"]composr_homesite_featuretray[/block]
+				[block="calendar|downloads|news|pages,catalogues|quizzes|galleries|wiki"]composr_homesite_featuretray[/block]
 			</div>
 
 			<h2><a href="#">General features</a></h2>
 			<div>
-				[block="installation|featured|banners|ecommerce,search|support|newsletters"]composr_homesite_featuretray[/block]
+				[block="installation|featured|banners|search,ecommerce|support|newsletters"]composr_homesite_featuretray[/block]
 			</div>
 
 			<h2><a href="#">Forums and members</a></h2>
@@ -49,7 +49,7 @@
 
 			<h2><a href="#">More social networking</a></h2>
 			<div>
-				[block="polls|msn|points,chat|community"]composr_homesite_featuretray[/block]
+				[block="chat|community,polls|points"]composr_homesite_featuretray[/block]
 			</div>
 
 			<h2><a href="#">Design and management</a></h2>
@@ -59,7 +59,7 @@
 
 			<h2><a href="#">Standards</a></h2>
 			<div>
-				[block="webstandards|performance|seo|itln,security|easeofuse"]composr_homesite_featuretray[/block]
+				[block="security|spam|easeofuse,webstandards|performance|seo|itln"]composr_homesite_featuretray[/block]
 			</div>
 
 			<h2><a href="#">Architecture</a></h2>
@@ -88,7 +88,7 @@
 
 			<h2><a href="#">More social networking</a></h2>
 			<div>
-				[block="polls|msn,points,chat,community"]composr_homesite_featuretray[/block]
+				[block="points,chat,community,polls"]composr_homesite_featuretray[/block]
 			</div>
 
 			<h2><a href="#">Design and management</a></h2>
@@ -98,7 +98,7 @@
 
 			<h2><a href="#">Standards</a></h2>
 			<div>
-				[block="webstandards|performance,seo|itln,security,easeofuse"]composr_homesite_featuretray[/block]
+				[block="spam|itln,security|performance,seo|webstandards,easeofuse"]composr_homesite_featuretray[/block]
 			</div>
 
 			<h2><a href="#">Architecture</a></h2>

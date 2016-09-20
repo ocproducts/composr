@@ -88,7 +88,7 @@ class Hook_preview_cns_post
         $post_date = get_timezoned_date($_post_date);
 
         $post_title = post_param_string('title', '');
-        if (strlen($post_title) > 120) {
+        if (cms_mb_strlen($post_title) > 120) {
             warn_exit(do_lang_tempcode('TITLE_TOO_LONG'));
         }
         $unvalidated = ((post_param_integer('validated', 0) == 0) && (get_page_name() == 'topics')) ? do_lang_tempcode('UNVALIDATED') : new Tempcode();

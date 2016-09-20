@@ -93,10 +93,10 @@ function cns_edit_topic($topic_id, $description = null, $emoticon = null, $valid
 
     $update = array();
     if (!is_null($description)) {
-        $update['t_description'] = $description;
+        $update['t_description'] = substr($description, 0, 255);
     }
     if (!is_null($description_link)) {
-        $update['t_description_link'] = $description_link;
+        $update['t_description_link'] = substr($description_link, 0, 255);
     }
     if (!is_null($emoticon)) {
         $update['t_emoticon'] = $emoticon;

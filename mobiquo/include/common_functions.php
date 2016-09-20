@@ -269,7 +269,7 @@ function tapatalk_strip_comcode($data)
     $bak = $GLOBALS['FORUM_DRIVER']->EMOTICON_CACHE;
     foreach ($emoticon_map as $tapatalk_code => $composr_code) {
         unset($GLOBALS['FORUM_DRIVER']->EMOTICON_CACHE[$composr_code]);
-        // Actually, Tapatalk emoticon rendering seems erratic in text mode (iOS), but it's best we TRY, because the centered on-own-line image emoticons look very poor
+        // Actually, Tapatalk emoticon rendering seems erratic in text mode (iOS), but it's best we TRY, because the centred on-own-line image emoticons look very poor
     }
     // Map Composr ones back to Tapatalk ones
     $emoticon_map = get_tapatalk_to_composr_emoticon_map('missing_from_composr');
