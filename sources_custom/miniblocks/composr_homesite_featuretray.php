@@ -107,7 +107,7 @@ $featuretree = array(
             array(
                 array('Multiple campaigns', 'Each one can specify it\'s own width-by-height (e.g. skyscraper)'),
                 array('Smart banners', 'Integrate text-banners into your content via keyword detection'),
-                array('Broad media compatibility', 'Accepts image banners, flash banners, external banner rotations, and text banners'),
+                array('Broad media compatibility', 'Image banners, flash banners, external banner rotations, and text banners'),
                 null, // divider
                 array('Determine which banners display most often'),
                 array('Run a cross-site banner network'),
@@ -172,11 +172,11 @@ $featuretree = array(
             'Support tickets <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of ticket system" href="http://shareddemo.composr.info/site/index.php?page=tickets&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>',
             array(
                 array('Support ticket system', 'Users can view and reply in private tickets to staff'),
-                array('Assign to individual staff', 'Includes the ability for staff members to &ldquo;take ownership&rdquo; of raised issues, and for all staff to discuss them'),
+                array('Assign to individual staff', 'Includes the ability for staff members to &ldquo;take ownership&rdquo; of raised issues, and for all staff to discuss'),
                 array('Allow users to e-mail in their tickets and replies'),
                 array('Expanded access granting', 'Grant third party members access to individual tickets'),
-                array('FAQ integration', 'Automatically search the FAQs before opening a ticket'),
                 null, // divider
+                array('FAQ integration', 'Automatically search FAQs before opening a ticket'),
                 array('Multiple ticket types', 'Set up different kinds of support ticket, with different access levels and fine-grained ticket notification settings'),
                 array('Receive SMS alerts for important tickets'),
                 array('Anonymous posting', 'Allow staff to post anonymously so that customers don\'t always expect the same employee to reply'),
@@ -193,7 +193,6 @@ $featuretree = array(
                 array('Integrate polls into your website', 'Guage visitor opinion'),
                 array('Virtually cheat-proof'),
                 array('Community involvement', 'Users can submit polls, and comment and rate them'),
-                null, // divider
                 array('Multiple polls', 'Showcase different polls on different areas of your website'),
                 array('Archive the data from unlimited polls'),
             ),
@@ -353,8 +352,8 @@ $featuretree = array(
                 array('<abbr title="What You See Is What You Get">WYSIWYG</abbr> editor'),
                 array('Convenient edit links', 'Staff see &ldquo;edit this&rdquo; links at the bottom of every page'),
                 array('PHP support', 'Upload your PHP scripts and run them inside Composr (may require adjustments to the script code)'),
-                array('Hierarchical page structure'),
                 null, // divider
+                array('Hierarchical page structure'),
                 array('Periodic content reviews', 'Helping you ensure ongoing accuracy of your content'),
             ),
         ),
@@ -368,7 +367,7 @@ $featuretree = array(
         'permissions' => array(
             'Permissions <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Permissions" href="http://shareddemo.composr.info/adminzone/index.php?page=admin_permissions&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>',
             array(
-                array('Detailed privilege control', 'Over 150 permissions'),
+                array('Detailed privilege control', 'Over 180 permissions'),
                 array('Control access to all your resources'),
                 array('User-friendly permissions editor'),
                 null, // divider
@@ -428,7 +427,6 @@ $featuretree = array(
                 array('Aggregate content types', 'Design complex content relationships, cloning out large structures in a single operation.'),
                 null, // divider
                 array('Configurable access', 'Restrict to no/partial/full access based on usergroup'),
-                array('Configure a staff roster, for an automatically created staff page <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Staff" href="http://shareddemo.composr.info/adminzone/index.php?page=admin_staff&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Detect broken URLs <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Cleanup Tools" href="http://shareddemo.composr.info/adminzone/index.php?page=admin_cleanup&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Content versioning <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Page Versioning" href="http://shareddemo.composr.info/cms/index.php?page=cms_comcode_pages&amp;type=_edit&amp;page_link=:start"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
             ),
@@ -436,7 +434,7 @@ $featuretree = array(
         'tools' => array(
             'Themeing tools',
             array(
-                array('Theme Wizard: pick a colour, let Composr do the work', 'Recolour all your <abbr title="Cascading Style Sheets">CSS</abbr> and images in just a few clicks (Composr picks the perfect complementary palette and automatically makes 100\'s of CSS and image changes) <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Theme Wizard" href="http://shareddemo.composr.info/adminzone/index.php?page=admin_themewizard&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
+                array('Theme Wizard', 'Recolour all your <abbr title="Cascading Style Sheets">CSS</abbr> and images in just a few clicks (Composr picks the perfect complementary palette and automatically makes 100\'s of CSS and image changes) <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Theme Wizard" href="http://shareddemo.composr.info/adminzone/index.php?page=admin_themewizard&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Built-in template and <abbr title="Cascading Style Sheets">CSS</abbr> editing tools <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Theme Tools" href="http://shareddemo.composr.info/adminzone/index.php?page=admin&amp;type=style"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Quick-start logo wizard <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Logo Wizard" href="http://shareddemo.composr.info/adminzone/index.php?page=admin_themewizard&amp;type=make_logo"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Interactive CSS editor', 'Quickly identify what to change and preview'),
@@ -446,7 +444,7 @@ $featuretree = array(
             'Design without barriers',
             array(
                 array('Full control of your vision', 'Control hundreds of settings. Strip Composr down. Reshape features as needed'),
-                array('Full templating support', 'Reskin features so things look however you want them to'),
+                array('Full templating support', 'Reskin features to look however you want them to'),
                 array('No navigation assumptions', 'Replace default page and structures as required'),
                 null, // divider
                 array('No layout assumptions', 'Shift content between templates, totally breaking down any default layout assumptions'),
@@ -499,12 +497,12 @@ $featuretree = array(
         'security' => array(
             'Security',
             array(
-                array('<abbr title="Secure Socket Layer">SSL</abbr>/<abbr title="Transport Layer Security">TLS</abbr>/HTTPS certificate support', 'Make key pages of your choice run over SSL (e.g. the join and payment pages)'),
+                array('<abbr title="Secure Socket Layer">SSL</abbr>/HTTPS support', 'Make pages of your choice run over <abbr title="Transport Layer Security">TLS</abbr> (e.g. the join and payment pages)'),
                 array('Automatic detection and banning of hackers <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of IP Banning" href="http://shareddemo.composr.info/adminzone/index.php?page=admin_ip_ban&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
-                array('Punishment system', 'Warnings, probation, and silencing of members from forums/topics (Conversr-only) <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Punishments" href="http://shareddemo.composr.info/site/index.php?page=warnings&amp;type=add&amp;id=3&amp;post_id=11"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
-                array('2-factor-authentication', 'E-mail based 2-factor-authentication security when unrecognised IP addresses are used with staff groups (optional, Conversr-only)'),
-                array('Password strength', 'Enforce minimum password strengths (Conversr-only)'),
+                array('Punishment system', 'Warnings, probation, and silencing of members from forums/topics<br />(Conversr-only) <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Punishments" href="http://shareddemo.composr.info/site/index.php?page=warnings&amp;type=add&amp;id=3&amp;post_id=11"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
+                array('2-factor-authentication', 'E-mail based 2-factor-authentication security when unrecognised IP addresses are used with staff groups<br />(optional, Conversr-only)'),
                 null, // divider
+                array('Password strength', 'Enforce minimum password strengths (Conversr-only)'),
                 array('Architectural approaches to combat all major exploit techniques'),
                 array('Defence-in-depth', 'Multiple layers of built-in security'),
                 array('<abbr title="Cross-Site scripting">XSS</abbr> protection', 'Developed using unique technology to auto-detect XSS security holes before the software gets even released'),
@@ -519,7 +517,7 @@ $featuretree = array(
             'Spam protection and Moderation',
             array(
                 array('Configurable swear filtering <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Word Filter" href="http://shareddemo.composr.info/adminzone/index.php?page=admin_wordfilter&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
-                array('IP address tools', 'Audit, check, and ban them <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Lookup Tools" href="http://shareddemo.composr.info/adminzone/index.php?page=admin_lookup"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
+                array('IP address tools', 'Audit, check, and ban <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Lookup Tools" href="http://shareddemo.composr.info/adminzone/index.php?page=admin_lookup"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('<abbr title="Completely Automated Public Turing test to tell Computers and Humans Apart">CAPTCHA</abbr>, to stop spammers'),
                 array('Integrate with known-spammer blacklists', 'Multiple configurable levels of enforcement'),
                 array('Honeypots and blackholes', 'Find and ban bots via automated traps'),
@@ -665,7 +663,8 @@ $featuretree = array(
         'forumcontentsharing' => array(
             'Content sharing',
             array(
-                array('Show forum topics on your website', 'Great if you have a &lsquo;news&rsquo; forum <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of displayed forum topics" href="http://shareddemo.composr.info/site/index.php?page=featured_content"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
+                array('Show topics on your website <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of displayed forum topics" href="http://shareddemo.composr.info/site/index.php?page=featured_content"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
+                null, // divider
                 array('Comment integration', 'New topics appear in the &lsquo;comments&rsquo; forum as you add content to your website. Members can watch these topics so they never miss an addition to your website <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of comment topics" href="http://shareddemo.composr.info/forum/index.php?page=forumview&amp;id=website_comment_topics"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
             ),
         ),
