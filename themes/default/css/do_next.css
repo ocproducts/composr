@@ -42,7 +42,7 @@
 	font-size: 0.9em;
 	{$BETA_CSS_PROPERTY,transition: background-color 0.5s linear;}
 	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
-	min-height: 110px;
+	height: 110px;
 }
 
 .do_next_item>div {
