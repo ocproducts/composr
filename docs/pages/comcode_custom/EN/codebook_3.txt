@@ -287,10 +287,10 @@ For example, if you wanted a module as seen in one zone to have one virtual root
 
 [title="3"]Deployment[/title]
 
-Be very careful deploying these three files:
+Be very careful deploying these particular files:
 1) [tt]_config.php[/tt]
 2) [tt].htaccess[/tt]
-3) [tt]php.ini[/tt]
+3) [tt].user.ini[/tt]
 
 [tt]_config.php[/tt] is obvious, you don't want to overwrite the live server environment settings with development ones.
 Sometimes it is a good idea to code up [tt]_config.php[/tt] to detect what server it is on, then share that file across all platforms. This is mainly a personal choice.
@@ -301,7 +301,7 @@ Sometimes it is a good idea to code up [tt]_config.php[/tt] to detect what serve
 3) If a RewriteBase line is there, it may be wrong for the server
 4) The server could have its own file, with its own special settings (it's quite common to use the file to tune live settings)
 
-[tt]php.ini[/tt] is similar to [tt].htaccess[/tt] in that it can encode very server-specific settings.
+[tt].user.ini[/tt] is similar to [tt].htaccess[/tt] in that it can encode very server-specific settings.
 
 [title="3"]Tidying up ugly Comcode or running conversions[/title]
 
@@ -474,7 +474,7 @@ We have the following which are either unlikely to be useful, or potentially uns
   - [tt]force_admin_auth[/tt] -- set this to '1' if you want any super-administrator to have to have some kind of authorisation-based login by redirecting them to [tt]http://yourbaseurl/admin_login/[/tt] which presumably you have configured to be a redirect-through that catches logins (Apache only)
   - [tt]no_password_hashing[/tt] -- set this to '1' if you want passwords to be stored as plain-text in the database (not recommended)
   - [tt]xhtml_strict[/tt] -- set this to '1' to do some magic to make Composr's output XHTML strict. This is slow and not really advisable as it will degrade the user experience if JavaScript is not available (new-window links would break)
-  - [tt]webdav_root[/tt] -- set this to the subdirectory the WebDAV addon should run from. On Windows it needs to run from the root, i.e. '/'. However, to do this you would need to map onto a separate domain name. If you change this setting, you'll need to change the redirect in your [tt].htaccess[/tt] file
+  - [tt]webdav_root[/tt] -- set this to the subdirectory the WebDAV addon should run from. On Windows it needs to run from the root, i.e. '/'. However, to do this you would need to map onto a separate domain name. If you change this setting, you'll need to change the redirect in your [tt].htaccess[/tt] file (or non-Apache equivalent)
   - [tt]allow_member_mail_relay[/tt] -- set to '1' if the [tt]form_to_email.php[/tt] script should allow e-mailing to arbitrary members via the [tt]allow_member_mail_relay[/tt] parameter. This potentially allows people to spam your members, so you may want to add some kind of extra security here at a web-server level (i.e. restricting access to the script).
   - [tt]windows_auth_is_enabled[/tt] -- set to '1' to enable Integrated Windows Kerberos Authentication for automatic desktop client logins
  - Unsupported functionality
@@ -793,7 +793,7 @@ However, if you're making a website for somebody else it is is important to bear
 Here are some assorted hints:
  - You might want to use the debranding feature, Admin Zone > Style > Debranding
  - You might want to give the user a non-admin username (e.g. a super-moderator user instead), and then set Admin Zone permissions so that many unnecessary pages are hidden. Composr is then smart enough to automatically simplify its interface to compensate.
- - When deploying make sure to get your canonical URL right. Ask the client whether they want 'www.' in their URL or not. Set up a [tt].htaccess[/tt] file (https://css-tricks.com/snippets/htaccess/www-no-www/) that redirects the non-canonical URL to the correct one. This will remove a lot of headaches related to duplicate cookies, bad SEO, confusion, and Composr error messages.
+ - When deploying make sure to get your canonical URL right. Ask the client whether they want 'www.' in their URL or not. Set up a [tt].htaccess[/tt] file (https://css-tricks.com/snippets/htaccess/www-no-www/) (or non-Apache equivalent) that redirects the non-canonical URL to the correct one. This will remove a lot of headaches related to duplicate cookies, bad SEO, confusion, and Composr error messages.
  - Always, always, test the e-mails a site gives out. It is very embarrassing if you accidentally customise your [tt]MAIL.tpl[/tt] template in a custom theme and then find e-mails are being sent out of the Admin Zone using the default theme and Composr logo. Always save your [tt]MAIL.tpl[/tt] in the default theme, and make sure that the default theme's 'logo/-logo' and 'logo/standalone-logo' theme images correctly reflect your design. And, test it! If you made complex changes, test in different e-mail programs/webmail-apps.
  - Develop using a staging/developer website, and deploy to live/customer-demo after you've finished all changes. This primarily involves uploading changed files. Composr has a great tool for transferring data between Composr sites using XML too, if you find you are needing to sync data.
 

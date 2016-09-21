@@ -104,7 +104,6 @@ class Hook_addon_registry_google_appengine
             'data/modules/google_appengine/dos.yaml',
             'data/modules/google_appengine/queue.yaml',
             'data/modules/google_appengine/index.html',
-            'data/modules/google_appengine/php.gae.ini',
             'data/modules/google_appengine/cloud_storage_proxy.php',
             'data_custom/modules/google_appengine/index.html',
             'sources/google_appengine.php',

@@ -196,7 +196,7 @@ If there is something about your server configuration that prevents PHP scripts 
 
 [title="3"]How do I get more than <just a few megabytes> of upload support?[/title]
 
-PHP defines its own upload limits, which Composr can not exceed. Try renaming the bundled 'recommended.htaccess' file to '.htaccess'. If this fails read the answer to "Why does [tt]recommended.htaccess[/tt] not work?". If you still have problems you will need to persuade the server administrator to increase the limits defined in the PHP [tt]post_max_size[/tt] and [tt]upload_max_filesize[/tt] options.
+PHP defines its own upload limits, which Composr can not exceed. The bundled [tt].user.ini[/tt] file should increase them though. If you have problems you will need to persuade the server administrator to increase the limits defined in the PHP [tt]post_max_size[/tt] and [tt]upload_max_filesize[/tt] options.
 
 By the way, make sure you define MB units like '50M', not '50MB'. 'MB' is not a recognised unit by PHP.
 
@@ -222,8 +222,7 @@ PHP[1] Out of memory (allocated 6815744) (tried to allocate 311296 bytes)
 [/quote]
 then this is telling you PHP [i]actually[/i] has a memory limit of approximately 6815744+311296 bytes (about 7MB).
 
-It may be possible to get Composr to raise the memory limit for you. Our default [tt]recommended.htaccess[/tt] file does this -- try renaming it to [tt].htaccess[/tt] to activate it. If you get the problem during the quick installer and thus don't have this file yet, you can find it in the manual installer package.
-If renaming the [tt]recommended.htaccess[/tt] file results in "Internal Server Error" error messages, see the "I've renamed [tt]recommended.htaccess[/tt] to [tt].htaccess[/tt], but why Composr won't load anymore" answer below.
+It may be possible to get Composr to raise the memory limit for you. Our default [tt].user.ini[/tt] file does this -- try renaming it to [tt].htaccess[/tt] to activate it. If you get the problem during the quick installer and thus don't have this file yet, you can find it in the manual installer package.
 If you are not successful in raising the memory limit you will need to contact the webhost to ask them to do it, as on some hosts the limit is locked down at a server level.
 
 [title="4"]Corrupt PHP files[/title]
@@ -251,24 +250,12 @@ If in doubt, look at the permissions of a working PHP script, and copy them.
 
 If you have being using root access to add files on the server, you may need to change the file ownership and file group to that of the account user.
 
-Also see the answer to "I've renamed [tt]recommended.htaccess[/tt] to [tt].htaccess[/tt], but why Composr won't load anymore (Internal Server Error or '500' error)?" if this has just start after editing the [tt].htaccess[/tt] file or switching webhosts.
-
-[title="4"].htaccess problems[/title]
-
-Please keep reading on for this specific case.
-
 [title="4"]Other causes[/title]
 
 Otherwise, you may need to look at your raw web server logs, or contact your webhost. Often the true cause of internal errors are written into the web server error log.
 
-[title="3"]I've renamed [tt]recommended.htaccess[/tt] to [tt].htaccess[/tt], but why Composr won't load anymore (Internal Server Error or '500' error)?[/title]
-
-Unfortunately the Apache web server gives very poor error feedback, and setting features that it's configuration environment doesn't understand can cause it to fail. Try commenting out lines (put "#" at the start of the line) to work out what lines cause the problems, and leave those lines commented out.
-Read the next question's answer also.
-
 [title="3"]Why does [tt]recommended.htaccess[/tt] not work?[/title]
 
-If you are getting "Internal Server Error" errors or '500' errors first read the answer above, to narrow down to the problem.
 If you're not getting actual errors but things just aren't applying, it's probably because either:
 [list="a"]
 [*] [tt].htaccess[/tt] has been disabled on the server (you'll need to consult your webhost)
@@ -280,57 +267,10 @@ If you're not getting actual errors but things just aren't applying, it's probab
 
 If you are getting actual errors you have probably narrowed it down and found that all the [tt]php_value[/tt]/[tt]php_flag[/tt] lines fail. If this is the case it is because PHP on your server is set up as CGI, and on CGI you need to set PHP settings differently (read the answer to the next question).
 
-[title="3"]How do I set PHP settings on a CGI server?[/title]
+[title="3"]How do I set PHP settings?[/title]
 
-You need to create [tt]php.ini[/tt] files that override your web-server's default [tt]php.ini[/tt] file. This can be tricky for two reasons:
-1) You need to place duplicates of the file in a number of different directories.
-2) You may need to replicate settings from the original [tt]php.ini[/tt] file into your own one. Usually your webhost will provide some kind of documentation that you can copy&paste from.
-
-This is what your [tt]php.ini[/tt] file should look like, assuming you do not need to add any extra lines (see "2" above).
-[codebox="INI"]
-; Composr needs uploads; many hosts leave these low
-post_max_size=500M
-upload_max_filesize=500M
-
-; Turn insecure things off
-allow_url_fopen=off
-
-; Put some limits up. Composr is stable enough not to cause problems- it'll only use higher limits when it really needs them
-memory_limit=128M
-max_input_time=60
-max_input_vars=2000
-
-; This causes unstability (and is known/documented to) but some hosts turn it on
-mbstring.func_overload=0
-mail.add_x_header=off
-
-; Suhosin can cause problems on configuration and Catalogue forms, which use a lot of fields
-suhosin.post.max_vars=2000
-suhosin.request.max_vars=2000
-suhosin.cookie.max_vars=400
-suhosin.cookie.max_name_length=150
-suhosin.cookie.encrypt=off
-suhosin.post.max_value_length=100000000
-suhosin.request.max_value_length=100000000
-suhosin.post.max_totalname_length=10000
-suhosin.request.max_totalname_length=10000
-suhosin.cookie.encrypt=off
-suhosin.sql.union=off
-suhosin.sql.comment=off
-suhosin.sql.multiselect=off
-suhosin.upload.remove_binary=off
-
-
-; Sandbox Composr to its own directory
-; open_basedir=/tmp:/home/blah/public_html/composr/		Customise this line for your server, or leave it commented out
-[/codebox]
-
-Theoretically the file should be placed in any directory from which a PHP file might be called up by URL. Practically though you can just put it in the base directory, [tt]adminzone[/tt], [tt]cms[/tt], [tt]data[/tt], [tt]data_custom[/tt], [tt]forum[/tt] and [tt]site[/tt] directories.
-
-[title="3"]Composr has gone very slow after changing the configuration / will not save configuration changes / catalogue adding or editing will not work?[/title]
-
-It is likely you have suhosin on the server and it is limiting the number of fields that forms may use.
-Composr's sample [tt].htaccess[/tt] and [tt]php.ini[/tt] files contain a remedy for this.
+Edit the [tt].user.ini[/tt] file. This should work on virtually any PHP version. It is a newer technique than editing [tt]php.ini[/tt] or [tt].htaccess[/tt] files.
+Note that PHP does not allow all settings to be overridden.
 
 [title="3"]Why does the language pack I installed mess up the layout?[/title]
 

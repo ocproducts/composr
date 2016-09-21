@@ -352,7 +352,7 @@ function phase_2()
 
             <li>API docs (<em>Optional</em>): Recompile the API docs&hellip;<ul>
                 <li><a href="http://graphviz.org/Download..php">Install Graphviz</a></li>
-                <li>Make sure you have a very high PHP memory limit in php.ini; 1024M is good</li>
+                <li>Make sure you have a very high PHP memory limit in <kbd>php.ini</kbd>; 1024M is good</li>
                 <li>Install PEAR if you don\'t have it already, with something like: <kbd>curl http://pear.php.net/go-pear.phar &gt; go-pear.php ; sudo php -q go-pear.php</kbd></li>
                 <li>Install phpdocumentor if you don\'t have it already, with something like: <kbd>sudo pear channel-discover pear.phpdoc.org ; sudo pear install phpdoc/phpDocumentor</kbd></li>
                 <li>In your phpdocumentor\'s <kbd>data/templates</kbd> directory, create a symbolic link to your Composr <kbd>docs/composr-api-template</kbd> directory (e.g. <kbd>sudo ln -s `pwd`/docs/composr-api-template /usr/share/pear/phpDocumentor/data/templates</kbd>)</li>

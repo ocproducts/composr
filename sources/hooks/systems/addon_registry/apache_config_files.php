@@ -99,7 +99,6 @@ class Hook_addon_registry_apache_config_files
     {
         return array(
             'sources/hooks/systems/addon_registry/apache_config_files.php',
-            'plain.htaccess',
             'recommended.htaccess',
         );
     }

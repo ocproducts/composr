@@ -25,7 +25,7 @@ The available URL Schemes are:
 
 "Use /pg/ to identify CMS pages" is recommended for novice users because it is unambiguous and simple to set up.
 
-"Use .htm to identify CMS pages" requires the [tt].htaccess[/tt] file to have an awareness of each Composr zone, so it can disambiguate requests and thus route them to the correct zone.
+"Use .htm to identify CMS pages" requires the [tt].htaccess[/tt] file (or non-Apache equivalent) to have an awareness of each Composr zone, so it can disambiguate requests and thus route them to the correct zone.
 
 "Very simple unadorned URLs" is great, but the webmaster may need to be very skilled at web server administration if they have other software packages installed in the same directory as Composr. The redirect rules for this are commented out in the default [tt].htaccess[/tt] files.
 
@@ -72,7 +72,7 @@ Composr can do URL Schemes on the following web-servers:
 
 [media thumb="0" framed="0" float="right"]data_custom/images/docs/tut_short_urls/apache.png[/media]
 Perform the following steps:
-1) If you haven't already got a working Composr [tt].htaccess[/tt] file (the quick installer may have made it for you automatically), rename [tt]recommended.htaccess[/tt] to [tt].htaccess[/tt]. If your site gives errors after doing this, try [tt]plain.htaccess[/tt] instead.
+1) If you haven't already got a working Composr [tt].htaccess[/tt] file (the quick installer may have made it for you automatically), rename [tt]recommended.htaccess[/tt] to [tt].htaccess[/tt].
 2) If things go wrong, you can disable URL Schemes via an emergency shut off option in the [tt]http://yourbaseurl/config_editor.php[/tt] script. Make sure you see where it is before proceeding to the next step.
 3) Enable a URL Scheme from your site options (Admin Zone > Setup > Configuration > Site options > SEO).
 

@@ -1112,7 +1112,7 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
         if ($file == 'data/files_previous.dat') {
             continue; // Comes in outside scope of files.dat
         }
-        if (($file == 'recommended.htaccess') || ($file == 'plain.htaccess')) {
+        if ($file == 'recommended.htaccess') {
             continue; // May be renamed
         }
 

@@ -229,7 +229,7 @@ You tried to upload a file which was larger than the maximum allowed size (xxx b
  - the PHP 'upload_max_filesize' setting
  - the website's setting for the maximum file size
  - the website's setting for the maximum image size (if it is an image)
- - your remaining quota space","Go to the Admin Zone, then the Setup section, then the Configuration icon, then the Security options, then the 'Upload' section. You will see the PHP and website settings laid out here. If you need the PHP options changed you can likely use a [tt]php.ini[/tt] or [tt].htaccess[/tt] file to do it -- see the [page=""""docs:faq""""]FAQ[/page].
+ - your remaining quota space","Go to the Admin Zone, then the Setup section, then the Configuration icon, then the Security options, then the 'Upload' section. You will see the PHP and website settings laid out here. If you need the PHP options changed you can likely use the [tt].user.ini[/tt] file to do it -- see the [page=""""docs:faq""""]FAQ[/page].
 
 It is unlikely you are being affected by a quota restriction, as by-default staff do not have any quota restrictions. You can see quotas when editing usergroups."
 A page (xxx) was referenced that does not exist,"A page was accessed by name, but there is no such page.",It is likely the page once existed but does not exist any more.,Change/remove any broken links.
