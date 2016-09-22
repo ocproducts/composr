@@ -551,14 +551,30 @@ function pull_lang_from_transifex($project_slug, $tar_file, $lang, $core_only, $
 
         // Write addon_registry hook
         if (count($files) != 0) {
+            $path = 'sources_custom/hooks/systems/addon_registry/language_' . $lang . '.php';
+            $full_path = get_file_base() . '/' . $path;
+
             $translators = implode(', ', $language_details['translators']);
             if ($translators == '') {
                 $translators = do_lang('UNKNOWN');
+
+                if (is_file($full_path)) {
+                    $c = file_get_contents(($full_path));
+
+                    $matches = array();
+                    if (preg_match('#function get_author\(\)\s*\{\s*return \'([^\']*)\';#', $c, $matches) != 0) {
+                        $translators = $matches[1];
+                    }
+                }
             }
 
             $percentage = intval(round(100.0 * $language_details['translated_segments'] / $language_details['total_segments']));
 
             $language_name = lookup_language_full_name($lang);
+
+            if (is_file('sources_custom/lang_filter_' . $lang . '.php')) {
+                $files[] = 'sources_custom/lang_filter_' . $lang . '.php';
+            }
 
             $files_str = '';
             foreach ($files as $file) {
@@ -709,9 +725,6 @@ END;
 
             $c = trim($c) . "\n\n";
 
-            $path = 'sources_custom/hooks/systems/addon_registry/language_' . $lang . '.php';
-            $full_path = get_file_base() . '/' . $path;
-
             if ($tar_file === null) {
                 file_put_contents($full_path, $c);
                 fix_permissions($full_path);
@@ -736,6 +749,13 @@ function _pull_cms_file_from_transifex($project_slug, $tar_file, $lang, $path, $
     $trans_path = preg_replace('#^data/#', 'data_custom/' , $trans_path);
 
     $trans_full_path = get_file_base() . '/' . $trans_path;
+
+    $limit_substring = get_param_string('limit_substring', null);
+    if ($limit_substring !== null && strpos($path, $limit_substring) === false) {
+        $files[] = $trans_path;
+
+        return;
+    }
 
     $test = _transifex('/project/' . $project_slug . '/resource/' . $resource_path . '/translation/' . convert_lang_code_to_transifex($lang) . '/', 'GET', null, true);
     if ($test[1] == '200') {
@@ -762,6 +782,16 @@ function _pull_cms_file_from_transifex($project_slug, $tar_file, $lang, $path, $
 
 function _pull_strings_file_from_transifex($project_slug, $tar_file, $lang, $_f, &$files)
 {
+    $trans_path = 'lang_custom/' . $lang . '/' . $_f . '.ini';
+    $trans_full_path = get_file_base() . '/' . $trans_path;
+
+    $limit_substring = get_param_string('limit_substring', null);
+    if ($limit_substring !== null && strpos($_f, $limit_substring) === false) {
+        $files[] = $trans_path;
+
+        return;
+    }
+
     $test_a = _transifex('/project/' . $project_slug . '/resource/' . $_f . '/translation/' . convert_lang_code_to_transifex($lang) . '/', 'GET', null, true);
     $test_b = _transifex('/project/' . $project_slug . '/resource/' . $_f . '__administrative/translation/' . convert_lang_code_to_transifex($lang) . '/', 'GET', null, true);
     if ($test_a[1] == '200' || $test_b[1] == '200') {
@@ -780,9 +810,6 @@ function _pull_strings_file_from_transifex($project_slug, $tar_file, $lang, $_f,
 
         $write_out = preg_replace('#^\# .*\n#m', '', $data_a['content'] . "\n" . $data_b['content']);
         $c = "[strings]\n" . trim($write_out) . "\n";
-
-        $trans_path = 'lang_custom/' . $lang . '/' . $_f . '.ini';
-        $trans_full_path = get_file_base() . '/' . $trans_path;
 
         if ($tar_file === null) {
             @mkdir(dirname($trans_full_path), 0777, true);
