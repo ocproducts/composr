@@ -468,7 +468,7 @@ function transifex_pull_script()
 
     if ($output) {
         header('Content-type: application/octet-stream');
-        header('Content-Disposition: attachment; filename="' . escape_header($lang) . '.tar"');
+        header('Content-Disposition: attachment; filename="language-' . escape_header($lang) . '.tar"');
         safe_ini_set('ocproducts.xss_detect', '0');
 
         require_code('tar');
@@ -672,7 +672,13 @@ class Hook_addon_registry_language_{$lang}
      */
     public function get_description()
     {
-        return 'Translation into {$language_name}. Completeness: {$percentage}% (29% typically means translated fully apart from administrative strings). This addon was automatically bundled from community contributions provided on Transifex and will be routinely updated alongside new Composr patch releases. Translations may also be downloaded directly from Transifex.';
+        return 'Translation into {$language_name}.
+
+Completeness: {$percentage}% (29% typically means translated fully apart from administrative strings).
+
+This addon was automatically bundled from community contributions provided on Transifex and will be routinely updated alongside new Composr patch releases.
+
+Translations may also be downloaded directly from Transifex.';
     }
 
     /**
