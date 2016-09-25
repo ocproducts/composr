@@ -468,7 +468,8 @@ function transifex_pull_script()
 
     if ($output) {
         header('Content-type: application/octet-stream');
-        header('Content-Disposition: attachment; filename="language-' . escape_header($lang) . '.tar"');
+        require_code('version2');
+        header('Content-Disposition: attachment; filename="language-' . escape_header($lang) . '-' . get_version_branch(floatval(cms_version_number())) . '.tar"');
         safe_ini_set('ocproducts.xss_detect', '0');
 
         require_code('tar');
@@ -523,7 +524,7 @@ function pull_lang_from_transifex($project_slug, $tar_file, $lang, $core_only, $
         $language_details = json_decode($test[0], true);
 
         if (!$definitely_want) {
-            if (floatval($language_details['translated_segments']) / floatval($language_details['total_segments']) < 0.2) {
+            if (floatval($language_details['translated_segments']) / floatval($language_details['total_segments']) < 0.2/*Under 20%*/) {
                 // Not translated enough
                 return false;
             }
@@ -568,7 +569,7 @@ function pull_lang_from_transifex($project_slug, $tar_file, $lang, $core_only, $
                 }
             }
 
-            $percentage = intval(round(100.0 * $language_details['translated_segments'] / $language_details['total_segments']));
+            $percentage = intval(round(100.0 * $language_details['translated_segments'] / $language_details['total_segments'])); // calculate %age
 
             $language_name = lookup_language_full_name($lang);
 

@@ -469,7 +469,7 @@ $featuretree = array(
         'rad' => array(
             '<abbr title="Rapid Application Development">RAD</abbr> and testing tools',
             array(
-                array('Switch users', 'Masquerade as any user using your admin logging <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of SU" href="http://shareddemo.composr.info/index.php?keep_su=test"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
+                array('Switch users', 'Masquerade as any user using your admin login <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of SU" href="http://shareddemo.composr.info/index.php?keep_su=test"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Change theme images inline with just a few clicks'),
                 array('Easily find and edit the templates used to construct any screen <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Template Tree" href="http://shareddemo.composr.info/index.php?special_page_type=tree"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Error monitoring', 'Get informed by e-mail if errors ever happen on your site'),

@@ -369,6 +369,7 @@ function phase_2()
                 <li>Do a git pull of the latest branch onto the server</li>
                 <li>Make sure things are working on the server</li>
                 <li>Re-open the site on the server</li>
+                <li>Make sure the history on the vision page is up-to-date</li>
             </ul>
 
             <li><strong>Addons</strong>:<ul>
