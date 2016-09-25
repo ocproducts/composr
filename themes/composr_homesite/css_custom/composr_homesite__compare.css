@@ -1,4 +1,5 @@
 .headlineRow { margin:1em 0 2em 0; }
+.headlineRow p { text-align: left; }
 
 ul.cntLiFull { list-style:none; overflow:hidden; padding:10px 0px; margin:0 0 20px 0; }
 ul.cntLiFull li { padding:0px 0px 15px 40px; line-height:22px; display:block; color:#666; font-size:14px; background-image:url('{$IMG;,composr_homesite/para-bullet}'); background-repeat:no-repeat; background-position:20px 5px; }
