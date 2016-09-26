@@ -112,13 +112,14 @@ function cns_may_delete_poll_by($forum_id, $poll_owner, $member_id = null)
  *
  * @param  AUTO_LINK $poll_id The poll.
  * @param  boolean $request_results Whether we must record that the current member is requesting the results, blocking future voting for them.
- * @return array The map of results.
+ * @return ?array The map of results (null: could not find poll).
  */
 function cns_poll_get_results($poll_id, $request_results = true)
 {
     $poll_info = $GLOBALS['FORUM_DB']->query_select('f_polls', array('*'), array('id' => $poll_id), '', 1);
     if (!array_key_exists(0, $poll_info)) {
-        fatal_exit(do_lang_tempcode('_MISSING_RESOURCE', escape_html(strval($poll_id)), 'poll'));
+        attach_message(do_lang_tempcode('_MISSING_RESOURCE', escape_html(strval($poll_id)), 'poll'), 'warn');
+        return null;
     }
 
     $_answers = $GLOBALS['FORUM_DB']->query_select('f_poll_answers', array('*'), array('pa_poll_id' => $poll_id), 'ORDER BY id');

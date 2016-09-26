@@ -152,6 +152,7 @@ class Hook_addon_registry_core_configuration
             'sources/hooks/systems/config/spam_check_usernames.php',
             'sources/hooks/systems/config/spam_stale_threshold.php',
             'sources/hooks/systems/config/stopforumspam_api_key.php',
+            'sources/hooks/systems/config/login_error_secrecy.php',
             'sources/hooks/systems/config/cdn.php',
             'sources/hooks/systems/config/allow_theme_image_selector.php',
             'sources/hooks/systems/config/infinite_scrolling.php',

@@ -110,3 +110,8 @@
 	float: right;
 	margin-top: 0.6em;
 }
+
+.advanced_member_search .search_option, .advanced_member_search .search_button {
+	/* Force a neat float alignment */
+	min-height: 2.7em;
+}

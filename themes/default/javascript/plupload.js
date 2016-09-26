@@ -13129,7 +13129,7 @@ function begin_form_uploading(e,ob,recurse)
 		smooth_scroll(find_pos_y(filename_field,true));
 
 		if (btn_submit.form.offsetHeight > get_window_height()) // If possibly cannot see upload progress bars
-			window.fauxmodal_alert('{!javascript:PLEASE_WAIT_WHILE_UPLOADING;}');
+			window.fauxmodal_alert('{!javascript:PLEASE_WAIT_WHILE_UPLOADING;^}');
 	} else
 	{
 		if (typeof ob.original_click_handler=='undefined')
@@ -13449,7 +13449,7 @@ function replace_file_input(page_type,name,_btn_submit_id,posting_field_name,fil
 
 	var upload_button=document.createElement('input');
 	upload_button.type='button';
-	upload_button.value='{!BROWSE;}';
+	upload_button.value='{!BROWSE;^}';
 	upload_button.className='buttons__upload '+button_type;
 	upload_button.id='uploadButton_'+name;
 	upload_button.onclick=function() { return false; };

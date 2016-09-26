@@ -69,7 +69,7 @@ function copy_fields_into_bottom(i, changed) {
         if (document.getElementById('theme_img_code_' + i).value == form.elements['theme_img_code'].options[s].value) break;
     if (s == form.elements['theme_img_code'].options.length) {
         s = 0;
-        fauxmodal_alert('{!menus:MISSING_THEME_IMAGE_FOR_MENU;}'.replace(/\\{1\\}/, document.getElementById('theme_img_code_' + i).value));
+        fauxmodal_alert('{!menus:MISSING_THEME_IMAGE_FOR_MENU;^}'.replace(/\\{1\\}/, document.getElementById('theme_img_code_' + i).value));
     }
     form.elements['theme_img_code'].selectedIndex = s;
     form.elements['theme_img_code'].onchange = function () {
@@ -376,7 +376,7 @@ function check_menu() {
                 caption = document.getElementById('caption_' + id);
                 url = document.getElementById('url_' + id);
                 if ((caption.value == '') && (url.value != '')) {
-                    window.fauxmodal_alert('{!MISSING_CAPTION_ERROR;}');
+                    window.fauxmodal_alert('{!MISSING_CAPTION_ERROR;^}');
                     return false;
                 }
 
@@ -384,7 +384,7 @@ function check_menu() {
                 branch_type = document.getElementById('branch_type_' + id);
                 if (branch_type.options[branch_type.selectedIndex].value == 'page') {
                     if ((caption.value != '') && (url.value == '')) {
-                        window.fauxmodal_alert('{!MISSING_URL_ERROR;}');
+                        window.fauxmodal_alert('{!MISSING_URL_ERROR;^}');
                         return false;
                     }
                 }

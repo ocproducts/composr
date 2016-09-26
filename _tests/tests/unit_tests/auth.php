@@ -39,7 +39,11 @@ class auth_test_set extends cms_test_case
         $login_array = $GLOBALS['FORUM_DRIVER']->forum_authorise_login($username, null, apply_forum_driver_md5_variant($password, $username), $password);
         $member = $login_array['id'];
         $this->assertTrue($member === null);
-        $this->assertTrue(isset($login_array['error']) && is_object($login_array['error']) && static_evaluate_tempcode($login_array['error']) == do_lang('MEMBER_BAD_PASSWORD'));
+        $this->assertTrue(
+            isset($login_array['error']) &&
+            is_object($login_array['error']) &&
+            (static_evaluate_tempcode($login_array['error']) == do_lang('MEMBER_BAD_PASSWORD') || static_evaluate_tempcode($login_array['error']) == do_lang('MEMBER_INVALID_LOGIN'))
+        );
     }
 
     public function testUnknownUsernameDoesFail()

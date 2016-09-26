@@ -452,7 +452,7 @@ function cms_strftime($format, $timestamp = null)
 function make_locale_filter()
 {
     global $LOCALE_FILTER_CACHE;
-    $LOCALE_FILTER_CACHE = explode(',', do_lang('LOCALE_SUBST'));
+    $LOCALE_FILTER_CACHE = explode(',', trim(do_lang('LOCALE_SUBST')));
     foreach ($LOCALE_FILTER_CACHE as $i => $filter) {
         if ($filter == '') {
             unset($LOCALE_FILTER_CACHE[$i]);

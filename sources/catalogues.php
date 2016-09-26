@@ -483,6 +483,24 @@ function render_catalogue_category_entry_buildup($category_id, $catalogue_name, 
             break;
 
         case C_DT_TABULAR:
+            // Pre-scan to know if view URLs will be used
+            $has_view_screens = false;
+            for ($i = 0; $i < $num_entries; $i++) {
+                if (!array_key_exists($i, $entries)) {
+                    break;
+                }
+                if (!array_key_exists('map', $entries[$i])) {
+                    continue;
+                }
+
+                $entry = $entries[$i];
+
+                if ((get_option('is_on_comments') == '1') && ($entry['allow_comments'] >= 1) || (get_option('is_on_rating') == '1') && ($entry['allow_rating'] == 1) || (get_option('is_on_trackbacks') == '1') && ($entry['allow_trackbacks'] == 1)) {
+                    $has_view_screens = true;
+                }
+            }
+
+            // Main scan
             for ($i = 0; $i < $num_entries; $i++) {
                 if (!array_key_exists($i, $entries)) {
                     break;
@@ -494,7 +512,7 @@ function render_catalogue_category_entry_buildup($category_id, $catalogue_name, 
                 $entry = $entries[$i];
                 if ((($start === null) || ($in_db_sorting) || ($i >= $start) && ($i < $start + $max)) && ((!is_array($filter)) || (is_array($filter)) && (in_array($entry['id'], $filter)))) {
                     $tab_entry_map = $entry['map'] + (array_key_exists($i, $extra_map) ? $extra_map[$i] : array());
-                    if ((get_option('is_on_comments') == '1') && ($entry['allow_comments'] >= 1) || (get_option('is_on_rating') == '1') && ($entry['allow_rating'] == 1) || (get_option('is_on_trackbacks') == '1') && ($entry['allow_trackbacks'] == 1)) {
+                    if ($has_view_screens) {
                         $url_map = array('page' => 'catalogues', 'type' => 'entry', 'id' => $entry['id']);
                         if ($root !== null) {
                             $url_map['keep_catalogue_' . $catalogue_name . '_root'] = $root;
@@ -511,6 +529,7 @@ function render_catalogue_category_entry_buildup($category_id, $catalogue_name, 
                 }
             }
 
+            // Put it together
             if (!$entry_buildup->is_empty()) {
                 $head = new Tempcode();
                 $field_count = 0;

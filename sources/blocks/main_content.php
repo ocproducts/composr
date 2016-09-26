@@ -100,7 +100,7 @@ class Block_main_content
         $object = get_content_object($content_type);
         $info = $object->info();
         if ($info === null) {
-            warn_exit(do_lang_tempcode('IMPOSSIBLE_TYPE_USED'), false, true);
+            return paragraph(do_lang_tempcode('IMPOSSIBLE_TYPE_USED'), '', 'red_alert');
         }
         if ($title === null) {
             if ($content_id === null) {
@@ -299,7 +299,7 @@ class Block_main_content
         }
 
         if ($award_content_row === null) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE', $content_type), false, true);
+            return paragraph(do_lang_tempcode('MISSING_RESOURCE', $content_type), '', 'red_alert');
         }
 
         $submit_url = str_replace('%21', $content_id, $submit_url);

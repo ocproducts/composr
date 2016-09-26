@@ -46,7 +46,7 @@ class TapatalkPush extends TapatalkBasePush
     public function get_push_slug()
     {
         $tapatalk_push_slug = get_value('tapatalk_push_slug', null, true);
-        if (is_null($tapatalk_push_slug)) {
+        if ($tapatalk_push_slug === null) {
             $tapatalk_push_slug = '';
         }
         return $tapatalk_push_slug;
@@ -116,7 +116,7 @@ class TapatalkPush extends TapatalkBasePush
         ini_set('ocproducts.type_strictness', '0');
 
         // Send basic topic/post
-        if (is_null($post_row['p_cache_forum_id'])) {
+        if ($post_row['p_cache_forum_id'] === null) {
             $this->do_push_conversation($post_row);
         } else {
             $is_new_topic = ($post_row['t_cache_first_post_id'] == $post_row['post_id']);
@@ -136,7 +136,7 @@ class TapatalkPush extends TapatalkBasePush
             $quoted_members = array();
             for ($i = 0; $i < $num_matches; $i++) {
                 $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($matches[2][$i]);
-                if (!is_null($member_id)) {
+                if ($member_id !== null) {
                     $quoted_members[] = $member_id;
                 }
             }
@@ -169,7 +169,7 @@ class TapatalkPush extends TapatalkBasePush
         $member_ids = array($post_row['p_poster']);
 
         $data = $this->build_data('like', $post_row, $member_ids);
-        if (!is_null($data)) {
+        if ($data !== null) {
             self::do_push_request($data);
         }
     }
@@ -191,7 +191,7 @@ class TapatalkPush extends TapatalkBasePush
         $member_ids = array_unique($member_ids);
 
         $data = $this->build_data('conv', $post_row, $member_ids, true);
-        if (!is_null($data)) {
+        if ($data !== null) {
             self::do_push_request($data);
         }
     }
@@ -215,7 +215,7 @@ class TapatalkPush extends TapatalkBasePush
             $type = ($is_new_topic ? 'newtopic' : 'sub');
 
             $data = $this->build_data($type, $post_row, array_keys($followers));
-            if (!is_null($data)) {
+            if ($data !== null) {
                 self::do_push_request($data);
             }
 
@@ -238,7 +238,7 @@ class TapatalkPush extends TapatalkBasePush
         $type = 'tag';
 
         $data = $this->build_data($type, $post_row, $mentioned_members);
-        if (!is_null($data)) {
+        if ($data !== null) {
             self::do_push_request($data);
         }
     }
@@ -254,7 +254,7 @@ class TapatalkPush extends TapatalkBasePush
         $type = 'quote';
 
         $data = $this->build_data($type, $post_row, $quoted_members);
-        if (!is_null($data)) {
+        if ($data !== null) {
             self::do_push_request($data);
         }
     }

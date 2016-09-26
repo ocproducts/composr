@@ -431,6 +431,25 @@ It means:
 1) If someone found a vulnerability that allowed them to read the hashed master password out of [tt]_config.php[/tt], they could not use Composr-specific rainbow tables to get the original password and therefore login.
 2) Bruce force login attempts cannot work.
 
+[title="3"]Maintenance scripts[/title]
+
+To provide additional protection beyond the master password you may want to set IP-based restrictions (or temporary access blocks) to the following scripts:
+ - [tt]rootkit_detection.php[/tt]
+ - [tt]upgrader.php[/tt]
+ - [tt]uninstall.php[/tt]
+ - [tt]data/upgrader2.php[/tt]
+ - [tt]config_editor.php[/tt]
+ - [tt]code_editor.php[/tt]
+
+Follows are sample access rules for an Apache [tt].htaccess[/tt] file to provide a temporary access block:
+[code="htaccess"]
+<FilesMatch ^((rootkit_detection|upgrader|uninstall|data/upgrader2|config_editor|code_editor)\.php)$>
+	Order allow,deny
+	Deny from all
+</FilesMatch>
+[/code]
+You should test these rules are working correctly after applying them.
+
 [title="3"]Denial Of Service prevention[/title]
 
 Composr is a sophisticated system and comes with an unavoidable overhead. This increases the opportunity for a malicious individual/group to try and take down a server by flooding it with requests. Composr is designed to prevent against this -- it will ban flooders and hackattack repeaters after a point. However, the normal IP banning that Composr uses works via the database, and hence a significant overhead is taken before the ban can be detected. To workaround this, Composr can write IP bans directly into the Apache [tt].htaccess[/tt] file (obviously, Apache only) -- to do this, the [tt].htaccess[/tt] file must be writable by the web server (typically, 666 permissions, although as explained, a well configured environment won't need that).

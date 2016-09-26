@@ -272,10 +272,13 @@ function phase_2()
             <strong>Upload</strong>: Upload all built files (in <kbd>builds/' . escape_html($version_dotted) . '</kbd>) to compo.sr server (<kbd>uploads/downloads</kbd>)
         </li>
         <li>
-            Tag the release with <kbd>git tag ' . escape_html($version_dotted) . ' ; git push origin ' . escape_html($version_dotted) . '</kbd>
+            Tag the release with <kbd>git commit -a -m "New build"; git push; git tag ' . escape_html($version_dotted) . ' ; git push origin ' . escape_html($version_dotted) . '</kbd>
         </li>
         <li>
             <strong>Add to compo.sr</strong>: Run the <form target="_blank" onclick="window.setTimeout(undo_staff_unload_action,1000);" style="display: inline" action="' . escape_html($push_url) . '" method="post">' . static_evaluate_tempcode(symbol_tempcode('INSERT_SPAMMER_BLACKHOLE')) . '<input type="hidden" name="changes" value="' . escape_html($changes) . '" /><input class="hyperlink_button" type="submit" value="compo.sr setup script" /></form>. Note if you are re-releasing, this will still work &ndash; it will update existing entries appropriately.
+        </li>
+        <li>
+            <strong>Test</strong>: Go to <a target="_blank" href="http://compo.sr/download.htm">Composr download page</a> to ensure the right packages are there and no error messages display.
         </li>
     ';
 
@@ -349,7 +352,7 @@ function phase_2()
 
             <li>API docs (<em>Optional</em>): Recompile the API docs&hellip;<ul>
                 <li><a href="http://graphviz.org/Download..php">Install Graphviz</a></li>
-                <li>Make sure you have a very high PHP memory limit in php.ini; 1024M is good</li>
+                <li>Make sure you have a very high PHP memory limit in <kbd>php.ini</kbd>; 1024M is good</li>
                 <li>Install PEAR if you don\'t have it already, with something like: <kbd>curl http://pear.php.net/go-pear.phar &gt; go-pear.php ; sudo php -q go-pear.php</kbd></li>
                 <li>Install phpdocumentor if you don\'t have it already, with something like: <kbd>sudo pear channel-discover pear.phpdoc.org ; sudo pear install phpdoc/phpDocumentor</kbd></li>
                 <li>In your phpdocumentor\'s <kbd>data/templates</kbd> directory, create a symbolic link to your Composr <kbd>docs/composr-api-template</kbd> directory (e.g. <kbd>sudo ln -s `pwd`/docs/composr-api-template /usr/share/pear/phpDocumentor/data/templates</kbd>)</li>

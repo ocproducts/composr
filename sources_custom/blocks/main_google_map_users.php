@@ -32,8 +32,7 @@ class Block_main_google_map_users
         $info['hack_version'] = null;
         $info['version'] = 2;
         $info['locked'] = false;
-        $info['parameters'] = array('title', 'region', 'cluster', 'filter_usergroup', 'filter_term', 'geolocate_user', 'username_prefix', 'latitude', 'longitude', 'width', 'height',/*'api_key',no longer used*/
-                                    'zoom', 'center');
+        $info['parameters'] = array('title', 'region', 'cluster', 'filter_usergroup', 'filter_term', 'geolocate_user', 'username_prefix', 'latitude', 'longitude', 'width', 'height',/*'api_key',no longer used*/'zoom', 'center');
         return $info;
     }
 

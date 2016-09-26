@@ -1170,7 +1170,11 @@ class Module_topics
         $reason = post_param_string('reason');
 
         foreach ($topics as $topic_id) {
-            $own_topic = ($GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_cache_first_member_id', array('id' => $topic_id)) == get_member());
+            $own_topic = ($GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 't_cache_first_member_id', array('id' => $topic_id)) == get_member());
+            if ($own_topic === null) {
+                continue;
+            }
+
             if ($own_topic) {
                 cns_delete_topic($topic_id, $reason, null);
             } else {

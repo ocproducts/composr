@@ -34,10 +34,10 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 
 .global_messages {
 	margin: 0;
-	{+START,IF,{$MOBILE}}
+	/*{+START,IF,{$MOBILE}}*/
 		padding-left: 2px;
 		padding-right: 2px;
-	{+END}
+	/*{+END}*/
 }
 
 .global_messages .box___message {

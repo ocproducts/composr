@@ -24,7 +24,7 @@ class css_and_js_test_set extends cms_test_case
             @set_time_limit(0);
         }
 
-        $_GET['keep_no_minify'] = '1';
+        $_GET['keep_minify'] = '0';
 
         require_code('webstandards');
         require_code('webstandards2');

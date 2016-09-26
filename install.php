@@ -1767,14 +1767,10 @@ if (appengine_is_live()) {
     }
 
     if (GOOGLE_APPENGINE) {
-        // Copy in default php.ini file
-        @unlink(get_file_base() . '/php.ini');
-        copy(get_file_base() . '/data/modules/google_appengine/php.gae.ini', get_file_base() . '/php.ini');
-
-        // Customise php.ini file
-        $php_ini = file_get_contents(get_file_base() . '/php.ini');
+        // Customise .user.ini file
+        $php_ini = file_get_contents(get_file_base() . '/.user.ini');
         $php_ini = str_replace('<application>', post_param_string('gae_application'), $php_ini);
-        file_put_contents(get_file_base() . '/php.ini', $php_ini);
+        file_put_contents(get_file_base() . '/.user.ini', $php_ini);
 
         // Copy in default YAML files
         $dh = opendir(get_file_base() . '/data/modules/google_appengine');
@@ -2615,7 +2611,7 @@ function make_option($nice_name, $description, $name, $value, $hidden = false, $
         $value = '';
     }
 
-    $_required = $required;
+    $_required = ($required ? '_required' : '');
 
     if ($hidden) {
         $input1 = do_template('INSTALLER_INPUT_PASSWORD', array('_GUID' => '373b85cea71837a30d146df387dc2a42', 'REQUIRED' => $_required, 'NAME' => $name, 'VALUE' => $value));
@@ -2825,60 +2821,12 @@ SecFilterScanPOST Off
 </IfModule>
 END;
 
-    $php_value_ok = (substr(cms_srv('SERVER_SOFTWARE'), 0, 10) != 'LightSpeed');
-
-    if ($php_value_ok) {
-        $clauses[] = <<<END
-# Composr needs uploads; many hosts leave these low
-php_value post_max_size "500M"
-php_value upload_max_filesize "500M"
+    $base = str_replace('\\', '/', dirname(cms_srv('SCRIPT_NAME')));
+    $clauses[] = <<<END
+<FilesMatch !"\.(jpg|jpeg|gif|png|ico)$">
+ErrorDocument 404 {$base}/index.php?page=404
+</FilesMatch>
 END;
-    }
-
-    if ($php_value_ok) {
-        $clauses[] = <<<END
-# Turn insecure things off
-php_flag allow_url_fopen off
-END;
-    }
-
-    if ($php_value_ok) {
-        $clauses[] = <<<END
-php_value max_input_vars "2000"
-php_value mbstring.func_overload "0"
-
-# Suhosin can cause problems on configuration and Catalogue forms, which use a lot of fields
-php_value suhosin.post.max_vars "2000"
-php_value suhosin.request.max_vars "2000"
-php_value suhosin.cookie.max_vars "400"
-php_value suhosin.cookie.max_name_length "150"
-php_value suhosin.post.max_value_length "100000000"
-php_value suhosin.request.max_value_length "100000000"
-php_value suhosin.post.max_totalname_length "10000"
-php_value suhosin.request.max_totalname_length "10000"
-php_flag suhosin.cookie.encrypt off
-php_flag suhosin.sql.union off
-php_flag suhosin.sql.comment off
-php_flag suhosin.sql.multiselect off
-php_flag suhosin.upload.remove_binary off
-# Some free hosts prepend/append junk, which is not legitimate (breaks binary and AJAX scripts, potentially more)
-php_value auto_prepend_file none
-php_value auto_append_file none
-END;
-    }
-
-    if ($php_value_ok) {
-        $clauses[] = <<<END
-# Put some limits up. Composr is stable enough not to cause problems- it'll only use higher limits when it really needs them
-php_value memory_limit "128M"
-END;
-    }
-
-    if ($php_value_ok) {
-        $clauses[] = <<<END
-php_value max_input_time "60"
-END;
-    }
 
     $clauses[] = <<<END
 # Compress some static resources
@@ -2963,16 +2911,9 @@ END;
 
     $clauses[] = <<<END
 order allow,deny
+allow from all
 # IP bans go here (leave this comment here! If this file is writeable, Composr will write in IP bans below, in sync with its own DB-based banning - this makes DOS/hack attack prevention stronger)
 # deny from xxx.xx.x.x (leave this comment here!)
-allow from all
-END;
-
-    $base = str_replace('\\', '/', dirname(cms_srv('SCRIPT_NAME')));
-    $clauses[] = <<<END
-<FilesMatch !"\.(jpg|jpeg|gif|png|ico)$">
-ErrorDocument 404 {$base}/index.php?page=404
-</FilesMatch>
 END;
 
     if ((cms_is_writable(get_file_base() . '/exports/addons')) && ((!file_exists(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess')) || (trim(file_get_contents(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess')) == ''))) {

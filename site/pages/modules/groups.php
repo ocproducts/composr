@@ -94,7 +94,8 @@ class Module_groups
                 warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
             }
 
-            $map = has_privilege(get_member(), 'see_hidden_groups') ? array('id' => $id) : array('id' => $id, 'g_hidden' => 0);
+            $members_groups = $GLOBALS['CNS_DRIVER']->get_members_groups(get_member());
+            $map = ((has_privilege(get_member(), 'see_hidden_groups')) || (in_array($id, $members_groups))) ? array('id' => $id) : array('id' => $id, 'g_hidden' => 0);
             $groups = $GLOBALS['FORUM_DB']->query_select('f_groups', array('*'), $map, '', 1);
             if (!array_key_exists(0, $groups)) {
                 warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'group'));
@@ -214,9 +215,11 @@ class Module_groups
     {
         $staff_groups = array_merge($GLOBALS['FORUM_DRIVER']->get_super_admin_groups(), $GLOBALS['FORUM_DRIVER']->get_moderator_groups());
 
+        $members_groups = $GLOBALS['CNS_DRIVER']->get_members_groups(get_member());
+
         $sql = 'SELECT g.* FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_groups g WHERE ';
         if (!has_privilege(get_member(), 'see_hidden_groups')) {
-            $sql .= 'g_hidden=0 AND ';
+            $sql .= '(g_hidden=0 OR g.id IN (' . implode(',', array_map('strval', $members_groups)) . ')) AND ';
         }
         $sql .= '(g_promotion_target IS NOT NULL OR EXISTS(SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_groups h WHERE h.g_promotion_target=g.id)';
         foreach ($staff_groups as $g_id) {
@@ -394,7 +397,7 @@ class Module_groups
         $max = get_param_integer('others_max', intval(get_option('normal_groups_per_page')));
         $sql = 'SELECT g.* FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_groups g WHERE ';
         if (!has_privilege(get_member(), 'see_hidden_groups')) {
-            $sql .= 'g_hidden=0 AND ';
+            $sql .= '(g_hidden=0 OR g.id IN (' . implode(',', array_map('strval', $members_groups)) . ')) AND ';
         }
         $sql .= '(g_promotion_target IS NULL AND NOT EXISTS(SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_groups h WHERE h.g_promotion_target=g.id)';
         foreach ($staff_groups as $g_id) {

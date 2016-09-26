@@ -152,7 +152,7 @@ class Module_news
             add_privilege('SEARCH', 'autocomplete_title_news', false);
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 7)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 7)) {
             $GLOBALS['SITE_DB']->alter_table_field('news_categories', 'nc_img', 'URLPATH');
         }
     }

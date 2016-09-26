@@ -51,6 +51,7 @@
 
 		<form title="{!PRIMARY_PAGE_FORM}" action="{$URL_FOR_GET_FORM*,{URL}}" target="_self" method="get" class="main_search_form" autocomplete="off">
 			{$HIDDENS_FOR_GET_FORM,{URL}}
+			<input type="hidden" name="all_defaults" value="0" />
 
 			<div class="wide_table_wrap"><table class="map_table form_table wide_table">
 				{+START,IF,{$NOT,{$MOBILE}}}
@@ -166,7 +167,7 @@
 						</tr>
 					{+END}
 					<tr>
-						<th class="form_table_field_name">{!SORT_BY}</th>
+						<th class="form_table_field_name">{!SORT}</th>
 						<td class="form_table_field_input" colspan="2">
 							<div class="accessibility_hidden"><label for="search_direction">{!DIRECTION}</label></div>
 							<div class="accessibility_hidden"><label for="search_sort">{!SORT_BY}</label></div>

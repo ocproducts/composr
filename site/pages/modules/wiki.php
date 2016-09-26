@@ -580,7 +580,7 @@ class Module_wiki
             attach_message(do_lang_tempcode('TOO_MANY_WIKI_POSTS'), 'warn');
         }
 
-        $buttons = $this->_render_buttons($chain, $id, $include_expansion, $num_posts < intval(get_option('general_safety_listing_limit')));
+        $buttons = $this->_render_screen_buttons($chain, $id, $include_expansion, $num_posts < intval(get_option('general_safety_listing_limit')));
 
         return do_template('WIKI_PAGE_SCREEN', array(
             '_GUID' => '1840d6934be3344c4f93a159fc737a45',
@@ -600,7 +600,7 @@ class Module_wiki
     }
 
     /**
-     * Show the buttons on the Wiki+ page viewing page.
+     * Show the buttons on the Wiki+ page viewing screen.
      *
      * @param  SHORT_TEXT $chain The ID chain being used to get to this page
      * @param  AUTO_LINK $id The ID of the page we are showing the menu on
@@ -608,11 +608,9 @@ class Module_wiki
      * @param  boolean $may_post Whether posting is generally allowed (may be passed false if too many posts)
      * @return Tempcode The button Tempcode
      */
-    public function _render_buttons($chain, $id, $include_expansion, $may_post = true)
+    public function _render_screen_buttons($chain, $id, $include_expansion, $may_post = true)
     {
         $page_url = build_url(array('page' => '_SELF', 'type' => 'browse', 'id' => $chain), '_SELF');
-        $pos = strpos($chain, '/');
-        $id = intval(substr($chain, ($pos === false) ? 0 : ($pos + 1)));
 
         /*if ((addon_installed('search')) && (has_actual_page_access(get_member(),'search'))) { // Not enough space
             $search_url = build_url(array('page' => 'search', 'type' => 'browse', 'id' => 'wiki_posts', 'search_under' => $id), get_module_zone('search'));

@@ -132,7 +132,7 @@ CREATE DATABASE <application>;
 
 Finish off installation as instructed. The remaining steps are very straight-forward, and the same as any normal Composr installation. You'll be asked to delete [tt]install.php[/tt] when you're done. This is necessary.
 
-The installer will have copied a custom [tt]php.ini[/tt] and various [tt]*.yaml[/tt] files into your project directory. The [tt]app.yaml[/tt] file will have been customised. A [tt]_config.php[/tt] file will have been built that contains configuration for both the development and live sites.
+The installer will have copied a [tt].user.ini[/tt] and various [tt]*.yaml[/tt] files into your project directory. The [tt]app.yaml[/tt] file will have been customised. A [tt]_config.php[/tt] file will have been built that contains configuration for both the development and live sites.
 
 Your MySQL database will have been populated, and your local storage directory ([tt]data_custom/modules/google_appengine[/tt]) will be starting to fill up with cache files and custom data.
 
@@ -260,7 +260,7 @@ Developers may be interested in GAE's [url="Push-to-deploy"]https://developers.g
 
 Note that the CRON bridge scheduler will have been automatically set up.
 
-An appropriate PHP configuration has also been provided for you (no [tt].htaccess[/tt] file setup needed).
+An appropriate PHP configuration has also been provided for you.
 
 [title="2"]Late structural changes[/title]
 

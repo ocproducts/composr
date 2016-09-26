@@ -96,9 +96,19 @@ class Hook_profiles_tabs_edit
                 if ($ob->is_active($member_id_of, $member_id_viewing)) {
                     $tab = $ob->render_tab($member_id_of, $member_id_viewing, $only_tab !== $hook && $leave_to_ajax_if_possible);
 
+                    if ($tab === null) {
+                        continue;
+                    }
+
                     if ($only_tab === $hook) {
                         $title = $tab[0];
                     }
+
+                    if (!array_key_exists(7, $tab)) {
+                        $tab[7] = false;
+                    }
+
+                    $tab[8] = $hook;
 
                     $tabs[] = $tab;
                 }
@@ -143,7 +153,7 @@ class Hook_profiles_tabs_edit
                 }
             }
 
-            $single_field = (array_key_exists(7, $tab) ? $tab[7] : false);
+            $single_field = $tab[7];
 
             if (isset($tab[5])) {
                 $hidden->attach($tab[5]);
@@ -151,6 +161,7 @@ class Hook_profiles_tabs_edit
 
             $_tabs[] = array(
                 'TAB_TITLE' => $tab[0],
+                'TAB_CODE' => $tab[8],
                 'TAB_FIELDS' => $tab[1],
                 'TAB_ICON' => $tab[6],
                 'TAB_TEXT' => $tab[2],

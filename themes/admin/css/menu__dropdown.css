@@ -18,12 +18,7 @@ For example:
 	border-{!en_left}: 1px solid #cacaca;
 	margin-bottom: 0;
 	transition: color, background-color 0.5s linear;
-	{+START,IF,{$EQ,{$LANG},EN}}
-		font-size: 0.9em;
-	{+END}
-	{+START,IF,{$NEQ,{$LANG},EN}}
-		font-size: 0.72em;
-	{+END}
+	font-size: 0.9em;
 	padding: 0.5em 0.25em;
 	box-sizing: border-box;
 	width: {$DIV_FLOAT*,100,9}%;

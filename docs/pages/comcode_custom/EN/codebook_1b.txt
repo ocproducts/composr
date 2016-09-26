@@ -594,7 +594,7 @@ If Composr is running out of a git repository, or with our own custom version of
  - Relative URLs will intentionally not work, due to an intentionally broken HTML [tt]base[/tt] tag. This forces you to use absolute URLs as per coding standards. One exception is URLs like [tt]#example[/tt], which are broken by the [tt]base[/tt] tag, but then fixed at run time using JavaScript -- you are allowed to use those.
  - To save time you can define language strings inline in PHP code, and then Composr will automatically find the closest matching loaded language file to the name of the page you are running, and then move your inline definition into that file while removing it from your PHP file. For example, you can write: [tt]do_lang('EXAMPLE=This is an example');[/tt] and as soon as it runs for the first time the definition will be shifted into a proper language file. Note that if the call does not get executed, nothing is done -- but that's a good way to see if you're not testing your code fully.
 
-You can turn off most of development mode by putting "[tt]&keep_no_dev_mode=1[/tt]" into the URL, but this is not promoted as development mode was intentionally written to help us do on-the-fly testing of things that might otherwise go unnoticed.
+You can turn off most of development mode by putting "[tt]&keep_dev_mode=0[/tt]" into the URL, but this is not promoted as development mode was intentionally written to help us do on-the-fly testing of things that might otherwise go unnoticed.
 
 [title="3"]Custom version of PHP[/title]
 

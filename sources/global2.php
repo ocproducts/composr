@@ -44,7 +44,11 @@ function init__global2()
     if ((GOOGLE_APPENGINE) && (!appengine_is_live())) {
         @mkdir(get_custom_file_base() . '/data_custom', 0755);
     }
-    safe_ini_set('error_log', get_custom_file_base() . '/data_custom/errorlog.php');
+    $error_log_path = get_custom_file_base() . '/data_custom/errorlog.php';
+    safe_ini_set('error_log', $error_log_path);
+    if (is_file($error_log_path) && filesize($error_log_path) < 17) {
+        file_put_contents($error_log_path, "<" . "?php return; ?" . ">\n");
+    }
 
     global $BOOTSTRAPPING, $CHECKING_SAFEMODE, $RELATIVE_PATH, $RUNNING_SCRIPT_CACHE, $SERVER_TIMEZONE_CACHE, $HAS_SET_ERROR_HANDLER, $DYING_BADLY, $XSS_DETECT, $SITE_INFO, $IN_MINIKERNEL_VERSION, $EXITING, $FILE_BASE, $CACHE_TEMPLATES, $WORDS_TO_FILTER_CACHE, $FIELD_RESTRICTIONS, $VALID_ENCODING, $CONVERTED_ENCODING, $MICRO_BOOTUP, $MICRO_AJAX_BOOTUP, $QUERY_LOG, $CURRENT_SHARE_USER, $WHAT_IS_RUNNING_CACHE, $DEV_MODE, $SEMI_DEV_MODE, $IS_VIRTUALISED_REQUEST, $FILE_ARRAY, $DIR_ARRAY, $JAVASCRIPTS_DEFAULT, $JAVASCRIPTS, $KNOWN_AJAX, $KNOWN_UTF8, $CSRF_TOKENS, $STATIC_CACHE_ENABLED, $IN_SELF_ROUTING_SCRIPT;
 
@@ -204,7 +208,7 @@ function init__global2()
      *
      * @global boolean $DEV_MODE
      */
-    $DEV_MODE = (((!array_key_exists('dev_mode', $SITE_INFO) || ($SITE_INFO['dev_mode'] == '1')) && (is_dir(get_file_base() . '/.git') || (function_exists('ocp_mark_as_escaped')))) && ((!array_key_exists('keep_no_dev_mode', $_GET) || ($_GET['keep_no_dev_mode'] == '0'))));
+    $DEV_MODE = (((!array_key_exists('dev_mode', $SITE_INFO) || ($SITE_INFO['dev_mode'] == '1')) && (is_dir(get_file_base() . '/.git') || (function_exists('ocp_mark_as_escaped')))) && ((!array_key_exists('keep_dev_mode', $_GET) || ($_GET['keep_dev_mode'] == '1'))));
     /** Whether Composr is running in a more limited development mode, which may make things a bit slower and more verbose, but won't run such severe standard enforcement tricks
      *
      * @global boolean $SEMI_DEV_MODE
@@ -365,10 +369,7 @@ function init__global2()
 
     // Register Internationalisation settings
     @header('Content-type: text/html; charset=' . get_charset());
-    $locales = explode(',', do_lang('locale'));
-    setlocale(LC_ALL, $locales[0]);
-    @setlocale(LC_ALL, $locales);
-    unset($locales);
+    setlocale(LC_ALL, explode(',', do_lang('locale')));
 
     // Check RBLs
     $spam_check_level = get_option('spam_check_level');
@@ -457,7 +458,7 @@ function init__global2()
     safe_ini_set('memory_limit', $default_memory_limit);
     memory_limit_for_max_param('max');
     if ((isset($GLOBALS['FORUM_DRIVER'])) && ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()))) {
-        if (get_param_integer('keep_avoid_memory_limit', 0) == 1) {
+        if (get_param_integer('keep_memory_limit', null) === 0) {
             disable_php_memory_limit();
         } else {
             $memory_test = get_param_integer('keep_memory_limit_test', 0);

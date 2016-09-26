@@ -18,7 +18,7 @@ The "URL scheme" option contains a number of different possibilities, including.
  - "Use /pg/ to identify CMS pages" produces URLs like [tt]http://yourbaseurl/ZONEA/pg/start[/tt].
  - "Use .htm to identify CMS pages" produces URLs like [tt]http://yourbaseurl/ZONEA/start.htm[/tt].
 
-If you have renamed [tt]recommended.htaccess[/tt] or [tt]plain.htaccess[/tt] to [tt].htaccess[/tt] you can turn the first of these options on straight away.
+If you have renamed [tt]recommended.htaccess[/tt] to [tt].htaccess[/tt] you can turn the first of these options on straight away.
 
 [title="2"]Use .htm to identify CMS pages[/title]
 

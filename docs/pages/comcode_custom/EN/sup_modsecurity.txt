@@ -1,6 +1,6 @@
 [title sub="Written by temp1024 and Chris Graham (ocProducts)"]Composr Supplementary: Advanced site structure and flow[/title]
 
-ModSecurity is an "application firewall" which is often installed by Linux-based webhosts.
+ModSecurity is an "application firewall" which is often installed by Linux-based Apache webhosts.
 
 It's a mixed blessing. By its very nature, it provides limitations on what web systems can do. So in some sense, it breaks standards-based behaviour of web servers. It does this though to raise security, by blocking what it perceives to be malicious server requests, and that's a good thing.
 

@@ -32,12 +32,12 @@ class template_previews_test_set extends cms_test_case
 
         $_GET['keep_has_js'] = '0';
         push_query_limiting(false);
-        $_GET['keep_no_query_limit'] = '1';
+        $_GET['keep_query_limit'] = '0';
         safe_ini_set('memory_limit', '-1');
         $_GET['wide'] = '1';
         $_GET['keep_devtest'] = '1';
         $_GET['keep_has_js'] = '0';
-        $_GET['keep_no_minify'] = '1'; // Disables resource merging, which messes with results
+        $_GET['keep_minify'] = '0'; // Disables resource merging, which messes with results
         $_GET['keep_fatalistic'] = '1';
         $GLOBALS['OUTPUT_STREAMING'] = false;
 

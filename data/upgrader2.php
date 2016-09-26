@@ -213,17 +213,7 @@ END;
  */
 function upgrader2_check_master_password($password_given_hashed)
 {
-    if (isset($GLOBALS['SITE_INFO']['admin_password'])) { // LEGACY
-        $GLOBALS['SITE_INFO']['master_password'] = $GLOBALS['SITE_INFO']['admin_password'];
-        unset($GLOBALS['SITE_INFO']['admin_password']);
-    }
-
-    global $SITE_INFO;
-    $actual_password_hashed = $SITE_INFO['master_password'];
-
-    if (hash_equals(md5($actual_password_hashed), $password_given_hashed)) {
-        return true; // LEGACY: Upgrade from v7 where hashed input password given even if plain-text password is in use
-    }
-
-    return (hash_equals($actual_password_hashed, $password_given_hashed));
+    global $FILE_BASE;
+    require_once($FILE_BASE . '/sources/crypt_master.php');
+    return check_master_password_from_hash($password_given_hashed);
 }

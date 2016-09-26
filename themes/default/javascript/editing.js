@@ -30,7 +30,7 @@ function toggle_wysiwyg(name) {
             _toggle_wysiwyg(name);
         } else {
             generate_question_ui(
-                '{!comcode:WHETHER_SAVE_WYSIWYG_SELECTION;}',
+                '{!comcode:WHETHER_SAVE_WYSIWYG_SELECTION;^}',
                 {
                     buttons__cancel: '{!INPUTSYSTEM_CANCEL;^}',
                     buttons__clear: '{!javascript:WYSIWYG_DISABLE_ONCE;^}',
@@ -451,12 +451,12 @@ function wysiwyg_editor_init_for(element, id) {
         }
     });
     if (document.getElementById('attachment_store'))
-        window.lang_PREFER_CMS_ATTACHMENTS = '{!javascript:PREFER_CMS_ATTACHMENTS;}';
-    window.lang_SPELLCHECKER_ENABLED = '{!javascript:SPELLCHECKER_ENABLED;}';
-    window.lang_SPELLCHECKER_DISABLED = '{!javascript:SPELLCHECKER_DISABLED;}';
-    window.lang_SPELLCHECKER_TOGGLE = '{!javascript:SPELLCHECKER_TOGGLE;}';
-    window.lang_SPELLCHECKER_LABEL = '{!javascript:SPELLCHECKER_LABEL;}';
-    window.lang_NO_IMAGE_PASTE_SAFARI = '{!javascript:NO_IMAGE_PASTE_SAFARI;}';
+        window.lang_PREFER_CMS_ATTACHMENTS = '{!javascript:PREFER_CMS_ATTACHMENTS;^}';
+    window.lang_SPELLCHECKER_ENABLED = '{!javascript:SPELLCHECKER_ENABLED;^}';
+    window.lang_SPELLCHECKER_DISABLED = '{!javascript:SPELLCHECKER_DISABLED;^}';
+    window.lang_SPELLCHECKER_TOGGLE = '{!javascript:SPELLCHECKER_TOGGLE;^}';
+    window.lang_SPELLCHECKER_LABEL = '{!javascript:SPELLCHECKER_LABEL;^}';
+    window.lang_NO_IMAGE_PASTE_SAFARI = '{!javascript:NO_IMAGE_PASTE_SAFARI;^}';
 
     // Mainly used by autosaving
     editor.on('key', function (event) {
@@ -596,12 +596,12 @@ function find_tags_in_editor(editor, element) {
                             self_ob.tag_text = tag_text;
                             self_ob.is_over = true;
 
-                            var url = maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&box_title={!PREVIEW;&}' + keep_stub());
+                            var url = maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&box_title={!PREVIEW&;^}' + keep_stub());
                             if (window.location.href.indexOf('topics') != -1) url += '&forum_db=1';
                             var request = do_ajax_request(url, function (ajax_result_frame, ajax_result) {
                                 if (ajax_result) {
                                     var tmp_rendered = merge_text_nodes(ajax_result.childNodes);
-                                    if (tmp_rendered.indexOf('{!CCP_ERROR_STUB;}') == -1)
+                                    if (tmp_rendered.indexOf('{!CCP_ERROR_STUB;^}') == -1)
                                         self_ob.rendered_tooltip = tmp_rendered;
                                 }
                                 if (typeof self_ob.rendered_tooltip != 'undefined') {
@@ -848,7 +848,7 @@ function insert_textbox_wrapping(element, before_wrap_tag, after_wrap_tag) {
         editor.focus(); // Needed on some browsers, but on Opera will defocus our selection
         var selected_html = get_selected_html(editor);
 
-        if (selected_html == '') selected_html = '{!comcode:TEXT_OR_COMCODE_GOES_HERE;}'.toUpperCase();
+        if (selected_html == '') selected_html = '{!comcode:TEXT_OR_COMCODE_GOES_HERE;^}'.toUpperCase();
 
         var new_html = '';
 
@@ -975,7 +975,7 @@ function show_upload_syndication_options(name, syndication_json, no_quota) {
             };
         }(id, authorised), 0);
 
-        html += '<span><label for="' + id + '"><input type="checkbox" ' + (checked ? 'checked="checked" ' : '') + 'id="' + id + '" name="' + id + '" value="1" />{!upload_syndication:UPLOAD_TO} ' + escape_html(label) + (((no_quota) && (num == 1)) ? ' ({!_REQUIRED;})' : '') + '</label></span>';
+        html += '<span><label for="' + id + '"><input type="checkbox" ' + (checked ? 'checked="checked" ' : '') + 'id="' + id + '" name="' + id + '" value="1" />{!upload_syndication:UPLOAD_TO;^} ' + escape_html(label) + (((no_quota) && (num == 1)) ? ' ({!_REQUIRED;^})' : '') + '</label></span>';
     }
 
     if ((no_quota) && (num_checked == 0)) {
@@ -983,7 +983,7 @@ function show_upload_syndication_options(name, syndication_json, no_quota) {
     }
 
     if ((html != '') && (!no_quota)) {
-        html += '<span><label for="force_remove_locally"><input type="checkbox" id="force_remove_locally" name="force_remove_locally" value="1" />{!upload_syndication:FORCE_REMOVE_LOCALLY}</label></span>';
+        html += '<span><label for="force_remove_locally"><input type="checkbox" id="force_remove_locally" name="force_remove_locally" value="1" />{!upload_syndication:FORCE_REMOVE_LOCALLY;^}</label></span>';
     }
 
     html = '<div>' + html + '</div>';

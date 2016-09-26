@@ -70,7 +70,7 @@
             for (var i = 0; i < friends.length; i++) {
                 friend = friends[i];
 
-                if (friend.onlineText !== '{!ACTIVE}') {
+                if (friend.onlineText !== '{!ACTIVE;^}') {
                     document.getElementById('friend_img_' + friend.memberId).className = 'friend_inactive';
                 }
             }
@@ -1177,7 +1177,7 @@ function detected_conversation(room_id, room_name, participants) // Assumes conv
         var im_popup_window_options = 'width=370,height=460,menubar=no,toolbar=no,location=no,resizable=no,scrollbars=yes,top=' + ((screen.height - 520) / 2) + ',left=' + ((screen.width - 440) / 2);
         var new_window = window.open(Composr.url('{$BASE_URL;,0}') + '/data/empty.html?instant_messaging', 'room_' + room_id, im_popup_window_options); // The "?instant_messaging" is just to make the location bar less surprising to the user ;-) [modern browsers always show the location bar for security, even if we try and disable it]
         if ((!new_window) || (typeof new_window.window == 'undefined' /*BetterPopupBlocker for Chrome returns a fake new window but won't have this defined in it*/)) {
-            fauxmodal_alert('{!chat:_FAILED_TO_OPEN_POPUP;,{$PAGE_LINK*,_SEARCH:popup_blockers:failure=1,0,1}}', null, '{!chat:FAILED_TO_OPEN_POPUP;}', true);
+            fauxmodal_alert('{!chat:_FAILED_TO_OPEN_POPUP;,{$PAGE_LINK*,_SEARCH:popup_blockers:failure=1,0,1}}', null, '{!chat:FAILED_TO_OPEN_POPUP;^}', true);
         }
         window.setTimeout(function () // Needed for Safari to set the right domain, and also to give window an opportunity to attach itself on its own accord
         {
@@ -1203,7 +1203,7 @@ function detected_conversation(room_id, room_name, participants) // Assumes conv
                     new_window.participants = participants;
 
                     new_window.onbeforeunload = function () {
-                        return '{!CLOSE_VIA_END_CHAT_BUTTON;}';
+                        return '{!CLOSE_VIA_END_CHAT_BUTTON;^}';
                         //new_window.close_chat_conversation(room_id);
                     };
 

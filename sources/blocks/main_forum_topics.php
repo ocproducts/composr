@@ -49,7 +49,7 @@ class Block_main_forum_topics
     public function caching_environment()
     {
         $info = array();
-        $info['cache_on'] = 'array(array_key_exists(\'check\',$map)?$map[\'check\']:\'0\',array_key_exists(\'title\',$map)?$map[\'title\']:\'\',array_key_exists(\'hot\',$map)?$map[\'hot\']:\'0\',array_key_exists(\'param\',$map)?$map[\'param\']:\'General chat\',array_key_exists(\'limit\',$map)?$map[\'limit\']:6,array_key_exists(\'date_key\',$map)?$map[\'date_key\']:\'lasttime\',array_key_exists(\'username_key\',$map)?$map[\'username_key\']:\'firstusername\')';
+        $info['cache_on'] = 'array(array_key_exists(\'check\',$map)?$map[\'check\']:\'0\',array_key_exists(\'title\',$map)?$map[\'title\']:\'\',array_key_exists(\'hot\',$map)?$map[\'hot\']:\'0\',array_key_exists(\'param\',$map)?$map[\'param\']:do_lang(\'DEFAULT_FORUM_TITLE\'),array_key_exists(\'limit\',$map)?$map[\'limit\']:6,array_key_exists(\'date_key\',$map)?$map[\'date_key\']:\'lasttime\',array_key_exists(\'username_key\',$map)?$map[\'username_key\']:\'firstusername\')';
         $info['ttl'] = (get_value('no_block_timeout') === '1') ? 60 * 60 * 24 * 365 * 5/*5 year timeout*/ : 10;
         return $info;
     }
@@ -71,7 +71,7 @@ class Block_main_forum_topics
         $block_id = get_block_id($map);
 
         // Read in variables
-        $forum_name = array_key_exists('param', $map) ? $map['param'] : 'General chat';
+        $forum_name = array_key_exists('param', $map) ? $map['param'] : do_lang('DEFAULT_FORUM_TITLE');
         $limit = array_key_exists('limit', $map) ? intval($map['limit']) : 6;
         $hot = array_key_exists('hot', $map) ? intval($map['hot']) : 0;
         $date_key = array_key_exists('date_key', $map) ? $map['date_key'] : 'lasttime';
@@ -118,7 +118,7 @@ class Block_main_forum_topics
         }
 
         // Block title
-        $forum_name = array_key_exists('param', $map) ? $map['param'] : 'General chat';
+        $forum_name = array_key_exists('param', $map) ? $map['param'] : do_lang('DEFAULT_FORUM_TITLE');
         if ((is_numeric($forum_name)) && (get_forum_type() == 'cns')) {
             $forum_name = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forums', 'f_name', array('id' => intval($forum_name)));
             if ($forum_name === null) {
@@ -210,7 +210,7 @@ class Block_main_forum_topics
                     '_GUID' => 'c76ab018a0746c2875c6cf69c92a01fb',
                     'BLOCK_ID' => $block_id,
                     'HIGH' => false,
-                    'FORUM_NAME' => array_key_exists('param', $map) ? $map['param'] : 'General chat',
+                    'FORUM_NAME' => array_key_exists('param', $map) ? $map['param'] : do_lang('DEFAULT_FORUM_TITLE'),
                     'TITLE' => $_title,
                     'MESSAGE' => do_lang_tempcode(($hot == 1) ? 'NO_TOPICS_HOT' : 'NO_TOPICS'),
                     'ADD_NAME' => $add_name,
@@ -223,7 +223,7 @@ class Block_main_forum_topics
                 'BLOCK_ID' => $block_id,
                 'TITLE' => $_title,
                 'TOPICS' => $_topics,
-                'FORUM_NAME' => array_key_exists('param', $map) ? $map['param'] : 'General chat',
+                'FORUM_NAME' => array_key_exists('param', $map) ? $map['param'] : do_lang('DEFAULT_FORUM_TITLE'),
                 'SUBMIT_URL' => $submit_url,
             ));
         } else {

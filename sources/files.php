@@ -257,8 +257,8 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
         '403.shtml' => '',
         'cron.yaml' => '',
         'dos.yaml' => '',
-        'server_certificates.pem' => 'data_custom/modules/composr_mobile_sdk/ios',
         'queue.yaml' => '',
+        'server_certificates.pem' => 'data_custom/modules/composr_mobile_sdk/ios',
         '.htaccess' => '',
 
         // Installer files
@@ -358,6 +358,7 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
             'execute_temp.php' => 'data_custom',
             'upgrader.cms.tmp' => 'data_custom',
             'unit_test_positive_ignore_sampler.xxx' => 'data_custom', // To help us test this function. This file won't ever exist.
+            '.user.ini' => '.*',
         );
     }
 

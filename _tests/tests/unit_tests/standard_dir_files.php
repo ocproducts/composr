@@ -87,6 +87,10 @@ class standard_dir_files_test_set extends cms_test_case
             $a = array();
             $dh = opendir(get_file_base() . '/sources/hooks/' . $dir);
             while (($f = readdir($dh)) !== false) {
+                if ($f == '.DS_Store') {
+                    continue;
+                }
+
                 $a[] = $f;
             }
             closedir($dh);
@@ -95,6 +99,10 @@ class standard_dir_files_test_set extends cms_test_case
             $b = array();
             $dh = opendir(get_file_base() . '/sources_custom/hooks/' . $dir);
             while (($f = readdir($dh)) !== false) {
+                if ($f == '.DS_Store') {
+                    continue;
+                }
+
                 $b[] = $f;
             }
             closedir($dh);

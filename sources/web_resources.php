@@ -480,7 +480,7 @@ function _get_web_resources_env($_seed = null, $_minify = null, $_https = null, 
         $minify = $_minify;
     } elseif ($minify_cached === null || $seed != '') {
         if ($seed == '') {
-            $minify = (get_param_integer('keep_no_minify', 0) == 0);
+            $minify = (get_param_integer('keep_minify', null) !== 0);
             $minify_cached = $minify;
         } else {
             $minify = false;

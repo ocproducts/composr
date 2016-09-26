@@ -55,7 +55,7 @@
 					}
 				}
 
-				if (!check_password(form)) return false;
+				if (!check_passwords(form)) return false;
 
 				if ((form.elements['db_site_password']) && (window.do_ajax_field_test))
 				{
@@ -78,7 +78,6 @@
 				return true;
 			}
 
-			// By Netscape
 			function set_cookie(cookieName,cookieValue,nDays)
 			{
 				var today=new Date();
@@ -131,37 +130,9 @@
 					}
 				}
 			}
-
-			function check_password(form)
-			{
-				if ((typeof form.confirm!='undefined') && (form.confirm)) return true;
-
-				if (typeof form.elements['cns_admin_password_confirm']!='undefined')
-				{
-					if (form.elements['cns_admin_password_confirm'].value!=form.elements['cns_admin_password'].value)
-					{
-						window.alert('{!PASSWORDS_DO_NOT_MATCH;/}');
-						return false;
-					}
-				}
-				if (typeof form.elements['master_password_confirm']!='undefined')
-				{
-					if (form.elements['master_password_confirm'].value!=form.elements['master_password'].value)
-					{
-						window.alert('{!PASSWORDS_DO_NOT_MATCH;/}');
-						return false;
-					}
-				}
-
-				window.alert('{PASSWORD_PROMPT;/}','');
-
-				if (form.elements['master_password'].value.length<5)
-				{
-					return window.confirm('{!MASTER_PASSWORD_INSECURE;/}');
-				}
-				return true;
-			}
 		//]]></script>
+
+		{+START,INCLUDE,PASSWORD_CHECK_JS}INSTALLER=1{+END}
 	</head>
 
 	<body id="installer_body" class="website_body" onload="install_stage_load();">

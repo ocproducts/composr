@@ -34,7 +34,7 @@ function upgrade_script()
 
     if ((array_key_exists('given_password', $_POST))) {
         $given_password = post_param_string('given_password');
-        require_code('crypt');
+        require_code('crypt_master');
         if (check_master_password($given_password)) {
             $type = get_param_string('type', 'browse');
 
@@ -525,7 +525,7 @@ function upgrade_script()
             }
         } else {
             up_do_header();
-            up_do_login(do_lang('MEMBER_BAD_PASSWORD'));
+            up_do_login(do_lang((get_option('login_error_secrecy') == '1') ? 'MEMBER_INVALID_LOGIN' : 'MEMBER_BAD_PASSWORD'));
         }
     } else {
         up_do_header();
@@ -1112,7 +1112,7 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
         if ($file == 'data/files_previous.dat') {
             continue; // Comes in outside scope of files.dat
         }
-        if (($file == 'recommended.htaccess') || ($file == 'plain.htaccess')) {
+        if ($file == 'recommended.htaccess') {
             continue; // May be renamed
         }
 

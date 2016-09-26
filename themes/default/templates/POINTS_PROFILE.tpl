@@ -34,56 +34,56 @@
 		<tbody>
 			{+START,IF,{$NEQ,{POINTS_JOINING},0}}
 				<tr>
-					<td>&bull; {!JOINING}:</td>
+					<td>&bull;&nbsp;{!JOINING}:</td>
 					<td class="equation">1 &times; {POINTS_JOINING*} {!POINTS_UNIT}</td>
 					<td class="answer">= {POINTS_JOINING*} {!POINTS_UNIT}</td>
 				</tr>
 			{+END}
 			{+START,IF,{$NEQ,{POINTS_PER_DAY},0}}
 				<tr>
-					<td>&bull; {!MEMBERSHIP_LENGTH}</td>
+					<td>&bull;&nbsp;{!MEMBERSHIP_LENGTH}</td>
 					<td class="equation">{DAYS_JOINED*} &times; {POINTS_PER_DAY*} {!POINTS_UNIT}</td>
 					<td class="answer">= {MULT_POINTS_PER_DAY*} {!POINTS_UNIT}</td>
 				</tr>
 			{+END}
 			{+START,IF,{$NEQ,{POINTS_POSTING},0}}{+START,IF,{$HAS_FORUM}}
 				<tr>
-					<td>&bull; {!COUNT_POSTS}:</td>
+					<td>&bull;&nbsp;{!COUNT_POSTS}:</td>
 					<td class="equation">{POST_COUNT*} &times; {POINTS_POSTING*} {!POINTS_UNIT}</td>
 					<td class="answer">= {MULT_POINTS_POSTING*} {!POINTS_UNIT}</td>
 				</tr>
 			{+END}{+END}
 			{+START,IF,{$NEQ,{POINTS_WIKI_POSTING},0}}{+START,IF,{$ADDON_INSTALLED,wiki}}
 				<tr>
-					<td>&bull; {!wiki:WIKI_POSTS}:</td>
+					<td>&bull;&nbsp;{!wiki:WIKI_POSTS}:</td>
 					<td class="equation">{WIKI_POST_COUNT*} &times; {POINTS_WIKI_POSTING*} {!POINTS_UNIT}</td>
 					<td class="answer">= {MULT_POINTS_WIKI_POSTING*} {!POINTS_UNIT}</td>
 				</tr>
 			{+END}{+END}
 			{+START,IF,{$NEQ,{POINTS_CHAT_POSTING},0}}{+START,IF,{$ADDON_INSTALLED,chat}}
 				<tr>
-					<td>&bull; {!chat:COUNT_CHATPOSTS}:</td>
+					<td>&bull;&nbsp;{!chat:COUNT_CHATPOSTS}:</td>
 					<td class="equation">{CHAT_POST_COUNT*} &times; {POINTS_CHAT_POSTING*} {!POINTS_UNIT}</td>
 					<td class="answer">= {MULT_POINTS_CHAT_POSTING*} {!POINTS_UNIT}</td>
 				</tr>
 			{+END}{+END}
 			{+START,IF,{$NEQ,{POINTS_PER_DAILY_VISIT},0}}
 				<tr>
-					<td>&bull; {!COUNT_VISITS}:</td>
+					<td>&bull;&nbsp;{!COUNT_VISITS}:</td>
 					<td class="equation">{POINTS_GAINED_VISITING*} &times; {POINTS_PER_DAILY_VISIT*} {!POINTS_UNIT}</td>
 					<td class="answer">= {MULT_POINTS_VISITING*} {!POINTS_UNIT}</td>
 				</tr>
 			{+END}
 			{+START,IF,{$NEQ,{POINTS_VOTING},0}}{+START,IF,{$ADDON_INSTALLED,polls}}
 				<tr>
-					<td>&bull; {!COUNT_VOTINGS}:</td>
+					<td>&bull;&nbsp;{!COUNT_VOTINGS}:</td>
 					<td class="equation">{POINTS_GAINED_VOTING*} &times; {POINTS_VOTING*} {!POINTS_UNIT}</td>
 					<td class="answer">= {MULT_POINTS_VOTING*} {!POINTS_UNIT}</td>
 				</tr>
 			{+END}{+END}
 			{+START,IF,{$NEQ,{POINTS_RATING},0}}
 				<tr>
-					<td>&bull; {!RATING_CONTENT}:</td>
+					<td>&bull;&nbsp;{!RATING_CONTENT}:</td>
 					<td class="equation">{POINTS_GAINED_RATING*} &times; {POINTS_RATING*} {!POINTS_UNIT}</td>
 					<td class="answer">= {MULT_POINTS_RATING*} {!POINTS_UNIT}</td>
 				</tr>

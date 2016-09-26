@@ -93,7 +93,7 @@ You will want to change your logo to give your site an individual identity. You 
 When you change images, styling, or low-level HTML structure (defined in templates), you are editing the theme of the site. Therefore to do it, you should go to Admin Zone > Style > Themes.
 When you choose to manage images in the default theme, you will be warned against editing the default theme; for this simple task, the warning is irrelevant, and we therefore recommend you click 'ok'. If you are feeling adventurous, you could add a new theme, and continue sculpting your theme as you go.
 
-Choose [tt]logo/-logo[/tt] (the logo for the Welcome Zone, and the logo for any zone that does not have its own) from the drop-down list presented. After clicking the button you will see the current image; all you need to do is create your own replacement on your computer (as a [tt].jpeg[/tt]/[tt].jpg[/tt], [tt].png[/tt], [tt].gif[/tt] or [tt].png[/tt] file) and choose to browse for it to upload. You do not need to erase the current URL, as your upload will replace it, and you definitely should leave the 'Name' field unchanged.
+Choose [tt]logo/-logo[/tt] (the logo for the Welcome Zone, and the logo for any zone that does not have its own) from the drop-down list presented. After clicking the button you will see the current image; all you need to do is create your own replacement on your computer (as a [tt].jpeg[/tt]/[tt].jpg[/tt], [tt].gif[/tt] or [tt].png[/tt] file) and choose to browse for it to upload. You do not need to erase the current URL, as your upload will replace it, and you definitely should leave the 'Name' field unchanged.
 
 Your choice of image file formats:
  - Use either [tt].png[/tt], [tt].jpg[/tt], or [tt].gif[/tt] files.

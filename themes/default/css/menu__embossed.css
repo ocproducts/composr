@@ -60,9 +60,6 @@
 	display: block;
 	padding: 0.4em 0.5em;
 	outline: 0;
-	/*{+START,IF,{$NEQ,{$LANG},EN}}*/
-		font-size: 0.72em;
-	/*{+END}*/
 }
 
 .menu_type__embossed a, .menu_type__embossed a:visited, .menu_type__embossed a:hover {

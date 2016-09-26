@@ -119,7 +119,7 @@ function cns_join_form($url, $captcha_if_enabled = true, $intro_message_if_enabl
         'USERNAME_CHECK_SCRIPT' => find_script('username_check'),
         'SNIPPET_SCRIPT' => find_script('snippet'),
         'INVITES_ENABLED' => $invites_if_enabled && (get_option('is_on_invites') === '1'),
-        'ONE_PER_EMAIL_ADDRESS' => $one_per_email_address_if_enabled && (get_option('one_per_email_address') === '1'),
+        'ONE_PER_EMAIL_ADDRESS' => $one_per_email_address_if_enabled && (get_option('one_per_email_address') !== '0'),
         'USE_CAPTCHA' => $captcha_if_enabled && addon_installed('captcha') && use_captcha(),
     ));
 }
@@ -235,7 +235,7 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
     // Check that the given address isn't already used (if one_per_email_address on)
     $member_id = null;
     if ($one_per_email_address_if_enabled) {
-        if (get_option('one_per_email_address') == '1') {
+        if (get_option('one_per_email_address') != '0') {
             $test = $GLOBALS['FORUM_DB']->query_select('f_members', array('id', 'm_username'), array('m_email_address' => $email_address), '', 1);
             if (array_key_exists(0, $test)) {
                 if ($test[0]['m_username'] != $username) {

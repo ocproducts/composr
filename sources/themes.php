@@ -310,12 +310,12 @@ function cdn_filter($url_path)
     if ($cdn === null) {
         $cdn = get_option('cdn');
     }
-    static $knm = null;
-    if ($knm === null) {
-        $knm = get_param_integer('keep_no_minify', 0);
+    static $km = null;
+    if ($km === null) {
+        $km = get_param_integer('keep_minify', null);
     }
 
-    if (($cdn !== '') && ($knm === 0)) {
+    if (($cdn !== '') && ($km !== 0)) {
         if ($cdn === '<autodetect>') {
             $cdn = get_value('cdn');
             if ($cdn === null) {

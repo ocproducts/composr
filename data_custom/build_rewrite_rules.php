@@ -141,10 +141,7 @@ $rewrite_rules = array(
 write_to('sources/google_appengine.php', 'GAE1', "\t" . '// RULES START', "\t// RULES END", 1, $rewrite_rules);
 write_to('data/modules/google_appengine/app.yaml', 'GAE2', 'handlers:' . "\n", "- url: ^.*\.(css", 0, $rewrite_rules);
 
-// Write rules to plain.htaccess (Apache, CGI PHP)
-write_to('plain.htaccess', 'Apache', '<IfModule mod_rewrite.c>', '</IfModule>', 0, $rewrite_rules);
-
-// Write rules to recommended.htaccess (Apache, PHP module)
+// Write rules to recommended.htaccess (Apache)
 write_to('recommended.htaccess', 'Apache', '<IfModule mod_rewrite.c>', '</IfModule>', 0, $rewrite_rules);
 
 // Write rules to install.php (quick installer)

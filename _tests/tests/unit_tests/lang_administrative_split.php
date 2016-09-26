@@ -34,4 +34,23 @@ class lang_administrative_split_test_set extends cms_test_case
             $this->assertTrue(false, $str . ': not defined as either administrative or not');
         }
     }
+
+    public function testNoEmptyLangStrings()
+    {
+        $d = get_file_base() . '/lang/' . fallback_lang();
+        $dh = opendir($d);
+        while (($f = readdir($dh)) !== false) {
+            if (substr($f, -4) == '.ini') {
+                $strings = get_lang_file_map(fallback_lang(), basename($f, '.ini'), true);
+                foreach ($strings as $key => $val) {
+                    if (in_array($key, array('date_withinweek_joiner', '_HTTP_REDIRECT_PROBLEM_INSTALLING')/*We'll allow these ones*/)) {
+                        continue;
+                    }
+
+                    $this->assertTrue(trim($val) != '', 'Transifex does not support empty language strings, ' . $key . ' in ' . $f);
+                }
+            }
+        }
+        closedir($dh);
+    }
 }

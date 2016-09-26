@@ -197,7 +197,7 @@ Composr notes:
 
 Composr is not just built for MySQL. It is designed to work with any kind of database software. It is all to common for developers to assume specifics of the MySQL platform are standard SQL and can be used freely. MySQL in fact is very non-standard in certain ways. Composr enables "MySQL strict mode" to force MySQL to (correctly) complain when mistakes (such as non-specified field values) are made.
 
-If is advisable for you to:
+It is advisable for you to:
  - write SQL conservatively: avoid SQL syntax/functionality that Composr does not already use somewhere because that syntax/functionality probably is vendor-specific
  - avoid being sloppy and getting MySQL to perform automatic type conversions and to automatically guess missing values during insert queries.
 
@@ -217,7 +217,7 @@ $GLOBALS['NO_QUERY_LIMIT'] = true;
 [/code]
 ...in your code.
 
-You can also put [tt]&keep_no_query_limit=1[/tt] into the URL to have query limits temporarily disabled. Often when caching is disabled or empty the query limit can be exceeded.
+You can also put [tt]&keep_query_limit=0[/tt] into the URL to have query limits temporarily disabled. Often when caching is disabled or empty the query limit can be exceeded.
 
 [title="3"]Debugging, and stack traces[/title]
 
@@ -287,10 +287,10 @@ For example, if you wanted a module as seen in one zone to have one virtual root
 
 [title="3"]Deployment[/title]
 
-Be very careful deploying these three files:
+Be very careful deploying these particular files:
 1) [tt]_config.php[/tt]
 2) [tt].htaccess[/tt]
-3) [tt]php.ini[/tt]
+3) [tt].user.ini[/tt]
 
 [tt]_config.php[/tt] is obvious, you don't want to overwrite the live server environment settings with development ones.
 Sometimes it is a good idea to code up [tt]_config.php[/tt] to detect what server it is on, then share that file across all platforms. This is mainly a personal choice.
@@ -301,7 +301,7 @@ Sometimes it is a good idea to code up [tt]_config.php[/tt] to detect what serve
 3) If a RewriteBase line is there, it may be wrong for the server
 4) The server could have its own file, with its own special settings (it's quite common to use the file to tune live settings)
 
-[tt]php.ini[/tt] is similar to [tt].htaccess[/tt] in that it can encode very server-specific settings.
+[tt].user.ini[/tt] is similar to [tt].htaccess[/tt] in that it can encode very server-specific settings.
 
 [title="3"]Tidying up ugly Comcode or running conversions[/title]
 
@@ -474,7 +474,7 @@ We have the following which are either unlikely to be useful, or potentially uns
   - [tt]force_admin_auth[/tt] -- set this to '1' if you want any super-administrator to have to have some kind of authorisation-based login by redirecting them to [tt]http://yourbaseurl/admin_login/[/tt] which presumably you have configured to be a redirect-through that catches logins (Apache only)
   - [tt]no_password_hashing[/tt] -- set this to '1' if you want passwords to be stored as plain-text in the database (not recommended)
   - [tt]xhtml_strict[/tt] -- set this to '1' to do some magic to make Composr's output XHTML strict. This is slow and not really advisable as it will degrade the user experience if JavaScript is not available (new-window links would break)
-  - [tt]webdav_root[/tt] -- set this to the subdirectory the WebDAV addon should run from. On Windows it needs to run from the root, i.e. '/'. However, to do this you would need to map onto a separate domain name. If you change this setting, you'll need to change the redirect in your [tt].htaccess[/tt] file
+  - [tt]webdav_root[/tt] -- set this to the subdirectory the WebDAV addon should run from. On Windows it needs to run from the root, i.e. '/'. However, to do this you would need to map onto a separate domain name. If you change this setting, you'll need to change the redirect in your [tt].htaccess[/tt] file (or non-Apache equivalent)
   - [tt]allow_member_mail_relay[/tt] -- set to '1' if the [tt]form_to_email.php[/tt] script should allow e-mailing to arbitrary members via the [tt]allow_member_mail_relay[/tt] parameter. This potentially allows people to spam your members, so you may want to add some kind of extra security here at a web-server level (i.e. restricting access to the script).
   - [tt]windows_auth_is_enabled[/tt] -- set to '1' to enable Integrated Windows Kerberos Authentication for automatic desktop client logins
  - Unsupported functionality
@@ -580,9 +580,9 @@ We have the following which are either unlikely to be useful, or potentially uns
 
 The 'keep' parameters available are:
  - [tt]keep_cache[/tt] -- set to '1' to temporarily enable caching or '0' to temporarily disable. You can also use [tt]cache[/tt] so it works on a per-page basis, with the exception of this not affecting the template and language caching.
- - [tt]keep_no_dev_mode[/tt] -- set to '1' to disable development mode (which only runs if you're working out of a subversion repository anyway)
+ - [tt]keep_dev_mode[/tt] -- set to '0' to disable development mode (which only runs if you're working out of a subversion repository anyway)
  - [tt]keep_hide_dev_mode_message[/tt] -- set to '1' if you don't want the "Dev-mode is on" message to show if dev-mode is on (maybe you're taking screenshots?)
- - [tt]keep_no_ext_check[/tt] -- set to '1' to force the webstandards checker to not check dependency files
+ - [tt]keep_ext_check[/tt] -- set to '0' to force the webstandards checker to not check dependency files
  - [tt]keep_force_htaccess[/tt] -- set to '1' to force the Conversr login to go via htauth in precedence over other login methods (e.g. login cookies, sessions)
  - [tt]keep_textonly[/tt] -- set to '1' if the 'text only' stylesheet is to be used
  - [tt]keep_simplified_donext[/tt] -- set to '1' to temporarily act as if the simplified do-next option is turned on
@@ -602,7 +602,7 @@ The 'keep' parameters available are:
  - [tt]keep_preserve_ids[/tt] -- set this to '1' when doing an CMS-merge import, to preserve IDs in the import (and not import duplicated IDs); this is not supported officially
  - [tt]keep_theme[/tt] -- set this to a theme name, to temporarily try out a different theme
  - [tt]keep_safe_mode[/tt] -- set this to '1' so that where possible, any customised files will be ignored; the default theme will be used
- - [tt]keep_no_output_streaming[/tt] -- set this to '1' to disable output streaming (i.e. enable full pre-processing)
+ - [tt]keep_output_streaming[/tt] -- set this to '0' to disable output streaming (i.e. enable full pre-processing)
  - [tt]keep_fatalistic[/tt] -- set this to '1' if terminal warning errors should be handled as terminal fatal errors (which include stack traces); useful for debugging the origin of an error message
  - [tt]keep_firephp[/tt] -- set this to '1' to dump permissions checks that occurred to [url="FirePHP"]http://www.firephp.org/[/url]. It only works for authenticated administrators, but if the administrator is using [tt]keep_su[/tt] to masquerade as another user it will work (which is particularly useful for debugging permissions problems).
  - [tt]keep_firephp_queries[/tt] -- set this to '1' to dump queries that occurred to [url="FirePHP"]http://www.firephp.org/[/url]. It only works for authenticated administrators, but if the administrator is using [tt]keep_su[/tt] to masquerade as another user it will work.
@@ -610,30 +610,30 @@ The 'keep' parameters available are:
  - [tt]keep_send_immediately[/tt] -- set this to '1' if you want to debug newsletter code, and not have newsletters sent in the background
  - [tt]keep_su_online[/tt] -- set this to '1' if you want the user [tt]keep_su[/tt] is used with to also show as online, and for their last online/submit statuses to be updated
  - [tt]keep_su_strict[/tt] -- set this to '1' if to strictly masquerade as another user rather than to allow a few exceptions like the display of stack traces
- - [tt]keep_no_minify[/tt] -- set this to '1' if you want to use a JavaScript debugger and hence do not want the JS to be minified (unreadable)
+ - [tt]keep_minify[/tt] -- set this to '0' if you want to use a JavaScript debugger and hence do not want the JS to be minified (unreadable)
  - [tt]keep_show_loading[/tt] -- set this to '1' if you want comments inside the HTML source showing memory usage taken up as major server-side dependency files load
  - [tt]keep_show_loading_code[/tt] -- set this to '1' if you want comments inside the HTML source showing memory usage taken up as server-side PHP scripts load
- - [tt]keep_avoid_memory_limit[/tt] -- do not put on a memory limit (admins only); using this will also add in the option to remove paginations, for those with the remove_page_split privilege
+ - [tt]keep_memory_limit[/tt] -- set this to '0' to not put on a memory limit (admins only); using this will also add in the option to remove paginations, for those with the remove_page_split privilege
  - [tt]keep_memory_over_speed[/tt] -- use less memory for Tempcode
- - [tt]keep_no_query_limit[/tt] -- do not place a query limit during development mode
+ - [tt]keep_query_limit[/tt] -- set this to '0' to not place a query limit during development mode
  - [tt]keep_on_same_msn[/tt] -- set this to '0' if you are doing a Composr site merge import and want to force Conversr content to import even if the importer thinks that you are on the same MSN as the other site
  - [tt]keep_theme_test[/tt] -- set this to '1' if you are testing lots of themes. It will cause installed theme addons to have their Comcode pages extracted with a special prefix, it will remove that prefix on addon packaging, and page detection will give preference to the prefix for the particular theme you are currently using (so use in conjunction with keep_theme).
  - [tt]keep_debug_notifications[/tt] -- set this to '1' if you are debugging the notifications system and therefore need them to be sent before the page output finishes
  - [tt]keep_debug_tasks[/tt] -- set this to '1' if you are debugging the tasks system and therefore need them to be run immediately (i.e. without going into the task queue)
  - [tt]keep_devtest[/tt] -- used during development mode to test URL building is working correctly, of no use manually
- - [tt]keep_debug_has_cookies[/tt] -- useful for developers to tell Composr cookies are supported when JavaScript may be off
+ - [tt]keep_debug_has_cookies[/tt] -- set this to '1' to tell Composr cookies are supported when JavaScript may be off
  - [tt]keep_memory_limit_test[/tt] -- set to a number of megabytes under 32 to reduce the memory limit to this value; useful for performance debugging
- - [tt]keep_no_chain[/tt] -- useful when working with the XML forum driver, tells it to not do reads from the configured chain database
- - [tt]keep_realtime_test[/tt] -- used for testing the realtime feature's display (it injects random data)
- - [tt]keep_wide[/tt] -- remove panels
- - [tt]keep_wide_high[/tt] -- remove panels, as well as the header and footer
+ - [tt]keep_chain[/tt] -- set this to '0' if when working with the XML forum driver you do not want to do reads from the configured chain database
+ - [tt]keep_realtime_test[/tt] -- set this to '1' for testing the realtime feature's display (it injects random data)
+ - [tt]keep_wide[/tt] -- set this to '1' to remove panels
+ - [tt]keep_wide_high[/tt] -- set this to '1' to remove panels, as well as the header and footer
  - [tt]keep_rating_test[/tt] -- set this to '1' if you are testing rating and don't want to be locked out for having already rated
  - [tt]keep_all_cpfs[/tt] -- set this to '1' if you want to edit bundled CPFs that aren't currently marked as editable
  - [tt]keep_oembed_cache[/tt] -- set this to '0' to disable the oembed URL cache temporarily, when debugging oembed endpoints
  - [tt]keep_urlmonikers[/tt] -- set to '0' to disable URL monikers
- - [tt]keep_no_url_scheme[/tt] -- set this to '1' to temporarily disable URL Schemes. This is useful for working out page-links/match-keys
+ - [tt]keep_url_scheme[/tt] -- set this to '0' to temporarily disable URL Schemes. This is useful for working out page-links/match-keys
  - [tt]keep_force_open[/tt] -- set this to '1' if you want to ignore a [tt]closed.html[/tt] file and get to the website
- - [tt]keep_no_frames[/tt] -- set this to '1' to disable optional iframes / AJAX frame-simulation
+ - [tt]keep_frames[/tt] -- set this to '0' to disable optional iframes / AJAX frame-simulation
  - [tt]keep_failover[/tt] -- set this to '1' or '0' to force failover mode to on or off
  - [tt]keep_grow_template_meta_tree[/tt] -- set this to '1' for the "Grow template meta-tree" configuration option to be considered as temporarily enabled
  - [tt]keep_has_cron[/tt] -- set this to '1' or '0' to override UI adaptations to CRON being on or not (e.g. to enable scheduling options as if CRON was on, even if they won't run)
@@ -793,7 +793,7 @@ However, if you're making a website for somebody else it is is important to bear
 Here are some assorted hints:
  - You might want to use the debranding feature, Admin Zone > Style > Debranding
  - You might want to give the user a non-admin username (e.g. a super-moderator user instead), and then set Admin Zone permissions so that many unnecessary pages are hidden. Composr is then smart enough to automatically simplify its interface to compensate.
- - When deploying make sure to get your canonical URL right. Ask the client whether they want 'www.' in their URL or not. Set up a [tt].htaccess[/tt] file (https://css-tricks.com/snippets/htaccess/www-no-www/) that redirects the non-canonical URL to the correct one. This will remove a lot of headaches related to duplicate cookies, bad SEO, confusion, and Composr error messages.
+ - When deploying make sure to get your canonical URL right. Ask the client whether they want 'www.' in their URL or not. Set up a [tt].htaccess[/tt] file (https://css-tricks.com/snippets/htaccess/www-no-www/) (or non-Apache equivalent) that redirects the non-canonical URL to the correct one. This will remove a lot of headaches related to duplicate cookies, bad SEO, confusion, and Composr error messages.
  - Always, always, test the e-mails a site gives out. It is very embarrassing if you accidentally customise your [tt]MAIL.tpl[/tt] template in a custom theme and then find e-mails are being sent out of the Admin Zone using the default theme and Composr logo. Always save your [tt]MAIL.tpl[/tt] in the default theme, and make sure that the default theme's 'logo/-logo' and 'logo/standalone-logo' theme images correctly reflect your design. And, test it! If you made complex changes, test in different e-mail programs/webmail-apps.
  - Develop using a staging/developer website, and deploy to live/customer-demo after you've finished all changes. This primarily involves uploading changed files. Composr has a great tool for transferring data between Composr sites using XML too, if you find you are needing to sync data.
 

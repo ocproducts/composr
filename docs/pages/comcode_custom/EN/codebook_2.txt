@@ -137,7 +137,7 @@ See the [page="_SEARCH:tut_integration"]Integration of Composr and other install
 
 When writing new JavaScript code try to make good use of the existing functions that are defined in whatever JavaScript you already have included. For example, use the standard cookie manipulation functions and standard AJAX functions, rather than making new ones. If existing functions are not sufficient consider improving those functions.
 
-In Composr, JavaScript libraries are automatically minified to save on bandwidth, unless [tt]&keep_no_minify=1[/tt] is in the URL (very useful for debugging).
+In Composr, JavaScript libraries are automatically minified to save on bandwidth, unless [tt]&keep_minify=0[/tt] is in the URL (very useful for debugging).
 
 [title="3"]Useful Composr JavaScript functions[/title]
 

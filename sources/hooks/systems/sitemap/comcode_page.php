@@ -192,18 +192,26 @@ class Hook_sitemap_comcode_page extends Hook_sitemap_page
                 $struct['extra_meta']['db_row'] = $db_row[0] + (($row === null) ? array() : $struct['extra_meta']['db_row']);
             }
         }
-        if (!$got_title) {
-            $full_path = get_custom_file_base() . '/' . $path;
-            if (!is_file($full_path)) {
-                $full_path = get_file_base() . '/' . $path;
-            }
-            $page_contents = file_get_contents($full_path);
+        $full_path = get_custom_file_base() . '/' . $path;
+        if (!is_file($full_path)) {
+            $full_path = get_file_base() . '/' . $path;
+        }
+        $page_contents = file_get_contents($full_path);
+        if (!$got_title || strpos($page_contents, 'sub="') !== false) {
             $matches = array();
-            if (preg_match('#\[title[^\]]*\]#', $page_contents, $matches) != 0) {
+            if (preg_match('#\[title([^\]]*\ssub="([^"]*)")?[^\]]*\]#', $page_contents, $matches) != 0) {
                 $start = strpos($page_contents, $matches[0]) + strlen($matches[0]);
                 $end = strpos($page_contents, '[/title]', $start);
                 $_title = substr($page_contents, $start, $end - $start);
                 if ($_title != '') {
+                    if (!empty($matches[2])) {
+                        if (stripos($matches[2], $_title) !== false) {
+                            $_title = ucfirst($matches[2]);
+                        } else {
+                            $_title .= ' (' . $matches[2] . ')';
+                        }
+                    }
+
                     require_code('comcode');
                     $struct['title'] = comcode_to_tempcode($_title, null, true);
                 }

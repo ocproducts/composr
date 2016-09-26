@@ -33,12 +33,12 @@
             localStorageKey: false,
             appendTo: "body",
             maxSelectionSize: 7,
-            cancelText: "{$LCASE#,{!INPUTSYSTEM_CANCEL}}",
-            chooseText: "{$LCASE#,{!CHOOSE}}",
-            togglePaletteMoreText: "{$LCASE#,{!MORE}}",
-            togglePaletteLessText: "{$LCASE#,{!LESS}}",
-            clearText: "{!javascript:CLEAR_COLOR_SELECTION#}",
-            noColorSelectedText: "{!javascript:NO_COLOR_SELECTION#}",
+            cancelText: "{$LCASE#^,{!INPUTSYSTEM_CANCEL}}",
+            chooseText: "{$LCASE#^,{!CHOOSE}}",
+            togglePaletteMoreText: "{$LCASE#^,{!MORE}}",
+            togglePaletteLessText: "{$LCASE#^,{!LESS}}",
+            clearText: "{!javascript:CLEAR_COLOR_SELECTION#^}",
+            noColorSelectedText: "{!javascript:NO_COLOR_SELECTION#^}",
             preferredFormat: 'hex', // Changed for Composr
             className: "", // Deprecated - use containerClassName and replacerClassName instead.
             containerClassName: "",

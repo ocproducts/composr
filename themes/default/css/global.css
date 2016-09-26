@@ -969,7 +969,7 @@ footer .special_page_type_form select option {
 footer .global_footer_left .horizontal_buttons, footer .su_form, footer .special_page_type_form {
 	/*{+START,IF,{$NOT,{$MOBILE}}}*/
 		float: left;
-		padding-right: 20px;
+		padding-right: 14px;
 	/*{+END}*/
 }
 footer .global_footer_left .horizontal_buttons {
@@ -984,7 +984,7 @@ footer .global_footer_left img {
 }
 
 footer .global_footer_left #special_page_type {
-	width: 12em;
+	width: 8em;
 }
 
 footer .global_footer_right {
@@ -1421,7 +1421,7 @@ th.metadata_title {
 
 	overflow: hidden;
 }
-td>.box, .right>.box, .left>.box {
+td>.box, .right .box, .left .box {
 	margin: 0;
 }
 /* Accordion boxes don't have margins */
@@ -1945,7 +1945,7 @@ table.scrollable_inside {
 
 .wide_table {
 	width: 100%;
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+	/*{+START,IF,{$EQ,{$LANG},EN}}*/
 		table-layout: fixed;
 	/*{+END}*/
 }
@@ -2726,6 +2726,9 @@ div .post_buttons>*, div .buttons_group_faded>* {
 	font-size: 0.85em;
 	font-weight: normal;
 }
+.comments_posting_form_inner .associated_links_block_group li {
+	white-space: normal !important;
+}
 
 .comments_posting_form_end {
 	overflow: hidden;
@@ -2882,6 +2885,7 @@ ul.meta_details_list>li {
 
 dl.meta_details_list>dt {
 	float: {!en_left};
+	clear: {!en_left};
 	padding-{!en_right}: 0.4em !important;
 }
 dl.meta_details_list>dt, dl.meta_details_list>dd {
@@ -3328,7 +3332,9 @@ div>.button_micro:first-child, div>.button_screen:first-child, div>.button_scree
 	font-size: 12px;
 	margin: 1px 0.2em 0 0.4em; /* Push it up a bit due to confined space */
 	text-shadow: 1px 1px 1px {$GET,dark_shadow};
-	line-height: 0.9em;
+	/*{+START,IF,{$MOBILE}}*/
+		line-height: 0.9em;
+	/*{+END}*/
 }
 div .button_micro {
 	background-image: none !important; /* Too loud for such a small space */
@@ -3712,14 +3718,14 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 	.buttons__report {
 		background-image: url('{$IMG,icons/48x48/buttons/report}') !important;
 	}
-	{+START,IF,{$ADDON_INSTALLED,actionlog}}
+	/*{+START,IF,{$ADDON_INSTALLED,actionlog}}*/
 		.buttons__undo {
 			background-image: url('{$IMG,icons/48x48/buttons/undo}') !important;
 		}
 		.buttons__revisions {
 			background-image: url('{$IMG,icons/48x48/buttons/revisions}') !important;
 		}
-	{+END}
+	/*{+END}*/
 	.buttons__save {
 		background-image: url('{$IMG,icons/48x48/buttons/save}') !important;
 	}

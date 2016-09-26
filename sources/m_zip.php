@@ -116,7 +116,7 @@ function init__m_zip()
 
             // IT IS IMPORTANT THAT YOUR COMMANDLINE ZUNZIP TOOL CORRECTLY SETS RESULT CODE
             // result code 0 == NO ERROR as in:
-            if (is_null($res)) {
+            if ($res === null) {
                 m_deldir($zip_dir);
                 return constant('ZIPARCHIVE::ER_INTERNAL');
             }

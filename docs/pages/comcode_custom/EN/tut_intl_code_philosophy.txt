@@ -18,8 +18,7 @@ The bundled [tt]sources/lang_filter_EN.php[/tt] fixes a number of grammatical co
 [media float="right" thumb="0" framed="0"]data_custom/images/docs/remember.png[/media]
 Approximately 6% of the language strings contain the same text as other language strings.
 
-However, that's not an accurate reflection of the situation, as some of those actually are different
-(see "Grammar in different languages" above).
+However, that's not an accurate reflection of the situation, as some of those actually are different (see "Grammar in different languages" above).
 So, maybe it's more like 5% duplication in practice.
 
 The remaining duplicated ones are for pragmatic reasons, such as:

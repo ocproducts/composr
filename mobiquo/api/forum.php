@@ -34,7 +34,20 @@ function get_config_func($raw_params)
         $banners_disabled[] = strval($b['group_id']);
     }
 
-    $login_type = (get_option('one_per_email_address') == '1') ? 'both' : 'username';
+    switch (get_option('one_per_email_address')) {
+        case '1':
+            $login_type = 'both';
+            break;
+
+        case '2':
+            $login_type = 'email';
+            break;
+
+        case '0':
+        default:
+            $login_type = 'username';
+            break;
+    }
 
     $brand_name = get_value('rebrand_name');
     if ($brand_name === null) {

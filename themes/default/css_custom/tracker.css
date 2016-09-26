@@ -1,15 +1,15 @@
 /* Tabs */
 
 .page_running_tracker .tab {
-	{+START,IF,{$NOT,{$MOBILE}}}
+	/*{+START,IF,{$NOT,{$MOBILE}}}*/
 		width: 110px;
-	{+END}
+	/*{+END}*/
 
-	{+START,IF,{$MOBILE}}
+	/*{+START,IF,{$MOBILE}}*/
 		width: auto;
 		text-align: left;
 		min-width: 0;
-	{+END}
+	/*{+END}*/
 
 	display: inline-block;
 }

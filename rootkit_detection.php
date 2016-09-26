@@ -118,12 +118,12 @@ END;
     // Connect to DB
     $db = mysqli_connect($settings['db_host'], $settings['db_user'], $settings['db_password']);
     if ($db === false) {
-        echo '<p>Could not connect (1)</p>';
+        echo '<p>Could not login to database</p>';
         rd_do_footer();
         exit();
     }
     if (!mysqli_select_db($db, $settings['db_name'])) {
-        echo '<p>Could not connect (2)</p>';
+        echo '<p>Could not connect to specific database after database login</p>';
         rd_do_footer();
         exit();
     }
@@ -131,7 +131,7 @@ END;
     $results = '';
 
     // Check database
-    $prefix = $settings['db_prefix'];
+    $prefix = preg_replace('#[^\w\_]#', '', $settings['db_prefix']);
     if (file_exists($FILE_BASE . '/sources/hooks/systems/addon_registry/calendar_events.php')) {
         $multi_lang_content = isset($SITE_INFO['multi_lang_content']) ? ($SITE_INFO['multi_lang_content'] == '1') : true;
         if ($multi_lang_content) {
@@ -307,25 +307,7 @@ END;
  */
 function rk_check_master_password($password_given)
 {
-    global $SITE_INFO;
-    if (!array_key_exists('master_password', $SITE_INFO)) {
-        exit('No master password defined in _config.php currently so cannot authenticate');
-    }
-    $actual_password_hashed = $SITE_INFO['master_password'];
-    if (strpos($actual_password_hashed, '$') !== false) {
-        return password_verify($password_given, $actual_password_hashed);
-    }
-
-    // LEGACY
-    $salt = '';
-    if ((substr($actual_password_hashed, 0, 1) == '!') && (strlen($actual_password_hashed) == 33)) {
-        $actual_password_hashed = substr($actual_password_hashed, 1);
-        $salt = 'cms';
-
-        // LEGACY
-        if ($actual_password_hashed != md5($password_given . $salt)) {
-            $salt = 'ocp';
-        }
-    }
-    return (((strlen($password_given) != 32) && (hash_equals($actual_password_hashed, $password_given))) || (hash_equals($actual_password_hashed, md5($password_given . $salt))));
+    global $FILE_BASE;
+    require_once($FILE_BASE . '/sources/crypt_master.php');
+    return check_master_password($password_given);
 }

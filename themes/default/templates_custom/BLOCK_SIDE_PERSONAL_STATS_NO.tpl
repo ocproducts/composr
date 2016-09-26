@@ -7,7 +7,7 @@
 
 			<div>
 				<div class="constrain_field">
-					<div class="accessibility_hidden"><label for="ps_login_username">{!USERNAME}{+START,IF,{$AND,{$CNS},{$CONFIG_OPTION,one_per_email_address}}} / {!EMAIL_ADDRESS}{+END}</label></div>
+					<div class="accessibility_hidden"><label for="ps_login_username">{$LOGIN_LABEL}</label></div>
 					<input maxlength="80" class="wide_field login_block_username field_input_non_filled" type="text" onfocus="placeholder_focus(this);" onblur="placeholder_blur(this);" value="{!USERNAME}" id="ps_login_username" name="login_username" />
 					<div class="accessibility_hidden"><label for="ps_password">{!PASSWORD}</label></div>
 					<input maxlength="255" class="wide_field" type="password" placeholder="{!PASSWORD}" value="" name="password" id="ps_password" />

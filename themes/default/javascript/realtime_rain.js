@@ -290,7 +290,7 @@ function timeline_click(timeline, prospective) {
     if (!prospective) {
         window.current_time = time;
         bubbles_tidy_up();
-        Composr.dom.html(document.getElementById('real_time_date'), '{!SET}');
+        Composr.dom.html(document.getElementById('real_time_date'), '{!SET;^}');
         Composr.dom.html(document.getElementById('real_time_time'), '');
         document.getElementById('loading_icon').style.display = 'block';
     } else {

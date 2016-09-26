@@ -675,15 +675,15 @@
                     if (comcode.indexOf('[attachment') != -1) {
                         if (comcode.indexOf('[attachment_safe') != -1) {
                             if (is_wysiwyg) {
-                                message = '';//'{!ADDED_COMCODE_ONLY_SAFE_ATTACHMENT_INSTANT;}'; Not really needed
+                                message = '';//'{!ADDED_COMCODE_ONLY_SAFE_ATTACHMENT_INSTANT;^}'; Not really needed
                             } else {
-                                message = '{!ADDED_COMCODE_ONLY_SAFE_ATTACHMENT;}';
+                                message = '{!ADDED_COMCODE_ONLY_SAFE_ATTACHMENT;^}';
                             }
                         } else {
-                            //message='{!ADDED_COMCODE_ONLY_ATTACHMENT;}';	Kind of states the obvious
+                            //message='{!ADDED_COMCODE_ONLY_ATTACHMENT;^}';	Kind of states the obvious
                         }
                     } else {
-                        //message='{!ADDED_COMCODE_ONLY;}';	Kind of states the obvious
+                        //message='{!ADDED_COMCODE_ONLY;^}';	Kind of states the obvious
                     }
 
                     target_window.insert_comcode_tag = function (rep_from, rep_to, ret) { // We define as a temporary global method so we can clone out the tag if needed (e.g. for multiple attachment selections)
@@ -846,7 +846,7 @@
                     var matches = text_value.replace(/<[^<|>]+?>|&nbsp;/gi, ' ').match(/\b/g);
                     var count = 0;
                     if (matches) count = matches.length / 2;
-                    Composr.dom.html(count_element, '{!WORDS;}'.replace('\\{1\\}', count));
+                    Composr.dom.html(count_element, '{!WORDS;^}'.replace('\\{1\\}', count));
                 }
                 catch (e) {
                 }
@@ -930,12 +930,12 @@
         try {
             navigator.geolocation.getCurrentPosition(function (position) {
                 var fields = [
-                    '{!cns_special_cpf:SPECIAL_CPF__cms_street_address;}',
-                    '{!cns_special_cpf:SPECIAL_CPF__cms_city;}',
-                    '{!cns_special_cpf:SPECIAL_CPF__cms_county;}',
-                    '{!cns_special_cpf:SPECIAL_CPF__cms_state;}',
-                    '{!cns_special_cpf:SPECIAL_CPF__cms_post_code;}',
-                    '{!cns_special_cpf:SPECIAL_CPF__cms_country;}'
+                    '{!cns_special_cpf:SPECIAL_CPF__cms_street_address;^}',
+                    '{!cns_special_cpf:SPECIAL_CPF__cms_city;^}',
+                    '{!cns_special_cpf:SPECIAL_CPF__cms_county;^}',
+                    '{!cns_special_cpf:SPECIAL_CPF__cms_state;^}',
+                    '{!cns_special_cpf:SPECIAL_CPF__cms_post_code;^}',
+                    '{!cns_special_cpf:SPECIAL_CPF__cms_country;^}'
                 ];
 
                 var geocode_url = '{$FIND_SCRIPT;,geocode}';
@@ -975,23 +975,23 @@
 
         form.elements['username'].onchange = function () {
             if (form.elements['intro_title'])
-                form.elements['intro_title'].value = '{!cns:INTRO_POST_DEFAULT;}'.replace(/\{1\}/g, form.elements['username'].value);
+                form.elements['intro_title'].value = '{!cns:INTRO_POST_DEFAULT;^}'.replace(/\{1\}/g, form.elements['username'].value);
         };
 
         form.old_submit = form.onsubmit;
         form.onsubmit = function () {
             if ((typeof form.elements['confirm'] !== 'undefined') && (form.elements['confirm'].type == 'checkbox') && (!form.elements['confirm'].checked)) {
-                window.fauxmodal_alert('{!cns:DESCRIPTION_I_AGREE_RULES;}');
+                window.fauxmodal_alert('{!cns:DESCRIPTION_I_AGREE_RULES;^}');
                 return false;
             }
 
             if ((typeof form.elements['email_address_confirm'] !== 'undefined') && (form.elements['email_address_confirm'].value != form.elements['email_address'].value)) {
-                window.fauxmodal_alert('{!cns:EMAIL_ADDRESS_MISMATCH;}');
+                window.fauxmodal_alert('{!cns:EMAIL_ADDRESS_MISMATCH;^}');
                 return false;
             }
 
             if ((typeof form.elements['password_confirm'] !== 'undefined') && (form.elements['password_confirm'].value != form.elements['password'].value)) {
-                window.fauxmodal_alert('{!cns:PASSWORD_MISMATCH;}');
+                window.fauxmodal_alert('{!cns:PASSWORD_MISMATCH;^}');
                 return false;
             }
 

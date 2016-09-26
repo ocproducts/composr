@@ -29,7 +29,7 @@ There are a number of online tools for creating favicon, namely X-Icon-Editor, f
 Editing the [tt]favicon[/tt] theme image:
 1) Go to Admin Zone > Style > Themes. This will take us to the Manage Themes screen.
 2) Next to each theme we have an 'edit' section and there we have an icon to 'manage theme images' which we need to click. Click the icon for the default theme and ignore the warning (the favicon is usually for the whole site regardless of theme, so is best put in the default theme).
-3) We are now lead to a screen containing a number of images grouped by category. We can see the images present and edit them by clicking the expand button placed alongside each category name. The favicon is available under the category given the same name as your site. Select the [tt]favicon[/tt] image.
+3) We are now lead to a screen containing a number of images grouped by category. We can see the images present and edit them by clicking the expand button placed alongside each category name. The favicon is available under the category titled "(unnamed)". Select the [tt]favicon[/tt] image.
 4) You are now lead to a screen "Edit theme image" and in that we can see the current image and the options for uploading new image. Click the "Upload" radio button then the Browse button, then attach your new icon file.
 5) Click "Save".
 

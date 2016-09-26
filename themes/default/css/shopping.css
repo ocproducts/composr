@@ -27,7 +27,9 @@ table.cart_table td {
 
 table.cart_payment_summary {
 	width: 100%;
-	table-layout: fixed;
+	/*{+START,IF,{$EQ,{$LANG},EN}}*/
+		table-layout: fixed;
+	/*{+END}*/
 	font-size: 1.2em;
 	margin: 2em 0;
 	border-top: 1px solid {$GET,pale_border};

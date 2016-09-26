@@ -3468,14 +3468,14 @@ the specific language governing permissions and limitations under the Apache Lic
     $.fn.select2.locales = [];
 
     $.fn.select2.locales['en'] = {
-         formatMatches: function (matches) { if (matches === 1) { return "{!javascript:SELECT2_SINGLE_RESULT#}"; } return "{!javascript:SELECT2_MULTIPLE_RESULTS#,xxx}".replace(/xxx/g,matches); },
-         formatNoMatches: function () { return "{!javascript:SELECT2_NO_RESULTS#}"; },
-         formatAjaxError: function (jqXHR, textStatus, errorThrown) { return "{!javascript:SELECT2_LOADING_FAILED#}"; },
-         formatInputTooShort: function (input, min) { var n = min - input.length; return "{!javascript:SELECT2_ENTER#,xxx}".replace(/xxx/g,n); },
-         formatInputTooLong: function (input, max) { var n = input.length - max; return "{!javascript:SELECT2_DELETE#,xxx}".replace(/xxx/g,n); },
-         formatSelectionTooBig: function (limit) { return "{!javascript:SELECT2_SELECTION_LIMIT#,xxx}".replace(/xxx/g,limit); },
-         formatLoadMore: function (pageNumber) { return "{!javascript:SELECT2_LOADING_MORE#}"; },
-         formatSearching: function () { return "{!javascript:SELECT2_SEARCHING#}"; },
+         formatMatches: function (matches) { if (matches === 1) { return "{!javascript:SELECT2_SINGLE_RESULT#^}"; } return "{!javascript:SELECT2_MULTIPLE_RESULTS#^,xxx}".replace(/xxx/g,matches); },
+         formatNoMatches: function () { return "{!javascript:SELECT2_NO_RESULTS#^}"; },
+         formatAjaxError: function (jqXHR, textStatus, errorThrown) { return "{!javascript:SELECT2_LOADING_FAILED#^}"; },
+         formatInputTooShort: function (input, min) { var n = min - input.length; return "{!javascript:SELECT2_ENTER#^,xxx}".replace(/xxx/g,n); },
+         formatInputTooLong: function (input, max) { var n = input.length - max; return "{!javascript:SELECT2_DELETE#^,xxx}".replace(/xxx/g,n); },
+         formatSelectionTooBig: function (limit) { return "{!javascript:SELECT2_SELECTION_LIMIT#^,xxx}".replace(/xxx/g,limit); },
+         formatLoadMore: function (pageNumber) { return "{!javascript:SELECT2_LOADING_MORE#^}"; },
+         formatSearching: function () { return "{!javascript:SELECT2_SEARCHING#^}"; },
     };
 
     $.extend($.fn.select2.defaults, $.fn.select2.locales['en']);
