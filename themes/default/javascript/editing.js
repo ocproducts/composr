@@ -6,13 +6,13 @@
 // HTML EDITOR
 // ===========
 
-if (typeof window.CKEDITOR == 'undefined') {
+if (window.CKEDITOR === undefined) {
     window.CKEDITOR = null;
 }
 
 function wysiwyg_on() {
     var cookie = read_cookie('use_wysiwyg');
-    return (!cookie || (cookie !== '0')) && (browser_matches('wysiwyg') && !Composr.$MOBILE);
+    return (!cookie || (cookie !== '0')) && (browser_matches('wysiwyg') && Composr.not(Composr.$MOBILE));
 }
 
 function toggle_wysiwyg(name) {
@@ -219,12 +219,15 @@ function wysiwyg_set_readonly(name, readonly) {
 }
 
 // Initialising the HTML editor if requested later (i.e. toggling it to on)
-if (typeof window.wysiwyg_editors == 'undefined') {
+if (window.wysiwyg_editors === undefined) {
     window.wysiwyg_editors = {};
     window.wysiwyg_original_comcode = {};
 }
+
 function load_html_edit(posting_form, ajax_copy) {
-    if ((!posting_form.method) || (posting_form.method.toLowerCase() != 'post')) return;
+    if ((!posting_form.method) || (posting_form.method.toLowerCase() != 'post')) {
+        return;
+    }
 
     if (!posting_form.elements['http_referer']) {
         var http_referer = document.createElement('input');
@@ -339,10 +342,85 @@ function wysiwyg_editor_init_for(element, id) {
         wysiwyg_color += (window.parseInt(matches[5]) + 4) + matches[6];
     }
 
-    /*{+START,INCLUDE,WYSIWYG_SETTINGS,.js,javascript}{+END}*/
+    /*== START WYSIWYG_SETTINGS.js ==*/
+    // Carefully work out toolbar
+    // Look to see if this Comcode button is here as a hint whether we are doing an advanced editor. Unfortunately we cannot put contextual Tempcode inside a JavaScript file, so this trick is needed.
+    var precision_editing = Composr.is(Composr.$IS_STAFF) || (document.body.querySelectorAll('.comcode_button_box').length > 1);
+    var toolbar = [];
+    if (precision_editing) {
+        toolbar.push(['Source', '-']);
+    }
+    var toolbar_edit_actions = ['Cut', 'Copy', 'Paste', precision_editing ? 'PasteText' : null, precision_editing ? 'PasteFromWord' : null, precision_editing ? 'PasteCode' : null];
+    if (Composr.is(Composr.$VALUE_OPTION.commercialSpellchecker)) {
+        toolbar_edit_actions.push('-', 'SpellChecker', 'Scayt');
+    }
+    toolbar.push(toolbar_edit_actions);
+    toolbar.push(['Undo', 'Redo', precision_editing ? '-' : null, precision_editing ? 'Find' : null, precision_editing ? 'Replace' : null, ((document.body.spellcheck !== undefined) ? 'spellchecktoggle' : null), '-', precision_editing ? 'SelectAll' : null, 'RemoveFormat']);
+    toolbar.push(['Link', 'Unlink']);
+    toolbar.push(precision_editing ? '/' : '-');
+    var formatting = ['Bold', 'Italic', 'Strike', '-', precision_editing ? 'Subscript' : null, (precision_editing ? 'Superscript' : null)];
+    toolbar.push(formatting);
+    toolbar.push(['NumberedList', 'BulletedList', precision_editing ? '-' : null, precision_editing ? 'Outdent' : null, precision_editing ? 'Indent' : null]);
+    if (precision_editing) {
+        toolbar.push(['JustifyLeft', 'JustifyCenter', 'JustifyRight', precision_editing ? 'JustifyBlock' : null]);
+    }
+    toolbar.push([precision_editing ? 'composr_image' : null, 'Table']);
+    if (precision_editing) {
+        toolbar.push('/');
+    }
+    toolbar.push(['Format', 'Font', 'FontSize']);
+    toolbar.push(['TextColor']);
+    if (precision_editing) {
+        toolbar.push(['Maximize', 'ShowBlocks']);
+    }
+    if (precision_editing) {
+        toolbar.push(['HorizontalRule', 'SpecialChar']);
+    }
+    var use_composr_toolbar = true;
+    if (use_composr_toolbar) {
+        toolbar.push(['composr_block', 'composr_comcode', (precision_editing ? 'composr_page' : null), 'composr_quote', (precision_editing ? 'composr_box' : null), 'composr_code']);
+    }
+    var editor_settings = {
+        skin: 'kama',
+        enterMode: window.CKEDITOR.ENTER_BR,
+        uiColor: wysiwyg_color,
+        ocpTheme: Composr.$THEME,
+        fontSize_sizes: '0.6em;0.85em;1em;1.1em;1.2em;1.3em;1.4em;1.5em;1.6em;1.7em;1.8em;2em',
+        removePlugins: '',
+        extraPlugins: 'showcomcodeblocks,imagepaste,spellchecktoggle' + (use_composr_toolbar ? ',composr' : ''),
+        /*{+START,IF,{$NEQ,{$CKEDITOR_PATH},data_custom/ckeditor}}*/
+        customConfig: '',
+        /*{+END}*/
+        bodyId: 'wysiwyg_editor',
+        baseHref: get_base_url() + '/',
+        linkShowAdvancedTab: Composr.not(Composr.$CONFIG_OPTION.eagerWysiwyg),
+        imageShowAdvancedTab: Composr.not(Composr.$CONFIG_OPTION.eagerWysiwyg),
+        imageShowLinkTab: Composr.not(Composr.$CONFIG_OPTION.eagerWysiwyg),
+        imageShowSizing: Composr.not(Composr.$CONFIG_OPTION.eagerWysiwyg),
+        autoUpdateElement: true,
+        contentsCss: page_stylesheets,
+        cssStatic: css,
+        startupOutlineBlocks: true,
+        language: Composr.$LANG ? Composr.$LANG.toLowerCase() : 'en',
+        emailProtection: false,
+        resize_enabled: true,
+        width: (element.offsetWidth - 15),
+        height: window.location.href.includes('cms_comcode_pages') ? 250 : 500,
+        toolbar: toolbar,
+        allowedContent: true,
+        browserContextMenuOnCtrl: true,
+        comcodeXMLBlockTags: '{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_BLOCK}}',
+        comcodeXMLInlineTags: '{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_INLINE}}',
+        magicline_everywhere: true,
+        autoGrow_onStartup: true
+    };
+    /*== END WYSIWYG_SETTINGS.js ==*/
 
-    if (typeof window.CKEDITOR.instances[element.id] != 'undefined' && window.CKEDITOR.instances[element.id])
-        delete window.CKEDITOR.instances[element.id]; // Workaround "The instance "xxx" already exists" error in Google Chrome
+
+    if ((window.CKEDITOR.instances[element.id] !== undefined) && window.CKEDITOR.instances[element.id]) {
+        // Workaround "The instance "xxx" already exists" error in Google Chrome
+        delete window.CKEDITOR.instances[element.id];
+    }
     var editor = window.CKEDITOR.replace(element.id, editor_settings);
     if (!editor) return; // Not supported on this platform
     window.wysiwyg_editors[id] = editor;
@@ -439,10 +517,12 @@ function find_tags_in_editor(editor, element) {
         if (!comcodes[i].onmouseout) {
             comcodes[i].orig_title = comcodes[i].title;
             comcodes[i].onmouseout = function () {
-                if (typeof window.deactivate_tooltip != 'undefined') deactivate_tooltip(this);
+                deactivate_tooltip(this);
             };
             comcodes[i].onmousemove = function (event) {
-                if (typeof event == 'undefined') event = editor.window.$.event;
+                if (event === undefined) {
+                    event = editor.window.$.event;
+                }
 
                 var eventCopy = {};
                 if (event) {
@@ -451,14 +531,14 @@ function find_tags_in_editor(editor, element) {
                     if (event.pageY) eventCopy.pageY = 3000;
                     if (event.clientY) eventCopy.clientY = 3000;
 
-                    if (typeof window.activate_tooltip != 'undefined') {
-                        reposition_tooltip(this, eventCopy);
-                        this.title = this.orig_title;
-                    }
+                    reposition_tooltip(this, eventCopy);
+                    this.title = this.orig_title;
                 }
             };
             comcodes[i].onmousedown = function (event) {
-                if (typeof event == 'undefined') event = editor.window.$.event;
+                if (event === undefined) {
+                    event = editor.window.$.event;
+                }
 
                 if (event.altKey) {
                     // Mouse cursor to start
@@ -546,20 +626,24 @@ function find_tags_in_editor(editor, element) {
 // ============
 
 function do_emoticon(field_name, p, _opener) {
-    var element;
+    var element, title, text;
     if (_opener) {
         element = get_main_cms_window().document.getElementById(field_name);
-        if (!element) element = opener.document.getElementById(field_name); // If it is really actually cascading popups
+        if (!element) { // If it is really actually cascading popups
+            element = opener.document.getElementById(field_name);
+        }
     } else {
         element = document.getElementById(field_name);
     }
-    element = ensure_true_id(element, field_name);
 
-    var title = p.title;
-    if (title == '') title = p.getElementsByTagName('img')[0].alt; // Might be on image inside link instead
+    title = p.title;
+    if (title === '') {
+        // Might be on image inside link instead
+        title = p.querySelctor('img').alt;
+    }
     title = title.replace(/^.*: /, '');
 
-    var text = ' ' + title + ' ';
+    text = ' ' + title + ' ';
 
     if (_opener) {
         insert_textbox_opener(element, text, null, true, Composr.dom.html(p));
@@ -569,12 +653,15 @@ function do_emoticon(field_name, p, _opener) {
 }
 
 function do_attachment(field_name, id, description) {
-    if (!get_main_cms_window().wysiwyg_editors) return;
+    if (!get_main_cms_window().wysiwyg_editors) {
+        return;
+    }
 
-    if (typeof description == 'undefined') description = '';
+    if (description === undefined) {
+        description = '';
+    }
 
     var element = get_main_cms_window().document.getElementById(field_name);
-    element = ensure_true_id(element, field_name);
 
     var comcode;
     comcode = '\n\n[attachment description="' + escape_comcode(description) + '"]' + id + '[/attachment]';
@@ -582,20 +669,9 @@ function do_attachment(field_name, id, description) {
     insert_textbox_opener(element, comcode);
 }
 
-function ensure_true_id(element, field_name) // Works around IE bug
-{
-    var form = element.form;
-    var i;
-    for (i = 0; i < form.elements.length; i++) {
-        if ((form.elements[i].id == field_name)) {
-            return form.elements[i];
-        }
-    }
-    return element;
-}
-
 function is_wysiwyg_field(the_element) {
-    return ((typeof window.wysiwyg_editors != 'undefined') && (typeof wysiwyg_editors[the_element.id] == 'object'));
+    var id = the_element.id;
+    return (typeof window.wysiwyg_editors === 'object') && (typeof window.wysiwyg_editors[id] === 'object');
 }
 
 function get_textbox(element) {
@@ -671,15 +747,17 @@ function insert_textbox(element, text, sel, plain_insert, html) {
             }
 
             var after = editor.getData();
-            if (after == before) throw 'Failed to insert';
+            if (after == before) {
+                throw 'Failed to insert';
+            }
 
             find_tags_in_editor(editor, element);
-        }
-        catch (e) // Sometimes happens on Firefox in Windows, appending is a bit tamer (e.g. you cannot insert if you have the start of a h1 at cursor)
-        {
+        } catch (e) { // Sometimes happens on Firefox in Windows, appending is a bit tamer (e.g. you cannot insert if you have the start of a h1 at cursor)
+
             var after = editor.getData();
-            if (after == before) // Could have just been a window.scrollBy popup-blocker exception, so only do this if the op definitely failed
+            if (after === before) {// Could have just been a window.scrollBy popup-blocker exception, so only do this if the op definitely failed
                 editor.document.getBody().appendHtml(insert);
+            }
         }
 
         editor.updateElement();
@@ -691,11 +769,15 @@ function insert_textbox(element, text, sel, plain_insert, html) {
 
     element.focus();
 
-    if (typeof sel == 'undefined') sel = null;
-    if (sel === null) sel = document.selection ? document.selection : null;
+    if (sel === undefined) {
+        sel = null;
+    }
 
-    if (typeof element.selectionEnd != 'undefined') // Mozilla style
-    {
+    if (sel === null) {
+        sel = document.selection ? document.selection : null;
+    }
+
+    if (element.selectionEnd !== undefined)  {// Mozilla style
         from = element.selectionStart;
         to = element.selectionEnd;
 
@@ -704,8 +786,7 @@ function insert_textbox(element, text, sel, plain_insert, html) {
 
         element.value = start + element.value.substring(from, to) + text + end;
         set_selection_range(element, from + text.length, from + text.length);
-    } else if (sel) // IE style
-    {
+    } else if (sel) {// IE style
         var ourRange = sel.createRange();
         if ((ourRange.moveToElementText) || (ourRange.parentElement() == element)) {
             if (ourRange.parentElement() != element) ourRange.moveToElementText(element);
@@ -724,7 +805,9 @@ function insert_textbox(element, text, sel, plain_insert, html) {
     }
  }
 function insert_textbox_opener(element, text, sel, plain_insert, html) {
-    if ((typeof sel == 'undefined') || (!sel)) var sel = get_main_cms_window().document.selection ? get_main_cms_window().document.selection : null;
+    if (!sel) {
+        sel = get_main_cms_window().document.selection || null;
+    }
 
     get_main_cms_window().insert_textbox(element, text, sel, plain_insert, html);
 }

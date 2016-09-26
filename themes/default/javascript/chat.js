@@ -89,7 +89,7 @@
         },
 
         chatLobbyScreen: function chatLobbyScreen(options) {
-            if (Composr.$IS_GUEST) { return; }
+            if (Composr.is(Composr.$IS_GUEST)) { return; }
 
             window.im_area_template = options.imAreaTemplate;
             window.im_participant_template = options.imParticipantTemplate;
@@ -154,7 +154,7 @@
         },
 
         chatSetEffectsSettingBlock: function chatSetEffectsSettingBlock(options) {
-            if (!Composr.$IS_HTTPAUTH_LOGIN) {
+            if (Composr.not(Composr.$IS_HTTPAUTH_LOGIN)) {
                 var btnSubmitId = 'upload_' + options.key;
 
                 if (options.memberId) {
@@ -275,9 +275,6 @@ function dec_to_hex(number) {
 
 function hex_to_dec(number) {
     return parseInt(number, 16);
-}
-
-function update_picker_colour() {
 }
 
 function chat_on_rgb_change(o) {
@@ -585,13 +582,13 @@ function process_chat_xml_messages(ajax_result, skip_incoming_sound) {
 
             // Clone the node so that we may insert it
             cloned_message = doc.createElement('div');
-            Composr.dom.html(cloned_message, (typeof messages[i].xml != 'undefined') ? messages[i].xml/*IE-only optimisation*/ : messages[i].childNodes[0].outerHTML);
-            cloned_message = cloned_message.childNodes[0];
+            Composr.dom.html(cloned_message, (typeof messages[i].xml != 'undefined') ? messages[i].xml/*IE-only optimisation*/ : messages[i].firstElementChild.outerHTML);
+            cloned_message = cloned_message.firstElementChild;
             cloned_message.id = 'chat_message__' + id;
 
             // Non-first message
-            if (message_container.childNodes.length > 0) {
-                message_container.insertBefore(cloned_message, message_container.childNodes[0]);
+            if (message_container.children.length > 0) {
+                message_container.insertBefore(cloned_message, message_container.firstElementChild);
 
                 if (!first_set) // Only if no other message sound already for this event update
                 {
@@ -895,7 +892,7 @@ function create_overlay_event(skip_incoming_sound, member_id, message, click_eve
         }
     };
     var imgclose = document.createElement('img');
-    imgclose.setAttribute('src', '{$IMG;,icons/14x14/delete}'.replace(/^https?:/, window.location.protocol));
+    imgclose.src = Composr.url('{$IMG;,icons/14x14/delete}');
     imgclose.className = 'im_popup_close_button blend';
     imgclose.onclick = close_popup;
     div.appendChild(imgclose);
@@ -1067,7 +1064,7 @@ function deinvolve_im(room_id, logs, is_popup) // is_popup means that we show a 
         var body = document.getElementsByTagName('body');
         if (typeof body[0] != 'undefined') {
             body[0].className += ' site_unloading';
-            Composr.dom.html(body[0], '<div class="spaced"><div aria-busy="true" class="ajax_loading vertical_alignment"><img src="' + '{$IMG*;,loading}'.replace(/^https?:/, window.location.protocol) + '" alt="{!LOADING;^}" /> <span>{!LOADING;^}<\/span><\/div><\/div>');
+            Composr.dom.html(body[0], '<div class="spaced"><div aria-busy="true" class="ajax_loading vertical_alignment"><img src="' + Composr.url('{$IMG*;,loading}') + '" alt="{!LOADING;^}" /> <span>{!LOADING;^}<\/span><\/div><\/div>');
         }
     }
 
@@ -1178,7 +1175,7 @@ function detected_conversation(room_id, room_name, participants) // Assumes conv
     } else {
         // Open popup
         var im_popup_window_options = 'width=370,height=460,menubar=no,toolbar=no,location=no,resizable=no,scrollbars=yes,top=' + ((screen.height - 520) / 2) + ',left=' + ((screen.width - 440) / 2);
-        var new_window = window.open('{$BASE_URL;,0}'.replace(/^https?:/, window.location.protocol) + '/data/empty.html?instant_messaging', 'room_' + room_id, im_popup_window_options); // The "?instant_messaging" is just to make the location bar less surprising to the user ;-) [modern browsers always show the location bar for security, even if we try and disable it]
+        var new_window = window.open(Composr.url('{$BASE_URL;,0}') + '/data/empty.html?instant_messaging', 'room_' + room_id, im_popup_window_options); // The "?instant_messaging" is just to make the location bar less surprising to the user ;-) [modern browsers always show the location bar for security, even if we try and disable it]
         if ((!new_window) || (typeof new_window.window == 'undefined' /*BetterPopupBlocker for Chrome returns a fake new window but won't have this defined in it*/)) {
             fauxmodal_alert('{!chat:_FAILED_TO_OPEN_POPUP;,{$PAGE_LINK*,_SEARCH:popup_blockers:failure=1,0,1}}', null, '{!chat:FAILED_TO_OPEN_POPUP;}', true);
         }

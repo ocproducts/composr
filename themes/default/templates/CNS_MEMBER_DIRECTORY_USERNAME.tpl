@@ -1,5 +1,5 @@
 <span class="vertical_alignment">
-	<img onmouseover="if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,'{BOX;^*}','auto');" src="{$THUMBNAIL*,{$?,{$IS_EMPTY,{AVATAR_URL}},{$IMG,cns_default_avatars/default},{AVATAR_URL}},18x18,,,{$IMG,cns_default_avatars/default}}" alt="" />
+	<img onmouseover="activate_tooltip(this,event,'{BOX;^*}','auto');" src="{$THUMBNAIL*,{$?,{$IS_EMPTY,{AVATAR_URL}},{$IMG,cns_default_avatars/default},{AVATAR_URL}},18x18,,,{$IMG,cns_default_avatars/default}}" alt="" />
 
 	<a href="{URL*}">{$DISPLAYED_USERNAME*,{USERNAME}}</a>
 

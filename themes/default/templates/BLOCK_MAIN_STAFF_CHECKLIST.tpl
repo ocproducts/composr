@@ -2,11 +2,12 @@
 {$REQUIRE_JAVASCRIPT,core_adminzone_dashboard}
 <section id="tray_{!CHECK_LIST|}" class="box box___block_main_staff_checklist" data-tpl-core-adminzone-dashboard="blockMainStaffChecklist" data-view-core="ToggleableTray" data-tray-cookie="{!CHECK_LIST|}">
 	<h3 class="toggleable_tray_title js-tray-header">
-		<a href="#!" onclick="set_task_hiding(false); return false;" id="checklist_show_all_link" class="top_left_toggleicon" title="{!SHOW_ALL}: {!CHECK_LIST}">{!SHOW_ALL}</a>
-		<a href="#!" onclick="set_task_hiding(true); return false;" id="checklist_hide_done_link" class="top_left_toggleicon">{!HIDE_DONE}</a>
+		<a href="#!" id="checklist_show_all_link" class="top_left_toggleicon js-click-disable-task-hiding" title="{!SHOW_ALL}: {!CHECK_LIST}">{!SHOW_ALL}</a>
+		<a href="#!" id="checklist_hide_done_link" class="top_left_toggleicon js-click-enable-task-hiding">{!HIDE_DONE}</a>
 
-		<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!CHECK_LIST}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" srcset="{$IMG*,2x/trays/contract2} 2x" /></a>
-
+		<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">
+			<img alt="{!CONTRACT}: {$STRIP_TAGS,{!CHECK_LIST}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" srcset="{$IMG*,2x/trays/contract2} 2x" />
+		</a>
 		<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!CHECK_LIST}</a>
 	</h3>
 
@@ -29,7 +30,7 @@
 			{CUSTOM_TASKS}
 		</div>
 
-		<form title="{!CUSTOM_TASKS}" action="{URL*}" method="post" class="add_custom_task" onsubmit="return submit_custom_task(this);" autocomplete="off">
+		<form title="{!CUSTOM_TASKS}" action="{URL*}" method="post" data-cms-js="1" class="add_custom_task js-submit-custom-task" autocomplete="off">
 			{$INSERT_SPAMMER_BLACKHOLE}
 
 			<div class="right">
@@ -39,7 +40,7 @@
 				<input class="button_micro menu___generic_admin__add_one" type="submit" name="save" title="{!ADD} ({!CUSTOM_TASKS})" value="{!ADD}" />
 			</div>
 			<div class="constrain_field">
-				<a data-open-as-overlay="{}" class="link_exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SEARCH:userguide_comcode}"><img class="vertical_alignment" alt="" src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" /></a>
+				<a data-open-as-overlay="1" class="link_exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SEARCH:userguide_comcode}"><img class="vertical_alignment" alt="" src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" /></a>
 				<label class="accessibility_hidden" for="new_task">{!DESCRIPTION}</label>
 				<input maxlength="255" value="" type="text" id="new_task" name="new_task" size="32" />
 			</div>

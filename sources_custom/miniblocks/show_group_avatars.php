@@ -70,7 +70,7 @@ foreach ($rows as $row) {
         <div class="box left float_separation"><div class="box_inner">
             <a href="' . escape_html($url) . '"><img src="' . escape_html($avatar_url) . '" /></a><br />
 
-            <a href="' . escape_html($url) . '" onblur="this.onmouseout(event);" onfocus="this.onmouseover(event);" onmouseover="if (typeof window.activate_tooltip!=\'undefined\') activate_tooltip(this,event,\'' . escape_html(str_replace("\n", '\n', addslashes($tooltip))) . '\',\'auto\');">' . escape_html($username) . '</a><br />
+            <a href="' . escape_html($url) . '" onblur="this.onmouseout(event);" onfocus="this.onmouseover(event);" onmouseover="activate_tooltip(this,event,\'' . escape_html(str_replace("\n", '\n', addslashes($tooltip))) . '\',\'auto\');">' . escape_html($username) . '</a><br />
         </div></div>
     ';
 }

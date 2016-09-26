@@ -30,7 +30,7 @@
 	{+END}
 {+END}
 
-<form title="{!SAVE}" id="quiz_form" class="quiz_form" method="post" onsubmit="return check_form(this);" action="{URL*}" autocomplete="off">
+<form title="{!SAVE}" id="quiz_form" class="quiz_form js-quiz-form js-submit-check-form" method="post" action="{URL*}" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<div>

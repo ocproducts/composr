@@ -3,80 +3,97 @@
     Composr.behaviors.coreFeedbackFeatures = {
         initialize: {
             attach: function (context) {
-                Composr.initializeViews(context, 'core_feedback_features');
                 Composr.initializeTemplates(context, 'core_feedback_features');
             }
         }
     };
 
     var CommentsPostingForm = Composr.View.extend({
+        form: null,
+        btnSubmit: null,
         initialize: function (v, options) {
-            Composr.View.prototype.initialize.apply(this, arguments);
-            this.form = this.$('.js-form-comments');
-            this.setup();
-        },
-
-        events: {
-            'click .js-btn-full-editor': 'moveToFullEditor',
-            'click .js-btn-submit-comments': 'clickBtnSubmit',
-            'submit .js-form-comments': 'submitFormComments'
-        },
-
-        setup: function () {
-            var options = this.options;
+            CommentsPostingForm.__super__.initialize.apply(this, arguments);
+            this.form = this.$('form.js-form-comments');
+            this.btnSubmit = this.$('.js-btn-submit-comments');
 
             set_up_comcode_autocomplete('post', Composr.is(options.wysiwyg));
 
-            if (Composr.is(options.forcePreviews)) {
-                document.getElementById('submit_button').style.display = 'none';
-            }
-
-            if (Composr.defined(options.reviewRatingCriteria, options.type, options.id) && Composr.$JS_ON) {
-                var i, reviewTitleId, func,
-                    id = Composr.filters.id(options.id),
-                    type = options.type,
-                    typeId = Composr.filters.id(type);
-
-                for (i = 0; i < options.reviewRatingCriteria; i++) {
-                    reviewTitleId = Composr.filters.id(options.reviewRatingCriteria[i].reviewTitle);
-                    func = 'new_review_highlight__' + type + ' __' + reviewTitleId + '__' + id;
-
-                    window[func] = (function (func, reviewTitleId) {
-                        return function (review, first_time) {
-                            var j, bit;
-                            for (j = 1; j <= 5; j++) {
-                                bit = document.getElementById('review_bar_' + j + '__' + typeId + '__' + reviewTitleId + '__' + id);
-                                bit.className = ((review != 0) && (review / 2 >= j)) ? 'rating_star_highlight' : 'rating_star';
-                                if (first_time) bit.onmouseover = function (i) {
-                                    return function () {
-                                        window[func](i * 2, false);
-                                    }
-                                }(j);
-                                if (first_time) bit.onmouseout = function (i) {
-                                    return function () {
-                                        window[func](window.parseInt(document.getElementById('review_rating__' + typeId + '__' + reviewTitleId + '__' + id).value), false);
-                                    }
-                                }(j);
-                                if (first_time) bit.onclick = function (i) {
-                                    return function () {
-                                        document.getElementById('review_rating__' + typeId + '__' + reviewTitleId + '__' + id).value = i * 2;
-                                    }
-                                }(j);
-                            }
-                        }
-                    }(func, reviewTitleId));
-
-                    window[func](0, true);
-                }
+            if (Composr.is(Composr.$CONFIG_OPTION.enablePreviews, Composr.$FORCE_PREVIEWS)) {
+                this.btnSubmit.style.display = 'none';
             }
 
             if (Composr.is(options.useCaptcha)) {
                 this.addCaptchaChecking();
             }
+
+            if (Composr.is(options.type, options.id)) {
+                this.initReviewRatings();
+            }
+
+            var captchaSpot = this.$('#captcha_spot');
+            if (captchaSpot) {
+                Composr.dom.html(captchaSpot, options.captcha);
+            }
         },
 
-        clickBtnSubmit: function (e) {
-            var form = this.form, button = e.currentTarget;
+        events: {
+            'click .js-btn-full-editor': 'moveToFullEditor',
+            'click .js-btn-submit-comments': 'clickBtnSubmit',
+            'click .js-click-do-form-preview': 'doFormPreview',
+            'submit .js-form-comments': 'submitFormComments',
+
+            'click .js-img-review-bar': 'reviewBarClick',
+            'mouseover .js-img-review-bar': 'reviewBarHover',
+            'mouseout .js-img-review-bar': 'reviewBarHover'
+        },
+
+        initReviewRatings: function () {
+            var view = this,
+                reviewRatingContainers = view.$$('.js-container-review-rating');
+
+            reviewRatingContainers.forEach(function (container) {
+                view.displayReviewRating(container);
+            });
+        },
+
+        displayReviewRating: function (container, rating) {
+            var reviewBars = Composr.dom.$$(container, '.js-img-review-bar');
+            if (rating === undefined) {
+                rating = container.querySelector('.js-inp-review-rating').value;
+            }
+            rating = +rating || 0;
+
+            reviewBars.forEach(function (reviewBar) {
+                var barRating = +reviewBar.dataset.vwRating || 0;
+
+                if (barRating <= rating) { // Whether to highlight
+                    reviewBar.classList.remove('rating_star');
+                    reviewBar.classList.add('rating_star_highlight');
+                } else {
+                    reviewBar.classList.remove('rating_star_highlight');
+                    reviewBar.classList.add('rating_star');
+                }
+            });
+        },
+
+        reviewBarClick: function (e, reviewBar) {
+            var container = this.$closest(reviewBar, '.js-container-review-rating'),
+                ratingInput = container.querySelector('.js-inp-review-rating'),
+                rating = +reviewBar.dataset.vwRating || 0;
+
+            ratingInput.value = rating;
+            this.displayReviewRating(container, rating);
+        },
+
+        reviewBarHover: function (e, reviewBar) {
+            var container = this.$closest(reviewBar, '.js-container-review-rating'),
+                rating = (e.type === 'mouseover') ? reviewBar.dataset.vwRating : undefined;
+
+            this.displayReviewRating(container, rating);
+        },
+
+        clickBtnSubmit: function (e, button) {
+            var form = this.form;
 
             form.setAttribute('target', '_self');
 
@@ -84,8 +101,17 @@
                 form.setAttribute('action', form.old_action);
             }
 
-            if (form.onsubmit.call(form, event)) {
+            if (form.onsubmit.call(form, e)) {
                 disable_button_just_clicked(button);
+                form.submit();
+            }
+        },
+
+        doFormPreview: function (e) {
+            var form = this.form,
+                url = maintain_theme_in_link(Composr.$PREVIEW_URL + Composr.$KEEP);
+
+            if (do_form_preview(e, form, url)) {
                 form.submit();
             }
         },
@@ -108,8 +134,7 @@
         },
 
         moveToFullEditor: function (e) {
-            var button = e.currentTarget,
-                moreUrl = options.moreUrl,
+            var moreUrl = this.options.moreUrl,
                 form = this.form;
 
             // Tell next screen what the stub to trim is
@@ -133,7 +158,7 @@
                 } else {
                     moreUrl += '&';
                 }
-                moreUrl += 'parent_id=' + window.encodeURIComponent(form.elements['parent_id'].value);
+                moreUrl += 'parent_id=' + encodeURIComponent(form.elements['parent_id'].value);
             }
 
             // Reset form target
@@ -154,7 +179,7 @@
             form.old_submit = form.onsubmit;
             form.onsubmit = function () {
                 form.elements['submit_button'].disabled = true;
-                var url = '{$FIND_SCRIPT;,snippet}?snippet=captcha_wrong&name=' + window.encodeURIComponent(form.elements['captcha'].value);
+                var url = '{$FIND_SCRIPT;,snippet}?snippet=captcha_wrong&name=' + encodeURIComponent(form.elements['captcha'].value);
                 if (!do_ajax_field_test(url)) {
                     form.elements['captcha'].src += '&'; // Force it to reload latest captcha
                     document.getElementById('submit_button').disabled = false;
@@ -174,9 +199,7 @@
     });
 
     // Expose the views
-    Composr.views.coreFeedbackFeatures = {
-        CommentsPostingForm: CommentsPostingForm
-    };
+    Composr.views.CommentsPostingForm = CommentsPostingForm;
 
     Composr.templates.coreFeedbackFeatures = {
         ratingForm: function ratingForm(options) {
@@ -307,7 +330,7 @@
                         var known_posts = comments_wrapper.querySelectorAll('.post');
                         for (var i = 0; i < known_posts.length; i++) {
                             if (known_times.indexOf(known_posts[i].className.replace(/^post /, '')) == -1) {
-                                set_opacity(known_posts[i], 0.0);
+                                clear_transition_and_set_opacity(known_posts[i], 0.0);
                                 fade_transition(known_posts[i], 100, 20, 5);
                             }
                         }
@@ -382,7 +405,7 @@
                         Composr.dom.html(_replace_spot, '');
                         var loading_image = document.createElement('img');
                         loading_image.className = 'ajax_loading';
-                        loading_image.src = '{$IMG;,loading}'.replace(/^https?:/, window.location.protocol);
+                        loading_image.src = Composr.url('{$IMG;,loading}');
                         loading_image.style.height = '12px';
                         _replace_spot.appendChild(loading_image);
 

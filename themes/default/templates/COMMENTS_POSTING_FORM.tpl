@@ -29,8 +29,8 @@
 	{+END}
 {+END}
 
-<div class="view view-comments-posting-form" data-view-core-feedback-features="CommentsPostingForm"
-	  data-view-args="{+START,PARAMS_JSON,MORE_URL,GET_EMAIL,EMAIL_OPTIONAL,force_previews,WYSIWYG,REVIEW_RATING_CRITERIA,CAPTCHA}{_*}{+END}">
+<div data-view="CommentsPostingForm"
+	  data-view-args="{+START,PARAMS_JSON,MORE_URL,GET_EMAIL,EMAIL_OPTIONAL,WYSIWYG,CAPTCHA}{_*}{+END}">
 {+START,IF_NON_EMPTY,{COMMENT_URL}}
 <form role="form" title="{TITLE*}" class="comments_form js-form-comments" id="comments_form" action="{COMMENT_URL*}{+START,IF_NON_EMPTY,{$GET,current_anchor}}#{$GET,current_anchor}{+END}{+START,IF_EMPTY,{$GET,current_anchor}}{+START,IF_PASSED_AND_TRUE,COMMENTS}#last_comment{+END}{+END}" method="post" enctype="multipart/form-data" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
@@ -124,12 +124,21 @@
 
 						{+START,IF_PASSED,REVIEW_RATING_CRITERIA}{+START,IF_PASSED,TYPE}{+START,IF_PASSED,ID}
 							{+START,LOOP,REVIEW_RATING_CRITERIA}
-								<tr>
+								<tr class="js-container-review-rating">
 									<th class="de_th vertical_alignment">
 										{+START,IF,{$NOT,{$JS_ON}}}<label class="accessibility_hidden" for="review_rating__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}">{+END}{+START,IF_EMPTY,{REVIEW_TITLE}}{!RATING}:{+END}{+START,IF_NON_EMPTY,{REVIEW_TITLE}}{REVIEW_TITLE*}:{+END}{+START,IF,{$NOT,{$JS_ON}}}</label>{+END}
 									</th>
 
 									<td>
+										{+START,IF,{$JS_ON}}
+											<img id="review_bar_1__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" class="rating_star js-img-review-bar" data-vw-rating="2" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" />
+											<img id="review_bar_2__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" class="rating_star js-img-review-bar" data-vw-rating="4" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" />
+											<img id="review_bar_3__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" class="rating_star js-img-review-bar" data-vw-rating="6" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" />
+											<img id="review_bar_4__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" class="rating_star js-img-review-bar" data-vw-rating="8" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" />
+											<img id="review_bar_5__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" class="rating_star js-img-review-bar" data-vw-rating="10" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" />
+											<input id="review_rating__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" class="js-inp-review-rating" type="hidden" name="review_rating__{REVIEW_TITLE|*}" value="" />
+										{+END}
+
 										{+START,IF,{$NOT,{$JS_ON}}}
 											<select id="review_rating__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" name="review_rating">
 												<option value="">{!NA}</option>
@@ -154,7 +163,7 @@
 								{$SET,needs_msg_label,{$OR,{$GET,GET_TITLE},{GET_EMAIL},{$AND,{$IS_GUEST},{$CNS}}}}
 								{+START,IF,{$GET,needs_msg_label}}
 									<div class="vertical_alignment">
-										<a data-open-as-overlay="{}" class="link_exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SEARCH:userguide_comcode}"><img alt="" src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" /></a>
+										<a data-open-as-overlay="1" class="link_exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SEARCH:userguide_comcode}"><img alt="" src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" /></a>
 										<label for="post">{!POST_COMMENT}:</label>
 									</div>
 								{+END}
@@ -162,18 +171,18 @@
 								{+START,IF_NON_EMPTY,{FIRST_POST}{COMMENT_TEXT}}
 									<ul class="associated_links_block_group">
 										{+START,IF_NON_EMPTY,{FIRST_POST}}
-											<li><a class="non_link" title="{!cns:FIRST_POST} {!LINK_NEW_WINDOW}" target="_blank" href="{FIRST_POST_URL*}" onblur="this.onmouseout(event);" onfocus="this.onmouseover(event);" onmouseover="if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,'{FIRST_POST*~;^}','320px',null,null,false,true);">{!cns:FIRST_POST}</a></li>
+											<li><a class="non_link" title="{!cns:FIRST_POST} {!LINK_NEW_WINDOW}" target="_blank" href="{FIRST_POST_URL*}" onblur="this.onmouseout(event);" onfocus="this.onmouseover(event);" onmouseover="activate_tooltip(this,event,'{FIRST_POST*~;^}','320px',null,null,false,true);">{!cns:FIRST_POST}</a></li>
 										{+END}
 
 										{+START,IF_NON_EMPTY,{COMMENT_TEXT}}
-											<li><a class="non_link" href="{$PAGE_LINK*,:rules}" onblur="this.onmouseout(event);" onfocus="this.onmouseover(event);" onmouseover="if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,'{$TRUNCATE_LEFT,{COMMENT_TEXT*~;^},1000,0,1}','320px',null,null,false,true);">{!HOVER_MOUSE_IMPORTANT}</a></li>
+											<li><a class="non_link" href="{$PAGE_LINK*,:rules}" onblur="this.onmouseout(event);" onfocus="this.onmouseover(event);" onmouseover="activate_tooltip(this,event,'{$TRUNCATE_LEFT,{COMMENT_TEXT*~;^},1000,0,1}','320px',null,null,false,true);">{!HOVER_MOUSE_IMPORTANT}</a></li>
 										{+END}
 									</ul>
 								{+END}
 
 								{+START,IF,{$NOT,{$GET,needs_msg_label}}}
 									<div>
-										<a data-open-as-overlay="{}" class="link_exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SEARCH:userguide_comcode}"><img alt="" src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" class="vertical_alignment" /></a>
+										<a data-open-as-overlay="1" class="link_exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SEARCH:userguide_comcode}"><img alt="" src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" class="vertical_alignment" /></a>
 										<label for="post" class="vertical_alignment">{!POST_COMMENT}:</label>
 									</div>
 								{+END}
@@ -218,9 +227,6 @@
 
 										{+START,IF_NON_EMPTY,{$TRIM,{$GET,CAPTCHA}}}
                                             <div id="captcha_spot"></div>
-                                            <script>// <![CDATA[
-												Composr.dom.html(document.getElementById('captcha_spot'),'{$GET;^/,CAPTCHA}');
-                                            //]]></script>
 										{+END}
 									{+END}
 									{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}
@@ -241,9 +247,6 @@
 
                             {+START,IF_NON_EMPTY,{$TRIM,{$GET,CAPTCHA}}}
                                 <div id="captcha_spot"></div>
-                                <script>// <![CDATA[
-                                    Composr.dom.html(document.getElementById('captcha_spot'),'{$GET;^/,CAPTCHA}');
-                            //]]></script>
                             {+END}
 						{+END}
 						{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}
@@ -254,7 +257,7 @@
 					<div class="proceed_button buttons_group">
 						{+START,IF,{$NOT,{$MOBILE}}}
 							{+START,IF,{$JS_ON}}{+START,IF,{$CONFIG_OPTION,enable_previews}}{+START,IF,{$NOT,{$VALUE_OPTION,xhtml_strict}}}
-								<input onclick="if (typeof this.form=='undefined') var form=window.form_submitting; else var form=this.form; if (do_form_preview(event,form,maintain_theme_in_link('{$PREVIEW_URL;*}{$KEEP;*}'))) form.submit();" id="preview_button" accesskey="p" tabindex="250" class="tabs__preview {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item} js-btn-preview" type="button" value="{!PREVIEW}" />
+								<input id="preview_button" accesskey="p" tabindex="250" class="tabs__preview js-click-do-form-preview {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item}" type="button" value="{!PREVIEW}" />
 							{+END}{+END}{+END}
 						{+END}
 
@@ -280,13 +283,9 @@
 </form>
 {+END}
 
-{$SET,force_previews,0}
-{+START,IF,{$JS_ON}}{+START,IF,{$CONFIG_OPTION,enable_previews}}{+START,IF,{$NOT,{$VALUE_OPTION,xhtml_strict}}}
-	{+START,IF,{$FORCE_PREVIEWS}}
-		{$SET,force_previews,1}
-	{+END}
 
+{+START,IF,{$JS_ON}}{+START,IF,{$CONFIG_OPTION,enable_previews}}
 	<iframe{$?,{$BROWSER_MATCHES,ie}, frameBorder="0" scrolling="no"} title="{!PREVIEW}" name="preview_iframe" id="preview_iframe" src="{$BASE_URL*}/uploads/index.html" class="hidden_preview_frame">{!PREVIEW}</iframe>
-{+END}{+END}{+END}
+{+END}{+END}
 
 </div>

@@ -33,7 +33,7 @@ function s_update_get_data() {
                     post_val += '&csrf_token=' + window.encodeURIComponent(get_csrf_token()); // For CSRF prevention
 
                     jQuery.ajax({
-                        url: url.replace(/^https?:/, window.location.protocol),
+                        url: Composr.url(url),
                         type: 'POST',
                         data: post_val,
                         cache: false,
@@ -121,7 +121,7 @@ function s_update_remove(event, id) {
                 post_val += '&csrf_token=' + window.encodeURIComponent(get_csrf_token()); // For CSRF prevention
 
                 jQuery.ajax({
-                    url: url.replace(/^https?:/, window.location.protocol),
+                    url: Composr.url(url),
                     type: 'POST',
                     data: post_val,
                     cache: false,

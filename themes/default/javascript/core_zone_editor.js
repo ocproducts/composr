@@ -20,13 +20,12 @@
             'click .js-btn-fetch-and-submit': 'fetchAndSubmit'
         },
 
-        submit: function (e) {
-            modsecurity_workaround(e.currentTarget);
+        submit: function (e, form) {
+            modsecurity_workaround(form);
             e.preventDefault();
         },
 
-        fetchAndSubmit: function (e) {
-            var btn = e.currentTarget;
+        fetchAndSubmit: function (e, btn) {
             fetch_more_fields();
             btn.form.submit();
         }
@@ -56,9 +55,9 @@
             'change .js-ta-ze-comcode, .js-sel-zones-draw, .js-inp-zones-draw': 'setEditedPanel'
         },
 
-        selectTab: function (e) {
+        selectTab: function (e, target) {
             var id = this.options.id,
-                tab = e.currentTarget.dataset.jsTab;
+                tab = target.dataset.jsTab;
 
             select_ze_tab(id, tab);
 
@@ -67,8 +66,8 @@
             }
         },
 
-        submitComcode: function (e) {
-            modsecurity_workaround(e.currentTarget);
+        submitComcode: function (e, target) {
+            modsecurity_workaround(target);
             e.preventDefault();
         },
 
@@ -76,9 +75,8 @@
             toggle_wysiwyg('edit_' + this.options.id + '_textarea');
         },
 
-        setEditedPanel: function (e) {
+        setEditedPanel: function (e, field) {
             var opts = this.options,
-                field = e.currentTarget,
                 editor = document.getElementById('edit_tab_' + opts.id);
 
             set_edited_panel(opts.id);
@@ -190,7 +188,7 @@ function select_ze_tab(id, tab) {
                 }
             }
             if (tabs[i] === tab) {
-                set_opacity(element, 0.0);
+                clear_transition_and_set_opacity(element, 0.0);
                 fade_transition(element, 100, 30, 4);
 
                 elementh.className += ' tab_active';
@@ -256,7 +254,7 @@ function reload_preview(id) {
     var edit_element = document.getElementById('edit_' + id + '_textarea');
     if (!edit_element) return; // Nothing interatively edited
 
-    Composr.dom.html(element, '<div aria-busy="true" class="ajax_loading vertical_alignment"><img src="' + '{$IMG;,loading}'.replace(/^https?:/, window.location.protocol) + '" /> <span>{!LOADING;^}</span></div>');
+    Composr.dom.html(element, '<div aria-busy="true" class="ajax_loading vertical_alignment"><img src="' + Composr.url('{$IMG;,loading}') + '" /> <span>{!LOADING;^}</span></div>');
 
     window.loading_preview_of = id;
 

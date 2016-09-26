@@ -1,4 +1,4 @@
-(function ($, Composr) {
+(function (Composr) {
     Composr.templates.tickets = {
         supportTicketScreen: function supportTicketScreen(options) {
             if ((typeof options.serializedOptions === 'string') && (typeof options.hash === 'string')) {
@@ -15,4 +15,4 @@
             }
         }
     };
-})(window.jQuery || window.Zepto, Composr);
+}(Composr));

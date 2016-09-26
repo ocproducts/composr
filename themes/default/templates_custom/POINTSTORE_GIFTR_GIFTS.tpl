@@ -43,7 +43,7 @@
 
 	<div class="box box___pointstore_giftr_gifts"><div class="box_inner">
 		{+START,LOOP,GIFTS}
-			<div style="float: left; margin: 15px" onmouseover="if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,'{NAME;^*}.&lt;br /&gt;&lt;br /&gt;{!GIFT_POPULARITY;^*,{POPULARITY}}','auto');">
+			<div style="float: left; margin: 15px" onmouseover="activate_tooltip(this,event,'{NAME;^*}.&lt;br /&gt;&lt;br /&gt;{!GIFT_POPULARITY;^*,{POPULARITY}}','auto');">
 				<a href="{GIFT_URL*}"><img title="{NAME*}" src="{$THUMBNAIL*,{IMAGE_URL},80x80,,,,pad,both,#FFFFFF00}" /></a>
 
 				<p class="associated_links_block_group associated_link"><a title="{NAME*}" href="{GIFT_URL*}">{!_GIFT_PRICE,{PRICE*}}</a></p>

@@ -157,7 +157,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 							{+END}{+END}{+END}{+END}
 							<li><a href="{$PAGE_LINK*,adminzone:}">{$?,{$MOBILE},{!ADMIN_ZONE},<img width="24" height="24" title="{!ADMIN_ZONE}" alt="{!ADMIN_ZONE}" src="{$IMG*,icons/24x24/menu/adminzone/adminzone}" srcset="{$IMG*,icons/48x48/menu/adminzone/adminzone} 2x" />}</a></li>
 							{+START,IF,{$NOT,{$MOBILE}}}{+START,IF,{$EQ,{$BRAND_NAME},Composr}}
-								<li><a id="software_chat_button" accesskey="-" onclick="if (typeof window.load_software_chat!='undefined') return load_software_chat(event); else return false;" href="#!">{$?,{$MOBILE},{!SOFTWARE_CHAT},<img width="24" height="24" id="software_chat_img" title="{!SOFTWARE_CHAT}" alt="{!SOFTWARE_CHAT}" src="{$IMG*,icons/24x24/tool_buttons/software_chat}" srcset="{$IMG*,icons/48x48/tool_buttons/software_chat} 2x" />}</a></li>
+								<li><a id="software_chat_button" accesskey="-" href="#!" class="js-click-load-software-chat">{$?,{$MOBILE},{!SOFTWARE_CHAT},<img width="24" height="24" id="software_chat_img" title="{!SOFTWARE_CHAT}" alt="{!SOFTWARE_CHAT}" src="{$IMG*,icons/24x24/tool_buttons/software_chat}" srcset="{$IMG*,icons/48x48/tool_buttons/software_chat} 2x" />}</a></li>
 							{+END}{+END}
 						{+END}
 					{+END}
@@ -180,7 +180,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 					{+END}
 
 					{+START,IF,{$NOT,{$MOBILE}}}{+START,IF_NON_EMPTY,{$STAFF_ACTIONS}}{+START,IF,{$CONFIG_OPTION,show_staff_page_actions}}
-						<form onsubmit="return staff_actions_select(this);" title="{!SCREEN_DEV_TOOLS} {!LINK_NEW_WINDOW}" class="inline special_page_type_form" action="{$URL_FOR_GET_FORM*,{$SELF_URL,0,1}}" method="get" target="_blank" autocomplete="off">
+						<form title="{!SCREEN_DEV_TOOLS} {!LINK_NEW_WINDOW}" class="inline special_page_type_form js-submit-staff-actions-select" action="{$URL_FOR_GET_FORM*,{$SELF_URL,0,1}}" method="get" target="_blank" autocomplete="off">
 							{$HIDDENS_FOR_GET_FORM,{$SELF_URL,0,1,0,cache_blocks=0,cache_comcode_pages=0,keep_no_minify=1,special_page_type=<null>,keep_template_magic_markers=<null>}}
 
 							<div class="inline">
@@ -202,19 +202,19 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 								<li><a accesskey="3" rel="site_map" href="{$PAGE_LINK*,_SEARCH:sitemap}">{!SITEMAP}</a></li>
 							{+END}
 							{+START,IF,{$CONFIG_OPTION,bottom_show_rules_link}}
-								<li><a data-open-as-overlay="{}" rel="site_rules" accesskey="7" href="{$PAGE_LINK*,:rules}">{!RULES}</a></li>
+								<li><a data-open-as-overlay="1" rel="site_rules" accesskey="7" href="{$PAGE_LINK*,:rules}">{!RULES}</a></li>
 							{+END}
 							{+START,IF,{$CONFIG_OPTION,bottom_show_privacy_link}}
-								<li><a data-open-as-overlay="{}" rel="site_privacy" accesskey="8" href="{$PAGE_LINK*,_SEARCH:privacy}">{!PRIVACY}</a></li>
+								<li><a data-open-as-overlay="1" rel="site_privacy" accesskey="8" href="{$PAGE_LINK*,_SEARCH:privacy}">{!PRIVACY}</a></li>
 							{+END}
 							{+START,IF,{$CONFIG_OPTION,bottom_show_feedback_link}}
-								<li><a data-open-as-overlay="{}" rel="site_contact" accesskey="9" href="{$?,{$OR,{$ADDON_INSTALLED,staff_messaging},{$NOT,{$ADDON_INSTALLED,tickets}}},{$PAGE_LINK*,_SEARCH:feedback:redirect={$SELF_URL&,1}},{$PAGE_LINK*,_SEARCH:tickets}}">{!_FEEDBACK}</a></li>
+								<li><a data-open-as-overlay="1" rel="site_contact" accesskey="9" href="{$?,{$OR,{$ADDON_INSTALLED,staff_messaging},{$NOT,{$ADDON_INSTALLED,tickets}}},{$PAGE_LINK*,_SEARCH:feedback:redirect={$SELF_URL&,1}},{$PAGE_LINK*,_SEARCH:tickets}}">{!_FEEDBACK}</a></li>
 							{+END}
 							{+START,IF,{$NOR,{$IS_HTTPAUTH_LOGIN},{$IS_GUEST}}}
 								<li><form title="{!LOGOUT}" class="inline" method="post" action="{$PAGE_LINK*,_SELF:login:logout}" autocomplete="off"><input class="button_hyperlink" type="submit" title="{!_LOGOUT,{$USERNAME*}}" value="{!LOGOUT}" /></form></li>
 							{+END}
 							{+START,IF,{$OR,{$IS_HTTPAUTH_LOGIN},{$IS_GUEST}}}
-								<li><a data-open-as-overlay="{}" href="{$PAGE_LINK*,_SELF:login{$?,{$NOR,{$GET,login_screen},{$_POSTED},{$EQ,{$PAGE},login,join}},:redirect={$SELF_URL&*,1}}}">{!_LOGIN}</a></li>
+								<li><a data-open-as-overlay="1" href="{$PAGE_LINK*,_SELF:login{$?,{$NOR,{$GET,login_screen},{$_POSTED},{$EQ,{$PAGE},login,join}},:redirect={$SELF_URL&*,1}}}">{!_LOGIN}</a></li>
 							{+END}
 							{+START,IF,{$CONFIG_OPTION,mobile_support}}
 								{+START,IF,{$MOBILE,1}}

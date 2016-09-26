@@ -7,7 +7,7 @@
 
 <p>{!TEMPCODE_TESTER_HELP}</p>
 
-<form title="{!PRIMARY_PAGE_FORM}" method="post" action="#" autocomplete="off" data-tpl-core-themeing="tempcodeTesterScreen">
+<form title="{!PRIMARY_PAGE_FORM}" method="post" action="#!" autocomplete="off" data-tpl-core-themeing="tempcodeTesterScreen">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<h2><label for="tempcode">Tempcode</label></h2>

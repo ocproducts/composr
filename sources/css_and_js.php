@@ -124,34 +124,6 @@ function js_compile($j, $js_cache_path, $minify = true)
     $KEEP_MARKERS = false;
     $SHOW_EDIT_LINKS = false;
     $tpl_params = array();
-    if ($j == 'staff') {
-        $url_patterns = array();
-        $cma_hooks = find_all_hooks('systems', 'content_meta_aware');
-        foreach (array_keys($cma_hooks) as $content_type) {
-            require_code('content');
-            $content_type_ob = get_content_object($content_type);
-            if ($content_type_ob !== null) {
-                $info = $content_type_ob->info();
-                if (isset($info['view_page_link_pattern'])) {
-                    list($zone, $attributes,) = page_link_decode($info['view_page_link_pattern']);
-                    $url = build_url($attributes, $zone, null, false, false, true);
-                    $url_patterns[$url->evaluate()] = array(
-                        'PATTERN' => $url->evaluate(),
-                        'HOOK' => $content_type,
-                    );
-                }
-                if (isset($info['edit_page_link_pattern'])) {
-                    list($zone, $attributes,) = page_link_decode($info['edit_page_link_pattern']);
-                    $url = build_url($attributes, $zone, null, false, false, true);
-                    $url_patterns[$url->evaluate()] = array(
-                        'PATTERN' => $url->evaluate(),
-                        'HOOK' => $content_type,
-                    );
-                }
-            }
-        }
-        $tpl_params['URL_PATTERNS'] = array_values($url_patterns);
-    }
     require_code('tempcode');
     $js = do_template($j, $tpl_params, null, false, null, '.js', 'javascript');
     $KEEP_MARKERS = $temp_keep_markers;

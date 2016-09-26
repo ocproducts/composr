@@ -70,6 +70,7 @@ function init__global2()
     // Initialise some globals
     $JAVASCRIPTS_DEFAULT = array(
         'underscore' => true,
+        'modernizr' => true,
         'jquery' => true,
         'backbone' => true,
         'composr' => true,

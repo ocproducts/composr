@@ -1,1 +1,1 @@
-<abbr title="{$REPLACE,",&quot;,{$STRIP_TAGS,{TEXT_LARGE}}}" class="non_link" onmouseover="var win=get_main_cms_window(true); if (typeof win.activate_tooltip!='undefined') win.activate_tooltip(this,event,'{TEXT_LARGE;~*}','40%',null,null,null,false,false,false,win);">{TEXT_SMALL}</abbr>
+<abbr data-tpl-core-abstract-components="cropTextMouseOverInline" data-tpl-args="{+START,PARAMS_JSON,TEXT_LARGE}{_*}{+END}" class="non_link" title="{$REPLACE,",&quot;,{$STRIP_TAGS,{TEXT_LARGE}}}">{TEXT_SMALL}</abbr>

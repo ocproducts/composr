@@ -19,7 +19,7 @@
 					{+END}
 				</ul>
 			{+END}
-			<a href="{$PAGE_LINK*,_SEARCH:awards}"><img onmouseover="if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,'{$GET;^*,AWARDS_TEXT}','auto',null,null,false,true);" title="" alt="{!AWARD_WINNER}" src="{$IMG*,awarded}" /></a>
+			<a href="{$PAGE_LINK*,_SEARCH:awards}"><img onmouseover="activate_tooltip(this,event,'{$GET;^*,AWARDS_TEXT}','auto',null,null,false,true);" title="" alt="{!AWARD_WINNER}" src="{$IMG*,awarded}" /></a>
 		{+END}
 	{+END}
 </h1>

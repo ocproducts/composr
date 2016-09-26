@@ -71,7 +71,7 @@
 	<div class="block_main_members block_main_members__{DISPLAY_MODE%}{+START,IF_NON_EMPTY,{ITEM_WIDTH}} has_item_width{+END} float_surrounder">
 		{+START,LOOP,MEMBER_BOXES}
 			{+START,IF,{$EQ,{DISPLAY_MODE},avatars,photos}}
-				<div{+START,IF_NON_EMPTY,{ITEM_WIDTH}} style="width: {ITEM_WIDTH*}"{+END} onmouseover="if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,'{BOX;^*}','auto');">
+				<div{+START,IF_NON_EMPTY,{ITEM_WIDTH}} style="width: {ITEM_WIDTH*}"{+END} onmouseover="activate_tooltip(this,event,'{BOX;^*}','auto');">
 					<p>
 						{+START,IF,{$EQ,{DISPLAY_MODE},avatars}}
 							{$SET,image,{$THUMBNAIL,{$?,{$IS_EMPTY,{$AVATAR,{MEMBER_ID}}},{$IMG,cns_default_avatars/default},{$AVATAR,{MEMBER_ID}}},80x80,,,{$IMG,cns_default_avatars/default},pad,both,FFFFFF00}}
@@ -104,7 +104,7 @@
 
 							<ul class="horizontal_links associated_links_block_group">
 								<li>
-									<a onmouseover="if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,'{BOX;^*}','auto');" href="{$MEMBER_PROFILE_URL*,{MEMBER_ID}}" onfocus="this.parentNode.onmouseover(event);" onblur="this.parentNode.onmouseout(event);">{$USERNAME*,{MEMBER_ID}}</a>
+									<a onmouseover="activate_tooltip(this,event,'{BOX;^*}','auto');" href="{$MEMBER_PROFILE_URL*,{MEMBER_ID}}" onfocus="this.parentNode.onmouseover(event);" onblur="this.parentNode.onmouseout(event);">{$USERNAME*,{MEMBER_ID}}</a>
 								</li>
 							</ul>
 						</div></div>

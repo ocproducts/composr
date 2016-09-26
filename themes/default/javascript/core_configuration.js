@@ -21,8 +21,7 @@
             'submit .js-form-xml-config': 'submit'
         },
 
-        submit: function (e) {
-            var form = e.currentTarget;
+        submit: function (e, form) {
             e.preventDefault();
             modsecurity_workaround(form);
         }

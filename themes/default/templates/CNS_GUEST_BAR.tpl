@@ -37,8 +37,8 @@
 			<nav class="cns_guest_column cns_member_column_d">
 				{$,<p class="cns_member_column_title">{!VIEW}:</p>}
 				<ul class="actions_list">
-					<li><a data-open-as-overlay="{}" href="{NEW_POSTS_URL*}">{!POSTS_SINCE}</a></li>
-					<li><a data-open-as-overlay="{}" href="{UNANSWERED_TOPICS_URL*}">{!UNANSWERED_TOPICS}</a></li>
+					<li><a data-open-as-overlay="1" href="{NEW_POSTS_URL*}">{!POSTS_SINCE}</a></li>
+					<li><a data-open-as-overlay="1" href="{UNANSWERED_TOPICS_URL*}">{!UNANSWERED_TOPICS}</a></li>
 				</ul>
 			</nav>
 		</div>

@@ -130,7 +130,7 @@ function commandr_command_response(ajax_result_frame, ajax_result) {
     // Deal with the response: add the result to the command_line
     var method = merge_text_nodes(ajax_result.getElementsByTagName('command')[0].childNodes);
     var stdcommand = merge_text_nodes(ajax_result.getElementsByTagName('stdcommand')[0].childNodes);
-    var stdhtml = ajax_result.getElementsByTagName('stdhtml')[0].childNodes[0];
+    var stdhtml = ajax_result.getElementsByTagName('stdhtml')[0].firstElementChild;
     var stdout = merge_text_nodes(ajax_result.getElementsByTagName('stdout')[0].childNodes);
     var stderr = merge_text_nodes(ajax_result.getElementsByTagName('stderr')[0].childNodes);
 

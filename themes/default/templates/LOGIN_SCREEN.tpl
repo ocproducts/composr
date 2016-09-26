@@ -1,8 +1,9 @@
+<div data-tpl-core="loginScreen">
 {TITLE}
 
 {$SET,login_screen,1}
 
-<div class="login_page" data-tpl-core="loginScreen">
+<div class="login_page">
 	{+START,IF,{$HAS_FORUM,1}}
 		<div class="box box___login_screen"><div class="box_inner">
 			{!LOGIN_TEXT,<a href="{JOIN_URL*}"><strong>{!JOIN_HERE}</strong></a>}
@@ -85,3 +86,4 @@
 	{+END}
 </div>
 
+</div>

@@ -47,7 +47,6 @@ function set_attachment(field_name, number, filename, multi, uploader_settings) 
     if (typeof window.max_attachments == 'undefined') return;
 
     var post = document.getElementById(field_name);
-    post = ensure_true_id(post, field_name);
 
     var tmp_form = post.form;
     if ((tmp_form) && (tmp_form.preview)) {
@@ -84,7 +83,39 @@ function set_attachment(field_name, number, filename, multi, uploader_settings) 
         var show_overlay, defaults = {};
         if (filepath.indexOf('fakepath') == -1) // iPhone gives c:\fakepath\image.jpg, so don't use that
             defaults.description = filepath; // Default caption to local file path
-        /*{+START,INCLUDE,ATTACHMENT_UI_DEFAULTS,.js,javascript}{+END}*/
+
+        /*== START ATTACHMENT_UI_DEFAULTS.js ==*/
+        /*
+         This file is intended for customising the way the attachment UI operates/defaults.
+
+         The following variables are defined:
+         is_image (boolean)
+         is_video (boolean)
+         is_audio (boolean)
+         is_archive (boolean)
+         ext (the file extension, with no dot)
+         */
+
+        // Add any defaults into URL
+        defaults.thumb = '1';
+        defaults.type = ''; // =autodetect rendering type
+
+        // Shall we show the options overlay?
+        show_overlay = true;
+
+        if (multi || Composr.is(Composr.$CONFIG_OPTION.simplifiedAttachmentsUi, is_image) || is_archive) {
+            show_overlay = false;
+        }
+
+        if (is_image) {
+            tag = 'attachment_safe';
+        }
+
+        if (multi || is_image) {
+            defaults.framed = '0';
+        }
+
+        /*== END ATTACHMENT_UI_DEFAULTS.js ==*/
 
         if (!show_overlay) {
             var comcode = '[' + tag;
@@ -226,7 +257,6 @@ function do_input_html(field_name) {
     if (typeof window.insert_textbox_wrapping == 'undefined') return;
 
     var post = document.getElementById(field_name);
-    post = ensure_true_id(post, field_name);
     insert_textbox_wrapping(post, 'semihtml', '');
 }
 
@@ -234,7 +264,6 @@ function do_input_code(field_name) {
     if (typeof window.insert_textbox_wrapping == 'undefined') return;
 
     var post = document.getElementById(field_name);
-    post = ensure_true_id(post, field_name);
     insert_textbox_wrapping(post, (post.name == 'message') ? 'tt' : 'codebox', '');
 }
 
@@ -242,7 +271,6 @@ function do_input_quote(field_name) {
     if (typeof window.insert_textbox_wrapping == 'undefined') return;
 
     var post = document.getElementById(field_name);
-    post = ensure_true_id(post, field_name);
     window.fauxmodal_prompt(
         '{!javascript:ENTER_QUOTE_BY;^}',
         '',
@@ -257,7 +285,6 @@ function do_input_box(field_name) {
     if (typeof window.insert_textbox_wrapping == 'undefined') return;
 
     var post = document.getElementById(field_name);
-    post = ensure_true_id(post, field_name);
     window.fauxmodal_prompt(
         '{!javascript:ENTER_BOX_TITLE;^}',
         '',
@@ -284,7 +311,6 @@ function do_input_menu(field_name) {
 
                         var add;
                         var element = document.getElementById(field_name);
-                        element = ensure_true_id(element, field_name);
                         add = '[block=\""+escape_comcode(va)+"\" caption=\""+escape_comcode(vb)+"\" type=\"tree\"]menu[/block]';
                         insert_textbox(element, add);
                     },
@@ -377,7 +403,6 @@ function do_input_list(field_name, add) {
     if (typeof add == 'undefined') add = [];
 
     var post = document.getElementById(field_name);
-    post = ensure_true_id(post, field_name);
     insert_textbox(post, '\n');
     window.fauxmodal_prompt(
         '{!javascript:ENTER_LIST_ENTRY;^}',
@@ -418,7 +443,6 @@ function do_input_hide(field_name) {
                     '',
                     function (vb) {
                         var element = document.getElementById(field_name);
-                        element = ensure_true_id(element, field_name);
                         if (vb) {
                             insert_textbox(element, '[hide=\"' + escape_comcode(va) + '\"]' + escape_comcode(vb) + '[/hide]');
                         }
@@ -464,7 +488,6 @@ function do_input_thumb(field_name, va) {
                                 if (!vc) vc = '';
 
                                 var element = document.getElementById(field_name);
-                                element = ensure_true_id(element, field_name);
                                 if (vb.toLowerCase() == '{!IMAGE;^}'.toLowerCase()) {
                                     insert_textbox(element, '[img=\"' + escape_comcode(vc) + '\"]' + escape_comcode(va) + '[/img]');
                                 } else {
@@ -482,22 +505,35 @@ function do_input_thumb(field_name, va) {
 }
 
 function do_input_attachment(field_name) {
-    if (typeof window.insert_textbox == 'undefined') return;
+    if (typeof window.insert_textbox == 'undefined') {
+        return;
+    }
 
     window.fauxmodal_prompt(
         '{!javascript:ENTER_ATTACHMENT;^}',
         '',
-        function (va) {
-            if (!is_integer(va)) {
+        function (val) {
+            if (!is_integer(val)) {
                 window.fauxmodal_alert('{!javascript:NOT_VALID_ATTACHMENT;^}');
             } else {
                 var element = document.getElementById(field_name);
-                element = ensure_true_id(element, field_name);
-                insert_textbox(element, '[attachment]new_' + va + '[/attachment]');
+                insert_textbox(element, '[attachment]new_' + val + '[/attachment]');
             }
         },
         '{!comcode:INPUT_COMCODE_attachment;^}'
     );
+
+    /* Type checking */
+    function is_integer(val) {
+        if (val == '') return false;
+        var c;
+        for (var i = 0; i < val.length; i++) {
+            c = val.charAt(i);
+            if ((c != '0') && (c != '1') && (c != '2') && (c != '3') && (c != '4') && (c != '5') && (c != '6') && (c != '7') && (c != '8') && (c != '9'))
+                return false;
+        }
+        return true;
+    }
 }
 
 function do_input_url(field_name, va) {
@@ -520,7 +556,6 @@ function do_input_url(field_name, va) {
                     '',
                     function (vb) {
                         var element = document.getElementById(field_name);
-                        element = ensure_true_id(element, field_name);
                         if (vb != null) insert_textbox(element, '[url=\"' + escape_comcode(vb) + '\"]' + escape_comcode(va) + '[/url]');
                     },
                     '{!comcode:INPUT_COMCODE_url;^}'
@@ -587,7 +622,6 @@ function do_input_page(field_name) {
 
 function _do_input_page(field_name, result, vc) {
     var element = document.getElementById(field_name);
-    element = ensure_true_id(element, field_name);
     insert_textbox(element, '[page=\"' + escape_comcode(result) + '\"]' + escape_comcode(vc) + '[/page]');
 }
 
@@ -611,7 +645,6 @@ function do_input_email(field_name, va) {
                     '',
                     function (vb) {
                         var element = document.getElementById(field_name);
-                        element = ensure_true_id(element, field_name);
                         if (vb !== null) insert_textbox(element, '[email=\"' + escape_comcode(vb) + '\"]' + escape_comcode(va) + '[/email]');
                     },
                     '{!comcode:INPUT_COMCODE_email;^}'
@@ -626,7 +659,6 @@ function do_input_b(field_name) {
     if (typeof window.insert_textbox_wrapping == 'undefined') return;
 
     var element = document.getElementById(field_name);
-    element = ensure_true_id(element, field_name);
     insert_textbox_wrapping(element, 'b', '');
 }
 
@@ -634,7 +666,6 @@ function do_input_i(field_name) {
     if (typeof window.insert_textbox_wrapping == 'undefined') return;
 
     var element = document.getElementById(field_name);
-    element = ensure_true_id(element, field_name);
     insert_textbox_wrapping(element, 'i', '');
 }
 
@@ -642,7 +673,6 @@ function do_input_font(field_name) {
     if (typeof window.insert_textbox_wrapping == 'undefined') return;
 
     var element = document.getElementById(field_name);
-    element = ensure_true_id(element, field_name);
     var form = element.form;
     var face = form.elements['f_face'];
     var size = form.elements['f_size'];
@@ -671,7 +701,7 @@ function init_form_saving(form_id) {
     window.last_autosave = new Date();
 
     /*{+START,IF,{$DEV_MODE}}*/
-    if (typeof console.log != 'undefined') console.log('Initialising auto-save subsystem');
+    console.log('Initialising auto-save subsystem');
     /*{+END}*/
 
     // Go through all forms/elements
@@ -793,7 +823,7 @@ function _retrieve_form_autosave(result, form) {
         _restore_form_autosave(form, fields_to_do, biggest_length_data);
     } else {
         /*{+START,IF,{$DEV_MODE}}*/
-        if (typeof console.log != 'undefined') console.log('No auto-save, fields found was ' + fields_to_do_counter + ', largest length was ' + biggest_length_data.length);
+        console.log('No auto-save, fields found was ' + fields_to_do_counter + ', largest length was ' + biggest_length_data.length);
         /*{+END}*/
     }
 }
@@ -843,7 +873,8 @@ function field_supports_autosave(element) {
         element = element[0];
     }
 
-    if (typeof element.name == 'undefined') return false;
+    if (typeof element.name === 'undefined') return false;
+
     var name = element.name;
     if (name == '') return false;
     if (name.substr(-2) == '[]') return false;
@@ -958,9 +989,10 @@ function handle_form_saving(event, element, force) {
 
         // Save remotely
         if (navigator.onLine) {
-            /*{+START,IF,{$DEV_MODE}}*/
-            if (typeof console.log != 'undefined') console.log('Doing AJAX auto-save');
-            /*{+END}*/
+
+            if (Composr.isDevMode) {
+                console.log('Doing AJAX auto-save');
+            }
 
             post = modsecurity_workaround_ajax(post);
             do_ajax_request('{$FIND_SCRIPT_NOHTTP;,autosave}?type=store' + keep_stub(), function () {
@@ -998,21 +1030,20 @@ function _handle_form_saving(event, element, force) {
 
     // Save locally
     if (typeof window.localStorage != 'undefined') {
-        /*{+START,IF,{$DEV_MODE}}*/
-        if (typeof console.log != 'undefined') console.log('Doing local storage auto-save for ' + element_name + ' (' + autosave_name + ')');
-        /*{+END}*/
+        if (Composr.isDevMode) {
+            console.log('Doing local storage auto-save for ' + element_name + ' (' + autosave_name + ')');
+        }
 
         try {
             localStorage.setItem(autosave_name, value);
-        }
-        catch (e) {}; // Could have NS_ERROR_DOM_QUOTA_REACHED
+        } catch (e) {}; // Could have NS_ERROR_DOM_QUOTA_REACHED
     }
 
     return [autosave_name, value];
 }
 
 function clever_set_value(form, element, value) {
-    if ((typeof element.length != 'undefined') && (typeof element.nodeName == 'undefined')) {
+    if ((typeof element.length !== 'undefined') && (typeof element.nodeName == 'undefined')) {
         // Radio button
         element = element[0];
     }

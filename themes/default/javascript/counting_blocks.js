@@ -1,4 +1,4 @@
-(function ($, Composr) {
+(function (Composr) {
     'use strict';
 
     Composr.behaviors.countingBlocks = {
@@ -23,4 +23,4 @@
             }, options.millisecondsForPrecision);
         }
     };
-})(window.jQuery || window.Zepto, Composr);
+}(window.Composr));

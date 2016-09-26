@@ -68,12 +68,12 @@ function _generate_menu_sitemap(target, node, the_level) {
         if (the_level < 2) // High-levels start expanded
         {
             expand_img.alt = "{!CONTRACT^#}";
-            expand_img.src = "{$IMG#,1x/trays/contract}".replace(/^https?:/, window.location.protocol);
-            expand_img.srcset = "{$IMG#,2x/trays/contract}".replace(/^https?:/, window.location.protocol) + ' 2x';
+            expand_img.src = Composr.url("{$IMG#,1x/trays/contract}");
+            expand_img.srcset = Composr.url("{$IMG#,2x/trays/contract}") + ' 2x';
         } else {
             expand_img.alt = "{!EXPAND^#}";
-            expand_img.src = "{$IMG#,1x/trays/expand}".replace(/^https?:/, window.location.protocol);
-            expand_img.srcset = "{$IMG#,2x/trays/expand}".replace(/^https?:/, window.location.protocol) + ' 2x';
+            expand_img.src = Composr.url("{$IMG#,1x/trays/expand}");
+            expand_img.srcset = Composr.url("{$IMG#,2x/trays/expand}") + ' 2x';
             ul.style.display = 'none';
         }
         expand.appendChild(expand_img);

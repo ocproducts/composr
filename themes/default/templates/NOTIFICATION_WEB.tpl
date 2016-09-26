@@ -9,7 +9,7 @@
 		{+END}
 
 		{+START,IF_NON_PASSED,URL}
-			<a onclick="poll_for_notifications(true,true);" data-open-as-overlay="{}" href="{$PAGE_LINK*,_SEARCH:notifications:view:{ID}}">{SUBJECT*}</a>
+			<a onclick="poll_for_notifications(true,true);" data-open-as-overlay="1" href="{$PAGE_LINK*,_SEARCH:notifications:view:{ID}}">{SUBJECT*}</a>
 		{+END}
 	</p>
 

@@ -20,8 +20,7 @@
             'submit .js-form-catalogue-add': 'submit'
         },
 
-        submit: function (e) {
-            var form = e.currentTarget;
+        submit: function (e, form) {
             e.preventDefault();
             modsecurity_workaround(form);
         }
@@ -38,8 +37,7 @@
             'submit .js-form-catalogue-edit': 'submit'
         },
 
-        submit: function (e) {
-            var form = e.currentTarget;
+        submit: function (e, form) {
             e.preventDefault();
             modsecurity_workaround(form);
         }

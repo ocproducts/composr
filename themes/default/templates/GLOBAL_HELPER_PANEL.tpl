@@ -1,12 +1,14 @@
-<div class="global_helper_panel_wrap">
-	{+START,IF,{$NOT,{$HIDE_HELP_PANEL}}}
-	<a id="helper_panel_toggle" href="#!" onclick="return helper_panel(false);"><img title="{!HELP_OR_ADVICE}: {!HIDE}" alt="{!HELP_OR_ADVICE}: {!HIDE}" src="{$IMG*,icons/14x14/helper_panel_hide}" srcset="{$IMG*,icons/28x28/helper_panel_hide} 2x" /></a>
-	{+END}
-	{+START,IF,{$HIDE_HELP_PANEL}}
-	<a id="helper_panel_toggle" href="#!" onclick="return helper_panel(true);"><img title="{!HELP_OR_ADVICE}: {!SHOW}" alt="{!HELP_OR_ADVICE}: {!SHOW}" src="{$IMG*,icons/14x14/helper_panel_show}" srcset="{$IMG*,icons/28x28/helper_panel_show} 2x" /></a>
-	{+END}
+<div class="global_helper_panel_wrap" data-view-core-primary-layout="GlobalHelperPanel">
+	<a id="helper_panel_toggle" href="#!" class="js-click-toggle-helper-panel">
+		{+START,IF,{$NOT,{$HIDE_HELP_PANEL}}}
+			<img title="{!HELP_OR_ADVICE}: {!HIDE}" alt="{!HELP_OR_ADVICE}: {!HIDE}" src="{$IMG*,icons/14x14/helper_panel_hide}" srcset="{$IMG*,icons/28x28/helper_panel_hide} 2x" />
+		{+END}
+		{+START,IF,{$HIDE_HELP_PANEL}}
+			<img title="{!HELP_OR_ADVICE}: {!SHOW}" alt="{!HELP_OR_ADVICE}: {!SHOW}" src="{$IMG*,icons/14x14/helper_panel_show}" srcset="{$IMG*,icons/28x28/helper_panel_show} 2x" />
+		{+END}
+	</a>
 
-	<div id="helper_panel_contents"{+START,IF,{$HIDE_HELP_PANEL}} style="display: none" aria-expanded="false"{+END}>
+	<div id="helper_panel_contents"{+START,IF,{$HIDE_HELP_PANEL}} style="display: none" aria-expanded="false"{+END} class="js-helper-panel-contents">
 		<h2>{!HELP_OR_ADVICE}</h2>
 
 		<div class="global_helper_panel">

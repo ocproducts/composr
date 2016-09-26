@@ -26,9 +26,7 @@
             'change: .js-change-update-perm-box': 'updatePermissionBox'
         },
 
-        updateGroupDisplayer: function (e) {
-            var select = e.currentTarget;
-
+        updateGroupDisplayer: function (e, select) {
             Composr.dom.html(document.getElementById('group_name'), escape_html(window.usergroup_titles[select.options[select.selectedIndex].value]));
             var tree = document.getElementById('tree_list__root_tree_list');
             Composr.dom.html(tree, '');
@@ -39,8 +37,8 @@
             set_permissions(document.getElementById('tree_list'));
         },
 
-        updatePermissionBox: function (e) {
-            update_permission_box(e.currentTarget);
+        updatePermissionBox: function (e, target) {
+            update_permission_box(target);
         }
     });
 
@@ -158,7 +156,7 @@
                                     row = rows[0];
                                     new_cell = row.insertBefore(document.createElement('th'), row.cells[row.cells.length]);
                                     new_cell.className = 'privilege_header';
-                                    Composr.dom.html(new_cell, '<img class="gd_text" data-gd-text="1" src="' + '{$BASE_URL*;,0}'.replace(/^https?:/, window.location.protocol) + '/data/gd_text.php?color=' + window.column_color + '&amp;text=' + window.encodeURIComponent(privilege_title) + escape_html(keep_stub()) + '" title="' + escape_html(privilege_title) + '" alt="' + escape_html(privilege_title) + '" />');
+                                    Composr.dom.html(new_cell, '<img class="gd_text" data-gd-text="1" src="' + Composr.url('{$BASE_URL*;,0}') + '/data/gd_text.php?color=' + window.column_color + '&amp;text=' + window.encodeURIComponent(privilege_title) + escape_html(keep_stub()) + '" title="' + escape_html(privilege_title) + '" alt="' + escape_html(privilege_title) + '" />');
 
                                     rows[rows.length - 1].appendChild(document.createElement('td')).className = 'form_table_field_input privilege_footer'; // Footer cell
 

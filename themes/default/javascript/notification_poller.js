@@ -20,8 +20,9 @@ function notification_poller_init(time_barrier) {
     window.setInterval(window.poll_for_notifications, window.NOTIFICATION_POLL_FREQUENCY * 1000);
 
     var web_notifications_button = document.getElementById('web_notifications_button');
-    if (web_notifications_button)
+    if (web_notifications_button) {
         web_notifications_button.addEventListener('click', explicit_notifications_enable_request);
+    }
 }
 
 function notifications_mark_all_read(event) {
@@ -86,7 +87,7 @@ function _poll_for_notifications(raw_ajax_result) {
         if ((typeof display[0] != 'undefined') && (display[0])) {
             unread = raw_ajax_result.getElementsByTagName('unread_web_notifications');
             Composr.dom.html(spot, Composr.dom.html(display[0]));
-            Composr.dom.html(button.childNodes[0], Composr.dom.html(unread[0]));
+            Composr.dom.html(button.firstElementChild, Composr.dom.html(unread[0]));
             button.className = 'count_' + Composr.dom.html(unread[0]);
         }
     }
@@ -98,7 +99,7 @@ function _poll_for_notifications(raw_ajax_result) {
         if ((typeof display[0] != 'undefined') && (display[0])) {
             unread = raw_ajax_result.getElementsByTagName('unread_pts');
             Composr.dom.html(spot, Composr.dom.html(display[0]));
-            Composr.dom.html(button.childNodes[0], Composr.dom.html(unread[0]));
+            Composr.dom.html(button.firstElementChild, Composr.dom.html(unread[0]));
             button.className = 'count_' + Composr.dom.html(unread[0]);
         }
     }
@@ -131,9 +132,8 @@ function display_alert(notification) {
     }
 
     // Show desktop notification
-    /*{+START,IF,{$CONFIG_OPTION,notification_desktop_alerts}}*/
-    if (window.notify.isSupported) {
-        var icon = '{$IMG;,favicon}'.replace(/^https?:/, window.location.protocol);
+    if (Composr.is(Composr.$CONFIG_OPTION.notificationDesktopAlerts) && window.notify.isSupported) {
+        var icon = Composr.url('{$IMG;,favicon}');
         var title = '{!notifications:DESKTOP_NOTIFICATION_SUBJECT;}';
         title = title.replace(/\\{1\\}/, notification.getAttribute('subject'));
         title = title.replace(/\\{2\\}/, notification.getAttribute('from_username'));
@@ -157,7 +157,6 @@ function display_alert(notification) {
             window.notify.requestPermission(); // Probably won't actually work (silent fail), as we're not running via a user-initiated event; this is why we have explicit_notifications_enable_request called elsewhere
         }
     }
-    /*{+END}*/
 
     // Mark done
     window.notifications_already_presented[id] = true;
@@ -165,9 +164,9 @@ function display_alert(notification) {
 
 // We attach to an onclick handler, to enable desktop notifications later on; we need this as we cannot call requestPermission out of the blue
 function explicit_notifications_enable_request() {
-    /*{+START,IF,{$CONFIG_OPTION,notification_desktop_alerts}}*/
-    window.notify.requestPermission();
-    /*{+END}*/
+    if (Composr.is(Composr.$CONFIG_OPTION.notificationDesktopAlerts)) {
+        window.notify.requestPermission();
+    }
 }
 
 function toggle_top_personal_stats(event) {
@@ -253,8 +252,6 @@ function _toggle_messaging_box(event, name, hide) {
     return false;
 }
 
-/*{+START,IF,{$CONFIG_OPTION,notification_desktop_alerts}}*/
-
 /**
  * Copyright 2012 Tsvetan Tsvetkov
  *
@@ -272,7 +269,11 @@ function _toggle_messaging_box(event, name, hide) {
  *
  * Author: Tsvetan Tsvetkov (tsekach@gmail.com)
  */
-(function (win) {
+(function () {
+    if (Composr.not(Composr.$CONFIG_OPTION.notificationDesktopAlerts)) {
+        return;
+    }
+
     /*
      Safari native methods required for Notifications do NOT run in strict mode.
      */
@@ -300,7 +301,7 @@ function _toggle_messaging_box(event, name, hide) {
              * successfully - then it is IE9+, if not - an exceptions is thrown.
              */
             try {
-                isSupported = !!(/* Safari, Chrome */win.Notification || /* Chrome & ff-html5notifications plugin */win.webkitNotifications || /* Firefox Mobile */navigator.mozNotification || /* IE9+ */(win.external && win.external.msIsSiteMode() !== undefined));
+                isSupported = !!(/* Safari, Chrome */window.Notification || /* Chrome & ff-html5notifications plugin */window.webkitNotifications || /* Firefox Mobile */navigator.mozNotification || /* IE9+ */(window.external && window.external.msIsSiteMode() !== undefined));
             } catch (e) {
             }
             return isSupported;
@@ -334,8 +335,8 @@ function _toggle_messaging_box(event, name, hide) {
 
     function getNotification(title, options) {
         var notification;
-        if (win.Notification) { /* Safari 6, Chrome (23+) */
-            notification = new win.Notification(title, {
+        if (window.Notification) { /* Safari 6, Chrome (23+) */
+            notification = new window.Notification(title, {
                 /* The notification's icon - For Chrome in Windows, Linux & Chrome OS */
                 icon: isString(options.icon) ? options.icon : options.icon.x32,
                 /* The notification's subtitle. */
@@ -346,26 +347,26 @@ function _toggle_messaging_box(event, name, hide) {
                  */
                 tag: options.tag || emptyString
             });
-        } else if (win.webkitNotifications) { /* FF with html5Notifications plugin installed */
-            notification = win.webkitNotifications.createNotification(options.icon, title, options.body);
+        } else if (window.webkitNotifications) { /* FF with html5Notifications plugin installed */
+            notification = window.webkitNotifications.createNotification(options.icon, title, options.body);
             notification.tag = options.tag || emptyString;
             notification.show();
         } else if (navigator.mozNotification) { /* Firefox Mobile */
             notification = navigator.mozNotification.createNotification(title, options.body, options.icon);
             notification.tag = options.tag || emptyString;
             notification.show();
-        } else if (win.external && win.external.msIsSiteMode()) { /* IE9+ */
+        } else if (window.external && window.external.msIsSiteMode()) { /* IE9+ */
             //Clear any previous notifications
-            win.external.msSiteModeClearIconOverlay();
-            win.external.msSiteModeSetIconOverlay('{$IMG;,notifications/notifications}', title);
-            win.external.msSiteModeActivate();
+            window.external.msSiteModeClearIconOverlay();
+            window.external.msSiteModeSetIconOverlay('{$IMG;,notifications/notifications}', title);
+            window.external.msSiteModeActivate();
             notification = {
                 "ieVerification": ++ieVerification
             };
         } else {
-            if (typeof win.focus != 'undefined') {
+            if (typeof window.focus != 'undefined') {
                 try {
-                    win.focus();
+                    window.focus();
                 }
                 catch (e) {
                 }
@@ -382,9 +383,9 @@ function _toggle_messaging_box(event, name, hide) {
                     if (notification.close) {
                         //http://code.google.com/p/ff-html5notifications/issues/detail?id=58
                         notification.close();
-                    } else if (win.external && win.external.msIsSiteMode()) {
+                    } else if (window.external && window.external.msIsSiteMode()) {
                         if (notification.ieVerification === ieVerification) {
-                            win.external.msSiteModeClearIconOverlay();
+                            window.external.msSiteModeClearIconOverlay();
                         }
                     }
                 }
@@ -397,18 +398,18 @@ function _toggle_messaging_box(event, name, hide) {
             return;
         }
         var callbackFunction = isFunction(callback) ? callback : noop;
-        if (win.webkitNotifications && win.webkitNotifications.checkPermission) {
+        if (window.webkitNotifications && window.webkitNotifications.checkPermission) {
             /*
-             * Chrome 23 supports win.Notification.requestPermission, but it
+             * Chrome 23 supports window.Notification.requestPermission, but it
              * breaks the browsers, so use the old-webkit-prefixed
-             * win.webkitNotifications.checkPermission instead.
+             * window.webkitNotifications.checkPermission instead.
              *
              * Firefox with html5notifications plugin supports this method
              * for requesting permissions.
              */
-            win.webkitNotifications.requestPermission(callbackFunction);
-        } else if (win.Notification && win.Notification.requestPermission) {
-            win.Notification.requestPermission(callbackFunction);
+            window.webkitNotifications.requestPermission(callbackFunction);
+        } else if (window.Notification && window.Notification.requestPermission) {
+            window.Notification.requestPermission(callbackFunction);
         }
     }
 
@@ -417,21 +418,21 @@ function _toggle_messaging_box(event, name, hide) {
         if (!isSupported) {
             return;
         }
-        if (win.Notification && win.Notification.permissionLevel) {
+        if (window.Notification && window.Notification.permissionLevel) {
             //Safari 6
-            permission = win.Notification.permissionLevel();
-        } else if (win.webkitNotifications && win.webkitNotifications.checkPermission) {
+            permission = window.Notification.permissionLevel();
+        } else if (window.webkitNotifications && window.webkitNotifications.checkPermission) {
             //Chrome & Firefox with html5-notifications plugin installed
-            permission = PERMISSION[win.webkitNotifications.checkPermission()];
+            permission = PERMISSION[window.webkitNotifications.checkPermission()];
         } else if (navigator.mozNotification) {
             //Firefox Mobile
             permission = PERMISSION_GRANTED;
-        } else if (win.Notification && win.Notification.permission) {
+        } else if (window.Notification && window.Notification.permission) {
             // Firefox 23+
-            permission = win.Notification.permission;
-        } else if (win.external && (win.external.msIsSiteMode() !== undefined)) { /* keep last */
+            permission = window.Notification.permission;
+        } else if (window.external && (window.external.msIsSiteMode() !== undefined)) { /* keep last */
             //IE9+
-            permission = win.external.msIsSiteMode() ? PERMISSION_GRANTED : PERMISSION_DEFAULT;
+            permission = window.external.msIsSiteMode() ? PERMISSION_GRANTED : PERMISSION_DEFAULT;
         }
         return permission;
     }
@@ -468,7 +469,7 @@ function _toggle_messaging_box(event, name, hide) {
         if (settings.autoClose != 0 && notification && !notification.ieVerification && notification.addEventListener) {
             notification.addEventListener("show", function () {
                 var notification = notificationWrapper;
-                win.setTimeout(function () {
+                window.setTimeout(function () {
                     notification.close();
                 }, settings.autoClose);
             });
@@ -476,7 +477,7 @@ function _toggle_messaging_box(event, name, hide) {
         return notificationWrapper;
     }
 
-    win.notify = {
+    window.notify = {
         PERMISSION_DEFAULT: PERMISSION_DEFAULT,
         PERMISSION_GRANTED: PERMISSION_GRANTED,
         PERMISSION_DENIED: PERMISSION_DENIED,
@@ -486,9 +487,9 @@ function _toggle_messaging_box(event, name, hide) {
         permissionLevel: permissionLevel,
         requestPermission: requestPermission
     };
-    if (isFunction(Object.seal)) {
-        Object.seal(win.notify);
-    }
-}(window));
 
-/*{+END}*/
+    if (isFunction(Object.seal)) {
+        Object.seal(window.notify);
+    }
+}());
+

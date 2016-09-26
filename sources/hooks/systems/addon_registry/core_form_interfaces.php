@@ -641,38 +641,38 @@ class Hook_addon_registry_core_form_interfaces
             'templates/BLOCK_HELPER_BLOCK_GROUP.tpl' => 'administrative__block_helper_block_group',
             'templates/BLOCK_HELPER_START.tpl' => 'administrative__block_helper_start',
             'templates/BLOCK_HELPER_DONE.tpl' => 'administrative__block_helper_done',
-            'javascript/WYSIWYG_SETTINGS.js' => 'wysiwyg_settings',
-            'javascript/ATTACHMENT_UI_DEFAULTS.js' => 'attachment_ui_defaults',
+            //'javascript/WYSIWYG_SETTINGS.js' => 'wysiwyg_settings',
+            //'javascript/ATTACHMENT_UI_DEFAULTS.js' => 'attachment_ui_defaults',
         );
     }
 
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
-    public function tpl_preview__wysiwyg_settings()
-    {
-        return array(
-            do_lorem_template('WYSIWYG_SETTINGS', array(), null, false, null, '.js', 'javascript')
-        );
-    }
-
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
-    public function tpl_preview__attachment_ui_defaults()
-    {
-        return array(
-            do_lorem_template('ATTACHMENT_UI_DEFAULTS', array(), null, false, null, '.js', 'javascript')
-        );
-    }
+//    /**
+//     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+//     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+//     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+//     *
+//     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+//     */
+//    public function tpl_preview__wysiwyg_settings()
+//    {
+//        return array(
+//            do_lorem_template('WYSIWYG_SETTINGS', array(), null, false, null, '.js', 'javascript')
+//        );
+//    }
+//
+//    /**
+//     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+//     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+//     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+//     *
+//     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+//     */
+//    public function tpl_preview__attachment_ui_defaults()
+//    {
+//        return array(
+//            do_lorem_template('ATTACHMENT_UI_DEFAULTS', array(), null, false, null, '.js', 'javascript')
+//        );
+//    }
 
     /**
      * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.

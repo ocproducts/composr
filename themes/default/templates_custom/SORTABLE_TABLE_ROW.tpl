@@ -13,7 +13,7 @@
 	{+END}
 {+END}
 
-<tr{+START,IF_NON_EMPTY,{$TRIM,{$GET,tooltip}}} style="cursor: pointer" onmouseover="if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,'{$GET*;^,tooltip}','auto');"{+END}>
+<tr{+START,IF_NON_EMPTY,{$TRIM,{$GET,tooltip}}} style="cursor: pointer" onmouseover="activate_tooltip(this,event,'{$GET*;^,tooltip}','auto');"{+END}>
 	{+START,LOOP,VALUES}
 		<td>{_loop_var*}</td>
 	{+END}
