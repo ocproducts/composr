@@ -1756,7 +1756,7 @@ class Module_cms_catalogues_alt extends Standard_crud_module
         $type_list = create_selection_list_field_type($type, $name != '');
 
         $fields->attach(form_input_list(do_lang_tempcode('TYPE'), do_lang_tempcode(($name == '') ? 'DESCRIPTION_FIELD_TYPE_FIRST_TIME' : 'DESCRIPTION_FIELD_TYPE'), $prefix . 'type', $type_list));
-        $fields->attach(form_input_line(do_lang_tempcode('FIELD_OPTIONS'), do_lang_tempcode('DESCRIPTION_FIELD_OPTIONS'), $prefix . 'options', $options, false));
+        $fields->attach(form_input_line(do_lang_tempcode('FIELD_OPTIONS'), do_lang_tempcode('DESCRIPTION_FIELD_OPTIONS', escape_html(get_tutorial_url('tut_fields'))), $prefix . 'options', $options, false));
         //$order_list = new Tempcode();
         $order_list = '';
         for ($i = 0; $i < $num_fields_to_show; $i++) {

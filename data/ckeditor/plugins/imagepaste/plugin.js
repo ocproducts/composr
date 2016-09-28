@@ -8,7 +8,7 @@ CKEDITOR.plugins.add('imagepaste',{
 				if (!event) event=window.event;
 
 				var items=(event.clipboardData || event.originalEvent.clipboardData).items;
-				if (items[0].type.substr(0,6)=='image/')
+				if (typeof items!='undefined' && items[0].type.substr(0,6)=='image/')
 				{
 					var blob=items[0].getAsFile();
 					var reader=new FileReader();

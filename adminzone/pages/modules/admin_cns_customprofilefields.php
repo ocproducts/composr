@@ -213,7 +213,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
         } else {
             $hidden->attach(form_input_hidden('type', $type));
         }
-        $fields->attach(form_input_line(do_lang_tempcode('FIELD_OPTIONS'), do_lang_tempcode('DESCRIPTION_FIELD_OPTIONS'), 'options', $options, false));
+        $fields->attach(form_input_line(do_lang_tempcode('FIELD_OPTIONS'), do_lang_tempcode('DESCRIPTION_FIELD_OPTIONS', escape_html(get_tutorial_url('tut_fields'))), 'options', $options, false));
 
         if ($locked == 0 || $allow_full_edit) {
             $fields->attach(form_input_tick(do_lang_tempcode('REQUIRED'), do_lang_tempcode('DESCRIPTION_REQUIRED'), 'required', $required == 1));
