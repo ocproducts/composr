@@ -205,7 +205,7 @@ $featuretree = array(
                 array('Gift system', 'Allows members to reward each other with gift points <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Points" href="http://shareddemo.composr.info/site/index.php?page=points"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Leader board', 'Create some community competition, by showing a week-by-week who has the most points <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Leaderboard" href="http://shareddemo.composr.info/site/index.php?page=leader_board&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 null, // divider
-                array('Auditing'),
+                array('Auditing', 'See what gifts have been given to crack down on any abuse'),
                 array('Profiles', 'Browse through member points profiles, and see what gifts members have been given'),
             ),
             'A virtual economy for your members',
@@ -213,7 +213,7 @@ $featuretree = array(
         'community' => array(
             'Community features',
             array(
-                array('User submission', 'Allow users to submit to any area of your site. Staff approval is supported <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of CMS" href="http://shareddemo.composr.info/cms/index.php?page=cms&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
+                array('User content submission', 'Allow users to submit to any area of your site. Staff approval is supported <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of CMS" href="http://shareddemo.composr.info/cms/index.php?page=cms&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Public awards', 'Give public awards to your choice of &ldquo;best content&rdquo; <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Awards" href="http://shareddemo.composr.info/site/index.php?page=awards&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Per-usergroup privileges', 'Give special members access to extra features, like file storage <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Permissions" href="http://shareddemo.composr.info/adminzone/index.php?page=admin_permissions&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Bookmarks', 'Users can bookmark their favourite pages to their account <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Bookmarks" href="http://shareddemo.composr.info/site/index.php?page=bookmarks&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
@@ -258,9 +258,9 @@ $featuretree = array(
             'Wiki+ <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Wiki+" href="http://shareddemo.composr.info/site/index.php?page=wiki&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>',
             array(
                 array('Create an encyclopaedic database for your website'),
-                array('Create a tree-structure, or use traditional cross-linking'),
+                array('Use a tree-structure, or traditional cross-linking'),
                 array('Track changes'),
-                array('Display a tree structure of your whole Wiki+ (normal wiki\'s can\'t do that!)'),
+                array('Display the tree structure of your whole Wiki+ (normal wiki\'s can\'t do that!)'),
                 null, // divider
                 array('Allow users to jump in at random pages'),
                 array('Make your pages either wiki-style or topic-style'),
@@ -333,14 +333,14 @@ $featuretree = array(
         'downloads' => array(
             'Downloads/documents library <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Downloads" href="http://shareddemo.composr.info/site/index.php?page=downloads&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>',
             array(
-                array('Great organisation', 'Uses a tree structure for unlimited categorisation'),
+                array('Clear organisation', 'Uses a tree structure for unlimited categorisation'),
                 array('&lsquo;Sell&rsquo; downloads using website points'),
                 array('Anti-leech protection'),
                 array('Community-centred', 'Allow users to comment upon and rate downloads'),
                 null, // divider
                 array('Many ways to add new files', 'Upload files. Link-to existing files. Copy existing files using a live URL. Batch import links from existing file stores'),
                 array('Author support', 'Assign your downloads to authors, so users can find other downloads by the same author'),
-                array('Licences', 'Make users agree to a licence before downloading'),
+                array('Set licences', 'Make users agree to a licence before downloading'),
                 array('Images', 'Show images along with your downloads (e.g. screen-shots)'),
                 array('Basic file versioning support'),
             ),
