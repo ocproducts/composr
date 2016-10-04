@@ -720,7 +720,7 @@ function create_data_mash($url, $data = null, $extension = null, $direct_path = 
             if ((php_function_allowed('shell_exec')) && ($tmp_file !== null)) {
                 $enc = (get_charset() == 'utf-8') ? ' -enc UTF-8' : '';
                 $path = 'pdftohtml -i -noframes -stdout -hidden' . $enc . ' -q -xml ' . escapeshellarg_wrap($tmp_file);
-                if (stripos(PHP_OS, 'win') !== false) {
+                if (stripos(PHP_OS, 'win') === 0) {
                     if (file_exists(get_file_base() . '/data_custom/pdftohtml.exe')) {
                         $path = '"' . get_file_base() . DIRECTORY_SEPARATOR . 'data_custom' . DIRECTORY_SEPARATOR . '"' . $path;
                     }

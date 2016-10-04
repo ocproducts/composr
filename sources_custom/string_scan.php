@@ -6870,6 +6870,9 @@ function string_scan($lang, $do_guessing = false)
         VR_WEEKLY
         WAGES
         WARNINGS
+        WARNING_SSL
+        WARNING_SUEXEC
+        WARNING_OPEN_BASEDIR
         WARNING_DB_OVERWRITE
         WARNING_DISK_SPACE
         WARNING_FILE_ADDON
