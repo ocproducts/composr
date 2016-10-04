@@ -53,14 +53,13 @@ The remainder of this section details Composr's requirements. If you have troubl
 
 Composr requires:
  - A web server that runs PHP. PHP is software which provides the environment that Composr is written for.
-  - version 5.6 or higher
-  - we have tested up to and including PHP 7.0, although newer versions usually do work or are quickly fixed to work
+  - version 5.6 or higher; we have tested up to and including PHP 7.0, although newer versions usually do work or are quickly fixed to work
   - GD2 extension (including PNG and JPEG support). GD is used by PHP for image generation, e.g. to generate thumbnails.
   - file uploads with at least 5MB (or higher, depending on your particular needs)
   - MySQL extension ([tt]mysql[/tt] or [tt]mysqli[/tt])
+  - XML extension
   - a maximum execution time of at least 30 seconds
-  - [tt]max_input_vars[/tt] of at least 1000 (most hosts let you raise the setting)
-  - key functions may not be disabled with disable_functions (PHP can be stripped down heavily by disreputable webhosts) -- the installer will warn if any critical functions have been
+  - key functions may not be disabled with [tt]disable_functions[/tt] (PHP can be stripped down heavily by disreputable webhosts) -- the installer will warn if any critical functions have been
   - no other explicit disabling of standard functionality that we require. Commonly webhosts do this using ModSecurity, Suhosin, suPHP or their own modified PHP versions. We do our best to workaround such issues for common recoverable cases, but ultimately if arbitrary standard functionality has been disabled the software cannot function.
   - memory limit of at least 128MB (as this is PHP's default memory limit since 2009).
  - At least 50MB of disk space, plus your needs for space for downloads, images, etc. No maximum file size limit under 25MB or file type whitelists (some free webhosts will impose these limits -- which explains why [tt]data.cms[/tt] might disappear when you try to upload it)
@@ -90,9 +89,8 @@ Composr recommends:
   - iconv or mbstring (Unicode support)
   - FreeType (with the build-option for GD). FreeType allows us to draw text onto graphics using TrueType fonts.
   - ZIP
-  - XML
   - cURL
-  - APC (PHP 5.6 or lower only), or Memcache, or Memcached, or Wincache
+  - Zend OpCache or (bundled by default), APC (available for PHP 5.6 or lower only), or Memcache, or Memcached, or Wincache
  - A PHP environment with [tt]open_basedir[/tt] enabled
  - A suEXEC/IIS server (explained further down)
  - At least 100MB of disk space

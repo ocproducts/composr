@@ -963,7 +963,7 @@ class Module_admin_setupwizard
 
             // Security level...
 
-            $security_level = post_param('security_level');
+            $security_level = post_param_string('security_level');
 
             $security_level_options = array(
                 'session_expiry_time' => array(
@@ -1022,6 +1022,11 @@ class Module_admin_setupwizard
                     'high' => '8',
                 ),
                 'audio_captcha' => array(
+                    'low' => '1',
+                    'medium' => '1',
+                    'high' => '0',
+                ),
+                'url_monikers_enabled' => array(
                     'low' => '1',
                     'medium' => '1',
                     'high' => '0',

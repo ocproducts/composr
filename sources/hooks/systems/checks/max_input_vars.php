@@ -30,6 +30,8 @@ class Hook_check_max_input_vars
      */
     public function run()
     {
+        // .user.ini should set this correctly, but let's be sure it's not been force-lowered
+
         $warning = array();
         foreach (array('max_input_vars', 'suhosin.post.max_vars', 'suhosin.request.max_vars') as $setting) {
             if ((@is_numeric(ini_get($setting))) && (intval(ini_get($setting)) > 10)) {
