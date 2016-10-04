@@ -112,6 +112,11 @@ function string_scan($lang, $do_guessing = false)
     );
 
     $lang_strings_admin_initial = array_map('trim', explode("\n", trim('
+        SECURITY_LEVEL
+        DESCRIPTION_SECURITY_LEVEL
+        SECURITY_LEVEL_low
+        SECURITY_LEVEL_medium
+        SECURITY_LEVEL_high
         OWNER
         TICKETS_STAFF
         NO_CNS

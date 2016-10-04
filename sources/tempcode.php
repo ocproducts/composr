@@ -554,6 +554,10 @@ function camel_case_array_keys(array $arr) {
     $new_arr = [];
 
     foreach ($arr as $k => $v) {
+        if (is_integer($k)) {
+            $k = strval($k);
+        }
+
         $leading_underscore = $k[0] === '_';
         $k = lcfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', strtolower($k))))); // camelCase the key
 

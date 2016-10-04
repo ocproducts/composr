@@ -51,6 +51,6 @@ class Hook_config_minimum_password_strength
      */
     public function get_default()
     {
-        return (get_forum_type() != 'cns') ? null : '1';
+        return (get_forum_type() != 'cns') ? null : '5';
     }
 }

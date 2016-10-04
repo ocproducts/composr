@@ -680,12 +680,12 @@ abstract class Mail_dispatcher_base
 
                 // Cleanup the Comcode a bit
                 $message_plain = strip_comcode($message_raw);
-                $message_plain = static_evaluate_tempcode(do_template($mail_template, array(
+                $message_plain = static_evaluate_tempcode(do_template($this->mail_template, array(
                      '_GUID' => 'a23069c20202aa59b7450ebf8d49cde1',
                      'CSS' => '{CSS}',
                      'LOGOURL' => get_logo_url(''),
                      'LANG' => $lang,
-                     'TITLE' => $subject,
+                     'TITLE' => $subject_line,
                      'CONTENT' => $message_plain,
                  ), $lang, false, 'MAIL', '.txt', 'text', $theme));
 
