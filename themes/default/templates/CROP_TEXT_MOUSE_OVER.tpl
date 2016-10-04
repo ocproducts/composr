@@ -1,1 +1,1 @@
-<abbr title="{$REPLACE,",&quot;,{$STRIP_TAGS,{TEXT_LARGE}}}" onmouseover="if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,'{TEXT_LARGE;~*}','40%');">{TEXT_SMALL}</abbr>
+<abbr data-tpl-core-abstract-components="cropTextMouseOver" data-tpl-args="{+START,PARAMS_JSON,TEXT_LARGE}{_*}{+END}" title="{$REPLACE,",&quot;,{$STRIP_TAGS,{TEXT_LARGE}}}">{TEXT_SMALL}</abbr>

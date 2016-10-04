@@ -1,3 +1,4 @@
+<div data-view="PointsGive">
 {+START,IF,{$NOT,{$HAS_ACTUAL_PAGE_ACCESS,admin_points}}}
 	{$,Regular member}
 	<p class="points_give_box_header">
@@ -10,7 +11,7 @@
 		{+END}
 	</p>
 
-	<form title="{!GIVE_POINTS}" method="post" onsubmit="return check_form(this);" action="{GIVE_URL*}#tab__points" autocomplete="off">
+	<form title="{!GIVE_POINTS}" method="post" class="js-submit-check-form" action="{GIVE_URL*}#tab__points" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<div>
@@ -39,7 +40,7 @@
 		{+END}
 	</p>
 
-	<form title="{!GIVE_POINTS}" method="post" onsubmit="return check_form(this);" action="{GIVE_URL*}#tab__points" autocomplete="off">
+	<form title="{!GIVE_POINTS}" method="post" class="js-submit-check-form" action="{GIVE_URL*}#tab__points" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<div>
@@ -68,3 +69,4 @@
 		</div>
 	</form>
 {+END}
+</div>

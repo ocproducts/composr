@@ -7,7 +7,7 @@
 
 	{+START,SET,tpl_marker_link}
 		{$,NB: We do not use an anchor tag because nested anchors make a mess}
-		<span onmouseover="if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,'&lt;p&gt;{!TEMPLATES_WITH_EDIT_LINKS_PARAMETERS;^*}&lt;/p&gt;{PARAM_INFO;^*}','800px',null,null,null,true);" class="template_edit_link associated_link"><span onkeypress="return this.onclick.call(this,event);" onclick="window.open('{EDIT_URL;*}'); return cancel_bubbling(event);"><kbd>{CODENAME*}.tpl</kbd></span></span>
+		<span onmouseover="activate_tooltip(this,event,'&lt;p&gt;{!TEMPLATES_WITH_EDIT_LINKS_PARAMETERS;^*}&lt;/p&gt;{PARAM_INFO;^*}','800px',null,null,null,true);" class="template_edit_link associated_link"><span onkeypress="return this.onclick.call(this,event);" onclick="window.open('{EDIT_URL;*}'); return cancel_bubbling(event);"><kbd>{CODENAME*}.tpl</kbd></span></span>
 	{+END}
 
 	{+START,SET,tpl_marker_close}

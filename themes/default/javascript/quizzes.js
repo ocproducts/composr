@@ -2,8 +2,15 @@
 
     Composr.templates.quizzes = {
         quizScreen: function quizScreen(options) {
-            var form = Composr.dom.$('#quiz_form'),
-                timeout = Number(options.timeout);
+            var container = this,
+                form = Composr.dom.$(container, '.js-quiz-form'),
+                timeout = +options.timeout || 0;
+
+            Composr.dom.on(container, 'submit', '.js-submit-check-form', function (e, form) {
+                if (!check_form(form)) {
+                    e.preventDefault();
+                }
+            });
 
             if (timeout > 0) {
                 setTimeout(function () {

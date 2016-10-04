@@ -1,4 +1,4 @@
-(function ($, Composr) {
+(function (Composr) {
     'use strict';
 
     Composr.behaviors.cnsWarnings = {
@@ -11,9 +11,7 @@
 
     Composr.templates.cnsWarnings = {
         cnsSavedWarning: function cnsSavedWarning(options) {
-            var id = Composr.templates.identifier(options.title);
-
-            Composr.required(options, ['message', 'messageHtml']);
+            var id = Composr.filter.id(options.title);
 
             document.getElementById('saved_use__' + id).onsubmit = function () {
                 var win = get_main_cms_window();
@@ -46,4 +44,4 @@
             };
         }
     };
-})(window.jQuery || window.Zepto, Composr);
+}(window.Composr));

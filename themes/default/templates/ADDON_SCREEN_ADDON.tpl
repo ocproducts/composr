@@ -24,7 +24,7 @@
 				{CATEGORY*}
 			</p>
 		{+END}
-		<p onmouseover="if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,'{$GET;^*,description}','50%');">
+		<p onmouseover="activate_tooltip(this,event,'{$GET;^*,description}','50%');">
 			{PRETTY_NAME}
 		</p>
 		{+START,SET,FILE_LIST}
@@ -35,7 +35,7 @@
 				{+END}
 			</ul>
 		{+END}
-		<p onmouseover="if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,'{$GET;^*,FILE_LIST}','50%');">
+		<p onmouseover="activate_tooltip(this,event,'{$GET;^*,FILE_LIST}','50%');">
 			{+START,IF_PASSED,FILENAME}
 				{FILENAME*}
 			{+END}

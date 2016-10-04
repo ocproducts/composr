@@ -45,7 +45,7 @@ function add_template() {
         function (subdir) {
             if (subdir !== null) {
                 if (subdir != 'templates' && subdir != 'css' && subdir != 'javascript' && subdir != 'text' && subdir != 'xml') {
-                    window.fauxmodal_alert('{!BAD_TEMPLATE_TYPE;^}');
+                    window.fauxmodal_alert('{!BAD_TEMPLATE_TYPE;}');
                     return;
                 }
 
@@ -127,24 +127,24 @@ function template_editor_add_tab(file) {
     if (ext != '') tab_title = tab_title.substr(0, tab_title.length - 4);
     var icon_img = document.createElement('img');
     if (ext == 'tpl') {
-        icon_img.src = '{$IMG;,icons/16x16/filetypes/tpl}'.replace(/^https?:/, window.location.protocol);
-        icon_img.setAttribute('srcset', '{$IMG;,icons/32x32/filetypes/tpl}'.replace(/^https?:/, window.location.protocol));
+        icon_img.src = Composr.url('{$IMG;,icons/16x16/filetypes/tpl}');
+        icon_img.setAttribute('srcset', Composr.url('{$IMG;,icons/32x32/filetypes/tpl}'));
     }
     if (ext == 'css') {
-        icon_img.src = '{$IMG;,icons/16x16/filetypes/css}'.replace(/^https?:/, window.location.protocol);
-        icon_img.setAttribute('srcset', '{$IMG;,icons/32x32/filetypes/css}'.replace(/^https?:/, window.location.protocol));
+        icon_img.src = Composr.url('{$IMG;,icons/16x16/filetypes/css}');
+        icon_img.setAttribute('srcset', Composr.url('{$IMG;,icons/32x32/filetypes/css}'));
     }
     if (ext == 'js') {
-        icon_img.src = '{$IMG;,icons/16x16/filetypes/js}'.replace(/^https?:/, window.location.protocol);
-        icon_img.setAttribute('srcset', '{$IMG;,icons/32x32/filetypes/js}'.replace(/^https?:/, window.location.protocol));
+        icon_img.src = Composr.url('{$IMG;,icons/16x16/filetypes/js}');
+        icon_img.setAttribute('srcset', Composr.url('{$IMG;,icons/32x32/filetypes/js}'));
     }
     if (ext == 'xml') {
-        icon_img.src = '{$IMG;,icons/16x16/filetypes/xml}'.replace(/^https?:/, window.location.protocol);
-        icon_img.setAttribute('srcset', '{$IMG;,icons/32x32/filetypes/xml}'.replace(/^https?:/, window.location.protocol));
+        icon_img.src = Composr.url('{$IMG;,icons/16x16/filetypes/xml}');
+        icon_img.setAttribute('srcset', Composr.url('{$IMG;,icons/32x32/filetypes/xml}'));
     }
     if (ext == 'txt' || ext == '') {
-        icon_img.src = '{$IMG;,icons/16x16/filetypes/page_txt}'.replace(/^https?:/, window.location.protocol);
-        icon_img.setAttribute('srcset', '{$IMG;,icons/32x32/filetypes/page_txt}'.replace(/^https?:/, window.location.protocol));
+        icon_img.src = Composr.url('{$IMG;,icons/16x16/filetypes/page_txt}');
+        icon_img.setAttribute('srcset', Composr.url('{$IMG;,icons/32x32/filetypes/page_txt}'));
     }
     icon_img.style.width = '16px';
     header.appendChild(icon_img);
@@ -153,10 +153,10 @@ function template_editor_add_tab(file) {
     span.textContent = tab_title;
     header.appendChild(span);
     var close_button = document.createElement('img');
-    close_button.src = '{$IMG;,icons/16x16/close}'.replace(/^https?:/, window.location.protocol);
+    close_button.src = Composr.url('{$IMG;,icons/16x16/close}');
     if (typeof close_button.srcset != 'undefined')
-        close_button.srcset = '{$IMG;,icons/32x32/close} 2x'.replace(/^https?:/, window.location.protocol);
-    close_button.alt = '{!CLOSE;^}';
+        close_button.srcset = Composr.url('{$IMG;,icons/32x32/close}') + ' 2x';
+    close_button.alt = '{!CLOSE;}';
     close_button.style.paddingLeft = '5px';
     close_button.style.width = '16px';
     close_button.style.height = '16px';
@@ -170,7 +170,7 @@ function template_editor_add_tab(file) {
                 if (result) {
                     template_editor_tab_unload_content(file);
                 }
-            }, '{!Q_SURE;^}', true);
+            }, '{!Q_SURE;}', true);
         } else {
             template_editor_tab_unload_content(file);
         }
@@ -187,7 +187,7 @@ function template_editor_add_tab(file) {
     body.style.display = 'none';
     var loading_image = document.createElement('img');
     loading_image.className = 'ajax_loading';
-    loading_image.src = '{$IMG;,loading}'.replace(/^https?:/, window.location.protocol);
+    loading_image.src = Composr.url('{$IMG;,loading}');
     loading_image.style.height = '12px';
     body.appendChild(loading_image);
     bodies.appendChild(body);
@@ -362,7 +362,7 @@ function template_editor_clean_tabs() {
 
     if (num_tabs == 0) {
         Composr.dom.html(headers, '<a href="#!" id="t_default" class="tab"><span>&mdash;</span></a>');
-        Composr.dom.html(bodies, '<div id="g_default"><p class="nothing_here">{!NA;^}</p></div>');
+        Composr.dom.html(bodies, '<div id="g_default"><p class="nothing_here">{!NA}</p></div>');
     }
 }
 
@@ -420,7 +420,7 @@ function get_file_textbox(file) {
 }
 
 function template_editor_keypress(event) {
-    if (Composr.dom.keyPressed(event) === 'Tab') {
+    if (Composr.dom.keyPressed(event, 'Tab')) {
         insert_textbox(this, "\t");
         return false;
     }
@@ -763,14 +763,14 @@ function set_up_parent_page_highlighting(file, file_id) {
             css_text = css_text.toLowerCase().replace(/; /, ';<br />\n');
         }
         li.onmouseout = function (event) {
-            if (typeof window.deactivate_tooltip != 'undefined') deactivate_tooltip(this);
+            deactivate_tooltip(this);
         };
         li.onmousemove = function (event) {
-            if (typeof window.activate_tooltip != 'undefined') reposition_tooltip(this, event);
+            reposition_tooltip(this, event);
         };
         li.onmouseover = function (css_text) {
             return function (event) {
-                if (typeof window.activate_tooltip != 'undefined') activate_tooltip(this, event, css_text, 'auto');
+                activate_tooltip(this, event, css_text, 'auto');
             }
         }(css_text);
 
@@ -968,7 +968,7 @@ function css_equation_helper(file_id, theme) {
     var result = load_snippet(url);
 
     if (result == '' || result.indexOf('<html') != -1) {
-        window.fauxmodal_alert('{!ERROR_OCCURRED;^}');
+        window.fauxmodal_alert('{!ERROR_OCCURRED;}');
     } else {
         document.getElementById('css_result_' + file_id).value = result;
     }

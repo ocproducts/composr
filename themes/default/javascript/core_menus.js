@@ -61,8 +61,8 @@
             'click [data-menu-tree-toggle]': 'toggleMenu'
         },
 
-        toggleMenu: function (e) {
-            var menuId = e.currentTarget.dataset.menuTreeToggle;
+        toggleMenu: function (e, target) {
+            var menuId = target.dataset.menuTreeToggle;
             toggleable_tray(menuId);
         }
     });
@@ -298,7 +298,7 @@ function pop_up_menu(id, place, menu, event, outside_fixed_width) {
     e.style.position = 'absolute';
     e.style.left = '0'; // Setting this lets the browser calculate a more appropriate (larger) width, before we set the correct left for that width will fit
     e.style.display = 'block';
-    set_opacity(e, 0.0);
+    clear_transition_and_set_opacity(e, 0.0);
     fade_transition(e, 100, 30, 8);
 
     var full_width = (window.scrollX == 0) ? get_window_width() : get_window_scroll_width();

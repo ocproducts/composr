@@ -1,4 +1,4 @@
-(function ($, Composr) {
+(function (Composr) {
     'use strict';
 
     Composr.behaviors.coreNotificatons = {
@@ -8,6 +8,28 @@
             }
         }
     };
+
+    Composr.views.NotificationButtons = Composr.View.extend({
+        disableForm: null,
+        enableForm: null,
+        initialize: function (v, opts) {
+            Composr.View.initialize.apply(this, arguments);
+            this.disableForm = this.$('#ndisable_' + opts.notificationId);
+            this.enableForm = this.$('#nenable_' + opts.notificationId);
+        },
+        events: {
+            'submit .js-submit-show-disable-form': 'showDisableForm',
+            'submit .js-submit-show-enable-form': 'showEnableForm'
+        },
+        showDisableForm: function () {
+            set_display_with_aria(this.enableForm, 'none');
+            set_display_with_aria(this.disableForm,'inline');
+        },
+        showEnableForm: function () {
+            set_display_with_aria(this.disableForm, 'none');
+            set_display_with_aria(this.enableForm,'inline');
+        }
+    });
 
     Composr.templates.coreNotificatons = {
         notificationPoller: function (options) {
@@ -49,4 +71,4 @@
             }
         }
     };
-}(window.jQuery || window.Zepto, window.Composr));
+}(window.Composr));

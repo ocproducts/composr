@@ -116,10 +116,10 @@ function copy_fields_into_bottom(i, changed) {
     mfh.style.display = 'block';
 
     if (!changed) {
-        set_opacity(mfh, 0.0);
+        clear_transition_and_set_opacity(mfh, 0.0);
         fade_transition(mfh, 100, 30, 4);
     } else {
-        set_opacity(form.elements['url'], 0.0);
+        clear_transition_and_set_opacity(form.elements['url'], 0.0);
         fade_transition(form.elements['url'], 100, 30, 4);
     }
 }

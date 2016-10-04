@@ -11,7 +11,7 @@ function load_commandr() {
         var img = document.getElementById('commandr_img');
         img.className = 'footer_button_loading';
         var tmp_element = document.createElement('img');
-        tmp_element.src = '{$IMG;,loading}'.replace(/^https?:/, window.location.protocol);
+        tmp_element.src = Composr.url('{$IMG;,loading}');
         tmp_element.style.position = 'absolute';
         tmp_element.style.left = (find_pos_x(img) + 2) + 'px';
         tmp_element.style.top = (find_pos_y(img) + 1) + 'px';
@@ -59,9 +59,9 @@ function load_commandr() {
                     commandr_box.style.display = 'block';
 
                     if (img) {
-                        img.src = '{$IMG;,icons/24x24/tool_buttons/commandr_off}'.replace(/^https?:/, window.location.protocol);
+                        img.src = Composr.url('{$IMG;,icons/24x24/tool_buttons/commandr_off}');
                         if (typeof img.srcset != 'undefined')
-                            img.srcset = '{$IMG;,icons/48x48/tool_buttons/commandr_off} 2x'.replace(/^https?:/, window.location.protocol);
+                            img.srcset = Composr.url('{$IMG;,icons/48x48/tool_buttons/commandr_off} 2x');
                         img.className = '';
                     }
 
@@ -69,13 +69,16 @@ function load_commandr() {
                         document.getElementById('commandr_command').focus();
                     });
 
-                    set_opacity(document.getElementById('command_line'), 0.0);
+                    var cmdLine = document.getElementById('command_line');
+                    clear_transition(cmdLine);
+                    cmdLine.style.opacity = 0.0;
                     fade_transition(document.getElementById('command_line'), 90, 30, 5);
 
 
                     var bi = document.getElementById('main_website_inner');
                     if (bi) {
-                        set_opacity(bi, 1.0);
+                        clear_transition(bi);
+                        bi.style.opacity = 1.0;
                         fade_transition(bi, 30, 30, -5);
                     }
 
@@ -84,10 +87,11 @@ function load_commandr() {
                 else // Hiding Commandr
                 {
                     if (img) {
-                        img.src = '{$IMG;,icons/24x24/tool_buttons/commandr_on}'.replace(/^https?:/, window.location.protocol);
+                        img.src = Composr.url('{$IMG;,icons/24x24/tool_buttons/commandr_on}');
                         if (typeof img.srcset != 'undefined')
-                            img.srcset = '{$IMG;,icons/48x48/tool_buttons/commandr_on} 2x'.replace(/^https?:/, window.location.protocol);
-                        set_opacity(img, 1.0);
+                            img.srcset = Composr.url('{$IMG;,icons/48x48/tool_buttons/commandr_on}') + ' 2x';
+                        clear_transition(img);
+                        img.style.opacity = 1.0;
                     }
 
                     commandr_box.style.display = 'none';
@@ -104,7 +108,9 @@ function load_commandr() {
 
     // Fallback to link to module
     var btn = document.getElementById('commandr_button');
-    if (btn)
+    if (btn) {
         window.location.href = btn.href;
+    }
+
     return false;
 }

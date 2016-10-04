@@ -1,3 +1,5 @@
+{$REQUIRE_JAVASCRIPT,registry_search}
+<div data-view="SearchFormScreen">
 {TITLE}
 
 {+START,IF_PASSED,RESULTS}
@@ -101,7 +103,7 @@
 						<td class="form_table_field_input" colspan="2">
 							<div class="accessibility_hidden"><label for="search_author">{USER_LABEL*}</label></div>
 							<div class="constrain_field">
-								<span class="invisible_ref_point"></span><input{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="80" class="wide_field" onkeyup="update_ajax_author_list(this,event);" type="text" value="{AUTHOR*}" id="search_author" name="author" />
+								<span class="invisible_ref_point"></span><input autocomplete="off" maxlength="80" class="wide_field js-keyup-update-author-list" onkeyup="update_ajax_author_list(this,event);" type="text" value="{AUTHOR*}" id="search_author" name="author" {+START,IF,{$MOBILE}} autocorrect="off"{+END} />
 							</div>
 						</td>
 					</tr>
@@ -198,3 +200,4 @@
 {+START,IF_PASSED,RESULTS}
 </div>
 {+END}
+</div>

@@ -14,17 +14,19 @@
     // POSTING_FORM
     // - POSTING_FIELD
     var PostingForm = Composr.View.extend({
-        initialize: function () {
-            PostingForm.__super__.initialize.apply(this, arguments);
-        },
-
         events: {
-            'submit .js-submit-modsec-workaround': 'workaround'
+            'submit .js-submit-modsec-workaround': 'workaround',
+            'click .js-click-toggle-subord-fields': 'toggleSubordFields',
+            'keypress .js-keypress-toggle-subord-fields': 'toggleSubordFields'
         },
 
-        workaround: function (e) {
+        workaround: function (e, target) {
             e.preventDefault();
-            modsecurity_workaround(e.currentTarget);
+            modsecurity_workaround(target);
+        },
+
+        toggleSubordFields: function (e, target) {
+            toggle_subordinate_fields(target.parentNode.querySelector('img'), 'fes_attachments_help');
         }
     });
 
@@ -67,15 +69,13 @@
             'click .js-click-perm-repeating': 'permissionRepeating'
         },
 
-        copyPresets: function (e) {
-            var select = e.currentTarget;
+        copyPresets: function (e, select) {
             copy_permission_presets(this.prefix, select.options[select.selectedIndex].value);
             cleanup_permission_list(this.prefix);
         },
 
-        permissionRepeating: function (e) {
-            var button = e.currentTarget,
-                name = this.prefix,
+        permissionRepeating: function (e, button) {
+            var name = this.prefix,
                 old_permission_copying = window.permission_copying,
                 tr = button.parentNode.parentNode,
                 trs = tr.parentNode.getElementsByTagName('tr');
@@ -153,14 +153,64 @@
             permissions_overridden(this.prefix);
         },
 
-        showPermissionSetting: function (e) {
-            var select = e.currentTarget;
-
+        showPermissionSetting: function (e, select) {
             if (select.options[select.selectedIndex].value === '-1') {
                 show_permission_setting(select);
             }
         }
     });
+
+    var FormStandardEnd = Composr.View.extend({
+        form: null,
+        btnSubmit: null,
+        initialize: function (v, options) {
+            FormStandardEnd.__super__.initialize.apply(this, arguments);
+            this.form = Composr.dom.closest(this.el, 'form');
+            this.btnSubmit = this.$('#submit_button');
+
+            window.form_preview_url = options.previewUrl;
+
+            if (Composr.is(options.forcePreviews)) {
+                this.btnSubmit.style.display = 'none';
+            }
+
+            if (Composr.is(options.javascript)) {
+                eval.call(window, options.javascript);
+            }
+
+            if (Composr.not(options.secondaryForm)) {
+                fix_form_enter_key(this.form);
+            }
+
+            if (Composr.is(options.supportAutosave, options.formName)) {
+                if (typeof init_form_saving !== 'undefined') {
+                    init_form_saving(options.formName);
+                }
+            }
+        },
+
+        events: {
+            'click .js-click-do-form-preview': 'doFormPreview',
+            'click .js-click-do-form-submit': 'doFormSubmit'
+        },
+
+        doFormPreview: function (e) {
+            var form = this.form,
+                separatePreview = Composr.is(this.options.separatePreview);
+
+            if (do_form_preview(e, form, window.form_preview_url, separatePreview) && !window.just_checking_requirements) {
+                form.submit();
+            }
+        },
+
+        doFormSubmit: function (e) {
+           if (!do_form_submit(this.form, e)) {
+               e.preventDefault();
+           }
+        }
+    });
+
+    Composr.views.FormStandardEnd = FormStandardEnd;
 
     Composr.views.coreFormInterfaces = {
         PostingForm: PostingForm,
@@ -169,36 +219,14 @@
         FormScreenInputPermissionOverride: FormScreenInputPermissionOverride
     };
 
+
+
     Composr.templates.coreFormInterfaces = {
         form: function (options) {
             options = options || {};
 
             if (Composr.is(options.isJoinForm)) {
                 joinForm(options);
-            }
-        },
-
-        formStandardEnd: function formStandardEnd(options) {
-            window.form_preview_url = options.previewUrl;
-
-            if (Composr.is(options.forcePreviews)) {
-                document.getElementById('submit_button').style.display = 'none';
-            }
-
-            if (Composr.is(options.javascript)) {
-                eval.call(window, options.javascript);
-            }
-
-            if (Composr.not(options.secondaryForm)) {
-                if (typeof window.fix_form_enter_key!=='undefined') {
-                    fix_form_enter_key(document.getElementById('submit_button').form);
-                }
-            }
-
-            if (Composr.is(options.supportAutosave, options.formName)) {
-                if (typeof init_form_saving!='undefined') {
-                    init_form_saving(options.formName);
-                }
             }
         },
 
@@ -211,19 +239,15 @@
 
             if (options.iframeUrl) {
                 window.setInterval(function() { resize_frame('iframe_under'); }, 1500);
-            }
 
-            Composr.dom.on(container, 'click', function (e) {
-                var chkBoxOpenNew = Composr.dom.closest(e.target, '.js-checkbox-will-open-new', container);
-
-                if (options.iframeUrl && chkBoxOpenNew) {
+                Composr.dom.on(container, 'click', '.js-checkbox-will-open-new', function (e, checkbox) {
                     var form = Composr.dom.id(container, 'main_form');
 
-                    form.action = chkBoxOpenNew.checked ? options.url : options.iframeUrl;
-                    form.elements.opens_below.value = chkBoxOpenNew.checked ? '0' : '1';
-                    form.target = chkBoxOpenNew.checked ? '_blank' : 'iframe_under';
-                }
-            });
+                    form.action = checkbox.checked ? options.url : options.iframeUrl;
+                    form.elements.opens_below.value = checkbox.checked ? '0' : '1';
+                    form.target = checkbox.checked ? '_blank' : 'iframe_under';
+                });
+            }
         },
 
         formScreenField_input: function (options) {
@@ -269,9 +293,9 @@
         },
 
         formScreenInputTreeList: function formScreenInputTreeList(options) {
-            var hook = Composr.filters.urlEncode(options.hook),
-                rootId = Composr.filters.urlEncode(options.rootId),
-                opts =  Composr.filters.urlEncode(options.options),
+            var hook = Composr.filter.url(options.hook),
+                rootId = Composr.filter.url(options.rootId),
+                opts =  Composr.filter.url(options.options),
                 multiSel = Composr.is(options.multiSelect);
 
             new tree_list(options.name, 'data/ajax_tree.php?hook=' + hook + Composr.$KEEP, rootId, opts, multiSel, options.tabIndex, false, Composr.is(options.useServerId));
@@ -281,9 +305,9 @@
             var container = this;
             window.perm_serverid = options.serverId;
 
-            Composr.dom.on(container, 'click', { '.js-click-permissions-toggle': function () {
-                permissions_toggle(this.parentNode)
-            }});
+            Composr.dom.on(container, 'click', '.js-click-permissions-toggle', function (e, clicked) {
+                permissions_toggle(clicked.parentNode)
+            });
 
             function permissions_toggle(cell) {
                 var index = cell.cellIndex;
@@ -320,26 +344,32 @@
             }
         },
 
-        formScreenFieldSpacer: function formScreenFieldSpaces(options) {
-            var container = this;
-            options || (options = {});
+        formScreenFieldSpacer: function (args) {
+            args || (args = {});
+            var container = this,
+                title = Composr.filter.id(args.title);
 
-            if (Composr.is(options.title, options.sectionHidden)) {
-                var title = Composr.filters.id(options.title);
+            if (Composr.is(title, args.sectionHidden)) {
                 Composr.dom.id('fes' + title).click();
             }
 
-            Composr.dom.on(container, 'click', {
-                '.js-click-geolocate-address-fields': function (e) {
-                    geolocate_address_fields();
-                }
+            Composr.dom.on(container, 'click', '.js-click-toggle-subord-fields', function (e, clicked) {
+                toggle_subordinate_fields(clicked.parentNode.querySelector('img'),'fes' + title + '_help');
+            });
+
+            Composr.dom.on(container, 'keypress', '.js-keypress-toggle-subord-fields', function (e, pressed) {
+                toggle_subordinate_fields(pressed.parentNode.querySelector('img'),'fes' + title + '_help');
+            });
+
+            Composr.dom.on(container, 'click', '.js-click-geolocate-address-fields', function () {
+                geolocate_address_fields();
             });
         },
 
         formScreenInputTick: function (options) {
             var el = this;
 
-            if (Composr.$JS_ON && (options.name === 'validated')) {
+            if (Composr.is(Composr.$JS_ON) && (options.name === 'validated')) {
                 Composr.dom.on(el, 'click', function () {
                     el.previousSibling.className = 'validated_checkbox' + (el.checked ? ' checked' : '');
                 });
@@ -377,7 +407,7 @@
                 Composr.dom.html(document.getElementById('captcha_spot'), options.captcha);
             } else {
                 window.addEventListener('pageshow', function () {
-                    document.getElementById('captcha_readable').src += '&r=' + Composr.util.random(); // Force it to reload latest captcha
+                    document.getElementById('captcha_readable').src += '&r=' + Composr.random(); // Force it to reload latest captcha
                 });
             }
         },
@@ -423,7 +453,40 @@
         },
 
         formScreenInputThemeImageEntry: function (options) {
-            initialise_input_theme_image_entry(Composr.filters.id(options.name), Composr.filters.id(options.code));
+            var name = Composr.filter.id(options.name),
+                code = Composr.filter.id(options.code),
+                stem = name + '_' + code,
+                e = document.getElementById('w_' + stem),
+                img = e.getElementsByTagName('img')[0],
+                input = document.getElementById('j_' + stem),
+                label = e.getElementsByTagName('label')[0],
+                form = input.form;
+
+            e.onkeypress = function (event) {
+                if (entered_pressed(event))
+                    return e.onclick.call([event]);
+                return null;
+            };
+
+            function click_func(event) {
+                choose_picture('j_' + stem, img, name, event);
+
+                if (typeof window.main_form_very_simple != 'undefined') form.submit();
+
+                cancel_bubbling(event);
+            }
+            img.onkeypress = click_func;
+            img.onclick = click_func;
+            e.onclick = click_func;
+
+            label.className = 'js_widget';
+
+            input.onclick = function () {
+                if (this.disabled) return;
+                if (typeof window.deselect_alt_url != 'undefined') deselect_alt_url(this.form);
+                if (typeof window.main_form_very_simple != 'undefined') this.form.submit();
+                cancel_bubbling(event);
+            }
         },
 
         formScreenInputHuge_input: function (options) {
@@ -451,17 +514,40 @@
             }
         },
 
-        previewScript: function previewScript() {
-            var inner = Composr.dom.$('.js-preview-box-scroll');
+        previewScript: function () {
+            var container = this,
+                inner = Composr.dom.$(container, '.js-preview-box-scroll');
 
-            if (!inner) { return; }
+            if (inner) {
+                Composr.dom.on(inner, browser_matches('gecko') ? 'DOMMouseScroll' : 'mousewheel', function (event) {
+                    inner.scrollTop -= event.wheelDelta ? event.wheelDelta : event.detail;
+                    cancel_bubbling(event);
+                    if (event.cancelable) {
+                        event.preventDefault();
+                    }
+                    return false;
+                });
+            }
 
-            inner.addEventListener(browser_matches('gecko') ? 'DOMMouseScroll' : 'mousewheel', function (event) {
-                inner.scrollTop -= event.wheelDelta ? event.wheelDelta : event.detail;
-                cancel_bubbling(event);
-                if (event.cancelable) event.preventDefault();
-                return false;
+            Composr.dom.on(container, 'click', '.js-click-preview-mobile-button', function (e, el) {
+                preview_mobile_button(el);
             });
+
+            function preview_mobile_button(ob) {
+                ob.form.action = ob.form.action.replace(/keep_mobile=\d/g, 'keep_mobile=' + (ob.checked ? '1' : '0'));
+                if (window.parent) {
+                    try {
+                        window.parent.scrollTo(0, find_pos_y(window.parent.document.getElementById('preview_iframe')));
+                    } catch (e) {
+                    }
+                    window.parent.mobile_version_for_preview = ob.checked;
+                    window.parent.document.getElementById('preview_button').onclick(event);
+
+                    return;
+                }
+
+                ob.form.submit();
+            }
         },
 
         postingField: function postingField(options) {
@@ -478,7 +564,7 @@
                     }, 3000);
                 }
 
-                if (typeof options.wordCounter !== 'undefined') {
+                if (options.wordCounter !== undefined) {
                     setup_word_counter(document.getElementById('post'), document.getElementById('word_count_' + options.wordCountId));
                 }
             }
@@ -491,7 +577,7 @@
             }
         },
 
-        previewScriptCode: function previewScriptCode(options) {
+        previewScriptCode: function (options) {
             var main_window = get_main_cms_window();
 
             var post = main_window.document.getElementById('post');
@@ -540,9 +626,7 @@
             }
         },
 
-        blockHelperDone: function blockHelperDone(options) {
-            Composr.required(options, ['fieldName', 'comcode', 'comcodeSemihtml', 'saveToId']);
-
+        blockHelperDone: function (options) {
             var element;
             var target_window = window.opener ? window.opener : window.parent;
             element = target_window.document.getElementById(options.fieldName);
@@ -550,7 +634,6 @@
                 target_window = target_window.frames['iframe_page'];
                 element = target_window.document.getElementById(options.fieldName);
             }
-            element = ensure_true_id(element, options.fieldName);
             var is_wysiwyg = target_window.is_wysiwyg_field(element);
 
             var comcode, comcode_semihtml;
@@ -581,7 +664,7 @@
                     } else {
                         var input_container = document.createElement('div');
                         Composr.dom.html(input_container, comcode_semihtml.replace(/^\s*/, ''));
-                        ob.parentNode.replaceChild(input_container.childNodes[0], ob);
+                        ob.parentNode.replaceChild(input_container.firstElementChild, ob);
                     }
 
                     target_window.wysiwyg_editors[element.id].updateElement();
@@ -642,8 +725,6 @@
             var attached_event_action = false;
 
             if (Composr.is(options.syncWysiwygAttachments)) {
-                Composr.required(options, ['tagContents']);
-
                 // WYSIWYG-editable attachments must be synched
                 var field = 'file' + options.tagContents.substr(4);
                 var upload_element = target_window.document.getElementById(field);
@@ -677,23 +758,23 @@
             }
         },
 
-        formScreenInputUploadMulti: function formScreenInputUploadMulti(options) {
+        formScreenInputUploadMulti: function (options) {
             if (typeof options.syndicationJson !== 'undefined') {
                 show_upload_syndication_options(options.nameStub, options.syndicationJson);
             }
 
-            if ((options.plupload === '1') && !Composr.$IS_HTTPAUTH_LOGIN) {
+            if ((options.plupload === '1') && Composr.not(Composr.$IS_HTTPAUTH_LOGIN)) {
                 preinit_file_input('upload_multi', options.nameStub + '_' + options.i, null, null, options.filter);
             }
         },
 
-        formScreenInputRadioList: function formScreenInputRadioList(options) {
+        formScreenInputRadioList: function (options) {
             if (typeof options.name === 'undefined') {
                 return;
             }
 
             if (typeof options.code !== 'undefined') {
-                choose_picture('j_' + Composr.filters.id(options.name) + '_' + Composr.filters.id(options.code), null, options.name, null);
+                choose_picture('j_' + Composr.filter.id(options.name) + '_' + Composr.filter.id(options.code), null, options.name, null);
             }
 
             if (options.name === 'delete') {
@@ -728,7 +809,7 @@
         },
 
         formScreenInputRadioListComboEntry: function formScreenInputRadioListComboEntry(options) {
-            var el = document.getElementById('j_' + Composr.filters.id(options.name) + '_other');
+            var el = document.getElementById('j_' + Composr.filter.id(options.name) + '_other');
             el.dispatchEvent(new CustomEvent('change', { bubbles: true }));
         },
 
@@ -957,4 +1038,76 @@
         };
     }
 
+    // Hide a 'tray' of trs in a form
+    function toggle_subordinate_fields(pic, help_id) {
+        var new_state, new_state_2, field_input = pic.parentNode.parentNode.parentNode;
+        var next = field_input.nextElementSibling;
+        if (!next) {
+            return;
+        }
+        while (next.classList.contains('field_input')) { // Sometimes divs or whatever may have errornously been put in a table by a programmer, skip past them
+            next = next.nextElementSibling;
+            if (!next) {
+                break;
+            }
+            if (next.classList.contains('form_table_field_spacer')) {// End of section, so no need to keep going
+                next = null;
+                break;
+            }
+        }
+
+        if ((!next && (pic.src.includes('expand'))) || (next && (next.style.display === 'none'))) {/* Expanding now */
+            pic.src = Composr.url(pic.src.includes('themewizard.php') ? pic.src.replace('expand', 'contract') : '{$IMG;,1x/trays/contract}');
+            if (pic.srcset !== undefined) {
+                pic.srcset = Composr.url(pic.srcset.includes('themewizard.php') ? pic.srcset.replace('expand', 'contract') : '{$IMG;,2x/trays/contract} 2x');
+            }
+            pic.alt ='{!CONTRACT;}';
+            pic.title = '{!CONTRACT;}';
+            new_state = (field_input.localName === 'tr') ? 'table-row' : 'block';
+            new_state_2 = 'block';
+        } else { /* Contracting now */
+            pic.src = ((pic.src.includes('themewizard.php')) ? pic.src.replace('contract', 'expand') : Composr.url('{$IMG;,1x/trays/expand}'));
+            if (pic.srcset !== undefined) {
+                pic.srcset = (pic.src.includes('themewizard.php') ? pic.srcset.replace('contract', 'expand') : Composr.url('{$IMG;,2x/trays/expand}') + ' 2x');
+            }
+            pic.alt = '{!EXPAND;}';
+            pic.title = '{!EXPAND;}';
+            new_state = 'none';
+            new_state_2 = 'none';
+        }
+
+        // Hide everything until we hit end of section
+        var count = 0;
+        while (field_input.nextElementSibling) {
+            field_input = field_input.nextElementSibling;
+
+            /* Start of next section? */
+            if (field_input.classList.contains('form_table_field_spacer')) {
+                break; // End of section
+            }
+
+            /* Ok to proceed */
+            field_input.style.display = new_state;
+
+            if ((new_state_2 !== 'none') && (count < 50/*Performance*/)) {
+                clear_transition_and_set_opacity(field_input, 0.0);
+                fade_transition(field_input, 100, 30, 20);
+                count++;
+            }
+        }
+        if (help_id === undefined) {
+            help_id = pic.parentNode.id + '_help';
+        }
+        var help = document.getElementById(help_id);
+
+        while (help !== null) {
+            help.style.display = new_state_2;
+            help = help.nextElementSibling;
+            if (help && (help.localName !== 'p')) {
+                break;
+            }
+        }
+
+        trigger_resize();
+    }
 }(window.jQuery || window.Zepto, window.Composr));

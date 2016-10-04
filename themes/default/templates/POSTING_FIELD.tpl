@@ -34,7 +34,7 @@
 				<ul class="horizontal_links horiz_field_sep associated_links_block_group">
 					{+START,IF,{$SHOW_DOCS}}{+START,IF_PASSED,COMCODE_URL}
 						{+START,IF,{$NOT,{$MATCH_KEY_MATCH,_WILD:cms_comcode_pages}}}
-							<li><a data-open-as-overlay="{}" class="link_exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{COMCODE_URL*}"><img src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" class="vertical_alignment" alt="" /></a></li>
+							<li><a data-open-as-overlay="1" class="link_exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{COMCODE_URL*}"><img src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" class="vertical_alignment" alt="" /></a></li>
 						{+END}
 						{+START,IF,{$MATCH_KEY_MATCH,_WILD:cms_comcode_pages}}
 							<li><a class="link_exempt" title="{!FULL_COMCODE_TUTORIAL} {!LINK_NEW_WINDOW}" target="_blank" href="{$TUTORIAL_URL*,tut_comcode}">{!FULL_COMCODE_TUTORIAL}</a></li>
@@ -129,10 +129,10 @@
 	<tr class="form_table_field_spacer" id="field-{$GET*,id}-attachments-ui">
 		<th{+START,IF,{$NOT,{$MOBILE}}} colspan="2"{+END} class="table_heading_cell">
 			{+START,IF,{$JS_ON}}
-				<a class="toggleable_tray_button js-click-toggle-subord-fields" id="fes_attachments" onclick="toggle_subordinate_fields(this.getElementsByTagName('img')[0]);" href="#!"><img class="js-img-toggle-subord-fields" alt="{!EXPAND}: {!ATTACHMENTS}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+				<a class="toggleable_tray_button js-click-toggle-subord-fields" id="fes_attachments" href="#!"><img alt="{!EXPAND}: {!ATTACHMENTS}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
 			{+END}
 
-			<span class="faux_h2{+START,IF,{$JS_ON}} toggleable_tray_button js-click-toggle-subord-fields{+END}"{+START,IF,{$JS_ON}} onclick="/*Access-note: code has other activation*/ toggle_subordinate_fields(this.parentNode.getElementsByTagName('img')[0],'fes_attachments_help');"{+END}>
+			<span class="faux_h2{+START,IF,{$JS_ON}} toggleable_tray_button js-click-toggle-subord-fields{+END}">
 				{!ATTACHMENTS}
 
 				{+START,IF,{$NOT,{$MOBILE}}}

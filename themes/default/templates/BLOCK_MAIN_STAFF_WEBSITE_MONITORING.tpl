@@ -1,9 +1,9 @@
 {$SET,RAND_WEBSITE_MONITORING,{$RAND}}
 
-<div class="form_ajax_target">
+<div class="form_ajax_target" data-view="BlockMainStaffWebsiteMonitoring" data-view-args="{+START,PARAMS_JSON,RAND_WEBSITE_MONITORING}{_*}{+END}">
 	<section id="tray_{!SITE_WATCHLIST|}" data-view-core="ToggleableTray" data-tray-cookie="{!SITE_WATCHLIST|}" class="box box___block_main_staff_website_monitoring">
 		<h3 class="toggleable_tray_title js-tray-header">
-			<a title="{!EDIT}: {!SITE_WATCHLIST}" class="top_left_toggleicon" href="#!" onclick="return staff_block_flip_over('website_monitoring_list_{$GET%,RAND_WEBSITE_MONITORING}');">{!EDIT}</a>
+			<a title="{!EDIT}: {!SITE_WATCHLIST}" class="top_left_toggleicon js-click-staff-block-flip" href="#!">{!EDIT}</a>
 
 			<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!SITE_WATCHLIST}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" srcset="{$IMG*,2x/trays/contract2} 2x" /></a>
 

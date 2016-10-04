@@ -49,27 +49,34 @@ function realtime_rain_button_load_handler() {
     var img = document.getElementById('realtime_rain_img');
 
     var e = document.getElementById('real_time_surround');
-    if (e) // Clicked twice - so now we close it
-    {
+    if (e) {// Clicked twice - so now we close it
         bubbles_tidy_up();
         if (window.bubble_timer_1) {
             window.clearInterval(window.bubble_timer_1);
             window.bubble_timer_1 = null;
         }
+
         if (window.bubble_timer_2) {
             window.clearInterval(window.bubble_timer_2);
             window.bubble_timer_2 = null;
         }
-        if (e.parentNode) e.parentNode.parentNode.removeChild(e.parentNode);
-        img.src = '{$IMG;,icons/24x24/tool_buttons/realtime_rain_on}'.replace(/^https?:/, window.location.protocol);
-        if (typeof img.srcset != 'undefined')
-            img.srcset = '{$IMG;,icons/48x48/tool_buttons/realtime_rain_on} 2x'.replace(/^https?:/, window.location.protocol);
+
+        if (e.parentNode) {
+            e.parentNode.parentNode.removeChild(e.parentNode);
+        }
+
+        img.src = Composr.url('{$IMG;,icons/24x24/tool_buttons/realtime_rain_on}');
+        if (img.srcset !== undefined) {
+            img.srcset = Composr.url('{$IMG;,icons/48x48/tool_buttons/realtime_rain_on}') + ' 2x';
+        }
+
         return false;
     }
 
-    img.src = '{$IMG;,icons/24x24/tool_buttons/realtime_rain_off}'.replace(/^https?:/, window.location.protocol);
-    if (typeof img.srcset != 'undefined')
-        img.srcset = '{$IMG;,icons/48x48/tool_buttons/realtime_rain_off} 2x'.replace(/^https?:/, window.location.protocol);
+    img.src = Composr.url('{$IMG;,icons/24x24/tool_buttons/realtime_rain_off}');
+    if (img.srcset !== undefined) {
+        img.srcset = Composr.url('{$IMG;,icons/48x48/tool_buttons/realtime_rain_off}') + ' 2x';
+    }
     var tmp_element = document.getElementById('realtime_rain_img_loader');
     if (tmp_element) tmp_element.parentNode.removeChild(tmp_element);
     img.className = '';
@@ -210,7 +217,7 @@ function received_events(ajax_result_frame, ajax_result) {
                                                     next_icon.style.left = left + 'px';
                                                     var top = (sts(next_icon.style.top) + next_icon.y_vector);
                                                     next_icon.style.top = top + 'px';
-                                                    set_opacity(next_icon, next_icon.opacity);
+                                                    clear_transition_and_set_opacity(next_icon, next_icon.opacity);
                                                     next_icon.opacity *= 0.98;
                                                     next_icon.y_vector += 0.2;
                                                     if ((top > max_height) || (next_icon.opacity < 0.05) || (left + 50 > window_width) || (left < 0)) {

@@ -16,9 +16,28 @@
         }
     });
 
+    // Templates:
+    // ADDON_SCREEN.tpl
+    // - ADDON_SCREEN_ADDON.tpl
+    var AddonScreen = Composr.View.extend({
+        events: {
+            'click .js-click-check-uninstall-all': 'checkUninstallAll'
+        },
+
+        checkUninstallAll: function () {
+            var checkboxes = this.$$('input[type="checkbox"][name^="uninstall_"]');
+
+            checkboxes.forEach(function (el) {
+                el.checked = true;
+            });
+        }
+    });
+
     Composr.views.coreAddonManagement = {
-        AddonInstallConfirmScreen: AddonInstallConfirmScreen
+        AddonInstallConfirmScreen: AddonInstallConfirmScreen,
+        AddonScreen: AddonScreen
     };
 
     Composr.templates.coreAddonManagement = {};
+
 }(window.Composr));

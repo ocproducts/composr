@@ -1,4 +1,4 @@
-(function ($, Composr) {
+(function (Composr) {
     'use strict';
 
     Composr.behaviors.news = {
@@ -10,7 +10,7 @@
     };
 
     Composr.templates.news = {
-        blockMainImageFaderNews: function blockMainImageFaderNews(options, itemsHtml) {
+        blockMainImageFaderNews: function (options, itemsHtml) {
             var rand = options.randFaderNews, i,
                 news = options.news;
 
@@ -84,9 +84,9 @@
 
                 // Set up fade}
                 fp_animation_news.src = fp_animation.src;
-                set_opacity(fp_animation_news, 1.0);
+                clear_transition_and_set_opacity(fp_animation_news, 1.0);
                 fade_transition(fp_animation_news, 0, 30, -4);
-                set_opacity(fp_animation, 0.0);
+                clear_transition_and_set_opacity(fp_animation, 0.0);
                 fade_transition(fp_animation, 100, 30, 4);
                 fp_animation.src = data[j].image_url;
                 window.setTimeout(function () { // Will know dimensions by the time the timeout happens}
@@ -110,11 +110,11 @@
         },
 
         blockBottomNews: function blockBottomNews(options) {
-            var newsTickerText = Composr.filters.stripNewLines(options.newsTickerText);
+            var newsTickerText = Composr.filter.crLf(options.newsTickerText);
 
             window.tick_pos = window.tick_pos || [];
             var ticktickticker = document.getElementById('ticktickticker_news' + options.bottomNewsId);
-            if (typeof document.createElement('marquee').scrolldelay === 'undefined') {// Slower, but chrome does not support marquee's
+            if (document.createElement('marquee').scrolldelay === undefined) {// Slower, but chrome does not support marquee's
                 var my_id = parseInt(Math.random() * 10000);
                 window.tick_pos[my_id] = 400;
                 Composr.dom.html(ticktickticker, '<div onmouseover="this.mouseisover=true;" onmouseout="this.mouseisover=false;" class="ticker" ' +
@@ -135,4 +135,4 @@
             }
         }
     };
-}(window.jQuery || window.Zepto, window.Composr));
+}(window.Composr));

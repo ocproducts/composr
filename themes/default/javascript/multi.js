@@ -11,9 +11,9 @@ function deselect_alt_url(form) {
 }
 
 function _ensure_next_field(event, ob) {
-    if (Composr.dom.keyPressed(event) === 'Enter') {
+    if (Composr.dom.keyPressed(event, 'Enter')) {
         goto_next_field(ob);
-    } else if (Composr.dom.keyPressed(event) !== 'Tab') {
+    } else if (!Composr.dom.keyPressed(event, 'Tab')) {
         ensure_next_field(ob);
     }
 }
@@ -86,7 +86,7 @@ function ensure_next_field(this_field) {
 }
 
 function _ensure_next_field_upload(event) {
-    if (Composr.dom.keyPressed(event) !== 'Tab') {
+    if (!Composr.dom.keyPressed(event, 'Tab')) {
         ensure_next_field_upload(this);
     }
 }

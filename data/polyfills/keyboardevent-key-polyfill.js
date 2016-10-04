@@ -1,0 +1,127 @@
+/*!
+ The MIT License
+
+ Copyright © 2015 Chris Van.
+
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+
+ The above copyright notice and this permission notice shall be included in
+ all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ THE SOFTWARE.
+ */
+
+/* global define, KeyboardEvent, module */
+
+(function () {
+    'use strict';
+
+    var keys = {
+        3: 'Cancel',
+        6: 'Help',
+        8: 'Backspace',
+        9: 'Tab',
+        12: 'Clear',
+        13: 'Enter',
+        16: 'Shift',
+        17: 'Control',
+        18: 'Alt',
+        19: 'Pause',
+        20: 'CapsLock',
+        27: 'Escape',
+        28: 'Convert',
+        29: 'NonConvert',
+        30: 'Accept',
+        31: 'ModeChange',
+        32: ' ',
+        33: 'PageUp',
+        34: 'PageDown',
+        35: 'End',
+        36: 'Home',
+        37: 'ArrowLeft',
+        38: 'ArrowUp',
+        39: 'ArrowRight',
+        40: 'ArrowDown',
+        41: 'Select',
+        42: 'Print',
+        43: 'Execute',
+        44: 'PrintScreen',
+        45: 'Insert',
+        46: 'Delete',
+        48: ['0', ')'],
+        49: ['1', '!'],
+        50: ['2', '@'],
+        51: ['3', '#'],
+        52: ['4', '$'],
+        53: ['5', '%'],
+        54: ['6', '^'],
+        55: ['7', '&'],
+        56: ['8', '*'],
+        57: ['9', '('],
+        91: 'OS',
+        93: 'ContextMenu',
+        144: 'NumLock',
+        145: 'ScrollLock',
+        181: 'VolumeMute',
+        182: 'VolumeDown',
+        183: 'VolumeUp',
+        186: [';', ':'],
+        187: ['=', '+'],
+        188: [',', '<'],
+        189: ['-', '_'],
+        190: ['.', '>'],
+        191: ['/', '?'],
+        192: ['`', '~'],
+        219: ['[', '{'],
+        220: ['\\', '|'],
+        221: [']', '}'],
+        222: ["'", '"'],
+        224: 'Meta',
+        225: 'AltGraph',
+        246: 'Attn',
+        247: 'CrSel',
+        248: 'ExSel',
+        249: 'EraseEof',
+        250: 'Play',
+        251: 'ZoomOut'
+    };
+
+    // Function keys (F1-24).
+    var i;
+    for (i = 1; i < 25; i++) {
+        keys[111 + i] = 'F' + i;
+    }
+
+    // Printable ASCII characters.
+    var letter = '';
+    for (i = 65; i < 91; i++) {
+        letter = String.fromCharCode(i);
+        keys[i] = [letter.toLowerCase(), letter.toUpperCase()];
+    }
+
+    if (!('key' in window.KeyboardEvent.prototype)) {
+        // Polyfill `key` on `KeyboardEvent`.
+        Object.defineProperty(KeyboardEvent.prototype, 'key', {
+            get: function (x) {
+                var key = keys[this.which || this.keyCode];
+
+                if (Array.isArray(key)) {
+                    key = key[+this.shiftKey];
+                }
+
+                return key;
+            }
+        });
+    }
+}());

@@ -13091,7 +13091,6 @@ function begin_form_uploading(e,ob,recurse)
 			if (element) set_field_error(element,'{!REQUIRED_NOT_FILLED_IN^;}');
 			ret=false;
 		}
-		window.form_submitting=btn_submit.form; // For IE
 		if (typeof ob.original_click_handler=='undefined')
 		{
 			if ((btn_submit.form.onsubmit) && (false===btn_submit.form.onsubmit())) return false;
@@ -13133,8 +13132,6 @@ function begin_form_uploading(e,ob,recurse)
 			window.fauxmodal_alert('{!javascript:PLEASE_WAIT_WHILE_UPLOADING;^}');
 	} else
 	{
-		window.form_submitting=btn_submit.form; // For IE
-
 		if (typeof ob.original_click_handler=='undefined')
 		{
 			if ((btn_submit.form.onsubmit) && (false===btn_submit.form.onsubmit())) return false;
@@ -13331,7 +13328,6 @@ function upload_finished(ob,file,data)
 	{
 		window.just_checking_requirements=false;
 
-		window.form_submitting=btn_submit.form; // For IE
 		if (typeof ob.original_click_handler!='undefined')
 		{
 			if (ob.original_click_handler(null,ob,btn_submit.form,true))

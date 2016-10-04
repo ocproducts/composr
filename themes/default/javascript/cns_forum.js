@@ -68,7 +68,7 @@
             var container = this,
                 ignoreUrl = options.ignoreUrl2;
 
-            Composr.dom.on(container, 'click', {'.js-click-ignore-notification': function () {
+            Composr.dom.on(container, 'click', '.js-click-ignore-notification', function () {
                 var el = this;
                 do_ajax_request(ignoreUrl, function () {
                     var o = el.parentNode.parentNode.parentNode.parentNode;
@@ -79,7 +79,7 @@
                         nots.parentNode.removeChild(nots);
                     }
                 });
-            }});
+            });
         }
     };
 

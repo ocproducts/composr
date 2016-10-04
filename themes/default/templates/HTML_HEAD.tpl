@@ -42,7 +42,7 @@
 <link rel="sitemap" href="{$BASE_URL*}/data_custom/sitemaps/index.xml" />
 <meta name="description" content="{+START,IF,{$NEQ,{$METADATA,meta_description},{!NA},???}}{$METADATA*,meta_description}{+END}" />
 <meta name="keywords" content="{$METADATA*,keywords}" />
-<meta name="composr-symbol-data" content="{$SYMBOL_DATA_AS_JSON*}" />
+<meta id="composr-symbol-data" name="composr-symbol-data" content="{$SYMBOL_DATA_AS_JSON*}" />
 {+START,COMMENT,Commented out by default to save bandwidth}
 	<meta name="GENERATOR" content="{$BRAND_NAME*}" />
 	<meta name="publisher" content="{$COPYRIGHT`}" />
@@ -158,17 +158,6 @@
 	</script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js"></script>
 {+END}
-
-{$,Detecting of Timezones and JavaScript support}
-<script>// <![CDATA[
-	/*{+START,IF,{$CONFIG_OPTION,detect_javascript}}*/
-	/*{+START,IF,{$AND,{$EQ,,{$_GET,keep_has_js}},{$NOT,{$JS_ON}}}}*/
-	if ((window.location.href.indexOf('upgrader.php') === -1) && (window.location.href.indexOf('webdav.php') === -1) && (window.location.search.indexOf('keep_has_js') === -1)) {
-		window.location = window.location.href + ((window.location.search == '') ? (((window.location.href.indexOf('.htm') === -1) && (window.location.href.indexOf('.php') === -1)) ? (((window.location.href.substr(window.location.href.length - 1) != '/') ? '/' : '') + 'index.php?') : '?') : '&') + 'keep_has_js=1{+START,IF,{$DEV_MODE}}&keep_devtest=1{+END}';
-	}// Redirect with JS on, and then hopefully we can remove keep_has_js after one click. This code only happens if JS is marked off, no infinite loops can happen.
-	/*{+END}*/
-	/*{+END}*/
-//]]></script>
 
 <script>
 	// Early initialization to allow end-users not using CSP to add inline Composr.ready & Composr.load calls

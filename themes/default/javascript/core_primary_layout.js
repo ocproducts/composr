@@ -1,12 +1,32 @@
-(function ($, Composr) {
+(function (Composr) {
     'use strict';
 
     Composr.behaviors.corePrimaryLayout = {
         initialize: {
             attach: function (context) {
+                Composr.initializeViews(context, 'core_primary_layout');
                 Composr.initializeTemplates(context, 'core_primary_layout');
             }
         }
+    };
+
+    var GlobalHelperPanel = Composr.View.extend({
+        contents: null,
+        initialize: function () {
+            GlobalHelperPanel.__super__.initialize.apply(this, arguments);
+            this.contents = this.$('.js-helper-panel-contents');
+        },
+        events: {
+            'click .js-click-toggle-helper-panel': 'toggleHelperPanel'
+        },
+        toggleHelperPanel: function () {
+            var show = Composr.dom.css(this.contents, 'display') === 'none';
+            helper_panel(show);
+        }
+    });
+
+    Composr.views.corePrimaryLayout = {
+        GlobalHelperPanel: GlobalHelperPanel
     };
 
     Composr.templates.corePrimaryLayout = {
@@ -19,9 +39,56 @@
                 m2.parentNode.removeChild(m2);
             }
 
-            if (Composr.queryString.has('wide_print')) {
+            if (Composr.usp.has('wide_print')) {
                 try { window.print(); } catch (ignore) {}
             }
         }
     };
-})(window.jQuery || window.Zepto, Composr);
+
+    // The help panel
+    function helper_panel(show) {
+        var panel_right = document.getElementById('panel_right'),
+            helper_panel_contents = document.getElementById('helper_panel_contents'),
+            helper_panel_toggle = document.getElementById('helper_panel_toggle');
+
+        if (show) {
+            panel_right.classList.remove('helper_panel_hidden');
+            helper_panel_contents.setAttribute('aria-expanded', 'true');
+            helper_panel_contents.style.display = 'block';
+            clear_transition_and_set_opacity(helper_panel_contents, 0.0);
+            fade_transition(helper_panel_contents, 100, 30, 4);
+
+            if (read_cookie('hide_helper_panel') === '1') {
+                set_cookie('hide_helper_panel', '0', 100);
+            }
+
+            helper_panel_toggle.firstElementChild.src = Composr.url('{$IMG;,icons/14x14/helper_panel_hide}');
+            if (helper_panel_toggle.firstElementChild.srcset !== undefined) {
+                helper_panel_toggle.firstElementChild.srcset = Composr.url('{$IMG;,icons/28x28/helper_panel_hide} 2x');
+            }
+        } else {
+            if (read_cookie('hide_helper_panel') == '') {
+                window.fauxmodal_confirm('{!CLOSING_HELP_PANEL_CONFIRM;^}', function (answer) {
+                    if (answer) {
+                        _hide_helper_panel(panel_right, helper_panel_contents, helper_panel_toggle);
+                    }
+                });
+
+                return;
+            }
+            _hide_helper_panel(panel_right, helper_panel_contents, helper_panel_toggle);
+        }
+    }
+
+    function _hide_helper_panel(panel_right, helper_panel_contents, helper_panel_toggle) {
+        panel_right.classList.add('helper_panel_hidden');
+        helper_panel_contents.setAttribute('aria-expanded', 'false');
+        helper_panel_contents.style.display = 'none';
+        set_cookie('hide_helper_panel', '1', 100);
+        helper_panel_toggle.firstElementChild.src = Composr.url('{$IMG;,icons/14x14/helper_panel_show}');
+
+        if (helper_panel_toggle.firstElementChild.srcset !== undefined) {
+            helper_panel_toggle.firstElementChild.srcset = Composr.url('{$IMG;,icons/28x28/helper_panel_show} 2x');
+        }
+    }
+}(window.Composr));

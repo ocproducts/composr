@@ -19,7 +19,7 @@ function show_permission_setting(ob, event) {
             serverid = window.perm_serverid + ':_new_';
         }
 
-        var url = '{$FIND_SCRIPT_NOHTTP;,find_permissions}?serverid=' + window.encodeURIComponent(serverid) + '&x=' + window.encodeURIComponent(ob.name);
+        var url = '{$FIND_SCRIPT_NOHTTP;,find_permissions}?serverid=' + encodeURIComponent(serverid) + '&x=' + encodeURIComponent(ob.name);
         do_ajax_request(url + keep_stub(), function (ret) {
             if (!ret) return;
             ob.full_setting = ret.responseText;
@@ -127,20 +127,20 @@ function permissions_img_func_1_b(node, id) {
     if (((window.attributes_full[id]['group_privileges_delete_highrange_content_' + group]) && (window.attributes_full[id]['group_privileges_delete_highrange_content_' + group] == '1')) ||
         ((window.attributes_full[id]['group_privileges_delete_midrange_content_' + group]) && (window.attributes_full[id]['group_privileges_delete_midrange_content_' + group] == '1')) ||
         ((window.attributes_full[id]['group_privileges_delete_lowrange_content_' + group]) && (window.attributes_full[id]['group_privileges_delete_lowrange_content_' + group] == '1')))
-        return ['{$IMG;,permlevels/3}'.replace(/^https?:/, window.location.protocol), '{!PINTERFACE_LEVEL_3;^}'];
+        return [Composr.url('{$IMG;,permlevels/3}'), '{!PINTERFACE_LEVEL_3;^}'];
     else if (((window.attributes_full[id]['group_privileges_bypass_validation_highrange_content_' + group]) && (window.attributes_full[id]['group_privileges_bypass_validation_highrange_content_' + group] == '1')) ||
         ((window.attributes_full[id]['group_privileges_bypass_validation_midrange_content_' + group]) && (window.attributes_full[id]['group_privileges_bypass_validation_midrange_content_' + group] == '1')) ||
         ((window.attributes_full[id]['group_privileges_bypass_validation_lowrange_content_' + group]) && (window.attributes_full[id]['group_privileges_bypass_validation_lowrange_content_' + group] == '1')))
-        return ['{$IMG;,permlevels/2}'.replace(/^https?:/, window.location.protocol), '{!PINTERFACE_LEVEL_2;^}'];
+        return [Composr.url('{$IMG;,permlevels/2}'), '{!PINTERFACE_LEVEL_2;^}'];
     else if (((window.attributes_full[id]['group_privileges_submit_highrange_content_' + group]) && (window.attributes_full[id]['group_privileges_submit_highrange_content_' + group] == '1')) ||
         ((window.attributes_full[id]['group_privileges_submit_midrange_content_' + group]) && (window.attributes_full[id]['group_privileges_submit_midrange_content_' + group] == '1')) ||
         ((window.attributes_full[id]['group_privileges_submit_lowrange_content_' + group]) && (window.attributes_full[id]['group_privileges_submit_lowrange_content_' + group] == '1')))
-        return ['{$IMG;,permlevels/1}'.replace(/^https?:/, window.location.protocol), '{!PINTERFACE_LEVEL_1;^}'];
+        return [Composr.url('{$IMG;,permlevels/1}'), '{!PINTERFACE_LEVEL_1;^}'];
     else if (window.attributes_full[id]['inherits_something'])
-        return ['{$IMG;,permlevels/inherit}'.replace(/^https?:/, window.location.protocol), '{!permissions:PINTERFACE_LEVEL_GLOBAL;^}'];
-    else if (window.attributes_full[id]['no_privileges']) return ['{$IMG;,blank}'.replace(/^https?:/, window.location.protocol), ''];
+        return [Composr.url('{$IMG;,permlevels/inherit}'), '{!permissions:PINTERFACE_LEVEL_GLOBAL;^}'];
+    else if (window.attributes_full[id]['no_privileges']) return [Composr.url('{$IMG;,blank}'), ''];
 
-    return ['{$IMG;,permlevels/0}'.replace(/^https?:/, window.location.protocol), '{!permissions:PINTERFACE_LEVEL_0;^}'];
+    return [Composr.url('{$IMG;,permlevels/0}'), '{!permissions:PINTERFACE_LEVEL_0;^}'];
 }
 
 function permissions_img_func_2(node, id) {
@@ -155,9 +155,11 @@ function permissions_img_func_2_b(node, id) {
 
     var group = document.getElementById('group').value;
 
-    if (node.getAttribute('g_view_' + group) == 'true')
-        return ['{$IMG;,led_on}'.replace(/^https?:/, window.location.protocol), '{!permissions:PINTERFACE_VIEW;^}'];
-    return ['{$IMG;,led_off}'.replace(/^https?:/, window.location.protocol), '{!permissions:PINTERFACE_VIEW_NO;^}'];
+    if (node.getAttribute('g_view_' + group) == 'true') {
+        return [Composr.url('{$IMG;,led_on}'), '{!permissions:PINTERFACE_VIEW;^}'];
+    }
+
+    return [Composr.url('{$IMG;,led_off}'), '{!permissions:PINTERFACE_VIEW_NO;^}'];
 }
 
 

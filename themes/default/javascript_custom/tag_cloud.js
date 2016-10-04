@@ -172,7 +172,7 @@ Scene3D.prototype.renderCamera = function (camera) {
                 currItem.style.left = currItem._x + 'px';
                 currItem.style.fontSize = 100 * currItem.scale + '%';
 
-                set_opacity(currItem, (currItem.scale - 0.75) * 2);
+                clear_transition_and_set_opacity(currItem, (currItem.scale - 0.75) * 2);
 
             }
 

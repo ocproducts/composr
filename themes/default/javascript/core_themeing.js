@@ -1,8 +1,9 @@
-(function ($, Composr) {
+(function (Composr) {
+    'use strict';
+
     Composr.behaviors.coreThemeing = {
         initialize: {
             attach: function (context) {
-                Composr.initializeViews(context, 'core_themeing');
                 Composr.initializeTemplates(context, 'core_themeing');
             }
         }
@@ -10,14 +11,12 @@
 
     var ThemeManageScreen = Composr.View.extend({
         initialize: function (v, options) {
-            Composr.View.prototype.initialize.apply(this, arguments);
-
-
+            ThemeManageScreen.__super__.initialize.apply(this, arguments);
         }
     });
 
     var ThemeTemplateEditorTab = Composr.View.extend({
-        initialize: function (viewOptions, options) {
+        initialize: function (v, options) {
             this.options = options;
 
             // Allow searching via URL hash
@@ -59,34 +58,34 @@
             template_editor_tab_save_content(this.options.file);
         },
 
-        livePreview: function (e) {
+        livePreview: function (e, target) {
             var opts = this.options;
-            if (!template_editor_preview(opts.fileId, opts.livePreviewUrl, e.currentTarget, true)) {
+            if (!template_editor_preview(opts.fileId, opts.livePreviewUrl, target, true)) {
                 e.preventDefault();
             }
         },
 
-        screenPreview: function (e) {
+        screenPreview: function (e, target) {
             var opts = this.options;
-            if (!template_editor_preview(opts.fileId, opts.screenPreviewUrl, e.currentTarget)) {
+            if (!template_editor_preview(opts.fileId, opts.screenPreviewUrl, target)) {
                 e.preventDefault();
             }
         },
 
-        editareaSearch: function (e) {
-            var regexp = e.currentTarget.dataset.eaSearch;
+        editareaSearch: function (e, target) {
+            var regexp = target.dataset.eaSearch;
 
             editarea_do_search('e_' + this.options.fileId, regexp);
         },
 
-        insertGuid: function (e) {
-            var guid = e.currentTarget.dataset.insertGuid;
+        insertGuid: function (e, target) {
+            var guid = target.dataset.insertGuid;
 
             insert_guid(this.options.file, guid);
         },
 
-        addEditorTab: function (e) {
-            var file = e.currentTarget.dataset.templateFile;
+        addEditorTab: function (e, target) {
+            var file = target.dataset.templateFile;
 
             template_editor_add_tab(file);
         },
@@ -98,8 +97,8 @@
 
             e.preventDefault();
 
-            url += '&theme=' + window.encodeURIComponent(opts.theme);
-            url += '&css_equation=' + window.encodeURIComponent(document.getElementById('css_equation_' + opts.fileId).value);
+            url += '&theme=' + encodeURIComponent(opts.theme);
+            url += '&css_equation=' + encodeURIComponent(document.getElementById('css_equation_' + opts.fileId).value);
 
             result = load_snippet(url);
 
@@ -111,13 +110,11 @@
         }
     });
 
-    Composr.views.coreThemeing = {
-        ThemeManageScreen: ThemeManageScreen,
-        ThemeTemplateEditorTab: ThemeTemplateEditorTab
-    };
+    Composr.views.ThemeManageScreen = ThemeManageScreen;
+    Composr.views.ThemeTemplateEditorTab = ThemeTemplateEditorTab;
 
     Composr.templates.coreThemeing = {
-        tempcodeTesterScreen: function tempcodeTesterScreen(options) {
+        tempcodeTesterScreen: function () {
             var form = this,
                 button = form.querySelector('.js-btn-do-preview');
 
@@ -126,9 +123,7 @@
             });
         },
 
-        themeTemplateEditorScreen: function themeTemplateEditorScreen(options) {
-            Composr.required(options, ['theme']);
-
+        themeTemplateEditorScreen: function (options) {
             window.template_editor_theme = options.theme;
 
             if (typeof options.activeGuid !== 'undefined') {
@@ -149,12 +144,12 @@
                 }
             }, 1000);
 
-            $('.template_editor_file_selector').resizable();
+            window.jQuery('.template_editor_file_selector').resizable();
 
             template_editor_assign_unload_event();
         },
 
-        themeImageManageScreen: function themeImageManageScreen() {
+        themeImageManageScreen: function () {
             window.main_form_very_simple = true;
         }
     };
@@ -174,8 +169,6 @@
         do_ajax_request('{$FIND_SCRIPT;,tempcode_tester}?comcode=1' + keep_stub(), function (ajax_result) {
             Composr.dom.html(document.getElementById('preview_comcode'), ajax_result.responseText);
         }, request);
-
-        return false;
     }
-})(window.jQuery || window.Zepto, Composr);
+}(window.Composr));
 
