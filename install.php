@@ -396,7 +396,7 @@ function step_1()
             $warnings->attach(do_template('INSTALLER_NOTICE', array('MESSAGE' => do_lang_tempcode('RECURSIVE_SERVER'))));
         }
     }
-    if ((file_exists(get_file_base() . '/_config.php')) && (!is_writable_wrap(get_file_base() . '/_config.php')) && (!php_function_allowed('posix_getuid')) && ((strpos(PHP_OS, 'WIN') !== false))) {
+    if ((file_exists(get_file_base() . '/_config.php')) && (!is_writable_wrap(get_file_base() . '/_config.php')) && (!php_function_allowed('posix_getuid')) && ((stripos(PHP_OS, 'WIN') === 0))) {
         $warnings->attach(do_template('INSTALLER_WARNING', array('MESSAGE' => do_lang_tempcode('TROUBLESOME_WINDOWS_SERVER', escape_html(get_tutorial_url('tut_adv_install'))))));
     }
 
@@ -761,7 +761,7 @@ function step_4()
     $use_persistent = false;
     require_code('version');
     $table_prefix = get_default_table_prefix();
-    if (stripos(PHP_OS, 'win') !== false) {
+    if (stripos(PHP_OS, 'WIN') === 0) {
         $db_site_host = '127.0.0.1';
     } else {
         $db_site_host = 'localhost';
