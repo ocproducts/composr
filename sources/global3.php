@@ -3522,3 +3522,42 @@ function website_creation_time()
 {
     return filemtime(get_file_base() . '/sources/global.php');
 }
+
+/**
+ * Find whether a particular feature is currently maintained (only works with particular pre-determined feature codes).
+ *
+ * @param  ID_TEXT $code Feature
+ * @return boolean Maintained status
+ */
+function is_maintained($code)
+{
+    $myfile = fopen(get_custom_file_base() . '/data/maintenance_status.csv', 'rb');
+    fgetcsv($myfile); // Skip header row
+    while (($row = fgetcsv($myfile)) !== false) {
+        if ($code == $row[0]) {
+            return !empty($row[3]);
+        }
+    }
+    fclose($myfile);
+
+    return true;
+}
+
+/**
+ * Tack on a message to some text if a feature is not maintained.
+ *
+ * @param  ID_TEXT $code Feature
+ * @param  mixed $text Text to show (string or Tempcode)
+ * @return Tempcode Text
+ */
+function is_maintained_description($code, $text)
+{
+    if (is_string($text)) {
+        $text = protect_from_escaping($text);
+    }
+
+    if (!is_maintained($code)) {
+        return do_lang_tempcode('NON_MAINTAINED_STATUS', $text, make_string_tempcode(escape_html(get_brand_base_url())));
+    }
+    return $text;
+}

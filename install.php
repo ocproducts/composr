@@ -551,8 +551,9 @@ function step_3()
 
         $mapped_name = do_lang('FORUM_CLASS_' . $class, null, null, null, null, false);
         if ($mapped_name === null) {
-            $mapped_name = ucwords($class);
+            $mapped_name = titleify($class);
         }
+        $_mapped_name = is_maintained_description('forum_' . $class, $mapped_name);
         $versions = new Tempcode();
         $first = true;
         $forums = array_reverse($forums);
@@ -569,17 +570,16 @@ function step_3()
             } else {
                 $version = array_key_exists($forum . '_version', $forum_info) ? do_lang('VERSION_NUM', $forum_info[$forum . '_version']) : do_lang('VERSION_NUM', do_lang('NA'));
             }
-            $extra2 = '';//(($first && !$rec) || $rec)?'checked="checked"':'';
-            $versions->attach(do_template('INSTALLER_FORUM_CHOICE_VERSION', array('_GUID' => '159a5a7cd1397620ef34e98c3b06cd7f', 'IS_DEFAULT' => ($DEFAULT_FORUM == $forum) || ($first && !$rec), 'CLASS' => $class, 'NAME' => $forum, 'VERSION' => $version, 'EXTRA' => $extra2)));
+            $versions->attach(do_template('INSTALLER_FORUM_CHOICE_VERSION', array('_GUID' => '159a5a7cd1397620ef34e98c3b06cd7f', 'IS_DEFAULT' => ($DEFAULT_FORUM == $forum) || ($first && !$rec), 'CLASS' => $class, 'NAME' => $forum, 'VERSION' => $version)));
             $first = false;
 
-            $simple_forums->attach(do_template('INSTALLER_FORUM_CHOICE_VERSION', array('_GUID' => 'c4c0e7accab56ae45e8e1a4ff777c42b', 'IS_DEFAULT' => ($DEFAULT_FORUM == $forum) || ($first && !$rec), 'CLASS' => $class, 'NAME' => $forum, 'VERSION' => $mapped_name . ' ' . $version, 'EXTRA' => '')));
+            $simple_forums->attach(do_template('INSTALLER_FORUM_CHOICE_VERSION', array('_GUID' => 'c4c0e7accab56ae45e8e1a4ff777c42b', 'IS_DEFAULT' => ($DEFAULT_FORUM == $forum) || ($first && !$rec), 'CLASS' => $class, 'NAME' => $forum, 'VERSION' => $mapped_name . ' ' . $version)));
         }
         if ($rec) {
             $default_version = $versions;
         }
         $extra = ($rec) ? 'checked="checked"' : '';
-        $tforums->attach(do_template('INSTALLER_FORUM_CHOICE', array('_GUID' => 'a5460829e86c9da3637f8e566cfca63c', 'CLASS' => $class, 'REC' => $rec, 'TEXT' => $mapped_name, 'VERSIONS' => $versions, 'EXTRA' => $extra)));
+        $tforums->attach(do_template('INSTALLER_FORUM_CHOICE', array('_GUID' => 'a5460829e86c9da3637f8e566cfca63c', 'CLASS' => $class, 'REC' => $rec, 'TEXT' => $_mapped_name, 'VERSIONS' => $versions, 'EXTRA' => $extra)));
     }
 
     // Database chooser
@@ -631,6 +631,7 @@ function step_3()
         } else {
             $mapped_name = $database;
         }
+        $mapped_name = is_maintained_description('database_' . $database, $mapped_name);
         $tdatabase->attach(do_template('FORM_SCREEN_INPUT_LIST_ENTRY', array('SELECTED' => $selected, 'DISABLED' => false, 'NAME' => $database, 'CLASS' => '', 'TEXT' => $mapped_name)));
 
         if ($database != 'xml') {

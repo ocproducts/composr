@@ -257,10 +257,10 @@ function _create_media_template_parameters($url, $attributes, $as_admin = false,
         }
 
         if ($no_width && !$no_height) {
-            $attributes['width'] = strval(intval(round(floatval($attributes['height']) * (float)$_width / (float)$_height)));
+            $attributes['width'] = strval(intval(round(floatval($attributes['height']) * floatval($_width) / floatval($_height))));
         }
         elseif (!$no_width && $no_height) {
-            $attributes['height'] = strval(intval(round(floatval($attributes['width']) * (float)$_height / (float)$_width)));
+            $attributes['height'] = strval(intval(round(floatval($attributes['width']) * floatval($_height) / floatval($_width))));
         } else {
             if ($no_width) {
                 $attributes['width'] = $_width;

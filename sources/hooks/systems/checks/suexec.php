@@ -32,8 +32,10 @@ class Hook_check_suexec
     {
         $warning = array();
 
-        if (!is_suexec_like()) {
-            $warning[] = do_lang_tempcode('WARNING_SUEXEC', escape_html(get_brand_base_url()));
+        if (!is_maintained('platform_chmod')) {
+            if (!is_suexec_like()) {
+                $warning[] = do_lang_tempcode('WARNING_SUEXEC', escape_html(get_brand_base_url()));
+            }
         }
 
         return $warning;

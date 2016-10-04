@@ -73,18 +73,19 @@ class Hook_import_smf2
             'news_and_categories'
         );
 
-        $info['dependencies'] = array( // This dependency tree is overdefined, but I wanted to make it clear what depends on what, rather than having a simplified version
-                                       'banners' => array('cns_members'),
-                                       'news_and_categories' => array('cns_members'),
-                                       'cns_members' => array('cns_groups', 'cns_custom_profile_fields'),
-                                       'cns_member_files' => array('cns_members'),
-                                       'cns_forums' => array('cns_forum_groupings', 'cns_members', 'cns_groups'),
-                                       'cns_topics' => array('cns_forums', 'cns_members'),
-                                       'cns_polls_and_votes' => array('cns_topics', 'cns_members'),
-                                       'cns_posts' => array('cns_topics', 'cns_members'),
-                                       'cns_post_files' => array('cns_posts', 'cns_personal_topics'),
-                                       'notifications' => array('cns_topics', 'cns_members', 'cns_polls_and_votes'),
-                                       'cns_personal_topics' => array('cns_members')
+        $info['dependencies'] = array(
+            // This dependency tree is overdefined, but I wanted to make it clear what depends on what, rather than having a simplified version
+           'banners' => array('cns_members'),
+           'news_and_categories' => array('cns_members'),
+           'cns_members' => array('cns_groups', 'cns_custom_profile_fields'),
+           'cns_member_files' => array('cns_members'),
+           'cns_forums' => array('cns_forum_groupings', 'cns_members', 'cns_groups'),
+           'cns_topics' => array('cns_forums', 'cns_members'),
+           'cns_polls_and_votes' => array('cns_topics', 'cns_members'),
+           'cns_posts' => array('cns_topics', 'cns_members'),
+           'cns_post_files' => array('cns_posts', 'cns_personal_topics'),
+           'notifications' => array('cns_topics', 'cns_members', 'cns_polls_and_votes'),
+           'cns_personal_topics' => array('cns_members')
         );
         $_cleanup_url = build_url(array('page' => 'admin_cleanup'), get_module_zone('admin_cleanup'));
         $cleanup_url = $_cleanup_url->evaluate();

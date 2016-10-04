@@ -109,6 +109,7 @@ class Hook_addon_registry_core
     public function get_file_list()
     {
         return array(
+            'data/maintenance_status.csv',
             'themes/default/images/icons/24x24/menu/_generic_admin/merge.png',
             'themes/default/images/icons/48x48/menu/_generic_admin/merge.png',
             'themes/default/images/icons/24x24/menu/rich_content.png',
