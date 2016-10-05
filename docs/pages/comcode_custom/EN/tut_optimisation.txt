@@ -454,9 +454,9 @@ You'll need to disable the Composr "Reveal usage figures" option, as the usage f
 
 Alternatively, you could do a similar thing using rewrite rules in [tt].htaccess[/tt] (Apache only), but this would add additional latency.
 
-[title="2"]Facebook's HHVM[/title]
+[title="2"]{$IS_MAINTAINED,platform_hhvm,Facebook's HHVM}[/title]
 
-[i]HHVM is not officially supported, as it is fast evolving and sometimes has bugs.[/i] It should work though. Support can be provided individually upon commercial demand. As PHP 7 improved performance a lot over the previous official PHP releases, HHVM is not as interesting as it once was, as HHVM is a very heavyweight solution.
+As PHP 7 improved performance a lot over the previous official PHP releases, HHVM is not as interesting as it once was, as HHVM is a very heavyweight solution. However HHVM does have a large development team continually improving it so it may perform some decent speed boosts still.
 
 Facebook released an alternative implementation of PHP that works as a JIT virtual machine instead of an interpreter. It more than doubles performance, and is set to improve further as it is developed.
 This is not suitable for most people for the following reasons:

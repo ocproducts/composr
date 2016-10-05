@@ -122,7 +122,7 @@ You may, for example, include it on a Comcode page, or on a menu, to guide users
 
 [title="2"]Podcasts[/title]
 
-Composr RSS complies with Apple's podcast format. Other companies support the same format, as it has become a de facto standard.
+Composr RSS complies with {$IS_MAINTAINED,itunes,Apple's podcast format}. Other companies support the same format, as it has become a de facto standard.
 
 The podcast URL for a gallery is:
 [tt]http://yourbaseurl/backend.php?mode=galleries&select=galleryname&type=rss&itunes=1[/tt]

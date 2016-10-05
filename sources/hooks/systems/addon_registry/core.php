@@ -1197,6 +1197,8 @@ class Hook_addon_registry_core
             'data/blank.php',
             'sources/hooks/systems/checks/.htaccess',
             'sources_custom/hooks/systems/checks/.htaccess',
+            'sources/hooks/systems/checks/server_software.php',
+            'sources/hooks/systems/checks/php_software.php',
             'sources/hooks/systems/checks/base_url.php',
             'sources/hooks/systems/checks/no_ad_script.php',
         	'sources/hooks/systems/checks/open_basedir.php',

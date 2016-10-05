@@ -59,7 +59,7 @@ Similarly, for '2'-'4', you will get a choice of language which to edit under wh
 You will notice when you choose your language you will temporarily see the website displayed as the language you are working under, until you finish.
 E.g. if you are viewing the website in English, and you go to edit a Comcode page and select to edit to in French, the website will be shown in French while you are editing that page.
 
-[title="2"]Content translation[/title]
+[title="2"]{$IS_MAINTAINED,multi_lang_content,Content translation}[/title]
 
 [media width="150" description="Content translation" float="right"]data_custom/images/docs/tut_intl_content/content.png[/media]
 Content added to Composr is initially saved against the language being used by the submitter. Therefore, when adding content you must ensure you have the correct language choice for what you want the default content language to be; a good rule of thumb to check this is by seeing if the language Composr is uses in its interface matches the language you expect to be submitting content in.

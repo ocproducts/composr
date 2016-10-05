@@ -112,6 +112,8 @@ function string_scan($lang, $do_guessing = false)
     );
 
     $lang_strings_admin_initial = array_map('trim', explode("\n", trim('
+        WARNING_SERVER_SOFTWARE
+        WARNING_NON_MAINTAINED
         NON_MAINTAINED_STATUS
         SECURITY_LEVEL
         DESCRIPTION_SECURITY_LEVEL

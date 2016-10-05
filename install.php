@@ -790,7 +790,7 @@ function step_4()
 
     $sections = new Tempcode();
 
-    // Detect FTP settings
+    // Detect FTP settings...
 
     if (php_function_allowed('posix_getpwuid')) {
         $u_info = posix_getpwuid(fileowner(get_file_base() . '/install.php'));
@@ -826,7 +826,7 @@ function step_4()
     $ftp_folder = '/' . $webdir_stub . basename(cms_srv('SCRIPT_NAME'));
     $ftp_domain = $domain;
 
-    // Is this autoinstaller? FTP settings
+    // Is this autoinstaller? FTP settings...
 
     global $FILE_ARRAY;
     if ((@is_array($FILE_ARRAY)) && (!is_suexec_like())) {
@@ -842,7 +842,7 @@ function step_4()
         $sections->attach(do_template('INSTALLER_STEP_4_SECTION', array('_GUID' => '50fcb00f4d1da1813e94d86529ea0862', 'HIDDEN' => $hidden, 'TITLE' => $title, 'TEXT' => $text, 'OPTIONS' => $options)));
     }
 
-    // General settings
+    // General settings...
 
     $title = do_lang_tempcode('GENERAL_SETTINGS');
     $text = new Tempcode();
@@ -861,11 +861,10 @@ function step_4()
     $options->attach(make_option(do_lang_tempcode('MASTER_PASSWORD'), example('', 'CHOOSE_MASTER_PASSWORD'), 'master_password', $master_password, true));
     require_lang('config');
     $options->attach(make_tick(do_lang_tempcode('SEND_ERROR_EMAILS_OCPRODUCTS'), example('', 'CONFIG_OPTION_send_error_emails_ocproducts'), 'send_error_emails_ocproducts', 1));
-    $options->attach(make_tick(do_lang_tempcode('MULTI_LANG_CONTENT'), example('', 'MULTI_LANG_CONTENT_TEXT'), 'multi_lang_content', file_exists(get_file_base() . '/.git')/*randomise in dev mode*/ ? mt_rand(0, 1) : 0));
     $sections->attach(do_template('INSTALLER_STEP_4_SECTION', array('_GUID' => 'f051465e86a7a53ec078e0d9de773993', 'HIDDEN' => $hidden, 'TITLE' => $title, 'TEXT' => $text, 'OPTIONS' => $options)));
     $hidden->attach(form_input_hidden('self_learning_cache', '1'));
 
-    // Database settings for forum (if applicable)
+    // Database settings for forum (if applicable)...
 
     $forum_text = new Tempcode();
     if (($forum_type == 'cns') || ($forum_type == 'none')) {
@@ -912,7 +911,7 @@ function step_4()
         }
     }
 
-    // Database settings for site
+    // Database settings for site...
 
     $text = ($use_msn == 1) ? do_lang_tempcode(($forum_type == 'cns') ? 'DUPLICATE_CNS' : 'DUPLICATE') : new Tempcode();
     $options = make_option(do_lang_tempcode('DATABASE_NAME'), new Tempcode(), 'db_site', $db_site, false, true);
@@ -973,7 +972,16 @@ function step_4()
         }
     }
 
-    // Cookie settings
+    // Advanced settings...
+
+    $title = do_lang_tempcode('GENERAL');
+    $text = new Tempcode();
+    $options = new Tempcode();
+    $hidden = new Tempcode();
+    $options->attach(make_tick(do_lang_tempcode('MULTI_LANG_CONTENT'), is_maintained_description('multi_lang_content', example('', 'MULTI_LANG_CONTENT_TEXT')), 'multi_lang_content', 0));
+    $advanced_1 = do_template('INSTALLER_STEP_4_SECTION', array('_GUID' => 'g051465e86a7a53ec078e0d9de773993', 'HIDDEN' => $hidden, 'TITLE' => $title, 'TEXT' => $text, 'OPTIONS' => $options));
+
+    // Cookie settings...
 
     if (!GOOGLE_APPENGINE) {
         $title = do_lang_tempcode('COOKIE_SETTINGS');
@@ -985,9 +993,13 @@ function step_4()
         $options->attach(make_option(do_lang_tempcode('COOKIE_DOMAIN'), example('COOKIE_DOMAIN_EXAMPLE', 'COOKIE_DOMAIN_TEXT'), 'cookie_domain', $cookie_domain));
         $options->attach(make_option(do_lang_tempcode('COOKIE_PATH'), example('COOKIE_PATH_EXAMPLE', 'COOKIE_PATH_TEXT'), 'cookie_path', $cookie_path));
         $options->attach(make_option(do_lang_tempcode('COOKIE_DAYS'), example('COOKIE_DAYS_EXAMPLE', 'COOKIE_DAYS_TEXT'), 'cookie_days', $cookie_days, false, true));
-        $temp = do_template('INSTALLER_STEP_4_SECTION', array('_GUID' => '3b9ea022164801f4b60780a4a966006f', 'HIDDEN' => $hidden, 'TITLE' => $title, 'TEXT' => $text, 'OPTIONS' => $options));
-        $sections->attach(do_template('INSTALLER_STEP_4_SECTION_HIDE', array('_GUID' => '42eb3d44bcf8ef99987b6daa9e6530aa', 'TITLE' => $title, 'CONTENT' => $temp)));
+        $advanced_2 = do_template('INSTALLER_STEP_4_SECTION', array('_GUID' => '3b9ea022164801f4b60780a4a966006f', 'HIDDEN' => $hidden, 'TITLE' => $title, 'TEXT' => $text, 'OPTIONS' => $options));
     }
+
+    $temp = new Tempcode();
+    $temp->attach($advanced_1);
+    $temp->attach($advanced_2);
+    $sections->attach(do_template('INSTALLER_STEP_4_SECTION_HIDE', array('_GUID' => '42eb3d44bcf8ef99987b6daa9e6530aa', 'TITLE' => $title, 'CONTENT' => $temp)));
 
     // ----
 
