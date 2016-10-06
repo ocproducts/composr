@@ -410,7 +410,6 @@ $featuretree = array(
                 array('HTTP authentication', 'Tie into an existing HTTP authentication-based login system (<abbr title="The Composr forum">Conversr</abbr>)'),
                 array('Proxying system', 'Programmers can integrate any existing scripts using our sophisticated proxying system (which includes full cookie support)'),
                 array('Minimodules and miniblocks', 'Programmers can port existing PHP code into Composr itself <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Framework documentation" href="{$PAGE_LINK*,docs:tut_framework}"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
-                array('Export your Comcode as <abbr title="eXtensible HyperText Markup Language">XML</abbr>', 'Other systems may integrate your rich content, using (for example) <abbr title="XSL transformations">XSLT</abbr>'),
             ),
         ),
     ),
