@@ -41,6 +41,8 @@ class Hook_config_stopforumspam_api_key
             'order_in_category_group' => 14,
 
             'addon' => 'core_configuration',
+
+            'maintenance_code' => 'stop_forum_spam',
         );
     }
 

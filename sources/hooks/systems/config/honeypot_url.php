@@ -41,6 +41,8 @@ class Hook_config_honeypot_url
             'order_in_category_group' => 1,
 
             'addon' => 'core_configuration',
+
+            'maintenance_code' => 'project_honeypot',
         );
     }
 

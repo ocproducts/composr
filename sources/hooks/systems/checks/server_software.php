@@ -55,11 +55,11 @@ class Hook_check_server_software
         }
 
         if ((!is_maintained('platform_litespeed')) && (stripos($server_software, 'LiteSpeed') !== false)) {
-            $warning[] = do_lang_tempcode('WARNING_NON_MAINTAINED', escape_html('LiteSpeed'));
+            $warning[] = do_lang_tempcode('WARNING_NON_MAINTAINED', escape_html('LiteSpeed'), escape_html(get_brand_base_url()), escape_html('platform_litespeed'));
         }
 
         if ((!is_maintained('platform_iis')) && (stripos($server_software, 'Microsoft-IIS') !== false)) {
-            $warning[] = do_lang_tempcode('WARNING_NON_MAINTAINED', escape_html('Microsoft IIS'));
+            $warning[] = do_lang_tempcode('WARNING_NON_MAINTAINED', escape_html('Microsoft IIS'), escape_html(get_brand_base_url()), escape_html('platform_iis'));
         }
 
         return $warning;

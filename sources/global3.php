@@ -3531,14 +3531,19 @@ function website_creation_time()
  */
 function is_maintained($code)
 {
-    $myfile = fopen(get_custom_file_base() . '/data/maintenance_status.csv', 'rb');
-    fgetcsv($myfile); // Skip header row
-    while (($row = fgetcsv($myfile)) !== false) {
-        if ($code == $row[0]) {
-            return !empty($row[3]);
+    static $cache = array();
+    if ($cache === array()) {
+        $myfile = fopen(get_custom_file_base() . '/data/maintenance_status.csv', 'rb');
+        fgetcsv($myfile); // Skip header row
+        while (($row = fgetcsv($myfile)) !== false) {
+            $cache[$row[0]] = !empty($row[3]);
         }
+        fclose($myfile);
     }
-    fclose($myfile);
+
+    if (isset($cache[$code])) {
+        return $cache[$code];
+    }
 
     return true;
 }
@@ -3557,7 +3562,7 @@ function is_maintained_description($code, $text)
     }
 
     if (!is_maintained($code)) {
-        return do_lang_tempcode('NON_MAINTAINED_STATUS', $text, make_string_tempcode(escape_html(get_brand_base_url())));
+        return do_lang_tempcode('NON_MAINTAINED_STATUS', $text, make_string_tempcode(escape_html(get_brand_base_url())), escape_html($code));
     }
     return $text;
 }

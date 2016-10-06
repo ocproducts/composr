@@ -1,7 +1,7 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Facebook Support[/title]
 
 [media thumb="0" framed="0" float="right"]data_custom/images/docs/tut_facebook/fb_composr.jpg[/media]
-This tutorial describes Composr Facebook integration. It mostly describes functionality supplied by the non-bundled Facebook Support addon.
+This tutorial describes {$IS_MAINTAINED,facebook,Composr Facebook integration}. It mostly describes functionality supplied by the non-bundled Facebook Support addon.
 
 You may want to get a developer to help configure things. We're helping people getting Composr integrated, even when you're not a developer, but bear in mind that it can be tricky sometimes. Facebook is in flux, and Composr has to play catch-up quite a lot. All the standards involved in the integration are also in flux. Things are a lot better than they were, but still not always ideal. Any screenshots we show for Facebook could be out-dated by the time you read this.
 

@@ -40,6 +40,8 @@ class Hook_config_forum_in_portal
             'list_options' => '',
 
             'addon' => 'core_configuration',
+
+            'maintenance_code' => 'forum_in_portal',
         );
     }
 

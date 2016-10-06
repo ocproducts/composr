@@ -24,14 +24,15 @@ Parallel to Microsoft speeding up, Google Chrome (based on Safari's Webkit code)
 
 [title="2"]Supported browsers[/title]
 
-Composr is designed to work on all serious modern browsers. We have official support for:
- - Microsoft Edge (latest version &dagger;) (EdgeHTML/Chakra engine)
- - Internet Explorer (common versions &dagger;&dagger;&dagger;) (Trident/Chakra engine)
- - Firefox (latest version &dagger;) (Gecko/SpiderMonkey engine)
- - Safari (common versions &dagger;&dagger;) (Webkit/JavaScriptCore engine)
- - Google Chrome (latest version &dagger;) (Blink/V8 engine)
- - Android browser (common versions &dagger;&dagger;) (Webkit/JavaScriptCore engine)
- - Mobile Safari (common versions &dagger;&dagger;) (Blink/V8 engine)
+Composr is designed to work on all serious modern browsers:
+ - {$IS_MAINTAINED,browser_microsoft,Microsoft Edge} (latest version &dagger;) (EdgeHTML/Chakra engine)
+ - {$IS_MAINTAINED,browser_microsoft,Internet Explorer} (common versions &dagger;&dagger;&dagger;) (Trident/Chakra engine)
+ - {$IS_MAINTAINED,browser_firefox,Firefox} (latest version &dagger;) (Gecko/SpiderMonkey engine)
+ - {$IS_MAINTAINED,browser_safari,Safari} (common versions &dagger;&dagger;) (Webkit/JavaScriptCore engine)
+ - {$IS_MAINTAINED,browser_blink,Google Chrome} (latest version &dagger;) (Blink/V8 engine)
+ - {$IS_MAINTAINED,browser_android_legacy,Android legacy browser} (common versions &dagger;&dagger;) (Webkit/JavaScriptCore engine)
+ - {$IS_MAINTAINED,browser_android_chrome,Android Chrome browser} (common versions &dagger;&dagger;) (Webkit/JavaScriptCore engine)
+ - {$IS_MAINTAINED,browser_ios,Mobile Safari} (common versions &dagger;&dagger;) (Blink/V8 engine)
 
 &dagger; These browsers auto-update, so we support the latest versions only.
 
@@ -68,7 +69,7 @@ There are a number of approaches that can help you with the above problems:
 
 [title="2"]JavaScript[/title]
 
-JavaScript may be disabled by visitors to Composr. Sometimes users consider it unsafe and disable it (there is a strong case to this, but it is a very limiting thing to do), although by doing so on the modern web, most websites will not work.
+{$IS_MAINTAINED,standard_nojs,JavaScript may be disabled by visitors to Composr}. Sometimes users consider it unsafe and disable it (there is a strong case to this, but it is a very limiting thing to do), although by doing so on the modern web, most websites will not work.
 
 If a Composr visitor has JavaScript disabled then certain functionality will not work, such as using the menu editor (appropriate Composr error messages will be given explaining why); in addition, other functionality reduces in ability due to a lack of interactive ability in the web browser: for example, the Comcode [tt]hide[/tt] tag will drop-down to the level where the content isn't actually hidden by default.
 
@@ -76,7 +77,7 @@ The main reason for Composr not requiring JavaScript is that interactive functio
 
 [title="2"]Cookies[/title]
 
-Composr does not require cookie support, although it is recommended. To at least have 'session cookies' enabled is strongly recommended, as otherwise Composr will need to carry additional data along in the URL.
+{$IS_MAINTAINED,standard_nocookies,Composr does not require cookie support}, although it is recommended. To at least have 'session cookies' enabled is strongly recommended, as otherwise Composr will need to carry additional data along in the URL.
 
 [title="2"]Desktop settings[/title]
 
@@ -87,7 +88,7 @@ A screen-resolution of at least 1024&times;768 is strongly suggested, as this is
 It is not usually appropriate for a printed webpage to look like it does on the screen. For example, margins would want removing from each side of the site, social media links should not show, background images should be disabled, and so on.
 There are 3 approaches to solving this problem that work together:
 1) Browsers automatically disable background images, when printing
-2) CSS provides a mechanism for specifying different display rules for the printed version; Composr makes use of this
+2) CSS provides a mechanism for specifying different display rules for the printed version; {$IS_MAINTAINED,theme_print,Composr makes use of this}
 3) Composr has a parameter, [tt]wide_print[/tt], that will influence some aspects of how pages are put together
 
 The Composr [tt]wide_print[/tt] parameter is activated from either:

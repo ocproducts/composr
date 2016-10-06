@@ -36,25 +36,35 @@ class Hook_check_mysql_version
         // If you really need to fiddle it and don't care about emoji, add this to _config.php while installing (before step 5 runs):   $SITE_INFO['database_charset'] = 'utf8';
 
         $warning = array();
+
+        $version = null;
+
         if (isset($GLOBALS['SITE_DB']->connection_read[0])) {
             if (function_exists('mysqli_get_server_version') && get_db_type() == 'mysqli') {
                 $__version = @mysqli_get_server_version($GLOBALS['SITE_DB']->connection_read[0]);
                 if ($__version !== false) {
                     $_version = strval($__version);
                     $version = strval(intval(substr($_version, 0, strlen($_version) - 4))) . '.' . strval(intval(substr($_version, -4, 2))) . '.' . strval(intval(substr($_version, -2, 2)));
-                    if (version_compare($version, $minimum_version, '<')) {
-                        $warning[] = do_lang_tempcode('MYSQL_TOO_OLD', escape_html($minimum_version), escape_html($version));
-                    }
                 }
             } elseif (function_exists('mysql_get_server_info') && get_db_type() == 'mysql') {
-                $version = @mysql_get_server_info($GLOBALS['SITE_DB']->connection_read[0]);
-                if ($version !== false) {
-                    if (version_compare($version, $minimum_version, '<')) {
-                        $warning[] = do_lang_tempcode('MYSQL_TOO_OLD', escape_html($minimum_version), escape_html($version));
-                    }
+                $_version = @mysql_get_server_info($GLOBALS['SITE_DB']->connection_read[0]);
+                if ($_version !== false) {
+                    $version = $_version;
                 }
             }
         }
+
+        if ($version !== null) {
+            if (version_compare($version, $minimum_version, '<')) {
+                $warning[] = do_lang_tempcode('MYSQL_TOO_OLD', escape_html($minimum_version), escape_html($version));
+            }
+
+            $max_tested_mysql_version = '5.7';
+            if ((!is_maintained('mysql')) && (version_compare($version, $max_tested_mysql_version . '.1000', '>'))) {
+                $warning[] = do_lang_tempcode('WARNING_NON_MAINTAINED', escape_html('MySQL versions newer than ' . $max_tested_mysql_version), escape_html(get_brand_base_url()), escape_html('mysql'));
+            }
+        }
+
         return $warning;
     }
 }

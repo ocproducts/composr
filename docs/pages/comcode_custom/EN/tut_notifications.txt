@@ -18,7 +18,7 @@ You can receive notifications through a number of means:
  - E-mail
  - Digest e-mail (i.e. in batches)
  - Private topics
- - SMS (if configured, requires payment for each text message sent)
+ - {$IS_MAINTAINED,sms,SMS} (if configured, requires payment for each text message sent)
  - As web notifications
 
 Note that private topic receipt is disabled for topic-derived notifications, in order to stop massive growth in database size.

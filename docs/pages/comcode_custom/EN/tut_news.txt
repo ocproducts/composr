@@ -25,7 +25,7 @@ The add icon brings up the add screen, which is a standard form in Composr. It c
  - [b]Allow comments[/b]: With this option ticked, your members will be able to leave comments at the end of your news post
  - [b]Allow trackbacks[/b]: With this option ticked, your members will have to ability to [[trackback]] this post
  - [b]Notes[/b]: This is additional information that the staff will be able to see when they are validating this post
- - [b]Validated[/b]: Tick this and this post will be visible and posted after you click 'add news'. If you leave this unticked, it will remain in a validation queue until it is either validated or deleted by the staff
+ - [b]Validated[/b]: Tick (check) this and this post will be visible and posted after you click 'add news'. If you leave this unticked, it will remain in a validation queue until it is either validated or deleted by the staff
  - [b]News article[/b]: In this space, you can write your news post in detail, with options to include formatting and/or emoticons
  - [b]News summary[/b]: this is a brief summary (1 or 2 paragraphs) of your news post. If your post is less than 2 paragraphs or so, you may choose to not write a summary at all (in which case Composr is smart enough to use the actual article in place of a summary)
  - [b]Attachments[/b]: At the bottom of the page, you have the ability to add as many attachments to this post from your computer as you like

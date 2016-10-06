@@ -64,7 +64,7 @@ Framework security:
 Other features:
  - Privileges and access permissions to restrict privileged functionality
  - Validation process for content submission
- - Rootkit detector system (manually generate security signatures representing the state of the website, to compare to previous ones)
+ - {$IS_MAINTAINED,rootkit_detector,Rootkit detector system} (manually generate security signatures representing the state of the website, to compare to previous ones)
  - Many spam-prevention systems (outside the scope of this tutorial)
  - Automatic download of new web application firewall rules (for emergency patching)
  - Many moderation systems such as warnings, probations, and bans (outside the scope of this tutorial)

@@ -33,15 +33,15 @@ class Hook_check_php_software
         $warning = array();
 
         if ((!is_maintained('platform_hhvm')) && (HHVM)) {
-            $warning[] = do_lang_tempcode('WARNING_NON_MAINTAINED', escape_html('HHVM'));
+            $warning[] = do_lang_tempcode('WARNING_NON_MAINTAINED', escape_html('HHVM'), escape_html(get_brand_base_url()), escape_html('platform_hhvm'));
         }
 
         if ((!is_maintained('platform_gae')) && (GOOGLE_APPENGINE)) {
-            $warning[] = do_lang_tempcode('WARNING_NON_MAINTAINED', escape_html('Google App Engine'));
+            $warning[] = do_lang_tempcode('WARNING_NON_MAINTAINED', escape_html('Google App Engine'), escape_html(get_brand_base_url()), escape_html('platform_gae'));
         }
 
         if ((!is_maintained('platform_phalanger')) && (defined('PHALANGER'))) {
-            $warning[] = do_lang_tempcode('WARNING_NON_MAINTAINED', escape_html('Phalanger'));
+            $warning[] = do_lang_tempcode('WARNING_NON_MAINTAINED', escape_html('Phalanger'), escape_html(get_brand_base_url()), escape_html('platform_phalanger'));
         }
 
         return $warning;

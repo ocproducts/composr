@@ -115,7 +115,7 @@ $featuretree = array(
                 array('Show different banners to different usergroups'),
                 array('Track banner performance'),
                 array('Use the banner system to display whole sets of sponsor logos'),
-                array('Geotargetting'),
+                (!is_maintained('geocode_internal')) ? false : array('Geotargetting'),
             ),
         ),
         'search' => array(
@@ -127,7 +127,7 @@ $featuretree = array(
                 array('Search boxes to integrate into your website'),
                 null, // divider
                 array('Logging/stats'),
-                array('OpenSearch support', 'Allow users to search from inside their web browser'),
+                (!is_maintained('standard_opensearch')) ? false : array('OpenSearch support', 'Allow users to search from inside their web browser'),
                 array('Results sorting, and filtering by author and date'),
                 array('Search within downloads', 'Including support for looking inside archives'),
             ),
@@ -164,11 +164,11 @@ $featuretree = array(
                 array('Shopping cart for running an online store'),
                 array('Extendable framework', 'Programmers can easily add new product types to sell, or payment gateways'),
                 null, // divider
-                array('Multiple payment gateways', 'Accepts payments via PayPal, WorldPay, SecPay, and manual transactions (cash/cheque)'),
+                array('Multiple payment gateways', 'Accepts payments via various payment gateways including PayPal, and manual transactions (cash/cheque)'),
                 array('Invoicing support', 'Including status tracking and online payment tracking'),
                 array('Basic accounting support', 'Input your incoming and outgoing transactions to get basic ledger, profit-and-loss, and cashflow charting'),
-                array('<abbr title="Secure Socket Layer">SSL</abbr>/<abbr title="Transport Layer Security">TLS</abbr>/HTTPS certificate support', 'Make key pages of your choice run over SSL (e.g. the join and payment pages)'),
-                array('Currency conversions', 'Perform automatic currency conversions within your website pages'),
+                (!is_maintained('ssl')) ? false : array('<abbr title="Secure Socket Layer">SSL</abbr>/<abbr title="Transport Layer Security">TLS</abbr>/HTTPS certificate support', 'Make key pages of your choice run over SSL (e.g. the join and payment pages)'),
+                (!is_maintained('currency')) ? false : array('Currency conversions', 'Perform automatic currency conversions within your website pages'),
             ),
         ),
         'support' => array(
@@ -180,7 +180,7 @@ $featuretree = array(
                 null, // divider
                 array('Support ticket types', 'Set up different kinds of support ticket, with different access levels'),
                 array('Allow users to e-mail in their tickets and replies'),
-                array('Receive SMS alerts for important tickets'),
+                (!is_maintained('sms')) ? false : array('Receive SMS alerts for important tickets'),
                 array('Anonymous feedback', 'Any user can submit anonymous feedback'),
                 array('Users may review your content (optional)'),
             ),
@@ -233,13 +233,11 @@ $featuretree = array(
                 array('Blocking', 'Choose to appear offline to certain members'),
             ),
         ),
-        'msn' => array(
+        'msn' => (!is_maintained('msn')) ? false : array(
             'Multi-site networks',
             array(
                 array('Shared membership', 'Share members between multiple Composr websites'),
-                null, // divider
                 array('Syndicated site list', 'Allows each member site to see an up-to-date list of sites in the network'),
-                array('Staff filter', 'Choose which members are staff on which sites'),
             ),
         ),
     ),
@@ -288,7 +286,7 @@ $featuretree = array(
                 array('Priority flagging'),
                 array('Programmers can even use the calendar to schedule website cronjobs'),
                 array('<abbr title="Really Simple Syndication">RSS</abbr> and Atom support', 'Export support, but also support for overlaying news feeds onto the calendar'),
-                array('Geotargetting'),
+                (!is_maintained('geocode_internal')) ? false : array('Geotargetting'),
             ),
         ),
         'news' => array(
@@ -304,7 +302,7 @@ $featuretree = array(
                 array('Multiple ways to integrate news into your website'),
                 array('Import from RSS feeds <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of News" href="http://shareddemo.composr.info/cms/index.php?page=cms_news"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Easily syndicate to Facebook and Twitter'),
-                array('Geotargetting'),
+                (!is_maintained('geocode_internal')) ? false : array('Geotargetting'),
             ),
         ),
         'quizzes' => array(
@@ -333,7 +331,7 @@ $featuretree = array(
                 array('Automatic thumbnail generation'),
                 array('Import and export easily', 'With mass upload and metadata support'),
                 array('Optional watermarking', 'To guard against thieving swines ;)'),
-                array('Geotargetting'),
+                (!is_maintained('geocode_internal')) ? false : array('Geotargetting'),
             ),
         ),
         'downloads' => array(
@@ -408,9 +406,9 @@ $featuretree = array(
                 array('Convert from other software', 'See our <a href="' . escape_html($importing_tutorial_url) . '">importing tutorial</a> for a list of importers'),
                 array('Use an existing member system', 'See our <a href="' . escape_html($download_page_url) . '">download page</a> for a list of forum drivers'),
                 array('Convert an <abbr title="HyperText Markup Language">HTML</abbr> site into Composr pages'),
-                array('LDAP support for corporate networks (<abbr title="The Composr forum">Conversr</abbr>) <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Help of LDAP usage" href="{$PAGE_LINK*,docs:tut_ldap}"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
+                (!is_maintained('ldap')) ? false : array('LDAP support for corporate networks (<abbr title="The Composr forum">Conversr</abbr>) <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Help of LDAP usage" href="{$PAGE_LINK*,docs:tut_ldap}"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 null, // divider
-                array('HTTP authentication', 'Tie into an existing HTTP authentication-based login system (<abbr title="The Composr forum">Conversr</abbr>)'),
+                (!is_maintained('httpauth')) ? false : array('HTTP authentication', 'Tie into an existing HTTP authentication-based login system (<abbr title="The Composr forum">Conversr</abbr>)'),
                 array('Proxying system', 'Programmers can integrate any existing scripts using our sophisticated proxying system (which includes full cookie support)'),
                 array('Minimodules and miniblocks', 'Programmers can port existing PHP code into Composr itself <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Framework documentation" href="{$PAGE_LINK*,docs:tut_framework}"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Export your Comcode as <abbr title="eXtensible HyperText Markup Language">XML</abbr>', 'Other systems may integrate your rich content, using (for example) <abbr title="XSL transformations">XSLT</abbr>'),
@@ -464,7 +462,7 @@ $featuretree = array(
                 null, // divider
                 array('Include other templates, blocks, or pages, within a template'),
                 array('Create and use standard boxes', 'Avoid having to copy and paste complex segments of <abbr title="eXtensible HyperText Markup Language">XHTML</abbr>'),
-                array('Easy web browser sniffing', 'Present different markup to different web browsers, detect whether JavaScript is enabled, detect bots, and detect PDAs/Smartphones'),
+                (!is_maintained('detect_bot') || !is_maintained('detect_mobile')) ? false : array('Easy web browser sniffing', 'Present different markup to different web browsers, detect whether JavaScript is enabled, detect bots, and detect Smartphones'),
                 array('Randomisation features'),
                 array('Pull up member details with ease', 'For example, show the current users avatar or point count'),
                 array('Easily pull different banner rotations into your templates'),
@@ -511,7 +509,7 @@ $featuretree = array(
                 array('<abbr title="Cross-Site scripting">XSS</abbr> protection', 'Developed using unique technology to auto-detect XSS security holes before the software gets even released'),
                 null, // divider
                 array('Track failed logins <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Security" href="http://shareddemo.composr.info/adminzone/index.php?page=admin_security&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
-                array('Integrate with known-spammer blacklists'),
+                (!is_maintained('stop_forum_spam')) ? false : array('Integrate with known-spammer blacklists'),
                 array('Published e-mail addresses will be protected from spammers'),
                 array('Protection from spammers trying to use your website for their own <abbr title="Search Engine Optimisation">SEO</abbr>'),
                 array('<abbr title="HyperText Markup Language">HTML</abbr> filtering'),
@@ -545,11 +543,11 @@ $featuretree = array(
             array(
                 array('Support for all major web browsers'),
                 array('True and correct <abbr title="eXtensible HyperText Markup Language">XHTML5</abbr> markup'),
-                array('<abbr title="Web Content Accessibility Guidelines">WCAG</abbr>, <abbr title="Authoring Tool Accessibility Guidelines">ATAG</abbr>', 'Meeting of accessibility guidelines in full'),
+                (!is_maintained('standard_accessibility')) ? false : array('<abbr title="Web Content Accessibility Guidelines">WCAG</abbr>, <abbr title="Authoring Tool Accessibility Guidelines">ATAG</abbr>', 'Meeting of accessibility guidelines in full'),
                 array('Tableless <abbr title="Cascading Style Sheets">CSS</abbr> markup, with no hacks'),
                 null, // divider
                 array('Inbuilt tools for checking webstandards conformance of <abbr title="eXtensible HyperText Markup Language">XHTML</abbr>, <abbr title="Cascading Style Sheets">CSS</abbr>, and JavaScript'),
-                array('Extra markup semantics, including Dublin Core support and microformats'),
+                (!is_maintained('standard_microformats')) ? false : array('Extra markup semantics, including Dublin Core support and microformats'),
                 array('Standards-based (modern <abbr title="Document Object Model">DOM</abbr> and <abbr title="Asynchronous JavaScript And XML">AJAX</abbr>, no DOM-0 or innerHTML) JavaScript'),
                 array('Automatic cleanup of bad <abbr title="eXtensible HyperText Markup Language">XHTML</abbr>', 'XHTML outside your control (e.g. from <abbr title="Really Simple Syndication">RSS</abbr>) will be cleaned up for you'),
             ),
@@ -558,15 +556,15 @@ $featuretree = array(
             'Localisation support <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Localisation" href="https://www.transifex.com/organization/ocproducts/dashboard"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>',
             array(
                 array('Translate Composr into your own language'),
-                array('Translate content into multiple languages'),
-                null, // divider
-                array('Custom time and date formatting'),
                 array('Language packs', 'Download new language packs as users post them'),
+                null, // divider
+                (!is_maintained('multi_lang_content')) ? false : array('Translate content into multiple languages'),
+                array('Custom time and date formatting'),
                 array('Timezone support', 'Members may choose their own timezones'),
                 array('Host multiple languages on your website at the same time'),
-                array('Support for different character sets, and Unicode'),
+                array('Full Unicode support'),
                 array('Serve different theme images for different languages'),
-                array('Support for right-to-left languages'),
+                (!is_maintained('theme_rtl')) ? false : array('Support for right-to-left languages'),
             ),
         ),
         'seo' => array(
@@ -605,7 +603,7 @@ $featuretree = array(
                 array('IP address lock-down', 'Extra (but optional) security for staff groups'),
                 array('Welcome e-mails', 'Set up multiple &ldquo;welcome e-mails&rdquo; to be sent out to new members on a schedule <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Welcome E-mails" href="http://shareddemo.composr.info/adminzone/index.php?page=admin_cns_welcome_emails"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Account pruning', 'Find and delete unused accounts, merge duplicate accounts <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Account Pruning" href="http://shareddemo.composr.info/adminzone/index.php?page=admin_cns_members&amp;type=delurk"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
-                array('Encrypted custom profile fields'),
+                (!is_maintained('cpf_encryption')) ? false : array('Encrypted custom profile fields'),
                 array('Members may set privacy settings for individual fields <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Privacy Settings" href="http://shareddemo.composr.info/site/index.php?page=members&type=view#tab__edit__privacy"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('CSV files', 'Import and export members using CSV files, including support for automatic creation of custom profile fields and usergroups &ndash; great for migrating data <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Member CSV Import" href="http://shareddemo.composr.info/adminzone/index.php?page=admin_cns_members&amp;type=import_csv"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
             ),
@@ -687,6 +685,10 @@ foreach (($map['param'] == '') ? array() : explode(',', $map['param']) as $i => 
         }
         $subsection = $collapsed_tree[$subsection_code];
 
+        if ($subsection === false) { // Filtered out
+            continue;
+        }
+
         if (!$raw) {
             echo '<div class="subsection">' . "\n\n";
         }
@@ -722,6 +724,10 @@ foreach (($map['param'] == '') ? array() : explode(',', $map['param']) as $i => 
             echo '<div><ul class="main">';
             $see_more = false;
             foreach ($subsection_items as $item) {
+                if ($item === false) { // Filtered out
+                    continue;
+                }
+
                 if ($item === null) { // Divider
                     if (has_js()) {
                         echo '</ul></div>' . "\n\n";

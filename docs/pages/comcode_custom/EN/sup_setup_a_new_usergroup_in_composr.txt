@@ -33,7 +33,7 @@ This section has three quite important options in some circumstances. These opti
 [list]
 [*] [b]Initial primary usergroup[/b] -- this option basically means that if a new person joins your site then this will be their primary usergroup. You may choose to use this if you created new members group for example which may have reduced capabilities or need to have posts manually verified by a moderator at first until you are sure they are real member and not a spammer for example.
 [*] [b]Automatic secondary group[/b] -- similar to the first option but adds new members as members of this group but as a secondary usergroup alongside their primary group.
-[*] [b]Open Membership[/b] -- This is whether anyone can join the usergroup or whether they have to apply to join. If you are creating a members group for subscription payers you will not want to tick this option.
+[*] [b]Open Membership[/b] -- This is whether anyone can join the usergroup or whether they have to apply to join. If you are creating a members group for subscription payers you will not want to tick (check) this option.
 [/list]
 
 [title="2"]Rank[/title]

@@ -234,6 +234,11 @@ class lang_spelling_test_set extends cms_test_case
             $this->assertTrue(false, 'The word \'whilst\' was used in ' . $file . '. This should be changed to \'while\'.');
         }
 
+        // Weird British english
+        if (preg_match('#[^s]tick [^\(]#', $string) != 0) {
+            $this->assertTrue(false, 'The word tick was used in ' . $file . ' without being followed by check in brackets in the conventional way.');
+        }
+
         // Common spelling errors
         $common_spelling_mistakes = array(
             'cacheing' => 'caching',

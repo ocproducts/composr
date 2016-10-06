@@ -46,7 +46,7 @@ class Hook_addon_registry_twitter_support
      */
     public function get_category()
     {
-        return 'Third Party Integration';
+        return is_maintained('twitter') ? 'Third Party Integration' : 'Development';
     }
 
     /**
@@ -89,7 +89,7 @@ class Hook_addon_registry_twitter_support
      */
     public function get_description()
     {
-        return 'Syndicate site activities to Twitter.
+        return '{$IS_MAINTAINED,twitter,Syndicate site activities to Twitter}.
 
 Activity can be syndicated:
 1) On a site level, for any news or calendar events added by the staff

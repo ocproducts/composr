@@ -9,7 +9,7 @@
 [media width="150" description="Choose this option if you want to run each site' discussion forum from its own code and URL (optional only shows if applicable to your site)" float="right"]data_custom/images/docs/tut_msn/msn_cns_local.png[/media]
 All that needs to be done to create an M.S.N. is to install each Composr such that they all share a common forum driver and forum database. At its heart, this is all a M.S.N. is: Composr provides special features that allow this to work comfortably, but there is no specific 'M.S.N.' feature or setting in Composr, nor does Composr need such.
 
-[i]This functionality is not fully supported by the developers[/i]. Bug fixes will be produced if the functionality is not working correctly, but it is not proactively and regularly tested. Those relying on it for large deployments should make sure they have appropriate budgets to deal with the maintenance of the volume of sites desired, and to sponsor custom functionality they are likely to want running such a large/custom/special/complex operation. At the time of writing this note (2016), a more normal approach to sharing member databases is to leave it to Facebook, using the Facebook addon to handle log-ins. Usage of Facebook has obvious disadvantages, but also for most people the advantages far outweigh them. Facebook is de-facto the world's standard identity service.
+At the time of writing this note (2016), a more normal approach to sharing member databases is to leave it to Facebook, using the Facebook addon to handle log-ins. Usage of Facebook has obvious disadvantages, but also for most people the advantages far outweigh them. Facebook is de-facto the world's standard identity service.
 
 If you are using a third-party forum, unless the forum itself is modified to work from different URLs, the forums interface will not be integrated into each site. However, all Composr functions that work through the forum driver (e.g. comment topics, or support tickets) may be completely customised for the individual websites.
 
@@ -116,13 +116,13 @@ As of Composr 10, you can do this setup in the normal zone management screen. It
 Please note it is essential to configure your cookie domain to be encompassing of all the subdomains you use. In the above example you would need [tt].mydomain.com[/tt] to be set as the cookie domain. You cannot use a blank cookie domain.
 [/list]
 
-[title="2"]Many sites, one install (not supported, very advanced)[/title]
+[title="2"]Many sites, one install (very advanced)[/title]
 
-Composr has some residual support for running many websites of a single install, although [i]not officially supported[/i]. We informally refer to this functionality as 'Demonstratr', named after our Composr demoing system.
+Composr has some support for {$IS_MAINTAINED,demonstratr,running many websites of a single install}. We informally refer to this functionality as 'Demonstratr', named after our Composr demoing system.
 
 If run like this, certain functions of Composr, such as e-mail settings, or addon management, are disabled.
 
-The functionality is useful if you are running a massive Composr hosting service, where individual maintenance of each site is not possible. Be prepared to invest serious money or effort to sponsor the upkeep of this Composr functionality, as it has no regular testing or maintenance by core developers.
+The functionality is useful if you are running a massive Composr hosting service, where individual maintenance of each site is not possible.
 
 The support is activated by setting options in the [tt]_config.php[/tt], like:
 [code="PHP"]

@@ -89,6 +89,8 @@ class Module_lost_password
             cns_require_all_forum_stuff();
         }
 
+        require_code('cns_lost_password');
+
         $type = get_param_string('type', 'browse');
 
         if ($type == 'browse') {
@@ -149,8 +151,10 @@ class Module_lost_password
 
         $fields->attach(alternate_fields_set__end($set_name, $set_title, '', $field_set, $required));
 
-        $temporary_passwords = (get_option('password_reset_process') != 'emailed');
-        $text = do_lang_tempcode('_PASSWORD_RESET_TEXT_' . get_option('password_reset_process'));
+        $password_reset_process = get_password_reset_process();
+
+        $temporary_passwords = ($password_reset_process != 'emailed');
+        $text = do_lang_tempcode('_PASSWORD_RESET_TEXT_' . $password_reset_process);
         $submit_name = do_lang_tempcode('PASSWORD_RESET_BUTTON');
         $post_url = build_url(array('page' => '_SELF', 'type' => 'step2'), '_SELF');
 
@@ -167,10 +171,11 @@ class Module_lost_password
         $username = trim(post_param_string('username', ''));
         $email_address = trim(post_param_string('email_address', ''));
 
-        require_code('cns_lost_password');
         list($email, $email_address_masked, $member_id) = lost_password_emailer_step($username, $email_address);
 
-        if (get_option('password_reset_process') == 'ultra') {
+        $password_reset_process = get_password_reset_process();
+
+        if ($password_reset_process == 'ultra') {
             // Input UI (as code will be typed immediately, there's no link in the e-mail for 'ultra' mode)
             $zone = get_module_zone('lost_password');
             $_url = build_url(array('page' => 'lost_password', 'type' => 'step3', 'member' => $member_id), $zone);
@@ -202,6 +207,8 @@ class Module_lost_password
      */
     public function step3()
     {
+        $password_reset_process = get_password_reset_process();
+
         $code = trim(get_param_string('code', ''));
         if ($code == '') {
             require_code('form_templates');
@@ -243,7 +250,7 @@ class Module_lost_password
             $reset_url = $_reset_url->evaluate();
             warn_exit(do_lang_tempcode('PASSWORD_ALREADY_RESET', escape_html($reset_url), get_site_name()));
         }
-        if (get_option('password_reset_process') == 'ultra') {
+        if ($password_reset_process == 'ultra') {
             list($correct_code, $correct_session) = explode('__', $correct_code);
             if ($correct_session != get_session_id()) {
                 warn_exit(do_lang_tempcode('WRONG_RESET_SESSION', escape_html(display_time_period(60 * 60 * intval(get_option('session_expiry_time'))))));
@@ -264,7 +271,7 @@ class Module_lost_password
         require_code('crypt');
         $new_password = get_rand_password();
 
-        $temporary_passwords = (get_option('password_reset_process') != 'emailed');
+        $temporary_passwords = ($password_reset_process != 'emailed');
 
         if (!$temporary_passwords) {
             // Send password in mail

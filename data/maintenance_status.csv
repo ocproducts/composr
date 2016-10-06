@@ -38,7 +38,6 @@ ldap,LDAP,,,Not regularly tested due to the complexity of having multiple workin
 httpauth,HTTP authentication,,,Not regularly tested.,No
 cpf_encryption,CPF encryption,ocProducts,,Not regularly tested.,No
 itunes,iTunes podcasts,,,Not regularly tested.,No
-lostpassword_ultra,Lost Password 'ultra' mode,,,May not work on some server configurations.,No
 theme_rtl,Right-to-left support in default theme,,,Too burdensome to routinely maintain and test.,No
 theme_print,Custom print layout support in default theme,ocProducts,,Not regularly tested.,No
 standard_opensearch,OpenSearch compliance,ocProducts,,Not regularly tested.,No
@@ -50,6 +49,7 @@ standard_nocookies,Support users without cookies,ocProducts,,"If a user has disa
 ip_tools,Links to external IP address tools,ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No
 project_honeypot,Project Honeypot integration,ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No
 rbl,Remote Block List integration,ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No
+gateway_paypal,PayPal eCommerce driver,ocProducts,,Could potentially break due to third-party changes.,No
 gateway_ccbill,CCBill eCommerce driver,,,Not regularly tested. Could potentially break due to third-party changes.,No
 gateway_secpay,SecPay eCommerce driver,,,Not regularly tested. Could potentially break due to third-party changes.,No
 gateway_worldpay,WorldPay eCommerce driver,,,Not regularly tested. Could potentially break due to third-party changes.,No
@@ -70,8 +70,6 @@ static_cache,Static caching,ocProducts,,Not regularly tested.,No
 rootkit_detector,Rootkit detector,ocProducts,,Not regularly tested. Not compatible with all systems. Intended for developers.,No
 failover_mode,Failover Mode,ocProducts,,Not regularly tested.,No
 rate_limit,Rate Limiting,ocProducts,,Not regularly tested.,No
-url_schemes,URL Schemes,ocProducts,ocProducts,Needs to be separately tested.,No
-ecommerce_paypal,PayPal eCommerce driver,ocProducts,ocProducts,Could potentially break due to third-party changes.,No
 youtube,YouTube media,ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No
 sitemap_submit,XML Sitemap auto-submit,ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No
 external_urls,"Recommended links on staff dashboard, and accuracy of external URLs in general",ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No
@@ -92,9 +90,7 @@ browser_android_chrome,Mobile Chrome (Android & iOS) support,ocProducts,ocProduc
 browser_microsoft,IE/Microsoft Edge support,ocProducts,ocProducts,Could potentially break due to third-party changes.,No
 browser_blink,Chrome/Opera/Blink support,ocProducts,ocProducts,Could potentially break due to third-party changes.,No
 social_links,Basic social media / instant messenger linkage,ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No
-log_permissions,Permission check logging feature,ocProducts,,Not regularly tested.,No
-log_ecommerce,eCommerce logging feature,ocProducts,,Not regularly tested.,No
-log_profiling,Profiling (performance logging) feature,ocProducts,,Not regularly tested.,No
+extra_logging,Permission/eCommerce/profile logging features,ocProducts,,Not regularly tested.,No
 fields_xml,Field filter feature,ocProducts,,Not regularly tested.,No
 context,Magic click / context menu features,ocProducts,,Not regularly tested.,No
 php,Maintain with new versions of PHP,ocProducts,ocProducts,Could potentially break due to third-party changes.,No
@@ -104,12 +100,10 @@ options_dev,Development options in config_editor.php,ocProducts,,Not regularly t
 facebook,Facebook login integration and syndication,ocProducts,ocProducts,Could potentially break due to third-party changes.,Yes
 tapatalk,Tapatalk,ocProducts,,Could potentially break due to third-party changes.,Yes
 google_maps,"Google maps (DataMappr, UserMappr)",ocProducts,,Could potentially break due to third-party changes.,Yes
-log_firephp,FirePHP logging,ocProducts,,Not regularly tested.,No
+firephp,FirePHP logging,ocProducts,,Not regularly tested.,No
 twitter,Twitter syndication,ocProducts,,Could potentially break due to third-party changes.,Yes
 webdav,WebDav access for The Repository,ocProducts,,Could potentially break due to third-party changes.,Yes
 rest,REST API from Composr Mobile SDK,ocProducts,,Not regularly tested.,Yes
-activities,Activity feeds,ocProducts,,Not regularly tested.,Yes
-composr_platform,"Addons relating to Composr builds, testing, or the Composr homesite",ocProducts,ocProducts,Not tested by users.,Yes
 currency,Currency conversion,ocProducts,ocProducts,Could potentially break due to third-party changes.,No
 stop_forum_spam,Stop Forum Spam integration,ocProducts,ocProducts,Could potentially break due to third-party changes.,No
 geocode_internal,IP address geocoding (internal list),ocProducts,ocProducts,Could potentially break due to third-party changes.,No

@@ -2195,7 +2195,7 @@ php data_custom/composr_mobile_sdk_build.php images example
 [*] Delete assets you don't want them copy through to your app
 [/list]
 
-[title="2"]Server-side API[/title]
+[title="2"]{$IS_MAINTAINED,rest,Server-side API}[/title]
 
 [media thumb="0" framed="0" float="right"]data_custom/images/docs/tut_mobile_sdk/phone.png[/media]
 You may access the server-side API by making HTTP calls to [tt]http://yourbaseurl/data/endpoint.php[/tt]. Results are returned as JSON.

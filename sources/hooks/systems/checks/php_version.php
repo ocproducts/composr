@@ -31,10 +31,17 @@ class Hook_check_php_version
     public function run()
     {
         $warning = array();
+
         $phpv = PHP_VERSION;
         if ((substr($phpv, 0, 2) == '3.') || (substr($phpv, 0, 2) == '4.') || (substr($phpv, 0, 4) == '5.0.') || (substr($phpv, 0, 4) == '5.1.') || (substr($phpv, 0, 4) == '5.2.')) {
             $warning[] = do_lang_tempcode('PHP_OLD');
         }
+
+        $max_tested_php_version = '7.1';
+        if ((!is_maintained('php')) && (version_compare(PHP_VERSION, $max_tested_php_version . '.1000', '>'))) {
+            $warning[] = do_lang_tempcode('WARNING_NON_MAINTAINED', escape_html('PHP versions newer than ' . $max_tested_php_version), escape_html(get_brand_base_url()), escape_html('php'));
+        }
+
         return $warning;
     }
 }

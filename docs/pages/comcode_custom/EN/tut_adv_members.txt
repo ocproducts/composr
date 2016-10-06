@@ -146,11 +146,11 @@ By default the values of the CPFs are not publicly viewable.
 
 Some CPFS are only activated by certain addons. They are pre-installed as they may be shared between addons, yet may not be used by any. They show so you can know they are there, but are no made available for use to reduce feature-bloat. If no addons currently use them, they show in the list as unused and inaccessible. If you want them, you can install an addon that uses them, or simply add your own alternative CPF. The [tt]ecommerce[/tt] addon uses quite a few.
 
-[title="3"]Encrypted CPFs (advanced)[/title]
+[title="3"]{$IS_MAINTAINED,cpf_encryption,Encrypted CPFs} (advanced)[/title]
 
 When creating a custom profile field, it is possible to mark it as encrypted inside the database. If you have the OpenSSL PHP extension installed and configured (see the [page="_SEARCH:tut_webhosting"]Webhosting for Composr[/page] tutorial), Composr can automatically encrypt the contents of such CPFs, such that their sensitive data would not be revealed if the server were to be compromised.
 
-To mark a CPF as encrypted, tick the "Encryption" box when creating the field, making sure to first have encryption set up on your server and on Composr.
+To mark a CPF as encrypted, tick (check) the "Encryption" box when creating the field, making sure to first have encryption set up on your server and on Composr.
 
 When editing the value of an encrypted CPF, the encrypted data will be shown. To change the value, simply overwrite it with the data you want to change it to. Leaving the value alone will [i]not[/i] cause it to be doubly-encrypted so don't worry.
 

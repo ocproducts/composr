@@ -430,6 +430,10 @@ class Module_admin_config
                     $explanation = do_lang_tempcode($option['explanation']);
                 }
 
+                if (!empty($option['maintenance_code'])) {
+                    $explanation = is_maintained_description($option['maintenance_code'], $explanation);
+                }
+
                 if (isset($option['required'])) {
                     $required = $option['required'];
                 } else {

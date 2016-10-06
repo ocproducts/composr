@@ -46,7 +46,7 @@ class Hook_addon_registry_user_mappr
      */
     public function get_category()
     {
-        return 'Information Display';
+        return is_maintained('google_maps') ? 'Information Display' : 'Development';
     }
 
     /**
@@ -86,7 +86,7 @@ class Hook_addon_registry_user_mappr
      */
     public function get_description()
     {
-        return 'A google map with markers of users locations.
+        return 'A {$IS_MAINTAINED,google_maps,google map} with markers of users locations.
 
 The addon adds extra custom profile fields to store members coordinates to store their latitude and logitude. The addon can automatically populate the members when members visit the block page (only supported by browsers that support the HTML 5 Location API, e.g. Firefox). Members can edit their locations in their profile.
 

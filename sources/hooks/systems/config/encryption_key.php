@@ -40,6 +40,8 @@ class Hook_config_encryption_key
             'list_options' => '',
 
             'addon' => 'core_cns',
+
+            'maintenance_code' => 'cpf_encryption',
         );
     }
 

@@ -161,7 +161,7 @@ Please note that when using 'SU':
 
 [title="2"]Debugging permission problems[/title]
 
-[title="3"]FirePHP[/title]
+[title="3"]{$IS_MAINTAINED,firephp,FirePHP}[/title]
 
 [media width="150" description="FirePHP in action" float="right"]data_custom/images/docs/tut_permissions/firephp.png[/media]
 Composr has a special feature to help you diagnose problems with your permission settings.
@@ -173,7 +173,7 @@ You will then find that details of all the permission checks used to generate th
 
 There are FirePHP equivalents in other browsers, but for simplicity we have focused the above instructions on the official/original Firefox addon.
 
-[title="3"]Logging[/title]
+[title="3"]{$IS_MAINTAINED,extra_logging,Logging}[/title]
 
 As an alternative to FirePHP, you can create an empty writable [tt]data_custom/permissioncheckslog.php[/tt] file. All failed permission checks will be logged to it.
 
