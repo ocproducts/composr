@@ -2223,6 +2223,8 @@ function ecv_CPF_VALUE($lang, $escaped, $param)
     }
 
     if (isset($param[0])) {
+        $_value = '';
+
         if (is_numeric($param[0])) {
             require_code('cns_members');
             $fields = cns_get_custom_fields_member(isset($param[1]) ? intval($param[1]) : get_member());
@@ -2242,8 +2244,6 @@ function ecv_CPF_VALUE($lang, $escaped, $param)
                     if (array_key_exists($cpf_id, $fields)) {
                         $_value = $fields[$cpf_id];
                     }
-                } else {
-                    $_value = '';
                 }
             }
         }
