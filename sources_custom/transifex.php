@@ -464,7 +464,7 @@ function transifex_pull_script()
     $version = get_param_string('version', strval(cms_version()));
     $output = (get_param_integer('output', 0) == 1);
     $lang = get_param_string('lang', null);
-    $core_only = (get_param_integer('core_only', 1) == 1);
+    $core_only = (get_param_integer('core_only', 0) == 1);
 
     if ($output) {
         header('Content-type: application/octet-stream');
