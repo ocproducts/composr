@@ -297,7 +297,7 @@ class Block_main_multi_content
             $x2 = $this->build_select($select_b, $info, $category_field_access);
         }
 
-        if ($days !== null) {
+        if ($days !== null && $info['date_field'] !== null) {
             $where .= ' AND ';
             $where .= $info['date_field'] . '>=' . strval(time() - 60 * 60 * 24 * $days);
         }
@@ -470,7 +470,7 @@ class Block_main_multi_content
                     case 'title':
                     case 'title ASC':
                     case 'title DESC':
-                        if ($sort == 'title') {
+                        if (strpos($sort, ' ') === false) {
                             $sort .= ' ASC';
                         }
                         $sort_order = preg_replace('#^.* #', '', $sort);

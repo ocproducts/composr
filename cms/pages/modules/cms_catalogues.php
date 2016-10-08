@@ -337,13 +337,12 @@ class Module_cms_catalogues extends Standard_crud_module
 
         require_code('form_templates');
         $only_owned = has_privilege(get_member(), 'edit_midrange_content', 'cms_catalogues') ? null : get_member();
-        list($rows, $max_rows) = $this->get_entry_rows(false, ($current_ordering == 'title ASC' || $current_ordering == 'title DESC') ? 'ce_add_date ASC' : $current_ordering, is_null($only_owned) ? array('c_name' => get_param_string('catalogue_name')) : array('c_name' => get_param_string('catalogue_name'), 'ce_submitter' => $only_owned));
+        $catalogue_name = get_param_string('catalogue_name');
+        list($rows, $max_rows) = $this->get_entry_rows(false, ($current_ordering == 'title ASC' || $current_ordering == 'title DESC') ? 'ce_add_date ASC' : $current_ordering, is_null($only_owned) ? array('c_name' => $catalogue_name) : array('c_name' => $catalogue_name, 'ce_submitter' => $only_owned));
         $_fields = array();
         $cat_titles = array();
         foreach ($rows as $row) {
             $edit_link = build_url($url_map + array('id' => $row['id']), '_SELF');
-
-            $catalogue_name = $row['c_name'];
 
             $entry_fields = get_catalogue_entry_field_values($catalogue_name, $row['id'], array(0));
             $name = $entry_fields[0]['effective_value']; // 'Name' is value of first field

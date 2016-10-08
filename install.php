@@ -1405,7 +1405,7 @@ function step_5_ftp()
     $start_pos = get_param_integer('start_from', 0);
     $done_all = false;
     $time_start = time();
-    $max_time = intval(round(floatval(ini_get('max_execution_time')) / 1.5));
+    $max_time = min(20, intval(round(floatval(ini_get('max_execution_time')) / 1.5)));
     $max = post_param_integer('max', is_suexec_like() ? 5000 : 1000);
     for ($i = $start_pos; $i < $start_pos + $max; $i++) {
         list($filename, $contents) = file_array_get_at($i);
