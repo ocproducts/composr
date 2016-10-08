@@ -13,6 +13,19 @@
  * @package    addon_publish
  */
 
+// Examples:
+// http://localhost/composr/data_custom/transifex_push.php?username=info@ocproducts.com&password=xxx
+// http://localhost/composr/data_custom/transifex_push.php?username=info@ocproducts.com&password=xxx&core_only=1&push_cms=0&limit_substring=global
+
+// Parameters:
+//    username                  Transifex username (required)
+//    password                  Transifex password (required)
+//    core_only=0|1             Set to 1 to only upload translations for bundled addons (labelled as 'core' within Transifex) (default: 0)
+//    push_cms=0|1              Set to 0 to not push CMS file resources (i.e. pages and templates), Leave as 1 to push them (default: 1)
+//    push_ini=0|1              Set to 0 to not push .ini resources, Leave as 1 to push them (default: 1)
+//    push_translations=0|1     Set to 1 to push translations also (default: 0)
+//    limit_substring           Set to a resource file name substring to upload just that resource file(s) (default: blank)
+
 // Find Composr base directory, and chdir into it
 global $FILE_BASE, $RELATIVE_PATH;
 $FILE_BASE = (strpos(__FILE__, './') === false) ? __FILE__ : realpath(__FILE__);

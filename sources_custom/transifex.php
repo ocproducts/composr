@@ -259,11 +259,11 @@ function push_to_transifex($core_only, $push_cms, $push_ini, $push_translations,
                 }
 
                 $default_lang_files[$f] = true;
-                $result = _push_strings_file_to_transifex($f, $project_slug, false, TRANSLATE_ADMINISTRATIVE_NO, $push_translations);
+                $result = _push_ini_file_to_transifex($f, $project_slug, false, TRANSLATE_ADMINISTRATIVE_NO, $push_translations);
                 if ($result) {
-                    _push_strings_file_to_transifex($f, $project_slug, false, TRANSLATE_ADMINISTRATIVE_YES, $push_translations);
+                    _push_ini_file_to_transifex($f, $project_slug, false, TRANSLATE_ADMINISTRATIVE_YES, $push_translations);
 
-                    echo "Uploaded strings file {$f}\n";
+                    echo "Uploaded ini (strings) file {$f}\n";
                     flush();
                 }
             }
@@ -278,10 +278,10 @@ function push_to_transifex($core_only, $push_cms, $push_ini, $push_translations,
                         continue;
                     }
 
-                    $result = _push_strings_file_to_transifex($f, $project_slug, true, TRANSLATE_ADMINISTRATIVE_MIXED, $push_translations);
+                    $result = _push_ini_file_to_transifex($f, $project_slug, true, TRANSLATE_ADMINISTRATIVE_MIXED, $push_translations);
 
                     if ($result) {
-                        echo "Uploaded strings file {$f}\n";
+                        echo "Uploaded ini (strings) file {$f}\n";
                         flush();
                     }
                 }
@@ -340,7 +340,7 @@ function _push_cms_file_to_transifex($path, $resource_path, $project_slug, $prio
     }
 }
 
-function _push_strings_file_to_transifex($f, $project_slug, $custom, $administrative, $push_translations)
+function _push_ini_file_to_transifex($f, $project_slug, $custom, $administrative, $push_translations)
 {
     global $JUST_LANG_STRINGS_ADMIN, $OVERRIDE_PRIORITY_LANGUAGE_FILES, $LANGUAGE_STRING_DESCRIPTIONS, $LANGUAGE_FILES_ADDON;
 
@@ -547,7 +547,7 @@ function pull_lang_from_transifex($project_slug, $tar_file, $lang, $core_only, $
                 continue;
             }
 
-            _pull_strings_file_from_transifex($project_slug, $tar_file, $lang, $_f, $files);
+            _pull_ini_file_from_transifex($project_slug, $tar_file, $lang, $_f, $files);
         }
 
         // Write addon_registry hook
@@ -735,6 +735,7 @@ END;
             if ($tar_file === null) {
                 file_put_contents($full_path, $c);
                 fix_permissions($full_path);
+                sync_file($full_path);
             } else {
                 tar_add_file($tar_file, $path, $c);
             }
@@ -775,10 +776,11 @@ function _pull_cms_file_from_transifex($project_slug, $tar_file, $lang, $path, $
         }
 
         if ($tar_file === null) {
-            @mkdir(dirname($trans_full_path), 0777);
+            @mkdir(dirname($trans_full_path), 0777, true);
             fix_permissions(dirname($trans_full_path));
             file_put_contents($trans_full_path, $c);
             fix_permissions($trans_full_path);
+            sync_file($trans_full_path);
         } else {
             tar_add_file($tar_file, $trans_path, $c);
         }
@@ -787,7 +789,7 @@ function _pull_cms_file_from_transifex($project_slug, $tar_file, $lang, $path, $
     }
 }
 
-function _pull_strings_file_from_transifex($project_slug, $tar_file, $lang, $_f, &$files)
+function _pull_ini_file_from_transifex($project_slug, $tar_file, $lang, $_f, &$files)
 {
     $trans_path = 'lang_custom/' . $lang . '/' . $_f . '.ini';
     $trans_full_path = get_file_base() . '/' . $trans_path;
@@ -823,6 +825,7 @@ function _pull_strings_file_from_transifex($project_slug, $tar_file, $lang, $_f,
             fix_permissions(dirname($trans_full_path));
             file_put_contents($trans_full_path, $c);
             fix_permissions($trans_full_path);
+            sync_file($trans_full_path);
         } else {
             tar_add_file($tar_file, $trans_path, $c);
         }

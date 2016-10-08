@@ -249,6 +249,7 @@ Transifex tips:
 [list]
 [*] Firefox has a good spellchecker that is compatible with Transifex (it doesn't seem to work in Chrome). Install the dictionary addon for your language before you start. It'll put the red squiggly lines under misspellings while you are doing the translating.
 [*] Don't manually change the URL in Transifex to quickly navigate between language files -- Transifex won't save stuff correctly if you do.
+[*] The [tt]too_common_words[/tt] resource is a list of [i]words[/i] that should be filtered out of searches; it should not be directly translated, but rewritten for your language as appropriate
 [/list]
 
 [title="3"]Testing and Debugging tips[/title]

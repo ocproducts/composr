@@ -13,6 +13,17 @@
  * @package    addon_publish
  */
 
+// Examples:
+// http://localhost/composr/data_custom/transifex_pull.php?username=info@ocproducts.com&password=xxx&lang=ES
+
+// Parameters:
+//    username                  Transifex username (required)
+//    password                  Transifex password (required)
+//    output=0|1                Leave as 0 to save individual files directly into Composr, Set as 1 to download a TAR file (default: 0)
+//    lang                      Set to a language code to  download just that language (default: blank)
+//    core_only=0|1             Set to 1 to only download translations for bundled addons (labelled as 'core' within Transifex) (default: 0)
+//    limit_substring           Set to a resource file name substring to download just that resource file(s) (default: blank)
+
 // Find Composr base directory, and chdir into it
 global $FILE_BASE, $RELATIVE_PATH;
 $FILE_BASE = (strpos(__FILE__, './') === false) ? __FILE__ : realpath(__FILE__);
