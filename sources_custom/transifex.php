@@ -15,7 +15,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    addon_publish
+ * @package    transifex
  */
 
 /*EXTRA FUNCTIONS: json_decode,json_encode*/
@@ -150,11 +150,11 @@ function convert_lang_code_to_transifex($lang)
 
 function transifex_push_script()
 {
-    if (!$GLOBALS['DEV_MODE']) {
-        $cli = ((php_sapi_name() == 'cli') && (empty($_SERVER['REMOTE_ADDR'])) && (empty($_ENV['REMOTE_ADDR'])));
-        if (!$cli) {
+    $cli = ((php_sapi_name() == 'cli') && (empty($_SERVER['REMOTE_ADDR'])) && (empty($_ENV['REMOTE_ADDR'])));
+    if (!$cli) {
+        if (!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) {
             header('Content-type: text/plain');
-            exit('Must run this script on command line, for security reasons');
+            exit('Must run this script on command line, for security reasons -- or be logged in as an administrator');
         }
     }
 
@@ -466,10 +466,30 @@ function transifex_pull_script()
     $lang = get_param_string('lang', null);
     $core_only = (get_param_integer('core_only', 0) == 1);
 
+    $cli = ((php_sapi_name() == 'cli') && (empty($_SERVER['REMOTE_ADDR'])) && (empty($_ENV['REMOTE_ADDR'])));
+    if (!$cli) {
+        if (!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) {
+            if (!$output) {
+                header('Content-type: text/plain');
+                exit('You must be logged in as an administrator (or run this script from the command line) if not using output=0');
+            }
+
+            if ($lang === null) {
+                header('Content-type: text/plain');
+                exit('You must be logged in as an administrator (or run this script from the command line) if not setting an output language');
+            }
+        }
+    }
+
     if ($output) {
         header('Content-type: application/octet-stream');
         require_code('version2');
-        header('Content-Disposition: attachment; filename="language-' . escape_header($lang) . '-' . get_version_branch(floatval(cms_version_number())) . '.tar"');
+        if ($lang === null) {
+            $filename = 'languages-' . get_version_branch(floatval(cms_version_number())) . '.tar';
+        } else {
+            $filename = 'language-' . escape_header($lang) . '-' . get_version_branch(floatval(cms_version_number())) . '.tar';
+        }
+        header('Content-Disposition: attachment; filename="' . addslashes($filename) . '"');
         safe_ini_set('ocproducts.xss_detect', '0');
 
         require_code('tar');

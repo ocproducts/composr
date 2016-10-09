@@ -10,13 +10,13 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    addon_publish
+ * @package    transifex
  */
 
 /**
  * Hook class.
  */
-class Hook_addon_registry_addon_publish
+class Hook_addon_registry_transifex
 {
     /**
      * Get a list of file permissions to set
@@ -86,7 +86,7 @@ class Hook_addon_registry_addon_publish
      */
     public function get_description()
     {
-        return 'Scripts to help us in mass-publishing addons to compo.sr (not useful in their direct form to anyone else).';
+        return 'Scripts to help push/pull translations from Transifex.';
     }
 
     /**
@@ -131,12 +131,12 @@ class Hook_addon_registry_addon_publish
     public function get_file_list()
     {
         return array(
-            'sources_custom/hooks/systems/addon_registry/addon_publish.php',
-            'adminzone/pages/minimodules_custom/publish_addons_as_downloads.php',
-            'adminzone/pages/minimodules_custom/build_addons.php',
-            'sources_custom/hooks/systems/page_groupings/addon_publish.php',
-            'sources_custom/addon_publish.php',
-            'data_custom/change_addon_bundling.php',
+            'sources_custom/hooks/systems/addon_registry/transifex.php',
+            'sources_custom/transifex.php',
+            'data_custom/transifex_pull.php',
+            'data_custom/transifex_push.php',
+            'site/pages/minimodules_custom/transifex.php',
+            'themes/default/templates_custom/TRANSIFEX_SCREEN.tpl',
         );
     }
 }
