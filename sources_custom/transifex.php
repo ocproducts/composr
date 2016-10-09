@@ -38,11 +38,6 @@ function init__transifex()
     require_code('lang2');
     require_code('files2');
 
-    require_code('string_scan');
-    global $JUST_LANG_STRINGS_ADMIN;
-    list($JUST_LANG_STRINGS_ADMIN) = string_scan(fallback_lang(), true);
-    $JUST_LANG_STRINGS_ADMIN = array_flip($JUST_LANG_STRINGS_ADMIN);
-
     global $OVERRIDE_PRIORITY_LANGUAGE_FILES;
     $OVERRIDE_PRIORITY_LANGUAGE_FILES = array(
         'global.ini' => TRANSLATE_PRIORITY_URGENT,
@@ -343,6 +338,10 @@ function _push_cms_file_to_transifex($path, $resource_path, $project_slug, $prio
 function _push_ini_file_to_transifex($f, $project_slug, $custom, $administrative, $push_translations)
 {
     global $JUST_LANG_STRINGS_ADMIN, $OVERRIDE_PRIORITY_LANGUAGE_FILES, $LANGUAGE_STRING_DESCRIPTIONS, $LANGUAGE_FILES_ADDON;
+
+    require_code('string_scan');
+    list($JUST_LANG_STRINGS_ADMIN) = string_scan(fallback_lang(), true);
+    $JUST_LANG_STRINGS_ADMIN = array_flip($JUST_LANG_STRINGS_ADMIN);
 
     if ($custom) {
         $category = TRANSLATE_ADDON;
