@@ -21,35 +21,9 @@ If you see a language on Transifex that has been translated, but there's no addo
 
 [title="3"]Direct from Transifex[/title]
 
-If you need more up-to-date translations, you can get them directly from Transifex. This is a manual process and is labourious: we provide an automated tool too (see the next section).
+If you need more up-to-date translations, you can get them directly from Transifex.
 
-To download and install the Transifex translations you can follow the following step by step process:
-1) Make a [tt]lang_custom/<langcode>[/tt] folder on your webhosting. The [tt]<langcode>[/tt] is the upper-case version of the ISO code for the language. For example, Spanish is [tt]ES[/tt] and German is [tt]DE[/tt].
-2) Go to the [url="ocProducts organisation on Transifex"]https://www.transifex.com/organization/ocproducts[/url].
-3) Register as a Transifex user if you do not already have an account, or log in.
-4) Choose the version of Composr you have installed (if you're not sure, it will say on the front page of the Admin Zone). Transifex calls this the 'project'.
-5) Choose your language.
-6) Join the translation team for this project & language.
-7) For each resource in the project, you need to download it individually ("Download for use"). You'll be delivered a [tt].ini[/tt] file. These resources correspond to language files in Composr.
-8) Rename the files to match the correct names. For example, [tt]for_use_composr-cms-10_cns_ta.ini[/tt] would be [tt]cns.ini[/tt] (it's the name of the language file, followed by [tt].ini[/tt]).
-9) Copy all the [tt].ini[/tt] files into the folder you created earlier.
-10) Any [tt]x__administrative.ini[/tt] file needs manually merging into the corresponding [tt]x.ini[/tt] file. However, most translators won't have bothered translating administrative strings anyway.
-11) If you want your new language to by the default, log into [tt]http://yourbaseurl/config_editor.php[/tt] and change the default language. This is discussed in more detail in the next section.
-
-[title="3"]Using developer tools[/title]
-
-If you install the developer [tt]addon_publish[/tt] addon then you can pull language packs from Transifex by calling a URL like:
-[tt]http://yourbaseurl/data_custom/transifex_pull.php?output=1&core_only=1&lang=XX&username=youremail&password=yourpassword[/tt]
-
-Substitute as follows:
- - [tt]yourbaseurl[/tt] -- the URL to your Composr installation that has the [tt]addon_publish[/tt] addon installed on
- - [tt]XX[/tt] -- the code for the language (e.g. [tt]fr[/tt] for French)
- - [tt]youremail[/tt] -- your Transifex account e-mail address (it must have translator access to the language you are downloading by joining the translation team)
- - [tt]yourpassword[/tt] -- your Transifex account password
-
-If everything is working right then a [tt].tar[/tt] file will download to your computer. This is your addon.
-
-Change [tt]&core_only=1[/tt] to [tt]&core_only=0[/tt] if you want to download files for non-bundled addons too.
+The Composr website hosts a copy of our [tt]transifex[/tt] addon that allows you to generate any language pack addon from the latest files on Transifex. It's a very simple process that will generate a [tt].tar[/tt] file that you can import (upload) into Composr from Admin Zone > Structure > Addons, then the Import non-bundled addon(s) link at the bottom.
 
 [title="2"]Turning on a different language[/title]
 

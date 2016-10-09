@@ -105,7 +105,7 @@ function cache_and_carry($func, $args, $timeout = null)
             $ret = array($_ret, $HTTP_DOWNLOAD_MIME_TYPE, $HTTP_DOWNLOAD_SIZE, $HTTP_DOWNLOAD_URL, $HTTP_MESSAGE, $HTTP_MESSAGE_B, $HTTP_NEW_COOKIES, $HTTP_FILENAME, $HTTP_CHARSET, $HTTP_DOWNLOAD_MTIME);
             file_put_contents($path, serialize($ret), LOCK_EX);
         } else {
-            $ret = $_ret;
+            $ret = is_string($_ret) ? $_ret : serialize($_ret);
             file_put_contents($path, $ret, LOCK_EX);
         }
         fix_permissions($path);

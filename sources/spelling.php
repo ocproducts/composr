@@ -160,7 +160,7 @@ function run_spellcheck($text, $lang = null, $skip_known_words_in_db = true)
     // Run checks
     $spell_link = _spellcheck_initialise($lang);
     if (function_exists('pspell_check')) { // pspell
-        if (is_resource($spell_link)) {
+        if ($spell_link !== null) {
             foreach ($words as $word) {
                 if (!pspell_check($spell_link, $word)) {
                     $corrections = pspell_suggest($spell_link, $word);
@@ -171,7 +171,7 @@ function run_spellcheck($text, $lang = null, $skip_known_words_in_db = true)
     } else { // enchant
         list($broker, $dict, $personal_dict) = $spell_link;
 
-        if (is_resource($dict)) {
+        if ($dict !== null) {
             foreach ($words as $word) {
                 $corrections = array();
                 if (!enchant_dict_quick_check($dict, $word, $corrections)) {
@@ -196,7 +196,7 @@ function add_spellchecker_words($words)
     $spell_link = _spellcheck_initialise();
 
     if (function_exists('pspell_check')) { // pspell
-        if (is_resource($spell_link)) {
+        if ($spell_link !== null) {
             foreach ($words as $word) {
                 pspell_add_to_personal($spell_link, $word);
             }
@@ -206,7 +206,7 @@ function add_spellchecker_words($words)
     } else {
         list($broker, $dict, $personal_dict) = $spell_link;
 
-        if (is_resource($dict)) {
+        if ($dict !== null) {
             foreach ($words as $word) {
                 enchant_dict_add_to_personal($personal_dict, $word);
             }

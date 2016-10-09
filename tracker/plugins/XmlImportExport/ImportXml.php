@@ -110,7 +110,7 @@ class ImportXML {
 			$bugLinkRegexp = '/(^|[^\w])(' . preg_quote( $this->source_->issuelink, '/' ) . ')(\d+)\b/e';
 			$replacement = '"\\1" . $this->getReplacementString( "\\2", "\\3" )';
 
-			$bugData->description = preg_replace( $bugLinkRegexp, $replacement, $bugData->description );
+			$bugData->description = /*PHP7*/@preg_replace( $bugLinkRegexp, $replacement, $bugData->description );
 			bug_update( $newId, $bugData, true, true );
 		}
 		echo " Done\n";

@@ -88,7 +88,7 @@ You should be wary about:
  - PHP "Safe Mode" (the name is very misleading, at best this introduces bugs and mitigates the problems on shared hosting environments that are already fundamentally insecure)
  - PHP "disable_functions" (this increases security by disabling arbitrary parts of PHP -- this should only be done by consent with a programmer, to confirm those parts that were decided to be disabled are not actually necessary for functionality)
  - PHP "magic quotes" (this does not add any actual security due to fundamental design problems, but does have the potential to create lots of bugs)
- - ModSecurity (Composr does have inbuilt features, as described above -- and ModSecurity rules have a tendency to block legitimate administrative requests, such as use of Commandr of theme editing)
+ - ModSecurity (Composr does have inbuilt features, as described above -- and ModSecurity rules have a tendency to block legitimate administrative requests, such as use of Commandr or theme editing)
  - Suhosin/SuPHP (actually Suhosin/SuPHP is okay if you have control over its settings or know for sure that nobody is going to set anything that is too restrictive)
 
 The best way to ensure your hosting is secure is to choose a webhost that you're confident in and/or a server management team who will carry out their system administration tasks diligently. There are a thousand ways a bad host or a bad team could make things insecure, but if they stick to default/careful software configurations and industry-standard practices then usually things will be in decent shape.

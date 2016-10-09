@@ -65,11 +65,26 @@ function build_menu($type, $menu, $silent_failure = false, $apply_highlighting =
     // Render
     $content = _render_menu($root, null, $type, true, $apply_highlighting);
 
+    $content->handle_symbol_preprocessing(); // Optimisation: we are likely to have lots of page-links in here, so we want to spawn them to be detected for mass moniker loading
+
+    if (strpos(serialize($root), 'keep_') === false) {
+        $content = apply_quick_caching($content);
+    }
+
     // Edit link
     if (((!$is_sitemap_menu) || ($menu == get_option('header_menu_call_string'))) && (has_actual_page_access(get_member(), 'admin_menus'))) {
-        $redirect = get_self_url(true, true);
-        $url_map = array('page' => 'admin_menus', 'type' => 'edit', 'id' => $is_sitemap_menu ? null : $root['content_id'], 'redirect' => $redirect, 'clickable_sections' => (($type == 'popup') || ($type == 'dropdown')) ? 1 : 0);
-        $url = build_url($url_map, get_module_zone('admin_menus'));
+        // We have to build up URL using Tempcode as it needs SELF_URL nested as unevaluated Tempcode, for cache-safety
+        $page_link = get_module_zone('admin_menus') . ':admin_menus:edit';
+        if (!$is_sitemap_menu) {
+            $page_link .= ':' . $root['content_id'];
+        }
+        $page_link .= ':clickable_sections=' . strval((($type == 'popup') || ($type == 'dropdown')) ? 1 : 0);
+        $page_link .= ':redirect=';
+        $_page_link = make_string_tempcode($page_link);
+        $_page_link->attach(symbol_tempcode('SELF_URL',array('1')));
+
+        $url = symbol_tempcode('PAGE_LINK', array($_page_link, '0', '0', '0'));
+
         $_content = new Tempcode(); // Done to preserve tree structure, special_page_type=tree
         $_content->attach($content);
         $_content->attach(do_template('MENU_STAFF_LINK', array(

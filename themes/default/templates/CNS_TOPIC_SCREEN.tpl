@@ -104,7 +104,7 @@
 						<form title="{!MARKED_POST_ACTIONS}" action="{$URL_FOR_GET_FORM*,{ACTION_URL}}" method="get" class="inline horiz_field_sep_rightward" autocomplete="off">
 							{$HIDDENS_FOR_GET_FORM,{ACTION_URL}}
 
-							<div class="inline horiz_field_sep_rightward">
+							<div class="inline">
 								<label for="mpa_type">{!_MARKED_POST_ACTIONS}:</label>
 								<select id="mpa_type" name="type">
 									{+START,IF,{$GT,{$SUBSTR_COUNT,{MARKED_POST_ACTIONS},<option},1}}

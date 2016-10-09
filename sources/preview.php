@@ -133,6 +133,8 @@ function build_preview($multi_return = false)
             continue;
         }
 
+        // Read in value, and will it be hidden?...
+
         $val = post_param_string($key, ''); // stripslashes, and WYSIWYG output handling
         if ($val == '0') {
             $val = do_lang('NO');
@@ -145,7 +147,40 @@ function build_preview($multi_return = false)
             $val .= '/10';
         }
 
-        $is_hidden = in_array($key, array('stub', 'from_url', 'password', 'confirm_password', 'edit_password', 'MAX_FILE_SIZE', 'perform_webstandards_check', '_validated', 'id', 'posting_ref_id', 'f_face', 'f_colour', 'f_size', 'http_referer')) || (strpos($key, 'hour') !== false) || (strpos($key, 'access_') !== false) || (strpos($key, 'minute') !== false) || (strpos($key, 'confirm') !== false) || (strpos($key, 'pre_f_') !== false) || (strpos($key, 'label_for__') !== false) || (strpos($key, 'wysiwyg_version_of_') !== false) || (strpos($key, 'is_wysiwyg') !== false) || (strpos($key, 'require__') !== false) || (strpos($key, 'tempcodecss__') !== false) || (strpos($key, 'comcode__') !== false) || (strpos($key, '_parsed') !== false) || (substr($key, 0, 1) == '_') || (substr($key, 0, 9) == 'hidFileID') || (substr($key, 0, 11) == 'hidFileName') || (($key[0] == 'x') && (strlen($key) == 33));
+        $is_hidden =
+            in_array($key, array(
+                'stub',
+                'from_url',
+                'password',
+                'confirm_password',
+                'edit_password',
+                'MAX_FILE_SIZE',
+                'perform_webstandards_check',
+                '_validated',
+                'id',
+                'posting_ref_id',
+                'f_face',
+                'f_colour',
+                'f_size',
+                'http_referer',
+                'csrf_token',
+            )) ||
+            (strpos($key, 'hour') !== false) ||
+            (strpos($key, 'access_') !== false) ||
+            (strpos($key, 'minute') !== false) ||
+            (strpos($key, 'confirm') !== false) ||
+            (strpos($key, 'pre_f_') !== false) ||
+            (strpos($key, 'label_for__') !== false) ||
+            (strpos($key, 'wysiwyg_version_of_') !== false) ||
+            (strpos($key, 'is_wysiwyg') !== false) ||
+            (strpos($key, 'require__') !== false) ||
+            (strpos($key, 'tempcodecss__') !== false) ||
+            (strpos($key, 'comcode__') !== false) ||
+            (strpos($key, '_parsed') !== false) ||
+            (substr($key, 0, 1) == '_') ||
+            (substr($key, 0, 9) == 'hidFileID') ||
+            (substr($key, 0, 11) == 'hidFileName') ||
+            (($key[0] == 'x') && (strlen($key) == 33));
         if (substr($key, 0, 14) == 'tick_on_form__') {
             if (post_param_integer(substr($key, 14), 0) == 1) {
                 $is_hidden = true;
@@ -170,6 +205,8 @@ function build_preview($multi_return = false)
         if ($key_nice == '') {
             $is_hidden = true;
         }
+
+        // Checking...
 
         if (!$is_hidden) {
             if ($spellcheck) {
@@ -206,6 +243,8 @@ function build_preview($multi_return = false)
                 }
             }
         }
+
+        // Display...
 
         if (is_null($output)) {
             if ((is_null($attachment_type)) || ($key != 'post')) { // Not an attachment-supporting field

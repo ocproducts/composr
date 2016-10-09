@@ -101,9 +101,7 @@ class Block_menu
 
         require_code('menus');
         $menu = build_menu($type, $menu, $silent_failure, !$javascript_highlighting);
-        $menu->handle_symbol_preprocessing(); // Optimisation: we are likely to have lots of page-links in here, so we want to spawn them to be detected for mass moniker loading
 
-        $menu = apply_quick_caching($menu);
         $LANGS_REQUESTED = $bak; // We've flatten with apply_quick_caching, we don't need to load up all those language files next time
 
         if ($title != '') {

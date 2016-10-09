@@ -261,7 +261,7 @@ function cms_strftime($format, $timestamp = null)
 
     static $is_windows = null;
     if ($is_windows === null) {
-        $is_windows = (stripos(PHP_OS, 'win') === 0);
+        $is_windows = (stripos(PHP_OS, 'WIN') === 0);
     }
     if ($is_windows) {
         $format = str_replace('%e', '%#d', $format);

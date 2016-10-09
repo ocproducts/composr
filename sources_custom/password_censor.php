@@ -50,7 +50,7 @@ function password_censor($auto = false, $display = true, $days_ago = 30)
             if (multi_lang_content()) {
                 $update_query = 'UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'translate SET text_original=\'' . db_escape_string($text_after) . '\',text_parsed=\'\' WHERE id=' . strval($row['id']);
             } else {
-                $update_query = 'UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts SET p_post=\'' . db_escape_string($text_after) . '\',p_post__tempcode=\'\' WHERE id=' . strval($row['id']);
+                $update_query = 'UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts SET p_post=\'' . db_escape_string($text_after) . '\',p_post__text_parsed=\'\' WHERE id=' . strval($row['id']);
             }
 
             if ($auto) {

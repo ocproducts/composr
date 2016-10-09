@@ -43,7 +43,7 @@ $featuretree = array(
             'Skill-based',
             array(
                 array('Make addons', 'If you know PHP, or want to learn, [page="docs:sup_hardcore_1"]make and release some addons[/page] for the community. It takes a lot of knowledge, but [page="docs:tut_programming"]anybody can learn[/page] and it\'s fun, fulfilling and makes you more employable.'),
-                array('Make themes', 'If you know [abbr="eXtensible HyperText Markup Language"]XHTML[/abbr]/[abbr="Cascading Style Sheets"]CSS[/abbr], or are [page="docs:tut_markup"]learning[/page], [page="docs:tut_releasing_themes"]make and release some themes[/page] for the community. With CSS you can start small and still achieve cool things.'),
+                array('Make themes', 'If you know [abbr="HyperText Markup Language"]HTML[/abbr]/[abbr="Cascading Style Sheets"]CSS[/abbr], or are [page="docs:tut_markup"]learning[/page], [page="docs:tut_releasing_themes"]make and release some themes[/page] for the community. With CSS you can start small and still achieve cool things.'),
                 array('Translate', 'If you know another language, [url="collaborate with others on Transifex"]https://www.transifex.com/organization/ocproducts/dashboard[/url] to [page="docs:tut_intl"]make a new language pack[/page].'),
                 //array('Use Composr for your own clients', 'Are you a professional website developer? Try to start using Composr for your projects &ndash; it provides you [page="site:features"]lots of advantages[/page] to other software, it\'s free, and we want the community and install-base to grow!'),         Removed to save space
                 array('Google Summer of Code', 'If you\'re a student and want to work on Composr for the [url="http://code.google.com/soc/"]Google Summer of Code[/url], please [page="site:tickets:ticket:ticket_type=Partnership"]contact us[/page] and we will work to try and make it happen.'),
@@ -205,7 +205,7 @@ $featuretree = array(
                 array('Gift system', 'Allows members to reward each other with gift points <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Points" href="http://shareddemo.composr.info/site/index.php?page=points"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Leader board', 'Create some community competition, by showing a week-by-week who has the most points <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Leaderboard" href="http://shareddemo.composr.info/site/index.php?page=leader_board&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 null, // divider
-                array('Auditing'),
+                array('Auditing', 'See what gifts have been given to crack down on any abuse'),
                 array('Profiles', 'Browse through member points profiles, and see what gifts members have been given'),
             ),
             'A virtual economy for your members',
@@ -213,7 +213,7 @@ $featuretree = array(
         'community' => array(
             'Community features',
             array(
-                array('User submission', 'Allow users to submit to any area of your site. Staff approval is supported <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of CMS" href="http://shareddemo.composr.info/cms/index.php?page=cms&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
+                array('User content submission', 'Allow users to submit to any area of your site. Staff approval is supported <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of CMS" href="http://shareddemo.composr.info/cms/index.php?page=cms&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Public awards', 'Give public awards to your choice of &ldquo;best content&rdquo; <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Awards" href="http://shareddemo.composr.info/site/index.php?page=awards&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Per-usergroup privileges', 'Give special members access to extra features, like file storage <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Permissions" href="http://shareddemo.composr.info/adminzone/index.php?page=admin_permissions&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Bookmarks', 'Users can bookmark their favourite pages to their account <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Bookmarks" href="http://shareddemo.composr.info/site/index.php?page=bookmarks&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
@@ -258,9 +258,9 @@ $featuretree = array(
             'Wiki+ <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Wiki+" href="http://shareddemo.composr.info/site/index.php?page=wiki&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>',
             array(
                 array('Create an encyclopaedic database for your website'),
-                array('Create a tree-structure, or use traditional cross-linking'),
+                array('Use a tree-structure, or traditional cross-linking'),
                 array('Track changes'),
-                array('Display a tree structure of your whole Wiki+ (normal wiki\'s can\'t do that!)'),
+                array('Display the tree structure of your whole Wiki+ (normal wiki\'s can\'t do that!)'),
                 null, // divider
                 array('Allow users to jump in at random pages'),
                 array('Make your pages either wiki-style or topic-style'),
@@ -320,7 +320,7 @@ $featuretree = array(
                 null, // divider
                 array('Auto-detection of video length and resolution (most file formats)'),
                 array('Full tree-structure support'),
-                array('Two different display modes'),
+                array('2 different display modes'),
                 array('e-cards'),
                 array('Slide-shows'),
                 array('Automatic thumbnail generation'),
@@ -333,14 +333,14 @@ $featuretree = array(
         'downloads' => array(
             'Downloads/documents library <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Downloads" href="http://shareddemo.composr.info/site/index.php?page=downloads&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>',
             array(
-                array('Great organisation', 'Uses a tree structure for unlimited categorisation'),
+                array('Clear organisation', 'Uses a tree structure for unlimited categorisation'),
                 array('&lsquo;Sell&rsquo; downloads using website points'),
                 array('Anti-leech protection'),
                 array('Community-centred', 'Allow users to comment upon and rate downloads'),
                 null, // divider
                 array('Many ways to add new files', 'Upload files. Link-to existing files. Copy existing files using a live URL. Batch import links from existing file stores'),
                 array('Author support', 'Assign your downloads to authors, so users can find other downloads by the same author'),
-                array('Licences', 'Make users agree to a licence before downloading'),
+                array('Set licences', 'Make users agree to a licence before downloading'),
                 array('Images', 'Show images along with your downloads (e.g. screen-shots)'),
                 array('Basic file versioning support'),
             ),
@@ -410,7 +410,6 @@ $featuretree = array(
                 array('HTTP authentication', 'Tie into an existing HTTP authentication-based login system (<abbr title="The Composr forum">Conversr</abbr>)'),
                 array('Proxying system', 'Programmers can integrate any existing scripts using our sophisticated proxying system (which includes full cookie support)'),
                 array('Minimodules and miniblocks', 'Programmers can port existing PHP code into Composr itself <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Framework documentation" href="{$PAGE_LINK*,docs:tut_framework}"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
-                array('Export your Comcode as <abbr title="eXtensible HyperText Markup Language">XML</abbr>', 'Other systems may integrate your rich content, using (for example) <abbr title="XSL transformations">XSLT</abbr>'),
             ),
         ),
     ),
@@ -459,7 +458,7 @@ $featuretree = array(
                 array('Branching and filtering', 'Tailor output according to permissions and usergroups, as well as user options such as language selection'),
                 null, // divider
                 array('Include other templates, blocks, or pages, within a template'),
-                array('Create and use standard boxes', 'Avoid having to copy and paste complex segments of <abbr title="eXtensible HyperText Markup Language">XHTML</abbr>'),
+                array('Create and use standard boxes', 'Avoid having to copy and paste complex segments of <abbr title="eXtensible HyperText Markup Language 5">XHTML5</abbr>'),
                 array('Easy web browser sniffing', 'Present different markup to different web browsers, detect whether JavaScript is enabled, detect bots, and detect PDAs/Smartphones'),
                 array('Randomisation features'),
                 array('Pull up member details with ease', 'For example, show the current users avatar or point count'),
@@ -469,12 +468,12 @@ $featuretree = array(
         'rad' => array(
             '<abbr title="Rapid Application Development">RAD</abbr> and testing tools',
             array(
-                array('Switch users', 'Masquerade as any user using your admin logging <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of SU" href="http://shareddemo.composr.info/index.php?keep_su=test"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
+                array('Switch users', 'Masquerade as any user using your admin login <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of SU" href="http://shareddemo.composr.info/index.php?keep_su=test"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Change theme images inline with just a few clicks'),
                 array('Easily find and edit the templates used to construct any screen <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Template Tree" href="http://shareddemo.composr.info/index.php?special_page_type=tree"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Error monitoring', 'Get informed by e-mail if errors ever happen on your site'),
                 null, // divider
-                array('Make changes to content titles inline'),
+                array('Make inline changes to content titles'),
                 array('Easy text changes', 'Easily change the language strings used to build up any screen'),
                 array('Easily diagnose permission configuration problems', 'Log permission checks, or interactively display them in Firefox'),
             ),
@@ -484,12 +483,12 @@ $featuretree = array(
             array(
                 array('Comcode', 'Powerful but simple content-enrichment language'),
                 array('Media embedding', 'Easily integrate/attach all common video and image formats, as well as embeds for common sites such as Youtube and Google Maps (just by pasting in the URL)'),
-                array('Easily create cool effects', 'Create scrolling, rolling, randomisation, and hiding effects. Put content in boxes, split content across subpages. Create <abbr title="eXtensible HyperText Markup Language">XHTML</abbr> overlays. Place tooltips'),
+                array('Easily create cool effects', 'Create scrolling, rolling, randomisation, and hiding effects. Put content in boxes, split content across subpages. Create <abbr title="eXtensible HyperText Markup Language 5">XHTML5</abbr> overlays. Place tooltips'),
                 array('Customise your content for different usergroups'),
                 array('Create count-downs and hit counters'),
                 array('Automatic table of contents creation for your documents'),
                 array('Custom Comcode tags', 'Set up your own tags, to make it easy to maintain a sophisticated and consistent design as your site grows <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Custom Comcode" href="http://shareddemo.composr.info/adminzone/index.php?page=admin_custom_comcode&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
-                array('Include pages within other pages'),
+                array('Embed pages within other pages'),
             ),
         ),
     ),
@@ -552,15 +551,16 @@ $featuretree = array(
         'webstandards' => array(
             'Web standards <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Web standards" href="{$PAGE_LINK*,site:vision}"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>',
             array(
-                array('Support for all major web browsers'),
-                array('True and correct <abbr title="eXtensible HyperText Markup Language">XHTML5</abbr> markup'),
+                array('Responsive design and hi-dpi images'),
+                array('True and correct <abbr title="eXtensible HyperText Markup Language 5">XHTML5</abbr> markup'),
                 array('<abbr title="Web Content Accessibility Guidelines">WCAG</abbr>, <abbr title="Authoring Tool Accessibility Guidelines">ATAG</abbr>', 'Meeting of accessibility guidelines in full'),
                 array('Tableless <abbr title="Cascading Style Sheets">CSS</abbr> markup, with no hacks'),
                 null, // divider
-                array('Inbuilt tools for checking webstandards conformance of <abbr title="eXtensible HyperText Markup Language">XHTML</abbr>, <abbr title="Cascading Style Sheets">CSS</abbr>, and JavaScript'),
-                array('Extra markup semantics, including Dublin Core support and microformats'),
+                array('Support for all major web browsers'),
+                array('Inbuilt tools for checking webstandards conformance of <abbr title="eXtensible HyperText Markup Language 5">XHTML5</abbr>, <abbr title="Cascading Style Sheets">CSS</abbr>, and JavaScript'),
+                array('Extra markup semantics', 'Including Dublin Core support, schema.org, Open Graph, and microformats'),
                 array('Standards-based (modern <abbr title="Document Object Model">DOM</abbr> and <abbr title="Asynchronous JavaScript And XML">AJAX</abbr>, no DOM-0 or innerHTML) JavaScript'),
-                array('Automatic cleanup of bad <abbr title="eXtensible HyperText Markup Language">XHTML</abbr>', 'XHTML outside your control (e.g. from <abbr title="Really Simple Syndication">RSS</abbr>) will be cleaned up for you'),
+                array('Automatic cleanup of bad <abbr title="eXtensible HyperText Markup Language 5">XHTML5</abbr>', 'HTML outside your control (e.g. from <abbr title="Really Simple Syndication">RSS</abbr>) will be cleaned up for you'),
             ),
         ),
         'itln' => array(
@@ -581,14 +581,13 @@ $featuretree = array(
         'seo' => array(
             '<abbr title="Search Engine Optimisation">SEO</abbr> <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of SEO" href="http://shareddemo.composr.info/index.php?page=sitemap"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>',
             array(
-                array('Support for short URLs'),
-                array('Automatic site-map generation'),
+                array('Support for short URLs', 'Also textual monikers instead of numeric IDs'),
+                array('Automatic site-map generation', 'Both XML Sitemaps and sitemaps for users'),
                 array('Metadata', 'Meta descriptions and keywords for all content. Auto-summarisation.'),
-                array('XML Sitemaps'),
                 null, // divider
                 array('Keyword density analysis for your content'),
                 array('Correct use of HTTP status codes'),
-                array('Correct use of page titles'),
+                array('Content-contextualised page titles'),
                 array('<abbr title="Search Engine Optimisation">SEO</abbr> via semantic and accessible markup (e.g. &lsquo;alt tags&rdquo;)'),
             ),
         ),

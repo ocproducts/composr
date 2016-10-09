@@ -860,7 +860,7 @@ class Module_admin_themes
         switch ($type) {
             case 'css':
                 $add_one = null;
-                $edit_this = array('_SELF', array('type' => 'edit_css', 'file' => str_replace('/css/', '/css_custom/', $file), 'theme' => $theme), '_SELF');
+                $edit_this = array('_SELF', array('type' => 'edit_css', 'file' => str_replace('css_custom/', 'css/', $file), 'theme' => $theme), '_SELF');
                 $edit_one = array('_SELF', array('type' => 'choose_css', 'theme' => $theme), '_SELF');
                 $section_title = do_lang_tempcode('CSS');
                 $content_type = do_lang('CSS_FILE');
@@ -868,7 +868,7 @@ class Module_admin_themes
 
             case 'templates':
                 $add_one = null;
-                $edit_this = array('_SELF', array('type' => '_edit_templates', 'f0file' => file_exists(get_custom_file_base() . '/' . str_replace('/templates/', '/templates_custom/', $file)) ? str_replace('/templates/', '/templates_custom/', $file) : $file, 'theme' => $theme), '_SELF');
+                $edit_this = array('_SELF', array('type' => '_edit_templates', 'f0file' => str_replace('templates_custom/', 'templates/', $file), 'theme' => $theme), '_SELF');
                 $edit_one = array('_SELF', array('type' => 'edit_templates', 'theme' => $theme), '_SELF');
                 $section_title = do_lang_tempcode('TEMPLATES');
                 $content_type = do_lang('TEMPLATE');
