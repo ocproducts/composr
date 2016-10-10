@@ -268,6 +268,7 @@ Translations may also be downloaded directly from Transifex.';
             'lang_custom/TA/sites.ini',
             'lang_custom/TA/customers.ini',
             'lang_custom/TA/tutorials.ini',
+            'sources_custom/lang_filter_TA.php',
         );
     }
 }
