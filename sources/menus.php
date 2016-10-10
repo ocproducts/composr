@@ -37,7 +37,7 @@ function init__menus()
  * @param  SHORT_TEXT $menu The menu identifier to use (may be the name of a stored menu, or syntax to load from the Sitemap)
  * @param  boolean $silent_failure Whether to silently return blank if the menu does not exist
  * @param  boolean $apply_highlighting Whether to apply current-screen highlighting
- * @return Tempcode The generated Tempcode of the menu
+ * @return array A pair: The generated Tempcode of the menu, the menu nodes
  */
 function build_menu($type, $menu, $silent_failure = false, $apply_highlighting = true)
 {
@@ -51,14 +51,15 @@ function build_menu($type, $menu, $silent_failure = false, $apply_highlighting =
         // Empty?
         if (count($root['children']) == 0) {
             if ($silent_failure) {
-                return new Tempcode();
+                return array(new Tempcode(), array());
             }
 
             $redirect = get_self_url(true, true);
             $_add_url = build_url(array('page' => 'admin_menus', 'type' => 'edit', 'id' => $menu, 'redirect' => $redirect), 'adminzone');
             $add_url = $_add_url->evaluate();
 
-            return do_template('INLINE_WIP_MESSAGE', array('_GUID' => '276e6600571b8b4717ca742b6e9da17a', 'MESSAGE' => do_lang_tempcode('MISSING_MENU', escape_html($menu), escape_html($add_url))));
+            $content = do_template('INLINE_WIP_MESSAGE', array('_GUID' => '276e6600571b8b4717ca742b6e9da17a', 'MESSAGE' => do_lang_tempcode('MISSING_MENU', escape_html($menu), escape_html($add_url))));
+            return array($content, array());
         }
     }
 
@@ -66,10 +67,6 @@ function build_menu($type, $menu, $silent_failure = false, $apply_highlighting =
     $content = _render_menu($root, null, $type, true, $apply_highlighting);
 
     $content->handle_symbol_preprocessing(); // Optimisation: we are likely to have lots of page-links in here, so we want to spawn them to be detected for mass moniker loading
-
-    if (strpos(serialize($root), 'keep_') === false) {
-        $content = apply_quick_caching($content);
-    }
 
     // Edit link
     if (((!$is_sitemap_menu) || ($menu == get_option('header_menu_call_string'))) && (has_actual_page_access(get_member(), 'admin_menus'))) {
@@ -96,7 +93,7 @@ function build_menu($type, $menu, $silent_failure = false, $apply_highlighting =
         $content = $_content;
     }
 
-    return $content;
+    return array($content, $root);
 }
 
 /**
