@@ -1,0 +1,39 @@
+[title sub="About the Collaboration Zone"]About[/title]
+
+The Collaboration Zone is an exclusive area of {$SITE_NAME*} for super-members to share files, manage their author profile, release files instantly onto {$SITE_NAME*} and generally collaborate with other active super-members in a supported and protected environment.
+
+[title="2"]Non-Super-members[/title]
+
+To become a super-member, a member must {+START,IF,{$CNS}}[page="_SEARCH:groups:apply:Super-members"]apply to join the Super-members usergroup[/page]{+END}{+START,IF,{$NOT,{$CNS}}}ask to join the Super-members usergroup{+END}. There is a degree of exclusivity in the Collaboration Zone, due to the enhanced privileges and the need for a private environment: therefore not all applications will necessarily be accepted.
+
+[title="2"]Super-members[/title]
+
+As a super-member, you are a member of an exclusive group and you have been given the trust to have greater access and resources than normal members.
+
+Some of the services we may offer ([b]DEFAULT. PLEASE EDIT AS REQUIRED[/b]):
+ - Access to a file storage service, with remote linking enabled
+ - Forum hosting (usually as a sub-forum of our main forums - which brings a lot of interest to your project)
+ - News posting/coverage, of your projects
+ - File hosting, in our public download database
+ - An active community on our forums, with public and super-member-only forums
+ - Advertising for projects in our banner exchange, and our project database
+ - A personal author profile, so you can give information about yourself along with your file releases
+ - A points system on the forums, so you can be awarded for your work. You can use your gained points to 'purchase' banner hits, emails and text-banner promotion
+ - Advertisement of your works as images of the day
+{+START,IF,{$ADDON_INSTALLED,filedump}}
+[title="2"]The file/media library[/title]
+
+{$ANCHOR,FILEDUMP}[semihtml]<a href="{$PAGE_LINK*,_SEARCH:filedump}">The file/media library</a>[/semihtml] is a place where you may store files to share with other super-members.
+
+Feel free to create personal folders in here for your own use.
+
+Please do not use the space for large, unrelated. files. It is not for the storage of purely personal files, or illegal material.
+
+If any rules are broken with the space, or people cause trouble, they are liable to be removed from the super-member usergroup.
+
+Please use our public download system for releasing final (public) files, as this is much more powerful and organised.
+
+Most members will only be able to delete their own files, but all files are viewable to all other super-members, and may be downloaded by anyone who knows the URL.
+{+END}
+
+[block]main_comcode_page_children[/block]
