@@ -60,6 +60,29 @@ function find_words($text)
 }
 
 /**
+ * Find the active spell checker.
+ *
+ * @return ?string Spell checker (null: none)
+ */
+function find_spell_checker()
+{
+    $spell_checker = get_value('force_spell_checker');
+    if ($spell_checker !== null) {
+        return $spell_checker;
+    }
+
+    if (function_exists('pspell_check')) {
+        return 'pspell';
+    }
+
+    if (function_exists('enchant_dict_check')) {
+        return 'enchant';
+    }
+
+    return null;
+}
+
+/**
  * Fix spellings in input string.
  *
  * @param string $text Input string
@@ -67,7 +90,7 @@ function find_words($text)
  */
 function spell_correct_phrase($text)
 {
-    if (!function_exists('pspell_check') && !function_exists('enchant_dict_check')) {
+    if (find_spell_checker() === null) {
         return $text;
     }
 
@@ -97,7 +120,7 @@ function spell_correct_phrase($text)
  */
 function run_spellcheck($text, $lang = null, $skip_known_words_in_db = true)
 {
-    if (!function_exists('pspell_check') && !function_exists('enchant_dict_check')) {
+    if (find_spell_checker() === null) {
         return array();
     }
 
@@ -159,7 +182,7 @@ function run_spellcheck($text, $lang = null, $skip_known_words_in_db = true)
 
     // Run checks
     $spell_link = _spellcheck_initialise($lang);
-    if (function_exists('pspell_check')) { // pspell
+    if (find_spell_checker() === 'pspell') {
         if ($spell_link !== null) {
             foreach ($words as $word) {
                 if (!pspell_check($spell_link, $word)) {
@@ -168,7 +191,8 @@ function run_spellcheck($text, $lang = null, $skip_known_words_in_db = true)
                 }
             }
         }
-    } else { // enchant
+    }
+    if (find_spell_checker() === 'enchant') {
         list($broker, $dict, $personal_dict) = $spell_link;
 
         if ($dict !== null) {
@@ -179,7 +203,7 @@ function run_spellcheck($text, $lang = null, $skip_known_words_in_db = true)
                 }
             }
 
-            enchant_broker_free($broker);
+            //enchant_broker_free($broker); Seems to crash on some PHP versions
         }
     }
 
@@ -195,7 +219,7 @@ function add_spellchecker_words($words)
 {
     $spell_link = _spellcheck_initialise();
 
-    if (function_exists('pspell_check')) { // pspell
+    if (find_spell_checker() === 'pspell') {
         if ($spell_link !== null) {
             foreach ($words as $word) {
                 pspell_add_to_personal($spell_link, $word);
@@ -203,7 +227,8 @@ function add_spellchecker_words($words)
 
             pspell_save_wordlist($spell_link);
         }
-    } else {
+    }
+    if (find_spell_checker() === 'enchant') {
         list($broker, $dict, $personal_dict) = $spell_link;
 
         if ($dict !== null) {
@@ -240,7 +265,7 @@ function _spellcheck_initialise($lang = null)
 
     $p_dict_path = sl_get_custom_file_base() . '/data_custom/spelling/personal_dicts';
 
-    if (function_exists('pspell_check')) { // pspell
+    if (find_spell_checker() === 'pspell') {
         $charset = str_replace('ISO-', 'iso', str_replace('iso-', 'iso', $charset));
 
         $pspell_config = @pspell_config_create($lang, $spelling, '', $charset);
@@ -264,7 +289,8 @@ function _spellcheck_initialise($lang = null)
                 return null;
             }
         }
-    } else { // enchant
+    }
+    if (find_spell_checker() === 'enchant') {
         $broker = enchant_broker_init();
 
         if (!enchant_broker_dict_exists($broker, $lang)) {
