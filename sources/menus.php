@@ -81,7 +81,7 @@ function build_menu($type, $menu, $silent_failure = false, $apply_highlighting =
         $page_link .= ':clickable_sections=' . strval((($type == 'popup') || ($type == 'dropdown')) ? 1 : 0);
         $page_link .= ':redirect=';
         $_page_link = make_string_tempcode($page_link);
-        $_page_link->attach(symbol_tempcode('SELF_URL',array('1')));
+        $_page_link->attach(symbol_tempcode('SELF_URL', array('1')));
 
         $url = symbol_tempcode('PAGE_LINK', array($_page_link, '0', '0', '0'));
 
