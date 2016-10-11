@@ -116,6 +116,7 @@ class Hook_addon_registry_news
             'sources/hooks/blocks/side_stats/stats_news.php',
             'sources/hooks/systems/addon_registry/news.php',
             'sources/hooks/modules/admin_import_types/news.php',
+            'sources/hooks/systems/config/news_summary_required.php',
             'sources/hooks/systems/config/blog_update_time.php',
             'sources/hooks/systems/config/news_show_stats_count_blogs.php',
             'sources/hooks/systems/config/news_show_stats_count_total_posts.php',
