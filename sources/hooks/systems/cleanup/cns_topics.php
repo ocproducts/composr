@@ -57,6 +57,8 @@ class Hook_cleanup_cns_topics
             return new Tempcode();
         }
 
+        require_lang('cns');
+
         require_code('tasks');
         return call_user_func_array__long_task(do_lang('CACHE_TOPICS'), null, 'cns_topics_recache');
     }

@@ -68,6 +68,10 @@ function build_menu($type, $menu, $silent_failure = false, $apply_highlighting =
 
     $content->handle_symbol_preprocessing(); // Optimisation: we are likely to have lots of page-links in here, so we want to spawn them to be detected for mass moniker loading
 
+    if (strpos(serialize($root), 'keep_') === false) {
+        $content = apply_quick_caching($content);
+    }
+
     // Edit link
     if (((!$is_sitemap_menu) || ($menu == get_option('header_menu_call_string'))) && (has_actual_page_access(get_member(), 'admin_menus'))) {
         // We have to build up URL using Tempcode as it needs SELF_URL nested as unevaluated Tempcode, for cache-safety
@@ -78,7 +82,9 @@ function build_menu($type, $menu, $silent_failure = false, $apply_highlighting =
         $page_link .= ':clickable_sections=' . strval((($type == 'popup') || ($type == 'dropdown')) ? 1 : 0);
         $page_link .= ':redirect=';
         $_page_link = make_string_tempcode($page_link);
-        $_page_link->attach(symbol_tempcode('SELF_URL', array('1')));
+        $self_url = symbol_tempcode('SELF_URL', array('1'));
+        $self_url = build_closure_tempcode(TC_LANGUAGE_REFERENCE, 'dont_escape_trick', array($self_url), array(UL_ESCAPED));
+        $_page_link->attach($self_url);
 
         $url = symbol_tempcode('PAGE_LINK', array($_page_link, '0', '0', '0'));
 

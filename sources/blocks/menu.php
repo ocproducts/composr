@@ -102,10 +102,8 @@ class Block_menu
         require_code('menus');
         list($content, $root) = build_menu($type, $menu, $silent_failure, !$javascript_highlighting);
         if (strpos(serialize($root), 'keep_') === false) {
-            $content = apply_quick_caching($content);
+            $LANGS_REQUESTED = $bak; // We've flattened with apply_quick_caching, we don't need to load up all those language files next time
         }
-
-        $LANGS_REQUESTED = $bak; // We've flattened with apply_quick_caching, we don't need to load up all those language files next time
 
         if ($title != '') {
             $content = do_template('BLOCK_MENU', array(
