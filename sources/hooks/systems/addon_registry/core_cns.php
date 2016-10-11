@@ -394,6 +394,7 @@ class Hook_addon_registry_core_cns
             'themes/default/templates/CNS_MEMBER_BOX.tpl',
             'themes/default/templates/CNS_RANK_IMAGE.tpl',
             'sources/password_rules.php',
+            'sources/hooks/systems/snippets/password_strength.php',
             'lang/EN/password_rules.ini',
             'sources/hooks/systems/config/complex_privacy_options.php',
             'sources/hooks/systems/config/display_name_generator.php',

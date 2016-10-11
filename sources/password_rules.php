@@ -18,6 +18,69 @@
  * @package    core_cns
  */
 
+/*
+Examples...
+
+'hello' --> 1
+'t2D' --> 2
+'t2D$' --> 3
+'t2D$f3t4t412%$' --> 9
+*/
+
+/**
+ * Test password strength.
+ *
+ * @param  string $password The password to check
+ * @param  string $username The username that will go with the password
+ * @return integer Password strength (1-10)
+ */
+function test_password($password, $username = '')
+{
+    $strength = 1;
+
+    if (strlen($password) == 0) {
+        return $strength;
+    }
+
+    if (($username != '') && ($username == $password)) {
+        return $strength;
+    }
+
+    // Check if password is not all lower case
+    if (strtolower($password) != $password) {
+        $strength += 5;
+    }
+
+    // Check if password is not all upper case
+    if (strtoupper($password) != $password) {
+        $strength += 5;
+    }
+
+    // Check string length
+    $length = strlen($password);
+    if ($length >= 8 && $length <= 15) {
+        $strength += 16;
+    } elseif ($length >= 16 && $length <= 35) {
+        $strength += 32; // Check if length greater than 35 chars
+    } elseif ($length > 35) {
+        $strength += 48;
+    }
+
+    // Get the numbers in the password
+    $strength += preg_match_all('#[0-9]#', $password) * 3;
+
+    // Check for special chars
+    $strength += preg_match_all('#[^a-zA-Z0-9]#', $password) * 8;
+
+    // Get the number of unique chars
+    $chars = preg_split('#(.)#', $password, null, PREG_SPLIT_DELIM_CAPTURE);
+    $num_unique_chars = count(array_unique($chars)) - 1;
+    $strength += ($num_unique_chars - 1) * 2;
+
+    // Strength must be a number 1-10
+    return min(10, intval(round(floatval($strength) / 10.0)));
+}
+
 /**
  * API function for if password resets have just been turned on but you want some more time before it kicks in.
  */
@@ -120,7 +183,7 @@ function check_password_complexity($username, $password, $return_errors = false)
     $_minimum_password_strength = get_option('minimum_password_strength');
     if ($_minimum_password_strength != '1') {
         $minimum_strength = intval($_minimum_password_strength);
-        require_code('password_strength');
+        require_code('password_rules');
         $strength = test_password($password, $username);
         if ($strength < $minimum_strength) {
             require_lang('password_rules');
