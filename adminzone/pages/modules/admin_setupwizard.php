@@ -1031,6 +1031,11 @@ class Module_admin_setupwizard
                     'medium' => '1',
                     'high' => '0',
                 ),
+                'maintenance_script_htaccess' => array(
+                    'low' => '0',
+                    'medium' => '0',
+                    'high' => '1',
+                ),
             );
             foreach ($security_level_options as $security_level_option => $values) {
                 set_option($security_level_option, $values[$security_level]);
@@ -1038,6 +1043,7 @@ class Module_admin_setupwizard
 
             if (get_forum_type() == 'cns') {
                 $admin_groups = $GLOBALS['FORUM_DRIVER']->get_super_admin_groups();
+                $moderator_groups = $GLOBALS['FORUM_DRIVER']->get_moderator_groups();
                 $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(true, true);
                 foreach (array_keys($groups) as $id) {
                     switch ($security_level) {
@@ -1051,7 +1057,8 @@ class Module_admin_setupwizard
                             break;
 
                         case 'high':
-                            $GLOBALS['FORUM_DB']->query_update('f_groups', array('g_enquire_on_new_ips' => 1), array('id' => $id), '', 1);
+                            $is_staff = in_array($id, $admin_groups) || in_array($id, $moderator_groups);
+                            $GLOBALS['FORUM_DB']->query_update('f_groups', array('g_enquire_on_new_ips' => $is_staff ? 1 : 0), array('id' => $id), '', 1);
                             break;
                     }
                 }

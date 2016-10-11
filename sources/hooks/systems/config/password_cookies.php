@@ -34,7 +34,7 @@ class Hook_config_password_cookies
             'human_name' => 'PASSWORD_COOKIES',
             'type' => 'tick',
             'category' => 'SECURITY',
-            'group' => 'GENERAL',
+            'group' => 'MEMBERS',
             'explanation' => 'CONFIG_OPTION_password_cookies',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

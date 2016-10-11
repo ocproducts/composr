@@ -298,7 +298,7 @@ Admin Zone > Audit > Security logging
 [title="2"]robots.txt[/title]
 
 To remove the possibility of search engines indexing the login screens of your Admin Zone you can create a [tt]robots.txt[/tt] file on the root of your domain name:
-[code="htaccess"]
+[code="robots"]
 User-agent: *
 Disallow: /adminzone/
 Sitemap: http://yourbaseurl/data_custom/sitemaps/index.xml
@@ -444,11 +444,13 @@ To provide additional protection beyond the master password you may want to set 
 Follows are sample access rules for an Apache [tt].htaccess[/tt] file to provide a temporary access block:
 [code="htaccess"]
 <FilesMatch ^((rootkit_detection|upgrader|uninstall|data/upgrader2|config_editor|code_editor)\.php)$>
-	Order allow,deny
-	Deny from all
+Order deny,allow
+Deny from all
 </FilesMatch>
 [/code]
 You should test these rules are working correctly after applying them.
+
+If the "Auto-maintained maintenance script IP-barrier" config option is enabled and the "Enquire on new IPs" option is set on a Conversr usergroup(s) then the [tt].htaccess[/tt] file will automatically be updated to include all confirmed IP addresses with access. This option is not always available as it requires write access to the [tt].htaccess[/tt] file and also the Apache web server. If the option is enabled then you should not manually add the above rules to the [tt].htaccess[/tt] file or try to adjust the automatically maintained code. Additionally only enable "Enquire on new IPs" for usergroups you trust.
 
 [title="3"]Denial Of Service prevention[/title]
 

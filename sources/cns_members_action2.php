@@ -130,45 +130,6 @@ function create_selection_list_timezone_list($timezone = null)
 }
 
 /**
- * Validate an IP address, indirectly by passing through a confirmation code.
- */
-function approve_ip_script()
-{
-    require_code('site');
-    attach_to_screen_header('<meta name="robots" content="noindex" />'); // XHTMLXHTML
-
-    $keep = keep_symbol(array('1'));
-
-    $code = either_param_string('code', '');
-    if ($code == '') {
-        $title = get_screen_title('CONFIRM');
-        require_code('form_templates');
-        $fields = new Tempcode();
-        $fields->attach(form_input_codename(do_lang_tempcode('CODE'), '', 'code', '', true));
-        $submit_name = do_lang_tempcode('PROCEED');
-        $url = find_script('approve_ip') . $keep;
-        $middle = do_template('FORM_SCREEN', array('_GUID' => 'd92ce4ec82dc709f920a4ce6760778de', 'TITLE' => $title, 'SKIP_WEBSTANDARDS' => true, 'HIDDEN' => '', 'URL' => $url, 'FIELDS' => $fields, 'TEXT' => do_lang_tempcode('MISSING_CONFIRM_CODE'), 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name));
-        $echo = globalise($middle, null, '', true, true);
-        $echo->evaluate_echo();
-        exit();
-    }
-
-    // If we're still here, we're ok to go
-    require_lang('cns');
-    $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_member_known_login_ips', 'i_val_code', array('i_val_code' => $code));
-    if ($test === null) {
-        warn_exit(do_lang_tempcode('ALREADY_VALIDATED'));
-    }
-    $GLOBALS['FORUM_DB']->query_update('f_member_known_login_ips', array('i_val_code' => ''), array('i_val_code' => $code), '', 1);
-
-    $title = get_screen_title('CONFIRM');
-    $middle = redirect_screen($title, get_base_url() . $keep, do_lang_tempcode('SUCCESS'));
-    $echo = globalise($middle, null, '', true, true);
-    $echo->evaluate_echo();
-    exit();
-}
-
-/**
  * If we are using human names for usernames, a conflict is likely. Store a suffixed variety. Maybe later Composr will strip these suffixes out in some contexts.
  *
  * @param  SHORT_TEXT $username The desired human name for the member profile.

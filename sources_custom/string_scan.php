@@ -120,6 +120,8 @@ function string_scan($lang, $do_guessing = false)
         SECURITY_LEVEL_low
         SECURITY_LEVEL_medium
         SECURITY_LEVEL_high
+        MAINTENANCE_SCRIPT_ACCESS
+        CONFIG_OPTION_maintenance_script_htaccess
         OWNER
         TICKETS_STAFF
         NO_CNS
@@ -7369,7 +7371,7 @@ function string_scan($lang, $do_guessing = false)
         ALREADY_HAVE_THIS_SINGLE
         ALREADY_IN_GROUP
         ALREADY_MEMBER_LOGIN
-        ALREADY_VALIDATED
+        ALREADY_APPROVED_IP
         ALT_COPY_EXISTING_POLL
         ALT_FIELD
         AMOUNT
