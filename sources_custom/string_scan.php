@@ -112,6 +112,16 @@ function string_scan($lang, $do_guessing = false)
     );
 
     $lang_strings_admin_initial = array_map('trim', explode("\n", trim('
+        WARNING_SERVER_SOFTWARE
+        WARNING_NON_MAINTAINED
+        NON_MAINTAINED_STATUS
+        SECURITY_LEVEL
+        DESCRIPTION_SECURITY_LEVEL
+        SECURITY_LEVEL_low
+        SECURITY_LEVEL_medium
+        SECURITY_LEVEL_high
+        MAINTENANCE_SCRIPT_ACCESS
+        CONFIG_OPTION_maintenance_script_htaccess
         OWNER
         TICKETS_STAFF
         NO_CNS
@@ -6865,6 +6875,9 @@ function string_scan($lang, $do_guessing = false)
         VR_WEEKLY
         WAGES
         WARNINGS
+        WARNING_SSL
+        WARNING_SUEXEC
+        WARNING_OPEN_BASEDIR
         WARNING_DB_OVERWRITE
         WARNING_DISK_SPACE
         WARNING_FILE_ADDON
@@ -7358,7 +7371,7 @@ function string_scan($lang, $do_guessing = false)
         ALREADY_HAVE_THIS_SINGLE
         ALREADY_IN_GROUP
         ALREADY_MEMBER_LOGIN
-        ALREADY_VALIDATED
+        ALREADY_APPROVED_IP
         ALT_COPY_EXISTING_POLL
         ALT_FIELD
         AMOUNT

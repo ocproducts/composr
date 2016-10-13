@@ -46,7 +46,7 @@ class Hook_addon_registry_youtube_channel_integration_block
      */
     public function get_category()
     {
-        return 'Third Party Integration';
+        return 'Third Party Integration'; // Change to 'Development' if the integration breaks and is not fixed
     }
 
     /**

@@ -680,12 +680,12 @@ abstract class Mail_dispatcher_base
 
                 // Cleanup the Comcode a bit
                 $message_plain = strip_comcode($message_raw);
-                $message_plain = static_evaluate_tempcode(do_template($mail_template, array(
+                $message_plain = static_evaluate_tempcode(do_template($this->mail_template, array(
                      '_GUID' => 'a23069c20202aa59b7450ebf8d49cde1',
                      'CSS' => '{CSS}',
                      'LOGOURL' => get_logo_url(''),
                      'LANG' => $lang,
-                     'TITLE' => $subject,
+                     'TITLE' => $subject_line,
                      'CONTENT' => $message_plain,
                  ), $lang, false, 'MAIL', '.txt', 'text', $theme));
 
@@ -847,7 +847,7 @@ abstract class Mail_dispatcher_base
                     'temp' => false,
                 );
             } else {
-                $contents = http_download_file($path, null, false);
+                $contents = http_get_contents($path, array('trigger_error' => false));
                 if ($contents === null) {
                     continue;
                 }
@@ -1140,7 +1140,8 @@ abstract class Mail_dispatcher_base
                 }
             }
             if ($file_contents === null) {
-                $file_contents = http_download_file($img, 1024 * 1024 * 5, false);
+                $http_result = cms_http_request($img, array('trigger_error' => false, 'byte_limit' => 1024 * 1024 * 5));
+                $file_contents = $http_result->data;
                 if ($file_contents === null) {
                     return null;
                 }
@@ -1148,11 +1149,11 @@ abstract class Mail_dispatcher_base
                 if ($total_filesize > 1024 * 1024 * 5) {
                     return null; // Too large to process into an email
                 }
-                if ($GLOBALS['HTTP_DOWNLOAD_MIME_TYPE'] !== null) {
-                    $mime_type = $GLOBALS['HTTP_DOWNLOAD_MIME_TYPE'];
+                if ($http_result->download_mime_type !== null) {
+                    $mime_type = $http_result->download_mime_type;
                 }
-                if ($GLOBALS['HTTP_FILENAME'] !== null) {
-                    $filename = $GLOBALS['HTTP_FILENAME'];
+                if ($http_result->filename !== null) {
+                    $filename = $http_result->filename;
                 }
             }
         }

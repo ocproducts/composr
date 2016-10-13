@@ -145,7 +145,7 @@ class Block_main_staff_links
                         $link = $q;
                     }
 
-                    require_code('files2');
+                    require_code('http');
                     $meta_details = get_webpage_meta_details($link);
                     $link_title = $meta_details['t_title'];
 

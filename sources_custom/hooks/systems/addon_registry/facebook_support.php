@@ -46,7 +46,7 @@ class Hook_addon_registry_facebook_support
      */
     public function get_category()
     {
-        return 'Third Party Integration';
+        return is_maintained('facebook') ? 'Third Party Integration' : 'Development';
     }
 
     /**
@@ -89,7 +89,7 @@ class Hook_addon_registry_facebook_support
      */
     public function get_description()
     {
-        return 'Substantial Facebook integration for your Composr website.
+        return 'Substantial {$IS_MAINTAINED,facebook,Facebook integration} for your Composr website.
 
 Features:
  - User\'s can log in to your site using their Facebook profile (for Conversr-sites only)

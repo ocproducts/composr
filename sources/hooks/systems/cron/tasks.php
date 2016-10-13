@@ -41,7 +41,7 @@ class Hook_cron_tasks
 
                 require_code('files');
                 //$url = find_script('tasks') . '?id=' . strval($task_row['id']) . '&secure_ref=' . urlencode($task_row['t_secure_ref']);
-                //http_download_file($url);
+                //http_get_contents($url);
                 execute_task_background($task_row);
             }
         }

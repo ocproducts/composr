@@ -53,14 +53,13 @@ The remainder of this section details Composr's requirements. If you have troubl
 
 Composr requires:
  - A web server that runs PHP. PHP is software which provides the environment that Composr is written for.
-  - version 5.6 or higher
-  - we have tested up to and including PHP 7.0, although newer versions usually do work or are quickly fixed to work
+  - version 5.6 or higher; we have tested up to and including PHP 7.0, although newer versions usually do work or are quickly fixed to work
   - GD2 extension (including PNG and JPEG support). GD is used by PHP for image generation, e.g. to generate thumbnails.
   - file uploads with at least 5MB (or higher, depending on your particular needs)
   - MySQL extension ([tt]mysql[/tt] or [tt]mysqli[/tt])
+  - XML extension
   - a maximum execution time of at least 30 seconds
-  - [tt]max_input_vars[/tt] of at least 1000 (most hosts let you raise the setting)
-  - key functions may not be disabled with disable_functions (PHP can be stripped down heavily by disreputable webhosts) -- the installer will warn if any critical functions have been
+  - key functions may not be disabled with [tt]disable_functions[/tt] (PHP can be stripped down heavily by disreputable webhosts) -- the installer will warn if any critical functions have been
   - no other explicit disabling of standard functionality that we require. Commonly webhosts do this using ModSecurity, Suhosin, suPHP or their own modified PHP versions. We do our best to workaround such issues for common recoverable cases, but ultimately if arbitrary standard functionality has been disabled the software cannot function.
   - memory limit of at least 128MB (as this is PHP's default memory limit since 2009).
  - At least 50MB of disk space, plus your needs for space for downloads, images, etc. No maximum file size limit under 25MB or file type whitelists (some free webhosts will impose these limits -- which explains why [tt]data.cms[/tt] might disappear when you try to upload it)
@@ -68,9 +67,9 @@ Composr requires:
   - MySQL is the database software (software which allows creation of a number of separate databases) which Composr uses to store the majority of its data. Often webhosts will quote a number of databases that webhosting comes with: Composr only requires a single MySQL database to function.
   - version 5.5.3 (&dagger;) or higher
   - at least 10MB of database storage space is required, which should be available on any reputable webhost
- - A web server running Apache (the common Linux web server) or IIS7+ (the Microsoft web server). It is very unlikely you will find a webhost that provides something else. Other servers might work but are not supported (for example nginx should work, but you would need significant expertise to get the URL schemes functionality working)
+ - A web server running Apache (the common Linux web server), {$IS_MAINTAINED,platform_litespeed,LiteSpeed} [an Apache drop-in replacement], or {$IS_MAINTAINED,platform_iis,IIS7+} [the Microsoft web server]. It is very unlikely you will find a webhost that provides something else. Other servers might work but are not supported (for example nginx should work, but you would need significant expertise to get the URL schemes functionality working)
   - If running Windows, you should use an NTFS partition not a FAT32 partition, as FAT32 cannot support file locking
-  - If running Apache using a [tt]mod_php[/tt] (as opposed to a CGI version of PHP), the server configuration needs to have [tt]AllowOverride All[/tt] or at least [tt]AllowOverride Options FileInfo Limit[/tt] (because we use distributed [tt].htaccess[/tt] files containing settings to increase security)
+  - If running Apache the server configuration needs to have [tt]AllowOverride All[/tt] or at least [tt]AllowOverride Options FileInfo Limit[/tt] (because we use distributed [tt].htaccess[/tt] files containing settings to increase security)
  - That the web server is not overloaded with too many users, or has very poor performance
  - That the web server does not have a Firewall that stops outgoing connections or internal connections to itself (sometimes referred to 'HTTP loopback')
  - Connectivity to a mail server (SMTP) so that outgoing e-mail can be sent out to the staff e-mail address or the addresses of individual members
@@ -90,9 +89,8 @@ Composr recommends:
   - iconv or mbstring (Unicode support)
   - FreeType (with the build-option for GD). FreeType allows us to draw text onto graphics using TrueType fonts.
   - ZIP
-  - XML
   - cURL
-  - APC (PHP 5.6 or lower only), or Memcache, or Memcached, or Wincache
+  - An opcode cache: Zend OpCache (bundled by default), APC (available for PHP 5.6 or lower only), XCache, Nusphere PhpExpress, or Wincache
  - A PHP environment with [tt]open_basedir[/tt] enabled
  - A suEXEC/IIS server (explained further down)
  - At least 100MB of disk space
@@ -170,14 +168,12 @@ Some lines in the default PHP ini ([tt]/etc/php.ini[/tt]) file need changing:
 [title="2"]Forum drivers (advanced)[/title]
 
 If you wish to integrate an existing forum into Composr, rather than use our own, the forum must be one of:
- - Advanced Electron Forum 1
- - Invision Board 1.1-1.3/2.0-2.3
- - phpBB 2.0-3.0
- - myBB 1.4
- - vBulletin 2.2/3.0-3.7
- - Burning Board 2.0/2.2/Lite
- - Simple Machine Forum 1.0/1.1
- - WowBB 1.7
+ - {$IS_MAINTAINED,forum_ipb,Invision Board 2.3}
+ - {$IS_MAINTAINED,forum_phpbb,phpBB 3.0}
+ - {$IS_MAINTAINED,forum_mybb,myBB 1.4}
+ - {$IS_MAINTAINED,forum_vb,vBulletin .7}
+ - {$IS_MAINTAINED,forum_wbb,Burning Board 2.2/Lite}
+ - {$IS_MAINTAINED,forum_smf,Simple Machine Forum 1.1}
 If your forum is not on the list, professional developers are available to add support.
 
 Please note that many 'forum systems' are referred to as 'bulletin boards', and that a 'forum' within 'forums' is often referred to as a 'board'. We consistently use the terms 'discussion forums', 'forums' and 'forum' to describe these.
@@ -282,7 +278,7 @@ So, the main take-away is:
 PHP-Info can be reached from:
 Admin Zone > Tools > PHP-Info / Server Checks
 
-[title="2"]Failover mode[/title]
+[title="2"]{$IS_MAINTAINED,failover_mode,Failover mode}[/title]
 
 You may configure a special failover mode via the [tt]config_editor[/tt] script. This mode serves cached versions of page if your server seems to be failing. It is not a perfect system because:
 1) it serves hits as guests

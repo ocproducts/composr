@@ -81,28 +81,31 @@ class CMS_RSS
         }
 
         if ($is_filesystem_path) {
-            $GLOBALS['HTTP_CHARSET'] = '';
             $data = @file_get_contents($url);
+            $charset = '';
+            $http_message = '';
         } else {
-            $GLOBALS['HTTP_CHARSET'] = '';
-            $data = http_download_file($url, null, false);
+            $http_response = cms_http_request($url, array('trigger_error' => false));
+            $data = $http_response->data;
+            $charset = $http_response->charset;
+            $http_message = $http_response->message;
         }
 
         if ($data === null) {
-            $this->error = do_lang('RSS_XML_MISSING', $url) . ' [' . $GLOBALS['HTTP_MESSAGE'] . ']';
+            $this->error = do_lang('RSS_XML_MISSING', $url) . ' [' . $http_message . ']';
         } else {
             // Try and detect feed charset
             $exp = '#<\?xml\s+version\s*=\s*["\'][\d\.]+["\']\s*(encoding\s*=\s*["\']([^"\'<>]+)["\'])?\s*(standalone\s*=\s*["\']([^"\'<>]+)["\'])?\s*\?' . '>#';
             $matches = array();
             if ((preg_match($exp, $data, $matches) != 0) && (array_key_exists(2, $matches))) {
-                $GLOBALS['HTTP_CHARSET'] = $matches[2];
-                if (strtolower($GLOBALS['HTTP_CHARSET']) == 'windows-1252') {
-                    $GLOBALS['HTTP_CHARSET'] = 'ISO-8859-1';
+                $charset = $matches[2];
+                if (strtolower($charset) == 'windows-1252') {
+                    $charset = 'ISO-8859-1';
                 }
             }
             // Weed out if isn't supported
-            if (($GLOBALS['HTTP_CHARSET'] === null) || (!in_array(strtoupper($GLOBALS['HTTP_CHARSET']), array('ISO-8859-1', 'US-ASCII', 'utf-8')))) {
-                $GLOBALS['HTTP_CHARSET'] = 'utf-8';
+            if (($charset === null) || (!in_array(strtoupper($charset), array('ISO-8859-1', 'US-ASCII', 'utf-8')))) {
+                $charset = 'utf-8';
             }
 
             // Our internal charset
@@ -115,7 +118,7 @@ class CMS_RSS
             if (function_exists('libxml_disable_entity_loader')) {
                 libxml_disable_entity_loader();
             }
-            $xml_parser =  @xml_parser_create_ns($GLOBALS['HTTP_CHARSET']);
+            $xml_parser =  @xml_parser_create_ns($charset);
             if ($xml_parser === false) {
                 $this->error = do_lang_tempcode('XML_PARSING_NOT_SUPPORTED');
                 return; // PHP5 default build on windows comes with this function disabled, so we need to be able to escape on error
@@ -128,10 +131,10 @@ class CMS_RSS
             xml_set_start_namespace_decl_handler($xml_parser, 'startNamespace');
             xml_set_end_namespace_decl_handler($xml_parser, 'endNameSpace');
 
-            //$data = convert_to_internal_encoding($data);    xml_parser does it for us, and we can't disable it- so run with it instead of our own. Shame as it's inferior.
+            //$data = convert_to_internal_encoding($data, $charset);    xml_parser does it for us, and we can't disable it- so run with it instead of our own. Shame as it's inferior.
 
             if (strpos($data, '<!ENTITY') === false) {
-                $extra_data = "<" . "?xml version=\"1.0\" encoding=\"" . $GLOBALS['HTTP_CHARSET'] . "\" ?" . ">
+                $extra_data = "<" . "?xml version=\"1.0\" encoding=\"" . $charset . "\" ?" . ">
 <!DOCTYPE atom [
 <!ENTITY nbsp \" \" >
 ]>
@@ -141,19 +144,19 @@ class CMS_RSS
                 if (($extra_data != '') && (strpos($data, $extra_data) === false)) {
                     $data = $extra_data . $data;
                 }
-                if ((strtoupper($GLOBALS['HTTP_CHARSET']) == 'ISO-8859-1') || (strtolower($GLOBALS['HTTP_CHARSET']) == 'utf-8')) { // Hack to fix bad use of entities (we can't encode them all above)
-                    $data = convert_bad_entities($data, $GLOBALS['HTTP_CHARSET']);
+                if ((strtoupper($charset) == 'ISO-8859-1') || (strtolower($charset) == 'utf-8')) { // Hack to fix bad use of entities (we can't encode them all above)
+                    $data = convert_bad_entities($data, $charset);
                 }
                 $convert_bad_entities = true;
             } else {
                 $convert_bad_entities = false;
                 if (strpos($data, "<" . "?xml") === false) {
-                    $data = "<" . "?xml version=\"1.0\" encoding=\"" . $GLOBALS['HTTP_CHARSET'] . "\" ?" . ">" . $data;
+                    $data = "<" . "?xml version=\"1.0\" encoding=\"" . $charset . "\" ?" . ">" . $data;
                 }
-                $data = preg_replace($exp, "<" . "?xml version=\"1.0\" encoding=\"" . $GLOBALS['HTTP_CHARSET'] . "\" ?" . ">", $data); // Strip out internal encoding (we already detected and sanitised it)
+                $data = preg_replace($exp, "<" . "?xml version=\"1.0\" encoding=\"" . $charset . "\" ?" . ">", $data); // Strip out internal encoding (we already detected and sanitised it)
             }
 
-            $data = unixify_line_format($data, $GLOBALS['HTTP_CHARSET']); // Fixes Windows characters
+            $data = unixify_line_format($data, $charset); // Fixes Windows characters
 
             if ($convert_bad_entities) {
                 if (strtoupper(get_charset()) == 'ISO-8859-1') { // Hack to fix bad use of entities (we can't encode them all above)

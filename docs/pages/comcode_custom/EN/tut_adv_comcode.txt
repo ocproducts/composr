@@ -105,7 +105,7 @@ Some time in the future browsers may gain the ability to sandbox parts of web pa
 To add a custom tag, do as follows:
 1) Go to Admin Zone > Setup > Custom Comcode > Add Custom Comcode tag
 2) Choose the tag codename you would like to use, a title for the tag, a description, and an example of how the tag would be used.
-3) Tick the various check boxes as necessary.
+3) Tick (check) the various check boxes as necessary.
 4) Place the HTML you wish to use inside the 'Replacement text' field, and put '{content}' at the place where you wish for the tag content to be (the text that sits between the opening of the Comcode tag and the closing of the Comcode tag).
 5) If you have additional parameters for the tag, list your chosen codenames, separated by commas, in the 'Parameters' field. Then place the codenames in the 'Replacement text' field, in a similar way to as you did for '{content}'.
 6) Click the 'Add Custom Comcode tag' button

@@ -283,7 +283,7 @@ It is generally better to look at outstanding translation tasks via Transifex. W
 
 [title="3"]Right-to-left languages[/title]
 
-Composr has some built-in support for right-to-left languages. You need to change the 'dir', 'en_left' and 'en_right' language strings to activate it.
+Composr has some {$IS_MAINTAINED,theme_rtl,built-in support for right-to-left languages}. You need to change the 'dir', 'en_left' and 'en_right' language strings to activate it.
 
 However there are two issues where some extra consideration is needed...
 
@@ -298,7 +298,7 @@ input[type="text"],textarea { /* So Comcode can be typed */
 }
 [/code]
 Uncommenting this makes text input areas work in left-to-right. You can choose to enable it, to make Comcode easier to type, but it will make right-to-left languages harder to type and understand.
-
+{+START,IF,{$NOT,{$IS_MAINTAINED,theme_rtl}}}
 [title="4"]Theme layout[/title]
 
 In the past we have tried to make our default theme support right-to-left nicely, but it's a high maintenance burden for the developers and unfortunately there are many cases where we could not elegantly do it because we are setting things on a pixel-way instead of a left/right-way. For example, you may see list bullets displaying on the wrong side of a list element. It is caused by CSS like:
@@ -317,7 +317,7 @@ ul.compact_list li {
 [/code]
 Therefore to make things display neatly you will need to make a modified theme that makes these kinds of changes for margin settings, padding settings, and background settings.
 
-If there are cases where our default theme can be improved without encumbering the left-to-right majority too much, please consider making a Pull Request on the Composr project on github. Only do this if you have brought things up to a default level and tested it. We would love regular users of right-to-left languages to contribute corrections, as it is too big and complex a task to integrate into the core development process.
+If there are cases where our default theme can be improved without encumbering the left-to-right majority too much, please consider making a Pull Request on the Composr project on github. Only do this if you have brought things up to a default level and tested it. We would love regular users of right-to-left languages to contribute corrections, as it is too big and complex a task to integrate into the core development process.{+END}
 
 [title="3"]Additional things you can translate[/title]
 

@@ -60,8 +60,8 @@ These priorities are intended to be reflected in the content translation interfa
 [media description="" width="250" float="right" framed="0"]data_custom/images/docs/codebook_1b/2.jpg[/media]
 Composr supports a "persistent cache" that can store any arbitrary PHP data (e.g. query results) between page views. This is faster than the database: although one would think databases are made very fast, they do not know how to directly access the actual data structures used, and have an overhead in their interprocess connection system, so will never be as fast as a persistent cache.
 The persistent cache is implemented in 3 ways, and one of them is used, or none if it is not enabled (by default it isn't):
-1) via the APC/xcache/wincache PHP extensions (requires PHP extension)
-2) via the memcached server daemon (requires either memcache or memcached PHP extension to access it)
+1) via a supported persistent cache PHP extension
+2) via the memcached server daemon combined with the above (requires either memcache or memcached PHP extension to access it)
 3) via file writing
 
 The usage of the cache is very simple. You can:

@@ -49,6 +49,5 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 }
 require($FILE_BASE . '/sources/global.php');
 
-require_code('cns_members_action');
-require_code('cns_members_action2');
+require_code('two_factor');
 approve_ip_script();

@@ -19,6 +19,20 @@
  */
 
 /**
+ * Find what password reset process will be used
+ *
+ * @return ID_TEXT Password reset process codename
+ */
+function get_password_reset_process()
+{
+    $password_reset_process = get_option('password_reset_process');
+    if ($password_reset_process == 'ultra' && get_option('smtp_sockets_host') != '') {
+        $password_reset_process = 'emailed';
+    }
+    return $password_reset_process;
+}
+
+/**
  * Send out a lost password e-mail
  *
  * @param  string $username Username to reset for (may be blank if other is not)
@@ -52,16 +66,18 @@ function lost_password_emailer_step($username, $email_address)
         warn_exit(do_lang_tempcode('EXT_NO_PASSWORD_CHANGE'));
     }
 
+    $password_reset_process = get_password_reset_process();
+
     require_code('crypt');
     $code = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_password_change_code'); // Re-use existing code if possible, so that overlapping reset emails don't cause chaos
     if ($code != '') {
-        if (get_option('password_reset_process') == 'ultra') {
+        if ($password_reset_process == 'ultra') {
             list($code, $session_id) = explode('__', $code);
         }
     }
-    if (($code == '') || (get_option('password_reset_process') == 'ultra') && ($session_id != get_session_id())) {
+    if (($code == '') || ($password_reset_process == 'ultra') && ($session_id != get_session_id())) {
         $code = get_rand_password();
-        if (get_option('password_reset_process') == 'ultra') {
+        if ($password_reset_process == 'ultra') {
             $GLOBALS['FORUM_DB']->query_update('f_members', array('m_password_change_code' => $code . '__' . get_session_id()), array('id' => $member_id), '', 1);
         } else {
             $GLOBALS['FORUM_DB']->query_update('f_members', array('m_password_change_code' => $code), array('id' => $member_id), '', 1);
@@ -77,10 +93,10 @@ function lost_password_emailer_step($username, $email_address)
 
     $join_time = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_join_time');
 
-    $temporary_passwords = (get_option('password_reset_process') != 'emailed');
+    $temporary_passwords = ($password_reset_process != 'emailed');
 
     // Send confirm mail
-    if (get_option('password_reset_process') != 'ultra') {
+    if ($password_reset_process != 'ultra') {
         $zone = get_module_zone('lost_password');
         $_url = build_url(array('page' => 'lost_password', 'type' => 'step3', 'code' => $code, 'member' => $member_id), $zone, null, false, false, true);
         $url = $_url->evaluate();

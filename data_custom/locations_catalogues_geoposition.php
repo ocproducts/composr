@@ -68,7 +68,7 @@ if ($lstring !== null) {
     if ($key != '') {
         $url .= '&key=' . urlencode($key);
     }
-    $result = http_download_file($url);
+    $result = http_get_contents($url);
     $matches = array();
     if (preg_match('#<lat>([\-\d\.]+)</lat>\s*<lng>([\-\d\.]+)</lng>.*<lat>([\-\d\.]+)</lat>\s*<lng>([\-\d\.]+)</lng>.*<lat>([\-\d\.]+)</lat>\s*<lng>([\-\d\.]+)</lng>#s', $result, $matches) != 0) {
         echo '[';
@@ -100,7 +100,7 @@ if ($lstring !== null) {
         if ($key != '') {
             $url .= '&key=' . urlencode($key);
         }
-        $result = http_download_file($url);
+        $result = http_get_contents($url);
         $matches = array();
         if (preg_match('#<formatted_address>([^<>]*)</formatted_address>.*<lat>([\-\d\.]+)</lat>\s*<lng>([\-\d\.]+)</lng>.*<lat>([\-\d\.]+)</lat>\s*<lng>([\-\d\.]+)</lng>.*<lat>([\-\d\.]+)</lat>\s*<lng>([\-\d\.]+)</lng>#Us', $result, $matches) != 0) {
             echo '[';

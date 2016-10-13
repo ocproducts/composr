@@ -197,7 +197,7 @@ class Hook_task_import_rss
                         require_code('urls2');
                         list($target_path, $rep_image) = find_unique_path('uploads/repimages', basename(urldecode($rep_image)));
                         $target_handle = fopen($target_path, 'wb') or intelligent_write_error($target_path);
-                        http_download_file($item['rep_image'], null, false, false, 'Composr', null, array(), null, null, null, $target_handle);
+                        http_get_contents($item['rep_image'], array('trigger_error' => false, 'write_to_file' => $target_handle));
                         fclose($target_handle);
                         sync_file($target_path);
                         fix_permissions($target_path);

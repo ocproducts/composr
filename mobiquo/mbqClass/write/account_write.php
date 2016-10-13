@@ -257,7 +257,7 @@ class CMSAccountWrite
             if ($key != '') {
                 $boardurl = get_base_url();
                 $verification_url = 'http://directory.tapatalk.com/au_reg_verify.php?token=' . urlencode($token) . '&code=' . urlencode($code) . '&key=' . urlencode($key) . '&url=' . urlencode($boardurl);
-                $response = http_download_file($verification_url, null, false);
+                $response = http_get_contents($verification_url, array('trigger_error' => false));
                 if (!empty($response)) {
                     $result = json_decode($response, true);
                     $verified = $result['result'];

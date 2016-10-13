@@ -97,16 +97,16 @@ Composr is built on top of standard web/Internet protocols, languages and [abbr=
 		</tr>
 		<tr>
 			<td>[url="http://www.w3.org/TR/WAI-WEBCONTENT/"]WCAG 1.0[/url] and [url="http://www.w3.org/TR/WCAG20/"]2.0[/url] and [url="http://www.w3.org/WAI/intro/aria"]WAI-ARIA[/url]</td>
-			<td>Accessibility standards, particularly for blind users.</td>
+			<td>{$IS_MAINTAINED,standard_accessibility,Accessibility standards, particularly for blind users.</td>
 			<td>We support the highest levels of compliance (AAA).</td>
 		</tr>
 		<tr>
 			<td>[url="http://en.wikipedia.org/wiki/Access_key#UK_Government_recommendation_for_access_keys"]UK Gov. recommendation for access keys[/url] and [url="https://zoek.officielebekendmakingen.nl/stcrt-2006-136-p23-SC75949.html"]Besluit Kwaliteit Rijksoverheidswebsites[/url] and [url="http://www.section508.gov"]Section 508[/url]</td>
-			<td>Detailed accessibility standards from particular countries.</td>
+			<td>{$IS_MAINTAINED,standard_accessibility,Detailed accessibility standards from particular countries}.</td>
 			<td>We support these standards.</td>
 		</td>
 		<tr>
-			<td>[url="http://www.w3.org/WAI/intro/atag.php"]ATAG[/url]</td>
+			<td>[url="http://www.w3.org/WAI/intro/atag.php"]{$IS_MAINTAINED,standard_accessibility,ATAG}[/url]</td>
 			<td>Accessibility standards for site authors.</td>
 			<td>We are fully compliant.</td>
 		</tr>
@@ -135,7 +135,7 @@ Composr is built on top of standard web/Internet protocols, languages and [abbr=
 			<td>This is only relevant if you are setting up a corporate Intranet.</td>
 		</tr>
 		<tr>
-			<td>[url="http://www.webdav.org/"]WebDav[/url]</td>
+			<td>[url="http://www.webdav.org/"]{$IS_MAINTAINED,webdav,WebDav}[/url]</td>
 			<td>A network file system.</td>
 			<td>This can be used with [page="_SEARCH:tut_repository"]The Repository[/page] for accessing the Commandr-fs filesystem.</td>
 		</tr>
@@ -150,7 +150,7 @@ Composr is built on top of standard web/Internet protocols, languages and [abbr=
 			<td>A basic understanding of SQL is useful. Sometimes going down to the database level, bypassing Composr, is useful. For example, to make a bulk text change across the system you could write some queries to do so.</td>
 		</tr>
 		<tr>
-			<td>[url="http://www.opensearch.org/Home"]OpenSearch 1.0[/url]</td>
+			<td>[url="http://www.opensearch.org/Home"]{$IS_MAINTAINED,standard_opensearch,OpenSearch 1.0}[/url]</td>
 			<td>This allows site searching (with auto-completion) integrated direct into web browsers.</td>
 			<td>You are unlikely to need any awareness of this.</td>
 		</tr>
@@ -160,12 +160,12 @@ Composr is built on top of standard web/Internet protocols, languages and [abbr=
 		</tr>
 
 		<tr>
-			<td>[url="http://developers.facebook.com/docs/opengraph/"]Open Graph[/url]</td>
+			<td>[url="http://developers.facebook.com/docs/opengraph/"]{$IS_MAINTAINED,standard_opengraph,Open Graph}[/url]</td>
 			<td>Facebook-originated metadata standard, with data being embedded into normal web pages.</td>
 			<td>This is automatically included in Composr's templates. Further documentation is in the [page="_SEARCH:tut_facebook"]Facebook Support[/page] tutorial.</td>
 		</tr>
 		<tr>
-			<td>[url="http://schema.org/"]schema.org[/url]</td>
+			<td>[url="http://schema.org/"]{$IS_MAINTAINED,standard_schema_org,schema.org}[/url]</td>
 			<td>Search Engine originating standard for providing extra data about objects within web pages.</td>
 			<td>This is automatically included in Composr's templates.</td>
 		</tr>
@@ -175,27 +175,27 @@ Composr is built on top of standard web/Internet protocols, languages and [abbr=
 			<td>This is automatically included in Composr's templates.</td>
 		</tr>
 		<tr>
-			<td>[url="http://microformats.org/wiki/hcalendar"]hCalendar[/url]</td>
+			<td>[url="http://microformats.org/wiki/hcalendar"]{$IS_MAINTAINED,standard_microformats,hCalendar}[/url]</td>
 			<td>Standard for embedding calendar data within web pages.</td>
 			<td>This is automatically included in Composr's templates (calendar).</td>
 		</tr>
 		<tr>
-			<td>[url="http://microformats.org/wiki/hcard"]hCard[/url]</td>
+			<td>[url="http://microformats.org/wiki/hcard"]{$IS_MAINTAINED,standard_microformats,hCard}[/url]</td>
 			<td>Standard for embedding contacts data within web pages.</td>
 			<td>This is automatically included in Composr's templates (member profiles).</td>
 		</tr>
 		<tr>
-			<td>[url="http://microformats.org/wiki/hreview"]hReview[/url]</td>
+			<td>[url="http://microformats.org/wiki/hreview"]{$IS_MAINTAINED,standard_microformats,hReview}[/url]</td>
 			<td>Standard for embedding user review data within web pages.</td>
 			<td>This is automatically included in Composr's templates (content comments/reviews).</td>
 		</tr>
 		<tr>
 			<td>[url="http://microformats.org/wiki/rel-nofollow"]rel-nofollow[/url], [url="http://microformats.org/wiki/rel-enclosure"]rel-enclosure[/url], [url="http://microformats.org/wiki/rel-license"]rel-license[/url], [url="http://microformats.org/wiki/rel-tag"]rel-tag[/url]</td>
-			<td>Standards for describing linking behaviour.</td>
+			<td>{$IS_MAINTAINED,standard_microformats,Standards for describing linking behaviour}.</td>
 			<td>This is automatically included in Composr's templates.</td>
 		</tr>
 		<tr>
-			<td>[url="http://gmpg.org/xfn/"]XFN[/url]</td>
+			<td>[url="http://gmpg.org/xfn/"]{$IS_MAINTAINED,standard_microformats,XFN}[/url]</td>
 			<td>Standard for showing how website users are friends of each other.</td>
 			<td>This is automatically included in Composr's templates [size=".85"](limited support)[/size].</td>
 		</tr>

@@ -83,16 +83,19 @@ class Hook_video_syndication_youtube
             if ($transcoding_id !== null) {
                 /* EDIT: Actually we looked at transcoding table instead and lookup individual video and process as such
                 $query_params['category'] = 'sync' . strval($local_id); // Covers {http://gdata.youtube.com/schemas/2007/developertags.cat} and {http://gdata.youtube.com/schemas/2007/keywords.cat}
-                $xml = $this->_http('https://gdata.youtube.com/feeds/api/users/default/uploads', $query_params);
+                $http_result = $this->_http('https://gdata.youtube.com/feeds/api/users/default/uploads', $query_params);
+                $xml = $http_result->data;
 
                 if (!isset($parsed->entry)) // Annoying! Youtube search index takes time and doesn't consider unlisted. We therefore need to search much harder.
                 {
                     unset($query_params['category']);
-                    $xml = $this->_http('https://gdata.youtube.com/feeds/api/users/default/uploads', $query_params);
+                    $http_result = $this->_http('https://gdata.youtube.com/feeds/api/users/default/uploads', $query_params);
+                    $xml = $http_result->data;
                 }
                 */
 
-                $xml = $this->_http('https://gdata.youtube.com/feeds/api/users/default/uploads/' . $transcoding_id, array());
+                $http_result = $this->_http('https://gdata.youtube.com/feeds/api/users/default/uploads/' . $transcoding_id, array());
+                $xml = $http_result->data;
 
                 if ($xml === null) {
                     break;
@@ -113,7 +116,8 @@ class Hook_video_syndication_youtube
             }
 
             $query_params = array('max-results' => strval(50), 'start-index' => strval($start));
-            $xml = $this->_http('https://gdata.youtube.com/feeds/api/users/default/uploads', $query_params);
+            $http_result = $this->_http('https://gdata.youtube.com/feeds/api/users/default/uploads', $query_params);
+            $xml = $http_result->data;
 
             if ($xml === null) {
                 break;
@@ -221,8 +225,6 @@ class Hook_video_syndication_youtube
 
     public function upload_video($video)
     {
-        global $HTTP_DOWNLOAD_URL;
-
         $extra_headers = array('Slug' => basename($video['url']));
 
         $xml = $this->_generate_video_xml($video/*PHP has weird overwrite precedence with + operator, opposite to the intuitive ordering*/, true);
@@ -238,14 +240,14 @@ class Hook_video_syndication_youtube
             @set_time_limit(10000);
         }
         try {
-            $test = $this->_http($api_url, array(), 'POST', $xml, 1000.0, $extra_headers/*, $file_path*/);
-            $response = $this->_http($HTTP_DOWNLOAD_URL, null, 'PUT', null, 10000.0, $extra_headers, $file_path, $mime_type);
+            $test_http_response = $this->_http($api_url, array(), 'POST', $xml, 1000.0, $extra_headers/*, $file_path*/);
+            $http_result = $this->_http($test_http_response->download_url, null, 'PUT', null, 10000.0, $extra_headers, $file_path, $mime_type);
 
             if ($is_temp_file) {
                 @unlink($file_path);
             }
 
-            $parsed = simplexml_load_string($response);
+            $parsed = simplexml_load_string($http_result->data);
 
             if (isset($parsed->error)) {
                 throw new Exception(@strval($parsed->error->internalReason), @strval($parsed->error->code));
@@ -273,7 +275,7 @@ class Hook_video_syndication_youtube
         if (substr($url, 0, strlen(get_custom_base_url())) != get_custom_base_url()) {
             $temppath = cms_tempnam();
             $tempfile = fopen($temppath, 'wb');
-            http_download_file($url, 1024 * 1024 * 1024 * 5, true, false, 'Composr', null, array(), null, null, null, $tempfile);
+            http_get_contents($url, array('byte_limit' => 1024 * 1024 * 1024 * 5, 'write_to_file' => $tempfile));
 
             $is_temp_file = true;
 
@@ -299,9 +301,9 @@ class Hook_video_syndication_youtube
         $xml = $this->_generate_video_xml($changes + $video/*PHP has weird overwrite precedence with + operator, opposite to the intuitive ordering*/, false);
 
         try {
-            $response = $this->_http('https://gdata.youtube.com/feeds/api/users/default/uploads/' . $video['remote_id'], null, 'PUT', $xml);
+            $http_result = $this->_http('https://gdata.youtube.com/feeds/api/users/default/uploads/' . $video['remote_id'], null, 'PUT', $xml);
 
-            $parsed = simplexml_load_string($response);
+            $parsed = simplexml_load_string($http_result->data);
 
             if (isset($parsed->error)) {
                 throw new Exception(@strval($parsed->error->internalReason), @strval($parsed->error->code));
@@ -325,9 +327,9 @@ class Hook_video_syndication_youtube
     public function delete_remote_video($video)
     {
         try {
-            $response = $this->_http('https://gdata.youtube.com/feeds/api/users/default/uploads/' . $video['remote_id'], null, 'DELETE');
+            $http_result = $this->_http('https://gdata.youtube.com/feeds/api/users/default/uploads/' . $video['remote_id'], null, 'DELETE');
 
-            $parsed = simplexml_load_string($response);
+            $parsed = simplexml_load_string($http_result->data);
 
             if (isset($parsed->error)) {
                 throw new Exception(@strval($parsed->error->internalReason), @strval($parsed->error->code));
@@ -353,9 +355,9 @@ class Hook_video_syndication_youtube
         ');
 
         try {
-            $response = $this->_http('https://gdata.youtube.com/feeds/api/videos/' . $video['remote_id'] . '/comments', array(), 'POST', $xml);
+            $http_result = $this->_http('https://gdata.youtube.com/feeds/api/videos/' . $video['remote_id'] . '/comments', array(), 'POST', $xml);
 
-            $parsed = simplexml_load_string($response);
+            $parsed = simplexml_load_string($http_result->data);
 
             if (isset($parsed->error)) {
                 throw new Exception(@strval($parsed->error->internalReason), @strval($parsed->error->code));
@@ -375,7 +377,7 @@ class Hook_video_syndication_youtube
     protected function _generate_video_xml($video, $is_initial)
     {
         // Match to a category using remote list
-        $remote_list_xml = http_download_file('http://gdata.youtube.com/schemas/2007/categories.cat');
+        $remote_list_xml = http_get_contents('http://gdata.youtube.com/schemas/2007/categories.cat');
         $remote_list_parsed = simplexml_load_string($remote_list_xml);
         $category = 'People';
         foreach ($remote_list_parsed->category as $c) { // Try to bind to one of our tags. Already-bound-remote-category intentionally will be on start of tags list, so automatically maintained through precedence.
@@ -473,13 +475,12 @@ class Hook_video_syndication_youtube
             $files = array($mime_type => $file_to_upload);
         }
 
-        $response = http_download_file($full_url, null, false, true, 'Composr', ($xml === null) ? null : array($xml), null, null, null, null, null, null, null, $timeout, $xml !== null, $files, $extra_headers, $http_verb, $content_type);
+        $http_result = cms_http_request($full_url, array('trigger_error' => false, 'post_params' => ($xml === null) ? null : array($xml), 'timeout' => $timeout, 'raw_post' => $xml !== null, 'files' => $files, 'extra_headers' => $extra_headers, 'http_verb' => $http_verb, 'raw_content_type' => $content_type));
 
-        if ($response === null) {
-            global $HTTP_MESSAGE_B;
-            throw new Exception(($HTTP_MESSAGE_B === null) ? do_lang('UNKNOWN') : static_evaluate_tempcode($HTTP_MESSAGE_B));
+        if ($http_result->data === null) {
+            throw new Exception(($http_result->message_b === null) ? do_lang('UNKNOWN') : static_evaluate_tempcode($http_result->message_b));
         }
 
-        return $response;
+        return $http_result;
     }
 }

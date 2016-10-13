@@ -55,7 +55,7 @@ The Composr caches are:
  - [b]values caches[/b]: this isn't a specific cache, but caching of values such as member post counts removes the need for Composr to recalculate them on-the-fly
  - [b]persistent cache[/b]: this is a very special cache that is explained in the next section
  - [b]advanced admin cache[/b]: this can be turned on in the Admin Zone configuration to let admins have cached pages on their computer that are immediately (without server communication) interstitially displayed (for roughly 1 second) while the server generates the up-to-date page
- - [b]fast spider cache[/b]: this can be turned on from the Installation Options editor to feed static pages to bots, to stop bots hurting site performance
+ - [b]{$IS_MAINTAINED,static_cache,static cache}[/b]: this can be turned on from the Installation Options editor to feed static pages to bots or Guests
  - [b]self learning cache[/b]: this can be turned on from the Installation Options editor and allows pages to learn what resources they need, for efficient bulk loading of essentials while avoiding loading full resource sets upfront
 
 [box="Technical note for programmers"]
@@ -94,12 +94,12 @@ Composr is not designed to "cache everything as it will be displayed" because th
 The [b]persistent cache[/b] is a cache that aims to store regularly-accessed data in-memory between requests, so that it does not actually need to be loaded from the database or re-calculated on each page load. This cache removes about 30% of the page load time, but most importantly, takes load away from the database, allowing the database to become less of a limiting factor in high throughput situations.
 
 The cache is implemented to work with any one of:
- - [b]APC[/b] (or another opcode cache mentioned in the intro paragraph), which provides in-memory storage features as well as an opcode cache and is associated with core PHP development (hence why we recommend it as the opcode cache to use)
- - [b]memcache[/b] ('memcache' is the PHP extension for the 'memcached' server), which provides a heavyweight solution to memory sharing -- it is not recommended that this be used for typical websites, as memcached requires additional configuration
-  - or [b]memcached[/b], which works via the other PHP memcached server extension
- - [b]Wincache[/b] -- a PHP accelerator developed by Microsoft, optimised for Windows
- - [b]XCache[/b] -- another PHP accelerator
- - [b]disk cache[/b] -- while this does increase disk access, it still provides a performance boost over not having a persistent cache
+ - [b]{$IS_MAINTAINED,caches_apc,APC}[/b], which provides in-memory storage features as well as an opcode cache and is associated with core PHP development (hence why we recommend it as the opcode cache to use)
+ - [b]{$IS_MAINTAINED,caches_memcache,memcache}[/b] ('memcache' is the PHP extension for the 'memcached' server), which provides a heavyweight solution to memory sharing -- it is not recommended that this be used for typical websites, as memcached requires additional configuration
+  - or [b]{$IS_MAINTAINED,caches_memcached,memcached}[/b], which works via the other PHP memcached server extension
+ - [b]{$IS_MAINTAINED,caches_wincache,Wincache}[/b] -- a PHP accelerator developed by Microsoft, optimised for Windows
+ - [b]{$IS_MAINTAINED,caches_xcache,XCache}[/b] -- another PHP accelerator
+ - [b]{$IS_MAINTAINED,caches_filesystem,disk cache}[/b] -- while this does increase disk access, it still provides a performance boost over not having a persistent cache
 
 Composr will not use a persistent cache by default but it may be enabled from the Installation Options editor.
 
@@ -150,7 +150,7 @@ $SITE_INFO['no_extra_mobiles'] = '1'; // Don't read in extra mobile device signa
 [/code]
 They all have effects, so be careful! There are reasons these settings aren't the defaults.
 
-[title="2"]Rate limiting[/title]
+[title="2"]{$IS_MAINTAINED,rate_limit,Rate limiting}[/title]
 
 A site can be impacted by a flood of requests from a machine, and it is wise to block this.
 
@@ -408,7 +408,7 @@ There are a number of approaches you can take if you want to serve media from th
 
 You can have randomised content delivery networks used for your theme images and CSS files.
 
-Change the Content Delivery Network option to something like:
+Change the {$IS_MAINTAINED,cdn_theme_image,Content Delivery Network option} to something like:
 [code="Text"]
 example1.example.com,example2.example.com
 [/code]
@@ -454,9 +454,9 @@ You'll need to disable the Composr "Reveal usage figures" option, as the usage f
 
 Alternatively, you could do a similar thing using rewrite rules in [tt].htaccess[/tt] (Apache only), but this would add additional latency.
 
-[title="2"]Facebook's HHVM[/title]
+[title="2"]{$IS_MAINTAINED,platform_hhvm,Facebook's HHVM}[/title]
 
-[i]HHVM is not officially supported, as it is fast evolving and sometimes has bugs.[/i] It should work though. Support can be provided individually upon commercial demand. As PHP 7 improved performance a lot over the previous official PHP releases, HHVM is not as interesting as it once was, as HHVM is a very heavyweight solution.
+As PHP 7 improved performance a lot over the previous official PHP releases, HHVM is not as interesting as it once was, as HHVM is a very heavyweight solution. However HHVM does have a large development team continually improving it so it may perform some decent speed boosts still.
 
 Facebook released an alternative implementation of PHP that works as a JIT virtual machine instead of an interpreter. It more than doubles performance, and is set to improve further as it is developed.
 This is not suitable for most people for the following reasons:

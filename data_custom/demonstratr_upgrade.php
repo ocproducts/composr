@@ -100,7 +100,7 @@ set_option('site_closed', '1');
 clear_caches_1();
 
 // Reset demo
-http_download_file(get_brand_base_url() . '/data_custom/composr_homesite_web_service.php?call=demo_reset');
+http_get_contents(get_brand_base_url() . '/data_custom/composr_homesite_web_service.php?call=demo_reset');
 
 // Run upgrade
 global $SITE_INFO;

@@ -71,7 +71,7 @@ The forum base URL should not include a script name -- it should be a URL-prefix
 Admin Zone > Setup > Configuration > Site options > Advanced" float="left"]data_custom/images/docs/tut_nuances/nuances_3.png[/media]
 [media width="150" description="...and this is how you should make it be" float="right"]data_custom/images/docs/tut_nuances/nuances_forum_menu_2.png[/media]
 [media width="150" description="The default forum link before you fix it..." float="right"]data_custom/images/docs/tut_nuances/nuances_forum_menu_1.png[/media]
-Composr supports integration of your forum into the website, so that it fits between your menus, and your header and footer. For this to work, Composr loads up the forum on-server, and integrates its HTML code and CSS into the HTML code and CSS of Composr; it also relays cookies, to give the illusion that you are interacting directly with the forum code.
+Composr has a feature for {$IS_MAINTAINED,forum_in_portal,integration of your forum into the website}, so that it fits between your menus, and your header and footer. For this to work, Composr loads up the forum on-server, and integrates its HTML code and CSS into the HTML code and CSS of Composr; it also relays cookies, to give the illusion that you are interacting directly with the forum code.
 
 This feature can be turned on from the Admin Zone configuration module, and once on, any Composr generated forum link will be passed through the module (such as links to member profiles). You will also need to replace the forum link in the menu so as to pass through the 'forums' embedding module, as the menus are not managed by the configuration options. To do this, click the "edit menu" link underneath the menu, and make the change as identified in the screenshots.
 

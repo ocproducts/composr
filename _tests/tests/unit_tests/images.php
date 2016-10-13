@@ -70,9 +70,8 @@ class images_test_set extends cms_test_case
     public function testImageSizing()
     {
         $this->assertTrue(is_array(cms_getimagesize(get_custom_file_base() . '/themes/default/images/icons/48x48/status/warn.png')));
-        $GLOBALS['HTTP_DOWNLOAD_SIZE'] = null;
         $this->assertTrue(is_array(cms_getimagesize(get_custom_base_url() . '/themes/default/images/icons/48x48/status/warn.png')));
-        $this->assertTrue(!isset($GLOBALS['HTTP_DOWNLOAD_SIZE'])); // Should have been able to do the above using the filesystem, via a URL->path conversion
+        $this->assertTrue(!isset($GLOBALS['REQUIRED_CODE']['http'])); // Should have been able to do the above using the filesystem, via a URL->path conversion
         $this->assertTrue(is_array(cms_getimagesize('http://compo.sr/themes/composr_homesite/images_custom/composr_homesite/composr_full_logo.png')));
         $this->assertTrue(cms_getimagesize(get_custom_file_base() . '/themes/default/images/icons/48x48/status/not_here.png') === false);
     }

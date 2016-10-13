@@ -65,11 +65,11 @@ class Hook_config_payment_gateway
      */
     public function field_inputter($name, $myrow, $human_name, $explanation)
     {
-        $list = '';
+        $list = new Tempcode();
         $all_via = find_all_hooks('systems', 'ecommerce_via');
         foreach (array_keys($all_via) as $via) {
-            $list .= static_evaluate_tempcode(form_input_list_entry($via, $via == get_option($name)));
+            $list->attach(form_input_list_entry($via, $via == get_option($name), is_maintained_description('gateway_' . $via, $via)));
         }
-        return form_input_list($human_name, $explanation, $name, make_string_tempcode($list));
+        return form_input_list($human_name, $explanation, $name, $list);
     }
 }

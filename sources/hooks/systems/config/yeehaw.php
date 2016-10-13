@@ -41,6 +41,8 @@ class Hook_config_yeehaw
             'order_in_category_group' => 9,
 
             'addon' => 'core_configuration',
+
+            'maintenance_code' => 'lang_us',
         );
     }
 

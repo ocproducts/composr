@@ -15,7 +15,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    core
+ * @package    core_cns
  */
 
 /**
@@ -30,7 +30,7 @@ class Hook_snippet_password_strength
      */
     public function run()
     {
-        require_code('password_strength');
+        require_code('password_rules');
         return make_string_tempcode(strval(test_password(post_param_string('password'), post_param_string('username', ''))));
     }
 }

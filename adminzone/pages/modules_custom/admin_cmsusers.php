@@ -208,11 +208,11 @@ class Module_admin_cmsusers
             if ($i < 100) {
                 $active = get_value_newer_than('testing__' . $r['website_url'] . '/_config.php', time() - 60 * 60 * 10, true);
                 if ($active === null) {
-                    $test = http_download_file($r['website_url'] . '/_config.php', 10, false, false, 'Simple install stats', null, null, null, null, null, null, null, null, 2.0);
-                    if ($test !== null) {
+                    $test = cms_http_request($r['website_url'] . '/_config.php', array('trigger_error' => false, 'byte_limit' => 0, 'ua' => 'Simple install stats', 'timeout' => 2.0));
+                    if ($test->data !== null) {
                         $active = do_lang('YES');
                     } else {
-                        $active = @strval($GLOBALS['HTTP_MESSAGE']);
+                        $active = @strval($test->message);
                         if ($active == '') {
                             $active = do_lang('NO');
                         } else {

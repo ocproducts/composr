@@ -255,12 +255,12 @@ function get_enclosure_details($url, $enclosure_url)
         require_code('mime_types');
         $enclosure_type = get_mime_type(get_file_extension($url), false);
     } else {
-        http_download_file($enclosure_url, 0, false);
-        $enclosure_length = strval($GLOBALS['HTTP_DOWNLOAD_SIZE']);
+        $http_response = cms_http_request($enclosure_url, array('trigger_error' => false, 'byte_limit' => 0));
+        $enclosure_length = strval($http_response->download_size);
         if ($enclosure_length === null) {
-            $enclosure_length = strval(strlen(http_download_file($enclosure_url)));
+            $enclosure_length = strval(strlen(http_get_contents($enclosure_url)));
         }
-        $enclosure_type = $GLOBALS['HTTP_DOWNLOAD_MIME_TYPE'];
+        $enclosure_type = $http_response->download_mime_type;
     }
     return array($enclosure_length, $enclosure_type);
 }

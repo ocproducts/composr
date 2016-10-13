@@ -460,11 +460,11 @@ function will_be_unicode_neutered($data)
  * Convert some data from one encoding to the internal encoding.
  *
  * @param  string $data Data to convert.
- * @param  ?string $input_charset Charset to convert from (null: that read by the last http_download_file call).
+ * @param  string $input_charset Charset to convert from.
  * @param  ?string $internal_charset Charset to convert to (null: current encoding).
  * @return string Converted data.
  */
-function convert_to_internal_encoding($data, $input_charset = null, $internal_charset = null)
+function convert_to_internal_encoding($data, $input_charset, $internal_charset = null)
 {
     if (preg_match('#^[\x00-\x7f]$#', $data) != 0) { // All ASCII
         return $data;
@@ -474,9 +474,6 @@ function convert_to_internal_encoding($data, $input_charset = null, $internal_ch
 
     convert_data_encodings(); // In case it hasn't run yet. We need $VALID_ENCODING to be set.
 
-    if ($input_charset === null) {
-        $input_charset = $GLOBALS['HTTP_CHARSET'];
-    }
     if (($input_charset === '') || ($input_charset === null)) {
         return $data;
     }

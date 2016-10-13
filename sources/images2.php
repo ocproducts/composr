@@ -289,7 +289,7 @@ function _convert_image($from, &$to, $width, $height, $box_width = -1, $exit_on_
             $from_file = @file_get_contents($file_path_stub);
             $exif = function_exists('exif_read_data') ? @exif_read_data($file_path_stub) : false;
         } else {
-            $from_file = http_download_file($from, 1024 * 1024 * 20/*reasonable limit*/, false);
+            $from_file = http_get_contents($from, array('trigger_error' => false, 'byte_limit' => 1024 * 1024 * 20/*reasonable limit*/));
             if ($from_file === null) {
                 $from_file = false;
                 $exif = false;

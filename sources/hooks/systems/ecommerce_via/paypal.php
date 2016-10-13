@@ -316,7 +316,8 @@ class Hook_ecommerce_via_paypal
             $x = 0;
             $res = mixed();
             do { // Try up to 3 times
-                $res = http_download_file('https://' . (ecommerce_test_mode() ? 'www.sandbox.paypal.com' : 'www.paypal.com') . '/cgi-bin/webscr', null, false, false, 'Composr', $pure_post + array('cmd' => '_notify-validate'));
+                $url = 'https://' . (ecommerce_test_mode() ? 'www.sandbox.paypal.com' : 'www.paypal.com') . '/cgi-bin/webscr';
+                $res = http_get_contents($url, array('trigger_error' => false, 'post_params' => $pure_post + array('cmd' => '_notify-validate')));
                 $x++;
             } while (($res === null) && ($x < 3));
             if ($res === null) {

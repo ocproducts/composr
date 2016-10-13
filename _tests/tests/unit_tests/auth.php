@@ -68,9 +68,8 @@ class auth_test_set extends cms_test_case
     public function testAdminZoneDoesFail()
     {
         require_code('files');
-        $result = http_download_file(static_evaluate_tempcode(build_url(array('page' => ''), 'adminzone', null, false, false, true)), null, false);
-        global $HTTP_MESSAGE;
-        $this->assertTrue($HTTP_MESSAGE == '401');
+        $http_result = cms_http_request(static_evaluate_tempcode(build_url(array('page' => ''), 'adminzone', null, false, false, true)), array('trigger_error' => false));
+        $this->assertTrue($http_result->message == '401');
     }
 
     public function testCannotStealSession()
@@ -107,13 +106,12 @@ class auth_test_set extends cms_test_case
             persistent_cache_delete('SESSION_CACHE');
 
             require_code('files');
-            $result = http_download_file(static_evaluate_tempcode(build_url(array('page' => '', 'keep_session' => $fake_session_id), 'adminzone', null, false, false, true)), null, false);
+            $http_result = cms_http_request(static_evaluate_tempcode(build_url(array('page' => '', 'keep_session' => $fake_session_id), 'adminzone', null, false, false, true)), array('trigger_error' => false));
 
-            global $HTTP_MESSAGE;
             if ($pass_expected) {
-                $this->assertTrue($HTTP_MESSAGE != '401');
+                $this->assertTrue($http_result->message != '401');
             } else {
-                $this->assertTrue($HTTP_MESSAGE == '401');
+                $this->assertTrue($http_result->message == '401');
             }
         }
     }

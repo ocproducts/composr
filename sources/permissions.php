@@ -698,7 +698,7 @@ function has_privilege($member, $privilege, $page = null, $cats = null)
         if ($cats !== null) {
             $okay = false;
             if (is_array($cats)) { // Specific overrides for cats allowed
-                for ($i = 0; $i < intval(floor((float)count($cats) / 2.0)); $i++) {
+                for ($i = 0; $i < @intval(floor((float)count($cats) / 2.0)); $i++) {
                     if ($cats[$i * 2] === null) {
                         continue;
                     }

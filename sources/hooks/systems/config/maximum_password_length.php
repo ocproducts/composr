@@ -51,6 +51,6 @@ class Hook_config_maximum_password_length
      */
     public function get_default()
     {
-        return '20';
+        return '40';
     }
 }

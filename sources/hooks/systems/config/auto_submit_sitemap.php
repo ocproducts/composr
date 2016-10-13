@@ -41,6 +41,8 @@ class Hook_config_auto_submit_sitemap
             'order_in_category_group' => 8,
 
             'addon' => 'core_configuration',
+
+            'maintenance_code' => 'sitemap_submit',
         );
     }
 

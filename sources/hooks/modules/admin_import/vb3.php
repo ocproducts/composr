@@ -71,19 +71,20 @@ class Hook_import_vb3
             'calendar',
             //                      'logs'
         );
-        $info['dependencies'] = array( // This dependency tree is overdefined, but I wanted to make it clear what depends on what, rather than having a simplified version
-                                       'cns_members' => array('cns_groups'),
-                                       'cns_member_files' => array('cns_members'),
-                                       'cns_forums' => array('cns_forum_groupings', 'cns_members', 'cns_groups'),
-                                       'cns_topics' => array('cns_forums', 'cns_members'),
-                                       'cns_polls_and_votes' => array('cns_topics', 'cns_members'),
-                                       'cns_posts' => array('custom_comcode', 'cns_topics', 'cns_members'),
-                                       'cns_post_files' => array('cns_posts'),
-                                       'notifications' => array('cns_topics', 'cns_members'),
-                                       'cns_private_topics' => array('custom_comcode', 'cns_members'),
-                                       'points_gifts_and_charges' => array('cns_members'),
-                                       'logs' => array('cns_members', 'cns_posts'),
-                                       'calendar' => array('cns_members'),
+        $info['dependencies'] = array(
+            // This dependency tree is overdefined, but I wanted to make it clear what depends on what, rather than having a simplified version
+           'cns_members' => array('cns_groups'),
+           'cns_member_files' => array('cns_members'),
+           'cns_forums' => array('cns_forum_groupings', 'cns_members', 'cns_groups'),
+           'cns_topics' => array('cns_forums', 'cns_members'),
+           'cns_polls_and_votes' => array('cns_topics', 'cns_members'),
+           'cns_posts' => array('custom_comcode', 'cns_topics', 'cns_members'),
+           'cns_post_files' => array('cns_posts'),
+           'notifications' => array('cns_topics', 'cns_members'),
+           'cns_private_topics' => array('custom_comcode', 'cns_members'),
+           'points_gifts_and_charges' => array('cns_members'),
+           'logs' => array('cns_members', 'cns_posts'),
+           'calendar' => array('cns_members'),
         );
         $_cleanup_url = build_url(array('page' => 'admin_cleanup'), get_module_zone('admin_cleanup'));
         $cleanup_url = $_cleanup_url->evaluate();

@@ -196,6 +196,9 @@ This addon does not contain the compo.sr install code and the overall site and t
             'sources_custom/hooks/systems/symbols/COMPOSR_HOMESITE_ID_LATEST_THEMES.php',
             'sources_custom/hooks/systems/symbols/COMPOSR_HOMESITE_ID_LATEST_TRANSLATIONS.php',
             'sources_custom/hooks/systems/startup/composr_homesite__for_outdated_version.php',
+            'sources_custom/miniblocks/composr_maintenance_status.php',
+            'themes/default/templates_custom/BLOCK_COMPOSR_MAINTENANCE_STATUS.tpl',
+            'site/pages/comcode_custom/EN/maintenance_status.txt',
         );
     }
 }

@@ -3384,6 +3384,10 @@ div.proceed_button_left_2 {
 	min-width: 0; /* Works around webkit bug, where it breaks max-width:100% inside because the size calculation has been inverted by the default "min-width: -webkit-min-content;" rule  */
 }
 
+.box_inner>.innocuous_fieldset {
+	margin: 0;
+}
+
 .mass_select_marker {
 	padding: 0.2em;
 	float: {!en_right};

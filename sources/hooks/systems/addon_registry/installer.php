@@ -304,14 +304,12 @@ class Hook_addon_registry_installer
                     'CLASS' => $forum,
                     'NAME' => $forum,
                     'VERSION' => $version,
-                    'EXTRA' => '',
                 )));
                 $simple_forums->attach(do_lorem_template('INSTALLER_FORUM_CHOICE_VERSION', array(
                     'IS_DEFAULT' => false,
                     'CLASS' => $forum,
                     'NAME' => $forum,
                     'VERSION' => $version,
-                    'EXTRA' => '',
                 )));
             }
             $tforums->attach(do_lorem_template('INSTALLER_FORUM_CHOICE', array(
@@ -450,7 +448,6 @@ class Hook_addon_registry_installer
         ));
 
         $section->attach(do_lorem_template('INSTALLER_STEP_4_SECTION_HIDE', array(
-            'TITLE' => lorem_phrase(),
             'CONTENT' => lorem_phrase(),
         )));
 

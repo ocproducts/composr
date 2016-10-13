@@ -283,7 +283,7 @@ function cron_bridge_script($caller)
         foreach ($SITE_INFO as $key => $val) {
             if (substr($key, 0, 12) == 'custom_user_') {
                 $url = preg_replace('#://[\w\.]+#', '://' . substr($key, 12) . '.' . $SITE_INFO['custom_share_domain'], get_base_url()) . '/data/cron_bridge.php';
-                http_download_file($url);
+                http_get_contents($url);
             }
         }
     }

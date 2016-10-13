@@ -390,7 +390,7 @@ function step_1()
             $warnings->attach(do_template('INSTALLER_NOTICE', array('MESSAGE' => do_lang_tempcode('RECURSIVE_SERVER'))));
         }
     }
-    if ((file_exists(get_file_base() . '/_config.php')) && (!cms_is_writable(get_file_base() . '/_config.php')) && (!php_function_allowed('posix_getuid')) && ((strpos(PHP_OS, 'WIN') !== false))) {
+    if ((file_exists(get_file_base() . '/_config.php')) && (!cms_is_writable(get_file_base() . '/_config.php')) && (!php_function_allowed('posix_getuid')) && ((stripos(PHP_OS, 'win') === 0))) {
         $warnings->attach(do_template('INSTALLER_WARNING', array('MESSAGE' => do_lang_tempcode('TROUBLESOME_WINDOWS_SERVER', escape_html(get_tutorial_url('tut_adv_install'))))));
     }
 
@@ -518,7 +518,7 @@ function step_3()
     }
     if (($email != '') || ($advertise_on == 1)) {
         require_code('files');
-        http_download_file('http://compo.sr/uploads/website_specific/compo.sr/scripts/newsletter_join.php?url=' . urlencode('http://' . cms_srv('HTTP_HOST') . cms_srv('SCRIPT_NAME')) . '&email=' . urlencode($email) . '&advertise_on=' . strval($advertise_on) . '&lang=' . $INSTALL_LANG, null, false);
+        http_get_contents('http://compo.sr/uploads/website_specific/compo.sr/scripts/newsletter_join.php?url=' . urlencode('http://' . cms_srv('HTTP_HOST') . cms_srv('SCRIPT_NAME')) . '&email=' . urlencode($email) . '&advertise_on=' . strval($advertise_on) . '&lang=' . $INSTALL_LANG, array('trigger_error' => false));
     }
 
     // Forum chooser
@@ -551,8 +551,9 @@ function step_3()
 
         $mapped_name = do_lang('FORUM_CLASS_' . $class, null, null, null, null, false);
         if ($mapped_name === null) {
-            $mapped_name = ucwords($class);
+            $mapped_name = titleify($class);
         }
+        $_mapped_name = is_maintained_description('forum_' . $class, $mapped_name);
         $versions = new Tempcode();
         $first = true;
         $forums = array_reverse($forums);
@@ -569,17 +570,16 @@ function step_3()
             } else {
                 $version = array_key_exists($forum . '_version', $forum_info) ? do_lang('VERSION_NUM', $forum_info[$forum . '_version']) : do_lang('VERSION_NUM', do_lang('NA'));
             }
-            $extra2 = '';//(($first && !$rec) || $rec)?'checked="checked"':'';
-            $versions->attach(do_template('INSTALLER_FORUM_CHOICE_VERSION', array('_GUID' => '159a5a7cd1397620ef34e98c3b06cd7f', 'IS_DEFAULT' => ($DEFAULT_FORUM == $forum) || ($first && !$rec), 'CLASS' => $class, 'NAME' => $forum, 'VERSION' => $version, 'EXTRA' => $extra2)));
+            $versions->attach(do_template('INSTALLER_FORUM_CHOICE_VERSION', array('_GUID' => '159a5a7cd1397620ef34e98c3b06cd7f', 'IS_DEFAULT' => ($DEFAULT_FORUM == $forum) || ($first && !$rec), 'CLASS' => $class, 'NAME' => $forum, 'VERSION' => $version)));
             $first = false;
 
-            $simple_forums->attach(do_template('INSTALLER_FORUM_CHOICE_VERSION', array('_GUID' => 'c4c0e7accab56ae45e8e1a4ff777c42b', 'IS_DEFAULT' => ($DEFAULT_FORUM == $forum) || ($first && !$rec), 'CLASS' => $class, 'NAME' => $forum, 'VERSION' => $mapped_name . ' ' . $version, 'EXTRA' => '')));
+            $simple_forums->attach(do_template('INSTALLER_FORUM_CHOICE_VERSION', array('_GUID' => 'c4c0e7accab56ae45e8e1a4ff777c42b', 'IS_DEFAULT' => ($DEFAULT_FORUM == $forum) || ($first && !$rec), 'CLASS' => $class, 'NAME' => $forum, 'VERSION' => $mapped_name . ' ' . $version)));
         }
         if ($rec) {
             $default_version = $versions;
         }
         $extra = ($rec) ? 'checked="checked"' : '';
-        $tforums->attach(do_template('INSTALLER_FORUM_CHOICE', array('_GUID' => 'a5460829e86c9da3637f8e566cfca63c', 'CLASS' => $class, 'REC' => $rec, 'TEXT' => $mapped_name, 'VERSIONS' => $versions, 'EXTRA' => $extra)));
+        $tforums->attach(do_template('INSTALLER_FORUM_CHOICE', array('_GUID' => 'a5460829e86c9da3637f8e566cfca63c', 'CLASS' => $class, 'REC' => $rec, 'TEXT' => $_mapped_name, 'VERSIONS' => $versions, 'EXTRA' => $extra)));
     }
 
     // Database chooser
@@ -631,6 +631,7 @@ function step_3()
         } else {
             $mapped_name = $database;
         }
+        $mapped_name = is_maintained_description('database_' . $database, $mapped_name);
         $tdatabase->attach(do_template('FORM_SCREEN_INPUT_LIST_ENTRY', array('SELECTED' => $selected, 'DISABLED' => false, 'NAME' => $database, 'CLASS' => '', 'TEXT' => $mapped_name)));
 
         if ($database != 'xml') {
@@ -743,7 +744,7 @@ function step_4()
     $use_persistent = false;
     require_code('version');
     $table_prefix = get_default_table_prefix();
-    if (stripos(PHP_OS, 'win') !== false) {
+    if (stripos(PHP_OS, 'win') === 0) {
         $db_site_host = '127.0.0.1';
     } else {
         $db_site_host = 'localhost';
@@ -789,7 +790,7 @@ function step_4()
 
     $sections = new Tempcode();
 
-    // Detect FTP settings
+    // Detect FTP settings...
 
     if (php_function_allowed('posix_getpwuid')) {
         $u_info = posix_getpwuid(fileowner(get_file_base() . '/install.php'));
@@ -825,7 +826,7 @@ function step_4()
     $ftp_folder = '/' . $webdir_stub . basename(cms_srv('SCRIPT_NAME'));
     $ftp_domain = $domain;
 
-    // Is this autoinstaller? FTP settings
+    // Is this autoinstaller? FTP settings...
 
     global $FILE_ARRAY;
     if ((@is_array($FILE_ARRAY)) && (!is_suexec_like())) {
@@ -841,7 +842,7 @@ function step_4()
         $sections->attach(do_template('INSTALLER_STEP_4_SECTION', array('_GUID' => '50fcb00f4d1da1813e94d86529ea0862', 'HIDDEN' => $hidden, 'TITLE' => $title, 'TEXT' => $text, 'OPTIONS' => $options)));
     }
 
-    // General settings
+    // General settings...
 
     $title = do_lang_tempcode('GENERAL_SETTINGS');
     $text = new Tempcode();
@@ -860,11 +861,10 @@ function step_4()
     $options->attach(make_option(do_lang_tempcode('MASTER_PASSWORD'), example('', 'CHOOSE_MASTER_PASSWORD'), 'master_password', $master_password, true));
     require_lang('config');
     $options->attach(make_tick(do_lang_tempcode('SEND_ERROR_EMAILS_OCPRODUCTS'), example('', 'CONFIG_OPTION_send_error_emails_ocproducts'), 'send_error_emails_ocproducts', 1));
-    $options->attach(make_tick(do_lang_tempcode('MULTI_LANG_CONTENT'), example('', 'MULTI_LANG_CONTENT_TEXT'), 'multi_lang_content', file_exists(get_file_base() . '/.git')/*randomise in dev mode*/ ? mt_rand(0, 1) : 0));
     $sections->attach(do_template('INSTALLER_STEP_4_SECTION', array('_GUID' => 'f051465e86a7a53ec078e0d9de773993', 'HIDDEN' => $hidden, 'TITLE' => $title, 'TEXT' => $text, 'OPTIONS' => $options)));
     $hidden->attach(form_input_hidden('self_learning_cache', '1'));
 
-    // Database settings for forum (if applicable)
+    // Database settings for forum (if applicable)...
 
     $forum_text = new Tempcode();
     if (($forum_type == 'cns') || ($forum_type == 'none')) {
@@ -911,7 +911,7 @@ function step_4()
         }
     }
 
-    // Database settings for site
+    // Database settings for site...
 
     $text = ($use_msn == 1) ? do_lang_tempcode(($forum_type == 'cns') ? 'DUPLICATE_CNS' : 'DUPLICATE') : new Tempcode();
     $options = make_option(do_lang_tempcode('DATABASE_NAME'), new Tempcode(), 'db_site', $db_site, false, true);
@@ -972,7 +972,16 @@ function step_4()
         }
     }
 
-    // Cookie settings
+    // Advanced settings...
+
+    $title = do_lang_tempcode('GENERAL');
+    $text = new Tempcode();
+    $options = new Tempcode();
+    $hidden = new Tempcode();
+    $options->attach(make_tick(do_lang_tempcode('MULTI_LANG_CONTENT'), is_maintained_description('multi_lang_content', example('', 'MULTI_LANG_CONTENT_TEXT')), 'multi_lang_content', 0));
+    $advanced_1 = do_template('INSTALLER_STEP_4_SECTION', array('_GUID' => 'g051465e86a7a53ec078e0d9de773993', 'HIDDEN' => $hidden, 'TITLE' => $title, 'TEXT' => $text, 'OPTIONS' => $options));
+
+    // Cookie settings...
 
     if (!GOOGLE_APPENGINE) {
         $title = do_lang_tempcode('COOKIE_SETTINGS');
@@ -984,9 +993,13 @@ function step_4()
         $options->attach(make_option(do_lang_tempcode('COOKIE_DOMAIN'), example('COOKIE_DOMAIN_EXAMPLE', 'COOKIE_DOMAIN_TEXT'), 'cookie_domain', $cookie_domain));
         $options->attach(make_option(do_lang_tempcode('COOKIE_PATH'), example('COOKIE_PATH_EXAMPLE', 'COOKIE_PATH_TEXT'), 'cookie_path', $cookie_path));
         $options->attach(make_option(do_lang_tempcode('COOKIE_DAYS'), example('COOKIE_DAYS_EXAMPLE', 'COOKIE_DAYS_TEXT'), 'cookie_days', $cookie_days, false, true));
-        $temp = do_template('INSTALLER_STEP_4_SECTION', array('_GUID' => '3b9ea022164801f4b60780a4a966006f', 'HIDDEN' => $hidden, 'TITLE' => $title, 'TEXT' => $text, 'OPTIONS' => $options));
-        $sections->attach(do_template('INSTALLER_STEP_4_SECTION_HIDE', array('_GUID' => '42eb3d44bcf8ef99987b6daa9e6530aa', 'TITLE' => $title, 'CONTENT' => $temp)));
+        $advanced_2 = do_template('INSTALLER_STEP_4_SECTION', array('_GUID' => '3b9ea022164801f4b60780a4a966006f', 'HIDDEN' => $hidden, 'TITLE' => $title, 'TEXT' => $text, 'OPTIONS' => $options));
     }
+
+    $temp = new Tempcode();
+    $temp->attach($advanced_1);
+    $temp->attach($advanced_2);
+    $sections->attach(do_template('INSTALLER_STEP_4_SECTION_HIDE', array('_GUID' => '42eb3d44bcf8ef99987b6daa9e6530aa', 'TITLE' => $title, 'CONTENT' => $temp)));
 
     // ----
 
@@ -1097,13 +1110,12 @@ function step_5()
     // Test base URL isn't subject to redirects
     $test_url = $base_url . '/installer_is_testing_base_urls.php';
     require_code('files');
-    http_download_file($test_url, null, false);
-    global $HTTP_DOWNLOAD_URL;
-    if ($HTTP_DOWNLOAD_URL != $test_url) {
-        if (preg_replace('#www\.#', '', $HTTP_DOWNLOAD_URL) == $test_url) {
+    $http_result = cms_http_request($test_url, array('trigger_error' => false));
+    if ($http_result->download_url != $test_url) {
+        if (preg_replace('#www\.#', '', $http_result->download_url) == $test_url) {
             warn_exit(do_lang_tempcode('BASE_URL_REDIRECTS_WITH_WWW'));
         }
-        elseif ($HTTP_DOWNLOAD_URL == preg_replace('#www\.#', '', $test_url)) {
+        elseif ($http_result->download_url == preg_replace('#www\.#', '', $test_url)) {
             warn_exit(do_lang_tempcode('BASE_URL_REDIRECTS_WITHOUT_WWW'));
         }
     }
@@ -2917,8 +2929,6 @@ allow from all
 END;
 
     if ((cms_is_writable(get_file_base() . '/exports/addons')) && ((!file_exists(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess')) || (trim(file_get_contents(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess')) == ''))) {
-        global $HTTP_MESSAGE;
-
         $base_url = post_param_string('base_url', get_base_url());
 
         foreach ($clauses as $i => $clause) {
@@ -2933,9 +2943,8 @@ END;
             $myfile = fopen(get_file_base() . '/exports/addons' . DIRECTORY_SEPARATOR . '.htaccess', GOOGLE_APPENGINE ? 'wb' : 'wt');
             fwrite($myfile, $clause);
             fclose($myfile);
-            $HTTP_MESSAGE = '';
-            http_download_file($base_url . '/exports/addons/index.php', null, false);
-            if ($HTTP_MESSAGE != '200') {
+            $http_result = cms_http_request($base_url . '/exports/addons/index.php', array('trigger_error' => false));
+            if ($http_result->message != '200') {
                 $clauses[$i] = null;
             }
             unlink(get_file_base() . '/exports/addons' . DIRECTORY_SEPARATOR . '.htaccess');

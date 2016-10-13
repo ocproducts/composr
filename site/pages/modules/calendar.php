@@ -650,12 +650,7 @@ class Module_calendar
             }
             if ($past_no_follow || $future_no_follow) {
                 attach_to_screen_header('<meta name="robots" content="noindex" />'); // XHTMLXHTML
-                $GLOBALS['HTTP_STATUS_CODE'] = '401';
-                if (!headers_sent()) {
-                    if ((!browser_matches('ie')) && (strpos(cms_srv('SERVER_SOFTWARE'), 'IIS') === false)) {
-                        header('HTTP/1.0 401 Unauthorized'); // Stop spiders ever storing the URL that caused this
-                    }
-                }
+                set_http_status_code('401'); // Stop spiders ever storing the URL that caused this
                 access_denied('NOT_AS_GUEST_CALENDAR_PERFORMANCE');
             }
         }

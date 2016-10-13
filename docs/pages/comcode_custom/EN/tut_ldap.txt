@@ -2,7 +2,7 @@
 
 {!cns:DOC_LDAP}
 
-[i]LDAP support is not regularly tested. If you find any clear bugs please report them to the developers, and they will be rectified in a timely manner. If you're not sure what settings to use then you'll probably need someone with programming experience to step through it all, as LDAP can be very complex and involve non-standard/diverse schema.[/i]
+[i]{$IS_MAINTAINED,ldap,LDAP support} is complex. If you're not sure what settings to use then you'll probably need someone with programming experience to step through it all, as LDAP can be very complex and involve non-standard/diverse schema.[/i]
 
 [contents]decimal,lower-alpha[/contents]
 

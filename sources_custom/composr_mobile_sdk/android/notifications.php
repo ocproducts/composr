@@ -80,6 +80,6 @@ class AndroidPushNotifications
         );
         $url = 'https://android.googleapis.com/gcm/send';
         $post_params = json_encode($fields);
-        http_download_file($url, null, true, false, 'Composr', array($post_params), null, null, null, null, null, null, null, 6.0, true, null, $extra_headers, null, 'application/json');
+        http_get_contents($url, array('trigger_error' => true, 'post_params' => array($post_params), 'raw_post' => true, 'extra_headers' => $extra_headers, 'raw_content_type' => 'application/json'));
     }
 }

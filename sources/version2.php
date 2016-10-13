@@ -47,12 +47,13 @@ function get_future_version_information()
 
     $url = 'http://compo.sr/uploads/website_specific/compo.sr/scripts/version.php?version=' . rawurlencode(get_version_dotted()) . '&lang=' . rawurlencode(user_lang());
 
-    static $data = null; // Cache
-    if ($data === null) {
-        require_code('files2');
-        list($data) = cache_and_carry('http_download_file', array($url, null, false), 5/*5 minute cache*/);
+    static $http_result = null; // Cache
+    if ($http_result === null) {
+        require_code('http');
+        $http_result = cache_and_carry('cms_http_request', array($url, null, false), 5/*5 minute cache*/);
     }
-    if ($data !== null) {
+    if ($http_result->data !== null) {
+        $data = $http_result->data;
         $data = str_replace('"../upgrader.php"', '"' . get_base_url() . '/upgrader.php"', $data);
 
         if ($GLOBALS['XSS_DETECT']) {
@@ -60,8 +61,7 @@ function get_future_version_information()
         }
 
         require_code('character_sets');
-
-        $data = convert_to_internal_encoding($data);
+        $data = convert_to_internal_encoding($data, $http_result[8]);
 
         $table = make_string_tempcode($data);
     } else {

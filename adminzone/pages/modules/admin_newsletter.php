@@ -1306,30 +1306,7 @@ class Module_admin_newsletter extends Standard_crud_module
         $spam_report = null;
         $spam_score = null;
         if ($mail_dispatcher->mime_data !== null) {
-            $_spam_test = http_download_file(
-                'http://spamcheck.postmarkapp.com/filter',
-                null,
-                false,
-                false,
-                'Composr',
-                array(json_encode(array(
-                    'email' => $mail_dispatcher->mime_data,
-                    'options' => 'long',
-                ))),
-                array(),
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                6.0,
-                true,
-                array(),
-                array(),
-                null,
-                'application/json'
-            );
+            $_spam_test = http_get_contents('http://spamcheck.postmarkapp.com/filter', array('trigger_error' => false, 'post_params' => array(json_encode(array('email' => $mail_dispatcher->mime_data, 'options' => 'long'))), 'raw_content_type' => 'application/json'));
             if ($_spam_test != '') {
                 $spam_test = @json_decode($_spam_test, true);
                 if ($spam_test !== null && isset($spam_test['success']) && isset($spam_test['report']) && isset($spam_test['score'])) {

@@ -46,8 +46,6 @@ function download_associated_media(&$text)
  */
 function _download_associated_media(&$text, $old_url)
 {
-    global $HTTP_DOWNLOAD_MIME_TYPE, $HTTP_FILENAME;
-
     $local_url_1 = parse_url(get_base_url());
     $local_domain_1 = $local_url_1['host'];
 
@@ -60,8 +58,8 @@ function _download_associated_media(&$text, $old_url)
         $temp_path = get_custom_file_base() . '/uploads/external_media/' . $temp_filename;
 
         $write_to_file = fopen($temp_path, 'wb');
-        $test = http_download_file($old_url, null, false, false, 'Composr', null, array(), null, null, null, $write_to_file);
-        if ($test === null) {
+        $http_result = cms_http_request($old_url, array('write_to_file' => $write_to_file));
+        if ($http_result->data === null) {
             @unlink($temp_path);
             return;
         }
@@ -76,16 +74,16 @@ function _download_associated_media(&$text, $old_url)
             'video/mpeg' => 'mp3',
             'audio/ogg' => 'ogg',
         );
-        if (!isset($mapping[$HTTP_DOWNLOAD_MIME_TYPE])) {
+        if (!isset($mapping[$http_result->download_mime_type])) {
             @unlink($temp_path);
             return;
         }
 
-        $new_filename = preg_replace('#\..*#', '', basename($HTTP_FILENAME));
+        $new_filename = preg_replace('#\..*#', '', basename($http_result->filename));
         if ($new_filename == '') {
             $new_filename = uniqid('', true);
         }
-        $new_filename .= '.' . $mapping[$HTTP_DOWNLOAD_MIME_TYPE];
+        $new_filename .= '.' . $mapping[$http_result->download_mime_type];
         require_code('urls2');
         list($new_path, $new_url) = find_unique_path('uploads/external_media', $new_filename);
 

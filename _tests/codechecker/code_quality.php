@@ -682,9 +682,10 @@ function load_function_signatures()
 // Do the actual code quality check
 function check($structure)
 {
-    global $GLOBAL_VARIABLES, $CURRENT_CLASS, $OK_EXTRA_FUNCTIONS;
+    global $GLOBAL_VARIABLES, $CURRENT_CLASS, $OK_EXTRA_FUNCTIONS, $STRUCTURE;
     $GLOBAL_VARIABLES = array();
     $OK_EXTRA_FUNCTIONS = $structure['ok_extra_functions'];
+    $STRUCTURE = $structure;
 
     $CURRENT_CLASS = '__global';
     global $LOCAL_VARIABLES;
@@ -1257,7 +1258,7 @@ function check_call($c, $c_pos, $class = null, $function_guard = '')
             log_warning('Call to insecure function (' . $_function . ')', $c_pos);
         }
     }
-    global $FUNCTION_SIGNATURES;
+    global $FUNCTION_SIGNATURES, $STRUCTURE;
     $ret = null;
     $found = false;
 
@@ -1446,7 +1447,7 @@ function check_call($c, $c_pos, $class = null, $function_guard = '')
                         } else {
                             log_warning('Could not find class \'' . $class . '\'', $c_pos);
                         }
-                    } else {
+                    } elseif (empty($STRUCTURE['classes'][$class]['superclass'])) {
                         //@var_dump($FUNCTION_SIGNATURES[$class]['functions']);exit(); Useful for debugging
                         log_warning('Could not find method \'' . $class . '->' . $function . '\'', $c_pos);
                     }

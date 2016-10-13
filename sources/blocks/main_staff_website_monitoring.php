@@ -97,7 +97,7 @@ class Block_main_staff_website_monitoring
     {
         require_code('files');
         $p = array();
-        $result = http_download_file('http://data.alexa.com/data?cli=10&dat=s&url=' . $url, null, false, false, 'Composr', null, array(), null, null, null, null, null, null, 1.0);
+        $result = http_get_contents('http://data.alexa.com/data?cli=10&dat=s&url=' . $url, array('trigger_error' => false, 'timeout' => 1.0));
         if (preg_match('#<POPULARITY [^<>]*TEXT="([0-9]+){1,}"#si', $result, $p) != 0) {
             $rank = integer_format(intval($p[1]));
         } else {
@@ -214,7 +214,7 @@ class Block_main_staff_website_monitoring
         $ch = $this->getch($url);
         $errno = '0';
         $errstr = '';
-        $data = http_download_file('http://toolbarqueries.google.com/tbr?client=navclient-auto&ch=' . $ch . '&features=Rank&q=info:' . $url, null, false, false, 'Composr', null, array(), null, null, null, null, null, null, 1.0);
+        $data = http_get_contents('http://toolbarqueries.google.com/tbr?client=navclient-auto&ch=' . $ch . '&features=Rank&q=info:' . $url, array('trigger_error' => false, 'timeout' => 1.0));
         if ($data === null) {
             return '';
         }
@@ -269,7 +269,7 @@ class Block_main_staff_website_monitoring
                     } else {
                         $link = $q;
 
-                        require_code('files2');
+                        require_code('http');
                         $meta_details = get_webpage_meta_details($link);
                         $site_name = $meta_details['t_title'];
                         if ($site_name == '') {

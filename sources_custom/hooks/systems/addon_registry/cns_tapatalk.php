@@ -46,7 +46,7 @@ class Hook_addon_registry_cns_tapatalk
      */
     public function get_category()
     {
-        return 'New Features';
+        return is_maintained('tapatalk') ? 'New Features' : 'Development';
     }
 
     /**
@@ -88,7 +88,7 @@ class Hook_addon_registry_cns_tapatalk
      */
     public function get_description()
     {
-        return '[url="Tapatalk"]http://tapatalk.com[/url] is a popular third-party forum app for smartphones (available on all major mobile platforms). The Composr Tapatalk addon allows the Tapatalk app to connect seamlessly to Composr forums. The addon does this by providing an implementation of the Tapatalk API.
+        return '[url="Tapatalk"]http://tapatalk.com[/url] is a popular third-party forum app for smartphones (available on all major mobile platforms). The Composr {$IS_MAINTAINED,tapatalk,Tapatalk addon} allows the Tapatalk app to connect seamlessly to Composr forums. The addon does this by providing an implementation of the Tapatalk API.
 
 Tapatalk is free. It has optional advertisements and they will share advertising revenue with you. Tapatalk provide commercial customisation options also, for customisation of high-end forums ("BYO").
 

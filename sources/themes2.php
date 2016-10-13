@@ -62,7 +62,7 @@ function autoprobe_cdns()
         if (preg_match('#^' . preg_quote($t, '#') . '($|\.|/|:)#', $domain_name) == 0) { // Don't use it if it is in the base URL
             $test_url = 'http://' . $t . $parsed['path'] . '/themes/default/images/icons/16x16/editor/comcode.png';
 
-            $test_result = http_download_file($test_url, null, false, false, 'Composr', null, array(), null, null, null, null, null, null, 0.25);
+            $test_result = http_get_contents($test_url, array('trigger_error' => false, 'timeout' => 0.25));
 
             if (($test_result !== null) && ($test_result == $expected)) {
                 if ($detected_cdns != '') {
@@ -461,8 +461,11 @@ function post_param_image($name = 'image', $upload_to = null, $theme_image_type 
     if ((is_plupload()) || (((array_key_exists($field_file, $_FILES)) && (is_uploaded_file($_FILES[$field_file]['tmp_name']))))) {
         $urls = get_url('', $field_file, $upload_to, 0, CMS_UPLOAD_IMAGE, $thumb_url !== null, $thumb_specify_name, $thumb_attach_name);
 
-        if ((substr($urls[0], 0, 8) != 'uploads/') && ((http_download_file($urls[0], 0, false) === null)) && ($GLOBALS['HTTP_MESSAGE_B'] !== null)) {
-            attach_message($GLOBALS['HTTP_MESSAGE_B'], 'warn');
+        if (substr($urls[0], 0, 8) != 'uploads/') {
+            $http_result = http_get_contents($urls[0], array('trigger_error' => false, 'byte_limit' => 0));
+            if (($http_result->data === null) && ($http_result->message_b !== null)) {
+                attach_message($http_result->message_b, 'warn');
+            }
         }
 
         if ($thumb_url !== null) {

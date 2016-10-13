@@ -35,12 +35,12 @@ class Hook_check_modsecurity
         // Test to see if we have any ModSecurity issue that blocks config form submissions, via posting through some perfectly legitimate things that it might be paranoid about
         if (get_zone_name() . ':' . get_page_name() != 'adminzone:' . DEFAULT_ZONE_PAGE_NAME) {
             $test_url = get_custom_base_url() . '/uploads/index.html';
-            $test_a = http_download_file($test_url, 0, false, true);
-            $message_a = $GLOBALS['HTTP_MESSAGE'];
+            $test_a = cms_http_request($test_url, array('byte_limit' => 0, 'trigger_error' => false, 'no_redirect' => true));
+            $message_a = $test_a->message;
             if ($message_a == '200')
             {
-                $test_b = http_download_file($test_url, 0, false, true, 'Composr', array('test_a' => '/usr/bin/unzip -o @_SRC_@ -x -d @_DST_@', 'test_b' => '<iframe src="http://example.com/"></iframe>', 'test_c' => '<script>console.log(document.cookie);</script>'));
-                $message_b = $GLOBALS['HTTP_MESSAGE'];
+                $test_b = http_get_contents($test_url, array('byte_limit' => 0, 'trigger_error' => false, 'no_redirect' => true, 'post_params' => array('test_a' => '/usr/bin/unzip -o @_SRC_@ -x -d @_DST_@', 'test_b' => '<iframe src="http://example.com/"></iframe>', 'test_c' => '<script>console.log(document.cookie);</script>')));
+                $message_b = $test_b->message;
                 if ($message_b != '200')
                 {
                     $warning[] = do_lang_tempcode('MOD_SECURITY', escape_html($message_b));

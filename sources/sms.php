@@ -123,7 +123,7 @@ function dispatch_sms($message, $to_sms)
 </clickAPI>
 END;
 
-        $result = http_download_file('http://api.clickatell.com/xml/xml', null, false, false, 'Composr', array('data' => $xml));
+        $result = http_get_contents('http://api.clickatell.com/xml/xml', array('trigger_error' => false, 'post_params' => array('data' => $xml)));
         if (strpos($result, 'fault') !== false) {
             attach_message($result, 'warn', false, true);
             continue;

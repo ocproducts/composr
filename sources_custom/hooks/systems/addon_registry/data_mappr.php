@@ -46,7 +46,7 @@ class Hook_addon_registry_data_mappr
      */
     public function get_category()
     {
-        return 'Information Display';
+        return is_maintained('google_maps') ? 'Information Display' : 'Development';
     }
 
     /**
@@ -88,7 +88,7 @@ class Hook_addon_registry_data_mappr
     {
         return 'Shows different catalogue entries locations longitude/latitude values (the names of the fields to take longitude/latitude from are configured inside block parameters).
 
-The different catalogue entries are shown as pins on a Google map. Clicking on the pin shows the catalogue entry in a little box (as a link to the entry).
+The different catalogue entries are shown as pins on a {$IS_MAINTAINED,google_maps,Google map}. Clicking on the pin shows the catalogue entry in a little box (as a link to the entry).
 
 Example:
 [code="Comcode"][block title="store locater" description="This is a Store Locater" latfield="lat" longfield="long" catalogue="stores" width="100%" height="300px" zoom="6" latitude="24.2135" longitude="-1.4654"]main_google_map[/block][/code]

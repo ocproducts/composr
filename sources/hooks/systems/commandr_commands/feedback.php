@@ -42,7 +42,7 @@ class Hook_commandr_command_feedback
 
             $url = get_brand_page_url(array('page' => 'feedback'), '');
             $post = array('title' => 'Commandr feedback', 'post' => '(From "' . get_custom_base_url() . '" via Commandr.)[quote]' . $parameters[0] . '[/quote]');
-            http_download_file($url, null, true, true, 'Composr', $post);
+            http_get_contents($url, array('no_redirect' => true, 'post_params' => $post));
 
             return array('', '', do_lang('SUCCESS'), '');
         }

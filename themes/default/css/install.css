@@ -168,11 +168,6 @@ textarea.mono_textbox {
 	padding: 0;
 }
 
-.installer_forums td {
-	vertical-align: top !important;
-	padding: 1em;
-}
-
 .installer_forums th>div {
 	text-align: {!en_left};
 	width: 75%;
@@ -193,6 +188,15 @@ textarea.mono_textbox {
 	border-right: 1px dotted {$GET,standard_border};
 	float: left;
 	text-align: right;
+}
+
+.installer_forums td {
+	vertical-align: top !important;
+	padding: 1em;
+}
+
+.installer_forums td div {
+	margin: 0.75em 0;
 }
 
 .installer_forum_list {

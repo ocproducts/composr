@@ -100,7 +100,7 @@ class Block_side_similar_sites
         $google_base_query = '?v=1.0&rsz=large&q=';
         $google_full_url = $google_base_url . $google_base_query . $search_url . '%20' . $search_terms;
 
-        $returned_google_search = http_download_file($google_full_url);
+        $returned_google_search = http_get_contents($google_full_url);
 
         $returned_google_search_arr = json_decode($returned_google_search, true);
 

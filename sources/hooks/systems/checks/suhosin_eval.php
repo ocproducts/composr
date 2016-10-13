@@ -31,9 +31,15 @@ class Hook_check_suhosin_eval
     public function run()
     {
         $warning = array();
+
         if (ini_get('suhosin.executor.disable_eval') === '1') {
             $warning[] = do_lang_tempcode('DISABLED_FUNCTION', 'eval');
         }
+
+        if (php_function_allowed('extension_loaded') && extension_loaded('suhosin') && !is_maintained('platform_suhosin')) {
+            $warning[] = do_lang_tempcode('WARNING_NON_MAINTAINED', escape_html('Suhosin'), escape_html(get_brand_base_url()), escape_html('platform_suhosin'));
+        }
+
         return $warning;
     }
 }

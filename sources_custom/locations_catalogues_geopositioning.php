@@ -50,7 +50,7 @@ function fix_geoposition($lstring, $category_id)
     } else {
         exit('unknown type');
     }
-    $result = http_download_file($url);
+    $result = http_get_contents($url);
     $matches = array();
     if ((($type == 'bing') && (preg_match('#<Latitude>([\-\d\.]+)</Latitude>\s*<Longitude>([\-\d\.]+)</Longitude>#', $result, $matches) != 0)) || (($type == 'google') && (preg_match('#<lat>([\-\d\.]+)</lat>\s*<lng>([\-\d\.]+)</lng>#', $result, $matches) != 0)) || (($type == 'yahoo') && (preg_match('#<latitude>([\-\d\.]+)</latitude>\s*<longitude>([\-\d\.]+)</longitude>#', $result, $matches) != 0))) {
         $latitude = floatval($matches[1]);

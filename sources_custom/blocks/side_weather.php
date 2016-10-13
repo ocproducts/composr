@@ -105,7 +105,7 @@ class Block_side_weather
 
                 if (preg_match('#^\-?\d+(\.\d+)?,\-?\d+(\.\d+)?$#', $loc_code) != 0) {
                     $url = 'http://query.yahooapis.com/v1/public/yql?q=' . urlencode('select * from geo.placefinder where text="' . $loc_code . '"') . '&format=json&diagnostics=true&callback=cbfunc';
-                    $result = http_download_file($url);
+                    $result = http_get_contents($url);
 
                     if (preg_match('#"woeid":\s*"(\d+)"#', $result, $matches) != 0) {
                         $loc_code = $matches[1];
@@ -113,11 +113,12 @@ class Block_side_weather
                         return new Tempcode();
                     }
                 } else {
-                    $result = http_download_file('http://uk.weather.yahoo.com/search/weather?p=' . urlencode($loc_code));
+                    $http_result = cms_http_request('http://uk.weather.yahoo.com/search/weather?p=' . urlencode($loc_code));
+                    $result = $http_result->data;
 
                     if (preg_match('#<a href=\'/redirwoei/(\d+)\'>#', $result, $matches) != 0) {
                         $loc_code = $matches[1];
-                    } elseif (preg_match('#-(\d+)/#', $GLOBALS['HTTP_DOWNLOAD_URL'], $matches) != 0) {
+                    } elseif (preg_match('#-(\d+)/#', $http_result->download_url, $matches) != 0) {
                         $loc_code = $matches[1];
                     } else {
                         return new Tempcode();
@@ -138,21 +139,22 @@ class Block_side_weather
         $temperature_unit = (array_key_exists('unit', $map) && ($map['unit'] != '')) ? $map['unit'] : 'c';
 
         $json_url = 'http://query.yahooapis.com/v1/public/yql?q=select+%2A+from+weather.forecast+where+woeid%3D' . urlencode($loc_code) . '%20AND%20u%3D%22' . urlencode($temperature_unit) . '%22&format=json';
-        $json = http_download_file($json_url, null, false);
+        $http_result = cms_http_request($json_url, array('trigger_error' => false));
+        $json = $http_result->data;
         if (empty($json)) {
-            if (empty($GLOBALS['HTTP_MESSAGE_B'])) {
-                $GLOBALS['HTTP_MESSAGE_B'] = do_lang('HTTP_DOWNLOAD_STATUS_SERVER_ERROR', $json_url);
+            if (empty($http_result->message_b)) {
+                $http_result->message_b = do_lang('HTTP_DOWNLOAD_STATUS_SERVER_ERROR', $json_url);
             }
 
             $GLOBALS['DO_NOT_CACHE_THIS'] = true;
             require_code('failure');
-            relay_error_notification($GLOBALS['HTTP_MESSAGE_B'], false, 'error_occurred_weather');
+            relay_error_notification($http_result->message_b, false, 'error_occurred_weather');
             if (cron_installed()) {
                 if (!$GLOBALS['FORUM_DRIVER']->is_staff(get_member())) {
                     return new Tempcode();
                 }
             }
-            return do_template('INLINE_WIP_MESSAGE', array('_GUID' => '046c437a5c3799838155b5c5fbe3be26', 'MESSAGE' => htmlentities($GLOBALS['HTTP_MESSAGE_B'])));
+            return do_template('INLINE_WIP_MESSAGE', array('_GUID' => '046c437a5c3799838155b5c5fbe3be26', 'MESSAGE' => htmlentities($http_result->message_b)));
         }
 
         $data = @json_decode($json, true);

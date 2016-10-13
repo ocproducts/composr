@@ -126,7 +126,7 @@ if (get_param_integer('save__uploads', 1) == 1) {
                 }
             }
         } else {
-            tar_add_folder($STATIC_EXPORT_TAR, null, get_file_base(), null, $subpath, null, null, false, false);
+            tar_add_folder($STATIC_EXPORT_TAR, null, get_file_base(), null, $subpath, array(), null, false, false);
         }
     }
 }
@@ -293,7 +293,7 @@ if (trim($post)!="")
         @mkdir(dirname($mailer_path), 0777);
         file_put_contents($mailer_path, $mailer_script);
         $session_cookie_id = get_session_cookie();
-        $data = http_download_file(static_evaluate_tempcode(build_url(array('page' => 'mailer_temp', 'keep_lang' => (count($langs) != 1) ? $lang : null), '', null, false, false, true)), null, false, false, 'Composr', null, array($session_cookie_id => get_rand_password()));
+        $data = http_get_contents(static_evaluate_tempcode(build_url(array('page' => 'mailer_temp', 'keep_lang' => (count($langs) != 1) ? $lang : null), '', null, false, false, true)), array('trigger_error' => false, 'post_params' => array($session_cookie_id => get_rand_password())));
         unlink($mailer_path);
         $data = preg_replace('#<title>.*</title>#', '<title>' . escape_html(get_site_name()) . '</title>', $data);
         $relative_root = (count($langs) != 1) ? '../' : '';

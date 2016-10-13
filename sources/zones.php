@@ -961,6 +961,8 @@ function find_all_hook_obs($type, $subtype, $classname_prefix)
         $ob = object_factory($classname_prefix . $hook, true);
         if ($ob !== null) {
             $hooks[$hook] = $ob;
+        } else {
+            unset($hooks[$hook]);
         }
     }
     return $hooks;

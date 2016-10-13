@@ -283,7 +283,7 @@ function generate_logo($name, $font_choice = 'Vera', $logo_theme_image = 'logo/d
             }
             $data = file_get_contents($file_path_stub);
         } else {
-            $data = http_download_file($url);
+            $data = http_get_contents($url);
         }
         $img = @imagecreatefromstring($data);
         if ($img === false) {

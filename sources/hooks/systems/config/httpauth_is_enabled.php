@@ -40,6 +40,8 @@ class Hook_config_httpauth_is_enabled
             'list_options' => '',
 
             'addon' => 'core_cns',
+
+            'maintenance_code' => 'httpauth',
         );
     }
 

@@ -224,7 +224,7 @@ class Module_admin_import
         require_code('form_templates');
         foreach ($_hooks as $hook => $object) {
             $info = $object->info();
-            $__hooks[$hook] = $info['product'];
+            $__hooks[$hook] = strip_tags(static_evaluate_tempcode(is_maintained_description('import_' . $hook, $info['product'])));
         }
         asort($__hooks, SORT_NATURAL | SORT_FLAG_CASE);
         foreach ($__hooks as $hook => $hook_title) {

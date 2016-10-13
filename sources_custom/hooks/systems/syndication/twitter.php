@@ -133,7 +133,7 @@ class Hook_syndication_twitter
         $max_length = 255;
         $shortened_link = mixed();
         if ($link != '') {
-            $shortened_link = http_download_file('http://is.gd/api.php?longurl=' . urlencode($link));
+            $shortened_link = http_get_contents('http://is.gd/api.php?longurl=' . urlencode($link));
             $max_length -= strlen($shortened_link) + 1;
         }
         if (strlen($chopped_message) > $max_length) {

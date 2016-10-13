@@ -750,7 +750,7 @@ function _try_for_special_comcode_tag_all_params_ui($tag, $actual_tag, &$fields,
         foreach (array_keys(get_currency_map()) as $currency) {
             $list->attach(form_input_list_entry($currency, $currency == $default));
         }
-        $fields->attach(form_input_list(do_lang_tempcode('CURRENCY'), do_lang_tempcode('COMCODE_TAG_currency_PARAM_param'), 'param', $list));
+        $fields->attach(form_input_list(do_lang_tempcode('CURRENCY'), is_maintained_description('currency', do_lang_tempcode('COMCODE_TAG_currency_PARAM_param')), 'param', $list));
         $default_embed = array_key_exists('', $defaults) ? ($defaults['']) : get_param_string('default', '');
         $fields->attach(form_input_float(do_lang_tempcode('AMOUNT'), do_lang_tempcode('COMCODE_TAG_currency_EMBED'), 'tag_contents', floatval($default_embed), true));
         $default = array_key_exists('bracket', $defaults) ? $defaults['bracket'] : get_param_string('default_bracket', '');

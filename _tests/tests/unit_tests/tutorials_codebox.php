@@ -47,6 +47,7 @@ class tutorials_codebox_test_set extends cms_test_case
             'Commandr',
             'Bash',
             'INI',
+            'robots',
             'Tempcode',
             'Comcode',
             'JavaScript',

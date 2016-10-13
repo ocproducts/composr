@@ -75,7 +75,7 @@ Composr ([concept]Conversr[/concept]) does also support many other types of bann
 [media width="150" description="Starting an investigation" float="right"]data_custom/images/docs/tut_trace/trace_investigate_1.png[/media]
 {!lookup:DOC_INVESTIGATE_USER}
 
-These tools are:
+{$IS_MAINTAINED,ip_tools,These tools are}:
  - [b]Reverse-DNS lookup[/b] - this will find try and find a domain name attached to the IP address.
  - [b]DNS lookup[/b] - this will find try and find a domain name attached to the IP address, and then the IP address attached to the domain name: with a second IP address, further analysis might be performed
  - [b]WHOIS query[/b] - this will try and find a domain name attached to the IP address, and then try to find real-world details about the registered owner of that domain name

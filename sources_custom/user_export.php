@@ -144,11 +144,11 @@ function do_user_export__single_ipc($member_id, $delete = false)
 
         if ($delete) {
             if (USER_EXPORT_IPC_URL_DELETE !== null) {
-                http_download_file(USER_EXPORT_IPC_URL_DELETE . '?' . $out, null, false);
+                http_get_contents(USER_EXPORT_IPC_URL_DELETE . '?' . $out, array('trigger_error' => false));
             }
         } else {
             if (USER_EXPORT_IPC_URL_EDIT !== null) {
-                http_download_file(USER_EXPORT_IPC_URL_EDIT . '?' . $out, null, false);
+                http_get_contents(USER_EXPORT_IPC_URL_EDIT . '?' . $out, array('trigger_error' => false));
             }
 
             if (USER_EXPORT_EMAIL !== null) {

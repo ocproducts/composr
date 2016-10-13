@@ -1678,7 +1678,6 @@ insert into `cms_addons_files` values('cns_thematic_avatars','themes/default/ima
  ('core','sources/hooks/systems/notifications/error_occurred_missing_reference_important.php','1483'),
  ('core','sources/hooks/systems/notifications/adminzone_dashboard_accessed.php','1484'),
  ('core','sources/hooks/systems/disposable_values/page_views.php','1485'),
- ('core','sources/password_strength.php','1486'),
  ('core','sources/hooks/systems/snippets/password_strength.php','1487'),
  ('core','sources/hooks/blocks/main_staff_checklist/version.php','1488'),
  ('core','sources/hooks/systems/sitemap/.htaccess','1489'),

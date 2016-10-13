@@ -168,7 +168,7 @@ function _parse_php($inside_namespace = false)
                         log_warning('Duplicated class/interface/trait ' . $class['name']);
                     }
                 }
-                $program['classes'][] = $class;
+                $program['classes'][$class['name']] = $class;
                 $modifiers = array();
                 break;
 

@@ -256,15 +256,25 @@ class Module_admin_setupwizard
             $installprofiles->attach(form_input_list_entry($hook, false, $installprofile['title']));
         }
         $fields->attach(form_input_list(do_lang_tempcode('INSTALLPROFILE'), do_lang_tempcode('DESCRIPTION_INSTALLPROFILE'), 'installprofile', $installprofiles, null, true, false));
+
         $fields->attach(form_input_line(do_lang_tempcode('SITE_NAME'), do_lang_tempcode('CONFIG_OPTION_site_name'), 'site_name', $site_name, true));
+
         $fields->attach(form_input_line(do_lang_tempcode('DESCRIPTION'), do_lang_tempcode('CONFIG_OPTION_description'), 'description', $description, false));
+
         $fields->attach(form_input_line(do_lang_tempcode('SITE_SCOPE'), do_lang_tempcode('CONFIG_OPTION_site_scope'), 'site_scope', $site_scope, true));
+
         $fields->attach(form_input_line(do_lang_tempcode('HEADER_TEXT'), do_lang_tempcode('DESCRIPTION_HEADER_TEXT'), 'header_text', $header_text, false));
+
         $fields->attach(form_input_line(do_lang_tempcode('COPYRIGHT'), do_lang_tempcode('CONFIG_OPTION_copyright'), 'copyright', $copyright, false));
+
         $fields->attach(form_input_line(do_lang_tempcode('STAFF_EMAIL'), do_lang_tempcode('CONFIG_OPTION_staff_address'), 'staff_address', $staff_address, true));
+
         $fields->attach(form_input_line(do_lang_tempcode('KEYWORDS'), do_lang_tempcode('CONFIG_OPTION_keywords'), 'keywords', $keywords, false));
+
         $fields->attach(form_input_line(do_lang_tempcode('GOOGLE_ANALYTICS'), do_lang_tempcode('CONFIG_OPTION_google_analytics'), 'google_analytics', $google_analytics, false));
+
         $fields->attach(form_input_tick(do_lang_tempcode('FIXED_WIDTH'), do_lang_tempcode('CONFIG_OPTION_fixed_width'), 'fixed_width', get_option('fixed_width') == '1'));
+
         $panel_path = get_custom_file_base() . '/pages/comcode_custom/' . get_site_default_lang() . '/panel_left.txt';
         if (file_exists($panel_path)) {
             $include_cms_advert = strpos(file_get_contents($panel_path), 'logos/') !== false;
@@ -272,6 +282,24 @@ class Module_admin_setupwizard
             $include_cms_advert = false;
         }
         $fields->attach(form_input_tick(do_lang_tempcode('INCLUDE_CMS_ADVERT'), do_lang_tempcode('DESCRIPTION_INCLUDE_CMS_ADVERT'), 'include_cms_advert', $include_cms_advert));
+
+        switch (get_option('minimum_password_length')) {
+            case '8':
+                $security_level = 'high';
+                break;
+            case '5':
+                $security_level = 'low';
+                break;
+            case '6':
+            default:
+                $security_level = 'medium';
+                break;
+        }
+        $security_levels = new Tempcode();
+        foreach (array('low', 'medium', 'high') as $_security_level) {
+            $security_levels->attach(form_input_list_entry($_security_level, $_security_level == $security_level, do_lang_tempcode('SECURITY_LEVEL_' . $_security_level)));
+        }
+        $fields->attach(form_input_list(do_lang_tempcode('SECURITY_LEVEL'), do_lang_tempcode('DESCRIPTION_SECURITY_LEVEL'), 'security_level', $security_levels));
 
         $inner = do_template('FORM', array('_GUID' => '3126441524b51cba6a1e0de336c8a9d5', 'SKIP_WEBSTANDARDS' => true, 'SKIPPABLE' => 'skip_3', 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => $text, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'HIDDEN' => ''));
         return do_template('SETUPWIZARD_SCREEN', array('_GUID' => '6bdae2f0aa24b5dbe81fd0fc72e87feb', 'TITLE' => $this->title, 'STEP' => '3', 'INNER' => $inner));
@@ -931,6 +959,109 @@ class Module_admin_setupwizard
             $b = $GLOBALS['SITE_DB']->query_select_value_if_there('zones', 'zone_header_text', array('zone_name' => 'site'));
             if ($b !== null) {
                 $GLOBALS['SITE_DB']->query_update('zones', lang_remap('zone_header_text', $b, $header_text), array('zone_name' => 'site'), '', 1);
+            }
+
+            // Security level...
+
+            $security_level = post_param_string('security_level');
+
+            $security_level_options = array(
+                'session_expiry_time' => array(
+                    'low' => '24',
+                    'medium' => '3',
+                    'high' => '1',
+                ),
+                'password_reset_process' => array(
+                    'low' => 'emailed',
+                    'medium' => 'temporary',
+                    'high' => 'ultra',
+                ),
+                'password_expiry_days' => array(
+                    'low' => '0',
+                    'medium' => '0',
+                    'high' => '31',
+                ),
+                'minimum_password_length' => array(
+                    'low' => '5',
+                    'medium' => '6',
+                    'high' => '8',
+                ),
+                'minimum_password_strength' => array(
+                    'low' => '2',
+                    'medium' => '4',
+                    'high' => '6',
+                ),
+                'login_error_secrecy' => array(
+                    'low' => '0',
+                    'medium' => '0',
+                    'high' => '1',
+                ),
+                'ip_strict_for_sessions' => array(
+                    'low' => '1',
+                    'medium' => '1',
+                    'high' => '1',
+                ),
+                'crypt_ratchet' => array(
+                    'low' => '8',
+                    'medium' => '10',
+                    'high' => '12',
+                ),
+                'captcha_single_guess' => array(
+                    'low' => '0',
+                    'medium' => '1',
+                    'high' => '1',
+                ),
+                'captcha_noise' => array(
+                    'low' => '0',
+                    'medium' => '1',
+                    'high' => '1',
+                ),
+                'brute_force_threshold' => array(
+                    'low' => '32',
+                    'medium' => '16',
+                    'high' => '8',
+                ),
+                'audio_captcha' => array(
+                    'low' => '1',
+                    'medium' => '1',
+                    'high' => '0',
+                ),
+                'url_monikers_enabled' => array(
+                    'low' => '1',
+                    'medium' => '1',
+                    'high' => '0',
+                ),
+                'maintenance_script_htaccess' => array(
+                    'low' => '0',
+                    'medium' => '0',
+                    'high' => '1',
+                ),
+            );
+            foreach ($security_level_options as $security_level_option => $values) {
+                set_option($security_level_option, $values[$security_level]);
+            }
+
+            if (get_forum_type() == 'cns') {
+                $admin_groups = $GLOBALS['FORUM_DRIVER']->get_super_admin_groups();
+                $moderator_groups = $GLOBALS['FORUM_DRIVER']->get_moderator_groups();
+                $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(true, true);
+                foreach (array_keys($groups) as $id) {
+                    switch ($security_level) {
+                        case 'low':
+                            $GLOBALS['FORUM_DB']->query_update('f_groups', array('g_enquire_on_new_ips' => 0), array('id' => $id), '', 1);
+                            break;
+
+                        case 'medium':
+                            $is_admin = in_array($id, $admin_groups);
+                            $GLOBALS['FORUM_DB']->query_update('f_groups', array('g_enquire_on_new_ips' => $is_admin ? 1 : 0), array('id' => $id), '', 1);
+                            break;
+
+                        case 'high':
+                            $is_staff = in_array($id, $admin_groups) || in_array($id, $moderator_groups);
+                            $GLOBALS['FORUM_DB']->query_update('f_groups', array('g_enquire_on_new_ips' => $is_staff ? 1 : 0), array('id' => $id), '', 1);
+                            break;
+                    }
+                }
             }
         }
 

@@ -822,11 +822,20 @@ function _transifex($call, $http_verb, $params = array(), $trigger_error = true)
 
     $url = 'https://www.transifex.com/api/2' . $call;
     $auth = array($username, $password);
-    global $HTTP_MESSAGE;
-    $result = http_download_file($url, null, $trigger_error, false, 'Composr', ($http_verb == 'GET') ? null : $params, null, null, null, null, null, null, $auth, 30.0, $raw_post, null, null, $http_verb, $raw_content_type);
+    $options = array(
+        'trigger_error' => $trigger_error,
+        'post_params' => ($http_verb == 'GET') ? null : $params,
+        'auth' => $auth,
+        'timeout' => 30.0,
+        'raw_post' => $raw_post,
+        'http_verb' => $http_verb,
+        'raw_content_type' => $raw_content_type,
+    );
+    $http_result = cms_http_request($url, $options);
+    $result = $http_result->data;
 
     if (is_cli()) {
-        @print('Done call to ' . $url . ' [' . $HTTP_MESSAGE . ']' . "\n");
+        @print('Done call to ' . $url . ' [' . $http_result->message . ']' . "\n");
     }
 
     // Meet rate limit requirement
@@ -838,5 +847,5 @@ function _transifex($call, $http_verb, $params = array(), $trigger_error = true)
         usleep(500000);
     }*/
 
-    return array($result, $HTTP_MESSAGE);
+    return array($result, $http_result->message);
 }

@@ -41,6 +41,8 @@ class Hook_config_transcoding_zencoder_api_key
             'order_in_category_group' => 6,
 
             'addon' => 'galleries',
+
+            'maintenance_code' => 'zencoder',
         );
     }
 

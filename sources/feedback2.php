@@ -227,7 +227,7 @@ function send_trackbacks($_urls, $title, $excerpt)
 
     foreach ($urls as $url) {
         $url = trim($url);
-        http_download_file($url, null, false, false, 'Composr', array('url' => get_custom_base_url(), 'title' => $title, 'blog_name' => get_site_name(), 'excerpt' => $excerpt));
+        http_get_contents($url, array('trigger_error' => false, 'post_params' => array('url' => get_custom_base_url(), 'title' => $title, 'blog_name' => get_site_name(), 'excerpt' => $excerpt)));
     }
 
     return true;
