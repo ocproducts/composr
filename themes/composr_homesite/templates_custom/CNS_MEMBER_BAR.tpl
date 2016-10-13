@@ -26,7 +26,7 @@
 						<dt class="field_name"><abbr title="{!LIFETIME_POINTS,{$NUMBER_FORMAT*,{$AVAILABLE_POINTS}}}">{!POINTS}</abbr>:</dt> <dd><a{+START,IF_PASSED,NUM_POINTS_ADVANCE} title="{!GROUP_ADVANCE,{NUM_POINTS_ADVANCE*}}"{+END} href="{$PAGE_LINK*,site:points:member:{$MEMBER}}">{NUM_POINTS*}</a></dd>
 					{+END}
 					<dt class="field_name">{!COUNT_POSTS}:</dt> <dd>{NUM_POSTS*}</dd>
-					<dt class="field_name">{!PRIMARY_GROUP}:</dt> <dd>{PRIMARY_GROUP*}</dd>
+					<dt class="field_name">{$?,{$MOBILE},{!USERGROUP},{!PRIMARY_GROUP}}:</dt> <dd>{PRIMARY_GROUP*}</dd>
 				</dl>
 			</div>
 
@@ -43,12 +43,12 @@
 				{$,<p class="cns_member_column_title">{!VIEW}:</p>}
 				<ul class="actions_list">
 					<!--<li><a href="{PRIVATE_TOPIC_URL*}">{!PRIVATE_TOPICS}{+START,IF_NON_EMPTY,{PT_EXTRA}} <span class="cns_member_column_pts">{PT_EXTRA}</span>{+END}</a></li>-->
-					<li><a onclick="return open_link_as_overlay(this);" href="{NEW_POSTS_URL*}">{!POSTS_SINCE}</a></li>
-					<li><a onclick="return open_link_as_overlay(this);" href="{UNREAD_TOPICS_URL*}">{!TOPICS_UNREAD}</a></li>
-					<li><a onclick="return open_link_as_overlay(this);" href="{RECENTLY_READ_URL*}">{!RECENTLY_READ}</a></li>
-					<li><a href="{INLINE_PERSONAL_POSTS_URL*}">{!INLINE_PERSONAL_POSTS}</a></li>
-					<li><a onclick="return open_link_as_overlay(this);" href="{UNANSWERED_TOPICS_URL*}">{!UNANSWERED_TOPICS}</a></li>
-					<li><a onclick="return open_link_as_overlay(this);" href="{INVOLVED_TOPICS_URL*}">{!INVOLVED_TOPICS}</a></li>
+					<li><a{+START,IF,{$NOT,{$MOBILE}}} onclick="return open_link_as_overlay(this);"{+END} href="{NEW_POSTS_URL*}">{!POSTS_SINCE}</a></li>
+					<li><a{+START,IF,{$NOT,{$MOBILE}}} onclick="return open_link_as_overlay(this);"{+END} href="{UNREAD_TOPICS_URL*}">{!TOPICS_UNREAD}</a></li>
+					<li><a{+START,IF,{$NOT,{$MOBILE}}} onclick="return open_link_as_overlay(this);"{+END} href="{RECENTLY_READ_URL*}">{!RECENTLY_READ}</a></li>
+					<li><a{+START,IF,{$NOT,{$MOBILE}}} onclick="return open_link_as_overlay(this);"{+END} href="{INLINE_PERSONAL_POSTS_URL*}">{!INLINE_PERSONAL_POSTS}</a></li>
+					<li><a{+START,IF,{$NOT,{$MOBILE}}} onclick="return open_link_as_overlay(this);"{+END} href="{UNANSWERED_TOPICS_URL*}">{!UNANSWERED_TOPICS}</a></li>
+					<li><a{+START,IF,{$NOT,{$MOBILE}}} onclick="return open_link_as_overlay(this);"{+END} href="{INVOLVED_TOPICS_URL*}">{!INVOLVED_TOPICS}</a></li>
 				</ul>
 			</nav>
 		</div>
