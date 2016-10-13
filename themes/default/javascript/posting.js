@@ -9,8 +9,8 @@ require_javascript('ajax', window.do_ajax_request);
 // ===========
 
 function add_attachment(start_num, posting_field_name) {
-    if (typeof window.num_attachments == 'undefined') return;
-    if (typeof window.max_attachments == 'undefined') return;
+    if (window.num_attachments === undefined) return;
+    if (window.max_attachments === undefined) return;
 
     var add_to = document.getElementById('attachment_store');
 
@@ -19,20 +19,22 @@ function add_attachment(start_num, posting_field_name) {
     // Add new file input, if we are using naked file inputs
     if (window.attachment_template.replace(/\s/, '') != '') {
         var new_div = document.createElement('div');
-        Composr.dom.html(new_div, window.attachment_template.replace(/\_\_num_attachments\_\_/g, window.num_attachments));
+        $cms.dom.html(new_div, window.attachment_template.replace(/\_\_num_attachments\_\_/g, window.num_attachments));
         add_to.appendChild(new_div);
     }
 
     // Rebuild uploader button, if we have a singular button
-    if (typeof window.rebuild_attachment_button_for_next != 'undefined') {
+    if (window.rebuild_attachment_button_for_next !== undefined) {
         rebuild_attachment_button_for_next(posting_field_name);
     }
 
     // Previous file input cannot be used anymore, if it exists
     var element = document.getElementById('file' + window.num_attachments);
-    if (element) element.setAttribute('unselectable', 'on');
+    if (element) {
+        element.setAttribute('unselectable', 'on');
+    }
 
-    if (typeof window.trigger_resize != 'undefined') trigger_resize();
+    if (window.trigger_resize !== undefined) trigger_resize();
 }
 
 function attachment_present(post_value, number) {
@@ -40,11 +42,11 @@ function attachment_present(post_value, number) {
 }
 
 function set_attachment(field_name, number, filename, multi, uploader_settings) {
-    if (typeof multi == 'undefined') multi = false;
+    multi = !!multi;
 
-    if (typeof window.insert_textbox == 'undefined') return;
-    if (typeof window.num_attachments == 'undefined') return;
-    if (typeof window.max_attachments == 'undefined') return;
+    if (window.insert_textbox === undefined) return;
+    if (window.num_attachments === undefined) return;
+    if (window.max_attachments === undefined) return;
 
     var post = document.getElementById(field_name);
 
@@ -101,11 +103,7 @@ function set_attachment(field_name, number, filename, multi, uploader_settings) 
         defaults.type = ''; // =autodetect rendering type
 
         // Shall we show the options overlay?
-        show_overlay = true;
-
-        if (multi || Composr.is(Composr.$CONFIG_OPTION.simplifiedAttachmentsUi, is_image) || is_archive) {
-            show_overlay = false;
-        }
+        show_overlay = !(multi || (is_image && $cms.$CONFIG_OPTION.simplifiedAttachmentsUi) || is_archive);
 
         if (is_image) {
             tag = 'attachment_safe';
@@ -149,7 +147,7 @@ function set_attachment(field_name, number, filename, multi, uploader_settings) 
             }
             if (suffix != '') insert_textbox(post, suffix);
 
-            if (typeof uploader_settings != 'undefined') {
+            if (uploader_settings !== undefined) {
                 uploader_settings.callbacks.push(function () {
                     // Do insta-preview
                     if (is_wysiwyg_field(post)) {
@@ -174,7 +172,7 @@ function set_attachment(field_name, number, filename, multi, uploader_settings) 
         url += '&prefix=' + prefix;
         if (wysiwyg) url += '&in_wysiwyg=1';
         for (var key in defaults) {
-            url += '&default_' + key + '=' + window.encodeURIComponent(defaults[key]);
+            url += '&default_' + key + '=' + encodeURIComponent(defaults[key]);
         }
         url += keep_stub();
 
@@ -237,11 +235,11 @@ function generate_background_preview(post) {
     var form_post = '';
     var form = post.form;
     for (var i = 0; i < form.elements.length; i++) {
-        if ((!form.elements[i].disabled) && (typeof form.elements[i].name != 'undefined') && (form.elements[i].name != '')) {
+        if ((!form.elements[i].disabled) && ( form.elements[i].name !== undefined) && (form.elements[i].name != '')) {
             var name = form.elements[i].name;
             var value = clever_find_value(form, form.elements[i]);
             if (name == 'title' && value == '') value = 'x'; // Fudge, title must be filled in on many forms
-            form_post += '&' + name + '=' + window.encodeURIComponent(value);
+            form_post += '&' + name + '=' + encodeURIComponent(value);
         }
     }
     form_post = modsecurity_workaround_ajax(form_post.substr(1));
@@ -254,21 +252,21 @@ function generate_background_preview(post) {
 // ====================
 
 function do_input_html(field_name) {
-    if (typeof window.insert_textbox_wrapping == 'undefined') return;
+    if (window.insert_textbox_wrapping === undefined) return;
 
     var post = document.getElementById(field_name);
     insert_textbox_wrapping(post, 'semihtml', '');
 }
 
 function do_input_code(field_name) {
-    if (typeof window.insert_textbox_wrapping == 'undefined') return;
+    if (window.insert_textbox_wrapping === undefined) return;
 
     var post = document.getElementById(field_name);
     insert_textbox_wrapping(post, (post.name == 'message') ? 'tt' : 'codebox', '');
 }
 
 function do_input_quote(field_name) {
-    if (typeof window.insert_textbox_wrapping == 'undefined') return;
+    if (window.insert_textbox_wrapping === undefined) return;
 
     var post = document.getElementById(field_name);
     window.fauxmodal_prompt(
@@ -282,7 +280,7 @@ function do_input_quote(field_name) {
 }
 
 function do_input_box(field_name) {
-    if (typeof window.insert_textbox_wrapping == 'undefined') return;
+    if (window.insert_textbox_wrapping === undefined) return;
 
     var post = document.getElementById(field_name);
     window.fauxmodal_prompt(
@@ -296,7 +294,7 @@ function do_input_box(field_name) {
 }
 
 function do_input_menu(field_name) {
-    if (typeof window.insert_textbox == 'undefined') return;
+    if (window.insert_textbox === undefined) return;
 
     window.fauxmodal_prompt(
         '{!javascript:ENTER_MENU_NAME;^,' + (document.getElementById(field_name).form.menu_items.value) + '}',
@@ -338,7 +336,7 @@ function do_input_comcode(field_name, tag) {
         if (is_wysiwyg_field(element)) {
             var selection = wysiwyg_editors[field_name].getSelection();
             var ranges = selection.getRanges();
-            if (typeof ranges[0] != 'undefined') {
+            if ( ranges[0] !== undefined) {
                 var comcode_element = ranges[0].startContainer.$;
                 do
                 {
@@ -352,7 +350,7 @@ function do_input_comcode(field_name, tag) {
                             }
                         }
 
-                        default_embed = Composr.dom.html(comcode_element);
+                        default_embed = $cms.dom.html(comcode_element);
 
                         if (comcode_element.id == '') {
                             comcode_element.id = 'comcode_' + Date.now();
@@ -369,9 +367,9 @@ function do_input_comcode(field_name, tag) {
         }
     }
 
-    var url = '{$FIND_SCRIPT;,comcode_helper}?field_name=' + window.encodeURIComponent(field_name);
+    var url = '{$FIND_SCRIPT;,comcode_helper}?field_name=' + encodeURIComponent(field_name);
     if (tag) {
-        url += '&tag=' + window.encodeURIComponent(tag);
+        url += '&tag=' + encodeURIComponent(tag);
     }
     if (default_embed !== null) {
         url += '&type=replace';
@@ -384,13 +382,13 @@ function do_input_comcode(field_name, tag) {
     }
     if (is_wysiwyg_field(document.getElementById(field_name))) url += '&in_wysiwyg=1';
     for (var key in attributes) {
-        url += '&default_' + key + '=' + window.encodeURIComponent(attributes[key]);
+        url += '&default_' + key + '=' + encodeURIComponent(attributes[key]);
     }
     if (default_embed !== null) {
-        url += '&default=' + window.encodeURIComponent(default_embed);
+        url += '&default=' + encodeURIComponent(default_embed);
     }
     if (save_to_id !== null) {
-        url += '&save_to_id=' + window.encodeURIComponent(save_to_id);
+        url += '&save_to_id=' + encodeURIComponent(save_to_id);
     }
     url += keep_stub();
 
@@ -398,9 +396,9 @@ function do_input_comcode(field_name, tag) {
 }
 
 function do_input_list(field_name, add) {
-    if (typeof window.insert_textbox == 'undefined') return;
+    if (window.insert_textbox === undefined) return;
 
-    if (typeof add == 'undefined') add = [];
+    if (add === undefined) add = [];
 
     var post = document.getElementById(field_name);
     insert_textbox(post, '\n');
@@ -431,7 +429,7 @@ function do_input_list(field_name, add) {
 }
 
 function do_input_hide(field_name) {
-    if (typeof window.insert_textbox == 'undefined') return;
+    if (window.insert_textbox === undefined) return;
 
     window.fauxmodal_prompt(
         '{!javascript:ENTER_WARNING;^}',
@@ -456,9 +454,9 @@ function do_input_hide(field_name) {
 }
 
 function do_input_thumb(field_name, va) {
-    if (typeof window.insert_textbox == 'undefined') return;
+    if (window.insert_textbox === undefined) return;
 
-    if (typeof window.start_simplified_upload != 'undefined' && document.getElementById(field_name).name != 'message') {
+    if (window.start_simplified_upload !== undefined && document.getElementById(field_name).name != 'message') {
         var test = start_simplified_upload(field_name);
         if (test) return;
     }
@@ -505,7 +503,7 @@ function do_input_thumb(field_name, va) {
 }
 
 function do_input_attachment(field_name) {
-    if (typeof window.insert_textbox == 'undefined') {
+    if (window.insert_textbox === undefined) {
         return;
     }
 
@@ -537,7 +535,7 @@ function do_input_attachment(field_name) {
 }
 
 function do_input_url(field_name, va) {
-    if (typeof window.insert_textbox == 'undefined') return;
+    if (window.insert_textbox === undefined) return;
 
     window.fauxmodal_prompt(
         '{!javascript:ENTER_URL;^}',
@@ -567,17 +565,19 @@ function do_input_url(field_name, va) {
 }
 
 function do_input_page(field_name) {
-    if (typeof window.insert_textbox == 'undefined') return;
+    if (window.insert_textbox === undefined) {
+        return;
+    }
 
     var result;
 
-    if (typeof window.showModalDialog != 'undefined'/*{+START,IF,{$CONFIG_OPTION,js_overlays}}*/ || true/*{+END}*/) {
+    if ((window.showModalDialog !== undefined) || $cms.$CONFIG_OPTION.jsOverlays) {
         window.faux_showModalDialog(
             maintain_theme_in_link('{$FIND_SCRIPT;,page_link_chooser}' + keep_stub(true)),
             null,
             'dialogWidth=600;dialogHeight=400;status=no;unadorned=yes',
             function (result) {
-                if ((typeof result == 'undefined') || (result === null)) return;
+                if ((result === undefined) || (result === null)) return;
 
                 window.fauxmodal_prompt(
                     '{!javascript:ENTER_CAPTION;^}',
@@ -626,7 +626,7 @@ function _do_input_page(field_name, result, vc) {
 }
 
 function do_input_email(field_name, va) {
-    if (typeof window.insert_textbox == 'undefined') return;
+    if (window.insert_textbox === undefined) return;
 
     window.fauxmodal_prompt(
         '{!javascript:ENTER_ADDRESS;^}',
@@ -656,21 +656,21 @@ function do_input_email(field_name, va) {
 }
 
 function do_input_b(field_name) {
-    if (typeof window.insert_textbox_wrapping == 'undefined') return;
+    if (window.insert_textbox_wrapping === undefined) return;
 
     var element = document.getElementById(field_name);
     insert_textbox_wrapping(element, 'b', '');
 }
 
 function do_input_i(field_name) {
-    if (typeof window.insert_textbox_wrapping == 'undefined') return;
+    if (window.insert_textbox_wrapping === undefined) return;
 
     var element = document.getElementById(field_name);
     insert_textbox_wrapping(element, 'i', '');
 }
 
 function do_input_font(field_name) {
-    if (typeof window.insert_textbox_wrapping == 'undefined') return;
+    if (window.insert_textbox_wrapping === undefined) return;
 
     var element = document.getElementById(field_name);
     var form = element.form;
@@ -700,9 +700,7 @@ function do_input_font(field_name) {
 function init_form_saving(form_id) {
     window.last_autosave = new Date();
 
-    /*{+START,IF,{$DEV_MODE}}*/
-    console.log('Initialising auto-save subsystem');
-    /*{+END}*/
+    $cms.log('Initialising auto-save subsystem');
 
     // Go through all forms/elements
     var form = document.getElementById(form_id);
@@ -725,14 +723,14 @@ function init_form_saving(form_id) {
     // Load via local storage
     var autosave_value = read_cookie(encodeURIComponent(get_autosave_url_stem()));
     if ((autosave_value != '') && (autosave_value != '0')) {
-        if (typeof window.localStorage != 'undefined') {
+        if (window.localStorage !== undefined) {
             var fields_to_do = {}, fields_to_do_counter = 0, biggest_length_data = '';
             var key, value;
             var element_name, autosave_name;
             for (var j = 0; j < form.elements.length; j++) {
-                element_name = (typeof form.elements[j].name == 'undefined') ? form.elements[0][j].name : form.elements[j].name;
+                element_name = (form.elements[j].name === undefined) ? form.elements[0][j].name : form.elements[j].name;
                 autosave_name = get_autosave_name(element_name);
-                if (typeof localStorage[autosave_name] != 'undefined') {
+                if (localStorage[autosave_name] !== undefined) {
                     key = autosave_name;
                     value = localStorage[autosave_name];
 
@@ -743,13 +741,9 @@ function init_form_saving(form_id) {
                         biggest_length_data = value;
                     }
 
-                    /*{+START,IF,{$DEV_MODE}}*/
-                    if (typeof console.log != 'undefined') console.log('+ Has autosave for ' + element_name + ' (' + autosave_name + ')');
-                    /*{+END}*/
+                    $cms.log('+ Has autosave for ' + element_name + ' (' + autosave_name + ')');
                 } else {
-                    /*{+START,IF,{$DEV_MODE}}*/
-                    //if (typeof console.log!='undefined') console.log('- Has no autosave for '+element_name);
-                    /*{+END}*/
+                    $cms.log('- Has no autosave for ' + element_name);
                 }
             }
 
@@ -757,32 +751,23 @@ function init_form_saving(form_id) {
                 _restore_form_autosave(form, fields_to_do, biggest_length_data);
                 return; // If we had it locally, we won't let it continue on to try via AJAX
             } else {
-                /*{+START,IF,{$DEV_MODE}}*/
-                if (typeof console.log != 'undefined') console.log('No auto-save, fields found was ' + fields_to_do_counter + ', largest length was ' + biggest_length_data.length);
-                /*{+END}*/
+                $cms.log('No auto-save, fields found was ' + fields_to_do_counter + ', largest length was ' + biggest_length_data.length);
             }
         }
     } else {
-        /*{+START,IF,{$DEV_MODE}}*/
-        if (typeof console.log != 'undefined') console.log('Nothing in local storage');
-        /*{+END}*/
+        $cms.log('Nothing in local storage');
     }
 
     // Load via AJAX (if issue happened on another machine, or if we do not support local storage)
     if (navigator.onLine) {
-        /*{+START,IF,{$DEV_MODE}}*/
-        if (typeof console.log != 'undefined') console.log('Searching AJAX for auto-save');
-        /*{+END}*/
+        $cms.log('Searching AJAX for auto-save');
 
         var url = '{$FIND_SCRIPT;,autosave}?type=retrieve';
-        url += '&stem=' + window.encodeURIComponent(get_autosave_url_stem());
+        url += '&stem=' + encodeURIComponent(get_autosave_url_stem());
         url += keep_stub();
         var callback = function (form) {
             return function (result) {
-                /*{+START,IF,{$DEV_MODE}}*/
-                if (typeof console.log != 'undefined') console.log('Auto-save AJAX says', result);
-                /*{+END}*/
-
+                $cms.log('Auto-save AJAX says', result);
                 _retrieve_form_autosave(result, form);
             }
         }(form);
@@ -801,7 +786,7 @@ function _retrieve_form_autosave(result, form) {
 
         element = null;
         for (var j = 0; j < form.elements.length; j++) {
-            element_name = (typeof form.elements[j].name == 'undefined') ? form.elements[0][j].name : form.elements[j].name;
+            element_name = (form.elements[j].name === undefined) ? form.elements[0][j].name : form.elements[j].name;
             autosave_name = get_autosave_name(element_name);
             if (autosave_name == key) {
                 element = form.elements[j];
@@ -822,9 +807,7 @@ function _retrieve_form_autosave(result, form) {
     if ((fields_to_do_counter != 0) && (biggest_length_data.length > 25)) {
         _restore_form_autosave(form, fields_to_do, biggest_length_data);
     } else {
-        /*{+START,IF,{$DEV_MODE}}*/
-        console.log('No auto-save, fields found was ' + fields_to_do_counter + ', largest length was ' + biggest_length_data.length);
-        /*{+END}*/
+        $cms.log('No auto-save, fields found was ' + fields_to_do_counter + ', largest length was ' + biggest_length_data.length);
     }
 }
 
@@ -841,8 +824,8 @@ function _restore_form_autosave(form, fields_to_do, biggest_length_data) {
                 for (key in fields_to_do) {
                     if (typeof fields_to_do[key] != 'string') continue;
 
-                    if (typeof form.elements[key] != 'undefined') {
-                        if (typeof console.log != 'undefined') console.log('Restoring ' + key);
+                    if (form.elements[key] !== undefined) {
+                        if (console.log !== undefined) console.log('Restoring ' + key);
                         clever_set_value(form, form.elements[key], fields_to_do[key]);
                     }
                 }
@@ -851,12 +834,12 @@ function _restore_form_autosave(form, fields_to_do, biggest_length_data) {
 
                 set_cookie(encodeURIComponent(get_autosave_url_stem()), '0', 0.167/*4 hours*/); // Mark as not wanting to restore from local storage
 
-                if (typeof window.localStorage != 'undefined') {
+                if (window.localStorage !== undefined) {
                     for (var key in fields_to_do) {
                         if (typeof fields_to_do[key] != 'string') continue;
 
                         autosave_name = get_autosave_name(key);
-                        if (typeof localStorage[autosave_name] != 'undefined') {
+                        if (localStorage[autosave_name] !== undefined) {
                             delete localStorage[autosave_name];
                         }
                     }
@@ -868,12 +851,12 @@ function _restore_form_autosave(form, fields_to_do, biggest_length_data) {
 }
 
 function field_supports_autosave(element) {
-    if ((typeof element.length != 'undefined') && (typeof element.nodeName == 'undefined')) {
+    if ((element.length !== undefined) && (element.nodeName === undefined)) {
         // Radio button
         element = element[0];
     }
 
-    if (typeof element.name === 'undefined') return false;
+    if (element.name === undefined) return false;
 
     var name = element.name;
     if (name == '') return false;
@@ -912,7 +895,7 @@ function field_supports_autosave(element) {
 }
 
 function is_typed_input(element) {
-    if ((typeof element.length != 'undefined') && (typeof element.nodeName == 'undefined')) {
+    if ((element.length !== undefined) && (element.nodeName === undefined)) {
         // Radio button
         element = element[0];
     }
@@ -945,9 +928,7 @@ function is_typed_input(element) {
 
 function handle_form_saving_explicit(event, form) {
     if (event.keyCode == 83/*s*/ && (navigator.platform.match('Mac') ? event.metaKey : event.ctrlKey) && (!navigator.platform.match('Mac') ? event.ctrlKey : event.metaKey) && (!event.altKey)) {
-        /*{+START,IF,{$DEV_MODE}}*/
-        if (typeof console.log != 'undefined') console.log('Doing explicit auto-save');
-        /*{+END}*/
+        $cms.log('Doing explicit auto-save');
 
         event.preventDefault(); // Prevent browser save dialog
 
@@ -960,7 +941,7 @@ function handle_form_saving_explicit(event, form) {
                 temp = _handle_form_saving(event, form.elements[i], true);
                 if (temp) {
                     if (post != '') post += '&';
-                    post += window.encodeURIComponent(temp[0]) + '=' + window.encodeURIComponent(temp[1]);
+                    post += encodeURIComponent(temp[0]) + '=' + encodeURIComponent(temp[1]);
                 }
             }
         }
@@ -985,12 +966,12 @@ function handle_form_saving_explicit(event, form) {
 function handle_form_saving(event, element, force) {
     var temp = _handle_form_saving(event, element, force);
     if (temp) {
-        var post = window.encodeURIComponent(temp[0]) + '=' + window.encodeURIComponent(temp[1]);
+        var post = encodeURIComponent(temp[0]) + '=' + encodeURIComponent(temp[1]);
 
         // Save remotely
         if (navigator.onLine) {
 
-            if (Composr.isDevMode) {
+            if ($cms.$DEV_MODE) {
                 console.log('Doing AJAX auto-save');
             }
 
@@ -1002,17 +983,17 @@ function handle_form_saving(event, element, force) {
 }
 
 function _handle_form_saving(event, element, force) {
-    if (typeof force == 'undefined') force = (event.type == 'blur');
+    if (force === undefined) force = (event.type == 'blur');
 
     var this_date = new Date();
     if (!force) {
         if ((this_date.getTime() - window.last_autosave.getTime()) < 20 * 1000) return null; // Only save every 20 seconds
     }
 
-    if (typeof element == 'undefined') {
+    if (element === undefined) {
         element = event.target;
     }
-    if ((typeof element == 'undefined') || (element === null)) {
+    if ((element === undefined) || (element === null)) {
         return null; // Some weird error, perhaps an extension fired this event
     }
 
@@ -1022,15 +1003,15 @@ function _handle_form_saving(event, element, force) {
     }
 
     // Mark it as saved, so the server can clear it out when we submit, signally local storage should get deleted too
-    var element_name = (typeof element.name == 'undefined') ? element[0].name : element.name;
+    var element_name = (element.name === undefined) ? element[0].name : element.name;
     var autosave_name = get_autosave_name(element_name);
     set_cookie(encodeURIComponent(get_autosave_url_stem()), '1', 0.167/*4 hours*/);
 
     window.last_autosave = this_date;
 
     // Save locally
-    if (typeof window.localStorage != 'undefined') {
-        if (Composr.isDevMode) {
+    if (window.localStorage !== undefined) {
+        if ($cms.$DEV_MODE) {
             console.log('Doing local storage auto-save for ' + element_name + ' (' + autosave_name + ')');
         }
 
@@ -1043,7 +1024,7 @@ function _handle_form_saving(event, element, force) {
 }
 
 function clever_set_value(form, element, value) {
-    if ((typeof element.length !== 'undefined') && (typeof element.nodeName == 'undefined')) {
+    if ((element.length !== undefined) && (element.nodeName === undefined)) {
         // Radio button
         element = element[0];
     }
@@ -1056,7 +1037,7 @@ function clever_set_value(form, element, value) {
             for (var i = 0; i < element.options.length; i++) {
                 if (element.options[i].value == value) {
                     element.selectedIndex = i;
-                    if (typeof $(element).select2 != 'undefined') {
+                    if ($(element).select2 !== undefined) {
                         $(element).trigger('change');
                     }
                 }

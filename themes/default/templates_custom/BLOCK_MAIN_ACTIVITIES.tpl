@@ -25,7 +25,7 @@
 		</div>
 
 		<script>//<![CDATA[
-			Composr.ready.then(function() {
+		$cms.ready.then(function() {
 				window.activities_mode='{MODE;/}';
 				window.activities_member_ids='{MEMBER_IDS;/}';
 

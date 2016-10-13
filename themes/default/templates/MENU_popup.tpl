@@ -3,8 +3,8 @@
 
 {+START,IF_NON_EMPTY,{CONTENT}}
 	{$SET,menu_id,r_{MENU|}_p}
-	<nav class="menu_type__popup" data-view-core-menus="PopupMenu" data-view-args="{+START,PARAMS_JSON,MENU,JAVASCRIPT_HIGHLIGHTING,menu_id}{_*}{+END}">
-		<ul class="nl js-ul-menu-items" id="{$GET*,menu_id}">
+	<nav class="menu_type__popup" data-view="PopupMenu" data-view-args="{+START,PARAMS_JSON,MENU,JAVASCRIPT_HIGHLIGHTING,menu_id}{_*}{+END}">
+		<ul class="nl js-mouseout-unset-active-menu" id="{$GET*,menu_id}">
 			{CONTENT}
 		</ul>
 	</nav>

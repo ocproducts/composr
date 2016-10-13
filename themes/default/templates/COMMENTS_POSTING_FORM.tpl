@@ -42,7 +42,7 @@
 	<input type="hidden" name="comcode__post" value="1" />
 	<input type="hidden" name="stub" value="" />
 
-	<div class="box box___comments_posting_form" {+START,IF_PASSED,EXPAND_TYPE} data-view-core="ToggleableTray" {+END}>
+	<div class="box box___comments_posting_form" {+START,IF_PASSED,EXPAND_TYPE} data-view="ToggleableTray" {+END}>
 		{+START,IF_NON_EMPTY,{TITLE}}
 			<h3 class="toggleable_tray_title js-tray-header">
 				{+START,IF_NON_PASSED,EXPAND_TYPE}

@@ -1,4 +1,4 @@
-<div class="cns_forum_grouping" data-view-core="ToggleableTray">
+<div class="cns_forum_grouping" data-view="ToggleableTray">
 	<h3 class="toggleable_tray_title_heading js-tray-header">
 		<span class="cns_forum_grouping_toggleable_tray_button">
 			<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img title="{!TOGGLE_GROUPING_VISIBILITY}" alt="{!TOGGLE_GROUPING_VISIBILITY}" src="{$IMG*,1x/trays/{EXPAND_TYPE*}2}" srcset="{$IMG*,2x/trays/{EXPAND_TYPE*}2} 2x" /></a>

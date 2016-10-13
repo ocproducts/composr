@@ -1,47 +1,35 @@
-(function (Composr) {
+(function ($cms) {
     'use strict';
 
-    Composr.behaviors.corePrimaryLayout = {
-        initialize: {
-            attach: function (context) {
-                Composr.initializeViews(context, 'core_primary_layout');
-                Composr.initializeTemplates(context, 'core_primary_layout');
-            }
-        }
-    };
+    function GlobalHelperPanel(options) {
+        $cms.View.apply(this, arguments);
+        this.contentsEl = this.$('.js-helper-panel-contents');
+    }
 
-    var GlobalHelperPanel = Composr.View.extend({
-        contents: null,
-        initialize: function () {
-            GlobalHelperPanel.__super__.initialize.apply(this, arguments);
-            this.contents = this.$('.js-helper-panel-contents');
-        },
+    $cms.inherits(GlobalHelperPanel, $cms.View, {
+        contentsEl: null,
         events: {
             'click .js-click-toggle-helper-panel': 'toggleHelperPanel'
         },
         toggleHelperPanel: function () {
-            var show = Composr.dom.css(this.contents, 'display') === 'none';
+            var show = !$cms.dom.isDisplayed(this.contentsEl, 'display');
             helper_panel(show);
         }
     });
 
-    Composr.views.corePrimaryLayout = {
-        GlobalHelperPanel: GlobalHelperPanel
-    };
+    $cms.views.GlobalHelperPanel = GlobalHelperPanel;
 
-    Composr.templates.corePrimaryLayout = {
-        globalHtmlWrap: function () {
-            if (document.getElementById('global_messages_2')) {
-                var m1 = document.getElementById('global_messages');
-                if (!m1) return;
-                var m2 = document.getElementById('global_messages_2');
-                Composr.dom.appendHtml(m1, Composr.dom.html(m2));
-                m2.parentNode.removeChild(m2);
-            }
+    $cms.templates.globalHtmlWrap = function () {
+        if (document.getElementById('global_messages_2')) {
+            var m1 = document.getElementById('global_messages');
+            if (!m1) return;
+            var m2 = document.getElementById('global_messages_2');
+            $cms.dom.appendHtml(m1, $cms.dom.html(m2));
+            m2.parentNode.removeChild(m2);
+        }
 
-            if (Composr.usp.has('wide_print')) {
-                try { window.print(); } catch (ignore) {}
-            }
+        if ($cms.usp.has('wide_print')) {
+            try { window.print(); } catch (ignore) {}
         }
     };
 
@@ -62,9 +50,9 @@
                 set_cookie('hide_helper_panel', '0', 100);
             }
 
-            helper_panel_toggle.firstElementChild.src = Composr.url('{$IMG;,icons/14x14/helper_panel_hide}');
+            helper_panel_toggle.firstElementChild.src = $cms.img('{$IMG;,icons/14x14/helper_panel_hide}');
             if (helper_panel_toggle.firstElementChild.srcset !== undefined) {
-                helper_panel_toggle.firstElementChild.srcset = Composr.url('{$IMG;,icons/28x28/helper_panel_hide} 2x');
+                helper_panel_toggle.firstElementChild.srcset = $cms.img('{$IMG;,icons/28x28/helper_panel_hide} 2x');
             }
         } else {
             if (read_cookie('hide_helper_panel') == '') {
@@ -85,10 +73,10 @@
         helper_panel_contents.setAttribute('aria-expanded', 'false');
         helper_panel_contents.style.display = 'none';
         set_cookie('hide_helper_panel', '1', 100);
-        helper_panel_toggle.firstElementChild.src = Composr.url('{$IMG;,icons/14x14/helper_panel_show}');
+        helper_panel_toggle.firstElementChild.src = $cms.img('{$IMG;,icons/14x14/helper_panel_show}');
 
         if (helper_panel_toggle.firstElementChild.srcset !== undefined) {
-            helper_panel_toggle.firstElementChild.srcset = Composr.url('{$IMG;,icons/28x28/helper_panel_show} 2x');
+            helper_panel_toggle.firstElementChild.srcset = $cms.img('{$IMG;,icons/28x28/helper_panel_show} 2x');
         }
     }
-}(window.Composr));
+}(window.$cms));

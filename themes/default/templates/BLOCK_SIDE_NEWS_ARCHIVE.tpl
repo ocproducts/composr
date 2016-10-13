@@ -4,7 +4,7 @@
 {$,Try and set to year of currently viewed item or otherwise the current year}
 {$SET,news_archive_year,{$?,{$IS_EMPTY,{$_GET,year}},{$?,{$IS_EMPTY,{$METADATA,created}},{$FROM_TIMESTAMP,Y},{$PREG_REPLACE,-.*$,,{$METADATA,created}}},{$_GET,year}}}
 
-<section class="box box___block_side_news_archive" data-view-core="ToggleableTray">
+<section class="box box___block_side_news_archive" data-view="ToggleableTray">
 <div class="box_inner">
 	<h3>{TITLE*}</h3>
 

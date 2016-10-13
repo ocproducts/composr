@@ -1,4 +1,4 @@
-<div data-tpl-galleries="galleryImportScreen">
+<div data-tpl="galleryImportScreen">
 {$REQUIRE_JAVASCRIPT,galleries}
 
 {TITLE}

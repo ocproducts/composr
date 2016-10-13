@@ -1,41 +1,33 @@
-(function (Composr) {
+(function ($cms) {
     'use strict';
 
-    Composr.behaviors.coreThemeing = {
-        initialize: {
-            attach: function (context) {
-                Composr.initializeTemplates(context, 'core_themeing');
-            }
+    function ThemeManageScreen() {
+        $cms.View.apply(this, arguments);
+    }
+
+    $cms.inherits(ThemeManageScreen, $cms.View);
+
+    function ThemeTemplateEditorTab(options) {
+        $cms.View.apply(this, arguments);
+
+        // Allow searching via URL hash
+        if (window.location.hash) {
+            window.setTimeout(function () {
+                var hash = window.location.hash.substr(1, window.location.hash.length - 1);
+                editarea_do_search('e_' + options.fileId, hash);
+            }, 2000);
         }
-    };
 
-    var ThemeManageScreen = Composr.View.extend({
-        initialize: function (v, options) {
-            ThemeManageScreen.__super__.initialize.apply(this, arguments);
+        if ($cms.$CONFIG_OPTION.editarea) {
+            ace_composr_loader('e_' + options.fileId, options.highlighterType, false);
         }
-    });
 
-    var ThemeTemplateEditorTab = Composr.View.extend({
-        initialize: function (v, options) {
-            this.options = options;
+        if (options.includeCssEditing && window.opener && window.opener.document) {
+            load_contextual_css_editor(options.file, options.fileId);
+        }
+    }
 
-            // Allow searching via URL hash
-            if (window.location.hash) {
-                window.setTimeout(function () {
-                    var hash = window.location.hash.substr(1, window.location.hash.length - 1);
-                    editarea_do_search('e_' + options.fileId, hash);
-                }, 2000);
-            }
-
-            if (Composr.is(Composr.$CONFIG_OPTION.editarea)) {
-                ace_composr_loader('e_' + options.fileId, options.highlighterType, false);
-            }
-
-            if (Composr.is(options.includeCssEditing) && window.opener && window.opener.document) {
-                load_contextual_css_editor(options.file, options.fileId);
-            }
-        },
-
+    $cms.inherits(ThemeTemplateEditorTab, $cms.View, {
         events: {
             'keydown .js-ta-tpl-editor': 'editorKeyPress',
             'click .js-btn-save-content': 'saveContent',
@@ -110,33 +102,46 @@
         }
     });
 
-    Composr.views.ThemeManageScreen = ThemeManageScreen;
-    Composr.views.ThemeTemplateEditorTab = ThemeTemplateEditorTab;
+    $cms.views.ThemeManageScreen = ThemeManageScreen;
+    $cms.views.ThemeTemplateEditorTab = ThemeTemplateEditorTab;
 
-    Composr.templates.coreThemeing = {
+    $cms.extend($cms.templates, {
         tempcodeTesterScreen: function () {
             var form = this,
                 button = form.querySelector('.js-btn-do-preview');
 
             button.addEventListener('click', function () {
-                doTempcodeTesterPreview(form);
+                var request = '';
+
+                for (var i = 0; i < form.elements.length; i++) {
+                    request += encodeURIComponent(form.elements[i].name) + '=' + encodeURIComponent(form.elements[i].value) + '&';
+                }
+
+                do_ajax_request('{$FIND_SCRIPT;,tempcode_tester}' + keep_stub(true), function (ajax_result) {
+                    $cms.dom.html(document.getElementById('preview_raw'), escape_html(ajax_result.responseText));
+                    $cms.dom.html(document.getElementById('preview_html'), ajax_result.responseText);
+                }, request);
+
+                do_ajax_request('{$FIND_SCRIPT;,tempcode_tester}?comcode=1' + keep_stub(), function (ajax_result) {
+                    $cms.dom.html(document.getElementById('preview_comcode'), ajax_result.responseText);
+                }, request);
             });
         },
 
         themeTemplateEditorScreen: function (options) {
             window.template_editor_theme = options.theme;
 
-            if (typeof options.activeGuid !== 'undefined') {
+            if (options.activeGuid !== undefined) {
                 window.template_editor_active_guid = options.activeGuid;
             }
 
-            if (typeof options.livePreviewUrl !== 'undefined') {
+            if (options.livePreviewUrl !== undefined) {
                 window.template_editor_live_preview_url = options.livePreviewUrl;
             }
 
             template_editor_clean_tabs();
 
-            window.sitemap = new tree_list('theme_files', 'data/ajax_tree.php?hook=choose_theme_files&theme=' + options.theme + Composr.$KEEP, null, '', false, null, false, true);
+            window.sitemap = $cms.createTreeList('theme_files', 'data/ajax_tree.php?hook=choose_theme_files&theme=' + options.theme + $cms.$KEEP, null, '', false, null, false, true);
 
             window.setTimeout(function () {
                 for (var i = 0, len = options.filesToLoad.length; i < len; i++) {
@@ -152,23 +157,6 @@
         themeImageManageScreen: function () {
             window.main_form_very_simple = true;
         }
-    };
-
-    function doTempcodeTesterPreview(form) {
-        var request = '';
-
-        for (var i = 0; i < form.elements.length; i++) {
-            request += window.encodeURIComponent(form.elements[i].name) + '=' + window.encodeURIComponent(form.elements[i].value) + '&';
-        }
-
-        do_ajax_request('{$FIND_SCRIPT;,tempcode_tester}' + keep_stub(true), function (ajax_result) {
-            Composr.dom.html(document.getElementById('preview_raw'), escape_html(ajax_result.responseText));
-            Composr.dom.html(document.getElementById('preview_html'), ajax_result.responseText);
-        }, request);
-
-        do_ajax_request('{$FIND_SCRIPT;,tempcode_tester}?comcode=1' + keep_stub(), function (ajax_result) {
-            Composr.dom.html(document.getElementById('preview_comcode'), ajax_result.responseText);
-        }, request);
-    }
-}(window.Composr));
+    });
+}(window.$cms));
 

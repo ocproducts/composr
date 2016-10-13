@@ -1,59 +1,48 @@
 'use strict';
-(function (Composr) {
+(function ($cms) {
     if (window.slideshow_timer === undefined) {
         window.slideshow_timer = null;
         window.slideshow_slides = {};
         window.slideshow_time = null;
     }
 
-    Composr.behaviors.galleries = {
-        initialize: {
-            attach: function (context) {
-                Composr.initializeViews(context, 'galleries');
-                Composr.initializeTemplates(context, 'galleries');
-            }
+    function BlockMainImageFader(options) {
+        $cms.View.apply(this, arguments);
+
+        var data = {},
+            key,
+            id = options.randFaderImage;
+
+        data.fp_animation = document.getElementById('image_fader_' + id);
+        data.fp_animation_fader = document.createElement('img');
+        data.tease_title = document.getElementById('image_fader_title_' + id);
+        data.tease_scrolling_text = document.getElementById('image_fader_scrolling_text_' + id);
+        data.fp_animation_fader.className = 'img_thumb';
+        data.fp_animation.parentNode.insertBefore(data.fp_animation_fader, data.fp_animation);
+        data.fp_animation.parentNode.style.position = 'relative';
+        data.fp_animation.parentNode.style.display = 'block';
+        data.fp_animation_fader.style.position = 'absolute';
+        data.fp_animation_fader.src = $cms.img('{$IMG;,blank}');
+
+        for (key in options.titles) {
+            this.initializeTitle(data, options.titles[key], key);
         }
-    };
 
-    var BlockMainImageFader = Composr.View.extend({
-        initialize: function (v, options) {
-            var data = {}, key, id = options.randFaderImage;
-            BlockMainImageFader.__super__.initialize.apply(this, arguments);
+        for (key in options.html) {
+            this.initializeHtml(data, options.html[key], key);
+        }
 
-            data.fp_animation = document.getElementById('image_fader_' + id);
-            data.fp_animation_fader = document.createElement('img');
-            data.tease_title = document.getElementById('image_fader_title_' + id);
-            data.tease_scrolling_text = document.getElementById('image_fader_scrolling_text_' + id);
-            data.fp_animation_fader.className = 'img_thumb';
-            data.fp_animation.parentNode.insertBefore(data.fp_animation_fader, data.fp_animation);
-            data.fp_animation.parentNode.style.position = 'relative';
-            data.fp_animation.parentNode.style.display = 'block';
-            data.fp_animation_fader.style.position = 'absolute';
-            data.fp_animation_fader.src = Composr.url('{$IMG;,blank}');
+        for (key in options.images) {
+            this.initializeImage(data, options.images[key], key, options.mill, options.images.length);
+        }
+    }
 
-            for (key in options.titles) {
-                if (options.titles.hasOwnProperty(key)) {
-                    this.initializeTitle(data, options.titles[key], key);
-                }
-            }
-
-            for (key in options.html) {
-                if (options.html.hasOwnProperty(key)) {
-                    this.initializeHtml(data, options.html[key], key);
-                }
-            }
-
-            for (key in options.images) {
-                if (options.images.hasOwnProperty(key)) {
-                    this.initializeImage(data, options.images[key], key, options.mill, options.images.length);
-                }
-            }
-        },
+    $cms.inherits(BlockMainImageFader, $cms.View, {
         initializeTitle: function (data, v, k) {
             data['title' + k] = v;
             if (k == 0) {
                 if (data.tease_title) {
-                    Composr.dom.html(data.tease_title, data['title' + k]);
+                    $cms.dom.html(data.tease_title, data['title' + k]);
                 }
             }
         },
@@ -61,7 +50,7 @@
             data['html' + k] = v;
             if (k == 0) {
                 if (data.tease_scrolling_text) {
-                    Composr.dom.html(data.tease_scrolling_text, (data['html' + k] == '') ? '{!MEDIA;}' : data['html' + k]);
+                    $cms.dom.html(data.tease_scrolling_text, (data['html' + k] == '') ? '{!MEDIA;}' : data['html' + k]);
                 }
             }
         },
@@ -86,10 +75,10 @@
                     data.fp_animation_fader.style.left = ((data.fp_animation_fader.parentNode.offsetWidth - data.fp_animation_fader.offsetWidth) / 2) + 'px';
                     data.fp_animation_fader.style.top = ((data.fp_animation_fader.parentNode.offsetHeight - data.fp_animation_fader.offsetHeight) / 2) + 'px';
                     if (data.tease_title) {
-                        Composr.dom.html(data.tease_title, data['title' + k]);
+                        $cms.dom.html(data.tease_title, data['title' + k]);
                     }
                     if (data.tease_scrolling_text) {
-                        Composr.dom.html(data.tease_scrolling_text, data['html' + k]);
+                        $cms.dom.html(data.tease_scrolling_text, data['html' + k]);
                     }
                 }
 
@@ -102,17 +91,18 @@
         }
     });
 
-    var GalleryNav = Composr.View.extend({
-        initialize: function (v, options) {
-            GalleryNav.__super__.initialize.apply(this, arguments);
+    function GalleryNav(options) {
+        $cms.View.apply(this, arguments);
 
-            window.slideshow_current_position = options._x - 1;
-            window.slideshow_total_slides = options._n;
+        window.slideshow_current_position = options._x - 1;
+        window.slideshow_total_slides = options._n;
 
-            if (Composr.is(options.slideshow)) {
-                this.initializeSlideshow();
-            }
-        },
+        if (options.slideshow) {
+            this.initializeSlideshow();
+        }
+    }
+
+    $cms.inherits(GalleryNav, $cms.View, {
         initializeSlideshow: function () {
             reset_slideshow_countdown();
             start_slideshow_timer();
@@ -159,11 +149,10 @@
         }
     });
 
-    Composr.views.galleries = {
-        GalleryNav: GalleryNav
-    };
+    $cms.views.BlockMainImageFader = BlockMainImageFader;
+    $cms.views.GalleryNav = GalleryNav;
 
-    Composr.templates.galleries = {
+    $cms.extend($cms.templates, {
         blockMainGalleryEmbed: function blockMainGalleryEmbed(options) {
             if (!options.carouselId || !options.blockCallUrl) {
                 return;
@@ -208,7 +197,7 @@
                 files[i].onmouseout = preview_generator_mouseout;
             }
         }
-    };
+    });
 
     function start_slideshow_timer() {
         if (!window.slideshow_timer) {
@@ -230,7 +219,7 @@
     function show_current_slideshow_time() {
         var changer = document.getElementById('changer_wrap');
         if (changer) {
-            Composr.dom.html(changer, '{!galleries:CHANGING_IN,xxx}'.replace('xxx', (window.slideshow_time < 0) ? 0 : window.slideshow_time));
+            $cms.dom.html(changer, '{!galleries:CHANGING_IN,xxx}'.replace('xxx', (window.slideshow_time < 0) ? 0 : window.slideshow_time));
         }
     }
 
@@ -259,7 +248,7 @@
             message = '{!galleries:STOPPED;}';
         }
         var changer = document.getElementById('changer_wrap');
-        if (changer) Composr.dom.html(changer, message);
+        if (changer) $cms.dom.html(changer, message);
         if (window.slideshow_timer) window.clearInterval(window.slideshow_timer);
         window.slideshow_timer = null;
         document.getElementById('gallery_entry_screen').style.cursor = '';
@@ -295,7 +284,7 @@
         }
 
         if (window.slideshow_current_position === slide) {// Ah, it's where we are, so save that in
-            window.slideshow_slides[slide] = Composr.dom.html(document.getElementById('gallery_entry_screen'));
+            window.slideshow_slides[slide] = $cms.dom.html(document.getElementById('gallery_entry_screen'));
             return;
         }
 
@@ -306,7 +295,7 @@
             if (slide == window.slideshow_current_position - 1)
                 url = document.getElementById('previous_slide').value;
 
-            if (typeof callback != 'undefined') {
+            if (callback !== undefined) {
                 do_ajax_request(url, function (ajax_result_raw) {
                     _slideshow_read_in_slide(ajax_result_raw, slide);
                     callback();
@@ -333,7 +322,7 @@
                 var slideshow_from = document.getElementById('slideshow_from');
 
                 var fade_elements_old = document.body.querySelectorAll('.scale_down');
-                if (typeof fade_elements_old[0] != 'undefined') {
+                if (fade_elements_old[0] !== undefined) {
                     var fade_element_old = fade_elements_old[0];
                     var left_pos = fade_element_old.parentNode.offsetWidth / 2 - fade_element_old.offsetWidth / 2;
                     fade_element_old.style.left = left_pos + 'px';
@@ -341,7 +330,7 @@
                 } // else probably a video
 
                 var cleaned_slide_html = window.slideshow_slides[slide].replace(/<!DOCTYPE [^>]*>/i, '').replace(/<script[^>]*>(.|\n)*?<\/script>/gi, '');
-                Composr.dom.html(document.getElementById('gallery_entry_screen'), cleaned_slide_html);
+                $cms.dom.html(document.getElementById('gallery_entry_screen'), cleaned_slide_html);
 
                 fade_elements = document.body.querySelectorAll('.scale_down');
                 if ((fade_elements[0] !== undefined) && (fade_elements_old[0] !== undefined)) {
@@ -385,5 +374,5 @@
     // Exports to be gotten rid of later
     window.player_stopped = player_stopped;
     window.stop_slideshow_timer = stop_slideshow_timer;
-}(window.Composr));
+}(window.$cms));
 

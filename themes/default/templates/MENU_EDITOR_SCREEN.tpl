@@ -1,4 +1,4 @@
-<div data-tpl-core-menus="menuEditorScreen" data-tpl-args="{+START,PARAMS_JSON,ALL_MENUS}{_*}{+END}">
+<div data-tpl="menuEditorScreen" data-tpl-args="{+START,PARAMS_JSON,ALL_MENUS}{_*}{+END}">
 {TITLE}
 
 {+START,INCLUDE,HANDLE_CONFLICT_RESOLUTION}{+END}
@@ -83,7 +83,7 @@
 		<input type="hidden" name="confirm" value="1" />
 	</form>
 
-	<div class="box box___menu_editor_screen" data-view-core="ToggleableTray">
+	<div class="box box___menu_editor_screen" data-view="ToggleableTray">
 		<h2 class="toggleable_tray_title">
 			<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!EXPAND}: {!DELETE_MENU}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
 			<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!DELETE_MENU}</a>

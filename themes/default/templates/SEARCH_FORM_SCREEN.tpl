@@ -22,7 +22,7 @@
 {+END}
 
 {+START,IF_PASSED,RESULTS}
-<div class="box" data-view-core="ToggleableTray">
+<div class="box" data-view="ToggleableTray">
 {+END}
 	{+START,IF_PASSED,RESULTS}
 		<h2 class="toggleable_tray_title js-tray-header">
@@ -103,7 +103,7 @@
 						<td class="form_table_field_input" colspan="2">
 							<div class="accessibility_hidden"><label for="search_author">{USER_LABEL*}</label></div>
 							<div class="constrain_field">
-								<span class="invisible_ref_point"></span><input autocomplete="off" maxlength="80" class="wide_field js-keyup-update-author-list" onkeyup="update_ajax_author_list(this,event);" type="text" value="{AUTHOR*}" id="search_author" name="author" {+START,IF,{$MOBILE}} autocorrect="off"{+END} />
+								<span class="invisible_ref_point"></span><input autocomplete="off" maxlength="80" class="wide_field js-keyup-update-author-list" type="text" value="{AUTHOR*}" id="search_author" name="author" {+START,IF,{$MOBILE}} autocorrect="off"{+END} />
 							</div>
 						</td>
 					</tr>

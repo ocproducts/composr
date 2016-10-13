@@ -1,3 +1,5 @@
+{$REQUIRE_JAVASCRIPT,page_management}
+
 {$SET,edit_zone_url,{$PAGE_LINK,_SEARCH:admin_zones:_edit:!}};
 {$SET,add_zone_url,{$PAGE_LINK,_SEARCH:admin_zones:add}};
 {$SET,zone_editor_url,{$PAGE_LINK,_SEARCH:admin_zones:_editor:!}};
@@ -6,8 +8,7 @@
 {$SET,add_page_url,{$PAGE_LINK,_SEARCH:cms_comcode_pages:_edit:page_link=!:example}};
 {$SET,delete_url,{$PAGE_LINK,_SELF:_SELF:_delete:zone=[1]:page__[2]=1}};
 {$SET,stats_url,{+START,IF,{$ADDON_INSTALLED,stats}}{$PAGE_LINK,_SEARCH:admin_stats:_page:iscreen=!}{+END}};
-{$SET,move_url,{$PAGE_LINK,_SELF:_SELF:_move:zone=[1]:destination_zone=[3]:page__[2]=1}};
-<div data-tpl-page-management="sitemapEditorScreen" data-tpl-args="{+START,PARAMS_JSON,edit_zone_url,add_zone_url,zone_editor_url,permission_tree_editor_url,edit_page_url,add_page_url,delete_url,stats_url,move_url}{_*}{+END}">
+<div data-tpl="sitemapEditorScreen" data-tpl-args="{+START,PARAMS_JSON,edit_zone_url,add_zone_url,zone_editor_url,permission_tree_editor_url,edit_page_url,add_page_url,delete_url,stats_url}{_*}{+END}">
 {TITLE}
 
 <div class="float_surrounder">
@@ -29,7 +30,7 @@
 			<form title="{!PRIMARY_PAGE_FORM}" action="index.php" method="post" autocomplete="off">
 				{$INSERT_SPAMMER_BLACKHOLE}
 
-				<input onchange="update_details_box(this)" style="display: none" type="text" id="tree_list" name="tree_list" value="{$_GET*,id}" />
+				<input style="display: none" type="text" id="tree_list" name="tree_list" value="{$_GET*,id}" class="js-change-update-details-box" />
 				<div id="tree_list__root_tree_list" class="sitemap_editor">
 					<!-- List put in here -->
 				</div>

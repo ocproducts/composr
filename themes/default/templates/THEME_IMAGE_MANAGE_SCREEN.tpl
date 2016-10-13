@@ -1,4 +1,4 @@
-<div data-tpl-core-themeing="themeImageManageScreen">
+<div data-tpl="themeImageManageScreen">
 {TITLE}
 
 <h2>{!EDIT}</h2>

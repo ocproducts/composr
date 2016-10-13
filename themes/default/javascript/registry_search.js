@@ -1,9 +1,19 @@
-(function (Composr) {
+(function ($cms) {
     'use strict';
 
-    Composr.views.SearchFormScreen = Composr.View.extend({
+    function SearchFormScreen() {
+        $cms.View.apply(this, arguments);
+    }
+
+    $cms.inherits(SearchFormScreen, $cms.View, {
         events: {
             'keyup .js-keyup-update-author-list': 'updateAuthorList'
+        },
+        updateAuthorList: function (e, target) {
+            update_ajax_author_list(target, e);
         }
     });
-}(window.Composr));
+
+    $cms.views.SearchFormScreen = SearchFormScreen;
+
+}(window.$cms));

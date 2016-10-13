@@ -9,7 +9,7 @@
 </select>
 
 {$SET,delimiter,}
-<script type="application/json" data-tpl-core-form-interfaces="formScreenInputList">
+<script type="application/json" data-tpl="formScreenInputList">
 [
 	{+START,PARAMS_JSON,INLINE_LIST,IMAGES,NAME}{_/}{+END},
 	[

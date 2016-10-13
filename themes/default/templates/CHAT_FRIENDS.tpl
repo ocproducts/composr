@@ -1,6 +1,6 @@
 {$REQUIRE_JAVASCRIPT,chat}
 {+START,IF_NON_EMPTY,{FRIENDS}}
-	<div class="wide_table_wrap" data-tpl-chat="chatFriends" data-tpl-args="{+START,PARAMS_JSON,FRIENDS}{_*}{+END}">
+	<div class="wide_table_wrap" data-tpl="chatFriends" data-tpl-args="{+START,PARAMS_JSON,FRIENDS}{_*}{+END}">
 		<table class="columned_table results_table wide_table autosized_table">
 		<colgroup>
 			<col class="chat_friends_column" />

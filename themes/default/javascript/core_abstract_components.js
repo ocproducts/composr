@@ -1,28 +1,21 @@
-(function (Composr) {
+(function ($cms) {
     'use strict';
-    Composr.behaviors.coreAbstractComponents = {
-        initialize: {
-            attach: function (context) {
-                Composr.initializeTemplates(context, 'core_abstract_components');
-            }
-        }
-    };
 
-    Composr.templates.coreAbstractComponents = {
+    $cms.extend($cms.templates, {
         cropTextMouseOver: function (options) {
-            var textLarge = Composr.filter.crLf(options.textLarge),
+            var textLarge = $cms.filter.crLf(options.textLarge),
                 el = this;
 
-            Composr.dom.on(el, 'mouseover', function (e) {
+            $cms.dom.on(el, 'mouseover', function (e) {
                 activate_tooltip(el, e, textLarge, '40%');
             });
         },
 
         cropTextMouseOverInline: function (options) {
-            var textLarge = Composr.filter.crLf(options.textLarge),
+            var textLarge = $cms.filter.crLf(options.textLarge),
                 el = this;
 
-            Composr.dom.on(el, 'mouseover', function (e) {
+            $cms.dom.on(el, 'mouseover', function (e) {
                 var window = get_main_cms_window(true);
                 window.activate_tooltip(el, e, textLarge, '40%', null, null, null, false, false, false, window);
             });
@@ -33,9 +26,9 @@
                 ids = options.implodedIds,
                 id = options.id;
 
-            Composr.dom.on(container, 'click', '.js-click-threaded-load-more', function () {
+            $cms.dom.on(container, 'click', '.js-click-threaded-load-more', function () {
                 /* Load more from a threaded topic */
-                load_snippet('comments&id=' + window.encodeURIComponent(id) + '&ids=' + window.encodeURIComponent(ids) + '&serialized_options=' + window.encodeURIComponent(window.comments_serialized_options) + '&hash=' + window.encodeURIComponent(window.comments_hash), null, function (ajax_result) {
+                load_snippet('comments&id=' + encodeURIComponent(id) + '&ids=' + encodeURIComponent(ids) + '&serialized_options=' + encodeURIComponent(window.comments_serialized_options) + '&hash=' + encodeURIComponent(window.comments_hash), null, function (ajax_result) {
                     var wrapper;
                     if (id !== '') {
                         wrapper = document.getElementById('post_children_' + id);
@@ -44,7 +37,7 @@
                     }
                     container.parentNode.removeChild(container);
 
-                    Composr.dom.appendHtml(wrapper, ajax_result.responseText);
+                    $cms.dom.appendHtml(wrapper, ajax_result.responseText);
 
                     window.setTimeout(function () {
                         var _ids = ids.split(',');
@@ -64,7 +57,7 @@
         handleConflictResolution: function (options) {
             options = options || {};
 
-            if (Composr.is(options.pingUrl)) {
+            if (options.pingUrl) {
                 do_ajax_request(options.pingUrl);
 
                 window.setInterval(function () {
@@ -72,5 +65,5 @@
                 }, 12000);
             }
         }
-    };
-}(window.Composr));
+    });
+}(window.$cms));

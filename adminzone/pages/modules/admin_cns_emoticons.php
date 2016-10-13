@@ -122,7 +122,7 @@ class Module_admin_cns_emoticons extends Standard_crud_module
                 form.old_submit=form.onsubmit;
                 form.onsubmit=function() {
                     document.getElementById('submit_button').disabled=true;
-                    var url='" . addslashes($script) . "?snippet=exists_emoticon&name='+window.encodeURIComponent(form.elements['code'].value);
+                    var url='" . addslashes($script) . "?snippet=exists_emoticon&name='+encodeURIComponent(form.elements['code'].value);
                     if (!do_ajax_field_test(url))
                     {
                         document.getElementById('submit_button').disabled=false;

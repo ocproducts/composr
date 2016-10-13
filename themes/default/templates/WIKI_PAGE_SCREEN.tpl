@@ -56,7 +56,7 @@
 	{+END}
 
 	{+START,IF,{$AND,{$NOT,{$PREG_MATCH,(^|&|\?)te\_\d+=1,{$QUERY_STRING}}},{HIDE_POSTS}}}
-		<div data-view-core="ToggleableTray">
+		<div data-view="ToggleableTray">
 			<p class="toggleable_tray_title js-tray-header">
 				<a class="toggleable_tray_button js-btn-tray-toggle" title="{!DISCUSSION}: {!EXPAND}/{!CONTRACT}" href="#!"><img alt="{!EXPAND}: {!DISCUSSION}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
 				<a class="toggleable_tray_button js-btn-tray-toggle" title="{!DISCUSSION}: {!EXPAND}/{!CONTRACT}" href="#!">{!DISCUSSION}</a> ({!POST_PLU,{NUM_POSTS*}})

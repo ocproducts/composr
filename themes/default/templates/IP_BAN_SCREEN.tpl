@@ -1,4 +1,4 @@
-<div data-tpl-core="ipBanScreen">
+<div data-tpl="ipBanScreen">
 {TITLE}
 
 {+START,INCLUDE,HANDLE_CONFLICT_RESOLUTION}{+END}

@@ -1,25 +1,20 @@
-(function (Composr) {
+(function ($cms) {
     'use strict';
 
-    Composr.behaviors.coreAddonManagement = {
-        initialize: {
-            attach: function (context) {
-                Composr.initializeViews(context, 'core_addon_management');
-                Composr.initializeTemplates(context, 'core_addon_management');
-            }
-        }
-    };
+    function AddonInstallConfirmScreen() {
+        $cms.View.apply(this, arguments);
+    }
 
-    var AddonInstallConfirmScreen = Composr.View.extend({
-        initialize: function () {
-            AddonInstallConfirmScreen.__super__.initialize.apply(this, arguments);
-        }
-    });
+    $cms.inherits(AddonInstallConfirmScreen, $cms.View);
 
     // Templates:
     // ADDON_SCREEN.tpl
     // - ADDON_SCREEN_ADDON.tpl
-    var AddonScreen = Composr.View.extend({
+    function AddonScreen() {
+        $cms.View.apply(this, arguments);
+    }
+
+    $cms.inherits(AddonScreen, $cms.View, {
         events: {
             'click .js-click-check-uninstall-all': 'checkUninstallAll'
         },
@@ -33,11 +28,6 @@
         }
     });
 
-    Composr.views.coreAddonManagement = {
-        AddonInstallConfirmScreen: AddonInstallConfirmScreen,
-        AddonScreen: AddonScreen
-    };
-
-    Composr.templates.coreAddonManagement = {};
-
-}(window.Composr));
+    $cms.views.AddonInstallConfirmScreen = AddonInstallConfirmScreen;
+    $cms.views.AddonScreen = AddonScreen;
+}(window.$cms));

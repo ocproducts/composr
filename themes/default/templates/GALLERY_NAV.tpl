@@ -1,5 +1,5 @@
 {$REQUIRE_JAVASCRIPT,ajax}
-<div data-view-galleries="GalleryNav" data-view-args="{+START,PARAMS_JSON,_X,_N,SLIDESHOW}{_*}{+END}">
+<div data-view="GalleryNav" data-view-args="{+START,PARAMS_JSON,_X,_N,SLIDESHOW}{_*}{+END}">
 	{+START,IF,{SLIDESHOW}}
 		<label for="slideshow_from" class="slideshow_speed">
 			{!SPEED_IN_SECS}
@@ -10,7 +10,7 @@
 	{+END}
 
 	<div class="trinav_wrap">
-		<div class="trinav_left" onclick="/*Access-note: code has other activation*/ cancel_bubbling(event);">
+		<div class="trinav_left" onclick="cancel_bubbling(event);">
 			{$,Back}
 			{+START,IF_NON_EMPTY,{BACK_URL}}
 				<a class="button_screen buttons__previous {+START,IF,{SLIDESHOW}}js-click-slideshow-backward{+END}"{+START,IF,{SLIDESHOW}} data-cms-js="1"{+END} rel="prev" accesskey="j" href="{BACK_URL*}"><span>{!PREVIOUS}</span></a>
@@ -20,7 +20,7 @@
 			{+END}
 		</div>
 
-		<div class="trinav_right" onclick="/*Access-note: code has other activation*/ cancel_bubbling(event);">
+		<div class="trinav_right" onclick="cancel_bubbling(event);">
 			{$,Start slideshow}
 			{+START,IF_NON_EMPTY,{SLIDESHOW_URL}}
 				{+START,IF,{$NOT,{$MOBILE}}}

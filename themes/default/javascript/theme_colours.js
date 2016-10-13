@@ -13,16 +13,17 @@ function hex_to_dec(number) {
     return parseInt(number, 16);
 }
 
-if (typeof window.names_to_numbers == 'undefined') {
+if (window.names_to_numbers === undefined) {
     window.names_to_numbers = {length: 0};
     window.last_cc = {};
     window.last_cc_i = {};
 }
 
 function make_colour_chooser(name, color, context, tabindex, label, className) {
-    if ((typeof label == 'undefined') || (!label)) var label = '&lt;color-' + name + '&gt;';
-    if (typeof className == 'undefined') {
-        var className = '';
+    label || (label = '&lt;color-' + name + '&gt;');
+
+    if (className === undefined) {
+        className = '';
     } else {
         className = 'class="' + className + '" ';
     }
@@ -31,11 +32,16 @@ function make_colour_chooser(name, color, context, tabindex, label, className) {
     window.names_to_numbers.length++;
 
     var p = document.getElementById('colours_go_here_' + name);
-    if (!p) p = document.getElementById('colours_go_here');
+    if (!p) {
+        p = document.getElementById('colours_go_here');
+    }
 
     if ((color != '') && (color.substr(0, 1) != '#') && (color.substr(0, 3) != 'rgb')) {
-        if (color.match(/[A-Fa-f\d]\{6\}/)) color = '#' + color;
-        else color = '#000000';
+        if (color.match(/[A-Fa-f\d]\{6\}/)) {
+            color = '#' + color;
+        } else {
+            color = '#000000';
+        }
     }
 
     var _color = (color == '' || color == '#') ? '#000000' : ('#' + color.substr(1));
@@ -63,9 +69,9 @@ function make_colour_chooser(name, color, context, tabindex, label, className) {
     if (context != '') t = t + '<div class="css_colour_chooser_context">' + context + '</div>';
 
     if (p.id === 'colours_go_here') {
-        Composr.dom.appendHtml(p, t);
+        $cms.dom.appendHtml(p, t);
     } else {
-        Composr.dom.html(p, t);
+        $cms.dom.html(p, t);
     }
 
     /*
@@ -139,14 +145,14 @@ function do_color_chooser_element(element) {
             if (selected) style += 'outline: 3px solid gray; position: relative;';
             innert = innert + '<div onclick="do_color_change(event);" class="css_colour_strip" style="' + style + '" id="' + tid + '"></div>';
         }
-        Composr.dom.html(c[d], innert);
+        $cms.dom.html(c[d], innert);
     }
 }
 
 function do_color_change(e) {
     // Find our colour element we clicked on
     var targ;
-    if (typeof e.target != 'undefined') targ = e.target;
+    if (e.target !== undefined) targ = e.target;
 
     // Find the colour chooser's ID of this element
     var _id = targ.id.substring(targ.id.lastIndexOf('#') + 1);

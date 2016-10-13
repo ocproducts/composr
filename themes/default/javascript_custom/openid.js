@@ -5,7 +5,7 @@ http://code.google.com/p/openid-realselector/
 Martin Conte Mac Donell <Reflejo@gmail.com>
 */
 
-(function($) {
+(function($, $cms) {
 	$.fn.openid = function(opt) {
 		var gprovider;
 		var INPUTID = 'openid_username';
@@ -179,4 +179,4 @@ Martin Conte Mac Donell <Reflejo@gmail.com>
 
 		return this;
 	};
-})(jQuery);
+}(window.jQuery, window.$cms));

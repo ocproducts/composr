@@ -4,7 +4,7 @@
  Poll for notifications (and unread PTs)
  */
 
-if (typeof window.notifications_time_barrier == 'undefined') {
+if (window.notifications_time_barrier === undefined) {
     window.notifications_already_presented = {};
 
     window.NOTIFICATION_POLL_FREQUENCY = '{$CONFIG_OPTION%,notification_poll_frequency}';
@@ -27,8 +27,10 @@ function notification_poller_init(time_barrier) {
 
 function notifications_mark_all_read(event) {
     var url = '{$FIND_SCRIPT;,notifications}?type=poller&type=mark_all_read';
-    if (typeof window.max_notifications_to_show != 'undefined') url += '&max=' + window.max_notifications_to_show;
-    url += '&time_barrier=' + window.encodeURIComponent(window.notifications_time_barrier);
+    if (window.max_notifications_to_show !== undefined) {
+        url += '&max=' + window.max_notifications_to_show;
+    }
+    url += '&time_barrier=' + encodeURIComponent(window.notifications_time_barrier);
     url += '&forced_update=1';
     url += keep_stub();
     do_ajax_request(url, window._poll_for_notifications);
@@ -37,8 +39,8 @@ function notifications_mark_all_read(event) {
 }
 
 function poll_for_notifications(forced_update, delay) {
-    if (typeof forced_update == 'undefined') forced_update = false;
-    if (typeof delay == 'undefined') delay = false;
+    forced_update = !!forced_update;
+    delay = !!delay;
 
     if (delay) {
         window.setTimeout(function () {
@@ -48,19 +50,19 @@ function poll_for_notifications(forced_update, delay) {
     }
 
     var url = '{$FIND_SCRIPT;,notifications}?type=poller&type=poller';
-    if (typeof window.max_notifications_to_show != 'undefined') url += '&max=' + window.max_notifications_to_show;
-    url += '&time_barrier=' + window.encodeURIComponent(window.notifications_time_barrier);
+    if (window.max_notifications_to_show !== undefined) url += '&max=' + window.max_notifications_to_show;
+    url += '&time_barrier=' + encodeURIComponent(window.notifications_time_barrier);
     if (forced_update) url += '&forced_update=1';
     url += keep_stub();
     do_ajax_request(url, window._poll_for_notifications);
 }
 
 function _poll_for_notifications(raw_ajax_result) {
-    if (typeof raw_ajax_result.getElementsByTagName == 'undefined')
+    if (raw_ajax_result.getElementsByTagName === undefined)
         return; // Some kind of error
 
-    var time_node = raw_ajax_result.getElementsByTagName('time')[0];
-    window.notifications_time_barrier = window.parseInt(Composr.dom.html(time_node));
+    var time_node = raw_ajax_result.querySelector('time');
+    window.notifications_time_barrier = window.parseInt($cms.dom.html(time_node));
 
     // HTML5 notification API
 
@@ -84,11 +86,11 @@ function _poll_for_notifications(raw_ajax_result) {
     if (spot) {
         display = raw_ajax_result.getElementsByTagName('display_web_notifications');
         button = document.getElementById('web_notifications_button');
-        if ((typeof display[0] != 'undefined') && (display[0])) {
+        if (display[0]) {
             unread = raw_ajax_result.getElementsByTagName('unread_web_notifications');
-            Composr.dom.html(spot, Composr.dom.html(display[0]));
-            Composr.dom.html(button.firstElementChild, Composr.dom.html(unread[0]));
-            button.className = 'count_' + Composr.dom.html(unread[0]);
+            $cms.dom.html(spot, $cms.dom.html(display[0]));
+            $cms.dom.html(button.firstElementChild, $cms.dom.html(unread[0]));
+            button.className = 'count_' + $cms.dom.html(unread[0]);
         }
     }
 
@@ -96,11 +98,11 @@ function _poll_for_notifications(raw_ajax_result) {
     if (spot) {
         display = raw_ajax_result.getElementsByTagName('display_pts');
         button = document.getElementById('pts_button');
-        if ((typeof display[0] != 'undefined') && (display[0])) {
+        if (display[0]) {
             unread = raw_ajax_result.getElementsByTagName('unread_pts');
-            Composr.dom.html(spot, Composr.dom.html(display[0]));
-            Composr.dom.html(button.firstElementChild, Composr.dom.html(unread[0]));
-            button.className = 'count_' + Composr.dom.html(unread[0]);
+            $cms.dom.html(spot, $cms.dom.html(display[0]));
+            $cms.dom.html(button.firstElementChild, $cms.dom.html(unread[0]));
+            button.className = 'count_' + $cms.dom.html(unread[0]);
         }
     }
 }
@@ -108,14 +110,14 @@ function _poll_for_notifications(raw_ajax_result) {
 function display_alert(notification) {
     var id = notification.getAttribute('id');
 
-    if (typeof window.notifications_already_presented[id] != 'undefined') return; // Already handled this one
+    if (window.notifications_already_presented[id] !== undefined) return; // Already handled this one
 
     // Play sound, if requested
     var sound = notification.getAttribute('sound');
     if (!sound) sound = (window.parseInt(notification.getAttribute('priority')) < 3) ? 'on' : 'off';
     if (read_cookie('sound', 'off') === 'off') sound = 'off';
     if (sound == 'on') {
-        if (typeof window.soundManager != 'undefined') {
+        if (window.soundManager !== undefined) {
             var go_func = function () {
                 var sound_url = 'data/sounds/message_received.mp3';
                 var base_url = ((sound_url.indexOf('data_custom') == -1) && (sound_url.indexOf('uploads/') == -1)) ? '{$BASE_URL_NOHTTP;}' : '{$CUSTOM_BASE_URL_NOHTTP;}';
@@ -124,7 +126,7 @@ function display_alert(notification) {
             };
 
             if (!window.soundManager.setupOptions.url) {
-                window.soundManager.setup({onready: go_func, url: get_base_url() + '/data/soundmanager', debugMode: false});
+                window.soundManager.setup({onready: go_func, url: $cms.$BASE_URL_S + 'data/soundmanager', debugMode: false});
             } else {
                 go_func();
             }
@@ -132,14 +134,14 @@ function display_alert(notification) {
     }
 
     // Show desktop notification
-    if (Composr.is(Composr.$CONFIG_OPTION.notificationDesktopAlerts) && window.notify.isSupported) {
-        var icon = Composr.url('{$IMG;,favicon}');
+    if ($cms.$CONFIG_OPTION.notificationDesktopAlerts && window.notify.isSupported) {
+        var icon = $cms.img('{$IMG;,favicon}');
         var title = '{!notifications:DESKTOP_NOTIFICATION_SUBJECT;}';
         title = title.replace(/\\{1\\}/, notification.getAttribute('subject'));
         title = title.replace(/\\{2\\}/, notification.getAttribute('from_username'));
         var body = '';//notification.getAttribute('rendered'); Looks ugly
         if (window.notify.permissionLevel() == window.notify.PERMISSION_GRANTED) {
-            var notification_wrapper = window.notify.createNotification(title, {'icon': icon, 'body': body, 'tag': '{$SITE_NAME;}__' + id});
+            var notification_wrapper = window.notify.createNotification(title, {'icon': icon, 'body': body, 'tag': $cms.$SITE_NAME + '__' + id});
             if (notification_wrapper) {
                 window.addEventListener('focus', function () {
                     notification_wrapper.close();
@@ -148,9 +150,7 @@ function display_alert(notification) {
                 notification_wrapper.notification.onclick = function () {
                     try {
                         window.focus();
-                    }
-                    catch (ex) {
-                    }
+                    } catch (ignore) {}
                 };
             }
         } else {
@@ -164,7 +164,7 @@ function display_alert(notification) {
 
 // We attach to an onclick handler, to enable desktop notifications later on; we need this as we cannot call requestPermission out of the blue
 function explicit_notifications_enable_request() {
-    if (Composr.is(Composr.$CONFIG_OPTION.notificationDesktopAlerts)) {
+    if ($cms.$CONFIG_OPTION.notificationDesktopAlerts) {
         window.notify.requestPermission();
     }
 }
@@ -188,17 +188,18 @@ function toggle_pts(event) {
 }
 
 function _toggle_messaging_box(event, name, hide) {
-    if (typeof hide == 'undefined') hide = false;
+    hide = !!hide;
 
     var e = document.getElementById(name + '_rel');
-    if (!e) return;
+    if (!e) {
+        return;
+    }
 
     event.within_message_box = true;
     cancel_bubbling(event);
 
     var body = document.body;
-    if (e.parentNode != body) // Move over, so it is not cut off by overflow:hidden of the header
-    {
+    if (e.parentNode != body) {// Move over, so it is not cut off by overflow:hidden of the header
         e.parentNode.removeChild(e);
         body.appendChild(e);
 
@@ -206,7 +207,7 @@ function _toggle_messaging_box(event, name, hide) {
             event.within_message_box = true;
         });
         body.addEventListener('click', function (event) {
-            if (typeof event.within_message_box != 'undefined') return;
+            if (event.within_message_box !== undefined) return;
             _toggle_messaging_box(event, 'top_personal_stats', true);
             _toggle_messaging_box(event, 'web_notifications', true);
             _toggle_messaging_box(event, 'pts', true);
@@ -220,7 +221,7 @@ function _toggle_messaging_box(event, name, hide) {
         var button_width = button.offsetWidth;
         var x = (button_x + button_width - e.offsetWidth);
         if (x < 0) {
-            var span = e.getElementsByTagName('span')[0];
+            var span = e.querySelector('span');
             span.style.marginLeft = (button_x + button_width / 4) + 'px';
             x = 0;
         }
@@ -236,7 +237,7 @@ function _toggle_messaging_box(event, name, hide) {
 
     if ((e.style.display == 'none') && (!hide)) {
         var tooltips = document.querySelectorAll('body>.tooltip');
-        if (typeof tooltips[0] != 'undefined')
+        if (tooltips[0] !== undefined)
             tooltips[0].style.display = 'none'; // Hide tooltip, to stop it being a mess
 
         e.style.display = 'inline';
@@ -245,9 +246,7 @@ function _toggle_messaging_box(event, name, hide) {
     }
     try {
         e.style.opacity = '0.0'; // Render, but invisibly, until we've positioned it
-    }
-    catch (ex) {
-    }
+    } catch (ex) {}
 
     return false;
 }
@@ -270,7 +269,7 @@ function _toggle_messaging_box(event, name, hide) {
  * Author: Tsvetan Tsvetkov (tsekach@gmail.com)
  */
 (function () {
-    if (Composr.not(Composr.$CONFIG_OPTION.notificationDesktopAlerts)) {
+    if (!$cms.$CONFIG_OPTION.notificationDesktopAlerts) {
         return;
     }
 
@@ -323,7 +322,7 @@ function _toggle_messaging_box(event, name, hide) {
             var name, s;
             for (name in source) {
                 s = source[name];
-                if ((typeof target[name] == 'undefined') || (!target.name) || (target[name] !== s && ((typeof empty[name] == 'undefined') || (!empty[name]) || empty[name] !== s))) {
+                if ((target[name] === undefined) || (!target.name) || (target[name] !== s && ((empty[name] === undefined) || (!empty[name]) || empty[name] !== s))) {
                     target[name] = s;
                 }
             }
@@ -364,7 +363,7 @@ function _toggle_messaging_box(event, name, hide) {
                 "ieVerification": ++ieVerification
             };
         } else {
-            if (typeof window.focus != 'undefined') {
+            if (window.focus !== undefined) {
                 try {
                     window.focus();
                 }

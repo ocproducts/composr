@@ -116,7 +116,7 @@ class Module_admin_cns_groups extends Standard_crud_module
                     form.old_submit=form.onsubmit;
                     form.onsubmit=function() {
                         document.getElementById('submit_button').disabled=true;
-                        var url='" . addslashes($script) . "?snippet=exists_usergroup&name='+window.encodeURIComponent(form.elements['name'].value);
+                        var url='" . addslashes($script) . "?snippet=exists_usergroup&name='+encodeURIComponent(form.elements['name'].value);
                         if (!do_ajax_field_test(url))
                         {
                             document.getElementById('submit_button').disabled=false;

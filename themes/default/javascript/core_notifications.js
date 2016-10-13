@@ -1,37 +1,32 @@
-(function (Composr) {
+(function ($cms) {
     'use strict';
 
-    Composr.behaviors.coreNotificatons = {
-        initialize: {
-            attach: function (context) {
-                Composr.initializeTemplates(context, 'core_notifications');
-            }
-        }
-    };
+    function NotificationButtons(options) {
+        $cms.View.apply(this, arguments);
 
-    Composr.views.NotificationButtons = Composr.View.extend({
-        disableForm: null,
-        enableForm: null,
-        initialize: function (v, opts) {
-            Composr.View.initialize.apply(this, arguments);
-            this.disableForm = this.$('#ndisable_' + opts.notificationId);
-            this.enableForm = this.$('#nenable_' + opts.notificationId);
-        },
+        this.disableFormEl = this.$('#ndisable_' + options.notificationId);
+        this.enableFormEl = this.$('#nenable_' + options.notificationId);
+
+    }
+
+    inherits(NotificationButtons, $cms.View, {
+        disableFormEl: null,
+        enableFormEl: null,
         events: {
             'submit .js-submit-show-disable-form': 'showDisableForm',
             'submit .js-submit-show-enable-form': 'showEnableForm'
         },
         showDisableForm: function () {
-            set_display_with_aria(this.enableForm, 'none');
-            set_display_with_aria(this.disableForm,'inline');
+            $cms.dom.show(this.disableFormEl);
+            $cms.dom.hide(this.enableFormEl);
         },
         showEnableForm: function () {
-            set_display_with_aria(this.disableForm, 'none');
-            set_display_with_aria(this.enableForm,'inline');
+            $cms.dom.hide(this.disableFormEl);
+            $cms.dom.show(this.enableFormEl);
         }
     });
 
-    Composr.templates.coreNotificatons = {
+    $cms.extend($cms.templates, {
         notificationPoller: function (options) {
             notification_poller_init(options.timestamp);
         },
@@ -49,26 +44,26 @@
         },
 
         notificationTypes: function (options) {
-            var types = options.notificationTypes, i, len, nt, el;
+            var types = options.notificationTypes || [];
 
-            for (i = 0, len = types.length; i < len; i++) {
-                nt = types[i];
+            types.forEach(function (nt) {
+                if (!nt || !nt.available || !nt.typeHasChildrenSet){
+                    return;
+                }
 
-                if (Composr.is(nt.available, nt.typeHasChildrenSet)) {
-                    el = document.getElementById('notification_' + options.scope + '_' + options.ntype);
+                var el = document.getElementById('notification_' + nt.scope + '_' + nt.ntype);
 
+                if (!el.checked) {
+                    el.indeterminate = true;
+                }
+
+                el.addEventListener('change', function () {
                     if (!el.checked) {
+                        // Put back
                         el.indeterminate = true;
                     }
-
-                    el.addEventListener('change', function () {
-                        if (!this.checked) {
-                            // Put back
-                            this.indeterminate = true;
-                        }
-                    });
-                }
-            }
+                });
+            });
         }
-    };
-}(window.Composr));
+    });
+}(window.$cms));

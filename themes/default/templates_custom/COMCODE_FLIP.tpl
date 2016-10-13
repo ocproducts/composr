@@ -10,7 +10,7 @@
 </div>
 
 <script>// <![CDATA[
-	Composr.ready.then(function() {
+$cms.ready.then(function() {
 		var _e=document.getElementById("flipbox_{$GET%,RAND_FLIP}");
 		_e.onclick=function() {
 			var e=$("#flipbox_{$GET%,RAND_FLIP}");

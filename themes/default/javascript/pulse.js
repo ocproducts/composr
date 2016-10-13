@@ -6,7 +6,7 @@ function find_text_nodes(e) {
         if (e.childNodes[i].nodeName == '#text') {
             found.push(e.childNodes[i]);
         }
-        if (typeof e.childNodes[i] != 'undefined') {
+        if (e.childNodes[i] !== undefined) {
             var found2 = find_text_nodes(e.childNodes[i]);
             for (var i2 = 0; i2 < found2.length; i2++) {
                 found.push(found2[i2]);

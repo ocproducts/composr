@@ -1,7 +1,7 @@
 {$REQUIRE_JAVASCRIPT,ajax}
 {$REQUIRE_JAVASCRIPT,checking}
 {$SET,block_call_url,{$FACILITATE_AJAX_BLOCK_CALL;,{BLOCK_PARAMS}}}
-<section id="tray_{!MODULE_TRANS_NAME_admin_actionlog|}" data-view-core="ToggleableTray" data-tray-cookie="{!MODULE_TRANS_NAME_admin_actionlog|}" data-tpl-core-adminzone-dashboard="blockMainStaffActions" data-tpl-args="{+START,PARAMS_JSON,wrapper_id,block_call_url}{_*}{+END}" class="box box___block_main_staff_actions">
+<section id="tray_{!MODULE_TRANS_NAME_admin_actionlog|}" data-view="ToggleableTray" data-tray-cookie="{!MODULE_TRANS_NAME_admin_actionlog|}" data-tpl="blockMainStaffActions" data-tpl-args="{+START,PARAMS_JSON,wrapper_id,block_call_url}{_*}{+END}" class="box box___block_main_staff_actions">
 
 	<h3 class="toggleable_tray_title js-tray-header">
 		<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">

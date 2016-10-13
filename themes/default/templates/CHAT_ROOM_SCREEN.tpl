@@ -1,4 +1,4 @@
-<div data-view-chat="ChatRoomScreen" data-view-args="{+START,PARAMS_JSON,CHATROOM_ID}{_*}{+END}">
+<div data-view="ChatRoomScreen" data-view-args="{+START,PARAMS_JSON,CHATROOM_ID}{_*}{+END}">
 {TITLE}
 
 {$REQUIRE_JAVASCRIPT,jquery}
@@ -104,7 +104,7 @@
 			</p>
 
 			<p>
-				<input class="button_screen_item buttons__save" onclick="var form=this.form; window.fauxmodal_confirm('{!SAVE_COMPUTER_USING_COOKIE}',function(answer) { if (answer) form.submit(); }); return false;" type="submit" value="{$STRIP_TAGS,{!CHAT_CHANGE_OPTIONS}}" />
+				<input class="button_screen_item buttons__save" data-cms-confirm-click="{!SAVE_COMPUTER_USING_COOKIE*}" type="submit" value="{$STRIP_TAGS,{!CHAT_CHANGE_OPTIONS}}" />
 			</p>
 		</div>
 

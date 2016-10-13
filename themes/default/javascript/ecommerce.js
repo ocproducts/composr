@@ -1,21 +1,22 @@
-(function (Composr) {
+(function ($cms) {
     'use strict';
 
-    var PurchaseWizardScreen = Composr.View.extend({
-        form: null,
-        initialize: function () {
-            PurchaseWizardScreen.__super__.initialize.apply(this, arguments);
-            this.form = this.$('form.js-form-primary');
-        },
+    function PurchaseWizardScreen() {
+        $cms.View.apply(this, arguments);
+        this.formEl = this.$('form.js-form-primary');
+    }
+
+    $cms.inherits(PurchaseWizardScreen, $cms.View, {
+        formEl: null,
         events: {
             'click .js-click-do-form-submit': 'doFormSubmit'
         },
         doFormSubmit: function (e) {
-            if (!do_form_submit(this.form, e)) {
+            if (!do_form_submit(this.formEl, e)) {
                 e.preventDefault();
             }
         }
     });
 
-    Composr.views.PurchaseWizardScreen = PurchaseWizardScreen;
-}(window.Composr));
+    $cms.views.PurchaseWizardScreen = PurchaseWizardScreen;
+}(window.$cms));

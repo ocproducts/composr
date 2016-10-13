@@ -14,7 +14,7 @@
 			cssBlock += 'tempcode' + trailing;
 			cssLtr += '.cke_contents_ltr tempcode' + trailing;
 			cssRtl += '.cke_contents_rtl tempcode' + trailing;
-			url = get_base_url() + '/data/gd_text.php?text=Tempcode%20tag&direction=horizontal&size=9&fg_color=seed-' + editor.config.ocpTheme + '&font=FreeMonoBold';
+			url = $cms.$BASE_URL_S + 'data/gd_text.php?text=Tempcode%20tag&direction=horizontal&size=9&fg_color=seed-' + editor.config.ocpTheme + '&font=FreeMonoBold';
 			cssImg += 'tempcode{' +
 				'background-image:url(\'' + url + '\')' +
 			'}';
@@ -28,7 +28,7 @@
 				cssBlock += 'comcode-' + tag + trailing;
 				cssLtr += '.cke_contents_ltr comcode-' + tag + trailing;
 				cssRtl += '.cke_contents_rtl comcode-' + tag + trailing;
-				url = get_base_url() + '/data/gd_text.php?text=Comcode%20' + tag.toUpperCase() + '%20tag&direction=horizontal&size=9&fg_color=seed-' + editor.config.ocpTheme + '&font=FreeMonoBold';
+				url = $cms.$BASE_URL_S + 'data/gd_text.php?text=Comcode%20' + tag.toUpperCase() + '%20tag&direction=horizontal&size=9&fg_color=seed-' + editor.config.ocpTheme + '&font=FreeMonoBold';
 				cssImg += 'comcode-' + tag + '{' +
 					'background-image:url(\'' + url + '\')' +
 				'}';
@@ -42,7 +42,7 @@
 				cssInline += 'comcode-' + tag + trailing;
 				cssLtr += '.cke_contents_ltr comcode-' + tag + trailing;
 				cssRtl += '.cke_contents_rtl comcode-' + tag + trailing;
-				url = get_base_url() + '/data/gd_text.php?text=Comcode%20' + tag.toUpperCase() + '%20tag&direction=horizontal&size=7&fg_color=seed-' + editor.config.ocpTheme + '&font=FreeMonoBold';
+				url = $cms.$BASE_URL_S + 'data/gd_text.php?text=Comcode%20' + tag.toUpperCase() + '%20tag&direction=horizontal&size=7&fg_color=seed-' + editor.config.ocpTheme + '&font=FreeMonoBold';
 				cssImg += 'comcode-' + tag + '{' +
 					'background-image:url(\'' + url + '\');' +
 					'font-size:0.8em;' +
@@ -52,7 +52,7 @@
 
 			// Allow our new tags under everywhere with spans
 			for (var i in CKEDITOR.dtd) {
-				if (typeof CKEDITOR.dtd[i].span != 'undefined' && CKEDITOR.dtd[i].span == 1) {
+				if (typeof CKEDITOR.dtd[i].span !== 'undefined' && CKEDITOR.dtd[i].span == 1) {
 					tagsBlock = editor.config.comcodeXMLBlockTags.split(',');
 					while ( ( tag = tagsBlock.pop() ) ) {
 						CKEDITOR.dtd[i]['comcode-' + tag] = 1;

@@ -1,19 +1,6 @@
 'use strict';
 
-(function ($, Composr) {
-    Composr.behaviors.commandr = {
-        initialize: {
-            attach: function (context) {
-                Composr.initializeTemplates(context, 'commandr');
-            }
-        }
-    };
-
-    Composr.templates.commandr = {};
-})(window.jQuery || window.Zepto, window.Composr);
-
-
-if (typeof window.previous_commands == 'undefined') {
+if (window.previous_commands === undefined) {
     window.previous_commands = [];
     window.current_command = null;
 }
@@ -63,12 +50,12 @@ function commandr_form_submission(command, form) {
     // Catch the data being submitted by the form, and send it through XMLHttpRequest if possible. Stop the form submission if this is achieved.
     // var command=document.getElementById('commandr_command').value;
 
-    if ((window.do_ajax_request) && (typeof window.do_ajax_request != 'undefined')) {
+    if (window.do_ajax_request) {
         // Send it through XMLHttpRequest, and append the results.
         document.getElementById('commandr_command').focus();
         document.getElementById('commandr_command').disabled = true;
 
-        var post = 'command=' + window.encodeURIComponent(command);
+        var post = 'command=' + encodeURIComponent(command);
         post = modsecurity_workaround_ajax(post);
         do_ajax_request('{$FIND_SCRIPT;,commandr}' + keep_stub(true), commandr_command_response, post);
 
@@ -83,7 +70,7 @@ function commandr_form_submission(command, form) {
         window.previous_commands.push(command);
 
         return false;
-    } else if (typeof form != 'undefined') {
+    } else if (form !== undefined) {
         // Let the form be submitted the old-fashioned way.
         return modsecurity_workaround(form);
     }
@@ -128,11 +115,11 @@ function commandr_command_response(ajax_result_frame, ajax_result) {
     }
 
     // Deal with the response: add the result to the command_line
-    var method = merge_text_nodes(ajax_result.getElementsByTagName('command')[0].childNodes);
-    var stdcommand = merge_text_nodes(ajax_result.getElementsByTagName('stdcommand')[0].childNodes);
-    var stdhtml = ajax_result.getElementsByTagName('stdhtml')[0].firstElementChild;
-    var stdout = merge_text_nodes(ajax_result.getElementsByTagName('stdout')[0].childNodes);
-    var stderr = merge_text_nodes(ajax_result.getElementsByTagName('stderr')[0].childNodes);
+    var method = merge_text_nodes(ajax_result.querySelector('command').childNodes);
+    var stdcommand = merge_text_nodes(ajax_result.querySelector('stdcommand').childNodes);
+    var stdhtml = ajax_result.querySelector('stdhtml').firstElementChild;
+    var stdout = merge_text_nodes(ajax_result.querySelector('stdout').childNodes);
+    var stderr = merge_text_nodes(ajax_result.querySelector('stderr').childNodes);
 
     var past_command_text = document.createTextNode(method + ' \u2192 ');
     past_command_prompt.appendChild(past_command_text);
@@ -211,7 +198,7 @@ function clear_cl() {
 
 // Fun stuff...
 
-if (typeof window.commandr_foxy_textnodes == 'undefined') {
+if (window.commandr_foxy_textnodes === undefined) {
     window.commandr_foxy_textnodes = [];
 }
 

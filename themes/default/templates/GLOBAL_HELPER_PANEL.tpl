@@ -1,4 +1,4 @@
-<div class="global_helper_panel_wrap" data-view-core-primary-layout="GlobalHelperPanel">
+<div class="global_helper_panel_wrap" data-view="GlobalHelperPanel">
 	<a id="helper_panel_toggle" href="#!" class="js-click-toggle-helper-panel">
 		{+START,IF,{$NOT,{$HIDE_HELP_PANEL}}}
 			<img title="{!HELP_OR_ADVICE}: {!HIDE}" alt="{!HELP_OR_ADVICE}: {!HIDE}" src="{$IMG*,icons/14x14/helper_panel_hide}" srcset="{$IMG*,icons/28x28/helper_panel_hide} 2x" />

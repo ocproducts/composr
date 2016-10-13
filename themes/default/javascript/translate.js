@@ -16,7 +16,7 @@ function translate(name, old, lang_from, lang_to) {
         var element = document.getElementById('rexp_' + name);
         if (element.style.display != 'none') {
             element = document.getElementById('exp_' + name);
-            Composr.dom.html(element, '<iframe src="{$BASE_URL_NOHTTP*;}/data/empty.html" id="iframe_' + name + '" name="iframe_' + name + '" class="translate_iframe">{!IGNORE^}</iframe>');
+            $cms.dom.html(element, '<iframe src="{$BASE_URL_NOHTTP*;}/data/empty.html" id="iframe_' + name + '" name="iframe_' + name + '" class="translate_iframe">{!IGNORE^}</iframe>');
             var form = document.getElementById('hack_form');
             form.setAttribute('target', 'iframe_' + name);
             var input_text = document.getElementById('hack_input');
@@ -28,9 +28,9 @@ function translate(name, old, lang_from, lang_to) {
 
         var newScript = document.createElement('script');
         newScript.type = 'text/javascript';
-        var source = 'https://www.googleapis.com/language/translate/v2?key=' + window.encodeURIComponent(apiKey) + '&source=' + window.encodeURIComponent(lang_from) + '&target=' + window.encodeURIComponent(lang_to) + '&callback=translate_text&q=' + window.encodeURIComponent(old);
+        var source = 'https://www.googleapis.com/language/translate/v2?key=' + encodeURIComponent(apiKey) + '&source=' + encodeURIComponent(lang_from) + '&target=' + encodeURIComponent(lang_to) + '&callback=translate_text&q=' + encodeURIComponent(old);
         newScript.src = source;
-        document.getElementsByTagName('head')[0].appendChild(newScript);
+        document.querySelector('head').appendChild(newScript);
     }
 }
 

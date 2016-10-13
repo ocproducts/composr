@@ -1,4 +1,4 @@
-<div data-view-catalogues="CatalogueEditingScreen">
+<div data-view="CatalogueEditingScreen">
 {TITLE}
 
 {$PARAGRAPH,{TEXT}}

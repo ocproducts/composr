@@ -1,4 +1,4 @@
-<div data-view-core="ToggleableTray" {+START,IF_NON_EMPTY,{TITLE}} id="{TITLE|}"{+END} class="box box___standardbox_default{+START,IF_PASSED,CLASS} {CLASS*}{+END}" {+START,IF_NON_EMPTY,{WIDTH}} style="width: {WIDTH*}"{+END}{+START,IF_IN_ARRAY,OPTIONS,tray_open,tray_closed}{+START,IF,{$JS_ON}} data-tray-cookie="{TITLE|}"{+END}{+END}>
+<div data-view="ToggleableTray" {+START,IF_NON_EMPTY,{TITLE}} id="{TITLE|}"{+END} class="box box___standardbox_default{+START,IF_PASSED,CLASS} {CLASS*}{+END}" {+START,IF_NON_EMPTY,{WIDTH}} style="width: {WIDTH*}"{+END}{+START,IF_IN_ARRAY,OPTIONS,tray_open,tray_closed}{+START,IF,{$JS_ON}} data-tray-cookie="{TITLE|}"{+END}{+END}>
 	{+START,IF_NON_EMPTY,{TITLE}}
 		{+START,IF_IN_ARRAY,OPTIONS,tray_open,tray_closed}
 			<h3 class="toggleable_tray_title js-tray-header">

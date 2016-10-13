@@ -1,48 +1,36 @@
-(function (Composr) {
+(function ($cms) {
     'use strict';
 
-    Composr.behaviors.coreHtmlAbstractions = {
-        initialize: {
-            attach: function (context) {
-                Composr.initializeTemplates(context, 'core_html_abstractions');
-            }
-        }
-    };
+    $cms.templates.standaloneHtmlWrap = function (options) {
+        if (window.parent) {
+            $cms.load.then(function () {
+                document.body.classList.add('frame');
 
-    Composr.templates.coreHtmlAbstractions = {
-        standaloneHtmlWrap: function (options) {
-            if (window.parent) {
-                Composr.load.then(function () {
-                    document.body.className += ' frame';
+                try {
+                    trigger_resize();
+                } catch (e) {
+                }
 
+                window.setTimeout(function () { // Needed for IE10
                     try {
-                        if (typeof window.trigger_resize != 'undefined') trigger_resize();
+                        trigger_resize();
+                    } catch (e) {
                     }
-                    catch (e) {
-                    }
+                }, 1000);
+            });
+        }
 
-                    window.setTimeout(function () { // Needed for IE10
-                        try {
-                            if (typeof window.trigger_resize != 'undefined') trigger_resize();
-                        }
-                        catch (e) {
-                        }
-                    }, 1000);
-                });
-            }
-
-            if (Composr.is(options.isPreview)) {
-                disable_preview_scripts();
-            }
-        },
-
-        jsRefresh: function jsRefresh(options) {
-            if (window.location.hash.indexOf('redirected_once') === -1) {
-                window.location.hash = 'redirected_once';
-                document.getElementById(options.formName).submit();
-            } else {
-                window.history.go(-2); // We've used back button, don't redirect forward again
-            }
+        if (options.isPreview) {
+            disable_preview_scripts();
         }
     };
-}(window.Composr));
+
+    $cms.templates.jsRefresh = function (options){
+        if (!window.location.hash.includes('redirected_once')) {
+            window.location.hash = 'redirected_once';
+            document.getElementById(options.formName).submit();
+        } else {
+            window.history.go(-2); // We've used back button, don't redirect forward again
+        }
+    };
+}(window.$cms));

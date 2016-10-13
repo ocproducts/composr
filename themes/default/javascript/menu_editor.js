@@ -29,12 +29,14 @@ function menu_editor_add_new_page() {
 }
 
 function make_field_selected(ob) {
-    if (ob.className == 'menu_editor_selected_field') return;
+    if (ob.className === 'menu_editor_selected_field') {
+        return;
+    }
 
     ob.className = 'menu_editor_selected_field';
     var changed = false;
     for (var i = 0; i < ob.form.elements.length; i++) {
-        if ((ob.form.elements[i].className == 'menu_editor_selected_field') && (ob.form.elements[i] != ob)) {
+        if ((ob.form.elements[i].className === 'menu_editor_selected_field') && (ob.form.elements[i] !== ob)) {
             ob.form.elements[i].className = '';
             changed = true;
         }
@@ -76,7 +78,7 @@ function copy_fields_into_bottom(i, changed) {
         document.getElementById('theme_img_code_' + i).value = this.options[this.selectedIndex].value;
         document.getElementById('theme_img_code_' + i).disabled = (this.selectedIndex == 0);
     };
-    if (typeof $(form.elements['theme_img_code']).select2 != 'undefined') {
+    if ($(form.elements['theme_img_code']).select2 !== undefined) {
         $(form.elements['theme_img_code']).trigger('change');
     }
 
@@ -92,13 +94,13 @@ function copy_fields_into_bottom(i, changed) {
         document.getElementById('check_perms_' + i).disabled = !this.checked;
     };
 
-    //Composr.dom.html(form.elements['branch_type'],Composr.dom.html(document.getElementById('branch_type_'+i))); Breaks in IE due to strict container rules
+    //$cms.dom.html(form.elements['branch_type'],$cms.dom.html(document.getElementById('branch_type_'+i))); Breaks in IE due to strict container rules
     form.elements['branch_type'].selectedIndex = document.getElementById('branch_type_' + i).selectedIndex;
     form.elements['branch_type'].onchange = function (event) {
         document.getElementById('branch_type_' + i).selectedIndex = this.selectedIndex;
         if (document.getElementById('branch_type_' + i).onchange) document.getElementById('branch_type_' + i).onchange(event);
     };
-    if (typeof $(form.elements['branch_type']).select2 != 'undefined') {
+    if ( $(form.elements['branch_type']).select2 !== undefined) {
         $(form.elements['branch_type']).trigger('change');
     }
 
@@ -107,7 +109,7 @@ function copy_fields_into_bottom(i, changed) {
         document.getElementById('include_sitemap_' + i).value = this.selectedIndex;
         document.getElementById('include_sitemap_' + i).disabled = (this.selectedIndex == 0);
     };
-    if (typeof $(form.elements['include_sitemap']).select2 != 'undefined') {
+    if ( $(form.elements['include_sitemap']).select2 !== undefined) {
         $(form.elements['include_sitemap']).trigger('change');
     }
 
@@ -119,8 +121,8 @@ function copy_fields_into_bottom(i, changed) {
         clear_transition_and_set_opacity(mfh, 0.0);
         fade_transition(mfh, 100, 30, 4);
     } else {
-        clear_transition_and_set_opacity(form.elements['url'], 0.0);
-        fade_transition(form.elements['url'], 100, 30, 4);
+        clear_transition_and_set_opacity(form.elements.url, 0.0);
+        fade_transition(form.elements.url, 100, 30, 4);
     }
 }
 
@@ -134,24 +136,34 @@ function menu_editor_handle_keypress(e) {
 }
 
 function branch_depth(branch) {
-    if (branch.parentNode) return branch_depth(branch.parentNode) + 1;
+    if (branch.parentNode) {
+        return branch_depth(branch.parentNode) + 1;
+    }
+
     return 0;
 }
 
 function exists_child(elements, parent) {
     for (var i = 0; i < elements.length; i++) {
-        if ((elements[i].name.substr(0, 7) == 'parent_') && (elements[i].value == parent)) return true;
+        if ((elements[i].name.substr(0, 7) === 'parent_') && (elements[i].value == parent)) {
+            return true;
+        }
     }
+
     return false;
 }
 
 function is_child(elements, possible_parent, possible_child) {
     for (var i = 0; i < elements.length; i++) {
         if ((elements[i].name.substr(7) == possible_child) && (elements[i].name.substr(0, 7) == 'parent_')) {
-            if (elements[i].value == possible_parent) return true;
+            if (elements[i].value == possible_parent) {
+                return true;
+            }
+
             return is_child(elements, possible_parent, elements[i].value);
         }
     }
+
     return false;
 }
 
@@ -170,8 +182,7 @@ function handle_ordering(t, up, down) {
         var best = -1, bestindex = -1;
     }
 
-    if (up) // Up
-    {
+    if (up) {// Up
         // Find previous branch with same parent (if exists)
         for (i = 0; i < form.elements.length; i++) {
             if ((form.elements[i].name.substr(0, 7) == 'parent_') &&
@@ -186,8 +197,7 @@ function handle_ordering(t, up, down) {
         }
     }
 
-    if (down) // Down
-    {
+    if (down) {// Down
         // Find next branch with same parent (if exists)
         for (i = 0; i < form.elements.length; i++) {
             if ((form.elements[i].name.substr(0, 7) == 'parent_') &&
@@ -234,8 +244,8 @@ function handle_ordering(t, up, down) {
 }
 
 function swap_names(t, a, b, t2, values_also) {
-    if (typeof t2 == 'undefined') t2 = '';
-    if (typeof values_also == 'undefined') values_also = false;
+    if (t2 === undefined) t2 = '';
+    if (values_also === undefined) values_also = false;
     var _a = document.getElementById(t + '_' + a + t2);
     var _b = document.getElementById(t + '_' + b + t2);
     _a.name = t + '_' + b + t2;
@@ -331,7 +341,7 @@ function add_new_menu_item(parent_id, clickable_sections) {
         elements_bak.push([_elements_bak[i].name, _elements_bak[i].value]);
     }
 
-    Composr.dom.appendHtml(before, template2); // Technically we are actually putting after "branches_go_before_XXX", but it makes no difference. It only needs to act as a divider.
+    $cms.dom.appendHtml(before, template2); // Technically we are actually putting after "branches_go_before_XXX", but it makes no difference. It only needs to act as a divider.
 
     // Restore form branches
     for (i = 0; i < elements_bak.length; i++) {
@@ -395,62 +405,3 @@ function check_menu() {
     return true;
 }
 
-function delete_menu_branch(ob) {
-    var id = ob.id.substring(4, ob.id.length);
-
-    if ((typeof window.showModalDialog != 'undefined'/*{+START,IF,{$CONFIG_OPTION,js_overlays}}*/ || true/*{+END}*/) || (ob.form.elements['branch_type_' + id] != 'page')) {
-        var choices = { buttons__cancel: '{!INPUTSYSTEM_CANCEL;^}', menu___generic_admin__delete: '{!DELETE;^}', buttons__move: '{!menus:MOVETO_MENU;^}' };
-        generate_question_ui(
-            '{!CONFIRM_DELETE_LINK_NICE;^,xxxx}'.replace('xxxx', document.getElementById('caption_' + id).value),
-            choices,
-            '{!menus:DELETE_MENU_ITEM;^}',
-            null,
-            function (result) {
-                if (result.toLowerCase() == '{!DELETE;^}'.toLowerCase()) {
-                    delete_branch('branch_wrap_' + ob.name.substr(4, ob.name.length));
-                } else if (result.toLowerCase() == '{!menus:MOVETO_MENU;^}'.toLowerCase()) {
-                    var choices = {buttons__cancel: '{!INPUTSYSTEM_CANCEL;^}'};
-                    for (var i = 0; i < window.all_menus.length; i++) {
-                        choices['buttons__choose___' + i] = window.all_menus[i];
-                    }
-                    generate_question_ui(
-                        '{!menus:CONFIRM_MOVE_LINK_NICE;^,xxxx}'.replace('xxxx', document.getElementById('caption_' + id).value),
-                        choices,
-                        '{!menus:MOVE_MENU_ITEM;^}',
-                        null,
-                        function (result) {
-                            if (result.toLowerCase() != '{!INPUTSYSTEM_CANCEL;^}'.toLowerCase()) {
-                                var post = '', name, value;
-                                for (var i = 0; i < ob.form.elements.length; i++) {
-                                    name = ob.form.elements[i].name;
-                                    if (name.substr(name.length - (('_' + id).length)) == '_' + id) {
-                                        if (ob.localName == 'select') {
-                                            value = ob.form.elements[i].value;
-                                            window.myValue = ob.options[ob.selectedIndex].value;
-                                        } else {
-                                            if ((ob.type.toLowerCase() == 'checkbox') && (!ob.checked)) continue;
-
-                                            value = ob.form.elements[i].value;
-                                        }
-                                        if (post != '') post += '&';
-                                        post += name + '=' + window.encodeURIComponent(value);
-                                    }
-                                }
-                                do_ajax_request('{$FIND_SCRIPT_NOHTTP;,menu_management}' + '?id=' + window.encodeURIComponent(id) + '&menu=' + window.encodeURIComponent(result) + keep_stub(), null, post);
-                                delete_branch('branch_wrap_' + ob.name.substr(4, ob.name.length));
-                            }
-                        }
-                    );
-                }
-            }
-        );
-    } else {
-        window.fauxmodal_confirm(
-            '{!CONFIRM_DELETE_LINK;^,xxxx}'.replace('xxxx', document.getElementById('caption_' + id).value),
-            function (result) {
-                if (result)
-                    delete_branch('branch_wrap_' + ob.name.substr(4, ob.name.length));
-            }
-        );
-    }
-}

@@ -133,10 +133,10 @@ class Module_cms_banners extends Standard_crud_module
                     var _im_total=document.getElementById("im_total");
                     var im_here=window.parseInt(document.getElementById("importancemodulus").value);
                     var im_total=window.parseInt(_im_total.className.replace("im_",""))+im_here;
-                    Composr.dom.html(_im_here,im_here);
-                    Composr.dom.html(document.getElementById("im_here_2"),im_here);
-                    Composr.dom.html(_im_total,im_total);
-                    Composr.dom.html(document.getElementById("im_total_2"),im_total);
+                    $cms.dom.html(_im_here,im_here);
+                    $cms.dom.html(document.getElementById("im_here_2"),im_here);
+                    $cms.dom.html(_im_total,im_total);
+                    $cms.dom.html(document.getElementById("im_total_2"),im_total);
                 }
             }
         ';
@@ -149,7 +149,7 @@ class Module_cms_banners extends Standard_crud_module
                 form.old_submit=form.onsubmit;
                 form.onsubmit=function() {
                     document.getElementById('submit_button').disabled=true;
-                    var url='" . addslashes($script) . "?snippet=exists_banner&name='+window.encodeURIComponent(form.elements['name'].value);
+                    var url='" . addslashes($script) . "?snippet=exists_banner&name='+encodeURIComponent(form.elements['name'].value);
                     if (!do_ajax_field_test(url))
                     {
                         document.getElementById('submit_button').disabled=false;
@@ -170,7 +170,7 @@ class Module_cms_banners extends Standard_crud_module
                 form.old_submit=form.onsubmit;
                 form.onsubmit=function() {
                     document.getElementById('submit_button').disabled=true;
-                    var url='" . addslashes($script) . "?snippet=exists_banner_type&name='+window.encodeURIComponent(form.elements['new_id'].value);
+                    var url='" . addslashes($script) . "?snippet=exists_banner_type&name='+encodeURIComponent(form.elements['new_id'].value);
                     if (!do_ajax_field_test(url))
                     {
                         document.getElementById('submit_button').disabled=false;

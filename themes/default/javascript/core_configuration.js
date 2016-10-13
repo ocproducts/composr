@@ -1,22 +1,13 @@
-(function ($, Composr) {
+(function ($cms) {
     'use strict';
 
-    Composr.behaviors.coreConfiguration = {
-        initialize: {
-            attach: function (context) {
-                Composr.initializeViews(context, 'core_configuration');
-                Composr.initializeTemplates(context, 'core_configuration');
-            }
-        }
-    };
+    function XmlConfigScreen() {
+        $cms.View.apply(this, arguments);
 
-    var XmlConfigScreen = Composr.View.extend({
-        initialize: function () {
-            Composr.View.prototype.initialize.apply(this, arguments);
+        ace_composr_loader('xml', 'xml');
+    }
 
-            ace_composr_loader('xml', 'xml');
-        },
-
+    $cms.inherits(XmlConfigScreen, $cms.View, {
         events: {
             'submit .js-form-xml-config': 'submit'
         },
@@ -27,10 +18,5 @@
         }
     });
 
-    Composr.views.coreConfiguration = {
-        XmlConfigScreen: XmlConfigScreen
-    };
-
-    Composr.templates.coreConfiguration = {};
-
-}(window.jQuery || window.Zepto, Composr));
+    $cms.views.XmlConfigScreen = XmlConfigScreen;
+}(window.$cms));

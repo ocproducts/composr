@@ -343,7 +343,7 @@ function captcha_ajax_check()
         form.old_submit_b=form.onsubmit;
         form.onsubmit=function() {
             document.getElementById('submit_button').disabled=true;
-            var url='" . addslashes($script) . "?snippet=captcha_wrong&name='+window.encodeURIComponent(form.elements['captcha'].value);
+            var url='" . addslashes($script) . "?snippet=captcha_wrong&name='+encodeURIComponent(form.elements['captcha'].value);
             if (!do_ajax_field_test(url))
             {
                 document.getElementById('captcha').src+='&'; // Force it to reload latest captcha

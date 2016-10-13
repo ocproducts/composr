@@ -29,7 +29,7 @@
 	{+END}
 
 	{+START,COMMENT}
-		<div data-view-core="ToggleableTray">
+		<div data-view="ToggleableTray">
 			<div class="js-tray-header">
 				<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!EXPAND}</a>
 			</div>

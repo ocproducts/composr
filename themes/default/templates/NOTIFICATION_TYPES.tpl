@@ -13,4 +13,4 @@
 		</div>
 	</td>
 {+END}
-<script type="application/json" data-tpl-core-notifications="notificationTypes">{+START,PARAMS_JSON,NOTIFICATION_TYPES}{_/}{+END}</script>
+<script type="application/json" data-tpl="notificationTypes">{+START,PARAMS_JSON,NOTIFICATION_TYPES}{_/}{+END}</script>

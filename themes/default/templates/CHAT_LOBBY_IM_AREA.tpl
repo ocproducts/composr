@@ -1,5 +1,5 @@
 {$REQUIRE_JAVASCRIPT,chat}
-<div id="room_{CHATROOM_ID*}" class="chat_lobby_convos_area" data-tpl-chat="chatLobbyImArea" data-tpl-args="{+START,PARAMS_JSON,CHATROOM_ID}{_*}{+END}">
+<div id="room_{CHATROOM_ID*}" class="chat_lobby_convos_area" data-tpl="chatLobbyImArea" data-tpl-args="{+START,PARAMS_JSON,CHATROOM_ID}{_*}{+END}">
 	<form title="{!MESSAGE}" action="{MESSAGES_PHP*}?action=post" method="post" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
 

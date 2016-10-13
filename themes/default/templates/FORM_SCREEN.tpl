@@ -1,4 +1,4 @@
-<div data-tpl-core-form-interfaces="formScreen" data-tpl-args="{+START,PARAMS_JSON,URL,IFRAME_URL}{_*}{+END}">
+<div data-tpl="formScreen" data-tpl-args="{+START,PARAMS_JSON,URL,IFRAME_URL,SKIPPABLE}{_*}{+END}">
 
 {TITLE}
 

@@ -1,6 +1,6 @@
 "use strict";
 
-window.template_editor_open_files = {};
+window.template_editor_open_files || (window.template_editor_open_files = {});
 
 /*
  Naming conventions...
@@ -24,7 +24,7 @@ function file_id_to_file(file_id) {
 
 function template_editor_assign_unload_event() {
     window.addEventListener('beforeunload', function (event) {
-        if (document.querySelectorAll('.file_changed').length > 0) {
+        if (document.querySelector('.file_changed')) {
             undo_staff_unload_action();
             window.unloaded = false;
 
@@ -127,24 +127,24 @@ function template_editor_add_tab(file) {
     if (ext != '') tab_title = tab_title.substr(0, tab_title.length - 4);
     var icon_img = document.createElement('img');
     if (ext == 'tpl') {
-        icon_img.src = Composr.url('{$IMG;,icons/16x16/filetypes/tpl}');
-        icon_img.setAttribute('srcset', Composr.url('{$IMG;,icons/32x32/filetypes/tpl}'));
+        icon_img.src = $cms.img('{$IMG;,icons/16x16/filetypes/tpl}');
+        icon_img.setAttribute('srcset', $cms.img('{$IMG;,icons/32x32/filetypes/tpl}'));
     }
     if (ext == 'css') {
-        icon_img.src = Composr.url('{$IMG;,icons/16x16/filetypes/css}');
-        icon_img.setAttribute('srcset', Composr.url('{$IMG;,icons/32x32/filetypes/css}'));
+        icon_img.src = $cms.img('{$IMG;,icons/16x16/filetypes/css}');
+        icon_img.setAttribute('srcset', $cms.img('{$IMG;,icons/32x32/filetypes/css}'));
     }
     if (ext == 'js') {
-        icon_img.src = Composr.url('{$IMG;,icons/16x16/filetypes/js}');
-        icon_img.setAttribute('srcset', Composr.url('{$IMG;,icons/32x32/filetypes/js}'));
+        icon_img.src = $cms.img('{$IMG;,icons/16x16/filetypes/js}');
+        icon_img.setAttribute('srcset', $cms.img('{$IMG;,icons/32x32/filetypes/js}'));
     }
     if (ext == 'xml') {
-        icon_img.src = Composr.url('{$IMG;,icons/16x16/filetypes/xml}');
-        icon_img.setAttribute('srcset', Composr.url('{$IMG;,icons/32x32/filetypes/xml}'));
+        icon_img.src = $cms.img('{$IMG;,icons/16x16/filetypes/xml}');
+        icon_img.setAttribute('srcset', $cms.img('{$IMG;,icons/32x32/filetypes/xml}'));
     }
     if (ext == 'txt' || ext == '') {
-        icon_img.src = Composr.url('{$IMG;,icons/16x16/filetypes/page_txt}');
-        icon_img.setAttribute('srcset', Composr.url('{$IMG;,icons/32x32/filetypes/page_txt}'));
+        icon_img.src = $cms.img('{$IMG;,icons/16x16/filetypes/page_txt}');
+        icon_img.setAttribute('srcset', $cms.img('{$IMG;,icons/32x32/filetypes/page_txt}'));
     }
     icon_img.style.width = '16px';
     header.appendChild(icon_img);
@@ -153,9 +153,10 @@ function template_editor_add_tab(file) {
     span.textContent = tab_title;
     header.appendChild(span);
     var close_button = document.createElement('img');
-    close_button.src = Composr.url('{$IMG;,icons/16x16/close}');
-    if (typeof close_button.srcset != 'undefined')
-        close_button.srcset = Composr.url('{$IMG;,icons/32x32/close}') + ' 2x';
+    close_button.src = $cms.img('{$IMG;,icons/16x16/close}');
+    if (close_button.srcset !== undefined) {
+        close_button.srcset = $cms.img('{$IMG;,icons/32x32/close}') + ' 2x';
+    }
     close_button.alt = '{!CLOSE;}';
     close_button.style.paddingLeft = '5px';
     close_button.style.width = '16px';
@@ -163,7 +164,9 @@ function template_editor_add_tab(file) {
     close_button.style.verticalAlign = 'middle';
     close_button.onclick = function (event) {
         cancel_bubbling(event);
-        if (event.cancelable) event.preventDefault();
+        if (event.cancelable) {
+            event.preventDefault();
+        }
 
         if (window.template_editor_open_files[file].unsaved_changes) {
             fauxmodal_confirm('{!themes:UNSAVED_CHANGES;^}'.replace('\{1\}', file), function (result) {
@@ -174,7 +177,7 @@ function template_editor_add_tab(file) {
         } else {
             template_editor_tab_unload_content(file);
         }
-    }
+    };
     header.appendChild(close_button);
     headers.appendChild(header);
 
@@ -187,7 +190,7 @@ function template_editor_add_tab(file) {
     body.style.display = 'none';
     var loading_image = document.createElement('img');
     loading_image.className = 'ajax_loading';
-    loading_image.src = Composr.url('{$IMG;,loading}');
+    loading_image.src = $cms.img('{$IMG;,loading}');
     loading_image.style.height = '12px';
     body.appendChild(loading_image);
     bodies.appendChild(body);
@@ -209,16 +212,16 @@ function template_editor_add_tab(file) {
 
 function template_editor_loading_url(file, revision_id) {
     var url = 'template_editor_load';
-    url += '&file=' + window.encodeURIComponent(file);
-    url += '&theme=' + window.encodeURIComponent(window.template_editor_theme);
-    if (typeof window.template_editor_active_guid != 'undefined') {
-        url += '&active_guid=' + window.encodeURIComponent(window.template_editor_active_guid);
+    url += '&file=' + encodeURIComponent(file);
+    url += '&theme=' + encodeURIComponent(window.template_editor_theme);
+    if (window.template_editor_active_guid !== undefined) {
+        url += '&active_guid=' + encodeURIComponent(window.template_editor_active_guid);
     }
-    if (typeof window.template_editor_live_preview_url != 'undefined') {
-        url += '&live_preview_url=' + window.encodeURIComponent(window.template_editor_live_preview_url);
+    if (window.template_editor_live_preview_url !== undefined) {
+        url += '&live_preview_url=' + encodeURIComponent(window.template_editor_live_preview_url);
     }
-    if (typeof revision_id != 'undefined') {
-        url += '&undo_revision=' + window.encodeURIComponent(revision_id);
+    if (revision_id !== undefined) {
+        url += '&undo_revision=' + encodeURIComponent(revision_id);
     }
     return url;
 }
@@ -236,7 +239,7 @@ function template_editor_show_tab(file_id) {
         $('#e_' + file_id.replace(/\./g, '\\.') + '_wrap').resizable({
             resize: function (event, ui) {
                 var editor = window.ace_editors['e_' + file_id];
-                if (typeof editor != 'undefined') {
+                if (editor !== undefined) {
                     $('#e_' + file_id.replace(/\./g, '\\.') + '__ace')[0].style.height = '100%';
                     $('#e_' + file_id.replace(/\./g, '\\.') + '__ace')[0].parentNode.style.height = '100%';
                     editor.resize();
@@ -250,7 +253,7 @@ function template_editor_show_tab(file_id) {
 function template_editor_tab_loaded_content(ajax_result, file) {
     var file_id = file_to_file_id(file);
 
-    Composr.dom.html(document.getElementById('g_' + file_id), ajax_result.responseText);
+    $cms.dom.html(document.getElementById('g_' + file_id), ajax_result.responseText);
 
     window.setTimeout(function () {
         var textarea_id = 'e_' + file_id;
@@ -283,12 +286,12 @@ function template_editor_tab_mark_changed_content(file) {
 
 function template_editor_tab_save_content(file) {
     var url = 'template_editor_save';
-    url += '&file=' + window.encodeURIComponent(file);
-    url += '&theme=' + window.encodeURIComponent(window.template_editor_theme);
+    url += '&file=' + encodeURIComponent(file);
+    url += '&theme=' + encodeURIComponent(window.template_editor_theme);
 
     editarea_reverse_refresh('e_' + file_to_file_id(file));
 
-    var post = 'contents=' + window.encodeURIComponent(get_file_textbox(file).value);
+    var post = 'contents=' + encodeURIComponent(get_file_textbox(file).value);
     load_snippet(url, post, function (ajax_result) {
         fauxmodal_alert(ajax_result.responseText, null, null, true);
         template_editor_tab_mark_nonchanged_content(file);
@@ -306,7 +309,9 @@ function template_editor_tab_mark_nonchanged_content(file) {
 function template_editor_get_tab_count() {
     var count = 0;
     for (var k in window.template_editor_open_files) {
-        if (window.template_editor_open_files.hasOwnProperty(k)) count++;
+        if (window.template_editor_open_files.hasOwnProperty(k)) {
+            count++;
+        }
     }
     return count;
 }
@@ -320,7 +325,7 @@ function template_editor_tab_unload_content(file) {
     if (was_active) {
         // Select tab
         var c = document.getElementById('template_editor_tab_headers').childNodes;
-        if (typeof c[0] != 'undefined') {
+        if (c[0] !== undefined) {
             var next_file_id = c[0].id.substr(2);
 
             select_tab('g', next_file_id);
@@ -361,8 +366,8 @@ function template_editor_clean_tabs() {
     }
 
     if (num_tabs == 0) {
-        Composr.dom.html(headers, '<a href="#!" id="t_default" class="tab"><span>&mdash;</span></a>');
-        Composr.dom.html(bodies, '<div id="g_default"><p class="nothing_here">{!NA}</p></div>');
+        $cms.dom.html(headers, '<a href="#!" id="t_default" class="tab"><span>&mdash;</span></a>');
+        $cms.dom.html(bodies, '<div id="g_default"><p class="nothing_here">{!NA}</p></div>');
     }
 }
 
@@ -381,7 +386,7 @@ function template_editor_restore_revision(file, revision_id) {
 }
 
 function template_editor_preview(file_id, url, button, ask_for_url) {
-    if (typeof ask_for_url == 'undefined') ask_for_url = false;
+    if (ask_for_url === undefined) ask_for_url = false;
 
     var has_editarea = editarea_is_loaded('e_' + file_id);
     if (has_editarea) editarea_reverse_refresh('e_' + file_id);
@@ -420,7 +425,7 @@ function get_file_textbox(file) {
 }
 
 function template_editor_keypress(event) {
-    if (Composr.dom.keyPressed(event, 'Tab')) {
+    if ($cms.dom.keyPressed(event, 'Tab')) {
         insert_textbox(this, "\t");
         return false;
     }
@@ -457,14 +462,16 @@ function template_insert_parameter(dropdown_name, file_id) {
 
     var has_editarea = editarea_is_loaded(textbox.name);
 
-    if ((value == 'BLOCK')/*{+START,IF,{$NOT,{$CONFIG_OPTION,js_overlays}}}*/ && (typeof window.showModalDialog != 'undefined')/*{+END}*/) {
+    if ((value == 'BLOCK') && ((window.showModalDialog !== undefined) || $cms.$CONFIG_OPTION.jsOverlays)) {
         var url = '{$FIND_SCRIPT_NOHTTP;,block_helper}?field_name=' + textbox.name + '&block_type=template' + keep_stub();
         window.faux_showModalDialog(
             maintain_theme_in_link(url),
             null,
             'dialogWidth=750;dialogHeight=600;status=no;resizable=yes;scrollbars=yes;unadorned=yes',
             function () {
-                if (has_editarea) editarea_refresh(textbox.name);
+                if (has_editarea) {
+                    editarea_refresh(textbox.name);
+                }
             }
         );
         return;
@@ -559,7 +566,9 @@ function _get_parameter_parameters(definite_gets, parameter, arity, box, name, v
 }
 
 function cleanup_template_markers(win) {
-    if (window.done_cleanup_template_markers) return;
+    if (window.done_cleanup_template_markers) {
+        return;
+    }
 
     _cleanup_template_markers(win.document.body, 0);
 
@@ -704,12 +713,12 @@ function load_contextual_css_editor(file, file_id) {
 
         editor.css_recompiler_timer = window.setInterval(function () {
             if ((window.opener) && (window.opener.document)) {
-                if (typeof editor.last_change == 'undefined') return; // No change made at all
+                if (editor.last_change === undefined) return; // No change made at all
 
                 var milliseconds_ago = (new Date()).getTime() - editor.last_change;
                 if (milliseconds_ago > 3 * 1000) return; // Not changed recently enough (within last 3 seconds)
 
-                if (typeof window.opener.have_set_up_parent_page_highlighting == 'undefined') {
+                if (window.opener.have_set_up_parent_page_highlighting === undefined) {
                     set_up_parent_page_highlighting(file, file_id);
                     last_css = '';
                     /*force new CSS to apply*/
@@ -718,10 +727,10 @@ function load_contextual_css_editor(file, file_id) {
                 var new_css = editarea_get_value(textarea_id);
                 if (new_css == last_css) return; // Not changed
 
-                var url = '{$BASE_URL_NOHTTP;}/data/snippet.php?snippet=css_compile__text' + keep_stub();
+                var url = $cms.$BASE_URL_NOHTTP + '/data/snippet.php?snippet=css_compile__text' + keep_stub();
                 do_ajax_request(url, function (ajax_result_frame) {
                     receive_compiled_css(ajax_result_frame, file);
-                }, 'css=' + window.encodeURIComponent(new_css));
+                }, 'css=' + encodeURIComponent(new_css));
 
                 last_css = new_css;
             }
@@ -730,7 +739,7 @@ function load_contextual_css_editor(file, file_id) {
 }
 
 function set_up_parent_page_highlighting(file, file_id) {
-    if (typeof window.opener.find_active_selectors == 'undefined') return; // themeing.js is loaded up for staff, so it should be there
+    if (window.opener.find_active_selectors === undefined) return; // themeing.js is loaded up for staff, so it should be there
     window.opener.have_set_up_parent_page_highlighting = true;
 
     var doing_css_for = file.replace(/^css\//, '').replace('.css', '');
@@ -740,7 +749,7 @@ function set_up_parent_page_highlighting(file, file_id) {
     var selectors = window.opener.find_active_selectors(doing_css_for, window.opener);
 
     var list = document.getElementById('selector_list_' + file_id);
-    Composr.dom.html(list, '');
+    $cms.dom.html(list, '');
 
     for (var i = 0; i < selectors.length; i++) {
         selector = selectors[i].selectorText;
@@ -751,15 +760,14 @@ function set_up_parent_page_highlighting(file, file_id) {
         li.appendChild(a);
         a.href = '#!';
         a.id = 'selector_' + i;
-        Composr.dom.html(a, escape_html(selector));
+        $cms.dom.html(a, escape_html(selector));
         list.appendChild(li);
 
         // Add tooltip so we can see what the CSS text is in when hovering the selector
-        css_text = (typeof selectors[i].cssText == 'undefined') ? selectors[i].style.cssText : selectors[i].cssText;
+        css_text = (selectors[i].cssText === undefined) ? selectors[i].style.cssText : selectors[i].cssText;
         if (css_text.indexOf('{') != -1) {
             css_text = css_text.replace(/ \{ /g, ' {<br />\n&nbsp;&nbsp;&nbsp;').replace(/; \}/g, '<br />\n}').replace(/; /g, ';<br />\n&nbsp;&nbsp;&nbsp;');
-        } else // IE
-        {
+        } else  {// IE
             css_text = css_text.toLowerCase().replace(/; /, ';<br />\n');
         }
         li.onmouseout = function (event) {
@@ -911,7 +919,7 @@ function find_selectors_for(opener, selector) {
 function receive_compiled_css(ajax_result_frame, file, win) {
     var doing_css_for = file.replace(/^css\//, '').replace('.css', '');
 
-    if ((typeof win == 'undefined') || (!win)) var win = window.opener;
+    win || (win = window.opener)
 
     if (win) {
         try {
@@ -928,7 +936,7 @@ function receive_compiled_css(ajax_result_frame, file, win) {
                 var links = win.document.getElementsByTagName('link');
                 for (var i = 0; i < links.length; i++) {
                     e = links[i];
-                    if ((e.type == 'text/css') && (e.href.indexOf('/templates_cached/' + window.opener.Composr.$LANG + '/' + doing_css_for) != -1)) {
+                    if ((e.type == 'text/css') && (e.href.indexOf('/templates_cached/' + window.opener.$cms.$LANG + '/' + doing_css_for) != -1)) {
                         e.parentNode.removeChild(e);
                     }
                 }
@@ -942,11 +950,11 @@ function receive_compiled_css(ajax_result_frame, file, win) {
             if (style.styleSheet) {
                 style.styleSheet.cssText = css;
             } else {
-                if (typeof style.childNodes[0] != 'undefined') style.removeChild(style.childNodes[0]);
+                if (style.childNodes[0] !== undefined) style.removeChild(style.childNodes[0]);
                 var tn = win.document.createTextNode(css);
                 style.appendChild(tn);
             }
-            win.document.getElementsByTagName('head')[0].appendChild(style);
+            win.document.querySelector('head').appendChild(style);
 
             for (var i = 0; i < win.frames.length; i++) {
                 if (win.frames[i]) // If test needed for some browsers, as window.frames can get out-of-date
@@ -962,8 +970,8 @@ function receive_compiled_css(ajax_result_frame, file, win) {
 
 function css_equation_helper(file_id, theme) {
     var url = 'themewizard_equation';
-    url += '&theme=' + window.encodeURIComponent(theme);
-    url += '&css_equation=' + window.encodeURIComponent(document.getElementById('css_equation_' + file_id).value);
+    url += '&theme=' + encodeURIComponent(theme);
+    url += '&css_equation=' + encodeURIComponent(document.getElementById('css_equation_' + file_id).value);
 
     var result = load_snippet(url);
 
@@ -979,8 +987,8 @@ function css_equation_helper(file_id, theme) {
 // INIT CODE
 
 window.done_cleanup_template_markers = false;
-if (window.location.href.indexOf('keep_template_magic_markers=1') != -1) {
-    $(function () {
+if (window.location.href.includes('keep_template_magic_markers=1')) {
+    $cms.ready(function () {
         cleanup_template_markers(window);
     });
 }

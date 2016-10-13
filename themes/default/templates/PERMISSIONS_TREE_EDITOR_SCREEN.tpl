@@ -1,4 +1,4 @@
-<div data-view-core-permission-management="PermissionsTreeEditorScreen" data-view-args="{+START,PARAMS_JSON,COLOR,USERGROUPS}{_*}{+END}">
+<div data-view="PermissionsTreeEditorScreen" data-view-args="{+START,PARAMS_JSON,COLOR,USERGROUPS}{_*}{+END}">
 {TITLE}
 
 <p>{!PERMISSIONS_TREE_EDITOR_ABOUT_PRIVILEGE,{$PAGE_LINK*,adminzone:admin_permissions:specific}}</p>

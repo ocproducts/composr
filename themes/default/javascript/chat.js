@@ -1,31 +1,21 @@
-(function ($, Composr) {
+(function ($cms) {
     'use strict';
-    var BlockSideShoutbox, ChatRoomScreen;
 
-    Composr.behaviors.chat = {
-        initialize: {
-            attach: function (context) {
-                Composr.initializeViews(context, 'chat');
-                Composr.initializeTemplates(context, 'chat');
-            }
-        }
-    };
+    function BlockSideShoutbox() {
+        $cms.View.apply(this, arguments);
+    }
 
-    BlockSideShoutbox = Composr.View.extend({
-        initialize: function () {
-            Composr.View.prototype.initialize.apply(this, arguments);
-        }
-    });
+    $cms.inherits(BlockSideShoutbox, $cms.View);
 
-    ChatRoomScreen = Composr.View.extend({
-        initialize: function (v, options) {
-            Composr.View.prototype.initialize.apply(this, arguments);
+    function ChatRoomScreen(options) {
+        $cms.View.apply(this, arguments);
 
-            Composr.load.then(function () {
-                chat_load(options.chatroomId);
-            });
-        },
+        $cms.load.then(function () {
+            chat_load(options.chatroomId);
+        });
+    }
 
+    $cms.inherits(ChatRoomScreen, $cms.View, {
         events: {
             'click .js-btn-toggle-chat-comcode-panel': 'toggleChatPanel'
         },
@@ -35,33 +25,28 @@
         }
     });
 
-    Composr.views.chat = {
-        BlockSideShoutbox: BlockSideShoutbox,
-        ChatRoomScreen: ChatRoomScreen
-    };
+    $cms.views.BlockSideShoutbox = BlockSideShoutbox;
+    $cms.views.ChatRoomScreen = ChatRoomScreen;
 
-    Composr.templates.chat = {
+    $cms.extend($cms.templates, {
         chatSound: function (options) { // Prepares chat sounds
-            if (window.prepared_chat_sounds !== undefined) {
+            if (window.prepared_chat_sounds) {
                 return;
             }
             window.prepared_chat_sounds = true;
 
-            if (window.soundManager !== undefined) {
-                window.soundManager.setup({
-                    url: get_base_url() + '/data',
-                    debugMode: false,
-                    onready: function () {
-                        var soundEffects = options.soundEffects, i;
+            window.soundManager.setup({
+                url: $cms.$BASE_URL_S + 'data',
+                debugMode: false,
+                onready: function () {
+                    var soundEffects = options.soundEffects,
+                        i;
 
-                        for (i in soundEffects) {
-                            if (soundEffects.hasOwnProperty(i)) {
-                                window.soundManager.createSound(soundEffects[i].key, soundEffects[i].value);
-                            }
-                        }
+                    for (i in soundEffects) {
+                        window.soundManager.createSound(soundEffects[i].key, soundEffects[i].value);
                     }
-                });
-            }
+                }
+            });
         },
 
         chatFriends: function (options) {
@@ -78,7 +63,7 @@
 
         chatLobbyImArea: function chatLobbyImArea(options) {
             window.setTimeout(function () { /* Needed for IE */
-                Composr.load.then(function () {
+                $cms.load.then(function () {
                     try {
                         document.getElementById('post_' + options.chatroomId).focus();
                     } catch (e) {
@@ -89,7 +74,9 @@
         },
 
         chatLobbyScreen: function chatLobbyScreen(options) {
-            if (Composr.is(Composr.$IS_GUEST)) { return; }
+            if ($cms.$IS_GUEST) {
+                return;
+            }
 
             window.im_area_template = options.imAreaTemplate;
             window.im_participant_template = options.imParticipantTemplate;
@@ -97,7 +84,7 @@
 
             function begin_im_chatting() {
                 window.load_from_room_id = -1;
-                if ((window.chat_check) && (window.do_ajax_request)) {
+                if ((window.chat_check)) {
                     chat_check(true, 0);
                 } else {
                     window.setTimeout(begin_im_chatting, 500);
@@ -108,18 +95,19 @@
         },
 
         chatSitewideImPopup: function chatSitewideImPopup() {
-            window.detect_if_chat_window_closed_checker=window.setInterval(function() {
-                if (typeof detect_if_chat_window_closed!='undefined') detect_if_chat_window_closed();
-            },5);
+            window.detect_if_chat_window_closed_checker = window.setInterval(function () {
+                if ( detect_if_chat_window_closed !== undefined) {
+                    detect_if_chat_window_closed();
+                }
+            }, 5);
         },
 
         blockMainFriendsList: function blockMainFriendsList(options) {
             options || (options = {});
-            if (Composr.not(options.wrapperId, options.blockCallUrl)) {
-                return;
-            }
 
-            internalise_ajax_block_wrapper_links(options.blockCallUrl, document.getElementById(options.wrapperId), ['.*'], {}, false, true);
+            if (options.wrapperId &&  options.blockCallUrl) {
+                internalise_ajax_block_wrapper_links(options.blockCallUrl, document.getElementById(options.wrapperId), ['.*'], {}, false, true);
+            }
         },
 
         blockSideShoutbox: function blockSideShoutbox(options) {
@@ -127,7 +115,7 @@
         },
 
         chatSitewideIm: function chatSitewideIm(options) {
-            if (Composr.not(options.matched)) {
+            if (!options.matched) {
                 return;
             }
 
@@ -137,7 +125,7 @@
             window.lobby_link = options.lobbyLink;
             window.participants = '';
 
-            Composr.ready.then(function () {
+            $cms.ready.then(function () {
                 if (!window.load_from_room_id) { // Only if not in chat lobby or chatroom, so as to avoid conflicts
                     begin_im_chatting();
                 }
@@ -145,7 +133,7 @@
 
             function begin_im_chatting() {
                 window.load_from_room_id = -1;
-                if ((window.chat_check) && (window.do_ajax_request)) {
+                if ((window.chat_check)) {
                     chat_check(true, 0);
                 } else {
                     window.setTimeout(begin_im_chatting, 100);
@@ -154,7 +142,7 @@
         },
 
         chatSetEffectsSettingBlock: function chatSetEffectsSettingBlock(options) {
-            if (Composr.not(Composr.$IS_HTTPAUTH_LOGIN)) {
+            if (!$cms.$IS_HTTPAUTH_LOGIN) {
                 var btnSubmitId = 'upload_' + options.key;
 
                 if (options.memberId) {
@@ -164,9 +152,9 @@
                 preinit_file_input('chat_effect_settings', btnSubmitId, null, null, 'mp3', 'button_micro');
             }
         }
-    };
+    });
 
-})(window.jQuery || window.Zepto, window.Composr);
+}(window.$cms));
 
 
 // Constants
@@ -203,7 +191,7 @@ window.addEventListener('focus', function () {
 
 function play_sound_url(url) // Used for testing different sounds
 {
-    if (typeof window.soundManager == 'undefined') return;
+    if (window.soundManager === undefined) return;
 
     var base_url = ((url.indexOf('data_custom') == -1) && (url.indexOf('uploads/') == -1)) ? '{$BASE_URL_NOHTTP;}' : '{$CUSTOM_BASE_URL_NOHTTP;}';
     var sound_object = window.soundManager.createSound({url: base_url + '/' + url});
@@ -211,7 +199,7 @@ function play_sound_url(url) // Used for testing different sounds
 }
 
 function play_chat_sound(s_id, for_member) {
-    if (typeof window.soundManager == 'undefined') return;
+    if (window.soundManager === undefined) return;
 
     var play_sound = window.document.getElementById('play_sound');
 
@@ -224,7 +212,7 @@ function play_chat_sound(s_id, for_member) {
         }
     }
 
-    if (typeof window.top_window.console != 'undefined') {
+    if (window.top_window.console !== undefined) {
         window.top_window.console.log('Playing ' + s_id + ' sound'); // Useful when debugging sounds when testing using SU, otherwise you don't know which window they came from
     }
 
@@ -251,7 +239,7 @@ function chat_load(room_id) {
 function begin_chatting(room_id) {
     window.load_from_room_id = room_id;
 
-    if (typeof window.do_ajax_request != 'undefined') {
+    if (window.do_ajax_request) {
         chat_check(true, 0);
         play_chat_sound('you_connect');
     } else {
@@ -309,7 +297,7 @@ function get_ticked_people(form) {
 }
 
 function do_input_private_message(field_name) {
-    if (typeof window.insert_textbox == 'undefined') return;
+    if (window.insert_textbox === undefined) return;
     window.fauxmodal_prompt(
         '{!chat:ENTER_RECIPIENT;^}',
         '',
@@ -330,7 +318,7 @@ function do_input_private_message(field_name) {
 }
 
 function do_input_invite(field_name) {
-    if (typeof window.insert_textbox == 'undefined') return;
+    if (window.insert_textbox === undefined) return;
     window.fauxmodal_prompt(
         '{!chat:ENTER_RECIPIENT;^}',
         '',
@@ -351,7 +339,7 @@ function do_input_invite(field_name) {
 }
 
 function do_input_new_room(field_name) {
-    if (typeof window.insert_textbox == 'undefined') return;
+    if (window.insert_textbox === undefined) return;
     window.fauxmodal_prompt(
         '{!chat:ENTER_CHATROOM;^}',
         '',
@@ -374,7 +362,7 @@ function do_input_new_room(field_name) {
 // Post a chat message
 function chat_post(event, current_room_id, field_name, font_name, font_colour) {
     // Catch the data being submitted by the form, and send it through XMLHttpRequest if possible. Stop the form submission if this is achieved.
-    if ((window.do_ajax_request) && (typeof window.do_ajax_request != 'undefined')) {
+    if (window.do_ajax_request) {
         var element = document.getElementById(field_name);
         cancel_bubbling(event);
         var message_text = element.value;
@@ -386,7 +374,7 @@ function chat_post(event, current_room_id, field_name, font_name, font_colour) {
             }
 
             // Reinvite last left member if necessary
-            if ((typeof element.force_invite != 'undefined') && (element.force_invite !== null)) {
+            if ((element.force_invite !== undefined) && (element.force_invite !== null)) {
                 invite_im(element.force_invite);
                 element.force_invite = null;
             }
@@ -422,8 +410,8 @@ function chat_post(event, current_room_id, field_name, font_name, font_colour) {
                 }
                 catch (e) {
                 }
-            }
-            do_ajax_request(maintain_theme_in_link(url) + window.top_window.keep_stub(false), func, 'room_id=' + window.encodeURIComponent(current_room_id) + '&message=' + window.encodeURIComponent(message_text) + '&font=' + window.encodeURIComponent(font_name) + '&colour=' + window.encodeURIComponent(font_colour) + '&message_id=' + window.encodeURIComponent((window.top_window.last_message_id === null) ? -1 : window.top_window.last_message_id) + '&event_id=' + window.encodeURIComponent(window.top_window.last_event_id) + keep_stub(false));
+            };
+            do_ajax_request(maintain_theme_in_link(url) + window.top_window.keep_stub(false), func, 'room_id=' + encodeURIComponent(current_room_id) + '&message=' + encodeURIComponent(message_text) + '&font=' + encodeURIComponent(font_name) + '&colour=' + encodeURIComponent(font_colour) + '&message_id=' + encodeURIComponent((window.top_window.last_message_id === null) ? -1 : window.top_window.last_message_id) + '&event_id=' + encodeURIComponent(window.top_window.last_event_id) + keep_stub(false));
         }
 
         return false;
@@ -436,13 +424,14 @@ function chat_post(event, current_room_id, field_name, font_name, font_colour) {
 
 // Check for new messages
 function chat_check(backlog, message_id, event_id) {
-    if (window.currently_sending_message) // We'll reschedule once our currently-in-progress message is sent
+    if (window.currently_sending_message)  {// We'll reschedule once our currently-in-progress message is sent
         return null;
+    }
 
-    if ((typeof event_id == 'undefined') || (!event_id)) var event_id = -1; // Means, we don't want to look at events, but the server will give us a null event
+    event_id = +event_id || -1;  // -1 Means, we don't want to look at events, but the server will give us a null event
 
     // Check for new messages on the server the new or old way
-    if (typeof window.do_ajax_request != 'undefined') {
+    if (window.do_ajax_request) {
         // AJAX!
         window.setTimeout(function () {
             chat_check_timeout(backlog, message_id, event_id);
@@ -454,9 +443,9 @@ function chat_check(backlog, message_id, event_id) {
             var url;
             var _room_id = (window.load_from_room_id == null) ? -1 : window.load_from_room_id;
             if (backlog) {
-                url = '{$FIND_SCRIPT;,messages}?action=all&room_id=' + window.encodeURIComponent(_room_id);
+                url = '{$FIND_SCRIPT;,messages}?action=all&room_id=' + encodeURIComponent(_room_id);
             } else {
-                url = '{$FIND_SCRIPT;,messages}?action=new&room_id=' + window.encodeURIComponent(_room_id) + '&message_id=' + window.encodeURIComponent(message_id ? message_id : -1) + '&event_id=' + window.encodeURIComponent(event_id);
+                url = '{$FIND_SCRIPT;,messages}?action=new&room_id=' + encodeURIComponent(_room_id) + '&message_id=' + encodeURIComponent(message_id ? message_id : -1) + '&event_id=' + encodeURIComponent(event_id);
             }
             if (window.location.href.indexOf('no_reenter_message=1') != -1) url = url + '&no_reenter_message=1';
             do_ajax_request(maintain_theme_in_link(url + keep_stub(false)), function (ajax_result_frame, ajax_result) {
@@ -484,7 +473,7 @@ function chat_check_timeout(backlog, message_id, event_id) {
 
 // Deal with the new messages response. Wraps around process_chat_xml_messages as it also adds timers to ensure the message check continues to function even if background errors might have happened.
 function chat_check_response(ajax_result_frame, ajax_result, skip_incoming_sound) {
-    if (typeof skip_incoming_sound == 'undefined') skip_incoming_sound = false;
+    if (skip_incoming_sound === undefined) skip_incoming_sound = false;
 
     var temp = process_chat_xml_messages(ajax_result, skip_incoming_sound);
     if (temp == -2) return false;
@@ -506,7 +495,7 @@ function chat_check_response(ajax_result_frame, ajax_result, skip_incoming_sound
 function process_chat_xml_messages(ajax_result, skip_incoming_sound) {
     if (!ajax_result) return; // Some kind of error happened
 
-    if (typeof skip_incoming_sound == 'undefined') skip_incoming_sound = false;
+    if (skip_incoming_sound === undefined) skip_incoming_sound = false;
 
     var messages = ajax_result.childNodes;
     var message_container = document.getElementById('messages_window');
@@ -545,7 +534,7 @@ function process_chat_xml_messages(ajax_result, skip_incoming_sound) {
                 if ((tab_element) && (tab_element.className.indexOf('chat_lobby_convos_current_tab') == -1)) {
                     tab_element.className = ((tab_element.className.indexOf('chat_lobby_convos_tab_first') != -1) ? 'chat_lobby_convos_tab_first ' : '') + 'chat_lobby_convos_tab_new_messages';
                 }
-            } else if ((typeof opened_popups['room_' + current_room_id] != 'undefined') && (!opened_popups['room_' + current_room_id].is_shutdown) && (opened_popups['room_' + current_room_id].document)) // Popup
+            } else if (( opened_popups['room_' + current_room_id] !== undefined) && (!opened_popups['room_' + current_room_id].is_shutdown) && (opened_popups['room_' + current_room_id].document)) // Popup
             {
                 message_container = opened_popups['room_' + current_room_id].document.getElementById('messages_window_' + current_room_id);
             }
@@ -559,7 +548,7 @@ function process_chat_xml_messages(ajax_result, skip_incoming_sound) {
             if ((newest_timestamp_here = null) || (newest_timestamp_here < parseInt(timestamp))) newest_timestamp_here = parseInt(timestamp);
 
             var doc = document;
-            if (typeof opened_popups['room_' + current_room_id] != 'undefined') {
+            if ( opened_popups['room_' + current_room_id] !== undefined) {
                 var popup_win = opened_popups['room_' + current_room_id];
                 if (!popup_win.document) // We have nowhere to put the message
                 {
@@ -582,7 +571,7 @@ function process_chat_xml_messages(ajax_result, skip_incoming_sound) {
 
             // Clone the node so that we may insert it
             cloned_message = doc.createElement('div');
-            Composr.dom.html(cloned_message, (typeof messages[i].xml != 'undefined') ? messages[i].xml/*IE-only optimisation*/ : messages[i].firstElementChild.outerHTML);
+            $cms.dom.html(cloned_message, ( messages[i].xml !== undefined) ? messages[i].xml/*IE-only optimisation*/ : messages[i].firstElementChild.outerHTML);
             cloned_message = cloned_message.firstElementChild;
             cloned_message.id = 'chat_message__' + id;
 
@@ -593,13 +582,13 @@ function process_chat_xml_messages(ajax_result, skip_incoming_sound) {
                 if (!first_set) // Only if no other message sound already for this event update
                 {
                     if (!skip_incoming_sound) {
-                        if (typeof window.play_chat_sound != 'undefined') play_chat_sound(window.has_focus ? 'message_received' : 'message_background', messages[i].getAttribute('sender_id'));
+                        if (window.play_chat_sound !== undefined) play_chat_sound(window.has_focus ? 'message_received' : 'message_background', messages[i].getAttribute('sender_id'));
                     }
                     flashable_alert = true;
                 }
             } else // First message
             {
-                Composr.dom.html(message_container, '');
+                $cms.dom.html(message_container, '');
                 message_container.appendChild(cloned_message);
                 first_set = true; // Let the code know the first set of messages has started, squashing any extra sounds for this event update
                 if (!skip_incoming_sound) {
@@ -615,10 +604,10 @@ function process_chat_xml_messages(ajax_result, skip_incoming_sound) {
         else if (messages[i].nodeName == 'chat_members_update') // UPDATE MEMBERS LIST IN ROOM
         {
             var members_element = document.getElementById('chat_members_update');
-            if (members_element) Composr.dom.html(members_element, merge_text_nodes(messages[i].childNodes));
+            if (members_element) $cms.dom.html(members_element, merge_text_nodes(messages[i].childNodes));
         }
 
-        else if ((messages[i].nodeName == 'chat_event') && (typeof window.im_participant_template != 'undefined')) // Some kind of transitory event
+        else if ((messages[i].nodeName == 'chat_event') && (window.im_participant_template !== undefined)) // Some kind of transitory event
         {
             event_type = messages[i].getAttribute('event_type');
             room_id = messages[i].getAttribute('room_id');
@@ -633,14 +622,14 @@ function process_chat_xml_messages(ajax_result, skip_incoming_sound) {
                     flashable_alert = true;
                     tmp_element = document.getElementById('online_' + member_id);
                     if (tmp_element) {
-                        if (Composr.dom.html(tmp_element).toLowerCase() == '{!ACTIVE;^}'.toLowerCase()) break;
-                        Composr.dom.html(tmp_element, '{!ACTIVE;^}');
+                        if ($cms.dom.html(tmp_element).toLowerCase() == '{!ACTIVE;^}'.toLowerCase()) break;
+                        $cms.dom.html(tmp_element, '{!ACTIVE;^}');
                         var friend_img = document.getElementById('friend_img_' + member_id);
                         if (friend_img) friend_img.className = 'friend_active';
                         var alert_box_wrap = document.getElementById('alert_box_wrap');
                         if (alert_box_wrap) alert_box_wrap.style.display = 'block';
                         var alert_box = document.getElementById('alert_box');
-                        if (alert_box) Composr.dom.html(alert_box, '{!NOW_ONLINE;^}'.replace('{' + '1}', username));
+                        if (alert_box) $cms.dom.html(alert_box, '{!NOW_ONLINE;^}'.replace('{' + '1}', username));
                         window.setTimeout(function () {
                             if (document.getElementById('alert_box')) // If the alert box is still there, remove it
                                 alert_box_wrap.style.display = 'none';
@@ -660,13 +649,13 @@ function process_chat_xml_messages(ajax_result, skip_incoming_sound) {
                     for (var r in rooms) {
                         room_id = rooms[r];
                         var doc = document;
-                        if ((typeof opened_popups['room_' + room_id] != 'undefined') && (!opened_popups['room_' + room_id].is_shutdown)) {
+                        if (( opened_popups['room_' + room_id] !== undefined) && (!opened_popups['room_' + room_id].is_shutdown)) {
                             if (!opened_popups['room_' + room_id].document) continue;
                             doc = opened_popups['room_' + room_id].document;
                         }
                         tmp_element = doc.getElementById('participant_online__' + room_id + '__' + member_id);
                         if (tmp_element) {
-                            Composr.dom.html(tmp_element, '{!ACTIVE;^}');
+                            $cms.dom.html(tmp_element, '{!ACTIVE;^}');
                         }
                     }
                     break;
@@ -675,8 +664,8 @@ function process_chat_xml_messages(ajax_result, skip_incoming_sound) {
                     var friend_being_tracked = false;
                     tmp_element = document.getElementById('online_' + member_id);
                     if (tmp_element) {
-                        if (Composr.dom.html(tmp_element).toLowerCase() == '{!INACTIVE;^}'.toLowerCase()) break;
-                        Composr.dom.html(tmp_element, '{!INACTIVE;^}');
+                        if ($cms.dom.html(tmp_element).toLowerCase() == '{!INACTIVE;^}'.toLowerCase()) break;
+                        $cms.dom.html(tmp_element, '{!INACTIVE;^}');
                         document.getElementById('friend_img_' + member_id).className = 'friend_inactive';
                         friend_being_tracked = true;
                     }
@@ -685,12 +674,12 @@ function process_chat_xml_messages(ajax_result, skip_incoming_sound) {
                     for (var r in rooms) {
                         room_id = rooms[r];
                         var doc = document;
-                        if (typeof opened_popups['room_' + room_id] != 'undefined') {
+                        if ( opened_popups['room_' + room_id] !== undefined) {
                             if (!opened_popups['room_' + room_id].document) continue;
                             doc = opened_popups['room_' + room_id].document;
                         }
                         tmp_element = doc.getElementById('participant_online__' + room_id + '__' + member_id);
-                        if (tmp_element) Composr.dom.html(tmp_element, '{!INACTIVE;^}');
+                        if (tmp_element) $cms.dom.html(tmp_element, '{!INACTIVE;^}');
                         friend_being_tracked = true;
                     }
 
@@ -704,14 +693,16 @@ function process_chat_xml_messages(ajax_result, skip_incoming_sound) {
                     add_im_member(room_id, member_id, username, messages[i].getAttribute('away') == '1', avatar_url);
 
                     var doc = document;
-                    if ((typeof opened_popups['room_' + room_id] != 'undefined') && (!opened_popups['room_' + room_id].is_shutdown)) {
+                    if (( opened_popups['room_' + room_id] !== undefined) && (!opened_popups['room_' + room_id].is_shutdown)) {
                         if (!opened_popups['room_' + room_id].document) break;
                         doc = opened_popups['room_' + room_id].document;
                     }
                     tmp_element = doc.getElementById('participant_online__' + room_id + '__' + member_id);
                     if (tmp_element) {
-                        if (Composr.dom.html(tmp_element).toLowerCase() == '{!ACTIVE;^}'.toLowerCase()) break;
-                        Composr.dom.html(tmp_element, '{!ACTIVE;^}');
+                        if ($cms.dom.html(tmp_element).toLowerCase() == '{!ACTIVE;^}'.toLowerCase()) {
+                            break;
+                        }
+                        $cms.dom.html(tmp_element, '{!ACTIVE;^}');
                         document.getElementById('friend_img_' + member_id).className = 'friend_active';
                     }
 
@@ -726,7 +717,7 @@ function process_chat_xml_messages(ajax_result, skip_incoming_sound) {
 
                 case 'DEINVOLVE_IM':
                     var doc = document;
-                    if (typeof opened_popups['room_' + room_id] != 'undefined') {
+                    if ( opened_popups['room_' + room_id] !== undefined) {
                         if (!opened_popups['room_' + room_id].document) break;
                         doc = opened_popups['room_' + room_id].document;
                     }
@@ -742,8 +733,8 @@ function process_chat_xml_messages(ajax_result, skip_incoming_sound) {
                          tmp_element=doc.getElementById('participant_online__'+room_id+'__'+member_id);
                          if (tmp_element)
                          {
-                         if (Composr.dom.html(tmp_element).toLowerCase()=='{!INACTIVE;^}'.toLowerCase()) break;
-                         Composr.dom.html(tmp_element,'{!INACTIVE;^}');
+                         if ($cms.dom.html(tmp_element).toLowerCase()=='{!INACTIVE;^}'.toLowerCase()) break;
+                         $cms.dom.html(tmp_element,'{!INACTIVE;^}');
                          }
                          } else*/
                         {
@@ -751,7 +742,7 @@ function process_chat_xml_messages(ajax_result, skip_incoming_sound) {
                         }
                         /*if (parent.childNodes.length==0)		Don't set to none, as we want to allow the 'force_invite' IM re-activation feature, to draw the other guy back -- above we pretended they're merely 'away', not just left
                          {
-                         Composr.dom.html(parent,'<em class="none">{!NONE;^}</em>');
+                         $cms.dom.html(parent,'<em class="none">{!NONE;^}</em>');
                          }*/
 
                         if (!skip_incoming_sound) {
@@ -762,10 +753,10 @@ function process_chat_xml_messages(ajax_result, skip_incoming_sound) {
             }
         } else // INVITES
 
-        if ((messages[i].nodeName == 'chat_invite') && (typeof window.im_participant_template != 'undefined')) {
+        if ((messages[i].nodeName == 'chat_invite') && (window.im_participant_template !== undefined)) {
             room_id = merge_text_nodes(messages[i].childNodes);
 
-            if ((!document.getElementById('room_' + room_id)) && ((typeof opened_popups['room_' + room_id] == 'undefined') || (opened_popups['room_' + room_id].is_shutdown))) {
+            if ((!document.getElementById('room_' + room_id)) && (( opened_popups['room_' + room_id] === undefined) || (opened_popups['room_' + room_id].is_shutdown))) {
                 room_name = messages[i].getAttribute('room_name');
                 avatar_url = messages[i].getAttribute('avatar_url');
                 participants = messages[i].getAttribute('participants');
@@ -792,9 +783,9 @@ function process_chat_xml_messages(ajax_result, skip_incoming_sound) {
 
     // Get attention, to indicate something has happened
     if (flashable_alert) {
-        if ((room_id) && (typeof opened_popups['room_' + room_id] != 'undefined') && (!opened_popups['room_' + room_id].is_shutdown)) {
-            if (typeof opened_popups['room_' + room_id].getAttention != 'undefined') opened_popups['room_' + room_id].getAttention();
-            if (typeof opened_popups['room_' + room_id].focus != 'undefined') {
+        if ((room_id) && ( opened_popups['room_' + room_id] !== undefined) && (!opened_popups['room_' + room_id].is_shutdown)) {
+            if ( opened_popups['room_' + room_id].getAttention !== undefined) opened_popups['room_' + room_id].getAttention();
+            if ( opened_popups['room_' + room_id].focus !== undefined) {
                 try {
                     opened_popups['room_' + room_id].focus();
                 }
@@ -812,8 +803,8 @@ function process_chat_xml_messages(ajax_result, skip_incoming_sound) {
                 }
             }
         } else {
-            if (typeof window.getAttention != 'undefined') window.getAttention();
-            if (typeof window.focus != 'undefined') {
+            if (window.getAttention !== undefined) window.getAttention();
+            if (window.focus !== undefined) {
                 try {
                     window.focus();
                 }
@@ -838,17 +829,19 @@ function process_chat_xml_messages(ajax_result, skip_incoming_sound) {
 }
 
 function create_overlay_event(skip_incoming_sound, member_id, message, click_event, avatar_url, room_id) {
-    if (typeof room_id == 'undefined') room_id = null;
+    if (room_id === undefined) {
+        room_id = null;
+    }
 
     if (window != window.top_window) return; // Can't display in an autonomous popup
 
     // Make sure to not show multiple equiv ones, which could happen in various situations
     if (room_id !== null) {
-        if ((typeof window.already_received_room_invites[room_id] != 'undefined') && (window.already_received_room_invites[room_id]))
+        if (( window.already_received_room_invites[room_id] !== undefined) && (window.already_received_room_invites[room_id]))
             return;
         window.already_received_room_invites[room_id] = true;
     } else {
-        if ((typeof window.already_received_contact_alert[member_id] != 'undefined') && (window.already_received_contact_alert[member_id]))
+        if (( window.already_received_contact_alert[member_id] !== undefined) && (window.already_received_contact_alert[member_id]))
             return;
         window.already_received_contact_alert[member_id] = true;
     }
@@ -892,7 +885,7 @@ function create_overlay_event(skip_incoming_sound, member_id, message, click_eve
         }
     };
     var imgclose = document.createElement('img');
-    imgclose.src = Composr.url('{$IMG;,icons/14x14/delete}');
+    imgclose.src = $cms.img('{$IMG;,icons/14x14/delete}');
     imgclose.className = 'im_popup_close_button blend';
     imgclose.onclick = close_popup;
     div.appendChild(imgclose);
@@ -907,7 +900,7 @@ function create_overlay_event(skip_incoming_sound, member_id, message, click_eve
 
     // Message
     var p_message = document.createElement('p');
-    Composr.dom.html(p_message, message);
+    $cms.dom.html(p_message, message);
     div.appendChild(p_message);
 
     // Open link
@@ -921,7 +914,7 @@ function create_overlay_event(skip_incoming_sound, member_id, message, click_eve
             return false;
         };
         a_popup_open.href = '#';
-        Composr.dom.html(a_popup_open, '{!OPEN_IM_POPUP;^}');
+        $cms.dom.html(a_popup_open, '{!OPEN_IM_POPUP;^}');
         var li_popup_open = document.createElement('li');
         li_popup_open.appendChild(a_popup_open);
         links.appendChild(li_popup_open);
@@ -932,7 +925,7 @@ function create_overlay_event(skip_incoming_sound, member_id, message, click_eve
     a_goto_lobby.href = window.lobby_link.replace('%21%21', member_id);
     a_goto_lobby.onclick = close_popup;
     a_goto_lobby.target = '_blank';
-    Composr.dom.html(a_goto_lobby, '{!GOTO_CHAT_LOBBY;^}');
+    $cms.dom.html(a_goto_lobby, '{!GOTO_CHAT_LOBBY;^}');
     var li_goto_lobby = document.createElement('li');
     li_goto_lobby.appendChild(a_goto_lobby);
     links.appendChild(li_goto_lobby);
@@ -953,7 +946,7 @@ function start_im(people, just_refocus) {
     if ((browser_matches('non_concurrent')) && (!document.getElementById('chat_lobby_convos_tabs'))) return true; // Let it navigate to chat lobby
 
     var message = (people.indexOf(',') == -1) ? '{!ALREADY_HAVE_THIS_SINGLE;^}' : '{!ALREADY_HAVE_THIS;^}';
-    if ((typeof window.top_window.all_conversations[people] != 'undefined') && (window.top_window.all_conversations[people] !== null)) {
+    if ((window.top_window.all_conversations[people] !== undefined) && (window.top_window.all_conversations[people] !== null)) {
         if (just_refocus) {
             try {
                 var room_id = window.top_window.all_conversations[people];
@@ -983,9 +976,9 @@ function start_im(people, just_refocus) {
 function _start_im(people, may_recycle) {
     var div = document.createElement('div');
     div.className = 'loading_overlay';
-    Composr.dom.html(div, '{!LOADING;^}');
+    $cms.dom.html(div, '{!LOADING;^}');
     document.body.appendChild(div);
-    do_ajax_request(maintain_theme_in_link('{$FIND_SCRIPT;,messages}?action=start_im&message_id=' + window.encodeURIComponent((window.top_window.last_message_id === null) ? -1 : window.top_window.last_message_id) + '&may_recycle=' + (may_recycle ? '1' : '0') + '&event_id=' + window.encodeURIComponent(window.top_window.last_event_id) + keep_stub(false)), function (result) {
+    do_ajax_request(maintain_theme_in_link('{$FIND_SCRIPT;,messages}?action=start_im&message_id=' + encodeURIComponent((window.top_window.last_message_id === null) ? -1 : window.top_window.last_message_id) + '&may_recycle=' + (may_recycle ? '1' : '0') + '&event_id=' + encodeURIComponent(window.top_window.last_event_id) + keep_stub(false)), function (result) {
         var responses = result.getElementsByTagName('result');
         if (responses[0]) {
             window.instant_go = true;
@@ -1002,7 +995,7 @@ function invite_im(people) {
         window.fauxmodal_alert('{!NO_IM_ACTIVE;^}');
     } else {
         do_ajax_request('{$FIND_SCRIPT;,messages}?action=invite_im' + keep_stub(false), function () {
-        }, 'room_id=' + window.encodeURIComponent(room_id) + '&people=' + people);
+        }, 'room_id=' + encodeURIComponent(room_id) + '&people=' + people);
     }
 }
 
@@ -1062,9 +1055,9 @@ function deinvolve_im(room_id, logs, is_popup) // is_popup means that we show a 
 {
     if (is_popup) {
         var body = document.getElementsByTagName('body');
-        if (typeof body[0] != 'undefined') {
+        if ( body[0] !== undefined) {
             body[0].className += ' site_unloading';
-            Composr.dom.html(body[0], '<div class="spaced"><div aria-busy="true" class="ajax_loading vertical_alignment"><img src="' + Composr.url('{$IMG*;,loading}') + '" alt="{!LOADING;^}" /> <span>{!LOADING;^}<\/span><\/div><\/div>');
+            $cms.dom.html(body[0], '<div class="spaced"><div aria-busy="true" class="ajax_loading vertical_alignment"><img src="' + $cms.img('{$IMG*;,loading}') + '" alt="{!LOADING;^}" /> <span>{!LOADING;^}<\/span><\/div><\/div>');
         }
     }
 
@@ -1081,7 +1074,7 @@ function deinvolve_im(room_id, logs, is_popup) // is_popup means that we show a 
         participants = tab_element.participants;
     } else {
         if (is_popup)
-            participants = ((typeof window.already_autonomous != 'undefined') && (window.already_autonomous)) ? window.participants : window.top_window.opened_popups['room_' + room_id].participants;
+            participants = ((window.already_autonomous !== undefined) && (window.already_autonomous)) ? window.participants : window.top_window.opened_popups['room_' + room_id].participants;
     }
 
     window.top_window.already_received_room_invites[room_id] = false;
@@ -1090,7 +1083,7 @@ function deinvolve_im(room_id, logs, is_popup) // is_popup means that we show a 
     window.setTimeout(function () // Give time for any logs to download (download does not need to have finished - but must have loaded into a request response on the server side)
     {
         window.top_window.do_ajax_request('{$FIND_SCRIPT;,messages}?action=deinvolve_im' + window.top_window.keep_stub(false), function () {
-        }, 'room_id=' + window.encodeURIComponent(room_id)); // Has to be on top_window or it will be lost if the window was explicitly closed (it is unloading mode and doesn't want to make a new request)
+        }, 'room_id=' + encodeURIComponent(room_id)); // Has to be on top_window or it will be lost if the window was explicitly closed (it is unloading mode and doesn't want to make a new request)
 
         if (participants)
             window.top_window.all_conversations[participants] = null;
@@ -1104,9 +1097,9 @@ function deinvolve_im(room_id, logs, is_popup) // is_popup means that we show a 
             // All gone?
             var count = count_im_convos();
             if (count == 0) {
-                Composr.dom.html(tabs, '&nbsp;');
+                $cms.dom.html(tabs, '&nbsp;');
                 document.getElementById('chat_lobby_convos_tabs').style.display = 'none';
-                Composr.dom.html(document.getElementById('chat_lobby_convos_areas'), no_im_html);
+                $cms.dom.html(document.getElementById('chat_lobby_convos_areas'), no_im_html);
                 if (document.getElementById('invite_ongoing_im_button')) document.getElementById('invite_ongoing_im_button').disabled = true;
             } else {
                 chat_select_tab(document.getElementById('tab_' + find_im_convo_room_ids().pop()));
@@ -1132,9 +1125,9 @@ function detected_conversation(room_id, room_name, participants) // Assumes conv
         var count = count_im_convos();
         // First one?
         if (count == 0) {
-            window.no_im_html = Composr.dom.html(areas);
-            Composr.dom.html(areas, '');
-            Composr.dom.html(tabs, '');
+            window.no_im_html = $cms.dom.html(areas);
+            $cms.dom.html(areas, '');
+            $cms.dom.html(tabs, '');
         }
 
         lobby = true;
@@ -1146,20 +1139,20 @@ function detected_conversation(room_id, room_name, participants) // Assumes conv
     window.top_window.all_conversations[participants] = room_id;
 
     var url = '{$FIND_SCRIPT_NOHTTP;,messages}?action=join_im&event_id=' + window.top_window.last_event_id + window.top_window.keep_stub(false);
-    var post = 'room_id=' + window.encodeURIComponent(room_id);
+    var post = 'room_id=' + encodeURIComponent(room_id);
 
     // Add in
     var new_one = window.im_area_template.replace(/\_\_room_id\_\_/g, room_id).replace(/\_\_room\_name\_\_/g, room_name);
     if (lobby) {
         var new_div;
         new_div = document.createElement('div');
-        Composr.dom.html(new_div, new_one);
+        $cms.dom.html(new_div, new_one);
         areas.appendChild(new_div);
 
         // Add tab
         new_div = document.createElement('div');
         new_div.className = 'chat_lobby_convos_tab_uptodate' + ((count == 0) ? ' chat_lobby_convos_tab_first' : '');
-        Composr.dom.html(new_div, escape_html(room_name));
+        $cms.dom.html(new_div, escape_html(room_name));
         new_div.setAttribute('id', 'tab_' + room_id);
         new_div.participants = participants;
         new_div.onclick = function () {
@@ -1175,20 +1168,20 @@ function detected_conversation(room_id, room_name, participants) // Assumes conv
     } else {
         // Open popup
         var im_popup_window_options = 'width=370,height=460,menubar=no,toolbar=no,location=no,resizable=no,scrollbars=yes,top=' + ((screen.height - 520) / 2) + ',left=' + ((screen.width - 440) / 2);
-        var new_window = window.open(Composr.url('{$BASE_URL;,0}') + '/data/empty.html?instant_messaging', 'room_' + room_id, im_popup_window_options); // The "?instant_messaging" is just to make the location bar less surprising to the user ;-) [modern browsers always show the location bar for security, even if we try and disable it]
-        if ((!new_window) || (typeof new_window.window == 'undefined' /*BetterPopupBlocker for Chrome returns a fake new window but won't have this defined in it*/)) {
+        var new_window = window.open($cms.$BASE_URL + '/data/empty.html?instant_messaging', 'room_' + room_id, im_popup_window_options); // The "?instant_messaging" is just to make the location bar less surprising to the user ;-) [modern browsers always show the location bar for security, even if we try and disable it]
+        if ((!new_window) || (new_window.window === undefined /*BetterPopupBlocker for Chrome returns a fake new window but won't have this defined in it*/)) {
             fauxmodal_alert('{!chat:_FAILED_TO_OPEN_POPUP;,{$PAGE_LINK*,_SEARCH:popup_blockers:failure=1,0,1}}', null, '{!chat:FAILED_TO_OPEN_POPUP;^}', true);
         }
         window.setTimeout(function () // Needed for Safari to set the right domain, and also to give window an opportunity to attach itself on its own accord
         {
-            if ((typeof opened_popups['room_' + room_id] != 'undefined') && (opened_popups['room_' + room_id] != null) && (!opened_popups['room_' + room_id].is_shutdown)) // It's been reattached already
+            if (( opened_popups['room_' + room_id] !== undefined) && (opened_popups['room_' + room_id] != null) && (!opened_popups['room_' + room_id].is_shutdown)) // It's been reattached already
             {
                 return;
             }
 
             opened_popups['room_' + room_id] = new_window;
 
-            if ((new_window) && (typeof new_window.document != 'undefined')) {
+            if ((new_window) && (new_window.document !== undefined)) {
                 new_window.document.open();
                 new_window.document.write(new_one); // This causes a blocking on Firefox while files download/parse. It's annoying, you'll see the popup freezes. But it works after a few seconds.
                 new_window.document.close();
@@ -1219,9 +1212,9 @@ function detected_conversation(room_id, room_name, participants) // Assumes conv
                     }, post);
 
                     // Set title
-                    var dom_title = new_window.document.getElementsByTagName('title')[0];
+                    var dom_title = new_window.document.querySelector('title');
                     if (dom_title != null)
-                        new_window.document.title = Composr.dom.html(dom_title).replace(/<.*?>/g, ''); // For Safari
+                        new_window.document.title = $cms.dom.html(dom_title).replace(/<.*?>/g, ''); // For Safari
 
                 }, 500);
                 /* Could be 60 except for Firefox which is slow */
@@ -1233,14 +1226,14 @@ function detected_conversation(room_id, room_name, participants) // Assumes conv
 function add_im_member(room_id, member_id, username, away, avatar_url) {
     window.setTimeout(function () {
         var doc = document;
-        if (typeof opened_popups['room_' + room_id] != 'undefined') {
+        if ( opened_popups['room_' + room_id] !== undefined) {
             if (opened_popups['room_' + room_id].is_shutdown) return;
             if (!opened_popups['room_' + room_id].document) return;
             doc = opened_popups['room_' + room_id].document;
         }
         if (away) {
             var tmp_element = doc.getElementById('online_' + member_id);
-            if ((tmp_element) && (Composr.dom.html(tmp_element).toLowerCase() == '{!ACTIVE;^}'.toLowerCase())) away = false;
+            if ((tmp_element) && ($cms.dom.html(tmp_element).toLowerCase() == '{!ACTIVE;^}'.toLowerCase())) away = false;
         }
         if (doc.getElementById('participant__' + room_id + '__' + member_id)) return; // They're already put in it
         var new_participant = doc.createElement('div');
@@ -1250,15 +1243,15 @@ function add_im_member(room_id, member_id, username, away, avatar_url) {
         new_participant_inner = new_participant_inner.replace(/\_\_avatar\_url\_\_/g, avatar_url);
         if (avatar_url == '') new_participant_inner = new_participant_inner.replace('style="display: block" id="avatar__', 'style="display: none" id="avatar__');
         new_participant_inner = new_participant_inner.replace(/\_\_online\_\_/g, away ? '{!INACTIVE;^}' : '{!ACTIVE;^}');
-        Composr.dom.html(new_participant, new_participant_inner);
+        $cms.dom.html(new_participant, new_participant_inner);
         new_participant.setAttribute('id', 'participant__' + room_id + '__' + member_id);
         var element = doc.getElementById('participants__' + room_id);
         if (element) // If we've actually got the HTML for the room setup
         {
-            var p_list = Composr.dom.html(element).toLowerCase();
+            var p_list = $cms.dom.html(element).toLowerCase();
 
             if ((p_list.indexOf('<em class="none">') != -1) || (p_list.indexOf('<em class="loading">') != -1))
-                Composr.dom.html(element, '');
+                $cms.dom.html(element, '');
             element.appendChild(new_participant);
             if (doc.getElementById('friend_img_' + member_id)) doc.getElementById('friend__' + member_id).style.display = 'none';
         }
@@ -1308,7 +1301,7 @@ function detect_if_chat_window_closed(die_on_lost, become_autonomous_on_lost) {
             lost_connection = true;
         } else {
             var room_id = find_current_im_room();
-            if (typeof window.opener.opened_popups['room_' + room_id] == 'undefined') {
+            if (window.opener.opened_popups['room_' + room_id] === undefined) {
                 var chat_lobby_convos_tabs = window.opener.document.getElementById('chat_lobby_convos_tabs');
                 if (chat_lobby_convos_tabs) // Now in the chat lobby, consider this a confirmed loss, because we don't want duplicate IM spaces
                 {
@@ -1318,14 +1311,14 @@ function detect_if_chat_window_closed(die_on_lost, become_autonomous_on_lost) {
                 } else {
                     window.opener.opened_popups['room_' + room_id] = window; // Reattach, presumably a navigation has happened
 
-                    if ((typeof window.already_autonomous != 'undefined') && (window.already_autonomous)) // Losing autonomity again?
+                    if ((window.already_autonomous !== undefined) && (window.already_autonomous)) // Losing autonomity again?
                     {
                         window.top_window = window.opener;
                         chat_check(false, window.last_message_id, window.last_event_id);
                         window.already_autonomous = false;
                     }
 
-                    if (typeof window.opener.console.log != 'undefined') window.opener.console.log('Reattaching chat window to re-navigated master window.');
+                    if (window.opener.console.log !== undefined) window.opener.console.log('Reattaching chat window to re-navigated master window.');
                 }
             }
         }
@@ -1335,19 +1328,18 @@ function detect_if_chat_window_closed(die_on_lost, become_autonomous_on_lost) {
     }
 
     if (lost_connection) {
-        if (typeof die_on_lost == 'undefined') die_on_lost = false;
-        if (typeof become_autonomous_on_lost == 'undefined') become_autonomous_on_lost = false;
+        if (die_on_lost === undefined) die_on_lost = false;
+        if (become_autonomous_on_lost === undefined) become_autonomous_on_lost = false;
 
         if (become_autonomous_on_lost) // Becoming autonomous means allowing to work with a master window
         {
             chat_window_become_autonomous();
-        }
-        else if (die_on_lost) {
+        } else if (die_on_lost) {
             window.is_shutdown = true;
             window.onbeforeunload = null;
             window.close();
         } else {
-            if ((typeof window.already_autonomous == 'undefined') || (!window.already_autonomous)) {
+            if ((window.already_autonomous === undefined) || (!window.already_autonomous)) {
                 window.setTimeout(function () {
                     detect_if_chat_window_closed(false, true);
                 }, 3000); // If connection still lost after this time then kill the window
@@ -1357,7 +1349,7 @@ function detect_if_chat_window_closed(die_on_lost, become_autonomous_on_lost) {
 }
 
 function chat_window_become_autonomous() {
-    if ((typeof window.already_autonomous == 'undefined') || (!window.already_autonomous)) {
+    if ((window.already_autonomous === undefined) || (!window.already_autonomous)) {
         window.top_window = window;
         chat_check(false, window.last_message_id, window.last_event_id);
         window.already_autonomous = true;

@@ -12,7 +12,7 @@
 	<div class="float_surrounder">
 		<div class="download_metadata">
 			<div class="download_now_wrapper">
-				<div class="box box___download_screen" data-view-core="ToggleableTray">
+				<div class="box box___download_screen" data-view="ToggleableTray">
 					{+START,IF_PASSED,LICENCE_HYPERLINK}
 					<p class="download_licence">
 						{!D_BEFORE_PROCEED_AGREE,{LICENCE_HYPERLINK}}
@@ -150,7 +150,7 @@
 
 			{$SET,carousel_id,{$RAND}}
 
-			<div id="carousel_{$GET*,carousel_id}" class="carousel" style="display: none" data-view-core-rich-media="Carousel" data-view-args="{+START,PARAMS_JSON,carousel_id}{_*}{+END}">
+			<div id="carousel_{$GET*,carousel_id}" class="carousel" style="display: none" data-view="Carousel" data-view-args="{+START,PARAMS_JSON,carousel_id}{_*}{+END}">
 				<div class="move_left js-btn-car-move" data-move-amount="-100"></div>
 				<div class="move_right js-btn-car-move" data-move-amount="+100"></div>
 

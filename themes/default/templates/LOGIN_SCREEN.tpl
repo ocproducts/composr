@@ -1,4 +1,4 @@
-<div data-tpl-core="loginScreen">
+<div data-tpl="loginScreen">
 {TITLE}
 
 {$SET,login_screen,1}

@@ -49,7 +49,7 @@
 {+END}
 {+END}
 
-<section class="box box___block_main_image_fader_news" data-tpl-news="blockMainImageFaderNews" data-tpl-args="{+START,PARAMS_JSON,RAND_FADER_NEWS,NEWS,MILL}[{_*}, [{$GET*,news_items_html_json}]]{+END}">
+<section class="box box___block_main_image_fader_news" data-tpl="blockMainImageFaderNews" data-tpl-args="{+START,PARAMS_JSON,RAND_FADER_NEWS,NEWS,MILL}[{_*}, [{$GET*,news_items_html_json}]]{+END}">
 	<div class="box_inner">
 	{+START,IF_NON_EMPTY,{TITLE}}
 		<h2>{TITLE}</h2>

@@ -284,7 +284,7 @@ class Hook_profiles_tabs_edit_settings
                     if (form.elements['edit_password'].value!='')
                     {
                         var url='" . addslashes($script) . "?';
-                        if (!do_ajax_field_test(url,'password='+window.encodeURIComponent(form.elements['edit_password'].value)))
+                        if (!do_ajax_field_test(url,'password='+encodeURIComponent(form.elements['edit_password'].value)))
                         {
                             document.getElementById('submit_button').disabled=false;
                             return false;

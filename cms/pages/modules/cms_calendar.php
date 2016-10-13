@@ -186,23 +186,23 @@ class Module_cms_calendar extends Standard_crud_module
                 if ((typeof event!='undefined') && (has_date_set)) // Something changed
                 {
                     var url='calendar_recurrence_suggest';
-                    url+='&monthly_spec_type='+window.encodeURIComponent(radio_value(form.elements['monthly_spec_type']));
+                    url+='&monthly_spec_type='+encodeURIComponent(radio_value(form.elements['monthly_spec_type']));
                     if (start_day)
                     {
-                        url+='&date_day='+window.encodeURIComponent(start_day.options[start_day.selectedIndex].value);
-                        url+='&date_month='+window.encodeURIComponent(start_month.options[start_month.selectedIndex].value);
-                        url+='&date_year='+window.encodeURIComponent(start_year.options[start_year.selectedIndex].value);
+                        url+='&date_day='+encodeURIComponent(start_day.options[start_day.selectedIndex].value);
+                        url+='&date_month='+encodeURIComponent(start_month.options[start_month.selectedIndex].value);
+                        url+='&date_year='+encodeURIComponent(start_year.options[start_year.selectedIndex].value);
                     } else
                     {
-                        url+='&date='+window.encodeURIComponent(start.value);
+                        url+='&date='+encodeURIComponent(start.value);
                     }
                     if (start_hour)
                     {
-                        url+='&date_time_hour='+window.encodeURIComponent(start_hour.options[start_hour.selectedIndex].value);
-                        url+='&date_time_minute='+window.encodeURIComponent(start_minute.options[start_minute.selectedIndex].value);
+                        url+='&date_time_hour='+encodeURIComponent(start_hour.options[start_hour.selectedIndex].value);
+                        url+='&date_time_minute='+encodeURIComponent(start_minute.options[start_minute.selectedIndex].value);
                     } else
                     {
-                        url+='&date_time='+window.encodeURIComponent(start_time.value);
+                        url+='&date_time='+encodeURIComponent(start_time.value);
                     }
                     url+='&do_timezone_conv='+(do_timezone_conv.checked?'1':'0');
                     url+='&all_day_event='+(all_day_event.checked?'1':'0');
@@ -212,7 +212,7 @@ class Module_cms_calendar extends Standard_crud_module
                     {
                         tr=tr.parentNode;
                     }
-                    Composr.dom.html(tr,new_data.replace(/<tr [^>]*>/,'').replace(/<\/tr>/,''));
+                    \$cms.dom.html(tr,new_data.replace(/<tr [^>]*>/,'').replace(/<\/tr>/,''));
                 }
                 var monthly_recurrence=form.elements['recurrence'][3].checked;
                 for (var i=0;i<form.elements['monthly_spec_type'].length;i++)

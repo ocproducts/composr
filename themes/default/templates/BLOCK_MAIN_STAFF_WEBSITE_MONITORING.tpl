@@ -1,7 +1,7 @@
 {$SET,RAND_WEBSITE_MONITORING,{$RAND}}
 
 <div class="form_ajax_target" data-view="BlockMainStaffWebsiteMonitoring" data-view-args="{+START,PARAMS_JSON,RAND_WEBSITE_MONITORING}{_*}{+END}">
-	<section id="tray_{!SITE_WATCHLIST|}" data-view-core="ToggleableTray" data-tray-cookie="{!SITE_WATCHLIST|}" class="box box___block_main_staff_website_monitoring">
+	<section id="tray_{!SITE_WATCHLIST|}" data-view="ToggleableTray" data-tray-cookie="{!SITE_WATCHLIST|}" class="box box___block_main_staff_website_monitoring">
 		<h3 class="toggleable_tray_title js-tray-header">
 			<a title="{!EDIT}: {!SITE_WATCHLIST}" class="top_left_toggleicon js-click-staff-block-flip" href="#!">{!EDIT}</a>
 
@@ -36,7 +36,7 @@
 				</tbody>
 			</table></div>
 
-			<form title="{!SITE_WATCHLIST}: {!EDIT}"{+START,IF,{$JS_ON}} style="display: none" aria-hidden="true"{+END} action="{URL*}" method="post" id="website_monitoring_list_{$GET%,RAND_WEBSITE_MONITORING}_form" autocomplete="off">
+			<form title="{!SITE_WATCHLIST}: {!EDIT}"{+START,IF,{$JS_ON}} style="display: none" aria-hidden="true"{+END} action="{URL*}" method="post" id="website_monitoring_list_{$GET%,RAND_WEBSITE_MONITORING}_form" autocomplete="off" class="js-form-site-watchlist">
 				{$INSERT_SPAMMER_BLACKHOLE}
 
 				<div class="constrain_field">
@@ -45,7 +45,7 @@
 				</div>
 
 				<div class="buttons_group">
-					<input data-disable-on-click="1" onclick="{+START,IF,{$HAS_PRIVILEGE,comcode_dangerous}} return ajax_form_submit__admin__headless(event,this.form,'{BLOCK_NAME;~*}','{MAP;~*}');{+END}" class="button_screen_item buttons__save" type="submit" value="{!SAVE}" />
+					<input data-disable-on-click="1" class="button_screen_item buttons__save {+START,IF,{$HAS_PRIVILEGE,comcode_dangerous}}js-click-headless-submit{+END}" type="submit" value="{!SAVE}" />
 				</div>
 			</form>
 

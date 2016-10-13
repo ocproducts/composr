@@ -1,7 +1,9 @@
 "use strict";
 
 function decrypt_data(encrypted_data) {
-    if (document.getElementById('decryption_overlay')) return;
+    if (document.getElementById('decryption_overlay')) {
+        return;
+    }
 
     var container = document.createElement('div');
     container.className = 'decryption_overlay box';
@@ -13,9 +15,7 @@ function decrypt_data(encrypted_data) {
     container.style.top = (get_window_height() / 2 - 100).toString() + 'px';
     try {
         window.scrollTo(0, 0);
-    }
-    catch (e) {
-    }
+    } catch (e) {}
 
     var title = document.createElement('h2');
     title.appendChild(document.createTextNode('{!encryption:DECRYPT_TITLE;^}'));
@@ -62,7 +62,7 @@ function decrypt_data(encrypted_data) {
     button.value = '{!INPUTSYSTEM_CANCEL;^}';
     // Remove the form when it's cancelled
     button.addEventListener('click', function () {
-        document.getElementsByTagName('body')[0].removeChild(container);
+        document.querySelector('body').removeChild(container);
         return false;
     });
     proceed_div.appendChild(button);
@@ -81,7 +81,7 @@ function decrypt_data(encrypted_data) {
 
     form.appendChild(proceed_div);
 
-    document.getElementsByTagName('body')[0].appendChild(container);
+    document.querySelector('body').appendChild(container);
 
     window.setTimeout(function () {
         try {

@@ -55,7 +55,7 @@ function s_update_submit(event) {
         var url = '{$BASE_URL;,0}/data_custom/activities_handler.php' + keep_stub(true);
 
         jQuery.ajax({
-            url: Composr.url(url),
+            url: $cms.url(url),
             type: 'POST',
             data: $('#fp_status_form').serialize(),
             cache: false,

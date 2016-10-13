@@ -1,4 +1,4 @@
-<div data-tpl-filedump="filedumpEmbedScreen" data-tpl-args="{+START,PARAMS_JSON,GENERATED}{_*}{+END}">
+<div data-tpl="filedumpEmbedScreen" data-tpl-args="{+START,PARAMS_JSON,GENERATED}{_*}{+END}">
 {TITLE}
 
 {+START,IF_PASSED,GENERATED}

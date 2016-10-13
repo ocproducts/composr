@@ -1,8 +1,9 @@
 "use strict";
 
-(function ($, Composr) {
-    Composr.templates.realtimeRain = {
-        realtimeRainOverlay: function realtimeRainOverlay(options) {
+(function ($cms) {
+
+    $cms.extend($cms.templates, {
+        realtimeRainOverlay: function (options) {
             window.min_time = options.minTime;
             window.paused = false;
             window.bubble_groups = {};
@@ -13,36 +14,28 @@
             start_realtime_rain();
         },
 
-        realtimeRainBubble: function realtimeRainBubble(options) {
+        realtimeRainBubble: function (options) {
             window.pending_eval_function = function (ob) { // In webkit you can't get a node until it's been closed, so we need to set our code into a function and THEN run it
-                if (typeof options.tickerText !== 'undefined') {
+                if (options.tickerText !== undefined) {
                     window.setTimeout(function () {
-                        Composr.dom.html(document.getElementById('news_go_here'), options.tickerText);
+                        $cms.dom.html(document.getElementById('news_go_here'), options.tickerText);
                     }, options.relativeTimestamp * 1000);
                 }
                 // Set up extra attributes
                 ob.time_offset = options.relativeTimestamp;
                 ob.lines_for = [];
 
-                if (typeof options.groupId !== 'undefined'){
+                if (options.groupId !== undefined){
                     ob.lines_for.push(options.groupId);
                 }
 
-                if ((typeof options.specialIcon !== 'undefined') && (options.specialIcon === 'email-icon')) {
+                if ((options.specialIcon !== undefined) && (options.specialIcon === 'email-icon')) {
                     ob.icon_multiplicity = options.multiplicity;
                 }
             };
         }
-    };
-
-    Composr.behaviors.realtimeRain = {
-        initialize: {
-            attach: function (context) {
-                Composr.initializeTemplates(context, 'realtime_rain');
-            }
-        }
-    };
-})(window.jQuery || window.Zepto, Composr);
+    });
+}(window.$cms));
 
 // Handle the realtime_rain button on the bottom bar
 function realtime_rain_button_load_handler() {
@@ -65,17 +58,17 @@ function realtime_rain_button_load_handler() {
             e.parentNode.parentNode.removeChild(e.parentNode);
         }
 
-        img.src = Composr.url('{$IMG;,icons/24x24/tool_buttons/realtime_rain_on}');
+        img.src = $cms.img('{$IMG;,icons/24x24/tool_buttons/realtime_rain_on}');
         if (img.srcset !== undefined) {
-            img.srcset = Composr.url('{$IMG;,icons/48x48/tool_buttons/realtime_rain_on}') + ' 2x';
+            img.srcset = $cms.img('{$IMG;,icons/48x48/tool_buttons/realtime_rain_on}') + ' 2x';
         }
 
         return false;
     }
 
-    img.src = Composr.url('{$IMG;,icons/24x24/tool_buttons/realtime_rain_off}');
+    img.src = $cms.img('{$IMG;,icons/24x24/tool_buttons/realtime_rain_off}');
     if (img.srcset !== undefined) {
-        img.srcset = Composr.url('{$IMG;,icons/48x48/tool_buttons/realtime_rain_off}') + ' 2x';
+        img.srcset = $cms.img('{$IMG;,icons/48x48/tool_buttons/realtime_rain_off}') + ' 2x';
     }
     var tmp_element = document.getElementById('realtime_rain_img_loader');
     if (tmp_element) tmp_element.parentNode.removeChild(tmp_element);
@@ -83,7 +76,7 @@ function realtime_rain_button_load_handler() {
 
     var x = document.createElement('div');
     document.body.appendChild(x);
-    Composr.dom.html(x, load_snippet('realtime_rain_load'));
+    $cms.dom.html(x, load_snippet('realtime_rain_load'));
     e = document.getElementById('real_time_surround');
     e.style.position = 'absolute';
     e.style.zIndex = 100;
@@ -121,7 +114,7 @@ function start_realtime_rain() {
             window.time_window = 10;
             window.current_time = time_now() - 10;
         }
-        if ((typeof window.disable_real_time_indicator == 'undefined') || (!window.disable_real_time_indicator)) set_time_line_position(window.current_time);
+        if ((window.disable_real_time_indicator === undefined) || (!window.disable_real_time_indicator)) set_time_line_position(window.current_time);
         window.current_time += window.time_window / 10.0;
     }, 1000);
 }
@@ -130,7 +123,7 @@ function get_more_events(from, to) {
     from = Math.round(from);
     to = Math.round(to);
 
-    var url = '{$BASE_URL_NOHTTP;}/data/realtime_rain.php?from=' + window.encodeURIComponent(from) + '&to=' + window.encodeURIComponent(to) + keep_stub();
+    var url = $cms.$BASE_URL_NOHTTP + '/data/realtime_rain.php?from=' + encodeURIComponent(from) + '&to=' + encodeURIComponent(to) + keep_stub();
     do_ajax_request(url, received_events);
 }
 
@@ -155,7 +148,7 @@ function received_events(ajax_result_frame, ajax_result) {
             cloned_message = document.createElement('div');
             cloned_message.id = _cloned_message.getAttribute('id');
             cloned_message.className = _cloned_message.getAttribute('class');
-            Composr.dom.html(cloned_message, Composr.dom.html(_cloned_message));
+            $cms.dom.html(cloned_message, $cms.dom.html(_cloned_message));
             left_pos += 200;
             if (left_pos >= window_width) break; // Too much!
             window.setTimeout(function () {
@@ -189,7 +182,7 @@ function received_events(ajax_result_frame, ajax_result) {
                 window.setTimeout(function (cloned_message) {
                     return function () {
                         if (cloned_message.lines_for !== undefined) {
-                            if ((typeof cloned_message.icon_multiplicity != 'undefined') && (!browser_matches('ie')/*Too slow on IE*/)) {
+                            if ((cloned_message.icon_multiplicity !== undefined) && (!browser_matches('ie')/*Too slow on IE*/)) {
                                 var num = cloned_message.icon_multiplicity;
                                 var main_icon = cloned_message.querySelectorAll('.email-icon')[0];
                                 var next_icon;
@@ -200,7 +193,7 @@ function received_events(ajax_result_frame, ajax_result) {
                                         return function () {
                                             next_icon = document.createElement('div');
                                             next_icon.className = main_icon.className;
-                                            Composr.dom.html(next_icon, Composr.dom.html(main_icon));
+                                            $cms.dom.html(next_icon, $cms.dom.html(main_icon));
                                             next_icon.style.position = 'absolute';
                                             next_icon.style.left = find_pos_x(main_icon, true) + 'px';
                                             next_icon.style.top = find_pos_y(main_icon, true) + 'px';
@@ -290,8 +283,8 @@ function timeline_click(timeline, prospective) {
     if (!prospective) {
         window.current_time = time;
         bubbles_tidy_up();
-        Composr.dom.html(document.getElementById('real_time_date'), '{!SET;^}');
-        Composr.dom.html(document.getElementById('real_time_time'), '');
+        $cms.dom.html(document.getElementById('real_time_date'), '{!SET;^}');
+        $cms.dom.html(document.getElementById('real_time_time'), '');
         document.getElementById('loading_icon').style.display = 'block';
     } else {
         set_time_line_position(time);
@@ -308,7 +301,7 @@ function bubbles_tidy_up() {
             bubbles[i].timer = null;
         }
     }
-    Composr.dom.html(bubbles_go_here, '');
+    $cms.dom.html(bubbles_go_here, '');
     window.bubble_groups = [];
     window.total_lines = 0;
     var icons = document.getElementById('real_time_surround').parentNode.querySelectorAll('.email_icon');
@@ -338,8 +331,8 @@ function set_time_line_position(time) {
     var realtimedate = document.getElementById('real_time_date');
     var realtimetime = document.getElementById('real_time_time');
     if (!realtimedate) return;
-    Composr.dom.html(realtimedate, date_object.getFullYear() + '/' + ('' + date_object.getMonth()) + '/' + ('' + date_object.getDate()));
-    Composr.dom.html(realtimetime, ('' + date_object.getHours()) + ':' + ('' + date_object.getMinutes()) + ':' + ('' + date_object.getSeconds()));
+    $cms.dom.html(realtimedate, date_object.getFullYear() + '/' + ('' + date_object.getMonth()) + '/' + ('' + date_object.getDate()));
+    $cms.dom.html(realtimetime, ('' + date_object.getHours()) + ':' + ('' + date_object.getMinutes()) + ':' + ('' + date_object.getSeconds()));
 }
 
 function toggle_window_pausing(button) {
@@ -353,11 +346,15 @@ function toggle_window_pausing(button) {
 }
 
 function draw_line(group_id, bubble_id) {
-    if (typeof window.bubble_groups[group_id] == 'undefined') {
+    if (window.bubble_groups[group_id] === undefined) {
         window.bubble_groups[group_id] = [];
     } else {
-        if (window.bubble_groups[group_id].indexOf(bubble_id) != -1) return;
-        if (window.total_lines > 20) return; // Performance
+        if (window.bubble_groups[group_id].indexOf(bubble_id) != -1) {
+            return;
+        }
+        if (window.total_lines > 20) { // Performance
+            return;
+        }
 
         var others = window.bubble_groups[group_id];
         var ob = document.getElementById(bubble_id + '_main'), ob2;

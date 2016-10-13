@@ -1,6 +1,6 @@
 {$REQUIRE_JAVASCRIPT,chat}
 
-<div data-tpl-chat="chatLobbyScreen" data-tpl-args="{+START,PARAMS_JSON,IM_AREA_TEMPLATE,IM_PARTICIPANT_TEMPLATE}{_/}{+END}">
+<div data-tpl="chatLobbyScreen" data-tpl-args="{+START,PARAMS_JSON,IM_AREA_TEMPLATE,IM_PARTICIPANT_TEMPLATE}{_/}{+END}">
 {TITLE}
 
 {+START,IF,{$HAS_FORUM,1}}
@@ -90,7 +90,7 @@
 									<input class="button_screen_item menu__social__chat__chat" type="button" value="{!START_IM}" onclick="var people=get_ticked_people(this.form); if (people) start_im(people);" />
 								{+END}
 								{+START,IF_NON_EMPTY,{URL_REMOVE_FRIENDS}}
-									<input class="button_screen_item menu___generic_admin__delete" type="submit" value="{!DUMP_FRIENDS}" onclick="var people=get_ticked_people(this.form); if (!people) return false; var t=this; window.fauxmodal_confirm('{!Q_SURE=;}',function(result) { if (result) { disable_button_just_clicked(t); click_link(t); } }); return false;" />
+									<input class="button_screen_item menu___generic_admin__delete" type="submit" value="{!DUMP_FRIENDS}" onclick="var people=get_ticked_people(this.form); if (!people) return false; var t=this; window.fauxmodal_confirm('{!Q_SURE=;}',function(result) { if (result) { disable_button_just_clicked(t); t.form.submit(); } }); return false;" />
 								{+END}
 							</div>
 						</form>
@@ -99,7 +99,7 @@
 					{+START,IF_NON_EMPTY,{URL_ADD_FRIEND}}
 						<p>{!MUST_ADD_CONTACTS}</p>
 
-						<form onsubmit="var _this=this; load_snippet('im_friends_rejig&amp;member_id={MEMBER_ID%}','add='+window.encodeURIComponent(this.elements['friend_username'].value),function(ajax_result) { Composr.dom.html(document.getElementById('friends_wrap'),ajax_result.responseText); _this.elements['friend_username'].value=''; }); return false;" title="{!ADD}: {!FRIEND_LIST}" method="post" action="{URL_ADD_FRIEND*}" autocomplete="off">
+						<form onsubmit="var _this=this; load_snippet('im_friends_rejig&amp;member_id={MEMBER_ID%}','add='+encodeURIComponent(this.elements['friend_username'].value),function(ajax_result) { $cms.dom.html(document.getElementById('friends_wrap'),ajax_result.responseText); _this.elements['friend_username'].value=''; }); return false;" title="{!ADD}: {!FRIEND_LIST}" method="post" action="{URL_ADD_FRIEND*}" autocomplete="off">
 							{$INSERT_SPAMMER_BLACKHOLE}
 
 							<label class="accessibility_hidden" for="friend_username">{!USERNAME}: </label>

@@ -1,1 +1,1 @@
-<script data-tpl-core-abstract-components="handleConflictResolution">{+START,PARAMS_JSON,PING_URL}{_/}{+END}</script>
+<script type="application/json" data-tpl="handleConflictResolution">{+START,PARAMS_JSON,PING_URL}{_/}{+END}</script>

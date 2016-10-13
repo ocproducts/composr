@@ -1,46 +1,80 @@
-(function ($, Composr) {
+(function ($cms) {
     'use strict';
 
-    Composr.ready.then(function () {
-        Composr.attachBehaviors(document);
+    $cms.ready.then(function () {
+        $cms.attachBehaviors(document);
     });
 
-    Composr.behaviors.core = {
-        initialize: {
+    $cms.extend($cms.behaviors, {
+        initializeViews: {
             attach: function (context) {
-                Composr.initializeViewsAlternate(context);
-                Composr.initializeViews(context, 'core');
-                Composr.initializeTemplates(context, 'core');
+                $cms.dom.$$$(context, '[data-view]').forEach(function (el) {
+                    var ViewClass = $cms.views[el.dataset.view], view,
+                        options = $cms.parseDataObject(el.dataset.viewArgs),
+                        viewOptions = { el: el };
+
+                    if (typeof ViewClass === 'function') {
+                        view = new ViewClass(options, viewOptions);
+
+                        $cms.viewInstances[view.uid] = view;
+                    }
+                });
+            }
+        },
+
+        initializeTemplates: {
+            attach: function (context) {
+                $cms.dom.$$$(context, '[data-tpl]').forEach(function (el) {
+                    var template = el.dataset.tpl,
+                        args, templateFunction;
+
+                    if ((el.localName === 'script') && (el.type === 'application/json')) {
+                        // Arguments provided inside the <script> tag.
+                        args = el.textContent.trim();
+                    } else {
+                        // Arguments provided in the data-tpl-args attribute.
+                        args = el.dataset.tplArgs;
+                    }
+
+                    args = $cms.parseDataObject(args);
+
+                    templateFunction = $cms.templates[template];
+                    if (typeof templateFunction === 'function') {
+                        templateFunction.apply(el, args);
+                    }
+                });
             }
         },
 
         initializeAnchors: {
             attach: function (context) {
-                var anchors = Composr.dom.$$$(context, 'a'),
+                var anchors = $cms.dom.$$$(context, 'a'),
                     hasBaseEl = !!document.querySelector('base');
 
                 anchors.forEach(function (anchor) {
-                    var href = anchor.href;
+                    var href = anchor.getAttribute('href') || '';
                     // So we can change base tag especially when on debug mode
-                    if (hasBaseEl && (href.substr(0, 1) === '#')) {
-                        anchor.href = window.location.href.replace(/#.*$/, '') + href;
+                    if (hasBaseEl && href.startsWith('#')) {
+                        anchor.setAttribute('href', window.location.href.replace(/#.*$/, '') + href);
                     }
 
-                    if (Composr.is(Composr.$CONFIG_OPTION.jsOverlays)) {
+                    if ($cms.$CONFIG_OPTION.jsOverlays) {
                         // Lightboxes
-                        if (anchor.rel && anchor.rel.match(/lightbox/)) {
+                        if (anchor.rel && anchor.rel.includes('lightbox')) {
                             anchor.title = anchor.title.replace('{!LINK_NEW_WINDOW;^}', '').trim();
                         }
 
-                        // Convert <a> title attributes into Composr tooltips
+                        // Convert <a> title attributes into composr tooltips
                         if (!anchor.classList.contains('no_tooltip')) {
                             convert_tooltip(anchor);
                         }
                     }
 
-                    // Keep parameters need propagating
-                    if (Composr.is(Composr.$VALUE_OPTION.jsKeepParams) && (href.indexOf(Composr.$BASE_URL + '/') === 0)) {
-                        anchor.href += keep_stub(!anchor.href.includes('?'), true, href);
+                    if ($cms.$VALUE_OPTION.jsKeepParams) {
+                        // Keep parameters need propagating
+                        if (anchor.href && anchor.href.startsWith($cms.$BASE_URL_S)) {
+                            anchor.href += keep_stub_with_context(anchor.href);
+                        }
                     }
                 });
             }
@@ -48,7 +82,7 @@
 
         initializeForms: {
             attach: function (context) {
-                var forms = Composr.dom.$$$(context, 'form');
+                var forms = $cms.dom.$$$(context, 'form');
 
                 forms.forEach(function (form) {
                     // HTML editor
@@ -59,9 +93,9 @@
                     // Remove tooltips from forms as they are for screenreader accessibility only
                     form.title = '';
 
-                    // Convert a/img title attributes into Composr tooltips
-                    if (Composr.is(Composr.$CONFIG_OPTION.jsOverlays)) {
-                        // Convert title attributes into Composr tooltips
+                    // Convert a/img title attributes into composr tooltips
+                    if ($cms.$CONFIG_OPTION.jsOverlays) {
+                        // Convert title attributes into composr tooltips
                         var elements, j;
                         elements = form.elements;
 
@@ -77,24 +111,24 @@
                         }
                     }
 
-                    if (Composr.is(Composr.$VALUE_OPTION.jsKeepParams)) {
+                    if ($cms.$VALUE_OPTION.jsKeepParams) {
                         /* Keep parameters need propagating */
-                        if (form.action && form.action.indexOf(Composr.$BASE_URL + '/') === 0) {
-                            form.action += keep_stub(form.action.indexOf('?') === -1, true, form.action);
+                        if (form.action && form.action.startsWith($cms.$BASE_URL_S)) {
+                            form.action += keep_stub_with_context(form.action);
                         }
                     }
                 });
             }
         },
 
-        // Convert img title attributes into Composr tooltips
+        // Convert img title attributes into composr tooltips
         imageTooltips: {
             attach: function (context) {
-                if (Composr.not(Composr.$CONFIG_OPTION.jsOverlays)) {
+                if (!$cms.$CONFIG_OPTION.jsOverlays) {
                     return;
                 }
 
-                Composr.dom.$$$(context, 'img:not(.activate_rich_semantic_tooltip)').forEach(function (img) {
+                $cms.dom.$$$(context, 'img:not(.activate_rich_semantic_tooltip)').forEach(function (img) {
                     convert_tooltip(img);
                 });
             }
@@ -102,7 +136,7 @@
 
         select2Plugin: {
             attach: function (context) {
-                var els = Composr.dom.$$$(context, '[data-cms-select2]');
+                var els = $cms.dom.$$$(context, '[data-cms-select2]');
 
                 // Select2 plugin hook
                 els.forEach(function (el) {
@@ -112,37 +146,198 @@
                         options = JSON.parse(el.dataset.cmsSelect2);
                     }
 
-                    $(el).select2(options);
+                    window.jQuery(el).select2(options);
                 });
             }
         },
 
         gdTextImages: {
             attach: function (context) {
-                var els = Composr.dom.$$$(context, 'img[data-gd-text]');
+                var els = $cms.dom.$$$(context, 'img[data-gd-text]');
 
                 els.forEach(function (img) {
                     gdImageTransform(img);
                 });
             }
         }
-    };
+    });
 
-    var Global = Composr.View.extend({
-        _stripPatternCache: null,
+    function Global() {
+        $cms.View.apply(this, arguments);
+        this.setup();
+    }
 
-        initialize: function initialize() {
-            Global.__super__.initialize.apply(this, arguments);
-            this._stripPatternCache = {};
+    $cms.inherits(Global, $cms.View, {
+        setup: function () {
+            var view = this;
 
-            if (Composr.is(Composr.$CONFIG_OPTION.detectJavascript)) {
+            if ($cms.$CONFIG_OPTION.detectJavascript) {
                 this.detectJavascript();
             }
 
-            this.setup();
+            if (document.getElementById('global_messages_2')) {
+                var m1 = document.getElementById('global_messages');
+                if (!m1) return;
+                var m2 = document.getElementById('global_messages_2');
+                $cms.dom.appendHtml(m1, $cms.dom.html(m2));
+                m2.parentNode.removeChild(m2);
+            }
+
+            if (+$cms.usp.get('wide_print')) {
+                try {
+                    window.print();
+                } catch (ignore) {
+                }
+            }
+
+            if (($cms.$ZONE === 'adminzone') && $cms.$CONFIG_OPTION.backgroundTemplateCompilation) {
+                var page = $cms.filter.url($cms.$PAGE);
+                load_snippet('background_template_compilation&page=' + page, '', function () {});
+            }
+
+
+            if (((window === window.top) && !window.opener) || (window.name === '')) {
+                window.name = '_site_opener';
+            }
+
+            // Are we dealing with a touch device?
+            if ($cms.$TOUCH_ENABLED) {
+                document.body.classList.add('touch_enabled');
+            }
+
+            if ($cms.$HAS_PRIVILEGE.seesJavascriptErrorAlerts) {
+                this.initialiseErrorMechanism();
+            }
+
+            // Dynamic images need preloading
+            var preloader = new Image();
+            preloader.src = $cms.img('{$IMG;,loading}');
+
+            // Tell the server we have JavaScript, so do not degrade things for reasons of compatibility - plus also set other things the server would like to know
+            if ($cms.$CONFIG_OPTION.detectJavascript) {
+                set_cookie('js_on', 1, 120);
+            }
+
+            if ($cms.$CONFIG_OPTION.isOnTimezoneDetection) {
+                if (!window.parent || (window.parent === window)) {
+                    set_cookie('client_time', (new Date()).toString(), 120);
+                    set_cookie('client_time_ref', $cms.$FROM_TIMESTAMP, 120);
+                }
+            }
+
+            // Mouse/keyboard listening
+            window.mouse_x = 0;
+            window.mouse_y = 0;
+
+            window.addEventListener('click', capture_click_key_states, true); // Workaround for a dodgy firefox extension
+
+            // Pinning to top if scroll out
+            var stuck_navs = document.querySelectorAll('.stuck_nav');
+            if (stuck_navs.length) {
+                window.addEventListener('scroll', function () {
+                    for (var i = 0; i < stuck_navs.length; i++) {
+                        var stuck_nav = stuck_navs[i],
+                            stuck_nav_height = (stuck_nav.real_height === undefined) ? $cms.dom.contentHeight(stuck_nav) : stuck_nav.real_height;
+
+                        stuck_nav.real_height = stuck_nav_height;
+                        var pos_y = find_pos_y(stuck_nav.parentNode, true),
+                            footer_height = document.querySelector('footer').offsetHeight,
+                            panel_bottom = document.getElementById('panel_bottom');
+
+                        if (panel_bottom) {
+                            footer_height += panel_bottom.offsetHeight;
+                        }
+                        panel_bottom = document.getElementById('global_messages_2');
+                        if (panel_bottom) {
+                            footer_height += panel_bottom.offsetHeight;
+                        }
+                        if (stuck_nav_height < get_window_height() - footer_height)  {// If there's space in the window to make it "float" between header/footer
+                            var extra_height = (window.pageYOffset - pos_y);
+                            if (extra_height > 0) {
+                                var width = $cms.dom.contentWidth(stuck_nav);
+                                var height = $cms.dom.contentHeight(stuck_nav);
+                                var stuck_nav_width = $cms.dom.contentWidth(stuck_nav);
+                                if (!window.getComputedStyle(stuck_nav).getPropertyValue('width')) {// May be centered or something, we should be careful
+                                    stuck_nav.parentNode.style.width = width + 'px';
+                                }
+                                stuck_nav.parentNode.style.height = height + 'px';
+                                stuck_nav.style.position = 'fixed';
+                                stuck_nav.style.top = '0px';
+                                stuck_nav.style.zIndex = '1000';
+                                stuck_nav.style.width = stuck_nav_width + 'px';
+                            } else {
+                                stuck_nav.parentNode.style.width = '';
+                                stuck_nav.parentNode.style.height = '';
+                                stuck_nav.style.position = '';
+                                stuck_nav.style.top = '';
+                                stuck_nav.style.width = '';
+                            }
+                        } else {
+                            stuck_nav.parentNode.style.width = '';
+                            stuck_nav.parentNode.style.height = '';
+                            stuck_nav.style.position = '';
+                            stuck_nav.style.top = '';
+                            stuck_nav.style.width = '';
+                        }
+                    }
+                });
+            }
+
+            // If back button pressed back from an AJAX-generated page variant we need to refresh page because we aren't doing full JS state management
+            window.onpopstate = function () {
+                window.setTimeout(function () {
+                    if (!window.location.hash && window.has_js_state) {
+                        window.location.reload();
+                    }
+                });
+            };
+
+            window.page_loaded = true;
+
+            /* Tidying up after the page is rendered */
+            $cms.load.then(function () {
+                // When images etc have loaded
+                // Move the help panel if needed
+                if ($cms.$CONFIG_OPTION.fixedWidth || (get_window_width() > 990)) {
+                    return;
+                }
+
+                var panel_right = view.$('#panel_right');
+                if (!panel_right) {
+                    return;
+                }
+
+                var helperPanel = panel_right.querySelector('.global_helper_panel');
+                if (!helperPanel) {
+                    return;
+                }
+
+                var middle = panel_right.parentNode.querySelector('.global_middle');
+                if (!middle) {
+                    return;
+                }
+
+                middle.style.marginRight = '0';
+                var boxes = panel_right.querySelectorAll('.standardbox_curved'), i;
+                for (i = 0; i < boxes.length; i++) {
+                    boxes[i].style.width = 'auto';
+                }
+                panel_right.classList.add('horiz_helper_panel');
+                panel_right.parentNode.removeChild(panel_right);
+                middle.parentNode.appendChild(panel_right);
+                document.getElementById('helper_panel_toggle').style.display = 'none';
+                helperPanel.style.minHeight = '0';
+            });
+
+            if ($cms.$IS_STAFF) {
+                this.loadStuffStaff()
+            }
         },
 
         events: {
+            // Show a confirmation dialog for clicks on a link
+            'click [data-cms-confirm-click]': 'confirmClick',
+
             // Prevent url change for clicks on anchor tags with a placeholder href
             'click a[href$="#!"]': 'preventDefault',
             // Prevent form submission for forms with a placeholder action
@@ -176,59 +371,88 @@
 
             /* STAFF */
             'click .js-click-load-software-chat': 'loadSoftwareChat',
+
             'submit .js-submit-staff-actions-select': 'staffActionsSelect'
         },
 
+
+        // Stores an element's `uid`
+        _confirmedClick: null,
+
+        // Implementation for [data-cms-confirm-click="<Message>"]
+        confirmClick: function (e, clicked) {
+            var view = this, message,
+                uid = $cms.uid(clicked);
+
+            if (uid === view._confirmedClick) {
+                // Confirmed, let it through
+                view._confirmedClick = null;
+                return;
+            }
+
+            e.preventDefault();
+            message = clicked.dataset.cmsConfirmClick;
+            window.fauxmodal_confirm(message, function (result) {
+                if (result) {
+                    view._confirmedClick = uid;
+                    clicked.click();
+                }
+            });
+        },
+
+        // Implementation for [data-cms-js]
         preventDefault: function (e, el) {
             if (el.dataset.cmsJs !== '0') {
                 e.preventDefault();
             }
         },
 
+        // Implementation for [data-cms-href="<URL>"]
         cmsHref: function (e, el) {
-            var anchorClicked = !!Composr.dom.closest(e.target, 'a', el);
+            var anchorClicked = !!$cms.dom.closest(e.target, 'a', el);
 
             // Make sure a child <a> element wasn't clicked and default wasn't prevented
             if (!anchorClicked && !e.defaultPrevented) {
-                Composr.navigate(el);
+                $cms.navigate(el);
             }
         },
 
+
+        // Implementation for [data-disable-on-click]
         disableButton: function (e, target) {
-            Composr.ui.disableButton(target);
+            $cms.ui.disableButton(target);
         },
 
+        // Implementation for form[data-disable-buttons-on-submit]
         disableFormButtons: function (e, target) {
-            Composr.ui.disableFormButtons(target);
+            $cms.ui.disableFormButtons(target);
         },
 
+        // Implementation for input[data-cms-invalid-pattern]
+        _invalidPatternCache: null,
         invalidPattern: function (e, input) {
-            var pattern = input.dataset.cmsInvalidPattern,
-                regex;
+            var pattern = input.dataset.cmsInvalidPattern, regex;
 
-            regex = this._stripPatternCache[pattern] || (this._stripPatternCache[pattern] = new RegExp(pattern, 'g'));
+            this._invalidPatternCache || (this._invalidPatternCache = {});
+            regex = this._invalidPatternCache[pattern] || (this._invalidPatternCache[pattern] = new RegExp(pattern, 'g'));
 
             if (e.type === 'input') {
-                // value.length is also 0 if invalid value is provided for input[type=number] et al., clear that
                 if (input.value.length === 0) {
-                    input.value = '';
+                    input.value = ''; // value.length is also 0 if invalid value is provided for input[type=number] et al., clear that
                 } else if (regex.test(input.value)) {
                     input.value = input.value.replace(regex, '');
                 }
-                return;
-            }
-
-            // keydown/keypress event
-            if (regex.test(Composr.dom.keyOutput(e))) {
+            } else if ($cms.dom.keyOutput(e, regex)) { // keydown/keypress event
                 // pattern matched, prevent input
                 e.preventDefault();
             }
         },
 
+        // Implemenetation for [data-open-as-overlay]
         openOverlay: function (e, el) {
             var args, url = (el.href === undefined) ? el.action : el.href;
 
-            if (Composr.not(Composr.$CONFIG_OPTION.jsOverlays)) {
+            if (!($cms.$CONFIG_OPTION.jsOverlays)) {
                 return;
             }
 
@@ -238,20 +462,21 @@
 
             e.preventDefault();
 
-            args = Composr.parseDataObject(el.dataset.openAsOverlay);
+            args = $cms.parseDataObject(el.dataset.openAsOverlay);
             args.el = el;
 
             openLinkAsOverlay(args);
         },
 
+        // Implementation for `click a[rel*="lightbox"]`
         lightBoxes: function (e, el) {
-            if (Composr.not(Composr.$CONFIG_OPTION.jsOverlays)) {
+            if (!($cms.$CONFIG_OPTION.jsOverlays)) {
                 return;
             }
 
             e.preventDefault();
 
-            if (el.querySelectorAll('img').length > 0 || el.querySelectorAll('video').length > 0) {
+            if (el.querySelector('img') || el.querySelector('video')) {
                 open_image_into_lightbox(el);
             } else {
                 openLinkAsOverlay({el: el});
@@ -267,7 +492,7 @@
             var url = window.location.href,
                 append = '?';
 
-            if (Composr.is(Composr.$JS_ON) || Composr.usp.has('keep_has_js') || url.includes('upgrader.php') || url.includes('webdav.php')) {
+            if ($cms.$JS_ON || $cms.usp.has('keep_has_js') || url.includes('upgrader.php') || url.includes('webdav.php')) {
                 return;
             }
 
@@ -285,7 +510,7 @@
 
             append += 'keep_has_js=1';
 
-            if (Composr.is(Composr.$DEV_MODE)) {
+            if ($cms.$DEV_MODE) {
                 append += '&keep_devtest=1';
             }
 
@@ -293,161 +518,13 @@
             window.location = url + append;
         },
 
-        setup: function () {
-            var i, view = this;
-
-            if (((window === window.top) && !window.opener) || (window.name === '')) {
-                window.name = '_site_opener';
-            }
-
-            // Are we dealing with a touch device?
-            if (document.documentElement.ontouchstart !== undefined) {
-                document.body.classList.add('touch_enabled');
-            }
-
-            if (Composr.is(Composr.$HAS_PRIVILEGE.seesJavascriptErrorAlerts)) {
-                this.initialiseErrorMechanism();
-            }
-
-            // Dynamic images need preloading
-            var preloader = new Image();
-            preloader.src = Composr.url('{$IMG;,loading}');
-
-            // Tell the server we have JavaScript, so do not degrade things for reasons of compatibility - plus also set other things the server would like to know
-            if (Composr.is(Composr.$CONFIG_OPTION.detectJavascript)) {
-                set_cookie('js_on', 1, 120);
-            }
-
-            if (Composr.is(Composr.$CONFIG_OPTION.isOnTimezoneDetection)) {
-                if (!window.parent || (window.parent === window)) {
-                    set_cookie('client_time', new Date().toString(), 120);
-                    set_cookie('client_time_ref', Composr.$FROM_TIMESTAMP, 120);
-                }
-            }
-
-            // Mouse/keyboard listening
-            window.mouse_x = 0;
-            window.mouse_y = 0;
-            window.mouse_listener_enabled = false;
-            window.ctrl_pressed = false;
-            window.alt_pressed = false;
-            window.meta_pressed = false;
-            window.shift_pressed = false;
-
-            window.addEventListener('click', capture_click_key_states, true); // Workaround for a dodgy firefox extension
-
-            // Pinning to top if scroll out
-            var stuck_navs = document.querySelectorAll('.stuck_nav');
-            if (stuck_navs.length > 0) {
-                window.addEventListener('scroll', function () {
-                    for (var i = 0; i < stuck_navs.length; i++) {
-                        var stuck_nav = stuck_navs[i];
-                        var stuck_nav_height = (typeof stuck_nav.real_height == 'undefined') ? Composr.dom.contentHeight(stuck_nav) : stuck_nav.real_height;
-                        stuck_nav.real_height = stuck_nav_height;
-                        var pos_y = find_pos_y(stuck_nav.parentNode, true);
-                        var footer_height = document.getElementsByTagName('footer')[0].offsetHeight;
-                        var panel_bottom = document.getElementById('panel_bottom');
-                        if (panel_bottom) footer_height += panel_bottom.offsetHeight;
-                        panel_bottom = document.getElementById('global_messages_2');
-                        if (panel_bottom) footer_height += panel_bottom.offsetHeight;
-                        if (stuck_nav_height < get_window_height() - footer_height) // If there's space in the window to make it "float" between header/footer
-                        {
-                            var extra_height = (window.pageYOffset - pos_y);
-                            if (extra_height > 0) {
-                                var width = Composr.dom.contentWidth(stuck_nav);
-                                var height = Composr.dom.contentHeight(stuck_nav);
-                                var stuck_nav_width = Composr.dom.contentWidth(stuck_nav);
-                                if (!window.getComputedStyle(stuck_nav).getPropertyValue('width')) {// May be centered or something, we should be careful
-                                    stuck_nav.parentNode.style.width = width + 'px';
-                                }
-                                stuck_nav.parentNode.style.height = height + 'px';
-                                stuck_nav.style.position = 'fixed';
-                                stuck_nav.style.top = '0px';
-                                stuck_nav.style.zIndex = '1000';
-                                stuck_nav.style.width = stuck_nav_width + 'px';
-                            } else {
-                                stuck_nav.parentNode.style.width = '';
-                                stuck_nav.parentNode.style.height = '';
-                                stuck_nav.style.position = '';
-                                stuck_nav.style.top = '';
-                                stuck_nav.style.width = '';
-                            }
-                        } else {
-                            stuck_nav.parentNode.style.width = '';
-                            stuck_nav.parentNode.style.height = '';
-                            stuck_nav.style.position = '';
-                            stuck_nav.style.top = '';
-                            stuck_nav.style.width = '';
-                        }
-                    }
-                });
-            }
-
-            // Tooltips close on browser resize
-            window.addEventListener('resize', function () {
-                clear_out_tooltips(null);
-            });
-
-            // If back button pressed back from an AJAX-generated page variant we need to refresh page because we aren't doing full JS state management
-            window.has_js_state = false;
-            window.onpopstate = function (event) {
-                window.setTimeout(function () {
-                    if (window.location.hash == '' && window.has_js_state) {
-                        window.location.reload();
-                    }
-                }, 0);
-            };
-
-            window.page_loaded = true;
-            window.is_doing_a_drag = false;
-
-            /* Tidying up after the page is rendered */
-            Composr.load.then(function () {
-                // When images etc have loaded
-                // Move the help panel if needed
-                if (Composr.is(Composr.$CONFIG_OPTION.fixedWidth) || (get_window_width() > 990)) {
-                    return;
-                }
-
-                var panel_right = view.$('#panel_right');
-                if (!panel_right) {
-                    return;
-                }
-
-                var helperPanel = panel_right.querySelector('.global_helper_panel');
-                if (!helperPanel) {
-                    return;
-                }
-
-                var middle = panel_right.parentNode.querySelector('.global_middle');
-                if (!middle) {
-                    return;
-                }
-
-                middle.style.marginRight = '0';
-                var boxes = panel_right.querySelectorAll('.standardbox_curved'), i;
-                for (i = 0; i < boxes.length; i++) {
-                    boxes[i].style.width = 'auto';
-                }
-                panel_right.classList.add('horiz_helper_panel');
-                panel_right.parentNode.removeChild(panel_right);
-                middle.parentNode.appendChild(panel_right);
-                document.getElementById('helper_panel_toggle').style.display = 'none';
-                helperPanel.style.minHeight = '0';
-            });
-
-            if (Composr.isStaff) {
-                this.loadStuffStaff()
-            }
-        },
-
         /* SOFTWARE CHAT */
         loadSoftwareChat: function () {
             var url = 'https://kiwiirc.com/client/irc.kiwiirc.com/?nick=';
-            if (Composr.$USERNAME !== 'admin') {
-                url += encodeURIComponent(Composr.$USERNAME.replace(/[^a-zA-Z0-9\_\-\\\[\]\{\}\^`|]/g, ''));
+            if ($cms.$USERNAME !== 'admin') {
+                url += encodeURIComponent($cms.$USERNAME.replace(/[^a-zA-Z0-9\_\-\\\[\]\{\}\^`|]/g, ''));
             } else {
-                url += encodeURIComponent(Composr.$SITE_NAME.replace(/[^a-zA-Z0-9\_\-\\\[\]\{\}\^`|]/g, ''));
+                url += encodeURIComponent($cms.$SITE_NAME.replace(/[^a-zA-Z0-9\_\-\\\[\]\{\}\^`|]/g, ''));
             }
             url += '#composrcms';
             var html = ' \
@@ -457,7 +534,7 @@
         <p class="associated_link associated_links_block_group"><a title="{!SOFTWARE_CHAT_STANDALONE} {!LINK_NEW_WINDOW;}" target="_blank" href="' + escape_html(url) + '">{!SOFTWARE_CHAT_STANDALONE}</a> <a href="#!" class="js-click-load-software-chat">{!HIDE}</a></p> \
     </div> \
     <iframe class="software_chat_iframe" style="border: 0" src="' + escape_html(url) + '"></iframe> \
-'.replace(/\\{1\\}/, escape_html((window.location + '').replace(get_base_url(), 'http://baseurl')));
+'.replace(/\\{1\\}/, escape_html(window.location.href.replace($cms.$BASE_URL, 'http://baseurl')));
 
             var box = document.getElementById('software_chat_box'), img;
             if (box) {
@@ -470,7 +547,7 @@
                     height = 550;
                 box = document.createElement('div');
                 box.id = 'software_chat_box';
-                Composr.dom.css(box, {
+                $cms.dom.css(box, {
                     width: width + 'px',
                     height: height + 'px',
                     background: '#EEE',
@@ -483,7 +560,7 @@
                     top: 100 + 'px'
                 });
 
-                Composr.dom.html(box, html);
+                $cms.dom.html(box, html);
                 document.body.appendChild(box);
 
                 smooth_scroll(0);
@@ -529,7 +606,7 @@
             var loc = window.location.href;
 
             // Navigation loading screen
-            if (Composr.is(Composr.$CONFIG_OPTION.enableAnimations)) {
+            if ($cms.$CONFIG_OPTION.enableAnimations) {
                 if ((window.parent === window) && !loc.includes('js_cache=1') && (loc.includes('/cms/') || loc.includes('/adminzone/'))) {
                     window.addEventListener('beforeunload', function () {
                         staff_unload_action();
@@ -538,14 +615,14 @@
             }
 
             // Theme image editing hovers
-            var els = Composr.dom.$$('*:not(.no_theme_img_click)'), i, el, tag, hasImage;
+            var els = $cms.dom.$$('*:not(.no_theme_img_click)'), i, el, tag, isMage;
             for (i = 0; i < els.length; i++) {
                 el = els[i];
                 tag = el.localName;
-                hasImage = (tag === 'img') || ((tag === 'input') && (el.type === 'image')) || Composr.dom.css(el, 'background-image').includes('url');
+                isMage = (tag === 'img') || ((tag === 'input') && (el.type === 'image')) || $cms.dom.css(el, 'background-image').includes('url');
 
-                if (hasImage) {
-                    Composr.dom.on(el, {
+                if (isMage) {
+                    $cms.dom.on(el, {
                         mouseover: handle_image_mouse_over,
                         mouseout: handle_image_mouse_out,
                         click: handle_image_click
@@ -554,15 +631,15 @@
             }
 
             /* Thumbnail tooltips */
-            if (Composr.isDevMode || loc.replace(Composr.$BASE_URL_NOHTTP, '').includes('/cms/')) {
-                var urlPatterns = Composr.$EXTRA.staffTooltipsUrlPatterns,
+            if ($cms.$DEV_MODE || loc.replace($cms.$BASE_URL_NOHTTP, '').includes('/cms/')) {
+                var urlPatterns = $cms.$EXTRA.staffTooltipsUrlPatterns,
                     links, pattern, hook, patternRgx;
 
-                if (Composr.isEmptyObj(urlPatterns)) {
+                if ($cms.isEmptyObj(urlPatterns)) {
                     return;
                 }
 
-                links = Composr.dom.$$('td a');
+                links = $cms.dom.$$('td a');
                 for (pattern in urlPatterns) {
                     hook = urlPatterns[pattern];
                     patternRgx = new RegExp(pattern);
@@ -576,6 +653,49 @@
                         }
                     });
                 }
+            }
+
+            /* Screen transition, for staff */
+            function staff_unload_action() {
+                undo_staff_unload_action();
+
+                // If clicking a download link then don't show the animation
+                if (document.activeElement && document.activeElement.href !== undefined && document.activeElement.href != null) {
+                    var url = document.activeElement.href.replace(/.*:\/\/[^\/:]+/, '');
+                    if (url.includes('download') || url.includes('export')) {
+                        return;
+                    }
+                }
+
+                // If doing a meta refresh then don't show the animation
+                if (document.querySelector('meta[http-equiv="Refresh"]')) {
+                    return;
+                }
+
+                // Show the animation
+                var bi = document.getElementById('main_website_inner');
+                if (bi) {
+                    bi.classList.add('site_unloading');
+                    fade_transition(bi, 20, 30, -4);
+                }
+                var div = document.createElement('div');
+                div.className = 'unload_action';
+                div.style.width = '100%';
+                div.style.top = (get_window_height() / 2 - 160) + 'px';
+                div.style.position = 'fixed';
+                div.style.zIndex = 10000;
+                div.style.textAlign = 'center';
+                $cms.dom.html(div, '<div aria-busy="true" class="loading_box box"><h2>{!LOADING;^}</h2><img id="loading_image" alt="" src="{$IMG_INLINE*;,loading}" /></div>');
+                window.setTimeout(function () {
+                    // Stupid workaround for Google Chrome not loading an image on unload even if in cache
+                    if (document.getElementById('loading_image')) {
+                        document.getElementById('loading_image').src += '';
+                    }
+                }, 100);
+                document.body.appendChild(div);
+
+                // Allow unloading of the animation
+                $cms.dom.on(window, 'pageshow keydown click', undo_staff_unload_action)
             }
 
             /*
@@ -598,11 +718,11 @@
                     if (link.rendered_tooltip === undefined) {
                         link.is_over = true;
 
-                        var request = do_ajax_request(maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&raw_output=1&box_title={!PREVIEW;&}' + keep_stub(false)), function (ajax_result_frame) {
+                        var request = do_ajax_request(maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&raw_output=1&box_title={!PREVIEW;&}' + keep_stub()), function (ajax_result_frame) {
                             if (ajax_result_frame && ajax_result_frame.responseText) {
                                 link.rendered_tooltip = ajax_result_frame.responseText;
                             }
-                            if (typeof link.rendered_tooltip != 'undefined') {
+                            if (link.rendered_tooltip !== undefined) {
                                 if (link.is_over)
                                     activate_tooltip(link, event, link.rendered_tooltip, '400px', null, null, false, false, false, true);
                             }
@@ -619,15 +739,15 @@
 
             function handle_image_mouse_over(event) {
                 var target = event.target;
-                if (target.previousSibling && (typeof target.previousSibling.className != 'undefined') && (typeof target.previousSibling.className.indexOf != 'undefined') && (target.previousSibling.className.indexOf('magic_image_edit_link') != -1)) return;
+                if (target.previousSibling && (target.previousSibling.className !== undefined) && (target.previousSibling.className.indexOf !== undefined) && (target.previousSibling.className.indexOf('magic_image_edit_link') != -1)) return;
                 if (target.offsetWidth < 130) return;
 
-                var src = (typeof target.src == 'undefined') ? window.getComputedStyle(target).getPropertyValue('background-image') : target.src;
-                if ((typeof target.src == 'undefined') && (!event.ctrlKey) && (!event.metaKey) && (!event.altKey)) return; // Needs ctrl key for background images
+                var src = (target.src === undefined) ? window.getComputedStyle(target).getPropertyValue('background-image') : target.src;
+                if ((target.src === undefined) && (!event.ctrlKey) && (!event.metaKey) && (!event.altKey)) return; // Needs ctrl key for background images
                 if (src.indexOf('/themes/') == -1) return;
                 if (window.location.href.indexOf('admin_themes') != -1) return;
 
-                if (Composr.is(Composr.$CONFIG_OPTION.enableThemeImgButtons)) {
+                if ($cms.$CONFIG_OPTION.enableThemeImgButtons) {
                     // Remove other edit links
                     var old = document.querySelectorAll('.magic_image_edit_link');
                     for (var i = old.length - 1; i >= 0; i--) {
@@ -664,9 +784,9 @@
             function handle_image_mouse_out(event) {
                 var target = event.target;
 
-                if (Composr.is(Composr.$CONFIG_OPTION.enableThemeImgButtons)) {
-                    if (target.previousSibling && (typeof target.previousSibling.className != 'undefined') && (typeof target.previousSibling.className.indexOf != 'undefined') && (target.previousSibling.className.indexOf('magic_image_edit_link') != -1)) {
-                        if ((typeof target.mo_link != 'undefined') && (target.mo_link)) // Clear timed display of new edit button
+                if ($cms.$CONFIG_OPTION.enableThemeImgButtons) {
+                    if (target.previousSibling && (target.previousSibling.className !== undefined) && (target.previousSibling.className.indexOf !== undefined) && (target.previousSibling.className.indexOf('magic_image_edit_link') != -1)) {
+                        if ((target.mo_link !== undefined) && (target.mo_link)) // Clear timed display of new edit button
                         {
                             window.clearTimeout(target.mo_link);
                             target.mo_link = null;
@@ -676,31 +796,35 @@
                         if (target.mo_link)
                             window.clearTimeout(target.mo_link);
                         target.mo_link = window.setTimeout(function () {
-                            if ((typeof target.edit_window == 'undefined') || (!target.edit_window) || (target.edit_window.closed)) {
-                                if (target.previousSibling && (typeof target.previousSibling.className != 'undefined') && (typeof target.previousSibling.className.indexOf != 'undefined') && (target.previousSibling.className.indexOf('magic_image_edit_link') != -1))
+                            if ((target.edit_window === undefined) || (!target.edit_window) || (target.edit_window.closed)) {
+                                if (target.previousSibling && (target.previousSibling.className !== undefined) && (target.previousSibling.className.indexOf !== undefined) && (target.previousSibling.className.indexOf('magic_image_edit_link') != -1))
                                     target.parentNode.removeChild(target.previousSibling);
                             }
                         }, 3000);
                     }
                 }
 
-                if (typeof window.old_status_img == 'undefined') window.old_status_img = '';
+                if (window.old_status_img === undefined) {
+                    window.old_status_img = '';
+                }
                 window.status = window.old_status_img;
             }
 
             function handle_image_click(event, ob, force) {
-                if ((typeof ob == 'undefined') || (!ob)) var ob = this;
+                if ((ob === undefined) || (!ob)) var ob = this;
 
-                var src = ob.origsrc ? ob.origsrc : ((typeof ob.src == 'undefined') ? window.getComputedStyle(ob).getPropertyValue('background-image').replace(/.*url\(['"]?(.*)['"]?\).*/, '$1') : ob.src);
+                var src = ob.origsrc ? ob.origsrc : ((ob.src === undefined) ? window.getComputedStyle(ob).getPropertyValue('background-image').replace(/.*url\(['"]?(.*)['"]?\).*/, '$1') : ob.src);
                 if ((src) && ((force) || (magic_keypress(event)))) {
                     // Bubbling needs to be stopped because shift+click will open a new window on some lower event handler (in firefox anyway)
                     cancel_bubbling(event);
 
-                    if (typeof event.preventDefault != 'undefined') event.preventDefault();
+                    if (event.preventDefault !== undefined) event.preventDefault();
 
-                    if (src.indexOf('{$BASE_URL_NOHTTP;}/themes/') != -1)
-                        ob.edit_window = window.open('{$BASE_URL;,0}/adminzone/index.php?page=admin_themes&type=edit_image&lang=' + encodeURIComponent(Composr.$LANG) + '&theme=' + encodeURIComponent(Composr.$THEME) + '&url=' + encodeURIComponent(src.replace('{$BASE_URL;,0}/', '')) + keep_stub(), 'edit_theme_image_' + ob.id);
-                    else window.fauxmodal_alert('{!NOT_THEME_IMAGE;^}');
+                    if (src.includes('{$BASE_URL_NOHTTP;}/themes/')) {
+                        ob.edit_window = window.open('{$BASE_URL;,0}/adminzone/index.php?page=admin_themes&type=edit_image&lang=' + encodeURIComponent($cms.$LANG) + '&theme=' + encodeURIComponent($cms.$THEME) + '&url=' + encodeURIComponent(src.replace('{$BASE_URL;,0}/', '')) + keep_stub(), 'edit_theme_image_' + ob.id);
+                    } else {
+                        window.fauxmodal_alert('{!NOT_THEME_IMAGE;^}');
+                    }
 
                     return false;
                 }
@@ -713,41 +837,40 @@
         /* Staff JS error display */
         initialiseErrorMechanism: function () {
             window.onerror = function (msg, file, code) {
-                if (msg.indexOf === undefined) {
+                if (msg.includes === undefined) {
                     return null;
                 }
 
-                if (document.readyState !== 'complete') {
+                if (window.document.readyState !== 'complete') {
                     // Probably not loaded yet
                     return null;
                 }
 
                 if (
-                    (msg.indexOf('AJAX_REQUESTS is not defined') != -1) || // Intermittent during page out-clicks
-
+                    (msg.includes('AJAX_REQUESTS is not defined')) || // Intermittent during page out-clicks
                         // Internet Explorer false positives
-                    (((msg.indexOf("'null' is not an object") != -1) || (msg.indexOf("'undefined' is not a function") != -1)) && ((typeof file == 'undefined') || (file == 'undefined'))) || // Weird errors coming from outside
-                    ((code == '0') && (msg.indexOf('Script error.') != -1)) || // Too generic, can be caused by user's connection error
+                    (((msg.includes("'null' is not an object")) || (msg.includes("'undefined' is not a function"))) && ((file === undefined) || (file === 'undefined'))) || // Weird errors coming from outside
+                    (((code === 0) || (code === '0')) && (msg.includes('Script error.'))) || // Too generic, can be caused by user's connection error
 
                         // Firefox false positives
-                    (msg.indexOf("attempt to run compile-and-go script on a cleared scope") != -1) || // Intermittent buggyness
-                    (msg.indexOf('UnnamedClass.toString') != -1) || // Weirdness
-                    (msg.indexOf('ASSERT: ') != -1) || // Something too generic
-                    ((file) && (file.indexOf('TODO: FIXME') != -1)) || // Something too generic / Can be caused by extensions
-                    (msg.indexOf('TODO: FIXME') != -1) || // Something too generic / Can be caused by extensions
-                    (msg.indexOf('Location.toString') != -1) || // Buggy extensions may generate
-                    (msg.indexOf('Error loading script') != -1) || // User's connection error
-                    (msg.indexOf('NS_ERROR_FAILURE') != -1) || // Usually an internal error
+                    (msg.includes("attempt to run compile-and-go script on a cleared scope")) || // Intermittent buggyness
+                    (msg.includes('UnnamedClass.toString')) || // Weirdness
+                    (msg.includes('ASSERT: ')) || // Something too generic
+                    ((file) && (file.includes('TODO: FIXME'))) || // Something too generic / Can be caused by extensions
+                    (msg.includes('TODO: FIXME')) || // Something too generic / Can be caused by extensions
+                    (msg.includes('Location.toString')) || // Buggy extensions may generate
+                    (msg.includes('Error loading script')) || // User's connection error
+                    (msg.includes('NS_ERROR_FAILURE')) || // Usually an internal error
 
                         // Google Chrome false positives
-                    (msg.indexOf('can only be used in extension processes') != -1) || // Can come up with MeasureIt
-                    (msg.indexOf('extension.') != -1) || // E.g. "Uncaught Error: Invocation of form extension.getURL() doesn't match definition extension.getURL(string path) schema_generated_bindings"
+                    (msg.includes('can only be used in extension processes')) || // Can come up with MeasureIt
+                    (msg.includes('extension.')) || // E.g. "Uncaught Error: Invocation of form extension.getURL() doesn't match definition extension.getURL(string path) schema_generated_bindings"
 
                     false // Just to allow above lines to be reordered
                 )
                     return null; // Comes up on due to various Firefox/extension/etc bugs
 
-                if ((window.done_one_error === undefined) || (!window.done_one_error)) {
+                if (!window.done_one_error) {
                     window.done_one_error = true;
                     var alert = '{!JAVASCRIPT_ERROR;^}\n\n' + code + ': ' + msg + '\n' + file;
                     if (window.document.body) {// i.e. if loaded
@@ -763,20 +886,21 @@
         }
     });
 
-    var ToggleableTray = Composr.View.extend({
+    function ToggleableTray() {
+        $cms.View.apply(this, arguments);
+
+        this.contentEl = this.el.querySelector('.toggleable_tray');
+        this.cookieId = this.el.dataset.trayCookie || null;
+
+        if (this.cookieId) {
+            this.handleTrayCookie(this.cookieId);
+        }
+    }
+
+    $cms.inherits(ToggleableTray, $cms.View, {
         contentEl: null,
         // cookieId is null for trays not saving a cookie
         cookieId: null,
-        initialize: function () {
-            Composr.View.prototype.initialize.apply(this, arguments);
-
-            this.contentEl = this.el.querySelector('.toggleable_tray');
-            this.cookieId = this.el.dataset.trayCookie || null;
-
-            if (this.cookieId) {
-                this.handleTrayCookie(this.cookieId);
-            }
-        },
 
         events: {
             'click .js-btn-tray-toggle': 'toggle',
@@ -792,7 +916,7 @@
         },
 
         accordion: function (el) {
-            var i, nodes = Composr.dom.$$(el.parentNode.parentNode, '.toggleable_tray');
+            var i, nodes = $cms.dom.$$(el.parentNode.parentNode, '.toggleable_tray');
 
             nodes.forEach(function (node) {
                 if ((node.parentNode !== el) && (node.style.display !== 'none') && node.parentNode.classList.contains('js-tray-accordion-item')) {
@@ -800,11 +924,11 @@
                 }
             });
 
-            return toggleable_tray(el);
+            toggleable_tray(el);
         },
 
         toggleAccordionItems: function (e, btn) {
-            var accordionItem = Composr.dom.closest(btn, '.js-tray-accordion-item');
+            var accordionItem = $cms.dom.closest(btn, '.js-tray-accordion-item');
 
             if (accordionItem) {
                 this.accordion(accordionItem);
@@ -820,37 +944,10 @@
         }
     });
 
-    Composr.views.core = {
-        Global: Global,
-        ToggleableTray: ToggleableTray
-    };
+    $cms.views.Global = Global;
+    $cms.views.ToggleableTray = ToggleableTray;
 
-    Composr.templates.core = {
-        globalHtmlWrap: function globalHtmlWrap(options) {
-            options = options || {};
-
-            if (document.getElementById('global_messages_2')) {
-                var m1 = document.getElementById('global_messages');
-                if (!m1) return;
-                var m2 = document.getElementById('global_messages_2');
-                Composr.dom.appendHtml(m1, Composr.dom.html(m2));
-                m2.parentNode.removeChild(m2);
-            }
-
-            if (Composr.is(Composr.usp.get('wide_print'))) {
-                try {
-                    window.print();
-                } catch (ignore) {
-                }
-            }
-
-            if (Composr.is(options.bgTplCompilation)) {
-                var page = Composr.filter.url(options.page);
-                load_snippet('background_template_compilation&page=' + page, '', function () {
-                });
-            }
-        },
-
+    $cms.extend($cms.templates, {
         forumsEmbed: function () {
             var frame = this;
             window.setInterval(function () {
@@ -862,7 +959,7 @@
             var delBtn = this,
                 form = delBtn.form;
 
-            Composr.dom.on(delBtn, 'click', function () {
+            $cms.dom.on(delBtn, 'click', function () {
                 confirm_delete(form, true, function () {
                     var id = document.getElementById('id');
                     var ids = (id.value === '') ? [] : id.value.split(/,/);
@@ -892,22 +989,20 @@
 
         massSelectDeleteForm: function () {
             var form = this;
-            Composr.dom.on(form, 'submit', function (e) {
+            $cms.dom.on(form, 'submit', function (e) {
                 e.preventDefault();
                 confirm_delete(form, true);
             });
         },
 
         uploadSyndicationSetupScreen: function (id) {
-            var win_parent = window.parent;
-            if (!win_parent) win_parent = window.opener;
-
+            var win_parent = window.parent || window.opener;
             var ob = win_parent.document.getElementById(id);
             ob.checked = true;
 
             var win = window;
             window.setTimeout(function () {
-                if (typeof win.faux_close != 'undefined')
+                if (win.faux_close !== undefined)
                     win.faux_close();
                 else
                     win.close();
@@ -928,8 +1023,8 @@
                 textarea = this.querySelector('#bans');
             manage_scroll_height(textarea);
 
-            if (Composr.not(Composr.$MOBILE)) {
-                Composr.dom.on(container, 'keyup', '#bans', function (e, textarea) {
+            if (!($cms.$MOBILE)) {
+                $cms.dom.on(container, 'keyup', '#bans', function (e, textarea) {
                     manage_scroll_height(textarea);
                 });
             }
@@ -942,11 +1037,11 @@
         massSelectMarker: function (options) {
             var container = this;
 
-            Composr.dom.on(container, 'click', '.js-chb-prepare-mass-select', function (e, checkbox) {
+            $cms.dom.on(container, 'click', '.js-chb-prepare-mass-select', function (e, checkbox) {
                 prepareMassSelectMarker(options.supportMassSelect, options.type, options.id, checkbox.checked);
             });
         }
-    };
+    });
 
     function gdImageTransform(el) {
         /* GD text maybe can do with transforms */
@@ -1013,47 +1108,56 @@
     function convert_tooltip(el) {
         var title = el.title;
 
-        if ((title !== '') && !el.classList.contains('leave_native_tooltip') && !document.body.classList.contains('touch_enabled')) {
-            // Remove old tooltip
-            if (el.nodeName === 'IMG' && el.alt === '') {
-                el.alt = el.title;
+        if (!title || $cms.$TOUCH_ENABLED || el.classList.contains('leave_native_tooltip')) {
+            return;
+        }
+
+        // Remove old tooltip
+        if ((el.localName === 'img') && !el.alt) {
+            el.alt = el.title;
+        }
+
+        el.title = '';
+
+        if (el.onmouseover || (el.firstElementChild && (el.firstElementChild.onmouseover || el.firstElementChild.title))) {
+            // Only put on new tooltip if there's nothing with a tooltip inside the element
+            return;
+        }
+
+        if (el.textContent) {
+            var prefix = el.textContent + ': ';
+            if (title.substr(0, prefix.length) === prefix) {
+                title = title.substring(prefix.length, title.length);
             }
-
-            el.title = '';
-
-            if ((!el.onmouseover) && ((el.children.length == 0) || ((!el.children[0].onmouseover) && ((!el.children[0].title) || (el.children[0].title == ''))))) {
-                // ^ Only put on new tooltip if there's nothing with a tooltip inside the element
-                if (el.textContent) {
-                    var prefix = el.textContent + ': ';
-                    if (title.substr(0, prefix.length) == prefix)
-                        title = title.substring(prefix.length, title.length);
-                    else if (title == el.textContent) return;
-                }
-
-                // Stop the tooltip code adding to these events, by defining our own (it will not overwrite existing events).
-                if (!el.onmouseout) el.onmouseout = function () {
-                };
-                if (!el.onmousemove) el.onmouseover = function () {
-                };
-
-                // And now define nice listeners for it all...
-                var win = get_main_cms_window(true);
-
-                el.cms_tooltip_title = escape_html(title);
-
-                el.addEventListener('mouseover', function (event) {
-                    win.activate_tooltip(el, event, el.cms_tooltip_title, 'auto', '', null, false, false, false, false, win);
-                });
-
-                el.addEventListener('mousemove', function (event) {
-                    win.reposition_tooltip(el, event, false, false, null, false, win);
-                });
-
-                el.addEventListener('mouseout', function (event) {
-                    win.deactivate_tooltip(el);
-                });
+            else if (title === el.textContent) {
+                return;
             }
         }
+
+        // Stop the tooltip code adding to these events, by defining our own (it will not overwrite existing events).
+        if (!el.onmouseout) {
+            el.onmouseout = function () {};
+        }
+        if (!el.onmousemove) {
+            el.onmouseover = function () {};
+        }
+
+        // And now define nice listeners for it all...
+        var win = get_main_cms_window(true);
+
+        el.cms_tooltip_title = escape_html(title);
+
+        $cms.dom.on(el, 'mouseover', function (event) {
+            win.activate_tooltip(el, event, el.cms_tooltip_title, 'auto', '', null, false, false, false, false, win);
+        });
+
+        $cms.dom.on(el, 'mousemove', function (event) {
+            win.reposition_tooltip(el, event, false, false, null, false, win);
+        });
+
+        $cms.dom.on(el, 'mouseout', function () {
+            win.deactivate_tooltip(el);
+        });
     }
 
     function confirm_delete(form, multi, callback) {
@@ -1082,7 +1186,7 @@
         }
         var key = type + '_' + id;
         var hidden;
-        if (typeof mass_delete_form.elements[key] == 'undefined') {
+        if (mass_delete_form.elements[key] === undefined) {
             hidden = document.createElement('input');
             hidden.type = 'hidden';
             hidden.name = key;
@@ -1093,4 +1197,4 @@
         hidden.value = checked ? '1' : '0';
         mass_delete_form.style.display = 'block';
     }
-})(window.jQuery || window.Zepto, window.Composr);
+}(window.$cms));

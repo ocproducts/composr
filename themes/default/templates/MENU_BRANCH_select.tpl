@@ -3,7 +3,7 @@
 {+END}
 {+START,IF,{$NOT,{$JS_ON}}}
 	<li class="{$?,{CURRENT},current,non_current}">
-		<a{+START,INCLUDE,MENU_LINK_PROPERTIES}{+END}>{CAPTION}</a>
+		<a {+START,INCLUDE,MENU_LINK_PROPERTIES}{+END}>{CAPTION}</a>
 	</li>
 {+END}
 {CHILDREN}

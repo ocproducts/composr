@@ -27,7 +27,7 @@
 
 			{$SET,carousel_id,{$RAND}}
 
-			<div id="carousel_{$GET*,carousel_id}" class="carousel" data-view-core-rich-media="Carousel" data-view-args="{+START,PARAMS_JSON,carousel_id}{_*}{+END}">
+			<div id="carousel_{$GET*,carousel_id}" class="carousel" data-view="Carousel" data-view-args="{+START,PARAMS_JSON,carousel_id}{_*}{+END}">
 				<div class="move_left js-btn-car-move" data-move-amount="-100"></div>
 				<div class="move_right js-btn-car-move" data-move-amount="+100"></div>
 

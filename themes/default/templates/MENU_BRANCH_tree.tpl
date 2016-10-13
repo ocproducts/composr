@@ -6,7 +6,7 @@
 <li class="{$?,{CURRENT},current,non_current} {$?,{$IS_EMPTY,{IMG}},has_no_img,has_img}">
 	{+START,IF_NON_EMPTY,{IMG}}<img alt="" src="{IMG*}" srcset="{IMG_2X*} 2x" />{+END}
 	{+START,IF,{$NOT,{$GET,HAS_CHILDREN}}}
-		<a{+START,INCLUDE,MENU_LINK_PROPERTIES}{+END}>{CAPTION}</a>
+		<a {+START,INCLUDE,MENU_LINK_PROPERTIES}{+END}>{CAPTION}</a>
 	{+END}
 	{+START,IF,{$GET,HAS_CHILDREN}}
 		{+START,IF_NON_EMPTY,{URL}}

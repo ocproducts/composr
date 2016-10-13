@@ -1,7 +1,11 @@
-(function (Composr) {
+(function ($cms) {
     'use strict';
 
-    var PointsGive = Composr.View.extend({
+    function PointsGive() {
+        PointsGive.base(this, arguments);
+    }
+
+    $cms.inherits(PointsGive, $cms.View, {
         events: {
             'submit .js-submit-check-form': 'checkForm'
         },
@@ -13,4 +17,6 @@
         }
     });
 
-}(window.Composr));
+    $cms.views.PointsGive = PointsGive;
+
+}(window.$cms));

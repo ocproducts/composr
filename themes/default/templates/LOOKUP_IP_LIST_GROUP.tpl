@@ -1,6 +1,6 @@
 {$SET,rndx,{$RAND}}
 
-<li class="float_surrounder" data-view-core="ToggleableTray">
+<li class="float_surrounder" data-view="ToggleableTray">
 	<div class="js-tray-header">
 		<label for="banned_{$GET*,rndx}">
 			<kbd>{MASK*}</kbd>

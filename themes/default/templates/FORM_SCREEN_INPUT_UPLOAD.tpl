@@ -2,7 +2,7 @@
 <img class="upload_field_image_preview" src="{$ENSURE_PROTOCOL_SUITABILITY*,{EXISTING_URL}}" title="" alt="{!EXISTING;^}" />
 {+END}
 
-<div class="upload_field inline_block" data-view-core-form-interfaces="FromScreenInputUpload" data-view-args="{+START,PARAMS_JSON,NAME,PLUPLOAD,FILTER,SYNDICATION_JSON}{_*}{+END}">
+<div class="upload_field inline_block" data-view="FromScreenInputUpload" data-view-args="{+START,PARAMS_JSON,NAME,PLUPLOAD,FILTER,SYNDICATION_JSON}{_*}{+END}">
 	<div class="vertical_alignment inline_block">
 		<input tabindex="{TABINDEX*}" class="input_upload{REQUIRED*}" type="file" id="{NAME*}" name="{NAME*}" />
 		{+START,IF,{EDIT}}

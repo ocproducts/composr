@@ -1,21 +1,13 @@
-(function (Composr) {
+(function ($cms) {
 
-    Composr.behaviors.coreAbstractInterfaces = {
-        initialize: {
-            attach: function (context) {
-                Composr.initializeTemplates(context, 'core_abstract_interfaces');
-            }
-        }
-    };
-
-    Composr.templates.resultsLauncherContinue = function (opts) {
+    $cms.templates.resultsLauncherContinue = function (opts) {
         var link = this,
             max = opts.max,
             urlStub = opts.urlStub,
             numPages = opts.numPages,
-            message = Composr.str('{!javascript:ENTER_PAGE_NUMBER;}', numPages);
+            message = $cms.str('{!javascript:ENTER_PAGE_NUMBER;}', numPages);
 
-        Composr.dom.on(link, 'click', function () {
+        $cms.dom.on(link, 'click', function () {
             window.fauxmodal_prompt(message, numPages, function (res) {
                 if (!res) {
                     return;
@@ -23,13 +15,13 @@
 
                 res = parseInt(res);
                 if ((res >= 1) && (res <= numPages)) {
-                    Composr.navigate(urlStub + (urlStub.includes('?') ? '&' : '?') + 'start=' + (max * (res - 1)));
+                    $cms.navigate(urlStub + (urlStub.includes('?') ? '&' : '?') + 'start=' + (max * (res - 1)));
                 }
             }, '{!JUMP_TO_PAGE;^}');
         });
     };
 
-    Composr.templates.doNextItem = function (opts) {
+    $cms.templates.doNextItem = function (opts) {
         var container = this,
             rand = opts.randDoNextItem,
             url = opts.url,
@@ -37,11 +29,11 @@
             warning = opts.warning,
             autoAdd = opts.autoAdd;
 
-        Composr.dom.on(container, 'click', function (e) {
-            var clickedLink = Composr.dom.closest(e.target, 'a', container);
+        $cms.dom.on(container, 'click', function (e) {
+            var clickedLink = $cms.dom.closest(e.target, 'a', container);
 
             if (!clickedLink) {
-                Composr.navigate(url, target);
+                $cms.navigate(url, target);
                 return;
             }
 
@@ -53,7 +45,7 @@
                         append += url.includes('?') ? '&' : '?';
                         append += autoAdd + '=1';
                     }
-                    Composr.navigate(url + append, target);
+                    $cms.navigate(url + append, target);
                 });
                 return;
             }
@@ -62,7 +54,7 @@
                 e.preventDefault();
                 window.fauxmodal_confirm(warning, function (answer) {
                     if (answer) {
-                        Composr.navigate(url, target);
+                        $cms.navigate(url, target);
                     }
                 });
             }
@@ -73,10 +65,10 @@
 
         if (docEl && helpEl) {
             /* Do-next document tooltips */
-            Composr.dom.on(container, 'mouseover', function () {
-                if (Composr.dom.html(docEl) !== '') {
-                    window.orig_helper_text = Composr.dom.html(helpEl);
-                    Composr.dom.html(helpEl, Composr.dom.html(docEl));
+            $cms.dom.on(container, 'mouseover', function () {
+                if ($cms.dom.html(docEl) !== '') {
+                    window.orig_helper_text = $cms.dom.html(helpEl);
+                    $cms.dom.html(helpEl, $cms.dom.html(docEl));
                     clear_transition_and_set_opacity(helpEl, 0.0);
                     fade_transition(helpEl, 100, 30, 4);
 
@@ -85,9 +77,9 @@
                 }
             });
 
-            Composr.dom.on(container, 'mouseout', function () {
+            $cms.dom.on(container, 'mouseout', function () {
                 if (window.orig_helper_text !== undefined) {
-                    Composr.dom.html(helpEl, window.orig_helper_text);
+                    $cms.dom.html(helpEl, window.orig_helper_text);
                     clear_transition_and_set_opacity(helpEl, 0.0);
                     fade_transition(helpEl, 100, 30, 4);
 
@@ -99,31 +91,30 @@
 
 
         if (autoAdd) {
-            var links = Composr.dom.$$(container, 'a');
+            var links = $cms.dom.$$(container, 'a');
 
-            for (var i = 0; i < links.length; i++) {
-                links[i].onclick = function (_this) {
-                    return function (event) {
-                        event.preventDefault();
-                        cancel_bubbling(event);
-                        window.fauxmodal_confirm(
-                            '{!KEEP_ADDING_QUESTION;}',
-                            function (test) {
-                                if (test) {
-                                    _this.href += (_this.href.indexOf('?') != -1) ? '&' : '?';
-                                    _this.href += autoAdd + '=1';
-                                }
-                                click_link(_this);
+            links.forEach(function (link) {
+                link.onclick = function (event) {
+                    event.preventDefault();
+                    cancel_bubbling(event);
+                    window.fauxmodal_confirm(
+                        '{!KEEP_ADDING_QUESTION;}',
+                        function (test) {
+                            if (test) {
+                                link.href += link.href.includes('?') ? '&' : '?';
+                                link.href += autoAdd + '=1';
                             }
-                        );
-                        return false;
-                    };
-                }(links[i]);
-            }
+
+                            click_link(link);
+                        }
+                    );
+                    return false;
+                };
+            });
         }
     };
 
-    Composr.templates.coreAbstractInterfaces = {
+    $cms.extend($cms.templates, {
         internalizedAjaxScreen: function (options) {
             var element = this;
 
@@ -141,7 +132,7 @@
         },
 
         ajaxPagination: function (options) {
-            var wrapperEl = Composr.dom.id(options.wrapperId),
+            var wrapperEl = $cms.dom.id(options.wrapperId),
                 blockCallUrl = options.blockCallUrl,
                 infiniteScrollCallUrl = options.infiniteScrollCallUrl,
                 infiniteScrollFunc;
@@ -151,7 +142,7 @@
             if (infiniteScrollCallUrl) {
                 infiniteScrollFunc = internalise_infinite_scrolling.bind(undefined, infiniteScrollCallUrl, wrapperEl);
 
-                Composr.dom.on(window, {
+                $cms.dom.on(window, {
                     scroll:  infiniteScrollFunc,
                     touchmove: infiniteScrollFunc,
                     keydown: infinite_scrolling_block,
@@ -175,13 +166,13 @@
         },
 
         warnScreen: function warnScreen() {
-            if ((typeof window.trigger_resize !== 'undefined') && (window.top !== window)) {
+            if ((window.trigger_resize !== undefined) && (window.top !== window)) {
                 trigger_resize();
             }
         },
 
         fatalScreen: function fatalScreen() {
-            if ((typeof window.trigger_resize !== 'undefined') && (window.top !== window)) {
+            if ((window.trigger_resize !== undefined) && (window.top !== window)) {
                 trigger_resize();
             }
         },
@@ -194,10 +185,10 @@
             }
         },
 
-        questionUiButtons: function (options) {
+        questionUiButtons: function () {
             var container = this;
 
-            Composr.dom.on(container, 'click', 'js-click-close-window-with-val', function (e, clicked) {
+            $cms.dom.on(container, 'click', 'js-click-close-window-with-val', function (e, clicked) {
                 window.returnValue = clicked.dataset.tpReturnValue;
 
                 if (window.faux_close !== undefined) {
@@ -211,7 +202,7 @@
                 }
             });
         }
-    };
+    });
 
     function infiniteScrolling (callUrl, wrapperEl) {
         internalise_infinite_scrolling(callUrl, wrapperEl);
@@ -231,7 +222,7 @@
                 } catch (e) {
                 }
 
-                if (typeof window.soundManager !== 'undefined') {
+                if (window.soundManager !== undefined) {
                     window.soundManager.play('message_received');
                 }
 
@@ -239,7 +230,7 @@
 
                 callback();
             }
-        }, 'refresh_if_changed=' + window.encodeURIComponent(refresh_if_changed));
+        }, 'refresh_if_changed=' + encodeURIComponent(refresh_if_changed));
     }
 
-}(window.Composr));
+}(window.$cms));

@@ -5,15 +5,15 @@
 // ===========
 
 function deselect_alt_url(form) {
-    if (typeof form.elements['alt_url'] != 'undefined') {
+    if (form.elements['alt_url'] !== undefined) {
         form.elements['alt_url'].value = '';
     }
 }
 
 function _ensure_next_field(event, ob) {
-    if (Composr.dom.keyPressed(event, 'Enter')) {
+    if ($cms.dom.keyPressed(event, 'Enter')) {
         goto_next_field(ob);
-    } else if (!Composr.dom.keyPressed(event, 'Tab')) {
+    } else if (!$cms.dom.keyPressed(event, 'Tab')) {
         ensure_next_field(ob);
     }
 }
@@ -74,7 +74,7 @@ function ensure_next_field(this_field) {
             _ensure_next_field(event, next_field);
         };
         if (this_field.onchange) next_field.onchange = this_field.onchange;
-        if (typeof this_field.onrealchange != 'undefined') next_field.onchange = this_field.onrealchange;
+        if (this_field.onrealchange !== undefined) next_field.onchange = this_field.onrealchange;
         if (this_field.localName != 'textarea') {
             next_field.type = this_field.type;
         }
@@ -86,7 +86,7 @@ function ensure_next_field(this_field) {
 }
 
 function _ensure_next_field_upload(event) {
-    if (!Composr.dom.keyPressed(event, 'Tab')) {
+    if (!$cms.dom.keyPressed(event, 'Tab')) {
         ensure_next_field_upload(this);
     }
 }

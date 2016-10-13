@@ -1,4 +1,4 @@
-<div data-tpl-core-abstract-interfaces="warnScreen">
+<div data-tpl="warnScreen">
 {TITLE}
 
 {$REQUIRE_CSS,messages}

@@ -1,4 +1,4 @@
-<div data-tpl-core-abstract-interfaces="confirmScreen" data-tpl-args="{+START,PARAMS_JSON,JAVASCRIPT}{_*}{+END}">
+<div data-tpl="confirmScreen" data-tpl-args="{+START,PARAMS_JSON,JAVASCRIPT}{_*}{+END}">
 {TITLE}
 
 {+START,IF_NON_PASSED,TEXT}

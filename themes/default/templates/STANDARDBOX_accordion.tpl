@@ -1,6 +1,6 @@
 {$REQUIRE_JAVASCRIPT,core_rich_media}
 
-<div data-view-core="ToggleableTray" class="box box___standardbox_accordion accordion_trayitem js-tray-accordion-item{+START,IF_PASSED,CLASS} {CLASS*}{+END}"{+START,IF_NON_EMPTY,{WIDTH}} style="width: {WIDTH*}"{+END}>
+<div data-view="ToggleableTray" class="box box___standardbox_accordion accordion_trayitem js-tray-accordion-item{+START,IF_PASSED,CLASS} {CLASS*}{+END}"{+START,IF_NON_EMPTY,{WIDTH}} style="width: {WIDTH*}"{+END}>
 	{+START,IF_NON_EMPTY,{TITLE}}
 		<h3 class="toggleable_tray_title js-btn-tray-accordion">
 			{+START,IF_NOT_IN_ARRAY,OPTIONS,tray_open}

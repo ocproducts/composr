@@ -36,7 +36,9 @@ class Hook_symbol_SYMBOL_DATA_AS_JSON
 
         $lang = user_lang();
         $value = array(
+            'PAGE'                => ecv_PAGE($lang, [], []),
             'PAGE_TITLE'          => ecv_PAGE_TITLE($lang, [], []),
+            'ZONE'                => ecv_ZONE($lang, [], []),
             'MEMBER'              => ecv_MEMBER($lang, [], []),
             'IS_GUEST'            => ecv_IS_GUEST($lang, [], []),
             'USERNAME'            => ecv_USERNAME($lang, [], []),
@@ -104,6 +106,9 @@ class Hook_symbol_SYMBOL_DATA_AS_JSON
             'notificationDesktopAlerts' => get_option('notification_desktop_alerts'),
             'enableThemeImgButtons' => get_option('enable_theme_img_buttons'),
             'enablePreviews' => get_option('enable_previews'),
+            'backgroundTemplateCompilation' => get_option('background_template_compilation'),
+            'complexUploader' => get_option('complex_uploader'),
+            'collapse_user_zones' => get_option('collapse_user_zones'),
         ];
 
         $value['VALUE_OPTION'] = [
@@ -112,7 +117,7 @@ class Hook_symbol_SYMBOL_DATA_AS_JSON
         ];
 
         $value['HAS_PRIVILEGE'] = [
-            'seesJavascriptErrorAlerts' =>  has_privilege(get_member(), 'sees_javascript_error_alerts')
+            'seesJavascriptErrorAlerts' =>  has_privilege(get_member(), 'sees_javascript_error_alerts'),
         ];
 
         require_code('urls');
@@ -121,10 +126,10 @@ class Hook_symbol_SYMBOL_DATA_AS_JSON
             'staffTooltipsUrlPatterns' => $this->staff_tooltips_url_patterns($value['IS_STAFF'] === '1')
         ];
 
-        return json_encode($value);
+        return json_encode($value, JSON_NUMERIC_CHECK);
     }
 
-    public function staff_tooltips_url_patterns($is_staff) {
+    private function staff_tooltips_url_patterns($is_staff) {
         $url_patterns = [];
         if (!$is_staff) {
             return $url_patterns;

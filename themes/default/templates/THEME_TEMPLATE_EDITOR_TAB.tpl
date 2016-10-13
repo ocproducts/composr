@@ -7,7 +7,7 @@
 {$,Toolbarish}
 
 {+START,IF,{INCLUDE_CSS_EDITING}}
-	<div class="template_editing_toolbar" data-view-core="ToggleableTray">
+	<div class="template_editing_toolbar" data-view="ToggleableTray">
 		<h3 class="js-tray-header">
 			<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!EXPAND}: {$STRIP_TAGS,{!CSS_EDITING_TOOLS}}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
 			<a class="non_link js-btn-tray-toggle" href="#!">{!CSS_EDITING_TOOLS}</a>
@@ -439,7 +439,7 @@
 {+END}
 
 {+START,IF,{INCLUDE_TEMPCODE_EDITING}}
-	<div class="template_editing_toolbar" data-view-core="ToggleableTray">
+	<div class="template_editing_toolbar" data-view="ToggleableTray">
 		<h3 class="js-tray-header">
 			<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!EXPAND}: {$STRIP_TAGS,{!SYMBOLS_AND_DIRECTIVES}}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
 			<a class="non_link js-btn-tray-toggle" href="#!">{!SYMBOLS_AND_DIRECTIVES}</a>
@@ -491,7 +491,7 @@
 {$,GUIDs}
 
 {+START,IF_NON_EMPTY,{GUIDS}}
-	<div class="guids" data-view-core="ToggleableTray">
+	<div class="guids" data-view="ToggleableTray">
 		<h3 class="js-tray-header">
 			<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!EXPAND}: {$STRIP_TAGS,{!TEMPLATE_GUIDS}}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
 			<a class="non_link js-btn-tray-toggle" href="#!">{!TEMPLATE_GUIDS}</a>
@@ -533,7 +533,7 @@
 {$,Related templates}
 
 {+START,IF_NON_EMPTY,{RELATED}}
-	<div class="related" data-view-core="ToggleableTray">
+	<div class="related" data-view="ToggleableTray">
 		<h3 class="js-tray-header">
 			<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!EXPAND}: {$STRIP_TAGS,{!RELATED_TEMPLATES}}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
 			<a class="non_link js-btn-tray-toggle" href="#!">{!RELATED_TEMPLATES}</a>

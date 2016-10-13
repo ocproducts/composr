@@ -1,5 +1,5 @@
 {$REQUIRE_JAVASCRIPT,core_form_interfaces}
-<div class="webstandards_checker_off inline" data-tpl-core-form-interfaces="formScreenInputCombo" data-tpl-args="{+START,PARAMS_JSON,NAME}{_*}{+END}">
+<div class="webstandards_checker_off inline" data-tpl="formScreenInputCombo" data-tpl-args="{+START,PARAMS_JSON,NAME}{_*}{+END}">
 	<input autocomplete="off" onkeyup="var l=document.getElementById('{NAME%}_fallback_list'); if (l) l.disabled=(this.value!='');" class="input_line{REQUIRED*}" tabindex="{TABINDEX*}" type="text" value="{DEFAULT*}" id="{NAME*}" name="{NAME*}" list="{NAME*}_list" />
 	<datalist id="{NAME*}_list">
 		<span class="associated_details">{!fields:OR_ONE_OF_THE_BELOW}:</span>

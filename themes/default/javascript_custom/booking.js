@@ -17,9 +17,9 @@ function recalculate_price(form) {
                 value = form.elements[i].options[form.elements[i].selectedIndex].value;
                 break;
         }
-        post += form.elements[i].name + '=' + window.encodeURIComponent(value) + '&';
+        post += form.elements[i].name + '=' + encodeURIComponent(value) + '&';
     }
     do_ajax_request('{$FIND_SCRIPT;,booking_price_ajax}' + keep_stub(true), function (result) {
-        Composr.dom.html(document.getElementById('price'), escape_html(result.responseText));
+        $cms.dom.html(document.getElementById('price'), escape_html(result.responseText));
     }, post);
 }

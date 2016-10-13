@@ -1,4 +1,4 @@
-<div data-tpl-cns-forum="cnsTopicScreen" data-tpl-args="{+START,PARAMS_JSON,SERIALIZED_OPTIONS,HASH}{_*}{+END}">
+<div data-tpl="cnsTopicScreen" data-tpl-args="{+START,PARAMS_JSON,SERIALIZED_OPTIONS,HASH}{_*}{+END}">
 {TITLE}
 
 {WARNING_DETAILS}

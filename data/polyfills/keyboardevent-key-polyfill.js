@@ -27,6 +27,11 @@
 (function () {
     'use strict';
 
+    if ('key' in window.KeyboardEvent.prototype) {
+        // Already supported natively
+        return;
+    }
+
     var keys = {
         3: 'Cancel',
         6: 'Help',
@@ -110,18 +115,16 @@
         keys[i] = [letter.toLowerCase(), letter.toUpperCase()];
     }
 
-    if (!('key' in window.KeyboardEvent.prototype)) {
-        // Polyfill `key` on `KeyboardEvent`.
-        Object.defineProperty(KeyboardEvent.prototype, 'key', {
-            get: function (x) {
-                var key = keys[this.which || this.keyCode];
+    // Polyfill `key` on `KeyboardEvent`.
+    Object.defineProperty(KeyboardEvent.prototype, 'key', {
+        get: function (x) {
+            var key = keys[this.which || this.keyCode];
 
-                if (Array.isArray(key)) {
-                    key = key[+this.shiftKey];
-                }
-
-                return key;
+            if (Array.isArray(key)) {
+                key = key[+this.shiftKey];
             }
-        });
-    }
+
+            return key;
+        }
+    });
 }());

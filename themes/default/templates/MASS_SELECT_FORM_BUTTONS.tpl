@@ -2,5 +2,5 @@
 {+START,IF,{$JS_ON}}
 	<input type="button" id="mass_select_button" disabled="disabled"
 		   class="button_screen menu___generic_admin__delete js-btn-mass-delete" value="{!DELETE_SELECTION}"
-		   data-tpl-core="massSelectFormButtons" data-tpl-args="{+START,PARAMS_JSON,action_url,TYPE}{_*}{+END}" />
+		   data-tpl="massSelectFormButtons" data-tpl-args="{+START,PARAMS_JSON,action_url,TYPE}{_*}{+END}" />
 {+END}

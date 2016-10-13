@@ -6,7 +6,7 @@
 			<label for="{S*}int_{TYPE_ID*}">{TYPE*}:</label>
 		</div>
 		<div class="right">
-			<input onclick="return cancel_bubbling(event);" type="checkbox" value="1" id="{S*}int_{TYPE_ID*}" name="int_{TYPE_ID*}"{+START,IF,{$EQ,{INTERESTED},not_interested}} checked="checked"{+END} />
+			<input onclick="cancel_bubbling(event);" type="checkbox" value="1" id="{S*}int_{TYPE_ID*}" name="int_{TYPE_ID*}"{+START,IF,{$EQ,{INTERESTED},not_interested}} checked="checked"{+END} />
 		</div>
 	</div>
 {+END}

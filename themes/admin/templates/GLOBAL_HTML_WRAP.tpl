@@ -5,9 +5,9 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 {$BRAND_BASE_URL*}
 (admin theme)
 -->
-{$SET,bg_tpl_compilation,{$CONFIG_OPTION,background_template_compilation}}
+
 {$,We deploy as HTML5 but code and validate strictly to XHTML5}
-<html lang="{$LCASE*,{$LANG}}" dir="{!dir}" data-view-core="Global" data-tpl-core="globalHtmlWrap" data-tpl-args="{+START,PARAMS_JSON,bg_tpl_compilation}{_*}{+END}">
+<html lang="{$LCASE*,{$LANG}}" dir="{!dir}" data-view="Global">
 <head>
 	{+START,INCLUDE,HTML_HEAD}{+END}
 </head>

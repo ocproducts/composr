@@ -9,7 +9,7 @@ HTML5 Date polyfill | Jonathan Stipe | https://github.com/jonstipe/date-polyfill
 
 (function() {
 
-  (function($) {
+  (function($, $cms) {
     $.fn.inputDate = function() {
       var decrement, increment, makeDateDisplayString, makeDateString, readDate, stepNormalize;
       readDate = function(d_str) {
@@ -228,7 +228,7 @@ HTML5 Date polyfill | Jonathan Stipe | https://github.com/jonstipe/date-polyfill
         if (max != null) {
           $calendarDiv.datepicker("option", "maxDate", max);
         }
-        if (Modernizr.csstransitions) {
+        if ($cms.support.cssTransitions) {
           calendarDiv.className = "date-calendar-dialog date-closed";
           $dateBtn.click(function(event) {
             if ($('.date-calendar-dialog.date-open').length > 0) {
@@ -320,13 +320,13 @@ HTML5 Date polyfill | Jonathan Stipe | https://github.com/jonstipe/date-polyfill
       return this;
     };
     $(function() {
-      if (!Modernizr.inputtypes.date || navigator.userAgent.indexOf('Firefox/') != -1) {
+      if (!$cms.support.inputTypes.date || navigator.userAgent.includes('Firefox/')) {
         $('input[type="date"]').inputDate();
       }
       return null;
     });
     return null;
-  })(jQuery);
+  })(window.jQuery, window.$cms);
 
 }).call(this);
 
@@ -340,7 +340,7 @@ HTML5 Time polyfill | Jonathan Stipe | https://github.com/jonstipe/time-polyfill
 
 (function() {
 
-  (function($) {
+  (function($, composr) {
     $.fn.inputTime = function() {
       var decrement, increment, makeTimeDisplayString, makeTimeString, readTime, stepNormalize;
       readTime = function(t_str) {
@@ -713,12 +713,12 @@ HTML5 Time polyfill | Jonathan Stipe | https://github.com/jonstipe/time-polyfill
       return this;
     };
     $(function() {
-      if (!Modernizr.inputtypes.time || navigator.userAgent.indexOf('Firefox/') != -1) {
+      if (!$cms.support.inputTypes.time || navigator.userAgent.includes('Firefox/')) {
         $('input[type="time"]').inputTime();
       }
       return null;
     });
     return null;
-  })(jQuery);
+  })(window.jQuery, window.$cms);
 
 }).call(this);

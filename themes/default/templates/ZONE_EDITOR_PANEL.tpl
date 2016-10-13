@@ -1,4 +1,4 @@
-<div data-view-core-zone-editor="ZoneEditorPanel" data-view-args="{+START,PARAMS_JSON,COMCODE,CLASS,ID,CURRENT_ZONE}{_*}{+END}">
+<div data-view="ZoneEditorPanel" data-view-args="{+START,PARAMS_JSON,COMCODE,CLASS,ID,CURRENT_ZONE}{_*}{+END}">
 	{$,Tab buttons}
 	<div class="float_surrounder">
 		<div class="ze_tabs tabs" role="tablist">

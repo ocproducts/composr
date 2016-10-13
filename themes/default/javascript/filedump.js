@@ -1,28 +1,20 @@
-(function ($, Composr) {
+(function ($cms) {
     'use strict';
 
-    Composr.behaviors.filedump = {
-        initialize: {
-            attach: function (context) {
-                Composr.initializeTemplates(context, 'filedump');
-            }
-        }
-    };
-
-    Composr.templates.filedump = {
+    $cms.extend($cms.templates, {
         filedumpEmbedScreen: function filedumpEmbedScreen(options) {
-            if (typeof options.generated !== 'undefined') {
-                var e = document.getElementById('generated_comcode');
+            if (options && (options.generated !== undefined)) {
+                var el = document.getElementById('generated_comcode');
                 try {
-                    e.focus();
+                    el.focus();
                 } catch (e) {}
 
-                e.select();
+                el.select();
             }
         },
 
         filedumpScreen: function filedumpScreen(options) {
-            if (Composr.is(options.fileLink)) {
+            if(options.fileLink) {
                 faux_open(options.fileLink, null, 'width=950;height=700', '_top');
             }
 
@@ -48,5 +40,5 @@
                 return false;
             }
         }
-    };
-})(window.jQuery || window.Zepto, window.Composr);
+    });
+}(window.$cms));

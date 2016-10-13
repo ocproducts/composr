@@ -59,19 +59,19 @@
 
 				if ((form.elements['db_site_password']) && (window.do_ajax_field_test))
 				{
-					var url='install.php?type=ajax_db_details&db_type='+window.encodeURIComponent(form.elements['db_type'].value)+'&db_site_host='+window.encodeURIComponent(form.elements['db_site_host'].value)+'&db_site='+window.encodeURIComponent(form.elements['db_site'].value)+'&db_site_user='+window.encodeURIComponent(form.elements['db_site_user'].value)+'&db_site_password='+window.encodeURIComponent(form.elements['db_site_password'].value);
+					var url='install.php?type=ajax_db_details&db_type='+encodeURIComponent(form.elements['db_type'].value)+'&db_site_host='+encodeURIComponent(form.elements['db_site_host'].value)+'&db_site='+encodeURIComponent(form.elements['db_site'].value)+'&db_site_user='+encodeURIComponent(form.elements['db_site_user'].value)+'&db_site_password='+encodeURIComponent(form.elements['db_site_password'].value);
 					if (!do_ajax_field_test(url)) return false;
 				}
 
 				if ((form.elements['db_forums_password']) && (window.do_ajax_field_test))
 				{
-					var url='install.php?type=ajax_db_details&db_type='+window.encodeURIComponent(form.elements['db_type'].value)+'&db_forums_host='+window.encodeURIComponent(form.elements['db_forums_host'].value)+'&db_forums='+window.encodeURIComponent(form.elements['db_forums'].value)+'&db_forums_user='+window.encodeURIComponent(form.elements['db_forums_user'].value)+'&db_forums_password='+window.encodeURIComponent(form.elements['db_forums_password'].value);
+					var url='install.php?type=ajax_db_details&db_type='+encodeURIComponent(form.elements['db_type'].value)+'&db_forums_host='+encodeURIComponent(form.elements['db_forums_host'].value)+'&db_forums='+encodeURIComponent(form.elements['db_forums'].value)+'&db_forums_user='+encodeURIComponent(form.elements['db_forums_user'].value)+'&db_forums_password='+encodeURIComponent(form.elements['db_forums_password'].value);
 					if (!do_ajax_field_test(url)) return false;
 				}
 
 				if ((form.elements['ftp_domain']) && (window.do_ajax_field_test))
 				{
-					var url='install.php?type=ajax_ftp_details&ftp_domain='+window.encodeURIComponent(form.elements['ftp_domain'].value)+'&ftp_folder='+window.encodeURIComponent(form.elements['ftp_folder'].value)+'&ftp_username='+window.encodeURIComponent(form.elements['ftp_username'].value)+'&ftp_password='+window.encodeURIComponent(form.elements['ftp_password'].value);
+					var url='install.php?type=ajax_ftp_details&ftp_domain='+encodeURIComponent(form.elements['ftp_domain'].value)+'&ftp_folder='+encodeURIComponent(form.elements['ftp_folder'].value)+'&ftp_username='+encodeURIComponent(form.elements['ftp_username'].value)+'&ftp_password='+encodeURIComponent(form.elements['ftp_password'].value);
 					if (!do_ajax_field_test(url)) return false;
 				}
 
@@ -89,14 +89,14 @@
 
 			function do_forum_choose(object,versions)
 			{
-				Composr.dom.html(document.getElementById('versions'),versions);
+				$cms.dom.html(document.getElementById('versions'),versions);
 
 				var type='none';
 				if ((object.id!='none') && (object.id!='cns'))
 				{
 					type='block';
 					var label=document.getElementById('sep_forum');
-					if (label) Composr.dom.html(label,object.nextSibling.nodeValue);
+					if (label) $cms.dom.html(label,object.nextSibling.nodeValue);
 				}
 
 				document.getElementById('forum_database_info').style.display=type;

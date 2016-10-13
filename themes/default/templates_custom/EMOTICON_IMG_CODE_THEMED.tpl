@@ -7,7 +7,7 @@
 	{$REQUIRE_JAVASCRIPT,core_rich_media}
 	<div id="emoticoncrazy{$GET%,rndx}"></div>
 	<script>// <![CDATA[
-		Composr.ready.then(function() {
+	$cms.ready.then(function() {
 			if (typeof window.crazy_criters=='undefined')
 			{
 				window.crazy_criters=[];
@@ -15,7 +15,7 @@
 			}
 
 			var my_id=parseInt(Math.random()*10000),emoticoncrazy=document.getElementById('emoticoncrazy{$GET%,rndx}');
-			Composr.dom.html(emoticoncrazy,'<img id="'+my_id+'" style="position: relative" alt="{!EMOTICON;}" src="{$IMG*,{SRC},1}" />');
+		$cms.dom.html(emoticoncrazy,'<img id="'+my_id+'" style="position: relative" alt="{!EMOTICON;}" src="{$IMG*,{SRC},1}" />');
 			crazy_criters.push(my_id);
 		});
 	//]]></script>

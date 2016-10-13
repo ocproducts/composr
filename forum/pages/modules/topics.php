@@ -2823,7 +2823,8 @@ END;
         require_code('cns_forums');
         $or_list = get_forum_access_sql('t.t_forum_id');
         $polls = $GLOBALS['FORUM_DB']->query('SELECT p.*,t_cache_first_username FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics t LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_polls p ON p.id=t.t_poll_id WHERE (' . $or_list . ') AND p.id IS NOT NULL ORDER BY id DESC', 30);
-        if (count($polls) != 0) {
+        $javascript = '';
+        if (count($polls) !== 0) {
             $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '1fb2af282b014c3a6ae09d986e4f72eb', 'SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('ALT_COPY_EXISTING_POLL'))));
 
             $list = new Tempcode();
@@ -2833,9 +2834,24 @@ END;
             }
             $fields->attach(form_input_list(do_lang_tempcode('EXISTING'), do_lang_tempcode('COPY_EXISTING_POLL'), 'existing', $list, null, false, false));
 
-            $javascript = 'var existing=document.getElementById(\'existing\'); var form=existing.form; var ch_func=function() { var disable_all=(existing.selectedIndex!=0); var i; for (i=0;i<form.elements.length;i++) if ((form.elements[i]!=existing) && (form.elements[i].id!=\'perform_keywordcheck\') && ((form.elements[i].getAttribute(\'type\')==\'checkbox\') || (form.elements[i].getAttribute(\'type\')==\'text\'))) { set_required(form.elements[i].name,(!disable_all) && ((form.elements[i].id==\'question\') || (form.elements[i].id==\'answer_0\'))); set_locked(form.elements[i],disable_all); } }; for (i=0;i<form.elements.length;i++) form.elements[i].addEventListener(\'change\',ch_func);';
-        } else {
-            $javascript = '';
+            $javascript = /** @lang JavaScript */
+                "var existing = document.getElementById('existing'),
+                    form = existing.form;
+
+                for (i = 0; i < form.elements.length; i++) {
+                    form.elements[i].addEventListener('change', pollFormElementsChangeListener);
+                }
+
+                function pollFormElementsChangeListener() {
+                    var disable_all = (existing.selectedIndex !== 0);
+                    var i;
+                    for (i = 0; i < form.elements.length; i++) {
+                        if ((form.elements[i] !== existing) && (form.elements[i].id !== 'perform_keywordcheck') && ((form.elements[i].getAttribute('type') === 'checkbox') || (form.elements[i].getAttribute('type') === 'text'))) {
+                            set_required(form.elements[i].name, (!disable_all) && ((form.elements[i].id === 'question') || (form.elements[i].id === 'answer_0')));
+                            set_locked(form.elements[i], disable_all);
+                        }
+                    }
+                }";
         }
 
         $title = get_screen_title('ADD_TOPIC_POLL');

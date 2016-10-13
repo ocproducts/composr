@@ -525,10 +525,10 @@ function closure_params_json($param, $args, $main_function)
 
     $output = evaluate_tempcode_elements($output);
     $output = camel_case_array_keys($output);
-    $output = json_encode($output);
+    $output = json_encode($output, JSON_NUMERIC_CHECK);
 
     $ps = ['_' => $output]; // "{_}" paremeter inside the directive block represents the JSON output
-    $args[0] = $ps + $args[0];
+    $args[0] = $ps + $args[0]; // Combine arrays
     $args[0]['vars'] = $args[0];
     $value = call_user_func_array($main_function, $args);
 

@@ -1,4 +1,4 @@
-<div data-view-core="ToggleableTray">
+<div data-view="ToggleableTray">
 	<h2 class="js-tray-header">
 		<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!EXPAND}: {!MODULE_TRANS_NAME_subscriptions}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract}" srcset="{$IMG*,2x/trays/contract} 2x" /></a>
 		<span class="js-btn-tray-toggle">{!MODULE_TRANS_NAME_subscriptions}</span>

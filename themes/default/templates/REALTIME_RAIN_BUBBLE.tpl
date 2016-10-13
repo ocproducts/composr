@@ -1,5 +1,5 @@
 {$REQUIRE_JAVASCRIPT,realtime_rain}
-<div class="webstandards_checker_off" data-tpl-realtime-rain="realtimeRainBubble" data-tpl-args="{+START,PARAMS_JSON,TICKER_TEXT,RELATIVE_TIMESTAMP,GROUP_ID,SPECIAL_ICON,MULTIPLICITY}{_*}{+END}">
+<div class="webstandards_checker_off" data-tpl="realtimeRainBubble" data-tpl-args="{+START,PARAMS_JSON,TICKER_TEXT,RELATIVE_TIMESTAMP,GROUP_ID,SPECIAL_ICON,MULTIPLICITY}{_*}{+END}">
 	{$SET,RAND_ID,bubble_id_{$RAND}}
 
 	<div id="{$GET,RAND_ID}" class="bubble_wrap attitude_{TYPE%}{$?,{IS_POSITIVE},_positive,}{$?,{IS_NEGATIVE},_negative,}">

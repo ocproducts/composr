@@ -7,7 +7,7 @@
 		{$SET,listing,0}
 
 		{+START,LOOP,DIRECTORIES}
-			<li class="commandr_dir" onclick="var c=document.getElementById('commandr_command'); c.value='cd &quot;{FILENAME;*}&quot;'; click_link(c.nextSibling);">
+			<li class="commandr_dir" onclick="var c=document.getElementById('commandr_command'); c.value='cd &quot;{FILENAME;*}&quot;'; click_link(c.nextElementSibling);">
 				{FILENAME*}
 
 				{+START,IF_NON_EMPTY,{FILESIZE}}
@@ -25,7 +25,7 @@
 {+START,IF_NON_EMPTY,{FILES}}
 	<ul aria-label="{!LISTING_FILES}">
 		{+START,LOOP,FILES}
-			<li class="commandr_file" onclick="var c=document.getElementById('commandr_command'); if (c.value!='') { c.value=c.value.replace(/\s*$/,'')+' &quot;{FILENAME;*}&quot;'; c.focus(); } else { c.value='cat &quot;{FILENAME;*}&quot;'; click_link(c.nextSibling); }">
+			<li class="commandr_file" onclick="var c=document.getElementById('commandr_command'); if (c.value!='') { c.value=c.value.replace(/\s*$/,'')+' &quot;{FILENAME;*}&quot;'; c.focus(); } else { c.value='cat &quot;{FILENAME;*}&quot;'; click_link(c.nextElementSibling); }">
 				{FILENAME*}
 
 				{+START,IF_NON_EMPTY,{FILESIZE}}

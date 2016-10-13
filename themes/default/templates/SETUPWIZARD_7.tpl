@@ -1,7 +1,9 @@
 {FORM}
 
 <script>// <![CDATA[
-	document.getElementById('rules').onclick=function() { smooth_scroll(find_pos_y(document.getElementById('rules_set'))); };
+document.getElementById('rules').onclick = function () {
+	smooth_scroll(find_pos_y(document.getElementById('rules_set')));
+};
 //]]></script>
 
 <div class="box box___setupwizard_7_screen"><div class="box_inner">

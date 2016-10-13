@@ -3,4 +3,4 @@
 <img alt="{$STRIP_TAGS,{CAPTION}}"{+START,IF_PASSED,ROLLOVER} id="{$GET%,RAND_ID_IMG}"{+END}
 	 src="{$ENSURE_PROTOCOL_SUITABILITY*,{URL}}"{+START,IF_NON_EMPTY,{ALIGN}} style="vertical-align: {ALIGN|}"{+END}
 	 title="{+START,IF_PASSED,TOOLTIP}{$STRIP_TAGS,{TOOLTIP}}{+END}{+START,IF_NON_PASSED,TOOLTIP}{$STRIP_TAGS,{CAPTION}}{+END}"
-	 data-tpl-core-rich-media="comcodeImg" data-tpl-args="{+START,PARAMS_JSON,ROLLOVER,REFRESH_TIME}{_*}{+END}" />
+	 data-tpl="comcodeImg" data-tpl-args="{+START,PARAMS_JSON,ROLLOVER,REFRESH_TIME}{_*}{+END}" />

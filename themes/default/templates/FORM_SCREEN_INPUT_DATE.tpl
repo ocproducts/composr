@@ -1,4 +1,3 @@
-{$REQUIRE_JAVASCRIPT,modernizr}
 {$REQUIRE_JAVASCRIPT,jquery}
 {$REQUIRE_JAVASCRIPT,jquery_ui}
 {$REQUIRE_JAVASCRIPT,widget_date}

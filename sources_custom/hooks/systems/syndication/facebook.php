@@ -76,7 +76,7 @@ class Hook_syndication_facebook
                             if (val!='" . addslashes(do_lang('INPUTSYSTEM_CANCEL')) . "') {
                                 fb_input.value=(val=='" . addslashes(do_lang('FACEBOOK_PAGE')) . "')?'1':'0';
                                 fb_button.onclick=null;
-                                click_link(fb_button);
+                                fb_button.click();
                             }
                         }
                     );

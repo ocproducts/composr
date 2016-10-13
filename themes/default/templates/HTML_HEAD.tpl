@@ -117,11 +117,17 @@
 	{+START,IF_NON_EMPTY,{$METADATA,opensearch_itemsperpage}}<meta name="itemsPerPage" content="{$METADATA*,opensearch_itemsperpage}" />{+END}
 {+END}{+END}
 
-{$, Load classList and ES6 Promise polyfill for Internet Explorer}
+{$,Load classList and ES6 Promise polyfill for Internet Explorer}
 {+START,IF,{$BROWSER_MATCHES,ie}}
-<script src="{$BASE_URL}/data/polyfills/class-list.js"></script>
-<script src="{$BASE_URL}/data/polyfills/promise.js"></script>
+<script src="{$BASE_URL*}/data/polyfills/class-list.js"></script>
+<script src="{$BASE_URL*}/data/polyfills/promise.js"></script>
+<script src="{$BASE_URL*}/data/polyfills/custom-event-constructor.js"></script>
 {+END}
+
+{$,Polyfills for everyone}
+<script src="{$BASE_URL*}/data/polyfills/general.js"></script>
+<script src="{$BASE_URL*}/data/polyfills/url-search-params.max.js"></script>
+<script src="{$BASE_URL*}/data/polyfills/keyboardevent-key-polyfill.js"></script>
 
 {$,Google Analytics account, if one set up}
 {+START,IF_NON_EMPTY,{$CONFIG_OPTION,google_analytics}}{+START,IF,{$NOR,{$IS_STAFF},{$IS_ADMIN}}}
@@ -134,7 +140,7 @@
 						(i[r].q = i[r].q || []).push(arguments)
 					}, i[r].l = 1 * new Date();
 			a = s.createElement(o),
-			m = s.getElementsByTagName(o)[0];
+			m = s.querySelector(o);
 			a.async = 1;
 			a.src = g;
 			m.parentNode.insertBefore(a, m)
@@ -160,14 +166,17 @@
 {+END}
 
 <script>
-	// Early initialization to allow end-users not using CSP to add inline Composr.ready & Composr.load calls
-	var Composr = {};
-	Composr.ready = new Promise(function (resolve) {
-		Composr._resolveReady = resolve;
-	});
-	Composr.load = new Promise(function (resolve) {
-		Composr._resolveLoad = resolve;
-	});
+	// Early initialization to allow end-users not using CSP to add inline $cms.ready & $cms.load calls
+	window.$cms = {};
+
+	(function ($cms){
+		$cms.ready = new Promise(function (resolve) {
+			$cms._resolveReady = resolve;
+		});
+		$cms.load = new Promise(function (resolve) {
+			$cms._resolveLoad = resolve;
+		});
+	}(window.$cms));
 </script>
 
 {$,JavaScript code (usually) from Composr page}

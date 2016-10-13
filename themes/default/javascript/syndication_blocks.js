@@ -1,4 +1,12 @@
-(function ($, Composr) {
+(function ($cms) {
+    $cms.behaviors.initializeNewsScroller = {
+        attach: function (context) {
+            $cms.dom.$$$(context, '[data-cms-news-scroller]').forEach(function (scroller) {
+                newsScroller(scroller);
+            });
+        }
+    };
+
     function newsScroller(scroller) {
         var scroll_speed = 60;
 
@@ -18,13 +26,4 @@
         }, 2000);
     }
 
-    Composr.behaviors.syndicationBlocks = {
-        initialize: {
-            attach: function (context) {
-                $('[data-cms-news-scroller]', context).each(function () {
-                    newsScroller(this);
-                });
-            }
-        }
-    };
-})(window.jQuery || window.Zepto, Composr);
+}(window.$cms));

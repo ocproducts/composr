@@ -1,30 +1,24 @@
-(function (Composr) {
+(function ($cms) {
     'use strict';
 
-    var $IMG = {
-        'checklist/checklist1': '{$IMG;,checklist/checklist1}',
-        'checklist/not_completed': '{$IMG;,checklist/not_completed}',
-        'checklist/cross': '{$IMG;,checklist/cross}',
-        'checklist/cross2': '{$IMG;,checklist/cross2}',
-        'checklist/toggleicon2': '{$IMG;,checklist/toggleicon2}'
-    };
+    var $IMG_checklist_checklist1 = '{$IMG;,checklist/checklist1}',
+        $IMG_checklist_not_completed = '{$IMG;,checklist/not_completed}',
+        $IMG_checklist_cross = '{$IMG;,checklist/cross}',
+        $IMG_checklist_cross2 = '{$IMG;,checklist/cross2}',
+        $IMG_checklist_toggleicon2 = '{$IMG;,checklist/toggleicon2}';
 
-    Composr.behaviors.coreAdminzoneDashboard = {
-        initialize: {
-            attach: function (context) {
-                Composr.initializeTemplates(context, 'core_adminzone_dashboard');
-            }
-        }
-    };
+    var $SCRIPT_comcode_convert = '{$FIND_SCRIPT_NOHTTP;,comcode_convert}';
 
-    var BlockMainStaffChecklistCustomTask = Composr.View.extend({
+    function BlockMainStaffChecklistCustomTask() {
+        $cms.View.apply(this, arguments);
+
+        this.imgChecklistCross = this.$('.js-img-checklist-cross');
+        this.imgChecklistStatus = this.$('.js-img-checklist-status');
+    }
+
+    $cms.inherits(BlockMainStaffChecklistCustomTask, $cms.View, {
         imgChecklistCross: null,
         imgChecklistStatus: null,
-        initialize: function () {
-            BlockMainStaffChecklistCustomTask.__super__.initialize.apply(this, arguments);
-            this.imgChecklistCross = this.$('.js-img-checklist-cross');
-            this.imgChecklistStatus = this.$('.js-img-checklist-status');
-        },
 
         events: {
             'mouseover': 'mouseover',
@@ -36,11 +30,11 @@
         },
 
         mouseover: function () {
-            this.imgChecklistCross.src = $IMG['checklist/cross2'];
+            this.imgChecklistCross.src = $IMG_checklist_cross2;
         },
 
         mouseout: function () {
-            this.imgChecklistCross.src = $IMG['checklist/cross'];
+            this.imgChecklistCross.src = $IMG_checklist_cross;
         },
 
         markTask: function (e) {
@@ -54,20 +48,20 @@
 
             if (data.vwTaskDone === 'not_completed') {
                 load_snippet('checklist_task_manage', 'type=mark_done&id=' + id);
-                this.imgChecklistStatus.src = $IMG['checklist/checklist1'];
+                this.imgChecklistStatus.src = $IMG_checklist_checklist1;
                 data.vwTaskDone = 'checklist1';
             } else {
                 load_snippet('checklist_task_manage', 'type=mark_undone&id=' + id);
-                this.imgChecklistStatus.src = $IMG['checklist/not_completed'];
+                this.imgChecklistStatus.src = $IMG_checklist_not_completed;
                 data.vwTaskDone = 'not_completed';
             }
         },
 
         confirmDelete: function () {
             var viewEl = this.el,
-                opts = this.options,
-                message = opts.confirmDeleteMessage,
-                id = encodeURIComponent(opts.id);
+                options = this.options,
+                message = options.confirmDeleteMessage,
+                id = encodeURIComponent(options.id);
 
             window.fauxmodal_confirm(message, function (result) {
                 if (result) {
@@ -78,7 +72,11 @@
         }
     });
 
-    var BlockMainStaffLinks = Composr.View.extend({
+    function BlockMainStaffLinks() {
+        $cms.View.apply(this, arguments);
+    }
+
+    $cms.inherits(BlockMainStaffLinks, $cms.View, {
         events: {
             'click .js-click-staff-block-flip': 'staffBlockFlip',
             'click .js-click-form-submit-headless': 'formSubmitHeadless'
@@ -86,61 +84,104 @@
         staffBlockFlip: function () {
             var rand = this.options.randStaffLinks,
                 show = this.$('#staff_links_list_' + rand + '_form'),
-                hide = this.$('#staff_links_list_' + rand);
+                hide = this.$('#staff_links_list_' + rand),
+                isHideDisplayed = $cms.dom.isDisplayed(hide);
 
-            set_display_with_aria(show, (hide.style.display !== 'none') ? 'block' : 'none');
-            set_display_with_aria(hide, (hide.style.display !== 'none') ? 'none' : 'block');
+            $cms.dom.toggleWithAria(show, isHideDisplayed);
+            $cms.dom.toggleWithAria(hide, !isHideDisplayed);
         },
         formSubmitHeadless: function (e, btn) {
-            var opts = this.options,
-                doDefault = ajax_form_submit__admin__headless(null, btn.form, opts.blockName, opts.map);
+            var opts = this.options;
 
-            if (!doDefault) {
+            if (!ajax_form_submit__admin__headless(btn.form, opts.blockName, opts.map)) {
                 e.preventDefault();
             }
         }
     });
 
-    var BlockMainStaffWebsiteMonitoring = Composr.View.extend({
+    function BlockMainStaffWebsiteMonitoring() {
+        $cms.View.apply(this, arguments);
+
+        var rand = this.options.randWebsiteMonitoring;
+
+        this.tableEl = this.$('#website_monitoring_list_' + rand);
+        this.formEl = this.$('.js-form-site-watchlist');
+    }
+
+    $cms.inherits(BlockMainStaffWebsiteMonitoring, $cms.View, {
+        tableEl: null,
+        formEl: null,
         events: {
-            'click .js-click-staff-block-flip': 'staffBlockFlip'
+            'click .js-click-staff-block-flip': 'staffBlockFlip',
+            'click .js-click-headless-submit': 'headlessSubmit'
         },
 
         staffBlockFlip: function () {
-            var rand = this.options.randWebsiteMonitoring,
-                show = Composr.dom.id('website_monitoring_list_' + rand + '_form'),
-                hide = Composr.dom.id('website_monitoring_list_' + rand);
+            var isTableDisplayed = $cms.dom.isDisplayed(this.tableEl);
 
-            set_display_with_aria(show, (hide.style.display !== 'none') ? 'block' : 'none');
-            set_display_with_aria(hide, (hide.style.display !== 'none') ? 'none' : 'block');
+            $cms.dom.toggleWithAria(this.formEl, isTableDisplayed);
+            $cms.dom.toggleWithAria(this.tableEl, !isTableDisplayed);
+        },
+
+        headlessSubmit: function (e) {
+            var blockName = $cms.filter.crLf(this.options.blockName),
+                map = $cms.filter.crLf(this.options.map);
+
+            if (!ajax_form_submit__admin__headless(this.formEl, blockName, map)) {
+                e.preventDefault();
+            }
         }
     });
 
-    Composr.views.BlockMainStaffChecklistCustomTask = BlockMainStaffChecklistCustomTask;
-    Composr.views.BlockMainStaffLinks = BlockMainStaffLinks;
-    Composr.views.BlockMainStaffWebsiteMonitoring = BlockMainStaffWebsiteMonitoring;
+    function BlockMainNotes() {
+        $cms.View.apply(this, arguments);
+        this.formEl = this.$('.js-form-block-main-notes');
+    }
 
-    Composr.templates.coreAdminzoneDashboard = {
+    $cms.inherits(BlockMainNotes, $cms.View, {
+        formEl: null,
+        events: {
+            'click .js-click-headless-submit': 'headlessSubmit'
+        },
+
+        headlessSubmit: function (e) {
+            var blockName = $cms.filter.crLf(this.options.blockName),
+                map = $cms.filter.crLf(this.options.map);
+
+            if (!ajax_form_submit__admin__headless(this.formEl, blockName, map)) {
+                e.preventDefault();
+            }
+        }
+    });
+
+    $cms.views.BlockMainStaffChecklistCustomTask = BlockMainStaffChecklistCustomTask;
+    $cms.views.BlockMainStaffLinks = BlockMainStaffLinks;
+    $cms.views.BlockMainStaffWebsiteMonitoring = BlockMainStaffWebsiteMonitoring;
+    $cms.views.BlockMainNotes = BlockMainNotes;
+
+    $cms.extend($cms.templates, {
         blockMainStaffChecklist: function () {
-            var container = this;
+            var container = this,
+                showAllLink = document.getElementById('checklist_show_all_link'),
+                hideDoneLink = document.getElementById('checklist_hide_done_link');
 
             set_task_hiding(true);
 
-            Composr.dom.on(container, 'click', '.js-click-enable-task-hiding', function () {
+            $cms.dom.on(container, 'click', '.js-click-enable-task-hiding', function () {
                 set_task_hiding(true);
             });
 
-            Composr.dom.on(container, 'click', '.js-click-disable-task-hiding', function () {
+            $cms.dom.on(container, 'click', '.js-click-disable-task-hiding', function () {
                 set_task_hiding(false);
             });
 
-            Composr.dom.on(container, 'submit', '.js-submit-custom-task', function (e, form) {
+            $cms.dom.on(container, 'submit', '.js-submit-custom-task', function (e, form) {
                 submit_custom_task(form);
             });
 
             function set_task_hiding(hide_enable) {
-                new Image().src = $IMG['checklist/cross2'];
-                new Image().src =  $IMG['checklist/toggleicon2'];
+                new Image().src = $IMG_checklist_cross2;
+                new Image().src = $IMG_checklist_toggleicon2;
 
                 var i, checklist_rows = document.querySelectorAll('.checklist_row'), row_imgs, src;
 
@@ -151,29 +192,24 @@
                         if (row_imgs[row_imgs.length - 1].origsrc) {
                             src = row_imgs[row_imgs.length - 1].origsrc;
                         }
-                        if (src && src.indexOf('checklist1') != -1) {
-                            checklist_rows[i].style.display = 'none';
-                            checklist_rows[i].className += ' task_hidden';
+                        if (src && src.includes('checklist1')) {
+                            $cms.dom.hide(checklist_rows[i]);
+                            checklist_rows[i].classList.add('task_hidden');
                         } else {
-                            checklist_rows[i].className = checklist_rows[i].className.replace(/ task_hidden/g, '');
+                            checklist_rows[i].classList.remove('task_hidden');
                         }
                     } else {
-                        if ((checklist_rows[i].style.display == 'none')) {
+                        if (!$cms.dom.isDisplayed(checklist_rows[i])) {
                             clear_transition_and_set_opacity(checklist_rows[i], 0.0);
                             fade_transition(checklist_rows[i], 100, 30, 4);
                         }
-                        checklist_rows[i].style.display = 'block';
-                        checklist_rows[i].className = checklist_rows[i].className.replace(/ task_hidden/g, '');
+                        $cms.dom.show(checklist_rows[i]);
+                        checklist_rows[i].classList.remove('task_hidden');
                     }
                 }
 
-                if (hide_enable) {
-                    document.getElementById('checklist_show_all_link').style.display = 'block';
-                    document.getElementById('checklist_hide_done_link').style.display = 'none';
-                } else {
-                    document.getElementById('checklist_show_all_link').style.display = 'none';
-                    document.getElementById('checklist_hide_done_link').style.display = 'block';
-                }
+                $cms.dom.toggle(showAllLink, hide_enable);
+                $cms.dom.toggle(hideDoneLink, !hide_enable);
             }
 
             function submit_custom_task(form) {
@@ -183,7 +219,7 @@
                 form.elements.recur_interval.value = '';
                 form.elements.new_task.value = '';
 
-                Composr.dom.appendHtml(document.getElementById('custom_tasks_go_here'), new_task);
+                $cms.dom.appendHtml(document.getElementById('custom_tasks_go_here'), new_task);
             }
         },
 
@@ -194,6 +230,49 @@
         blockMainStaffTips: function (options) {
             internalise_ajax_block_wrapper_links(options.blockCallUrl, document.getElementById(options.wrapperId), ['staff_tips_dismiss', 'rand'/*cache breaker*/], {}, false, true, false);
         }
-    };
+    });
 
-}(window.Composr));
+
+    function ajax_form_submit__admin__headless(form, block_name, map) {
+        var post = '';
+        if (block_name !== undefined) {
+            if (map === undefined) {
+                map = '';
+            }
+            var comcode = '[block' + map + ']' + block_name + '[/block]';
+            post += 'data=' + encodeURIComponent(comcode);
+        }
+        for (var i = 0; i < form.elements.length; i++) {
+            if (!form.elements[i].disabled && form.elements[i].name) {
+                post += '&' + form.elements[i].name + '=' + encodeURIComponent(clever_find_value(form, form.elements[i]));
+            }
+        }
+        var request = do_ajax_request(maintain_theme_in_link($SCRIPT_comcode_convert + keep_stub(true)), null, post);
+
+        if (request.responseText && (request.responseText !== 'false')) {
+            var result = request.responseXML.documentElement.querySelector('result');
+
+            if (result) {
+                var xhtml = merge_text_nodes(result.childNodes);
+
+                var element_replace = form;
+                while (element_replace.className !== 'form_ajax_target') {
+                    element_replace = element_replace.parentNode;
+                    if (!element_replace) {
+                        return true;  // Oh dear, target not found
+                    }
+                }
+
+                $cms.dom.html(element_replace, xhtml);
+
+                window.fauxmodal_alert('{!SUCCESS;}');
+
+                return false; // We've handled it internally
+            }
+        }
+
+        return true;
+    }
+
+}(window.$cms));
+

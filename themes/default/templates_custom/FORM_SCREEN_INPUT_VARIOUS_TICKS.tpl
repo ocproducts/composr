@@ -1,6 +1,6 @@
 {$SET,early_description,1}
 
-<div data-view-core="ToggleableTray">
+<div data-view="ToggleableTray">
 	{+START,IF_PASSED,EXPANDED}
 		<h4 class="comcode_quote_h4 js-tray-header">
 			<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">

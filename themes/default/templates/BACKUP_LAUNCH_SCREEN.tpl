@@ -1,5 +1,5 @@
 {$REQUIRE_JAVASCRIPT,backup}
-<div data-tpl-backup="backupLaunchScreen">
+<div data-tpl="backupLaunchScreen">
 {TITLE}
 
 <h2>{!PREVIOUS}</h2>

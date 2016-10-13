@@ -1,5 +1,5 @@
 {$REQUIRE_JAVASCRIPT,core_form_interfaces}
-<div data-tpl-core-form-interfaces="previewScript">
+<div data-tpl="previewScript">
 {+START,IF_NON_EMPTY,{SPELLING}}
 	<div class="box box___preview_script"><div class="box_inner">
 		<h2>{!SPELLCHECK}</h2>

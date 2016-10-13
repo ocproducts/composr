@@ -3,7 +3,7 @@
 function advanced_notifications_copy_under(row, num_children) {
     var inputs_from = row.getElementsByTagName('input');
 
-    var parent_depth = window.getComputedStyle(row.getElementsByTagName('th')[0]).getPropertyValue('padding-left');
+    var parent_depth = window.getComputedStyle(row.querySelector('th')).getPropertyValue('padding-left');
 
     var children_ticked = 0;
     var child_depth = null;
@@ -14,7 +14,7 @@ function advanced_notifications_copy_under(row, num_children) {
             if (!row) return; // Should not happen
         }
 
-        var this_child_depth = window.getComputedStyle(row.getElementsByTagName('th')[0]).getPropertyValue('padding-left');
+        var this_child_depth = window.getComputedStyle(row.querySelector('th')).getPropertyValue('padding-left');
         if (child_depth == null) child_depth = this_child_depth;
 
         if (this_child_depth == parent_depth) {
@@ -44,10 +44,10 @@ function handle_notification_type_tick(ob, row, value) {
             }
         }
     } else {
-        if ((typeof elements[0] != 'undefined') && (elements[0].name.indexOf('CHOICE') != -1))
+        if ((elements[0] !== undefined) && (elements[0].name.indexOf('CHOICE') != -1))
             elements[0].checked = false;
 
-        if ((typeof elements[1] != 'undefined') && (elements[1].name.indexOf('STATISTICAL') != -1))
+        if ((elements[1] !== undefined) && (elements[1].name.indexOf('STATISTICAL') != -1))
             elements[1].checked = false;
     }
 }

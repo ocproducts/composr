@@ -1,15 +1,7 @@
-(function (Composr) {
+(function ($cms) {
     'use strict';
 
-    Composr.behaviors.news = {
-        initialize: {
-            attach: function (context) {
-                Composr.initializeTemplates(context, 'news');
-            }
-        }
-    };
-
-    Composr.templates.news = {
+    $cms.extend($cms.templates, {
         blockMainImageFaderNews: function (options, itemsHtml) {
             var rand = options.randFaderNews, i,
                 news = options.news;
@@ -79,7 +71,7 @@
                 window[cycleCount] = j;
 
                 // Simple data copy}
-                Composr.dom.html(fp_animation_html, data[j].html);
+                $cms.dom.html(fp_animation_html, data[j].html);
                 fp_animation_url.href = data[j].url;
 
                 // Set up fade}
@@ -110,14 +102,14 @@
         },
 
         blockBottomNews: function blockBottomNews(options) {
-            var newsTickerText = Composr.filter.crLf(options.newsTickerText);
+            var newsTickerText = $cms.filter.crLf(options.newsTickerText);
 
             window.tick_pos = window.tick_pos || [];
             var ticktickticker = document.getElementById('ticktickticker_news' + options.bottomNewsId);
             if (document.createElement('marquee').scrolldelay === undefined) {// Slower, but chrome does not support marquee's
                 var my_id = parseInt(Math.random() * 10000);
                 window.tick_pos[my_id] = 400;
-                Composr.dom.html(ticktickticker, '<div onmouseover="this.mouseisover=true;" onmouseout="this.mouseisover=false;" class="ticker" ' +
+                $cms.dom.html(ticktickticker, '<div onmouseover="this.mouseisover=true;" onmouseout="this.mouseisover=false;" class="ticker" ' +
                     'style="text-indent: 400px; width: 400px;" id="' + my_id + '"><span>' + newsTickerText + '</span></div>');
                 window.focused = true;
                 window.addEventListener("focus", function () {
@@ -130,9 +122,9 @@
                     ticker_tick(my_id, 400);
                 }, 50);
             } else {
-                Composr.dom.html(ticktickticker, '<marquee style="display: block" class="ticker" onmouseover="this.setAttribute(\'scrolldelay\',\'10000\');" ' +
+                $cms.dom.html(ticktickticker, '<marquee style="display: block" class="ticker" onmouseover="this.setAttribute(\'scrolldelay\',\'10000\');" ' +
                     'onmouseout="this.setAttribute(\'scrolldelay\',50);" scrollamount="2" scrolldelay="' + (50) + '" width="400">' + newsTickerText + '</marquee>');
             }
         }
-    };
-}(window.Composr));
+    });
+}(window.$cms));

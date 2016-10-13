@@ -1,4 +1,4 @@
-<div data-tpl-core-abstract-interfaces="fatalScreen">
+<div data-tpl="fatalScreen">
 {TITLE}
 
 <p role="alert">

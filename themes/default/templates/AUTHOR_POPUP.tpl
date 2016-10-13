@@ -1,5 +1,5 @@
 {$REQUIRE_JAVASCRIPT,authors}
-<div data-tpl-authors="authorPopup">
+<div data-tpl="authorPopup">
 {+START,IF_NON_EMPTY,{AUTHORS}}
 	<ul class="compact_list">
 		{+START,LOOP,AUTHORS}

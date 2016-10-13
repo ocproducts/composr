@@ -143,7 +143,7 @@
 	<div style="width:{WIDTH}; height:{HEIGHT}" id="{DIV_ID*}"></div>
 
 	<script>// <![CDATA[
-		Composr.ready.then(function() {
+	$cms.ready.then(function() {
 			google.load('maps','3',{callback: google_map_initialize,other_params:''{+START,IF_NON_EMPTY,{REGION}},region:'{REGION;/}'{+END}});
 		});
 	//]]></script>

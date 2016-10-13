@@ -1,6 +1,6 @@
 {$REQUIRE_JAVASCRIPT,core_notifications}
 {$REQUIRE_CSS,notifications}
-<div data-tpl-core-notifications="blockTopNotifications" data-tpl-args="{+START,PARAMS_JSON,MAX}{_*}{+END}">
+<div data-tpl="blockTopNotifications" data-tpl-args="{+START,PARAMS_JSON,MAX}{_*}{+END}">
 <div class="global_button_ref_point" id="web_notifications_rel" style="display: none">
 	<div class="box box_arrow box__block_top_notifications_web"><span></span><div class="box_inner">
 		<div id="web_notifications_spot" role="log">

@@ -1,4 +1,4 @@
-<div data-view-core-addon-management="AddonScreen">
+<div data-view="AddonScreen">
 
 {TITLE}
 

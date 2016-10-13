@@ -2,7 +2,7 @@
 
 {$SET,name_set_elsewhere,1}
 
-<div class="vcard member_profile_screen" itemscope="itemscope" itemtype="http://schema.org/ProfilePage" data-tpl-core-cns="cnsMemberProfileScreen" data-tpl-args="{+START,PARAMS_JSON,TABS,TAB_CODE,TAB_CONTENT,MEMBER_ID}{_*}{+END}">
+<div class="vcard member_profile_screen" itemscope="itemscope" itemtype="http://schema.org/ProfilePage" data-tpl="cnsMemberProfileScreen" data-tpl-args="{+START,PARAMS_JSON,TABS,TAB_CODE,TAB_CONTENT,MEMBER_ID}{_*}{+END}">
 	{TITLE}
 
 	<!-- Member: #{MEMBER_ID%} -->

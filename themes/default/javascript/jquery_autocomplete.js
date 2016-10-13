@@ -6,7 +6,7 @@
  * @license under Apache license
  * @author Bevis Zhao (i@bevis.me, http://bevis.me)
  */
-$(function() {
+jQuery(function($) {
 
 	var calculator = {
 		// key styles
@@ -241,7 +241,7 @@ $(function() {
 			this.options.onFilterChanged(this);
 		}
 
-		if (typeof window.CKEDITOR != 'undefined' && window.CKEDITOR != null && typeof CKEDITOR.instances[this.element.id]!='undefined') {
+		if (window.CKEDITOR && CKEDITOR.instances[this.element.id]) {
 			var _this = this;
 			var editor = CKEDITOR.instances[this.element.id];
 			if (editor.document) {
@@ -354,7 +354,7 @@ $(function() {
 
 			var s = CKEDITOR.instances[this.element.name].getSelection(); // getting selection
 			var selected_ranges = s.getRanges(); // getting ranges
-			if (typeof selected_ranges[0] != 'undefined') {
+			if (selected_ranges[0] !== undefined) {
 				var node = selected_ranges[0].startContainer; // selecting the starting node
 				var parents = node.getParents(true);
 
@@ -526,7 +526,7 @@ $(function() {
 			var val = this.getText().substring(0, startPos);
 		} else {
 			var range = CKEDITOR.instances[this.element.name].getSelection().getRanges()[0];
-			if (typeof range == 'undefined') return; // Out of focus :S
+			if (range === undefined) return; // Out of focus :S
 			var allText = this.getText();
 			allText = allText.replace(/\u200B/,'');
 			var textNode = range.startContainer.$;
@@ -656,20 +656,20 @@ function autoCompleteElementFactory(element,e) {
 
 /* Composr binder code */
 
-function set_up_comcode_autocomplete(name,wysiwyg)
-{
-	if (typeof wysiwyg!='undefined' && wysiwyg && wysiwyg_on() && (typeof CKEDITOR=='undefined' || typeof CKEDITOR.instances[name]=='undefined'))
+function set_up_comcode_autocomplete(name,wysiwyg) {
+	if (wysiwyg && wysiwyg_on() && (CKEDITOR == undefined ||  CKEDITOR.instances[name] == undefined)) {
 		return;
+	}
 
 	register_mouse_listener();
 
-	$('#'+name).sew({
+	window.jQuery('#'+name).sew({
 		values: [],
 		token: '@',
 		elementFactory: autoCompleteElementFactory,
 		onFilterChanged: function(sew, token, expression) {
 			do_ajax_request(
-				'{$FIND_SCRIPT;,namelike}?id='+window.encodeURIComponent(token)+keep_stub(),
+				'{$FIND_SCRIPT;,namelike}?id='+encodeURIComponent(token)+keep_stub(),
 				function(result,list_contents) {
 					var new_values = [];
 					for (var i=0;i<list_contents.childNodes.length;i++)

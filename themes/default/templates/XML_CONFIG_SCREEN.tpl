@@ -1,4 +1,4 @@
-<div data-view-core-configuration="XmlConfigScreen">
+<div data-view="XmlConfigScreen">
 {TITLE}
 
 <form title="{!PRIMARY_PAGE_FORM}" action="{POST_URL*}" method="post" autocomplete="off" class="js-form-xml-config">

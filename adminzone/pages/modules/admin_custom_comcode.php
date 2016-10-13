@@ -175,7 +175,7 @@ class Module_admin_custom_comcode extends Standard_crud_module
                     form.old_submit=form.onsubmit;
                     form.onsubmit=function() {
                         document.getElementById('submit_button').disabled=true;
-                        var url='" . addslashes($script) . "?snippet=exists_tag&name='+window.encodeURIComponent(form.elements['tag'].value);
+                        var url='" . addslashes($script) . "?snippet=exists_tag&name='+encodeURIComponent(form.elements['tag'].value);
                         if (!do_ajax_field_test(url))
                         {
                             document.getElementById('submit_button').disabled=false;

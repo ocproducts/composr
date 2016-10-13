@@ -1,17 +1,19 @@
 {$REQUIRE_CSS,menu__mobile}
-{$REQUIRE_JAVASCRIPT,menu_mobile}
+{$REQUIRE_JAVASCRIPT,core_menus}
 
 {+START,IF_NON_EMPTY,{CONTENT}}
 	{$SET,menu_id,r_{MENU|}_d}
-	<a href="{$PAGE_LINK*,:sitemap}" class="mobile_menu_button" onclick="return mobile_menu_button('{MENU|;*}');"><img src="{$IMG*,mobile_menu}" alt="{!MENU}" /> <span>{!MENU}</span></a>
+	<div data-view="MobileMenu" data-view-args="{+START,PARAMS_JSON,MENU,JAVASCRIPT_HIGHLIGHTING,menu_id}{_*}{+END}">
+		<a href="{$PAGE_LINK*,:sitemap}" class="mobile_menu_button js-click-toggle-content"><img src="{$IMG*,mobile_menu}" alt="{!MENU}" /> <span>{!MENU}</span></a>
 
-	<nav class="menu_type__mobile" style="display: none" aria-expanded="false" data-view-core-menus="Menu" data-view-args="{+START,PARAMS_JSON,MENU,JAVASCRIPT_HIGHLIGHTING,menu_id}{_*}{+END}">
-		<div class="mobile_search">
-			{$BLOCK,block=top_search,failsafe=1}
-		</div>
+		<nav class="menu_type__mobile js-el-menu-content" style="display: none" aria-expanded="false">
+			<div class="mobile_search">
+				{$BLOCK,block=top_search,failsafe=1}
+			</div>
 
-		<ul class="nl" id="{$GET,menu_id}">
-			{CONTENT}
-		</ul>
-	</nav>
+			<ul class="nl" id="{$GET,menu_id}">
+				{CONTENT}
+			</ul>
+		</nav>
+	</div>
 {+END}

@@ -1,4 +1,4 @@
-<div data-view-cns-forum="CnsForumTopicWrapper">
+<div data-view="CnsForumTopicWrapper">
 <div class="wide_table_wrap"><table class="columned_table wide_table cns_topic_list">
 	{+START,IF,{$NOT,{$MOBILE}}}
 		<colgroup>

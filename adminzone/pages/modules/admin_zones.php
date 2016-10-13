@@ -722,7 +722,7 @@ class Module_admin_zones
             form.old_submit=form.onsubmit;
             form.onsubmit=function() {
                 document.getElementById('submit_button').disabled=true;
-                var url='" . addslashes($script) . "?snippet=exists_zone&name='+window.encodeURIComponent(form.elements['zone'].value);
+                var url='" . addslashes($script) . "?snippet=exists_zone&name='+encodeURIComponent(form.elements['zone'].value);
                 if (!do_ajax_field_test(url))
                 {
                     document.getElementById('submit_button').disabled=false;

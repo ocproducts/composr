@@ -1,6 +1,6 @@
 <h3>{TITLE*}</h3>
 
-<div class="box" data-view-core="ToggleableTray">
+<div class="box" data-view="ToggleableTray">
 	<h4 class="toggleable_tray_title js-tray-header">
 		<a class="toggleable_tray_button js-btn-tray-toggle" title="{!SETTINGS}: {!EXPAND}" href="#!"><img alt="{!EXPAND}: {TITLE*}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
 		<a class="toggleable_tray_button js-btn-tray-toggle" title="{!SETTINGS}: {!EXPAND}" href="#!">{!SETTINGS}</a>

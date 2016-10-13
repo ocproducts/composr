@@ -1,4 +1,4 @@
-<div data-view-core-addon-management="AddonInstallConfirmScreen">
+<div data-view="AddonInstallConfirmScreen">
 {TITLE}
 
 {WARNINGS}

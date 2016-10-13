@@ -20,7 +20,7 @@ function check_decoding() {
     var d = document.getElementById('cometestme');
     if (!d) {
         throw complaining("Can't find an id='cometestme' element?");
-    } else if (typeof d.textContent == 'undefined') {
+    } else if (d.textContent === undefined) {
         // It's a browser with a halfassed DOM implementation (like IE6)
         // that doesn't implement textContent!  Assume that if it's that
         // dumb, it probably doesn't implement disable-content-encoding.
@@ -80,7 +80,7 @@ function go_decoding() {
         ) {
             // the null or markupless element needs no reworking
         } else {
-            Composr.dom.html(to_decode[i], s);  // that's the magic
+            $cms.dom.html(to_decode[i], s);  // that's the magic
         }
     }
 

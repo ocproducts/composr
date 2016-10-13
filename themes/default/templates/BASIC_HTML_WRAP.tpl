@@ -1,7 +1,7 @@
 {$,This template is used for very raw output like banner frames}
 <!DOCTYPE html>
 
-<html lang="{$LCASE*,{$LANG}}" dir="{!dir}" data-view-core="Global">
+<html lang="{$LCASE*,{$LANG}}" dir="{!dir}" data-view="Global">
 	<head>
 		{$,The character set of the page}
 		<meta http-equiv="Content-Type" content="text/html; charset={$CHARSET*}" />

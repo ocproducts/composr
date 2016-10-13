@@ -126,9 +126,8 @@
 			{
 				{$,Dynamically load a specific members details only when their marker is clicked.}
 				do_ajax_request('{$BASE_URL;/}/data_custom/get_member_tooltip.php?member='+arg_member+keep_stub(),function(reply) {
-					var content=reply.getElementsByTagName('result')[0].firstChild.nodeValue;
-					if (content!='')
-					{
+					var content=reply.querySelector('result').firstChild.nodeValue;
+					if (content!='') {
 						info_window.setContent('<div class="global_middle_faux float_surrounder">'+content+'<\/div>');
 						info_window.open(map,arg_marker);
 					}
@@ -146,7 +145,7 @@
 	<div id="map_canvas" style="width: {WIDTH}; height: {HEIGHT}"></div>
 
 	<script>// <![CDATA[
-		Composr.ready.then(function() {
+	$cms.ready.then(function() {
 			google.load('maps','3',{callback: google_map_users_initialize,other_params:''{+START,IF_NON_EMPTY,{REGION}},region:'{REGION;/}'{+END}});
 		});
 	//]]></script>

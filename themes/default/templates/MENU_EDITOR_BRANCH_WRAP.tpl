@@ -1,4 +1,4 @@
-<div class="menu_editor_branch" id="branch_wrap_{I*}" data-tpl-core-menus="menuEditorBranchWrap" data-tpl-args="{+START,PARAMS_JSON,CLICKABLE_SECTIONS,BRANCH_TYPE,I}{_*}{+END}">
+<div class="menu_editor_branch" id="branch_wrap_{I*}" data-tpl="menuEditorBranchWrap" data-tpl-args="{+START,PARAMS_JSON,CLICKABLE_SECTIONS,BRANCH_TYPE,I}{_*}{+END}">
 	<div id="branch_{I*}">
 		<label id="label_caption_{I*}" for="caption_{I*}">{!CAPTION}: </label>
 		<input maxlength="255" onfocus="make_field_selected(this);" ondblclick="var e=document.getElementById('menu_editor_wrap'); if (e.className.indexOf(' docked')==-1) smooth_scroll(find_pos_y(document.getElementsByTagName('h2')[2]));" type="text" value="{CAPTION*}" id="caption_{I*}" name="caption_{I*}" />
@@ -24,7 +24,7 @@
 		<input type="image" class="horiz_field_sep" src="{$IMG*,results/sortablefield_desc}" id="down_{I*}" alt="{!MOVE_DOWN}" onclick="handle_ordering(this,false,true); return false;" />
 		<input type="image" src="{$IMG*,results/sortablefield_asc}" id="up_{I*}" alt="{!MOVE_UP}" onclick="handle_ordering(this,true,false); return false;" />
 
-		<input class="menu___generic_admin__delete button_micro horiz_field_sep" value="{!DELETE}" type="button" id="del_{I*}" name="del_{I*}" onclick="delete_menu_branch(this);" />
+		<input class="menu___generic_admin__delete button_micro horiz_field_sep js-click-delete-menu-branch" value="{!DELETE}" type="button" id="del_{I*}" name="del_{I*}" />
 	</div>
 
 	<div class="menu_editor_branch_indent" id="branch_{I*}_follow_1" style="{DISPLAY*}">

@@ -1,34 +1,24 @@
-(function (Composr) {
+(function ($cms) {
     'use strict';
 
-    Composr.behaviors.cnsForum = {
-        initialize: {
-            attach: function (context) {
-                Composr.initializeViews(context, 'cns_forum');
-                Composr.initializeTemplates(context, 'cns_forum');
-            }
-        }
-    };
+    function CnsForumTopicWrapper() {
+        $cms.View.apply(this, arguments);
+    }
 
-    var CnsForumTopicWrapper = Composr.View.extend({
-        initialize: function () {
-            Composr.View.prototype.initialize.apply(this, arguments);
-        },
+    $cms.inherits(CnsForumTopicWrapper, $cms.View, {
         events: {
             'click .js-click-mark-all-topics': 'markAllTopics'
         },
         markAllTopics: function () {
-            Composr.dom.$$('input[type="checkbox"][name^="mark_"]').forEach(function (checkbox) {
+            $cms.dom.$$('input[type="checkbox"][name^="mark_"]').forEach(function (checkbox) {
                 checkbox.click();
             });
         }
     });
 
-    Composr.views.cnsForum = {
-        CnsForumTopicWrapper: CnsForumTopicWrapper
-    };
+    $cms.views.CnsForumTopicWrapper = CnsForumTopicWrapper;
 
-    Composr.templates.cnsForum = {
+    $cms.extend($cms.templates, {
         cnsTopicScreen: function (options) {
             if ((options.serializedOptions !== undefined) && (options.hash !== undefined)) {
                 window.comments_serialized_options = options.serializedOptions;
@@ -40,9 +30,9 @@
             var form = this,
                 minSelections = +options.minimumSelections,
                 maxSelections = +options.maximumSelections,
-                errorMessage  = (minSelections === maxSelections) ? Composr.str('{!POLL_NOT_ENOUGH_ERROR_2;^}', minSelections) : Composr.str('{!POLL_NOT_ENOUGH_ERROR;^}', minSelections, maxSelections);
+                errorMessage  = (minSelections === maxSelections) ? $cms.str('{!POLL_NOT_ENOUGH_ERROR_2;^}', minSelections) : $cms.str('{!POLL_NOT_ENOUGH_ERROR;^}', minSelections, maxSelections);
 
-            Composr.dom.on(form, 'submit', function (e) {
+            $cms.dom.on(form, 'submit', function (e) {
                 var success = cns_check_poll(form, minSelections, maxSelections, errorMessage);
                 if (!success) {
                     e.preventDefault();
@@ -68,7 +58,7 @@
             var container = this,
                 ignoreUrl = options.ignoreUrl2;
 
-            Composr.dom.on(container, 'click', '.js-click-ignore-notification', function () {
+            $cms.dom.on(container, 'click', '.js-click-ignore-notification', function () {
                 var el = this;
                 do_ajax_request(ignoreUrl, function () {
                     var o = el.parentNode.parentNode.parentNode.parentNode;
@@ -81,7 +71,7 @@
                 });
             });
         }
-    };
+    });
 
     // TODO: test if the new implementation in CnsForumTopicWrapper works and remove this
     function mark_all_topics(event) {
@@ -94,5 +84,5 @@
             }
         }
     }
-}(window.Composr));
+}(window.$cms));
 

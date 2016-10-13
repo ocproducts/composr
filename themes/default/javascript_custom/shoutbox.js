@@ -36,10 +36,10 @@ function sb_handle_signals(ajax_result) {
             if (!id) id = messages[i].id; // Weird fix for Opera
             if (id > window.sb_last_message_id && window.sb_last_message_id != -1) {
                 window.sb_last_message_id = id;
-                if (Composr.dom.html(messages[i]).indexOf('((SHAKE))') != -1) {
+                if ($cms.dom.html(messages[i]).indexOf('((SHAKE))') != -1) {
                     do_shake();
                 } else {
-                    show_ghost(Composr.dom.html(messages[i]));
+                    show_ghost($cms.dom.html(messages[i]));
                 }
 
                 var frames = window.parent.document.getElementsByTagName('iframe');

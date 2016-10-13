@@ -35,7 +35,7 @@
 </div>
 
 <script>//<![CDATA[
-	Composr.ready.then(function() {
+$cms.ready.then(function() {
 		if ($('#fp_status_form').length!=0) {
 			$('textarea','#fp_status_form').bind('focus',s_update_focus);
 			$('textarea','#fp_status_form').bind('blur',s_update_blur);

@@ -1,5 +1,5 @@
 {$REQUIRE_JAVASCRIPT,core_notifications}
-<div data-tpl-core-notifications="notificationsManageScreen">
+<div data-tpl="notificationsManageScreen">
 {TITLE}
 
 <form title="{!NOTIFICATIONS}" method="post" action="{ACTION_URL*}" autocomplete="off">

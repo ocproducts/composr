@@ -1,4 +1,4 @@
-<div data-tpl-core-abstract-interfaces="questionUiButtons">
+<div data-tpl="questionUiButtons">
 	<h2>{TITLE*}</h2>
 
 	{MESSAGE}

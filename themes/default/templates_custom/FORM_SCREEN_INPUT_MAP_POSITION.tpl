@@ -94,7 +94,7 @@
 <input class="button_micro buttons__search" type="button" value="{!FIND_ME}" onclick="geolocate_user_for_map_field(); return false;" />
 
 <script>// <![CDATA[
-	Composr.ready.then(function() {
+$cms.ready.then(function() {
 		window.setTimeout(function() {
 			google.load('maps','3', {callback: google_map_users_initialize, other_params:''});
 		},0);

@@ -155,6 +155,6 @@
 	</tr>
 {+END}
 
-<script type="application/json" data-tpl-core-form-interfaces="postingField">
+<script type="application/json" data-tpl="postingField">
 	{+START,PARAMS_JSON,CLASS,WORD_COUNTER,word_count_id,init_drag_drop}{_/}{+END}
 </script>

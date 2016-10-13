@@ -35,6 +35,6 @@
 	</td>
 </tr>
 
-<script type="application/json" data-tpl-core-form-interfaces="formScreenInputHugeComcode">
+<script type="application/json" data-tpl="formScreenInputHugeComcode">
 	{+START,PARAMS_JSON,REQUIRED,NAME,randomised_id,REQUIRED}{_/}{+END}
 </script>

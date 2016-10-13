@@ -1,4 +1,4 @@
-<div data-tpl-core-rich-media="mediaVideoGeneral" data-tpl-args="{+START,PARAMS_JSON,player_id}{_*}{+END}">
+<div data-tpl="mediaVideoGeneral" data-tpl-args="{+START,PARAMS_JSON,player_id}{_*}{+END}">
 {+START,IF_PASSED_AND_TRUE,FRAMED}
 <figure>
 {+END}

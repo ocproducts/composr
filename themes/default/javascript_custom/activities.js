@@ -30,10 +30,10 @@ function s_update_get_data() {
                     if ((window.activities_member_ids !== null) && (window.activities_member_ids !== ''))
                         post_val = post_val + '&member_ids=' + window.activities_member_ids;
 
-                    post_val += '&csrf_token=' + window.encodeURIComponent(get_csrf_token()); // For CSRF prevention
+                    post_val += '&csrf_token=' + encodeURIComponent(get_csrf_token()); // For CSRF prevention
 
                     jQuery.ajax({
-                        url: Composr.url(url),
+                        url: $cms.url(url),
                         type: 'POST',
                         data: post_val,
                         cache: false,
@@ -78,7 +78,7 @@ function s_update_show(data, stat) {
                     this_li.className = 'activities_box box';
                     this_li.setAttribute('toFade', 'yes');
                     top_of_list.parentNode.insertBefore(this_li, top_of_list);
-                    Composr.dom.html(this_li, Base64.decode($(this).text()));
+                    $cms.dom.html(this_li, Base64.decode($(this).text()));
                 });
 
                 var no_messages = document.getElementById('activity_-1');
@@ -118,10 +118,10 @@ function s_update_remove(event, id) {
                 var url = '{$BASE_URL;,0}/data_custom/activities_removal.php' + keep_stub(true);
 
                 var post_val = 'removal_id=' + id;
-                post_val += '&csrf_token=' + window.encodeURIComponent(get_csrf_token()); // For CSRF prevention
+                post_val += '&csrf_token=' + encodeURIComponent(get_csrf_token()); // For CSRF prevention
 
                 jQuery.ajax({
-                    url: Composr.url(url),
+                    url: $cms.url(url),
                     type: 'POST',
                     data: post_val,
                     cache: false,
