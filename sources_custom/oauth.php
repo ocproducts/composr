@@ -79,7 +79,7 @@ function retrieve_oauth2_token($service_name, $service_title, $auth_url, $endpoi
             'grant_type' => 'authorization_code',
         );
 
-        $result = http_download_file($endpoint . '/token', null, true, false, 'Composr', $post_params);
+        $result = http_get_contents($endpoint . '/token', array('post_params' => $post_params));
         $parsed_result = json_decode($result);
         set_value($service_name . '_refresh_token', $parsed_result->refresh_token, true);
 
@@ -104,7 +104,7 @@ function refresh_oauth2_token($service_name, $url, $client_id, $client_secret, $
 
     require_code('files');
 
-    $result = http_download_file($endpoint . '/token', null, true, false, 'Composr', $post_params);
+    $result = http_get_contents($endpoint . '/token', array('post_params' => $post_params));
     $parsed_result = json_decode($result);
 
     if (!array_key_exists('access_token', $parsed_result)) {

@@ -438,7 +438,7 @@ class Hook_ecommerce_via_secpay
         }
         $url = $_url->evaluate();
 
-        echo http_download_file($url, null, false);
+        echo http_get_contents($url, array('trigger_error' => false));
 
         if (addon_installed('shopping')) {
             $this->store_shipping_address($purchase_id);

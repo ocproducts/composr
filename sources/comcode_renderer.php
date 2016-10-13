@@ -502,15 +502,19 @@ function test_url($url_full, $tag_type, $given_url, $source_member)
         return new Tempcode();
     }
 
-    global $COMCODE_PARSE_URLS_CHECKED, $HTTP_MESSAGE, $COMCODE_BROKEN_URLS, $DONT_CARE_MISSING_PAGES;
+    global $COMCODE_PARSE_URLS_CHECKED, $COMCODE_BROKEN_URLS, $DONT_CARE_MISSING_PAGES;
 
     $temp_tpl = new Tempcode();
     require_code('global4');
     if (!handle_has_checked_recently($url_full)) {
         $COMCODE_PARSE_URLS_CHECKED++;
-        $test = ($COMCODE_PARSE_URLS_CHECKED >= MAX_URLS_TO_READ) ? '' : http_download_file($url_full, 0, false);
-        if (($test === null) && (in_array($HTTP_MESSAGE, array('404')))) {
-            if ($HTTP_MESSAGE != 'could not connect to host'/*don't show for random connectivity issue*/) {
+        if ($COMCODE_PARSE_URLS_CHECKED >= MAX_URLS_TO_READ) {
+            return new Tempcode();
+        }
+
+        $test = cms_http_request($url_full, array('trigger_error' => false, 'byte_limit' => 0));
+        if (($test->data === null) && (in_array($test->message, array('404')))) {
+            if ($test->message != 'could not connect to host'/*don't show for random connectivity issue*/) {
                 $temp_tpl = do_template('WARNING_BOX', array(
                     '_GUID' => '7bcea67226f89840394614d88020e3ac',
                     'FOR_GUESTS' => false,

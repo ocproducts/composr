@@ -176,7 +176,7 @@ function find_remote_addons()
     $stub = (get_param_integer('localhost', 0) == 1) ? get_base_url() : 'http://compo.sr';
     $v = 'Version ' . float_to_raw_string(cms_version_number(), 2, true);
     $url = $stub . '/data/ajax_tree.php?hook=choose_download&id=' . rawurlencode($v) . '&file_type=tar&full_depth=1';
-    $contents = http_download_file($url, null, false);
+    $contents = http_get_contents($url, array('trigger_error' => false));
     $matches = array();
     $num_matches = preg_match_all('#<entry id="(\d+)".* title="([^"]+)"#Us', $contents, $matches);
     for ($i = 0; $i < $num_matches; $i++) {
@@ -214,8 +214,8 @@ function find_updated_addons()
         $url .= '&addon_' . strval($i) . '=' . urlencode($addon);
     }
 
-    require_code('files2');
-    list($addon_data) = cache_and_carry('http_download_file', array($url, null, false), 5/*5 minute cache*/);
+    require_code('http');
+    list($addon_data) = cache_and_carry('cms_http_request', array($url, null, false), 5/*5 minute cache*/);
     if (($addon_data === null) || ($addon_data == '')) {
         return array();
         //warn_exit(do_lang('INTERNAL_ERROR'));
@@ -473,7 +473,7 @@ function create_addon($file, $files, $addon, $incompatibilities, $dependencies, 
             $mtime = 0;
             //if ((file_exists(get_file_base() . '/.git')) && (filemtime($themed_version) > 60 * 60 * 24 - 31 * 4/*If newer than 4 months it is likely git has garbled the modification date during a checkout*/)) {
             //    $_themed_version = dirname($val) . '/' . $themed_suffix . basename($val);
-            //    $json_data = @json_decode(http_download_file('http://github.com/api/v2/json/commits/list/ocproducts/composr/master/' . $_themed_version));
+            //    $json_data = @json_decode(http_get_contents('http://github.com/api/v2/json/commits/list/ocproducts/composr/master/' . $_themed_version));
             //    if (isset($json_data->commits[0]->committed_date)) {
             //        $mtime = strtotime($json_data->commits[0]->committed_date);
             //    }
@@ -489,7 +489,7 @@ function create_addon($file, $files, $addon, $incompatibilities, $dependencies, 
             $mode = fileperms($full);
             $mtime = 0;
             //if ((file_exists(get_file_base() . '/.git')) && (filemtime($full) > 60 * 60 * 24 - 31 * 4/*If newer than 4 months it is likely git has garbled the modification date during a checkout*/)) {
-            //    $json_data = @json_decode(http_download_file('http://github.com/api/v2/json/commits/list/ocproducts/composr/master/' . $val));
+            //    $json_data = @json_decode(http_get_contents('http://github.com/api/v2/json/commits/list/ocproducts/composr/master/' . $val));
             //    if (isset($json_data->commits[0]->committed_date)) {
             //        $mtime = strtotime($json_data->commits[0]->committed_date);
             //    }

@@ -1800,7 +1800,7 @@ class Hook_import_smf2
                 if ($row['illustration'] != '') {
                     list($out_path, $image) = find_unique_path('uploads/repimages', basename($row['illustration']));
                     $out_handle = fopen($out_path, 'wb');
-                    http_download_file($boardurl . '/tp-files/tp-articles/illustrations/' . $row['illustration'], null, false, false, 'Composr', null, array(), null, null, null, $out_handle);
+                    http_get_contents($boardurl . '/tp-files/tp-articles/illustrations/' . $row['illustration'], array('trigger_error' => false, 'write_to_file' => $out_handle));
                     fclose($out_handle);
                 } else {
                     $image = '';

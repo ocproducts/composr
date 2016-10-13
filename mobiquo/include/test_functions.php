@@ -113,7 +113,7 @@ function mobiquo_post_simple_call($method, $params, $username = null, $files = n
     );
 
     $post = $params + array('method_name' => $method);
-    $data = http_download_file($url, null, true, false, 'Composr', $post, null, null, null, null, null, null, null, 6.0, false, $files, $extra_headers);
+    $data = http_get_contents($url, array('post_params' => $post, 'files' => $files, 'extra_headers' => $extra_headers));
 
     $test = @php_xmlrpc_decode_xml($data);
     if (is_object($test)) {
@@ -153,7 +153,7 @@ function mobiquo_json_simple_call($method, $params, $username = null)
     );
 
     $post = json_encode($params);
-    $data = http_download_file($url, null, true, false, 'Composr', array($post), null, null, null, null, null, null, null, 6.0, true, null, array());
+    $data = http_get_contents($url, array('post_params' => array($post), 'raw_post' => true));
     echo 'RAW: ' . $data;
     return json_decode($data, true);
 }

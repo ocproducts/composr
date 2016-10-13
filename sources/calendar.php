@@ -722,9 +722,9 @@ function calendar_matches($auth_member_id, $member_id, $restrict, $period_start,
             $temp_file_path = cms_tempnam();
             require_code('files');
             $write_to_file = fopen($temp_file_path, 'wb');
-            http_download_file($feed_url, 1024 * 512, false, false, 'Composr', null, array(), null, null, null, $write_to_file);
+            $http_response = cms_http_request($feed_url, array('byte_limit' => 1024 * 512, 'trigger_error' => false, 'write_to_file' => $write_to_file));
 
-            if (($GLOBALS['HTTP_DOWNLOAD_MIME_TYPE'] == 'text/calendar') || ($GLOBALS['HTTP_DOWNLOAD_MIME_TYPE'] == 'application/octet-stream')) {
+            if (($http_response->download_mime_type == 'text/calendar') || ($http_response->download_mime_type == 'application/octet-stream')) {
                 $data = file_get_contents($temp_file_path);
 
                 require_code('calendar_ical');

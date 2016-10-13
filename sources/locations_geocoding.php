@@ -152,7 +152,7 @@ function _google_geocode($url_params, &$error_msg = null)
     }
     $url .= $url_params;
 
-    $_result = http_download_file($url, null, false);
+    $_result = http_get_contents($url, array('trigger_error' => false));
 
     if (empty($_result)) {
         $error_msg = do_lang_tempcode('GOOGLE_GEOCODE_COULD_NOT_CONNECT');

@@ -276,7 +276,7 @@ class Hook_video_syndication_vimeo
         if (substr($url, 0, strlen(get_custom_base_url())) != get_custom_base_url()) {
             $temppath = cms_tempnam();
             $tempfile = fopen($temppath, 'wb');
-            http_download_file($url, 1024 * 1024 * 1024 * 5, true, false, 'Composr', null, array(), null, null, null, $tempfile);
+            http_get_contents($url, array('byte_limit' => 1024 * 1024 * 1024 * 5, 'write_to_file' => $tempfile));
 
             $is_temp_file = true;
 

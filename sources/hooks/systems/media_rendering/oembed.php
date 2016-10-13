@@ -137,9 +137,8 @@ class Hook_media_rendering_oembed extends Media_renderer_with_fallback
         }
 
         // Call endpoint
-        require_code('files');
-        require_code('files2');
-        $result = cache_and_carry('http_download_file', array($endpoint, null, false, false, 'Composr', null, array(), null, null, null, null, null, null, 2.0));
+        require_code('http');
+        $result = cache_and_carry('cms_http_request', array($endpoint, null, false, false, 'Composr', null, array(), null, null, null, null, null, null, 2.0));
         if ($result === false || $result[4] != '200') {
             return null;
         }
@@ -375,7 +374,7 @@ class Hook_media_rendering_oembed extends Media_renderer_with_fallback
     public function _fallback_render($url, $attributes, $source_member, $link_captions_title = '')
     {
         if ($link_captions_title == '') {
-            require_code('files2');
+            require_code('http');
             $meta_details = get_webpage_meta_details($url);
             $link_captions_title = $meta_details['t_title'];
             if ($link_captions_title == '') {
@@ -419,7 +418,7 @@ class Hook_media_rendering_oembed extends Media_renderer_with_fallback
         }
 
         // Auto-discovery
-        require_code('files2');
+        require_code('http');
         $meta_details = get_webpage_meta_details($url);
         $mime_type = $meta_details['t_mime_type'];
         if ($mime_type == 'text/html' || $mime_type == 'application/xhtml+xml') {

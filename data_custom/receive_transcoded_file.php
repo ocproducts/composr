@@ -61,7 +61,7 @@ function run()
 
     require_code('files');
     $file_handle = @fopen(get_custom_file_base() . '/uploads/' . $type . '/' . $file, 'wb') or intelligent_write_error(get_custom_file_base() . '/uploads/' . $type . '/' . $file);
-    http_download_file($_GET['url'], null, false, false, 'Composr', null, array(), null, null, null, $file_handle, null, null, 6.0);
+    http_get_contents($_GET['url'], array('trigger_error' => false, 'write_to_file' => $file_handle));
     fclose($file_handle);
 
     // move the old media file to the archive directory - '/uploads/' . $type . '/archive/'
@@ -90,5 +90,5 @@ function run()
 
     $transcoding_server = get_option('transcoding_server');
 
-    http_download_file($transcoding_server . '/move_to_sent.php?file=' . urlencode($_GET['url']));
+    http_get_contents($transcoding_server . '/move_to_sent.php?file=' . urlencode($_GET['url']));
 }

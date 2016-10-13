@@ -713,7 +713,7 @@ function create_video_thumb($src_url, $expected_output_path = null)
                     }
                     require_code('files');
                     $_expected_output_path = fopen($expected_output_path, 'wb');
-                    http_download_file($ret, null, true, false, 'Composr', null, array(), null, null, null, $_expected_output_path);
+                    http_get_contents($ret, array('write_to_file' => $_expected_output_path));
                     fclose($_expected_output_path);
 
                     return $ret;
@@ -723,7 +723,7 @@ function create_video_thumb($src_url, $expected_output_path = null)
     }
 
     // oEmbed etc
-    require_code('files2');
+    require_code('http');
     $meta_details = get_webpage_meta_details($src_url);
     if ($meta_details['t_image_url'] != '') {
         return $meta_details['t_image_url'];
@@ -738,7 +738,7 @@ function create_video_thumb($src_url, $expected_output_path = null)
                 require_code('files');
                 $_expected_output_path = @fopen($expected_output_path, 'wb');
                 if ($_expected_output_path !== false) {
-                    http_download_file($ret, null, true, false, 'Composr', null, array(), null, null, null, $_expected_output_path);
+                    http_get_contents($ret, array('write_to_file' => $_expected_output_path));
                     fclose($_expected_output_path);
                 }
             }
@@ -837,7 +837,7 @@ function create_video_thumb($src_url, $expected_output_path = null)
         if ($expected_output_path !== null) {
             require_code('files');
             $_expected_output_path = fopen($expected_output_path, 'wb');
-            http_download_file($ret, null, true, false, 'Composr', null, array(), null, null, null, $_expected_output_path);
+            http_get_contents($ret, array('write_to_file' => $_expected_output_path));
             fclose($_expected_output_path);
         }
     }

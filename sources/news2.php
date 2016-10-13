@@ -428,7 +428,7 @@ function send_rss_ping($show_errors = true)
     foreach ($ping_urls as $ping_url) {
         $ping_url = trim($ping_url);
         if ($ping_url != '') {
-            $out .= http_download_file($ping_url, null, $show_errors);
+            $out .= http_get_contents($ping_url, array('trigger_error' => $show_errors));
         }
     }
 
@@ -895,7 +895,7 @@ function _news_import_grab_image(&$data, $url)
     }
 
     $target_handle = fopen($target_path, 'wb') or intelligent_write_error($target_path);
-    $result = http_download_file($url, null, false, false, 'Composr', null, array(), null, null, null, $target_handle);
+    $result = http_get_contents($url, array('trigger_error' => false, 'write_to_file' => $target_handle));
     fclose($target_handle);
     sync_file($target_path);
     fix_permissions($target_path);

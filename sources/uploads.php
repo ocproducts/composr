@@ -70,8 +70,11 @@ function post_param_multi_source_upload($name, $upload_to, $required = true, $is
     if (((array_key_exists($field_file, $_FILES)) && ((is_plupload()) || (is_uploaded_file($_FILES[$field_file]['tmp_name']))))) {
         $urls = get_url('', $field_file, $upload_to, 0, $upload_type, $thumb_url !== null, $thumb_specify_name, $thumb_attach_name);
 
-        if ((substr($urls[0], 0, 8) != 'uploads/') && (http_download_file($urls[0], 0, false) === null) && ($GLOBALS['HTTP_MESSAGE_B'] !== null)) {
-            attach_message($GLOBALS['HTTP_MESSAGE_B'], 'warn');
+        if (substr($urls[0], 0, 8) != 'uploads/') {
+            $http_result = cms_http_request($urls[0], array('trigger_error' => false, 'byte_limit' => 0));
+            if (($http_result->data === null) && ($http_result->message_b !== null)) {
+                attach_message($http_result->message_b, 'warn');
+            }
         }
 
         if ($thumb_url !== null) {
@@ -382,7 +385,8 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
             $path2 = cms_tempnam();
             $tmpfile = fopen($path2, 'wb');
 
-            $file = http_download_file($url[0], $max_size, true, false, 'Composr', null, array(), null, null, null, $tmpfile);
+            $http_result = cms_http_request($url[0], array('byte_limit' => $max_size, 'write_to_file' => $tmpfile));
+            $file = $http_result->data;
             fclose($tmpfile);
             if ($file === null) {
                 @unlink($path2);
@@ -393,15 +397,14 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
                     warn_exit(do_lang_tempcode('CANNOT_COPY_TO_SERVER'), false, true);
                 }
             }
-            global $HTTP_FILENAME;
-            if ($HTTP_FILENAME === null) {
-                $HTTP_FILENAME = $url[1];
+            if ($http_result->filename === null) {
+                $http_result->filename = $url[1];
             }
 
-            if (!check_extension($HTTP_FILENAME, $obfuscate == 2, $path2, $accept_errors)) {
+            if (!check_extension($http_result->filename, $obfuscate == 2, $path2, $accept_errors)) {
                 if ($obfuscate == 3) { // We'll try again, with obfuscation to see if this would get through
                     $obfuscate = 2;
-                    if (!check_extension($HTTP_FILENAME, $obfuscate == 2, $path2, $accept_errors)) {
+                    if (!check_extension($http_result->filename, $obfuscate == 2, $path2, $accept_errors)) {
                         return array('', '', '', '');
                     }
                 } else {
@@ -420,10 +423,10 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
             }
             if ($filename === null) {
                 if (($obfuscate != 0) && ($obfuscate != 3)) {
-                    $ext = (($obfuscate == 2) && (!is_image($HTTP_FILENAME, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous')))) ? 'dat' : get_file_extension($HTTP_FILENAME);
+                    $ext = (($obfuscate == 2) && (!is_image($http_result->filename, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous')))) ? 'dat' : get_file_extension($http_result->filename);
                     list($place, , $filename) = find_unique_path($upload_folder, $filename);
                 } else {
-                    $filename = $HTTP_FILENAME;
+                    $filename = $http_result->filename;
                     $place = $upload_folder_full . '/' . $filename;
                 }
             } else {
@@ -441,9 +444,8 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
                 }
             }
             $result = @rename($path2, $place);
-            global $HTTP_DOWNLOAD_MTIME;
-            if (($HTTP_DOWNLOAD_MTIME !== null) && ($HTTP_DOWNLOAD_MTIME != 0)) {
-                @touch($place, $HTTP_DOWNLOAD_MTIME);
+            if (($http_result->download_mtime !== null) && ($http_result->download_mtime != 0)) {
+                @touch($place, $http_result->download_mtime);
             }
             if (!$result) {
                 unlink($path2);
@@ -458,8 +460,8 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
             sync_file($place);
 
             $url[0] = $upload_folder . '/' . $filename;
-            if (strpos($HTTP_FILENAME, '/') === false) {
-                $url[1] = $HTTP_FILENAME;
+            if (strpos($http_result->filename, '/') === false) {
+                $url[1] = $http_result->filename;
             }
         }
     } else { // Uh oh
@@ -609,14 +611,13 @@ function _get_specify_url($member_id, $specify_name, $upload_folder, $enforce_ty
             } else {
                 $shouldbe = null;
             }
-            global $HTTP_MESSAGE;
-            $actuallyis = http_download_file(get_custom_base_url() . '/' . $url[0], 8000, false);
+            $actuallyis = cms_http_request(get_custom_base_url() . '/' . $url[0], array('trigger_error' => false, 'byte_limit' => 8000));
 
-            if (($HTTP_MESSAGE == '200') && ($shouldbe === null)) {
+            if (($actuallyis->message == '200') && ($shouldbe === null)) {
                 // No error downloading, but error using file system - therefore file exists and we'll use URL to download. Hence no security check.
                 $missing_ok = true;
             } else {
-                if (@strcmp(substr($shouldbe, 0, 8000), substr($actuallyis, 0, 8000)) != 0) {
+                if (@strcmp(substr($shouldbe, 0, 8000), substr($actuallyis->data, 0, 8000)) != 0) {
                     log_hack_attack_and_exit('TRY_TO_DOWNLOAD_SCRIPT');
                 }
             }
@@ -637,7 +638,7 @@ function _get_specify_url($member_id, $specify_name, $upload_folder, $enforce_ty
         // oEmbed etc
         if (($enforce_type != CMS_UPLOAD_ANYTHING) && (($enforce_type & CMS_UPLOAD_IMAGE) != 0) && (!is_image($url[0], IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous'))) && ((($enforce_type & CMS_UPLOAD_SWF) == 0) || (get_file_extension($url[0]) != 'swf'))) {
             require_code('media_renderer');
-            require_code('files2');
+            require_code('http');
             $meta_details = get_webpage_meta_details($url[0]);
             require_code('hooks/systems/media_rendering/oembed');
             $oembed_ob = object_factory('Hook_media_rendering_oembed');

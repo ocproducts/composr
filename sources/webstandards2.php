@@ -1432,7 +1432,7 @@ function _check_externals($tag, $attributes, $self_close, $close)
         $VALIDATED_ALREADY[$attributes['href']] = 1;
         $url = qualify_url($attributes['href'], $GLOBALS['URL_BASE']);
         if ($url != '') {
-            $sheet = http_download_file($url, null, false);
+            $sheet = http_get_contents($url, array('trigger_error' => false));
             if ($sheet !== null) {
                 $css_conformance = _webstandards_css_sheet($sheet);
                 if (is_array($css_conformance)) {
@@ -1446,11 +1446,10 @@ function _check_externals($tag, $attributes, $self_close, $close)
         $VALIDATED_ALREADY[$attributes['src']] = 1;
         $url = qualify_url($attributes['src'], $GLOBALS['URL_BASE']);
         if ($url != '') {
-            $js = http_download_file($url, null, false);
-            if ($js !== null) {
+            $http_result = cms_http_request($url, array('trigger_error' => false));
+            if ($http_result->data !== null) {
                 require_code('character_sets');
-
-                $js = convert_to_internal_encoding($js);
+                $js = convert_to_internal_encoding($http_result->data, $http_result->charset);
 
                 $VALIDATED_ALREADY[$attributes['src']] = 1;
 
@@ -1469,14 +1468,12 @@ function _check_externals($tag, $attributes, $self_close, $close)
         $VALIDATED_ALREADY[$attributes['src']] = 1;
         $url = qualify_url($attributes['src'], $GLOBALS['URL_BASE']);
         if ($url != '') {
-            $iframe = http_download_file($url, null, false);             //   Sometimes disabled due to my iframe producing a weird PHP exception, that was stopping me working
-            if (($iframe !== null) && ($iframe != '')) {
+            $http_result = cms_http_request($url, array('trigger_error' => false)); // Sometimes disabled due to my iframe producing a weird PHP exception, that was stopping me working
+            if (($http_result->data !== null) && ($http_result->data != '')) {
                 require_code('character_sets');
+                $iframe = convert_to_internal_encoding($http_result->data, $http_result->charset);
 
-                $iframe = convert_to_internal_encoding($iframe);
-
-                global $HTTP_DOWNLOAD_MIME_TYPE;
-                if (($HTTP_DOWNLOAD_MIME_TYPE == 'text/html') || ($HTTP_DOWNLOAD_MIME_TYPE == 'application/xhtml+xml')) {
+                if (($http_result->download_mime_type == 'text/html') || ($http_result->download_mime_type == 'application/xhtml+xml')) {
                     global $EXTRA_CHECK;
                     $EXTRA_CHECK[] = $iframe;
                 }
@@ -1702,7 +1699,7 @@ function _webstandards_css_sheet($data)
                         if (!isset($VALIDATED_ALREADY[$at_file])) {
                             $at_file = qualify_url($at_file, $GLOBALS['URL_BASE']);
                             if ($at_file != '') {
-                                $data2 = http_download_file($at_file, null, false);
+                                $data2 = http_get_contents($at_file, array('trigger_error' => false));
                                 if ($data2 !== null) {
                                     $css_tag_ranges_backup = $CSS_TAG_RANGES;
                                     $css_value_ranges_backup = $CSS_VALUE_RANGES;

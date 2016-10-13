@@ -21,8 +21,8 @@ function do_install_to($database, $username, $password, $table_prefix, $safe_mod
 
     if ($success && $do_index_test) {
         $url = get_base_url() . '/index.php';
-        $data = http_download_file($url, null, false, false, 'Composr', null, array(), null, null, null, null, null, null, 20.0);
-        $success = ($GLOBALS['HTTP_MESSAGE'] == '200');
+        $http_result = cms_http_request($url, array('trigger_error' => false, 'timeout' => 20.0));
+        $success = ($http_result->message == '200');
     }
 
     @unlink(get_file_base() . '/_config.php');
@@ -169,11 +169,12 @@ function _do_install_to($database, $username, $password, $table_prefix, $safe_mo
         if (count($get) > 0) {
             $url .= '&' . http_build_query($get);
         }
-        $data = http_download_file($url, null, true, false, 'Composr', $post);
+        $http_result = cms_http_request($url, array('post_params' => $post));
+        $data = $http_result->data;
         if (strpos(strip_tags($data), 'An error has occurred') !== false) {
-            $GLOBALS['HTTP_MESSAGE'] = '500';
+            $http_result->message = '500';
         }
-        $success = ($GLOBALS['HTTP_MESSAGE'] == '200');
+        $success = ($http_result->message == '200');
         if (!$success) {
             $error = $url . ' : ' . preg_replace('#^.*An error has occurred#s', 'An error has occurred', strip_tags($data));
             @print(escape_html($error));

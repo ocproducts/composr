@@ -335,7 +335,7 @@ function check_banner($title_text = '', $direct_code = '', $b_type = '', $b_type
                 $data = file_get_contents(get_custom_file_base() . '/' . rawurldecode($test_url));
                 $test_url = get_custom_base_url() . '/' . $test_url;
             } else {
-                $data = http_download_file($test_url);
+                $data = http_get_contents($test_url);
             }
             if (strlen($data) > $banner_type_row['t_max_file_size'] * 1024) {
                 if (url_is_local($test_url)) {

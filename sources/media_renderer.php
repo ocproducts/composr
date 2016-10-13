@@ -153,7 +153,7 @@ function find_media_renderers($url, $attributes, $as_admin, $source_member, $acc
     }
 
     // Find via download (oEmbed / mime-type) - last resort, as it is more 'costly' to do
-    require_code('files2');
+    require_code('http');
     $meta_details = get_webpage_meta_details($url);
     if ((array_key_exists('mime_type', $attributes)) && ($attributes['mime_type'] != '')) {
         $mime_type = $attributes['mime_type'];
@@ -286,7 +286,7 @@ function _create_media_template_parameters($url, $attributes, $as_admin = false,
     if ((!array_key_exists('mime_type', $attributes)) || ($attributes['mime_type'] == '')) {
         // As this is not necessarily a local file, we need to get the mime-type in the formal way.
         //  If this was an uploaded file (i.e. new file in the JS security context) with a dangerous mime type, it would have been blocked by now.
-        require_code('files2');
+        require_code('http');
         $meta_details = get_webpage_meta_details($_url);
         $attributes['mime_type'] = $meta_details['t_mime_type'];
     }

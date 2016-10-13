@@ -111,7 +111,8 @@ class Block_main_newsletter_signup
             if (file_exists(get_custom_file_base() . '/' . $map['path'])) {
                 $url = (url_is_local($map['path']) ? (get_custom_base_url() . '/') : '') . $map['path'];
                 $subject = array_key_exists('subject', $map) ? $map['subject'] : do_lang('WELCOME');
-                $body = convert_to_internal_encoding(http_download_file($url));
+                $http_response = cms_http_request($url);
+                $body = convert_to_internal_encoding($http_response->data, $http_response->charset);
                 $body = str_replace('{password}', $password, $body);
                 $body = str_replace('{email}', $address, $body);
                 $body = str_replace('{forename}', $forename, $body);

@@ -28,8 +28,8 @@ class Hook_stats_external
         $bits = new Tempcode();
         $map = array();
         $url = get_base_url();
-        list($rank, $links, $speed) = getAlexaRank($url);
-        $page_rank = getPageRank($url);
+        list($rank, $links, $speed) = get_alexa_rank($url);
+        $page_rank = get_page_rank($url);
         if ($page_rank != '') {
             $map['Google PageRank'] = $page_rank;
         }
@@ -51,7 +51,7 @@ class Hook_stats_external
     }
 }
 
-function getAlexaRank($url)
+function get_alexa_rank($url)
 {
     $test = get_value_newer_than('alexa__' . md5($url), time() - 60 * 60 * 24 * 5, true);
     if ($test !== null) {
@@ -60,7 +60,7 @@ function getAlexaRank($url)
 
     require_code('files');
     $p = array();
-    $result = http_download_file('http://data.alexa.com/data?cli=10&dat=s&url=' . $url, null, false, false, 'Composr', null, array(), null, null, null, null, null, null, 1.0);
+    $result = http_get_contents('http://data.alexa.com/data?cli=10&dat=s&url=' . $url, array('trigger_error' => false, 'timeout' => 1.0));
     if (preg_match('#<POPULARITY [^<>]*TEXT="([0-9]+){1,}"#si', $result, $p) != 0) {
         $rank = integer_format(intval($p[1]));
     } else {
@@ -93,7 +93,7 @@ function getAlexaRank($url)
 }
 
 // Convert a string to a 32-bit integer
-function StrToNum($str, $check, $magic)
+function str_to_num($str, $check, $magic)
 {
     // This is external code which doesn't live up to Composr's strictness level
     require_code('developer_tools');
@@ -121,10 +121,10 @@ function StrToNum($str, $check, $magic)
 }
 
 // Generate a hash for a url
-function HashURL($string)
+function hash_url($string)
 {
-    $check1 = StrToNum($string, 0x1505, 0x21);
-    $check2 = StrToNum($string, 0, 0x1003F);
+    $check1 = str_to_num($string, 0x1505, 0x21);
+    $check2 = str_to_num($string, 0, 0x1003F);
 
     $check1 = $check1 >> 2;
     $check1 = (($check1 >> 4) & 0x3FFFFC0) | ($check1 & 0x3F);
@@ -138,7 +138,7 @@ function HashURL($string)
 }
 
 // Generate a checksum for the hash string
-function CheckHash($hash_num)
+function check_hash($hash_num)
 {
     $check_byte = 0;
     $flag = 0;
@@ -174,7 +174,7 @@ function CheckHash($hash_num)
 // Return the pagerank checksum hash
 function getch($url)
 {
-    return CheckHash(HashURL($url));
+    return check_hash(hash_url($url));
 }
 
 // Return the pagerank figure
@@ -183,7 +183,7 @@ function getpr($url)
     $ch = getch($url);
     $errno = '0';
     $errstr = '';
-    $data = http_download_file('http://toolbarqueries.google.com/search?client=navclient-auto&ch=' . $ch . '&features=Rank&q=info:' . $url, null, false);
+    $data = http_get_contents('http://toolbarqueries.google.com/search?client=navclient-auto&ch=' . $ch . '&features=Rank&q=info:' . $url, array('trigger_error' => false));
     if ($data === null) {
         return '';
     }
@@ -200,7 +200,7 @@ function getpr($url)
 }
 
 // Return the pagerank figure
-function getPageRank($url)
+function get_page_rank($url)
 {
     $test = get_value_newer_than('pr__' . md5($url), time() - 60 * 60 * 24 * 5, true);
     if ($test !== null) {

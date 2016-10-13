@@ -93,7 +93,7 @@ class _performance_test_set extends cms_test_case
         $times = array();
         for ($i = 0; $i < 3; $i++) { // We can do it multiple times so that caches are primed for final time
             $before = microtime(true);
-            $result = http_download_file($url, null, false/*we're not looking for errors - we may get some under normal conditions, e.g. for site:authors which is 404 until you add your profile*/, false, 'Composr', null, array(), null, null, null, null, null, null, 60.0);
+            $result = http_get_contents($url, array('trigger_error' => false/*we're not looking for errors - we may get some under normal conditions, e.g. for site:authors which is 404 until you add your profile*/, 'timeout' => 60.0));
             $after = microtime(true);
             $time = $after - $before;
             $times[] = $time;

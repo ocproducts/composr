@@ -125,7 +125,7 @@ while (($r = fgetcsv($csvfile, 1024000)) !== false) {
 
     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('news', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('title') => $title, 'date_and_time' => $time));
     if ($test === null) { // If does not exist yet
-        $id = add_news($title, $news, $author, 1, 1, 1, 1, '', $news_article, $main_news_category, null, $time);
+        $id = add_news($title, $news, $author, 1, 1, 1, 1, '', $news_article, $main_news_category, array(), $time);
         seo_meta_set_for_explicit('news', strval($id), $r[7], $news);
 
         $done++;
@@ -141,7 +141,7 @@ function parse_ezinearticles($r)
     // NB: You'll get security errors on this occasionally. You need to open up the URL manually, solve the CAPTCHA, then refresh.
     // The inbuilt cache will ensure the script can get to the end of the process.
 
-    $f = http_download_file_cached($r[1]);
+    $f = http_get_contents_cached($r[1]);
 
     $matches = array();
     preg_match('#&id=(\d+)#s', $r[1], $matches);
@@ -159,7 +159,7 @@ function parse_ezinearticles($r)
     preg_match('#<h1>(.*)</h1>#Us', $f, $matches);
     $title = html_entity_decode($matches[1], ENT_QUOTES, get_charset());
 
-    $f = http_download_file_cached('http://ezinearticles.com/ezinepublisher/?id=' . $id, $r[1]);
+    $f = http_get_contents_cached('http://ezinearticles.com/ezinepublisher/?id=' . $id, $r[1]);
 
     $matches = array();
     preg_match('#<textarea id="formatted-article" wrap="physical" style="width:98%;height:200px;" readonly>(.*)</textarea>#Us', $f, $matches);
@@ -195,7 +195,7 @@ function parse_articlesbase($r)
         'SPSI' => '8209dce6e2947e79c6bf67fb7022ad39',
     ));
 
-    $f = http_download_file_cached($r[1], $r[1], $cookies);
+    $f = http_get_contents_cached($r[1], $r[1], $cookies);
 
     $matches = array();
     preg_match('#-(\d+)\.html$#Us', $r[1], $matches);
@@ -217,7 +217,7 @@ function parse_articlesbase($r)
     preg_match('#<h1 class="atitle" itemprop="name">(.*)</h1>#Us', $f, $matches);
     $title = html_entity_decode($matches[1], ENT_QUOTES, get_charset());
 
-    $f = http_download_file_cached('http://www.articlesbase.com/ezine/' . $id, $r[1], $cookies);
+    $f = http_get_contents_cached('http://www.articlesbase.com/ezine/' . $id, $r[1], $cookies);
 
     $matches = array();
     preg_match('#<textarea id="ezine_html" onclick="\$\(this\).select\(\)">(.*)</textarea>#Us', $f, $matches);
@@ -247,7 +247,7 @@ function parse_articlesbase($r)
 
 function parse_articletrader($r)
 {
-    $f = http_download_file_cached($r[1]);
+    $f = http_get_contents_cached($r[1]);
 
     $matches = array();
     preg_match('#<a rel="nofollow" href=\'([^\']*)\'>Get Html Code</a>#Us', $f, $matches);
@@ -262,7 +262,7 @@ function parse_articletrader($r)
     preg_match('#<h1 style="margin-bottom:3px">(.*)</h1>#Us', $f, $matches);
     $title = html_entity_decode($matches[1], ENT_QUOTES, get_charset());
 
-    $f = http_download_file_cached('http://www.articletrader.com' . $synd_url, $r[1]);
+    $f = http_get_contents_cached('http://www.articletrader.com' . $synd_url, $r[1]);
 
     $matches = array();
     preg_match('#<textarea style="width:99%" rows=30>(.*)</textarea>#Us', $f, $matches);
@@ -285,7 +285,7 @@ function parse_articletrader($r)
     );
 }
 
-function http_download_file_cached($url, $referer = '', $cookies = null)
+function http_get_contents_cached($url, $referer = '', $cookies = null)
 {
     require_code('files');
     $dir = get_custom_file_base() . '/data_custom/free_article_import_cache';
@@ -298,7 +298,7 @@ function http_download_file_cached($url, $referer = '', $cookies = null)
     } else {
         sleep(3);
 
-        $data = http_download_file($url, null, true, false, 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.146 Safari/537.36', null, $cookies, 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', null, 'en-US,en;q=0.8', null, $referer);
+        $data = http_get_contents($url, array('ua' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.146 Safari/537.36', 'cookies' => $cookies, 'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'accept_language' => 'en-US,en;q=0.8', 'referer' => $referer));
         file_put_contents($cache_file, $data);
     }
     return $data;

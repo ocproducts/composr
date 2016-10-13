@@ -1374,7 +1374,7 @@ class Module_cms_galleries_alt extends Standard_crud_module
 
                 // Try oEmbed
                 require_code('media_renderer');
-                require_code('files2');
+                require_code('http');
                 $meta_details = get_webpage_meta_details($url);
                 require_code('hooks/systems/media_rendering/oembed');
                 $oembed_ob = object_factory('Hook_media_rendering_oembed');
@@ -1398,12 +1398,12 @@ class Module_cms_galleries_alt extends Standard_crud_module
                     if ($url != '') {
                         $temp_path = cms_tempnam();
                         $write_to_file = fopen($temp_path, 'wb');
-                        $download_test = http_download_file($url, 1024 * 50, false, false, 'Composr', null, array(), null, null, null, $write_to_file);
+                        $download_test = cms_http_request($url, array('byte_limit' => 1024 * 50, 'trigger_error' => false, 'write_to_file' => $write_to_file));
                         rewind($write_to_file);
                         fclose($write_to_file);
                     }
-                    if ($download_test !== null) {
-                        $filename = ($GLOBALS['HTTP_FILENAME'] === null) ? basename(urldecode($url)) : $GLOBALS['HTTP_FILENAME'];
+                    if ($download_test !== null && $download_test->data !== null) {
+                        $filename = ($download_test->filename === null) ? basename(urldecode($url)) : $download_test->filename;
                         list($_video_width, $_video_height, $_video_length) = get_video_details($temp_path, $filename);
                     } else {
                         list($_video_width, $_video_height, $_video_length) = array(null, null, null);

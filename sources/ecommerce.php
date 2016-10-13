@@ -372,7 +372,10 @@ function dev__ipn_debug($ipn_target, $ipn_message)
     $post_params = array();
     parse_str($ipn_message, $post_params);
 
-    return http_download_file($ipn_target, null, false, false, 'Composr-IPN-debug', $post_params) . "\n" . $GLOBALS['HTTP_MESSAGE'];
+    $http_result = http_get_contents($ipn_target, array('trigger_error' => false, 'ua' => 'Composr-IPN-debug', 'post_params' => $post_params));
+    $ret = $http_result->data;
+    $ret .= "\n" . $http_result->message;
+    return $ret;
 }
 
 /**

@@ -1179,6 +1179,7 @@ class Hook_addon_registry_core
             'sources/encryption.php',
             'sources/files.php',
             'sources/files2.php',
+            'sources/http.php',
             'sources/forum_stub.php',
             'sources/global.php',
             'sources/shared_installs.php',

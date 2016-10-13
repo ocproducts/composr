@@ -52,7 +52,7 @@ function cms_getimagesize($path)
     }
 
     if ($_path === null) {
-        $data = http_download_file($path, 1024 * 1024 * 20/*reasonable limit*/, false);
+        $data = http_get_contents($path, array('trigger_error' => false, 'byte_limit' => 1024 * 1024 * 20/*reasonable limit*/));
     } else {
         if (function_exists('getimagesize')) {
             $details = @getimagesize($_path);
@@ -368,10 +368,9 @@ function is_image($name, $criteria, $as_admin = false, $mime_too = false)
 
     // Mime type consistency check
     if (($mime_too) && (looks_like_url($name))) {
-        global $HTTP_DOWNLOAD_MIME_TYPE;
-        http_download_file($name, 0, false);
+        $http_result = cms_http_request($name, array('trigger_error' => false, 'byte_limit' => 0));
 
-        if ($ext_mime_type != $HTTP_DOWNLOAD_MIME_TYPE) {
+        if ($ext_mime_type != $http_result->download_mime_type) {
             return false;
         }
     }

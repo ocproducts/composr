@@ -44,7 +44,7 @@ function get_latest_version_pretty()
 
 function server__public__get_tracker_categories()
 {
-    $categories = collapse_1d_complexity('name', $GLOBALS['SITE_DB']->query_select('mantis_category_table', array('DISTINCT name'), array('status' => 0));
+    $categories = collapse_1d_complexity('name', $GLOBALS['SITE_DB']->query_select('mantis_category_table', array('DISTINCT name'), array('status' => 0)));
     echo json_encode($categories);
 }
 
@@ -510,7 +510,7 @@ function find_server_load($server)
 {
     return 1; // Not currently supported, needs customising per-server
 
-    //$stats = http_download_file('http://' . $server . '/data_custom/stats.php?html=1');
+    //$stats = http_get_contents('http://' . $server . '/data_custom/stats.php?html=1');
     $stats = shell_exec('php /home/demonstratr/public_html/data_custom/stats.php 1');
     $matches = array();
     preg_match('#Memory%: (.*)<br />Swap%: (.*)<br />15-min-load: load average: (.*)<br />5-min-load: (.*)<br />1-min-load: (.*)<br />CPU-user%: (.*)<br />CPU-idle%: (.*)<br />Free-space: (.*)#', $stats, $matches);

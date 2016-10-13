@@ -219,34 +219,53 @@ function fix_permissions($path, $perms = null)
  * Return the file in the URL by downloading it over HTTP. If a byte limit is given, it will only download that many bytes. It outputs warnings, returning null, on error.
  *
  * @param  URLPATH $url The URL to download
- * @param  ?integer $byte_limit The number of bytes to download. This is not a guarantee, it is a minimum (null: all bytes)
- * @range  1 max
- * @param  boolean $trigger_error Whether to throw a Composr error, on error
- * @param  boolean $no_redirect Whether to block redirects (returns null when found)
- * @param  string $ua The user-agent to identify as
- * @param  ?array $post_params An optional array of POST parameters to send; if this is null, a GET request is used (null: none). If $raw_post is set, it should be array($data)
- * @param  array $cookies An optional array of cookies to send
- * @param  ?string $accept 'accept' header value (null: don't pass one)
- * @param  ?string $accept_charset 'accept-charset' header value (null: don't pass one)
- * @param  ?string $accept_language 'accept-language' header value (null: don't pass one)
- * @param  ?resource $write_to_file File handle to write to (null: do not do that)
- * @param  ?string $referer The HTTP referer (null: none)
- * @param  ?array $auth A pair: authentication username and password (null: none)
- * @param  float $timeout The timeout
- * @param  boolean $raw_post Whether to treat the POST parameters as a raw POST (rather than using MIME)
- * @param  array $files Files to send. Map between field to file path
- * @param  array $extra_headers Extra headers to send
- * @param  ?string $http_verb HTTP verb (null: auto-decide based on other parameters)
- * @param  string $raw_content_type The content type to use if a raw HTTP post
+ * @param  array $options Map of options (see the properties of the HttpDownloader class for what you may set)
  * @return ?string The data downloaded (null: error)
  */
-function http_download_file($url, $byte_limit = null, $trigger_error = true, $no_redirect = false, $ua = 'Composr', $post_params = null, $cookies = array(), $accept = null, $accept_charset = null, $accept_language = null, $write_to_file = null, $referer = null, $auth = null, $timeout = 6.0, $raw_post = false, $files = array(), $extra_headers = array(), $http_verb = null, $raw_content_type = 'application/xml')
+function http_get_contents($url, $options = array())
 {
-    require_code('files2');
-    cms_profile_start_for('http_download_file');
-    $ret = _http_download_file($url, $byte_limit, $trigger_error, $no_redirect, $ua, $post_params, $cookies, $accept, $accept_charset, $accept_language, $write_to_file, $referer, $auth, $timeout, $raw_post, $files, $extra_headers, $http_verb, $raw_content_type);
-    cms_profile_end_for('http_download_file', $url);
+    cms_profile_start_for('http_get_contents');
+    $ob = cms_http_request($url, $options);
+    $ret = $ob->data;
+    cms_profile_end_for('http_get_contents', $url);
     return $ret;
+}
+
+/**
+ * Return the file in the URL by downloading it over HTTP. If a byte limit is given, it will only download that many bytes. It outputs warnings, returning null, on error.
+ *
+ * @param  URLPATH $url The URL to download
+ * @param  array $options Map of options (see the properties of the HttpDownloader class for what you may set)
+ * @return object HttpDownloader object, which can be checked for return data
+ */
+function cms_http_request($url, $options = array())
+{
+    require_code('http');
+
+    $curl = new HttpDownloaderCurl();
+    $curl_priority = $curl->may_run_for($url, $options);
+
+    $sockets = new HttpDownloaderSockets();
+    $sockets_priority = $sockets->may_run_for($url, $options);
+
+    $file_wrapper = new HttpDownloaderFileWrapper();
+    $file_wrapper_priority = $file_wrapper->may_run_for($url, $options);
+
+    $filesystem = new HttpDownloaderFilesystem();
+    $filesystem_priority = $filesystem->may_run_for($url, $options);
+
+    if ($curl_priority > $sockets_priority && $curl_priority > $file_wrapper_priority && $curl_priority > $filesystem_priority) {
+        $curl->run($url, $options);
+        return $curl;
+    } elseif ($sockets_priority > $file_wrapper_priority && $sockets_priority > $filesystem_priority) {
+        $sockets->run($url, $options);
+        return $sockets;
+    } elseif ($file_wrapper_priority > $filesystem_priority) {
+        $file_wrapper->run($url, $options);
+        return $file_wrapper;
+    }
+    $filesystem->run($url, $options);
+    return $filesystem;
 }
 
 /**

@@ -719,7 +719,7 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
         }
         $is_se = false;
         foreach ($se_ip_lists as $ip_list => $is_proxy) {
-            $ip_list_file = http_download_file($ip_list, null, false);
+            $ip_list_file = http_get_contents($ip_list, array('trigger_error' => false));
             if (is_string($ip_list_file)) {
                 $ip_list_array = explode("\n", $ip_list_file);
                 foreach ($ip_stack as $ip_s) {
@@ -977,8 +977,9 @@ function get_webservice_result($error_message)
     }
 
     require_code('version2');
-    $result = http_download_file('http://compo.sr/uploads/website_specific/compo.sr/scripts/errorservice.php?version=' . rawurlencode(get_version_dotted()) . '&error_message=' . rawurlencode($error_message) . '&product=' . rawurlencode($brand), null, false);
-    if ($GLOBALS['HTTP_DOWNLOAD_MIME_TYPE'] != 'text/plain') {
+    $http_result = cms_http_request('http://compo.sr/uploads/website_specific/compo.sr/scripts/errorservice.php?version=' . rawurlencode(get_version_dotted()) . '&error_message=' . rawurlencode($error_message) . '&product=' . rawurlencode($brand), array('trigger_error' => false));
+    $result = $http_result->data;
+    if ($http_result->download_mime_type != 'text/plain') {
         return null;
     }
 

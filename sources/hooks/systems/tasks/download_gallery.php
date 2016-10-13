@@ -84,7 +84,7 @@ class Hook_task_download_gallery
 
                 $time = $row['add_date'];
                 $name = basename(urldecode($row['url']));
-                $data = http_download_file($row['url']);
+                $data = http_get_contents($row['url']);
             }
 
             $array[] = array('name' => preg_replace('#^uploads/galleries/#', '', $name), 'time' => $time, 'data' => $data, 'full_path' => $full_path);
@@ -102,7 +102,7 @@ class Hook_task_download_gallery
             } else {
                 $time = $gallery_row['add_date'];
                 $name = basename(urldecode($gallery_row['rep_image']));
-                $data = http_download_file($gallery_row['rep_image']);
+                $data = http_get_contents($gallery_row['rep_image']);
             }
             $array[] = array('name' => preg_replace('#^uploads/(galleries|repimages)/#', '', $name), 'time' => $time, 'data' => $data);
         }

@@ -90,7 +90,7 @@ class Hook_fields_url_multi
         $out = array();
         $evs = explode("\n", $ev);
         foreach ($evs as $ev) {
-            require_code('files2');
+            require_code('http');
             $meta_details = get_webpage_meta_details($ev);
             $link_captions_title = $meta_details['t_title'];
 

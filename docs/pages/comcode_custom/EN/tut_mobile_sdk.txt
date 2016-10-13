@@ -940,11 +940,11 @@ Calling [tt][CMS_HTTP build_url:@{@"param1":@"value1",@"param2":@"value2"} :@"te
 @"http://<base_url>/testZone/index.php?&param1=value1&param2=value2"
 [/code]
 
-[title="4"]http_download_file[/title]
+[title="4"]http_get_contents[/title]
 
 [i]Prototype:[/i]
 [code="objc"]
-(void)http_download_file:(NSString *)url :(BOOL)triggerError :(NSDictionary *)postParams :(int)timeoutInSeconds :(CMSCompletedDownloadBlock)completionHandler;
+(void)http_get_contents:(NSString *)url :(BOOL)triggerError :(NSDictionary *)postParams :(int)timeoutInSeconds :(CMSCompletedDownloadBlock)completionHandler;
 [/code]
 
 [i]Description:[/i]
@@ -952,13 +952,13 @@ Downloads the response from the web service and returns as a response in a compl
 
 [i]Usage:[/i]
 [code="objc"]
-[CMS_HTTP http_download_file:<web service url> :<trigger_error ?> :<post parameters> :<custom_timeout_value> :<completion_handler>];
+[CMS_HTTP http_get_contents:<web service url> :<trigger_error ?> :<post parameters> :<custom_timeout_value> :<completion_handler>];
 [/code]
 
 [i]Example:[/i]
 Calling:
 [code="objc"]
-[CMS_HTTP http_download_file:<url> :YES :nil :kHTTPTimeout :^(NSString *response) {
+[CMS_HTTP http_get_contents:<url> :YES :nil :kHTTPTimeout :^(NSString *response) {
 	NSLog(@"%@",response);
 }];
 [/code]

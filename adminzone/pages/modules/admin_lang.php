@@ -655,14 +655,14 @@ class Module_admin_lang
 
         $translated_stuff = array();
         if (($trans_lot != '') && ($google != '')) {
-            $result = http_download_file('http://translate.google.com/translate_t', null, false, false, 'Composr', array('text' => $trans_lot, 'langpair' => 'en|' . $google));
+            $http_result = http_get_contents('http://translate.google.com/translate_t', array('trigger_error' => false, 'post_params' => array('text' => $trans_lot, 'langpair' => 'en|' . $google)));
+            $result = $http_result->data;
             if ($result !== null) {
                 require_code('character_sets');
-
-                $result = convert_to_internal_encoding($result);
+                $result = convert_to_internal_encoding($result, $http_result->charset);
 
                 $matches = array();
-                if (preg_match('#<div id=result_box dir="ltr">(.*)</div>#Us', convert_to_internal_encoding($result), $matches) != 0) {
+                if (preg_match('#<div id=result_box dir="ltr">(.*)</div>#Us', $result, $matches) != 0) {
                     $result2 = $matches[1];
                     $result2 = @html_entity_decode($result2, ENT_QUOTES, get_charset());
                     $result2 = preg_replace('#\s?<br>\s?#', "\n", $result2);

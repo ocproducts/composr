@@ -79,7 +79,7 @@ function transcode_video($url, $table, $local_id, $local_id_field, $url_field, $
                             </outputs>
                     </api-request>
             ';
-            $response = http_download_file('https://app.zencoder.com/api/jobs', null, true, false, 'Composr', array($xml), array(), null, null, null, null, null, null, 12.0, true);
+            $response = http_get_contents('https://app.zencoder.com/api/jobs', array('post_params' => array($xml), 'timeout' => 12.0, 'raw_post' => true));
 
             $matches = array();
             if (preg_match('#<id[^>]*>(\d+)</id>#', $response, $matches) != 0) {
@@ -114,7 +114,7 @@ function transcode_video($url, $table, $local_id, $local_id_field, $url_field, $
         if ($local_id !== null) {
             $transcoding_server = get_option('transcoding_server');
             if ($transcoding_server != '') {
-                http_download_file($transcoding_server . '/receive_script.php?file=' . urlencode(url_is_local($url) ? (get_custom_base_url() . '/' . $url) : $url));
+                http_get_contents($transcoding_server . '/receive_script.php?file=' . urlencode(url_is_local($url) ? (get_custom_base_url() . '/' . $url) : $url));
 
                 attach_message(do_lang_tempcode('TRANSCODING_IN_PROGRESS'), 'inform');
 

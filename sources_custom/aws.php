@@ -100,7 +100,7 @@ function amazon_sns_topic_handler_script()
     $type = $message['Type'];
     switch ($type) {
         case 'SubscriptionConfirmation':
-            http_download_file($message['SubscribeURL']);
+            http_get_contents($message['SubscribeURL']);
             break;
 
         case 'Notification':

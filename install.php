@@ -518,7 +518,7 @@ function step_3()
     }
     if (($email != '') || ($advertise_on == 1)) {
         require_code('files');
-        http_download_file('http://compo.sr/uploads/website_specific/compo.sr/scripts/newsletter_join.php?url=' . urlencode('http://' . cms_srv('HTTP_HOST') . cms_srv('SCRIPT_NAME')) . '&email=' . urlencode($email) . '&advertise_on=' . strval($advertise_on) . '&lang=' . $INSTALL_LANG, null, false);
+        http_get_contents('http://compo.sr/uploads/website_specific/compo.sr/scripts/newsletter_join.php?url=' . urlencode('http://' . cms_srv('HTTP_HOST') . cms_srv('SCRIPT_NAME')) . '&email=' . urlencode($email) . '&advertise_on=' . strval($advertise_on) . '&lang=' . $INSTALL_LANG, array('trigger_error' => false));
     }
 
     // Forum chooser
@@ -1110,13 +1110,12 @@ function step_5()
     // Test base URL isn't subject to redirects
     $test_url = $base_url . '/installer_is_testing_base_urls.php';
     require_code('files');
-    http_download_file($test_url, null, false);
-    global $HTTP_DOWNLOAD_URL;
-    if ($HTTP_DOWNLOAD_URL != $test_url) {
-        if (preg_replace('#www\.#', '', $HTTP_DOWNLOAD_URL) == $test_url) {
+    $http_result = cms_http_request($test_url, array('trigger_error' => false));
+    if ($http_result->download_url != $test_url) {
+        if (preg_replace('#www\.#', '', $http_result->download_url) == $test_url) {
             warn_exit(do_lang_tempcode('BASE_URL_REDIRECTS_WITH_WWW'));
         }
-        elseif ($HTTP_DOWNLOAD_URL == preg_replace('#www\.#', '', $test_url)) {
+        elseif ($http_result->download_url == preg_replace('#www\.#', '', $test_url)) {
             warn_exit(do_lang_tempcode('BASE_URL_REDIRECTS_WITHOUT_WWW'));
         }
     }
@@ -2930,8 +2929,6 @@ allow from all
 END;
 
     if ((cms_is_writable(get_file_base() . '/exports/addons')) && ((!file_exists(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess')) || (trim(file_get_contents(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess')) == ''))) {
-        global $HTTP_MESSAGE;
-
         $base_url = post_param_string('base_url', get_base_url());
 
         foreach ($clauses as $i => $clause) {
@@ -2946,9 +2943,8 @@ END;
             $myfile = fopen(get_file_base() . '/exports/addons' . DIRECTORY_SEPARATOR . '.htaccess', GOOGLE_APPENGINE ? 'wb' : 'wt');
             fwrite($myfile, $clause);
             fclose($myfile);
-            $HTTP_MESSAGE = '';
-            http_download_file($base_url . '/exports/addons/index.php', null, false);
-            if ($HTTP_MESSAGE != '200') {
+            $http_result = cms_http_request($base_url . '/exports/addons/index.php', array('trigger_error' => false));
+            if ($http_result->message != '200') {
                 $clauses[$i] = null;
             }
             unlink(get_file_base() . '/exports/addons' . DIRECTORY_SEPARATOR . '.htaccess');

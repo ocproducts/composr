@@ -42,16 +42,16 @@ class _installer_test_set extends cms_test_case
             make_installers();
         }
 
-        http_download_file($url);
+        $http_result = cms_http_request($url);
 
-        $this->assertTrue($GLOBALS['HTTP_MESSAGE'] == '200');
+        $this->assertTrue($http_result->message == '200');
     }
 
     public function testDoesNotFullyCrash()
     {
-        $test = http_download_file(get_base_url() . '/install.php', null, false);
-        $this->assertTrue($GLOBALS['HTTP_MESSAGE'] == '200');
-        $this->assertTrue(strpos($test, 'type="submit"') !== false); // Has start button: meaning something worked
+        $http_result = http_get_contents(get_base_url() . '/install.php', array('trigger_error' => false));
+        $this->assertTrue($http_result->message == '200');
+        $this->assertTrue(strpos($http_result->data, 'type="submit"') !== false); // Has start button: meaning something worked
     }
 
     public function testFullInstallSafeMode()

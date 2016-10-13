@@ -93,19 +93,18 @@ function reprocess_url($url, $operation_base_url)
         }
     }
     require_code('character_sets');
-    $document = convert_to_internal_encoding(http_download_file($url, null, true, false, $ua, $post_relayed, $cookies_relayed, $accept, $accept_charset, $accept_language));
+    $http_result = cms_http_request($url, array('ua' => $ua, 'post_params' => $post_relayed, 'cookies' => $cookies_relayed, 'accept' => $accept, 'accept_charset' => $accept_charset, 'accept_language' => $accept_language));
+    $document = convert_to_internal_encoding($http_result->data, $http_result->charset);
 
-    global $HTTP_DOWNLOAD_MIME_TYPE;
-    if (($HTTP_DOWNLOAD_MIME_TYPE != 'text/html') && ($HTTP_DOWNLOAD_MIME_TYPE != 'application/xhtml+xml')) {
+    if (($http_result->download_mime_type != 'text/html') && ($http_result->download_mime_type != 'application/xhtml+xml')) {
         header('Location: ' . str_replace("\r", '', str_replace("\n", '', $url)));
         return '';
     }
 
     // Were we asked to set any cookies?
     if ($url_bits['host'] == $url_bits_2['host']) {
-        global $HTTP_NEW_COOKIES;
-        if ($HTTP_NEW_COOKIES !== null) {
-            foreach ($HTTP_NEW_COOKIES as $key => $val) {
+        if ($http_result->new_cookies !== null) {
+            foreach ($http_result->new_cookies as $key => $val) {
                 $parts = explode('; ', $val);
                 foreach ($parts as $i => $part) {
                     if ($i != 0) {

@@ -48,7 +48,7 @@ class Hook_commandr_command_fix_perms
                 return array('', '', '', do_lang('MISSING_PARAM', '3', 'fix_perms'));
             }
 
-            $return = http_download_file(get_base_url() . '/upgrader.php?check_perms=1&user=' . $parameters[0] . '&pass=' . $parameters[1] . '&root=' . $parameters[2], null, false);
+            $return = http_get_contents(get_base_url() . '/upgrader.php?check_perms=1&user=' . urlencode($parameters[0]) . '&pass=' . url_encode($parameters[1]) . '&root=' . urlencode($parameters[2]), array('trigger_error' => false));
             if ($return === null) {
                 return array('', '', '', do_lang('HTTP_DOWNLOAD_NO_SERVER', get_base_url() . '/upgrader.php?check_perms=1'));
             } else {

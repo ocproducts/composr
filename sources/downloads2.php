@@ -548,7 +548,7 @@ function create_data_mash($url, $data = null, $extension = null, $direct_path = 
                     break;
             }
 
-            $data = http_download_file($url, 3 * 1024 * 1024, false); // 3MB is enough
+            $data = http_get_contents($url, array('trigger_error' => false, 'byte_limit' => 3 * 1024 * 1024)); // 3MB is enough
             if ($data === null) {
                 return '';
             }
@@ -875,8 +875,8 @@ function add_download($category_id, $name, $url, $description, $author, $additio
         if (url_is_local($url)) {
             $file_size = @filesize(get_custom_file_base() . '/' . rawurldecode($url)) or $file_size = null;
         } else {
-            http_download_file($url, 0, false);
-            $file_size = $GLOBALS['HTTP_DOWNLOAD_SIZE'];
+            $http_result = cms_http_request($url, array('trigger_error' => false, 'byte_limit' => 0));
+            $file_size = $http_result->download_size;
         }
     }
 
@@ -1063,8 +1063,8 @@ function edit_download($id, $category_id, $name, $url, $description, $author, $a
             if (url_is_local($url)) {
                 $file_size = filesize(get_custom_file_base() . '/' . rawurldecode($url));
             } else {
-                http_download_file($url, 0, false);
-                $file_size = $GLOBALS['HTTP_DOWNLOAD_SIZE'];
+                $http_result = cms_http_request($url, array('trigger_error' => false, 'byte_limit' => 0));
+                $file_size = $http_result->download_size;
             }
         }
     }

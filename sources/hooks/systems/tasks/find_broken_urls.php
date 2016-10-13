@@ -268,8 +268,8 @@ class Hook_task_find_broken_urls
                 }
             }
 
-            $test = http_download_file($url, 0, false);
-            if (($test === null) && (in_array($GLOBALS['HTTP_MESSAGE'], array('404', 'could not connect to host')))) {
+            $http_result = cms_http_request($url, array('trigger_error' => false, 'byte_limit' => 0));
+            if (($http_result->data === null) && (in_array($http_result->message, array('404', 'could not connect to host')))) {
                 $found_404[] = array('URL' => $url, 'SPOT' => $spot);
             }
         }

@@ -211,7 +211,7 @@ function ping_sitemap_xml($url)
                 'http://search.yahooapis.com/SiteExplorerService/V1/updateNotification?appid=SitemapWriter&url=',
             );
             foreach ($services as $service) {
-                $out .= http_download_file($service . urlencode($url), null, false);
+                $out .= http_get_contents($service . urlencode($url), array('trigger_error' => false));
             }
         }
     }

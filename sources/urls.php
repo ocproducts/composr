@@ -1470,7 +1470,7 @@ function check_url_exists($url, $test_freq_secs)
     $test1 = $GLOBALS['SITE_DB']->query_select('urls_checked', array('url_check_time', 'url_exists'), array('url' => $url));
 
     if ((!isset($test1[0])) || ($test1[0]['url_check_time'] < time() - $test_freq_secs)) {
-        $test2 = http_download_file($url, 0, false);
+        $test2 = http_get_contents($url, array('trigger_error' => false, 'byte_limit' => 0));
         $exists = ($test2 === null) ? 0 : 1;
 
         if (!isset($test1[0])) {

@@ -291,7 +291,7 @@ class Module_recommend
                 if ($from !== null) {
                     $resource_title = get_param_string('title', '', true);
                     if ($resource_title == '') { // Auto download it
-                        $downloaded_at_link = http_download_file($from, 3000, false);
+                        $downloaded_at_link = http_get_contents($from, array('trigger_error' => false, 'byte_limit' => 3000));
                         if (is_string($downloaded_at_link)) {
                             $matches = array();
                             if (preg_match('#\s*<title[^>]*\s*>\s*(.*)\s*\s*<\s*/title\s*>#mi', $downloaded_at_link, $matches) != 0) {

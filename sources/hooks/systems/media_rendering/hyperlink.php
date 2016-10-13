@@ -104,7 +104,7 @@ class Hook_media_rendering_hyperlink
         }
 
         // Try and find the link title
-        require_code('files2');
+        require_code('http');
         $meta_details = get_webpage_meta_details($_url);
 
         $defined_not_framed = ((array_key_exists('framed', $attributes)) && ($attributes['framed'] == '0'));

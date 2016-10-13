@@ -307,7 +307,7 @@ function transcode_remaining_locations()
                 $from = $location['id'];
             }
 
-            $result = http_download_file($url);
+            $result = http_get_contents($url);
 
             $matches = array();
             if (strpos($result, '<lat>') !== false) {
@@ -349,7 +349,7 @@ function transcode_remaining_locations()
                 } else {
                     exit('unknown type');
                 }
-                $result = http_download_file($url);
+                $result = http_get_contents($url);
                 $matches = array();
                 if ((($type == 'bing') && (preg_match('#<Latitude>([\-\d\.]+)</Latitude>\s*<Longitude>([\-\d\.]+)</Longitude>#', $result, $matches) != 0)) || (($type == 'google') && (preg_match('#<lat>([\-\d\.]+)</lat>\s*<lng>([\-\d\.]+)</lng>#', $result, $matches) != 0)) || (($type == 'yahoo') && (preg_match('#<latitude>([\-\d\.]+)</latitude>\s*<longitude>([\-\d\.]+)</longitude>#', $result, $matches) != 0))) {
                     $GLOBALS['SITE_DB']->query_update('locations', array('l_latitude' => floatval($matches[1]), 'l_longitude' => floatval($matches[2])), array('id' => $location['id']), '', 1);
