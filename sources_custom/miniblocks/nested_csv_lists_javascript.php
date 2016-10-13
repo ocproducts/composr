@@ -41,7 +41,7 @@ foreach ($csv_structure['csv_files'] as $csv_filename => $csv_file) {
 echo "
     window.nested_csv_structure=" . json_encode($csv_structure) . ";
 
-    $cms.ready.then(function() {
+    \$cms.ready.then(function() {
         var forms=document.getElementsByTagName('form');
         for (var i=0;i<forms.length;i++)
         {
@@ -110,7 +110,7 @@ echo "
             {
                     option=document.createElement('option');
                     element.add(option,null);
-                    $cms.dom.html(option,'" . addslashes(do_lang('SELECT_OTHER_FIRST', 'xxx')) . "'.replace(/xxx/g,cpf_fields[cpf_field.csv_parent_heading].label));
+                    \$cms.dom.html(option,'" . addslashes(do_lang('SELECT_OTHER_FIRST', 'xxx')) . "'.replace(/xxx/g,cpf_fields[cpf_field.csv_parent_heading].label));
                     option.value='';
             } else // Parent is set, so we need to filter possibilities
             {
@@ -158,7 +158,7 @@ echo "
                     {
                             option=document.createElement('option');
                             element.add(option,null);
-                            $cms.dom.html(option,'" . addslashes(do_lang('PLEASE_SELECT')) . "');
+                            \$cms.dom.html(option,'" . addslashes(do_lang('PLEASE_SELECT')) . "');
                             option.value='';
                     }
                     var previous_one=null;
@@ -170,7 +170,7 @@ echo "
                             { // not a dupe
                                         option=document.createElement('option');
                                         element.add(option,null);
-                                        $cms.dom.html(option,escape_html(possibilities[i]));
+                                        \$cms.dom.html(option,escape_html(possibilities[i]));
                                         option.value=possibilities[i];
                                         if (current_value.length==0)
                                         {
