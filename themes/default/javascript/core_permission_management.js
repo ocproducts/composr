@@ -1,6 +1,8 @@
 (function ($cms) {
     'use strict';
 
+    $cms.views.PermissionsTreeEditorScreen = PermissionsTreeEditorScreen;
+
     function PermissionsTreeEditorScreen(options) {
         PermissionsTreeEditorScreen.base(this, arguments);
 
@@ -32,8 +34,6 @@
             update_permission_box(target);
         }
     });
-
-    $cms.views.PermissionsTreeEditorScreen = PermissionsTreeEditorScreen;
 
     // Selection changed, so update box
     function update_permission_box(setting) {

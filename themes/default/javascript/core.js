@@ -25,22 +25,20 @@
         initializeTemplates: {
             attach: function (context) {
                 $cms.dom.$$$(context, '[data-tpl]').forEach(function (el) {
-                    var template = el.dataset.tpl,
-                        args, templateFunction;
+                    var template = el.dataset.tpl, options;
 
                     if ((el.localName === 'script') && (el.type === 'application/json')) {
                         // Arguments provided inside the <script> tag.
-                        args = el.textContent.trim();
+                        options = el.textContent.trim();
                     } else {
                         // Arguments provided in the data-tpl-args attribute.
-                        args = el.dataset.tplArgs;
+                        options = el.dataset.tplArgs;
                     }
 
-                    args = $cms.parseDataObject(args);
+                    options = $cms.parseDataObject(options);
 
-                    templateFunction = $cms.templates[template];
-                    if (typeof templateFunction === 'function') {
-                        templateFunction.apply(el, args);
+                    if (typeof $cms.templates[template] === 'function') {
+                        $cms.templates[template].apply(el, [options]);
                     }
                 });
             }

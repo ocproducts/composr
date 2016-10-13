@@ -9,7 +9,7 @@
 
     }
 
-    inherits(NotificationButtons, $cms.View, {
+    $cms.inherits(NotificationButtons, $cms.View, {
         disableFormEl: null,
         enableFormEl: null,
         events: {
@@ -32,7 +32,7 @@
         },
 
         blockTopNotifications: function blockTopNotifications(options) {
-            window.max_notifications_to_show = options.max;
+            window.max_notifications_to_show = +options.max || 0;
         },
 
         notificationsManageScreen: function notificationsManageScreen() {

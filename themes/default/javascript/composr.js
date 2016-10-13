@@ -1817,12 +1817,11 @@
         }
     }
 
-    $cms.View = View;
-
     // List of view options that can be set as properties.
     var mapViewOptions = createMap({ model: 1, collection: 1, el: 1, id: 1, attributes: 1, className: 1, tagName: 1, events: 1 });
 
     // Initialize
+    $cms.View = View;
     function View(options, viewOptions) {
         this.uid = $cms.uid(this);
         this.options = options || {};

@@ -22,7 +22,7 @@
         catalogue_field_change_watching();
     }
 
-    inherits(CatalogueEditingScreen, $cms.View, {
+    $cms.inherits(CatalogueEditingScreen, $cms.View, {
         events: {
             'submit .js-form-catalogue-edit': 'submit'
         },
