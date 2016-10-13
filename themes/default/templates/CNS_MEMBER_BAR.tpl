@@ -26,7 +26,7 @@
 						<dt class="field_name"><abbr title="{!LIFETIME_POINTS,{$NUMBER_FORMAT*,{$AVAILABLE_POINTS}}}">{!POINTS}</abbr>:</dt> <dd><a{+START,IF_PASSED,NUM_POINTS_ADVANCE} title="{!GROUP_ADVANCE,{NUM_POINTS_ADVANCE*}}"{+END} href="{$PAGE_LINK*,site:points:member:{$MEMBER}}">{NUM_POINTS*}</a></dd>
 					{+END}
 					<dt class="field_name">{!COUNT_POSTS}:</dt> <dd>{NUM_POSTS*}</dd>
-					<dt class="field_name">{!PRIMARY_GROUP}:</dt> <dd>{PRIMARY_GROUP*}</dd>
+					<dt class="field_name">{$?,{$MOBILE},{!USERGROUP},{!PRIMARY_GROUP}}:</dt> <dd>{PRIMARY_GROUP*}</dd>
 				</dl>
 			</div>
 
