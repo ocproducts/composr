@@ -1689,7 +1689,7 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
     }
 
     if ($codename == 'sitemap') {
-        set_feed_url('?mode=comcode_pages&select=' . $zone);
+        set_feed_url('?mode=comcode_pages&select=' . urlencode($zone));
     }
 
     global $PAGE_STRING, $COMCODE_PARSE_TITLE, $LAST_COMCODE_PARSED_TITLE;

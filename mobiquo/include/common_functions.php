@@ -221,7 +221,7 @@ function strip_attachments_from_comcode($comcode, $inline_image_substitutions = 
             $original_filename = $GLOBALS['SITE_DB']->query_select_value_if_there('attachments', 'a_original_filename', array('id' => intval($matches[4][$i])));
             require_code('images');
             if ((!is_null($original_filename)) && (is_image($original_filename, false))) {
-                $comcode = str_replace($matches[0][$i], '[img="' . $matches[3][$i] . '"]' . find_script('attachment') . '?id=' . $matches[4][$i] . '[/img]', $comcode);
+                $comcode = str_replace($matches[0][$i], '[img="' . $matches[3][$i] . '"]' . find_script('attachment') . '?id=' . urlencode($matches[4][$i]) . '[/img]', $comcode);
             }
         }
     }

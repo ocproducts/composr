@@ -524,7 +524,7 @@ function step_3()
     }
     if (($email != '') || ($advertise_on == 1)) {
         require_code('files');
-        http_download_file('http://compo.sr/uploads/website_specific/compo.sr/scripts/newsletter_join.php?url=' . urlencode('http://' . cms_srv('HTTP_HOST') . cms_srv('SCRIPT_NAME')) . '&email=' . urlencode($email) . '&interest_level=' . $_POST['interest_level'] . '&advertise_on=' . strval($advertise_on) . '&lang=' . $INSTALL_LANG, null, false);
+        http_download_file('http://compo.sr/uploads/website_specific/compo.sr/scripts/newsletter_join.php?url=' . urlencode('http://' . cms_srv('HTTP_HOST') . cms_srv('SCRIPT_NAME')) . '&email=' . urlencode($email) . '&interest_level=' . urlencode($_POST['interest_level']) . '&advertise_on=' . strval($advertise_on) . '&lang=' . urlencode($INSTALL_LANG), null, false);
     }
 
     // Forum chooser
