@@ -110,6 +110,7 @@ function render_member_box($poster_details, $preview = false, $hooks = null, $ho
         } else {
             $points = '';
         }
+        require_code('cns_members');
         $primary_group = cns_get_member_primary_group($poster_details);
         if ($primary_group === null) {
             return new Tempcode();

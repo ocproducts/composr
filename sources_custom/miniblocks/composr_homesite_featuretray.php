@@ -392,10 +392,10 @@ $featuretree = array(
                 array('Versatile', 'You can strip down to a core system, or build up with 3rd-party addons <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Addons" href="http://shareddemo.composr.info/adminzone/index.php?page=admin_addons&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Full <abbr title="Application Programming Interface">API</abbr> documentation <a target="_blank" class="link_exempt no_print" title="(Opens in new window) API documentation" href="{$BRAND_BASE_URL}/docs/api/"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('High coding standards', 'No PHP notices. Type-strict codebase. We use <abbr title="Model View Controller">MVC</abbr>'),
-                array('Free online developers guide book <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Developers Documentation" href="{$PAGE_LINK*,docs:codebook}"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
+                array('Free online developer\'s guide book <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Developers Documentation" href="{$PAGE_LINK*,docs:codebook}"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 null, // divider
                 array('Custom field filters', 'For example, restrict news posts to a minimum length'),
-                array('Stack dumps for easy debugging'),
+                array('Stack traces for easy debugging'),
                 array('Synchronise data between staging and live sites using Resource-fs'),
             ),
         ),
@@ -501,7 +501,7 @@ $featuretree = array(
                 array('Punishment system', 'Warnings, probation, and silencing of members from forums/topics<br />(Conversr-only) <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Punishments" href="http://shareddemo.composr.info/site/index.php?page=warnings&amp;type=add&amp;id=3&amp;post_id=11"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('2-factor-authentication', 'E-mail based 2-factor-authentication security when unrecognised IP addresses are used with staff groups<br />(optional, Conversr-only)'),
                 null, // divider
-                array('Password strength', 'Enforce minimum password strengths (Conversr-only)'),
+                array('Password strength checks', 'Enforce minimum password strengths (Conversr-only)'),
                 array('Architectural approaches to combat all major exploit techniques'),
                 array('Defence-in-depth', 'Multiple layers of built-in security'),
                 array('<abbr title="Cross-Site scripting">XSS</abbr> protection', 'Developed using unique technology to auto-detect XSS security holes before the software gets even released'),
@@ -516,8 +516,8 @@ $featuretree = array(
             'Spam protection and Moderation',
             array(
                 array('Configurable swear filtering <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Word Filter" href="http://shareddemo.composr.info/adminzone/index.php?page=admin_wordfilter&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
-                array('IP address tools', 'Audit, check, and ban <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Lookup Tools" href="http://shareddemo.composr.info/adminzone/index.php?page=admin_lookup"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
-                array('<abbr title="Completely Automated Public Turing test to tell Computers and Humans Apart">CAPTCHA</abbr>, to stop spammers'),
+                array('IP address analysis', 'Audit, check, and ban <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Lookup Tools" href="http://shareddemo.composr.info/adminzone/index.php?page=admin_lookup"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
+                array('<abbr title="Completely Automated Public Turing test to tell Computers and Humans Apart">CAPTCHA</abbr>'),
                 array('Integrate with known-spammer blacklists', 'Multiple configurable levels of enforcement'),
                 array('Honeypots and blackholes', 'Find and ban bots via automated traps'),
                 array('Heuristics', 'Clever ways to detect and block spammers based on behaviour'),
@@ -570,9 +570,8 @@ $featuretree = array(
                 array('Translate content into multiple languages'),
                 null, // divider
                 array('Custom time and date formatting'),
-                array('Language packs', 'Download new language packs as users post them'),
+                array('Language packs', 'Download new language packs as users post them; host multiple languages on your website at the same time'),
                 array('Timezone support', 'Members may choose their own timezones'),
-                array('Host multiple languages on your website at the same time'),
                 array('Support for different character sets, and Unicode'),
                 array('Serve different theme images for different languages'),
                 array('Support for right-to-left languages'),
