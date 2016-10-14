@@ -187,6 +187,7 @@ class template_no_unused_test_set extends cms_test_case
             'POINTSTORE_GIFTR',
             'W_MESSAGE_ALL',
             'W_MESSAGE_TO',
+            'RATING_INLINE_STATIC',
         );
 
         $paths = array(
