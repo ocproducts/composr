@@ -75,13 +75,14 @@ class Hook_snippet_checklist_task_manage
 
             case 'delete':
                 $id = post_param_integer('id');
-                $task_title = $GLOBALS['SITE_DB']->query_select_value('staff_checklist_cus_tasks', 'task_title', array('id' => $id));
+                $task_title = $GLOBALS['SITE_DB']->query_select_value_if_there('staff_checklist_cus_tasks', 'task_title', array('id' => $id));
+                if ($task_title !== null) {
+                    $GLOBALS['SITE_DB']->query_delete('staff_checklist_cus_tasks', array(
+                        'id' => $id,
+                    ), '', 1);
 
-                $GLOBALS['SITE_DB']->query_delete('staff_checklist_cus_tasks', array(
-                    'id' => $id,
-                ), '', 1);
-
-                log_it('CHECK_LIST_DELETE', strval($id), $task_title);
+                    log_it('CHECK_LIST_DELETE', strval($id), $task_title);
+                }
 
                 break;
 

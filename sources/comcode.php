@@ -189,7 +189,7 @@ function comcode_to_tempcode($comcode, $source_member = null, $as_admin = false,
     // Full code path...
 
     require_code('comcode_renderer');
-    $long = (strlen($comcode) > 1000);
+    $long = (cms_mb_strlen($comcode) > 1000);
     if ($long) {
         cms_profile_start_for('comcode_to_tempcode/LONG');
     }

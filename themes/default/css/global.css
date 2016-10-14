@@ -2730,9 +2730,9 @@ div .post_buttons>*, div .buttons_group_faded>* {
 		padding: 0;
 		text-align: center;
 	/*{+END}*/
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+	/*{+START,IF,{$NOT,{$MOBILE}}}*//*{+START,IF,{$NOT,{!takes_lots_of_space}}}*/
 		margin: 0 0 1em 13.5em;
-	/*{+END}*/
+	/*{+END}*//*{+END}*/
 }
 
 .comments_posting_form_end input {

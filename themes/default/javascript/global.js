@@ -2049,7 +2049,7 @@ function _menu_active_selection(menu_id)
 				continue;
 			}
 
-			url=a.href;
+			url=(a.getAttribute('href')=='')?'':a.href;
 			is_selected=menu_item_is_selected(url);
 			if (is_selected!==null)
 			{
@@ -2079,6 +2079,8 @@ function _menu_active_selection(menu_id)
 
 function menu_item_is_selected(url)
 {
+	if (url=='') return null;
+
 	var current_url=window.location.toString();
 	if (current_url==url) return 0;
 	var global_breadcrumbs=document.getElementById('global_breadcrumbs');

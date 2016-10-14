@@ -105,7 +105,7 @@ function cache_and_carry($func, $args, $timeout = null)
             $ret = array($_ret, $HTTP_DOWNLOAD_MIME_TYPE, $HTTP_DOWNLOAD_SIZE, $HTTP_DOWNLOAD_URL, $HTTP_MESSAGE, $HTTP_MESSAGE_B, $HTTP_NEW_COOKIES, $HTTP_FILENAME, $HTTP_CHARSET, $HTTP_DOWNLOAD_MTIME);
             file_put_contents($path, serialize($ret), LOCK_EX);
         } else {
-            $ret = $_ret;
+            $ret = is_string($_ret) ? $_ret : serialize($_ret);
             file_put_contents($path, $ret, LOCK_EX);
         }
         fix_permissions($path);
@@ -2035,14 +2035,13 @@ function get_webpage_meta_details($url)
             $meta_details['t_image_url'] = qualify_url($meta_details['t_image_url'], $url);
         }
 
-        global $HTTP_DOWNLOAD_MIME_TYPE;
-        if (($HTTP_DOWNLOAD_MIME_TYPE == 'application/octet-stream') || ($HTTP_DOWNLOAD_MIME_TYPE == '')) {
+        if (($result[1] == 'application/octet-stream') || ($result[1] == '')) {
             // Lame, no real mime type - maybe the server is just not configured to know it - try and guess by using the file extension and our own Composr list
             require_code('mime_types');
             require_code('files');
             $meta_details['t_mime_type'] = get_mime_type(get_file_extension($url), true);
         } else {
-            $meta_details['t_mime_type'] = $HTTP_DOWNLOAD_MIME_TYPE;
+            $meta_details['t_mime_type'] = $result[1];
         }
 
         $matches = array();

@@ -34,8 +34,6 @@ class Persistent_caching_filecache
         $PC_FC_CACHE = array();
     }
 
-    public $objects_list = null;
-
     /**
      * Instruction to load up the objects list.
      *
@@ -43,13 +41,20 @@ class Persistent_caching_filecache
      */
     public function load_objects_list()
     {
+        /* No concurrency
         if ($this->objects_list === null) {
             $this->objects_list = $this->get('PERSISTENT_CACHE_OBJECTS');
             if ($this->objects_list === null) {
                 $this->objects_list = array();
             }
         }
-        return $this->objects_list;
+        return $this->objects_list;*/
+
+        $objects_list = $this->get('PERSISTENT_CACHE_OBJECTS');
+        if ($objects_list === null) {
+            $objects_list = array();
+        }
+        return $objects_list;
     }
 
     /**
@@ -61,12 +66,16 @@ class Persistent_caching_filecache
      */
     public function get($key, $min_cache_date = null)
     {
-        global $PC_FC_CACHE;
-        if ($min_cache_date === null && isset($PC_FC_CACHE[$key])) {
-            return $PC_FC_CACHE[$key];
+        if ($key != 'PERSISTENT_CACHE_OBJECTS'/*this key is too volatile with concurrency*/) {
+            global $PC_FC_CACHE;
+            if ($min_cache_date === null && isset($PC_FC_CACHE[$key])) {
+                return $PC_FC_CACHE[$key];
+            }
         }
 
         //@header('X-Persistent-Cache: caches/persistent/' . md5($key) . '.gcd');
+
+        clearstatcache();
 
         $myfile = @fopen(get_custom_file_base() . '/caches/persistent/' . md5($key) . '.gcd', 'rb');
         if ($myfile === false) {
