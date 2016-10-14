@@ -14,7 +14,7 @@
 		<tr>
 			<th>Language</th>
 			<th>Translators</th>
-			<th>Percentage</th>
+			<th>Percentage&nbsp;&dagger;</th>
 			<th>Links</th>
 		</tr>
 	</thead>
@@ -22,7 +22,7 @@
 		{+START,LOOP,LANGUAGES}
 			<tr>
 				<td>
-					<abbr title="{LANGUAGE_NAME*}">{LANGUAGE_CODE*}</abbr>
+					<abbr title="{LANGUAGE_CODE*}">{LANGUAGE_NAME*}</abbr>
 				</td>
 				<td>
 					{TRANSLATORS*}
@@ -45,3 +45,7 @@
 		{+END}
 	</tbody>
 </table></div>
+
+<p>
+	&dagger; 29% typically means translated fully apart from administrative strings
+</p>

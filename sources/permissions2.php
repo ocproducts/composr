@@ -374,7 +374,7 @@ function get_permissions_matrix($server_id, $access, $overridables, $privileges,
         $tmp_file = file_get_contents($css_path);
         $matches = array();
         if (preg_match('#(\s|\})th[\s,][^\}]*(\s|\{)background-color:\s*\#([\dA-Fa-f]*);color:\s*\#([\dA-Fa-f]*);#sU', $tmp_file, $matches) != 0) {
-            $color = $matches[3] . '&fg_color=' . $matches[4];
+            $color = $matches[3] . '&fg_color=' . urlencode($matches[4]);
         }
     }
 

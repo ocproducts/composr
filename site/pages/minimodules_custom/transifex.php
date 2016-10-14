@@ -33,7 +33,7 @@ if ($test[1] == '200') {
 $_languages = array();
 
 foreach ($languages as $language_code => $language_details_basic) {
-    if ($language_details_basic['translators'] == array()) {
+    if ($language_details_basic['reviewers'] == array() && $language_details_basic['translators'] == array()) {
         continue; // Not started yet
     }
 
@@ -60,7 +60,7 @@ foreach ($languages as $language_code => $language_details_basic) {
         $_languages[str_pad(strval($percentage), 3, '0', STR_PAD_LEFT) . '__' . $language_code] = array(
             'LANGUAGE_CODE' => strtoupper($language_code),
             'LANGUAGE_NAME' => $language_name,
-            'TRANSLATORS' => implode(', ', $language_details_basic['translators']),
+            'TRANSLATORS' => implode(', ', array_merge($language_details_basic['reviewers'], $language_details_basic['translators'])),
             'PERCENTAGE' => integer_format($percentage) . '%',
             'DOWNLOAD_URL' => $download_url,
             'DOWNLOAD_CORE_URL' => $download_core_url,

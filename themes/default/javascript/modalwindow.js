@@ -951,6 +951,12 @@ function ModalWindow()
 							{
 								iframe.contentWindow.document.body.done_popup_trans=true;
 							}
+						} else
+						{
+							if (!has_iframe_ownership(iframe)) {
+								iframe.scrolling='yes';
+								iframe.style.height='500px';
+							}
 						}
 
 						// Handle iframe sizing

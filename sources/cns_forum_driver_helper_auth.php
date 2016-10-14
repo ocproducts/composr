@@ -247,7 +247,7 @@ function _forum_authorise_login($this_ref, $username, $userid, $password_hashed,
 
                 $code = !is_null($test2) ? $test2 : uniqid('', true);
                 $this_ref->connection->query_insert('f_member_known_login_ips', array('i_val_code' => $code, 'i_member_id' => $row['id'], 'i_ip' => $ip));
-                $url = find_script('approve_ip') . '?code=' . $code;
+                $url = find_script('approve_ip') . '?code=' . urlencode($code);
                 $url_simple = find_script('approve_ip');
                 require_code('comcode');
                 $mail = do_lang('IP_VERIFY_MAIL', comcode_escape($url), comcode_escape(get_ip_address()), array($url_simple, $code), get_lang($row['id']));

@@ -1092,8 +1092,10 @@ function choose_picture(j_id,img_ob,name,event)
 	img_ob.style.outline='1px dotted';
 }
 
-function preview_mobile_button(ob)
+function preview_mobile_button(ob,event)
 {
+	if (!event) event=window.event;
+
 	ob.form.action=ob.form.action.replace(/keep_mobile=\d/g,'keep_mobile='+(ob.checked?'1':'0'));
 	if (window.parent)
 	{

@@ -3081,8 +3081,8 @@ function ecv_FORCE_PREVIEWS($lang, $escaped, $param)
 function ecv_PREVIEW_URL($lang, $escaped, $param)
 {
     $value = find_script('preview');
-    $value .= '?page=' . get_page_name();
-    $value .= '&type=' . get_param_string('type', '', true);
+    $value .= '?page=' . urlencode(get_page_name());
+    $value .= '&type=' . urlencode(get_param_string('type', '', true));
 
     if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);

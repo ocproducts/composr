@@ -2540,7 +2540,7 @@ function is_mobile($user_agent = null, $truth = false)
         }
     }
 
-    if (!$user_agent_given) {
+    if (!$user_agent_given && !$truth) {
         $val = get_param_integer('keep_mobile', null);
         if ($val !== null) {
             $result = ($val == 1);

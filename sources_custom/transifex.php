@@ -38,11 +38,6 @@ function init__transifex()
     require_code('lang2');
     require_code('files2');
 
-    require_code('string_scan');
-    global $JUST_LANG_STRINGS_ADMIN;
-    list($JUST_LANG_STRINGS_ADMIN) = string_scan(fallback_lang(), true);
-    $JUST_LANG_STRINGS_ADMIN = array_flip($JUST_LANG_STRINGS_ADMIN);
-
     global $OVERRIDE_PRIORITY_LANGUAGE_FILES;
     $OVERRIDE_PRIORITY_LANGUAGE_FILES = array(
         'global.ini' => TRANSLATE_PRIORITY_URGENT,
@@ -344,6 +339,10 @@ function _push_ini_file_to_transifex($f, $project_slug, $custom, $administrative
 {
     global $JUST_LANG_STRINGS_ADMIN, $OVERRIDE_PRIORITY_LANGUAGE_FILES, $LANGUAGE_STRING_DESCRIPTIONS, $LANGUAGE_FILES_ADDON;
 
+    require_code('string_scan');
+    list($JUST_LANG_STRINGS_ADMIN) = string_scan(fallback_lang(), true);
+    $JUST_LANG_STRINGS_ADMIN = array_flip($JUST_LANG_STRINGS_ADMIN);
+
     if ($custom) {
         $category = TRANSLATE_ADDON;
     } else {
@@ -602,6 +601,14 @@ function pull_lang_from_transifex($project_slug, $tar_file, $lang, $core_only, $
                 $files_str .= "\n            '" . $file . "',";
             }
 
+            $description = 'Translation into {$language_name}.
+
+Completeness: {$percentage}% (29% typically means translated fully apart from administrative strings).
+
+This addon was automatically bundled from community contributions provided on Transifex and will be routinely updated alongside new Composr patch releases.
+
+Translations may also be downloaded directly from Transifex.';
+
             $open = '<' . '?php';
 
             $c = <<<END
@@ -693,13 +700,7 @@ class Hook_addon_registry_language_{$lang}
      */
     public function get_description()
     {
-        return 'Translation into {$language_name}.
-
-Completeness: {$percentage}% (29% typically means translated fully apart from administrative strings).
-
-This addon was automatically bundled from community contributions provided on Transifex and will be routinely updated alongside new Composr patch releases.
-
-Translations may also be downloaded directly from Transifex.';
+        return '{$description}';
     }
 
     /**
@@ -758,6 +759,25 @@ END;
                 sync_file($full_path);
             } else {
                 tar_add_file($tar_file, $path, $c);
+
+                // addon.inf is needed too
+                $addon_inf = '';
+                $settings = array(
+                    'name' => $language_name,
+                    'author' => $translators,
+                    'organisation' => '',
+                    'version' => cms_version_number(),
+                    'category' => 'Translations',
+                    'copyright_attribution' => '',
+                    'licence' => '',
+                    'description' => $description,
+                    'incompatibilities' => '',
+                    'dependencies' => '',
+                );
+                foreach ($settings as $setting_name => $setting_value) {
+                    $addon_inf .= $setting_name . '="' . str_replace("\n", '\n', str_replace('"', '\'', $setting_value)) . '"' . "\n";
+                }
+                tar_add_file($tar_file, 'addon.inf', $addon_inf, 0644, time());
             }
         }
     }

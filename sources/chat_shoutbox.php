@@ -92,7 +92,7 @@ function shoutbox_script($ret = false, $room_id = null, $num_messages = null)
         $keep = symbol_tempcode('KEEP');
         $_url = find_script('shoutbox') . '?room_id=' . strval($room_id) . '&num_messages=' . strval($num_messages) . $keep->evaluate();
         if (get_param_string('utheme', '') != '') {
-            $_url .= '&utheme=' . get_param_string('utheme');
+            $_url .= '&utheme=' . urlencode(get_param_string('utheme'));
         }
         $url = make_string_tempcode($_url);
     } else {

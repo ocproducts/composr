@@ -37,7 +37,7 @@ function init__menus()
  * @param  SHORT_TEXT $menu The menu identifier to use (may be the name of a stored menu, or syntax to load from the Sitemap)
  * @param  boolean $silent_failure Whether to silently return blank if the menu does not exist
  * @param  boolean $apply_highlighting Whether to apply current-screen highlighting
- * @return Tempcode The generated Tempcode of the menu
+ * @return array A pair: The generated Tempcode of the menu, the menu nodes
  */
 function build_menu($type, $menu, $silent_failure = false, $apply_highlighting = true)
 {
@@ -51,14 +51,15 @@ function build_menu($type, $menu, $silent_failure = false, $apply_highlighting =
         // Empty?
         if (count($root['children']) == 0) {
             if ($silent_failure) {
-                return new Tempcode();
+                return array(new Tempcode(), array());
             }
 
             $redirect = get_self_url(true, true);
             $_add_url = build_url(array('page' => 'admin_menus', 'type' => 'edit', 'id' => $menu, 'redirect' => $redirect), 'adminzone');
             $add_url = $_add_url->evaluate();
 
-            return do_template('INLINE_WIP_MESSAGE', array('_GUID' => '276e6600571b8b4717ca742b6e9da17a', 'MESSAGE' => do_lang_tempcode('MISSING_MENU', escape_html($menu), escape_html($add_url))));
+            $content = do_template('INLINE_WIP_MESSAGE', array('_GUID' => '276e6600571b8b4717ca742b6e9da17a', 'MESSAGE' => do_lang_tempcode('MISSING_MENU', escape_html($menu), escape_html($add_url))));
+            return array($content, array());
         }
     }
 
@@ -81,7 +82,9 @@ function build_menu($type, $menu, $silent_failure = false, $apply_highlighting =
         $page_link .= ':clickable_sections=' . strval((($type == 'popup') || ($type == 'dropdown')) ? 1 : 0);
         $page_link .= ':redirect=';
         $_page_link = make_string_tempcode($page_link);
-        $_page_link->attach(symbol_tempcode('SELF_URL',array('1')));
+        $self_url = symbol_tempcode('SELF_URL', array('1'));
+        $self_url = build_closure_tempcode(TC_LANGUAGE_REFERENCE, 'dont_escape_trick', array($self_url), array(UL_ESCAPED));
+        $_page_link->attach($self_url);
 
         $url = symbol_tempcode('PAGE_LINK', array($_page_link, '0', '0', '0'));
 
@@ -96,7 +99,7 @@ function build_menu($type, $menu, $silent_failure = false, $apply_highlighting =
         $content = $_content;
     }
 
-    return $content;
+    return array($content, $root);
 }
 
 /**
