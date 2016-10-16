@@ -20,7 +20,7 @@
 			{$INSERT_SPAMMER_BLACKHOLE}
 
 			<p class="proceed_button">
-				<input onclick="if (add_form_marked_posts(this.form,'del_')) { disable_button_just_clicked(this); return true; } window.fauxmodal_alert('{!NOTHING_SELECTED=;}'); return false;" class="button_screen menu___generic_admin__delete" type="submit" value="{!DELETE}" />
+				<input onclick="if (add_form_marked_posts(this.form,'del_')) { $cms.ui.disableButton(this); return true; } window.fauxmodal_alert('{!NOTHING_SELECTED=;}'); return false;" class="button_screen menu___generic_admin__delete" type="submit" value="{!DELETE}" />
 			</p>
 		</form>
 	{+END}

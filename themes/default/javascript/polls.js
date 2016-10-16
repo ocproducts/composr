@@ -1,7 +1,7 @@
 (function ($cms) {
 
     function PollBox() {
-        $cms.View.apply(this, arguments);
+        PollBox.base(this, arguments);
     }
 
     $cms.inherits(PollBox, $cms.View, {
@@ -23,8 +23,8 @@
 
     $cms.views.PollBox = PollBox;
 
-    $cms.templates.blockMainPoll = function blockMainPoll(options) {
-        internalise_ajax_block_wrapper_links(options.blockCallUrl, document.getElementById(options.wrapperId), ['.*poll.*'], {}, false, true);
+    $cms.templates.blockMainPoll = function blockMainPoll(params) {
+        internalise_ajax_block_wrapper_links(params.blockCallUrl, document.getElementById(params.wrapperId), ['.*poll.*'], {}, false, true);
     };
 
 }(window.$cms));

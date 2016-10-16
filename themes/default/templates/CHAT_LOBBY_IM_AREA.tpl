@@ -11,7 +11,7 @@
 				<a rel="nofollow" class="horiz_field_sep" href="#!" title="{!EMOTICONS} {!LINK_NEW_WINDOW}" onclick="(window.opener?window.open:window.faux_open)(maintain_theme_in_link('{$FIND_SCRIPT;*,emoticons}?field_name=post_{CHATROOM_ID*}{$KEEP;*,0,1}'),'emoticon_chooser','width=300,height=320,status=no,resizable=yes,scrollbars=no'); return false;"><img alt="" src="{$IMG*,icons/16x16/editor/insert_emoticons}" srcset="{$IMG*,icons/32x32/editor/insert_emoticons} 2x" /></a>
 			{+END}
 
-			<input class="button_micro buttons__send" type="button" onclick="return chat_post(event,{CHATROOM_ID*},'post_{CHATROOM_ID*}','','');" value="{!MAKE_POST_SHORT}" />
+			<input class="button_micro buttons__send" type="button" onclick="chat_post(event,{CHATROOM_ID*},'post_{CHATROOM_ID*}','','');" value="{!MAKE_POST_SHORT}" />
 		</div>
 
 		<div class="chat_lobby_convos_area_bar">

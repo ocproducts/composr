@@ -1,10 +1,10 @@
 {+START,LOOP,NOTIFICATION_TYPES}
-	<td>
+	<td data-tpl="notificationTypes_item">
 		<div>
 			<label for="notification_{SCOPE*}_{NTYPE*}">{LABEL*}</label>
 
 			{+START,IF,{AVAILABLE}}
-				<input onclick="handle_notification_type_tick(this,this.parentNode.parentNode.parentNode,{RAW%});" title="{LABEL*}"{+START,IF,{CHECKED}} checked="checked"{+END} id="notification_{SCOPE*}_{NTYPE*}" name="notification_{SCOPE*}_{NTYPE*}" type="checkbox" value="1" />
+				<input class="js-click-handle-ntype-tick" data-tp-raw="{RAW%}" title="{LABEL*}"{+START,IF,{CHECKED}} checked="checked"{+END} id="notification_{SCOPE*}_{NTYPE*}" name="notification_{SCOPE*}_{NTYPE*}" type="checkbox" value="1" {+START,IF_PASSED_AND_TRUE,TYPE_HAS_CHILDREN_SET} data-cms-unchecked-is-indeterminate="1" {+END} />
 			{+END}
 
 			{+START,IF,{$NOT,{AVAILABLE}}}
@@ -13,4 +13,3 @@
 		</div>
 	</td>
 {+END}
-<script type="application/json" data-tpl="notificationTypes">{+START,PARAMS_JSON,NOTIFICATION_TYPES}{_/}{+END}</script>

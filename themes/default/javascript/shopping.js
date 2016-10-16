@@ -41,7 +41,7 @@ function confirm_admin_order_actions(action_event, form) {
             '{!shopping:DISPATCH_CONFIRMATION_MESSAGE;^}',
             function (result) {
                 if (result) {
-                    disable_button_just_clicked(form);
+                    $cms.ui.disableFormButtons(form);
                     form.submit();
                 }
             }
@@ -52,7 +52,7 @@ function confirm_admin_order_actions(action_event, form) {
             '{!shopping:CANCEL_ORDER_CONFIRMATION_MESSAGE;^}',
             function (result) {
                 if (result) {
-                    disable_button_just_clicked(form);
+                    $cms.ui.disableFormButtons(form);
                     form.submit();
                 }
             }

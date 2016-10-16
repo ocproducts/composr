@@ -5,44 +5,35 @@
     var smile = ':)',
         emptyObj = {},
         emptyArr = [],
-        emptyEl = document.createElement('div'),
-        emptyInputEl = document.createElement('input'),
-        emptyElStyle = emptyEl.style,
         elProto = window.HTMLElement.prototype,
-        docEl = document.documentElement,
-        encodeUC = encodeURIComponent;
+        emptyEl = document.createElement('div'),
+        emptyElStyle = emptyEl.style,
+        emptyInputEl = document.createElement('input'),
+        rootEl = document.documentElement,
+        encodeUC = encodeURIComponent,
 
-    var ELEMENT_NODE = 1,
-        DOCUMENT_NODE = 9,
-        DOCUMENT_FRAGMENT_NODE = 11;
-
-    var isArray = Array.isArray,
+        isArray = Array.isArray,
         toArray = Function.bind.call(Function.call, emptyArr.slice),
         forEach = Function.bind.call(Function.call, emptyArr.forEach),
         includes = Function.bind.call(Function.call, emptyArr.includes),
-        filter = Function.bind.call(Function.call, emptyArr.filter),
-        // Clever helper for merging arrays using `[].push` (@TODO: check if this has a performance penalty?)
+    // Clever helper for merging arrays using `[].push`
         merge = Function.bind.call(Function.apply, emptyArr.push),
-        // hasOwnProperty shorcut
+    // hasOwnProperty shorcut
         hasOwn = Function.bind.call(Function.call, emptyObj.hasOwnProperty),
 
-        // Browser detection. Credit: http://stackoverflow.com/a/9851769/362006
-        // Opera 8.0+
+    // Browser detection. Credit: http://stackoverflow.com/a/9851769/362006
+    // Opera 8.0+
         isOpera = (!!window.opr && !!window.opr.addons) || !!window.opera || (navigator.userAgent.includes(' OPR/')),
-        // Firefox 1.0+
+    // Firefox 1.0+
         isFirefox = (window.InstallTrigger !== undefined),
-        // At least Safari 3+: HTMLElement's constructor's name is HTMLElementConstructor
-        isSafari = clazz(window.HTMLElement) === 'HTMLElementConstructor',
-        // Internet Explorer 6-11
-        isIE = /*@cc_on!@*/false || (typeof document.documentMode === 'number'),
-        // Edge 20+
+    // At least Safari 3+: HTMLElement's constructor's name is HTMLElementConstructor
+        isSafari = internal(window.HTMLElement) === 'HTMLElementConstructor',
+    // Internet Explorer 6-11
+        isIE = (/*@cc_on!@*/0 || (typeof document.documentMode === 'number')),
+    // Edge 20+
         isEdge = !isIE && !!window.StyleMedia,
-        // Chrome 1+
-        isChrome = !!window.chrome && !!window.chrome.webstore,
-        // Blink engine detection
-        isBlink = (isChrome || isOpera) && !!window.CSS;
-
-    var mapPrimitiveTypes = createMap({ Boolean: 1, Number: 1, String: 1, Function: 1, Array: 1, Date: 1, RegExp: 1, Object: 1, Error: 1 });
+    // Chrome 1+
+        isChrome = !!window.chrome && !!window.chrome.webstore;
 
     Object.assign($cms, {
         // Unique for each copy of Composr on the page
@@ -126,7 +117,54 @@
         $EXTRA: {
             canTryUrlSchemes: !!symbols.EXTRA.canTryUrlSchemes,
             staffTooltipsUrlPatterns: symbols.EXTRA.staffTooltipsUrlPatterns
-        }
+        },
+
+        // Export useful stuff
+        toArray: toArray,
+        forEach: forEach,
+        some: Function.bind.call(Function.call, emptyArr.some),
+        every: Function.bind.call(Function.call, emptyArr.every),
+        includes: includes,
+        hasOwn: hasOwn,
+
+        isOpera: isOpera,
+        isFirefox: isFirefox,
+        isSafari: isSafari,
+        isIE: isIE,
+        isEdge: isEdge,
+        isChrome: isChrome,
+
+        uid: uid,
+        isEmptyObj: isEmptyObj,
+        nodeType: nodeType,
+        isEl: isEl,
+        isNumeric: isNumeric,
+        isDocOrEl: isDocOrEl,
+        isArrayLike: isArrayLike,
+        noop: noop,
+        random: random,
+        camelCase: camelCase,
+
+        each: each,
+        extend: extend,
+        extendOwn: extendOwn,
+        defaults: defaults,
+
+        createMap: createMap,
+
+        define: define,
+        defineC: defineC,
+        defineCE: defineCE,
+        defineCW: defineCW,
+        defineCEW: defineCEW,
+        defineE: defineE,
+        defineEW: defineEW,
+        defineW: defineW,
+
+        strval: strval,
+        format: format,
+
+        inherits: inherits
     });
 
     var domReadyPromise = new Promise(function (resolve) {
@@ -162,18 +200,18 @@
     });
 
     // Extracts query string from url
-    $cms.qsFromUrl = function (url) {
+    $cms.qsFromUrl = function qsFromUrl(url) {
         var query = (url || '').split('?', 2)[1]; // Grab query string
         return (query || '').split('#')[0]; // Remove hash fragment (if any)
     };
 
     // Returns an `URLSearchParams` instance
-    $cms.uspFromUrl = function (url) {
+    $cms.uspFromUrl = function uspFromUrl(url) {
         var query = $cms.qsFromUrl(url);
         return new URLSearchParams(query);
     };
 
-    $cms.paramsFromUsp = function (usp) {
+    $cms.paramsFromUsp = function paramsFromUsp(usp) {
         var entriesIterator = usp.entries(),
             entry, params = {};
 
@@ -207,30 +245,6 @@
 
     function noop() {}
 
-    function isset(val) {
-        return (val !== undefined) && (val !== null);
-    }
-
-    function notset(val) {
-        return (val === undefined) || (val === null);
-    }
-
-    function allset() {
-        for (var i = 0, len = arguments.length; i < len; i++) {
-            if (notset(arguments[i])) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    function ucfirst(str) {
-        str = isset(str) ? '' + str : '';
-
-        return str.charAt(0).toUpperCase() + str.substr(1);
-    }
-
     // Port of PHP's empty() function
     function empty(val) {
         return !val || (val === '0') || ((typeof val === 'object') && !hasEnumerables(val));
@@ -238,44 +252,31 @@
 
     // Generate a unique integer id (unique within the entire client session).
     var _uniqueId = 0;
+
     function uniqueId() {
         return ++_uniqueId;
     }
 
     // Used to uniquely identify objects
-     function uid(obj) {
-         if (hasOwn(obj, $cms.id)) {
-             return +obj[$cms.id];
-         }
+    function uid(obj) {
+        if (hasOwn(obj, $cms.id)) {
+            return +obj[$cms.id];
+        }
 
-         var props = {}, id = uniqueId();
-         props[$cms.id] = id;
-         defineCW(obj, props);
+        var props = {},
+            id = uniqueId();
+
+        props[$cms.id] = id;
+        defineCW(obj, props);
 
         return id;
-     }
+    }
 
     function returnTrue() {
         return true;
     }
 
     function returnFalse() {
-        return false;
-    }
-
-    function isObj(val) {
-        return (val !== null) && (typeof val === 'object');
-    }
-
-    function isObjWithKeys(val) {
-        var key;
-
-        if (isObj(val)) {
-            for (key in val) {
-                return true;
-            }
-        }
-
         return false;
     }
 
@@ -289,17 +290,32 @@
         return false;
     }
 
-    // Retrieve all the enumerable property names of `val` as an array
-    function allKeys(val) {
-        var keys = [], key;
+    // Gets the internal type/constructor name of the provided `val`
+    function internal(val) {
+        return emptyObj.toString.call(val).slice(8, -1); // slice off the surrounding '[object ' and ']'
+    }
 
-        try {
-            for (key in val) {
-                keys.push(key);
+    function isFunc(val) {
+        return typeof val === 'function';
+    }
+
+    function isEmptyObj(obj) {
+        var k;
+        if (obj && (typeof obj === 'object')) {
+            for (k in obj) {
+                return false;
             }
-        } catch (ignore) {}
+        }
 
-        return keys;
+        return true;
+    }
+
+    function isPlainObj(obj) {
+        return (internal(obj) === 'Object') && (Object.getPrototypeOf(obj) === Object.prototype);
+    }
+
+    function isArrayOrPlainObj(val) {
+        return isArray(val) || isPlainObj(val);
     }
 
     function hasMatchingKey(obj, keys) {
@@ -314,72 +330,33 @@
         return false;
     }
 
-    function createMap(data) {
-        var obj = Object.create(null);
-
-        if (0 in arguments) {
+    function withProto(prototype, data) {
+        var obj = Object.create(prototype);
+        if (data) {
             Object.assign(obj, data);
         }
-
         return obj;
     }
 
-    // Gets the internal class/constructor function name of the provided `val`
-    function clazz(val) {
-        return emptyObj.toString.call(val).slice(8, -1); // slice off the surrounding '[object ' and ']'
-    }
-
-    function isFunc(val) {
-        return typeof val === 'function';
-    }
-
-    function isObjOrFunc(val) {
-        return isObj(val) || isFunc(val);
-    }
-
-    function isStr(val) {
-        return typeof val === 'string';
-    }
-
-    function isNumber(val) {
-        return typeof val === 'number';
-    }
-
-    function isEmptyObj(obj) {
-        var k;
-        if (isObj(obj)) {
-            for (k in obj) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    function isPlainObj(obj) {
-        return (clazz(obj) === 'Object') && (Object.getPrototypeOf(obj) === Object.prototype);
-    }
-
-    function isPlainObjOrArray(val) {
-        return isPlainObj(val) || isArray(val);
-    }
-
-    // Checks if an object is of given class
-    function isA(obj, constructorName) {
-        return clazz(obj) === constructorName;
+    function createMap(data) {
+        return withProto(null, data);
     }
 
     function isArguments(obj) {
-        return clazz(obj) === 'Arguments';
+        return internal(obj) === 'Arguments';
     }
 
     function isWindow(obj) {
-        return isObj(obj) && (obj === obj.window) && (obj === obj.self) && (clazz(obj) === 'Window');
+        return (obj != null) && (typeof obj === 'object') && (obj === obj.window) && (obj === obj.self) && (internal(obj) === 'Window');
     }
 
     function nodeType(obj) {
-        return isObj(obj) && (typeof obj.nodeName === 'string') && (typeof obj.nodeType === 'number') && obj.nodeType;
+        return (obj != null) && (typeof obj === 'object') && (typeof obj.nodeName === 'string') && (typeof obj.nodeType === 'number') && obj.nodeType;
     }
+
+    var ELEMENT_NODE = 1,
+        DOCUMENT_NODE = 9,
+        DOCUMENT_FRAGMENT_NODE = 11;
 
     function isNode(obj) {
         return nodeType(obj) !== false;
@@ -408,58 +385,25 @@
     }
 
     function isEvent(obj) {
-        return isObj(obj) && (typeof obj.type === 'string') && (typeof obj.preventDefault === 'function');
+        return (obj != null) && (typeof obj === 'object') && (typeof obj.type === 'string') && (typeof obj.preventDefault === 'function');
     }
 
     function isRegExp(obj) {
-        return clazz(obj) === 'RegExp';
-    }
-
-    function instanceOf(obj, constructorName, global) {
-        var Class;
-
-        if (arguments.length === 2) {
-            // Try to figure out the global
-            if (isNode(obj) && obj.ownerDocument) {
-                global = obj.ownerDocument.defaultView;
-            } else {
-                global = window;
-            }
-        }
-
-        Class = global[constructorName];
-
-        return obj instanceof Class;
+        return internal(obj) === 'RegExp';
     }
 
     function isNumeric(val) { // Inspired by jQuery.isNumeric
         return ((typeof val === 'number') || (typeof val === 'string')) && !Number.isNaN(val - parseFloat(val));
     }
 
-    function defined() {
-        var i, len = arguments.length;
-        for (i = 0; i < len; i++) {
-            if (arguments[i] === undefined) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     function funcArg(context, arg, payload) {
         return isFunc(arg) ? arg.call(context, payload) : arg;
-    }
-
-    function isIterator(obj) {
-        return isObj(obj) && (typeof obj.next === 'function');
     }
 
     function isArrayLike(obj, minLen) {
         var len;
 
-        minLen = +minLen || 0;
-
-        if (!isObj(obj) || isWindow(obj) || (typeof (len = obj.length) !== 'number') || (len < minLen)) {
+        if ((obj == null ) || (typeof obj !== 'object') || isWindow(obj) || (typeof (len = obj.length) !== 'number') || (len < minLen)) {
             return false;
         }
 
@@ -477,37 +421,6 @@
         max = +max || 1000000000000000;
 
         return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-
-    // Credit: http://stackoverflow.com/a/32604073/362006
-    function camelCase(str) {
-        // Lower cases the string
-        return str.toLowerCase()
-            // Replaces any - or _ characters with a space
-            .replace(/[\-_]+/g, ' ')
-            // Removes any non alphanumeric characters
-            .replace(/[^\w\s]/g, '')
-            // Uppercases the first character in each group immediately following a space
-            // (delimited by spaces)
-            .replace(/ (.)/g, function ($1) {
-                return $1.toUpperCase();
-            })
-            // Removes spaces
-            .replace(/ /g, '');
-    }
-
-    function camelize(str) {
-        return str.replace(/-+(.)?/g, function (match, chr) {
-            return chr ? chr.toUpperCase() : '';
-        });
-    }
-
-    function dasherize(str) {
-        return str.replace(/::/g, '/')
-            .replace(/([A-Z]+)([A-Z][a-z])/g, '$1_$2')
-            .replace(/([a-z\d])([A-Z])/g, '$1_$2')
-            .replace(/_/g, '-')
-            .toLowerCase();
     }
 
     function each(obj, callback, args) {
@@ -549,29 +462,31 @@
         return obj;
     }
 
-    function _extend(target, source, deep, own) {
-        var key;
+    function _extend(target, source, deep, own, undefinedOnly) {
+        var key, src, tgt;
 
         deep = !!deep;
         own = !!own;
+        undefinedOnly = !!undefinedOnly;
 
         for (key in source) {
-            if ((source[key] === undefined) || (own && !hasOwn(source, key))) {
+            tgt = target[key];
+            src = source[key];
+
+            if ((src === undefined) || (own && !hasOwn(source, key)) || (undefinedOnly && (tgt !== undefined))) {
                 continue;
             }
 
-            if (deep && (isPlainObj(source[key]) || isArray(source[key]))) {
-                if (isPlainObj(source[key]) && !isPlainObj(target[key])) {
-                    target[key] = {};
+            if (deep && src && isArrayOrPlainObj(src)) {
+                if (isArray(src) && !isArray(tgt)) {
+                    tgt = target[key] = [];
+                } else if (isPlainObj(src) && !isPlainObj(tgt)) {
+                    tgt = target[key] = {};
                 }
 
-                if (isArray(source[key]) && !isArray(target[key])) {
-                    target[key] = [];
-                }
-
-                extend(target[key], source[key], deep);
+                _extend(tgt, src, deep, own, undefinedOnly);
             } else {
-                target[key] = source[key]
+                target[key] = src;
             }
         }
     }
@@ -579,15 +494,15 @@
     // Copy all but undefined properties from one or more
     // objects to the `target` object.
     function extend(target) {
-        var deep, args = toArray(arguments, 1);
+        var deep, sources = toArray(arguments, 1);
 
         if (typeof target === 'boolean') {
             deep = target;
-            target = args.shift();
+            target = sources.shift();
         }
 
-        args.forEach(function (arg) {
-            _extend(target, arg, deep);
+        sources.forEach(function (source) {
+            _extend(target, source, deep);
         });
 
         return target
@@ -596,15 +511,30 @@
     // Copy all but undefined properties from one or more
     // objects to the `target` object.
     function extendOwn(target) {
-        var deep, args = toArray(arguments, 1);
+        var deep, sources = toArray(arguments, 1);
 
         if (typeof target === 'boolean') {
             deep = target;
-            target = args.shift();
+            target = sources.shift();
         }
 
-        args.forEach(function (arg) {
-            _extend(target, arg, deep, true);
+        sources.forEach(function (source) {
+            _extend(target, source, deep, true);
+        });
+
+        return target
+    }
+
+    function defaults(target) {
+        var deep, sources = toArray(arguments, 1);
+
+        if (typeof target === 'boolean') {
+            deep = target;
+            target = sources.shift();
+        }
+
+        sources.forEach(function (source) {
+            _extend(target, source, deep, false, true);
         });
 
         return target
@@ -613,51 +543,94 @@
     // If the value of the named `property` is a function then invoke it with the
     // `object` as context; otherwise, return it.
     function result(object, property, fallback) {
-        var value = isset(object) ? object[property] : undefined;
+        var value = (object != null) ? object[property] : undefined;
         if (value === undefined) {
             value = fallback;
         }
         return isFunc(value) ? value.call(object) : value;
     }
 
-    // Export useful stuff
-    Object.assign($cms, {
-        toArray: toArray,
-        forEach: forEach,
-        some: Function.bind.call(Function.call, emptyArr.some),
-        every: Function.bind.call(Function.call, emptyArr.every),
-        includes: includes,
-        hasOwn: hasOwn,
+    var DEFINE_CONFIGURABLE = 1,
+        DEFINE_ENUMERABLE = 2,
+        DEFINE_WRITABLE = 4;
 
-        isOpera: isOpera,
-        isFirefox: isFirefox,
-        isSafari: isSafari,
-        isIE: isIE,
-        isEdge: isEdge,
-        isChrome: isChrome,
-        isBlink: isBlink,
+    // `mask` is optional (defaults to 0)
+    function define(mask, obj, props) {
+        if (props === undefined) {
+            props = obj;
+            obj = mask;
+            mask = 0;
+        }
 
-        uid: uid,
-        clazz: clazz,
-        isObj: isObj,
-        isEmptyObj: isEmptyObj,
-        nodeType: nodeType,
-        isEl: isEl,
-        isNumeric: isNumeric,
-        isDocOrEl: isDocOrEl,
-        defined: defined,
-        isArrayLike: isArrayLike,
-        noop: noop,
-        random: random,
-        camelCase: camelCase,
+        mask = +mask || 0;
+        obj || (obj = {});
+        props || (props = {});
 
-        each: each,
-        extend: extend
-    });
+        var key, descriptors = {};
+
+        for (key in props) {
+            descriptors[key] = {
+                configurable: !!(mask & DEFINE_CONFIGURABLE),
+                enumerable: !!(mask & DEFINE_ENUMERABLE),
+                value: props[key],
+                writable: !!(mask & DEFINE_WRITABLE)
+            };
+        }
+
+        return Object.defineProperties(obj, descriptors);
+    }
+
+    function defineC(obj, props) {
+        return define(DEFINE_CONFIGURABLE, obj, props);
+    }
+
+    function defineCE(obj, props) {
+        return define(DEFINE_CONFIGURABLE | DEFINE_ENUMERABLE, obj, props);
+    }
+
+    function defineCW(obj, props) {
+        return define(DEFINE_CONFIGURABLE | DEFINE_WRITABLE, obj, props);
+    }
+
+    function defineCEW(obj, props) {
+        return define(DEFINE_CONFIGURABLE | DEFINE_ENUMERABLE | DEFINE_WRITABLE, obj, props);
+    }
+
+    function defineE(obj, props) {
+        return define(DEFINE_ENUMERABLE, obj, props);
+    }
+
+    function defineEW(obj, props) {
+        return define(DEFINE_ENUMERABLE | DEFINE_WRITABLE, obj, props);
+    }
+
+    function defineW(obj, props) {
+        return define(DEFINE_WRITABLE, obj, props);
+    }
+
+    // Sensible PHP-like string coercion
+    function strval(val) {
+        var type;
+
+        if (!val) {
+            return (val === 0) ? '0' : '';
+        } else if (val === true) {
+            return '1';
+        } else if ((type = typeof val) === 'string') {
+            return val;
+        } else if (type === 'number') {
+            return Number.isFinite(val) ? ('' + val) : '';
+        } else if ((type === 'object') && (typeof val.toString === 'function') && (val.toString !== emptyObj.toString)) {
+            // `val` has a toString implementation other than the useless generic one
+            return '' + val;
+        }
+
+        throw new Error('strval(): Cannot coerce "' + val + '" to a string');
+    }
 
     // String interpolation
-    $cms.str = function (str, values) {
-        if (!isObj(values)) {
+    function format(str, values) {
+        if (!values || (typeof values !== 'object')) {
             // values provided as multiple parameters?
             values = toArray(arguments, 1);
             values.unshift(''); // Add empty string at index 0 so that interpolation starts from '{1}'
@@ -668,31 +641,45 @@
         }
 
         return str.replace(/\{(\w+)\}/g, function (match, key) {
-            return (key in values) ? values[key] : match;
+            return (key in values) ? strval(values[key]) : match;
         });
-    };
+    }
 
-    // Sensible string coercion
-    function toStr(val) {
-        var type = clazz(val);
+    function ucfirst(str) {
+        str = strval(str);
 
-        switch (type) {
-            case 'Undefined':
-            case 'Null':
-                return '';
+        return str.charAt(0).toUpperCase() + str.substr(1);
+    }
 
-            case 'String':
-                return val;
+    // Credit: http://stackoverflow.com/a/32604073/362006
+    function camelCase(str) {
+        // Lower cases the string
+        return str.toLowerCase()
+            // Replaces any - or _ characters with a space
+            .replace(/[\-_]+/g, ' ')
+            // Removes any non alphanumeric characters
+            .replace(/[^\w\s]/g, '')
+            // Uppercases the first character in each group immediately following a space
+            // (delimited by spaces)
+            .replace(/ (.)/g, function ($1) {
+                return $1.toUpperCase();
+            })
+            // Removes spaces
+            .replace(/ /g, '');
+    }
 
-            case 'Boolean':
-                return val ? '1' : '';
+    function camelize(str) {
+        return str.replace(/-+(.)?/g, function (match, chr) {
+            return chr ? chr.toUpperCase() : '';
+        });
+    }
 
-            case 'Number':
-                return Number.isFinite(val) ?  '' + val : '';
-
-            default:
-                throw new Error('toStr(): Cannot coerce value of type "' + type + '" to a string');
-        }
+    function dasherize(str) {
+        return str.replace(/::/g, '/')
+            .replace(/([A-Z]+)([A-Z][a-z])/g, '$1_$2')
+            .replace(/([a-z\d])([A-Z])/g, '$1_$2')
+            .replace(/_/g, '-')
+            .toLowerCase();
     }
 
     /* Generate url */
@@ -709,7 +696,7 @@
     };
 
     $cms.url.absolute = function (relativeUrl) {
-        relativeUrl = isset(relativeUrl) ? ('' + relativeUrl) : '';
+        relativeUrl = strval(relativeUrl);
 
         return ((relativeUrl[0] === '/') ? $cms.$BASE_URL : $cms.$BASE_URL_S) + relativeUrl;
     };
@@ -719,7 +706,7 @@
         return (url || '').replace(rgxProtocol, window.location.protocol);
     };
 
-    $cms.navigate = function (url, target) {
+    $cms.navigate = function navigate(url, target) {
         var el;
 
         if (isEl(url)) {
@@ -756,35 +743,72 @@
         }
     };
 
-    $cms.log = function () {
+    $cms.log = function log() {
         if ($cms.$DEV_MODE) {
             console.log.apply(undefined, arguments);
         }
     };
 
-    $cms.dir = function () {
+    $cms.dir = function dir() {
         if ($cms.$DEV_MODE) {
             console.dir.apply(undefined, arguments);
         }
     };
 
-    $cms.assert = function () {
+    $cms.assert = function assert() {
         if ($cms.$DEV_MODE) {
             console.assert.apply(undefined, arguments);
         }
     };
 
-    $cms.error = function () {
+    $cms.error = function error() {
         if ($cms.$DEV_MODE) {
             console.error.apply(undefined, arguments);
         }
     };
 
-    $cms.exception = function (ex) {
+    $cms.exception = function exception(ex) {
         if ($cms.$DEV_MODE) {
             throw ex;
         }
     };
+
+    // Inspired by goog.inherits and Babel's generated output for ES6 classes
+    function inherits(SubClass, SuperClass, protoProps) {
+        Object.setPrototypeOf(SubClass, SuperClass);
+
+        defineCW(SubClass, {base: base.bind(undefined, SuperClass)});
+
+        // Set the prototype chain to inherit from `SuperClass`
+        SubClass.prototype = Object.create(SuperClass.prototype);
+
+        defineCW(SubClass.prototype, {constructor: SubClass});
+
+        if (protoProps) {
+            Object.assign(SubClass.prototype, protoProps);
+        }
+    }
+
+    /** @private */
+    function base(SuperClass, that, method, args) {
+        if ((typeof method !== 'string') && (args === undefined)) {
+            // emulate super() call
+            args = method;
+
+            if (args) {
+                return SuperClass.apply(that, args);
+            } else {
+                return SuperClass.call(that);
+            }
+        }
+
+        // emulate super.method() call
+        if (args) {
+            return SuperClass.prototype[method].apply(that, args);
+        } else {
+            return SuperClass.prototype[method].call(that);
+        }
+    }
 
     /* Browser feature detection */
     $cms.support || ($cms.support = {});
@@ -809,10 +833,10 @@
             emptyInputEl.style.cssText = 'position:absolute;visibility:hidden;';
 
             if ((type === 'range') && (emptyInputEl.style.WebkitAppearance !== undefined)) {
-                docEl.appendChild(emptyInputEl);
+                rootEl.appendChild(emptyInputEl);
 
                 bool = (getComputedStyle(emptyInputEl).WebkitAppearance !== 'textfield') && (emptyInputEl.offsetHeight !== 0);
-                docEl.removeChild(emptyInputEl);
+                rootEl.removeChild(emptyInputEl);
             } else if ((type === 'url') || (type === 'email')) {
                 bool = emptyInputEl.checkValidity && (emptyInputEl.checkValidity() === false);
             } else {
@@ -823,7 +847,7 @@
         $cms.support.inputTypes[type] = !!bool;
     }
 
-    function getComputedProperty(el, property) {
+    function computed(el, property) {
         var global = el.ownerDocument.defaultView;
         return global.getComputedStyle(el).getPropertyValue(property);
     }
@@ -858,27 +882,28 @@
 
     // Returns a single matching child element, defaults to 'document' as parent
     $cms.dom.id = function (context, id) {
-        if (!(1 in arguments)) {
+        if (id === undefined) {
             id = context;
             context = document;
         }
-
+        console.warn('Warning: $cms.dom.id() is deprecated');
         return ('getElementById' in context) ? context.getElementById(id) : context.querySelector('#' + id);
     };
 
     // Returns a single matching child element, `context` defaults to 'document'
+    var rgxIdSelector = /^\#[\w\-]+$/;
     $cms.dom.$ = function (context, selector) {
-        if (!(1 in arguments)) {
+        if (selector === undefined) {
             selector = context;
             context = document;
         }
 
-        return context.querySelector(selector);
+        return (('getElementById' in context) && rgxIdSelector.test(selector)) ? context.getElementById(selector.substr(1)) : context.querySelector(selector);
     };
 
     // Returns an array with matching child elements
     $cms.dom.$$ = function (context, selector) {
-        if (!(1 in arguments)) {
+        if (selector === undefined) {
             selector = context;
             context = document;
         }
@@ -887,7 +912,7 @@
     };
 
     $cms.dom.last = function (context, selector) {
-        if (!(1 in arguments)) {
+        if (selector === undefined) {
             selector = context;
             context = document;
         }
@@ -907,24 +932,26 @@
     };
 
     // Special attributes that should be set via method calls
-    var mapMethodAttributes = createMap({ val: 1, css: 1, html: 1, text: 1, data: 1, width: 1, height: 1, offset: 1 });
+    var mapMethodAttributes = createMap({val: 1, css: 1, html: 1, text: 1, data: 1, width: 1, height: 1, offset: 1});
 
-    $cms.dom.element = function (tag, properties) {
+    $cms.dom.create = function (tag, properties) {
         var el = document.createElement(tag);
 
-        each(properties || {}, function (key, value) {
-            if (key in mapMethodAttributes) {
-                $cms.dom[key](el, value);
-            } else {
-                $cms.dom.attr(el, key, value)
-            }
-        });
+        if (properties) {
+            each(properties, function (key, value) {
+                if (key in mapMethodAttributes) {
+                    $cms.dom[key](el, value);
+                } else {
+                    $cms.dom.attr(el, key, value)
+                }
+            });
+        }
 
         return el;
     };
 
     $cms.dom.val = function (el, value) {
-        if (!(1 in arguments)) {
+        if (value === undefined) {
             if (!el.multiple) {
                 return el.value;
             }
@@ -942,16 +969,16 @@
             return values;
         }
 
-        el.value = isset(value) ? funcArg(el, value, el.value) : '';
+        el.value = (value != null) ? funcArg(el, value, $cms.dom.val(el)) : '';
     };
 
     $cms.dom.text = function (el, text) {
-        if (!(1 in arguments)) {
+        if (text === undefined) {
             return el.textContent;
         }
 
         var newText = funcArg(el, text, el.textContent);
-        el.textContent = isset(newText) ? ('' + newText) : '';
+        el.textContent = (newText != null) ? ('' + newText) : '';
 
         return el.textContent;
     };
@@ -979,24 +1006,24 @@
         }
     }
 
-    var capitalRE = /([A-Z])/g;
+    var rgxCapital = /([A-Z])/g;
     $cms.dom.data = function (el, name, value) {
-        var attrName = 'data-' + name.replace(capitalRE, '-$1').toLowerCase(), data;
+        var attrName = 'data-' + name.replace(rgxCapital, '-$1').toLowerCase();
 
-        if (2 in arguments) {
+        if (value !== undefined) {
             $cms.dom.attr(el, attrName, value);
         }
 
-        data = $cms.dom.attr(el, attrName);
+        var data = $cms.dom.attr(el, attrName);
 
-        return isset(data) ? deserializeValue(data) : undefined;
+        return (data != null) ? deserializeValue(data) : undefined;
     };
 
     $cms.dom.width = function (el, value) {
         var offset;
 
-        if (!(1 in arguments)) {
-            return isWindow(el) ? el.innerWidth  :
+        if (value === undefined) {
+            return isWindow(el) ? el.innerWidth :
                 isDoc(el) ? el.documentElement.scrollWidth :
                 (offset = $cms.dom.offset(el)) && offset.width;
         }
@@ -1007,8 +1034,8 @@
     $cms.dom.height = function (el, value) {
         var offset;
 
-        if (!(1 in arguments)) {
-            return isWindow(el) ? el.innerHeight  :
+        if (value === undefined) {
+            return isWindow(el) ? el.innerHeight :
                 isDoc(el) ? el.documentElement.scrollHeight :
                 (offset = $cms.dom.offset(el)) && offset.height;
         }
@@ -1017,9 +1044,9 @@
     };
 
     $cms.dom.offset = function (el, coordinates) {
-        if (!(1 in arguments)) {
+        if (coordinates === undefined) {
             if (!document.documentElement.contains(el)) {
-                return { top: 0, left: 0 };
+                return {top: 0, left: 0};
             }
 
             var rect = el.getBoundingClientRect();
@@ -1056,7 +1083,8 @@
     $cms.dom.hasIframeAccess = function (iframe) {
         try {
             return (iframe.contentWindow['access' + random()] = true) === true;
-        } catch (ignore) {}
+        } catch (ignore) {
+        }
 
         return false;
     };
@@ -1084,16 +1112,53 @@
     };
 
     $cms.dom.parents = function (el, selector) {
-        var parents = [], parent = isEl(el) && el.parentElement;
+        var parents = [],
+            parent = isEl(el) && el.parentElement;
 
         while (parent) {
-            if (!selector || $cms.dom.matches(parent, selector)) {
+            if ((selector === undefined) || $cms.dom.matches(parent, selector)) {
                 parents.push(parent);
             }
             parent = parent.parentElement;
         }
 
         return parents;
+    };
+
+    $cms.dom.next = function (el, selector) {
+        var sibling = el.nextElementSibling;
+
+        if (selector === undefined) {
+            return sibling;
+        }
+
+        while (sibling) {
+            if ($cms.dom.matches(sibling, selector)) {
+                return sibling;
+            }
+
+            sibling = el.nextElementSibling;
+        }
+
+        return null;
+    };
+
+    $cms.dom.prev = function (el, selector) {
+        var sibling = el.previousElementSibling;
+
+        if (selector === undefined) {
+            return sibling;
+        }
+
+        while (sibling) {
+            if ($cms.dom.matches(sibling, selector)) {
+                return sibling;
+            }
+
+            sibling = el.previousElementSibling;
+        }
+
+        return null;
     };
 
     $cms.dom.contains = function (parentNode, childNode) {
@@ -1108,204 +1173,201 @@
         el.insertBefore(newChild, el.firstChild);
     };
 
-    (function () {
-        var handlers = {},
-            focus = { focus: 'focusin', blur: 'focusout' },
-            hover = { mouseenter: 'mouseover', mouseleave: 'mouseout' };
+    var eventHandlers = {},
+        focusEvents = {focus: 'focusin', blur: 'focusout'},
+        hoverEvents = {mouseenter: 'mouseover', mouseleave: 'mouseout'},
+        focusinSupported = 'onfocusin' in window;
 
-        function parseEventName(event) {
-            var parts = ('' + event).split('.');
-            return {e: parts[0], ns: parts.slice(1).sort().join(' ')};
-        }
+    function parseEventName(event) {
+        var parts = ('' + event).split('.');
+        return {e: parts[0], ns: parts.slice(1).sort().join(' ')};
+    }
 
-        function matcherFor(ns) {
-            return new RegExp('(?:^| )' + ns.replace(' ', ' .* ?') + '(?: |$)');
-        }
+    function matcherFor(ns) {
+        return new RegExp('(?:^| )' + ns.replace(' ', ' .* ?') + '(?: |$)');
+    }
 
-        var focusinSupported = 'onfocusin' in window;
+    function eventCapture(handler, captureSetting) {
+        return !!handler.del && (!focusinSupported && (handler.e in focusEvents)) || !!captureSetting;
+    }
 
-        function eventCapture(handler, captureSetting) {
-            return handler.del && (!focusinSupported && (handler.e in focus)) || !!captureSetting;
-        }
+    function realEvent(type) {
+        return hoverEvents[type] || (focusinSupported && focusEvents[type]) || type;
+    }
 
-        function realEvent(type) {
-            return hover[type] || (focusinSupported && focus[type]) || type;
-        }
+    function addEvent(el, events, fn, data, selector, delegator, capture) {
+        var id = uid(el),
+            set = eventHandlers[id] || (eventHandlers[id] = []);
 
-        function addEvent(el, events, fn, data, selector, delegator, capture) {
-            var id = uid(el),
-                set = handlers[id] || (handlers[id] = []);
-
-            events.split(/\s/).forEach(function (event) {
-                var handler = parseEventName(event);
-                handler.fn = fn;
-                handler.sel = selector;
-                // emulate mouseenter, mouseleave
-                if (handler.e in hover) {
-                    fn = function (e) {
-                        var related = e.relatedTarget;
-                        if (!related || ((related !== this) && !this.contains(related))) {
-                            return handler.fn.apply(this, arguments);
-                        }
-                    };
+        events.split(/\s/).forEach(function (event) {
+            var handler = parseEventName(event);
+            handler.fn = fn;
+            handler.sel = selector;
+            // emulate mouseenter, mouseleave
+            if (handler.e in hoverEvents) {
+                fn = function (e) {
+                    var related = e.relatedTarget;
+                    if (!related || ((related !== this) && !this.contains(related))) {
+                        return handler.fn.apply(this, arguments);
+                    }
+                };
+            }
+            handler.del = delegator;
+            var callback = delegator || fn;
+            handler.proxy = function (e) {
+                var args = [e, el];
+                e.data = data;
+                if (isArray(e._args)) {
+                    merge(args, e._args);
                 }
-                handler.del = delegator;
-                var callback = delegator || fn;
-                handler.proxy = function (e) {
-                    var args = [e, el];
-                    e.data = data;
-                    if (isArray(e._args)) {
-                        merge(args, e._args);
-                    }
-                    var result = callback.apply(el, args);
-                    if (result === false) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                    }
-                    return result;
-                };
-                handler.i = set.length;
-                set.push(handler);
+                var result = callback.apply(el, args);
+                if (result === false) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+                return result;
+            };
+            handler.i = set.length;
+            set.push(handler);
 
-                el.addEventListener(realEvent(handler.e), handler.proxy, eventCapture(handler, capture))
+            el.addEventListener(realEvent(handler.e), handler.proxy, eventCapture(handler, capture))
+        });
+    }
+
+    function findHandlers(element, event, fn, selector) {
+        var matcher;
+        event = parseEventName(event);
+        if (event.ns) {
+            matcher = matcherFor(event.ns)
+        }
+        return (eventHandlers[uid(element)] || []).filter(function (handler) {
+            return handler
+                && (!event.e || handler.e === event.e)
+                && (!event.ns || matcher.test(handler.ns))
+                && (!fn || uid(handler.fn) === uid(fn))
+                && (!selector || handler.sel === selector);
+        });
+    }
+
+    function removeEvent(element, events, fn, selector, capture) {
+        var id = uid(element);
+
+        (events || '').split(/\s/).forEach(function (event) {
+            findHandlers(element, event, fn, selector).forEach(function (handler) {
+                delete eventHandlers[id][handler.i];
+                element.removeEventListener(realEvent(handler.e), handler.proxy, eventCapture(handler, capture))
+            })
+        });
+    }
+
+    $cms.dom.one = function (el, event, selector, data, callback) {
+        return $cms.dom.on(el, event, selector, data, callback, 1);
+    };
+
+    $cms.dom.on = function (el, event, selector, data, callback, one) {
+        var autoRemove, delegator;
+
+        if (event && (typeof event !== 'string')) {
+            each(event, function (type, fn) {
+                $cms.dom.on(el, type, selector, data, fn, one)
             });
+            return;
         }
 
-        function findHandlers(element, event, fn, selector) {
-            var matcher;
-            event = parseEventName(event);
-            if (event.ns) {
-                matcher = matcherFor(event.ns)
-            }
-            return (handlers[uid(element)] || []).filter(function (handler) {
-                return handler
-                    && (!event.e || handler.e === event.e)
-                    && (!event.ns || matcher.test(handler.ns))
-                    && (!fn || uid(handler.fn) === uid(fn))
-                    && (!selector || handler.sel === selector);
-            });
+        if ((typeof selector !== 'string') && !isFunc(callback) && (callback !== false)) {
+            callback = data;
+            data = selector;
+            selector = undefined;
         }
 
-        function removeEvent(element, events, fn, selector, capture) {
-            var id = uid(element);
-
-            (events || '').split(/\s/).forEach(function (event) {
-                findHandlers(element, event, fn, selector).forEach(function (handler) {
-                    delete handlers[id][handler.i];
-                    element.removeEventListener(realEvent(handler.e), handler.proxy, eventCapture(handler, capture))
-                })
-            });
+        if ((callback === undefined) || (data === false)) {
+            callback = data;
+            data = undefined;
         }
 
-        $cms.dom.one = function (el, event, selector, data, callback) {
-            return $cms.dom.on(el, event, selector, data, callback, 1);
-        };
+        if (callback === false) {
+            callback = returnFalse;
+        }
 
-        $cms.dom.on = function (el, event, selector, data, callback, one) {
-            var autoRemove, delegator;
+        if (one) {
+            autoRemove = function (e) {
+                removeEvent(el, e.type, callback);
+                return callback.apply(this, arguments);
+            };
+        }
 
-            if (event && !isStr(event)) {
-                each(event, function (type, fn) {
-                    $cms.dom.on(el, type, selector, data, fn, one)
-                });
-                return;
-            }
+        if (selector) {
+            delegator = function (e) {
+                var match = $cms.dom.closest(e.target, selector, el);
 
-            if (!isStr(selector) && !isFunc(callback) && (callback !== false)) {
-                callback = data;
-                data = selector;
-                selector = undefined;
-            }
+                if (match) {
+                    var args = toArray(arguments);
+                    args[1] = match; // Set the element arg to the matched element
+                    return (autoRemove || callback).apply(match, args);
+                }
+            };
+        }
 
-            if ((callback === undefined) || (data === false)) {
-                callback = data;
-                data = undefined;
-            }
+        addEvent(el, event, callback, data, selector, delegator || autoRemove);
+    };
 
-            if (callback === false) {
-                callback = returnFalse;
-            }
+    $cms.dom.off = function (el, event, selector, callback) {
+        if (event && (typeof event !== 'string')) {
+            each(event, function (type, fn) {
+                $cms.dom.off(el, type, selector, fn);
+            });
+            return;
+        }
 
-            if (one) {
-                autoRemove = function (e) {
-                    removeEvent(el, e.type, callback);
-                    return callback.apply(this, arguments);
-                };
-            }
+        if ((typeof selector !== 'string') && !isFunc(callback) && (callback !== false)) {
+            callback = selector;
+            selector = undefined;
+        }
 
-            if (selector) {
-                delegator = function (e) {
-                    var match = $cms.dom.closest(e.target, selector, el);
+        if (callback === false) {
+            callback = returnFalse;
+        }
 
-                    if (match && (match !== el)) {
-                        var args = toArray(arguments);
-                        args[1] = match; // Set the element arg to the matched element
-                        return (autoRemove || callback).apply(match, args);
-                    }
-                };
-            }
+        removeEvent(el, event, callback, selector)
+    };
 
-            addEvent(el, event, callback, data, selector, delegator || autoRemove);
-        };
+    var mapMouseEvents = createMap({click: 1, mousedown: 1, mouseup: 1, mousemove: 1});
 
-        $cms.dom.off = function (el, event, selector, callback) {
-            if (event && !isStr(event)) {
-                each(event, function (type, fn) {
-                    $cms.dom.off(el, type, selector, fn);
-                });
-                return;
-            }
+    $cms.dom.createEvent = function (type, props) {
+        if (type && (typeof type === 'object')) {
+            props = type;
+            type = props.type;
+        }
+        var event = document.createEvent((type in mapMouseEvents) ? 'MouseEvents' : 'Events'),
+            bubbles = true,
+            cancelable = true;
 
-            if (!isStr(selector) && !isFunc(callback) && (callback !== false)) {
-                callback = selector;
-                selector = undefined;
-            }
-
-            if (callback === false) {
-                callback = returnFalse;
-            }
-
-            removeEvent(el, event, callback, selector)
-        };
-
-        var mapMouseEvents = createMap({ click: 1, mousedown: 1, mouseup: 1, mousemove: 1 });
-
-        $cms.dom.createEvent = function (type, props) {
-            if (isObj(type)) {
-                props = type;
-                type = props.type;
-            }
-            var event = document.createEvent((type in mapMouseEvents) ? 'MouseEvents' : 'Events'),
-                bubbles = true,
-                cancelable = true;
-
-            if (props) {
-                for (var key in props) {
-                    if (key === 'bubbles') {
-                        bubbles = !!props.bubbles;
-                    } else if (key === 'cancelable') {
-                        cancelable = !!props.cancelable;
-                    } else if (key !== 'type') {
-                        event[key] = props[key];
-                    }
+        if (props) {
+            for (var key in props) {
+                if (key === 'bubbles') {
+                    bubbles = !!props.bubbles;
+                } else if (key === 'cancelable') {
+                    cancelable = !!props.cancelable;
+                } else if (key !== 'type') {
+                    event[key] = props[key];
                 }
             }
-            event.initEvent(type, bubbles, cancelable);
-            return event;
-        };
+        }
+        event.initEvent(type, bubbles, cancelable);
+        return event;
+    };
 
-        $cms.dom.trigger = function (el, event, args) {
-            event = (isStr(event) || isPlainObj(event)) ? $cms.dom.createEvent(event) : event;
-            event._args = args;
+    $cms.dom.trigger = function (el, event, args) {
+        event = ((typeof event === 'string') || isPlainObj(event)) ? $cms.dom.createEvent(event) : event;
+        event._args = args;
 
-            // handle focus(), blur() by calling them directly
-            if ((event.type in focus) && isFunc(el[event.type])) {
-                return el[event.type]();
-            } else {
-                return el.dispatchEvent(event)
-            }
-        };
-    }());
+        // handle focus(), blur() by calling them directly
+        if ((event.type in focusEvents) && (typeof el[event.type] === 'function')) {
+            return el[event.type]();
+        } else {
+            return el.dispatchEvent(event)
+        }
+    };
 
     // Gets the 'initial' value for an element type's CSS property (only 'display' supported as of now)
     var _initial = {};
@@ -1347,8 +1409,8 @@
         $cms.dom.css(el, 'display', 'none');
     };
 
-    $cms.dom.toggle = $cms.dom.toggleDisplay = function (el, show) {
-        show = (1 in arguments) ? !!show : ($cms.dom.css(el, 'display') === 'none');
+    $cms.dom.toggle = function (el, show) {
+        show = (show !== undefined) ? !!show : ($cms.dom.css(el, 'display') === 'none');
 
         if (show) {
             $cms.dom.show(el);
@@ -1358,7 +1420,7 @@
     };
 
     $cms.dom.toggleWithAria = function (el, show) {
-        show = (1 in arguments) ? !!show : ($cms.dom.css(el, 'display') === 'none');
+        show = (show !== undefined) ? !!show : ($cms.dom.css(el, 'display') === 'none');
 
         if (show) {
             $cms.dom.show(el);
@@ -1370,18 +1432,18 @@
     };
 
     $cms.dom.toggleDisabled = function (el, disabled) {
-        disabled = (1 in arguments) ? !!disabled : !el.disabled;
+        disabled = (disabled !== undefined) ? !!disabled : !el.disabled;
 
         el.disabled = disabled;
     };
 
     $cms.dom.toggleChecked = function (el, checked) {
-        checked = (1 in arguments) ? !!checked : !el.checked;
+        checked = (checked !== undefined) ? !!checked : !el.checked;
 
         el.checked = checked;
     };
 
-    var mapCssNumericProps = createMap({ 'column-count': 1, 'columns': 1, 'font-weight': 1, 'line-height': 1, 'opacity': 1, 'z-index': 1, 'zoom': 1 });
+    var mapCssNumericProps = createMap({'column-count': 1, 'columns': 1, 'font-weight': 1, 'line-height': 1, 'opacity': 1, 'z-index': 1, 'zoom': 1});
 
     function maybeAddPx(name, value) {
         return ((typeof value === 'number') && !(name in mapCssNumericProps)) ? (value + 'px') : value;
@@ -1389,8 +1451,8 @@
 
     $cms.dom.css = function (el, property, value) {
         var key;
-        if (!(2 in arguments)) {
-            if (isStr(property)) {
+        if (value === undefined) {
+            if (typeof property === 'string') {
                 return el.style[camelize(property)] || getComputedStyle(el).getPropertyValue(property);
             } else if (isArray(property)) {
                 var computedStyle = getComputedStyle(el),
@@ -1404,7 +1466,7 @@
         }
 
         var css = '';
-        if (isStr(property)) {
+        if (typeof property === 'string') {
             if (!value && (value !== 0)) {
                 el.style.removeProperty(dasherize(property));
             } else {
@@ -1424,7 +1486,7 @@
     };
 
     $cms.dom.isCss = function (el, property, values) {
-        values = isStr(values) ? [values] : (values || []);
+        values = (typeof values === 'string') ? [values] : (values || []);
 
         return values.includes($cms.dom.css(el, property));
     };
@@ -1436,9 +1498,9 @@
     $cms.dom.keyPressed = function (keyboardEvent, checkKey) {
         var key = keyboardEvent.key;
 
-        if (1 in arguments) {
+        if (checkKey !== undefined) {
             // Key(s) to check against passed
-            if (isStr(checkKey)) {
+            if (typeof checkKey === 'string') {
                 return key === checkKey;
             }
 
@@ -1464,9 +1526,9 @@
             key = '';
         }
 
-        if (1 in arguments) {
+        if (checkOutput !== undefined) {
             // Key output(s) to check against passed
-            if (isStr(checkOutput)) {
+            if (typeof checkOutput === 'string') {
                 return key === checkOutput;
             }
 
@@ -1497,17 +1559,17 @@
     };
 
     function setAttribute(el, name, value) {
-        isset(value) ? el.setAttribute(name, value) : el.removeAttribute(name);
+        (value != null) ? el.setAttribute(name, value) : el.removeAttribute(name);
     }
 
     $cms.dom.attr = function (el, name, value) {
         var key;
 
-        if (isStr(name) && !(2 in arguments)) {
+        if ((typeof name === 'string') && (value === undefined)) {
             return el.getAttribute(name);
         }
 
-        if (isObj(name)) {
+        if (name && (typeof name === 'object')) {
             for (key in name) {
                 setAttribute(el, key, name[key]);
             }
@@ -1526,18 +1588,16 @@
         // Parser hint: .innerHTML okay
         var i, len;
 
-        if (!(1 in arguments)) {
+        if (html === undefined) {
             return el.innerHTML;
         }
-
-        html = html || '';
 
         for (i = 0, len = el.children.length; i < len; i++) {
             // Detach behaviors from the (if any) elements to be deleted
             $cms.detachBehaviors(el.children[i]);
         }
 
-        el.innerHTML = html;
+        el.innerHTML = strval(html);
 
         // Attach behaviors to new child elements (if any)
         for (i = 0, len = el.children.length; i < len; i++) {
@@ -1546,7 +1606,7 @@
     };
 
     $cms.dom.empty = function (el) {
-
+        $cms.dom.html(el, '');
     };
 
     $cms.dom.prependHtml = function (el, html) {
@@ -1589,7 +1649,7 @@
             next = el.nextSibling,
             node;
 
-        if (!(1 in arguments)) {
+        if (html === undefined) {
             return el.outerHTML;
         }
 
@@ -1621,7 +1681,7 @@
         return el.offsetHeight - padding - border;
     };
 
-    var mapExcludedTypes = createMap({ submit: 1, reset: 1, button: 1, file: 1 });
+    var mapExcludedTypes = createMap({submit: 1, reset: 1, button: 1, file: 1});
     $cms.dom.serializeArray = function (form) {
         var name, result = [];
 
@@ -1636,7 +1696,7 @@
             if (isArray(value)) {
                 return value.forEach(add);
             }
-            result.push({ name: name, value: value });
+            result.push({name: name, value: value});
         }
 
         return result;
@@ -1671,7 +1731,7 @@
         behaviors = $cms.behaviors;
 
         for (name in behaviors) {
-            if (isObj(behaviors[name]) && isFunc(behaviors[name].attach)) {
+            if (behaviors[name] && (typeof behaviors[name] === 'object') && (typeof behaviors[name].attach === 'function')) {
                 //try {
                 behaviors[name].attach(context, settings);
                 //} catch (e) {
@@ -1695,10 +1755,10 @@
         behaviors = $cms.behaviors;
 
         for (name in behaviors) {
-            if (isObj(behaviors[name]) && isFunc(behaviors[name].detach)) {
-               // try {
-                    behaviors[name].detach(context, settings, trigger);
-               // } catch (e) {
+            if (behaviors[name] && (typeof behaviors[name] === 'object') && (typeof behaviors[name].detach === 'function')) {
+                // try {
+                behaviors[name].detach(context, settings, trigger);
+                // } catch (e) {
                 //    $cms.error('Error while detaching behavior \'' + name + '\' of addon \'' + addon + '\'', e);
                 //}
             }
@@ -1713,134 +1773,36 @@
 
     $cms.viewInstances || ($cms.viewInstances = {});
 
-    var DEFINE_CONFIGURABLE = 1,
-        DEFINE_ENUMERABLE = 2,
-        DEFINE_WRITABLE = 4;
-
-    // `mask` is optional (defaults to 0)
-    $cms.define = define;
-    function define(mask, obj, props) {
-        if (!(2 in arguments)) {
-            props = obj;
-            obj = mask;
-            mask = 0;
-        }
-
-        mask = +mask || 0;
-        obj || (obj = {});
-        props || (props = {});
-
-        var key, descriptors = {};
-
-        for (key in props) {
-            descriptors[key] = {
-                configurable: !!(mask & DEFINE_CONFIGURABLE),
-                enumerable: !!(mask & DEFINE_ENUMERABLE),
-                value: props[key],
-                writable: !!(mask & DEFINE_WRITABLE)
-            };
-        }
-
-        return Object.defineProperties(obj, descriptors);
-    }
-
-    $cms.defineC = defineC;
-    function defineC(obj, props) {
-        return define(DEFINE_CONFIGURABLE, obj, props);
-    }
-
-    $cms.defineCE = defineCE;
-    function defineCE(obj, props) {
-        return define(DEFINE_CONFIGURABLE | DEFINE_ENUMERABLE, obj, props);
-    }
-
-    $cms.defineCW = defineCW;
-    function defineCW(obj, props) {
-        return define(DEFINE_CONFIGURABLE | DEFINE_WRITABLE, obj, props);
-    }
-
-    $cms.defineCEW = defineCEW;
-    function defineCEW(obj, props) {
-        return define(DEFINE_CONFIGURABLE | DEFINE_ENUMERABLE | DEFINE_WRITABLE, obj, props);
-    }
-
-    $cms.defineE = defineE;
-    function defineE(obj, props) {
-        return define(DEFINE_ENUMERABLE, obj, props);
-    }
-
-    $cms.defineEW = defineEW;
-    function defineEW(obj, props) {
-        return define(DEFINE_ENUMERABLE | DEFINE_WRITABLE, obj, props);
-    }
-
-    $cms.defineW = defineW;
-    function defineW(obj, props) {
-        return define(DEFINE_WRITABLE, obj, props);
-    }
-
-    // Inspired by goog.inherits and Babel's generated output for ES6 classes
-    $cms.inherits = inherits;
-    function inherits(SubClass, SuperClass, protoProps) {
-        Object.setPrototypeOf(SubClass, SuperClass);
-
-        defineCW(SubClass, {
-            base: function base(self, method, args) {
-                if ((typeof method !== 'string') && !(2 in arguments)) {
-                    // emulate super() call
-                    args = method;
-
-                    if (args) {
-                        return SuperClass.apply(self, args);
-                    } else {
-                        return SuperClass.call(self);
-                    }
-                }
-
-                // emulate super.method() call
-                if (args) {
-                    return SuperClass.prototype[method].apply(self, args);
-                } else {
-                    return SuperClass.prototype[method].call(self);
-                }
-            }
-        });
-
-        // Set the prototype chain to inherit from `SuperClass`, without calling
-        // `SuperClass`'s constructor function and add the prototype properties.
-        SubClass.prototype = Object.create(SuperClass.prototype);
-
-        defineCW(SubClass.prototype, { constructor: SubClass });
-
-        if (protoProps) {
-            Object.assign(SubClass.prototype, protoProps);
-        }
-    }
 
     // List of view options that can be set as properties.
-    var mapViewOptions = createMap({ model: 1, collection: 1, el: 1, id: 1, attributes: 1, className: 1, tagName: 1, events: 1 });
+    var mapViewOptions = createMap({ el: 1, id: 1, attributes: 1, className: 1, tagName: 1, events: 1});
 
     // Initialize
     $cms.View = View;
-    function View(options, viewOptions) {
-        this.uid = $cms.uid(this);
-        this.options = options || {};
-
-        if (isObj(viewOptions)) {
-            for (var key in mapViewOptions) {
-                if (key in viewOptions) {
-                    this[key] = viewOptions[key];
-                }
-            }
-        }
-
-        this._ensureElement();
+    function View(params, viewOptions) {
+        this.initialize.apply(this, arguments);
     }
 
     // Cached regex to split keys for `delegate`.
     var rgxDelegateEventSplitter = /^(\S+)\s*(.*)$/;
 
-    extend(View.prototype, {
+    Object.assign(View.prototype, {
+        initialize: function (params, viewOptions) {
+            this.uid = $cms.uid(this);
+            this.params = params || {};
+            this.options = params || {};
+
+            if (viewOptions && (typeof viewOptions === 'object')) {
+                for (var key in mapViewOptions) {
+                    if (key in viewOptions) {
+                        this[key] = viewOptions[key];
+                    }
+                }
+            }
+
+            this._ensureElement();
+        },
+
         // The default `tagName` of a View's element is `"div"`.
         tagName: 'div',
 
@@ -1857,15 +1819,8 @@
             return $cms.dom.closest(el, selector, this.el);
         },
 
-        // **render** is the core function that your view should override, in order
-        // to populate its element (`this.el`), with the appropriate HTML. The
-        // convention is for **render** to always return `this`.
-        render: function() {
-            return this;
-        },
-
         // Remove this view by taking the element out of the DOM.
-        remove: function() {
+        remove: function () {
             this._removeElement();
             return this;
         },
@@ -1987,7 +1942,7 @@
 
         return function (urlPart, canTryUrlSchemes) {
             var urlPartEncoded = urlencode(urlPart);
-            canTryUrlSchemes = (1 in arguments) ? !!canTryUrlSchemes : $cms.$EXTRA.canTryUrlSchemes;
+            canTryUrlSchemes = (canTryUrlSchemes !== undefined) ? !!canTryUrlSchemes : $cms.$EXTRA.canTryUrlSchemes;
 
             if ((urlPartEncoded !== urlPart) && canTryUrlSchemes) {
                 // These interfere with URL Scheme processing because they get pre-decoded and make things ambiguous
@@ -2001,7 +1956,7 @@
 
     // JS port of the tempcode filter '~' (NL_ESCAPED)
     $cms.filter.crLf = function (str) {
-        return str.replace(/[\r\n]/g, '');
+        return strval(str).replace(/[\r\n]/g, '');
     };
 
     var mapFilterIdReplace = createMap({
@@ -2068,6 +2023,8 @@
 
     $cms.ui || ($cms.ui = {});
 
+    var tempDisabledButtons = {};
+
     $cms.ui.disableButton = function (btn, permanent) {
         permanent = !!permanent;
 
@@ -2075,10 +2032,14 @@
             return;
         }
 
+        var uid = $cms.uid(btn);
+
         window.setTimeout(function () {
             btn.style.cursor = 'wait';
             btn.disabled = true;
-            btn.under_timer = true;
+            if (!permanent) {
+                tempDisabledButtons[uid] = true;
+            }
         }, 20);
 
         if (!permanent) {
@@ -2087,10 +2048,10 @@
         }
 
         function enable() {
-            if (btn.under_timer) {
+            if (tempDisabledButtons[uid]) {
                 btn.disabled = false;
-                btn.under_timer = false;
                 btn.style.cursor = 'default';
+                delete tempDisabledButtons[uid];
             }
         }
     };
@@ -2111,7 +2072,7 @@
         permanent = !!permanent;
 
         buttons.forEach(function (btn) {
-            if (!btn.disabled && !btn.under_timer) {// We do not want to interfere with other code potentially operating
+            if (!btn.disabled && !tempDisabledButtons[$cms.uid(btn)]) {// We do not want to interfere with other code potentially operating
                 $cms.ui.disableButton(btn, permanent);
             }
         });
@@ -2139,7 +2100,25 @@
      HEAVILY Modified by ocProducts for composr.
 
      */
-    var optionsDefaults = createMap({
+
+    $cms.views.ModalWindow = ModalWindow;
+    function ModalWindow(options) {
+        ModalWindow.base(this, arguments);
+
+        options = $cms.defaults({}, options, ModalWindow.defaults);
+
+        for (var key in ModalWindow.defaults) {
+            this[key] = options[key];
+        }
+
+        this.top_window = window.top;
+        this.top_window = this.top_window.top;
+
+        this.close(this.top_window);
+        this.init_box();
+    }
+
+    ModalWindow.defaults = createMap({
         'type': 'alert',
         'opacity': '0.5',
         'width': 'auto',
@@ -2160,26 +2139,7 @@
         'input_type': 'text'
     });
 
-    $cms.views.ModalWindow = ModalWindow;
-    function ModalWindow(options) {
-        ModalWindow.base(this, arguments);
-
-        options || (options = {});
-
-        for (var key in optionsDefaults) {
-            this[key] = (key in options) ? options[key] : optionsDefaults[key];
-        }
-
-        this.top_window = window.top;
-        this.top_window = this.top_window.top;
-
-        this.close(this.top_window);
-        this.init_box();
-
-        return this;
-    }
-
-    inherits(ModalWindow, $cms.View, {
+    $cms.inherits(ModalWindow, $cms.View, {
         // Constants
         WINDOW_SIDE_GAP: $cms.$MOBILE ? 5 : 25,
         WINDOW_TOP_GAP: 25, // Will also be used for bottom gap for percentage heights
@@ -2294,7 +2254,7 @@
             this.boxWrapperEl.firstElementChild.style.height = box_height;
             var iframe = this.boxWrapperEl.querySelector('iframe');
 
-            if (($cms.dom.hasIframeAccess(iframe)) && (iframe.contentWindow.document.body))  {// Balance iframe height
+            if (($cms.dom.hasIframeAccess(iframe)) && (iframe.contentWindow.document.body)) {// Balance iframe height
                 iframe.style.width = '100%';
                 if (height == 'auto') {
                     if (!init) {
@@ -2362,7 +2322,8 @@
                     if (iframe && ($cms.dom.hasIframeAccess(iframe))) {
                         iframe.contentWindow.scrolled_up_for = true;
                     }
-                } catch (e) {}
+                } catch (e) {
+                }
             }
         },
 
@@ -2390,7 +2351,7 @@
                 }
             }));
 
-            var self = this;
+            var that = this;
             var width = this.width;
             var height = this.height;
 
@@ -2435,15 +2396,15 @@
             });
 
             this.clickout_cancel = function () {
-                self.option('cancel');
+                that.option('cancel');
             };
 
             this.clickout_finished = function () {
-                self.option('finished');
+                that.option('finished');
             };
 
             this.clickout_yes = function () {
-                self.option('yes');
+                that.option('yes');
             };
 
             this.keyup = function (e) {
@@ -2451,26 +2412,26 @@
 
                 if (key_code == 37) // Left arrow
                 {
-                    self.option('left');
+                    that.option('left');
                 } else if (key_code == 39) // Right arrow
                 {
-                    self.option('right');
-                } else if ((key_code == 13/*enter*/) && (self.yes)) {
-                    self.option('yes');
+                    that.option('right');
+                } else if ((key_code == 13/*enter*/) && (that.yes)) {
+                    that.option('yes');
                 }
-                if ((key_code == 13/*enter*/) && (self.finished)) {
-                    self.option('finished');
-                } else if ((key_code == 27/*esc*/) && (self.cancel_button) && ((self.type == 'prompt') || (self.type == 'confirm') || (self.type == 'lightbox') || (self.type == 'alert'))) {
-                    self.option('cancel');
+                if ((key_code == 13/*enter*/) && (that.finished)) {
+                    that.option('finished');
+                } else if ((key_code == 27/*esc*/) && (that.cancel_button) && ((that.type == 'prompt') || (that.type == 'confirm') || (that.type == 'lightbox') || (that.type == 'alert'))) {
+                    that.option('cancel');
                 }
             };
 
             this.mousemove = function (e) {
-                if (self.boxWrapperEl && self.boxWrapperEl.firstElementChild.className.indexOf(' mousemove') == -1) {
-                    self.boxWrapperEl.firstElementChild.className += ' mousemove';
+                if (that.boxWrapperEl && that.boxWrapperEl.firstElementChild.className.indexOf(' mousemove') == -1) {
+                    that.boxWrapperEl.firstElementChild.className += ' mousemove';
                     window.setTimeout(function () {
-                        if (self.boxWrapperEl) {
-                            self.boxWrapperEl.firstElementChild.className = self.boxWrapperEl.firstElementChild.className.replace(/ mousemove/g, '');
+                        if (that.boxWrapperEl) {
+                            that.boxWrapperEl.firstElementChild.className = that.boxWrapperEl.firstElementChild.className.replace(/ mousemove/g, '');
                         }
                     }, 2000);
                 }
@@ -2478,11 +2439,12 @@
 
             $cms.dom.on(this.boxWrapperEl.firstElementChild, 'click', function (e) {
                 try {
-                    self.top_window.cancel_bubbling(e);
-                } catch (e) {}
+                    that.top_window.cancel_bubbling(e);
+                } catch (e) {
+                }
 
-                if ($cms.$MOBILE && (self.type === 'lightbox')) {// IDEA: Swipe detect would be better, but JS does not have this natively yet
-                    self.option('right');
+                if ($cms.$MOBILE && (that.type === 'lightbox')) {// IDEA: Swipe detect would be better, but JS does not have this natively yet
+                    that.option('right');
                 }
             });
 
@@ -2511,7 +2473,7 @@
                     animate_frame_load(iframe, 'overlay_iframe', 50, true);
 
                     window.setTimeout(function () {
-                        $cms.dom.on(self.boxWrapperEl, 'click', self.clickout_finished);
+                        $cms.dom.on(that.boxWrapperEl, 'click', that.clickout_finished);
                     }, 1000);
 
                     $cms.dom.on(iframe, 'load', function () {
@@ -2526,9 +2488,9 @@
                     // Fiddle it, to behave like a popup would
                     var name = this.name;
                     var make_frame_like_popup = function () {
-                        if (iframe.parentNode.parentNode.parentNode.parentNode == null && self.iframe_restyle_timer != null) {
-                            clearInterval(self.iframe_restyle_timer);
-                            self.iframe_restyle_timer = null;
+                        if (iframe.parentNode.parentNode.parentNode.parentNode == null && that.iframe_restyle_timer != null) {
+                            clearInterval(that.iframe_restyle_timer);
+                            that.iframe_restyle_timer = null;
                             return;
                         }
 
@@ -2543,15 +2505,15 @@
                             //iframe.scrolling=(_this.scrollbars===false)?'no':'auto';	Actually, not wanting this now
 
                             // Remove fixed width
-                            var main_website_inner = iframe.contentWindow.document.getElementById('main_website_inner');
+                            var main_website_inner = iframe.contentWindow.$cms.dom.id('main_website_inner');
                             if (main_website_inner) main_website_inner.id = '';
 
                             // Remove main_website marker
-                            var main_website = iframe.contentWindow.document.getElementById('main_website');
+                            var main_website = iframe.contentWindow.$cms.dom.id('main_website');
                             if (main_website) main_website.id = '';
 
                             // Remove popup spacing
-                            var popup_spacer = iframe.contentWindow.document.getElementById('popup_spacer');
+                            var popup_spacer = iframe.contentWindow.$cms.dom.id('popup_spacer');
                             if (popup_spacer) popup_spacer.id = '';
 
                             // Set linking scheme
@@ -2568,15 +2530,15 @@
                             } else {
                                 base_element = bases[0];
                             }
-                            base_element.target = self.target;
+                            base_element.target = that.target;
                             // Firefox 3.6 does not respect <base> element put in via DOM manipulation :(
                             var forms = iframe.contentWindow.document.getElementsByTagName('form');
                             for (var i = 0; i < forms.length; i++) {
-                                if (!forms[i].target) forms[i].target = self.target;
+                                if (!forms[i].target) forms[i].target = that.target;
                             }
                             var as = iframe.contentWindow.document.getElementsByTagName('a');
                             for (var i = 0; i < as.length; i++) {
-                                if (!as[i].target) as[i].target = self.target;
+                                if (!as[i].target) as[i].target = that.target;
                             }
 
                             // Set frame name
@@ -2586,8 +2548,8 @@
                             if (iframe.contentWindow.faux_close === undefined) {
                                 iframe.contentWindow.faux_close = function () {
                                     if (iframe && iframe.contentWindow && iframe.contentWindow.returnValue !== undefined)
-                                        self.returnValue = iframe.contentWindow.returnValue;
-                                    self.option('finished');
+                                        that.returnValue = iframe.contentWindow.returnValue;
+                                    that.option('finished');
                                 };
                             }
 
@@ -2598,17 +2560,17 @@
                         }
 
                         // Handle iframe sizing
-                        if (self.height == 'auto') {
-                            self.reset_dimensions(self.width, self.height, false);
+                        if (that.height == 'auto') {
+                            that.reset_dimensions(that.width, that.height, false);
                         }
                     };
                     window.setTimeout(function () {
                         illustrate_frame_load('overlay_iframe');
-                        iframe.src = self.href;
+                        iframe.src = that.href;
                         make_frame_like_popup();
 
-                        if (self.iframe_restyle_timer == null)
-                            self.iframe_restyle_timer = window.setInterval(make_frame_like_popup, 300); // In case internal nav changes
+                        if (that.iframe_restyle_timer == null)
+                            that.iframe_restyle_timer = window.setInterval(make_frame_like_popup, 300); // In case internal nav changes
                     }, 0);
                     break;
 
@@ -2620,15 +2582,15 @@
                             'class': 'buttons__proceed button_screen_item'
                         });
                         $cms.dom.on(button, 'click', function () {
-                            self.option('yes');
+                            that.option('yes');
                         });
                         window.setTimeout(function () {
-                            $cms.dom.on(self.boxWrapperEl, 'click', self.clickout_yes);
+                            $cms.dom.on(that.boxWrapperEl, 'click', that.clickout_yes);
                         }, 1000);
                         this.button_container.appendChild(button);
                     } else {
                         window.setTimeout(function () {
-                            $cms.dom.on(self.boxWrapperEl, 'click', self.clickout_cancel);
+                            $cms.dom.on(that.boxWrapperEl, 'click', that.clickout_cancel);
                         }, 1000);
                     }
                     break;
@@ -2640,7 +2602,7 @@
                         'style': 'font-weight: bold;'
                     });
                     $cms.dom.on(button, 'click', function () {
-                        self.option('yes');
+                        that.option('yes');
                     });
                     this.button_container.appendChild(button);
                     var button = this.element('button', {
@@ -2648,7 +2610,7 @@
                         'class': 'buttons__no button_screen_item'
                     });
                     $cms.dom.on(button, 'click', function () {
-                        self.option('no');
+                        that.option('no');
                     });
                     this.button_container.appendChild(button);
                     break;
@@ -2675,12 +2637,12 @@
                             'style': 'font-weight: bold;'
                         });
                         $cms.dom.on(button, 'click', function () {
-                            self.option('yes');
+                            that.option('yes');
                         });
                         this.button_container.appendChild(button);
                     }
                     window.setTimeout(function () {
-                        $cms.dom.on(self.boxWrapperEl, 'click', self.clickout_cancel);
+                        $cms.dom.on(that.boxWrapperEl, 'click', that.clickout_cancel);
                     }, 1000);
                     break;
             }
@@ -2703,7 +2665,7 @@
                     container.appendChild(button);
                 }
                 $cms.dom.on(button, 'click', function () {
-                    self.option(this.cancel ? 'cancel' : 'finished');
+                    that.option(this.cancel ? 'cancel' : 'finished');
                 });
             }
 
@@ -2719,21 +2681,21 @@
             // Handle dimensions
             this.reset_dimensions(this.width, this.height, true);
             $cms.dom.on(window, 'resize', function () {
-                self.reset_dimensions(width, height, false);
+                that.reset_dimensions(width, height, false);
             });
 
             // Focus first button by default
             if (this.input) {
                 setTimeout(function () {
-                    self.input.focus();
+                    that.input.focus();
                 });
             } else if (this.boxWrapperEl.querySelector('button')) {
                 this.boxWrapperEl.querySelector('button').focus();
             }
 
             setTimeout(function () { // Timeout needed else keyboard activation of overlay opener may cause instant shutdown also
-                $cms.dom.on(document, 'keyup', self.keyup);
-                $cms.dom.on(document, 'mousemove', self.mousemove);
+                $cms.dom.on(document, 'keyup', that.keyup);
+                $cms.dom.on(document, 'mousemove', that.mousemove);
             }, 100);
         },
 
@@ -2757,7 +2719,7 @@
                     'text': 'innerText'
                 };
 
-            if (isObj(options)) {
+            if (options && (typeof options === 'object')) {
                 for (var name in options) {
                     var value = options[name];
                     if (name === 'styles') {
@@ -2808,15 +2770,15 @@
                 all_nodes_selectable: all_nodes_selectable,
                 use_server_id: use_server_id
             },
-            el = document.getElementById('tree_list__root_' + name);
+            el = $cms.dom.id('tree_list__root_' + name);
 
-        return new $cms.views.TreeList(options, { el: el });
+        return new $cms.views.TreeList(options, {el: el});
     };
 
     $cms.views.TreeList = TreeList;
 
     function TreeList(options) {
-        $cms.View.apply(this, arguments);
+        TreeList.base(this, arguments);
 
         this.name = options.name;
         this.ajax_url = options.ajax_url;
@@ -2834,13 +2796,13 @@
             url += '&id=' + encodeURIComponent(options.root_id);
         }
         url += '&options=' + this.options;
-        url += '&default=' + encodeURIComponent(document.getElementById(this.name).value);
+        url += '&default=' + encodeURIComponent($cms.dom.id(this.name).value);
 
         do_ajax_request(url, this);
 
-        var self = this;
+        var that = this;
         $cms.dom.on(document.documentElement, 'mousemove', function (event) {
-            self.specialKeyPressed = !!(event.ctrlKey || event.altKey || event.metaKey || event.shiftKey)
+            that.specialKeyPressed = !!(event.ctrlKey || event.altKey || event.metaKey || event.shiftKey)
         });
     }
 
@@ -2857,6 +2819,7 @@
 
             type || (type = 'c');
             ob || (ob = this.tree_list_data);
+            serverid = !!serverid;
 
             // Normally we could only ever use getElementsByTagName, but Konqueror and Safari don't like it
             try {// IE9 beta has serious problems
@@ -2872,15 +2835,15 @@
             } catch (e) {}
 
             if (!done) {
-                for (i = 0; i < ob.childNodes.length; i++) {
-                    if (ob.childNodes[i].localName === 'category') {
-                        test = this.getElementByIdHack(id, type, ob.childNodes[i], serverid);
+                for (i = 0; i < ob.children.length; i++) {
+                    if (ob.children[i].localName === 'category') {
+                        test = this.getElementByIdHack(id, type, ob.children[i], serverid);
                         if (test) {
                             return test;
                         }
                     }
-                    if ((ob.childNodes[i].localName === ((type === 'c') ? 'category' : 'entry')) && (ob.childNodes[i].getAttribute(serverid ? 'serverid' : 'id') == id)) {
-                        return ob.childNodes[i];
+                    if ((ob.children[i].localName === ((type === 'c') ? 'category' : 'entry')) && (ob.children[i].getAttribute(serverid ? 'serverid' : 'id') == id)) {
+                        return ob.children[i];
                     }
                 }
             }
@@ -2896,7 +2859,7 @@
 
             var i, xml, temp_node, html;
             if (!expanding_id) {// Root
-                html = document.getElementById('tree_list__root_' + this.name);
+                html = $cms.dom.id('tree_list__root_' + this.name);
                 $cms.dom.html(html, '');
 
                 this.tree_list_data = ajax_result.cloneNode(true);
@@ -2914,7 +2877,7 @@
                     temp_node = ajax_result.childNodes[i];
                     xml.appendChild(temp_node.cloneNode(true));
                 }
-                html = document.getElementById(this.name + 'tree_list_c_' + expanding_id);
+                html = $cms.dom.id(this.name + 'tree_list_c_' + expanding_id);
             }
 
             attributes_full_fixup(xml);
@@ -2926,11 +2889,11 @@
         },
 
         renderTree: function (xml, html, element) {
-            var self = this, i, colour, new_html, url, escaped_title,
+            var that = this, i, colour, new_html, url, escaped_title,
                 initially_expanded, selectable, extra, title, func,
                 temp, master_html, node, node_self_wrap, node_self;
 
-            element || (element = document.getElementById(this.name));
+            element || (element = $cms.dom.id(this.name));
 
             clear_transition_and_set_opacity(html, 0.0);
             fade_transition(html, 100, 30, 4);
@@ -2941,30 +2904,33 @@
             }
 
             forEach(xml.children, function (node) {
+                var el, html_node, expanding;
+
                 // Special handling of 'options' nodes, inject new options
-                if (node.nodeName === 'options') {
-                    self.options = encodeURIComponent($cms.dom.html(node));
+                if (node.localName === 'options') {
+                    that.options = encodeURIComponent($cms.dom.html(node));
                     return;
                 }
 
                 // Special handling of 'expand' nodes, which say to pre-expand some categories as soon as the page loads
-                if (node.nodeName === 'expand') {
-                    var e = document.getElementById(self.name + 'texp_c_' + $cms.dom.html(node));
-                    if (e) {
-                        var html_node = document.getElementById(self.name + 'tree_list_c_' + $cms.dom.html(node));
-                        var expanding = (html_node.style.display != 'block');
+                if (node.localName === 'expand') {
+                    el = $cms.dom.$('#' + that.name + 'texp_c_' + $cms.dom.html(node));
+                    if (el) {
+                        html_node = $cms.dom.$('#' + that.name + 'tree_list_c_' + $cms.dom.html(node));
+                        expanding = (html_node.style.display != 'block');
                         if (expanding)
-                            e.onclick(null, true);
+                            el.onclick(null, true);
                     } else {
                         // Now try against serverid
-                        var xml_node = self.getElementByIdHack($cms.dom.html(node), 'c', null, true);
+                        var xml_node = that.getElementByIdHack($cms.dom.html(node), 'c', null, true);
                         if (xml_node) {
-                            var e = document.getElementById(self.name + 'texp_c_' + xml_node.getAttribute('id'));
-                            if (e) {
-                                var html_node = document.getElementById(self.name + 'tree_list_c_' + xml_node.getAttribute('id'));
-                                var expanding = (html_node.style.display != 'block');
-                                if (expanding)
-                                    e.onclick(null, true);
+                            el = $cms.dom.$('#' + that.name + 'texp_c_' + xml_node.getAttribute('id'));
+                            if (el) {
+                                html_node = $cms.dom.id(that.name + 'tree_list_c_' + xml_node.getAttribute('id'));
+                                expanding = (html_node.style.display != 'block');
+                                if (expanding) {
+                                    el.onclick(null, true);
+                                }
                             }
                         }
                     }
@@ -2985,9 +2951,9 @@
                 node_self = document.createElement('div');
                 node_self.style.display = 'inline-block';
                 node_self_wrap.appendChild(node_self);
-                node_self.object = self;
-                colour = (node.getAttribute('selectable') == 'true' || self.all_nodes_selectable) ? 'native_ui_foreground' : 'locked_input_field';
-                selectable = (node.getAttribute('selectable') == 'true' || self.all_nodes_selectable);
+                node_self.object = that;
+                colour = (node.getAttribute('selectable') == 'true' || that.all_nodes_selectable) ? 'native_ui_foreground' : 'locked_input_field';
+                selectable = (node.getAttribute('selectable') == 'true' || that.all_nodes_selectable);
                 if (node.localName === 'category') {
                     // Render self
                     node_self.className = (node.getAttribute('highlighted') == 'true') ? 'tree_list_highlighted' : 'tree_list_nonhighlighted';
@@ -3011,26 +2977,26 @@
                     }
                     $cms.dom.html(node_self, ' \
 				<div> \
-					<input class="ajax_tree_expand_icon"' + (self.tabindex ? (' tabindex="' + self.tabindex + '"') : '') + ' type="image" alt="' + ((!initially_expanded) ? '{!EXPAND;^}' : '{!CONTRACT;^}') + ': ' + escaped_title + '" title="' + ((!initially_expanded) ? '{!EXPAND;^}' : '{!CONTRACT;^}') + '" id="' + self.name + 'texp_c_' + node.getAttribute('id') + '" src="' + $cms.url(!initially_expanded ? '{$IMG*;,1x/treefield/expand}' : '{$IMG*;,1x/treefield/collapse}') + '" /> \
+					<input class="ajax_tree_expand_icon"' + (that.tabindex ? (' tabindex="' + that.tabindex + '"') : '') + ' type="image" alt="' + ((!initially_expanded) ? '{!EXPAND;^}' : '{!CONTRACT;^}') + ': ' + escaped_title + '" title="' + ((!initially_expanded) ? '{!EXPAND;^}' : '{!CONTRACT;^}') + '" id="' + that.name + 'texp_c_' + node.getAttribute('id') + '" src="' + $cms.url(!initially_expanded ? '{$IMG*;,1x/treefield/expand}' : '{$IMG*;,1x/treefield/collapse}') + '" /> \
 					<img class="ajax_tree_cat_icon" alt="{!CATEGORY;^}" src="' + escape_html(img_url) + '" srcset="' + escape_html(img_url_2) + ' 2x" /> \
-					<label id="' + self.name + 'tsel_c_' + node.getAttribute('id') + '" for="' + self.name + 'tsel_r_' + node.getAttribute('id') + '" onmouseover="activate_tooltip(this,event,' + (node.getAttribute('description_html') ? '' : 'escape_html') + '(this.firstElementChild.title),\'auto\');" class="ajax_tree_magic_button ' + colour + '"><input ' + (self.tabindex ? ('tabindex="' + self.tabindex + '" ') : '') + 'id="' + self.name + 'tsel_r_' + node.getAttribute('id') + '" style="position: absolute; left: -10000px" type="radio" name="_' + self.name + '" value="1" title="' + description_in_use + '" />' + escaped_title + '</label> \
-					<span id="' + self.name + 'extra_' + node.getAttribute('id') + '">' + extra + '</span> \
+					<label id="' + that.name + 'tsel_c_' + node.getAttribute('id') + '" for="' + that.name + 'tsel_r_' + node.getAttribute('id') + '" onmouseover="activate_tooltip(this,event,' + (node.getAttribute('description_html') ? '' : 'escape_html') + '(this.firstElementChild.title),\'auto\');" class="ajax_tree_magic_button ' + colour + '"><input ' + (that.tabindex ? ('tabindex="' + that.tabindex + '" ') : '') + 'id="' + that.name + 'tsel_r_' + node.getAttribute('id') + '" style="position: absolute; left: -10000px" type="radio" name="_' + that.name + '" value="1" title="' + description_in_use + '" />' + escaped_title + '</label> \
+					<span id="' + that.name + 'extra_' + node.getAttribute('id') + '">' + extra + '</span> \
 				</div> \
 			');
                     var expand_button = node_self.querySelector('input');
                     expand_button.oncontextmenu = function () {
                         return false;
                     };
-                    expand_button.object = self;
+                    expand_button.object = that;
                     expand_button.onclick = function (event, automated) {
-                        if (document.getElementById('choose_' + self.name)) {
-                            document.getElementById('choose_' + self.name).click();
+                        if ($cms.dom.$('#choose_' + that.name)) {
+                            $cms.dom.$('#choose_' + that.name).click();
                         }
 
                         if (event) {
                             event.preventDefault();
                         }
-                        self.handleTreeClick.call(expand_button, event, automated);
+                        that.handleTreeClick.call(expand_button, event, automated);
                         return false;
 
                     };
@@ -3044,7 +3010,7 @@
                     a.oncontextmenu = function () {
                         return false;
                     };
-                    a.handleSelection = self.handleSelection;
+                    a.handleSelection = that.handleSelection;
                     a.firstElementChild.onfocus = function () {
                         this.parentNode.style.outline = '1px dotted';
                     };
@@ -3067,14 +3033,14 @@
                     // Do any children
                     new_html = document.createElement('div');
                     new_html.role = 'treeitem';
-                    new_html.id = self.name + 'tree_list_c_' + node.getAttribute('id');
+                    new_html.id = that.name + 'tree_list_c_' + node.getAttribute('id');
                     new_html.style.display = ((!initially_expanded) || (node.getAttribute('has_children') != 'true')) ? 'none' : 'block';
                     new_html.style.padding/*{$?,{$EQ,{!en_left},left},Left,Right}*/ = '15px';
-                    var selected = ((self.use_server_id ? node.getAttribute('serverid') : node.getAttribute('id')) == element.value && element.value != '') || node.getAttribute('selected') == 'yes';
+                    var selected = ((that.use_server_id ? node.getAttribute('serverid') : node.getAttribute('id')) == element.value && element.value != '') || node.getAttribute('selected') == 'yes';
                     if (selectable) {
-                        self.makeElementLookSelected(document.getElementById(self.name + 'tsel_c_' + node.getAttribute('id')), selected);
+                        that.makeElementLookSelected($cms.dom.id(that.name + 'tsel_c_' + node.getAttribute('id')), selected);
                         if (selected) {
-                            element.value = (self.use_server_id ? node.getAttribute('serverid') : node.getAttribute('id')); // Copy in proper ID for what is selected, not relying on what we currently have as accurate
+                            element.value = (that.use_server_id ? node.getAttribute('serverid') : node.getAttribute('id')); // Copy in proper ID for what is selected, not relying on what we currently have as accurate
                             if (element.value != '') {
                                 if (element.selected_title === undefined) element.selected_title = '';
                                 if (element.selected_title != '') element.selected_title += ',';
@@ -3087,7 +3053,7 @@
                     node_self.appendChild(new_html);
 
                     // Auto-expand
-                    if (self.specialKeyPressed && !initially_expanded) {
+                    if (that.specialKeyPressed && !initially_expanded) {
                         expand_button.onclick();
                     }
                 } else { // Assume entry
@@ -3116,7 +3082,7 @@
                     }
                     $cms.dom.html(node_self, '<div><img alt="{!ENTRY;^}" src="' + escape_html(img_url) + '" srcset="' + escape_html(img_url_2) + ' 2x" style="width: 14px; height: 14px" /> <label id="' + this.name + 'tsel_e_' + node.getAttribute('id') + '" class="ajax_tree_magic_button ' + colour + '" for="' + this.name + 'tsel_s_' + node.getAttribute('id') + '" onmouseover="activate_tooltip(this,event,' + (node.getAttribute('description_html') ? '' : 'escape_html') + '(\'' + (description_in_use.replace(/\n/g, '').replace(/'/g, '\\' + '\'')) + '\'),\'800px\');"><input' + (this.tabindex ? (' tabindex="' + this.tabindex + '"') : '') + ' id="' + this.name + 'tsel_s_' + node.getAttribute('id') + '" style="position: absolute; left: -10000px" type="radio" name="_' + this.name + '" value="1" />' + escaped_title + '</label>' + extra + '</div>');
                     var a = node_self.querySelector('label');
-                    a.handleSelection = self.handleSelection;
+                    a.handleSelection = that.handleSelection;
                     a.firstElementChild.onfocus = function () {
                         this.parentNode.style.outline = '1px dotted';
                     };
@@ -3125,8 +3091,8 @@
                     };
                     a.firstElementChild.onclick = a.handleSelection;
                     a.onclick = a.handleSelection; // Needed by Firefox, the radio button's onclick will not be called if shift/ctrl held
-                    a.firstElementChild.object = self;
-                    a.object = self;
+                    a.firstElementChild.object = that;
+                    a.object = that;
                     a.onmousedown = function (event) { // To disable selection of text when holding shift or control
                         if (event.ctrlKey || event.metaKey || event.shiftKey) {
                             if (event.cancelable) {
@@ -3135,15 +3101,15 @@
                         }
                     };
                     html.appendChild(node_self_wrap);
-                    var selected = ((self.use_server_id ? node.getAttribute('serverid') : node.getAttribute('id')) == element.value) || node.getAttribute('selected') == 'yes';
-                    if ((self.multi_selection) && (!selected)) {
+                    var selected = ((that.use_server_id ? node.getAttribute('serverid') : node.getAttribute('id')) == element.value) || node.getAttribute('selected') == 'yes';
+                    if ((that.multi_selection) && (!selected)) {
                         selected = ((',' + element.value + ',').indexOf(',' + node.getAttribute('id') + ',') != -1);
                     }
-                    self.makeElementLookSelected(document.getElementById(self.name + 'tsel_e_' + node.getAttribute('id')), selected);
+                    that.makeElementLookSelected($cms.dom.id(that.name + 'tsel_e_' + node.getAttribute('id')), selected);
                 }
 
                 if ((node.getAttribute('draggable')) && (node.getAttribute('draggable') !== 'false')) {
-                    master_html = document.getElementById('tree_list__root_' + self.name);
+                    master_html = $cms.dom.id('tree_list__root_' + that.name);
                     fix_up_node_position(node_self);
                     node_self.cms_draggable = node.getAttribute('draggable');
                     node_self.draggable = true;
@@ -3214,7 +3180,7 @@
                 }
 
                 if (initially_expanded) {
-                    self.renderTree(node, new_html, element);
+                    that.renderTree(node, new_html, element);
                 } else if (new_html) {
                     $cms.dom.appendHtml(new_html, '{!PLEASE_WAIT;^}');
                 }
@@ -3226,7 +3192,7 @@
         },
 
         handleTreeClick: function (event, automated) {// Not called as a method
-            var element = document.getElementById(this.object.name);
+            var element = $cms.dom.id(this.object.name);
             if (element.disabled || this.object.busy) {
                 return false;
             }
@@ -3235,8 +3201,8 @@
 
             var clicked_id = this.getAttribute('id').substr(7 + this.object.name.length);
 
-            var html_node = document.getElementById(this.object.name + 'tree_list_c_' + clicked_id);
-            var expand_button = document.getElementById(this.object.name + 'texp_c_' + clicked_id);
+            var html_node = $cms.dom.id(this.object.name + 'tree_list_c_' + clicked_id);
+            var expand_button = $cms.dom.id(this.object.name + 'texp_c_' + clicked_id);
 
             var expanding = (html_node.style.display != 'block');
 
@@ -3244,14 +3210,11 @@
                 var xml_node = this.object.getElementByIdHack(clicked_id, 'c');
                 xml_node.setAttribute('expanded', 'true');
                 var real_clicked_id = xml_node.getAttribute('serverid');
-                if ((typeof real_clicked_id).toLowerCase() != 'string') real_clicked_id = clicked_id;
+                if (typeof real_clicked_id !== 'string') {
+                    real_clicked_id = clicked_id;
+                }
 
-                /*if ((xml_node.getAttribute('draggable')) && (xml_node.getAttribute('draggable')!='false'))
-                 {
-                 html_node.parentNode.style.position='static';
-                 }*/
-
-                if ((xml_node.getAttribute('has_children') == 'true') && !xml_node.firstElementChild) {
+                if ((xml_node.getAttribute('has_children') === 'true') && !xml_node.firstElementChild) {
                     var url = $cms.$BASE_URL_NOHTTP_S + this.object.ajax_url + '&id=' + encodeURIComponent(real_clicked_id) + '&options=' + this.object.options + '&default=' + encodeURIComponent(element.value);
                     var ob = this.object;
                     do_ajax_request(url, function (ajax_result_frame, ajax_result) {
@@ -3259,7 +3222,7 @@
                         ob.response(ajax_result_frame, ajax_result, clicked_id);
                     });
                     $cms.dom.html(html_node, '<div aria-busy="true" class="vertical_alignment"><img src="' + $cms.img('{$IMG*;,loading}') + '" alt="" /> <span>{!LOADING;^}</span></div>');
-                    var container = document.getElementById('tree_list__root_' + ob.name);
+                    var container = $cms.dom.id('tree_list__root_' + ob.name);
                     if ((automated) && (container) && (container.style.overflowY == 'auto')) {
                         window.setTimeout(function () {
                             container.scrollTop = find_pos_y(html_node) - 20;
@@ -3278,12 +3241,6 @@
             } else {
                 var xml_node = this.object.getElementByIdHack(clicked_id, 'c');
                 xml_node.setAttribute('expanded', 'false');
-
-                /*if ((xml_node.getAttribute('draggable')) && (xml_node.getAttribute('draggable')!='false'))
-                 {
-                 html_node.parentNode.style.position='absolute';
-                 }*/
-
                 html_node.style.display = 'none';
 
                 expand_button.src = $cms.img('{$IMG;,1x/treefield/expand}');
@@ -3303,7 +3260,7 @@
         handleSelection: function (event, assume_ctrl) {// Not called as a method
             assume_ctrl = !!assume_ctrl;
 
-            var element = document.getElementById(this.object.name);
+            var element = $cms.dom.id(this.object.name);
             if (element.disabled) return;
             var i;
             var selected_before = (element.value == '') ? [] : (this.object.multi_selection ? element.value.split(',') : [element.value]);
@@ -3313,7 +3270,7 @@
 
             if ((!assume_ctrl) && (event.shiftKey) && (this.object.multi_selection)) {
                 // We're holding down shift so we need to force selection of everything bounded between our last click spot and here
-                var all_a = document.getElementById('tree_list__root_' + this.object.name).getElementsByTagName('label');
+                var all_a = $cms.dom.id('tree_list__root_' + this.object.name).getElementsByTagName('label');
                 var pos_last = -1;
                 var pos_us = -1;
                 if (this.object.last_clicked == null) this.object.last_clicked = all_a[0];
@@ -3351,8 +3308,11 @@
                 return;
             }
             var type = this.getAttribute('id').charAt(5 + this.object.name.length);
-            if (type == 'r') type = 'c';
-            if (type == 's') type = 'e';
+            if (type === 'r') {
+                type = 'c';
+            } else if (type === 's') {
+                type = 'e';
+            }
             var real_selected_id = this.getAttribute('id').substr(7 + this.object.name.length);
             var xml_node = this.object.getElementByIdHack(real_selected_id, type);
             var selected_id = (this.object.use_server_id) ? xml_node.getAttribute('serverid') : real_selected_id;
@@ -3360,7 +3320,7 @@
             if (xml_node.getAttribute('selectable') == 'true' || this.object.all_nodes_selectable) {
                 var selected_after = selected_before;
                 for (i = 0; i < selected_before.length; i++) {
-                    this.object.makeElementLookSelected(document.getElementById(this.object.name + 'tsel_' + type + '_' + selected_before[i]), false);
+                    this.object.makeElementLookSelected($cms.dom.id(this.object.name + 'tsel_' + type + '_' + selected_before[i]), false);
                 }
                 if ((!this.object.multi_selection) || (((!event.ctrlKey) && (!event.metaKey) && (!event.altKey)) && (!assume_ctrl))) {
                     selected_after = [];
@@ -3374,15 +3334,15 @@
                     selected_after.push(selected_id);
                     if (!this.object.multi_selection) // This is a bit of a hack to make selection look nice, even though we aren't storing natural IDs of what is selected
                     {
-                        var anchors = document.getElementById('tree_list__root_' + this.object.name).getElementsByTagName('label');
+                        var anchors = $cms.dom.id('tree_list__root_' + this.object.name).getElementsByTagName('label');
                         for (i = 0; i < anchors.length; i++) {
                             this.object.makeElementLookSelected(anchors[i], false);
                         }
-                        this.object.makeElementLookSelected(document.getElementById(this.object.name + 'tsel_' + type + '_' + real_selected_id), true);
+                        this.object.makeElementLookSelected($cms.dom.id(this.object.name + 'tsel_' + type + '_' + real_selected_id), true);
                     }
                 }
                 for (i = 0; i < selected_after.length; i++) {
-                    this.object.makeElementLookSelected(document.getElementById(this.object.name + 'tsel_' + type + '_' + selected_after[i]), true);
+                    this.object.makeElementLookSelected($cms.dom.id(this.object.name + 'tsel_' + type + '_' + selected_after[i]), true);
                 }
 
                 element.value = selected_after.join(',');
@@ -3393,7 +3353,9 @@
                 if (element.fakeonchange !== undefined && element.fakeonchange) element.fakeonchange();
             }
 
-            if (/*(!event.ctrlKey) && */(!assume_ctrl)) this.object.last_clicked = this;
+            if (!assume_ctrl) {
+                this.object.last_clicked = this;
+            }
         },
 
         makeElementLookSelected: function (target, selected) {
@@ -3406,14 +3368,12 @@
     });
 
     function attributes_full_fixup(xml) {
-        var node, i;
-        if (window.attributes_full === undefined) {
-            window.attributes_full = {};
-        }
-        var id = xml.getAttribute('id');
-        if (window.attributes_full[id] === undefined) {
-            window.attributes_full[id] = {};
-        }
+        var node, i,
+            id = xml.getAttribute('id');
+
+        window.attributes_full || (window.attributes_full = {});
+        window.attributes_full[id] || (window.attributes_full[id] = {});
+
         for (i = 0; i < xml.attributes.length; i++) {
             window.attributes_full[id][xml.attributes[i].name] = xml.attributes[i].value;
         }
@@ -3427,11 +3387,13 @@
     }
 
     function fixup_node_positions(name) {
-        var html = document.getElementById('tree_list__root_' + name);
+        var html = $cms.dom.$('#tree_list__root_' + name);
         var to_fix = html.getElementsByTagName('div');
         var i;
         for (i = 0; i < to_fix.length; i++) {
-            if (to_fix[i].style.position == 'absolute') fix_up_node_position(to_fix[i]);
+            if (to_fix[i].style.position === 'absolute') {
+                fix_up_node_position(to_fix[i]);
+            }
         }
     }
 
@@ -3455,7 +3417,7 @@
         }
 
         if (node.getAttribute('droppable') == element.cms_draggable) {
-            child_node_element = document.getElementById(name + 'tree_list_' + ((node.localName === 'category') ? 'c' : 'e') + '_' + node.getAttribute('id'));
+            child_node_element = $cms.dom.id(name + 'tree_list_' + ((node.localName === 'category') ? 'c' : 'e') + '_' + node.getAttribute('id'));
             y = find_pos_y(child_node_element.parentNode.parentNode, true);
             height = child_node_element.parentNode.parentNode.offsetHeight;
             if ((y < mouse_y) && (y + height > mouse_y)) {
@@ -3529,7 +3491,9 @@
                     message += button_set[i] + ',';
                 }
                 message = message.substr(0, message.length - 1);
-            } else message = fallback_message;
+            } else {
+                message = fallback_message;
+            }
 
             window.fauxmodal_prompt(
                 message,
@@ -3560,8 +3524,8 @@
         }
     }
 
-    var AJAX_REQUESTS,
-        AJAX_CALLBACKS;
+    var ajaxRequests,
+        ajaxCallbacks;
 
     function do_ajax_request(url, callback__method, post) { // Note: 'post' is not an array, it's a string (a=b)
         var async = !!callback__method;
@@ -3570,55 +3534,57 @@
             url = window.location.protocol + '//' + window.location.host + url;
         }
 
-        AJAX_REQUESTS || (AJAX_REQUESTS = []);
-        AJAX_CALLBACKS || (AJAX_CALLBACKS = []);
+        ajaxRequests || (ajaxRequests = []);
+        ajaxCallbacks || (ajaxCallbacks = []);
 
-        var index = AJAX_REQUESTS.length;
+        var index = ajaxRequests.length;
 
-        AJAX_CALLBACKS[index] = callback__method;
-
-        AJAX_REQUESTS[index] = new XMLHttpRequest();
+        ajaxRequests[index] = new XMLHttpRequest();
+        ajaxCallbacks[index] = callback__method;
 
         if (async) {
-            AJAX_REQUESTS[index].onreadystatechange = readyStateChangeListener;
+            ajaxRequests[index].onreadystatechange = readyStateChangeListener;
         }
 
-        if (isStr(post)) {
+        if (typeof post === 'string') {
             if (!post.includes('&csrf_token')) { // For CSRF prevention
-                post += '&csrf_token=' + encodeURIComponent(get_csrf_token());
+                post += '&csrf_token=' + encodeUC(get_csrf_token());
             }
 
-            AJAX_REQUESTS[index].open('POST', url, async);
-            AJAX_REQUESTS[index].setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            AJAX_REQUESTS[index].send(post);
+            ajaxRequests[index].open('POST', url, async);
+            ajaxRequests[index].setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            ajaxRequests[index].send(post);
         } else {
-            AJAX_REQUESTS[index].open('GET', url, async);
-            AJAX_REQUESTS[index].send(null);
+            ajaxRequests[index].open('GET', url, async);
+            ajaxRequests[index].send(null);
         }
 
-        var result = AJAX_REQUESTS[index];
+        var result = ajaxRequests[index];
 
         if (!async) {
-            delete AJAX_REQUESTS[index];
+            delete ajaxRequests[index];
         }
 
         return result;
 
         function readyStateChangeListener() {
-            // Check if any AJAX_REQUESTS are 'complete'
-            AJAX_REQUESTS.some(function (xhr, i) {
+            ajaxRequests || (ajaxRequests = []);
+            ajaxCallbacks || (ajaxCallbacks = []);
+
+            // Check if any ajax requests are complete
+            ajaxRequests.some(function (xhr, i) {
                 if (!xhr || (xhr.readyState !== 4)) { // 4 = DONE
                     return; // (continue)
                 }
 
-                delete AJAX_REQUESTS[i];
+                delete ajaxRequests[i];
 
                 var okStatusCodes = [200, 500, 400, 401];
                 // If status is 'OK'
                 if (xhr.status && okStatusCodes.includes(xhr.status)) {
                     // Process the result
-                    if (isFunc(AJAX_CALLBACKS[i]) && (!xhr.responseXML/*Not payload handler and not stack trace*/ || !xhr.responseXML.firstChild)) {
-                        AJAX_CALLBACKS[i](xhr);
+                    if (isFunc(ajaxCallbacks[i]) && (!xhr.responseXML/*Not payload handler and not stack trace*/ || !xhr.responseXML.firstChild)) {
+                        ajaxCallbacks[i](xhr);
                         return true; // (break)
                     }
                     var xml;
@@ -3653,6 +3619,9 @@
         }
 
         function processRequestChange(ajaxResultFrame, i) {
+            ajaxRequests || (ajaxRequests = []);
+            ajaxCallbacks || (ajaxCallbacks = []);
+
             var messageEl = ajaxResultFrame.querySelector('message');
             if (messageEl) {
                 // Either an error or a message was returned. :(
@@ -3674,8 +3643,8 @@
             }
 
             var methodEl = ajaxResultFrame.querySelector('method');
-            if (methodEl || isFunc(AJAX_CALLBACKS[i])) {
-                var method = methodEl ? eval('return ' + merge_text_nodes(methodEl)) : AJAX_CALLBACKS[i];
+            if (methodEl || isFunc(ajaxCallbacks[i])) {
+                var method = methodEl ? eval('return ' + merge_text_nodes(methodEl)) : ajaxCallbacks[i];
 
                 if (method.response !== undefined) {
                     method.response(ajaxResultFrame, ajaxResultEl);
@@ -3706,6 +3675,7 @@
 
     /* Cookies */
     var _doneCookieAlert;
+
     function set_cookie(cookie_name, cookie_value, num_days) {
         var expires = new Date(),
             to_set;
@@ -3772,14 +3742,71 @@
     window.get_csrf_token = get_csrf_token;
     window.get_session_id = get_session_id;
 
-}(window.$cms, JSON.parse(document.getElementById('composr-symbol-data').content)));
+    $cms.topicReply = topicReply;
+    /* Reply to a topic using AJAX */
+    function topicReply(el, isThreaded, id, replyingToUsername, replyingToPost, replyingToPostPlain, isExplicitQuote) {
+        isThreaded = !!isThreaded;
+        isExplicitQuote = !!isExplicitQuote;
 
-(function (){
+        var form = $cms.dom.$('form#comments_form');
+
+        var parent_id_field;
+        if (form.elements['parent_id'] === undefined) {
+            parent_id_field = document.createElement('input');
+            parent_id_field.type = 'hidden';
+            parent_id_field.name = 'parent_id';
+            form.appendChild(parent_id_field);
+        } else {
+            parent_id_field = form.elements['parent_id'];
+            if (window.last_reply_to !== undefined) {
+                clear_transition_and_set_opacity(window.last_reply_to, 1.0);
+            }
+        }
+        window.last_reply_to = el;
+        parent_id_field.value = isThreaded ? id : '';
+
+        el.classList.add('activated_quote_button');
+
+        var post = form.elements.post;
+
+        smooth_scroll(find_pos_y(form, true));
+
+        var outer = $cms.dom.id('comments_posting_form_outer');
+        if (outer && !$cms.dom.isDisplayed(outer)) {
+            toggleable_tray(outer);
+        }
+
+        if (isThreaded) {
+            post.value = $cms.format('{!QUOTED_REPLY_MESSAGE;^}', replyingToUsername, replyingToPostPlain);
+            post.strip_on_focus = post.value;
+            post.classList.add('field_input_non_filled');
+        } else {
+            if ((post.strip_on_focus !== undefined) && (post.value == post.strip_on_focus)) {
+                post.value = '';
+            } else if (post.value != '') {
+                post.value += '\n\n';
+            }
+
+            post.focus();
+            post.value += '[quote="' + replyingToUsername + '"]\n' + replyingToPost + '\n[snapback]' + id + '[/snapback][/quote]\n\n';
+
+            if (!isExplicitQuote) {
+                post.default_substring_to_strip = post.value;
+            }
+        }
+
+        manage_scroll_height(post);
+        post.scrollTop = post.scrollHeight;
+    }
+}(window.$cms, JSON.parse($cms.dom.id('composr-symbol-data').content)));
+
+function noop() {}
+
+(function () {
     window.undo_staff_unload_action = undo_staff_unload_action;
     window.placeholder_focus = placeholder_focus;
     window.placeholder_blur = placeholder_blur;
     window.check_field_for_blankness = check_field_for_blankness;
-    window.disable_button_just_clicked = disable_button_just_clicked;
     window.manage_scroll_height = manage_scroll_height;
     window.get_main_cms_window = get_main_cms_window;
     window.sts = sts;
@@ -3801,7 +3828,7 @@
         for (var i = 0; i < pre.length; i++) {
             pre[i].parentNode.removeChild(pre[i]);
         }
-        var bi = document.getElementById('main_website_inner');
+        var bi = $cms.dom.id('main_website_inner');
         if (bi) {
             clear_transition(bi);
             bi.classList.remove('site_unloading');
@@ -3848,7 +3875,7 @@
             value = field.value;
         }
 
-        var ee = document.getElementById('error_' + field.id);
+        var ee = $cms.dom.id('error_' + field.id);
 
         if ((value.replace(/\s/g, '') === '') || (value === '****') || (value === '{!POST_WARNING;^}') || (value === '{!THREADED_REPLY_NOTICE;^,{!POST_WARNING}}')) {
             if (event) {
@@ -3869,40 +3896,6 @@
         }
 
         return true;
-    }
-    function disable_button_just_clicked(input, permanent) {
-        if (permanent === undefined) {
-            permanent = false;
-        }
-
-        if (input.localName === 'form') {
-            for (var i = 0; i < input.elements.length; i++) {
-                if ((input.elements[i].type === 'submit') || (input.elements[i].type === 'button') || (input.elements[i].type === 'image') || (input.elements[i].localName === 'button')) {
-                    disable_button_just_clicked(input.elements[i]);
-                }
-            }
-            return;
-        }
-
-        if (input.form.target == '_blank') return;
-
-        window.setTimeout(function () {
-            input.disabled = true;
-            input.under_timer = true;
-        }, 20);
-        input.style.cursor = 'wait';
-        if (!permanent) {
-            var goback = function () {
-                if (input.under_timer) {
-                    input.disabled = false;
-                    input.under_timer = false;
-                    input.style.cursor = 'default';
-                }
-            };
-            window.setTimeout(goback, 5000);
-        } else input.under_timer = false;
-
-        window.addEventListener('pagehide', goback);
     }
 
     /* Making the height of a textarea match its contents */
@@ -3932,13 +3925,15 @@
             if (window.parent && (window.parent !== window) && (window.parent.get_main_cms_window !== undefined)) {
                 return window.parent.get_main_cms_window();
             }
-        } catch (ignore) {}
+        } catch (ignore) {
+        }
 
         try {
             if (window.opener && (window.opener.get_main_cms_window !== undefined)) {
                 return window.opener.get_main_cms_window();
             }
-        } catch (ignore) {}
+        } catch (ignore) {
+        }
 
         return window;
     }
@@ -3990,7 +3985,7 @@
 
     /* Image rollover effects */
     function create_rollover(rand, rollover) {
-        var img = document.getElementById(rand);
+        var img = $cms.dom.id(rand);
         if (!img) {
             return;
         }
@@ -4002,9 +3997,11 @@
             }
             img.setAttribute('src', rollover);
         }
+
         function deactivate() {
             img.setAttribute('src', img.old_src);
         }
+
         img.addEventListener('mouseover', activate);
         img.addEventListener('click', deactivate);
         img.addEventListener('mouseout', deactivate);
@@ -4067,18 +4064,17 @@
 function confirm_session(callback) {
     var url = '{$FIND_SCRIPT_NOHTTP;,confirm_session}' + keep_stub(true);
 
-    var ret = do_ajax_request(url + keep_stub(true), function (ret) {
+    do_ajax_request(url, function (ret) {
         if (!ret) {
             return;
         }
 
-        if (ret.responseText === '')  {// Blank means success, no error - so we can call callback
+        if (ret.responseText === '') {// Blank means success, no error - so we can call callback
             callback(true);
             return;
         }
 
         // But non blank tells us the username, and there is an implication that no session is confirmed for this login
-
         if (ret.responseText === '{!GUEST;}') {// Hmm, actually whole login was lost, so we need to ask for username too
             window.fauxmodal_prompt(
                 '{!USERNAME;^}',
@@ -4093,26 +4089,30 @@ function confirm_session(callback) {
 
         _confirm_session(callback, ret.responseText, url);
     });
+
+    function _confirm_session(callback, username, url) {
+        window.fauxmodal_prompt(
+            $cms.$CONFIG_OPTION.jsOverlays ? '{!ENTER_PASSWORD_JS_2;^}' : '{!ENTER_PASSWORD_JS;^}',
+            '',
+            function (promptt) {
+                if (promptt !== null) {
+                    do_ajax_request(url, function (ret) {
+                        if (ret && ret.responseText === '') {// Blank means success, no error - so we can call callback
+                            callback(true);
+                        } else {
+                            _confirm_session(callback, username, url); // Recurse
+                        }
+                    }, 'login_username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(promptt));
+                } else {
+                    callback(false);
+                }
+            },
+            '{!_LOGIN;}',
+            'password'
+        );
+    }
 }
 
-function _confirm_session(callback, username, url) {
-    window.fauxmodal_prompt(
-        $cms.$CONFIG_OPTION.jsOverlays ? '{!ENTER_PASSWORD_JS_2;^}' : '{!ENTER_PASSWORD_JS;^}',
-        '',
-        function (promptt) {
-            if (promptt !== null) {
-                do_ajax_request(url, function (ret) {
-                    if (ret && ret.responseText === '') // Blank means success, no error - so we can call callback
-                        callback(true);
-                    else
-                        _confirm_session(callback, username, url); // Recurse
-                }, 'login_username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(promptt));
-            } else callback(false);
-        },
-        '{!_LOGIN;}',
-        'password'
-    );
-}
 
 /* Dynamic inclusion */
 function load_snippet(snippet_hook, post, callback) {
@@ -4139,7 +4139,7 @@ function load_snippet(snippet_hook, post, callback) {
     return html.responseText;
 }
 function require_css(sheet) {
-    if (document.getElementById('loading_css_' + sheet)) {
+    if ($cms.dom.id('loading_css_' + sheet)) {
         return;
     }
     var link = document.createElement('link');
@@ -4150,7 +4150,7 @@ function require_css(sheet) {
 }
 function require_javascript(script, detector) {
     // Check it is not already loading
-    if (document.getElementById('loading_js_' + script)) {
+    if ($cms.dom.id('loading_js_' + script)) {
         return;
     }
 
@@ -4176,10 +4176,10 @@ function find_url_tab(hash) {
     if (hash.replace(/^#/, '') !== '') {
         var tab = hash.replace(/^#/, '').replace(/^tab\_\_/, '');
 
-        if (document.getElementById('g_' + tab)) {
+        if ($cms.dom.id('g_' + tab)) {
             select_tab('g', tab);
         }
-        else if ((tab.indexOf('__') != -1) && (document.getElementById('g_' + tab.substr(0, tab.indexOf('__'))))) {
+        else if ((tab.indexOf('__') != -1) && ($cms.dom.id('g_' + tab.substr(0, tab.indexOf('__'))))) {
             var old = hash;
             select_tab('g', tab.substr(0, tab.indexOf('__')));
             window.location.hash = old;
@@ -4191,7 +4191,7 @@ function select_tab(id, tab, from_url, automated) {
     automated = !!automated;
 
     if (!from_url) {
-        var tab_marker = document.getElementById('tab__' + tab.toLowerCase());
+        var tab_marker = $cms.dom.id('tab__' + tab.toLowerCase());
         if (tab_marker) {
             // For URL purposes, we will change URL to point to tab
             // HOWEVER, we do not want to cause a scroll so we will be careful
@@ -4203,7 +4203,7 @@ function select_tab(id, tab, from_url, automated) {
 
     var tabs = [];
     var i, element;
-    element = document.getElementById('t_' + tab);
+    element = $cms.dom.id('t_' + tab);
     for (i = 0; i < element.parentNode.children.length; i++) {
         if (element.parentNode.children[i].id && (element.parentNode.children[i].id.substr(0, 2) === 't_')) {
             tabs.push(element.parentNode.children[i].id.substr(2));
@@ -4211,7 +4211,7 @@ function select_tab(id, tab, from_url, automated) {
     }
 
     for (i = 0; i < tabs.length; i++) {
-        element = document.getElementById(id + '_' + tabs[i]);
+        element = $cms.dom.id(id + '_' + tabs[i]);
         if (element) {
             element.style.display = (tabs[i] === tab) ? 'block' : 'none';
 
@@ -4223,7 +4223,7 @@ function select_tab(id, tab, from_url, automated) {
             }
         }
 
-        element = document.getElementById('t_' + tabs[i]);
+        element = $cms.dom.id('t_' + tabs[i]);
         if (element) {
             element.classList.toggle('tab_active', tabs[i] === tab);
         }
@@ -4231,7 +4231,7 @@ function select_tab(id, tab, from_url, automated) {
 
     if (window['load_tab__' + tab] !== undefined) {
         // Usually an AJAX loader
-        window['load_tab__' + tab](automated, document.getElementById(id + '_' + tab));
+        window['load_tab__' + tab](automated, $cms.dom.id(id + '_' + tab));
     }
 
     return false;
@@ -4257,7 +4257,7 @@ function toggleable_tray(element, no_animate, cookie_id_name) {
         $IMG_2x_contract2 = '{$IMG;,2x/trays/contract2}';
 
     if (typeof element === 'string') {
-        element = document.getElementById(element);
+        element = $cms.dom.id(element);
     }
 
     if (!element) {
@@ -4282,7 +4282,7 @@ function toggleable_tray(element, no_animate, cookie_id_name) {
         set_cookie('tray_' + cookie_id_name, (element.style.display === 'none') ? 'open' : 'closed');
     }
 
-    var pic = $cms.dom.$(element.parentNode, '.toggleable_tray_button img') || $cms.dom.id('e_' + element.id);
+    var pic = $cms.dom.$(element.parentNode, '.toggleable_tray_button img') || $cms.dom.$('#e_' + element.id);
 
     if (pic && (matches_theme_image(pic.src, $IMG_expcon) || matches_theme_image(pic.src, $IMG_expcon2))) {// Currently in action?
         return;
@@ -4454,7 +4454,7 @@ function animate_frame_load(pf, frame, leave_gap_top, leave_height) {
 
     illustrate_frame_load(frame);
 
-    var ifuob = window.top.document.getElementById('iframe_under');
+    var ifuob = window.top.$cms.dom.id('iframe_under');
     var extra = ifuob ? ((window != window.top) ? find_pos_y(ifuob) : 0) : 0;
     if (ifuob) {
         ifuob.scrolling = 'no';
@@ -4466,7 +4466,7 @@ function animate_frame_load(pf, frame, leave_gap_top, leave_height) {
 }
 
 function illustrate_frame_load(iframeId) {
-    var head, cssText = '', i, iframe = document.getElementById(iframeId), doc, de;
+    var head, cssText = '', i, iframe = $cms.dom.id(iframeId), doc, de;
 
     if (!$cms.$CONFIG_OPTION.enableAnimations || !iframe || !iframe.contentDocument || !iframe.contentDocument.documentElement) {
         return;
@@ -4509,8 +4509,7 @@ function illustrate_frame_load(iframeId) {
 
     head += cssText + '<\/style>';
 
-    doc.body.classList.add('website_body');
-    doc.body.classList.add('main_website_faux');
+    doc.body.classList.add('website_body', 'main_website_faux');
 
     if (!de.querySelector('style')) {// The conditional is needed for Firefox - for some odd reason it is unable to parse any head tags twice
         $cms.dom.html(doc.head, head);
@@ -4519,7 +4518,7 @@ function illustrate_frame_load(iframeId) {
     $cms.dom.html(doc.body, '<div aria-busy="true" class="spaced"><div class="ajax_loading"><img id="loading_image" class="vertical_alignment" src="' + $cms.img('{$IMG_INLINE*;,loading}') + '" alt="{!LOADING;^}" /> <span class="vertical_alignment">{!LOADING;^}<\/span><\/div><\/div>');
 
     // Stupid workaround for Google Chrome not loading an image on unload even if in cache
-    window.setTimeout(function () {
+    setTimeout(function () {
         if (!doc.getElementById('loading_image')) {
             return;
         }
@@ -4542,32 +4541,40 @@ function smooth_scroll(dest_y, expected_scroll_y, dir, event_after) {
     if (!$cms.$CONFIG_OPTION.enableAnimations) {
         try {
             window.scrollTo(0, dest_y);
-        } catch (e) {}
+        } catch (e) {
+        }
         return;
     }
 
     var scroll_y = window.pageYOffset;
     if (typeof dest_y === 'string') {
-        dest_y = find_pos_y(document.getElementById(dest_y), true);
+        dest_y = find_pos_y($cms.dom.id(dest_y), true);
     }
     if (dest_y < 0) {
         dest_y = 0;
     }
-    if ((expected_scroll_y !== undefined) && (expected_scroll_y != null) && (expected_scroll_y != scroll_y)) return; // We must terminate, as the user has scrolled during our animation and we do not want to interfere with their action -- or because our last scroll failed, due to us being on the last scroll screen already
-
-    if (dir === undefined || !null) {
-        dir = (dest_y > scroll_y) ? 1 : -1;
+    if ((expected_scroll_y !== undefined) && (expected_scroll_y != null) && (expected_scroll_y != scroll_y)) {
+        // We must terminate, as the user has scrolled during our animation and we do not want to interfere with their action -- or because our last scroll failed, due to us being on the last scroll screen already
+        return;
     }
+
+    dir = (dest_y > scroll_y) ? 1 : -1;
 
     var distance_to_go = (dest_y - scroll_y) * dir;
     var dist = Math.round(dir * (distance_to_go / 25));
-    if (dir == -1 && dist > -25) dist = -25;
-    if (dir == 1 && dist < 25) dist = 25;
+
+    if (dir == -1 && dist > -25) {
+        dist = -25;
+    }
+    if (dir == 1 && dist < 25) {
+        dist = 25;
+    }
 
     if (((dir == 1) && (scroll_y + dist >= dest_y)) || ((dir == -1) && (scroll_y + dist <= dest_y)) || (distance_to_go > 2000)) {
         try {
             window.scrollTo(0, dest_y);
-        } catch (e) {}
+        } catch (e) {
+        }
         if (event_after) {
             event_after();
         }
@@ -4586,12 +4593,13 @@ function smooth_scroll(dest_y, expected_scroll_y, dir, event_after) {
 }
 
 /* Helper to change class on checkbox check */
-function change_class(box, theId, to, from) {
-    var cell = document.getElementById(theId);
-    if (!cell) {
-        cell = theId;
+function change_class(checkbox, cell, checkedClass, uncheckedClass) {
+    if (typeof cell === 'string') {
+        cell = $cms.dom.id(cell);
     }
-    cell.className = (box.checked) ? to : from;
+
+    cell.classList.toggle(checkedClass, checkbox.checked);
+    cell.classList.toggle(uncheckedClass, !checkbox.checked);
 }
 
 /* Dimension functions */
@@ -4603,10 +4611,10 @@ function register_mouse_listener(e) {
         window.mouse_y = get_mouse_y(e);
     }
 
-   document.documentElement.addEventListener('mousemove', function (event) {
-       window.mouse_x = get_mouse_x(event);
-       window.mouse_y = get_mouse_y(event);
-   });
+    document.documentElement.addEventListener('mousemove', function (event) {
+        window.mouse_x = get_mouse_x(event);
+        window.mouse_y = get_mouse_y(event);
+    });
 
     function get_mouse_x(event) {
         try {
@@ -4615,7 +4623,8 @@ function register_mouse_listener(e) {
             } else if (event.clientX) {
                 return event.clientX + window.pageXOffset;
             }
-        } catch (ignore) {}
+        } catch (ignore) {
+        }
 
         return 0;
     }
@@ -4627,44 +4636,19 @@ function register_mouse_listener(e) {
             } else if (event.clientY) {
                 return event.clientY + window.pageYOffset
             }
-        } catch (ignore) {}
+        } catch (ignore) {
+        }
 
         return 0;
     }
 }
 
 function get_window_width(win) {
-    win || (win = window);
-
-    if (win.innerWidth !== undefined) {
-        return win.innerWidth - 18;
-    }
-
-    if ((win.document.documentElement) && (win.document.documentElement.clientWidth)) {
-        return win.document.documentElement.clientWidth;
-    }
-
-    if ((win.document.body) && (win.document.body.clientWidth)) {
-        return win.document.body.clientWidth;
-    }
-
-    return 0;
+    return (win || window).innerWidth - 18;
 }
 
 function get_window_height(win) {
-    win || (win = window);
-
-    if (win.innerHeight !== undefined) {
-        return win.innerHeight - 18;
-    }
-    if ((win.document.documentElement) && (win.document.documentElement.clientHeight)) {
-        return win.document.documentElement.clientHeight;
-    }
-    if ((win.document.body) && (win.document.body.clientHeight)) {
-        return win.document.body.clientHeight;
-    }
-
-    return 0;
+    return (win || window).innerHeight - 18;
 }
 
 function get_window_scroll_width(win) {
@@ -4673,15 +4657,13 @@ function get_window_scroll_width(win) {
 
 function get_window_scroll_height(win) {
     win || (win = window);
-    var rect_a = win.document.body.parentNode.getBoundingClientRect();
-    var a = rect_a.bottom - rect_a.top;
-    var rect_b = win.document.body.getBoundingClientRect();
-    var b = rect_b.bottom - rect_b.top;
-    if (a > b) {
-        return a;
-    }
 
-    return b;
+    var rect_a = win.document.body.parentNode.getBoundingClientRect(),
+        rect_b = win.document.body.getBoundingClientRect(),
+        a = (rect_a.bottom - rect_a.top),
+        b = (rect_b.bottom - rect_b.top);
+
+    return (a > b) ? a : b;
 }
 
 function find_pos_x(el, not_relative) {/* if not_relative is true it gets the position relative to the browser window, else it will be relative to the most recent position:absolute/relative going up the element tree */
@@ -4696,7 +4678,7 @@ function find_pos_x(el, not_relative) {/* if not_relative is true it gets the po
                 ret -= find_pos_x(el, true);
                 break;
             }
-            el = el.parentNode;
+            el = el.parentElement;
         }
     }
 
@@ -4806,22 +4788,6 @@ function clear_out_tooltips(tooltip_being_opened) {
     });
 }
 
-function preactivate_rich_semantic_tooltip(ob, event, have_links) {
-    if (ob.ttitle === undefined) {
-        ob.ttitle = ob.title;
-    }
-    ob.title = '';
-    ob.onmouseover = null;
-    ob.onclick = function () {
-        activate_rich_semantic_tooltip(ob, event, have_links);
-    };
-}
-function activate_rich_semantic_tooltip(ob, event, have_links) {
-    if (ob.ttitle === undefined) {
-        ob.ttitle = ob.title;
-    }
-    activate_tooltip(ob, event, ob.ttitle, 'auto', null, null, false, true, false, false, window, have_links);
-}
 /* Tooltips that can work on any element with rich HTML support */
 //  ac is the object to have the tooltip
 //  event is the event handler
@@ -4835,7 +4801,8 @@ function activate_rich_semantic_tooltip(ob, event, have_links) {
 //  force_width is set to true if you want width to not be a max width
 //  win is the window to open in
 //  have_links is set to true if we activate/deactivate by clicking due to possible links in the tooltip or the need for it to work on mobile
-function activate_tooltip(el, event, tooltip, width, pic, height, bottom, no_delay, lights_off, force_width, win, have_links) {
+function activate_tooltip(el, event, tooltip, width, pic, height, bottom, no_delay, lights_off, force_width, global, have_links) {
+    event || (event = {});
     width || (width = 'auto');
     pic || (pic = '');
     height || (height = 'auto');
@@ -4843,7 +4810,7 @@ function activate_tooltip(el, event, tooltip, width, pic, height, bottom, no_del
     no_delay = !!no_delay;
     lights_off = !!lights_off;
     force_width = !!force_width;
-    win || (win = window);
+    global || (global = window);
     have_links = !!have_links;
 
     if (!window.page_loaded || !tooltip) {
@@ -4867,18 +4834,18 @@ function activate_tooltip(el, event, tooltip, width, pic, height, bottom, no_del
     if (!have_links) {
         if (!el.onmouseout) {
             el.onmouseout = function () {
-                win.deactivate_tooltip(el);
+                global.deactivate_tooltip(el);
             };
         }
         if (!el.onmousemove) {
             el.onmousemove = function (event) {
-                win.reposition_tooltip(el, event, false, false, null, false, win);
+                global.reposition_tooltip(el, event, false, false, null, false, global);
             };
         }
     } else {
         el.old_onclick = el.onclick;
         el.onclick = function () {
-            win.deactivate_tooltip(el);
+            global.deactivate_tooltip(el);
         };
     }
 
@@ -4895,19 +4862,21 @@ function activate_tooltip(el, event, tooltip, width, pic, height, bottom, no_del
     el.initial_width = width;
     el.have_links = have_links;
 
-    var children = el.getElementsByTagName('img');
-    for (var i = 0; i < children.length; i++) children[i].setAttribute('title', '');
+    var children = el.querySelectorAll('img');
+    for (var i = 0; i < children.length; i++) {
+        children[i].setAttribute('title', '');
+    }
 
     var tooltip_element;
-    if ((el.tooltip_id !== undefined) && (document.getElementById(el.tooltip_id))) {
-        tooltip_element = win.document.getElementById(el.tooltip_id);
+    if ((el.tooltip_id !== undefined) && ($cms.dom.id(el.tooltip_id))) {
+        tooltip_element = global.$cms.dom.id(el.tooltip_id);
         tooltip_element.style.display = 'none';
         $cms.dom.html(tooltip_element, '');
         window.setTimeout(function () {
             reposition_tooltip(el, event, bottom, true, tooltip_element, force_width);
-        }, 0);
+        });
     } else {
-        tooltip_element = win.document.createElement('div');
+        tooltip_element = global.document.createElement('div');
         tooltip_element.role = 'tooltip';
         tooltip_element.style.display = 'none';
         var rt_pos = tooltip.indexOf('results_table');
@@ -4920,7 +4889,7 @@ function activate_tooltip(el, event, tooltip, width, pic, height, bottom, no_del
             tooltip_element.style.width = width;
         } else {
             if (width == 'auto') {
-                var new_auto_width = get_window_width(win) - 30 - window.mouse_x;
+                var new_auto_width = get_window_width(global) - 30 - window.mouse_x;
                 if (new_auto_width < 150) new_auto_width = 150; // For tiny widths, better let it slide to left instead, which it will as this will force it to not fit
                 tooltip_element.style.maxWidth = new_auto_width + 'px';
             } else {
@@ -4941,7 +4910,7 @@ function activate_tooltip(el, event, tooltip, width, pic, height, bottom, no_del
     tooltip_element.ac = el;
 
     if (pic) {
-        var img = win.document.createElement('img');
+        var img = global.document.createElement('img');
         img.src = pic;
         img.className = 'tooltip_img';
         if (lights_off) img.className += ' faded_tooltip_img';
@@ -4949,28 +4918,16 @@ function activate_tooltip(el, event, tooltip, width, pic, height, bottom, no_del
         tooltip_element.className += ' tooltip_with_img';
     }
 
-    var event_copy;
-    try {
-        event_copy = { // Needs to be copied as it will get erased on IE after this function ends
-            'pageX': event.pageX,
-            'pageY': event.pageY,
-            'clientX': event.clientX,
-            'clientY': event.clientY,
-            'type': event.type
-        };
-    }
-    catch (e) { // Can happen if IE has lost the event
-        event_copy = {
-            'pageX': 0,
-            'pageY': 0,
-            'clientX': 0,
-            'clientY': 0,
-            'type': ''
-        };
-    }
+    var event_copy = { // Needs to be copied as it will get erased on IE after this function ends
+        'pageX': +event.pageX || 0,
+        'pageY': +event.pageY || 0,
+        'clientX': +event.clientX || 0,
+        'clientY': +event.clientY || 0,
+        'type': event.type || ''
+    };
 
     // This allows turning off tooltips by pressing anywhere, on iPhone (and probably Android etc). The clickability of body forces the simulated onmouseout events to fire.
-    var bi = document.getElementById('main_website_inner');
+    var bi = $cms.dom.id('main_website_inner');
     if (!bi) {
         bi = document.body;
     }
@@ -4995,11 +4952,11 @@ function activate_tooltip(el, event, tooltip, width, pic, height, bottom, no_del
 
         if (!no_delay) {
             // If delayed we will sub in what the currently known global mouse coordinate is
-            event_copy.pageX = win.mouse_x;
-            event_copy.pageY = win.mouse_y;
+            event_copy.pageX = global.mouse_x;
+            event_copy.pageY = global.mouse_y;
         }
 
-        reposition_tooltip(el, event_copy, bottom, true, tooltip_element, force_width, win);
+        reposition_tooltip(el, event_copy, bottom, true, tooltip_element, force_width, global);
     }, no_delay ? 0 : 666);
 }
 function reposition_tooltip(el, event, bottom, starting, tooltip_element, force_width, win) {
@@ -5007,9 +4964,13 @@ function reposition_tooltip(el, event, bottom, starting, tooltip_element, force_
 
     if (!starting) {// Real JS mousemove event, so we assume not a screen reader and have to remove natural tooltip
 
-        if (el.getAttribute('title')) el.setAttribute('title', '');
-        if ((el.parentNode.localName === 'a') && (el.parentNode.getAttribute('title')) && ((el.localName === 'abbr') || (el.parentNode.getAttribute('title').includes('{!LINK_NEW_WINDOW;^}'))))
-            el.parentNode.setAttribute('title', ''); // Do not want second tooltips that are not useful
+        if (el.getAttribute('title')) {
+            el.setAttribute('title', '');
+        }
+
+        if ((el.parentElement.localName === 'a') && (el.parentElement.getAttribute('title')) && ((el.localName === 'abbr') || (el.parentElement.getAttribute('title').includes('{!LINK_NEW_WINDOW;^}')))) {
+            el.parentElement.setAttribute('title', '');  // Do not want second tooltips that are not useful
+        }
     }
 
     if (!window.page_loaded) {
@@ -5023,66 +4984,74 @@ function reposition_tooltip(el, event, bottom, starting, tooltip_element, force_
         return;
     }  // Should not happen but written as a fail-safe
 
-    tooltip_element || (tooltip_element = document.getElementById(el.tooltip_id));
+    tooltip_element || (tooltip_element = $cms.dom.id(el.tooltip_id));
 
-    if (tooltip_element) {
-        var style__offset_x = 9;
-        var style__offset_y = (el.have_links) ? 18 : 9;
-
-        // Find mouse position
-        var x, y;
-        x = window.mouse_x;
-        y = window.mouse_y;
-        x += style__offset_x;
-        y += style__offset_y;
-        try {
-            if (event.type) {
-                if (event.type != 'focus') {
-                    el.done_none_focus = true;
-                }
-
-                if ((event.type === 'focus') && (el.done_none_focus)) {
-                    return;
-                }
-
-                x = (event.type === 'focus') ? (win.pageXOffset + get_window_width(win) / 2) : (window.mouse_x + style__offset_x);
-                y = (event.type === 'focus') ? (win.pageYOffset + get_window_height(win) / 2 - 40) : (window.mouse_y + style__offset_y);
-            }
-        } catch (ignore) {}
-        // Maybe mouse position actually needs to be in parent document?
-        try {
-            if (event.target && (event.target.ownerDocument !== win.document)) {
-                x = win.mouse_x + style__offset_x;
-                y = win.mouse_y + style__offset_y;
-            }
-        } catch (ignore) {}
-
-        // Work out which direction to render in
-        var width = $cms.dom.contentWidth(tooltip_element);
-        if (tooltip_element.style.width == 'auto') {
-            if (width < 200) width = 200; // Give some breathing room, as might already have painfully-wrapped when it found there was not much space
-        }
-        var height = tooltip_element.offsetHeight;
-        var x_excess = x - get_window_width(win) - win.pageXOffset + width + 10/*magic tolerance factor*/;
-        if (x_excess > 0) // Either we explicitly gave too much width, or the width auto-calculated exceeds what we THINK is the maximum width in which case we have to re-compensate with an extra contingency to stop CSS/JS vicious disagreement cycles
-        {
-            var x_before = x;
-            x -= x_excess + 20 + style__offset_x;
-            if (x < 100) x = (x_before < 100) ? x_before : 100; // Do not make it impossible to de-focus the tooltip
-        }
-        if (x < 0) x = 0;
-        if (bottom) {
-            tooltip_element.style.top = (y - height) + 'px';
-        } else {
-            var y_excess = y - get_window_height(win) - win.pageYOffset + height + style__offset_y;
-            if (y_excess > 0) y -= y_excess;
-            var scroll_y = win.pageYOffset;
-            if (y < scroll_y) y = scroll_y;
-            tooltip_element.style.top = y + 'px';
-        }
-        tooltip_element.style.left = x + 'px';
+    if (!tooltip_element) {
+        return;
     }
+
+    var style__offset_x = 9,
+        style__offset_y = (el.have_links) ? 18 : 9,
+        x, y;
+
+    // Find mouse position
+    x = window.mouse_x;
+    y = window.mouse_y;
+    x += style__offset_x;
+    y += style__offset_y;
+    try {
+        if (event.type) {
+            if (event.type != 'focus') {
+                el.done_none_focus = true;
+            }
+
+            if ((event.type === 'focus') && (el.done_none_focus)) {
+                return;
+            }
+
+            x = (event.type === 'focus') ? (win.pageXOffset + get_window_width(win) / 2) : (window.mouse_x + style__offset_x);
+            y = (event.type === 'focus') ? (win.pageYOffset + get_window_height(win) / 2 - 40) : (window.mouse_y + style__offset_y);
+        }
+    } catch (ignore) {
+    }
+    // Maybe mouse position actually needs to be in parent document?
+    try {
+        if (event.target && (event.target.ownerDocument !== win.document)) {
+            x = win.mouse_x + style__offset_x;
+            y = win.mouse_y + style__offset_y;
+        }
+    } catch (ignore) {
+    }
+
+    // Work out which direction to render in
+    var width = $cms.dom.contentWidth(tooltip_element);
+    if (tooltip_element.style.width == 'auto') {
+        if (width < 200) width = 200; // Give some breathing room, as might already have painfully-wrapped when it found there was not much space
+    }
+    var height = tooltip_element.offsetHeight;
+    var x_excess = x - get_window_width(win) - win.pageXOffset + width + 10/*magic tolerance factor*/;
+    if (x_excess > 0) {// Either we explicitly gave too much width, or the width auto-calculated exceeds what we THINK is the maximum width in which case we have to re-compensate with an extra contingency to stop CSS/JS vicious disagreement cycles
+        var x_before = x;
+        x -= x_excess + 20 + style__offset_x;
+        if (x < 100) { // Do not make it impossible to de-focus the tooltip
+            x = (x_before < 100) ? x_before : 100;
+        }
+    }
+    if (x < 0) {
+        x = 0;
+    }
+    if (bottom) {
+        tooltip_element.style.top = (y - height) + 'px';
+    } else {
+        var y_excess = y - get_window_height(win) - win.pageYOffset + height + style__offset_y;
+        if (y_excess > 0) y -= y_excess;
+        var scroll_y = win.pageYOffset;
+        if (y < scroll_y) y = scroll_y;
+        tooltip_element.style.top = y + 'px';
+    }
+    tooltip_element.style.left = x + 'px';
 }
+
 function deactivate_tooltip(el, tooltip_element) {
     el.is_over = false;
 
@@ -5090,10 +5059,10 @@ function deactivate_tooltip(el, tooltip_element) {
         return;
     }
 
-    tooltip_element || (tooltip_element = document.getElementById(el.tooltip_id));
+    tooltip_element || (tooltip_element = $cms.dom.id(el.tooltip_id));
 
     if (tooltip_element) {
-        tooltip_element.style.display = 'none';
+        $cms.dom.hide(tooltip_element);
     }
 
     if (el.old_onclick !== undefined) {
@@ -5105,39 +5074,50 @@ function deactivate_tooltip(el, tooltip_element) {
 function resize_frame(name, min_height) {
     min_height = +min_height || 0;
 
-    var frame_element = document.getElementById(name);
+    var frame_element = $cms.dom.id(name);
 
     var frame_window;
     if (window.frames[name] !== undefined) {
         frame_window = window.frames[name];
-    } else if (parent && parent.frames[name]) {
-        frame_window = parent.frames[name];
+    } else if (window.parent && window.parent.frames[name]) {
+        frame_window = window.parent.frames[name];
     } else {
         return;
     }
 
     if ((frame_element) && (frame_window) && (frame_window.document) && (frame_window.document.body)) {
         var h = get_window_scroll_height(frame_window);
-        if ((h == 0) && (frame_element.parentNode.style.display == 'none')) {
-            h = ((min_height === undefined) || (min_height == 0)) ? 100 : min_height;
-            if (frame_window.parent) window.setTimeout(function () {
-                if (frame_window.parent) frame_window.parent.trigger_resize();
-            }, 0);
+
+        if ((h === 0) && (frame_element.parentElement.style.display === 'none')) {
+            h = min_height ? min_height : 100;
+
+            if (frame_window.parent) {
+                window.setTimeout(function () {
+                    if (frame_window.parent) {
+                        frame_window.parent.trigger_resize();
+                    }
+                });
+            }
         }
+
         if (h + 'px' != frame_element.style.height) {
-            if (frame_element.scrolling != 'auto') {
+            if (frame_element.scrolling !== 'auto') {
                 frame_element.style.height = ((h >= min_height) ? h : min_height) + 'px';
                 if (frame_window.parent) {
                     window.setTimeout(function () {
                         if (frame_window.parent) frame_window.parent.trigger_resize();
-                    }, 0);
+                    });
                 }
                 frame_element.scrolling = 'no';
                 frame_window.onscroll = function (event) {
-                    if (event == null) return false;
+                    if (event == null) {
+                        return false;
+                    }
                     try {
                         frame_window.scrollTo(0, 0);
-                    } catch (e) {}
+                    } catch (e) {
+                    }
+
                     return cancel_bubbling(event);
                 }; // Needed for Opera
             }
@@ -5147,14 +5127,17 @@ function resize_frame(name, min_height) {
     frame_element.style.transform = 'scale(1)'; // Workaround Chrome painting bug
 }
 function trigger_resize(and_subframes) {
-    if (window.parent === undefined) return;
-    if (window.parent.document === undefined) return;
+    if (!window.parent || !window.parent.document) {
+        return;
+    }
     var frames = window.parent.document.getElementsByTagName('iframe');
     var done = false, i;
 
     for (i = 0; i < frames.length; i++) {
         if ((frames[i].src == window.location.href) || (frames[i].contentWindow == window) || ((frames[i].id != '') && (window.parent.frames[frames[i].id] !== undefined) && (window.parent.frames[frames[i].id] == window))) {
-            if (frames[i].style.height == '900px') frames[i].style.height = 'auto';
+            if (frames[i].style.height == '900px') {
+                frames[i].style.height = 'auto';
+            }
             window.parent.resize_frame(frames[i].name);
         }
     }
@@ -5283,7 +5266,7 @@ function ga_track(ob, category, action) {
     }
 
     try {
-        ga('send', 'event', category, action);
+        window.ga('send', 'event', category, action);
     } catch (ignore) {
     }
 
@@ -5310,7 +5293,7 @@ function click_link(link) {
 
     tmp = link.onclick;
     link.onclick = null;
-    cancelled = !$cms.dom.trigger(link, { type: 'click', bubbles: false, cancelable: true });
+    cancelled = !$cms.dom.trigger(link, {type: 'click', bubbles: false});
     link.onclick = tmp;
 
     if (!cancelled && link.href) {
@@ -5320,57 +5303,6 @@ function click_link(link) {
             window.open(link.href, link.target);
         }
     }
-}
-
-/* Reply to a topic using AJAX */
-function topic_reply(is_threaded, ob, id, replying_to_username, replying_to_post, replying_to_post_plain, explicit_quote) {
-    explicit_quote = !!explicit_quote;
-
-    var form = document.getElementById('comments_form');
-
-    var parent_id_field;
-    if (form.elements['parent_id'] === undefined) {
-        parent_id_field = document.createElement('input');
-        parent_id_field.type = 'hidden';
-        parent_id_field.name = 'parent_id';
-        form.appendChild(parent_id_field);
-    } else {
-        parent_id_field = form.elements['parent_id'];
-        if (window.last_reply_to !== undefined) {
-            clear_transition_and_set_opacity(window.last_reply_to, 1.0);
-        }
-    }
-    window.last_reply_to = ob;
-    parent_id_field.value = is_threaded ? id : '';
-
-    ob.className += ' activated_quote_button';
-
-    var post = form.elements['post'];
-
-    smooth_scroll(find_pos_y(form, true));
-
-    var outer = document.getElementById('comments_posting_form_outer');
-    if (outer && outer.style.display == 'none')
-        toggleable_tray('comments_posting_form_outer');
-
-    if (is_threaded) {
-        post.value = '{!QUOTED_REPLY_MESSAGE;^}'.replace(/\\{1\\}/g, replying_to_username).replace(/\\{2\\}/g, replying_to_post_plain);
-        post.strip_on_focus = post.value;
-        post.className += ' field_input_non_filled';
-    } else {
-        if (post.strip_on_focus !== undefined && post.value == post.strip_on_focus)
-            post.value = '';
-        else if (post.value != '') post.value += '\n\n';
-
-        post.focus();
-        post.value += '[quote="' + replying_to_username + '"]\n' + replying_to_post + '\n[snapback]' + id + '[/snapback][/quote]\n\n';
-        if (!explicit_quote) post.default_substring_to_strip = post.value;
-    }
-
-    manage_scroll_height(post);
-    post.scrollTop = post.scrollHeight;
-
-    return false;
 }
 
 /* Set it up so a form field is known and can be monitored for changes */
@@ -5407,6 +5339,10 @@ function play_self_audio_link(ob) {
     require_javascript('sound', window.SoundManager);
 
     var timer = window.setInterval(function () {
+        if (window.soundManager === undefined) {
+            return;
+        }
+
         window.clearInterval(timer);
         window.soundManager.setup({
             url: $cms.$BASE_URL_S + 'data',
@@ -5494,13 +5430,14 @@ function play_self_audio_link(ob) {
     }
 
     function clear_transition(el) {
-        var id = $cms.isEl(el) && $cms.uid(el);
+        var uid = $cms.isEl(el) && $cms.uid(el);
 
-        if (id && timeouts[id]) {
+        if (uid && timeouts[uid]) {
             try { // Cross-frame issues may cause error
-                window.clearTimeout(timeouts[id]);
-            } catch (ignore) {}
-            delete timeouts[id];
+                window.clearTimeout(timeouts[uid]);
+            } catch (ignore) {
+            }
+            delete timeouts[uid];
         }
     }
 
@@ -5530,11 +5467,7 @@ function play_self_audio_link(ob) {
  */
 'use strict';
 
-if (window.overlay_zIndex === undefined) {
-    window.overlay_zIndex = 999999; // Has to be higher than plupload, which is 99999
-}
-
-function noop() {}
+window.overlay_zIndex || (window.overlay_zIndex = 999999); // Has to be higher than plupload, which is 99999
 
 function open_images_into_lightbox(imgs, start) {
     start = +start || 0;
@@ -5542,11 +5475,13 @@ function open_images_into_lightbox(imgs, start) {
     var modal = _open_image_into_lightbox(imgs[start][0], imgs[start][1], start + 1, imgs.length, true, imgs[start][2]);
     modal.positionInSet = start;
 
-    var previous_button = document.createElement('img');
-    previous_button.className = 'previous_button';
-    previous_button.src = $cms.img('{$IMG;,mediaset_previous}');
-    function previous(e) {
-        cancel_bubbling(e);
+    var previousButton = document.createElement('img');
+    previousButton.className = 'previous_button';
+    previousButton.src = $cms.img('{$IMG;,mediaset_previous}');
+    previousButton.onclick = clickPreviousButton;
+    function clickPreviousButton(e) {
+        e.stopPropagation();
+        e.preventDefault();
 
         var new_position = modal.positionInSet - 1;
         if (new_position < 0) {
@@ -5554,25 +5489,27 @@ function open_images_into_lightbox(imgs, start) {
         }
         modal.positionInSet = new_position;
         _open_different_image_into_lightbox(modal, new_position, imgs);
-        return false;
     }
-    previous_button.onclick = previous;
+
     modal.left = previous;
-    modal.boxWrapperEl.firstElementChild.appendChild(previous_button);
+    modal.boxWrapperEl.firstElementChild.appendChild(previousButton);
 
     var next_button = document.createElement('img');
     next_button.className = 'next_button';
     next_button.src = $cms.img('{$IMG;,mediaset_next}');
-    function next(e) {
-        cancel_bubbling(e);
+    next_button.onclick = clickNextButton;
+    function clickNextButton(e) {
+        e.stopPropagation();
+        e.preventDefault();
 
         var new_position = modal.positionInSet + 1;
-        if (new_position >= imgs.length) new_position = 0;
+        if (new_position >= imgs.length) {
+            new_position = 0;
+        }
         modal.positionInSet = new_position;
         _open_different_image_into_lightbox(modal, new_position, imgs);
-        return false;
     }
-    next_button.onclick = next;
+
     modal.right = next;
     modal.boxWrapperEl.firstElementChild.appendChild(next_button);
 
@@ -5601,11 +5538,11 @@ function open_images_into_lightbox(imgs, start) {
                         _resize_lightbox_dimensions_img(modal, img, true, is_video);
                     };
                     img.src = imgs[position][0];
-                }, 0);
+                });
             }
 
-            var lightbox_description = modal.top_window.document.getElementById('lightbox_description'),
-                lightbox_position_in_set_x = modal.top_window.document.getElementById('lightbox_position_in_set_x');
+            var lightbox_description = modal.top_window.$cms.dom.id('lightbox_description'),
+                lightbox_position_in_set_x = modal.top_window.$cms.dom.id('lightbox_position_in_set_x');
 
             if (lightbox_description) {
                 $cms.dom.html(lightbox_description, imgs[position][1]);
@@ -5614,20 +5551,14 @@ function open_images_into_lightbox(imgs, start) {
             if (lightbox_position_in_set_x) {
                 $cms.dom.html(lightbox_position_in_set_x, position + 1);
             }
-        }, 0);
+        });
     }
 
 }
 
-function open_image_into_lightbox(a, is_video) {
-    is_video = !!is_video;
-
-    var has_full_button = (a.firstElementChild === null) || (a.href !== a.firstElementChild.src);
-    _open_image_into_lightbox(a.href, (a.cms_tooltip_title !== undefined) ? a.cms_tooltip_title : a.title, null, null, has_full_button, is_video);
-}
-
 function _open_image_into_lightbox(initial_img_url, description, x, n, has_full_button, is_video) {
     has_full_button = !!has_full_button;
+    is_video = !!is_video;
 
     // Set up overlay for Lightbox
     var lightbox_code = ' \
@@ -5643,14 +5574,13 @@ function _open_image_into_lightbox(initial_img_url, description, x, n, has_full_
 
     // Show overlay
     var my_lightbox = {
-        type: 'lightbox',
-        text: lightbox_code,
-        cancel_button: '{!INPUTSYSTEM_CLOSE;^}',
-        width: '450', // This will be updated with the real image width, when it has loaded
-        height: '300' // "
-    };
-
-    var modal = $cms.openModalWindow(my_lightbox);
+            type: 'lightbox',
+            text: lightbox_code,
+            cancel_button: '{!INPUTSYSTEM_CLOSE;^}',
+            width: '450', // This will be updated with the real image width, when it has loaded
+            height: '300' // "
+        },
+        modal = $cms.openModalWindow(my_lightbox);
 
     // Load proper image
     window.setTimeout(function () { // Defer execution until the HTML was parsed
@@ -5673,7 +5603,7 @@ function _open_image_into_lightbox(initial_img_url, description, x, n, has_full_
             };
             img.src = initial_img_url;
         }
-    }, 0);
+    });
 
     return modal;
 }
@@ -5684,30 +5614,36 @@ function _resize_lightbox_dimensions_img(modal, img, has_full_button, is_video) 
         return;
     }
 
-    var real_width = is_video ? img.videoWidth : img.width;
-    var width = real_width;
-    var real_height = is_video ? img.videoHeight : img.height;
-    var height = real_height;
-    var lightbox_image = modal.top_window.document.getElementById('lightbox_image');
+    var real_width = is_video ? img.videoWidth : img.width,
+        width = real_width,
+        real_height = is_video ? img.videoHeight : img.height,
+        height = real_height,
+        lightbox_image = modal.top_window.$cms.dom.id('lightbox_image'),
 
-    var lightbox_meta = modal.top_window.document.getElementById('lightbox_meta');
-    var lightbox_description = modal.top_window.document.getElementById('lightbox_description');
-    var lightbox_position_in_set = modal.top_window.document.getElementById('lightbox_position_in_set');
-    var lightbox_full_link = modal.top_window.document.getElementById('lightbox_full_link');
+        lightbox_meta = modal.top_window.$cms.dom.id('lightbox_meta'),
+        lightbox_description = modal.top_window.$cms.dom.id('lightbox_description'),
+        lightbox_position_in_set = modal.top_window.$cms.dom.id('lightbox_position_in_set'),
+        lightbox_full_link = modal.top_window.$cms.dom.id('lightbox_full_link');
 
     function dims_func() {
         lightbox_description.style.display = (lightbox_description.firstChild) ? 'inline' : 'none';
-        if (lightbox_full_link) lightbox_full_link.style.display = (!is_video && has_full_button && (real_width > max_width || real_height > max_height)) ? 'inline' : 'none';
-        lightbox_meta.style.display = (lightbox_description.style.display == 'inline' || lightbox_position_in_set !== null || lightbox_full_link && lightbox_full_link.style.display == 'inline') ? 'block' : 'none';
+        if (lightbox_full_link) {
+            var showLightboxFullLink = !!(!is_video && has_full_button && ((real_width > max_width) || (real_height > max_height)));
+            $cms.dom.toggle(lightbox_full_link, showLightboxFullLink);
+        }
+        var showLightboxMeta = !!((lightbox_description.style.display === 'inline') || (lightbox_position_in_set !== null) || (lightbox_full_link && lightbox_full_link.style.display === 'inline'));
+        $cms.dom.toggle(lightbox_meta, showLightboxMeta);
 
         // Might need to rescale using some maths, if natural size is too big
-        var max_dims = _get_max_lightbox_img_dims(modal, has_full_button);
-        var max_width = max_dims[0];
-        var max_height = max_dims[1];
+        var max_dims = _get_max_lightbox_img_dims(modal, has_full_button),
+            max_width = max_dims[0],
+            max_height = max_dims[1];
+
         if (width > max_width) {
             width = max_width;
             height = window.parseInt(max_width * real_height / real_width - 1);
         }
+
         if (height > max_height) {
             width = window.parseInt(max_height * real_width / real_height - 1);
             height = max_height;
@@ -5719,7 +5655,7 @@ function _resize_lightbox_dimensions_img(modal, img, has_full_button, is_video) 
 
         window.setTimeout(function () {
             modal.reset_dimensions('' + width, '' + height, false);
-        }, 0);
+        });
 
         if (img.parentElement) {
             img.parentElement.parentElement.parentElement.style.width = 'auto';
@@ -5738,8 +5674,8 @@ function _resize_lightbox_dimensions_img(modal, img, has_full_button, is_video) 
 
     var sup = lightbox_image.parentNode;
     sup.removeChild(lightbox_image);
-    if (sup.childNodes.length != 0) {
-        sup.insertBefore(img, sup.firstElementChild);
+    if (sup.firstChild) {
+        sup.insertBefore(img, sup.firstChild);
     } else {
         sup.appendChild(img);
     }
@@ -5748,9 +5684,7 @@ function _resize_lightbox_dimensions_img(modal, img, has_full_button, is_video) 
     sup.style.overflow = 'hidden';
 
     dims_func();
-    $cms.dom.on(window, 'resize', function () {
-        dims_func();
-    });
+    $cms.dom.on(window, 'resize', dims_func);
 }
 
 
@@ -5917,291 +5851,304 @@ function faux_open(url, name, options, target, cancel_text) {
     faux_showModalDialog(url, name, options, null, target, cancel_text);
 }
 
+(function () {
+    /*
+     Faux frames and faux scrolling
+     */
 
-/*
- Faux frames and faux scrolling
-*/
-if (window.infinite_scroll_pending === undefined) {
-    window.infinite_scroll_pending = false; // Blocked due to queued HTTP request
-    window.infinite_scroll_blocked = false; // Blocked due to event tracking active
-}
-function infinite_scrolling_block(event) {
-    if (event.keyCode === 35) {// 'End' key pressed, so stop the expand happening for a few seconds while the browser scrolls down
-        window.infinite_scroll_blocked = true;
-        window.setTimeout(function () {
-            window.infinite_scroll_blocked = false;
-        }, 3000);
-    }
-}
-if (window.infinite_scroll_mouse_held === undefined) {
-    window.infinite_scroll_mouse_held = false;
-}
-function infinite_scrolling_block_hold() {
-    if (!window.infinite_scroll_blocked) {
-        window.infinite_scroll_blocked = true;
-        window.infinite_scroll_mouse_held = true;
-    }
-}
-function infinite_scrolling_block_unhold(infinite_scrolling) {
-    if (window.infinite_scroll_mouse_held) {
-        window.infinite_scroll_blocked = false;
-        window.infinite_scroll_mouse_held = false;
-        infinite_scrolling();
-    }
-}
-function internalise_infinite_scrolling(url_stem, wrapper) {
-    if (window.infinite_scroll_blocked || window.infinite_scroll_pending) return false; // Already waiting for a result
+    window.infinite_scrolling_block = infinite_scrolling_block;
+    window.infinite_scrolling_block_hold = infinite_scrolling_block_hold;
+    window.infinite_scrolling_block_unhold = infinite_scrolling_block_unhold;
+    window.internalise_infinite_scrolling = internalise_infinite_scrolling;
+    window.internalise_infinite_scrolling_go = internalise_infinite_scrolling_go;
+    window.internalise_ajax_block_wrapper_links = internalise_ajax_block_wrapper_links;
 
-    var _pagination = wrapper.querySelectorAll('.pagination');
 
-    if (_pagination.length == 0) return false;
+    var infinite_scroll_pending = false, // Blocked due to queued HTTP request
+        infinite_scroll_blocked = false, // Blocked due to event tracking active
+        infinite_scroll_mouse_held = false;
 
-    var more_links = [], found_new_links = null;
-
-    for (var _i = 0; _i < _pagination.length; _i++) {
-        var pagination = _pagination[_i];
-
-        if (pagination.style.display != 'none') {
-            // Remove visibility of pagination, now we've replaced with AJAX load more link
-            var pagination_parent = pagination.parentNode;
-            pagination.style.display = 'none';
-            var num_node_children = 0;
-            for (var i = 0; i < pagination_parent.childNodes.length; i++) {
-                if (pagination_parent.childNodes[i].nodeName != '#text') num_node_children++;
-            }
-            if (num_node_children == 0) // Remove empty pagination wrapper
-            {
-                pagination_parent.style.display = 'none';
-            }
-
-            // Add AJAX load more link before where the last pagination control was
-            // Remove old pagination_load_more's
-            var pagination_load_more = wrapper.querySelectorAll('.pagination_load_more');
-            if (pagination_load_more.length > 0) pagination_load_more[0].parentNode.removeChild(pagination_load_more[0]);
-
-            // Add in new one
-            var load_more_link = document.createElement('div');
-            load_more_link.className = 'pagination_load_more';
-            var load_more_link_a = document.createElement('a');
-            $cms.dom.html(load_more_link_a, '{!LOAD_MORE;}');
-            load_more_link_a.href = '#!';
-            load_more_link_a.onclick = function () {
-                internalise_infinite_scrolling_go(url_stem, wrapper, more_links);
-                return false;
-            }; // Click link -- load
-            load_more_link.appendChild(load_more_link_a);
-            _pagination[_pagination.length - 1].parentNode.insertBefore(load_more_link, _pagination[_pagination.length - 1].nextSibling);
-
-            more_links = pagination.getElementsByTagName('a');
-            found_new_links = _i;
+    function infinite_scrolling_block(event) {
+        if (event.keyCode === 35) {// 'End' key pressed, so stop the expand happening for a few seconds while the browser scrolls down
+            infinite_scroll_blocked = true;
+            window.setTimeout(function () {
+                infinite_scroll_blocked = false;
+            }, 3000);
         }
     }
-    for (var _i = 0; _i < _pagination.length; _i++) {
-        var pagination = _pagination[_i];
-        if (found_new_links != null) // Cleanup old pagination
-        {
-            if (_i != found_new_links) {
-                var _more_links = pagination.getElementsByTagName('a');
-                var num_links = _more_links.length;
-                for (var i = num_links - 1; i >= 0; i--) {
-                    _more_links[i].parentNode.removeChild(_more_links[i]);
+
+    function infinite_scrolling_block_hold() {
+        if (!infinite_scroll_blocked) {
+            infinite_scroll_blocked = true;
+            infinite_scroll_mouse_held = true;
+        }
+    }
+    function infinite_scrolling_block_unhold(infinite_scrolling) {
+        if (infinite_scroll_mouse_held) {
+            infinite_scroll_blocked = false;
+            infinite_scroll_mouse_held = false;
+            infinite_scrolling();
+        }
+    }
+    function internalise_infinite_scrolling(url_stem, wrapper) {
+        if (infinite_scroll_blocked || infinite_scroll_pending) {
+            // Already waiting for a result
+            return false;
+        }
+
+        var _pagination = wrapper.querySelectorAll('.pagination');
+
+        if (_pagination.length == 0) return false;
+
+        var more_links = [], found_new_links = null;
+
+        for (var _i = 0; _i < _pagination.length; _i++) {
+            var pagination = _pagination[_i];
+
+            if (pagination.style.display != 'none') {
+                // Remove visibility of pagination, now we've replaced with AJAX load more link
+                var pagination_parent = pagination.parentNode;
+                pagination.style.display = 'none';
+                var num_node_children = 0;
+                for (var i = 0; i < pagination_parent.childNodes.length; i++) {
+                    if (pagination_parent.childNodes[i].nodeName != '#text') num_node_children++;
+                }
+                if (num_node_children == 0) // Remove empty pagination wrapper
+                {
+                    pagination_parent.style.display = 'none';
+                }
+
+                // Add AJAX load more link before where the last pagination control was
+                // Remove old pagination_load_more's
+                var pagination_load_more = wrapper.querySelectorAll('.pagination_load_more');
+                if (pagination_load_more.length > 0) pagination_load_more[0].parentNode.removeChild(pagination_load_more[0]);
+
+                // Add in new one
+                var load_more_link = document.createElement('div');
+                load_more_link.className = 'pagination_load_more';
+                var load_more_link_a = document.createElement('a');
+                $cms.dom.html(load_more_link_a, '{!LOAD_MORE;}');
+                load_more_link_a.href = '#!';
+                load_more_link_a.onclick = function () {
+                    internalise_infinite_scrolling_go(url_stem, wrapper, more_links);
+                    return false;
+                }; // Click link -- load
+                load_more_link.appendChild(load_more_link_a);
+                _pagination[_pagination.length - 1].parentNode.insertBefore(load_more_link, _pagination[_pagination.length - 1].nextSibling);
+
+                more_links = pagination.getElementsByTagName('a');
+                found_new_links = _i;
+            }
+        }
+        for (var _i = 0; _i < _pagination.length; _i++) {
+            var pagination = _pagination[_i];
+            if (found_new_links != null) // Cleanup old pagination
+            {
+                if (_i != found_new_links) {
+                    var _more_links = pagination.getElementsByTagName('a');
+                    var num_links = _more_links.length;
+                    for (var i = num_links - 1; i >= 0; i--) {
+                        _more_links[i].parentNode.removeChild(_more_links[i]);
+                    }
+                }
+            } else {// Find links from an already-hidden pagination
+
+                more_links = pagination.getElementsByTagName('a');
+                if (more_links.length != 0) {
+                    break;
                 }
             }
-        } else {// Find links from an already-hidden pagination
+        }
 
-            more_links = pagination.getElementsByTagName('a');
-            if (more_links.length != 0) {
-                break;
+        // Is more scrolling possible?
+        var rel, found_rel = false;
+        for (var i = 0; i < more_links.length; i++) {
+            rel = more_links[i].getAttribute('rel');
+            if (rel && rel.indexOf('next') != -1) {
+                found_rel = true;
             }
         }
-    }
+        if (!found_rel) // Ah, no more scrolling possible
+        {
+            // Remove old pagination_load_more's
+            var pagination_load_more = wrapper.querySelectorAll('.pagination_load_more');
+            if (pagination_load_more.length > 0) {
+                pagination_load_more[0].parentNode.removeChild(pagination_load_more[0]);
+            }
 
-    // Is more scrolling possible?
-    var rel, found_rel = false;
-    for (var i = 0; i < more_links.length; i++) {
-        rel = more_links[i].getAttribute('rel');
-        if (rel && rel.indexOf('next') != -1) {
-            found_rel = true;
+            return;
         }
+
+        // Used for calculating if we need to scroll down
+        var wrapper_pos_y = find_pos_y(wrapper);
+        var wrapper_height = wrapper.offsetHeight;
+        var wrapper_bottom = wrapper_pos_y + wrapper_height;
+        var window_height = get_window_height();
+        var page_height = get_window_scroll_height();
+        var scroll_y = window.pageYOffset;
+
+        // Scroll down -- load
+        if ((scroll_y + window_height > wrapper_bottom - window_height * 2) && (scroll_y + window_height < page_height - 30)) // If within window_height*2 pixels of load area and not within 30 pixels of window bottom (so you can press End key)
+        {
+            return internalise_infinite_scrolling_go(url_stem, wrapper, more_links);
+        }
+
+        return false;
     }
-    if (!found_rel) // Ah, no more scrolling possible
-    {
-        // Remove old pagination_load_more's
-        var pagination_load_more = wrapper.querySelectorAll('.pagination_load_more');
-        if (pagination_load_more.length > 0) pagination_load_more[0].parentNode.removeChild(pagination_load_more[0]);
+    function internalise_infinite_scrolling_go(url_stem, wrapper, more_links) {
+        if (infinite_scroll_pending) {
+            return false;
+        }
 
-        return;
-    }
+        var wrapper_inner = $cms.dom.id(wrapper.id + '_inner');
+        if (!wrapper_inner) wrapper_inner = wrapper;
 
-    // Used for calculating if we need to scroll down
-    var wrapper_pos_y = find_pos_y(wrapper);
-    var wrapper_height = wrapper.offsetHeight;
-    var wrapper_bottom = wrapper_pos_y + wrapper_height;
-    var window_height = get_window_height();
-    var page_height = get_window_scroll_height();
-    var scroll_y = window.pageYOffset;
+        var rel;
+        for (var i = 0; i < more_links.length; i++) {
+            rel = more_links[i].getAttribute('rel');
+            if (rel && rel.indexOf('next') != -1) {
+                var next_link = more_links[i];
+                var url_stub = '';
 
-    // Scroll down -- load
-    if ((scroll_y + window_height > wrapper_bottom - window_height * 2) && (scroll_y + window_height < page_height - 30)) // If within window_height*2 pixels of load area and not within 30 pixels of window bottom (so you can press End key)
-    {
-        return internalise_infinite_scrolling_go(url_stem, wrapper, more_links);
-    }
+                var matches = next_link.href.match(new RegExp('[&?](start|[^_]*_start|start_[^_]*)=([^&]*)'));
+                if (matches) {
+                    url_stub += (url_stem.indexOf('?') == -1) ? '?' : '&';
+                    url_stub += matches[1] + '=' + matches[2];
+                    url_stub += '&raw=1';
+                    infinite_scroll_pending = true;
 
-    return false;
-}
-function internalise_infinite_scrolling_go(url_stem, wrapper, more_links) {
-    if (window.infinite_scroll_pending) {
+                    return call_block(url_stem + url_stub, '', wrapper_inner, true, function () {
+                        infinite_scroll_pending = false;
+                        internalise_infinite_scrolling(url_stem, wrapper);
+                    });
+                }
+            }
+        }
+
         return false;
     }
 
-    var wrapper_inner = document.getElementById(wrapper.id + '_inner');
-    if (!wrapper_inner) wrapper_inner = wrapper;
+    function internalise_ajax_block_wrapper_links(url_stem, block_element, look_for, extra_params, append, forms_too, scroll_to_top) {
+        look_for || (look_for = []);
+        extra_params || (extra_params = []);
+        append = !!append;
+        forms_too = !!forms_too;
+        scroll_to_top = (scroll_to_top !== undefined) ? !!scroll_to_top : true;
 
-    var rel;
-    for (var i = 0; i < more_links.length; i++) {
-        rel = more_links[i].getAttribute('rel');
-        if (rel && rel.indexOf('next') != -1) {
-            var next_link = more_links[i];
-            var url_stub = '';
-
-            var matches = next_link.href.match(new RegExp('[&?](start|[^_]*_start|start_[^_]*)=([^&]*)'));
-            if (matches) {
-                url_stub += (url_stem.indexOf('?') == -1) ? '?' : '&';
-                url_stub += matches[1] + '=' + matches[2];
-                url_stub += '&raw=1';
-                window.infinite_scroll_pending = true;
-
-                return call_block(url_stem + url_stub, '', wrapper_inner, true, function () {
-                    window.infinite_scroll_pending = false;
-                    internalise_infinite_scrolling(url_stem, wrapper);
-                });
-            }
+        var block_pos_y = find_pos_y(block_element, true);
+        if (block_pos_y > window.pageYOffset) {
+            scroll_to_top = false;
         }
-    }
 
-    return false;
-}
-
-function internalise_ajax_block_wrapper_links(url_stem, block_element, look_for, extra_params, append, forms_too, scroll_to_top) {
-    look_for || (look_for = []);
-    extra_params || (extra_params = []);
-    append = !!append;
-    forms_too = !!forms_too;
-    scroll_to_top = (scroll_to_top !== undefined) ? !!scroll_to_top : true;
-
-    var block_pos_y = find_pos_y(block_element, true);
-    if (block_pos_y > window.pageYOffset) {
-        scroll_to_top = false;
-    }
-
-    var _link_wrappers = block_element.querySelectorAll('.ajax_block_wrapper_links');
-    if (_link_wrappers.length === 0) {
-        _link_wrappers = [block_element];
-    }
-    var links = [];
-    for (var i = 0; i < _link_wrappers.length; i++) {
-        var _links = _link_wrappers[i].getElementsByTagName('a');
-        for (var j = 0; j < _links.length; j++) {
-            links.push(_links[j]);
+        var _link_wrappers = block_element.querySelectorAll('.ajax_block_wrapper_links');
+        if (_link_wrappers.length === 0) {
+            _link_wrappers = [block_element];
         }
-        if (forms_too) {
-            _links = _link_wrappers[i].getElementsByTagName('form');
+        var links = [];
+        for (var i = 0; i < _link_wrappers.length; i++) {
+            var _links = _link_wrappers[i].getElementsByTagName('a');
             for (var j = 0; j < _links.length; j++) {
                 links.push(_links[j]);
             }
-            if (_link_wrappers[i].localName === 'form') {
-                links.push(_link_wrappers[i]);
-            }
-        }
-    }
-
-    links.forEach(function (link) {
-        if (!link.target || (link.target !== '_self') || (link.href && link.href.startsWith('#'))) {
-            return; // (continue)
-        }
-
-        if (link.localName === 'a') {
-            if (link.onclick) {
-                link.onclick = function (old_onclick) {
-                    return function (event) {
-                        return (old_onclick.call(this, event) !== false) && submit_func.call(this, event);
-                    }
-                }(link.onclick);
-            } else {
-                link.onclick = submit_func;
-            }
-        } else {
-            if (link.onsubmit) {
-                link.onsubmit = function (old_onsubmit) {
-                    return function (event) {
-                        return (old_onsubmit.call(this, event) !== false) && submit_func.call(this, event);
-                    }
-                }(link.onsubmit);
-            } else {
-                link.onsubmit = submit_func;
-            }
-        }
-    });
-
-    function submit_func() {
-        var url_stub = '', j;
-
-        var href = (this.localName === 'a') ? this.href : this.action;
-
-        // Any parameters matching a pattern must be sent in the URL to the AJAX block call
-        for (j = 0; j < look_for.length; j++) {
-            var matches = href.match(new RegExp('[&\?](' + look_for[j] + ')=([^&]*)'));
-            if (matches) {
-                url_stub += (url_stem.indexOf('?') === -1) ? '?' : '&';
-                url_stub += matches[1] + '=' + matches[2];
-            }
-        }
-        for (j in extra_params) {
-            url_stub += (url_stem.indexOf('?') === -1) ? '?' : '&';
-            url_stub += j + '=' + encodeURIComponent(extra_params[j]);
-        }
-
-        // Any POST parameters?
-        var post_params = null, param;
-        if (this.localName === 'form') {
-            post_params = '';
-            for (j = 0; j < this.elements.length; j++) {
-                if (this.elements[j].name) {
-                    param = this.elements[j].name + '=' + encodeURIComponent(clever_find_value(this, this.elements[j]));
-
-                    if ((!this.method) || (this.method.toLowerCase() !== 'get')) {
-                        if (post_params != '') post_params += '&';
-                        post_params += param;
-                    } else {
-                        url_stub += (url_stem.indexOf('?') == -1) ? '?' : '&';
-                        url_stub += param;
-                    }
+            if (forms_too) {
+                _links = _link_wrappers[i].getElementsByTagName('form');
+                for (var j = 0; j < _links.length; j++) {
+                    links.push(_links[j]);
+                }
+                if (_link_wrappers[i].localName === 'form') {
+                    links.push(_link_wrappers[i]);
                 }
             }
         }
 
-        if (window.history.pushState) {
-            try {
-                window.has_js_state = true;
-                window.history.pushState({js: true}, document.title, href.replace('&ajax=1', '').replace(/&zone=\w+/, ''));
-            } catch (e) {
-                // Exception could have occurred due to cross-origin error (e.g. "Failed to execute 'pushState' on 'History':
-                // A history state object with URL 'https://xxx' cannot be created in a document with origin 'http://xxx'")
+        links.forEach(function (link) {
+            if (!link.target || (link.target !== '_self') || (link.href && link.href.startsWith('#'))) {
+                return; // (continue)
             }
+
+            if (link.localName === 'a') {
+                if (link.onclick) {
+                    link.onclick = function (old_onclick) {
+                        return function (event) {
+                            return (old_onclick.call(this, event) !== false) && submit_func.call(this, event);
+                        }
+                    }(link.onclick);
+                } else {
+                    link.onclick = submit_func;
+                }
+            } else {
+                if (link.onsubmit) {
+                    link.onsubmit = function (old_onsubmit) {
+                        return function (event) {
+                            return (old_onsubmit.call(this, event) !== false) && submit_func.call(this, event);
+                        }
+                    }(link.onsubmit);
+                } else {
+                    link.onsubmit = submit_func;
+                }
+            }
+        });
+
+        function submit_func() {
+            var url_stub = '', j;
+
+            var href = (this.localName === 'a') ? this.href : this.action;
+
+            // Any parameters matching a pattern must be sent in the URL to the AJAX block call
+            for (j = 0; j < look_for.length; j++) {
+                var matches = href.match(new RegExp('[&\?](' + look_for[j] + ')=([^&]*)'));
+                if (matches) {
+                    url_stub += (url_stem.indexOf('?') === -1) ? '?' : '&';
+                    url_stub += matches[1] + '=' + matches[2];
+                }
+            }
+            for (j in extra_params) {
+                url_stub += (url_stem.indexOf('?') === -1) ? '?' : '&';
+                url_stub += j + '=' + encodeURIComponent(extra_params[j]);
+            }
+
+            // Any POST parameters?
+            var post_params = null, param;
+            if (this.localName === 'form') {
+                post_params = '';
+                for (j = 0; j < this.elements.length; j++) {
+                    if (this.elements[j].name) {
+                        param = this.elements[j].name + '=' + encodeURIComponent(clever_find_value(this, this.elements[j]));
+
+                        if ((!this.method) || (this.method.toLowerCase() !== 'get')) {
+                            if (post_params != '') post_params += '&';
+                            post_params += param;
+                        } else {
+                            url_stub += (url_stem.indexOf('?') == -1) ? '?' : '&';
+                            url_stub += param;
+                        }
+                    }
+                }
+            }
+
+            if (window.history.pushState) {
+                try {
+                    window.has_js_state = true;
+                    window.history.pushState({js: true}, document.title, href.replace('&ajax=1', '').replace(/&zone=\w+/, ''));
+                } catch (e) {
+                    // Exception could have occurred due to cross-origin error (e.g. "Failed to execute 'pushState' on 'History':
+                    // A history state object with URL 'https://xxx' cannot be created in a document with origin 'http://xxx'")
+                }
+            }
+
+            clear_out_tooltips();
+
+            // Make AJAX block call
+            return call_block(url_stem + url_stub, '', block_element, append, function () {
+                if (scroll_to_top) {
+                    window.scrollTo(0, block_pos_y);
+                }
+            }, false, post_params);
         }
-
-        clear_out_tooltips();
-
-        // Make AJAX block call
-        return call_block(url_stem + url_stub, '', block_element, append, function () {
-            if (scroll_to_top) {
-                window.scrollTo(0, block_pos_y);
-            }
-        }, false, post_params);
     }
-}
+}());
 
-(function (){
+(function () {
     window.call_block = call_block;
 
     var _blockDataCache = {};
@@ -6289,7 +6236,8 @@ function internalise_ajax_block_wrapper_links(url_stem, block_element, look_for,
         if (scroll_to_top_of_wrapper) {
             try {
                 window.scrollTo(0, find_pos_y(target_div));
-            } catch (e) {}
+            } catch (e) {
+            }
         }
 
         // Defined callback
@@ -6407,7 +6355,7 @@ function update_ajax_member_list(target, special, delayed, e) {
     do_ajax_request(url + keep_stub(), update_ajax_member_list_response);
 
     function close_down() {
-        var current = document.getElementById('ajax_list');
+        var current = $cms.dom.id('ajax_list');
         if (current) {
             current.parentNode.removeChild(current);
         }
@@ -6482,14 +6430,15 @@ function update_ajax_member_list(target, special, delayed, e) {
             current_list_for_copy.value = el.value;
             current_list_for_copy.onkeyup = current_list_for_copy.old_onkeyup;
             current_list_for_copy.onchange = current_list_for_copy.old_onchange;
-            current_list_for_copy.onkeypress = function () {};
+            current_list_for_copy.onkeypress = function () {
+            };
             if (current_list_for_copy.onrealchange) {
                 current_list_for_copy.onrealchange(e);
             }
             if (current_list_for_copy.onchange) {
                 current_list_for_copy.onchange(e);
             }
-            var al = document.getElementById('ajax_list');
+            var al = $cms.dom.id('ajax_list');
             al.parentNode.removeChild(al);
             window.setTimeout(function () {
                 current_list_for_copy.focus();
@@ -6541,9 +6490,10 @@ function update_ajax_member_list(target, special, delayed, e) {
             }
             return null;
         }
+
         window.current_list_for.onkeyup = function (event) {
             var ret = handle_arrow_usage(event);
-            if (isset(ret)) {
+            if (ret != null) {
                 return ret;
             }
             return update_ajax_member_list(current_list_for_copy, current_list_for_copy.special, false, event);
@@ -6557,7 +6507,7 @@ function update_ajax_member_list(target, special, delayed, e) {
         };
         list.onkeyup = function (event) {
             var ret = handle_arrow_usage(event);
-            if (isset(ret)) {
+            if (ret != null) {
                 return ret;
             }
 
@@ -6614,7 +6564,7 @@ function password_strength(ob) {
         return;
     }
 
-    var _ind = document.getElementById('password_strength_' + ob.id);
+    var _ind = $cms.dom.id('password_strength_' + ob.id);
     if (!_ind) return;
     var ind = _ind.querySelector('div');
     var post = 'password=' + encodeURIComponent(ob.value);
@@ -6695,9 +6645,9 @@ function set_field_error(the_element, error_msg) {
     }
 
     function get_errormsg_element(id) {
-        var errormsg_element = document.getElementById('error_' + id);
+        var errormsg_element = $cms.dom.id('error_' + id);
         if (!errormsg_element) {
-            errormsg_element = document.getElementById('error_' + id.replace(/\_day$/, '').replace(/\_month$/, '').replace(/\_year$/, '').replace(/\_hour$/, '').replace(/\_minute$/, ''));
+            errormsg_element = $cms.dom.id('error_' + id.replace(/\_day$/, '').replace(/\_month$/, '').replace(/\_year$/, '').replace(/\_hour$/, '').replace(/\_minute$/, ''));
         }
         return errormsg_element;
     }
@@ -6754,7 +6704,7 @@ function do_form_submit(form, event) {
 function do_form_preview(event, form, preview_url, has_separate_preview) {
     has_separate_preview = !!has_separate_preview;
 
-    if (!document.getElementById('preview_iframe')) {
+    if (!$cms.dom.id('preview_iframe')) {
         fauxmodal_alert('{!ADBLOCKER;}');
         return false;
     }
@@ -6763,7 +6713,9 @@ function do_form_preview(event, form, preview_url, has_separate_preview) {
 
     var old_action = form.getAttribute('action');
 
-    if (!form.old_action) form.old_action = old_action;
+    if (!form.old_action) {
+        form.old_action = old_action;
+    }
     form.setAttribute('action', /*maintain_theme_in_link - no, we want correct theme images to work*/(preview_url) + ((form.old_action.indexOf('&uploading=1') != -1) ? '&uploading=1' : ''));
     var old_target = form.getAttribute('target');
     if (!old_target) old_target = '_top';
@@ -6785,9 +6737,9 @@ function do_form_preview(event, form, preview_url, has_separate_preview) {
         return true;
     }
 
-    document.getElementById('submit_button').style.display = 'inline';
+    $cms.dom.id('submit_button').style.display = 'inline';
     //window.setInterval(function() { resize_frame('preview_iframe',window.top.scrollY+window.top.get_window_height()); },1500);
-    var pf = document.getElementById('preview_iframe');
+    var pf = $cms.dom.id('preview_iframe');
 
     /* Do our loading-animation */
     if (!window.just_checking_requirements) {
@@ -6829,7 +6781,9 @@ function clever_find_value(form, element) {
                     }
                 } else if (element.selectedIndex >= 0) {
                     value = element.options[element.selectedIndex].value;
-                    if ((value == '') && (element.getAttribute('size') > 1)) value = '-1'; // Fudge, as we have selected something explicitly that is blank
+                    if ((value == '') && (element.getAttribute('size') > 1)) {
+                        value = '-1';  // Fudge, as we have selected something explicitly that is blank
+                    }
                 }
             }
             break;
@@ -6983,16 +6937,16 @@ function check_field(the_element, the_form) {
     return [erroneous, total_file_size, alerted];
 
     function get_errormsg_element(id) {
-        var errormsg_element = document.getElementById('error_' + id);
+        var errormsg_element = $cms.dom.id('error_' + id);
         if (!errormsg_element) {
-            errormsg_element = document.getElementById('error_' + id.replace(/\_day$/, '').replace(/\_month$/, '').replace(/\_year$/, '').replace(/\_hour$/, '').replace(/\_minute$/, ''));
+            errormsg_element = $cms.dom.id('error_' + id.replace(/\_day$/, '').replace(/\_month$/, '').replace(/\_year$/, '').replace(/\_hour$/, '').replace(/\_minute$/, ''));
         }
         return errormsg_element;
     }
 }
 
 function check_form(the_form, for_preview) {
-    var delete_element = document.getElementById('delete');
+    var delete_element = $cms.dom.id('delete');
     if ((!for_preview) && (delete_element != null) && (((delete_element.classList[0] == 'input_radio') && (the_element.value != '0')) || (delete_element.classList[0] == 'input_tick')) && (delete_element.checked)) {
         return true;
     }
@@ -7021,11 +6975,11 @@ function check_form(the_form, for_preview) {
                         }
 
                         if ((!no_recurse) && (the_element.className.indexOf('date') != -1) && (the_element.name.match(/\_(day|month|year)$/))) {
-                            var e = document.getElementById(the_element.id.replace(/\_(day|month|year)$/, '_day'));
+                            var e = $cms.dom.id(the_element.id.replace(/\_(day|month|year)$/, '_day'));
                             if (e != the_element) e.onblur(event, true);
-                            var e = document.getElementById(the_element.id.replace(/\_(day|month|year)$/, '_month'));
+                            var e = $cms.dom.id(the_element.id.replace(/\_(day|month|year)$/, '_month'));
                             if (e != the_element) e.onblur(event, true);
-                            var e = document.getElementById(the_element.id.replace(/\_(day|month|year)$/, '_year'));
+                            var e = $cms.dom.id(the_element.id.replace(/\_(day|month|year)$/, '_year'));
                             if (e != the_element) e.onblur(event, true);
                         }
                     };
@@ -7073,7 +7027,7 @@ function check_form(the_form, for_preview) {
 
     // Try and workaround max_input_vars problem if lots of usergroups
     if (!erroneous) {
-        var delete_e = document.getElementById('delete');
+        var delete_e = $cms.dom.id('delete');
         var is_delete = delete_e && delete_e.type == 'checkbox' && delete_e.checked;
         var es = document.getElementsByTagName('select'), e;
         for (var i = 0; i < es.length; i++) {
@@ -7088,14 +7042,14 @@ function check_form(the_form, for_preview) {
 }
 
 function set_locked(field, is_locked, chosen_ob) {
-    var radio_button = document.getElementById('choose_' + field.name.replace(/\[\]$/, ''));
+    var radio_button = $cms.dom.id('choose_' + field.name.replace(/\[\]$/, ''));
     if (!radio_button) {
-        radio_button = document.getElementById('choose_' + field.name.replace(/\_\d+$/, '_'));
+        radio_button = $cms.dom.id('choose_' + field.name.replace(/\_\d+$/, '_'));
     }
 
     // For All-and-not,Line-multi,Compound-Tick,Radio-List,Date/Time: set_locked assumes that the calling code is clever
     // special input types are coded to observe their master input field readonly status)
-    var button = document.getElementById('uploadButton_' + field.name.replace(/\[\]$/, ''));
+    var button = $cms.dom.id('uploadButton_' + field.name.replace(/\[\]$/, ''));
 
     if (is_locked) {
         var labels = document.getElementsByTagName('label'), label = null;
@@ -7129,7 +7083,7 @@ function set_locked(field, is_locked, chosen_ob) {
 }
 
 function set_required(fieldName, isRequired) {
-    var radio_button = document.getElementById('choose_' + fieldName);
+    var radio_button = $cms.dom.id('choose_' + fieldName);
 
     isRequired = !!isRequired;
 
@@ -7138,10 +7092,10 @@ function set_required(fieldName, isRequired) {
             radio_button.checked = true;
         }
     } else {
-        var required_a = document.getElementById('form_table_field_name__' + fieldName),
-            required_b = document.getElementById('required_readable_marker__' + fieldName),
-            required_c = document.getElementById('required_posted__' + fieldName),
-            required_d = document.getElementById('form_table_field_input__' + fieldName);
+        var required_a = $cms.dom.$('#form_table_field_name__' + fieldName),
+            required_b = $cms.dom.$('#required_readable_marker__' + fieldName),
+            required_c = $cms.dom.$('#required_posted__' + fieldName),
+            required_d = $cms.dom.$('#form_table_field_input__' + fieldName);
 
         if (required_a) {
             required_a.className = 'form_table_field_name';
@@ -7152,7 +7106,7 @@ function set_required(fieldName, isRequired) {
         }
 
         if (required_b) {
-            $cms.dom.toggleDisplay(required_b, isRequired);
+            $cms.dom.toggle(required_b, isRequired);
         }
 
         if (required_c) {
@@ -7164,7 +7118,7 @@ function set_required(fieldName, isRequired) {
         }
     }
 
-    var element = document.getElementById(fieldName);
+    var element = $cms.dom.id(fieldName);
 
     if (element) {
         element.className = element.className.replace(/(input\_[a-z\_]+)_required/g, '$1');
@@ -7179,7 +7133,7 @@ function set_required(fieldName, isRequired) {
     }
 
     if (!isRequired) {
-        var error = document.getElementById('error__' + fieldName);
+        var error = $cms.dom.id('error__' + fieldName);
         if (error) {
             error.style.display = 'none';
         }
@@ -7206,7 +7160,8 @@ function disable_preview_scripts(under) {
                 if (!elements[i].href.toLowerCase().startsWith('javascript:') && (elements[i].target !== '_self') && (elements[i].target !== '_blank')) {// guard due to weird Firefox bug, JS actions still opening new window
                     elements[i].target = 'false_blank'; // Real _blank would trigger annoying CSS. This is better anyway.
                 }
-            } catch (e) { }// IE can have security exceptions
+            } catch (e) {
+            }// IE can have security exceptions
         }
     }
 

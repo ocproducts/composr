@@ -32,7 +32,7 @@
 			<p class="nothing_here">{!NO_NEWS}</p>
 		{+END}
 		{+START,IF_NON_EMPTY,{CONTENT}}
-			<div onmouseover="this.paused=true;" onmouseout="this.paused=false;" class="webstandards_checker_off wide_ticker" id="news_scroller{$GET%,side_news_id}" data-cms-news-scroller="">
+			<div onmouseover="this.paused=true;" onmouseout="this.paused=false;" class="webstandards_checker_off wide_ticker" id="news_scroller{$GET%,side_news_id}" data-cms-news-scroller="1">
 				{CONTENT}
 			</div>
 		{+END}

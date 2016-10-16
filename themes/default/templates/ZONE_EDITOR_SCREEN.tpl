@@ -1,4 +1,5 @@
-<div data-view="ZoneEditorScreen">
+{$SET,default_zone_page_name,{$DEFAULT_ZONE_PAGE_NAME}}
+<div data-view="ZoneEditorScreen" data-view-params="{+START,PARAMS_JSON,default_zone_page_name}{_*}{+END}">
 {TITLE}
 
 {+START,INCLUDE,HANDLE_CONFLICT_RESOLUTION}{+END}

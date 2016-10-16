@@ -2,7 +2,7 @@
     'use strict';
 
     function PurchaseWizardScreen() {
-        $cms.View.apply(this, arguments);
+        PurchaseWizardScreen.base(this, arguments);
         this.formEl = this.$('form.js-form-primary');
     }
 

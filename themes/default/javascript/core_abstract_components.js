@@ -1,9 +1,11 @@
 (function ($cms) {
     'use strict';
 
+    var encodeUC = encodeURIComponent;
+
     $cms.extend($cms.templates, {
-        cropTextMouseOver: function (options) {
-            var textLarge = $cms.filter.crLf(options.textLarge),
+        cropTextMouseOver: function (params) {
+            var textLarge = $cms.filter.crLf(params.textLarge),
                 el = this;
 
             $cms.dom.on(el, 'mouseover', function (e) {
@@ -11,8 +13,8 @@
             });
         },
 
-        cropTextMouseOverInline: function (options) {
-            var textLarge = $cms.filter.crLf(options.textLarge),
+        cropTextMouseOverInline: function (params) {
+            var textLarge = $cms.filter.crLf(params.textLarge),
                 el = this;
 
             $cms.dom.on(el, 'mouseover', function (e) {
@@ -21,14 +23,14 @@
             });
         },
 
-        postChildLoadLink: function (options) {
+        postChildLoadLink: function (params) {
             var container = this,
-                ids = options.implodedIds,
-                id = options.id;
+                ids = params.implodedIds,
+                id = params.id;
 
             $cms.dom.on(container, 'click', '.js-click-threaded-load-more', function () {
                 /* Load more from a threaded topic */
-                load_snippet('comments&id=' + encodeURIComponent(id) + '&ids=' + encodeURIComponent(ids) + '&serialized_options=' + encodeURIComponent(window.comments_serialized_options) + '&hash=' + encodeURIComponent(window.comments_hash), null, function (ajax_result) {
+                load_snippet('comments&id=' + encodeUC(id) + '&ids=' + encodeUC(ids) + '&serialized_options=' + encodeUC(window.comments_serialized_options) + '&hash=' + encodeUC(window.comments_hash), null, function (ajax_result) {
                     var wrapper;
                     if (id !== '') {
                         wrapper = document.getElementById('post_children_' + id);
@@ -54,14 +56,14 @@
 
 
         },
-        handleConflictResolution: function (options) {
-            options = options || {};
+        handleConflictResolution: function (params) {
+            params = params || {};
 
-            if (options.pingUrl) {
-                do_ajax_request(options.pingUrl);
+            if (params.pingUrl) {
+                do_ajax_request(params.pingUrl);
 
                 window.setInterval(function () {
-                    do_ajax_request(options.pingUrl, function () {});
+                    do_ajax_request(params.pingUrl, function () {});
                 }, 12000);
             }
         }

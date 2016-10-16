@@ -5,7 +5,7 @@
     // POSTING_FORM
     // - POSTING_FIELD
     function PostingForm() {
-        $cms.View.apply(this, arguments);
+        PostingForm.base(this, arguments);
     }
 
     $cms.inherits(PostingForm, $cms.View, {
@@ -26,7 +26,7 @@
     });
 
     function FromScreenInputUpload() {
-        $cms.View.apply(this, arguments);
+        FromScreenInputUpload.base(this, arguments);
 
         if (options.plupload && !$cms.$IS_HTTPAUTH_LOGIN) {
             preinit_file_input('upload', options.name, null, null, options.filter);
@@ -40,7 +40,7 @@
     $cms.inherits(FromScreenInputUpload, $cms.View);
 
     function FormScreenInputPermission(options) {
-        $cms.View.apply(this, arguments);
+        FormScreenInputPermission.base(this, arguments);
 
         this.groupId = options.groupId;
         this.prefix = 'access_' + this.groupId;
@@ -121,7 +121,7 @@
     });
 
     function FormScreenInputPermissionOverride(options) {
-        $cms.View.apply(this, arguments);
+        FormScreenInputPermissionOverride.base(this, arguments);
 
         var prefix = 'access_' + options.groupId;
 
@@ -162,7 +162,7 @@
     });
 
     function FormStandardEnd() {
-        $cms.View.apply(this, arguments);
+        FormScreenInputPermissionOverride.base(this, arguments);
 
         this.form = $cms.dom.closest(this.el, 'form');
         this.btnSubmit = this.$('#submit_button');
@@ -271,6 +271,19 @@
             }
         },
 
+        formScreenFieldDescription: function formScreenFieldDescription() {
+            var img = this;
+
+            $cms.dom.one(img, 'mouseover', function () {
+                if (img.ttitle === undefined) {
+                    img.ttitle = img.title;
+                }
+                img.title = '';
+                img.have_links = true;
+                img.dataset.cmsRichTooltip = '1';
+            });
+        },
+
         formScreenInputLine: function formScreenInputLine(options) {
             set_up_comcode_autocomplete(options.name, !!options.wysiwyg);
         },
@@ -287,7 +300,7 @@
             var textarea = $cms.dom.id(options.name),
                 input = $cms.dom.id('form_table_field_input__' + options.randomisedId);
 
-            if (options.required.includes('wysiwyg') && wysiwyg_on()) {
+            if (options.required && options.required.includes('wysiwyg') && wysiwyg_on()) {
                 textarea.readOnly = true;
             }
 

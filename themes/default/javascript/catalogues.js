@@ -1,8 +1,11 @@
 (function ($cms) {
     'use strict';
 
+    $cms.views.CatalogueAddingScreen = CatalogueAddingScreen;
+    $cms.views.CatalogueEditingScreen = CatalogueEditingScreen;
+
     function CatalogueAddingScreen() {
-        $cms.View.apply(this, arguments);
+        CatalogueAddingScreen.base(this, arguments);
         catalogue_field_change_watching();
     }
 
@@ -18,7 +21,7 @@
     });
 
     function CatalogueEditingScreen() {
-        $cms.View.apply(this, arguments);
+        CatalogueEditingScreen.base(this, arguments);
         catalogue_field_change_watching();
     }
 
@@ -32,10 +35,6 @@
             modsecurity_workaround(form);
         }
     });
-
-    $cms.views.CatalogueAddingScreen = CatalogueAddingScreen;
-    $cms.views.CatalogueEditingScreen = CatalogueEditingScreen;
-
 
     function catalogue_field_change_watching() {
         // Find all our ordering fields

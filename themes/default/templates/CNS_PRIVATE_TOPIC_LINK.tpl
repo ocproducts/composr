@@ -3,7 +3,7 @@
 	<img class="right spaced" src="{$?*,{$IS_EMPTY,{$AVATAR,{WITH_POSTER_ID}}},{$IMG,cns_default_avatars/default},{$ENSURE_PROTOCOL_SUITABILITY*,{$AVATAR,{WITH_POSTER_ID}}}}" title="{$GET,label}" alt="{$GET,label}" />
 
 	<div>
-		<a onclick="poll_for_notifications(true,true);" data-open-as-overlay="{}" title="{!POST_PLU,{NUM_POSTS*}}, {TITLE*~}" href="{TOPIC_URL*}">{$TRUNCATE_LEFT,{TITLE},30}</a>, {$GET,label}<br />
+		<a onclick="poll_for_notifications(true,true);" data-open-as-overlay="1" title="{!POST_PLU,{NUM_POSTS*}}, {TITLE*~}" href="{TOPIC_URL*}">{$TRUNCATE_LEFT,{TITLE},30}</a>, {$GET,label}<br />
 		<span class="associated_details">({$?,{HAS_READ},{!notifications:HAS_READ},{!notifications:HAS_NOT_READ}})</span>
 	</div>
 

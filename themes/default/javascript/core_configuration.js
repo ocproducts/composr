@@ -2,7 +2,7 @@
     'use strict';
 
     function XmlConfigScreen() {
-        $cms.View.apply(this, arguments);
+        XmlConfigScreen.base(this, arguments);
 
         ace_composr_loader('xml', 'xml');
     }

@@ -94,7 +94,7 @@
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					<div class="inline">
-						<input id="wiki_merge_button" style="display: none" onclick="if (add_form_marked_posts(this.form,'mark_')) { disable_button_just_clicked(this); return true; } window.fauxmodal_alert('{!NOTHING_SELECTED=;}'); return false;" class="menu___generic_admin__merge button_screen button_faded" type="submit" value="{!_MERGE_WIKI_POSTS}" />
+						<input id="wiki_merge_button" style="display: none" onclick="if (add_form_marked_posts(this.form,'mark_')) { $cms.ui.disableButton(this); return true; } window.fauxmodal_alert('{!NOTHING_SELECTED=;}'); return false;" class="menu___generic_admin__merge button_screen button_faded" type="submit" value="{!_MERGE_WIKI_POSTS}" />
 					</div>
 				</form>
 			{+END}

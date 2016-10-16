@@ -90,7 +90,7 @@
 									<input class="button_screen_item menu__social__chat__chat" type="button" value="{!START_IM}" onclick="var people=get_ticked_people(this.form); if (people) start_im(people);" />
 								{+END}
 								{+START,IF_NON_EMPTY,{URL_REMOVE_FRIENDS}}
-									<input class="button_screen_item menu___generic_admin__delete" type="submit" value="{!DUMP_FRIENDS}" onclick="var people=get_ticked_people(this.form); if (!people) return false; var t=this; window.fauxmodal_confirm('{!Q_SURE=;}',function(result) { if (result) { disable_button_just_clicked(t); t.form.submit(); } }); return false;" />
+									<input class="button_screen_item menu___generic_admin__delete" type="submit" value="{!DUMP_FRIENDS}" onclick="var people=get_ticked_people(this.form); if (!people) return false; var t=this; window.fauxmodal_confirm('{!Q_SURE=;}',function(result) { if (result) { $cms.ui.disableButton(t); t.form.submit(); } }); return false;" />
 								{+END}
 							</div>
 						</form>

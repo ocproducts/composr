@@ -167,7 +167,7 @@
 
 <script>
 	// Early initialization to allow end-users not using CSP to add inline $cms.ready & $cms.load calls
-	window.$cms = {};
+	window.$cms || (window.$cms = {});
 
 	(function ($cms){
 		$cms.ready = new Promise(function (resolve) {

@@ -1,8 +1,9 @@
 (function ($cms) {
     'use strict';
 
-    function ZoneEditorScreen(options) {
-        $cms.View.apply(this, arguments);
+    $cms.views.ZoneEditorScreen = ZoneEditorScreen;
+    function ZoneEditorScreen(params) {
+        ZoneEditorScreen.base(this, arguments);
     }
 
     $cms.inherits(ZoneEditorScreen, $cms.View, {
@@ -17,46 +18,46 @@
         },
 
         fetchAndSubmit: function (e, btn) {
-            fetch_more_fields();
-            btn.form.submit();
+            var params = this.params;
 
-            function fetch_more_fields() {
-                set_edited_panel('panel_left');
-                set_edited_panel('panel_right');
-                set_edited_panel('panel_top');
-                set_edited_panel('panel_bottom');
-                set_edited_panel('{$DEFAULT_ZONE_PAGE_NAME;}');
+            set_edited_panel('panel_left');
+            set_edited_panel('panel_right');
+            set_edited_panel('panel_top');
+            set_edited_panel('panel_bottom');
+            set_edited_panel(params.defaultZonePageName);
 
-                var form = document.getElementById('middle_fields');
-                var edit_field_store = document.getElementById('edit_field_store');
-                var i, store;
-                for (i = 0; i < form.elements.length; i++) {
-                    store = document.createElement('input');
-                    store.setAttribute('type', 'hidden');
-                    store.name = form.elements[i].name;
-                    if (form.elements[i].getAttribute('type') == 'checkbox') {
-                        store.value = form.elements[i].checked ? '1' : '0';
-                    } else {
-                        store.value = form.elements[i].value;
-                    }
-                    edit_field_store.appendChild(store);
+            var form = $cms.dom.id('middle_fields');
+            var edit_field_store = $cms.dom.id('edit_field_store');
+            var i, store;
+            for (i = 0; i < form.elements.length; i++) {
+                store = document.createElement('input');
+                store.setAttribute('type', 'hidden');
+                store.name = form.elements[i].name;
+                if (form.elements[i].getAttribute('type') == 'checkbox') {
+                    store.value = form.elements[i].checked ? '1' : '0';
+                } else {
+                    store.value = form.elements[i].value;
                 }
+                edit_field_store.appendChild(store);
             }
+
+            btn.form.submit();
         }
     });
 
-    function ZoneEditorPanel(options) {
-        $cms.View.apply(this, arguments);
+    $cms.views.ZoneEditorPanel = ZoneEditorPanel;
+    function ZoneEditorPanel(params) {
+        ZoneEditorPanel.base(this, arguments);
 
-        this.id = options.id;
+        this.id = params.id;
 
-        if (options.preview !== undefined) {
-            disable_preview_scripts(document.getElementById('view_' + options.id));
+        if (params.preview !== undefined) {
+            disable_preview_scripts($cms.dom.id('view_' + params.id));
         }
 
-        if (options.comcode && options.class.includes('wysiwyg')) {
+        if (params.comcode && params.class.includes('wysiwyg')) {
             if ((window.wysiwyg_on) && (wysiwyg_on())) {
-                document.getElementById('edit_' + options.id + '_textarea').readOnly = true;
+                $cms.dom.id('edit_' + params.id + '_textarea').readOnly = true;
             }
         }
     }
@@ -70,7 +71,7 @@
         },
 
         selectTab: function (e, target) {
-            var id = this.options.id,
+            var id = this.params.id,
                 tab = target.dataset.jsTab;
 
             select_ze_tab(id, tab);
@@ -84,12 +85,12 @@
                 var i, j, element, elementh, selects;
 
                 for (i = 0; i < tabs.length; i++) {
-                    element = document.getElementById(tabs[i] + '_' + id);
-                    elementh = document.getElementById(tabs[i] + '_tab_' + id);
+                    element = $cms.dom.id(tabs[i] + '_' + id);
+                    elementh = $cms.dom.id(tabs[i] + '_tab_' + id);
                     if (element) {
                         element.style.display = (tabs[i] === tab) ? 'block' : 'none';
                         if ((tabs[i] == tab) && (tab == 'edit')) {
-                            if (is_wysiwyg_field(document.getElementById('edit_' + id + '_textarea'))) {
+                            if (is_wysiwyg_field($cms.dom.id('edit_' + id + '_textarea'))) {
                                 // Fix for Firefox
                                 if (window.wysiwyg_editors['edit_' + id + '_textarea'].document !== undefined) {
                                     window.wysiwyg_editors['edit_' + id + '_textarea'].document.getBody().$.contentEditable = 'false';
@@ -110,9 +111,9 @@
             }
 
             function reload_preview(id) {
-                var element = document.getElementById('view_' + id);
+                var element = $cms.dom.id('view_' + id);
 
-                var edit_element = document.getElementById('edit_' + id + '_textarea');
+                var edit_element = $cms.dom.id('edit_' + id + '_textarea');
                 if (!edit_element) {
                     return; // Nothing interatively edited
                 }
@@ -133,7 +134,7 @@
                         return;
                     }
 
-                    var element = document.getElementById('view_' + loading_preview_of);
+                    var element = $cms.dom.id('view_' + loading_preview_of);
                     $cms.dom.html(element, merge_text_nodes(ajax_result.childNodes).replace(/^((\s)|(\<br\s*\>)|(&nbsp;))*/, '').replace(/((\s)|(\<br\s*\>)|(&nbsp;))*$/, ''));
 
                     disable_preview_scripts(element);
@@ -151,69 +152,64 @@
         },
 
         setEditedPanel: function (e, field) {
-            var opts = this.options,
-                editor = document.getElementById('edit_tab_' + opts.id);
+            var params = this.params,
+                editor = $cms.dom.id('edit_tab_' + params.id);
 
-            set_edited_panel(opts.id);
+            set_edited_panel(params.id);
 
             if (editor) {
                 if (field.localName === 'select') {
-                    editor.style.display = (opts.currentZone === field.options[field.selectedIndex].value) ? 'block' : 'none';
+                    editor.style.display = (params.currentZone === field.options[field.selectedIndex].value) ? 'block' : 'none';
                 } else if (field.localName === 'input') {
-                    editor.style.display = (opts.currentZone === field.value) ? 'block' : 'none';
+                    editor.style.display = (params.currentZone === field.value) ? 'block' : 'none';
                 }
             }
         }
     });
 
     function set_edited_panel(id) {
-        var store;
+        var el, store;
 
         /* The editing box */
 
-        var object = document.getElementById('edit_' + id + '_textarea');
-        if ((object) && (object.nodeName.toLowerCase() == 'textarea')) {
-            store = document.getElementById('store_' + id);
+        el = $cms.dom.$('teaxtarea#edit_' + id + '_textarea');
+        if (el) {
+            store = $cms.dom.id('store_' + id);
             if (!store) {
                 store = document.createElement('textarea');
-                store.name = object.name;
+                store.name = el.name;
                 store.id = 'store_' + id;
-                document.getElementById('edit_field_store').appendChild(store);
+                $cms.dom.id('edit_field_store').appendChild(store);
             }
-            store.value = get_textbox(object);
+            store.value = get_textbox(el);
         }
 
         /* The WYSIWYG setting (not the actual HTML text value of the editor, the setting of whether WYSIWYG was used or not) */
 
-        var object = document.getElementById('edit_' + id + '_textarea__is_wysiwyg');
-        if (object) {
-            store = document.getElementById('wysiwyg_store_' + id);
+        el = $cms.dom.id('edit_' + id + '_textarea__is_wysiwyg');
+        if (el) {
+            store = $cms.dom.id('wysiwyg_store_' + id);
             if (!store) {
                 store = document.createElement('textarea');
-                store.name = object.name;
                 store.id = 'wysiwyg_store_' + id;
-                document.getElementById('edit_field_store').appendChild(store);
+                store.name = el.name;
+                $cms.dom.id('edit_field_store').appendChild(store);
             }
-            store.value = object.value;
+            store.value = el.value;
         }
 
         /* The redirect setting */
 
-        var object = document.getElementById('redirect_' + id);
-        if ((object) && (object.nodeName.toLowerCase() == 'select')) {
-            store = document.getElementById('redirects_store_' + id);
+        el = $cms.dom.$('select#redirect_' + id);
+        if (el) {
+            store = $cms.dom.id('redirects_store_' + id);
             if (!store) {
                 store = document.createElement('textarea');
-                store.name = object.name;
+                store.name = el.name;
                 store.id = 'redirects_store_' + id;
-                document.getElementById('edit_field_store').appendChild(store);
+                $cms.dom.id('edit_field_store').appendChild(store);
             }
-            store.value = object.options[object.selectedIndex].value;
+            store.value = el.options[el.selectedIndex].value;
         }
     }
-
-
-    $cms.views.ZoneEditorScreen = ZoneEditorScreen;
-    $cms.views.ZoneEditorPanel = ZoneEditorPanel;
-
 }(window.$cms));

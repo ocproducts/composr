@@ -3,16 +3,16 @@
     var $ADDON_INSTALLED_code_editor = !!+'{$ADDON_INSTALLED,code_editor}',
         $ADDON_INSTALLED_stats = !!+'{$ADDON_INSTALLED,stats}';
 
-    $cms.templates.sitemapEditorScreen = function sitemapEditorScreen(options) {
+    $cms.templates.sitemapEditorScreen = function sitemapEditorScreen(params) {
         var container = this,
-            edit_zone_url = options.editZoneUrl,
-            add_zone_url = options.addZoneUrl,
-            zone_editor_url = options.zoneEditorUrl,
-            permission_tree_editor_url = options.permissonTreeEditorUrl,
-            edit_page_url = options.editPageUrl,
-            add_page_url = options.addPageUrl,
-            delete_url = options.deleteUrl,
-            stats_url = options.statusUrl;
+            edit_zone_url = params.editZoneUrl,
+            add_zone_url = params.addZoneUrl,
+            zone_editor_url = params.zoneEditorUrl,
+            permission_tree_editor_url = params.permissonTreeEditorUrl,
+            edit_page_url = params.editPageUrl,
+            add_page_url = params.addPageUrl,
+            delete_url = params.deleteUrl,
+            stats_url = params.statusUrl;
 
         window.sitemap = $cms.createTreeList('tree_list', 'data/sitemap.php?start_links=1&get_perms=0&label_content_types=1&keep_full_structure=1' + $cms.$KEEP, null, '', false, null, true);
 

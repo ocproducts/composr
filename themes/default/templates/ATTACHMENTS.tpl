@@ -27,7 +27,7 @@
 
 	{+START,IF_NON_EMPTY,{$_GET,id}}
 		<p>
-			{!comcode:DELETE_ATTACHMENTS,<a rel="nofollow" title="{!comcode:ATTACHMENT_POPUP} {!LINK_NEW_WINDOW}" target="_blank" href="{$FIND_SCRIPT*,attachment_popup}?field_name={POSTING_FIELD_NAME*}{$KEEP*,0,1}" onclick="window.faux_open(maintain_theme_in_link(this.href)\,'site_attachment_chooser'\,'width=550\,height=600\,status=no\,resizable=yes\,scrollbars=yes'); return false;">{!comcode:ATTACHMENT_POPUP}</a>}
+			{!comcode:DELETE_ATTACHMENTS,<a class="js-click-open-attachment-popup" rel="nofollow" title="{!comcode:ATTACHMENT_POPUP} {!LINK_NEW_WINDOW}" target="_blank" href="{$FIND_SCRIPT*,attachment_popup}?field_name={POSTING_FIELD_NAME*}{$KEEP*,0,1}">{!comcode:ATTACHMENT_POPUP}</a>}
 		</p>
 	{+END}
 {+END}

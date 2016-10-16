@@ -136,7 +136,7 @@
 				{!ATTACHMENTS}
 
 				{+START,IF,{$NOT,{$MOBILE}}}
-					<img class="activate_rich_semantic_tooltip help_icon" onclick="this.onmouseover(event);" title="{$STRIP_TAGS,{!ATTACHMENT_HELP}}" onmouseover="activate_rich_semantic_tooltip(this,event);" alt="{!HELP}" src="{$IMG*,icons/16x16/help}" srcset="{$IMG*,icons/32x32/help} 2x" />
+					<img class="help_icon" data-cms-rich-tooltip="1" title="{$STRIP_TAGS,{!ATTACHMENT_HELP}}" alt="{!HELP}" src="{$IMG*,icons/16x16/help}" srcset="{$IMG*,icons/32x32/help} 2x" />
 				{+END}
 			</span>
 

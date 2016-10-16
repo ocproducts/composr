@@ -1,3 +1,4 @@
+<div>
 {TITLE}
 
 <p>
@@ -35,4 +36,4 @@
 		<input accesskey="u" data-disable-on-click="1" class="button_screen buttons__yes" type="submit" value="{!PROCEED}"{+START,IF,{$JS_ON}} disabled="disabled"{+END} id="proceed_button" />
 	</p>
 </form>
-
+</div>

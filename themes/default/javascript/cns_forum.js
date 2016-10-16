@@ -2,7 +2,7 @@
     'use strict';
 
     function CnsForumTopicWrapper() {
-        $cms.View.apply(this, arguments);
+        CnsForumTopicWrapper.base(this, arguments);
     }
 
     $cms.inherits(CnsForumTopicWrapper, $cms.View, {
@@ -19,44 +19,45 @@
     $cms.views.CnsForumTopicWrapper = CnsForumTopicWrapper;
 
     $cms.extend($cms.templates, {
-        cnsTopicScreen: function (options) {
-            if ((options.serializedOptions !== undefined) && (options.hash !== undefined)) {
-                window.comments_serialized_options = options.serializedOptions;
-                window.comments_hash = options.hash;
+        cnsTopicScreen: function (params) {
+            if ((params.serializedOptions !== undefined) && (params.hash !== undefined)) {
+                window.comments_serialized_options = params.serializedOptions;
+                window.comments_hash = params.hash;
             }
         },
 
-        cnsTopicPoll: function (options) {
+        cnsTopicPoll: function (params) {
             var form = this,
-                minSelections = +options.minimumSelections,
-                maxSelections = +options.maximumSelections,
-                errorMessage  = (minSelections === maxSelections) ? $cms.str('{!POLL_NOT_ENOUGH_ERROR_2;^}', minSelections) : $cms.str('{!POLL_NOT_ENOUGH_ERROR;^}', minSelections, maxSelections);
+                minSelections = +params.minimumSelections || 0,
+                maxSelections = +params.maximumSelections || 0,
+                error  = (minSelections === maxSelections) ? $cms.format('{!POLL_NOT_ENOUGH_ERROR_2;^}', minSelections) : $cms.format('{!POLL_NOT_ENOUGH_ERROR;^}', minSelections, maxSelections);
 
             $cms.dom.on(form, 'submit', function (e) {
-                var success = cns_check_poll(form, minSelections, maxSelections, errorMessage);
-                if (!success) {
+                if (cns_check_poll() === false) {
                     e.preventDefault();
                 }
             });
 
-            function cns_check_poll(form, min, max, error) {
+            function cns_check_poll() {
                 var j = 0;
-                for (var i = 0; i < form.elements.length; i++)
-                    if ((form.elements[i].checked) && ((form.elements[i].type == 'checkbox') || (form.elements[i].type == 'radio'))) j++;
-                var answer = ((j >= min) && (j <= max));
+                for (var i = 0; i < form.elements.length; i++) {
+                    if (form.elements[i].checked && ((form.elements[i].type === 'checkbox') || (form.elements[i].type === 'radio'))) {
+                        j++;
+                    }
+                }
+                var answer = ((j >= minSelections) && (j <= maxSelections));
                 if (!answer) {
                     window.fauxmodal_alert(error);
-                } else {
-                    disable_button_just_clicked(form.elements['poll_vote_button']);
+                    return false;
                 }
 
-                return answer;
+                $cms.ui.disableButton(form.elements['poll_vote_button']);
             }
         },
 
-        cnsNotification: function (options) {
+        cnsNotification: function (params) {
             var container = this,
-                ignoreUrl = options.ignoreUrl2;
+                ignoreUrl = params.ignoreUrl2;
 
             $cms.dom.on(container, 'click', '.js-click-ignore-notification', function () {
                 var el = this;

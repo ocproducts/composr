@@ -1,11 +1,11 @@
 (function ($cms) {
 
-    $cms.templates.resultsLauncherContinue = function (opts) {
+    $cms.templates.resultsLauncherContinue = function (params) {
         var link = this,
-            max = opts.max,
-            urlStub = opts.urlStub,
-            numPages = opts.numPages,
-            message = $cms.str('{!javascript:ENTER_PAGE_NUMBER;}', numPages);
+            max = params.max,
+            urlStub = params.urlStub,
+            numPages = params.numPages,
+            message = $cms.format('{!javascript:ENTER_PAGE_NUMBER;}', numPages);
 
         $cms.dom.on(link, 'click', function () {
             window.fauxmodal_prompt(message, numPages, function (res) {
@@ -21,13 +21,13 @@
         });
     };
 
-    $cms.templates.doNextItem = function (opts) {
+    $cms.templates.doNextItem = function (params) {
         var container = this,
-            rand = opts.randDoNextItem,
-            url = opts.url,
-            target = opts.target,
-            warning = opts.warning,
-            autoAdd = opts.autoAdd;
+            rand = params.randDoNextItem,
+            url = params.url,
+            target = params.target,
+            warning = params.warning,
+            autoAdd = params.autoAdd;
 
         $cms.dom.on(container, 'click', function (e) {
             var clickedLink = $cms.dom.closest(e.target, 'a', container);
@@ -115,26 +115,26 @@
     };
 
     $cms.extend($cms.templates, {
-        internalizedAjaxScreen: function (options) {
+        internalizedAjaxScreen: function (params) {
             var element = this;
 
-            internalise_ajax_block_wrapper_links(options.url, element, ['.*'], { }, false, true);
+            internalise_ajax_block_wrapper_links(params.url, element, ['.*'], { }, false, true);
 
-            if ((typeof options.changeDetectionUrl === 'string') && (options.changeDetectionUrl !== '') && (Number(options.refreshTime) > 0)) {
+            if ((typeof params.changeDetectionUrl === 'string') && (params.changeDetectionUrl !== '') && (Number(params.refreshTime) > 0)) {
                 window.detect_interval = window.setInterval(function () {
-                    detectChange(options.changeDetectionUrl, options.refreshIfChanged, function () {
+                    detectChange(params.changeDetectionUrl, params.refreshIfChanged, function () {
                         if ((!document.getElementById('post')) || (document.getElementById('post').value === '')) {
-                            call_block(options.url, '', element, false, null, true, null, true);
+                            call_block(params.url, '', element, false, null, true, null, true);
                         }
                     });
-                }, options.refreshTime * 1000);
+                }, params.refreshTime * 1000);
             }
         },
 
-        ajaxPagination: function (options) {
-            var wrapperEl = $cms.dom.id(options.wrapperId),
-                blockCallUrl = options.blockCallUrl,
-                infiniteScrollCallUrl = options.infiniteScrollCallUrl,
+        ajaxPagination: function (params) {
+            var wrapperEl = $cms.dom.id(params.wrapperId),
+                blockCallUrl = params.blockCallUrl,
+                infiniteScrollCallUrl = params.infiniteScrollCallUrl,
                 infiniteScrollFunc;
 
             internalise_ajax_block_wrapper_links(blockCallUrl, wrapperEl, ['[^_]*_start', '[^_]*_max'], {});
@@ -157,38 +157,38 @@
             }
         },
 
-        confirmScreen: function confirmScreen(options) {
-            options = options || {};
+        confirmScreen: function confirmScreen(params) {
+            params = params || {};
 
-            if (options.javascript !== undefined) {
-                eval.call(window, options.javascript);
+            if (params.javascript != null) {
+                eval.call(window, params.javascript);
             }
         },
 
         warnScreen: function warnScreen() {
-            if ((window.trigger_resize !== undefined) && (window.top !== window)) {
+            if ((window.trigger_resize != null) && (window.top !== window)) {
                 trigger_resize();
             }
         },
 
         fatalScreen: function fatalScreen() {
-            if ((window.trigger_resize !== undefined) && (window.top !== window)) {
+            if ((window.trigger_resize != null) && (window.top !== window)) {
                 trigger_resize();
             }
         },
 
-        columnedTableScreen: function columnedTableScreen(options) {
-            options = options || {};
+        columnedTableScreen: function columnedTableScreen(params) {
+            params = params || {};
 
-            if (options.javascript !== undefined) {
-                eval.call(window, options.javascript);
+            if (params.javascript != null) {
+                eval.call(window, params.javascript);
             }
         },
 
         questionUiButtons: function () {
             var container = this;
 
-            $cms.dom.on(container, 'click', 'js-click-close-window-with-val', function (e, clicked) {
+            $cms.dom.on(container, 'click', '.js-click-close-window-with-val', function (e, clicked) {
                 window.returnValue = clicked.dataset.tpReturnValue;
 
                 if (window.faux_close !== undefined) {
@@ -203,10 +203,6 @@
             });
         }
     });
-
-    function infiniteScrolling (callUrl, wrapperEl) {
-        internalise_infinite_scrolling(callUrl, wrapperEl);
-    }
 
     function detectChange(change_detection_url, refresh_if_changed, callback) {
         do_ajax_request(change_detection_url, function (result) {

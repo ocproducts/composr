@@ -2,14 +2,14 @@
     'use strict';
 
     $cms.extend($cms.templates, {
-        blockMainImageFaderNews: function (options, itemsHtml) {
-            var rand = options.randFaderNews, i,
-                news = options.news;
+        blockMainImageFaderNews: function (params, itemsHtml) {
+            var rand = params.randFaderNews, i,
+                news = params.news;
 
             // Variables we will need
-            var fp_animation = document.getElementById('image_fader_news_' + rand),
-                fp_animation_url = document.getElementById('image_fader_news_url_' + rand),
-                fp_animation_html = document.getElementById('image_fader_news_html_' + rand);
+            var fp_animation = $cms.dom.$('#image_fader_news_' + rand),
+                fp_animation_url = $cms.dom.$('#image_fader_news_url_' + rand),
+                fp_animation_html = $cms.dom.$('#image_fader_news_html_' + rand);
 
             // For pause function
             var pause = 'main_image_fader_news_pause_' + rand;
@@ -24,9 +24,9 @@
 
             fp_animation_news.style.position = 'absolute';
             fp_animation_news.src = '{$IMG;,blank}';
-            fp_animation.parentNode.insertBefore(fp_animation_news, fp_animation);
-            fp_animation.parentNode.style.position = 'relative';
-            fp_animation.parentNode.style.display = 'block';
+            fp_animation.parentElement.insertBefore(fp_animation_news, fp_animation);
+            fp_animation.parentElement.style.position = 'relative';
+            fp_animation.parentElement.style.display = 'block';
 
             var data = [];
 
@@ -45,13 +45,13 @@
                 if (window[cycleTimer]) {
                     window.clearTimeout(cycleTimer);
                     window[cycleTimer] = null;
-                    document.getElementById('pause_button_' + rand).className = 'light button_depressed';
+                    $cms.dom.$('#pause_button_' + rand).className = 'light button_depressed';
                 } else {
-                    document.getElementById('pause_button_' + rand).className = 'light';
+                    $cms.dom.$('#pause_button_' + rand).className = 'light';
 
                     window[cycleTimer] = window.setTimeout(function () {
                         window[cycle](1);
-                    }, options.mill);
+                    }, params.mill);
                 }
                 return false;
             };
@@ -61,7 +61,7 @@
             window[cycleTimer] = null;
             window[cycle] = function (dif) {
                 //  Cycle
-                var j = window.window[cycleCount] + dif;
+                var j = window[cycleCount] + dif;
                 if (j < 0) {
                     j = data.length - 1;
                 }
@@ -90,10 +90,10 @@
                 if (window[cycleTimer]) {
                     window.clearTimeout(window[cycleTimer]);
                 }
-                document.getElementById('pause_button_' + rand).className = 'light';
+                $cms.dom.$('#pause_button_' + rand).className = 'light';
                 window[cycleTimer] = window.setTimeout(function () {
                     window[cycle](1);
-                }, options.mill);
+                }, params.mill);
 
                 return false;
             };
@@ -101,11 +101,11 @@
             window[cycle](0);
         },
 
-        blockBottomNews: function blockBottomNews(options) {
-            var newsTickerText = $cms.filter.crLf(options.newsTickerText);
+        blockBottomNews: function blockBottomNews(params) {
+            var newsTickerText = $cms.filter.crLf(params.newsTickerText);
 
             window.tick_pos = window.tick_pos || [];
-            var ticktickticker = document.getElementById('ticktickticker_news' + options.bottomNewsId);
+            var ticktickticker = $cms.dom.$('#ticktickticker_news' + params.bottomNewsId);
             if (document.createElement('marquee').scrolldelay === undefined) {// Slower, but chrome does not support marquee's
                 var my_id = parseInt(Math.random() * 10000);
                 window.tick_pos[my_id] = 400;

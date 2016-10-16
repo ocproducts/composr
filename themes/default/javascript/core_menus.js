@@ -1,6 +1,14 @@
 (function ($cms) {
+    $cms.views.Menu = Menu;
+    $cms.views.DropdownMenu = DropdownMenu;
+    $cms.views.PopupMenu = PopupMenu;
+    $cms.views.PopupMenuBranch = PopupMenuBranch;
+    $cms.views.TreeMenu = TreeMenu;
+    $cms.views.MobileMenu = MobileMenu;
+    $cms.views.SelectMenu = SelectMenu;
+
     function Menu() {
-        $cms.View.apply(this, arguments);
+        Menu.base(this, arguments);
 
         this.menuId = this.options.menuId;
 
@@ -17,7 +25,7 @@
     // MENU_dropdown.tpl
     // - MENU_BRANCH_dropdown.tpl
     function DropdownMenu() {
-        Menu.apply(this, arguments);
+        DropdownMenu.base(this, arguments);
     }
 
     $cms.inherits(DropdownMenu, Menu, {
@@ -33,7 +41,7 @@
     });
 
     function PopupMenu() {
-        $cms.View.apply(this, arguments);
+        PopupMenu.base(this, arguments);
 
         this.menuId = this.options.menuId;
         if (this.options.javascriptHighlighting && this.menuId) {
@@ -56,7 +64,7 @@
     });
 
     function PopupMenuBranch() {
-        $cms.View.apply(this, arguments);
+        PopupMenuBranch.base(this, arguments);
 
         this.rand = this.options.rand;
         this.menu = $cms.filter.id(this.options.menu);
@@ -83,7 +91,7 @@
     });
 
     function TreeMenu() {
-        Menu.apply(this, arguments);
+        TreeMenu.base(this, arguments);
     }
 
     $cms.inherits(TreeMenu, Menu, {
@@ -101,7 +109,7 @@
     // MENU_mobile.tpl
     // - MENU_BRANCH_mobile.tpl
     function MobileMenu() {
-        Menu.apply(this, arguments);
+        MobileMenu.base(this, arguments);
         this.elMenuContent = this.$('.js-el-menu-content');
     }
 
@@ -113,7 +121,7 @@
         },
         toggleContent: function (e) {
             e.preventDefault();
-            $cms.dom.toggleDisplay(this.elMenuContent);
+            $cms.dom.toggle(this.elMenuContent);
         },
         toggleSubMenu: function (e, link) {
             var rand = link.dataset.vwRand, href,
@@ -135,7 +143,7 @@
     });
 
     function SelectMenu() {
-        Menu.apply(this, arguments);
+        SelectMenu.base(this, arguments);
     }
 
     $cms.inherits(SelectMenu, Menu, {
@@ -149,13 +157,6 @@
         }
     });
 
-    $cms.views.Menu = Menu;
-    $cms.views.DropdownMenu = DropdownMenu;
-    $cms.views.PopupMenu = PopupMenu;
-    $cms.views.PopupMenuBranch = PopupMenuBranch;
-    $cms.views.TreeMenu = TreeMenu;
-    $cms.views.MobileMenu = MobileMenu;
-    $cms.views.SelectMenu = SelectMenu;
 
     $cms.extend($cms.templates, {
         menuEditorScreen: function menuEditorScreen(options) {

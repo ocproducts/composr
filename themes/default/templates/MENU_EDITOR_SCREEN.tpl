@@ -35,7 +35,7 @@
 			</div>
 
 			<p class="proceed_button">
-				<input accesskey="u" class="button_screen buttons__save" type="submit" value="{!SAVE}" onclick="if (check_menu()) { disable_button_just_clicked(this); return true; } else return false;" />
+				<input accesskey="u" class="button_screen buttons__save" type="submit" value="{!SAVE}" onclick="if (check_menu()) { $cms.ui.disableButton(this); return true; } else return false;" />
 			</p>
 		</div>
 

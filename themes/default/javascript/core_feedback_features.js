@@ -1,29 +1,29 @@
 (function ($cms) {
     'use strict';
 
-    function CommentsPostingForm(options) {
-        $cms.View.apply(this, arguments);
+    function CommentsPostingForm(params) {
+        CommentsPostingForm.base(this, arguments);
 
         this.form = this.$('form.js-form-comments');
         this.btnSubmit = this.$('.js-btn-submit-comments');
 
-        set_up_comcode_autocomplete('post', !!options.wysiwyg);
+        set_up_comcode_autocomplete('post', !!params.wysiwyg);
 
         if ($cms.$CONFIG_OPTION.enablePreviews && $cms.$FORCE_PREVIEWS) {
             this.btnSubmit.style.display = 'none';
         }
 
-        if (options.useCaptcha) {
+        if (params.useCaptcha) {
             this.addCaptchaChecking();
         }
 
-        if (options.type && options.id) {
+        if (params.type && params.id) {
             this.initReviewRatings();
         }
 
         var captchaSpot = this.$('#captcha_spot');
         if (captchaSpot) {
-            $cms.dom.html(captchaSpot, options.captcha);
+            $cms.dom.html(captchaSpot, params.captcha);
         }
     }
 
@@ -92,7 +92,7 @@
             }
 
             if (form.onsubmit.call(form, e)) {
-                disable_button_just_clicked(button);
+                $cms.ui.disableButton(button);
                 form.submit();
             }
         },
@@ -196,48 +196,50 @@
     $cms.views.CommentsPostingForm = CommentsPostingForm;
 
     $cms.extend($cms.templates, {
-        ratingForm: function ratingForm(options) {
+        ratingForm: function ratingForm(params) {
             var rating;
 
-            if (options.error) {
+            if (params.error) {
                 return;
             }
 
-            for (var i = 0, len = options.allRatingCriteria; i < len; i++) {
-                rating = options.allRatingCriteria[i];
+            for (var i = 0, len = params.allRatingCriteria; i < len; i++) {
+                rating = params.allRatingCriteria[i];
 
                 apply_rating_highlight_and_ajax_code((rating.likes === 1), rating.rating, rating.contentType, rating.id, rating.type, rating.rating, rating.contentUrl, rating.contentTitle, true);
             }
         },
 
-        commentsWrapper: function (options) {
-            if ((options.serializedOptions !== undefined) && (options.hash !== undefined)) {
-                window.comments_serialized_options = options.serializedOptions;
-                window.comments_hash = options.hash;
+        commentsWrapper: function (params) {
+            if ((params.serializedOptions !== undefined) && (params.hash !== undefined)) {
+                window.comments_serialized_options = params.serializedOptions;
+                window.comments_hash = params.hash;
             }
         },
 
-        commentAjaxHandler: function (options) {
-            var urlStem = options.urlStem,
+        commentAjaxHandler: function (params) {
+            var urlStem = params.urlStem,
                 wrapper = $cms.dom.id('comments_wrapper');
 
-            replace_comments_form_with_ajax(options.options, options.hash, 'comments_form', 'comments_wrapper');
+            replace_comments_form_with_ajax(params.options, params.hash, 'comments_form', 'comments_wrapper');
 
             if (wrapper) {
                 internalise_ajax_block_wrapper_links(urlStem, wrapper, ['start_comments', 'max_comments'], {});
             }
 
             // Infinite scrolling hides the pagination when it comes into view, and auto-loads the next link, appending below the current results
-            if (options.infiniteScroll) {
+            if (params.infiniteScroll) {
                 var infinite_scrolling_comments_wrapper = function (event) {
                     internalise_infinite_scrolling(urlStem, wrapper);
                 };
-                window.addEventListener('scroll', infinite_scrolling_comments_wrapper);
-                window.addEventListener('keydown', infinite_scrolling_block);
-                window.addEventListener('mousedown', infinite_scrolling_block_hold);
-                window.addEventListener('mousemove', function () {
+
+                $cms.dom.on(window, 'scroll', infinite_scrolling_comments_wrapper);
+                $cms.dom.on(window, 'keydown', infinite_scrolling_block);
+                $cms.dom.on(window, 'mousedown', infinite_scrolling_block_hold);
+                $cms.dom.on(window, 'mousemove', function () {
                     infinite_scrolling_block_unhold(infinite_scrolling_comments_wrapper);
                 });
+
                 // ^ mouseup/mousemove does not work on scrollbar, so best is to notice when mouse moves again (we know we're off-scrollbar then)
                 infinite_scrolling_comments_wrapper();
             }
@@ -245,7 +247,7 @@
     });
 
     function force_reload_on_back() {
-        window.addEventListener('pageshow', function () {
+        $cms.dom.on(window, 'pageshow', function () {
             window.location.reload();
         });
     }
@@ -274,7 +276,7 @@
 
                 var submit_button = $cms.dom.id('submit_button');
                 if (submit_button) {
-                    disable_button_just_clicked(submit_button);
+                    $cms.ui.disableButton(submit_button);
                 }
 
                 // Note what posts are shown now

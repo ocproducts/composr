@@ -2,7 +2,7 @@
     'use strict';
 
     function SearchFormScreen() {
-        $cms.View.apply(this, arguments);
+        SearchFormScreen.base(this, arguments);
     }
 
     $cms.inherits(SearchFormScreen, $cms.View, {

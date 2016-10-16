@@ -91,7 +91,7 @@
 						<select class="dropdown_actions" name="type" id="fma_type">
 							<option value="browse">-</option>
 							{MODERATOR_ACTIONS}
-						</select><input onclick="if (add_form_marked_posts(this.form,'mark_')) { disable_button_just_clicked(this); return true; } window.fauxmodal_alert('{!NOTHING_SELECTED=;}'); return false;" class="button_micro buttons__proceed" type="submit" value="{!PROCEED}" />
+						</select><input onclick="if (add_form_marked_posts(this.form,'mark_')) { $cms.ui.disableButton(this); return true; } window.fauxmodal_alert('{!NOTHING_SELECTED=;}'); return false;" class="button_micro buttons__proceed" type="submit" value="{!PROCEED}" />
 					</div>
 				</form>
 
@@ -101,14 +101,14 @@
 
 						<div class="inline">
 							<label for="forum_max">{!PER_PAGE}:</label>
-							<select{+START,IF,{$JS_ON}} onchange="/*guarded*/this.form.submit();"{+END} name="forum_max" id="forum_max">
+							<select {+START,IF,{$JS_ON}} onchange="/*guarded*/this.form.submit();"{+END} name="forum_max" id="forum_max">
 								<option value="10"{$?,{$EQ,{MAX},10}, selected="selected",}>10</option>
 								<option value="20"{$?,{$EQ,{MAX},20}, selected="selected",}>20</option>
 								<option value="30"{$?,{$EQ,{MAX},30}, selected="selected",}>30</option>
 								<option value="50"{$?,{$EQ,{MAX},50}, selected="selected",}>50</option>
 								<option value="100"{$?,{$EQ,{MAX},100}, selected="selected",}>100</option>
 								<option value="300"{$?,{$EQ,{MAX},300}, selected="selected",}>300</option>
-							</select><input onclick="if (add_form_marked_posts(this.form,'mark_')) { disable_button_just_clicked(this); return true; } window.fauxmodal_alert('{!NOTHING_SELECTED=;}'); return false;" class="button_micro buttons__proceed" type="submit" value="{!PROCEED}" />
+							</select><input onclick="if (add_form_marked_posts(this.form,'mark_')) { $cms.ui.disableButton(this); return true; } window.fauxmodal_alert('{!NOTHING_SELECTED=;}'); return false;" class="button_micro buttons__proceed" type="submit" value="{!PROCEED}" />
 						</div>
 					</form>
 

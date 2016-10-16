@@ -2,7 +2,7 @@
     'use strict';
 
     function GlobalHelperPanel(options) {
-        $cms.View.apply(this, arguments);
+        GlobalHelperPanel.base(this, arguments);
         this.contentsEl = this.$('.js-helper-panel-contents');
     }
 

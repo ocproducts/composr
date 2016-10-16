@@ -2,7 +2,7 @@
 	<section class="box box___block_side_personal_stats_no"><div class="box_inner">
 		{+START,IF_NON_EMPTY,{TITLE}}<h3>{TITLE}</h3>{+END}
 
-		<form title="{!_LOGIN}" onsubmit="if (check_field_for_blankness(this.elements['login_username'],event)) { disable_button_just_clicked(this); return true; } return false;" action="{LOGIN_URL*}" method="post" autocomplete="on">
+		<form title="{!_LOGIN}" onsubmit="if (check_field_for_blankness(this.elements['login_username'],event)) { $cms.ui.disableFormButtons(this); return true; } return false;" action="{LOGIN_URL*}" method="post" autocomplete="on">
 			{$INSERT_SPAMMER_BLACKHOLE}
 
 			<div>

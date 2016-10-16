@@ -6,12 +6,12 @@
         window.slideshow_time = null;
     }
 
-    function BlockMainImageFader(options) {
-        $cms.View.apply(this, arguments);
+    function BlockMainImageFader(params) {
+        BlockMainImageFader.base(this, arguments);
 
         var data = {},
             key,
-            id = options.randFaderImage;
+            id = params.randFaderImage;
 
         data.fp_animation = document.getElementById('image_fader_' + id);
         data.fp_animation_fader = document.createElement('img');
@@ -24,16 +24,16 @@
         data.fp_animation_fader.style.position = 'absolute';
         data.fp_animation_fader.src = $cms.img('{$IMG;,blank}');
 
-        for (key in options.titles) {
-            this.initializeTitle(data, options.titles[key], key);
+        for (key in params.titles) {
+            this.initializeTitle(data, params.titles[key], key);
         }
 
-        for (key in options.html) {
-            this.initializeHtml(data, options.html[key], key);
+        for (key in params.html) {
+            this.initializeHtml(data, params.html[key], key);
         }
 
-        for (key in options.images) {
-            this.initializeImage(data, options.images[key], key, options.mill, options.images.length);
+        for (key in params.images) {
+            this.initializeImage(data, params.images[key], key, params.mill, params.images.length);
         }
     }
 
@@ -91,13 +91,13 @@
         }
     });
 
-    function GalleryNav(options) {
-        $cms.View.apply(this, arguments);
+    function GalleryNav(params) {
+        GalleryNav.base(this, arguments);
 
-        window.slideshow_current_position = options._x - 1;
-        window.slideshow_total_slides = options._n;
+        window.slideshow_current_position = params._x - 1;
+        window.slideshow_total_slides = params._n;
 
-        if (options.slideshow) {
+        if (params.slideshow) {
             this.initializeSlideshow();
         }
     }

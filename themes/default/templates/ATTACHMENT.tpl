@@ -17,7 +17,7 @@
 						{!ATTACHMENT,{I*}}
 
 						{+START,IF,{$NOT,{$MOBILE}}}
-							<img class="activate_rich_semantic_tooltip help_icon" onclick="this.onmouseover(event);" title="{!ATTACHMENT_HELP_2=,{$GET,IMAGE_TYPES}}" onmouseover="activate_rich_semantic_tooltip(this,event);" alt="{!HELP}" src="{$IMG*,icons/16x16/help}" srcset="{$IMG*,icons/32x32/help} 2x" />
+							<img class="help_icon" data-cms-rich-tooltip="1" title="{!ATTACHMENT_HELP_2=,{$GET,IMAGE_TYPES}}" alt="{!HELP}" src="{$IMG*,icons/16x16/help}" srcset="{$IMG*,icons/32x32/help} 2x" />
 						{+END}
 					</th>
 				{+END}

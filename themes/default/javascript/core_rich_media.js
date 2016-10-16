@@ -1,13 +1,17 @@
 (function ($cms) {
     'use strict';
 
-    function Attachment(options) {
-        $cms.View.apply(this, arguments);
+    $cms.views.Attachment = Attachment;
+    $cms.views.Carousel = Carousel;
+    $cms.views.ComcodeMediaSet = ComcodeMediaSet;
 
-        preinit_file_input("attachment_multi", "file" + options.i, null, options.postingFieldName, options.filter);
+    function Attachment(params) {
+        Attachment.base(this, arguments);
 
-        if (options.syndicationJson !== undefined) {
-            show_upload_syndication_options("file" + options.i, options.syndicationJson, !!options.noQuota);
+        preinit_file_input("attachment_multi", "file" + params.i, null, params.postingFieldName, params.filter);
+
+        if (params.syndicationJson !== undefined) {
+            show_upload_syndication_options("file" + params.i, params.syndicationJson, !!params.noQuota);
         }
     }
 
@@ -21,10 +25,10 @@
         }
     });
 
-    function Carousel(options) {
-        $cms.View.apply(this, arguments);
+    function Carousel(params) {
+        Carousel.base(this, arguments);
 
-        var id = options.carouselId,
+        var id = params.carouselId,
             carousel_ns = document.getElementById('carousel_ns_' + id);
 
         this.mainEl = this.$('.main');
@@ -119,26 +123,26 @@
         }
     });
 
-    function ComcodeMediaSet(options) {
-        $cms.View.apply(this, arguments);
+    function ComcodeMediaSet(params) {
+        ComcodeMediaSet.base(this, arguments);
 
         if (!$cms.$CONFIG_OPTION.jsOverlays) {
             return;
         }
 
         var imgs, imgsThumbs, setImgWidthHeight = false, mediaSet, as, containsVideo, x, i,
-            imgsId = 'imgs_' + options.rand,
-            imgsThumbsId = 'imgs_thumbs_' + options.rand,
+            imgsId = 'imgs_' + params.rand,
+            imgsThumbsId = 'imgs_thumbs_' + params.rand,
             thumbWidthConfig = ($cms.$CONFIG_OPTION.thumbWidth || '') + 'x' + ($cms.$CONFIG_OPTION.thumbWidth || '');
 
-        if ((thumbWidthConfig !== 'x') && ((options.width + 'x' + options.height) !== 'x')) {
+        if ((thumbWidthConfig !== 'x') && ((params.width + 'x' + params.height) !== 'x')) {
             setImgWidthHeight = true;
         }
 
         imgs = window[imgsId] = [];
         imgsThumbs = window[imgsThumbsId] = [];
 
-        mediaSet = document.getElementById('media_set_' + options.rand);
+        mediaSet = document.getElementById('media_set_' + params.rand);
         as = window.as = mediaSet.querySelectorAll('a, video');
         containsVideo = false;
 
@@ -182,14 +186,14 @@
 
         // If you only want a single image-based thumbnail
         if (containsVideo) {// Remove this 'if' (so it always runs) if you do not want the grid-style layout (plus remove the media_set class from the outer div
-            var width = options.width ? 'style="width: ' + Number(options.width) + 'px"' : '',
-                imgWidthHeight = setImgWidthHeight ? ' width="' + Number(options.width) + '" height="' + Number(options.height) + '"' : '',
+            var width = params.width ? 'style="width: ' + Number(params.width) + 'px"' : '',
+                imgWidthHeight = setImgWidthHeight ? ' width="' + Number(params.width) + '" height="' + Number(params.height) + '"' : '',
                 mediaSetHtml = '\
 					<figure class="attachment" ' + width + '>\
-						<figcaption>' + $cms.str('{!comcode:MEDIA_SET^;}', imgs.length) + '<\/figcaption>\
+						<figcaption>' + $cms.format('{!comcode:MEDIA_SET^;}', imgs.length) + '<\/figcaption>\
 						<div>\
 							<div class="attachment_details">\
-								<a onclick="open_images_into_lightbox(window.imgs); return false;" target="_blank" title="' + escape_html($cms.str('{!comcode:MEDIA_SET^;}', imgs.length)) + ' {!LINK_NEW_WINDOW^/}" href="#!">\
+								<a onclick="open_images_into_lightbox(window.imgs); return false;" target="_blank" title="' + escape_html($cms.format('{!comcode:MEDIA_SET^;}', imgs.length)) + ' {!LINK_NEW_WINDOW^/}" href="#!">\
                                     <img ' + imgWidthHeight + ' src="' + escape_html(imgsThumbs[0]) + '" />\
                                 <\/a>\
 							<\/div>\
@@ -202,20 +206,24 @@
 
     $cms.inherits(ComcodeMediaSet, $cms.View);
 
-    $cms.views.Attachment = Attachment;
-    $cms.views.Carousel = Carousel;
-    $cms.views.ComcodeMediaSet = ComcodeMediaSet;
-
     $cms.extend($cms.templates, {
-        attachments: function attachments(options) {
-            window.attachment_template = options.attachmentTemplate;
-            window.max_attachments = options.maxAttachments;
-            window.num_attachments = options.numAttachments;
+        attachments: function attachments(params) {
+            var container = this;
 
-            window.rebuild_attachment_button_for_next = function (posting_field_name, attachment_upload_button) {
-                var filter = options.filter !== undefined ? options.filter : null;
+            window.attachment_template = params.attachmentTemplate;
+            window.max_attachments = +params.maxAttachments || 0;
+            window.num_attachments = +params.numAttachments || 0;
 
-                if (posting_field_name !== options.postingFieldName) {
+            $cms.dom.on(container, 'click', '.js-click-open-attachment-popup', function (e, link) {
+                e.preventDefault();
+                window.faux_open(maintain_theme_in_link(link.href), 'site_attachment_chooser', 'width=550,height=600,status=no,resizable=yes,scrollbars=yes');
+            });
+
+            window.rebuild_attachment_button_for_next = rebuild_attachment_button_for_next;
+            function rebuild_attachment_button_for_next(posting_field_name, attachment_upload_button) {
+                var filter = (params.filter != null) ? params.filter : null;
+
+                if (posting_field_name !== params.postingFieldName) {
                     return false;
                 }
 
@@ -224,15 +232,15 @@
                 }
                 window.attachment_upload_button = attachment_upload_button;
 
-                prepare_simplified_file_input('attachment_multi', 'file' + window.num_attachments, null, options.postingFieldName, filter, window.attachment_upload_button);
-            };
+                prepare_simplified_file_input('attachment_multi', 'file' + window.num_attachments, null, params.postingFieldName, filter, window.attachment_upload_button);
+            }
 
-            if (options.simpleUi) {
+            if (params.simpleUi) {
                 window.num_attachments = 1;
 
                 $cms.load.then(function () {
                     if (document.getElementById('attachment_upload_button')) {
-                        window.rebuild_attachment_button_for_next(options.postingFieldName, 'attachment_upload_button');
+                        window.rebuild_attachment_button_for_next(params.postingFieldName, 'attachment_upload_button');
                     }
                 });
             }

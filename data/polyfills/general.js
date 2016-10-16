@@ -1,6 +1,6 @@
 (function (){
     'use strict';
-    // Credit for isSymbol and define: https://github.com/inexorabletash/polyfill/blob/master/es6.js
+    // Credit for `isSymbol` and `define`: https://github.com/inexorabletash/polyfill/blob/master/es6.js
     function isSymbol(s) {
         return (typeof s === 'symbol') || (('Symbol' in window) && (Object.prototype.toString.call(s) === '[object Symbol]'));
     }

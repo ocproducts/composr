@@ -87,7 +87,7 @@
 						<select class="dropdown_actions" id="tma_type" name="type">
 							<option value="browse">-</option>
 							{MODERATOR_ACTIONS}
-						</select><input class="button_micro buttons__proceed" type="submit" onclick="if (document.getElementById('tma_type').selectedIndex!=-1) { disable_button_just_clicked(this); return true; }  return false;" value="{!PROCEED}" />
+						</select><input class="button_micro buttons__proceed" type="submit" onclick="if (document.getElementById('tma_type').selectedIndex!=-1) { $cms.ui.disableButton(this); return true; }  return false;" value="{!PROCEED}" />
 					</div>
 				</form>
 			{+END}
@@ -105,7 +105,7 @@
 										<option value="browse">-</option>
 									{+END}
 									{MARKED_POST_ACTIONS}
-								</select><input class="button_micro buttons__proceed" type="submit" onclick="if (!add_form_marked_posts(this.form,'mark_')) { window.fauxmodal_alert('{!NOTHING_SELECTED=;}'); return false; } if (document.getElementById('mpa_type').selectedIndex!=-1) { disable_button_just_clicked(this); return true; } return false;" value="{!PROCEED}" />
+								</select><input class="button_micro buttons__proceed" type="submit" onclick="if (!add_form_marked_posts(this.form,'mark_')) { window.fauxmodal_alert('{!NOTHING_SELECTED=;}'); return false; } if (document.getElementById('mpa_type').selectedIndex!=-1) { $cms.ui.disableButton(this); return true; } return false;" value="{!PROCEED}" />
 							</div>
 						</form>
 					{+END}

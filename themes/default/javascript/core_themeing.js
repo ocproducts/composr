@@ -1,14 +1,16 @@
 (function ($cms) {
     'use strict';
 
+    $cms.views.ThemeManageScreen = ThemeManageScreen;
     function ThemeManageScreen() {
-        $cms.View.apply(this, arguments);
+        ThemeManageScreen.base(this, arguments);
     }
 
     $cms.inherits(ThemeManageScreen, $cms.View);
 
+    $cms.views.ThemeTemplateEditorTab = ThemeTemplateEditorTab;
     function ThemeTemplateEditorTab(options) {
-        $cms.View.apply(this, arguments);
+        ThemeTemplateEditorTab.base(this, arguments);
 
         // Allow searching via URL hash
         if (window.location.hash) {
@@ -83,30 +85,27 @@
         },
 
         cssEquationHelper: function (e) {
-            var opts = this.options,
+            var options = this.options,
                 url = 'themewizard_equation',
                 result;
 
             e.preventDefault();
 
-            url += '&theme=' + encodeURIComponent(opts.theme);
-            url += '&css_equation=' + encodeURIComponent(document.getElementById('css_equation_' + opts.fileId).value);
+            url += '&theme=' + encodeURIComponent(options.theme);
+            url += '&css_equation=' + encodeURIComponent(document.getElementById('css_equation_' + options.fileId).value);
 
             result = load_snippet(url);
 
             if (!result || result.includes('<html')) {
                 window.fauxmodal_alert('{!ERROR_OCCURRED;^}');
             } else {
-                document.getElementById('css_result_' + opts.fileId).value = result;
+                document.getElementById('css_result_' + options.fileId).value = result;
             }
         }
     });
 
-    $cms.views.ThemeManageScreen = ThemeManageScreen;
-    $cms.views.ThemeTemplateEditorTab = ThemeTemplateEditorTab;
-
     $cms.extend($cms.templates, {
-        tempcodeTesterScreen: function () {
+        tempcodeTesterScreen: function tempcodeTesterScreen() {
             var form = this,
                 button = form.querySelector('.js-btn-do-preview');
 
@@ -128,7 +127,7 @@
             });
         },
 
-        themeTemplateEditorScreen: function (options) {
+        themeTemplateEditorScreen: function themeTemplateEditorScreen(options) {
             window.template_editor_theme = options.theme;
 
             if (options.activeGuid !== undefined) {

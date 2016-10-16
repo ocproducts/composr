@@ -2,16 +2,16 @@
     'use strict';
 
     function BlockSideShoutbox() {
-        $cms.View.apply(this, arguments);
+        BlockSideShoutbox.base(this, arguments);
     }
 
     $cms.inherits(BlockSideShoutbox, $cms.View);
 
-    function ChatRoomScreen(options) {
-        $cms.View.apply(this, arguments);
+    function ChatRoomScreen(params) {
+        ChatRoomScreen.base(this, arguments);
 
         $cms.load.then(function () {
-            chat_load(options.chatroomId);
+            chat_load(params.chatroomId);
         });
     }
 
@@ -29,7 +29,7 @@
     $cms.views.ChatRoomScreen = ChatRoomScreen;
 
     $cms.extend($cms.templates, {
-        chatSound: function (options) { // Prepares chat sounds
+        chatSound: function (params) { // Prepares chat sounds
             if (window.prepared_chat_sounds) {
                 return;
             }
@@ -39,7 +39,7 @@
                 url: $cms.$BASE_URL_S + 'data',
                 debugMode: false,
                 onready: function () {
-                    var soundEffects = options.soundEffects,
+                    var soundEffects = params.soundEffects,
                         i;
 
                     for (i in soundEffects) {
@@ -49,8 +49,8 @@
             });
         },
 
-        chatFriends: function (options) {
-            var friends = options.friends, friend;
+        chatFriends: function (params) {
+            var friends = params.friends, friend;
 
             for (var i = 0; i < friends.length; i++) {
                 friend = friends[i];
@@ -61,25 +61,25 @@
             }
         },
 
-        chatLobbyImArea: function chatLobbyImArea(options) {
+        chatLobbyImArea: function chatLobbyImArea(params) {
             window.setTimeout(function () { /* Needed for IE */
                 $cms.load.then(function () {
                     try {
-                        document.getElementById('post_' + options.chatroomId).focus();
+                        document.getElementById('post_' + params.chatroomId).focus();
                     } catch (e) {
                     }
-                    document.getElementById('post_' + options.chatroomId).value = read_cookie('last_chat_msg_' + options.chatroomId);
+                    document.getElementById('post_' + params.chatroomId).value = read_cookie('last_chat_msg_' + params.chatroomId);
                 });
             }, 1000);
         },
 
-        chatLobbyScreen: function chatLobbyScreen(options) {
+        chatLobbyScreen: function chatLobbyScreen(params) {
             if ($cms.$IS_GUEST) {
                 return;
             }
 
-            window.im_area_template = options.imAreaTemplate;
-            window.im_participant_template = options.imParticipantTemplate;
+            window.im_area_template = params.imAreaTemplate;
+            window.im_participant_template = params.imParticipantTemplate;
             window.top_window = window;
 
             function begin_im_chatting() {
@@ -114,15 +114,15 @@
             internalise_ajax_block_wrapper_links(options.blockCallUrl, document.getElementById(options.wrapperId), [], {}, false, true);
         },
 
-        chatSitewideIm: function chatSitewideIm(options) {
-            if (!options.matched) {
+        chatSitewideIm: function chatSitewideIm(params) {
+            if (!params.matched) {
                 return;
             }
 
-            window.im_area_template = options.imAreaTemplate;
-            window.im_participant_template = options.imParticipantTemplate;
+            window.im_area_template = params.imAreaTemplate;
+            window.im_participant_template = params.imParticipantTemplate;
             window.top_window = window;
-            window.lobby_link = options.lobbyLink;
+            window.lobby_link = params.lobbyLink;
             window.participants = '';
 
             $cms.ready.then(function () {
@@ -415,8 +415,7 @@ function chat_post(event, current_room_id, field_name, font_name, font_colour) {
         }
 
         return false;
-    }
-    else {
+    } else {
         // Let the form be submitted the old-fashioned way.
         return true;
     }

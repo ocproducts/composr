@@ -10,16 +10,13 @@
     var $SCRIPT_comcode_convert = '{$FIND_SCRIPT_NOHTTP;,comcode_convert}';
 
     function BlockMainStaffChecklistCustomTask() {
-        $cms.View.apply(this, arguments);
+        BlockMainStaffChecklistCustomTask.base(this, arguments);
 
         this.imgChecklistCross = this.$('.js-img-checklist-cross');
         this.imgChecklistStatus = this.$('.js-img-checklist-status');
     }
 
     $cms.inherits(BlockMainStaffChecklistCustomTask, $cms.View, {
-        imgChecklistCross: null,
-        imgChecklistStatus: null,
-
         events: {
             'mouseover': 'mouseover',
             'mouseout': 'mouseout',
@@ -39,7 +36,7 @@
 
         markTask: function (e) {
             var data = this.el.dataset,
-                id = encodeURIComponent(this.options.id);
+                id = encodeURIComponent(this.params.id);
 
             // Prevent events on the delete link from triggering this function
             if (this.$closest(e.target, '.js-click-confirm-delete')) {
@@ -73,7 +70,7 @@
     });
 
     function BlockMainStaffLinks() {
-        $cms.View.apply(this, arguments);
+        BlockMainStaffLinks.base(this, arguments);
     }
 
     $cms.inherits(BlockMainStaffLinks, $cms.View, {
@@ -82,7 +79,7 @@
             'click .js-click-form-submit-headless': 'formSubmitHeadless'
         },
         staffBlockFlip: function () {
-            var rand = this.options.randStaffLinks,
+            var rand = this.params.randStaffLinks,
                 show = this.$('#staff_links_list_' + rand + '_form'),
                 hide = this.$('#staff_links_list_' + rand),
                 isHideDisplayed = $cms.dom.isDisplayed(hide);
@@ -91,18 +88,18 @@
             $cms.dom.toggleWithAria(hide, !isHideDisplayed);
         },
         formSubmitHeadless: function (e, btn) {
-            var opts = this.options;
+            var params = this.params;
 
-            if (!ajax_form_submit__admin__headless(btn.form, opts.blockName, opts.map)) {
+            if (!ajax_form_submit__admin__headless(btn.form, params.blockName, params.map)) {
                 e.preventDefault();
             }
         }
     });
 
     function BlockMainStaffWebsiteMonitoring() {
-        $cms.View.apply(this, arguments);
+        BlockMainStaffWebsiteMonitoring.base(this, arguments);
 
-        var rand = this.options.randWebsiteMonitoring;
+        var rand = this.params.randWebsiteMonitoring;
 
         this.tableEl = this.$('#website_monitoring_list_' + rand);
         this.formEl = this.$('.js-form-site-watchlist');
@@ -124,8 +121,8 @@
         },
 
         headlessSubmit: function (e) {
-            var blockName = $cms.filter.crLf(this.options.blockName),
-                map = $cms.filter.crLf(this.options.map);
+            var blockName = $cms.filter.crLf(this.params.blockName),
+                map = $cms.filter.crLf(this.params.map);
 
             if (!ajax_form_submit__admin__headless(this.formEl, blockName, map)) {
                 e.preventDefault();
@@ -134,7 +131,7 @@
     });
 
     function BlockMainNotes() {
-        $cms.View.apply(this, arguments);
+        BlockMainNotes.base(this, arguments);
         this.formEl = this.$('.js-form-block-main-notes');
     }
 
@@ -145,8 +142,8 @@
         },
 
         headlessSubmit: function (e) {
-            var blockName = $cms.filter.crLf(this.options.blockName),
-                map = $cms.filter.crLf(this.options.map);
+            var blockName = $cms.filter.crLf(this.params.blockName),
+                map = $cms.filter.crLf(this.params.map);
 
             if (!ajax_form_submit__admin__headless(this.formEl, blockName, map)) {
                 e.preventDefault();
