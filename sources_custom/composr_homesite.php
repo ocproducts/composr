@@ -119,12 +119,12 @@ function server__public__demo_reset()
 
 function demonstratr_add_site($codename, $name, $email_address, $password, $description, $category, $show_in_directory)
 {
-    if (strlen($name) > 200) {
+    if (cms_mb_strlen($name) > 200) {
         warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
     }
 
     // Check named site valid
-    if ((strlen($codename) < 3) || (strlen($codename) > 20) || (preg_match('#^[\w\d-]*$#', $codename) == 0)) {
+    if ((strlen($codename) < 3) || (cms_mb_strlen($codename) > 20) || (preg_match('#^[\w\d-]*$#', $codename) == 0)) {
         warn_exit(do_lang_tempcode('CMS_BAD_NAME'));
     }
 

@@ -196,9 +196,11 @@ function wysiwyg_set_readonly(name, readonly) {
     }
 
     var editor = window.wysiwyg_editors[name];
-    editor.document.$.body.readOnly = readonly;
-    editor.document.$.body.contentEditable = !readonly;
-    editor.document.$.body.designMode = readonly ? 'off' : 'on';
+    if (editor.document.$.body) {
+        editor.document.$.body.readOnly = readonly;
+        editor.document.$.body.contentEditable = !readonly;
+        editor.document.$.body.designMode = readonly ? 'off' : 'on';
+    }
 
     // In case it sticks as read only we need a timer to put it back. But only if not already back.
     if (window.wysiwyg_readonly_timer[name] !== undefined && window.wysiwyg_readonly_timer[name]) {

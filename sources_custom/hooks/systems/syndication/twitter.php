@@ -136,7 +136,7 @@ class Hook_syndication_twitter
             $shortened_link = http_get_contents('http://is.gd/api.php?longurl=' . urlencode($link));
             $max_length -= strlen($shortened_link) + 1;
         }
-        if (strlen($chopped_message) > $max_length) {
+        if (cms_mb_strlen($chopped_message) > $max_length) {
             $chopped_message = substr($chopped_message, 0, $max_length - 3) . '...';
         }
         if ($link != '') {

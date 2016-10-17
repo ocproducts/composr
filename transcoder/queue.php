@@ -219,7 +219,7 @@ while (true) {
 
                 if (is_string(strstr($done_path, '/done/'))) {
                     $relative_url = 'done/' . rawurlencode(str_replace(dirname($done_path) . '/', '', $done_path));
-                    $call = $liveserver . '/data_custom/receive_transcoded_file.php?url=' . $transcoder_server . $relative_url;
+                    $call = $liveserver . '/data_custom/receive_transcoded_file.php?url=' . urlencode($transcoder_server . $relative_url);
                     echo '[' . date('d/m/Y h:i:s') . '] Calling: ' . $call . "\n";
                     file_get_contents($call);
                 }

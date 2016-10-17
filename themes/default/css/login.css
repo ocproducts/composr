@@ -55,7 +55,7 @@ table.login_page_form {
 .login_page_options {
 	text-align: left;
 	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		width: 285px;
+		width: 278px; /* On Firefox Windows it needs more space than Chrome Windows which needs more space than Chrome Mac */
 		float: left;
 	/*{+END}*/
 	margin-top: 0.5em;

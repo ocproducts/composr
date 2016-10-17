@@ -338,9 +338,9 @@ class Database_super_mysql extends DatabaseDriver
 
         $table_type = (get_value('innodb') == '1') ? 'InnoDB' : 'MyISAM';
         $type_key = 'engine';
-        if ($raw_table_name == 'sessions') {
-            $table_type = 'HEAP';
-        }
+        /*if ($raw_table_name == 'sessions') {
+            $table_type = 'HEAP';   Some MySQL servers are very regularly reset
+        }*/
 
         $query = 'CREATE TABLE ' . $table_name . ' (' . "\n" . $_fields . '
             PRIMARY KEY (' . $keys . ')

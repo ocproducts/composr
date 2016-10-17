@@ -368,20 +368,20 @@ function cns_force_update_forum_caching($forum_id, $num_topics_increment = null,
     }
 
     $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forums SET ' .
-                                ($num_posts_increment !== null ? ('
+        (($num_posts_increment !== null) ? ('
         f_cache_num_topics=(f_cache_num_topics+' . strval($num_topics_increment) . '),
         f_cache_num_posts=(f_cache_num_posts+' . strval($num_posts_increment) . '),')
-                                    :
-                                    ('
+        :
+        ('
         f_cache_num_topics=' . strval($num_topics) . ',
         f_cache_num_posts=' . strval($num_posts) . ',
         ')) .
-                                'f_cache_last_topic_id=' . ($last_topic_id !== null ? strval($last_topic_id) : 'NULL') . ',
+        'f_cache_last_topic_id=' . (($last_topic_id !== null) ? strval($last_topic_id) : 'NULL') . ',
         f_cache_last_title=\'' . db_escape_string($last_title) . '\',
-        f_cache_last_time=' . ($last_time !== null ? strval($last_time) : 'NULL') . ',
+        f_cache_last_time=' . (($last_time !== null) ? strval($last_time) : 'NULL') . ',
         f_cache_last_username=\'' . db_escape_string(cms_mb_substr($last_username, 0, 255)) . '\',
-        f_cache_last_member_id=' . ($last_member_id !== null ? strval($last_member_id) : 'NULL') . ',
-        f_cache_last_forum_id=' . ($last_forum_id !== null ? strval($last_forum_id) : 'NULL') . '
+        f_cache_last_member_id=' . (($last_member_id !== null) ? strval($last_member_id) : 'NULL') . ',
+        f_cache_last_forum_id=' . (($last_forum_id !== null) ? strval($last_forum_id) : 'NULL') . '
             WHERE id=' . strval($forum_id), 1, null, false, true);
 
     // Now, are there any parents who need updating?

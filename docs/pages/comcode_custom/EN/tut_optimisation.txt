@@ -88,6 +88,7 @@ Composr is not designed to "cache everything as it will be displayed" because th
  - Don't allow thousands of posts in forum topics, as navigating within becomes very inefficient for the database.
  - Make sure PHP was not compiled with [tt]--disable-ctype[/tt]
  - You can add [tt]{$,Quick Cache}[/tt] into Comcode pages to enable the equivalent of quick block caching for that page
+ - You can edit the [tt]sessions[/tt] table to be of type [tt]HEAP[/tt], which will have it stored in memory rather than disk (it has no need to be saved to disk permanently)
 
 [title="2"]Persistent cache[/title]
 

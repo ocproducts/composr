@@ -446,7 +446,7 @@ function cns_get_member_fields_settings($mini_mode = true, $member_id = null, $g
             if ($temporary_password) {
                 $password_field_description = do_lang_tempcode('DESCRIPTION_PASSWORD_TEMPORARY');
             } else {
-                $password_field_description = do_lang_tempcode('DESCRIPTION_PASSWORD' . ($member_id !== null ? '_EDIT' : ''));
+                $password_field_description = do_lang_tempcode('DESCRIPTION_PASSWORD' . (($member_id !== null) ? '_EDIT' : ''));
             }
             $fields->attach(form_input_password(do_lang_tempcode(($member_id === null) ? 'PASSWORD' : 'NEW_PASSWORD'), $password_field_description, ($member_id === null) ? 'password' : 'edit_password', $mini_mode || $temporary_password));
             $fields->attach(form_input_password(do_lang_tempcode('CONFIRM_PASSWORD'), '', 'password_confirm', $mini_mode || $temporary_password));

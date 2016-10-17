@@ -690,6 +690,7 @@ class Module_admin_themes
 
             attach_message(do_lang_tempcode('THEME_MADE_LIVE'), 'inform');
         }
+
         erase_persistent_cache();
 
         $before = better_parse_ini_file((($theme == 'default') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini');

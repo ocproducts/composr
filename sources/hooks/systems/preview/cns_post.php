@@ -88,7 +88,7 @@ class Hook_preview_cns_post
         $post_date = get_timezoned_date_time($_post_date);
 
         $post_title = post_param_string('title', '');
-        if (strlen($post_title) > 120) {
+        if (cms_mb_strlen($post_title) > 120) {
             warn_exit(do_lang_tempcode('TITLE_TOO_LONG'));
         }
         $unvalidated = ((post_param_integer('validated', 0) == 0) && (get_page_name() == 'topics')) ? do_lang_tempcode('UNVALIDATED') : new Tempcode();
@@ -103,7 +103,7 @@ class Hook_preview_cns_post
         } elseif ($intended_solely_for !== null) {
             $emphasis = do_lang_tempcode('PP_TO', escape_html($intended_solely_for));
         }
-        $class = $is_emphasised ? 'cns_post_emphasis' : ($intended_solely_for !== null ? 'cns_post_personal' : '');
+        $class = $is_emphasised ? 'cns_post_emphasis' : (($intended_solely_for !== null) ? 'cns_post_personal' : '');
 
         // Member details
         $member_row = $GLOBALS['FORUM_DRIVER']->get_member_row($post_owner);

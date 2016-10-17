@@ -179,7 +179,7 @@ function wiki_add_post($page_id, $message, $validated = 1, $member = null, $send
     log_it('WIKI_MAKE_POST', strval($post_id), strval($page_id));
 
     // Update post count
-    if ((addon_installed('points')) && (strlen($message) > 1024)) {
+    if ((addon_installed('points')) && (cms_mb_strlen($message) > 1024)) {
         require_code('points');
         $_count = point_info($member);
         $count = array_key_exists('points_gained_wiki', $_count) ? $_count['points_gained_wiki'] : 0;
@@ -388,7 +388,7 @@ function wiki_add_page($title, $description, $notes, $hide_posts, $member = null
     check_comcode($description, null, false, null, true);
 
     // Update post count
-    if ((addon_installed('points')) && (strlen($description) > 1024)) {
+    if ((addon_installed('points')) && (cms_mb_strlen($description) > 1024)) {
         require_code('points');
         $_count = point_info($member);
         $count = array_key_exists('points_gained_wiki', $_count) ? $_count['points_gained_wiki'] : 0;

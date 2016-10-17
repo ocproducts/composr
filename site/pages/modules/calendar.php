@@ -271,7 +271,7 @@ class Module_calendar
         require_lang('calendar');
         require_code('calendar');
 
-        set_feed_url('?mode=calendar&select=' . implode(',', $this->get_and_filter()));
+        set_feed_url('?mode=calendar&select=' . urlencode(implode(',', $this->get_and_filter())));
 
         inform_non_canonical_parameter('#^int_.*$#');
 

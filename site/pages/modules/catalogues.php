@@ -551,7 +551,7 @@ class Module_catalogues
 
         if ($type == 'index') {
             $catalogue_name = get_param_string('id');
-            set_feed_url('?mode=catalogues&select=' . $catalogue_name);
+            set_feed_url('?mode=catalogues&select=' . urlencode($catalogue_name));
 
             // Read in catalogue details
             $catalogue = load_catalogue_row($catalogue_name);

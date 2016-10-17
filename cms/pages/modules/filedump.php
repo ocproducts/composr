@@ -134,7 +134,7 @@ class Module_filedump
                 $place .= '/';
             }
 
-            set_feed_url('?mode=filedump&select=' . $place);
+            set_feed_url('?mode=filedump&select=' . urlencode($place));
 
             // Show breadcrumbs
             $dirs = explode('/', substr($place, 0, strlen($place) - 1));
@@ -281,8 +281,6 @@ class Module_filedump
         }
 
         $recurse = get_param_integer('recurse', 0);
-
-        $GLOBALS['FEED_URL'] = find_script('backend') . '?mode=filedump&select=' . $place;
 
         // Check directory exists
         $full_path = get_custom_file_base() . '/uploads/filedump' . $place;

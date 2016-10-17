@@ -341,7 +341,7 @@ function comcode_helper_script_replace()
     if ($action != '') {
         switch ($action) {
             case 'add':
-                $url = find_script('comcode_helper') . '?type=step1&field_name=' . get_param_string('field_name') . $keep->evaluate();
+                $url = find_script('comcode_helper') . '?type=step1&field_name=' . urlencode(get_param_string('field_name')) . $keep->evaluate();
                 header('Location: ' . str_replace("\r", '', str_replace("\n", '', $url)));
                 exit();
 
@@ -443,9 +443,9 @@ function comcode_helper_script_step1()
                 $description = do_lang_tempcode('COMCODE_TAG_' . $tag . '_DESCRIPTION');
             }
 
-            $url = find_script('comcode_helper') . '?type=step2&tag=' . urlencode($tag) . '&field_name=' . get_param_string('field_name') . $keep->evaluate();
+            $url = find_script('comcode_helper') . '?type=step2&tag=' . urlencode($tag) . '&field_name=' . urlencode(get_param_string('field_name')) . $keep->evaluate();
             if (get_param_string('utheme', '') != '') {
-                $url .= '&utheme=' . get_param_string('utheme');
+                $url .= '&utheme=' . urlencode(get_param_string('utheme'));
             }
             $link_caption = escape_html($tag);
             $usage = '';
@@ -656,9 +656,9 @@ function comcode_helper_script_step2()
     // Further details for the UI...
 
     $keep = symbol_tempcode('KEEP');
-    $post_url = find_script('comcode_helper') . '?type=step3&field_name=' . get_param_string('field_name') . $keep->evaluate();
+    $post_url = find_script('comcode_helper') . '?type=step3&field_name=' . urlencode(get_param_string('field_name')) . $keep->evaluate();
     if (get_param_string('utheme', '') != '') {
-        $post_url .= '&utheme=' . get_param_string('utheme');
+        $post_url .= '&utheme=' . urlencode(get_param_string('utheme'));
     }
     $prefix = get_param_string('prefix', '', true);
     if ($prefix != '') {

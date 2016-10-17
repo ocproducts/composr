@@ -160,7 +160,7 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
     }
 
     if ($check_permissions) {
-        if (strlen($title) > 120) {
+        if (cms_mb_strlen($title) > 120) {
             warn_exit(do_lang_tempcode('TITLE_TOO_LONG'));
         }
 
@@ -474,7 +474,6 @@ function cns_force_update_member_post_count($member_id, $member_post_count_dif =
         if (addon_installed('unvalidated')) {
             $map['p_validated'] = 1;
         }
-        $member_post_count += $GLOBALS['FORUM_DB']->query_select_value('f_posts', 'COUNT(*)', $map);
         $GLOBALS['FORUM_DB']->query_update('f_members', array('m_cache_num_posts' => $member_post_count), array('id' => $member_id));
     } else {
         $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members SET m_cache_num_posts=(m_cache_num_posts+' . strval($member_post_count_dif) . ') WHERE id=' . strval($member_id));

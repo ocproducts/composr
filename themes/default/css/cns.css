@@ -484,7 +484,7 @@ hr.cns_sig_barrier {
 }
 
 .cns_topic_control_functions select {
-	max-width: 11em;
+	max-width: 10.5em;
 }
 
 .cns_topic_control_functions label, .cns_topic_control_functions span, .cns_topic_control_functions input, .cns_topic_control_functions select {

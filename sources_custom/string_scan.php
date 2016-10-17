@@ -122,6 +122,8 @@ function string_scan($lang, $do_guessing = false)
         SECURITY_LEVEL_high
         MAINTENANCE_SCRIPT_ACCESS
         CONFIG_OPTION_maintenance_script_htaccess
+        NEWS_SUMMARY_REQUIRED
+        CONFIG_OPTION_news_summary_required
         OWNER
         TICKETS_STAFF
         NO_CNS

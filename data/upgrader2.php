@@ -130,13 +130,6 @@ if ($file_offset + $per_cycle < count($todo)) {
     $next_offset_url .= '#progress';
 }
 up2_do_header($next_offset_url);
-if ($next_offset_url == '') {
-    echo '<p><strong>' . htmlentities($_GET['done']) . '!</strong></p>';
-    unlink($tmp_path);
-    unlink($tmp_data_path);
-} else {
-    echo '<p><img alt="" src="../themes/default/images/loading.gif" /></p>';
-}
 echo '<ol>';
 foreach ($todo as $i => $target_file) {
     echo '<li>';
@@ -147,6 +140,13 @@ foreach ($todo as $i => $target_file) {
     echo '</li>';
 }
 echo '</ol>';
+if ($next_offset_url == '') {
+    echo '<p><strong>' . htmlentities($_GET['done']) . '!</strong></p>';
+    unlink($tmp_path);
+    unlink($tmp_data_path);
+} else {
+    echo '<p><img alt="" src="../themes/default/images/loading.gif" /></p>';
+}
 echo '<script>// <![CDATA[
     window.setTimeout(function() {
         window.scrollTo(0,document.getElementById("file_' . strval(min(count($todo) - 1, $file_offset + $per_cycle)) . '").offsetTop-50);

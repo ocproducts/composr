@@ -15,7 +15,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    addon_publish
+ * @package    transifex
  */
 
 function init__transifex()
@@ -35,11 +35,6 @@ function init__transifex()
     require_code('lang_compile');
     require_code('lang2');
     require_code('files2');
-
-    require_code('string_scan');
-    global $JUST_LANG_STRINGS_ADMIN;
-    list($JUST_LANG_STRINGS_ADMIN) = string_scan(fallback_lang(), true);
-    $JUST_LANG_STRINGS_ADMIN = array_flip($JUST_LANG_STRINGS_ADMIN);
 
     global $OVERRIDE_PRIORITY_LANGUAGE_FILES;
     $OVERRIDE_PRIORITY_LANGUAGE_FILES = array(
@@ -146,10 +141,11 @@ function convert_lang_code_to_transifex($lang)
 
 function transifex_push_script()
 {
-    if (!$GLOBALS['DEV_MODE']) {
-        if (!is_cli()) {
+    $cli = is_cli();
+    if (!$cli) {
+        if (!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) {
             header('Content-type: text/plain');
-            exit('Must run this script on command line, for security reasons');
+            exit('Must run this script on command line, for security reasons -- or be logged in as an administrator');
         }
     }
 
@@ -254,11 +250,11 @@ function push_to_transifex($core_only, $push_cms, $push_ini, $push_translations,
                 }
 
                 $default_lang_files[$f] = true;
-                $result = _push_strings_file_to_transifex($f, $project_slug, false, TRANSLATE_ADMINISTRATIVE_NO, $push_translations);
+                $result = _push_ini_file_to_transifex($f, $project_slug, false, TRANSLATE_ADMINISTRATIVE_NO, $push_translations);
                 if ($result) {
-                    _push_strings_file_to_transifex($f, $project_slug, false, TRANSLATE_ADMINISTRATIVE_YES, $push_translations);
+                    _push_ini_file_to_transifex($f, $project_slug, false, TRANSLATE_ADMINISTRATIVE_YES, $push_translations);
 
-                    echo "Uploaded strings file {$f}\n";
+                    echo "Uploaded ini (strings) file {$f}\n";
                     flush();
                 }
             }
@@ -273,10 +269,10 @@ function push_to_transifex($core_only, $push_cms, $push_ini, $push_translations,
                         continue;
                     }
 
-                    $result = _push_strings_file_to_transifex($f, $project_slug, true, TRANSLATE_ADMINISTRATIVE_MIXED, $push_translations);
+                    $result = _push_ini_file_to_transifex($f, $project_slug, true, TRANSLATE_ADMINISTRATIVE_MIXED, $push_translations);
 
                     if ($result) {
-                        echo "Uploaded strings file {$f}\n";
+                        echo "Uploaded ini (strings) file {$f}\n";
                         flush();
                     }
                 }
@@ -335,9 +331,13 @@ function _push_cms_file_to_transifex($path, $resource_path, $project_slug, $prio
     }
 }
 
-function _push_strings_file_to_transifex($f, $project_slug, $custom, $administrative, $push_translations)
+function _push_ini_file_to_transifex($f, $project_slug, $custom, $administrative, $push_translations)
 {
     global $JUST_LANG_STRINGS_ADMIN, $OVERRIDE_PRIORITY_LANGUAGE_FILES, $LANGUAGE_STRING_DESCRIPTIONS, $LANGUAGE_FILES_ADDON;
+
+    require_code('string_scan');
+    list($JUST_LANG_STRINGS_ADMIN) = string_scan(fallback_lang(), true);
+    $JUST_LANG_STRINGS_ADMIN = array_flip($JUST_LANG_STRINGS_ADMIN);
 
     if ($custom) {
         $category = TRANSLATE_ADDON;
@@ -459,11 +459,32 @@ function transifex_pull_script()
     $version = get_param_string('version', strval(cms_version()));
     $output = (get_param_integer('output', 0) == 1);
     $lang = get_param_string('lang', null);
-    $core_only = (get_param_integer('core_only', 1) == 1);
+    $core_only = (get_param_integer('core_only', 0) == 1);
+
+    $cli = is_cli();
+    if (!$cli) {
+        if (!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) {
+            if (!$output) {
+                header('Content-type: text/plain');
+                exit('You must be logged in as an administrator (or run this script from the command line) if not using output=0');
+            }
+
+            if ($lang === null) {
+                header('Content-type: text/plain');
+                exit('You must be logged in as an administrator (or run this script from the command line) if not setting an output language');
+            }
+        }
+    }
 
     if ($output) {
         header('Content-type: application/octet-stream');
-        header('Content-Disposition: attachment; filename="' . escape_header($lang) . '.tar"');
+        require_code('version2');
+        if ($lang === null) {
+            $filename = 'languages-' . get_version_branch(floatval(cms_version_number())) . '.tar';
+        } else {
+            $filename = 'language-' . escape_header($lang) . '-' . get_version_branch(floatval(cms_version_number())) . '.tar';
+        }
+        header('Content-Disposition: attachment; filename="' . addslashes($filename) . '"');
         safe_ini_set('ocproducts.xss_detect', '0');
 
         require_code('tar');
@@ -518,7 +539,7 @@ function pull_lang_from_transifex($project_slug, $tar_file, $lang, $core_only, $
         $language_details = json_decode($test[0], true);
 
         if (!$definitely_want) {
-            if (floatval($language_details['translated_segments']) / floatval($language_details['total_segments']) < 0.2) {
+            if (floatval($language_details['translated_segments']) / floatval($language_details['total_segments']) < 0.2/*Under 20%*/) {
                 // Not translated enough
                 return false;
             }
@@ -541,24 +562,48 @@ function pull_lang_from_transifex($project_slug, $tar_file, $lang, $core_only, $
                 continue;
             }
 
-            _pull_strings_file_from_transifex($project_slug, $tar_file, $lang, $_f, $files);
+            _pull_ini_file_from_transifex($project_slug, $tar_file, $lang, $_f, $files);
         }
 
         // Write addon_registry hook
         if (count($files) != 0) {
+            $path = 'sources_custom/hooks/systems/addon_registry/language_' . $lang . '.php';
+            $full_path = get_file_base() . '/' . $path;
+
             $translators = implode(', ', $language_details['translators']);
             if ($translators == '') {
                 $translators = do_lang('UNKNOWN');
+
+                if (is_file($full_path)) {
+                    $c = file_get_contents(($full_path));
+
+                    $matches = array();
+                    if (preg_match('#function get_author\(\)\s*\{\s*return \'([^\']*)\';#', $c, $matches) != 0) {
+                        $translators = $matches[1];
+                    }
+                }
             }
 
-            $percentage = intval(round(100.0 * $language_details['translated_segments'] / $language_details['total_segments']));
+            $percentage = intval(round(100.0 * $language_details['translated_segments'] / $language_details['total_segments'])); // calculate %age
 
             $language_name = lookup_language_full_name($lang);
+
+            if (is_file('sources_custom/lang_filter_' . $lang . '.php')) {
+                $files[] = 'sources_custom/lang_filter_' . $lang . '.php';
+            }
 
             $files_str = '';
             foreach ($files as $file) {
                 $files_str .= "\n            '" . $file . "',";
             }
+
+            $description = 'Translation into {$language_name}.
+
+Completeness: {$percentage}% (29% typically means translated fully apart from administrative strings).
+
+This addon was automatically bundled from community contributions provided on Transifex and will be routinely updated alongside new Composr patch releases.
+
+Translations may also be downloaded directly from Transifex.';
 
             $open = '<' . '?php';
 
@@ -651,7 +696,7 @@ class Hook_addon_registry_language_{$lang}
      */
     public function get_description()
     {
-        return 'Translation into {$language_name}. Completeness: {$percentage}% (29% typically means translated fully apart from administrative strings). This addon was automatically bundled from community contributions provided on Transifex and will be routinely updated alongside new Composr patch releases. Translations may also be downloaded directly from Transifex.';
+        return '{$description}';
     }
 
     /**
@@ -704,14 +749,31 @@ END;
 
             $c = trim($c) . "\n\n";
 
-            $path = 'sources_custom/hooks/systems/addon_registry/language_' . $lang . '.php';
-            $full_path = get_file_base() . '/' . $path;
-
             if ($tar_file === null) {
                 file_put_contents($full_path, $c);
                 fix_permissions($full_path);
+                sync_file($full_path);
             } else {
                 tar_add_file($tar_file, $path, $c);
+
+                // addon.inf is needed too
+                $addon_inf = '';
+                $settings = array(
+                    'name' => $language_name,
+                    'author' => $translators,
+                    'organisation' => '',
+                    'version' => cms_version_number(),
+                    'category' => 'Translations',
+                    'copyright_attribution' => '',
+                    'licence' => '',
+                    'description' => $description,
+                    'incompatibilities' => '',
+                    'dependencies' => '',
+                );
+                foreach ($settings as $setting_name => $setting_value) {
+                    $addon_inf .= $setting_name . '="' . str_replace("\n", '\n', str_replace('"', '\'', $setting_value)) . '"' . "\n";
+                }
+                tar_add_file($tar_file, 'addon.inf', $addon_inf, 0644, time());
             }
         }
     }
@@ -732,6 +794,13 @@ function _pull_cms_file_from_transifex($project_slug, $tar_file, $lang, $path, $
 
     $trans_full_path = get_file_base() . '/' . $trans_path;
 
+    $limit_substring = get_param_string('limit_substring', null);
+    if ($limit_substring !== null && strpos($path, $limit_substring) === false) {
+        $files[] = $trans_path;
+
+        return;
+    }
+
     $test = _transifex('/project/' . $project_slug . '/resource/' . $resource_path . '/translation/' . convert_lang_code_to_transifex($lang) . '/', 'GET', null, true);
     if ($test[1] == '200') {
         $data = json_decode($test[0], true);
@@ -743,10 +812,11 @@ function _pull_cms_file_from_transifex($project_slug, $tar_file, $lang, $path, $
         }
 
         if ($tar_file === null) {
-            @mkdir(dirname($trans_full_path), 0777);
+            @mkdir(dirname($trans_full_path), 0777, true);
             fix_permissions(dirname($trans_full_path));
             file_put_contents($trans_full_path, $c);
             fix_permissions($trans_full_path);
+            sync_file($trans_full_path);
         } else {
             tar_add_file($tar_file, $trans_path, $c);
         }
@@ -755,8 +825,18 @@ function _pull_cms_file_from_transifex($project_slug, $tar_file, $lang, $path, $
     }
 }
 
-function _pull_strings_file_from_transifex($project_slug, $tar_file, $lang, $_f, &$files)
+function _pull_ini_file_from_transifex($project_slug, $tar_file, $lang, $_f, &$files)
 {
+    $trans_path = 'lang_custom/' . $lang . '/' . $_f . '.ini';
+    $trans_full_path = get_file_base() . '/' . $trans_path;
+
+    $limit_substring = get_param_string('limit_substring', null);
+    if ($limit_substring !== null && strpos($_f, $limit_substring) === false) {
+        $files[] = $trans_path;
+
+        return;
+    }
+
     $test_a = _transifex('/project/' . $project_slug . '/resource/' . $_f . '/translation/' . convert_lang_code_to_transifex($lang) . '/', 'GET', null, true);
     $test_b = _transifex('/project/' . $project_slug . '/resource/' . $_f . '__administrative/translation/' . convert_lang_code_to_transifex($lang) . '/', 'GET', null, true);
     if ($test_a[1] == '200' || $test_b[1] == '200') {
@@ -776,14 +856,12 @@ function _pull_strings_file_from_transifex($project_slug, $tar_file, $lang, $_f,
         $write_out = preg_replace('#^\# .*\n#m', '', $data_a['content'] . "\n" . $data_b['content']);
         $c = "[strings]\n" . trim($write_out) . "\n";
 
-        $trans_path = 'lang_custom/' . $lang . '/' . $_f . '.ini';
-        $trans_full_path = get_file_base() . '/' . $trans_path;
-
         if ($tar_file === null) {
             @mkdir(dirname($trans_full_path), 0777, true);
             fix_permissions(dirname($trans_full_path));
             file_put_contents($trans_full_path, $c);
             fix_permissions($trans_full_path);
+            sync_file($trans_full_path);
         } else {
             tar_add_file($tar_file, $trans_path, $c);
         }

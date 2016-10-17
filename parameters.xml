@@ -26,46 +26,46 @@
       />
   </parameter>
 
-	<parameter
-		name="Local Application URL"
-		description="The URL of the application on the target box such as http://myserver.com/composr. This needs to be correct for where you are hosting Composr, although you can leave it blank for it to be autodetected at run-time."
-		defaultValue=""
-		tags="AppURL"
-		>
+  <parameter
+    name="Local Application URL"
+    description="The URL of the application on the target box such as http://myserver.com/composr. This needs to be correct for where you are hosting Composr, although you can leave it blank for it to be autodetected at run-time."
+    defaultValue=""
+    tags="AppURL"
+    >
        <parameterValidation type="AllowEmpty" />
-	</parameter>
+  </parameter>
 
-	<parameter
-		name="Automatic Local Application URL"
-		defaultValue="$SITE_INFO['base_url']='{Local Application URL}';"
-		tags="Hidden"
-		>
-	    <parameterEntry
-	      type="TextFile"
-	      scope="_config.php"
-	      match="\$SITE_INFO\s*\['base_url'\]='([^']*)';"
-	      />
-	</parameter>
+  <parameter
+    name="Automatic Local Application URL"
+    defaultValue="$SITE_INFO['base_url']='{Local Application URL}';"
+    tags="Hidden"
+    >
+      <parameterEntry
+        type="TextFile"
+        scope="composr/_config.php"
+        match="\$SITE_INFO\s*\['base_url'\]='([^']*)';"
+        />
+  </parameter>
 
-	<parameter
-		name="Domain name"
-		description="The domain name you intend to run on, such as myserver.com. This needs to be correct for where you are hosting Composr, although you can leave it blank for it to be autodetected at run-time."
-		defaultValue=""
-		>
+  <parameter
+    name="Domain name"
+    description="The domain name you intend to run on, such as myserver.com. This needs to be correct for where you are hosting Composr, although you can leave it blank for it to be autodetected at run-time."
+    defaultValue=""
+    >
        <parameterValidation type="AllowEmpty" />
-	</parameter>
+  </parameter>
 
-	<parameter
-		name="Automatic Domain name"
-		defaultValue="$SITE_INFO['domain']='{Domain name}';"
-		tags="Hidden"
-		>
-	    <parameterEntry
-	      type="TextFile"
-	      scope="_config.php"
-	      match="\$SITE_INFO\s*\['domain'\]='([^']*)';"
-	      />
-	</parameter>
+  <parameter
+    name="Automatic Domain name"
+    defaultValue="$SITE_INFO['domain']='{Domain name}';"
+    tags="Hidden"
+    >
+      <parameterEntry
+        type="TextFile"
+        scope="composr/_config.php"
+        match="\$SITE_INFO\s*\['domain'\]='([^']*)';"
+        />
+  </parameter>
 
 
   <!-- Prompts for database server name, this is used in the
@@ -86,12 +86,12 @@
     >
     <parameterEntry
       type="TextFile"
-      scope="_config.php"
+      scope="composr/_config.php"
       match="\$SITE_INFO\s*\['db_site_host'\]='([^']*)';"
       />
     <parameterEntry
       type="TextFile"
-      scope="_config.php"
+      scope="composr/_config.php"
       match="\$SITE_INFO\s*\['db_forums_host'\]='([^']*)';"
       />
   </parameter>
@@ -125,12 +125,12 @@
     >
     <parameterEntry
       type="TextFile"
-      scope="_config.php"
+      scope="composr/_config.php"
       match="\$SITE_INFO\s*\['db_site'\]='([^']*)';"
       />
     <parameterEntry
       type="TextFile"
-      scope="_config.php"
+      scope="composr/_config.php"
       match="\$SITE_INFO\s*\['db_forums'\]='([^']*)';"
       />
   </parameter>
@@ -166,12 +166,12 @@
     >
     <parameterEntry
       type="TextFile"
-      scope="_config.php"
+      scope="composr/_config.php"
       match="\$SITE_INFO\s*\['db_site_user'\]='([^']*)';"
       />
     <parameterEntry
       type="TextFile"
-      scope="_config.php"
+      scope="composr/_config.php"
       match="\$SITE_INFO\s*\['db_forums_user'\]='([^']*)';"
       />
   </parameter>
@@ -184,7 +184,6 @@
     name="dbUserPassword"
     tags="New, Password, MySQL, dbUserPassword"
     >
-    <parameterValidation type="AllowEmpty" />
     <parameterEntry
       type="TextFile"
       scope="user.sql"
@@ -199,12 +198,12 @@
     >
     <parameterEntry
       type="TextFile"
-      scope="_config.php"
+      scope="composr/_config.php"
       match="\$SITE_INFO\s*\['db_site_password'\]='([^']*)';"
       />
     <parameterEntry
       type="TextFile"
-      scope="_config.php"
+      scope="composr/_config.php"
       match="\$SITE_INFO\s*\['db_forums_password'\]='([^']*)';"
       />
   </parameter>
@@ -233,7 +232,6 @@
     name="dbAdminPassword"
     tags="Password, MySQL, dbAdminPassword"
     >
-    <parameterValidation type="AllowEmpty" />
   </parameter>
 
   <!-- #Composr - These are Composr specific parameters.
@@ -242,9 +240,8 @@
   <parameter
     name="Master password"
     description="Password for the Composr upgrader and config editor."
-    tags="New, Password"
+    tags="New, Password, NoStore"
     >
-    <parameterValidation type="AllowEmpty" />
   </parameter>
 
   <parameter
@@ -254,7 +251,7 @@
     >
     <parameterEntry
       type="TextFile"
-      scope="_config.php"
+      scope="composr/_config.php"
       match="\$SITE_INFO\s*\['master_password'\]='([^']*)';" />
   </parameter>
 
@@ -262,7 +259,7 @@
     name="Admin user username"
     defaultValue="admin"
     description="The username for your Composr admin account."
-    tags=""
+    tags="NoStore"
     >
     <parameterEntry
       type="TextFile"
@@ -273,9 +270,8 @@
   <parameter
     name="Admin user password"
     description="The password for your Composr admin account."
-    tags="New, Password"
+    tags="New, Password, NoStore"
     >
-    <parameterValidation type="AllowEmpty" />
     <parameterEntry
       type="TextFile"
       scope="postinstall.sql"

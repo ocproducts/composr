@@ -91,10 +91,10 @@ function cns_edit_topic($topic_id, $description = null, $emoticon = null, $valid
 
     $update = array();
     if ($description !== null) {
-        $update['t_description'] = $description;
+        $update['t_description'] = substr($description, 0, 255);
     }
     if ($description_link !== null) {
-        $update['t_description_link'] = $description_link;
+        $update['t_description_link'] = substr($description_link, 0, 255);
     }
     if ($emoticon !== null) {
         $update['t_emoticon'] = $emoticon;
@@ -225,7 +225,7 @@ function cns_delete_topic($topic_id, $reason = '', $post_target_topic_id = null,
 
     if ($forum_id !== null) {
         // Update member post counts if we've switched between post-count countable forums
-        $post_count_info = $GLOBALS['FORUM_DB']->query('SELECT id,f_post_count_increment FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forums WHERE id=' . strval($forum_id) . ($post_target_topic_id !== null ? (' OR id=' . strval($to)) : ''), 2, null, false, true);
+        $post_count_info = $GLOBALS['FORUM_DB']->query('SELECT id,f_post_count_increment FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forums WHERE id=' . strval($forum_id) . (($post_target_topic_id !== null) ? (' OR id=' . strval($to)) : ''), 2, null, false, true);
         if ($post_count_info[0]['id'] == $forum_id) {
             $from_cnt = $post_count_info[0]['f_post_count_increment'];
             $to_cnt = (array_key_exists(1, $post_count_info)) ? $post_count_info[1]['f_post_count_increment'] : 0;

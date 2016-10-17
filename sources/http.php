@@ -50,7 +50,7 @@ function cache_and_carry($func, $args, $timeout = null)
             $ret = array($_ret->data, $_ret->download_mime_type, $_ret->download_size, $_ret->download_url, $_ret->message, $_ret->message_b, $_ret->new_cookies, $_ret->filename, $_ret->charset, $_ret->download_mtime);
             file_put_contents($path, serialize($ret), LOCK_EX);
         } else {
-            $ret = $_ret;
+            $ret = is_string($_ret) ? $_ret : serialize($_ret);
             file_put_contents($path, $ret, LOCK_EX);
         }
         fix_permissions($path);

@@ -104,7 +104,7 @@ function _draw_key($data, $start_colour, $start_x, $start_y, $units = '')
 
         $value = float_format($_value);
 
-        if (strlen($value) > 100) {
+        if (cms_mb_strlen($value) > 100) {
             $value = substr($value, 0, 40) . '&hellip;' . substr($value, -40);
         }
 

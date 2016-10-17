@@ -2557,6 +2557,12 @@
 
                                 iframe.contentWindow.document.body.done_popup_trans = true;
                             }
+                        } else
+                        {
+                            if (!has_iframe_ownership(iframe)) {
+                                iframe.scrolling='yes';
+                                iframe.style.height='500px';
+                            }
                         }
 
                         // Handle iframe sizing
@@ -4075,14 +4081,14 @@ function confirm_session(callback) {
         }
 
         // But non blank tells us the username, and there is an implication that no session is confirmed for this login
-        if (ret.responseText === '{!GUEST;}') {// Hmm, actually whole login was lost, so we need to ask for username too
+        if (ret.responseText === '{!GUEST;^}') {// Hmm, actually whole login was lost, so we need to ask for username too
             window.fauxmodal_prompt(
                 '{!USERNAME;^}',
                 '',
                 function (promptt) {
                     _confirm_session(callback, promptt, url);
                 },
-                '{!_LOGIN;}'
+                '{!_LOGIN;^}'
             );
             return;
         }
@@ -4107,7 +4113,7 @@ function confirm_session(callback) {
                     callback(false);
                 }
             },
-            '{!_LOGIN;}',
+            '{!_LOGIN;^}',
             'password'
         );
     }
@@ -4261,7 +4267,7 @@ function toggleable_tray(element, no_animate, cookie_id_name) {
     }
 
     if (!element) {
-        return;
+        return false;
     }
 
     no_animate = !!no_animate;
@@ -4285,7 +4291,7 @@ function toggleable_tray(element, no_animate, cookie_id_name) {
     var pic = $cms.dom.$(element.parentNode, '.toggleable_tray_button img') || $cms.dom.$('#e_' + element.id);
 
     if (pic && (matches_theme_image(pic.src, $IMG_expcon) || matches_theme_image(pic.src, $IMG_expcon2))) {// Currently in action?
-        return;
+        return false;
     }
 
     element.setAttribute('aria-expanded', 'true');
@@ -4325,9 +4331,9 @@ function toggleable_tray(element, no_animate, cookie_id_name) {
         } else {
             if (pic) {
                 set_tray_theme_image('contract', 'expand', $IMG_contract, $IMG_expand, $IMG_2x_expand, $IMG_expand2, $IMG_2x_expand2);
-                pic.setAttribute('alt', pic.getAttribute('alt').replace('{!CONTRACT;}', '{!EXPAND;}'));
-                pic.title = '{!EXPAND;}'; // Needs doing because convert_tooltip may not have run yet
-                pic.cms_tooltip_title = '{!EXPAND;}';
+                pic.setAttribute('alt', pic.getAttribute('alt').replace('{!CONTRACT;^}', '{!EXPAND;^}'));
+                pic.title = '{!EXPAND;^}'; // Needs doing because convert_tooltip may not have run yet
+                pic.cms_tooltip_title = '{!EXPAND;^}';
             }
             $cms.dom.hide(element);
         }
@@ -4397,8 +4403,8 @@ function toggleable_tray(element, no_animate, cookie_id_name) {
             } else {
                 set_tray_theme_image('expcon', 'contract', $IMG_expcon, $IMG_contract, $IMG_2x_contract, $IMG_contract2, $IMG_2x_contract2);
             }
-            pic.setAttribute('alt', pic.getAttribute('alt').replace((animate_dif < 0) ? '{!CONTRACT;}' : '{!EXPAND;}', (animate_dif < 0) ? '{!EXPAND;}' : '{!CONTRACT;}'));
-            pic.cms_tooltip_title = (animate_dif < 0) ? '{!EXPAND;}' : '{!CONTRACT;}';
+            pic.setAttribute('alt', pic.getAttribute('alt').replace((animate_dif < 0) ? '{!CONTRACT;^}' : '{!EXPAND;^}', (animate_dif < 0) ? '{!EXPAND;^}' : '{!CONTRACT;^}'));
+            pic.cms_tooltip_title = (animate_dif < 0) ? '{!EXPAND;^}' : '{!CONTRACT;^}';
         }
         trigger_resize(true);
     }
@@ -5258,11 +5264,11 @@ function ga_track(ob, category, action) {
     }
 
     if (category === undefined) {
-        category = '{!URL;}';
+        category = '{!URL;^}';
     }
 
     if (action === undefined) {
-        action = ob ? ob.href : '{!UNKNOWN;}';
+        action = ob ? ob.href : '{!UNKNOWN;^}';
     }
 
     try {
@@ -5450,7 +5456,7 @@ function play_self_audio_link(ob) {
 
 /*
 
- This file does a lot of stuff relating to overlays...
+ This code does a lot of stuff relating to overlays...
 
  It provides callback-based *overlay*-driven substitutions for the standard browser windowing API...
  - alert

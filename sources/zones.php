@@ -1079,7 +1079,7 @@ function get_block_id($map)
  */
 function do_block($codename, $map = array(), $ttl = null)
 {
-    global $LANGS_REQUESTED, $JAVASCRIPTS, $CSSS, $DO_NOT_CACHE_THIS, $SMART_CACHE;
+    global $LANGS_REQUESTED, $REQUIRED_ALL_LANG, $JAVASCRIPTS, $CSSS, $DO_NOT_CACHE_THIS, $SMART_CACHE;
 
     $map['block'] = $codename;
 
@@ -1133,7 +1133,9 @@ function do_block($codename, $map = array(), $ttl = null)
                         return $out;
                     }
                     $backup_langs_requested = $LANGS_REQUESTED;
+                    $backup_required_all_lang = $REQUIRED_ALL_LANG;
                     $LANGS_REQUESTED = array();
+                    $REQUIRED_ALL_LANG = array();
                     if ((isset($map['quick_cache'])) && ($map['quick_cache'] === '1')) { // because we know we will not do this often we can allow this to work as a vector for doing highly complex activity
                         global $MEMORY_OVER_SPEED;
                         $MEMORY_OVER_SPEED = true; // Let this eat up some CPU in order to let it save RAM,
@@ -1172,6 +1174,7 @@ function do_block($codename, $map = array(), $ttl = null)
                         if ((isset($map['quick_cache'])) && ($map['quick_cache'] === '1')/* && (has_cookies())*/) {
                             $cache = apply_quick_caching($cache);
                             $LANGS_REQUESTED = array();
+                            $REQUIRED_ALL_LANG = array();
                         }
                         require_code('temporal');
                         $staff_status = (($special_cache_flags & CACHE_AGAINST_STAFF_STATUS) !== 0) ? ($GLOBALS['FORUM_DRIVER']->is_staff(get_member()) ? 1 : 0) : null;
@@ -1182,12 +1185,14 @@ function do_block($codename, $map = array(), $ttl = null)
                         put_into_cache($codename, $ttl, $cache_identifier, $staff_status, $member, $groups, $is_bot, $timezone, $cache, array_keys($LANGS_REQUESTED), array_keys($JAVASCRIPTS), array_keys($CSSS), true);
                     } elseif (($ttl !== -1) && ($cache->is_empty())) { // Try again with no TTL, if we currently failed but did impose a TTL
                         $LANGS_REQUESTED += $backup_langs_requested;
+                        $REQUIRED_ALL_LANG = $backup_required_all_lang;
                         if (!$GLOBALS['OUTPUT_STREAMING']) {
                             restore_output_state(false, true);
                         }
                         return do_block($codename, $map, -1);
                     }
                     $LANGS_REQUESTED += $backup_langs_requested;
+                    $REQUIRED_ALL_LANG += $backup_required_all_lang;
 
                     pop_query_limiting();
                 }
@@ -1209,7 +1214,9 @@ function do_block($codename, $map = array(), $ttl = null)
         push_query_limiting(false);
 
         $backup_langs_requested = $LANGS_REQUESTED;
+        $backup_required_all_lang = $REQUIRED_ALL_LANG;
         $LANGS_REQUESTED = array();
+        $REQUIRED_ALL_LANG = array();
         if ($new_security_scope) {
             _solemnly_enter();
         }
@@ -1252,6 +1259,7 @@ function do_block($codename, $map = array(), $ttl = null)
         }
     }
     $LANGS_REQUESTED += $backup_langs_requested;
+    $REQUIRED_ALL_LANG += $backup_required_all_lang;
 
     if (!$GLOBALS['OUTPUT_STREAMING']) {
         restore_output_state(false, true);

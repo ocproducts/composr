@@ -2522,10 +2522,6 @@ END;
     {
         $topic_id = get_param_integer('id');
         $forum_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 't_forum_id', array('id' => $topic_id));
-        if ($forum_id === null) 
-        {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
-        }
 
         cns_ping_topic_read($topic_id, get_member(), get_param_integer('timestamp', null));
         if (($forum_id === null) || (get_param_integer('ajax', 0) == 1)) {

@@ -60,7 +60,7 @@ function get_alexa_rank($url)
 
     require_code('files');
     $p = array();
-    $result = http_get_contents('http://data.alexa.com/data?cli=10&dat=s&url=' . $url, array('trigger_error' => false, 'timeout' => 1.0));
+    $result = http_get_contents('http://data.alexa.com/data?cli=10&dat=s&url=' . urlencode($url), array('trigger_error' => false, 'timeout' => 1.0));
     if (preg_match('#<POPULARITY [^<>]*TEXT="([0-9]+){1,}"#si', $result, $p) != 0) {
         $rank = integer_format(intval($p[1]));
     } else {
@@ -183,7 +183,7 @@ function getpr($url)
     $ch = getch($url);
     $errno = '0';
     $errstr = '';
-    $data = http_get_contents('http://toolbarqueries.google.com/search?client=navclient-auto&ch=' . $ch . '&features=Rank&q=info:' . $url, array('trigger_error' => false));
+    $data = http_get_contents('http://toolbarqueries.google.com/search?client=navclient-auto&ch=' . urlencode($ch) . '&features=Rank&q=info:' . $url, array('trigger_error' => false));
     if ($data === null) {
         return '';
     }

@@ -1,0 +1,45 @@
+[title]Política de privacidad[/title]
+
+[surround="spaced_list"]
+Este sitio web:
+ - guarda cookies temporales que son borradas al cerrar el navegador, tales como un identificador de sesión de usuario;{+START,IF,{$CONFIG_OPTION,remember_me_by_default}} también utiliza cookies para la función "recuérdame";{+END}{+START,IF,{$CONFIG_OPTION,detect_javascript}} también utiliza cookies para detectar si JavaScript está habilitado;{+END}{+START,IF,{$CONFIG_OPTION,is_on_timezone_detection}} también utiliza cookies para detectar su zona horaria;{+END}{+START,IF_NON_EMPTY,{$CONFIG_OPTION,google_analytics}} usa Google Analytics para el análisis de tendencias de los visitantes y el seguimiento de la efectividad de nuestros anuncios;{+END}
+ - guarda cookies (si/no) para recordar qué cosas se han bloqueado/cerrado;
+ - guarda cookies para recordar el tamaño de la fuente;
+ - guarda cookies para mejorar la usabilidad de aspectos atractivos tales como la sala de chat o el foro (en particular, el auto-guardado de mensajes escritos parcialmente);
+ - guarda otros tipos de cookies que se mencionan antes de usarlas;
+ - registra la información básica relativa a su ordenador, incluyendo su dirección IP, el nombre del navegador web y sistema operativo;
+ - guarda otra información que se introduce de manera explícita, como la información de su cuenta, o mensajes del foro;
+ - si usted está identificado en el sistema, su perfil de miembro se actualizará y mostrará públicamente la última vez que nos visitó (que también se almacena en una cookie), y se mostrará como conectado (a menos que usted esté registrado como invisible).
+[/surround]
+
+Si desea ver que cookies exactas se guardan, o eliminar las cookies, puede hacerlo a través de [url = "herramientas estándar incorporadas en el navegador web"]http://www.wikihow.com/View-Cookies[/url].
+
+Podemos enviar correos electrónicos masivos alguna vez sobre {$SITE_NAME*}, o asuntos relacionados con {$SITE_SCOPE*} a los miembros. En principio no vamos a enviar correos electrónicos masivos o permitir que otros envíen correos electrónicos masivos, pues creemos que sería considerado spam.
+
+No vamos a compartir detalles privados que no sean los que pueden verse en el perfil del foro y publicaciones públicas a menos que seamos requeridos legalmente para hacerlo.
+
+El personal se reservan el derecho a leer cualquier Tema Privado o mensaje colocados en este sitio web. Cualquier forma de conversación realizada a través de este sitio web debe ser considerada visible para el personal. Todos los mensajes privados o no, ya sean 'borrados' o no, se almacenan en el servidor y pueden ser revisados si creemos que tenemos motivo para una investigación. Si quiere mantener algo privado, no use nuestros servicios para transmitirlo. Las situaciones que plantean las investigaciones pueden ser cualquier cosa a nuestro criterio, por ejemplo, para investigar los incidentes específicos de nuestros servicios que son utilizados para el racismo o acoso.
+{+START,IF,{$ADDON_INSTALLED,shopping}}
+El uso del carrito de la compra puede causar un final de sesión del usuario al quedarse más tiempo que el normal, usando una cookie, con el fin de mantener que los datos el carro no se pierdan.
+{+END}{+START,IF,{$CNS}}
+[title="2"]Ajustes de privacidad[/title]
+
+Los miembros conectados podrán [page="_SEARCH:members:view#tab__edit__privacy"] elegir qué campos se verán públicamente[/page].
+{+END}{+START,IF,{$COPPA_ON}}
+[title="2"]Ley de Protección de la Privacidad de los niños[/title]
+
+Para que los niños menores de trece años puedan unirse a este sitio web, un padre o tutor debe aprobarlo. Esto está de acuerdo con la ley de EE.UU., pero se aplica a nivel internacional como una norma civil.
+Un aviso será enviado, por correo electrónico, a la dirección de correo electrónico que se de cuando un niño se una, donde se proporcionará información sobre cómo aprobar la membresía.
+
+El padre o tutor tiene la opción de aceptar la recogida y uso de la información del niño sin su consentimiento para la divulgación de la información a terceros.
+
+{$SITE_NAME*} no pedirá a un niño el revelar más información que la razonablemente necesaria para participar en una actividad como condición para la participación.
+
+El padre o tutor puede revisar la información personal del niño, pedir que se borre y negarse a permitir el uso de cualquier recogida de información del niño. Esto se puede hacer poniéndose en contacto con el personal de la misma manera como se hizo para aprobar la membresía al principio.
+{+END}{+START,IF,{$NEQ,{$CONFIG_OPTION,spam_check_level},NEVER}}
+[title="2"]Control de spam[/title]
+
+Para el propósito de reducir el spam:
+1) Su dirección IP, dirección de correo electrónico y nombre de usuario, se pueden comprobar en servicio web [url="http://www.stopforumspam.com/"]Foro de eliminar el spam[/url], lo que implica que estos datos pueden ser transmitidos por una solicitud del servicio.
+1) Su dirección IP puede ser verificada en muchas listas de bloqueo, lo que implica que estos datos puedan ser transmitidos dentro de una solicitud de servicio.
+{+END}

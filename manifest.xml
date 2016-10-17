@@ -5,17 +5,17 @@
 
   <iisApp path="composr" />
 
-  <!-- dbmysql path identifies the SQL script file that will be
+  <!-- dbmySql path identifies the SQL script file that will be
        executed for database setup.  In this app's case, the script is
        being used to create the database user for the application
   -->
 
-  <dbmysql path="user.sql" waitAttempts="7" waitInterval="3000" />
-  <dbmysql path="install1.sql" />
-  <dbmysql path="install2.sql" />
-  <dbmysql path="install3.sql" />
-  <dbmysql path="install4.sql" />
-  <dbmysql path="postinstall.sql" />
+  <dbmySql path="user.sql" waitAttempts="7" waitInterval="3000" />
+  <dbmySql path="install1.sql" />
+  <dbmySql path="install2.sql" />
+  <dbmySql path="install3.sql" />
+  <dbmySql path="install4.sql" />
+  <dbmySql path="postinstall.sql" />
 
   <!-- alias is used to make a copy of a distribution file to a
        location where it will be used.  Note that when you specify the

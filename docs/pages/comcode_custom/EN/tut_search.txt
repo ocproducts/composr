@@ -86,9 +86,13 @@ All these cases are controlled via privileges (the "Autocomplete searches based 
 
 If you have spell checking enabled on your server (pspell or enchant PHP extension), then misspellings will result in a suggestion to run a search on an autocorrected search term. Any keyword terms on the site will be considered real words and not autocorrected.
 
+[title="2"]Result counts[/title]
+
+Unfortunately result counts have to be an approximation. To de-duplicate the result count we'd need to load in the full record sets for each query pattern that runs, which can be incredibly slow, especially if searches are broad.
+
 [title="2"]Improving search results[/title]
 
-The title fields, and meta keyword fields, get precedence when search results are determined. Tuning these manually for your can improve search results considerably.
+The title fields, and meta keyword fields, get precedence when search results are determined. Tuning these manually for your can improve search results considerably. Additionally keywords are individually queried, rather than having to go through a textual search -- so you can specify things more precisely, e.g. to include hyphens (which full-text search treats like spaces).
 
 If you are using MySQL, also considering turning the [url="MySQL minimum word length"]http://dev.mysql.com/doc/refman/5.0/en/server-system-variables.html#sysvar_ft_min_word_len[/url] down to 3 (the default 4).
 

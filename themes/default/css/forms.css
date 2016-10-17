@@ -551,7 +551,9 @@ span.validated_checkbox+input[name="validated"].input_tick {
 
 /*{+START,IF,{$MOBILE}}*/
 	.mobile.preview_box {
-		padding: 209px 33px 159px 31px;
+		padding: 209px 36px 159px 34px;
+		width: 314px;
+		height: 360px;
 		background: url('{$IMG;,iphone}') no-repeat;
 		cursor: crosshair;
 	}

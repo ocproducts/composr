@@ -617,7 +617,7 @@ class Module_chat
         $posting_name = do_lang_tempcode('SEND_MESSAGE');
         $keep = symbol_tempcode('KEEP');
         $posting_url = find_script('messages') . '?mode=2&room_id=' . strval($room_id) . $keep->evaluate();
-        $messages_link = find_script('messages') . '?room_id=' . strval($room_id) . '&zone=' . get_zone_name() . $keep->evaluate();
+        $messages_link = find_script('messages') . '?room_id=' . strval($room_id) . '&zone=' . urlencode(get_zone_name()) . $keep->evaluate();
         $buttons = new Tempcode();
         $_buttons = array(
             //'url', Bloat
@@ -1119,7 +1119,7 @@ class Module_chat
 
         // We have the messages, now we have to create a nice little text file...
         $keep = symbol_tempcode('KEEP');
-        $mod_url = find_script('download_chat_logs') . '?room=' . strval($room) . '&start=' . strval($start_date_and_time) . '&finish=' . strval($finish_date_and_time) . '&zone=' . get_zone_name() . $keep->evaluate();
+        $mod_url = find_script('download_chat_logs') . '?room=' . strval($room) . '&start=' . strval($start_date_and_time) . '&finish=' . strval($finish_date_and_time) . '&zone=' . urlencode(get_zone_name()) . $keep->evaluate();
 
         return redirect_screen($this->title, $mod_url);
     }
