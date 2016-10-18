@@ -362,7 +362,7 @@ People often wonder why you can syndicate everything personally, but not everyth
 
 [title="4"]Maybe just keep it simple / separate-out responsibilities?[/title]
 
-You may prefer to use a dedicated service such as [url="Twitterfeed"]http://twitterfeed.com[/url] to tie in any of the Composr RSS feeds. This is a more flexible and automated solution. Twitterfeed is subject to the same [url="60 day issue"]http://blog.twitterfeed.com/post/60359135452/an-easier-way-to-re-connect-facebook-accounts[/url] Composr is though (it's unavoidable).
+You may prefer to use a dedicated service such as [url="dlvr.it"]https://dlvr.it/[/url] to tie in any of the Composr RSS feeds. This is a more flexible and automated solution. dlvr.it is subject to the same [url="60 day issue"]http://blog.twitterfeed.com/post/60359135452/an-easier-way-to-re-connect-facebook-accounts[/url] Composr is though (it's unavoidable).
 
 Also, don't discount the idea of simply manually sharing things. It really doesn't take long and gives you more control and quality assurance (i.e. you'll get to see how the sharing actually looks). You can find third-party tools to do cross-posting across multiple social media sites in one go.
 
