@@ -2654,7 +2654,7 @@ function preg_grep($pattern, $subject, $flags = 0)
  * @param  integer $flags Either 0, or PREG_OFFSET_CAPTURE.
  * @return ~integer The number of matches (false: error).
  */
-function preg_match_all($pattern, $subject, &$matches = null, $flags = 0)
+function preg_match_all($pattern, $subject, &$matches, $flags = 0)
 {
     return 0;
 }
