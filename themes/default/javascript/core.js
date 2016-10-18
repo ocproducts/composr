@@ -86,20 +86,22 @@
                     // Remove tooltips from forms as they are for screenreader accessibility only
                     form.title = '';
 
-                    // Convert a/img title attributes into composr tooltips
+                    // Convert form element title attributes into composr tooltips
                     if ($cms.$CONFIG_OPTION.jsOverlays) {
                         // Convert title attributes into composr tooltips
                         var elements = form.elements, j;
 
                         for (j = 0; j < elements.length; j++) {
-                            if (elements[j].title !== undefined) {
+                            if (elements[j].title !== undefined && typeof elements[j]['original-title'] == 'undefined'/*check tipsy not used*/ && elements[j].className.indexOf('no_tooltip') == -1) {
                                 convert_tooltip(elements[j]);
                             }
                         }
 
                         elements = form.querySelectorAll('input[type="image"][title]'); // JS DOM does not include type="image" ones in form.elements
                         for (j = 0; j < elements.length; j++) {
-                            convert_tooltip(elements[j]);
+                            if (typeof elements[j]['original-title'] == 'undefined'/*check tipsy not used*/ && elements[j].className.indexOf('no_tooltip') == -1) {
+                                convert_tooltip(elements[j]);
+                            }
                         }
                     }
 
