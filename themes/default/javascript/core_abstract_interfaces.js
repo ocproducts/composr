@@ -5,7 +5,7 @@
             max = params.max,
             urlStub = params.urlStub,
             numPages = params.numPages,
-            message = $cms.format('{!javascript:ENTER_PAGE_NUMBER;}', numPages);
+            message = $cms.format('{!javascript:ENTER_PAGE_NUMBER;^}', numPages);
 
         $cms.dom.on(link, 'click', function () {
             window.fauxmodal_prompt(message, numPages, function (res) {
@@ -39,7 +39,7 @@
 
             if (autoAdd) {
                 e.preventDefault();
-                window.fauxmodal_confirm('{!KEEP_ADDING_QUESTION;}', function (answer) {
+                window.fauxmodal_confirm('{!KEEP_ADDING_QUESTION;^}', function (answer) {
                     var append = '';
                     if (answer) {
                         append += url.includes('?') ? '&' : '?';
@@ -98,7 +98,7 @@
                     event.preventDefault();
                     cancel_bubbling(event);
                     window.fauxmodal_confirm(
-                        '{!KEEP_ADDING_QUESTION;}',
+                        '{!KEEP_ADDING_QUESTION;^}',
                         function (test) {
                             if (test) {
                                 link.href += link.href.includes('?') ? '&' : '?';

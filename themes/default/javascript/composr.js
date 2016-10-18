@@ -3674,7 +3674,7 @@
             if (xhr.responseText && xhr.responseText.includes('<html')) {
                 console.log(xhr);
 
-                fauxmodal_alert(xhr.responseText, null, '{!ERROR_OCCURRED;}', true);
+                fauxmodal_alert(xhr.responseText, null, '{!ERROR_OCCURRED;^}', true);
             }
         }
     }
@@ -5573,7 +5573,7 @@ function _open_image_into_lightbox(initial_img_url, description, x, n, has_full_
 				<p id="lightbox_meta" style="display: none" class="associated_link associated_links_block_group"> \
 					<span id="lightbox_description">' + description + '</span> \
 					' + ((n === null) ? '' : ('<span id="lightbox_position_in_set"><span id="lightbox_position_in_set_x">' + x + '</span> / <span id="lightbox_position_in_set_n">' + n + '</span></span>')) + ' \
-					' + (is_video ? '' : ('<span id="lightbox_full_link"><a href="' + escape_html(initial_img_url) + '" target="_blank" title="{$STRIP_TAGS;,{!SEE_FULL_IMAGE}} {!LINK_NEW_WINDOW;}">{!SEE_FULL_IMAGE;}</a></span>')) + ' \
+					' + (is_video ? '' : ('<span id="lightbox_full_link"><a href="' + escape_html(initial_img_url) + '" target="_blank" title="{$STRIP_TAGS;^,{!SEE_FULL_IMAGE}} {!LINK_NEW_WINDOW;^}">{!SEE_FULL_IMAGE;^}</a></span>')) + ' \
 				</p> \
 			</div> \
 		';
@@ -5695,7 +5695,7 @@ function _resize_lightbox_dimensions_img(modal, img, has_full_button, is_video) 
 
 
 function fauxmodal_confirm(question, callback, title, unescaped) {
-    title || (title = '{!Q_SURE;}');
+    title || (title = '{!Q_SURE;^}');
     unescaped = !!unescaped;
 
     if (!$cms.$CONFIG_OPTION.jsOverlays) {
@@ -5933,7 +5933,7 @@ function faux_open(url, name, options, target, cancel_text) {
                 var load_more_link = document.createElement('div');
                 load_more_link.className = 'pagination_load_more';
                 var load_more_link_a = document.createElement('a');
-                $cms.dom.html(load_more_link_a, '{!LOAD_MORE;}');
+                $cms.dom.html(load_more_link_a, '{!LOAD_MORE;^}');
                 load_more_link_a.href = '#!';
                 load_more_link_a.onclick = function () {
                     internalise_infinite_scrolling_go(url_stem, wrapper, more_links);
@@ -6280,7 +6280,7 @@ function do_ajax_field_test(url, post) {
             if (xmlhttp.responseText.length > 1000) {
                 console.log(xmlhttp.responseText);
 
-                fauxmodal_alert(xmlhttp.responseText, null, '{!ERROR_OCCURRED;}', true);
+                fauxmodal_alert(xmlhttp.responseText, null, '{!ERROR_OCCURRED;^}', true);
             } else {
                 window.fauxmodal_alert(xmlhttp.responseText);
             }
@@ -6410,8 +6410,8 @@ function update_ajax_member_list(target, special, delayed, e) {
         }
         item = document.createElement('option');
         item.disabled = true;
-        item.text = '{!javascript:SUGGESTIONS_ONLY;}'.toUpperCase();
-        item.innerText = '{!javascript:SUGGESTIONS_ONLY;}'.toUpperCase();
+        item.text = '{!javascript:SUGGESTIONS_ONLY;^}'.toUpperCase();
+        item.innerText = '{!javascript:SUGGESTIONS_ONLY;^}'.toUpperCase();
         list.appendChild(item);
         window.current_list_for.parentNode.appendChild(list);
 
@@ -6622,7 +6622,7 @@ function set_field_error(the_element, error_msg) {
                     var p = errormsg_element;
                     while (p !== null) {
                         p = p.parentNode;
-                        if ((error_msg.substr(0, 5) != '{!DISABLED_FORM_FIELD;}'.substr(0, 5)) && (p) && (p.getAttribute !== undefined) && (p.getAttribute('id')) && (p.getAttribute('id').substr(0, 2) == 'g_') && (p.style.display == 'none')) {
+                        if ((error_msg.substr(0, 5) != '{!DISABLED_FORM_FIELD;^}'.substr(0, 5)) && (p) && (p.getAttribute !== undefined) && (p.getAttribute('id')) && (p.getAttribute('id').substr(0, 2) == 'g_') && (p.style.display == 'none')) {
                             select_tab('g', p.getAttribute('id').substr(2, p.id.length - 2), false, true);
                             break;
                         }
@@ -6711,7 +6711,7 @@ function do_form_preview(event, form, preview_url, has_separate_preview) {
     has_separate_preview = !!has_separate_preview;
 
     if (!$cms.dom.id('preview_iframe')) {
-        fauxmodal_alert('{!ADBLOCKER;}');
+        fauxmodal_alert('{!ADBLOCKER;^}');
         return false;
     }
 
