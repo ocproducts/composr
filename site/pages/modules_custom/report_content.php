@@ -270,7 +270,7 @@ class Module_report_content
         }
 
         // Done
-        $_url = post_param_string('url', '', true);
+        $_url = post_param_string('url', '');
         if ($_url != '') {
             $content_url = make_string_tempcode($_url);
         }

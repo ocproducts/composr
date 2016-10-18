@@ -34,7 +34,7 @@ function comcode_convert_script()
 
     require_lang('comcode');
 
-    $data = post_param_string('data', null, false, false);
+    $data = post_param_string('data', null, false);
     if ($data === null) {
         // UI can be called up manually if desired, it's a useful little developer tool...
 

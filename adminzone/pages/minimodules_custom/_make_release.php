@@ -47,7 +47,7 @@ if (!$is_bleeding_edge) {
     $bleeding2 = 'bleeding-edge, ';
 }
 
-$changes = post_param_string('changes', '', true);
+$changes = post_param_string('changes', '');
 
 $descrip = get_param_string('descrip', '', true);
 

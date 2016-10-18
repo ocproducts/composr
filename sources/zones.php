@@ -1710,9 +1710,9 @@ function extract_module_functions($path, $functions, $params = array(), $prefer_
         }
         return $ret;
     }
-    $file = unixify_line_format(file_get_contents($path), null, false, true);
+    $file = unixify_line_format(file_get_contents($path));
     if ((strpos($path, '/modules_custom/') !== false) && (is_file(str_replace('/modules_custom/', '/modules/', $path))) && (strpos($file, "\nclass ") === false)) {
-        $file = unixify_line_format(file_get_contents(str_replace('/modules_custom/', '/modules/', $path)), null, false, true);
+        $file = unixify_line_format(file_get_contents(str_replace('/modules_custom/', '/modules/', $path)));
     }
 
     if (strpos($file, 'class Mx_') !== false) {

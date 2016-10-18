@@ -1425,11 +1425,10 @@ function either_param_string($name, $default = false)
  *
  * @param  ID_TEXT $name The name of the parameter to get
  * @param  ?mixed $default The default value to give the parameter if the parameter value is not defined (null: allow missing parameter) (false: give error on missing parameter)
- * @param  boolean $html Whether we are cleaning for HTML rather than Comcode/plain-text
  * @param  boolean $conv_from_wysiwyg Whether to convert WYSIWYG contents to Comcode automatically
  * @return ?string The parameter value (null: missing)
  */
-function post_param_string($name, $default = false, $html = false, $conv_from_wysiwyg = true)
+function post_param_string($name, $default = false, $conv_from_wysiwyg = true)
 {
     $ret = __param($_POST, $name, $default, false, true);
 
@@ -1454,7 +1453,7 @@ function post_param_string($name, $default = false, $html = false, $conv_from_wy
         }
     }
     if ($ret !== null) {
-        $ret = unixify_line_format($ret, null, $html);
+        $ret = unixify_line_format($ret);
 
         if (post_param_integer($name . '_download_associated_media', 0) === 1) {
             require_code('comcode_cleanup');
@@ -1714,11 +1713,9 @@ function get_param_integer($name, $default = false, $not_string_ok = false)
  *
  * @param  string $in The data to clean
  * @param  ?ID_TEXT $desired_charset The character set it should be in. We don't do any real conversions using this, only make sure that common problems with fed ISO-8859-1 data are resolved (null: output character set)
- * @param  boolean $html Whether we are cleaning for HTML rather than Comcode/plain-text
- * @param  boolean $from_disk Whether the file is loaded from disk (less conversion needed)
  * @return string The cleaned data
  */
-function unixify_line_format($in, $desired_charset = null, $html = false, $from_disk = false)
+function unixify_line_format($in, $desired_charset = null)
 {
     if ($in === '') {
         return $in;
