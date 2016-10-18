@@ -553,6 +553,9 @@ function _comcode_lang_string($lang_code)
                 $ret = get_translated_tempcode('cached_comcode_pages', $comcode_page_row_cached_only, 'string_index', null, null, true);
                 if ($ret === null) { // Not existent in our language, we'll need to lookup and insert, and get again
                     $looked_up = do_lang($lang_code, null, null, null, null, false);
+                    if ($looked_up === null) {
+                        return make_string_tempcode(escape_html('{!' . $lang_code . '}'));
+                    }
                     $GLOBALS['SITE_DB']->query_insert('translate', array('id' => $comcode_page[0]['string_index'], 'source_user' => get_member(), 'broken' => 0, 'importance_level' => 1, 'text_original' => $looked_up, 'text_parsed' => '', 'language' => user_lang()), true, false, true);
                     $ret = get_translated_tempcode('cached_comcode_pages', $comcode_page_row_cached_only, 'string_index');
                 }

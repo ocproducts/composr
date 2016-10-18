@@ -52,7 +52,7 @@ class Hook_notification_cns_member_joined_group extends Hook_Notification
             $where .= ' AND (g_hidden=0 OR g.id IN (' . implode(',', array_map('strval', $members_groups)) . '))';
         }
 
-        $types = $GLOBALS['FORUM_DB']->query('SELECT id,g_name FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_groups g' . $where);
+        $types = $GLOBALS['FORUM_DB']->query('SELECT id,g_name FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_groups g WHERE ' . $where);
         foreach ($types as $type) {
             $page_links[] = array(
                 'id' => $type['id'],

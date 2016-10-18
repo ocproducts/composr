@@ -2559,7 +2559,7 @@
                             }
                         } else
                         {
-                            if (!has_iframe_ownership(iframe)) {
+                            if (has_iframe_loaded(iframe) && !has_iframe_ownership(iframe)) {
                                 iframe.scrolling='yes';
                                 iframe.style.height='500px';
                             }
