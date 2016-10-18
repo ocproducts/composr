@@ -55,16 +55,18 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 	padding-top: 0;
 }
 
+/*{+START,IF,{$CONFIG_OPTION,fixed_width}}*/
 .global_breadcrumbs {
 	padding: 18px 0 7px 0;
 }
 
-{+START,IF,{$NOT,{$MOBILE}}}
+/*{+START,IF,{$NOT,{$MOBILE}}}*/
 	.global_middle {
 		padding-left: 0;
 		padding-right: 0;
 	}
-{+END}
+/*{+END}*/
+/*{+END}*/
 
 #panel_left{
 	margin-left: 0;
@@ -131,6 +133,7 @@ footer .global_minilinks {
 
 .adminzone_search {
 	padding: 0.7em 1em;
+	white-space: nowrap;
 }
 
 .adminzone_search input {
