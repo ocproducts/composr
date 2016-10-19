@@ -5572,7 +5572,7 @@ function fauxmodal_confirm(question, callback, title, unescaped) {
 
 function fauxmodal_alert(notice, callback, title, unescaped) {
     callback || (callback = noop);
-    title || (title = '{!MESSAGE^;}');
+    title || (title = '{!MESSAGE;^}');
     unescaped = !!unescaped;
 
     if (!$cms.$CONFIG_OPTION.js_overlays) {
@@ -6134,7 +6134,7 @@ function faux_open(url, name, options, target, cancel_text) {
                 if (xmlhttp.responseText.length > 1000) {
                     console.log(xmlhttp.responseText);
 
-                    fauxmodal_alert(xmlhttp.responseText, null, '{!ERROR_OCCURRED;}', true);
+                    fauxmodal_alert(xmlhttp.responseText, null, '{!ERROR_OCCURRED;^}', true);
                 } else {
                     window.fauxmodal_alert(xmlhttp.responseText);
                 }
@@ -6265,8 +6265,8 @@ function faux_open(url, name, options, target, cancel_text) {
             }
             item = document.createElement('option');
             item.disabled = true;
-            item.text = '{!javascript:SUGGESTIONS_ONLY;}'.toUpperCase();
-            item.innerText = '{!javascript:SUGGESTIONS_ONLY;}'.toUpperCase();
+            item.text = '{!javascript:SUGGESTIONS_ONLY;^}'.toUpperCase();
+            item.innerText = '{!javascript:SUGGESTIONS_ONLY;^}'.toUpperCase();
             list.appendChild(item);
             currentListForEl.parentNode.appendChild(list);
 
@@ -6803,7 +6803,7 @@ function check_form(the_form, for_preview) {
 
         // Test file types
         if ((the_element.type == 'file') && (the_element.value) && (the_element.name != 'file_anytype')) {
-            var allowed_types = '{$VALID_FILE_TYPES;}'.split(/,/);
+            var allowed_types = '{$VALID_FILE_TYPES;^}'.split(/,/);
             var type_ok = false;
             var theFileType = the_element.value.indexOf('.') ? the_element.value.substr(the_element.value.lastIndexOf('.') + 1) : '{!NONE;^}';
             for (var k = 0; k < allowed_types.length; k++) {

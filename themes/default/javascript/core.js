@@ -855,7 +855,7 @@
 
                     if (event.preventDefault !== undefined) event.preventDefault();
 
-                    if (src.includes('{$BASE_URL_NOHTTP;}/themes/')) {
+                    if (src.includes('{$BASE_URL_NOHTTP;^}/themes/')) {
                         ob.edit_window = window.open('{$BASE_URL;,0}/adminzone/index.php?page=admin_themes&type=edit_image&lang=' + encodeURIComponent($cms.$LANG) + '&theme=' + encodeURIComponent($cms.$THEME) + '&url=' + encodeURIComponent(src.replace('{$BASE_URL;,0}/', '')) + keep_stub(), 'edit_theme_image_' + ob.id);
                     } else {
                         window.fauxmodal_alert('{!NOT_THEME_IMAGE;^}');
@@ -1052,9 +1052,9 @@
             } else {
                 if (pic) {
                     set_tray_theme_image('contract', 'expand', $IMG_contract, $IMG_expand, $IMG_2x_expand, $IMG_expand2, $IMG_2x_expand2);
-                    pic.setAttribute('alt', pic.getAttribute('alt').replace('{!CONTRACT;}', '{!EXPAND;}'));
-                    pic.title = '{!EXPAND;}'; // Needs doing because convert_tooltip may not have run yet
-                    pic.cms_tooltip_title = '{!EXPAND;}';
+                    pic.setAttribute('alt', pic.getAttribute('alt').replace('{!CONTRACT;^}', '{!EXPAND;^}'));
+                    pic.title = '{!EXPAND;^}'; // Needs doing because convert_tooltip may not have run yet
+                    pic.cms_tooltip_title = '{!EXPAND;^}';
                 }
                 $cms.dom.hide(element);
             }
@@ -1124,8 +1124,8 @@
                 } else {
                     set_tray_theme_image('expcon', 'contract', $IMG_expcon, $IMG_contract, $IMG_2x_contract, $IMG_contract2, $IMG_2x_contract2);
                 }
-                pic.setAttribute('alt', pic.getAttribute('alt').replace((animate_dif < 0) ? '{!CONTRACT;}' : '{!EXPAND;}', (animate_dif < 0) ? '{!EXPAND;}' : '{!CONTRACT;}'));
-                pic.cms_tooltip_title = (animate_dif < 0) ? '{!EXPAND;}' : '{!CONTRACT;}';
+                pic.setAttribute('alt', pic.getAttribute('alt').replace((animate_dif < 0) ? '{!CONTRACT;^}' : '{!EXPAND;^}', (animate_dif < 0) ? '{!EXPAND;^}' : '{!CONTRACT;^}'));
+                pic.cms_tooltip_title = (animate_dif < 0) ? '{!EXPAND;^}' : '{!CONTRACT;^}';
             }
             trigger_resize(true);
         }

@@ -125,7 +125,7 @@ function display_alert(notification) {
         if (window.soundManager !== undefined) {
             var go_func = function () {
                 var sound_url = 'data/sounds/message_received.mp3';
-                var base_url = ((sound_url.indexOf('data_custom') == -1) && (sound_url.indexOf('uploads/') == -1)) ? '{$BASE_URL_NOHTTP;}' : '{$CUSTOM_BASE_URL_NOHTTP;}';
+                var base_url = ((sound_url.indexOf('data_custom') == -1) && (sound_url.indexOf('uploads/') == -1)) ? '{$BASE_URL_NOHTTP;^}' : '{$CUSTOM_BASE_URL_NOHTTP;^}';
                 var sound_object = window.soundManager.createSound({url: base_url + '/' + sound_url});
                 if (sound_object) sound_object.play();
             };
