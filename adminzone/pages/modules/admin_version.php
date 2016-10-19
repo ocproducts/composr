@@ -393,13 +393,14 @@ class Module_admin_version
                 'id' => '*AUTO',
                 'cached_for' => 'ID_TEXT',
                 'identifier' => 'MINIID_TEXT',
-                'the_theme' => 'MINIID_TEXT', // *Always* set
                 'staff_status' => '?BINARY', // May be null
                 'the_member' => '?MEMBER', // May be null
                 'groups' => 'SHORT_TEXT', // May be blank
                 'is_bot' => '?BINARY', // May be null
                 'timezone' => 'MINIID_TEXT', // May be blank
+                'is_ssl' => '?BINARY', // May be null
                 'lang' => 'LANGUAGE_NAME', // *Always* set
+                'the_theme' => 'MINIID_TEXT', // *Always* set
                 'the_value' => 'LONG_TEXT',
                 'dependencies' => 'LONG_TEXT',
                 'date_and_time' => 'TIME',
@@ -453,6 +454,7 @@ class Module_admin_version
                 'c_groups' => 'SHORT_TEXT',
                 'c_is_bot' => '?BINARY',
                 'c_timezone' => 'MINIID_TEXT',
+                'c_is_ssl' => '?BINARY',
                 'c_lang' => 'LANGUAGE_NAME',
                 'c_theme' => 'ID_TEXT',
             ));
@@ -975,6 +977,9 @@ class Module_admin_version
 
         if (($upgrade_from !== null) && ($upgrade_from < 18)) {
             $GLOBALS['SITE_DB']->drop_table_if_exists('bookmarks');
+
+            $GLOBALS['SITE_DB']->add_table_field('cron_caching_requests', 'c_is_ssl', '?BINARY');
+            $GLOBALS['SITE_DB']->add_table_field('cache', 'is_ssl', '?BINARY');
         }
     }
 
