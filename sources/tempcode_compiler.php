@@ -559,7 +559,9 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                         }
 
                         $parameter = preg_replace('#[^\w]#', '', $parameter); // security to stop PHP injection
-                        if ($escaped === array(PURE_STRING)) {
+                        if (is_numeric($parameter)) {
+                            $current_level_data[] = '\'{' . php_addslashes($parameter) . '}\'';
+                        } elseif ($escaped === array(PURE_STRING)) {
                             $current_level_data[] = '$bound_' . php_addslashes($parameter);
                         } else {
                             $temp = 'otp(isset($bound_' . php_addslashes($parameter) . ')?$bound_' . php_addslashes($parameter) . ':null';

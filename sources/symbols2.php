@@ -462,6 +462,10 @@ function ecv2_CNS($lang, $escaped, $param)
  */
 function ecv2_VALID_FILE_TYPES($lang, $escaped, $param)
 {
+    if (!function_exists('get_option')) {
+        return '';
+    }
+
     $value = get_option('valid_types');
     $types = array_flip(explode(',', $value));
     $value = '';

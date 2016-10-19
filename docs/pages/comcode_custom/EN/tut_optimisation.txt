@@ -283,7 +283,7 @@ If you have really large databases then two issues come into play:
 
 You may also want to switch tables to InnoDB instead of MyISAM. If you do this then run this command in Commandr too:
 [code="Commandr"]
-:set_value('slow_counts', '1');
+:set_value('innodb', '1'); set_value('slow_counts', '1');
 [/code]
 This works around that InnoDB can't do quick row counts in tables, so implements an approximation for certain table counts.
 
