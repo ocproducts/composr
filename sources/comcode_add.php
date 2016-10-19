@@ -492,7 +492,7 @@ function comcode_helper_script_step2()
 
     // Find default settings (typically prepopulating an existing tag)
     require_code('comcode_compiler');
-    $defaults = parse_single_comcode_tag(get_param_string('parse_defaults', '', true), $actual_tag);
+    $defaults = parse_single_comcode_tag(get_param_string('parse_defaults', '', INPUT_FILTER_GET_COMPLEX), $actual_tag);
     if (array_key_exists('', $defaults)) {
         if (html_to_comcode($defaults['']) == $defaults['']) {
             $default_embed = $defaults['']; // Simple case, don't confuse user with semihtml gibberish
@@ -500,7 +500,7 @@ function comcode_helper_script_step2()
             $default_embed = '[semihtml]' . $defaults[''] . '[/semihtml]';
         }
     } else {
-        $default_embed = get_param_string('default', '');
+        $default_embed = get_param_string('default', '', INPUT_FILTER_GET_COMPLEX);
     }
 
     // Some initial settings for the tag
@@ -527,7 +527,7 @@ function comcode_helper_script_step2()
                     $is_advanced = (strpos($descriptiont, do_lang('BLOCK_IND_ADVANCED')) !== false);
                     $descriptiont = trim(str_replace(do_lang('BLOCK_IND_ADVANCED'), '', $descriptiont));
 
-                    $default = get_param_string('default_' . $param, array_key_exists($param, $defaults) ? $defaults[$param] : '');
+                    $default = get_param_string('default_' . $param, array_key_exists($param, $defaults) ? $defaults[$param] : '', INPUT_FILTER_GET_COMPLEX);
                     if ((!array_key_exists($param, $defaults)) && ($default == '')) {
                         $matches = array();
                         if (preg_match('#' . do_lang('BLOCK_IND_DEFAULT') . ': ["\']([^"]*)["\']#Ui', $descriptiont, $matches) != 0) {
@@ -660,7 +660,7 @@ function comcode_helper_script_step2()
     if (get_param_string('utheme', '') != '') {
         $post_url .= '&utheme=' . urlencode(get_param_string('utheme'));
     }
-    $prefix = get_param_string('prefix', '', true);
+    $prefix = get_param_string('prefix', '', INPUT_FILTER_GET_COMPLEX);
     if ($prefix != '') {
         $post_url .= '&prefix=' . urlencode($prefix);
     }
@@ -1065,7 +1065,7 @@ function comcode_helper_script_step3()
     $comcode = _get_preview_environment_comcode($tag);
     $comcode_semihtml = comcode_to_tempcode($comcode, null, false, null, null, COMCODE_SEMIPARSE_MODE);
 
-    $prefix = get_param_string('prefix', '', true);
+    $prefix = get_param_string('prefix', '', INPUT_FILTER_GET_COMPLEX);
 
     require_css('widget_plupload');
 

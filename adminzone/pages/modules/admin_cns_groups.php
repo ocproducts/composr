@@ -352,7 +352,7 @@ class Module_admin_cns_groups extends Standard_crud_module
         require_code('templates_results_table');
 
         $default_order = 'g_promotion_threshold ASC,r.id ASC';
-        $current_ordering = get_param_string('sort', $default_order, true);
+        $current_ordering = get_param_string('sort', $default_order, INPUT_FILTER_GET_COMPLEX);
         $sortables = array(
             'g_name' => do_lang_tempcode('NAME'),
             'g_is_presented_at_install' => do_lang_tempcode('IS_PRESENTED_AT_INSTALL'),

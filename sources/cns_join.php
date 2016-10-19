@@ -49,7 +49,7 @@ function check_joining_allowed()
  * @param  boolean $intro_message_if_enabled Whether to ask for intro messages (if enabled at all)
  * @param  boolean $invites_if_enabled Whether to check for invites (if enabled at all)
  * @param  boolean $one_per_email_address_if_enabled Whether to check email-address restrictions (if enabled at all)
- * @return array A tuple: Necessary JavaScript code, the form
+ * @return Tempcode The form
  */
 function cns_join_form($url, $captcha_if_enabled = true, $intro_message_if_enabled = true, $invites_if_enabled = true, $one_per_email_address_if_enabled = true)
 {
@@ -157,8 +157,8 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
     cns_check_name_valid($username, null, null, true); // Adjusts username if needed
 
     if ($password === null)	{
-        $password = trim(post_param_string('password'));
-        $password_confirm = trim(post_param_string('password_confirm'));
+        $password = trim(post_param_string('password', false, INPUT_FILTER_NONE));
+        $password_confirm = trim(post_param_string('password_confirm', false, INPUT_FILTER_NONE));
         if ($password != $password_confirm) {
             warn_exit(make_string_tempcode(escape_html(do_lang('PASSWORD_MISMATCH'))));
         }
@@ -296,7 +296,7 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
         $url = $_url->evaluate();
         $_url_simple = build_url(array('page' => 'join', 'type' => 'step4'), $zone, null, false, false, true);
         $url_simple = $_url_simple->evaluate();
-        $redirect = get_param_string('redirect', '');
+        $redirect = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
         if ($redirect != '') {
             $url .= '&redirect=' . cms_url_encode($redirect);
         }
@@ -384,7 +384,7 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
             handle_active_login($username); // The auto-login simulates a real login, i.e. actually checks the password from the form against the real account. So no security hole when "re-registering" a real user
             $message->attach(do_lang_tempcode('CNS_LOGIN_AUTO'));
         } else { // Invite them to explicitly instant log in
-            $_login_url = build_url(array('page' => 'login', 'type' => 'browse', 'redirect' => get_param_string('redirect', null)), get_module_zone('login'));
+            $_login_url = build_url(array('page' => 'login', 'type' => 'browse', 'redirect' => get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL)), get_module_zone('login'));
             $login_url = $_login_url->evaluate();
             $message->attach(do_lang_tempcode('CNS_LOGIN_INSTANT', escape_html($login_url)));
         }

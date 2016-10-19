@@ -304,7 +304,7 @@ class Module_cms_catalogues extends Standard_crud_module
     {
         require_code('templates_results_table');
 
-        $current_ordering = get_param_string('sort', 'title ASC');
+        $current_ordering = get_param_string('sort', 'title ASC', INPUT_FILTER_GET_COMPLEX);
         if (strpos($current_ordering, ' ') === false) {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
@@ -495,7 +495,7 @@ class Module_cms_catalogues extends Standard_crud_module
         require_code('fields');
         foreach ($special_fields as $field_num => $field) {
             $ob = get_fields_hook($field['cf_type']);
-            $default = get_param_string('field_' . strval($field['id']), array_key_exists('effective_value_pure', $field) ? $field['effective_value_pure'] : $field['cf_default']);
+            $default = get_param_string('field_' . strval($field['id']), array_key_exists('effective_value_pure', $field) ? $field['effective_value_pure'] : $field['cf_default'], INPUT_FILTER_GET_COMPLEX);
 
             $_cf_name = get_translated_text($field['cf_name']);
             $field_cat = '';
@@ -1179,7 +1179,7 @@ class Module_cms_catalogues_cat extends Standard_crud_module
     {
         require_code('templates_results_table');
 
-        $current_ordering = get_param_string('sort', 'cc_title ASC');
+        $current_ordering = get_param_string('sort', 'cc_title ASC', INPUT_FILTER_GET_COMPLEX);
         if (strpos($current_ordering, ' ') === false) {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }

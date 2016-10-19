@@ -298,7 +298,7 @@ class Module_admin
         $default_theme = $GLOBALS['FORUM_DRIVER']->get_theme('');
 
         // Mess around to find our search keywords (takes synonyms into account, and generally tidies up)
-        $raw_search_string = get_param_string('content', false, true);
+        $raw_search_string = get_param_string('content', false, INPUT_FILTER_GET_COMPLEX);
 
         cms_profile_start_for('admin search:derive keywords');
 

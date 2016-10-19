@@ -84,7 +84,7 @@ function force_have_afm_details()
             set_value('ftp_directory', $ftp_directory);
             set_value('ftp_domain', post_param_string('ftp_domain'));
             if (post_param_integer('remember_password', 0) == 1) {
-                set_value('ftp_password', post_param_string('ftp_password'));
+                set_value('ftp_password', post_param_string('ftp_password', false, INPUT_FILTER_NONE));
             }
         }
     }
@@ -237,7 +237,7 @@ function _ftp_info($light_fail = false)
         $ssl = ($conn !== false);
 
         $username = post_param_string('ftp_username', get_value('ftp_username'));
-        $password = post_param_string('ftp_password', get_value('ftp_password'));
+        $password = post_param_string('ftp_password', get_value('ftp_password'), INPUT_FILTER_NONE);
 
         if (($ssl) && (!@ftp_login($conn, $username, $password))) {
             $conn = false;
@@ -262,7 +262,7 @@ function _ftp_info($light_fail = false)
         }
 
         $username = post_param_string('ftp_username', get_value('ftp_username'));
-        $password = post_param_string('ftp_password', get_value('ftp_password'));
+        $password = post_param_string('ftp_password', get_value('ftp_password'), INPUT_FILTER_NONE);
 
         if ((!$ssl) && (@ftp_login($conn, $username, $password) === false)) {
             set_value('ftp_password', '');

@@ -129,7 +129,7 @@ class Module_filedump
         $type = get_param_string('type', 'browse');
 
         if ($type == 'browse') {
-            $place = filter_naughty(get_param_string('place', '/'));
+            $place = filter_naughty(get_param_string('place', '/', INPUT_FILTER_GET_COMPLEX));
             if (substr($place, -1, 1) != '/') {
                 $place .= '/';
             }
@@ -266,12 +266,12 @@ class Module_filedump
 
         $type_filter = get_param_string('type_filter', '');
 
-        $search = get_param_string('search', '', true);
+        $search = get_param_string('search', '', INPUT_FILTER_GET_COMPLEX);
         if ($search == do_lang('SEARCH')) {
             $search = '';
         }
 
-        $sort = get_param_string('sort', 'time ASC');
+        $sort = get_param_string('sort', 'time ASC', INPUT_FILTER_GET_COMPLEX);
         if (strpos($sort, ' ') === false) {
             $sort = 'time ASC';
         }
@@ -778,8 +778,8 @@ class Module_filedump
         require_code('form_templates');
         require_code('images');
 
-        $place = get_param_string('place');
-        $file = get_param_string('file');
+        $place = get_param_string('place', INPUT_FILTER_GET_COMPLEX);
+        $file = get_param_string('file', INPUT_FILTER_GET_COMPLEX);
 
         $url = get_custom_base_url() . '/uploads/filedump' . str_replace('%2F', '/', rawurlencode($place . $file));
         $path = get_custom_file_base() . '/uploads/filedump' . $place . $file;
@@ -820,7 +820,7 @@ class Module_filedump
             if ($param != '') {
                 $generated .= ' thumb="' . comcode_escape($param) . '"';
             }
-            $param = post_param_string('thumb_url', '');
+            $param = post_param_string('thumb_url', '', INPUT_FILTER_URL_GENERAL);
             if ($param != '') {
                 $generated .= ' thumb_url="' . comcode_escape($param) . '"';
             }
@@ -906,7 +906,7 @@ class Module_filedump
         if (substr($_description, 0, strlen($adv) + 1) == $adv) {
             $_description = substr($_description, 0, strlen($adv) + 1);
         }
-        $fields->attach(form_input_line_comcode(do_lang_tempcode('COMCODE_TAG_attachment_PARAM_thumb_url_TITLE'), $_description, 'thumb_url', post_param_string('thumb_url', null), false));
+        $fields->attach(form_input_line_comcode(do_lang_tempcode('COMCODE_TAG_attachment_PARAM_thumb_url_TITLE'), $_description, 'thumb_url', post_param_string('thumb_url', null, INPUT_FILTER_URL_GENERAL), false));
 
         $form = do_template('FORM', array(
             '_GUID' => 'b1502bd870aded49d27d7478806d53ed',
@@ -1193,7 +1193,7 @@ class Module_filedump
             exit();
         }
 
-        $redirect_url = get_param_string('redirect');
+        $redirect_url = get_param_string('redirect', false, INPUT_FILTER_URL_INTERNAL);
 
         return redirect_screen($this->title, $redirect_url, do_lang_tempcode('SUCCESS'));
     }

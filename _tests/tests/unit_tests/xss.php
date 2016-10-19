@@ -72,17 +72,14 @@ class xss_test_set extends cms_test_case
 
     public function testInputFilter()
     {
-        global $FORCE_INPUT_FILTER_FOR_ALL;
-        $FORCE_INPUT_FILTER_FOR_ALL = true;
+        $_POST['foo'] = '_config.php';
+        $this->assertTrue(strpos(post_param_string('foo'), '_config.php') === false);
 
-        $_GET['foo'] = '_config.php';
-        $this->assertTrue(strpos(get_param_string('foo'), '_config.php') === false);
+        $_POST['foo'] = '<script>';
+        $this->assertTrue(strpos(post_param_string('foo'), '<script') === false);
 
-        $_GET['foo'] = '<script>';
-        $this->assertTrue(strpos(get_param_string('foo'), '<script') === false);
-
-        $_GET['redirect'] = 'http://example.com/';
-        $this->assertTrue(strpos(get_param_string('foo'), 'http://example.com/') === false);
+        $_POST['redirect'] = 'http://example.com/';
+        $this->assertTrue(strpos(post_param_string('foo'), 'http://example.com/') === false);
     }
 
     private $found_error = null;

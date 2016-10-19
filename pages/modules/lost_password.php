@@ -147,7 +147,7 @@ class Module_lost_password
         $field_set->attach(form_input_line(do_lang_tempcode('USERNAME'), '', 'username', trim(get_param_string('username', '')), false));
         // form_input_username not used, so as to stop someone accidentally autocompleting to someone else's similar name - very possible for a person already known to be forgetful
 
-        $field_set->attach(form_input_email(do_lang_tempcode('EMAIL_ADDRESS'), '', 'email_address', trim(get_param_string('email_address', '')), false));
+        $field_set->attach(form_input_email(do_lang_tempcode('EMAIL_ADDRESS'), '', 'email_address', trim(get_param_string('email_address', '', INPUT_FILTER_GET_COMPLEX)), false));
 
         $fields->attach(alternate_fields_set__end($set_name, $set_title, '', $field_set, $required));
 

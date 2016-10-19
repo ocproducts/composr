@@ -114,7 +114,7 @@ class Module_admin_lang
             if ($lang == '') {
                 $this->title = get_screen_title('TRANSLATE_CODE');
             } else {
-                $search = get_param_string('search', '', true);
+                $search = get_param_string('search', '', INPUT_FILTER_GET_COMPLEX);
                 if ($search != '') {
                     $this->title = get_screen_title('TRANSLATE_CODE');
                 } else {
@@ -516,7 +516,7 @@ class Module_admin_lang
         }
 
         // Show it worked / Refresh
-        $url = post_param_string('redirect', null);
+        $url = post_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
         if ($url === null) {
             $_url = build_url(array('page' => '_SELF', 'type' => 'content', 'lang' => $lang, 'start' => get_param_integer('start', null)), '_SELF');
             $url = $_url->evaluate();
@@ -563,7 +563,7 @@ class Module_admin_lang
         $map_a = get_file_base() . '/lang/langs.ini';
         $map_b = get_custom_file_base() . '/lang_custom/langs.ini';
 
-        $search = get_param_string('search', '', true);
+        $search = get_param_string('search', '', INPUT_FILTER_GET_COMPLEX);
         if ($search != '') {
             $search = trim($search, '" ');
 
@@ -898,7 +898,7 @@ class Module_admin_lang
         persistent_cache_delete('LANGS_LIST');
 
         // Show it worked / Refresh
-        $url = post_param_string('redirect', '');
+        $url = post_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
         if ($url == '') {
             return inform_screen($this->title, do_lang_tempcode('SUCCESS'));
         }

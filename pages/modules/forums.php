@@ -74,7 +74,7 @@ class Module_forums
 
         $base_url = get_forum_base_url();
 
-        $forums = get_param_string('url', $base_url . '/');
+        $forums = get_param_string('url', $base_url . '/', INPUT_FILTER_URL_GENERAL);
 
         if (substr($forums, 0, strlen($base_url)) != $base_url) {
             $GLOBALS['OUTPUT_STREAMING'] = false; // Too complex to do a pre_run for this properly
@@ -92,7 +92,7 @@ class Module_forums
     {
         $base_url = get_forum_base_url();
 
-        $forums = get_param_string('url', $base_url . '/');
+        $forums = get_param_string('url', $base_url . '/', INPUT_FILTER_URL_GENERAL);
 
         if (substr($forums, 0, strlen($base_url)) != $base_url) {
             $base_url = rtrim($forums, '/');
@@ -100,7 +100,6 @@ class Module_forums
                 $base_url = dirname($base_url);
             }
 
-            //log_hack_attack_and_exit('REFERRER_IFRAME_HACK'); No longer a hack attack becase people webmasters changed their forum base URL at some point, creating problems with old bookmarks!
             require_code('site2');
             smart_redirect(get_self_url(true, false, array('url' => get_forum_base_url())));
         }

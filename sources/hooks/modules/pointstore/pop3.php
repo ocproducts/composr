@@ -285,7 +285,7 @@ class Hook_pointstore_pop3
         // So we don't need to call these big ugly names, again...
         $prefix = post_param_string('prefix');
         $_suffix = post_param_string('suffix');
-        $password = trim(post_param_string('password'));
+        $password = trim(post_param_string('password', false, INPUT_FILTER_NONE));
 
         $suffix = 'pop3_' . $_suffix;
         $suffix_price = get_price($suffix);

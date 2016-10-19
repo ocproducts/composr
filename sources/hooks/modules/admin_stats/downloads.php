@@ -107,7 +107,7 @@ class Hook_admin_stats_downloads
             $max = 10000;
         }
         $sortables = array('num_downloads' => do_lang_tempcode('COUNT_DOWNLOADS'));
-        $test = explode(' ', get_param_string('sort', 'num_downloads DESC'), 2);
+        $test = explode(' ', get_param_string('sort', 'num_downloads DESC', INPUT_FILTER_GET_COMPLEX), 2);
         if (count($test) == 1) {
             $test[1] = 'DESC';
         }

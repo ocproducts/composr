@@ -70,7 +70,7 @@ if (!headers_sent()) {
  */
 function cleanup()
 {
-    $password = post_param_string('password', null);
+    $password = post_param_string('password', null, INPUT_FILTER_NONE);
     if ($password === null) {
         @exit('<form action="#" method="post"><label>Master password <input type="password" name="password" value="" /></label><input class="menu___generic_admin__delete button_screen" type="submit" value="Delete programmed data" /></form>');
     }

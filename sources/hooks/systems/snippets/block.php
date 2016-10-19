@@ -30,8 +30,8 @@ class Hook_snippet_block
      */
     public function run()
     {
-        $sup = get_param_string('block_map_sup', '', true);
-        $_map = get_param_string('block_map', false, true);
+        $sup = get_param_string('block_map_sup', '', INPUT_FILTER_GET_COMPLEX);
+        $_map = get_param_string('block_map', false, INPUT_FILTER_GET_COMPLEX);
         if ($sup != '') {
             $_map .= ',' . $sup;
         }

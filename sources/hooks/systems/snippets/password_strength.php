@@ -31,6 +31,6 @@ class Hook_snippet_password_strength
     public function run()
     {
         require_code('password_rules');
-        return make_string_tempcode(strval(test_password(post_param_string('password'), post_param_string('username', ''))));
+        return make_string_tempcode(strval(test_password(post_param_string('password', false, INPUT_FILTER_NONE), post_param_string('username', ''))));
     }
 }

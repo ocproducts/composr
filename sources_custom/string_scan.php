@@ -6023,7 +6023,6 @@ function string_scan($lang, $do_guessing = false)
         REDIRECT_TRANS_SHORT
         REDUCE_PROBATION
         REFERER
-        REFERRER_IFRAME_HACK
         REFERRER_SHARE
         REFRESH_TIME
         REFRESH_TO_FINISH

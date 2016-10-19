@@ -167,7 +167,7 @@ class Module_cms_booking extends Standard_crud_module
     {
         require_code('templates_results_table');
 
-        $current_ordering = get_param_string('sort', 'sort_order ASC');
+        $current_ordering = get_param_string('sort', 'sort_order ASC', INPUT_FILTER_GET_COMPLEX);
         if (strpos($current_ordering, ' ') === false) {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
@@ -416,7 +416,7 @@ class Module_cms_booking_supplements extends Standard_crud_module
     {
         require_code('templates_results_table');
 
-        $current_ordering = get_param_string('sort', 'sort_order ASC');
+        $current_ordering = get_param_string('sort', 'sort_order ASC', INPUT_FILTER_GET_COMPLEX);
         if (strpos($current_ordering, ' ') === false) {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
@@ -610,7 +610,7 @@ class Module_cms_booking_blacks extends Standard_crud_module
     {
         require_code('templates_results_table');
 
-        $current_ordering = get_param_string('sort', 'blacked_from_year,blacked_from_month,blacked_from_day ASC');
+        $current_ordering = get_param_string('sort', 'blacked_from_year,blacked_from_month,blacked_from_day ASC', INPUT_FILTER_GET_COMPLEX);
         if (strpos($current_ordering, ' ') === false) {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
@@ -875,7 +875,7 @@ class Module_cms_booking_bookings extends Standard_crud_module
 
         require_code('templates_results_table');
 
-        $current_ordering = get_param_string('sort', 'b_year DESC,b_month DESC,b_day DESC');
+        $current_ordering = get_param_string('sort', 'b_year DESC,b_month DESC,b_day DESC', INPUT_FILTER_GET_COMPLEX);
         list(, $sortable, $sort_order) = preg_split('#(.*) (ASC|DESC)#', $current_ordering, 2, PREG_SPLIT_DELIM_CAPTURE);
         $sortables = array(
             'b_year DESC,b_month DESC,b_day' => do_lang_tempcode('DATE'),

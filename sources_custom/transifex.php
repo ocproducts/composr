@@ -156,7 +156,7 @@ function transifex_push_script()
     $push_cms = (get_param_integer('push_cms', 1) == 1);
     $push_ini = (get_param_integer('push_ini', 1) == 1);
     $push_translations = (get_param_integer('push_translations', 0) == 1);
-    $limit_substring = get_param_string('limit_substring', null);
+    $limit_substring = get_param_string('limit_substring', null, INPUT_FILTER_GET_COMPLEX);
 
     push_to_transifex($core_only, $push_cms, $push_ini, $push_translations, $limit_substring);
 
@@ -794,7 +794,7 @@ function _pull_cms_file_from_transifex($project_slug, $tar_file, $lang, $path, $
 
     $trans_full_path = get_file_base() . '/' . $trans_path;
 
-    $limit_substring = get_param_string('limit_substring', null);
+    $limit_substring = get_param_string('limit_substring', null, INPUT_FILTER_GET_COMPLEX);
     if ($limit_substring !== null && strpos($path, $limit_substring) === false) {
         $files[] = $trans_path;
 
@@ -830,7 +830,7 @@ function _pull_ini_file_from_transifex($project_slug, $tar_file, $lang, $_f, &$f
     $trans_path = 'lang_custom/' . $lang . '/' . $_f . '.ini';
     $trans_full_path = get_file_base() . '/' . $trans_path;
 
-    $limit_substring = get_param_string('limit_substring', null);
+    $limit_substring = get_param_string('limit_substring', null, INPUT_FILTER_GET_COMPLEX);
     if ($limit_substring !== null && strpos($_f, $limit_substring) === false) {
         $files[] = $trans_path;
 
@@ -872,8 +872,8 @@ function _pull_ini_file_from_transifex($project_slug, $tar_file, $lang, $_f, &$f
 
 function _transifex($call, $http_verb, $params = array(), $trigger_error = true)
 {
-    $username = get_param_string('username', get_value('transifex_username', null, true));
-    $password = get_param_string('password', get_value('transifex_password', null, true));
+    $username = get_param_string('username', get_value('transifex_username', null, true), INPUT_FILTER_GET_COMPLEX);
+    $password = get_param_string('password', get_value('transifex_password', null, true), INPUT_FILTER_GET_COMPLEX);
 
     if (empty($username)) {
         warn_exit('Transifex username must be set with :set_value(\'transifex_username\', \'...\', true);', true);

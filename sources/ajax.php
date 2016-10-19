@@ -97,7 +97,7 @@ function username_check_script()
     if ($username !== null) {
         $username = trim($username);
     }
-    $password = post_param_string('password', null);
+    $password = post_param_string('password', null, INPUT_FILTER_NONE);
     if ($password !== null) {
         $password = trim($password);
     }
@@ -118,7 +118,7 @@ function username_exists_script()
 
     header('Content-type: text/plain; charset=' . get_charset());
 
-    $username = trim(get_param_string('username', false, true));
+    $username = trim(get_param_string('username', false, INPUT_FILTER_GET_COMPLEX));
     $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($username);
     if ($member_id === null) {
         echo 'false';
@@ -134,7 +134,7 @@ function namelike_script()
 {
     prepare_for_known_ajax_response();
 
-    $id = str_replace('*', '%', get_param_string('id', false, true));
+    $id = str_replace('*', '%', get_param_string('id', false, INPUT_FILTER_GET_COMPLEX));
     $special = get_param_string('special', '');
 
     safe_ini_set('ocproducts.xss_detect', '0');
@@ -272,73 +272,6 @@ function find_permissions_script()
 }
 
 /**
- * AJAX script to store an autosave.
- *
- * @ignore
- */
-function store_autosave()
-{
-    require_code('input_filter_2');
-    modsecurity_workaround_enable();
-
-    prepare_for_known_ajax_response();
-
-    $member_id = get_member();
-    $time = time();
-
-    foreach (array_keys($_POST) as $key) {
-        $value = post_param_string($key);
-
-        $GLOBALS['SITE_DB']->query_insert('autosave', array(
-            // Will duplicate against a_member_id/a_key, but DB space is not an issue - better to have the back-archive of it
-            'a_member_id' => $member_id,
-            'a_key' => $key,
-            'a_value' => $value,
-            'a_time' => $time,
-        ));
-    }
-}
-
-/**
- * AJAX script to retrieve an autosave.
- *
- * @ignore
- */
-function retrieve_autosave()
-{
-    prepare_for_known_ajax_response();
-
-    header('Content-type: text/xml; charset=' . get_charset());
-
-    $member_id = get_member();
-    $stem = either_param_string('stem');
-
-    require_code('xml');
-
-    header('Content-Type: text/xml');
-    echo '<?xml version="1.0" encoding="' . get_charset() . '"?' . '>';
-    echo '<request><result>' . "\n";
-
-    $rows = $GLOBALS['SITE_DB']->query_select(
-        'autosave',
-        array('a_key', 'a_value'),
-        array('a_member_id' => $member_id),
-        'AND a_key LIKE \'' . db_encode_like($stem) . '%\' ORDER BY a_time DESC'
-    );
-
-    $done = array();
-    foreach ($rows as $row) {
-        if (isset($done[$row['a_key']])) {
-            continue;
-        }
-        echo '<field key="' . xmlentities($row['a_key']) . '" value="' . xmlentities($row['a_value']) . '" />' . "\n";
-        $done[$row['a_key']] = true;
-    }
-
-    echo '</result></request>';
-}
-
-/**
  * AJAX script to make a fractional edit to some data.
  *
  * @ignore
@@ -424,14 +357,14 @@ function edit_ping_script()
     $GLOBALS['SITE_DB']->query_delete('edit_pings', array(
         'the_page' => cms_mb_substr(get_page_name(), 0, 80),
         'the_type' => cms_mb_substr(get_param_string('type'), 0, 80),
-        'the_id' => cms_mb_substr(get_param_string('id', '', true), 0, 80),
+        'the_id' => cms_mb_substr(get_param_string('id', '', INPUT_FILTER_GET_COMPLEX), 0, 80),
         'the_member' => get_member()
     ));
 
     $GLOBALS['SITE_DB']->query_insert('edit_pings', array(
         'the_page' => cms_mb_substr(get_page_name(), 0, 80),
         'the_type' => cms_mb_substr(get_param_string('type'), 0, 80),
-        'the_id' => cms_mb_substr(get_param_string('id', '', true), 0, 80),
+        'the_id' => cms_mb_substr(get_param_string('id', '', INPUT_FILTER_GET_COMPLEX), 0, 80),
         'the_time' => time(),
         'the_member' => get_member()
     ));
@@ -463,7 +396,7 @@ function ajax_tree_script()
     $hook = filter_naughty_harsh(get_param_string('hook'));
     require_code('hooks/systems/ajax_tree/' . $hook);
     $object = object_factory('Hook_ajax_tree_' . $hook);
-    $id = get_param_string('id', '', true);
+    $id = get_param_string('id', '', INPUT_FILTER_GET_COMPLEX);
     if ($id == '') {
         $id = null;
     }
@@ -473,7 +406,7 @@ function ajax_tree_script()
         echo '<?xml version="1.0" encoding="' . get_charset() . '"?' . '>';
     }
     echo($html_mask ? '<html>' : '<request>');
-    $_options = get_param_string('options', '', true);
+    $_options = get_param_string('options', '', INPUT_FILTER_GET_COMPLEX);
     if ($_options == '') {
         $_options = json_encode(array());
     }
@@ -481,7 +414,7 @@ function ajax_tree_script()
     if ($options === false) {
         warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
     }
-    $val = $object->run($id, $options, get_param_string('default', null, true));
+    $val = $object->run($id, $options, get_param_string('default', null, INPUT_FILTER_GET_COMPLEX));
     echo str_replace('</body>', '<br id="ended" /></body>', $val);
     echo($html_mask ? '</html>' : '</request>');
 }
@@ -522,7 +455,7 @@ function load_template_script()
 
     $theme = filter_naughty(get_param_string('theme'));
     $id = filter_naughty(basename(get_param_string('id')));
-    $directory = filter_naughty(get_param_string('directory', dirname(get_param_string('id'))));
+    $directory = filter_naughty(get_param_string('directory', dirname(get_param_string('id')), INPUT_FILTER_GET_COMPLEX));
 
     $x = get_custom_file_base() . '/themes/' . $theme . '/' . $directory . '_custom/' . $id;
     if (!file_exists($x)) {

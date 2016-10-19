@@ -25,6 +25,28 @@
  */
 function init__global2()
 {
+    // Input filtering constants
+    define('INPUT_FILTER_WORDFILTER', 1); // POST-only
+    define('INPUT_FILTER_WYSIWYG_TO_COMCODE', 2); // POST-only
+    define('INPUT_FILTER_COMCODE_CLEANUP', 4); // POST-only
+    define('INPUT_FILTER_DOWNLOAD_ASSOCIATED_MEDIA', 8); // POST-only
+    define('INPUT_FILTER_FIELDS_XML', 16); // POST-only
+    define('INPUT_FILTER_URL_SCHEMES', 32); // POST/GET
+    define('INPUT_FILTER_URL_DESTINATION', 64); // GET
+    define('INPUT_FILTER_JS_URLS', 128); // POST/GET
+    define('INPUT_FILTER_VERY_STRICT', 256); // POST/GET
+    define('INPUT_FILTER_SPAM_HEURISTIC', 512); // POST/GET
+    define('INPUT_FILTER_EARLY_XSS', 1024); // POST for non-privileged/GET
+    define('INPUT_FILTER_DYNAMIC_FIREWALL', 2048); // POST/GET
+    define('INPUT_FILTER_ALLOWED_POSTING_SITES', 4096); // POST
+    // --
+    define('INPUT_FILTER_DEFAULT_POST', INPUT_FILTER_WORDFILTER | INPUT_FILTER_WYSIWYG_TO_COMCODE | INPUT_FILTER_COMCODE_CLEANUP | INPUT_FILTER_DOWNLOAD_ASSOCIATED_MEDIA | INPUT_FILTER_FIELDS_XML | INPUT_FILTER_URL_SCHEMES | INPUT_FILTER_JS_URLS | INPUT_FILTER_SPAM_HEURISTIC | INPUT_FILTER_EARLY_XSS | INPUT_FILTER_DYNAMIC_FIREWALL | INPUT_FILTER_ALLOWED_POSTING_SITES);
+    define('INPUT_FILTER_DEFAULT_GET', INPUT_FILTER_JS_URLS | INPUT_FILTER_VERY_STRICT | INPUT_FILTER_SPAM_HEURISTIC | INPUT_FILTER_EARLY_XSS | INPUT_FILTER_DYNAMIC_FIREWALL | INPUT_FILTER_URL_SCHEMES);
+    define('INPUT_FILTER_GET_COMPLEX', INPUT_FILTER_JS_URLS | INPUT_FILTER_SPAM_HEURISTIC | INPUT_FILTER_EARLY_XSS | INPUT_FILTER_DYNAMIC_FIREWALL | INPUT_FILTER_URL_SCHEMES);
+    define('INPUT_FILTER_URL_GENERAL', INPUT_FILTER_JS_URLS | INPUT_FILTER_EARLY_XSS | INPUT_FILTER_DYNAMIC_FIREWALL | INPUT_FILTER_URL_SCHEMES);
+    define('INPUT_FILTER_URL_INTERNAL', INPUT_FILTER_JS_URLS | INPUT_FILTER_URL_DESTINATION | INPUT_FILTER_EARLY_XSS | INPUT_FILTER_DYNAMIC_FIREWALL | INPUT_FILTER_URL_SCHEMES);
+    define('INPUT_FILTER_NONE', 0);
+
     // Fixup some inconsistencies in parameterisation on different PHP platforms. See phpstub.php for info on what environmental data we can rely on.
     if ((!isset($_SERVER['SCRIPT_NAME'])) && (!isset($_ENV['SCRIPT_NAME']))) { // May be missing on GAE
         if (strpos($_SERVER['PHP_SELF'], '.php') !== false) {
@@ -1392,9 +1414,10 @@ function get_complex_base_url($at)
  *
  * @param  ID_TEXT $name The name of the parameter to get
  * @param  ?mixed $default The default value to give the parameter if the parameter value is not defined (null: allow missing parameter) (false: give error on missing parameter)
+ * @param  integer $filters A bitmask of INPUT_FILTER_* filters
  * @return ?string The parameter value (null: missing)
  */
-function either_param_string($name, $default = false)
+function either_param_string($name, $default = false, $filters = INPUT_FILTER_DEFAULT_GET)
 {
     $ret = __param(array_merge($_POST, $_GET), $name, $default);
     if ($ret === null) {
@@ -1409,12 +1432,12 @@ function either_param_string($name, $default = false)
         return $ret;
     }
 
-    if (strpos($ret, ':') !== false && function_exists('cms_url_decode_post_process')) {
+    if ((($filters & INPUT_FILTER_URL_SCHEMES) != 0) && (strpos($ret, ':') !== false) && (function_exists('cms_url_decode_post_process'))) {
         $ret = cms_url_decode_post_process($ret);
     }
 
     require_code('input_filter');
-    check_input_field_string($name, $ret, true);
+    check_input_field_string($name, $ret, true, $filters);
 
     return $ret;
 }
@@ -1425,10 +1448,10 @@ function either_param_string($name, $default = false)
  *
  * @param  ID_TEXT $name The name of the parameter to get
  * @param  ?mixed $default The default value to give the parameter if the parameter value is not defined (null: allow missing parameter) (false: give error on missing parameter)
- * @param  boolean $conv_from_wysiwyg Whether to convert WYSIWYG contents to Comcode automatically
+ * @param  integer $filters A bitmask of INPUT_FILTER_* filters
  * @return ?string The parameter value (null: missing)
  */
-function post_param_string($name, $default = false, $conv_from_wysiwyg = true)
+function post_param_string($name, $default = false, $filters = INPUT_FILTER_DEFAULT_POST)
 {
     $ret = __param($_POST, $name, $default, false, true);
 
@@ -1444,24 +1467,22 @@ function post_param_string($name, $default = false, $conv_from_wysiwyg = true)
         improperly_filled_in_post($name);
     }
 
-    if (($ret !== '') && (addon_installed('wordfilter'))) {
-        if ($name !== 'password') {
-            require_code('wordfilter');
-            if ($ret !== $default) {
-                $ret = check_wordfilter($ret, $name);
-            }
+    if (($ret !== '') && (($filters & INPUT_FILTER_WORDFILTER) != 0) && (addon_installed('wordfilter'))) {
+        require_code('wordfilter');
+        if ($ret !== $default) {
+            $ret = check_wordfilter($ret, $name);
         }
     }
     if ($ret !== null) {
         $ret = unixify_line_format($ret);
 
-        if (post_param_integer($name . '_download_associated_media', 0) === 1) {
+        if ((($filters & INPUT_FILTER_DOWNLOAD_ASSOCIATED_MEDIA) != 0) && (post_param_integer($name . '_download_associated_media', 0) === 1)) {
             require_code('comcode_cleanup');
             download_associated_media($ret);
         }
     }
 
-    if ((isset($_POST[$name . '__is_wysiwyg'])) && ($_POST[$name . '__is_wysiwyg'] === '1') && ($conv_from_wysiwyg)) {
+    if ((($filters & INPUT_FILTER_WYSIWYG_TO_COMCODE) != 0) && (isset($_POST[$name . '__is_wysiwyg'])) && ($_POST[$name . '__is_wysiwyg'] === '1')) {
         if (trim($ret) === '') {
             $ret = '';
         } else {
@@ -1469,7 +1490,7 @@ function post_param_string($name, $default = false, $conv_from_wysiwyg = true)
             $ret = trim(semihtml_to_comcode($ret));
         }
     } else {
-        if ((substr($ret, 0, 10) === '[semihtml]') && (substr(trim($ret), -11) === '[/semihtml]')) {
+        if ((($filters & INPUT_FILTER_COMCODE_CLEANUP) != 0) && (substr($ret, 0, 10) === '[semihtml]') && (substr(trim($ret), -11) === '[/semihtml]')) {
             $_ret = trim($ret);
             $_ret = substr($_ret, 10, strlen($_ret) - 11 - 10);
             if (strpos($_ret, '[semihtml') === false) {
@@ -1483,22 +1504,24 @@ function post_param_string($name, $default = false, $conv_from_wysiwyg = true)
 
     if ((!$GLOBALS['BOOTSTRAPPING']) && (!$GLOBALS['MICRO_AJAX_BOOTUP'])) {
         if ($ret !== $default) {
-            check_posted_field($name, $ret);
+            check_posted_field($name, $ret, $filters);
         }
 
         // Custom fields.xml filter system
-        $ret = filter_form_field_default($name, $ret, true);
+        if (($filters & INPUT_FILTER_FIELDS_XML) != 0) {
+            $ret = filter_form_field_default($name, $ret, true);
+        }
     }
 
     if ($ret === $default) {
         return $ret;
     }
 
-    if (strpos($ret, ':') !== false && function_exists('cms_url_decode_post_process')) {
+    if ((($filters & INPUT_FILTER_URL_SCHEMES) != 0) && (strpos($ret, ':') !== false) && (function_exists('cms_url_decode_post_process'))) {
         $ret = cms_url_decode_post_process($ret);
     }
 
-    check_input_field_string($name, $ret, true);
+    check_input_field_string($name, $ret, true, $filters);
 
     return $ret;
 }
@@ -1509,10 +1532,10 @@ function post_param_string($name, $default = false, $conv_from_wysiwyg = true)
  *
  * @param  ID_TEXT $name The name of the parameter to get
  * @param  ?mixed $default The default value to give the parameter if the parameter value is not defined (null: allow missing parameter) (false: give error on missing parameter)
- * @param  boolean $no_security Whether to skip the security check. Does not currently do anything
+ * @param  integer $filters A bitmask of INPUT_FILTER_* filters
  * @return ?string The parameter value (null: missing)
  */
-function get_param_string($name, $default = false, $no_security = false)
+function get_param_string($name, $default = false, $filters = INPUT_FILTER_DEFAULT_GET)
 {
     $ret = __param($_GET, $name, $default);
     if (($ret === '') && (isset($_GET['require__' . $name])) && ($default !== $ret) && ($_GET['require__' . $name] !== '0')) {
@@ -1530,12 +1553,12 @@ function get_param_string($name, $default = false, $no_security = false)
         return $ret;
     }
 
-    if (strpos($ret, ':') !== false && function_exists('cms_url_decode_post_process')) {
+    if ((($filters & INPUT_FILTER_URL_SCHEMES) != 0) && (strpos($ret, ':') !== false) && (function_exists('cms_url_decode_post_process'))) {
         $ret = cms_url_decode_post_process($ret);
     }
 
     require_code('input_filter');
-    check_input_field_string($name, $ret);
+    check_input_field_string($name, $ret, false, $filters);
 
     if ($ret === false) { // Should not happen, but have seen in the wild via malicious bots sending corrupt URLs
         $ret = $default;
@@ -1624,15 +1647,16 @@ function either_param_integer($name, $default = false)
  *
  * @param  ID_TEXT $name The name of the parameter to get
  * @param  ?mixed $default The default value to give the parameter if the parameter value is not defined or the empty string (null: allow missing parameter) (false: give error on missing parameter)
+ * @param  integer $filters A bitmask of INPUT_FILTER_* filters
  * @return ?integer The parameter value (null: not set, and null given as default)
  */
-function post_param_integer($name, $default = false)
+function post_param_integer($name, $default = false, $filters = INPUT_FILTER_DEFAULT_POST)
 {
     $ret = __param($_POST, $name, ($default === false) ? $default : (($default === null) ? '' : strval($default)), true, true);
 
     if ((!$GLOBALS['BOOTSTRAPPING']) && (!$GLOBALS['MICRO_AJAX_BOOTUP'])) {
         if (((($default === null) && ($ret === '')) ? null : intval($ret)) !== $default) {
-            check_posted_field($name, $ret);
+            check_posted_field($name, $ret, $filters);
         }
 
         // Custom fields.xml filter system

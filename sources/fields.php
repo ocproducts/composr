@@ -30,16 +30,16 @@ function catalogue_file_script()
         @exit(get_option('closed'));
     }
 
-    $file = filter_naughty(get_param_string('file', false, true));
+    $file = filter_naughty(get_param_string('file', false, INPUT_FILTER_GET_COMPLEX));
     $_full = get_custom_file_base() . '/uploads/catalogues/' . filter_naughty(rawurldecode($file));
     if (!file_exists($_full)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE', do_lang_tempcode('FILE')));
     }
     $size = filesize($_full);
 
-    $original_filename = get_param_string('original_filename', null, true);
+    $original_filename = get_param_string('original_filename', null, INPUT_FILTER_GET_COMPLEX);
 
-    // Security check; doesn't work for very old attachments (pre-v8)
+    // Security check
     $table = get_param_string('table');
     if ($table != 'catalogue_efv_short' && $table != 'catalogue_efv_long' && $table != 'f_member_custom_fields') {
         access_denied('I_ERROR');
@@ -431,7 +431,7 @@ function append_form_custom_fields($content_type, $id, &$fields, &$hidden, $fiel
         }
 
         $ob = get_fields_hook($field['cf_type']);
-        $default = get_param_string('field_' . strval($field['id']), array_key_exists('effective_value_pure', $field) ? $field['effective_value_pure'] : $field['cf_default']);
+        $default = get_param_string('field_' . strval($field['id']), array_key_exists('effective_value_pure', $field) ? $field['effective_value_pure'] : $field['cf_default'], INPUT_FILTER_GET_COMPLEX);
 
         $_cf_name = get_translated_text($field['cf_name']);
         $field_cat = '';

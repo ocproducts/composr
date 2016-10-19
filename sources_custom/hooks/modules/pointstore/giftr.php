@@ -121,7 +121,7 @@ class Hook_pointstore_giftr
         $submit_name = do_lang_tempcode('SEND_GIFT');
         $text = paragraph(do_lang_tempcode('CHOOSE_MEMBER'));
 
-        $post_url = build_url(array('page' => 'pointstore', 'type' => 'action_done2', 'id' => 'giftr', 'gift' => get_param_string('gift', 0)), get_module_zone('pointstore'));
+        $post_url = build_url(array('page' => 'pointstore', 'type' => 'action_done2', 'id' => 'giftr', 'gift' => get_param_integer('gift', 0)), get_module_zone('pointstore'));
 
         return do_template('FORM_SCREEN', array('_GUID' => '0d2878fbba63b22f7225a05ec2672537', 'SKIP_WEBSTANDARDS' => true, 'STAFF_HELP_URL' => '', 'HIDDEN' => '', 'TITLE' => $title, 'FIELDS' => $fields, 'TEXT' => $text, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'URL' => $post_url));
     }

@@ -39,7 +39,7 @@ class Hook_check_modsecurity
             $message_a = $test_a->message;
             if ($message_a == '200')
             {
-                $test_b = http_get_contents($test_url, array('byte_limit' => 0, 'trigger_error' => false, 'no_redirect' => true, 'post_params' => array('test_a' => '/usr/bin/unzip -o @_SRC_@ -x -d @_DST_@', 'test_b' => '<iframe src="http://example.com/"></iframe>', 'test_c' => '<script>console.log(document.cookie);</script>')));
+                $test_b = cms_http_request($test_url, array('byte_limit' => 0, 'trigger_error' => false, 'no_redirect' => true, 'post_params' => array('test_a' => '/usr/bin/unzip -o @_SRC_@ -x -d @_DST_@', 'test_b' => '<iframe src="http://example.com/"></iframe>', 'test_c' => '<script>console.log(document.cookie);</script>')));
                 $message_b = $test_b->message;
                 if ($message_b != '200')
                 {

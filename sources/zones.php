@@ -1016,7 +1016,7 @@ function find_all_hooks($type, $subtype)
     }
 
     // Optimisation, so that hooks with same name as our page get loaded first
-    $page = get_param_string('page', '', true); // Not get_page_name for bootstrap order reasons
+    $page = get_param_string('page', '', INPUT_FILTER_GET_COMPLEX); // Not get_page_name for bootstrap order reasons
     if (array_key_exists($page, $out)) {
         $_out = array($page => $out[$page]);
         unset($out[$page]);

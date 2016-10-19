@@ -841,8 +841,8 @@ abstract class Standard_crud_module
         if (get_param_string('auto__add_one_category', null) !== null) {
             $map['auto__add_one_category'] = get_param_string('auto__add_one_category');
         }
-        if (get_param_string('redirect', null) !== null) {
-            $map['redirect'] = get_param_string('redirect');
+        if (get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL) !== null) {
+            $map['redirect'] = get_param_string('redirect', false, INPUT_FILTER_URL_INTERNAL);
         }
         if (get_param_string('continue', null) !== null) {
             $map['continue'] = get_param_string('continue');
@@ -1068,7 +1068,7 @@ abstract class Standard_crud_module
         }
 
         //if ($this->redirect_type=='!') {
-        $url = get_param_string('redirect', null);
+        $url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
         if ($url !== null) {
             $url = str_replace('__ID__', $id, $url);
             return redirect_screen($this->title, $url, $description);
@@ -1165,7 +1165,7 @@ abstract class Standard_crud_module
         $entries = new Tempcode();
         foreach ($_entries as $key => $row) {
             $readable = $row['_readable'];
-            $entries->attach(form_input_list_entry($key, $key === get_param_string('id', null, true), $readable));
+            $entries->attach(form_input_list_entry($key, $key === get_param_string('id', null, INPUT_FILTER_GET_COMPLEX), $readable));
         }
         return $entries;
     }
@@ -1196,8 +1196,8 @@ abstract class Standard_crud_module
         if (either_param_string('catalogue_name', '') != '') {
             $map['catalogue_name'] = either_param_string('catalogue_name');
         }
-        if (get_param_string('redirect', null) !== null) {
-            $map['redirect'] = get_param_string('redirect');
+        if (get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL) !== null) {
+            $map['redirect'] = get_param_string('redirect', false, INPUT_FILTER_URL_INTERNAL);
         }
         if (get_param_string('continue', null) !== null) {
             $map['continue'] = get_param_string('continue');
@@ -1316,7 +1316,7 @@ abstract class Standard_crud_module
         $submit_name = do_lang_tempcode('SAVE');
 
         $id = mixed(); // Define type as mixed
-        $id = $this->non_integer_id ? get_param_string('id', false, true) : strval(get_param_integer('id'));
+        $id = $this->non_integer_id ? get_param_string('id', false, INPUT_FILTER_GET_COMPLEX) : strval(get_param_integer('id'));
 
         $map = array('page' => '_SELF', 'type' => $this->get_screen_type_for('__edit', $this->type_code), 'id' => $id);
         if (get_param_string('catalogue_name', '') != '') {
@@ -1325,8 +1325,8 @@ abstract class Standard_crud_module
         if (get_param_string('type', '') == '_edit_catalogue') {
             $map['type'] = '__edit_catalogue';
         }
-        if (get_param_string('redirect', null) !== null) {
-            $map['redirect'] = get_param_string('redirect');
+        if (get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL) !== null) {
+            $map['redirect'] = get_param_string('redirect', false, INPUT_FILTER_URL_INTERNAL);
         }
         if (get_param_string('continue', null) !== null) {
             $map['continue'] = get_param_string('continue');
@@ -1471,7 +1471,7 @@ abstract class Standard_crud_module
 
             // Existing fields
             $field_count = 0;
-            $c_name = get_param_string('id', false, true);
+            $c_name = get_param_string('id', false, INPUT_FILTER_GET_COMPLEX);
             $rows = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $c_name), 'ORDER BY cf_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cf_name'));
             $fields_existing = new Tempcode();
             foreach ($rows as $i => $myrow) {
@@ -1565,7 +1565,7 @@ abstract class Standard_crud_module
     public function __edit()
     {
         $id = mixed(); // Define type as mixed
-        $id = $this->non_integer_id ? get_param_string('id', false, true) : strval(get_param_integer('id'));
+        $id = $this->non_integer_id ? get_param_string('id', false, INPUT_FILTER_GET_COMPLEX) : strval(get_param_integer('id'));
 
         if (($this->second_stage_preview) && (get_param_integer('preview', 0) == 1)) {
             return $this->preview_intercept($this->title);
@@ -1607,14 +1607,14 @@ abstract class Standard_crud_module
             }
 
             /*    No - resource is gone now, and redirect would almost certainly try to take us back there
-            if (($this->redirect_type !== null) || ((get_param_string('redirect', null) !== null))) {
-                $url = (($this->redirect_type == '!') || ($this->redirect_type === null)) ? get_param_string('redirect') : build_url(array('page' => '_SELF', 'type' => $this->redirect_type), '_SELF');
+            if (($this->redirect_type !== null) || ((get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL) !== null))) {
+                $url = (($this->redirect_type == '!') || ($this->redirect_type === null)) ? get_param_string('redirect', false, INPUT_FILTER_URL_INTERNAL) : build_url(array('page' => '_SELF', 'type' => $this->redirect_type), '_SELF');
                 return redirect_screen($this->title, $url, do_lang_tempcode($this->success_message_str));
             }
             */
 
-            if (($this->redirect_type !== null) || ((get_param_string('redirect', null) !== null))) {
-                $url = make_string_tempcode(str_replace('__ID__', $id, get_param_string('redirect')));
+            if (($this->redirect_type !== null) || ((get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL) !== null))) {
+                $url = make_string_tempcode(str_replace('__ID__', $id, get_param_string('redirect', false, INPUT_FILTER_URL_INTERNAL)));
 
                 return redirect_screen($this->title, $url, do_lang_tempcode($this->success_message_str));
             }
@@ -1687,8 +1687,8 @@ abstract class Standard_crud_module
             }
         }
 
-        if (($this->redirect_type !== null) || (get_param_string('redirect', null) !== null)) {
-            $url = (($this->redirect_type == '!') || ($this->redirect_type === null)) ? make_string_tempcode(get_param_string('redirect')) : build_url(array('page' => '_SELF', 'type' => $this->redirect_type), '_SELF');
+        if (($this->redirect_type !== null) || (get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL) !== null)) {
+            $url = (($this->redirect_type == '!') || ($this->redirect_type === null)) ? make_string_tempcode(get_param_string('redirect', false, INPUT_FILTER_URL_INTERNAL)) : build_url(array('page' => '_SELF', 'type' => $this->redirect_type), '_SELF');
 
             return redirect_screen($this->title, $url, do_lang_tempcode($this->success_message_str));
         }
@@ -1743,8 +1743,8 @@ abstract class Standard_crud_module
 
         // UI
         if ($top_level) {
-            if (($this->redirect_type !== null) || (get_param_string('redirect', null) !== null)) {
-                $url = make_string_tempcode(get_param_string('redirect'));
+            if (($this->redirect_type !== null) || (get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL) !== null)) {
+                $url = make_string_tempcode(get_param_string('redirect', false, INPUT_FILTER_URL_INTERNAL));
 
                 return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
             }

@@ -158,7 +158,7 @@ class Hook_pointstore_banners
         $name = post_param_string('name');
         $urls = get_url('image_url', 'file', 'uploads/banners', 0, CMS_UPLOAD_IMAGE);
         $image_url = $urls[0];
-        $site_url = post_param_string('site_url');
+        $site_url = post_param_string('site_url', false, INPUT_FILTER_URL_GENERAL);
         $caption = post_param_string('caption');
         $direct_code = post_param_string('direct_code', '');
         $notes = post_param_string('notes', '');
@@ -227,8 +227,8 @@ class Hook_pointstore_banners
         $this->check_afford_banner();
 
         // So we don't need to call these big ugly names, again...
-        $image_url = post_param_string('image_url');
-        $site_url = post_param_string('site_url');
+        $image_url = post_param_string('image_url', false, INPUT_FILTER_URL_GENERAL);
+        $site_url = post_param_string('site_url', false, INPUT_FILTER_URL_GENERAL);
         $caption = post_param_string('caption');
         $direct_code = post_param_string('direct_code', '');
         $notes = post_param_string('notes', '');

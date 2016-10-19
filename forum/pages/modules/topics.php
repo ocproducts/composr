@@ -648,7 +648,7 @@ class Module_topics
         $title = get_screen_title('MARK_READ');
 
         // Show it worked / Refresh
-        $url = get_param_string('redirect', null);
+        $url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
         if ($url !== null) {
             return redirect_screen($title, $url, do_lang_tempcode('SUCCESS'));
         }
@@ -1207,7 +1207,7 @@ class Module_topics
 
         $post_url = build_url(array('page' => '_SELF', 'type' => '_categorise_pts'), '_SELF');
 
-        $default_filter_cat = get_param_string('id', '', true);
+        $default_filter_cat = get_param_string('id', '', INPUT_FILTER_GET_COMPLEX);
 
         // Certain aspects relating to the posting system
         $fields = new Tempcode();
@@ -1488,7 +1488,7 @@ class Module_topics
 
         // Where to post to
         $map = array('page' => '_SELF', 'type' => '_add_reply');
-        $redirect = get_param_string('redirect', '');
+        $redirect = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
         if ($redirect != '') {
             $map['redirect'] = $redirect;
         }
@@ -1813,7 +1813,7 @@ class Module_topics
         $hidden_fields->attach(form_input_hidden('from_url', get_self_url(true, false, array('type' => get_param_string('type', 'browse')))));
 
         $map = array('page' => '_SELF', 'type' => '_add_reply', 'parent_id' => $parent_id, 'timestamp' => get_param_integer('timestamp', null));
-        $test = get_param_string('kfs' . (($forum_id === null) ? '' : strval($forum_id)), null, true);
+        $test = get_param_string('kfs' . (($forum_id === null) ? '' : strval($forum_id)), null);
         if (($test !== null) && ($test !== '0')) {
             $map['kfs' . (($forum_id === null) ? '' : strval($forum_id))] = $test;
         }
@@ -2345,7 +2345,7 @@ END;
 
                     $text = do_lang_tempcode('SUCCESS');
                     $map = array('page' => 'topicview', 'type' => 'first_unread', 'id' => $topic_id);
-                    $test = get_param_string('kfs' . (($forum_id === null) ? '' : strval($forum_id)), null, true);
+                    $test = get_param_string('kfs' . (($forum_id === null) ? '' : strval($forum_id)), null);
                     if (($test !== null) && ($test !== '0')) {
                         $map['kfs' . (($forum_id === null) ? '' : strval($forum_id))] = $test;
                     }
@@ -2356,7 +2356,7 @@ END;
                     $_url = build_url($map, get_module_zone('topicview'));
                     $url = $_url->evaluate();
                     $url .= '#first_unread';
-                    $url = get_param_string('redirect', $url);
+                    $url = get_param_string('redirect', $url, INPUT_FILTER_URL_INTERNAL);
                     return redirect_screen($_title, $url, $text);
                 }
 
@@ -2419,7 +2419,7 @@ END;
                 $url = find_post_id_url($post_id);
             } else {
                 $map = array('page' => 'topicview', 'type' => 'findpost', 'id' => $post_id);
-                $test = get_param_string('kfs' . (($forum_id === null) ? '' : strval($forum_id)), null, true);
+                $test = get_param_string('kfs' . (($forum_id === null) ? '' : strval($forum_id)), null);
                 if (($test !== null) && ($test !== '0')) {
                     $map['kfs' . (($forum_id === null) ? '' : strval($forum_id))] = $test;
                 }
@@ -2443,7 +2443,7 @@ END;
             $topic_validated = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_validated', array('id' => $topic_id));
             if (($topic_validated == 0) && (!has_privilege(get_member(), 'jump_to_unvalidated'))) {
                 $map = array('page' => 'forumview', 'id' => $forum_id);
-                $test = get_param_string('kfs' . (($forum_id === null) ? '' : strval($forum_id)), null, true);
+                $test = get_param_string('kfs' . (($forum_id === null) ? '' : strval($forum_id)), null);
                 if (($test !== null) && ($test !== '0')) {
                     $map['kfs' . (($forum_id === null) ? '' : strval($forum_id))] = $test;
                 }
@@ -2498,7 +2498,7 @@ END;
         }
 
         // Show it worked / Refresh
-        $url = get_param_string('redirect', $url);
+        $url = get_param_string('redirect', $url, INPUT_FILTER_URL_INTERNAL);
         return redirect_screen($_title, $url, $text);
     }
 
@@ -2709,7 +2709,7 @@ END;
         }
 
         // Show it worked / Refresh
-        $url = get_param_string('redirect', null);
+        $url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
         if ($url !== null) {
             return redirect_screen(get_screen_title('DELETE_POST'), $url, do_lang_tempcode('SUCCESS'));
         }
@@ -2992,11 +2992,11 @@ END;
         $hidden_fields->attach(form_input_hidden('post_id', strval($post_id)));
 
         $map = array('page' => '_SELF', 'type' => '_edit_post');
-        $redirect = get_param_string('redirect', '');
+        $redirect = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
         if ($redirect != '') {
             $map['redirect'] = $redirect;
         }
-        $test = get_param_string('kfs' . (($forum_id === null) ? '' : strval($forum_id)), null, true);
+        $test = get_param_string('kfs' . (($forum_id === null) ? '' : strval($forum_id)), null);
         if (($test !== null) && ($test !== '0')) {
             $map['kfs' . (($forum_id === null) ? '' : strval($forum_id))] = $test;
         }
@@ -3213,7 +3213,7 @@ END;
         }
 
         // Show it worked / Refresh
-        $url = get_param_string('redirect', null);
+        $url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
         if ($url !== null) {
             return redirect_screen(get_screen_title('EDIT_POST'), $url, do_lang_tempcode('SUCCESS'));
         }
@@ -3235,7 +3235,7 @@ END;
         require_code('cns_posts_action3');
         $topic_id = cns_validate_post($post_id);
 
-        $redirect = get_param_string('redirect', '');
+        $redirect = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
         if ($redirect != '') {
             return redirect_screen(get_screen_title('VALIDATE_POST'), $redirect, do_lang_tempcode('SUCCESS'));
         }

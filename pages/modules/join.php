@@ -144,11 +144,11 @@ class Module_join
         // Show rules
         $rules = request_page('_rules', true, get_comcode_zone('rules'), null, true);
         $map = array('page' => '_SELF', 'type' => 'step2');
-        $email_address = trim(get_param_string('email_address', ''));
+        $email_address = trim(get_param_string('email_address', '', INPUT_FILTER_GET_COMPLEX));
         if ($email_address != '') {
             $map['email_address'] = $email_address;
         }
-        $redirect = get_param_string('redirect', '');
+        $redirect = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
         if ($redirect != '') {
             $map['redirect'] = $redirect;
         }
@@ -186,7 +186,7 @@ class Module_join
         }
 
         $map = array('page' => '_SELF', 'type' => 'step3');
-        $redirect = get_param_string('redirect', '');
+        $redirect = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
         if ($redirect != '') {
             $map['redirect'] = $redirect;
         }
@@ -260,13 +260,13 @@ class Module_join
                 'SUBMIT_NAME' => $submit_name,
             ));
         }
-        $rows = $GLOBALS['FORUM_DB']->query_select('f_members', array('id', 'm_validated'), array('m_validated_email_confirm_code' => strval($code), 'm_email_address' => trim(get_param_string('email'))));
+        $rows = $GLOBALS['FORUM_DB']->query_select('f_members', array('id', 'm_validated'), array('m_validated_email_confirm_code' => strval($code), 'm_email_address' => trim(get_param_string('email', false, INPUT_FILTER_GET_COMPLEX))));
         if (!array_key_exists(0, $rows)) {
-            $rows = $GLOBALS['FORUM_DB']->query_select('f_members', array('id', 'm_validated'), array('m_validated_email_confirm_code' => '', 'm_email_address' => trim(get_param_string('email'))));
+            $rows = $GLOBALS['FORUM_DB']->query_select('f_members', array('id', 'm_validated'), array('m_validated_email_confirm_code' => '', 'm_email_address' => trim(get_param_string('email', false, INPUT_FILTER_GET_COMPLEX))));
             if (!array_key_exists(0, $rows)) {
                 warn_exit(do_lang_tempcode('INCORRECT_CONFIRM_CODE'));
             } else {
-                $redirect = get_param_string('redirect', '');
+                $redirect = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
                 $map = array('page' => 'login', 'type' => 'browse');
                 if ($redirect != '') {
                     $map['redirect'] = $redirect;
@@ -286,7 +286,7 @@ class Module_join
         }
 
         // Alert user to situation
-        $redirect = get_param_string('redirect', '');
+        $redirect = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
         $map = array('page' => 'login', 'type' => 'browse');
         if ($redirect != '') {
             $map['redirect'] = $redirect;

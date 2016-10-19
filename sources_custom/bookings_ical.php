@@ -36,7 +36,7 @@ function bookables_ical_script()
     }
 
     $query = 'SELECT * FROM ' . get_table_prefix() . 'bookable WHERE enabled=1';
-    $filter = get_param_string('filter', '*');
+    $filter = get_param_string('filter', '*', INPUT_FILTER_GET_COMPLEX);
     require_code('selectcode');
     $query .= ' AND ' . selectcode_to_sqlfragment($filter, 'id');
     $events = $GLOBALS['SITE_DB']->query($query, null, null, false, true);
@@ -151,7 +151,7 @@ function bookables_ical_script()
 function bookings_ical_script()
 {
     require_code('crypt');
-    $pass_ok = get_param_string('pass', '') == ratchet_hash($GLOBALS['SITE_INFO']['master_password'], get_site_salt());
+    $pass_ok = get_param_string('pass', '', INPUT_FILTER_GET_COMPLEX) == ratchet_hash($GLOBALS['SITE_INFO']['master_password'], get_site_salt());
     if ((!$pass_ok) && (!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()))) {
         access_denied('I_ERROR');
     }

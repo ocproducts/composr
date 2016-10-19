@@ -203,7 +203,7 @@ class Module_search
             $ob = $this->ob;
             $info = $this->info;
 
-            $under = get_param_string('search_under', '!', true);
+            $under = get_param_string('search_under', '!', INPUT_FILTER_GET_COMPLEX);
             if (($info !== null) && (method_exists($ob, 'get_tree'))) {
                 $ob->get_tree($under);
             }
@@ -213,7 +213,7 @@ class Module_search
         require_javascript('ajax_people_lists');
         require_javascript('tree_list');
 
-        $content = get_param_string('content', null, true);
+        $content = get_param_string('content', null, INPUT_FILTER_GET_COMPLEX);
 
         $user_label = do_lang_tempcode('SEARCH_USER');
 
@@ -268,7 +268,7 @@ class Module_search
             $under = null;
             if (method_exists($ob, 'ajax_tree')) {
                 $ajax = true;
-                $under = get_param_string('search_under', '', true);
+                $under = get_param_string('search_under', '', INPUT_FILTER_GET_COMPLEX);
                 $ajax_tree = $ob->ajax_tree();
                 if (is_object($ajax_tree)) {
                     return $ajax_tree;
@@ -313,7 +313,7 @@ class Module_search
                 $ajax = false;
                 $tree = form_input_list_entry('!', false, do_lang_tempcode('NA_EM'));
                 if (method_exists($ob, 'get_tree')) {
-                    $under = get_param_string('search_under', '!', true);
+                    $under = get_param_string('search_under', '!', INPUT_FILTER_GET_COMPLEX);
                     $tree->attach($ob->get_tree($under));
                 }
             }
@@ -354,7 +354,7 @@ class Module_search
             $specialisation = do_template('SEARCH_ADVANCED', array('_GUID' => 'fad0c147b8291ba972f105c65715f1ac', 'AJAX' => $ajax, 'OPTIONS' => $options, 'TREE' => $tree, 'UNDERNEATH' => $under !== null));
         } else { // General screen
             $map = array('page' => '_SELF', 'type' => 'results');
-            $under = get_param_string('search_under', '-1', true);
+            $under = get_param_string('search_under', '-1', INPUT_FILTER_GET_COMPLEX);
             if ($under != '-1') {
                 $map['search_under'] = $under;
             }
@@ -393,7 +393,7 @@ class Module_search
             log_hack_attack_and_exit('ORDERBY_HACK');
         }
         $only_titles = get_param_integer('only_titles', 0) == 1;
-        $search_under = get_param_string('search_under', '!', true);
+        $search_under = get_param_string('search_under', '!', INPUT_FILTER_GET_COMPLEX);
         if ($search_under == '') {
             $search_under = '!';
         }
@@ -500,7 +500,7 @@ class Module_search
      */
     public function _is_boolean_search()
     {
-        $content = get_param_string('content', '', true);
+        $content = get_param_string('content', '', INPUT_FILTER_GET_COMPLEX);
 
         $boolean_search = get_param_integer('boolean_search', 0) == 1;
         if (get_option('enable_boolean_search') == '0') {
@@ -531,7 +531,7 @@ class Module_search
         cache_module_installed_status();
 
         // What we're searching for
-        $content = get_param_string('content', false, true);
+        $content = get_param_string('content', false, INPUT_FILTER_GET_COMPLEX);
 
         // Did you mean?
         require_code('spelling');

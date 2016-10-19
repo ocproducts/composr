@@ -315,7 +315,7 @@ A complete example (assumes a table named [tt]example[/tt], with fields [tt]name
 require_code('templates_results_table');
 
 // Read in current sorting, and apply security
-$current_ordering = get_param_string('sort', 'name ASC');
+$current_ordering = get_param_string('sort', 'name ASC', INPUT_FILTER_GET_COMPLEX);
 if (strpos($current_ordering, ' ') === false) {
     warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
 }

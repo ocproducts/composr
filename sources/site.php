@@ -698,8 +698,8 @@ function process_url_monikers($page, $redirect_if_non_canonical = true)
     $run_once = true;
 
     $zone = get_zone_name();
-    $type = get_param_string('type', null, true);
-    $url_id = get_param_string('id', null, true);
+    $type = get_param_string('type', null, INPUT_FILTER_GET_COMPLEX);
+    $url_id = get_param_string('id', null, INPUT_FILTER_GET_COMPLEX);
 
     if (url_monikers_enabled()) {
         // Monikers relative to the zone

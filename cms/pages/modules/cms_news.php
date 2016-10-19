@@ -205,7 +205,7 @@ class Module_cms_news extends Standard_crud_module
     {
         require_code('templates_results_table');
 
-        $current_ordering = get_param_string('sort', 'date_and_time DESC');
+        $current_ordering = get_param_string('sort', 'date_and_time DESC', INPUT_FILTER_GET_COMPLEX);
         if (strpos($current_ordering, ' ') === false) {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
@@ -819,7 +819,7 @@ class Module_cms_news extends Standard_crud_module
         $import_blog_comments = post_param_integer('import_blog_comments', 0);
         $import_to_blog = post_param_integer('import_to_blog', 0);
 
-        $rss_url = post_param_string('rss_feed_url', null);
+        $rss_url = post_param_string('rss_feed_url', null, INPUT_FILTER_URL_GENERAL);
         require_code('uploads');
         if (((is_plupload(true)) && (array_key_exists('file_anytype', $_FILES))) || ((array_key_exists('file_anytype', $_FILES)) && (is_uploaded_file($_FILES['file_anytype']['tmp_name'])))) {
             $rss_url = $_FILES['file_anytype']['tmp_name'];
@@ -868,7 +868,7 @@ class Module_cms_news_cat extends Standard_crud_module
     {
         require_code('templates_results_table');
 
-        $current_ordering = get_param_string('sort', 'nc_title ASC', true);
+        $current_ordering = get_param_string('sort', 'nc_title ASC', INPUT_FILTER_GET_COMPLEX);
         list($sortable, $sort_order) = array(substr($current_ordering, 0, strrpos($current_ordering, ' ')), substr($current_ordering, strrpos($current_ordering, ' ') + 1));
         $sortables = array(
             'nc_title' => do_lang_tempcode('TITLE'),

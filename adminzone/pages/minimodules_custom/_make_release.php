@@ -49,10 +49,10 @@ if (!$is_bleeding_edge) {
 
 $changes = post_param_string('changes', '');
 
-$descrip = get_param_string('descrip', '', true);
+$descrip = get_param_string('descrip', '', INPUT_FILTER_GET_COMPLEX);
 
-$needed = get_param_string('needed', '', true);
-$justification = get_param_string('justification', '', true);
+$needed = get_param_string('needed', '', INPUT_FILTER_GET_COMPLEX);
+$justification = get_param_string('justification', '', INPUT_FILTER_GET_COMPLEX);
 
 $urls = array();
 

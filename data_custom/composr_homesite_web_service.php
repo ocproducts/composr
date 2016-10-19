@@ -50,7 +50,7 @@ header('Content-type: text/plain; charset=' . get_charset());
 
 $parameters = isset($_POST['parameters']) ? $_POST['parameters'] : array();
 
-$password_given = post_param_string('password', null);
+$password_given = post_param_string('password', null, INPUT_FILTER_NONE);
 if ($password_given === null) {
     call_user_func_array('server__public__' . get_param_string('call'), $parameters);
 } else {

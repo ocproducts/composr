@@ -106,7 +106,7 @@ function _helper_install_test_load_from($path)
     $PROBED_FORUM_CONFIG['sql_user'] = $GLOBALS['DB_STATIC_OBJECT']->default_user();
     $PROBED_FORUM_CONFIG['sql_pass'] = $GLOBALS['DB_STATIC_OBJECT']->default_password();
 
-    $base_url = post_param_string('base_url', get_base_url());
+    $base_url = post_param_string('base_url', get_base_url(), INPUT_FILTER_URL_GENERAL);
 
     $PROBED_FORUM_CONFIG['board_url'] = $base_url . '/forum';
     return true;

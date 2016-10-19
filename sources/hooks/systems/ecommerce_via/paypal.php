@@ -426,6 +426,6 @@ class Hook_ecommerce_via_paypal
      */
     public function get_callback_url_message()
     {
-        return get_param_string('message', null, true);
+        return get_param_string('message', null, INPUT_FILTER_GET_COMPLEX);
     }
 }

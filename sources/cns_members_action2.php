@@ -466,7 +466,7 @@ function cns_get_member_fields_settings($mini_mode = true, $member_id = null, $g
     // E-mail address
     if (cns_field_editable('email', $special_type)) {
         if ($email_address == '') {
-            $email_address = trim(get_param_string('email_address', ''));
+            $email_address = trim(get_param_string('email_address', '', INPUT_FILTER_GET_COMPLEX));
         }
         $email_description = new Tempcode();
         if ((get_option('valid_email_domains') != '') && ($mini_mode)) { // domain restriction only applies on public join form ($mini_mode)

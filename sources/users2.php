@@ -247,7 +247,7 @@ function get_members_viewing($page = null, $type = null, $id = null, $forum_laye
         $type = get_param_string('type', '/');
     }
     if ($id === null) {
-        $id = get_param_string('id', '/', true);
+        $id = get_param_string('id', '/', INPUT_FILTER_GET_COMPLEX);
     }
     if ($type == '/') {
         $type = '';

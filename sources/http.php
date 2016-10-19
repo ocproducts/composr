@@ -191,6 +191,41 @@ function get_webpage_meta_details($url)
 }
 
 /**
+ * Return the file in the URL by downloading it over HTTP. If a byte limit is given, it will only download that many bytes. It outputs warnings, returning null, on error.
+ *
+ * @param  URLPATH $url The URL to download
+ * @param  array $options Map of options (see the properties of the HttpDownloader class for what you may set)
+ * @return object HttpDownloader object, which can be checked for return data
+ */
+function _cms_http_request($url, $options = array())
+{
+    $curl = new HttpDownloaderCurl();
+    $curl_priority = $curl->may_run_for($url, $options);
+
+    $sockets = new HttpDownloaderSockets();
+    $sockets_priority = $sockets->may_run_for($url, $options);
+
+    $file_wrapper = new HttpDownloaderFileWrapper();
+    $file_wrapper_priority = $file_wrapper->may_run_for($url, $options);
+
+    $filesystem = new HttpDownloaderFilesystem();
+    $filesystem_priority = $filesystem->may_run_for($url, $options);
+
+    if ($curl_priority > $sockets_priority && $curl_priority > $file_wrapper_priority && $curl_priority > $filesystem_priority) {
+        $curl->run($url, $options);
+        return $curl;
+    } elseif ($sockets_priority > $file_wrapper_priority && $sockets_priority > $filesystem_priority) {
+        $sockets->run($url, $options);
+        return $sockets;
+    } elseif ($file_wrapper_priority > $filesystem_priority) {
+        $file_wrapper->run($url, $options);
+        return $file_wrapper;
+    }
+    $filesystem->run($url, $options);
+    return $filesystem;
+}
+
+/**
  * Base HttpDownloader.
  *
  * @package    core

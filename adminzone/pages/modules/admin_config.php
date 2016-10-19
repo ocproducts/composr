@@ -338,7 +338,7 @@ class Module_admin_config
 
         // Load up some basic details
         $category = $this->category;
-        $post_url = build_url(array('page' => '_SELF', 'type' => 'set', 'id' => $category, 'redirect' => get_param_string('redirect', null)), '_SELF');
+        $post_url = build_url(array('page' => '_SELF', 'type' => 'set', 'id' => $category, 'redirect' => get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL)), '_SELF');
         $category_description = do_lang_tempcode('CONFIG_CATEGORY_DESCRIPTION__' . $category);
 
         // Find all options in category
@@ -742,7 +742,7 @@ class Module_admin_config
         erase_cached_templates(false, null, TEMPLATE_DECACHE_WITH_CONFIG);
 
         // Show it worked / Refresh
-        $redirect = get_param_string('redirect', null);
+        $redirect = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
         if ($redirect === null) {
             $url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF'); // , 'type' => 'category', 'id' => $category
         } else {

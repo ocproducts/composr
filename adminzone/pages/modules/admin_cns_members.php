@@ -283,7 +283,7 @@ class Module_admin_cns_members
     {
         // Read in data
         $username = trim(post_param_string('username'));
-        $password = trim(post_param_string('password'));
+        $password = trim(post_param_string('password', false, INPUT_FILTER_NONE));
         $email_address = trim(post_param_string('email_address', member_field_is_required(null, 'email_address') ? false : ''));
         require_code('temporal2');
         list($dob_year, $dob_month, $dob_day) = post_param_date_components('dob');
@@ -750,7 +750,7 @@ class Module_admin_cns_members
     {
         set_mass_import_mode();
 
-        $default_password = post_param_string('default_password');
+        $default_password = post_param_string('default_password', false, INPUT_FILTER_NONE);
 
         $use_temporary_passwords = (post_param_integer('temporary_password', 0) == 1);
 

@@ -131,8 +131,8 @@ class Module_recommend
             inform_non_canonical_parameter('title');
             inform_non_canonical_parameter('cms');
 
-            $page_title = get_param_string('page_title', null, true);
-            if (get_param_string('from', null, true) !== null) {
+            $page_title = get_param_string('page_title', null, INPUT_FILTER_GET_COMPLEX);
+            if (get_param_string('from', null, INPUT_FILTER_URL_INTERNAL) !== null) {
                 if ($page_title === null) {
                     $this->title = get_screen_title('RECOMMEND_LINK');
                 } else {
@@ -148,8 +148,8 @@ class Module_recommend
         }
 
         if ($type == 'gui2') {
-            $page_title = get_param_string('page_title', null, true);
-            if (get_param_string('from', null, true) !== null) {
+            $page_title = get_param_string('page_title', null, INPUT_FILTER_GET_COMPLEX);
+            if (get_param_string('from', null, INPUT_FILTER_URL_INTERNAL) !== null) {
                 if ($page_title === null) {
                     $this->title = get_screen_title('RECOMMEND_LINK');
                 } else {
@@ -227,7 +227,7 @@ class Module_recommend
 
         require_css('recommend');
 
-        $page_title = get_param_string('page_title', null, true);
+        $page_title = get_param_string('page_title', null, INPUT_FILTER_GET_COMPLEX);
 
         $submit_name = ($page_title !== null) ? make_string_tempcode($page_title) : do_lang_tempcode('SEND');
         $post_url = build_url(array('page' => '_SELF', 'type' => 'actual'), '_SELF', null, true);
@@ -283,13 +283,13 @@ class Module_recommend
             }
         }
         $message = post_param_string('message', null);
-        $subject = get_param_string('subject', do_lang('RECOMMEND_MEMBER_SUBJECT', get_site_name()), true);
+        $subject = get_param_string('subject', do_lang('RECOMMEND_MEMBER_SUBJECT', get_site_name()), INPUT_FILTER_GET_COMPLEX);
         if ($message === null) {
-            $message = get_param_string('s_message', '', true);
+            $message = get_param_string('s_message', '', INPUT_FILTER_GET_COMPLEX);
             if ($message == '') {
-                $from = get_param_string('from', null, true);
+                $from = get_param_string('from', null, INPUT_FILTER_URL_INTERNAL);
                 if ($from !== null) {
-                    $resource_title = get_param_string('title', '', true);
+                    $resource_title = get_param_string('title', '', INPUT_FILTER_GET_COMPLEX);
                     if ($resource_title == '') { // Auto download it
                         $downloaded_at_link = http_get_contents($from, array('trigger_error' => false, 'byte_limit' => 3000));
                         if (is_string($downloaded_at_link)) {
@@ -304,7 +304,7 @@ class Module_recommend
                     if ($resource_title == '') {
                         $resource_title = do_lang('THIS'); // Could not find at all, so say 'this'
                     } else {
-                        $subject = get_param_string('subject', do_lang('RECOMMEND_MEMBER_SUBJECT_SPECIFIC', get_site_name(), $resource_title));
+                        $subject = get_param_string('subject', do_lang('RECOMMEND_MEMBER_SUBJECT_SPECIFIC', get_site_name(), $resource_title), INPUT_FILTER_GET_COMPLEX);
                     }
 
                     $message = do_lang('FOUND_THIS_ON', get_site_name(), comcode_escape($from), comcode_escape($resource_title));
@@ -317,7 +317,7 @@ class Module_recommend
 
         $text = ($page_title === null) ? do_lang_tempcode('RECOMMEND_SITE_TEXT', escape_html(get_site_name())) : new Tempcode();
 
-        if (get_param_string('from', null, true) !== null) {
+        if (get_param_string('from', null, INPUT_FILTER_URL_INTERNAL) !== null) {
             $submit_name = do_lang_tempcode('SEND');
             $text = do_lang_tempcode('RECOMMEND_AUTO_TEXT', get_site_name());
             $need_message = true;
@@ -393,8 +393,8 @@ class Module_recommend
 
         $text = do_lang_tempcode('RECOMMEND_SITE_TEXT_CHOOSE_CONTACTS', escape_html(get_site_name()));
 
-        $page_title = get_param_string('page_title', null, true);
-        if (get_param_string('from', null, true) === null) {
+        $page_title = get_param_string('page_title', null, INPUT_FILTER_GET_COMPLEX);
+        if (get_param_string('from', null, INPUT_FILTER_URL_INTERNAL) === null) {
             $hidden->attach(form_input_hidden('wrap_message', '1'));
         }
 

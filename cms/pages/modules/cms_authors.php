@@ -330,7 +330,7 @@ class Module_cms_authors
                 delete_form_custom_fields('author', $author);
             }
         } else {
-            $_url = post_param_string('url');
+            $_url = post_param_string('url', false, INPUT_FILTER_URL_GENERAL);
             if ((strpos($_url, '@') !== false) && (strpos($_url, 'mailto:') === false)) {
                 $_url = 'mailto:' . $_url;
             }

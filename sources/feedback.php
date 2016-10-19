@@ -187,10 +187,7 @@ function post_comment_script()
     prepare_for_known_ajax_response();
 
     // Read in context of what we're doing
-    if (!isset($_GET['options']) && !isset($_POST['options'])) {
-        post_param_string('options'); // Trigger an error
-    }
-    $options = isset($_POST['options']) ? $_POST['options'] : (isset($_GET['options']) ? $_GET['options'] : '');
+    $options = either_param_string('options', false, INPUT_FILTER_NONE);
     $_options = @json_decode($options, true);
     if (!is_array($_options)) {
         warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
@@ -1089,7 +1086,7 @@ function actualise_post_trackback($allow_trackbacks, $content_type, $content_id)
     require_code('antispam');
     inject_action_spamcheck();
 
-    $url = post_param_string('url', null);
+    $url = post_param_string('url', null, INPUT_FILTER_URL_GENERAL);
     if ($url === null) {
         return false;
     }

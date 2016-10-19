@@ -213,7 +213,7 @@ class Hook_search_cns_members extends FieldsSearchHook
             $ob = get_fields_hook($row['cf_type']);
             list(, , $storage_type) = $ob->get_field_value_row_bits($row);
 
-            $param = get_param_string('option_' . strval($row['id']), '');
+            $param = get_param_string('option_' . strval($row['id']), '', INPUT_FILTER_GET_COMPLEX);
             if ($param != '') {
                 $where_clause .= ' AND ';
 

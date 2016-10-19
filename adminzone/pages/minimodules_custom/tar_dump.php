@@ -30,8 +30,8 @@ header('Content-Disposition: attachment; filename="' . escape_header($filename) 
 $tar = tar_open(null, 'wb');
 
 $max_size = get_param_integer('max_size', null);
-$subpath = get_param_string('path', '');
-tar_add_folder($tar, null, get_file_base() . (($subpath == '') ? '' : '/') . $subpath, $max_size, $subpath, null, null, false, true);
+$subpath = get_param_string('path', '', INPUT_FILTER_GET_COMPLEX);
+tar_add_folder($tar, null, get_file_base() . (($subpath == '') ? '' : '/') . $subpath, $max_size, $subpath, array(), null, false, true);
 
 tar_close($tar);
 

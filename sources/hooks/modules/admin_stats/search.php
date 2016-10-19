@@ -70,7 +70,7 @@ class Hook_admin_stats_search
         $start = get_param_integer('start', 0);
         $max = get_param_integer('max', 20);
         $sortables = array('s_primary' => do_lang_tempcode('SEARCH_STATISTICS'));
-        $test = explode(' ', get_param_string('sort', 's_primary DESC'), 2);
+        $test = explode(' ', get_param_string('sort', 's_primary DESC', INPUT_FILTER_GET_COMPLEX), 2);
         if (count($test) == 1) {
             $test[1] = 'DESC';
         }

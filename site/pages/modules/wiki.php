@@ -243,7 +243,7 @@ class Module_wiki
 
         if ($type == 'browse') {
             // Find our page by whatever means
-            $find = get_param_string('find', '');
+            $find = get_param_string('find', '', INPUT_FILTER_GET_COMPLEX);
             if ($find != '') { // Allow quick 'find' remapping to a real ID
                 $id = $GLOBALS['SITE_DB']->query_select_value_if_there('wiki_pages', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('title') => $find));
                 if ($id === null) {
@@ -757,9 +757,9 @@ class Module_wiki
      */
     public function do_wiki_merge_interface()
     {
-        $_redir_url = build_url(array('page' => '_SELF', 'type' => 'browse', 'id' => get_param_string('id', false, true)), '_SELF');
+        $_redir_url = build_url(array('page' => '_SELF', 'type' => 'browse', 'id' => get_param_string('id', false, INPUT_FILTER_GET_COMPLEX)), '_SELF');
         $redir_url = $_redir_url->evaluate();
-        $merge_url = build_url(array('page' => '_SELF', 'type' => 'do', 'id' => get_param_string('id', false, true), 'redirect' => $redir_url), '_SELF', null, true);
+        $merge_url = build_url(array('page' => '_SELF', 'type' => 'do', 'id' => get_param_string('id', false, INPUT_FILTER_GET_COMPLEX), 'redirect' => $redir_url), '_SELF', null, true);
 
         $merged = '';
         $markers = $this->get_markers();
@@ -798,7 +798,7 @@ class Module_wiki
      */
     public function do_wiki_merge()
     {
-        check_edit_permission('low', null, array('wiki_page', get_param_string('id', false, true)), 'cms_wiki');
+        check_edit_permission('low', null, array('wiki_page', get_param_string('id', false, INPUT_FILTER_GET_COMPLEX)), 'cms_wiki');
 
         require_code('comcode_check');
 
@@ -841,7 +841,7 @@ class Module_wiki
         log_it('MERGE_WIKI_POSTS', strval($page_id), $page_title);
 
         // Show it worked / Refresh
-        $url = get_param_string('redirect');
+        $url = get_param_string('redirect', false, INPUT_FILTER_URL_INTERNAL);
         return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
     }
 
@@ -864,9 +864,9 @@ class Module_wiki
         }
         check_edit_permission('low', $original_poster, array('wiki_page', $true_page_id), 'cms_wiki');
 
-        $_redir_url = build_url(array('page' => '_SELF', 'type' => 'browse', 'id' => get_param_string('id', false, true)), '_SELF');
+        $_redir_url = build_url(array('page' => '_SELF', 'type' => 'browse', 'id' => get_param_string('id', false, INPUT_FILTER_GET_COMPLEX)), '_SELF');
         $redir_url = $_redir_url->evaluate();
-        $move_url = build_url(array('page' => '_SELF', 'type' => '_move', 'id' => get_param_string('id', false, true), 'redirect' => $redir_url), '_SELF');
+        $move_url = build_url(array('page' => '_SELF', 'type' => '_move', 'id' => get_param_string('id', false, INPUT_FILTER_GET_COMPLEX), 'redirect' => $redir_url), '_SELF');
 
         require_code('form_templates');
 
@@ -927,7 +927,7 @@ class Module_wiki
             log_it('WIKI_MOVE_POST', strval($post_id), strval($target));
 
             // Show it worked / Refresh
-            $url = get_param_string('redirect');
+            $url = get_param_string('redirect', false, INPUT_FILTER_URL_INTERNAL);
             return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
         }
     }
@@ -1068,9 +1068,9 @@ class Module_wiki
 
         $breadcrumbs = breadcrumb_segments_to_tempcode(wiki_breadcrumbs($chain, null, true, true));
 
-        $_redir_url = build_url(array('page' => '_SELF', 'type' => 'browse', 'id' => get_param_string('id', strval($id), true)), '_SELF');
+        $_redir_url = build_url(array('page' => '_SELF', 'type' => 'browse', 'id' => get_param_string('id', strval($id), INPUT_FILTER_GET_COMPLEX)), '_SELF');
         $redir_url = $_redir_url->evaluate();
-        $post_url = build_url(array('page' => '_SELF', 'type' => '_post', 'id' => get_param_string('id', strval(db_get_first_id()), false), 'redirect' => $redir_url), '_SELF');
+        $post_url = build_url(array('page' => '_SELF', 'type' => '_post', 'id' => get_param_string('id', strval(db_get_first_id()), INPUT_FILTER_GET_COMPLEX), 'redirect' => $redir_url), '_SELF');
 
         $hidden_fields->attach(form_input_hidden('post_id', ($post_id === null) ? '' : strval($post_id)));
 
@@ -1195,7 +1195,7 @@ class Module_wiki
         }
 
         // Show it worked / Refresh
-        $url = get_param_string('redirect');
+        $url = get_param_string('redirect', false, INPUT_FILTER_URL_INTERNAL);
         return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
     }
 }

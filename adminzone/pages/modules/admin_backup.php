@@ -360,7 +360,7 @@ class Module_admin_backup
      */
     public function confirm_delete()
     {
-        $file = get_param_string('file');
+        $file = get_param_string('file', false, INPUT_FILTER_GET_COMPLEX);
 
         $preview = do_lang_tempcode('CONFIRM_DELETE', escape_html($file));
         $url = build_url(array('page' => '_SELF', 'type' => 'delete'), '_SELF');

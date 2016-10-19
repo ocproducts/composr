@@ -107,7 +107,7 @@ class Module_admin_messaging
         }
 
         if ($type == 'take') {
-            $id = get_param_string('id', false, true);
+            $id = get_param_string('id', false, INPUT_FILTER_GET_COMPLEX);
             $message_type = get_param_string('message_type');
             breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('CONTACT_US_MESSAGING')), array('_SELF:_SELF:view:' . $id . ':message_type=' . $message_type, do_lang_tempcode('MESSAGE'))));
             breadcrumb_set_self(do_lang_tempcode('_TAKE_RESPONSIBILITY'));
@@ -197,7 +197,7 @@ class Module_admin_messaging
      */
     public function view_message()
     {
-        $id = get_param_string('id', false, true);
+        $id = get_param_string('id', false, INPUT_FILTER_GET_COMPLEX);
         $message_type = get_param_string('message_type');
 
         require_css('messaging');

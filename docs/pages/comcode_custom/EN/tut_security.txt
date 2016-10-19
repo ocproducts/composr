@@ -215,7 +215,6 @@ Most security logs are accidental (caused by mistyped URLs, or buggy software) o
 
 The following types of alert are defined:
  - [tt]DODGY_GET_HACK[/tt], A suspicious URL was given that includes characters looking like they may be there to do dodgy things. As URLs are generally clean of symbols, it is safe for Composr to detect dangerous looking ones, such as file system paths, new line characters, and HTML symbols
- - [s][tt]REFERRER_IFRAME_HACK[/tt], It looks like someone tried to abuse an iframe in Composr, where the iframe URL was given by the main page URL. By doing this, social engineering, or referrer faking, might be achievable[/s] -- [i]not currently in use, we now use alternative and more reliable CSRF-prevention methods[/i]
  - [tt]EVIL_POSTED_FORM_HACK[/tt], This may be due to a social engineering attack, where a logged in administrator has been tricked into filling in a form targeted to delete something from the website (CSRF)
  - [tt]VOTE_CHEAT[/tt], The user tried to vote outside the allowed range of options (e.g. 11 or -2). I can think of no way this could be done accidentally
  - [tt]SCRIPT_UPLOAD_HACK[/tt], The user tried to upload a PHP script. This may well be innocent (if they are uploading a saved web-page with [tt].php[/tt] in the URL for example, or if they are uploading a script they expect people to be able to download in raw form)
@@ -230,7 +229,6 @@ The following types of alert are defined:
  - [tt]HEADER_SPLIT_HACK[/tt], A URL was submitted that contains a blank line. The submitter of the content with this URL is very likely to be a hacker, as there is no conventional way this situation could be come by
  - [tt]EVAL_HACK[/tt], The EVAL command would have executed arbitrary code if it was not blocked. This is extremely likely to be a hack attempt and should be taken seriously
  - [tt]PATH_HACK[/tt], Tried to use a file path redirection to get outside intended directory
- - [tt]ADMINCENTRE_ACCESS_DENIED[/tt], The user tried to access a secured zone without permission. This is unlikely to be a serious attack, as the user may just have been following a misplaced URL, or messing about. This error is not enabled by default on Composr because we found that Google ads triggered it massively!
  - [tt]PHP_DOWNLOAD_INNOCENT[/tt], Somehow a PHP file got referenced in the download system. This should have been filtered by 'TRY_TO_DOWNLOAD_SCRIPT', but was not. This is a serious security breach if it happens
  - [tt]BRUTEFORCE_LOGIN_HACK[/tt], Someone gave incorrect login details 30 times over a 15 minute period (brute-force attack)
 

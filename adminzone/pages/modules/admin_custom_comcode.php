@@ -223,7 +223,7 @@ class Module_admin_custom_comcode extends Standard_crud_module
     {
         require_code('templates_results_table');
 
-        $current_ordering = get_param_string('sort', 'tag_tag ASC');
+        $current_ordering = get_param_string('sort', 'tag_tag ASC', INPUT_FILTER_GET_COMPLEX);
         if (strpos($current_ordering, ' ') === false) {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }

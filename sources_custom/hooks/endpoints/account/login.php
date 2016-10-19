@@ -28,7 +28,7 @@ class Hook_endpoint_account_login
     public function run($type, $id)
     {
         $username = trim(post_param_string('username'));
-        $password = trim(post_param_string('password'));
+        $password = trim(post_param_string('password', false, INPUT_FILTER_NONE));
 
         $feedback = $GLOBALS['FORUM_DRIVER']->forum_authorise_login($username, null, apply_forum_driver_md5_variant($password, $username), $password);
         $member_id = $feedback['id'];

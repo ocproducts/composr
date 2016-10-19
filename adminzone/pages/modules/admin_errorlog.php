@@ -157,7 +157,7 @@ class Module_admin_errorlog
         $start = get_param_integer('start', 0);
         $max = get_param_integer('max', 50);
         $sortables = array('date_and_time' => do_lang_tempcode('DATE_TIME'));
-        $test = explode(' ', get_param_string('sort', 'date_and_time DESC'), 2);
+        $test = explode(' ', get_param_string('sort', 'date_and_time DESC', INPUT_FILTER_GET_COMPLEX), 2);
         if (count($test) == 1) {
             $test[1] = 'DESC';
         }

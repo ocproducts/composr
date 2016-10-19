@@ -560,7 +560,7 @@ class Module_groups
 
         require_code('templates_results_table');
         $sortables = array();
-        list($sortable, $sort_order) = explode(' ', get_param_string('p_sort', 'date_and_time DESC'));
+        list($sortable, $sort_order) = explode(' ', get_param_string('p_sort', 'date_and_time DESC', INPUT_FILTER_GET_COMPLEX));
 
         // Primary members
         $start = get_param_integer('p_start', 0);

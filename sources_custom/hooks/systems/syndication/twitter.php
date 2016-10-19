@@ -58,7 +58,7 @@ class Hook_syndication_twitter
             exit();
         }
 
-        $response = $twitter->oAuthAccessToken(get_param_string('oauth_token'), get_param_string('oauth_verifier'));
+        $response = $twitter->oAuthAccessToken(get_param_string('oauth_token', false, INPUT_FILTER_GET_COMPLEX), get_param_string('oauth_verifier', false, INPUT_FILTER_GET_COMPLEX));
 
         if (!isset($response['oauth_token'])) {
             attach_message(do_lang_tempcode('TWITTER_OAUTH_FAIL', escape_html($response['message'])), 'warn', false, true);

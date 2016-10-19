@@ -116,7 +116,7 @@ function create_session($member, $session_confirmed = 0, $invisible = false)
             'the_title' => '',
             'the_zone' => get_zone_name(),
             'the_page' => cms_mb_substr(get_page_name(), 0, 80),
-            'the_type' => cms_mb_substr(get_param_string('type', '', true), 0, 80),
+            'the_type' => cms_mb_substr(get_param_string('type', '', INPUT_FILTER_GET_COMPLEX), 0, 80),
             'the_id' => cms_mb_substr(get_param_string('id', ''), 0, 80),
         );
         $GLOBALS['SITE_DB']->query_insert('sessions', $new_session_row, false, true);
@@ -303,7 +303,7 @@ function try_su_login($member)
                 'the_title' => '',
                 'the_zone' => get_zone_name(),
                 'the_page' => cms_mb_substr(get_page_name(), 0, 80),
-                'the_type' => cms_mb_substr(get_param_string('type', '', true), 0, 80),
+                'the_type' => cms_mb_substr(get_param_string('type', '', INPUT_FILTER_GET_COMPLEX), 0, 80),
                 'the_id' => cms_mb_substr(get_param_string('id', ''), 0, 80),
             );
             $GLOBALS['SITE_DB']->query_insert('sessions', $new_session_row);

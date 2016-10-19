@@ -33,6 +33,28 @@
  */
 function init__minikernel()
 {
+    // Input filtering constants
+    define('INPUT_FILTER_WORDFILTER', 1); // POST-only
+    define('INPUT_FILTER_WYSIWYG_TO_COMCODE', 2); // POST-only
+    define('INPUT_FILTER_COMCODE_CLEANUP', 4); // POST-only
+    define('INPUT_FILTER_DOWNLOAD_ASSOCIATED_MEDIA', 8); // POST-only
+    define('INPUT_FILTER_FIELDS_XML', 16); // POST-only
+    define('INPUT_FILTER_URL_SCHEMES', 32); // POST/GET
+    define('INPUT_FILTER_URL_DESTINATION', 64); // GET
+    define('INPUT_FILTER_JS_URLS', 128); // POST/GET
+    define('INPUT_FILTER_VERY_STRICT', 256); // POST/GET
+    define('INPUT_FILTER_SPAM_HEURISTIC', 512); // POST/GET
+    define('INPUT_FILTER_EARLY_XSS', 1024); // POST for non-privileged/GET
+    define('INPUT_FILTER_DYNAMIC_FIREWALL', 2048); // POST/GET
+    define('INPUT_FILTER_ALLOWED_POSTING_SITES', 4096); // POST
+    // --
+    define('INPUT_FILTER_DEFAULT_POST', INPUT_FILTER_WORDFILTER | INPUT_FILTER_WYSIWYG_TO_COMCODE | INPUT_FILTER_COMCODE_CLEANUP | INPUT_FILTER_DOWNLOAD_ASSOCIATED_MEDIA | INPUT_FILTER_FIELDS_XML | INPUT_FILTER_URL_SCHEMES | INPUT_FILTER_JS_URLS | INPUT_FILTER_SPAM_HEURISTIC | INPUT_FILTER_EARLY_XSS | INPUT_FILTER_DYNAMIC_FIREWALL);
+    define('INPUT_FILTER_DEFAULT_GET', INPUT_FILTER_JS_URLS | INPUT_FILTER_VERY_STRICT | INPUT_FILTER_SPAM_HEURISTIC | INPUT_FILTER_EARLY_XSS | INPUT_FILTER_DYNAMIC_FIREWALL | INPUT_FILTER_URL_SCHEMES);
+    define('INPUT_FILTER_GET_COMPLEX', INPUT_FILTER_JS_URLS | INPUT_FILTER_SPAM_HEURISTIC | INPUT_FILTER_EARLY_XSS | INPUT_FILTER_DYNAMIC_FIREWALL | INPUT_FILTER_URL_SCHEMES);
+    define('INPUT_FILTER_URL_GENERAL', INPUT_FILTER_EARLY_XSS | INPUT_FILTER_DYNAMIC_FIREWALL | INPUT_FILTER_URL_SCHEMES);
+    define('INPUT_FILTER_URL_INTERNAL', INPUT_FILTER_URL_DESTINATION | INPUT_FILTER_EARLY_XSS | INPUT_FILTER_DYNAMIC_FIREWALL | INPUT_FILTER_URL_SCHEMES);
+    define('INPUT_FILTER_NONE', 0);
+
     // Fixup some inconsistencies in parameterisation on different PHP platforms. See phpstub.php for info on what environmental data we can rely on.
     if ((!isset($_SERVER['SCRIPT_NAME'])) && (!isset($_ENV['SCRIPT_NAME']))) { // May be missing on GAE
         if (strpos($_SERVER['PHP_SELF'], '.php') !== false) {
@@ -588,7 +610,7 @@ function get_base_url($https = null, $zone_for = '')
     if (empty($SITE_INFO['base_url'])) {
         $default_base_url = (tacit_https() ? 'https://' : 'http://') . cms_srv('HTTP_HOST') . str_replace('%2F', '/', rawurlencode(str_replace('\\', '/', dirname(cms_srv('SCRIPT_NAME')))));
 
-        $base_url = post_param_string('base_url', $default_base_url);
+        $base_url = post_param_string('base_url', $default_base_url, INPUT_FILTER_URL_GENERAL);
         if (substr($base_url, -1) == '/') {
             $base_url = substr($base_url, 0, strlen($base_url) - 1);
         }

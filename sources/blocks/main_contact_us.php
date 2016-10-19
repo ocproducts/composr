@@ -139,7 +139,7 @@ class Block_main_contact_us
                 }
 
                 $default_text = mixed();
-                $redirect = get_param_string('redirect', '', true);
+                $redirect = get_param_string('redirect', '', INPUT_FILTER_GET_COMPLEX);
                 if ($redirect != '') {
                     $default_text = do_lang('COMMENTS_DEFAULT_TEXT', $redirect);
                 }

@@ -77,7 +77,7 @@ class Block_bottom_news
         $content = new Tempcode();
 
         // News Query
-        $select = array_key_exists('select', $map) ? $map['select'] : get_param_string('news_select', '*');
+        $select = array_key_exists('select', $map) ? $map['select'] : get_param_string('news_select', '*', INPUT_FILTER_GET_COMPLEX);
         if ($select == '*') {
             $q_filter = '1=1';
         } else {

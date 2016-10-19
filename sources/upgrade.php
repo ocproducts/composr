@@ -33,7 +33,7 @@ function upgrade_script()
     }
 
     if ((array_key_exists('given_password', $_POST))) {
-        $given_password = post_param_string('given_password');
+        $given_password = post_param_string('given_password', false, INPUT_FILTER_NONE);
         require_code('crypt_master');
         if (check_master_password($given_password)) {
             $type = get_param_string('type', 'browse');
@@ -216,11 +216,11 @@ function upgrade_script()
                 case 'file_upgrade':
                     appengine_live_guard();
 
-                    if (get_param_string('tar_url', '') == '') {
+                    if (get_param_string('tar_url', '', INPUT_FILTER_URL_GENERAL) == '') {
                         echo do_lang('FU_FILE_UPGRADE_INFO');
                     }
                     echo '<form title="' . do_lang('PROCEED') . '" enctype="multipart/form-data" action="upgrader.php?type=_file_upgrade" method="post">' . post_fields_relay();
-                    echo '<p><label for="url">' . do_lang('URL') . '</label> <input type="text" id="url" name="url" value="' . escape_html(base64_decode(get_param_string('tar_url', ''))) . '" /></p>';
+                    echo '<p><label for="url">' . do_lang('URL') . '</label> <input type="text" id="url" name="url" value="' . escape_html(base64_decode(get_param_string('tar_url', '', INPUT_FILTER_URL_GENERAL))) . '" /></p>';
                     echo '<p><label for="dry_run"><input type="checkbox" id="dry_run" name="dry_run" value="1" /> ' . do_lang('FU_DRY_RUN') . '</label></p>';
                     if ((cms_srv('HTTP_HOST') == 'compo.sr') || ($GLOBALS['DEV_MODE'])) { // for ocProducts to use on own site, for testing
                         echo '<p><label for="upload">' . do_lang('ALT_FIELD', do_lang('UPLOAD')) . '</label> <input type="file" id="upload" name="upload" /></p>';
@@ -243,16 +243,16 @@ function upgrade_script()
                     if (php_function_allowed('set_time_limit')) {
                         @set_time_limit(0);
                     }
-                    if ((post_param_string('url', '') == '') && ((cms_srv('HTTP_HOST') == 'compo.sr') || ($GLOBALS['DEV_MODE']))) {
+                    if ((post_param_string('url', '', INPUT_FILTER_URL_GENERAL) == '') && ((cms_srv('HTTP_HOST') == 'compo.sr') || ($GLOBALS['DEV_MODE']))) {
                         $temp_path = $_FILES['upload']['tmp_name'];
                     } else {
-                        if (post_param_string('url', '') == '') {
+                        if (post_param_string('url', '', INPUT_FILTER_URL_GENERAL) == '') {
                             warn_exit(do_lang_tempcode('IMPROPERLY_FILLED_IN'));
                         }
 
                         $temp_path = cms_tempnam();
                         $myfile = fopen($temp_path, 'wb');
-                        http_get_contents(post_param_string('url'), array('write_to_file' => $myfile));
+                        http_get_contents(post_param_string('url', false, INPUT_FILTER_URL_GENERAL), array('write_to_file' => $myfile));
                         fclose($myfile);
                     }
                     if (substr(strtolower($temp_path), -4) == '.zip') {
@@ -651,7 +651,7 @@ function up_do_login($message = null)
     <form title=\"{$l_login}\" action=\"" . escape_html($url) . "\" method=\"post\">
     " . (($news_id === null) ? '' : ('<input type="hidden" name="news_id" value="' . strval($news_id) . '" />')) . "
     <p>
-        {$l_password}: <input type=\"password\" name=\"given_password\" value=\"" . escape_html(post_param_string('password', '')) . "\" />
+        {$l_password}: <input type=\"password\" name=\"given_password\" value=\"" . escape_html(post_param_string('password', '', INPUT_FILTER_NONE)) . "\" />
     </p>
     ";
 

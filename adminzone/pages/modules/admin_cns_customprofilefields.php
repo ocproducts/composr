@@ -257,7 +257,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
     {
         require_code('templates_results_table');
         $form_id = 'selection_table';
-        $current_ordering = get_param_string('sort', 'cf_order ASC');
+        $current_ordering = get_param_string('sort', 'cf_order ASC', INPUT_FILTER_GET_COMPLEX);
         if (strpos($current_ordering, ' ') === false) {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }

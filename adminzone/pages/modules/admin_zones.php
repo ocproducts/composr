@@ -285,7 +285,7 @@ class Module_admin_zones
         // After completion prep/relay
         $_default_redirect = build_url(array('page' => ''), $id);
         $default_redirect = $_default_redirect->evaluate();
-        $post_url = build_url(array('page' => '_SELF', 'type' => '__editor', 'lang' => $lang, 'redirect' => get_param_string('redirect', $default_redirect), 'id' => $id), '_SELF');
+        $post_url = build_url(array('page' => '_SELF', 'type' => '__editor', 'lang' => $lang, 'redirect' => get_param_string('redirect', $default_redirect, INPUT_FILTER_URL_INTERNAL), 'id' => $id), '_SELF');
 
         // Zone editing stuff
         $rows = $GLOBALS['SITE_DB']->query_select('zones', array('*'), array('zone_name' => $id), '', 1);
@@ -493,7 +493,7 @@ class Module_admin_zones
 
         // Edit pages
         foreach (array('panel_left', DEFAULT_ZONE_PAGE_NAME, 'panel_right') as $for) {
-            $redirect = post_param_string('redirect_' . $for, null);
+            $redirect = post_param_string('redirect_' . $for, null, INPUT_FILTER_URL_INTERNAL);
             if ($redirect !== null) {
                 if (addon_installed('redirects_editor')) {
                     $GLOBALS['SITE_DB']->query_delete('redirects', array(
@@ -562,7 +562,7 @@ class Module_admin_zones
         erase_persistent_cache();
 
         // Redirect
-        $url = get_param_string('redirect');
+        $url = get_param_string('redirect', false, INPUT_FILTER_URL_INTERNAL);
         return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
     }
 
@@ -762,7 +762,7 @@ class Module_admin_zones
         $header_text = post_param_string('header_text');
         $theme = post_param_string('theme');
         $require_session = post_param_integer('require_session', 0);
-        $base_url = post_param_string('base_url', '');
+        $base_url = post_param_string('base_url', '', INPUT_FILTER_URL_GENERAL);
 
         actual_add_zone($zone, $_title, $default_page, $header_text, $theme, $require_session, false, $base_url);
 
@@ -888,7 +888,7 @@ class Module_admin_zones
         }
 
         $map = array('page' => '_SELF', 'type' => '__edit');
-        $url = get_param_string('redirect', null);
+        $url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
         if ($url !== null) {
             $map['redirect'] = $url;
         }
@@ -921,7 +921,7 @@ class Module_admin_zones
             $header_text = post_param_string('header_text');
             $theme = post_param_string('theme');
             $require_session = post_param_integer('require_session', 0);
-            $base_url = post_param_string('base_url', '');
+            $base_url = post_param_string('base_url', '', INPUT_FILTER_URL_GENERAL);
 
             $new_zone = post_param_string('new_zone');
             if ($new_zone != $zone) {
@@ -964,7 +964,7 @@ class Module_admin_zones
             sync_htaccess_with_zones();
 
             // Show it worked / Refresh
-            $url = get_param_string('redirect', null);
+            $url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
             if ($url === null) {
                 $_url = build_url(array('page' => '_SELF', 'type' => 'edit'), '_SELF');
                 $url = $_url->evaluate();

@@ -133,8 +133,8 @@ class Module_admin_cns_merge_members
 
         require_code('form_templates');
 
-        $from = get_param_string('from', '', true);
-        $to = get_param_string('to', '', true);
+        $from = get_param_string('from', '', INPUT_FILTER_GET_COMPLEX);
+        $to = get_param_string('to', '', INPUT_FILTER_GET_COMPLEX);
 
         $fields->attach(form_input_username(do_lang_tempcode('FROM'), do_lang_tempcode('DESCRIPTION_MEMBER_FROM'), 'from', $from, true));
         $fields->attach(form_input_username(do_lang_tempcode('TO'), do_lang_tempcode('DESCRIPTION_MEMBER_TO'), 'to', $to, true));

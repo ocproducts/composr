@@ -105,7 +105,7 @@ class Block_main_news
         $days_outline = floatval($days) - $days_full;
 
         // News query
-        $select = isset($map['select']) ? $map['select'] : get_param_string('news_select', '*');
+        $select = isset($map['select']) ? $map['select'] : get_param_string('news_select', '*', INPUT_FILTER_GET_COMPLEX);
         $select_and = isset($map['select_and']) ? $map['select_and'] : '';
         if ($select == '*') {
             $q_filter = '1=1';

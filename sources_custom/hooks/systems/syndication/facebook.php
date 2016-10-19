@@ -103,7 +103,7 @@ class Hook_syndication_facebook
         require_code('facebook_connect');
         global $FACEBOOK_CONNECT;
 
-        $code = get_param_string('code', '', true);
+        $code = get_param_string('code', '', INPUT_FILTER_GET_COMPLEX);
 
         if ($code == '') {
             $scope = array('publish_actions');
@@ -116,8 +116,8 @@ class Hook_syndication_facebook
             smart_redirect($oauth_redir_url);
         }
 
-        if (get_param_string('error_reason', null) !== null) { // oauth happened and ERROR!
-            attach_message(do_lang_tempcode('FACEBOOK_OAUTH_FAIL', escape_html(get_param_string('error_reason'))), 'warn', false, true);
+        if (get_param_string('error_reason', null, INPUT_FILTER_GET_COMPLEX) !== null) { // oauth happened and ERROR!
+            attach_message(do_lang_tempcode('FACEBOOK_OAUTH_FAIL', escape_html(get_param_string('error_reason', false, INPUT_FILTER_GET_COMPLEX))), 'warn', false, true);
             return false;
         }
 

@@ -118,7 +118,7 @@ class Hook_pointstore_disastr
     {
         $class = str_replace('hook_pointstore_', '', strtolower(get_class($this)));
 
-        $disease_id = get_param_string('disease', 0);
+        $disease_id = get_param_integer('disease', 0);
         $member_id = get_member();
 
         //default values

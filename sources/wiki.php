@@ -617,7 +617,7 @@ function get_param_wiki_chain($parameter_name, $default_value = null)
     if ($default_value === null) {
         $default_value = strval(db_get_first_id());
     }
-    $value = get_param_string($parameter_name, $default_value, true);
+    $value = get_param_string($parameter_name, $default_value, INPUT_FILTER_GET_COMPLEX);
     if (is_numeric($value)) { // If you head to a page directly, e.g. via [[example]], should auto-derive breadcrumbs
         $id = intval($value);
         $chain = wiki_derive_chain($id);

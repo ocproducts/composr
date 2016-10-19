@@ -396,7 +396,7 @@ class Module_admin_import
         } else {
             $db_name = either_param_string('db_name');
             $db_user = either_param_string('db_user');
-            $db_password = either_param_string('db_password');
+            $db_password = either_param_string('db_password', false, INPUT_FILTER_NONE);
             $db_table_prefix = either_param_string('db_table_prefix');
             $db_host = either_param_string('db_host', $db_host);
         }
@@ -553,7 +553,7 @@ class Module_admin_import
         } else {
             $db_name = either_param_string('db_name');
             $db_user = either_param_string('db_user');
-            $db_password = either_param_string('db_password');
+            $db_password = either_param_string('db_password', false, INPUT_FILTER_NONE);
             $db_table_prefix = either_param_string('db_table_prefix');
             $db_host = either_param_string('db_host', $db_host);
         }

@@ -167,8 +167,8 @@ class Module_admin_menus
 
         // Actualiser URL
         $map = array('page' => '_SELF', 'type' => 'edit');
-        if (get_param_string('redirect', '!') != '!') {
-            $map['redirect'] = get_param_string('redirect');
+        if (get_param_string('redirect', '!', INPUT_FILTER_URL_INTERNAL) != '!') {
+            $map['redirect'] = get_param_string('redirect', false, INPUT_FILTER_URL_INTERNAL);
         }
         $post_url = build_url($map, '_SELF', null, false, true);
 
@@ -210,7 +210,7 @@ class Module_admin_menus
         // Option to copy to an editable menu
         if ($id == '') {
             $preview = do_lang_tempcode('COPY_TO_EDITABLE_MENU');
-            $confirm_url = build_url(array('page' => '_SELF', 'type' => 'edit', 'id' => 'main_menu', 'redirect' => get_param_string('redirect', null)), '_SELF');
+            $confirm_url = build_url(array('page' => '_SELF', 'type' => 'edit', 'id' => 'main_menu', 'redirect' => get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL)), '_SELF');
             require_code('templates_confirm_screen');
             return confirm_screen($this->title, $preview, $confirm_url, null, array('copy_from' => get_option('header_menu_call_string'), 'switch_over' => 1));
         }
@@ -279,14 +279,14 @@ class Module_admin_menus
         ));
 
         $map = array('page' => '_SELF', 'type' => '_edit', 'id' => $id);
-        if (get_param_string('redirect', '!') != '!') {
-            $map['redirect'] = get_param_string('redirect');
+        if (get_param_string('redirect', '!', INPUT_FILTER_URL_INTERNAL) != '!') {
+            $map['redirect'] = get_param_string('redirect', false, INPUT_FILTER_URL_INTERNAL);
         }
         $post_url = build_url($map, '_SELF');
 
         $map = array('page' => '_SELF', 'type' => '_edit', 'id' => $id); // Actually same as edit URL, just we put this into an empty post form
-        if (get_param_string('redirect', '!') != '!') {
-            $map['redirect'] = get_param_string('redirect');
+        if (get_param_string('redirect', '!', INPUT_FILTER_URL_INTERNAL) != '!') {
+            $map['redirect'] = get_param_string('redirect', false, INPUT_FILTER_URL_INTERNAL);
         }
         $delete_url = build_url($map, '_SELF');
 
@@ -429,7 +429,7 @@ class Module_admin_menus
             log_it('DELETE_MENU', $menu_id);
 
             // Go back to menu editor screen
-            $url = get_param_string('redirect', null);
+            $url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
             if ($url === null) {
                 $_url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');
                 $url = $_url->evaluate();
@@ -471,7 +471,7 @@ class Module_admin_menus
             log_it('EDIT_MENU', $menu_id);
 
             // Go back to editing the menu
-            $url = get_param_string('redirect', null);
+            $url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
             if ($url === null) {
                 $_url = build_url(array('page' => '_SELF', 'type' => 'edit', 'id' => $menu_id), '_SELF');
                 $url = $_url->evaluate();
@@ -511,7 +511,7 @@ class Module_admin_menus
         $new_window = post_param_integer('new_window_' . strval($id), 0);
         $include_sitemap = post_param_integer('include_sitemap_' . strval($id), 0);
 
-        $url = post_param_string('url_' . strval($id), '');
+        $url = post_param_string('url_' . strval($id), '', INPUT_FILTER_URL_GENERAL);
 
         // See if we can tidy it back to a page-link
         if (preg_match('#^\w+$#', $url) != 0) {

@@ -1270,7 +1270,7 @@ function ecv__GET($lang, $escaped, $param)
     }
 
     if (isset($param[0])) {
-        $value = get_param_string($param[0], isset($param[1]) ? $param[1] : '', true);
+        $value = get_param_string($param[0], isset($param[1]) ? $param[1] : '', INPUT_FILTER_GET_COMPLEX);
     }
 
     if ($escaped !== array()) {
@@ -3161,7 +3161,7 @@ function ecv_PREVIEW_URL($lang, $escaped, $param)
 {
     $value = find_script('preview');
     $value .= '?page=' . urlencode(get_page_name());
-    $value .= '&type=' . urlencode(get_param_string('type', '', true));
+    $value .= '&type=' . urlencode(get_param_string('type', '', INPUT_FILTER_GET_COMPLEX));
 
     if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);

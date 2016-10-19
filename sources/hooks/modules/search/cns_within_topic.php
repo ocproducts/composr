@@ -41,7 +41,7 @@ class Hook_search_cns_within_topic extends FieldsSearchHook
             }
         }
 
-        if (get_param_string('search_under', '', true) == '') {
+        if (get_param_string('search_under', '', INPUT_FILTER_GET_COMPLEX) == '') {
             return null;
         }
 

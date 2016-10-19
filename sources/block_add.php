@@ -211,7 +211,7 @@ function block_helper_script()
 
     if ($type == 'step2') { // Ask for block fields
         require_code('comcode_compiler');
-        $defaults = parse_single_comcode_tag(get_param_string('parse_defaults', '', true), 'block');
+        $defaults = parse_single_comcode_tag(get_param_string('parse_defaults', '', INPUT_FILTER_GET_COMPLEX), 'block');
 
         $keep = symbol_tempcode('KEEP');
         $back_url = find_script('block_helper') . '?type=step1&field_name=' . urlencode(get_param_string('field_name')) . $keep->evaluate();

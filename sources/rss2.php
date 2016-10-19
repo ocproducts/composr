@@ -156,7 +156,7 @@ function rss_backend_script()
 
     $cutoff = get_param_integer('cutoff', time() - 60 * 60 * 24 * get_param_integer('days', 30));
     $max = get_param_integer('max', 100);
-    $select = get_param_string('select', '*');
+    $select = get_param_string('select', '*', INPUT_FILTER_GET_COMPLEX);
     if ($select == '') {
         $select = '*';
     }

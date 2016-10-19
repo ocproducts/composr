@@ -646,8 +646,8 @@ class Module_galleries
     {
         list($sort, $sort_backwards, $sql_suffix_images, $sql_suffix_videos) = $this->get_sort_order();
 
-        $image_select = get_param_string('select', '*');
-        $video_select = get_param_string('video_select', '*');
+        $image_select = get_param_string('select', '*', INPUT_FILTER_GET_COMPLEX);
+        $video_select = get_param_string('video_select', '*', INPUT_FILTER_GET_COMPLEX);
 
         // View current entry
         $row = null;
@@ -961,7 +961,7 @@ class Module_galleries
         }
 
         // Navigation
-        list(, , , $first_entry_id, , , $first_type) = $this->build_set_navigation(db_string_equal_to('cat', $cat), '', '', $probe_id, $root, $probe_type, get_param_integer('slideshow', 0), get_param_integer('wide_high', 0), $start, $max, $cat, $sort, $sort_backwards, $sql_suffix_images, $sql_suffix_videos, get_param_string('select', '*'), get_param_string('video_select', '*'));
+        list(, , , $first_entry_id, , , $first_type) = $this->build_set_navigation(db_string_equal_to('cat', $cat), '', '', $probe_id, $root, $probe_type, get_param_integer('slideshow', 0), get_param_integer('wide_high', 0), $start, $max, $cat, $sort, $sort_backwards, $sql_suffix_images, $sql_suffix_videos, get_param_string('select', '*', INPUT_FILTER_GET_COMPLEX), get_param_string('video_select', '*', INPUT_FILTER_GET_COMPLEX));
 
         // Render
         return do_template('GALLERY_FLOW_MODE_SCREEN', array(
@@ -1032,9 +1032,9 @@ class Module_galleries
             $cat_select = $cat . '#';
         }
         $days = get_param_string('days', '');
-        $image_select = get_param_string('select', '*');
-        $video_select = get_param_string('video_select', '*');
-        $sort = get_param_string('sort', get_option('galleries_default_sort_order'));
+        $image_select = get_param_string('select', '*', INPUT_FILTER_GET_COMPLEX);
+        $video_select = get_param_string('video_select', '*', INPUT_FILTER_GET_COMPLEX);
+        $sort = get_param_string('sort', get_option('galleries_default_sort_order'), INPUT_FILTER_GET_COMPLEX);
         $filter = either_param_string('active_filter', '');
         $entries = do_block('main_gallery_embed', array('param' => $cat_select, 'zone' => '_SELF', 'sort' => $sort, 'days' => $days, 'max' => get_option('gallery_entries_regular_per_page'), 'pagination' => '1', 'select' => $image_select, 'video_select' => $video_select, 'filter' => $filter, 'video_filter' => $filter, 'block_id' => 'module'));
 
@@ -1144,7 +1144,7 @@ class Module_galleries
         $add_date = get_timezoned_date_time($myrow['add_date']);
         $edit_date = ($myrow['edit_date'] === null) ? '' : get_timezoned_date_time($myrow['edit_date']);
 
-        list($n, $x, $nav) = $this->build_set_navigation(db_string_equal_to('cat', $cat), '', $category_name, $id, $root, 'image', get_param_integer('slideshow', 0), get_param_integer('wide_high', 0), get_param_integer('module_start', 0), get_param_integer('module_max', get_default_gallery_max()), $cat, $sort, $sort_backwards, $sql_suffix_images, $sql_suffix_videos, get_param_string('select', '*'), get_param_string('video_select', '*'));
+        list($n, $x, $nav) = $this->build_set_navigation(db_string_equal_to('cat', $cat), '', $category_name, $id, $root, 'image', get_param_integer('slideshow', 0), get_param_integer('wide_high', 0), get_param_integer('module_start', 0), get_param_integer('module_max', get_default_gallery_max()), $cat, $sort, $sort_backwards, $sql_suffix_images, $sql_suffix_videos, get_param_string('select', '*', INPUT_FILTER_GET_COMPLEX), get_param_string('video_select', '*', INPUT_FILTER_GET_COMPLEX));
 
         $member_id = get_member_id_from_gallery_name($cat, null, true);
         if (get_forum_type() == 'cns') {
@@ -1264,7 +1264,7 @@ class Module_galleries
         // Video HTML
         $video = show_gallery_video_media($url, $thumb_url, $myrow['video_width'], $myrow['video_height'], $myrow['video_length'], $myrow['submitter']);
 
-        list($n, $x, $nav) = $this->build_set_navigation(db_string_equal_to('cat', $cat), '', $category_name, $id, $root, 'video', get_param_integer('slideshow', 0), get_param_integer('wide_high', 0), get_param_integer('module_start', 0), get_param_integer('module_max', get_default_gallery_max()), $cat, $sort, $sort_backwards, $sql_suffix_images, $sql_suffix_videos, get_param_string('select', '*'), get_param_string('video_select', '*'));
+        list($n, $x, $nav) = $this->build_set_navigation(db_string_equal_to('cat', $cat), '', $category_name, $id, $root, 'video', get_param_integer('slideshow', 0), get_param_integer('wide_high', 0), get_param_integer('module_start', 0), get_param_integer('module_max', get_default_gallery_max()), $cat, $sort, $sort_backwards, $sql_suffix_images, $sql_suffix_videos, get_param_string('select', '*', INPUT_FILTER_GET_COMPLEX), get_param_string('video_select', '*', INPUT_FILTER_GET_COMPLEX));
 
         $member_id = get_member_id_from_gallery_name($cat, null, true);
         if (get_forum_type() == 'cns') {
@@ -1520,7 +1520,7 @@ class Module_galleries
      */
     public function get_sort_order()
     {
-        $sort = get_param_string('sort', get_option('galleries_default_sort_order'));
+        $sort = get_param_string('sort', get_option('galleries_default_sort_order'), INPUT_FILTER_GET_COMPLEX);
         if ($sort == 'random ASC') {
             $sort = 'add_date ASC';
         }

@@ -192,7 +192,7 @@ class Module_admin_themes
         if ($type == 'edit_image') {
             $theme = $this->theme;
 
-            $url = get_param_string('url', '');
+            $url = get_param_string('url', '', INPUT_FILTER_URL_GENERAL);
             if ($url != '') {
                 $url = preg_replace('#\.pagespeed\..*$#', '', $url); // Support for working around https://developers.google.com/speed/docs/mod_pagespeed/filter-cache-extend
 
@@ -637,12 +637,12 @@ class Module_admin_themes
     public function _edit_theme()
     {
         if (post_param_integer('delete', 0) == 1) {
-            $theme = get_param_string('old_theme', false, true);
+            $theme = get_param_string('old_theme', false, INPUT_FILTER_GET_COMPLEX);
             actual_delete_theme($theme);
 
             $to = '';
         } elseif (post_param_integer('copy', 0) == 1) {
-            $theme = get_param_string('old_theme', false, true);
+            $theme = get_param_string('old_theme', false, INPUT_FILTER_GET_COMPLEX);
             $to = post_param_string('theme', $theme); // Can't rename the default theme, so there's no such field for it
             if ($theme == $to) {
                 warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($to)));
@@ -652,7 +652,7 @@ class Module_admin_themes
 
             $this->save_theme_changes($to);
         } else {
-            $theme = get_param_string('old_theme', false, true);
+            $theme = get_param_string('old_theme', false, INPUT_FILTER_GET_COMPLEX);
             $to = post_param_string('theme', $theme); // Can't rename the default theme, so there's no such field for it
             if ($theme != $to) {
                 require_code('type_sanitisation');
@@ -804,10 +804,10 @@ class Module_admin_themes
         list($warning_details, $ping_url) = handle_conflict_resolution(''); // Intentionally blank, because only one person should edit any of all templates at any time (because they depend on each other)
 
         // Screen preview feature
-        $live_preview_url = get_param_string('live_preview_url', null, true);
+        $live_preview_url = get_param_string('live_preview_url', null, INPUT_FILTER_URL_INTERNAL);
 
         // Opening up file browser location
-        $default_theme_files_location = get_param_string('default_theme_files_location', null, true);
+        $default_theme_files_location = get_param_string('default_theme_files_location', null, INPUT_FILTER_GET_COMPLEX);
 
         return do_template('THEME_TEMPLATE_EDITOR_SCREEN', array(
             'TITLE' => $this->title,

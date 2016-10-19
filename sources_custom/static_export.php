@@ -31,7 +31,7 @@ function _page_link_to_static($node)
     if (strpos($page_link, ':static_export') === false) {
         global $STATIC_EXPORT_TAR, $STATIC_EXPORT_WARNINGS;
 
-        $only_page_links = get_param_string('only_page_links', null);
+        $only_page_links = get_param_string('only_page_links', null, INPUT_FILTER_GET_COMPLEX);
         if ($only_page_links !== null) {
             if (!in_array($page_link, explode(',', $only_page_links))) {
                 return;

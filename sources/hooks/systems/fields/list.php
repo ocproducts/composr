@@ -37,12 +37,12 @@ class Hook_fields_list
      */
     public function get_search_inputter($field)
     {
-        $current = get_param_string('option_' . strval($field['id']), '');
+        $current = get_param_string('option_' . strval($field['id']), '', INPUT_FILTER_GET_COMPLEX);
 
         $fields = array();
         $type = '_LIST';
         $special = new Tempcode();
-        $special->attach(form_input_list_entry('', get_param_string('option_' . strval($field['id']), '') == '', '---'));
+        $special->attach(form_input_list_entry('', get_param_string('option_' . strval($field['id']), '', INPUT_FILTER_GET_COMPLEX) == '', '---'));
         $display = array_key_exists('trans_name', $field) ? $field['trans_name'] : get_translated_text($field['cf_name']); // 'trans_name' may have been set in CPF retrieval API, might not correspond to DB lookup if is an internal field
         $list = $this->get_input_list_map($field, true);
         foreach ($list as $l => $written) {

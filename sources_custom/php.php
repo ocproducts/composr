@@ -690,6 +690,11 @@ function test_fail_php_type_check($type, $function_name, $name, $value, $echo = 
     if ($_type == 'mixed') {
         return;
     }
+
+    if ((is_string($value)) && (preg_match('#^[A-Z\_]+$#', $value) != 0)) {
+        return;
+    }
+
     switch ($_type) {
         case 'integer':
             if ((!is_integer($value)) && ((!is_float($value)) || (strval(intval(round($value))) != strval($value)))) {
