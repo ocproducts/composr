@@ -19,10 +19,10 @@
 
 	<h2>{!NOTIFICATION_SOUND}</h2>
 
-	<form title="{!NOTIFICATION_SOUND}" action="#" method="post" autocomplete="off">
+	<form title="{!NOTIFICATION_SOUND}" action="#!" method="post" autocomplete="off">
 		<p>
-			<label for="sound_on">{!ENABLE_NOTIFICATION_SOUND} <input checked="checked" onclick="set_cookie('sound','on');" type="radio" name="sound" id="sound_on" /></label>
-			<label for="sound_off">{!DISABLE_NOTIFICATION_SOUND} <input onclick="set_cookie('sound','off');" type="radio" name="sound" id="sound_off" /></label>
+			<label for="sound_on">{!ENABLE_NOTIFICATION_SOUND} <input class="js-click-set-sound-cookie-on" type="radio" name="sound" id="sound_on" /></label>
+			<label for="sound_off">{!DISABLE_NOTIFICATION_SOUND} <input class="js-click-set-sound-cookie-off" type="radio" name="sound" id="sound_off" /></label>
 		</p>
 	</form>
 {+END}

@@ -8,7 +8,7 @@
 	{CELLS}
 	<td>
 		{+START,IF,{$JS_ON}}
-			<input class="button_micro" type="button" value="{+START,IF,{ALL_OFF}}+{+END}{+START,IF,{$NOT,{ALL_OFF}}}-{+END}" onclick="{CODE*}; this.value=(this.value=='-')?'+':'-';" />
+			<input class="button_micro" type="button" value="{+START,IF,{ALL_OFF}}+{+END}{+START,IF,{$NOT,{ALL_OFF}}}-{+END}" onclick="{CODE*}; this.value=(this.value==='-')?'+':'-';" />
 		{+END}
 	</td>
 </tr>

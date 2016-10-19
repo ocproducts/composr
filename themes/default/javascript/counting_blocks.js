@@ -2,17 +2,17 @@
     'use strict';
 
     $cms.extend($cms.templates, {
-        blockMainCount: function (options) {
-            if (options.update !== undefined) {
-                load_snippet('count', 'name=' + options.update);
+        blockMainCount: function (params) {
+            if (params.update !== undefined) {
+                load_snippet('count', 'name=' + params.update);
             }
         },
 
-        blockMainCountdown: function (options) {
+        blockMainCountdown: function (params) {
             var el = this;
             window.setInterval(function() {
-                countdown(el, (options.positive ? -1 : +1) * options.distanceForPrecision, options.tailing);
-            }, options.millisecondsForPrecision);
+                countdown(el, (params.positive ? -1 : +1) * params.distanceForPrecision, params.tailing);
+            }, params.millisecondsForPrecision);
         }
     });
 }(window.$cms));

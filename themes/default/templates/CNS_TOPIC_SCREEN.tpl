@@ -1,4 +1,4 @@
-<div data-tpl="cnsTopicScreen" data-tpl-args="{+START,PARAMS_JSON,SERIALIZED_OPTIONS,HASH}{_*}{+END}">
+<div data-tpl="cnsTopicScreen" data-tpl-params="{+START,PARAMS_JSON,SERIALIZED_OPTIONS,HASH}{_*}{+END}">
 {TITLE}
 
 {WARNING_DETAILS}
@@ -95,7 +95,7 @@
 			{+START,IF,{$NOT,{$MOBILE}}}
 				{+START,IF_NON_EMPTY,{MARKED_POST_ACTIONS}}
 					{+START,IF,{$JS_ON}}
-						<form title="{!MARKED_POST_ACTIONS}" action="{$URL_FOR_GET_FORM*,{ACTION_URL}}" method="get" class="inline horiz_field_sep_rightward" autocomplete="off">
+						<form title="{!MARKED_POST_ACTIONS}" action="{$URL_FOR_GET_FORM*,{ACTION_URL}}" method="get" class="inline horiz_field_sep_rightward js-form-marked-post-actions" autocomplete="off">
 							{$HIDDENS_FOR_GET_FORM,{ACTION_URL}}
 
 							<div class="inline">
@@ -105,7 +105,7 @@
 										<option value="browse">-</option>
 									{+END}
 									{MARKED_POST_ACTIONS}
-								</select><input class="button_micro buttons__proceed" type="submit" onclick="if (!add_form_marked_posts(this.form,'mark_')) { window.fauxmodal_alert('{!NOTHING_SELECTED=;}'); return false; } if (document.getElementById('mpa_type').selectedIndex!=-1) { $cms.ui.disableButton(this); return true; } return false;" value="{!PROCEED}" />
+								</select><input class="button_micro buttons__proceed js-click-check-marked-form-and-submit" type="submit" value="{!PROCEED}" />
 							</div>
 						</form>
 					{+END}

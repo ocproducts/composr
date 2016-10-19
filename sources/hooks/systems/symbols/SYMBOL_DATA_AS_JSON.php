@@ -88,42 +88,42 @@ class Hook_symbol_SYMBOL_DATA_AS_JSON
 
         require_code('config');
         $value['CONFIG_OPTION'] = [
-            'thumbWidth'        => get_option('thumb_width'),
-            'jsOverlays'        => get_option('js_overlays'),
-            'jsCaptcha'         => get_option('js_captcha'),
-            'googleAnalytics'   => get_option('google_analytics'),
-            'longGoogleCookies' => get_option('long_google_cookies'),
+            'thumb_width'        => get_option('thumb_width'),
+            'js_overlays'        => get_option('js_overlays'),
+            'js_captcha'         => get_option('js_captcha'),
+            'google_analytics'   => get_option('google_analytics'),
+            'long_google_cookies' => get_option('long_google_cookies'),
             'editarea'          => get_option('editarea'),
-            'enableAnimations'  => get_option('enable_animations'),
-            'detectJavascript'  => get_option('detect_javascript'),
-            'isOnTimezoneDetection' => get_option('is_on_timezone_detection'),
-            'fixedWidth'        => get_option('fixed_width'),
-            'infiniteScrolling' => get_option('infinite_scrolling'),
+            'enable_animations'  => get_option('enable_animations'),
+            'detect_javascript'  => get_option('detect_javascript'),
+            'is_on_timezone_detection' => get_option('is_on_timezone_detection'),
+            'fixed_width'        => get_option('fixed_width'),
+            'infinite_scrolling' => get_option('infinite_scrolling'),
             'wysiwyg'           => get_option('wysiwyg'),
-            'eagerWysiwyg'      => get_option('eager_wysiwyg'),
-            'simplifiedAttachmentsUi'   => get_option('simplified_attachments_ui'),
-            'showInlineStats'           => get_option('show_inline_stats'),
-            'notificationDesktopAlerts' => get_option('notification_desktop_alerts'),
-            'enableThemeImgButtons' => get_option('enable_theme_img_buttons'),
-            'enablePreviews' => get_option('enable_previews'),
-            'backgroundTemplateCompilation' => get_option('background_template_compilation'),
-            'complexUploader' => get_option('complex_uploader'),
+            'eager_wysiwyg'      => get_option('eager_wysiwyg'),
+            'simplified_attachments_ui'   => get_option('simplified_attachments_ui'),
+            'show_inline_stats'           => get_option('show_inline_stats'),
+            'notification_desktop_alerts' => get_option('notification_desktop_alerts'),
+            'enable_theme_img_buttons' => get_option('enable_theme_img_buttons'),
+            'enable_previews' => get_option('enable_previews'),
+            'background_template_compilation' => get_option('background_template_compilation'),
+            'complex_uploader' => get_option('complex_uploader'),
             'collapse_user_zones' => get_option('collapse_user_zones'),
         ];
 
         $value['VALUE_OPTION'] = [
-            'jsKeepParams' => get_value('js_keep_params'),
-            'commercialSpellchecker' => get_value('commercial_spellchecker'),
+            'js_keep_params' => get_value('js_keep_params'),
+            'commercial_spellchecker' => get_value('commercial_spellchecker'),
         ];
 
         $value['HAS_PRIVILEGE'] = [
-            'seesJavascriptErrorAlerts' =>  has_privilege(get_member(), 'sees_javascript_error_alerts'),
+            'sees_javascript_error_alerts' =>  has_privilege(get_member(), 'sees_javascript_error_alerts'),
         ];
 
         require_code('urls');
         $value['EXTRA'] = [
-            'canTryUrlSchemes' => can_try_url_schemes(),
-            'staffTooltipsUrlPatterns' => $this->staff_tooltips_url_patterns($value['IS_STAFF'] === '1')
+            'can_try_url_schemes' => can_try_url_schemes(),
+            'staff_tooltips_url_patterns' => $this->staff_tooltips_url_patterns($value['IS_STAFF'] === '1')
         ];
 
         return json_encode($value, JSON_NUMERIC_CHECK);

@@ -206,6 +206,7 @@ class Hook_profiles_tabs_edit_privacy
 
         // UI
         $text = do_template('CNS_CPF_PERMISSIONS_TAB', array('_GUID' => '1ca98f8ea5009be2229491d341ec6e87', 'FIELDS' => $fields));
+
         $javascript = '';
 
         return array($title, $fields, $text, $javascript, $order, $cpfs_hidden, 'menu/pages/privacy_policy');

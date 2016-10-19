@@ -3,11 +3,11 @@
 
     $cms.views.PermissionsTreeEditorScreen = PermissionsTreeEditorScreen;
 
-    function PermissionsTreeEditorScreen(options) {
+    function PermissionsTreeEditorScreen(params) {
         PermissionsTreeEditorScreen.base(this, arguments);
 
-        window.column_color = options.color;
-        window.usergroup_titles = options.usergroups;
+        window.column_color = params.color;
+        window.usergroup_titles = params.usergroups;
         window.sitemap = $cms.createTreeList('tree_list', 'data/sitemap.php?start_links=1&get_perms=1&label_content_types=1&keep_full_structure=1' + $cms.$KEEP, null, '', true);
     }
 

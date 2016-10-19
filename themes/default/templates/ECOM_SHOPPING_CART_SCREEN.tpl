@@ -22,7 +22,7 @@
 			{+END}
 
 			{+START,IF_NON_EMPTY,{EMPTY_CART_URL*}}
-				<input class="button_screen buttons__cart_empty" type="submit" onclick="return confirm_empty('{!EMPTY_CONFIRM}','{EMPTY_CART_URL;*}',this.form);" value="{!EMPTY_CART}" />
+				<input class="button_screen buttons__cart_empty" type="submit" data-cms-js="1" onclick="confirm_empty('{!EMPTY_CONFIRM}','{EMPTY_CART_URL;*}',this.form);" value="{!EMPTY_CART}" />
 			{+END}
 		</div>
 

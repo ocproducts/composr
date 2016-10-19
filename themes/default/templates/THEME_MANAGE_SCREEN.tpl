@@ -1,4 +1,4 @@
-<div data-view="ThemeManageScreen" data-view-args="{+START,PARAMS_JSON,NAME}{_*}{+END}">
+<div data-view="ThemeManageScreen" data-view-params="{+START,PARAMS_JSON,NAME}{_*}{+END}">
 {TITLE}
 
 {+START,INCLUDE,HANDLE_CONFLICT_RESOLUTION}{+END}

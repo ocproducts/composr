@@ -1,6 +1,6 @@
 {$REQUIRE_JAVASCRIPT,core_notifications}
 {$REQUIRE_CSS,notifications}
-<div data-tpl="blockTopNotifications" data-tpl-args="{+START,PARAMS_JSON,MAX}{_*}{+END}">
+<div data-tpl="blockTopNotifications" data-tpl-params="{+START,PARAMS_JSON,MAX}{_*}{+END}">
 <div class="global_button_ref_point" id="web_notifications_rel" style="display: none">
 	<div class="box box_arrow box__block_top_notifications_web"><span></span><div class="box_inner">
 		<div id="web_notifications_spot" role="log">
@@ -15,13 +15,13 @@
 		<ul class="associated_links_block_group horizontal_links">
 			<li><a href="{$PAGE_LINK*,_SEARCH:notifications:browse}">{!VIEW_ARCHIVE}</a></li>
 			{+START,IF,{$NOT,{$MATCH_KEY_MATCH,_WILD:members:view}}}
-				<li><a onmouseup="toggle_web_notifications(event); find_url_tab();" title="{!VIEW_ARCHIVE} {!notifications:NOTIFICATIONS}: {!SETTINGS}" href="{$PAGE_LINK*,{$?,{$CNS},_SEARCH:members:view#tab__edit__notifications,_SEARCH:notifications:overall}}">{!SETTINGS}</a></li>
+				<li><a class="js-mouseup-toggle-web-notifications js-mouseup-find-url-tab" title="{!VIEW_ARCHIVE} {!notifications:NOTIFICATIONS}: {!SETTINGS}" href="{$PAGE_LINK*,{$?,{$CNS},_SEARCH:members:view#tab__edit__notifications,_SEARCH:notifications:overall}}">{!SETTINGS}</a></li>
 			{+END}
-			<li><a href="#!" onclick="return notifications_mark_all_read(event);">{!NOTIFICATIONS_MARK_READ}</a></li>
+			<li><a href="#!" class="js-click-notifications-mark-all-read">{!NOTIFICATIONS_MARK_READ}</a></li>
 		</ul>
 	</div></div>
 </div>
-<a title="{!notifications:NOTIFICATIONS}" id="web_notifications_button" class="leave_native_tooltip count_{NUM_UNREAD_WEB_NOTIFICATIONS%}" onclick="return toggle_web_notifications(event);" href="{$PAGE_LINK*,_SEARCH:notifications:browse}"><span aria-label="{!COUNT_TOTAL} {!notifications:NOTIFICATIONS}">{NUM_UNREAD_WEB_NOTIFICATIONS*}</span></a>
+<a title="{!notifications:NOTIFICATIONS}" id="web_notifications_button" class="leave_native_tooltip count_{NUM_UNREAD_WEB_NOTIFICATIONS%} js-click-toggle-web-notifications" href="{$PAGE_LINK*,_SEARCH:notifications:browse}"><span aria-label="{!COUNT_TOTAL} {!notifications:NOTIFICATIONS}">{NUM_UNREAD_WEB_NOTIFICATIONS*}</span></a>
 
 {+START,IF,{$NOT,{$CONFIG_OPTION,pt_notifications_as_web}}}{+START,IF,{$CNS}}
 	<div class="global_button_ref_point" id="pts_rel" style="display: none">
@@ -36,11 +36,13 @@
 			</div>
 
 			<ul class="associated_links_block_group horizontal_links">
-				<li><a onmouseup="toggle_pts(event); find_url_tab();" href="{$PAGE_LINK*,_SEARCH:members:view#tab__pts}">{!cns:PRIVATE_TOPICS_INBOX}</a></li>
+				<li><a class="js-mouseup-find-url-tab js-mouseup-toggle-pts" href="{$PAGE_LINK*,_SEARCH:members:view#tab__pts}">{!cns:PRIVATE_TOPICS_INBOX}</a></li>
 				<li><a href="{$PAGE_LINK*,_SEARCH:topics:new_pt}">{!cns:NEW_PRIVATE_TOPIC}</a></li>
 			</ul>
 		</div></div>
 	</div>
-	<a title="{!cns:PRIVATE_TOPICS}" id="pts_button" class="leave_native_tooltip count_{NUM_UNREAD_PTS%}" onclick="return toggle_pts(event);" href="{$PAGE_LINK*,_SEARCH:members:view#tab__pts}"><span aria-label="{!COUNT_TOTAL} {!cns:PRIVATE_TOPICS}">{NUM_UNREAD_PTS*}</span></a>
+	<a title="{!cns:PRIVATE_TOPICS}" id="pts_button" class="leave_native_tooltip count_{NUM_UNREAD_PTS%} js-click-toggle-pts" href="{$PAGE_LINK*,_SEARCH:members:view#tab__pts}">
+		<span aria-label="{!COUNT_TOTAL} {!cns:PRIVATE_TOPICS}">{NUM_UNREAD_PTS*}</span>
+	</a>
 {+END}{+END}
 </div>

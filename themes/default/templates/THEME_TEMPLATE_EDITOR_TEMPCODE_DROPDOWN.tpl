@@ -8,7 +8,7 @@
 	</div>
 	{+START,IF,{$JS_ON}}
 		<div class="right">
-			<input class="button_micro menu___generic_admin__add_one" onclick="return template_insert_parameter('b_{FILE_ID;*}_{STUB;*}','{FILE_ID;*}');" type="button" value="{LANG*}" />
+			<input class="button_micro menu___generic_admin__add_one" onclick="template_insert_parameter('b_{FILE_ID;*}_{STUB;*}','{FILE_ID;*}');" type="button" value="{LANG*}" />
 		</div>
 	{+END}
 </div>

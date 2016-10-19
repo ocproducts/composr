@@ -1,5 +1,5 @@
 {+START,IF_NON_EMPTY,{ADD_URL}}
-<td onclick="window.location.href='{ADD_URL;*}'" class="calendar_{CLASS*}{+START,IF,{CURRENT}} calendar_current{+END}" rowspan="{DOWN*}">
+<td data-cms-href="{ADD_URL*}'" class="calendar_{CLASS*}{+START,IF,{CURRENT}} calendar_current{+END}" rowspan="{DOWN*}">
 	{ENTRIES}
 </td>
 {+END}

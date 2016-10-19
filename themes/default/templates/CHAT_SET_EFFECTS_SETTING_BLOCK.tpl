@@ -1,5 +1,5 @@
 {$REQUIRE_JAVASCRIPT,chat}
-<div data-tpl="chatSetEffectsSettingBlock" data-tpl-args="{+START,PARAMS_JSON,KEY,MEMBER_ID}{_*}{+END}" {+START,IF_PASSED,MEMBER_ID}data-view="ToggleableTray"{+END}>
+<div data-tpl="chatSetEffectsSettingBlock" data-tpl-params="{+START,PARAMS_JSON,KEY,MEMBER_ID}{_*}{+END}" {+START,IF_PASSED,MEMBER_ID}data-view="ToggleableTray"{+END}>
 	{+START,IF_PASSED,USERNAME}{+START,IF_PASSED,MEMBER_ID}
 		<div class="toggleable_tray_title js-tray-header">
 			{!OVERRIDES_FOR_FRIEND,{USERNAME*}}
@@ -7,7 +7,7 @@
 		</div>
 	{+END}{+END}
 
-	<div{+START,IF_PASSED,MEMBER_ID} class="toggleable_tray js-tray-content" id="user_{MEMBER_ID*}"{+START,IF,{$NOT,{HAS_SOME}}} style="{$JS_ON,display: none,}{+END}"{+END} aria-expanded="false">
+	<div {+START,IF_PASSED,MEMBER_ID} class="toggleable_tray js-tray-content" id="user_{MEMBER_ID*}"{+START,IF,{$NOT,{HAS_SOME}}} style="{$JS_ON,display: none,}{+END}"{+END} aria-expanded="false">
 		<div class="wide_table_wrap"><table class="map_table form_table wide_table scrollable_inside">
 			{+START,IF,{$NOT,{$MOBILE}}}
 				<colgroup>
@@ -49,7 +49,7 @@
 								{+END}
 							</select>
 
-							<input class="button_screen_item menu__social__chat__sound" type="button" onclick="var ob=document.getElementById('select_{KEY;*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}'); var val=ob.options[ob.selectedIndex].value; if (val=='') window.fauxmodal_alert('{!PLEASE_SELECT_SOUND;}'); else play_sound_url(val); return false;" title="{EFFECT_TITLE*}" value="{!TEST_SOUND}" />
+							<input class="button_screen_item menu__social__chat__sound" type="button" onclick="var ob=document.getElementById('select_{KEY;*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}'); var val=ob.options[ob.selectedIndex].value; if (val=='') window.fauxmodal_alert('{!PLEASE_SELECT_SOUND;}'); else play_sound_url(val);" title="{EFFECT_TITLE*}" value="{!TEST_SOUND}" />
 						</td>
 					</tr>
 

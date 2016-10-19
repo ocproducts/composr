@@ -11,7 +11,7 @@ function translate(name, old, lang_from, lang_to) {
     if (lang_from == lang_to) lang_from = 'EN';
 
     if (!apiKey) {
-        toggleable_tray('rexp_' + name);
+        $cms.toggleableTray($cms.dom.id('rexp_' + name));
 
         var element = document.getElementById('rexp_' + name);
         if (element.style.display != 'none') {

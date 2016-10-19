@@ -1,7 +1,7 @@
 <section class="box box___block_main_search"><div class="box_inner">
 	<h3>{TITLE*}</h3>
 
-	<form role="search" title="{TITLE*}" onsubmit="if (typeof this.elements['content']=='undefined') { $cms.ui.disableFormButtons(this); return true; } if (check_field_for_blankness(this.elements['content'],event)) { $cms.ui.disableFormButtons(this); return true; } return false;" action="{$URL_FOR_GET_FORM*,{URL}}" method="get" autocomplete="off">
+	<form role="search" title="{TITLE*}" onsubmit="if (this.elements.content === undefined) { $cms.ui.disableFormButtons(this); return true; } if (check_field_for_blankness(this.elements.content, event)) { $cms.ui.disableFormButtons(this); return true; } return false;" action="{$URL_FOR_GET_FORM*,{URL}}" method="get" autocomplete="off">
 		{$HIDDENS_FOR_GET_FORM,{URL},content}
 
 		<div>

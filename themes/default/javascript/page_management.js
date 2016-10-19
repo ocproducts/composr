@@ -1,4 +1,5 @@
 (function ($cms) {
+    'use strict';
 
     var $ADDON_INSTALLED_code_editor = !!+'{$ADDON_INSTALLED,code_editor}',
         $ADDON_INSTALLED_stats = !!+'{$ADDON_INSTALLED,stats}';

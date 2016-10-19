@@ -1,3 +1,5 @@
+{$REQUIRE_JAVASCRIPT,core_language_editing}
+<div data-tpl="translateScreen">
 {TITLE}
 
 {+START,IF,{$NEQ,{LANG},EN}}
@@ -12,7 +14,7 @@
 	</p>
 {+END}
 
-<form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post" autocomplete="off" onsubmit="return modsecurity_workaround(this);">
+<form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post" autocomplete="off" data-cms-js="1" class="js-form-submit-modsecurity-workaround">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<div class="wide_table_wrap really_long_table_wrap"><table class="autosized_table columned_table results_table wide_table">
@@ -47,4 +49,4 @@
 		<input type="hidden" name="langpair" value="en|{GOOGLE*}" />
 	</div>
 </form>
-
+</div>

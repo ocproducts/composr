@@ -1,7 +1,7 @@
 "use strict";
 
 // Assume that our activity feed needs updating to start with
-if (typeof window.latest_activity == 'undefined') {
+if (window.latest_activity === undefined) {
     window.latest_activity = 0;
     window.s_ajax_update_locking = 0;
     window.activities_feed_grow = true;
@@ -14,26 +14,27 @@ function s_update_get_data() {
     } else {
         // First we check whether our feed is already up to date
         jQuery.ajax({
-            url: '{$BASE_URL;}/data_custom/latest_activity.txt?chrome_fix=' + Math.floor(Math.random() * 10000),
+            url: $cms.$BASE_URL_S + 'data_custom/latest_activity.txt?chrome_fix=' + Math.floor(Math.random() * 10000),
             data: {},
-            success: function (data, status) {
+            success: function (data) {
                 if (window.parseInt(data) != window.latest_activity) {
                     // If not then remember the new value
                     window.latest_activity = window.parseInt(data);
 
                     // Now grab whatever updates are available
-                    var url = '{$BASE_URL;,0}/data_custom/activities_updater.php' + keep_stub(true);
-                    var list_elements = $('li', '#activities_feed');
-                    var last_id = ((typeof list_elements.attr('id') == 'undefined') ? '-1' : list_elements.attr('id').replace(/^activity_/, ''));
-                    var post_val = 'last_id=' + last_id + '&mode=' + window.activities_mode;
+                    var url = $cms.$BASE_URL_S + 'data_custom/activities_updater.php' + keep_stub(true),
+                        list_elements = $('li', '#activities_feed'),
+                        last_id = ((typeof list_elements.attr('id') == 'undefined') ? '-1' : list_elements.attr('id').replace(/^activity_/, '')),
+                        post_val = 'last_id=' + last_id + '&mode=' + window.activities_mode;
 
-                    if ((window.activities_member_ids !== null) && (window.activities_member_ids !== ''))
+                    if ((window.activities_member_ids != null) && (window.activities_member_ids !== '')) {
                         post_val = post_val + '&member_ids=' + window.activities_member_ids;
+                    }
 
                     post_val += '&csrf_token=' + encodeURIComponent(get_csrf_token()); // For CSRF prevention
 
                     jQuery.ajax({
-                        url: $cms.url(url),
+                        url: url,
                         type: 'POST',
                         data: post_val,
                         cache: false,
@@ -115,13 +116,13 @@ function s_update_remove(event, id) {
         '{!activities:DELETE_CONFIRM;^}',
         function (result) {
             if (result) {
-                var url = '{$BASE_URL;,0}/data_custom/activities_removal.php' + keep_stub(true);
+                var url = $cms.$BASE_URL_S + 'data_custom/activities_removal.php' + keep_stub(true);
 
                 var post_val = 'removal_id=' + id;
                 post_val += '&csrf_token=' + encodeURIComponent(get_csrf_token()); // For CSRF prevention
 
                 jQuery.ajax({
-                    url: $cms.url(url),
+                    url: url,
                     type: 'POST',
                     data: post_val,
                     cache: false,

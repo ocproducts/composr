@@ -3,8 +3,8 @@
 (function ($cms) {
 
     $cms.extend($cms.templates, {
-        realtimeRainOverlay: function (options) {
-            window.min_time = options.minTime;
+        realtimeRainOverlay: function (params) {
+            window.min_time = params.minTime;
             window.paused = false;
             window.bubble_groups = {};
             window.total_lines = 0;
@@ -14,23 +14,23 @@
             start_realtime_rain();
         },
 
-        realtimeRainBubble: function (options) {
+        realtimeRainBubble: function (params) {
             window.pending_eval_function = function (ob) { // In webkit you can't get a node until it's been closed, so we need to set our code into a function and THEN run it
-                if (options.tickerText !== undefined) {
+                if (params.tickerText !== undefined) {
                     window.setTimeout(function () {
-                        $cms.dom.html(document.getElementById('news_go_here'), options.tickerText);
-                    }, options.relativeTimestamp * 1000);
+                        $cms.dom.html(document.getElementById('news_go_here'), params.tickerText);
+                    }, params.relativeTimestamp * 1000);
                 }
                 // Set up extra attributes
-                ob.time_offset = options.relativeTimestamp;
+                ob.time_offset = params.relativeTimestamp;
                 ob.lines_for = [];
 
-                if (options.groupId !== undefined){
-                    ob.lines_for.push(options.groupId);
+                if (params.groupId !== undefined){
+                    ob.lines_for.push(params.groupId);
                 }
 
-                if ((options.specialIcon !== undefined) && (options.specialIcon === 'email-icon')) {
-                    ob.icon_multiplicity = options.multiplicity;
+                if ((params.specialIcon !== undefined) && (params.specialIcon === 'email-icon')) {
+                    ob.icon_multiplicity = params.multiplicity;
                 }
             };
         }

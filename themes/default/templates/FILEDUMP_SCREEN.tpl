@@ -1,23 +1,25 @@
+{$REQUIRE_JAVASCRIPT,filedump}
+
 {$SET,file_link,}
 {+START,IF_NON_EMPTY,{$_GET,filename}}
-{$SET,file_link,{$PAGE_LINK;,_SELF:_SELF:embed:place={$_GET&,place}:file={$_GET&,filename}:wide_high=1}}
+	{$SET,file_link,{$PAGE_LINK;,_SELF:_SELF:embed:place={$_GET&,place}:file={$_GET&,filename}:wide_high=1}}
 {+END}
-<div data-tpl="filedumpScreen" data-tpl-args="{+START,PARAMS_JSON,file_link}{_*}{+END}">
+<div data-tpl="filedumpScreen" data-tpl-params="{+START,PARAMS_JSON,file_link}{_*}{+END}">
 
 {TITLE}
 
 <div>
 	<div class="float_surrounder"><div class="tabs" role="tablist">
-		<a aria-controls="g_thumbnails" role="tab" href="#!" id="t_thumbnails" class="tab tab_active tab_first" onclick="select_tab('g','thumbnails'); return false;"><span>{!VIEW_THUMBNAILS}</span></a>
+		<a aria-controls="g_thumbnails" role="tab" href="#!" id="t_thumbnails" class="tab tab_active tab_first js-click-select-tab-g" data-tp-tab="thumbnails"><span>{!VIEW_THUMBNAILS}</span></a>
 
-		<a aria-controls="g_listing" role="tab" href="#!" id="t_listing" class="tab{+START,IF_EMPTY,{CREATE_FOLDER_FORM}{UPLOAD_FORM}} tab_last{+END}" onclick="select_tab('g','listing'); return false;"><span>{!VIEW_LISTING}</span></a>
+		<a aria-controls="g_listing" role="tab" href="#!" id="t_listing" class="tab{+START,IF_EMPTY,{CREATE_FOLDER_FORM}{UPLOAD_FORM}} tab_last{+END} js-click-select-tab-g" data-tp-tab="listing"><span>{!VIEW_LISTING}</span></a>
 
 		{+START,IF_NON_EMPTY,{CREATE_FOLDER_FORM}}
-			<a aria-controls="g_create_folder" role="tab" href="#!" id="t_create_folder" class="tab{+START,IF_EMPTY,{UPLOAD_FORM}} tab_last{+END}" onclick="select_tab('g','create_folder'); return false;"><span>{!FILEDUMP_CREATE_FOLDER}</span></a>
+			<a aria-controls="g_create_folder" role="tab" href="#!" id="t_create_folder" class="tab{+START,IF_EMPTY,{UPLOAD_FORM}} tab_last{+END} js-click-select-tab-g" data-tp-tab="create_folder"><span>{!FILEDUMP_CREATE_FOLDER}</span></a>
 		{+END}
 
 		{+START,IF_NON_EMPTY,{UPLOAD_FORM}}
-			<a aria-controls="g_upload" role="tab" href="#!" id="t_upload" class="tab tab_last" onclick="select_tab('g','upload'); return false;"><span>{!UPLOAD}</span></a>
+			<a aria-controls="g_upload" role="tab" href="#!" id="t_upload" class="tab tab_last js-click-select-tab-g" data-tp-tab="upload"><span>{!UPLOAD}</span></a>
 		{+END}
 	</div></div>
 	<div class="tab_surround">
@@ -26,7 +28,7 @@
 
 			{+START,INCLUDE,FILEDUMP_SEARCH}I=1{+END}
 
-			<form title="{!ACTION}" action="{POST_URL*}" method="post" onsubmit="return check_filedump_selections(this);" autocomplete="off">
+			<form class="js-submit-check-filedump-selections" title="{!ACTION}" action="{POST_URL*}" autocomplete="off">
 				{$INSERT_SPAMMER_BLACKHOLE}
 
 				{+START,IF_NON_EMPTY,{THUMBNAILS}}
@@ -76,7 +78,7 @@
 
 			{+START,INCLUDE,FILEDUMP_SEARCH}I=2{+END}
 
-			<form title="{!ACTION}" action="{POST_URL*}" method="post" onsubmit="return check_filedump_selections(this);" autocomplete="off">
+			<form class="js-submit-check-filedump-selections" title="{!ACTION}" action="{POST_URL*}" method="post" autocomplete="off">
 				{$INSERT_SPAMMER_BLACKHOLE}
 
 				{+START,IF_NON_EMPTY,{LISTING}}

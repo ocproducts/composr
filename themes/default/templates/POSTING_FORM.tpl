@@ -1,4 +1,4 @@
-<div data-view="PostingForm" data-view-args="{+START,PARAMS_JSON,MODSECURITY_WORKAROUND}{_*}{+END}">
+<div data-view="PostingForm" data-view-params="{+START,PARAMS_JSON,MODSECURITY_WORKAROUND}{_*}{+END}">
 {+START,IF,{$IN_STR,{SPECIALISATION}{SPECIALISATION2},_required}}
 	{+START,INCLUDE,FORM_SCREEN_ARE_REQUIRED}{+END}
 {+END}

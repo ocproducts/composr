@@ -30,7 +30,7 @@
 				{+START,IF_NON_EMPTY,{FILTERS_ROW_B}}
 					<div class="search_fields float_surrounder">
 						<div class="search_button">
-							<input onclick="window.location.href='{$PAGE_LINK;*,_SELF:_SELF}';" class="button_screen_item buttons__clear" type="button" value="{$,{!RESET_FILTER} }&#9746;" />
+							<input data-cms-href="{$PAGE_LINK*,_SELF:_SELF}" class="button_screen_item buttons__clear" type="button" value="{$,{!RESET_FILTER} }&#9746;" />
 						</div>
 
 						{+START,LOOP,{FILTERS_ROW_B}}

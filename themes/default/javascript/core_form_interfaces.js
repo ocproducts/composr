@@ -1,6 +1,12 @@
 (function ($cms) {
     'use strict';
 
+    $cms.views.FormStandardEnd = FormStandardEnd;
+    $cms.views.PostingForm = PostingForm;
+    $cms.views.FromScreenInputUpload = FromScreenInputUpload;
+    $cms.views.FormScreenInputPermission = FormScreenInputPermission;
+    $cms.views.FormScreenInputPermissionOverride = FormScreenInputPermissionOverride;
+
     // Templates:
     // POSTING_FORM
     // - POSTING_FIELD
@@ -25,28 +31,28 @@
         }
     });
 
-    function FromScreenInputUpload() {
+    function FromScreenInputUpload(params) {
         FromScreenInputUpload.base(this, arguments);
 
-        if (options.plupload && !$cms.$IS_HTTPAUTH_LOGIN) {
-            preinit_file_input('upload', options.name, null, null, options.filter);
+        if (params.plupload && !$cms.$IS_HTTPAUTH_LOGIN) {
+            preinit_file_input('upload', params.name, null, null, params.filter);
         }
 
-        if (options.syndicationJson !== undefined) {
-            show_upload_syndication_options(options.name, options.syndicationJson);
+        if (params.syndicationJson !== undefined) {
+            show_upload_syndication_options(params.name, params.syndicationJson);
         }
     }
 
     $cms.inherits(FromScreenInputUpload, $cms.View);
 
-    function FormScreenInputPermission(options) {
+    function FormScreenInputPermission(params) {
         FormScreenInputPermission.base(this, arguments);
 
-        this.groupId = options.groupId;
+        this.groupId = params.groupId;
         this.prefix = 'access_' + this.groupId;
         var prefix = this.prefix;
 
-        if (!options.allGlobal) {
+        if (!params.allGlobal) {
             var list = document.getElementById(prefix + '_presets');
             // Test to see what we wouldn't have to make a change to get - and that is what we're set at
             if (!copy_permission_presets(prefix, '0', true)) list.selectedIndex = list.options.length - 4;
@@ -120,17 +126,17 @@
         }
     });
 
-    function FormScreenInputPermissionOverride(options) {
+    function FormScreenInputPermissionOverride(params) {
         FormScreenInputPermissionOverride.base(this, arguments);
 
-        var prefix = 'access_' + options.groupId;
+        var prefix = 'access_' + params.groupId;
 
-        this.groupId = options.groupId;
+        this.groupId = params.groupId;
         this.prefix  = prefix;
 
-        setup_privilege_override_selector(prefix, options.defaultAccess, options.privilege, options.title, !!options.allGlobal);
+        setup_privilege_override_selector(prefix, params.defaultAccess, params.privilege, params.title, !!params.allGlobal);
 
-        if (!options.allGlobal) {
+        if (!params.allGlobal) {
             var list = document.getElementById(prefix + '_presets');
             // Test to see what we wouldn't have to make a change to get - and that is what we're set at
             if (!copy_permission_presets(prefix, '0', true)) list.selectedIndex = list.options.length - 4;
@@ -161,29 +167,29 @@
         }
     });
 
-    function FormStandardEnd() {
-        FormScreenInputPermissionOverride.base(this, arguments);
+    function FormStandardEnd(params) {
+        FormStandardEnd.base(this, arguments);
 
         this.form = $cms.dom.closest(this.el, 'form');
         this.btnSubmit = this.$('#submit_button');
 
-        window.form_preview_url = options.previewUrl;
+        window.form_preview_url = params.previewUrl;
 
-        if (options.forcePreviews) {
+        if (params.forcePreviews) {
             this.btnSubmit.style.display = 'none';
         }
 
-        if (options.javascript) {
-            eval.call(window, options.javascript);
+        if (params.javascript) {
+            eval.call(window, params.javascript);
         }
 
-        if (!options.secondaryForm) {
+        if (!params.secondaryForm) {
             this.fixFormEnterKey();
         }
 
-        if (options.supportAutosave && options.formName) {
+        if (params.supportAutosave && params.formName) {
             if (init_form_saving !== undefined) {
-                init_form_saving(options.formName);
+                init_form_saving(params.formName);
             }
         }
     }
@@ -199,7 +205,7 @@
 
         doFormPreview: function (e) {
             var form = this.form,
-                separatePreview = !!this.options.separatePreview;
+                separatePreview = !!this.params.separatePreview;
 
             if (do_form_preview(e, form, window.form_preview_url, separatePreview) && !window.just_checking_requirements) {
                 form.submit();
@@ -223,49 +229,68 @@
                     && (submit.onclick !== undefined) && (submit.onclick)
                     && ((inputs[i].onkeypress === undefined) || (!inputs[i].onkeypress)))
                     inputs[i].onkeypress = function (event) {
-                        if (enter_pressed(event)) submit.onclick(event);
+                        if ($cms.dom.keyPressed(event, 'Enter')) submit.onclick(event);
                     };
             }
         }
     });
 
-    $cms.views.FormStandardEnd = FormStandardEnd;
-    $cms.views.PostingForm = PostingForm;
-    $cms.views.FromScreenInputUpload = FromScreenInputUpload;
-    $cms.views.FormScreenInputPermission = FormScreenInputPermission;
-    $cms.views.FormScreenInputPermissionOverride = FormScreenInputPermissionOverride;
+    $cms.templates.comcodeEditor = function (params) {
+        var container = this,
+            postingField = strVal(params.postingField);
+
+        $cms.dom.on(container, 'click', '.js-click-do-input-font-posting-field', function () {
+            do_input_font(postingField);
+        });
+
+
+        function do_input_font(field_name) {
+            if (window.insert_textbox_wrapping === undefined) {
+                return;
+            }
+
+            var element = document.getElementById(field_name);
+            var form = element.form;
+            var face = form.elements['f_face'];
+            var size = form.elements['f_size'];
+            var colour = form.elements['f_colour'];
+            if ((face.value == '') && (size.value == '') && (colour.value == '')) {
+                window.fauxmodal_alert('{!javascript:NO_FONT_SELECTED;^}');
+                return;
+            }
+            insert_textbox_wrapping(document.getElementById(field_name), '[font=\"' + escape_comcode(face.value) + '\" color=\"' + escape_comcode(colour.value) + '\" size=\"' + escape_comcode(size.value) + '\"]', '[/font]');
+        }
+    };
 
     $cms.extend($cms.templates, {
-        form: function (options) {
-            options = options || {};
-
-            if (!!options.isJoinForm) {
-                joinForm(options);
+        form: function (params) {
+            if (!!params.isJoinForm) {
+                joinForm(params);
             }
         },
 
-        formScreen: function (options) {
+        formScreen: function (params) {
             var container = this;
 
-            options = options || {};
+            params = params || {};
 
             try_to_simplify_iframe_form();
 
-            if (options.iframeUrl) {
+            if (params.iframeUrl) {
                 window.setInterval(function() { resize_frame('iframe_under'); }, 1500);
 
                 $cms.dom.on(container, 'click', '.js-checkbox-will-open-new', function (e, checkbox) {
                     var form = $cms.dom.id(container, 'main_form');
 
-                    form.action = checkbox.checked ? options.url : options.iframeUrl;
+                    form.action = checkbox.checked ? params.url : params.iframeUrl;
                     form.elements.opens_below.value = checkbox.checked ? '0' : '1';
                     form.target = checkbox.checked ? '_blank' : 'iframe_under';
                 });
             }
         },
 
-        formScreenField_input: function (options) {
-            var el = $cms.dom.id('form_table_field_input__' + options.randomisedId);
+        formScreenField_input: function (params) {
+            var el = $cms.dom.id('form_table_field_input__' + params.randomisedId);
             if (el) {
                 set_up_change_monitor(el.parentElement);
             }
@@ -284,23 +309,23 @@
             });
         },
 
-        formScreenInputLine: function formScreenInputLine(options) {
-            set_up_comcode_autocomplete(options.name, !!options.wysiwyg);
+        formScreenInputLine: function formScreenInputLine(params) {
+            set_up_comcode_autocomplete(params.name, !!params.wysiwyg);
         },
 
-        formScreenInputCombo: function (options) {
-            document.getElementById(options.name).onkeyup();
+        formScreenInputCombo: function (params) {
+            document.getElementById(params.name).onkeyup();
 
             if (window.HTMLDataListElement === undefined) {
-                document.getElementById(options.name).className = 'input_line';
+                document.getElementById(params.name).className = 'input_line';
             }
         },
 
-        formScreenInputHugeComcode: function (options) {
-            var textarea = $cms.dom.id(options.name),
-                input = $cms.dom.id('form_table_field_input__' + options.randomisedId);
+        formScreenInputHugeComcode: function (params) {
+            var textarea = $cms.dom.id(params.name),
+                input = $cms.dom.id('form_table_field_input__' + params.randomisedId);
 
-            if (options.required && options.required.includes('wysiwyg') && wysiwyg_on()) {
+            if (params.required && params.required.includes('wysiwyg') && wysiwyg_on()) {
                 textarea.readOnly = true;
             }
 
@@ -309,28 +334,28 @@
             }
 
             manage_scroll_height(textarea);
-            set_up_comcode_autocomplete(options.name, options.required.includes('wysiwyg'));
+            set_up_comcode_autocomplete(params.name, params.required.includes('wysiwyg'));
         },
 
-        formScreenInputColour: function (options) {
-            var label = options.rawField ? ' ' : options.prettyName;
+        formScreenInputColour: function (params) {
+            var label = params.rawField ? ' ' : params.prettyName;
 
-            make_colour_chooser(options.name, options.default, '', options.tabindex, label, 'input_colour' + options._required);
+            make_colour_chooser(params.name, params.default, '', params.tabindex, label, 'input_colour' + params._required);
             do_color_chooser();
         },
 
-        formScreenInputTreeList: function formScreenInputTreeList(options) {
-            var hook = $cms.filter.url(options.hook),
-                rootId = $cms.filter.url(options.rootId),
-                opts =  $cms.filter.url(options.options),
-                multiSel = !!options.multiSelect;
+        formScreenInputTreeList: function formScreenInputTreeList(params) {
+            var hook = $cms.filter.url(params.hook),
+                rootId = $cms.filter.url(params.rootId),
+                opts =  $cms.filter.url(params.options),
+                multiSel = !!params.multiSelect;
 
-            $cms.createTreeList(options.name, 'data/ajax_tree.php?hook=' + hook + $cms.$KEEP, rootId, opts, multiSel, options.tabIndex, false, !!options.useServerId);
+            $cms.createTreeList(params.name, 'data/ajax_tree.php?hook=' + hook + $cms.$KEEP, rootId, opts, multiSel, params.tabIndex, false, !!params.useServerId);
         },
 
-        formScreenInputPermissionMatrix: function (options) {
+        formScreenInputPermissionMatrix: function (params) {
             var container = this;
-            window.perm_serverid = options.serverId;
+            window.perm_serverid = params.serverId;
 
             $cms.dom.on(container, 'click', '.js-click-permissions-toggle', function (e, clicked) {
                 permissions_toggle(clicked.parentNode)
@@ -363,20 +388,20 @@
             }
         },
 
-        formScreenFieldsSetItem: function formScreenFieldsSetItem(options) {
-            var el = $cms.dom.$('#form_table_field_input__' + options.name);
+        formScreenFieldsSetItem: function formScreenFieldsSetItem(params) {
+            var el = $cms.dom.$('#form_table_field_input__' + params.name);
 
             if (el) {
                 set_up_change_monitor(el.parentElement);
             }
         },
 
-        formScreenFieldSpacer: function (options) {
-            options || (options = {});
+        formScreenFieldSpacer: function (params) {
+            params || (params = {});
             var container = this,
-                title = $cms.filter.id(options.title);
+                title = $cms.filter.id(params.title);
 
-            if (title && options.sectionHidden) {
+            if (title && params.sectionHidden) {
                 $cms.dom.id('fes' + title).click();
             }
 
@@ -393,17 +418,17 @@
             });
         },
 
-        formScreenInputTick: function (options) {
+        formScreenInputTick: function (params) {
             var el = this;
 
-            if (options.name === 'validated') {
+            if (params.name === 'validated') {
                 $cms.dom.on(el, 'click', function () {
                     el.previousSibling.className = 'validated_checkbox' + (el.checked ? ' checked' : '');
                 });
             }
 
-            if (options.name === 'delete') {
-                assign_tick_deletion_confirm(options.name);
+            if (params.name === 'delete') {
+                assign_tick_deletion_confirm(params.name);
             }
 
             function assign_tick_deletion_confirm(name) {
@@ -429,9 +454,9 @@
             }
         },
 
-        formScreenInputCaptcha: function formScreenInputCaptcha(options) {
-            if ($cms.$CONFIG_OPTION.jsCaptcha) {
-                $cms.dom.html(document.getElementById('captcha_spot'), options.captcha);
+        formScreenInputCaptcha: function formScreenInputCaptcha(params) {
+            if ($cms.$CONFIG_OPTION.js_captcha) {
+                $cms.dom.html(document.getElementById('captcha_spot'), params.captcha);
             } else {
                 window.addEventListener('pageshow', function () {
                     document.getElementById('captcha_readable').src += '&r=' + $cms.random(); // Force it to reload latest captcha
@@ -439,49 +464,50 @@
             }
         },
 
-        formScreenInputList: function formScreenInputList(options, images) {
-            var el, selectOptions;
+        formScreenInputList: function formScreenInputList(params) {
+            var selectEl, select2Options, imageSources;
 
-            if (options.inlineList) {
+            if (params.inlineList) {
                 return;
             }
 
-            el = $cms.dom.id(options.name);
-            selectOptions = {
+            selectEl = $cms.dom.id(params.name);
+            select2Options = {
                 dropdownAutoWidth: true,
                 containerCssClass: 'wide_field'
             };
 
-            if (images.length) {
-                selectOptions.formatResult = formatSelectImage;
+            if (params.images !== undefined) {
+                select2Options.formatResult = formatSelectImage;
+                imageSources = JSON.parse(params.imageSources || '{}');
             }
 
-            if (window.jQuery && (el.options.length > 20)/*only for long lists*/ && (!el.options[0].value.match(/^\d+$/)/*not for lists of numbers*/)) {
-                window.jQuery(el).select2(selectOptions);
+            if (window.jQuery && (selectEl.options.length > 20)/*only for long lists*/ && (!selectEl.options[0].value.match(/^\d+$/)/*not for lists of numbers*/)) {
+                window.jQuery(selectEl).select2(select2Options);
             }
 
-            function formatSelectImage(o) {
-                if (!o.id) {
-                    return o.text; // optgroup
+            function formatSelectImage(opt) {
+                if (!opt.id) {
+                    return opt.text; // optgroup
                 }
 
-                for (var imgId in images) {
-                    if (o.id === imgId) {
-                        return '<span class="vertical_alignment inline_lined_up"><img style="width: 24px;" src="' + images[imgId] + '" \/> ' + escape_html(o.text) + '</span>';
+                for (var imageName in imageSources) {
+                    if (opt.id === imageName) {
+                        return '<span class="vertical_alignment inline_lined_up"><img style="width: 24px;" src="' + imageSources[imageName] + '" \/> ' + escape_html(opt.text) + '</span>';
                     }
                 }
 
-                return escape_html(o.text);
+                return escape_html(opt.text);
             }
         },
 
-        formScreenFieldsSet: function (options) {
-            standard_alternate_fields_within(options.setName, !!options.required);
+        formScreenFieldsSet: function (params) {
+            standard_alternate_fields_within(params.setName, !!params.required);
         },
 
-        formScreenInputThemeImageEntry: function (options) {
-            var name = $cms.filter.id(options.name),
-                code = $cms.filter.id(options.code),
+        formScreenInputThemeImageEntry: function (params) {
+            var name = $cms.filter.id(params.name),
+                code = $cms.filter.id(params.code),
                 stem = name + '_' + code,
                 e = document.getElementById('w_' + stem),
                 img = e.querySelector('img'),
@@ -490,7 +516,7 @@
                 form = input.form;
 
             e.onkeypress = function (event) {
-                if (enter_pressed(event)) {
+                if ($cms.dom.keyPressed(event, 'Enter')) {
                     return e.onclick.call([event]);
                 }
                 return null;
@@ -503,6 +529,7 @@
 
                 cancel_bubbling(event);
             }
+
             img.onkeypress = click_func;
             img.onclick = click_func;
             e.onclick = click_func;
@@ -510,16 +537,22 @@
             label.className = 'js_widget';
 
             input.onclick = function () {
-                if (this.disabled) return;
-                if (window.deselect_alt_url !== undefined) deselect_alt_url(this.form);
-                if (window.main_form_very_simple !== undefined) this.form.submit();
+                if (this.disabled) {
+                    return;
+                }
+                if (window.deselect_alt_url !== undefined) {
+                    deselect_alt_url(this.form);
+                }
+                if (window.main_form_very_simple !== undefined) {
+                    this.form.submit();
+                }
                 cancel_bubbling(event);
             }
         },
 
-        formScreenInputHuge_input: function (options) {
-            var textArea = document.getElementById(options.name),
-                el = $cms.dom.$('#form_table_field_input__' + options.randomisedId);
+        formScreenInputHuge_input: function (params) {
+            var textArea = document.getElementById(params.name),
+                el = $cms.dom.$('#form_table_field_input__' + params.randomisedId);
 
             if (el) {
                 set_up_change_monitor(el.parentElement);
@@ -534,10 +567,10 @@
             }
         },
 
-        formScreenInputHugeList_input: function (options) {
-            var el = $cms.dom.$('#form_table_field_input__' + options.randomisedId);
+        formScreenInputHugeList_input: function (params) {
+            var el = $cms.dom.$('#form_table_field_input__' + params.randomisedId);
 
-            if (!options.inlineList && el) {
+            if (!params.inlineList && el) {
                 set_up_change_monitor(el.parentElement);
             }
         },
@@ -571,10 +604,10 @@
             });
         },
 
-        postingField: function postingField(options) {
-            var postEl = document.getElementById(options.name);
+        postingField: function postingField(params) {
+            var postEl = document.getElementById(params.name);
 
-            if (options.class.includes('wysiwyg')) {
+            if (params.class.includes('wysiwyg')) {
                 if ((window.wysiwyg_on) && (wysiwyg_on())) {
                     postEl.readOnly = true; // Stop typing while it loads
 
@@ -585,27 +618,27 @@
                     }, 3000);
                 }
 
-                if (options.wordCounter !== undefined) {
-                    setup_word_counter(document.getElementById('post'), document.getElementById('word_count_' + options.wordCountId));
+                if (params.wordCounter !== undefined) {
+                    setup_word_counter(document.getElementById('post'), document.getElementById('word_count_' + params.wordCountId));
                 }
             }
 
             manage_scroll_height(postEl);
-            set_up_comcode_autocomplete(options.name, true);
+            set_up_comcode_autocomplete(params.name, true);
 
-            if (options.initDragDrop) {
-                initialise_html5_dragdrop_upload('container_for_' + options.name, options.name);
+            if (params.initDragDrop) {
+                initialise_html5_dragdrop_upload('container_for_' + params.name, params.name);
             }
         },
 
-        previewScriptCode: function (options) {
+        previewScriptCode: function (params) {
             var main_window = get_main_cms_window();
 
             var post = main_window.document.getElementById('post');
 
             // Replace Comcode
             var old_comcode = main_window.get_textbox(post);
-            main_window.set_textbox(post, options.newPostValue.replace(/&#111;/g, 'o').replace(/&#79;/g, 'O'), options.newPostValueHtml);
+            main_window.set_textbox(post, params.newPostValue.replace(/&#111;/g, 'o').replace(/&#79;/g, 'O'), params.newPostValueHtml);
 
             // Turn main post editing back on
             if (wysiwyg_set_readonly !== undefined) wysiwyg_set_readonly('post', false);
@@ -648,20 +681,20 @@
             }
         },
 
-        blockHelperDone: function (options) {
+        blockHelperDone: function (params) {
             var element;
             var target_window = window.opener ? window.opener : window.parent;
-            element = target_window.document.getElementById(options.fieldName);
+            element = target_window.document.getElementById(params.fieldName);
             if (!element) {
                 target_window = target_window.frames['iframe_page'];
-                element = target_window.document.getElementById(options.fieldName);
+                element = target_window.document.getElementById(params.fieldName);
             }
             var is_wysiwyg = target_window.is_wysiwyg_field(element);
 
             var comcode, comcode_semihtml;
-            comcode = options.comcode;
+            comcode = params.comcode;
             window.returnValue = comcode;
-            comcode_semihtml = options.comcodeSemihtml;
+            comcode_semihtml = params.comcodeSemihtml;
 
             var loading_space = document.getElementById('loading_space');
 
@@ -678,10 +711,10 @@
 
             function dispatch_block_helper() {
                 var win = window;
-                if ((typeof options.saveToId === 'string') && (options.saveToId !== '')) {
-                    var ob = target_window.wysiwyg_editors[element.id].document.$.getElementById(options.saveToId);
+                if ((typeof params.saveToId === 'string') && (params.saveToId !== '')) {
+                    var ob = target_window.wysiwyg_editors[element.id].document.$.getElementById(params.saveToId);
 
-                    if (options.delete) {
+                    if (params.delete) {
                         ob.parentNode.removeChild(ob);
                     } else {
                         var input_container = document.createElement('div');
@@ -726,8 +759,8 @@
                         }
                     };
 
-                    if (options.prefix !== undefined) {
-                        target_window.insert_textbox(element, options.prefix, target_window.document.selection ? target_window.document.selection : null, true);
+                    if (params.prefix !== undefined) {
+                        target_window.insert_textbox(element, params.prefix, target_window.document.selection ? target_window.document.selection : null, true);
                     }
                     target_window.insert_comcode_tag();
 
@@ -746,9 +779,9 @@
 
             var attached_event_action = false;
 
-            if (options.syncWysiwygAttachments) {
+            if (params.syncWysiwygAttachments) {
                 // WYSIWYG-editable attachments must be synched
-                var field = 'file' + options.tagContents.substr(4);
+                var field = 'file' + params.tagContents.substr(4);
                 var upload_element = target_window.document.getElementById(field);
                 if (!upload_element) upload_element = target_window.document.getElementById('hidFileID_' + field);
                 if ((upload_element.plupload_object !== undefined) && (is_wysiwyg)) {
@@ -780,27 +813,27 @@
             }
         },
 
-        formScreenInputUploadMulti: function (options) {
-            if (options.syndicationJson !== undefined) {
-                show_upload_syndication_options(options.nameStub, options.syndicationJson);
+        formScreenInputUploadMulti: function (params) {
+            if (params.syndicationJson !== undefined) {
+                show_upload_syndication_options(params.nameStub, params.syndicationJson);
             }
 
-            if (options.plupload && !$cms.$IS_HTTPAUTH_LOGIN) {
-                preinit_file_input('upload_multi', options.nameStub + '_' + options.i, null, null, options.filter);
+            if (params.plupload && !$cms.$IS_HTTPAUTH_LOGIN) {
+                preinit_file_input('upload_multi', params.nameStub + '_' + params.i, null, null, params.filter);
             }
         },
 
-        formScreenInputRadioList: function (options) {
-            if (options.name === undefined) {
+        formScreenInputRadioList: function (params) {
+            if (params.name === undefined) {
                 return;
             }
 
-            if (options.code !== undefined) {
-                choose_picture('j_' + $cms.filter.id(options.name) + '_' + $cms.filter.id(options.code), null, options.name, null);
+            if (params.code !== undefined) {
+                choose_picture('j_' + $cms.filter.id(params.name) + '_' + $cms.filter.id(params.code), null, params.name, null);
             }
 
-            if (options.name === 'delete') {
-                assign_radio_deletion_confirm(options.name);
+            if (params.name === 'delete') {
+                assign_radio_deletion_confirm(params.name);
             }
 
             function assign_radio_deletion_confirm(name) {
@@ -830,32 +863,32 @@
             }
         },
 
-        formScreenInputRadioListComboEntry: function formScreenInputRadioListComboEntry(options) {
-            var el = document.getElementById('j_' + $cms.filter.id(options.name) + '_other');
-            el.dispatchEvent(new CustomEvent('change', { bubbles: true }));
+        formScreenInputRadioListComboEntry: function formScreenInputRadioListComboEntry(params) {
+            var el = document.getElementById('j_' + $cms.filter.id(params.name) + '_other');
+            $cms.dom.trigger(el, 'change');
+
         },
 
-        formScreenInputVariousTricks: function formScreenInputVariousTricks(options) {
-            options || (options = {});
-
-            if (options.customName && !options.customAcceptMultiple) {
-                document.getElementById(options.customName + '_value').dispatchEvent(new CustomEvent('change', { bubbles: true }));
+        formScreenInputVariousTricks: function formScreenInputVariousTricks(params) {
+            if (params && params.customName && !params.customAcceptMultiple) {
+                var el = document.getElementById(params.customName + '_value');
+                $cms.dom.trigger(el, 'change');
             }
         },
 
-        formScreenInputText: function formScreenInputText(options) {
-            if (options.required.includes('wysiwyg')) {
+        formScreenInputText: function formScreenInputText(params) {
+            if (params.required.includes('wysiwyg')) {
                 if ((window.wysiwyg_on) && (wysiwyg_on())) {
-                    document.getElementById(options.name).readOnly = true;
+                    document.getElementById(params.name).readOnly = true;
                 }
             }
 
-            manage_scroll_height(document.getElementById(options.name));
+            manage_scroll_height(document.getElementById(params.name));
         },
 
-        formScreenInputTime: function formScreenInputTime(options) {
+        formScreenInputTime: function formScreenInputTime(params) {
             // Uncomment if you want to force jQuery-UI inputs even when there is native browser input support
-            //window.jQuery('#' + options.name).inputTime({});
+            //window.jQuery('#' + params.name).inputTime({});
         }
     });
 
@@ -889,7 +922,9 @@
     }
 
     function try_to_simplify_iframe_form() {
-        var form_cat_selector = document.getElementById('main_form'), elements, i, element, count = 0, found, foundButton;
+        var form_cat_selector = document.getElementById('main_form'),
+            elements, i, element,
+            count = 0, found, foundButton;
         if (!form_cat_selector) {
             return;
         }
@@ -992,7 +1027,7 @@
         } catch (e) { }
     }
 
-    function joinForm(options) {
+    function joinForm(params) {
         var form = document.getElementById('username').form;
 
         form.elements['username'].onchange = function () {
@@ -1019,31 +1054,31 @@
 
             document.getElementById('submit_button').disabled = true;
 
-            var url = options.usernameCheckScript + '?username=' + encodeURIComponent(form.elements['username'].value);
+            var url = params.usernameCheckScript + '?username=' + encodeURIComponent(form.elements['username'].value);
 
             if (!do_ajax_field_test(url, 'password=' + encodeURIComponent(form.elements['password'].value))) {
                 document.getElementById('submit_button').disabled = false;
                 return false;
             }
 
-            if (options.invitesEnabled) {
-                url = options.snippetScript + '?snippet=invite_missing&name=' + encodeURIComponent(form.elements['email_address'].value);
+            if (params.invitesEnabled) {
+                url = params.snippetScript + '?snippet=invite_missing&name=' + encodeURIComponent(form.elements['email_address'].value);
                 if (!do_ajax_field_test(url)) {
                     document.getElementById('submit_button').disabled = false;
                     return false;
                 }
             }
 
-            if (options.onePerEmailAddress) {
-                url = options.snippetScript + '?snippet=exists_email&name=' + encodeURIComponent(form.elements['email_address'].value);
+            if (params.onePerEmailAddress) {
+                url = params.snippetScript + '?snippet=exists_email&name=' + encodeURIComponent(form.elements['email_address'].value);
                 if (!do_ajax_field_test(url)) {
                     document.getElementById('submit_button').disabled = false;
                     return false;
                 }
             }
 
-            if (options.useCaptcha) {
-                url = options.snippetScript + '?snippet=captcha_wrong&name=' + encodeURIComponent(form.elements['captcha'].value);
+            if (params.useCaptcha) {
+                url = params.snippetScript + '?snippet=captcha_wrong&name=' + encodeURIComponent(form.elements['captcha'].value);
                 if (!do_ajax_field_test(url)) {
                     document.getElementById('submit_button').disabled = false;
                     return false;
@@ -1151,7 +1186,7 @@
             if (e[i].disabled) continue;
             var img = e[i].parentNode.parentNode.querySelector('img');
             if (img && (img !== img_ob)) {
-                if (img.parentNode.classList.has('selected')) {
+                if (img.parentNode.classList.contains('selected')) {
                     img.parentNode.classList.remove('selected');
                     img.style.outline = '0';
                     if (!browser_matches('ie8+')) {

@@ -33,7 +33,7 @@ class Module_admin_cns_forum_groupings extends Standard_crud_module
     public $extra_donext_whatever_title = '';
     public $do_next_editing_categories = true;
     public $menu_label = 'SECTION_FORUMS';
-    public $javascript = 'if (document.getElementById(\'delete\')) { var form=document.getElementById(\'delete\').form; var crf=function() { form.elements[\'target_forum_grouping\'].disabled=(!form.elements[\'delete\'].checked); }; crf(); form.elements[\'delete\'].onchange=crf; }';
+    public $javascript = /** @lang JavaScript */ "if (document.getElementById('delete')) { var form=document.getElementById('delete').form; var crf=function() { form.elements['target_forum_grouping'].disabled=(!form.elements['delete'].checked); }; crf(); form.elements['delete'].onchange=crf; }";
     public $orderer = 'c_title';
     public $title_is_multi_lang = false;
     public $donext_entry_content_type = 'forum_grouping';

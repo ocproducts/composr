@@ -2,7 +2,7 @@
 {$REQUIRE_JAVASCRIPT,core_menus}
 
 {+START,IF_NON_EMPTY,{CONTENT}}
-	<nav class="menu_type__dropdown" data-view="DropdownMenu" data-view-args="{+START,PARAMS_JSON,MENU,JAVASCRIPT_HIGHLIGHTING}{_*}{+END}">
+	<nav class="menu_type__dropdown" data-view="DropdownMenu" data-view-params="{+START,PARAMS_JSON,MENU,JAVASCRIPT_HIGHLIGHTING}{_*}{+END}">
 		<ul class="nl js-mouseout-unset-active-menu" id="r_{MENU|*}_d">
 			{CONTENT}
 

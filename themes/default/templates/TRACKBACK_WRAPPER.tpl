@@ -27,7 +27,7 @@
 
 	{+START,IF,{$JS_ON}}
 		<ul class="associated_links_block_group horizontal_links">
-			<li><a rel="nofollow" onclick="window.fauxmodal_alert('{!DONT_CLICK_TRACKBACK=;}'); return false;" href="{$FIND_SCRIPT*,trackback}?page={TRACKBACK_PAGE*}&amp;id={TRACKBACK_ID*}&amp;time={$FROM_TIMESTAMP}">{!TRACKBACK_LINK}</a></li>
+			<li><a rel="nofollow" data-cms-js="1" onclick="window.fauxmodal_alert('{!DONT_CLICK_TRACKBACK=;}');" href="{$FIND_SCRIPT*,trackback}?page={TRACKBACK_PAGE*}&amp;id={TRACKBACK_ID*}&amp;time={$FROM_TIMESTAMP}">{!TRACKBACK_LINK}</a></li>
 		</ul>
 	{+END}
 </div></section>

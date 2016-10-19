@@ -1,9 +1,10 @@
 (function ($cms) {
 
-    $cms.templates.cnsMemberProfileScreen = function cnsMemberProfileScreen(options) {
-        var tabFunc = 'load_tab__' + options.tabCode;
+    $cms.templates.cnsMemberProfileScreen = function cnsMemberProfileScreen(params) {
+        var container = this,
+            tabFunc = 'load_tab__' + params.tabCode;
 
-        if (options.tabContent === undefined) {
+        if (params.tabContent === undefined) {
             window[tabFunc] = function (automated) {
                 if (automated) {
                     try {
@@ -14,15 +15,15 @@
                 // Self destruct loader after this first run
                 window[tabFunc] = $cms.noop;
 
-                load_snippet('profile_tab&tab=' + options.tabCode + '&member_id=' + options.memberId + window.location.search.replace('?', '&'), null, function (result) {
-                    $cms.dom.html(document.getElementById('g_' + options.tabCode), result.responseText);
+                load_snippet('profile_tab&tab=' + params.tabCode + '&member_id=' + params.memberId + window.location.search.replace('?', '&'), null, function (result) {
+                    $cms.dom.html(document.getElementById('g_' + params.tabCode), result.responseText);
 
                     find_url_tab();
                 });
             }
         }
 
-        var tabs = +options.tabs || 0;
+        var tabs = +params.tabs || 0;
 
         if (tabs > 1) {
             // we do not want it to scroll down
@@ -30,6 +31,13 @@
             window.location.hash = '#';
             find_url_tab(old_hash);
         }
+
+        $cms.dom.on(container, 'click', '.js-click-select-tab-g', function (e, clicked) {
+            var tab = clicked.dataset.tpTab;
+            if (tab) {
+                select_tab('g', tab);
+            }
+        });
     };
 
 }(window.$cms));

@@ -1,6 +1,6 @@
 {$SET,player_id,player_{$RAND}}
 
-<div data-tpl="mediaQuicktime" data-tpl-args="{+START,PARAMS_JSON,player_id}{_*}{+END}">
+<div data-tpl="mediaQuicktime" data-tpl-params="{+START,PARAMS_JSON,player_id}{_*}{+END}">
 {+START,IF_PASSED_AND_TRUE,FRAMED}
 <figure>
 {+END}

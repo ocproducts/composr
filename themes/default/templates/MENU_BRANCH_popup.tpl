@@ -3,7 +3,7 @@
 
 {$SET,RAND,{$RAND}}
 
-<li data-view="PopupMenuBranch" data-view-args="{+START,PARAMS_JSON,MENU,RAND,HAS_CHILDREN}{_*}{+END}" class="{$?,{CURRENT},current,non_current} {$?,{$IS_EMPTY,{IMG}},has_no_img,has_img} {$?,{$GET,HAS_CHILDREN},js-mousemove-pop-up-menu}">
+<li data-view="PopupMenuBranch" data-view-params="{+START,PARAMS_JSON,MENU,RAND,HAS_CHILDREN}{_*}{+END}" class="{$?,{CURRENT},current,non_current} {$?,{$IS_EMPTY,{IMG}},has_no_img,has_img} {$?,{$GET,HAS_CHILDREN},js-mousemove-pop-up-menu}">
 	{+START,IF_NON_EMPTY,{IMG}}<img alt="" src="{IMG*}" srcset="{IMG_2X*} 2x" />{+END}
 
 	{+START,IF_NON_EMPTY,{URL}}

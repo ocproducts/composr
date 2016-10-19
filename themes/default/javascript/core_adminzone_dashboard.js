@@ -56,9 +56,9 @@
 
         confirmDelete: function () {
             var viewEl = this.el,
-                options = this.options,
-                message = options.confirmDeleteMessage,
-                id = encodeURIComponent(options.id);
+                params = this.params,
+                message = params.confirmDeleteMessage,
+                id = encodeURIComponent(params.id);
 
             window.fauxmodal_confirm(message, function (result) {
                 if (result) {
@@ -177,6 +177,8 @@
             });
 
             function set_task_hiding(hide_enable) {
+                hide_enable = !!hide_enable;
+
                 new Image().src = $IMG_checklist_cross2;
                 new Image().src = $IMG_checklist_toggleicon2;
 
@@ -220,12 +222,12 @@
             }
         },
 
-        blockMainStaffActions: function (options) {
-            internalise_ajax_block_wrapper_links(options.blockCallUrl, document.getElementById(options.wrapperId), ['.*'], {}, false, true);
+        blockMainStaffActions: function (params) {
+            internalise_ajax_block_wrapper_links(params.blockCallUrl, document.getElementById(params.wrapperId), ['.*'], {}, false, true);
         },
 
-        blockMainStaffTips: function (options) {
-            internalise_ajax_block_wrapper_links(options.blockCallUrl, document.getElementById(options.wrapperId), ['staff_tips_dismiss', 'rand'/*cache breaker*/], {}, false, true, false);
+        blockMainStaffTips: function (params) {
+            internalise_ajax_block_wrapper_links(params.blockCallUrl, document.getElementById(params.wrapperId), ['staff_tips_dismiss', 'rand'/*cache breaker*/], {}, false, true, false);
         }
     });
 

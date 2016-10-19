@@ -10,9 +10,9 @@
     function Menu() {
         Menu.base(this, arguments);
 
-        this.menuId = this.options.menuId;
+        this.menuId = this.params.menuId;
 
-        if (this.options.javascriptHighlighting && this.menuId) {
+        if (this.params.javascriptHighlighting && this.menuId) {
             menuActiveSelection(this.menuId);
         }
     }
@@ -43,8 +43,8 @@
     function PopupMenu() {
         PopupMenu.base(this, arguments);
 
-        this.menuId = this.options.menuId;
-        if (this.options.javascriptHighlighting && this.menuId) {
+        this.menuId = this.params.menuId;
+        if (this.params.javascriptHighlighting && this.menuId) {
             menuActiveSelection(this.menuId);
         }
     }
@@ -66,8 +66,8 @@
     function PopupMenuBranch() {
         PopupMenuBranch.base(this, arguments);
 
-        this.rand = this.options.rand;
-        this.menu = $cms.filter.id(this.options.menu);
+        this.rand = this.params.rand;
+        this.menu = $cms.filter.id(this.params.menu);
         this.popup = this.menu + '_pexpand_' + this.rand;
     }
 
@@ -101,7 +101,8 @@
 
         toggleMenu: function (e, target) {
             var menuId = target.dataset.menuTreeToggle;
-            toggleable_tray(menuId);
+
+            $cms.toggleableTray($cms.dom.id(menuId));
         }
     });
 
@@ -110,18 +111,17 @@
     // - MENU_BRANCH_mobile.tpl
     function MobileMenu() {
         MobileMenu.base(this, arguments);
-        this.elMenuContent = this.$('.js-el-menu-content');
+        this.menuContentEl = this.$('.js-el-menu-content');
     }
 
     $cms.inherits(MobileMenu, Menu, {
-        elMenuContent: null,
         events: {
             'click .js-click-toggle-content': 'toggleContent',
             'click .js-click-toggle-sub-menu': 'toggleSubMenu'
         },
         toggleContent: function (e) {
             e.preventDefault();
-            $cms.dom.toggle(this.elMenuContent);
+            $cms.dom.toggle(this.menuContentEl);
         },
         toggleSubMenu: function (e, link) {
             var rand = link.dataset.vwRand, href,
@@ -157,35 +157,88 @@
         }
     });
 
+    $cms.templates.menuEditorScreen = function (params) {
+        var container = this,
+            menuEditorWrapEl = $cms.dom.$(container, '.js-el-menu-editor-wrap');
 
-    $cms.extend($cms.templates, {
-        menuEditorScreen: function menuEditorScreen(options) {
-            window.all_menus = options.allMenus;
+        window.all_menus = params.allMenus;
 
-            document.getElementById('url').ondblclick = cb;
-            document.getElementById('caption_long').ondblclick = cb;
-            document.getElementById('page_only').ondblclick = cb;
+        $cms.dom.$('#url').ondblclick = doubleClick;
+        $cms.dom.$('#caption_long').ondblclick = doubleClick;
+        $cms.dom.$('#page_only').ondblclick = doubleClick;
 
-            window.current_selection = '';
-            window.sitemap = $cms.createTreeList('tree_list', 'data/sitemap.php?get_perms=0' + $cms.$KEEP + '&start_links=1', null, '', false, null, false, true);
+        window.current_selection = '';
+        window.sitemap = $cms.createTreeList('tree_list', 'data/sitemap.php?get_perms=0' + $cms.$KEEP + '&start_links=1', null, '', false, null, false, true);
 
-            function cb() {
-                var el = document.getElementById('menu_editor_wrap');
-                if (!el.classList.contains('docked')) {
-                    smooth_scroll(find_pos_y(document.getElementById('caption_' + window.current_selection)));
+        function doubleClick() {
+            if (!menuEditorWrapEl.classList.contains('docked')) {
+                smooth_scroll(find_pos_y(document.getElementById('caption_' + window.current_selection)));
+            }
+        }
+
+        $cms.dom.on(container, 'click', '.js-click-menu-editor-add-new-page', function () {
+            menu_editor_add_new_page();
+        });
+
+        $cms.dom.on(container, 'submit', '.js-submit-modsecurity-workaround', function (e, form) {
+            modsecurity_workaround(form);
+        });
+
+        $cms.dom.on(container, 'change', '.js-input-change-update-selection', function (e, input) {
+            var el = $cms.dom.$('#url_' + window.current_selection);
+            if (!el) {
+                return;
+            }
+            el.value = input.value;
+            el = $cms.dom.$('#edit_form').elements['url'];
+            el.value = input.value;
+            el = $cms.dom.$('#edit_form').elements['caption_' + window.current_selection];
+
+            if ((el.value == '') && input.selected_title) {
+                el.value = input.selected_title.replace(/^.*:\s*/, '');
+            }
+        });
+
+        $cms.dom.on(container, 'click', '.js-click-check-menu', function (e, button) {
+            if (!check_menu()) {
+                e.preventDefault();
+                return;
+            }
+
+            $cms.ui.disableButton(button);
+        });
+
+
+        $cms.dom.on(container, 'click', '.js-img-click-toggle-docked-field-editing', toggleDockedFieldEditing);
+        $cms.dom.on(container, 'keypress', '.js-img-keypress-toggle-docked-field-editing', toggleDockedFieldEditing);
+
+        function toggleDockedFieldEditing(e, img) {
+            if (!menuEditorWrapEl.classList.contains('docked')) {
+                menuEditorWrapEl.classList.add('docked');
+                img.src = '{$IMG;*,1x/arrow_box_hover}';
+                if (img.srcset !== undefined) {
+                    img.srcset = '{$IMG;*,2x/arrow_box_hover} 2x';
+                }
+            } else {
+                menuEditorWrapEl.classList.remove('docked');
+                img.src = '{$IMG;*,1x/arrow_box}';
+                if (img.srcset !== undefined) {
+                    img.srcset = '{$IMG;*,2x/arrow_box} 2x';
                 }
             }
-        },
+        }
+    };
 
-        menuEditorBranchWrap: function (options) {
+    $cms.extend($cms.templates, {
+        menuEditorBranchWrap: function (params) {
             var container = this,
-                sIndex = +options.branchType || 0;
+                sIndex = +params.branchType || 0;
 
-            if (options.clickableSections) {
+            if (params.clickableSections) {
                 sIndex = (sIndex === 0) ? 0 : (sIndex - 1);
             }
 
-            document.getElementById('branch_type_' + options.i).selectedIndex = sIndex;
+            document.getElementById('branch_type_' + params.i).selectedIndex = sIndex;
 
             $cms.dom.on(container, 'click', '.js-click-delete-menu-branch', function (e, clicked) {
                 delete_menu_branch(clicked);
@@ -195,7 +248,7 @@
             function delete_menu_branch(ob) {
                 var id = ob.id.substring(4, ob.id.length);
 
-                if (((window.showModalDialog !== undefined) || $cms.$CONFIG_OPTION.jsOverlays) || (ob.form.elements['branch_type_' + id] != 'page')) {
+                if (((window.showModalDialog !== undefined) || $cms.$CONFIG_OPTION.js_overlays) || (ob.form.elements['branch_type_' + id] != 'page')) {
                     var choices = { buttons__cancel: '{!INPUTSYSTEM_CANCEL;^}', menu___generic_admin__delete: '{!DELETE;^}', buttons__move: '{!menus:MOVETO_MENU;^}' };
                     generate_question_ui(
                         '{!CONFIRM_DELETE_LINK_NICE;^,xxxx}'.replace('xxxx', document.getElementById('caption_' + id).value),
@@ -253,18 +306,18 @@
             }
         },
 
-        menuSitemap: function (options) {
-            generate_menu_sitemap(options.menuSitemapId, options.content);
+        menuSitemap: function (params) {
+            generate_menu_sitemap(params.menuSitemapId, params.content);
         },
 
-        pageLinkChooser: function pageLinkChooser(options) {
+        pageLinkChooser: function pageLinkChooser(params) {
             var ajax_url = 'data/sitemap.php?get_perms=0' + $cms.$KEEP + '&start_links=1';
 
-            if (options.pageType !== undefined) {
-                ajax_url += '&page_type=' + options.pageType;
+            if (params.pageType !== undefined) {
+                ajax_url += '&page_type=' + params.pageType;
             }
 
-            $cms.createTreeList(options.name, ajax_url, '', '', false, null, false, true);
+            $cms.createTreeList(params.name, ajax_url, '', '', false, null, false, true);
         }
     });
 
@@ -326,8 +379,11 @@
 
                 var min_score = possibilities[0].score;
                 for (var i = 0; i < possibilities.length; i++) {
-                    if (possibilities[i].score != min_score) break;
-                    possibilities[i].element.className = possibilities[i].element.className.replace('non_current', 'current');
+                    if (possibilities[i].score != min_score) {
+                        break;
+                    }
+                    possibilities[i].element.classList.remove('non_current');
+                    possibilities[i].element.classList.add('current');
                 }
             }
         }
@@ -464,7 +520,7 @@
 
         var full_width = (window.scrollX == 0) ? get_window_width() : get_window_scroll_width();
 
-        if ($cms.$CONFIG_OPTION.fixedWidth && !outside_fixed_width) {
+        if ($cms.$CONFIG_OPTION.fixed_width && !outside_fixed_width) {
             var main_website_inner = document.getElementById('main_website_inner');
             if (main_website_inner) {
                 full_width = main_website_inner.offsetWidth;

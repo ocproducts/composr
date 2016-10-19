@@ -30,7 +30,7 @@
 					{+END}
 						<div class="download_now" itemprop="significantLinks">
 							{+START,IF,{MAY_DOWNLOAD}}
-								<p class="download_link associated_link suggested_link"><a{+START,IF,{$NOT,{$INLINE_STATS}}} onclick="return ga_track(this,'{!DOWNLOAD;*}','{ORIGINAL_FILENAME;*}');"{+END} rel="nofollow" href="{DOWNLOAD_URL*}"><strong>{!DOWNLOAD_NOW}</strong></a></p>
+								<p class="download_link associated_link suggested_link"><a {+START,IF,{$NOT,{$INLINE_STATS}}} onclick="return ga_track(this,'{!DOWNLOAD;*}','{ORIGINAL_FILENAME;*}');"{+END} rel="nofollow" href="{DOWNLOAD_URL*}"><strong>{!DOWNLOAD_NOW}</strong></a></p>
 							{+END}
 							{+START,IF,{$NOT,{MAY_DOWNLOAD}}}
 								<p>{!NO_DOWNLOAD_ACCESS}</p>
@@ -150,7 +150,7 @@
 
 			{$SET,carousel_id,{$RAND}}
 
-			<div id="carousel_{$GET*,carousel_id}" class="carousel" style="display: none" data-view="Carousel" data-view-args="{+START,PARAMS_JSON,carousel_id}{_*}{+END}">
+			<div id="carousel_{$GET*,carousel_id}" class="carousel" style="display: none" data-view="Carousel" data-view-params="{+START,PARAMS_JSON,carousel_id}{_*}{+END}">
 				<div class="move_left js-btn-car-move" data-move-amount="-100"></div>
 				<div class="move_right js-btn-car-move" data-move-amount="+100"></div>
 

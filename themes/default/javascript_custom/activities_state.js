@@ -1,120 +1,157 @@
-"use strict";
+(function ($cms) {
 
-/*{$,Parser hint: .innerHTML okay}*/
+    /*
+     This provides the JavaScript necessary for the "status" part of activities
+     */
 
-/*
- This provides the JavaScript necessary for the "status" part of activities
+    $cms.views.BlockMainActivitiesState = BlockMainActivitiesState;
 
- You can make use of it via require_javascript('activities_state',window.s_update_submit)
- */
+    function BlockMainActivitiesState(params) {
+        BlockMainActivitiesState.base(this, arguments);
 
-function s_update_focus(event) {
-    if ($(this).val().trim() == '{!activities:TYPE_HERE;^}') {
-        $(this).val('');
-        this.className = this.className.replace(/ field_input_non_filled/g, ' field_input_filled');
-    }
-    $(this).removeClass('fade_input');
-}
-
-function s_update_blur(event) {
-    if ($(this).val().trim() == '') {
-        $(this).val('{!activities:TYPE_HERE;^}');
-        this.className = this.className.replace(/ field_input_filled/g, ' field_input_non_filled');
-    }
-    $(this).addClass('fade_input');
-}
-
-/**
- * Maintain feedback on how many characters are available in an update box.
- */
-function s_maintain_char_count(event) {
-    var char_count = $('#activity_status').val().length;
-
-    if (char_count < 255)
-        $('#activities_update_notify', '#status_updates').attr('class', 'update_success').text((254 - char_count) + ' {!activities:CHARACTERS_LEFT;^}');
-    else
-        $('#activities_update_notify', '#status_updates').attr('class', 'update_error').text((char_count - 254) + ' {!activities:CHARACTERS_TOO_MANY;^}');
-}
-
-/**
- * Called on update submission
- */
-function s_update_submit(event) {
-    var subject_text = '';
-
-    if (event) {
-        event.preventDefault();
-        subject_text = $('textarea', this).val().trim();
-    } else {
-        subject_text = $('textarea', '#fp_status_form').val().trim();
+        this.form = this.$('form.js-form-status-updates');
+        this.submitBtn = this.$('.js-btn-submit-update');
+        this.textarea = this.$('textarea.js-textarea-activity-status');
+        this.notificationEl = this.$('.js-el-activities-update-notification');
     }
 
-    if ((subject_text == '{!activities:TYPE_HERE;^}') || (subject_text == '')) {
-        $('#activities_update_notify', '#status_updates').attr('class', 'update_error').text('{!activities:PLEASE_ENTER_STATUS;^}');
-    } else {
-        var url = '{$BASE_URL;,0}/data_custom/activities_handler.php' + keep_stub(true);
+    $cms.inherits(BlockMainActivitiesState, $cms.View, {
+        events: {
+            'focus textarea.js-textarea-activity-status': 'textareaFocus',
+            'blur textarea.js-textarea-activity-status': 'textareaBlur',
+            'keyup textarea.js-textarea-activity-status': 'textareaKeyup',
+            'keypress textarea.js-textarea-activity-status': 'textareaKeypress',
 
-        jQuery.ajax({
-            url: $cms.url(url),
-            type: 'POST',
-            data: $('#fp_status_form').serialize(),
-            cache: false,
-            timeout: 5000,
-            success: function (data, stat) {
-                s_update_retrieve(data, stat);
-            },
-            error: function (a, stat, err) {
-                s_update_retrieve(err, stat);
+            'keyup .js-textarea-keyup-manage-scroll-height': 'manageScrollHeight',
+
+            'submit form.js-form-status-updates': 'submitForm'
+        },
+
+        textareaFocus: function (e, textarea) {
+            if (textarea.value.trim() === '{!activities:TYPE_HERE;^}') {
+                textarea.value = '';
+                textarea.classList.add('field_input_filled');
+                textarea.classList.remove('field_input_non_filled');
             }
-        });
-    }
-}
+            textarea.classList.remove('fade_input');
+        },
+        textareaBlur: function (e, textarea) {
+            if (textarea.value.trim() === '') {
+                textarea.value = '{!activities:TYPE_HERE;^}';
+                textarea.classList.remove('field_input_filled');
+                textarea.classList.add('field_input_non_filled');
+            }
 
-/**
- * Processes data retrieved for the activities feed and updates the list
- * If called by s_update_submit will also catch if you're logged out and redirect
- */
-function s_update_retrieve(data, tStat) {
-    document.getElementById('button').disabled = false;
+            textarea.classList.add('fade_input');
+        },
+        textareaKeyup: function (e, textarea) {
+            if (!$cms.$MOBILE) {
+                manage_scroll_height(textarea);
+            }
+            this.maintainCharCount();
+        },
+        textareaKeypress: function (e, textarea) {
+            this.maintainCharCount();
+        },
 
-    var update_box = $('#activities_update_notify', '#status_updates');
-    if (tStat == 'success') {
-        if ($('success', data).text() == '0') {
-            if ($('feedback', data).text().substr(0, 13) == '{!MUST_LOGIN;^}') { //if refusal is due to login expiry...
-                window.fauxmodal_alert('{!MUST_LOGIN;^}');
+        /**
+         * Called on update submission
+         */
+        submitForm: function (e, form) {
+            var subjectText = this.textarea.value.trim();
+
+            if (e) {
+                e.preventDefault();
+            }
+
+            if ((subjectText === '') || (subjectText === '{!activities:TYPE_HERE;^}')) {
+                this.notificationEl.className = 'update_error';
+                this.notificationEl.textContent = '{!activities:PLEASE_ENTER_STATUS;^}';
             } else {
-                update_box.attr('class', 'update_error').html($('feedback', data).text());
-            }
-        }
-        else if ($('success', data).text() == '1') {
-            update_box.attr('class', 'update_success').text($('feedback', data).text());
-            if ($('#activities_feed').length != 0) // The update box won't necessarily have a displayed feed to update
-            {
-                s_update_get_data();
-            }
-            update_box.fadeIn(1200, function () {
-                update_box.fadeOut(1200, function () {
-                    var as = $('#activity_status');
-                    update_box.attr('class', 'update_success').text('254 {!activities:CHARACTERS_LEFT;^}');
-                    update_box.fadeIn(1200);
-                    as.parent().height(as.parent().height());
-                    as.val('{!activities:TYPE_HERE;^}');
-                    as[0].className = as[0].className.replace(/ field_input_filled/g, ' field_input_non_filled');
-                    as.fadeIn(1200, function () {
-                        as.parent().height('');
-                    });
+                var view = this;
+                jQuery.ajax({
+                    url: $cms.$BASE_URL_S + 'data_custom/activities_handler.php' + keep_stub(true),
+                    type: 'POST',
+                    data: $cms.dom.serialize(form),
+                    cache: false,
+                    timeout: 5000,
+                    // Processes data retrieved for the activities feed and updates the list
+                    complete: function (jqXHR, textStatus ) {
+                        view.submitBtn.disabled = false;
+
+                        if ((textStatus !== 'success') || !jqXHR.responseXML) {
+                            view.notificationEl.className = 'update_error';
+                            view.notificationEl.textContent = '{!activities:WENT_WRONG;^}';
+                            $cms.dom.hide(view.notificationEl);
+
+                            $cms.dom.fadeIn(view.notificationEl, 1200, function () {
+                                setTimeout(function () {
+                                    $cms.dom.fadeOut(view.notificationEl, 1200, function () {
+                                        view.maintainCharCount();
+                                        $cms.dom.fadeIn(view.notificationEl, 1200);
+                                    });
+                                }, 2400);
+                            });
+                            return;
+                        }
+
+                        var xmlDoc = jqXHR.responseXML,
+                            successEl = xmlDoc.querySelector('success'),
+                            feedbackEl = xmlDoc.querySelector('feedback');
+
+                        if (successEl.textContent === '0') {
+                            if (feedbackEl.textContent.startsWith('{!MUST_LOGIN;^}')) { //if refusal is due to login expiry...
+                                window.fauxmodal_alert('{!MUST_LOGIN;^}');
+                            } else {
+                                view.notificationEl.className = 'update_error';
+                                view.notificationEl.textContent = feedbackEl.textContent;
+                            }
+                        } else if (successEl.textContent === '1') {
+                            view.notificationEl.className = 'update_success';
+                            view.notificationEl.textContent = feedbackEl.textContent;
+
+                            if ($cms.dom.$('#activities_feed')) {// The update box won't necessarily have a displayed feed to update
+                                s_update_get_data();
+                            }
+
+                            $cms.dom.fadeIn(view.notificationEl, 1200, function () {
+                                $cms.dom.fadeOut(view.notificationEl, 1200, function () {
+                                    view.notificationEl.className = 'update_success';
+                                    view.notificationEl.textContent = '254 {!activities:CHARACTERS_LEFT;^}';
+                                    $cms.dom.fadeIn(view.notificationEl, 1200);
+
+                                    var textareaParentEl = view.textarea.parentElement;
+
+                                    $cms.dom.height(textareaParentEl, $cms.dom.height(textareaParentEl));
+
+                                    view.textarea.value = '{!activities:TYPE_HERE;^}';
+                                    view.textarea.classList.remove('field_input_filled');
+                                    view.textarea.classList.add('field_input_non_filled');
+
+                                    $cms.dom.fadeIn(view.textarea, 1200, function () {
+                                        $cms.dom.height(textareaParentEl, '');
+                                    });
+                                });
+                            });
+                        }
+                    }
                 });
-            });
+            }
+        },
+
+        // Maintain feedback on how many characters are available in an update box.
+        maintainCharCount: function () {
+            var charCount = this.textarea.value.length;
+
+            if (charCount < 255) {
+                this.notificationEl.className = 'update_success';
+                this.notificationEl.textContent = (254 - charCount) + ' {!activities:CHARACTERS_LEFT;^}';
+            } else {
+                this.notificationEl.className = 'update_error';
+                this.notificationEl.textContent = (charCount - 254) + ' {!activities:CHARACTERS_TOO_MANY;^}';
+
+            }
         }
-    } else {
-        var errText = '{!activities:WENT_WRONG;^}';
-        update_box.attr('class', '').addClass('update_error').text(errText);
-        update_box.hide();
-        update_box.fadeIn(1200, function () {
-            update_box.delay(2400).fadeOut(1200, function () {
-                s_maintain_char_count(null);
-                update_box.fadeIn(1200);
-            });
-        });
-    }
-}
+    });
+
+}(window.$cms));

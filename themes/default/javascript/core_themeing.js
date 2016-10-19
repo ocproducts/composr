@@ -2,30 +2,31 @@
     'use strict';
 
     $cms.views.ThemeManageScreen = ThemeManageScreen;
+    $cms.views.ThemeTemplateEditorTab = ThemeTemplateEditorTab;
+
     function ThemeManageScreen() {
         ThemeManageScreen.base(this, arguments);
     }
 
     $cms.inherits(ThemeManageScreen, $cms.View);
 
-    $cms.views.ThemeTemplateEditorTab = ThemeTemplateEditorTab;
-    function ThemeTemplateEditorTab(options) {
+    function ThemeTemplateEditorTab(params) {
         ThemeTemplateEditorTab.base(this, arguments);
 
         // Allow searching via URL hash
         if (window.location.hash) {
             window.setTimeout(function () {
                 var hash = window.location.hash.substr(1, window.location.hash.length - 1);
-                editarea_do_search('e_' + options.fileId, hash);
+                editarea_do_search('e_' + params.fileId, hash);
             }, 2000);
         }
 
         if ($cms.$CONFIG_OPTION.editarea) {
-            ace_composr_loader('e_' + options.fileId, options.highlighterType, false);
+            ace_composr_loader('e_' + params.fileId, params.highlighterType, false);
         }
 
-        if (options.includeCssEditing && window.opener && window.opener.document) {
-            load_contextual_css_editor(options.file, options.fileId);
+        if (params.includeCssEditing && window.opener && window.opener.document) {
+            load_contextual_css_editor(params.file, params.fileId);
         }
     }
 
@@ -49,18 +50,18 @@
 
         saveContent: function (e) {
             e.preventDefault();
-            template_editor_tab_save_content(this.options.file);
+            template_editor_tab_save_content(this.params.file);
         },
 
         livePreview: function (e, target) {
-            var opts = this.options;
+            var opts = this.params;
             if (!template_editor_preview(opts.fileId, opts.livePreviewUrl, target, true)) {
                 e.preventDefault();
             }
         },
 
         screenPreview: function (e, target) {
-            var opts = this.options;
+            var opts = this.params;
             if (!template_editor_preview(opts.fileId, opts.screenPreviewUrl, target)) {
                 e.preventDefault();
             }
@@ -69,13 +70,13 @@
         editareaSearch: function (e, target) {
             var regexp = target.dataset.eaSearch;
 
-            editarea_do_search('e_' + this.options.fileId, regexp);
+            editarea_do_search('e_' + this.params.fileId, regexp);
         },
 
         insertGuid: function (e, target) {
             var guid = target.dataset.insertGuid;
 
-            insert_guid(this.options.file, guid);
+            insert_guid(this.params.file, guid);
         },
 
         addEditorTab: function (e, target) {
@@ -85,21 +86,21 @@
         },
 
         cssEquationHelper: function (e) {
-            var options = this.options,
+            var params = this.params,
                 url = 'themewizard_equation',
                 result;
 
             e.preventDefault();
 
-            url += '&theme=' + encodeURIComponent(options.theme);
-            url += '&css_equation=' + encodeURIComponent(document.getElementById('css_equation_' + options.fileId).value);
+            url += '&theme=' + encodeURIComponent(params.theme);
+            url += '&css_equation=' + encodeURIComponent(document.getElementById('css_equation_' + params.fileId).value);
 
             result = load_snippet(url);
 
             if (!result || result.includes('<html')) {
                 window.fauxmodal_alert('{!ERROR_OCCURRED;^}');
             } else {
-                document.getElementById('css_result_' + options.fileId).value = result;
+                document.getElementById('css_result_' + params.fileId).value = result;
             }
         }
     });
@@ -127,24 +128,24 @@
             });
         },
 
-        themeTemplateEditorScreen: function themeTemplateEditorScreen(options) {
-            window.template_editor_theme = options.theme;
+        themeTemplateEditorScreen: function themeTemplateEditorScreen(params) {
+            window.template_editor_theme = params.theme;
 
-            if (options.activeGuid !== undefined) {
-                window.template_editor_active_guid = options.activeGuid;
+            if (params.activeGuid !== undefined) {
+                window.template_editor_active_guid = params.activeGuid;
             }
 
-            if (options.livePreviewUrl !== undefined) {
-                window.template_editor_live_preview_url = options.livePreviewUrl;
+            if (params.livePreviewUrl !== undefined) {
+                window.template_editor_live_preview_url = params.livePreviewUrl;
             }
 
             template_editor_clean_tabs();
 
-            window.sitemap = $cms.createTreeList('theme_files', 'data/ajax_tree.php?hook=choose_theme_files&theme=' + options.theme + $cms.$KEEP, null, '', false, null, false, true);
+            window.sitemap = $cms.createTreeList('theme_files', 'data/ajax_tree.php?hook=choose_theme_files&theme=' + params.theme + $cms.$KEEP, null, '', false, null, false, true);
 
             window.setTimeout(function () {
-                for (var i = 0, len = options.filesToLoad.length; i < len; i++) {
-                    template_editor_add_tab(options.filesToLoad[i]);
+                for (var i = 0, len = params.filesToLoad.length; i < len; i++) {
+                    template_editor_add_tab(params.filesToLoad[i]);
                 }
             }, 1000);
 

@@ -11,7 +11,7 @@
 
 	<div>
 		<div class="proceed_button">
-			<input class="button_screen buttons__proceed" onclick="this.disabled=true; this.form.submit();" accesskey="u" type="submit" value="{!PROCEED}" />
+			<input class="button_screen buttons__proceed" onclick="setTimeout(function (btn) { btn.disabled=true; }, 100, this);" accesskey="u" type="submit" value="{!PROCEED}" />
 		</div>
 	</div>
 </form>

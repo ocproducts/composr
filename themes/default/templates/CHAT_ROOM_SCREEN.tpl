@@ -1,4 +1,5 @@
-<div data-view="ChatRoomScreen" data-view-args="{+START,PARAMS_JSON,CHATROOM_ID}{_*}{+END}">
+{$REQUIRE_JAVASCRIPT,chat}
+<div data-view="ChatRoomScreen" data-view-params="{+START,PARAMS_JSON,CHATROOM_ID}{_*}{+END}">
 {TITLE}
 
 {$REQUIRE_JAVASCRIPT,jquery}
@@ -18,7 +19,7 @@
 
 				<div style="display: inline;">
 					<p class="accessibility_hidden"><label for="post">{!MESSAGE}</label></p>
-					<textarea style="font-family: {FONT_NAME_DEFAULT;*}" class="input_text_required"{+START,IF,{$NOT,{$MOBILE}}} onkeyup="manage_scroll_height(this);"{+END} onkeypress="if (enter_pressed(event)) return chat_post(event,{CHATROOM_ID*},'post',document.getElementById('font_name').options[document.getElementById('font_name').selectedIndex].value,document.getElementById('text_colour').value); return true;" id="post" name="message" cols="{$?,{$MOBILE},37,39}" rows="1"></textarea>
+					<textarea style="font-family: {FONT_NAME_DEFAULT;*}" class="input_text_required"{+START,IF,{$NOT,{$MOBILE}}} onkeyup="manage_scroll_height(this);"{+END} onkeypress="if ($cms.dom.keyPressed(event, 'Enter')) return chat_post(event,{CHATROOM_ID*},'post',document.getElementById('font_name').value,document.getElementById('text_colour').value); return true;" id="post" name="message" cols="{$?,{$MOBILE},37,39}" rows="1"></textarea>
 					<input type="hidden" name="font" id="font" value="{FONT_NAME_DEFAULT*}" />
 					<input type="hidden" name="colour" id="colour" value="{TEXT_COLOUR_DEFAULT*}" />
 				</div>
@@ -28,12 +29,12 @@
 			<form title="{SUBMIT_VALUE*}" action="{MESSAGES_PHP*}?action=post&amp;room_id={CHATROOM_ID*}" method="post" class="inline" autocomplete="off">
 				{$INSERT_SPAMMER_BLACKHOLE}
 
-				<input type="button" class="button_micro buttons__send" onclick="return chat_post(event,{CHATROOM_ID*},'post',document.getElementById('font_name').options[document.getElementById('font_name').selectedIndex].value,document.getElementById('text_colour').value);" value="{SUBMIT_VALUE*}" />
+				<input type="button" class="button_micro buttons__send js-click-post-chat-message" value="{SUBMIT_VALUE*}" />
 			</form>
 			{+START,IF,{$NOT,{$MOBILE}}}
 				{MICRO_BUTTONS}
 				{+START,IF,{$CNS}}
-					<a rel="nofollow" class="horiz_field_sep" tabindex="6" href="#!" onclick="window.faux_open(maintain_theme_in_link('{$FIND_SCRIPT;*,emoticons}?field_name=post{$KEEP;*}'),'emoticon_chooser','width=300,height=320,status=no,resizable=yes,scrollbars=no'); return false;" title="{!EMOTICONS_POPUP}"><img alt="" src="{$IMG*,icons/16x16/editor/insert_emoticons}" srcset="{$IMG*,icons/32x32/editor/insert_emoticons} 2x" /></a>
+					<a rel="nofollow" class="horiz_field_sep" tabindex="6" href="#!" onclick="window.faux_open(maintain_theme_in_link('{$FIND_SCRIPT;*,emoticons}?field_name=post{$KEEP;*}'),'emoticon_chooser','width=300,height=320,status=no,resizable=yes,scrollbars=no');" title="{!EMOTICONS_POPUP}"><img alt="" src="{$IMG*,icons/16x16/editor/insert_emoticons}" srcset="{$IMG*,icons/32x32/editor/insert_emoticons} 2x" /></a>
 				{+END}
 			{+END}
 		</div>
@@ -64,7 +65,7 @@
 	{!USERS_IN_CHATROOM} <span id="chat_members_update">{CHATTERS}</span>
 </p></div>
 
-<form title="{$STRIP_TAGS,{!CHAT_OPTIONS_DESCRIPTION}}" class="below_main_chat_window" onsubmit="return check_chat_options(this);" method="post" action="{OPTIONS_URL*}" autocomplete="off">
+<form title="{$STRIP_TAGS,{!CHAT_OPTIONS_DESCRIPTION}}" class="below_main_chat_window js-form-submit-check-chat-options" method="post" action="{OPTIONS_URL*}" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<div class="box box___chat_screen_options box_prominent"><div class="box_inner">
@@ -90,7 +91,7 @@
 						<label for="font_name">{!CHAT_OPTIONS_TEXT_NAME}:</label>
 					</p>
 					<p>
-						<select onclick="this.onchange(event);" onchange="on_font_change(this);" id="font_name" name="font_name">
+						<select class="js-select-click-font-change js-select-change-font-chage" id="font_name" name="font_name">
 							{+START,LOOP,Arial\,Courier\,Georgia\,Impact\,Times\,Trebuchet\,Verdana\,Tahoma\,Geneva\,Helvetica}
 								<option {$?,{$EQ,{FONT_NAME_DEFAULT},{_loop_var}},selected="selected" ,}value="{_loop_var*}" style="font-family: '{_loop_var;*}'">{_loop_var*}</option>
 							{+END}

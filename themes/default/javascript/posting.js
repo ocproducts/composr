@@ -34,7 +34,7 @@ function add_attachment(start_num, posting_field_name) {
         element.setAttribute('unselectable', 'on');
     }
 
-    if (window.trigger_resize !== undefined) trigger_resize();
+    trigger_resize();
 }
 
 function attachment_present(post_value, number) {
@@ -103,7 +103,7 @@ function set_attachment(field_name, number, filename, multi, uploader_settings) 
         defaults.type = ''; // =autodetect rendering type
 
         // Shall we show the options overlay?
-        show_overlay = !(multi || (is_image && $cms.$CONFIG_OPTION.simplifiedAttachmentsUi) || is_archive);
+        show_overlay = !(multi || (is_image && $cms.$CONFIG_OPTION.simplified_attachments_ui) || is_archive);
 
         if (is_image) {
             tag = 'attachment_safe';
@@ -571,7 +571,7 @@ function do_input_page(field_name) {
 
     var result;
 
-    if ((window.showModalDialog !== undefined) || $cms.$CONFIG_OPTION.jsOverlays) {
+    if ((window.showModalDialog !== undefined) || $cms.$CONFIG_OPTION.js_overlays) {
         window.faux_showModalDialog(
             maintain_theme_in_link('{$FIND_SCRIPT;,page_link_chooser}' + keep_stub(true)),
             null,
@@ -669,20 +669,6 @@ function do_input_i(field_name) {
     insert_textbox_wrapping(element, 'i', '');
 }
 
-function do_input_font(field_name) {
-    if (window.insert_textbox_wrapping === undefined) return;
-
-    var element = document.getElementById(field_name);
-    var form = element.form;
-    var face = form.elements['f_face'];
-    var size = form.elements['f_size'];
-    var colour = form.elements['f_colour'];
-    if ((face.value == '') && (size.value == '') && (colour.value == '')) {
-        window.fauxmodal_alert('{!javascript:NO_FONT_SELECTED;^}');
-        return;
-    }
-    insert_textbox_wrapping(document.getElementById(field_name), '[font=\"' + escape_comcode(face.value) + '\" color=\"' + escape_comcode(colour.value) + '\" size=\"' + escape_comcode(size.value) + '\"]', '[/font]');
-}
 
 // ==================
 // Auto-saving/drafts

@@ -266,7 +266,7 @@ function get_banner_form_fields($simplified = false, $name = '', $image_url = ''
         }
     }
 
-    $javascript = '
+    $javascript =  /** @lang JavaScript */ '
         if (document.getElementById(\'campaignremaining\'))
         {
             var form=document.getElementById(\'campaignremaining\').form;

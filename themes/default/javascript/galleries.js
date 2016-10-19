@@ -153,24 +153,27 @@
     $cms.views.GalleryNav = GalleryNav;
 
     $cms.extend($cms.templates, {
-        blockMainGalleryEmbed: function blockMainGalleryEmbed(options) {
-            if (!options.carouselId || !options.blockCallUrl) {
+        blockMainGalleryEmbed: function blockMainGalleryEmbed(params) {
+            var container = this,
+                carouselId = params.carouselId ? ('' + params.carouselId) : '',
+                blockCallUrl = params.blockCallUrl ? ('' + params.blockCallUrl) : '',
+                currentLoadingFromPos = +params.start || 0;
+
+            if (!carouselId|| !blockCallUrl) {
                 return;
             }
 
-            window['current_loading_from_pos_' + options.carouselId] = options.start || 0;
+            $cms.dom.on(container, 'click', '.js-click-carousel-prepare-load-more', function () {
+                var ob = document.getElementById('carousel_ns_' + carouselId);
 
-            window['carousel_prepare_load_more_' + options.carouselId] = function () {
-                var ob = document.getElementById('carousel_ns_' + options.carouselId);
-
-                if (ob.parentNode.scrollLeft + ob.offsetWidth * 2 < ob.scrollWidth) {
+                if ((ob.parentNode.scrollLeft + ob.offsetWidth * 2) < ob.scrollWidth) {
                     return; // Not close enough to need more results
                 }
 
-                window['current_loading_from_pos_' + options.carouselId] += options.max;
+                currentLoadingFromPos += +params.max || 0;
 
-                call_block(options.blockCallUrl, 'raw=1,cache=0', ob, true);
-            };
+                window.call_block(blockCallUrl, 'raw=1,cache=0', ob, true);
+            });
         },
 
         galleryImportScreen: function () {

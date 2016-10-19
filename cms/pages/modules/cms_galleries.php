@@ -1924,7 +1924,15 @@ class Module_cms_galleries_cat extends Standard_crud_module
     public $content_type = 'gallery';
     public $menu_label = 'GALLERIES';
     public $table = 'galleries';
-    public $javascript = "var fn=document.getElementById('fullname'); if (fn) { var form=fn.form; fn.onchange=function() { if ((form.elements['name']) && (form.elements['name'].value=='')) form.elements['name'].value=fn.value.toLowerCase().replace(/[^\w\d\.\-]/g,'_').replace(/\_+\$/,'').substr(0,80); }; }";
+    public $javascript = /** @lang JavaScript */ "var fn = document.getElementById('fullname');
+if (fn) {
+    var form = fn.form;
+    fn.onchange = function () {
+        if ((form.elements['name']) && (form.elements['name'].value == '')) {
+            form.elements['name'].value = fn.value.toLowerCase().replace(/[^\w\d\.\-]/g, '_').replace(/\_+\$/, '').substr(0, 80);
+        }
+    };
+}";
     public $is_chained_with_parent_browse = true;
 
     /**

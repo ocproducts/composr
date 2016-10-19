@@ -281,7 +281,8 @@ function template_editor_tab_mark_changed_content(file) {
 
     var file_id = file_to_file_id(file);
     var ob = document.getElementById('t_' + file_id);
-    ob.className = ob.className.replace(/ file_nonchanged/, ' file_changed');
+    ob.classList.remove('file_nonchanged');
+    ob.classList.add('file_changed');
 }
 
 function template_editor_tab_save_content(file) {
@@ -303,7 +304,8 @@ function template_editor_tab_mark_nonchanged_content(file) {
 
     var file_id = file_to_file_id(file);
     var ob = document.getElementById('t_' + file_id);
-    ob.className = ob.className.replace(/ file_changed/, ' file_nonchanged');
+    ob.classList.remove('file_changed');
+    ob.classList.add('file_nonchanged');
 }
 
 function template_editor_get_tab_count() {
@@ -462,7 +464,7 @@ function template_insert_parameter(dropdown_name, file_id) {
 
     var has_editarea = editarea_is_loaded(textbox.name);
 
-    if ((value == 'BLOCK') && ((window.showModalDialog !== undefined) || $cms.$CONFIG_OPTION.jsOverlays)) {
+    if ((value == 'BLOCK') && ((window.showModalDialog !== undefined) || $cms.$CONFIG_OPTION.js_overlays)) {
         var url = '{$FIND_SCRIPT_NOHTTP;,block_helper}?field_name=' + textbox.name + '&block_type=template' + keep_stub();
         window.faux_showModalDialog(
             maintain_theme_in_link(url),
@@ -631,18 +633,13 @@ function _highlight_template(node, template_path, depth) {
 
     node = node.firstChild;
     while (node) {
-        if (node.nodeType == 1) // Element node
-        {
+        if (node.nodeType === 1) {// Element node
             var template = node.getAttribute('data-template');
-            var data_match = (template && template.indexOf(' ' + template_path + ' ') != -1);
+            var data_match = (template && template.includes(' ' + template_path + ' '));
             if (data_match) {
-                if (node.className && node.className.indexOf('glowing_node') == -1)
-                    node.className += ' glowing_node';
-                else if (!node.className)
-                    node.className = ' glowing_node';
+                node.classList.add('glowing_node');
             } else {
-                if (node.className && node.className.indexOf('glowing_node') != -1)
-                    node.className = node.className.replace(/\s?glowing_node/, '');
+                node.classList.remove('glowing_node');
             }
         }
 

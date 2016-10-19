@@ -125,11 +125,10 @@ class Module_cms_banners extends Standard_crud_module
             return $this->export_csv();
         }
 
-        $this->javascript = '
+        $this->javascript = /** @lang JavaScript */'
             document.getElementById("importancemodulus").onkeyup=function() {
                 var _im_here=document.getElementById("im_here");
-                if (_im_here)
-                {
+                if (_im_here) {
                     var _im_total=document.getElementById("im_total");
                     var im_here=window.parseInt(document.getElementById("importancemodulus").value);
                     var im_total=window.parseInt(_im_total.className.replace("im_",""))+im_here;
@@ -144,7 +143,7 @@ class Module_cms_banners extends Standard_crud_module
         if ($type == 'add') {
             require_javascript('ajax');
             $script = find_script('snippet');
-            $this->javascript .= "
+            $this->javascript .= /** @lang JavaScript */"
                 var form=document.getElementById('main_form');
                 form.old_submit=form.onsubmit;
                 form.onsubmit=function() {
@@ -165,7 +164,7 @@ class Module_cms_banners extends Standard_crud_module
         if ($type == 'add_category') {
             require_javascript('ajax');
             $script = find_script('snippet');
-            $this->cat_crud_module->javascript = "
+            $this->cat_crud_module->javascript = /** @lang JavaScript */"
                 var form=document.getElementById('main_form');
                 form.old_submit=form.onsubmit;
                 form.onsubmit=function() {

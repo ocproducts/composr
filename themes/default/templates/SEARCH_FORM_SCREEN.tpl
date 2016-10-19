@@ -1,5 +1,5 @@
 {$REQUIRE_JAVASCRIPT,registry_search}
-<div data-view="SearchFormScreen">
+<div data-view="SearchFormScreen" data-tpl-params="{+START,PARAMS_JSON,SEARCH_TYPE}{_*}{+END}">
 {TITLE}
 
 {+START,IF_PASSED,RESULTS}
@@ -49,7 +49,7 @@
 			{+END}
 		{+END}
 
-		<form title="{!PRIMARY_PAGE_FORM}" action="{$URL_FOR_GET_FORM*,{URL}}" target="_self" method="get" class="main_search_form" autocomplete="off">
+		<form title="{!PRIMARY_PAGE_FORM}" action="{$URL_FOR_GET_FORM*,{URL}}" target="_self" method="get" class="main_search_form js-form-primary-form" autocomplete="off">
 			{$HIDDENS_FOR_GET_FORM,{URL}}
 			<input type="hidden" name="all_defaults" value="0" />
 
@@ -68,7 +68,7 @@
 						<td class="form_table_field_input" colspan="2">
 							<div class="accessibility_hidden"><label for="search_content">{!SEARCH_FOR}</label></div>
 							<div class="constrain_field">
-								<input maxlength="255"{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" onkeyup="update_ajax_search_list(this,event{+START,IF_PASSED,SEARCH_TYPE},'{SEARCH_TYPE;^*}'{+END});" onkeypress="if (enter_pressed(event)) this.form.submit();" class="search_content wide_field" type="search" size="{$?,{$MOBILE},30,48}" id="search_content" name="content" value="{+START,IF_PASSED,CONTENT}{CONTENT*}{+END}" />
+								<input maxlength="255"{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" class="search_content wide_field js-keyup-update-ajax-search-list js-keypress-enter-submit-primary-form" type="search" size="{$?,{$MOBILE},30,48}" id="search_content" name="content" value="{+START,IF_PASSED,CONTENT}{CONTENT*}{+END}" />
 							</div>
 
 							{+START,IF,{HAS_TEMPLATE_SEARCH}}
@@ -81,8 +81,8 @@
 						<td class="form_table_field_input" colspan="2">
 							{+START,IF,{$CONFIG_OPTION,enable_boolean_search}}
 								{+START,IF,{HAS_FULLTEXT_SEARCH}}
-								<input type="checkbox" id="boolean_search"{+START,IF,{BOOLEAN_SEARCH}} checked="checked"{+END} name="boolean_search" value="1" onclick="document.getElementById('boolean_options').style.display=this.checked?'block':'none'; trigger_resize();" /> <label for="boolean_search">{!BOOLEAN_SEARCH}</label>
-								<div style="display: {$JS_ON,none,block}" class="boolean_options" id="boolean_options">
+								<input type="checkbox" id="boolean_search"{+START,IF,{BOOLEAN_SEARCH}} checked="checked"{+END} name="boolean_search" value="1" class="js-checkbox-click-toggle-boolean-options js-click-trigger-resize" /> <label for="boolean_search">{!BOOLEAN_SEARCH}</label>
+								<div style="display: {$JS_ON,none,block}" class="boolean_options js-el-boolean-options" id="boolean_options">
 								{+END}
 									{+START,IF,{$NOT,{HAS_FULLTEXT_SEARCH}}}
 										<p>
@@ -103,7 +103,8 @@
 						<td class="form_table_field_input" colspan="2">
 							<div class="accessibility_hidden"><label for="search_author">{USER_LABEL*}</label></div>
 							<div class="constrain_field">
-								<span class="invisible_ref_point"></span><input autocomplete="off" maxlength="80" class="wide_field js-keyup-update-author-list" type="text" value="{AUTHOR*}" id="search_author" name="author" {+START,IF,{$MOBILE}} autocorrect="off"{+END} />
+								<span class="invisible_ref_point"></span>
+								<input autocomplete="off" maxlength="80" class="wide_field js-keyup-update-author-list" type="text" value="{AUTHOR*}" id="search_author" name="author" {+START,IF,{$MOBILE}} autocorrect="off"{+END} />
 							</div>
 						</td>
 					</tr>
@@ -114,15 +115,15 @@
 								<div class="accessibility_hidden"><label for="search_days">{DAYS_LABEL*}</label></div>
 								<select id="search_days" name="days">
 									<option selected="selected" value="-1">{!NA}</option>
-									<option{+START,IF,{$EQ,{DAYS},2}} selected="selected"{+END} value="2">{!SUBMIT_AGE_DAYS,2}</option>
-									<option{+START,IF,{$EQ,{DAYS},5}} selected="selected"{+END} value="5">{!SUBMIT_AGE_DAYS,5}</option>
-									<option{+START,IF,{$EQ,{DAYS},15}} selected="selected"{+END} value="15">{!SUBMIT_AGE_DAYS,15}</option>
-									<option{+START,IF,{$EQ,{DAYS},30}} selected="selected"{+END} value="30">{!SUBMIT_AGE_DAYS,30}</option>
-									<option{+START,IF,{$EQ,{DAYS},45}} selected="selected"{+END} value="45">{!SUBMIT_AGE_DAYS,45}</option>
-									<option{+START,IF,{$EQ,{DAYS},60}} selected="selected"{+END} value="60">{!SUBMIT_AGE_DAYS,60}</option>
-									<option{+START,IF,{$EQ,{DAYS},120}} selected="selected"{+END} value="120">{!SUBMIT_AGE_DAYS,120}</option>
-									<option{+START,IF,{$EQ,{DAYS},240}} selected="selected"{+END} value="240">{!SUBMIT_AGE_DAYS,240}</option>
-									<option{+START,IF,{$EQ,{DAYS},365}} selected="selected"{+END} value="365">{!SUBMIT_AGE_DAYS,365}</option>
+									<option {+START,IF,{$EQ,{DAYS},2}} selected="selected"{+END} value="2">{!SUBMIT_AGE_DAYS,2}</option>
+									<option {+START,IF,{$EQ,{DAYS},5}} selected="selected"{+END} value="5">{!SUBMIT_AGE_DAYS,5}</option>
+									<option {+START,IF,{$EQ,{DAYS},15}} selected="selected"{+END} value="15">{!SUBMIT_AGE_DAYS,15}</option>
+									<option {+START,IF,{$EQ,{DAYS},30}} selected="selected"{+END} value="30">{!SUBMIT_AGE_DAYS,30}</option>
+									<option {+START,IF,{$EQ,{DAYS},45}} selected="selected"{+END} value="45">{!SUBMIT_AGE_DAYS,45}</option>
+									<option {+START,IF,{$EQ,{DAYS},60}} selected="selected"{+END} value="60">{!SUBMIT_AGE_DAYS,60}</option>
+									<option {+START,IF,{$EQ,{DAYS},120}} selected="selected"{+END} value="120">{!SUBMIT_AGE_DAYS,120}</option>
+									<option {+START,IF,{$EQ,{DAYS},240}} selected="selected"{+END} value="240">{!SUBMIT_AGE_DAYS,240}</option>
+									<option {+START,IF,{$EQ,{DAYS},365}} selected="selected"{+END} value="365">{!SUBMIT_AGE_DAYS,365}</option>
 								</select>
 							</td>
 						</tr>
@@ -172,18 +173,18 @@
 							<div class="accessibility_hidden"><label for="search_direction">{!DIRECTION}</label></div>
 							<div class="accessibility_hidden"><label for="search_sort">{!SORT_BY}</label></div>
 							<select class="search_sort" id="search_sort" name="sort">
-								<option{+START,IF,{$EQ,{SORT},relevance}} selected="selected"{+END} value="relevance">{!RELEVANCE_SORT}</option>
-								<option{+START,IF,{$EQ,{SORT},add_date}} selected="selected"{+END} value="add_date">{!DATE}</option>
-								<option{+START,IF,{$EQ,{SORT},title}} selected="selected"{+END} value="title">{!TITLE}</option>
-								<option{+START,IF,{$EQ,{SORT},rating}} selected="selected"{+END} value="average_rating">{!RATING}</option>
-								<option{+START,IF,{$EQ,{SORT},rating}} selected="selected"{+END} value="compound_rating">{!POPULARITY}</option>
+								<option {+START,IF,{$EQ,{SORT},relevance}} selected="selected"{+END} value="relevance">{!RELEVANCE_SORT}</option>
+								<option {+START,IF,{$EQ,{SORT},add_date}} selected="selected"{+END} value="add_date">{!DATE}</option>
+								<option {+START,IF,{$EQ,{SORT},title}} selected="selected"{+END} value="title">{!TITLE}</option>
+								<option {+START,IF,{$EQ,{SORT},rating}} selected="selected"{+END} value="average_rating">{!RATING}</option>
+								<option {+START,IF,{$EQ,{SORT},rating}} selected="selected"{+END} value="compound_rating">{!POPULARITY}</option>
 								{+START,LOOP,EXTRA_SORT_FIELDS}
-									<option{+START,IF,{$EQ,{SORT},{_loop_key*}}} selected="selected"{+END} value="{_loop_key*}">{_loop_var*}</option>
+									<option {+START,IF,{$EQ,{SORT},{_loop_key*}}} selected="selected"{+END} value="{_loop_key*}">{_loop_var*}</option>
 								{+END}
 							</select>
 							<select id="search_direction" name="direction">
-								<option{+START,IF,{$EQ,{DIRECTION},ASC}} selected="selected"{+END} value="ASC">{!ASCENDING}</option>
-								<option{+START,IF,{$EQ,{DIRECTION},DESC}} selected="selected"{+END} value="DESC">{!DESCENDING}</option>
+								<option {+START,IF,{$EQ,{DIRECTION},ASC}} selected="selected"{+END} value="ASC">{!ASCENDING}</option>
+								<option {+START,IF,{$EQ,{DIRECTION},DESC}} selected="selected"{+END} value="DESC">{!DESCENDING}</option>
 							</select>
 						</td>
 					</tr>

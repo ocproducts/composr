@@ -1,7 +1,7 @@
 {$REQUIRE_JAVASCRIPT,galleries}
 {$SET,support_mass_select,cms_galleries}
 
-<div data-tpl="blockMainGalleryEmbed" data-tpl-args="{+START,PARAMS_JSON,carousel_id,START,MAX,block_call_url}{_*}{+END}">
+<div data-tpl="blockMainGalleryEmbed" data-tpl-params="{+START,PARAMS_JSON,carousel_id,START,MAX,block_call_url}{_*}{+END}">
 {+START,IF,{$NEQ,{$COMMA_LIST_GET,{BLOCK_PARAMS},raw},1}}
 	{+START,IF,{$NEQ,{_GUID},carousel}}
 		{$SET,wrapper_id,ajax_block_wrapper_{$RAND%}}
@@ -27,12 +27,11 @@
 		{$SET,carousel_id,{$RAND}}
 		{$SET,block_call_url,{$FACILITATE_AJAX_BLOCK_CALL,{BLOCK_PARAMS},raw=.*\,cache=.*,{START_PARAM}=.*}&{START_PARAM}=current_loading_from_pos_{$GET,carousel_id}}
 
-		<div id="carousel_{$GET*,carousel_id}" class="carousel" style="display: none" data-view="Carousel" data-view-args="{+START,PARAMS_JSON,carousel_id}{_*}{+END}">
-			<div class="move_left js-btn-car-move" data-move-amount="-47"></div>
-			<div class="move_right js-btn-car-move" data-move-amount="+47" onclick="carousel_prepare_load_more_{$GET*,carousel_id}({$GET*,carousel_id});"></div>
+		<div id="carousel_{$GET*,carousel_id}" class="carousel" style="display: none" data-view="Carousel" data-view-params="{+START,PARAMS_JSON,carousel_id}{_*}{+END}">
+			<div class="move_left js-btn-car-move " data-move-amount="-47"></div>
+			<div class="move_right js-btn-car-move js-click-carousel-prepare-load-more" data-move-amount="+47"></div>
 
-			<div class="main raw_ajax_grow_spot" id="carousel_{$GET*,carousel_id}_container">
-			</div>
+			<div class="main raw_ajax_grow_spot" id="carousel_{$GET*,carousel_id}_container"></div>
 		</div>
 
 		<div class="carousel_temp" id="carousel_ns_{$GET*,carousel_id}">

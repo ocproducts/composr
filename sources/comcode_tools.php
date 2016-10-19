@@ -64,21 +64,28 @@ function comcode_convert_script()
         $fields->attach(form_input_tick('Reindent output', '', 'reindent', false));
         $fields->attach(form_input_tick('Do intensive conversion', '', 'force', false));
 
-        $javascript = "
-            var form=document.getElementById('semihtml').form;
+        ob_start();
+        ?>
+        /*<script>*/
+        (function (){
+            'use strict';
+            var form = $cms.dom.id('semihtml').form;
 
-            var refresh_locked_inputs=function() {
-                var value=radio_value(form.elements['from_html']);
-                document.getElementById('semihtml').disabled=(value!=0);
-                document.getElementById('is_semihtml').disabled=(value!=0);
-                document.getElementById('lax').disabled=(value!=0);
-                document.getElementById('fix_bad_html').disabled=(value==1);
-                document.getElementById('force').disabled=(value!=1);
-            };
-            form.elements['from_html'][0].onclick=refresh_locked_inputs;
-            form.elements['from_html'][1].onclick=refresh_locked_inputs;
-            form.elements['from_html'][2].onclick=refresh_locked_inputs;
-            ";
+            form.elements.from_html[0].onclick = refresh_locked_inputs;
+            form.elements.from_html[1].onclick = refresh_locked_inputs;
+            form.elements.from_html[2].onclick = refresh_locked_inputs;
+
+            function refresh_locked_inputs() {
+                var value = radio_value(form.elements['from_html']);
+                $cms.dom.id('semihtml').disabled = (value != 0);
+                $cms.dom.id('is_semihtml').disabled = (value != 0);
+                $cms.dom.id('lax').disabled = (value != 0);
+                $cms.dom.id('fix_bad_html').disabled = (value == 1);
+                $cms.dom.id('force').disabled = (value != 1);
+            }
+        }());
+        <?php
+        $javascript = ob_get_clean();
 
         $out2 = globalise(do_template('FORM_SCREEN', array(
             '_GUID' => 'dd82970fa1196132e07049871c51aab7',

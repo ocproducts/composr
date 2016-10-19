@@ -1,3 +1,5 @@
+{$REQUIRE_JAVASCRIPT,core}
+<div data-tpl="blockTopPersonalStats">
 <div class="global_button_ref_point" id="top_personal_stats_rel" style="display: none">
 	<div class="box box_arrow box__block_top_personal_stats"><span></span><div class="box_inner"><div>
 		{+START,IF_NON_EMPTY,{AVATAR_URL}}
@@ -25,4 +27,5 @@
 		{+END}
 	</div></div></div>
 </div>
-<a title="{$STRIP_TAGS,{!LOGGED_IN_AS,{USERNAME*}}} ({$IP_ADDRESS*}, #{MEMBER_ID*})" id="top_personal_stats_button" onclick="return toggle_top_personal_stats(event);" href="{$MEMBER_PROFILE_URL*,{MEMBER_ID}}"><img width="20" height="20" alt="" src="{$IMG*,icons/24x24/tabs/member_account/profile2}" srcset="{$IMG*,icons/48x48/tabs/member_account/profile2} 2x" /></a>
+<a title="{$STRIP_TAGS,{!LOGGED_IN_AS,{USERNAME*}}} ({$IP_ADDRESS*}, #{MEMBER_ID*})" id="top_personal_stats_button" class="js-click-toggle-top-personal-stats" href="{$MEMBER_PROFILE_URL*,{MEMBER_ID}}"><img width="20" height="20" alt="" src="{$IMG*,icons/24x24/tabs/member_account/profile2}" srcset="{$IMG*,icons/48x48/tabs/member_account/profile2} 2x" /></a>
+</div>

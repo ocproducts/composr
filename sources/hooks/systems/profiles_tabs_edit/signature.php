@@ -72,24 +72,34 @@ class Hook_profiles_tabs_edit_signature
 
         $size = cns_get_member_best_group_property($member_id_of, 'max_sig_length_comcode');
 
-        $javascript = "
-            var form=document.getElementById('signature').form;
-            form.old_submit=form.onsubmit;
-            form.onsubmit=function() {
-                var post=form.elements['signature'];
-                if ((!post.value) && (post[1])) post=post[1];
-                if (post.value.length>" . strval($size) . ")
-                {
-                            window.fauxmodal_alert('" . php_addslashes(do_lang('SIGNATURE_TOO_BIG')) . "');
-                            return false;
+        ob_start();
+        ?>/*<script>*/
+        (function (){
+            'use strict';
+
+            var form = document.getElementById('signature').form;
+            form.old_submit = form.onsubmit;
+            form.onsubmit = function () {
+                var post = form.elements.signature;
+
+                if ((!post.value) && (post[1])) {
+                    post = post[1];
                 }
-                if (typeof form.old_submit!='undefined' && form.old_submit) return form.old_submit();
+                if (post.value.length > <?= json_encode(strval($size)); ?>) {
+
+                    window.fauxmodal_alert(<?= json_encode(strval(do_lang('SIGNATURE_TOO_BIG'))); ?>);
+                    return false;
+                }
+                if (form.old_submit) {
+                    return form.old_submit();
+                }
                 return true;
             };
-        ";
+        }());/*</script>*/
+        <?php
+        $javascript = ob_get_clean();
 
         require_code('form_templates');
-
         $required = false;
         $has_preview = true;
 

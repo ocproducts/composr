@@ -36,7 +36,30 @@ class Module_cms_quiz extends Standard_crud_module
     public $content_type = 'quiz';
     public $view_entry_point = '_SEARCH:quiz:do:_ID';
     public $archive_entry_point = '_SEARCH:quiz:browse';
-    public $javascript = 'var hide_func=function() { var ob=document.getElementById(\'type\'); if (ob.value==\'TEST\') { document.getElementById(\'percentage\').disabled=false; document.getElementById(\'num_winners\').disabled=true; }  if (ob.value==\'COMPETITION\') { document.getElementById(\'num_winners\').disabled=false; document.getElementById(\'percentage\').disabled=true; }  if (ob.value==\'SURVEY\') { document.getElementById(\'text\').value=document.getElementById(\'text\').value.replace(/ \[\*\]/g,\'\'); document.getElementById(\'num_winners\').disabled=true; document.getElementById(\'percentage\').disabled=true; } }; document.getElementById(\'type\').onchange=hide_func; hide_func();';
+    public $javascript = /** @lang JavaScript */"(function(){
+        'use strict';
+
+        document.getElementById('type').onchange = hide_func;
+        hide_func();
+
+        function hide_func() {
+            var ob = document.getElementById('type');
+            if (ob.value == 'TEST') {
+                document.getElementById('percentage').disabled = false;
+                document.getElementById('num_winners').disabled = true;
+            }
+            if (ob.value == 'COMPETITION') {
+                document.getElementById('num_winners').disabled = false;
+                document.getElementById('percentage').disabled = true;
+            }
+            if (ob.value == 'SURVEY') {
+                document.getElementById('text').value = document.getElementById('text').value.replace(/ \[\*\]/g, '');
+                document.getElementById('num_winners').disabled = true;
+                document.getElementById('percentage').disabled = true;
+            }
+        }
+    }());";
+
     public $menu_label = 'QUIZZES';
     public $table = 'quizzes';
     public $orderer = 'q_add_date';
@@ -547,3 +570,7 @@ class Module_cms_quiz extends Standard_crud_module
         delete_quiz($id);
     }
 }
+?>
+<script>
+
+</script>

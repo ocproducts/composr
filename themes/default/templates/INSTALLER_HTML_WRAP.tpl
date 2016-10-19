@@ -15,57 +15,50 @@
 
 		<meta name="robots" content="noindex, nofollow" />
 
-		<script>// <![CDATA[
-			function install_stage_load()
-			{
+		<script>
+			function install_stage_load() {
 				//set_cookie('js_on',1,120);
 
-				var none=document.getElementById('{DEFAULT_FORUM;/}');
-				if (none) none.checked=true;
+				var none = document.getElementById('{DEFAULT_FORUM;/}');
+				if (none) none.checked = true;
 
-				if (('{DEFAULT_FORUM;/}'!='none') && ('{DEFAULT_FORUM;/}'!='cns'))
-				{
-					var d=document.getElementById('forum_path');
-					if (d) d.style.display='block';
+				if (('{DEFAULT_FORUM;/}' != 'none') && ('{DEFAULT_FORUM;/}' != 'cns')) {
+					var d = document.getElementById('forum_path');
+					if (d) d.style.display = 'block';
 				}
 
-				var forms=document.getElementsByTagName('form');
-				if (typeof forms[0]!='undefined') forms[0].title='';
+				var forms = document.getElementsByTagName('form');
+				if (typeof forms[0] != 'undefined') forms[0].title = '';
 
-				var cns=document.getElementById('cns');
+				var cns = document.getElementById('cns');
 				if (cns)
 				{
-					var use_multi_db_locker=function() {
-						forms[0].elements['use_multi_db'][0].disabled=cns.checked;
-						forms[0].elements['use_multi_db'][1].disabled=cns.checked;
+					var use_multi_db_locker = function() {
+						forms[0].elements['use_multi_db'][0].disabled = cns.checked;
+						forms[0].elements['use_multi_db'][1].disabled = cns.checked;
 						if (cns.checked) {
-							forms[0].elements['use_multi_db'][1].checked=true;
+							forms[0].elements['use_multi_db'][1].checked = true;
 						}
 					};
-					for (var i=0; i<forms[0].elements['forum'].length;i++) {
-						forms[0].elements['forum'][i].onclick=use_multi_db_locker;
+					for (var i=0; i < forms[0].elements['forum'].length; i++) {
+						forms[0].elements['forum'][i].onclick = use_multi_db_locker;
 					}
 					use_multi_db_locker();
 				}
 			}
 
-			function submit_settings(form)
-			{
-				if ((form.elements['forum_base_url']) && (form.elements['forum_base_url'].type!='hidden') && (form.elements['forum_base_url'].value==form.elements['base_url'].value))
-				{
+			function submit_settings(form) {
+				if ((form.elements['forum_base_url']) && (form.elements['forum_base_url'].type != 'hidden') && (form.elements['forum_base_url'].value == form.elements['base_url'].value)) {
 					window.alert('{!FORUM_BASE_URL_INVALID;/}');
 					return false;
 				}
-				if ((form.elements['forum_base_url']) && (form.elements['forum_base_url'].type!='hidden') && (form.elements['forum_base_url'].value.substr(-7)=='/forums') && (!form.elements['forum_base_url'].changed))
-				{
+				if ((form.elements['forum_base_url']) && (form.elements['forum_base_url'].type != 'hidden') && (form.elements['forum_base_url'].value.substr(-7) == '/forums') && (!form.elements['forum_base_url'].changed)) {
 					if (!window.confirm('{!FORUM_BASE_URL_UNCHANGED;/}')) return false;
 				}
 
 				var i;
-				for (i=0;i<form.elements.length;i++)
-				{
-					if ((form.elements[i].className.indexOf('required1')!=-1) && (form.elements[i].value==''))
-					{
+				for (i = 0; i < form.elements.length; i++) {
+					if ((form.elements[i].className.indexOf('required1') != -1) && (form.elements[i].value == '')) {
 						window.alert('{!IMPROPERLY_FILLED_IN;/}');
 						return false;
 					}
@@ -73,80 +66,69 @@
 
 				if (!check_passwords(form)) return false;
 
-				if ((form.elements['db_site_password']) && (window.do_ajax_field_test))
-				{
-					var url='install.php?type=ajax_db_details&db_type='+encodeURIComponent(form.elements['db_type'].value)+'&db_site_host='+encodeURIComponent(form.elements['db_site_host'].value)+'&db_site='+encodeURIComponent(form.elements['db_site'].value)+'&db_site_user='+encodeURIComponent(form.elements['db_site_user'].value)+'&db_site_password='+encodeURIComponent(form.elements['db_site_password'].value);
+				if ((form.elements['db_site_password']) && (window.do_ajax_field_test)) {
+					var url = 'install.php?type=ajax_db_details&db_type=' + encodeURIComponent(form.elements['db_type'].value) + '&db_site_host=' + encodeURIComponent(form.elements['db_site_host'].value) + '&db_site=' + encodeURIComponent(form.elements['db_site'].value) + '&db_site_user=' + encodeURIComponent(form.elements['db_site_user'].value) + '&db_site_password=' + encodeURIComponent(form.elements['db_site_password'].value);
 					if (!do_ajax_field_test(url)) return false;
 				}
 
-				if ((form.elements['db_forums_password']) && (window.do_ajax_field_test))
-				{
-					var url='install.php?type=ajax_db_details&db_type='+encodeURIComponent(form.elements['db_type'].value)+'&db_forums_host='+encodeURIComponent(form.elements['db_forums_host'].value)+'&db_forums='+encodeURIComponent(form.elements['db_forums'].value)+'&db_forums_user='+encodeURIComponent(form.elements['db_forums_user'].value)+'&db_forums_password='+encodeURIComponent(form.elements['db_forums_password'].value);
+				if ((form.elements['db_forums_password']) && (window.do_ajax_field_test)) {
+					var url = 'install.php?type=ajax_db_details&db_type=' + encodeURIComponent(form.elements['db_type'].value) + '&db_forums_host=' + encodeURIComponent(form.elements['db_forums_host'].value) + '&db_forums=' + encodeURIComponent(form.elements['db_forums'].value) + '&db_forums_user=' + encodeURIComponent(form.elements['db_forums_user'].value) + '&db_forums_password=' + encodeURIComponent(form.elements['db_forums_password'].value);
 					if (!do_ajax_field_test(url)) return false;
 				}
 
-				if ((form.elements['ftp_domain']) && (window.do_ajax_field_test))
-				{
-					var url='install.php?type=ajax_ftp_details&ftp_domain='+encodeURIComponent(form.elements['ftp_domain'].value)+'&ftp_folder='+encodeURIComponent(form.elements['ftp_folder'].value)+'&ftp_username='+encodeURIComponent(form.elements['ftp_username'].value)+'&ftp_password='+encodeURIComponent(form.elements['ftp_password'].value);
+				if ((form.elements['ftp_domain']) && (window.do_ajax_field_test)) {
+					var url = 'install.php?type=ajax_ftp_details&ftp_domain=' + encodeURIComponent(form.elements['ftp_domain'].value) + '&ftp_folder=' + encodeURIComponent(form.elements['ftp_folder'].value) + '&ftp_username=' + encodeURIComponent(form.elements['ftp_username'].value) + '&ftp_password=' + encodeURIComponent(form.elements['ftp_password'].value);
 					if (!do_ajax_field_test(url)) return false;
 				}
 
 				return true;
 			}
 
-			function set_cookie(cookieName,cookieValue,nDays)
-			{
-				var today=new Date();
-				var expire=new Date();
-				if (nDays==null || nDays==0) nDays=1;
-				expire.setTime(today.getTime()+3600000*24*nDays);
-				document.cookie=cookieName+"="+escape(cookieValue)+";expires="+expire.toUTCString();
+			function set_cookie(cookieName, cookieValue, nDays) {
+				var today = new Date();
+				var expire = new Date();
+				if (nDays == null || nDays == 0) nDays = 1;
+				expire.setTime(today.getTime() + 3600000 * 24 * nDays);
+				document.cookie = cookieName + "=" + escape(cookieValue) + ";expires=" + expire.toUTCString();
 			}
 
-			function do_forum_choose(object,versions)
-			{
-				$cms.dom.html(document.getElementById('versions'),versions);
+			function do_forum_choose(object, versions) {
+				$cms.dom.html(document.getElementById('versions'), versions);
 
-				var type='none';
-				if ((object.id!='none') && (object.id!='cns'))
-				{
-					type='block';
-					var label=document.getElementById('sep_forum');
-					if (label) $cms.dom.html(label,object.nextSibling.nodeValue);
+				var type = 'none';
+				if ((object.id != 'none') && (object.id != 'cns')) {
+					type = 'block';
+					var label = document.getElementById('sep_forum');
+					if (label) $cms.dom.html(label, object.nextSibling.nodeValue);
 				}
 
-				document.getElementById('forum_database_info').style.display=type;
+				document.getElementById('forum_database_info').style.display = type;
 				if (document.getElementById('forum_path'))
-					document.getElementById('forum_path').style.display=type;
+					document.getElementById('forum_path').style.display = type;
 			}
 
-			function toggle_section(id)
-			{
+			function toggle_section(id) {
 				// Try and grab our item
-				var itm=document.getElementById(id);
-				var img=document.getElementById('img_'+id);
+				var itm = document.getElementById(id);
+				var img = document.getElementById('img_' + id);
 
-				if (itm.style.display=='none')
-				{
-					itm.style.display='block';
-					if (img)
-					{
-						img.src='{$BASE_URL;/}/install.php?type=contract';
-						img.alt=img.alt.replace('{!EXPAND;}','{!CONTRACT;}');
-						img.title=img.title.replace('{!EXPAND;}','{!CONTRACT;}');
+				if (itm.style.display == 'none') {
+					itm.style.display = 'block';
+					if (img) {
+						img.src = '{$BASE_URL;/}/install.php?type=contract';
+						img.alt = img.alt.replace('{!EXPAND;}', '{!CONTRACT;}');
+						img.title = img.title.replace('{!EXPAND;}', '{!CONTRACT;}');
 					}
-				} else
-				{
-					itm.style.display='none';
-					if (img)
-					{
-						img.src='{$BASE_URL;/}/install.php?type=expand';
-						img.alt=img.alt.replace('{!CONTRACT;}','{!EXPAND;}');
-						img.title=img.title.replace('{!CONTRACT;}','{!EXPAND;}');
+				} else {
+					itm.style.display = 'none';
+					if (img) {
+						img.src = '{$BASE_URL;/}/install.php?type=expand';
+						img.alt = img.alt.replace('{!CONTRACT;}', '{!EXPAND;}');
+						img.title = img.title.replace('{!CONTRACT;}', '{!EXPAND;}');
 					}
 				}
 			}
-		//]]></script>
+		</script>
 
 		{+START,INCLUDE,PASSWORD_CHECK_JS}INSTALLER=1{+END}
 	</head>
@@ -156,15 +138,14 @@
 			<img alt="Composr" src="{LOGO_URL*}" width="550" height="115" />
 		</div>
 
-		<script>// <![CDATA[
-			window.setTimeout(function() {
-				if (window.alert===null)
-				{
+		<script>
+			setTimeout(function () {
+				if (window.alert === null) {
 					/* Parser hint: .innerHTML okay */
-					document.getElementById('extra_errors').innerHTML='<p class="installer_warning"><strong class="popup_blocker_warning">Your popup blocker is too aggressive<\/strong> (even error alerts cannot display). Please disable for the installer.<\/p>';
+					document.getElementById('extra_errors').innerHTML = '<p class="installer_warning"><strong class="popup_blocker_warning">Your popup blocker is too aggressive<\/strong> (even error alerts cannot display). Please disable for the installer.<\/p>';
 				}
-			}, 0);
-		//]]></script>
+			});
+		</script>
 
 		<div class="installer_main_inner">
 			<div class="box box___installer_html_wrap"><div class="box_inner">

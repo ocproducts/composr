@@ -1,7 +1,7 @@
 {$REQUIRE_CSS,menu__select}
 {$REQUIRE_JAVASCRIPT,core_menus}
 {$SET,menu_id,r_{MENU|}}
-<div class="menu_type__select" data-view="SelectMenu" data-view-args="{+START,PARAMS_JSON,MENU,JAVASCRIPT_HIGHLIGHTING,menu_id}{_*}{+END}">
+<div class="menu_type__select" data-view="SelectMenu" data-view-params="{+START,PARAMS_JSON,MENU,JAVASCRIPT_HIGHLIGHTING,menu_id}{_*}{+END}">
 	{+START,IF,{$JS_ON}}
 		<form title="{!MENU} ({!FORM_AUTO_SUBMITS})" method="get" action="#!" autocomplete="off">
 			<div class="constrain_field">

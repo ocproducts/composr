@@ -1,3 +1,5 @@
+{$REQUIRE_JAVASCRIPT,core_form_interfaces}
+<div data-tpl="comcodeEditor" data-tpl-params="{+START,PARAMS_JSON,POSTING_FIELD}{_*}{+END}">
 <div class="posting_form_insert_buttons">
 	<span>{!ADD}:</span>
 	{BUTTONS}
@@ -47,6 +49,9 @@
 		<option value="yellow" style="color: yellow">{!YELLOW}</option>
 	</select>
 
-	<a href="#!" onclick="do_input_font('{POSTING_FIELD;*}'); return false;"><img title="{!INPUT_COMCODE_font}" alt="{!INPUT_COMCODE_font}" src="{$IMG*,comcodeeditor/apply_changes}" /></a>
+	<a href="#!" class="js-click-do-input-font-posting-field">
+		<img title="{!INPUT_COMCODE_font}" alt="{!INPUT_COMCODE_font}" src="{$IMG*,comcodeeditor/apply_changes}" />
+	</a>
 </div>
 {+END}
+</div>

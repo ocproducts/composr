@@ -1,4 +1,4 @@
-<div data-tpl="pageLinkChooser" data-tpl-args="{+START,PARAMS_JSON,NAME,PAGE_TYPE}{_*}{+END}">
+<div data-tpl="pageLinkChooser" data-tpl-params="{+START,PARAMS_JSON,NAME,PAGE_TYPE}{_*}{+END}">
 {+START,IF_NON_PASSED_OR_FALSE,AS_FIELD}
 <form title="{!PRIMARY_PAGE_FORM}" action="{$BASE_URL*}/index.php" method="post" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}

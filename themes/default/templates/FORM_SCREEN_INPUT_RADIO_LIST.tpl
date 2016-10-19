@@ -4,7 +4,7 @@
 	<div id="error_{NAME*}" style="display: none" class="input_error_here"></div>
 {+END}
 
-<div class="radio_list" data-tpl="formScreenInputRadioList" data-tpl-args="{+START,PARAMS_JSON,NAME,CODE}{_*}{+END}">
+<div class="radio_list" data-tpl="formScreenInputRadioList" data-tpl-params="{+START,PARAMS_JSON,NAME,CODE}{_*}{+END}">
 	{CONTENT}
 </div>
 
