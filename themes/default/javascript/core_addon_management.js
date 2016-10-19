@@ -16,7 +16,8 @@
 
     $cms.inherits(AddonScreen, $cms.View, {
         events: {
-            'click .js-click-check-uninstall-all': 'checkUninstallAll'
+            'click .js-click-check-uninstall-all': 'checkUninstallAll',
+            'mouseover .js-mouseover-activate-tooltip': 'activateTooltip'
         },
 
         checkUninstallAll: function () {
@@ -25,6 +26,13 @@
             checkboxes.forEach(function (el) {
                 el.checked = true;
             });
+        },
+
+        activateTooltip: function (e, el) {
+            var text = el.dataset.vwTooltip;
+            if (text) {
+                activate_tooltip(el, e, text, '50%');
+            }
         }
     });
 

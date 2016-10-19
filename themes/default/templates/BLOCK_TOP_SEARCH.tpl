@@ -1,9 +1,10 @@
-<form role="search" title="{TITLE*}" onsubmit="if (typeof this.elements['content']=='undefined') { $cms.ui.disableFormButtons(this); return true; } if (check_field_for_blankness(this.elements['content'],event)) { $cms.ui.disableFormButtons(this); return true; } return false;" action="{$URL_FOR_GET_FORM*,{URL}}" method="get" autocomplete="off">
+{$REQUIRE_JAVASCRIPT,search}
+<form role="search" title="{TITLE*}" data-tpl="blockTopSearch" data-tpl-params="{+START,PARAMS_JSON,SEARCH_TYPE}{_*}{+END}" class="js-submit-check-search-content-element" action="{$URL_FOR_GET_FORM*,{URL}}" method="get" autocomplete="off">
 	{$HIDDENS_FOR_GET_FORM,{URL}}
 
 	<div class="inline">
 		<label class="accessibility_hidden" for="top_search_content">{!SEARCH}</label>
-		<input{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" size="{$?,{!takes_lots_of_space},10,20}" maxlength="255" onkeyup="update_ajax_search_list(this,event{+START,IF_PASSED,SEARCH_TYPE},'{SEARCH_TYPE;^*}'{+END});" type="search" id="top_search_content" name="content" value="" /><input class="button_micro buttons__search" type="submit" value="{!SEARCH}" />
+		<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" size="{$?,{!takes_lots_of_space},10,20}" maxlength="255" class="js-input-keyup-update-ajax-search-list" type="search" id="top_search_content" name="content" value="" /><input class="button_micro buttons__search" type="submit" value="{!SEARCH}" />
 
 		{+START,LOOP,LIMIT_TO}
 			<input type="hidden" name="{_loop_var*}" value="1" />

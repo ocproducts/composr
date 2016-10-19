@@ -6,7 +6,7 @@
 	{+START,IF,{EXPLICIT_EDITING_LINKS}}
 		<span>{VALUE}</span>
 
-		<a href="#!" onclick="fractional_edit(event,this.previousSibling.previousSibling,'{URL;*}','{EDIT_TEXT;^*}','{EDIT_PARAM_NAME;*}'); return false;" class="associated_link">{!EDIT_TEXT}</a>
+		<a href="#!" onclick="fractional_edit(event,this.previousSibling.previousSibling,'{URL;*}','{EDIT_TEXT;^*}','{EDIT_PARAM_NAME;*}');" class="associated_link">{!EDIT_TEXT}</a>
 	{+END}
 {+END}
 {$TRIM,{$GET,fractional_edit}}

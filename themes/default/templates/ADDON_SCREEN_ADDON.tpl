@@ -1,3 +1,4 @@
+{$REQUIRE_JAVASCRIPT,core_addon_management}
 <tr>
 	<td class="addon_name">
 		{+START,SET,description}
@@ -24,7 +25,7 @@
 				{CATEGORY*}
 			</p>
 		{+END}
-		<p onmouseover="activate_tooltip(this,event,'{$GET;^*,description}','50%');">
+		<p class="js-mouseover-activate-tooltip" data-vw-tooltip="{$GET*,description}">
 			{PRETTY_NAME}
 		</p>
 		{+START,SET,FILE_LIST}
@@ -35,7 +36,7 @@
 				{+END}
 			</ul>
 		{+END}
-		<p onmouseover="activate_tooltip(this,event,'{$GET;^*,FILE_LIST}','50%');">
+		<p class="js-mouseover-activate-tooltip" data-vw-tooltip="{$GET*,FILE_LIST}">
 			{+START,IF_PASSED,FILENAME}
 				{FILENAME*}
 			{+END}

@@ -1,6 +1,5 @@
 {$REQUIRE_JAVASCRIPT,chat}
-
-<div data-tpl="chatLobbyScreen" data-tpl-args="{+START,PARAMS_JSON,IM_AREA_TEMPLATE,IM_PARTICIPANT_TEMPLATE}{_/}{+END}">
+<div data-tpl="chatLobbyScreen" data-tpl-params="{+START,PARAMS_JSON,IM_AREA_TEMPLATE,IM_PARTICIPANT_TEMPLATE}{_/}{+END}">
 {TITLE}
 
 {+START,IF,{$HAS_FORUM,1}}
@@ -103,7 +102,7 @@
 							{$INSERT_SPAMMER_BLACKHOLE}
 
 							<label class="accessibility_hidden" for="friend_username">{!USERNAME}: </label>
-							<input{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" size="18" maxlength="80" onkeyup="update_ajax_member_list(this,null,false,event);" type="text" onfocus="placeholder_focus(this);" onblur="placeholder_blur(this);" class="field_input_non_filled" value="{!USERNAME}" id="friend_username" name="friend_username" /><input class="button_micro menu___generic_admin__add_one" type="submit" value="{!ADD}" />
+							<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" size="18" maxlength="80" onkeyup="update_ajax_member_list(this,null,false,event);" type="text" placeholder="{!USERNAME}" id="friend_username" name="friend_username" /><input class="button_micro menu___generic_admin__add_one" type="submit" value="{!ADD}" />
 						</form>
 					{+END}
 

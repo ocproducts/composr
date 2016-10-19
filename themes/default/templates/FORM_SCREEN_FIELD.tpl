@@ -37,7 +37,7 @@
 		<tr class="field_input">
 	{+END}
 
-	<td id="form_table_field_input__{$GET,randomised_id}" class="form_table_field_input{+START,IF,{REQUIRED}} required{+END}" data-tpl="formScreenField_input" data-tpl-args="{+START,PARAMS_JSON,randomised_id}{_*}{+END}">
+	<td id="form_table_field_input__{$GET,randomised_id}" class="form_table_field_input{+START,IF,{REQUIRED}} required{+END}" data-tpl="formScreenField_input" data-tpl-params="{+START,PARAMS_JSON,randomised_id}{_*}{+END}">
 		{+START,IF,{$NOT,{$MOBILE}}}{+START,IF,{$NOT,{$_GET,overlay}}}
 			{COMCODE}
 		{+END}{+END}

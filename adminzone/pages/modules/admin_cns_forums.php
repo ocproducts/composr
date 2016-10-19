@@ -35,7 +35,7 @@ class Module_admin_cns_forums extends Standard_crud_module
     public $privilege_page = 'topics';
     public $permission_module = 'forums';
     public $content_type = 'forum';
-    public $javascript = 'if (document.getElementById(\'delete\')) { var form=document.getElementById(\'delete\').form; var crf=function() { form.elements[\'target_forum\'].disabled=(!form.elements[\'delete\'].checked); form.elements[\'delete_topics\'].disabled=(!form.elements[\'delete\'].checked); }; crf(); form.elements[\'delete\'].onchange=crf; }';
+    public $javascript = /** @lang JavaScript */ "if (document.getElementById('delete')) { var form=document.getElementById('delete').form; var crf=function() { form.elements['target_forum'].disabled=(!form.elements['delete'].checked); form.elements['delete_topics'].disabled=(!form.elements['delete'].checked); }; crf(); form.elements['delete'].onchange=crf; }";
     public $menu_label = 'SECTION_FORUMS';
     public $do_preview = null;
     public $donext_entry_content_type = 'forum';

@@ -35,29 +35,34 @@
     // Chrome 1+
         isChrome = !!window.chrome && !!window.chrome.webstore;
 
+    // Too useful to not have globally!
+    window.falsy = falsy;
+    window.truthy = truthy;
+    window.strVal = strVal;
+
     Object.assign($cms, {
         // Unique for each copy of Composr on the page
         id: 'composr' + ('' + Math.random()).substr(2),
 
         // Load up symbols data
-        $PAGE: '' + symbols.PAGE,
-        $PAGE_TITLE: '' + symbols.PAGE_TITLE,
-        $ZONE: symbols.ZONE,
-        $MEMBER: symbols.MEMBER,
-        $IS_GUEST: !!symbols.IS_GUEST,
-        $USERNAME: '' + symbols.USERNAME,
+        $PAGE: strVal(symbols.PAGE),
+        $PAGE_TITLE: strVal(symbols.PAGE_TITLE),
+        $ZONE: strVal(symbols.ZONE),
+        $MEMBER: strVal(symbols.MEMBER),
+        $IS_GUEST: truthy(symbols.IS_GUEST),
+        $USERNAME: strVal(symbols.USERNAME),
         $AVATAR: symbols.AVATAR,
         $MEMBER_EMAIL: symbols.MEMBER_EMAIL,
         $PHOTO: symbols.PHOTO,
         $MEMBER_PROFILE_URL: symbols.MEMBER_PROFILE_URL,
         $FROM_TIMESTAMP: symbols.FROM_TIMESTAMP,
-        $MOBILE: !!symbols.MOBILE,
+        $MOBILE: truthy(symbols.MOBILE),
         $THEME: symbols.THEME,
-        $JS_ON: !!symbols.JS_ON,
+        $JS_ON: truthy(symbols.JS_ON),
         $LANG: symbols.LANG,
         $BROWSER_UA: symbols.BROWSER_UA,
         $OS: symbols.OS,
-        $DEV_MODE: !!symbols.DEV_MODE,
+        $DEV_MODE: truthy(symbols.DEV_MODE),
         $USER_AGENT: symbols.USER_AGENT,
         $IP_ADDRESS: symbols.IP_ADDRESS,
         $TIMEZONE: symbols.TIMEZONE,
@@ -76,47 +81,52 @@
         $BASE_URL_NOHTTP: symbols.BASE_URL_NOHTTP,
         $BASE_URL_NOHTTP_S: symbols.BASE_URL_NOHTTP + '/', // With trailing slash
         $CUSTOM_BASE_URL_NOHTTP: symbols.CUSTOM_BASE_URL_NOHTTP,
-        $BRAND_NAME: symbols.BRAND_NAME,
+        $BRAND_NAME: strVal(symbols.BRAND_NAME),
         $IS_STAFF: !!symbols.IS_STAFF,
         $IS_ADMIN: !!symbols.IS_ADMIN,
-        $VERSION: symbols.VERSION,
-        $COOKIE_PATH: symbols.COOKIE_PATH,
-        $COOKIE_DOMAIN: symbols.COOKIE_DOMAIN,
+        $VERSION: strVal(symbols.VERSION),
+        $COOKIE_PATH: strVal(symbols.COOKIE_PATH),
+        $COOKIE_DOMAIN: strVal(symbols.COOKIE_DOMAIN),
         $IS_HTTPAUTH_LOGIN: !!symbols.IS_HTTPAUTH_LOGIN,
         $IS_A_COOKIE_LOGIN: !!symbols.IS_A_COOKIE_LOGIN,
         $SESSION_COOKIE_NAME: symbols.SESSION_COOKIE_NAME,
         $GROUP_ID: symbols.GROUP_ID,
         $CONFIG_OPTION: {
-            thumbWidth: symbols.CONFIG_OPTION.thumbWidth,
-            jsOverlays: !!symbols.CONFIG_OPTION.jsOverlays,
-            jsCaptcha: symbols.CONFIG_OPTION.jsCaptcha,
-            googleAnalytics: symbols.CONFIG_OPTION.googleAnalytics,
-            longGoogleCookies: symbols.CONFIG_OPTION.longGoogleCookies,
+            thumb_width: symbols.CONFIG_OPTION.thumb_width,
+            js_overlays: !!symbols.CONFIG_OPTION.js_overlays,
+            js_captcha: symbols.CONFIG_OPTION.js_captcha,
+            google_analytics: strVal(symbols.CONFIG_OPTION.google_analytics),
+            longGoogleCookies: symbols.CONFIG_OPTION.long_google_cookies,
             editarea: symbols.CONFIG_OPTION.editarea,
-            enableAnimations: !!symbols.CONFIG_OPTION.enableAnimations,
-            detectJavascript: !!symbols.CONFIG_OPTION.detectJavascript,
-            isOnTimezoneDetection: !!symbols.CONFIG_OPTION.isOnTimezoneDetection,
-            fixedWidth: symbols.CONFIG_OPTION.fixedWidth,
-            infiniteScrolling: symbols.CONFIG_OPTION.infiniteScrolling,
+            enable_animations: !!symbols.CONFIG_OPTION.enable_animations,
+            detect_javascript: !!symbols.CONFIG_OPTION.detect_javascript,
+            is_on_timezone_detection: !!symbols.CONFIG_OPTION.is_on_timezone_detection,
+            fixed_width: symbols.CONFIG_OPTION.fixed_width,
+            infinite_scrolling: symbols.CONFIG_OPTION.infinite_scrolling,
             wysiwyg: !!symbols.CONFIG_OPTION.wysiwyg,
-            eagerWysiwyg: symbols.CONFIG_OPTION.eagerWysiwyg,
-            simplifiedAttachmentsUi: symbols.CONFIG_OPTION.simplifiedAttachmentsUi,
-            showInlineStats: symbols.CONFIG_OPTION.showInlineStats,
-            notificationDesktopAlerts: symbols.CONFIG_OPTION.notificationDesktopAlerts,
-            enableThemeImgButtons: symbols.CONFIG_OPTION.enableThemeImgButtons,
-            enablePreviews: symbols.CONFIG_OPTION.enablePreviews,
-            backgroundTemplateCompilation: symbols.CONFIG_OPTION.backgroundTemplateCompilation,
-            complexUploader: !!symbols.CONFIG_OPTION.complexUploader,
+            eager_wysiwyg: symbols.CONFIG_OPTION.eager_wysiwyg,
+            simplified_attachments_ui: symbols.CONFIG_OPTION.simplified_attachments_ui,
+            show_inline_stats: symbols.CONFIG_OPTION.show_inline_stats,
+            notification_desktop_alerts: symbols.CONFIG_OPTION.notification_desktop_alerts,
+            enable_theme_img_buttons: symbols.CONFIG_OPTION.enable_theme_img_buttons,
+            enable_previews: symbols.CONFIG_OPTION.enable_previews,
+            background_template_compilation: symbols.CONFIG_OPTION.background_template_compilation,
+            complex_uploader: !!symbols.CONFIG_OPTION.complex_uploader,
             collapse_user_zones: !!symbols.CONFIG_OPTION.collapse_user_zones
         },
-        $VALUE_OPTION: symbols.VALUE_OPTION,
-        $HAS_PRIVILEGE: symbols.HAS_PRIVILEGE,
+        $VALUE_OPTION: {
+            js_keep_params: symbols.VALUE_OPTION.js_keep_params,
+            commercial_spellchecker: symbols.VALUE_OPTION.commercial_spellchecker
+        },
+        $HAS_PRIVILEGE: {
+            sees_javascript_error_alerts: symbols.HAS_PRIVILEGE.sees_javascript_error_alerts
+        },
 
         // Just some more useful stuff, (not tempcode symbols)
         $TOUCH_ENABLED: ('ontouchstart' in document.documentElement),
         $EXTRA: {
-            canTryUrlSchemes: !!symbols.EXTRA.canTryUrlSchemes,
-            staffTooltipsUrlPatterns: symbols.EXTRA.staffTooltipsUrlPatterns
+            canTryUrlSchemes: truthy(symbols.EXTRA.can_try_url_schemes),
+            staffTooltipsUrlPatterns: symbols.EXTRA.staff_tooltips_url_patterns || {}
         },
 
         // Export useful stuff
@@ -161,7 +171,7 @@
         defineEW: defineEW,
         defineW: defineW,
 
-        strval: strval,
+        strVal: strVal,
         format: format,
 
         inherits: inherits
@@ -245,11 +255,6 @@
 
     function noop() {}
 
-    // Port of PHP's empty() function
-    function empty(val) {
-        return !val || (val === '0') || ((typeof val === 'object') && !hasEnumerables(val));
-    }
-
     // Generate a unique integer id (unique within the entire client session).
     var _uniqueId = 0;
 
@@ -280,13 +285,12 @@
         return false;
     }
 
-    function hasEnumerables(val) {
-        try {
+    function hasKeys(val) {
+        if (val != null) {
             for (var key in val) {
                 return true;
             }
-        } catch (ignore) {}
-
+        }
         return false;
     }
 
@@ -301,7 +305,7 @@
 
     function isEmptyObj(obj) {
         var k;
-        if (obj && (typeof obj === 'object')) {
+        if ((obj != null) && (typeof obj === 'object')) {
             for (k in obj) {
                 return false;
             }
@@ -311,7 +315,8 @@
     }
 
     function isPlainObj(obj) {
-        return (internal(obj) === 'Object') && (Object.getPrototypeOf(obj) === Object.prototype);
+        var proto;
+        return (obj != null) && (typeof obj === 'object') && (internal(obj) === 'Object') && (((proto = Object.getPrototypeOf(obj)) === Object.prototype) || (proto === null));
     }
 
     function isArrayOrPlainObj(val) {
@@ -340,10 +345,6 @@
 
     function createMap(data) {
         return withProto(null, data);
-    }
-
-    function isArguments(obj) {
-        return internal(obj) === 'Arguments';
     }
 
     function isWindow(obj) {
@@ -384,10 +385,6 @@
         return (t === ELEMENT_NODE) || (t === DOCUMENT_NODE) || (t === DOCUMENT_FRAGMENT_NODE);
     }
 
-    function isEvent(obj) {
-        return (obj != null) && (typeof obj === 'object') && (typeof obj.type === 'string') && (typeof obj.preventDefault === 'function');
-    }
-
     function isRegExp(obj) {
         return internal(obj) === 'RegExp';
     }
@@ -397,11 +394,13 @@
     }
 
     function funcArg(context, arg, payload) {
-        return isFunc(arg) ? arg.call(context, payload) : arg;
+        return (typeof arg === 'function') ? arg.call(context, payload) : arg;
     }
 
     function isArrayLike(obj, minLen) {
         var len;
+
+        minLen = +minLen || 0;
 
         if ((obj == null ) || (typeof obj !== 'object') || isWindow(obj) || (typeof (len = obj.length) !== 'number') || (len < minLen)) {
             return false;
@@ -426,7 +425,7 @@
     function each(obj, callback, args) {
         var i = 0,
             len = obj.length,
-            isObj = (len === undefined) || isFunc(obj),
+            isObj = (typeof len !== 'number') || (typeof obj === 'function'),
             name;
 
         if (args) {
@@ -462,29 +461,29 @@
         return obj;
     }
 
-    function _extend(target, source, deep, own, undefinedOnly) {
+    function _extend(target, source, deepClone, ownSrcOnly, undefinedTgtOnly) {
         var key, src, tgt;
 
-        deep = !!deep;
-        own = !!own;
-        undefinedOnly = !!undefinedOnly;
+        deepClone = !!deepClone;
+        ownSrcOnly = !!ownSrcOnly;
+        undefinedTgtOnly = !!undefinedTgtOnly;
 
         for (key in source) {
             tgt = target[key];
             src = source[key];
 
-            if ((src === undefined) || (own && !hasOwn(source, key)) || (undefinedOnly && (tgt !== undefined))) {
+            if ((src === undefined) || (ownSrcOnly && !hasOwn(source, key)) || (undefinedTgtOnly && (tgt !== undefined))) {
                 continue;
             }
 
-            if (deep && src && isArrayOrPlainObj(src)) {
+            if (deepClone && src && isArrayOrPlainObj(src)) {
                 if (isArray(src) && !isArray(tgt)) {
                     tgt = target[key] = [];
                 } else if (isPlainObj(src) && !isPlainObj(tgt)) {
                     tgt = target[key] = {};
                 }
 
-                _extend(tgt, src, deep, own, undefinedOnly);
+                _extend(tgt, src, deepClone, ownSrcOnly, undefinedTgtOnly);
             } else {
                 target[key] = src;
             }
@@ -493,8 +492,9 @@
 
     // Copy all but undefined properties from one or more
     // objects to the `target` object.
-    function extend(target) {
-        var deep, sources = toArray(arguments, 1);
+    function extend(target, /*...*/sources) {
+        var deep = false;
+        sources = toArray(arguments, 1);
 
         if (typeof target === 'boolean') {
             deep = target;
@@ -510,8 +510,9 @@
 
     // Copy all but undefined properties from one or more
     // objects to the `target` object.
-    function extendOwn(target) {
-        var deep, sources = toArray(arguments, 1);
+    function extendOwn(target, /*...*/sources) {
+        var deep = false;
+        sources = toArray(arguments, 1);
 
         if (typeof target === 'boolean') {
             deep = target;
@@ -525,19 +526,19 @@
         return target
     }
 
-    function defaults(target) {
-        var deep, sources = toArray(arguments, 1);
+    function defaults(defaults, /*...*/sources) {
+        defaults || (defaults = {});
+        sources = toArray(arguments, 1);
 
-        if (typeof target === 'boolean') {
-            deep = target;
-            target = sources.shift();
+        for (var key in defaults) {
+            for (var i, len = sources.length; i < len; i++) {
+                if ((sources[i] != null) && (sources[i][key] !== undefined)) {
+                    defaults[key] = sources[i][key];
+                }
+            }
         }
 
-        sources.forEach(function (source) {
-            _extend(target, source, deep, false, true);
-        });
-
-        return target
+        return defaults;
     }
 
     // If the value of the named `property` is a function then invoke it with the
@@ -608,8 +609,25 @@
         return define(DEFINE_WRITABLE, obj, props);
     }
 
+    function constructorName(obj) {
+        if ((obj != null) && (typeof obj.constructor === 'function') && (typeof obj.constructor.name === 'string')) {
+            return obj.constructor.name;
+        }
+        return '?';
+    }
+
+    // Port of PHP's empty() function
+    function falsy(val) {
+        return !val || (val === '0') || ((typeof val === 'object') && ((isPlainObj(val) && !hasKeys(val)) || (isArrayLike(val) && (val.length === 0))));
+    }
+
+    // Inverted falsy()
+    function truthy(val) {
+        return (val === true) || !falsy(val);
+    }
+
     // Sensible PHP-like string coercion
-    function strval(val) {
+    function strVal(val) {
         var type;
 
         if (!val) {
@@ -619,18 +637,24 @@
         } else if ((type = typeof val) === 'string') {
             return val;
         } else if (type === 'number') {
-            return Number.isFinite(val) ? ('' + val) : '';
+            return ((val !== Infinity) && (val !== -Infinity)) ? ('' + val) : '';
         } else if ((type === 'object') && (typeof val.toString === 'function') && (val.toString !== emptyObj.toString)) {
             // `val` has a toString implementation other than the useless generic one
             return '' + val;
         }
 
-        throw new Error('strval(): Cannot coerce "' + val + '" to a string');
+        throw new Error('strVal(): Cannot coerce "' + val + '" of type "' + constructorName(val) + '" to a string');
     }
 
     // String interpolation
     function format(str, values) {
-        if (!values || (typeof values !== 'object')) {
+        str = strVal(str);
+
+        if (!(1 in arguments)) {
+            return str; // Nothing to do
+        }
+
+        if ((values == null) || (typeof values !== 'object')) {
             // values provided as multiple parameters?
             values = toArray(arguments, 1);
             values.unshift(''); // Add empty string at index 0 so that interpolation starts from '{1}'
@@ -641,14 +665,18 @@
         }
 
         return str.replace(/\{(\w+)\}/g, function (match, key) {
-            return (key in values) ? strval(values[key]) : match;
+            return (key in values) ? strVal(values[key]) : match;
         });
     }
 
-    function ucfirst(str) {
-        str = strval(str);
-
+    function ucFirst(str) {
+        str = strVal(str);
         return str.charAt(0).toUpperCase() + str.substr(1);
+    }
+
+    function lcFirst(str) {
+        str = strVal(str);
+        return str.charAt(0).toLowerCase() + str.substr(1);
     }
 
     // Credit: http://stackoverflow.com/a/32604073/362006
@@ -684,26 +712,17 @@
 
     /* Generate url */
     var rgxProtocol = /^https?:/;
-    $cms.url = function (url) {
-        url || (url = '');
-
-        if (rgxProtocol.test(url)) {
-            // It's an absolute URL, just set the current protocol
-            return url.replace(rgxProtocol, window.location.protocol);
-        }
-
-        return $cms.$BASE_URL_S + url;
-    };
+    $cms.url = function (url) {};
 
     $cms.url.absolute = function (relativeUrl) {
-        relativeUrl = strval(relativeUrl);
+        relativeUrl = strVal(relativeUrl);
 
         return ((relativeUrl[0] === '/') ? $cms.$BASE_URL : $cms.$BASE_URL_S) + relativeUrl;
     };
 
     // Dynamically fixes the protocol for image URLs
     $cms.img = function (url) {
-        return (url || '').replace(rgxProtocol, window.location.protocol);
+        return strVal(url).replace(rgxProtocol, window.location.protocol);
     };
 
     $cms.navigate = function navigate(url, target) {
@@ -717,23 +736,19 @@
                 if ('target' in el) {
                     target = el.target;
                 }
-            } else if (el.localName === 'input') {
-                url = el.value;
-                if (el.form && ('target' in el.form)) {
-                    target = url.form.target;
-                }
             } else if (el.dataset && ('cmsHref' in el.dataset)) {
                 url = el.dataset.cmsHref;
                 if ('cmsTarget' in el.dataset) {
                     target = el.dataset.cmsTarget;
                 }
+            } else {
+                url = '';
             }
         }
 
         if (!url) {
             return;
         }
-
         target || (target = '_self');
 
         if (target === '_self') {
@@ -769,6 +784,9 @@
 
     $cms.exception = function exception(ex) {
         if ($cms.$DEV_MODE) {
+            if (typeof ex === 'string') {
+                throw new Error(ex);
+            }
             throw ex;
         }
     };
@@ -777,12 +795,12 @@
     function inherits(SubClass, SuperClass, protoProps) {
         Object.setPrototypeOf(SubClass, SuperClass);
 
-        defineCW(SubClass, {base: base.bind(undefined, SuperClass)});
+        defineCW(SubClass, { base: base.bind(SuperClass) });
 
         // Set the prototype chain to inherit from `SuperClass`
         SubClass.prototype = Object.create(SuperClass.prototype);
 
-        defineCW(SubClass.prototype, {constructor: SubClass});
+        defineCW(SubClass.prototype, { constructor: SubClass });
 
         if (protoProps) {
             Object.assign(SubClass.prototype, protoProps);
@@ -790,7 +808,9 @@
     }
 
     /** @private */
-    function base(SuperClass, that, method, args) {
+    function base(that, method, args) {
+        var SuperClass = this;
+
         if ((typeof method !== 'string') && (args === undefined)) {
             // emulate super() call
             args = method;
@@ -816,7 +836,7 @@
     // If the browser has support for CSS transitions
     $cms.support.cssTransitions = ('transition' in emptyElStyle) || ('WebkitTransition' in emptyElStyle) || ('msTransition' in emptyElStyle);
 
-    // If the browser has support for an input type
+    // If the browser has support for an <input [type=???]>
     $cms.support.inputTypes = createMap({
         search: 0, tel: 0, url: 0, email: 0, datetime: 0, date: 0, month: 0,
         week: 0, time: 0, 'datetime-local': 0, number: 0, range: 0, color: 0
@@ -847,38 +867,13 @@
         $cms.support.inputTypes[type] = !!bool;
     }
 
+    /* DOM helper methods */
+    $cms.dom || ($cms.dom = {});
+
     function computed(el, property) {
         var global = el.ownerDocument.defaultView;
         return global.getComputedStyle(el).getPropertyValue(property);
     }
-
-    /* DOM helper methods */
-    $cms.dom || ($cms.dom = {});
-
-    // `$cms.dom.qsa` is a CSS selector implementation which uses `document.querySelectorAll` and optimizes for some special cases, like `#id`, `.someclass` and `div`.
-    var rgxSimpleSelector = /^[\#\.]?[\w\-]+$/;
-    $cms.dom.qsa = function (el, selector) {
-        var found;
-
-        // DocumentFragment is missing getElementById and getElementsBy(Tag|Class)Name in some implementations
-        if (rgxSimpleSelector.test(selector) && isDocOrEl(el)) {
-            switch (selector[0]) {
-                case '#': // selector is an ID
-                    return (found = (('getElementById' in el) ? el.getElementById(selector.substr(1)) : el.querySelector(selector))) ? [found] : [];
-                    break;
-
-                case '.': // selector is a class name
-                    return toArray(el.getElementsByClassName(selector.substr(1)));
-                    break;
-
-                default: // selector is a tag name
-                    return toArray(el.getElementsByTagName(selector));
-                    break;
-            }
-        }
-
-        return toArray(el.querySelectorAll(selector));
-    };
 
     // Returns a single matching child element, defaults to 'document' as parent
     $cms.dom.id = function (context, id) {
@@ -886,7 +881,6 @@
             id = context;
             context = document;
         }
-        console.warn('Warning: $cms.dom.id() is deprecated');
         return ('getElementById' in context) ? context.getElementById(id) : context.querySelector('#' + id);
     };
 
@@ -898,34 +892,54 @@
             context = document;
         }
 
-        return (('getElementById' in context) && rgxIdSelector.test(selector)) ? context.getElementById(selector.substr(1)) : context.querySelector(selector);
+        return (rgxIdSelector.test(selector) && ('getElementById' in context)) ? context.getElementById(selector.substr(1)) : context.querySelector(selector);
     };
 
-    // Returns an array with matching child elements
+    // `$cms.dom.$$` is a CSS selector implementation which uses `document.querySelectorAll` and optimizes for some special cases, like `#id`, `.someclass` and `div`.
+    var rgxSimpleSelector = /^[\#\.]?[\w\-]+$/;
     $cms.dom.$$ = function (context, selector) {
+        var found;
+
         if (selector === undefined) {
             selector = context;
             context = document;
         }
 
-        return $cms.dom.qsa(context, selector);
+        // DocumentFragment is missing getElementById and getElementsBy(Tag|Class)Name in some implementations
+        if (rgxSimpleSelector.test(selector) && isDocOrEl(context)) {
+            switch (selector[0]) {
+                case '#': // selector is an ID
+                    return (found = (('getElementById' in context) ? context.getElementById(selector.substr(1)) : context.querySelector(selector))) ? [found] : [];
+                    break;
+
+                case '.': // selector is a class name
+                    return toArray(context.getElementsByClassName(selector.substr(1)));
+                    break;
+
+                default: // selector is a tag name
+                    return toArray(context.getElementsByTagName(selector));
+                    break;
+            }
+        }
+
+        return toArray(context.querySelectorAll(selector));
     };
 
     $cms.dom.last = function (context, selector) {
+        return $cms.dom.$$(context, selector).pop();
+    };
+
+    // This one (3 dollars) also includes the context element (at offset 0) if it matches the selector
+    $cms.dom.$$$ = function (context, selector) {
         if (selector === undefined) {
             selector = context;
             context = document;
         }
 
-        return $cms.dom.qsa(context, selector).pop();
-    };
+        var els = $cms.dom.$$(context, selector);
 
-    // This one (3 dollars) also includes the parent element (at offset 0) if it matches the selector
-    $cms.dom.$$$ = function (el, selector) {
-        var els = toArray(el.querySelectorAll(selector));
-
-        if ($cms.dom.matches(el, selector)) {
-            els.unshift(el);
+        if ($cms.dom.matches(context, selector)) {
+            els.unshift(context);
         }
 
         return els;
@@ -952,24 +966,23 @@
 
     $cms.dom.val = function (el, value) {
         if (value === undefined) {
-            if (!el.multiple) {
+            if ((el.localName !== 'select') || !el.multiple) {
                 return el.value;
             }
 
             // Special case: <select[multiple]>
-            var options = $cms.dom.$$(el, 'option'),
-                values = [], i;
+            var values = [], i;
 
-            for (i = 0; i < options.length; i++) {
-                if (options[i].selected) {
-                    values.push(options[i].value);
+            for (i = 0; i < el.options.length; i++) {
+                if (el.options[i].selected) {
+                    values.push(el.options[i].value);
                 }
             }
 
             return values;
         }
 
-        el.value = (value != null) ? funcArg(el, value, $cms.dom.val(el)) : '';
+        el.value = (value !== null) ? funcArg(el, value, $cms.dom.val(el)) : '';
     };
 
     $cms.dom.text = function (el, text) {
@@ -991,14 +1004,14 @@
     // "08"    => "08"
     // JSON    => parse if valid
     // String  => self
-    function deserializeValue(value) {
+    function parseJsonish(value) {
         try {
             return value ?
             value === 'true' ||
             ( value === 'false' ? false :
                 value === 'null' ? null :
                     (+value + '') == value ? +value :
-                        /^[\[\{]/.test(value) ? JSON.parse(value) :
+                        ((value[0] === '[') || (value[0] === '{')) ? JSON.parse(value) :
                             value )
                 : value;
         } catch (e) {
@@ -1016,7 +1029,7 @@
 
         var data = $cms.dom.attr(el, attrName);
 
-        return (data != null) ? deserializeValue(data) : undefined;
+        return (data != null) ? parseJsonish(data) : undefined;
     };
 
     $cms.dom.width = function (el, value) {
@@ -1040,7 +1053,7 @@
                 (offset = $cms.dom.offset(el)) && offset.height;
         }
 
-        $cms.dom.css(el, 'height', funcArg(el, value, $cms.dom.height(el)));
+        $cms.dom.css(el, 'height', (typeof value === 'function') ? funcArg(el, value, $cms.dom.height(el)) : value);
     };
 
     $cms.dom.offset = function (el, coordinates) {
@@ -1083,8 +1096,7 @@
     $cms.dom.hasIframeAccess = function (iframe) {
         try {
             return (iframe.contentWindow['access' + random()] = true) === true;
-        } catch (ignore) {
-        }
+        } catch (ignore) {}
 
         return false;
     };
@@ -1359,7 +1371,9 @@
 
     $cms.dom.trigger = function (el, event, args) {
         event = ((typeof event === 'string') || isPlainObj(event)) ? $cms.dom.createEvent(event) : event;
-        event._args = args;
+        if (args) {
+            event._args = args;
+        }
 
         // handle focus(), blur() by calling them directly
         if ((event.type in focusEvents) && (typeof el[event.type] === 'function')) {
@@ -1443,6 +1457,72 @@
         el.checked = checked;
     };
 
+    $cms.dom.fadeIn = function (el, duration, callback) {
+        if ((typeof duration === 'function') && (callback === undefined)) {
+            callback = duration;
+            duration = undefined;
+        }
+
+        duration = (duration != null) ? +duration : 400;
+
+        var target = $cms.dom.css(el, 'opacity');
+
+        if (target > 0) {
+            $cms.dom.css(el, 'opacity', 0);
+        } else {
+            target = 1;
+        }
+
+        $cms.dom.show(el);
+
+        if ('animate' in emptyEl) { // Progressive enhancement using the web animations API
+            var keyFrames = [{ opacity: 0 }, { opacity: target }],
+                options = { duration : duration },
+                animation = el.animate(keyFrames, options);
+
+            animation.onfinish = function () {
+                el.style.opacity = target;
+
+                if (callback) {
+                    callback.call(el);
+                }
+            };
+        } else {
+            $cms.dom.css(el, 'opacity', target);
+            if (callback) {
+                callback.call(el);
+            }
+        }
+    };
+
+    $cms.dom.fadeOut = function (el, duration, callback) {
+        if ((typeof duration === 'function') && (callback === undefined)) {
+            callback = duration;
+            duration = undefined;
+        }
+
+        duration = (duration != null) ? +duration : 400;
+
+        if ('animate' in emptyEl) { // Progressive enhancement using the web animations API
+            var keyFrames = [{ opacity: $cms.dom.css(el, 'opacity')}, { opacity: 0 }],
+                options = { duration: duration },
+                animation = el.animate(keyFrames, options);
+
+            animation.onfinish = function () {
+                $cms.dom.hide(el);
+
+                if (callback) {
+                    callback.call(el);
+                }
+            };
+        } else {
+            $cms.dom.hide(el);
+            if (callback) {
+                callback.call(el);
+            }
+        }
+    };
+
     var mapCssNumericProps = createMap({'column-count': 1, 'columns': 1, 'font-weight': 1, 'line-height': 1, 'opacity': 1, 'z-index': 1, 'zoom': 1});
 
     function maybeAddPx(name, value) {
@@ -1462,7 +1542,6 @@
                 });
                 return props;
             }
-            return;
         }
 
         var css = '';
@@ -1597,7 +1676,7 @@
             $cms.detachBehaviors(el.children[i]);
         }
 
-        el.innerHTML = strval(html);
+        el.innerHTML = strVal(html);
 
         // Attach behaviors to new child elements (if any)
         for (i = 0, len = el.children.length; i < len; i++) {
@@ -1790,7 +1869,6 @@
         initialize: function (params, viewOptions) {
             this.uid = $cms.uid(this);
             this.params = params || {};
-            this.options = params || {};
 
             if (viewOptions && (typeof viewOptions === 'object')) {
                 for (var key in mapViewOptions) {
@@ -1924,39 +2002,37 @@
     /* Tempcode filters ported to JS */
     $cms.filter = {};
 
+    // JavaScript port of php's urlencode function
+    // Credit: http://locutus.io/php/url/urlencode/
+    function urlencode(str) {
+        str = (str + '');
+        return encodeURIComponent(str)
+            .replace(/!/g, '%21')
+            .replace(/'/g, '%27')
+            .replace(/\(/g, '%28')
+            .replace(/\)/g, '%29')
+            .replace(/\*/g, '%2A')
+            .replace(/%20/g, '+')
+            .replace(/~/g, '%7E');
+    }
+
     // JS port of the cms_url_encode function used by the tempcode filter '&' (UL_ESCAPED)
-    $cms.filter.url = (function () {
-        // JavaScript port of php's urlencode function
-        // Credit: http://locutus.io/php/url/urlencode/
-        function urlencode(str) {
-            str = (str + '');
-            return encodeURIComponent(str)
-                .replace(/!/g, '%21')
-                .replace(/'/g, '%27')
-                .replace(/\(/g, '%28')
-                .replace(/\)/g, '%29')
-                .replace(/\*/g, '%2A')
-                .replace(/%20/g, '+')
-                .replace(/~/g, '%7E');
+    $cms.filter.url = function filterUrl(urlPart, canTryUrlSchemes) {
+        var urlPartEncoded = urlencode(strVal(urlPart));
+        canTryUrlSchemes = (canTryUrlSchemes !== undefined) ? !!canTryUrlSchemes : $cms.$EXTRA.canTryUrlSchemes;
+
+        if ((urlPartEncoded !== urlPart) && canTryUrlSchemes) {
+            // These interfere with URL Scheme processing because they get pre-decoded and make things ambiguous
+            urlPart = urlPart.replace(/\//g, ':slash:').replace(/&/g, ':amp:').replace(/#/g, ':uhash:');
+            return urlencode(urlPart);
         }
 
-        return function (urlPart, canTryUrlSchemes) {
-            var urlPartEncoded = urlencode(urlPart);
-            canTryUrlSchemes = (canTryUrlSchemes !== undefined) ? !!canTryUrlSchemes : $cms.$EXTRA.canTryUrlSchemes;
-
-            if ((urlPartEncoded !== urlPart) && canTryUrlSchemes) {
-                // These interfere with URL Scheme processing because they get pre-decoded and make things ambiguous
-                urlPart = urlPart.replace(/\//g, ':slash:').replace(/&/g, ':amp:').replace(/#/g, ':uhash:');
-                return urlencode(urlPart);
-            }
-
-            return urlPartEncoded;
-        };
-    }());
+        return urlPartEncoded;
+    };
 
     // JS port of the tempcode filter '~' (NL_ESCAPED)
     $cms.filter.crLf = function (str) {
-        return strval(str).replace(/[\r\n]/g, '');
+        return strVal(str).replace(/[\r\n]/g, '');
     };
 
     var mapFilterIdReplace = createMap({
@@ -1973,7 +2049,7 @@
     $cms.filter.id = function (str) {
         var i, char, ascii, out = '';
 
-        str || (str = '');
+        str = strVal(str);
 
         for (i = 0; i < str.length; i++) {
             char = str[i];
@@ -2003,22 +2079,21 @@
     };
 
     $cms.parseDataObject = function (data, defaults) {
-        data = data ? ('' + data).trim() : '';
-        defaults = defaults || {};
+        data = strVal(data).trim();
 
         if ((data !== '') && (data !== '{}') && (data !== '[]') && (data !== '1')) {
             try {
                 data = JSON.parse(data);
 
                 if (data && (typeof data === 'object')) {
-                    return Object.assign({}, defaults, data);
+                    return defaults ? Object.assign({}, defaults, data) : data;
                 }
             } catch (ex) {
                 $cms.error('$cms.parseDataArgs(), error parsing JSON: ' + data, ex);
             }
         }
 
-        return defaults;
+        return defaults || {};
     };
 
     $cms.ui || ($cms.ui = {});
@@ -2102,14 +2177,29 @@
      */
 
     $cms.views.ModalWindow = ModalWindow;
-    function ModalWindow(options) {
+    function ModalWindow(params) {
         ModalWindow.base(this, arguments);
 
-        options = $cms.defaults({}, options, ModalWindow.defaults);
-
-        for (var key in ModalWindow.defaults) {
-            this[key] = options[key];
-        }
+        Object.assign(this, $cms.defaults({
+            'type': 'alert',
+            'opacity': '0.5',
+            'width': 'auto',
+            'height': 'auto',
+            'title': '',
+            'text': '',
+            'yes_button': '{!YES;^}',
+            'no_button': '{!NO;^}',
+            'cancel_button': '{!INPUTSYSTEM_CANCEL;^}',
+            'yes': null,
+            'no': null,
+            'finished': null,
+            'cancel': null,
+            'href': null,
+            'scrollbars': null,
+            'defaultValue': null,
+            'target': '_self',
+            'input_type': 'text'
+        }, params));
 
         this.top_window = window.top;
         this.top_window = this.top_window.top;
@@ -2117,27 +2207,6 @@
         this.close(this.top_window);
         this.init_box();
     }
-
-    ModalWindow.defaults = createMap({
-        'type': 'alert',
-        'opacity': '0.5',
-        'width': 'auto',
-        'height': 'auto',
-        'title': '',
-        'text': '',
-        'yes_button': '{!YES;^}',
-        'no_button': '{!NO;^}',
-        'cancel_button': '{!INPUTSYSTEM_CANCEL;^}',
-        'yes': null,
-        'no': null,
-        'finished': null,
-        'cancel': null,
-        'href': null,
-        'scrollbars': null,
-        'defaultValue': null,
-        'target': '_self',
-        'input_type': 'text'
-    });
 
     $cms.inherits(ModalWindow, $cms.View, {
         // Constants
@@ -2328,6 +2397,8 @@
         },
 
         init_box: function () {
+            this.top_window.overlay_zIndex || (this.top_window.overlay_zIndex = 999999); // Has to be higher than plupload, which is 99999
+
             this.boxWrapperEl = this.element('div', { // Black out the background
                 'styles': {
                     'background': 'rgba(0,0,0,0.7)',
@@ -2431,7 +2502,7 @@
                     that.boxWrapperEl.firstElementChild.className += ' mousemove';
                     window.setTimeout(function () {
                         if (that.boxWrapperEl) {
-                            that.boxWrapperEl.firstElementChild.className = that.boxWrapperEl.firstElementChild.className.replace(/ mousemove/g, '');
+                            that.boxWrapperEl.firstElementChild.classList.remove('mousemove');
                         }
                     }, 2000);
                 }
@@ -2547,14 +2618,14 @@
                             // Create close function
                             if (iframe.contentWindow.faux_close === undefined) {
                                 iframe.contentWindow.faux_close = function () {
-                                    if (iframe && iframe.contentWindow && iframe.contentWindow.returnValue !== undefined)
+                                    if (iframe && iframe.contentWindow && iframe.contentWindow.returnValue !== undefined) {
                                         that.returnValue = iframe.contentWindow.returnValue;
+                                    }
                                     that.option('finished');
                                 };
                             }
 
                             if ($cms.dom.html(iframe.contentWindow.document.body).length > 300) {// Loaded now
-
                                 iframe.contentWindow.document.body.done_popup_trans = true;
                             }
                         }
@@ -2777,23 +2848,23 @@
 
     $cms.views.TreeList = TreeList;
 
-    function TreeList(options) {
+    function TreeList(params) {
         TreeList.base(this, arguments);
 
-        this.name = options.name;
-        this.ajax_url = options.ajax_url;
-        this.options = options.options;
-        this.multi_selection = !!options.multi_selection;
-        this.tabindex = options.tabindex || null;
-        this.all_nodes_selectable = !!options.all_nodes_selectable;
-        this.use_server_id = !!options.use_server_id;
+        this.name = params.name;
+        this.ajax_url = params.ajax_url;
+        this.options = params.options;
+        this.multi_selection = !!params.multi_selection;
+        this.tabindex = params.tabindex || null;
+        this.all_nodes_selectable = !!params.all_nodes_selectable;
+        this.use_server_id = !!params.use_server_id;
 
         $cms.dom.html(this.el, '<div class="ajax_loading vertical_alignment"><img src="' + $cms.img('{$IMG*;,loading}') + '" alt="" /> <span>{!LOADING;^}</span></div>');
 
         // Initial rendering
         var url = $cms.$BASE_URL_S + this.ajax_url;
-        if (options.root_id) {
-            url += '&id=' + encodeURIComponent(options.root_id);
+        if (params.root_id) {
+            url += '&id=' + encodeURIComponent(params.root_id);
         }
         url += '&options=' + this.options;
         url += '&default=' + encodeURIComponent($cms.dom.id(this.name).value);
@@ -3439,7 +3510,7 @@
         }
         button_set = new_button_set;
 
-        if ((window.showModalDialog !== undefined) || $cms.$CONFIG_OPTION.jsOverlays) {
+        if ((window.showModalDialog !== undefined) || $cms.$CONFIG_OPTION.js_overlays) {
             if (button_set.length > 4) {
                 dialog_height += 5 * (button_set.length - 4);
             }
@@ -3524,7 +3595,7 @@
         }
     }
 
-    var ajaxRequests,
+    var ajaxInstances,
         ajaxCallbacks;
 
     function do_ajax_request(url, callback__method, post) { // Note: 'post' is not an array, it's a string (a=b)
@@ -3534,16 +3605,16 @@
             url = window.location.protocol + '//' + window.location.host + url;
         }
 
-        ajaxRequests || (ajaxRequests = []);
+        ajaxInstances || (ajaxInstances = []);
         ajaxCallbacks || (ajaxCallbacks = []);
 
-        var index = ajaxRequests.length;
+        var index = ajaxInstances.length;
 
-        ajaxRequests[index] = new XMLHttpRequest();
+        ajaxInstances[index] = new XMLHttpRequest();
         ajaxCallbacks[index] = callback__method;
 
         if (async) {
-            ajaxRequests[index].onreadystatechange = readyStateChangeListener;
+            ajaxInstances[index].onreadystatechange = readyStateChangeListener;
         }
 
         if (typeof post === 'string') {
@@ -3551,33 +3622,33 @@
                 post += '&csrf_token=' + encodeUC(get_csrf_token());
             }
 
-            ajaxRequests[index].open('POST', url, async);
-            ajaxRequests[index].setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            ajaxRequests[index].send(post);
+            ajaxInstances[index].open('POST', url, async);
+            ajaxInstances[index].setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            ajaxInstances[index].send(post);
         } else {
-            ajaxRequests[index].open('GET', url, async);
-            ajaxRequests[index].send(null);
+            ajaxInstances[index].open('GET', url, async);
+            ajaxInstances[index].send(null);
         }
 
-        var result = ajaxRequests[index];
+        var result = ajaxInstances[index];
 
         if (!async) {
-            delete ajaxRequests[index];
+            delete ajaxInstances[index];
         }
 
         return result;
 
         function readyStateChangeListener() {
-            ajaxRequests || (ajaxRequests = []);
+            ajaxInstances || (ajaxInstances = []);
             ajaxCallbacks || (ajaxCallbacks = []);
 
             // Check if any ajax requests are complete
-            ajaxRequests.some(function (xhr, i) {
+            ajaxInstances.some(function (xhr, i) {
                 if (!xhr || (xhr.readyState !== 4)) { // 4 = DONE
                     return; // (continue)
                 }
 
-                delete ajaxRequests[i];
+                delete ajaxInstances[i];
 
                 var okStatusCodes = [200, 500, 400, 401];
                 // If status is 'OK'
@@ -3619,7 +3690,7 @@
         }
 
         function processRequestChange(ajaxResultFrame, i) {
-            ajaxRequests || (ajaxRequests = []);
+            ajaxInstances || (ajaxInstances = []);
             ajaxCallbacks || (ajaxCallbacks = []);
 
             var messageEl = ajaxResultFrame.querySelector('message');
@@ -3773,7 +3844,7 @@
 
         var outer = $cms.dom.id('comments_posting_form_outer');
         if (outer && !$cms.dom.isDisplayed(outer)) {
-            toggleable_tray(outer);
+            $cms.toggleableTray(outer);
         }
 
         if (isThreaded) {
@@ -3798,14 +3869,12 @@
         manage_scroll_height(post);
         post.scrollTop = post.scrollHeight;
     }
-}(window.$cms, JSON.parse($cms.dom.id('composr-symbol-data').content)));
+}(window.$cms, JSON.parse(document.getElementById('composr-symbol-data').content)));
 
 function noop() {}
 
 (function () {
     window.undo_staff_unload_action = undo_staff_unload_action;
-    window.placeholder_focus = placeholder_focus;
-    window.placeholder_blur = placeholder_blur;
     window.check_field_for_blankness = check_field_for_blankness;
     window.manage_scroll_height = manage_scroll_height;
     window.get_main_cms_window = get_main_cms_window;
@@ -3835,47 +3904,17 @@ function noop() {}
         }
     }
 
-    function placeholder_focus(el, def) {
-        if (def === undefined) {
-            def = el.defaultValue;
-        }
-
-        if (el.value === def) {
-            el.value = '';
-        }
-
-        el.classList.remove('field_input_non_filled');
-        el.classList.add('field_input_filled');
-    }
-
-    function placeholder_blur(el, def) {
-        if (def === undefined) {
-            def = el.defaultValue;
-        }
-
-        if (el.value === '') {
-            el.value = def;
-        }
-
-        if (el.value === def) {
-            el.classList.remove('field_input_filled');
-            el.classList.add('field_input_non_filled');
-        }
-    }
-
     /* Very simple form control flow */
     function check_field_for_blankness(field, event) {
-        if (!field) return true; // Shame we need this, seems on Google Chrome things can get confused on JS assigned to page-changing events
-        if (field.nodeName === undefined) return true; // Also bizarre
-
-        var value;
-        if (field.localName === 'select') {
-            value = field.options[field.selectedIndex].value;
-        } else {
-            value = field.value;
+        if (!field) { // Shame we need this, seems on Google Chrome things can get confused on JS assigned to page-changing events
+            return true;
+        }
+        if (field.nodeName === undefined) { // Also bizarre
+            return true;
         }
 
-        var ee = $cms.dom.id('error_' + field.id);
+        var value = field.value,
+            ee = $cms.dom.id('error_' + field.id);
 
         if ((value.replace(/\s/g, '') === '') || (value === '****') || (value === '{!POST_WARNING;^}') || (value === '{!THREADED_REPLY_NOTICE;^,{!POST_WARNING}}')) {
             if (event) {
@@ -3899,12 +3938,17 @@ function noop() {}
     }
 
     /* Making the height of a textarea match its contents */
-    function manage_scroll_height(ob) {
-        var height = ob.scrollHeight;
-        if ((height > 5) && (sts(ob.style.height) < height) && (ob.offsetHeight < height)) {
-            ob.style.height = height + 'px';
-            ob.style.boxSizing = 'border-box';
-            ob.style.overflowY = 'hidden';
+    function manage_scroll_height(textAreaEl) {
+        var scrollHeight = textAreaEl.scrollHeight,
+            offsetHeight = textAreaEl.offsetHeight,
+            currentHeight = parseInt($cms.dom.css(textAreaEl, 'height'));
+
+        if ((scrollHeight > 5) && (currentHeight < scrollHeight) && (offsetHeight < scrollHeight)) {
+            $cms.dom.css(textAreaEl, {
+                height: scrollHeight + 'px',
+                boxSizing: 'border-box',
+                overflowY: 'hidden'
+            });
             trigger_resize();
         }
     }
@@ -3925,15 +3969,13 @@ function noop() {}
             if (window.parent && (window.parent !== window) && (window.parent.get_main_cms_window !== undefined)) {
                 return window.parent.get_main_cms_window();
             }
-        } catch (ignore) {
-        }
+        } catch (ignore) {}
 
         try {
             if (window.opener && (window.opener.get_main_cms_window !== undefined)) {
                 return window.opener.get_main_cms_window();
             }
-        } catch (ignore) {
-        }
+        } catch (ignore) {}
 
         return window;
     }
@@ -3973,10 +4015,11 @@ function noop() {}
 
     /* Data escaping */
     function escape_html(value) {
+        value = $cms.strVal(value);
         if (!value) {
             return '';
         }
-        return value.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(new RegExp('<', 'g')/* For CDATA embedding else causes weird error */, '&lt;').replace(/>/g, '&gt;');
+        return value.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     }
 
     function escape_comcode(value) {
@@ -4092,7 +4135,7 @@ function confirm_session(callback) {
 
     function _confirm_session(callback, username, url) {
         window.fauxmodal_prompt(
-            $cms.$CONFIG_OPTION.jsOverlays ? '{!ENTER_PASSWORD_JS_2;^}' : '{!ENTER_PASSWORD_JS;^}',
+            $cms.$CONFIG_OPTION.js_overlays ? '{!ENTER_PASSWORD_JS_2;^}' : '{!ENTER_PASSWORD_JS;^}',
             '',
             function (promptt) {
                 if (promptt !== null) {
@@ -4148,7 +4191,7 @@ function require_css(sheet) {
     link.setAttribute('href', '{$FIND_SCRIPT_NOHTTP;,sheet}?sheet=' + sheet + keep_stub());
     document.head.appendChild(link);
 }
-function require_javascript(script, detector) {
+function require_javascript(script, detector, callback) {
     // Check it is not already loading
     if ($cms.dom.id('loading_js_' + script)) {
         return;
@@ -4157,6 +4200,9 @@ function require_javascript(script, detector) {
     // Check it is already loaded
     if (detector !== undefined) {
         // Some object reference into the file passed in was defined, so the file must have been loaded already
+        if (callback) {
+            callback();
+        }
         return;
     }
 
@@ -4201,8 +4247,8 @@ function select_tab(id, tab, from_url, automated) {
         }
     }
 
-    var tabs = [];
-    var i, element;
+    var tabs = [], i, element;
+
     element = $cms.dom.id('t_' + tab);
     for (i = 0; i < element.parentNode.children.length; i++) {
         if (element.parentNode.children[i].id && (element.parentNode.children[i].id.substr(0, 2) === 't_')) {
@@ -4241,203 +4287,6 @@ function matches_theme_image(src, url) {
     return $cms.img(src) === $cms.img(url);
 }
 
-function toggleable_tray(element, no_animate, cookie_id_name) {
-    var $IMG_expcon = '{$IMG;,1x/trays/expcon}',
-        $IMG_expcon2 = '{$IMG;,1x/trays/expcon2}',
-        $IMG_expand = '{$IMG;,1x/trays/expand}',
-        $IMG_expand2 = '{$IMG;,1x/trays/expand2}',
-        $IMG_contract = '{$IMG;,1x/trays/contract}',
-        $IMG_contract2 = '{$IMG;,1x/trays/contract2}',
-
-        $IMG_2x_expcon = '{$IMG;,2x/trays/expcon}',
-        $IMG_2x_expcon2 = '{$IMG;,2x/trays/expcon2}',
-        $IMG_2x_expand = '{$IMG;,2x/trays/expand}',
-        $IMG_2x_expand2 = '{$IMG;,2x/trays/expand2}',
-        $IMG_2x_contract = '{$IMG;,2x/trays/contract}',
-        $IMG_2x_contract2 = '{$IMG;,2x/trays/contract2}';
-
-    if (typeof element === 'string') {
-        element = $cms.dom.id(element);
-    }
-
-    if (!element) {
-        return;
-    }
-
-    no_animate = !!no_animate;
-
-    if (!$cms.$CONFIG_OPTION.enableAnimations) {
-        no_animate = true;
-    }
-
-    if (!element.classList.contains('toggleable_tray')) {// Suspicious, maybe we need to probe deeper
-        element = $cms.dom.$(element, '.toggleable_tray') || element;
-    }
-
-    if (element.dataset && element.dataset.trayCookie) {
-        cookie_id_name = element.dataset.trayCookie;
-    }
-
-    if (cookie_id_name !== undefined) {
-        set_cookie('tray_' + cookie_id_name, (element.style.display === 'none') ? 'open' : 'closed');
-    }
-
-    var pic = $cms.dom.$(element.parentNode, '.toggleable_tray_button img') || $cms.dom.$('#e_' + element.id);
-
-    if (pic && (matches_theme_image(pic.src, $IMG_expcon) || matches_theme_image(pic.src, $IMG_expcon2))) {// Currently in action?
-        return;
-    }
-
-    element.setAttribute('aria-expanded', 'true');
-
-    var isDiv = element.localName === 'div',
-        isThemeWizard = !!(pic && pic.src && pic.src.includes('themewizard.php'));
-
-    if (!$cms.dom.isDisplayed(element)) {
-        $cms.dom.show(element);
-
-        if (isDiv && !no_animate && !isThemeWizard) {
-            element.style.visibility = 'hidden';
-            element.style.width = element.offsetWidth + 'px';
-            element.style.position = 'absolute'; // So things do not just around now it is visible
-            if (pic) {
-                set_tray_theme_image('expand', 'expcon', $IMG_expand, $IMG_expcon, $IMG_2x_expcon, $IMG_expcon2, $IMG_2x_expcon2);
-            }
-            setTimeout(function () {
-                begin_toggleable_tray_animation(20, 70, -1);
-            }, 20);
-        } else {
-            clear_transition_and_set_opacity(element, 0.0);
-            fade_transition(element, 100, 30, 4);
-
-            if (pic) {
-                set_tray_theme_image('expand', 'contract', $IMG_expand, $IMG_contract, $IMG_2x_contract, $IMG_contract2, $IMG_2x_contract2);
-            }
-        }
-    } else {
-        if (isDiv && !no_animate && !isThemeWizard) {
-            if (pic) {
-                set_tray_theme_image('contract', 'expcon', $IMG_contract, $IMG_expcon, $IMG_2x_expcon, $IMG_expcon2, $IMG_2x_expcon2);
-            }
-            setTimeout(function () {
-                begin_toggleable_tray_animation(-20, 70, 0);
-            }, 20);
-        } else {
-            if (pic) {
-                set_tray_theme_image('contract', 'expand', $IMG_contract, $IMG_expand, $IMG_2x_expand, $IMG_expand2, $IMG_2x_expand2);
-                pic.setAttribute('alt', pic.getAttribute('alt').replace('{!CONTRACT;}', '{!EXPAND;}'));
-                pic.title = '{!EXPAND;}'; // Needs doing because convert_tooltip may not have run yet
-                pic.cms_tooltip_title = '{!EXPAND;}';
-            }
-            $cms.dom.hide(element);
-        }
-    }
-
-    trigger_resize(true);
-
-    return false;
-
-    function begin_toggleable_tray_animation(animate_dif, animate_ticks, final_height) {
-        var full_height = $cms.dom.contentHeight(element);
-        if (final_height === -1) {// We are animating to full height - not a fixed height
-            final_height = full_height;
-            element.style.height = '0px';
-            element.style.visibility = 'visible';
-            element.style.position = 'static';
-        }
-        if (full_height > 300) {// Quick finish in the case of huge expand areas
-            toggleable_tray_done(element, animate_dif, 'hidden');
-            return;
-        }
-
-        element.style.outline = '1px dashed gray';
-
-        if (final_height === 0) {
-            clear_transition_and_set_opacity(element, 1.0);
-            fade_transition(element, 0, 30, 4);
-        } else {
-            clear_transition_and_set_opacity(element, 0.0);
-            fade_transition(element, 100, 30, 4);
-        }
-
-        var orig_overflow = element.style.overflow;
-        element.style.overflow = 'hidden';
-        window.setTimeout(function () {
-            toggleable_tray_animate(element, final_height, animate_dif, orig_overflow, animate_ticks);
-        }, animate_ticks);
-    }
-
-    function toggleable_tray_animate(element, final_height, animate_dif, orig_overflow, animate_ticks) {
-        var current_height = ((element.style.height === 'auto') || (element.style.height === '')) ? element.offsetHeight : sts(element.style.height);
-
-        if (((current_height > final_height) && (animate_dif < 0)) || ((current_height < final_height) && (animate_dif > 0))) {
-            var num = Math.max(current_height + animate_dif, 0);
-            if (animate_dif > 0) num = Math.min(num, final_height);
-            element.style.height = num + 'px';
-            window.setTimeout(function () {
-                toggleable_tray_animate(element, final_height, animate_dif, orig_overflow, animate_ticks);
-            }, animate_ticks);
-        } else {
-            toggleable_tray_done(element, animate_dif, orig_overflow);
-        }
-    }
-
-    function toggleable_tray_done(element, animate_dif, orig_overflow) {
-        element.style.height = 'auto';
-
-        if (animate_dif < 0) {
-            element.style.display = 'none';
-        }
-
-        element.style.overflow = orig_overflow;
-        element.style.outline = '0';
-        if (pic) {
-            if (animate_dif < 0) {
-                set_tray_theme_image('expcon', 'expand', $IMG_expcon, $IMG_expand, $IMG_2x_expand, $IMG_expand2, $IMG_2x_expand2);
-            } else {
-                set_tray_theme_image('expcon', 'contract', $IMG_expcon, $IMG_contract, $IMG_2x_contract, $IMG_contract2, $IMG_2x_contract2);
-            }
-            pic.setAttribute('alt', pic.getAttribute('alt').replace((animate_dif < 0) ? '{!CONTRACT;}' : '{!EXPAND;}', (animate_dif < 0) ? '{!EXPAND;}' : '{!CONTRACT;}'));
-            pic.cms_tooltip_title = (animate_dif < 0) ? '{!EXPAND;}' : '{!CONTRACT;}';
-        }
-        trigger_resize(true);
-    }
-
-    function set_tray_theme_image(before_theme_img, after_theme_img, before1_url, after1_url, after1_url_2x, after2_url, after2_url_2x) {
-        var is_1 = matches_theme_image(pic.src, before1_url);
-
-        if (is_1) {
-            if (isThemeWizard) {
-                pic.src = pic.src.replace(before_theme_img, after_theme_img);
-            } else {
-                pic.src = $cms.img(after1_url);
-            }
-        } else {
-            if (isThemeWizard) {
-                pic.src = pic.src.replace(before_theme_img + '2', after_theme_img + '2');
-            } else {
-                pic.src = $cms.img(after2_url);
-            }
-        }
-
-        if (pic.srcset !== undefined) {
-            if (is_1) {
-                if (pic.srcset.includes('themewizard.php')) {
-                    pic.srcset = pic.srcset.replace(before_theme_img, after_theme_img);
-                } else {
-                    pic.srcset = $cms.img(after1_url_2x);
-                }
-            } else {
-                if (pic.srcset.includes('themewizard.php')) {
-                    pic.srcset = pic.srcset.replace(before_theme_img + '2', after_theme_img + '2');
-                } else {
-                    pic.srcset = $cms.img(after2_url_2x);
-                }
-            }
-        }
-    }
-}
-
 /* Animate the loading of a frame */
 function animate_frame_load(pf, frame, leave_gap_top, leave_height) {
     if (!pf) {
@@ -4468,7 +4317,7 @@ function animate_frame_load(pf, frame, leave_gap_top, leave_height) {
 function illustrate_frame_load(iframeId) {
     var head, cssText = '', i, iframe = $cms.dom.id(iframeId), doc, de;
 
-    if (!$cms.$CONFIG_OPTION.enableAnimations || !iframe || !iframe.contentDocument || !iframe.contentDocument.documentElement) {
+    if (!$cms.$CONFIG_OPTION.enable_animations || !iframe || !iframe.contentDocument || !iframe.contentDocument.documentElement) {
         return;
     }
 
@@ -4538,7 +4387,7 @@ function illustrate_frame_load(iframeId) {
 
 /* Smoothly scroll to another position on the page */
 function smooth_scroll(dest_y, expected_scroll_y, dir, event_after) {
-    if (!$cms.$CONFIG_OPTION.enableAnimations) {
+    if (!$cms.$CONFIG_OPTION.enable_animations) {
         try {
             window.scrollTo(0, dest_y);
         } catch (e) {
@@ -4703,79 +4552,76 @@ function find_pos_y(el, not_relative) {/* if not_relative is true it gets the po
     return ret;
 }
 
-/* See if a key event was an enter key being pressed */
-function enter_pressed(event, alt_char) {
-    if ((alt_char !== undefined) && (event.which && (event.which === alt_char.charCodeAt(0)))) {
-        return true;
-    }
+(function (){
+    window.modsecurity_workaround = modsecurity_workaround;
+    window.modsecurity_workaround_ajax = modsecurity_workaround_ajax;
 
-    return event.which && (event.which === 13);
-}
+    function modsecurity_workaround(form) {
+        var temp_form = document.createElement('form');
+        temp_form.method = 'post';
 
-function modsecurity_workaround(form) {
-    var temp_form = document.createElement('form');
-    temp_form.method = 'post';
-
-    if (form.target) {
-        temp_form.target = form.target;
-    }
-    temp_form.action = form.action;
-
-    var data = $cms.dom.serialize(form);
-    data = _modsecurity_workaround(data);
-
-    var input = document.createElement('input');
-    input.type = 'hidden';
-    input.name = '_data';
-    input.value = data;
-    temp_form.appendChild(input);
-
-    if (form.elements.csrf_token) {
-        var csrf_input = document.createElement('input');
-        csrf_input.type = 'hidden';
-        csrf_input.name = 'csrf_token';
-        csrf_input.value = form.elements.csrf_token.value;
-        temp_form.appendChild(csrf_input);
-    }
-
-    temp_form.style.display = 'none';
-    document.body.appendChild(temp_form);
-
-    window.setTimeout(function () {
-        temp_form.submit();
-        temp_form.parentNode.removeChild(temp_form);
-    });
-
-    return false;
-}
-
-function modsecurity_workaround_ajax(data) {
-    return '_data=' + encodeURIComponent(_modsecurity_workaround(data));
-}
-
-function _modsecurity_workaround(data) {
-    var remapper = {
-        '\\': '<',
-        '/': '>',
-        '<': '\'',
-        '>': '"',
-        '\'': '/',
-        '"': '\\',
-        '%': '&',
-        '&': '%'
-    };
-    var out = '';
-    var len = data.length, char;
-    for (var i = 0; i < len; i++) {
-        char = data[i];
-        if (remapper[char] !== undefined) {
-            out += remapper[char];
-        } else {
-            out += char;
+        if (form.target) {
+            temp_form.target = form.target;
         }
+        temp_form.action = form.action;
+
+        var data = $cms.dom.serialize(form);
+        data = _modsecurity_workaround(data);
+
+        var input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = '_data';
+        input.value = data;
+        temp_form.appendChild(input);
+
+        if (form.elements.csrf_token) {
+            var csrf_input = document.createElement('input');
+            csrf_input.type = 'hidden';
+            csrf_input.name = 'csrf_token';
+            csrf_input.value = form.elements.csrf_token.value;
+            temp_form.appendChild(csrf_input);
+        }
+
+        temp_form.style.display = 'none';
+        document.body.appendChild(temp_form);
+
+        window.setTimeout(function () {
+            temp_form.submit();
+            temp_form.parentNode.removeChild(temp_form);
+        });
+
+        return false;
     }
-    return out;
-}
+
+    function modsecurity_workaround_ajax(data) {
+        return '_data=' + encodeURIComponent(_modsecurity_workaround(data));
+    }
+
+    function _modsecurity_workaround(data) {
+        var remapper = {
+            '\\': '<',
+            '/': '>',
+            '<': '\'',
+            '>': '"',
+            '\'': '/',
+            '"': '\\',
+            '%': '&',
+            '&': '%'
+        };
+        var out = '';
+        var len = data.length, char;
+        for (var i = 0; i < len; i++) {
+            char = data[i];
+            if (remapper[char] !== undefined) {
+                out += remapper[char];
+            } else {
+                out += char;
+            }
+        }
+        return out;
+    }
+}());
+
 
 function clear_out_tooltips(tooltip_being_opened) {
     // Delete other tooltips, which due to browser bugs can get stuck
@@ -5074,9 +4920,9 @@ function deactivate_tooltip(el, tooltip_element) {
 function resize_frame(name, min_height) {
     min_height = +min_height || 0;
 
-    var frame_element = $cms.dom.id(name);
+    var frame_element = $cms.dom.id(name),
+        frame_window;
 
-    var frame_window;
     if (window.frames[name] !== undefined) {
         frame_window = window.frames[name];
     } else if (window.parent && window.parent.frames[name]) {
@@ -5130,12 +4976,11 @@ function trigger_resize(and_subframes) {
     if (!window.parent || !window.parent.document) {
         return;
     }
-    var frames = window.parent.document.getElementsByTagName('iframe');
-    var done = false, i;
+    var i, frames = window.parent.document.querySelectorAll('iframe');
 
     for (i = 0; i < frames.length; i++) {
-        if ((frames[i].src == window.location.href) || (frames[i].contentWindow == window) || ((frames[i].id != '') && (window.parent.frames[frames[i].id] !== undefined) && (window.parent.frames[frames[i].id] == window))) {
-            if (frames[i].style.height == '900px') {
+        if ((frames[i].src === window.location.href) || (frames[i].contentWindow === window) || ((frames[i].id != '') && (window.parent.frames[frames[i].id] !== undefined) && (window.parent.frames[frames[i].id] == window))) {
+            if (frames[i].style.height === '900px') {
                 frames[i].style.height = 'auto';
             }
             window.parent.resize_frame(frames[i].name);
@@ -5143,19 +4988,20 @@ function trigger_resize(and_subframes) {
     }
 
     if (and_subframes) {
-        frames = document.getElementsByTagName('iframe');
+        frames = document.querySelectorAll('iframe');
         for (i = 0; i < frames.length; i++) {
-            if ((frames[i].name != '') && ((frames[i].className.indexOf('expandable_iframe') != -1) || (frames[i].className.indexOf('dynamic_iframe') != -1))) resize_frame(frames[i].name);
+            if ((frames[i].name != '') && ((frames[i].classList.contains('expandable_iframe')) || (frames[i].classList.contains('dynamic_iframe')))) {
+                resize_frame(frames[i].name);
+            }
         }
     }
 }
 
 /* Marking things (to avoid illegally nested forms) */
 function add_form_marked_posts(work_on, prefix) {
-    var get = work_on.method.toLowerCase() === 'get';
-    var elements = document.getElementsByTagName('input');
-    var i;
-    var append = '';
+    var get = work_on.method.toLowerCase() === 'get',
+        elements = document.getElementsByTagName('input'),
+        i, append = '';
     if (get) {
         for (i = 0; i < work_on.elements.length; i++) {
             if (work_on.elements[i].name.match(new RegExp('&' + prefix.replace('_', '\_') + '\d+=1$', 'g'))) {
@@ -5169,24 +5015,26 @@ function add_form_marked_posts(work_on, prefix) {
         work_on.action = work_on.action.replace('&', '?'); // will just do first due to how JS works
     }
     for (i = 0; i < elements.length; i++) {
-        if ((elements[i].type == 'checkbox') && (elements[i].name.substring(0, prefix.length) == prefix) && (elements[i].checked))
-            append += (((append == '') && (work_on.action.indexOf('?') == -1) && (work_on.action.indexOf('/pg/') == -1) && (!get)) ? '?' : '&') + elements[i].name + '=1';
+        if ((elements[i].type == 'checkbox') && (elements[i].name.substring(0, prefix.length) == prefix) && (elements[i].checked)) {
+            append += (((append === '') && !work_on.action.includes('?') && !work_on.action.includes('/pg/') && !get) ? '?' : '&') + elements[i].name + '=1';
+        }
     }
     if (get) {
         var bits = append.split('&');
         for (i = 0; i < bits.length; i++) {
-            if (bits[i] != '') {
-                var hidden = document.createElement('input');
-                hidden.name = bits[i].substr(0, bits[i].indexOf('=1'));
-                hidden.value = '1';
-                hidden.type = 'hidden';
+            if (bits[i] !== '') {
+                var hidden = Object.assign(document.createElement('input'), {
+                    name: bits[i].substr(0, bits[i].indexOf('=1')),
+                    type: 'hidden',
+                    value: '1'
+                });
                 work_on.appendChild(hidden);
             }
         }
     } else {
         work_on.action += append;
     }
-    return append != '';
+    return append !== '';
 }
 
 /* Event listeners */
@@ -5253,7 +5101,7 @@ function careful_import_node(node) {
 
 /* Google Analytics tracking for links; particularly useful if you have no server-side stat collection */
 function ga_track(ob, category, action) {
-    if (!$cms.$CONFIG_OPTION.googleAnalytics || $cms.$IS_STAFF || $cms.$IS_ADMIN) {
+    if (!$cms.$CONFIG_OPTION.google_analytics || $cms.$IS_STAFF || $cms.$IS_ADMIN) {
         return;
     }
 
@@ -5365,6 +5213,7 @@ function play_self_audio_link(ob) {
     window.clear_transition = clear_transition;
     window.clear_transition_and_set_opacity = clear_transition_and_set_opacity;
 
+    // <{element's uid}, {setTimeout id}>
     var timeouts = {};
 
     function fade_transition(el, destPercentOpacity, periodInMsecs, increment, destroyAfter) {
@@ -5377,7 +5226,7 @@ function play_self_audio_link(ob) {
         increment = +increment || 0;
         destroyAfter = !!destroyAfter;
 
-        if (!$cms.$CONFIG_OPTION.enableAnimations) {
+        if (!$cms.$CONFIG_OPTION.enable_animations) {
             el.style.opacity = destPercentOpacity / 100.0;
             return;
         }
@@ -5467,7 +5316,7 @@ function play_self_audio_link(ob) {
  */
 'use strict';
 
-window.overlay_zIndex || (window.overlay_zIndex = 999999); // Has to be higher than plupload, which is 99999
+
 
 function open_images_into_lightbox(imgs, start) {
     start = +start || 0;
@@ -5561,7 +5410,7 @@ function _open_image_into_lightbox(initial_img_url, description, x, n, has_full_
     is_video = !!is_video;
 
     // Set up overlay for Lightbox
-    var lightbox_code = ' \
+    var lightbox_code = /** @lang HTML */' \
 			<div style="text-align: center"> \
 				<p class="ajax_loading" id="lightbox_image"><img src="' + $cms.img('{$IMG*;,loading}') + '" /></p> \
 				<p id="lightbox_meta" style="display: none" class="associated_link associated_links_block_group"> \
@@ -5692,7 +5541,7 @@ function fauxmodal_confirm(question, callback, title, unescaped) {
     title || (title = '{!Q_SURE;}');
     unescaped = !!unescaped;
 
-    if (!$cms.$CONFIG_OPTION.jsOverlays) {
+    if (!$cms.$CONFIG_OPTION.js_overlays) {
         callback(window.confirm(question));
         return;
     }
@@ -5720,7 +5569,7 @@ function fauxmodal_alert(notice, callback, title, unescaped) {
     title || (title = '{!MESSAGE^;}');
     unescaped = !!unescaped;
 
-    if (!$cms.$CONFIG_OPTION.jsOverlays) {
+    if (!$cms.$CONFIG_OPTION.js_overlays) {
         window.alert(notice);
         callback();
         return;
@@ -5739,7 +5588,7 @@ function fauxmodal_alert(notice, callback, title, unescaped) {
 }
 
 function fauxmodal_prompt(question, defaultValue, callback, title, input_type) {
-    if (!$cms.$CONFIG_OPTION.jsOverlays) {
+    if (!$cms.$CONFIG_OPTION.js_overlays) {
         callback(window.prompt(question, defaultValue));
         return;
     }
@@ -5768,7 +5617,7 @@ function fauxmodal_prompt(question, defaultValue, callback, title, input_type) {
 function faux_showModalDialog(url, name, options, callback, target, cancel_text) {
     callback = callback || noop;
 
-    if (!($cms.$CONFIG_OPTION.jsOverlays)) {
+    if (!($cms.$CONFIG_OPTION.js_overlays)) {
         options = options.replace('height=auto', 'height=520');
 
         var timer = new Date().getTime();
@@ -5842,7 +5691,7 @@ function faux_open(url, name, options, target, cancel_text) {
         cancel_text = '{!INPUTSYSTEM_CANCEL;^}';
     }
 
-    if (!$cms.$CONFIG_OPTION.jsOverlays) {
+    if (!$cms.$CONFIG_OPTION.js_overlays) {
         options = options.replace('height=auto', 'height=520');
         window.open(url, name, options);
         return;
@@ -5995,6 +5844,7 @@ function faux_open(url, name, options, target, cancel_text) {
 
         return false;
     }
+
     function internalise_infinite_scrolling_go(url_stem, wrapper, more_links) {
         if (infinite_scroll_pending) {
             return false;
@@ -6177,7 +6027,7 @@ function faux_open(url, name, options, target, cancel_text) {
 
         // Show loading animation
         var loading_wrapper = target_div;
-        if ((loading_wrapper.id.indexOf('carousel_') == -1) && ($cms.dom.html(loading_wrapper).indexOf('ajax_loading_block') == -1) && (show_loading_animation)) {
+        if ((loading_wrapper.id.indexOf('carousel_') === -1) && ($cms.dom.html(loading_wrapper).indexOf('ajax_loading_block') === -1) && (show_loading_animation)) {
             var raw_ajax_grow_spot = target_div.querySelectorAll('.raw_ajax_grow_spot');
             if (raw_ajax_grow_spot[0] !== undefined && append) loading_wrapper = raw_ajax_grow_spot[0]; // If we actually are embedding new results a bit deeper
             var loading_wrapper_inner = document.createElement('div');
@@ -6236,8 +6086,7 @@ function faux_open(url, name, options, target, cancel_text) {
         if (scroll_to_top_of_wrapper) {
             try {
                 window.scrollTo(0, find_pos_y(target_div));
-            } catch (e) {
-            }
+            } catch (e) {}
         }
 
         // Defined callback
@@ -6260,299 +6109,309 @@ function faux_open(url, name, options, target, cancel_text) {
         }
     }
 
-}());
 
-/*
- Validation
- */
+    /*
+     Validation
+     */
 
-/* Calls up a URL to check something, giving any 'feedback' as an error (or if just 'false' then returning false with no message) */
-function do_ajax_field_test(url, post) {
-    var xmlhttp = do_ajax_request(url, null, post);
-    if ((xmlhttp.responseText != '') && (xmlhttp.responseText.replace(/[ \t\n\r]/g, '') != '0'/*some cache layers may change blank to zero*/)) {
-        if (xmlhttp.responseText != 'false') {
-            if (xmlhttp.responseText.length > 1000) {
-                console.log(xmlhttp.responseText);
+    window.do_ajax_field_test = do_ajax_field_test;
+    window.merge_text_nodes = merge_text_nodes;
+    window.update_ajax_search_list = update_ajax_search_list;
+    window.update_ajax_author_list = update_ajax_author_list;
+    window.update_ajax_member_list = update_ajax_member_list;
 
-                fauxmodal_alert(xmlhttp.responseText, null, '{!ERROR_OCCURRED;}', true);
-            } else {
-                window.fauxmodal_alert(xmlhttp.responseText);
+    /* Calls up a URL to check something, giving any 'feedback' as an error (or if just 'false' then returning false with no message) */
+    function do_ajax_field_test(url, post) {
+        var xmlhttp = do_ajax_request(url, null, post);
+        if ((xmlhttp.responseText != '') && (xmlhttp.responseText.replace(/[ \t\n\r]/g, '') != '0'/*some cache layers may change blank to zero*/)) {
+            if (xmlhttp.responseText != 'false') {
+                if (xmlhttp.responseText.length > 1000) {
+                    console.log(xmlhttp.responseText);
+
+                    fauxmodal_alert(xmlhttp.responseText, null, '{!ERROR_OCCURRED;}', true);
+                } else {
+                    window.fauxmodal_alert(xmlhttp.responseText);
+                }
+            }
+            return false;
+        }
+        return true;
+    }
+
+    function merge_text_nodes(childNodes) {
+        var i, text = '';
+        for (i = 0; i < childNodes.length; i++) {
+            if (childNodes[i].nodeName === '#text') {
+                text += childNodes[i].data;
             }
         }
-        return false;
+        return text;
     }
-    return true;
-}
 
-function merge_text_nodes(childNodes) {
-    var i, text = '';
-    for (i = 0; i < childNodes.length; i++) {
-        if (childNodes[i].nodeName === '#text') {
-            text += childNodes[i].data;
+    function update_ajax_search_list(target, e, search_type) {
+        var special = 'search';
+        if (search_type !== undefined) {
+            special += '&search_type=' + encodeURIComponent(search_type);
         }
-    }
-    return text;
-}
-
-function update_ajax_search_list(target, e, search_type) {
-    var special = 'search';
-    if (search_type !== undefined) {
-        special += '&search_type=' + encodeURIComponent(search_type);
-    }
-    update_ajax_member_list(target, special, false, e);
-}
-
-function update_ajax_author_list(target, e) {
-    update_ajax_member_list(target, 'author', false, e);
-}
-
-function update_ajax_member_list(target, special, delayed, e) {
-    // Uncomment the below to disable backspace
-    //if (!e) target.onkeyup=function (e2) { update_ajax_member_list(target,special,delayed,e2); } ; // Make sure we get the event next time
-    //if ((e) && (e.keyCode==8)) return; // No back key allowed
-
-    if (e && enter_pressed(e)) {
-        return null;
+        update_ajax_member_list(target, special, false, e);
     }
 
-    if (target.disabled) {
-        return;
+    function update_ajax_author_list(target, e) {
+        update_ajax_member_list(target, 'author', false, e);
     }
 
-    if (!browser_matches('ios')) {
-        if (!target.onblur) target.onblur = function () {
-            setTimeout(function () {
-                close_down();
-            }, 300);
+    var currentlyDoingListTimer = 0,
+        currentListForEl = null;
+
+    function update_ajax_member_list(target, special, delayed, event) {
+        if (event && $cms.dom.keyPressed(event, 'Enter')) {
+            return null;
         }
-    }
 
-    if (!delayed) {// A delay, so as not to throw out too many requests
-
-        if (window.currently_doing_list) {
-            window.clearTimeout(window.currently_doing_list);
-            window.currently_doing_list = null;
+        if (target.disabled) {
+            return;
         }
-        var e_copy = {'keyCode': e.keyCode, 'which': e.which};
-        window.currently_doing_list = window.setTimeout(function () {
-            update_ajax_member_list(target, special, true, e_copy);
-        }, 400);
-        return;
-    } else {
-        window.currently_doing_list = null;
-    }
 
-    target.special = special;
-
-    var v = target.value;
-
-    window.current_list_for = target;
-    var url = '{$FIND_SCRIPT;,namelike}?id=' + encodeURIComponent(v);
-    if (special) {
-        url = url + '&special=' + special;
-    }
-
-    do_ajax_request(url + keep_stub(), update_ajax_member_list_response);
-
-    function close_down() {
-        var current = $cms.dom.id('ajax_list');
-        if (current) {
-            current.parentNode.removeChild(current);
+        if (!browser_matches('ios') && !target.onblur) {
+            target.onblur = function () {
+                setTimeout(function () {
+                    close_down();
+                }, 300);
+            }
         }
-    }
 
-    function update_ajax_member_list_response(result, list_contents) {
-        if (!list_contents) return;
-        if (window.current_list_for == null) return;
+        if (!delayed) {// A delay, so as not to throw out too many requests
+            if (currentlyDoingListTimer) {
+                window.clearTimeout(currentlyDoingListTimer);
+            }
+            var e_copy = { 'keyCode': event.keyCode, 'which': event.which };
 
-        close_down();
-
-        var data_list = false;//(document.createElement('datalist').options!==undefined);	Still too buggy in browsers
-
-        //if (list_contents.childNodes.length==0) return;
-        var list = document.createElement(data_list ? 'datalist' : 'select');
-        list.className = 'people_list';
-        list.setAttribute('id', 'ajax_list');
-        if (data_list) {
-            window.current_list_for.setAttribute('list', 'ajax_list');
+            currentlyDoingListTimer = window.setTimeout(function () {
+                update_ajax_member_list(target, special, true, e_copy);
+            }, 400);
+            return;
         } else {
-            if (list_contents.childNodes.length == 1) {// We need to make sure it is not a dropdown. Normally we'd use size (multiple isn't correct, but we'll try this for 1 as it may be more stable on some browsers with no side effects)
-                list.setAttribute('multiple', 'multiple');
+            currentlyDoingListTimer = 0;
+        }
+
+        target.special = special;
+
+        var v = target.value;
+
+        currentListForEl = target;
+        var url = '{$FIND_SCRIPT;,namelike}?id=' + encodeURIComponent(v);
+        if (special) {
+            url = url + '&special=' + special;
+        }
+
+        do_ajax_request(url + keep_stub(), update_ajax_member_list_response);
+
+        function close_down() {
+            var current = $cms.dom.id('ajax_list');
+            if (current) {
+                current.parentNode.removeChild(current);
+            }
+        }
+
+        function update_ajax_member_list_response(result, list_contents) {
+            if (!list_contents || !currentListForEl) {
+                return;
+            }
+
+            close_down();
+
+            var data_list = false;//(document.createElement('datalist').options!==undefined);	Still too buggy in browsers
+
+            //if (list_contents.childNodes.length==0) return;
+            var list = document.createElement(data_list ? 'datalist' : 'select');
+            list.className = 'people_list';
+            list.setAttribute('id', 'ajax_list');
+            if (data_list) {
+                currentListForEl.setAttribute('list', 'ajax_list');
             } else {
-                list.setAttribute('size', list_contents.childNodes.length + 1);
+                if (list_contents.childNodes.length == 1) {// We need to make sure it is not a dropdown. Normally we'd use size (multiple isn't correct, but we'll try this for 1 as it may be more stable on some browsers with no side effects)
+                    list.setAttribute('multiple', 'multiple');
+                } else {
+                    list.setAttribute('size', list_contents.childNodes.length + 1);
+                }
+                list.style.position = 'absolute';
+                list.style.left = (find_pos_x(currentListForEl)) + 'px';
+                list.style.top = (find_pos_y(currentListForEl) + currentListForEl.offsetHeight) + 'px';
             }
-            list.style.position = 'absolute';
-            list.style.left = (find_pos_x(window.current_list_for)) + 'px';
-            list.style.top = (find_pos_y(window.current_list_for) + window.current_list_for.offsetHeight) + 'px';
-        }
-        setTimeout(function () {
-            list.style.zIndex++;
-        }, 100); // Fixes Opera by causing a refresh
+            setTimeout(function () {
+                list.style.zIndex++;
+            }, 100); // Fixes Opera by causing a refresh
 
-        if (list_contents.children.length == 0) return;
+            if (list_contents.children.length === 0) {
+                return;
+            }
 
-        var i, item, displaytext;
-        for (i = 0; i < list_contents.children.length; i++) {
+            var i, item, displaytext;
+            for (i = 0; i < list_contents.children.length; i++) {
+                item = document.createElement('option');
+                item.value = list_contents.children[i].getAttribute('value');
+                displaytext = item.value;
+                if (list_contents.children[i].getAttribute('displayname') != '')
+                    displaytext = list_contents.children[i].getAttribute('displayname');
+                item.text = displaytext;
+                item.innerText = displaytext;
+                list.appendChild(item);
+            }
             item = document.createElement('option');
-            item.value = list_contents.children[i].getAttribute('value');
-            displaytext = item.value;
-            if (list_contents.children[i].getAttribute('displayname') != '')
-                displaytext = list_contents.children[i].getAttribute('displayname');
-            item.text = displaytext;
-            item.innerText = displaytext;
+            item.disabled = true;
+            item.text = '{!javascript:SUGGESTIONS_ONLY;}'.toUpperCase();
+            item.innerText = '{!javascript:SUGGESTIONS_ONLY;}'.toUpperCase();
             list.appendChild(item);
-        }
-        item = document.createElement('option');
-        item.disabled = true;
-        item.text = '{!javascript:SUGGESTIONS_ONLY;}'.toUpperCase();
-        item.innerText = '{!javascript:SUGGESTIONS_ONLY;}'.toUpperCase();
-        list.appendChild(item);
-        window.current_list_for.parentNode.appendChild(list);
+            currentListForEl.parentNode.appendChild(list);
 
-        if (data_list) return;
+            if (data_list) {
+                return;
+            }
 
-        clear_transition_and_set_opacity(list, 0.0);
-        fade_transition(list, 100, 30, 8);
+            clear_transition_and_set_opacity(list, 0.0);
+            fade_transition(list, 100, 30, 8);
 
-        var current_list_for_copy = window.current_list_for;
+            var current_list_for_copy = currentListForEl;
 
-        if (window.current_list_for.old_onkeyup === undefined) {
-            window.current_list_for.old_onkeyup = window.current_list_for.onkeyup;
-        }
+            if (currentListForEl.old_onkeyup === undefined) {
+                currentListForEl.old_onkeyup = currentListForEl.onkeyup;
+            }
 
-        if (window.current_list_for.old_onchange === undefined) {
-            window.current_list_for.old_onchange = window.current_list_for.onchange;
-        }
+            if (currentListForEl.old_onchange === undefined) {
+                currentListForEl.old_onchange = currentListForEl.onchange;
+            }
 
-        function make_selection(e) {
-            var el = e.target;
+            currentListForEl.down_once = false;
 
-            current_list_for_copy.value = el.value;
-            current_list_for_copy.onkeyup = current_list_for_copy.old_onkeyup;
-            current_list_for_copy.onchange = current_list_for_copy.old_onchange;
-            current_list_for_copy.onkeypress = function () {
+            currentListForEl.onkeyup = function (event) {
+                var ret = handle_arrow_usage(event);
+                if (ret != null) {
+                    return ret;
+                }
+                return update_ajax_member_list(current_list_for_copy, current_list_for_copy.special, false, event);
             };
-            if (current_list_for_copy.onrealchange) {
-                current_list_for_copy.onrealchange(e);
-            }
-            if (current_list_for_copy.onchange) {
-                current_list_for_copy.onchange(e);
-            }
-            var al = $cms.dom.id('ajax_list');
-            al.parentNode.removeChild(al);
-            window.setTimeout(function () {
-                current_list_for_copy.focus();
-            }, 300);
-        }
+            currentListForEl.onchange = function (event) {
+                current_list_for_copy.onkeyup = current_list_for_copy.old_onkeyup;
+                current_list_for_copy.onchange = current_list_for_copy.old_onchange;
+                if (current_list_for_copy.onchange) {
+                    current_list_for_copy.onchange(event);
+                }
+            };
+            list.onkeyup = function (event) {
+                var ret = handle_arrow_usage(event);
+                if (ret != null) {
+                    return ret;
+                }
 
-        window.current_list_for.down_once = false;
-        function handle_arrow_usage(event) {
-            if (!event.shiftKey && $cms.dom.keyPressed(event, 'ArrowDown')) {// DOWN
-                current_list_for_copy.disabled = true;
-                window.setTimeout(function () {
-                    current_list_for_copy.disabled = false;
-                }, 1000);
+                if ($cms.dom.keyPressed(event, 'Enter')) {// ENTER
+                    make_selection(event);
+                    current_list_for_copy.disabled = true;
+                    window.setTimeout(function () {
+                        current_list_for_copy.disabled = false;
+                    }, 200);
 
-                var temp = current_list_for_copy.onblur;
-                current_list_for_copy.onblur = function () {
+                    return cancel_bubbling(event);
+                }
+                if (!event.shiftKey && $cms.dom.keyPressed(event, ['ArrowUp', 'ArrowDown'])) {
+                    if (event.cancelable) {
+                        event.preventDefault();
+                    }
+                    return cancel_bubbling(event);
+                }
+                return null;
+            };
+
+            currentListForEl.onkeypress = function (event) {
+                if (!event.shiftKey && $cms.dom.keyPressed(event, ['ArrowUp', 'ArrowDown'])) {
+                    if (event.cancelable) {
+                        event.preventDefault();
+                    }
+                    return cancel_bubbling(event);
+                }
+                return null;
+            };
+            list.onkeypress = function (event) {
+                if (!event.shiftKey && $cms.dom.keyPressed(event, ['Enter', 'ArrowUp', 'ArrowDown'])) {
+                    if (event.cancelable) {
+                        event.preventDefault();
+                    }
+                    return cancel_bubbling(event);
+                }
+                return null;
+            };
+
+            list.addEventListener(browser_matches('ios') ? 'change' : 'click', make_selection, false);
+
+            currentListForEl = null;
+
+            function handle_arrow_usage(event) {
+                if (!event.shiftKey && $cms.dom.keyPressed(event, 'ArrowDown')) {// DOWN
+                    current_list_for_copy.disabled = true;
+                    window.setTimeout(function () {
+                        current_list_for_copy.disabled = false;
+                    }, 1000);
+
+                    var temp = current_list_for_copy.onblur;
+                    current_list_for_copy.onblur = function () {
+                    };
+                    list.focus();
+                    current_list_for_copy.onblur = temp;
+                    if (!current_list_for_copy.down_once) {
+                        current_list_for_copy.down_once = true;
+                        list.selectedIndex = 0;
+                    } else {
+                        if (list.selectedIndex < list.options.length - 1) list.selectedIndex++;
+                    }
+                    list.options[list.selectedIndex].selected = true;
+                    return cancel_bubbling(event);
+                }
+
+                if (!event.shiftKey && $cms.dom.keyPressed(event, 'ArrowUp')) {// UP
+                    current_list_for_copy.disabled = true;
+                    window.setTimeout(function () {
+                        current_list_for_copy.disabled = false;
+                    }, 1000);
+
+                    var temp = current_list_for_copy.onblur;
+                    current_list_for_copy.onblur = function () {
+                    };
+                    list.focus();
+                    current_list_for_copy.onblur = temp;
+                    if (!current_list_for_copy.down_once) {
+                        current_list_for_copy.down_once = true;
+                        list.selectedIndex = 0;
+                    } else {
+                        if (list.selectedIndex > 0) list.selectedIndex--;
+                    }
+                    list.options[list.selectedIndex].selected = true;
+                    return cancel_bubbling(event);
+                }
+                return null;
+            }
+
+            function make_selection(e) {
+                var el = e.target;
+
+                current_list_for_copy.value = el.value;
+                current_list_for_copy.onkeyup = current_list_for_copy.old_onkeyup;
+                current_list_for_copy.onchange = current_list_for_copy.old_onchange;
+                current_list_for_copy.onkeypress = function () {
                 };
-                list.focus();
-                current_list_for_copy.onblur = temp;
-                if (!current_list_for_copy.down_once) {
-                    current_list_for_copy.down_once = true;
-                    list.selectedIndex = 0;
-                } else {
-                    if (list.selectedIndex < list.options.length - 1) list.selectedIndex++;
+                if (current_list_for_copy.onrealchange) {
+                    current_list_for_copy.onrealchange(e);
                 }
-                list.options[list.selectedIndex].selected = true;
-                return cancel_bubbling(event);
-            }
-
-            if (!event.shiftKey && $cms.dom.keyPressed(event, 'ArrowUp')) {// UP
-                current_list_for_copy.disabled = true;
+                if (current_list_for_copy.onchange) {
+                    current_list_for_copy.onchange(e);
+                }
+                var al = $cms.dom.id('ajax_list');
+                al.parentNode.removeChild(al);
                 window.setTimeout(function () {
-                    current_list_for_copy.disabled = false;
-                }, 1000);
-
-                var temp = current_list_for_copy.onblur;
-                current_list_for_copy.onblur = function () {
-                };
-                list.focus();
-                current_list_for_copy.onblur = temp;
-                if (!current_list_for_copy.down_once) {
-                    current_list_for_copy.down_once = true;
-                    list.selectedIndex = 0;
-                } else {
-                    if (list.selectedIndex > 0) list.selectedIndex--;
-                }
-                list.options[list.selectedIndex].selected = true;
-                return cancel_bubbling(event);
+                    current_list_for_copy.focus();
+                }, 300);
             }
-            return null;
         }
-
-        window.current_list_for.onkeyup = function (event) {
-            var ret = handle_arrow_usage(event);
-            if (ret != null) {
-                return ret;
-            }
-            return update_ajax_member_list(current_list_for_copy, current_list_for_copy.special, false, event);
-        };
-        window.current_list_for.onchange = function (event) {
-            current_list_for_copy.onkeyup = current_list_for_copy.old_onkeyup;
-            current_list_for_copy.onchange = current_list_for_copy.old_onchange;
-            if (current_list_for_copy.onchange) {
-                current_list_for_copy.onchange(event);
-            }
-        };
-        list.onkeyup = function (event) {
-            var ret = handle_arrow_usage(event);
-            if (ret != null) {
-                return ret;
-            }
-
-            if (enter_pressed(event)) {// ENTER
-                make_selection(event);
-                current_list_for_copy.disabled = true;
-                window.setTimeout(function () {
-                    current_list_for_copy.disabled = false;
-                }, 200);
-
-                return cancel_bubbling(event);
-            }
-            if (!event.shiftKey && $cms.dom.keyPressed(event, ['ArrowUp', 'ArrowDown'])) {
-                if (event.cancelable) {
-                    event.preventDefault();
-                }
-                return cancel_bubbling(event);
-            }
-            return null;
-        };
-
-        window.current_list_for.onkeypress = function (event) {
-            if (!event.shiftKey && $cms.dom.keyPressed(event, ['ArrowUp', 'ArrowDown'])) {
-                if (event.cancelable) {
-                    event.preventDefault();
-                }
-                return cancel_bubbling(event);
-            }
-            return null;
-        };
-        list.onkeypress = function (event) {
-            if (!event.shiftKey && $cms.dom.keyPressed(event, ['Enter', 'ArrowUp', 'ArrowDown'])) {
-                if (event.cancelable) {
-                    event.preventDefault();
-                }
-                return cancel_bubbling(event);
-            }
-            return null;
-        };
-
-        list.addEventListener(browser_matches('ios') ? 'change' : 'click', make_selection, false);
-
-        window.current_list_for = null;
     }
-}
+}());
 
 
 /* Validation code and other general code relating to forms */
@@ -6591,7 +6450,9 @@ function password_strength(ob) {
 
 function radio_value(radios) {
     for (var i = 0; i < radios.length; i++) {
-        if (radios[i].checked) return radios[i].value;
+        if (radios[i].checked) {
+            return radios[i].value;
+        }
     }
     return '';
 }
@@ -6639,9 +6500,9 @@ function set_field_error(the_element, error_msg) {
         }
     }
     if ((window.is_wysiwyg_field !== undefined) && (is_wysiwyg_field(the_element))) the_element = the_element.parentNode;
-    the_element.className = the_element.className.replace(/( input_erroneous($| ))+/g, ' ');
+    the_element.classList.remove('input_erroneous');
     if (error_msg != '') {
-        the_element.className = the_element.className + ' input_erroneous';
+        the_element.classList.add('input_erroneous');
     }
 
     function get_errormsg_element(id) {
@@ -6738,8 +6599,6 @@ function do_form_preview(event, form, preview_url, has_separate_preview) {
     }
 
     $cms.dom.id('submit_button').style.display = 'inline';
-    //window.setInterval(function() { resize_frame('preview_iframe',window.top.scrollY+window.top.get_window_height()); },1500);
-    var pf = $cms.dom.id('preview_iframe');
 
     /* Do our loading-animation */
     if (!window.just_checking_requirements) {
@@ -6824,125 +6683,6 @@ function clever_find_value(form, element) {
             }
     }
     return value;
-}
-
-function check_field(the_element, the_form) {
-    var i, the_class, required, my_value, erroneous = false, error_msg = '', regexp, total_file_size = 0, alerted = false;
-
-    // No checking for hidden elements
-    if (((the_element.type === 'hidden') || (((the_element.style.display == 'none') || (the_element.parentNode.style.display == 'none') || (the_element.parentNode.parentNode.style.display == 'none') || (the_element.parentNode.parentNode.parentNode.style.display == 'none')) && ((window.is_wysiwyg_field === undefined) || (!is_wysiwyg_field(the_element))))) && ((!the_element.className) || (the_element.classList.contains('hidden_but_needed')) == null)) {
-        return null;
-    }
-    if (the_element.disabled) {
-        return null;
-    }
-
-    // Test file sizes
-    if ((the_element.type == 'file') && (the_element.files) && (the_element.files.item) && (the_element.files.item(0)) && (the_element.files.item(0).fileSize))
-        total_file_size += the_element.files.item(0).fileSize;
-
-    // Test file types
-    if ((the_element.type == 'file') && (the_element.value) && (the_element.name != 'file_anytype')) {
-        var allowed_types = '{$VALID_FILE_TYPES;}'.split(/,/);
-        var type_ok = false;
-        var theFileType = the_element.value.indexOf('.') ? the_element.value.substr(the_element.value.lastIndexOf('.') + 1) : '{!NONE;^}';
-        for (var k = 0; k < allowed_types.length; k++) {
-            if (allowed_types[k].toLowerCase() == theFileType.toLowerCase()) type_ok = true;
-        }
-        if (!type_ok) {
-            error_msg = '{!INVALID_FILE_TYPE;^,xx1xx,{$VALID_FILE_TYPES}}'.replace(/xx1xx/g, theFileType).replace(/<[^>]*>/g, '').replace(/&[lr][sd]quo;/g, '\'').replace(/,/g, ', ');
-            if (!alerted) window.fauxmodal_alert(error_msg);
-            alerted = true;
-        }
-    }
-
-    // Fix up bad characters
-    if ((browser_matches('ie')) && (the_element.value) && (the_element.localName != 'select')) {
-        var bad_word_chars = [8216, 8217, 8220, 8221];
-        var fixed_word_chars = ['\'', '\'', '"', '"'];
-        for (i = 0; i < bad_word_chars.length; i++) {
-            regexp = new RegExp(String.fromCharCode(bad_word_chars[i]), 'gm');
-            the_element.value = the_element.value.replace(regexp, fixed_word_chars[i]);
-        }
-    }
-
-    // Class name
-    the_class = the_element.classList[0];
-
-    // Find whether field is required and value of it
-    if (the_element.type == 'radio') {
-        required = (the_form.elements['require__' + the_element.name] !== undefined) && (the_form.elements['require__' + the_element.name].value == '1');
-    } else {
-        required = the_element.className.includes('_required');
-    }
-    my_value = clever_find_value(the_form, the_element);
-
-    // Prepare for custom error messages, stored as HTML5 data on the error message display element
-    var errormsg_element = (the_element.name === undefined) ? null : get_errormsg_element(the_element.name);
-
-    // Blank?
-    if ((required) && (my_value.replace(/&nbsp;/g, ' ').replace(/<br\s*\/?>/g, ' ').replace(/\s/g, '') == '')) {
-        error_msg = '{!REQUIRED_NOT_FILLED_IN;^}';
-        if ((errormsg_element) && (errormsg_element.getAttribute('data-errorUnfilled') != null) && (errormsg_element.getAttribute('data-errorUnfilled') != ''))
-            error_msg = errormsg_element.getAttribute('data-errorUnfilled');
-    } else {
-        // Standard field-type checks
-        if ((the_element.className.indexOf('date') != -1) && (the_element.name.match(/\_(day|month|year)$/)) && (my_value != '')) {
-            var day = the_form.elements[the_element.name.replace(/\_(day|month|year)$/, '_day')].options[the_form.elements[the_element.name.replace(/\_(day|month|year)$/, '_day')].selectedIndex].value;
-            var month = the_form.elements[the_element.name.replace(/\_(day|month|year)$/, '_month')].options[the_form.elements[the_element.name.replace(/\_(day|month|year)$/, '_month')].selectedIndex].value;
-            var year = the_form.elements[the_element.name.replace(/\_(day|month|year)$/, '_year')].options[the_form.elements[the_element.name.replace(/\_(day|month|year)$/, '_year')].selectedIndex].value;
-            var source_date = new Date(year, month - 1, day);
-            if (year != source_date.getFullYear()) error_msg = '{!javascript:NOT_A_DATE;^}';
-            if (month != source_date.getMonth() + 1) error_msg = '{!javascript:NOT_A_DATE;^}';
-            if (day != source_date.getDate()) error_msg = '{!javascript:NOT_A_DATE;^}';
-        }
-        if (((the_class == 'input_email') || (the_class == 'input_email_required')) && (my_value != '') && (!my_value.match(/^[a-zA-Z0-9\._\-\+]+@[a-zA-Z0-9\._\-]+$/))) {
-            error_msg = '{!javascript:NOT_A_EMAIL;^}'.replace('\{1}', my_value);
-        }
-        if (((the_class == 'input_username') || (the_class == 'input_username_required')) && (my_value != '') && (window.do_ajax_field_test) && (!do_ajax_field_test('{$FIND_SCRIPT_NOHTTP;,username_exists}?username=' + encodeURIComponent(my_value)))) {
-            error_msg = '{!javascript:NOT_USERNAME;^}'.replace('\{1}', my_value);
-        }
-        if (((the_class == 'input_codename') || (the_class == 'input_codename_required')) && (my_value != '') && (!my_value.match(/^[a-zA-Z0-9\-\.\_]*$/))) {
-            error_msg = '{!javascript:NOT_CODENAME;^}'.replace('\{1}', my_value);
-        }
-        if (((the_class == 'input_integer') || (the_class == 'input_integer_required')) && (my_value != '') && (parseInt(my_value, 10) != my_value - 0)) {
-            error_msg = '{!javascript:NOT_INTEGER;^}'.replace('\{1}', my_value);
-        }
-        if (((the_class == 'input_float') || (the_class == 'input_float_required')) && (my_value != '') && (parseFloat(my_value) != my_value - 0)) {
-            error_msg = '{!javascript:NOT_FLOAT;^}'.replace('\{1}', my_value);
-        }
-
-        // Shim for HTML5 regexp patterns
-        if (the_element.getAttribute('pattern')) {
-            if ((my_value != '') && (!my_value.match(new RegExp(the_element.getAttribute('pattern'))))) {
-                error_msg = '{!javascript:PATTERN_NOT_MATCHED;^}'.replace('\{1}', my_value);
-            }
-        }
-
-        // Custom error messages
-        if (error_msg != '' && errormsg_element != null) {
-            var custom_msg = errormsg_element.getAttribute('data-errorRegexp');
-            if ((custom_msg != null) && (custom_msg != ''))
-                error_msg = custom_msg;
-        }
-    }
-
-    // Show error?
-    set_field_error(the_element, error_msg);
-
-    if ((error_msg != '') && (!erroneous)) {
-        erroneous = true;
-    }
-
-    return [erroneous, total_file_size, alerted];
-
-    function get_errormsg_element(id) {
-        var errormsg_element = $cms.dom.id('error_' + id);
-        if (!errormsg_element) {
-            errormsg_element = $cms.dom.id('error_' + id.replace(/\_day$/, '').replace(/\_month$/, '').replace(/\_year$/, '').replace(/\_hour$/, '').replace(/\_minute$/, ''));
-        }
-        return errormsg_element;
-    }
 }
 
 function check_form(the_form, for_preview) {
@@ -7039,6 +6779,125 @@ function check_form(the_form, for_preview) {
     }
 
     return !erroneous;
+
+    function check_field(the_element, the_form) {
+        var i, the_class, required, my_value, erroneous = false, error_msg = '', regexp, total_file_size = 0, alerted = false;
+
+        // No checking for hidden elements
+        if (((the_element.type === 'hidden') || (((the_element.style.display == 'none') || (the_element.parentNode.style.display == 'none') || (the_element.parentNode.parentNode.style.display == 'none') || (the_element.parentNode.parentNode.parentNode.style.display == 'none')) && ((window.is_wysiwyg_field === undefined) || (!is_wysiwyg_field(the_element))))) && ((!the_element.className) || (the_element.classList.contains('hidden_but_needed')) == null)) {
+            return null;
+        }
+        if (the_element.disabled) {
+            return null;
+        }
+
+        // Test file sizes
+        if ((the_element.type == 'file') && (the_element.files) && (the_element.files.item) && (the_element.files.item(0)) && (the_element.files.item(0).fileSize))
+            total_file_size += the_element.files.item(0).fileSize;
+
+        // Test file types
+        if ((the_element.type == 'file') && (the_element.value) && (the_element.name != 'file_anytype')) {
+            var allowed_types = '{$VALID_FILE_TYPES;}'.split(/,/);
+            var type_ok = false;
+            var theFileType = the_element.value.indexOf('.') ? the_element.value.substr(the_element.value.lastIndexOf('.') + 1) : '{!NONE;^}';
+            for (var k = 0; k < allowed_types.length; k++) {
+                if (allowed_types[k].toLowerCase() == theFileType.toLowerCase()) type_ok = true;
+            }
+            if (!type_ok) {
+                error_msg = '{!INVALID_FILE_TYPE;^,xx1xx,{$VALID_FILE_TYPES}}'.replace(/xx1xx/g, theFileType).replace(/<[^>]*>/g, '').replace(/&[lr][sd]quo;/g, '\'').replace(/,/g, ', ');
+                if (!alerted) window.fauxmodal_alert(error_msg);
+                alerted = true;
+            }
+        }
+
+        // Fix up bad characters
+        if ((browser_matches('ie')) && (the_element.value) && (the_element.localName != 'select')) {
+            var bad_word_chars = [8216, 8217, 8220, 8221];
+            var fixed_word_chars = ['\'', '\'', '"', '"'];
+            for (i = 0; i < bad_word_chars.length; i++) {
+                regexp = new RegExp(String.fromCharCode(bad_word_chars[i]), 'gm');
+                the_element.value = the_element.value.replace(regexp, fixed_word_chars[i]);
+            }
+        }
+
+        // Class name
+        the_class = the_element.classList[0];
+
+        // Find whether field is required and value of it
+        if (the_element.type == 'radio') {
+            required = (the_form.elements['require__' + the_element.name] !== undefined) && (the_form.elements['require__' + the_element.name].value == '1');
+        } else {
+            required = the_element.className.includes('_required');
+        }
+        my_value = clever_find_value(the_form, the_element);
+
+        // Prepare for custom error messages, stored as HTML5 data on the error message display element
+        var errormsg_element = (the_element.name === undefined) ? null : get_errormsg_element(the_element.name);
+
+        // Blank?
+        if ((required) && (my_value.replace(/&nbsp;/g, ' ').replace(/<br\s*\/?>/g, ' ').replace(/\s/g, '') == '')) {
+            error_msg = '{!REQUIRED_NOT_FILLED_IN;^}';
+            if ((errormsg_element) && (errormsg_element.getAttribute('data-errorUnfilled') != null) && (errormsg_element.getAttribute('data-errorUnfilled') != ''))
+                error_msg = errormsg_element.getAttribute('data-errorUnfilled');
+        } else {
+            // Standard field-type checks
+            if ((the_element.className.indexOf('date') != -1) && (the_element.name.match(/\_(day|month|year)$/)) && (my_value != '')) {
+                var day = the_form.elements[the_element.name.replace(/\_(day|month|year)$/, '_day')].options[the_form.elements[the_element.name.replace(/\_(day|month|year)$/, '_day')].selectedIndex].value;
+                var month = the_form.elements[the_element.name.replace(/\_(day|month|year)$/, '_month')].options[the_form.elements[the_element.name.replace(/\_(day|month|year)$/, '_month')].selectedIndex].value;
+                var year = the_form.elements[the_element.name.replace(/\_(day|month|year)$/, '_year')].options[the_form.elements[the_element.name.replace(/\_(day|month|year)$/, '_year')].selectedIndex].value;
+                var source_date = new Date(year, month - 1, day);
+                if (year != source_date.getFullYear()) error_msg = '{!javascript:NOT_A_DATE;^}';
+                if (month != source_date.getMonth() + 1) error_msg = '{!javascript:NOT_A_DATE;^}';
+                if (day != source_date.getDate()) error_msg = '{!javascript:NOT_A_DATE;^}';
+            }
+            if (((the_class == 'input_email') || (the_class == 'input_email_required')) && (my_value != '') && (!my_value.match(/^[a-zA-Z0-9\._\-\+]+@[a-zA-Z0-9\._\-]+$/))) {
+                error_msg = '{!javascript:NOT_A_EMAIL;^}'.replace('\{1}', my_value);
+            }
+            if (((the_class == 'input_username') || (the_class == 'input_username_required')) && (my_value != '') && (window.do_ajax_field_test) && (!do_ajax_field_test('{$FIND_SCRIPT_NOHTTP;,username_exists}?username=' + encodeURIComponent(my_value)))) {
+                error_msg = '{!javascript:NOT_USERNAME;^}'.replace('\{1}', my_value);
+            }
+            if (((the_class == 'input_codename') || (the_class == 'input_codename_required')) && (my_value != '') && (!my_value.match(/^[a-zA-Z0-9\-\.\_]*$/))) {
+                error_msg = '{!javascript:NOT_CODENAME;^}'.replace('\{1}', my_value);
+            }
+            if (((the_class == 'input_integer') || (the_class == 'input_integer_required')) && (my_value != '') && (parseInt(my_value, 10) != my_value - 0)) {
+                error_msg = '{!javascript:NOT_INTEGER;^}'.replace('\{1}', my_value);
+            }
+            if (((the_class == 'input_float') || (the_class == 'input_float_required')) && (my_value != '') && (parseFloat(my_value) != my_value - 0)) {
+                error_msg = '{!javascript:NOT_FLOAT;^}'.replace('\{1}', my_value);
+            }
+
+            // Shim for HTML5 regexp patterns
+            if (the_element.getAttribute('pattern')) {
+                if ((my_value != '') && (!my_value.match(new RegExp(the_element.getAttribute('pattern'))))) {
+                    error_msg = '{!javascript:PATTERN_NOT_MATCHED;^}'.replace('\{1}', my_value);
+                }
+            }
+
+            // Custom error messages
+            if (error_msg != '' && errormsg_element != null) {
+                var custom_msg = errormsg_element.getAttribute('data-errorRegexp');
+                if ((custom_msg != null) && (custom_msg != ''))
+                    error_msg = custom_msg;
+            }
+        }
+
+        // Show error?
+        set_field_error(the_element, error_msg);
+
+        if ((error_msg != '') && (!erroneous)) {
+            erroneous = true;
+        }
+
+        return [erroneous, total_file_size, alerted];
+
+        function get_errormsg_element(id) {
+            var errormsg_element = $cms.dom.id('error_' + id);
+            if (!errormsg_element) {
+                errormsg_element = $cms.dom.id('error_' + id.replace(/\_day$/, '').replace(/\_month$/, '').replace(/\_year$/, '').replace(/\_hour$/, '').replace(/\_minute$/, ''));
+            }
+            return errormsg_element;
+        }
+    }
 }
 
 function set_locked(field, is_locked, chosen_ob) {
@@ -7071,7 +6930,7 @@ function set_locked(field, is_locked, chosen_ob) {
                 set_field_error(field, '{!DISABLED_FORM_FIELD;^}');
             }
         }
-        field.className = field.className.replace(/( input_erroneous($| ))+/g, ' ');
+        field.classList.remove('input_erroneous');
     } else if (!radio_button) {
         set_field_error(field, '');
     }
@@ -7121,14 +6980,14 @@ function set_required(fieldName, isRequired) {
     var element = $cms.dom.id(fieldName);
 
     if (element) {
-        element.className = element.className.replace(/(input\_[a-z\_]+)_required/g, '$1');
+        element.className = element.className.replace(/(input_[a-z_]+)_required/g, '$1');
 
         if (element.plupload_object !== undefined) {
             element.plupload_object.settings.required = isRequired;
         }
 
         if (isRequired) {
-            element.className = element.className.replace(/(input\_[a-z\_]+)/g, '$1_required');
+            element.className = element.className.replace(/(input_[a-z_]+)/g, '$1_required');
         }
     }
 

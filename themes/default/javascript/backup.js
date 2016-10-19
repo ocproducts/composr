@@ -1,9 +1,9 @@
 (function ($cms) {
     'use strict';
 
-    $cms.templates.backupLaunchScreen = function () {
-        var submit_button = document.querySelector('#submit_button'),
-            max_size_field = document.querySelector('#max_size');
+    $cms.templates.backupLaunchScreen = function backupLaunchScreen() {
+        var submit_button = $cms.dom.$('#submit_button'),
+            max_size_field = $cms.dom.$('#max_size');
 
         if (!submit_button || !max_size_field) {
             return;

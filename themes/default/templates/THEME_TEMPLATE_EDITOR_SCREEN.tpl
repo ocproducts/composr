@@ -1,4 +1,4 @@
-<div data-tpl="themeTemplateEditorScreen" data-tpl-args="{+START,PARAMS_JSON,THEME,ACTIVE_GUID,LIVE_PREVIEW_URL,FILES_TO_LOAD}{_*}{+END}">
+<div data-tpl="themeTemplateEditorScreen" data-tpl-params="{+START,PARAMS_JSON,THEME,ACTIVE_GUID,LIVE_PREVIEW_URL,FILES_TO_LOAD}{_*}{+END}">
 {TITLE}
 
 {$REQUIRE_JAVASCRIPT,jquery}

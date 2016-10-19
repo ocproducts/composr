@@ -148,7 +148,7 @@
         },
 
         toggleWysiwyg: function () {
-            toggle_wysiwyg('edit_' + this.options.id + '_textarea');
+            toggle_wysiwyg('edit_' + this.params.id + '_textarea');
         },
 
         setEditedPanel: function (e, field) {

@@ -20,7 +20,7 @@
 
 		<div class="accessibility_hidden"><label for="trans_{NAME*}">{NAME*}</label></div>
 		<div class="constrain_field">
-			<textarea{+START,IF,{$AND,{$JS_ON},{$EQ,{OLD},{CURRENT}}}} disabled="disabled"{+END}{+START,IF_PASSED,TRANSLATE_AUTO} onclick="if (this.value=='') this.value='{TRANSLATE_AUTO;^*}';"{+END} class="wide_field translate_field" cols="60" rows="{+START,IF,{$EQ,{CURRENT},}}{$ADD,{$DIV,{$LENGTH,{OLD}},80},1}{+END}{+START,IF,{$NEQ,{CURRENT},}}{$ADD,{$DIV,{$LENGTH,{CURRENT}},80},1}{+END}" id="trans_{NAME*}" name="{NAME*}">{CURRENT*}</textarea>
+			<textarea {+START,IF,{$AND,{$JS_ON},{$EQ,{OLD},{CURRENT}}}} disabled="disabled"{+END} {+START,IF_PASSED,TRANSLATE_AUTO} onclick="if (this.value==='') this.value='{TRANSLATE_AUTO;^*}';"{+END} class="wide_field translate_field" cols="60" rows="{+START,IF,{$EQ,{CURRENT},}}{$ADD,{$DIV,{$LENGTH,{OLD}},80},1}{+END}{+START,IF,{$NEQ,{CURRENT},}}{$ADD,{$DIV,{$LENGTH,{CURRENT}},80},1}{+END}" id="trans_{NAME*}" name="{NAME*}">{CURRENT*}</textarea>
 		</div>
 	</td>
 	{+START,IF_NON_EMPTY,{ACTIONS}}

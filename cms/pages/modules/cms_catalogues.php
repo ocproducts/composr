@@ -1016,22 +1016,33 @@ class Module_cms_catalogues extends Standard_crud_module
         $update_handling_options->attach(form_input_radio_entry('update_handling', 'delete', false, do_lang_tempcode('UPDATE_HANDLING_DELETE')));
         $fields->attach(form_input_radio(do_lang_tempcode('CATALOGUE_CSV_UPDATE_HANDLING'), do_lang_tempcode('DESCRIPTION_CATALOGUE_CSV_UPDATE_HANDLING'), 'update_handling', $update_handling_options));
 
-        $javascript = '
-            var key_field=document.getElementById(\'key_field\');
-            var update_key_settings=function() {
-                var has_key=(key_field.value!=\'\');
-                key_field.form.elements[\'new_handling\'][0].disabled=!has_key;
-                key_field.form.elements[\'new_handling\'][1].disabled=!has_key;
-                key_field.form.elements[\'delete_handling\'][0].disabled=!has_key;
-                key_field.form.elements[\'delete_handling\'][1].disabled=!has_key;
-                key_field.form.elements[\'update_handling\'][0].disabled=!has_key;
-                key_field.form.elements[\'update_handling\'][1].disabled=!has_key;
-                key_field.form.elements[\'update_handling\'][2].disabled=!has_key;
-                key_field.form.elements[\'update_handling\'][3].disabled=!has_key;
-            }
-            key_field.onchange=update_key_settings;
+        ob_start();
+        ?>/*<script>*/
+        (function () {
+            'use strict';
+            var key_field = document.getElementById('key_field'),
+                form = key_field.form;
+
+            key_field.onchange = update_key_settings;
             update_key_settings();
-        ';
+
+            function update_key_settings() {
+                var has_key = (key_field.value != '');
+
+                form.elements.new_handling[0].disabled = !has_key;
+                form.elements.new_handling[1].disabled = !has_key;
+
+                form.elements.delete_handling[0].disabled = !has_key;
+                form.elements.delete_handling[1].disabled = !has_key;
+
+                form.elements.update_handling[0].disabled = !has_key;
+                form.elements.update_handling[1].disabled = !has_key;
+                form.elements.update_handling[2].disabled = !has_key;
+                form.elements.update_handling[3].disabled = !has_key;
+            }
+        }());/*</script>*/
+        <?php
+        $javascript = ob_get_clean();
 
         $fields->attach(form_input_codename(do_lang_tempcode('CATALOGUE_CSV_IMPORT_META_KEYWORDS_FIELD'), do_lang_tempcode('DESCRIPTION_CATALOGUE_CSV_IMPORT_META_KEYWORDS_FIELD'), 'meta_keywords_field', '', false));
         $fields->attach(form_input_codename(do_lang_tempcode('CATALOGUE_CSV_IMPORT_META_DESCRIPTION_FIELD'), do_lang_tempcode('DESCRIPTION_CATALOGUE_CSV_IMPORT_META_DESCRIPTION_FIELD'), 'meta_description_field', '', false));

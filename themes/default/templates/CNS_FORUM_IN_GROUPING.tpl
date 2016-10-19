@@ -1,4 +1,4 @@
-<tr>
+<tr data-tpl="cnsForumInGrouping" data-tpl-params="{+START,PARAMS_JSON,FORUM_RULES_URL,INTRO_QUESTION_URL}{_*}{+END}">
 	{+START,IF,{$NOT,{$MOBILE}}}
 		<td class="cns_forum_new_post_indicator cns_column1">
 			<img width="32" height="32" title="{LANG_NEW_POST_OR_NOT*}" alt="{LANG_NEW_POST_OR_NOT*}" src="{$IMG*,cns_general/{NEW_POST_OR_NOT*}}" />
@@ -11,10 +11,10 @@
 			<a class="horiz_field_sep associated_link suggested_link" rel="edit" href="{EDIT_URL*}" title="{!EDIT}: {FORUM_NAME*}">{!EDIT}</a>
 		{+END}
 		{+START,IF_NON_EMPTY,{FORUM_RULES_URL}}
-			<a class="horiz_field_sep associated_link suggested_link" target="_blank" onclick="window.faux_open(maintain_theme_in_link('{FORUM_RULES_URL;*}'),'','width=600,height=auto,status=yes,resizable=yes,scrollbars=yes'); return false;" href="{FORUM_RULES_URL*}" title="{!FORUM_RULES}: {FORUM_NAME*} {!LINK_NEW_WINDOW}">{!FORUM_RULES}</a>
+			<a class="horiz_field_sep associated_link suggested_link js-click-open-forum-rules-popup" target="_blank" data-cms-js="1" href="{FORUM_RULES_URL*}" title="{!FORUM_RULES}: {FORUM_NAME*} {!LINK_NEW_WINDOW}">{!FORUM_RULES}</a>
 		{+END}
 		{+START,IF_NON_EMPTY,{INTRO_QUESTION_URL}}
-			<a class="horiz_field_sep associated_link suggested_link" target="_blank" onclick="window.faux_open(maintain_theme_in_link('{INTRO_QUESTION_URL;*}'),'','width=600,height=auto,status=yes,resizable=yes,scrollbars=yes'); return false;" href="{INTRO_QUESTION_URL*}" title="{!INTRO_QUESTION}: {FORUM_NAME*} {!LINK_NEW_WINDOW}">{!INTRO_QUESTION}</a>
+			<a class="horiz_field_sep associated_link suggested_link js-click-open-intro-question-popup" target="_blank" data-cms-js="1" href="{INTRO_QUESTION_URL*}" title="{!INTRO_QUESTION}: {FORUM_NAME*} {!LINK_NEW_WINDOW}">{!INTRO_QUESTION}</a>
 		{+END}
 
 		{+START,IF_NON_EMPTY,{DESCRIPTION}}

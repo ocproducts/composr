@@ -39,9 +39,9 @@
 
 <div class="pagination">
 	<nav class="float_surrounder">
-		<a onclick="return window.main_image_fader_news_cycle_{$GET,RAND_FADER_NEWS}(-1);" rel="prev" accesskey="j" href="#!" title="&laquo;&nbsp;{!PREVIOUS}: {!NEWS}" class="light">&laquo;&nbsp;{!PREVIOUS}</a>
-		<a id="pause_button_{$GET,RAND_FADER_NEWS}" onclick="return window.main_image_fader_news_pause_{$GET,RAND_FADER_NEWS}();" href="#!" title="{!PAUSE}" class="light">{!PAUSE}</a>
-		<a onclick="return window.main_image_fader_news_cycle_{$GET,RAND_FADER_NEWS}( 1);" rel="next" accesskey="k" href="#!" title="&laquo;&nbsp;{!NEXT}: {!NEWS}" class="light">{!NEXT}&nbsp;&raquo;</a>
+		<a href="#!" onclick=" window.main_image_fader_news_cycle_{$GET,RAND_FADER_NEWS}(-1);" rel="prev" accesskey="j" title="&laquo;&nbsp;{!PREVIOUS}: {!NEWS}" class="light">&laquo;&nbsp;{!PREVIOUS}</a>
+		<a href="#!" onclick="window.main_image_fader_news_pause_{$GET,RAND_FADER_NEWS}();" id="pause_button_{$GET,RAND_FADER_NEWS}" title="{!PAUSE}" class="light">{!PAUSE}</a>
+		<a href="#!" onclick="window.main_image_fader_news_cycle_{$GET,RAND_FADER_NEWS}(1);" rel="next" accesskey="k" title="&laquo;&nbsp;{!NEXT}: {!NEWS}" class="light">{!NEXT}&nbsp;&raquo;</a>
 	</nav>
 </div>
 {+END}
@@ -49,7 +49,7 @@
 {+END}
 {+END}
 
-<section class="box box___block_main_image_fader_news" data-tpl="blockMainImageFaderNews" data-tpl-args="{+START,PARAMS_JSON,RAND_FADER_NEWS,NEWS,MILL}[{_*}, [{$GET*,news_items_html_json}]]{+END}">
+<section class="box box___block_main_image_fader_news" data-tpl="blockMainImageFaderNews" data-tpl-params="{+START,PARAMS_JSON,RAND_FADER_NEWS,NEWS,MILL,news_items_html_json}{_*}{+END}">
 	<div class="box_inner">
 	{+START,IF_NON_EMPTY,{TITLE}}
 		<h2>{TITLE}</h2>

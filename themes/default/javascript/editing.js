@@ -349,7 +349,7 @@ function wysiwyg_editor_init_for(element, id) {
         toolbar.push(['Source', '-']);
     }
     var toolbar_edit_actions = ['Cut', 'Copy', 'Paste', precision_editing ? 'PasteText' : null, precision_editing ? 'PasteFromWord' : null, precision_editing ? 'PasteCode' : null];
-    if ($cms.$VALUE_OPTION.commercialSpellchecker) {
+    if ($cms.$VALUE_OPTION.commercial_spellchecker) {
         toolbar_edit_actions.push('-', 'SpellChecker', 'Scayt');
     }
     toolbar.push(toolbar_edit_actions);
@@ -391,10 +391,10 @@ function wysiwyg_editor_init_for(element, id) {
         /*{+END}*/
         bodyId: 'wysiwyg_editor',
         baseHref: $cms.$BASE_URL_S,
-        linkShowAdvancedTab: !$cms.$CONFIG_OPTION.eagerWysiwyg,
-        imageShowAdvancedTab: !$cms.$CONFIG_OPTION.eagerWysiwyg,
-        imageShowLinkTab: !$cms.$CONFIG_OPTION.eagerWysiwyg,
-        imageShowSizing: !$cms.$CONFIG_OPTION.eagerWysiwyg,
+        linkShowAdvancedTab: !$cms.$CONFIG_OPTION.eager_wysiwyg,
+        imageShowAdvancedTab: !$cms.$CONFIG_OPTION.eager_wysiwyg,
+        imageShowLinkTab: !$cms.$CONFIG_OPTION.eager_wysiwyg,
+        imageShowSizing: !$cms.$CONFIG_OPTION.eager_wysiwyg,
         autoUpdateElement: true,
         contentsCss: page_stylesheets,
         cssStatic: css,
@@ -695,7 +695,6 @@ function set_textbox(element, text, html) {
         }
 
         window.wysiwyg_editors[element.id].setData(html);
-
         window.wysiwyg_editors[element.id].updateElement();
 
         window.setTimeout(function () {

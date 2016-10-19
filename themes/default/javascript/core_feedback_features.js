@@ -1,6 +1,8 @@
 (function ($cms) {
     'use strict';
 
+    $cms.views.CommentsPostingForm = CommentsPostingForm;
+
     function CommentsPostingForm(params) {
         CommentsPostingForm.base(this, arguments);
 
@@ -9,7 +11,7 @@
 
         set_up_comcode_autocomplete('post', !!params.wysiwyg);
 
-        if ($cms.$CONFIG_OPTION.enablePreviews && $cms.$FORCE_PREVIEWS) {
+        if ($cms.$CONFIG_OPTION.enable_previews && $cms.$FORCE_PREVIEWS) {
             this.btnSubmit.style.display = 'none';
         }
 
@@ -28,9 +30,6 @@
     }
 
     $cms.inherits(CommentsPostingForm, $cms.View, {
-        form: null,
-        btnSubmit: null,
-
         events: {
             'click .js-btn-full-editor': 'moveToFullEditor',
             'click .js-btn-submit-comments': 'clickBtnSubmit',
@@ -108,7 +107,7 @@
 
         submitFormComments: function (e) {
             var form = this.form,
-                opts = this.options;
+                opts = this.params;
 
             if ((opts.moreUrl !== undefined) && (form.action === opts.moreUrl)) {
                 return;
@@ -125,7 +124,7 @@
         },
 
         moveToFullEditor: function (e) {
-            var moreUrl = this.options.moreUrl,
+            var moreUrl = this.params.moreUrl,
                 form = this.form;
 
             // Tell next screen what the stub to trim is
@@ -192,9 +191,6 @@
         }
     });
 
-    // Expose the views
-    $cms.views.CommentsPostingForm = CommentsPostingForm;
-
     $cms.extend($cms.templates, {
         ratingForm: function ratingForm(params) {
             var rating;
@@ -259,14 +255,20 @@
             comments_form.old_onsubmit = comments_form.onsubmit;
 
             comments_form.onsubmit = function (event, is_preview) {
-                if ((is_preview !== undefined) && (is_preview)) return true;
+                is_preview = !!is_preview;
+
+                if (is_preview) {
+                    return true;
+                }
 
                 // Cancel the event from running
                 if (event.cancelable) {
                     event.preventDefault();
                 }
 
-                if (!comments_form.old_onsubmit(event)) return false;
+                if (!comments_form.old_onsubmit(event)) {
+                    return false;
+                }
 
                 var comments_wrapper = $cms.dom.id(comments_wrapper_id);
                 if (!comments_wrapper) {// No AJAX, as stuff missing from template
@@ -321,13 +323,13 @@
                         // Collapse, so user can see what happening
                         var outer = $cms.dom.id('comments_posting_form_outer');
                         if (outer && outer.classList.contains('toggleable_tray')) {
-                            toggleable_tray('comments_posting_form_outer');
+                            $cms.toggleableTray(outer);
                         }
 
                         // Set fade for posts not shown before
                         var known_posts = comments_wrapper.querySelectorAll('.post');
                         for (var i = 0; i < known_posts.length; i++) {
-                            if (known_times.indexOf(known_posts[i].className.replace(/^post /, '')) == -1) {
+                            if (!known_times.includes(known_posts[i].className.replace(/^post /, ''))) {
                                 clear_transition_and_set_opacity(known_posts[i], 0.0);
                                 fade_transition(known_posts[i], 100, 20, 5);
                             }

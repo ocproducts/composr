@@ -190,8 +190,6 @@ class Module_admin_lang
         $langs = new Tempcode();
         $langs->attach(create_selection_list_langs(null, $add_lang));
 
-        $javascript = '';
-
         $fields = new Tempcode();
 
         if ($add_lang) {
@@ -238,7 +236,7 @@ class Module_admin_lang
             'FIELDS' => $fields,
             'URL' => $post_url,
             'TEXT' => $text,
-            'JAVASCRIPT' => $javascript,
+            'JAVASCRIPT' => '',
         ));
     }
 

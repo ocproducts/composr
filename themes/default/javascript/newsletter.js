@@ -3,7 +3,7 @@
 
     $cms.templates.newsletterPreview = function (params) {
         var frame_id = 'preview_frame',
-            html = $cms.strval(params.htmlPreview);
+            html = strVal(params.htmlPreview);
 
         window.setTimeout(function () {
             var adjusted_preview = html.replace(/<!DOCTYPE[^>]*>/i, '').replace(/<html[^>]*>/i, '').replace(/<\/html>/i, '');
@@ -30,7 +30,22 @@
         window.setInterval(function () {
             resize_frame(frame_id, 300);
         }, 1000);
-    }
+    };
+
+    $cms.templates.blockMainNewsletterSignup = function (params) {
+        var container = this,
+            nid = strVal(params.nid);
+
+        $cms.dom.on(container, 'submit', '.js-form-submit-newsletter-check-email-field', function (e, form) {
+            if ((check_field_for_blankness(form.elements['address' + nid], e)) && (form.elements['address' + nid].value.match(/^[a-zA-Z0-9\._\-\+]+@[a-zA-Z0-9\._\-]+$/))) {
+                $cms.ui.disableFormButtons(form);
+                return;
+            }
+
+            e.preventDefault();
+            window.fauxmodal_alert('{!javascript:NOT_A_EMAIL;}');
+        });
+    };
 
 }(window.$cms));
 

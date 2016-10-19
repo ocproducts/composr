@@ -2,9 +2,14 @@
     'use strict';
 
     $cms.extend($cms.templates, {
-        blockMainImageFaderNews: function (params, itemsHtml) {
+        blockMainImageFaderNews: function (params) {
             var rand = params.randFaderNews, i,
-                news = params.news;
+                news = params.news,
+                itemsHtml = JSON.parse(strVal(params.newsItemsHtmlJson));
+
+            if (!Array.isArray(itemsHtml)) {
+                itemsHtml = [];
+            }
 
             // Variables we will need
             var fp_animation = $cms.dom.$('#image_fader_news_' + rand),

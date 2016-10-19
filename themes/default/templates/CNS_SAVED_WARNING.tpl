@@ -1,5 +1,5 @@
 {$SET,question,{!CONFIRM_DELETE,{TITLE}}}
-<div data-tpl="cnsSavedWarning" data-tpl-args="{+START,PARAMS_JSON,TITLE,EXPLANATION,MESSAGE,MESSAGE_HTML,question}{_*}{+END}">
+<div data-tpl="cnsSavedWarning" data-tpl-params="{+START,PARAMS_JSON,TITLE,EXPLANATION,MESSAGE,MESSAGE_HTML,question}{_*}{+END}">
 	<h3>
 		{TITLE*}
 	</h3>

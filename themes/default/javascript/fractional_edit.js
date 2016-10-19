@@ -196,7 +196,7 @@ function fractional_edit(event, object, url, raw_text, edit_param_name, was_doub
                 return null;
             }
 
-            if (enter_pressed(event) && (this.value != '')) {// Save
+            if ($cms.dom.keyPressed(event, 'Enter') && (this.value != '')) {// Save
                 return save_function();
             }
 

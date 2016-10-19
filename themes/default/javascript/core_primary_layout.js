@@ -1,7 +1,9 @@
 (function ($cms) {
     'use strict';
 
-    function GlobalHelperPanel(options) {
+    $cms.views.GlobalHelperPanel = GlobalHelperPanel;
+
+    function GlobalHelperPanel(params) {
         GlobalHelperPanel.base(this, arguments);
         this.contentsEl = this.$('.js-helper-panel-contents');
     }
@@ -16,8 +18,6 @@
             helper_panel(show);
         }
     });
-
-    $cms.views.GlobalHelperPanel = GlobalHelperPanel;
 
     $cms.templates.globalHtmlWrap = function () {
         if (document.getElementById('global_messages_2')) {

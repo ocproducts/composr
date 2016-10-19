@@ -31,7 +31,7 @@ class Module_admin_custom_comcode extends Standard_crud_module
     public $select_name = 'TITLE';
     public $non_integer_id = true;
     public $menu_label = 'CUSTOM_COMCODE';
-    public $javascript = "
+    public $javascript = /** @lang JavaScript */"
         var update_func=function() {
             var e=document.getElementById('example');
             e.value='['+tag.value;

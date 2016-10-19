@@ -50,9 +50,13 @@ function poll_for_notifications(forced_update, delay) {
     }
 
     var url = '{$FIND_SCRIPT;,notifications}?type=poller&type=poller';
-    if (window.max_notifications_to_show !== undefined) url += '&max=' + window.max_notifications_to_show;
+    if (window.max_notifications_to_show !== undefined) {
+        url += '&max=' + window.max_notifications_to_show;
+    }
     url += '&time_barrier=' + encodeURIComponent(window.notifications_time_barrier);
-    if (forced_update) url += '&forced_update=1';
+    if (forced_update) {
+        url += '&forced_update=1';
+    }
     url += keep_stub();
     do_ajax_request(url, window._poll_for_notifications);
 }
@@ -114,9 +118,14 @@ function display_alert(notification) {
 
     // Play sound, if requested
     var sound = notification.getAttribute('sound');
-    if (!sound) sound = (window.parseInt(notification.getAttribute('priority')) < 3) ? 'on' : 'off';
-    if (read_cookie('sound', 'off') === 'off') sound = 'off';
-    if (sound == 'on') {
+    if (!sound) {
+        sound = (window.parseInt(notification.getAttribute('priority')) < 3) ? 'on' : 'off';
+    }
+
+    if (read_cookie('sound', 'off') === 'off') {
+        sound = 'off';
+    }
+    if (sound === 'on') {
         if (window.soundManager !== undefined) {
             var go_func = function () {
                 var sound_url = 'data/sounds/message_received.mp3';
@@ -134,7 +143,7 @@ function display_alert(notification) {
     }
 
     // Show desktop notification
-    if ($cms.$CONFIG_OPTION.notificationDesktopAlerts && window.notify.isSupported) {
+    if ($cms.$CONFIG_OPTION.notification_desktop_alerts && window.notify.isSupported) {
         var icon = $cms.img('{$IMG;,favicon}');
         var title = '{!notifications:DESKTOP_NOTIFICATION_SUBJECT;}';
         title = title.replace(/\\{1\\}/, notification.getAttribute('subject'));
@@ -164,7 +173,7 @@ function display_alert(notification) {
 
 // We attach to an onclick handler, to enable desktop notifications later on; we need this as we cannot call requestPermission out of the blue
 function explicit_notifications_enable_request() {
-    if ($cms.$CONFIG_OPTION.notificationDesktopAlerts) {
+    if ($cms.$CONFIG_OPTION.notification_desktop_alerts) {
         window.notify.requestPermission();
     }
 }
@@ -269,7 +278,7 @@ function _toggle_messaging_box(event, name, hide) {
  * Author: Tsvetan Tsvetkov (tsekach@gmail.com)
  */
 (function () {
-    if (!$cms.$CONFIG_OPTION.notificationDesktopAlerts) {
+    if (!$cms.$CONFIG_OPTION.notification_desktop_alerts) {
         return;
     }
 

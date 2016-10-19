@@ -1,5 +1,5 @@
 <!-- form_table_field_spacer (don't remove this comment when templating) -->
-<tr class="form_table_field_spacer" data-tpl="formScreenFieldSpacer" data-tpl-args="{+START,PARAMS_JSON,TITLE,SECTION_HIDDEN}{_*}{+END}">
+<tr class="form_table_field_spacer" data-tpl="formScreenFieldSpacer" data-tpl-params="{+START,PARAMS_JSON,TITLE,SECTION_HIDDEN}{_*}{+END}">
 	<th{+START,IF,{$NOT,{$MOBILE}}} colspan="2"{+END} class="table_heading_cell vertical_alignment">
 		{+START,IF_PASSED,TITLE}
 			{+START,IF,{$JS_ON}}{+START,IF_NON_PASSED_OR_FALSE,FORCE_OPEN}

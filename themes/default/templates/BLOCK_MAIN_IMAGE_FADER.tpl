@@ -1,7 +1,7 @@
 {$SET,RAND_FADER_IMAGE,{$RAND}}
 
 {+START,IF,{$EQ,{BLOCK_ID},small_version}}
-	<div class="box box___block_main_image_fader" data-view="BlockMainImageFader" data-view-args="{+START,PARAMS_JSON,RAND_FADER_IMAGE,TITLES,HTML,IMAGES}{_*}{+END}">
+	<div class="box box___block_main_image_fader" data-view="BlockMainImageFader" data-view-params="{+START,PARAMS_JSON,RAND_FADER_IMAGE,TITLES,HTML,IMAGES}{_*}{+END}">
 		<div class="box_inner">
 			<h2>{!MEDIA}</h2>
 
@@ -12,7 +12,7 @@
 	</div>
 {+END}
 {+START,IF,{$NEQ,{BLOCK_ID},small_version}}
-	<div class="gallery_tease_pic_wrap" data-view="BlockMainImageFader" data-view-args="{+START,PARAMS_JSON,RAND_FADER_IMAGE,TITLES,HTML,IMAGES}{_*}{+END}">
+	<div class="gallery_tease_pic_wrap" data-view="BlockMainImageFader" data-view-params="{+START,PARAMS_JSON,RAND_FADER_IMAGE,TITLES,HTML,IMAGES}{_*}{+END}">
 		<div class="gallery_tease_pic">
 		<div class="box box___gallery_tease_pic"><div class="box_inner">
 			<div class="float_surrounder">

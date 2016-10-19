@@ -48,7 +48,7 @@
 	{$,Uncomment for a download link \{+START,INCLUDE,MEDIA__DOWNLOAD_LINK\}\{+END\}}
 {+END}
 
-<div data-tpl="mediaAudioWebsafe" data-tpl-args="{+START,PARAMS_JSON,player_id,player_width,player_height,LENGTH,URL,THUMB_URL,type,flashplayer,inline_stats}{_*}{+END}">
+<div data-tpl="mediaAudioWebsafe" data-tpl-params="{+START,PARAMS_JSON,player_id,player_width,player_height,LENGTH,URL,THUMB_URL,type,flashplayer,inline_stats}{_*}{+END}">
 {+START,IF,{$GET,raw_video}}
 	<video{+START,IF_NON_EMPTY,{THUMB_URL}} poster="{THUMB_URL*}"{+END} width="{WIDTH*}" height="{HEIGHT*}" controls="controls">
 		<source src="{$ENSURE_PROTOCOL_SUITABILITY*,{URL}}" type="{MIME_TYPE*}" />

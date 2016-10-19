@@ -217,7 +217,7 @@ class DecisionTree
 
         $text = comcode_to_tempcode(isset($details['text']) ? $details['text'] : '', null, true);
 
-        $javascript = 'var main_form=document.getElementById(\'main_form\');';
+        $javascript = /** @lang JavaScript */ 'var main_form=document.getElementById(\'main_form\');';
 
         // Screen messages
         foreach (array('inform', 'notice', 'warn') as $notice_type) {
@@ -234,20 +234,17 @@ class DecisionTree
 
                         $notice_title = do_lang('DYNAMIC_NOTICE_' . $notice_type);
 
-                        $javascript .= '
+                        $javascript .= /** @lang JavaScript */'
                             var e=main_form.elements[\'' . addslashes($parameter) . '\'];
-                            if (typeof e.length==\'undefined\')
-                            {
+                            if (e.length === undefined) {
                                 e=[e];
                             }
                             for (var i=0;i<e.length;i++) {
                                 e[i].addEventListener(\'click\',function(_e) { return function() {
                                     var selected=false;
-                                    if (_e.type!=\'undefined\' && _e.type==\'checkbox\')
-                                    {
+                                    if (_e.type!=\'undefined\' && _e.type==\'checkbox\') {
                                         selected=(_e.checked && _e.value==\'' . addslashes($value) . '\') || (!_e.checked && \'\'==\'' . addslashes($value) . '\');
-                                    } else
-                                    {
+                                    } else {
                                         selected=(_e.value==\'' . addslashes($value) . '\');
                                     }
                                     if (selected) {

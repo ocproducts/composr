@@ -1,4 +1,5 @@
-<div data-tpl="menuEditorScreen" data-tpl-args="{+START,PARAMS_JSON,ALL_MENUS}{_*}{+END}">
+{$REQUIRE_JAVASCRIPT,core_menus}
+<div data-tpl="menuEditorScreen" data-tpl-params="{+START,PARAMS_JSON,ALL_MENUS}{_*}{+END}">
 {TITLE}
 
 {+START,INCLUDE,HANDLE_CONFLICT_RESOLUTION}{+END}
@@ -6,13 +7,13 @@
 	{WARNING_DETAILS}
 {+END}
 
-<div class="menu_editor_page docked" id="menu_editor_wrap">
+<div class="menu_editor_page docked js-el-menu-editor-wrap" id="menu_editor_wrap">
 	<form title="" action="{URL*}" method="post" autocomplete="off">
 		<!-- In separate form due to mod_security -->
 		<textarea aria-hidden="true" cols="30" rows="3" style="display: none" name="template" id="template">{CHILD_BRANCH_TEMPLATE*}</textarea>
 	</form>
 
-	<form title="{!PRIMARY_PAGE_FORM}" id="edit_form" action="{URL*}" method="post" autocomplete="off" onsubmit="return modsecurity_workaround(this);">
+	<form title="{!PRIMARY_PAGE_FORM}" id="edit_form" action="{URL*}" method="post" autocomplete="off" class="js-submit-modsecurity-workaround" data-cms-js="1">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<div class="float_surrounder menu_edit_main">
@@ -35,18 +36,18 @@
 			</div>
 
 			<p class="proceed_button">
-				<input accesskey="u" class="button_screen buttons__save" type="submit" value="{!SAVE}" onclick="if (check_menu()) { $cms.ui.disableButton(this); return true; } else return false;" />
+				<input accesskey="u" class="button_screen buttons__save js-click-check-menu" type="submit" value="{!SAVE}" />
 			</p>
 		</div>
 
 		<div id="mini_form_hider" style="display: none" class="float_surrounder">
 			<div class="menu_editor_rh_side">
-				<img onkeypress="this.onclick(event);" onclick="var e=document.getElementById('menu_editor_wrap'); if (e.className.indexOf(' docked')==-1) { e.className='menu_editor_page docked'; this.src='{$IMG;*,1x/arrow_box_hover}'; if (typeof this.srcset!='undefined') this.srcset='{$IMG;*,2x/arrow_box_hover} 2x'; } else { e.className='menu_editor_page'; this.src='{$IMG;*,1x/arrow_box}'; if (typeof this.srcset!='undefined') this.srcset='{$IMG;*,2x/arrow_box} 2x'; }" class="dock_button" alt="" title="{!TOGGLE_DOCKED_FIELD_EDITING}" src="{$IMG*,1x/arrow_box_hover}" srcset="{$IMG*,2x/arrow_box_hover} 2x" />
+				<img class="dock_button js-img-click-toggle-docked-field-editing js-img-keypress-toggle-docked-field-editing" alt="" title="{!TOGGLE_DOCKED_FIELD_EDITING}" src="{$IMG*,1x/arrow_box_hover}" srcset="{$IMG*,2x/arrow_box_hover} 2x" />
 
 				<h2>{!CHOOSE_ENTRY_POINT}</h2>
 
 				<div class="accessibility_hidden"><label for="tree_list">{!ENTRY}</label></div>
-				<input onchange="var e=document.getElementById('url_'+current_selection); if (!e) return; e.value=this.value; e=document.getElementById('edit_form').elements['url']; e.value=this.value; e=document.getElementById('edit_form').elements['caption_'+window.current_selection]; if (e.value=='' &amp;&amp; this.selected_title) e.value=this.selected_title.replace(/^.*:\s*/,'');" style="display: none" type="text" id="tree_list" name="tree_list" value="" />
+				<input class="js-input-change-update-selection" style="display: none" type="text" id="tree_list" name="tree_list" value="" />
 				<div id="tree_list__root_tree_list">
 					<!-- List put in here -->
 				</div>
@@ -57,7 +58,7 @@
 
 				<nav>
 					<ul class="actions_list">
-						<li><a href="#!" onclick="return menu_editor_add_new_page();">{!SPECIFY_NEW_PAGE}</a></li>
+						<li><a href="#!" class="js-click-menu-editor-add-new-page">{!SPECIFY_NEW_PAGE}</a></li>
 					</ul>
 				</nav>
 			</div>
@@ -99,7 +100,7 @@
 					<input type="hidden" name="confirm" value="1" />
 					<input type="hidden" name="delete_confirm" value="1" />
 
-					<input class="button_screen_item menu___generic_admin__delete" type="submit" value="{!DELETE}" onclick="var form=this.form; window.fauxmodal_confirm('{!CONFIRM_DELETE;,{MENU_NAME*}}',function(answer) { if (answer) form.submit(); }); return false;" />
+					<input class="button_screen_item menu___generic_admin__delete" type="submit" value="{!DELETE}" data-cms-confirm-click="{!CONFIRM_DELETE*,{MENU_NAME}}" />
 				</p>
 			</form>
 		</div>

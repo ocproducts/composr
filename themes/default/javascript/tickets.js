@@ -1,8 +1,8 @@
 (function ($cms) {
-    $cms.templates.supportTicketScreen = function supportTicketScreen(options) {
-        if ((typeof options.serializedOptions === 'string') && (typeof options.hash === 'string')) {
-            window.comments_serialized_options = options.serializedOptions;
-            window.comments_hash = options.hash;
+    $cms.templates.supportTicketScreen = function supportTicketScreen(params) {
+        if ((typeof params.serializedOptions === 'string') && (typeof params.hash === 'string')) {
+            window.comments_serialized_options = params.serializedOptions;
+            window.comments_hash = params.hash;
         }
     };
 }(window.$cms));

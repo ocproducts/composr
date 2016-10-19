@@ -21,7 +21,7 @@
         },
 
         setAttachment: function () {
-            set_attachment('post', this.options.i, '');
+            set_attachment('post', this.params.i, '');
         }
     });
 
@@ -126,69 +126,72 @@
     function ComcodeMediaSet(params) {
         ComcodeMediaSet.base(this, arguments);
 
-        if (!$cms.$CONFIG_OPTION.jsOverlays) {
-            return;
+        if ($cms.$CONFIG_OPTION.js_overlays) {
+            this.setup(params);
         }
+    }
 
-        var imgs, imgsThumbs, setImgWidthHeight = false, mediaSet, as, containsVideo, x, i,
-            imgsId = 'imgs_' + params.rand,
-            imgsThumbsId = 'imgs_thumbs_' + params.rand,
-            thumbWidthConfig = ($cms.$CONFIG_OPTION.thumbWidth || '') + 'x' + ($cms.$CONFIG_OPTION.thumbWidth || '');
+    $cms.inherits(ComcodeMediaSet, $cms.View, {
+        setup: function (params) {
+            var imgs, imgsThumbs, setImgWidthHeight = false, mediaSet, as, containsVideo, x, i,
+                imgsId = 'imgs_' + params.rand,
+                imgsThumbsId = 'imgs_thumbs_' + params.rand,
+                thumbWidthConfig = ($cms.$CONFIG_OPTION.thumb_width || '') + 'x' + ($cms.$CONFIG_OPTION.thumb_width || '');
 
-        if ((thumbWidthConfig !== 'x') && ((params.width + 'x' + params.height) !== 'x')) {
-            setImgWidthHeight = true;
-        }
+            if ((thumbWidthConfig !== 'x') && ((params.width + 'x' + params.height) !== 'x')) {
+                setImgWidthHeight = true;
+            }
 
-        imgs = window[imgsId] = [];
-        imgsThumbs = window[imgsThumbsId] = [];
+            imgs = window[imgsId] = [];
+            imgsThumbs = window[imgsThumbsId] = [];
 
-        mediaSet = document.getElementById('media_set_' + params.rand);
-        as = window.as = mediaSet.querySelectorAll('a, video');
-        containsVideo = false;
+            mediaSet = document.getElementById('media_set_' + params.rand);
+            as = window.as = mediaSet.querySelectorAll('a, video');
+            containsVideo = false;
 
-        x = 0;
-        for (i = 0; i < as.length; i++) {
-            if (as[i].localName === 'video') {
-                var span = as[i].getElementsByTagName('span');
-                var title = '';
-                if (span.length !== 0) {
-                    title = $cms.dom.html(span[0]);
-                    span[0].parentNode.removeChild(span[0]);
-                }
-
-                imgs.push([$cms.dom.html(as[i]), title, true]);
-                imgsThumbs.push(as[i].poster || '{$IMG^;,video_thumb}');
-
-                containsVideo = true;
-
-                x++;
-            } else {
-                if ((as[i].children.length === 1) && (as[i].firstElementChild.localName === 'img')) {
-                    as[i].title = as[i].title.replace('{!LINK_NEW_WINDOW^;}', '').replace(/^\s+/, '');
-
-                    imgs.push([as[i].href, (as[i].title === '') ? as[i].firstElementChild.alt : as[i].title, false]);
-                    imgsThumbs.push(as[i].firstElementChild.src);
-
-                    as[i].onclick = (function (x) {
-                        return function () {
-                            open_images_into_lightbox(imgs, x);
-                            return false;
-                        };
-                    }(x));
-                    if (as[i].rel) {
-                        as[i].rel = as[i].rel.replace('lightbox', '');
+            x = 0;
+            for (i = 0; i < as.length; i++) {
+                if (as[i].localName === 'video') {
+                    var span = as[i].getElementsByTagName('span');
+                    var title = '';
+                    if (span.length !== 0) {
+                        title = $cms.dom.html(span[0]);
+                        span[0].parentNode.removeChild(span[0]);
                     }
 
+                    imgs.push([$cms.dom.html(as[i]), title, true]);
+                    imgsThumbs.push(as[i].poster || '{$IMG^;,video_thumb}');
+
+                    containsVideo = true;
+
                     x++;
+                } else {
+                    if ((as[i].children.length === 1) && (as[i].firstElementChild.localName === 'img')) {
+                        as[i].title = as[i].title.replace('{!LINK_NEW_WINDOW^;}', '').replace(/^\s+/, '');
+
+                        imgs.push([as[i].href, (as[i].title === '') ? as[i].firstElementChild.alt : as[i].title, false]);
+                        imgsThumbs.push(as[i].firstElementChild.src);
+
+                        as[i].onclick = (function (x) {
+                            return function () {
+                                open_images_into_lightbox(imgs, x);
+                                return false;
+                            };
+                        }(x));
+                        if (as[i].rel) {
+                            as[i].rel = as[i].rel.replace('lightbox', '');
+                        }
+
+                        x++;
+                    }
                 }
             }
-        }
 
-        // If you only want a single image-based thumbnail
-        if (containsVideo) {// Remove this 'if' (so it always runs) if you do not want the grid-style layout (plus remove the media_set class from the outer div
-            var width = params.width ? 'style="width: ' + Number(params.width) + 'px"' : '',
-                imgWidthHeight = setImgWidthHeight ? ' width="' + Number(params.width) + '" height="' + Number(params.height) + '"' : '',
-                mediaSetHtml = '\
+            // If you only want a single image-based thumbnail
+            if (containsVideo) {// Remove this 'if' (so it always runs) if you do not want the grid-style layout (plus remove the media_set class from the outer div
+                var width = params.width ? 'style="width: ' + Number(params.width) + 'px"' : '',
+                    imgWidthHeight = setImgWidthHeight ? ' width="' + Number(params.width) + '" height="' + Number(params.height) + '"' : '',
+                    mediaSetHtml = '\
 					<figure class="attachment" ' + width + '>\
 						<figcaption>' + $cms.format('{!comcode:MEDIA_SET^;}', imgs.length) + '<\/figcaption>\
 						<div>\
@@ -200,11 +203,29 @@
 						<\/div>\
 					<\/figure>';
 
-            $cms.dom.html(mediaSet, mediaSetHtml);
+                $cms.dom.html(mediaSet, mediaSetHtml);
+            }
         }
+    });
+
+    function AttachmentsBrowser() {
+        AttachmentsBrowser.base(this, arguments);
     }
 
-    $cms.inherits(ComcodeMediaSet, $cms.View);
+    $cms.inherits(AttachmentsBrowser, $cms.View, {
+        events: {
+            'click .js-click-do-attachment-and-close': 'doAttachmentAndClose'
+        },
+        doAttachmentAndClose: function () {
+            var params = this.params,
+                fieldName = params.fieldName || '',
+                id = params.id || '',
+                description = params.description || '';
+
+            do_attachment(fieldName, id, description);
+            (window.faux_close !== undefined) ? window.faux_close() :  window.close();
+        }
+    });
 
     $cms.extend($cms.templates, {
         attachments: function attachments(params) {
@@ -246,12 +267,12 @@
             }
         },
 
-        comcodeImg: function comcodeImg(options) {
+        comcodeImg: function comcodeImg(params) {
             var img = this,
-                refreshTime = Number(options.refreshTime);
+                refreshTime = +params.refreshTime || 0;
 
-            if ((typeof options.rollover === 'string') && (options.rollover !== '')) {
-                create_rollover(img.id, options.rollover);
+            if ((typeof params.rollover === 'string') && (params.rollover !== '')) {
+                create_rollover(img.id, params.rollover);
             }
 
             if (refreshTime > 0) {
@@ -270,13 +291,13 @@
             }
         },
 
-        comcodeRandom: function comcodeRandom(options) {
+        comcodeRandom: function comcodeRandom(params) {
             var rand, part, use, comcoderandom;
 
-            rand = window.parseInt(Math.random() * options.max);
+            rand = window.parseInt(Math.random() * params.max);
 
-            for (var key in options.parts) {
-                part = options.parts[key];
+            for (var key in params.parts) {
+                part = params.parts[key];
                 use = part.val;
 
                 if (part.num > rand) {
@@ -284,50 +305,50 @@
                 }
             }
 
-            comcoderandom = document.getElementById('comcoderandom' + options.randIdRandom);
+            comcoderandom = document.getElementById('comcoderandom' + params.randIdRandom);
             $cms.dom.html(comcoderandom, use);
         },
 
-        comcodePulse: function (options) {
-            var id = 'pulse_wave_' + options.randIdPulse;
+        comcodePulse: function (params) {
+            var id = 'pulse_wave_' + params.randIdPulse;
 
-            window[id] = [0, options.maxColor, options.minColor, options.speed, []];
+            window[id] = [0, params.maxColor, params.minColor, params.speed, []];
             window.setInterval(function() {
                 process_wave(document.getElementById(id));
-            }, options.speed);
+            }, params.speed);
         },
 
-        comcodeShocker: function (options) {
-            var id = options.randIdShocker, part;
+        comcodeShocker: function (params) {
+            var id = params.randIdShocker,
+                parts = param.parts || [], part,
+                time = +params.time;
 
-            if (window.shocker_parts === undefined) {
-                window.shocker_parts = {};
-                window.shocker_pos = {};
-            }
+            window.shocker_parts || (window.shocker_parts = {});
+            window.shocker_pos || (window.shocker_pos = {});
 
             window.shocker_parts[id] = [];
             window.shocker_pos[id] = 0;
 
-            for (var i = 0, len = options.parts.length; i < len; i++) {
-                part = options.parts[i];
+            for (var i = 0, len = parts.length; i < len; i++) {
+                part = parts[i];
                 window.shocker_parts[id].push([part.left, part.right]);
             }
 
-            shocker_tick(id, options.time, options.maxColor, options.minColor);
+            shocker_tick(id, time, params.maxColor, params.minColor);
             window.setInterval(function () {
-                shocker_tick(id, options.time, options.maxColor, options.minColor);
-            }, options.time);
+                shocker_tick(id, time, params.maxColor, params.minColor);
+            }, time);
         },
 
-        comcodeSectionController: function (options) {
+        comcodeSectionController: function (params) {
             var container = this,
-                passId = $cms.filter.id(options.passId),
+                passId = $cms.filter.id(params.passId),
                 id = 'a' + passId + '_sections';
 
             window[id] = [];
 
-            for (var i = 0, len = options.sections.length; i < len; i++) {
-                window[id].push(options.sections[i]);
+            for (var i = 0, len = params.sections.length; i < len; i++) {
+                window[id].push(params.sections[i]);
             }
 
             flip_page(0, passId, id);
@@ -335,15 +356,15 @@
             $cms.dom.on(container, 'click', '.js-click-flip-page', function (e, clicked) {
                 var flipTo = (clicked.dataset.vwFlipTo !== undefined) ? clicked.dataset.vwFlipTo : 0;
                 if ($cms.isNumeric(flipTo)) {
-                    flipTo = Number(flipTo);
+                    flipTo = +flipTo;
                 }
 
                 flip_page(flipTo, passId, id);
             });
         },
 
-        comcodeOverlay: function comcodeOverlay(options) {
-            var container = this, id = options.id;
+        comcodeOverlay: function comcodeOverlay(params) {
+            var container = this, id = params.id;
 
             $cms.dom.on(container, 'click', '.js-click-dismiss-overlay', function () {
                 var bi = document.getElementById('main_website_inner');
@@ -351,7 +372,7 @@
                     clear_transition_and_set_opacity(bi, 1.0);
                 }
 
-                document.getElementById(options.randIdOverlay).style.display = 'none';
+                document.getElementById(params.randIdOverlay).style.display = 'none';
 
                 if (id) {
                     set_cookie('og_' + id, '1', 365);
@@ -364,7 +385,7 @@
 
                     smooth_scroll(0);
 
-                    element = document.getElementById(options.randIdOverlay);
+                    element = document.getElementById(params.randIdOverlay);
                     element.style.display = 'block';
                     element.parentNode.removeChild(element);
                     document.body.appendChild(element);
@@ -379,7 +400,7 @@
                     fade_transition(element, 100, 30, 3);
 
 
-                    if (options.timeout !== '-1') {
+                    if (params.timeout !== '-1') {
                         window.setTimeout(function () {
                             if (bi) {
                                 clear_transition_and_set_opacity(bi, 1.0);
@@ -388,18 +409,18 @@
                             if (element) {
                                 element.style.display = 'none';
                             }
-                        }, options.timeout);
+                        }, params.timeout);
                     }
-                }, options.timein + 100);
+                }, params.timein + 100);
             }
         },
 
-        comcodeBigTabsController: function (options) {
+        comcodeBigTabsController: function (params) {
             var container = this,
-                passId = $cms.filter.id(options.passId),
-                id = passId + '_' + options.bigTabSets,
+                passId = $cms.filter.id(params.passId),
+                id = passId + '_' + params.bigTabSets,
                 fullId = 'a' + id + '_big_tab',
-                tabs = options.tabs,
+                tabs = params.tabs,
                 sections = [], i;
 
             /* Precache images */
@@ -415,8 +436,8 @@
             window[fullId] = sections;
             window['big_tabs_auto_cycler_' + id] = null;
 
-            if (options.switchTime !== undefined) {
-                window['big_tabs_switch_time_' + id] = options.switchtime;
+            if (params.switchTime !== undefined) {
+                window['big_tabs_switch_time_' + id] = params.switchtime;
                 window['move_between_big_tabs_' + id] = function () {
                     var next_page = 0, i, x;
 
@@ -447,28 +468,28 @@
             });
         },
 
-        comcodeTabBody: function (options) {
-            var title = $cms.filter.id(options.title);
+        comcodeTabBody: function (params) {
+            var title = $cms.filter.id(params.title);
 
-            if (options.blockCallUrl) {
+            if (params.blockCallUrl) {
                 window['load_tab__' + title] = function () {
-                    call_block(options.blockCallUrl, '', document.getElementById('g_' + title));
+                    call_block(params.blockCallUrl, '', document.getElementById('g_' + title));
                 };
             }
         },
 
-        comcodeTicker: function (options) {
-            var el = document.getElementById('ticktickticker' + options.randIdTicker),
-                width = $cms.filter.id(options.width);
+        comcodeTicker: function (params) {
+            var el = document.getElementById('ticktickticker' + params.randIdTicker),
+                width = $cms.filter.id(params.width);
 
             window.tick_pos = window.tick_pos || [];
 
             if (document.createElement('marquee').scrolldelay === undefined) { // Slower, but chrome does not support marquee's
                 var my_id = parseInt(Math.random() * 10000);
-                window.tick_pos[my_id] = options.width;
+                window.tick_pos[my_id] = params.width;
                 $cms.dom.html(el, '<div onmouseover="this.mouseisover=true;" onmouseout="this.mouseisover=false;" class="ticker" ' +
                     'style="text-indent: ' + width + 'px; width: ' + width + 'px;" id="' + my_id + '"><span>' +
-                    $cms.filter.crLf(options.text) + '<\/span><\/div>'
+                    $cms.filter.crLf(params.text) + '<\/span><\/div>'
                 );
                 window.focused = true;
                 window.addEventListener('focus', function () {
@@ -478,34 +499,34 @@
                     window.focused = false;
                 });
                 window.setInterval(function () {
-                    ticker_tick(my_id, options.width);
-                }, 100 / options.speed);
+                    ticker_tick(my_id, params.width);
+                }, 100 / params.speed);
             } else {
                 $cms.dom.html(el, '<marquee style="display: block" class="ticker" onmouseover="this.setAttribute(\'scrolldelay\',\'10000\');" ' +
-                    'onmouseout="this.setAttribute(\'scrolldelay\',' + (100 / options.speed) + ');" scrollamount="2" scrolldelay="' + (100 / options.speed) + '" ' +
-                    'width="' + width + '">' + $cms.filter.crLf(options.text) + '<\/marquee>');
+                    'onmouseout="this.setAttribute(\'scrolldelay\',' + (100 / params.speed) + ');" scrollamount="2" scrolldelay="' + (100 / params.speed) + '" ' +
+                    'width="' + width + '">' + $cms.filter.crLf(params.text) + '<\/marquee>');
             }
         },
 
-        comcodeJumping: function (options) {
+        comcodeJumping: function (params) {
             var id = parseInt(Math.random() * 10000);
 
             jumper_parts[id] = [];
             jumper_pos[id] = 1;
 
-            for (var i = 0, len = options.parts.length; i < len; i++) {
-                jumper_parts[id].push(options.parts[i]);
+            for (var i = 0, len = params.parts.length; i < len; i++) {
+                jumper_parts[id].push(params.parts[i]);
             }
 
-            var comcodejumping = document.getElementById('comcodejumping' + options.randIdJumping);
+            var comcodejumping = document.getElementById('comcodejumping' + params.randIdJumping);
             $cms.dom.html(comcodejumping, '<span id="' + id + '">' + jumper_parts[id][0] + '<\/span>');
 
             window.setInterval(function () {
                 jumper_tick(id);
-            }, options.time);
+            }, params.time);
         },
 
-        mediaYoutube: function () {
+        mediaYoutube: function (params) {
             var element = this;
 
             if (window.done_youtube_player_init === undefined) {
@@ -521,9 +542,9 @@
             window.onYouTubeIframeAPIReady = function () {
                 var slideshow_mode = document.getElementById('next_slide');
                 var player = new YT.Player(element.id, {
-                    width: options.width,
-                    height: options.height,
-                    videoId: options.remoteId,
+                    width: params.width,
+                    height: params.height,
+                    videoId: params.remoteId,
                     events: {
                         'onReady': function () {
                             if (slideshow_mode) {
@@ -540,41 +561,41 @@
             }
         },
 
-        mediaRealmedia: function (options) {
+        mediaRealmedia: function (params) {
             // Tie into callback event to see when finished, for our slideshows
             // API: http://service.real.com/help/library/guides/realone/ScriptingGuide/PDF/ScriptingGuide.pdf
             $cms.load.then(function () {
                 if (document.getElementById('next_slide')) {
                     stop_slideshow_timer();
                     window.setTimeout(function () {
-                        document.getElementById(options.playerId).addEventListener('stateChange', function (newState) {
+                        document.getElementById(params.playerId).addEventListener('stateChange', function (newState) {
                             if (newState == 0) {
                                 player_stopped();
                             }
                         });
-                        document.getElementById(options.playerId).DoPlay();
+                        document.getElementById(params.playerId).DoPlay();
                     }, 1000);
                 }
             });
         },
 
-        mediaQuicktime: function (options) {
+        mediaQuicktime: function (params) {
             // Tie into callback event to see when finished, for our slideshows
             // API: http://developer.apple.com/library/safari/#documentation/QuickTime/Conceptual/QTScripting_JavaScript/bQTScripting_JavaScri_Document/QuickTimeandJavaScri.html
             $cms.load.then(function () {
                 if (document.getElementById('next_slide')) {
                     stop_slideshow_timer();
                     window.setTimeout(function () {
-                        document.getElementById(options.playerId).addEventListener('qt_ended', function () {
+                        document.getElementById(params.playerId).addEventListener('qt_ended', function () {
                             player_stopped();
                         });
-                        document.getElementById(options.playerId).Play();
+                        document.getElementById(params.playerId).Play();
                     }, 1000);
                 }
             });
         },
 
-        mediaVideoGeneral: function (options) {
+        mediaVideoGeneral: function (params) {
             // Tie into callback event to see when finished, for our slideshows
             // API: http://developer.apple.com/library/safari/#documentation/QuickTime/Conceptual/QTScripting_JavaScript/bQTScripting_JavaScri_Document/QuickTimeandJavaScri.html
             // API: http://msdn.microsoft.com/en-us/library/windows/desktop/dd563945(v=vs.85).aspx
@@ -583,7 +604,7 @@
                     stop_slideshow_timer();
 
                     window.setTimeout(function () {
-                        var player = document.getElementById(options.playerId);
+                        var player = document.getElementById(params.playerId);
                         // WMP
                         player.addEventListener('playstatechange', function (newState) {
                             if (newState == 1) {
@@ -609,30 +630,30 @@
             });
         },
 
-        mediaVimeo: function (options) {
+        mediaVimeo: function (params) {
             // Tie into callback event to see when finished, for our slideshows}
             if (document.getElementById('next_slide')) {
                 stop_slideshow_timer();
                 window.setTimeout(function () {
                     window.addEventListener('message', player_stopped, false);
 
-                    var player = document.getElementById(options.playerId);
-                    player.contentWindow.postMessage(JSON.stringify({method: 'addEventListener', value: 'finish'}), 'https://player.vimeo.com/video/' + options.remoteId);
+                    var player = document.getElementById(params.playerId);
+                    player.contentWindow.postMessage(JSON.stringify({method: 'addEventListener', value: 'finish'}), 'https://player.vimeo.com/video/' + params.remoteId);
                 }, 1000);
             }
         },
 
         // API: http://www.longtailvideo.com/support/jw-player/jw-player-for-flash-v5/12540/javascript-api-reference
         // Carefully tuned to avoid this problem: http://www.longtailvideo.com/support/forums/jw-player/setup-issues-and-embedding/8439/sound-but-no-video
-        mediaAudioWebsafe: function (options) {
+        mediaAudioWebsafe: function (params) {
             var playerOptions = {
-                width: options.width,
-                height: options.height,
+                width: params.width,
+                height: params.height,
                 autostart: false,
-                file: options.url,
-                type: options.type,
-                image: options.thumbUrl,
-                flashplayer: options.flashplayer,
+                file: params.url,
+                type: params.type,
+                image: params.thumbUrl,
+                flashplayer: params.flashplayer,
                 events: {
                     onComplete: function () {
                         if (document.getElementById('next_slide')) {
@@ -642,34 +663,34 @@
                     onReady: function () {
                         if (document.getElementById('next_slide')) {
                             stop_slideshow_timer();
-                            jwplayer(options.playerId).play(true);
+                            jwplayer(params.playerId).play(true);
                         }
                     }
                 }
             };
 
-            if (options.duration) {
-                playerOptions.duration = options.duration;
+            if (params.duration) {
+                playerOptions.duration = params.duration;
             }
 
-            if (!($cms.$CONFIG_OPTION.showInlineStats)) {
+            if (!($cms.$CONFIG_OPTION.show_inline_stats)) {
                 playerOptions.events.onPlay = function () {
-                    ga_track(null, '{!AUDIO;^}', options.url);
+                    ga_track(null, '{!AUDIO;^}', params.url);
                 };
             }
 
-            jwplayer(options.playerId).setup(playerOptions);
+            jwplayer(params.playerId).setup(playerOptions);
         },
 
         // API: http://www.longtailvideo.com/support/jw-player/jw-player-for-flash-v5/12540/javascript-api-reference
         // Carefully tuned to avoid this problem: http://www.longtailvideo.com/support/forums/jw-player/setup-issues-and-embedding/8439/sound-but-no-video
-        mediaVideoWebsafe: function (options) {
+        mediaVideoWebsafe: function (params) {
             var playerOptions = {
                 autostart: false,
-                file: options.url,
-                type: options.type,
-                image: options.thumbUrl,
-                flashplayer: options.flashplayer,
+                file: params.url,
+                type: params.type,
+                image: params.thumbUrl,
+                flashplayer: params.flashplayer,
                 events: {
                     onComplete: function () {
                         if (document.getElementById('next_slide')) player_stopped();
@@ -677,31 +698,31 @@
                     onReady: function () {
                         if (document.getElementById('next_slide')) {
                             stop_slideshow_timer();
-                            jwplayer(options.playerId).play(true);
+                            jwplayer(params.playerId).play(true);
                         }
                     }
                 }
             };
 
-            if (options.duration) {
-                playerOptions.duration = options.duration;
+            if (params.duration) {
+                playerOptions.duration = params.duration;
             }
 
-            if (options.playerWidth) {
-                playerOptions.width = options.playerWidth;
+            if (params.playerWidth) {
+                playerOptions.width = params.playerWidth;
             }
 
-            if (options.playerHeight) {
-                playerOptions.height = options.playerHeight;
+            if (params.playerHeight) {
+                playerOptions.height = params.playerHeight;
             }
 
-            if (!$cms.$CONFIG_OPTION.showInlineStats) {
+            if (!$cms.$CONFIG_OPTION.show_inline_stats) {
                 playerOptions.events.onPlay = function () {
-                    ga_track(null, '{!VIDEO;^}', options.url);
+                    ga_track(null, '{!VIDEO;^}', params.url);
                 };
             }
 
-            jwplayer(options.playerId).setup(playerOptions);
+            jwplayer(params.playerId).setup(playerOptions);
         }
     });
 
@@ -790,7 +811,8 @@
             }
             x = document.getElementById(pass_id + '_btgoto_' + sections[i]);
             if (x) {
-                x.className = x.className.replace(/big\_tab\_(in)?active/, (i == current_pos) ? 'big_tab_active' : 'big_tab_inactive');
+                x.classList.toggle('big_tab_active', (i == current_pos));
+                x.classList.toggle('big_tab_inactive', (i != current_pos));
             }
             x = document.getElementById(pass_id + '_isat_' + sections[i]);
             if (x) {

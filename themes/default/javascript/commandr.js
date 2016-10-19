@@ -1,7 +1,8 @@
 'use strict';
 
-if (window.previous_commands === undefined) {
-    window.previous_commands = [];
+window.previous_commands || (window.previous_commands = []);
+
+if (window.current_command === undefined) {
     window.current_command = null;
 }
 
@@ -198,9 +199,7 @@ function clear_cl() {
 
 // Fun stuff...
 
-if (window.commandr_foxy_textnodes === undefined) {
-    window.commandr_foxy_textnodes = [];
-}
+window.commandr_foxy_textnodes || (window.commandr_foxy_textnodes = []);
 
 function bsod() {
     // Nothing to see here, move along.

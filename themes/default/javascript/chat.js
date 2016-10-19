@@ -1,6 +1,9 @@
 (function ($cms) {
     'use strict';
 
+    $cms.views.BlockSideShoutbox = BlockSideShoutbox;
+    $cms.views.ChatRoomScreen = ChatRoomScreen;
+
     function BlockSideShoutbox() {
         BlockSideShoutbox.base(this, arguments);
     }
@@ -9,6 +12,7 @@
 
     function ChatRoomScreen(params) {
         ChatRoomScreen.base(this, arguments);
+        this.chatroomId = params.chatroomId;
 
         $cms.load.then(function () {
             chat_load(params.chatroomId);
@@ -17,16 +21,39 @@
 
     $cms.inherits(ChatRoomScreen, $cms.View, {
         events: {
-            'click .js-btn-toggle-chat-comcode-panel': 'toggleChatPanel'
+            'click .js-btn-toggle-chat-comcode-panel': 'toggleChatPanel',
+            'click select.js-select-click-font-change': 'fontChange',
+            'change select.js-select-change-font-change': 'fontChange',
+            'submit form.js-form-submit-check-chat-options': 'checkChatOptions',
+            'click .js-click-post-chat-message': 'postChatMessage'
         },
 
         toggleChatPanel: function () {
-            toggleable_tray('chat_comcode_panel');
+            $cms.toggleableTray($cms.dom.id('chat_comcode_panel'));
+        },
+
+        fontChange: function (e, selectEl) {
+            this.$('#font').value = selectEl.value;
+            this.$('#post').style.fontFamily = selectEl.value;
+            manage_scroll_height(this.$('#post'));
+        },
+
+        checkChatOptions: function (e, form) {
+            if (!form.elements.text_colour.value.match(/^#[0-9A-F][0-9A-F][0-9A-F]([0-9A-F][0-9A-F][0-9A-F])?$/)) {
+                window.fauxmodal_alert('{!chat:BAD_HTML_COLOUR;^}');
+                e.preventDefault();
+                return;
+            }
+
+            if (check_form(form) === false) {
+                e.preventDefault();
+            }
+        },
+
+        postChatMessagE: function (e) {
+            chat_post(e, this.chatroomId, 'post', this.$('#font_name').value, this.$('#text_colour').value);
         }
     });
-
-    $cms.views.BlockSideShoutbox = BlockSideShoutbox;
-    $cms.views.ChatRoomScreen = ChatRoomScreen;
 
     $cms.extend($cms.templates, {
         chatSound: function (params) { // Prepares chat sounds
@@ -62,15 +89,26 @@
         },
 
         chatLobbyImArea: function chatLobbyImArea(params) {
-            window.setTimeout(function () { /* Needed for IE */
-                $cms.load.then(function () {
-                    try {
-                        document.getElementById('post_' + params.chatroomId).focus();
-                    } catch (e) {
-                    }
-                    document.getElementById('post_' + params.chatroomId).value = read_cookie('last_chat_msg_' + params.chatroomId);
-                });
-            }, 1000);
+            var container = this,
+                chatroomId = strVal(params.chatroomId);
+
+            $cms.load.then(function () {
+                try {
+                    $cms.dom.$('#post_' + chatroomId).focus();
+                } catch (e) {}
+                $cms.dom.$('#post_' + chatroomId).value = read_cookie('last_chat_msg_' + chatroomId);
+            });
+
+            $cms.dom.on(container, 'click', '.js-click-chatroom-chat-post', function (e) {
+                chat_post(e, chatroomId, 'post_' + chatroomId, '', '');
+            });
+
+            $cms.dom.on(container, 'click', '.js-click-open-chat-emoticons-popup', function () {
+                var openFunc = (window.opener ? window.open : window.faux_open),
+                    popupUrl = strVal(params.emoticonsPopupUrl);
+
+                openFunc(maintain_theme_in_link(popupUrl), 'emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
+            });
         },
 
         chatLobbyScreen: function chatLobbyScreen(params) {
@@ -102,16 +140,16 @@
             }, 5);
         },
 
-        blockMainFriendsList: function blockMainFriendsList(options) {
-            options || (options = {});
+        blockMainFriendsList: function blockMainFriendsList(params) {
+            params || (params = {});
 
-            if (options.wrapperId &&  options.blockCallUrl) {
-                internalise_ajax_block_wrapper_links(options.blockCallUrl, document.getElementById(options.wrapperId), ['.*'], {}, false, true);
+            if (params.wrapperId &&  params.blockCallUrl) {
+                internalise_ajax_block_wrapper_links(params.blockCallUrl, document.getElementById(params.wrapperId), ['.*'], {}, false, true);
             }
         },
 
-        blockSideShoutbox: function blockSideShoutbox(options) {
-            internalise_ajax_block_wrapper_links(options.blockCallUrl, document.getElementById(options.wrapperId), [], {}, false, true);
+        blockSideShoutbox: function blockSideShoutbox(params) {
+            internalise_ajax_block_wrapper_links(params.blockCallUrl, document.getElementById(params.wrapperId), [], {}, false, true);
         },
 
         chatSitewideIm: function chatSitewideIm(params) {
@@ -141,12 +179,12 @@
             }
         },
 
-        chatSetEffectsSettingBlock: function chatSetEffectsSettingBlock(options) {
+        chatSetEffectsSettingBlock: function chatSetEffectsSettingBlock(params) {
             if (!$cms.$IS_HTTPAUTH_LOGIN) {
-                var btnSubmitId = 'upload_' + options.key;
+                var btnSubmitId = 'upload_' + params.key;
 
-                if (options.memberId) {
-                    btnSubmitId += '_' + options.memberId;
+                if (params.memberId) {
+                    btnSubmitId += '_' + params.memberId;
                 }
 
                 preinit_file_input('chat_effect_settings', btnSubmitId, null, null, 'mp3', 'button_micro');
@@ -247,15 +285,6 @@ function begin_chatting(room_id) {
     }
 }
 
-function check_chat_options(ob) {
-    if (!ob.elements['text_colour'].value.match(/^#[0-9A-F][0-9A-F][0-9A-F]([0-9A-F][0-9A-F][0-9A-F])?$/)) {
-        window.fauxmodal_alert('{!chat:BAD_HTML_COLOUR;^}');
-        return false;
-    }
-
-    return check_form(ob);
-}
-
 function dec_to_hex(number) {
     var hexbase = '0123456789ABCDEF';
     return hexbase.charAt((number >> 4) & 0xf) + hexbase.charAt(number & 0xf);
@@ -271,13 +300,6 @@ function chat_on_rgb_change(o) {
     window.text_colour.style.color = value;
     document.getElementById('colour').value = value;
     //document.getElementById('post').style.color=value;
-}
-
-function on_font_change(o) {
-    var value = o.options[o.selectedIndex].value;
-    document.getElementById('font').value = value;
-    document.getElementById('post').style.fontFamily = value;
-    manage_scroll_height(document.getElementById('post'));
 }
 
 function get_ticked_people(form) {

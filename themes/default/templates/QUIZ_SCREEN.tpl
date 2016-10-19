@@ -1,5 +1,5 @@
 {$REQUIRE_JAVASCRIPT,quizzes}
-<div data-tpl="quizScreen" data-tpl-args="{+START,PARAMS_JSON,TIMEOUT}{_*}{+END}">
+<div data-tpl="quizScreen" data-tpl-params="{+START,PARAMS_JSON,TIMEOUT}{_*}{+END}">
 {TITLE}
 
 {WARNING_DETAILS}

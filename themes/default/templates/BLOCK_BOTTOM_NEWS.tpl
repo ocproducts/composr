@@ -1,5 +1,5 @@
 {$REQUIRE_JAVASCRIPT,core_rich_media}
-<div data-tpl="blockBottomNews" data-tpl-args="{+START,PARAMS_JSON,bottom_news_id,news_ticker_text}{_*}{+END}">
+<div data-tpl="blockBottomNews" data-tpl-params="{+START,PARAMS_JSON,bottom_news_id,news_ticker_text}{_*}{+END}">
 {+START,SET,news_ticker_text}
 	<ol class="horizontal_ticker">
 		{+START,LOOP,POSTS}

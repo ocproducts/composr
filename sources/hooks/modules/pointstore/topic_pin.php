@@ -85,19 +85,26 @@ class Hook_pointstore_topic_pin
 
         // Return template
         $post_url = build_url(array('page' => '_SELF', 'type' => '__topic_pin', 'id' => 'topic_pin'), '_SELF');
-        $javascript = "
+        ob_start();
+        ?>
+        /*<script>*/
+        (function(){
+            'use strict';
             var form=document.getElementById('days').form;
             form.old_submit=form.onsubmit;
             form.onsubmit=function() {
                 var days=form.elements['days'].value;
-                if (days>" . strval(intval(get_option('topic_pin_max_days'))) . ")
-                {
+                if (days > <?php echo strval(intval(get_option('topic_pin_max_days'))); ?>) {
                     window.fauxmodal_alert('" . php_addslashes(do_lang('TOPIC_PINNED_MAX_DAYS', integer_format(intval(get_option('topic_pin_max_days'))), 'xxx')) . "'.replace(/xxx/g,days));
+
+                    window.fauxmodal_alert($cms.str('<?php echo php_addslashes(do_lang('TOPIC_PINNED_MAX_DAYS', integer_format(intval(get_option('topic_pin_max_days'))), 'xxx')); ?>').replace(/xxx/g,days));
                     return false;
                 }
                 return true;
             };
-        ";
+        }());
+        <?php
+        $javascript = ob_get_clean();
         return do_template('FORM_SCREEN', array(
             '_GUID' => '318a1f335fd0d2d9380024eb5438d2d8',
             'HIDDEN' => '',

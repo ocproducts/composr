@@ -158,8 +158,6 @@ class Hook_profiles_tabs_edit_avatar
         $hidden = new Tempcode();
         $hidden->attach(form_input_hidden('submitting_avatar_tab', '1'));
 
-        $javascript = '';
-
-        return array($title, $fields, $text, $javascript, $order, $hidden, 'tabs/member_account/edit/avatar', true);
+        return array($title, $fields, $text, '', $order, $hidden, 'tabs/member_account/edit/avatar', true);
     }
 }

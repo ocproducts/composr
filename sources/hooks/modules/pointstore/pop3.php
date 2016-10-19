@@ -169,7 +169,7 @@ class Hook_pointstore_pop3
         $fields->attach(form_input_password(do_lang_tempcode('PASSWORD'), '', 'pass1', true));
         $fields->attach(form_input_password(do_lang_tempcode('CONFIRM_PASSWORD'), '', 'pass2', true));
 
-        $javascript = "
+        $javascript =  /** @lang JavaScript */ "
             var form=document.getElementById('pass1').form;
             form.old_submit=form.onsubmit;
             form.onsubmit=function() {

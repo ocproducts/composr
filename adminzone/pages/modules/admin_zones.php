@@ -717,7 +717,7 @@ class Module_admin_zones
 
         require_javascript('ajax');
         $script = find_script('snippet');
-        $javascript .= "
+        $javascript .= /** @lang JavaScript */"
             var form=document.getElementById('main_form');
             form.old_submit=form.onsubmit;
             form.onsubmit=function() {

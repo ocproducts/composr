@@ -2834,9 +2834,11 @@ END;
             }
             $fields->attach(form_input_list(do_lang_tempcode('EXISTING'), do_lang_tempcode('COPY_EXISTING_POLL'), 'existing', $list, null, false, false));
 
-            $javascript = /** @lang JavaScript */
-                "var existing = document.getElementById('existing'),
-                    form = existing.form;
+            ob_start();
+            ?>/*<script>*/
+            (function (){
+                var existing = document.getElementById('existing'),
+                form = existing.form;
 
                 for (i = 0; i < form.elements.length; i++) {
                     form.elements[i].addEventListener('change', pollFormElementsChangeListener);
@@ -2851,7 +2853,10 @@ END;
                             set_locked(form.elements[i], disable_all);
                         }
                     }
-                }";
+                }
+            }());/*</script>*/
+            <?php
+            $javascript = ob_get_clean();
         }
 
         $title = get_screen_title('ADD_TOPIC_POLL');
@@ -3100,13 +3105,12 @@ END;
         $javascript = '';
 
         if (get_option('force_guest_names') == '1') {
-            $javascript .= '
-                var poster_name_if_guest=document.getElementById(\'poster_name_if_guest\');
-                if (poster_name_if_guest)
-                {
-                    var crf=function() {
-                        if (poster_name_if_guest.value==\'' . php_addslashes(do_lang('GUEST')) . '\') {
-                            poster_name_if_guest.value=\'\';
+            $javascript .= /** @lang JavaScript */'
+                var poster_name_if_guest=document.getElementById("poster_name_if_guest");
+                if (poster_name_if_guest) {
+                    var crf = function() {
+                        if (poster_name_if_guest.value == "' . php_addslashes(do_lang('GUEST')) . '") {
+                            poster_name_if_guest.value="";
                         }
                     };
                     crf();
@@ -3115,7 +3119,7 @@ END;
             ';
         }
 
-        $javascript .= "
+        $javascript .= /** @lang JavaScript */ "
             var form=document.getElementById('post').form;
             form.old_submit=form.onsubmit;
             form.onsubmit=function() {
@@ -3142,7 +3146,7 @@ END;
 
         $stub = unixify_line_format(either_param_string('stub', ''));
         if ($stub != '') {
-            $javascript .= "
+            $javascript .= /** @lang JavaScript */ "
                 var df='" . str_replace("\n", '\n', addslashes($stub)) . "';
 
                 var pv=post.value;
@@ -3151,13 +3155,11 @@ END;
                     pv=pv.substring(df.length,pv.length);
                 }
                 post.value=pv;
-        ";
+            ";
         }
 
-        $javascript .= "
-                if (typeof form.old_submit!='undefined' && form.old_submit) return form.old_submit();
-
-                return true;
+        $javascript .=  /** @lang JavaScript */ "
+                return form.old_submit ? form.old_submit() : true;
             };
         ";
 
