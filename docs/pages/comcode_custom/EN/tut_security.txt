@@ -235,7 +235,6 @@ The following types of alert are defined:
  - [tt]HEADER_SPLIT_HACK[/tt], A URL was submitted that contains a blank line. The submitter of the content with this URL is very likely to be a hacker, as there is no conventional way this situation could be come by
  - [tt]EVAL_HACK[/tt], The EVAL command would have executed arbitrary code if it was not blocked. This is extremely likely to be a hack attempt and should be taken seriously
  - [tt]PATH_HACK[/tt], Tried to use a file path redirection to get outside intended directory
- - [tt]ADMINCENTRE_ACCESS_DENIED[/tt], The user tried to access a secured zone without permission. This is unlikely to be a serious attack, as the user may just have been following a misplaced URL, or messing about. This error is not enabled by default on Composr because we found that Google ads triggered it massively!
  - [tt]PHP_DOWNLOAD_INNOCENT[/tt], Somehow a PHP file got referenced in the download system. This should have been filtered by 'TRY_TO_DOWNLOAD_SCRIPT', but was not. This is a serious security breach if it happens
  - [tt]BRUTEFORCE_LOGIN_HACK[/tt], Someone gave incorrect login details 30 times over a 15 minute period (brute-force attack)
 
