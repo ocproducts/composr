@@ -2237,7 +2237,7 @@ class Module_topics
                 $_title = get_screen_title('REPORT_POST');
                 $check_permissions = false;
 
-                decache('main_staff_checklist');
+                delete_cache_entry('main_staff_checklist');
 
                 $is_reported_post = true;
             } else { // New topic

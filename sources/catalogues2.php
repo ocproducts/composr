@@ -324,7 +324,7 @@ function actual_edit_catalogue($old_name, $name, $title, $description, $display_
     $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'cx_' . $name), array('cf_type' => 'cx_' . $old_name));
     update_catalogue_content_ref('catalogue', $old_name, $name);
 
-    decache('main_cc_embed');
+    delete_cache_entry('main_cc_embed');
 
     log_it('EDIT_CATALOGUE', $name);
 
@@ -777,7 +777,7 @@ function actual_edit_catalogue_category($id, $title, $description, $notes, $pare
 
     log_it('EDIT_CATALOGUE_CATEGORY', strval($id), $title);
 
-    decache('main_cc_embed');
+    delete_cache_entry('main_cc_embed');
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
@@ -873,7 +873,7 @@ function actual_delete_catalogue_category($id, $deleting_all = false)
 
     log_it('DELETE_CATALOGUE_CATEGORY', strval($id), $_title);
 
-    decache('main_cc_embed');
+    delete_cache_entry('main_cc_embed');
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
@@ -1044,7 +1044,7 @@ function actual_add_catalogue_entry($category_id, $validated, $notes, $allow_rat
         }
     }
 
-    decache('main_cc_embed');
+    delete_cache_entry('main_cc_embed');
 
     require_code('member_mentions');
     dispatch_member_mention_notifications('catalogue_entry', strval($id), $submitter);
@@ -1191,7 +1191,7 @@ function actual_edit_catalogue_entry($id, $category_id, $validated, $notes, $all
         }
     }
 
-    decache('main_cc_embed');
+    delete_cache_entry('main_cc_embed');
 
     if ($catalogue_name[0] != '_') {
         log_it('EDIT_CATALOGUE_ENTRY', strval($id), $title);
@@ -1301,7 +1301,7 @@ function actual_delete_catalogue_entry($id)
 
     calculate_category_child_count_cache($old_category_id);
 
-    decache('main_cc_embed');
+    delete_cache_entry('main_cc_embed');
 
     if ($catalogue_name[0] != '_') {
         log_it('DELETE_CATALOGUE_ENTRY', strval($id), $title);

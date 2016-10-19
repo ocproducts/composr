@@ -290,7 +290,7 @@ class Module_login
                 }
                 $refresh = do_template('JS_REFRESH', array('_GUID' => 'c7d2f9e7a2cc637f3cf9ac4d1cf97eca', 'FORM_NAME' => 'redir_form'));
             }
-            decache('side_users_online');
+            delete_cache_entry('side_users_online');
 
             return do_template('REDIRECT_POST_METHOD_SCREEN', array('_GUID' => '82e056de9150bbed185120eac3571f40', 'REFRESH' => $refresh, 'TITLE' => $this->title, 'TEXT' => do_lang_tempcode('_LOGIN_TEXT'), 'URL' => $url, 'POST' => $post));
         } else {
@@ -327,7 +327,7 @@ class Module_login
      */
     public function logout()
     {
-        decache('side_users_online');
+        delete_cache_entry('side_users_online');
 
         $url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
         if ($url === null) {

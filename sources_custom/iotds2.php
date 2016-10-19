@@ -139,7 +139,7 @@ function edit_iotd($id, $title, $caption, $thumb_url, $url, $allow_rating, $allo
     require_code('urls2');
     suggest_new_idmoniker_for('iotds', 'view', strval($id), '', $title);
 
-    decache('main_iotd');
+    delete_cache_entry('main_iotd');
 
     require_code('feedback');
     update_spacer_post(
@@ -186,7 +186,7 @@ function delete_iotd($id)
     require_code('notifications');
     delete_all_notifications_on('comment_posted', 'iotds_' . strval($id));
 
-    decache('main_iotd');
+    delete_cache_entry('main_iotd');
 
     log_it('DELETE_IOTD', strval($id), get_translated_text($caption));
 
@@ -242,5 +242,5 @@ function set_iotd($id)
     $mail = do_notification_lang('IOTD_CHOSEN_NOTIFICATION_MAIL', comcode_escape(get_site_name()), $title, array($view_url->evaluate(), $thumb_url));
     dispatch_notification('iotd_chosen', null, $subject, $mail);
 
-    decache('main_iotd');
+    delete_cache_entry('main_iotd');
 }

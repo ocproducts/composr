@@ -405,7 +405,7 @@ function _load_comcode_page_not_cached($string, $zone, $codename, $file_base, $c
         }
         $GLOBALS['SITE_DB']->query_insert('cached_comcode_pages', $map, false, true); // Race conditions
 
-        decache('main_comcode_page_children');
+        delete_cache_entry('main_comcode_page_children');
 
         // Try and insert corresponding page; will silently fail if already exists. This is only going to add a row for a page that was not created in-system
         if ($comcode_page_row === null) {

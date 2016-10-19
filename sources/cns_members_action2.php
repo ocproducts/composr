@@ -1126,7 +1126,7 @@ function cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $
         generate_resource_fs_moniker('member', strval($member_id));
     }
 
-    decache('main_members');
+    delete_cache_entry('main_members');
 
     require_code('sitemap_xml');
     notify_sitemap_node_edit('SEARCH:members:view:' . strval($member_id), true);
@@ -1205,7 +1205,7 @@ function cns_delete_member($member_id)
         expunge_resource_fs_moniker('member', strval($member_id));
     }
 
-    decache('main_members');
+    delete_cache_entry('main_members');
 
     require_code('sitemap_xml');
     notify_sitemap_node_delete('SEARCH:members:view:' . strval($member_id));
@@ -1235,7 +1235,7 @@ function cns_ban_member($member_id)
     $mail = do_lang('BAN_MEMBER_MAIL', $username, get_site_name(), array(), get_lang($member_id));
     dispatch_mail(do_lang('BAN_MEMBER_MAIL_SUBJECT', null, null, null, get_lang($member_id)), $mail, array($email_address), $username, '', '', array('priority' => 2, 'require_recipient_valid_since' => $join_time));
 
-    decache('main_members');
+    delete_cache_entry('main_members');
 
     unset($GLOBALS['FORUM_DRIVER']->MEMBER_ROWS_CACHED[$member_id]);
 }
@@ -1264,7 +1264,7 @@ function cns_unban_member($member_id)
     $mail = do_lang('UNBAN_MEMBER_MAIL', $username, get_site_name(), array(), get_lang($member_id));
     dispatch_mail(do_lang('UNBAN_MEMBER_MAIL_SUBJECT', null, null, null, get_lang($member_id)), $mail, array($email_address), $username, '', '', array('priority' => 2, 'require_recipient_valid_since' => $join_time));
 
-    decache('main_members');
+    delete_cache_entry('main_members');
 
     unset($GLOBALS['FORUM_DRIVER']->MEMBER_ROWS_CACHED[$member_id]);
 }
@@ -1354,7 +1354,7 @@ function cns_edit_custom_field($id, $name, $description, $default, $public_view,
         persistent_cache_delete('LIST_CPFS');
     }
 
-    decache('main_members');
+    delete_cache_entry('main_members');
 }
 
 /**
@@ -1397,8 +1397,8 @@ function cns_delete_custom_field($id)
         persistent_cache_delete('LIST_CPFS');
     }
 
-    if (function_exists('decache')) {
-        decache('main_members');
+    if (function_exists('delete_cache_entry')) {
+        delete_cache_entry('main_members');
     }
 }
 
@@ -1509,8 +1509,8 @@ function cns_set_custom_field($member_id, $field_id, $value, $type = null, $defe
         return $change;
     }
 
-    if (function_exists('decache')) {
-        decache('main_members');
+    if (function_exists('delete_cache_entry')) {
+        delete_cache_entry('main_members');
     }
 
     global $MEMBER_CACHE_FIELD_MAPPINGS;
@@ -1689,7 +1689,7 @@ function cns_member_choose_title($new_title, $member_id = null)
     unset($GLOBALS['FORUM_DRIVER']->MEMBER_ROWS_CACHED[$member_id]);
     unset($GLOBALS['MEMBER_CACHE_FIELD_MAPPINGS'][$member_id]);
 
-    decache('main_members');
+    delete_cache_entry('main_members');
 }
 
 /**
@@ -1800,9 +1800,9 @@ function cns_member_choose_avatar($avatar_url, $member_id = null)
     unset($GLOBALS['FORUM_DRIVER']->MEMBER_ROWS_CACHED[$member_id]);
     unset($GLOBALS['MEMBER_CACHE_FIELD_MAPPINGS'][$member_id]);
 
-    decache('main_friends_list');
+    delete_cache_entry('main_friends_list');
 
-    decache('main_members');
+    delete_cache_entry('main_members');
 }
 
 /**
@@ -1866,7 +1866,7 @@ function cns_member_choose_photo($param_name, $upload_name, $member_id = null)
 
     cns_member_choose_photo_concrete($urls[0], $urls[1], $member_id);
 
-    decache('main_members');
+    delete_cache_entry('main_members');
 }
 
 /**
@@ -1923,9 +1923,9 @@ function cns_member_choose_photo_concrete($url, $thumb_url, $member_id = null)
     unset($GLOBALS['FORUM_DRIVER']->MEMBER_ROWS_CACHED[$member_id]);
     unset($GLOBALS['MEMBER_CACHE_FIELD_MAPPINGS'][$member_id]);
 
-    decache('main_friends_list');
+    delete_cache_entry('main_friends_list');
 
-    decache('main_members');
+    delete_cache_entry('main_members');
 }
 
 /**

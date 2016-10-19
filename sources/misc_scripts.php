@@ -289,7 +289,7 @@ function cron_bridge_script($caller)
     }
 
     if (intval(get_value('last_cron')) < time() - 60 * 60 * 12) {
-        decache('main_staff_checklist'); // So the block knows CRON has run
+        delete_cache_entry('main_staff_checklist'); // So the block knows CRON has run
     }
 
     $limit_hook = get_param_string('limit_hook', '');

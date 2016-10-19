@@ -447,14 +447,14 @@ class Module_admin_version
                 'id' => '*AUTO',
                 'c_codename' => 'ID_TEXT',
                 'c_map' => 'LONG_TEXT',
-                'c_lang' => 'LANGUAGE_NAME',
-                'c_theme' => 'ID_TEXT',
+                'c_store_as_tempcode' => 'BINARY',
                 'c_staff_status' => '?BINARY',
                 'c_member' => '?MEMBER',
                 'c_groups' => 'SHORT_TEXT',
                 'c_is_bot' => '?BINARY',
                 'c_timezone' => 'MINIID_TEXT',
-                'c_store_as_tempcode' => 'BINARY',
+                'c_lang' => 'LANGUAGE_NAME',
+                'c_theme' => 'ID_TEXT',
             ));
             $GLOBALS['SITE_DB']->create_index('cron_caching_requests', 'c_compound', array('c_codename', 'c_theme', 'c_lang', 'c_timezone'));
             $GLOBALS['SITE_DB']->create_index('cron_caching_requests', 'c_is_bot', array('c_is_bot'));

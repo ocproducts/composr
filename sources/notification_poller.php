@@ -56,7 +56,7 @@ function notification_mark_all_read_script()
 {
     $GLOBALS['SITE_DB']->query_update('digestives_tin', array('d_read' => 1), array('d_read' => 0, 'd_to_member_id' => get_member()));
 
-    decache('_get_notifications', null, get_member());
+    delete_cache_entry('_get_notifications', null, get_member());
 }
 
 /**
@@ -134,7 +134,7 @@ function notification_poller_script()
 
             $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'digestives_tin WHERE ' . $sql);
 
-            decache('_get_notifications', null, get_member());
+            delete_cache_entry('_get_notifications', null, get_member());
         }
     }
 
@@ -244,7 +244,7 @@ function get_web_notifications($max = null, $start = 0)
 
     if ($start == 0) {
         require_code('caches2');
-        put_into_cache('_get_notifications', 60 * 60 * 24, serialize(array($max)), null, get_member(), '', (get_bot_type() === null) ? 0 : 1, get_users_timezone(get_member()), $ret);
+        set_cache_entry('_get_notifications', 60 * 60 * 24, serialize(array($max)), $ret);
     }
 
     return $ret;
@@ -390,7 +390,7 @@ function get_pts($max = null, $start = 0)
 
     if ($start == 0) {
         require_code('caches2');
-        put_into_cache('_get_pts', 60 * 60 * 24, serialize(array($max)), null, get_member(), '', (get_bot_type() === null) ? 0 : 1, get_users_timezone(get_member()), $ret);
+        set_cache_entry('_get_pts', 60 * 60 * 24, serialize(array($max)), $ret);
     }
 
     return $ret;

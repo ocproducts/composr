@@ -81,7 +81,7 @@ class Hook_cleanup_tags
             }
         }
 
-        decache('side_tag_cloud');
+        delete_cache_entry('side_tag_cloud');
 
         return new Tempcode();
     }

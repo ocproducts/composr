@@ -31,7 +31,7 @@ class Hook_notes_quotes
     public function run($file)
     {
         if ((strpos($file, '/quotes') !== false) || ($file == 'quotes')) {
-            decache('main_quotes');
+            delete_cache_entry('main_quotes');
         }
     }
 }

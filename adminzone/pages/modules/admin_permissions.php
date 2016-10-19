@@ -651,7 +651,7 @@ class Module_admin_permissions
             delete_lang($lid);
         }
 
-        decache('menu');
+        delete_cache_entry('menu');
 
         log_it('PAGE_MATCH_KEY_ACCESS');
 
@@ -759,7 +759,7 @@ class Module_admin_permissions
             }
         }
 
-        decache('menu');
+        delete_cache_entry('menu');
         require_code('caches3');
         erase_block_cache();
         erase_persistent_cache();
@@ -1051,7 +1051,7 @@ class Module_admin_permissions
             }
         }
 
-        decache('menu');
+        delete_cache_entry('menu');
         require_code('caches3');
         erase_block_cache();
         erase_persistent_cache();

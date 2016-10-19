@@ -187,7 +187,7 @@ function actual_add_zone($zone, $title, $default_page = DEFAULT_ZONE_PAGE_NAME, 
 
     persistent_cache_delete('ALL_ZONES');
 
-    decache('menu');
+    delete_cache_entry('menu');
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');

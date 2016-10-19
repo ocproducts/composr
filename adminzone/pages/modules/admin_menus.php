@@ -478,7 +478,7 @@ class Module_admin_menus
             }
         }
 
-        decache('menu');
+        delete_cache_entry('menu');
         persistent_cache_delete(array('MENU', $menu_id));
 
         return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));

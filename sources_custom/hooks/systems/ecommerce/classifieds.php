@@ -140,8 +140,8 @@ function handle_classifieds_advert($purchase_id, $details, $type_code)
     if ($time !== null) {
         $time += $days * 60 * 60 * 24;
         $GLOBALS['SITE_DB']->query_update('catalogue_entries', array('ce_validated' => 1, 'ce_last_moved' => $time), array('id' => intval($purchase_id)), '', 1);
-        decache('main_cc_embed');
-        decache('main_recent_cc_entries');
+        delete_cache_entry('main_cc_embed');
+        delete_cache_entry('main_recent_cc_entries');
         require_code('catalogues2');
         $cc_id = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_entries', 'cc_id', array('id' => intval($purchase_id)));
         calculate_category_child_count_cache($cc_id);

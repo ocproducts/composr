@@ -108,7 +108,7 @@ class Block_main_contact_us
                 assign_refresh($redirect, 0.0);
             }
 
-            decache('main_staff_checklist');
+            delete_cache_entry('main_staff_checklist');
 
             attach_message(do_lang_tempcode('MESSAGE_SENT'), 'inform');
         } else {

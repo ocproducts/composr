@@ -106,7 +106,7 @@ function friend_add($likes, $liked, $time = null)
         syndicate_described_activity('chat:PEOPLE_NOW_FRIENDS', $to_displayname, '', '', '_SEARCH:members:view:' . strval($liked), '_SEARCH:members:view:' . strval($likes), '', 'chat', 1, $likes);
         //syndicate_described_activity('chat:PEOPLE_NOW_FRIENDS', $to_displayname, '', '', '_SEARCH:members:view:' . strval($liked), '_SEARCH:members:view:' . strval($likes), '', 'chat', 1, $liked); Should only show if the user also does this
 
-        decache('main_friends_list');
+        delete_cache_entry('main_friends_list');
     }
 }
 
@@ -125,7 +125,7 @@ function friend_remove($likes, $liked)
 
     log_it('DUMP_FRIEND', strval($likes), strval($liked));
 
-    decache('main_friends_list');
+    delete_cache_entry('main_friends_list');
 }
 
 /**
@@ -338,7 +338,7 @@ function add_chatroom($welcome, $room_name, $room_owner, $allow2, $allow2_groups
         generate_resource_fs_moniker('chat', strval($id), null, null, true);
     }
 
-    decache('side_shoutbox');
+    delete_cache_entry('side_shoutbox');
 
     if ($is_im == 0) {
         require_code('sitemap_xml');
@@ -377,7 +377,7 @@ function edit_chatroom($id, $welcome, $room_name, $room_owner, $allow2, $allow2_
     $map += lang_remap('c_welcome', $c_welcome, $welcome);
     $GLOBALS['SITE_DB']->query_update('chat_rooms', $map, array('id' => $id), '', 1);
 
-    decache('side_shoutbox');
+    delete_cache_entry('side_shoutbox');
 
     require_code('urls2');
     suggest_new_idmoniker_for('chat', 'room', strval($id), '', $room_name);
@@ -411,7 +411,7 @@ function delete_chatroom($id)
 
     delete_chat_messages(array('room_id' => $id));
 
-    decache('side_shoutbox');
+    delete_cache_entry('side_shoutbox');
 
     if (addon_installed('catalogues')) {
         update_catalogue_content_ref('chat', strval($id), '');
@@ -466,7 +466,7 @@ function delete_all_chatrooms()
         }
     } while ($c_welcomes != array());
 
-    decache('side_shoutbox');
+    delete_cache_entry('side_shoutbox');
 
     log_it('DELETE_ALL_CHATROOMS');
 }
@@ -524,5 +524,5 @@ function delete_chatroom_messages($id)
 
     log_it('DELETE_ALL_MESSAGES', strval($id));
 
-    decache('side_shoutbox');
+    delete_cache_entry('side_shoutbox');
 }

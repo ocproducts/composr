@@ -144,7 +144,7 @@ function add_calendar_event($type, $recurrence, $recurrences, $seg_recurrences, 
         seo_meta_set_for_explicit('event', strval($id), $meta_keywords, $meta_description);
     }
 
-    decache('side_calendar');
+    delete_cache_entry('side_calendar');
 
     if ($validated == 1) {
         if (addon_installed('content_privacy')) {
@@ -366,7 +366,7 @@ function edit_calendar_event($id, $type, $recurrence, $recurrences, $seg_recurre
         }
     }
 
-    decache('side_calendar');
+    delete_cache_entry('side_calendar');
 
     require_code('feedback');
     update_spacer_post(
@@ -421,7 +421,7 @@ function delete_calendar_event($id)
         delete_lang_comcode_attachments($myrow['e_content'], 'e_content', strval($id));
     }
 
-    decache('side_calendar');
+    delete_cache_entry('side_calendar');
 
     $member_calendar = $myrow['e_member_calendar'];
     if ($member_calendar !== null) {

@@ -25,7 +25,7 @@ class Hook_upon_query_google_maps
         }
 
         if ((strpos($query, 'main_cc_embed') !== false) && (preg_match('#^DELETE FROM ' . get_table_prefix() . 'cache WHERE .*main_cc_embed#', $query) != 0)) { // If main_cc_embed being decached
-            decache('main_google_map'); // decache map block too
+            delete_cache_entry('main_google_map'); // decache map block too
         }
     }
 }

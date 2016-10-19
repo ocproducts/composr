@@ -405,7 +405,7 @@ class Module_admin_sitemap
 
         erase_persistent_cache();
 
-        decache('menu');
+        delete_cache_entry('menu');
 
         return $this->do_next_manager($this->title, null, $zone, new Tempcode());
     }
@@ -604,7 +604,7 @@ class Module_admin_sitemap
             $message = do_lang_tempcode('WOULD_NOT_OVERWRITE_BUT_SUCCESS', $cannot_move);
         }
 
-        decache('menu');
+        delete_cache_entry('menu');
 
         if (has_js()) {
             return inform_screen($this->title, $message); // Came from sitemap editor, so want to just close this window when done

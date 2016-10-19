@@ -385,8 +385,8 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
     ));
 
     if ($check_correctness) {
-        if (function_exists('decache')) {
-            decache('side_stats');
+        if (function_exists('delete_cache_entry')) {
+            delete_cache_entry('side_stats');
         }
         delete_value('cns_newest_member_id');
         delete_value('cns_newest_member_username');
@@ -408,8 +408,8 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
     require_code('member_mentions');
     dispatch_member_mention_notifications('member', strval($member_id));
 
-    if (function_exists('decache')) {
-        decache('main_members');
+    if (function_exists('delete_cache_entry')) {
+        delete_cache_entry('main_members');
     }
 
     require_code('sitemap_xml');
@@ -629,8 +629,8 @@ function cns_make_custom_field($name, $locked = 0, $description = '', $default =
         generate_resource_fs_moniker('cpf', strval($id), null, null, true);
     }
 
-    if (function_exists('decache')) {
-        decache('main_members');
+    if (function_exists('delete_cache_entry')) {
+        delete_cache_entry('main_members');
     }
 
     if (function_exists('persistent_cache_delete')) {

@@ -106,7 +106,7 @@ class Module_topicview
                 foreach ($notification_ids as $notification_id) {
                     $GLOBALS['SITE_DB']->query_update('digestives_tin', array('d_read' => 1), array('id' => $notification_id['id']));
                 }
-                decache('_get_notifications', null, get_member());
+                delete_cache_entry('_get_notifications', null, get_member());
             }
         }
 

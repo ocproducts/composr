@@ -969,7 +969,7 @@ function chat_post_message($room_id, $message, $font_name, $text_colour)
             $GLOBALS['FORUM_DRIVER']->set_custom_field(get_member(), 'points_gained_chat', $count + 1);
         }
 
-        decache('side_shoutbox');
+        delete_cache_entry('side_shoutbox');
 
         return true;
     }

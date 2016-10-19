@@ -134,7 +134,7 @@ class Module_admin_backup
             warn_exit(do_lang_tempcode('SHARED_INSTALL_PROHIBIT'));
         }
 
-        decache('main_staff_checklist');
+        delete_cache_entry('main_staff_checklist');
 
         require_code('backup');
 

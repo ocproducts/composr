@@ -265,7 +265,7 @@ function _enforce_temporary_passwords($member)
         }
 
         if ($force_change_message !== null) {
-            decache('side_users_online');
+            delete_cache_entry('side_users_online');
 
             require_code('urls');
             require_lang('cns');
@@ -320,7 +320,7 @@ function set_invisibility($make_invisible = true)
         }
     }
 
-    decache('side_users_online');
+    delete_cache_entry('side_users_online');
 
     // Store in cookie, if we have login cookies around
     if (array_key_exists(get_member_cookie(), $_COOKIE)) {

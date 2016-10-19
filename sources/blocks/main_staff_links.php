@@ -162,7 +162,7 @@ class Block_main_staff_links
                 }
             }
 
-            decache('main_staff_links');
+            delete_cache_entry('main_staff_links');
 
             log_it('STAFF_LINKS');
         }

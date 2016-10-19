@@ -101,7 +101,7 @@ function import_menu_csv($file_path = null)
     }
     fclose($myfile);
 
-    decache('side_stored_menu');
+    delete_cache_entry('side_stored_menu');
 }
 
 /**
@@ -352,7 +352,7 @@ function delete_menu($menu_id)
         erase_cached_templates(false, array('GLOBAL_HTML_WRAP')); // Config option saves into templates
     }
 
-    decache('menu');
+    delete_cache_entry('menu');
     persistent_cache_delete(array('MENU', $menu_id));
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {

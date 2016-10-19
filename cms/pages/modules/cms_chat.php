@@ -553,7 +553,7 @@ class Module_cms_chat
 
             log_it('EDIT_MESSAGE', strval($message_id), post_param_string('message'));
 
-            decache('side_shoutbox');
+            delete_cache_entry('side_shoutbox');
 
             require_code('templates_donext');
             return do_next_manager(
@@ -613,7 +613,7 @@ class Module_cms_chat
 
         $GLOBALS['SITE_DB']->query_delete('chat_messages', array('id' => $message_id), '', 1);
 
-        decache('side_shoutbox');
+        delete_cache_entry('side_shoutbox');
 
         $message2 = get_translated_tempcode('chat_messages', $myrow, 'the_message');
         delete_lang($myrow['the_message']);
@@ -709,7 +709,7 @@ class Module_cms_chat
 
             delete_chat_messages(array('room_id' => $room_id));
 
-            decache('side_shoutbox');
+            delete_cache_entry('side_shoutbox');
 
             log_it('DELETE_ALL_MESSAGES', strval($room_id));
 
@@ -752,7 +752,7 @@ class Module_cms_chat
             warn_exit(do_lang_tempcode('NOTHING_SELECTED'));
         }
 
-        decache('side_shoutbox');
+        delete_cache_entry('side_shoutbox');
 
         $num_remaining = $GLOBALS['SITE_DB']->query_select_value('chat_messages', 'COUNT(*)', array('room_id' => $room_id));
         if ($num_remaining == 0) {

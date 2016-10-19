@@ -722,7 +722,7 @@ class Module_admin_lang
      */
     public function set_lang_code()
     {
-        decache('side_language');
+        delete_cache_entry('side_language');
         require_code('caches3');
         erase_block_cache();
 

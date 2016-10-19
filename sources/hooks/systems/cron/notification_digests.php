@@ -86,7 +86,7 @@ class Hook_cron_notification_digests
                             dispatch_mail($wrapped_subject, $wrapped_message, array($to_email), $to_name, get_option('staff_address'), get_site_name(), array('as' => A_FROM_SYSTEM_UNPRIVILEGED, 'require_recipient_valid_since' => $join_time));
                         }
 
-                        decache('_get_notifications', null, $to_member_id);
+                        delete_cache_entry('_get_notifications', null, $to_member_id);
                     }
 
                     $GLOBALS['SITE_DB']->query_update('digestives_consumed', array(

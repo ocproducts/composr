@@ -31,7 +31,7 @@ class Hook_notes_msn
     public function run($file)
     {
         if ((strpos($file, '/netlink') !== false) || ($file == 'netlink')) {
-            decache('side_network');
+            delete_cache_entry('side_network');
         }
     }
 }

@@ -55,7 +55,7 @@ function add_news_category($title, $img, $notes, $owner = null, $id = null)
         generate_resource_fs_moniker('news_category', strval($id), null, null, true);
     }
 
-    decache('side_news_categories');
+    delete_cache_entry('side_news_categories');
 
     require_code('member_mentions');
     dispatch_member_mention_notifications('news_category', strval($id));
@@ -129,12 +129,12 @@ function edit_news_category($id, $title, $img, $notes, $owner)
     require_code('themes2');
     tidy_theme_img_code($img, $myrow['nc_img'], 'news_categories', 'nc_img');
 
-    decache('main_news');
-    decache('main_image_fader_news');
-    decache('side_news');
-    decache('side_news_archive');
-    decache('bottom_news');
-    decache('side_news_categories');
+    delete_cache_entry('main_news');
+    delete_cache_entry('main_image_fader_news');
+    delete_cache_entry('side_news');
+    delete_cache_entry('side_news_archive');
+    delete_cache_entry('bottom_news');
+    delete_cache_entry('side_news_categories');
 
     require_code('sitemap_xml');
     notify_sitemap_node_edit('SEARCH:news:browse:' . strval($id), has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'news', strval($id)));
@@ -179,7 +179,7 @@ function delete_news_category($id)
     require_code('themes2');
     tidy_theme_img_code(null, $myrow['nc_img'], 'news_categories', 'nc_img');
 
-    decache('side_news_categories');
+    delete_cache_entry('side_news_categories');
 
     log_it('DELETE_NEWS_CATEGORY', strval($id), $old_title);
 
@@ -386,12 +386,12 @@ function add_news($title, $news, $author = null, $validated = 1, $allow_rating =
     }
 
     if ($validated == 1) {
-        decache('main_news');
-        decache('main_image_fader_news');
-        decache('side_news');
-        decache('side_news_archive');
-        decache('bottom_news');
-        decache('side_news_categories');
+        delete_cache_entry('main_news');
+        delete_cache_entry('main_image_fader_news');
+        delete_cache_entry('side_news');
+        delete_cache_entry('side_news_archive');
+        delete_cache_entry('bottom_news');
+        delete_cache_entry('side_news_categories');
 
         dispatch_news_notification($id, $title, $main_news_category_id);
     }
@@ -562,12 +562,12 @@ function edit_news($id, $title, $news, $author, $validated, $allow_rating, $allo
     }
     seo_meta_set_for_explicit('news', strval($id), $meta_keywords, $meta_description);
 
-    decache('main_news');
-    decache('main_image_fader_news');
-    decache('side_news');
-    decache('side_news_archive');
-    decache('bottom_news');
-    decache('side_news_categories');
+    delete_cache_entry('main_news');
+    delete_cache_entry('main_image_fader_news');
+    delete_cache_entry('side_news');
+    delete_cache_entry('side_news_archive');
+    delete_cache_entry('bottom_news');
+    delete_cache_entry('side_news_categories');
 
     if (($validated == 1) && (has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'news', strval($main_news_category)))) {
         register_shutdown_function('send_rss_ping');
@@ -660,12 +660,12 @@ function delete_news($id)
     require_code('seo2');
     seo_meta_erase_storage('news', strval($id));
 
-    decache('main_news');
-    decache('main_image_fader_news');
-    decache('side_news');
-    decache('side_news_archive');
-    decache('bottom_news');
-    decache('side_news_categories');
+    delete_cache_entry('main_news');
+    delete_cache_entry('main_image_fader_news');
+    delete_cache_entry('side_news');
+    delete_cache_entry('side_news_archive');
+    delete_cache_entry('bottom_news');
+    delete_cache_entry('side_news_categories');
 
     if (addon_installed('catalogues')) {
         update_catalogue_content_ref('news', strval($id), '');

@@ -488,7 +488,7 @@ class Notification_dispatcher
                     'c_time' => time(),
                 ), false, true/*If we've not set up first digest time, make it the digest period from now; if we have then silent error is suppressed*/);
 
-                decache('_get_notifications', null, $to_member_id);
+                delete_cache_entry('_get_notifications', null, $to_member_id);
             }
         }
 

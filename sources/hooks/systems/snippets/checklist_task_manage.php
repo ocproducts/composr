@@ -36,7 +36,7 @@ class Hook_snippet_checklist_task_manage
             return new Tempcode();
         }
 
-        decache('main_staff_checklist');
+        delete_cache_entry('main_staff_checklist');
 
         require_lang('staff_checklist');
 

@@ -504,7 +504,7 @@ function cns_decache_cms_blocks($updated_forum_id, $forum_name = null, $member =
         $decache[] = array('main_staff_checklist', null);
     }
 
-    decache($decache);
+    delete_cache_entry($decache);
 
     if ($member !== null) {
         decache_private_topics($member);

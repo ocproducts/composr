@@ -40,7 +40,7 @@ class Hook_cron_backups
             $time = time();
             $last_time = intval(get_value('last_backup'));
             if ($time >= $backup_schedule_time) {
-                decache('main_staff_checklist');
+                delete_cache_entry('main_staff_checklist');
                 require_lang('backups');
                 require_code('backup');
                 $max_size = get_value('backup_max_size');

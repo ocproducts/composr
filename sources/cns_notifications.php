@@ -250,7 +250,7 @@ function generate_notifications($member_id)
 
         if ($do_caching) {
             require_code('caches2');
-            put_into_cache('_new_pp', 60 * 60 * 24, $cache_identifier, null, get_member(), '', (get_bot_type() === null) ? 0 : 1, get_users_timezone(get_member()), array($notifications->to_assembly(), $num_unread_pps));
+            set_cache_entry('_new_pp', 60 * 60 * 24, $cache_identifier, array($notifications->to_assembly(), $num_unread_pps));
         }
 
         pop_query_limiting();

@@ -560,7 +560,7 @@ function has_caching_for($type)
  */
 function decache_private_topics($member_id = null)
 {
-    decache(array('side_cns_private_topics', '_new_pp', '_get_pts'), null, $member_id);
+    delete_cache_entry(array('side_cns_private_topics', '_new_pp', '_get_pts'), null, $member_id);
 }
 
 /**
@@ -570,14 +570,14 @@ function decache_private_topics($member_id = null)
  * @param  ?array $identifier A map of identifiying characteristics (null: no identifying characteristics, decache all)
  * @param  ?MEMBER $member Member to only decache for (null: no limit)
  */
-function decache($cached_for, $identifier = null, $member = null)
+function delete_cache_entry($cached_for, $identifier = null, $member = null)
 {
     if (get_mass_import_mode()) {
         return;
     }
 
     require_code('caches2');
-    _decache($cached_for, $identifier, $member);
+    _delete_cache_entry($cached_for, $identifier, $member);
 }
 
 /**
@@ -615,7 +615,7 @@ function find_cache_on($codename)
  * @param  array $map Parameters to call up block with if we have to defer caching
  * @return ?mixed The cached result (null: no cached result)
  */
-function get_cache_entry($codename, $cache_identifier, $special_cache_flags, $ttl = 10000, $tempcode = false, $caching_via_cron = false, $map = array())
+function get_cache_entry($codename, $cache_identifier, $special_cache_flags = CACHE_AGAINST_DEFAULT, $ttl = 10000, $tempcode = false, $caching_via_cron = false, $map = array())
 {
     $det = array($codename, $cache_identifier, md5($cache_identifier), $special_cache_flags, $ttl, $tempcode, $caching_via_cron, $map);
 
@@ -629,6 +629,45 @@ function get_cache_entry($codename, $cache_identifier, $special_cache_flags, $tt
 
     $rets = _get_cache_entries(array($det), $special_cache_flags);
     return $rets[0];
+}
+
+/**
+ * Fill in cache signature details from the environment, based on $special_cache_flags.
+ *
+ * @param  integer $special_cache_flags Special cache flags
+ * @param  ?BINARY $staff_status Staff status to limit to (null: Get from environment)
+ * @param  ?MEMBER $member Member to limit to (null: Get from environment)
+ * @param  ?SHORT_TEXT $groups Sorted permissive usergroup list to limit to (null: Get from environment)
+ * @param  ?BINARY $is_bot Bot status to limit to (null: Get from environment)
+ * @param  ?MINIID_TEXT $timezone Timezone to limit to (null: Get from environment)
+ * @param  ?ID_TEXT $theme The theme this is being cached for (null: Get from environment)
+ * @param  ?LANGUAGE_NAME $lang The language this is being cached for (null: Get from environment)
+ */
+function get_cache_signature_details($special_cache_flags, &$staff_status, &$member, &$groups, &$is_bot, &$timezone, &$theme, &$lang)
+{
+    if ($staff_status === null) {
+        $staff_status = (($special_cache_flags !== null) && (($special_cache_flags & CACHE_AGAINST_STAFF_STATUS) !== 0)) ? ($GLOBALS['FORUM_DRIVER']->is_staff(get_member()) ? 1 : 0) : null;
+    }
+    if ($member === null) {
+        $member = (($special_cache_flags !== null) && (($special_cache_flags & CACHE_AGAINST_MEMBER) !== 0)) ? get_member() : null;
+    }
+    if ($groups === null) {
+        $groups = (($special_cache_flags !== null) && (($special_cache_flags & CACHE_AGAINST_PERMISSIVE_GROUPS) !== 0)) ? implode(',', array_map('strval', filter_group_permissivity($GLOBALS['FORUM_DRIVER']->get_members_groups(get_member())))) : '';
+    }
+    if ($is_bot === null) {
+        $is_bot = (($special_cache_flags !== null) && (($special_cache_flags & CACHE_AGAINST_BOT_STATUS) !== 0)) ? ((get_bot_type() === null) ? 0 : 1) : null;
+    }
+    if ($timezone === null) {
+        require_code('temporal');
+        $timezone = (($special_cache_flags !== null) && (($special_cache_flags & CACHE_AGAINST_TIMEZONE) !== 0)) ? get_users_timezone(get_member()) : '';
+    }
+
+    if ($theme === null) {
+        $theme = $GLOBALS['FORUM_DRIVER']->get_theme();
+    }
+    if ($lang === null) {
+        $lang = user_lang();
+    }
 }
 
 /**
@@ -650,19 +689,21 @@ function _get_cache_entries($dets, $special_cache_flags = null)
 
     $rets = array();
 
-    require_code('temporal');
-    $staff_status = (($special_cache_flags !== null) && (($special_cache_flags & CACHE_AGAINST_STAFF_STATUS) !== 0)) ? ($GLOBALS['FORUM_DRIVER']->is_staff(get_member()) ? 1 : 0) : null;
-    $member = (($special_cache_flags !== null) && (($special_cache_flags & CACHE_AGAINST_MEMBER) !== 0)) ? get_member() : null;
-    $groups = (($special_cache_flags !== null) && (($special_cache_flags & CACHE_AGAINST_PERMISSIVE_GROUPS) !== 0)) ? implode(',', array_map('strval', filter_group_permissivity($GLOBALS['FORUM_DRIVER']->get_members_groups(get_member())))) : '';
-    $is_bot = (($special_cache_flags !== null) && (($special_cache_flags & CACHE_AGAINST_BOT_STATUS) !== 0)) ? ((get_bot_type() === null) ? 0 : 1) : null;
-    $timezone = (($special_cache_flags !== null) && (($special_cache_flags & CACHE_AGAINST_TIMEZONE) !== 0)) ? get_users_timezone(get_member()) : '';
+    $staff_status = null;
+    $member = null;
+    $groups = null;
+    $is_bot = null;
+    $timezone = null;
+    $theme = null;
+    $lang = null;
+    get_cache_signature_details($special_cache_flags, $staff_status, $member, $groups, $is_bot, $timezone, $theme, $lang);
 
     // Bulk load
     if ($GLOBALS['PERSISTENT_CACHE'] === null) {
         $do_query = false;
 
-        $sql = 'SELECT cached_for,identifier,the_value,date_and_time,dependencies FROM ' . get_table_prefix() . 'cache WHERE ';
-        $sql .= db_string_equal_to('the_theme', $GLOBALS['FORUM_DRIVER']->get_theme());
+        $sql = 'SELECT cached_for,identifier,the_value,date_and_time,dependencies FROM ' . get_table_prefix() . 'cache WHERE 1=1';
+
         if ($staff_status === null) {
             $sql .= ' AND staff_status IS NULL';
         } else {
@@ -688,7 +729,10 @@ function _get_cache_entries($dets, $special_cache_flags = null)
         } else {
             $sql .= ' AND ' . db_string_equal_to('timezone', $timezone);
         }
-        $sql .= ' AND ' . db_string_equal_to('lang', user_lang());
+
+        $sql .= ' AND ' . db_string_equal_to('the_theme', $theme);
+        $sql .= ' AND ' . db_string_equal_to('lang', $lang);
+
         $sql .= ' AND (1=0';
         foreach ($dets as $det) {
             list($codename, $cache_identifier, $md5_cache_identifier, $special_cache_flags, $ttl, $tempcode, $caching_via_cron, $map) = $det;
@@ -705,6 +749,7 @@ function _get_cache_entries($dets, $special_cache_flags = null)
             $do_query = true;
         }
         $sql .= ')';
+
         $cache_rows = $do_query ? $GLOBALS['SITE_DB']->query($sql) : array();
     }
 

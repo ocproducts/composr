@@ -65,7 +65,7 @@ class Block_main_tutorial_rating
         $id = 'tutorial_' . $page_name;
         $test_changed = post_param_string('rating_' . $id, '');
         if ($test_changed != '') {
-            decache('main_rating');
+            delete_cache_entry('main_rating');
         }
         actualise_rating(true, 'block_main_rating', $id, $self_url, $self_title);
 

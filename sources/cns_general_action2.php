@@ -142,7 +142,7 @@ function cns_edit_emoticon($old_code, $code, $theme_img_code, $relevance_level, 
         generate_resource_fs_moniker('emoticon', $code);
     }
 
-    decache('_emoticon_chooser');
+    delete_cache_entry('_emoticon_chooser');
 
     log_it('EDIT_EMOTICON', $code, $theme_img_code);
 }
@@ -169,7 +169,7 @@ function cns_delete_emoticon($code)
         expunge_resource_fs_moniker('emoticon', $code);
     }
 
-    decache('_emoticon_chooser');
+    delete_cache_entry('_emoticon_chooser');
 
     log_it('DELETE_EMOTICON', $code);
 }
