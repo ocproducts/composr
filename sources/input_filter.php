@@ -29,9 +29,6 @@ function init__input_filter()
 {
     global $URL_DEFAULT_PARAMETERS_ENABLED;
     $URL_DEFAULT_PARAMETERS_ENABLED = false;
-
-    global $FORCE_INPUT_FILTER_FOR_ALL;
-    $FORCE_INPUT_FILTER_FOR_ALL = false;
 }
 
 /**
@@ -40,56 +37,51 @@ function init__input_filter()
  * @param  string $name The name of the parameter
  * @param  string $val The value retrieved
  * @param  ?boolean $posted Whether the parameter is a POST parameter (null: undetermined)
+ * @param  integer $filters A bitmask of INPUT_FILTER_* filters
  */
-function check_input_field_string($name, &$val, $posted = false)
+function check_input_field_string($name, &$val, $posted, $filters)
 {
     if (preg_match('#^\w*$#', $val) !== 0) {
         return;
     }
 
-    // Security for URL context (not only things that are specifically known URL parameters)
-    if ((preg_match('#^\s*((((j\s*a\s*v\s*a\s*)|(v\s*b\s*))?s\s*c\s*r\s*i\s*p\s*t)|(d\s*a\s*t\s*a\s*))\s*:#i', $val) !== 0) && ($name !== 'value')/*Don't want autosave triggering this*/) {
+    if ((($filters & INPUT_FILTER_JS_URLS) != 0) && (preg_match('#^\s*((((j\s*a\s*v\s*a\s*)|(v\s*b\s*))?s\s*c\s*r\s*i\s*p\s*t)|(d\s*a\s*t\s*a\s*))\s*:#i', $val) !== 0)) {
         log_hack_attack_and_exit('SCRIPT_URL_HACK_2', $val);
     }
 
-    // Security check for known URL fields. Check for specific things, plus we know we can be pickier in general
-    $is_url = ($name === 'from') || ($name === 'preview_url') || ($name === 'redirect') || ($name === 'redirect_passon') || ($name === 'url');
-    if ($is_url) {
-        if (preg_match('#\n|\000|<|(".*[=<>])|^\s*((((j\s*a\s*v\s*a\s*)|(v\s*b\s*))?s\s*c\s*r\s*i\s*p\s*t)|(d\s*a\s*t\s*a\s*))\s*:#mi', $val) !== 0) {
-            if ($name === 'page') { // Stop loops
-                $_GET[$name] = '';
-            }
-            log_hack_attack_and_exit('DODGY_GET_HACK', $name, $val);
+    if ((($filters & INPUT_FILTER_VERY_STRICT) != 0) && (preg_match('#\n|\000|<#mi', $val) !== 0)) {
+        if ($name === 'page') { // Stop loops
+            $_GET[$name] = '';
         }
+        log_hack_attack_and_exit('DODGY_GET_HACK', $name, $val);
+    }
 
-        // Don't allow external redirections
-        if (!$posted && !running_script('external_url_proxy')) {
-            $_val = str_replace('https://', 'http://', $val);
-            if (looks_like_url($_val)) {
-                $bus = array(
-                    get_base_url(false) . '/',
-                    get_base_url(true) . '/',
-                    get_forum_base_url() . '/',
-                    'http://compo.sr/',
-                );
-                $allowed_partners = get_allowed_partner_sites();
-                foreach ($allowed_partners as $allowed) {
-                    $bus[] = 'http://' . $allowed . '/';
-                    $bus[] = 'https://' . $allowed . '/';
+    if ((($filters & INPUT_FILTER_URL_DESTINATION) != 0) && (!$posted)) { // Don't allow external redirections
+        $_val = str_replace('https://', 'http://', $val);
+        if (!url_is_local($_val)) {
+            $bus = array(
+                get_base_url(false) . '/',
+                get_base_url(true) . '/',
+                get_forum_base_url() . '/',
+                'http://compo.sr/',
+            );
+            $allowed_partners = get_allowed_partner_sites();
+            foreach ($allowed_partners as $allowed) {
+                $bus[] = 'http://' . $allowed . '/';
+                $bus[] = 'https://' . $allowed . '/';
+            }
+            $ok = false;
+            foreach ($bus as $bu) {
+                if (substr($_val, 0, strlen($bu)) === $bu) {
+                    $ok = true;
+                    break;
                 }
-                $ok = false;
-                foreach ($bus as $bu) {
-                    if (substr($_val, 0, strlen($bu)) === $bu) {
-                        $ok = true;
-                        break;
-                    }
-                }
-                if (!$ok) {
-                    if (function_exists('build_url')) {
-                        $val = static_evaluate_tempcode(build_url(array('page' => ''), 'site'));
-                    } else {
-                        $val = get_base_url(false);
-                    }
+            }
+            if (!$ok) {
+                if (function_exists('build_url')) {
+                    $val = static_evaluate_tempcode(build_url(array('page' => ''), 'site'));
+                } else {
+                    $val = get_base_url(false);
                 }
             }
         }
@@ -97,18 +89,24 @@ function check_input_field_string($name, &$val, $posted = false)
 
     if (!$GLOBALS['BOOTSTRAPPING']) {
         // Quickly depose of common spam attacks. Not really security, just a sensible barrier
-        if (((!function_exists('is_guest')) || (is_guest())) && ((strpos($val, '[url=http://') !== false) || (strpos($val, '[link') !== false)) && (strpos($val, '<a ') !== false)) // Combination of non-Composr-supporting bbcode and HTML, almost certainly a bot trying too hard to get link through
-        {
-            log_hack_attack_and_exit('LAME_SPAM_HACK', $val);
+        if (($filters & INPUT_FILTER_SPAM_HEURISTIC) != 0) {
+            if (((!function_exists('is_guest')) || (is_guest())) && ((strpos($val, '[url=http://') !== false) || (strpos($val, '[link') !== false)) && (strpos($val, '<a ') !== false)) // Combination of non-Composr-supporting bbcode and HTML, almost certainly a bot trying too hard to get link through
+            {
+                log_hack_attack_and_exit('LAME_SPAM_HACK', $val);
+            }
         }
 
         // Additional checks for non-privileged users
         if ((function_exists('has_privilege') || !$posted) && $name !== 'page'/*Too early in boot if 'page'*/) {
-            if ($GLOBALS['FORCE_INPUT_FILTER_FOR_ALL'] || !$posted/*get parameters really shouldn't be so crazy so as for the filter to do anything!*/ || !has_privilege(get_member(), 'unfiltered_input')) {
-                hard_filter_input_data__html($val);
-                hard_filter_input_data__filesystem($val);
+            if (($filters & INPUT_FILTER_EARLY_XSS) != 0) {
+                if (!$posted/*get parameters really shouldn't be so crazy so as for the filter to do anything!*/ || !has_privilege(get_member(), 'unfiltered_input')) {
+                    hard_filter_input_data__html($val);
+                    hard_filter_input_data__filesystem($val);
+                }
             }
-            @hard_filter_input_data__dynamic_firewall($name, $val); // @'d to stop any internal errors taking stuff down
+            if (($filters & INPUT_FILTER_DYNAMIC_FIREWALL) != 0) {
+                @hard_filter_input_data__dynamic_firewall($name, $val); // @'d to stop any internal errors taking stuff down
+            }
         }
     }
 }
@@ -118,8 +116,9 @@ function check_input_field_string($name, &$val, $posted = false)
  *
  * @param  string $name The name of the parameter
  * @param  string $val The value retrieved
+ * @param  integer $filters A bitmask of INPUT_FILTER_* filters
  */
-function check_posted_field($name, $val)
+function check_posted_field($name, $val, $filters)
 {
     $evil = false;
 
@@ -137,7 +136,7 @@ function check_posted_field($name, $val)
             $canonical_referer_domain = strip_url_to_representative_domain($referer);
             $canonical_baseurl_domain = strip_url_to_representative_domain(get_base_url());
             if ($canonical_referer_domain != $canonical_baseurl_domain) {
-                if ((has_interesting_post_fields()) && (!in_array($name, array('login_username', 'password', 'remember', 'login_invisible')))) {
+                if ((has_interesting_post_fields()) && (($filters & INPUT_FILTER_ALLOWED_POSTING_SITES) != 0)) {
                     $allowed_partners = get_allowed_partner_sites();
                     $found = false;
                     foreach ($allowed_partners as $partner) {
@@ -360,7 +359,7 @@ function filter_form_field_default($name, $val, $live = false)
     if ($URL_DEFAULT_PARAMETERS_ENABLED) {
         inform_non_canonical_parameter($name);
 
-        $_val = get_param_string($name, null, true);
+        $_val = get_param_string($name, null, INPUT_FILTER_GET_COMPLEX);
         if ($_val !== null) {
             $val = $_val;
         }

@@ -379,7 +379,7 @@ class Module_admin_ip_ban
         persistent_cache_delete('IP_BANS');
 
         // Show it worked / Refresh
-        $_url = get_param_string('redirect', null);
+        $_url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
         if ($_url !== null) {
             $url = make_string_tempcode($_url);
             return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
@@ -428,7 +428,7 @@ class Module_admin_ip_ban
         persistent_cache_delete('IP_BANS');
 
         // Show it worked / Refresh
-        $_url = get_param_string('redirect', null);
+        $_url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
         if ($_url !== null) {
             $url = make_string_tempcode($_url);
             return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
@@ -454,11 +454,17 @@ class Module_admin_ip_ban
 
         require_code('failure');
         require_code('failure_spammers');
-        syndicate_spammer_report($ip, is_guest($member_id) ? '' : $GLOBALS['FORUM_DRIVER']->get_username($member_id), $GLOBALS['FORUM_DRIVER']->get_member_email_address($member_id), get_param_string('reason'), true);
+        syndicate_spammer_report(
+            $ip,
+            is_guest($member_id) ? '' : $GLOBALS['FORUM_DRIVER']->get_username($member_id),
+            $GLOBALS['FORUM_DRIVER']->get_member_email_address($member_id),
+            get_param_string('reason', false, INPUT_FILTER_GET_COMPLEX),
+            true
+        );
         log_it('SYNDICATED_IP_BAN', $ip);
 
         // Show it worked / Refresh
-        $_url = get_param_string('redirect', null);
+        $_url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
         if ($_url !== null) {
             $url = make_string_tempcode($_url);
             return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
@@ -505,7 +511,7 @@ class Module_admin_ip_ban
         persistent_cache_delete('IP_BANS');
 
         // Show it worked / Refresh
-        $_url = get_param_string('redirect', null);
+        $_url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
         if ($_url !== null) {
             $url = make_string_tempcode($_url);
             return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));

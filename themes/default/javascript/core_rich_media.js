@@ -529,17 +529,9 @@
         mediaYoutube: function (params) {
             var element = this;
 
-            if (window.done_youtube_player_init === undefined) {
-                var tag = document.createElement('script');
-                tag.src = "https://www.youtube.com/iframe_api";
-                var first_script_tag = document.querySelector('script');
-                first_script_tag.parentNode.insertBefore(tag, first_script_tag);
-                window.done_youtube_player_init = true;
-            }
-
             // Tie into callback event to see when finished, for our slideshows}
             // API: https://developers.google.com/youtube/iframe_api_reference}
-            window.onYouTubeIframeAPIReady = function () {
+            var youtube_callback_{$GET%,player_id} = function () {
                 var slideshow_mode = document.getElementById('next_slide');
                 var player = new YT.Player(element.id, {
                     width: params.width,
@@ -558,6 +550,19 @@
                         }
                     }
                 });
+            };
+
+            if (window.done_youtube_player_init === undefined) {
+                var tag = document.createElement('script');
+                tag.src = "https://www.youtube.com/iframe_api";
+                var first_script_tag = document.querySelector('script');
+                first_script_tag.parentNode.insertBefore(tag, first_script_tag);
+                window.done_youtube_player_init = true;
+
+                window.onYouTubeIframeAPIReady = youtube_callback_{$GET%,player_id};
+            } else
+            {
+                youtube_callback_{$GET%,player_id}();
             }
         },
 

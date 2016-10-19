@@ -602,7 +602,7 @@ class Module_admin_workflow extends Standard_crud_module
 
         $description = do_lang_tempcode('SUCCESS');
 
-        $url = get_param_string('redirect', null);
+        $url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
         if ($url !== null) {
             return redirect_screen($this->title, $url, $description);
         }

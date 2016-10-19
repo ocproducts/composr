@@ -19,6 +19,73 @@
  */
 
 /**
+ * AJAX script to store an autosave.
+ *
+ * @ignore
+ */
+function store_autosave()
+{
+    require_code('input_filter_2');
+    modsecurity_workaround_enable();
+
+    prepare_for_known_ajax_response();
+
+    $member_id = get_member();
+    $time = time();
+
+    foreach (array_keys($_POST) as $key) {
+        $value = post_param_string($key);
+
+        $GLOBALS['SITE_DB']->query_insert('autosave', array(
+            // Will duplicate against a_member_id/a_key, but DB space is not an issue - better to have the back-archive of it
+            'a_member_id' => $member_id,
+            'a_key' => $key,
+            'a_value' => $value,
+            'a_time' => $time,
+        ));
+    }
+}
+
+/**
+ * AJAX script to retrieve an autosave.
+ *
+ * @ignore
+ */
+function retrieve_autosave()
+{
+    prepare_for_known_ajax_response();
+
+    header('Content-type: text/xml; charset=' . get_charset());
+
+    $member_id = get_member();
+    $stem = either_param_string('stem');
+
+    require_code('xml');
+
+    header('Content-Type: text/xml');
+    echo '<?xml version="1.0" encoding="' . get_charset() . '"?' . '>';
+    echo '<request><result>' . "\n";
+
+    $rows = $GLOBALS['SITE_DB']->query_select(
+        'autosave',
+        array('a_key', 'a_value'),
+        array('a_member_id' => $member_id),
+        'AND a_key LIKE \'' . db_encode_like($stem) . '%\' ORDER BY a_time DESC'
+    );
+
+    $done = array();
+    foreach ($rows as $row) {
+        if (isset($done[$row['a_key']])) {
+            continue;
+        }
+        echo '<field key="' . xmlentities($row['a_key']) . '" value="' . xmlentities($row['a_value']) . '" />' . "\n";
+        $done[$row['a_key']] = true;
+    }
+
+    echo '</result></request>';
+}
+
+/**
  * Declare that an action succeeded - delete safety autosave cookies.
  */
 function clear_cms_autosave()

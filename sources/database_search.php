@@ -744,7 +744,7 @@ function opensearch_script()
             require_code('search');
 
             header('Content-type: text/plain; charset=' . get_charset());
-            $request = get_param_string('request', false, true);
+            $request = get_param_string('request', false, INPUT_FILTER_GET_COMPLEX);
 
             $suggestions = find_search_suggestions($request);
 
@@ -778,7 +778,7 @@ function opensearch_script()
             echo '],' . "\n";
 
             // URLs to search suggestions
-            $filter = get_param_string('filter', '');
+            $filter = get_param_string('filter', '', INPUT_FILTER_GET_COMPLEX);
             $filter_map = array();
             if ($filter != '') {
                 foreach (explode(':', $filter) as $f) {
@@ -889,7 +889,7 @@ function exact_match_sql($field, $i, $type = 'short', $param = null)
     $table = ' LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'catalogue_efv_' . $type . ' f' . strval($i) . ' ON (f' . strval($i) . '.ce_id=r.id AND f' . strval($i) . '.cf_id=' . strval($field['id']) . ')';
     $search_field = 'f' . strval($i) . '.cv_value';
     if ($param === null) {
-        $param = get_param_string('option_' . strval($field['id']), '');
+        $param = get_param_string('option_' . strval($field['id']), '', INPUT_FILTER_GET_COMPLEX);
     }
     $where_clause = '';
     if ($param != '') {
@@ -917,7 +917,7 @@ function nl_delim_match_sql($field, $i, $type = 'short', $param = null)
     $table = ' LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'catalogue_efv_' . $type . ' f' . strval($i) . ' ON (f' . strval($i) . '.ce_id=r.id AND f' . strval($i) . '.cf_id=' . strval($field['id']) . ')';
     $search_field = 'f' . strval($i) . '.cv_value';
     if ($param === null) {
-        $param = get_param_string('option_' . strval($field['id']), '');
+        $param = get_param_string('option_' . strval($field['id']), '', INPUT_FILTER_GET_COMPLEX);
     }
     $where_clause = '';
     if ($param != '') {

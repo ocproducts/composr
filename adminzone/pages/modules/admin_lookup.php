@@ -126,7 +126,7 @@ class Module_admin_lookup
 
             return do_template('FORM_SCREEN', array('_GUID' => '9cc407037ec01a8f3483746a22889471', 'GET' => true, 'SKIP_WEBSTANDARDS' => true, 'HIDDEN' => '', 'TITLE' => $this->title, 'TEXT' => '', 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'FIELDS' => $fields, 'URL' => $post_url));
         } else {
-            $test = explode(' ', get_param_string('sort', 'date_and_time DESC'), 2);
+            $test = explode(' ', get_param_string('sort', 'date_and_time DESC', INPUT_FILTER_GET_COMPLEX), 2);
             if (count($test) == 1) {
                 $test[1] = 'DESC';
             }

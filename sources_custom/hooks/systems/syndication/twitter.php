@@ -58,7 +58,7 @@ class Hook_syndication_twitter
             exit();
         }
 
-        $response = $twitter->oAuthAccessToken(get_param_string('oauth_token'), get_param_string('oauth_verifier'));
+        $response = $twitter->oAuthAccessToken(get_param_string('oauth_token', false, INPUT_FILTER_GET_COMPLEX), get_param_string('oauth_verifier', false, INPUT_FILTER_GET_COMPLEX));
 
         if (!isset($response['oauth_token'])) {
             attach_message(do_lang_tempcode('TWITTER_OAUTH_FAIL', escape_html($response['message'])), 'warn', false, true);
@@ -136,7 +136,7 @@ class Hook_syndication_twitter
             $shortened_link = http_get_contents('http://is.gd/api.php?longurl=' . urlencode($link));
             $max_length -= strlen($shortened_link) + 1;
         }
-        if (strlen($chopped_message) > $max_length) {
+        if (cms_mb_strlen($chopped_message) > $max_length) {
             $chopped_message = substr($chopped_message, 0, $max_length - 3) . '...';
         }
         if ($link != '') {

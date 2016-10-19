@@ -186,7 +186,7 @@ class Module_cms_quiz extends Standard_crud_module
     {
         require_code('templates_results_table');
 
-        $current_ordering = get_param_string('sort', 'q_name ASC');
+        $current_ordering = get_param_string('sort', 'q_name ASC', INPUT_FILTER_GET_COMPLEX);
         if (strpos($current_ordering, ' ') === false) {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }

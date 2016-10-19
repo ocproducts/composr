@@ -46,7 +46,7 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 }
 require($FILE_BASE . '/sources/global.php');
 
-$file = get_param_string('file', false, true);
+$file = get_param_string('file', false, INPUT_FILTER_GET_COMPLEX);
 $filename = basename($file);
 
 if (strpos($file, '..') !== false) {

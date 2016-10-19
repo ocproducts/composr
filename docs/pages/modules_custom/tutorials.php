@@ -590,7 +590,7 @@ class Module_tutorials
 
         $title = get_screen_title('Tutorials &ndash; Learning Composr', false);
 
-        $tag = get_param_string('type', 'Installation', true); // $type, essentially
+        $tag = get_param_string('type', 'Installation', INPUT_FILTER_GET_COMPLEX); // $type, essentially
 
         $tags = list_tutorial_tags(true, ($tag == '' || $tag == 'browse') ? null : $tag);
 

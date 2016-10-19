@@ -545,7 +545,7 @@ class Module_admin_cns_forums extends Standard_crud_module
 
         $metadata = actual_metadata_get_fields('forum', null);
 
-        $id = strval(cns_make_forum($name, post_param_string('description'), post_param_integer('forum_grouping_id'), null, $parent_forum, post_param_order_field(), post_param_integer('post_count_increment', 0), post_param_integer('order_sub_alpha', 0), post_param_string('intro_question'), post_param_string('intro_answer'), post_param_string('redirection'), post_param_string('topic_order'), post_param_integer('is_threaded', 0), post_param_integer('allows_anonymous_posts', 0)));
+        $id = strval(cns_make_forum($name, post_param_string('description'), post_param_integer('forum_grouping_id'), null, $parent_forum, post_param_order_field(), post_param_integer('post_count_increment', 0), post_param_integer('order_sub_alpha', 0), post_param_string('intro_question'), post_param_string('intro_answer'), post_param_string('redirection', false, INPUT_FILTER_URL_GENERAL), post_param_string('topic_order'), post_param_integer('is_threaded', 0), post_param_integer('allows_anonymous_posts', 0)));
 
         set_url_moniker('forum', $id);
 
@@ -615,7 +615,7 @@ class Module_admin_cns_forums extends Standard_crud_module
             post_param_integer('order_sub_alpha', fractional_edit() ? INTEGER_MAGIC_NULL : 0),
             post_param_string('intro_question', STRING_MAGIC_NULL),
             post_param_string('intro_answer', STRING_MAGIC_NULL),
-            post_param_string('redirection', STRING_MAGIC_NULL),
+            post_param_string('redirection', STRING_MAGIC_NULL, INPUT_FILTER_URL_GENERAL),
             post_param_string('topic_order', STRING_MAGIC_NULL),
             post_param_integer('is_threaded', fractional_edit() ? INTEGER_MAGIC_NULL : 0),
             post_param_integer('allows_anonymous_posts', fractional_edit() ? INTEGER_MAGIC_NULL : 0),

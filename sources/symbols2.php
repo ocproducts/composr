@@ -2358,15 +2358,6 @@ function ecv2_RATING($lang, $escaped, $param)
                 } else {
                     $value = isset($rating['ALL_RATING_CRITERIA'][key($rating['ALL_RATING_CRITERIA'])]['RATING']) ? $rating['ALL_RATING_CRITERIA'][key($rating['ALL_RATING_CRITERIA'])]['RATING'] : '';
                 }
-            } else {
-                if ((!array_key_exists(2, $param)) || ($param[2] == '0')) {
-                    $value = isset($rating['ALL_RATING_CRITERIA'][0]['RATING']) ? $rating['ALL_RATING_CRITERIA'][0]['RATING'] : '';
-                } else {
-                    $value = do_template('RATING_INLINE_STATIC', $rating);
-                }
-                if (is_object($value)) {
-                    $value = $value->evaluate();
-                }
             }
 
             $cache_rating[$cache_key] = $value;
@@ -2406,7 +2397,9 @@ function ecv2_NUM_RATINGS($lang, $escaped, $param)
         } else {
             require_code('feedback');
             $rating = get_rating_simple_array(array_key_exists(3, $param) ? $param[3] : get_self_url(true), array_key_exists(4, $param) ? $param[4] : (($DISPLAYED_TITLE === null) ? '' : $DISPLAYED_TITLE->evaluate()), $param[0], $param[1], array_key_exists(5, $param) ? $param[5] : 'RATING_FORM', array_key_exists(2, $param) ? $param[2] : null);
-            $value = $rating['ALL_RATING_CRITERIA'][key($rating['ALL_RATING_CRITERIA'])]['NUM_RATINGS'];
+            if ($rating !== null) {
+                $value = $rating['ALL_RATING_CRITERIA'][key($rating['ALL_RATING_CRITERIA'])]['NUM_RATINGS'];
+            }
 
             $cache_num_ratings[$cache_key] = $value;
         }

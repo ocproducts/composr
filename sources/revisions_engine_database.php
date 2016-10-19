@@ -350,7 +350,7 @@ class RevisionEngineDatabase
         $max = get_param_integer('revisions_max', 25);
 
         $sortables = array('log_time' => do_lang_tempcode('DATE'));
-        $test = explode(' ', get_param_string('revisions_sort', 'log_time DESC'), 2);
+        $test = explode(' ', get_param_string('revisions_sort', 'log_time DESC', INPUT_FILTER_GET_COMPLEX), 2);
         if (count($test) == 1) {
             $test[1] = 'DESC';
         }
@@ -449,7 +449,7 @@ class RevisionEngineDatabase
         $max = get_param_integer('revisions_max', 5);
 
         $sortables = array('log_time' => do_lang_tempcode('DATE'));
-        $test = explode(' ', get_param_string('revisions_sort', 'log_time DESC'), 2);
+        $test = explode(' ', get_param_string('revisions_sort', 'log_time DESC', INPUT_FILTER_GET_COMPLEX), 2);
         if (count($test) == 1) {
             $test[1] = 'DESC';
         }

@@ -51,7 +51,7 @@ require($FILE_BASE . '/sources/global.php');
 
 require_code('multi_site_networks');
 
-$redir_url = get_param_string('url', '');
+$redir_url = get_param_string('url', '', INPUT_FILTER_URL_GENERAL);
 if (strpos($redir_url, '://') === false) {
     $redir_url = base64_decode($redir_url);
 }

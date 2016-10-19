@@ -74,7 +74,7 @@ function phase_0()
         $on_disk_version_parts[$last] = strval(intval($on_disk_version_parts[$last]) - 1);
         $on_disk_version_previous = implode('.', $on_disk_version_parts);
 
-        $changes .= ' For a list of the more important fixes, see the [url="bugs catalogue"]http://compo.sr/tracker/search.php?project_id=1&product_version=' . $on_disk_version_previous . '[/url]. For all changes, see the [url="git history"]http://github.com/ocproducts/composr/commits/' . $on_disk_version_previous . '[/url].';
+        $changes .= ' For a list of the more important fixes, see the [url="bugs catalogue"]http://compo.sr/tracker/search.php?project_id=1&product_version=' . urlencode($on_disk_version_previous) . '[/url]. For all changes, see the [url="git history"]http://github.com/ocproducts/composr/commits/' . $on_disk_version_previous . '[/url].';
     }
     if (strpos($release_description, 'gold') !== false) {
         $changes = 'TODO';
@@ -386,6 +386,7 @@ function phase_2()
                 <li>Do a git pull of the latest branch onto the server</li>
                 <li>Make sure things are working on the server</li>
                 <li>Re-open the site on the server</li>
+                <li>Make sure the history on the vision page is up-to-date</li>
             </ul>
 
             <li><strong>Addons</strong>:<ul>

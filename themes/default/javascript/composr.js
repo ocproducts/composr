@@ -2628,6 +2628,12 @@
                             if ($cms.dom.html(iframe.contentWindow.document.body).length > 300) {// Loaded now
                                 iframe.contentWindow.document.body.done_popup_trans = true;
                             }
+                        } else
+                        {
+                            if (has_iframe_loaded(iframe) && !has_iframe_ownership(iframe)) {
+                                iframe.scrolling='yes';
+                                iframe.style.height='500px';
+                            }
                         }
 
                         // Handle iframe sizing
@@ -3739,7 +3745,7 @@
             if (xhr.responseText && xhr.responseText.includes('<html')) {
                 console.log(xhr);
 
-                fauxmodal_alert(xhr.responseText, null, '{!ERROR_OCCURRED;}', true);
+                fauxmodal_alert(xhr.responseText, null, '{!ERROR_OCCURRED;^}', true);
             }
         }
     }
@@ -4118,14 +4124,14 @@ function confirm_session(callback) {
         }
 
         // But non blank tells us the username, and there is an implication that no session is confirmed for this login
-        if (ret.responseText === '{!GUEST;}') {// Hmm, actually whole login was lost, so we need to ask for username too
+        if (ret.responseText === '{!GUEST;^}') {// Hmm, actually whole login was lost, so we need to ask for username too
             window.fauxmodal_prompt(
                 '{!USERNAME;^}',
                 '',
                 function (promptt) {
                     _confirm_session(callback, promptt, url);
                 },
-                '{!_LOGIN;}'
+                '{!_LOGIN;^}'
             );
             return;
         }
@@ -4150,7 +4156,7 @@ function confirm_session(callback) {
                     callback(false);
                 }
             },
-            '{!_LOGIN;}',
+            '{!_LOGIN;^}',
             'password'
         );
     }
@@ -5106,11 +5112,11 @@ function ga_track(ob, category, action) {
     }
 
     if (category === undefined) {
-        category = '{!URL;}';
+        category = '{!URL;^}';
     }
 
     if (action === undefined) {
-        action = ob ? ob.href : '{!UNKNOWN;}';
+        action = ob ? ob.href : '{!UNKNOWN;^}';
     }
 
     try {
@@ -5299,7 +5305,7 @@ function play_self_audio_link(ob) {
 
 /*
 
- This file does a lot of stuff relating to overlays...
+ This code does a lot of stuff relating to overlays...
 
  It provides callback-based *overlay*-driven substitutions for the standard browser windowing API...
  - alert
@@ -5416,7 +5422,7 @@ function _open_image_into_lightbox(initial_img_url, description, x, n, has_full_
 				<p id="lightbox_meta" style="display: none" class="associated_link associated_links_block_group"> \
 					<span id="lightbox_description">' + description + '</span> \
 					' + ((n === null) ? '' : ('<span id="lightbox_position_in_set"><span id="lightbox_position_in_set_x">' + x + '</span> / <span id="lightbox_position_in_set_n">' + n + '</span></span>')) + ' \
-					' + (is_video ? '' : ('<span id="lightbox_full_link"><a href="' + escape_html(initial_img_url) + '" target="_blank" title="{$STRIP_TAGS;,{!SEE_FULL_IMAGE}} {!LINK_NEW_WINDOW;}">{!SEE_FULL_IMAGE;}</a></span>')) + ' \
+					' + (is_video ? '' : ('<span id="lightbox_full_link"><a href="' + escape_html(initial_img_url) + '" target="_blank" title="{$STRIP_TAGS;^,{!SEE_FULL_IMAGE}} {!LINK_NEW_WINDOW;^}">{!SEE_FULL_IMAGE;^}</a></span>')) + ' \
 				</p> \
 			</div> \
 		';
@@ -5538,7 +5544,7 @@ function _resize_lightbox_dimensions_img(modal, img, has_full_button, is_video) 
 
 
 function fauxmodal_confirm(question, callback, title, unescaped) {
-    title || (title = '{!Q_SURE;}');
+    title || (title = '{!Q_SURE;^}');
     unescaped = !!unescaped;
 
     if (!$cms.$CONFIG_OPTION.js_overlays) {
@@ -5776,7 +5782,7 @@ function faux_open(url, name, options, target, cancel_text) {
                 var load_more_link = document.createElement('div');
                 load_more_link.className = 'pagination_load_more';
                 var load_more_link_a = document.createElement('a');
-                $cms.dom.html(load_more_link_a, '{!LOAD_MORE;}');
+                $cms.dom.html(load_more_link_a, '{!LOAD_MORE;^}');
                 load_more_link_a.href = '#!';
                 load_more_link_a.onclick = function () {
                     internalise_infinite_scrolling_go(url_stem, wrapper, more_links);
@@ -6477,7 +6483,7 @@ function set_field_error(the_element, error_msg) {
                     var p = errormsg_element;
                     while (p !== null) {
                         p = p.parentNode;
-                        if ((error_msg.substr(0, 5) != '{!DISABLED_FORM_FIELD;}'.substr(0, 5)) && (p) && (p.getAttribute !== undefined) && (p.getAttribute('id')) && (p.getAttribute('id').substr(0, 2) == 'g_') && (p.style.display == 'none')) {
+                        if ((error_msg.substr(0, 5) != '{!DISABLED_FORM_FIELD;^}'.substr(0, 5)) && (p) && (p.getAttribute !== undefined) && (p.getAttribute('id')) && (p.getAttribute('id').substr(0, 2) == 'g_') && (p.style.display == 'none')) {
                             select_tab('g', p.getAttribute('id').substr(2, p.id.length - 2), false, true);
                             break;
                         }
@@ -6566,7 +6572,7 @@ function do_form_preview(event, form, preview_url, has_separate_preview) {
     has_separate_preview = !!has_separate_preview;
 
     if (!$cms.dom.id('preview_iframe')) {
-        fauxmodal_alert('{!ADBLOCKER;}');
+        fauxmodal_alert('{!ADBLOCKER;^}');
         return false;
     }
 

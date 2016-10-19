@@ -102,17 +102,16 @@ class Block_menu
         $javascript_highlighting = ((isset($map['javascript_highlighting']) ? $map['javascript_highlighting'] : '1') == '1');
 
         require_code('menus');
-        $menu = build_menu($type, $menu, $silent_failure, !$javascript_highlighting);
-        $menu->handle_symbol_preprocessing(); // Optimisation: we are likely to have lots of page-links in here, so we want to spawn them to be detected for mass moniker loading
-
-        $menu = apply_quick_caching($menu);
-        $LANGS_REQUESTED = $bak; // We've flatten with apply_quick_caching, we don't need to load up all those language files next time
+        list($content, $root) = build_menu($type, $menu, $silent_failure, !$javascript_highlighting);
+        if (strpos(serialize($root), 'keep_') === false) {
+            $LANGS_REQUESTED = $bak; // We've flattened with apply_quick_caching, we don't need to load up all those language files next time
+        }
 
         if ($title != '') {
-            $menu = do_template('BLOCK_MENU', array(
+            $content = do_template('BLOCK_MENU', array(
                 '_GUID' => 'ae46aa37a9c5a526f43b26a391164436',
                 'BLOCK_ID' => $block_id,
-                'CONTENT' => $menu,
+                'CONTENT' => $content,
                 'TYPE' => $type,
                 'PARAM' => $menu,
                 'TRAY_STATUS' => $tray_status,
@@ -121,7 +120,7 @@ class Block_menu
             ));
         }
 
-        return $menu;
+        return $content;
     }
 }
 

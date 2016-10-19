@@ -175,7 +175,7 @@ class Module_admin_community_billboard extends Standard_crud_module
     {
         require_code('templates_results_table');
 
-        $current_ordering = get_param_string('sort', 'the_message ASC');
+        $current_ordering = get_param_string('sort', 'the_message ASC', INPUT_FILTER_GET_COMPLEX);
         if (strpos($current_ordering, ' ') === false) {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }

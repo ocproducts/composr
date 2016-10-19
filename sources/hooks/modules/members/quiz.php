@@ -65,7 +65,7 @@ class Hook_members_quiz
         require_code('quiz');
 
         // Sorting
-        $order = get_param_string('sort_quiz_results', 'q_time DESC', true);
+        $order = get_param_string('sort_quiz_results', 'q_time DESC', INPUT_FILTER_GET_COMPLEX);
         $_selectors = array(
             'q_name ASC' => 'ALPHABETICAL_FORWARD',
             'q_name DESC' => 'ALPHABETICAL_BACKWARD',

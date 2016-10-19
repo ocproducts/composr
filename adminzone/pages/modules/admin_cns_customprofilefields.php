@@ -215,7 +215,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
         } else {
             $hidden->attach(form_input_hidden('type', $type));
         }
-        $fields->attach(form_input_line(do_lang_tempcode('FIELD_OPTIONS'), do_lang_tempcode('DESCRIPTION_FIELD_OPTIONS'), 'options', $options, false));
+        $fields->attach(form_input_line(do_lang_tempcode('FIELD_OPTIONS'), do_lang_tempcode('DESCRIPTION_FIELD_OPTIONS', escape_html(get_tutorial_url('tut_fields'))), 'options', $options, false));
 
         if ($locked == 0 || $allow_full_edit) {
             $fields->attach(form_input_tick(do_lang_tempcode('REQUIRED'), do_lang_tempcode('DESCRIPTION_REQUIRED'), 'required', $required == 1));
@@ -257,7 +257,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
     {
         require_code('templates_results_table');
         $form_id = 'selection_table';
-        $current_ordering = get_param_string('sort', 'cf_order ASC');
+        $current_ordering = get_param_string('sort', 'cf_order ASC', INPUT_FILTER_GET_COMPLEX);
         if (strpos($current_ordering, ' ') === false) {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }

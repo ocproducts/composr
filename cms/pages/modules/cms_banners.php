@@ -217,7 +217,7 @@ class Module_cms_banners extends Standard_crud_module
     {
         require_code('templates_results_table');
 
-        $current_ordering = get_param_string('sort', 'b_type ASC');
+        $current_ordering = get_param_string('sort', 'b_type ASC', INPUT_FILTER_GET_COMPLEX);
         if (strpos($current_ordering, ' ') === false) {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
@@ -419,7 +419,7 @@ class Module_cms_banners extends Standard_crud_module
         $caption = post_param_string('caption');
         $direct_code = post_param_string('direct_code', '');
         $campaignremaining = post_param_integer('campaignremaining', 0);
-        $site_url = fixup_protocolless_urls(post_param_string('site_url', ''));
+        $site_url = fixup_protocolless_urls(post_param_string('site_url', '', INPUT_FILTER_URL_GENERAL));
         $importancemodulus = post_param_integer('importancemodulus', 3);
         $notes = post_param_string('notes', '');
         $the_type = post_param_integer('the_type', 1);
@@ -486,7 +486,7 @@ class Module_cms_banners extends Standard_crud_module
 
         $metadata = actual_metadata_get_fields('banner', $id, array(), $new_id);
 
-        edit_banner($id, $new_id, $url, $title_text, post_param_string('caption'), $direct_code, post_param_integer('campaignremaining', 0), fixup_protocolless_urls(post_param_string('site_url')), post_param_integer('importancemodulus'), post_param_string('notes', ''), post_param_integer('the_type', 1), post_param_date('expiry_date'), $metadata['submitter'], $validated, $b_type, $b_types, $regions, $metadata['edit_time'], $metadata['add_time'], true);
+        edit_banner($id, $new_id, $url, $title_text, post_param_string('caption'), $direct_code, post_param_integer('campaignremaining', 0), fixup_protocolless_urls(post_param_string('site_url', false, INPUT_FILTER_URL_GENERAL)), post_param_integer('importancemodulus'), post_param_string('notes', ''), post_param_integer('the_type', 1), post_param_date('expiry_date'), $metadata['submitter'], $validated, $b_type, $b_types, $regions, $metadata['edit_time'], $metadata['add_time'], true);
 
         if ($id != $new_id) {
             unset($_GET['redirect']);
@@ -679,7 +679,7 @@ class Module_cms_banners_cat extends Standard_crud_module
     {
         require_code('templates_results_table');
 
-        $current_ordering = get_param_string('sort', 'id ASC', true);
+        $current_ordering = get_param_string('sort', 'id ASC', INPUT_FILTER_GET_COMPLEX);
         list($sortable, $sort_order) = array(substr($current_ordering, 0, strrpos($current_ordering, ' ')), substr($current_ordering, strrpos($current_ordering, ' ') + 1));
         $sortables = array(
             'id' => do_lang_tempcode('CODENAME'),

@@ -144,7 +144,7 @@ class Module_admin_email_log
             disable_php_memory_limit();
         }
         $sortables = array('m_date_and_time' => do_lang_tempcode('DATE_TIME'), 'm_to_name' => do_lang_tempcode('FROM'), 'm_from_name' => do_lang_tempcode('TO'), 'm_subject' => do_lang_tempcode('SUBJECT'));
-        $test = explode(' ', get_param_string('sort', 'm_date_and_time DESC'), 2);
+        $test = explode(' ', get_param_string('sort', 'm_date_and_time DESC', INPUT_FILTER_GET_COMPLEX), 2);
         if (count($test) == 1) {
             $test[1] = 'DESC';
         }

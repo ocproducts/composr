@@ -212,7 +212,7 @@ class Module_admin_actionlog
         $start = get_param_integer('start', 0);
         $max = get_param_integer('max', 50);
         $sortables = array('date_and_time' => do_lang_tempcode('DATE_TIME'), 'the_type' => do_lang_tempcode('ACTION'));
-        $test = explode(' ', get_param_string('sort', 'date_and_time DESC'), 2);
+        $test = explode(' ', get_param_string('sort', 'date_and_time DESC', INPUT_FILTER_GET_COMPLEX), 2);
         if (count($test) == 1) {
             $test[1] = 'DESC';
         }
@@ -229,8 +229,8 @@ class Module_admin_actionlog
         $fields_title = results_field_title($field_titles, $sortables, 'sort', $sortable . ' ' . $sort_order);
 
         $filter_to_type = get_param_string('to_type', '');
-        $filter_param_a = get_param_string('param_a', '');
-        $filter_param_b = get_param_string('param_b', '');
+        $filter_param_a = get_param_string('param_a', '', INPUT_FILTER_GET_COMPLEX);
+        $filter_param_b = get_param_string('param_b', '', INPUT_FILTER_GET_COMPLEX);
 
         $max_rows = 0;
 

@@ -174,7 +174,7 @@ class Module_admin_debrand
         }
 
         set_value('rebrand_name', post_param_string('rebrand_name'));
-        set_value('rebrand_base_url', post_param_string('rebrand_base_url'));
+        set_value('rebrand_base_url', post_param_string('rebrand_base_url', false, INPUT_FILTER_URL_GENERAL));
         set_value('company_name', post_param_string('company_name'));
         set_option('show_docs', post_param_string('show_docs', '0'));
 
@@ -240,7 +240,7 @@ class Module_admin_debrand
         if ($GLOBALS['CURRENT_SHARE_USER'] === null) { // Only if not a shared install
             $critical_errors = file_get_contents(get_file_base() . '/sources/critical_errors.php');
             $critical_errors = str_replace('Composr', addslashes(post_param_string('rebrand_name')), $critical_errors);
-            $critical_errors = str_replace('http://compo.sr', addslashes(post_param_string('rebrand_base_url')), $critical_errors);
+            $critical_errors = str_replace('http://compo.sr', addslashes(post_param_string('rebrand_base_url', false, INPUT_FILTER_URL_GENERAL)), $critical_errors);
             $critical_errors = str_replace('ocProducts', 'ocProducts/' . addslashes(post_param_string('company_name')), $critical_errors);
             $critical_errors_path = 'sources_custom/critical_errors.php';
 

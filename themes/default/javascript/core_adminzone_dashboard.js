@@ -264,7 +264,7 @@
 
                 $cms.dom.html(element_replace, xhtml);
 
-                window.fauxmodal_alert('{!SUCCESS;}');
+                window.fauxmodal_alert('{!SUCCESS;^}');
 
                 return false; // We've handled it internally
             }

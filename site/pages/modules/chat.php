@@ -617,7 +617,7 @@ class Module_chat
         $posting_name = do_lang_tempcode('SEND_MESSAGE');
         $keep = symbol_tempcode('KEEP');
         $posting_url = find_script('messages') . '?mode=2&room_id=' . strval($room_id) . $keep->evaluate();
-        $messages_link = find_script('messages') . '?room_id=' . strval($room_id) . '&zone=' . get_zone_name() . $keep->evaluate();
+        $messages_link = find_script('messages') . '?room_id=' . strval($room_id) . '&zone=' . urlencode(get_zone_name()) . $keep->evaluate();
         $buttons = new Tempcode();
         $_buttons = array(
             //'url', Bloat
@@ -891,7 +891,7 @@ class Module_chat
             }
             $fields = form_input_hidden('member_id', strval($member_id));
             $map = array('page' => '_SELF', 'type' => get_param_string('type'));
-            $redirect = get_param_string('redirect', '');
+            $redirect = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
             if ($redirect != '') {
                 $map['redirect'] = $redirect;
             }
@@ -927,7 +927,7 @@ class Module_chat
         require_code('chat2');
         blocking_add(get_member(), $member_id);
 
-        $url = get_param_string('redirect', '');
+        $url = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
         if ($url == '') {
             return inform_screen($this->title, do_lang_tempcode('SUCCESS'));
         }
@@ -956,7 +956,7 @@ class Module_chat
         require_code('chat2');
         blocking_remove(get_member(), $member_id);
 
-        $url = get_param_string('redirect', '');
+        $url = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
         if ($url == '') {
             return inform_screen($this->title, do_lang_tempcode('SUCCESS'));
         }
@@ -1003,7 +1003,7 @@ class Module_chat
         require_code('chat2');
         friend_add(get_member(), $member_id);
 
-        $url = get_param_string('redirect', '');
+        $url = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
         if ($url == '') {
             return inform_screen($this->title, do_lang_tempcode('NOW_ADDED_AS_FRIEND', escape_html($username)));
         }
@@ -1053,7 +1053,7 @@ class Module_chat
             friend_remove(get_member(), $member_id);
         }
 
-        $url = get_param_string('redirect', '');
+        $url = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
         if ($url == '') {
             return inform_screen($this->title, do_lang_tempcode('SUCCESS'));
         }
@@ -1119,7 +1119,7 @@ class Module_chat
 
         // We have the messages, now we have to create a nice little text file...
         $keep = symbol_tempcode('KEEP');
-        $mod_url = find_script('download_chat_logs') . '?room=' . strval($room) . '&start=' . strval($start_date_and_time) . '&finish=' . strval($finish_date_and_time) . '&zone=' . get_zone_name() . $keep->evaluate();
+        $mod_url = find_script('download_chat_logs') . '?room=' . strval($room) . '&start=' . strval($start_date_and_time) . '&finish=' . strval($finish_date_and_time) . '&zone=' . urlencode(get_zone_name()) . $keep->evaluate();
 
         return redirect_screen($this->title, $mod_url);
     }
@@ -1170,7 +1170,7 @@ class Module_chat
         $post_url = build_url(array('page' => '_SELF', 'type' => '_set_effects'), '_SELF');
 
         $hidden = new Tempcode();
-        $redirect = get_param_string('redirect', null);
+        $redirect = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
         if ($redirect !== null) {
             $hidden->attach(form_input_hidden('redirect', $redirect));
         }
@@ -1281,7 +1281,7 @@ class Module_chat
             }
         }
 
-        $redirect = post_param_string('redirect', null);
+        $redirect = post_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
         if ($redirect !== null) {
             return redirect_screen($this->title, $redirect, do_lang_tempcode('SUCCESS'));
         }

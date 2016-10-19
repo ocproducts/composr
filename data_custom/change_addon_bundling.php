@@ -46,7 +46,7 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 }
 require($FILE_BASE . '/sources/global.php');
 
-$password = post_param_string('password', null);
+$password = post_param_string('password', null, INPUT_FILTER_NONE);
 if ($password === null) {
     @exit('<form action="#" method="post"><label>Master password <input type="password" name="password" value="" /></label><input class="menu___generic_admin__delete button_screen" type="submit" value="Delete programmed data" /></form>');
 }

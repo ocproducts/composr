@@ -342,7 +342,7 @@ class Module_cms_calendar extends Standard_crud_module
     {
         require_code('templates_results_table');
 
-        $current_ordering = get_param_string('sort', 'e_title ASC', true);
+        $current_ordering = get_param_string('sort', 'e_title ASC', INPUT_FILTER_GET_COMPLEX);
         if (strpos($current_ordering, ' ') === false) {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
@@ -1277,7 +1277,7 @@ class Module_cms_calendar extends Standard_crud_module
 
         require_code('calendar_ical');
 
-        $ical_url = post_param_string('ical_feed_url', null);
+        $ical_url = post_param_string('ical_feed_url', null, INPUT_FILTER_URL_GENERAL);
 
         require_code('uploads');
         if (((is_plupload(true)) && (array_key_exists('file_anytype', $_FILES))) || ((array_key_exists('file_anytype', $_FILES)) && (is_uploaded_file($_FILES['file_anytype']['tmp_name'])))) {
@@ -1405,7 +1405,7 @@ class Module_cms_calendar_cat extends Standard_crud_module
     {
         require_code('templates_results_table');
 
-        $current_ordering = get_param_string('sort', 't_title ASC', true);
+        $current_ordering = get_param_string('sort', 't_title ASC', INPUT_FILTER_GET_COMPLEX);
         if (strpos($current_ordering, ' ') === false) {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }

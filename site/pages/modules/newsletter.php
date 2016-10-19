@@ -312,7 +312,7 @@ class Module_newsletter
         $forename = '';
         $surname = '';
         if (!is_guest()) {
-            $their_email = get_param_string('email', $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member()));
+            $their_email = get_param_string('email', $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member()), INPUT_FILTER_GET_COMPLEX);
             $username = $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true);
             $parts = explode(' ', $username);
             if (count($parts) >= 2) {
@@ -328,7 +328,7 @@ class Module_newsletter
                 $surname = $existing_record[0]['n_surname'];
             }*/
         } else {
-            $their_email = get_param_string('email', '');
+            $their_email = get_param_string('email', '', INPUT_FILTER_GET_COMPLEX);
         }
 
         $message = get_option('newsletter_text');
@@ -396,10 +396,10 @@ class Module_newsletter
 
         // Add
         $email = trim(post_param_string('email'));
-        $password = trim(post_param_string('password', ''));
+        $password = trim(post_param_string('password', '', INPUT_FILTER_NONE));
         $forename = trim(post_param_string('forename'));
         $surname = trim(post_param_string('surname'));
-        if ($password != trim(post_param_string('password_confirm', ''))) {
+        if ($password != trim(post_param_string('password_confirm', '', INPUT_FILTER_NONE))) {
             warn_exit(make_string_tempcode(escape_html(do_lang('PASSWORD_MISMATCH'))));
         }
         $language = post_param_string('lang', user_lang());
@@ -486,7 +486,7 @@ class Module_newsletter
     {
         require_code('crypt');
 
-        $email = trim(get_param_string('email'));
+        $email = trim(get_param_string('email', false, INPUT_FILTER_GET_COMPLEX));
         $language = $GLOBALS['SITE_DB']->query_select_value('newsletter_subscribers', 'language', array('email' => $email));
         $salt = $GLOBALS['SITE_DB']->query_select_value('newsletter_subscribers', 'pass_salt', array('email' => $email));
         $new_password = produce_salt();
@@ -559,7 +559,7 @@ class Module_newsletter
     public function newsletter_confirm_joining()
     {
         $code_confirm = get_param_integer('confirm');
-        $email = trim(get_param_string('email'));
+        $email = trim(get_param_string('email', false, INPUT_FILTER_GET_COMPLEX));
         $correct_confirm = $GLOBALS['SITE_DB']->query_select_value('newsletter_subscribers', 'code_confirm', array('email' => $email));
         if ($correct_confirm == $code_confirm) {
             $GLOBALS['SITE_DB']->query_update('newsletter_subscribers', array('code_confirm' => 0), array('email' => $email), '', 1);

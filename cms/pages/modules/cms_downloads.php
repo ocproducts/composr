@@ -263,7 +263,7 @@ class Module_cms_downloads extends Standard_crud_module
 
         set_mass_import_mode();
 
-        $server_url = post_param_string('server_url');
+        $server_url = post_param_string('server_url', false, INPUT_FILTER_URL_GENERAL);
         $subfolders = post_param_integer('subfolders', 0);
 
         require_code('tasks');
@@ -563,7 +563,7 @@ class Module_cms_downloads extends Standard_crud_module
         $name = post_param_string('name');
         $description = post_param_string('description');
         $author = post_param_string('author', get_site_name());
-        $url_redirect = post_param_string('url_redirect');
+        $url_redirect = post_param_string('url_redirect', false, INPUT_FILTER_URL_GENERAL);
         $_out_mode_id = post_param_string('out_mode_id', '');
         $out_mode_id = ($_out_mode_id == '') ? null : intval($_out_mode_id);
         $_licence = post_param_string('licence', '');
@@ -606,7 +606,7 @@ class Module_cms_downloads extends Standard_crud_module
 
         $this->donext_type = $category_id;
 
-        if ((get_param_string('redirect', null) !== null) && (addon_installed('galleries'))) {
+        if ((get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL) !== null) && (addon_installed('galleries'))) {
             $redirect_url = build_url(array('page' => 'downloads', 'type' => 'entry', 'id' => $id), get_module_zone('downloads'));
             $add_image_url = build_url(array('page' => 'cms_galleries', 'type' => 'add', 'cat' => 'download_' . strval($id), 'redirect' => $redirect_url->evaluate()), get_module_zone('cms_galleries'));
             $this->do_next_description = do_lang_tempcode('DOWNLOAD_ADDED', escape_html($add_image_url->evaluate()));
@@ -669,7 +669,7 @@ class Module_cms_downloads extends Standard_crud_module
 
         $description = post_param_string('description', STRING_MAGIC_NULL);
         $author = post_param_string('author', STRING_MAGIC_NULL);
-        $url_redirect = post_param_string('url_redirect', STRING_MAGIC_NULL);
+        $url_redirect = post_param_string('url_redirect', STRING_MAGIC_NULL, INPUT_FILTER_URL_GENERAL);
         $additional_details = post_param_string('additional_details', STRING_MAGIC_NULL);
         $default_pic = post_param_integer('default_pic', fractional_edit() ? INTEGER_MAGIC_NULL : 1);
         if (addon_installed('galleries')) {

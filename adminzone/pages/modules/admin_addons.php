@@ -545,7 +545,7 @@ class Module_admin_addons
 
         $url_map = array('page' => '_SELF', 'type' => 'multi_action');
 
-        $__url = post_param_string('url', '');
+        $__url = post_param_string('url', '', INPUT_FILTER_URL_GENERAL);
         foreach (explode(',', $__url) as $i => $url) {
             if (is_numeric($url)) {
                 $_POST['url'] = 'http://compo.sr/site/dload.php?id=' . $url;
@@ -712,7 +712,7 @@ class Module_admin_addons
     {
         appengine_live_guard();
 
-        $file = get_param_string('file');
+        $file = get_param_string('file', false, INPUT_FILTER_GET_COMPLEX);
         list($warnings, $files, $info) = inform_about_addon_install($file);
 
         $url = build_url(array('page' => '_SELF', 'type' => '_addon_install'), '_SELF');
@@ -1206,7 +1206,7 @@ class Module_admin_addons
         // Show it worked / Refresh
         $_url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');
         $url = $_url->evaluate();
-        $url = get_param_string('redirect', $url);
+        $url = get_param_string('redirect', $url, INPUT_FILTER_URL_INTERNAL);
         return redirect_screen($this->title, $url, do_lang_tempcode('ADDON_CREATED', escape_html($download_url)));
     }
 

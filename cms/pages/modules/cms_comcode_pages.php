@@ -310,7 +310,7 @@ class Module_cms_comcode_pages
         $text = paragraph(do_lang_tempcode('CHOOSE_EDIT_TABLE_EXTRA_COMCODE_PAGES', escape_html($search_url->evaluate()), escape_html($archive_url->evaluate()), escape_html($sitemap_url->evaluate())));
 
         // Sorting
-        $current_ordering = get_param_string('sort', 'page ASC');
+        $current_ordering = get_param_string('sort', 'page ASC', INPUT_FILTER_GET_COMPLEX);
         if (strpos($current_ordering, ' ') === false) {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
@@ -851,7 +851,7 @@ class Module_cms_comcode_pages
         $hidden_fields->attach(form_input_hidden('file', $file));
         $hidden_fields->attach(form_input_hidden('lang', $lang));
         $hidden_fields->attach(form_input_hidden('zone', $zone));
-        $hidden_fields->attach(form_input_hidden('redirect', get_param_string('redirect', '')));
+        $hidden_fields->attach(form_input_hidden('redirect', get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL)));
 
         $posting_form = get_posting_form(do_lang(($file == '') ? 'COMCODE_PAGE_ADD' : 'SAVE'), ($file == '') ? 'menu___generic_admin__add_one' : 'menu___generic_admin__edit_this', $contents, $post_url, $hidden_fields, $fields, do_lang_tempcode('COMCODE_PAGE'), '', $fields2, $parsed, null, null, false);
 
@@ -1001,7 +1001,7 @@ class Module_cms_comcode_pages
             }
         }
         $completion_text = ($validated == 0) ? do_lang_tempcode('SUBMIT_UNVALIDATED', 'comcode_page') : do_lang_tempcode('SUCCESS');
-        $url = post_param_string('redirect', '');
+        $url = post_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
         if ($url != '') {
             return redirect_screen($this->title, $url, $completion_text);
         }
@@ -1135,14 +1135,14 @@ class Module_cms_comcode_pages
                 $page_contents = get_translated_text($page['string_index']);
             } else {
                 $located = _request_page($page['the_page'], $page['the_zone']);
-                if ($located === false) {
-                    $page_contents = '';
-                } else {
+                if ($located !== false && $located[0] != 'REDIRECT') {
                     $path = get_custom_file_base() . '/' . $located[4];
                     if (!is_file($path)) {
                         $path = get_file_base() . '/' . $located[4];
                     }
                     $page_contents = file_get_contents($path);
+                } else {
+                    $page_contents = '';
                 }
             }
             if (!empty($page_contents)) {

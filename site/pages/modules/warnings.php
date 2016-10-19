@@ -538,7 +538,7 @@ class Module_warnings extends Standard_crud_module
     {
         require_code('templates_results_table');
 
-        $current_ordering = get_param_string('sort', 'w_time DESC', true);
+        $current_ordering = get_param_string('sort', 'w_time DESC', INPUT_FILTER_GET_COMPLEX);
         if (strpos($current_ordering, ' ') === false) {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
@@ -831,7 +831,7 @@ class Module_warnings extends Standard_crud_module
             }
         }
 
-        if (get_param_string('redirect', '') == '') {
+        if (get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL) == '') {
             require_code('site2');
             assign_refresh($GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true), 0.0);
         }
@@ -848,7 +848,7 @@ class Module_warnings extends Standard_crud_module
     {
         $member_id = cns_edit_warning(intval($id), post_param_string('explanation'), post_param_integer('is_warning', 0));
 
-        if (get_param_string('redirect', '') == '') {
+        if (get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL) == '') {
             require_code('site2');
             assign_refresh($GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true), 0.0);
         }
@@ -878,7 +878,7 @@ class Module_warnings extends Standard_crud_module
     {
         $member_id = cns_delete_warning(intval($id));
 
-        if (get_param_string('redirect', '') == '') {
+        if (get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL) == '') {
             require_code('site2');
             assign_refresh($GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true), 0.0);
         }

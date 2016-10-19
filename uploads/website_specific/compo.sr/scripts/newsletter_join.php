@@ -37,8 +37,8 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 }
 require($FILE_BASE . '/sources/global.php');
 
-$url = get_param_string('url');
-$email = get_param_string('email');
+$url = get_param_string('url', false, INPUT_FILTER_URL_GENERAL);
+$email = get_param_string('email', false, INPUT_FILTER_GET_COMPLEX);
 $advertise_on = get_param_integer('advertise_on', 0);
 $lang = get_param_string('lang');
 

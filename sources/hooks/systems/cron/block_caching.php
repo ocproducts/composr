@@ -69,12 +69,14 @@ class Hook_cron_block_caching
             }
 
             if (is_object($object)) {
-                global $LANGS_REQUESTED, $LANGS_REQUESTED, $DO_NOT_CACHE_THIS, $TIMEZONE_MEMBER_CACHE, $JAVASCRIPTS, $CSSS;
+                global $LANGS_REQUESTED, $LANGS_REQUESTED, $DO_NOT_CACHE_THIS, $TIMEZONE_MEMBER_CACHE, $JAVASCRIPTS, $CSSS, $REQUIRED_ALL_LANG;
 
                 $backup_langs_requested = $LANGS_REQUESTED;
+                $backup_required_all_lang = $REQUIRED_ALL_LANG;
                 get_users_timezone();
                 $backup_timezone = $TIMEZONE_MEMBER_CACHE[get_member()];
                 $LANGS_REQUESTED = array();
+                $REQUIRED_ALL_LANG = array();
                 push_output_state(false, true);
                 $cache = $object->run($map);
                 $TIMEZONE_MEMBER_CACHE[get_member()] = $backup_timezone;
@@ -114,6 +116,7 @@ class Hook_cron_block_caching
                     put_into_cache($codename, $ttl, $cache_identifier, $request['c_staff_status'], $request['c_member'], $request['c_groups'], $request['c_is_bot'], $request['c_timezone'], $cache, array_keys($LANGS_REQUESTED), array_keys($JAVASCRIPTS), array_keys($CSSS), true);
                 }
                 $LANGS_REQUESTED += $backup_langs_requested;
+                $REQUIRED_ALL_LANG += $backup_required_all_lang;
                 restore_output_state(false, true);
             }
 

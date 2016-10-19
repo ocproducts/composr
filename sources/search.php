@@ -79,7 +79,7 @@ abstract class FieldsSearchHook
             $temp = $ob->get_search_inputter($row);
             if ($temp === null) {
                 $type = '_TEXT';
-                $special = get_param_string('option_' . strval($row['id']), '');
+                $special = get_param_string('option_' . strval($row['id']), '', INPUT_FILTER_GET_COMPLEX);
                 $extra = '';
                 $display = get_translated_text($row['cf_name']);
                 $fields[] = array('NAME' => strval($row['id']) . $extra, 'DISPLAY' => $display, 'TYPE' => $type, 'SPECIAL' => $special);
@@ -191,7 +191,7 @@ abstract class FieldsSearchHook
                     if (method_exists($ob, 'get_search_filter_from_env')) {
                         $param = $ob->get_search_filter_from_env($field);
                     } else {
-                        $param = get_param_string('option_' . strval($field['id']), '');
+                        $param = get_param_string('option_' . strval($field['id']), '', INPUT_FILTER_GET_COMPLEX);
                     }
 
                     if ($param != '') {
@@ -559,7 +559,7 @@ function do_search_block($map)
             if (array_key_exists('special_on', $info)) {
                 foreach ($info['special_on'] as $name => $display) {
                     $_name = 'option_' . $id . '_' . $name;
-                    $options[$_name] = array('SEARCH_FOR_SEARCH_DOMAIN_OPTION', array('CHECKED' => (get_param_string('content', null) === null) || (get_param_integer($_name, 0) == 1), 'DISPLAY' => $display));
+                    $options[$_name] = array('SEARCH_FOR_SEARCH_DOMAIN_OPTION', array('CHECKED' => (get_param_string('content', null, INPUT_FILTER_GET_COMPLEX) === null) || (get_param_integer($_name, 0) == 1), 'DISPLAY' => $display));
                 }
             }
             if (array_key_exists('special_off', $info)) {

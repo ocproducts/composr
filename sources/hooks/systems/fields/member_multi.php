@@ -47,7 +47,7 @@ class Hook_fields_member_multi
      */
     public function inputted_to_sql_for_search($field, $i)
     {
-        $param = get_param_string('option_' . strval($field['id']), '');
+        $param = get_param_string('option_' . strval($field['id']), '', INPUT_FILTER_GET_COMPLEX);
         if ($param != '' && !is_numeric($param)) {
             $_member = $GLOBALS['FORUM_DRIVER']->get_member_from_username($param);
             if ($_member === null) {

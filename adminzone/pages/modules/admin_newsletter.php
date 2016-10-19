@@ -403,7 +403,7 @@ class Module_admin_newsletter extends Standard_crud_module
         require_code('form_templates');
 
         $username = post_param_string('username');
-        $password = post_param_string('password');
+        $password = post_param_string('password', false, INPUT_FILTER_NONE);
         $server = post_param_string('server');
         $port = post_param_integer('port');
 
@@ -439,7 +439,7 @@ class Module_admin_newsletter extends Standard_crud_module
         require_code('form_templates');
 
         $username = post_param_string('username');
-        $password = post_param_string('password');
+        $password = post_param_string('password', false, INPUT_FILTER_NONE);
         $server = post_param_string('server');
         $port = post_param_integer('port');
         $box = post_param_string('box');
@@ -1609,7 +1609,7 @@ class Module_admin_newsletter extends Standard_crud_module
     {
         require_code('templates_results_table');
 
-        $current_ordering = get_param_string('sort', 'title ASC', true);
+        $current_ordering = get_param_string('sort', 'title ASC', INPUT_FILTER_GET_COMPLEX);
         list($sortable, $sort_order) = array(substr($current_ordering, 0, strrpos($current_ordering, ' ')), substr($current_ordering, strrpos($current_ordering, ' ') + 1));
         $sortables = array(
             'title' => do_lang_tempcode('TITLE'),

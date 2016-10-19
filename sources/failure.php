@@ -1047,6 +1047,7 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
         (strpos($text, 'has been disabled for security reasons') === false) &&
         (strpos($text, 'max_questions')/*mysql limit*/ === false) &&
         (strpos($text, 'Error at offset') === false) &&
+        (strpos($text, 'gd-png: fatal libpng error') === false) &&
         (strpos($text, 'No word lists can be found for the language &quot;en&quot;') === false) &&
         (strpos($text, 'Unable to allocate memory for pool') === false) &&
         (strpos($text, 'Out of memory') === false) &&
@@ -1059,6 +1060,7 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
         (strpos($text, 'Lost connection to MySQL server') === false) &&
         (strpos($text, 'The SELECT would examine more than MAX_JOIN_SIZE rows') === false) &&
         (strpos($text, 'Unable to save result set') === false) &&
+        (strpos($text, 'Deadlock found when trying to get lock; try restarting transaction') === false) &&
         (strpos($text, 'MySQL client ran out of memory') === false) &&
         (strpos($text, '.MAI') === false) && // MariaDB
         (strpos($text, '.MAD') === false) && // MariaDB
@@ -1072,6 +1074,7 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
         (strpos($text, 'Error writing file') === false) && // E.g. cannot PHP create a temporary file
         (strpos($text, 'possibly out of free disk space') === false) && 
         (strpos($text, 'Illegal mix of collations') === false) &&
+        (strpos($text, 'The MySQL server is running with the --read-only option so it cannot execute this statement') === false) &&
         (strpos($text, 'marked as crashed and should be repaired') === false) &&
         (strpos($text, 'connect to') === false) &&
         (strpos($text, 'Access denied for') === false) &&

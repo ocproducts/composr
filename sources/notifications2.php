@@ -203,7 +203,7 @@ function notifications_ui($member_id_of)
         $tmp_file = file_get_contents($css_path);
         $matches = array();
         if (preg_match('#(\s|\})th[\s,][^\}]*(\s|\{)background-color:\s*\#([\dA-Fa-f]*);color:\s*\#([\dA-Fa-f]*);#sU', $tmp_file, $matches) != 0) {
-            $color = $matches[3] . '&fg_color=' . $matches[4];
+            $color = $matches[3] . '&fg_color=' . urlencode($matches[4]);
         }
     }
 
@@ -297,7 +297,7 @@ function notifications_ui_advanced($notification_code, $enable_message = null, $
             attach_message(do_lang_tempcode('SUCCESS'), 'inform');
 
             // Redirect them back
-            $redirect = get_param_string('redirect', null);
+            $redirect = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
             if ($redirect !== null) {
                 return redirect_screen($title, $redirect, do_lang_tempcode('SUCCESS'));
             }
@@ -350,7 +350,7 @@ function notifications_ui_advanced($notification_code, $enable_message = null, $
         $tmp_file = file_get_contents($css_path);
         $matches = array();
         if (preg_match('#(\s|\})th[\s,][^\}]*(\s|\{)background-color:\s*\#([\dA-Fa-f]*);color:\s*\#([\dA-Fa-f]*);#sU', $tmp_file, $matches) != 0) {
-            $color = $matches[3] . '&fg_color=' . $matches[4];
+            $color = $matches[3] . '&fg_color=' . urlencode($matches[4]);
         }
     }
 

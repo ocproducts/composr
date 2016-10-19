@@ -234,7 +234,7 @@ class Module_admin_ecommerce_logs
         $start = get_param_integer('start', 0);
         $max = get_param_integer('max', 50);
         $sortables = array('t_time' => do_lang_tempcode('DATE'), 't_amount' => do_lang_tempcode('AMOUNT'));
-        $test = explode(' ', get_param_string('sort', 't_time DESC'), 2);
+        $test = explode(' ', get_param_string('sort', 't_time DESC', INPUT_FILTER_GET_COMPLEX), 2);
         if (count($test) == 1) {
             $test[1] = 'DESC';
         }
@@ -368,7 +368,7 @@ class Module_admin_ecommerce_logs
             return do_template('FORM_SCREEN', array('_GUID' => 'a2fe914c23e378c493f6e1dad0dc11eb', 'TITLE' => $this->title, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'FIELDS' => $fields, 'TEXT' => '', 'URL' => get_self_url(), 'GET' => true, 'HIDDEN' => ''));
         }
 
-        $post_url = build_url(array('page' => '_SELF', 'type' => '_trigger', 'redirect' => get_param_string('redirect', null)), '_SELF');
+        $post_url = build_url(array('page' => '_SELF', 'type' => '_trigger', 'redirect' => get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL)), '_SELF');
         $text = do_lang('MANUAL_TRANSACTION_TEXT');
         $submit_name = do_lang('MANUAL_TRANSACTION');
 
@@ -510,7 +510,7 @@ class Module_admin_ecommerce_logs
 
         handle_confirmed_transaction($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, '', 'manual');
 
-        $url = get_param_string('redirect', null);
+        $url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
         if ($url !== null) {
             return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
         }

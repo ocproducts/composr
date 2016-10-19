@@ -118,14 +118,10 @@ function display_alert(notification) {
 
     // Play sound, if requested
     var sound = notification.getAttribute('sound');
-    if (!sound) {
-        sound = (window.parseInt(notification.getAttribute('priority')) < 3) ? 'on' : 'off';
-    }
-
-    if (read_cookie('sound', 'off') === 'off') {
-        sound = 'off';
-    }
-    if (sound === 'on') {
+    if (!sound) sound = (window.parseInt(notification.getAttribute('priority')) < 3) ? 'on' : 'off';
+    if (read_cookie('sound', 'off') === 'off') sound = 'off';
+    var notification_code = notification.getAttribute('notification_code');
+    if (sound == 'on' && typeof window.detect_change == 'undefined' || notification_code != 'ticket_reply' && notification_code != 'ticket_reply_staff') {
         if (window.soundManager !== undefined) {
             var go_func = function () {
                 var sound_url = 'data/sounds/message_received.mp3';
@@ -145,7 +141,7 @@ function display_alert(notification) {
     // Show desktop notification
     if ($cms.$CONFIG_OPTION.notification_desktop_alerts && window.notify.isSupported) {
         var icon = $cms.img('{$IMG;,favicon}');
-        var title = '{!notifications:DESKTOP_NOTIFICATION_SUBJECT;}';
+        var title = '{!notifications:DESKTOP_NOTIFICATION_SUBJECT;^}';
         title = title.replace(/\\{1\\}/, notification.getAttribute('subject'));
         title = title.replace(/\\{2\\}/, notification.getAttribute('from_username'));
         var body = '';//notification.getAttribute('rendered'); Looks ugly

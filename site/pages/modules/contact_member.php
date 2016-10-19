@@ -169,8 +169,8 @@ class Module_contact_member
         if ($default_email == '') {
             $fields->attach($email_field);
         }
-        $fields->attach(form_input_line(do_lang_tempcode('SUBJECT'), '', 'subject', get_param_string('subject', '', true), true));
-        $fields->attach(form_input_text(do_lang_tempcode('MESSAGE'), '', 'message', get_param_string('message', '', true), true));
+        $fields->attach(form_input_line(do_lang_tempcode('SUBJECT'), '', 'subject', get_param_string('subject', '', INPUT_FILTER_GET_COMPLEX), true));
+        $fields->attach(form_input_text(do_lang_tempcode('MESSAGE'), '', 'message', get_param_string('message', '', INPUT_FILTER_GET_COMPLEX), true));
         if (addon_installed('captcha')) {
             require_code('captcha');
             if (use_captcha()) {
@@ -200,7 +200,7 @@ class Module_contact_member
         }
         $submit_name = do_lang_tempcode('SEND');
         $redirect = mixed();
-        $redirect = get_param_string('redirect', '');
+        $redirect = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
         if ($redirect == '') {
             $redirect = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true);
             if (is_object($redirect)) {
@@ -319,7 +319,7 @@ class Module_contact_member
 
         log_it('EMAIL', strval($member_id), $to_name);
 
-        $url = get_param_string('redirect');
+        $url = get_param_string('redirect', false, INPUT_FILTER_URL_INTERNAL);
         return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
     }
 }

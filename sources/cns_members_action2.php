@@ -446,7 +446,7 @@ function cns_get_member_fields_settings($mini_mode = true, $member_id = null, $g
             if ($temporary_password) {
                 $password_field_description = do_lang_tempcode('DESCRIPTION_PASSWORD_TEMPORARY');
             } else {
-                $password_field_description = do_lang_tempcode('DESCRIPTION_PASSWORD' . ($member_id !== null ? '_EDIT' : ''));
+                $password_field_description = do_lang_tempcode('DESCRIPTION_PASSWORD' . (($member_id !== null) ? '_EDIT' : ''));
             }
             $fields->attach(form_input_password(do_lang_tempcode(($member_id === null) ? 'PASSWORD' : 'NEW_PASSWORD'), $password_field_description, ($member_id === null) ? 'password' : 'edit_password', $mini_mode || $temporary_password));
             $fields->attach(form_input_password(do_lang_tempcode('CONFIRM_PASSWORD'), '', 'password_confirm', $mini_mode || $temporary_password));
@@ -466,7 +466,7 @@ function cns_get_member_fields_settings($mini_mode = true, $member_id = null, $g
     // E-mail address
     if (cns_field_editable('email', $special_type)) {
         if ($email_address == '') {
-            $email_address = trim(get_param_string('email_address', ''));
+            $email_address = trim(get_param_string('email_address', '', INPUT_FILTER_GET_COMPLEX));
         }
         $email_description = new Tempcode();
         if ((get_option('valid_email_domains') != '') && ($mini_mode)) { // domain restriction only applies on public join form ($mini_mode)

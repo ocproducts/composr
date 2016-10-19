@@ -52,7 +52,7 @@ header('Content-type: text/plain; charset=' . get_charset());
 
 safe_ini_set('ocproducts.xss_detect', '0');
 
-$lstring = get_param_string('lstring', null);
+$lstring = get_param_string('lstring', null, INPUT_FILTER_GET_COMPLEX);
 if ($lstring !== null) {
 
     $url = 'http://maps.googleapis.com/maps/api/geocode/xml?address=' . urlencode($lstring);

@@ -107,7 +107,7 @@ function handle_logins()
         require_code('users_inactive_occasionals');
         force_httpauth();
     }
-    $username = trim(post_param_string('login_username', ''));
+    $username = trim(post_param_string('login_username', '', INPUT_FILTER_DEFAULT_POST & ~INPUT_FILTER_ALLOWED_POSTING_SITES));
     if (($username != '') && ($username != do_lang('GUEST'))) {
         require_code('users_active_actions');
         handle_active_login($username);
@@ -115,7 +115,7 @@ function handle_logins()
 
     // If it was a log out
     $page = get_param_string('page', ''); // Not get_page_name for bootstrap order reasons
-    if (($page == 'login') && (get_param_string('type', '', true) == 'logout')) {
+    if (($page == 'login') && (get_param_string('type', '', INPUT_FILTER_GET_COMPLEX) == 'logout')) {
         require_code('users_active_actions');
         handle_active_logout();
     }

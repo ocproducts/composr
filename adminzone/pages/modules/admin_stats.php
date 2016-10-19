@@ -431,7 +431,7 @@ class Module_admin_stats
             $max = 10000;
         }
         $sortables = array('date_and_time' => do_lang_tempcode('DATE_TIME'), 'peak' => do_lang_tempcode('PEAK'));
-        $test = explode(' ', get_param_string('sort', 'date_and_time DESC'), 2);
+        $test = explode(' ', get_param_string('sort', 'date_and_time DESC', INPUT_FILTER_GET_COMPLEX), 2);
         if (count($test) == 1) {
             $test[1] = 'DESC';
         }
@@ -639,7 +639,7 @@ class Module_admin_stats
         }
 
         $sortables = array('AVG(milliseconds)' => do_lang_tempcode('LOAD_TIME'));
-        $test = explode(' ', get_param_string('sort', 'AVG(milliseconds) DESC'), 2);
+        $test = explode(' ', get_param_string('sort', 'AVG(milliseconds) DESC', INPUT_FILTER_GET_COMPLEX), 2);
         if (count($test) == 1) {
             $test[1] = 'DESC';
         }
@@ -755,7 +755,7 @@ class Module_admin_stats
         }
 
         $sortables = array('referer' => do_lang_tempcode('TOP_REFERRERS'));
-        $test = explode(' ', get_param_string('sort', 'referer DESC'), 2);
+        $test = explode(' ', get_param_string('sort', 'referer DESC', INPUT_FILTER_GET_COMPLEX), 2);
         if (count($test) == 1) {
             $test[1] = 'DESC';
         }
@@ -867,7 +867,7 @@ class Module_admin_stats
         $this->title = get_screen_title('TOP_SEARCH_KEYWORDS_RANGE', true, array(escape_html(get_timezoned_date($time_start)), escape_html(get_timezoned_date($time_end))));
 
         $sortables = array('referer' => do_lang_tempcode('TOP_SEARCH_KEYWORDS'));
-        $test = explode(' ', get_param_string('sort', 'referer DESC'), 2);
+        $test = explode(' ', get_param_string('sort', 'referer DESC', INPUT_FILTER_GET_COMPLEX), 2);
         if (count($test) == 1) {
             $test[1] = 'DESC';
         }
@@ -1050,7 +1050,7 @@ class Module_admin_stats
         $views[do_lang('_ALL')] = array($total, null);
 
         $sortables = array('views' => do_lang_tempcode('COUNT_VIEWS'));
-        $test = explode(' ', get_param_string('sort', 'views DESC'), 2);
+        $test = explode(' ', get_param_string('sort', 'views DESC', INPUT_FILTER_GET_COMPLEX), 2);
         if (count($test) == 1) {
             $test[1] = 'DESC';
         }
@@ -1125,7 +1125,7 @@ class Module_admin_stats
         $start = get_param_integer('start_views', 0);
         $max = get_param_integer('max_views', 30);
         $sortables = array('date_and_time' => do_lang_tempcode('DATE_TIME'));
-        list($sortable, $sort_order) = explode(' ', get_param_string('sort_views', 'date_and_time DESC'));
+        list($sortable, $sort_order) = explode(' ', get_param_string('sort_views', 'date_and_time DESC', INPUT_FILTER_GET_COMPLEX));
         if (((strtoupper($sort_order) != 'ASC') && (strtoupper($sort_order) != 'DESC')) || (!array_key_exists($sortable, $sortables))) {
             log_hack_attack_and_exit('ORDERBY_HACK');
         }
@@ -1209,7 +1209,7 @@ class Module_admin_stats
         $start = get_param_integer('start_keywords', 0);
         $max = get_param_integer('max_keywords', 30);
         $sortables = array('referer' => do_lang_tempcode('TOP_SEARCH_KEYWORDS'));
-        $test = explode(' ', get_param_string('sort_keywords', 'referer DESC'));
+        $test = explode(' ', get_param_string('sort_keywords', 'referer DESC', INPUT_FILTER_GET_COMPLEX));
         if (count($test) == 1) {
             $test[1] = 'DESC';
         }
@@ -1307,7 +1307,7 @@ class Module_admin_stats
             $start = get_param_integer('start_regionalities', 0);
             $max = get_param_integer('max_regionalities', 15);
             $sortables = array('ip' => do_lang_tempcode('REGIONALITY'));
-            list($sortable, $sort_order) = explode(' ', get_param_string('sort_regionalities', 'ip DESC'));
+            list($sortable, $sort_order) = explode(' ', get_param_string('sort_regionalities', 'ip DESC', INPUT_FILTER_GET_COMPLEX));
             if (((strtoupper($sort_order) != 'ASC') && (strtoupper($sort_order) != 'DESC')) || (!array_key_exists($sortable, $sortables))) {
                 log_hack_attack_and_exit('ORDERBY_HACK');
             }
@@ -1385,7 +1385,7 @@ class Module_admin_stats
         $start = get_param_integer('start_views', 0);
         $max = get_param_integer('max_views', 30);
         $sortables = array('date_and_time' => do_lang_tempcode('DATE_TIME'));
-        $test = explode(' ', get_param_string('sort_views', 'date_and_time DESC'));
+        $test = explode(' ', get_param_string('sort_views', 'date_and_time DESC', INPUT_FILTER_GET_COMPLEX));
         if (count($test) == 1) {
             $test[1] = 'DESC';
         }
@@ -1557,7 +1557,7 @@ class Module_admin_stats
         $start = get_param_integer('start_' . $type, 0);
         $max = get_param_integer('max_' . $type, 50);
         $sortables = array('date_and_time' => do_lang_tempcode('DATE_TIME'));
-        $test = explode(' ', get_param_string('sort', 'date_and_time ASC'), 2);
+        $test = explode(' ', get_param_string('sort', 'date_and_time ASC', INPUT_FILTER_GET_COMPLEX), 2);
         if (count($test) == 1) {
             $test[1] = 'DESC';
         }
@@ -1645,7 +1645,7 @@ class Module_admin_stats
         $start = get_param_integer('start_' . $type, 0);
         $max = get_param_integer('max_' . $type, 25);
         $sortables = array('views' => do_lang_tempcode('COUNT_VIEWS'));
-        list($sortable, $sort_order) = explode(' ', get_param_string('sort', 'views ASC'), 2);
+        list($sortable, $sort_order) = explode(' ', get_param_string('sort', 'views ASC', INPUT_FILTER_GET_COMPLEX), 2);
         if (((strtoupper($sort_order) != 'ASC') && (strtoupper($sort_order) != 'DESC')) || (!array_key_exists($sortable, $sortables))) {
             log_hack_attack_and_exit('ORDERBY_HACK');
         }

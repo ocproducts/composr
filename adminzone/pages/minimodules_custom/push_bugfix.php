@@ -405,7 +405,7 @@ function upload_to_tracker_issue($tracker_id, $tar_path)
 function make_call($call, $params, $file = null)
 {
     $data = $params;
-    $data['password'] = post_param_string('password');
+    $data['password'] = post_param_string('password', false, INPUT_FILTER_NONE);
     if ($file === null) {
         $data_url = http_build_query($data);
         $data_len = strlen($data_url);

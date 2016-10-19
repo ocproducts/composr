@@ -736,7 +736,7 @@ function _get_wordpress_db_data()
     $host_name = post_param_string('wp_host');
     $db_name = post_param_string('wp_db');
     $db_user = post_param_string('wp_db_user');
-    $db_passwrod = post_param_string('wp_db_password');
+    $db_passwrod = post_param_string('wp_db_password', false, INPUT_FILTER_NONE);
     $db_table_prefix = post_param_string('wp_table_prefix');
 
     if (substr($db_table_prefix, -1) != '_') {

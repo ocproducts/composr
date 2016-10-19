@@ -361,7 +361,7 @@
                     continue;
                 }
 
-                url = a.href;
+                url = (a.getAttribute('href') == '') ? '' : a.href;
                 is_selected = menuItemIsSelected(url);
                 if (is_selected !== null) {
                     possibilities.push({
@@ -390,6 +390,10 @@
     }
 
     function menuItemIsSelected(url) {
+        if (url == '') {
+            return null;
+        }
+
         var current_url = window.location.href;
         if (current_url === url) {
             return 0;

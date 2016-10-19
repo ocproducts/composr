@@ -1018,7 +1018,7 @@ class Forum_driver_ipb3 extends Forum_driver_base
                 $attachments = $this->db->query_select('attachments', array('attach_member_id', 'attach_id', 'attach_file', 'attach_location', 'attach_thumb_location', 'attach_is_image', 'attach_filesize', 'attach_hits'), array('attach_post_key' => $fp_rows[0]['post_key']/*, 'attach_approved' => true Gone in IPB3? */));
                 foreach ($attachments as $attachment) {
                     if (($attachment['attach_thumb_location'] != '') || ($attachment['attach_is_image'] == 0)) { // Not fully inline
-                        $url = get_forum_base_url() . '/index.php?act=Attach&type=post&id=' . $attachment['attach_id'];
+                        $url = get_forum_base_url() . '/index.php?act=Attach&type=post&id=' . urlencode($attachment['attach_id']);
                         if ($attachment['attach_thumb_location'] != '') {
                             $special = do_template('FORUM_ATTACHMENT_IMAGE_THUMB', array('_GUID' => 'f06760e3325efd9be27e2d5c89611d43', 'FULL' => $url, 'URL' => get_forum_base_url() . '/uploads/' . $attachment['attach_thumb_location']));
                         } else {

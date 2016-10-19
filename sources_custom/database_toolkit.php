@@ -43,8 +43,8 @@ function xml_dump_script()
 
     if (cms_srv('REQUEST_METHOD') == 'GET') { // Interface
         $from = get_param_string('from', null);
-        $skip = get_param_string('skip', null);
-        $only = get_param_string('only', null);
+        $skip = get_param_string('skip', null, INPUT_FILTER_GET_COMPLEX);
+        $only = get_param_string('only', null, INPUT_FILTER_GET_COMPLEX);
 
         echo '
         <!DOCTYPE html>

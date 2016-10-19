@@ -31,7 +31,7 @@ function gd_text_script()
         return;
     }
 
-    $text = get_param_string('text', false, true);
+    $text = get_param_string('text', false, INPUT_FILTER_GET_COMPLEX);
 
     $direction = array_key_exists('direction', $_GET) ? $_GET['direction'] : 'vertical';
 
@@ -198,7 +198,7 @@ function gd_text_script()
  */
 function simple_tracker_script()
 {
-    $url = get_param_string('url');
+    $url = get_param_string('url', false, INPUT_FILTER_URL_GENERAL);
     if (strpos($url, '://') === false) {
         $url = base64_decode($url);
     }
@@ -529,7 +529,7 @@ function emoticons_script()
  */
 function thumb_script()
 {
-    $url_full = get_param_string('url');
+    $url_full = get_param_string('url', false, INPUT_FILTER_URL_GENERAL);
     if (strpos($url_full, '://') === false) {
         $url_full = base64_decode($url_full);
     }
@@ -564,13 +564,13 @@ function question_ui_script()
     safe_ini_set('ocproducts.xss_detect', '0');
     $GLOBALS['SCREEN_TEMPLATE_CALLED'] = '';
 
-    $title = get_param_string('window_title', false, true);
-    $_message = nl2br(escape_html(get_param_string('message', false, true)));
+    $title = get_param_string('window_title', false, INPUT_FILTER_GET_COMPLEX);
+    $_message = nl2br(escape_html(get_param_string('message', false, INPUT_FILTER_GET_COMPLEX)));
     if (function_exists('ocp_mark_as_escaped')) {
         ocp_mark_as_escaped($_message);
     }
-    $button_set = explode(',', get_param_string('button_set', false, true));
-    $_image_set = get_param_string('image_set', false, true);
+    $button_set = explode(',', get_param_string('button_set', false, INPUT_FILTER_GET_COMPLEX));
+    $_image_set = get_param_string('image_set', false, INPUT_FILTER_GET_COMPLEX);
     $image_set = ($_image_set == '') ? array() : explode(',', $_image_set);
     $message = do_template('QUESTION_UI_BUTTONS', array('_GUID' => '0c5a1efcf065e4281670426c8fbb2769', 'TITLE' => $title, 'IMAGES' => $image_set, 'BUTTONS' => $button_set, 'MESSAGE' => $_message));
 
@@ -589,7 +589,7 @@ function question_ui_script()
  */
 function external_url_proxy_script()
 {
-    $url = get_param_string('url', false, true);
+    $url = get_param_string('url', false, INPUT_FILTER_URL_GENERAL);
 
     // Don't allow loops
     if (strpos($url, 'external_url_proxy.php') !== false) {

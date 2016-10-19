@@ -185,7 +185,7 @@ class Module_admin_security
         $start = get_param_integer('failed_start', 0);
         $max = get_param_integer('failed_max', 50);
         $sortables = array('date_and_time' => do_lang_tempcode('DATE_TIME'), 'ip' => do_lang_tempcode('IP_ADDRESS'));
-        $test = explode(' ', get_param_string('failed_sort', 'date_and_time DESC'));
+        $test = explode(' ', get_param_string('failed_sort', 'date_and_time DESC', INPUT_FILTER_GET_COMPLEX));
         if (count($test) == 1) {
             $test[1] = 'DESC';
         }

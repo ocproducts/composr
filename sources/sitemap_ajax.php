@@ -60,7 +60,7 @@ function sitemap_script_loading()
     $admin_groups = $GLOBALS['FORUM_DRIVER']->get_super_admin_groups();
     $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
 
-    $default = get_param_string('default', null, true);
+    $default = get_param_string('default', null, INPUT_FILTER_GET_COMPLEX);
 
     header('Content-Type: text/xml');
     $permissions_needed = (get_param_integer('get_perms', 0) == 1); // Whether we are limiting our tree to permission-supporting
@@ -70,7 +70,7 @@ function sitemap_script_loading()
     echo "\n" . '<request><result>';
     require_lang('permissions');
     require_lang('zones');
-    $page_link = get_param_string('id', null, true);
+    $page_link = get_param_string('id', null, INPUT_FILTER_GET_COMPLEX);
 
     $requesting_root = ($page_link === null);
 
@@ -145,7 +145,7 @@ function _sitemap_node_to_xml($admin_groups, $groups, $node, $permissions_needed
         return;
     }
 
-    $filter = get_param_string('filter', '');
+    $filter = get_param_string('filter', '', INPUT_FILTER_GET_COMPLEX);
     if ($filter != '') {
         list($zone_name, $attributes) = page_link_decode($node['page_link']);
         if (!match_key_match($filter, false, $attributes, $zone_name, $attributes['page'])) {
@@ -153,7 +153,7 @@ function _sitemap_node_to_xml($admin_groups, $groups, $node, $permissions_needed
         }
     }
 
-    $default = get_param_string('default', null, true);
+    $default = get_param_string('default', null, INPUT_FILTER_GET_COMPLEX);
 
     if (isset($node['children'])) {
         $has_children = (count($node['children']) > 0);

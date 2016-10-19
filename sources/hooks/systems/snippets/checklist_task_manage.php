@@ -44,7 +44,7 @@ class Hook_snippet_checklist_task_manage
             case 'add':
                 $recur_interval = post_param_integer('recur_interval', 0);
 
-                $task_title = post_param_string('task_title', false, true);
+                $task_title = post_param_string('task_title', false);
 
                 $id = $GLOBALS['SITE_DB']->query_insert('staff_checklist_cus_tasks', array(
                     'task_title' => $task_title,
@@ -65,7 +65,7 @@ class Hook_snippet_checklist_task_manage
 
                 return do_template('BLOCK_MAIN_STAFF_CHECKLIST_CUSTOM_TASK', array(
                     '_GUID' => 'e95228a3740dc7eda2d1b0ccc7d3d9d3',
-                    'TASK_TITLE' => comcode_to_tempcode(post_param_string('task_title', false, true)),
+                    'TASK_TITLE' => comcode_to_tempcode(post_param_string('task_title', false)),
                     'ADD_DATE' => display_time_period(time()),
                     'RECUR_INTERVAL' => ($recur_interval == 0) ? '' : integer_format($recur_interval),
                     'RECUR_EVERY' => post_param_string('recur_every'),
@@ -75,13 +75,14 @@ class Hook_snippet_checklist_task_manage
 
             case 'delete':
                 $id = post_param_integer('id');
-                $task_title = $GLOBALS['SITE_DB']->query_select_value('staff_checklist_cus_tasks', 'task_title', array('id' => $id));
+                $task_title = $GLOBALS['SITE_DB']->query_select_value_if_there('staff_checklist_cus_tasks', 'task_title', array('id' => $id));
+                if ($task_title !== null) {
+                    $GLOBALS['SITE_DB']->query_delete('staff_checklist_cus_tasks', array(
+                        'id' => $id,
+                    ), '', 1);
 
-                $GLOBALS['SITE_DB']->query_delete('staff_checklist_cus_tasks', array(
-                    'id' => $id,
-                ), '', 1);
-
-                log_it('CHECK_LIST_DELETE', strval($id), $task_title);
+                    log_it('CHECK_LIST_DELETE', strval($id), $task_title);
+                }
 
                 break;
 

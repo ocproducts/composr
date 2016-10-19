@@ -55,7 +55,7 @@ class Hook_profiles_tabs_edit_avatar
             if (has_privilege($member_id_viewing, 'own_avatars')) {
                 if (!(((is_plupload(true)) && (array_key_exists('avatar_file', $_FILES))) || ((array_key_exists('avatar_file', $_FILES)) && (is_uploaded_file($_FILES['avatar_file']['tmp_name']))))) { // No upload -> URL or stock or none
                     $urls = array();
-                    $stock = post_param_string('avatar_alt_url', '');
+                    $stock = post_param_string('avatar_alt_url', '', INPUT_FILTER_URL_GENERAL);
                     if ($stock == '') { // No URL -> Stock or none
                         $stock = post_param_string('avatar_stock', null);
                         if ($stock !== null) { // Stock

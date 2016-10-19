@@ -128,7 +128,7 @@ class Hook_import_html_site
         $theme = either_param_string('theme');
         $convert_to_comcode = either_param_integer('convert_to_comcode', 0);
         $fix_html = either_param_integer('fix_html', 0);
-        $base_url = either_param_string('base_url');
+        $base_url = either_param_string('base_url', false, INPUT_FILTER_URL_GENERAL);
         if (substr($base_url, -1) == '/') {
             $base_url = substr($base_url, 0, strlen($base_url) - 1);
         }

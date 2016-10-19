@@ -21,7 +21,7 @@ function get_problem_match()
     header('Content-type: text/plain; charset=' . get_charset());
 
     $version = get_param_string('version');
-    $error_message = get_param_string('error_message', false, true);
+    $error_message = get_param_string('error_message', false, INPUT_FILTER_GET_COMPLEX);
 
     $output = get_problem_match_nearest($error_message);
     if ($output !== null) {

@@ -137,10 +137,7 @@ Includes the code for pulling translations from {$IS_MAINTAINED,transifex,Transi
             'adminzone/pages/minimodules_custom/publish_addons_as_downloads.php',
             'adminzone/pages/minimodules_custom/build_addons.php',
             'sources_custom/hooks/systems/page_groupings/addon_publish.php',
-            'sources_custom/transifex.php',
             'sources_custom/addon_publish.php',
-            'data_custom/transifex_pull.php',
-            'data_custom/transifex_push.php',
             'data_custom/change_addon_bundling.php',
         );
     }

@@ -109,7 +109,7 @@ class Module_admin_banners
         $start = get_param_integer('start', 0);
         $max = get_param_integer('max', 50);
         $sortables = array('name' => do_lang_tempcode('NAME'), 'add_date' => do_lang_tempcode('DATE_TIME'));
-        $test = explode(' ', get_param_string('sort', 'name ASC'), 2);
+        $test = explode(' ', get_param_string('sort', 'name ASC', INPUT_FILTER_GET_COMPLEX), 2);
         if (count($test) == 1) {
             $test[1] = 'DESC';
         }

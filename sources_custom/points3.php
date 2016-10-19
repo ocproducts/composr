@@ -90,7 +90,7 @@ function points_profile($member_id_of, $member_id_viewing)
         $start = get_param_integer('charge_start', 0);
         $max = get_param_integer('charge_max', intval(get_option('point_logs_per_page')));
         $sortables = array('date_and_time' => do_lang_tempcode('DATE'), 'amount' => do_lang_tempcode('AMOUNT'));
-        $test = explode(' ', get_param_string('sort', 'date_and_time DESC'), 2);
+        $test = explode(' ', get_param_string('sort', 'date_and_time DESC', INPUT_FILTER_GET_COMPLEX), 2);
         if (count($test) == 1) {
             $test[1] = 'DESC';
         }

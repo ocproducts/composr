@@ -254,7 +254,7 @@ class Module_booking
     public function choose_bookables_and_dates()
     {
         $query = 'SELECT * FROM ' . get_table_prefix() . 'bookable WHERE enabled=1';
-        $filter = get_param_string('filter', '*');
+        $filter = get_param_string('filter', '*', INPUT_FILTER_GET_COMPLEX);
         require_code('selectcode');
         $query .= ' AND ' . selectcode_to_sqlfragment($filter, 'id');
         $bookables = $GLOBALS['SITE_DB']->query($query . ' ORDER BY sort_order', null, null, false, true);

@@ -13,6 +13,8 @@
  * @package    composr_homesite
  */
 
+/*EXTRA FUNCTIONS: ftp_.**/
+
 /*
 For Demonstratr (personal demos / sites system)...
 
@@ -291,7 +293,7 @@ class Module_sites
         if ($conn_id === false) {
             warn_exit(do_lang_tempcode('COULD_NOT_CONNECT_SERVER', escape_html(post_param_string('ftp_domain')), @strval($php_errormsg)));
         }
-        $login_result = @ftp_login($conn_id, post_param_string('ftp_username'), post_param_string('ftp_password'));
+        $login_result = @ftp_login($conn_id, post_param_string('ftp_username'), post_param_string('ftp_password', false, INPUT_FILTER_NONE));
 
         // Check connection
         if (!$login_result) {
@@ -382,7 +384,7 @@ class Module_sites
         ftp_close($conn_id);
 
         // Generate URL to installer on hosting
-        $base_url = post_param_string('base_url');
+        $base_url = post_param_string('base_url', false, INPUT_FILTER_URL_GENERAL);
         if (substr($base_url, -1) != '/') {
             $base_url .= '/';
         }
@@ -429,8 +431,8 @@ class Module_sites
         $description = post_param_string('description', '');
         $category = post_param_string('category', '');
         $show_in_directory = post_param_integer('show_in_directory', 0);
-        $password = post_param_string('password');
-        $confirm_password = post_param_string('confirm_password');
+        $password = post_param_string('password', false, INPUT_FILTER_NONE);
+        $confirm_password = post_param_string('confirm_password', false, INPUT_FILTER_NONE);
 
         if ($password != $confirm_password) {
             warn_exit(do_lang_tempcode('PASSWORD_MISMATCH'));

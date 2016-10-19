@@ -29,7 +29,7 @@ class Hook_startup_im
     public function run()
     {
         // Initialise site-wide IM
-        if ((get_option('sitewide_im', true) === '1') && (running_script('index')) /* i.e. not running script */ && (get_param_string('type', 'browse', true) != 'room')) {
+        if ((get_option('sitewide_im', true) === '1') && (running_script('index')) /* i.e. not running script */ && (get_param_string('type', 'browse') != 'room')) {
             require_code('chat_lobby');
             enter_chat_lobby();
         }

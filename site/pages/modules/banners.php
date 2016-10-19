@@ -335,7 +335,7 @@ class Module_banners
     {
         require_code('templates_results_table');
 
-        $current_ordering = get_param_string('sort', 'name ASC');
+        $current_ordering = get_param_string('sort', 'name ASC', INPUT_FILTER_GET_COMPLEX);
         if (strpos($current_ordering, ' ') === false) {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
@@ -514,7 +514,7 @@ class Module_banners
 
             require_code('templates_results_table');
 
-            $current_ordering = get_param_string('sort', 'month ASC');
+            $current_ordering = get_param_string('sort', 'month ASC', INPUT_FILTER_GET_COMPLEX);
             if (strpos($current_ordering, ' ') === false) {
                 warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
             }

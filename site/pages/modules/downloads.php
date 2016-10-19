@@ -448,7 +448,7 @@ class Module_downloads
         $description = get_translated_tempcode('download_categories', $category, 'description');
 
         // Sorting
-        $sort = get_param_string('sort', get_option('downloads_default_sort_order'));
+        $sort = get_param_string('sort', get_option('downloads_default_sort_order'), INPUT_FILTER_GET_COMPLEX);
         if ((strtoupper($sort) != strtoupper('title ASC')) && (strtoupper($sort) != strtoupper('title DESC'))
             && (strtoupper($sort) != strtoupper('file_size ASC')) && (strtoupper($sort) != strtoupper('file_size DESC'))
             && (strtoupper($sort) != strtoupper('num_downloads DESC'))

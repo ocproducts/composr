@@ -105,7 +105,7 @@ class Block_main_news
         $days_outline = floatval($days) - $days_full;
 
         // News query
-        $select = isset($map['select']) ? $map['select'] : get_param_string('news_select', '*');
+        $select = isset($map['select']) ? $map['select'] : get_param_string('news_select', '*', INPUT_FILTER_GET_COMPLEX);
         $select_and = isset($map['select_and']) ? $map['select_and'] : '';
         if ($select == '*') {
             $q_filter = '1=1';
@@ -423,9 +423,9 @@ class Block_main_news
         $atom_url = new Tempcode();
         $rss_url = new Tempcode();
         if ($is_on_rss == 1) {
-            $atom_url = make_string_tempcode(find_script('backend') . '?type=atom&mode=news&select=' . $select);
+            $atom_url = make_string_tempcode(find_script('backend') . '?type=atom&mode=news&select=' . urlencode($select));
             $atom_url->attach(symbol_tempcode('KEEP'));
-            $rss_url = make_string_tempcode(find_script('backend') . '?type=rss2&mode=news&select=' . $select);
+            $rss_url = make_string_tempcode(find_script('backend') . '?type=rss2&mode=news&select=' . urlencode($select));
             $rss_url->attach(symbol_tempcode('KEEP'));
         }
 

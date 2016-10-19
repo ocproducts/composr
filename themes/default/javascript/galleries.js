@@ -50,7 +50,7 @@
             data['html' + k] = v;
             if (k == 0) {
                 if (data.tease_scrolling_text) {
-                    $cms.dom.html(data.tease_scrolling_text, (data['html' + k] == '') ? '{!MEDIA;}' : data['html' + k]);
+                    $cms.dom.html(data.tease_scrolling_text, (data['html' + k] == '') ? '{!MEDIA;^}' : data['html' + k]);
                 }
             }
         },
@@ -248,7 +248,7 @@
 
     function stop_slideshow_timer(message) {
         if (message === undefined) {
-            message = '{!galleries:STOPPED;}';
+            message = '{!galleries:STOPPED;^}';
         }
         var changer = document.getElementById('changer_wrap');
         if (changer) $cms.dom.html(changer, message);
@@ -271,7 +271,7 @@
 
     function slideshow_forward() {
         if (window.slideshow_current_position === (window.slideshow_total_slides - 1)) {
-            stop_slideshow_timer('{!galleries:LAST_SLIDE;}');
+            stop_slideshow_timer('{!galleries:LAST_SLIDE;^}');
             return;
         }
 
@@ -363,7 +363,7 @@
                 start_slideshow_timer();
                 reset_slideshow_countdown();
             } else {// Is video
-                stop_slideshow_timer('{!galleries:WILL_CONTINUE_AFTER_VIDEO_FINISHED}');
+                stop_slideshow_timer('{!galleries:WILL_CONTINUE_AFTER_VIDEO_FINISHED;^}');
             }
 
             if (window.slideshow_current_position != window.slideshow_total_slides - 1) {

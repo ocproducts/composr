@@ -874,8 +874,8 @@ class Module_buildr
                 $member = get_param_integer('member');
                 list($realm, $x, $y) = get_loc_details($member_id);
 
-                $cost = $GLOBALS['SITE_DB']->query_select_value('w_items', 'cost', array('copy_owner' => $member, 'location_x' => $x, 'location_y' => $y, 'location_realm' => $realm, 'name' => get_param_string('item')));
-                $not_infinite = $GLOBALS['SITE_DB']->query_select_value('w_items', 'not_infinite', array('copy_owner' => $member, 'location_x' => $x, 'location_y' => $y, 'location_realm' => $realm, 'name' => get_param_string('item')));
+                $cost = $GLOBALS['SITE_DB']->query_select_value('w_items', 'cost', array('copy_owner' => $member, 'location_x' => $x, 'location_y' => $y, 'location_realm' => $realm, 'name' => get_param_string('item', false, INPUT_FILTER_GET_COMPLEX)));
+                $not_infinite = $GLOBALS['SITE_DB']->query_select_value('w_items', 'not_infinite', array('copy_owner' => $member, 'location_x' => $x, 'location_y' => $y, 'location_realm' => $realm, 'name' => get_param_string('item', false, INPUT_FILTER_GET_COMPLEX)));
 
                 $tpl = do_template('W_ITEMCOPY_SCREEN', array(
                     '_GUID' => 'a8d28f6516408dba96a8b57ddcd7cee6',
@@ -885,7 +885,7 @@ class Module_buildr
                     'X' => strval($x),
                     'Y' => strval($y),
                     'REALM' => strval($realm),
-                    'ITEM' => get_param_string('item'),
+                    'ITEM' => get_param_string('item', false, INPUT_FILTER_GET_COMPLEX),
                     'OWNER' => strval($member),
                     'COST' => strval($cost),
                 ));
@@ -934,7 +934,7 @@ class Module_buildr
             }
 
             $urls = get_url('url', 'pic', 'uploads/buildr_addon', 0, CMS_UPLOAD_IMAGE);
-            edit_room_wrap($member_id, $name, post_param_string('text'), post_param_string('password_question'), post_param_string('password_answer'), post_param_string('password_fail_message'), post_param_string('required_item'), post_param_integer('locked_up', 0), post_param_integer('locked_down', 0), post_param_integer('locked_right', 0), post_param_integer('locked_left', 0), $urls[0], post_param_integer('allow_portal', 0), grab_new_owner('new_owner'), post_param_integer('new_x'), post_param_integer('new_y'), post_param_integer('new_realm'));
+            edit_room_wrap($member_id, $name, post_param_string('text'), post_param_string('password_question'), post_param_string('password_answer', false, INPUT_FILTER_NONE), post_param_string('password_fail_message'), post_param_string('required_item'), post_param_integer('locked_up', 0), post_param_integer('locked_down', 0), post_param_integer('locked_right', 0), post_param_integer('locked_left', 0), $urls[0], post_param_integer('allow_portal', 0), grab_new_owner('new_owner'), post_param_integer('new_x'), post_param_integer('new_y'), post_param_integer('new_realm'));
         }
 
         if ($type == 'editrealm') {

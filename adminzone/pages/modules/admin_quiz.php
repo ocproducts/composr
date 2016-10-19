@@ -456,7 +456,7 @@ class Module_admin_quiz
         $start = get_param_integer('start', 0);
         $max = get_param_integer('max', 50);
         $sortables = array('q_time' => do_lang_tempcode('DATE'));
-        $test = explode(' ', get_param_string('sort', 'q_time DESC'), 2);
+        $test = explode(' ', get_param_string('sort', 'q_time DESC', INPUT_FILTER_GET_COMPLEX), 2);
         if (count($test) == 1) {
             $test[1] = 'DESC';
         }

@@ -189,7 +189,7 @@ class Module_admin_points
         $start = get_param_integer('start', 0);
         $max = get_param_integer('max', 50);
         $sortables = array('date_and_time' => do_lang_tempcode('DATE_TIME'), 'amount' => do_lang_tempcode('AMOUNT'));
-        $test = explode(' ', get_param_string('sort', 'date_and_time DESC'), 2);
+        $test = explode(' ', get_param_string('sort', 'date_and_time DESC', INPUT_FILTER_GET_COMPLEX), 2);
         if (count($test) == 1) {
             $test[1] = 'DESC';
         }
@@ -280,7 +280,7 @@ class Module_admin_points
         reverse_point_gift_transaction($id);
 
         // Show it worked / Refresh
-        $url = get_param_string('redirect', null);
+        $url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
         if ($url === null) {
             $_url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');
             $url = $_url->evaluate();
@@ -310,7 +310,7 @@ class Module_admin_points
         $text = do_lang_tempcode('MEMBER_HAS_BEEN_CHARGED', escape_html($username), escape_html(integer_format($amount)), escape_html(integer_format($left)));
 
         // Show it worked / Refresh
-        $url = get_param_string('redirect', null);
+        $url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
         if ($url === null) {
             $_url = build_url(array('page' => 'points', 'type' => 'member', 'id' => $member), get_module_zone('points'));
             $url = $_url->evaluate();

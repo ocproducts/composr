@@ -241,31 +241,7 @@ function http_get_contents($url, $options = array())
 function cms_http_request($url, $options = array())
 {
     require_code('http');
-
-    $curl = new HttpDownloaderCurl();
-    $curl_priority = $curl->may_run_for($url, $options);
-
-    $sockets = new HttpDownloaderSockets();
-    $sockets_priority = $sockets->may_run_for($url, $options);
-
-    $file_wrapper = new HttpDownloaderFileWrapper();
-    $file_wrapper_priority = $file_wrapper->may_run_for($url, $options);
-
-    $filesystem = new HttpDownloaderFilesystem();
-    $filesystem_priority = $filesystem->may_run_for($url, $options);
-
-    if ($curl_priority > $sockets_priority && $curl_priority > $file_wrapper_priority && $curl_priority > $filesystem_priority) {
-        $curl->run($url, $options);
-        return $curl;
-    } elseif ($sockets_priority > $file_wrapper_priority && $sockets_priority > $filesystem_priority) {
-        $sockets->run($url, $options);
-        return $sockets;
-    } elseif ($file_wrapper_priority > $filesystem_priority) {
-        $file_wrapper->run($url, $options);
-        return $file_wrapper;
-    }
-    $filesystem->run($url, $options);
-    return $filesystem;
+    return _cms_http_request($url, $options);
 }
 
 /**
@@ -1629,7 +1605,7 @@ function get_page_name()
         return 'unknown';
     }
     $getting_page_name = true;
-    $page = get_param_string('page', '', true);
+    $page = get_param_string('page', '', INPUT_FILTER_GET_COMPLEX);
     if (strlen($page) > 80) {
         warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
     }
@@ -2531,7 +2507,7 @@ function is_mobile($user_agent = null, $truth = false)
         }
     }
 
-    if (!$user_agent_given) {
+    if (!$user_agent_given && !$truth) {
         $val = get_param_integer('keep_mobile', null);
         if ($val !== null) {
             $result = ($val == 1);

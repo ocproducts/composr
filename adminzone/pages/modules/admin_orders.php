@@ -238,7 +238,7 @@ class Module_admin_orders
         require_code('shopping');
 
         $filter = get_param_string('filter', null);
-        $search = get_param_string('search', '', true);
+        $search = get_param_string('search', '', INPUT_FILTER_GET_COMPLEX);
 
         $cond = 'WHERE 1=1';
 
@@ -269,7 +269,7 @@ class Module_admin_orders
             't1.transaction_id' => do_lang_tempcode('TRANSACTION_ID'),
         );
 
-        $query_sort = explode(' ', get_param_string('sort', 't1.add_date ASC'), 2);
+        $query_sort = explode(' ', get_param_string('sort', 't1.add_date ASC', INPUT_FILTER_GET_COMPLEX), 2);
         if (count($query_sort) == 1) {
             $query_sort[] = 'ASC';
         }
@@ -392,7 +392,7 @@ class Module_admin_orders
         $max = get_param_integer('max', 10);
 
         $sortables = array();
-        $query_sort = explode(' ', get_param_string('sort', 'p_name ASC'), 2);
+        $query_sort = explode(' ', get_param_string('sort', 'p_name ASC', INPUT_FILTER_GET_COMPLEX), 2);
         if (count($query_sort) == 1) {
             $query_sort[] = 'ASC';
         }
@@ -535,7 +535,7 @@ class Module_admin_orders
 
         require_code('form_templates');
 
-        $redirect_url = get_param_string('redirect', null);
+        $redirect_url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
         $last_action = get_param_string('last_act', null);
 
         $update_url = build_url(array('page' => '_SELF', 'type' => '_add_note', 'redirect' => $redirect_url), '_SELF');
@@ -591,7 +591,7 @@ class Module_admin_orders
         $id = post_param_integer('order_id');
 
         $notes = post_param_string('note');
-        $redirect = get_param_string('redirect', null);
+        $redirect = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
 
         $GLOBALS['SITE_DB']->query_update('shopping_order', array('notes' => $notes), array('id' => $id), '', 1);
 

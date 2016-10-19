@@ -41,7 +41,7 @@ class Hook_snippet_template_editor_load
         require_code('files');
         require_code('files2');
 
-        $file = get_param_string('file', false, true);
+        $file = get_param_string('file', false, INPUT_FILTER_GET_COMPLEX);
         $file_id = get_dynamic_file_parameter($file);
         $theme = get_param_string('theme');
         $active_guid = get_param_string('active_guid', null);
@@ -52,7 +52,7 @@ class Hook_snippet_template_editor_load
         $revisions = new Tempcode();
 
         $live_preview_url = mixed();
-        $live_preview_url = get_param_string('live_preview_url', null, true);
+        $live_preview_url = get_param_string('live_preview_url', null, INPUT_FILTER_URL_INTERNAL);
         $screen_preview_url = null;
 
         if (strpos($file, ':') === false) {

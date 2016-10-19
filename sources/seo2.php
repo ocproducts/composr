@@ -292,8 +292,8 @@ function _seo_meta_find_data($keyword_sources, $description = '')
     $description = strip_comcode($description, true);
     $description = trim(preg_replace('#\s+---+\s+#', ' ', $description));
 
-    if (strlen($description) > 160) {
-        $description = substr($description, 0, 157) . '...';
+    if (cms_mb_strlen($description) > 160) {
+        $description = cms_mb_substr($description, 0, 157) . '...';
     }
 
     return array($imp, $description);

@@ -34,7 +34,7 @@ function comcode_convert_script()
 
     require_lang('comcode');
 
-    $data = post_param_string('data', null, false, false);
+    $data = post_param_string('data', null, INPUT_FILTER_DEFAULT & ~INPUT_FILTER_WYSIWYG_TO_COMCODE);
     if ($data === null) {
         // UI can be called up manually if desired, it's a useful little developer tool...
 
@@ -148,7 +148,7 @@ function comcode_convert_script()
         $out = trim(semihtml_to_comcode($data, post_param_integer('force', 0) == 1));
     }
 
-    $box_title = get_param_string('box_title', '');
+    $box_title = get_param_string('box_title', '', INPUT_FILTER_GET_COMPLEX);
 
     if (($from_html != 1) && (either_param_integer('fix_bad_html', 0) == 1)) {
         require_code('xhtml');
@@ -182,7 +182,7 @@ function comcode_convert_script()
 
         safe_ini_set('ocproducts.xss_detect', '0');
 
-        $box_title = get_param_string('box_title', '');
+        $box_title = get_param_string('box_title', '', INPUT_FILTER_GET_COMPLEX);
         if (($box_title != '') && ($out != '')) {
             $out = static_evaluate_tempcode(put_in_standard_box(make_string_tempcode($out), $box_title));
         }

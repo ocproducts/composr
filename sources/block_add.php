@@ -155,9 +155,9 @@ function block_helper_script()
 
             $url = find_script('block_helper') . '?type=step2&block=' . urlencode($block) . '&field_name=' . urlencode(get_param_string('field_name')) . $keep->evaluate();
             if (get_param_string('utheme', '') != '') {
-                $url .= '&utheme=' . get_param_string('utheme');
+                $url .= '&utheme=' . urlencode(get_param_string('utheme'));
             }
-            $url .= '&block_type=' . $type_wanted;
+            $url .= '&block_type=' . urlencode($type_wanted);
             if (get_param_string('save_to_id', '') != '') {
                 $url .= '&save_to_id=' . urlencode(get_param_string('save_to_id'));
             }
@@ -211,12 +211,12 @@ function block_helper_script()
 
     if ($type == 'step2') { // Ask for block fields
         require_code('comcode_compiler');
-        $defaults = parse_single_comcode_tag(get_param_string('parse_defaults', '', true), 'block');
+        $defaults = parse_single_comcode_tag(get_param_string('parse_defaults', '', INPUT_FILTER_GET_COMPLEX), 'block');
 
         $keep = symbol_tempcode('KEEP');
-        $back_url = find_script('block_helper') . '?type=step1&field_name=' . get_param_string('field_name') . $keep->evaluate();
+        $back_url = find_script('block_helper') . '?type=step1&field_name=' . urlencode(get_param_string('field_name')) . $keep->evaluate();
         if (get_param_string('utheme', '') != '') {
-            $back_url .= '&utheme=' . get_param_string('utheme');
+            $back_url .= '&utheme=' . urlencode(get_param_string('utheme'));
         }
         if (get_param_string('save_to_id', '') != '') {
             $back_url .= '&save_to_id=' . urlencode(get_param_string('save_to_id'));
@@ -422,9 +422,9 @@ function block_helper_script()
         }
         $post_url = find_script('block_helper') . '?type=step3&field_name=' . urlencode(get_param_string('field_name')) . $keep->evaluate();
         if (get_param_string('utheme', '') != '') {
-            $post_url .= '&utheme=' . get_param_string('utheme');
+            $post_url .= '&utheme=' . urlencode(get_param_string('utheme'));
         }
-        $post_url .= '&block_type=' . $type_wanted;
+        $post_url .= '&block_type=' . urlencode($type_wanted);
         if (get_param_string('save_to_id', '') != '') {
             $post_url .= '&save_to_id=' . urlencode(get_param_string('save_to_id'));
             $submit_name = do_lang_tempcode('SAVE');

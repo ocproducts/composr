@@ -699,7 +699,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
 
                 $_embed = $embed->evaluate();
 
-                if ((!array_key_exists('scroll', $attributes)) && (strlen($_embed) > 1000)) {
+                if ((!array_key_exists('scroll', $attributes)) && (cms_mb_strlen($_embed) > 1000)) {
                     $attributes['scroll'] = '1';
                 }
                 $tpl = (array_key_exists('scroll', $attributes) && ($attributes['scroll'] == '1')) ? 'COMCODE_CODE_SCROLL' : 'COMCODE_CODE';

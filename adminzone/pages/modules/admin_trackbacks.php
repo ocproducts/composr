@@ -170,7 +170,7 @@ class Module_admin_trackbacks
 
         // Show it worked / Refresh
         $text = do_lang_tempcode('SUCCESS');
-        $url = get_param_string('redirect', null);
+        $url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
         if ($url === null) {
             $_url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');
             $url = $_url->evaluate();

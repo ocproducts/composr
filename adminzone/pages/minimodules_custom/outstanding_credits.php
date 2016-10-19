@@ -46,7 +46,7 @@ if ($field_id !== null) {
     $ulast = do_lang_tempcode('LAST_VISIT_TIME');
 
     $sortables = array('username' => $uname, 'credits' => $ucredits, 'join_date' => $ujoin, 'last_visit' => $ulast);
-    $test = explode(' ', get_param_string('sort', 'username DESC'), 2);
+    $test = explode(' ', get_param_string('sort', 'username DESC', INPUT_FILTER_GET_COMPLEX), 2);
     if (count($test) == 1) {
         $test[1] = 'DESC';
     }

@@ -126,7 +126,7 @@ class Module_report_content
             warn_exit(do_lang_tempcode('cns:NO_REPORTED_POST_FORUM'));
         }
 
-        $url = get_param_string('url', false, true);
+        $url = get_param_string('url', false, INPUT_FILTER_URL_INTERNAL);
         $content_type = get_param_string('content_type'); // Equates to a content_meta_aware hook
         $content_id = get_param_string('content_id');
 
@@ -136,8 +136,7 @@ class Module_report_content
             'r_session_id' => get_session_id(),
             'r_content_type' => $content_type,
             'r_content_id' => $content_id,
-        ) !== null)
-        ) {
+        )) !== null) {
             warn_exit(do_lang_tempcode('ALREADY_REPORTED_CONTENT'));
         }
 
@@ -270,7 +269,7 @@ class Module_report_content
         }
 
         // Done
-        $_url = post_param_string('url', '', true);
+        $_url = post_param_string('url', '', INPUT_FILTER_URL_INTERNAL);
         if ($_url != '') {
             $content_url = make_string_tempcode($_url);
         }

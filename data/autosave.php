@@ -51,7 +51,7 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 }
 require($FILE_BASE . '/sources/global.php');
 
-require_code('ajax');
+require_code('autosave');
 if (get_param_string('type') == 'store') {
     store_autosave();
 } else {

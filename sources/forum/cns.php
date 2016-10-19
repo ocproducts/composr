@@ -597,7 +597,7 @@ class Forum_driver_cns extends Forum_driver_base
         $_redirect_url = build_url(array('page' => $page), '_SELF', array('keep_session' => 1, 'redirect' => 1), true);
         $redirect_url = $_redirect_url->evaluate();
 
-        $redirect_url = get_param_string('redirect_passon', get_param_string('redirect', $redirect_url));
+        $redirect_url = get_param_string('redirect_passon', get_param_string('redirect', $redirect_url, INPUT_FILTER_URL_INTERNAL), INPUT_FILTER_URL_INTERNAL);
 
         $_url = build_url(array('page' => 'join', 'redirect' => (get_page_name() == 'recommend') ? null : $redirect_url), get_module_zone('join'), array('keep_session' => 1, 'redirect' => 1));
         $url = $_url->evaluate();

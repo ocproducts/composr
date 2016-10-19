@@ -44,8 +44,8 @@ class Hook_snippet_rating
         $type = get_param_string('type', '');
         $content_id = get_param_string('id');
 
-        $content_url = get_param_string('content_url', '', true);
-        $content_title = get_param_string('content_title', '', true);
+        $content_url = get_param_string('content_url', '', INPUT_FILTER_URL_INTERNAL);
+        $content_title = get_param_string('content_title', '', INPUT_FILTER_GET_COMPLEX);
 
         require_code('feedback');
         actualise_specific_rating($rating, get_page_name(), get_member(), $content_type, $type, $content_id, $content_url, $content_title);

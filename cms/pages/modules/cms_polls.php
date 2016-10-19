@@ -148,7 +148,7 @@ class Module_cms_polls extends Standard_crud_module
         require_code('templates_results_table');
 
         $default_order = 'is_current DESC,add_time DESC';
-        $current_ordering = get_param_string('sort', $default_order);
+        $current_ordering = get_param_string('sort', $default_order, INPUT_FILTER_GET_COMPLEX);
         if ($current_ordering == 'is_current DESC,add_time DESC') {
             list($sortable, $sort_order) = array('is_current DESC,add_time', 'DESC');
         } elseif (($current_ordering == 'is_current ASC,add_time ASC') || ($current_ordering == 'is_current DESC,add_time ASC')) {

@@ -245,7 +245,7 @@ if (@is_resource($DATADOTCMS_FILE)) {
         }
         $ssl = ($conn !== false);
         $username = trim(post_param_string('ftp_username'));
-        $password = trim(post_param_string('ftp_password'));
+        $password = trim(post_param_string('ftp_password', false, INPUT_FILTER_NONE));
         if (($ssl) && (!@ftp_login($conn, $username, $password))) {
             $conn = false;
             $ssl = false;
@@ -695,7 +695,7 @@ function step_4()
 
     // Probing
 
-    $base_url = post_param_string('base_url', get_base_url());
+    $base_url = post_param_string('base_url', get_base_url(), INPUT_FILTER_URL_GENERAL);
 
     // Our forum is
     $forum_type = post_param_string('forum_type');
@@ -836,7 +836,7 @@ function step_4()
         $options = new Tempcode();
         $options->attach(make_option(do_lang_tempcode('FTP_DOMAIN'), new Tempcode(), 'ftp_domain', post_param_string('ftp_domain', $ftp_domain), false, true));
         $options->attach(make_option(do_lang_tempcode('FTP_USERNAME'), new Tempcode(), 'ftp_username', post_param_string('ftp_username', $ftp_username), false, true));
-        $options->attach(make_option(do_lang_tempcode('FTP_PASSWORD'), new Tempcode(), 'ftp_password', post_param_string('ftp_password', ''), true));
+        $options->attach(make_option(do_lang_tempcode('FTP_PASSWORD'), new Tempcode(), 'ftp_password', post_param_string('ftp_password', '', INPUT_FILTER_NONE), true));
         $options->attach(make_option(do_lang_tempcode('FTP_DIRECTORY'), do_lang_tempcode('FTP_FOLDER'), 'ftp_folder', post_param_string('ftp_folder', $ftp_folder)));
         $options->attach(make_option(do_lang_tempcode('FTP_FILES_PER_GO'), do_lang_tempcode('DESCRIPTION_FTP_FILES_PER_GO'), 'max', post_param_string('max', '1000')));
         $sections->attach(do_template('INSTALLER_STEP_4_SECTION', array('_GUID' => '50fcb00f4d1da1813e94d86529ea0862', 'HIDDEN' => $hidden, 'TITLE' => $title, 'TEXT' => $text, 'OPTIONS' => $options)));
@@ -1070,7 +1070,7 @@ function step_5()
     // Check cookie settings. IF THIS CODE IS CHANGED ALSO CHANGE COPY&PASTED CODE IN CONFIG_EDITOR.PHP
     $cookie_path = post_param_string('cookie_path');
     $cookie_domain = trim(post_param_string('cookie_domain'));
-    $base_url = post_param_string('base_url');
+    $base_url = post_param_string('base_url', false, INPUT_FILTER_URL_GENERAL);
     if (strpos($base_url, '://') === false) {
         $base_url = 'http://' . $base_url;
     }
@@ -1151,7 +1151,7 @@ function step_5()
     // Give warning if database contains data
     require_code('database');
     if (post_param_integer('confirm', 0) == 0) {
-        $tmp = new DatabaseConnector(trim(post_param_string('db_site')), trim(post_param_string('db_site_host')), trim(post_param_string('db_site_user')), trim(post_param_string('db_site_password')), $table_prefix);
+        $tmp = new DatabaseConnector(trim(post_param_string('db_site')), trim(post_param_string('db_site_host')), trim(post_param_string('db_site_user')), trim(post_param_string('db_site_password', false, INPUT_FILTER_NONE)), $table_prefix);
         $test = $tmp->query_select_value_if_there('config', 'c_value', array('c_name' => 'is_on_block_cache'), '', true);
         unset($tmp);
         if ($test !== null) {
@@ -1182,7 +1182,7 @@ function step_5()
 
     // Give warning if setting up a multi-site-network to a bad database
     if (($_POST['db_forums'] != $_POST['db_site']) && (get_forum_type() == 'cns')) {
-        $tmp = new DatabaseConnector(trim(post_param_string('db_forums')), trim(post_param_string('db_forums_host')), trim(post_param_string('db_forums_user')), trim(post_param_string('db_forums_password')), post_param_string('cns_table_prefix'));
+        $tmp = new DatabaseConnector(trim(post_param_string('db_forums')), trim(post_param_string('db_forums_host')), trim(post_param_string('db_forums_user')), trim(post_param_string('db_forums_password', false, INPUT_FILTER_NONE)), post_param_string('cns_table_prefix'));
         if ($tmp->query_select_value_if_there('db_meta', 'COUNT(*)', null, '', true) === null) {
             warn_exit(do_lang_tempcode('MSN_FORUM_DB_NOT_CNS_ALREADY'));
         }
@@ -1276,7 +1276,7 @@ function step_5_ftp()
         $ssl = ($conn !== false);
 
         $username = trim(post_param_string('ftp_username'));
-        $password = trim(post_param_string('ftp_password'));
+        $password = trim(post_param_string('ftp_password', false, INPUT_FILTER_NONE));
 
         if (($ssl) && (@ftp_login($conn, $username, $password) === false)) {
             $conn = false;
@@ -1392,7 +1392,7 @@ function step_5_ftp()
     $start_pos = get_param_integer('start_from', 0);
     $done_all = false;
     $time_start = time();
-    $max_time = intval(round(floatval(ini_get('max_execution_time')) / 1.5));
+    $max_time = min(20, intval(round(floatval(ini_get('max_execution_time')) / 1.5)));
     $max = post_param_integer('max', is_suexec_like() ? 5000 : 1000);
     for ($i = $start_pos; $i < $start_pos + $max; $i++) {
         list($filename, $contents) = file_array_get_at($i);
@@ -1614,7 +1614,7 @@ function step_5_write_config()
 {
     $log = new Tempcode();
 
-    $base_url = post_param_string('base_url');
+    $base_url = post_param_string('base_url', false, INPUT_FILTER_URL_GENERAL);
     if (substr($base_url, -1) == '/') {
         $base_url = substr($base_url, 0, strlen($base_url) - 1);
     }
@@ -1707,7 +1707,7 @@ if (appengine_is_live()) {
     \$SITE_INFO['db_site'] = '" . addslashes(post_param_string('gae_live_db_site')) . "';
     \$SITE_INFO['db_site_host'] = '" . addslashes(post_param_string('gae_live_db_site_host')) . "';
     \$SITE_INFO['db_site_user'] = '" . addslashes(post_param_string('gae_live_db_site_user')) . "';
-    \$SITE_INFO['db_site_password'] = '" . addslashes(post_param_string('gae_live_db_site_password')) . "';
+    \$SITE_INFO['db_site_password'] = '" . addslashes(post_param_string('gae_live_db_site_password', false, INPUT_FILTER_NONE)) . "';
     \$SITE_INFO['custom_file_base'] = '" . addslashes('gs://' . post_param_string('gae_bucket_name')) . "';
     if ((strpos(\$_SERVER['HTTP_HOST'],'.appspot.com') !== false) || (!tacit_https())) {
         \$SITE_INFO['custom_base_url'] = '" . addslashes((tacit_https() ? 'https://' : 'http://') . post_param_string('gae_bucket_name') . '.storage.googleapis.com') . "';
@@ -1753,7 +1753,7 @@ if (appengine_is_live()) {
         $ssl = ($conn !== false);
 
         $username = trim(post_param_string('ftp_username'));
-        $password = trim(post_param_string('ftp_password'));
+        $password = trim(post_param_string('ftp_password', false, INPUT_FILTER_NONE));
 
         if (($ssl) && (!@ftp_login($conn, $username, $password))) {
             $conn = false;
@@ -2447,7 +2447,7 @@ function handle_self_referencing_embedment()
                     exit();
                 }
                 $conn = false;
-                $domain = trim(get_param_string('ftp_domain'));
+                $domain = trim(get_param_string('ftp_domain', false, INPUT_FILTER_GET_COMPLEX));
                 $port = 21;
                 if (strpos($domain, ':') !== false) {
                     list($domain, $_port) = explode(':', $domain, 2);
@@ -2457,8 +2457,8 @@ function handle_self_referencing_embedment()
                     $conn = @ftp_ssl_connect($domain, $port);
                 }
                 $ssl = ($conn !== false);
-                $username = get_param_string('ftp_username');
-                $password = get_param_string('ftp_password');
+                $username = get_param_string('ftp_username', false, INPUT_FILTER_GET_COMPLEX);
+                $password = get_param_string('ftp_password', false, INPUT_FILTER_GET_COMPLEX);
                 $ssl = ($conn !== false);
                 if (($ssl) && (!@ftp_login($conn, $username, $password))) {
                     $conn = false;
@@ -2476,7 +2476,7 @@ function handle_self_referencing_embedment()
                     ftp_close($conn);
                     exit();
                 }
-                $ftp_folder = get_param_string('ftp_folder');
+                $ftp_folder = get_param_string('ftp_folder', false, INPUT_FILTER_GET_COMPLEX);
                 if (substr($ftp_folder, -1) != '/') {
                     $ftp_folder .= '/';
                 }
@@ -2507,9 +2507,9 @@ function handle_self_referencing_embedment()
                 $SITE_INFO['db_type'] = get_param_string('db_type');
                 require_code('database');
                 if (get_param_string('db_site') == '') {
-                    $db = new DatabaseConnector(get_param_string('db_forums'), get_param_string('db_forums_host'), get_param_string('db_forums_user'), get_param_string('db_forums_password'), '', true);
+                    $db = new DatabaseConnector(get_param_string('db_forums'), get_param_string('db_forums_host'), get_param_string('db_forums_user'), get_param_string('db_forums_password', false, INPUT_FILTER_GET_COMPLEX), '', true);
                 } else {
-                    $db = new DatabaseConnector(get_param_string('db_site'), get_param_string('db_site_host'), get_param_string('db_site_user'), get_param_string('db_site_password'), '', true);
+                    $db = new DatabaseConnector(get_param_string('db_site'), get_param_string('db_site_host'), get_param_string('db_site_user'), get_param_string('db_site_password', false, INPUT_FILTER_GET_COMPLEX), '', true);
                 }
                 $db->ensure_connected();
                 exit();
@@ -2929,7 +2929,7 @@ allow from all
 END;
 
     if ((cms_is_writable(get_file_base() . '/exports/addons')) && ((!file_exists(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess')) || (trim(file_get_contents(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess')) == ''))) {
-        $base_url = post_param_string('base_url', get_base_url());
+        $base_url = post_param_string('base_url', get_base_url(), INPUT_FILTER_URL_GENERAL);
 
         foreach ($clauses as $i => $clause) {
             $myfile = fopen(get_file_base() . '/exports/addons/index.php', GOOGLE_APPENGINE ? 'wb' : 'wt');

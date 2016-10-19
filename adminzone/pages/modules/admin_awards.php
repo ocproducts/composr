@@ -202,7 +202,7 @@ class Module_admin_awards extends Standard_crud_module
         $hr[] = do_lang_tempcode('USED_PREVIOUSLY');
         $hr[] = do_lang_tempcode('ACTIONS');
 
-        $current_ordering = get_param_string('sort', 'a_title ASC');
+        $current_ordering = get_param_string('sort', 'a_title ASC', INPUT_FILTER_GET_COMPLEX);
         if (strpos($current_ordering, ' ') === false) {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }

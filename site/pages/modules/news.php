@@ -228,7 +228,7 @@ class Module_news
             $blog = get_param_integer('blog', null);
 
             $select = get_param_string('id', get_param_string('select', '*'));
-            $select_and = get_param_string('select_and', '*');
+            $select_and = get_param_string('select_and', '*', INPUT_FILTER_GET_COMPLEX);
 
             $news_cat_id = null;
             $news_cat_rows = array();
@@ -283,8 +283,8 @@ class Module_news
 
             $blog = get_param_integer('blog', null);
 
-            $select = get_param_string('select', '*');
-            $select_and = get_param_string('select_and', '*');
+            $select = get_param_string('select', '*', INPUT_FILTER_GET_COMPLEX);
+            $select_and = get_param_string('select_and', '*', INPUT_FILTER_GET_COMPLEX);
 
             // Load from database
             $rows = $GLOBALS['SITE_DB']->query_select('news', array('*'), array('id' => $id), '', 1);
@@ -432,7 +432,7 @@ class Module_news
         $start = get_param_integer('news_categories_start', 0);
         $max = get_param_integer('news_categories_max', intval(get_option('news_categories_per_page')));
 
-        $select = get_param_string('select', '*');
+        $select = get_param_string('select', '*', INPUT_FILTER_GET_COMPLEX);
         if ($select == '*') {
             $where = '1=1';
         } else {

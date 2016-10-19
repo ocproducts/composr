@@ -82,7 +82,7 @@ class Hook_admin_stats_cns_posting_rates
         $title = get_screen_title('SECTION_POSTING_RATES_RANGE', true, array(escape_html(get_timezoned_date($time_start)), escape_html(get_timezoned_date($time_end))));
 
         $poster_exception = '';
-        foreach (explode(',', get_param_string('poster_exception', '')) as $e) {
+        foreach (explode(',', get_param_string('poster_exception', '', INPUT_FILTER_GET_COMPLEX)) as $e) {
             if (trim($e) == '') {
                 continue;
             }

@@ -223,7 +223,7 @@ class Module_cms_tutorials extends Standard_crud_module
      */
     public function add_actualisation()
     {
-        $url = post_param_string('url');
+        $url = post_param_string('url', false, INPUT_FILTER_URL_GENERAL);
         $title = post_param_string('title');
         $summary = post_param_string('summary');
         $icon = find_theme_image(post_param_string('icon'));
@@ -270,7 +270,7 @@ class Module_cms_tutorials extends Standard_crud_module
     {
         $id = intval($_id);
 
-        $url = post_param_string('url');
+        $url = post_param_string('url', false, INPUT_FILTER_URL_GENERAL);
         $title = post_param_string('title');
         $summary = post_param_string('summary');
         $icon = find_theme_image(post_param_string('icon'));

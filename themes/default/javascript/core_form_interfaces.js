@@ -1118,8 +1118,8 @@
             if (pic.srcset !== undefined) {
                 pic.srcset = pic.srcset.includes('themewizard.php') ? pic.srcset.replace('expand', 'contract') : ($cms.img('{$IMG;,2x/trays/contract}') + ' 2x');
             }
-            pic.alt ='{!CONTRACT;}';
-            pic.title = '{!CONTRACT;}';
+            pic.alt ='{!CONTRACT;^}';
+            pic.title = '{!CONTRACT;^}';
             newDisplayState = (field_input.localName === 'tr') ? 'table-row' : 'block';
             newDisplayState2 = 'block';
         } else { /* Contracting now */
@@ -1127,8 +1127,8 @@
             if (pic.srcset !== undefined) {
                 pic.srcset = pic.src.includes('themewizard.php') ? pic.srcset.replace('contract', 'expand') : ($cms.img('{$IMG;,2x/trays/expand}') + ' 2x');
             }
-            pic.alt = '{!EXPAND;}';
-            pic.title = '{!EXPAND;}';
+            pic.alt = '{!EXPAND;^}';
+            pic.title = '{!EXPAND;^}';
             newDisplayState = 'none';
             newDisplayState2 = 'none';
         }

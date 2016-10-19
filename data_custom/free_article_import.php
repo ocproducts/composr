@@ -159,7 +159,7 @@ function parse_ezinearticles($r)
     preg_match('#<h1>(.*)</h1>#Us', $f, $matches);
     $title = html_entity_decode($matches[1], ENT_QUOTES, get_charset());
 
-    $f = http_get_contents_cached('http://ezinearticles.com/ezinepublisher/?id=' . $id, $r[1]);
+    $f = http_get_contents_cached('http://ezinearticles.com/ezinepublisher/?id=' . urlencode($id), $r[1]);
 
     $matches = array();
     preg_match('#<textarea id="formatted-article" wrap="physical" style="width:98%;height:200px;" readonly>(.*)</textarea>#Us', $f, $matches);

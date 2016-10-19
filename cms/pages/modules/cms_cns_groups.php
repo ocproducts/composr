@@ -153,7 +153,7 @@ class Module_cms_cns_groups extends Standard_crud_module
         require_code('templates_results_table');
 
         $default_order = 'g_name ASC';
-        $current_ordering = get_param_string('sort', $default_order, true);
+        $current_ordering = get_param_string('sort', $default_order, INPUT_FILTER_GET_COMPLEX);
         $sortables = array(
             'g_name' => do_lang_tempcode('NAME'),
         );

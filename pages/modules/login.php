@@ -127,9 +127,9 @@ class Module_login
         if ($type == 'login') {
             breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('_LOGIN'))));
 
-            $username = trim(post_param_string('login_username'));
+            $username = trim(post_param_string('login_username', false, INPUT_FILTER_DEFAULT_POST & ~INPUT_FILTER_ALLOWED_POSTING_SITES));
 
-            $feedback = $GLOBALS['FORUM_DRIVER']->forum_authorise_login($username, null, apply_forum_driver_md5_variant(trim(post_param_string('password')), $username), trim(post_param_string('password')));
+            $feedback = $GLOBALS['FORUM_DRIVER']->forum_authorise_login($username, null, apply_forum_driver_md5_variant(trim(post_param_string('password', false, INPUT_FILTER_NONE)), $username), trim(post_param_string('password', false, INPUT_FILTER_NONE)));
             if ($feedback['id'] !== null) {
                 $this->title = get_screen_title('LOGGED_IN');
             } else {
@@ -203,7 +203,7 @@ class Module_login
 
         // Where we will be redirected to after login, for GET requests (POST requests are handled further in the code)
         $redirect_default = get_self_url(true); // The default is to go back to where we are after login. Note that this is not necessarily the URL to the login module, as login screens happen on top of screens you're not allowed to access. If it is the URL to the login module, we'll realise this later in this code. This URL is coded to not redirect to root if we have $_POST, because we relay $_POST values and have intelligence (via $passion).
-        $redirect = get_param_string('redirect', $redirect_default); // ... but often the login screen's URL tells us where to go back to
+        $redirect = get_param_string('redirect', $redirect_default, INPUT_FILTER_URL_INTERNAL); // ... but often the login screen's URL tells us where to go back to
         $unhelpful_redirect = false;
         $unhelpful_url_stubs = array(
             static_evaluate_tempcode(build_url(array('page' => 'login'), '', null, false, false, true)),
@@ -233,7 +233,7 @@ class Module_login
         // POST field relaying
         if (count($_FILES) == 0) { // Only if we don't have _FILES (which could never be relayed)
             $passion->attach(build_keep_post_fields($this->fields_to_not_relay));
-            $redirect_passon = post_param_string('redirect', null);
+            $redirect_passon = post_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL & ~INPUT_FILTER_ALLOWED_POSTING_SITES);
             if ($redirect_passon !== null) {
                 $passion->attach(form_input_hidden('redirect_passon', $redirect_passon)); // redirect_passon is used when there are POST fields, as it says what the redirect will be on the post-login-check hop (post fields prevent us doing an immediate HTTP-level redirect).
             }
@@ -275,7 +275,7 @@ class Module_login
 
         $id = $feedback['id'];
         if ($id !== null) {
-            $url = enforce_sessioned_url(either_param_string('redirect')); // Now that we're logged in, we need to ensure the redirect URL contains our new session ID
+            $url = enforce_sessioned_url(either_param_string('redirect', false, INPUT_FILTER_URL_INTERNAL)); // Now that we're logged in, we need to ensure the redirect URL contains our new session ID
 
             if (!has_interesting_post_fields()) {
                 require_code('site2');
@@ -284,7 +284,7 @@ class Module_login
                 $refresh = new Tempcode();
             } else {
                 $post = build_keep_post_fields($this->fields_to_not_relay);
-                $redirect_passon = post_param_string('redirect_passon', null); // redirect_passon is used when there are POST fields, as it says what the redirect will be on this post-login-check hop (post fields prevent us doing an immediate HTTP-level redirect).
+                $redirect_passon = post_param_string('redirect_passon', null, INPUT_FILTER_URL_INTERNAL & ~INPUT_FILTER_ALLOWED_POSTING_SITES); // redirect_passon is used when there are POST fields, as it says what the redirect will be on this post-login-check hop (post fields prevent us doing an immediate HTTP-level redirect).
                 if ($redirect_passon !== null) {
                     $post->attach(form_input_hidden('redirect', enforce_sessioned_url($redirect_passon)));
                 }
@@ -329,7 +329,7 @@ class Module_login
     {
         decache('side_users_online');
 
-        $url = get_param_string('redirect', null);
+        $url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
         if ($url === null) {
             $_url = build_url(array('page' => ''), '', array('keep_session' => 1));
             $url = $_url->evaluate();
@@ -353,7 +353,7 @@ class Module_login
             }
         }
 
-        $url = get_param_string('redirect', null);
+        $url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
         if ($url === null) {
             $_url = build_url(array('page' => ''), '');
             $url = $_url->evaluate();
@@ -373,7 +373,7 @@ class Module_login
         require_code('users_active_actions');
         set_invisibility($visible_now);
 
-        $url = get_param_string('redirect', null);
+        $url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
         if ($url === null) {
             $_url = build_url(array('page' => ''), '');
             $url = $_url->evaluate();

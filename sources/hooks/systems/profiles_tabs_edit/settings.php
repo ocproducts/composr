@@ -61,11 +61,11 @@ class Hook_profiles_tabs_edit_settings
             if (($is_ldap) || ($is_httpauth) || (($member_id_of != $member_id_viewing) && (!has_privilege($member_id_viewing, 'assume_any_member')))) {
                 $password = null;
             } else {
-                $password = post_param_string('edit_password', '');
+                $password = post_param_string('edit_password', '', INPUT_FILTER_NONE);
                 if ($password == '') {
                     $password = null;
                 } else {
-                    $password_confirm = trim(post_param_string('password_confirm'));
+                    $password_confirm = trim(post_param_string('password_confirm', false, INPUT_FILTER_NONE));
                     if ($password != $password_confirm) {
                         warn_exit(make_string_tempcode(escape_html(do_lang('PASSWORD_MISMATCH'))));
                     }
@@ -260,7 +260,7 @@ class Hook_profiles_tabs_edit_settings
             $fields->attach(get_award_fields('member', strval($member_id_of)));
         }
 
-        $redirect = get_param_string('redirect', null);
+        $redirect = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
         if ($redirect !== null) {
             $hidden->attach(form_input_hidden('redirect', $redirect));
         }

@@ -47,12 +47,12 @@ if (!$is_bleeding_edge) {
     $bleeding2 = 'bleeding-edge, ';
 }
 
-$changes = post_param_string('changes', '', true);
+$changes = post_param_string('changes', '');
 
-$descrip = get_param_string('descrip', '', true);
+$descrip = get_param_string('descrip', '', INPUT_FILTER_GET_COMPLEX);
 
-$needed = get_param_string('needed', '', true);
-$justification = get_param_string('justification', '', true);
+$needed = get_param_string('needed', '', INPUT_FILTER_GET_COMPLEX);
+$justification = get_param_string('justification', '', INPUT_FILTER_GET_COMPLEX);
 
 $urls = array();
 
@@ -62,7 +62,7 @@ if (!$is_bleeding_edge) {
     require_code('catalogues');
     require_code('catalogues2');
 
-    $urls['Bugs'] = 'http://compo.sr/tracker/search.php?project_id=1&product_version=' . $version_dotted;
+    $urls['Bugs'] = 'http://compo.sr/tracker/search.php?project_id=1&product_version=' . urlencode($version_dotted);
 }
 
 // Add downloads (assume uploaded already)

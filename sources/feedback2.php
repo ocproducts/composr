@@ -165,7 +165,7 @@ function feedback_fields($content_type, $allow_rating, $allow_comments, $allow_t
 
     if (($send_trackbacks) && (get_option('is_on_trackbacks') == '1')) {
         require_lang('trackbacks');
-        $fields->attach(form_input_line(do_lang_tempcode('SEND_TRACKBACKS'), do_lang_tempcode('DESCRIPTION_SEND_TRACKBACKS'), $field_name_prefix . 'send_trackbacks', get_param_string('trackback', ''), false));
+        $fields->attach(form_input_line(do_lang_tempcode('SEND_TRACKBACKS'), do_lang_tempcode('DESCRIPTION_SEND_TRACKBACKS'), $field_name_prefix . 'send_trackbacks', get_param_string('trackback', '', INPUT_FILTER_GET_COMPLEX), false));
     }
 
     if (get_option('is_on_rating') == '1') {

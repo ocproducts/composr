@@ -205,7 +205,7 @@ class Module_cms_news extends Standard_crud_module
     {
         require_code('templates_results_table');
 
-        $current_ordering = get_param_string('sort', 'date_and_time DESC');
+        $current_ordering = get_param_string('sort', 'date_and_time DESC', INPUT_FILTER_GET_COMPLEX);
         if (strpos($current_ordering, ' ') === false) {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
@@ -389,7 +389,13 @@ class Module_cms_news extends Standard_crud_module
 
         $fields2->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '90e0f1f4557eb78d58b9a13c3e1e65dc', 'SECTION_HIDDEN' => $news == '' && $image == '' && ($scheduled === null) && ($title == ''/*=new entry and selected news cats was from URL*/ || ($news_category === null) || $news_category == array()), 'TITLE' => do_lang_tempcode('ADVANCED'))));
 
-        $fields2->attach(form_input_text_comcode(do_lang_tempcode('NEWS_SUMMARY'), do_lang_tempcode('DESCRIPTION_NEWS_SUMMARY'), 'news', $news, false));
+        $news_summary_required = (get_option('news_summary_required') == '1');
+        $_summary_field = form_input_text_comcode(do_lang_tempcode('NEWS_SUMMARY'), $news_summary_required ? new Tempcode() : do_lang_tempcode('DESCRIPTION_NEWS_SUMMARY'), 'news', $news, $news_summary_required);
+        if ($news_summary_required) {
+            $fields->attach($_summary_field);
+        } else {
+            $fields2->attach($_summary_field);
+        }
 
         $fields2->attach(form_input_multi_list(do_lang_tempcode('SECONDARY_CATEGORIES'), do_lang_tempcode('DESCRIPTION_SECONDARY_CATEGORIES', 'news'), 'news_category', $cats2));
 
@@ -813,7 +819,7 @@ class Module_cms_news extends Standard_crud_module
         $import_blog_comments = post_param_integer('import_blog_comments', 0);
         $import_to_blog = post_param_integer('import_to_blog', 0);
 
-        $rss_url = post_param_string('rss_feed_url', null);
+        $rss_url = post_param_string('rss_feed_url', null, INPUT_FILTER_URL_GENERAL);
         require_code('uploads');
         if (((is_plupload(true)) && (array_key_exists('file_anytype', $_FILES))) || ((array_key_exists('file_anytype', $_FILES)) && (is_uploaded_file($_FILES['file_anytype']['tmp_name'])))) {
             $rss_url = $_FILES['file_anytype']['tmp_name'];
@@ -862,7 +868,7 @@ class Module_cms_news_cat extends Standard_crud_module
     {
         require_code('templates_results_table');
 
-        $current_ordering = get_param_string('sort', 'nc_title ASC', true);
+        $current_ordering = get_param_string('sort', 'nc_title ASC', INPUT_FILTER_GET_COMPLEX);
         list($sortable, $sort_order) = array(substr($current_ordering, 0, strrpos($current_ordering, ' ')), substr($current_ordering, strrpos($current_ordering, ' ') + 1));
         $sortables = array(
             'nc_title' => do_lang_tempcode('TITLE'),

@@ -275,7 +275,7 @@ class Module_admin_revisions
             warn_exit(do_lang_tempcode('IMPROPERLY_FILLED_IN'));
         }
 
-        $revision_type = get_param_string('revision_type', 'database', true);
+        $revision_type = get_param_string('revision_type', 'database', INPUT_FILTER_GET_COMPLEX);
         $id = get_param_integer('id');
 
         if ($revision_type == 'database') {
@@ -292,7 +292,7 @@ class Module_admin_revisions
             $revision_engine_files->delete_revision($directory, $filename_id, $ext, $id);
         }
 
-        $url = get_param_string('redirect', get_self_url(true, false, array('type' => 'browse')));
+        $url = get_param_string('redirect', get_self_url(true, false, array('type' => 'browse')), INPUT_FILTER_URL_INTERNAL);
 
         return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
     }

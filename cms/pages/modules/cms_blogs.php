@@ -166,7 +166,7 @@ class Module_cms_blogs extends Standard_crud_module
     {
         require_code('templates_results_table');
 
-        $current_ordering = get_param_string('sort', 'date_and_time DESC');
+        $current_ordering = get_param_string('sort', 'date_and_time DESC', INPUT_FILTER_GET_COMPLEX);
         if (strpos($current_ordering, ' ') === false) {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
@@ -257,9 +257,9 @@ class Module_cms_blogs extends Standard_crud_module
         list($allow_rating, $allow_comments, $allow_trackbacks) = $this->choose_feedback_fields_statistically($allow_rating, $allow_comments, $allow_trackbacks);
 
         if ($title == '') {
-            $title = get_param_string('title', $title);
+            $title = get_param_string('title', $title, INPUT_FILTER_GET_COMPLEX);
             $author = get_param_string('author', $author);
-            $notes = get_param_string('notes', $notes);
+            $notes = get_param_string('notes', $notes, INPUT_FILTER_GET_COMPLEX);
 
             if ($main_news_category === null) {
                 global $NON_CANONICAL_PARAMS;
@@ -736,7 +736,7 @@ class Module_cms_blogs extends Standard_crud_module
             $import_blog_comments = post_param_integer('import_blog_comments', 0);
             $import_to_blog = post_param_integer('import_to_blog', 0);
 
-            $rss_url = post_param_string('rss_feed_url', null);
+            $rss_url = post_param_string('rss_feed_url', null, INPUT_FILTER_URL_GENERAL);
             require_code('uploads');
             if (((is_plupload(true)) && (array_key_exists('file_anytype', $_FILES))) || ((array_key_exists('file_anytype', $_FILES)) && (is_uploaded_file($_FILES['file_anytype']['tmp_name'])))) {
                 $rss_url = $_FILES['file_anytype']['tmp_name'];

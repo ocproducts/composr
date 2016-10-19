@@ -85,20 +85,22 @@
                     // Remove tooltips from forms as they are for screenreader accessibility only
                     form.title = '';
 
-                    // Convert a/img title attributes into composr tooltips
+                    // Convert form element title attributes into composr tooltips
                     if ($cms.$CONFIG_OPTION.js_overlays) {
                         // Convert title attributes into composr tooltips
                         var elements = form.elements, j;
 
                         for (j = 0; j < elements.length; j++) {
-                            if (elements[j].title !== undefined) {
+                            if (elements[j].title !== undefined && typeof elements[j]['original-title'] == 'undefined'/*check tipsy not used*/ && elements[j].className.indexOf('no_tooltip') == -1) {
                                 convert_tooltip(elements[j]);
                             }
                         }
 
                         elements = form.querySelectorAll('input[type="image"][title]'); // JS DOM does not include type="image" ones in form.elements
                         for (j = 0; j < elements.length; j++) {
-                            convert_tooltip(elements[j]);
+                            if (typeof elements[j]['original-title'] == 'undefined'/*check tipsy not used*/ && elements[j].className.indexOf('no_tooltip') == -1) {
+                                convert_tooltip(elements[j]);
+                            }
                         }
                     }
 
@@ -561,8 +563,8 @@
             var html = ' \
     <div class="software_chat"> \
         <h2>{!CMS_COMMUNITY_HELP}</h2> \
-        <ul class="spaced_list">{!SOFTWARE_CHAT_EXTRA;}</ul> \
-        <p class="associated_link associated_links_block_group"><a title="{!SOFTWARE_CHAT_STANDALONE} {!LINK_NEW_WINDOW;}" target="_blank" href="' + escape_html(url) + '">{!SOFTWARE_CHAT_STANDALONE}</a> <a href="#!" class="js-click-load-software-chat">{!HIDE}</a></p> \
+        <ul class="spaced_list">{!SOFTWARE_CHAT_EXTRA;^}</ul> \
+        <p class="associated_link associated_links_block_group"><a title="{!SOFTWARE_CHAT_STANDALONE} {!LINK_NEW_WINDOW;^}" target="_blank" href="' + escape_html(url) + '">{!SOFTWARE_CHAT_STANDALONE}</a> <a href="#!" class="js-click-load-software-chat">{!HIDE}</a></p> \
     </div> \
     <iframe class="software_chat_iframe" style="border: 0" src="' + escape_html(url) + '"></iframe> \
 '.replace(/\\{1\\}/, escape_html(window.location.href.replace($cms.$BASE_URL, 'http://baseurl')));
@@ -794,7 +796,7 @@
                     };
                     ml.type = 'button';
                     ml.id = 'editimg_' + target.id;
-                    ml.value = '{!themes:EDIT_THEME_IMAGE;}';
+                    ml.value = '{!themes:EDIT_THEME_IMAGE;^}';
                     ml.className = 'magic_image_edit_link button_micro';
                     ml.style.position = 'absolute';
                     ml.style.left = find_pos_x(target) + 'px';
@@ -811,7 +813,7 @@
                 }
 
                 window.old_status_img = window.status;
-                window.status = '{!SPECIAL_CLICK_TO_EDIT;}';
+                window.status = '{!SPECIAL_CLICK_TO_EDIT;^}';
             }
 
             function handle_image_mouse_out(event) {
@@ -1411,6 +1413,24 @@
                 }
             }
         );
+    }
+
+    function has_iframe_loaded(iframe) {
+        var has_loaded = false;
+        try {
+            has_loaded = (typeof iframe != 'undefined') && (iframe != null) && (iframe.contentWindow.location.host != '');
+        }
+        catch (e) {};
+        return has_loaded;
+    }
+
+    function has_iframe_ownership(iframe) {
+        var has_ownership = false;
+        try {
+            has_ownership = (typeof iframe != 'undefined') && (iframe != null) && (iframe.contentWindow.location.host == window.location.host) && (iframe.contentWindow.document != null);
+        }
+        catch (e) {};
+        return has_ownership;
     }
 
     function prepareMassSelectMarker(set, type, id, checked) {
