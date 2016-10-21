@@ -2793,7 +2793,7 @@
                     'html': 'innerHTML',
                     'class': 'className',
                     'for': 'htmlFor',
-                    'text': 'innerText'
+                    'text': 'textContent'
                 };
 
             if (options && (typeof options === 'object')) {
@@ -6260,13 +6260,13 @@ function faux_open(url, name, options, target, cancel_text) {
                 if (list_contents.children[i].getAttribute('displayname') != '')
                     displaytext = list_contents.children[i].getAttribute('displayname');
                 item.text = displaytext;
-                item.innerText = displaytext;
+                item.textContent = displaytext;
                 list.appendChild(item);
             }
             item = document.createElement('option');
             item.disabled = true;
             item.text = '{!javascript:SUGGESTIONS_ONLY;^}'.toUpperCase();
-            item.innerText = '{!javascript:SUGGESTIONS_ONLY;^}'.toUpperCase();
+            item.textContent = '{!javascript:SUGGESTIONS_ONLY;^}'.toUpperCase();
             list.appendChild(item);
             currentListForEl.parentNode.appendChild(list);
 
