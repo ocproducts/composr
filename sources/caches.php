@@ -664,7 +664,13 @@ function get_cache_signature_details($special_cache_flags, &$staff_status, &$mem
         $timezone = (($special_cache_flags !== null) && (($special_cache_flags & CACHE_AGAINST_TIMEZONE) !== 0)) ? get_users_timezone(get_member()) : '';
     }
     if ($is_ssl === null) {
-        $is_ssl = (($special_cache_flags !== null) && (($special_cache_flags & CACHE_AGAINST_SSL) !== 0)) ? (is_page_https(get_zone_name(), get_page_name()) ? 1 : 0) : null;
+        if (!addon_installed('ssl')) {
+            $https = tacit_https();
+        } else {
+            $https = ((tacit_https()) || (function_exists('is_page_https')) && (function_exists('get_zone_name')) && (is_page_https(get_zone_name(), get_page_name())));
+        }
+
+        $is_ssl = (($special_cache_flags !== null) && (($special_cache_flags & CACHE_AGAINST_SSL) !== 0)) ? ($https ? 1 : 0) : null;
     }
 
     if ($theme === null) {
