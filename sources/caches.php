@@ -149,8 +149,8 @@ class Self_learning_cache
         $this->bucket_name = $bucket_name;
         $dir = get_custom_file_base() . '/caches/self_learning';
         if (!is_dir($dir)) {
-            @mkdir($dir, 0777);
-            fix_permissions($dir);
+            require_code('files2');
+            make_missing_directory($dir);
         }
         //$this->path = $dir . '/' . filter_naughty(str_replace(array('/', '\\', ':'), array('__', '__', '__'), $bucket_name)) . '.gcd'; Windows has a 260 character path limit, so we can't do it this way
         $this->path = $dir . '/' . filter_naughty(md5($bucket_name)) . '.gcd';

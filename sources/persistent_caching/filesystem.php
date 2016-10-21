@@ -51,7 +51,7 @@ class Persistent_caching_filecache
         return $this->objects_list;*/
 
         $objects_list = $this->get('PERSISTENT_CACHE_OBJECTS');
-        if ($objects_list === null) {
+        if (!is_array($objects_list)) {
             $objects_list = array();
         }
         return $objects_list;
