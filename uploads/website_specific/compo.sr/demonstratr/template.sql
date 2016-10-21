@@ -5987,7 +5987,7 @@ insert into `cms_addons_files` values('random_quotes','text/EN/quotes.txt','5344
  ('shopping','themes/default/templates/CATALOGUE_products_GRID_ENTRY_WRAP.tpl','5791'),
  ('shopping','themes/default/templates/RESULTS_products_TABLE.tpl','5792'),
  ('shopping','themes/default/javascript/shopping.js','5793'),
- ('shopping','themes/default/templates/CATALOGUE_ENTRY_CART_BUTTONS.tpl','5794'),
+ ('shopping','themes/default/templates/ECOM_SHOPPING_CART_BUTTONS.tpl','5794'),
  ('shopping','adminzone/pages/modules/admin_orders.php','5795'),
  ('shopping','lang/EN/shopping.ini','5796'),
  ('shopping','sources/hooks/systems/addon_registry/shopping.php','5797'),

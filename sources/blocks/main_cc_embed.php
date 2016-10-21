@@ -162,17 +162,11 @@ class Block_main_cc_embed
                 break;
         }
 
-        $cart_link = new Tempcode();
         $is_ecommerce = is_ecommerce_catalogue($catalogue_name, $catalogue);
         if ($is_ecommerce) {
             if (get_forum_type() != 'cns') {
                 return paragraph(do_lang_tempcode('NO_CNS'), '', 'red_alert');
             }
-
-            require_code('shopping');
-            require_lang('shopping');
-
-            $cart_link = show_cart_link();
         }
 
         $entry_buildup = apply_quick_caching($entry_buildup);
@@ -187,8 +181,6 @@ class Block_main_cc_embed
             'ENTRIES' => $entry_buildup,
             'SORTING' => $sorting,
             'PAGINATION' => $pagination,
-
-            'CART_LINK' => $cart_link,
 
             'START' => strval($start),
             'MAX' => strval($max),

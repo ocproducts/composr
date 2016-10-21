@@ -10,7 +10,7 @@
 					</div></div>
 				{+END}
 
-				{CART_LINK}
+				{$CART_LINK}
 			</div>
 		{+END}
 
