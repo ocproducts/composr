@@ -16,7 +16,6 @@
 		width: 606px;
 	/*{+END}*/
 	text-align: center;
-	border: 1px dotted {$GET,standard_border};
 	{$BETA_CSS_PROPERTY,border-radius: 15px;}
 	background: {$GET,area_background};
 	padding: 0.7em;
