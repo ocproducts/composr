@@ -33,13 +33,10 @@ class Hook_symbol_BETA_CSS_PROPERTY
     {
         /*
         Properties currently used:
-         backface-visibility
          flex-wrap
          user-select
 
         Property settings currently used:
-         background-image
-          linear-gradient
          display
           flex
         */
@@ -50,15 +47,12 @@ class Hook_symbol_BETA_CSS_PROPERTY
             // No prefixing needed for these
             $is_supported = array(
                 '-o-' => array(
-                    'backface-visibility',
                 ),
                 '-webkit-' => array(
-                    'backface-visibility',
                 ),
                 '-ms-' => array(
                 ),
                 '-moz-' => array(
-                    'backface-visibility',
                 ),
             );
 
@@ -75,18 +69,6 @@ class Hook_symbol_BETA_CSS_PROPERTY
                 // Normalise
                 if (substr(trim($param[0]), -1) != ';') {
                     $value .= '; ';
-                }
-
-                // CSS gradients aren't a new property as such, they're a prefixed extension to an existing one
-                if (preg_match('#^background-image:\s*(\w+-gradient)(.*)$#s', $param[0], $matches) != 0) {
-                    $new_style = $matches[2];
-                    $old_style = str_replace(array('to right', 'to bottom', 'to bottom right', 'to top right'), array('left', 'top', 'top left', 'bottom left'), $new_style); // This is because the spec changed; at time of writing only MS support the new spec, so for others we'll need to put out both methods (as they'll likely break their self-compatibility)
-                    if (($prefix != '-ms-') && ($prefix != '')) {
-                        $value .= 'background-image: ' . $prefix . $matches[1] . $old_style;
-                    }
-                    $value .= 'background-image: ' . $prefix . $matches[1] . $new_style;
-                    $value .= "\n\t";
-                    continue;
                 }
 
                 // Flexbox is a prefixed extension to an existing one

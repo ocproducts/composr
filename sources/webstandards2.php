@@ -256,10 +256,12 @@ function init__webstandards2()
         'background' => '((' . $enforce_transparent_or_color . '|' . $enforce_functional_url_or_none . '|' . $enforce_background_repeat . '|' . $enforce_attachment . '|' . $enforce_background_position . ')( |$))+',
         'background-attachment' => $enforce_attachment,
         'background-color' => $enforce_transparent_or_color,
-        'background-image' => /*$enforce_functional_url_or_none*/
-            '.*', // Changed to .* to allow gradients
+        'background-image' => /*$enforce_functional_url_or_none*/'.*', // Changed to .* to allow gradients
         'background-repeat' => $enforce_background_repeat,
         'background-position' => $enforce_background_position,
+        'background-size' => '(' . $enforce_length . ' ' . $enforce_length . ')',
+        'background-origin' => '(border-box|content-box)', // padding-box not widely supported yet; may be droped from spec
+        'background-clip' => '(border-box|padding-box|content-box)',
         'border' => $enforce_border,
         'border-collapse' => '(collapse|separate)',
         'border-color' => $enforce_transparent_or_color . '( ' . $enforce_transparent_or_color . '( ' . $enforce_transparent_or_color . '( ' . $enforce_transparent_or_color . '|)|)|)',
@@ -286,9 +288,9 @@ function init__webstandards2()
         'clear' => '(both|left|right|none)',
         'clip' => 'auto|(rect\(' . $enforce_potential_4d_length . '\))',
         'color' => $enforce_css_color,
-        'cursor' => '(' . $enforce_functional_url . '|default|auto|n-resize|ne-resize|e-resize|se-resize|s-resize|sw-resize|w-resize|nw-resize|crosshair|pointer|move|text|wait|help' . ((!$is_ie) ? '|progress' : '') . ')', // hand is actually IE specific version of pointer; we'll use Tempcode so as to only show that when really needed
+        'cursor' => '(' . $enforce_functional_url . '|default|auto|n-resize|ne-resize|e-resize|se-resize|s-resize|sw-resize|w-resize|nw-resize|crosshair|pointer|move|text|wait|help' . ((!$is_ie) ? '|progress' : '') . ')',
         'direction' => '(ltr|rtl)',
-        'display' => '(none|inline|block|list-item|table|table-header-group|table-footer-group|inline-block|run-in' . ((!$is_ie) ? '|inline-table|table-row|table-row-group|table-column-group|table-column|table-cell|table-caption' : '') . ')',
+        'display' => '(none|inline|block|list-item|table|table-header-group|table-footer-group|inline-block|run-in|inline-table|table-row|table-row-group|table-column-group|table-column|table-cell|table-caption|flex|-ms-flexbox|-\w+-flex)',
         'float' => '(left|right|none)',
         'font' => '((caption|icon|menu|message-box|small-caption|status-bar|' . $enforce_font_style . '|' . $enforce_font_variant . '|' . $enforce_font_weight . '|' . $enforce_length . '|' . $enforce_normal_or_length . '|' . $enforce_font_list . ')( |$))+',
         'font-family' => $enforce_font_list,
@@ -350,12 +352,7 @@ function init__webstandards2()
         'opacity' => $enforce_fraction,
         'overflow-x' => '(visible|hidden|scroll|auto)',
         'overflow-y' => '(visible|hidden|scroll|auto)',
-
-        // CSS3, widely supported
         'box-sizing' => '(border-box|content-box|padding-box)', // should be vendor prefixed (for Firefox)
-
-        // CSS3, not supported on IE8 but irrelevant as these just add flashiness; should be vendor prefixed
-        'background-size' => '(' . $enforce_length . ' ' . $enforce_length . ')',
         'box-shadow' => '(none|(' . $enforce_box_shadow . '(,\s*' . $enforce_box_shadow . '(,\s*' . $enforce_box_shadow . '(,\s*' . $enforce_box_shadow . ')?)?)?))',
         'text-shadow' => '(none|(' . $enforce_length . ' ' . $enforce_length . '( ' . $enforce_length . ')?( ' . $enforce_css_color . ')?))',
         'border-radius' => $enforce_length . '( ' . $enforce_length . '( ' . $enforce_length . '( ' . $enforce_length . ')?)?)?',
@@ -368,15 +365,34 @@ function init__webstandards2()
         'transition-timing-function' => $enforce_transition_timing_function,
         'transition-delay' => $enforce_time,
         'transition' => $enforce_transition_property . '( ' . $enforce_time . '( ' . $enforce_transition_timing_function . '( ' . $enforce_time . ')?)?)?',
-        'background-origin' => '(border-box|content-box)', // padding-box not widely supported yet; may be droped from spec
         'transform' => '(none|\w+\([^\(\)]+\))',
         'transform-origin' => $enforce_transform_origin . '( ' . $enforce_transform_origin . '( ' . $enforce_transform_origin . ')?)?',
         'transform-style' => $enforce_transform_style,
+        'perspective' => $enforce_length,
+        'perspective-origin' => $enforce_background_position,
+        'backface-visibility' => '(hidden|visible)',
+        'border-image' => '.*',
+        'border-image-source' => /*$enforce_functional_url_or_none*/'.*', // Changed to .* to allow gradients
+        'border-image-slice' => $enforce_length,
+        'border-image-width' => $enforce_length,
+        'border-image-outset' => $enforce_length,
+        'border-image-repeat' => '(stretch|repeat|round|space)',
+        'animation' => '.*',
+        'animation-name' => '\w+',
+        'animation-duration' => '\d+s',
+        'animation-timing-function' => '(linear|ease|ease-in|ease-out|ease-in-out|step-start|step-end|steps\(\d+(,(start|end))?\)|cubic-bezier\([\d\.]+,[\d\.]+,[\d\.]+,[\d\.]+\))',
+        'animation-iteration-count' => '.*',
+        'animation-direction' => '.*',
+        'animation-play-state' => '.*',
+        'animation-delay' => '.*',
+        'animation-fill-mode' => '.*',
 
         /* Purposely left out these CSS2 features due to very poor browser support (not just IE not having it) */
         /*
         (print module)
         (aural module)
+        (columns module)
+        (low level font and color settings)
         */
 
         /* These are non standard but we want them */
@@ -1817,10 +1833,13 @@ function _webstandards_css_sheet($data)
                     $cnt = substr_count($class_name, ':');
                     if ($cnt > 0) {
                         $matches = array();
-                        $num_matches = preg_match_all('#:([\w-]+)#', $class_name, $matches);
+                        $num_matches = preg_match_all('#:([\w-]+)(\([^()]*\))?#', $class_name, $matches);
                         for ($j = 0; $j < $num_matches; $j++) {
                             $pseudo = $matches[1][$j];
-                            if (($GLOBALS['WEBSTANDARDS_COMPAT']) && (!in_array($pseudo, array('active', 'hover', 'link', 'visited', 'first-letter', 'first-line', 'first-child', 'last-child', 'before', 'after', 'disabled', 'focus')))) {
+                            if (
+                                ($GLOBALS['WEBSTANDARDS_COMPAT']) &&
+                                (!in_array($pseudo, array('active', 'hover', 'link', 'visited', 'first-letter', 'first-line', 'first-child', 'last-child', 'before', 'after', 'disabled', 'focus', 'root', 'nth-child', 'nth-last-child', 'nth-of-type', 'nth-last-of-type', 'first-of-type', 'last-of-type', 'only-child', 'only-of-type', 'empty', 'target', 'not', 'enabled', 'checked', 'indeterminate',)))
+                            ) {
                                 $errors[] = array(0 => 'CSS_BAD_PSEUDO_CLASS', 1 => $pseudo, 'pos' => $i);
                             }
                         }
@@ -2080,7 +2099,7 @@ function _check_css_value($key, $value, $_i)
         $reg_exp = $CSS_PROPERTIES[$key];
     }
 
-    if ((preg_match('#^' . $reg_exp . '$#s', $value) == 0) && ($value != 'xpx') && ($value != 'x') && ($value != 'inherit')) {
+    if ((preg_match('#^' . $reg_exp . '$#s', $value) == 0) && ($value != 'xpx') && ($value != 'x') && ($value != 'inherit') && ($value != 'initial') && (substr($value, 0, 5) != 'calc(')) {
         return array(0 => 'CSS_BAD_PROPERTY_VALUE', 1 => $key, 2 => $value, 3 => $reg_exp, 'pos' => $_i);
     }
 
