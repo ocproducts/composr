@@ -36,7 +36,9 @@
 
 .display_type_GRID .box {
 	margin: 0.5em 0 0 0.5em;
-	width: calc(25% - 0.5em - 2px);
+	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+		width: calc(25% - 0.5em - 2px);
+	/*{+END}*/
 }
 
 .display_type_GRID .box h3 span {

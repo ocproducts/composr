@@ -71,7 +71,9 @@
 
 .gallery_grid_cell {
 	margin: 0.5em 0 0 0.5em;
-	width: calc(25% - 0.5em);
+	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+		width: calc(25% - 0.5em);
+	/*{+END}*/
 }
 
 .gallery_regular_thumb {
