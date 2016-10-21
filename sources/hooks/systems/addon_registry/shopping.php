@@ -139,7 +139,7 @@ class Hook_addon_registry_shopping
             'themes/default/templates/CATALOGUE_products_GRID_ENTRY_WRAP.tpl',
             'themes/default/templates/RESULTS_products_TABLE.tpl',
             'themes/default/javascript/shopping.js',
-            'themes/default/templates/CATALOGUE_ENTRY_CART_BUTTONS.tpl',
+            'themes/default/templates/ECOM_SHOPPING_CART_BUTTONS.tpl',
             'adminzone/pages/modules/admin_orders.php',
             'lang/EN/shopping.ini',
             'sources/hooks/systems/addon_registry/shopping.php',
@@ -188,11 +188,11 @@ class Hook_addon_registry_shopping
             'templates/RESULTS_cart_TABLE.tpl' => 'shopping_cart_screen',
             'templates/RESULTS_TABLE_cart_ENTRY.tpl' => 'shopping_cart_screen',
             'templates/RESULTS_TABLE_cart_FIELD.tpl' => 'shopping_cart_screen',
-            'templates/ECOM_CART_LINK.tpl' => 'products_entry_screen',
+            'templates/ECOM_CART_LINK.tpl' => 'ecom_cart_link_screen',
             'templates/CATALOGUE_products_CATEGORY_EMBED.tpl' => 'grid_category_screen__products',
             'templates/CATALOGUE_products_ENTRY_SCREEN.tpl' => 'products_entry_screen',
             'templates/CATALOGUE_products_FIELDMAP_ENTRY_FIELD.tpl' => 'products_entry_screen',
-            'templates/CATALOGUE_ENTRY_CART_BUTTONS.tpl' => 'products_entry_screen',
+            'templates/ECOM_SHOPPING_CART_BUTTONS.tpl' => 'products_entry_screen',
             'templates/CATALOGUE_products_CATEGORY_SCREEN.tpl' => 'grid_category_screen__products',
             'templates/CATALOGUE_products_GRID_ENTRY_FIELD.tpl' => 'grid_category_screen__products',
             'templates/CATALOGUE_products_GRID_ENTRY_WRAP.tpl' => 'grid_category_screen__products',
@@ -592,7 +592,7 @@ class Hook_addon_registry_shopping
             $fields->attach($_field);
         }
 
-        $cart_buttons = do_lorem_template('CATALOGUE_ENTRY_CART_BUTTONS', array(
+        $cart_buttons = do_lorem_template('ECOM_SHOPPING_CART_BUTTONS', array(
             'OUT_OF_STOCK' => lorem_phrase(),
             'ACTION_URL' => placeholder_url(),
             'PRODUCT_ID' => placeholder_id(),
@@ -600,11 +600,6 @@ class Hook_addon_registry_shopping
             'PURCHASE_ACTION_URL' => placeholder_url(),
             'CART_URL' => placeholder_url(),
         ));
-        $cart_link = do_lorem_template('ECOM_CART_LINK', array(
-            'URL' => placeholder_url(),
-            'TITLE' => lorem_phrase(),
-            'ITEMS' => placeholder_number(),
-        ), null, false);
 
         $rating_inside = new Tempcode();
 
@@ -625,8 +620,6 @@ class Hook_addon_registry_shopping
             'RATING' => $rating_inside,
             'ALLOW_RATING' => false,
             'MAP_TABLE' => placeholder_table(),
-            'CART_BUTTONS' => $cart_buttons,
-            'CART_LINK' => $cart_link,
             'ADD_TO_CART' => placeholder_url(),
             'FIELDS' => $fields,
             'ENTRY_SCREEN' => true,
@@ -650,6 +643,7 @@ class Hook_addon_registry_shopping
                     'EDIT_DATE_RAW' => placeholder_date_raw(),
                     'VIEWS' => placeholder_number(),
                     'TAGS' => array(),
+                    'CART_BUTTONS' => $cart_buttons,
                     'CATALOGUE' => 'products',
                     'SUBMITTER' => placeholder_id(),
                     'FIELD_1' => lorem_word(),
@@ -690,20 +684,6 @@ class Hook_addon_registry_shopping
             $fields->attach($_field);
         }
 
-        $cart_buttons = do_lorem_template('CATALOGUE_ENTRY_CART_BUTTONS', array(
-            'OUT_OF_STOCK' => lorem_phrase(),
-            'ACTION_URL' => placeholder_url(),
-            'PRODUCT_ID' => placeholder_id(),
-            'ALLOW_OPTOUT_TAX' => lorem_phrase(),
-            'PURCHASE_ACTION_URL' => placeholder_url(),
-            'CART_URL' => placeholder_url(),
-        ));
-        $cart_link = do_lorem_template('ECOM_CART_LINK', array(
-            'URL' => placeholder_url(),
-            'TITLE' => lorem_phrase(),
-            'ITEMS' => placeholder_number(),
-        ), null, false);
-
         $rating_inside = new Tempcode();
 
         $map = array(
@@ -721,8 +701,6 @@ class Hook_addon_registry_shopping
             'PRICE' => placeholder_number(),
             'RATING' => $rating_inside,
             'MAP_TABLE' => placeholder_table(),
-            'CART_BUTTONS' => $cart_buttons,
-            'CART_LINK' => $cart_link,
             'ADD_TO_CART' => placeholder_url(),
             'FIELDS' => $fields,
             'URL' => placeholder_url(),
@@ -739,8 +717,6 @@ class Hook_addon_registry_shopping
             'SORTING' => '',
             'PAGINATION' => '',
 
-            'CART_LINK' => placeholder_link(),
-
             'START' => '0',
             'MAX' => '10',
             'START_PARAM' => 'x_start',
@@ -749,24 +725,43 @@ class Hook_addon_registry_shopping
 
         return array(
             lorem_globalise(do_lorem_template('CATALOGUE_products_CATEGORY_SCREEN', $map + array(
-                    'ID' => placeholder_id(),
-                    'ADD_DATE_RAW' => placeholder_date(),
-                    'TITLE' => lorem_title(),
-                    '_TITLE' => lorem_phrase(),
-                    'TAGS' => '',
-                    'CATALOGUE' => lorem_word_2(),
-                    'ADD_ENTRY_URL' => placeholder_url(),
-                    'ADD_CAT_URL' => placeholder_url(),
-                    'ADD_CAT_TITLE' => do_lang_tempcode('ADD_CATALOGUE_CATEGORY'),
-                    'EDIT_CAT_URL' => placeholder_url(),
-                    'EDIT_CATALOGUE_URL' => placeholder_url(),
-                    'ENTRIES' => $entries,
-                    'SUBCATEGORIES' => '',
-                    'DESCRIPTION' => lorem_sentence(),
-                    'CART_LINK' => placeholder_link(),
-                    'TREE' => lorem_phrase(),
-                    'DISPLAY_TYPE' => '0',
-                )), null, '', true)
+                'ID' => placeholder_id(),
+                'ADD_DATE_RAW' => placeholder_date(),
+                'TITLE' => lorem_title(),
+                '_TITLE' => lorem_phrase(),
+                'TAGS' => '',
+                'CATALOGUE' => lorem_word_2(),
+                'ADD_ENTRY_URL' => placeholder_url(),
+                'ADD_CAT_URL' => placeholder_url(),
+                'ADD_CAT_TITLE' => do_lang_tempcode('ADD_CATALOGUE_CATEGORY'),
+                'EDIT_CAT_URL' => placeholder_url(),
+                'EDIT_CATALOGUE_URL' => placeholder_url(),
+                'ENTRIES' => $entries,
+                'SUBCATEGORIES' => '',
+                'DESCRIPTION' => lorem_sentence(),
+                'TREE' => lorem_phrase(),
+                'DISPLAY_TYPE' => '0',
+            )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__ecom_cart_link_screen()
+    {
+        $cart_link = do_lorem_template('ECOM_CART_LINK', array(
+            'URL' => placeholder_url(),
+            'TITLE' => lorem_phrase(),
+            'ITEMS' => placeholder_number(),
+        ), null, false);
+
+        return array(
+            lorem_globalise($cart_link, null, '', true)
         );
     }
 

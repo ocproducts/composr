@@ -73,7 +73,7 @@ class Block_main_rss
 
         $block_id = get_block_id($map);
 
-        $url = array_key_exists('param', $map) ? $map['param'] : (get_brand_base_url() . '/backend.php?type=rss&mode=news&select=1,2,17,18,29,30'); // http://news.google.co.uk/news?hs=UTT&tab=wn&topic=w&output=atom
+        $url = array_key_exists('param', $map) ? $map['param'] : (get_brand_base_url() . '/backend.php?type=rss&mode=news'); // http://news.google.co.uk/news?hs=UTT&tab=wn&topic=w&output=atom
 
         require_code('rss');
         $rss_feeds = array();

@@ -136,9 +136,10 @@
 	margin: 3em 0 3em 3em;
 }
 
-.product_view .sku {
+.product_view .sku, .product_view .stock_level {
 	float: right;
 	padding-top: 0.5em;
+	padding-left: 1em;
 }
 
 /*

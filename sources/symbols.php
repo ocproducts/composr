@@ -105,6 +105,8 @@ function ecv($lang, $escaped, $type, $name, $param)
                     }
                     if (!running_script('install')) {
                         trigger_error(do_lang('MISSING_SYMBOL', escape_html($name)), E_USER_NOTICE);
+
+                        persistent_cache_delete('HOOKS'); // May be a cache issue, find it on refresh
                     }
                 }
             }

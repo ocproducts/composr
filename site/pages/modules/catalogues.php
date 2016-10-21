@@ -367,7 +367,7 @@ class Module_catalogues
                 array('ECOM_CAT_price_pre_tax', 'ECOM_CATD_price_pre_tax', 'float', 0, 1, 1, 1, 'decimal_points_behaviour=price'),
                 array('ECOM_CAT_stock_level', 'ECOM_CATD_stock_level', 'integer', 0, 0, 1, 0),
                 array('ECOM_CAT_stock_level_warn_at', 'ECOM_CATD_stock_level_warn_at', 'integer', 0, 0, 0, 0),
-                array('ECOM_CAT_stock_level_maintain', 'ECOM_CATD_stock_level_maintain', 'tick', 0, 1, 0, 0),
+                array('ECOM_CAT_stock_level_maintain', 'ECOM_CATD_stock_level_maintain', 'tick'/*will save as list*/, 0, 1, 0, 0),
                 array('ECOM_CAT_tax_type', 'ECOM_CATD_tax_type', 'list', 0, 1, 0, 0, "0%|5%|17.5%"),
                 array('ECOM_CAT_image', 'ECOM_CATD_image', 'picture', 0, 0, 1, 1),
                 array('ECOM_CAT_weight', 'ECOM_CATD_weight', 'float', 0, 1, 0, 0),
@@ -971,7 +971,6 @@ class Module_catalogues
             'CATALOGUE_' . $tpl_set . '_CATEGORY_SCREEN',
             array(
                 'TITLE' => $this->title,
-                'CART_LINK' => '',
                 '_TITLE' => $_title,
                 'TAGS' => get_loaded_tags('catalogue_categories'),
                 'CATALOGUE' => $catalogue_name,
@@ -1017,16 +1016,10 @@ class Module_catalogues
         if ($is_ecommerce) {
             $tpl_set = 'products';
         }
-        $cart_link = new Tempcode();
         if ($is_ecommerce) {
             if (get_forum_type() != 'cns') {
                 warn_exit(do_lang_tempcode('NO_CNS'));
             }
-
-            require_code('shopping');
-            require_lang('shopping');
-
-            $cart_link = show_cart_link();
         }
 
         // Management links
@@ -1100,7 +1093,6 @@ class Module_catalogues
             'ENTRIES' => $entries,
             'SUBCATEGORIES' => $subcategories,
             'DESCRIPTION' => get_translated_tempcode('catalogue_categories', $category, 'cc_description'),
-            'CART_LINK' => $cart_link,
         ), null, false, 'CATALOGUE_DEFAULT_CATEGORY_SCREEN');
     }
 

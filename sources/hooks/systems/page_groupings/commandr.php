@@ -37,7 +37,7 @@ class Hook_page_groupings_commandr
         }
 
         return array(
-            array('tools', 'menu/adminzone/tools/commandr', array('admin_commandr', array('type' => 'browse'), get_module_zone('admin_commandr')), do_lang_tempcode('commandr:COMMANDR'), 'DOC_COMMANDR'),
+            array('tools', 'menu/adminzone/tools/commandr', array('admin_commandr', array('type' => 'browse'), get_module_zone('admin_commandr')), do_lang_tempcode('commandr:COMMANDR'), 'commandr:DOC_COMMANDR'),
         );
     }
 }

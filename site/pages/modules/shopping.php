@@ -490,19 +490,22 @@ class Module_shopping
 
             $object = find_product($pid);
 
-            if (method_exists($object, 'get_available_quantity')) {
-                $available_qty = $object->get_available_quantity($pid);
+            $remove = post_param_integer('remove_' . $pid, 0);
 
-                if (($available_qty !== null) && ($available_qty <= $qty)) {
-                    $qty = $available_qty;
+            if ($remove == 0) {
+                if (method_exists($object, 'get_available_quantity')) {
+                    $available_qty = $object->get_available_quantity($pid);
 
-                    attach_message(do_lang_tempcode('PRODUCT_QUANTITY_CHANGED', strval($pid)), 'warn');
+                    if (($available_qty !== null) && ($available_qty <= $qty)) {
+                        $qty = $available_qty;
+
+                        attach_message(do_lang_tempcode('PRODUCT_QUANTITY_CHANGED', strval($pid)), 'warn');
+                    }
                 }
             }
 
             $product_details[] = array('product_id' => $pid, 'quantity' => $qty);
 
-            $remove = post_param_integer('remove_' . $pid, 0);
             if ($remove == 1) {
                 $product_to_remove[] = $pid;
             }
