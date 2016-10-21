@@ -211,8 +211,7 @@
             if (response == '1') {
                 window.clearInterval(window.detect_interval);
 
-                if (typeof window.console != 'undefined')
-                    console.log('Change detected');
+                console.log('Change detected');
 
                 callback();
             }
@@ -220,8 +219,7 @@
     }
 
     function detectedChange() {
-        if (typeof window.console!='undefined')
-            console.log('Change notification running');
+        console.log('Change notification running');
 
         try {
             window.getAttention();
