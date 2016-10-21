@@ -63,9 +63,9 @@ class Hook_ecommerce_catalogue_items
         do {
             $items = $GLOBALS['SITE_DB']->query_select('catalogue_entries t1 LEFT JOIN ' . get_table_prefix() . 'catalogues t2 ON t1.c_name=t2.c_name', array('t1.id', 't1.c_name'), $where, '', 500, $start);
             foreach ($items as $ecomm_item) {
-                $map = get_catalogue_entry_field_values($ecomm_item['c_name'], $ecomm_item['id'], null, null, true);
+                $field_rows = get_catalogue_entry_field_values($ecomm_item['c_name'], $ecomm_item['id'], null, null, true);
 
-                $product_title = $map[0]['effective_value_pure'];
+                $product_title = $field_rows[0]['effective_value_pure'];
 
                 if ((!is_null($search)) && ($search_item_names)) {
                     if ($product_title != $search) {
@@ -74,18 +74,18 @@ class Hook_ecommerce_catalogue_items
                 }
 
                 $item_price = '0.0';
-                if (array_key_exists(2, $map)) {
-                    $item_price = is_object($map[2]['effective_value']) ? $map[2]['effective_value']->evaluate() : $map[2]['effective_value'];
+                if (array_key_exists(2, $field_rows)) {
+                    $item_price = is_object($field_rows[2]['effective_value']) ? $field_rows[2]['effective_value']->evaluate() : $field_rows[2]['effective_value'];
                 }
 
                 $tax = 0.0;
-                if (array_key_exists(6, $map)) {
-                    $tax = floatval(preg_replace('#[^\d\.]#', '', is_object($map[6]['effective_value']) ? $map[6]['effective_value']->evaluate() : $map[6]['effective_value']));
+                if (array_key_exists(6, $field_rows)) {
+                    $tax = floatval(preg_replace('#[^\d\.]#', '', is_object($field_rows[6]['effective_value']) ? $field_rows[6]['effective_value']->evaluate() : $field_rows[6]['effective_value']));
                 }
 
                 $product_weight = 0.0;
-                if (array_key_exists(8, $map)) {
-                    $product_weight = floatval(is_object($map[8]['effective_value']) ? $map[8]['effective_value']->evaluate() : $map[8]['effective_value']);
+                if (array_key_exists(8, $field_rows)) {
+                    $product_weight = floatval(is_object($field_rows[8]['effective_value']) ? $field_rows[8]['effective_value']->evaluate() : $field_rows[8]['effective_value']);
                 }
 
                 $price = float_to_raw_string($this->calculate_product_price(floatval($item_price), $tax, $product_weight));
@@ -123,39 +123,30 @@ class Hook_ecommerce_catalogue_items
             return ECOMMERCE_PRODUCT_MISSING;
         }
 
-        $product_det = $res[0];
+        $entry_row = $res[0];
 
-        $fields = get_catalogue_entry_field_values($product_det['c_name'], $product_det['id'], null, null, true);
+        $field_rows = get_catalogue_entry_field_values($entry_row['c_name'], $entry_row['id'], null, null, true);
 
-        $str = null;
-
-        if (!array_key_exists(3, $fields)) {
-            return ECOMMERCE_PRODUCT_INTERNAL_ERROR;
-        }
-
-        if (array_key_exists(4, $fields)) {
-            if (is_object($fields[4]['effective_value'])) {
-                $fields[4]['effective_value'] = $fields[4]['effective_value']->evaluate();
+        if (array_key_exists(5, $field_rows)) { // Check maintenance status
+            if (is_object($field_rows[5]['effective_value'])) {
+                $field_rows[5]['effective_value'] = $field_rows[5]['effective_value']->evaluate();
             }
 
-            if ((is_null($fields[4]['effective_value'])) || (intval($fields[4]['effective_value']) == 0)) {
+            if ((is_null($field_rows[5]['effective_value'])) || ($field_rows[5]['effective_value'] == do_lang('YES', null, null, null, get_site_default_lang()))) {
                 return ECOMMERCE_PRODUCT_AVAILABLE;
             }
         }
 
-        if (is_object($fields[3]['effective_value'])) {
-            $fields[3]['effective_value'] = $fields[3]['effective_value']->evaluate();
+        if (!array_key_exists(3, $field_rows)) {
+            return ECOMMERCE_PRODUCT_INTERNAL_ERROR;
         }
-        if ($fields[3]['effective_value'] != '') {
-            $available_stock = intval($fields[3]['effective_value']);
+        if (is_object($field_rows[3]['effective_value'])) { // Check stock
+            $field_rows[3]['effective_value'] = $field_rows[3]['effective_value']->evaluate();
+        }
+        if ($field_rows[3]['effective_value'] != '') {
+            $available_stock = $this->get_available_quantity($type_code);
 
-            // Locked order check
-            $item_count = $GLOBALS['SITE_DB']->query_select_value('shopping_order t1 JOIN ' . get_table_prefix() . 'shopping_order_details t2 ON t1.id=t2.order_id', 'SUM(t2.p_quantity) as qty', array('t1.order_status' => 'ORDER_STATUS_awaiting_payment', 't2.p_id' => intval($type_code)));
-            if (is_null($item_count)) {
-                $item_count = 0;
-            }
-
-            return ($available_stock - $item_count >= $req_quantity) ? ECOMMERCE_PRODUCT_AVAILABLE : ECOMMERCE_PRODUCT_OUT_OF_STOCK;
+            return ($available_stock >= $req_quantity) ? ECOMMERCE_PRODUCT_AVAILABLE : ECOMMERCE_PRODUCT_OUT_OF_STOCK;
         }
 
         return ECOMMERCE_PRODUCT_AVAILABLE;
@@ -165,9 +156,10 @@ class Hook_ecommerce_catalogue_items
      * Get currently available quantity of selected product.
      *
      * @param  ID_TEXT $type_code The product codename.
+     * @param  boolean $consider_own_cart_contents Whether to consider the contents of your own cart.
      * @return ?integer Quantity (null: no limit).
      */
-    public function get_available_quantity($type_code)
+    public function get_available_quantity($type_code, $consider_own_cart_contents = true)
     {
         require_code('catalogues');
 
@@ -176,38 +168,56 @@ class Hook_ecommerce_catalogue_items
             return 0;
         }
 
-        $product_det = $res[0];
+        $entry_row = $res[0];
 
-        $fields = get_catalogue_entry_field_values($product_det['c_name'], $product_det['id'], null, null, true);
+        $field_rows = get_catalogue_entry_field_values($entry_row['c_name'], $entry_row['id'], null, null, true);
 
-        $str = null;
-
-        if (is_object($fields[3]['effective_value'])) {
-            $fields[3]['effective_value'] = $fields[3]['effective_value']->evaluate();
+        if (is_object($field_rows[5]['effective_value'])) {
+            $field_rows[5]['effective_value'] = $field_rows[5]['effective_value']->evaluate();
         }
-        if ((is_null($fields[3]['effective_value'])) || (intval($fields[3]['effective_value']) == 0)) {
+        $stock_maintained = ($field_rows[5]['effective_value'] == do_lang('YES', null, null, null, get_site_default_lang()));
+        if ($stock_maintained) {
             return null;
         }
 
-        if ($fields[3]['effective_value'] != '') {
-            $available_stock = intval($fields[3]['effective_value']);
+        if (is_object($field_rows[3]['effective_value'])) {
+            $field_rows[3]['effective_value'] = $field_rows[3]['effective_value']->evaluate();
+        }
+        if ($field_rows[3]['effective_value'] != '') {
+            $available_quantity = intval($field_rows[3]['effective_value']);
 
             // Locked order check
-            $query = 'SELECT sum(t2.p_quantity) as qty FROM ' . get_table_prefix() . 'shopping_order t1 JOIN ' . get_table_prefix() . 'shopping_order_details t2 ON t1.id=t2.order_id WHERE add_date>' . strval(time() - 60 * 60 * intval(get_option('cart_hold_hours'))) . ' AND ' . db_string_equal_to('t1.order_status', 'ORDER_STATUS_awaiting_payment') . ' AND t2.p_id=' . strval(intval($type_code));
+            $query = 'SELECT sum(t2.p_quantity) FROM ' . get_table_prefix() . 'shopping_order t1 JOIN ' . get_table_prefix() . 'shopping_order_details t2 ON t1.id=t2.order_id WHERE add_date>' . strval(time() - 60 * 60 * intval(get_option('cart_hold_hours'))) . ' AND ' . db_string_equal_to('t1.order_status', 'ORDER_STATUS_awaiting_payment') . ' AND t2.p_id=' . strval(intval($type_code));
             if (is_guest()) {
                 $query .= ' AND ' . db_string_not_equal_to('t1.session_id', get_session_id());
             } else {
                 $query .= ' AND t1.c_member<>' . strval(get_member());
             }
-            $res = $GLOBALS['SITE_DB']->query($query);
-
-            if (array_key_exists(0, $res)) {
-                $item_count = intval($res[0]['qty']);
-            } else {
-                $item_count = 0;
+            $locked_item_count = $GLOBALS['SITE_DB']->query_value_if_there($query);
+            if ($locked_item_count === null) {
+                $locked_item_count = 0;
             }
 
-            return ($available_stock - $item_count);
+            // Items in own cart (not locked, but tied to this purchase)
+            if ($consider_own_cart_contents) {
+                $where = array(
+                    'is_deleted' => 0,
+                    'product_id' => intval($type_code),
+                );
+                if (is_guest()) {
+                    $where['session_id'] = get_session_id();
+                } else {
+                    $where['ordered_by'] = get_member();
+                }
+                $cart_item_count = $GLOBALS['SITE_DB']->query_select_value('shopping_cart', 'SUM(quantity)', $where);
+                if (is_null($cart_item_count)) {
+                    $cart_item_count = 0;
+                }
+            } else {
+                $cart_item_count = 0;
+            }
+
+            return ($available_quantity - $locked_item_count - $cart_item_count);
         }
 
         return null;
@@ -255,8 +265,6 @@ class Hook_ecommerce_catalogue_items
     {
         require_code('catalogues');
 
-        $product_det = array();
-
         if (is_null($pid)) {
             $pid = either_param_integer('product_id');
         }
@@ -268,28 +276,27 @@ class Hook_ecommerce_catalogue_items
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'catalogue_entry'));
         }
 
-        $product_det = get_catalogue_entry_field_values($catalogue_name, $pid, null, null, true);
+        $field_rows = get_catalogue_entry_field_values($catalogue_name, $pid, null, null, true);
 
-        foreach ($product_det as $key => $value) {
-            $product_det[$key] = $value['effective_value_pure'];
+        foreach ($field_rows as $key => $value) {
+            $field_rows[$key] = $value['effective_value_pure'];
         }
-
         for ($i = 0; $i <= 9; $i++) {
-            if (!isset($product_det[$i])) {
-                $product_det[$i] = '';
+            if (!isset($field_rows[$i])) {
+                $field_rows[$i] = '';
             }
         }
 
         $product = array(
             'product_id' => $pid,
-            'product_name' => $product_det[0],
-            'product_code' => $product_det[1],
-            'price' => $product_det[2],
-            'tax' => floatval(preg_replace('#[^\d\.]#', '', $product_det[6])),
-            'description' => $product_det[9],
+            'product_name' => $field_rows[0],
+            'product_code' => $field_rows[1],
+            'price' => $field_rows[2],
+            'tax' => floatval(preg_replace('#[^\d\.]#', '', $field_rows[6])),
+            'description' => $field_rows[9],
             'quantity' => $qty,
             'product_type' => 'catalogue_items',
-            'product_weight' => floatval($product_det[8])
+            'product_weight' => floatval($field_rows[8])
         );
 
         return $product;
@@ -568,19 +575,19 @@ class Hook_ecommerce_catalogue_items
     {
         require_code('catalogues');
 
-        $map = get_catalogue_entry_field_values($catalogue_name, $entry_id, null, null, true);
+        $field_rows = get_catalogue_entry_field_values($catalogue_name, $entry_id, null, null, true);
 
         $image = null;
 
-        if (array_key_exists(7, $map)) {
-            return is_object($map[7]['effective_value']) ? $map[7]['effective_value']->evaluate() : $map[7]['effective_value'];
+        if (array_key_exists(7, $field_rows)) {
+            return is_object($field_rows[7]['effective_value']) ? $field_rows[7]['effective_value']->evaluate() : $field_rows[7]['effective_value'];
         } else {
             return null;
         }
     }
 
     /**
-     * Calculate product price.
+     * Update stock levels after a purchase.
      *
      * @param  AUTO_LINK $entry_id Catalogue entry ID.
      * @param  integer $quantity Quantity to deduct.
@@ -589,76 +596,71 @@ class Hook_ecommerce_catalogue_items
     {
         require_code('catalogues');
 
-        $stock_level_warn_threshold = 0;
-
-        $current_stock = 0;
-
-        $stock_maintained = false;
-
         $res = $GLOBALS['SITE_DB']->query_select('catalogue_entries', array('c_name', 'cc_id'), array('id' => $entry_id), '', 1);
-
         if (!array_key_exists(0, $res)) {
             return;
         }
-
         $row = $res[0];
 
         $catalogue_name = $row['c_name'];
 
-        $fields = get_catalogue_entry_field_values($catalogue_name, $entry_id, null, null, true);
+        $field_rows = get_catalogue_entry_field_values($catalogue_name, $entry_id, null, null, true);
 
-        if (array_key_exists(3, $fields)) { // Stock level
-            if (is_object($fields[3]['effective_value'])) {
-                $fields[3]['effective_value'] = $fields[3]['effective_value']->evaluate();
+        $available_quantity = 0;
+        if (array_key_exists(3, $field_rows)) { // Stock level
+            if (is_object($field_rows[3]['effective_value'])) {
+                $field_rows[3]['effective_value'] = $field_rows[3]['effective_value']->evaluate();
             }
 
-            if ($fields[3]['effective_value'] == '') {
+            if ($field_rows[3]['effective_value'] == '') {
                 return;
             }
 
-            $stock_field = $fields[3]['id'];
-            $current_stock = intval($fields[3]['effective_value']);
+            $stock_field_id = $field_rows[3]['id'];
+            $available_quantity = intval($field_rows[3]['effective_value']);
         }
 
-        if (array_key_exists(4, $fields)) { // Stock maintained
-            if (is_object($fields[4]['effective_value'])) {
-                $fields[4]['effective_value'] = $fields[4]['effective_value']->evaluate();
+        $stock_maintained = false;
+        if (array_key_exists(5, $field_rows)) { // Stock maintained
+            if (is_object($field_rows[5]['effective_value'])) {
+                $field_rows[5]['effective_value'] = $field_rows[5]['effective_value']->evaluate();
             }
 
-            if (is_null($fields[4]['effective_value'])) {
+            if (is_null($field_rows[5]['effective_value'])) {
                 return;
             }
 
-            $stock_maintained = intval($fields[4]['effective_value']) == 1;
+            $stock_maintained = ($field_rows[5]['effective_value'] == do_lang('YES', null, null, null, get_site_default_lang()));
         }
 
-        if (array_key_exists(5, $fields)) { // Stock level warn threshold
-            if (is_object($fields[5]['effective_value'])) {
-                $fields[5]['effective_value'] = $fields[5]['effective_value']->evaluate();
+        $stock_level_warn_threshold = 0;
+        if (array_key_exists(4, $field_rows)) { // Stock level warn threshold
+            if (is_object($field_rows[4]['effective_value'])) {
+                $field_rows[4]['effective_value'] = $field_rows[4]['effective_value']->evaluate();
             }
 
-            if (is_null($fields[5]['effective_value'])) {
+            if (is_null($field_rows[4]['effective_value'])) {
                 return;
             }
 
-            $stock_level_warn_threshold = intval($fields[5]['effective_value']);
+            $stock_level_warn_threshold = intval($field_rows[4]['effective_value']);
         }
 
         $product_name = get_translated_text($row['cc_id']);
 
-        if ($current_stock < $quantity && $stock_maintained) {
+        if ($available_quantity < $quantity && !$stock_maintained) {
             require_code('site');
             attach_message(do_lang_tempcode('LOW_STOCK_DISPATCH_FAILED', $product_name));
         }
 
-        $stock_after_dispatch = $current_stock - $quantity;
+        $stock_after_dispatch = $available_quantity - $quantity;
 
         if ($stock_after_dispatch < $stock_level_warn_threshold) {
             stock_maintain_warn_mail($product_name, $entry_id);
         }
 
-        if (array_key_exists(3, $fields)) { // Stock level
-            $GLOBALS['SITE_DB']->query_update('catalogue_efv_integer', array('cv_value' => intval($stock_after_dispatch)), array('cf_id' => $stock_field, 'ce_id' => $entry_id));
+        if (array_key_exists(3, $field_rows)) { // Stock level
+            $GLOBALS['SITE_DB']->query_update('catalogue_efv_integer', array('cv_value' => intval($stock_after_dispatch)), array('cf_id' => $stock_field_id, 'ce_id' => $entry_id));
         }
     }
 
@@ -712,21 +714,14 @@ class Hook_ecommerce_catalogue_items
 
         $fields = method_exists($this, 'get_needed_fields') ? $this->get_needed_fields(strval($id)) : null;
 
-        if (array_key_exists('FIELD_3', $map)) {
-            if (!is_object($map['FIELD_3'])) {
-                $out_of_stock = ($map['FIELD_3'] == '0');
-            } else {
-                $out_of_stock = ($map['FIELD_3']->evaluate() == '0');
-            }
-        } else {
-            $out_of_stock = false;
-        }
+        $available_quantity = $this->get_available_quantity(strval($id));
+        $out_of_stock = ($available_quantity !== null) && ($available_quantity <= 0);
 
         $cart_url = build_url(array('page' => 'shopping', 'type' => 'add_item', 'hook' => 'catalogue_items'), '_SELF');
 
         $purchase_mod_url = build_url(array('page' => 'purchase', 'type' => ($terms == '') ? (is_null($fields) ? 'pay' : 'details') : 'terms', 'type_code' => strval($id), 'id' => $id), '_SELF');
 
-        $map['CART_BUTTONS'] = do_template('CATALOGUE_ENTRY_CART_BUTTONS', array(
+        $map['CART_BUTTONS'] = do_template('ECOM_SHOPPING_CART_BUTTONS', array(
             '_GUID' => 'd4491c6e221b1f06375a6427da062bac',
             'OUT_OF_STOCK' => $out_of_stock,
             'ACTION_URL' => $cart_url,
@@ -735,8 +730,6 @@ class Hook_ecommerce_catalogue_items
             'PURCHASE_ACTION_URL' => $purchase_mod_url,
             'CART_URL' => $shopping_cart_url,
         ));
-
-        $map['CART_LINK'] = show_cart_link();
     }
 }
 

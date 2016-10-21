@@ -238,7 +238,7 @@ function _helper_make_post_forum_topic($this_ref, $forum_name, $topic_identifier
 function _helper_show_forum_topics($this_ref, $name, $limit, $start, &$max_rows, $filter_topic_title, $filter_topic_description, $show_first_posts, $date_key, $hot, $open_only)
 {
     if (is_integer($name)) {
-        $id_list = 't_forum_id=' . strval($name);
+        $id_list = 't_forum_id=' . strval(intval($name));
     } elseif (!is_array($name)) {
         $id = $this_ref->forum_id_from_name($name);
         if (is_null($id)) {

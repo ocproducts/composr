@@ -71,6 +71,8 @@ images_custom/*/*__*.jpeg
 default/images/*/*__*.jpeg
 /data_custom/failover_rewritemap.txt
 /data_custom/failover_rewritemap__mobile.txt
+/themes/default/images_custom/*/logo/-logo.png
+/themes/default/images_custom/*/logo/standalone_logo.png
 
 ; The matched files should be blocked for the main Composr dev repository but not for Composr projects
 /uploads/website_specific/compo.sr/demonstratr/servers/

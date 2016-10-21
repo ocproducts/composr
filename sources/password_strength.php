@@ -66,11 +66,13 @@ function test_password($password, $username = '')
         $strength += 48;
     }
 
+    $matches = array();
+
     // Get the numbers in the password
-    $strength += preg_match_all('#[0-9]#', $password) * 3;
+    $strength += preg_match_all('#[0-9]#', $password, $matches) * 3;
 
     // Check for special chars
-    $strength += preg_match_all('#[^a-zA-Z0-9]#', $password) * 8;
+    $strength += preg_match_all('#[^a-zA-Z0-9]#', $password, $matches) * 8;
 
     // Get the number of unique chars
     $chars = preg_split('#(.)#', $password, null, PREG_SPLIT_DELIM_CAPTURE);

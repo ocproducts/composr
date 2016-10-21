@@ -499,32 +499,43 @@ class Module_admin_themewizard
 
         // Do it
         require_code('themes2');
-        $rand = uniqid('', true);
         foreach (array($theme, 'default') as $logo_save_theme) {
-            $path = 'themes/' . $logo_save_theme . '/images_custom/' . $rand . '.png';
-
-            if (!file_exists(dirname($path))) {
-                require_code('files2');
-                make_missing_directory(dirname($path));
-            }
-
+            // Save -logo
             $img = generate_logo(post_param_string('name'), $font, $logo_theme_image, $background_theme_image, false, $logo_save_theme);
-            @imagepng($img, get_custom_file_base() . '/' . $path, 9) or intelligent_write_error($path);
-            imagedestroy($img);
-            require_code('images_png');
-            png_compress(get_custom_file_base() . '/' . $path);
-            actual_edit_theme_image('logo/-logo', $logo_save_theme, user_lang(), 'logo/-logo', $path);
-            if (addon_installed('collaboration_zone')) {
-                actual_edit_theme_image('logo/collaboration-logo', $logo_save_theme, user_lang(), 'logo/collaboration-logo', $path);
+            foreach (array_keys(find_all_langs()) as $lang) {
+                if (is_suexec_like()) {
+                    $path = 'themes/' . $logo_save_theme . '/images_custom/' . $lang . '/logo/-logo.png';
+                } else {
+                    $path = 'themes/' . $logo_save_theme . '/images_custom/-logo.png';
+                }
+
+                if (!file_exists(dirname($path))) {
+                    require_code('files2');
+                    make_missing_directory(dirname($path));
+                }
+
+                @imagepng($img, get_custom_file_base() . '/' . $path, 9) or intelligent_write_error($path);
+                require_code('images_png');
+                png_compress(get_custom_file_base() . '/' . $path);
+                actual_edit_theme_image('logo/-logo', $logo_save_theme, $lang, 'logo/-logo', $path);
             }
-            $rand = uniqid('', true);
-            $path = 'themes/' . $logo_save_theme . '/images_custom/' . $rand . '.png';
-            $img = generate_logo(post_param_string('name'), $font, $logo_theme_image, $background_theme_image, false, null, true);
-            @imagepng($img, get_custom_file_base() . '/' . $path, 9) or intelligent_write_error($path);
             imagedestroy($img);
-            require_code('images_png');
-            png_compress(get_custom_file_base() . '/' . $path);
-            actual_edit_theme_image('logo/standalone_logo', $logo_save_theme, user_lang(), 'logo/standalone_logo', $path);
+
+            // Save standalone_logo
+            $img = generate_logo(post_param_string('name'), $font, $logo_theme_image, $background_theme_image, false, null, true);
+            foreach (array_keys(find_all_langs()) as $lang) {
+                if (is_suexec_like()) {
+                    $path = 'themes/' . $logo_save_theme . '/images_custom/' . $lang . '/logo/standalone_logo.png';
+                } else {
+                    $path = 'themes/' . $logo_save_theme . '/images_custom/standalone_logo.png';
+                }
+
+                @imagepng($img, get_custom_file_base() . '/' . $path, 9) or intelligent_write_error($path);
+                require_code('images_png');
+                png_compress(get_custom_file_base() . '/' . $path);
+                actual_edit_theme_image('logo/standalone_logo', $logo_save_theme, $lang, 'logo/standalone_logo', $path);
+            }
+            imagedestroy($img);
         }
         Self_learning_cache::erase_smart_cache();
 

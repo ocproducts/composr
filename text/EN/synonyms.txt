@@ -63,7 +63,7 @@ gallery	album	galleries	podcast	multimedia
 audit	log	usage
 download	file	document	publication	library
 page	article	comcode
-entry	item	content	resource	submission
+entry	item	content	resource	submission	sku
 category	node	section	repository	collection
 directory	folder
 catalogue	database	classified	catalog	directory	schema	field
