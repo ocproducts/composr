@@ -28,35 +28,29 @@
 }
 
 .do_next_section {
-	border-top: 1px dotted {$GET,standard_border};
+	{$BETA_CSS_PROPERTY,display: flex;}
+	{$BETA_CSS_PROPERTY,flex-wrap: wrap;}
 	border-left: 1px dotted {$GET,standard_border};
-	overflow: hidden;
+	border-top: 1px dotted {$GET,standard_border};
 }
 
 .do_next_item, .do_theme_item {
 	background-color: {$GET,area_background};
-	padding: 0.5em 0.1em;
-	border-right: 1px dotted {$GET,standard_border};
-	border-bottom: 1px dotted {$GET,standard_border};
+	padding: 0.75em;
 	text-align: center;
 	font-size: 0.9em;
 	transition: background-color 0.5s linear;
 	box-sizing: border-box;
-	height: 110px;
+	min-height: 8.5em;
+	border-right: 1px dotted {$GET,standard_border};
+	border-bottom: 1px dotted {$GET,standard_border};
 }
 
-.do_next_item>div {
-	display: table;
-	height: 100%;
-	width: 100%;
-	min-height: 90px;
+.do_next_item {
 }
-.do_next_item>div>div {
-	display: table-row;
-}
-.do_next_item>div>div>div {
-	display: table-cell;
-	vertical-align: middle;
+
+.do_theme_item {
+	width: 100px;
 }
 
 .do_next_item:hover, .do_theme_item:hover {
@@ -64,20 +58,10 @@
 	cursor: pointer;
 }
 
-.do_next_item {
-	width: 20%;
-	float: left;
-}
-
-.do_theme_item {
-	width: 15.5%;
+.do_next_item_icon {
+	padding-bottom: 0.5em;
 }
 
 .do_next_item a, .do_theme_item a {
 	text-decoration: none;
-}
-
-.do_next_item img {
-	width: 45px;
-	height: 45px;
 }

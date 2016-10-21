@@ -19,9 +19,9 @@
 		{+START,IF_NON_EMPTY,{FRIENDS_FORWARD}}
 			<div class="cns_profile_friends block_main_members block_main_members__boxes raw_ajax_grow_spot">
 				{+START,LOOP,FRIENDS_FORWARD}
-					<div><div class="box"><div class="box_inner">
+					<div class="box"><div class="box_inner">
 						{BOX}
-					</div></div></div>
+					</div></div>
 				{+END}
 			</div>
 
@@ -45,9 +45,9 @@
 {+START,IF,{$EQ,{$COMMA_LIST_GET,{BLOCK_PARAMS},raw},1}}
 <div data-tpl="blockMainFriendsList">
 	{+START,LOOP,FRIENDS_FORWARD}
-		<div><div class="box"><div class="box_inner">
+		<div class="box"><div class="box_inner">
 			{BOX}
-		</div></div></div>
+		</div></div>
 	{+END}
 
 	{PAGINATION}

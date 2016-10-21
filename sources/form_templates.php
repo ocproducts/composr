@@ -1823,7 +1823,7 @@ function form_input_all_and_not($pretty_name, $description, $base, $list, $type 
  */
 function form_input_radio($pretty_name, $description, $name, $content, $required = false, $picture_contents = false, $selected_path = '')
 {
-    $map = array('_GUID' => '26021f9ae8a0cd83b93874bfa80052ca', 'NAME' => $name, 'REQUIRED' => $required, 'CONTENT' => $content);
+    $map = array('_GUID' => '26021f9ae8a0cd83b93874bfa80052ca', 'NAME' => $name, 'REQUIRED' => $required, 'CONTENT' => $content, 'IMAGES' => $picture_contents);
     if ($picture_contents) {
         $map = array_merge($map, array('CODE' => $selected_path,));
     }
@@ -2012,7 +2012,7 @@ function form_input_theme_image($pretty_name, $description, $name, $ids, $select
         $content->attach($_category);
     }
 
-    $input = do_template('FORM_SCREEN_INPUT_RADIO_LIST', array('_GUID' => '35fed772f022cf561f823543e56d63e8', 'REQUIRED' => !$allow_none, 'NAME' => $name, 'CODE' => ($selected_code === null) ? '' : $selected_code, 'TABINDEX' => strval($tabindex), 'CONTENT' => $content));
+    $input = do_template('FORM_SCREEN_INPUT_RADIO_LIST', array('_GUID' => '35fed772f022cf561f823543e56d63e8', 'REQUIRED' => !$allow_none, 'NAME' => $name, 'CODE' => ($selected_code === null) ? '' : $selected_code, 'TABINDEX' => strval($tabindex), 'CONTENT' => $content, 'IMAGES' => true, 'LINEAR' => $linear));
 
     return _form_input($GLOBALS['DOING_ALTERNATE_FIELDS_SET'] ? $name : '', $pretty_name, $description, $input, !$allow_none);
 }

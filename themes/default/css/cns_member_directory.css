@@ -4,22 +4,22 @@
 */
 
 .block_main_members {
-	font-size: 0;
-}
-
-.block_main_members .associated_details {
-	margin: 0;
+	{$BETA_CSS_PROPERTY,display: flex;}
+	{$BETA_CSS_PROPERTY,flex-wrap: wrap;}
+	margin: -0.5em 0 0 -0.5em;
 }
 
 .block_main_members>div {
 	vertical-align: top;
-	font-size: 12px;
-	display: inline-block;
-	padding: 0.5em;
+	margin: 0.5em 0 0 0.5em;
 	box-sizing: border-box; /* Exact percentage widths are chosen to match the per_row block parameter */
-	min-width: 30em;
+	width: calc(50% - 0.5em);
 }
 .block_main_members>div>.box {
+	margin: 0;
+}
+
+.block_main_members .associated_details {
 	margin: 0;
 }
 
@@ -52,10 +52,6 @@
 
 .block_main_members__boxes .box_inner {
 	margin: 0;
-}
-.block_main_members__boxes .cns_member_box {
-	min-width: 23em;
-	min-height: 8em;
 }
 .block_main_members__boxes .cns_member_box_avatar {
 	float: right;
