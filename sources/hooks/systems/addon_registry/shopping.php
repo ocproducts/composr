@@ -752,7 +752,7 @@ class Hook_addon_registry_shopping
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    function tpl_preview__ecom_cart_link_screen()
+    public function tpl_preview__ecom_cart_link_screen()
     {
         $cart_link = do_lorem_template('ECOM_CART_LINK', array(
             'URL' => placeholder_url(),
