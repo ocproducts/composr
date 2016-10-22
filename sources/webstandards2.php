@@ -27,158 +27,6 @@
  */
 function init__webstandards2()
 {
-    global $TAGS_BLOCK;
-    $TAGS_BLOCK = array(
-        'div' => 1,
-        'h1' => 1,
-        'h2' => 1,
-        'h3' => 1,
-        'h4' => 1,
-        'h5' => 1,
-        'h6' => 1,
-        'p' => 1,
-        'blockquote' => 1,
-        'pre' => 1,
-        'hr' => 1,
-        'fieldset' => 1,
-        'figure' => 1,
-
-        // Best classified as block
-        'address' => 1,
-        'iframe' => 1,
-        'noscript' => 1,
-        'table' => 1,
-        'tbody' => 1,
-        'td' => 1,
-        'tfoot' => 1,
-        'th' => 1,
-        'thead' => 1,
-        'tr' => 1,
-        'dd' => 1,
-        'dt' => 1,
-        'dl' => 1,
-        'li' => 1,
-        'ol' => 1,
-        'ul' => 1,
-        'rbc' => 1,
-        'rtc' => 1,
-        'rb' => 1,
-        'rt' => 1,
-        'rp' => 1,
-    );
-    $TAGS_BLOCK += array(
-        'video' => 1,
-        'details' => 1,
-        'summary' => 1,
-        'section' => 1,
-        'nav' => 1,
-        'header' => 1,
-        'footer' => 1,
-        'figure' => 1,
-        'canvas' => 1,
-        'audio' => 1,
-        'aside' => 1,
-        'article' => 1,
-    );
-
-    global $TAGS_INLINE;
-    $TAGS_INLINE = array(
-        'span' => 1,
-        'br' => 1,
-        'abbr' => 1,
-        'cite' => 1,
-        'code' => 1,
-        'dfn' => 1,
-        'em' => 1,
-        'strong' => 1,
-        'kbd' => 1,
-        'q' => 1,
-        'samp' => 1,
-        'var' => 1,
-        'sub' => 1,
-        'sup' => 1,
-        'del' => 1,
-        'ruby' => 1,
-
-        // Best classified as inline
-        'a' => 1,
-        'bdo' => 1,
-        'img' => 1,
-        'ins' => 1,
-        'param' => 1,
-        'textarea' => 1,
-        'button' => 1,
-        'input' => 1,
-        'select' => 1,
-        'embed' => 1,
-        'object' => 1,
-        'caption' => 1,
-        'label' => 1,
-    );
-
-    $TAGS_INLINE += array(
-        'wbr' => 1,
-        'time' => 1,
-        'progress' => 1,
-        'output' => 1,
-        'meter' => 1,
-        'mark' => 1,
-        'keygen' => 1,
-        'datalist' => 1,
-        'command' => 1,
-        'track' => 1,
-    );
-
-    global $TAGS_NORMAL;
-    $TAGS_NORMAL = array(
-        'base' => 1,
-        'body' => 1,
-        'col' => 1,
-        'colgroup' => 1,
-        'head' => 1,
-        'html' => 1,
-        'link' => 1,
-        'map' => 1,
-        'meta' => 1,
-        'optgroup' => 1,
-        'option' => 1,
-        'style' => 1,
-        'title' => 1,
-        'legend' => 1,
-        'figcaption' => 1,
-        'script' => 1,
-        'area' => 1,
-
-        // I'd call this 'block', but XHTML-strict other checkers would disagree - probably xhtml-strict doesn't consider 'programmatic' elements to be inline/block
-        'form' => 1,
-    );
-
-    $TAGS_NORMAL += array(
-        'source' => 1,
-    );
-
-    global $TAGS_BLOCK_DEPRECATED;
-    $TAGS_BLOCK_DEPRECATED = array(
-        'dir' => 1,
-        'menu' => 1,
-    );
-
-    global $TAGS_INLINE_DEPRECATED;
-    $TAGS_INLINE_DEPRECATED = array(
-        // Would be removed in XHTML strict and deprecated in transitional
-        'center' => 1,
-        'applet' => 1,
-        'font' => 1,
-        's' => 1,
-        'strike' => 1,
-        'u' => 1,
-    );
-
-    global $TAGS_NORMAL_DEPRECATED;
-    $TAGS_NORMAL_DEPRECATED = array(
-        'basefont' => 1,
-    );
-
     $enforce_javascript = '([^\n]+)';
     $enforce_lang = '[a-zA-Z][a-zA-Z](-[a-zA-Z]+)?';
     $enforce_direction = '(ltr|rtl)';
@@ -389,388 +237,6 @@ function init__webstandards2()
         'word-wrap' => '(normal|break-word)', // Was renamed to overflow-wrap, but that name is not supported widely
     );
 
-    $strict_form_accessibility = false; // Form fields may not be empty with this strict rule
-
-    global $TAG_ATTRIBUTES;
-    $TAG_ATTRIBUTES = array(
-        '*.class' => $enforce_class,
-        '*.contenteditable' => '(true|false)',
-        '*.contextmenu' => $enforce_id,
-        '*.dir' => $enforce_direction,
-        '*.draggable' => '(true|false|auto)',
-        '*.dropzone' => '(copy|move|link)',
-        '*.hidden' => '(hidden)',
-        '*.hidden' => '(hidden)',
-        '*.id' => $enforce_id,
-        '*.itemprop' => '.*',
-        '*.itemscope' => '.*',
-        '*.itemtype' => '.*',
-        '*.lang' => $enforce_lang,
-        '*.onclick' => $enforce_javascript,
-        '*.ondblclick' => $enforce_javascript,
-        '*.onkeydown' => $enforce_javascript,
-        '*.onkeypress' => $enforce_javascript,
-        '*.onkeyup' => $enforce_javascript,
-        '*.onmousedown' => $enforce_javascript,
-        '*.onmousemove' => $enforce_javascript,
-        '*.onmouseout' => $enforce_javascript,
-        '*.onmouseover' => $enforce_javascript,
-        '*.onmouseup' => $enforce_javascript,
-        '*.spellcheck' => '(true|false)',
-        '*.style' => '.*',
-        '*.title' => '.*',
-        '*.translate' => '(yes|no)',
-        'a.accesskey' => $enforce_character,
-        'a.charset' => '.+',
-        'a.coords' => '.+',
-        'a.download' => '(download)',
-        'a.href' => $enforce_link,
-        'a.hreflang' => $enforce_lang,
-        'a.media' => '.+',
-        'a.onblur' => $enforce_javascript,
-        'a.onfocus' => $enforce_javascript,
-        'a.rel' => '.*',
-        'a.rev' => '.+',
-        'a.shape' => '(rect|circle|poly|default)',
-        'a.tabindex' => $enforce_inumber,
-        'a.target' => '.+',
-        'a.type' => '.+',
-        'area.accesskey' => $enforce_character,
-        'area.alt' => '.*',
-        'area.coords' => '.+',
-        'area.href' => $enforce_link,
-        'area.nohref' => 'nohref',
-        'area.onblur' => '.+',
-        'area.onfocus' => $enforce_javascript,
-        'area.shape' => '(rect|circle|poly|default)',
-        'area.tabindex' => $enforce_inumber,
-        'area.target' => '.+',
-        'aria-activedescendant' => $enforce_id,
-        'aria-atomic' => '(true|false)',
-        'aria-autocomplete' => '(true|false)',
-        'aria-busy' => '(true|false)',
-        'aria-checked' => '(true|false)',
-        'aria-controls' => $enforce_id,
-        'aria-describedby' => $enforce_id,
-        'aria-disabled' => '(true|false)',
-        'aria-dropeffect' => '(copy|move|link|execute|popup|none)',
-        'aria-expanded' => '(true|false)',
-        'aria-flowto' => $enforce_id,
-        'aria-grabbed' => '(true|false)',
-        'aria-haspopup' => '(true|false)',
-        'aria-hidden' => '(true|false)',
-        'aria-invalid' => '(true|false)',
-        'aria-label' => $enforce_id,
-        'aria-labelledby' => $enforce_id,
-        'aria-level' => $enforce_number,
-        'aria-live' => '(true|false)',
-        'aria-multiline' => '(true|false)',
-        'aria-multiselectable' => '(true|false)',
-        'aria-orientation' => '(scrollbar|separator|slider)',
-        'aria-owns' => $enforce_id,
-        'aria-posinset' => '(true|false)',
-        'aria-pressed' => '(true|false)',
-        'aria-readonly' => '(true|false)',
-        'aria-relevant' => '(true|false)',
-        'aria-required' => '(true|false)',
-        'aria-selected' => '(true|false)',
-        'aria-setsize' => $enforce_number,
-        'aria-sort' => '(ascending|descending)',
-        'aria-valuemax' => '.*',
-        'aria-valuemin' => '.*',
-        'aria-valuenow' => '.*',
-        'aria-valuetext' => '.*',
-        'audio.autoplay' => '(autoplay)',
-        'audio.controls' => '(controls)',
-        'audio.loop' => '(loop)',
-        'audio.preload' => '(auto|metadata|none)',
-        'audio.src' => '.*',
-        'base.href' => $enforce_link,
-        'base.target' => '.+',
-        'blockquote.cite' => '.+',
-        'body.onload' => $enforce_javascript,
-        'body.onunload' => $enforce_javascript,
-        'button.accesskey' => $enforce_character,
-        'button.disabled' => 'disabled',
-        'button.form' => $enforce_name,
-        'button.formaction' => '.+',
-        'button.formenctype' => '(application/x-www-form-urlencoded|multipart/form-data|text/plain)',
-        'button.formmethod' => '(get|post)',
-        'button.formnovalidate' => '(formnovalidate)',
-        'button.formtarget' => $enforce_name,
-        'button.name' => $enforce_name,
-        'button.onblur' => $enforce_javascript,
-        'button.onfocus' => $enforce_javascript,
-        'button.tabindex' => $enforce_inumber,
-        'button.type' => '(button|submit|reset)',
-        'button.value' => '.+',
-        'canvas.height' => $enforce_length,
-        'canvas.width' => $enforce_length,
-        'col.char' => $enforce_character,
-        'col.charoff' => $enforce_length,
-        'col.span' => $enforce_inumber,
-        'colgroup.char' => $enforce_character,
-        'colgroup.charoff' => $enforce_length,
-        'colgroup.span' => $enforce_inumber,
-        'command.checked' => '(checked)',
-        'command.disabled' => '(disabled)',
-        'command.icon' => '.+',
-        'command.label' => $enforce_id,
-        'command.radiogroup' => $enforce_name,
-        'command.type' => '(checkbox|command|radio)',
-        'del.cite' => '.+',
-        'del.datetime' => '.+',
-        'details.open' => '(open)',
-        'div.xml:lang' => $enforce_lang,
-        'embed.height' => $enforce_inumber,
-        'embed.src' => $enforce_link,
-        'embed.type' => '.*',
-        'embed.width' => $enforce_inumber,
-        'fieldset.disabled' => '(disabled)',
-        'fieldset.form' => $enforce_name,
-        'fieldset.name' => $enforce_name,
-        'form.accept-charset' => '.+',
-        'form.action' => $enforce_link,
-        'form.autocomplete' => '(on|off)',
-        'form.enctype' => 'multipart/form-data|application/x-www-form-urlencoded',
-        'form.method' => '(get|post)',
-        'form.novalidate' => '(novalidate)',
-        'form.oninput' => '.+',
-        'form.onreset' => '.+',
-        'form.onsubmit' => '.+',
-        'form.target' => '.+',
-        'html.manifest' => '.+',
-        'html.version' => '.+',
-        'html.xml:lang' => $enforce_lang,
-        'html.xmlns' => '.+',
-        'iframe.longdesc' => '.+',
-        'iframe.name' => $enforce_name,
-        'iframe.sandbox' => '(allow-forms|allow-same-origin|allow-scripts|allow-top-navigation)',
-        'iframe.seamless' => '(seamless)',
-        'iframe.src' => '.+',
-        'iframe.srcdoc' => '.+',
-        'img.alt' => '.*', // Have to allow this really, for non-semantic images
-        'img.height' => $enforce_inumber,
-        'img.ismap' => 'ismap',
-        'img.longdesc' => '.+',
-        'img.src' => $enforce_link,
-        'img.srcset' => '(' . $enforce_link . ' \d+x( |$))*',
-        'img.usemap' => '.+',
-        'img.width' => $enforce_inumber,
-        'input.accept' => '.+',
-        'input.accesskey' => $enforce_character,
-        'input.alt' => '.*',
-        'input.autocomplete' => '(on|off)',
-        'input.autofocus' => '(autofocus)',
-        'input.checked' => 'checked',
-        'input.disabled' => 'disabled',
-        'input.form' => $enforce_name,
-        'input.formaction' => '.+',
-        'input.formenctype' => '(application/x-www-form-urlencoded|multipart/form-data|text/plain)',
-        'input.formmethod' => '(get|post)',
-        'input.formnovalidate' => '(formnovalidate)',
-        'input.formtarget' => $enforce_name,
-        'input.height' => $enforce_inumber,
-        'input.list' => $enforce_name,
-        'input.max' => '.+',
-        'input.maxlength' => $enforce_inumber,
-        'input.min' => '.+',
-        'input.multiple' => '(multiple)',
-        'input.name' => $enforce_name,
-        'input.onblur' => '.+',
-        'input.onchange' => '.+',
-        'input.onfocus' => $enforce_javascript,
-        'input.onselect' => '.+',
-        'input.pattern' => '.+',
-        'input.placeholder' => '.+',
-        'input.readonly' => 'readonly',
-        'input.required' => '(required)',
-        'input.size' => '.+',
-        'input.src' => '.+',
-        'input.step' => 'any|(-?[0-9]+(\.[0-9]+)?)',
-        'input.tabindex' => $enforce_inumber,
-        'input.type' => '(text|password|checkbox|radio|submit|reset|file|hidden|image|button|color|date|datetime|datetime-local|email|month|number|range|search|tel|time|url|week)',
-        'input.usemap' => '.+',
-        'input.value' => '.' . ($strict_form_accessibility ? '+' : '*'),
-        'input.width' => $enforce_inumber,
-        'ins.cite' => '.+',
-        'ins.datetime' => '.+',
-        'keygen.autofocus' => '(autofocus)',
-        'keygen.challenge' => '(challenge)',
-        'keygen.disabled' => '(disabled)',
-        'keygen.keytype' => '(rsa|other)',
-        'keygen.name' => $enforce_name,
-        'label.accesskey' => $enforce_character,
-        'label.for' => $enforce_id,
-        'label.form' => $enforce_name,
-        'label.onblur' => '.+',
-        'label.onfocus' => $enforce_javascript,
-        'legend.accesskey' => $enforce_character,
-        'link.charset' => '.+',
-        'link.href' => $enforce_link,
-        'link.hreflang' => $enforce_lang,
-        'link.media' => '.+',
-        'link.rel' => '.+',
-        'link.rev' => '.+',
-        'link.sizes' => '.+',
-        'link.sizes' => '.+',
-        'link.type' => '.+',
-        'map.name' => $enforce_name,
-        'menu.label' => '.*',
-        'menu.type' => '(context|toolbar|list)',
-        'meta.charset' => '.+',
-        'meta.content' => '.*',
-        'meta.http-equiv' => '[a-zA-Z].+',
-        'meta.name' => '[a-zA-Z].+',
-        'meta.property' => '[a-zA-Z].+',
-        'meta.scheme' => '.+',
-        'meter.form' => $enforce_name,
-        'meter.high' => $enforce_number,
-        'meter.low' => $enforce_number,
-        'meter.max' => $enforce_number,
-        'meter.min' => $enforce_number,
-        'meter.optimum' => $enforce_number,
-        'meter.value' => $enforce_number,
-        'object.archive' => '.+',
-        'object.classid' => '.+',
-        'object.codebase' => $enforce_link,
-        'object.codetype' => '.+',
-        'object.data' => $enforce_link,
-        'object.declare' => 'declare',
-        'object.form' => $enforce_name,
-        'object.height' => $enforce_length,
-        'object.name' => $enforce_name,
-        'object.standby' => '.+',
-        'object.tabindex' => $enforce_inumber,
-        'object.type' => '.+',
-        'object.usemap' => '.+',
-        'object.width' => $enforce_length,
-        'ol.reversed' => '(reversed)',
-        'optgroup.disabled' => 'disabled',
-        'optgroup.label' => '.+',
-        'option.disabled' => 'disabled',
-        'option.label' => '.+',
-        'option.selected' => 'selected',
-        'option.value' => '.*',
-        'output.for' => $enforce_id,
-        'output.form' => $enforce_name,
-        'output.name' => $enforce_name,
-        'param.name' => $enforce_name,
-        'param.type' => '.+',
-        'param.value' => '.+',
-        'param.valuetype' => '(data|ref|object)',
-        'progress.max' => $enforce_number,
-        'progress.value' => $enforce_number,
-        'q.cite' => '.+',
-        'rt.rbspan' => $enforce_inumber,
-        'script.async' => '(async)',
-        'script.charset' => '.+',
-        'script.defer' => 'defer',
-        'script.event' => '.+',
-        'script.for' => '.+',
-        'script.src' => '.+',
-        'script.type' => 'text/javascript',
-        'select.autofocus' => '(autofocus)',
-        'select.disabled' => 'disabled',
-        'select.form' => $enforce_name,
-        'select.multiple' => 'multiple',
-        'select.name' => $enforce_name,
-        'select.onblur' => '.+',
-        'select.onchange' => '.+',
-        'select.onfocus' => $enforce_javascript,
-        'select.size' => $enforce_inumber,
-        'select.tabindex' => $enforce_inumber,
-        'source.media' => '.*',
-        'source.src' => '.*',
-        'source.type' => '.*',
-        'span.xml:lang' => $enforce_lang,
-        'style.media' => '.+',
-        'style.scoped' => '(scoped)',
-        'style.type' => 'text/css',
-        'table.frame' => '(void|above|below|hsides|lhs|rhs|vsides|box|border)',
-        'table.rules' => '(none|groups|rows|cols|all)',
-        'tbody.char' => $enforce_character,
-        'tbody.charoff' => $enforce_length,
-        'td.axis' => '.+',
-        'td.char' => $enforce_character,
-        'td.charoff' => $enforce_length,
-        'td.colspan' => $enforce_inumber,
-        'td.headers' => '.+',
-        'td.rowspan' => $enforce_inumber,
-        'td.scope' => '(row|col|rowgroup|colgroup)',
-        'textarea.accesskey' => $enforce_character,
-        'textarea.autofocus' => '(autofocus)',
-        'textarea.cols' => $enforce_inumber,
-        'textarea.dirname' => $enforce_name,
-        'textarea.disabled' => 'disabled',
-        'textarea.form' => $enforce_name,
-        'textarea.maxlength' => $enforce_inumber,
-        'textarea.name' => $enforce_name,
-        'textarea.onblur' => '.+',
-        'textarea.onchange' => '.+',
-        'textarea.onfocus' => $enforce_javascript,
-        'textarea.onselect' => '.+',
-        'textarea.placeholder' => '.+',
-        'textarea.readonly' => 'readonly',
-        'textarea.required' => '(required)',
-        'textarea.rows' => $enforce_inumber,
-        'textarea.rows' => $enforce_inumber,
-        'textarea.tabindex' => $enforce_inumber,
-        'textarea.wrap' => '(hard|soft)',
-        'tfoot.char' => $enforce_character,
-        'tfoot.charoff' => $enforce_length,
-        'th.axis' => '.+',
-        'th.char' => $enforce_character,
-        'th.charoff' => $enforce_length,
-        'th.colspan' => $enforce_inumber,
-        'th.headers' => '.+',
-        'th.rowspan' => $enforce_inumber,
-        'th.scope' => '(row|col|rowgroup|colgroup)',
-        'thead.char' => $enforce_character,
-        'thead.charoff' => $enforce_length,
-        'time.datetime' => '.*',
-        'tr.char' => $enforce_character,
-        'tr.charoff' => $enforce_length,
-        'track.default' => '(default)',
-        'track.kind' => '(subtitles|captions|descriptions|chapters|metadata)',
-        'track.label' => '.*',
-        'track.lang' => $enforce_lang,
-        'track.src' => '.*',
-        'video.audio' => '(muted)',
-        'video.autoplay' => '(autoplay)',
-        'video.controls' => '(controls)',
-        'video.height' => $enforce_length,
-        'video.loop' => '(loop)',
-        'video.poster' => '.*',
-        'video.preload' => '(auto|metadata|none)',
-        'video.src' => '.*',
-        'video.width' => $enforce_length,
-
-        // These are needed in IE, so we will have to browser sniff and output if IE being used, but not check them as okay
-        //'iframe.scrolling' => '(yes|no|auto)',
-        //'iframe.frameborder' => '(1|0)',
-    );
-
-    global $TAG_ATTRIBUTES_REQUIRED;
-    $TAG_ATTRIBUTES_REQUIRED = array(
-        'base' => array('href'), // XHTML-strict
-        'meta' => array('content'),
-        'style' => array(/*'type'*/),
-        'script' => array(/*'type'*/),
-        'bdo' => array('dir'),
-        'basefont' => array('size'),
-        //'param' => array('name'), Not needed in XHTML strict
-        'iframe' => array('src', 'title'),
-        'img' => array('src', 'alt'),
-        'label' => array('for'),
-        'map' => array('id'),
-        'area' => array('alt'),
-        'form' => array('action', 'title', 'autocomplete'/*not really required but for stability we should always set it*/),
-        'textarea' => array('cols', 'rows'),
-        //'input' => array('value'), // accessibility, checked somewhere else
-        'optgroup' => array('label'),
-    );
-
     define('CSS_AT_RULE_BLOCK', -4);
     define('CSS_AT_RULE', -3);
     define('CSS_NO_MANS_LAND', -2);
@@ -803,7 +269,20 @@ function init__webstandards2()
  */
 function __check_tag($tag, $attributes, $self_close, $close, $errors)
 {
-    global $XML_CONSTRAIN, $TAG_STACK, $ATT_STACK, $TABS_SEEN, $KEYS_SEEN, $IDS_SO_FAR, $ANCESTER_BLOCK, $ANCESTER_INLINE, $EXPECTING_TAG, $OUT, $POS, $LAST_A_TAG, $TAG_RANGES;
+    global $XML_CONSTRAIN, $TAG_STACK, $ATT_STACK, $TABS_SEEN, $KEYS_SEEN, $IDS_SO_FAR, $ANCESTER_BLOCK, $ANCESTER_INLINE, $EXPECTING_TAG, $OUT, $POS, $LAST_A_TAG, $TAG_RANGES, $WEBSTANDARDS_CSP;
+
+    // CSP violation
+    if ($WEBSTANDARDS_CSP) {
+        if ($tag == 'script') {
+            $errors[] = array('CSP_SCRIPT_TAG');
+        }
+
+        foreach (array_keys($attributes) as $attribute) {
+            if (substr($attribute, 0, 2) == 'on') {
+                $errors[] = array('CSP_EVENT_HANDLER');
+            }
+        }
+    }
 
     // Dodgy mouse events.
     if ((isset($attributes['onclick'])) && (strpos($attributes['onclick'], '/*Access-note: code has other activation*/') === false) && ((!isset($attributes['onmouseover'])) || (strpos($attributes['onmouseover'], 'activate_rich_semantic_tooltip') === false)) && (!isset($attributes['onkeypress'])) && (!isset($attributes['onkeydown'])) && (!isset($attributes['onkeyup'])) && (!in_array($tag, array('a', 'input', 'textarea', 'select', 'button')))) {
@@ -1280,7 +759,7 @@ function _check_attributes($tag, $attributes, $self_close, $close)
             }
         }
 
-        if ((($attribute == 'alt') || ($attribute == 'title') || (($attribute == 'content') && (array_key_exists('http-equiv', $attributes)) && ((strtolower($attributes['http-equiv']) == 'description') || (strtolower($attributes['http-equiv']) == 'keywords')))) && (function_exists('pspell_new')) && (isset($GLOBALS['SPELLING'])) && ($value != '')) {
+        if ((($attribute == 'alt') || ($attribute == 'title') || (($attribute == 'content') && (array_key_exists('http-equiv', $attributes)) && ((strtolower($attributes['http-equiv']) == 'description') || (strtolower($attributes['http-equiv']) == 'keywords')))) && (function_exists('pspell_new')) && (!empty($GLOBALS['SPELLING'])) && ($value != '')) {
             $_value = @html_entity_decode($value, ENT_QUOTES, get_charset());
             $errors = array_merge($errors, check_spelling($_value));
         }
@@ -1686,7 +1165,7 @@ function _webstandards_css_sheet($data)
                     // Continuing
                 } elseif (($next == '.') || ($next == ':') || ($next == '#') || ($alpha_numeric)) {
                     if ($data[$i + 1] == ':') { // e.g. "::selection"
-                        if (isset($GLOBALS['PEDANTIC'])) {
+                        if (!empty($GLOBALS['PEDANTIC'])) {
                             $errors[] = array(0 => 'CSS_UNEXPECTED_CHARACTER', 1 => $next, 2 => integer_format($line), 'pos' => $i);
                         }
                         $i++;
@@ -1751,12 +1230,6 @@ function _webstandards_css_sheet($data)
                         $num_matches = preg_match_all('#:([\w-]+)(\([^()]*\))?#', $class_name, $matches);
                         for ($j = 0; $j < $num_matches; $j++) {
                             $pseudo = $matches[1][$j];
-                            if (
-                                ($GLOBALS['WEBSTANDARDS_COMPAT']) &&
-                                (!in_array($pseudo, array('active', 'hover', 'link', 'visited', 'first-letter', 'first-line', 'first-child', 'last-child', 'before', 'after', 'disabled', 'focus', 'root', 'nth-child', 'nth-last-child', 'nth-of-type', 'nth-last-of-type', 'first-of-type', 'last-of-type', 'only-child', 'only-of-type', 'empty', 'target', 'not', 'enabled', 'checked', 'indeterminate',)))
-                            ) {
-                                $errors[] = array(0 => 'CSS_BAD_PSEUDO_CLASS', 1 => $pseudo, 'pos' => $i);
-                            }
                         }
                     }
 
@@ -2019,7 +1492,7 @@ function _check_css_value($key, $value, $_i)
             return array(0 => 'MAIL_WIDTH', 'pos' => $_i);
         }
     } else {
-        if (isset($GLOBALS['PEDANTIC'])) {
+        if (!empty($GLOBALS['PEDANTIC'])) {
             if (($key == 'font-size') && (substr($value, -2) == 'px')) {
                 return array(0 => 'CSS_PX_FONT', 'pos' => $_i);
             }

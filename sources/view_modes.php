@@ -566,7 +566,8 @@ function check_xhtml_webstandards($out, $display_regardless = false, $preview_mo
             get_option('webstandards_wcag') == '1',
             get_option('webstandards_compat') == '1',
             get_option('webstandards_ext_files') == '1',
-            $display_regardless || ($preview_mode == 2)
+            $display_regardless || ($preview_mode == 2),
+            get_option('csp_enabled') == '1',
         );
         $show = (count($error['errors']) != 0) || ($display_regardless);
         if ((!$show) && (get_option('webstandards_ext_files') == '1')) {

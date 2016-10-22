@@ -418,7 +418,7 @@ Your income");
     } else {
         $GLOBALS['MAIL_MODE'] = false;
     }
-    $results = check_xhtml($contents, false, $is_fragment, true, true, true, true, $ext, $manual); // full check, but no external file checking
+    $results = check_xhtml($contents, false, $is_fragment, true, true, true, true, $ext, $manual, true); // full check, but no external file checking
 }
 if ($results !== null) {
     $pedantic = (in_array('checks', $_SERVER['argv'])) || ((array_key_exists('pedantic', $_SERVER['argv']) && ($_SERVER['argv']['pedantic'] == '1')));
