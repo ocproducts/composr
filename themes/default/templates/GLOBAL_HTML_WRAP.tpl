@@ -140,6 +140,10 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 			</div>
 		{+END}
 
+		<noscript>
+			{!JAVASCRIPT_REQUIRED}
+		</noscript>
+
 		{$,This is the main site footer}
 		{+START,IF,{$SHOW_FOOTER}}
 			<footer class="float_surrounder" itemscope="itemscope" itemtype="http://schema.org/WPFooter" role="contentinfo">

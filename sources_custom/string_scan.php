@@ -7185,6 +7185,7 @@ function string_scan($lang, $do_guessing = false)
 
     $lang_strings_non_admin_initial = array_map('trim', explode("\n", trim('
         takes_lots_of_space
+        JAVASCRIPT_REQUIRED
         DESCRIPTION_AWARD_OVERVIEW
         EMAILS
         AVATARS_CARTOONS
