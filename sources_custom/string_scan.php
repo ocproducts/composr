@@ -3086,7 +3086,6 @@ function string_scan($lang, $do_guessing = false)
         CSS_FILE
         CSS_FILE_UPGRADED
         CSS_INLINE_STYLES
-        CSS_NON_IE_PROPERTIES
         CSS_PX_FONT
         CSS_RULE_OVERMATCHED_css_append
         CSS_RULE_OVERMATCHED_css_prepend
@@ -3403,7 +3402,6 @@ function string_scan($lang, $do_guessing = false)
         DESCRIPTION_DESCRIPTION_FILES
         DESCRIPTION_DESTINATION_FORUM
         DESCRIPTION_DESTINATION_PATH
-        DESCRIPTION_DESTINATION_ZONE
         DESCRIPTION_DISPLAY_REVIEW_STATUS
         DESCRIPTION_DISPLAY_TYPE
         DESCRIPTION_DOWNLOADS_STATISTICS
@@ -3900,7 +3898,6 @@ function string_scan($lang, $do_guessing = false)
         DOC_NEWS
         DOC_NEWSLETTER
         DOC_NOTIFICATIONS
-        DOC_PAGES
         DOC_PAGE_MATCH_KEY_ACCESS
         DOC_PAGE_STATISTICS
         DOC_PERMISSIONS_TREE
@@ -4851,7 +4848,6 @@ function string_scan($lang, $do_guessing = false)
         ITEMS_HERE
         JAVASCRIPT_ERROR
         JAVASCRIPT_EXECUTED
-        JAVASCRIPT_REQUIRED
         JPEG_QUALITY
         JSON_ONLY
         JS_CAPTCHA
@@ -5252,7 +5248,6 @@ function string_scan($lang, $do_guessing = false)
         MOVETO_MENU
         MOVE_DOWN
         MOVE_MENU_ITEM
-        MOVE_PAGES
         MOVE_POSTS
         MOVE_POSTS_A_TEXT
         MOVE_POSTS_B_TEXT
@@ -5260,7 +5255,6 @@ function string_scan($lang, $do_guessing = false)
         MOVE_TOPIC
         MOVE_TOPICS
         MOVE_UP
-        MSG_JS_NEEDED
         MSN_FORUM_DB_NOT_CNS_ALREADY
         MULTILANG_OFF
         MULTILANG_OFF_CONTENT
@@ -5474,10 +5468,6 @@ function string_scan($lang, $do_guessing = false)
         NO_GD_ON_SERVER_TTF
         NO_HELP
         NO_INTEGERS_TEMPLATE
-        NO_JS_ADVANCED_SCREEN_PERMISSIONS
-        NO_JS_ADVANCED_SCREEN_SITEMAP
-        NO_JS_ADVANCED_SCREEN_ZONE_EDITOR
-        NO_JS_REALTIME
         NO_LAST_BACKUP
         NO_LEVEL_1_HEADERS
         NO_LEVEL_2_HEADERS
@@ -6127,8 +6117,6 @@ function string_scan($lang, $do_guessing = false)
         SELECT_A_MESSAGE
         SELECT_CATEGORIES_WANTED
         SELECT_COLUMNS_TO_INCLUDE
-        SELECT_PAGES_DELETE
-        SELECT_PAGES_MOVE
         SELECT_STATS_RANGE
         SELECT_TO_IMPORT
         SELECT_USERGROUPS_TO_FILTER
@@ -6203,7 +6191,6 @@ function string_scan($lang, $do_guessing = false)
         SIMPLIFY_WYSIWYG_BY_PERMISSIONS
         SITEMAP_EDITOR
         SITEMAP_LINK
-        SITEMAP_TOOLS
         SITEWIDE_IM
         SITE_CLOSED
         SITE_DB
@@ -6500,7 +6487,6 @@ function string_scan($lang, $do_guessing = false)
         TEMPLATES_JAVASCRIPT_RELATED
         TEMPLATES_TEXT_RELATED
         TEMPLATES_XML_RELATED
-        TEMPLATE_EDITOR_ACCESSIBILITY_HELP
         TEMPLATE_GUID
         TEMPLATE_GUIDS
         UNPAUSE
@@ -8434,7 +8420,6 @@ function string_scan($lang, $do_guessing = false)
         MARKED_POST_ACTIONS
         MARKER
         MARKS
-        MARK_JAVASCRIPT_DISABLED
         MARK_READ
         MARK_UNREAD
         MARK_UNREAD_TOO_OLD

@@ -379,10 +379,6 @@ class Module_chat
      */
     public function run()
     {
-        if (!has_js()) {
-            warn_exit(do_lang_tempcode('MSG_JS_NEEDED'));
-        }
-
         require_javascript('ajax');
         require_javascript('chat');
         require_javascript('sound');

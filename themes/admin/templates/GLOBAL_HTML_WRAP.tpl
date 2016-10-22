@@ -208,10 +208,6 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 							<li class="accessibility_hidden"><a accesskey="1" href="{$PAGE_LINK*,:}">{$SITE_NAME*}</a></li>
 							<li class="accessibility_hidden"><a accesskey="0" href="{$PAGE_LINK*,:keymap}">{!KEYBOARD_MAP}</a></li>
 						</ul>
-
-						{+START,IF,{$AND,{$NOT,{$_GET,keep_has_js}},{$JS_ON}}}
-							<noscript><a href="{$EXTEND_URL*,{$SELF_URL,1,0,1},keep_has_js=0}">{!MARK_JAVASCRIPT_DISABLED}</a></noscript>
-						{+END}
 					</nav>
 				</div>
 			</div>

@@ -43,7 +43,7 @@
 		</div>
 	</div>
 
-	<div style="display: {$JS_ON,none,block}" id="chat_comcode_panel">
+	<div style="display: none" id="chat_comcode_panel">
 		{BUTTONS}
 
 		{+START,IF_NON_EMPTY,{COMCODE_HELP}{CHATCODE_HELP}}

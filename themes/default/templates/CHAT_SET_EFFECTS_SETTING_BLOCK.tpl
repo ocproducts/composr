@@ -7,7 +7,7 @@
 		</div>
 	{+END}{+END}
 
-	<div {+START,IF_PASSED,MEMBER_ID} class="toggleable_tray js-tray-content" id="user_{MEMBER_ID*}"{+START,IF,{$NOT,{HAS_SOME}}} style="{$JS_ON,display: none,}{+END}"{+END} aria-expanded="false">
+	<div {+START,IF_PASSED,MEMBER_ID} class="toggleable_tray js-tray-content" id="user_{MEMBER_ID*}"{+START,IF,{$NOT,{HAS_SOME}}} style="display: none"{+END} aria-expanded="false">
 		<div class="wide_table_wrap"><table class="map_table form_table wide_table scrollable_inside">
 			{+START,IF,{$NOT,{$MOBILE}}}
 				<colgroup>

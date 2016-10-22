@@ -1420,7 +1420,7 @@ class Module_topics
             }
             $post_templates->attach(form_input_list_entry(str_replace("\n", '\n', $text), $default == 1, $title));
         }
-        if ((!$post_templates->is_empty()) && (has_js())) {
+        if (!$post_templates->is_empty()) {
             $post_templates2 = form_input_list_entry('', false, do_lang_tempcode('NA_EM'));
             $post_templates2->attach($post_templates);
 

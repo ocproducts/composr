@@ -1189,9 +1189,7 @@
                 if (img.parentNode.classList.contains('selected')) {
                     img.parentNode.classList.remove('selected');
                     img.style.outline = '0';
-                    if (!browser_matches('ie8+')) {
-                        img.style.background = 'none';
-                    }
+                    img.style.background = 'none';
                 }
             }
         }

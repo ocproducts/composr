@@ -459,9 +459,7 @@ class RevisionEngineDatabase
         }
 
         $max_rows = $this->total_revisions(array($resource_type), $resource_id);
-        if (!has_js()) {
-            $max = $max_rows; // No AJAX pagination if no JS
-        }
+
         $revisions = $this->find_revisions(array($resource_type), $resource_id, null, null, null, $max, $start);
 
         $do_actionlog = has_actual_page_access(get_member(), 'admin_actionlog');

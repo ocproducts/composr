@@ -37,7 +37,7 @@
 			<div class="buttons_group post_buttons wiki_post_buttons">
 				{BUTTONS}
 
-				{+START,IF,{$AND,{$JS_ON},{STAFF_ACCESS}}}
+				{+START,IF,{STAFF_ACCESS}}
 					<div id="cell_mark_{ID*}" class="cns_off mass_select_marker wiki_mass_select_marker">
 						<form class="webstandards_checker_off" title="{!MARKER}: {ID*}" method="post" action="index.php" id="form_mark_{ID*}" autocomplete="off">
 							<div>

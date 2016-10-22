@@ -19,14 +19,12 @@
 	{+START,IF_PASSED_AND_TRUE,GET}{$HIDDENS_FOR_GET_FORM,{URL}}{+END}
 
 	{+START,IF_PASSED,SKIPPABLE}
-		{+START,IF,{$JS_ON}}
-			<div class="skip_step_button_wrap">
-				<input type="hidden" id="{SKIPPABLE*}" name="{SKIPPABLE*}" value="0" />
-				<div>
-					<input onclick="document.getElementById('{SKIPPABLE;*}').value='1';" data-disable-on-click="1" tabindex="151" class="button_screen_item buttons__skip" type="submit" value="{!SKIP}" />
-				</div>
+		<div class="skip_step_button_wrap">
+			<input type="hidden" id="{SKIPPABLE*}" name="{SKIPPABLE*}" value="0" />
+			<div>
+				<input onclick="document.getElementById('{SKIPPABLE;*}').value='1';" data-disable-on-click="1" tabindex="151" class="button_screen_item buttons__skip" type="submit" value="{!SKIP}" />
 			</div>
-		{+END}
+		</div>
 	{+END}
 
 	<div>

@@ -477,11 +477,6 @@ function globalise($middle, $message = null, $type = '', $include_header_and_foo
         }
     }
 
-    if (get_value('xhtml_strict') === '1') {
-        require_code('global4');
-        $global = make_xhtml_strict($global);
-    }
-
     if ((!$include_header_and_footer) && ($old !== null)) {
         $_GET['wide_high'] = $old;
     }
@@ -2384,7 +2379,7 @@ function browser_matches($code, $comcode = null)
 
     switch ($code) {
         case 'simplified_attachments_ui':
-            $browser_matches_cache[$code] = !$is_ie8 && !$is_ie9 && get_option('simplified_attachments_ui') == '1' && get_option('complex_uploader') == '1' && has_js();
+            $browser_matches_cache[$code] = !$is_ie8 && !$is_ie9 && (get_option('simplified_attachments_ui') == '1') && (get_option('complex_uploader') == '1');
             return $browser_matches_cache[$code];
         case 'itunes':
             $browser_matches_cache[$code] = (get_param_integer('itunes', 0) == 1) || (strpos($browser, 'itunes') !== false);

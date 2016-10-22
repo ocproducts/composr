@@ -10,13 +10,8 @@
 	{+END}
 
 	{+START,IF_EMPTY,{$_POST,decrypt}}
-		{+START,IF,{$JS_ON}}
-			<p>
-				<a href="javascript:decrypt_data('{CONTENT;^*}');" title="{!encryption:DECRYPT_DATA}: {!encryption:DESCRIPTION_DECRYPT_DATA}">{!encryption:DECRYPT_DATA}</a>
-			</p>
-		{+END}
-		{+START,IF,{$NOT,{$JS_ON}}}
-			<p>JavaScript is required.</p>
-		{+END}
+		<p>
+			<a href="javascript:decrypt_data('{CONTENT;^*}');" title="{!encryption:DECRYPT_DATA}: {!encryption:DESCRIPTION_DECRYPT_DATA}">{!encryption:DECRYPT_DATA}</a>
+		</p>
 	{+END}
 </div></div>

@@ -29,7 +29,6 @@ Managed menus:
 [tt]+[/tt]	User friendly
 [tt]+[/tt]	Provides menus with greater power (context dependant menus)
 [tt]+[/tt]	Provides an interface to find all 'entry points' and easily add them to the menu
-[tt]-[/tt]	The admin interface is not designed to be accessible for those with disabilities (it requires JavaScript)
 [/surround]
 
 Almost all users would best choose managed menus.

@@ -6,7 +6,7 @@
 {$SET,permission_tree_editor_url,{$PAGE_LINK,_SEARCH:admin_permissions:browse:!}};
 {$SET,edit_page_url,{$PAGE_LINK,cms:cms_comcode_pages:_edit:page_link=!}};
 {$SET,add_page_url,{$PAGE_LINK,_SEARCH:cms_comcode_pages:_edit:page_link=!:example}};
-{$SET,delete_url,{$PAGE_LINK,_SELF:_SELF:_delete:zone=[1]:page__[2]=1}};
+{$SET,delete_url,{$PAGE_LINK,_SELF:_SELF:delete:zone=[1]:page__[2]=1}};
 {$SET,stats_url,{+START,IF,{$ADDON_INSTALLED,stats}}{$PAGE_LINK,_SEARCH:admin_stats:_page:iscreen=!}{+END}};
 <div data-tpl="sitemapEditorScreen" data-tpl-params="{+START,PARAMS_JSON,edit_zone_url,add_zone_url,zone_editor_url,permission_tree_editor_url,edit_page_url,add_page_url,delete_url,stats_url}{_*}{+END}">
 {TITLE}

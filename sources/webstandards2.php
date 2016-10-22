@@ -183,13 +183,6 @@ function init__webstandards2()
         'basefont' => 1,
     );
 
-    if (function_exists('cms_srv')) {
-        $browser = strtolower(cms_srv('HTTP_USER_AGENT'));
-        $is_ie = (strpos($browser, 'msie') !== false);
-    } else {
-        $is_ie = false;
-    }
-
     $enforce_javascript = '([^\n]+)';
     $enforce_lang = '[a-zA-Z][a-zA-Z](-[a-zA-Z]+)?';
     $enforce_direction = '(ltr|rtl)';
@@ -217,7 +210,7 @@ function init__webstandards2()
     $enforce_font_list = '((([A-Za-z]+)|("[A-Za-z ]+")|(\'[A-Za-z ]+\')),\s*)*' . $_enforce_font_list;
     $enforce_functional_url = '(url\(\'.+\'\)|url\(".+"\)|url\([^\(\);]+\))';
     $enforce_functional_url_or_none = '(' . $enforce_functional_url . '|none)';
-    $enforce_border_style = '(none|dotted|dashed|solid|double|groove|ridge|inset|outset|transparent)'; // 'transparent' not supported in IE6
+    $enforce_border_style = '(none|dotted|dashed|solid|double|groove|ridge|inset|outset|transparent)';
     $enforce_background_repeat = '(repeat|repeat-x|repeat-y|no-repeat)';
     $enforce_attachment = '(scroll|fixed)';
     $_enforce_background_position = '((' . $enforce_length . '|top( ' . $enforce_length . ')?|center|bottom( ' . $enforce_length . ')?)|(' . $enforce_length . '|left( ' . $enforce_length . ')?|center|right( ' . $enforce_length . ')?))';
@@ -231,7 +224,7 @@ function init__webstandards2()
     $enforce_font_variant = '(normal|small-caps)';
     $enforce_font_weight = '(lighter|normal|bold|bolder|((\d)+))';
     $enforce_list_style_position = '(inside|outside)';
-    $enforce_list_style_type = '(none|disc|circle|square|decimal|lower-roman|upper-roman|lower-alpha|upper-alpha' . ((!$is_ie) ? '|decimal-leading-zero|lower-greek|lower-latin|upper-latin|hebrew|armenian|georgian|cjk-ideographic|hiragana|katakana|hiragana-iroha|katakana-iroha' : '') . ')';
+    $enforce_list_style_type = '(none|disc|circle|square|decimal|lower-roman|upper-roman|lower-alpha|upper-alpha|decimal-leading-zero|lower-greek|lower-latin|upper-latin|hebrew|armenian|georgian|cjk-ideographic|hiragana|katakana|hiragana-iroha|katakana-iroha)';
     $enforce_list_style_image = '(none|' . $enforce_functional_url . ')';
     $enforce_id = '[a-zA-Z][\w\-\:\.]*';
     $enforce_name = '[\w\-\:\.]+(\[\])?';
@@ -288,7 +281,7 @@ function init__webstandards2()
         'clear' => '(both|left|right|none)',
         'clip' => 'auto|(rect\(' . $enforce_potential_4d_length . '\))',
         'color' => $enforce_css_color,
-        'cursor' => '(' . $enforce_functional_url . '|default|auto|n-resize|ne-resize|e-resize|se-resize|s-resize|sw-resize|w-resize|nw-resize|crosshair|pointer|move|text|wait|help' . ((!$is_ie) ? '|progress' : '') . ')',
+        'cursor' => '(' . $enforce_functional_url . '|default|auto|n-resize|ne-resize|e-resize|se-resize|s-resize|sw-resize|w-resize|nw-resize|crosshair|pointer|move|text|wait|help|progress)',
         'direction' => '(ltr|rtl)',
         'display' => '(none|inline|block|list-item|table|table-header-group|table-footer-group|inline-block|run-in|inline-table|table-row|table-row-group|table-column-group|table-column|table-cell|table-caption|flex|-ms-flexbox|-\w+-flex)',
         'float' => '(left|right|none)',
@@ -320,17 +313,17 @@ function init__webstandards2()
         'padding-top' => $enforce_auto_or_ilength,
         'page-break-after' => '(auto|left|right|always)',
         'page-break-before' => '(auto|left|right|always)',
-        'position' => '(static|relative|absolute' . ((!$is_ie) ? '|fixed' : '') . ')',
+        'position' => '(static|relative|absolute|fixed)',
         'table-layout' => '(auto|fixed)',
         'text-align' => '(left|right|center|justify)',
-        'text-decoration' => '(underline|line-through|none' . ((!$is_ie) ? '|blink' : '') . ')',
+        'text-decoration' => '(underline|line-through|none|blink)',
         'text-indent' => $enforce_length,
         'text-transform' => '(capitalize|uppercase|lowercase|none)',
         'top' => $enforce_auto_or_length,
         'unicode-bidi' => '(bidi-override|normal|embed)',
         'vertical-align' => '(baseline|sub|super|top|text-top|middle|bottom|text-bottom|' . $enforce_length . ')',
         'visibility' => '(hidden|visible|collapse)',
-        'white-space' => '(normal|pre|nowrap' . ((!$is_ie) ? '|pre-wrap|pre-line' : '') . ')',
+        'white-space' => '(normal|pre|nowrap|pre-wrap|pre-line)',
         'width' => $enforce_auto_or_length,
         'word-spacing' => $enforce_normal_or_length,
         'z-index' => '(auto|(\d+))',
@@ -387,7 +380,7 @@ function init__webstandards2()
         'animation-delay' => '.*',
         'animation-fill-mode' => '.*',
 
-        /* Purposely left out these CSS2 features due to very poor browser support (not just IE not having it) */
+        /* Purposely left out these CSS features due to very poor browser support or generally irrelevancy */
         /*
         (print module)
         (aural module)
@@ -400,18 +393,10 @@ function init__webstandards2()
         'word-wrap' => '(normal|break-word)', // Was renamed to overflow-wrap, but that name is not supported widely
     );
 
-    global $CSS_NON_IE_PROPERTIES;
-    $CSS_NON_IE_PROPERTIES = array(
-        // Empty for now, as CSS is evolving fast, and the point where we're at now we don't need to use things IE does not support, or if we would like to, they're not fully standardised yet anyway
-        //  In other words, we are just supporting CSS2.1 and parts of CSS3 specs in this checker. That is our baseline.
-        //  There is no real 'CSS3' anyway, just a rapidly evolving series of specs with varying levels of industry and standards acceptance.
-    );
-
     $strict_form_accessibility = false; // Form fields may not be empty with this strict rule
 
     global $TAG_ATTRIBUTES;
-    $TAG_ATTRIBUTES = array(); // Split up to workaround bug in HHVM
-    $TAG_ATTRIBUTES += array(
+    $TAG_ATTRIBUTES = array(
         'a.accesskey' => $enforce_character,
         'a.charset' => '.+',
         'a.download' => '(download)',
@@ -434,8 +419,6 @@ function init__webstandards2()
         'area.onfocus' => $enforce_javascript,
         'area.shape' => '(rect|circle|poly|default)',
         'area.tabindex' => $enforce_inumber,
-    );
-    $TAG_ATTRIBUTES += array(
         'base.href' => $enforce_link,
         'blockquote.cite' => '.+',
         'body.onload' => $enforce_javascript,
@@ -448,8 +431,6 @@ function init__webstandards2()
         'button.tabindex' => $enforce_inumber,
         'button.type' => '(button|submit|reset)',
         'button.value' => '.+',
-    );
-    $TAG_ATTRIBUTES += array(
         'col.char' => $enforce_character,
         'col.charoff' => $enforce_length,
         'col.span' => $enforce_inumber,
@@ -459,16 +440,12 @@ function init__webstandards2()
         'del.cite' => '.+',
         'del.datetime' => '.+',
         'div.xml:lang' => $enforce_lang,
-    );
-    $TAG_ATTRIBUTES += array(
         'form.accept-charset' => '.+',
         'form.action' => $enforce_link,
         'form.enctype' => 'multipart/form-data|application/x-www-form-urlencoded',
         'form.method' => '(get|post)',
         'form.onreset' => '.+',
         'form.onsubmit' => '.+',
-    );
-    $TAG_ATTRIBUTES += array(
         'html.xml:lang' => $enforce_lang,
         'html.version' => '.+',
         'html.xmlns' => '.+',
@@ -504,8 +481,6 @@ function init__webstandards2()
         'input.value' => '.' . ($strict_form_accessibility ? '+' : '*'),
         'ins.cite' => '.+',
         'ins.datetime' => '.+',
-    );
-    $TAG_ATTRIBUTES += array(
         'label.accesskey' => $enforce_character,
         'label.for' => $enforce_id,
         'label.onblur' => '.+',
@@ -519,8 +494,6 @@ function init__webstandards2()
         'link.rev' => '.+',
         'link.type' => '.+',
         'link.sizes' => '.+',
-    );
-    $TAG_ATTRIBUTES += array(
         'meta.content' => '.*',
         'meta.http-equiv' => '[a-zA-Z].+',
         'meta.name' => '[a-zA-Z].+',
@@ -544,8 +517,6 @@ function init__webstandards2()
         'option.label' => '.+',
         'option.selected' => 'selected',
         'option.value' => '.*',
-    );
-    $TAG_ATTRIBUTES += array(
         'param.name' => $enforce_name,
         'param.type' => '.+',
         'param.value' => '.+',
@@ -568,11 +539,8 @@ function init__webstandards2()
         'span.xml:lang' => $enforce_lang,
         'style.media' => '.+',
         'style.type' => 'text/css',
-    );
-    $TAG_ATTRIBUTES += array(
         'table.frame' => '(void|above|below|hsides|lhs|rhs|vsides|box|border)',
         'table.rules' => '(none|groups|rows|cols|all)',
-        //'table.summary' => '.*', Not in HTML5
         'tbody.char' => $enforce_character,
         'tbody.charoff' => $enforce_length,
         'td.axis' => '.+',
@@ -606,8 +574,6 @@ function init__webstandards2()
         'thead.charoff' => $enforce_length,
         'tr.char' => $enforce_character,
         'tr.charoff' => $enforce_length,
-    );
-    $TAG_ATTRIBUTES += array(
         'map.name' => $enforce_name,
 
         // Below brought back in in modules (target, iframe) / fully in HTML5
@@ -622,10 +588,7 @@ function init__webstandards2()
         // These are needed in IE, so we will have to browser sniff and output if IE being used, but not check them as okay
         //'iframe.scrolling' => '(yes|no|auto)',
         //'iframe.frameborder' => '(1|0)',
-        //'iframe.marginheight' => $enforce_pixels,
-        //'iframe.marginwidth' => $enforce_pixels,
-    );
-    $TAG_ATTRIBUTES += array(
+
         '*.hidden' => '(hidden)',
         '*.class' => $enforce_class,
         '*.dir' => $enforce_direction,
@@ -718,8 +681,8 @@ function init__webstandards2()
         'input.width' => $enforce_inumber,
         'input.step' => 'any|(-?[0-9]+(\.[0-9]+)?)',
         'input.required' => '(required)',
-        'input.placeholder' => '.+', // We will allow use of this because it is progressive enhancement. Don't rely on it for core communications within Composr until we can drop IE8/IE9 support (LEGACY note)
-        'input.pattern' => '.+', // Don't rely on this being supported, we have our own sanitisation API anyway
+        'input.placeholder' => '.+',
+        'input.pattern' => '.+',
         'input.multiple' => '(multiple)',
         'input.min' => '.+',
         'input.max' => '.+',
@@ -1118,8 +1081,8 @@ function __check_tag($tag, $attributes, $self_close, $close, $errors)
 
             case 'select':
                 $webstandards_check = function_exists('get_param_integer') ? get_param_integer('keep_webstandards_check', get_param_integer('webstandards_check', 0)) : 0;
-                if ((isset($attributes['onchange'])) && (strpos($attributes['onchange'], 'form.submit()') !== false) && (strpos($attributes['onchange'], '/*guarded*/') === false) && (($webstandards_check == 0) || (!has_js()))) {
-                    $errors[] = array('WCAG_AUTO_SUBMIT_LIST');
+                if ((isset($attributes['onchange'])) && (strpos($attributes['onchange'], 'form.submit()') !== false) && (strpos($attributes['onchange'], '/*guarded*/') === false) && ($webstandards_check == 0)) {
+                    //$errors[] = array('WCAG_AUTO_SUBMIT_LIST'); Outdated, active JS now expected
                 }
                 break;
 
@@ -1390,7 +1353,7 @@ function _check_attributes($tag, $attributes, $self_close, $close)
         }
 
         if ($attribute == 'id') { // Check we don't have duplicate IDs
-            if (isset($IDS_SO_FAR[strtolower($value)])) { // strtolower is for IE - in reality, IDs are not meant to be case insensitive
+            if (isset($IDS_SO_FAR[strtolower($value)])) { // strtolower is for compatibility - in reality, IDs are not meant to be case insensitive
                 $errors[] = array('XHTML_DUPLICATED_ID', $value);
             }
             $IDS_SO_FAR[strtolower($value)] = 1;
@@ -1611,7 +1574,6 @@ function _check_labelling($tag, $attributes, $self_close, $close)
                 }
             }
 
-            //if ((!in_array('label', $TAG_STACK)))//&& ((!isset($attributes['value']) || ($attributes['value'] == '')))) { // Compromise - sometimes we will use a default value as a substitute for a label. Not strictly allowed in accessibility rules, but writers mention as ok (+ we need it so we don't clutter things unless we start hiding labels, which is not nice)
             if (!isset($attributes['id'])) {
                 $attributes['id'] = 'unnamed_' . strval(mt_rand(0, 10000));
             }
@@ -1619,7 +1581,6 @@ function _check_labelling($tag, $attributes, $self_close, $close)
             if ((!isset($FOR_LABEL_IDS[$attributes['id']])) && ($attributes['id'] != 'x') && (preg_match('#<label[^<>]+for="' . preg_quote($attributes['id'], '#') . '"#', $OUT) == 0)) {
                 $errors[] = array('WCAG_NO_INPUT_LABEL', $attributes['id']);
             }
-            //}
         }
     }
 
@@ -1675,7 +1636,6 @@ function _webstandards_css_sheet($data)
     $class = '';
     $at_rule = '';
     $at_rule_block = '';
-    //$left_no_mans_land_once = false;
     $brace_level = 0;
     $i = 0;
     $class_start_line = null;
@@ -1776,7 +1736,6 @@ function _webstandards_css_sheet($data)
                     }
                     $status = CSS_IN_IDENTIFIER;
                     $class_name = '';
-                    //$left_no_mans_land_once = true;
                 } elseif ($next == '@') {
                     $status = CSS_AT_RULE;
                     $at_rule = '';
@@ -1786,7 +1745,6 @@ function _webstandards_css_sheet($data)
                 } elseif ($next == '*') {
                     $status = CSS_IN_IDENTIFIER;
                     $class_name = '*';
-                    //$left_no_mans_land_once = true;
                 } else {
                     $errors[] = array(0 => 'CSS_UNEXPECTED_CHARACTER', 1 => $next, 2 => integer_format($line), 'pos' => $i);
                 }
@@ -2082,19 +2040,12 @@ function _check_css_value($key, $value, $_i)
 
     $error = null;
 
-    global $CSS_PROPERTIES, $CSS_NON_IE_PROPERTIES;
+    global $CSS_PROPERTIES;
     if (!isset($CSS_PROPERTIES[$key])) {
-        if (!isset($CSS_NON_IE_PROPERTIES[$key])) {
-            if (substr($key, 0, 1) == '-') {
-                return null;
-            }
-            return array(0 => 'CSS_UNKNOWN_PROPERTY', 1 => $key, 'pos' => $_i);
-        } else {
-            $reg_exp = $CSS_NON_IE_PROPERTIES[$key];
-            if ($GLOBALS['WEBSTANDARDS_COMPAT']) {
-                $error = array(0 => 'CSS_NON_IE_PROPERTIES', 1 => $key, 'pos' => $_i);
-            }
+        if (substr($key, 0, 1) == '-') {
+            return null;
         }
+        return array(0 => 'CSS_UNKNOWN_PROPERTY', 1 => $key, 'pos' => $_i);
     } else {
         $reg_exp = $CSS_PROPERTIES[$key];
     }

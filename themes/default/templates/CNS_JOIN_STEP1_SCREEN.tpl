@@ -29,11 +29,9 @@
 	{+END}
 
 	<p>
-		{+START,IF,{$JS_ON}}
-			<button type="button" data-disable-on-click="1" onclick="window.top.location='{$PAGE_LINK;*,:}';" class="button_screen buttons__no">{!I_DISAGREE}</button>
-		{+END}
+		<button type="button" data-disable-on-click="1" onclick="window.top.location='{$PAGE_LINK;*,:}';" class="button_screen buttons__no">{!I_DISAGREE}</button>
 
-		<input accesskey="u" data-disable-on-click="1" class="button_screen buttons__yes" type="submit" value="{!PROCEED}"{+START,IF,{$JS_ON}} disabled="disabled"{+END} id="proceed_button" />
+		<input accesskey="u" data-disable-on-click="1" class="button_screen buttons__yes" type="submit" value="{!PROCEED}" disabled="disabled" id="proceed_button" />
 	</p>
 </form>
 </div>

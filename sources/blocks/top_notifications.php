@@ -53,10 +53,6 @@ class Block_top_notifications
             return new Tempcode();
         }
 
-        if (!has_js()) {
-            return new Tempcode();
-        }
-
         $block_id = get_block_id($map);
 
         $max = isset($map['max']) ? intval($map['max']) : 5;

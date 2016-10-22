@@ -4,7 +4,7 @@
 		<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{TEXT}</a>
 	</h4>
 
-	<div class="toggleable_tray js-tray-content" style="display: {$JS_ON,none,block}" aria-expanded="false">
+	<div class="toggleable_tray js-tray-content" style="display: none" aria-expanded="false">
 		{CONTENT}
 	</div>
 </blockquote>

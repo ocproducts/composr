@@ -939,7 +939,7 @@ class Module_admin_themes
             'URL' => $post_url,
             'FIELD' => $fields,
             'SUBMIT_ICON' => 'buttons__proceed',
-            'SUBMIT_NAME' => has_js() ? new Tempcode() : do_lang_tempcode('EDIT'), // We don't want a button if JS is on because clicking on images takes you through
+            'SUBMIT_NAME' => new Tempcode(), // We don't want a button because clicking on images takes you through
         ));
 
         $add_url = build_url(array('page' => '_SELF', 'type' => 'add_image', 'theme' => $theme, 'lang' => $lang), '_SELF');

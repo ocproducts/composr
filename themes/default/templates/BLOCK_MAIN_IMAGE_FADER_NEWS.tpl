@@ -66,9 +66,3 @@
 		</div>
 	</div>
 </section>
-
-<noscript>
-	{+START,LOOP,NEWS}
-		{$TRUNCATE_LEFT,{BODY},600,0,1,1,0.1}
-	{+END}
-</noscript>

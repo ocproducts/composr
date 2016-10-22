@@ -7,8 +7,3 @@
 	<div class="shocker_left" id="comcodeshocker{$GET,RAND_ID_SHOCKER}_left"></div>
 	<div class="shocker_right" id="comcodeshocker{$GET,RAND_ID_SHOCKER}_right"></div>
 </div>
-
-<noscript>
-	{FULL*}
-</noscript>
-

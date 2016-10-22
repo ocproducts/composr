@@ -54,7 +54,7 @@
 						<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!CONTENT}</a>
 					</h2>
 
-					<nav class="toggleable_tray js-tray-content" style="display: {$JS_ON,none,block}" aria-expanded="false">
+					<nav class="toggleable_tray js-tray-content" style="display: none" aria-expanded="false">
 						<ul class="nl">
 							{ACTIONS_content}
 						</ul>
@@ -69,7 +69,7 @@
 						<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!ACCOUNT}</a>
 					</h2>
 
-					<nav class="toggleable_tray js-tray-content" style="display: {$JS_ON,none,block}" aria-expanded="false">
+					<nav class="toggleable_tray js-tray-content" style="display: none" aria-expanded="false">
 						<ul class="nl">
 							{ACTIONS_views}
 							{ACTIONS_profile}
@@ -85,7 +85,7 @@
 						<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!AUDIT}</a>
 					</h2>
 
-					<nav class="toggleable_tray js-tray-content" style="display: {$JS_ON,none,block}" aria-expanded="false">
+					<nav class="toggleable_tray js-tray-content" style="display: none" aria-expanded="false">
 						<ul class="nl">
 							{ACTIONS_audit}
 						</ul>
@@ -140,8 +140,7 @@
 													{+END}
 												{+END}
 												{+START,IF_NON_EMPTY,{ENCRYPTED_VALUE}}
-													{+START,IF,{$JS_ON}}{!encryption:DATA_ENCRYPTED} <a href="javascript:decrypt_data('{ENCRYPTED_VALUE;^*}');" title="{!encryption:DECRYPT_DATA}: {$STRIP_TAGS,{!encryption:DESCRIPTION_DECRYPT_DATA}}">{!encryption:DECRYPT_DATA}</a>{+END}
-													{+START,IF,{$NOT,{$JS_ON}}}{ENCRYPTED_VALUE*}{+END}
+													{!encryption:DATA_ENCRYPTED} <a href="javascript:decrypt_data('{ENCRYPTED_VALUE;^*}');" title="{!encryption:DECRYPT_DATA}: {$STRIP_TAGS,{!encryption:DESCRIPTION_DECRYPT_DATA}}">{!encryption:DECRYPT_DATA}</a>
 												{+END}
 												<!-- {$,Break out of non-terminated comments in CPF} -->
 											</span>
@@ -206,8 +205,7 @@
 													{+END}
 												{+END}
 												{+START,IF_NON_EMPTY,{ENCRYPTED_VALUE}}
-													{+START,IF,{$JS_ON}}{!encryption:DATA_ENCRYPTED} <a href="javascript:decrypt_data('{ENCRYPTED_VALUE;^*}');" title="{!encryption:DECRYPT_DATA}: {$STRIP_TAGS,{!encryption:DESCRIPTION_DECRYPT_DATA}}">{!encryption:DECRYPT_DATA}</a>{+END}
-													{+START,IF,{$NOT,{$JS_ON}}}{ENCRYPTED_VALUE*}{+END}
+													{!encryption:DATA_ENCRYPTED} <a href="javascript:decrypt_data('{ENCRYPTED_VALUE;^*}');" title="{!encryption:DECRYPT_DATA}: {$STRIP_TAGS,{!encryption:DESCRIPTION_DECRYPT_DATA}}">{!encryption:DECRYPT_DATA}</a>
 												{+END}
 												<!-- {$,Break out of non-terminated comments in CPF} -->
 											</span>

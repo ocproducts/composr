@@ -269,16 +269,9 @@ function sitemap_do_next_manager($title, $page, $zone, $completion_text)
         require_lang('redirects');
         $special[] = array('menu/adminzone/structure/redirects', array('admin_redirects', array('type' => 'browse'), get_module_zone('admin_redirects')), do_lang_tempcode('REDIRECTS'));
     }
-    if (!has_js()) {
-        $special = array_merge($special, array(
-            array('menu/adminzone/structure/sitemap/page_delete', array('admin_sitemap', array('type' => 'delete'), get_module_zone('admin_sitemap')), do_lang_tempcode('DELETE_PAGES')),
-            array('menu/adminzone/structure/sitemap/page_move', array('admin_sitemap', array('type' => 'move'), get_module_zone('admin_sitemap')), do_lang_tempcode('MOVE_PAGES')),
-        ));
-    } else {
-        $special = array_merge($special, array(
-            array('menu/adminzone/structure/sitemap/sitemap_editor', array('admin_sitemap', array('type' => 'sitemap'), get_module_zone('admin_sitemap')), do_lang_tempcode('SITEMAP_EDITOR')),
-        ));
-    }
+    $special = array_merge($special, array(
+        array('menu/adminzone/structure/sitemap/sitemap_editor', array('admin_sitemap', array('type' => 'browse'), get_module_zone('admin_sitemap')), do_lang_tempcode('SITEMAP_EDITOR')),
+    ));
     return do_next_manager(
         $title,
         $completion_text,

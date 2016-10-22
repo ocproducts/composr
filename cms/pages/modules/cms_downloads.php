@@ -326,7 +326,7 @@ class Module_cms_downloads extends Standard_crud_module
         $archive_url = build_url(array('page' => 'downloads'), get_module_zone('downloads'));
 
         $only_owned = has_privilege(get_member(), 'edit_midrange_content', 'cms_downloads') ? null : get_member();
-        $tree = form_input_tree_list(do_lang_tempcode('NAME'), '', 'id', null, 'choose_download', array('only_owned' => $only_owned, 'editable_filter' => true), true, null, false, null, has_js() && $this->supports_mass_delete);
+        $tree = form_input_tree_list(do_lang_tempcode('NAME'), '', 'id', null, 'choose_download', array('only_owned' => $only_owned, 'editable_filter' => true), true, null, false, null, $this->supports_mass_delete);
         return array($tree, $search_url, $archive_url);
     }
 

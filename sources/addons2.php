@@ -1079,9 +1079,6 @@ function has_feature($dependency)
     }
 
     // Some other features
-    if (($dependency == 'javascript') && (has_js())) {
-        return true;
-    }
     if (($dependency == 'cron') && (cron_installed())) {
         return true;
     }
@@ -1089,9 +1086,6 @@ function has_feature($dependency)
         return true;
     }
     if ((strtolower($dependency) == 'gd') && (function_exists('imagetypes'))) {
-        return true;
-    }
-    if ($dependency == 'adobeflash') {
         return true;
     }
     if (substr($dependency, 0, 3) == 'php') {

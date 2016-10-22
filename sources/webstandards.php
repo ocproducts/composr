@@ -19,11 +19,16 @@
  */
 
 /*
-The webstandards checking is designed for a special blend between uber-modern-standards and cross-browser stability - to only allow XHTML5 and CSS3 that runs (or gracefully degrades) on IE8.
+The webstandards checking is designed for a special blend between uber-modern-standards and cross-browser stability - to only allow XHTML5 and CSS3 that runs (or gracefully degrades) on the minimum Composr browser versions.
 
 We favour the W3C standard over the WHATWG living document.
 
 We continue to prohibit much of what was deprecated in XHTML but brought back into HTML5 (e.g. 'b' tag).
+
+We have a few global flags to tweak behaviour:
+ - MAIL_MODE
+ - SPELLING
+ - PEDANTIC
 */
 
 /**
@@ -122,7 +127,7 @@ function init__webstandards()
         'th' => true, // Only use for 'corner' ones
         'textarea' => true,
         'button' => true,
-        'script' => true, // If we have one of these as self-closing in IE... it kills it!
+        'script' => true, // HTML forces us to have empty script (not self-closing) tags to do includes, it's weird but it's the standard
         'noscript' => true,
         'li' => true,
         'embed' => true,
@@ -576,7 +581,7 @@ function check_xhtml($out, $well_formed_only = false, $is_fragment = false, $web
         return array('level_ranges' => $level_ranges, 'tag_ranges' => $TAG_RANGES, 'value_ranges' => $VALUE_RANGES, 'errors' => $errors);
     }
 
-    if (!$well_formed_only) { // if ((($WEBSTANDARDS_CHECKER_OFF === null)) || (!$well_formed_only)) // checker-off check needed because it's possible a non-checkable portion foobars up possibility of interpreting the rest of the document such that checking ends early
+    if (!$well_formed_only) {
         if (!$is_fragment) {
             foreach (array_keys($to_find) as $tag) {
                 $errors[] = _xhtml_error('XHTML_MISSING_TAG', $tag);
@@ -591,8 +596,6 @@ function check_xhtml($out, $well_formed_only = false, $is_fragment = false, $web
             if (!$FOUND_CONTENTTYPE) {
                 $errors[] = _xhtml_error('XHTML_CONTENTTYPE');
             }
-            //if (!$FOUND_KEYWORDS) $errors[]=_xhtml_error('XHTML_KEYWORDS');
-            //if (!$FOUND_DESCRIPTION) $errors[]=_xhtml_error('XHTML_DESCRIPTION');
         }
 
         if (!$is_fragment) {
@@ -715,7 +718,6 @@ function test_entity($offset = 0)
     $errors = array();
 
     $pos = strpos($lump, ';');
-    //if ($pos!==0) { // "&; sequence" is possible. It's in IPB's posts and to do with emoticon meta tagging
     if ($pos === false) {
         $errors[] = array('XHTML_BAD_ENTITY');
     } else {
@@ -727,7 +729,6 @@ function test_entity($offset = 0)
             }
         }
     }
-    //}
 
     if (!isset($errors[0])) {
         return null;
@@ -825,7 +826,6 @@ function _get_next_tag()
             $LINENO++;
             $LINESTART = $POS;
         }
-        //echo $status . ' for ' . $next . '<br />';
 
         // Entity checking
         if (($next == '&') && ($status != IN_CDATA) && ($status != IN_COMMENT) && ($WEBSTANDARDS_CHECKER_OFF === null)) {
@@ -901,6 +901,7 @@ function _get_next_tag()
                     }
                 }
                 break;
+
             case IN_TAG_NAME:
                 $more_to_come = (!isset($special_chars[$next])) && ($POS < $LEN);
                 while ($more_to_come) {
@@ -931,6 +932,7 @@ function _get_next_tag()
                     $current_tag .= $next;
                 }
                 break;
+
             case STARTING_TAG:
                 if ($next == '/') {
                     $close = true;
@@ -946,6 +948,7 @@ function _get_next_tag()
                     $status = IN_TAG_NAME;
                 }
                 break;
+
             case IN_TAG_BETWEEN_ATTRIBUTES:
                 if (($next == '/') && (isset($OUT[$POS])) && ($OUT[$POS] == '>')) {
                     ++$POS;
@@ -965,6 +968,7 @@ function _get_next_tag()
                     $current_attribute_name .= $next;
                 }
                 break;
+
             case IN_TAG_ATTRIBUTE_NAME:
                 $more_to_come = (!isset($special_chars[$next])) && ($POS < $LEN);
                 while ($more_to_come) {
@@ -1032,6 +1036,7 @@ function _get_next_tag()
                     $status = IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_LEFT;
                 }
                 break;
+
             case IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_LEFT:
                 if ($next == '=') {
                     $status = IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_RIGHT;
@@ -1050,6 +1055,7 @@ function _get_next_tag()
                     $VALUE_RANGES[] = array($POS - 1, $POS - 1);
                 }
                 break;
+
             case IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_RIGHT:
                 if ($next == '"') {
                     $v_pos = $POS;
@@ -1072,6 +1078,7 @@ function _get_next_tag()
                     $status = IN_TAG_ATTRIBUTE_VALUE_NO_QUOTES;
                 }
                 break;
+
             case IN_TAG_ATTRIBUTE_VALUE_NO_QUOTES:
                 if ($next == '>') {
                     if (isset($attribute_map[$current_attribute_name])) {
@@ -1099,6 +1106,7 @@ function _get_next_tag()
                     $current_attribute_value .= $next;
                 }
                 break;
+
             case IN_TAG_ATTRIBUTE_VALUE_BIG_QUOTES:
                 $more_to_come = (!isset($special_chars[$next])) && ($POS < $LEN);
                 while ($more_to_come) {
@@ -1137,6 +1145,7 @@ function _get_next_tag()
                     $current_attribute_value .= $next;
                 }
                 break;
+
             case IN_TAG_ATTRIBUTE_VALUE_LITTLE_QUOTES:
                 if ($next == '\'') {
                     $status = IN_TAG_BETWEEN_ATTRIBUTES;
@@ -1154,11 +1163,13 @@ function _get_next_tag()
                     $current_attribute_value .= $next;
                 }
                 break;
+
             case IN_XML_TAG:
                 if (($OUT[$POS - 2] == '?') && ($next == '>')) {
                     $status = NO_MANS_LAND;
                 }
                 break;
+
             case IN_DTD_TAG: // This is a parser-directive, but we only use them for doctypes
                 $doc_type .= $next;
                 if ($next == '>') {
@@ -1180,12 +1191,14 @@ function _get_next_tag()
                     $status = NO_MANS_LAND;
                 }
                 break;
+
             case IN_CDATA:
                 $INBETWEEN_TEXT .= $next;
                 if (($next == '>') && ($OUT[$POS - 2] == ']') && ($OUT[$POS - 3] == ']')) {
                     $status = NO_MANS_LAND;
                 }
                 break;
+
             case IN_COMMENT:
                 $INBETWEEN_TEXT .= $next;
                 if (($next == '>') && ($OUT[$POS - 2] == '-') && ($OUT[$POS - 3] == '-')) {
@@ -1195,6 +1208,7 @@ function _get_next_tag()
                     $status = NO_MANS_LAND;
                 }
                 break;
+
             case IN_TAG_EMBEDDED_COMMENT:
                 if (($next == '>') && ($OUT[$POS - 2] == '-') && ($OUT[$POS - 3] == '-')) {
                     $status = IN_TAG_BETWEEN_ATTRIBUTES;

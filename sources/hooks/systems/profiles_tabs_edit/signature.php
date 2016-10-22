@@ -129,7 +129,7 @@ class Hook_profiles_tabs_edit_signature
         $comcode_editor = get_comcode_editor('signature', false, true);
         $comcode_editor_small = get_comcode_editor('signature', true);
 
-        $w = (has_js()) && (browser_matches('wysiwyg') && (strpos($signature_original, '{$,page hint: no_wysiwyg}') === false));
+        $w = (browser_matches('wysiwyg') && (strpos($signature_original, '{$,page hint: no_wysiwyg}') === false));
         $class = '';
         attach_wysiwyg();
         if ($w) {

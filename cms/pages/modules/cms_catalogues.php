@@ -411,7 +411,7 @@ class Module_cms_catalogues extends Standard_crud_module
         $archive_url = build_url(array('page' => 'catalogues', 'type' => 'index', 'id' => $catalogue_name), get_module_zone('catalogues'));
 
         $only_owned = has_privilege(get_member(), 'edit_midrange_content', 'cms_catalogues') ? null : get_member();
-        $tree = form_input_tree_list(do_lang_tempcode('ENTRY'), '', 'id', null, 'choose_catalogue_entry', array('catalogue_name' => $catalogue_name, 'only_owned' => $only_owned, 'editable_filter' => true), true, null, false, null, has_js() && $this->supports_mass_delete);
+        $tree = form_input_tree_list(do_lang_tempcode('ENTRY'), '', 'id', null, 'choose_catalogue_entry', array('catalogue_name' => $catalogue_name, 'only_owned' => $only_owned, 'editable_filter' => true), true, null, false, null, $this->supports_mass_delete);
         return array($tree, $search_url, $archive_url);
     }
 

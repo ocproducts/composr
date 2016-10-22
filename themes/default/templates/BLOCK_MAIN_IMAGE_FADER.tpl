@@ -32,9 +32,3 @@
 	</div>
 	</div>
 {+END}
-
-<noscript>
-	{+START,LOOP,HTML}
-		{_loop_var}
-	{+END}
-</noscript>

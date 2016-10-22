@@ -5,7 +5,7 @@
 			<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{CAPTION*}</a>
 		</span>
 
-		<ul style="display: {$JS_ON,none,block}" class="compact_list toggleable_tray js-tray-content">
+		<ul style="display: none" class="compact_list toggleable_tray js-tray-content">
 			{CONTENTS}
 		</ul>
 	</div>

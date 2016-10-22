@@ -206,10 +206,7 @@ function find_security_alerts($where = array())
     if (((strtoupper($sort_order) != 'ASC') && (strtoupper($sort_order) != 'DESC')) || (!array_key_exists($sortable, $sortables))) {
         log_hack_attack_and_exit('ORDERBY_HACK');
     }
-    $_fields = array(do_lang_tempcode('FROM'), do_lang_tempcode('DATE_TIME'), do_lang_tempcode('IP_ADDRESS'), do_lang_tempcode('REASON'));
-    if (has_js()) {
-        $_fields[] = new Tempcode();
-    }
+    $_fields = array(do_lang_tempcode('FROM'), do_lang_tempcode('DATE_TIME'), do_lang_tempcode('IP_ADDRESS'), do_lang_tempcode('REASON'), new Tempcode());
     $fields_title = results_field_title($_fields, $sortables, 'alert_sort', $sortable . ' ' . $sort_order);
     $max_rows = $GLOBALS['SITE_DB']->query_select_value('hackattack', 'COUNT(*)', $where);
     $rows = $GLOBALS['SITE_DB']->query_select('hackattack', array('*'), $where, 'ORDER BY ' . $sortable . ' ' . $sort_order, $max, $start);
@@ -231,10 +228,9 @@ function find_security_alerts($where = array())
         }
 
         $_row = array(hyperlink($member_url, $username, false, true), hyperlink($full_url, $date, false, true), hyperlink($lookup_url, $row['ip'], false, true), $reason);
-        if (has_js()) {
-            $deletion_tick = do_template('RESULTS_TABLE_TICK', array('_GUID' => '9d310a90afa8bd1817452e476385bc57', 'ID' => strval($row['id'])));
-            $_row[] = $deletion_tick;
-        }
+
+        $deletion_tick = do_template('RESULTS_TABLE_TICK', array('_GUID' => '9d310a90afa8bd1817452e476385bc57', 'ID' => strval($row['id'])));
+        $_row[] = $deletion_tick;
 
         $fields->attach(results_entry($_row, false));
     }

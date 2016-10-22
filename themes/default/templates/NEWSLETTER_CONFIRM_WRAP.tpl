@@ -1,17 +1,15 @@
-{+START,IF,{$NOT,{$VALUE_OPTION,xhtml_strict}}}
+<div class="box box___newsletter_confirm_wrap"><div class="box_inner">
+	<h2>{SUBJECT*} &ndash; {!HTML_VERSION}</h2>
+
+	{+START,INCLUDE,NEWSLETTER_PREVIEW}{+END}
+</div></div>
+
+{+START,IF_NON_EMPTY,{TEXT_PREVIEW}}
 	<div class="box box___newsletter_confirm_wrap"><div class="box_inner">
-		<h2>{SUBJECT*} &ndash; {!HTML_VERSION}</h2>
+		<h2>{SUBJECT*} &ndash; {!TEXT_VERSION}</h2>
 
-		{+START,INCLUDE,NEWSLETTER_PREVIEW}{+END}
+		<div class="whitespace_visible">{TEXT_PREVIEW*}</div>
 	</div></div>
-
-	{+START,IF_NON_EMPTY,{TEXT_PREVIEW}}
-		<div class="box box___newsletter_confirm_wrap"><div class="box_inner">
-			<h2>{SUBJECT*} &ndash; {!TEXT_VERSION}</h2>
-
-			<div class="whitespace_visible">{TEXT_PREVIEW*}</div>
-		</div></div>
-	{+END}
 {+END}
 
 {+START,IF_PASSED,SPAM_REPORT}

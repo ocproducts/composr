@@ -23,7 +23,7 @@
 						<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!I_AGREE}</a>
 					</div>
 
-					<div class="toggleable_tray js-tray-content" style="display: {$JS_ON,none,block}" aria-expanded="false">
+					<div class="toggleable_tray js-tray-content" style="display: none" aria-expanded="false">
 					{+END}
 					{+START,IF_NON_PASSED,LICENCE_HYPERLINK}
 					<div class="box_inner">

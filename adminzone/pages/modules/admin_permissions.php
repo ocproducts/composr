@@ -187,15 +187,9 @@ class Module_admin_permissions
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
-        if (has_js()) {
-            $ret = array(
-                'browse' => array('PERMISSIONS_TREE', 'menu/adminzone/security/permissions/permission_tree_editor'),
-            );
-        } else {
-            $ret = array(
-                'page' => array('PAGE_ACCESS', 'menu/adminzone/security/permissions/permission_tree_editor'),
-            );
-        }
+        $ret = array(
+            'browse' => array('PERMISSIONS_TREE', 'menu/adminzone/security/permissions/permission_tree_editor'),
+        );
 
         if (!$be_deferential) {
             $ret['privileges'] = array('PRIVILEGES', 'menu/adminzone/security/permissions/privileges');
@@ -271,22 +265,6 @@ class Module_admin_permissions
             breadcrumb_set_self(do_lang_tempcode('DONE'));
         }
 
-        if ($type == 'page') {
-            $zone = get_param_string('zone', null);
-            if ($zone === null) {
-                breadcrumb_set_self(do_lang_tempcode('CHOOSE'));
-            } else {
-                breadcrumb_set_parents(array(array('_SELF:_SELF:page', do_lang_tempcode('PAGE_ACCESS'))));
-                breadcrumb_set_self(($zone == '') ? do_lang('_WELCOME') : $zone);
-            }
-        }
-
-        if ($type == '_page') {
-            $zone = post_param_string('zone');
-            breadcrumb_set_parents(array(array('_SELF:_SELF:page', do_lang_tempcode('PAGE_ACCESS')), array('_SELF:_SELF:page:zone=' . $zone, ($zone == '') ? do_lang('_WELCOME') : $zone)));
-            breadcrumb_set_self(do_lang_tempcode('DONE'));
-        }
-
         if ($type == 'absorb' || $type == '_absorb') {
             $this->title = get_screen_title('ABSORB_PERMISSIONS');
         }
@@ -297,10 +275,6 @@ class Module_admin_permissions
 
         if ($type == 'match_keys' || $type == '_match_keys') {
             $this->title = get_screen_title('PAGE_MATCH_KEY_ACCESS');
-        }
-
-        if ($type == 'page' || $type == '_page') {
-            $this->title = get_screen_title('PAGE_ACCESS');
         }
 
         return null;
@@ -339,12 +313,6 @@ class Module_admin_permissions
             if ($type == '_match_keys') {
                 return $this->set_match_keys_access();
             }
-        }
-        if ($type == 'page') {
-            return $this->interface_page_access();
-        }
-        if ($type == '_page') {
-            return $this->set_page_access();
         }
         if ($type == 'privileges') {
             return $this->interface_privileges();
@@ -431,12 +399,6 @@ class Module_admin_permissions
      */
     public function tree_editor()
     {
-        if (!has_js()) {
-            // Send them to the page permissions screen
-            $url = build_url(array('page' => '_SELF', 'type' => 'page'), '_SELF');
-            return redirect_screen($this->title, $url, do_lang_tempcode('NO_JS_ADVANCED_SCREEN_PERMISSIONS'));
-        }
-
         require_javascript('ajax');
         require_javascript('tree_list');
         require_code('form_templates');
@@ -657,117 +619,6 @@ class Module_admin_permissions
 
         // Show it worked / Refresh
         $url = build_url(array('page' => '_SELF', 'type' => 'match_keys'), '_SELF');
-        return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
-    }
-
-    /**
-     * The UI to set page access.
-     *
-     * @return Tempcode The UI
-     */
-    public function interface_page_access()
-    {
-        $url = build_url(array('page' => '_SELF', 'type' => '_page'), '_SELF');
-
-        $admin_groups = $GLOBALS['FORUM_DRIVER']->get_super_admin_groups();
-        $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
-
-        $header_cells = $this->_access_header($admin_groups, $groups);
-
-        $cols = new Tempcode();
-        foreach ($groups as $id => $g_name) {
-            if (in_array($id, $admin_groups)) {
-                continue;
-            }
-            $cols->attach(do_template('PERMISSION_COLUMN_SIZER'));
-        }
-
-        // Rows (pages)
-        $rows = new Tempcode();
-        $zone = get_param_string('zone', null);
-        if ($zone === null) {
-            return $this->_choose_zone($this->title);
-        }
-        $zones = array($zone);
-        $access_rows = $GLOBALS['SITE_DB']->query_select('group_page_access', array('page_name', 'zone_name', 'group_id'));
-        foreach ($zones as $zone) {
-            $pages = find_all_pages_wrap($zone);
-
-            foreach (array_keys($pages) as $page) {
-                if (is_integer($page)) {
-                    $page = strval($page);
-                }
-
-                $cells = new Tempcode();
-                $code = '';
-
-                $has = true;
-                foreach ($groups as $id => $g_name) {
-                    if (in_array($id, $admin_groups)) {
-                        continue;
-                    }
-
-                    $has_not_permission = false;
-                    foreach ($access_rows as $access_row) {
-                        if ($access_row === array('page_name' => $page, 'zone_name' => $zone, 'group_id' => $id)) {
-                            $has_not_permission = true;
-                            $has = false;
-                            break;
-                        }
-                    }
-
-                    $cells->attach(do_template('PERMISSION_CELL', array('_GUID' => '094dde94ef78328074409e2d2388dcda', 'CHECKED' => (!$has_not_permission), 'HUMAN' => do_lang_tempcode('PERMISSION_CELL', escape_html($page), escape_html($g_name)), 'NAME' => 'p_' . $zone . '__' . $page . '__' . strval($id))));
-                    $code .= 'form.elements[\'' . 'p_' . $zone . '__' . $page . '__' . strval($id) . '\'].checked=this.value==\'+\';';
-                }
-
-                $rows->attach(do_template('PERMISSION_ROW', array('_GUID' => '127bc51f9d5d2d53c84ad54d09fd4fe6', 'HAS' => $has, 'ABBR' => $page, 'PERMISSION' => $page, 'CELLS' => $cells, 'CODE' => $code)));
-            }
-        }
-
-        return do_template('PERMISSION_SCREEN_PERMISSIONS_SCREEN', array('_GUID' => '1cfa15b2fd8c2828c897c6a5c974b201', 'COLS' => $cols, 'ZONE' => $zone, 'TITLE' => $this->title, 'URL' => $url, 'HEADER_CELLS' => $header_cells, 'ROWS' => $rows));
-    }
-
-    /**
-     * The actualiser to set page access.
-     *
-     * @return Tempcode The UI
-     */
-    public function set_page_access()
-    {
-        // Delete to cleanup
-        $zone = post_param_string('zone');
-        $GLOBALS['SITE_DB']->query('DELETE FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'group_page_access WHERE page_name NOT LIKE \'' . db_encode_like('%:%') . '\' AND ' . db_string_equal_to('zone_name', $zone));
-
-        $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
-        $admin_groups = $GLOBALS['FORUM_DRIVER']->get_super_admin_groups();
-        $zones = array($zone);
-        foreach ($zones as $zone) {
-            $pages = find_all_pages_wrap($zone);
-
-            foreach (array_keys($pages) as $page) {
-                foreach (array_keys($groups) as $id) {
-                    if (in_array($id, $admin_groups)) {
-                        continue;
-                    }
-
-                    $val = post_param_integer('p_' . $zone . '__' . $page . '__' . strval($id), 0);
-
-                    if ($val == 0) { // If we're denied permission, we make an entry (we store whether DENIED)
-                        $GLOBALS['SITE_DB']->query_insert('group_page_access', array('zone_name' => $zone, 'page_name' => $page, 'group_id' => $id));
-                    }
-                }
-            }
-        }
-
-        delete_cache_entry('menu');
-        require_code('caches3');
-        erase_block_cache();
-        erase_persistent_cache();
-
-        log_it('PAGE_ACCESS');
-
-        // Show it worked / Refresh
-        $url = build_url(array('page' => '_SELF', 'type' => 'page'), '_SELF');
         return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
     }
 

@@ -276,12 +276,6 @@ class Module_admin_zones
         require_code('form_templates');
         require_lang('comcode');
 
-        if (!has_js()) {
-            // Send them to the page permissions screen
-            $url = build_url(array('page' => '_SELF', 'type' => 'edit'), '_SELF');
-            return redirect_screen($this->title, $url, do_lang_tempcode('NO_JS_ADVANCED_SCREEN_ZONE_EDITOR'));
-        }
-
         // After completion prep/relay
         $_default_redirect = build_url(array('page' => ''), $id);
         $default_redirect = $_default_redirect->evaluate();
@@ -379,7 +373,7 @@ class Module_admin_zones
 
                 // WYSIWYG?
                 require_javascript('editing');
-                $w = (has_js()) && (browser_matches('wysiwyg') && (strpos($comcode, '{$,page hint: no_wysiwyg}') === false));
+                $w = (browser_matches('wysiwyg') && (strpos($comcode, '{$,page hint: no_wysiwyg}') === false));
                 attach_wysiwyg();
                 if ($w) {
                     $class .= ' wysiwyg';

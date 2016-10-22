@@ -94,21 +94,19 @@
 
 			{+START,IF,{$NOT,{$MOBILE}}}
 				{+START,IF_NON_EMPTY,{MARKED_POST_ACTIONS}}
-					{+START,IF,{$JS_ON}}
-						<form title="{!MARKED_POST_ACTIONS}" action="{$URL_FOR_GET_FORM*,{ACTION_URL}}" method="get" class="inline horiz_field_sep_rightward js-form-marked-post-actions" autocomplete="off">
-							{$HIDDENS_FOR_GET_FORM,{ACTION_URL}}
+					<form title="{!MARKED_POST_ACTIONS}" action="{$URL_FOR_GET_FORM*,{ACTION_URL}}" method="get" class="inline horiz_field_sep_rightward js-form-marked-post-actions" autocomplete="off">
+						{$HIDDENS_FOR_GET_FORM,{ACTION_URL}}
 
-							<div class="inline">
-								<label for="mpa_type">{!_MARKED_POST_ACTIONS}:</label>
-								<select id="mpa_type" name="type">
-									{+START,IF,{$GT,{$SUBSTR_COUNT,{MARKED_POST_ACTIONS},<option},1}}
-										<option value="browse">-</option>
-									{+END}
-									{MARKED_POST_ACTIONS}
-								</select><input class="button_micro buttons__proceed js-click-check-marked-form-and-submit" type="submit" value="{!PROCEED}" />
-							</div>
-						</form>
-					{+END}
+						<div class="inline">
+							<label for="mpa_type">{!_MARKED_POST_ACTIONS}:</label>
+							<select id="mpa_type" name="type">
+								{+START,IF,{$GT,{$SUBSTR_COUNT,{MARKED_POST_ACTIONS},<option},1}}
+									<option value="browse">-</option>
+								{+END}
+								{MARKED_POST_ACTIONS}
+							</select><input class="button_micro buttons__proceed js-click-check-marked-form-and-submit" type="submit" value="{!PROCEED}" />
+						</div>
+					</form>
 				{+END}
 			{+END}
 

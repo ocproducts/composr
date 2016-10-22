@@ -69,7 +69,7 @@
 		<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!INTERESTS}</a>
 	</h2>
 
-	<div class="toggleable_tray js-tray-content" style="{$JS_ON,display: none,}" aria-expanded="false">
+	<div class="toggleable_tray js-tray-content" style="display: none" aria-expanded="false">
 		<div class="float_surrounder">
 			{+START,IF_NON_EMPTY,{EVENT_TYPES_1}}
 				<div class="right event_interest_box"><section class="box"><div class="box_inner">
@@ -119,7 +119,7 @@
 			<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!FEEDS_TO_OVERLAY}</a>
 		</h2>
 
-		<div class="toggleable_tray js-tray-content" style="{$JS_ON,display: none,}" aria-expanded="false">
+		<div class="toggleable_tray js-tray-content" style="display: none" aria-expanded="false">
 			{RSS_FORM}
 		</div>
 	</div>

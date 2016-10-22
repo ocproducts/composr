@@ -102,10 +102,6 @@ class Hook_addon_registry_page_management
     public function get_file_list()
     {
         return array(
-            'themes/default/images/icons/24x24/menu/adminzone/structure/sitemap/page_delete.png',
-            'themes/default/images/icons/48x48/menu/adminzone/structure/sitemap/page_delete.png',
-            'themes/default/images/icons/24x24/menu/adminzone/structure/sitemap/page_move.png',
-            'themes/default/images/icons/48x48/menu/adminzone/structure/sitemap/page_move.png',
             'themes/default/images/icons/24x24/menu/adminzone/structure/sitemap/sitemap_editor.png',
             'themes/default/images/icons/48x48/menu/adminzone/structure/sitemap/sitemap_editor.png',
             'sources/hooks/systems/addon_registry/page_management.php',

@@ -102,7 +102,7 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
 
     // Sitemap Editor
     if ($special_page_type == 'sitemap') {
-        $url = build_url(array('page' => 'admin_sitemap', 'type' => 'sitemap', 'id' => get_zone_name() . ':' . get_page_name()), get_module_zone('admin_sitemap'));
+        $url = build_url(array('page' => 'admin_sitemap', 'type' => 'browse', 'id' => get_zone_name() . ':' . get_page_name()), get_module_zone('admin_sitemap'));
 
         require_code('site2');
         smart_redirect($url->evaluate());

@@ -69,11 +69,9 @@ There are a number of approaches that can help you with the above problems:
 
 [title="2"]JavaScript[/title]
 
-{$IS_MAINTAINED,standard_nojs,JavaScript may be disabled by visitors to Composr}. Sometimes users consider it unsafe and disable it (there is a strong case to this, but it is a very limiting thing to do), although by doing so on the modern web, most websites will not work.
+Composr requires JavaScript to be enabled for the default theme and for administration screens. Themers may opt to use our JavaScript-detection functionality to cater to users with JavaScript-enabled if desired.
 
-If a Composr visitor has JavaScript disabled then certain functionality will not work, such as using the menu editor (appropriate Composr error messages will be given explaining why); in addition, other functionality reduces in ability due to a lack of interactive ability in the web browser: for example, the Comcode [tt]hide[/tt] tag will drop-down to the level where the content isn't actually hidden by default.
-
-The main reason for Composr not requiring JavaScript is that interactive functionality is usually inaccessible for those with certain forms of disability such as blindness. By disabling JavaScript in their accessible browser, or by the browser not supporting it anyway, they may get a better experience.
+Previously we suported JavaScript as disabled, but realistically all modern websites (YouTube, Facebook, etc) require Javascript, so to provide a competitive modern experience we do need it. The ARIA standard allows JavaScript-heavy sites to remain accessible, and print stylesheets can ensure web pages still print effectively.
 
 [title="2"]Cookies[/title]
 

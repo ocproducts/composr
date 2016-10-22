@@ -691,7 +691,7 @@ class Module_tickets
                     list($pt_title, $pt_text,) = $template;
                     $_post_templates->attach(form_input_list_entry(str_replace("\n", '\n', $pt_text), false, $pt_title));
                 }
-                if ((!$_post_templates->is_empty()) && (has_js())) {
+                if (!$_post_templates->is_empty()) {
                     $post_templates2 = form_input_list_entry('', false, do_lang_tempcode('NA_EM'));
                     $post_templates2->attach($_post_templates);
 

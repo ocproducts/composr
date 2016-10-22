@@ -48,7 +48,6 @@ A full description of the Tempcode language is available in the [page="docs:tut_
 WCAG is the standard accessibility standard. Imagine, for example, a blind user using a website.
 
 Adherence to the following guidelines can't be automatically detected, so need to be checked manually in your XHTML:
- - [color="#AA2222"][tt]<noscript>[/tt] is given whenever appropriate and possible[/color]
  - [color="#AA2222"]When plugins are used, info about it must be displayed[/color]
  - [color="#AA2222"]When an appropriate markup language exists, use markup rather than images to convey information.[/color]
  - [color="#AA2222"]Mark up lists and list items properly.[/color]

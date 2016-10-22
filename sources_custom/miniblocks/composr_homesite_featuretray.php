@@ -737,11 +737,9 @@ foreach (($map['param'] == '') ? array() : explode(',', $map['param']) as $i => 
                 }
 
                 if ($item === null) { // Divider
-                    if (has_js()) {
-                        echo '</ul></div>' . "\n\n";
-                        $see_more = true;
-                        echo '<div class="moreE"><ul class="more">';
-                    }
+                    echo '</ul></div>' . "\n\n";
+                    $see_more = true;
+                    echo '<div class="moreE"><ul class="more">';
                 } else {
                     $item[0] = comcode_to_tempcode('[semihtml]' . $item[0] . '[/semihtml]', null, true);
                     $item[0] = $item[0]->evaluate();

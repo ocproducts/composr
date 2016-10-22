@@ -5,6 +5,6 @@
 	</a>
 </p>
 
-<div id="{TITLE|*}" style="display: {$JS_ON,none,block}">
+<div id="{TITLE|*}" style="display: none">
 	{CONTENT}
 </div>

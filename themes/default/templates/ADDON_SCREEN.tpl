@@ -15,13 +15,11 @@
 	</nav>
 {+END}
 
-{+START,IF,{$JS_ON}}
-	<div class="float_surrounder">
-		<p class="right associated_link">
-			<a href="#!" class="js-click-check-uninstall-all">{!UNINSTALL}: {!USE_ALL}</a>
-		</p>
-	</div>
-{+END}
+<div class="float_surrounder">
+	<p class="right associated_link">
+		<a href="#!" class="js-click-check-uninstall-all">{!UNINSTALL}: {!USE_ALL}</a>
+	</p>
+</div>
 
 <form title="{!PRIMARY_PAGE_FORM}" action="{MULTI_ACTION*}" method="post" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}

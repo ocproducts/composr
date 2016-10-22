@@ -17,9 +17,7 @@
 	</div></div>
 
 	<p class="proceed_button">
-		{+START,IF,{$JS_ON}}
-			<input class="button_screen buttons__back" data-cms-btn-go-back="1" type="button" value="{!GO_BACK}" />
-		{+END}
+		<input class="button_screen buttons__back" data-cms-btn-go-back="1" type="button" value="{!GO_BACK}" />
 
 		<input data-disable-on-click="1" class="button_screen buttons__proceed" type="submit" value="{!PROCEED}" />
 	</p>

@@ -111,7 +111,6 @@ class Hook_addon_registry_core_permission_management
             'sources/hooks/systems/sitemap/privilege_category.php',
             'themes/default/templates/PERMISSION_KEYS_PERMISSIONS_SCREEN.tpl',
             'themes/default/templates/PERMISSION_KEYS_PERMISSION_ROW.tpl',
-            'themes/default/templates/PERMISSION_SCREEN_PERMISSIONS_SCREEN.tpl',
             'themes/default/templates/PERMISSION_PRIVILEGES_SECTION.tpl',
             'themes/default/templates/PERMISSION_PRIVILEGES_SCREEN.tpl',
             'themes/default/templates/PERMISSION_CELL.tpl',
@@ -145,9 +144,8 @@ class Hook_addon_registry_core_permission_management
             'templates/PERMISSION_KEYS_PERMISSION_ROW.tpl' => 'administrative__permission_keys_permissions_screen',
             'templates/PERMISSION_KEYS_MESSAGE_ROW.tpl' => 'administrative__permission_keys_permissions_screen',
             'templates/PERMISSION_KEYS_PERMISSIONS_SCREEN.tpl' => 'administrative__permission_keys_permissions_screen',
-            'templates/PERMISSION_COLUMN_SIZER.tpl' => 'administrative__permission_screen_permissions_screen',
-            'templates/PERMISSION_ROW.tpl' => 'administrative__permission_screen_permissions_screen',
-            'templates/PERMISSION_SCREEN_PERMISSIONS_SCREEN.tpl' => 'administrative__permission_screen_permissions_screen',
+            'templates/PERMISSION_COLUMN_SIZER.tpl' => 'administrative__permission_s_permissions_screen',
+            'templates/PERMISSION_ROW.tpl' => 'administrative__permission_s_permissions_screen',
             'templates/PERMISSION_PRIVILEGES_SECTION.tpl' => 'administrative__permission_s_permissions_screen',
             'templates/PERMISSION_PRIVILEGES_SCREEN.tpl' => 'administrative__permission_s_permissions_screen'
         );
@@ -263,74 +261,6 @@ class Hook_addon_registry_core_permission_management
                 'ROWS' => $rows,
                 'ROWS2' => $rows2,
                 'COLS' => '',
-            )), null, '', true)
-        );
-    }
-
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
-    public function tpl_preview__administrative__permission_screen_permissions_screen()
-    {
-        require_lang('permissions');
-
-        require_css('forms');
-
-        $header_cells = new Tempcode();
-        foreach (placeholder_array() as $id => $name) {
-            $header_cells->attach(do_lorem_template('PERMISSION_HEADER_CELL', array(
-                'COLOR' => 'b7b7b7',
-                'GROUP' => $name,
-            )));
-        }
-        $header_cells->attach(do_lorem_template('PERMISSION_HEADER_CELL', array(
-            'COLOR' => 'b7b7b7',
-            'GROUP' => '',
-        )));
-
-        $cols = new Tempcode();
-        foreach (placeholder_array() as $id => $g_name) {
-            $cols->attach(do_lorem_template('PERMISSION_COLUMN_SIZER'));
-        }
-        $k = 0;
-        $rows = new Tempcode();
-        foreach (placeholder_array() as $zone) {
-            foreach (placeholder_array() as $page) {
-                $cells = new Tempcode();
-                $code = '';
-
-                $has = true;
-                foreach (placeholder_array() as $id => $g_name) {
-                    $cells->attach(do_lorem_template('PERMISSION_CELL', array(
-                        'CHECKED' => true,
-                        'HUMAN' => lorem_phrase(),
-                        'NAME' => 'id_' . strval($k),
-                    )));
-                    $k++;
-                }
-
-                $rows->attach(do_lorem_template('PERMISSION_ROW', array(
-                    'HAS' => true,
-                    'ABBR' => lorem_word(),
-                    'PERMISSION' => lorem_word_2(),
-                    'CELLS' => $cells,
-                    'CODE' => '',
-                )));
-            }
-        }
-
-        return array(
-            lorem_globalise(do_lorem_template('PERMISSION_SCREEN_PERMISSIONS_SCREEN', array(
-                'COLS' => '',
-                'ZONE' => lorem_phrase(),
-                'TITLE' => lorem_title(),
-                'URL' => placeholder_url(),
-                'HEADER_CELLS' => $header_cells,
-                'ROWS' => $rows,
             )), null, '', true)
         );
     }

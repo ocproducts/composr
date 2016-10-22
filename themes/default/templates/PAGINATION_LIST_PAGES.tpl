@@ -4,9 +4,9 @@
 	<div class="pagination_pages">
 		{HIDDEN}
 		<div class="accessibility_hidden"><label for="blp_start{$GET*,RAND_PAGINATION_LIST_PAGES}">{!COUNT_PAGES}{+START,IF_NON_EMPTY,{$GET,TEXT_ID}}: {$GET*,TEXT_ID}{+END}</label></div>
-		<select{+START,IF,{$JS_ON}} onchange="/*guarded*/this.form.submit();"{+END} id="blp_start{$GET*,RAND_PAGINATION_LIST_PAGES}" name="{START_NAME*}">
+		<select onchange="this.form.submit();" id="blp_start{$GET*,RAND_PAGINATION_LIST_PAGES}" name="{START_NAME*}">
 			{LIST}
-		</select>{+START,IF,{$NOT,{$JS_ON}}}<input data-disable-on-click="1" class="button_micro buttons__morepage" type="submit" value="{!JUMP}{+START,IF_NON_EMPTY,{$GET,TEXT_ID}}: {$GET*,TEXT_ID}{+END}" />{+END}
+		</select>
 	</div>
 </form>
 

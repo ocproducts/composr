@@ -33,9 +33,7 @@
 
 		<p class="proceed_button">
 			{+START,IF_NON_PASSED,BACK_URL}
-				{+START,IF,{$JS_ON}}
-					<input class="button_screen buttons__back" type="button" data-cms-btn-go-back="1" value="{!GO_BACK}" />
-				{+END}
+				<input class="button_screen buttons__back" type="button" data-cms-btn-go-back="1" value="{!GO_BACK}" />
 			{+END}
 
 			<input data-disable-on-click="1" accesskey="u" class="button_screen buttons__proceed" type="submit" value="{!PROCEED}" />

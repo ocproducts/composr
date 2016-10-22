@@ -257,12 +257,10 @@
 	<div class="box box___w_main_screen" data-view="ToggleableTray">
 		<h2 class="toggleable_tray_title js-tray-header">
 			<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!W_ENVIRONMENT_ACTIONS}</a>
-			{+START,IF,{$JS_ON}}
-				<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!EXPAND}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
-			{+END}
+			<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!EXPAND}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
 		</h2>
 
-		<div class="toggleable_tray js-tray-content" style="{$JS_ON,{HIDE_ACTIONS*},}"{+START,IF,{HIDE_ACTIONS}} aria-expanded="false"{+END}>
+		<div class="toggleable_tray js-tray-content" style="{HIDE_ACTIONS*}"{+START,IF,{HIDE_ACTIONS}} aria-expanded="false"{+END}>
 			<table class="columned_table results_table wide_table autosized_table">
 				<colgroup>
 					<col style="width: 20%" />
@@ -710,12 +708,10 @@
 		<div class="box box___w_main_screen" data-view="ToggleableTray">
 			<h2 class="toggleable_tray_title js-tray-header">
 				<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!W_ENVIRONMENT_ADDITIONS}</a>
-				{+START,IF,{$JS_ON}}
-					<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!EXPAND}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
-				{+END}
+				<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!EXPAND}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
 			</h2>
 
-			<div class="toggleable_tray js-tray-content" style="{$JS_ON,{HIDE_ADDITIONS*},}"{+START,IF,{HIDE_ADDITIONS}} aria-expanded="false"{+END}>
+			<div class="toggleable_tray js-tray-content" style="{HIDE_ADDITIONS*}"{+START,IF,{HIDE_ADDITIONS}} aria-expanded="false"{+END}>
 				<div class="float_surrounder">
 					<div class="buildr_icon" style="width: {$?,{MAY_ADD_PORTAL},20%,25%};">
 						<a href="{$PAGE_LINK*,_SELF:_SELF:addrealm}"><img alt="{!W_ADD_REALM}" src="{$IMG*,buildr/realms}" /></a><br /><a href="{$PAGE_LINK*,_SELF:_SELF:addrealm}">{!W_ADD_REALM}</a>
@@ -742,12 +738,10 @@
 	<div class="box box___w_main_screen" data-view="ToggleableTray">
 		<h2 class="toggleable_tray_title js-tray-header">
 			<a class="toggleable_tray_button js-btn-tray-toggle" href="#!" onclick="set_cookie('hideMod',(this.querySelector('img').getAttribute('src')=='{$IMG;*,1x/trays/contract}')?'0':'1');">{!W_ENVIRONMENT_MODIFICATIONS}</a>
-			{+START,IF,{$JS_ON}}
-				<a class="toggleable_tray_button js-btn-tray-toggle" href="#!" onclick="set_cookie('hideMod',(this.querySelector('img').getAttribute('src')=='{$IMG;*,1x/trays/contract}')?'0':'1');"><img alt="{!EXPAND}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
-			{+END}
+			<a class="toggleable_tray_button js-btn-tray-toggle" href="#!" onclick="set_cookie('hideMod',(this.querySelector('img').getAttribute('src')=='{$IMG;*,1x/trays/contract}')?'0':'1');"><img alt="{!EXPAND}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
 		</h2>
 
-		<div class="toggleable_tray js-tray-content" style="{$JS_ON,{HIDE_MODIFICATIONS*},}"{+START,IF,{HIDE_MODIFICATIONS}} aria-expanded="false"{+END}>
+		<div class="toggleable_tray js-tray-content" style="{HIDE_MODIFICATIONS*}"{+START,IF,{HIDE_MODIFICATIONS}} aria-expanded="false"{+END}>
 			{+START,IF_NON_EMPTY,{ITEMS_OWNED}}
 				<form method="post" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off"><div>
 					{$INSERT_SPAMMER_BLACKHOLE}
