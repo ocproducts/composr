@@ -29,6 +29,10 @@ We have a few global flags to tweak behaviour:
  - MAIL_MODE
  - SPELLING
  - PEDANTIC
+ - WEBSTANDARDS_EXT_FILES
+ - WEBSTANDARDS_MANUAL
+ - WEBSTANDARDS_JAVASCRIPT
+ - WEBSTANDARDS_CSS
 */
 
 /**
@@ -116,8 +120,6 @@ function init__webstandards()
         'ldquo' => true, 'rdquo' => true, 'bdquo' => true, 'dagger' => true, 'Dagger' => true, 'permil' => true,
         'lsaquo' => true, 'rsaquo' => true, 'euro' => true);
 
-    $strict_form_accessibility = false; // Form fields may not be empty with this strict rule
-
     global $POSSIBLY_EMPTY_TAGS;
     $POSSIBLY_EMPTY_TAGS = array(
         'a' => true, // When it's an anchor only - we will detect this with custom code
@@ -132,9 +134,6 @@ function init__webstandards()
         'li' => true,
         'embed' => true,
     );
-    if ($strict_form_accessibility) {
-        unset($POSSIBLY_EMPTY_TAGS['textarea']);
-    }
 
     global $MUST_SELFCLOSE_TAGS;
     $MUST_SELFCLOSE_TAGS = array(
@@ -398,8 +397,6 @@ function check_xhtml($out, $well_formed_only = false, $is_fragment = false, $web
 
     $token = _get_next_tag();
     while ($token !== null) {
-        //echo $T_POS . '-' . $POS . ' (' . $stack_size . ')<br />';
-
         while ((is_array($token)) && (count($token) != 0)) { // Some kind of error in our token
             if ($WEBSTANDARDS_CHECKER_OFF === null) {
                 foreach ($token[1] as $error) {
@@ -549,7 +546,6 @@ function check_xhtml($out, $well_formed_only = false, $is_fragment = false, $web
                 }
                 $stack_size--;
                 $level_ranges[] = array($stack_size, $T_POS, $POS);
-                //echo 'Popped $previous<br />';
 
                 if ((($WEBSTANDARDS_CHECKER_OFF === null)) && (!$WELL_FORMED_ONLY) && (($WEBSTANDARDS_CHECKER_OFF === null))) {
                     if ($previous == 'script') {

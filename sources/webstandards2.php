@@ -191,8 +191,8 @@ function init__webstandards2()
     $enforce_inumber = '[0-9]+';
     $enforce_character = '.';
     $enforce_color = '(black|silver|gray|white|maroon|purple|fuchsia|green|lime|olive|yellow|navy|blue|teal|aqua|orange|red|(\#[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f])|(\#[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f]))'; // orange and red aren't 'official' -- but kind of handy ;). In reality, the colour codes were never properly defined, and these two are obvious names for obviously needed ones-- they'll be supported
-    $enforce_length = '((0)|(' . $enforce_number . '(|in|cm|mm|ex|pt|pc|px|em|%))|((' . $enforce_number . ')?\.' . $enforce_number . '(in|cm|mm|ex|em|%)))'; // |ex|pt|in|cm|mm|pc  We don't want these in our XHTML... preferably we only want em when it comes to font size!
-    $enforce_ilength = '((0)|(' . $enforce_inumber . '(|in|cm|mm|ex|pt|pc|px|em|%))|((' . $enforce_inumber . ')?\.' . $enforce_inumber . '(in|cm|mm|ex|em|%)))'; // |ex|pt|in|cm|mm|pc We don't want these in our XHTML... preferably we only want em when it comes to font size!
+    $enforce_length = '((0)|(' . $enforce_number . '(|in|cm|mm|ex|pt|pc|px|em|%))|((' . $enforce_number . ')?\.' . $enforce_number . '(in|cm|mm|ex|em|vh|vw|vmin|rem|%)))'; // |ex|pt|in|cm|mm|pc  We don't want these in our XHTML... preferably we only want em when it comes to font size!
+    $enforce_ilength = '((0)|(' . $enforce_inumber . '(|in|cm|mm|ex|pt|pc|px|em|%))|((' . $enforce_inumber . ')?\.' . $enforce_inumber . '(in|cm|mm|ex|em|vh|vw|vmin|rem|%)))'; // |ex|pt|in|cm|mm|pc We don't want these in our XHTML... preferably we only want em when it comes to font size!
     $enforce_pixels = '[0-9]+';
     $enforce_auto_or_length = '(auto|' . $enforce_length . ')';
     $enforce_auto_or_ilength = '(auto|' . $enforce_ilength . ')';
@@ -257,7 +257,7 @@ function init__webstandards2()
         'background-clip' => '(border-box|padding-box|content-box)',
         'background-color' => $enforce_transparent_or_color,
         'background-image' => /*$enforce_functional_url_or_none*/'.*', // Changed to .* to allow gradients
-        'background-origin' => '(border-box|content-box)', // padding-box not widely supported yet; may be droped from spec
+        'background-origin' => '(border-box|content-box)',
         'background-position' => $enforce_background_position,
         'background-repeat' => $enforce_background_repeat,
         'background-size' => '(' . $enforce_length . ' ' . $enforce_length . ')',
@@ -296,7 +296,7 @@ function init__webstandards2()
         'border-width' => $enforce_potential_4d_border_width,
         'bottom' => $enforce_auto_or_length,
         'box-shadow' => '(none|(' . $enforce_box_shadow . '(,\s*' . $enforce_box_shadow . '(,\s*' . $enforce_box_shadow . '(,\s*' . $enforce_box_shadow . ')?)?)?))',
-        'box-sizing' => '(border-box|content-box|padding-box)', // should be vendor prefixed (for Firefox)
+        'box-sizing' => '(border-box|content-box|padding-box)',
         'caption-side' => 'top|bottom|left|right',
         'clear' => '(both|left|right|none)',
         'clip' => 'auto|(rect\(' . $enforce_potential_4d_length . '\))',
@@ -768,7 +768,6 @@ function init__webstandards2()
         'form' => array('action', 'title', 'autocomplete'/*not really required but for stability we should always set it*/),
         'textarea' => array('cols', 'rows'),
         //'input' => array('value'), // accessibility, checked somewhere else
-        'table' => array(/*'summary' not in html5*/),
         'optgroup' => array('label'),
     );
 
@@ -821,13 +820,7 @@ function __check_tag($tag, $attributes, $self_close, $close, $errors)
 
     // Unexpected tags
     if (($EXPECTING_TAG !== null) && ($EXPECTING_TAG != $tag)) {
-        if ($EXPECTING_TAG == 'noscript') {
-            if ($GLOBALS['WEBSTANDARDS_MANUAL']) {
-                $errors[] = array('MANUAL_WCAG_SCRIPT');
-            }
-        } else {
-            $errors[] = array('XHTML_EXPECTING', $EXPECTING_TAG);
-        }
+        $errors[] = array('XHTML_EXPECTING', $EXPECTING_TAG);
     }
     $EXPECTING_TAG = null;
 
@@ -1074,17 +1067,15 @@ function __check_tag($tag, $attributes, $self_close, $close, $errors)
                 break;
 
             case 'table':
-                if ((isset($attributes['summary'])) && (($attributes['summary'] == do_lang('SPREAD_TABLE')) || ($attributes['summary'] == do_lang('MAP_TABLE')))) {
-                    $content = strtolower(substr($OUT, $POS, strpos($OUT, '</table>', $POS) - $POS)); // While the </table> found may not be the closing tag to our table, we do know a <th> should occur before any such one (unless it's a really weird table layout)
-                    $th_count = substr_count($content, '<th');
-                    if (($th_count == 0) && (trim($content) != 'x')) {
-                        $errors[] = array('WCAG_MISSING_TH');
-                    } else {
-                        if (strpos($content, '<thead') === false) {
-                            $tr_count = substr_count($content, '<tr');
-                            if ($th_count > $tr_count) {
-                                $errors[] = array('WCAG_HD_SPECIAL');
-                            }
+                $content = strtolower(substr($OUT, $POS, strpos($OUT, '</table>', $POS) - $POS)); // While the </table> found may not be the closing tag to our table, we do know a <th> should occur before any such one (unless it's a really weird table layout)
+                $th_count = substr_count($content, '<th');
+                if (($th_count == 0) && (trim($content) != 'x')) {
+                    $errors[] = array('WCAG_MISSING_TH');
+                } else {
+                    if (strpos($content, '<thead') === false) {
+                        $tr_count = substr_count($content, '<tr');
+                        if ($th_count > $tr_count) {
+                            $errors[] = array('WCAG_HD_SPECIAL');
                         }
                     }
                 }
@@ -1095,9 +1086,6 @@ function __check_tag($tag, $attributes, $self_close, $close, $errors)
                 if ($array_pos !== false) {
                     $array_pos = count($TAG_STACK) - $array_pos - 1;
                 }
-                if (($array_pos !== false) && (isset($ATT_STACK[$array_pos]['summary'])) && ($ATT_STACK[$array_pos]['summary'] == '')) {
-                    $errors[] = array('WCAG_BAD_LAYOUT_TABLE');
-                }
                 break;
 
             case 'tfoot':
@@ -1105,18 +1093,12 @@ function __check_tag($tag, $attributes, $self_close, $close, $errors)
                 if ($array_pos !== false) {
                     $array_pos = count($TAG_STACK) - $array_pos - 1;
                 }
-                if (($array_pos !== false) && (isset($ATT_STACK[$array_pos]['summary'])) && ($ATT_STACK[$array_pos]['summary'] == '')) {
-                    $errors[] = array('WCAG_BAD_LAYOUT_TABLE');
-                }
                 break;
 
             case 'th':
                 $array_pos = array_search('table', array_reverse($TAG_STACK));
                 if ($array_pos !== false) {
                     $array_pos = count($TAG_STACK) - $array_pos - 1;
-                }
-                if (($array_pos !== false) && (isset($ATT_STACK[$array_pos]['summary'])) && ($ATT_STACK[$array_pos]['summary'] == '')) {
-                    $errors[] = array('WCAG_BAD_LAYOUT_TABLE');
                 }
 
                 /* We used to enforce th length for accessibility, but this is impractical since 'abbr' attribute was dropped in HTML5
@@ -1284,7 +1266,8 @@ function _check_attributes($tag, $attributes, $self_close, $close)
                 continue;
             }
 
-            //if ($tag == 'embed') continue; // Hack, to allow rich media to work in multiple browsers. Not needed now that <object> tag is quite stable.
+            if ($tag == 'embed') continue;
+
             $errors[] = array('XHTML_UNKNOWN_ATTRIBUTE', $tag, $attribute);
             continue;
         } else {
@@ -1297,7 +1280,7 @@ function _check_attributes($tag, $attributes, $self_close, $close)
             }
         }
 
-        if ((($attribute == 'alt') || ($attribute == 'title') || (($attribute == 'content') && (array_key_exists('http-equiv', $attributes)) && ((strtolower($attributes['http-equiv']) == 'description') || (strtolower($attributes['http-equiv']) == 'keywords'))) || ($attribute == 'summary')) && (function_exists('pspell_new')) && (isset($GLOBALS['SPELLING'])) && ($value != '')) {
+        if ((($attribute == 'alt') || ($attribute == 'title') || (($attribute == 'content') && (array_key_exists('http-equiv', $attributes)) && ((strtolower($attributes['http-equiv']) == 'description') || (strtolower($attributes['http-equiv']) == 'keywords')))) && (function_exists('pspell_new')) && (isset($GLOBALS['SPELLING'])) && ($value != '')) {
             $_value = @html_entity_decode($value, ENT_QUOTES, get_charset());
             $errors = array_merge($errors, check_spelling($_value));
         }
@@ -1466,18 +1449,6 @@ function _check_link_accessibility($tag, $attributes, $self_close, $close)
 
     $errors = array();
 
-    // Check positioning - not anymore "until user agents"
-    /*
-    if (($LAST_A_TAG !== null) && (isset($attributes['href']))) {
-        $between = substr($OUT, $LAST_A_TAG + 1, $TAG_RANGES[count($TAG_RANGES) - 1][0] - $LAST_A_TAG - 2);
-        $between = str_replace('&nbsp;', ' ', $between);
-        $between = strip_tags($between, '<li><td><img><hr><br><p><th>');
-        if (trim($between) == '') {
-            $errors[] = array('WCAG_ADJACENT_LINKS');
-        }
-    }
-    */
-
     // Check captioning
     global $A_LINKS;
     if (!isset($attributes['title'])) {
@@ -1509,7 +1480,6 @@ function _check_link_accessibility($tag, $attributes, $self_close, $close)
                 }
             }
         }
-        //if ((strlen(@html_entity_decode($_content, ENT_QUOTES, get_charset())) > 40) && (isset($attributes['href'])) && (strpos($attributes['href'], 'tut_') === false)) $errors[] = array('WCAG_ATTRIBUTE_TOO_LONG', 'a');
         if ($title == '') {
             if (strtolower($content) == 'more') {
                 $errors[] = array('WCAG_DODGY_LINK_2', $string);
