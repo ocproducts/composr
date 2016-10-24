@@ -1003,6 +1003,11 @@ class Module_admin_setupwizard
             $security_level = post_param_string('security_level');
 
             $security_level_options = array(
+                'csp_enabled' => array(
+                    'low' => '0',
+                    'medium' => '1',
+                    'high' => '1',
+                ),
                 'session_expiry_time' => array(
                     'low' => '24',
                     'medium' => '3',

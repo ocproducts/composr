@@ -38,6 +38,7 @@ class Hook_config_csp_enabled
             'explanation' => 'CONFIG_OPTION_csp_enabled',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 1,
 
             'addon' => 'core_configuration',
         );
