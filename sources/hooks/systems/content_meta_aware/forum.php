@@ -66,6 +66,7 @@ class Hook_content_meta_aware_forum
             'title_field' => 'f_name',
             'title_field_dereference' => false,
             'description_field' => 'f_description',
+            'description_field_dereference' => true,
             'thumb_field' => null,
             'thumb_field_is_theme_image' => false,
             'alternate_icon_theme_image' => 'icons/48x48/menu/social/forum/forums',
@@ -113,6 +114,8 @@ class Hook_content_meta_aware_forum
             'support_privacy' => false,
 
             'support_content_reviews' => true,
+
+            'support_spam_heuristics' => null,
 
             'actionlog_regexp' => '\w+_FORUM',
         );

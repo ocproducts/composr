@@ -55,6 +55,7 @@ class Hook_content_meta_aware_news
             'title_field_dereference' => true,
             'title_field_supports_comcode' => true,
             'description_field' => 'news',
+            'description_field_dereference' => true,
             'thumb_field' => 'news_image',
             'thumb_field_is_theme_image' => false,
             'alternate_icon_theme_image' => null,
@@ -102,6 +103,8 @@ class Hook_content_meta_aware_news
             'support_privacy' => true,
 
             'support_content_reviews' => true,
+
+            'support_spam_heuristics' => 'post',
 
             'actionlog_regexp' => '\w+_NEWS',
         );

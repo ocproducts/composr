@@ -585,6 +585,12 @@ class Module_admin_config
                         }
                         break;
 
+                    case 'country':
+                        require_code('locations');
+                        $list = static_evaluate_tempcode(create_region_selection_list(explode(',', get_option($name))));
+                        $out .= static_evaluate_tempcode(form_input_multi_list($human_name, $explanation, $name, make_string_tempcode($list)));
+                        break;
+
                     default:
                         fatal_exit('Invalid config option type: ' . $option['type'] . ' (for ' . $option['name'] . ')');
                 }

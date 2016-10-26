@@ -34,18 +34,61 @@ function init__antispam()
 }
 
 /**
- * Should be called when an action happens that results in content submission. Does a spammer check.
+ * Should be called when an action happens that results in content submission.
+ * Does a spammer check that is not page level (i.e. it does a deep scan).
  *
- * @param ?string    $username Check this particular username that has just been supplied (null: none)
- * @param ?string    $email Check this particular email address that has just been supplied (null: none)
+ * Don't call this for less important stuff like quiz entries or newsletter subscription, it's too intensive on 3rd party resources.
+ * Those will be picked up by the page level check if it is a POST request.
+ * Do use it for anything that will result in publicly viewed content, or outbound emails.
+ *
+ * @param ?string $username Check this particular username that has just been supplied (null: none)
+ * @param ?string $email Check this particular email address that has just been supplied (null: none)
  */
 function inject_action_spamcheck($username = null, $email = null)
 {
     // Check RBL's/stopforumspam
     $spam_check_level = get_option('spam_check_level');
     if (($spam_check_level == 'EVERYTHING') || ($spam_check_level == 'ACTIONS') || ($spam_check_level == 'GUESTACTIONS') && (is_guest())) {
-        check_rbls();
+        check_for_spam($username, $email, false);
+    }
+}
+
+/**
+ * Spam check call front-end.
+ *
+ * @param ?string $username Check this particular username that has just been supplied (null: none)
+ * @param ?string $email Check this particular email address that has just been supplied (null: none)
+ * @param boolean $page_level Whether this is a page level check (i.e. we won't consider blocks or approval, just ban setting)
+ */
+function check_for_spam($username, $email, $page_level)
+{
+    if ($username !== null) {
+        $username = trim($username);
+        if ($username == '') {
+            $username = null;
+        }
+    }
+
+    if ($email !== null) {
+        $email = trim($email);
+        if ($email == '') {
+            $email = null;
+        }
+    }
+
+    static $done_for = array();
+    $sz = serialize(array($username, $email, $page_level));
+    if (isset($done_for[$sz])) {
+        return;
+    }
+    $done_for[$sz] = true;
+
+    check_rbls($page_level);
+    if (!$page_level) {
         check_stopforumspam($username, $email);
+    }
+    if ((!$page_level) || (cms_srv('REQUEST_METHOD') == 'POST')) {
+        check_spam_heuristics($page_level);
     }
 }
 
@@ -53,7 +96,7 @@ function inject_action_spamcheck($username = null, $email = null)
  * Check RBLs to see if we need to block this user.
  *
  * @param boolean $page_level Whether this is a page level check (i.e. we won't consider blocks or approval, just ban setting)
- * @param ?IP        $user_ip IP address (null: current user's)
+ * @param ?IP $user_ip IP address (null: current user's)
  */
 function check_rbls($page_level = false, $user_ip = null)
 {
@@ -433,10 +476,10 @@ function _check_stopforumspam($user_ip, $username = null, $email = null)
     require_code('character_sets');
     $key = get_option('stopforumspam_api_key');
     $url = 'http://www.stopforumspam.com/api?f=serial&unix&confidence&ip=' . urlencode($user_ip);
-    if (!is_null($username)) {
+    if ($username !== null) {
         $url .= '&username=' . urlencode(convert_to_internal_encoding($username, get_charset(), 'utf-8'));
     }
-    if (!is_null($email)) {
+    if ($email !== null) {
         $url .= '&email=' . urlencode(convert_to_internal_encoding($email, get_charset(), 'utf-8'));
     }
     if ($key != '') {
@@ -490,4 +533,56 @@ function _check_stopforumspam($user_ip, $username = null, $email = null)
     }
 
     return array($status, $confidence_level);
+}
+
+/**
+ * Check internal spam heuristics.
+ *
+ * @param boolean $page_level Whether this is a page level check (i.e. we won't consider blocks or approval, just ban setting)
+ */
+function check_spam_heuristics($page_level)
+{
+    if (has_privilege(get_member(), 'bypass_spam_heuristics')) {
+        return;
+    }
+
+    list($confidence_level, $scoring) = calculation_internal_heuristic_confidence();
+
+    $user_ip = get_ip_address();
+    handle_perceived_spammer_by_confidence($user_ip, $confidence_level, $scoring, $page_level);
+}
+
+/**
+ * Get the spam confidence number by looking at internal heuristics.
+ *
+ * @return array A pair: Confidence number, scoring text
+ */
+function calculation_internal_heuristic_confidence()
+{
+    $post_data = '';
+    foreach ($_POST as $val) {
+        if (is_string($val)) {
+            $post_data .= strtolower($val) . "\n\n";
+        }
+    }
+
+    $confidence_level = 0;
+    $scoring = '';
+
+    $hooks = find_all_hooks('systems', 'spam_heuristics'); // TODO: Change in v11
+    foreach (array_keys($hooks) as $hook) {
+        require_code('hooks/systems/spam_heuristics/' . $hook);
+        $ob = object_factory('Hook_spam_heuristics_' . $hook);
+        $this_level = $ob->assess_confidence($post_data);
+
+        if ($this_level != 0) {
+            $confidence_level += $this_level;
+            if ($scoring != '') {
+                $scoring .= ', ';
+            }
+            $scoring .= $hook . '=' . strval($this_level);
+        }
+    }
+
+    return array($confidence_level, $scoring);
 }

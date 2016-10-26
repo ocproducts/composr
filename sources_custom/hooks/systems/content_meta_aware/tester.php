@@ -50,6 +50,7 @@ class Hook_content_meta_aware_tester
             'title_field' => null,
             'title_field_dereference' => false,
             'description_field' => null,
+            'description_field_dereference' => null,
             'thumb_field' => null,
             'thumb_field_is_theme_image' => false,
             'alternate_icon_theme_image' => null,
@@ -97,6 +98,8 @@ class Hook_content_meta_aware_tester
             'support_privacy' => false,
 
             'support_content_reviews' => false,
+
+            'support_spam_heuristics' => null,
 
             'actionlog_regexp' => '\w+_TEST',
         );

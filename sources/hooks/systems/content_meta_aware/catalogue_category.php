@@ -55,6 +55,7 @@ class Hook_content_meta_aware_catalogue_category
             'title_field' => 'cc_title',
             'title_field_dereference' => true,
             'description_field' => 'cc_description',
+            'description_field_dereference' => true,
             'thumb_field' => 'rep_image',
             'thumb_field_is_theme_image' => false,
             'alternate_icon_theme_image' => null,
@@ -102,6 +103,8 @@ class Hook_content_meta_aware_catalogue_category
             'support_privacy' => false,
 
             'support_content_reviews' => true,
+
+            'support_spam_heuristics' => null,
 
             'actionlog_regexp' => '\w+_CATALOGUE_CATEGORY',
         );

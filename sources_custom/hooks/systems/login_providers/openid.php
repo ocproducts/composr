@@ -133,8 +133,7 @@ class Hook_login_provider_openid
                         $spam_check_level = get_option('spam_check_level');
                         if (($spam_check_level == 'EVERYTHING') || ($spam_check_level == 'ACTIONS') || ($spam_check_level == 'GUESTACTIONS') || ($spam_check_level == 'JOINING')) {
                             require_code('antispam');
-                            check_rbls();
-                            check_stopforumspam($username);
+                            check_for_spam($username, null, false);
                         }
 
                         // Actually add member

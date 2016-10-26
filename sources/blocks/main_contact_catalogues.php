@@ -103,6 +103,9 @@ class Block_main_contact_catalogues
                 }
             }
 
+            require_code('antispam');
+            inject_action_spamcheck(null, post_param_string('email', null));
+
             require_code('mail');
             $to_email = array_key_exists('to', $map) ? $map['to'] : '';
             if ($to_email == '') {

@@ -398,6 +398,7 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/lang_no_unused.php',
             '_tests/tests/unit_tests/cqc_explicit_fail.php',
             '_tests/tests/unit_tests/menu.php',
+            '_tests/tests/unit_tests/antispam.php',
             '_tests/tests/unit_tests/themeini_images.php',
             '_tests/tests/unit_tests/addon_screenshots.php',
             '_tests/tests/unit_tests/missing_block_params.php',

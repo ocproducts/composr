@@ -164,6 +164,8 @@ function build_preview($multi_return = false)
                 'f_size',
                 'http_referer',
                 'csrf_token',
+                'js_token',
+                'post_data',
             )) ||
             (strpos($key, 'hour') !== false) ||
             (strpos($key, 'access_') !== false) ||

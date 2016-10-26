@@ -239,6 +239,17 @@ function script_load_stuff()
 		},0);
 	}
 
+	// Monitor pasting, for anti-spam reasons
+	add_event_listener_abstract(window,'paste',function(event) {
+		if (!event) event=window.event;
+		var clipboard_data=event.clipboardData || window.clipboardData;
+		var pasted_data=clipboard_data.getData('Text');
+		if (pasted_data && pasted_data.length>{$CONFIG_OPTION,spam_heuristic_pasting})
+		{
+			set_post_data_flag('paste');
+		}
+	});
+
 	if (typeof window.script_load_stuff_b!='undefined') window.script_load_stuff_b(); // This is designed to allow you to easily define additional initialisation code in JAVASCRIPT_CUSTOM_GLOBALS.tpl
 
 	window.page_loaded=true;
@@ -249,6 +260,29 @@ function script_load_stuff()
 	});
 
 	if ((typeof window.cms_is_staff!='undefined') && (window.cms_is_staff) && (typeof window.script_load_stuff_staff!='undefined')) script_load_stuff_staff();
+}
+
+function set_post_data_flag(flag)
+{
+	var forms=document.getElementsByTagName('form'),form,post_data;
+	for (var i=0;i<forms.length;i++)
+	{
+		form=forms[i];
+
+		if (typeof form.elements['post_data']=='undefined')
+		{
+			post_data=document.createElement('input');
+			post_data.value='';
+		} else
+		{
+			post_data=form.elements['post_data'];
+			post_data.value+=',';
+		}
+		post_data.name='post_data';
+		post_data.value+=flag;
+		post_data.type='hidden';
+		form.appendChild(post_data);
+	}
 }
 
 function merge_global_messages()
@@ -411,6 +445,15 @@ function new_html__initialise(element)
 				if (element.action && element.action.indexOf('{$BASE_URL;}/')==0)
 					element.action+=keep_stub(element.action.indexOf('?')==-1,true,element.action);
 			/*{+END}*/
+
+			// This "proves" that JS is running, which is an anti-spam heuristic (bots rarely have working JS)
+			if (typeof element.elements['csrf_token']!='undefined' && typeof element.elements['js_token']=='undefined') {
+				var js_token=document.createElement('input');
+				js_token.name='js_token';
+				js_token.value=element.elements['csrf_token'].value.split("").reverse().join(""); // Reverse the CSRF token for our JS token
+				js_token.type='hidden';
+				element.appendChild(js_token);
+			}
 
 			break;
 	}

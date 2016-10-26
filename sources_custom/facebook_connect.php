@@ -249,8 +249,7 @@ function handle_facebook_connection_login($current_logged_in_member)
             $spam_check_level = get_option('spam_check_level');
             if (($spam_check_level == 'EVERYTHING') || ($spam_check_level == 'ACTIONS') || ($spam_check_level == 'GUESTACTIONS') || ($spam_check_level == 'JOINING')) {
                 require_code('antispam');
-                check_rbls();
-                check_stopforumspam(post_param_string('username', $username), $email_address);
+                check_for_spam(post_param_string('username', $username), $email_address, false);
             }
 
             $username = post_param_string('username', $username);//user may have customised username

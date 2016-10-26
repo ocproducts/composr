@@ -51,6 +51,7 @@ class Hook_content_meta_aware_iotd
             'title_field_dereference' => true,
             'title_field_supports_comcode' => true,
             'description_field' => 'caption',
+            'description_field_dereference' => true,
             'thumb_field' => 'thumb_url',
             'thumb_field_is_theme_image' => false,
             'alternate_icon_theme_image' => null,
@@ -98,6 +99,8 @@ class Hook_content_meta_aware_iotd
             'support_privacy' => false,
 
             'support_content_reviews' => true,
+
+            'support_spam_heuristics' => 'caption',
 
             'actionlog_regexp' => '\w+_IOTD',
         );

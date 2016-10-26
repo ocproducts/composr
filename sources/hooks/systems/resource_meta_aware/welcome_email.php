@@ -54,7 +54,8 @@ class Hook_resource_meta_aware_welcome_email
 
             'title_field' => 'w_name',
             'title_field_dereference' => false,
-            'description_field' => null,
+            'description_field' => 'w_text',
+            'description_field_dereference' => true,
             'thumb_field' => null,
             'thumb_field_is_theme_image' => false,
             'alternate_icon_theme_image' => null,

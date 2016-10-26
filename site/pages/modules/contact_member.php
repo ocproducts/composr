@@ -256,6 +256,9 @@ class Module_contact_member
         }
         $from_name = post_param_string('name');
 
+        require_code('antispam');
+        inject_action_spamcheck(null, $from_email);
+
         $extra_cc_addresses = array();
         $extra_bcc_addresses = array();
         if (!is_guest()) {

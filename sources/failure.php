@@ -669,6 +669,10 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
                 if ($row['reason'] == 'LAME_SPAM_HACK') {
                     $is_spammer = true;
                 }
+                if (preg_match('#^' . str_replace('xxx', '.*', preg_quote(do_lang('IP_BAN_LOG_AUTOBAN_ANTISPAM', 'xxx'))), '$#', $row['reason']) != 0) {
+                    $is_spammer = true;
+                }
+
                 $full_reason = do_lang($row['reason'], $row['reason_param_a'], $row['reason_param_b'], null, get_site_default_lang());
                 $summary .= "\n" . '[*]' . $full_reason . "\n" . $row['url'] . "\n" . get_timezoned_date($row['date_and_time']);
             }

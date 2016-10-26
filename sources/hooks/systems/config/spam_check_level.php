@@ -51,6 +51,6 @@ class Hook_config_spam_check_level
      */
     public function get_default()
     {
-        return 'NEVER';
+        return 'ACTIONS';
     }
 }

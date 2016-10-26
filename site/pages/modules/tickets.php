@@ -810,6 +810,10 @@ class Module_tickets
         if ($ticket_type_id === null) {
             // If existing ticket, check access
             check_ticket_access($id);
+        } else {
+            // If new ticket, spam check
+            require_code('antispam');
+            inject_action_spamcheck(null, post_param_string('email', null));
         }
 
         $_title = post_param_string('title');

@@ -55,6 +55,7 @@ class Hook_content_meta_aware_banner
             'title_field' => 'name',
             'title_field_dereference' => false,
             'description_field' => 'caption',
+            'description_field_dereference' => true,
             'thumb_field' => 'img_url',
             'thumb_field_is_theme_image' => false,
             'alternate_icon_theme_image' => 'icons/48x48/menu/cms/banners',
@@ -102,6 +103,8 @@ class Hook_content_meta_aware_banner
             'support_privacy' => false,
 
             'support_content_reviews' => true,
+
+            'support_spam_heuristics' => null,
 
             'actionlog_regexp' => '\w+_BANNER',
         );

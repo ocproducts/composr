@@ -53,6 +53,11 @@ function cns_make_topic($forum_id, $description = '', $emoticon = '', $validated
         $num_views = 0;
     }
 
+    if (!running_script('install')) {
+        require_code('antispam');
+        inject_action_spamcheck(post_param_string('poster_name_if_guest', null), post_param_string('email', null));
+    }
+
     if ($check_perms) {
         require_code('cns_topics');
         if (!cns_may_post_topic($forum_id, get_member())) {

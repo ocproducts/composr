@@ -3486,6 +3486,8 @@ function has_interesting_post_fields()
     $post = $_POST;
     $to_ignore = array(
         'csrf_token',
+        'js_token',
+        'post_data',
         'y' . md5(get_site_name() . ': antispam'),
         'login_username',
         'password',
