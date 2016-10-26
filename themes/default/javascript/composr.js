@@ -112,7 +112,8 @@
             enable_previews: symbols.CONFIG_OPTION.enable_previews,
             background_template_compilation: symbols.CONFIG_OPTION.background_template_compilation,
             complex_uploader: !!symbols.CONFIG_OPTION.complex_uploader,
-            collapse_user_zones: !!symbols.CONFIG_OPTION.collapse_user_zones
+            collapse_user_zones: !!symbols.CONFIG_OPTION.collapse_user_zones,
+            spam_heuristic_pasting: !!symbols.CONFIG_OPTION.spam_heuristic_pasting,
         },
         $VALUE_OPTION: {
             js_keep_params: symbols.VALUE_OPTION.js_keep_params,
@@ -788,6 +789,25 @@
                 throw new Error(ex);
             }
             throw ex;
+        }
+    };
+
+    $cms.set_post_data_flag = function set_post_data_flag() {
+        var forms = document.getElementsByTagName('form'), form, post_data;
+        for (var i = 0;i < forms.length; i++) {
+            form = forms[i];
+
+            if (typeof form.elements['post_data'] == 'undefined') {
+                post_data = document.createElement('input');
+                post_data.value = '';
+            } else {
+                post_data = form.elements['post_data'];
+                post_data.value += ',';
+            }
+            post_data.name = 'post_data';
+            post_data.value += flag;
+            post_data.type = 'hidden';
+            form.appendChild(post_data);
         }
     };
 

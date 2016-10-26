@@ -495,8 +495,8 @@ function wysiwyg_editor_init_for(element, id) {
 
     // Monitor pasting, for anti-spam reasons
     editor.on('paste', function (event) {
-        if (event.data.html && event.data.html.length > {$CONFIG_OPTION,spam_heuristic_pasting}) {
-            set_post_data_flag('paste');
+        if (event.data.html && event.data.html.length > $cms.$CONFIG_OPTION.spam_heuristic_pasting) {
+            $cms.set_post_data_flag('paste');
         }
     });
 
