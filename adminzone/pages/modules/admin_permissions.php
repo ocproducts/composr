@@ -173,6 +173,7 @@ class Module_admin_permissions
 
         if (($upgrade_from === null) || ($upgrade_from < 10)) {
             add_privilege('STAFF_ACTIONS', 'see_query_errors', false);
+            add_privilege('SUBMISSION', 'bypass_spam_heuristics', false);
         }
     }
 

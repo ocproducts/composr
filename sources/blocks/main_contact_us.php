@@ -89,6 +89,10 @@ class Block_main_contact_us
                 }
             }
 
+            // Check spam
+            require_code('antispam');
+            inject_action_spamcheck(null, $email_from);
+
             // Handle notifications
             require_code('notifications');
             $notification_subject = do_lang('CONTACT_US_NOTIFICATION_SUBJECT', $subject_prefix . $title . $subject_suffix, null, null, get_site_default_lang());

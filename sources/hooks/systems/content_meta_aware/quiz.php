@@ -55,6 +55,7 @@ class Hook_content_meta_aware_quiz
             'title_field' => 'q_name',
             'title_field_dereference' => true,
             'description_field' => 'q_start_text',
+            'description_field_dereference' => true,
             'thumb_field' => null,
             'thumb_field_is_theme_image' => false,
             'alternate_icon_theme_image' => 'icons/48x48/menu/rich_content/quiz',
@@ -102,6 +103,8 @@ class Hook_content_meta_aware_quiz
             'support_privacy' => false,
 
             'support_content_reviews' => true,
+
+            'support_spam_heuristics' => null,
 
             'actionlog_regexp' => '\w+_QUIZ',
         );

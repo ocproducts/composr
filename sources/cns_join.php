@@ -31,8 +31,7 @@ function check_joining_allowed()
     $spam_check_level = get_option('spam_check_level');
     if (($spam_check_level == 'EVERYTHING') || ($spam_check_level == 'ACTIONS') || ($spam_check_level == 'GUESTACTIONS') || ($spam_check_level == 'JOINING')) {
         require_code('antispam');
-        check_rbls();
-        check_stopforumspam();
+        check_for_spam(null, null, false);
     }
 
     global $LDAP_CONNECTION;
@@ -251,8 +250,7 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
     $spam_check_level = get_option('spam_check_level');
     if (($spam_check_level == 'EVERYTHING') || ($spam_check_level == 'ACTIONS') || ($spam_check_level == 'GUESTACTIONS') || ($spam_check_level == 'JOINING')) {
         require_code('antispam');
-        check_rbls();
-        check_stopforumspam($username, $email_address);
+        check_for_spam($username, $email_address, false);
     }
 
     if ($captcha_if_enabled) {

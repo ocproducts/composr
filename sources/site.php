@@ -1489,26 +1489,18 @@ function __request_page($codename, $zone, $page_type = null, $lang = null, $no_r
             }
         }
     }
-    $path = zone_black_magic_filterer($zone . (($zone == '') ? '' : '/') . 'pages/comcode/' . $lang . '/' . $codename . '.txt', true);
-    if (is_file(get_file_base() . '/' . $path)) {
-        return array('COMCODE', $zone, $codename, $lang, $path);
-    }
     if (!in_safe_mode()) {
         $path = zone_black_magic_filterer($zone . (($zone == '') ? '' : '/') . 'pages/html_custom/' . $lang . '/' . $codename . '.htm', true);
         if (is_file(get_custom_file_base() . '/' . $path)) {
             return array('HTML_CUSTOM', $zone, $codename, $lang, $path);
         }
     }
-    $path = zone_black_magic_filterer($zone . (($zone == '') ? '' : '/') . 'pages/html/' . $lang . '/' . $codename . '.htm', true);
-    if (is_file(get_file_base() . '/' . $path)) {
-        return array('HTML', $zone, $codename, $lang, $path);
-    }
     $path = zone_black_magic_filterer($zone . (($zone == '') ? '' : '/') . 'pages/minimodules/' . $codename . '.php', true);
     if (is_file(get_file_base() . '/' . $path)) {
         return array('MINIMODULES', $zone, $codename, $path);
     }
 
-    // As a last resort, consider it might not yet have been translated
+    // As a fallback consider it might not yet have been translated
     $fallback_lang = fallback_lang();
     $site_lang = get_site_default_lang();
     $langs_to_try = array();
@@ -1530,16 +1522,26 @@ function __request_page($codename, $zone, $page_type = null, $lang = null, $no_r
                     return array('COMCODE_CUSTOM_PURE', $zone, $codename, $fallback_lang, $path);
                 }
             }
-        }
-        $path = zone_black_magic_filterer($zone . (($zone == '') ? '' : '/') . 'pages/comcode/' . $fallback_lang . '/' . $codename . '.txt', true);
-        if (is_file(get_file_base() . '/' . $path)) {
-            return array('COMCODE', $zone, $codename, $fallback_lang, $path);
-        }
-        if (!in_safe_mode()) {
             $path = zone_black_magic_filterer($zone . (($zone == '') ? '' : '/') . 'pages/html_custom/' . $fallback_lang . '/' . $codename . '.htm', true);
             if (is_file(get_custom_file_base() . '/' . $path)) {
                 return array('HTML_CUSTOM', $zone, $codename, $fallback_lang, $path);
             }
+        }
+    }
+
+    // Or check for default pages
+    $path = zone_black_magic_filterer($zone . (($zone == '') ? '' : '/') . 'pages/comcode/' . $lang . '/' . $codename . '.txt', true);
+    if (is_file(get_file_base() . '/' . $path)) {
+        return array('COMCODE', $zone, $codename, $lang, $path);
+    }
+    $path = zone_black_magic_filterer($zone . (($zone == '') ? '' : '/') . 'pages/html/' . $lang . '/' . $codename . '.htm', true);
+    if (is_file(get_file_base() . '/' . $path)) {
+        return array('HTML', $zone, $codename, $lang, $path);
+    }
+    foreach ($langs_to_try as $fallback_lang) {
+        $path = zone_black_magic_filterer($zone . (($zone == '') ? '' : '/') . 'pages/comcode/' . $fallback_lang . '/' . $codename . '.txt', true);
+        if (is_file(get_file_base() . '/' . $path)) {
+            return array('COMCODE', $zone, $codename, $fallback_lang, $path);
         }
         $path = zone_black_magic_filterer($zone . (($zone == '') ? '' : '/') . 'pages/html/' . $fallback_lang . '/' . $codename . '.htm', true);
         if (is_file(get_file_base() . '/' . $path)) {

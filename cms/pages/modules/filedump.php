@@ -1168,7 +1168,7 @@ class Module_filedump
                         break;
 
                     case 'move':
-                        $path_target = get_custom_file_base() . '/uploads/filedump' . $target . $file;
+                        $path_target = get_custom_file_base() . '/uploads/filedump/' . $target . $file;
                         rename($path, $path_target) or intelligent_write_error($path);
                         sync_file('uploads/filedump' . $path_target);
 

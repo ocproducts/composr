@@ -56,6 +56,7 @@ class Hook_content_meta_aware_catalogue_entry
             'title_field' => 'CALL: generate_catalogue_entry_title',
             'title_field_dereference' => false,
             'description_field' => null,
+            'description_field_dereference' => null,
             'thumb_field' => 'CALL: generate_catalogue_thumb_field',
             'thumb_field_is_theme_image' => false,
             'alternate_icon_theme_image' => null,
@@ -106,6 +107,8 @@ class Hook_content_meta_aware_catalogue_entry
             'support_privacy' => true,
 
             'support_content_reviews' => true,
+
+            'support_spam_heuristics' => null,
 
             'actionlog_regexp' => '\w+_CATALOGUE_ENTRY',
         );

@@ -390,11 +390,9 @@ function init__global2()
 
     // Check RBLs
     $spam_check_level = get_option('spam_check_level');
-    if ($spam_check_level == 'EVERYTHING') {
-        if (get_option('spam_block_lists') != '') {
-            require_code('antispam');
-            check_rbls(true);
-        }
+    if (($spam_check_level == 'EVERYTHING') || ((cms_srv('REQUEST_METHOD') == 'POST') && (($spam_check_level == 'ACTIONS') || ($spam_check_level == 'GUESTACTIONS') && (is_guest())))) {
+        require_code('antispam');
+        check_for_spam(null, null, true);
     }
 
     safe_ini_set('display_errors', '0');

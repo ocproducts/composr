@@ -59,6 +59,7 @@ class Hook_content_meta_aware_group
             'title_field' => 'g_name',
             'title_field_dereference' => true,
             'description_field' => null,
+            'description_field_dereference' => null,
             //'thumb_field' => 'g_rank_image',  Looks ugly, often missing and random sizes
             //'thumb_field_is_theme_image' => true,
             'thumb_field' => null,
@@ -108,6 +109,8 @@ class Hook_content_meta_aware_group
             'support_privacy' => false,
 
             'support_content_reviews' => true,
+
+            'support_spam_heuristics' => null,
 
             'actionlog_regexp' => '\w+_GROUP',
         );

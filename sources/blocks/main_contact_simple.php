@@ -87,6 +87,9 @@ class Block_main_contact_simple
 
             $title = post_param_string('title');
 
+            require_code('antispam');
+            inject_action_spamcheck(null, $email_from);
+
             dispatch_mail($subject_prefix . $title . $subject_suffix, $body_prefix . $post . $body_suffix, array($to), null, $email_from, $GLOBALS['FORUM_DRIVER']->get_username(get_member()), array('as' => get_member()));
 
             if ($email_from != '' && get_option('message_received_emails') == '1') {

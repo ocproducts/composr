@@ -88,14 +88,6 @@ function check_input_field_string($name, &$val, $posted, $filters)
     }
 
     if (!$GLOBALS['BOOTSTRAPPING']) {
-        // Quickly depose of common spam attacks. Not really security, just a sensible barrier
-        if (($filters & INPUT_FILTER_SPAM_HEURISTIC) != 0) {
-            if (((!function_exists('is_guest')) || (is_guest())) && ((strpos($val, '[url=http://') !== false) || (strpos($val, '[link') !== false)) && (strpos($val, '<a ') !== false)) // Combination of non-Composr-supporting bbcode and HTML, almost certainly a bot trying too hard to get link through
-            {
-                log_hack_attack_and_exit('LAME_SPAM_HACK', $val);
-            }
-        }
-
         // Additional checks for non-privileged users
         if ((function_exists('has_privilege') || !$posted) && $name !== 'page'/*Too early in boot if 'page'*/) {
             if (($filters & INPUT_FILTER_EARLY_XSS) != 0) {
