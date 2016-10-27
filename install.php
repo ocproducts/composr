@@ -2581,7 +2581,7 @@ function handle_self_referencing_embedment()
                 exit();
 
             case 'css':
-            case 'css_2'/*So colours are parsed initially*/:
+            case 'css_2'/*Chained together so that colours are parsed initially*/:
                 header('Content-Type: text/css');
 
                 $output = '';

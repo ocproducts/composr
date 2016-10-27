@@ -206,6 +206,17 @@ function tar_add_folder_incremental(&$resource, $logfile, $path, $threshold, $ma
             }
 
             $_subpath = ($subpath == '') ? $entry : ($subpath . '/' . $entry);
+
+            // Also see code in backup_size.php, and repeated in this file
+            if ($GLOBALS['DEV_MODE']) {
+                if ($_subpath == 'exports/builds' || $_subpath == 'exports/addons') {
+                    continue;
+                }
+            }
+            if ($_subpath == 'uploads/incoming' || $_subpath == 'uploads/auto_thumbs') {
+                continue;
+            }
+
             if (($all_files) || (!should_ignore_file($_subpath))) {
                 $full = ($path == '') ? $_subpath : ($path . '/' . $_subpath);
                 if (!is_readable($full)) {
@@ -291,6 +302,17 @@ function tar_add_folder(&$resource, $logfile, $path, $max_size = null, $subpath 
             }
 
             $_subpath = ($subpath == '') ? $entry : ($subpath . '/' . $entry);
+
+            // Also see code in backup_size.php, and repeated in this file
+            if ($GLOBALS['DEV_MODE']) {
+                if ($_subpath == 'exports/builds' || $_subpath == 'exports/addons') {
+                    continue;
+                }
+            }
+            if ($_subpath == 'uploads/incoming' || $_subpath == 'uploads/auto_thumbs') {
+                continue;
+            }
+
             if (($all_files) || (!should_ignore_file($_subpath))) {
                 $full = ($path == '') ? $_subpath : ($path . '/' . $_subpath);
                 if (!is_readable($full)) {
@@ -299,6 +321,7 @@ function tar_add_folder(&$resource, $logfile, $path, $max_size = null, $subpath 
                     }
                     continue;
                 }
+
                 if (is_dir($full)) {
                     if ((is_null($root_only_dirs)) || (in_array($entry, $root_only_dirs))) {
                         tar_add_folder($resource, $logfile, $path, $max_size, $_subpath, $avoid_backing_up, null, $tick, $all_files);
