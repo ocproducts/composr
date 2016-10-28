@@ -333,6 +333,8 @@ class Hook_sitemap_zone extends Hook_sitemap_base
                 }
             }
 
+            $consider_validation = (($options & SITEMAP_GEN_CONSIDER_VALIDATION) != 0);
+
             // Do page-groupings
             if (count($page_groupings) != 1) { // 0 or more than 1 page groupings
                 $page_grouping_sitemap_xml_ob = $this->_get_sitemap_object('page_grouping');
@@ -362,8 +364,6 @@ class Hook_sitemap_zone extends Hook_sitemap_base
                         $children[] = $child_node;
                     }
                 }
-
-                $consider_validation = (($options & SITEMAP_GEN_CONSIDER_VALIDATION) != 0);
 
                 // Any remaining orphaned pages (we have to tag these on as there was no catch-all page grouping in this zone)
                 if (count($orphaned_pages) > 0) {

@@ -54,7 +54,7 @@
 							<li><a href="{PROFILE_URL*}">{!VIEW_PROFILE}</a></li>
 						{+END}
 						{+START,IF_PASSED,ACTIONLOG_URL}
-							<li><a href="{ACTIONLOG_URL*}">{!VIEW_ACTIONLOGS}</a></li>
+							<li><a href="{ACTIONLOG_URL*}">{!actionlog:VIEW_ACTIONLOGS}</a></li>
 						{+END}
 						{+START,IF_PASSED,POINTS_URL}
 							<li><a href="{POINTS_URL*}">{!POINTS}</a></li>

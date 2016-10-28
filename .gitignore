@@ -27,6 +27,9 @@ test_a
 /data_custom/rate_limiter.php
 /data_custom/*log.php
 /exports/*/*.tar
+/exports/*/*.gz
+/exports/*/*.txt
+/exports/backups/test
 /exports/builds/*/*
 /imports/*/*.tar
 /mobiquo/logging.dat

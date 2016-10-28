@@ -294,6 +294,9 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
                                              'hphp.files.list' => '',
                                              'hphp' => '',
 
+                                             // Tests
+                                             'test' => 'exports/backups',
+
                                              // LEGACY: Old files
                                              'info.php' => '', // Pre-v10 equivalent to _config.php
                                              'persistant_cache' => '', // Old misspelling
