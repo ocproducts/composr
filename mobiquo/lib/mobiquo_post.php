@@ -81,7 +81,7 @@ class MobiquoServerPOST extends MobiquoServer
 
             if ((is_file(TAPATALK_LOG)) && (cms_is_writable(TAPATALK_LOG))) {
                 // Request
-                $log_file = fopen(TAPATALK_LOG, 'at');
+                $log_file = fopen(TAPATALK_LOG, 'ab');
                 fwrite($log_file, TAPATALK_REQUEST_ID . ' -- ' . date('Y-m-d H:i:s') . " *TRACE*:\n");
                 fwrite($log_file, var_export($e->getTrace(), true));
                 fwrite($log_file, "\n\n");

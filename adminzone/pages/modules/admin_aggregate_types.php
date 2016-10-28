@@ -402,7 +402,7 @@ class Module_admin_aggregate_types extends Standard_crud_module
             make_missing_directory(get_custom_file_base() . '/data_custom');
         }
 
-        $myfile = @fopen(get_custom_file_base() . '/data_custom/xml_config/aggregate_types.xml', GOOGLE_APPENGINE ? 'wb' : 'wt');
+        $myfile = @fopen(get_custom_file_base() . '/data_custom/xml_config/aggregate_types.xml', 'wb');
         if ($myfile === false) {
             intelligent_write_error(get_custom_file_base() . '/data_custom/xml_config/aggregate_types.xml');
         }

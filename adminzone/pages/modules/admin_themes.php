@@ -719,7 +719,7 @@ class Module_admin_themes
         erase_persistent_cache();
 
         $before = better_parse_ini_file((($theme == 'default') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini');
-        $myfile = @fopen((($theme == 'default') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini', GOOGLE_APPENGINE ? 'wb' : 'at') or intelligent_write_error(get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/theme.ini');
+        $myfile = @fopen((($theme == 'default') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini', GOOGLE_APPENGINE ? 'wb' : 'ab') or intelligent_write_error(get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/theme.ini');
         @flock($myfile, LOCK_EX);
         if (!GOOGLE_APPENGINE) {
             ftruncate($myfile, 0);
@@ -763,7 +763,7 @@ class Module_admin_themes
                 $new_map[$val] = $theme;
             }
         }
-        $myfile = @fopen(get_file_base() . '/themes/map.ini', GOOGLE_APPENGINE ? 'wb' : 'at') or intelligent_write_error(get_file_base() . '/themes/map.ini');
+        $myfile = @fopen(get_file_base() . '/themes/map.ini', GOOGLE_APPENGINE ? 'wb' : 'ab') or intelligent_write_error(get_file_base() . '/themes/map.ini');
         @flock($myfile, LOCK_EX);
         if (!GOOGLE_APPENGINE) {
             ftruncate($myfile, 0);

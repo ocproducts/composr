@@ -402,9 +402,7 @@ function upgrade_script()
                         @unlink($temp_path);
                         $temp_path = get_custom_file_base() . '/data_custom/upgrader.cms.tmp';
                         $tmp_data_path = get_custom_file_base() . '/data_custom/upgrader.tmp';
-                        $tmp_data_file = fopen($tmp_data_path, 'wb');
-                        fwrite($tmp_data_file, serialize($data));
-                        fclose($tmp_data_file);
+                        file_put_contents($tmp_data_path, serialize($data));
                         global $SITE_INFO;
                         if (isset($GLOBALS['SITE_INFO']['admin_password'])) { // LEGACY
                             $GLOBALS['SITE_INFO']['master_password'] = $GLOBALS['SITE_INFO']['admin_password'];
@@ -1315,16 +1313,10 @@ function check_outdated__handle_overrides($dir, $rela, &$master_data, &$hook_fil
                             if (($true_hash !== null) && ($hash_on_disk != $true_hash)) {
                                 if ((function_exists('diff_compute_new')) && (substr($file, -4) == '.css') && ($true_hash !== 2) && (file_exists($dir . $file . '.editfrom')) && (cms_is_writable($dir . $file))) {
                                     $new = diff_compute_new($equiv_file, $dir . $file . '.editfrom', $dir . $file);
-                                    $myfile = fopen($dir . $file . '.' . strval(time()), 'wb');
-                                    fwrite($myfile, file_get_contents($dir . $file));
-                                    fclose($myfile);
-                                    $myfile = fopen($dir . $file, 'wb');
-                                    fwrite($myfile, $new);
-                                    fclose($myfile);
+                                    file_put_contents($dir . $file . '.' . strval(time()), file_get_contents($dir . $file));
+                                    file_put_contents($dir . $file, $new);
                                     $outdated__possibly_outdated_override .= '<li><kbd>' . escape_html($rela . $file) . '</kbd> ' . do_lang('AUTO_MERGED') . '</li>';
-                                    $myfile = fopen($dir . $file . '.editfrom', 'wb');
-                                    fwrite($myfile, file_get_contents($equiv_file));
-                                    fclose($myfile);
+                                    file_put_contents($dir . $file . '.editfrom', file_get_contents($equiv_file));
                                 } else {
                                     $outdated__possibly_outdated_override .= '<li><kbd>' . escape_html($rela . $file) . '</kbd></li>';
                                 }
@@ -2247,9 +2239,7 @@ function upgrade_theme($theme, $from_version, $to_version, $test_run = true)
 
                 // Save
                 if ($orig_css_file_contents != $css_file_contents) {
-                    $outfile = @fopen($css_dir . $css_file, 'wb') or intelligent_write_error($css_dir . $css_file);
-                    fwrite($outfile, $css_file_contents);
-                    fclose($outfile);
+                    @file_put_contents($css_dir . $css_file, $css_file_contents) or intelligent_write_error($css_dir . $css_file);
                 }
 
                 $successes[] = do_lang_tempcode('CSS_FILE_UPGRADED', escape_html($css_file));
@@ -2358,9 +2348,7 @@ function upgrade_theme($theme, $from_version, $to_version, $test_run = true)
                         $successes[] = do_lang_tempcode('TEMPLATE_ALTERED', escape_html($templates_file));
 
                         // Save
-                        $outfile = @fopen($templates_dir . $templates_file, 'wb') or intelligent_write_error($templates_dir . $templates_file);
-                        fwrite($outfile, $templates_file_contents);
-                        fclose($outfile);
+                        @file_put_contents($templates_dir . $templates_file, $templates_file_contents) or intelligent_write_error($templates_dir . $templates_file);
                     }
                 }
 

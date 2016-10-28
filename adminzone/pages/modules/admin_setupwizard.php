@@ -966,7 +966,7 @@ class Module_admin_setupwizard
                 actual_edit_theme_image('logo/standalone_logo', $logo_save_theme, get_site_default_lang(), 'logo/standalone_logo', $path, true);
                 imagedestroy($logo);
             }
-            $myfile = fopen(get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/theme.ini', GOOGLE_APPENGINE ? 'wb' : 'wt');
+            $myfile = fopen(get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/theme.ini', 'wb');
             fwrite($myfile, 'title=' . $name . "\n");
             fwrite($myfile, 'description=' . do_lang('NA') . "\n");
             fwrite($myfile, 'seed=' . post_param_string('seed_hex') . "\n");
@@ -1232,7 +1232,7 @@ class Module_admin_setupwizard
                 fix_permissions($full_path . '.' . strval(time()));
                 sync_file($full_path . '.' . strval(time()));
             }
-            $myfile = @fopen($full_path, GOOGLE_APPENGINE ? 'wb' : 'wt') or intelligent_write_error($full_path);
+            $myfile = @fopen($full_path, 'wb') or intelligent_write_error($full_path);
             $rf = $this->get_rules_file(post_param_string('rules'));
             if (fwrite($myfile, $rf) < strlen($rf)) {
                 warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
@@ -1262,7 +1262,7 @@ class Module_admin_setupwizard
                 if (file_exists($full_path)) {
                     @copy($full_path, $full_path . '.' . strval(time()));
                 }
-                $myfile = @fopen($full_path, GOOGLE_APPENGINE ? 'wb' : 'wt') or intelligent_write_error($full_path);
+                $myfile = @fopen($full_path, 'wb') or intelligent_write_error($full_path);
                 if ($myfile !== false) {
                     if (fwrite($myfile, $zone_pages[DEFAULT_ZONE_PAGE_NAME]) == 0) {
                         if ($zone_pages[DEFAULT_ZONE_PAGE_NAME] != '') {
@@ -1279,7 +1279,7 @@ class Module_admin_setupwizard
                 if (file_exists($full_path)) {
                     @copy($full_path, $full_path . '.' . strval(time()));
                 }
-                $myfile = @fopen($full_path, GOOGLE_APPENGINE ? 'wb' : 'wt');
+                $myfile = @fopen($full_path, 'wb');
                 if ($myfile !== false) {
                     if (fwrite($myfile, $zone_pages['left']) == 0) {
                         if ($zone_pages['left'] != '') {
@@ -1296,7 +1296,7 @@ class Module_admin_setupwizard
                 if (file_exists($full_path)) {
                     @copy($full_path, $full_path . '.' . strval(time()));
                 }
-                $myfile = fopen($full_path, GOOGLE_APPENGINE ? 'wb' : 'wt');
+                $myfile = fopen($full_path, 'wb');
                 if ($myfile !== false) {
                     if (fwrite($myfile, $zone_pages['right']) == 0) {
                         if ($zone_pages['right'] != '') {

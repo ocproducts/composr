@@ -351,9 +351,7 @@ class Hook_import_html_site
             $global_to_write = $header_to_write . '{MIDDLE}' . $footer_to_write;
         }
         $path = get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/templates_custom/GLOBAL_HTML_WRAP.tpl';
-        $myfile = fopen($path, GOOGLE_APPENGINE ? 'wb' : 'wt');
-        fwrite($myfile, $global_to_write);
-        fclose($myfile);
+        file_put_contents($path, $global_to_write);
         fix_permissions($path);
         sync_file($path);
 
@@ -415,9 +413,7 @@ class Hook_import_html_site
 
             if (substr($content_file, -4) == '.php') {
                 $file_path = zone_black_magic_filterer(get_custom_file_base() . '/' . $zone . '/pages/minimodules_custom/' . $page . '.php');
-                $myfile = fopen($file_path, GOOGLE_APPENGINE ? 'wb' : 'wt');
-                fwrite($myfile, $file_contents);
-                fclose($myfile);
+                file_put_contents($file_path, $file_contents);
                 fix_permissions($file_path);
                 sync_file($file_path);
             } else {
@@ -459,9 +455,7 @@ class Hook_import_html_site
 
                     $file_path = zone_black_magic_filterer(get_custom_file_base() . '/' . $zone . '/pages/comcode_custom/' . get_site_default_lang() . '/' . $page . '.txt');
 
-                    $myfile = fopen($file_path, GOOGLE_APPENGINE ? 'wb' : 'wt');
-                    fwrite($myfile, '[semihtml]' . $filtered . '[/semihtml]');
-                    fclose($myfile);
+                    file_put_contents($file_path, '[semihtml]' . $filtered . '[/semihtml]');
                     fix_permissions($file_path);
                     sync_file($file_path);
                 } else { // Or copy htm/html's as Comcode-converted instead, if the user chose this
@@ -473,9 +467,7 @@ class Hook_import_html_site
                     require_code('comcode_from_html');
                     $comcode = semihtml_to_comcode($filtered);
                     $file_path = zone_black_magic_filterer(get_custom_file_base() . '/' . $zone . '/pages/comcode_custom/' . get_site_default_lang() . '/' . $page . '.txt');
-                    $myfile = fopen($file_path, GOOGLE_APPENGINE ? 'wb' : 'wt');
-                    fwrite($myfile, $comcode);
-                    fclose($myfile);
+                    file_put_contents($file_path, $comcode);
                     fix_permissions($file_path);
                     sync_file($file_path);
                 }
@@ -500,7 +492,7 @@ class Hook_import_html_site
             $panels = array('panel_left', 'panel_right');
             foreach ($panels as $panel) {
                 $path = zone_black_magic_filterer(get_custom_file_base() . '/' . $zone . 'pages/comcode_custom/' . filter_naughty(fallback_lang()) . '/' . filter_naughty($panel) . '.txt');
-                $myfile = fopen($path, GOOGLE_APPENGINE ? 'wb' : 'wt');
+                $myfile = fopen($path, 'wb');
                 fclose($myfile);
                 fix_permissions($path);
                 sync_file($path);
@@ -579,9 +571,7 @@ class Hook_import_html_site
                         /*if (substr($decoded_url, -4) == '.css') { Not needed, as relative paths maintained
                             $css_file = file_get_contents($target);
                             $css_file = preg_replace('#(url\([\'"]?)(\.*' . '/)?#', '${1}{$BASE_URL;}/uploads/website_specific/', $css_file);
-                            $my_css_file = fopen($target, GOOGLE_APPENGINE ? 'wb' : 'wt');
-                            fwrite($my_css_file, $css_file);
-                            fclose($my_css_file);
+                            file_put_contents($target, $css_file);
                         }*/
 
                         fix_permissions($target);

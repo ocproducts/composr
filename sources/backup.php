@@ -129,7 +129,7 @@ function make_backup_2($file, $b_type, $max_size) // This is called as a shutdow
         @set_time_limit(0);
     }
     $logfile_path = get_custom_file_base() . '/exports/backups/' . $file . '.txt';
-    $logfile = @fopen($logfile_path, GOOGLE_APPENGINE ? 'wb' : 'wt') or intelligent_write_error($logfile_path); // .txt file because IIS doesn't allow .log download
+    $logfile = @fopen($logfile_path, 'wb') or intelligent_write_error($logfile_path); // .txt file because IIS doesn't allow .log download
     safe_ini_set('log_errors', '1');
     safe_ini_set('error_log', $logfile_path);
     fwrite($logfile, 'This is a log file for a Composr backup. The backup is not complete unless this log terminates with a completion message.' . "\n\n");

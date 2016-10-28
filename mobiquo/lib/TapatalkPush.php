@@ -330,7 +330,7 @@ class TapatalkPush extends TapatalkBasePush
 
         if ((is_file(TAPATALK_LOG)) && (cms_is_writable(TAPATALK_LOG))) {
             // Request
-            $log_file = fopen(TAPATALK_LOG, 'at');
+            $log_file = fopen(TAPATALK_LOG, 'ab');
             fwrite($log_file, TAPATALK_REQUEST_ID . ' -- ' . date('Y-m-d H:i:s') . " *PUSH*:\n");
             fwrite($log_file, var_export($arr, true));
             fwrite($log_file, "\n\n");

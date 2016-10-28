@@ -56,9 +56,7 @@ class cms_test_case extends WebTestCase
             mkdir($path, 0777);
         }
         $content = $this->_browser->getContent();
-        $outfile = fopen($path . '/' . url_to_filename($url) . '.htm.tmp', 'wb');
-        fwrite($outfile, $content);
-        fclose($outfile);
+        $file_put_contents($path . '/' . url_to_filename($url) . '.htm.tmp', $content);
         fix_permissions($path . '/' . url_to_filename($url) . '.htm.tmp');
 
         // Save the text so we can run through Word's grammar checker
@@ -73,9 +71,7 @@ class cms_test_case extends WebTestCase
         $text_content = str_replace('&mdash;', '-', $text_content);
         $text_content = str_replace('&hellip;', '...', $text_content);
         $text_content = @html_entity_decode($text_content, ENT_QUOTES);
-        $outfile = fopen($path . '/' . url_to_filename($url) . '.txt.tmp', 'wb');
-        fwrite($outfile, $text_content);
-        fclose($outfile);
+        file_put_contents($path . '/' . url_to_filename($url) . '.txt.tmp', $text_content);
         fix_permissions($path . '/' . url_to_filename($url) . '.txt.tmp');
 
         return $ret;

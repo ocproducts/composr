@@ -988,7 +988,7 @@ function cms_is_writable($path)
 
     if (is_dir($path)) {
         /*if (false) { // ideal, but too dangerous as sometimes you can write files but not delete again
-            $test = @fopen($path . '/cms.delete.me', GOOGLE_APPENGINE ? 'wb' : 'wt');
+            $test = @fopen($path . '/cms.delete.me', 'wb');
             if ($test !== false) {
                 fclose($test);
                 unlink($path . '/cms.delete.me');

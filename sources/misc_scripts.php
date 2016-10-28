@@ -297,7 +297,7 @@ function cron_bridge_script($caller)
     $_log_file = get_custom_file_base() . '/data_custom/cron_log.txt';
     $log_file = mixed();
     if (is_file($_log_file)) {
-        $log_file = fopen($_log_file, 'at');
+        $log_file = fopen($_log_file, 'ab');
     }
 
     // Call the hooks which do the real work

@@ -1318,7 +1318,7 @@ class Database_Static_xml extends DatabaseDriver
         $svn_command = 'svn remove "' . str_replace('"', '\"', $path) . '"';
         //@shell_exec($svn_command);   Can't do as it would not execute with the correct permissions
         $new = !file_exists($db[0] . '/deletions.sh');
-        $command_file = @fopen($db[0] . '/deletions.sh', 'at');
+        $command_file = @fopen($db[0] . '/deletions.sh', 'ab');
         if ($command_file !== false) {
             if ($new) {
                 fwrite($command_file, '#!/bin/sh' . "\n");

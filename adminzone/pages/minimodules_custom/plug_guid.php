@@ -59,17 +59,13 @@ foreach ($files as $i => $file) {
     if ($IN != $out) {
         echo '<span style="color: orange">Re-saved ' . escape_html($file) . '</span><br />';
 
-        $myfile = fopen(get_file_base() . '/' . $file, 'wb');
-        fwrite($myfile, $out);
-        fclose($myfile);
+        file_put_contents(get_file_base() . '/' . $file, $out);
     }
 }
 echo 'Finished! You will want to check that any changed do_template arrays are not now ugly, because there\'s no autoformatter here.';
 
 if ($limit_file == '') {
-    $guid_file = fopen(get_file_base() . '/data/guids.dat', 'wb');
-    fwrite($guid_file, serialize($GUID_LANDSCAPE));
-    fclose($guid_file);
+    file_put_contents(get_file_base() . '/data/guids.dat', serialize($GUID_LANDSCAPE));
 }
 
 function callback($match)

@@ -564,9 +564,7 @@ function create_data_mash($url, $data = null, $extension = null, $direct_path = 
         case 'docx':
             require_code('m_zip');
             $tmp_file = cms_tempnam();
-            $myfile2 = fopen($tmp_file, 'wb');
-            fwrite($myfile2, $data);
-            fclose($myfile2);
+            file_put_contents($tmp_file, $data);
             $myfile_zip = @zip_open($tmp_file);
             if (!is_integer($myfile_zip)) {
                 while (($entry = (@zip_read($myfile_zip))) !== false) { // Temporary file may be cleaned up before this can complete, hence @
@@ -601,9 +599,7 @@ function create_data_mash($url, $data = null, $extension = null, $direct_path = 
         case 'tar':
             require_code('tar');
             $tmp_file = cms_tempnam();
-            $myfile = fopen($tmp_file, 'wb');
-            fwrite($myfile, $data);
-            fclose($myfile);
+            file_put_contents($tmp_file, data);
             $myfile_tar = tar_open($tmp_file, 'rb');
             if ($myfile_tar !== false) {
                 $directory = tar_get_directory($myfile_tar);
@@ -630,9 +626,7 @@ function create_data_mash($url, $data = null, $extension = null, $direct_path = 
                 if (function_exists('gzeof')) {
                     if (function_exists('gzread')) {
                         $tmp_file = cms_tempnam();
-                        $myfile = fopen($tmp_file, 'wb');
-                        fwrite($myfile, $data);
-                        fclose($myfile);
+                        file_put_contents($tmp_file, $data);
                         $myfile = gzopen($tmp_file, 'rb');
                         if ($myfile !== false) {
                             $file_data = '';

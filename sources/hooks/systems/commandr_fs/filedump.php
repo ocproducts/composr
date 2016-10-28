@@ -288,7 +288,7 @@ class Hook_commandr_fs_filedump
             }
             unset($input['data']);
 
-            $fh = @fopen($path . '/' . $file_name, GOOGLE_APPENGINE ? 'wb' : 'wt') or intelligent_write_error($path . '/' . $file_name);
+            $fh = @fopen($path . '/' . $file_name, 'wb') or intelligent_write_error($path . '/' . $file_name);
             $output = fwrite($fh, $data);
             fclose($fh);
             if ($output < strlen($data)) {

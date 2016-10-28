@@ -78,7 +78,7 @@ function resource_fs_logging__start($level = 'notice')
     if ($RESOURCE_FS_LOGGER !== null) {
         fclose($RESOURCE_FS_LOGGER);
     }
-    $RESOURCE_FS_LOGGER = fopen(get_custom_file_base() . '/data_custom/resource_fs.log', 'at');
+    $RESOURCE_FS_LOGGER = fopen(get_custom_file_base() . '/data_custom/resource_fs.log', 'ab');
     $RESOURCE_FS_LOGGER_LEVEL = $level;
 }
 

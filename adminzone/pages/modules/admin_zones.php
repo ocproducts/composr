@@ -531,7 +531,7 @@ class Module_admin_zones
                 }
 
                 // Save
-                $myfile = @fopen($full_path, GOOGLE_APPENGINE ? 'wb' : 'at') or intelligent_write_error($full_path);
+                $myfile = @fopen($full_path, GOOGLE_APPENGINE ? 'wb' : 'ab') or intelligent_write_error($full_path);
                 @flock($myfile, LOCK_EX);
                 if (!GOOGLE_APPENGINE) {
                     ftruncate($myfile, 0);

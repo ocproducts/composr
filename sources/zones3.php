@@ -554,7 +554,7 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated = null, $p
             make_missing_directory(dirname($full_path));
         }
 
-        $myfile = @fopen($full_path, GOOGLE_APPENGINE ? 'wb' : 'at');
+        $myfile = @fopen($full_path, GOOGLE_APPENGINE ? 'wb' : 'ab');
         if ($myfile === false) {
             intelligent_write_error($full_path);
         }

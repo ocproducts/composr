@@ -69,7 +69,7 @@ class Hook_snippet_template_editor_save
                 }
             } else {
                 // Save
-                $myfile = @fopen($custom_path, GOOGLE_APPENGINE ? 'wb' : 'at');
+                $myfile = @fopen($custom_path, GOOGLE_APPENGINE ? 'wb' : 'ab');
                 if ($myfile === false) {
                     intelligent_write_error($custom_path);
                 }
@@ -88,7 +88,7 @@ class Hook_snippet_template_editor_save
 
                 // Make base-hash-thingy
                 if (is_file($original_path) && !is_file($custom_path . '.editfrom')) {
-                    $myfile = @fopen($custom_path . '.editfrom', GOOGLE_APPENGINE ? 'wb' : 'at');
+                    $myfile = @fopen($custom_path . '.editfrom', GOOGLE_APPENGINE ? 'wb' : 'ab');
                     if ($myfile === false) {
                         intelligent_write_error($custom_path);
                     }

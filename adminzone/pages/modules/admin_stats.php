@@ -1738,7 +1738,7 @@ class Module_admin_stats
     public function save_graph($path, $graph)
     {
         $path = get_custom_file_base() . '/data_custom/modules/admin_stats/' . filter_naughty_harsh($path) . '.xml';
-        $file = @fopen($path, GOOGLE_APPENGINE ? 'wb' : 'wt');
+        $file = @fopen($path, 'wb');
         if ($file === false) {
             intelligent_write_error($path);
         }

@@ -262,9 +262,7 @@ if (@is_resource($DATADOTCMS_FILE)) {
         }
         ftp_chdir($conn, $ftp_folder);
         if (file_exists('cms_inst_tmp')) {
-            $tmp = fopen(get_file_base() . '/cms_inst_tmp/tmp', 'wb');
-            fwrite($tmp, '');
-            fclose($tmp);
+            file_put_contents(get_file_base() . '/cms_inst_tmp/tmp', '');
             ftp_put($conn, 'install_locked', get_file_base() . '/cms_inst_tmp/tmp', FTP_BINARY);
             ftp_put($conn, 'install_ok', get_file_base() . '/cms_inst_tmp/tmp', FTP_BINARY);
             @unlink(get_file_base() . '/cms_inst_tmp/tmp'); // Might not be able to unlink on a Windows server, if has permission to create but not delete
@@ -1413,15 +1411,11 @@ function step_5_ftp()
                         }
 
                         if (is_suexec_like()) {
-                            $myfile = fopen(get_file_base() . '/' . str_replace('/' . fallback_lang() . '/', '/' . $lang . '/', $filename), 'wb');
-                            fwrite($myfile, $contents);
-                            fclose($myfile);
+                            file_put_contents(get_file_base() . '/' . str_replace('/' . fallback_lang() . '/', '/' . $lang . '/', $filename), $contents);
                             fix_permissions(get_file_base() . '/' . str_replace('/' . fallback_lang() . '/', '/' . $lang . '/', $filename));
                         } else {
                             @ftp_delete($conn, str_replace('/' . fallback_lang() . '/', '/' . $lang . '/', $filename));
-                            $tmp = fopen(get_file_base() . '/cms_inst_tmp/tmp', 'wb');
-                            fwrite($tmp, $contents);
-                            fclose($tmp);
+                            file_put_contents(get_file_base() . '/cms_inst_tmp/tmp', $contents);
                             ftp_put($conn, str_replace('/' . fallback_lang() . '/', '/' . $lang . '/', $filename), get_file_base() . '/cms_inst_tmp/tmp', FTP_BINARY);
                             $mask = 0;
                             if (get_file_extension($filename) == 'php') {
@@ -1568,7 +1562,7 @@ function step_5_checks_a()
     // Check permissions
     global $CHMOD_ARRAY;
     if (!file_exists(get_file_base() . '/_config.php')) {
-        $myfile = @fopen(get_file_base() . '/_config.php', GOOGLE_APPENGINE ? 'wb' : 'wt');
+        $myfile = @fopen(get_file_base() . '/_config.php', 'wb');
         @fclose($myfile);
     }
     foreach ($CHMOD_ARRAY as $chmod) {
@@ -1619,7 +1613,7 @@ function step_5_write_config()
 
     // Open up _config.php
     $config_file = '_config.php';
-    $config_file_handle = fopen(get_file_base() . '/' . $config_file, GOOGLE_APPENGINE ? 'wb' : 'wt');
+    $config_file_handle = fopen(get_file_base() . '/' . $config_file, 'wb');
     fwrite($config_file_handle, "<" . "?php\nglobal \$SITE_INFO;\n");
     if ($config_file_handle === false) {
         warn_exit(do_lang_tempcode('INSTALL_WRITE_ERROR', escape_html($config_file)));
@@ -2930,7 +2924,7 @@ END;
         $base_url = post_param_string('base_url', get_base_url(), INPUT_FILTER_URL_GENERAL);
 
         foreach ($clauses as $i => $clause) {
-            $myfile = fopen(get_file_base() . '/exports/addons/index.php', GOOGLE_APPENGINE ? 'wb' : 'wt');
+            $myfile = fopen(get_file_base() . '/exports/addons/index.php', 'wb');
             fwrite($myfile, "<" . "?php
             @header('Expires: Mon, 20 Dec 1998 01:00:00 GMT');
             @header('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT');
@@ -2938,9 +2932,7 @@ END;
             ");
             fclose($myfile);
 
-            $myfile = fopen(get_file_base() . '/exports/addons' . DIRECTORY_SEPARATOR . '.htaccess', GOOGLE_APPENGINE ? 'wb' : 'wt');
-            fwrite($myfile, $clause);
-            fclose($myfile);
+            file_put_contents(get_file_base() . '/exports/addons' . DIRECTORY_SEPARATOR . '.htaccess', $clause);
             $http_result = cms_http_request($base_url . '/exports/addons/index.php', array('trigger_error' => false));
             if ($http_result->message != '200') {
                 $clauses[$i] = null;
@@ -2956,16 +2948,23 @@ END;
         }
         if (is_suexec_like()) {
             @unlink(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess');
-            $tmp = fopen(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess', 'wb');
-            fwrite($tmp, $out);
-            fclose($tmp);
+            file_put_contents(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess', $out);
         } else {
             @ftp_delete($conn, '.htaccess');
-            $tmp = fopen(get_file_base() . '/cms_inst_tmp/tmp', 'wb');
-            fwrite($tmp, $out);
-            fclose($tmp);
+            file_put_contents(get_file_base() . '/cms_inst_tmp/tmp', $out);
             @ftp_put($conn, '.htaccess', get_file_base() . '/cms_inst_tmp/tmp', FTP_TEXT);
             @ftp_site($conn, 'CHMOD 644 .htaccess');
+        }
+    }
+
+    $user_ini = ini_get('user_ini.filename');
+    if ((!empty($user_ini)) && ($user_ini != '.user.ini')) {
+        if (is_suexec_like()) {
+            @copy(get_file_base() . DIRECTORY_SEPARATOR . '.user.ini', get_file_base() . DIRECTORY_SEPARATOR . $user_ini);
+        } else {
+            file_put_contents(get_file_base() . '/cms_inst_tmp/tmp', file_get_contents(get_file_base() . DIRECTORY_SEPARATOR . '.user.ini'));
+            @ftp_put($conn, $user_ini, get_file_base() . '/cms_inst_tmp/tmp', FTP_TEXT);
+            @ftp_site($conn, 'CHMOD 644 ' . $user_ini);
         }
     }
 }

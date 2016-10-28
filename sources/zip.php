@@ -71,9 +71,7 @@ function crc32_file($filename)
         // Detect PHP bug http://bugs.php.net/bug.php?id=45028
         $reverse = false;
         $tempnam = cms_tempnam();
-        $myfile = fopen($tempnam, 'wb');
-        fwrite($myfile, 'test');
-        fclose($myfile);
+        file_put_contents($tempnam, 'test');
         $crc_test = hash_file('crc32b', $tempnam);
         @unlink($tempnam);
         if ($crc_test == '0c7e7fd8') {

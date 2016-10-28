@@ -294,9 +294,7 @@ function _convert_image($from, &$to, $width, $height, $box_width = -1, $exit_on_
                 $from_file = false;
                 $exif = false;
             } else {
-                $myfile = fopen($to, 'wb');
-                fwrite($myfile, $from_file);
-                fclose($myfile);
+                file_put_contents($to, $from_file);
                 fix_permissions($to);
                 sync_file($to);
                 $exif = function_exists('exif_read_data') ? @exif_read_data($to) : false;
@@ -391,9 +389,7 @@ function _convert_image($from, &$to, $width, $height, $box_width = -1, $exit_on_
                 if ($using_path) {
                     copy($from, $to);
                 } else {
-                    $_to = @fopen($to, 'wb') or intelligent_write_error($to);
-                    fwrite($_to, $from_file);
-                    fclose($_to);
+                    @file_put_contents($to, $from_file) or intelligent_write_error($to);
                 }
                 fix_permissions($to);
                 sync_file($to);

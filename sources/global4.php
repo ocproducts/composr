@@ -108,9 +108,7 @@ function _save_web_resource_merging($resources, $type, $write_path)
             $data = str_replace('"use strict";', '', $data);
         }
 
-        $myfile = @fopen($write_path, 'wb') or intelligent_write_error($write_path); // Intentionally 'wb' to stop line ending conversions on Windows
-        fwrite($myfile, $data);
-        fclose($myfile);
+        file_put_contents($write_path, $data) or intelligent_write_error($write_path); // Intentionally 'wb' to stop line ending conversions on Windows
         fix_permissions($write_path);
         sync_file($write_path);
 

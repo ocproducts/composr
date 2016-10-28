@@ -834,7 +834,7 @@ class Module_admin_config
             make_missing_directory(get_custom_file_base() . '/data_custom');
         }
 
-        $myfile = @fopen(get_custom_file_base() . '/data_custom/xml_config/fields.xml', GOOGLE_APPENGINE ? 'wb' : 'at');
+        $myfile = @fopen(get_custom_file_base() . '/data_custom/xml_config/fields.xml', GOOGLE_APPENGINE ? 'wb' : 'ab');
         if ($myfile === false) {
             intelligent_write_error(get_custom_file_base() . '/data_custom/xml_config/fields.xml');
         }
@@ -885,7 +885,7 @@ class Module_admin_config
             make_missing_directory(get_custom_file_base() . '/data_custom');
         }
 
-        $myfile = @fopen(get_custom_file_base() . '/data_custom/xml_config/breadcrumbs.xml', GOOGLE_APPENGINE ? 'wb' : 'at');
+        $myfile = @fopen(get_custom_file_base() . '/data_custom/xml_config/breadcrumbs.xml', GOOGLE_APPENGINE ? 'wb' : 'ab');
         if ($myfile === false) {
             intelligent_write_error(get_custom_file_base() . '/data_custom/xml_config/breadcrumbs.xml');
         }

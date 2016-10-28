@@ -104,7 +104,7 @@ function load_themewizard_params_from_theme($theme, $guess_images_if_needed = fa
         }
 
         if ($theme != 'default') {
-            $myfile = fopen(get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/theme.ini', 'at');
+            $myfile = fopen(get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/theme.ini', 'ab');
             fwrite($myfile, 'theme_wizard_images=' . $map['theme_wizard_images'] . "\n");
             fclose($myfile);
         }
@@ -525,7 +525,7 @@ function make_theme($theme_name, $source_theme, $algorithm, $seed, $use, $dark =
                         $changed_from_default_theme = true;
                     }
                     if ($changed_from_default_theme) {
-                        $fp = @fopen($saveat, GOOGLE_APPENGINE ? 'wb' : 'wt') or intelligent_write_error(get_custom_file_base() . '/themes/' . filter_naughty($theme_name) . '/css_custom/' . $sheet);
+                        $fp = @fopen($saveat, 'wb') or intelligent_write_error(get_custom_file_base() . '/themes/' . filter_naughty($theme_name) . '/css_custom/' . $sheet);
                         if (fwrite($fp, $output) < strlen($output)) {
                             warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
                         }

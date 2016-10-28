@@ -341,7 +341,7 @@ function reset_base_config_file($server)
     global $SITE_INFO;
 
     $path = special_demonstratr_dir() . '/servers/' . filter_naughty($server) . '/_config.php';
-    $myfile = fopen($path, GOOGLE_APPENGINE ? 'wb' : 'at');
+    $myfile = fopen($path, GOOGLE_APPENGINE ? 'wb' : 'ab');
     @flock($myfile, LOCK_EX);
     if (!GOOGLE_APPENGINE) {
         ftruncate($myfile, 0);
@@ -441,7 +441,7 @@ function reset_aliases()
             $text .= $site['s_domain_name'] . ':' . 'alias-demonstratr_' . $site['s_codename'] . "\n";
         }
     }
-    $myfile = fopen(special_demonstratr_dir() . '/virtualdomains', GOOGLE_APPENGINE ? 'wb' : 'at');
+    $myfile = fopen(special_demonstratr_dir() . '/virtualdomains', GOOGLE_APPENGINE ? 'wb' : 'ab');
     @flock($myfile, LOCK_EX);
     if (!GOOGLE_APPENGINE) {
         ftruncate($myfile, 0);
@@ -465,7 +465,7 @@ function reset_aliases()
             $hosts[$site['s_domain_name']] = true;
         }
     }
-    $myfile = fopen(special_demonstratr_dir() . '/rcpthosts', GOOGLE_APPENGINE ? 'wb' : 'at');
+    $myfile = fopen(special_demonstratr_dir() . '/rcpthosts', GOOGLE_APPENGINE ? 'wb' : 'ab');
     @flock($myfile, LOCK_EX);
     if (!GOOGLE_APPENGINE) {
         ftruncate($myfile, 0);
@@ -487,7 +487,7 @@ function reset_aliases()
     // Rebuild alias files
     $emails = $GLOBALS['SITE_DB']->query_select('sites_email', array('*'));
     foreach ($emails as $email) {
-        $myfile = fopen($a_path . '/.qmail-demonstratr_' . filter_naughty($email['s_codename']) . '_' . filter_naughty(str_replace('.', ':', $email['s_email_from'])), GOOGLE_APPENGINE ? 'wb' : 'at');
+        $myfile = fopen($a_path . '/.qmail-demonstratr_' . filter_naughty($email['s_codename']) . '_' . filter_naughty(str_replace('.', ':', $email['s_email_from'])), GOOGLE_APPENGINE ? 'wb' : 'ab');
         @flock($myfile, LOCK_EX);
         if (!GOOGLE_APPENGINE) {
             ftruncate($myfile, 0);
