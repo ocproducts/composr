@@ -60,7 +60,7 @@ safe_ini_set('ocproducts.xss_detect', '0');
 
 require_code('files2');
 foreach (array('data_custom/images/docs', 'docs/pages/comcode_custom/EN') as $place) {
-    $files = get_directory_contents(get_file_base() . '/' . $place, $place, false, true);
+    $files = get_directory_contents(get_file_base() . '/' . $place, $place, IGNORE_ACCESS_CONTROLLERS, true);
     foreach ($files as $file) {
         echo "'" . addslashes($file) . "',\n";
     }

@@ -108,7 +108,7 @@ if (get_param_integer('save__pages', 1) == 1) {
 // Other media
 if (get_param_integer('save__uploads', 1) == 1) {
     $subpaths = array();
-    foreach (get_directory_contents(get_custom_file_base() . '/uploads', '', false, false, false) as $subpath) {
+    foreach (get_directory_contents(get_custom_file_base() . '/uploads', '', IGNORE_ACCESS_CONTROLLERS, false, false) as $subpath) {
         if (($subpath != 'downloads') && ($subpath != 'attachments') && ($subpath != 'attachments_thumbs')) {
             $subpaths = array_merge($subpaths, array('uploads/' . $subpath));
         }
@@ -160,7 +160,7 @@ foreach ($directory as $entry) {
         if (get_param_integer('save__redirects', 1) == 1) {
             $datax = '<meta http-equiv="refresh" content="0;' . escape_html(basename($dir_name)) . '/browse.htm" />';
             foreach (array_keys($langs) as $lang) {
-                if (($lang != fallback_lang()) && (count(get_directory_contents(get_custom_file_base() . '/lang_custom/' . $lang, '', true, false, true)) < 5)) {
+                if (($lang != fallback_lang()) && (count(get_directory_contents(get_custom_file_base() . '/lang_custom/' . $lang, '', 0, false, true)) < 5)) {
                     continue; // Probably this is just the utf8 addon
                 }
 
@@ -175,7 +175,7 @@ if (count($langs) != 1) {
 
     // Recognise when language explicitly called
     foreach (array_keys($langs) as $lang) {
-        if (($lang != fallback_lang()) && (count(get_directory_contents(get_custom_file_base() . '/lang_custom/' . $lang, '', true, false, true)) < 5)) {
+        if (($lang != fallback_lang()) && (count(get_directory_contents(get_custom_file_base() . '/lang_custom/' . $lang, '', 0, false, true)) < 5)) {
             continue; // Probably this is just the utf8 addon
         }
 
@@ -189,7 +189,7 @@ if (count($langs) != 1) {
     // Recognise when language supported by browser
     if (get_option('detect_lang_browser') == '1') {
         foreach (array_keys($langs) as $lang) {
-            if (($lang != fallback_lang()) && (count(get_directory_contents(get_custom_file_base() . '/lang_custom/' . $lang, '', true, false, true)) < 5)) {
+            if (($lang != fallback_lang()) && (count(get_directory_contents(get_custom_file_base() . '/lang_custom/' . $lang, '', 0, false, true)) < 5)) {
                 continue; // Probably this is just the utf8 addon
             }
 
@@ -216,7 +216,7 @@ require_lang('messaging');
 // Mailer
 $robots_data = '';
 foreach (array_keys($langs) as $lang) {
-    if (($lang != fallback_lang()) && (count(get_directory_contents(get_custom_file_base() . '/lang_custom/' . $lang, '', true, false, true)) < 5)) {
+    if (($lang != fallback_lang()) && (count(get_directory_contents(get_custom_file_base() . '/lang_custom/' . $lang, '', 0, false, true)) < 5)) {
         continue; // Probably this is just the utf8 addon
     }
     $mailer_script = '

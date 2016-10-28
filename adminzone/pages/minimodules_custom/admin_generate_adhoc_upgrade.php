@@ -55,9 +55,9 @@ if ($type == 'auto_probe') {
     if (file_exists($path)) {
         // Via addon_registry hooks (bundled ones)
         $files = array();
-        $files = array_merge($files, get_directory_contents($path, '', false, false));
+        $files = array_merge($files, get_directory_contents($path, '', IGNORE_ACCESS_CONTROLLERS, false));
         if (file_exists(str_replace('/sources/', '/sources_custom/', $path))) {
-            $files = array_merge($files, get_directory_contents(str_replace('/sources/', '/sources_custom/', $path), '', false, false));
+            $files = array_merge($files, get_directory_contents(str_replace('/sources/', '/sources_custom/', $path), '', IGNORE_ACCESS_CONTROLLERS, false));
         }
         foreach ($files as $file) {
             if (substr($file, -4) == '.php') {
@@ -113,7 +113,7 @@ if ($type == 'auto_probe') {
 
                         if (preg_match('#^themes/default/(css/[^/]*\.css|templates/[^/]*\.tpl)$#', $file) != 0) {
                             // Looks for themes which may override
-                            $themes = get_directory_contents($probe_dir . '/themes', '', false, false);
+                            $themes = get_directory_contents($probe_dir . '/themes', '', IGNORE_ACCESS_CONTROLLERS, false);
                             foreach ($themes as $theme) {
                                 if ($theme == 'map.ini') {
                                     continue;

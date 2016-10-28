@@ -241,13 +241,13 @@ function demonstratr_add_site_raw($server, $codename, $email_address, $password)
     tar_extract_to_folder($tar, $path_short);
     tar_close($tar);
     require_code('files2');
-    $contents = get_directory_contents($path, $path, true, true, true);
+    $contents = get_directory_contents($path, $path, 0, true, true);
     foreach ($contents as $c) {
         if (is_file($c)) {
             @chmod($c, 0666);
         }
     }
-    $contents = get_directory_contents($path, $path, true, true, false);
+    $contents = get_directory_contents($path, $path, 0, true, false);
     foreach ($contents as $c) {
         if (is_dir($c)) {
             @chmod($c, 0777);

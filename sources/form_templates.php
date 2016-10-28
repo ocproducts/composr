@@ -1411,7 +1411,7 @@ function form_input_upload_multi_source($set_title, $set_description, &$hidden, 
     if ((addon_installed('filedump')) && (has_actual_page_access(null, 'filedump'))) {
         require_code('files2');
         $full_path = get_custom_file_base() . '/uploads/filedump';
-        $files = get_directory_contents($full_path, '', false, false);
+        $files = get_directory_contents($full_path, '', IGNORE_ACCESS_CONTROLLERS, false);
         $has_image_or_dir = false;
         foreach ($files as $file) {
             if (is_image($file, IMAGE_CRITERIA_WEBSAFE, true) || is_dir($full_path . '/' . $file)) {

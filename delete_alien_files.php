@@ -138,11 +138,11 @@ foreach (array_keys($GFILE_ARRAY) as $file) {
 }
 
 // Empty dirs
-$directories = get_directory_contents(get_file_base(), get_file_base(), true, true, false);
+$directories = get_directory_contents(get_file_base(), get_file_base(), 0, true, false);
 $cnt = 0;
 foreach ($directories as $directory) {
-    $_files = get_directory_contents($directory, '', true, false, true);
-    $_directories = get_directory_contents($directory, '', true, false, false);
+    $_files = get_directory_contents($directory, '', 0, false, true);
+    $_directories = get_directory_contents($directory, '', 0, false, false);
     if ((count($_files) == 0) && (count($_directories) == 0)) {
         echo 'rmdir ' . escapeshellarg($directory) . "\n";
         $cnt++;

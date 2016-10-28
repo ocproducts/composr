@@ -27,7 +27,7 @@ class overused_globals_test_set extends cms_test_case
 
         require_code('files');
         require_code('files2');
-        $files = get_directory_contents(get_file_base(), '', true);
+        $files = get_directory_contents(get_file_base(), '', 0);
         foreach ($files as $file) {
             if ((substr($file, -4) == '.php') && (($file == 'install.php') || (!should_ignore_file($file, IGNORE_BUNDLED_VOLATILE | IGNORE_NONBUNDLED_SCATTERED | IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS)))) {
                 $done_for_file = array();

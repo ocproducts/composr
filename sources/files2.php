@@ -438,12 +438,12 @@ function find_php_path($cgi = false)
  *
  * @param  PATH $path The path to search
  * @param  PATH $rel_path The path we prepend to everything we find (intended to be used inside the recursion)
- * @param  boolean $special_too Whether to also get special files
+ * @param  integer $bitmask Bitmask of extra stuff to ignore (see IGNORE_* constants)
  * @param  boolean $recurse Whether to recurse (if not, will return directories as files)
  * @param  boolean $files_wanted Whether to get files (if not, will return directories as files)
  * @return array The contents of the directory
  */
-function get_directory_contents($path, $rel_path = '', $special_too = false, $recurse = true, $files_wanted = true)
+function get_directory_contents($path, $rel_path = '', $bitmask = IGNORE_ACCESS_CONTROLLERS, $recurse = true, $files_wanted = true)
 {
     $out = array();
 
@@ -454,8 +454,8 @@ function get_directory_contents($path, $rel_path = '', $special_too = false, $re
         return array();
     }
     while (($file = readdir($d)) !== false) {
-        if (!$special_too) {
-            if (should_ignore_file($rel_path . (($rel_path == '') ? '' : '/') . $file, IGNORE_ACCESS_CONTROLLERS)) {
+        if ($bitmask != 0) {
+            if (should_ignore_file($rel_path . (($rel_path == '') ? '' : '/') . $file, $bitmask)) {
                 continue;
             }
         } elseif (($file == '.') || ($file == '..')) {
@@ -471,7 +471,7 @@ function get_directory_contents($path, $rel_path = '', $special_too = false, $re
             if (!$files_wanted) {
                 $out[] = $rel_path . (($rel_path == '') ? '' : '/') . $file;
             }
-            $out = array_merge($out, get_directory_contents($path . '/' . $file, $rel_path . (($rel_path == '') ? '' : '/') . $file, $special_too, $recurse, $files_wanted));
+            $out = array_merge($out, get_directory_contents($path . '/' . $file, $rel_path . (($rel_path == '') ? '' : '/') . $file, $bitmask, $recurse, $files_wanted));
         }
     }
     closedir($d);

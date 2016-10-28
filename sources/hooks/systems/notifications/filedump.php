@@ -50,7 +50,7 @@ class Hook_notification_filedump extends Hook_Notification
         if ($id !== null) {
             $path .= '/' . $id;
         }
-        $files = get_directory_contents($path, '', false, false);
+        $files = get_directory_contents($path, '', IGNORE_ACCESS_CONTROLLERS, false);
 
         if (count($files) > 30) {
             return array(); // Too many, so don't show
