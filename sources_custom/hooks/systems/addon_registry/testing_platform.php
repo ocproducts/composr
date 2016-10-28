@@ -341,6 +341,8 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/banners.php',
             '_tests/tests/unit_tests/comcode_wysiwyg.php',
             '_tests/tests/unit_tests/_bash_parser.php',
+            '_tests/tests/unit_tests/backups.php',
+            '_tests/tests/unit_tests/bookmark.php',
             '_tests/tests/unit_tests/bump_member_group_timeout.php',
             '_tests/tests/unit_tests/catalogues.php',
             '_tests/tests/unit_tests/catalogues_category.php',

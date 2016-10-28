@@ -36,14 +36,33 @@ class Hook_snippet_backup_size
 
         require_code('files');
         require_code('files2');
+        require_code('backup');
+
+        $directories_to_backup = array_flip(directories_to_backup());
 
         $size = 0;
         $max_size = get_param_integer('max_size') * 1024 * 1024;
         $files = get_directory_contents(get_custom_file_base());
         foreach ($files as $file) {
-            $filesize = filesize(get_custom_file_base() . '/' . $file);
-            if ($filesize < $max_size) {
-                $size += $filesize;
+            $first_dir = preg_replace('#/.*#', '', $file);
+
+            if (!isset($directories_to_backup[$first_dir])) {
+                continue;
+            }
+
+            // Also see code in tar.php
+            if ($GLOBALS['DEV_MODE']) {
+                if (($first_dir == 'exports') && (preg_match('#^exports/(builds|addons)/#', $file) != 0)) {
+                    continue;
+                }
+            }
+            if (($first_dir == 'uploads') && (preg_match('#^uploads/(auto_thumbs|incoming)/#', $file) != 0)) {
+                continue;
+            }
+
+            $file_size = filesize(get_custom_file_base() . '/' . $file);
+            if ($file_size < $max_size) {
+                $size += $file_size;
             }
         }
 

@@ -1,14 +1,14 @@
 {$REQUIRE_JAVASCRIPT,backup}
 <div data-tpl="backupLaunchScreen">
-{TITLE}
+	{TITLE}
 
-<h2>{!PREVIOUS}</h2>
+	<h2>{!PREVIOUS}</h2>
 
-{RESULTS}
+	{RESULTS}
 
-<p>{TEXT*}</p>
+	<p>{TEXT*}</p>
 
-<h2>{!NEW}</h2>
+	<h2>{!NEW}</h2>
 
-{FORM}
+	{FORM}
 </div>

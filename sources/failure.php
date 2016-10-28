@@ -1051,6 +1051,7 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
         (strpos($text, 'has been disabled for security reasons') === false) &&
         (strpos($text, 'max_questions')/*mysql limit*/ === false) &&
         (strpos($text, 'Error at offset') === false) &&
+        (strpos($text, 'expects parameter 1 to be a valid path, string given') === false) &&
         (strpos($text, 'gd-png: fatal libpng error') === false) &&
         (strpos($text, 'No word lists can be found for the language &quot;en&quot;') === false) &&
         (strpos($text, 'Unable to allocate memory for pool') === false) &&
