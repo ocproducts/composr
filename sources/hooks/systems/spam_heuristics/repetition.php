@@ -52,11 +52,9 @@ class Hook_spam_heuristics_repetition
                         $where[$cma_info['description_field']] = $data;
                     }
 
-                    $db = (substr($cma_info['table'], 0, 2) == 'f_' ) ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
-
                     $threshold = 60 * 60 * intval(get_option('spam_heuristic_repetition'));
 
-                    $previous = $db->query_select_value(
+                    $previous = $cma_info['db']->query_select_value(
                         $cma_info['table'],
                         'COUNT(*)',
                         $where,

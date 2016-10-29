@@ -53,11 +53,9 @@ class Hook_spam_heuristics_frequency
                         $cma_info['submitter_field'] => get_member(),
                     );
 
-                    $db = (substr($cma_info['table'], 0, 2) == 'f_' ) ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
-
                     $threshold = 60 * intval(get_option('spam_heuristic_frequency'));
 
-                    $previous += $db->query_select_value(
+                    $previous += $cma_info['db']->query_select_value(
                         $cma_info['table'],
                         'COUNT(*)',
                         $where,

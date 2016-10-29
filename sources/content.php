@@ -265,6 +265,53 @@ function content_get_details($content_type, $content_id, $resource_fs_style = fa
         return array(null, null, null, null, null, null);
     }
 
+    $content_title = get_content_title($cma_info, $content_row, $content_type, $content_id, $resource_fs_style);
+
+    if ($cma_info['submitter_field'] !== null) {
+        if (strpos($cma_info['submitter_field'], ':') !== false) {
+            $bits = explode(':', $cma_info['submitter_field']);
+            $matches = array();
+            if (preg_match('#' . $bits[1] . '#', $content_row[$bits[0]], $matches) != 0) {
+                $submitter_id = intval($matches[1]);
+            } else {
+                $submitter_id = $GLOBALS['FORUM_DRIVER']->get_guest_id();
+            }
+        } else {
+            $submitter_id = $content_row[$cma_info['submitter_field']];
+        }
+    } else {
+        $submitter_id = $GLOBALS['FORUM_DRIVER']->get_guest_id();
+    }
+
+    $content_url = mixed();
+    $content_url_email_safe = mixed();
+    if ($cma_info['view_page_link_pattern'] !== null) {
+        list($zone, $url_bits, $hash) = page_link_decode(str_replace('_WILD', $content_id, $cma_info['view_page_link_pattern']));
+        $content_url = build_url($url_bits, $zone, null, false, false, false, $hash);
+        $content_url_email_safe = build_url($url_bits, $zone, null, false, false, true, $hash);
+    }
+
+    return array($content_title, $submitter_id, $cma_info, $content_row, $content_url, $content_url_email_safe);
+}
+
+/**
+ * Get the title of a content item
+ *
+ * @param  array $cma_info The info array for the content type
+ * @param  array $content_row Content row
+ * @param  ID_TEXT $content_type Content type
+ * @param  ?ID_TEXT $content_id Content ID (null: find from row)
+ * @param  boolean $resource_fs_style Whether to use the content API as resource-fs requires (may be slightly different)
+ * @return string Title
+ */
+function get_content_title($cma_info, $content_row, $content_type, $content_id = null, $resource_fs_style = false)
+{
+    $db = $cma_info['db'];
+
+    if ($content_id === null) {
+        $content_id = @strval($content_row[$cma_info['id_field']]);
+    }
+
     $title_field = $cma_info['title_field'];
     $title_field_dereference = $cma_info['title_field_dereference'];
     if (($resource_fs_style) && (array_key_exists('title_field__resource_fs', $cma_info))) {
@@ -292,31 +339,11 @@ function content_get_details($content_type, $content_id, $resource_fs_style = fa
         }
     }
 
-    if ($cma_info['submitter_field'] !== null) {
-        if (strpos($cma_info['submitter_field'], ':') !== false) {
-            $bits = explode(':', $cma_info['submitter_field']);
-            $matches = array();
-            if (preg_match('#' . $bits[1] . '#', $content_row[$bits[0]], $matches) != 0) {
-                $submitter_id = intval($matches[1]);
-            } else {
-                $submitter_id = $GLOBALS['FORUM_DRIVER']->get_guest_id();
-            }
-        } else {
-            $submitter_id = $content_row[$cma_info['submitter_field']];
-        }
-    } else {
-        $submitter_id = $GLOBALS['FORUM_DRIVER']->get_guest_id();
+    if (($content_type == 'post') && ($content_title == '')) {
+        $content_title = do_lang('cns:FORUM_POST_NUMBERED', $content_id);
     }
 
-    $content_url = mixed();
-    $content_url_email_safe = mixed();
-    if ($cma_info['view_page_link_pattern'] !== null) {
-        list($zone, $url_bits, $hash) = page_link_decode(str_replace('_WILD', $content_id, $cma_info['view_page_link_pattern']));
-        $content_url = build_url($url_bits, $zone, null, false, false, false, $hash);
-        $content_url_email_safe = build_url($url_bits, $zone, null, false, false, true, $hash);
-    }
-
-    return array($content_title, $submitter_id, $cma_info, $content_row, $content_url, $content_url_email_safe);
+    return $content_title;
 }
 
 /**

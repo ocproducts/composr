@@ -4457,7 +4457,6 @@ function string_scan($lang, $do_guessing = false)
         FORWARDING_DESCRIPTION
         FORW_MAINTAIN_URL
         FOR_EXAMPLE
-        FOR_PUNISHMENT
         FRACTIONAL_EDIT
         FRACTIONAL_EDITING
         FRACTIONAL_EDIT_CANCELLED
@@ -7174,6 +7173,9 @@ function string_scan($lang, $do_guessing = false)
         CONFIRM_REALLY
         PASSWORDS_DO_NOT_REUSE
         PASSWORD_INSECURE
+        SPAM
+        DESCRIPTION_DELETE_CONTENT
+        DESCRIPTION_DELETE_THIS
     ')));
 
     $non_admin_files = array(
@@ -7852,7 +7854,6 @@ function string_scan($lang, $do_guessing = false)
         DESCRIPTION_EMPHASISED
         DESCRIPTION_ENABLE_AUTO_MARK_READ
         DESCRIPTION_EXPIRY_DATE
-        DESCRIPTION_EXPLANATION
         DESCRIPTION_FEEDS_TO_OVERLAY
         DESCRIPTION_FRIENDS
         DESCRIPTION_GAMBLE_AMOUNT
