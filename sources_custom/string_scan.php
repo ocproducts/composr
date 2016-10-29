@@ -7031,6 +7031,8 @@ function string_scan($lang, $do_guessing = false)
         PASSWORDS_DO_NOT_REUSE
         PASSWORD_INSECURE
         SPAM
+        DESCRIPTION_DELETE_CONTENT
+        DESCRIPTION_DELETE_THIS
     ')));
 
     $non_admin_files = array(

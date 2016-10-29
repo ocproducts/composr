@@ -519,6 +519,24 @@ class Module_warnings extends Standard_crud_module
             }
         }
 
+        // Moderation actions
+        if ($new) {
+            $content = $this->find_member_content($member_id);
+            if (count($content) > 0) {
+                $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'c7eb70b13be74d8f3bd1f1c5e739d9ab', 'TITLE' => do_lang_tempcode('DELETE'), 'HELP' => do_lang_tempcode('DESCRIPTION_DELETE_CONTENT'))));
+
+                foreach ($content as $content_details) {
+                    list($content_type_title, $content_type, $content_id, $content_title, $content_url, $content_timestamp, $auto_selected) = $content_details;
+                    if (is_object($content_url)) {
+                        $content_url = $content_url->evaluate();
+                    }
+                    $content_description = do_lang_tempcode('DESCRIPTION_DELETE_THIS', escape_html($content_title), escape_html(get_timezoned_date($content_timestamp)), array(escape_html($content_url), do_lang($content_type_title)));
+
+                    $fields->attach(form_input_tick($content_title, $content_description, 'delete__' . $content_type . '_' . $content_id, $auto_selected));
+                }
+            }
+        }
+
         // Explanatory text
         $keep = symbol_tempcode('KEEP');
         $load_url = find_script('warnings_browse') . '?type=load' . $keep->evaluate();
@@ -650,6 +668,124 @@ class Module_warnings extends Standard_crud_module
         }
 
         return $this->get_form_fields(false, $warning[0]['w_explanation'], $warning[0]['w_is_warning'], $warning[0]['w_member_id']);
+    }
+
+    /**
+     * Find a member's content.
+     *
+     * @param MEMBER $member_id Member ID
+     * @return array List of content rows
+     */
+    private function find_member_content($member_id)
+    {
+        if (!has_privilege(get_member(), 'delete_highrange_content')) {
+            return array();
+        }
+
+        require_code('content');
+
+        $post_id = get_param_integer('post_id', null);
+
+        $content = array();
+
+        if (is_guest($member_id)) {
+            // For guests we can at least try and get a specific topic/post being warned for...
+
+            if ($post_id !== null) {
+                $post_rows = $GLOBALS['FORUM_DB']->query_select(
+                    'f_posts p JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics t ON t.id=p.p_topic_id',
+                    array('*', 'p.id AS post_id', 't.id AS topic_id'),
+                    array('p.id' => $post_id)
+                );
+                if (count($post_rows) != 0) {
+                    $row = $post_rows[0];
+
+                    $content_url = $GLOBALS['FORUM_DRIVER']->post_url($post_id, $row['t_forum_id'], true);
+                    $content_title = $row['p_title'];
+                    if ($content_title == '') {
+                        $content_title = do_lang('cns:FORUM_POST_NUMBERED', strval($post_id));
+                    }
+                    $content[] = array(
+                        do_lang('cns:FORUM_POST'),
+                        'post',
+                        strval($post_id),
+                        $content_title,
+                        $content_url,
+                        $row['p_time'],
+                        true
+                    );
+
+                    if ($row['t_cache_first_post_id'] == $post_id) {
+                        $content_url = $GLOBALS['FORUM_DRIVER']->topic_url($post_id, $row['t_forum_id'], true);
+                        $content_title = $row['t_cache_first_title'];
+                        $content[] = array(
+                            do_lang('cns:FORUM_TOPIC'),
+                            'topic',
+                            strval($row['topic_id']),
+                            $content_title,
+                            $content_url,
+                            $row['t_cache_first_time'],
+                            true
+                        );
+                    }
+                }
+                return $content;
+            }
+        }
+
+        // All content using hooks...
+
+        $hooks = find_all_hooks('systems', 'content_meta_aware'); // TODO: Change in v11
+        foreach (array_keys($hooks) as $hook) {
+            $ob = get_content_object($hook);
+            $cma_info = $ob->info();
+            if (($hook != 'member') && ($cma_info['table'] !== null) && ($cma_info['submitter_field'] !== null) && (($cma_info['id_field'] !== null) && strpos($cma_info['submitter_field'], ':') === false) && ($cma_info['commandr_filesystem_hook'] !== null)) {
+                $start = 0;
+                $max = 100;
+
+                do {
+                    $rows = $cma_info['connection']->query_select(
+                        $cma_info['table'],
+                        array('*'),
+                        array($cma_info['submitter_field'] => $member_id),
+                        '',
+                        $max,
+                        $start
+                    );
+
+                    foreach ($rows as $row) {
+                        $content_id = @strval($row[$cma_info['id_field']]);
+                        $content_title = get_content_title($cma_info, $row, $content_id);
+
+                        list($zone, $url_bits, $hash) = page_link_decode(str_replace('_WILD', $content_id, $cma_info['view_page_link_pattern']));
+                        $content_url = build_url($url_bits, $zone, null, false, false, false, $hash);
+
+                        $auto_selected = false;
+                        if (($hook == 'post') && ($post_id !== null) && ($content_id == strval($post_id))) {
+                            $auto_selected = true;
+                        }
+                        if (($hook == 'topic') && ($post_id !== null) && ($row['t_cache_first_post_id'] == $post_id)) {
+                            $auto_selected = true;
+                        }
+
+                        $content[] = array(
+                            $cma_info['content_type_label'],
+                            $hook,
+                            $content_id,
+                            $content_title,
+                            $content_url,
+                            $row[$cma_info['add_time_field']],
+                            $auto_selected
+                        );
+                    }
+
+                    $start += $max;
+                }
+                while (count($rows) == $max);
+            }
+        }
+
+        return $content;
     }
 
     /**
@@ -855,7 +991,29 @@ class Module_warnings extends Standard_crud_module
             }
         }
 
-        if (get_param_string('redirect', '') == '') {
+        // Delete content
+        $content = $this->find_member_content($member_id);
+        $done_deleting = false;
+        foreach ($content as $content_details) {
+            list($content_type_title, $content_type, $content_id, $content_title, $content_url, $content_timestamp, $auto_selected) = $content_details;
+
+            if (post_param_integer('delete__' . $content_type . '_' . $content_id, 0) == 1) {
+                require_all_lang();
+                require_code('resource_fs');
+                $object_fs = get_resource_commandr_fs_object($content_type);
+                if ($object_fs !== null) {
+                    $filename = $object_fs->convert_id_to_filename($content_type, $content_id);
+                    if ($filename !== null) {
+                        $subpath = $object_fs->search($content_type, $content_id, true);
+                        $object_fs->resource_delete($content_type, $filename, dirname($subpath));
+
+                        $done_deleting = true;
+                    }
+                }
+            }
+        }
+
+        if ((get_param_string('redirect', '') == '') && (!$done_deleting)) {
             require_code('site2');
             assign_refresh($GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true, true), 0.0);
         }

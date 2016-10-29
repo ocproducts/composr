@@ -265,32 +265,7 @@ function content_get_details($content_type, $content_id, $resource_fs_style = fa
         return array(null, null, null, null, null, null);
     }
 
-    $title_field = $cma_info['title_field'];
-    $title_field_dereference = $cma_info['title_field_dereference'];
-    if (($resource_fs_style) && (array_key_exists('title_field__resource_fs', $cma_info))) {
-        $title_field = $cma_info['title_field__resource_fs'];
-        $title_field_dereference = $cma_info['title_field_dereference__resource_fs'];
-    }
-    if (is_null($title_field)) {
-        $content_title = do_lang($cma_info['content_type_label']);
-    } else {
-        if (strpos($title_field, 'CALL:') !== false) {
-            $content_title = call_user_func(trim(substr($title_field, 5)), array('id' => $content_id), $resource_fs_style);
-        } else {
-            $_content_title = $content_row[$title_field];
-            $content_title = $title_field_dereference ? get_translated_text($_content_title, $db) : $_content_title;
-            if (($content_title == '') && (!$resource_fs_style)) {
-                $content_title = do_lang($cma_info['content_type_label']) . ' (#' . (is_string($content_id) ? $content_id : strval($content_id)) . ')';
-                if ($content_type == 'image' || $content_type == 'video') { // A bit of a fudge, but worth doing
-                    require_lang('galleries');
-                    $fullname = $GLOBALS['SITE_DB']->query_select_value_if_there('galleries', 'fullname', array('name' => $content_row['cat']));
-                    if (!is_null($fullname)) {
-                        $content_title = do_lang('VIEW_' . strtoupper($content_type) . '_IN', get_translated_text($fullname));
-                    }
-                }
-            }
-        }
-    }
+    $content_title = get_content_title($cma_info, $content_row, $content_type, $content_id, $resource_fs_style);
 
     if (!is_null($cma_info['submitter_field'])) {
         if (strpos($cma_info['submitter_field'], ':') !== false) {
@@ -317,6 +292,58 @@ function content_get_details($content_type, $content_id, $resource_fs_style = fa
     }
 
     return array($content_title, $submitter_id, $cma_info, $content_row, $content_url, $content_url_email_safe);
+}
+
+/**
+ * Get the title of a content item
+ *
+ * @param  array $cma_info The info array for the content type
+ * @param  array $content_row Content row
+ * @param  ID_TEXT $content_type Content type
+ * @param  ?ID_TEXT $content_id Content ID (null: find from row)
+ * @param  boolean $resource_fs_style Whether to use the content API as resource-fs requires (may be slightly different)
+ * @return string Title
+ */
+function get_content_title($cma_info, $content_row, $content_type, $content_id = null, $resource_fs_style = false)
+{
+    $db = $cma_info['connection'];
+
+    if ($content_id === null) {
+        $content_id = @strval($content_row[$cma_info['id_field']]);
+    }
+
+    $title_field = $cma_info['title_field'];
+    $title_field_dereference = $cma_info['title_field_dereference'];
+    if (($resource_fs_style) && (array_key_exists('title_field__resource_fs', $cma_info))) {
+        $title_field = $cma_info['title_field__resource_fs'];
+        $title_field_dereference = $cma_info['title_field_dereference__resource_fs'];
+    }
+    if ($title_field === null) {
+        $content_title = do_lang($cma_info['content_type_label']);
+    } else {
+        if (strpos($title_field, 'CALL:') !== false) {
+            $content_title = call_user_func(trim(substr($title_field, 5)), array('id' => $content_id), $resource_fs_style);
+        } else {
+            $_content_title = $content_row[$title_field];
+            $content_title = $title_field_dereference ? get_translated_text($_content_title, $db) : $_content_title;
+            if (($content_title == '') && (!$resource_fs_style)) {
+                $content_title = do_lang($cma_info['content_type_label']) . ' (#' . (is_string($content_id) ? $content_id : strval($content_id)) . ')';
+                if ($content_type == 'image' || $content_type == 'video') { // A bit of a fudge, but worth doing
+                    require_lang('galleries');
+                    $fullname = $GLOBALS['SITE_DB']->query_select_value_if_there('galleries', 'fullname', array('name' => $content_row['cat']));
+                    if ($fullname !== null) {
+                        $content_title = do_lang('VIEW_' . strtoupper($content_type) . '_IN', get_translated_text($fullname));
+                    }
+                }
+            }
+        }
+    }
+
+    if (($content_type == 'post') && ($content_title == '')) {
+        $content_title = do_lang('cns:FORUM_POST_NUMBERED', $content_id);
+    }
+
+    return $content_title;
 }
 
 /**
