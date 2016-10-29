@@ -369,7 +369,7 @@ class Module_tester
             $tests->attach(do_template('TESTER_GO_TEST', array('_GUID' => '1e719a51201d27eff7aed58b7f730251', 'BUG_REPORT_URL' => $bug_report_url, 'TEST' => $a_test, 'ID' => strval($test['id']), 'VALUE' => strval($test['t_status']))));
         }
         if (($tests->is_empty()) && ($sections->is_empty())) {
-            $sections = paragraph(do_lang_tempcode('NO_ENTRIES'), '4tregerg344');
+            $sections = paragraph(do_lang_tempcode('NO_ENTRIES'), '4tregerg344', 'nothing_here');
         } else {
             $edit_test_section_url = new Tempcode();
             if ((has_privilege(get_member(), 'edit_own_tests')) && (($test['s_assigned_to'] == get_member()) || ($GLOBALS['FORUM_DRIVER']->is_staff(get_member())))) {
