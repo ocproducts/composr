@@ -19,34 +19,6 @@
  */
 
 /**
- * Get ticket details.
- *
- * @param  string $ticket_id The ticket ID
- * @param  boolean $hard_error Exit with an error message if it cannot find the ticket
- * @return ?array A tuple: The ticket title, the topic ID, the ticket type ID, the ticket owner (null: not found)
- */
-function get_ticket_details($ticket_id, $hard_error = true)
-{
-    $forum = 1;
-    $topic_id = 1;
-    $_ticket_type_id = 1; // These will be returned by reference
-    $_comments = get_ticket_posts($ticket_id, $forum, $topic_id, $_ticket_type_id, 0, 1);
-    if ((!is_array($_comments)) || (!array_key_exists(0, $_comments))) {
-        if ($hard_error) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'ticket'));
-        }
-
-        return null;
-    }
-    $ticket_title = $_comments[0]['title'];
-
-    $_temp = explode('_', $ticket_id);
-    $uid = intval($_temp[0]);
-
-    return array($ticket_title, $topic_id, $forum, $uid);
-}
-
-/**
  * Add a ticket type.
  *
  * @param  SHORT_TEXT $ticket_type_name The ticket type name
@@ -130,6 +102,37 @@ function delete_ticket_type($ticket_type_id)
 }
 
 /**
+ * Build a list of ticket types.
+ *
+ * @param  ?AUTO_LINK $selected_ticket_type_id The current selected ticket type (null: none)
+ * @param  array $ticket_types_to_let_through List of ticket types to show regardless of access permissions
+ * @return array A map between ticket types, and template-ready details about them
+ */
+function build_types_list($selected_ticket_type_id, $ticket_types_to_let_through = array())
+{
+    $_types = $GLOBALS['SITE_DB']->query_select('ticket_types', array('*'), null, 'ORDER BY ' . $GLOBALS['SITE_DB']->translate_field_ref('ticket_type_name'));
+    $types = array();
+    foreach ($_types as $type) {
+        if ((!has_category_access(get_member(), 'tickets', strval($type['id']))) && (!in_array($type['id'], $ticket_types_to_let_through))) {
+            continue;
+        }
+
+        if ($type['cache_lead_time'] === null) {
+            $lead_time = do_lang('UNKNOWN');
+        } else {
+            $lead_time = display_time_period($type['cache_lead_time']);
+        }
+        $types[$type['id']] = array(
+            'TICKET_TYPE_ID' => strval($type['id']),
+            'SELECTED' => ($type['id'] === $selected_ticket_type_id),
+            'NAME' => get_translated_text($type['ticket_type_name']),
+            'LEAD_TIME' => $lead_time,
+        );
+    }
+    return $types;
+}
+
+/**
  * Get a map of properties for the given ticket type.
  *
  * @param  ?AUTO_LINK $ticket_type_id The ticket type (null: fallback for old tickets)
@@ -137,7 +140,14 @@ function delete_ticket_type($ticket_type_id)
  */
 function get_ticket_type($ticket_type_id)
 {
-    $default = array('ticket_type' => null, 'ticket_type_name' => do_lang('UNKNOWN'), 'guest_emails_mandatory' => 0, 'search_faq' => 0, 'cache_lead_time' => null);
+    $default = array(
+        'ticket_type' => null,
+        'ticket_type_name' => do_lang('UNKNOWN'),
+        'ticket_type_name_trans' => do_lang('UNKNOWN'),
+        'guest_emails_mandatory' => 0,
+        'search_faq' => 0,
+        'cache_lead_time' => null,
+    );
 
     if ($ticket_type_id === null) {
         // LEGACY
@@ -148,194 +158,9 @@ function get_ticket_type($ticket_type_id)
     if (count($rows) == 0) {
         return $default;
     }
+
+    $rows[0]['ticket_type_name_trans'] = get_translated_text($rows[0]['ticket_type_name']);
     return $rows[0];
-}
-
-/**
- * Update the cache of ticket type lead times (average time taken for a response to tickets of that type) in the database.
- * This is a query-intensive function, so should only be run occasionally.
- */
-function update_ticket_type_lead_times()
-{
-    require_code('feedback');
-
-    $ticket_types = $GLOBALS['SITE_DB']->query_select('ticket_types', array('*'));
-    foreach ($ticket_types as $ticket_type) {
-        $total_lead_time = 0;
-        $tickets_counted = 0;
-
-        $tickets = $GLOBALS['SITE_DB']->query_select('tickets', null, array('ticket_type' => $ticket_type['id']));
-        foreach ($tickets as $ticket) {
-            $max_rows = 0;
-            $topic = $GLOBALS['FORUM_DRIVER']->show_forum_topics($ticket['forum_id'], 1, 0, $max_rows, $ticket['ticket_id'], true, 'lasttime', false, do_lang('SUPPORT_TICKET') . ': #' . $ticket['ticket_id']);
-            if ($topic === null) {
-                continue;
-            }
-            $topic = $topic[0];
-
-            // We need to have two posts for new-style tickets, or three for old-style tickets (with spacers)
-            if (($topic['num'] < 2) || (($topic['firstusername'] == do_lang('SYSTEM')) && ($topic['num'] < 3))) {
-                continue;
-            }
-
-            $ticket_id = extract_topic_identifier($topic['description']);
-            $_forum = 1;
-            $_topic_id = 1;
-            $_ticket_type_id = 1; // These will be returned by reference
-            $posts = get_ticket_posts($ticket_id, $_forum, $_topic_id, $_ticket_type_id);
-
-            // Differentiate between old- and new-style tickets
-            if ($topic['firstusername'] == do_lang('SYSTEM')) {
-                $first_key = 1;
-            } else {
-                $first_key = 0;
-            }
-
-            // Find the first post by someone other than the ticket owner
-            $i = $first_key + 1;
-            while ((array_key_exists($i, $posts)) && ($posts[$i]['member'] != $posts[$first_key]['member'])) {
-                $i++;
-            }
-
-            if (array_key_exists($i, $posts)) {
-                $total_lead_time += $posts[$i]['date'] - $posts[$first_key]['date'];
-                $tickets_counted++;
-            }
-        }
-
-        /* Calculate the new lead time and store it in the DB */
-        if ($tickets_counted > 0) {
-            $GLOBALS['SITE_DB']->query_update('ticket_types', array('cache_lead_time' => $total_lead_time / $tickets_counted), array('id' => $ticket_type['id']), '', 1);
-        }
-    }
-}
-
-/**
- * Get an array of tickets for the given member and ticket type. If the member has permission to see others' tickets, it will be a list of all tickets
- * in the system, restricted by ticket type as appropriate. Otherwise, it will be a list of that member's tickets, as restricted by ticket type.
- *
- * @param  AUTO_LINK $member_id The member ID
- * @param  ?AUTO_LINK $ticket_type_id The ticket type (null: all ticket types)
- * @param  boolean $override_view_others_tickets Don't view others' tickets, even if the member has permission to
- * @param  boolean $silent_error_handling Whether to skip showing errors, returning null instead
- * @param  boolean $open_only Open tickets only
- * @param  boolean $include_first_posts Whether to include first posts
- * @return array Array of tickets, empty on failure
- */
-function get_tickets($member_id, $ticket_type_id = null, $override_view_others_tickets = false, $silent_error_handling = false, $open_only = false, $include_first_posts = false)
-{
-    $restrict = '';
-    $restrict_description = '';
-    $view_others_tickets = (!$override_view_others_tickets) && (has_privilege($member_id, 'view_others_tickets'));
-
-    if (!$view_others_tickets) {
-        $restrict = strval($member_id) . '\_%';
-        $restrict_description = do_lang('SUPPORT_TICKET') . ': #' . $restrict;
-    } else {
-        if (($ticket_type_id !== null) && (!has_category_access(get_member(), 'tickets', strval($ticket_type_id)))) {
-            return array();
-        }
-    }
-
-    if ($ticket_type_id !== null) {
-        $ticket_type_name = $GLOBALS['SITE_DB']->query_select_value('ticket_types', 'ticket_type_name', array('id' => $ticket_type_id));
-    }
-
-    if ((get_option('ticket_member_forums') == '1') || (get_option('ticket_type_forums') == '1')) {
-        if (get_forum_type() == 'cns') {
-            $fid = ($view_others_tickets) ? get_ticket_forum_id(null, null, false, $silent_error_handling) : get_ticket_forum_id(get_member(), null, false, $silent_error_handling);
-            if ($fid === null) {
-                return array();
-            }
-
-            if ($ticket_type_id === null) {
-                require_code('cns_forums');
-                $forums = cns_get_all_subordinate_forums($fid, null, null, true);
-            } else {
-                $query = 'SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forums WHERE ' . db_string_equal_to('f_name', get_translated_text($ticket_type_name)) . ' AND ';
-                if ($view_others_tickets) {
-                    $query .= 'f_parent_forum IN (SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forums WHERE f_parent_forum=' . strval($fid) . ')';
-                } else {
-                    $query .= 'f_parent_forum=' . strval($fid);
-                }
-
-                $rows = $GLOBALS['FORUM_DB']->query($query, null, null, false, true);
-                $forums = collapse_2d_complexity('id', 'id', $rows);
-            }
-        } else {
-            $forums = array(get_ticket_forum_id($member_id, $ticket_type_id, false, $silent_error_handling));
-        }
-    } else {
-        $forums = array(get_ticket_forum_id(null, null, false, $silent_error_handling));
-    }
-
-    if ((count($forums) == 1) && (array_key_exists(0, $forums)) && ($forums[0] === null)) {
-        return array();
-    }
-    $max_rows = 0;
-    $topics = $GLOBALS['FORUM_DRIVER']->show_forum_topics(array_flip($forums), $view_others_tickets ? 100 : 500, 0, $max_rows, $restrict, true, 'lasttime', false, $restrict_description, $open_only);
-    if ($topics === null) {
-        return array();
-    }
-    $filtered_topics = array();
-    foreach ($topics as $topic) {
-        $fp = $topic['firstpost'];
-        if (!$include_first_posts) {
-            unset($topic['firstpost']); // To stop Tempcode randomly making serialization sometimes change such that the refresh_if_changed is triggered
-        }
-        if (($ticket_type_id === null) || (strpos($fp->evaluate(), do_lang('TICKET_TYPE') . ': ' . get_translated_text($ticket_type_name)) !== false)) {
-            $filtered_topics[] = $topic;
-        }
-    }
-    return $filtered_topics;
-}
-
-/**
- * Get the posts from a given ticket, and also return the IDs of the forum and topic containing it. The return value is the same as
- * that of get_forum_topic_posts(), except in error conditions
- *
- * @param  string $ticket_id The ticket ID
- * @param  AUTO_LINK $forum Return location for the forum ID
- * @param  AUTO_LINK $topic_id Return location for the topic ID
- * @param  AUTO_LINK $ticket_type Return location for the ticket type
- * @param  integer $start Start offset in pagination
- * @param  ?integer $max Max per page in pagination (null: no limit)
- * @return mixed The array of maps (Each map is: title, message, member, date) (null: no such ticket)
- */
-function get_ticket_posts($ticket_id, &$forum, &$topic_id, &$ticket_type, $start = 0, $max = null)
-{
-    $ticket = $GLOBALS['SITE_DB']->query_select('tickets', null, array('ticket_id' => $ticket_id), '', 1, null, true);
-    if (count($ticket) == 1) { // We know about it, so grab details from tickets table
-        $ticket_type_id = $ticket[0]['ticket_type'];
-
-        if (has_privilege(get_member(), 'view_others_tickets')) {
-            if (!has_category_access(get_member(), 'tickets', strval($ticket_type_id))) {
-                access_denied('CATEGORY_ACCESS_LEVEL');
-            }
-        }
-
-        $forum = $ticket[0]['forum_id'];
-        $topic_id = $ticket[0]['topic_id'];
-        $count = 0;
-        return $GLOBALS['FORUM_DRIVER']->get_forum_topic_posts($GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(strval($forum), $ticket_id, do_lang('SUPPORT_TICKET')), $count, $max, $start);
-    }
-
-    // It must be an old-style ticket, residing in the root ticket forum
-    $forum = get_ticket_forum_id();
-    $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(get_option('ticket_forum_name'), $ticket_id, do_lang('SUPPORT_TICKET'));
-    $ticket_type_id = null;
-    $count = 0;
-    return $GLOBALS['FORUM_DRIVER']->get_forum_topic_posts($GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(strval($forum), $ticket_id, do_lang('SUPPORT_TICKET')), $count);
-}
-
-/**
- * Remove a ticket from the database. This does not remove the associated forum topic.
- *
- * @param  AUTO_LINK $topic_id The associated topic ID
- */
-function delete_ticket_by_topic_id($topic_id)
-{
-    $GLOBALS['SITE_DB']->query_delete('tickets', array('topic_id' => $topic_id));
 }
 
 /**
@@ -356,7 +181,7 @@ function ticket_add_post($member_id, $ticket_id, $ticket_type_id, $title, $post,
     // Get the forum ID first
     $fid = $GLOBALS['SITE_DB']->query_select_value_if_there('tickets', 'forum_id', array('ticket_id' => $ticket_id));
     if ($fid === null) {
-        $fid = get_ticket_forum_id($member_id, $ticket_type_id);
+        $fid = get_ticket_forum_id($ticket_type_id);
     }
 
     // Find member ID
@@ -420,7 +245,7 @@ function send_ticket_email($ticket_id, $title, $post, $ticket_url, $uid_email, $
     require_code('notifications');
 
     // Lookup user details
-    $_temp = explode('_', $ticket_id);
+    $_temp = explode('_', $ticket_id, 2);
     $uid = intval($_temp[0]);
     $uid_displayname = $GLOBALS['FORUM_DRIVER']->get_username($uid, true);
     if ($uid_displayname === null) {
@@ -577,15 +402,166 @@ function send_ticket_email($ticket_id, $title, $post, $ticket_url, $uid_email, $
 }
 
 /**
- * Is the given ticket post intended for staff only? Works only on Conversr.
+ * Remove a ticket from the database. This does not remove the associated forum topic.
  *
- * @param  array $post Array of data for the post
- * @return boolean Whether the post's staff only
+ * @param  AUTO_LINK $topic_id The associated topic ID
  */
-function is_ticket_post_staff_only($post)
+function delete_ticket_by_topic_id($topic_id)
 {
-    if (get_forum_type() != 'cns') {
-        return false;
+    $GLOBALS['SITE_DB']->query_delete('tickets', array('topic_id' => $topic_id), '', 1);
+}
+
+/**
+ * Get ticket details, except actual posts or ticket type information.
+ *
+ * @param  string $ticket_id The ticket ID
+ * @param  boolean $hard_error Exit with an error message if it cannot find the ticket
+ * @return ?array A tuple: The ticket title, the topic ID, the ticket type ID, the ticket owner (null: not found)
+ */
+function get_ticket_meta_details($ticket_id, $hard_error = true)
+{
+    $forum = 0; // Returned by reference
+    $topic_id = 0; // Returned by reference
+    $total_ticket_posts = 1; // Returned by reference
+    $ticket_posts = get_ticket_posts($ticket_id, $forum, $topic_id, $total_ticket_posts, 0, 1);
+    if (empty($ticket_posts)) {
+        if ($hard_error) {
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'ticket'));
+        }
+
+        return null;
     }
-    return (($post['p_intended_solely_for'] !== null) && (is_guest($post['p_intended_solely_for'])));
+
+    $ticket_title = $ticket_posts[0]['title'];
+
+    $_temp = explode('_', $ticket_id, 2);
+    $uid = intval($_temp[0]);
+
+    return array($ticket_title, $topic_id, $forum, $uid);
+}
+
+/**
+ * Get the posts from a given ticket, and also return the IDs of the forum and topic containing it. The return value is the same as
+ * that of get_forum_topic_posts(), except in error conditions
+ *
+ * @param  string $ticket_id The ticket ID
+ * @param  ?AUTO_LINK $forum Return location for the forum ID (null: don't collect)
+ * @param  ?AUTO_LINK $topic_id Return location for the topic ID (null: don't collect)
+ * @param  ?integer $total_ticket_posts Return total number of posts in the ticket (null: don't collect)
+ * @param  integer $start Start offset in pagination
+ * @param  ?integer $max Max per page in pagination (null: no limit)
+ * @return mixed The array of maps (Each map is: title, message, member, date) (null: no such ticket)
+ */
+function get_ticket_posts($ticket_id, &$forum = null, &$topic_id = null, &$total_ticket_posts = null, $start = 0, $max = null)
+{
+    $ticket = $GLOBALS['SITE_DB']->query_select('tickets', null, array('ticket_id' => $ticket_id), '', 1, null, true);
+    if (count($ticket) == 1) {
+        // We know about it, so grab details from tickets table...
+
+        $ticket_type_id = $ticket[0]['ticket_type'];
+        if (has_privilege(get_member(), 'view_others_tickets')) {
+            if (!has_category_access(get_member(), 'tickets', strval($ticket_type_id))) {
+                access_denied('CATEGORY_ACCESS_LEVEL');
+            }
+        }
+
+        $forum = $ticket[0]['forum_id'];
+        $topic_id = $ticket[0]['topic_id'];
+    } else {
+        // It must be a ticket with no row (normal topic moved in?), so find via residing in the root ticket forum...
+
+        $forum = get_ticket_forum_id();
+        $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(get_option('ticket_forum_name'), $ticket_id, do_lang('SUPPORT_TICKET'));
+    }
+
+    $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(strval($forum), $ticket_id, do_lang('SUPPORT_TICKET'));
+    $ticket_posts = $GLOBALS['FORUM_DRIVER']->get_forum_topic_posts($topic_id, $total_ticket_posts, $max, $start);
+
+    if (count($ticket_posts) == 0) {
+        return null;
+    }
+
+    $ticket_title = &$ticket_posts[0]['title'];
+    if ($ticket_title == '') {
+        $ticket_title = do_lang('UNKNOWN');
+    }
+
+    return $ticket_posts;
+}
+
+/**
+ * Find who a ticket is assigned to.
+ *
+ * @param  ID_TEXT $ticket_id Ticket ID
+ * @return array Map of assigned members (member ID to display name)
+ */
+function find_ticket_assigned_to($ticket_id)
+{
+    $assigned = array();
+    $where = array('l_notification_code' => 'ticket_assigned_staff', 'l_code_category' => $ticket_id);
+    $_assigned = $GLOBALS['SITE_DB']->query_select('notifications_enabled', array('l_member_id'), $where, 'ORDER BY id DESC', 200/*reasonable limit*/);
+    foreach ($_assigned as $__assigned) {
+        $assigned[$__assigned['l_member_id']] = $GLOBALS['FORUM_DRIVER']->get_username($__assigned['l_member_id'], true);
+    }
+    return $assigned;
+}
+
+/**
+ * Update the cache of ticket type lead times (average time taken for a response to tickets of that type) in the database.
+ * This is a query-intensive function, so should only be run occasionally.
+ */
+function update_ticket_type_lead_times()
+{
+    require_code('feedback');
+
+    $ticket_types = $GLOBALS['SITE_DB']->query_select('ticket_types', array('*'));
+    foreach ($ticket_types as $ticket_type) {
+        $total_lead_time = 0;
+        $tickets_counted = 0;
+
+        $tickets = $GLOBALS['SITE_DB']->query_select('tickets', null, array('ticket_type' => $ticket_type['id']));
+        foreach ($tickets as $ticket) {
+            $max_rows = 0;
+            $topic = $GLOBALS['FORUM_DRIVER']->show_forum_topics($ticket['forum_id'], 1, 0, $max_rows, $ticket['ticket_id'], true, 'lasttime', false, do_lang('SUPPORT_TICKET') . ': #' . $ticket['ticket_id']);
+            if ($topic === null) {
+                continue;
+            }
+            $topic = $topic[0];
+
+            // We need to have two posts for new-style tickets, or three for old-style tickets (with spacers)
+            if (($topic['num'] < 2) || (($topic['firstusername'] == do_lang('SYSTEM')) && ($topic['num'] < 3))) {
+                continue;
+            }
+
+            $ticket_id = extract_topic_identifier($topic['description']);
+
+            $forum = 0; // Returned by reference
+            $topic_id = 0; // Returned by reference
+            $total_ticket_posts = 1; // Returned by reference
+            $ticket_posts = get_ticket_posts($ticket_id, $forum, $topic_id, $total_ticket_posts);
+
+            // Differentiate between old- and new-style tickets
+            if ($topic['firstusername'] == do_lang('SYSTEM')) {
+                $first_key = 1;
+            } else {
+                $first_key = 0;
+            }
+
+            // Find the first post by someone other than the ticket owner
+            $i = $first_key + 1;
+            while ((array_key_exists($i, $ticket_posts)) && ($ticket_posts[$i]['member'] != $ticket_posts[$first_key]['member'])) {
+                $i++;
+            }
+
+            if (array_key_exists($i, $ticket_posts)) {
+                $total_lead_time += $ticket_posts[$i]['date'] - $ticket_posts[$first_key]['date'];
+                $tickets_counted++;
+            }
+        }
+
+        // Calculate the new lead time and store it in the DB
+        if ($tickets_counted > 0) {
+            $GLOBALS['SITE_DB']->query_update('ticket_types', array('cache_lead_time' => $total_lead_time / $tickets_counted), array('id' => $ticket_type['id']), '', 1);
+        }
+    }
 }

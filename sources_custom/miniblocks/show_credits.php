@@ -20,7 +20,6 @@ $existing_customer = !is_guest() && ($GLOBALS['SITE_DB']->query_select_value_if_
 require_lang('customers');
 require_lang('tickets');
 require_code('tickets');
-require_code('tickets2');
 
 $credits = intval(get_cms_cpf('support_credits'));
 
@@ -51,7 +50,7 @@ foreach ($topic_filters as $topic_filter) {
     if ($query != '') {
         $query .= ' + ';
     }
-    $query .= '(SELECT COUNT(*) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics WHERE t_forum_id=' . strval(get_ticket_forum_id(null, null, false)) . ' AND ' . $topic_filter . ' AND t_is_open=1)';
+    $query .= '(SELECT COUNT(*) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics WHERE t_forum_id=' . strval(get_ticket_forum_id(null, false)) . ' AND ' . $topic_filter . ' AND t_is_open=1)';
 }
 $tickets_url = build_url(array('page' => 'tickets', 'type' => 'browse'), get_module_zone('tickets'));
 $tickets_open = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT ' . $query, false, true);

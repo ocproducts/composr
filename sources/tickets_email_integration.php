@@ -457,16 +457,16 @@ function ticket_incoming_message($from_email, $subject, $body, $attachments)
     $from_email_orig = $from_email;
 
     // Try to bind to an existing ticket
-    $existing_ticket = mixed();
+    $existing_ticket_id = null;
     $matches = array();
     if (preg_match('#' . do_lang('TICKET_SIMPLE_SUBJECT_regexp') . '#', $subject, $matches) != 0) {
         if (strpos($matches[2], '_') !== false) {
-            $existing_ticket = $matches[2];
+            $existing_ticket_id = $matches[2];
 
             // Validate
-            $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(get_option('ticket_forum_name'), $existing_ticket, do_lang('SUPPORT_TICKET'));
+            $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(get_option('ticket_forum_name'), $existing_ticket_id, do_lang('SUPPORT_TICKET'));
             if ($topic_id === null) {
-                $existing_ticket = null; // Invalid
+                $existing_ticket_id = null; // Invalid
             }
         }
     }
@@ -503,7 +503,7 @@ function ticket_incoming_message($from_email, $subject, $body, $attachments)
     }
 
     // Try to bind to a from member
-    $member_id = mixed();
+    $member_id = null;
     foreach ($tags as $tag) {
         $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($tag);
         if ($member_id !== null) {
@@ -517,12 +517,12 @@ function ticket_incoming_message($from_email, $subject, $body, $attachments)
         if ($member_id === null) {
             $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_email_address($from_email);
             if ($member_id === null) {
-                if ($existing_ticket === null) {
+                if ($existing_ticket_id === null) {
                     // E-mail back, saying user not found
                     ticket_email_cannot_bind($subject, $body, $from_email, $from_email_orig);
                     return;
                 } else {
-                    $_temp = explode('_', $existing_ticket);
+                    $_temp = explode('_', $existing_ticket_id, 2);
                     $member_id = intval($_temp[0]);
                 }
             }
@@ -573,14 +573,14 @@ function ticket_incoming_message($from_email, $subject, $body, $attachments)
     push_lax_comcode(true);
 
     // Post
-    if ($existing_ticket === null) {
+    if ($existing_ticket_id === null) {
         $new_ticket_id = strval($member_id) . '_' . uniqid('', false);
 
         $_home_url = build_url(array('page' => 'tickets', 'type' => 'ticket', 'id' => $new_ticket_id, 'redirect' => null), get_module_zone('tickets'), null, false, true, true);
         $home_url = $_home_url->evaluate();
 
         // Pick up ticket type, a other/general ticket type if it exists
-        $ticket_type_id = mixed();
+        $ticket_type_id = null;
         $tags[] = do_lang('OTHER');
         $tags[] = do_lang('GENERAL');
         foreach ($tags as $tag) {
@@ -600,35 +600,25 @@ function ticket_incoming_message($from_email, $subject, $body, $attachments)
         // Send email (to staff)
         send_ticket_email($new_ticket_id, $subject, $body, $home_url, $from_email, $ticket_type_id, $member_id, true);
     } else {
-        $_home_url = build_url(array('page' => 'tickets', 'type' => 'ticket', 'id' => $existing_ticket, 'redirect' => null), get_module_zone('tickets'), null, false, true, true);
+        $_home_url = build_url(array('page' => 'tickets', 'type' => 'ticket', 'id' => $existing_ticket_id, 'redirect' => null), get_module_zone('tickets'), null, false, true, true);
         $home_url = $_home_url->evaluate();
 
         // Reply to the ticket...
 
         $ticket_type_id = $GLOBALS['SITE_DB']->query_select_value_if_there('tickets', 'ticket_type', array(
-            'ticket_id' => $existing_ticket,
+            'ticket_id' => $existing_ticket_id,
         ));
 
-        ticket_add_post($member_id, $existing_ticket, $ticket_type_id, $subject, $body, $home_url);
+        ticket_add_post($member_id, $existing_ticket_id, $ticket_type_id, $subject, $body, $home_url);
 
-        // Find true ticket title
-        $_forum = 1;
-        $_topic_id = 1;
-        $_ticket_type_id = 1; // These will be returned by reference
-        $posts = get_ticket_posts($existing_ticket, $_forum, $_topic_id, $_ticket_type_id);
-        if (!is_array($posts)) {
+        $details = get_ticket_meta_details($existing_ticket_id);
+        if (empty($details)) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'ticket'), false, true);
         }
-        $__title = do_lang('UNKNOWN');
-        foreach ($posts as $ticket_post) {
-            $__title = $ticket_post['title'];
-            if ($__title != '') {
-                break;
-            }
-        }
+        list($__title) = $details;
 
         // Send email (to staff & to confirm receipt to $member_id)
-        send_ticket_email($existing_ticket, $__title, $body, $home_url, $from_email, null, $member_id, true);
+        send_ticket_email($existing_ticket_id, $__title, $body, $home_url, $from_email, null, $member_id, true);
     }
 
     pop_lax_comcode();

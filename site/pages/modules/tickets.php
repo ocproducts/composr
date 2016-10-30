@@ -163,11 +163,11 @@ class Module_tickets
         if ($type == 'browse') {
             if (!is_guest()) {
                 // Our tickets
-                $default_ticket_type = $this->get_ticket_type_id();
-                if ($default_ticket_type !== null) {
-                    set_feed_url('?mode=tickets&select=' . strval($default_ticket_type));
+                $default_ticket_type_id = $this->get_ticket_type_id();
+                if ($default_ticket_type_id !== null) {
+                    set_feed_url('?mode=tickets&select=' . strval($default_ticket_type_id));
                 }
-                $this->ticket_type_id = $default_ticket_type;
+                $this->ticket_type_id = $default_ticket_type_id;
             }
 
             $this->title = get_screen_title('SUPPORT_TICKETS');
@@ -239,13 +239,13 @@ class Module_tickets
         $type = get_param_string('type', 'browse');
 
         if ($type == 'browse') {
-            return $this->do_choose_ticket();
+            return $this->list_tickets();
         }
         if ($type == 'ticket') {
-            return $this->do_ticket();
+            return $this->display_ticket();
         }
         if ($type == 'post') {
-            return $this->do_update_ticket();
+            return $this->update_ticket();
         }
         if ($type == 'toggle_ticket_closed') {
             return $this->toggle_ticket_closed();
@@ -285,17 +285,17 @@ class Module_tickets
      */
     private function get_ticket_type_id()
     {
-        $default_ticket_type = either_param_integer('ticket_type_id', null);
-        if ($default_ticket_type === null) {
+        $default_ticket_type_id = either_param_integer('ticket_type_id', null);
+        if ($default_ticket_type_id === null) {
             $_default_ticket_type = either_param_string('ticket_type', null);
             if ($_default_ticket_type !== null) {
-                $default_ticket_type = $GLOBALS['SITE_DB']->query_select_value_if_there('ticket_types', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('ticket_type_name') => $_default_ticket_type));
-                if ($default_ticket_type === null) {
+                $default_ticket_type_id = $GLOBALS['SITE_DB']->query_select_value_if_there('ticket_types', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('ticket_type_name') => $_default_ticket_type));
+                if ($default_ticket_type_id === null) {
                     warn_exit(do_lang_tempcode('CAT_NOT_FOUND', escape_html($_default_ticket_type), 'ticket_type'));
                 }
             }
         }
-        return $default_ticket_type;
+        return $default_ticket_type_id;
     }
 
     /**
@@ -303,7 +303,7 @@ class Module_tickets
      *
      * @return Tempcode The UI
      */
-    public function do_choose_ticket()
+    public function list_tickets()
     {
         require_code('feedback');
 
@@ -311,16 +311,20 @@ class Module_tickets
         $links = new Tempcode();
         $existing_ticket_types = array();
 
-        if (!is_guest()) {
-            // Our tickets
+        if (is_guest()) {
+            $_login_url = build_url(array('page' => 'login'));
+            $login_url = $_login_url->evaluate();
+            $message = do_lang_tempcode('NO_TICKETS_GUESTS', escape_html($login_url));
+            $tickets = array();
+        } else {
             $ticket_type_id = $this->ticket_type_id;
-            $tickets = get_tickets(get_member(), $ticket_type_id, false, false, get_param_integer('open', 0) == 1);
+            $tickets = get_tickets(array('ticket_type_id' => $ticket_type_id, 'only_open' => get_param_integer('open', 0) == 1));
 
             // Find all ticket types used
             if ($ticket_type_id === null) {
                 $all_tickets = $tickets;
             } else {
-                $all_tickets = get_tickets(get_member(), null, false, false, get_param_integer('open', 0) == 1);
+                $all_tickets = get_tickets(array('only_open' => get_param_integer('open', 0) == 1));
             }
             foreach ($all_tickets as $topic) {
                 $ticket_id = extract_topic_identifier($topic['description']);
@@ -330,7 +334,7 @@ class Module_tickets
                 }
             }
 
-            // List (our?) tickets
+            // List tickets
             if ($tickets !== null) {
                 if (has_privilege(get_member(), 'support_operator')) {
                     $message = do_lang_tempcode('TICKETS_STAFF');
@@ -343,22 +347,17 @@ class Module_tickets
                         continue; // Staff don't see closed tickets
                     }
 
-                    list($ticket_type_tpl) = $this->_render_ticket_row($topic);
+                    list($ticket_type_tpl) = $this->render_ticket_row($topic);
 
                     $links->attach($ticket_type_tpl);
                 }
             }
-        } else {
-            $_login_url = build_url(array('page' => 'login'));
-            $login_url = $_login_url->evaluate();
-            $message = do_lang_tempcode('NO_TICKETS_GUESTS', escape_html($login_url));
-            $tickets = array();
         }
 
         $map = array('page' => '_SELF', 'type' => 'ticket');
-        $default_ticket_type = $this->get_ticket_type_id();
-        if ($default_ticket_type !== null) {
-            $map['ticket_type_id'] = $default_ticket_type;
+        $default_ticket_type_id = $this->get_ticket_type_id();
+        if ($default_ticket_type_id !== null) {
+            $map['ticket_type_id'] = $default_ticket_type_id;
         }
         $add_ticket_url = build_url($map, '_SELF');
 
@@ -368,7 +367,7 @@ class Module_tickets
             'MESSAGE' => $message,
             'LINKS' => $links,
             'ADD_TICKET_URL' => $add_ticket_url,
-            'TYPES' => build_types_list($default_ticket_type),
+            'TYPES' => build_types_list($default_ticket_type_id),
         ));
 
         require_code('templates_internalise_screen');
@@ -381,7 +380,7 @@ class Module_tickets
      * @param  array $topic Ticket details (from forum API)
      * @return array A tuple: Ticket row (Tempcode), Ticket type (ID), Ticket type (String)
      */
-    public function _render_ticket_row($topic)
+    private function render_ticket_row($topic)
     {
         $ticket_id = extract_topic_identifier($topic['description']);
 
@@ -412,7 +411,7 @@ class Module_tickets
             $ticket_type_name = do_lang('UNKNOWN');
         } else {
             $ticket_type_details = get_ticket_type($ticket_type_id);
-            $ticket_type_name = get_translated_text($ticket_type_details['ticket_type_name']);
+            $ticket_type_name = $ticket_type_details['ticket_type_name_trans'];
         }
 
         $assigned = find_ticket_assigned_to($ticket_id);
@@ -454,333 +453,310 @@ class Module_tickets
      *
      * @return Tempcode The UI
      */
-    public function do_ticket()
+    public function display_ticket()
     {
         require_lang('comcode');
+        require_code('form_templates');
+        require_code('feedback');
 
-        $id = get_param_string('id', null);
-        if ($id == '') {
-            $id = null;
+        list($warning_details, $ping_url) = handle_conflict_resolution(null, true);
+
+        // Help text
+        $ticket_page_text = comcode_to_tempcode(get_option('ticket_text'), null, true);
+
+        // Selection of ticket type for a new ticket and link to add another
+        $default_ticket_type_id = $this->get_ticket_type_id();
+        $types = build_types_list($default_ticket_type_id);
+        $add_ticket_url = build_url(array('page' => '_SELF', 'type' => 'ticket', 'ticket_type_id' => $default_ticket_type_id), '_SELF');
+
+        // Read in ticket ID
+        $ticket_id = get_param_string('id', null);
+        if ($ticket_id == '') {
+            $ticket_id = null;
         }
-        if ($id !== null) { // Existing ticket
-            $_temp = explode('_', $id);
-            if (!isset($_temp[1])) {
-                warn_exit(do_lang_tempcode('INTERNAL_ERROR')); // Normal topic, not a ticket!
-            }
-            $ticket_owner = intval($_temp[0]);
-            $ticket_id = $_temp[1];
+        $starting_new_ticket = ($ticket_id === null);
 
-            check_ticket_access($id);
-        } else { // New ticket, generate an ID
+        if ($starting_new_ticket) {
+            // New ticket, generate an ID...
+
             if (has_privilege(get_member(), 'support_operator')) {
                 $ticket_owner = get_param_integer('post_as', get_member());
             } else {
                 $ticket_owner = get_member();
             }
-            $ticket_id = uniqid('', false);
-        }
 
-        $poster = '';
-        $new = true;
-        $serialized_options = mixed();
-        $hash = mixed();
-        $ticket_type_id = mixed();
-        if ((!is_guest()) || ($id === null)) { // If this isn't a guest posting their ticket
-            $new = ($id === null);
+            $ticket_stub = uniqid('', false);
+
+            $ticket_id = strval($ticket_owner) . '_' . $ticket_stub;
+
+            // Screen title...
+
+            if ($ticket_owner != get_member()) {
+                $this->title = get_screen_title('ADD_TICKET_AS', true, array(escape_html($GLOBALS['FORUM_DRIVER']->get_username($ticket_owner))));
+            } else {
+                $this->title = get_screen_title('ADD_TICKET');
+            }
+
+            // Defaults for all...
+
+            $ticket_posts = array();
+            $ticket_type_id = null;
+            $rendered_ticket_posts = new Tempcode();
+            $has_staff_only = false;
+            $ticket_type_details = get_ticket_type(null);
+            $serialized_options = null;
+            $hash = null;
+            $staff_details = new Tempcode();
+            $pagination = null;
+        } else {
+            // Existing ticket, check access...
+
+            if (is_guest()) {
+                // Guest has posted ticket successfully. Actually, this code problem never runs (as they in fact see a separate screen from update_ticket), but it's here as a fail safe.
+                return inform_screen(get_screen_title('ADD_TICKET'), do_lang_tempcode('SUCCESS'));
+            }
+
+            $_temp = explode('_', $ticket_id, 2);
+            if (!isset($_temp[1])) {
+                warn_exit(do_lang_tempcode('INTERNAL_ERROR')); // Normal topic, not a ticket!
+            }
+
+            $ticket_owner = intval($_temp[0]);
+
+            $ticket_stub = $_temp[1];
+
+            check_ticket_access($ticket_id);
+
+            // Find existing posts/info...
 
             $num_to_show_limit = get_param_integer('max_comments', intval(get_option('comments_to_show_in_thread')));
             $start = get_param_integer('start_comments', 0);
 
-            // Find existing posts/info
-            if ($new) {
-                $id = strval($ticket_owner) . '_' . $ticket_id;
-                if ($ticket_owner != get_member()) {
-                    $this->title = get_screen_title('ADD_TICKET_AS', true, array(escape_html($GLOBALS['FORUM_DRIVER']->get_username($ticket_owner))));
-                } else {
-                    $this->title = get_screen_title('ADD_TICKET');
-                }
+            $ticket_type_id = $GLOBALS['SITE_DB']->query_select_value_if_there('tickets', 'ticket_type', array('ticket_id' => $ticket_id));
+            $ticket_type_details = get_ticket_type($ticket_type_id);
+            $ticket_type_name = $ticket_type_details['ticket_type_name_trans'];
 
-                $_comments = array();
-            } else {
-                $ticket_type_id = $GLOBALS['SITE_DB']->query_select_value_if_there('tickets', 'ticket_type', array('ticket_id' => $id));
-                $ticket_type_details = get_ticket_type($ticket_type_id);
-                $ticket_type_name = get_translated_text($ticket_type_details['ticket_type_name']);
-
-                $forum = 1;
-                $topic_id = 1;
-                $_ticket_type_id = 1; // These will be returned by reference
-                $_comments = get_ticket_posts($id, $forum, $topic_id, $_ticket_type_id, $start, $num_to_show_limit);
-                $_comments_all = get_ticket_posts($id, $forum, $topic_id, $_ticket_type_id);
-                if ((!is_array($_comments)) || (!array_key_exists(0, $_comments))) {
-                    warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'ticket'));
-                }
-
-                $ticket_title = $_comments[0]['title'];
-                if ($ticket_title == '') {
-                    $ticket_title = do_lang('UNKNOWN');
-                }
-
-                $this->title = get_screen_title('_VIEW_SUPPORT_TICKET', true, array(escape_html($ticket_title), escape_html($ticket_type_name)));
-                breadcrumb_set_self($ticket_title);
+            $forum = 1; // Returned by reference
+            $topic_id = 1; // Returned by reference
+            $total_ticket_posts = 1; // Returned by reference
+            $ticket_posts = get_ticket_posts($ticket_id, $forum, $topic_id, $total_ticket_posts, $start, $num_to_show_limit);
+            if (empty($ticket_posts)) {
+                warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'ticket'));
             }
 
-            // Help text
-            $ticket_page_text = comcode_to_tempcode(get_option('ticket_text'), null, true);
+            $ticket_title = $ticket_posts[0]['title'];
 
-            // Selection of ticket type
-            $default_ticket_type = $this->get_ticket_type_id();
-            $types = build_types_list($default_ticket_type);
+            // Screen title...
 
-            // Render existing posts/info
+            $this->title = get_screen_title('_VIEW_SUPPORT_TICKET', true, array(escape_html($ticket_title), escape_html($ticket_type_name)));
+
+            breadcrumb_set_self($ticket_title);
+
+            // Render posts...
+
+            require_code('topics');
+            $renderer = new CMS_Topic();
+            $renderer->set_rendering_context('tickets');
+            $renderer->inject_posts_for_scoring_algorithm($ticket_posts);
+            $renderer->topic_id = $topic_id;
+
+            $topic_info = null;
+            if (get_forum_type() == 'cns') {
+                $_topic_info = $GLOBALS['FORUM_DB']->query_select('f_topics', array('*'), array('id' => $topic_id), '', 1);
+                if (!array_key_exists(0, $_topic_info)) {
+                    warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+                }
+                $topic_info = $_topic_info[0];
+            }
+
+            $max_thread_depth = get_param_integer('max_thread_depth', intval(get_option('max_thread_depth')));
+            list($rendered_ticket_posts, $serialized_options, $hash) = $renderer->render_posts($num_to_show_limit, $max_thread_depth, true, $ticket_owner, array(), $forum, $topic_info);
+
+            // Pagination...
+
             $pagination = null;
-            $staff_details = new Tempcode();
-            if (!$new) {
-                if ($_comments === null) {
-                    warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'ticket'));
-                }
-                if (has_privilege(get_member(), 'support_operator')) {
-                    $topic_url = $GLOBALS['FORUM_DRIVER']->topic_url($topic_id, get_option('ticket_forum_name'), true);
-                    $staff_details = is_object($topic_url) ? $topic_url : make_string_tempcode($topic_url);
-                } else {
-                    $staff_details = new Tempcode();
-                }
+            if ((!$renderer->is_threaded) && ($total_ticket_posts > $num_to_show_limit)) {
+                require_code('templates_pagination');
+                $pagination = pagination(do_lang_tempcode('COMMENTS'), $start, 'start_comments', $num_to_show_limit, 'max_comments', $total_ticket_posts);
+            }
 
-                require_code('topics');
-                $renderer = new CMS_Topic();
-                $renderer->set_rendering_context('tickets');
-                $renderer->inject_posts_for_scoring_algorithm($_comments);
-                $renderer->topic_id = $topic_id;
+            // Special staff links...
 
-                $topic_info = mixed();
-                if (get_forum_type() == 'cns') {
-                    $_topic_info = $GLOBALS['FORUM_DB']->query_select('f_topics', array('*'), array('id' => $topic_id), '', 1);
-                    if (!array_key_exists(0, $_topic_info)) {
-                        warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
-                    }
-                    $topic_info = $_topic_info[0];
-                }
-
-                // Posts
-                $max_thread_depth = get_param_integer('max_thread_depth', intval(get_option('max_thread_depth')));
-                list($comments, $serialized_options, $hash) = $renderer->render_posts($num_to_show_limit, $max_thread_depth, true, $ticket_owner, array(), $forum, $topic_info);
-
-                // Pagination
-                if (!$renderer->is_threaded) {
-                    if (count($_comments_all) > $num_to_show_limit) {
-                        require_code('templates_pagination');
-                        $pagination = pagination(do_lang_tempcode('COMMENTS'), $start, 'start_comments', $num_to_show_limit, 'max_comments', count($_comments_all));
-                    }
-                }
-
-                set_extra_request_metadata(array(
-                    'created' => date('Y-m-d', $_comments[0]['date']),
-                    'creator' => $GLOBALS['FORUM_DRIVER']->get_username($_comments[0]['member']),
-                    'type' => 'Support ticket',
-                    'title' => $_comments[0]['title'],
-                    'identifier' => '_SEARCH:tickets:ticket:' . $id,
-                    'image' => find_theme_image('icons/48x48/menu/site_meta/tickets'),
-                ));
-
-                // "Staff only reply" tickbox
-                $has_staff_only = ((get_forum_type() == 'cns') && ($GLOBALS['FORUM_DRIVER']->is_staff(get_member())));
+            if (has_privilege(get_member(), 'support_operator')) {
+                $topic_url = $GLOBALS['FORUM_DRIVER']->topic_url($topic_id, get_option('ticket_forum_name'), true);
+                $staff_details = is_object($topic_url) ? $topic_url : make_string_tempcode($topic_url);
             } else {
-                $comments = new Tempcode();
-                $has_staff_only = false;
-                $ticket_type_details = get_ticket_type(null);
+                $staff_details = new Tempcode();
             }
 
-            // Posting form
-            if (($poster == '') || ($GLOBALS['FORUM_DRIVER']->get_guest_id() != intval($poster))) { // We can post a new ticket reply to an existing ticket that isn't from a guest
-                $em = $GLOBALS['FORUM_DRIVER']->get_emoticon_chooser();
-                require_code('form_templates');
-                list($attachments, $attach_size_field) = (get_forum_type() == 'cns') ? get_attachments('post') : array(null, null);
-                if (addon_installed('captcha')) {
-                    require_code('captcha');
-                    $use_captcha = ((get_option('captcha_on_feedback') == '1') && (use_captcha()));
-                    if ($use_captcha) {
-                        generate_captcha();
-                    }
-                } else {
-                    $use_captcha = false;
-                }
+            $has_staff_only = ((get_forum_type() == 'cns') && ($GLOBALS['FORUM_DRIVER']->is_staff(get_member())));
 
-                $comment_form = do_template('COMMENTS_POSTING_FORM', array(
-                    '_GUID' => 'aaa32620f3eb68d9cc820b18265792d7',
-                    'DEFAULT_TEXT' => either_param_string('post', null),
-                    'JOIN_BITS' => '',
-                    'FIRST_POST_URL' => '',
-                    'FIRST_POST' => '',
-                    'USE_CAPTCHA' => $use_captcha,
-                    'ATTACHMENTS' => $attachments,
-                    'ATTACH_SIZE_FIELD' => $attach_size_field,
-                    'POST_WARNING' => '',
-                    'COMMENT_TEXT' => '',
-                    'GET_EMAIL' => is_guest(),
-                    'EMAIL_OPTIONAL' => ((is_guest()) && ($ticket_type_details['guest_emails_mandatory'] == 1)),
-                    'GET_TITLE' => $new,
-                    'EM' => $em,
-                    'DISPLAY' => 'block',
-                    'COMMENT_URL' => '',
-                    'SUBMIT_NAME' => do_lang_tempcode($new ? 'CREATE_SUPPORT_TICKET' : 'MAKE_POST'),
-                    'TITLE' => do_lang_tempcode($new ? 'CREATE_TICKET_MAKE_POST' : 'REPLY'),
-                ));
-            } else {
-                $comment_form = new Tempcode();
-            }
+            // Meta-data...
 
-            // Show other tickets
-            require_code('form_templates');
-            require_code('feedback');
-            list($warning_details, $ping_url) = handle_conflict_resolution(null, true);
-            $other_tickets = new Tempcode();
-            $our_topic = null;
-            if (!is_guest($ticket_owner)) {
-                $tickets_of_member = get_tickets($ticket_owner, null, true);
-                if ($tickets_of_member !== null) {
-                    foreach ($tickets_of_member as $topic) {
-                        $_id = extract_topic_identifier($topic['description']);
-
-                        list($other_ticket_tpl, $ticket_type_id, $ticket_type_name) = $this->_render_ticket_row($topic);
-
-                        if ($id != $_id) {
-                            $other_tickets->attach($other_ticket_tpl);
-                        } else {
-                            $our_topic = $topic;
-                        }
-                    }
-                }
-            }
-
-            // Is it closed?
-            $closed = ($our_topic === null) ? false : ($our_topic['closed'] == 1);
-            $toggle_ticket_closed_url = mixed();
-            if ((get_forum_type() == 'cns') && (!$new)) {
-                $toggle_ticket_closed_url = build_url(array('page' => '_SELF', 'type' => 'toggle_ticket_closed', 'id' => $id), '_SELF');
-            }
-            if ($closed) {
-                $new_ticket_url = build_url(array('page' => '_SELF', 'type' => 'ticket', 'ticket_type_id' => $ticket_type_id), '_SELF');
-                attach_message(do_lang_tempcode('TICKET_IS_CLOSED', $new_ticket_url), 'notice');
-            }
-
-            // URL To add a new ticket
-            $add_ticket_url = build_url(array('page' => '_SELF', 'type' => 'ticket', 'ticket_type_id' => $default_ticket_type), '_SELF');
-
-            // Link to edit ticket subject/type
-            $edit_url = mixed();
-            if (!$new) {
-                $edit_url = build_url(array('page' => '_SELF', 'type' => 'edit', 'id' => $id), '_SELF');
-            }
-
-            // Link to set ticket extra access
-            $set_ticket_extra_access_url = mixed();
-            if (!$new) {
-                $set_ticket_extra_access_url = build_url(array('page' => '_SELF', 'type' => 'set_ticket_extra_access', 'id' => $id), '_SELF');
-            }
-
-            // Post templates
-            $post_templates = new Tempcode();
-            if (($has_staff_only) && (addon_installed('cns_post_templates')) && (get_forum_type() == 'cns')) {
-                require_code('cns_posts_action');
-                require_lang('cns_post_templates');
-
-                $forum_id = get_ticket_forum_id($ticket_owner, $ticket_type_id);
-
-                $templates = cns_get_post_templates($forum_id);
-                $_post_templates = new Tempcode();
-                foreach ($templates as $template) {
-                    list($pt_title, $pt_text,) = $template;
-                    $_post_templates->attach(form_input_list_entry(str_replace("\n", '\n', $pt_text), false, $pt_title));
-                }
-                if (!$_post_templates->is_empty()) {
-                    $post_templates2 = form_input_list_entry('', false, do_lang_tempcode('NA_EM'));
-                    $post_templates2->attach($_post_templates);
-
-                    $post_templates = do_template('CNS_POST_TEMPLATE_SELECT', array('_GUID' => 'b670b322b96041db458057432e33cdca', 'LIST' => $post_templates2, 'RESETS' => true));
-                }
-            }
-
-            $assigned = find_ticket_assigned_to($id);
-
-            $extra_details = new Tempcode();
-            if (function_exists('get_composr_support_timings_wrap')) { // FUDGE. Extra code may be added in for compo.sr's ticket system
-                if (!$new) {
-                    $last_poster_id = isset($our_topic['lastmemberid']) ? $our_topic['lastmemberid'] : $GLOBALS['FORUM_DRIVER']->get_member_from_username($our_topic['lastusername']);
-                    $extra_details = get_composr_support_timings_wrap($our_topic['closed'] == 0, $our_topic['id'], $ticket_type_name, true);
-                }
-            }
-
-            // Render ticket screen
-            $post_url = build_url(array('page' => '_SELF', 'type' => 'post', 'id' => $id, 'redirect' => get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL), 'start_comments' => get_param_string('start_comments', null), 'max_comments' => get_param_string('max_comments', null)), '_SELF');
-            $tpl = do_template('SUPPORT_TICKET_SCREEN', array(
-                '_GUID' => 'd21a9d161008c6c44fe7309a14be2c5b',
-                'ID' => ($id === null) ? '' : $id,
-                'SERIALIZED_OPTIONS' => $serialized_options,
-                'HASH' => $hash,
-                'TOGGLE_TICKET_CLOSED_URL' => $toggle_ticket_closed_url,
-                'CLOSED' => $closed,
-                'OTHER_TICKETS' => $other_tickets,
-                'USERNAME' => $GLOBALS['FORUM_DRIVER']->get_username($ticket_owner),
-                'TICKET_TYPE_ID' => ($ticket_type_id === null) ? null : strval($ticket_type_id),
-                'PING_URL' => $ping_url,
-                'WARNING_DETAILS' => $warning_details,
-                'NEW' => $new,
-                'TICKET_PAGE_TEXT' => $ticket_page_text,
-                'POST_TEMPLATES' => $post_templates,
-                'TYPES' => $types,
-                'STAFF_ONLY' => $has_staff_only,
-                'POSTER' => $poster,
-                'TITLE' => $this->title,
-                'COMMENTS' => $comments,
-                'COMMENT_FORM' => $comment_form,
-                'STAFF_DETAILS' => $staff_details,
-                'URL' => $post_url,
-                'ADD_TICKET_URL' => $add_ticket_url,
-                'PAGINATION' => $pagination,
-                'SET_TICKET_EXTRA_ACCESS_URL' => $set_ticket_extra_access_url,
-                'EDIT_URL' => $edit_url,
-                'ASSIGNED' => $assigned,
-                'EXTRA_DETAILS' => $extra_details,
+            set_extra_request_metadata(array(
+                'created' => date('Y-m-d', $ticket_posts[0]['date']),
+                'creator' => $GLOBALS['FORUM_DRIVER']->get_username($ticket_posts[0]['member']),
+                'type' => 'Support ticket',
+                'title' => $ticket_posts[0]['title'],
+                'identifier' => '_SEARCH:tickets:ticket:' . $ticket_id,
+                'image' => find_theme_image('icons/48x48/menu/site_meta/tickets'),
             ));
-
-            require_code('templates_internalise_screen');
-            return internalise_own_screen($tpl, 30, is_array($_comments) ? count($_comments) : 0);
-        } else { // Guest has posted ticket successfully. Actually, this code problem never runs (as they in fact see a separate screen from do_update_ticket), but it's here as a fail safe.
-            return inform_screen(get_screen_title('ADD_TICKET'), do_lang_tempcode('SUCCESS'));
         }
-    }
 
-    /**
-     * Actualise to toggle the closed state of a ticket.
-     *
-     * @return Tempcode The UI
-     */
-    public function toggle_ticket_closed()
-    {
-        $id = get_param_string('id');
+        // Posting form...
 
-        require_code('feedback');
+        $em = $GLOBALS['FORUM_DRIVER']->get_emoticon_chooser();
+        require_code('form_templates');
+        list($attachments, $attach_size_field) = (get_forum_type() == 'cns') ? get_attachments('post') : array(null, null);
+        if (addon_installed('captcha')) {
+            require_code('captcha');
+            $use_captcha = ((get_option('captcha_on_feedback') == '1') && (use_captcha()));
+            if ($use_captcha) {
+                generate_captcha();
+            }
+        } else {
+            $use_captcha = false;
+        }
 
-        $action = 'CLOSE_TICKET';
+        $comment_form = do_template('COMMENTS_POSTING_FORM', array(
+            '_GUID' => 'aaa32620f3eb68d9cc820b18265792d7',
+            'DEFAULT_TEXT' => either_param_string('post', null),
+            'JOIN_BITS' => '',
+            'FIRST_POST_URL' => '',
+            'FIRST_POST' => '',
+            'USE_CAPTCHA' => $use_captcha,
+            'ATTACHMENTS' => $attachments,
+            'ATTACH_SIZE_FIELD' => $attach_size_field,
+            'POST_WARNING' => '',
+            'COMMENT_TEXT' => '',
+            'GET_EMAIL' => is_guest(),
+            'EMAIL_OPTIONAL' => ((is_guest()) && ($ticket_type_details['guest_emails_mandatory'] == 0)),
+            'GET_TITLE' => $starting_new_ticket,
+            'EM' => $em,
+            'DISPLAY' => 'block',
+            'COMMENT_URL' => '',
+            'SUBMIT_NAME' => do_lang_tempcode($starting_new_ticket ? 'CREATE_SUPPORT_TICKET' : 'MAKE_POST'),
+            'TITLE' => do_lang_tempcode($starting_new_ticket ? 'CREATE_TICKET_MAKE_POST' : 'REPLY'),
+        ));
 
-        // Our tickets - search them for this ticket, acting as a kind of security check (as we will only iterate through tickets we have access to)
-        $tickets = get_tickets(get_member(), null);
-        foreach ($tickets as $ticket) {
-            $_id = extract_topic_identifier($ticket['description']);
-            if ($_id == $id) {
-                if ($ticket['closed'] == 0) {
-                    $action = 'OPEN_TICKET';
+        // Show other tickets, plus grab topic row for our ticket...
+
+        $other_tickets = new Tempcode();
+        $our_topic = null;
+        if (!is_guest($ticket_owner)) {
+            $tickets_of_member = get_tickets(array('only_owner_id' => $ticket_owner));
+            if ($tickets_of_member !== null) {
+                foreach ($tickets_of_member as $topic) {
+                    $_id = extract_topic_identifier($topic['description']);
+
+                    list($other_ticket_tpl, $ticket_type_id, $ticket_type_name) = $this->render_ticket_row($topic);
+
+                    if ($ticket_id != $_id) {
+                        $other_tickets->attach($other_ticket_tpl);
+                    } else {
+                        $our_topic = $topic;
+                    }
                 }
-                $GLOBALS['FORUM_DB']->query_update('f_topics', array('t_is_open' => $ticket['closed']), array('id' => $ticket['id']), '', 1);
             }
         }
 
-        $this->title = get_screen_title($action);
+        // Links...
 
-        $url = build_url(array('page' => '_SELF', 'type' => 'ticket', 'id' => $id), '_SELF');
-        if (is_guest()) {
-            $url = build_url(array('page' => '_SELF'), '_SELF');
+        // Close/Open
+        $closed = ($our_topic === null) ? false : ($our_topic['closed'] == 1);
+        $toggle_ticket_closed_url = null;
+        if ((get_forum_type() == 'cns') && (!$starting_new_ticket)) {
+            $toggle_ticket_closed_url = build_url(array('page' => '_SELF', 'type' => 'toggle_ticket_closed', 'id' => $ticket_id), '_SELF');
         }
-        return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
+        if ($closed) {
+            $new_ticket_url = build_url(array('page' => '_SELF', 'type' => 'ticket', 'ticket_type_id' => $ticket_type_id), '_SELF');
+            attach_message(do_lang_tempcode('TICKET_IS_CLOSED', $new_ticket_url), 'notice');
+        }
+
+        // Link to edit ticket subject/type
+        $edit_url = null;
+        if (!$starting_new_ticket) {
+            $edit_url = build_url(array('page' => '_SELF', 'type' => 'edit', 'id' => $ticket_id), '_SELF');
+        }
+
+        // Link to set ticket extra access
+        $set_ticket_extra_access_url = null;
+        if (!$starting_new_ticket) {
+            $set_ticket_extra_access_url = build_url(array('page' => '_SELF', 'type' => 'set_ticket_extra_access', 'id' => $ticket_id), '_SELF');
+        }
+
+        // Post templates...
+
+        $post_templates = new Tempcode();
+        if (($has_staff_only) && (addon_installed('cns_post_templates')) && (get_forum_type() == 'cns')) {
+            require_code('cns_posts_action');
+            require_lang('cns_post_templates');
+
+            $forum_id = get_ticket_forum_id($ticket_type_id);
+
+            $templates = cns_get_post_templates($forum_id);
+            $_post_templates = new Tempcode();
+            foreach ($templates as $template) {
+                list($pt_title, $pt_text,) = $template;
+                $_post_templates->attach(form_input_list_entry(str_replace("\n", '\n', $pt_text), false, $pt_title));
+            }
+            if (!$_post_templates->is_empty()) {
+                $post_templates2 = form_input_list_entry('', false, do_lang_tempcode('NA_EM'));
+                $post_templates2->attach($_post_templates);
+
+                $post_templates = do_template('CNS_POST_TEMPLATE_SELECT', array('_GUID' => 'b670b322b96041db458057432e33cdca', 'LIST' => $post_templates2, 'RESETS' => true));
+            }
+        }
+
+        // Assigned to whom...
+
+        $assigned = find_ticket_assigned_to($ticket_id);
+
+        $extra_details = new Tempcode();
+        if (function_exists('get_composr_support_timings_wrap')) { // FUDGE. Extra code may be added in for compo.sr's ticket system
+            if (!$starting_new_ticket) {
+                $last_poster_id = isset($our_topic['lastmemberid']) ? $our_topic['lastmemberid'] : $GLOBALS['FORUM_DRIVER']->get_member_from_username($our_topic['lastusername']);
+                $extra_details = get_composr_support_timings_wrap($our_topic['closed'] == 0, $our_topic['id'], $ticket_type_name, true);
+            }
+        }
+
+        // Render screen...
+
+        $post_url = build_url(array('page' => '_SELF', 'type' => 'post', 'id' => $ticket_id, 'redirect' => get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL), 'start_comments' => get_param_string('start_comments', null), 'max_comments' => get_param_string('max_comments', null)), '_SELF');
+
+        $tpl = do_template('SUPPORT_TICKET_SCREEN', array(
+            '_GUID' => 'd21a9d161008c6c44fe7309a14be2c5b',
+            'ID' => ($ticket_id === null) ? '' : $ticket_id,
+            'SERIALIZED_OPTIONS' => $serialized_options,
+            'HASH' => $hash,
+            'TOGGLE_TICKET_CLOSED_URL' => $toggle_ticket_closed_url,
+            'CLOSED' => $closed,
+            'OTHER_TICKETS' => $other_tickets,
+            'USERNAME' => $GLOBALS['FORUM_DRIVER']->get_username($ticket_owner),
+            'TICKET_TYPE_ID' => ($ticket_type_id === null) ? null : strval($ticket_type_id),
+            'PING_URL' => $ping_url,
+            'WARNING_DETAILS' => $warning_details,
+            'NEW' => $starting_new_ticket,
+            'TICKET_PAGE_TEXT' => $ticket_page_text,
+            'POST_TEMPLATES' => $post_templates,
+            'TYPES' => $types,
+            'STAFF_ONLY' => $has_staff_only,
+            'POSTER' => $GLOBALS['FORUM_DRIVER']->get_username(get_member()),
+            'TITLE' => $this->title,
+            'COMMENTS' => $rendered_ticket_posts,
+            'COMMENT_FORM' => $comment_form,
+            'STAFF_DETAILS' => $staff_details,
+            'URL' => $post_url,
+            'ADD_TICKET_URL' => $add_ticket_url,
+            'PAGINATION' => $pagination,
+            'SET_TICKET_EXTRA_ACCESS_URL' => $set_ticket_extra_access_url,
+            'EDIT_URL' => $edit_url,
+            'ASSIGNED' => $assigned,
+            'EXTRA_DETAILS' => $extra_details,
+        ));
+
+        require_code('templates_internalise_screen');
+        return internalise_own_screen($tpl, 30, is_array($ticket_posts) ? count($ticket_posts) : 0);
     }
 
     /**
@@ -788,22 +764,15 @@ class Module_tickets
      *
      * @return Tempcode The UI
      */
-    public function do_update_ticket()
+    public function update_ticket()
     {
         @ignore_user_abort(true); // Must keep going till completion
 
-        $id = get_param_string('id', strval(get_member()) . '_' . uniqid('', false)/*random new ticket ID*/);
+        $ticket_id = get_param_string('id', strval(get_member()) . '_' . uniqid('', false)/*random new ticket ID*/);
 
         $ticket_type_id = $this->get_ticket_type_id();
 
-        if ($ticket_type_id === null) {
-            // If existing ticket, check access
-            check_ticket_access($id);
-        } else {
-            // If new ticket, spam check
-            require_code('antispam');
-            inject_action_spamcheck(null, post_param_string('email', null));
-        }
+        // Read in...
 
         $_title = post_param_string('title');
 
@@ -820,25 +789,48 @@ class Module_tickets
 
         $staff_only = post_param_integer('staff_only', 0) == 1;
 
-        // Update
-        $_home_url = build_url(array('page' => '_SELF', 'type' => 'ticket', 'id' => $id, 'redirect' => null), '_SELF', null, false, true, true);
-        $home_url = $_home_url->evaluate();
-        $email = '';
-        if ($ticket_type_id !== null) { // New ticket
+        // Run checks...
+
+        if ($ticket_type_id === null) {
+            // If existing ticket...
+
+            // Check ticket access
+            check_ticket_access($ticket_id);
+        } else {
+            // If new ticket...
+
             $ticket_type_details = get_ticket_type($ticket_type_id);
 
+            // Spam check
+            require_code('antispam');
+            inject_action_spamcheck(null, post_param_string('email', null));
+
+            // Check ticket type access
             if (!has_category_access(get_member(), 'tickets', strval($ticket_type_id))) {
                 access_denied('I_ERROR');
             }
 
             // Check FAQ search results first
             if (($ticket_type_details['search_faq']) && (post_param_integer('faq_searched', 0) == 0)) {
-                $results = $this->do_search($this->title, $id, $post);
+                $results = $this->do_search($this->title, $ticket_id, $post);
                 if ($results !== null) {
                     return $results;
                 }
             }
+        }
 
+        if (addon_installed('captcha')) {
+            if (get_option('captcha_on_feedback') == '1') {
+                require_code('captcha');
+                enforce_captcha();
+            }
+        }
+
+        // Create ticket if needed...
+
+        $email = '';
+        if ($ticket_type_id !== null) {
+            // Do we need to tack on an email address?
             $new_post = new Tempcode();
             $email = trim(post_param_string('email', ''));
             if ($email != '') {
@@ -854,39 +846,43 @@ class Module_tickets
             $new_post->attach($post);
             $post = $new_post->evaluate();
         }
-        if (addon_installed('captcha')) {
-            if (get_option('captcha_on_feedback') == '1') {
-                require_code('captcha');
-                enforce_captcha();
-            }
-        }
-        ticket_add_post(null, $id, $ticket_type_id, $_title, $post, $home_url, $staff_only);
 
-        // Auto-monitor
+        // Add post to ticket...
+
+        $_home_url = build_url(array('page' => '_SELF', 'type' => 'ticket', 'id' => $ticket_id, 'redirect' => null), '_SELF', null, false, true, true);
+        $home_url = $_home_url->evaluate();
+        ticket_add_post(null, $ticket_id, $ticket_type_id, $_title, $post, $home_url, $staff_only);
+
+        // Auto-monitor...
+
         if (has_privilege(get_member(), 'support_operator') && get_option('ticket_auto_assign') == '1') {
             require_code('notifications');
-            enable_notifications('ticket_assigned_staff', $id);
+            enable_notifications('ticket_assigned_staff', $ticket_id);
         }
 
-        // Find true ticket title
-        list($__title, $_topic_id) = get_ticket_details($id);
+        // Send email...
 
-        // Send email
+        // Find true ticket title
+        list($__title, $_topic_id) = get_ticket_meta_details($ticket_id);
+
         if (!$staff_only) {
             if ($email == '') {
                 $email = $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member());
             }
-            send_ticket_email($id, $__title, $post, $home_url, $email, $ticket_type_id, null);
+            send_ticket_email($ticket_id, $__title, $post, $home_url, $email, $ticket_type_id, null);
         }
 
-        // Close ticket, if requested
+        // Close ticket, if requested...
+
         if (post_param_integer('close', 0) == 1) {
             if (get_forum_type() == 'cns') {
                 $GLOBALS['FORUM_DB']->query_update('f_topics', array('t_is_open' => 0), array('id' => $_topic_id), '', 1);
             }
         }
 
-        $url = build_url(array('page' => '_SELF', 'type' => 'ticket', 'id' => $id), '_SELF');
+        // Redirect...
+
+        $url = build_url(array('page' => '_SELF', 'type' => 'ticket', 'id' => $ticket_id), '_SELF');
         if (is_guest()) {
             $url = build_url(array('page' => '_SELF'), '_SELF');
         }
@@ -894,6 +890,38 @@ class Module_tickets
             $url = make_string_tempcode(get_param_string('redirect', false, INPUT_FILTER_URL_INTERNAL));
         }
         return redirect_screen($this->title, $url, do_lang_tempcode('TICKET_STARTED'));
+    }
+
+    /**
+     * Actualise to toggle the closed state of a ticket.
+     *
+     * @return Tempcode The UI
+     */
+    public function toggle_ticket_closed()
+    {
+        $ticket_id = get_param_string('id');
+
+        check_ticket_access($ticket_id);
+
+        require_code('feedback');
+
+        $details = get_ticket_meta_details($ticket_id);
+        if ($details === null) {
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'ticket'));
+        }
+        list(, $topic_id) = $details;
+
+        $is_open = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_is_open', array('id' => $topic_id));
+        $GLOBALS['FORUM_DB']->query_update('f_topics', array('t_is_open' => 1 - $is_open), array('id' => $topic_id), '', 1);
+
+        $action = ($is_open == 1) ? 'CLOSE_TICKET' : 'OPEN_TICKET';
+        $this->title = get_screen_title($action);
+
+        $url = build_url(array('page' => '_SELF', 'type' => 'ticket', 'id' => $ticket_id), '_SELF');
+        if (is_guest()) {
+            $url = build_url(array('page' => '_SELF'), '_SELF');
+        }
+        return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
     }
 
     /**
@@ -962,15 +990,15 @@ class Module_tickets
     {
         require_code('form_templates');
 
-        $id = get_param_string('id');
+        $ticket_id = get_param_string('id');
 
-        $ticket_owner = check_ticket_access($id);
+        $ticket_owner = check_ticket_access($ticket_id);
         $ticket_owner_username = $GLOBALS['FORUM_DRIVER']->get_username($ticket_owner);
         if ($ticket_owner_username === null) {
             $ticket_owner_username = do_lang('UNKNOWN');
         }
 
-        $post_url = build_url(array('page' => '_SELF', 'type' => '_set_ticket_extra_access', 'id' => $id), '_SELF');
+        $post_url = build_url(array('page' => '_SELF', 'type' => '_set_ticket_extra_access', 'id' => $ticket_id), '_SELF');
 
         $submit_name = do_lang_tempcode('SET_TICKET_EXTRA_ACCESS');
 
@@ -979,7 +1007,7 @@ class Module_tickets
         $fields = new Tempcode();
 
         $access = array();
-        $_access = $GLOBALS['SITE_DB']->query_select('ticket_extra_access', array('member_id'), array('ticket_id' => $id));
+        $_access = $GLOBALS['SITE_DB']->query_select('ticket_extra_access', array('member_id'), array('ticket_id' => $ticket_id));
         foreach ($_access as $a) {
             $access[] = $GLOBALS['FORUM_DRIVER']->get_username($a['member_id']);
         }
@@ -995,12 +1023,12 @@ class Module_tickets
      */
     public function _set_ticket_extra_access()
     {
-        $id = get_param_string('id');
+        $ticket_id = get_param_string('id');
 
-        check_ticket_access($id);
+        check_ticket_access($ticket_id);
 
         $GLOBALS['SITE_DB']->query_delete('ticket_extra_access', array(
-            'ticket_id' => $id,
+            'ticket_id' => $ticket_id,
         ));
 
         foreach ($_POST as $key => $username) {
@@ -1017,12 +1045,12 @@ class Module_tickets
             }
 
             $GLOBALS['SITE_DB']->query_insert('ticket_extra_access', array(
-                'ticket_id' => $id,
+                'ticket_id' => $ticket_id,
                 'member_id' => $member_id,
             ));
         }
 
-        $url = build_url(array('page' => '_SELF', 'type' => 'ticket', 'id' => $id), '_SELF');
+        $url = build_url(array('page' => '_SELF', 'type' => 'ticket', 'id' => $ticket_id), '_SELF');
         if (is_guest()) {
             $url = build_url(array('page' => '_SELF'), '_SELF');
         }
@@ -1038,14 +1066,13 @@ class Module_tickets
     {
         require_code('form_templates');
 
-        $id = get_param_string('id');
+        $ticket_id = get_param_string('id');
 
-        check_ticket_access($id);
+        check_ticket_access($ticket_id);
 
-        $post_url = build_url(array('page' => '_SELF', 'type' => '_edit', 'id' => $id), '_SELF');
+        $post_url = build_url(array('page' => '_SELF', 'type' => '_edit', 'id' => $ticket_id), '_SELF');
 
-        require_code('tickets2');
-        list($title) = get_ticket_details($id);
+        list($title) = get_ticket_meta_details($ticket_id);
 
         $submit_name = do_lang_tempcode('EDIT_TICKET');
 
@@ -1053,7 +1080,7 @@ class Module_tickets
 
         $fields = new Tempcode();
 
-        $selected_ticket_type_id = $GLOBALS['SITE_DB']->query_select_value('tickets', 'ticket_type', array('ticket_id' => $id));
+        $selected_ticket_type_id = $GLOBALS['SITE_DB']->query_select_value('tickets', 'ticket_type', array('ticket_id' => $ticket_id));
 
         if (get_forum_type() == 'cns') {
             $fields->attach(form_input_line(do_lang_tempcode('SUBJECT'), '', 'title', $title, true));
@@ -1076,15 +1103,14 @@ class Module_tickets
      */
     public function _edit()
     {
-        $id = get_param_string('id');
+        $ticket_id = get_param_string('id');
 
-        check_ticket_access($id);
+        check_ticket_access($ticket_id);
 
-        $old_ticket_type = $GLOBALS['SITE_DB']->query_select_value('tickets', 'ticket_type', array('ticket_id' => $id));
+        $old_ticket_type = $GLOBALS['SITE_DB']->query_select_value('tickets', 'ticket_type', array('ticket_id' => $ticket_id));
         $ticket_type = post_param_integer('ticket_type');
 
-        require_code('tickets2');
-        list($title, , , $uid) = get_ticket_details($id);
+        list($title, , , $uid) = get_ticket_meta_details($ticket_id);
 
         if ($old_ticket_type != $ticket_type) {
             // Tell the staff that the ticket has been re-routed
@@ -1095,9 +1121,9 @@ class Module_tickets
                 $username = do_lang('UNKNOWN');
             }
             $ticket_type_details = get_ticket_type($ticket_type);
-            $ticket_type_name_new = get_translated_text($ticket_type_details['ticket_type_name']);
+            $ticket_type_name_new = $ticket_type_details['ticket_type_name_trans'];
             $ticket_type_details = get_ticket_type($old_ticket_type);
-            $ticket_type_name_old = get_translated_text($ticket_type_details['ticket_type_name']);
+            $ticket_type_name_old = $ticket_type_details['ticket_type_name_trans'];
 
             $subject = do_lang('SUBJECT_TICKET_REROUTED', $title, $username, array($ticket_type_name_new, $ticket_type_name_old));
             $message = do_notification_lang('BODY_TICKET_REROUTED', comcode_escape($title), comcode_escape($username), array(comcode_escape($ticket_type_name_new), comcode_escape($ticket_type_name_old)));
@@ -1110,14 +1136,14 @@ class Module_tickets
             );
         }
 
-        $forum_id = get_ticket_forum_id(null, $ticket_type, true);
+        $forum_id = get_ticket_forum_id($ticket_type, true);
 
-        $GLOBALS['SITE_DB']->query_update('tickets', array('ticket_type' => $ticket_type, 'forum_id' => $forum_id), array('ticket_id' => $id), '', 1);
+        $GLOBALS['SITE_DB']->query_update('tickets', array('ticket_type' => $ticket_type, 'forum_id' => $forum_id), array('ticket_id' => $ticket_id), '', 1);
 
         if (get_forum_type() == 'cns') {
             $title = post_param_string('title');
 
-            $topic_id = $GLOBALS['SITE_DB']->query_select_value('tickets', 'topic_id', array('ticket_id' => $id));
+            $topic_id = $GLOBALS['SITE_DB']->query_select_value('tickets', 'topic_id', array('ticket_id' => $ticket_id));
             $post_id = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_cache_first_post_id', array('id' => $topic_id));
             $post_id = $GLOBALS['FORUM_DB']->query_select_value('f_posts', 'MIN(id)', array('p_topic_id' => $topic_id), 'AND id<>' . strval($post_id));
             $GLOBALS['FORUM_DB']->query_update('f_topics', array('t_forum_id' => $forum_id, 't_cache_first_title' => $title), array('id' => $topic_id), '', 1);
@@ -1125,7 +1151,7 @@ class Module_tickets
             $GLOBALS['FORUM_DB']->query_update('f_posts', array('p_title' => $title), array('id' => $post_id), '', 1);
         }
 
-        $url = build_url(array('page' => '_SELF', 'type' => 'ticket', 'id' => $id), '_SELF');
+        $url = build_url(array('page' => '_SELF', 'type' => 'ticket', 'id' => $ticket_id), '_SELF');
         if (is_guest()) {
             $url = build_url(array('page' => '_SELF'), '_SELF');
         }
@@ -1143,13 +1169,11 @@ class Module_tickets
             access_denied('I_ERROR');
         }
 
-        require_code('tickets2');
-
         $from = get_param_string('from');
         $to = get_param_string('to');
 
-        list($from_title) = get_ticket_details($from);
-        list($to_title) = get_ticket_details($to);
+        list($from_title) = get_ticket_meta_details($from);
+        list($to_title) = get_ticket_meta_details($to);
 
         require_code('templates_confirm_screen');
         $preview = do_lang_tempcode('CONFIRM_MERGE_TICKETS', escape_html($from_title), escape_html($to_title));
@@ -1171,21 +1195,23 @@ class Module_tickets
         $from = get_param_string('from');
         $to = get_param_string('to');
 
-        list($from_title, $from_topic_id) = get_ticket_details($from);
-        list($to_title) = get_ticket_details($to);
+        list($from_title, $from_topic_id) = get_ticket_meta_details($from);
+        list($to_title) = get_ticket_meta_details($to);
+
+        $ticket_type_id_from = $GLOBALS['SITE_DB']->query_select_value_if_there('tickets', 'ticket_type', array('ticket_id' => $from));
+        $ticket_type_id_to = $GLOBALS['SITE_DB']->query_select_value_if_there('tickets', 'ticket_type', array('ticket_id' => $to));
 
         // Add into new ticket
         $_home_url = build_url(array('page' => '_SELF', 'type' => 'ticket', 'id' => $to, 'redirect' => null), '_SELF', null, false, true, true);
         $home_url = $_home_url->evaluate();
-        $forum = 1;
-        $topic_id = 1;
-        $_ticket_type_id = 1; // These will be returned by reference
-        $_comments_all = get_ticket_posts($from, $forum, $topic_id, $_ticket_type_id);
-        if (count($_comments_all) == 0) {
+        $forum = 0; // Returned by reference
+        $topic_id = 0; // Returned by reference
+        $ticket_posts_all = get_ticket_posts($from, $forum, $topic_id);
+        if (count($ticket_posts_all) == 0) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'ticket'));
         }
-        foreach ($_comments_all as $comment) {
-            ticket_add_post($comment['member'], $to, $_ticket_type_id, $comment['title'], $comment['message_comcode'], $home_url, isset($comment['staff_only']) && $comment['staff_only'], $comment['date']);
+        foreach ($ticket_posts_all as $comment) {
+            ticket_add_post($comment['member'], $to, $ticket_type_id_to, $comment['title'], $comment['message_comcode'], $home_url, isset($comment['staff_only']) && $comment['staff_only'], $comment['date']);
         }
 
         // Notification to support operator
@@ -1222,8 +1248,8 @@ class Module_tickets
         $home_url = $_home_url->evaluate();
         $merge_title = do_lang('TICKETS_MERGED_TITLE');
         $merge_post = do_lang('TICKETS_MERGED_POST', $to_title);
-        ticket_add_post(null, $from, $_ticket_type_id, $merge_title, $merge_post, $home_url, false);
-        $email = $GLOBALS['FORUM_DRIVER']->get_member_email_address($_comments_all[0]['member']);
+        ticket_add_post(null, $from, $ticket_type_id_from, $merge_title, $merge_post, $home_url, false);
+        $email = $GLOBALS['FORUM_DRIVER']->get_member_email_address($ticket_posts_all[0]['member']);
         send_ticket_email($from, $merge_title, $merge_post, $home_url, $email, null, null);
 
         // Closed old ticket
@@ -1250,7 +1276,7 @@ class Module_tickets
 
         $ticket_id = get_param_string('ticket_id');
 
-        list($ticket_title) = get_ticket_details($ticket_id);
+        list($ticket_title) = get_ticket_meta_details($ticket_id);
 
         $username = post_param_string('username');
         $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($username);
@@ -1313,7 +1339,7 @@ class Module_tickets
 
         $ticket_id = get_param_string('ticket_id');
 
-        list($ticket_title) = get_ticket_details($ticket_id);
+        list($ticket_title) = get_ticket_meta_details($ticket_id);
 
         $member_id = get_param_integer('member_id');
 

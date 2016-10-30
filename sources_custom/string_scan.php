@@ -2925,7 +2925,6 @@ function string_scan($lang, $do_guessing = false)
         CONFIG_OPTION_ticket_mail_server_port
         CONFIG_OPTION_ticket_mail_server_type
         CONFIG_OPTION_ticket_mail_username
-        CONFIG_OPTION_ticket_member_forums
         CONFIG_OPTION_ticket_text
         CONFIG_OPTION_ticket_type_forums
         CONFIG_OPTION_topic_pin
@@ -6588,7 +6587,6 @@ function string_scan($lang, $do_guessing = false)
         TICKET_MAIL_SERVER_PORT
         TICKET_MAIL_SERVER_TYPE
         TICKET_MAIL_USERNAME
-        TICKET_MEMBER_FORUMS
         TICKET_NEW_MESSAGE_FOR_STAFF
         TICKET_NEW_STAFF
         TICKET_OTHERS_HACK
@@ -6598,7 +6596,6 @@ function string_scan($lang, $do_guessing = false)
         TICKET_STAFF_ONLY
         TICKET_STAFF_ONLY_DESCRIPTION
         TICKET_STAFF_ONLY_REPLY
-        TICKET_SYSTEM_WEIRD
         TICKET_TYPE_FORUMS
         TICKET_UNASSIGN
         TICKET_UNASSIGNED_BODY
@@ -9387,7 +9384,6 @@ function string_scan($lang, $do_guessing = false)
         SUPPORT_SEARCH_FAQ
         SUPPORT_TICKET
         SUPPORT_TICKETS
-        SUPPORT_TICKETS_FOR_MEMBER
         SUPPORT_TICKETS_FOR_TYPE
         SURNAME
         SURVEYS

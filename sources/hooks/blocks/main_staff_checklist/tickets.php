@@ -36,11 +36,10 @@ class Hook_checklist_tickets
 
         require_lang('tickets');
         require_code('tickets');
-        require_code('tickets2');
 
         $outstanding = 0;
 
-        $tickets = get_tickets(get_member(), null, false, true);
+        $tickets = get_tickets(array(), false, true);
         if ($tickets !== null) {
             foreach ($tickets as $topic) {
                 if ($topic['closed'] == 0) {

@@ -133,7 +133,6 @@ class Hook_addon_registry_tickets
             'sources/tickets_email_integration.php',
             'sources/hooks/systems/cron/tickets_email_integration.php',
             'sources/hooks/systems/config/ticket_forum_name.php',
-            'sources/hooks/systems/config/ticket_member_forums.php',
             'sources/hooks/systems/config/ticket_text.php',
             'sources/hooks/systems/config/ticket_type_forums.php',
             'sources/hooks/systems/config/ticket_mail_on.php',
