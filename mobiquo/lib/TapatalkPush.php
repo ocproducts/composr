@@ -303,10 +303,16 @@ class TapatalkPush extends TapatalkBasePush
             'author_ua' => self::getClientUserAgent(),
             'from_app' => self::getIsFromApp(),
 
-            'userid' => implode(',', array_map('strval', $member_ids)),
+            'userid' => implode(',', array_map('strval', $member_ids)), // Being sent to these members
 
             'push' => 1,
         );
+
+        if ($type == 'like') {
+            $arr['author'] = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
+            $arr['authorid'] = get_member();
+            $arr['author_type'] = self::check_return_user_type(get_member());
+        }
 
         if ($is_pt) {
             $arr += array(

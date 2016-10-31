@@ -41,7 +41,7 @@ function get_active_support_user()
 }
 
 /**
- * Build a list of ticket types.
+ * Find who a ticket is assigned to.
  *
  * @param  ID_TEXT $ticket_id Ticket ID
  * @return array Map of assigned members (member ID to display name)
