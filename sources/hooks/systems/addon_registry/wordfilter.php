@@ -122,7 +122,7 @@ class Hook_addon_registry_wordfilter
     public function tpl_previews()
     {
         return array(
-            'templates/WORDFILTER_SCREEN.tpl' => 'administrative__wordfilter_screen'
+            'templates/WORDFILTER_SCREEN.tpl' => 'administrative__wordfilter_screen',
         );
     }
 

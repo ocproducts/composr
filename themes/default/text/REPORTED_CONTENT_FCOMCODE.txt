@@ -1,0 +1,4 @@
+{!REPORTED_CONTENT,[url param="{CONTENT_TITLE#}"]{CONTENT_URL@}[/url],{CONTENT_MEMBER}}
+
+/// {!cns:PUT_YOUR_REPORT_BELOW} \\\
+

@@ -330,7 +330,6 @@ function get_table_descriptions()
         'sms_log' => 'logs what SMS messages were sent out on behalf of what users and when',
         'staff_tips_dismissed' => 'stores what webmaster tips (Admin Zone dashboard) have been read so far',
         'trackbacks' => 'stores trackbacks for all kinds of content',
-        'tracking' => 'stores tracking for all content that supports it except forum/topic tracking (Composr 4.2 doesn\'t really use this table much, except for the staff-messaging tracking)',
         'translate' => 'very important table, stores most of the text; this table exists to internationalise content and also to store compiled Comcode',
         'tutorial_links' => 'used by the Composr documentation, don\'t worry about this table',
         'urls_checked' => 'stores whether URLs exists, may be used by any system within Composr',

@@ -143,7 +143,7 @@ class Hook_addon_registry_import
             'templates/IMPORT_ACTION_SCREEN.tpl' => 'administrative__import_action_screen',
             'templates/IMPORT_MESSAGE.tpl' => 'administrative__import_action_screen',
             'text/IMPORT_MKPORTAL_FCOMCODEPAGE.txt' => 'administrative__import_mkportal_fcomcodepage',
-            'text/IMPORT_PHPNUKE_FCOMCODEPAGE.txt' => 'administrative__import_phpnuke_fcomcodepage'
+            'text/IMPORT_PHPNUKE_FCOMCODEPAGE.txt' => 'administrative__import_phpnuke_fcomcodepage',
         );
     }
 

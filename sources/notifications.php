@@ -136,14 +136,14 @@ function do_notification_template($codename, $parameters = null, $lang = null, $
 function dispatch_notification($notification_code, $code_category, $subject, $message, $to_member_ids = null, $from_member_id = null, $advanced_parameters = array())
 {
     $priority = isset($advanced_parameters['priority']) ? $advanced_parameters['priority'] : 3; // The message priority (1=urgent, 3=normal, 5=low)
-    $store_in_staff_messaging_system = isset($advanced_parameters['store_in_staff_messaging_system']) ? $advanced_parameters['store_in_staff_messaging_system'] : false; // Whether to create a topic for discussion (ignored if the staff_messaging addon not installed)
+    $create_ticket = isset($advanced_parameters['create_ticket']) ? $advanced_parameters['create_ticket'] : false; // Whether to create a topic for discussion (ignored if the tickets addon not installed)
     $no_cc = isset($advanced_parameters['no_cc']) ? $advanced_parameters['no_cc'] : false; // Whether to NOT CC to the CC address
     $no_notify_for__notification_code = isset($advanced_parameters['no_notify_for__notification_code']) ? $advanced_parameters['no_notify_for__notification_code'] : null; // DO NOT send notifications to: The notification code (null: no restriction)
     $no_notify_for__code_category = isset($advanced_parameters['no_notify_for__code_category']) ? $advanced_parameters['no_notify_for__code_category'] : null; // DO NOT send notifications to: The category within the notification code (null: none / no restriction)
-    $subject_prefix = isset($advanced_parameters['subject_prefix']) ? $advanced_parameters['subject_prefix'] : ''; // Only relevant if $store_in_staff_messaging_system is true: subject prefix for storage
-    $subject_suffix = isset($advanced_parameters['subject_suffix']) ? $advanced_parameters['subject_suffix'] : ''; // Only relevant if $store_in_staff_messaging_system is true: subject suffix for storage
-    $body_prefix = isset($advanced_parameters['body_prefix']) ? $advanced_parameters['body_prefix'] : ''; // Only relevant if $store_in_staff_messaging_system is true: body prefix for storage
-    $body_suffix = isset($advanced_parameters['body_prefix']) ? $advanced_parameters['body_prefix'] : ''; // Only relevant if $store_in_staff_messaging_system is true: body suffix for storage
+    $subject_prefix = isset($advanced_parameters['subject_prefix']) ? $advanced_parameters['subject_prefix'] : ''; // Only relevant if $create_ticket is true: subject prefix for storage
+    $subject_suffix = isset($advanced_parameters['subject_suffix']) ? $advanced_parameters['subject_suffix'] : ''; // Only relevant if $create_ticket is true: subject suffix for storage
+    $body_prefix = isset($advanced_parameters['body_prefix']) ? $advanced_parameters['body_prefix'] : ''; // Only relevant if $create_ticket is true: body prefix for storage
+    $body_suffix = isset($advanced_parameters['body_prefix']) ? $advanced_parameters['body_prefix'] : ''; // Only relevant if $create_ticket is true: body suffix for storage
     $attachments = isset($advanced_parameters['attachments']) ? $advanced_parameters['attachments'] : null; // A list of attachments (each attachment being a map, path=>filename) (null: none)
     $use_real_from = isset($advanced_parameters['use_real_from']) ? $advanced_parameters['use_real_from'] : false; // Whether we will make a "reply to" direct -- we only do this if we're allowed to disclose email addresses for this particular notification type (i.e. if it's a direct contact)
     $send_immediately = isset($advanced_parameters['send_immediately']) ? $advanced_parameters['send_immediately'] : false; // Whether to send immediately rather than script end; this may be the case if the notification settings are expected to change before script end
@@ -165,7 +165,7 @@ function dispatch_notification($notification_code, $code_category, $subject, $me
 
     $dispatcher = new Notification_dispatcher($notification_code, $code_category, $subject, $message, $to_member_ids, $from_member_id);
     $dispatcher->priority = $priority;
-    $dispatcher->store_in_staff_messaging_system = $store_in_staff_messaging_system;
+    $dispatcher->create_ticket = $create_ticket;
     $dispatcher->no_cc = $no_cc;
     $dispatcher->no_notify_for__notification_code = $no_notify_for__notification_code;
     $dispatcher->no_notify_for__code_category = $no_notify_for__code_category;
@@ -230,7 +230,7 @@ class Notification_dispatcher
     public $to_member_ids = null;
     public $from_member_id = null;
     public $priority = null;
-    public $store_in_staff_messaging_system = null;
+    public $create_ticket = null;
     public $no_cc = null;
     public $no_notify_for__notification_code = null;
     public $no_notify_for__code_category = null;
@@ -245,7 +245,7 @@ class Notification_dispatcher
      * Construct notification dispatcher.
      *
      * @param  ID_TEXT $notification_code The notification code to use
-     * @param  ?SHORT_TEXT $code_category The category within the notification code (null: none). If it is to have $store_in_staff_messaging_system, it must have the format <type>_<id>
+     * @param  ?SHORT_TEXT $code_category The category within the notification code (null: none). If it is to have $create_ticket, it must have the format <type>_<id>
      * @param  SHORT_TEXT $subject Message subject (in Comcode)
      * @param  LONG_TEXT $message Message body (in Comcode)
      * @param  ?array $to_member_ids List of enabled members to limit sending to (null: everyone)
@@ -293,7 +293,7 @@ class Notification_dispatcher
         require_lang('notifications');
         require_code('mail');
 
-        if (($this->store_in_staff_messaging_system) && (addon_installed('staff_messaging'))) {
+        if (($this->create_ticket) && (addon_installed('tickets'))) {
             require_lang('messaging');
 
             list($type, $id) = explode('_', $this->code_category, 2);

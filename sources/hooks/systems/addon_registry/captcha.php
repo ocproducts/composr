@@ -161,7 +161,7 @@ class Hook_addon_registry_captcha
     public function tpl_previews()
     {
         return array(
-            'templates/FORM_SCREEN_INPUT_CAPTCHA.tpl' => 'form_screen_input_captcha'
+            'templates/FORM_SCREEN_INPUT_CAPTCHA.tpl' => 'form_screen_input_captcha',
         );
     }
 

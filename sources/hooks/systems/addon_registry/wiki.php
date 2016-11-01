@@ -171,7 +171,7 @@ class Hook_addon_registry_wiki
             'templates/WIKI_PAGE_SCREEN.tpl' => 'wiki_page_screen',
             'templates/WIKI_RATING.tpl' => 'wiki_page_screen',
             'templates/WIKI_POSTING_SCREEN.tpl' => 'wiki_posting_screen',
-            'templates/WIKI_RATING_FORM.tpl' => 'wiki_page_screen'
+            'templates/WIKI_RATING_FORM.tpl' => 'wiki_page_screen',
         );
     }
 

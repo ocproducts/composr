@@ -132,7 +132,7 @@ class Hook_addon_registry_awards
     {
         return array(
             'templates/BLOCK_MAIN_AWARDS.tpl' => 'block_main_awards',
-            'templates/AWARDED_CONTENT.tpl' => 'awarded_content'
+            'templates/AWARDED_CONTENT.tpl' => 'awarded_content',
         );
     }
 

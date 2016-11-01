@@ -106,4 +106,13 @@
 	{+START,IF,{$CONFIG_OPTION,show_content_tagging}}{TAGS}{+END}
 
 	{+START,IF,{$CONFIG_OPTION,show_screen_actions}}{$BLOCK,failsafe=1,block=main_screen_actions,title={$METADATA,title}}{+END}
+
+	{+START,INCLUDE,STAFF_ACTIONS}
+		{+START,IF,{$ADDON_INSTALLED,tickets}}
+			1_URL={$PAGE_LINK,_SEARCH:report_content:content_type=wiki_page:content_id={ID}:url={$SELF_URL&}}
+			1_TITLE={!report_content:REPORT_THIS}
+			1_ICON=buttons/report
+			1_REL=report
+		{+END}
+	{+END}
 </div>

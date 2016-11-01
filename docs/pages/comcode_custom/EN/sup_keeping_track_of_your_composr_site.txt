@@ -25,8 +25,6 @@ The Security log gives you a list of failed logins and anywhere a CAPTCHA form h
 
 The error log is as it sounds and it displays errors which Composr has reported. You can keep an eye on this log to make sure nothing is being reported which will seriously hinder your website performance.
 
-Also in this section is the contact us messaging log where you can keep track of all the messages sent through the contact us system (if you're using that).
-
 There are also a range of other logs such as:
 [list]
 [*] eCommerce log

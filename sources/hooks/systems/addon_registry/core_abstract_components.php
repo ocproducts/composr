@@ -139,7 +139,7 @@ class Hook_addon_registry_core_abstract_components
             'templates/STANDARDBOX_default.tpl' => 'standardbox_default',
             'templates/STANDARDBOX_accordion.tpl' => 'standardbox_accordion',
             'templates/HANDLE_CONFLICT_RESOLUTION.tpl' => 'administrative__handle_conflict_resolution',
-            'templates/STAFF_ACTIONS.tpl' => 'staff_actions'
+            'templates/STAFF_ACTIONS.tpl' => 'staff_actions',
         );
     }
 

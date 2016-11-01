@@ -229,7 +229,7 @@ class Hook_addon_registry_calendar
             'templates/CALENDAR_YEAR_MONTH.tpl' => 'calendar_year_view',
             'templates/CALENDAR_YEAR.tpl' => 'calendar_year_view',
             'templates/CALENDAR_EVENT_SCREEN.tpl' => 'calendar_event_screen',
-            'templates/CALENDAR_EVENT_BOX.tpl' => 'calendar_event_box'
+            'templates/CALENDAR_EVENT_BOX.tpl' => 'calendar_event_box',
         );
     }
 

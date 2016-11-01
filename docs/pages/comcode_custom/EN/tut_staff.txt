@@ -38,11 +38,11 @@ You can also share links and notes on the Admin Zone dashboard.
 
 More can be read on the Admin Zone in the [page="_SEARCH:tut_adminzone"]Admin Zone overview tutorial[/page].
 
-[title="3"]Staff notifications, and the messaging system[/title]
+[title="3"]Staff notifications, and the tickets system[/title]
 
 Staff have access to a wide variety of notifications, to be informed on what is happening on the site.
 
-In particular, if the [tt]main_contact_us[/tt] (staff messaging system) is being used for user contact messages, messages will be directed to a shared location in the Admin Zone (and notifications sent out), and staff will be able to take responsibility for handling the contents of the message.
+In particular, if the [tt]main_contact_us[/tt] is being used for user contact messages, messages will be directed to support tickets (and notifications sent out), and staff will be able to take responsibility for handling the contents of the message.
 
 [title="3"]Notes within content[/title]
 
@@ -85,17 +85,18 @@ There are a few angles to version control on a Composr site:
 On point '3':
 [tt]git[/tt] is a standard tool to use when making code changes, but not for database changes. However it is possible to use WebDAV in coordination with [tt]git[/tt] to manually do formal "commits" when changes are made to a website. If you are an enterprise interested in this functionality, you'll likely want to take on a developer (such as ocProducts) as a consultant to test/tune this functionality to your particular content needs, or set up an automated system if appropriate.
 
-[title="2"]Post reporting[/title]
+[title="2"]Content reporting[/title]
 
 [surround]
-[media width="150" description="A post needs a report / warning" float="left"]data_custom/images/docs/tut_staff/staff_report_1.png[/media]
+[media width="150" description="A forum post needs a report / warning" float="left"]data_custom/images/docs/tut_staff/staff_report_1.png[/media]
 [media width="150" description="An offended member reports the post" float="left"]data_custom/images/docs/tut_staff/staff_report_2.png[/media]
-[media width="150" description="The staff will see the report in the 'reported posts' forum" float="right"]data_custom/images/docs/tut_staff/staff_report_3.png[/media]
-On busy forums, it is often impossible for staff to read every post that is made. Therefore there is a facility for members to report problem posts to the staff (with an additional reporter message), so that the staff can then perform any appropriate action on the post.
+On busy forums, it is often impossible for staff to read every post that is made. Therefore there is a facility (if the [tt]tickets[/tt] addon is installed) for members to report problem posts to the staff (with an additional reporter message), so that the staff can then perform any appropriate action on the post.
 
-Once a post is reported, the reported is actually created as a topic in the default 'Reported posts' forum. This method is, at the time of writing, unique to Composr, and allows staff to collaborate together to decide how to deal with the problem, as well as allowing clarity so that all staff know how the issue was reported and dealt with.
+As well as reporting posts, you can also report any kind of content within the system via the embedded "Report this" links.
 
-We have found it often to be the case that staff will report posts themselves, so that they can easily bring them (and possibly their related action) to the attention of other staff.
+Once content is reported, the report is actually created as a support ticket. This method allows staff to collaborate together to decide how to deal with the problem, as well as allowing clarity so that all staff know how the issue was reported and dealt with.
+
+We have found it often to be the case that staff will report content themselves, so that they can easily bring them (and possibly their related action) to the attention of other staff.
 [/surround]
 
 [title="2"]Warning members[/title]
@@ -121,4 +122,4 @@ When members use the Conversr whisper feature to make inline-personal-posts, the
  - [page="_SEARCH:tut_msn"]Advanced techniques for multi-site-networks[/page]
  - [page="_SEARCH:tut_repository"]The Composr Enterprise Repository[/page]
 
-{$SET,tutorial_tags,cns_warnings,cns_reported_posts,Collaboration,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,A discussion on the features Composr provides for members, and for staff - and how permissions divide them.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,cns_warnings,tickets,Collaboration,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,A discussion on the features Composr provides for members, and for staff - and how permissions divide them.}[block]main_tutorial_rating[/block]

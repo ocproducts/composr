@@ -72,10 +72,6 @@ function block_helper_script()
                 }
                 foreach ($addon_files as $file) {
                     if ((substr($file, 0, 21) == 'sources_custom/blocks/') || (substr($file, 0, 15) == 'sources/blocks/')) {
-                        if ($addon_name == 'staff_messaging') {
-                            $addon_name = 'core_feedback_features';
-                        }
-
                         $addons_blocks[basename($file, '.php')] = $addon_name;
                     }
                 }

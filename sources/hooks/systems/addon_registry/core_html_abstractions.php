@@ -143,7 +143,7 @@ class Hook_addon_registry_core_html_abstractions
             'templates/DIV.tpl' => 'div',
             'templates/SPAN.tpl' => 'span',
             'templates/PARAGRAPH.tpl' => 'paragraph',
-            'templates/WITH_WHITESPACE.tpl' => 'with_whitespace'
+            'templates/WITH_WHITESPACE.tpl' => 'with_whitespace',
         );
     }
 

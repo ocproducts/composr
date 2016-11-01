@@ -1663,6 +1663,24 @@ function version_specific()
             perform_search_replace($reps);
         }
 
+        if ($version_database < 11.0) {
+            if ((addon_installed('tickets')) && (get_forum_type() == 'cns')) {
+                require_code('tickets');
+                require_code('cns_forums_action2');
+                $target_forum_id = get_ticket_forum_id(null, false, true);
+                if ($target_forum_id !== null) {
+                    $forum_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forums', 'id', array('f_name' => 'Reported posts forum'));
+                    if ($forum_id !== null) {
+                        cns_delete_forum($forum_id, $target_forum_id);
+                    }
+                    $forum_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forums', 'id', array('f_name' => 'Website "Contact Us" messages'));
+                    if ($forum_id !== null) {
+                        cns_delete_forum($forum_id, $target_forum_id);
+                    }
+                }
+            }
+        }
+
         return true;
     }
 

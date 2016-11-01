@@ -197,7 +197,7 @@ class Hook_addon_registry_shopping
             'templates/CATALOGUE_products_GRID_ENTRY_FIELD.tpl' => 'grid_category_screen__products',
             'templates/CATALOGUE_products_GRID_ENTRY_WRAP.tpl' => 'grid_category_screen__products',
             'templates/RESULTS_products_TABLE.tpl' => 'results_products_table',
-            'templates/ECOM_SHOPPING_CART_STAGE_PAY.tpl' => 'shopping_cart_stage_pay'
+            'templates/ECOM_SHOPPING_CART_STAGE_PAY.tpl' => 'shopping_cart_stage_pay',
         );
     }
 

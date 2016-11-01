@@ -47,7 +47,7 @@ class Hook_checklist_translations
             $status = do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM_STATUS_1', array('_GUID' => 'l578142633c6f3d37776e82a869deb91'));
         }
 
-        $url = build_url(array('page' => 'admin_lang', 'type' => 'content'), get_module_zone('admin_messaging'));
+        $url = build_url(array('page' => 'admin_lang', 'type' => 'content'), get_module_zone('admin_lang'));
 
         require_lang('lang');
 

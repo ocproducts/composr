@@ -182,7 +182,7 @@ class Hook_addon_registry_iotds
             'templates/IOTD_ADMIN_CHOOSE_SCREEN.tpl' => 'administrative__iotd_admin_choose_screen',
             'templates/BLOCK_MAIN_IOTD.tpl' => 'block_main_iotd',
             'templates/IOTD_BOX.tpl' => 'iotd_view_screen_iotd',
-            'templates/IOTD_ENTRY_SCREEN.tpl' => 'iotd_view_screen'
+            'templates/IOTD_ENTRY_SCREEN.tpl' => 'iotd_view_screen',
         );
     }
 

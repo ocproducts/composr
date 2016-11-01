@@ -121,7 +121,7 @@ class Hook_addon_registry_cns_member_avatars
     public function tpl_previews()
     {
         return array(
-            'templates/CNS_EDIT_AVATAR_TAB.tpl' => 'cns_edit_avatar_tab'
+            'templates/CNS_EDIT_AVATAR_TAB.tpl' => 'cns_edit_avatar_tab',
         );
     }
 

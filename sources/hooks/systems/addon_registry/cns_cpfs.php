@@ -123,7 +123,7 @@ class Hook_addon_registry_cns_cpfs
     {
         return array(
             'templates/CNS_CPF_PERMISSIONS_TAB.tpl' => 'cns_cpf_permissions_tab',
-            'templates/CNS_CPF_STATS_SCREEN.tpl' => 'administrative__cns_cpf_stats_screen'
+            'templates/CNS_CPF_STATS_SCREEN.tpl' => 'administrative__cns_cpf_stats_screen',
         );
     }
 

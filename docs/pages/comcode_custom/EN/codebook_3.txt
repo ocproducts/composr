@@ -1177,7 +1177,7 @@ This section is not designed as primary documentation for the tools. Those tools
 |-
 | [tt]data/form_to_email.php[/tt]
 | Pipes POSTed data to a staff e-mail.
-| [tt]staff_messaging[/tt]
+| [tt]core_feedback_features[/tt]
 | Web browser POST target
 |-
 | [tt]data/opensearch.php[/tt]

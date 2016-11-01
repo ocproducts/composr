@@ -123,7 +123,7 @@ class Hook_addon_registry_msn
     {
         return array(
             'templates/BLOCK_SIDE_NETWORK.tpl' => 'block_side_network',
-            'templates/NETLINK.tpl' => 'netlink'
+            'templates/NETLINK.tpl' => 'netlink',
         );
     }
 

@@ -481,8 +481,8 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
         if (cns_may_post_in_topic($forum_id, $topic_id, $topic_info['t_cache_last_member_id'], $topic_info['t_is_open'] == 0, null, true)) {
             $out['may_reply_private_post'] = true;
         }
-        if (cns_may_report_post()) {
-            $out['may_report_posts'] = true;
+        if ((has_privilege(get_member(), 'may_report_content')) && (addon_installed('tickets'))) {
+            $out['may_report_content'] = true;
         }
         if (cns_may_make_private_topic()) {
             $out['may_pt_members'] = true;
@@ -770,7 +770,8 @@ function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $render
     }
 
     if ($rendering_context != 'tickets') {
-        if ((array_key_exists('may_report_posts', $topic_info)) && (addon_installed('cns_reported_posts')) && (get_bot_type() === null)) {
+        if ((array_key_exists('may_report_content', $topic_info)) && (addon_installed('tickets')) && (get_bot_type() === null)) {
+            require_lang('report_content');
             $action_url = build_url(array('page' => 'topics', 'type' => 'report_post', 'id' => $_postdetails['id']), get_module_zone('topics'));
             $_title = do_lang_tempcode('_REPORT_POST');
             $_title_full = new Tempcode();

@@ -130,7 +130,7 @@ class Hook_addon_registry_syndication_blocks
             'templates/BLOCK_SIDE_RSS_SUMMARY.tpl' => 'block_side_rss',
             'templates/BLOCK_SIDE_RSS.tpl' => 'block_side_rss',
             'templates/BLOCK_MAIN_RSS_SUMMARY.tpl' => 'block_main_rss',
-            'templates/BLOCK_MAIN_RSS.tpl' => 'block_main_rss'
+            'templates/BLOCK_MAIN_RSS.tpl' => 'block_main_rss',
         );
     }
 

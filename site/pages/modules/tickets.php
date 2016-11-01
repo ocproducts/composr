@@ -1386,4 +1386,119 @@ class Module_tickets
         $redirect_url = build_url(array('page' => '_SELF', 'type' => 'ticket', 'id' => $ticket_id), '_SELF');
         return redirect_screen($this->title, $redirect_url, do_lang_tempcode('SUCCESS'));
     }
+
+    /**
+     * View a message.
+     *
+     * @return Tempcode The message view screen.
+     */
+    public function view_message()
+    {
+/*TODO
+        $id = get_param_string('id', false, INPUT_FILTER_GET_COMPLEX);
+        $message_type = get_param_string('message_type');
+
+        require_css('messaging');
+        require_javascript('checking');
+
+        $take_responsibility_url = build_url(array('page' => '_SELF', 'type' => 'take', 'id' => $id, 'message_type' => $message_type), '_SELF');
+        $responsible = null;
+
+        $forum = get_option('messaging_forum_name');
+
+        // Filter/read comments
+        require_code('feedback');
+        actualise_post_comment(true, $message_type, $id, build_url(array('page' => '_SELF', 'type' => 'view', 'id' => $id), '_SELF', null, false, false, true), null, $forum);
+        $count = 0;
+        $_comments = $GLOBALS['FORUM_DRIVER']->get_forum_topic_posts($GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier($forum, $message_type . '_' . $id, do_lang('COMMENT')), $count);
+        if ((is_array($_comments)) && (array_key_exists(0, $_comments))) {
+            $message_title = $_comments[0]['title'];
+            $message = $_comments[0]['message'];
+            if (isset($_comments[0]['message_comcode'])) {
+                push_lax_comcode(true);
+                $message = comcode_to_tempcode(str_replace('[/staff_note]', '', str_replace('[staff_note]', '', $_comments[0]['message_comcode'])), $GLOBALS['FORUM_DRIVER']->get_guest_id());
+                pop_lax_comcode();
+            }
+            $by = $_comments[0]['username'];
+
+            foreach ($_comments as $i => $comment) {
+                if (is_object($comment['message'])) {
+                    $comment['message'] = $comment['message']->evaluate();
+                }
+                if (substr($comment['message'], 0, strlen(do_lang('AUTO_SPACER_STUB'))) == do_lang('AUTO_SPACER_STUB')) {
+                    $matches = array();
+                    if (preg_match('#' . str_replace('\\{1\\}', '(.+)', preg_quote(do_lang('AUTO_SPACER_TAKE_RESPONSIBILITY'))) . '#', $comment['message'], $matches) != 0) {
+                        $responsible = $matches[1];
+                    }
+                    $_comments[$i] = null;
+                }
+            }
+            $_comments[0] = null;
+        } else {
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        }
+        $comment_details = get_comments($message_type, true, $id, false, $forum, null, $_comments, true);
+
+        // Find who's read this
+        $whos_read = array();
+        if (get_forum_type() == 'cns') {
+            // Read - who has, and when
+            $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier($forum, $message_type . '_' . $id, do_lang('COMMENT'));
+            $rows = $GLOBALS['FORUM_DB']->query_select('f_read_logs', array('l_member_id', 'l_time'), array('l_topic_id' => $topic_id));
+            foreach ($rows as $row) {
+                if (is_guest($row['l_member_id'])) {
+                    continue;
+                }
+
+                $username = $GLOBALS['FORUM_DRIVER']->get_username($row['l_member_id']);
+                $member_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($row['l_member_id'], true);
+                $date = get_timezoned_date_time($row['l_time']);
+                $whos_read[] = array('USERNAME' => $username, 'MEMBER_ID' => strval($row['l_member_id']), 'MEMBER_URL' => $member_url, 'DATE' => $date);
+            }
+        }
+
+        return do_template('MESSAGING_MESSAGE_SCREEN', array(
+            '_GUID' => '61561f1a333b88370ceb66dbbcc0ea4c',
+            'TITLE' => $this->title,
+            'MESSAGE_TITLE' => $message_title,
+            'MESSAGE' => $message,
+            'BY' => $by,
+            'WHOS_READ' => $whos_read,
+            'COMMENT_DETAILS' => $comment_details,
+            'TAKE_RESPONSIBILITY_URL' => $take_responsibility_url,
+            'RESPONSIBLE' => $responsible,
+        ));
+*/
+    }
+
+    /**
+     * Take responsibility for handling a message.
+     *
+     * @return Tempcode Success message.
+     */
+    public function take_responsibility()
+    {
+/*TODO
+        $id = get_param_string('id');
+        $message_type = get_param_string('message_type');
+
+        // Save as responsibility taken
+        $forum = get_option('messaging_forum_name');
+        $username = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
+        $displayname = $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true);
+        $GLOBALS['FORUM_DRIVER']->make_post_forum_topic(
+            $forum,
+            $message_type . '_' . $id,
+            get_member(),
+            '',
+            do_lang('AUTO_SPACER_TAKE_RESPONSIBILITY', $username, $displayname),
+            '',
+            do_lang('COMMENT')
+        );
+
+        // Redirect them back to view screen
+        $url = build_url(array('page' => '_SELF', 'type' => 'view', 'id' => $id, 'message_type' => $message_type), '_SELF');
+        return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
+*/
+    }
 }

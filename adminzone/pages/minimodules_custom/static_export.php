@@ -28,10 +28,6 @@ require_code('files');
 require_code('files2');
 require_code('config2');
 
-if (!addon_installed('staff_messaging')) {
-    warn_exit('Staff Messaging addon must be installed.');
-}
-
 if (get_option('url_scheme') != 'HTM') {
     set_option('url_scheme', 'HTM');
     warn_exit('A URL Scheme of "Use .htm to identify CMS pages" must be enabled before the export can happen, as this is the tidy scheme we export to. It is now enabled - just refresh the browser.');
@@ -211,7 +207,7 @@ if (get_param_integer('save__htaccess', 1) == 1) {
 }
 
 require_code('mail');
-require_lang('messaging');
+require_lang('tickets');
 
 // Mailer
 $robots_data = '';

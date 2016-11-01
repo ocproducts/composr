@@ -163,6 +163,8 @@ class Hook_addon_registry_core_feedback_features
             'sources/hooks/systems/config/is_on_trackbacks.php',
             'sources/hooks/systems/symbols/SHOW_RATINGS.php',
             'themes/default/templates/RATINGS_SHOW.tpl',
+            'sources/blocks/main_contact_simple.php',
+            'data/form_to_email.php',
         );
     }
 
@@ -195,6 +197,7 @@ class Hook_addon_registry_core_feedback_features
             'templates/COMMENT_AJAX_HANDLER.tpl' => 'comments',
             'templates/POST.tpl' => 'comments_wrapper',
             'templates/POST_CHILD_LOAD_LINK.tpl' => 'comments_wrapper',
+            'templates/BLOCK_MAIN_CONTACT_SIMPLE.tpl' => 'block_main_contact_simple',
         );
     }
 
@@ -690,6 +693,45 @@ class Hook_addon_registry_core_feedback_features
                 'MAX' => '1',
                 'CNT' => '1',
                 'CNT_REMAINING' => '10',
+            )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__block_main_contact_simple()
+    {
+        require_lang('cns');
+        $comment_details = do_lorem_template('COMMENTS_POSTING_FORM', array(
+            'JOIN_BITS' => lorem_phrase_html(),
+            'FIRST_POST_URL' => placeholder_url(),
+            'FIRST_POST' => lorem_paragraph_html(),
+            'USE_CAPTCHA' => false,
+            'EMAIL_OPTIONAL' => lorem_word(),
+            'POST_WARNING' => '',
+            'COMMENT_TEXT' => '',
+            'GET_EMAIL' => lorem_word(),
+            'GET_TITLE' => lorem_word(),
+            'EM' => placeholder_emoticon_chooser(),
+            'DISPLAY' => 'block',
+            'TITLE' => lorem_phrase(),
+            'COMMENT_URL' => placeholder_url(),
+            'MAKE_POST' => true,
+            'CREATE_TICKET_MAKE_POST' => true,
+            'NAME' => 'field',
+        ));
+
+        return array(
+            lorem_globalise(do_lorem_template('BLOCK_MAIN_CONTACT_SIMPLE', array(
+                'BLOCK_ID' => lorem_word(),
+                'EMAIL_OPTIONAL' => lorem_word_html(),
+                'COMMENT_DETAILS' => $comment_details,
+                'MESSAGE' => lorem_phrase(),
             )), null, '', true)
         );
     }

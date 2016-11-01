@@ -310,7 +310,7 @@ class Hook_addon_registry_core_configuration
     {
         return array(
             'templates/CONFIG_CATEGORY_SCREEN.tpl' => 'administrative__config_category_screen',
-            'templates/XML_CONFIG_SCREEN.tpl' => 'administrative__xml_config_screen'
+            'templates/XML_CONFIG_SCREEN.tpl' => 'administrative__xml_config_screen',
         );
     }
 

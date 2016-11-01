@@ -127,7 +127,7 @@ class Hook_addon_registry_cns_warnings
         return array(
             'templates/CNS_SAVED_WARNING.tpl' => 'cns_saved_warning',
             'templates/CNS_WARNING_HISTORY_SCREEN.tpl' => 'administrative__cns_warning_history_screen',
-            'templates/CNS_MEMBER_PROFILE_WARNINGS.tpl' => 'cns_member_profile_warnings'
+            'templates/CNS_MEMBER_PROFILE_WARNINGS.tpl' => 'cns_member_profile_warnings',
         );
     }
 

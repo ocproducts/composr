@@ -2382,7 +2382,6 @@ function string_scan($lang, $do_guessing = false)
         CONFIG_GROUP_DEFAULT_DESCRIP_STATISTICS
         CONFIG_GROUP_DEFAULT_DESCRIP_USERS_ONLINE_BLOCK
         CONFIG_GROUP_DESCRIP_CHECK_LIST
-        CONFIG_GROUP_DESCRIP_CONTACT_US_MESSAGING
         CONFIG_GROUP_DESCRIP_IMAP
         CONFIG_GROUP_DESCRIP_LDAP
         CONFIG_GROUP_DESCRIP_PERSONAL_BLOCK
@@ -2742,7 +2741,6 @@ function string_scan($lang, $do_guessing = false)
         CONFIG_OPTION_md_default_sort_order_VALUE_m_username__ASC
         CONFIG_OPTION_members_per_page
         CONFIG_OPTION_message_received_emails
-        CONFIG_OPTION_messaging_forum_name
         CONFIG_OPTION_minimum_autocomplete_length
         CONFIG_OPTION_minimum_autocomplete_past_search
         CONFIG_OPTION_minimum_gamble_amount
@@ -2836,7 +2834,6 @@ function string_scan($lang, $do_guessing = false)
         CONFIG_OPTION_quota_url
         CONFIG_OPTION_random_avatars
         CONFIG_OPTION_remember_me_by_default
-        CONFIG_OPTION_reported_posts_forum
         CONFIG_OPTION_require_new_member_validation
         CONFIG_OPTION_restricted_usernames
         CONFIG_OPTION_reverse_thumb_order
@@ -2995,7 +2992,6 @@ function string_scan($lang, $do_guessing = false)
         CONFLICTING_ZONE_NAME__PAGE
         CONNECT_DB_ERROR
         CONNECT_ERROR
-        CONTACT_US_MESSAGING
         CONTENT_DATE_TIME
         CONTENT_NEEDING_REVIEWING
         CONTENT_OWNER
@@ -3892,7 +3888,6 @@ function string_scan($lang, $do_guessing = false)
         DOC_MEMBERS
         DOC_MENUS
         DOC_MERGE_MEMBERS
-        DOC_MESSAGING
         DOC_MULTI_MODERATIONS
         DOC_NETLINK
         DOC_NETLINK_1
@@ -5109,8 +5104,6 @@ function string_scan($lang, $do_guessing = false)
         MERGING_ON_MSN
         MESSAGES
         MESSAGE_RECEIVED_EMAILS
-        MESSAGING_FORUM_NAME
-        MESSAGING_NOTIFICATION_WRAPPER
         META_DESCRIPTION
         MINIMALISTIC_SITE
         MINIMODULE
@@ -5204,7 +5197,6 @@ function string_scan($lang, $do_guessing = false)
         MODULE_TRANS_NAME_admin_lang
         MODULE_TRANS_NAME_admin_lookup
         MODULE_TRANS_NAME_admin_menus
-        MODULE_TRANS_NAME_admin_messaging
         MODULE_TRANS_NAME_admin_newsletter
         MODULE_TRANS_NAME_admin_permissions
         MODULE_TRANS_NAME_admin_phpinfo
@@ -5412,7 +5404,6 @@ function string_scan($lang, $do_guessing = false)
         NOTIFICATION_TYPE_ip_address_sharing
         NOTIFICATION_TYPE_low_disk_space
         NOTIFICATION_TYPE_low_stock
-        NOTIFICATION_TYPE_messaging
         NOTIFICATION_TYPE_needs_validation
         NOTIFICATION_TYPE_pointstore_request_custom
         NOTIFICATION_TYPE_pointstore_request_forwarding
@@ -5858,7 +5849,7 @@ function string_scan($lang, $do_guessing = false)
         PRIVILEGE_may_choose_custom_title
         PRIVILEGE_may_download_gallery
         PRIVILEGE_may_enable_staff_notifications
-        PRIVILEGE_may_report_post
+        PRIVILEGE_may_report_content
         PRIVILEGE_may_unblind_own_poll
         PRIVILEGE_member_maintenance
         PRIVILEGE_moderate_my_private_rooms
@@ -6035,7 +6026,6 @@ function string_scan($lang, $do_guessing = false)
         REPEAT_PERMISSION_NOTICE
         REPLACEMENT
         REPLACE_PERIODIC
-        REPORTED_POSTS_FORUM
         REPRESENTATIVE_IMAGE
         REQUIRES_MORE_INFO
         REQUIRES_TTF
@@ -7126,7 +7116,6 @@ function string_scan($lang, $do_guessing = false)
         _MEMORY_USAGE
         _MERGE
         _MERGE_WIKI_POSTS
-        _MESSAGING_FORUM_NAME
         _MISSING_INSTALLATION_FILE
         _MODIFIED
         _MUST_BE_EMAIL_DOMAIN
@@ -8797,7 +8786,6 @@ function string_scan($lang, $do_guessing = false)
         NO_POSTS
         NO_POSTS_YET
         NO_PT_FROM_ALLOW
-        NO_REPORTED_POST_FORUM
         NO_RESET_ACCESS
         NO_RESULTS
         NO_RESULTS_DAYS

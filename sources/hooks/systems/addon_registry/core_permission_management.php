@@ -147,7 +147,7 @@ class Hook_addon_registry_core_permission_management
             'templates/PERMISSION_COLUMN_SIZER.tpl' => 'administrative__permission_s_permissions_screen',
             'templates/PERMISSION_ROW.tpl' => 'administrative__permission_s_permissions_screen',
             'templates/PERMISSION_PRIVILEGES_SECTION.tpl' => 'administrative__permission_s_permissions_screen',
-            'templates/PERMISSION_PRIVILEGES_SCREEN.tpl' => 'administrative__permission_s_permissions_screen'
+            'templates/PERMISSION_PRIVILEGES_SCREEN.tpl' => 'administrative__permission_s_permissions_screen',
         );
     }
 

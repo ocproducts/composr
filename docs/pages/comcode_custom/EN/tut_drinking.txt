@@ -246,14 +246,14 @@ Honourable mentions...
 | Clubs
 |-
 ! Contact forms
-| staff_messaging
-| Various blocks exist that let you place contact forms on your website. The messaging system provides a way for staff to coordinate to respond to enquiries.
+| tickets/core_feedback_features
+| 
 | N/A
 |
 |-
 ! Support tickets
-| tickets
-| Support tickets are a step up from contact forms, allowing an ongoing conversation with members.
+| tickets/core_feedback_features
+| Various blocks exist that let you place contact forms on your website, tying either to support tickets or staff e-mailing. The tickets system provides a way for staff to have an ongoing conversation with members and also coordinate.
 | There are multiple support ticket types.
 |
 |-

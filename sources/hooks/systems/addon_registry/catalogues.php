@@ -240,7 +240,7 @@ class Hook_addon_registry_catalogues
             'templates/CATALOGUE_DEFAULT_FIELDMAP_ENTRY_WRAP.tpl' => 'entry_screen',
             'templates/CATALOGUE_DEFAULT_FIELDMAP_ENTRY_FIELD.tpl' => 'entry_screen',
 
-            'templates/CATALOGUE_DEFAULT_ENTRY_SCREEN.tpl' => 'entry_screen'
+            'templates/CATALOGUE_DEFAULT_ENTRY_SCREEN.tpl' => 'entry_screen',
         );
     }
 

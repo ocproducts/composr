@@ -157,7 +157,7 @@ class Hook_addon_registry_core_addon_management
             'templates/MODULE_SCREEN.tpl' => 'administrative__module_screen',
             'templates/ADDON_INSTALL_FILES_WARNING.tpl' => 'administrative__addon_install_confirm_screen',
             'templates/ADDON_INSTALL_FILES.tpl' => 'administrative__addon_install_confirm_screen',
-            'templates/ADDON_INSTALL_WARNING.tpl' => 'administrative__addon_install_confirm_screen'
+            'templates/ADDON_INSTALL_WARNING.tpl' => 'administrative__addon_install_confirm_screen',
         );
     }
 

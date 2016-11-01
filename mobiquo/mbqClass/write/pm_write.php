@@ -36,7 +36,8 @@ class CMSPmWrite
             access_denied('NOT_AS_GUEST');
         }
 
-        report_post($msg_id);
+        require_code('report_content');
+        report_post_headless($msg_id, '', is_invisible() ? 1 : 0);
     }
 
     /**

@@ -148,7 +148,7 @@ class Hook_addon_registry_core_cleanup_tools
         return array(
             'templates/CLEANUP_COMPLETED_SCREEN.tpl' => 'administrative__cleanup_completed_screen',
             'templates/CLEANUP_ORPHANED_UPLOADS.tpl' => 'administrative__cleanup_completed_screen',
-            'templates/CLEANUP_PAGE_STATS.tpl' => 'administrative__cleanup_completed_screen'
+            'templates/CLEANUP_PAGE_STATS.tpl' => 'administrative__cleanup_completed_screen',
         );
     }
 

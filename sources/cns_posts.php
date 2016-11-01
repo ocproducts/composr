@@ -30,6 +30,48 @@ function init__cns_posts()
 }
 
 /**
+ * Find whether a member can access a particular post.
+ *
+ * @param  AUTO_LINK $post_id Post ID
+ * @param  ?MEMBER $member_id Member involved (null: current member)
+ * @param  ?array $post_details Post row (null: lookup)
+ * @return boolean Whether they can
+ */
+function has_post_access($post_id, $member_id = null, $post_details = null)
+{
+    if ($member_id === null) {
+        $member_id = get_member();
+    }
+
+    if ($post_details === null) {
+        $table_prefix = $GLOBALS['FORUM_DB']->get_table_prefix();
+        $_post_details = $GLOBALS['FORUM_DB']->query_select('f_posts p JOIN ' . $table_prefix . 'f_topics t ON t.id=p.p_topic_id', array('*', 't.id AS topic_id', 'p.id AS post_id'), array('p.id' => $post_id), '', 1);
+        if (!isset($_post_details[0])) {
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'post'));
+        }
+        $post_details = $_post_details[0];
+    }
+
+    if (!has_privilege($member_id, 'view_other_pt')) {
+        if (($post_details['p_intended_solely_for'] !== null) && ($post_details['p_intended_solely_for'] != $member_id) && ($post_details['p_poster'] != $member_id)) {
+            return false;
+        }
+    }
+
+    if (addon_installed('unvalidated')) {
+        if (($post_details['p_validated'] == 0) && (!has_privilege($member_id, 'jump_to_unvalidated'))) {
+            return false;
+        }
+    }
+
+    if (!has_topic_access($post_details['topic_id'], $member_id, $post_details/*Contains topic details too*/)) {
+        return false;
+    }
+
+    return true;
+}
+
+/**
  * Find whether a member may post in a certain topic.
  *
  * @param  AUTO_LINK $forum_id The forum ID of the forum the topic is in.

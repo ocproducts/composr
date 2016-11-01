@@ -130,7 +130,7 @@ class Hook_addon_registry_unvalidated
         return array(
             'templates/UNVALIDATED_SECTION.tpl' => 'administrative__unvalidated_screen',
             'templates/UNVALIDATED_SCREEN.tpl' => 'administrative__unvalidated_screen',
-            'text/VALIDATION_REQUEST_MAIL.txt' => 'administrative__validation_request_mail'
+            'text/VALIDATION_REQUEST_MAIL.txt' => 'administrative__validation_request_mail',
         );
     }
 

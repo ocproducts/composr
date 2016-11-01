@@ -123,7 +123,7 @@ class Hook_addon_registry_page_management
         return array(
             'templates/SITEMAP_EDITOR_SCREEN.tpl' => 'administrative__sitemap_editor_screen',
             'templates/WEBSTANDARDS_CHECK_SCREEN.tpl' => 'administrative__webstandards_check_screen',
-            'templates/WEBSTANDARDS_CHECK_ERROR.tpl' => 'administrative__webstandards_check_screen'
+            'templates/WEBSTANDARDS_CHECK_ERROR.tpl' => 'administrative__webstandards_check_screen',
         );
     }
 

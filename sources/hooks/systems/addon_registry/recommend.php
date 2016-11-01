@@ -134,7 +134,7 @@ class Hook_addon_registry_recommend
     public function tpl_previews()
     {
         return array(
-            'templates/BLOCK_MAIN_SCREEN_ACTIONS.tpl' => 'block_main_screen_actions'
+            'templates/BLOCK_MAIN_SCREEN_ACTIONS.tpl' => 'block_main_screen_actions',
         );
     }
 

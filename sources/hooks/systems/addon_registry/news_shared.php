@@ -115,7 +115,7 @@ class Hook_addon_registry_news_shared
     public function tpl_previews()
     {
         return array(
-            'templates/NEWS_BOX.tpl' => 'news_piece_summary'
+            'templates/NEWS_BOX.tpl' => 'news_piece_summary',
         );
     }
 
