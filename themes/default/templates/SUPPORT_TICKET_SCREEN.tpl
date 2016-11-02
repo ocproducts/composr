@@ -242,8 +242,6 @@
 <!--
 TODO, merge...
 
-{TITLE}
-
 <div class="float_surrounder">
 	<div class="whos_read">
 		{+START,IF_NON_EMPTY,{WHOS_READ}}

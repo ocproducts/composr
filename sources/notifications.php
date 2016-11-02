@@ -22,7 +22,7 @@
 Background details, to set the context and how we have structured things for consistency...
 
 Notifications are one-off messages sent out in response to something happening on the site. They may get delivered via e-mail, etc.
-Notifications may optionally create a message that staff might discuss, in which case a discussion link will be auto-appended to anyone having access to the admin_messaging module. This should be used sparingly - remember that any staff may raise such a notification by reporting some content, so it should only be particularly eventful stuff that spawns this.
+Notifications may optionally create a support ticket, in which case a ticket link will be auto-appended to anyone having access as a support ticket operator. This should be used sparingly - it should only be particularly eventful stuff that spawns this.
 People may get an RSS feed of notifications if they enable notifications via PT, as PTs have an RSS feed - that may then be connected to Growl, IM, or whatever service they may enjoy using (kind of quirky, but some power users enjoy this for the cool factor). It's good that we support the standards, without too much complexity.
 
 There is a separate Composr action log, called via log_it. This is not related to the notifications system, although staff may choose a notification when anything is added to the action log.
@@ -277,7 +277,7 @@ class Notification_dispatcher
         $no_cc = $this->no_cc;
 
         if ($GLOBALS['DEV_MODE']) {
-            if ((strpos($this->message, 'keep_devtest') !== false) && ($this->notification_code != 'messaging') && ($this->notification_code != 'error_occurred') && ($this->notification_code != 'hack_attack') && ($this->notification_code != 'auto_ban') && (strpos($this->message, running_script('index') ? static_evaluate_tempcode(build_url(array('page' => '_SELF'), '_SELF', null, true, false, true)) : get_self_url_easy()) === false) && ((strpos(cms_srv('HTTP_REFERER'), 'keep_devtest') === false) || (strpos($this->message, cms_srv('HTTP_REFERER')) === false))) { // Bad URL - it has to be general, not session-specific
+            if ((strpos($this->message, 'keep_devtest') !== false) && ($this->notification_code != 'ticket_reply') && ($this->notification_code != 'error_occurred') && ($this->notification_code != 'hack_attack') && ($this->notification_code != 'auto_ban') && (strpos($this->message, running_script('index') ? static_evaluate_tempcode(build_url(array('page' => '_SELF'), '_SELF', null, true, false, true)) : get_self_url_easy()) === false) && ((strpos(cms_srv('HTTP_REFERER'), 'keep_devtest') === false) || (strpos($this->message, cms_srv('HTTP_REFERER')) === false))) { // Bad URL - it has to be general, not session-specific
                 fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
             }
         }
@@ -294,17 +294,33 @@ class Notification_dispatcher
         require_code('mail');
 
         if (($this->create_ticket) && (addon_installed('tickets'))) {
-            require_lang('messaging');
+            list($ticket_type_name, $id) = explode('_', $this->code_category, 2);
 
-            list($type, $id) = explode('_', $this->code_category, 2);
-            $message_url = build_url(array('page' => 'admin_messaging', 'type' => 'view', 'id' => $id, 'message_type' => $type), get_module_zone('admin_messaging'), null, false, false, true);
-            $message = do_lang('MESSAGING_NOTIFICATION_WRAPPER', $message, $message_url->evaluate());
+            $ticket_member_id = ($this->from_member_id >= 0) ? $this->from_member_id : $GLOBALS['FORUM_DRIVER']->get_guest_id();
 
             $post_title = $this->subject_prefix . post_param_string('title', '') . $this->subject_suffix;
             $post = $this->body_prefix . post_param_string('post', '') . $this->body_suffix;
 
-            require_code('feedback');
-            actualise_post_comment(true, $type, $id, $message_url, $subject, get_option('messaging_forum_name'), true, 1, true, true, true, $post_title, $post);
+            require_lang('tickets');
+            require_code('tickets');
+            require_code('tickets2');
+
+            $ticket_id = ticket_generate_new_id($ticket_member_id, $this->code_category);
+
+            $ticket_type_id = $GLOBALS['SITE_DB']->query_select_value_if_there('ticket_types t', 't.id', array($GLOBALS['SITE_DB']->translate_field_ref('ticket_type_name') => $ticket_type_name));
+            if ($ticket_type_id === null) {
+                $map = array(
+                    'guest_emails_mandatory' => 0,
+                    'search_faq' => 0,
+                    'cache_lead_time' => null,
+                );
+                $map += insert_lang('ticket_type_name', do_lang($ticket_type_name), 1);
+                $ticket_type_id = $GLOBALS['SITE_DB']->query_insert('ticket_types', $map, true);
+            }
+
+            $ticket_url = ticket_add_post($ticket_id, $ticket_type_id, $post_title, $post, false, $ticket_member_id);
+
+            $message = do_lang('MESSAGING_NOTIFICATION_WRAPPER', $message, $ticket_url);
         }
 
         $testing = (get_param_integer('keep_debug_notifications', 0) == 1);

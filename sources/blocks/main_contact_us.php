@@ -49,7 +49,7 @@ class Block_main_contact_us
      */
     public function run($map)
     {
-        require_lang('messaging');
+        require_lang('tickets');
         require_code('feedback');
 
         $block_id = get_block_id($map);
@@ -62,8 +62,6 @@ class Block_main_contact_us
         $subject_suffix = array_key_exists('subject_suffix', $map) ? $map['subject_suffix'] : '';
 
         $id = uniqid('', false);
-        $_self_url = build_url(array('page' => 'admin_messaging', 'type' => 'view', 'id' => $id, 'message_type' => $type), get_module_zone('admin_messaging'));
-        $self_url = $_self_url->evaluate();
         $self_title = post_param_string('title', do_lang('CONTACT_US_MESSAGING'));
         $post = post_param_string('post', '');
         $title = post_param_string('title', '');
@@ -73,14 +71,13 @@ class Block_main_contact_us
         $block_id = md5(serialize($map));
 
         if ((post_param_integer('_comment_form_post', 0) == 1) && (post_param_string('_block_id', '') == $block_id) && ($post != '')) {
-            $message = new Tempcode();/*Used to be written out here*/
-
             // Check CAPTCHA
             if ((addon_installed('captcha')) && (get_option('captcha_on_feedback') == '1')) {
                 require_code('captcha');
                 enforce_captcha();
             }
 
+            // Get/check e-mail address
             $email_from = trim(post_param_string('email', $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member())));
             if ($email_from != '') {
                 require_code('type_sanitisation');
@@ -97,7 +94,7 @@ class Block_main_contact_us
             require_code('notifications');
             $notification_subject = do_lang('CONTACT_US_NOTIFICATION_SUBJECT', $subject_prefix . $title . $subject_suffix, null, null, get_site_default_lang());
             $notification_message = do_notification_lang('CONTACT_US_NOTIFICATION_MESSAGE', comcode_escape(get_site_name()), comcode_escape($GLOBALS['FORUM_DRIVER']->get_username(get_member())), array($body_prefix . $post . $body_suffix, comcode_escape($type), strval(get_member())), get_site_default_lang());
-            dispatch_notification('messaging', $type . '_' . $id, $notification_subject, $notification_message, null, null, array('create_ticket' => true, 'subject_prefix' => $subject_prefix, 'subject_suffix' => $subject_suffix, 'body_prefix' => $body_prefix, 'body_suffix' => $body_suffix));
+            dispatch_notification('ticket_reply', $type . '_' . $id, $notification_subject, $notification_message, null, null, array('create_ticket' => true, 'subject_prefix' => $subject_prefix, 'subject_suffix' => $subject_suffix, 'body_prefix' => $body_prefix, 'body_suffix' => $body_suffix));
 
             // Send standard confirmation email to current user
             if ($email_from != '' && get_option('message_received_emails') == '1') {
@@ -115,85 +112,65 @@ class Block_main_contact_us
             delete_cache_entry('main_staff_checklist');
 
             attach_message(do_lang_tempcode('MESSAGE_SENT'), 'inform');
-        } else {
-            $message = new Tempcode();
         }
 
-        if (get_forum_type() != 'none') { // If cns_forum not installed, will still work
-            // Comment posts
-            $forum_id = $GLOBALS['FORUM_DRIVER']->forum_id_from_name(get_option('messaging_forum_name'));
+        if (get_forum_type() == 'none') {
+            return new Tempcode();
+        }
 
-            if ($forum_id !== null) {
-                $em = $GLOBALS['FORUM_DRIVER']->get_emoticon_chooser();
+        $em = $GLOBALS['FORUM_DRIVER']->get_emoticon_chooser();
 
-                require_javascript('editing');
-                require_javascript('checking');
+        require_javascript('editing');
+        require_javascript('checking');
 
-                $comment_url = get_self_url();
-                $email_optional = array_key_exists('email_optional', $map) ? (intval($map['email_optional']) == 1) : true;
+        $comment_url = get_self_url();
+        $email_optional = array_key_exists('email_optional', $map) ? (intval($map['email_optional']) == 1) : true;
 
-                if (addon_installed('captcha')) {
-                    require_code('captcha');
-                    $use_captcha = ((get_option('captcha_on_feedback') == '1') && (use_captcha()));
-                    if ($use_captcha) {
-                        generate_captcha();
-                    }
-                } else {
-                    $use_captcha = false;
-                }
-
-                $default_text = mixed();
-                $redirect = get_param_string('redirect', '', INPUT_FILTER_GET_COMPLEX);
-                if ($redirect != '') {
-                    $default_text = do_lang('COMMENTS_DEFAULT_TEXT', $redirect);
-                }
-
-                $hidden = new Tempcode();
-                $hidden->attach(form_input_hidden('_block_id', $block_id));
-
-                $guid = isset($map['guid']) ? $map['guid'] : '31fe96c5ec3b609fbf19595a1de3886f';
-
-                $comment_details = do_template('COMMENTS_POSTING_FORM', array(
-                    '_GUID' => $guid,
-                    'DEFAULT_TEXT' => $default_text,
-                    'JOIN_BITS' => '',
-                    'FIRST_POST_URL' => '',
-                    'FIRST_POST' => '',
-                    'USE_CAPTCHA' => $use_captcha,
-                    'EMAIL_OPTIONAL' => $email_optional,
-                    'POST_WARNING' => '',
-                    'COMMENT_TEXT' => '',
-                    'GET_EMAIL' => true,
-                    'GET_TITLE' => true,
-                    'EM' => $em,
-                    'DISPLAY' => 'block',
-                    'COMMENT_URL' => $comment_url,
-                    'TITLE' => $box_title,
-                    'HIDDEN' => $hidden,
-                ));
-
-                $notifications_enabled = null;
-                $notification_change_url = null;
-                if (has_actual_page_access(get_member(), 'admin_messaging')) {
-                    require_code('notifications');
-                    $notifications_enabled = notifications_enabled('messaging', 'type', get_member());
-                }
-
-                $out = do_template('BLOCK_MAIN_CONTACT_US', array(
-                    '_GUID' => $guid,
-                    'BLOCK_ID' => $block_id,
-                    'COMMENT_DETAILS' => $comment_details,
-                    'MESSAGE' => $message,
-                    'NOTIFICATIONS_ENABLED' => $notifications_enabled,
-                    'TYPE' => $type,
-                ));
-            } else {
-                $out = new Tempcode();
+        if (addon_installed('captcha')) {
+            require_code('captcha');
+            $use_captcha = ((get_option('captcha_on_feedback') == '1') && (use_captcha()));
+            if ($use_captcha) {
+                generate_captcha();
             }
         } else {
-            $out = new Tempcode();
+            $use_captcha = false;
         }
 
-        return $out;
+        $default_text = mixed();
+        $redirect = get_param_string('redirect', '', INPUT_FILTER_GET_COMPLEX);
+        if ($redirect != '') {
+            $default_text = do_lang('COMMENTS_DEFAULT_TEXT', $redirect);
+        }
+
+        $hidden = new Tempcode();
+        $hidden->attach(form_input_hidden('_block_id', $block_id));
+
+        $guid = isset($map['guid']) ? $map['guid'] : '31fe96c5ec3b609fbf19595a1de3886f';
+
+        $comment_details = do_template('COMMENTS_POSTING_FORM', array(
+            '_GUID' => $guid,
+            'DEFAULT_TEXT' => $default_text,
+            'JOIN_BITS' => '',
+            'FIRST_POST_URL' => '',
+            'FIRST_POST' => '',
+            'USE_CAPTCHA' => $use_captcha,
+            'EMAIL_OPTIONAL' => $email_optional,
+            'POST_WARNING' => '',
+            'COMMENT_TEXT' => '',
+            'GET_EMAIL' => true,
+            'GET_TITLE' => true,
+            'EM' => $em,
+            'DISPLAY' => 'block',
+            'COMMENT_URL' => $comment_url,
+            'TITLE' => $box_title,
+            'HIDDEN' => $hidden,
+        ));
+
+        return do_template('BLOCK_MAIN_CONTACT_US', array(
+            '_GUID' => $guid,
+            'BLOCK_ID' => $block_id,
+            'COMMENT_DETAILS' => $comment_details,
+            'TYPE' => $type,
+        ));
     }
 }

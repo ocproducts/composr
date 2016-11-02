@@ -438,10 +438,7 @@ class Hook_addon_registry_tickets
             lorem_globalise(do_lorem_template('BLOCK_MAIN_CONTACT_US', array(
                 'BLOCK_ID' => lorem_word(),
                 'COMMENT_DETAILS' => $comment_details,
-                'MESSAGE' => lorem_phrase(),
-                'NOTIFICATIONS_ENABLED' => lorem_phrase(),
                 'TYPE' => placeholder_id(),
-                'FIRST_POST' => lorem_paragraph_html(),
             )), null, '', true)
         );
     }
