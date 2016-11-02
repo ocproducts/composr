@@ -292,6 +292,14 @@ class Hook_addon_registry_tickets
             )));
         }
 
+        $whos_read = array();
+        $whos_read[] = array(
+            'USERNAME' => lorem_word(),
+            'MEMBER_ID' => placeholder_id();
+            'MEMBER_URL' => placeholder_url();
+            'DATE' => lorem_word(),
+        );
+
         return array(
             lorem_globalise(do_lorem_template('SUPPORT_TICKET_SCREEN', array(
                 'ID' => placeholder_id(),
@@ -317,6 +325,7 @@ class Hook_addon_registry_tickets
                 'SET_TICKET_EXTRA_ACCESS_URL' => placeholder_url(),
                 'ASSIGNED' => array(),
                 'EXTRA_DETAILS' => lorem_phrase(),
+                'WHOS_READ' => $whos_read,
             )), null, '', true)
         );
     }

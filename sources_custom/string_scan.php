@@ -442,7 +442,6 @@ function string_scan($lang, $do_guessing = false)
         AUTO_MERGED
         AUTO_RECUR
         AUTO_SPACER_STUB
-        AUTO_SPACER_TAKE_RESPONSIBILITY
         AUTO_SUBMIT_SITEMAP
         AUTO_TRANSLATE
         AUTO_VALIDATE_ALL_POSTS
@@ -1556,7 +1555,6 @@ function string_scan($lang, $do_guessing = false)
         CANNOT_DELETE_FORUM_OPTION
         CANNOT_DELETE_ROOT_FORUM
         CANNOT_MERGE_CATALOGUES
-        CANT_TAKE_RESPONSIBILITY
         CANT_TRACK
         CAN_MASS_UPLOAD
         CAPTCHAFAIL_HACK
@@ -3813,7 +3811,6 @@ function string_scan($lang, $do_guessing = false)
         DIRECTORY_NOT_FOUND
         DIRECTORY_RELATIVE_INSTALL
         DISABLED_FUNCTION
-        DISCUSS_BELOW
         DISK_USAGE
         DISMISS_TIP
         DISPATCH
@@ -5693,7 +5690,6 @@ function string_scan($lang, $do_guessing = false)
         PINTERFACE_VIEW_NO
         PIN_STATE
         PLEASE_CHOOSE_LANG
-        PLEASE_TAKE_RESPONSIBILITY
         POINTSTORE_ADD_MAIL_FORWARDER
         POINTSTORE_ADD_MAIL_POP3
         POINTSTORE_AMEND_CUSTOM_PERMISSIONS
@@ -6499,7 +6495,6 @@ function string_scan($lang, $do_guessing = false)
         TABLE_FIXED
         TABLE_PREFIX
         TABLE_PREFIX_TEXT
-        TAKE_RESPONSIBILITY
         TARGET
         TASKS_BACKGROUND
         TASK_LENGTH
@@ -7140,7 +7135,6 @@ function string_scan($lang, $do_guessing = false)
         _SUBSCRIPTION_TERM_END_TIME
         _SUBSCRIPTION_TERM_START_TIME
         _SUHOSIN_MAX_VARS_TOO_LOW
-        _TAKE_RESPONSIBILITY
         _TASK_FAILED_SUBJECT
         _THEMEWIZARD
         _TRANSLATE_CODE
