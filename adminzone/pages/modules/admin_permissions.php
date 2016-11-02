@@ -63,6 +63,7 @@ class Module_admin_permissions
         delete_privilege('assume_any_member');
         delete_privilege('unfiltered_input');
         delete_privilege('see_query_errors');
+        delete_privilege('bypass_spam_heuristics');
     }
 
     /**

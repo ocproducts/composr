@@ -2,7 +2,7 @@
 {$REQUIRE_JAVASCRIPT,core_menus}
 {$REQUIRE_JAVASCRIPT,menu_sitemap}
 
-{$SET,js_menu,{$NOT,{$BROWSER_MATCHES,bot}}
+{$SET,js_menu,{$NOT,{$BROWSER_MATCHES,bot}}}
 
 {+START,IF,{$NOT,{$GET,js_menu}}}
 	<nav class="menu_type__sitemap">

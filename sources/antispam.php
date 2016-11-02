@@ -341,7 +341,8 @@ function rbl_resolve($ip, $rbl_domain, $page_level)
         foreach ($_ip as $seg) { // Copy rest in
             $normalised_ip .= str_pad($seg, 4, '0', STR_PAD_LEFT); // Pad out each component in full, building up $normalised_ip
         }
-        $arpa = implode('.', array_reverse(preg_split('//', $normalised_ip, null, PREG_SPLIT_NO_EMPTY)));
+        $parts = preg_split('//', $normalised_ip, null, PREG_SPLIT_NO_EMPTY);
+        $arpa = implode('.', array_reverse($parts));
     }
 
     $lookup = str_replace('*', $arpa, $rbl_domain) . '.';
@@ -568,7 +569,7 @@ function calculation_internal_heuristic_confidence()
     $scoring = '';
 
     $hooks = find_all_hook_obs('systems', 'spam_heuristics', 'Hook_spam_heuristics_');
-    foreach ($hook => $ob) {
+    foreach ($hooks as $hook => $ob) {
         $this_level = $ob->assess_confidence($post_data);
 
         if ($this_level != 0) {

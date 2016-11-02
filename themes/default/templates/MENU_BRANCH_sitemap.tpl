@@ -1,4 +1,4 @@
-{$SET,js_menu,{$NOT,{$BROWSER_MATCHES,bot}}
+{$SET,js_menu,{$NOT,{$BROWSER_MATCHES,bot}}}
 
 {+START,IF,{$NOT,{$GET,js_menu}}}
 	<li class="{$?,{CURRENT},current,non_current} {$?,{$IS_EMPTY,{IMG}},has_no_img,has_img}">

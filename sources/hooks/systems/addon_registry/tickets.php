@@ -295,8 +295,8 @@ class Hook_addon_registry_tickets
         $whos_read = array();
         $whos_read[] = array(
             'USERNAME' => lorem_word(),
-            'MEMBER_ID' => placeholder_id();
-            'MEMBER_URL' => placeholder_url();
+            'MEMBER_ID' => placeholder_id(),
+            'MEMBER_URL' => placeholder_url(),
             'DATE' => lorem_word(),
         );
 
