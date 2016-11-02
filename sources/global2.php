@@ -147,7 +147,7 @@ function init__global2()
      * @global boolean $IN_SELF_ROUTING_SCRIPT
      */
     if (!isset($IN_SELF_ROUTING_SCRIPT)) {
-        $IN_SELF_ROUTING_SCRIPT = (current_script() == 'index')/*LEGACY - ideally just have as false*/;
+        $IN_SELF_ROUTING_SCRIPT = (current_script() == 'index')/*LEGACY - ideally just have as false but old zone index.php files exist on sites*/;
     }
     $CACHE_TEMPLATES = true;
     $IS_VIRTUALISED_REQUEST = false;

@@ -26,7 +26,7 @@ class Module_report_content
     public function info()
     {
         $info = array();
-        $info['author'] = 'Chris Graham';
+        $info['author'] = 'Chris Graham / Patrick Schmalstig';
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
@@ -177,6 +177,6 @@ class Module_report_content
         if ($_url != '') {
             $content_url = make_string_tempcode($_url);
         }
-        return redirect_screen($this->title, $content_url, do_lang_tempcode('SUCCESS'));
+        return redirect_screen($this->title, $content_url, do_lang_tempcode('CONTENT_REPORTED'));
     }
 }

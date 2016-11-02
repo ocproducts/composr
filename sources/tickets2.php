@@ -135,7 +135,7 @@ function build_types_list($selected_ticket_type_id, $ticket_types_to_let_through
 /**
  * Get a map of properties for the given ticket type.
  *
- * @param  ?AUTO_LINK $ticket_type_id The ticket type (null: fallback for old tickets)
+ * @param  ?AUTO_LINK $ticket_type_id The ticket type (null: fallback for malformed tickets)
  * @return array Array of properties
  */
 function get_ticket_type($ticket_type_id)
@@ -150,7 +150,7 @@ function get_ticket_type($ticket_type_id)
     );
 
     if ($ticket_type_id === null) {
-        // LEGACY
+        // Malformed ticket
         return $default;
     }
 
@@ -166,8 +166,8 @@ function get_ticket_type($ticket_type_id)
 /**
  * Generate a new ticket ID.
  *
- * @param ?MEMBER Member ID ticket is for
- * @param ?ID_TEXT Ticket ID stem (null: randomise)
+ * @param ?MEMBER $member_id Member ID ticket is for (null: current member)
+ * @param ?ID_TEXT $stem Ticket ID stem (null: randomise)
  * @return string New ticket ID
  */
 function ticket_generate_new_id($member_id = null, $stem = null)
@@ -238,6 +238,40 @@ function ticket_add_post($ticket_id, $ticket_type_id, $title, $post, $staff_only
     if (($is_new) && ($ticket_type_id !== null)) {
         $GLOBALS['SITE_DB']->query_insert('tickets', array('ticket_id' => $ticket_id, 'forum_id' => $fid, 'topic_id' => $topic_id, 'ticket_type' => $ticket_type_id));
     }
+
+    return $ticket_url;
+}
+
+/**
+ * Wrap a ticket with a guest e-mail address, if provided.
+ *
+ * @param  string $post The ticket post
+ * @param  EMAIL $email The e-mail address
+ * @param  boolean $mandatory_guest_email Whether an e-mail address is mandatory for guests
+ * @return string The wrapped ticket post
+ */
+function ticket_wrap_with_email_address($post, $email, $mandatory_guest_email = false)
+{
+    // Do we need to tack on an email address?
+    if ($email != '') {
+        $body = '> ' . str_replace("\n", "\n" . '> ', $post);
+        if (substr($body, -2) == '> ') {
+            $body = substr($body, 0, strlen($body) - 2);
+        }
+        $email_comcode = do_lang('GUEST_TICKET_REPLY_LINK', comcode_escape(post_param_string('title')), comcode_escape(get_site_name()), array(comcode_escape($body), $email));
+        $new_post = '';
+        $new_post .= $email_comcode;
+        $new_post .= "\n";
+        $new_post .= $post;
+        return $new_post;
+    }
+
+    if ((is_guest()) && ($mandatory_guest_email)) {
+        // Error if the e-mail address is required for this ticket type
+        warn_exit(do_lang_tempcode('ERROR_GUEST_EMAILS_MANDATORY'));
+    }
+
+    return $post;
 }
 
 /**

@@ -116,7 +116,218 @@ function init__webstandards()
         'ensp' => true, 'emsp' => true, 'thinsp' => true, 'zwnj' => true, 'zwj' => true, 'lrm' => true, 'rlm' => true,
         'ndash' => true, 'mdash' => true, 'lsquo' => true, 'rsquo' => true, 'sbquo' => true,
         'ldquo' => true, 'rdquo' => true, 'bdquo' => true, 'dagger' => true, 'Dagger' => true, 'permil' => true,
-        'lsaquo' => true, 'rsaquo' => true, 'euro' => true);
+        'lsaquo' => true, 'rsaquo' => true, 'euro' => true,
+    );
+
+    $enforce_javascript = '([^\n]+)';
+    $enforce_lang = '[a-zA-Z][a-zA-Z](-[a-zA-Z]+)?';
+    $enforce_direction = '(ltr|rtl)';
+    $enforce_align = '(left|center|right|justify|char)';
+    $enforce_align2 = '(top|middle|bottom|left|right)';
+    $enforce_align3 = '(left|center|right|justify)';
+    $enforce_align4 = '(top|bottom|left|right)';
+    $enforce_valign = '(top|middle|bottom|baseline)';
+    $enforce_number = '(-?[0-9]+)';
+    $enforce_inumber = '[0-9]+';
+    $enforce_character = '.';
+    $enforce_color = '(black|silver|gray|white|maroon|purple|fuchsia|green|lime|olive|yellow|navy|blue|teal|aqua|orange|red|(\#[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f])|(\#[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f]))'; // orange and red aren't 'official' -- but kind of handy ;). In reality, the colour codes were never properly defined, and these two are obvious names for obviously needed ones-- they'll be supported
+    $enforce_length = '((0)|(' . $enforce_number . '(|in|cm|mm|ex|pt|pc|px|em|%))|((' . $enforce_number . ')?\.' . $enforce_number . '(in|cm|mm|ex|em|vh|vw|vmin|rem|%)))'; // |ex|pt|in|cm|mm|pc  We don't want these in our XHTML... preferably we only want em when it comes to font size!
+    $enforce_ilength = '((0)|(' . $enforce_inumber . '(|in|cm|mm|ex|pt|pc|px|em|%))|((' . $enforce_inumber . ')?\.' . $enforce_inumber . '(in|cm|mm|ex|em|vh|vw|vmin|rem|%)))'; // |ex|pt|in|cm|mm|pc We don't want these in our XHTML... preferably we only want em when it comes to font size!
+    $enforce_pixels = '[0-9]+';
+    $enforce_auto_or_length = '(auto|' . $enforce_length . ')';
+    $enforce_auto_or_ilength = '(auto|' . $enforce_ilength . ')';
+    $enforce_normal_or_length = '(normal|' . $enforce_length . ')';
+    $enforce_border_width = '(thin|medium|thick|' . $enforce_length . ')';
+    $enforce_potential_4d_border_width = $enforce_border_width . '( ' . $enforce_border_width . '( ' . $enforce_border_width . '( ' . $enforce_border_width . '|)|)|)';
+    $enforce_css_color = '((rgb\(' . $enforce_inumber . '%,' . $enforce_inumber . '%,' . $enforce_inumber . '%\))|(rgb\(' . $enforce_inumber . ',' . $enforce_inumber . ',' . $enforce_inumber . '\))|(rgba\(' . $enforce_inumber . '%,' . $enforce_inumber . '%,' . $enforce_inumber . '%,' . $enforce_inumber . '%\))|(rgba\(' . $enforce_inumber . ',' . $enforce_inumber . ',' . $enforce_inumber . ',' . $enforce_inumber . '\.\d+\))|(\#[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f])|' . $enforce_color . '|ActiveBorder|ActiveCaption|AppWorkspace|Background|Buttonface|ButtonHighlight|ButtonShadow|ButtonText|CaptionText|GrayText|Highlight|HighlightText|InactiveBorder|InactiveCaption|InactiveCaptionText|InfoBackground|InfoText|Menu|MenuText|Scrollbar|ThreeDDarkShadow|ThreeDFace|ThreeDHighlight|ThreeDLightShadow|ThreeDShadow|Window|WindowFrame|WindowText)';
+    $enforce_transparent_or_color = '(transparent|' . $enforce_css_color . ')';
+    $enforce_fraction = '(\d%|\d\d%|100%|0\.\d+|1\.0|0|1)';
+    $_enforce_font_list = "(cursive|fantasy|monospace|serif|sans-serif|Georgia|Times|Trebuchet|Tahoma|Geneva|Verdana|Arial|Helvetica|Courier|Courier New|Impact|'Georgia'|'Times'|'Trebuchet'|'Tahoma'|'Geneva'|'Verdana'|'Arial'|'Helvetica'|'Courier'|'Courier New'|'Impact')";
+    $enforce_font_list = '((([A-Za-z]+)|("[A-Za-z ]+")|(\'[A-Za-z ]+\')),\s*)*' . $_enforce_font_list;
+    $enforce_functional_url = '(url\(\'.+\'\)|url\(".+"\)|url\([^\(\);]+\))';
+    $enforce_functional_url_or_none = '(' . $enforce_functional_url . '|none)';
+    $enforce_border_style = '(none|dotted|dashed|solid|double|groove|ridge|inset|outset|transparent)';
+    $enforce_background_repeat = '(repeat|repeat-x|repeat-y|no-repeat)';
+    $enforce_attachment = '(scroll|fixed)';
+    $_enforce_background_position = '((' . $enforce_length . '|top( ' . $enforce_length . ')?|center|bottom( ' . $enforce_length . ')?)|(' . $enforce_length . '|left( ' . $enforce_length . ')?|center|right( ' . $enforce_length . ')?))';
+    $enforce_background_position = '((' . $_enforce_background_position . ')|(' . $_enforce_background_position . ' ' . $_enforce_background_position . '))';
+    $enforce_border = '((' . $enforce_border_width . '|' . $enforce_border_style . '|' . $enforce_css_color . ')( |$))+';
+    $enforce_potential_4d_length = $enforce_length . '( ' . $enforce_length . '( ' . $enforce_length . '( ' . $enforce_length . '|)|)|)';
+    $enforce_potential_4d_length_auto = $enforce_auto_or_length . '( ' . $enforce_auto_or_length . '( ' . $enforce_auto_or_length . '( ' . $enforce_auto_or_length . '|)|)|)';
+    $enforce_potential_4d_ilength = $enforce_ilength . '( ' . $enforce_ilength . '( ' . $enforce_ilength . '( ' . $enforce_ilength . '|)|)|)';
+    $enforce_potential_4d_ilength_auto = $enforce_auto_or_ilength . '( ' . $enforce_auto_or_ilength . '( ' . $enforce_auto_or_ilength . '( ' . $enforce_auto_or_ilength . '|)|)|)';
+    $enforce_font_style = '(normal|italic|oblique)';
+    $enforce_font_variant = '(normal|small-caps)';
+    $enforce_font_weight = '(lighter|normal|bold|bolder|((\d)+))';
+    $enforce_list_style_position = '(inside|outside)';
+    $enforce_list_style_type = '(none|disc|circle|square|decimal|lower-roman|upper-roman|lower-alpha|upper-alpha|decimal-leading-zero|lower-greek|lower-latin|upper-latin|hebrew|armenian|georgian|cjk-ideographic|hiragana|katakana|hiragana-iroha|katakana-iroha)';
+    $enforce_list_style_image = '(none|' . $enforce_functional_url . ')';
+    $enforce_id = '[a-zA-Z][\w\-\:\.]*';
+    $enforce_name = '[\w\-\:\.]+(\[\])?';
+    if (function_exists('get_forum_type')) {
+        require_code('obfuscate');
+        $enforce_link = ((get_forum_type() == 'none') ? '(mailto:.*)?' : '') . '(mailto:.*|' . preg_quote(mailto_obfuscated(), '#') . '.*)?[^\s\#]*(\#[^\s\#]*)?';
+    } else {
+        $enforce_link = '.*';
+    }
+    $enforce_class = '[ \w-]*';
+    $_counter_increment = '((\w+( \d+)?)+)';
+    $enforce_counter_increment = $_counter_increment . '( ' . $_counter_increment . ')*';
+    $enforce_transition_timing_function = '(linear|ease|ease-in|ease-out|ease-in-out|cubic-bezier\(' . $enforce_fraction . ' ' . $enforce_fraction . ' ' . $enforce_fraction . ' ' . $enforce_fraction . '\))';
+    $enforce_time = '\d[\d\.]*s';
+    $enforce_box_shadow = '((inset )?' . $enforce_length . '( ' . $enforce_length . '( ' . $enforce_length . '( ' . $enforce_length . ')?)?)? ' . $enforce_css_color . ')';
+    $enforce_transition_property = '[\w,\-]+';
+    $enforce_transform_origin = '(left|center|right|' . $enforce_length . ')';
+    $enforce_transform_style = '(flat|preserve-3d)';
+
+    global $CSS_PROPERTIES;
+    $CSS_PROPERTIES = array(
+        'animation' => '.*',
+        'animation-delay' => '.*',
+        'animation-direction' => '.*',
+        'animation-duration' => '\d+s',
+        'animation-fill-mode' => '.*',
+        'animation-iteration-count' => '.*',
+        'animation-name' => '\w+',
+        'animation-play-state' => '.*',
+        'animation-timing-function' => '(linear|ease|ease-in|ease-out|ease-in-out|step-start|step-end|steps\(\d+(,(start|end))?\)|cubic-bezier\([\d\.]+,[\d\.]+,[\d\.]+,[\d\.]+\))',
+        'backface-visibility' => '(hidden|visible)',
+        'background' => '((' . $enforce_transparent_or_color . '|' . $enforce_functional_url_or_none . '|' . $enforce_background_repeat . '|' . $enforce_attachment . '|' . $enforce_background_position . ')( |$))+',
+        'background-attachment' => $enforce_attachment,
+        'background-clip' => '(border-box|padding-box|content-box)',
+        'background-color' => $enforce_transparent_or_color,
+        'background-image' => /*$enforce_functional_url_or_none*/'.*', // Changed to .* to allow gradients
+        'background-origin' => '(border-box|content-box)',
+        'background-position' => $enforce_background_position,
+        'background-repeat' => $enforce_background_repeat,
+        'background-size' => '(' . $enforce_length . ' ' . $enforce_length . ')',
+        'border' => $enforce_border,
+        'border-bottom' => $enforce_border,
+        'border-bottom-color' => $enforce_transparent_or_color,
+        'border-bottom-left-radius' => $enforce_length,
+        'border-bottom-right-radius' => $enforce_length,
+        'border-bottom-style' => $enforce_border_style,
+        'border-bottom-width' => $enforce_border_width,
+        'border-collapse' => '(collapse|separate)',
+        'border-color' => $enforce_transparent_or_color . '( ' . $enforce_transparent_or_color . '( ' . $enforce_transparent_or_color . '( ' . $enforce_transparent_or_color . '|)|)|)',
+        'border-image' => '.*',
+        'border-image-outset' => $enforce_length,
+        'border-image-repeat' => '(stretch|repeat|round|space)',
+        'border-image-slice' => $enforce_length,
+        'border-image-source' => /*$enforce_functional_url_or_none*/'.*', // Changed to .* to allow gradients
+        'border-image-width' => $enforce_length,
+        'border-left' => $enforce_border,
+        'border-left-color' => $enforce_transparent_or_color,
+        'border-left-style' => $enforce_border_style,
+        'border-left-width' => $enforce_border_width,
+        'border-radius' => $enforce_length . '( ' . $enforce_length . '( ' . $enforce_length . '( ' . $enforce_length . ')?)?)?',
+        'border-right' => $enforce_border,
+        'border-right-color' => $enforce_transparent_or_color,
+        'border-right-style' => $enforce_border_style,
+        'border-right-width' => $enforce_border_width,
+        'border-spacing' => $enforce_length . '( ' . $enforce_length . ')?',
+        'border-style' => $enforce_border_style,
+        'border-top' => $enforce_border,
+        'border-top-color' => $enforce_transparent_or_color,
+        'border-top-left-radius' => $enforce_length,
+        'border-top-right-radius' => $enforce_length,
+        'border-top-style' => $enforce_border_style,
+        'border-top-width' => $enforce_border_width,
+        'border-width' => $enforce_potential_4d_border_width,
+        'bottom' => $enforce_auto_or_length,
+        'box-shadow' => '(none|(' . $enforce_box_shadow . '(,\s*' . $enforce_box_shadow . '(,\s*' . $enforce_box_shadow . '(,\s*' . $enforce_box_shadow . ')?)?)?))',
+        'box-sizing' => '(border-box|content-box|padding-box)',
+        'caption-side' => 'top|bottom|left|right',
+        'clear' => '(both|left|right|none)',
+        'clip' => 'auto|(rect\(' . $enforce_potential_4d_length . '\))',
+        'color' => $enforce_css_color,
+        'content' => '.+',
+        'counter-increment' => $enforce_counter_increment,
+        'counter-reset' => $enforce_counter_increment,
+        'cursor' => '(' . $enforce_functional_url . '|default|auto|n-resize|ne-resize|e-resize|se-resize|s-resize|sw-resize|w-resize|nw-resize|crosshair|pointer|move|text|wait|help|progress)',
+        'direction' => '(ltr|rtl)',
+        'display' => '(none|inline|block|list-item|table|table-header-group|table-footer-group|inline-block|run-in|inline-table|table-row|table-row-group|table-column-group|table-column|table-cell|table-caption|flex|-ms-flexbox|-\w+-flex)',
+        'empty-cells' => 'show|hide',
+        'float' => '(left|right|none)',
+        'font' => '((caption|icon|menu|message-box|small-caption|status-bar|' . $enforce_font_style . '|' . $enforce_font_variant . '|' . $enforce_font_weight . '|' . $enforce_length . '|' . $enforce_normal_or_length . '|' . $enforce_font_list . ')( |$))+',
+        'font-family' => $enforce_font_list,
+        'font-size' => 'larger|smaller|xx-small|x-small|small|medium|large|x-large|xx-large|' . $enforce_length,
+        'font-style' => $enforce_font_style,
+        'font-variant' => $enforce_font_variant,
+        'font-weight' => $enforce_font_weight,
+        'height' => $enforce_auto_or_length,
+        'left' => $enforce_auto_or_length,
+        'letter-spacing' => $enforce_normal_or_length,
+        'line-height' => $enforce_normal_or_length,
+        'list-style' => '((' . $enforce_list_style_type . '|' . $enforce_list_style_position . '|' . $enforce_list_style_image . ')( |$))+',
+        'list-style-image' => '(' . $enforce_functional_url . '|none)',
+        'list-style-position' => $enforce_list_style_position,
+        'list-style-type' => $enforce_list_style_type,
+        'margin' => $enforce_potential_4d_length_auto,
+        'margin-bottom' => $enforce_auto_or_length,
+        'margin-left' => $enforce_auto_or_length,
+        'margin-right' => $enforce_auto_or_length,
+        'margin-top' => $enforce_auto_or_length,
+        'marker-offset' => $enforce_auto_or_length,
+        'max-height' => $enforce_auto_or_length,
+        'max-width' => $enforce_auto_or_length,
+        'min-height' => $enforce_auto_or_length,
+        'min-width' => $enforce_auto_or_length,
+        'opacity' => $enforce_fraction,
+        'outline' => $enforce_border,
+        'outline-color' => $enforce_transparent_or_color,
+        'outline-style' => $enforce_border_style,
+        'outline-width' => $enforce_border_width,
+        'overflow' => '(visible|hidden|scroll|auto)',
+        'overflow-x' => '(visible|hidden|scroll|auto)',
+        'overflow-y' => '(visible|hidden|scroll|auto)',
+        'padding' => $enforce_potential_4d_ilength,
+        'padding-bottom' => $enforce_auto_or_ilength,
+        'padding-left' => $enforce_auto_or_ilength,
+        'padding-right' => $enforce_auto_or_ilength,
+        'padding-top' => $enforce_auto_or_ilength,
+        'page-break-after' => '(auto|left|right|always)',
+        'page-break-before' => '(auto|left|right|always)',
+        'perspective' => $enforce_length,
+        'perspective-origin' => $enforce_background_position,
+        'position' => '(static|relative|absolute|fixed)',
+        'quotes' => '.+ .+',
+        'right' => $enforce_auto_or_length,
+        'table-layout' => '(auto|fixed)',
+        'text-align' => '(left|right|center|justify)',
+        'text-decoration' => '(underline|line-through|none|blink)',
+        'text-indent' => $enforce_length,
+        'text-shadow' => '(none|(' . $enforce_length . ' ' . $enforce_length . '( ' . $enforce_length . ')?( ' . $enforce_css_color . ')?))',
+        'text-transform' => '(capitalize|uppercase|lowercase|none)',
+        'top' => $enforce_auto_or_length,
+        'transform' => '(none|\w+\([^\(\)]+\))',
+        'transform-origin' => $enforce_transform_origin . '( ' . $enforce_transform_origin . '( ' . $enforce_transform_origin . ')?)?',
+        'transform-style' => $enforce_transform_style,
+        'transition' => $enforce_transition_property . '( ' . $enforce_time . '( ' . $enforce_transition_timing_function . '( ' . $enforce_time . ')?)?)?',
+        'transition-delay' => $enforce_time,
+        'transition-duration' => $enforce_time,
+        'transition-property' => $enforce_transition_property,
+        'transition-timing-function' => $enforce_transition_timing_function,
+        'unicode-bidi' => '(bidi-override|normal|embed)',
+        'vertical-align' => '(baseline|sub|super|top|text-top|middle|bottom|text-bottom|' . $enforce_length . ')',
+        'visibility' => '(hidden|visible|collapse)',
+        'white-space' => '(normal|pre|nowrap|pre-wrap|pre-line)',
+        'width' => $enforce_auto_or_length,
+        'word-spacing' => $enforce_normal_or_length,
+        'z-index' => '(auto|(\d+))',
+
+        /* Purposely left out these CSS features due to very poor browser support or generally irrelevancy */
+        /*
+        (print module)
+        (aural module)
+        (columns module)
+        (low level font and color settings)
+        */
+
+        /* These are non standard but we want them */
+        'writing-mode' => '(tb-rl|lr-tb)', // A more complex W3C standard is underway. Only IE supports this one.
+        'word-wrap' => '(normal|break-word)', // Was renamed to overflow-wrap, but that name is not supported widely
+    );
 
     global $POSSIBLY_EMPTY_TAGS;
     $POSSIBLY_EMPTY_TAGS = array(
@@ -433,7 +644,6 @@ function init__webstandards()
         '*.draggable' => '(true|false|auto)',
         '*.dropzone' => '(copy|move|link)',
         '*.hidden' => '(hidden)',
-        '*.hidden' => '(hidden)',
         '*.id' => $enforce_id,
         '*.itemprop' => '.*',
         '*.itemscope' => '.*',
@@ -646,7 +856,6 @@ function init__webstandards()
         'link.rel' => '.+',
         'link.rev' => '.+',
         'link.sizes' => '.+',
-        'link.sizes' => '.+',
         'link.type' => '.+',
         'map.name' => $enforce_name,
         'menu.label' => '.*',
@@ -746,7 +955,6 @@ function init__webstandards()
         'textarea.placeholder' => '.+',
         'textarea.readonly' => 'readonly',
         'textarea.required' => '(required)',
-        'textarea.rows' => $enforce_inumber,
         'textarea.rows' => $enforce_inumber,
         'textarea.tabindex' => $enforce_inumber,
         'textarea.wrap' => '(hard|soft)',

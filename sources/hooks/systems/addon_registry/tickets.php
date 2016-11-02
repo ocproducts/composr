@@ -372,10 +372,11 @@ class Hook_addon_registry_tickets
         return array(
             lorem_globalise(do_lorem_template('CNS_REPORTED_POST_FCOMCODE', array(
                 'POST_ID' => placeholder_id(),
-                'CONTENT_MEMBER_ID' => placeholder_id(),
-                'CONTENT_MEMBER' => lorem_phrase(),
+                'POST_MEMBER_ID' => placeholder_id(),
+                'POST_MEMBER' => lorem_phrase(),
                 'TOPIC_TITLE' => lorem_phrase(),
                 'POST' => lorem_phrase(),
+                'REPORT_POST' => lorem_phrase(),
             ), null, false, null, '.txt', 'text'), null, '', true)
         );
     }
@@ -389,13 +390,16 @@ class Hook_addon_registry_tickets
      */
     public function tpl_preview__reported_content_fcomcode()
     {
-        // TODO: Pass through more?
         return array(
             lorem_globalise(do_lorem_template('REPORTED_CONTENT_FCOMCODE', array(
                 'CONTENT_URL' => placeholder_url(),
-                'CONTENT_MEMBER_ID' => placeholder_id(),
+                'CONTENT_TYPE' => lorem_word(),
+                'CONTENT_ID' => placeholder_id(),
                 'CONTENT_MEMBER' => lorem_phrase(),
+                'CONTENT_MEMBER_ID' => placeholder_id(),
                 'CONTENT_TITLE' => lorem_phrase(),
+                'CONTENT_RENDERED' => lorem_paragraph_html(),
+                'REPORT_POST' => lorem_paragraph(),
             ), null, false, null, '.txt', 'text'), null, '', true)
         );
     }

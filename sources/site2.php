@@ -233,7 +233,7 @@ function closed_site()
             throw new CMSException($closed_message);
         }
 
-        set_http_status_code(503);
+        set_http_status_code('503');
 
         log_stats('/closed', 0);
 

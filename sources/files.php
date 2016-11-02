@@ -297,11 +297,6 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
 
         // Tests
         'test' => 'exports/backups',
-
-        // LEGACY: Old files
-        'info.php' => '', // Pre-v10 equivalent to _config.php
-        'persistant_cache' => '', // Old misspelling
-        'mods' => 'imports|exports',
     );
 
     $ignore_extensions = array( // Case insensitive, define in lower case
@@ -313,8 +308,8 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
         'gz' => '(themes/[^/]*/templates_cached|imports|exports)/.*',
 
         // Cache files
-        'lcd' => '(caches|lang_cached)/.*', // LEGACY
-        'gcd' => '(caches|persistent_cache|persistant_cache)/.*', // LEGACY
+        'lcd' => 'caches/.*',
+        'gcd' => 'caches/.*',
         'htm' => 'caches/guest_pages',
         'xml' => 'caches/guest_pages',
         'tcp' => 'themes/[^/]*/templates_cached/.*',

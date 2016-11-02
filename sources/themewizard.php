@@ -18,6 +18,8 @@
  * @package    themewizard
  */
 
+/*EXTRA FUNCTIONS: imagecreatefromwebp*/
+
 /**
  * Standard code module initialisation function.
  *

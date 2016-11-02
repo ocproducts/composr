@@ -822,25 +822,11 @@ class Module_tickets
             }
         }
 
-        // Create ticket if needed...
+        // Wrap around e-mail address if needed...
 
-        $email = '';
+        $email = trim(post_param_string('email', ''));
         if ($ticket_type_id !== null) {
-            // Do we need to tack on an email address?
-            $new_post = new Tempcode();
-            $email = trim(post_param_string('email', ''));
-            if ($email != '') {
-                $body = '> ' . str_replace("\n", "\n" . '> ', $post);
-                if (substr($body, -2) == '> ') {
-                    $body = substr($body, 0, strlen($body) - 2);
-                }
-                $new_post->attach(do_lang('GUEST_TICKET_REPLY_LINK', comcode_escape(post_param_string('title')), comcode_escape(get_site_name()), array(comcode_escape($body), $email)));
-            } elseif ((is_guest()) && ($ticket_type_details['guest_emails_mandatory'] == 1)) {
-                // Error if the e-mail address is required for this ticket type
-                warn_exit(do_lang_tempcode('ERROR_GUEST_EMAILS_MANDATORY'));
-            }
-            $new_post->attach($post);
-            $post = $new_post->evaluate();
+            $post = ticket_wrap_with_email_address($post, $email, ($ticket_type_details['guest_emails_mandatory'] == 1));
         }
 
         // Add post to ticket...
@@ -849,7 +835,7 @@ class Module_tickets
 
         // Auto-monitor...
 
-        if (has_privilege(get_member(), 'support_operator') && get_option('ticket_auto_assign') == '1') {
+        if ((has_privilege(get_member(), 'support_operator')) && (get_option('ticket_auto_assign') == '1')) {
             require_code('notifications');
             enable_notifications('ticket_assigned_staff', $ticket_id);
         }
@@ -857,20 +843,20 @@ class Module_tickets
         // Send email...
 
         // Find true ticket title
-        list($__title, $_topic_id) = get_ticket_meta_details($ticket_id);
+        list($ticket_title, $topic_id) = get_ticket_meta_details($ticket_id);
 
         if (!$staff_only) {
             if ($email == '') {
                 $email = $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member());
             }
-            send_ticket_email($ticket_id, $__title, $post, $ticket_url, $email, $ticket_type_id, null);
+            send_ticket_email($ticket_id, $ticket_title, $post, $ticket_url, $email, $ticket_type_id, null);
         }
 
         // Close ticket, if requested...
 
         if (post_param_integer('close', 0) == 1) {
             if (get_forum_type() == 'cns') {
-                $GLOBALS['FORUM_DB']->query_update('f_topics', array('t_is_open' => 0), array('id' => $_topic_id), '', 1);
+                $GLOBALS['FORUM_DB']->query_update('f_topics', array('t_is_open' => 0), array('id' => $topic_id), '', 1);
             }
         }
 
@@ -1238,7 +1224,7 @@ class Module_tickets
         // Add move notification post into from (old) ticket
         $merge_title = do_lang('TICKETS_MERGED_TITLE');
         $merge_post = do_lang('TICKETS_MERGED_POST', $to_title);
-        $ticket_url = ticket_add_post($from, $ticket_type_id_from, $merge_title, $merge_post, $ticket_url, false);
+        $ticket_url = ticket_add_post($from, $ticket_type_id_from, $merge_title, $merge_post, false);
         $email = $GLOBALS['FORUM_DRIVER']->get_member_email_address($ticket_posts_all[0]['member']);
         send_ticket_email($from, $merge_title, $merge_post, $ticket_url, $email, null, null);
 

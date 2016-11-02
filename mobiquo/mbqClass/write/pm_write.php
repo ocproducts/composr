@@ -37,7 +37,7 @@ class CMSPmWrite
         }
 
         require_code('report_content');
-        report_post_headless($msg_id, '', is_invisible() ? 1 : 0);
+        report_post($msg_id, '', is_invisible() ? 1 : 0);
     }
 
     /**

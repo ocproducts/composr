@@ -19,30 +19,29 @@
  */
 
 /**
- * Check the current user has post reporting access.
+ * Standard code module initialisation function.
  *
- * @param ID_TEXT $content_type The content type being reported
- * @param ID_TEXT $content_id The content ID being reported
+ * @ignore
  */
-function check_report_content_access($content_type = null, $content_id = null)
+function init__report_content()
+{
+    require_lang('report_content');
+    require_lang('tickets');
+
+    require_code('tickets');
+    require_code('tickets2');
+}
+
+/**
+ * Check the current user has post reporting access.
+ */
+function check_report_content_access()
 {
     if ((!has_privilege(get_member(), 'may_report_content')) || (!addon_installed('tickets'))) {
         access_denied('I_ERROR');
     }
 
     get_ticket_forum_id(); // Ensures forum exists
-
-    find_reported_content_ticket_type(); // Ensures ticket type exists
-
-    if (($content_type !== null) && ($content_id !== null)) {
-        if ($GLOBALS['SITE_DB']->query_select_value_if_there('reported_content', 'r_counts', array(
-            'r_session_id' => get_session_id(),
-            'r_content_type' => $content_type,
-            'r_content_id' => $content_id,
-        )) !== null) {
-            warn_exit(do_lang_tempcode('ALREADY_REPORTED_CONTENT'));
-        }
-    }
 }
 
 /**
@@ -52,10 +51,9 @@ function check_report_content_access($content_type = null, $content_id = null)
  */
 function find_reported_content_ticket_type()
 {
-    require_lang('tickets');
     $ticket_type_id = $GLOBALS['SITE_DB']->query_select_value_if_there('ticket_types t', 't.id', array($GLOBALS['SITE_DB']->translate_field_ref('ticket_type_name') => do_lang('TT_REPORTED_CONTENT')));
     if ($ticket_type_id === null) {
-        warn_exit(do_lang_tempcode('MISSING_REPORTED_CONTENT_TICKET_TYPE', do_lang('TT_REPORTED_CONTENT')));
+        $ticket_type_id = post_param_integer('ticket_type_id', null);
     }
     return $ticket_type_id;
 }
@@ -70,40 +68,26 @@ function find_reported_content_ticket_type()
  */
 function report_content_form($title, $content_type, $content_id)
 {
-    require_code('tickets');
-
-    require_lang('report_content');
-
-    check_report_content_access($content_type, $content_id);
+    check_report_content_access();
 
     require_code('content');
-    list($content_title, $content_member_id, , $content_url) = content_get_details($content_type, $content_id);
-    if ($content_title == '') {
-        $content_title = $content_type . ' #' . $content_id;
-    }
+    list($content_title, $content_member_id, $cma_info, $content_row, $content_url) = content_get_details($content_type, $content_id);
 
-    $content_member = report_content_member_link($content_member_id);
-
-    $report_post = do_template('REPORTED_CONTENT_FCOMCODE', array(
-        '_GUID' => 'cb40aa1900eefcd24a0786b9d980fef6',
-        'CONTENT_URL' => $content_url,
-        'CONTENT_ID' => $content_id,
-        'CONTENT_MEMBER' => $content_member,
-        'CONTENT_MEMBER_ID' => strval($content_member_id),
-        'CONTENT_TITLE' => $content_title,
-    ));
+    $report_post = post_param_string('post', '');
 
     url_default_parameters__enable();
 
+    $ticket_id = ticket_generate_new_id(get_member(), $content_type . '_' . $content_id);
+
     $text = paragraph(do_lang_tempcode('DESCRIPTION_REPORT_CONTENT', escape_html($content_title), escape_html(integer_format(intval(get_option('reported_times'))))));
-    report_content_append_text($text);
+    report_content_append_text($text, $ticket_id);
 
     $specialisation = report_content_form_fields();
     $hidden_fields = build_keep_form_fields('', true);
 
     $post_url = build_url(array('page' => 'report_content', 'type' => 'actual'), get_page_zone('report_content'));
 
-    $posting_form = get_posting_form(do_lang('REPORT_CONTENT'), 'buttons__send', $report_post->evaluate(), $post_url, $hidden_fields, $specialisation, '', '', null, null, null, null, true, false, true);
+    $posting_form = get_posting_form(do_lang('REPORT_CONTENT'), 'buttons__send', $report_post, $post_url, $hidden_fields, $specialisation, '', '', null, null, null, null, true, false, true);
 
     url_default_parameters__disable();
 
@@ -128,13 +112,7 @@ function report_content_form($title, $content_type, $content_id)
  */
 function report_post_form($title, $post_id, $javascript, &$topic_info = null, &$post_info = null)
 {
-    require_code('tickets');
-
-    require_lang('report_content');
-
-    check_report_content_access('post', strval($post_id));
-
-    $forum_id = get_ticket_forum_id();
+    check_report_content_access();
 
     $_post_info = $GLOBALS['FORUM_DB']->query_select('f_posts', array('*'), array('id' => $post_id), '', 1);
     if (!array_key_exists(0, $_post_info)) {
@@ -150,28 +128,16 @@ function report_post_form($title, $post_id, $javascript, &$topic_info = null, &$
     }
     $topic_info = $_topic_info[0];
 
-    $content_member_id = $post_info['p_poster'];
-    $content_member = report_content_member_link($content_member_id, $post_info['p_poster_name_if_guest']);
+    $topic_title = $topic_info['t_cache_first_title'];
 
-    $_postdetails = post_param_string('post', null);
-    if ($_postdetails === null) {
-        $post = preg_replace('#\[staff_note\].*\[/staff_note\]#Us', '', get_translated_text($post_info['p_post'], $GLOBALS['FORUM_DB']));
-        $report_post = do_template('CNS_REPORTED_POST_FCOMCODE', array(
-            '_GUID' => 'e0f65423f3cb7698d5f04431dbe52ddb',
-            'POST_ID' => strval($post_id),
-            'CONTENT_MEMBER_ID' => strval($content_member_id),
-            'CONTENT_MEMBER' => $content_member,
-            'TOPIC_TITLE' => $topic_info['t_cache_first_title'],
-            'POST' => $post,
-        ), null, false, null, '.txt', 'text');
-    } else {
-        $report_post = make_string_tempcode($_postdetails);
-    }
+    $report_post = post_param_string('post', '');
+
+    $ticket_id = ticket_generate_new_id(get_member(), 'post' . '_' . strval($post_id));
 
     url_default_parameters__enable();
 
-    $text = new Tempcode();
-    report_content_append_text($text);
+    $text = paragraph(do_lang_tempcode('DESCRIPTION_REPORT_POST', escape_html($topic_title), escape_html(integer_format(intval(get_option('reported_times'))))));
+    report_content_append_text($text, $ticket_id);
 
     $specialisation = report_content_form_fields();
 
@@ -180,13 +146,14 @@ function report_post_form($title, $post_id, $javascript, &$topic_info = null, &$
 
     $post_url = build_url(array('page' => 'topics', 'type' => '_report_post'), get_page_zone('topics'));
 
-    $posting_form = get_posting_form(do_lang('REPORT_POST'), 'buttons__report', $report_post->evaluate(), $post_url, $hidden, $specialisation, '', '', null, null, $javascript . (function_exists('captcha_ajax_check') ? captcha_ajax_check() : ''), null, true, false, true);
+    $posting_form = get_posting_form(do_lang('REPORT_POST'), 'buttons__report', $report_post, $post_url, $hidden, $specialisation, '', '', null, null, null, null, true, false, true);
 
     url_default_parameters__disable();
 
     return do_template('POSTING_SCREEN', array(
         '_GUID' => 'eee64757e66fed702f74fecf8d595260',
         'TITLE' => $title,
+        'JAVASCRIPT' => $javascript . (function_exists('captcha_ajax_check') ? captcha_ajax_check() : ''),
         'TEXT' => $text,
         'POSTING_FORM' => $posting_form,
     ));
@@ -206,7 +173,11 @@ function report_content_member_link($content_member_id, $content_poster_name_if_
     }
     if (($content_member_id !== null) && (!is_guest($content_member_id))) {
         if (!is_guest($content_member_id)) {
-            $content_member = '[page="_SEARCH:members:view:' . strval($content_member_id) . '"]' . $content_member . '[/page]';
+            $content_poster_name = $GLOBALS['FORUM_DRIVER']->get_username($content_member_id, true);
+            if ($content_poster_name === null) {
+                $content_poster_name = do_lang('UNKNOWN');
+            }
+            $content_member = '[page="_SEARCH:members:view:' . strval($content_member_id) . '"]' . $content_poster_name . '[/page]';
         } else {
             $content_member = $content_poster_name_if_guest;
         }
@@ -225,30 +196,60 @@ function report_content_form_fields()
 {
     require_code('form_templates');
 
+    $specialisation = new Tempcode();
+
+    if (addon_installed('captcha')) {
+        require_code('captcha');
+        if (use_captcha()) {
+            $specialisation->attach(form_input_captcha());
+        }
+    }
+
     if ((!is_guest()) && (get_forum_type() == 'cns')) {
         $options = array();
         require_code('cns_forums');
+        $forum_id = get_ticket_forum_id();
         if (cns_forum_allows_anonymous_posts($forum_id)) {
-            $options[] = array(do_lang_tempcode('_MAKE_ANONYMOUS_POST'), 'anonymous', false, do_lang_tempcode('MAKE_ANONYMOUS_POST_DESCRIPTION'));
+            $options[] = array(do_lang_tempcode('REPORT_ANONYMOUS'), 'anonymous', false, do_lang_tempcode('DESCRIPTION_REPORT_ANONYMOUS'));
         }
-        $specialisation = form_input_various_ticks($options, '');
-    } else {
-        $specialisation = new Tempcode();
+        $specialisation->attach(form_input_various_ticks($options, ''));
     }
-	return $specialisation;
+
+    if (is_guest()) {
+        // If the reporter is a guest user, ask for, but do not require, an email address for further communication.
+        $specialisation->attach(form_input_email(do_lang('EMAIL_ADDRESS'), do_lang('DESCRIPTION_REPORT_EMAIL'), 'email', null, false, null));
+    }
+
+    $ticket_type_id = find_reported_content_ticket_type();
+    if ($ticket_type_id === null) {
+        // There is no specific ticket type for reports. Build a list of, and ask for, ticket type.
+        $types = build_types_list(null);
+        $list_entries = new Tempcode();
+        foreach ($types as $type) {
+        	$list_entries->attach(form_input_list_entry($type['TICKET_TYPE_ID'], $type['SELECTED'], $type['NAME']));
+        }
+        $specialisation->attach(form_input_list(do_lang('TICKET_TYPE'), '', 'ticket_type_id', $list_entries));
+    }
+
+    return $specialisation;
 }
 
 /**
  * Get standard text for a report form.
  *
  * @param Tempcode $text Append the text here
+ * @param ID_TEXT $ticket_id Ticket ID
  */
-function report_content_append_text(&$text)
+function report_content_append_text(&$text, $ticket_id)
 {
+    if (ticket_exists($ticket_id)) {
+        // If session already reported this content and the associated ticket is still open, tell the user that report will go as another post in same ticket
+        $text->attach(paragraph(do_lang_tempcode('DUPLICATE_REPORT')));
+    }
+
     if (addon_installed('captcha')) {
         require_code('captcha');
         if (use_captcha()) {
-            $specialisation->attach(form_input_captcha());
             $text->attach(paragraph(do_lang_tempcode('FORM_TIME_SECURITY')));
         }
     }
@@ -265,7 +266,8 @@ function report_content_append_text(&$text)
 /**
  * The actualiser to report content.
  *
- * @param AUTO_LINK $post_id Post ID being reported
+ * @param ID_TEXT $content_type Post ID being reported
+ * @param ID_TEXT $content_id Post ID being reported
  * @param string $report_post Report post
  * @param BINARY $anonymous Anonymous
  * @param BINARY $open Report is open
@@ -274,62 +276,44 @@ function report_content_append_text(&$text)
  */
 function report_content($content_type, $content_id, $report_post, $anonymous = 0, $open = 1, $time = null, $member_id = null)
 {
-    require_code('tickets');
-
-    require_lang('report_content');
-
     require_code('content');
-    list($content_title) = content_get_details($content_type, $content_id);
+    list($content_title, $content_member_id, $cma_info, $content_row, $content_url) = content_get_details($content_type, $content_id);
+    $ob = get_content_object($content_type); 
+    $content_rendered = $ob->run($content_row, get_module_zone($cma_info['module']));
 
-    check_report_content_access($content_type, $content_id);
+    $content_member = $GLOBALS['FORUM_DRIVER']->get_username($content_member_id, true);
+    if ($content_member === null) {
+        $content_member = do_lang('UNKNOWN');
+    }
+
+    check_report_content_access();
 
     $report_title = do_lang('REPORTED_CONTENT_TITLE', $content_title);
 
-    _report_content($content_type, $content_id, $report_title, $report_post, $anonymous, $open, $time, $member_id);
-}
+    $ticket_id = ticket_generate_new_id($member_id, $content_type . '_' . $content_id);
 
-/**
- * Report a post, with simplified input. Feeds report_post.
- *
- * @param AUTO_LINK $post_id Post ID being reported
- * @param string $reason Reason for action
- * @param BINARY $anonymous Anonymous
- * @param BINARY $open Report is open
- * @param ?TIME $time Report time (null: now)
- * @param ?MEMBER $member_id Reporting member (null: current member)
- */
-function report_post_headless($post_id, $reason = '', $anonymous = 0, $open = 1, $time = null, $member_id = null)
-{
-    require_code('tickets');
-
-    require_lang('report_content');
-
-    $table_prefix = $GLOBALS['FORUM_DB']->get_table_prefix();
-    $_post_info = $GLOBALS['FORUM_DB']->query_select('f_posts p JOIN ' . $table_prefix . 'f_topics t on t.id=p.p_topic_id', array('*', 'p.id AS post_id', 't.id AS topic_id'), array('p.id' => $post_id), '', 1);
-    if (!array_key_exists(0, $_post_info)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'post'));
-    }
-    $post_info = $_post_info[0];
-
-    $topic_title = $post_info['t_cache_first_title'];
-
-    $content_member_id = $post_info['p_poster'];
-    $content_member = report_content_member_link($content_member_id, $post_info['p_poster_name_if_guest']);
-
-    $post = preg_replace('#\[staff_note\].*\[/staff_note\]#Us', '', get_translated_text($post_info['p_post'], $GLOBALS['FORUM_DB']));
-    $report_post = do_template('CNS_REPORTED_POST_FCOMCODE', array(
-        '_GUID' => '6e9a43a3503c357b52b724e11d3d4eef',
-        'POST_ID' => strval($post_id),
-        'CONTENT_MEMBER' => $content_member,
-        'CONTENT_MEMBER_ID' => $content_member_id,
-        'TOPIC_TITLE' => $topic_title,
-        'POST' => $post,
-    ), null, false, null, '.txt', 'text');
-    if ($reason != '') {
-        $report_post->attach($reason);
+    if (ticket_exists($ticket_id)) {
+        // If there is already an open ticket for this report, let's make a post inside that ticket instead of making a new ticket and report
+        $_report_post = do_lang('REPORTED_CONTENT_EXTRA', $report_post);
+    } else {
+        // Post will have extra information added around it
+        $_report_post = static_evaluate_tempcode(do_template('REPORTED_CONTENT_FCOMCODE', array(
+            '_GUID' => 'cb40aa1900eefcd24a0786b9d980fef6',
+            'CONTENT_URL' => $content_url,
+            'CONTENT_TYPE' => $content_type,
+            'CONTENT_ID' => $content_id,
+            'CONTENT_MEMBER' => $content_member,
+            'CONTENT_MEMBER_ID' => strval($content_member_id),
+            'CONTENT_TITLE' => $content_title,
+            'CONTENT_RENDERED' => $content_rendered,
+            'REPORT_POST' => $report_post,
+        )));
     }
 
-    report_post($post_id, $report_post->evaluate(), $anonymous, $open, $time, $member_id);
+    $email = trim(post_param_string('email', ''));
+    $_report_post = ticket_wrap_with_email_address($_report_post, $email);
+
+    _report_content($content_type, $content_id, $report_title, $_report_post, $anonymous, $open, $time, $member_id);
 }
 
 /**
@@ -344,11 +328,7 @@ function report_post_headless($post_id, $reason = '', $anonymous = 0, $open = 1,
  */
 function report_post($post_id, $report_post, $anonymous = 0, $open = 1, $time = null, $member_id = null)
 {
-    require_code('tickets');
-
-    require_lang('report_content');
-
-    check_report_content_access('post', strval($post_id));
+    check_report_content_access();
 
     $table_prefix = $GLOBALS['FORUM_DB']->get_table_prefix();
     $_post_info = $GLOBALS['FORUM_DB']->query_select('f_posts p JOIN ' . $table_prefix . 'f_topics t on t.id=p.p_topic_id', array('*', 'p.id AS post_id', 't.id AS topic_id'), array('p.id' => $post_id), '', 1);
@@ -357,15 +337,44 @@ function report_post($post_id, $report_post, $anonymous = 0, $open = 1, $time = 
     }
     $post_info = $_post_info[0];
 
+    $topic_title = $post_info['t_cache_first_title'];
+
+    $content_member_id = $post_info['p_poster'];
+    $content_member = report_content_member_link($content_member_id, $post_info['p_poster_name_if_guest']);
+
+    $ticket_id = ticket_generate_new_id($member_id, 'post' . '_' . strval($post_id));
+
+    if (ticket_exists($ticket_id)) {
+        // If there is already an open ticket for this report, let's make a post inside that ticket instead of making a new ticket and report
+        $_report_post = do_lang('REPORTED_CONTENT_EXTRA', $report_post);
+    } else {
+        $post = preg_replace('#\[staff_note\].*\[/staff_note\]#Us', '', get_translated_text($post_info['p_post'], $GLOBALS['FORUM_DB']));
+        $_report_post = static_evaluate_tempcode(do_template('CNS_REPORTED_POST_FCOMCODE', array(
+            '_GUID' => '6e9a43a3503c357b52b724e11d3d4eef',
+            'POST_ID' => strval($post_id),
+            'POST_MEMBER' => $content_member,
+            'POST_MEMBER_ID' => $content_member_id,
+            'TOPIC_TITLE' => $topic_title,
+            'POST' => $post,
+            'REPORT_POST' => $report_post,
+        ), null, false, null, '.txt', 'text'));
+        if ($_report_post != '') {
+            $_report_post .= $report_post;
+        }
+    }
+
     $_title = $post_info['p_title'];
     if ($_title == '') {
         $_title = $post_info['t_cache_first_title'];
     }
     $report_title = do_lang('REPORTED_POST_TITLE', $_title);
 
+    $email = trim(post_param_string('email', ''));
+    $_report_post = ticket_wrap_with_email_address($_report_post, $email);
+
     $content_type = 'post';
     $content_id = strval($post_id);
-    _report_content($content_type, $content_id, $report_title, $report_post, $anonymous, $open, $time, $member_id);
+    _report_content($content_type, $content_id, $report_title, $_report_post, $anonymous, $open, $time, $member_id);
 }
 
 /**
@@ -382,30 +391,72 @@ function report_post($post_id, $report_post, $anonymous = 0, $open = 1, $time = 
  */
 function _report_content($content_type, $content_id, $report_title, $report_post, $anonymous = 0, $open = 1, $time = null, $member_id = null)
 {
+    if ($member_id === null) {
+        $member_id = get_member();
+    }
     if ($anonymous == 1) {
         $member_id = $GLOBALS['FORUM_DRIVER']->get_guest_id();
+        $email = '';
+    } else {
+        $email = trim(post_param_string('email', $GLOBALS['FORUM_DRIVER']->get_member_email_address($member_id)));
     }
 
     $forum_id = get_ticket_forum_id();
 
     $ticket_id = ticket_generate_new_id($member_id, $content_type . '_' . $content_id);
+
     $ticket_type_id = find_reported_content_ticket_type();
-    ticket_add_post($ticket_id, $ticket_type_id, $report_title, $report_post, false, $member_id, $time);
+    if ($ticket_type_id === null) {
+        $ticket_type_id = post_param_integer('ticket_type_id'); // Force error message
+    }
+
+    $ticket_url = ticket_add_post($ticket_id, $ticket_type_id, $report_title, $report_post, false, $member_id, $time);
+
+    // Auto monitor this ticket for all support operators if auto assign is enabled
+    if ((has_privilege(get_member(), 'support_operator')) && (get_option('ticket_auto_assign') == '1')) {
+        require_code('notifications');
+        enable_notifications('ticket_assigned_staff', $ticket_id);
+    }
+
+    // Find true ticket title
+    list($ticket_title, $topic_id) = get_ticket_meta_details($ticket_id);
+
+    // Send e-mail, if e-mail address was provided either by guest field or logged in user
+    if ($email != '') {
+        send_ticket_email($ticket_id, $ticket_title, $report_post, $ticket_url, $email, $ticket_type_id, null);
+    }
 
     if (get_forum_type() == 'cns') {
         if ($anonymous == 1) {
+            $post_id = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_cache_last_post_id', array('id' => $topic_id));
             log_it('MAKE_ANONYMOUS_POST', strval($post_id), $report_title);
         }
     }
 
     delete_cache_entry('main_staff_checklist');
 
+    // If a report topic was closed then we will block any further reports from this member counting towards unvalidation
+    $counts_for_unvalidation = true;
+    if (get_forum_type() == 'cns') {
+        $topic_id = null;
+        if (ticket_exists($ticket_id, $topic_id)) {
+            if ($GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_is_open', array('id' => $topic_id)) == 0) {
+                $counts_for_unvalidation = false;
+            }
+        }
+    }
+
     // Add to reported_content table
+    $GLOBALS['SITE_DB']->query_delete('reported_content', array(
+        'r_session_id' => get_session_id(),
+        'r_content_type' => $content_type,
+        'r_content_id' => $content_id,
+    ), '', 1);
     $GLOBALS['SITE_DB']->query_insert('reported_content', array(
         'r_session_id' => get_session_id(),
         'r_content_type' => $content_type,
         'r_content_id' => $content_id,
-        'r_counts' => 1,
+        'r_counts' => ($counts_for_unvalidation ? 1 : 0),
     ));
 
     // If hit threshold, mark down r_counts and unvalidate the content
@@ -430,4 +481,23 @@ function _report_content($content_type, $content_id, $report_title, $report_post
             'r_content_id' => $content_id,
         ));
     }
+}
+
+/**
+ * Find if a particular support ticket ID exists.
+ *
+ * @param ID_TEXT $ticket_id Ticket ID
+ * @param ?AUTO_LINK $topic_id Topic ID (null: )
+ * @return boolean Whether it exists
+ */
+function ticket_exists($ticket_id, &$topic_id = null)
+{
+    $details = get_ticket_meta_details($ticket_id, false);
+    if ($details !== null) {
+        $topic_id = $details[1];
+        return true;
+    }
+
+    $topic_id = null;
+    return false;
 }

@@ -2029,7 +2029,7 @@ class Module_topics
      *
      * @return Tempcode The UI
      */
-    function _report_post()
+    public function _report_post()
     {
         if (addon_installed('captcha')) {
             require_code('captcha');

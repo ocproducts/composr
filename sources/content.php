@@ -343,6 +343,10 @@ function get_content_title($cma_info, $content_row, $content_type, $content_id =
         $content_title = do_lang('cns:FORUM_POST_NUMBERED', $content_id);
     }
 
+    if ($content_title == '') {
+        $content_title = $content_type . ' #' . $content_id;
+    }
+
     return $content_title;
 }
 

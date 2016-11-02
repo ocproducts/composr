@@ -32,6 +32,7 @@ $PTOKENS['IS_SMALLER_OR_EQUAL'] = '<=';
 $PTOKENS['IS_IDENTICAL'] = '===';
 $PTOKENS['IS_NOT_EQUAL'] = '!=';
 $PTOKENS['IS_NOT_IDENTICAL'] = '!==';
+$PTOKENS['INSTANCEOF'] = 'instanceof';
 // Unary logical operators
 $PTOKENS['BOOLEAN_NOT'] = '!';
 // Logical commands

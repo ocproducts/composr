@@ -613,13 +613,8 @@ function ecv2_IMG_INLINE($lang, $escaped, $param)
         }
         if ($value != '') {
             $file_path = ((substr($value, 0, 22) == 'themes/default/images/') ? get_file_base() : get_custom_file_base()) . '/' . $value;
-            $file_size = @filesize($file_path);
-            if (($file_size !== false) && (floatval($file_size) * 1.4 < 32768.0 - 100.0)) { /* 1.4 represents inflation ratio for base64 encoding */
-                require_code('mime_types');
-                $value = 'data:' . get_mime_type(get_file_extension($file_path), false) . ';base64,' . base64_encode(file_get_contents($file_path));
-            } else {
-                return ecv_IMG($lang, $escaped, $param); // LEGACY: IE8
-            }
+            require_code('mime_types');
+            $value = 'data:' . get_mime_type(get_file_extension($file_path), false) . ';base64,' . base64_encode(file_get_contents($file_path));
         } else {
             return ecv_IMG($lang, $escaped, $param);
         }

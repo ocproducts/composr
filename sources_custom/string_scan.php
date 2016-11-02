@@ -114,6 +114,10 @@ function string_scan($lang, $do_guessing = false)
     $lang_strings_admin_initial = array_map('trim', explode("\n", trim('
         WARNING_SERVER_SOFTWARE
         WARNING_NON_MAINTAINED
+        CONFIG_OPTION_reported_times
+        REPORTED_TIMES
+        PRIVILEGE_may_report_content
+        MISSING_REPORTED_CONTENT_TICKET_TYPE
         NON_MAINTAINED_STATUS
         SECURITY_LEVEL
         DESCRIPTION_SECURITY_LEVEL
@@ -7177,6 +7181,18 @@ function string_scan($lang, $do_guessing = false)
         takes_lots_of_space
         JAVASCRIPT_REQUIRED
         DESCRIPTION_AWARD_OVERVIEW
+        REPORT_CONTENT
+        DESCRIPTION_REPORT_CONTENT
+        DESCRIPTION_REPORT_POST
+        REPORT_THIS
+        REPORTED_CONTENT_TITLE
+        REPORTED_CONTENT
+        REPORTED_CONTENT_EXTRA
+        REPORT_ANONYMOUS
+        DESCRIPTION_REPORT_ANONYMOUS
+        DESCRIPTION_REPORT_EMAIL
+        DUPLICATE_REPORT
+        CONTENT_REPORTED
         EMAILS
         AVATARS_CARTOONS
         AVATARS_THEMATIC
@@ -9061,7 +9077,6 @@ function string_scan($lang, $do_guessing = false)
         PURCHASING
         PURCHASING_TITLE
         PURPLE
-        PUT_YOUR_REPORT_BELOW
         QUANTITY
         QUESTION
         QUICK_REPLY

@@ -1429,7 +1429,7 @@ class Hook_import_phpbb3
             }
 
             require_code('report_content');
-            report_post_headless($post_id, $row['report_text'], 0, null, ($row['report_closed'] == 1) ? 0 : 1, $row['report_time'], $user_id);
+            report_post($post_id, $row['report_text'], 0, ($row['report_closed'] == 1) ? 0 : 1, $row['report_time'], $user_id);
         }
     }
 }
