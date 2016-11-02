@@ -164,20 +164,40 @@ function get_ticket_type($ticket_type_id)
 }
 
 /**
+ * Generate a new ticket ID.
+ *
+ * @param ?MEMBER Member ID ticket is for
+ * @param ?ID_TEXT Ticket ID stem (null: randomise)
+ * @return string New ticket ID
+ */
+function ticket_generate_new_id($member_id = null, $stem = null)
+{
+    if ($member_id === null) {
+        $member_id = get_member();
+    }
+    if ($stem === null) {
+        $stem = uniqid('', false);
+    }
+    return strval($member_id) . '_' . $stem;
+}
+
+/**
  * Add a new post to a ticket, or create a new ticket if a ticket with the given ID doesn't exist.
  * It has the same return value as make_post_forum_topic().
  *
- * @param  ?AUTO_LINK $member_id The member ID (null: current member)
  * @param  string $ticket_id The ticket ID (doesn't have to exist)
  * @param  ?AUTO_LINK $ticket_type_id The ticket type (null: reply to ticket)
  * @param  LONG_TEXT $title The post title
  * @param  LONG_TEXT $post The post content in Comcode format
- * @param  string $ticket_url The home URL
  * @param  boolean $staff_only Whether the reply is staff only (invisible to ticket owner, only on Conversr)
+ * @param  ?AUTO_LINK $member_id The member ID (null: current member)
  * @param  ?TIME $time_post The post time (null: use current time)
+ * @return URLPATH The ticket URL
  */
-function ticket_add_post($member_id, $ticket_id, $ticket_type_id, $title, $post, $ticket_url, $staff_only = false, $time_post = null)
+function ticket_add_post($ticket_id, $ticket_type_id, $title, $post, $staff_only = false, $member_id = null, $time_post = null)
 {
+    $ticket_url = ticket_url($ticket_id);
+
     // Get the forum ID first
     $fid = $GLOBALS['SITE_DB']->query_select_value_if_there('tickets', 'forum_id', array('ticket_id' => $ticket_id));
     if ($fid === null) {
@@ -232,7 +252,7 @@ function ticket_add_post($member_id, $ticket_id, $ticket_type_id, $title, $post,
  * @param  ?MEMBER $new_poster Posting member (null: current member)
  * @param  boolean $auto_created Whether the ticket was auto-created
  */
-function send_ticket_email($ticket_id, $title, $post, $ticket_url, $uid_email, $ticket_type_id_if_new, $new_poster = null, $auto_created = false)
+function send_ticket_email($ticket_id, $title, $post, $ticket_url, $uid_email = '', $ticket_type_id_if_new = null, $new_poster = null, $auto_created = false)
 {
     if ($new_poster === null) {
         $new_poster = get_active_support_user();

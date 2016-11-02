@@ -51,6 +51,7 @@ class Hook_notification_ticket_assigned_staff extends Hook_Notification
             $types2 = array(); // Too many to consider
         }
 
+        require_lang('tickets');
         require_code('tickets');
         require_code('tickets2');
 

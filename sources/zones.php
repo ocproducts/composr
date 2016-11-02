@@ -1177,7 +1177,7 @@ function do_block($codename, $map = array(), $ttl = null)
                             $REQUIRED_ALL_LANG = array();
                         }
                         set_cache_entry($codename, $ttl, $cache_identifier, $cache, $special_cache_flags, array_keys($LANGS_REQUESTED), array_keys($JAVASCRIPTS), array_keys($CSSS), true);
-                    } elseif (($ttl !== -1) && ($cache->is_empty())) { // Try again with no TTL, if we currently failed but did impose a TTL
+                    } elseif (($ttl !== null) && ($cache->is_empty())) { // Try again with no TTL, if we currently failed but did impose a TTL
                         $LANGS_REQUESTED += $backup_langs_requested;
                         $REQUIRED_ALL_LANG = $backup_required_all_lang;
                         if (!$GLOBALS['OUTPUT_STREAMING']) {

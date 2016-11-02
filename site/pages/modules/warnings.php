@@ -465,7 +465,7 @@ class Module_warnings extends Standard_crud_module
             if (has_privilege(get_member(), 'member_maintenance')) {
                 $rows = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id', 'g_name'), array('g_is_private_club' => 0));
                 $groups = new Tempcode();
-                $groups->attach(form_input_list_entry('-1', false, do_lang_tempcode('NA_EM')));
+                $groups->attach(form_input_list_entry('', false, do_lang_tempcode('NA_EM')));
                 foreach ($rows as $group) {
                     if ($group['id'] != db_get_first_id()) {
                         $groups->attach(form_input_list_entry(strval($group['id']), false, get_translated_text($group['g_name'], $GLOBALS['FORUM_DB'])));
@@ -969,7 +969,7 @@ class Module_warnings extends Standard_crud_module
             } else {
                 $_changed_usergroup_from = intval($__changed_usergroup_from);
             }
-            if (($_changed_usergroup_from !== null) && ($_changed_usergroup_from != -1)) {
+            if ($_changed_usergroup_from !== null) {
                 $changed_usergroup_from = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_primary_group');
                 $GLOBALS['FORUM_DB']->query_update('f_members', array('m_primary_group' => $_changed_usergroup_from), array('id' => $member_id), '', 1);
             }

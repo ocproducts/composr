@@ -106,6 +106,7 @@ class Module_admin_tickets
     public function run()
     {
         require_css('tickets');
+
         require_code('tickets');
         require_code('tickets2');
 

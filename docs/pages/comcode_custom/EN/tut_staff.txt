@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Coordination between staff and staff/members[/title]
+[title sub="Written by Chris Graham and Patrick Schmalstig (ocProducts)"]Composr Tutorial: Coordination between staff and staff/members[/title]
 
 When you run a Composr site, you do not merely create a website for people to visit. As an interactive, dynamic, system, Composr can provide different features for different users, and in particular, different features for staff than are available to ordinary members or visitors. Some of these features are specifically written to be for staff, some of these are a result of the [concept]privileges[/concept] system, and some are the combination between the ability to create new categories/forums and control access to these using permissions. The term 'staff' is used loosely in this tutorial, to mean anyone with the necessary permission: by default, it is staff who have the mentioned permissions, but this may be altered.
 
@@ -90,11 +90,21 @@ On point '3':
 [surround]
 [media width="150" description="A forum post needs a report / warning" float="left"]data_custom/images/docs/tut_staff/staff_report_1.png[/media]
 [media width="150" description="An offended member reports the post" float="left"]data_custom/images/docs/tut_staff/staff_report_2.png[/media]
-On busy forums, it is often impossible for staff to read every post that is made. Therefore there is a facility (if the [tt]tickets[/tt] addon is installed) for members to report problem posts to the staff (with an additional reporter message), so that the staff can then perform any appropriate action on the post.
+On busy websites, it is often impossible for staff to read every bit of content that is submitted. Therefore there is a facility (if the [tt]tickets[/tt] addon is installed) for members to report problem content to the staff (with an additional reporter message), so that the staff can then perform any appropriate action.
 
-As well as reporting posts, you can also report any kind of content within the system via the embedded "Report this" links.
+You can also report any kind of content within the system like this via the embedded "Report this" links. For the forum you can report individual posts via a custom-designed reporting interface.
+
+If a user finds, say, a gallery image to be offensive or in violation, they can click the report link, which brings up an overlay window. In the overlay, they can provide information about the content, such as why they feel it should be removed or edited.
+
+A logged in user will also be given the option to report anonymously, which causes the support ticket to be created under the Guest user.
+
+Non-logged-in users may be asked to enter a CAPTCHA to prevent spam, and may optionally provide an email address for staff follow-up.
 
 Once content is reported, the report is actually created as a support ticket. This method allows staff to collaborate together to decide how to deal with the problem, as well as allowing clarity so that all staff know how the issue was reported and dealt with.
+
+When a user submits a report, the addon will then first check to see if the same active user (based on session ID) already reported that content. If so, it checks to see if there is still an open ticket associated with the report and will post to that ticket as a follow-up. Otherwise a new ticket will be created.
+
+The support ticket will include the content title (as a link to the content), the content type label, the content ID, the content submitter (i.e. the member who created it), and an embedded rendering of the content taken at the point of the report. It will also contain the report information supplied by the reporter.
 
 We have found it often to be the case that staff will report content themselves, so that they can easily bring them (and possibly their related action) to the attention of other staff.
 [/surround]

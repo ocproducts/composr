@@ -105,7 +105,6 @@ class Module_admin_banners
     {
         check_privilege('view_anyones_banner_stats');
 
-        $id = get_param_integer('id', -1);
         $start = get_param_integer('start', 0);
         $max = get_param_integer('max', 50);
         $sortables = array('name' => do_lang_tempcode('NAME'), 'add_date' => do_lang_tempcode('DATE_TIME'));

@@ -19,6 +19,48 @@
  */
 
 /**
+ * Check the current user has post reporting access.
+ *
+ * @param ID_TEXT $content_type The content type being reported
+ * @param ID_TEXT $content_id The content ID being reported
+ */
+function check_report_content_access($content_type = null, $content_id = null)
+{
+    if ((!has_privilege(get_member(), 'may_report_content')) || (!addon_installed('tickets'))) {
+        access_denied('I_ERROR');
+    }
+
+    get_ticket_forum_id(); // Ensures forum exists
+
+    find_reported_content_ticket_type(); // Ensures ticket type exists
+
+    if (($content_type !== null) && ($content_id !== null)) {
+        if ($GLOBALS['SITE_DB']->query_select_value_if_there('reported_content', 'r_counts', array(
+            'r_session_id' => get_session_id(),
+            'r_content_type' => $content_type,
+            'r_content_id' => $content_id,
+        )) !== null) {
+            warn_exit(do_lang_tempcode('ALREADY_REPORTED_CONTENT'));
+        }
+    }
+}
+
+/**
+ * Find the ticket type for reported content.
+ *
+ * @return AUTO_LINK The ticket type ID
+ */
+function find_reported_content_ticket_type()
+{
+    require_lang('tickets');
+    $ticket_type_id = $GLOBALS['SITE_DB']->query_select_value_if_there('ticket_types t', 't.id', array($GLOBALS['SITE_DB']->translate_field_ref('ticket_type_name') => do_lang('TT_REPORTED_CONTENT')));
+    if ($ticket_type_id === null) {
+        warn_exit(do_lang_tempcode('MISSING_REPORTED_CONTENT_TICKET_TYPE', do_lang('TT_REPORTED_CONTENT')));
+    }
+    return $ticket_type_id;
+}
+
+/**
  * The UI to report content.
  *
  * @param Tempcode $title Screen title
@@ -151,31 +193,6 @@ function report_post_form($title, $post_id, $javascript, &$topic_info = null, &$
 }
 
 /**
- * Check the current user has post reporting access.
- *
- * @param ID_TEXT $content_type The content type being reported
- * @param ID_TEXT $content_id The content ID being reported
- */
-function check_report_content_access($content_type = null, $content_id = null)
-{
-    if ((!has_privilege(get_member(), 'may_report_content')) || (!addon_installed('tickets'))) {
-        access_denied('I_ERROR');
-    }
-
-    $forum_id = get_ticket_forum_id();
-
-    if (($content_type !== null) && ($content_id !== null)) {
-        if ($GLOBALS['SITE_DB']->query_select_value_if_there('reported_content', 'r_counts', array(
-            'r_session_id' => get_session_id(),
-            'r_content_type' => $content_type,
-            'r_content_id' => $content_id,
-        )) !== null) {
-            warn_exit(do_lang_tempcode('ALREADY_REPORTED_CONTENT'));
-        }
-    }
-}
-
-/**
  * Get a member content link in Comcode format.
  *
  * @param ?MEMBER $content_member_id Member ID of the original content (null: unknown)
@@ -251,12 +268,11 @@ function report_content_append_text(&$text)
  * @param AUTO_LINK $post_id Post ID being reported
  * @param string $report_post Report post
  * @param BINARY $anonymous Anonymous
- * @param ?string $poster_name_if_guest Poster name (null: read from environment)
  * @param BINARY $open Report is open
  * @param ?TIME $time Report time (null: now)
  * @param ?MEMBER $member_id Reporting member (null: current member)
  */
-function report_content($content_type, $content_id, $report_post, $anonymous = 0, $poster_name_if_guest = null, $open = 1, $time = null, $member_id = null)
+function report_content($content_type, $content_id, $report_post, $anonymous = 0, $open = 1, $time = null, $member_id = null)
 {
     require_code('tickets');
 
@@ -269,7 +285,7 @@ function report_content($content_type, $content_id, $report_post, $anonymous = 0
 
     $report_title = do_lang('REPORTED_CONTENT_TITLE', $content_title);
 
-    _report_content($content_type, $content_id, $report_title, $report_post, $anonymous, $poster_name_if_guest, $open, $time, $member_id);
+    _report_content($content_type, $content_id, $report_title, $report_post, $anonymous, $open, $time, $member_id);
 }
 
 /**
@@ -278,12 +294,11 @@ function report_content($content_type, $content_id, $report_post, $anonymous = 0
  * @param AUTO_LINK $post_id Post ID being reported
  * @param string $reason Reason for action
  * @param BINARY $anonymous Anonymous
- * @param ?string $poster_name_if_guest Poster name (null: read from environment)
  * @param BINARY $open Report is open
  * @param ?TIME $time Report time (null: now)
  * @param ?MEMBER $member_id Reporting member (null: current member)
  */
-function report_post_headless($post_id, $reason = '', $anonymous = 0, $poster_name_if_guest = null, $open = 1, $time = null, $member_id = null)
+function report_post_headless($post_id, $reason = '', $anonymous = 0, $open = 1, $time = null, $member_id = null)
 {
     require_code('tickets');
 
@@ -314,7 +329,7 @@ function report_post_headless($post_id, $reason = '', $anonymous = 0, $poster_na
         $report_post->attach($reason);
     }
 
-    report_post($post_id, $report_post->evaluate(), $anonymous, $poster_name_if_guest, $open, $time, $member_id);
+    report_post($post_id, $report_post->evaluate(), $anonymous, $open, $time, $member_id);
 }
 
 /**
@@ -323,12 +338,11 @@ function report_post_headless($post_id, $reason = '', $anonymous = 0, $poster_na
  * @param AUTO_LINK $post_id Post ID being reported
  * @param string $report_post Report post
  * @param BINARY $anonymous Anonymous
- * @param ?string $poster_name_if_guest Poster name (null: read from environment)
  * @param BINARY $open Report is open
  * @param ?TIME $time Report time (null: now)
  * @param ?MEMBER $member_id Reporting member (null: current member)
  */
-function report_post($post_id, $report_post, $anonymous = 0, $poster_name_if_guest = null, $open = 1, $time = null, $member_id = null)
+function report_post($post_id, $report_post, $anonymous = 0, $open = 1, $time = null, $member_id = null)
 {
     require_code('tickets');
 
@@ -351,7 +365,7 @@ function report_post($post_id, $report_post, $anonymous = 0, $poster_name_if_gue
 
     $content_type = 'post';
     $content_id = strval($post_id);
-    _report_content($content_type, $content_id, $report_title, $report_post, $anonymous, $poster_name_if_guest, $open, $time, $member_id);
+    _report_content($content_type, $content_id, $report_title, $report_post, $anonymous, $open, $time, $member_id);
 }
 
 /**
@@ -362,49 +376,29 @@ function report_post($post_id, $report_post, $anonymous = 0, $poster_name_if_gue
  * @param string $report_title Report title
  * @param string $report_post Report post
  * @param BINARY $anonymous Anonymous
- * @param ?string $poster_name_if_guest Poster name (null: read from environment)
  * @param BINARY $open Report is open
  * @param ?TIME $time Report time (null: now)
  * @param ?MEMBER $member_id Reporting member (null: current member)
  */
-function _report_content($content_type, $content_id, $report_title, $report_post, $anonymous = 0, $poster_name_if_guest = null, $open = 1, $time = null, $member_id = null)
+function _report_content($content_type, $content_id, $report_title, $report_post, $anonymous = 0, $open = 1, $time = null, $member_id = null)
 {
-    // TODO: CNS assumptions
-
-    require_code('cns_posts_action');
-    require_code('cns_topics_action');
+    if ($anonymous == 1) {
+        $member_id = $GLOBALS['FORUM_DRIVER']->get_guest_id();
+    }
 
     $forum_id = get_ticket_forum_id();
 
-    if ($poster_name_if_guest === null) {
-        $poster_name_if_guest = cns_get_safe_specified_poster_name();
+    $ticket_id = ticket_generate_new_id($member_id, $content_type . '_' . $content_id);
+    $ticket_type_id = find_reported_content_ticket_type();
+    ticket_add_post($ticket_id, $ticket_type_id, $report_title, $report_post, false, $member_id, $time);
 
+    if (get_forum_type() == 'cns') {
         if ($anonymous == 1) {
-            if (cns_forum_allows_anonymous_posts($forum_id)) {
-                $poster_name_if_guest = null;
-            } else {
-                $anonymous = 0;
-            }
+            log_it('MAKE_ANONYMOUS_POST', strval($post_id), $report_title);
         }
     }
 
-    // See if post already reported...
-    $topic_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics t LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p ON p.id=t.t_cache_first_post_id', 't.id', array('p.p_title' => $report_title, 't.t_forum_id' => $forum_id));
-    if ($topic_id !== null) {
-        // Already a topic
-        $first_post = false;
-    } else { // New topic
-        $topic_id = cns_make_topic($forum_id, '', '', 1, $open, 0, 0, null, null, false);
-        $first_post = true;
-    }
-
-    $post_id = cns_make_post($topic_id, $report_title, $report_post, 0, $first_post, 1, 0, $poster_name_if_guest, null, $time, $member_id, null, null, null, false, true, null, true, $report_title, null, $anonymous == 1, true, false, false, null);
-
     delete_cache_entry('main_staff_checklist');
-
-    if ($anonymous == 1) {
-        log_it('MAKE_ANONYMOUS_POST', strval($post_id), $report_title);
-    }
 
     // Add to reported_content table
     $GLOBALS['SITE_DB']->query_insert('reported_content', array(
@@ -418,7 +412,7 @@ function _report_content($content_type, $content_id, $report_title, $report_post
     $count = $GLOBALS['SITE_DB']->query_select_value('reported_content', 'COUNT(*)', array(
         'r_content_type' => $content_type,
         'r_content_id' => $content_id,
-        'r_counts' => 1,
+        'r_counts' => 1, // All those not already counted to a de-validation
     ));
     if ($count >= intval(get_option('reported_times'))) {
         require_code('content');
@@ -430,7 +424,7 @@ function _report_content($content_type, $content_id, $report_title, $report_post
             $db->query_update($cma_info['table'], array($cma_info['validated_field'] => 0), get_content_where_for_str_id($content_id, $cma_info));
         }
 
-        // Reset counter
+        // Reset all those that made it non-validated
         $GLOBALS['SITE_DB']->query_update('reported_content', array('r_counts' => 0), array(
             'r_content_type' => $content_type,
             'r_content_id' => $content_id,

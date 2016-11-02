@@ -125,6 +125,7 @@ function ticket_incoming_scan()
     }
 
     require_lang('tickets');
+    require_code('tickets');
     require_code('tickets2');
     require_code('mail2');
 
@@ -576,9 +577,6 @@ function ticket_incoming_message($from_email, $subject, $body, $attachments)
     if ($existing_ticket_id === null) {
         $new_ticket_id = strval($member_id) . '_' . uniqid('', false);
 
-        $_home_url = build_url(array('page' => 'tickets', 'type' => 'ticket', 'id' => $new_ticket_id, 'redirect' => null), get_module_zone('tickets'), null, false, true, true);
-        $home_url = $_home_url->evaluate();
-
         // Pick up ticket type, a other/general ticket type if it exists
         $ticket_type_id = null;
         $tags[] = do_lang('OTHER');
@@ -595,21 +593,18 @@ function ticket_incoming_message($from_email, $subject, $body, $attachments)
 
         // Create the ticket...
 
-        ticket_add_post($member_id, $new_ticket_id, $ticket_type_id, $subject, $body, $home_url);
+        $ticket_url = ticket_add_post($new_ticket_id, $ticket_type_id, $subject, $body, false, $member_id);
 
         // Send email (to staff)
-        send_ticket_email($new_ticket_id, $subject, $body, $home_url, $from_email, $ticket_type_id, $member_id, true);
+        send_ticket_email($new_ticket_id, $subject, $body, $ticket_url, $from_email, $ticket_type_id, $member_id, true);
     } else {
-        $_home_url = build_url(array('page' => 'tickets', 'type' => 'ticket', 'id' => $existing_ticket_id, 'redirect' => null), get_module_zone('tickets'), null, false, true, true);
-        $home_url = $_home_url->evaluate();
-
         // Reply to the ticket...
 
         $ticket_type_id = $GLOBALS['SITE_DB']->query_select_value_if_there('tickets', 'ticket_type', array(
             'ticket_id' => $existing_ticket_id,
         ));
 
-        ticket_add_post($member_id, $existing_ticket_id, $ticket_type_id, $subject, $body, $home_url);
+        $ticket_url = ticket_add_post($existing_ticket_id, $ticket_type_id, $subject, $body, false, $member_id);
 
         $details = get_ticket_meta_details($existing_ticket_id);
         if (empty($details)) {
@@ -618,7 +613,7 @@ function ticket_incoming_message($from_email, $subject, $body, $attachments)
         list($__title) = $details;
 
         // Send email (to staff & to confirm receipt to $member_id)
-        send_ticket_email($existing_ticket_id, $__title, $body, $home_url, $from_email, null, $member_id, true);
+        send_ticket_email($existing_ticket_id, $__title, $body, $ticket_url, $from_email, null, $member_id, true);
     }
 
     pop_lax_comcode();

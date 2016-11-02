@@ -895,7 +895,7 @@ class Hook_import_vb3
                     $t_filename = $filename;
                     list($thumb_path) = find_unique_path('uploads/' . $sections . '_thumbs', $t_filename);
                     require_code('images');
-                    $thumb_url = convert_image($url, $thumb_path, -1, -1, intval(get_option('thumb_width')), false, null, true);
+                    $thumb_url = convert_image($url, $thumb_path, null, null, intval(get_option('thumb_width')), false, null, true);
                     return array($url, $thumb_url);
                 } else {
                     return array($url, '');

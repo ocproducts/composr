@@ -1803,7 +1803,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                     require_code('images');
                     $file_thumb = get_custom_file_base() . '/uploads/auto_thumbs/' . $new_name;
                     if ((!file_exists($file_thumb)) && (strpos($file_thumb, '{$') === false)) {
-                        $url_thumb = convert_image($url_full, $file_thumb, -1, -1, intval(get_option('thumb_width')), false);
+                        $url_thumb = convert_image($url_full, $file_thumb, null, null, intval(get_option('thumb_width')), false);
                     } else {
                         $url_thumb = get_custom_base_url() . '/uploads/auto_thumbs/' . rawurlencode($new_name);
                     }
@@ -2143,7 +2143,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                         $ext = '.' . get_file_extension($original_filename);
                         $md5 = md5(substr($original_filename, 0, 30));
                         $thumb_path = get_custom_file_base() . '/uploads/attachments_thumbs/' . $md5 . $ext;
-                        $attributes['thumb_url'] = convert_image($url, $thumb_path, -1, -1, intval(get_option('thumb_width')), true, null, false, true);
+                        $attributes['thumb_url'] = convert_image($url, $thumb_path, null, null, intval(get_option('thumb_width')), true, null, false, true);
 
                         if ($db->is_forum_db()) {
                             $attributes['thumb_url'] = get_custom_base_url() . '/' . $attributes['thumb_url'];

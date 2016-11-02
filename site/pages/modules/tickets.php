@@ -485,9 +485,7 @@ class Module_tickets
                 $ticket_owner = get_member();
             }
 
-            $ticket_stub = uniqid('', false);
-
-            $ticket_id = strval($ticket_owner) . '_' . $ticket_stub;
+            $ticket_id = ticket_generate_new_id($ticket_owner);
 
             // Screen title...
 
@@ -522,8 +520,6 @@ class Module_tickets
             }
 
             $ticket_owner = intval($_temp[0]);
-
-            $ticket_stub = $_temp[1];
 
             check_ticket_access($ticket_id);
 
@@ -768,7 +764,7 @@ class Module_tickets
     {
         @ignore_user_abort(true); // Must keep going till completion
 
-        $ticket_id = get_param_string('id', strval(get_member()) . '_' . uniqid('', false)/*random new ticket ID*/);
+        $ticket_id = get_param_string('id', ticket_generate_new_id());
 
         $ticket_type_id = $this->get_ticket_type_id();
 
@@ -849,9 +845,7 @@ class Module_tickets
 
         // Add post to ticket...
 
-        $_home_url = build_url(array('page' => '_SELF', 'type' => 'ticket', 'id' => $ticket_id, 'redirect' => null), '_SELF', null, false, true, true);
-        $home_url = $_home_url->evaluate();
-        ticket_add_post(null, $ticket_id, $ticket_type_id, $_title, $post, $home_url, $staff_only);
+        $ticket_url = ticket_add_post($ticket_id, $ticket_type_id, $_title, $post, $staff_only);
 
         // Auto-monitor...
 
@@ -869,7 +863,7 @@ class Module_tickets
             if ($email == '') {
                 $email = $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member());
             }
-            send_ticket_email($ticket_id, $__title, $post, $home_url, $email, $ticket_type_id, null);
+            send_ticket_email($ticket_id, $__title, $post, $ticket_url, $email, $ticket_type_id, null);
         }
 
         // Close ticket, if requested...
@@ -1202,8 +1196,6 @@ class Module_tickets
         $ticket_type_id_to = $GLOBALS['SITE_DB']->query_select_value_if_there('tickets', 'ticket_type', array('ticket_id' => $to));
 
         // Add into new ticket
-        $_home_url = build_url(array('page' => '_SELF', 'type' => 'ticket', 'id' => $to, 'redirect' => null), '_SELF', null, false, true, true);
-        $home_url = $_home_url->evaluate();
         $forum = 0; // Returned by reference
         $topic_id = 0; // Returned by reference
         $ticket_posts_all = get_ticket_posts($from, $forum, $topic_id);
@@ -1211,7 +1203,7 @@ class Module_tickets
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'ticket'));
         }
         foreach ($ticket_posts_all as $comment) {
-            ticket_add_post($comment['member'], $to, $ticket_type_id_to, $comment['title'], $comment['message_comcode'], $home_url, isset($comment['staff_only']) && $comment['staff_only'], $comment['date']);
+            $ticket_url = ticket_add_post($to, $ticket_type_id_to, $comment['title'], $comment['message_comcode'], isset($comment['staff_only']) && $comment['staff_only'], $comment['member'], $comment['date']);
         }
 
         // Notification to support operator
@@ -1231,7 +1223,7 @@ class Module_tickets
             comcode_escape($to_title),
             array(
                 comcode_escape($GLOBALS['FORUM_DRIVER']->get_username(get_member(), true)),
-                $home_url,
+                $ticket_url,
                 comcode_escape($GLOBALS['FORUM_DRIVER']->get_username(get_member()))
             ),
             get_site_default_lang()
@@ -1244,13 +1236,11 @@ class Module_tickets
         );
 
         // Add move notification post into from (old) ticket
-        $_home_url = build_url(array('page' => '_SELF', 'type' => 'ticket', 'id' => $from, 'redirect' => null), '_SELF', null, false, true, true);
-        $home_url = $_home_url->evaluate();
         $merge_title = do_lang('TICKETS_MERGED_TITLE');
         $merge_post = do_lang('TICKETS_MERGED_POST', $to_title);
-        ticket_add_post(null, $from, $ticket_type_id_from, $merge_title, $merge_post, $home_url, false);
+        $ticket_url = ticket_add_post($from, $ticket_type_id_from, $merge_title, $merge_post, $ticket_url, false);
         $email = $GLOBALS['FORUM_DRIVER']->get_member_email_address($ticket_posts_all[0]['member']);
-        send_ticket_email($from, $merge_title, $merge_post, $home_url, $email, null, null);
+        send_ticket_email($from, $merge_title, $merge_post, $ticket_url, $email, null, null);
 
         // Closed old ticket
         if (get_forum_type() == 'cns') {
@@ -1291,8 +1281,8 @@ class Module_tickets
         enable_notifications('ticket_assigned_staff', $ticket_id, $member_id);
 
         // Notification to support operator that they are assigned
-        $_home_url = build_url(array('page' => '_SELF', 'type' => 'ticket', 'id' => $ticket_id, 'redirect' => null), '_SELF', null, false, true, true);
-        $home_url = $_home_url->evaluate();
+        $_ticket_url = build_url(array('page' => '_SELF', 'type' => 'ticket', 'id' => $ticket_id, 'redirect' => null), '_SELF', null, false, true, true);
+        $ticket_url = $_ticket_url->evaluate();
         $subject = do_lang(
             'TICKET_ASSIGNED_SUBJECT',
             $ticket_title,
@@ -1307,7 +1297,7 @@ class Module_tickets
             comcode_escape($ticket_title),
             comcode_escape($GLOBALS['FORUM_DRIVER']->get_username(get_member(), true)),
             array(
-                $home_url,
+                $ticket_url,
                 $GLOBALS['FORUM_DRIVER']->get_username(get_member())
             ),
             get_site_default_lang()
@@ -1346,8 +1336,8 @@ class Module_tickets
         require_code('notifications');
 
         // Notification to support operator that they are assigned
-        $_home_url = build_url(array('page' => '_SELF', 'type' => 'ticket', 'id' => $ticket_id, 'redirect' => null), '_SELF', null, false, true, true);
-        $home_url = $_home_url->evaluate();
+        $_ticket_url = build_url(array('page' => '_SELF', 'type' => 'ticket', 'id' => $ticket_id, 'redirect' => null), '_SELF', null, false, true, true);
+        $ticket_url = $_ticket_url->evaluate();
         $subject = do_lang(
             'TICKET_UNASSIGNED_SUBJECT',
             $ticket_title,
@@ -1362,7 +1352,7 @@ class Module_tickets
             comcode_escape($ticket_title),
             comcode_escape($GLOBALS['FORUM_DRIVER']->get_username(get_member(), true)),
             array(
-                $home_url,
+                $ticket_url,
                 $GLOBALS['FORUM_DRIVER']->get_username(get_member())
             ),
             get_site_default_lang()

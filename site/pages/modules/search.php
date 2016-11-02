@@ -426,7 +426,7 @@ class Module_search
                 $cutoff_to_year = ($cutoff_to === null) ? null : intval(date('Y', utctime_to_usertime($cutoff_to)));
             }
         } else {
-            $days = get_param_integer('days', null);
+            $days = get_param_integer('days', null); // -1 for no limit, null for default limit
             if ($days === null) {
                 $_days = get_value('search_days__' . $id);
                 if ($_days === null) {

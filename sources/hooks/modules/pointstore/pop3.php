@@ -45,8 +45,8 @@ class Hook_pointstore_pop3
      */
     public function save_config()
     {
-        $pop3 = post_param_integer('pop3', -1);
-        if ($pop3 != -1) {
+        $pop3 = post_param_integer('pop3', null);
+        if ($pop3 !== null) {
             $dpop3 = post_param_string('dpop3');
             $GLOBALS['SITE_DB']->query_insert('prices', array('name' => 'pop3_' . $dpop3, 'price' => $pop3));
             log_it('POINTSTORE_ADD_MAIL_POP3', $dpop3);

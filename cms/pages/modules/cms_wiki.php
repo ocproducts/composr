@@ -224,10 +224,10 @@ class Module_cms_wiki
      * @param  SHORT_TEXT $title The page title
      * @param  LONG_TEXT $notes Hidden notes pertaining to the page
      * @param  BINARY $hide_posts Whether to hide the posts on the page by default
-     * @param  AUTO_LINK $page_id The ID of the page (-1 implies we're adding)
+     * @param  ?AUTO_LINK $page_id The ID of the page (null: we're adding)
      * @return array The fields, the extra fields, the hidden fields.
      */
-    public function get_page_fields($id = null, $title = '', $notes = '', $hide_posts = 0, $page_id = -1)
+    public function get_page_fields($id = null, $title = '', $notes = '', $hide_posts = 0, $page_id = null)
     {
         $fields = new Tempcode();
         $fields2 = new Tempcode();
@@ -243,7 +243,7 @@ class Module_cms_wiki
         if (addon_installed('actionlog')) {
             require_code('revisions_engine_database');
             $revision_engine = new RevisionEngineDatabase(false);
-            $notify = ($page_id == -1) || ($revision_engine->find_most_recent_category_change('wiki_page', strval($page_id)) < time() - 60 * 10);
+            $notify = ($page_id === null) || ($revision_engine->find_most_recent_category_change('wiki_page', strval($page_id)) < time() - 60 * 10);
         } else {
             $notify = true;
         }
@@ -261,7 +261,7 @@ class Module_cms_wiki
             }
 
             if (has_tied_catalogue('wiki_page')) {
-                append_form_custom_fields('wiki_page', ($page_id == -1) ? null : strval($page_id), $fields, $hidden);
+                append_form_custom_fields('wiki_page', ($page_id === null) ? null : strval($page_id), $fields, $hidden);
             }
         }
 
@@ -274,7 +274,7 @@ class Module_cms_wiki
         }
 
         require_code('permissions2');
-        $fields2->attach(get_category_permissions_for_environment('wiki_page', strval($page_id), 'cms_wiki', null, ($page_id == -1)));
+        $fields2->attach(get_category_permissions_for_environment('wiki_page', strval($page_id), 'cms_wiki', null, ($page_id === null)));
 
         return array($fields, $fields2, $hidden);
     }

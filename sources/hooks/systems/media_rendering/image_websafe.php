@@ -124,7 +124,7 @@ class Hook_media_rendering_image_websafe
             require_code('images');
             $file_thumb = get_custom_file_base() . '/uploads/auto_thumbs/' . $new_name;
             if (!file_exists($file_thumb)) {
-                $attributes['thumb_url'] = convert_image($url_direct_filesystem, $file_thumb, $auto_box_width ? -1 : $thumb_box_width, $auto_box_height ? -1 : $thumb_box_height, ($auto_box_width && $auto_box_height) ? $thumb_box_width : -1, false);
+                $attributes['thumb_url'] = convert_image($url_direct_filesystem, $file_thumb, $auto_box_width ? null : $thumb_box_width, $auto_box_height ? null : $thumb_box_height, ($auto_box_width && $auto_box_height) ? $thumb_box_width : null, false);
             } else {
                 $attributes['thumb_url'] = get_custom_base_url() . '/uploads/auto_thumbs/' . rawurlencode($new_name);
             }

@@ -306,7 +306,7 @@ class Hook_task_import_member_csv
                 } else {
                     require_code('images');
                     $photo_thumb_path = get_custom_file_base() . '/' . $photo_thumb_url;
-                    $photo_thumb_url = convert_image($photo_url, $photo_thumb_path, -1, -1, intval(get_option('thumb_width')), false);
+                    $photo_thumb_url = convert_image($photo_url, $photo_thumb_path, null, null, intval(get_option('thumb_width')), false);
                 }
             } else {
                 $photo_thumb_url = '';

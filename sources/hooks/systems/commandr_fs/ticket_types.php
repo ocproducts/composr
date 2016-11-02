@@ -79,6 +79,8 @@ class Hook_commandr_fs_ticket_types extends Resource_fs_base
     {
         list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
+        require_lang('tickets');
+        require_code('tickets');
         require_code('tickets2');
 
         $guest_emails_mandatory = $this->_default_property_int($properties, 'guest_emails_mandatory');
@@ -130,6 +132,8 @@ class Hook_commandr_fs_ticket_types extends Resource_fs_base
         list($resource_type, $resource_id) = $this->file_convert_filename_to_id($filename);
         list($properties,) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
+        require_lang('tickets');
+        require_code('tickets');
         require_code('tickets2');
 
         $label = $this->_default_property_str($properties, 'label');
@@ -154,7 +158,10 @@ class Hook_commandr_fs_ticket_types extends Resource_fs_base
     {
         list($resource_type, $resource_id) = $this->file_convert_filename_to_id($filename);
 
+        require_lang('tickets');
+        require_code('tickets');
         require_code('tickets2');
+
         delete_ticket_type(intval($resource_id));
 
         return true;

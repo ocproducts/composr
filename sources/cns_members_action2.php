@@ -1775,7 +1775,7 @@ function cns_member_choose_avatar($avatar_url, $member_id = null)
                         warn_exit(do_lang_tempcode('IMAGE_BAD_DIMENSIONS', strval($width) . 'x' . strval($height), strval($sx) . 'x' . strval($sy)));
                     }
                     $file_path = get_custom_file_base() . '/' . rawurldecode($avatar_url);
-                    $avatar_url = convert_image($file_path, $file_path, $width, $height, -1, false, get_file_extension($file_path), true, true);
+                    $avatar_url = convert_image($file_path, $file_path, $width, $height, null, false, get_file_extension($file_path), true, true);
                 }
             }
         }

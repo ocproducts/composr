@@ -539,7 +539,7 @@ function thumb_script()
     $new_name = url_to_filename($url_full);
     $file_thumb = get_custom_file_base() . '/uploads/auto_thumbs/' . $new_name;
     if (!file_exists($file_thumb)) {
-        $url_thumb = convert_image($url_full, $file_thumb, -1, -1, intval(get_option('thumb_width')), false);
+        $url_thumb = convert_image($url_full, $file_thumb, null, null, intval(get_option('thumb_width')), false);
     } else {
         $url_thumb = get_custom_base_url() . '/uploads/auto_thumbs/' . rawurlencode($new_name);
     }

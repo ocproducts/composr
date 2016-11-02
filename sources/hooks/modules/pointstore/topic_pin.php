@@ -135,8 +135,8 @@ class Hook_pointstore_topic_pin
 
         // So we don't need to call this big long ugly name...
         $days = post_param_integer('days');
-        $topic_id = post_param_integer('select_topic_id', -1);
-        if ($topic_id == -1) {
+        $topic_id = post_param_integer('select_topic_id', null);
+        if ($topic_id === null) {
             $_topic_id = post_param_string('manual_topic_id');
             $topic_id = intval($_topic_id);
         }

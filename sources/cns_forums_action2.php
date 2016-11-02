@@ -101,13 +101,6 @@ function cns_delete_forum_grouping($forum_grouping_id, $target_forum_grouping_id
  */
 function cns_edit_forum($forum_id, $name, $description, $forum_grouping_id, $new_parent, $position, $post_count_increment, $order_sub_alpha, $intro_question, $intro_answer, $redirection = '', $order = 'last_post', $is_threaded = 0, $allows_anonymous_posts = 0, $reset_intro_acceptance = false)
 {
-    if ($forum_grouping_id == -1) {
-        $forum_grouping_id = null;
-    }
-    if ($new_parent == -1) {
-        $new_parent = mixed();
-    }
-
     require_code('urls2');
     suggest_new_idmoniker_for('forumview', 'browse', strval($forum_id), '', $name);
 

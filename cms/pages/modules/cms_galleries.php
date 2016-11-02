@@ -295,10 +295,9 @@ class Module_cms_galleries extends Standard_crud_module
         check_privilege('mass_import');
 
         $condition = 'only_member_galleries_of_id';
-        $member_id = get_param_integer('member_id', -1);
-        if ($member_id == -1) {
+        $member_id = get_param_integer('member_id', null);
+        if ($member_id === null) {
             $condition = mixed();
-            $member_id = null;
         }
 
         $cat = get_param_string('cat', '');
@@ -578,7 +577,7 @@ class Module_cms_galleries extends Standard_crud_module
                     }
                 } else {
                     $thumb_path = get_custom_file_base() . '/uploads/galleries_thumbs/' . rawurldecode($file);
-                    $thumb_url = convert_image($url, $thumb_path, -1, -1, intval(get_option('thumb_width')), false);
+                    $thumb_url = convert_image($url, $thumb_path, null, null, intval(get_option('thumb_width')), false);
 
                     // See if we need to do watermarking
                     $watermark = (post_param_integer('ss_watermark', 0) == 1);
@@ -700,7 +699,7 @@ class Module_cms_galleries extends Standard_crud_module
             }
         } else {
             $thumb_path = get_custom_file_base() . '/' . rawurldecode($thumb_url);
-            $thumb_url = convert_image($url, $thumb_path, -1, -1, intval(get_option('thumb_width')), true);
+            $thumb_url = convert_image($url, $thumb_path, null, null, intval(get_option('thumb_width')), true);
 
             $exif = get_exif_data(get_custom_file_base() . '/' . rawurldecode($url), $file);
 

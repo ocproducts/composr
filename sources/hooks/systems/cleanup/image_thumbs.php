@@ -72,7 +72,7 @@ class Hook_cleanup_image_thumbs
                     $target = get_custom_file_base() . '/' . $dir . '_thumbs/' . $file;
                     if (!file_exists($target)) {
                         require_code('images');
-                        convert_image($full . '/' . $file, $target, -1, -1, intval(get_option('thumb_width')));
+                        convert_image($full . '/' . $file, $target, null, null, intval(get_option('thumb_width')));
                     }
                 }
             }

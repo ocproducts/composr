@@ -836,7 +836,7 @@ function _get_cache_entries($dets, $special_cache_flags = null)
             }
         }
 
-        $stale = (($ttl != -1) && (time() > ($cache_row['date_and_time'] + $ttl * 60)));
+        $stale = (($ttl !== null) && (time() > ($cache_row['date_and_time'] + $ttl * 60)));
 
         if ($stale) { // Stale
             if (!$caching_via_cron) {

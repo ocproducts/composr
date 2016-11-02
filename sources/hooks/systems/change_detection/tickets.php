@@ -32,6 +32,7 @@ class Hook_change_detection_tickets
     public function run($data)
     {
         if (get_param_string('type', 'browse') == 'browse') {
+            require_lang('tickets');
             require_code('tickets');
             require_code('tickets2');
             $ticket_type_id = get_param_integer('ticket_type_id', null);
@@ -41,9 +42,9 @@ class Hook_change_detection_tickets
 
         $ticket_id = get_param_string('id', null);
 
+        require_lang('tickets');
         require_code('tickets');
         require_code('tickets2');
-        require_lang('tickets');
 
         $ticket_posts = get_ticket_posts($ticket_id);
 

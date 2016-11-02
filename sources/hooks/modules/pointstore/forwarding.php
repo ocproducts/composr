@@ -45,8 +45,8 @@ class Hook_pointstore_forwarding
      */
     public function save_config()
     {
-        $forw = post_param_integer('forw', -1);
-        if ($forw != -1) {
+        $forw = post_param_integer('forw', null);
+        if ($forw !== null) {
             $dforw = post_param_string('dforw');
             $GLOBALS['SITE_DB']->query_insert('prices', array('name' => 'forw_' . $dforw, 'price' => $forw));
             log_it('POINTSTORE_ADD_MAIL_FORWARDER', $dforw);

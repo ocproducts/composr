@@ -79,6 +79,19 @@ function check_ticket_access($ticket_id)
 }
 
 /**
+ * Get a support ticket URL.
+ *
+ * @param  ID_TEXT $ticket_id The support ticket ID
+ * @return URLPATH The ticket URL
+ */
+function ticket_url($ticket_id)
+{
+    $_ticket_url = build_url(array('page' => 'tickets', 'type' => 'ticket', 'id' => $ticket_id), '_SEARCH', null, false, true, true);
+    $ticket_url = $_ticket_url->evaluate();
+    return $ticket_url;
+}
+
+/**
  * Get the forum ID for a given ticket type and member, taking the ticket_type_forums option into account.
  *
  * @param  ?integer $ticket_type_id The ticket type (null: all ticket types)

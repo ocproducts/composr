@@ -71,13 +71,6 @@ function cns_make_forum($name, $description, $forum_grouping_id, $access_mapping
     require_code('global4');
     prevent_double_submit('ADD_FORUM', null, $name);
 
-    if ($forum_grouping_id == -1) {
-        $forum_grouping_id = null;
-    }
-    if ($parent_forum == -1) {
-        $parent_forum = null;
-    }
-
     if (!get_mass_import_mode()) {
         if (($forum_grouping_id !== null) && (function_exists('cns_ensure_forum_grouping_exists'))) {
             cns_ensure_forum_grouping_exists($forum_grouping_id);
