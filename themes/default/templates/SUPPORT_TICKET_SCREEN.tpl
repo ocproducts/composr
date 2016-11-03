@@ -24,7 +24,7 @@
 		{+START,IF_NON_EMPTY,{ASSIGNED}}
 			{+START,LOOP,ASSIGNED}
 				<li>
-					{+START,IF,{$HAS_PRIVILEGE,ticket_assigned_staff}}
+					{+START,IF,{$HAS_PRIVILEGE,support_operator}}
 						<form title="{!_ASSIGNED_TO}" action="{$PAGE_LINK*,_SEARCH:tickets:unassign:ticket_id={ID}:member_id={_loop_key}}" method="post" class="inline vertical_alignment" autocomplete="off">
 							{$INSERT_SPAMMER_BLACKHOLE}
 
@@ -40,7 +40,7 @@
 			<li><em>{!UNASSIGNED}</em></li>
 		{+END}
 
-		{+START,IF,{$HAS_PRIVILEGE,ticket_assigned_staff}}
+		{+START,IF,{$HAS_PRIVILEGE,support_operator}}
 			<li>
 				<form title="{!ASSIGN_TO}" action="{$PAGE_LINK*,_SEARCH:tickets:assign:ticket_id={ID}}" method="post" class="inline vertical_alignment" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}

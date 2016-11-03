@@ -1473,7 +1473,7 @@ class Hook_phpbb3
 
             $title = do_lang('REPORTED_POST_TITLE', $post_title);
             $topic_id = cns_make_topic($forum_id, $title, '', $row['topic_approved'], ($row['report_closed'] == 1) ? 0 : 1, 0, 0, 0, null, null, false);
-            $post = do_template('CNS_REPORTED_POST', array('_GUID' => '0dd1532216390f75385323ce11baedba', 'POST_ID' => strval($post_id), 'MEMBER' => $member, 'TOPIC_NAME' => $topic_info[0]['t_cache_first_title'], 'POST' => $row['report_text'], 'POSTER' => $poster));
+            $post = do_template('CNS_REPORTED_POST_FCOMCODE', array('_GUID' => '0dd1532216390f75385323ce11baedba', 'POST_ID' => strval($post_id), 'MEMBER' => $member, 'TOPIC_NAME' => $topic_info[0]['t_cache_first_title'], 'POST' => $row['report_text'], 'POSTER' => $poster), null, false, null, '.txt', 'text');
             cns_make_post($topic_id, $title, $post->evaluate(), 0, true, 1, 0, $member, null, $row['report_time'], $user_id, null, null, null, false, true, null, true, $title, 0, null, false);
         }
     }

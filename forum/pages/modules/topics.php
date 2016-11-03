@@ -2284,6 +2284,7 @@ class Module_topics
                 }
 
                 $topic_id = cns_make_topic(null, post_param_string('description', ''), post_param_string('emoticon', ''), $topic_validated, post_param_integer('open', 0), post_param_integer('pinned', 0), $sunk, post_param_integer('cascading', 0), get_member(), $member_id, true, $metadata['views']);
+                $first_post = true;
                 $_title = get_screen_title('ADD_PRIVATE_TOPIC');
             } elseif ($forum_id == -2) { // New reported post topic
                 if (!cns_may_report_post()) {
@@ -2307,8 +2308,10 @@ class Module_topics
                 $topic_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics t LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p ON p.id=t.t_cache_first_post_id', 't.id', array('p.p_title' => $title, 't.t_forum_id' => $forum_id));
                 if (!is_null($topic_id)) {
                     // Already a topic
+                    $first_post = false;
                 } else { // New topic
                     $topic_id = cns_make_topic($forum_id, '', '', 1, 1, 0, 0, 0, null, null, false, $metadata['views']);
+                    $first_post = true;
                 }
 
                 $_title = get_screen_title('REPORT_POST');
@@ -2327,6 +2330,7 @@ class Module_topics
                 }
 
                 $topic_id = cns_make_topic($forum_id, post_param_string('description', ''), post_param_string('emoticon', ''), $topic_validated, post_param_integer('open', 0), post_param_integer('pinned', 0), $sunk, post_param_integer('cascading', 0), null, null, true, $metadata['views']);
+                $first_post = true;
                 $_title = get_screen_title('ADD_TOPIC');
 
                 $_topic_id = strval($topic_id);
@@ -2355,7 +2359,6 @@ END;
                     handle_award_setting('topic', strval($topic_id));
                 }
             }
-            $first_post = true;
 
             set_url_moniker('topic', strval($topic_id));
 
@@ -2551,11 +2554,6 @@ END;
 
         if ($anonymous == 1) {
             log_it('MAKE_ANONYMOUS_POST', strval($post_id), $title);
-        }
-
-        if (addon_installed('awards')) {
-            require_code('awards');
-            handle_award_setting('post', strval($post_id));
         }
 
         if (($forum_id == -1) && ($member_id != -1)) {

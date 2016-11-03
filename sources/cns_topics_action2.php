@@ -621,7 +621,7 @@ function handle_topic_ticket_reply($forum_id, $topic_id, $topic_title, $post)
             $ticket_id = extract_topic_identifier($topic_description);
             $home_url = build_url(array('page' => 'tickets', 'type' => 'ticket', 'id' => $ticket_id), 'site', null, false, true);
 
-            send_ticket_email($ticket_id, $topic_title, $post, $home_url->evaluate(), '', -1);
+            send_ticket_email($ticket_id, $topic_title, $post, $home_url->evaluate(), '', null);
         }
     }
 }
