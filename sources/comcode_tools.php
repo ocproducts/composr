@@ -34,7 +34,7 @@ function comcode_convert_script()
 
     require_lang('comcode');
 
-    $data = post_param_string('data', null, INPUT_FILTER_DEFAULT & ~INPUT_FILTER_WYSIWYG_TO_COMCODE);
+    $data = post_param_string('data', null, INPUT_FILTER_DEFAULT_POST & ~INPUT_FILTER_WYSIWYG_TO_COMCODE);
     if ($data === null) {
         // UI can be called up manually if desired, it's a useful little developer tool...
 

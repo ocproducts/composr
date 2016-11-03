@@ -581,5 +581,5 @@ function calculation_internal_heuristic_confidence()
         }
     }
 
-    return array($confidence_level, $scoring);
+    return array($confidence_level / 100.0, $scoring);
 }

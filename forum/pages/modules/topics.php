@@ -2007,9 +2007,9 @@ class Module_topics
     {
         $post_id = get_param_integer('id');
 
-        $title = get_screen_title('REPORT_POST');
+        require_code('report_content');
 
-        require_code('report_post');
+        $title = get_screen_title('REPORT_POST');
 
         $topic_info = null;
         $post_info = null;
@@ -2040,7 +2040,7 @@ class Module_topics
         $post = post_param_string('post');
         $anonymous = post_param_integer('anonymous', 0);
 
-        require_code('report_post');
+        require_code('report_content');
         report_post($post_id, $post, $anonymous);
 
         // Show it worked / Refresh
