@@ -50,7 +50,7 @@
             }
         },
 
-        postChatMessagE: function (e) {
+        postChatMessage: function (e) {
             chat_post(e, this.chatroomId, 'post', this.$('#font_name').value, this.$('#text_colour').value);
         }
     });
@@ -227,8 +227,7 @@ window.addEventListener('focus', function () {
     window.has_focus = true;
 });
 
-function play_sound_url(url) // Used for testing different sounds
-{
+function play_sound_url(url) {// Used for testing different sounds
     if (window.soundManager === undefined) return;
 
     var base_url = ((url.indexOf('data_custom') == -1) && (url.indexOf('uploads/') == -1)) ? '{$BASE_URL_NOHTTP;}' : '{$CUSTOM_BASE_URL_NOHTTP;}';
