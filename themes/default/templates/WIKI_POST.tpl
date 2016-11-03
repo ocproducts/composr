@@ -39,7 +39,7 @@
 
 				{+START,INCLUDE,BUTTON_SCREEN_ITEM}
 					{+START,IF,{$ADDON_INSTALLED,tickets}}
-						URL={$PAGE_LINK,_SEARCH:report_content:content_type=wiki_post:content_id={ID}:url={$SELF_URL&}}
+						URL={$PAGE_LINK,_SEARCH:report_content:content_type=wiki_post:content_id={ID}:redirect={$SELF_URL&}}
 						TITLE={!report_content:REPORT_THIS}
 						FULL_TITLE={!report_content:REPORT_THIS}
 						IMG=buttons/report

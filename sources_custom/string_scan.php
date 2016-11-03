@@ -7177,6 +7177,7 @@ function string_scan($lang, $do_guessing = false)
         DESCRIPTION_AWARD_OVERVIEW
         REPORT_CONTENT
         DESCRIPTION_REPORT_CONTENT
+        REPORT_OR_ANONYMOUS
         DESCRIPTION_REPORT_POST
         REPORT_THIS
         REPORTED_CONTENT_TITLE

@@ -63,7 +63,7 @@
 		5_REL=edit
 		5_ICON=menu/_generic_admin/edit_this_category
 		{+START,IF,{$ADDON_INSTALLED,tickets}}
-			6_URL={$PAGE_LINK,_SEARCH:report_content:content_type=gallery:content_id={CAT}:url={$SELF_URL&}}
+			6_URL={$PAGE_LINK,_SEARCH:report_content:content_type=gallery:content_id={CAT}:redirect={$SELF_URL&}}
 			6_TITLE={!report_content:REPORT_THIS}
 			6_ICON=buttons/report
 			6_REL=report

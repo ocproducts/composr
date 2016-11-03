@@ -121,8 +121,6 @@ class Module_report_content
      */
     public function run()
     {
-        require_lang('cns');
-
         // Decide what we're doing
         $type = get_param_string('type', 'browse');
 
@@ -171,12 +169,9 @@ class Module_report_content
         $post = post_param_string('post');
         $anonymous = post_param_integer('anonymous', 0);
 
-        report_content($content_type, $content_id, $post, $anonymous);
+        $_url = report_content($content_type, $content_id, $post, $anonymous);
 
-        $_url = post_param_string('url', '', INPUT_FILTER_URL_INTERNAL);
-        if ($_url != '') {
-            $content_url = make_string_tempcode($_url);
-        }
-        return redirect_screen($this->title, $content_url, do_lang_tempcode('CONTENT_REPORTED'));
+        $url = post_param_string('redirect', $_url->evaluate(), INPUT_FILTER_URL_INTERNAL);
+        return redirect_screen($this->title, $url, do_lang_tempcode('CONTENT_REPORTED'));
     }
 }

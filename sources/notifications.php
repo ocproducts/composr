@@ -314,7 +314,7 @@ class Notification_dispatcher
                     'search_faq' => 0,
                     'cache_lead_time' => null,
                 );
-                $map += insert_lang('ticket_type_name', do_lang($ticket_type_name), 1);
+                $map += insert_lang('ticket_type_name', $ticket_type_name, 1);
                 $ticket_type_id = $GLOBALS['SITE_DB']->query_insert('ticket_types', $map, true);
             }
 

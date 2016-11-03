@@ -50,6 +50,7 @@ class Block_main_contact_us
     public function run($map)
     {
         require_lang('tickets');
+
         require_code('feedback');
 
         $block_id = get_block_id($map);
@@ -62,7 +63,6 @@ class Block_main_contact_us
         $subject_suffix = array_key_exists('subject_suffix', $map) ? $map['subject_suffix'] : '';
 
         $id = uniqid('', false);
-        $self_title = post_param_string('title', do_lang('CONTACT_US_MESSAGING'));
         $post = post_param_string('post', '');
         $title = post_param_string('title', '');
 

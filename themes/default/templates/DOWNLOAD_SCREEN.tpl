@@ -183,7 +183,7 @@
 			2_ICON=menu/_generic_admin/add_one
 		{+END}
 		{+START,IF,{$ADDON_INSTALLED,tickets}}
-			3_URL={$PAGE_LINK,_SEARCH:report_content:content_type=download:content_id={ID}:url={$SELF_URL&}}
+			3_URL={$PAGE_LINK,_SEARCH:report_content:content_type=download:content_id={ID}:redirect={$SELF_URL&}}
 			3_TITLE={!report_content:REPORT_THIS}
 			3_ICON=buttons/report
 			3_REL=report

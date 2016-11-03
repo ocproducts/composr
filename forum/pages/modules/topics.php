@@ -2045,9 +2045,8 @@ class Module_topics
 
         // Show it worked / Refresh
         $_title = get_screen_title('REPORT_POST');
-        $text = do_lang_tempcode('POST_REPORTED');
         $url = get_param_string('redirect', $_url->evaluate(), INPUT_FILTER_URL_INTERNAL);
-        return redirect_screen($_title, $url, $text);
+        return redirect_screen($_title, $url, do_lang_tempcode('POST_REPORTED'));
     }
 
     /**

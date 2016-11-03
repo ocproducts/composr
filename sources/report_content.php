@@ -51,9 +51,12 @@ function check_report_content_access()
  */
 function find_reported_content_ticket_type()
 {
-    $ticket_type_id = $GLOBALS['SITE_DB']->query_select_value_if_there('ticket_types t', 't.id', array($GLOBALS['SITE_DB']->translate_field_ref('ticket_type_name') => do_lang('TT_REPORTED_CONTENT')));
+    static $ticket_type_id = null;
     if ($ticket_type_id === null) {
-        $ticket_type_id = post_param_integer('ticket_type_id', null);
+        $ticket_type_id = $GLOBALS['SITE_DB']->query_select_value_if_there('ticket_types t', 't.id', array($GLOBALS['SITE_DB']->translate_field_ref('ticket_type_name') => do_lang('TT_REPORTED_CONTENT')));
+        if ($ticket_type_id === null) {
+            $ticket_type_id = post_param_integer('ticket_type_id', null);
+        }
     }
     return $ticket_type_id;
 }
@@ -75,11 +78,18 @@ function report_content_form($title, $content_type, $content_id)
 
     $report_post = post_param_string('post', '');
 
+    require_code('form_templates');
+
     url_default_parameters__enable();
 
     $ticket_id = ticket_generate_new_id(get_member(), $content_type . '_' . $content_id);
 
-    $text = paragraph(do_lang_tempcode('DESCRIPTION_REPORT_CONTENT', escape_html($content_title), escape_html(integer_format(intval(get_option('reported_times'))))));
+    $text = paragraph(do_lang_tempcode(
+        'DESCRIPTION_REPORT_CONTENT',
+        escape_html($content_title),
+        escape_html(integer_format(intval(get_option('reported_times')))),
+        ticket_allow_anonymous_posts() ? do_lang('REPORT_OR_ANONYMOUS') : ''
+    ));
     report_content_append_text($text, $ticket_id);
 
     $specialisation = report_content_form_fields();
@@ -134,9 +144,16 @@ function report_post_form($title, $post_id, $javascript, &$topic_info = null, &$
 
     $ticket_id = ticket_generate_new_id(get_member(), 'post' . '_' . strval($post_id));
 
+    require_code('form_templates');
+
     url_default_parameters__enable();
 
-    $text = paragraph(do_lang_tempcode('DESCRIPTION_REPORT_POST', escape_html($topic_title), escape_html(integer_format(intval(get_option('reported_times'))))));
+    $text = paragraph(do_lang_tempcode(
+        'DESCRIPTION_REPORT_POST',
+        escape_html($topic_title),
+        escape_html(integer_format(intval(get_option('reported_times')))),
+        ticket_allow_anonymous_posts() ? do_lang('REPORT_OR_ANONYMOUS') : ''
+    ));
     report_content_append_text($text, $ticket_id);
 
     $specialisation = report_content_form_fields();
@@ -205,19 +222,17 @@ function report_content_form_fields()
         }
     }
 
-    if ((!is_guest()) && (get_forum_type() == 'cns')) {
+    if ((!is_guest()) && (ticket_allow_anonymous_posts())) {
         $options = array();
-        require_code('cns_forums');
-        $forum_id = get_ticket_forum_id();
-        if (cns_forum_allows_anonymous_posts($forum_id)) {
-            $options[] = array(do_lang_tempcode('REPORT_ANONYMOUS'), 'anonymous', false, do_lang_tempcode('DESCRIPTION_REPORT_ANONYMOUS'));
-        }
-        $specialisation->attach(form_input_various_ticks($options, ''));
+        $options[] = array(do_lang_tempcode('REPORT_ANONYMOUS'), 'anonymous', false, do_lang_tempcode('DESCRIPTION_REPORT_ANONYMOUS'));
+        $field = form_input_various_ticks($options, '');
+        $specialisation->attach($field);
     }
 
     if (is_guest()) {
         // If the reporter is a guest user, ask for, but do not require, an email address for further communication.
-        $specialisation->attach(form_input_email(do_lang('EMAIL_ADDRESS'), do_lang('DESCRIPTION_REPORT_EMAIL'), 'email', null, false, null));
+        $field = form_input_email(do_lang('EMAIL_ADDRESS'), do_lang('DESCRIPTION_REPORT_EMAIL'), 'email', null, false, null);
+        $specialisation->attach($field);
     }
 
     $ticket_type_id = find_reported_content_ticket_type();
@@ -228,7 +243,8 @@ function report_content_form_fields()
         foreach ($types as $type) {
         	$list_entries->attach(form_input_list_entry($type['TICKET_TYPE_ID'], $type['SELECTED'], $type['NAME']));
         }
-        $specialisation->attach(form_input_list(do_lang('TICKET_TYPE'), '', 'ticket_type_id', $list_entries));
+        $field = form_input_list(do_lang('TICKET_TYPE'), '', 'ticket_type_id', $list_entries);
+        $specialisation->attach($field);
     }
 
     return $specialisation;
@@ -308,7 +324,7 @@ function report_content($content_type, $content_id, $report_post, $anonymous = 0
             'CONTENT_TITLE' => $content_title,
             'CONTENT_RENDERED' => $content_rendered,
             'REPORT_POST' => $report_post,
-        )));
+        ), null, false, null, '.txt', 'text'));
     }
 
     $email = trim(post_param_string('email', ''));
@@ -502,4 +518,16 @@ function ticket_exists($ticket_id, &$topic_id = null)
 
     $topic_id = null;
     return false;
+}
+
+/**
+ * Whether anonymous posts are allowed.
+ *
+ * @return boolean Whether anonymous posts are allowed
+ */
+function ticket_allow_anonymous_posts()
+{
+    require_code('cns_forums');
+    $forum_id = get_ticket_forum_id();
+    return (get_forum_type() == 'cns') && (cns_forum_allows_anonymous_posts($forum_id));
 }
