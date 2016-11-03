@@ -32,22 +32,22 @@
     define(Number, 'MIN_SAFE_INTEGER', -9007199254740991); // -2^53+1
 
     // Credit: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/isNaN
-    define(Number, 'isNaN', function (value) {
+    define(Number, 'isNaN', function isNaN(value) {
         return value !== value;
     });
 
     // Credit: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/isFinite
-    define(Number, 'isFinite', function (value) {
+    define(Number, 'isFinite', function isFinite(value) {
         return (typeof value === 'number') && isFinite(value);
     });
 
     // Credit: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/isInteger
-    define(Number, 'isInteger', function (value) {
+    define(Number, 'isInteger', function isInteger(value) {
         return Number.isFinite(value) && (Math.floor(value) === value);
     });
 
     // Credit: https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/String/includes
-    define(String.prototype, 'includes', function (search, start) {
+    define(String.prototype, 'includes', function includes(search, start) {
         if (typeof start !== 'number') {
             start = 0;
         }
@@ -60,14 +60,14 @@
     });
 
     // Credit: https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith
-    define(String.prototype, 'startsWith', function (searchString, position) {
+    define(String.prototype, 'startsWith', function startsWith(searchString, position) {
         position = position || 0;
         return this.substr(position, searchString.length) === searchString;
     });
 
 
     // https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/String/endsWith
-    define(String.prototype, 'endsWith', function (searchString, position) {
+    define(String.prototype, 'endsWith', function endsWith(searchString, position) {
         var subjectString = this.toString();
         if (typeof position !== 'number' || !isFinite(position) || Math.floor(position) !== position || position > subjectString.length) {
             position = subjectString.length;
@@ -78,7 +78,7 @@
     });
 
     // Credit: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes
-    define(Array.prototype, 'includes', function (searchElement /*, fromIndex*/) {
+    define(Array.prototype, 'includes', function includes(searchElement /*, fromIndex*/) {
         var isSearchNaN = Number.isNaN(searchElement); // Needs a special check since NaN !== NaN
 
         if ((this === null) || (this === undefined)) {
