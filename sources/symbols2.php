@@ -1972,7 +1972,7 @@ function ecv2_HAS_SUBMIT_PERMISSION($lang, $escaped, $param)
 function ecv2_HTTP_STATUS_CODE($lang, $escaped, $param)
 {
     global $HTTP_STATUS_CODE;
-    $value = $HTTP_STATUS_CODE;
+    $value = strval($HTTP_STATUS_CODE);
 
     if ($GLOBALS['XSS_DETECT']) {
         ocp_mark_as_escaped($value);

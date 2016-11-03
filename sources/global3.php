@@ -257,12 +257,12 @@ function cms_http_request($url, $options = array())
 function _load_blank_output_state($just_tempcode = false, $true_blank = false)
 {
     /*
-        Now lots of stuff all relating to output state (unless commented, these GLOBALs should not be written to directly, we have API calls for it)
+    Now lots of stuff all relating to output state (unless commented, these GLOBALs should not be written to directly, we have API calls for it)
     */
 
     if (!$just_tempcode) {
         global $HTTP_STATUS_CODE;
-        $HTTP_STATUS_CODE = '200';
+        $HTTP_STATUS_CODE = 200;
 
         global $METADATA;
         $METADATA = array();
@@ -661,7 +661,7 @@ function set_extra_request_metadata($metadata, $row = null, $content_type = null
  *
  * @sets_output_state
  *
- * @param  string $code The HTTP status code (should be numeric)
+ * @param  integer $code The HTTP status code
  */
 function set_http_status_code($code)
 {
@@ -669,7 +669,7 @@ function set_http_status_code($code)
     $HTTP_STATUS_CODE = $code; // So we can keep track
 
     if ((!headers_sent()) && (function_exists('browser_matches')) && (!browser_matches('ie')) && (strpos(cms_srv('SERVER_SOFTWARE'), 'IIS') === false)) {
-        http_response_code(intval($code));
+        http_response_code($code);
     }
 }
 
@@ -2263,7 +2263,7 @@ function get_num_users_site()
         }
     }
     if ((intval($NUM_USERS_SITE_CACHE) > intval(get_option('maximum_users'))) && (intval(get_option('maximum_users')) > 1) && (get_page_name() != 'login') && (!has_privilege(get_member(), 'access_overrun_site')) && (!running_script('cron_bridge'))) {
-        set_http_status_code('503');
+        set_http_status_code(503);
 
         critical_error('BUSY', do_lang('TOO_MANY_USERS'));
     }

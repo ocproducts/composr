@@ -1649,7 +1649,7 @@ class Forum_driver_cns extends Forum_driver_base
                 require_lang('cns');
 
                 require_code('global3');
-                set_http_status_code('429');
+                set_http_status_code(429);
 
                 warn_exit(do_lang_tempcode('FLOOD_CONTROL_RESTRICT', escape_html(integer_format($wait_time))));
             }

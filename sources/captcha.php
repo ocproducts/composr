@@ -41,7 +41,7 @@ function captcha_script()
     if ($code_needed === null) {
         generate_captcha();
         $code_needed = $GLOBALS['SITE_DB']->query_select_value_if_there('captchas', 'si_code', array('si_session_id' => get_session_id()));
-        /*set_http_status_code('500');    This would actually be very slightly insecure, as it could be used to probe (binary) login state via rogue sites that check if CAPTCHAs had been generated
+        /*set_http_status_code(500);    This would actually be very slightly insecure, as it could be used to probe (binary) login state via rogue sites that check if CAPTCHAs had been generated
 
         warn_exit(do_lang_tempcode('CAPTCHA_NO_SESSION'));*/
     }
@@ -260,7 +260,7 @@ function enforce_captcha($regenerate_on_error = true)
     if (use_captcha()) {
         $code_entered = post_param_string('captcha');
         if (!check_captcha($code_entered, $regenerate_on_error)) {
-            set_http_status_code('500');
+            set_http_status_code(500);
 
             warn_exit(do_lang_tempcode('INVALID_SECURITY_CODE_ENTERED'));
         }

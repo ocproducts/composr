@@ -55,7 +55,7 @@ function init__site()
                     $non_canonical[$n] = null;
                 }
             }
-            set_http_status_code('301');
+            set_http_status_code(301);
             header('HTTP/1.0 301 Moved Permanently'); // Direct ascending for URL Schemes - not possible, so should give 404's to avoid indexing
             require_code('urls');
             header('Location: ' . get_self_url(true, false, $non_canonical));
@@ -83,7 +83,7 @@ function init__site()
         $url_scheme = get_option('url_scheme');
         if (($url_scheme == 'PG') || ($url_scheme == 'HTM')) {
             if ((!headers_sent()) && (running_script('index')) && ($GLOBALS['RELATIVE_PATH'] == get_zone_name()/*i.e. a proper zone*/) && (cms_srv('REQUEST_METHOD') != 'POST') && (get_param_integer('keep_failover', null) !== 0) && ((strpos($ruri, '/pg/') === false) || ($url_scheme != 'PG')) && ((strpos($ruri, '.htm') === false) || ($url_scheme != 'HTM'))) {
-                set_http_status_code('301');
+                set_http_status_code(301);
                 header('HTTP/1.0 301 Moved Permanently'); // Direct ascending for URL Schemes - not possible, so should give 404's to avoid indexing
                 header('Location: ' . get_self_url(true));
                 exit();
@@ -93,7 +93,7 @@ function init__site()
 
     // Search engine having session in URL, we don't like this
     if ((get_bot_type() !== null) && (cms_srv('REQUEST_METHOD') != 'POST') && (get_param_string('keep_session', null) !== null)) {
-        set_http_status_code('301');
+        set_http_status_code(301);
         header('Location: ' . get_self_url(true, false, array('keep_session' => null, 'keep_print' => null)));
         exit();
     }
@@ -767,7 +767,7 @@ function process_url_monikers($page, $redirect_if_non_canonical = true)
                     if (is_numeric($url_id)) { // Lookup and redirect to moniker
                         $correct_moniker = find_id_moniker(array('page' => $page, 'type' => get_param_string('type', 'browse'), 'id' => $url_id), $zone);
                         if (($correct_moniker !== null) && ($correct_moniker != $url_id) && (get_param_integer('keep_failover', null) !== 0) && (cms_srv('REQUEST_METHOD') != 'POST')) { // test is very unlikely to fail. Will only fail if the title of the resource was numeric - in which case the moniker was chosen to be the ID (NOT the number in the title, as that would have created ambiguity).
-                            set_http_status_code('301');
+                            set_http_status_code(301);
                             header('HTTP/1.0 301 Moved Permanently');
                             $_new_url = build_url(array('page' => '_SELF', 'id' => $correct_moniker), '_SELF', null, true);
                             $new_url = $_new_url->evaluate();
@@ -789,7 +789,7 @@ function process_url_monikers($page, $redirect_if_non_canonical = true)
                         if (($deprecated) && (cms_srv('REQUEST_METHOD') != 'POST') && (get_param_integer('keep_failover', null) !== 0)) {
                             $correct_moniker = find_id_moniker(array('page' => $page, 'type' => get_param_string('type', 'browse'), 'id' => $monikers[0]['m_resource_id']), $zone);
                             if ($correct_moniker != $url_id) { // Just in case database corruption means ALL are deprecated
-                                set_http_status_code('301');
+                                set_http_status_code(301);
                                 header('HTTP/1.0 301 Moved Permanently');
                                 $_new_url = build_url(array('page' => '_SELF', 'id' => $correct_moniker), '_SELF', null, true);
                                 $new_url = $_new_url->evaluate();
@@ -911,7 +911,7 @@ function do_site()
     // Load up our frames into strings. Note that the header and the footer are fixed already.
     $middle = request_page(get_page_name(), true, null, null, false, false, $out);
     if (($middle === null) || ($middle->is_empty_shell())) {
-        set_http_status_code('404');
+        set_http_status_code(404);
 
         $title = get_screen_title('ERROR_OCCURRED');
         $text = do_lang_tempcode('NO_PAGE_OUTPUT');
@@ -1699,7 +1699,7 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
     $is_panel = (substr($codename, 0, 6) == 'panel_') || ((strpos($codename, 'panel_') !== false) && (get_param_integer('keep_theme_test', 0) == 1));
 
     if ($zone == '' && $codename == '404') {
-        set_http_status_code('404');
+        set_http_status_code(404);
     }
 
     if (

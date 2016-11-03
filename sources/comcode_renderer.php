@@ -424,7 +424,7 @@ function comcode_parse_error($preparse_mode, $_message, $pos, $comcode, $check_o
     }
 
     if (!running_script('comcode_convert')) { // Don't want it running in background
-        set_http_status_code('400');
+        set_http_status_code(400);
     }
 
     set_helper_panel_text(new Tempcode());

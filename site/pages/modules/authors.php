@@ -147,7 +147,7 @@ class Module_authors
         $rows = $GLOBALS['SITE_DB']->query_select('authors', array('*'), array('author' => $author), '', 1);
         if (!array_key_exists(0, $rows)) {
             if ((has_actual_page_access(get_member(), 'cms_authors')) && (has_edit_author_permission(get_member(), $author))) {
-                set_http_status_code('404');
+                set_http_status_code(404);
 
                 $_author_add_url = build_url(array('page' => 'cms_authors', 'type' => '_add', 'id' => $author), get_module_zone('cms_authors'));
                 $author_add_url = $_author_add_url->evaluate();

@@ -233,7 +233,7 @@ function closed_site()
             throw new CMSException($closed_message);
         }
 
-        set_http_status_code('503');
+        set_http_status_code(503);
 
         log_stats('/closed', 0);
 
@@ -259,7 +259,7 @@ function page_not_found($codename, $zone)
     global $PAGE_NAME_CACHE;
     $PAGE_NAME_CACHE = '404';
 
-    set_http_status_code('404');
+    set_http_status_code(404);
 
     // Maybe problem with URL Schemes
     $url_scheme = get_option('url_scheme');

@@ -358,7 +358,7 @@ function get_zone_name()
                 if (($key[0] === 'Z') && (substr($key, 0, 13) === 'ZONE_MAPPING_') && (is_array($val))) {
                     if (($host === $val[0]) && (preg_match('#^' . (($val[1] === '') ? '' : ('/' . preg_quote($val[1]))) . '(/|$)#', $url_path) != 0)) {
                         require_code('urls');
-                        $GLOBALS['HTTP_STATUS_CODE'] = '301';
+                        $GLOBALS['HTTP_STATUS_CODE'] = 301;
                         header('HTTP/1.0 301 Moved Permanently');
                         header('Location: ' . str_replace('://www.', '://', str_replace("\r", '', str_replace("\n", '', get_self_url_easy()))));
                         exit();
