@@ -3972,7 +3972,7 @@ END;
 
         // Update forum cache view
         require_code('cns_posts_action2');
-        cns_force_update_forum_caching($forum_id, null);
+        cns_force_update_forum_caching($forum_id, -1);
 
         return $this->redirect_to('MAKE_PERSONAL', $topic_id);
     }
