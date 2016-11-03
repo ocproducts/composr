@@ -68,12 +68,15 @@
 				return true;
 			}
 
-			function set_cookie(cookieName, cookieValue, nDays) {
-				var today = new Date();
-				var expire = new Date();
-				if (nDays == null || nDays == 0) nDays = 1;
-				expire.setTime(today.getTime() + 3600000 * 24 * nDays);
-				document.cookie = cookieName + "=" + escape(cookieValue) + ";expires=" + expire.toUTCString();
+			function set_cookie(cookieName, cookieValue, expiryDays) {
+				var today = new Date(),
+					expires = new Date();
+
+				expiryDays = +expiryDays || 1;
+
+				expires.setTime(today.getTime() + 3600000 * 24 * expiryDays);
+
+				document.cookie = cookieName + "=" + escape(cookieValue) + ";expires=" + expires.toUTCString();
 			}
 
 			function do_forum_choose(object, versions) {
