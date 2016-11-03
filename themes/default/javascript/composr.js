@@ -3,14 +3,15 @@
 
     // Cached references
     var smile = ':)',
+        create = Object.create,
+        assign = Object.assign,
+        encodeUC = encodeURIComponent,
         emptyObj = {},
         emptyArr = [],
-        elProto = window.HTMLElement.prototype,
+        rootEl = document.documentElement,
         emptyEl = document.createElement('div'),
         emptyElStyle = emptyEl.style,
         emptyInputEl = document.createElement('input'),
-        rootEl = document.documentElement,
-        encodeUC = encodeURIComponent,
 
         isArray = Array.isArray,
         toArray = Function.bind.call(Function.call, emptyArr.slice),
@@ -37,82 +38,87 @@
 
     // Too useful to not have globally!
     window.falsy = falsy;
-    window.truthy = truthy;
+    window.boolVal = boolVal;
+    window.intVal = intVal;
     window.strVal = strVal;
 
-    Object.assign($cms, {
+    $cms = assign($cms, {
         // Unique for each copy of Composr on the page
         id: 'composr' + ('' + Math.random()).substr(2),
 
         // Load up symbols data
+        $IS_GUEST: boolVal(symbols.IS_GUEST),
+        $IS_STAFF: boolVal(symbols.IS_STAFF),
+        $IS_ADMIN: boolVal(symbols.IS_ADMIN),
+        $IS_HTTPAUTH_LOGIN: boolVal(symbols.IS_HTTPAUTH_LOGIN),
+        $IS_A_COOKIE_LOGIN: boolVal(symbols.IS_A_COOKIE_LOGIN),
+        $DEV_MODE: boolVal(symbols.DEV_MODE),
+        $JS_ON: boolVal(symbols.JS_ON),
+        $MOBILE: boolVal(symbols.MOBILE),
+        $FORCE_PREVIEWS: boolVal(symbols.FORCE_PREVIEWS),
+
+        $VERSION: strVal(symbols.VERSION),
         $PAGE: strVal(symbols.PAGE),
         $PAGE_TITLE: strVal(symbols.PAGE_TITLE),
         $ZONE: strVal(symbols.ZONE),
         $MEMBER: strVal(symbols.MEMBER),
-        $IS_GUEST: truthy(symbols.IS_GUEST),
         $USERNAME: strVal(symbols.USERNAME),
-        $AVATAR: symbols.AVATAR,
-        $MEMBER_EMAIL: symbols.MEMBER_EMAIL,
-        $PHOTO: symbols.PHOTO,
-        $MEMBER_PROFILE_URL: symbols.MEMBER_PROFILE_URL,
+        $AVATAR: strVal(symbols.AVATAR),
+        $MEMBER_EMAIL: strVal(symbols.MEMBER_EMAIL),
+        $PHOTO: strVal(symbols.PHOTO),
+        $MEMBER_PROFILE_URL: strVal(symbols.MEMBER_PROFILE_URL),
         $FROM_TIMESTAMP: symbols.FROM_TIMESTAMP,
-        $MOBILE: truthy(symbols.MOBILE),
-        $THEME: symbols.THEME,
-        $JS_ON: truthy(symbols.JS_ON),
-        $LANG: symbols.LANG,
-        $BROWSER_UA: symbols.BROWSER_UA,
-        $OS: symbols.OS,
-        $DEV_MODE: truthy(symbols.DEV_MODE),
+        $THEME: strVal(symbols.THEME),
+        $LANG: strVal(symbols.LANG),
+        $BROWSER_UA: strVal(symbols.BROWSER_UA),
+        $OS: strVal(symbols.OS),
         $USER_AGENT: symbols.USER_AGENT,
         $IP_ADDRESS: symbols.IP_ADDRESS,
         $TIMEZONE: symbols.TIMEZONE,
         $HTTP_STATUS_CODE: symbols.HTTP_STATUS_CODE,
         $CHARSET: symbols.CHARSET,
         $KEEP: symbols.KEEP,
-        $FORCE_PREVIEWS: !!symbols.FORCE_PREVIEWS,
         $PREVIEW_URL: symbols.PREVIEW_URL,
         $SITE_NAME: symbols.SITE_NAME,
         $COPYRIGHT: symbols.COPYRIGHT,
         $DOMAIN: symbols.DOMAIN,
         $FORUM_BASE_URL: symbols.FORUM_BASE_URL,
-        $BASE_URL: symbols.BASE_URL,
-        $BASE_URL_S: symbols.BASE_URL + '/', // With trailing slash
-        $CUSTOM_BASE_URL: symbols.CUSTOM_BASE_URL,
-        $BASE_URL_NOHTTP: symbols.BASE_URL_NOHTTP,
-        $BASE_URL_NOHTTP_S: symbols.BASE_URL_NOHTTP + '/', // With trailing slash
-        $CUSTOM_BASE_URL_NOHTTP: symbols.CUSTOM_BASE_URL_NOHTTP,
+        $BASE_URL: (symbols.BASE_URL),
+        $BASE_URL_S: (symbols.BASE_URL) + '/', // With trailing slash
+        $CUSTOM_BASE_URL: (symbols.CUSTOM_BASE_URL),
+        $BASE_URL_NOHTTP: (symbols.BASE_URL_NOHTTP),
+        $BASE_URL_NOHTTP_S: strVal(symbols.BASE_URL_NOHTTP) + '/', // With trailing slash
+        $CUSTOM_BASE_URL_NOHTTP: strVal(symbols.CUSTOM_BASE_URL_NOHTTP),
         $BRAND_NAME: strVal(symbols.BRAND_NAME),
-        $IS_STAFF: !!symbols.IS_STAFF,
-        $IS_ADMIN: !!symbols.IS_ADMIN,
-        $VERSION: strVal(symbols.VERSION),
+        $SESSION_COOKIE_NAME: strVal(symbols.SESSION_COOKIE_NAME),
+        $GROUP_ID: symbols.GROUP_ID,
         $COOKIE_PATH: strVal(symbols.COOKIE_PATH),
         $COOKIE_DOMAIN: strVal(symbols.COOKIE_DOMAIN),
-        $IS_HTTPAUTH_LOGIN: !!symbols.IS_HTTPAUTH_LOGIN,
-        $IS_A_COOKIE_LOGIN: !!symbols.IS_A_COOKIE_LOGIN,
-        $SESSION_COOKIE_NAME: symbols.SESSION_COOKIE_NAME,
-        $GROUP_ID: symbols.GROUP_ID,
+
         $CONFIG_OPTION: {
+            js_overlays: boolVal(symbols.CONFIG_OPTION.js_overlays),
+            enable_animations: boolVal(symbols.CONFIG_OPTION.enable_animations),
+            detect_javascript: boolVal(symbols.CONFIG_OPTION.detect_javascript),
+            is_on_timezone_detection: boolVal(symbols.CONFIG_OPTION.is_on_timezone_detection),
+            wysiwyg: boolVal(symbols.CONFIG_OPTION.wysiwyg),
+            complex_uploader: boolVal(symbols.CONFIG_OPTION.complex_uploader),
+            collapse_user_zones: boolVal(symbols.CONFIG_OPTION.collapse_user_zones),
+
             thumb_width: symbols.CONFIG_OPTION.thumb_width,
-            js_overlays: !!symbols.CONFIG_OPTION.js_overlays,
             js_captcha: symbols.CONFIG_OPTION.js_captcha,
             google_analytics: strVal(symbols.CONFIG_OPTION.google_analytics),
-            longGoogleCookies: symbols.CONFIG_OPTION.long_google_cookies,
+            long_google_cookies: symbols.CONFIG_OPTION.long_google_cookies,
             editarea: symbols.CONFIG_OPTION.editarea,
-            enable_animations: !!symbols.CONFIG_OPTION.enable_animations,
-            detect_javascript: !!symbols.CONFIG_OPTION.detect_javascript,
-            is_on_timezone_detection: !!symbols.CONFIG_OPTION.is_on_timezone_detection,
             fixed_width: symbols.CONFIG_OPTION.fixed_width,
             infinite_scrolling: symbols.CONFIG_OPTION.infinite_scrolling,
-            wysiwyg: !!symbols.CONFIG_OPTION.wysiwyg,
             eager_wysiwyg: symbols.CONFIG_OPTION.eager_wysiwyg,
             simplified_attachments_ui: symbols.CONFIG_OPTION.simplified_attachments_ui,
             show_inline_stats: symbols.CONFIG_OPTION.show_inline_stats,
             notification_desktop_alerts: symbols.CONFIG_OPTION.notification_desktop_alerts,
             enable_theme_img_buttons: symbols.CONFIG_OPTION.enable_theme_img_buttons,
             enable_previews: symbols.CONFIG_OPTION.enable_previews,
-            background_template_compilation: symbols.CONFIG_OPTION.background_template_compilation,
-            complex_uploader: !!symbols.CONFIG_OPTION.complex_uploader,
-            collapse_user_zones: !!symbols.CONFIG_OPTION.collapse_user_zones
+            background_template_compilation: symbols.CONFIG_OPTION.background_template_compilation
+
         },
         $VALUE_OPTION: {
             js_keep_params: symbols.VALUE_OPTION.js_keep_params,
@@ -125,8 +131,8 @@
         // Just some more useful stuff, (not tempcode symbols)
         $TOUCH_ENABLED: ('ontouchstart' in document.documentElement),
         $EXTRA: {
-            canTryUrlSchemes: truthy(symbols.EXTRA.can_try_url_schemes),
-            staffTooltipsUrlPatterns: symbols.EXTRA.staff_tooltips_url_patterns || {}
+            canTryUrlSchemes: boolVal(symbols.EXTRA.can_try_url_schemes),
+            staffTooltipsUrlPatterns: (symbols.EXTRA.staff_tooltips_url_patterns || {})
         },
 
         // Export useful stuff
@@ -174,7 +180,19 @@
         strVal: strVal,
         format: format,
 
-        inherits: inherits
+        inherits: inherits,
+
+        qsFromUrl: qsFromUrl,
+        uspFromUrl: uspFromUrl,
+        paramsFromUsp: paramsFromUsp,
+
+        img: img,
+        navigate: navigate,
+        log: log,
+        dir: dir,
+        assert: assert,
+        error: error,
+        exception: exception
     });
 
     var domReadyPromise = new Promise(function (resolve) {
@@ -209,31 +227,9 @@
         delete $cms._resolveLoad;
     });
 
-    // Extracts query string from url
-    $cms.qsFromUrl = function qsFromUrl(url) {
-        var query = (url || '').split('?', 2)[1]; // Grab query string
-        return (query || '').split('#')[0]; // Remove hash fragment (if any)
-    };
-
-    // Returns an `URLSearchParams` instance
-    $cms.uspFromUrl = function uspFromUrl(url) {
-        var query = $cms.qsFromUrl(url);
-        return new URLSearchParams(query);
-    };
-
-    $cms.paramsFromUsp = function paramsFromUsp(usp) {
-        var entriesIterator = usp.entries(),
-            entry, params = {};
-
-        while (entry = entriesIterator.next().value) {
-            params[entry[0]] = entry[1];
-        }
-        return params;
-    };
-
-    $cms.qs = $cms.qsFromUrl(window.location.href);
-    $cms.usp = $cms.uspFromUrl($cms.qs);
-    $cms.qsParams = $cms.paramsFromUsp($cms.usp);
+    $cms.qs = qsFromUrl(window.location.href);
+    $cms.usp = uspFromUrl($cms.qs);
+    $cms.qsParams = paramsFromUsp($cms.usp);
 
     $cms.uspKeep = new URLSearchParams();
     $cms.uspKeepSession = new URLSearchParams();
@@ -257,15 +253,18 @@
 
     // Generate a unique integer id (unique within the entire client session).
     var _uniqueId = 0;
-
     function uniqueId() {
         return ++_uniqueId;
     }
 
-    // Used to uniquely identify objects
+    // Used to uniquely identify objects/functions
     function uid(obj) {
+        if ((obj == null) || ((typeof obj !== 'object') && (typeof obj !== 'function'))) {
+            return 0;
+        }
+
         if (hasOwn(obj, $cms.id)) {
-            return +obj[$cms.id];
+            return obj[$cms.id];
         }
 
         var props = {},
@@ -285,10 +284,25 @@
         return false;
     }
 
-    function hasKeys(val) {
+    function isObj(val) {
+        return (val != null) && (typeof val === 'object');
+    }
+
+    function hasEnumerable(val) {
         if (val != null) {
             for (var key in val) {
                 return true;
+            }
+        }
+        return false;
+    }
+
+    function hasOwnEnumerable(val) {
+        if (val != null) {
+            for (var key in val) {
+                if (hasOwn(val, key)) {
+                    return true;
+                }
             }
         }
         return false;
@@ -299,13 +313,9 @@
         return emptyObj.toString.call(val).slice(8, -1); // slice off the surrounding '[object ' and ']'
     }
 
-    function isFunc(val) {
-        return typeof val === 'function';
-    }
-
     function isEmptyObj(obj) {
         var k;
-        if ((obj != null) && (typeof obj === 'object')) {
+        if (isObj(obj)) {
             for (k in obj) {
                 return false;
             }
@@ -316,7 +326,7 @@
 
     function isPlainObj(obj) {
         var proto;
-        return (obj != null) && (typeof obj === 'object') && (internal(obj) === 'Object') && (((proto = Object.getPrototypeOf(obj)) === Object.prototype) || (proto === null));
+        return isObj(obj) && (internal(obj) === 'Object') && (((proto = Object.getPrototypeOf(obj)) === Object.prototype) || (proto === null));
     }
 
     function isArrayOrPlainObj(val) {
@@ -338,7 +348,7 @@
     function withProto(prototype, data) {
         var obj = Object.create(prototype);
         if (data) {
-            Object.assign(obj, data);
+            assign(obj, data);
         }
         return obj;
     }
@@ -348,11 +358,11 @@
     }
 
     function isWindow(obj) {
-        return (obj != null) && (typeof obj === 'object') && (obj === obj.window) && (obj === obj.self) && (internal(obj) === 'Window');
+        return isObj(obj) && (obj === obj.window) && (obj === obj.self) && (internal(obj) === 'Window');
     }
 
     function nodeType(obj) {
-        return (obj != null) && (typeof obj === 'object') && (typeof obj.nodeName === 'string') && (typeof obj.nodeType === 'number') && obj.nodeType;
+        return isObj(obj) && (typeof obj.nodeName === 'string') && (typeof obj.nodeType === 'number') && obj.nodeType;
     }
 
     var ELEMENT_NODE = 1,
@@ -386,31 +396,34 @@
     }
 
     function isRegExp(obj) {
-        return internal(obj) === 'RegExp';
+        return (obj != null) && (internal(obj) === 'RegExp');
+    }
+
+    function isDate(obj) {
+        return (obj != null) && (internal(obj) === 'Date');
     }
 
     function isNumeric(val) { // Inspired by jQuery.isNumeric
-        return ((typeof val === 'number') || (typeof val === 'string')) && !Number.isNaN(val - parseFloat(val));
+        // parseFloat NaNs numeric-cast false positives ("")
+        // ...but misinterprets leading-number strings, particularly hex literals ("0x...")
+        val = (typeof val === 'string') ? parseFloat(val) : val;
+        return Number.isFinite(val);
     }
 
     function funcArg(context, arg, payload) {
         return (typeof arg === 'function') ? arg.call(context, payload) : arg;
     }
 
-    function isArrayLike(obj, minLen) {
+    function isArrayLike(obj, minLength) {
         var len;
 
-        minLen = +minLen || 0;
+        minLength = +minLength || 0;
 
-        if ((obj == null ) || (typeof obj !== 'object') || isWindow(obj) || (typeof (len = obj.length) !== 'number') || (len < minLen)) {
+        if ((obj == null ) || (typeof obj !== 'object') || (internal(obj) === 'Window') || (typeof (len = obj.length) !== 'number') || (len < minLength)) {
             return false;
         }
 
         return (len === 0) || ((0 in obj) && ((len - 1) in obj));
-    }
-
-    function isArrayLikeWithLen(obj) {
-        return isArrayLike(obj, 1);
     }
 
     // Returns a random integer between min (inclusive) and max (inclusive)
@@ -548,7 +561,7 @@
         if (value === undefined) {
             value = fallback;
         }
-        return isFunc(value) ? value.call(object) : value;
+        return (typeof value === 'function') ? value.call(object) : value;
     }
 
     var DEFINE_CONFIGURABLE = 1,
@@ -564,7 +577,6 @@
         }
 
         mask = +mask || 0;
-        obj || (obj = {});
         props || (props = {});
 
         var key, descriptors = {};
@@ -613,32 +625,37 @@
         if ((obj != null) && (typeof obj.constructor === 'function') && (typeof obj.constructor.name === 'string')) {
             return obj.constructor.name;
         }
-        return '?';
     }
 
     // Port of PHP's empty() function
     function falsy(val) {
-        return !val || (val === '0') || ((typeof val === 'object') && ((isPlainObj(val) && !hasKeys(val)) || (isArrayLike(val) && (val.length === 0))));
+        var p;
+        return !val || (val === '0') || ((typeof val === 'object') && ((p = isPlainObj(val)) || isArrayLike(val)) && (p ? !hasEnumerable(val) : (val.length === 0)));
     }
 
-    // Inverted falsy()
-    function truthy(val) {
-        return (val === true) || !falsy(val);
+    function boolVal(val) {
+        return !!val && ((val === true) || (val === 1) || (val === '1') || !falsy(val));
+    }
+
+    function intVal(val, defaultValue) {
+        defaultValue = (defaultValue !== undefined) ? defaultValue : 0;
+        return ((val != null) && Number.isFinite(val = parseInt(val))) ? val : defaultValue;
     }
 
     // Sensible PHP-like string coercion
-    function strVal(val) {
+    function strVal(val, defaultValue) {
         var type;
+        defaultValue = (defaultValue !== undefined) ? defaultValue : '';
 
         if (!val) {
-            return (val === 0) ? '0' : '';
+            return (val === 0) ? '0' : defaultValue;
         } else if (val === true) {
             return '1';
         } else if ((type = typeof val) === 'string') {
             return val;
         } else if (type === 'number') {
-            return ((val !== Infinity) && (val !== -Infinity)) ? ('' + val) : '';
-        } else if ((type === 'object') && (typeof val.toString === 'function') && (val.toString !== emptyObj.toString)) {
+            return ((val !== Infinity) && (val !== -Infinity)) ? ('' + val) : defaultValue;
+        } else if ((type === 'object') && (val.toString !== emptyObj.toString) && (typeof val.toString === 'function')) {
             // `val` has a toString implementation other than the useless generic one
             return '' + val;
         }
@@ -648,15 +665,16 @@
 
     // String interpolation
     function format(str, values) {
+        var alen = arguments.length;
         str = strVal(str);
 
-        if (!(1 in arguments)) {
+        if ((str === '') || (alen < 2)) {
             return str; // Nothing to do
         }
 
         if ((values == null) || (typeof values !== 'object')) {
             // values provided as multiple parameters?
-            values = toArray(arguments, 1);
+            values = (alen > 2) ? toArray(arguments, 1) : [values];
             values.unshift(''); // Add empty string at index 0 so that interpolation starts from '{1}'
         } else if (isArrayLike(values)) {
             // Array(-ish?) object provided with values
@@ -670,13 +688,11 @@
     }
 
     function ucFirst(str) {
-        str = strVal(str);
-        return str.charAt(0).toUpperCase() + str.substr(1);
+        return ((str != null) && (str = strVal(str))) ? str.charAt(0).toUpperCase() + str.substr(1) : '';
     }
 
     function lcFirst(str) {
-        str = strVal(str);
-        return str.charAt(0).toLowerCase() + str.substr(1);
+        return ((str != null) && (str = strVal(str))) ? str.charAt(0).toLowerCase() + str.substr(1) : '';
     }
 
     // Credit: http://stackoverflow.com/a/32604073/362006
@@ -696,36 +712,49 @@
             .replace(/ /g, '');
     }
 
-    function camelize(str) {
-        return str.replace(/-+(.)?/g, function (match, chr) {
-            return chr ? chr.toUpperCase() : '';
-        });
+    // Extracts query string from url
+    function qsFromUrl(url) {
+        var query = (url || '').split('?', 2)[1]; // Grab query string
+        return (query || '').split('#')[0]; // Remove hash fragment (if any)
     }
 
-    function dasherize(str) {
-        return str.replace(/::/g, '/')
-            .replace(/([A-Z]+)([A-Z][a-z])/g, '$1_$2')
-            .replace(/([a-z\d])([A-Z])/g, '$1_$2')
-            .replace(/_/g, '-')
-            .toLowerCase();
+    // Returns an `URLSearchParams` instance
+    function uspFromUrl(url) {
+        var query = $cms.qsFromUrl(url);
+        return new URLSearchParams(query);
+    }
+
+    function paramsFromUsp(usp) {
+        var entriesIterator = usp.entries(),
+            entry, params = {};
+
+        while (entry = entriesIterator.next().value) {
+            params[entry[0]] = entry[1];
+        }
+        return params;
     }
 
     /* Generate url */
     var rgxProtocol = /^https?:/;
-    $cms.url = function (url) {};
+    $cms.url = function url(url) {};
 
     $cms.url.absolute = function (relativeUrl) {
         relativeUrl = strVal(relativeUrl);
 
-        return ((relativeUrl[0] === '/') ? $cms.$BASE_URL : $cms.$BASE_URL_S) + relativeUrl;
+        return ((relativeUrl.startsWith('/')) ? $cms.$BASE_URL : $cms.$BASE_URL_S) + relativeUrl;
     };
+
+    function baseUrl(relativeUrl) {
+        relativeUrl = strVal(relativeUrl);
+        return ((relativeUrl.startsWith('/')) ? $cms.$BASE_URL : $cms.$BASE_URL_S) + relativeUrl;
+    }
 
     // Dynamically fixes the protocol for image URLs
-    $cms.img = function (url) {
+    function img(url) {
         return strVal(url).replace(rgxProtocol, window.location.protocol);
-    };
+    }
 
-    $cms.navigate = function navigate(url, target) {
+    function navigate(url, target) {
         var el;
 
         if (isEl(url)) {
@@ -756,40 +785,40 @@
         } else {
             window.open(url, target);
         }
-    };
+    }
 
-    $cms.log = function log() {
+    function log() {
         if ($cms.$DEV_MODE) {
             console.log.apply(undefined, arguments);
         }
-    };
+    }
 
-    $cms.dir = function dir() {
+    function dir() {
         if ($cms.$DEV_MODE) {
             console.dir.apply(undefined, arguments);
         }
-    };
+    }
 
-    $cms.assert = function assert() {
+    function assert() {
         if ($cms.$DEV_MODE) {
             console.assert.apply(undefined, arguments);
         }
-    };
+    }
 
-    $cms.error = function error() {
+    function error() {
         if ($cms.$DEV_MODE) {
             console.error.apply(undefined, arguments);
         }
-    };
+    }
 
-    $cms.exception = function exception(ex) {
+    function exception(ex) {
         if ($cms.$DEV_MODE) {
             if (typeof ex === 'string') {
                 throw new Error(ex);
             }
             throw ex;
         }
-    };
+    }
 
     // Inspired by goog.inherits and Babel's generated output for ES6 classes
     function inherits(SubClass, SuperClass, protoProps) {
@@ -803,7 +832,7 @@
         defineCW(SubClass.prototype, { constructor: SubClass });
 
         if (protoProps) {
-            Object.assign(SubClass.prototype, protoProps);
+            assign(SubClass.prototype, protoProps);
         }
     }
 
@@ -829,6 +858,161 @@
             return SuperClass.prototype[method].call(that);
         }
     }
+
+    /* Cookies */
+
+    // Inspired by cookie.js: https://github.com/js-cookie/js-cookie
+    function CookieMonster() {
+        // Bind contexts
+        this.get = this.get.bind(this);
+        this.getAll = this.getAll.bind(this);
+        this.set = this.set.bind(this);
+        this.remove = this.remove.bind(this);
+    }
+
+    CookieMonster.prototype.get = function get(cookieName) {
+        cookieName = strVal(cookieName);
+        if (cookieName) {
+            return this.getAll(cookieName);
+        }
+    };
+
+    CookieMonster.prototype.getAll = function getAll() {
+        // To prevent the for loop in the first place assign an empty array
+        // in case there are no cookies at all. Also prevents odd result when
+        // calling "get()"
+        var cookies = document.cookie ? document.cookie.split('; ') : [],
+            rdecode = /(%[0-9A-Z]{2})+/g,
+            cookieName = arguments[0], // (internal use only)
+            result, i;
+
+        if (cookieName == null) {
+            result = {};
+        }
+
+        for (i = 0; i < cookies.length; i++) {
+            var parts = cookies[i].split('='),
+                cookie = parts.slice(1).join('=');
+
+            if (cookie.startsWith('"') && cookie.endsWith('"')) {
+                cookie = cookie.slice(1, -1);
+            }
+
+            var name = parts[0].replace(rdecode, decodeURIComponent);
+            cookie = cookie.replace(rdecode, decodeURIComponent);
+
+            if (cookieName == null) {
+                result[name] = cookie;
+            } else if (cookieName === name) {
+                result = cookie;
+                break;
+            }
+        }
+
+        return result;
+    };
+
+    CookieMonster.prototype.set = function set(details, value) {
+        var defaults = {
+            value: '',
+            expires: 1, // 1 day
+            path: $cms.$COOKIE_PATH,
+            domain: $cms.$COOKIE_DOMAIN,
+            secure: false
+        };
+
+        if (!isObj(details)) {
+            // `details` is a cookie name
+            details = {
+                name: details,
+                value: value
+            };
+        }
+        details = assign(defaults, details);
+
+        if (!isDate(details.expires)) {
+            // Expiry specified in days
+            var expires = new Date();
+            expires.setDate(expires.getDate() + intVal(details.expires)); // Add days to date
+            details.expires = expires;
+        }
+
+        value = encodeURIComponent(strVal(details.value)).replace(/%(23|24|26|2B|3A|3C|3E|3D|2F|3F|40|5B|5D|5E|60|7B|7D|7C)/g, decodeURIComponent);
+
+        var cookieName = strVal(details.name);
+        cookieName = encodeURIComponent(cookieName);
+        cookieName = cookieName.replace(/%(23|24|26|2B|5E|60|7C)/g, decodeURIComponent);
+        cookieName = cookieName.replace(/[\(\)]/g, escape);
+
+        document.cookie = [
+            cookieName + '=' + value,
+            details.expires ? '; expires=' + details.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
+            details.path ? '; path=' + details.path : '',
+            details.domain ? '; domain=' + details.domain : '',
+            details.secure ? '; secure' : ''
+        ].join('');
+    };
+
+    CookieMonster.prototype.remove = function remove(cookieName) {
+        var details = {
+            name: cookieName,
+            expiry: -1
+        };
+
+        this.set(details);
+    };
+
+    $cms.cookies || ($cms.cookies = new CookieMonster());
+
+    var alertedCookieConflict;
+    function set_cookie(cookieName, cookieValue, numDays) {
+        var expires = new Date(),
+            output;
+
+        numDays = +numDays || 1;
+
+        expires.setDate(expires.getDate() + numDays); // Add days to date
+
+        output = cookieName + '=' + encodeURIComponent(cookieValue) + ';expires=' + expires.toUTCString();
+
+        if ($cms.$COOKIE_PATH) {
+            output += ';path=' + $cms.$COOKIE_PATH;
+        }
+
+        if ($cms.$COOKIE_DOMAIN) {
+            output += ';domain=' + $cms.$COOKIE_DOMAIN;
+        }
+
+        document.cookie = output;
+
+        var read = read_cookie(cookieName);
+
+        if (read && (read !== cookieValue) && $cms.$DEV_MODE && !alertedCookieConflict) {
+            window.fauxmodal_alert('{!COOKIE_CONFLICT_DELETE_COOKIES;^}' + '... ' + document.cookie + ' (' + output + ')', null, '{!ERROR_OCCURRED;^}');
+            alertedCookieConflict = true;
+        }
+    }
+
+    function read_cookie(cookieName, defaultValue) {
+        var cookies = '' + document.cookie,
+            startIdx = cookies.startsWith(cookieName + '=') ? 0 : cookies.indexOf(' ' + cookieName + '=');
+
+        if ((startIdx === -1) || !cookieName) {
+            return defaultValue;
+        }
+
+        if (startIdx > 0) {
+            startIdx++;
+        }
+
+        var endIdx = cookies.indexOf(';', startIdx);
+        if (endIdx === -1) {
+            endIdx = cookies.length;
+        }
+
+        return decodeURIComponent(cookies.substring(startIdx + cookieName.length + 1, endIdx));
+    }
+
 
     /* Browser feature detection */
     $cms.support || ($cms.support = {});
@@ -866,6 +1050,7 @@
 
         $cms.support.inputTypes[type] = !!bool;
     }
+
 
     /* DOM helper methods */
     $cms.dom || ($cms.dom = {});
@@ -982,7 +1167,7 @@
             return values;
         }
 
-        el.value = (value !== null) ? funcArg(el, value, $cms.dom.val(el)) : '';
+        el.value = strVal((typeof value === 'function') ? funcArg(el, value, $cms.dom.val(el)) : value);
     };
 
     $cms.dom.text = function (el, text) {
@@ -990,9 +1175,7 @@
             return el.textContent;
         }
 
-        var newText = funcArg(el, text, el.textContent);
-        el.textContent = (newText != null) ? ('' + newText) : '';
-
+        el.textContent = strVal((typeof text === 'function') ? funcArg(el, text, el.textContent) : text);
         return el.textContent;
     };
 
@@ -1041,7 +1224,7 @@
                 (offset = $cms.dom.offset(el)) && offset.width;
         }
 
-        $cms.dom.css(el, 'width', funcArg(el, value, $cms.dom.width(el)));
+        $cms.dom.css(el, 'width', (typeof value === 'function') ? funcArg(el, value, $cms.dom.width(el)) : value);
     };
 
     $cms.dom.height = function (el, value) {
@@ -1101,9 +1284,9 @@
         return false;
     };
 
-    var _matchesFnName = ('matches' in elProto) ? 'matches'
-        : ('webkitMatchesSelector' in elProto) ? 'webkitMatchesSelector'
-        : ('msMatchesSelector' in elProto) ? 'msMatchesSelector'
+    var _matchesFnName = ('matches' in emptyEl) ? 'matches'
+        : ('webkitMatchesSelector' in emptyEl) ? 'webkitMatchesSelector'
+        : ('msMatchesSelector' in emptyEl) ? 'msMatchesSelector'
         : 'matches';
 
     // Check if the given element matches selector
@@ -1286,7 +1469,7 @@
             return;
         }
 
-        if ((typeof selector !== 'string') && !isFunc(callback) && (callback !== false)) {
+        if ((typeof selector !== 'string') && (typeof callback !== 'function') && (callback !== false)) {
             callback = data;
             data = selector;
             selector = undefined;
@@ -1331,7 +1514,7 @@
             return;
         }
 
-        if ((typeof selector !== 'string') && !isFunc(callback) && (callback !== false)) {
+        if ((typeof selector !== 'string') && (typeof callback !== 'function') && (callback !== false)) {
             callback = selector;
             selector = undefined;
         }
@@ -1346,7 +1529,7 @@
     var mapMouseEvents = createMap({click: 1, mousedown: 1, mouseup: 1, mousemove: 1});
 
     $cms.dom.createEvent = function (type, props) {
-        if (type && (typeof type === 'object')) {
+        if (isObj(type)) {
             props = type;
             type = props.type;
         }
@@ -1381,6 +1564,74 @@
         } else {
             return el.dispatchEvent(event)
         }
+    };
+
+    function camelize(str) {
+        return str.replace(/-+(.)?/g, function (match, chr) {
+            return chr ? chr.toUpperCase() : '';
+        });
+    }
+
+    function dasherize(str) {
+        return str.replace(/::/g, '/')
+            .replace(/([A-Z]+)([A-Z][a-z])/g, '$1_$2')
+            .replace(/([a-z\d])([A-Z])/g, '$1_$2')
+            .replace(/_/g, '-')
+            .toLowerCase();
+    }
+
+    var mapCssNumericProps = createMap({'column-count': 1, 'columns': 1, 'font-weight': 1, 'line-height': 1, 'opacity': 1, 'z-index': 1, 'zoom': 1});
+    function maybeAddPx(name, value) {
+        return ((typeof value === 'number') && !(name in mapCssNumericProps)) ? (value + 'px') : value;
+    }
+
+    $cms.dom.css = function (el, property, value) {
+        var key;
+        if (value === undefined) {
+            if (typeof property === 'string') {
+                return el.style[camelize(property)] || getComputedStyle(el).getPropertyValue(property);
+            } else if (isArray(property)) {
+                var computedStyle = getComputedStyle(el),
+                    props = {};
+                property.forEach(function (prop) {
+                    props[prop] = (el.style[camelize(prop)] || computedStyle.getPropertyValue(prop));
+                });
+                return props;
+            }
+        }
+
+        var css = '';
+        if (typeof property === 'string') {
+            if (!value && (value !== 0)) {
+                el.style.removeProperty(dasherize(property));
+            } else {
+                css = dasherize(property) + ':' + maybeAddPx(property, value);
+            }
+        } else {
+            for (key in property) {
+                if (!property[key] && (property[key] !== 0)) {
+                    el.style.removeProperty(dasherize(key));
+                } else {
+                    css += dasherize(key) + ':' + maybeAddPx(key, property[key]) + ';';
+                }
+            }
+        }
+
+        el.style.cssText += ';' + css;
+    };
+
+    $cms.dom.isCss = function (el, property, values) {
+        values = (typeof values === 'string') ? [values] : (values || []);
+
+        return values.includes($cms.dom.css(el, property));
+    };
+
+    $cms.dom.isDisplayed = function (el) {
+        return $cms.dom.css(el, 'display') !== 'none';
+    };
+
+    $cms.dom.notDisplayed = function (el) {
+        return $cms.dom.css(el, 'display') === 'none';
     };
 
     // Gets the 'initial' value for an element type's CSS property (only 'display' supported as of now)
@@ -1488,7 +1739,7 @@
                 }
             };
         } else {
-            $cms.dom.css(el, 'opacity', target);
+            el.style.opacity = target;
             if (callback) {
                 callback.call(el);
             }
@@ -1523,57 +1774,6 @@
         }
     };
 
-    var mapCssNumericProps = createMap({'column-count': 1, 'columns': 1, 'font-weight': 1, 'line-height': 1, 'opacity': 1, 'z-index': 1, 'zoom': 1});
-
-    function maybeAddPx(name, value) {
-        return ((typeof value === 'number') && !(name in mapCssNumericProps)) ? (value + 'px') : value;
-    }
-
-    $cms.dom.css = function (el, property, value) {
-        var key;
-        if (value === undefined) {
-            if (typeof property === 'string') {
-                return el.style[camelize(property)] || getComputedStyle(el).getPropertyValue(property);
-            } else if (isArray(property)) {
-                var computedStyle = getComputedStyle(el),
-                    props = {};
-                property.forEach(function (prop) {
-                    props[prop] = (el.style[camelize(prop)] || computedStyle.getPropertyValue(prop));
-                });
-                return props;
-            }
-        }
-
-        var css = '';
-        if (typeof property === 'string') {
-            if (!value && (value !== 0)) {
-                el.style.removeProperty(dasherize(property));
-            } else {
-                css = dasherize(property) + ':' + maybeAddPx(property, value);
-            }
-        } else {
-            for (key in property) {
-                if (!property[key] && (property[key] !== 0)) {
-                    el.style.removeProperty(dasherize(key));
-                } else {
-                    css += dasherize(key) + ':' + maybeAddPx(key, property[key]) + ';';
-                }
-            }
-        }
-
-        el.style.cssText += ';' + css;
-    };
-
-    $cms.dom.isCss = function (el, property, values) {
-        values = (typeof values === 'string') ? [values] : (values || []);
-
-        return values.includes($cms.dom.css(el, property));
-    };
-
-    $cms.dom.isDisplayed = function (el) {
-        return $cms.dom.css(el, 'display') !== 'none';
-    };
-
     $cms.dom.keyPressed = function (keyboardEvent, checkKey) {
         var key = keyboardEvent.key;
 
@@ -1587,7 +1787,7 @@
                 return checkKey.test(key);
             }
 
-            if (isArrayLikeWithLen(checkKey)) {
+            if (isArrayLike(checkKey, 1)) {
                 return includes(checkKey, key);
             }
 
@@ -1615,7 +1815,7 @@
                 return checkOutput.test(key);
             }
 
-            if (isArrayLikeWithLen(checkOutput)) {
+            if (isArrayLike(checkOutput, 1)) {
                 return includes(checkOutput, key);
             }
 
@@ -1637,7 +1837,7 @@
         return false;
     };
 
-    function setAttribute(el, name, value) {
+    function setAttr(el, name, value) {
         (value != null) ? el.setAttribute(name, value) : el.removeAttribute(name);
     }
 
@@ -1648,18 +1848,18 @@
             return el.getAttribute(name);
         }
 
-        if (name && (typeof name === 'object')) {
+        if (isObj(name)) {
             for (key in name) {
-                setAttribute(el, key, name[key]);
+                setAttr(el, key, name[key]);
             }
         } else {
-            setAttribute(el, name, value);
+            setAttr(el, name, value);
         }
     };
 
     $cms.dom.removeAttr = function (el, name) {
         name.split(' ').forEach(function (attribute) {
-            setAttribute(el, attribute)
+            setAttr(el, attribute)
         });
     };
 
@@ -1760,7 +1960,7 @@
         return el.offsetHeight - padding - border;
     };
 
-    var mapExcludedTypes = createMap({submit: 1, reset: 1, button: 1, file: 1});
+    var mapExcludedTypes = createMap({ submit: 1, reset: 1, button: 1, file: 1 });
     $cms.dom.serializeArray = function (form) {
         var name, result = [];
 
@@ -1810,7 +2010,7 @@
         behaviors = $cms.behaviors;
 
         for (name in behaviors) {
-            if (behaviors[name] && (typeof behaviors[name] === 'object') && (typeof behaviors[name].attach === 'function')) {
+            if (isObj(behaviors[name]) && (typeof behaviors[name].attach === 'function')) {
                 //try {
                 behaviors[name].attach(context, settings);
                 //} catch (e) {
@@ -1834,7 +2034,7 @@
         behaviors = $cms.behaviors;
 
         for (name in behaviors) {
-            if (behaviors[name] && (typeof behaviors[name] === 'object') && (typeof behaviors[name].detach === 'function')) {
+            if (isObj(behaviors[name]) && (typeof behaviors[name].detach === 'function')) {
                 // try {
                 behaviors[name].detach(context, settings, trigger);
                 // } catch (e) {
@@ -1854,7 +2054,7 @@
 
 
     // List of view options that can be set as properties.
-    var mapViewOptions = createMap({ el: 1, id: 1, attributes: 1, className: 1, tagName: 1, events: 1});
+    var mapViewOptions = createMap({ el: 1, id: 1, attributes: 1, className: 1, tagName: 1, events: 1 });
 
     // Initialize
     $cms.View = View;
@@ -1865,12 +2065,11 @@
     // Cached regex to split keys for `delegate`.
     var rgxDelegateEventSplitter = /^(\S+)\s*(.*)$/;
 
-    Object.assign(View.prototype, {
+    assign(View.prototype, {
         initialize: function (params, viewOptions) {
-            this.uid = $cms.uid(this);
             this.params = params || {};
 
-            if (viewOptions && (typeof viewOptions === 'object')) {
+            if (isObj(viewOptions)) {
                 for (var key in mapViewOptions) {
                     if (key in viewOptions) {
                         this[key] = viewOptions[key];
@@ -1942,7 +2141,7 @@
             this.undelegateEvents();
             for (key in events) {
                 method = events[key];
-                if (!isFunc(method)) {
+                if (typeof method !== 'function') {
                     method = this[method];
                 }
                 if (!method) {
@@ -1956,7 +2155,7 @@
 
         // Add a single event listener to the view's element (or a child element using `selector`).
         delegate: function (eventName, selector, listener) {
-            $cms.dom.on(this.el, (eventName + '.delegateEvents' + this.uid), selector, listener);
+            $cms.dom.on(this.el, (eventName + '.delegateEvents' + uid(this)), selector, listener);
             return this;
         },
 
@@ -1965,29 +2164,28 @@
         // views attached to the same DOM element.
         undelegateEvents: function () {
             if (this.el) {
-                $cms.dom.off(this.el, '.delegateEvents' + this.uid);
+                $cms.dom.off(this.el, '.delegateEvents' + uid(this));
             }
             return this;
         },
 
         // A finer-grained `undelegateEvents` for removing a single delegated event. `selector` and `listener` are both optional.
         undelegate: function (eventName, selector, listener) {
-            $cms.dom.off(this.el, (eventName + '.delegateEvents' + this.uid), selector, listener);
+            $cms.dom.off(this.el, (eventName + '.delegateEvents' + uid(this)), selector, listener);
             return this;
         },
 
         _ensureElement: function () {
             var attrs;
             if (!this.el) {
-                attrs = extend({}, result(this, 'attributes'));
+                attrs = assign({}, result(this, 'attributes'));
                 if (this.id) {
                     attrs.id = result(this, 'id');
                 }
                 if (this.className) {
                     attrs.class = result(this, 'className');
                 }
-                this.setElement(document.createElement(result(this, 'tagName')));
-                $cms.dom.attr(this.el, attrs);
+                this.setElement($cms.dom.create(result(this, 'tagName'), attrs));
             } else {
                 this.setElement(result(this, 'el'));
             }
@@ -2031,11 +2229,11 @@
     };
 
     // JS port of the tempcode filter '~' (NL_ESCAPED)
-    $cms.filter.crLf = function (str) {
+    $cms.filter.crLf = function filterCrLf(str) {
         return strVal(str).replace(/[\r\n]/g, '');
     };
 
-    var mapFilterIdReplace = createMap({
+    var mapFilterIdReplace = assign(create(null), {
         '[': '_opensquare_',
         ']': '_closesquare_',
         '\'': '_apostophe_',
@@ -2045,6 +2243,7 @@
         '*': '_star_',
         '/': '__'
     });
+
     // JS port of the tempcode filter '|' (ID_ESCAPED)
     $cms.filter.id = function (str) {
         var i, char, ascii, out = '';
@@ -2085,8 +2284,8 @@
             try {
                 data = JSON.parse(data);
 
-                if (data && (typeof data === 'object')) {
-                    return defaults ? Object.assign({}, defaults, data) : data;
+                if (isObj(data)) {
+                    return defaults ? assign({}, defaults, data) : data;
                 }
             } catch (ex) {
                 $cms.error('$cms.parseDataArgs(), error parsing JSON: ' + data, ex);
@@ -2118,11 +2317,11 @@
         }, 20);
 
         if (!permanent) {
-            window.setTimeout(enable, 5000);
-            $cms.dom.on(window, 'pagehide', enable);
+            window.setTimeout(enableDisabledButton, 5000);
+            $cms.dom.on(window, 'pagehide', enableDisabledButton);
         }
 
-        function enable() {
+        function enableDisabledButton() {
             if (tempDisabledButtons[uid]) {
                 btn.disabled = false;
                 btn.style.cursor = 'default';
@@ -2180,7 +2379,7 @@
     function ModalWindow(params) {
         ModalWindow.base(this, arguments);
 
-        Object.assign(this, $cms.defaults({
+        params = assign({ // apply defaults
             'type': 'alert',
             'opacity': '0.5',
             'width': 'auto',
@@ -2199,7 +2398,26 @@
             'defaultValue': null,
             'target': '_self',
             'input_type': 'text'
-        }, params));
+        }, params);
+
+        this.type = params.type;
+        this.opacity = params.opacity;
+        this.width = params.width;
+        this.height = params.height;
+        this.title = params.title;
+        this.text = params.text;
+        this.yes_button = params.yes_button;
+        this.no_button = params.no_button;
+        this.cancel_button = params.cancel_button;
+        this.yes = params.yes;
+        this.no = params.no;
+        this.finished = params.finished;
+        this.cancel = params.cancel;
+        this.href = params.href;
+        this.scrollbars = params.scrollbars;
+        this.defaultValue = params.defaultValue;
+        this.target = params.target;
+        this.input_type = params.input_type;
 
         this.top_window = window.top;
         this.top_window = this.top_window.top;
@@ -2250,7 +2468,7 @@
                     this[method]();
                 }
             }
-            if (method != 'left' && method != 'right') {
+            if ((method !== 'left') && (method !== 'right')) {
                 this.close(win);
             }
         },
@@ -2385,8 +2603,7 @@
             }
 
             if (do_scroll) {
-                try // Scroll to top to see
-                {
+                try {// Scroll to top to see
                     this.top_window.scrollTo(0, 0);
                     if (iframe && ($cms.dom.hasIframeAccess(iframe))) {
                         iframe.contentWindow.scrolled_up_for = true;
@@ -2796,7 +3013,7 @@
                     'text': 'innerText'
                 };
 
-            if (options && (typeof options === 'object')) {
+            if (isObj(options)) {
                 for (var name in options) {
                     var value = options[name];
                     if (name === 'styles') {
@@ -2865,7 +3082,7 @@
         this.all_nodes_selectable = !!params.all_nodes_selectable;
         this.use_server_id = !!params.use_server_id;
 
-        $cms.dom.html(this.el, '<div class="ajax_loading vertical_alignment"><img src="' + $cms.img('{$IMG*;,loading}') + '" alt="" /> <span>{!LOADING;^}</span></div>');
+        $cms.dom.html(this.el, '<div class="ajax_loading vertical_alignment"><img src="' + $cms.img('{$IMG*;^,loading}') + '" alt="" /> <span>{!LOADING;^}</span></div>');
 
         // Initial rendering
         var url = $cms.$BASE_URL_S + this.ajax_url;
@@ -3505,8 +3722,15 @@
         return null;
     }
 
+    window.generate_question_ui = generate_question_ui;
+    window.do_ajax_request = do_ajax_request;
+    window.set_cookie = set_cookie;
+    window.read_cookie = read_cookie;
+    window.get_csrf_token = get_csrf_token;
+    window.get_session_id = get_session_id;
+
     /* Ask a user a question: they must click a button */
-// 'Cancel' should come as index 0 and Ok/default-option should come as index 1. This is so that the fallback works right.
+    // 'Cancel' should come as index 0 and Ok/default-option should come as index 1. This is so that the fallback works right.
     function generate_question_ui(message, button_set, window_title, fallback_message, callback, dialog_width, dialog_height) {
         var image_set = [];
         var new_button_set = [];
@@ -3660,7 +3884,7 @@
                 // If status is 'OK'
                 if (xhr.status && okStatusCodes.includes(xhr.status)) {
                     // Process the result
-                    if (isFunc(ajaxCallbacks[i]) && (!xhr.responseXML/*Not payload handler and not stack trace*/ || !xhr.responseXML.firstChild)) {
+                    if ((typeof ajaxCallbacks[i] === 'function') && (!xhr.responseXML/*Not payload handler and not stack trace*/ || !xhr.responseXML.firstChild)) {
                         ajaxCallbacks[i](xhr);
                         return true; // (break)
                     }
@@ -3720,7 +3944,7 @@
             }
 
             var methodEl = ajaxResultFrame.querySelector('method');
-            if (methodEl || isFunc(ajaxCallbacks[i])) {
+            if (methodEl || (typeof ajaxCallbacks[i] === 'function')) {
                 var method = methodEl ? eval('return ' + merge_text_nodes(methodEl)) : ajaxCallbacks[i];
 
                 if (method.response !== undefined) {
@@ -3750,59 +3974,6 @@
         }
     }
 
-    /* Cookies */
-    var _doneCookieAlert;
-
-    function set_cookie(cookie_name, cookie_value, num_days) {
-        var expires = new Date(),
-            to_set;
-
-        num_days = +num_days || 1;
-
-        expires.setDate(expires.getDate() + num_days); // Add days to date
-
-        to_set = cookie_name + '=' + encodeURIComponent(cookie_value) + ';expires=' + expires.toUTCString();
-
-        if ($cms.$COOKIE_PATH) {
-            to_set += ';path=' + $cms.$COOKIE_PATH;
-        }
-
-        if ($cms.$COOKIE_DOMAIN) {
-            to_set += ';domain=' + $cms.$COOKIE_DOMAIN;
-        }
-
-        document.cookie = to_set;
-
-        var read = read_cookie(cookie_name);
-
-        if (read && (read !== cookie_value)) {
-            if ($cms.$DEV_MODE && !_doneCookieAlert) {
-                window.fauxmodal_alert('{!COOKIE_CONFLICT_DELETE_COOKIES;^}' + '... ' + document.cookie + ' (' + to_set + ')', null, '{!ERROR_OCCURRED;^}');
-            }
-
-            _doneCookieAlert = true;
-        }
-    }
-
-    function read_cookie(cookieName, defaultValue) {
-        var docCookie = '' + document.cookie,
-            startIdx = docCookie.startsWith(cookieName + '=') ? 0 : docCookie.indexOf(' ' + cookieName + '=');
-
-        if ((startIdx === -1) || !cookieName) {
-            return defaultValue;
-        }
-
-        if (startIdx > 0) {
-            startIdx++;
-        }
-
-        var endIdx = docCookie.indexOf(';', startIdx);
-        if (endIdx === -1) {
-            endIdx = docCookie.length;
-        }
-
-        return decodeURIComponent(docCookie.substring(startIdx + cookieName.length + 1, endIdx));
-    }
 
     function get_csrf_token() {
         return read_cookie($cms.$SESSION_COOKIE_NAME); // Session also works as a CSRF-token, as client-side knows it (AJAX)
@@ -3811,13 +3982,6 @@
     function get_session_id() {
         return read_cookie($cms.$SESSION_COOKIE_NAME);
     }
-
-    window.generate_question_ui = generate_question_ui;
-    window.do_ajax_request = do_ajax_request;
-    window.set_cookie = set_cookie;
-    window.read_cookie = read_cookie;
-    window.get_csrf_token = get_csrf_token;
-    window.get_session_id = get_session_id;
 
     $cms.topicReply = topicReply;
     /* Reply to a topic using AJAX */
@@ -4021,7 +4185,7 @@ function noop() {}
 
     /* Data escaping */
     function escape_html(value) {
-        value = $cms.strVal(value);
+        value = strVal(value);
         if (!value) {
             return '';
         }
@@ -4029,16 +4193,25 @@ function noop() {}
     }
 
     function escape_comcode(value) {
-        return (value || '').replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+        value = strVal(value);
+        if (!value) {
+            return '';
+        }
+        return value.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
     }
 
     /* Image rollover effects */
     function create_rollover(rand, rollover) {
-        var img = $cms.dom.id(rand);
+        var img = rand && $cms.dom.id(rand);
         if (!img) {
             return;
         }
         new Image().src = rollover; // precache
+
+        $cms.dom.on(img, 'mouseover', activate);
+        $cms.dom.on(img, 'click', deactivate);
+        $cms.dom.on(img, 'mouseout', deactivate);
+
         function activate() {
             img.old_src = img.getAttribute('src');
             if (img.origsrc !== undefined) {
@@ -4050,12 +4223,7 @@ function noop() {}
         function deactivate() {
             img.setAttribute('src', img.old_src);
         }
-
-        img.addEventListener('mouseover', activate);
-        img.addEventListener('click', deactivate);
-        img.addEventListener('mouseout', deactivate);
     }
-
 
     /* Browser sniffing */
     function browser_matches(code) {
@@ -4794,7 +4962,7 @@ function activate_tooltip(el, event, tooltip, width, pic, height, bottom, no_del
             return;
         }
 
-        if ((!el.tooltip_on) || (tooltip_element.childNodes.length == 0)) // Some other tooltip jumped in and wiped out tooltip on a delayed-show yet never triggers due to losing focus during that delay
+        if ((!el.tooltip_on) || (tooltip_element.childNodes.length === 0)) // Some other tooltip jumped in and wiped out tooltip on a delayed-show yet never triggers due to losing focus during that delay
             $cms.dom.appendHtml(tooltip_element, tooltip);
 
         el.tooltip_on = true;
@@ -5029,7 +5197,7 @@ function add_form_marked_posts(work_on, prefix) {
         var bits = append.split('&');
         for (i = 0; i < bits.length; i++) {
             if (bits[i] !== '') {
-                var hidden = Object.assign(document.createElement('input'), {
+                var hidden = assign(document.createElement('input'), {
                     name: bits[i].substr(0, bits[i].indexOf('=1')),
                     type: 'hidden',
                     value: '1'
@@ -5244,6 +5412,7 @@ function play_self_audio_link(ob) {
         if (el.style.opacity) {
             var diff = (destPercentOpacity / 100.0) - el.style.opacity,
                 direction = 1;
+
             if (increment > 0) {
                 if (el.style.opacity > (destPercentOpacity / 100.0)) {
                     direction = -1;
@@ -5255,6 +5424,7 @@ function play_self_audio_link(ob) {
                 }
                 newIncrement = Math.max(direction * diff, increment / 100.0);
             }
+
             var temp = parseFloat(el.style.opacity) + (direction * newIncrement);
 
             if (temp < 0.0) {
@@ -6035,7 +6205,12 @@ function faux_open(url, name, options, target, cancel_text) {
         var loading_wrapper = target_div;
         if ((loading_wrapper.id.indexOf('carousel_') === -1) && ($cms.dom.html(loading_wrapper).indexOf('ajax_loading_block') === -1) && (show_loading_animation)) {
             var raw_ajax_grow_spot = target_div.querySelectorAll('.raw_ajax_grow_spot');
-            if (raw_ajax_grow_spot[0] !== undefined && append) loading_wrapper = raw_ajax_grow_spot[0]; // If we actually are embedding new results a bit deeper
+
+            if (raw_ajax_grow_spot[0] !== undefined && append) {
+                // If we actually are embedding new results a bit deeper
+                loading_wrapper = raw_ajax_grow_spot[0];
+            }
+
             var loading_wrapper_inner = document.createElement('div');
             if (!$cms.dom.isCss(loading_wrapper, 'position', ['relative', 'absolute'])) {
                 if (append) {
@@ -6045,12 +6220,16 @@ function faux_open(url, name, options, target, cancel_text) {
                     loading_wrapper.style.overflow = 'hidden'; // Stops margin collapsing weirdness
                 }
             }
-            var loading_image = document.createElement('img');
-            loading_image.className = 'ajax_loading_block';
-            loading_image.src = $cms.img('{$IMG;,loading}');
-            loading_image.style.position = 'absolute';
-            loading_image.style.zIndex = '1000';
-            loading_image.style.left = (target_div.offsetWidth / 2 - 10) + 'px';
+
+            var loading_image = $cms.dom.create('img', {
+                class: 'ajax_loading_block',
+                src: $cms.img('{$IMG;,loading}'),
+                css: {
+                    position: 'absolute',
+                    zIndex: 1000,
+                    left: (target_div.offsetWidth / 2 - 10) + 'px',
+                }
+            });
             if (!append) {
                 loading_image.style.top = (target_div.offsetHeight / 2 - 20) + 'px';
             } else {
@@ -6585,9 +6764,13 @@ function do_form_preview(event, form, preview_url, has_separate_preview) {
     }
     form.setAttribute('action', /*maintain_theme_in_link - no, we want correct theme images to work*/(preview_url) + ((form.old_action.indexOf('&uploading=1') != -1) ? '&uploading=1' : ''));
     var old_target = form.getAttribute('target');
-    if (!old_target) old_target = '_top';
+    if (!old_target) {
+        old_target = '_top';
+    }
     /* not _self due to edit screen being a frame itself */
-    if (!form.old_target) form.old_target = old_target;
+    if (!form.old_target) {
+        form.old_target = old_target;
+    }
     form.setAttribute('target', 'preview_iframe');
 
     if ((window.check_form) && (!check_form(form, true))) {
