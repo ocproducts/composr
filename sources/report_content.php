@@ -223,7 +223,7 @@ function report_content_form_fields()
     $ticket_type_id = find_reported_content_ticket_type();
     if ($ticket_type_id === null) {
         // There is no specific ticket type for reports. Build a list of, and ask for, ticket type.
-        $types = build_types_list(null);
+        $types = build_types_list(db_get_first_id());
         $list_entries = new Tempcode();
         foreach ($types as $type) {
         	$list_entries->attach(form_input_list_entry($type['TICKET_TYPE_ID'], $type['SELECTED'], $type['NAME']));
@@ -273,6 +273,7 @@ function report_content_append_text(&$text, $ticket_id)
  * @param BINARY $open Report is open
  * @param ?TIME $time Report time (null: now)
  * @param ?MEMBER $member_id Reporting member (null: current member)
+ * @return object URL to content
  */
 function report_content($content_type, $content_id, $report_post, $anonymous = 0, $open = 1, $time = null, $member_id = null)
 {
@@ -313,7 +314,7 @@ function report_content($content_type, $content_id, $report_post, $anonymous = 0
     $email = trim(post_param_string('email', ''));
     $_report_post = ticket_wrap_with_email_address($_report_post, $email);
 
-    _report_content($content_type, $content_id, $report_title, $_report_post, $anonymous, $open, $time, $member_id);
+    return _report_content($content_type, $content_id, $report_title, $_report_post, $anonymous, $open, $time, $member_id);
 }
 
 /**
@@ -325,6 +326,7 @@ function report_content($content_type, $content_id, $report_post, $anonymous = 0
  * @param BINARY $open Report is open
  * @param ?TIME $time Report time (null: now)
  * @param ?MEMBER $member_id Reporting member (null: current member)
+ * @return object URL to content
  */
 function report_post($post_id, $report_post, $anonymous = 0, $open = 1, $time = null, $member_id = null)
 {
@@ -353,14 +355,11 @@ function report_post($post_id, $report_post, $anonymous = 0, $open = 1, $time = 
             '_GUID' => '6e9a43a3503c357b52b724e11d3d4eef',
             'POST_ID' => strval($post_id),
             'POST_MEMBER' => $content_member,
-            'POST_MEMBER_ID' => $content_member_id,
+            'POST_MEMBER_ID' => strval($content_member_id),
             'TOPIC_TITLE' => $topic_title,
             'POST' => $post,
             'REPORT_POST' => $report_post,
         ), null, false, null, '.txt', 'text'));
-        if ($_report_post != '') {
-            $_report_post .= $report_post;
-        }
     }
 
     $_title = $post_info['p_title'];
@@ -374,7 +373,7 @@ function report_post($post_id, $report_post, $anonymous = 0, $open = 1, $time = 
 
     $content_type = 'post';
     $content_id = strval($post_id);
-    _report_content($content_type, $content_id, $report_title, $_report_post, $anonymous, $open, $time, $member_id);
+    return _report_content($content_type, $content_id, $report_title, $_report_post, $anonymous, $open, $time, $member_id);
 }
 
 /**
@@ -388,6 +387,7 @@ function report_post($post_id, $report_post, $anonymous = 0, $open = 1, $time = 
  * @param BINARY $open Report is open
  * @param ?TIME $time Report time (null: now)
  * @param ?MEMBER $member_id Reporting member (null: current member)
+ * @return object URL to content
  */
 function _report_content($content_type, $content_id, $report_title, $report_post, $anonymous = 0, $open = 1, $time = null, $member_id = null)
 {
@@ -459,6 +459,9 @@ function _report_content($content_type, $content_id, $report_title, $report_post
         'r_counts' => ($counts_for_unvalidation ? 1 : 0),
     ));
 
+    require_code('content');
+    list(, , $cma_info, , $content_url) = content_get_details($content_type, $content_id);
+
     // If hit threshold, mark down r_counts and unvalidate the content
     $count = $GLOBALS['SITE_DB']->query_select_value('reported_content', 'COUNT(*)', array(
         'r_content_type' => $content_type,
@@ -466,9 +469,6 @@ function _report_content($content_type, $content_id, $report_title, $report_post
         'r_counts' => 1, // All those not already counted to a de-validation
     ));
     if ($count >= intval(get_option('reported_times'))) {
-        require_code('content');
-        list(, , $cma_info, , $content_url) = content_get_details($content_type, $content_id);
-
         // Mark as unvalidated
         if (($cma_info['validated_field'] !== null) && (strpos($cma_info['table'], '(') === false)) {
             $db = $GLOBALS[(substr($cma_info['table'], 0, 2) == 'f_') ? 'FORUM_DB' : 'SITE_DB'];
@@ -481,6 +481,8 @@ function _report_content($content_type, $content_id, $report_title, $report_post
             'r_content_id' => $content_id,
         ));
     }
+
+    return $content_url;
 }
 
 /**

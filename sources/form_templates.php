@@ -2405,7 +2405,7 @@ function _form_input($name, $pretty_name, $description, $input, $required, $comc
  *
  * @param  ?ID_TEXT $id The ID we're editing (null: get from param, 'id')
  * @param  boolean $only_staff Whether to only care about staff conflicts
- * @return array A pair: warning details, ping url
+ * @return array A pair: warning details, ping URL
  */
 function handle_conflict_resolution($id = null, $only_staff = false)
 {
@@ -2418,7 +2418,7 @@ function handle_conflict_resolution($id = null, $only_staff = false)
     }
 
     if ($id === null) {
-        $id = get_param_string('id', post_param_string('id', null), true);
+        $id = get_param_string('id', post_param_string('id', null));
         if ($id === null) {
             return array(null, null);
         }

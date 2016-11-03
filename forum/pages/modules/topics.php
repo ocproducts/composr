@@ -2041,12 +2041,12 @@ class Module_topics
         $anonymous = post_param_integer('anonymous', 0);
 
         require_code('report_content');
-        report_post($post_id, $post, $anonymous);
+        $_url = report_post($post_id, $post, $anonymous);
 
         // Show it worked / Refresh
         $_title = get_screen_title('REPORT_POST');
         $text = do_lang_tempcode('POST_REPORTED');
-        $url = get_param_string('redirect', $url, INPUT_FILTER_URL_INTERNAL);
+        $url = get_param_string('redirect', $_url->evaluate(), INPUT_FILTER_URL_INTERNAL);
         return redirect_screen($_title, $url, $text);
     }
 
