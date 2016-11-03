@@ -67,8 +67,8 @@ class CMSPtRead
                 'new_post' => ($unread_num > 0),
                 'unread_num' => $unread_num,
                 'can_invite' => true,
-                'can_edit' => has_privilege(get_member(), 'moderate_personal_topic'),
-                'can_close' => has_privilege(get_member(), 'moderate_personal_topic'),
+                'can_edit' => has_privilege(get_member(), 'moderate_private_topic'),
+                'can_close' => has_privilege(get_member(), 'moderate_private_topic'),
                 'can_upload' => $can_upload,
                 'is_closed' => ($topic['t_is_open'] == 0),
                 'delete_mode' => 1, // soft-delete mode only
@@ -165,8 +165,8 @@ class CMSPtRead
             'total_posts' => $total_post_count,
             'new_post' => ($unread_num > 0),
             'can_invite' => true,
-            'can_edit' => has_privilege(get_member(), 'moderate_personal_topic'),
-            'can_close' => has_privilege(get_member(), 'moderate_personal_topic'),
+            'can_edit' => has_privilege(get_member(), 'moderate_private_topic'),
+            'can_close' => has_privilege(get_member(), 'moderate_private_topic'),
             'can_upload' => $can_upload,
             'is_closed' => ($topic_details[0]['t_is_open'] == 0),
             'delete_mode' => 1, // soft-delete mode only

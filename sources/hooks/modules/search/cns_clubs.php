@@ -127,7 +127,7 @@ class Hook_search_cns_clubs extends FieldsSearchHook
         $where_clause .= 'g_hidden=0 AND g_is_private_club=1';
 
         $table = 'f_groups r';
-        $trans_fields = array('!' => '!', 'r.g_name' => 'SHORT_TRANS', 'r.g_title' => 'SHORT_TRANS');
+        $trans_fields = array('r.g_name' => 'SHORT_TRANS', 'r.g_title' => 'SHORT_TRANS');
         $nontrans_fields = array();
         $this->_get_search_parameterisation_advanced_for_content_type('_group', $table, $where_clause, $trans_fields, $nontrans_fields);
 

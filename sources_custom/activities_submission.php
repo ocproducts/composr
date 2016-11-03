@@ -148,7 +148,7 @@ function activities_ajax_submit_handler()
 
                     if ($stored_id !== null) {
                         $response .= '<success>1</success><feedback>Message received.</feedback>';
-                    } elseif ($stored_id === null) {
+                    } else {
                         $response .= '<success>0</success><feedback>Message already received.</feedback>';
                     }
                 }

@@ -2161,6 +2161,7 @@ class Module_topics
                 }
 
                 $topic_id = cns_make_topic(null, post_param_string('description', ''), post_param_string('emoticon', ''), $topic_validated, post_param_integer('open', 0), post_param_integer('pinned', 0), post_param_integer('cascading', 0), get_member(), $member_id, true, $metadata['views']);
+                $first_post = true;
                 $_title = get_screen_title('ADD_PRIVATE_TOPIC');
             } else { // New topic
                 if ($anonymous == 1) {
@@ -2172,6 +2173,7 @@ class Module_topics
                 }
 
                 $topic_id = cns_make_topic($forum_id, post_param_string('description', ''), post_param_string('emoticon', ''), $topic_validated, post_param_integer('open', 0), post_param_integer('pinned', 0), post_param_integer('cascading', 0), null, null, true, $metadata['views']);
+                $first_post = true;
                 $_title = get_screen_title('ADD_TOPIC');
 
                 $_topic_id = strval($topic_id);
@@ -2200,7 +2202,6 @@ END;
                     handle_award_setting('topic', strval($topic_id));
                 }
             }
-            $first_post = true;
 
             set_url_moniker('topic', strval($topic_id));
 
