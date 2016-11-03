@@ -1008,7 +1008,7 @@ function do_site()
             safe_ini_set('default_socket_timeout', '3');
             require_code('version2');
             require_code('http');
-            cache_and_carry('cms_http_request', array('http://compo.sr/uploads/website_specific/compo.sr/scripts/user.php?url=' . urlencode(get_base_url()) . '&name=' . urlencode(get_site_name()) . '&version=' . urlencode(get_version_dotted()), null, false), 60 * 24/*once a day*/);
+            cache_and_carry('cms_http_request', array('http://compo.sr/uploads/website_specific/compo.sr/scripts/user.php?url=' . urlencode(get_base_url()) . '&name=' . urlencode(get_site_name()) . '&version=' . urlencode(get_version_dotted()), array('trigger_error' => false)), 60 * 24/*once a day*/);
             safe_ini_set('default_socket_timeout', $timeout_before);
         }
     }

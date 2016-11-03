@@ -101,7 +101,7 @@ function get_webpage_meta_details($url)
         return $meta_details;
     }
 
-    $result = cache_and_carry('cms_http_request', array($url, 1024 * 10, false, false, 'Composr', null, array(), null, null, null, null, null, null, 2.0));
+    $result = cache_and_carry('cms_http_request', array($url, array('byte_limit' => 1024 * 10, 'trigger_error' => false, 'timeout' => 2.0)));
     if ((is_array($result)) && ($result[1] !== null) && (strpos($result[1], 'html') !== false) && $result[4] == '200') {
         $html = $result[0];
 
