@@ -117,8 +117,8 @@
             notification_desktop_alerts: symbols.CONFIG_OPTION.notification_desktop_alerts,
             enable_theme_img_buttons: symbols.CONFIG_OPTION.enable_theme_img_buttons,
             enable_previews: symbols.CONFIG_OPTION.enable_previews,
-            background_template_compilation: symbols.CONFIG_OPTION.background_template_compilation
-
+            background_template_compilation: symbols.CONFIG_OPTION.background_template_compilation,
+            spam_heuristic_pasting: !!symbols.CONFIG_OPTION.spam_heuristic_pasting
         },
         $VALUE_OPTION: {
             js_keep_params: symbols.VALUE_OPTION.js_keep_params,
@@ -819,6 +819,25 @@
             throw ex;
         }
     }
+
+    $cms.set_post_data_flag = function set_post_data_flag() {
+        var forms = document.getElementsByTagName('form'), form, post_data;
+        for (var i = 0;i < forms.length; i++) {
+            form = forms[i];
+
+            if (typeof form.elements['post_data'] == 'undefined') {
+                post_data = document.createElement('input');
+                post_data.value = '';
+            } else {
+                post_data = form.elements['post_data'];
+                post_data.value += ',';
+            }
+            post_data.name = 'post_data';
+            post_data.value += flag;
+            post_data.type = 'hidden';
+            form.appendChild(post_data);
+        }
+    };
 
     // Inspired by goog.inherits and Babel's generated output for ES6 classes
     function inherits(SubClass, SuperClass, protoProps) {
@@ -3010,7 +3029,7 @@
                     'html': 'innerHTML',
                     'class': 'className',
                     'for': 'htmlFor',
-                    'text': 'innerText'
+                    'text': 'textContent'
                 };
 
             if (isObj(options)) {
@@ -6439,13 +6458,13 @@ function faux_open(url, name, options, target, cancel_text) {
                 if (list_contents.children[i].getAttribute('displayname') != '')
                     displaytext = list_contents.children[i].getAttribute('displayname');
                 item.text = displaytext;
-                item.innerText = displaytext;
+                item.textContent = displaytext;
                 list.appendChild(item);
             }
             item = document.createElement('option');
             item.disabled = true;
             item.text = '{!javascript:SUGGESTIONS_ONLY;^}'.toUpperCase();
-            item.innerText = '{!javascript:SUGGESTIONS_ONLY;^}'.toUpperCase();
+            item.textContent = '{!javascript:SUGGESTIONS_ONLY;^}'.toUpperCase();
             list.appendChild(item);
             currentListForEl.parentNode.appendChild(list);
 

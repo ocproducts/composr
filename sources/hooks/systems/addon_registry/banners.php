@@ -176,7 +176,7 @@ class Hook_addon_registry_banners
             'templates/POINTSTORE_BANNERS_UPGRADE.tpl' => 'pointstore_banners_upgrade',
             'templates/POINTSTORE_BANNERS_ACTIVATE.tpl' => 'pointstore_banners_activate',
             'templates/POINTSTORE_BANNERS_SCREEN.tpl' => 'pointstore_banners_screen',
-            'templates/BANNER_VIEW_SCREEN.tpl' => 'administrative__banner_view_screen'
+            'templates/BANNER_VIEW_SCREEN.tpl' => 'administrative__banner_view_screen',
         );
     }
 

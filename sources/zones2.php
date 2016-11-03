@@ -187,7 +187,7 @@ function actual_add_zone($zone, $title, $default_page = DEFAULT_ZONE_PAGE_NAME, 
 
     persistent_cache_delete('ALL_ZONES');
 
-    decache('menu');
+    delete_cache_entry('menu');
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
@@ -882,9 +882,7 @@ function sync_htaccess_with_zones()
 
         $htaccess = file_get_contents($htaccess_path);
         $htaccess = preg_replace('#\(site[^\)]*#', '(' . implode('|', $zones), $htaccess);
-        $myfile = fopen($htaccess_path, GOOGLE_APPENGINE ? 'wb' : 'wt');
-        fwrite($myfile, $htaccess);
-        fclose($myfile);
+        file_put_contents($htaccess_path, $htaccess);
         fix_permissions($htaccess_path);
         sync_file($htaccess_path);
     }

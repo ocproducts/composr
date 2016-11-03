@@ -16,46 +16,41 @@
 			{!FORUM_CHOICE}
 		</p>
 
-		{+START,IF,{$JS_ON}}
-			<table class="columned_table installer_forums">
-				<tbody>
-					<tr>
-						<th class="de_th">
-							<div class="left">
-								{!FORUM_SOFTWARE}
-							</div>
-						</th>
+		<table class="columned_table installer_forums">
+			<tbody>
+				<tr>
+					<th class="de_th">
+						<div class="left">
+							{!FORUM_SOFTWARE}
+						</div>
+					</th>
 
-						<th class="de_th">
-							<div class="right">
-								{!FORUM_VERSION}
-							</div>
-						</th>
-					</tr>
-					<tr>
-						<td class="installer_forum_list">
-							{FORUMS}
-						</td>
+					<th class="de_th">
+						<div class="right">
+							{!FORUM_VERSION}
+						</div>
+					</th>
+				</tr>
+				<tr>
+					<td class="installer_forum_list">
+						{FORUMS}
+					</td>
 
-						<td class="installer_forum_version">
-							<div id="versions">
-								{VERSION}
-							</div>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		{+END}
-		{+START,IF,{$NOT,{$JS_ON}}}
-			{SIMPLE_FORUMS}
-		{+END}
+					<td class="installer_forum_version">
+						<div id="versions">
+							{VERSION}
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
 
 		<p style="display: none" id="forum_database_info">
 			{!CAREFUL}
 		</p>
 
 		{+START,IF,{$NOT,{$GOOGLE_APPENGINE}}}
-			<div id="forum_path" style="display: {$JS_ON,none,block}">
+			<div id="forum_path" style="display: none">
 				<p>{!FORUM_PATH_TEXT}</p>
 				<div class="wide_table_wrap"><table class="map_table form_table wide_table">
 					<colgroup>
@@ -82,7 +77,7 @@
 				</a>
 			</p>
 
-			<div id="{!ADVANCED_DATABASE_SETUP|*}" style="display: {$JS_ON,none,block}">
+			<div id="{!ADVANCED_DATABASE_SETUP|*}" style="display: none">
 				<div class="wide_table_wrap"><table class="map_table form_table wide_table">
 					<colgroup>
 						<col class="installer_left_column" />

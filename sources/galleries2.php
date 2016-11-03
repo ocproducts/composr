@@ -488,11 +488,11 @@ function add_image($title, $cat, $description, $url, $thumb_url, $validated, $al
         dispatch_notification('gallery_entry', $cat, $subject, $mail, $privacy_limits);
     }
 
-    decache('side_galleries');
-    decache('main_personal_galleries_list');
-    decache('main_gallery_embed');
-    decache('main_image_fader');
-    decache('main_image_slider');
+    delete_cache_entry('side_galleries');
+    delete_cache_entry('main_personal_galleries_list');
+    delete_cache_entry('main_gallery_embed');
+    delete_cache_entry('main_image_fader');
+    delete_cache_entry('main_image_slider');
 
     require_code('member_mentions');
     dispatch_member_mention_notifications('image', strval($id), $submitter);
@@ -539,7 +539,7 @@ function edit_image($id, $title, $cat, $description, $url, $thumb_url, $validate
     $_title = $GLOBALS['SITE_DB']->query_select_value('images', 'title', array('id' => $id));
     $old_cat = $GLOBALS['SITE_DB']->query_select_value('images', 'cat', array('id' => $id));
 
-    decache('main_gallery_embed');
+    delete_cache_entry('main_gallery_embed');
 
     require_code('files2');
     delete_upload('uploads/galleries', 'images', 'url', 'id', $id, $url);
@@ -613,8 +613,8 @@ function edit_image($id, $title, $cat, $description, $url, $thumb_url, $validate
     require_code('seo2');
     seo_meta_set_for_explicit('image', strval($id), $meta_keywords, $meta_description);
 
-    decache('main_image_fader');
-    decache('main_image_slider');
+    delete_cache_entry('main_image_fader');
+    delete_cache_entry('main_image_slider');
 
     require_lang('galleries');
     require_code('feedback');
@@ -672,11 +672,11 @@ function delete_image($id, $delete_full = true)
     require_code('seo2');
     seo_meta_erase_storage('image', strval($id));
 
-    decache('side_galleries');
-    decache('main_personal_galleries_list');
-    decache('main_gallery_embed');
-    decache('main_image_fader');
-    decache('main_image_slider');
+    delete_cache_entry('side_galleries');
+    delete_cache_entry('main_personal_galleries_list');
+    delete_cache_entry('main_gallery_embed');
+    delete_cache_entry('main_image_fader');
+    delete_cache_entry('main_image_slider');
 
     log_it('DELETE_IMAGE', strval($id), get_translated_text($title));
 
@@ -782,7 +782,7 @@ function create_video_thumb($src_url, $expected_output_path = null)
 
                 if (file_exists($expected_output_path)) {
                     require_code('images');
-                    return convert_image($expected_output_path, $expected_output_path, -1, -1, intval(get_option('thumb_width')), true, null, true);
+                    return convert_image($expected_output_path, $expected_output_path, null, null, intval(get_option('thumb_width')), true, null, true);
                 }
             }
         }
@@ -821,7 +821,7 @@ function create_video_thumb($src_url, $expected_output_path = null)
             if (file_exists(str_replace('%d', '1', $dest_file))) {
                 require_code('images');
                 if (function_exists('imagetypes')) {
-                    return convert_image(str_replace('%d', '1', $dest_file), $expected_output_path, -1, -1, intval(get_option('thumb_width')), true, null, true);
+                    return convert_image(str_replace('%d', '1', $dest_file), $expected_output_path, null, null, intval(get_option('thumb_width')), true, null, true);
                 } else {
                     copy(str_replace('%d', '1', $dest_file), $expected_output_path);
                     fix_permissions($expected_output_path);
@@ -946,9 +946,9 @@ function add_video($title, $cat, $description, $url, $thumb_url, $validated, $al
         seo_meta_set_for_explicit('video', strval($id), $meta_keywords, $meta_description);
     }
 
-    decache('side_galleries');
-    decache('main_personal_galleries_list');
-    decache('main_gallery_embed');
+    delete_cache_entry('side_galleries');
+    delete_cache_entry('main_personal_galleries_list');
+    delete_cache_entry('main_gallery_embed');
 
     if ((is_file(get_file_base() . '/sources_custom/gallery_syndication.php')) && (!in_safe_mode())) {
         require_code('gallery_syndication');
@@ -1085,7 +1085,7 @@ function edit_video($id, $title, $cat, $description, $url, $thumb_url, $validate
     require_code('seo2');
     seo_meta_set_for_explicit('video', strval($id), $meta_keywords, $meta_description);
 
-    decache('main_gallery_embed');
+    delete_cache_entry('main_gallery_embed');
 
     require_lang('galleries');
     require_code('feedback');
@@ -1147,9 +1147,9 @@ function delete_video($id, $delete_full = true)
     require_code('seo2');
     seo_meta_erase_storage('video', strval($id));
 
-    decache('side_galleries');
-    decache('main_personal_galleries_list');
-    decache('main_gallery_embed');
+    delete_cache_entry('side_galleries');
+    delete_cache_entry('main_personal_galleries_list');
+    delete_cache_entry('main_gallery_embed');
 
     if ((is_file(get_file_base() . '/sources_custom/gallery_syndication.php')) && (!in_safe_mode())) {
         require_code('gallery_syndication');
@@ -1282,7 +1282,7 @@ function constrain_gallery_image_to_max_size($file_path, $filename, $box_width)
         return;
     }
 
-    convert_image($file_path, $file_path, -1, -1, $box_width, false, get_file_extension($filename), true, true);
+    convert_image($file_path, $file_path, null, null, $box_width, false, get_file_extension($filename), true, true);
 }
 
 /**
@@ -1379,9 +1379,9 @@ function add_gallery($name, $fullname, $description, $notes, $parent_id, $accept
         seo_meta_set_for_explicit('gallery', $name, $meta_keywords, $meta_description);
     }
 
-    if (function_exists('decache')) {
-        decache('side_galleries');
-        decache('main_personal_galleries_list');
+    if (function_exists('delete_cache_entry')) {
+        delete_cache_entry('side_galleries');
+        delete_cache_entry('main_personal_galleries_list');
     }
 
     require_code('member_mentions');
@@ -1540,8 +1540,8 @@ function edit_gallery($old_name, $name, $fullname, $description, $notes, $parent
 
     $GLOBALS['SITE_DB']->query_update('group_category_access', array('category_name' => $name), array('module_the_name' => 'galleries', 'category_name' => $old_name));
 
-    decache('side_galleries');
-    decache('main_personal_galleries_list');
+    delete_cache_entry('side_galleries');
+    delete_cache_entry('main_personal_galleries_list');
 
     require_code('feedback');
     update_spacer_post(
@@ -1619,8 +1619,8 @@ function delete_gallery($name)
     $GLOBALS['SITE_DB']->query_delete('group_category_access', array('module_the_name' => 'galleries', 'category_name' => $name));
     $GLOBALS['SITE_DB']->query_delete('group_privileges', array('module_the_name' => 'galleries', 'category_name' => $name));
 
-    decache('side_galleries');
-    decache('main_personal_galleries_list');
+    delete_cache_entry('side_galleries');
+    delete_cache_entry('main_personal_galleries_list');
 
     log_it('DELETE_GALLERY', $name, get_translated_text($rows[0]['fullname']));
 

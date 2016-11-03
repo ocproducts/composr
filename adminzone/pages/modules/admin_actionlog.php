@@ -160,7 +160,7 @@ class Module_admin_actionlog
             }
         }
         $member_choice_list = new Tempcode();
-        $member_choice_list->attach(form_input_list_entry('-1', true, do_lang_tempcode('_ALL')));
+        $member_choice_list->attach(form_input_list_entry('', true, do_lang_tempcode('_ALL')));
         foreach ($_member_choice_list as $id => $user_actions) {
             list($username, $action_count) = $user_actions;
             $member_choice_list->attach(form_input_list_entry(strval($id), false, do_lang(($action_count == 1) ? 'ACTIONLOG_USERCOUNT_UNI' : 'ACTIONLOG_USERCOUNT', $username, integer_format($action_count))));
@@ -208,7 +208,7 @@ class Module_admin_actionlog
      */
     public function choose_action()
     {
-        $id = get_param_integer('id', -1);
+        $id = get_param_integer('id', null);
         $start = get_param_integer('start', 0);
         $max = get_param_integer('max', 50);
         $sortables = array('date_and_time' => do_lang_tempcode('DATE_TIME'), 'the_type' => do_lang_tempcode('ACTION'));
@@ -260,7 +260,7 @@ class Module_admin_actionlog
                     $where .= ' AND l_param_b LIKE \'' . db_encode_like('%' . $filter_param_b . '%') . '\'';
                 }
             }
-            if ($id != -1) {
+            if ($id !== null) {
                 $where .= ' AND l_by=' . strval($id);
             }
 
@@ -296,7 +296,7 @@ class Module_admin_actionlog
                 $where .= ' AND param_b LIKE \'' . db_encode_like('%' . $filter_param_b . '%') . '\'';
             }
         }
-        if ($id != -1) {
+        if ($id !== null) {
             $where .= ' AND member_id=' . strval($id);
         }
 

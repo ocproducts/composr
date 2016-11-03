@@ -29,6 +29,22 @@
 
 				var forms = document.getElementsByTagName('form');
 				if (typeof forms[0] != 'undefined') forms[0].title = '';
+
+				var cns = document.getElementById('cns');
+				if (cns)
+				{
+					var use_multi_db_locker = function() {
+						forms[0].elements['use_multi_db'][0].disabled = cns.checked;
+						forms[0].elements['use_multi_db'][1].disabled = cns.checked;
+						if (cns.checked) {
+							forms[0].elements['use_multi_db'][1].checked = true;
+						}
+					};
+					for (var i=0; i < forms[0].elements['forum'].length; i++) {
+						forms[0].elements['forum'][i].onclick = use_multi_db_locker;
+					}
+					use_multi_db_locker();
+				}
 			}
 
 			function submit_settings(form) {

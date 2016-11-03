@@ -269,7 +269,7 @@ function get_attachments($posting_field_name)
     }
     $attach_size_field = form_input_hidden('MAX_FILE_SIZE', strval($max_attach_size));
 
-    $num_attachments = post_param_integer('num_attachments', has_js() ? 1 : 3);
+    $num_attachments = post_param_integer('num_attachments', 1);
 
     $attachments = new Tempcode();
     for ($i = 1; $i <= $num_attachments; $i++) {
@@ -365,7 +365,7 @@ function get_posting_form($submit_name, $submit_icon, $post, $post_url, $hidden_
     $comcode_editor = get_comcode_editor('post', false, true);
     $comcode_editor_small = get_comcode_editor('post', true, true);
 
-    $w = (!$avoid_wysiwyg) && (has_js()) && (browser_matches('wysiwyg', $post) && (strpos($post, '{$,page hint: no_wysiwyg}') === false));
+    $w = (!$avoid_wysiwyg) && (browser_matches('wysiwyg', $post) && (strpos($post, '{$,page hint: no_wysiwyg}') === false));
 
     $class = '';
     attach_wysiwyg();
@@ -721,14 +721,12 @@ function form_input_author($pretty_name, $description, $name, $default, $require
 
     $_description = new Tempcode();
     $_description->attach($description);
-    if (has_js()) {
-        if (!$_description->is_empty()) {
-            $_description->attach(do_template('FORM_DESCRIP_SEP'));
-        }
-        $keep = symbol_tempcode('KEEP');
-        $extra = do_template('HYPERLINK_POPUP_WINDOW', array('_GUID' => 'fb25dc4777a166c143a1bc32ff0c3239', 'URL' => find_script('authors') . '?field_name=' . urlencode($name) . $keep->evaluate(), 'TITLE' => do_lang_tempcode('AUTHOR'), 'CAPTION' => do_lang_tempcode('BROWSE_SENTENCE')));
-        $_description->attach($extra);
+    if (!$_description->is_empty()) {
+        $_description->attach(do_template('FORM_DESCRIP_SEP'));
     }
+    $keep = symbol_tempcode('KEEP');
+    $extra = do_template('HYPERLINK_POPUP_WINDOW', array('_GUID' => 'fb25dc4777a166c143a1bc32ff0c3239', 'URL' => find_script('authors') . '?field_name=' . urlencode($name) . $keep->evaluate(), 'TITLE' => do_lang_tempcode('AUTHOR'), 'CAPTION' => do_lang_tempcode('BROWSE_SENTENCE')));
+    $_description->attach($extra);
 
     $_required = ($required) ? '_required' : '';
     $input = do_template('FORM_SCREEN_INPUT_AUTHOR', array('_GUID' => '2662a51e494120078b4022915593e28a', 'TABINDEX' => strval($tabindex), 'REQUIRED' => $_required, 'NAME' => $name, 'DEFAULT' => $default));
@@ -775,10 +773,6 @@ function form_input_email($pretty_name, $description, $name, $default, $required
  */
 function form_input_colour($pretty_name, $description, $name, $default, $required, $tabindex = null)
 {
-    if (!has_js()) {
-        return form_input_line($pretty_name, $description, $name, $default, $required, $tabindex);
-    }
-
     if ($default === null) {
         $default = '';
     }
@@ -811,10 +805,6 @@ function form_input_colour($pretty_name, $description, $name, $default, $require
  */
 function form_input_page_link($pretty_name, $description, $name, $default, $required, $tabindex = null, $page_type = null, $get_title_too = false)
 {
-    if (!has_js()) {
-        return form_input_line($pretty_name, $description, $name, $default, $required, $tabindex);
-    }
-
     require_lang('menus');
 
     require_javascript('ajax');
@@ -906,7 +896,7 @@ function form_input_line_multi($pretty_name, $description, $name, $default_array
         )));
         $i++;
     }
-    $num_to_show_initially = has_js() ? max($num_required, count($default_array) + 1) : max($num_required, 10);
+    $num_to_show_initially = max($num_required, count($default_array) + 1);
     for (; $i < $num_to_show_initially; $i++) {
         $input->attach(do_template('FORM_SCREEN_INPUT_LINE_MULTI', array(
             '_GUID' => '10fcbe72e80ea1be07c3dd1fd9e0719e',
@@ -961,9 +951,6 @@ function form_input_text_multi($pretty_name, $description, $name, $default_array
         $input->attach(do_template('FORM_SCREEN_INPUT_TEXT_MULTI', array('_GUID' => '0d9e3c073d09d1ce3725f47813375c28', 'PRETTY_NAME' => $pretty_name, 'TABINDEX' => strval($tabindex), 'NAME_STUB' => $name, 'I' => strval($i), 'REQUIRED' => $_required, 'DEFAULT' => $default, 'MAXLENGTH' => ($maxlength === null) ? null : strval($maxlength))));
         $i++;
     }
-    if (!has_js()) {
-        $num_required = max($num_required, 10);
-    }
     for (; $i < $num_required; $i++) {
         $input->attach(do_template('FORM_SCREEN_INPUT_TEXT_MULTI', array('_GUID' => '2e816a71ef5a9ac9e1aac4bd1c13b5bd', 'PRETTY_NAME' => $pretty_name, 'TABINDEX' => strval($tabindex), 'NAME_STUB' => $name, 'I' => strval($i), 'REQUIRED' => '_required', 'DEFAULT' => '', 'MAXLENGTH' => ($maxlength === null) ? null : strval($maxlength))));
     }
@@ -1012,9 +999,6 @@ function form_input_username_multi($pretty_name, $description, $name, $default_a
         $_required = ($i < $num_required) ? '_required' : '';
         $input->attach(do_template('FORM_SCREEN_INPUT_USERNAME_MULTI', array('_GUID' => 'f2adcb1464b13e339a0336db6d5228cb', 'PRETTY_NAME' => $pretty_name, 'TABINDEX' => strval($tabindex), 'NEEDS_MATCH' => $needs_match, 'NAME_STUB' => $name, 'I' => strval($i), 'REQUIRED' => $_required, 'DEFAULT' => $default)));
         $i++;
-    }
-    if (!has_js()) {
-        $num_required = max($num_required, 10);
     }
     if ($num_required > $i) {
         $_num_required = $num_required;
@@ -1108,7 +1092,7 @@ function form_input_text_comcode($pretty_name, $description, $name, $default, $r
     if (!$force_non_wysiwyg) {
         attach_wysiwyg();
 
-        $w = (has_js()) && (browser_matches('wysiwyg', $default) && (strpos($default, '{$,page hint: no_wysiwyg}') === false));
+        $w = (browser_matches('wysiwyg', $default) && (strpos($default, '{$,page hint: no_wysiwyg}') === false));
         if ($w) {
             $_required .= ' wysiwyg';
         }
@@ -1171,7 +1155,7 @@ function form_input_huge_comcode($pretty_name, $description, $name, $default, $r
     attach_wysiwyg();
 
     if (!$force_non_wysiwyg) {
-        $w = (has_js()) && (browser_matches('wysiwyg', $default) && (strpos($default, '{$,page hint: no_wysiwyg}') === false));
+        $w = (browser_matches('wysiwyg', $default) && (strpos($default, '{$,page hint: no_wysiwyg}') === false));
         if ($w) {
             $_required .= ' wysiwyg';
         }
@@ -1427,7 +1411,7 @@ function form_input_upload_multi_source($set_title, $set_description, &$hidden, 
     if ((addon_installed('filedump')) && (has_actual_page_access(null, 'filedump'))) {
         require_code('files2');
         $full_path = get_custom_file_base() . '/uploads/filedump';
-        $files = get_directory_contents($full_path, '', false, false);
+        $files = get_directory_contents($full_path, '', IGNORE_ACCESS_CONTROLLERS, false);
         $has_image_or_dir = false;
         foreach ($files as $file) {
             if (is_image($file, IMAGE_CRITERIA_WEBSAFE, true) || is_dir($full_path . '/' . $file)) {
@@ -1725,7 +1709,7 @@ function form_input_tree_list($pretty_name, $description, $name, $root_id, $hook
     require_code('hooks/systems/ajax_tree/' . $hook);
     $object = object_factory('Hook_ajax_tree_' . $hook);
 
-    if ((!has_js()) || (get_option('tree_lists') == '0')) {
+    if (get_option('tree_lists') == '0') {
         $simple_content = new Tempcode();
         $simple_content->attach(form_input_list_entry('', false, do_lang('NA')));
         $simple_content->attach($object->simple($root_id, $options, $default));
@@ -1823,7 +1807,7 @@ function form_input_all_and_not($pretty_name, $description, $base, $list, $type 
  */
 function form_input_radio($pretty_name, $description, $name, $content, $required = false, $picture_contents = false, $selected_path = '')
 {
-    $map = array('_GUID' => '26021f9ae8a0cd83b93874bfa80052ca', 'NAME' => $name, 'REQUIRED' => $required, 'CONTENT' => $content);
+    $map = array('_GUID' => '26021f9ae8a0cd83b93874bfa80052ca', 'NAME' => $name, 'REQUIRED' => $required, 'CONTENT' => $content, 'IMAGES' => $picture_contents);
     if ($picture_contents) {
         $map = array_merge($map, array('CODE' => $selected_path,));
     }
@@ -2012,7 +1996,7 @@ function form_input_theme_image($pretty_name, $description, $name, $ids, $select
         $content->attach($_category);
     }
 
-    $input = do_template('FORM_SCREEN_INPUT_RADIO_LIST', array('_GUID' => '35fed772f022cf561f823543e56d63e8', 'REQUIRED' => !$allow_none, 'NAME' => $name, 'CODE' => ($selected_code === null) ? '' : $selected_code, 'TABINDEX' => strval($tabindex), 'CONTENT' => $content));
+    $input = do_template('FORM_SCREEN_INPUT_RADIO_LIST', array('_GUID' => '35fed772f022cf561f823543e56d63e8', 'REQUIRED' => !$allow_none, 'NAME' => $name, 'CODE' => ($selected_code === null) ? '' : $selected_code, 'TABINDEX' => strval($tabindex), 'CONTENT' => $content, 'IMAGES' => true, 'LINEAR' => $linear));
 
     return _form_input($GLOBALS['DOING_ALTERNATE_FIELDS_SET'] ? $name : '', $pretty_name, $description, $input, !$allow_none);
 }
@@ -2421,7 +2405,7 @@ function _form_input($name, $pretty_name, $description, $input, $required, $comc
  *
  * @param  ?ID_TEXT $id The ID we're editing (null: get from param, 'id')
  * @param  boolean $only_staff Whether to only care about staff conflicts
- * @return array A pair: warning details, ping url
+ * @return array A pair: warning details, ping URL
  */
 function handle_conflict_resolution($id = null, $only_staff = false)
 {
@@ -2434,7 +2418,7 @@ function handle_conflict_resolution($id = null, $only_staff = false)
     }
 
     if ($id === null) {
-        $id = get_param_string('id', post_param_string('id', null), true);
+        $id = get_param_string('id', post_param_string('id', null));
         if ($id === null) {
             return array(null, null);
         }

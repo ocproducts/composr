@@ -4,13 +4,13 @@
 
 {CONTENT}
 
-{+START,IF,{$JS_ON}}{+START,IF_PASSED,URL}
+{+START,IF_PASSED,URL}
 	<form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post" autocomplete="off">
 		<p class="proceed_button">
 			<input onclick="if (add_form_marked_posts(this.form,'del_')) { $cms.ui.disableButton(this); return true; } window.fauxmodal_alert('{!NOTHING_SELECTED=;}'); return false;" class="button_screen menu___generic_admin__delete" type="submit" value="{!DELETE}" />
 		</p>
 	</form>
-{+END}{+END}
+{+END}
 
 {+START,IF_NON_EMPTY,{LINKS}}
 	<hr class="spaced_rule" />

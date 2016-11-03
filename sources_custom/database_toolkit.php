@@ -422,9 +422,11 @@ function db_create_table_sql($table_name, $fields, $conn)
         $_fields .= ' ' . $perhaps_null . ',' . "\n";
     }
 
+    $table_type = (get_value('innodb') == '1') ? 'InnoDB' : 'MyISAM';
+
     $query = 'CREATE TABLE ' . $conn->get_table_prefix() . $table_name . ' (
 ' . $_fields . '
     PRIMARY KEY (' . $keys . ')
-) engine=' . ('MyISAM') . ';';
+) engine=' . $table_type . ';';
     return $query;
 }

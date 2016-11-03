@@ -1090,7 +1090,7 @@ class Module_wiki
      *
      * @return Tempcode The UI.
      */
-    public function _post()
+    private function _post()
     {
         if (addon_installed('captcha')) {
             require_code('captcha');

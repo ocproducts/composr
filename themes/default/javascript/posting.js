@@ -720,8 +720,14 @@ function init_form_saving(form_id) {
                     key = autosave_name;
                     value = localStorage[autosave_name];
 
+                    if (typeof form.elements[j].value != 'undefined' && form.elements[j].value.replace(/\s/g, '') == value.replace(/\s/g, '')) {
+                        continue;
+                    }
+
                     fields_to_do[element_name] = value;
+
                     fields_to_do_counter++;
+
                     if (value.length > biggest_length_data.length) // The longest is what we quote to the user as being restored
                     {
                         biggest_length_data = value;
@@ -781,8 +787,14 @@ function _retrieve_form_autosave(result, form) {
         }
 
         if (element) {
+            if (typeof element.value != 'undefined' && element.value.replace(/\s/g, '') == value.replace(/\s/g, '')) {
+                continue;
+            }
+
             fields_to_do[element_name] = value;
+
             fields_to_do_counter++;
+
             if (value.length > biggest_length_data.length) // The longest is what we quote to the user as being restored
             {
                 biggest_length_data = value;

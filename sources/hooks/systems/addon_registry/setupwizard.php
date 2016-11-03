@@ -141,7 +141,7 @@ class Hook_addon_registry_setupwizard
             'templates/SETUPWIZARD_SCREEN.tpl' => 'administrative__setupwizard_2_screen',
             'templates/SETUPWIZARD_2.tpl' => 'administrative__setupwizard_2_screen',
             'templates/SETUPWIZARD_7.tpl' => 'administrative__setupwizard_7_screen',
-            'templates/SETUPWIZARD_BLOCK_PREVIEW.tpl' => 'administrative__setupwizard_block_preview'
+            'templates/SETUPWIZARD_BLOCK_PREVIEW.tpl' => 'administrative__setupwizard_block_preview',
         );
     }
 

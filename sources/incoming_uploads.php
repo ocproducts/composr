@@ -97,9 +97,7 @@ function incoming_uploads_script()
 
         if (get_param_integer('base64', 0) == 1) {
             $new = base64_decode(file_get_contents(get_custom_file_base() . '/' . $savename));
-            $myfile = @fopen(get_custom_file_base() . '/' . $savename, 'wb') or intelligent_write_error(get_custom_file_base() . '/' . $savename);
-            fwrite($myfile, $new);
-            fclose($myfile);
+            @file_put_contents(get_custom_file_base() . '/' . $savename, $new) or intelligent_write_error(get_custom_file_base() . '/' . $savename);
         }
 
         fix_permissions(get_custom_file_base() . '/' . $savename);

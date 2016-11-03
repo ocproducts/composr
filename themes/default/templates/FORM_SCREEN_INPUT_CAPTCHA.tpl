@@ -16,8 +16,6 @@
 
 <div data-tpl="formScreenInputCaptcha" data-tpl-params="{+START,PARAMS_JSON,CAPTCHA}{_*}{+END}">
 {+START,IF,{$CONFIG_OPTION,js_captcha}}
-	<noscript>{!JAVASCRIPT_REQUIRED}</noscript>
-
 	<div id="captcha_spot"></div>
 {+END}
 {+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}

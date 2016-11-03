@@ -5,7 +5,7 @@
 
 	<div class="inline">
 		{+START,SET,sort_button}
-			{+START,IF,{$OR,{$GET,show_sort_button},{$NOT,{$JS_ON}}}}
+			{+START,IF,{$GET,show_sort_button}}
 				{+START,IF_NON_PASSED,FILTER}
 					<input data-disable-on-click="1" class="button_micro buttons__sort" type="submit" title="{!SORT}{+START,IF_NON_EMPTY,{$GET,TEXT_ID}}: {$GET*,TEXT_ID}{+END}" value="{!SORT}" />
 				{+END}
@@ -24,7 +24,7 @@
 		{+END}
 
 		<label for="r_{$GET*,RAND_PAGINATION}">{!SORT_BY} <span class="accessibility_hidden">{$GET*,TEXT_ID}</span></label>
-		<select{+START,IF,{$NOR,{$GET,show_sort_button},{$NOT,{$JS_ON}}}} onchange="/*guarded*/this.form.submit();"{+END} id="r_{$GET*,RAND_PAGINATION}" name="{SORT*}">
+		<select{+START,IF,{$NOT,{$GET,show_sort_button}}} onchange="this.form.submit();"{+END} id="r_{$GET*,RAND_PAGINATION}" name="{SORT*}">
 			{SELECTORS}
 		</select>{$GET,sort_button}
 	</div>

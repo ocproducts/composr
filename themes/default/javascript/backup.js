@@ -17,6 +17,7 @@
 
         var button = document.createElement('input');
         button.type = 'button';
+        button.className = 'button_micro buttons__proceed';
         button.value = '{!CALCULATE_SIZE;^}';
         button.onclick = function () {
             var progress_ticker = document.createElement('img');

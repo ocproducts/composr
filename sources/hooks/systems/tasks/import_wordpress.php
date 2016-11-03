@@ -272,7 +272,7 @@ class Hook_task_import_wordpress
                             require_code('files2');
                             make_missing_directory(dirname($full_path));
                         }
-                        $myfile = @fopen($full_path, GOOGLE_APPENGINE ? 'wb' : 'wt');
+                        $myfile = @fopen($full_path, 'wb');
                         if ($myfile === false) {
                             intelligent_write_error($full_path);
                         }
@@ -418,9 +418,7 @@ class Hook_task_import_wordpress
             $zone = $item['zone'];
             $page = $item['page'];
             _news_import_grab_images_and_fix_links($download_images == 1, $contents, $imported_news);
-            $myfile = fopen($item['path'], 'wb');
-            fwrite($myfile, $contents);
-            fclose($myfile);
+            file_put_contents($item['path'], $contents);
             sync_file($item['path']);
             fix_permissions($item['path']);
             if ($item['parent_page'] !== null) {

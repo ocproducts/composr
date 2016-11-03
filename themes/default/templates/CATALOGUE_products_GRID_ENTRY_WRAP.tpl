@@ -7,9 +7,11 @@
 		</div>
 	{+END}
 
-	<div class="ratings">
-		{RATING}
-	</div>
+	{+START,IF,{ALLOW_RATING}}{+START,IF_NON_EMPTY,{$TRIM,{RATING}}}
+		<div class="ratings">
+			{RATING}
+		</div>
+	{+END}{+END}
 
 	<div class="price_box">
 		<span class="price">{$CURRENCY_SYMBOL}{$FLOAT_FORMAT*,{FIELD_2_PLAIN}}</span>

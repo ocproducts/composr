@@ -1418,11 +1418,6 @@ class Hook_import_phpbb3
     {
         $rows = $db->query_select('reports', array('*'));
         foreach ($rows as $row) {
-            $forum_id = $GLOBALS['FORUM_DRIVER']->forum_id_from_name(get_option('reported_posts_forum'));
-            if ($forum_id === null) {
-                warn_exit(do_lang_tempcode('NO_REPORTED_POST_FORUM'));
-            }
-
             $post_id = import_id_remap_get('post', strval($row['post_id']), true);
             if ($post_id === null) {
                 continue;
@@ -1433,23 +1428,8 @@ class Hook_import_phpbb3
                 continue;
             }
 
-            $post_info = $GLOBALS['SITE_DB']->query_select('f_posts', array('*'), array('id' => $post_id), '', 1);
-            $topic_info = $GLOBALS['SITE_DB']->query_select('f_topics', array('*'), array('id' => $post_info[0]['p_topic_id']), '', 1);
-            $post_title = @html_entity_decode($post_info[0]['p_title'], ENT_QUOTES);
-            if ($post_title == '') {
-                $post_title = $post_title[0]['t_cache_first_title'];
-            }
-
-            $poster = $post_info[0]['p_poster_name_if_guest'];
-            $member = $GLOBALS['FORUM_DRIVER']->get_username($user_id);
-            if ($member === null) {
-                $member = do_lang('UNKNOWN');
-            }
-
-            $title = do_lang('REPORTED_POST_TITLE', $post_title);
-            $topic_id = cns_make_topic($forum_id, $title, '', $row['topic_approved'], ($row['report_closed'] == 1) ? 0 : 1, 0, 0, null, null, false);
-            $post = do_template('CNS_REPORTED_POST', array('_GUID' => '0dd1532216390f75385323ce11baedba', 'POST_ID' => strval($post_id), 'MEMBER' => $member, 'TOPIC_NAME' => $topic_info[0]['t_cache_first_title'], 'POST' => $row['report_text'], 'POSTER' => $poster));
-            cns_make_post($topic_id, $title, $post->evaluate(), 0, true, 1, 0, $member, null, $row['report_time'], $user_id, null, null, null, false, true, null, true, $title, null, false);
+            require_code('report_content');
+            report_post($post_id, $row['report_text'], 0, ($row['report_closed'] == 1) ? 0 : 1, $row['report_time'], $user_id);
         }
     }
 }

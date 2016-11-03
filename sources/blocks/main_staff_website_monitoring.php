@@ -280,7 +280,7 @@ class Block_main_staff_website_monitoring
                 }
             }
 
-            decache('main_staff_website_monitoring');
+            delete_cache_entry('main_staff_website_monitoring');
 
             log_it('SITE_WATCHLIST');
         }

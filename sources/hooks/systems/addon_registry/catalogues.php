@@ -240,7 +240,7 @@ class Hook_addon_registry_catalogues
             'templates/CATALOGUE_DEFAULT_FIELDMAP_ENTRY_WRAP.tpl' => 'entry_screen',
             'templates/CATALOGUE_DEFAULT_FIELDMAP_ENTRY_FIELD.tpl' => 'entry_screen',
 
-            'templates/CATALOGUE_DEFAULT_ENTRY_SCREEN.tpl' => 'entry_screen'
+            'templates/CATALOGUE_DEFAULT_ENTRY_SCREEN.tpl' => 'entry_screen',
         );
     }
 
@@ -301,8 +301,6 @@ class Hook_addon_registry_catalogues
             'SORTING' => '',
             'PAGINATION' => '',
 
-            'CART_LINK' => new Tempcode(),
-
             'START' => '0',
             'MAX' => '10',
             'START_PARAM' => 'x_start',
@@ -325,7 +323,6 @@ class Hook_addon_registry_catalogues
                 'ENTRIES' => $entries,
                 'SUBCATEGORIES' => $subcategories,
                 'DESCRIPTION' => lorem_sentence(),
-                'CART_LINK' => placeholder_link(),
                 'DISPLAY_TYPE' => '0',
             )), null, '', true)
         );
@@ -390,8 +387,6 @@ class Hook_addon_registry_catalogues
             'SORTING' => '',
             'PAGINATION' => '',
 
-            'CART_LINK' => new Tempcode(),
-
             'START' => '0',
             'MAX' => '10',
             'START_PARAM' => 'x_start',
@@ -414,7 +409,6 @@ class Hook_addon_registry_catalogues
                 'ENTRIES' => $entries,
                 'SUBCATEGORIES' => $subcategories,
                 'DESCRIPTION' => lorem_sentence(),
-                'CART_LINK' => placeholder_link(),
                 'DISPLAY_TYPE' => '0',
             )), null, '', true)
         );
@@ -459,8 +453,6 @@ class Hook_addon_registry_catalogues
             'SORTING' => '',
             'PAGINATION' => '',
 
-            'CART_LINK' => new Tempcode(),
-
             'START' => '0',
             'MAX' => '10',
             'START_PARAM' => 'x_start',
@@ -483,7 +475,6 @@ class Hook_addon_registry_catalogues
                 'ENTRIES' => $entries,
                 'SUBCATEGORIES' => '',
                 'DESCRIPTION' => lorem_sentence(),
-                'CART_LINK' => placeholder_link(),
                 'DISPLAY_TYPE' => '0',
             )), null, '', true)
         );
@@ -552,8 +543,6 @@ class Hook_addon_registry_catalogues
             'SORTING' => '',
             'PAGINATION' => '',
 
-            'CART_LINK' => new Tempcode(),
-
             'START' => '0',
             'MAX' => '10',
             'START_PARAM' => 'x_start',
@@ -576,7 +565,6 @@ class Hook_addon_registry_catalogues
                 'ENTRIES' => $entries,
                 'SUBCATEGORIES' => $subcategories,
                 'DESCRIPTION' => lorem_sentence(),
-                'CART_LINK' => placeholder_link(),
                 'DISPLAY_TYPE' => '0',
             )), null, '', true)
         );
@@ -642,8 +630,6 @@ class Hook_addon_registry_catalogues
             'SORTING' => '',
             'PAGINATION' => '',
 
-            'CART_LINK' => new Tempcode(),
-
             'START' => '0',
             'MAX' => '10',
             'START_PARAM' => 'x_start',
@@ -666,7 +652,6 @@ class Hook_addon_registry_catalogues
                 'ENTRIES' => $entries,
                 'SUBCATEGORIES' => $subcategories,
                 'DESCRIPTION' => lorem_sentence(),
-                'CART_LINK' => placeholder_link(),
                 'DISPLAY_TYPE' => '0',
             )), null, '', true)
         );

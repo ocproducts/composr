@@ -182,7 +182,7 @@ function received_events(ajax_result_frame, ajax_result) {
                 window.setTimeout(function (cloned_message) {
                     return function () {
                         if (cloned_message.lines_for !== undefined) {
-                            if ((cloned_message.icon_multiplicity !== undefined) && (!browser_matches('ie')/*Too slow on IE*/)) {
+                            if (cloned_message.icon_multiplicity !== undefined) {
                                 var num = cloned_message.icon_multiplicity;
                                 var main_icon = cloned_message.querySelectorAll('.email-icon')[0];
                                 var next_icon;

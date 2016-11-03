@@ -788,7 +788,7 @@ function add_newsletter($title, $description)
 
     log_it('ADD_NEWSLETTER', strval($id), $title);
 
-    decache('main_newsletter_signup');
+    delete_cache_entry('main_newsletter_signup');
 
     return $id;
 }
@@ -816,7 +816,7 @@ function edit_newsletter($id, $title, $description)
 
     log_it('EDIT_NEWSLETTER', strval($id), $_title);
 
-    decache('main_newsletter_signup');
+    delete_cache_entry('main_newsletter_signup');
 }
 
 /**
@@ -841,7 +841,7 @@ function delete_newsletter($id)
 
     log_it('DELETE_NEWSLETTER', strval($id), get_translated_text($_title));
 
-    decache('main_newsletter_signup');
+    delete_cache_entry('main_newsletter_signup');
 }
 
 /**

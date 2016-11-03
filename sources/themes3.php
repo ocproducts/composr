@@ -231,7 +231,7 @@ function actual_copy_theme($theme, $to)
     require_code('abstract_file_manager');
     require_code('files2');
     force_have_afm_details();
-    $contents = get_directory_contents(get_custom_file_base() . '/themes/' . $theme, '', true);
+    $contents = get_directory_contents(get_custom_file_base() . '/themes/' . $theme, '', 0);
     foreach ($contents as $c) {
         afm_make_directory(dirname('themes/' . $to . '/' . $c), true, true);
         afm_copy('themes/' . $theme . '/' . $c, 'themes/' . $to . '/' . $c, true);

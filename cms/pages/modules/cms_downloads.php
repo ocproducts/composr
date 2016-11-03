@@ -326,7 +326,7 @@ class Module_cms_downloads extends Standard_crud_module
         $archive_url = build_url(array('page' => 'downloads'), get_module_zone('downloads'));
 
         $only_owned = has_privilege(get_member(), 'edit_midrange_content', 'cms_downloads') ? null : get_member();
-        $tree = form_input_tree_list(do_lang_tempcode('NAME'), '', 'id', null, 'choose_download', array('only_owned' => $only_owned, 'editable_filter' => true), true, null, false, null, has_js() && $this->supports_mass_delete);
+        $tree = form_input_tree_list(do_lang_tempcode('NAME'), '', 'id', null, 'choose_download', array('only_owned' => $only_owned, 'editable_filter' => true), true, null, false, null, $this->supports_mass_delete);
         return array($tree, $search_url, $archive_url);
     }
 
@@ -916,11 +916,8 @@ class Module_cms_downloads_cat extends Standard_crud_module
      */
     public function get_form_fields($id = null, $category = '', $parent_id = null, $description = '', $notes = '', $category_id = -1, $rep_image = '')
     {
-        if (($parent_id === null) && ($category_id == -1)) {
-            $parent_id = get_param_integer('parent_id', -1);
-            if ($parent_id == -1) {
-                $parent_id = db_get_first_id();
-            }
+        if (($parent_id === null) && ($category_id === null)) {
+            $parent_id = get_param_integer('parent_id', db_get_first_id());
         }
 
         $fields = new Tempcode();
@@ -951,7 +948,7 @@ class Module_cms_downloads_cat extends Standard_crud_module
         }
 
         // Permissions
-        $fields->attach($this->get_permission_fields(($category_id == -1) ? null : strval($category_id), null, ($category == '')));
+        $fields->attach($this->get_permission_fields(($category_id === null) ? null : strval($category_id), null, ($category == '')));
 
         return array($fields, $hidden);
     }

@@ -694,7 +694,7 @@ function create_selection_list_field_type($type = '', $limit_to_storage_set = fa
 
         $ret = apply_quick_caching($ret);
 
-        put_into_cache('_field_type_selection', 60 * 60 * 24, $cache_identifier, null, null, '', null, '', $ret);
+        set_cache_entry('_field_type_selection', 60 * 60 * 24, $cache_identifier, $ret);
     }
 
     return $ret;

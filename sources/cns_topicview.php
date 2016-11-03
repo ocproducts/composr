@@ -481,8 +481,8 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
         if (cns_may_post_in_topic($forum_id, $topic_id, $topic_info['t_cache_last_member_id'], $topic_info['t_is_open'] == 0, null, true)) {
             $out['may_reply_private_post'] = true;
         }
-        if (cns_may_report_post()) {
-            $out['may_report_posts'] = true;
+        if ((has_privilege(get_member(), 'may_report_content')) && (addon_installed('tickets'))) {
+            $out['may_report_content'] = true;
         }
         if (cns_may_make_private_topic()) {
             $out['may_pt_members'] = true;
@@ -630,7 +630,7 @@ function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $render
 
     if ((array_key_exists('may_validate_posts', $topic_info)) && (addon_installed('unvalidated')) && ((($topic_info['validated'] == 0) && ($_postdetails['id'] == $topic_info['first_post_id'])) || ($_postdetails['validated'] == 0))) {
         $map = array('page' => 'topics', 'type' => 'validate_post', 'id' => $_postdetails['id']);
-        $test = get_param_string('kfs' . (($topic_info['forum_id'] === null) ? '' : strval($topic_info['forum_id'])), null, true);
+        $test = get_param_string('kfs' . (($topic_info['forum_id'] === null) ? '' : strval($topic_info['forum_id'])), null, INPUT_FILTER_GET_COMPLEX);
         if (($test !== null) && ($test !== '0')) {
             $map['kfs' . (($topic_info['forum_id'] === null) ? '' : strval($topic_info['forum_id']))] = $test;
         }
@@ -654,7 +654,7 @@ function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $render
         if (array_key_exists('intended_solely_for', $_postdetails)) {
             $map['intended_solely_for'] = $_postdetails['poster'];
         }
-        $test = get_param_string('kfs' . (($topic_info['forum_id'] === null) ? '' : strval($topic_info['forum_id'])), null, true);
+        $test = get_param_string('kfs' . (($topic_info['forum_id'] === null) ? '' : strval($topic_info['forum_id'])), null, INPUT_FILTER_GET_COMPLEX);
         if (($test !== null) && ($test !== '0')) {
             $map['kfs' . (($topic_info['forum_id'] === null) ? '' : strval($topic_info['forum_id']))] = $test;
         }
@@ -703,8 +703,8 @@ function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $render
 
                     $action_url = build_url(array('page' => 'tickets', 'type' => 'ticket', 'post_as' => ($ticket_owner == get_member()) ? null : $ticket_owner), get_module_zone('tickets'));
 
-                    $ticket_url = build_url(array('page' => 'tickets', 'type' => 'ticket', 'id' => $ticket_id), get_module_zone('tickets'));
-                    $quote_to_new_post = do_lang('POSTING_TICKET_AS', $GLOBALS['FORUM_DRIVER']->get_username(get_member()), $ticket_url->evaluate(), $_postdetails['message_comcode']);
+                    $ticket_url = ticket_url($ticket_id);
+                    $quote_to_new_post = do_lang('POSTING_TICKET_AS', $GLOBALS['FORUM_DRIVER']->get_username(get_member()), $ticket_url, $_postdetails['message_comcode']);
                     $hidden = form_input_hidden('post', $quote_to_new_post);
 
                     $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => '927d758415a3358d6b69e1587cab1e8d', 'IMMEDIATE' => true, 'HIDDEN' => $hidden, 'IMG' => 'buttons__new_quote', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $action_url, 'TARGET' => '_blank')));
@@ -730,7 +730,7 @@ function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $render
         } else {
             $map['redirect'] = get_self_url(true);
         }
-        $test = get_param_string('kfs' . (($topic_info['forum_id'] === null) ? '' : strval($topic_info['forum_id'])), null, true);
+        $test = get_param_string('kfs' . (($topic_info['forum_id'] === null) ? '' : strval($topic_info['forum_id'])), null, INPUT_FILTER_GET_COMPLEX);
         if (($test !== null) && ($test !== '0')) {
             $map['kfs' . (($topic_info['forum_id'] === null) ? '' : strval($topic_info['forum_id']))] = $test;
         }
@@ -753,7 +753,7 @@ function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $render
         } else {
             $map['redirect'] = get_self_url(true);
         }
-        $test = get_param_string('kfs' . (($topic_info['forum_id'] === null) ? '' : strval($topic_info['forum_id'])), null, true);
+        $test = get_param_string('kfs' . (($topic_info['forum_id'] === null) ? '' : strval($topic_info['forum_id'])), null, INPUT_FILTER_GET_COMPLEX);
         if (($test !== null) && ($test !== '0')) {
             $map['kfs' . (($topic_info['forum_id'] === null) ? '' : strval($topic_info['forum_id']))] = $test;
         }
@@ -770,7 +770,8 @@ function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $render
     }
 
     if ($rendering_context != 'tickets') {
-        if ((array_key_exists('may_report_posts', $topic_info)) && (addon_installed('cns_reported_posts')) && (get_bot_type() === null)) {
+        if ((array_key_exists('may_report_content', $topic_info)) && (addon_installed('tickets')) && (get_bot_type() === null)) {
+            require_lang('report_content');
             $action_url = build_url(array('page' => 'topics', 'type' => 'report_post', 'id' => $_postdetails['id']), get_module_zone('topics'));
             $_title = do_lang_tempcode('_REPORT_POST');
             $_title_full = new Tempcode();

@@ -117,7 +117,7 @@ class Hook_addon_registry_counting_blocks
     {
         return array(
             'templates/BLOCK_MAIN_COUNTDOWN.tpl' => 'main_countdown',
-            'templates/BLOCK_MAIN_COUNT.tpl' => 'main_count'
+            'templates/BLOCK_MAIN_COUNT.tpl' => 'main_count',
         );
     }
 

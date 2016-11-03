@@ -113,7 +113,7 @@ class Hook_addon_registry_printer_friendly_block
     public function tpl_previews()
     {
         return array(
-            'templates/BLOCK_SIDE_PRINTER_FRIENDLY.tpl' => 'block_side_printer_friendly'
+            'templates/BLOCK_SIDE_PRINTER_FRIENDLY.tpl' => 'block_side_printer_friendly',
         );
     }
 

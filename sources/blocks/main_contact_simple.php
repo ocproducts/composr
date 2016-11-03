@@ -15,7 +15,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    staff_messaging
+ * @package    core_feedback_features
  */
 
 /**
@@ -49,7 +49,6 @@ class Block_main_contact_simple
      */
     public function run($map)
     {
-        require_lang('messaging');
         require_code('feedback');
 
         $block_id = get_block_id($map);
@@ -86,6 +85,9 @@ class Block_main_contact_simple
             }
 
             $title = post_param_string('title');
+
+            require_code('antispam');
+            inject_action_spamcheck(null, $email_from);
 
             dispatch_mail($subject_prefix . $title . $subject_suffix, $body_prefix . $post . $body_suffix, array($to), null, $email_from, $GLOBALS['FORUM_DRIVER']->get_username(get_member()), array('as' => get_member()));
 

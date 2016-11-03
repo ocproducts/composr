@@ -110,6 +110,15 @@
                             form.action += keep_stub_with_context(form.action);
                         }
                     }
+
+                    // This "proves" that JS is running, which is an anti-spam heuristic (bots rarely have working JS)
+                    if (typeof form.elements['csrf_token'] != 'undefined' && typeof form.elements['js_token'] == 'undefined') {
+                        var js_token = document.createElement('input');
+                        js_token.name = 'js_token';
+                        js_token.value = form.elements['csrf_token'].value.split("").reverse().join(""); // Reverse the CSRF token for our JS token
+                        js_token.type = 'hidden';
+                        form.appendChild(js_token);
+                    }
                 });
             }
         },
@@ -348,6 +357,16 @@
                     }
                 });
             };
+
+            // Monitor pasting, for anti-spam reasons
+            window.addEventListener('paste', function(event) {
+                if (!event) event = window.event;
+                var clipboard_data = event.clipboardData || window.clipboardData;
+                var pasted_data = clipboard_data.getData('Text');
+                if (pasted_data && pasted_data.length > $cms.$CONFIG_OPTION.spam_heuristic_pasting) {
+                    $cms.set_post_data_flag('paste');
+                }
+            });
 
             window.page_loaded = true;
 

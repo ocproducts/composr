@@ -113,9 +113,7 @@ The above example creates a flip between text A and text B, taking 400ms. This i
     public function get_dependencies()
     {
         return array(
-            'requires' => array(
-                'JavaScript enabled',
-            ),
+            'requires' => array(),
             'recommends' => array(),
             'conflicts_with' => array()
         );

@@ -20,7 +20,7 @@
 			<div class="menu_editor_rh_side">
 				<h2>{!HELP}</h2>
 
-				<p>{!BRANCHES_DESCRIPTION,{$PAGE_LINK*,_SEARCH:admin_sitemap:sitemap}}</p>
+				<p>{!BRANCHES_DESCRIPTION,{$PAGE_LINK*,_SEARCH:admin_sitemap:browse}}</p>
 
 				<p>{!ENTRY_POINTS_DESCRIPTION}</p>
 			</div>
@@ -90,7 +90,7 @@
 			<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!DELETE_MENU}</a>
 		</h2>
 
-		<div class="toggleable_tray js-tray-content" id="delete_menu" style="{$JS_ON,display: none,}" aria-expanded="false">
+		<div class="toggleable_tray js-tray-content" id="delete_menu" style="display: none" aria-expanded="false">
 			<p>{!ABOUT_DELETE_MENU}</p>
 
 			<form title="{!DELETE}" action="{DELETE_URL*}" method="post" autocomplete="off">

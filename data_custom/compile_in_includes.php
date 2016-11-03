@@ -78,9 +78,7 @@ foreach ($files as $file) {
                 }
 
                 // Restore override
-                $myfile = fopen($file, 'wb');
-                fwrite($myfile, '<' . '?php' . "\n\n" . $file_data);
-                fclose($myfile);
+                file_put_contents($file, '<' . '?php' . "\n\n" . $file_data);
             }
         }
 
@@ -165,9 +163,7 @@ foreach ($files as $file) {
                     if ($marked_old) {
                         echo 'Skipped due to inconsistency (PRIOR TO COMPILED segment mismatching new override code): ' . $file . "\n";
                     } else {
-                        $myfile = fopen($file, 'wb');
-                        fwrite($myfile, $new);
-                        fclose($myfile);
+                        file_put_contents($file, $new);
 
                         echo 'Done: ' . $file . "\n";
                     }

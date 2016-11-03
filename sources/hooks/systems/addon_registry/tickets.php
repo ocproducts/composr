@@ -51,7 +51,7 @@ class Hook_addon_registry_tickets
      */
     public function get_description()
     {
-        return 'A support ticket system.';
+        return 'A support ticket system. Also provides an integrated standalone contact block, and integrated content reporting functionality.';
     }
 
     /**
@@ -62,6 +62,7 @@ class Hook_addon_registry_tickets
     public function get_applicable_tutorials()
     {
         return array(
+            'tut_feedback',
             'tut_support_desk',
         );
     }
@@ -131,9 +132,9 @@ class Hook_addon_registry_tickets
             'sources/hooks/systems/notifications/ticket_reply_staff.php',
             'sources/hooks/systems/notifications/ticket_assigned_staff.php',
             'sources/tickets_email_integration.php',
+            'sources/report_content.php',
             'sources/hooks/systems/cron/tickets_email_integration.php',
             'sources/hooks/systems/config/ticket_forum_name.php',
-            'sources/hooks/systems/config/ticket_member_forums.php',
             'sources/hooks/systems/config/ticket_text.php',
             'sources/hooks/systems/config/ticket_type_forums.php',
             'sources/hooks/systems/config/ticket_mail_on.php',
@@ -147,6 +148,16 @@ class Hook_addon_registry_tickets
             'sources/hooks/systems/config/ticket_auto_assign.php',
             'data/incoming_ticket_email.php',
             'sources/hooks/systems/commandr_fs_extended_member/ticket_known_emailers.php',
+            'lang/EN/report_content.ini',
+            'site/pages/modules/report_content.php',
+            'themes/default/text/CNS_REPORTED_POST_FCOMCODE.txt',
+            'themes/default/text/REPORTED_CONTENT_FCOMCODE.txt',
+            'sources/hooks/systems/config/reported_times.php',
+            'themes/default/images/icons/24x24/menu/site_meta/contact_us.png',
+            'themes/default/images/icons/48x48/menu/site_meta/contact_us.png',
+            'themes/default/templates/BLOCK_MAIN_CONTACT_SIMPLE.tpl',
+            'themes/default/templates/BLOCK_MAIN_CONTACT_US.tpl',
+            'sources/blocks/main_contact_us.php',
         );
     }
 
@@ -162,7 +173,10 @@ class Hook_addon_registry_tickets
             'templates/SUPPORT_TICKETS_SCREEN.tpl' => 'support_tickets_screen',
             'templates/SUPPORT_TICKET_SCREEN.tpl' => 'support_ticket_screen',
             'templates/SUPPORT_TICKETS_SEARCH_SCREEN.tpl' => 'support_tickets_search_screen',
-            'templates/SUPPORT_TICKET_TYPE_SCREEN.tpl' => 'support_ticket_type_screen'
+            'templates/SUPPORT_TICKET_TYPE_SCREEN.tpl' => 'support_ticket_type_screen',
+            'text/CNS_REPORTED_POST_FCOMCODE.txt' => 'cns_reported_post_fcomcode',
+            'text/REPORTED_CONTENT_FCOMCODE.txt' => 'reported_content_fcomcode',
+            'templates/BLOCK_MAIN_CONTACT_US.tpl' => 'block_main_contact_us',
         );
     }
 
@@ -278,6 +292,14 @@ class Hook_addon_registry_tickets
             )));
         }
 
+        $whos_read = array();
+        $whos_read[] = array(
+            'USERNAME' => lorem_word(),
+            'MEMBER_ID' => placeholder_id(),
+            'MEMBER_URL' => placeholder_url(),
+            'DATE' => lorem_word(),
+        );
+
         return array(
             lorem_globalise(do_lorem_template('SUPPORT_TICKET_SCREEN', array(
                 'ID' => placeholder_id(),
@@ -303,6 +325,7 @@ class Hook_addon_registry_tickets
                 'SET_TICKET_EXTRA_ACCESS_URL' => placeholder_url(),
                 'ASSIGNED' => array(),
                 'EXTRA_DETAILS' => lorem_phrase(),
+                'WHOS_READ' => $whos_read,
             )), null, '', true)
         );
     }
@@ -340,6 +363,91 @@ class Hook_addon_registry_tickets
                 'TITLE' => lorem_title(),
                 'TPL' => placeholder_form(),
                 'ADD_FORM' => placeholder_form(),
+            )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__cns_reported_post_fcomcode()
+    {
+        require_lang('cns');
+        require_css('cns');
+        return array(
+            lorem_globalise(do_lorem_template('CNS_REPORTED_POST_FCOMCODE', array(
+                'POST_ID' => placeholder_id(),
+                'POST_MEMBER_ID' => placeholder_id(),
+                'POST_MEMBER' => lorem_phrase(),
+                'TOPIC_TITLE' => lorem_phrase(),
+                'POST' => lorem_phrase(),
+                'REPORT_POST' => lorem_phrase(),
+            ), null, false, null, '.txt', 'text'), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__reported_content_fcomcode()
+    {
+        return array(
+            lorem_globalise(do_lorem_template('REPORTED_CONTENT_FCOMCODE', array(
+                'CONTENT_URL' => placeholder_url(),
+                'CONTENT_TYPE' => lorem_word(),
+                'CONTENT_ID' => placeholder_id(),
+                'CONTENT_MEMBER' => lorem_phrase(),
+                'CONTENT_MEMBER_ID' => placeholder_id(),
+                'CONTENT_TITLE' => lorem_phrase(),
+                'CONTENT_RENDERED' => lorem_paragraph_html(),
+                'REPORT_POST' => lorem_paragraph(),
+            ), null, false, null, '.txt', 'text'), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__block_main_contact_us()
+    {
+        require_javascript('posting');
+
+        $comment_details = do_lorem_template('COMMENTS_POSTING_FORM', array(
+            'JOIN_BITS' => lorem_phrase_html(),
+            'USE_CAPTCHA' => false,
+            'EMAIL_OPTIONAL' => lorem_word(),
+            'POST_WARNING' => '',
+            'COMMENT_TEXT' => '',
+            'GET_EMAIL' => true,
+            'GET_TITLE' => true,
+            'EM' => placeholder_emoticon_chooser(),
+            'DISPLAY' => 'block',
+            'COMMENT_URL' => placeholder_url(),
+            'TITLE' => lorem_phrase(),
+            'MAKE_POST' => true,
+            'CREATE_TICKET_MAKE_POST' => true,
+            'FIRST_POST_URL' => '',
+            'FIRST_POST' => '',
+            'NAME' => 'field',
+        ));
+
+        return array(
+            lorem_globalise(do_lorem_template('BLOCK_MAIN_CONTACT_US', array(
+                'BLOCK_ID' => lorem_word(),
+                'COMMENT_DETAILS' => $comment_details,
+                'TYPE' => placeholder_id(),
             )), null, '', true)
         );
     }

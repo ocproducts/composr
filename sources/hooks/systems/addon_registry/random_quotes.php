@@ -122,7 +122,7 @@ class Hook_addon_registry_random_quotes
     public function tpl_previews()
     {
         return array(
-            'templates/BLOCK_MAIN_QUOTES.tpl' => 'block_main_quotes'
+            'templates/BLOCK_MAIN_QUOTES.tpl' => 'block_main_quotes',
         );
     }
 

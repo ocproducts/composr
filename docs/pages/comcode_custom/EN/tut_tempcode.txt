@@ -1013,6 +1013,10 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 			<td>{$LOGIN_LABEL}</td>
 			<td>The label for the username field when logging in (the label depends on how login options are configured, e.g. Username, E-mail address, Username / E-mail address)</td>
 		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$STOCK_CHECK,Product id}</td>
+			<td>Get the stock count for an eCommerce product</td>
+		</tr>
 	</tbody>
 </table>
 [/html]

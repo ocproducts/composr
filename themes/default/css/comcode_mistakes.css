@@ -7,7 +7,7 @@
 	/*{+START,IF,{$NOT,{$MOBILE}}}*/
 		float: {!en_right};
 		width: 35%;
-		{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+		box-sizing: border-box;
 		margin-bottom: 1em;
 	/*{+END}*/
 }
@@ -15,7 +15,7 @@
 .comcode_error_details_div {
 	/*{+START,IF,{$NOT,{$MOBILE}}}*/
 		width: 65%;
-		{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+		box-sizing: border-box;
 		padding-{!en_right}: 1em;
 		margin-bottom: 1em;
 	/*{+END}*/

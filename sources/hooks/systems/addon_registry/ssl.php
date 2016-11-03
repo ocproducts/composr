@@ -117,7 +117,7 @@ class Hook_addon_registry_ssl
     public function tpl_previews()
     {
         return array(
-            'templates/SSL_CONFIGURATION_SCREEN.tpl' => 'administrative__ssl_configuration_screen'
+            'templates/SSL_CONFIGURATION_SCREEN.tpl' => 'administrative__ssl_configuration_screen',
         );
     }
 

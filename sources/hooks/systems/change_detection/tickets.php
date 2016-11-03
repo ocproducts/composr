@@ -32,22 +32,22 @@ class Hook_change_detection_tickets
     public function run($data)
     {
         if (get_param_string('type', 'browse') == 'browse') {
+            require_lang('tickets');
             require_code('tickets');
             require_code('tickets2');
             $ticket_type_id = get_param_integer('ticket_type_id', null);
-            $tickets = get_tickets(get_member(), $ticket_type_id);
+            $tickets = get_tickets(array('ticket_type_id' => $ticket_type_id));
             return md5(serialize($tickets)) != $data;
         }
 
-        $id = get_param_string('id', null);
+        $ticket_id = get_param_string('id', null);
+
+        require_lang('tickets');
         require_code('tickets');
         require_code('tickets2');
-        $forum = 0;
-        $topic_id = 0;
-        $ticket_type_id = 0;
-        require_lang('tickets');
-        $_comments = get_ticket_posts($id, $forum, $topic_id, $ticket_type_id);
 
-        return md5(serialize(is_array($_comments) ? count($_comments) : 0)) != $data;
+        $ticket_posts = get_ticket_posts($ticket_id);
+
+        return md5(serialize(is_array($ticket_posts) ? count($ticket_posts) : 0)) != $data;
     }
 }

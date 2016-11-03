@@ -2977,6 +2977,17 @@ function trigger_error($error_msg, $error_type)
 }
 
 /**
+ * Make a string's first character lowercase.
+ *
+ * @param  string $str Subject.
+ * @return string Result.
+ */
+function lcfirst($str)
+{
+    return '';
+}
+
+/**
  * Make a string's first character uppercase.
  *
  * @param  string $str Subject.

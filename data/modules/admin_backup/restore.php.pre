@@ -73,7 +73,6 @@ require_code('permissions');
 require_code('minikernel');
 require_code('global3');
 require_code('temporal');
-require_code('caches');
 require_code('files');
 require_code('lang');
 require_code('tempcode');
@@ -102,20 +101,20 @@ require_lang('version');
 
 $time_start = time();
 
-$myfile = fopen(__DIR__ . '/restore_data.php', 'rb');
+$data_file = fopen(__DIR__ . '/restore_data.php', 'rb');
 $i = 0;
 $offset = get_param_integer('start_offset', 0);
 if ($offset != 0) {
-    fseek($myfile, $offset);
+    fseek($data_file, $offset);
     $found_start = true;
 } else {
     $found_start = false;
 }
 $sql_buildup = '';
 $start_line = 0;
-while (($line = fgets($myfile, 10000000)) !== false) {
+while (($line = fgets($data_file, 10000000)) !== false) {
     if (!$found_start) {
-        if (trim($line) == '//COMMANDS BEGIN') {
+        if (trim($line) == '//COMMANDS BEGIN...') {
             $found_start = true;
             $start_line = $i;
         }
@@ -146,7 +145,7 @@ while (($line = fgets($myfile, 10000000)) !== false) {
             $sql_buildup = '';
         }
         if ((time() >= $time_start + 20) && ($sql_buildup == '')) {
-            $refresh_url = 'restore.php?start=' . strval($i + $start_line + get_param_integer('start', 0)) . '&start_offset=' . strval(ftell($myfile));
+            $refresh_url = 'restore.php?start=' . strval($i + $start_line + get_param_integer('start', 0)) . '&start_offset=' . strval(ftell($data_file));
             echo '<meta http-equiv="refresh" content="0;url=' . $refresh_url . '" /> Please wait, continuing.';
             //header('Location: '.$refresh_url);   Can result in "This web page has a redirect loop" error
             exit();
@@ -157,7 +156,7 @@ while (($line = fgets($myfile, 10000000)) !== false) {
         $i++;
     }
 }
-fclose($myfile);
+fclose($data_file);
 
 if ($sql_buildup != '') {
     $success = @eval($sql_buildup);
@@ -169,8 +168,7 @@ if ($sql_buildup != '') {
 }
 
 
-{
-    !!DB!!}
+//{!!DB!!}
 
 
 require_code('tempcode_compiler');
@@ -194,8 +192,8 @@ function require_code($codename)
     $REQUIRED_BEFORE[$codename] = 1;
     if (@is_array($FILE_ARRAY)) {
         $file = file_array_get('sources/' . $codename . '.php');
-        $file = str_replace('<?php', '', $file);
-        $file = str_replace('', '', $file);
+        $file = str_replace('<' . '?php', '', $file);
+        $file = str_replace('?' . '>', '', $file);
         eval($file);
         @call_user_func('init__' . str_replace('/', '__', $codename));
     } else {
@@ -260,24 +258,22 @@ function handle_self_referencing_embedment()
         }
         if ($type == 'css') {
             header('Content-Type: text/css');
-            if (!file_exists(get_file_base() . '/themes/default/css/global.css')) {
-                $file = file_array_get('themes/default/css/global.css');
-                echo $file;
-                $file = file_array_get('themes/default/css/install.css');
-                echo $file;
-            } else {
-                $path = get_file_base() . '/themes/default/templates_cached/EN/install.css';
-                if (!file_exists($path)) {
-                    $path = get_file_base() . '/themes/default/css/install.css';
-                }
-                require_once($path);
 
-                $path = get_file_base() . '/themes/default/templates_cached/EN/global.css';
-                if (!file_exists($path)) {
-                    $path = get_file_base() . '/themes/default/css/global.css';
-                }
-                require_once($path);
-            }
+            $output = '';
+
+            $path = get_file_base() . '/themes/default/css/install.css';
+            $file = file_get_contents($path);
+            require_code('tempcode_compiler');
+            $css = template_to_tempcode($file, 0, false, '');
+            $output .= $css->evaluate();
+
+            $path = get_file_base() . '/themes/default/css/global.css';
+            $file = file_get_contents($path);
+            require_code('tempcode_compiler');
+            $css = template_to_tempcode($file, 0, false, '');
+            $output .= $css->evaluate();
+
+            echo $output;
 
             exit();
         }

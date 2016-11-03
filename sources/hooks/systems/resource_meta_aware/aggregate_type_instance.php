@@ -55,6 +55,7 @@ class Hook_resource_meta_aware_aggregate_type_instance
             'title_field' => 'aggregate_label',
             'title_field_dereference' => false,
             'description_field' => null,
+            'description_field_dereference' => null,
             'thumb_field' => null,
             'thumb_field_is_theme_image' => false,
             'alternate_icon_theme_image' => null,

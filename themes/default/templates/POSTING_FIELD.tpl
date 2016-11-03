@@ -29,7 +29,7 @@
 		<input type="hidden" name="comcode__{NAME*}" value="1" />
 		{HIDDEN_FIELDS}
 
-		{+START,IF,{$OR,{$AND,{$IN_STR,{CLASS},wysiwyg},{$JS_ON}},{$AND,{$MATCH_KEY_MATCH,_WILD:cms_comcode_pages},{$SHOW_DOCS}}}}
+		{+START,IF,{$OR,{$IN_STR,{CLASS},wysiwyg},{$AND,{$MATCH_KEY_MATCH,_WILD:cms_comcode_pages},{$SHOW_DOCS}}}}
 			<div class="comcode_supported posting_form_main_comcode_button">
 				<ul class="horizontal_links horiz_field_sep associated_links_block_group">
 					{+START,IF,{$SHOW_DOCS}}{+START,IF_PASSED,COMCODE_URL}
@@ -43,9 +43,7 @@
 						<li><a rel="nofollow" class="link_exempt" title="{!EMOTICONS_POPUP} {!LINK_NEW_WINDOW}" target="_blank" href="{$FIND_SCRIPT*,emoticons}?field_name={NAME*}{$KEEP*,0,1}" data-cms-js="1" onclick="window.faux_open(maintain_theme_in_link('{$FIND_SCRIPT;*,emoticons}?field_name={NAME;*}{$KEEP;*,0,1}'),'field_emoticon_chooser','width=300,height=320,status=no,resizable=yes,scrollbars=no');"><img src="{$IMG*,icons/16x16/editor/insert_emoticons}" srcset="{$IMG*,icons/32x32/editor/insert_emoticons} 2x" alt="" class="vertical_alignment" /></a></li>
 					{+END}{+END}
 					{+START,IF,{$IN_STR,{CLASS},wysiwyg}}
-						{+START,IF,{$JS_ON}}
-							<li><a id="toggle_wysiwyg_{NAME*}" href="#!" onclick="return toggle_wysiwyg('{NAME;*}');"><abbr title="{!TOGGLE_WYSIWYG_2}"><img src="{$IMG*,icons/16x16/editor/wysiwyg_on}" srcset="{$IMG*,icons/32x32/editor/wysiwyg_on} 2x" alt="{!comcode:ENABLE_WYSIWYG}" title="{!comcode:ENABLE_WYSIWYG}" /></abbr></a></li>
-						{+END}
+						<li><a id="toggle_wysiwyg_{NAME*}" href="#!" onclick="return toggle_wysiwyg('{NAME;*}');"><abbr title="{!TOGGLE_WYSIWYG_2}"><img src="{$IMG*,icons/16x16/editor/wysiwyg_on}" srcset="{$IMG*,icons/32x32/editor/wysiwyg_on} 2x" alt="{!comcode:ENABLE_WYSIWYG}" title="{!comcode:ENABLE_WYSIWYG}" /></abbr></a></li>
 					{+END}
 				</ul>
 			</div>
@@ -64,16 +62,14 @@
 		{+END}
 
 		<div class="float_surrounder">
-			{+START,IF,{$JS_ON}}
-				<div role="toolbar" class="float_surrounder post_options_wrap">
-					<div id="post_special_options2" style="display: none">
-						{COMCODE_EDITOR_SMALL}
-					</div>
-					<div id="post_special_options">
-						{COMCODE_EDITOR}
-					</div>
+			<div role="toolbar" class="float_surrounder post_options_wrap">
+				<div id="post_special_options2" style="display: none">
+					{COMCODE_EDITOR_SMALL}
 				</div>
-			{+END}
+				<div id="post_special_options">
+					{COMCODE_EDITOR}
+				</div>
+			</div>
 
 			<div id="container_for_{NAME*}" class="constrain_field container_for_wysiwyg">
 				<textarea{+START,IF,{$NOT,{$MOBILE}}} onchange="manage_scroll_height(this);" onkeyup="manage_scroll_height(this);"{+END} accesskey="x" class="{CLASS*}{+START,IF,{REQUIRED}} posting_required{+END} wide_field posting_field_textarea" tabindex="{TABINDEX_PF*}" id="{NAME*}" name="{NAME*}" cols="70" rows="17">{POST*}</textarea>
@@ -87,9 +83,9 @@
 
 		{+START,IF_NON_EMPTY,{$TRIM,{EMOTICON_CHOOSER}}}
 			{+START,IF,{$NOT,{$MATCH_KEY_MATCH,_WILD:cms_news}}}
-				{+START,IF,{$NOT,{$MOBILE}}}{+START,IF,{$OR,{$CONFIG_OPTION,is_on_emoticon_choosers},{$AND,{$CNS},{$JS_ON}}}}
+				{+START,IF,{$NOT,{$MOBILE}}}{+START,IF,{$OR,{$CONFIG_OPTION,is_on_emoticon_choosers},{$CNS}}}
 					<div{+START,IF,{$CONFIG_OPTION,is_on_emoticon_choosers}} class="emoticon_chooser box"{+END}>
-						{+START,IF,{$AND,{$CNS},{$JS_ON}}}
+						{+START,IF,{$CNS}}
 							<span class="right horiz_field_sep associated_link"><a rel="nofollow" target="_blank" href="{$FIND_SCRIPT*,emoticons}?field_name={NAME*}{$KEEP*,0,1}" onclick="window.faux_open(maintain_theme_in_link('{$FIND_SCRIPT;*,emoticons}?field_name={NAME;*}{$KEEP;*,0,1}'),'site_emoticon_chooser','width=300,height=320,status=no,resizable=yes,scrollbars=no'); return false;" title="{!EMOTICONS_POPUP} {!LINK_NEW_WINDOW}">{$?,{$CONFIG_OPTION,is_on_emoticon_choosers},{!VIEW_ARCHIVE},{!EMOTICONS_POPUP}}</a></span>
 						{+END}
 
@@ -128,11 +124,9 @@
 	{$SET,init_drag_drop,1}
 	<tr class="form_table_field_spacer" id="field-{$GET*,id}-attachments-ui">
 		<th{+START,IF,{$NOT,{$MOBILE}}} colspan="2"{+END} class="table_heading_cell">
-			{+START,IF,{$JS_ON}}
-				<a class="toggleable_tray_button js-click-toggle-subord-fields" id="fes_attachments" href="#!"><img alt="{!EXPAND}: {!ATTACHMENTS}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
-			{+END}
+			<a class="toggleable_tray_button js-click-toggle-subord-fields" id="fes_attachments" href="#!"><img alt="{!EXPAND}: {!ATTACHMENTS}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
 
-			<span class="faux_h2{+START,IF,{$JS_ON}} toggleable_tray_button js-click-toggle-subord-fields{+END}">
+			<span class="faux_h2 toggleable_tray_button js-click-toggle-subord-fields">
 				{!ATTACHMENTS}
 
 				{+START,IF,{$NOT,{$MOBILE}}}

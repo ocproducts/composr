@@ -139,7 +139,7 @@ class Hook_addon_registry_custom_comcode
     public function tpl_previews()
     {
         return array(
-            'templates/BLOCK_MAIN_CUSTOM_COMCODE_TAGS.tpl' => 'block_main_custom_comcode_tags'
+            'templates/BLOCK_MAIN_CUSTOM_COMCODE_TAGS.tpl' => 'block_main_custom_comcode_tags',
         );
     }
 

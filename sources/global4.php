@@ -108,9 +108,7 @@ function _save_web_resource_merging($resources, $type, $write_path)
             $data = str_replace('"use strict";', '', $data);
         }
 
-        $myfile = @fopen($write_path, 'wb') or intelligent_write_error($write_path); // Intentionally 'wb' to stop line ending conversions on Windows
-        fwrite($myfile, $data);
-        fclose($myfile);
+        file_put_contents($write_path, $data) or intelligent_write_error($write_path); // Intentionally 'wb' to stop line ending conversions on Windows
         fix_permissions($write_path);
         sync_file($write_path);
 
@@ -494,12 +492,12 @@ function _log_it($type, $a = null, $b = null)
 
     // Cache clearing
     if ($logged == 1) {
-        decache('side_tag_cloud');
-        decache('main_staff_actions');
-        decache('main_staff_checklist');
-        decache('main_awards');
-        decache('main_multi_content');
-        decache('menu'); // Due to the content counts in the CMS/Admin Zones, and Sitemap menus
+        delete_cache_entry('side_tag_cloud');
+        delete_cache_entry('main_staff_actions');
+        delete_cache_entry('main_staff_checklist');
+        delete_cache_entry('main_awards');
+        delete_cache_entry('main_multi_content');
+        delete_cache_entry('menu'); // Due to the content counts in the CMS/Admin Zones, and Sitemap menus
     }
 
     // Tidy up auto-save

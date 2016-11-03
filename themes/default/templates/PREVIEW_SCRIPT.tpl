@@ -38,26 +38,24 @@
 		</div>
 
 		{+START,IF,{HAS_DEVICE_PREVIEW_MODES}}
-			{+START,IF,{$JS_ON}}
-				<hr class="spaced_rule" />
+			<hr class="spaced_rule" />
 
-				<form target="_self" action="{$SELF_URL*,0,0,keep_mobile={$MOBILE}}" method="post" autocomplete="off">
-					{$INSERT_SPAMMER_BLACKHOLE}
+			<form target="_self" action="{$SELF_URL*,0,0,keep_mobile={$MOBILE}}" method="post" autocomplete="off">
+				{$INSERT_SPAMMER_BLACKHOLE}
 
-					{HIDDEN}
+				{HIDDEN}
 
-					{+START,IF,{$NOT,{$MOBILE,1}}}
-						{+START,IF,{$CONFIG_OPTION,mobile_support}}
-							<p>
-								<label for="mobile_version">{!MOBILE_VERSION}: <input type="checkbox" id="mobile_version" name="_mobile_version" data-cms-js class="js-click-preview-mobile-button" {+START,IF,{$MOBILE}} checked="checked"{+END} /></label>
-								{+START,IF,{$MOBILE}}
-									&ndash; <em>{!USE_MOUSE_WHEEL_SCROLL}</em>
-								{+END}
-							</p>
-						{+END}
+				{+START,IF,{$NOT,{$MOBILE,1}}}
+					{+START,IF,{$CONFIG_OPTION,mobile_support}}
+						<p>
+							<label for="mobile_version">{!MOBILE_VERSION}: <input type="checkbox" id="mobile_version" name="_mobile_version" data-cms-js class="js-click-preview-mobile-button" {+START,IF,{$MOBILE}} checked="checked"{+END} /></label>
+							{+START,IF,{$MOBILE}}
+								&ndash; <em>{!USE_MOUSE_WHEEL_SCROLL}</em>
+							{+END}
+						</p>
 					{+END}
-				</form>
-			{+END}
+				{+END}
+			</form>
 		{+END}
 	</div></section>
 {+END}

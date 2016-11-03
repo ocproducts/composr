@@ -137,7 +137,7 @@ class Hook_addon_registry_backup
     {
         return array(
             'templates/RESTORE_HTML_WRAP.tpl' => 'administrative__restore_wrap',
-            'templates/BACKUP_LAUNCH_SCREEN.tpl' => 'administrative__backup_launch_screen'
+            'templates/BACKUP_LAUNCH_SCREEN.tpl' => 'administrative__backup_launch_screen',
         );
     }
 

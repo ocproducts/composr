@@ -4388,14 +4388,11 @@ a[rel="lightbox"] {
 
 .media_set {
 	margin: 1em 0;
+	{$BETA_CSS_PROPERTY,display: flex;}
+	{$BETA_CSS_PROPERTY,flex-wrap: wrap;}
 	border: 1px solid {$GET,standard_border};
 	background-color: {$GET,area_background};
-	padding-bottom: 0.5em;
 	border-radius: 5px;
-}
-
-.media_set div {
-	display: inline;
 }
 
 .media_set * {
@@ -4407,11 +4404,8 @@ a[rel="lightbox"] {
 }
 
 .media_set a {
-	display: inline-block;
-	margin-top: 0.5em;
-	margin-left: 0.5em;
+	margin: 0.5em;
 	min-width: {$DIV,{$CONFIG_OPTION,thumb_width},2}px;
-	min-height: {$DIV,{$CONFIG_OPTION,thumb_width},2}px;
 	text-align: center;
 }
 

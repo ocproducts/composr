@@ -1,10 +1,6 @@
 {$REQUIRE_JAVASCRIPT,core_themeing}
 {TITLE}
 
-<noscript>
-	{!MSG_JS_NEEDED}
-</noscript>
-
 <p>{!TEMPCODE_TESTER_HELP}</p>
 
 <form title="{!PRIMARY_PAGE_FORM}" method="post" action="#!" autocomplete="off" data-tpl-core-themeing="tempcodeTesterScreen">

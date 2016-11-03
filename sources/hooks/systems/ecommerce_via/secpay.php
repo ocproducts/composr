@@ -320,7 +320,7 @@ class Hook_ecommerce_via_secpay
      */
     public function handle_transaction()
     {
-        /*$myfile = fopen(get_file_base() . '/data_custom/ecommerce.log', 'at');      Useful for debugging
+        /*$myfile = fopen(get_file_base() . '/data_custom/ecommerce.log', 'ab');      Useful for debugging
         fwrite($myfile, serialize($_POST));
         fclose($myfile);*/
 

@@ -4,7 +4,7 @@
 
 		<label class="accessibility_hidden" for="action">{!ACTION}</label>
 
-		<select onchange="if (this.selectedIndex!=0) this.form.submit();/*guarded*/" name="action" id="action" class="orders_actions_dropdown">
+		<select onchange="if (this.selectedIndex!=0) this.form.submit();" name="action" id="action" class="orders_actions_dropdown">
 			<option value="">{!CHOOSE}&hellip;</option>
 
 			<option value="add_note">{!ADD_NOTE}</option>
@@ -23,9 +23,5 @@
 				{+END}
 			{+END}
 		</select>
-
-		{+START,IF,{$NOT,{$JS_ON}}}
-			<input class="button_screen_item buttons__proceed" type="submit" name="action_button" title="{!PROCEED}: {ORDER_TITLE*}" value="{!PROCEED_SHORT}" />
-		{+END}
 	</form>
 </div>

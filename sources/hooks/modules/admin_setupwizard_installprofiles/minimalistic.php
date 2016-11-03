@@ -60,7 +60,6 @@ class Hook_admin_setupwizard_installprofiles_minimalistic
                 'language_block',
                 'printer_friendly_block',
                 'search',
-                'staff_messaging',
                 'stats',
                 'stats_block',
                 'syndication',

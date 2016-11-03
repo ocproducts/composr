@@ -392,37 +392,34 @@ span.validated_checkbox+input[name="validated"].input_tick {
 	margin-bottom: 0;
 }
 
+.radio_list_pictures {
+	{$BETA_CSS_PROPERTY,display: flex;}
+	{$BETA_CSS_PROPERTY,flex-wrap: wrap;}
+	margin: -0.5em 0 0 -0.5em;
+}
+.radio_list_pictures.linear {
+	display: block;
+	margin: 0;
+}
+
 .radio_list_picture {
-	float: {!en_left};
-	white-space: nowrap;
-	padding: 0.25em;
+	margin: 0.5em 0 0 0.5em;
 	font-size: 0.8em;
+	text-align: center;
 	cursor: pointer;
 
-	/* Numbers based around selecting emoticons, making that line up with the irregular emoticon sizes */
-	min-height: 60px;
-	min-width: 60px;
+	/* Number based around topic emoticons emoticons */
+	min-width: 40px;
 }
-.page_running_topics .radio_list_picture {
-	/* Numbers based around topic emoticons emoticons */
-	min-height: 30px;
-	min-width: 30px;
-}
-.radio_list_picture_na {
-	float: none;
+.radio_list_picture.linear {
+	margin: 1em;
+	border: 1px solid {$GET,standard_border};
+	opacity: 1.0;
 }
 
 .radio_list_picture label {
 	cursor: pointer;
 	display: block;
-}
-
-.radio_list_picture.linear {
-	float: none;
-	margin: 1em;
-	border: 1px solid {$GET,standard_border};
-	min-height: auto;
-	opacity: 1.0;
 }
 
 .radio_list_picture img {

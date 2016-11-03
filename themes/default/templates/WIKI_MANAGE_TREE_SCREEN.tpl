@@ -16,7 +16,7 @@
 			<a class="toggleable_tray_button ttb_light js-btn-tray-toggle" href="#!">{!WIKI_MANAGE_TREE_TEXT_ADVANCED_LABEL}</a>:
 		</div>
 
-		<div class="toggleable_tray js-tray-content" style="display: {$JS_ON,none,block}" aria-expanded="false">
+		<div class="toggleable_tray js-tray-content" style="display: none" aria-expanded="false">
 			{!WIKI_MANAGE_TREE_TEXT_ADVANCED}
 		</div>
 	</div>
@@ -37,24 +37,14 @@
 		<p><label for="mtp_tree">{!BROWSE_ID_INSERT}</label></p>
 
 		<div>
-			{+START,IF,{$JS_ON}}
-				{$REQUIRE_JAVASCRIPT,ajax}
-				{$REQUIRE_JAVASCRIPT,tree_list}
-				{$REQUIRE_JAVASCRIPT,wiki}
+			{$REQUIRE_JAVASCRIPT,ajax}
+			{$REQUIRE_JAVASCRIPT,tree_list}
+			{$REQUIRE_JAVASCRIPT,wiki}
 
-				<input style="display: none" type="text" id="mtp_tree" name="tree" value="" onchange="if (this.form.elements['tree'].value!='') document.getElementById('children').value+=this.value+'='+this.selected_title+'\n';" />
-				<div id="tree_list__root_mtp_tree">
-					<!-- List put in here -->
-				</div>
-			{+END}
-
-			{+START,IF,{$NOT,{$JS_ON}}}
-				<select id="mtp_tree" name="tree">
-					{WIKI_TREE}
-				</select>
-
-				<input class="button_screen_item menu___generic_admin__add_to_category" type="button" value="{!ADD}" onclick="if (this.form.elements['tree'].value!='') document.getElementById('children').value+=this.form.elements['tree'].value+'\n'" />
-			{+END}
+			<input style="display: none" type="text" id="mtp_tree" name="tree" value="" onchange="if (this.form.elements['tree'].value!='') document.getElementById('children').value+=this.value+'='+this.selected_title+'\n';" />
+			<div id="tree_list__root_mtp_tree">
+				<!-- List put in here -->
+			</div>
 		</div>
 	</form>
 {+END}

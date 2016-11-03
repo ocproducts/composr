@@ -26,8 +26,8 @@
  */
 function seo_meta_clear_caching($type, $id)
 {
-    if (function_exists('decache')) {
-        decache('side_tag_cloud');
+    if (function_exists('delete_cache_entry')) {
+        delete_cache_entry('side_tag_cloud');
     }
 
     if (function_exists('persistent_cache_delete')) {
@@ -323,8 +323,8 @@ function seo_meta_set_for_implicit($type, $id, $keyword_sources, $description)
 
     seo_meta_set_for_explicit($type, $id, $imp, $description);
 
-    if (function_exists('decache')) {
-        decache('side_tag_cloud');
+    if (function_exists('delete_cache_entry')) {
+        delete_cache_entry('side_tag_cloud');
     }
 
     return $imp;

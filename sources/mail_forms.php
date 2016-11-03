@@ -120,6 +120,8 @@ function _form_to_email($extra_boring_fields = null, $subject = null, $intro = '
             'http_referer',
             'session_id',
             'csrf_token',
+            'js_token',
+            'post_data',
             md5(get_site_name() . ': antispam'),
         );
         if ($extra_boring_fields !== null) {

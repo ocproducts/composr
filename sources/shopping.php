@@ -38,32 +38,6 @@ function get_product_details()
 }
 
 /**
- * Show cart link
- *
- * @return Tempcode
- */
-function show_cart_link()
-{
-    $cart_url = build_url(array('page' => 'shopping', 'type' => 'browse'), get_module_zone('shopping'));
-
-    $where = array('is_deleted' => 0);
-    if (is_guest()) {
-        $where['session_id'] = get_session_id();
-    } else {
-        $where['ordered_by'] = get_member();
-    }
-    $item_count = $GLOBALS['SITE_DB']->query_select_value_if_there('shopping_cart', 'count(*)', $where);
-
-    if ($item_count > 0) {
-        $title = do_lang_tempcode('BUTTON_CART_ITEMS', strval($item_count));
-    } else {
-        $title = do_lang_tempcode('BUTTON_CART_EMPTY');
-    }
-
-    return do_template('ECOM_CART_LINK', array('_GUID' => '46ae00c8a605b84fee1b1c68fc57cd32', 'URL' => $cart_url, 'ITEMS' => strval($item_count), 'TITLE' => $title));
-}
-
-/**
  * Find products in cart
  *
  * @return array Product details in cart

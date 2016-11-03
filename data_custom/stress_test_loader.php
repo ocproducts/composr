@@ -128,9 +128,7 @@ function do_work()
     for ($i = $GLOBALS['SITE_DB']->query_select_value('comcode_pages', 'COUNT(*)'); $i < $num_wanted; $i++) {
         $file = uniqid('', true);
         /*$path = get_custom_file_base() . '/site/pages/comcode_custom/' . fallback_lang() . '/' . $file . '.txt';
-        $myfile = fopen($path, GOOGLE_APPENGINE ? 'wb' : 'wt');
-        fwrite($myfile, random_text());
-        fclose($myfile);
+        file_put_contents($path, random_text());
         sync_file($path);
         fix_permissions($path);*/
         $GLOBALS['SITE_DB']->query_insert('comcode_pages', array(
@@ -409,10 +407,12 @@ function do_work()
     }
 
     // support tickets
+    require_lang('tickets');
     require_code('tickets');
     require_code('tickets2');
     for ($i = intval(floatval($GLOBALS['FORUM_DB']->query_select_value('f_topics', 'COUNT(*)')) / 2.0); $i < $num_wanted; $i++) {
-        ticket_add_post(mt_rand(db_get_first_id(), $num_wanted - 1), uniqid('', true), db_get_first_id(), random_line(), random_text(), '', false);
+        $ticket_member_id = mt_rand(db_get_first_id(), $num_wanted - 1);
+        ticket_add_post(ticket_generate_new_id($ticket_member_id), db_get_first_id(), random_line(), random_text(), false, $ticket_member_id);
     }
     echo 'done tickets stuff' . "\n";
 

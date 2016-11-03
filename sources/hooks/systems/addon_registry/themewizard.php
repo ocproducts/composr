@@ -161,7 +161,7 @@ class Hook_addon_registry_themewizard
         return array(
             'templates/THEMEWIZARD_2_PREVIEW.tpl' => 'administrative__themewizard_2_preview',
             'templates/THEMEWIZARD_2_SCREEN.tpl' => 'administrative__themewizard_2_screen',
-            'templates/LOGOWIZARD_2.tpl' => 'administrative__logowizard_2'
+            'templates/LOGOWIZARD_2.tpl' => 'administrative__logowizard_2',
         );
     }
 

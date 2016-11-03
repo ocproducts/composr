@@ -101,13 +101,13 @@ table.cns_profile_about_section .associated_details {
 }
 
 .cns_profile_friends {
-	overflow: hidden;
-	margin-left: -5px;
-	width: calc(100% + 10px);
+	{$BETA_CSS_PROPERTY,display: flex;}
+	{$BETA_CSS_PROPERTY,flex-wrap: wrap;}
+	margin: -0.5em 0 0 -0.5em;
 }
 
 .cns_profile_friends>.box {
-	margin: 0.5em 0 1em 0;
+	margin: 0.5em 0 0 0.5em;
 	border: 1px solid {$GET,standard_border};
 	background: {$GET,area_background};
 }

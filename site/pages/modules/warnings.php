@@ -404,31 +404,75 @@ class Module_warnings extends Standard_crud_module
 
         require_code('form_templates');
 
+        $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
+        $num_warnings = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_cache_warnings');
+        $_rules_url = build_url(array('page' => 'rules'));
+        $rules_url = $_rules_url->evaluate();
+        $_history_url = build_url(array('page' => '_SELF', 'type' => 'history', 'id' => $member_id), '_SELF');
+        $history_url = $_history_url->evaluate();
+        $profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true);
+        if (is_object($profile_url)) {
+            $profile_url = $profile_url->evaluate();
+        }
+
         // Information about their history, and the rules - to educate the warner/punisher
         if ($new) {
             $post_id = get_param_integer('post_id', null);
 
             $hidden->attach(form_input_hidden('member_id', strval($member_id)));
 
-            $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
-            $num_warnings = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_cache_warnings');
-            $_rules_url = build_url(array('page' => 'rules'));
-            $rules_url = $_rules_url->evaluate();
-            $_history_url = build_url(array('page' => '_SELF', 'type' => 'history', 'id' => $member_id), '_SELF');
-            $history_url = $_history_url->evaluate();
-            $profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true);
-            if (is_object($profile_url)) {
-                $profile_url = $profile_url->evaluate();
-            }
-            $this->add_text = do_lang_tempcode('HAS_ALREADY_X_WARNINGS', escape_html($username), escape_html(integer_format($num_warnings)), array(escape_html(get_site_name()), escape_html($rules_url), escape_html($history_url), escape_html($profile_url)));
+            $this->add_text = do_lang_tempcode('PUNISH_FORM', escape_html($username), escape_html(integer_format($num_warnings)), array(escape_html(get_site_name()), escape_html($rules_url), escape_html($history_url), escape_html($profile_url)));
         }
 
-        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'cb4511a58a4c78eb75346a468e6e6fdf', 'TITLE' => do_lang_tempcode('MODULE_TRANS_NAME_warnings'))));
+        // Warnings...
+
+        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array(
+            '_GUID' => 'cb4511a58a4c78eb75346a468e6e6fdf',
+            'TITLE' => do_lang_tempcode('MODULE_TRANS_NAME_warnings'),
+            'HELP' => do_lang_tempcode('HAS_ALREADY_X_WARNINGS', escape_html($username), escape_html(integer_format($num_warnings)), array(escape_html(get_site_name()), escape_html($rules_url), escape_html($history_url), escape_html($profile_url))),
+        )));
+
         $fields->attach(form_input_tick(do_lang_tempcode('WHETHER_MAKE_WARNING'), do_lang_tempcode('DESCRIPTION_WHETHER_MAKE_WARNING'), 'is_warning', $is_warning == 1));
 
-        // Punitive actions
+        // Punitive actions...
+
         if ($new) {
             $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '322a026b7a56a3e4e9ac58e4979add35', 'TITLE' => do_lang_tempcode('PUNITIVE_ACTIONS'))));
+
+            if (addon_installed('securitylogging')) {
+                if (has_actual_page_access(get_member(), 'admin_ip_ban')) {
+                    $fields->attach(form_input_tick(do_lang_tempcode('WHETHER_BANNED_IP'), do_lang_tempcode('DESCRIPTION_WHETHER_BANNED_IP'), 'banned_ip', false));
+                }
+
+                $stopforumspam_api_key = get_option('stopforumspam_api_key');
+                if ($stopforumspam_api_key === null) {
+                    $stopforumspam_api_key = '';
+                }
+                $tornevall_api_username = get_option('tornevall_api_username');
+                if ($tornevall_api_username === null) {
+                    $tornevall_api_username = '';
+                }
+                if ($stopforumspam_api_key . $tornevall_api_username != '') {
+                    require_lang('submitban');
+                    $fields->attach(form_input_tick(do_lang_tempcode('SYNDICATE_TO_STOPFORUMSPAM'), do_lang_tempcode('DESCRIPTION_SYNDICATE_TO_STOPFORUMSPAM'), 'stopforumspam', false));
+                }
+            }
+
+            if (has_privilege(get_member(), 'member_maintenance')) {
+                $fields->attach(form_input_tick(do_lang_tempcode('BAN_MEMBER'), do_lang_tempcode('DESCRIPTION_BANNED_MEMBER'), 'banned_member', false));
+            }
+
+            if (has_privilege(get_member(), 'member_maintenance')) {
+                $rows = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id', 'g_name'), array('g_is_private_club' => 0));
+                $groups = new Tempcode();
+                $groups->attach(form_input_list_entry('', false, do_lang_tempcode('NA_EM')));
+                foreach ($rows as $group) {
+                    if ($group['id'] != db_get_first_id()) {
+                        $groups->attach(form_input_list_entry(strval($group['id']), false, get_translated_text($group['g_name'], $GLOBALS['FORUM_DB'])));
+                    }
+                }
+                $fields->attach(form_input_list(do_lang_tempcode('CHANGE_USERGROUP_TO'), do_lang_tempcode('DESCRIPTION_CHANGE_USERGROUP_TO'), 'changed_usergroup_from', $groups));
+            }
 
             if ($post_id !== null) {
                 $topic_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_posts', 'p_topic_id', array('id' => $post_id));
@@ -466,24 +510,7 @@ class Module_warnings extends Standard_crud_module
             if (has_privilege(get_member(), 'probate_members')) {
                 $fields->attach(form_input_integer(do_lang_tempcode('EXTEND_PROBATION'), do_lang_tempcode('DESCRIPTION_EXTEND_PROBATION'), 'probation', 0, true));
             }
-            if (addon_installed('securitylogging')) {
-                if (has_actual_page_access(get_member(), 'admin_ip_ban')) {
-                    $fields->attach(form_input_tick(do_lang_tempcode('WHETHER_BANNED_IP'), do_lang_tempcode('DESCRIPTION_WHETHER_BANNED_IP'), 'banned_ip', false));
-                }
 
-                $stopforumspam_api_key = get_option('stopforumspam_api_key');
-                if ($stopforumspam_api_key === null) {
-                    $stopforumspam_api_key = '';
-                }
-                $tornevall_api_username = get_option('tornevall_api_username');
-                if ($tornevall_api_username === null) {
-                    $tornevall_api_username = '';
-                }
-                if ($stopforumspam_api_key . $tornevall_api_username != '') {
-                    require_lang('submitban');
-                    $fields->attach(form_input_tick(do_lang_tempcode('SYNDICATE_TO_STOPFORUMSPAM'), do_lang_tempcode('DESCRIPTION_SYNDICATE_TO_STOPFORUMSPAM'), 'stopforumspam', false));
-                }
-            }
             if (addon_installed('points')) {
                 if (has_actual_page_access(get_member(), 'admin_points')) {
                     require_code('points');
@@ -491,26 +518,35 @@ class Module_warnings extends Standard_crud_module
                     $fields->attach(form_input_integer(do_lang_tempcode('CHARGED_POINTS'), do_lang_tempcode('DESCRIPTION_CHARGED_POINTS', escape_html(integer_format($num_points_currently))), 'charged_points', 0, true));
                 }
             }
-            if (has_privilege(get_member(), 'member_maintenance')) {
-                $fields->attach(form_input_tick(do_lang_tempcode('BAN_MEMBER'), do_lang_tempcode('DESCRIPTION_BANNED_MEMBER'), 'banned_member', false));
+        }
 
-                $rows = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id', 'g_name'), array('g_is_private_club' => 0));
-                $groups = new Tempcode();
-                $groups->attach(form_input_list_entry('-1', false, do_lang_tempcode('NA_EM')));
-                foreach ($rows as $group) {
-                    if ($group['id'] != db_get_first_id()) {
-                        $groups->attach(form_input_list_entry(strval($group['id']), false, get_translated_text($group['g_name'], $GLOBALS['FORUM_DB'])));
+        // Moderation actions
+        if ($new) {
+            $content = $this->find_member_content($member_id);
+            if (count($content) > 0) {
+                $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'c7eb70b13be74d8f3bd1f1c5e739d9ab', 'TITLE' => do_lang_tempcode('DELETE'), 'HELP' => do_lang_tempcode('DESCRIPTION_DELETE_CONTENT'))));
+
+                foreach ($content as $content_details) {
+                    list($content_type_title, $content_type, $content_id, $content_title, $content_url, $content_timestamp, $auto_selected) = $content_details;
+                    if (is_object($content_url)) {
+                        $content_url = $content_url->evaluate();
                     }
+                    $content_description = do_lang_tempcode('DESCRIPTION_DELETE_THIS', escape_html($content_title), escape_html(get_timezoned_date($content_timestamp)), array(escape_html($content_url), do_lang($content_type_title)));
+
+                    $fields->attach(form_input_tick($content_title, $content_description, 'delete__' . $content_type . '_' . $content_id, $auto_selected));
                 }
-                $fields->attach(form_input_list(do_lang_tempcode('CHANGE_USERGROUP_TO'), do_lang_tempcode('DESCRIPTION_CHANGE_USERGROUP_TO'), 'changed_usergroup_from', $groups));
             }
         }
 
-        // Explanatory text
+        // Explanatory text...
+
         $keep = symbol_tempcode('KEEP');
         $load_url = find_script('warnings_browse') . '?type=load' . $keep->evaluate();
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'c7eb70b13be74d8f3bd1f1c5e739d9aa', 'TITLE' => do_lang_tempcode('EXPLANATORY_TEXT'), 'HELP' => do_lang_tempcode('LOAD_SAVED_WARNING', escape_html($load_url)))));
-        $fields->attach(form_input_line_comcode(do_lang_tempcode('EXPLANATION'), do_lang_tempcode('DESCRIPTION_EXPLANATION'), 'explanation', $explanation, true));
+        if ($explanation == '') {
+            $explanation = do_lang('SPAM');
+        }
+        $fields->attach(form_input_line_comcode(do_lang_tempcode('REASON'), do_lang_tempcode('DESCRIPTION_REASON'), 'explanation', $explanation, true));
         if ($new) {
             $message = '';
             if ($post_id !== null) {
@@ -519,10 +555,17 @@ class Module_warnings extends Standard_crud_module
                     $message = '[quote="' . $username . '"]' . "\n" . get_translated_text($_postdetails_text) . "\n" . '[/quote]';
                 }
             }
-            $fields->attach(form_input_text_comcode(do_lang_tempcode('MESSAGE'), do_lang_tempcode('DESCRIPTION_PP_MESSAGE'), 'message', $message, false));
+            $fields->attach(form_input_text_comcode(do_lang_tempcode('MESSAGE'), do_lang_tempcode('DESCRIPTION_PP_MESSAGE'), 'message', $message, true));
 
-            $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'c745535395edf114d20a8a8eafe73b92', 'TITLE' => do_lang_tempcode('ACTIONS'))));
             $fields->attach(form_input_line(do_lang_tempcode('SAVE_WARNING_DETAILS'), do_lang_tempcode('DESCRIPTION_SAVE_WARNING_DETAILS'), 'save', '', false));
+
+            // TODO: CSP
+            $this->javascript = '
+                document.getElementById(\'message\').disabled = true;
+                document.getElementById(\'add_private_topic\').onclick = function() {
+                    document.getElementById(\'message\').disabled = !document.getElementById(\'add_private_topic\').checked;
+                }
+            ';
         }
 
         return array($fields, $hidden);
@@ -629,6 +672,123 @@ class Module_warnings extends Standard_crud_module
     }
 
     /**
+     * Find a member's content.
+     *
+     * @param MEMBER $member_id Member ID
+     * @return array List of content rows
+     */
+    private function find_member_content($member_id)
+    {
+        if (!has_privilege(get_member(), 'delete_highrange_content')) {
+            return array();
+        }
+
+        require_code('content');
+
+        $post_id = get_param_integer('post_id', null);
+
+        $content = array();
+
+        if (is_guest($member_id)) {
+            // For guests we can at least try and get a specific topic/post being warned for...
+
+            if ($post_id !== null) {
+                $post_rows = $GLOBALS['FORUM_DB']->query_select(
+                    'f_posts p JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics t ON t.id=p.p_topic_id',
+                    array('*', 'p.id AS post_id', 't.id AS topic_id'),
+                    array('p.id' => $post_id)
+                );
+                if (count($post_rows) != 0) {
+                    $row = $post_rows[0];
+
+                    $content_url = $GLOBALS['FORUM_DRIVER']->post_url($post_id, $row['t_forum_id'], true);
+                    $content_title = $row['p_title'];
+                    if ($content_title == '') {
+                        $content_title = do_lang('cns:FORUM_POST_NUMBERED', strval($post_id));
+                    }
+                    $content[] = array(
+                        do_lang('cns:FORUM_POST'),
+                        'post',
+                        strval($post_id),
+                        $content_title,
+                        $content_url,
+                        $row['p_time'],
+                        true
+                    );
+
+                    if ($row['t_cache_first_post_id'] == $post_id) {
+                        $content_url = $GLOBALS['FORUM_DRIVER']->topic_url($post_id, $row['t_forum_id'], true);
+                        $content_title = $row['t_cache_first_title'];
+                        $content[] = array(
+                            do_lang('cns:FORUM_TOPIC'),
+                            'topic',
+                            strval($row['topic_id']),
+                            $content_title,
+                            $content_url,
+                            $row['t_cache_first_time'],
+                            true
+                        );
+                    }
+                }
+                return $content;
+            }
+        }
+
+        // All content using hooks...
+
+        $hooks = find_all_hook_obs('systems', 'content_meta_aware', 'Hook_content_meta_aware_');
+        foreach ($hooks as $hook => $ob) {
+            $cma_info = $ob->info();
+            if (($hook != 'member') && ($cma_info['table'] !== null) && ($cma_info['submitter_field'] !== null) && (($cma_info['id_field'] !== null) && strpos($cma_info['submitter_field'], ':') === false) && ($cma_info['commandr_filesystem_hook'] !== null)) {
+                $start = 0;
+                $max = 100;
+
+                do {
+                    $rows = $cma_info['db']->query_select(
+                        $cma_info['table'],
+                        array('*'),
+                        array($cma_info['submitter_field'] => $member_id),
+                        '',
+                        $max,
+                        $start
+                    );
+
+                    foreach ($rows as $row) {
+                        $content_id = @strval($row[$cma_info['id_field']]);
+                        $content_title = get_content_title($cma_info, $row, $content_id);
+
+                        list($zone, $url_bits, $hash) = page_link_decode(str_replace('_WILD', $content_id, $cma_info['view_page_link_pattern']));
+                        $content_url = build_url($url_bits, $zone, null, false, false, false, $hash);
+
+                        $auto_selected = false;
+                        if (($hook == 'post') && ($post_id !== null) && ($content_id == strval($post_id))) {
+                            $auto_selected = true;
+                        }
+                        if (($hook == 'topic') && ($post_id !== null) && ($row['t_cache_first_post_id'] == $post_id)) {
+                            $auto_selected = true;
+                        }
+
+                        $content[] = array(
+                            $cma_info['content_type_label'],
+                            $hook,
+                            $content_id,
+                            $content_title,
+                            $content_url,
+                            $row[$cma_info['add_time_field']],
+                            $auto_selected
+                        );
+                    }
+
+                    $start += $max;
+                }
+                while (count($rows) == $max);
+            }
+        }
+
+        return $content;
+    }
+
+    /**
      * Standard crud_module add actualiser.
      *
      * @return ID_TEXT The entry added
@@ -681,7 +841,7 @@ class Module_warnings extends Standard_crud_module
             ));
 
             require_code('cns_general_action2');
-            cns_mod_log_it('SILENCE_FROM_TOPIC', strval($member_id), strval($silence_from_topic));
+            cns_mod_log_it('SILENCE_FROM_TOPIC', strval($member_id), strval($silence_from_topic), $explanation);
         } else {
             $_silence_from_topic = null;
         }
@@ -719,7 +879,7 @@ class Module_warnings extends Standard_crud_module
             $_silence_from_forum = post_param_date('silence_from_forum');
 
             require_code('cns_general_action2');
-            cns_mod_log_it('SILENCE_FROM_FORUM', strval($member_id), strval($silence_from_forum));
+            cns_mod_log_it('SILENCE_FROM_FORUM', strval($member_id), strval($silence_from_forum), $explanation);
         } else {
             $_silence_from_forum = null;
         }
@@ -758,7 +918,7 @@ class Module_warnings extends Standard_crud_module
                 $GLOBALS['FORUM_DB']->query_update('f_members', array('m_on_probation_until' => $on_probation_until), array('id' => $member_id), '', 1);
 
                 require_code('cns_general_action2');
-                cns_mod_log_it('PUT_ON_PROBATION', strval($member_id), $username);
+                cns_mod_log_it('PUT_ON_PROBATION', strval($member_id), $username, $explanation);
             }
         }
 
@@ -769,7 +929,7 @@ class Module_warnings extends Standard_crud_module
                 $GLOBALS['FORUM_DB']->query_update('f_members', array('m_is_perm_banned' => 1), array('id' => $member_id), '', 1);
 
                 require_code('cns_general_action2');
-                cns_mod_log_it('BAN_MEMBER', strval($member_id), $username);
+                cns_mod_log_it('BAN_MEMBER', strval($member_id), $username, $explanation);
             }
         } else {
             $banned_member = 0;
@@ -783,7 +943,7 @@ class Module_warnings extends Standard_crud_module
                 if ($_banned_ip == 1) {
                     $banned_ip = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_ip_address');
                     require_code('failure');
-                    add_ip_ban($banned_ip);
+                    add_ip_ban($banned_ip, $explanation);
                 }
             }
         }
@@ -797,7 +957,7 @@ class Module_warnings extends Standard_crud_module
             syndicate_spammer_report($banned_ip, $username, $GLOBALS['FORUM_DRIVER']->get_member_email_address($member_id), $explanation, true);
 
             require_code('cns_general_action2');
-            cns_mod_log_it('MARK_AS_SPAMMER', strval($member_id), $username);
+            cns_mod_log_it('MARK_AS_SPAMMER', strval($member_id), $username, $explanation);
         }
 
         // Change group
@@ -809,7 +969,7 @@ class Module_warnings extends Standard_crud_module
             } else {
                 $_changed_usergroup_from = intval($__changed_usergroup_from);
             }
-            if (($_changed_usergroup_from !== null) && ($_changed_usergroup_from != -1)) {
+            if ($_changed_usergroup_from !== null) {
                 $changed_usergroup_from = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_primary_group');
                 $GLOBALS['FORUM_DB']->query_update('f_members', array('m_primary_group' => $_changed_usergroup_from), array('id' => $member_id), '', 1);
             }
@@ -826,12 +986,34 @@ class Module_warnings extends Standard_crud_module
             if (has_actual_page_access(get_member(), 'admin_points')) {
                 if ($charged_points != 0) {
                     require_code('points2');
-                    charge_member($member_id, $charged_points, do_lang('FOR_PUNISHMENT', strval($warning_id)));
+                    charge_member($member_id, $charged_points, $explanation);
                 }
             }
         }
 
-        if (get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL) == '') {
+        // Delete content
+        $content = $this->find_member_content($member_id);
+        $done_deleting = false;
+        foreach ($content as $content_details) {
+            list($content_type_title, $content_type, $content_id, $content_title, $content_url, $content_timestamp, $auto_selected) = $content_details;
+
+            if (post_param_integer('delete__' . $content_type . '_' . $content_id, 0) == 1) {
+                require_all_lang();
+                require_code('resource_fs');
+                $object_fs = get_resource_commandr_fs_object($content_type);
+                if ($object_fs !== null) {
+                    $filename = $object_fs->convert_id_to_filename($content_type, $content_id);
+                    if ($filename !== null) {
+                        $subpath = $object_fs->search($content_type, $content_id, true);
+                        $object_fs->resource_delete($content_type, $filename, dirname($subpath));
+
+                        $done_deleting = true;
+                    }
+                }
+            }
+        }
+
+        if ((get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL) == '') && (!$done_deleting)) {
             require_code('site2');
             assign_refresh($GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true), 0.0);
         }

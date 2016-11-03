@@ -710,7 +710,7 @@ class Module_admin_import
         // _config.php
         global $FILE_BASE;
         $config_file = '_config.php';
-        $config_file_handle = @fopen($FILE_BASE . '/' . $config_file, GOOGLE_APPENGINE ? 'wb' : 'wt') or intelligent_write_error($FILE_BASE . '/' . $config_file);
+        $config_file_handle = @fopen($FILE_BASE . '/' . $config_file, 'wb') or intelligent_write_error($FILE_BASE . '/' . $config_file);
         fwrite($config_file_handle, "<" . "?php\n");
         global $SITE_INFO;
         $SITE_INFO['forum_type'] = 'cns';

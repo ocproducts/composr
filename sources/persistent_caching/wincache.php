@@ -81,7 +81,7 @@ class Persistent_caching_wincache
             wincache_ucache_set(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $objects_list);
         }
 
-        if ($expire_secs == -1) {
+        if ($expire_secs === null) {
             $expire_secs = 0;
         }
         wincache_ucache_set($key, array(time(), $data), $expire_secs);

@@ -103,6 +103,8 @@ class Hook_addon_registry_core_configuration
             'themes/default/images/icons/24x24/menu/adminzone/setup/config/config.png',
             'themes/default/images/icons/48x48/menu/adminzone/setup/config/config.png',
             'sources/hooks/systems/sitemap/config_category.php',
+            'sources/hooks/systems/config/csp_enabled.php',
+            'sources/hooks/systems/config/csp_exceptions.php',
             'sources/hooks/systems/config/csrf_token_expire_fresh.php',
             'sources/hooks/systems/config/csrf_token_expire_new.php',
             'sources/hooks/systems/config/header_menu_call_string.php',
@@ -308,7 +310,7 @@ class Hook_addon_registry_core_configuration
     {
         return array(
             'templates/CONFIG_CATEGORY_SCREEN.tpl' => 'administrative__config_category_screen',
-            'templates/XML_CONFIG_SCREEN.tpl' => 'administrative__xml_config_screen'
+            'templates/XML_CONFIG_SCREEN.tpl' => 'administrative__xml_config_screen',
         );
     }
 

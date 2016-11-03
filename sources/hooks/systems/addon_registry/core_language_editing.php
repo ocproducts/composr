@@ -146,7 +146,7 @@ class Hook_addon_registry_core_language_editing
             'templates/TRANSLATE_LINE_CONTENT.tpl' => 'administrative__translate_screen_content_screen',
             'templates/TRANSLATE_SCREEN_CONTENT_SCREEN.tpl' => 'administrative__translate_screen_content_screen',
             'templates/TRANSLATE_LINE.tpl' => 'administrative__translate_screen',
-            'templates/TRANSLATE_SCREEN.tpl' => 'administrative__translate_screen'
+            'templates/TRANSLATE_SCREEN.tpl' => 'administrative__translate_screen',
         );
     }
 

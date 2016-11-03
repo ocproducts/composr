@@ -83,9 +83,9 @@ function add_banner_quiet($name, $imgurl, $title_text, $caption, $campaign_remai
         $map += insert_lang_comcode('caption', $caption, 2);
         $GLOBALS['SITE_DB']->query_insert('banners', $map);
 
-        if (function_exists('decache')) {
-            decache('main_banner_wave');
-            decache('main_top_sites');
+        if (function_exists('delete_cache_entry')) {
+            delete_cache_entry('main_banner_wave');
+            delete_cache_entry('main_top_sites');
         }
 
         log_it('ADD_BANNER', $name, $caption);

@@ -105,6 +105,8 @@ function ecv($lang, $escaped, $type, $name, $param)
                     }
                     if (!running_script('install')) {
                         trigger_error(do_lang('MISSING_SYMBOL', escape_html($name)), E_USER_NOTICE);
+
+                        persistent_cache_delete('HOOKS'); // May be a cache issue, find it on refresh
                     }
                 }
             }
@@ -2134,7 +2136,17 @@ function ecv_TRIM($lang, $escaped, $param)
 
         if ($value !== '') {
             if (strpos($value, '<') === false && strpos($value, '&') === false) {
+                if ($GLOBALS['XSS_DETECT']) {
+                    $is_escaped = ocp_is_escaped($value);
+                }
+
                 $value = trim($value);
+
+                if ($GLOBALS['XSS_DETECT']) {
+                    if ($is_escaped) {
+                        ocp_mark_as_escaped($value);
+                    }
+                }
             } else {
                 $value = cms_trim($param[0], !isset($param[1]) || $param[1] === '1');
             }

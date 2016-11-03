@@ -24,9 +24,9 @@
 			{$,Start slideshow}
 			{+START,IF_NON_EMPTY,{SLIDESHOW_URL}}
 				{+START,IF,{$NOT,{$MOBILE}}}
-					{+START,IF,{$JS_ON}}{+START,IF,{$NOT,{SLIDESHOW}}}
+					{+START,IF,{$NOT,{SLIDESHOW}}}
 						<a class="button_screen buttons__slideshow" rel="nofollow" target="_blank" title="{!SLIDESHOW} {!LINK_NEW_WINDOW}" href="{SLIDESHOW_URL*}"><span>{!_SLIDESHOW}</span></a>
-					{+END}{+END}
+					{+END}
 				{+END}
 			{+END}
 
@@ -63,13 +63,13 @@
 	{$,Different positioning of slideshow button for mobiles, due to limited space}
 	{+START,IF_NON_EMPTY,{SLIDESHOW_URL}}
 		{+START,IF,{$MOBILE}}
-			{+START,IF,{$JS_ON}}{+START,IF,{$NOT,{SLIDESHOW}}}
+			{+START,IF,{$NOT,{SLIDESHOW}}}
 				<div class="float_surrounder">
 					<div class="right">
 						<a class="button_screen buttons__slideshow" rel="nofollow" target="_blank" title="{!SLIDESHOW} {!LINK_NEW_WINDOW}" href="{SLIDESHOW_URL*}"><span>{!_SLIDESHOW}</span></a>
 					</div>
 				</div>
-			{+END}{+END}
+			{+END}
 		{+END}
 	{+END}
 </div>

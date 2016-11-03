@@ -666,7 +666,7 @@ function _render_menu_branch($branch, $codename, $source_member, $level, $type, 
 
     // How to display
     if ((!isset($branch['modifiers']['expanded'])) && (!$expand_this) && (!$current_page) && ($url->is_empty())) {
-        $display = has_js() ? 'none' : 'block'; // We remap to 'none' using JS. If no JS, it remains visible. Once we have learn't we have JS, we don't need to do it again
+        $display = 'none';
     } else {
         $display = 'block';
     }

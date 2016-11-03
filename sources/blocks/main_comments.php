@@ -85,7 +85,7 @@ class Block_main_comments
         $self_title = empty($map['title']) ? $map['page'] : $map['title'];
         $test_changed = post_param_string('title', null);
         if ($test_changed !== null) {
-            decache('main_comments');
+            delete_cache_entry('main_comments');
         }
         $hidden = $submitted ? actualise_post_comment(true, 'block_main_comments', $map['page'] . '_' . $map['param'] . $extra, $self_url, $self_title, array_key_exists('forum', $map) ? $map['forum'] : null, false, null, $explicit_allow) : false;
 

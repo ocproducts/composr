@@ -1,8 +1,7 @@
-{!REPORTED_POST,[post param="{TOPIC_TITLE#}"]{POST_ID@}[/post],{NAME}}
+{!REPORTED_POST,[post param="{TOPIC_TITLE#}"]{POST_ID@}[/post],{POST_MEMBER}}
 
-[quote="{MEMBER_ID#}"]
+[quote="{POST_MEMBER_ID#}"]
 {POST}
 [/quote]
 
-//// {!PUT_YOUR_REPORT_BELOW} \\\\
-
+{REPORT_POST}

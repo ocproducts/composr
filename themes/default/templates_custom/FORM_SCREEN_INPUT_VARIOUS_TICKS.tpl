@@ -10,7 +10,7 @@
 			<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{SECTION_TITLE*}</a>
 		</h4>
 
-		<div class="toggleable_tray js-tray-content" style="display: {$JS_ON,{$?,{EXPANDED},block,none},block}"{+START,IF,{$NOT,{EXPANDED}}} aria-expanded="false"{+END}>
+		<div class="toggleable_tray js-tray-content" style="display: {$?,{EXPANDED},block,none}"{+START,IF,{$NOT,{EXPANDED}}} aria-expanded="false"{+END}>
 	{+END}
 
 

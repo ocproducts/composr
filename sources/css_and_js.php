@@ -88,7 +88,7 @@ function css_inherit($css_file, $theme, $destination_theme, $seed, $dark, $algor
     // Copy to tmp file
     $tmp_filename = $css_file . '__tmp_copy_' . uniqid('', true);
     $temp_file = get_custom_file_base() . '/themes/' . $destination_theme . '/css_custom/' . $tmp_filename . '.css';
-    $myfile = @fopen($temp_file, GOOGLE_APPENGINE ? 'wb' : 'at') or intelligent_write_error($temp_file);
+    $myfile = @fopen($temp_file, GOOGLE_APPENGINE ? 'wb' : 'ab') or intelligent_write_error($temp_file);
     @flock($myfile, LOCK_EX);
     if (!GOOGLE_APPENGINE) {
         ftruncate($myfile, 0);
@@ -142,7 +142,7 @@ function js_compile($j, $js_cache_path, $minify = true)
     } else {
         $contents = '/* DO NOT EDIT. THIS IS A CACHE FILE AND WILL GET OVERWRITTEN RANDOMLY.' . "\n" . 'INSTEAD EDIT THE TEMPLATE FROM WITHIN THE ADMIN ZONE, OR BY MANUALLY EDITING A JAVASCRIPT_CUSTOM OVERRIDE. */' . "\n\n" . $out;
     }
-    $js_file = @fopen($js_cache_path, GOOGLE_APPENGINE ? 'wb' : 'at');
+    $js_file = @fopen($js_cache_path, GOOGLE_APPENGINE ? 'wb' : 'ab');
     if ($js_file === false) {
         intelligent_write_error($js_cache_path . '.tmp');
     }
@@ -225,7 +225,7 @@ function css_compile($active_theme, $theme, $c, $full_path, $css_cache_path, $mi
     }
 
     list($success_status, $out) = _css_compile($active_theme, $theme, $c, $full_path, $minify);
-    $css_file = @fopen($css_cache_path, GOOGLE_APPENGINE ? 'wb' : 'at');
+    $css_file = @fopen($css_cache_path, GOOGLE_APPENGINE ? 'wb' : 'ab');
     if ($css_file === false) {
         intelligent_write_error($css_cache_path . '.tmp');
     }

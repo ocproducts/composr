@@ -219,7 +219,7 @@ function set_session_id($id, $guest_session = false)  // NB: Guests sessions can
     }
 
     if ($id != get_session_id()) {
-        decache('side_users_online');
+        delete_cache_entry('side_users_online');
     }
 }
 

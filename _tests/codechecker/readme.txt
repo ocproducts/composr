@@ -4,9 +4,9 @@ Code quality checker
 The code quality checker is a tool to check web documents against a number of standards, including:
  - PHP quality (including type-checking, which even PHP itself can't do at runtime)
  - De-facto JavaScript (Common implementations of DOM, ECMAScript [ECMA-262/JS-1.5], common browser library functions)
- - HTML 4.01 strict/transitional, XHTML 1.0 strict/transitional, XHTML 1.1 (using doctype sniffing - no doctype implies HTML4 and an error will be given)
+ - (X)HTML5
  - XML
- - CSS (version 2.1, with a very select 3.0 properties)
+ - CSS with solid 2.1, and additional 3.0 properties
  - WCAG-level-3 (version 1, with some stuff from the 2 draft also)
  - Extra web checks (such as checking form mime-types when upload fields are involved)
  - Web compatibility
@@ -47,10 +47,7 @@ HTML etc
 --------
 
 Some tips:
- - Layout tables are allowed, but to specify them you must place an empty table summary.
  - If you need a form field label but can't place it in your design, make it invisible.
- - If you need something to space links, make an invisible comma.
- - Internet Explorer's conditional-comments feature is a useful way to workaround IE's poor Object Tag implementation. Don't use 'embed'.
 
 If you want to check an HTML email (which requires additional rules), name the file '_mail.html' or '_mail.htm' and load in the files like any other file.
 
@@ -58,7 +55,6 @@ Accessibility
 -------------
 
 WCAG cannot be met by scanning alone. In particular, some manual checks are required.
- - Until user agents allow users to freeze moving content, avoid movement in pages AND Until user agents allow users to control flickering, avoid causing the screen to flicker. : by default, nothing flickers, but Comcode allows it. It's a question of whether a site is designed to be accessible for all, or 'fancy' for the majority
  - Alternatives given to multimedia content
  - Use the clearest and simplest language appropriate for a site's content.
  - Divide large blocks of information into more manageable groups where natural and appropriate.
@@ -66,7 +62,6 @@ WCAG cannot be met by scanning alone. In particular, some manual checks are requ
  - Specify the expansion of each abbreviation or acronym in a document where it first occurs.
  - Place distinguishing information at the beginning of headings, paragraphs, lists, etc.
  - Create a logical tab order through links, form controls, and objects
- - <noscript> is given whenever appropriate and possible
  - When plugins are used, info about it must be displayed
  - When an appropriate markup language exists, use markup rather than images to convey information.
  - Mark up lists and list items properly.
@@ -76,8 +71,6 @@ WCAG cannot be met by scanning alone. In particular, some manual checks are requ
 CSS
 ---
 
-Useful checks we don't do that other tools may do:
- - Warning if 'display' and 'float' used together ('display' would be ignored in most contexts) (REASON: it might be used to undo something like display:none inherited from somewhere else)
 This is a useful tool that does more checks: http://www.dirtymarkup.com/
 
 Spellcheck
@@ -142,13 +135,11 @@ For all of these, you should use function_exists at some point before using thes
 For other functions you can use function_exists too. The checker is smart about function_exists, but not very smart. You can do:
 function_exists('foo')?foo():bar()
 and
-if (function_exists('foo'))
-{
+if (function_exists('foo')) {
 	foo();
 }
 and
-if ((function_exists('foo')) && (whatever) && (whatever) [...])
-{
+if ((function_exists('foo')) && (whatever) && (whatever) [...]) {
 	foo();
 }
 
@@ -171,9 +162,7 @@ function mixed()
 Relationship with Composr
 --------------------------
 
-Some files, such as phpstub.php, and webstandards_js_lint.php, come from Composr. Composr contains the latest versions of these files, the CQC is updated separately as required.
-
-Update: As of the time of writing we have decided just to fully integrate the CQC as a component of Composr, as we want to streamline development and do more-opinionated checks. Quality standards chosen and enforced are very Composr-centric now.
+We have decided just to fully integrate the CQC as a component of Composr, as we want to streamline development and do more-opinionated checks. Quality standards chosen and enforced are very Composr-centric now.
 
 PHP: handling of return values
 ------------------------------

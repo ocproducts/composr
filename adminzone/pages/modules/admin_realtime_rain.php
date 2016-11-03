@@ -85,12 +85,6 @@ class Module_admin_realtime_rain
         require_javascript('ajax');
         require_css('realtime_rain');
 
-        if (!has_js()) {
-            // Send them to the page permissions screen
-            $url = build_url(array('page' => 'admin_stats', 'type' => 'browse'), '_SELF');
-            return redirect_screen($this->title, $url, do_lang_tempcode('NO_JS_REALTIME'));
-        }
-
         $min_time = $GLOBALS['SITE_DB']->query_select_value('stats', 'MIN(date_and_time)');
         if ($min_time === null) {
             $min_time = time();

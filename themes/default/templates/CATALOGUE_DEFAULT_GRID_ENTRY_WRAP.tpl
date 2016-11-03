@@ -41,9 +41,9 @@
 		{+END}
 	{+END}
 
-	{+START,IF,{ALLOW_RATING}}
+	{+START,IF,{ALLOW_RATING}}{+START,IF_NON_EMPTY,{$TRIM,{RATING}}}
 		<div class="ratings">
 			{RATING}
 		</div>
-	{+END}
+	{+END}{+END}
 </div></section>

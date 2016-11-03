@@ -71,8 +71,8 @@ function commandr_script()
         require_code('mail');
 
         $stdin = @fopen('php://stdin', GOOGLE_APPENGINE ? 'rb' : 'rt');
-        $stderr = @fopen('php://stderr', GOOGLE_APPENGINE ? 'wb' : 'wt');
-        $stdout = @fopen('php://stdout', GOOGLE_APPENGINE ? 'wb' : 'wt');
+        $stderr = @fopen('php://stderr', 'wb');
+        $stdout = @fopen('php://stdout', 'wb');
         while (true) { // Goes on until ctrl+C
             fwrite($stdout, "\n> ");
 

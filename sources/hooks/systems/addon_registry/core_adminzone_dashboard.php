@@ -285,7 +285,6 @@ class Hook_addon_registry_core_adminzone_dashboard
         $dates = do_lorem_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM', array(
             'URL' => placeholder_url(),
             'STATUS' => $_status,
-            'CONTACT_US_MESSAGING' => lorem_phrase(),
             'TASK' => lorem_phrase(),
             'INFO' => $info,
             'NUM_QUEUE' => placeholder_id(),
@@ -303,7 +302,6 @@ class Hook_addon_registry_core_adminzone_dashboard
             'URL' => placeholder_url(),
             'STATUS' => $status,
             'TASK' => lorem_phrase(),
-            'CONTACT_US_MESSAGING' => lorem_phrase(),
             'INFO' => lorem_phrase(),
             'NUM_QUEUE' => placeholder_id(),
         ));
@@ -312,7 +310,6 @@ class Hook_addon_registry_core_adminzone_dashboard
         $todo->attach(do_lorem_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM', array(
             'URL' => placeholder_url(),
             'STATUS' => do_lorem_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM_STATUS_1'),
-            'CONTACT_US_MESSAGING' => lorem_phrase(),
             'TASK' => lorem_phrase(),
             'INFO' => lorem_phrase(),
             'NUM_QUEUE' => placeholder_id(),
@@ -320,7 +317,6 @@ class Hook_addon_registry_core_adminzone_dashboard
         $todo->attach(do_lorem_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM', array(
             'URL' => placeholder_url(),
             'STATUS' => do_lorem_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM_STATUS_NA'),
-            'CONTACT_US_MESSAGING' => lorem_phrase(),
             'TASK' => lorem_phrase(),
             'INFO' => lorem_phrase(),
             'NUM_QUEUE' => placeholder_id(),

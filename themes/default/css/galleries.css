@@ -30,7 +30,7 @@
 	position: absolute;
 	right: 2px;
 	top: 2px;
-	{$BETA_CSS_PROPERTY,backface-visibility: hidden;} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
+	backface-visibility: hidden; /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 	opacity: 0.0;
 	transition: opacity 0.2s linear !important;
 }
@@ -63,24 +63,17 @@
 
 /* Non flow-mode only */
 
-{$,Our standard Composr-wide thumbnail image size is defined by the thumb_width option}
-{$SET,gallery_thumb_size,{$CONFIG_OPTION,thumb_width}px}
-{$,However actually lets make them smaller custom sizes for the gallery and let CSS scale-down the larger thumbnail images}
-{$SET,gallery_thumb_size,170px}
-{$,That is not the most efficient approach - which would be to use the Tempcode THUMBNAIL symbol in the GALLERY_IMAGE/GALLERY_VIDEO templates to generate idealised thumbnails and tie them into the HTML - but that is fiddly and messy, requires more thought and planning by the web designer}
-{$,Or, of course we could use the standard thumbnail size, or change the standard thumbnail size, but that would affect other systems which may want the larger thumbnails}
-
 .gallery_grid_cell_wrap {
-	overflow: hidden;
-
-	/* Fiddle it so our grid cells will be flush with the left */
-	margin-left: -0.5em;
-	width: 100%;
+	{$BETA_CSS_PROPERTY,display: flex;}
+	{$BETA_CSS_PROPERTY,flex-wrap: wrap;}
+	margin: -0.5em 0 0 -0.5em;
 }
 
 .gallery_grid_cell {
-	float: {!en_left};
-	padding: 0.4em;
+	margin: 0.5em 0 0 0.5em;
+	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+		width: calc(25% - 0.5em);
+	/*{+END}*/
 }
 
 .gallery_regular_thumb {
@@ -88,29 +81,6 @@
 	border: 1px solid {$GET,standard_border};
 	background-color: {$GET,area_background};
 	box-shadow: 3px 3px 10px {$GET,standard_border};
-	/*{+START,IF,{$MOBILE}}*/
-		display: inline-block;
-	/*{+END}*/
-}
-
-.gallery_media_title_cropped * {
-	vertical-align: middle;
-}
-.gallery_media_title_cropped>span {
-	max-width: 120px;
-	display: inline-block;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-	overflow: hidden;
-}
-
-.img_thumb_wrap {
-	/* Essentially adds padding around thumbnails; the thumbnails are sized to fit a box as tightly as possible, but unused space is not stored inside the images themselves */
-	width: {$GET,gallery_thumb_size};
-	height: {$GET,gallery_thumb_size};
-	text-align: center;
-	vertical-align: middle;
-	display: table-cell;
 }
 
 .img_thumb_wrap a {
@@ -118,22 +88,16 @@
 }
 
 .img_thumb_wrap .img_thumb {
-	vertical-align: bottom; /* Removes gap under this centered inline image, by moving it to baseline */
-
-	/* Maybe the thumbnail size has been reduced at some point - guard against this */
-	max-width: {$GET,gallery_thumb_size};
-	max-height: {$GET,gallery_thumb_size};
+	width: 100%;
 }
 
-
-.fp_col_block .img_thumb_wrap {
-	width: 120px;
-	height: 120px;
+.gallery_media_title_cropped * {
+	vertical-align: middle;
 }
-.fp_col_block .img_thumb_wrap .img_thumb {
-	max-width: 120px;
-	max-height: 120px;
-	display: block;
+.gallery_media_title_cropped>span {
+	white-space: nowrap;
+	{$BETA_CSS_PROPERTY,text-overflow: ellipsis;}
+	overflow: hidden;
 }
 
 .gallery_regular_thumb p, .gallery_regular_thumb .grating {

@@ -65,22 +65,18 @@
 		<hr class="spaced_rule" />
 	{+END}
 
-	{+START,IF,{$JS_ON}}
-		<div class="box box___booking_flesh_out_screen"><div class="box_inner">
-			<strong>{!PRICE_AUTO_CALC}:</strong> {$CURRENCY_SYMBOL} <span id="price">{PRICE*}</span>
-		</div></div>
-	{+END}
+	<div class="box box___booking_flesh_out_screen"><div class="box_inner">
+		<strong>{!PRICE_AUTO_CALC}:</strong> {$CURRENCY_SYMBOL} <span id="price">{PRICE*}</span>
+	</div></div>
 
 	<p class="proceed_button">
 		<input class="button_screen buttons__proceed" type="submit" value="{$?,{$IS_GUEST},{!PROCEED},{!BOOK}}" />
 	</p>
 </form>
 
-{+START,IF,{$JS_ON}}
-	<form action="{BACK_URL*}" method="post" autocomplete="off">
-		<div>
-			{HIDDEN}
-			<input type="image" title="{!NEXT_ITEM_BACK}" alt="{!NEXT_ITEM_BACK}" src="{$IMG*,icons/48x48/menu/_generic_admin/back}" / /></p>
-		</div>
-	</form>
-{+END}
+<form action="{BACK_URL*}" method="post" autocomplete="off">
+	<div>
+		{HIDDEN}
+		<input type="image" title="{!NEXT_ITEM_BACK}" alt="{!NEXT_ITEM_BACK}" src="{$IMG*,icons/48x48/menu/_generic_admin/back}" / /></p>
+	</div>
+</form>

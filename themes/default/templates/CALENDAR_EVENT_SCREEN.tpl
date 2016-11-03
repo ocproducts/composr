@@ -169,9 +169,15 @@
 			1_ACCESSKEY=q
 			1_REL=edit
 			1_ICON=menu/_generic_admin/edit_this
-
 			{$,Do not auto-redirect back to here as recurrences may break so URL hints may no longer be valid}
 			1_NOREDIRECT=1
+
+			{+START,IF,{$ADDON_INSTALLED,tickets}}
+				2_URL={$PAGE_LINK,_SEARCH:report_content:content_type=event:content_id={ID}:redirect={$SELF_URL&}}
+				2_TITLE={!report_content:REPORT_THIS}
+				2_ICON=buttons/report
+				2_REL=report
+			{+END}
 		{+END}
 
 		<div class="content_screen_comments">

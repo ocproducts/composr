@@ -133,7 +133,7 @@ class Hook_addon_registry_ldap
     {
         return array(
             'templates/CNS_LDAP_LIST_ENTRY.tpl' => 'administrative__cns_ldap_sync_screen',
-            'templates/CNS_LDAP_SYNC_SCREEN.tpl' => 'administrative__cns_ldap_sync_screen'
+            'templates/CNS_LDAP_SYNC_SCREEN.tpl' => 'administrative__cns_ldap_sync_screen',
         );
     }
 

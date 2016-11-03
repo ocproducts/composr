@@ -33,7 +33,7 @@
 		</h2>
 	{+END}
 
-	<div id="search_form" class="toggleable_tray js-tray-content" {+START,IF_PASSED,RESULTS}{+START,IF_NON_EMPTY,{RESULTS}} style="display: {$JS_ON,none,block}"{+END}{+END} aria-expanded="false">
+	<div id="search_form" class="toggleable_tray js-tray-content" {+START,IF_PASSED,RESULTS}{+START,IF_NON_EMPTY,{RESULTS}} style="display: none"{+END}{+END} aria-expanded="false">
 		<p>
 			{!SEARCH_HELP}
 		</p>
@@ -82,7 +82,7 @@
 							{+START,IF,{$CONFIG_OPTION,enable_boolean_search}}
 								{+START,IF,{HAS_FULLTEXT_SEARCH}}
 								<input type="checkbox" id="boolean_search"{+START,IF,{BOOLEAN_SEARCH}} checked="checked"{+END} name="boolean_search" value="1" class="js-checkbox-click-toggle-boolean-options js-click-trigger-resize" /> <label for="boolean_search">{!BOOLEAN_SEARCH}</label>
-								<div style="display: {$JS_ON,none,block}" class="boolean_options js-el-boolean-options" id="boolean_options">
+								<div style="display: none" class="boolean_options js-el-boolean-options" id="boolean_options">
 								{+END}
 									{+START,IF,{$NOT,{HAS_FULLTEXT_SEARCH}}}
 										<p>

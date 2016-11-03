@@ -518,7 +518,7 @@ function closure_params_json($param, $args, $main_function)
 
         if (array_key_exists($param_name, $template_params)) {
             $output[$param_name] = $template_params[$param_name];
-        } else if (array_key_exists($param_name, $TEMPCODE_SETGET)) {
+        } elseif (array_key_exists($param_name, $TEMPCODE_SETGET)) {
             $output[$param_name] = $TEMPCODE_SETGET[$param_name];
         }
     }
@@ -542,7 +542,7 @@ function evaluate_tempcode_elements(array $arr) {
             continue;
         }
 
-        if ($v instanceof Tempcode) {
+        if (is_object($v)) {
             $arr[$k] = $v->evaluate();
         }
     }

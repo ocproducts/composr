@@ -334,14 +334,6 @@ if ($has_jump) {
 
             echo '</p>';
 
-            // Noscript version
-            $out = "
-			<noscript>
-				<form style=\"display: inline\" action=\"../" . $upgrade_script . "\" target=\"_blank\" method=\"post\">
-					<input class=\"menu__adminzone__tools__upgrade button_screen_item\" type=\"submit\" title=\"Upgrade to " . escape_html($higher_versions[$i]['version']) . "\" value=\"Launch upgrader\" />
-				</form>
-			</noscript>
-			";
             echo str_replace("\n", '', str_replace("\r", '', $out));
         }
     }

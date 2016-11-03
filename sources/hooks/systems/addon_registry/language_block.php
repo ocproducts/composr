@@ -114,7 +114,7 @@ class Hook_addon_registry_language_block
     public function tpl_previews()
     {
         return array(
-            'templates/BLOCK_SIDE_LANGUAGE.tpl' => 'block_side_language'
+            'templates/BLOCK_SIDE_LANGUAGE.tpl' => 'block_side_language',
         );
     }
 

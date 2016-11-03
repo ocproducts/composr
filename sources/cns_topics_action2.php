@@ -288,6 +288,8 @@ function cns_delete_topic($topic_id, $reason = '', $post_target_topic_id = null,
     if (addon_installed('tickets')) {
         require_code('tickets');
         if (($forum_id !== null) && (is_ticket_forum($forum_id))) {
+            require_lang('tickets');
+            require_code('tickets');
             require_code('tickets2');
             delete_ticket_by_topic_id($topic_id);
         }
@@ -589,6 +591,7 @@ function handle_topic_ticket_reply($forum_id, $topic_id, $topic_title, $post)
 {
     // E-mail the user or staff if the post is a new one in a support ticket
     if (addon_installed('tickets')) {
+        require_lang('tickets');
         require_code('tickets');
         require_code('tickets2');
         require_code('feedback');
@@ -600,9 +603,9 @@ function handle_topic_ticket_reply($forum_id, $topic_id, $topic_title, $post)
 
             $topic_description = $topic_info[0]['t_description'];
             $ticket_id = extract_topic_identifier($topic_description);
-            $home_url = build_url(array('page' => 'tickets', 'type' => 'ticket', 'id' => $ticket_id), 'site', null, false, true);
+            $ticket_url = ticket_url($ticket_id);
 
-            send_ticket_email($ticket_id, $topic_title, $post, $home_url->evaluate(), '', -1);
+            send_ticket_email($ticket_id, $topic_title, $post, $ticket_url);
         }
     }
 }

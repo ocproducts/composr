@@ -289,7 +289,7 @@ function cron_bridge_script($caller)
     }
 
     if (intval(get_value('last_cron')) < time() - 60 * 60 * 12) {
-        decache('main_staff_checklist'); // So the block knows CRON has run
+        delete_cache_entry('main_staff_checklist'); // So the block knows CRON has run
     }
 
     $limit_hook = get_param_string('limit_hook', '');
@@ -297,7 +297,7 @@ function cron_bridge_script($caller)
     $_log_file = get_custom_file_base() . '/data_custom/cron_log.txt';
     $log_file = mixed();
     if (is_file($_log_file)) {
-        $log_file = fopen($_log_file, 'at');
+        $log_file = fopen($_log_file, 'ab');
     }
 
     // Call the hooks which do the real work
@@ -539,7 +539,7 @@ function thumb_script()
     $new_name = url_to_filename($url_full);
     $file_thumb = get_custom_file_base() . '/uploads/auto_thumbs/' . $new_name;
     if (!file_exists($file_thumb)) {
-        $url_thumb = convert_image($url_full, $file_thumb, -1, -1, intval(get_option('thumb_width')), false);
+        $url_thumb = convert_image($url_full, $file_thumb, null, null, intval(get_option('thumb_width')), false);
     } else {
         $url_thumb = get_custom_base_url() . '/uploads/auto_thumbs/' . rawurlencode($new_name);
     }

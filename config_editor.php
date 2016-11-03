@@ -418,7 +418,7 @@ function do_set()
     if ($copied_ok !== false) {
         co_sync_file($path);
     }
-    $config_file_handle = fopen($FILE_BASE . '/' . $config_file, 'wt');
+    $config_file_handle = fopen($FILE_BASE . '/' . $config_file, 'wb');
     if ($config_file_handle === false) {
         exit();
     }

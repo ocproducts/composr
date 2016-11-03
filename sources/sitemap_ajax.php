@@ -659,7 +659,7 @@ function sitemap_script_saving()
     }
 
     // Decache
-    decache('menu');
+    delete_cache_entry('menu');
     require_code('caches3');
     erase_block_cache();
     erase_persistent_cache();

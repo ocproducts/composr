@@ -1130,9 +1130,7 @@ class Hook_import_smf2
 
         list($path, $url) = find_unique_path('uploads/' . $sections, $filename);
 
-        $myfile = @fopen($path, 'wb') or intelligent_write_error($path);
-        fwrite($myfile, $data);
-        fclose($myfile);
+        @file_put_contents($path, $data) or intelligent_write_error($path);
         fix_permissions($path);
         sync_file($path);
 

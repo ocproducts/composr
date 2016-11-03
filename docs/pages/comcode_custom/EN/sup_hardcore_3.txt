@@ -161,7 +161,7 @@ function cns_wrapper($title, $content, $show_personal_bar = true, $show_stats = 
                 )));
             }
 
-            put_into_cache('_new_pp', 60 * 60 * 24, $cache_identifier, array($notifications, $num_unread_pps));
+            set_cache_entry('_new_pp', 60 * 60 * 24, $cache_identifier, array($notifications, $num_unread_pps));
         } else {
             list($notifications, $num_unread_pps) = $_notifications;
         }

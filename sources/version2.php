@@ -50,7 +50,7 @@ function get_future_version_information()
     static $http_result = null; // Cache
     if ($http_result === null) {
         require_code('http');
-        $http_result = cache_and_carry('cms_http_request', array($url, null, false), 5/*5 minute cache*/);
+        $http_result = cache_and_carry('cms_http_request', array($url, array('trigger_error' => false)), 5/*5 minute cache*/);
     }
     if ($http_result->data !== null) {
         $data = $http_result->data;

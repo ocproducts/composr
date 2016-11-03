@@ -148,7 +148,7 @@ Here are some features we have in Conversr that are mostly unique across forum s
  - Inline private posts (private messages embedded in public forum topics, so people can make private remarks to each other)
  - Forum introduction questions (a much more general concept than the silly 'password protected' forums, which duplicate what usergroup permissions are for)
  - True tree structure for forum, and cascading topics that can show as pinned just for a subtree (e.g. have a pinned topic under all the 'Games' forums, but not under the 'Politics' forums)
- - Reported post forum (so moderators can discuss reported posts as part of their normal forum workflow, rather than them being stored elsewhere)
+ - Reporting posts to a support ticket (so moderators can discuss reported posts as part of their normal forum workflow, rather than them being stored elsewhere)
  - Clubs (so members can create their own usergroups and forums)
  - JavaScript overlay for profile info next to posts, rather than having repetitive information placed everywhere
  - Integrated moderation function (no separate modcp needed)

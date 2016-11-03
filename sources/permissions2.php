@@ -480,7 +480,7 @@ function set_category_permissions_from_environment($module, $category, $page = n
         }
     }
 
-    decache('menu');
+    delete_cache_entry('menu');
 }
 
 /**
@@ -551,7 +551,7 @@ function set_page_permissions_from_environment($zone, $page)
         }
     }
 
-    decache('menu');
+    delete_cache_entry('menu');
     require_code('caches3');
     erase_block_cache();
     erase_persistent_cache();

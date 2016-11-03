@@ -426,7 +426,7 @@ class Module_search
                 $cutoff_to_year = ($cutoff_to === null) ? null : intval(date('Y', utctime_to_usertime($cutoff_to)));
             }
         } else {
-            $days = get_param_integer('days', null);
+            $days = get_param_integer('days', null); // -1 for no limit, null for default limit
             if ($days === null) {
                 $_days = get_value('search_days__' . $id);
                 if ($_days === null) {
@@ -599,7 +599,11 @@ class Module_search
                             $where_clause .= ' OR ';
                         }
                         if ($info['integer_category']) {
-                            $where_clause .= ((strpos($info['category'], '.') !== false) ? '' : 'r.') . $info['category'] . '=' . strval($cat);
+                            if (is_numeric($cat)) {
+                                $where_clause .= ((strpos($info['category'], '.') !== false) ? '' : 'r.') . $info['category'] . '=' . strval(intval($cat));
+                            } else {
+                                $where_clause .= '1=0';
+                            }
                         } else {
                             $where_clause .= db_string_equal_to(((strpos($info['category'], '.') !== false) ? '' : 'r.') . $info['category'], $cat);
                         }

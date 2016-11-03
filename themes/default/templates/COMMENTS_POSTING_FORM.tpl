@@ -54,7 +54,7 @@
 				{+END}
 			</h3>
 		{+END}
-		<div class="comments_posting_form_outer {+START,IF_PASSED,EXPAND_TYPE} toggleable_tray js-tray-content{+END}"{+START,IF_PASSED,EXPAND_TYPE} aria-expanded="false"{+END} id="comments_posting_form_outer" style="{$JS_ON,display: {DISPLAY*},}">
+		<div class="comments_posting_form_outer {+START,IF_PASSED,EXPAND_TYPE} toggleable_tray js-tray-content{+END}"{+START,IF_PASSED,EXPAND_TYPE} aria-expanded="false"{+END} id="comments_posting_form_outer" style="display: {DISPLAY*}">
 			<div class="comments_posting_form_inner">
 				<div class="wide_table_wrap"><table class="map_table wide_table">
 					{+START,IF,{$NOT,{$MOBILE}}}
@@ -126,29 +126,16 @@
 							{+START,LOOP,REVIEW_RATING_CRITERIA}
 								<tr class="js-container-review-rating">
 									<th class="de_th vertical_alignment">
-										{+START,IF,{$NOT,{$JS_ON}}}<label class="accessibility_hidden" for="review_rating__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}">{+END}{+START,IF_EMPTY,{REVIEW_TITLE}}{!RATING}:{+END}{+START,IF_NON_EMPTY,{REVIEW_TITLE}}{REVIEW_TITLE*}:{+END}{+START,IF,{$NOT,{$JS_ON}}}</label>{+END}
+										{+START,IF_EMPTY,{REVIEW_TITLE}}{!RATING}:{+END}{+START,IF_NON_EMPTY,{REVIEW_TITLE}}{REVIEW_TITLE*}:{+END}
 									</th>
 
 									<td>
-										{+START,IF,{$JS_ON}}
-											<img id="review_bar_1__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" class="rating_star js-img-review-bar" data-vw-rating="2" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" />
-											<img id="review_bar_2__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" class="rating_star js-img-review-bar" data-vw-rating="4" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" />
-											<img id="review_bar_3__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" class="rating_star js-img-review-bar" data-vw-rating="6" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" />
-											<img id="review_bar_4__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" class="rating_star js-img-review-bar" data-vw-rating="8" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" />
-											<img id="review_bar_5__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" class="rating_star js-img-review-bar" data-vw-rating="10" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" />
-											<input id="review_rating__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" class="js-inp-review-rating" type="hidden" name="review_rating__{REVIEW_TITLE|*}" value="" />
-										{+END}
-
-										{+START,IF,{$NOT,{$JS_ON}}}
-											<select id="review_rating__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" name="review_rating">
-												<option value="">{!NA}</option>
-												<option value="10">*****</option>
-												<option value="8">****</option>
-												<option value="6">***</option>
-												<option value="4">**</option>
-												<option value="2">*</option>
-											</select>
-										{+END}
+										<img id="review_bar_1__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" class="rating_star js-img-review-bar" data-vw-rating="2" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" />
+										<img id="review_bar_2__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" class="rating_star js-img-review-bar" data-vw-rating="4" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" />
+										<img id="review_bar_3__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" class="rating_star js-img-review-bar" data-vw-rating="6" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" />
+										<img id="review_bar_4__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" class="rating_star js-img-review-bar" data-vw-rating="8" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" />
+										<img id="review_bar_5__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" class="rating_star js-img-review-bar" data-vw-rating="10" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" />
+										<input id="review_rating__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" class="js-inp-review-rating" type="hidden" name="review_rating__{REVIEW_TITLE|*}" value="" />
 									</td>
 								</tr>
 							{+END}
@@ -188,18 +175,16 @@
 								{+END}
 
 								{+START,IF,{$NOT,{$MOBILE}}}
-									{+START,IF,{$JS_ON}}
-										{+START,IF_NON_EMPTY,{EM}}
-											<div class="comments_posting_form_emoticons">
-												<div class="box box___comments_posting_form"><div class="box_inner">
-													{EM}
+									{+START,IF_NON_EMPTY,{EM}}
+										<div class="comments_posting_form_emoticons">
+											<div class="box box___comments_posting_form"><div class="box_inner">
+												{EM}
 
-													{+START,IF,{$CNS}}
-														<p class="associated_link associated_links_block_group"><a rel="nofollow" tabindex="5" href="#!" onclick="window.faux_open(maintain_theme_in_link('{$FIND_SCRIPT;*,emoticons}?field_name=post{$KEEP;*}'),'site_emoticon_chooser','width=300,height=320,status=no,resizable=yes,scrollbars=no'); return false;">{!EMOTICONS_POPUP}</a></p>
-													{+END}
-												</div>
-											</div></div>
-										{+END}
+												{+START,IF,{$CNS}}
+													<p class="associated_link associated_links_block_group"><a rel="nofollow" tabindex="5" href="#!" onclick="window.faux_open(maintain_theme_in_link('{$FIND_SCRIPT;*,emoticons}?field_name=post{$KEEP;*}'),'site_emoticon_chooser','width=300,height=320,status=no,resizable=yes,scrollbars=no'); return false;">{!EMOTICONS_POPUP}</a></p>
+												{+END}
+											</div>
+										</div></div>
 									{+END}
 								{+END}
 							</th>
@@ -223,10 +208,8 @@
 
 								{+START,IF,{$MOBILE}}
 									{+START,IF,{$CONFIG_OPTION,js_captcha}}
-										<noscript>{!JAVASCRIPT_REQUIRED}</noscript>
-
 										{+START,IF_NON_EMPTY,{$TRIM,{$GET,CAPTCHA}}}
-                                            <div id="captcha_spot"></div>
+											<div id="captcha_spot"></div>
 										{+END}
 									{+END}
 									{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}
@@ -243,11 +226,9 @@
 				<div class="comments_posting_form_end">
 					{+START,IF,{$NOT,{$MOBILE}}}
 						{+START,IF,{$CONFIG_OPTION,js_captcha}}
-							<noscript>{!JAVASCRIPT_REQUIRED}</noscript>
-
-                            {+START,IF_NON_EMPTY,{$TRIM,{$GET,CAPTCHA}}}
-                                <div id="captcha_spot"></div>
-                            {+END}
+							{+START,IF_NON_EMPTY,{$TRIM,{$GET,CAPTCHA}}}
+								<div id="captcha_spot"></div>
+							{+END}
 						{+END}
 						{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}
 							{$GET,CAPTCHA}
@@ -256,15 +237,13 @@
 
 					<div class="proceed_button buttons_group">
 						{+START,IF,{$NOT,{$MOBILE}}}
-							{+START,IF,{$JS_ON}}{+START,IF,{$CONFIG_OPTION,enable_previews}}{+START,IF,{$NOT,{$VALUE_OPTION,xhtml_strict}}}
+							{+START,IF,{$CONFIG_OPTION,enable_previews}}
 								<input id="preview_button" accesskey="p" tabindex="250" class="tabs__preview js-click-do-form-preview {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item}" type="button" value="{!PREVIEW}" />
-							{+END}{+END}{+END}
+							{+END}
 						{+END}
 
 						{+START,IF_PASSED,MORE_URL}
-							{+START,IF,{$JS_ON}}
-								<input tabindex="6" accesskey="y" class="buttons__new_post_full {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item} js-btn-full-editor" type="button" value="{$?,{$MOBILE},{!MORE},{!FULL_EDITOR}}" />
-							{+END}
+							<input tabindex="6" accesskey="y" class="buttons__new_post_full {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item} js-btn-full-editor" type="button" value="{$?,{$MOBILE},{!MORE},{!FULL_EDITOR}}" />
 						{+END}
 
 						{+START,IF_PASSED,ATTACHMENTS}
@@ -274,7 +253,7 @@
 						{+END}
 
 						{+START,SET,button_title}{+START,IF_PASSED,SUBMIT_NAME}{SUBMIT_NAME*}{+END}{+START,IF_NON_PASSED,SUBMIT_NAME}{+START,IF_NON_EMPTY,{TITLE}}{TITLE*}{+END}{+START,IF_EMPTY,{TITLE}}{!SEND}{+END}{+END}{+END}
-						<input tabindex="8" accesskey="u" id="submit_button" class="{+START,IF_NON_PASSED,MORE_URL}buttons__new_comment{+END}{+START,IF_PASSED,MORE_URL}buttons__new_reply{+END} {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item} js-btn-submit-comments"{+START,IF,{$JS_ON}} type="button"{+END}{+START,IF,{$NOT,{$JS_ON}}} type="submit"{+END} value="{$?,{$MOBILE},{$REPLACE,{!cns:REPLY},{!_REPLY},{$GET,button_title}},{$GET,button_title}}" />
+						<input tabindex="8" accesskey="u" id="submit_button" class="{+START,IF_NON_PASSED,MORE_URL}buttons__new_comment{+END}{+START,IF_PASSED,MORE_URL}buttons__new_reply{+END} {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item} js-btn-submit-comments" type="button" value="{$?,{$MOBILE},{$REPLACE,{!cns:REPLY},{!_REPLY},{$GET,button_title}},{$GET,button_title}}" />
 					</div>
 				</div>
 			</div>
@@ -285,9 +264,8 @@
 </form>
 {+END}
 
-
-{+START,IF,{$JS_ON}}{+START,IF,{$CONFIG_OPTION,enable_previews}}
+{+START,IF,{$CONFIG_OPTION,enable_previews}}
 	<iframe{$?,{$BROWSER_MATCHES,ie}, frameBorder="0" scrolling="no"} title="{!PREVIEW}" name="preview_iframe" id="preview_iframe" src="{$BASE_URL*}/uploads/index.html" class="hidden_preview_frame">{!PREVIEW}</iframe>
-{+END}{+END}
+{+END}
 
 </div>

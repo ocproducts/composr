@@ -195,10 +195,6 @@ class Module_admin_menus
      */
     public function edit_menu()
     {
-        if (!has_js()) {
-            warn_exit(do_lang_tempcode('MSG_JS_NEEDED'));
-        }
-
         $id = get_param_string('id', '');
         if ($id == '') {
             $id = get_param_string('id_new', '');
@@ -478,7 +474,7 @@ class Module_admin_menus
             }
         }
 
-        decache('menu');
+        delete_cache_entry('menu');
         persistent_cache_delete(array('MENU', $menu_id));
 
         return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));

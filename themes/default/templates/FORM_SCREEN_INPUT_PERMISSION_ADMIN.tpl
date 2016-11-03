@@ -16,9 +16,7 @@
 	{+END}
 
 	{+START,IF,{$OR,{FORCE_PRESETS},{$IS_NON_EMPTY,{OVERRIDES}}}}
-		{+START,IF,{$JS_ON}}
-			<td class="form_table_field_input">
-			</td>
-		{+END}
+		<td class="form_table_field_input">
+		</td>
 	{+END}
 </tr>

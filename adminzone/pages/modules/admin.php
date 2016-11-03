@@ -512,7 +512,7 @@ class Module_admin
                                     $_url = build_url(array('page' => $page, 'type' => $type), $zone);
                                 }
                                 $sup = $breadcrumbs->is_empty() ? null : do_lang_tempcode('LOCATED_IN', $breadcrumbs);
-                                $sitemap_editor_url = build_url(array('page' => 'admin_sitemap', 'type' => 'sitemap', 'id' => $zone . ':' . $page), get_module_zone('admin_sitemap'));
+                                $sitemap_editor_url = build_url(array('page' => 'admin_sitemap', 'type' => 'browse', 'id' => $zone . ':' . $page), get_module_zone('admin_sitemap'));
                                 $permission_tree_editor_url = build_url(array('page' => 'admin_permissions', 'id' => $zone . ':' . $page), get_module_zone('admin_permissions'));
                                /* $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array(
                                     '_GUID' => 'f656efd513099deac516d3273f9adfc4',
@@ -530,9 +530,9 @@ class Module_admin
                     if ($n !== null) {
                         if (($this->_keyword_match($n)) && (has_actual_page_access(get_member(), $page, $zone))) {
                             $_url = build_url(array('page' => $page), $zone);
-                            $site_tree_editor_url = build_url(array('page' => 'admin_sitemap', 'type' => 'sitemap', 'id' => $zone . ':' . $page), get_module_zone('admin_sitemap'));
+                            $sitemap_editor_url = build_url(array('page' => 'admin_sitemap', 'type' => 'browse', 'id' => $zone . ':' . $page), get_module_zone('admin_sitemap'));
                             $permission_tree_editor_url = build_url(array('page' => 'admin_permissions', 'id' => $zone . ':' . $page), get_module_zone('admin_permissions'));
-                            $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => '65420db47f2a73b4cc24258a9e9f3ef9', 'NAME' => $n, 'URL' => $_url, 'TITLE' => '', 'DESCRIPTION' => do_lang_tempcode('FIND_IN_SITEMAP_EDITOR', escape_html($site_tree_editor_url->evaluate()), escape_html($permission_tree_editor_url->evaluate())))));
+                            $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => '65420db47f2a73b4cc24258a9e9f3ef9', 'NAME' => $n, 'URL' => $_url, 'TITLE' => '', 'DESCRIPTION' => do_lang_tempcode('FIND_IN_SITEMAP_EDITOR', escape_html($sitemap_editor_url->evaluate()), escape_html($permission_tree_editor_url->evaluate())))));
                         }
                     }
                 }

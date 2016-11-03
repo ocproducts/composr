@@ -13,7 +13,7 @@
 			</div>
 		{+END}
 
-		{CART_LINK}
+		{$CART_LINK}
 	</div>
 
 	<div class="box box___catalogue_products_entry_screen"><div class="box_inner">
@@ -58,6 +58,9 @@
 			{+START,IF_NON_EMPTY,{FIELD_1}}
 				<p class="product-ids sku">{!PRODUCT_CODE}: <kbd>{FIELD_1}</kbd>{$,Product code}</p>
 			{+END}
+			{+START,IF_NON_EMPTY,{FIELD_3}}
+				<p class="stock_level">{!STOCK}: <kbd>{$NUMBER_FORMAT*,{$STOCK_CHECK,{ID}}}</kbd>{$,Stock level}</p>
+			{+END}
 
 			{CART_BUTTONS}
 		</div>
@@ -75,6 +78,12 @@
 			1_ACCESSKEY=q
 			1_REL=edit
 			1_ICON=menu/_generic_admin/edit_this
+			{+START,IF,{$ADDON_INSTALLED,tickets}}
+				2_URL={$PAGE_LINK,_SEARCH:report_content:content_type=catalogue_entry:content_id={ID}:redirect={$SELF_URL&}}
+				2_TITLE={!report_content:REPORT_THIS}
+				2_ICON=buttons/report
+				2_REL=report
+			{+END}
 		{+END}
 
 		<div class="content_screen_comments">

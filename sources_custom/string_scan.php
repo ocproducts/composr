@@ -114,6 +114,10 @@ function string_scan($lang, $do_guessing = false)
     $lang_strings_admin_initial = array_map('trim', explode("\n", trim('
         WARNING_SERVER_SOFTWARE
         WARNING_NON_MAINTAINED
+        CONFIG_OPTION_reported_times
+        REPORTED_TIMES
+        PRIVILEGE_may_report_content
+        MISSING_REPORTED_CONTENT_TICKET_TYPE
         NON_MAINTAINED_STATUS
         SECURITY_LEVEL
         DESCRIPTION_SECURITY_LEVEL
@@ -145,6 +149,8 @@ function string_scan($lang, $do_guessing = false)
         ABSTRACTION_SYMBOL__PAGE_LINK
         ABSTRACTION_SYMBOL__THUMBNAIL
         ABSTRACT_FILE_MANAGEMENT
+        SPAMMER_DETECTION_HEURISTICS
+        SPAM_HEURISTIC_CONFIDENCE_ALIEN_CODE
         ACCEPTED_MEDIA_TYPES
         WORDFILTER
         AUDIT
@@ -436,7 +442,6 @@ function string_scan($lang, $do_guessing = false)
         AUTO_MERGED
         AUTO_RECUR
         AUTO_SPACER_STUB
-        AUTO_SPACER_TAKE_RESPONSIBILITY
         AUTO_SUBMIT_SITEMAP
         AUTO_TRANSLATE
         AUTO_VALIDATE_ALL_POSTS
@@ -1550,7 +1555,6 @@ function string_scan($lang, $do_guessing = false)
         CANNOT_DELETE_FORUM_OPTION
         CANNOT_DELETE_ROOT_FORUM
         CANNOT_MERGE_CATALOGUES
-        CANT_TAKE_RESPONSIBILITY
         CANT_TRACK
         CAN_MASS_UPLOAD
         CAPTCHAFAIL_HACK
@@ -2380,7 +2384,6 @@ function string_scan($lang, $do_guessing = false)
         CONFIG_GROUP_DEFAULT_DESCRIP_STATISTICS
         CONFIG_GROUP_DEFAULT_DESCRIP_USERS_ONLINE_BLOCK
         CONFIG_GROUP_DESCRIP_CHECK_LIST
-        CONFIG_GROUP_DESCRIP_CONTACT_US_MESSAGING
         CONFIG_GROUP_DESCRIP_IMAP
         CONFIG_GROUP_DESCRIP_LDAP
         CONFIG_GROUP_DESCRIP_PERSONAL_BLOCK
@@ -2740,7 +2743,6 @@ function string_scan($lang, $do_guessing = false)
         CONFIG_OPTION_md_default_sort_order_VALUE_m_username__ASC
         CONFIG_OPTION_members_per_page
         CONFIG_OPTION_message_received_emails
-        CONFIG_OPTION_messaging_forum_name
         CONFIG_OPTION_minimum_autocomplete_length
         CONFIG_OPTION_minimum_autocomplete_past_search
         CONFIG_OPTION_minimum_gamble_amount
@@ -2834,7 +2836,6 @@ function string_scan($lang, $do_guessing = false)
         CONFIG_OPTION_quota_url
         CONFIG_OPTION_random_avatars
         CONFIG_OPTION_remember_me_by_default
-        CONFIG_OPTION_reported_posts_forum
         CONFIG_OPTION_require_new_member_validation
         CONFIG_OPTION_restricted_usernames
         CONFIG_OPTION_reverse_thumb_order
@@ -2923,7 +2924,6 @@ function string_scan($lang, $do_guessing = false)
         CONFIG_OPTION_ticket_mail_server_port
         CONFIG_OPTION_ticket_mail_server_type
         CONFIG_OPTION_ticket_mail_username
-        CONFIG_OPTION_ticket_member_forums
         CONFIG_OPTION_ticket_text
         CONFIG_OPTION_ticket_type_forums
         CONFIG_OPTION_topic_pin
@@ -2994,7 +2994,6 @@ function string_scan($lang, $do_guessing = false)
         CONFLICTING_ZONE_NAME__PAGE
         CONNECT_DB_ERROR
         CONNECT_ERROR
-        CONTACT_US_MESSAGING
         CONTENT_DATE_TIME
         CONTENT_NEEDING_REVIEWING
         CONTENT_OWNER
@@ -3086,7 +3085,6 @@ function string_scan($lang, $do_guessing = false)
         CSS_FILE
         CSS_FILE_UPGRADED
         CSS_INLINE_STYLES
-        CSS_NON_IE_PROPERTIES
         CSS_PX_FONT
         CSS_RULE_OVERMATCHED_css_append
         CSS_RULE_OVERMATCHED_css_prepend
@@ -3403,7 +3401,6 @@ function string_scan($lang, $do_guessing = false)
         DESCRIPTION_DESCRIPTION_FILES
         DESCRIPTION_DESTINATION_FORUM
         DESCRIPTION_DESTINATION_PATH
-        DESCRIPTION_DESTINATION_ZONE
         DESCRIPTION_DISPLAY_REVIEW_STATUS
         DESCRIPTION_DISPLAY_TYPE
         DESCRIPTION_DOWNLOADS_STATISTICS
@@ -3814,7 +3811,6 @@ function string_scan($lang, $do_guessing = false)
         DIRECTORY_NOT_FOUND
         DIRECTORY_RELATIVE_INSTALL
         DISABLED_FUNCTION
-        DISCUSS_BELOW
         DISK_USAGE
         DISMISS_TIP
         DISPATCH
@@ -3893,14 +3889,12 @@ function string_scan($lang, $do_guessing = false)
         DOC_MEMBERS
         DOC_MENUS
         DOC_MERGE_MEMBERS
-        DOC_MESSAGING
         DOC_MULTI_MODERATIONS
         DOC_NETLINK
         DOC_NETLINK_1
         DOC_NEWS
         DOC_NEWSLETTER
         DOC_NOTIFICATIONS
-        DOC_PAGES
         DOC_PAGE_MATCH_KEY_ACCESS
         DOC_PAGE_STATISTICS
         DOC_PERMISSIONS_TREE
@@ -4458,7 +4452,6 @@ function string_scan($lang, $do_guessing = false)
         FORWARDING_DESCRIPTION
         FORW_MAINTAIN_URL
         FOR_EXAMPLE
-        FOR_PUNISHMENT
         FRACTIONAL_EDIT
         FRACTIONAL_EDITING
         FRACTIONAL_EDIT_CANCELLED
@@ -4851,7 +4844,6 @@ function string_scan($lang, $do_guessing = false)
         ITEMS_HERE
         JAVASCRIPT_ERROR
         JAVASCRIPT_EXECUTED
-        JAVASCRIPT_REQUIRED
         JPEG_QUALITY
         JSON_ONLY
         JS_CAPTCHA
@@ -5113,8 +5105,6 @@ function string_scan($lang, $do_guessing = false)
         MERGING_ON_MSN
         MESSAGES
         MESSAGE_RECEIVED_EMAILS
-        MESSAGING_FORUM_NAME
-        MESSAGING_NOTIFICATION_WRAPPER
         META_DESCRIPTION
         MINIMALISTIC_SITE
         MINIMODULE
@@ -5208,7 +5198,6 @@ function string_scan($lang, $do_guessing = false)
         MODULE_TRANS_NAME_admin_lang
         MODULE_TRANS_NAME_admin_lookup
         MODULE_TRANS_NAME_admin_menus
-        MODULE_TRANS_NAME_admin_messaging
         MODULE_TRANS_NAME_admin_newsletter
         MODULE_TRANS_NAME_admin_permissions
         MODULE_TRANS_NAME_admin_phpinfo
@@ -5252,7 +5241,6 @@ function string_scan($lang, $do_guessing = false)
         MOVETO_MENU
         MOVE_DOWN
         MOVE_MENU_ITEM
-        MOVE_PAGES
         MOVE_POSTS
         MOVE_POSTS_A_TEXT
         MOVE_POSTS_B_TEXT
@@ -5260,7 +5248,6 @@ function string_scan($lang, $do_guessing = false)
         MOVE_TOPIC
         MOVE_TOPICS
         MOVE_UP
-        MSG_JS_NEEDED
         MSN_FORUM_DB_NOT_CNS_ALREADY
         MULTILANG_OFF
         MULTILANG_OFF_CONTENT
@@ -5418,7 +5405,6 @@ function string_scan($lang, $do_guessing = false)
         NOTIFICATION_TYPE_ip_address_sharing
         NOTIFICATION_TYPE_low_disk_space
         NOTIFICATION_TYPE_low_stock
-        NOTIFICATION_TYPE_messaging
         NOTIFICATION_TYPE_needs_validation
         NOTIFICATION_TYPE_pointstore_request_custom
         NOTIFICATION_TYPE_pointstore_request_forwarding
@@ -5474,10 +5460,6 @@ function string_scan($lang, $do_guessing = false)
         NO_GD_ON_SERVER_TTF
         NO_HELP
         NO_INTEGERS_TEMPLATE
-        NO_JS_ADVANCED_SCREEN_PERMISSIONS
-        NO_JS_ADVANCED_SCREEN_SITEMAP
-        NO_JS_ADVANCED_SCREEN_ZONE_EDITOR
-        NO_JS_REALTIME
         NO_LAST_BACKUP
         NO_LEVEL_1_HEADERS
         NO_LEVEL_2_HEADERS
@@ -5708,7 +5690,6 @@ function string_scan($lang, $do_guessing = false)
         PINTERFACE_VIEW_NO
         PIN_STATE
         PLEASE_CHOOSE_LANG
-        PLEASE_TAKE_RESPONSIBILITY
         POINTSTORE_ADD_MAIL_FORWARDER
         POINTSTORE_ADD_MAIL_POP3
         POINTSTORE_AMEND_CUSTOM_PERMISSIONS
@@ -5868,7 +5849,7 @@ function string_scan($lang, $do_guessing = false)
         PRIVILEGE_may_choose_custom_title
         PRIVILEGE_may_download_gallery
         PRIVILEGE_may_enable_staff_notifications
-        PRIVILEGE_may_report_post
+        PRIVILEGE_may_report_content
         PRIVILEGE_may_unblind_own_poll
         PRIVILEGE_member_maintenance
         PRIVILEGE_moderate_my_private_rooms
@@ -6045,7 +6026,6 @@ function string_scan($lang, $do_guessing = false)
         REPEAT_PERMISSION_NOTICE
         REPLACEMENT
         REPLACE_PERIODIC
-        REPORTED_POSTS_FORUM
         REPRESENTATIVE_IMAGE
         REQUIRES_MORE_INFO
         REQUIRES_TTF
@@ -6127,8 +6107,6 @@ function string_scan($lang, $do_guessing = false)
         SELECT_A_MESSAGE
         SELECT_CATEGORIES_WANTED
         SELECT_COLUMNS_TO_INCLUDE
-        SELECT_PAGES_DELETE
-        SELECT_PAGES_MOVE
         SELECT_STATS_RANGE
         SELECT_TO_IMPORT
         SELECT_USERGROUPS_TO_FILTER
@@ -6203,7 +6181,6 @@ function string_scan($lang, $do_guessing = false)
         SIMPLIFY_WYSIWYG_BY_PERMISSIONS
         SITEMAP_EDITOR
         SITEMAP_LINK
-        SITEMAP_TOOLS
         SITEWIDE_IM
         SITE_CLOSED
         SITE_DB
@@ -6500,7 +6477,6 @@ function string_scan($lang, $do_guessing = false)
         TEMPLATES_JAVASCRIPT_RELATED
         TEMPLATES_TEXT_RELATED
         TEMPLATES_XML_RELATED
-        TEMPLATE_EDITOR_ACCESSIBILITY_HELP
         TEMPLATE_GUID
         TEMPLATE_GUIDS
         UNPAUSE
@@ -6519,7 +6495,6 @@ function string_scan($lang, $do_guessing = false)
         TABLE_FIXED
         TABLE_PREFIX
         TABLE_PREFIX_TEXT
-        TAKE_RESPONSIBILITY
         TARGET
         TASKS_BACKGROUND
         TASK_LENGTH
@@ -6601,7 +6576,6 @@ function string_scan($lang, $do_guessing = false)
         TICKET_MAIL_SERVER_PORT
         TICKET_MAIL_SERVER_TYPE
         TICKET_MAIL_USERNAME
-        TICKET_MEMBER_FORUMS
         TICKET_NEW_MESSAGE_FOR_STAFF
         TICKET_NEW_STAFF
         TICKET_OTHERS_HACK
@@ -6611,7 +6585,6 @@ function string_scan($lang, $do_guessing = false)
         TICKET_STAFF_ONLY
         TICKET_STAFF_ONLY_DESCRIPTION
         TICKET_STAFF_ONLY_REPLY
-        TICKET_SYSTEM_WEIRD
         TICKET_TYPE_FORUMS
         TICKET_UNASSIGN
         TICKET_UNASSIGNED_BODY
@@ -7142,7 +7115,6 @@ function string_scan($lang, $do_guessing = false)
         _MEMORY_USAGE
         _MERGE
         _MERGE_WIKI_POSTS
-        _MESSAGING_FORUM_NAME
         _MISSING_INSTALLATION_FILE
         _MODIFIED
         _MUST_BE_EMAIL_DOMAIN
@@ -7163,7 +7135,6 @@ function string_scan($lang, $do_guessing = false)
         _SUBSCRIPTION_TERM_END_TIME
         _SUBSCRIPTION_TERM_START_TIME
         _SUHOSIN_MAX_VARS_TOO_LOW
-        _TAKE_RESPONSIBILITY
         _TASK_FAILED_SUBJECT
         _THEMEWIZARD
         _TRANSLATE_CODE
@@ -7186,6 +7157,9 @@ function string_scan($lang, $do_guessing = false)
         CONFIRM_REALLY
         PASSWORDS_DO_NOT_REUSE
         PASSWORD_INSECURE
+        SPAM
+        DESCRIPTION_DELETE_CONTENT
+        DESCRIPTION_DELETE_THIS
     ')));
 
     $non_admin_files = array(
@@ -7199,7 +7173,21 @@ function string_scan($lang, $do_guessing = false)
 
     $lang_strings_non_admin_initial = array_map('trim', explode("\n", trim('
         takes_lots_of_space
+        JAVASCRIPT_REQUIRED
         DESCRIPTION_AWARD_OVERVIEW
+        REPORT_CONTENT
+        DESCRIPTION_REPORT_CONTENT
+        REPORT_OR_ANONYMOUS
+        DESCRIPTION_REPORT_POST
+        REPORT_THIS
+        REPORTED_CONTENT_TITLE
+        REPORTED_CONTENT
+        REPORTED_CONTENT_EXTRA
+        REPORT_ANONYMOUS
+        DESCRIPTION_REPORT_ANONYMOUS
+        DESCRIPTION_REPORT_EMAIL
+        DUPLICATE_REPORT
+        CONTENT_REPORTED
         EMAILS
         AVATARS_CARTOONS
         AVATARS_THEMATIC
@@ -7863,7 +7851,6 @@ function string_scan($lang, $do_guessing = false)
         DESCRIPTION_EMPHASISED
         DESCRIPTION_ENABLE_AUTO_MARK_READ
         DESCRIPTION_EXPIRY_DATE
-        DESCRIPTION_EXPLANATION
         DESCRIPTION_FEEDS_TO_OVERLAY
         DESCRIPTION_FRIENDS
         DESCRIPTION_GAMBLE_AMOUNT
@@ -8434,7 +8421,6 @@ function string_scan($lang, $do_guessing = false)
         MARKED_POST_ACTIONS
         MARKER
         MARKS
-        MARK_JAVASCRIPT_DISABLED
         MARK_READ
         MARK_UNREAD
         MARK_UNREAD_TOO_OLD
@@ -8811,7 +8797,6 @@ function string_scan($lang, $do_guessing = false)
         NO_POSTS
         NO_POSTS_YET
         NO_PT_FROM_ALLOW
-        NO_REPORTED_POST_FORUM
         NO_RESET_ACCESS
         NO_RESULTS
         NO_RESULTS_DAYS
@@ -9087,7 +9072,6 @@ function string_scan($lang, $do_guessing = false)
         PURCHASING
         PURCHASING_TITLE
         PURPLE
-        PUT_YOUR_REPORT_BELOW
         QUANTITY
         QUESTION
         QUICK_REPLY
@@ -9398,7 +9382,6 @@ function string_scan($lang, $do_guessing = false)
         SUPPORT_SEARCH_FAQ
         SUPPORT_TICKET
         SUPPORT_TICKETS
-        SUPPORT_TICKETS_FOR_MEMBER
         SUPPORT_TICKETS_FOR_TYPE
         SURNAME
         SURVEYS

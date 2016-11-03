@@ -11,6 +11,7 @@
 
 .theme_manage_table table {
 	border-collapse: collapse;
+	width: 100%;
 }
 
 .theme_manage_table_icon_column {

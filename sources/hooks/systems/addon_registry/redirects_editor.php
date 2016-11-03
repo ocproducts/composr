@@ -122,7 +122,7 @@ class Hook_addon_registry_redirects_editor
     {
         return array(
             'templates/REDIRECTE_TABLE_REDIRECT.tpl' => 'administrative__redirecte_table_screen',
-            'templates/REDIRECTE_TABLE_SCREEN.tpl' => 'administrative__redirecte_table_screen'
+            'templates/REDIRECTE_TABLE_SCREEN.tpl' => 'administrative__redirecte_table_screen',
         );
     }
 

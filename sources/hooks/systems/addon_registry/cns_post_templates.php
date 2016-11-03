@@ -119,7 +119,7 @@ class Hook_addon_registry_cns_post_templates
     public function tpl_previews()
     {
         return array(
-            'templates/CNS_POST_TEMPLATE_SELECT.tpl' => 'cns_post_template_select'
+            'templates/CNS_POST_TEMPLATE_SELECT.tpl' => 'cns_post_template_select',
         );
     }
 

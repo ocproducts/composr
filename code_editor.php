@@ -455,7 +455,7 @@ END;
         // Edit
         if (!isset($_POST['delete'])) {
             if ($conn === null) { // Via direct access
-                $myfile = @fopen($save_path, 'at');
+                $myfile = @fopen($save_path, 'ab');
                 if ($myfile === false) {
                     echo <<<END
 <script>
@@ -497,7 +497,7 @@ END;
                     $path2 = tempnam(get_custom_file_base() . '/temp/', 'cmsce');
                 }
 
-                $h = fopen($path2, 'wt');
+                $h = fopen($path2, 'wb');
                 if (fwrite($h, $file) === false) {
                     fclose($h);
                     echo <<<END
@@ -549,7 +549,7 @@ END;
             if (file_exists(str_replace('_custom/', '/', $save_path))) {
                 $hash = file_get_contents(str_replace('_custom/', '/', $save_path));
                 if ($conn === null) { // Via direct access
-                    $myfile = @fopen($save_path . '.editfrom', 'wt');
+                    $myfile = @fopen($save_path . '.editfrom', 'wb');
                     if ($myfile !== false) {
                         fwrite($myfile, $hash);
                         fclose($myfile);
@@ -557,9 +557,7 @@ END;
                 } else { // Via FTP
                     $path2 = ce_cms_tempnam();
 
-                    $h = fopen($path2, 'wt');
-                    fwrite($h, $hash);
-                    fclose($h);
+                    file_put_contents($path2, $hash);
 
                     $h = fopen($path2, 'rt');
                     @ftp_fput($conn, $save_path . '.editfrom', $h, FTP_BINARY);

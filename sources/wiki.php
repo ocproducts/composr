@@ -196,7 +196,7 @@ function wiki_add_post($page_id, $message, $validated = 1, $member = null, $send
     }
 
     if (get_option('show_post_validation') == '1') {
-        decache('main_staff_checklist');
+        delete_cache_entry('main_staff_checklist');
     }
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {

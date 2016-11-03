@@ -150,7 +150,7 @@ class Hook_addon_registry_polls
             'templates/POLL_ANSWER_RESULT.tpl' => 'poll_answer_result',
             'templates/POLL_BOX.tpl' => 'poll_answer',
             'templates/POLL_LIST_ENTRY.tpl' => 'poll_list_entry',
-            'templates/POLL_SCREEN.tpl' => 'poll_screen'
+            'templates/POLL_SCREEN.tpl' => 'poll_screen',
         );
     }
 

@@ -114,7 +114,7 @@ class Hook_addon_registry_users_online_block
     public function tpl_previews()
     {
         return array(
-            'templates/BLOCK_SIDE_USERS_ONLINE.tpl' => 'block_side_users_online'
+            'templates/BLOCK_SIDE_USERS_ONLINE.tpl' => 'block_side_users_online',
         );
     }
 

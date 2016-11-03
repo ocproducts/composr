@@ -40,9 +40,11 @@ class Hook_cron_backups
             $time = time();
             $last_time = intval(get_value('last_backup'));
             if ($time >= $backup_schedule_time) {
-                decache('main_staff_checklist');
+                delete_cache_entry('main_staff_checklist');
+
                 require_lang('backups');
                 require_code('backup');
+
                 $max_size = get_value('backup_max_size');
                 $b_type = get_value('backup_b_type');
                 global $MB2_FILE, $MB2_B_TYPE, $MB2_MAX_SIZE;
@@ -54,10 +56,12 @@ class Hook_cron_backups
                 } elseif ($b_type == 'sql') {
                     $file = 'database_' . $end;
                 }
+
                 $MB2_FILE = $file;
                 $MB2_B_TYPE = $b_type;
                 $MB2_MAX_SIZE = $max_size;
-                register_shutdown_function('make_backup_2');
+                register_shutdown_function('make_backup');
+
                 if ($backup_recurrance_days == 0) {
                     delete_value('backup_schedule_time');
                 } else {

@@ -14,11 +14,10 @@ For those unfamiliar with the features of a support desk, or who may not relate 
  - [b]Resolution[/b]: the ability for issues to be marked as 'resolved'
  - [b]Archiving[/b]: past issues may be browsed
 
-Four different Composr systems may be used to provide such a support desk:
+3 different Composr systems may be used to provide such a support desk:
  - The Support Ticket system
  - Discussion Forums
  - The Feedback system
- - The Messaging system
 
 [contents]decimal,lower-alpha[/contents]
 
@@ -63,15 +62,15 @@ Staff will see all open support tickets when they visit the support ticket page,
 	<tbody>
 		<tr>
 			<th>Placement</th>
-			<td>A special interface is provided for this</td>
+			<td>A special interface is provided to open tickets, and also send messages from a simplified block</td>
 		</tr>
 		<tr>
 			<th>Categorisation</th>
-			<td>Support ticket types may be managed from the Admin Zone</td>
+			<td>Support ticket types may be managed from the Admin Zone; staff members may set notifications for them individually</td>
 		</tr>
 		<tr>
 			<th>Prioritisation</th>
-			<td>You can make use of ticket types to set up a priority scale</td>
+			<td>You can make use of ticket types to set up a priority scale; ticket types may be edited</td>
 		</tr>
 		<tr>
 			<th>Assigning</th>
@@ -91,7 +90,7 @@ Staff will see all open support tickets when they visit the support ticket page,
 		</tr>
 		<tr>
 			<th>Archiving</th>
-			<td>Ticket list is made available, according to permissions</td>
+			<td>Ticket list is made available, according to permissions; filtering is available</td>
 		</tr>
 	</tbody>
 </table>
@@ -108,6 +107,8 @@ The primary interface for making or managing tickets is the [tt]tickets[/tt] mod
 Advantages of using the [tt]tickets[/tt] module include:
  - the ability to split replies into separate tickets
  - ticket assignment
+ - showing who has read the ticket
+ - private replies between staff
  - ticket type filtering
  - creation of new tickets (manually creating a new topic is not automatically a valid ticket)
  - staff conflict detection
@@ -118,6 +119,10 @@ The tickets are stored on the forum as they are built on top of our feedback sub
 [title="3"]Defining who gets support[/title]
 
 It is usual to use page access permissions to restrict access to the support ticket page, so that only those that may request support may access the system.
+
+[title="3"]Integration with blocks[/title]
+
+The [tt]main_contact_us[/tt] block is a simplified front-end for the creation of tickets.
 
 [title="3"]Integration with e-mail[/title]
 
@@ -137,62 +142,6 @@ Composr will try and match the original e-mailer for forwarded e-mails. You can 
 [tt]Fwd: How does this work? [SomeUsername][/tt]
 This is useful if Composr cannot match the originating e-mail address automatically. Often people have multiple e-mail addresses. Composr will learn, so you only need to do it once per person. If Composr can't find a match it will e-mail you back saying so, rather than logging the ticket against a Guest. You can override this behaviour via tagging against [tt][Guest][/tt].
 You can also use square brackets to specify the ticket type to log as. Composr "intelligently" matches things in square brackets against whatever it can.
-
-[title="2"]The Messaging system[/title]
-
-The Messaging system is designed to allow staff to easily receive messages and organise themselves with respect to those messages. It is different from the Support Ticket system because the Messaging system is designed around staff planning, and unlike support tickets there is no inbuilt reply mechanism to reply to messages received (although people may leave their contact details). It is optimised for managing feedback instead of maintaining customer relationships.
-
-The Messaging system hooks up to the [tt]main_contact_us[/tt] block.
-
-For more information on this, see the [page="_SEARCH:tut_feedback"]Feedback and user interaction tutorial[/page].
-
-[title="3"]Approach to support functions[/title]
-
-[html]
-<table class="columned_table results_table autosized_table">
-	<thead>
-		<tr>
-			<th>Support&nbsp;feature</th>
-			<th>Method</th>
-		</tr>
-	</thead>
-
-	<tbody>
-		<tr>
-			<th>Placement</th>
-			<td>A special interface is provided for this</td>
-		</tr>
-		<tr>
-			<th>Categorisation</th>
-			<td>You can place multiple contact-us blocks, each identified with different IDs. Staff members may set notifications for them individually.</td>
-		</tr>
-		<tr>
-			<th>Prioritisation</th>
-			<td><em>Not supported, although ticket types may be used in this way</em></td>
-		</tr>
-		<tr>
-			<th>Assigning</th>
-			<td>If more than one member of staff are viewing the same support ticket then a notification will be shown</td>
-		</tr>
-		<tr>
-			<th>Notifications</th>
-			<td>E-mail/etc notifications are sent</td>
-		</tr>
-		<tr>
-			<th>Coordination</th>
-			<td>Staff may privately discuss messages and take ownership</td>
-		</tr>
-		<tr>
-			<th>Resolution</th>
-			<td>Once a staff member has taken ownership over staff can essentially consider the matter resolved</td>
-		</tr>
-		<tr>
-			<th>Archiving</th>
-			<td>It is possible to browse past messages</td>
-		</tr>
-	</tbody>
-</table>
-[/html]
 
 [title="2"]Discussion Forums[/title]
 
@@ -327,6 +276,7 @@ For more information on this, see the [page="_SEARCH:tut_feedback"]Feedback and 
 [title="2"]Support tracker[/title]
 
 Composr does not come with its own issue management database, but we have a non-bundled addon that includes an integrated modified version of Mantis.
+Support tickets can work as a basic private issue management system, using Post Templates amongst other features.
 
 [concepts
  1_key="Support desk      1_value="A virtual support desk is the virtual equivalent to a companies real-world help-desk/support-department/reception/call centre."
@@ -342,4 +292,4 @@ Composr does not come with its own issue management database, but we have a non-
  - [page="_SEARCH:tut_nuances"]Nuances of forum integration[/page]
  - [page="_SEARCH:tut_feedback"]Feedback and user interaction[/page]
 
-{$SET,tutorial_tags,Support,tickets,cns_post_templates,staff_messaging,Administration,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Composr can be used as an effective support desk tool. Find out what features to use for it.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Support,tickets,cns_post_templates,Administration,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Composr can be used as an effective support desk tool. Find out what features to use for it.}[block]main_tutorial_rating[/block]

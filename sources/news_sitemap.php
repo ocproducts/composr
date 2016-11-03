@@ -33,7 +33,7 @@ function build_news_sitemap()
 
     cms_profile_start_for('build_news_sitemap');
 
-    $sitemap_file = fopen($path, GOOGLE_APPENGINE ? 'wb' : 'at');
+    $sitemap_file = fopen($path, GOOGLE_APPENGINE ? 'wb' : 'ab');
     @flock($sitemap_file, LOCK_EX);
     if (!GOOGLE_APPENGINE) {
         ftruncate($sitemap_file, 0);

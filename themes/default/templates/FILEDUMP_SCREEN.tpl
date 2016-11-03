@@ -73,7 +73,7 @@
 			{+END}
 		</div>
 
-		<div aria-labeledby="t_listing" role="tabpanel" id="g_listing" style="display: {$?,{$JS_ON},none,block}">
+		<div aria-labeledby="t_listing" role="tabpanel" id="g_listing" style="display: none">
 			<a id="tab__listing"></a>
 
 			{+START,INCLUDE,FILEDUMP_SEARCH}I=2{+END}
@@ -105,7 +105,7 @@
 		</div>
 
 		{+START,IF_NON_EMPTY,{CREATE_FOLDER_FORM}}
-			<div aria-labeledby="t_create_folder" role="tabpanel" id="g_create_folder" style="display: {$?,{$JS_ON},none,block}">
+			<div aria-labeledby="t_create_folder" role="tabpanel" id="g_create_folder" style="display: none">
 				<a id="tab__create_folder"></a>
 
 				{+START,INCLUDE,FORM_SCREEN_ARE_REQUIRED}{+END}
@@ -115,7 +115,7 @@
 		{+END}
 
 		{+START,IF_NON_EMPTY,{UPLOAD_FORM}}
-			<div aria-labeledby="t_upload" role="tabpanel" id="g_upload" style="display: {$?,{$JS_ON},none,block}">
+			<div aria-labeledby="t_upload" role="tabpanel" id="g_upload" style="display: none">
 				<a id="tab__upload"></a>
 
 				{+START,INCLUDE,FORM_SCREEN_ARE_REQUIRED}{+END}

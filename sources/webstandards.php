@@ -19,11 +19,17 @@
  */
 
 /*
-The webstandards checking is designed for a special blend between uber-modern-standards and cross-browser stability - to only allow XHTML5 and CSS3 that runs (or gracefully degrades) on IE8.
+The webstandards checking is designed for a special blend between uber-modern-standards and cross-browser stability - to only allow XHTML5 and CSS3 that runs (or gracefully degrades) on the minimum Composr browser versions.
 
 We favour the W3C standard over the WHATWG living document.
 
 We continue to prohibit much of what was deprecated in XHTML but brought back into HTML5 (e.g. 'b' tag).
+
+We have a few global flags to tweak behaviour:
+ - MAIL_MODE
+ - SPELLING
+ - PEDANTIC
+(other parameters are accepted to the check_xhtml function)
 */
 
 /**
@@ -43,13 +49,14 @@ function init__webstandards()
     // (X)HTML5, the future
     define('DOCTYPE_XHTML5', '<!DOCTYPE html>');
 
-    global $WEBSTANDARDS_CHECKER_OFF, $WELL_FORMED_ONLY, $WEBSTANDARDS_JAVASCRIPT, $WEBSTANDARDS_CSS, $WEBSTANDARDS_WCAG, $WEBSTANDARDS_COMPAT, $WEBSTANDARDS_EXT_FILES, $WEBSTANDARDS_MANUAL;
+    global $WEBSTANDARDS_CHECKER_OFF, $WELL_FORMED_ONLY, $WEBSTANDARDS_JAVASCRIPT, $WEBSTANDARDS_CSS, $WEBSTANDARDS_WCAG, $WEBSTANDARDS_COMPAT, $WEBSTANDARDS_EXT_FILES, $WEBSTANDARDS_MANUAL, $WEBSTANDARDS_CSP;
     $WEBSTANDARDS_JAVASCRIPT = true;
     $WEBSTANDARDS_CSS = true;
     $WEBSTANDARDS_WCAG = true;
     $WEBSTANDARDS_COMPAT = true;
     $WEBSTANDARDS_EXT_FILES = true;
     $WEBSTANDARDS_MANUAL = false;
+    $WEBSTANDARDS_CSP = false;
 
     global $EXTRA_CHECK;
     $EXTRA_CHECK = array();
@@ -109,9 +116,218 @@ function init__webstandards()
         'ensp' => true, 'emsp' => true, 'thinsp' => true, 'zwnj' => true, 'zwj' => true, 'lrm' => true, 'rlm' => true,
         'ndash' => true, 'mdash' => true, 'lsquo' => true, 'rsquo' => true, 'sbquo' => true,
         'ldquo' => true, 'rdquo' => true, 'bdquo' => true, 'dagger' => true, 'Dagger' => true, 'permil' => true,
-        'lsaquo' => true, 'rsaquo' => true, 'euro' => true);
+        'lsaquo' => true, 'rsaquo' => true, 'euro' => true,
+    );
 
-    $strict_form_accessibility = false; // Form fields may not be empty with this strict rule
+    $enforce_javascript = '([^\n]+)';
+    $enforce_lang = '[a-zA-Z][a-zA-Z](-[a-zA-Z]+)?';
+    $enforce_direction = '(ltr|rtl)';
+    $enforce_align = '(left|center|right|justify|char)';
+    $enforce_align2 = '(top|middle|bottom|left|right)';
+    $enforce_align3 = '(left|center|right|justify)';
+    $enforce_align4 = '(top|bottom|left|right)';
+    $enforce_valign = '(top|middle|bottom|baseline)';
+    $enforce_number = '(-?[0-9]+)';
+    $enforce_inumber = '[0-9]+';
+    $enforce_character = '.';
+    $enforce_color = '(black|silver|gray|white|maroon|purple|fuchsia|green|lime|olive|yellow|navy|blue|teal|aqua|orange|red|(\#[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f])|(\#[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f]))'; // orange and red aren't 'official' -- but kind of handy ;). In reality, the colour codes were never properly defined, and these two are obvious names for obviously needed ones-- they'll be supported
+    $enforce_length = '((0)|(' . $enforce_number . '(|in|cm|mm|ex|pt|pc|px|em|%))|((' . $enforce_number . ')?\.' . $enforce_number . '(in|cm|mm|ex|em|vh|vw|vmin|rem|%)))'; // |ex|pt|in|cm|mm|pc  We don't want these in our XHTML... preferably we only want em when it comes to font size!
+    $enforce_ilength = '((0)|(' . $enforce_inumber . '(|in|cm|mm|ex|pt|pc|px|em|%))|((' . $enforce_inumber . ')?\.' . $enforce_inumber . '(in|cm|mm|ex|em|vh|vw|vmin|rem|%)))'; // |ex|pt|in|cm|mm|pc We don't want these in our XHTML... preferably we only want em when it comes to font size!
+    $enforce_pixels = '[0-9]+';
+    $enforce_auto_or_length = '(auto|' . $enforce_length . ')';
+    $enforce_auto_or_ilength = '(auto|' . $enforce_ilength . ')';
+    $enforce_normal_or_length = '(normal|' . $enforce_length . ')';
+    $enforce_border_width = '(thin|medium|thick|' . $enforce_length . ')';
+    $enforce_potential_4d_border_width = $enforce_border_width . '( ' . $enforce_border_width . '( ' . $enforce_border_width . '( ' . $enforce_border_width . '|)|)|)';
+    $enforce_css_color = '((rgb\(' . $enforce_inumber . '%,' . $enforce_inumber . '%,' . $enforce_inumber . '%\))|(rgb\(' . $enforce_inumber . ',' . $enforce_inumber . ',' . $enforce_inumber . '\))|(rgba\(' . $enforce_inumber . '%,' . $enforce_inumber . '%,' . $enforce_inumber . '%,' . $enforce_inumber . '%\))|(rgba\(' . $enforce_inumber . ',' . $enforce_inumber . ',' . $enforce_inumber . ',' . $enforce_inumber . '\.\d+\))|(\#[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f])|' . $enforce_color . '|ActiveBorder|ActiveCaption|AppWorkspace|Background|Buttonface|ButtonHighlight|ButtonShadow|ButtonText|CaptionText|GrayText|Highlight|HighlightText|InactiveBorder|InactiveCaption|InactiveCaptionText|InfoBackground|InfoText|Menu|MenuText|Scrollbar|ThreeDDarkShadow|ThreeDFace|ThreeDHighlight|ThreeDLightShadow|ThreeDShadow|Window|WindowFrame|WindowText)';
+    $enforce_transparent_or_color = '(transparent|' . $enforce_css_color . ')';
+    $enforce_fraction = '(\d%|\d\d%|100%|0\.\d+|1\.0|0|1)';
+    $_enforce_font_list = "(cursive|fantasy|monospace|serif|sans-serif|Georgia|Times|Trebuchet|Tahoma|Geneva|Verdana|Arial|Helvetica|Courier|Courier New|Impact|'Georgia'|'Times'|'Trebuchet'|'Tahoma'|'Geneva'|'Verdana'|'Arial'|'Helvetica'|'Courier'|'Courier New'|'Impact')";
+    $enforce_font_list = '((([A-Za-z]+)|("[A-Za-z ]+")|(\'[A-Za-z ]+\')),\s*)*' . $_enforce_font_list;
+    $enforce_functional_url = '(url\(\'.+\'\)|url\(".+"\)|url\([^\(\);]+\))';
+    $enforce_functional_url_or_none = '(' . $enforce_functional_url . '|none)';
+    $enforce_border_style = '(none|dotted|dashed|solid|double|groove|ridge|inset|outset|transparent)';
+    $enforce_background_repeat = '(repeat|repeat-x|repeat-y|no-repeat)';
+    $enforce_attachment = '(scroll|fixed)';
+    $_enforce_background_position = '((' . $enforce_length . '|top( ' . $enforce_length . ')?|center|bottom( ' . $enforce_length . ')?)|(' . $enforce_length . '|left( ' . $enforce_length . ')?|center|right( ' . $enforce_length . ')?))';
+    $enforce_background_position = '((' . $_enforce_background_position . ')|(' . $_enforce_background_position . ' ' . $_enforce_background_position . '))';
+    $enforce_border = '((' . $enforce_border_width . '|' . $enforce_border_style . '|' . $enforce_css_color . ')( |$))+';
+    $enforce_potential_4d_length = $enforce_length . '( ' . $enforce_length . '( ' . $enforce_length . '( ' . $enforce_length . '|)|)|)';
+    $enforce_potential_4d_length_auto = $enforce_auto_or_length . '( ' . $enforce_auto_or_length . '( ' . $enforce_auto_or_length . '( ' . $enforce_auto_or_length . '|)|)|)';
+    $enforce_potential_4d_ilength = $enforce_ilength . '( ' . $enforce_ilength . '( ' . $enforce_ilength . '( ' . $enforce_ilength . '|)|)|)';
+    $enforce_potential_4d_ilength_auto = $enforce_auto_or_ilength . '( ' . $enforce_auto_or_ilength . '( ' . $enforce_auto_or_ilength . '( ' . $enforce_auto_or_ilength . '|)|)|)';
+    $enforce_font_style = '(normal|italic|oblique)';
+    $enforce_font_variant = '(normal|small-caps)';
+    $enforce_font_weight = '(lighter|normal|bold|bolder|((\d)+))';
+    $enforce_list_style_position = '(inside|outside)';
+    $enforce_list_style_type = '(none|disc|circle|square|decimal|lower-roman|upper-roman|lower-alpha|upper-alpha|decimal-leading-zero|lower-greek|lower-latin|upper-latin|hebrew|armenian|georgian|cjk-ideographic|hiragana|katakana|hiragana-iroha|katakana-iroha)';
+    $enforce_list_style_image = '(none|' . $enforce_functional_url . ')';
+    $enforce_id = '[a-zA-Z][\w\-\:\.]*';
+    $enforce_name = '[\w\-\:\.]+(\[\])?';
+    if (function_exists('get_forum_type')) {
+        require_code('obfuscate');
+        $enforce_link = ((get_forum_type() == 'none') ? '(mailto:.*)?' : '') . '(mailto:.*|' . preg_quote(mailto_obfuscated(), '#') . '.*)?[^\s\#]*(\#[^\s\#]*)?';
+    } else {
+        $enforce_link = '.*';
+    }
+    $enforce_class = '[ \w-]*';
+    $_counter_increment = '((\w+( \d+)?)+)';
+    $enforce_counter_increment = $_counter_increment . '( ' . $_counter_increment . ')*';
+    $enforce_transition_timing_function = '(linear|ease|ease-in|ease-out|ease-in-out|cubic-bezier\(' . $enforce_fraction . ' ' . $enforce_fraction . ' ' . $enforce_fraction . ' ' . $enforce_fraction . '\))';
+    $enforce_time = '\d[\d\.]*s';
+    $enforce_box_shadow = '((inset )?' . $enforce_length . '( ' . $enforce_length . '( ' . $enforce_length . '( ' . $enforce_length . ')?)?)? ' . $enforce_css_color . ')';
+    $enforce_transition_property = '[\w,\-]+';
+    $enforce_transform_origin = '(left|center|right|' . $enforce_length . ')';
+    $enforce_transform_style = '(flat|preserve-3d)';
+
+    global $CSS_PROPERTIES;
+    $CSS_PROPERTIES = array(
+        'animation' => '.*',
+        'animation-delay' => '.*',
+        'animation-direction' => '.*',
+        'animation-duration' => '\d+s',
+        'animation-fill-mode' => '.*',
+        'animation-iteration-count' => '.*',
+        'animation-name' => '\w+',
+        'animation-play-state' => '.*',
+        'animation-timing-function' => '(linear|ease|ease-in|ease-out|ease-in-out|step-start|step-end|steps\(\d+(,(start|end))?\)|cubic-bezier\([\d\.]+,[\d\.]+,[\d\.]+,[\d\.]+\))',
+        'backface-visibility' => '(hidden|visible)',
+        'background' => '((' . $enforce_transparent_or_color . '|' . $enforce_functional_url_or_none . '|' . $enforce_background_repeat . '|' . $enforce_attachment . '|' . $enforce_background_position . ')( |$))+',
+        'background-attachment' => $enforce_attachment,
+        'background-clip' => '(border-box|padding-box|content-box)',
+        'background-color' => $enforce_transparent_or_color,
+        'background-image' => /*$enforce_functional_url_or_none*/'.*', // Changed to .* to allow gradients
+        'background-origin' => '(border-box|content-box)',
+        'background-position' => $enforce_background_position,
+        'background-repeat' => $enforce_background_repeat,
+        'background-size' => '(' . $enforce_length . ' ' . $enforce_length . ')',
+        'border' => $enforce_border,
+        'border-bottom' => $enforce_border,
+        'border-bottom-color' => $enforce_transparent_or_color,
+        'border-bottom-left-radius' => $enforce_length,
+        'border-bottom-right-radius' => $enforce_length,
+        'border-bottom-style' => $enforce_border_style,
+        'border-bottom-width' => $enforce_border_width,
+        'border-collapse' => '(collapse|separate)',
+        'border-color' => $enforce_transparent_or_color . '( ' . $enforce_transparent_or_color . '( ' . $enforce_transparent_or_color . '( ' . $enforce_transparent_or_color . '|)|)|)',
+        'border-image' => '.*',
+        'border-image-outset' => $enforce_length,
+        'border-image-repeat' => '(stretch|repeat|round|space)',
+        'border-image-slice' => $enforce_length,
+        'border-image-source' => /*$enforce_functional_url_or_none*/'.*', // Changed to .* to allow gradients
+        'border-image-width' => $enforce_length,
+        'border-left' => $enforce_border,
+        'border-left-color' => $enforce_transparent_or_color,
+        'border-left-style' => $enforce_border_style,
+        'border-left-width' => $enforce_border_width,
+        'border-radius' => $enforce_length . '( ' . $enforce_length . '( ' . $enforce_length . '( ' . $enforce_length . ')?)?)?',
+        'border-right' => $enforce_border,
+        'border-right-color' => $enforce_transparent_or_color,
+        'border-right-style' => $enforce_border_style,
+        'border-right-width' => $enforce_border_width,
+        'border-spacing' => $enforce_length . '( ' . $enforce_length . ')?',
+        'border-style' => $enforce_border_style,
+        'border-top' => $enforce_border,
+        'border-top-color' => $enforce_transparent_or_color,
+        'border-top-left-radius' => $enforce_length,
+        'border-top-right-radius' => $enforce_length,
+        'border-top-style' => $enforce_border_style,
+        'border-top-width' => $enforce_border_width,
+        'border-width' => $enforce_potential_4d_border_width,
+        'bottom' => $enforce_auto_or_length,
+        'box-shadow' => '(none|(' . $enforce_box_shadow . '(,\s*' . $enforce_box_shadow . '(,\s*' . $enforce_box_shadow . '(,\s*' . $enforce_box_shadow . ')?)?)?))',
+        'box-sizing' => '(border-box|content-box|padding-box)',
+        'caption-side' => 'top|bottom|left|right',
+        'clear' => '(both|left|right|none)',
+        'clip' => 'auto|(rect\(' . $enforce_potential_4d_length . '\))',
+        'color' => $enforce_css_color,
+        'content' => '.+',
+        'counter-increment' => $enforce_counter_increment,
+        'counter-reset' => $enforce_counter_increment,
+        'cursor' => '(' . $enforce_functional_url . '|default|auto|n-resize|ne-resize|e-resize|se-resize|s-resize|sw-resize|w-resize|nw-resize|crosshair|pointer|move|text|wait|help|progress)',
+        'direction' => '(ltr|rtl)',
+        'display' => '(none|inline|block|list-item|table|table-header-group|table-footer-group|inline-block|run-in|inline-table|table-row|table-row-group|table-column-group|table-column|table-cell|table-caption|flex|-ms-flexbox|-\w+-flex)',
+        'empty-cells' => 'show|hide',
+        'float' => '(left|right|none)',
+        'font' => '((caption|icon|menu|message-box|small-caption|status-bar|' . $enforce_font_style . '|' . $enforce_font_variant . '|' . $enforce_font_weight . '|' . $enforce_length . '|' . $enforce_normal_or_length . '|' . $enforce_font_list . ')( |$))+',
+        'font-family' => $enforce_font_list,
+        'font-size' => 'larger|smaller|xx-small|x-small|small|medium|large|x-large|xx-large|' . $enforce_length,
+        'font-style' => $enforce_font_style,
+        'font-variant' => $enforce_font_variant,
+        'font-weight' => $enforce_font_weight,
+        'height' => $enforce_auto_or_length,
+        'left' => $enforce_auto_or_length,
+        'letter-spacing' => $enforce_normal_or_length,
+        'line-height' => $enforce_normal_or_length,
+        'list-style' => '((' . $enforce_list_style_type . '|' . $enforce_list_style_position . '|' . $enforce_list_style_image . ')( |$))+',
+        'list-style-image' => '(' . $enforce_functional_url . '|none)',
+        'list-style-position' => $enforce_list_style_position,
+        'list-style-type' => $enforce_list_style_type,
+        'margin' => $enforce_potential_4d_length_auto,
+        'margin-bottom' => $enforce_auto_or_length,
+        'margin-left' => $enforce_auto_or_length,
+        'margin-right' => $enforce_auto_or_length,
+        'margin-top' => $enforce_auto_or_length,
+        'marker-offset' => $enforce_auto_or_length,
+        'max-height' => $enforce_auto_or_length,
+        'max-width' => $enforce_auto_or_length,
+        'min-height' => $enforce_auto_or_length,
+        'min-width' => $enforce_auto_or_length,
+        'opacity' => $enforce_fraction,
+        'outline' => $enforce_border,
+        'outline-color' => $enforce_transparent_or_color,
+        'outline-style' => $enforce_border_style,
+        'outline-width' => $enforce_border_width,
+        'overflow' => '(visible|hidden|scroll|auto)',
+        'overflow-x' => '(visible|hidden|scroll|auto)',
+        'overflow-y' => '(visible|hidden|scroll|auto)',
+        'padding' => $enforce_potential_4d_ilength,
+        'padding-bottom' => $enforce_auto_or_ilength,
+        'padding-left' => $enforce_auto_or_ilength,
+        'padding-right' => $enforce_auto_or_ilength,
+        'padding-top' => $enforce_auto_or_ilength,
+        'page-break-after' => '(auto|left|right|always)',
+        'page-break-before' => '(auto|left|right|always)',
+        'perspective' => $enforce_length,
+        'perspective-origin' => $enforce_background_position,
+        'position' => '(static|relative|absolute|fixed)',
+        'quotes' => '.+ .+',
+        'right' => $enforce_auto_or_length,
+        'table-layout' => '(auto|fixed)',
+        'text-align' => '(left|right|center|justify)',
+        'text-decoration' => '(underline|line-through|none|blink)',
+        'text-indent' => $enforce_length,
+        'text-shadow' => '(none|(' . $enforce_length . ' ' . $enforce_length . '( ' . $enforce_length . ')?( ' . $enforce_css_color . ')?))',
+        'text-transform' => '(capitalize|uppercase|lowercase|none)',
+        'top' => $enforce_auto_or_length,
+        'transform' => '(none|\w+\([^\(\)]+\))',
+        'transform-origin' => $enforce_transform_origin . '( ' . $enforce_transform_origin . '( ' . $enforce_transform_origin . ')?)?',
+        'transform-style' => $enforce_transform_style,
+        'transition' => $enforce_transition_property . '( ' . $enforce_time . '( ' . $enforce_transition_timing_function . '( ' . $enforce_time . ')?)?)?',
+        'transition-delay' => $enforce_time,
+        'transition-duration' => $enforce_time,
+        'transition-property' => $enforce_transition_property,
+        'transition-timing-function' => $enforce_transition_timing_function,
+        'unicode-bidi' => '(bidi-override|normal|embed)',
+        'vertical-align' => '(baseline|sub|super|top|text-top|middle|bottom|text-bottom|' . $enforce_length . ')',
+        'visibility' => '(hidden|visible|collapse)',
+        'white-space' => '(normal|pre|nowrap|pre-wrap|pre-line)',
+        'width' => $enforce_auto_or_length,
+        'word-spacing' => $enforce_normal_or_length,
+        'z-index' => '(auto|(\d+))',
+
+        /* Purposely left out these CSS features due to very poor browser support or generally irrelevancy */
+        /*
+        (print module)
+        (aural module)
+        (columns module)
+        (low level font and color settings)
+        */
+
+        /* These are non standard but we want them */
+        'writing-mode' => '(tb-rl|lr-tb)', // A more complex W3C standard is underway. Only IE supports this one.
+        'word-wrap' => '(normal|break-word)', // Was renamed to overflow-wrap, but that name is not supported widely
+    );
 
     global $POSSIBLY_EMPTY_TAGS;
     $POSSIBLY_EMPTY_TAGS = array(
@@ -122,14 +338,11 @@ function init__webstandards()
         'th' => true, // Only use for 'corner' ones
         'textarea' => true,
         'button' => true,
-        'script' => true, // If we have one of these as self-closing in IE... it kills it!
+        'script' => true, // HTML forces us to have empty script (not self-closing) tags to do includes, it's weird but it's the standard
         'noscript' => true,
         'li' => true,
         'embed' => true,
     );
-    if ($strict_form_accessibility) {
-        unset($POSSIBLY_EMPTY_TAGS['textarea']);
-    }
 
     global $MUST_SELFCLOSE_TAGS;
     $MUST_SELFCLOSE_TAGS = array(
@@ -270,6 +483,535 @@ function init__webstandards()
         'menu' => true,
     );
 
+    global $TAGS_BLOCK;
+    $TAGS_BLOCK = array(
+        'div' => true,
+        'h1' => true,
+        'h2' => true,
+        'h3' => true,
+        'h4' => true,
+        'h5' => true,
+        'h6' => true,
+        'p' => true,
+        'blockquote' => true,
+        'pre' => true,
+        'hr' => true,
+        'fieldset' => true,
+        'figure' => true,
+
+        // Best classified as block
+        'address' => true,
+        'iframe' => true,
+        'noscript' => true,
+        'table' => true,
+        'tbody' => true,
+        'td' => true,
+        'tfoot' => true,
+        'th' => true,
+        'thead' => true,
+        'tr' => true,
+        'dd' => true,
+        'dt' => true,
+        'dl' => true,
+        'li' => true,
+        'ol' => true,
+        'ul' => true,
+        'rbc' => true,
+        'rtc' => true,
+        'rb' => true,
+        'rt' => true,
+        'rp' => true,
+    );
+    $TAGS_BLOCK += array(
+        'video' => true,
+        'details' => true,
+        'summary' => true,
+        'section' => true,
+        'nav' => true,
+        'header' => true,
+        'footer' => true,
+        'figure' => true,
+        'canvas' => true,
+        'audio' => true,
+        'aside' => true,
+        'article' => true,
+    );
+
+    global $TAGS_INLINE;
+    $TAGS_INLINE = array(
+        'span' => true,
+        'br' => true,
+        'abbr' => true,
+        'cite' => true,
+        'code' => true,
+        'dfn' => true,
+        'em' => true,
+        'strong' => true,
+        'kbd' => true,
+        'q' => true,
+        'samp' => true,
+        'var' => true,
+        'sub' => true,
+        'sup' => true,
+        'del' => true,
+        'ruby' => true,
+
+        // Best classified as inline
+        'a' => true,
+        'bdo' => true,
+        'img' => true,
+        'ins' => true,
+        'param' => true,
+        'textarea' => true,
+        'button' => true,
+        'input' => true,
+        'select' => true,
+        'embed' => true,
+        'object' => true,
+        'caption' => true,
+        'label' => true,
+    );
+
+    $TAGS_INLINE += array(
+        'wbr' => true,
+        'time' => true,
+        'progress' => true,
+        'output' => true,
+        'meter' => true,
+        'mark' => true,
+        'keygen' => true,
+        'datalist' => true,
+        'command' => true,
+        'track' => true,
+    );
+
+    global $TAGS_NORMAL;
+    $TAGS_NORMAL = array(
+        'base' => true,
+        'body' => true,
+        'col' => true,
+        'colgroup' => true,
+        'head' => true,
+        'html' => true,
+        'link' => true,
+        'map' => true,
+        'meta' => true,
+        'optgroup' => true,
+        'option' => true,
+        'style' => true,
+        'title' => true,
+        'legend' => true,
+        'figcaption' => true,
+        'script' => true,
+        'area' => true,
+
+        // I'd call this 'block', but XHTML-strict other checkers would disagree - probably xhtml-strict doesn't consider 'programmatic' elements to be inline/block
+        'form' => true,
+    );
+
+    $TAGS_NORMAL += array(
+        'source' => true,
+    );
+
+    global $TAGS_BLOCK_DEPRECATED;
+    $TAGS_BLOCK_DEPRECATED = array(
+        'dir' => true,
+        'menu' => true,
+    );
+
+    global $TAGS_INLINE_DEPRECATED;
+    $TAGS_INLINE_DEPRECATED = array(
+        // Would be removed in XHTML strict and deprecated in transitional
+        'center' => true,
+        'applet' => true,
+        'font' => true,
+        's' => true,
+        'strike' => true,
+        'u' => true,
+    );
+
+    global $TAGS_NORMAL_DEPRECATED;
+    $TAGS_NORMAL_DEPRECATED = array(
+        'basefont' => true,
+    );
+
+    global $TAG_ATTRIBUTES;
+    $TAG_ATTRIBUTES = array(
+        '*.class' => $enforce_class,
+        '*.contenteditable' => '(true|false)',
+        '*.contextmenu' => $enforce_id,
+        '*.dir' => $enforce_direction,
+        '*.draggable' => '(true|false|auto)',
+        '*.dropzone' => '(copy|move|link)',
+        '*.hidden' => '(hidden)',
+        '*.id' => $enforce_id,
+        '*.itemprop' => '.*',
+        '*.itemscope' => '.*',
+        '*.itemtype' => '.*',
+        '*.lang' => $enforce_lang,
+        '*.onclick' => $enforce_javascript,
+        '*.ondblclick' => $enforce_javascript,
+        '*.onkeydown' => $enforce_javascript,
+        '*.onkeypress' => $enforce_javascript,
+        '*.onkeyup' => $enforce_javascript,
+        '*.onmousedown' => $enforce_javascript,
+        '*.onmousemove' => $enforce_javascript,
+        '*.onmouseout' => $enforce_javascript,
+        '*.onmouseover' => $enforce_javascript,
+        '*.onmouseup' => $enforce_javascript,
+        '*.spellcheck' => '(true|false)',
+        '*.style' => '.*',
+        '*.title' => '.*',
+        '*.translate' => '(yes|no)',
+        'a.accesskey' => $enforce_character,
+        'a.charset' => '.+',
+        'a.coords' => '.+',
+        'a.download' => '(download)',
+        'a.href' => $enforce_link,
+        'a.hreflang' => $enforce_lang,
+        'a.media' => '.+',
+        'a.onblur' => $enforce_javascript,
+        'a.onfocus' => $enforce_javascript,
+        'a.rel' => '.*',
+        'a.rev' => '.+',
+        'a.shape' => '(rect|circle|poly|default)',
+        'a.tabindex' => $enforce_inumber,
+        'a.target' => '.+',
+        'a.type' => '.+',
+        'area.accesskey' => $enforce_character,
+        'area.alt' => '.*',
+        'area.coords' => '.+',
+        'area.href' => $enforce_link,
+        'area.nohref' => 'nohref',
+        'area.onblur' => '.+',
+        'area.onfocus' => $enforce_javascript,
+        'area.shape' => '(rect|circle|poly|default)',
+        'area.tabindex' => $enforce_inumber,
+        'area.target' => '.+',
+        'aria-activedescendant' => $enforce_id,
+        'aria-atomic' => '(true|false)',
+        'aria-autocomplete' => '(true|false)',
+        'aria-busy' => '(true|false)',
+        'aria-checked' => '(true|false)',
+        'aria-controls' => $enforce_id,
+        'aria-describedby' => $enforce_id,
+        'aria-disabled' => '(true|false)',
+        'aria-dropeffect' => '(copy|move|link|execute|popup|none)',
+        'aria-expanded' => '(true|false)',
+        'aria-flowto' => $enforce_id,
+        'aria-grabbed' => '(true|false)',
+        'aria-haspopup' => '(true|false)',
+        'aria-hidden' => '(true|false)',
+        'aria-invalid' => '(true|false)',
+        'aria-label' => $enforce_id,
+        'aria-labelledby' => $enforce_id,
+        'aria-level' => $enforce_number,
+        'aria-live' => '(true|false)',
+        'aria-multiline' => '(true|false)',
+        'aria-multiselectable' => '(true|false)',
+        'aria-orientation' => '(scrollbar|separator|slider)',
+        'aria-owns' => $enforce_id,
+        'aria-posinset' => '(true|false)',
+        'aria-pressed' => '(true|false)',
+        'aria-readonly' => '(true|false)',
+        'aria-relevant' => '(true|false)',
+        'aria-required' => '(true|false)',
+        'aria-selected' => '(true|false)',
+        'aria-setsize' => $enforce_number,
+        'aria-sort' => '(ascending|descending)',
+        'aria-valuemax' => '.*',
+        'aria-valuemin' => '.*',
+        'aria-valuenow' => '.*',
+        'aria-valuetext' => '.*',
+        'audio.autoplay' => '(autoplay)',
+        'audio.controls' => '(controls)',
+        'audio.loop' => '(loop)',
+        'audio.preload' => '(auto|metadata|none)',
+        'audio.src' => '.*',
+        'base.href' => $enforce_link,
+        'base.target' => '.+',
+        'blockquote.cite' => '.+',
+        'body.onload' => $enforce_javascript,
+        'body.onunload' => $enforce_javascript,
+        'button.accesskey' => $enforce_character,
+        'button.disabled' => 'disabled',
+        'button.form' => $enforce_name,
+        'button.formaction' => '.+',
+        'button.formenctype' => '(application/x-www-form-urlencoded|multipart/form-data|text/plain)',
+        'button.formmethod' => '(get|post)',
+        'button.formnovalidate' => '(formnovalidate)',
+        'button.formtarget' => $enforce_name,
+        'button.name' => $enforce_name,
+        'button.onblur' => $enforce_javascript,
+        'button.onfocus' => $enforce_javascript,
+        'button.tabindex' => $enforce_inumber,
+        'button.type' => '(button|submit|reset)',
+        'button.value' => '.+',
+        'canvas.height' => $enforce_length,
+        'canvas.width' => $enforce_length,
+        'col.char' => $enforce_character,
+        'col.charoff' => $enforce_length,
+        'col.span' => $enforce_inumber,
+        'colgroup.char' => $enforce_character,
+        'colgroup.charoff' => $enforce_length,
+        'colgroup.span' => $enforce_inumber,
+        'command.checked' => '(checked)',
+        'command.disabled' => '(disabled)',
+        'command.icon' => '.+',
+        'command.label' => $enforce_id,
+        'command.radiogroup' => $enforce_name,
+        'command.type' => '(checkbox|command|radio)',
+        'del.cite' => '.+',
+        'del.datetime' => '.+',
+        'details.open' => '(open)',
+        'div.xml:lang' => $enforce_lang,
+        'embed.height' => $enforce_inumber,
+        'embed.src' => $enforce_link,
+        'embed.type' => '.*',
+        'embed.width' => $enforce_inumber,
+        'fieldset.disabled' => '(disabled)',
+        'fieldset.form' => $enforce_name,
+        'fieldset.name' => $enforce_name,
+        'form.accept-charset' => '.+',
+        'form.action' => $enforce_link,
+        'form.autocomplete' => '(on|off)',
+        'form.enctype' => 'multipart/form-data|application/x-www-form-urlencoded',
+        'form.method' => '(get|post)',
+        'form.novalidate' => '(novalidate)',
+        'form.oninput' => '.+',
+        'form.onreset' => '.+',
+        'form.onsubmit' => '.+',
+        'form.target' => '.+',
+        'html.manifest' => '.+',
+        'html.version' => '.+',
+        'html.xml:lang' => $enforce_lang,
+        'html.xmlns' => '.+',
+        'iframe.longdesc' => '.+',
+        'iframe.name' => $enforce_name,
+        'iframe.sandbox' => '(allow-forms|allow-same-origin|allow-scripts|allow-top-navigation)',
+        'iframe.seamless' => '(seamless)',
+        'iframe.src' => '.+',
+        'iframe.srcdoc' => '.+',
+        'img.alt' => '.*', // Have to allow this really, for non-semantic images
+        'img.height' => $enforce_inumber,
+        'img.ismap' => 'ismap',
+        'img.longdesc' => '.+',
+        'img.src' => $enforce_link,
+        'img.srcset' => '(' . $enforce_link . ' \d+x( |$))*',
+        'img.usemap' => '.+',
+        'img.width' => $enforce_inumber,
+        'input.accept' => '.+',
+        'input.accesskey' => $enforce_character,
+        'input.alt' => '.*',
+        'input.autocomplete' => '(on|off)',
+        'input.autofocus' => '(autofocus)',
+        'input.checked' => 'checked',
+        'input.disabled' => 'disabled',
+        'input.form' => $enforce_name,
+        'input.formaction' => '.+',
+        'input.formenctype' => '(application/x-www-form-urlencoded|multipart/form-data|text/plain)',
+        'input.formmethod' => '(get|post)',
+        'input.formnovalidate' => '(formnovalidate)',
+        'input.formtarget' => $enforce_name,
+        'input.height' => $enforce_inumber,
+        'input.list' => $enforce_name,
+        'input.max' => '.+',
+        'input.maxlength' => $enforce_inumber,
+        'input.min' => '.+',
+        'input.multiple' => '(multiple)',
+        'input.name' => $enforce_name,
+        'input.onblur' => '.+',
+        'input.onchange' => '.+',
+        'input.onfocus' => $enforce_javascript,
+        'input.onselect' => '.+',
+        'input.pattern' => '.+',
+        'input.placeholder' => '.+',
+        'input.readonly' => 'readonly',
+        'input.required' => '(required)',
+        'input.size' => '.+',
+        'input.src' => '.+',
+        'input.step' => 'any|(-?[0-9]+(\.[0-9]+)?)',
+        'input.tabindex' => $enforce_inumber,
+        'input.type' => '(text|password|checkbox|radio|submit|reset|file|hidden|image|button|color|date|datetime|datetime-local|email|month|number|range|search|tel|time|url|week)',
+        'input.usemap' => '.+',
+        'input.value' => '.*',
+        'input.width' => $enforce_inumber,
+        'ins.cite' => '.+',
+        'ins.datetime' => '.+',
+        'keygen.autofocus' => '(autofocus)',
+        'keygen.challenge' => '(challenge)',
+        'keygen.disabled' => '(disabled)',
+        'keygen.keytype' => '(rsa|other)',
+        'keygen.name' => $enforce_name,
+        'label.accesskey' => $enforce_character,
+        'label.for' => $enforce_id,
+        'label.form' => $enforce_name,
+        'label.onblur' => '.+',
+        'label.onfocus' => $enforce_javascript,
+        'legend.accesskey' => $enforce_character,
+        'link.charset' => '.+',
+        'link.href' => $enforce_link,
+        'link.hreflang' => $enforce_lang,
+        'link.media' => '.+',
+        'link.rel' => '.+',
+        'link.rev' => '.+',
+        'link.sizes' => '.+',
+        'link.type' => '.+',
+        'map.name' => $enforce_name,
+        'menu.label' => '.*',
+        'menu.type' => '(context|toolbar|list)',
+        'meta.charset' => '.+',
+        'meta.content' => '.*',
+        'meta.http-equiv' => '[a-zA-Z].+',
+        'meta.name' => '[a-zA-Z].+',
+        'meta.property' => '[a-zA-Z].+',
+        'meta.scheme' => '.+',
+        'meter.form' => $enforce_name,
+        'meter.high' => $enforce_number,
+        'meter.low' => $enforce_number,
+        'meter.max' => $enforce_number,
+        'meter.min' => $enforce_number,
+        'meter.optimum' => $enforce_number,
+        'meter.value' => $enforce_number,
+        'object.archive' => '.+',
+        'object.classid' => '.+',
+        'object.codebase' => $enforce_link,
+        'object.codetype' => '.+',
+        'object.data' => $enforce_link,
+        'object.declare' => 'declare',
+        'object.form' => $enforce_name,
+        'object.height' => $enforce_length,
+        'object.name' => $enforce_name,
+        'object.standby' => '.+',
+        'object.tabindex' => $enforce_inumber,
+        'object.type' => '.+',
+        'object.usemap' => '.+',
+        'object.width' => $enforce_length,
+        'ol.reversed' => '(reversed)',
+        'optgroup.disabled' => 'disabled',
+        'optgroup.label' => '.+',
+        'option.disabled' => 'disabled',
+        'option.label' => '.+',
+        'option.selected' => 'selected',
+        'option.value' => '.*',
+        'output.for' => $enforce_id,
+        'output.form' => $enforce_name,
+        'output.name' => $enforce_name,
+        'param.name' => $enforce_name,
+        'param.type' => '.+',
+        'param.value' => '.+',
+        'param.valuetype' => '(data|ref|object)',
+        'progress.max' => $enforce_number,
+        'progress.value' => $enforce_number,
+        'q.cite' => '.+',
+        'rt.rbspan' => $enforce_inumber,
+        'script.async' => '(async)',
+        'script.charset' => '.+',
+        'script.defer' => 'defer',
+        'script.event' => '.+',
+        'script.for' => '.+',
+        'script.src' => '.+',
+        'script.type' => 'text/javascript',
+        'select.autofocus' => '(autofocus)',
+        'select.disabled' => 'disabled',
+        'select.form' => $enforce_name,
+        'select.multiple' => 'multiple',
+        'select.name' => $enforce_name,
+        'select.onblur' => '.+',
+        'select.onchange' => '.+',
+        'select.onfocus' => $enforce_javascript,
+        'select.size' => $enforce_inumber,
+        'select.tabindex' => $enforce_inumber,
+        'source.media' => '.*',
+        'source.src' => '.*',
+        'source.type' => '.*',
+        'span.xml:lang' => $enforce_lang,
+        'style.media' => '.+',
+        'style.scoped' => '(scoped)',
+        'style.type' => 'text/css',
+        'table.frame' => '(void|above|below|hsides|lhs|rhs|vsides|box|border)',
+        'table.rules' => '(none|groups|rows|cols|all)',
+        'tbody.char' => $enforce_character,
+        'tbody.charoff' => $enforce_length,
+        'td.axis' => '.+',
+        'td.char' => $enforce_character,
+        'td.charoff' => $enforce_length,
+        'td.colspan' => $enforce_inumber,
+        'td.headers' => '.+',
+        'td.rowspan' => $enforce_inumber,
+        'td.scope' => '(row|col|rowgroup|colgroup)',
+        'textarea.accesskey' => $enforce_character,
+        'textarea.autofocus' => '(autofocus)',
+        'textarea.cols' => $enforce_inumber,
+        'textarea.dirname' => $enforce_name,
+        'textarea.disabled' => 'disabled',
+        'textarea.form' => $enforce_name,
+        'textarea.maxlength' => $enforce_inumber,
+        'textarea.name' => $enforce_name,
+        'textarea.onblur' => '.+',
+        'textarea.onchange' => '.+',
+        'textarea.onfocus' => $enforce_javascript,
+        'textarea.onselect' => '.+',
+        'textarea.placeholder' => '.+',
+        'textarea.readonly' => 'readonly',
+        'textarea.required' => '(required)',
+        'textarea.rows' => $enforce_inumber,
+        'textarea.tabindex' => $enforce_inumber,
+        'textarea.wrap' => '(hard|soft)',
+        'tfoot.char' => $enforce_character,
+        'tfoot.charoff' => $enforce_length,
+        'th.axis' => '.+',
+        'th.char' => $enforce_character,
+        'th.charoff' => $enforce_length,
+        'th.colspan' => $enforce_inumber,
+        'th.headers' => '.+',
+        'th.rowspan' => $enforce_inumber,
+        'th.scope' => '(row|col|rowgroup|colgroup)',
+        'thead.char' => $enforce_character,
+        'thead.charoff' => $enforce_length,
+        'time.datetime' => '.*',
+        'tr.char' => $enforce_character,
+        'tr.charoff' => $enforce_length,
+        'track.default' => '(default)',
+        'track.kind' => '(subtitles|captions|descriptions|chapters|metadata)',
+        'track.label' => '.*',
+        'track.lang' => $enforce_lang,
+        'track.src' => '.*',
+        'video.audio' => '(muted)',
+        'video.autoplay' => '(autoplay)',
+        'video.controls' => '(controls)',
+        'video.height' => $enforce_length,
+        'video.loop' => '(loop)',
+        'video.poster' => '.*',
+        'video.preload' => '(auto|metadata|none)',
+        'video.src' => '.*',
+        'video.width' => $enforce_length,
+
+        // These are needed in IE, so we will have to browser sniff and output if IE being used, but not check them as okay
+        //'iframe.scrolling' => '(yes|no|auto)',
+        //'iframe.frameborder' => '(1|0)',
+    );
+
+    global $TAG_ATTRIBUTES_REQUIRED;
+    $TAG_ATTRIBUTES_REQUIRED = array(
+        'base' => array('href'), // XHTML-strict
+        'meta' => array('content'),
+        'style' => array(/*'type'*/),
+        'script' => array(/*'type'*/),
+        'bdo' => array('dir'),
+        'basefont' => array('size'),
+        //'param' => array('name'), Not needed in XHTML strict
+        'iframe' => array('src', 'title'),
+        'img' => array('src', 'alt'),
+        'label' => array('for'),
+        'map' => array('id'),
+        'area' => array('alt'),
+        'form' => array('action', 'title', 'autocomplete'/*not really required but for stability we should always set it*/),
+        'textarea' => array('cols', 'rows'),
+        //'input' => array('value'), // accessibility, checked somewhere else
+        'optgroup' => array('label'),
+    );
+
     define('IN_XML_TAG', -3);
     define('IN_DTD_TAG', -2);
     define('NO_MANS_LAND', -1);
@@ -299,9 +1041,10 @@ function init__webstandards()
  * @param  boolean $webstandards_compat Validate for compatibility
  * @param  boolean $webstandards_ext_files Validate external files
  * @param  boolean $webstandards_manual Bring up messages about manual checks
+ * @param  boolean $webstandards_csp Bring up messages about CSP
  * @return ?map Error information (null: no error)
  */
-function check_xhtml($out, $well_formed_only = false, $is_fragment = false, $webstandards_javascript = true, $webstandards_css = true, $webstandards_wcag = true, $webstandards_compat = true, $webstandards_ext_files = true, $webstandards_manual = false)
+function check_xhtml($out, $well_formed_only = false, $is_fragment = false, $webstandards_javascript = true, $webstandards_css = true, $webstandards_wcag = true, $webstandards_compat = true, $webstandards_ext_files = true, $webstandards_manual = false, $webstandards_csp = false)
 {
     if (php_function_allowed('set_time_limit')) {
         @set_time_limit(100);
@@ -311,7 +1054,7 @@ function check_xhtml($out, $well_formed_only = false, $is_fragment = false, $web
         disable_php_memory_limit();
     }
 
-    global $WEBSTANDARDS_CHECKER_OFF, $WELL_FORMED_ONLY, $WEBSTANDARDS_JAVASCRIPT, $WEBSTANDARDS_CSS, $WEBSTANDARDS_WCAG, $WEBSTANDARDS_COMPAT, $WEBSTANDARDS_EXT_FILES, $WEBSTANDARDS_MANUAL, $UNDER_XMLNS;
+    global $WEBSTANDARDS_CHECKER_OFF, $WELL_FORMED_ONLY, $WEBSTANDARDS_JAVASCRIPT, $WEBSTANDARDS_CSS, $WEBSTANDARDS_WCAG, $WEBSTANDARDS_COMPAT, $WEBSTANDARDS_EXT_FILES, $WEBSTANDARDS_MANUAL, $WEBSTANDARDS_CSP, $UNDER_XMLNS;
     if (function_exists('mixed')) {
         $WEBSTANDARDS_CHECKER_OFF = mixed();
     }
@@ -328,6 +1071,7 @@ function check_xhtml($out, $well_formed_only = false, $is_fragment = false, $web
     $WEBSTANDARDS_COMPAT = $webstandards_compat;
     $WEBSTANDARDS_EXT_FILES = $webstandards_ext_files;
     $WEBSTANDARDS_MANUAL = $webstandards_manual;
+    $WEBSTANDARDS_CSP = $webstandards_csp;
 
     global $IDS_SO_FAR;
     $IDS_SO_FAR = array();
@@ -393,8 +1137,6 @@ function check_xhtml($out, $well_formed_only = false, $is_fragment = false, $web
 
     $token = _get_next_tag();
     while ($token !== null) {
-        //echo $T_POS . '-' . $POS . ' (' . $stack_size . ')<br />';
-
         while ((is_array($token)) && (count($token) != 0)) { // Some kind of error in our token
             if ($WEBSTANDARDS_CHECKER_OFF === null) {
                 foreach ($token[1] as $error) {
@@ -431,7 +1173,6 @@ function check_xhtml($out, $well_formed_only = false, $is_fragment = false, $web
                 $only_one_of[$basis_token]--;
             }
 
-            //echo 'Push $basis_token<br />';
             $level_ranges[] = array($stack_size, $T_POS, $POS);
             if (isset($to_find[$basis_token])) {
                 unset($to_find[$basis_token]);
@@ -544,7 +1285,6 @@ function check_xhtml($out, $well_formed_only = false, $is_fragment = false, $web
                 }
                 $stack_size--;
                 $level_ranges[] = array($stack_size, $T_POS, $POS);
-                //echo 'Popped $previous<br />';
 
                 if ((($WEBSTANDARDS_CHECKER_OFF === null)) && (!$WELL_FORMED_ONLY) && (($WEBSTANDARDS_CHECKER_OFF === null))) {
                     if ($previous == 'script') {
@@ -576,7 +1316,7 @@ function check_xhtml($out, $well_formed_only = false, $is_fragment = false, $web
         return array('level_ranges' => $level_ranges, 'tag_ranges' => $TAG_RANGES, 'value_ranges' => $VALUE_RANGES, 'errors' => $errors);
     }
 
-    if (!$well_formed_only) { // if ((($WEBSTANDARDS_CHECKER_OFF === null)) || (!$well_formed_only)) // checker-off check needed because it's possible a non-checkable portion foobars up possibility of interpreting the rest of the document such that checking ends early
+    if (!$well_formed_only) {
         if (!$is_fragment) {
             foreach (array_keys($to_find) as $tag) {
                 $errors[] = _xhtml_error('XHTML_MISSING_TAG', $tag);
@@ -591,8 +1331,6 @@ function check_xhtml($out, $well_formed_only = false, $is_fragment = false, $web
             if (!$FOUND_CONTENTTYPE) {
                 $errors[] = _xhtml_error('XHTML_CONTENTTYPE');
             }
-            //if (!$FOUND_KEYWORDS) $errors[]=_xhtml_error('XHTML_KEYWORDS');
-            //if (!$FOUND_DESCRIPTION) $errors[]=_xhtml_error('XHTML_DESCRIPTION');
         }
 
         if (!$is_fragment) {
@@ -613,7 +1351,7 @@ function check_xhtml($out, $well_formed_only = false, $is_fragment = false, $web
     }
 
     // Main spelling
-    if (isset($GLOBALS['SPELLING'])) {
+    if (!empty($GLOBALS['SPELLING'])) {
         $stripped = $OUT;
         $matches = array();
         if (stripos($stripped, '<style') !== false) {
@@ -715,7 +1453,6 @@ function test_entity($offset = 0)
     $errors = array();
 
     $pos = strpos($lump, ';');
-    //if ($pos!==0) { // "&; sequence" is possible. It's in IPB's posts and to do with emoticon meta tagging
     if ($pos === false) {
         $errors[] = array('XHTML_BAD_ENTITY');
     } else {
@@ -727,7 +1464,6 @@ function test_entity($offset = 0)
             }
         }
     }
-    //}
 
     if (!isset($errors[0])) {
         return null;
@@ -825,7 +1561,6 @@ function _get_next_tag()
             $LINENO++;
             $LINESTART = $POS;
         }
-        //echo $status . ' for ' . $next . '<br />';
 
         // Entity checking
         if (($next == '&') && ($status != IN_CDATA) && ($status != IN_COMMENT) && ($WEBSTANDARDS_CHECKER_OFF === null)) {
@@ -901,6 +1636,7 @@ function _get_next_tag()
                     }
                 }
                 break;
+
             case IN_TAG_NAME:
                 $more_to_come = (!isset($special_chars[$next])) && ($POS < $LEN);
                 while ($more_to_come) {
@@ -931,6 +1667,7 @@ function _get_next_tag()
                     $current_tag .= $next;
                 }
                 break;
+
             case STARTING_TAG:
                 if ($next == '/') {
                     $close = true;
@@ -946,6 +1683,7 @@ function _get_next_tag()
                     $status = IN_TAG_NAME;
                 }
                 break;
+
             case IN_TAG_BETWEEN_ATTRIBUTES:
                 if (($next == '/') && (isset($OUT[$POS])) && ($OUT[$POS] == '>')) {
                     ++$POS;
@@ -965,6 +1703,7 @@ function _get_next_tag()
                     $current_attribute_name .= $next;
                 }
                 break;
+
             case IN_TAG_ATTRIBUTE_NAME:
                 $more_to_come = (!isset($special_chars[$next])) && ($POS < $LEN);
                 while ($more_to_come) {
@@ -1032,6 +1771,7 @@ function _get_next_tag()
                     $status = IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_LEFT;
                 }
                 break;
+
             case IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_LEFT:
                 if ($next == '=') {
                     $status = IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_RIGHT;
@@ -1050,6 +1790,7 @@ function _get_next_tag()
                     $VALUE_RANGES[] = array($POS - 1, $POS - 1);
                 }
                 break;
+
             case IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_RIGHT:
                 if ($next == '"') {
                     $v_pos = $POS;
@@ -1072,6 +1813,7 @@ function _get_next_tag()
                     $status = IN_TAG_ATTRIBUTE_VALUE_NO_QUOTES;
                 }
                 break;
+
             case IN_TAG_ATTRIBUTE_VALUE_NO_QUOTES:
                 if ($next == '>') {
                     if (isset($attribute_map[$current_attribute_name])) {
@@ -1099,6 +1841,7 @@ function _get_next_tag()
                     $current_attribute_value .= $next;
                 }
                 break;
+
             case IN_TAG_ATTRIBUTE_VALUE_BIG_QUOTES:
                 $more_to_come = (!isset($special_chars[$next])) && ($POS < $LEN);
                 while ($more_to_come) {
@@ -1137,6 +1880,7 @@ function _get_next_tag()
                     $current_attribute_value .= $next;
                 }
                 break;
+
             case IN_TAG_ATTRIBUTE_VALUE_LITTLE_QUOTES:
                 if ($next == '\'') {
                     $status = IN_TAG_BETWEEN_ATTRIBUTES;
@@ -1154,11 +1898,13 @@ function _get_next_tag()
                     $current_attribute_value .= $next;
                 }
                 break;
+
             case IN_XML_TAG:
                 if (($OUT[$POS - 2] == '?') && ($next == '>')) {
                     $status = NO_MANS_LAND;
                 }
                 break;
+
             case IN_DTD_TAG: // This is a parser-directive, but we only use them for doctypes
                 $doc_type .= $next;
                 if ($next == '>') {
@@ -1180,12 +1926,14 @@ function _get_next_tag()
                     $status = NO_MANS_LAND;
                 }
                 break;
+
             case IN_CDATA:
                 $INBETWEEN_TEXT .= $next;
                 if (($next == '>') && ($OUT[$POS - 2] == ']') && ($OUT[$POS - 3] == ']')) {
                     $status = NO_MANS_LAND;
                 }
                 break;
+
             case IN_COMMENT:
                 $INBETWEEN_TEXT .= $next;
                 if (($next == '>') && ($OUT[$POS - 2] == '-') && ($OUT[$POS - 3] == '-')) {
@@ -1195,6 +1943,7 @@ function _get_next_tag()
                     $status = NO_MANS_LAND;
                 }
                 break;
+
             case IN_TAG_EMBEDDED_COMMENT:
                 if (($next == '>') && ($OUT[$POS - 2] == '-') && ($OUT[$POS - 3] == '-')) {
                     $status = IN_TAG_BETWEEN_ATTRIBUTES;

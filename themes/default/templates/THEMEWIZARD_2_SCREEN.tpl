@@ -16,15 +16,13 @@
 	<p>{!THEMEWIZARD_2_LIGHT_DARK,{LD*}}</p>
 </div>
 
-{+START,IF,{$NOT,{$VALUE_OPTION,xhtml_strict}}}
-	<div class="theme_wizard_preview_wrap">
-		<div class="box box___themewizard_2_screen"><div class="box_inner">
-			<h2>{!PREVIEW}</h2>
+<div class="theme_wizard_preview_wrap">
+	<div class="box box___themewizard_2_screen"><div class="box_inner">
+		<h2>{!PREVIEW}</h2>
 
-			<iframe{$?,{$BROWSER_MATCHES,ie}, frameBorder="0" scrolling="no"} title="{!PREVIEW}" class="theme_wizard_preview" src="{$PAGE_LINK*,::keep_theme_seed={SEED#}:keep_theme_dark={DARK#}:keep_theme_source={SOURCE_THEME#}:keep_theme={SOURCE_THEME#}:keep_theme_algorithm={ALGORITHM#}:wide=1:keep_theme=default}">{!PREVIEW}</iframe>
-		</div></div>
-	</div>
-{+END}
+		<iframe{$?,{$BROWSER_MATCHES,ie}, frameBorder="0" scrolling="no"} title="{!PREVIEW}" class="theme_wizard_preview" src="{$PAGE_LINK*,::keep_theme_seed={SEED#}:keep_theme_dark={DARK#}:keep_theme_source={SOURCE_THEME#}:keep_theme={SOURCE_THEME#}:keep_theme_algorithm={ALGORITHM#}:wide=1:keep_theme=default}">{!PREVIEW}</iframe>
+	</div></div>
+</div>
 
 <nav>
 	<ul class="actions_list">

@@ -1,10 +1,8 @@
 {+START,IF,{$NOT,{$WIDE_HIGH}}}
-	{+START,IF,{$JS_ON}}
-		{+START,IF_NON_EMPTY,{$MESSAGES_TOP}}
-			<div class="global_messages">
-				{$MESSAGES_TOP}
-			</div>
-		{+END}
+	{+START,IF_NON_EMPTY,{$MESSAGES_TOP}}
+		<div class="global_messages">
+			{$MESSAGES_TOP}
+		</div>
 	{+END}
 {+END}
 
@@ -28,7 +26,7 @@
 	{+END}
 				{+START,LOOP,TABS}
 					{+START,IF,{$GT,{TABS},1}}
-					<div aria-labeledby="t_edit__{$LCASE,{TAB_CODE|*}}" role="tabpanel" id="g_edit__{$LCASE,{TAB_CODE|*}}" style="display: {$?,{$OR,{TAB_FIRST},{$NOT,{$JS_ON}}},block,none}">
+					<div aria-labeledby="t_edit__{$LCASE,{TAB_CODE|*}}" role="tabpanel" id="g_edit__{$LCASE,{TAB_CODE|*}}" style="display: {$?,{TAB_FIRST},block,none}">
 						<a id="tab__edit__{$LCASE,{TAB_CODE|*}}"></a>
 					{+END}
 

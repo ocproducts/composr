@@ -48,7 +48,7 @@ if ($cached === null) {
     $words = $pc->getWords();
 
     require_code('caches2');
-    put_into_cache('main_crossword', 60 * 60 * 24 * 5000, $cache_id, null, null, '', null, '', array($html, $words));
+    set_cache_entry('main_crossword', 60 * 60 * 24 * 5000, $cache_id, array($html, $words));
 } else {
     list($html, $words) = $cached;
 }

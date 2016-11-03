@@ -47,47 +47,47 @@ if (isset($_SERVER['argv'])) {
     }
     $_SERVER['argv'] = array_merge($_SERVER['argv'], $extra);
     if (array_key_exists('api', $_SERVER['argv'])) {
-        $GLOBALS['API'] = 1;
+        $GLOBALS['API'] = true;
     }
     if (array_key_exists('mixed', $_SERVER['argv'])) {
-        $GLOBALS['MIXED'] = 1;
+        $GLOBALS['MIXED'] = true;
     }
     if (array_key_exists('pedantic', $_SERVER['argv'])) {
-        $GLOBALS['PEDANTIC'] = 1;
+        $GLOBALS['PEDANTIC'] = true;
     }
     if (array_key_exists('todo', $_SERVER['argv'])) {
-        $GLOBALS['TODO'] = 1;
+        $GLOBALS['TODO'] = true;
     }
     if (array_key_exists('security', $_SERVER['argv'])) {
-        $GLOBALS['SECURITY'] = 1;
+        $GLOBALS['SECURITY'] = true;
     }
     if (array_key_exists('checks', $_SERVER['argv'])) {
-        $GLOBALS['CHECKS'] = 1;
+        $GLOBALS['CHECKS'] = true;
     }
     if (array_key_exists('spelling', $_SERVER['argv'])) {
-        $GLOBALS['SPELLING'] = 1;
+        $GLOBALS['SPELLING'] = true;
     }
 }
 if (array_key_exists('api', $_GET)) {
-    $GLOBALS['API'] = 1;
+    $GLOBALS['API'] = true;
 }
 if (array_key_exists('mixed', $_GET)) {
-    $GLOBALS['MIXED'] = 1;
+    $GLOBALS['MIXED'] = true;
 }
 if (array_key_exists('pedantic', $_GET)) {
-    $GLOBALS['PEDANTIC'] = 1;
+    $GLOBALS['PEDANTIC'] = true;
 }
 /*if (array_key_exists('todo', $_GET)) { */
-$GLOBALS['TODO'] = 1; // NB: Unit test skips these ones anyway
+$GLOBALS['TODO'] = true; // NB: Unit test skips these ones anyway
 /* } */
 if (array_key_exists('security', $_GET)) {
-    $GLOBALS['SECURITY'] = 1;
+    $GLOBALS['SECURITY'] = true;
 }
 if (array_key_exists('checks', $_GET)) {
-    $GLOBALS['CHECKS'] = 1;
+    $GLOBALS['CHECKS'] = true;
 }
 if (array_key_exists('spelling', $_GET)) {
-    $GLOBALS['SPELLING'] = 1;
+    $GLOBALS['SPELLING'] = true;
 }
 
 require_once('tests.php');

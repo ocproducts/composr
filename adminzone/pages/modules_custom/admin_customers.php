@@ -151,6 +151,8 @@ class Module_admin_customers
         // Tracker...
 
         if (get_db_type() != 'xml') {
+            $table_type = (get_value('innodb') == '1') ? 'InnoDB' : 'MyISAM';
+
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_bugnote_table` (
                                         `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
                                         `bug_id` int(10) unsigned NOT NULL DEFAULT '0',
@@ -165,14 +167,14 @@ class Module_admin_customers
                                         PRIMARY KEY (`id`),
                                         KEY `idx_bug` (`bug_id`),
                                         KEY `idx_last_mod` (`last_modified`)
-                    ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
+                    ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
             );
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_bugnote_text_table` (
                             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
                             `note` longtext NOT NULL,
                             PRIMARY KEY (`id`)
-                    ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
+                    ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
             );
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_bug_file_table` (
@@ -191,7 +193,7 @@ class Module_admin_customers
                             PRIMARY KEY (`id`),
                             KEY `idx_bug_file_bug_id` (`bug_id`),
                             KEY `idx_diskfile` (`diskfile`)
-                    ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
+                    ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
             );
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_bug_history_table` (
@@ -206,14 +208,14 @@ class Module_admin_customers
                             PRIMARY KEY (`id`),
                             KEY `idx_bug_history_bug_id` (`bug_id`),
                             KEY `idx_history_user_id` (`user_id`)
-                    ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
+                    ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
             );
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_bug_monitor_table` (
                             `user_id` int(10) unsigned NOT NULL DEFAULT '0',
                             `bug_id` int(10) unsigned NOT NULL DEFAULT '0',
                             PRIMARY KEY (`user_id`,`bug_id`)
-                    ) ENGINE=MyISAM DEFAULT CHARSET=utf8"
+                    ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8"
             );
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_bug_relationship_table` (
@@ -224,7 +226,7 @@ class Module_admin_customers
                             PRIMARY KEY (`id`),
                             KEY `idx_relationship_source` (`source_bug_id`),
                             KEY `idx_relationship_destination` (`destination_bug_id`)
-                    ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
+                    ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
             );
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_bug_revision_table` (
@@ -238,7 +240,7 @@ class Module_admin_customers
                             PRIMARY KEY (`id`),
                             KEY `idx_bug_rev_type` (`type`),
                             KEY `idx_bug_rev_id_time` (`bug_id`,`timestamp`)
-                    ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
+                    ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
             );
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_bug_table` (
@@ -276,7 +278,7 @@ class Module_admin_customers
                               KEY `idx_bug_fixed_in_version` (`fixed_in_version`),
                               KEY `idx_bug_status` (`status`),
                               KEY `idx_project` (`project_id`)
-                    ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
+                    ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
             );
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_bug_tag_table` (
@@ -286,7 +288,7 @@ class Module_admin_customers
                               `date_attached` int(10) unsigned NOT NULL DEFAULT '1',
                               PRIMARY KEY (`bug_id`,`tag_id`),
                               KEY `idx_bug_tag_tag_id` (`tag_id`)
-                    ) ENGINE=MyISAM DEFAULT CHARSET=utf8"
+                    ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8"
             );
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_bug_text_table` (
@@ -295,7 +297,7 @@ class Module_admin_customers
                             `steps_to_reproduce` longtext NOT NULL,
                             `additional_information` longtext NOT NULL,
                             PRIMARY KEY (`id`)
-                    ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
+                    ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
             );
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_category_table` (
@@ -306,7 +308,7 @@ class Module_admin_customers
                             `status` int(10) unsigned NOT NULL DEFAULT '0',
                             PRIMARY KEY (`id`),
                             UNIQUE KEY `idx_category_project_name` (`project_id`,`name`)
-                    ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2"
+                    ) ENGINE=" . $table_type . "  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2"
             );
 
             $GLOBALS['SITE_DB']->query("INSERT INTO `mantis_category_table` (`id`, `project_id`, `user_id`, `name`, `status`) VALUES (1, 0, 0, 'General', 0)");
@@ -319,7 +321,7 @@ class Module_admin_customers
                               `type` int(11) DEFAULT '90',
                               `value` longtext NOT NULL,
                               PRIMARY KEY (`config_id`,`project_id`,`user_id`)
-                    ) ENGINE=MyISAM DEFAULT CHARSET=utf8"
+                    ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8"
             );
 
             $GLOBALS['SITE_DB']->query("INSERT INTO `mantis_config_table` (`config_id`, `project_id`, `user_id`, `access_reqd`, `type`, `value`) VALUES ('database_version', 0, 0, 90, 1, '182')");
@@ -329,7 +331,7 @@ class Module_admin_customers
                             `project_id` int(10) unsigned NOT NULL DEFAULT '0',
                             `sequence` smallint(6) NOT NULL DEFAULT '0',
                             PRIMARY KEY (`field_id`,`project_id`)
-                    ) ENGINE=MyISAM DEFAULT CHARSET=utf8"
+                    ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8"
             );
 
             $GLOBALS['SITE_DB']->query("INSERT INTO `mantis_custom_field_project_table` (`field_id`, `project_id`, `sequence`) VALUES (1, 1, 0)");
@@ -340,7 +342,7 @@ class Module_admin_customers
                               `value` varchar(255) NOT NULL DEFAULT '',
                               PRIMARY KEY (`field_id`,`bug_id`),
                               KEY `idx_custom_field_bug` (`bug_id`)
-                    ) ENGINE=MyISAM DEFAULT CHARSET=utf8"
+                    ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8"
             );
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_custom_field_table` (
@@ -365,7 +367,7 @@ class Module_admin_customers
                               `filter_by` tinyint(4) NOT NULL DEFAULT '1',
                               PRIMARY KEY (`id`),
                               KEY `idx_custom_field_name` (`name`)
-                    ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=2"
+                    ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8 AUTO_INCREMENT=2"
             );
 
             $GLOBALS['SITE_DB']->query("INSERT INTO `mantis_custom_field_table` (
@@ -419,7 +421,7 @@ class Module_admin_customers
                               `body` longtext NOT NULL,
                               `submitted` int(10) unsigned NOT NULL DEFAULT '1',
                               PRIMARY KEY (`email_id`)
-                    ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
+                    ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
             );
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_filters_table` (
@@ -430,7 +432,7 @@ class Module_admin_customers
                             `name` varchar(64) NOT NULL DEFAULT '',
                             `filter_string` longtext NOT NULL,
                             PRIMARY KEY (`id`)
-                    ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
+                    ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
             );
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_news_table` (
@@ -444,7 +446,7 @@ class Module_admin_customers
                             `last_modified` int(10) unsigned NOT NULL DEFAULT '1',
                             `date_posted` int(10) unsigned NOT NULL DEFAULT '1',
                             PRIMARY KEY (`id`)
-                    ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
+                    ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
             );
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_plugin_table` (
@@ -453,7 +455,7 @@ class Module_admin_customers
                               `protected` tinyint(4) NOT NULL DEFAULT '0',
                               `priority` int(10) unsigned NOT NULL DEFAULT '3',
                               PRIMARY KEY (`basename`)
-                    ) ENGINE=MyISAM DEFAULT CHARSET=utf8"
+                    ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8"
             );
 
             $GLOBALS['SITE_DB']->query("INSERT INTO `mantis_plugin_table` (`basename`, `enabled`, `protected`, `priority`) VALUES ('MantisCoreFormatting', 1, 0, 3)");
@@ -472,7 +474,7 @@ class Module_admin_customers
                               `date_added` int(10) unsigned NOT NULL DEFAULT '1',
                               `user_id` int(10) unsigned NOT NULL DEFAULT '0',
                               PRIMARY KEY (`id`)
-                    ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
+                    ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
             );
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_project_hierarchy_table` (
@@ -481,7 +483,7 @@ class Module_admin_customers
                             `inherit_parent` int(10) unsigned NOT NULL DEFAULT '0',
                             KEY `idx_project_hierarchy_child_id` (`child_id`),
                             KEY `idx_project_hierarchy_parent_id` (`parent_id`)
-                    ) ENGINE=MyISAM DEFAULT CHARSET=utf8"
+                    ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8"
             );
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_project_table` (
@@ -498,7 +500,7 @@ class Module_admin_customers
                               PRIMARY KEY (`id`),
                               UNIQUE KEY `idx_project_name` (`name`),
                               KEY `idx_project_view` (`view_state`)
-                    ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=2"
+                    ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8 AUTO_INCREMENT=2"
             );
 
             $GLOBALS['SITE_DB']->query("INSERT INTO `mantis_project_table` (
@@ -532,7 +534,7 @@ class Module_admin_customers
                               `access_level` smallint(6) NOT NULL DEFAULT '10',
                               PRIMARY KEY (`project_id`,`user_id`),
                               KEY `idx_project_user` (`user_id`)
-                    ) ENGINE=MyISAM DEFAULT CHARSET=utf8"
+                    ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8"
             );
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_project_version_table` (
@@ -545,7 +547,7 @@ class Module_admin_customers
                               `date_order` int(10) unsigned NOT NULL DEFAULT '1',
                               PRIMARY KEY (`id`),
                               UNIQUE KEY `idx_project_version` (`project_id`,`version`)
-                    ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
+                    ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
             );
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_sponsorship_table` (
@@ -561,7 +563,7 @@ class Module_admin_customers
                               PRIMARY KEY (`id`),
                               KEY `idx_sponsorship_bug_id` (`bug_id`),
                               KEY `idx_sponsorship_user_id` (`user_id`)
-                    ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
+                    ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
             );
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_tag_table` (
@@ -573,7 +575,7 @@ class Module_admin_customers
                               `date_updated` int(10) unsigned NOT NULL DEFAULT '1',
                               PRIMARY KEY (`id`,`name`),
                               KEY `idx_tag_name` (`name`)
-                    ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
+                    ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
             );
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_tokens_table` (
@@ -585,7 +587,7 @@ class Module_admin_customers
                               `expiry` int(10) unsigned NOT NULL DEFAULT '1',
                               PRIMARY KEY (`id`),
                               KEY `idx_typeowner` (`type`,`owner`)
-                    ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
+                    ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
             );
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_user_pref_table` (
@@ -619,14 +621,14 @@ class Module_admin_customers
                               `language` varchar(32) NOT NULL DEFAULT 'english',
                               `timezone` varchar(32) NOT NULL DEFAULT '',
                               PRIMARY KEY (`id`)
-                    ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
+                    ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
             );
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_user_print_pref_table` (
                               `user_id` int(10) unsigned NOT NULL DEFAULT '0',
                               `print_pref` varchar(64) NOT NULL,
                               PRIMARY KEY (`user_id`)
-                    ) ENGINE=MyISAM DEFAULT CHARSET=utf8"
+                    ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8"
             );
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_user_profile_table` (
@@ -637,7 +639,7 @@ class Module_admin_customers
                               `os_build` varchar(32) NOT NULL DEFAULT '',
                               `description` longtext NOT NULL,
                               PRIMARY KEY (`id`)
-                    ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
+                    ) ENGINE=" . $table_type . " DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
             );
 
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_user_table` (
@@ -660,7 +662,7 @@ class Module_admin_customers
                               UNIQUE KEY `idx_user_username` (`username`),
                               KEY `idx_enable` (`enabled`),
                               KEY `idx_access` (`access_level`)
-                    ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
+                    ) ENGINE=" . $table_type . "  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
             );
         }
 

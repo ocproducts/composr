@@ -22,7 +22,7 @@
 Background details, to set the context and how we have structured things for consistency...
 
 Notifications are one-off messages sent out in response to something happening on the site. They may get delivered via e-mail, etc.
-Notifications may optionally create a message that staff might discuss, in which case a discussion link will be auto-appended to anyone having access to the admin_messaging module. This should be used sparingly - remember that any staff may raise such a notification by reporting some content, so it should only be particularly eventful stuff that spawns this.
+Notifications may optionally create a support ticket, in which case a ticket link will be auto-appended to anyone having access as a support ticket operator. This should be used sparingly - it should only be particularly eventful stuff that spawns this.
 People may get an RSS feed of notifications if they enable notifications via PT, as PTs have an RSS feed - that may then be connected to Growl, IM, or whatever service they may enjoy using (kind of quirky, but some power users enjoy this for the cool factor). It's good that we support the standards, without too much complexity.
 
 There is a separate Composr action log, called via log_it. This is not related to the notifications system, although staff may choose a notification when anything is added to the action log.
@@ -136,14 +136,14 @@ function do_notification_template($codename, $parameters = null, $lang = null, $
 function dispatch_notification($notification_code, $code_category, $subject, $message, $to_member_ids = null, $from_member_id = null, $advanced_parameters = array())
 {
     $priority = isset($advanced_parameters['priority']) ? $advanced_parameters['priority'] : 3; // The message priority (1=urgent, 3=normal, 5=low)
-    $store_in_staff_messaging_system = isset($advanced_parameters['store_in_staff_messaging_system']) ? $advanced_parameters['store_in_staff_messaging_system'] : false; // Whether to create a topic for discussion (ignored if the staff_messaging addon not installed)
+    $create_ticket = isset($advanced_parameters['create_ticket']) ? $advanced_parameters['create_ticket'] : false; // Whether to create a topic for discussion (ignored if the tickets addon not installed)
     $no_cc = isset($advanced_parameters['no_cc']) ? $advanced_parameters['no_cc'] : false; // Whether to NOT CC to the CC address
     $no_notify_for__notification_code = isset($advanced_parameters['no_notify_for__notification_code']) ? $advanced_parameters['no_notify_for__notification_code'] : null; // DO NOT send notifications to: The notification code (null: no restriction)
     $no_notify_for__code_category = isset($advanced_parameters['no_notify_for__code_category']) ? $advanced_parameters['no_notify_for__code_category'] : null; // DO NOT send notifications to: The category within the notification code (null: none / no restriction)
-    $subject_prefix = isset($advanced_parameters['subject_prefix']) ? $advanced_parameters['subject_prefix'] : ''; // Only relevant if $store_in_staff_messaging_system is true: subject prefix for storage
-    $subject_suffix = isset($advanced_parameters['subject_suffix']) ? $advanced_parameters['subject_suffix'] : ''; // Only relevant if $store_in_staff_messaging_system is true: subject suffix for storage
-    $body_prefix = isset($advanced_parameters['body_prefix']) ? $advanced_parameters['body_prefix'] : ''; // Only relevant if $store_in_staff_messaging_system is true: body prefix for storage
-    $body_suffix = isset($advanced_parameters['body_prefix']) ? $advanced_parameters['body_prefix'] : ''; // Only relevant if $store_in_staff_messaging_system is true: body suffix for storage
+    $subject_prefix = isset($advanced_parameters['subject_prefix']) ? $advanced_parameters['subject_prefix'] : ''; // Only relevant if $create_ticket is true: subject prefix for storage
+    $subject_suffix = isset($advanced_parameters['subject_suffix']) ? $advanced_parameters['subject_suffix'] : ''; // Only relevant if $create_ticket is true: subject suffix for storage
+    $body_prefix = isset($advanced_parameters['body_prefix']) ? $advanced_parameters['body_prefix'] : ''; // Only relevant if $create_ticket is true: body prefix for storage
+    $body_suffix = isset($advanced_parameters['body_prefix']) ? $advanced_parameters['body_prefix'] : ''; // Only relevant if $create_ticket is true: body suffix for storage
     $attachments = isset($advanced_parameters['attachments']) ? $advanced_parameters['attachments'] : null; // A list of attachments (each attachment being a map, path=>filename) (null: none)
     $use_real_from = isset($advanced_parameters['use_real_from']) ? $advanced_parameters['use_real_from'] : false; // Whether we will make a "reply to" direct -- we only do this if we're allowed to disclose email addresses for this particular notification type (i.e. if it's a direct contact)
     $send_immediately = isset($advanced_parameters['send_immediately']) ? $advanced_parameters['send_immediately'] : false; // Whether to send immediately rather than script end; this may be the case if the notification settings are expected to change before script end
@@ -165,7 +165,7 @@ function dispatch_notification($notification_code, $code_category, $subject, $me
 
     $dispatcher = new Notification_dispatcher($notification_code, $code_category, $subject, $message, $to_member_ids, $from_member_id);
     $dispatcher->priority = $priority;
-    $dispatcher->store_in_staff_messaging_system = $store_in_staff_messaging_system;
+    $dispatcher->create_ticket = $create_ticket;
     $dispatcher->no_cc = $no_cc;
     $dispatcher->no_notify_for__notification_code = $no_notify_for__notification_code;
     $dispatcher->no_notify_for__code_category = $no_notify_for__code_category;
@@ -230,7 +230,7 @@ class Notification_dispatcher
     public $to_member_ids = null;
     public $from_member_id = null;
     public $priority = null;
-    public $store_in_staff_messaging_system = null;
+    public $create_ticket = null;
     public $no_cc = null;
     public $no_notify_for__notification_code = null;
     public $no_notify_for__code_category = null;
@@ -245,7 +245,7 @@ class Notification_dispatcher
      * Construct notification dispatcher.
      *
      * @param  ID_TEXT $notification_code The notification code to use
-     * @param  ?SHORT_TEXT $code_category The category within the notification code (null: none). If it is to have $store_in_staff_messaging_system, it must have the format <type>_<id>
+     * @param  ?SHORT_TEXT $code_category The category within the notification code (null: none). If it is to have $create_ticket, it must have the format <type>_<id>
      * @param  SHORT_TEXT $subject Message subject (in Comcode)
      * @param  LONG_TEXT $message Message body (in Comcode)
      * @param  ?array $to_member_ids List of enabled members to limit sending to (null: everyone)
@@ -277,7 +277,7 @@ class Notification_dispatcher
         $no_cc = $this->no_cc;
 
         if ($GLOBALS['DEV_MODE']) {
-            if ((strpos($this->message, 'keep_devtest') !== false) && ($this->notification_code != 'messaging') && ($this->notification_code != 'error_occurred') && ($this->notification_code != 'hack_attack') && ($this->notification_code != 'auto_ban') && (strpos($this->message, running_script('index') ? static_evaluate_tempcode(build_url(array('page' => '_SELF'), '_SELF', null, true, false, true)) : get_self_url_easy()) === false) && ((strpos(cms_srv('HTTP_REFERER'), 'keep_devtest') === false) || (strpos($this->message, cms_srv('HTTP_REFERER')) === false))) { // Bad URL - it has to be general, not session-specific
+            if ((strpos($this->message, 'keep_devtest') !== false) && ($this->notification_code != 'ticket_reply') && ($this->notification_code != 'error_occurred') && ($this->notification_code != 'hack_attack') && ($this->notification_code != 'auto_ban') && (strpos($this->message, running_script('index') ? static_evaluate_tempcode(build_url(array('page' => '_SELF'), '_SELF', null, true, false, true)) : get_self_url_easy()) === false) && ((strpos(cms_srv('HTTP_REFERER'), 'keep_devtest') === false) || (strpos($this->message, cms_srv('HTTP_REFERER')) === false))) { // Bad URL - it has to be general, not session-specific
                 fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
             }
         }
@@ -293,18 +293,34 @@ class Notification_dispatcher
         require_lang('notifications');
         require_code('mail');
 
-        if (($this->store_in_staff_messaging_system) && (addon_installed('staff_messaging'))) {
-            require_lang('messaging');
+        if (($this->create_ticket) && (addon_installed('tickets'))) {
+            list($ticket_type_name, $id) = explode('_', $this->code_category, 2);
 
-            list($type, $id) = explode('_', $this->code_category, 2);
-            $message_url = build_url(array('page' => 'admin_messaging', 'type' => 'view', 'id' => $id, 'message_type' => $type), get_module_zone('admin_messaging'), null, false, false, true);
-            $message = do_lang('MESSAGING_NOTIFICATION_WRAPPER', $message, $message_url->evaluate());
+            $ticket_member_id = ($this->from_member_id >= 0) ? $this->from_member_id : $GLOBALS['FORUM_DRIVER']->get_guest_id();
 
             $post_title = $this->subject_prefix . post_param_string('title', '') . $this->subject_suffix;
             $post = $this->body_prefix . post_param_string('post', '') . $this->body_suffix;
 
-            require_code('feedback');
-            actualise_post_comment(true, $type, $id, $message_url, $subject, get_option('messaging_forum_name'), true, 1, true, true, true, $post_title, $post);
+            require_lang('tickets');
+            require_code('tickets');
+            require_code('tickets2');
+
+            $ticket_id = ticket_generate_new_id($ticket_member_id, $this->code_category);
+
+            $ticket_type_id = $GLOBALS['SITE_DB']->query_select_value_if_there('ticket_types t', 't.id', array($GLOBALS['SITE_DB']->translate_field_ref('ticket_type_name') => $ticket_type_name));
+            if ($ticket_type_id === null) {
+                $map = array(
+                    'guest_emails_mandatory' => 0,
+                    'search_faq' => 0,
+                    'cache_lead_time' => null,
+                );
+                $map += insert_lang('ticket_type_name', $ticket_type_name, 1);
+                $ticket_type_id = $GLOBALS['SITE_DB']->query_insert('ticket_types', $map, true);
+            }
+
+            $ticket_url = ticket_add_post($ticket_id, $ticket_type_id, $post_title, $post, false, $ticket_member_id);
+
+            $message = do_lang('MESSAGING_NOTIFICATION_WRAPPER', $message, $ticket_url);
         }
 
         $testing = (get_param_integer('keep_debug_notifications', 0) == 1);
@@ -488,7 +504,7 @@ class Notification_dispatcher
                     'c_time' => time(),
                 ), false, true/*If we've not set up first digest time, make it the digest period from now; if we have then silent error is suppressed*/);
 
-                decache('_get_notifications', null, $to_member_id);
+                delete_cache_entry('_get_notifications', null, $to_member_id);
             }
         }
 

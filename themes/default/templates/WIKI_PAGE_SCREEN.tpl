@@ -61,7 +61,7 @@
 				<a class="toggleable_tray_button js-btn-tray-toggle" title="{!DISCUSSION}: {!EXPAND}/{!CONTRACT}" href="#!"><img alt="{!EXPAND}: {!DISCUSSION}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
 				<a class="toggleable_tray_button js-btn-tray-toggle" title="{!DISCUSSION}: {!EXPAND}/{!CONTRACT}" href="#!">{!DISCUSSION}</a> ({!POST_PLU,{NUM_POSTS*}})
 			</p>
-			<div class="toggleable_tray js-tray-content" id="hidden_posts" style="display: {$JS_ON,none,block}" aria-expanded="false">
+			<div class="toggleable_tray js-tray-content" id="hidden_posts" style="display: none" aria-expanded="false">
 	{+END}
 
 	{+START,IF_EMPTY,{POSTS}}
@@ -89,7 +89,7 @@
 		{BUTTONS}
 
 		{+START,IF_NON_EMPTY,{POSTS}}
-			{+START,IF,{$AND,{$JS_ON},{STAFF_ACCESS}}}
+			{+START,IF,{STAFF_ACCESS}}
 				<form class="inline" title="{!MERGE_WIKI_POSTS}" action="{$PAGE_LINK*,_SEARCH:wiki:mg:{ID},1}" method="post" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
@@ -106,4 +106,13 @@
 	{+START,IF,{$CONFIG_OPTION,show_content_tagging}}{TAGS}{+END}
 
 	{+START,IF,{$CONFIG_OPTION,show_screen_actions}}{$BLOCK,failsafe=1,block=main_screen_actions,title={$METADATA,title}}{+END}
+
+	{+START,INCLUDE,STAFF_ACTIONS}
+		{+START,IF,{$ADDON_INSTALLED,tickets}}
+			1_URL={$PAGE_LINK,_SEARCH:report_content:content_type=wiki_page:content_id={ID}:redirect={$SELF_URL&}}
+			1_TITLE={!report_content:REPORT_THIS}
+			1_ICON=buttons/report
+			1_REL=report
+		{+END}
+	{+END}
 </div>

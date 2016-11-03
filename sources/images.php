@@ -158,7 +158,7 @@ function do_image_thumb($url, $caption, $js_tooltip = false, $is_thumbnail_alrea
         $thumb_path = get_custom_file_base() . '/uploads/auto_thumbs/' . $new_name;
 
         if (!file_exists($thumb_path)) {
-            $url = convert_image($url, $thumb_path, $box_size ? -1 : $width, $box_size ? -1 : $height, $box_size ? $width : -1, false, null, false, $only_make_smaller);
+            $url = convert_image($url, $thumb_path, $box_size ? null : $width, $box_size ? null : $height, $box_size ? $width : null, false, null, false, $only_make_smaller);
         } else {
             $url = get_custom_base_url() . '/uploads/auto_thumbs/' . rawurlencode($new_name);
         }
@@ -212,7 +212,7 @@ function ensure_thumbnail($full_url, $thumb_url, $thumb_dir, $table, $id, $thumb
                 }
 
                 if (is_image($from, IMAGE_CRITERIA_WEBSAFE, true)) {
-                    $_thumb_url = convert_image($from, $thumb_path, -1, -1, intval($thumb_width), false);
+                    $_thumb_url = convert_image($from, $thumb_path, null, null, intval($thumb_width), false);
                     if ($_thumb_url != $thumb_url) {
                         // Failed somehow, so do a full regeneration and resave
                         require_code('images2');
@@ -238,9 +238,9 @@ function ensure_thumbnail($full_url, $thumb_url, $thumb_dir, $table, $id, $thumb
  *
  * @param  URLPATH $from The URL to the image to resize. May be either relative or absolute
  * @param  PATH $to The file path (including filename) to where the resized image will be saved. May be changed by reference if it cannot save an image there for some reason
- * @param  integer $width The maximum width we want our new image to be (-1 means "don't factor this in")
- * @param  integer $height The maximum height we want our new image to be (-1 means "don't factor this in")
- * @param  integer $box_width This is only considered if both $width and $height are -1. If set, it will fit the image to a box of this dimension (suited for resizing both landscape and portraits fairly)
+ * @param  ?integer $width The maximum width we want our new image to be (null: don't factor this in)
+ * @param  ?integer $height The maximum height we want our new image to be (null: don't factor this in)
+ * @param  ?integer $box_width This is only considered if both $width and $height are null. If set, it will fit the image to a box of this dimension (suited for resizing both landscape and portraits fairly) (null: use width or height)
  * @param  boolean $exit_on_error Whether to exit Composr if an error occurs
  * @param  ?string $ext2 The file extension representing the file type to save with (null: same as our input file)
  * @param  boolean $using_path Whether $from was in fact a path, not a URL
@@ -248,7 +248,7 @@ function ensure_thumbnail($full_url, $thumb_url, $thumb_dir, $table, $id, $thumb
  * @param  ?array $thumb_options This optional parameter allows us to specify cropping or padding for the image. See comments in the function. (null: no details passed)
  * @return URLPATH The thumbnail URL (blank: URL is outside of base URL)
  */
-function convert_image($from, &$to, $width, $height, $box_width = -1, $exit_on_error = true, $ext2 = null, $using_path = false, $only_make_smaller = true, $thumb_options = null)
+function convert_image($from, &$to, $width, $height, $box_width = null, $exit_on_error = true, $ext2 = null, $using_path = false, $only_make_smaller = true, $thumb_options = null)
 {
     require_code('images2');
     cms_profile_start_for('convert_image');

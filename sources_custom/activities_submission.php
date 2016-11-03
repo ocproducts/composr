@@ -146,9 +146,9 @@ function activities_ajax_submit_handler()
                         ($map['PRIVACY'] == 'public') ? 1 : 0
                     );
 
-                    if ($stored_id > 0) {
+                    if ($stored_id !== null) {
                         $response .= '<success>1</success><feedback>Message received.</feedback>';
-                    } elseif ($stored_id == -1) {
+                    } elseif ($stored_id === null) {
                         $response .= '<success>0</success><feedback>Message already received.</feedback>';
                     }
                 }
@@ -273,8 +273,8 @@ function activities_ajax_removal_handler()
     $response = '<' . '?xml version="1.0" encoding="' . get_charset() . '" ?' . '>';
     $response .= '<response>';
 
-    $stat_id = post_param_integer('removal_id', -1);
-    $stat_owner = ($stat_id != -1) ? $GLOBALS['SITE_DB']->query_select_value_if_there('activities', 'a_member_id', array('id' => $stat_id)) : null;
+    $stat_id = post_param_integer('removal_id');
+    $stat_owner = $GLOBALS['SITE_DB']->query_select_value_if_there('activities', 'a_member_id', array('id' => $stat_id));
 
     if (($is_guest !== true) && ($stat_owner !== null)) {
         if (($stat_owner != $viewer_id) && ($can_remove_others !== true)) {

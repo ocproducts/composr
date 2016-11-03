@@ -66,7 +66,7 @@
 	<div class="cns_topic_post_area cns_post_main_column">
 		<div class="float_surrounder">
 			{+START,IF,{$NOT,{$MOBILE}}}
-				{+START,IF,{$JS_ON}}{+START,IF_NON_EMPTY,{ID}}{+START,IF_NON_PASSED_OR_FALSE,PREVIEWING}
+				{+START,IF_NON_EMPTY,{ID}}{+START,IF_NON_PASSED_OR_FALSE,PREVIEWING}
 					<div id="cell_mark_{ID*}" class="cns_off mass_select_marker">
 						<form class="webstandards_checker_off" title="{!FORUM_POST} {!MARKER} #{ID*}" method="post" action="index.php" id="form_mark_{ID*}" autocomplete="off">
 							{$INSERT_SPAMMER_BLACKHOLE}
@@ -77,7 +77,7 @@
 							</div>
 						</form>
 					</div>
-				{+END}{+END}{+END}
+				{+END}{+END}
 			{+END}
 
     		{+START,IF_NON_EMPTY,{POST_TITLE}}{+START,IF,{$NEQ,{TOPIC_FIRST_POST_ID},{ID}}}

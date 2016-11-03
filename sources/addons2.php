@@ -215,7 +215,7 @@ function find_updated_addons()
     }
 
     require_code('http');
-    list($addon_data) = cache_and_carry('cms_http_request', array($url, null, false), 5/*5 minute cache*/);
+    list($addon_data) = cache_and_carry('cms_http_request', array($url, array('trigger_error' => false)), 5/*5 minute cache*/);
     if (($addon_data === null) || ($addon_data == '')) {
         return array();
         //warn_exit(do_lang('INTERNAL_ERROR'));
@@ -1079,9 +1079,6 @@ function has_feature($dependency)
     }
 
     // Some other features
-    if (($dependency == 'javascript') && (has_js())) {
-        return true;
-    }
     if (($dependency == 'cron') && (cron_installed())) {
         return true;
     }
@@ -1089,9 +1086,6 @@ function has_feature($dependency)
         return true;
     }
     if ((strtolower($dependency) == 'gd') && (function_exists('imagetypes'))) {
-        return true;
-    }
-    if ($dependency == 'adobeflash') {
         return true;
     }
     if (substr($dependency, 0, 3) == 'php') {

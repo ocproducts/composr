@@ -122,6 +122,8 @@ class Hook_addon_registry_ecommerce
             'themes/default/images/icons/24x24/menu/rich_content/ecommerce/index.html',
             'themes/default/images/icons/48x48/menu/adminzone/audit/ecommerce/index.html',
             'themes/default/images/icons/48x48/menu/rich_content/ecommerce/index.html',
+            'sources/hooks/systems/symbols/STOCK_CHECK.php',
+            'sources/hooks/systems/symbols/CART_LINK.php',
             'sources/hooks/systems/resource_meta_aware/usergroup_subscription.php',
             'sources/hooks/systems/commandr_fs/usergroup_subscriptions.php',
             'sources/hooks/systems/config/callback_password.php',

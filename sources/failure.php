@@ -759,6 +759,10 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
                 if ($row['reason'] == 'LAME_SPAM_HACK') {
                     $is_spammer = true;
                 }
+                if (preg_match('#^' . str_replace('xxx', '.*', preg_quote(do_lang('IP_BAN_LOG_AUTOBAN_ANTISPAM', 'xxx'))), '$#', $row['reason']) != 0) {
+                    $is_spammer = true;
+                }
+
                 $full_reason = do_lang($row['reason'], $row['reason_param_a'], $row['reason_param_b'], null, get_site_default_lang());
                 $summary .= "\n" . '[*]' . $full_reason . "\n" . $row['url'] . "\n" . get_timezoned_date_time($row['date_and_time']);
             }
@@ -901,7 +905,7 @@ function remove_ip_ban($ip)
         if (trim($ip_cleaned) != '') {
             $contents = str_replace("\n" . 'deny from ' . $ip_cleaned . "\n", "\n", $contents);
             $contents = str_replace("\r" . 'deny from ' . $ip_cleaned . "\r", "\r", $contents); // Just in case
-            $myfile = fopen(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess', GOOGLE_APPENGINE ? 'wb' : 'wt');
+            $myfile = fopen(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess', 'wb');
             if (fwrite($myfile, $contents) < strlen($contents)) {
                 warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
             }
@@ -1047,6 +1051,7 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
         (strpos($text, 'has been disabled for security reasons') === false) &&
         (strpos($text, 'max_questions')/*mysql limit*/ === false) &&
         (strpos($text, 'Error at offset') === false) &&
+        (strpos($text, 'expects parameter 1 to be a valid path, string given') === false) &&
         (strpos($text, 'gd-png: fatal libpng error') === false) &&
         (strpos($text, 'No word lists can be found for the language &quot;en&quot;') === false) &&
         (strpos($text, 'Unable to allocate memory for pool') === false) &&

@@ -50,7 +50,6 @@ function init__cns_install()
         'use_pt',
         'edit_private_topic_posts',
         'may_unblind_own_poll',
-        'may_report_post',
         'view_member_photos',
         'use_quick_reply',
         'view_profiles',
@@ -667,7 +666,6 @@ function install_cns($upgrade_from = null)
         $staff_access = array($administrator_group => 5, $super_moderator_group => 5);
         $root_forum = cns_make_forum(do_lang('ROOT_FORUM'), '', null, $staff_post_access, null);
         cns_make_forum(do_lang('DEFAULT_FORUM_TITLE'), '', $forum_grouping_id, $typical_access, $root_forum);
-        cns_make_forum(do_lang('REPORTED_POSTS_FORUM'), '', $forum_grouping_id_staff, $staff_access, $root_forum);
         $trash_forum_id = cns_make_forum(do_lang('TRASH'), '', $forum_grouping_id_staff, $staff_access, $root_forum);
         cns_make_forum(do_lang('COMMENT_FORUM_NAME'), '', $forum_grouping_id, $typical_access, $root_forum, 1, 1, 0, '', '', '', 'last_post', 1);
         if (addon_installed('tickets')) {

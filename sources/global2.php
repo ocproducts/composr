@@ -147,7 +147,7 @@ function init__global2()
      * @global boolean $IN_SELF_ROUTING_SCRIPT
      */
     if (!isset($IN_SELF_ROUTING_SCRIPT)) {
-        $IN_SELF_ROUTING_SCRIPT = (current_script() == 'index')/*LEGACY - ideally just have as false*/;
+        $IN_SELF_ROUTING_SCRIPT = (current_script() == 'index')/*LEGACY - ideally just have as false but old zone index.php files exist on sites*/;
     }
     $CACHE_TEMPLATES = true;
     $IS_VIRTUALISED_REQUEST = false;
@@ -390,11 +390,9 @@ function init__global2()
 
     // Check RBLs
     $spam_check_level = get_option('spam_check_level');
-    if ($spam_check_level == 'EVERYTHING') {
-        if (get_option('spam_block_lists') != '') {
-            require_code('antispam');
-            check_rbls(true);
-        }
+    if (($spam_check_level == 'EVERYTHING') || ((cms_srv('REQUEST_METHOD') == 'POST') && (($spam_check_level == 'ACTIONS') || ($spam_check_level == 'GUESTACTIONS') && (is_guest())))) {
+        require_code('antispam');
+        check_for_spam(null, null, true);
     }
 
     safe_ini_set('display_errors', '0');
@@ -417,7 +415,12 @@ function init__global2()
     // Check installer not left behind
     if ((!$MICRO_AJAX_BOOTUP) && (!$MICRO_BOOTUP) && ((!isset($SITE_INFO['no_installer_checks'])) || ($SITE_INFO['no_installer_checks'] != '1'))) {
         if ((is_file(get_file_base() . '/install.php')) && (!is_file(get_file_base() . '/install_ok')) && (running_script('index'))) {
-            warn_exit(do_lang_tempcode('MUST_DELETE_INSTALLER'));
+            if (get_param_integer('came_from_installer', 0) == 1) {
+                @unlink(get_file_base() . '/install.php');
+            }
+            if (is_file(get_file_base() . '/install.php')) {
+                warn_exit(do_lang_tempcode('MUST_DELETE_INSTALLER'));
+            }
         }
     }
 

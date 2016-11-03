@@ -44,7 +44,7 @@ class Hook_realtime_rain_polls
                 $member_id = $row['member_id'];
 
                 $best = null;
-                $best_num = -1;
+                $best_num = null;
                 for ($i = 1; $i <= 10; $i++) {
                     if ($row['votes' . strval($i)] > $best_num) {
                         $best = $row['option' . strval($i)];
@@ -52,7 +52,7 @@ class Hook_realtime_rain_polls
                     }
                 }
 
-                if ($best_num == -1) {
+                if ($best_num === null) {
                     continue;
                 }
 

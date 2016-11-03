@@ -337,10 +337,7 @@ class Module_cms_chat
         $rows = $GLOBALS['SITE_DB']->query_select('chat_messages', array('*'), array('room_id' => $room_id), 'ORDER BY ' . $sortable . ' ' . $sort_order, $max, $start);
         $fields = new Tempcode();
         require_code('templates_results_table');
-        $array = array(do_lang_tempcode('MEMBER'), do_lang_tempcode('DATE_TIME'), do_lang_tempcode('MESSAGE'));
-        if (has_js()) {
-            $array[] = do_lang_tempcode('DELETE');
-        }
+        $array = array(do_lang_tempcode('MEMBER'), do_lang_tempcode('DATE_TIME'), do_lang_tempcode('MESSAGE'), do_lang_tempcode('DELETE'));
         $fields_title = results_field_title($array, $sortables, 'sort', $sortable . ' ' . $sort_order);
         foreach ($rows as $myrow) {
             $url = build_url(array('page' => '_SELF', 'type' => 'edit', 'room_id' => $room_id, 'id' => $myrow['id']), '_SELF');
@@ -355,10 +352,9 @@ class Module_cms_chat
             $link_date = hyperlink($url, get_timezoned_date_time($myrow['date_and_time']), false, true);
 
             $_row = array($GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($GLOBALS['FORUM_DRIVER']->get_member_from_username($username), '', false), escape_html($link_date), $message);
-            if (has_js()) {
-                $deletion_tick = do_template('RESULTS_TABLE_TICK', array('_GUID' => '40c6bd03e455c98589542b704259351d', 'ID' => strval($myrow['id'])));
-                $_row[] = $deletion_tick;
-            }
+
+            $deletion_tick = do_template('RESULTS_TABLE_TICK', array('_GUID' => '40c6bd03e455c98589542b704259351d', 'ID' => strval($myrow['id'])));
+            $_row[] = $deletion_tick;
 
             $fields->attach(results_entry($_row, false));
         }
@@ -553,7 +549,7 @@ class Module_cms_chat
 
             log_it('EDIT_MESSAGE', strval($message_id), post_param_string('message'));
 
-            decache('side_shoutbox');
+            delete_cache_entry('side_shoutbox');
 
             require_code('templates_donext');
             return do_next_manager(
@@ -613,7 +609,7 @@ class Module_cms_chat
 
         $GLOBALS['SITE_DB']->query_delete('chat_messages', array('id' => $message_id), '', 1);
 
-        decache('side_shoutbox');
+        delete_cache_entry('side_shoutbox');
 
         $message2 = get_translated_tempcode('chat_messages', $myrow, 'the_message');
         delete_lang($myrow['the_message']);
@@ -709,7 +705,7 @@ class Module_cms_chat
 
             delete_chat_messages(array('room_id' => $room_id));
 
-            decache('side_shoutbox');
+            delete_cache_entry('side_shoutbox');
 
             log_it('DELETE_ALL_MESSAGES', strval($room_id));
 
@@ -752,7 +748,7 @@ class Module_cms_chat
             warn_exit(do_lang_tempcode('NOTHING_SELECTED'));
         }
 
-        decache('side_shoutbox');
+        delete_cache_entry('side_shoutbox');
 
         $num_remaining = $GLOBALS['SITE_DB']->query_select_value('chat_messages', 'COUNT(*)', array('room_id' => $room_id));
         if ($num_remaining == 0) {

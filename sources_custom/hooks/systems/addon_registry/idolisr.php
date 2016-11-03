@@ -113,7 +113,6 @@ and
     {
         return array(
             'requires' => array(
-                'JavaScript enabled',
                 'points',
             ),
             'recommends' => array(),

@@ -954,10 +954,10 @@ function looks_like_url($value, $lax = false)
  *
  * @param  ID_TEXT $page The page for the form to go to (blank: don't attach)
  * @param  boolean $keep_all Whether to keep all elements of the current URL represented in this form (rather than just the keep_ fields, and page)
- * @param  ?array $exclude A list of parameters to exclude (null: don't exclude any)
+ * @param  array $exclude A list of parameters to exclude
  * @return Tempcode The builtup hidden form fields
  */
-function build_keep_form_fields($page = '', $keep_all = false, $exclude = null)
+function build_keep_form_fields($page = '', $keep_all = false, $exclude = array())
 {
     require_code('urls2');
     return _build_keep_form_fields($page, $keep_all, $exclude);

@@ -233,11 +233,7 @@ function closed_site()
             throw new CMSException($closed_message);
         }
 
-        if (!headers_sent()) {
-            if ((!browser_matches('ie')) && (strpos(cms_srv('SERVER_SOFTWARE'), 'IIS') === false)) {
-                header('HTTP/1.0 503 Service Temporarily Unavailable');
-            }
-        }
+        set_http_status_code('503');
 
         log_stats('/closed', 0);
 
@@ -405,7 +401,7 @@ function _load_comcode_page_not_cached($string, $zone, $codename, $file_base, $c
         }
         $GLOBALS['SITE_DB']->query_insert('cached_comcode_pages', $map, false, true); // Race conditions
 
-        decache('main_comcode_page_children');
+        delete_cache_entry('main_comcode_page_children');
 
         // Try and insert corresponding page; will silently fail if already exists. This is only going to add a row for a page that was not created in-system
         if ($comcode_page_row === null) {

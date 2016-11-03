@@ -4,12 +4,12 @@
 
 {$SET,preview_url,{$PREVIEW_URL}{$KEEP}{+START,IF_PASSED,THEME}&utheme={THEME}{+END}}
 {$SET,force_previews,0}
-{+START,IF_PASSED_AND_TRUE,PREVIEW}{+START,IF,{$JS_ON}}{+START,IF,{$CONFIG_OPTION,enable_previews}}{+START,IF,{$FORCE_PREVIEWS}}
+{+START,IF_PASSED_AND_TRUE,PREVIEW}{+START,IF,{$CONFIG_OPTION,enable_previews}}{+START,IF,{$FORCE_PREVIEWS}}
 	{$SET,force_previews,1}
-{+END}{+END}{+END}{+END}
+{+END}{+END}{+END}
 
 <div data-view="FormStandardEnd" data-view-params="{+START,PARAMS_JSON,preview_url,force_previews,JAVASCRIPT,SECONDARY_FORM,SUPPORT_AUTOSAVE,FORM_NAME,SEPARATE_PREVIEW}{_*}{+END}">
-{+START,IF_PASSED_AND_TRUE,PREVIEW}{+START,IF,{$JS_ON}}{+START,IF,{$CONFIG_OPTION,enable_previews}}
+{+START,IF_PASSED_AND_TRUE,PREVIEW}{+START,IF,{$CONFIG_OPTION,enable_previews}}
 	{+START,IF_NON_PASSED_OR_FALSE,SKIP_WEBSTANDARDS}{+START,IF,{$OR,{$CONFIG_OPTION,enable_markup_webstandards},{$CONFIG_OPTION,enable_spell_check},{$AND,{$HAS_PRIVILEGE,perform_keyword_check},{$CONFIG_OPTION,enable_keyword_density_check}}}}
 		<div class="preview_checking_box">
 			<section class="box box___form_standard_end"><div class="box_inner">
@@ -36,28 +36,26 @@
 			</div></section>
 		</div>
 	{+END}{+END}
-{+END}{+END}{+END}
+{+END}{+END}
 
 <p class="proceed_button{+START,IF_PASSED,SUBMIT_BUTTON_CLASS} {SUBMIT_BUTTON_CLASS*}{+END}">
-	{+START,IF,{$JS_ON}}
-		{+START,IF_PASSED_AND_TRUE,BACK}
-			<input class="button_screen buttons__back" type="button" data-cms-btn-go-back="1" value="{!GO_BACK}" />
-		{+END}
-		{+START,IF_PASSED,BACK_URL}
-			<input class="button_screen buttons__back" type="button" onclick="if (this.form.method === 'get') { window.location='{BACK_URL;^*}'; } else { this.form.action='{BACK_URL;^*}'; this.form.submit(); }" value="{!GO_BACK}" />
-		{+END}
+	{+START,IF_PASSED_AND_TRUE,BACK}
+		<input class="button_screen buttons__back" type="button" data-cms-btn-go-back="1" value="{!GO_BACK}" />
+	{+END}
+	{+START,IF_PASSED,BACK_URL}
+		<input class="button_screen buttons__back" type="button" onclick="if (this.form.method === 'get') { window.location='{BACK_URL;^*}'; } else { this.form.action='{BACK_URL;^*}'; this.form.submit(); }" value="{!GO_BACK}" />
 	{+END}
 
 	{+START,IF_PASSED,EXTRA_BUTTONS}{EXTRA_BUTTONS}{+END}
-	{+START,IF_PASSED_AND_TRUE,PREVIEW}{+START,IF,{$JS_ON}}{+START,IF,{$CONFIG_OPTION,enable_previews}}
+	{+START,IF_PASSED_AND_TRUE,PREVIEW}{+START,IF,{$CONFIG_OPTION,enable_previews}}
 		<input class="button_screen tabs__preview js-click-do-form-preview"  id="preview_button" accesskey="p" tabindex="{+START,IF_PASSED,TABINDEX}{TABINDEX}{+END}{+START,IF_NON_PASSED,TABINDEX}250{+END}" type="button" value="{!PREVIEW}" />
-	{+END}{+END}{+END}
-	<input class="{SUBMIT_ICON*} button_screen js-click-do-form-submit" {+START,IF_NON_PASSED_OR_FALSE,SECONDARY_FORM} id="submit_button" accesskey="u"{+END} tabindex="{+START,IF_PASSED,TABINDEX}{TABINDEX}{+END}{+START,IF_NON_PASSED,TABINDEX}250{+END}"{+START,IF,{$JS_ON}} type="button"{+END}{+START,IF,{$NOT,{$JS_ON}}} type="submit"{+END} value="{SUBMIT_NAME*}" />
+	{+END}{+END}
+	<input class="{SUBMIT_ICON*} button_screen js-click-do-form-submit" {+START,IF_NON_PASSED_OR_FALSE,SECONDARY_FORM} id="submit_button" accesskey="u"{+END} tabindex="{+START,IF_PASSED,TABINDEX}{TABINDEX}{+END}{+START,IF_NON_PASSED,TABINDEX}250{+END}" type="button" value="{SUBMIT_NAME*}" />
 </p>
 
-{+START,IF_PASSED_AND_TRUE,PREVIEW}{+START,IF,{$JS_ON}}{+START,IF,{$CONFIG_OPTION,enable_previews}}
+{+START,IF_PASSED_AND_TRUE,PREVIEW}{+START,IF,{$CONFIG_OPTION,enable_previews}}
 	<iframe {$?,{$BROWSER_MATCHES,ie}, frameBorder="0" scrolling="no"} title="{!PREVIEW}" name="preview_iframe" id="preview_iframe" src="{$BASE_URL*}/uploads/index.html" class="hidden_preview_frame">{!PREVIEW}</iframe>
-{+END}{+END}{+END}
+{+END}{+END}
 
 {$,Load up the staff actions template to display staff actions uniformly (we relay our parameters to it)...}
 {+START,IF,{$HAS_PRIVILEGE,see_software_docs}}{+START,IF_PASSED,STAFF_HELP_URL}{+START,IF,{$SHOW_DOCS}}

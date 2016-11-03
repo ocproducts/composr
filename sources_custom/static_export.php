@@ -52,7 +52,7 @@ function _page_link_to_static($node)
 
         $langs = find_all_langs();
         foreach (array_keys($langs) as $lang) {
-            if (($lang != fallback_lang()) && (count(get_directory_contents(get_custom_file_base() . '/lang_custom/' . $lang, '', true, false, true)) < 5)) {
+            if (($lang != fallback_lang()) && (count(get_directory_contents(get_custom_file_base() . '/lang_custom/' . $lang, '', 0, false, true)) < 5)) {
                 continue; // Probably this is just the utf8 addon
             }
 

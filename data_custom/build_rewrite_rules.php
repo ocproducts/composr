@@ -317,9 +317,7 @@ function write_to($file_path, $type, $match_start, $match_end, $indent_level, $r
     $updated = preg_replace('#' . preg_quote($match_start, '#') . '.*' . preg_quote($match_end, '#') . '#s', 'xxxRULES-GO-HERExxx', $existing);
     $updated = str_replace('xxxRULES-GO-HERExxx', $new, $updated);
 
-    $myfile = fopen($file_path, 'wb');
-    fwrite($myfile, $updated);
-    fclose($myfile);
+    file_put_contents($file_path, $updated);
 
     echo 'Done ' . $file_path . "\n";
 }

@@ -155,7 +155,7 @@ class Hook_addon_registry_core_webstandards
             'templates/WEBSTANDARDS_MARKER.tpl' => 'administrative__webstandards_error_screen',
             'templates/WEBSTANDARDS_LINE_ERROR.tpl' => 'administrative__webstandards_error_screen',
             'templates/WEBSTANDARDS_MARKER_START.tpl' => 'administrative__webstandards',
-            'templates/WEBSTANDARDS_MARKER_END.tpl' => 'administrative__webstandards'
+            'templates/WEBSTANDARDS_MARKER_END.tpl' => 'administrative__webstandards',
         );
     }
 

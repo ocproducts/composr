@@ -94,7 +94,7 @@ class Hook_pointstore_gambling
             return new Tempcode();
         }
 
-        $amount = post_param_integer('amount', -1);
+        $amount = post_param_integer('amount');
 
         $title = get_screen_title('GAMBLING');
 

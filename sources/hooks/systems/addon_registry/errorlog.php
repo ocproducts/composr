@@ -117,7 +117,7 @@ class Hook_addon_registry_errorlog
     public function tpl_previews()
     {
         return array(
-            'templates/ERRORLOG_SCREEN.tpl' => 'administrative__errorlog_screen'
+            'templates/ERRORLOG_SCREEN.tpl' => 'administrative__errorlog_screen',
         );
     }
 

@@ -38,7 +38,7 @@ class Hook_commandr_command_directory_sizes
         } else {
             $sizes = array();
             require_code('files2');
-            $dirs = get_directory_contents(get_custom_file_base(), '', false, true, false);
+            $dirs = get_directory_contents(get_custom_file_base(), '', IGNORE_ACCESS_CONTROLLERS, true, false);
             foreach ($dirs as $dir) {
                 $sizes[$dir] = get_directory_size(get_custom_file_base() . '/' . $dir);
             }

@@ -138,7 +138,7 @@ class Hook_addon_registry_stats_block
         return array(
             'templates/BLOCK_SIDE_STATS_SUBLINE.tpl' => 'block_side_stats',
             'templates/BLOCK_SIDE_STATS_SECTION.tpl' => 'block_side_stats',
-            'templates/BLOCK_SIDE_STATS.tpl' => 'block_side_stats'
+            'templates/BLOCK_SIDE_STATS.tpl' => 'block_side_stats',
         );
     }
 

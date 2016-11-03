@@ -190,7 +190,7 @@ class Hook_addon_registry_core_comcode_pages
             'templates/COMCODE_PAGE_BOX.tpl' => 'comcode_page_preview',
             'templates/GENERATE_PAGE_SITEMAP.tpl' => 'administrative__comcode_page_sitemap',
             'templates/GENERATE_PAGE_SITEMAP_SCREEN.tpl' => 'administrative__comcode_page_sitemap',
-            'templates/COMCODE_PAGE_MANAGE_SCREEN.tpl' => 'administrative__comcode_page_manage_screen'
+            'templates/COMCODE_PAGE_MANAGE_SCREEN.tpl' => 'administrative__comcode_page_manage_screen',
         );
     }
 

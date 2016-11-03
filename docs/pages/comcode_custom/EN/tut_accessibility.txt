@@ -44,8 +44,6 @@ It is also possible to degrade validation by creating different items of content
 
 This section will detail Composr compliance with the guidelines, with any relevant notes. The check-list is taken directly from the W3C specification. If the templates are edited, and conformance is still desired, then it is recommended that you enable the webstandards checker while editing templates (only staff will see the error messages even when it is enabled): the webstandards checker is of enormous practical assistance in finding and describing errors, for all relevant specifications. The table will detail any special information relating to how Composr is designed to work with some of the more tricky requirements.
 
-Please note that while Composr works without JavaScript, some times alternatives have to be used. For example, the menu editor requires JavaScript, so if JavaScript is not usable, the [tt][menu][/tt] Comcode tag must be used instead.
-
 [title="3"]Priority 1 checkpoints[/title]
 
 [html]
@@ -118,7 +116,7 @@ Please note that while Composr works without JavaScript, some times alternatives
 				</p>
 			</td>
 			<td>
-				<p>Composr works without JavaScript.</p>
+				<p>Composr supports ARIA.</p>
 			</td>
 		</tr>
 		<tr>
@@ -248,7 +246,7 @@ Please note that while Composr works without JavaScript, some times alternatives
 				</p>
 			</td>
 			<td>
-				<p>Composr works without JavaScript.</p>
+				<p>Composr supports ARIA. This guideline is outdated and does not appear in the newer (simpler) version of WCAG.</p>
 			</td>
 		</tr>
 	</tbody>
@@ -426,7 +424,7 @@ Please note that while Composr works without JavaScript, some times alternatives
 				</p>
 			</td>
 			<td>
-				<p>Composr works without JavaScript.</p>
+				<p>Composr supports ARIA.</p>
 			</td>
 		</tr>
 		<tr>
@@ -689,7 +687,7 @@ Please note that while Composr works without JavaScript, some times alternatives
 				</p>
 			</td>
 			<td>
-				<p>Composr works without JavaScript.</p>
+				<p>Composr supports ARIA.</p>
 			</td>
 		</tr>
 		<tr>
@@ -999,12 +997,6 @@ Please note that while Composr works without JavaScript, some times alternatives
 Macromedia Flash is inherently inaccessible to those with certain kinds of disabilities, because it assumes that the web browsing is a visual, mouse-orientated experience. While Flash does not deserve harsh criticism for this (almost all of traditional desktop interfaces make the same assumption), it is inferior to well written (X)HTML from the accessibility perspective. HTML's document model of interfaces provides the 'semantic' structure that allows web pages to be accessible.
 
 Therefore, to make an accessible website, Flash should be avoided for anything other than auxiliary usage that XHTML could not reasonably achieve.
-
-[title="3"]JavaScript[/title]
-
-As with Flash, the usage of JavaScript often degrades from the clean document model of (X)HTML that allows accessibility. As there is no way for a web browser to distinguish between JavaScript that does operate with alternative user interfaces and JavaScript that does actually actively detract from accessibility of the plain document, it must be assumed that JavaScript might be fully disabled.
-
-Hence, interfaces that rely on JavaScript, such as core navigation menus that are dynamically constructed from nothing using JavaScript, would not be acceptable for an accessible website. In contrast, Composr does have optional JavaScript powered menus, but they are primarily grounded in actual predefined XHTML and hence accessible.
 
 [title="3"]Abused markup[/title]
 

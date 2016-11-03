@@ -34,7 +34,7 @@ function comcode_convert_script()
 
     require_lang('comcode');
 
-    $data = post_param_string('data', null, INPUT_FILTER_DEFAULT & ~INPUT_FILTER_WYSIWYG_TO_COMCODE);
+    $data = post_param_string('data', null, INPUT_FILTER_DEFAULT_POST & ~INPUT_FILTER_WYSIWYG_TO_COMCODE);
     if ($data === null) {
         // UI can be called up manually if desired, it's a useful little developer tool...
 
@@ -158,13 +158,8 @@ function comcode_convert_script()
         $stripped_old = preg_replace('#<!--.*-->#Us', '', preg_replace('#\s+#', '', $out));
         if (($box_title != '') && ($stripped_new != $stripped_old)) {
             /*
-            $myfile = fopen(get_file_base() . '/a', 'wb');
-            fwrite($myfile, preg_replace('#<!--.*-->#Us', '', preg_replace('#\s+#', chr(10), $new)));
-            fclose($myfile);
-
-            $myfile = fopen(get_file_base() . '/b', 'wb');
-            fwrite($myfile, preg_replace('#<!--.*-->#Us', '', preg_replace('#\s+#', chr(10), $out)));
-            fclose($myfile);
+            file_put_contents(get_file_base() . '/a', preg_replace('#<!--.*-->#Us', '', preg_replace('#\s+#', chr(10), $new)));
+            file_put_contents(get_file_base() . '/b', preg_replace('#<!--.*-->#Us', '', preg_replace('#\s+#', chr(10), $out)));
             */
 
             $out = $new . do_lang('BROKEN_XHTML_FIXED');

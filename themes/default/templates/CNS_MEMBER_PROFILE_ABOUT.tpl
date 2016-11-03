@@ -54,7 +54,7 @@
 						<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!CONTENT}</a>
 					</h2>
 
-					<nav class="toggleable_tray js-tray-content" style="display: {$JS_ON,none,block}" aria-expanded="false">
+					<nav class="toggleable_tray js-tray-content" style="display: none" aria-expanded="false">
 						<ul class="nl">
 							{ACTIONS_content}
 						</ul>
@@ -69,7 +69,7 @@
 						<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!ACCOUNT}</a>
 					</h2>
 
-					<nav class="toggleable_tray js-tray-content" style="display: {$JS_ON,none,block}" aria-expanded="false">
+					<nav class="toggleable_tray js-tray-content" style="display: none" aria-expanded="false">
 						<ul class="nl">
 							{ACTIONS_views}
 							{ACTIONS_profile}
@@ -85,7 +85,7 @@
 						<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!AUDIT}</a>
 					</h2>
 
-					<nav class="toggleable_tray js-tray-content" style="display: {$JS_ON,none,block}" aria-expanded="false">
+					<nav class="toggleable_tray js-tray-content" style="display: none" aria-expanded="false">
 						<ul class="nl">
 							{ACTIONS_audit}
 						</ul>
@@ -140,8 +140,7 @@
 													{+END}
 												{+END}
 												{+START,IF_NON_EMPTY,{ENCRYPTED_VALUE}}
-													{+START,IF,{$JS_ON}}{!encryption:DATA_ENCRYPTED} <a href="javascript:decrypt_data('{ENCRYPTED_VALUE;^*}');" title="{!encryption:DECRYPT_DATA}: {$STRIP_TAGS,{!encryption:DESCRIPTION_DECRYPT_DATA}}">{!encryption:DECRYPT_DATA}</a>{+END}
-													{+START,IF,{$NOT,{$JS_ON}}}{ENCRYPTED_VALUE*}{+END}
+													{!encryption:DATA_ENCRYPTED} <a href="javascript:decrypt_data('{ENCRYPTED_VALUE;^*}');" title="{!encryption:DECRYPT_DATA}: {$STRIP_TAGS,{!encryption:DESCRIPTION_DECRYPT_DATA}}">{!encryption:DECRYPT_DATA}</a>
 												{+END}
 												<!-- {$,Break out of non-terminated comments in CPF} -->
 											</span>
@@ -206,8 +205,7 @@
 													{+END}
 												{+END}
 												{+START,IF_NON_EMPTY,{ENCRYPTED_VALUE}}
-													{+START,IF,{$JS_ON}}{!encryption:DATA_ENCRYPTED} <a href="javascript:decrypt_data('{ENCRYPTED_VALUE;^*}');" title="{!encryption:DECRYPT_DATA}: {$STRIP_TAGS,{!encryption:DESCRIPTION_DECRYPT_DATA}}">{!encryption:DECRYPT_DATA}</a>{+END}
-													{+START,IF,{$NOT,{$JS_ON}}}{ENCRYPTED_VALUE*}{+END}
+													{!encryption:DATA_ENCRYPTED} <a href="javascript:decrypt_data('{ENCRYPTED_VALUE;^*}');" title="{!encryption:DECRYPT_DATA}: {$STRIP_TAGS,{!encryption:DESCRIPTION_DECRYPT_DATA}}">{!encryption:DECRYPT_DATA}</a>
 												{+END}
 												<!-- {$,Break out of non-terminated comments in CPF} -->
 											</span>
@@ -319,80 +317,89 @@
 		{+END}
 
 		{+START,IF,{VIEW_PROFILES}}
-		<div class="stats_overwrap">
-			<h2>{!TRACKING}</h2>
+			<div class="stats_overwrap">
+				<h2>{!TRACKING}</h2>
 
-			<div class="wide_table_wrap">
-				<table class="map_table wide_table cns_profile_tracking cns_profile_about_section">
-					{+START,IF,{$NOT,{$MOBILE}}}
-						<colgroup>
-							<col class="cns_profile_about_field_name_column" />
-							<col class="cns_profile_about_field_value_column" />
-						</colgroup>
-					{+END}
-
-					<tbody>
-						{+START,IF,{$ADDON_INSTALLED,cns_forum}}
-							<tr>
-								<th class="de_th">{!COUNT_POSTS}:</th>
-								<td>{COUNT_POSTS*}</td>
-							</tr>
+				<div class="wide_table_wrap">
+					<table class="map_table wide_table cns_profile_tracking cns_profile_about_section">
+						{+START,IF,{$NOT,{$MOBILE}}}
+							<colgroup>
+								<col class="cns_profile_about_field_name_column" />
+								<col class="cns_profile_about_field_value_column" />
+							</colgroup>
 						{+END}
 
-						{+START,IF_NON_EMPTY,{MOST_ACTIVE_FORUM}}
-							<tr>
-								<th class="de_th">{!MOST_ACTIVE_FORUM}:</th>
-								<td>{MOST_ACTIVE_FORUM*}</td>
-							</tr>
-						{+END}
-
-						{+START,IF_PASSED,SUBMIT_DAYS_AGO}
-							<tr>
-								<th class="de_th">{!LAST_SUBMIT_TIME}:</th>
-								<td>{!DAYS_AGO,{SUBMIT_DAYS_AGO}}</td>
-							</tr>
-						{+END}
-
-						{+START,IF,{$ADDON_INSTALLED,securitylogging}}
-							{+START,IF_NON_EMPTY,{IP_ADDRESS}}
+						<tbody>
+							{+START,IF,{$ADDON_INSTALLED,cns_forum}}
 								<tr>
-									<th class="de_th">{!IP_ADDRESS}:</th>
-									<td>
-										{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,admin_lookup}}
-											<a href="{$PAGE_LINK*,_SEARCH:admin_lookup:param={IP_ADDRESS&}}">{$TRUNCATE_SPREAD,{IP_ADDRESS*},40,1,1}</a>
-										{+END}
-										{+START,IF,{$NOT,{$HAS_ACTUAL_PAGE_ACCESS,admin_lookup}}}
-											{$TRUNCATE_SPREAD,{IP_ADDRESS*},40,1,1}
-										{+END}
-									</td>
+									<th class="de_th">{!COUNT_POSTS}:</th>
+									<td>{COUNT_POSTS*}</td>
 								</tr>
 							{+END}
-						{+END}
 
-						{+START,IF_PASSED,USER_AGENT}
-							<tr>
-								<th class="de_th"><abbr title="{!USER_AGENT}">{$PREG_REPLACE*, \([^\(\)]*\),,{!USER_AGENT}}</abbr>:</th>
-								<td><abbr title="{USER_AGENT*}">{$PREG_REPLACE*, \([^\(\)]*\),,{$PREG_REPLACE,\.\d+,,{$REPLACE,({OPERATING_SYSTEM}),,{USER_AGENT}}}}</abbr></td>
-							</tr>
-						{+END}
+							{+START,IF_NON_EMPTY,{MOST_ACTIVE_FORUM}}
+								<tr>
+									<th class="de_th">{!MOST_ACTIVE_FORUM}:</th>
+									<td>{MOST_ACTIVE_FORUM*}</td>
+								</tr>
+							{+END}
 
-						{+START,IF_PASSED,OPERATING_SYSTEM}
-							<tr>
-								<th class="de_th">{!USER_OS}:</th>
-								<td>{OPERATING_SYSTEM*}</td>
-							</tr>
-						{+END}
+							{+START,IF_PASSED,SUBMIT_DAYS_AGO}
+								<tr>
+									<th class="de_th">{!LAST_SUBMIT_TIME}:</th>
+									<td>{!DAYS_AGO,{SUBMIT_DAYS_AGO}}</td>
+								</tr>
+							{+END}
 
-						{+START,LOOP,EXTRA_TRACKING_DETAILS}
-							<tr>
-								<th class="de_th">{_loop_key*}:</th>
-								<td><span>{_loop_var*}</span></td>
-							</tr>
-						{+END}
-					</tbody>
-				</table>
+							{+START,IF,{$ADDON_INSTALLED,securitylogging}}
+								{+START,IF_NON_EMPTY,{IP_ADDRESS}}
+									<tr>
+										<th class="de_th">{!IP_ADDRESS}:</th>
+										<td>
+											{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,admin_lookup}}
+												<a href="{$PAGE_LINK*,_SEARCH:admin_lookup:param={IP_ADDRESS&}}">{$TRUNCATE_SPREAD,{IP_ADDRESS*},40,1,1}</a>
+											{+END}
+											{+START,IF,{$NOT,{$HAS_ACTUAL_PAGE_ACCESS,admin_lookup}}}
+												{$TRUNCATE_SPREAD,{IP_ADDRESS*},40,1,1}
+											{+END}
+										</td>
+									</tr>
+								{+END}
+							{+END}
+
+							{+START,IF_PASSED,USER_AGENT}
+								<tr>
+									<th class="de_th"><abbr title="{!USER_AGENT}">{$PREG_REPLACE*, \([^\(\)]*\),,{!USER_AGENT}}</abbr>:</th>
+									<td><abbr title="{USER_AGENT*}">{$PREG_REPLACE*, \([^\(\)]*\),,{$PREG_REPLACE,\.\d+,,{$REPLACE,({OPERATING_SYSTEM}),,{USER_AGENT}}}}</abbr></td>
+								</tr>
+							{+END}
+
+							{+START,IF_PASSED,OPERATING_SYSTEM}
+								<tr>
+									<th class="de_th">{!USER_OS}:</th>
+									<td>{OPERATING_SYSTEM*}</td>
+								</tr>
+							{+END}
+
+							{+START,LOOP,EXTRA_TRACKING_DETAILS}
+								<tr>
+									<th class="de_th">{_loop_key*}:</th>
+									<td><span>{_loop_var*}</span></td>
+								</tr>
+							{+END}
+						</tbody>
+					</table>
+				</div>
 			</div>
-		</div>
+		{+END}
+
+		{+START,INCLUDE,STAFF_ACTIONS}
+			{+START,IF,{$ADDON_INSTALLED,tickets}}
+				1_URL={$PAGE_LINK,_SEARCH:report_content:content_type=member:content_id={ID}:redirect={$SELF_URL&}}
+				1_TITLE={!report_content:REPORT_THIS}
+				1_ICON=buttons/report
+				1_REL=report
+			{+END}
 		{+END}
 	</div>
 </div>

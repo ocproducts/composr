@@ -1704,6 +1704,7 @@ class Hook_addon_registry_core_form_interfaces
             'TABINDEX' => placeholder_number(),
             'CONTENT' => $content,
             'REQUIRED' => true,
+            'IMAGES' => true,
         ));
         $fields->attach(do_lorem_template('FORM_SCREEN_FIELD', array(
             'REQUIRED' => true,

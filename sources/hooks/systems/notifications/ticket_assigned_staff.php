@@ -51,11 +51,12 @@ class Hook_notification_ticket_assigned_staff extends Hook_Notification
             $types2 = array(); // Too many to consider
         }
 
+        require_lang('tickets');
         require_code('tickets');
         require_code('tickets2');
 
         foreach ($tickets as $ticket) {
-            $details = get_ticket_details($ticket['l_code_category'], false);
+            $details = get_ticket_meta_details($ticket['l_code_category'], false);
             if ($details === null) {
                 continue;
             }

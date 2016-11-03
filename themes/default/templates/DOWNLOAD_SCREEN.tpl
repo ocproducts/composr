@@ -23,7 +23,7 @@
 						<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!I_AGREE}</a>
 					</div>
 
-					<div class="toggleable_tray js-tray-content" style="display: {$JS_ON,none,block}" aria-expanded="false">
+					<div class="toggleable_tray js-tray-content" style="display: none" aria-expanded="false">
 					{+END}
 					{+START,IF_NON_PASSED,LICENCE_HYPERLINK}
 					<div class="box_inner">
@@ -178,9 +178,15 @@
 		1_REL=edit
 		1_ICON=menu/_generic_admin/edit_this
 		{+START,IF,{$ADDON_INSTALLED,galleries}}
-		2_URL={ADD_IMG_URL*}
-		2_TITLE={!ADD_IMAGE}
-		2_ICON=menu/_generic_admin/add_one
+			2_URL={ADD_IMG_URL*}
+			2_TITLE={!ADD_IMAGE}
+			2_ICON=menu/_generic_admin/add_one
+		{+END}
+		{+START,IF,{$ADDON_INSTALLED,tickets}}
+			3_URL={$PAGE_LINK,_SEARCH:report_content:content_type=download:content_id={ID}:redirect={$SELF_URL&}}
+			3_TITLE={!report_content:REPORT_THIS}
+			3_ICON=buttons/report
+			3_REL=report
 		{+END}
 	{+END}
 

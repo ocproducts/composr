@@ -119,7 +119,7 @@ function adjust_htaccess()
         $contents = substr($contents, 0, $start_pos) . implode("\n", $lines) . substr($contents, $end_pos + strlen($final_line));
     }
 
-    $myfile = @fopen($path, 'at');
+    $myfile = @fopen($path, 'ab');
     @flock($myfile, LOCK_EX);
     ftruncate($myfile, 0);
     fwrite($myfile, $contents);

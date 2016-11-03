@@ -241,5 +241,5 @@ function schedule_content_review($content_type, $content_id, $review_freq, $next
         'last_reviewed_time' => time(),
     ));
 
-    decache('main_staff_checklist');
+    delete_cache_entry('main_staff_checklist');
 }

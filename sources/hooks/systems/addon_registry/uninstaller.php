@@ -112,7 +112,7 @@ class Hook_addon_registry_uninstaller
     public function tpl_previews()
     {
         return array(
-            'templates/UNINSTALL_SCREEN.tpl' => 'administrative__uninstall_screen'
+            'templates/UNINSTALL_SCREEN.tpl' => 'administrative__uninstall_screen',
         );
     }
 

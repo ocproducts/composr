@@ -56,7 +56,7 @@ class Hook_ajax_tree_choose_filedump_file
         $out .= '<options>' . serialize($options) . '</options>';
 
         if ((has_actual_page_access(null, 'filedump')) && (file_exists($full_path))) {
-            $files = get_directory_contents($full_path, '', false, false);
+            $files = get_directory_contents($full_path, '', IGNORE_ACCESS_CONTROLLERS, false);
             sort($files, SORT_NATURAL | SORT_FLAG_CASE);
             foreach ($files as $f) {
                 $description = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'description', array('name' => basename($f), 'path' => $id . '/'));
@@ -64,7 +64,7 @@ class Hook_ajax_tree_choose_filedump_file
                 $entry_id = 'uploads/filedump/' . (($id == '') ? '' : (rawurlencode($id) . '/')) . rawurlencode($f);
 
                 if (is_dir($full_path . '/' . $f)) {
-                    $has_children = (count(get_directory_contents($full_path . '/' . $f, '', false, false)) > 0);
+                    $has_children = (count(get_directory_contents($full_path . '/' . $f, '', IGNORE_ACCESS_CONTROLLERS, false)) > 0);
 
                     if ($has_children) {
                         $out .= '<category id="' . xmlentities((($id == '') ? '' : ($id . '/')) . $f) . '" title="' . xmlentities($f) . '" has_children="' . ($has_children ? 'true' : 'false') . '" selectable="' . ($folder ? 'true' : 'false') . '"></category>';

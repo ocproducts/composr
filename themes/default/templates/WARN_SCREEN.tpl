@@ -39,9 +39,9 @@
 	{+END}
 {+END}
 
-{+START,IF,{PROVIDE_BACK}}{+START,IF,{$JS_ON}}{+START,IF,{$NOT,{$RUNNING_SCRIPT,preview}}}
+{+START,IF,{PROVIDE_BACK}}{+START,IF,{$NOT,{$RUNNING_SCRIPT,preview}}}
 	<p class="back_button">
 		<a href="#!" data-cms-btn-go-back="1"><img title="{!NEXT_ITEM_BACK}" alt="{!NEXT_ITEM_BACK}" src="{$IMG*,icons/48x48/menu/_generic_admin/back}" /></a>
 	</p>
-{+END}{+END}{+END}
+{+END}{+END}
 </div>

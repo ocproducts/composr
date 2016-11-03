@@ -722,7 +722,7 @@ class Module_admin_lang
      */
     public function set_lang_code()
     {
-        decache('side_language');
+        delete_cache_entry('side_language');
         require_code('caches3');
         erase_block_cache();
 
@@ -749,7 +749,7 @@ class Module_admin_lang
             @copy($path, $path_backup) or intelligent_write_error($path_backup);
             sync_file($path_backup);
         }
-        $myfile = @fopen($path, GOOGLE_APPENGINE ? 'wb' : 'at');
+        $myfile = @fopen($path, GOOGLE_APPENGINE ? 'wb' : 'ab');
         if ($myfile === false) {
             intelligent_write_error($path);
         }
@@ -763,14 +763,14 @@ class Module_admin_lang
                 warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
             }
         }
-        fwrite($myfile, "\n"); // Weird bug with IIS GOOGLE_APPENGINE?'wb':'wt' writing needs this to be on a separate line
+        fwrite($myfile, "\n");
         fwrite($myfile, "[runtime_processing]\n");
         foreach ($runtime_processing as $key => $flag) {
             if (fwrite($myfile, $key . '=' . $flag . "\n") == 0) {
                 warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
             }
         }
-        fwrite($myfile, "\n"); // Weird bug with IIS GOOGLE_APPENGINE?'wb':'wt' writing needs this to be on a separate line
+        fwrite($myfile, "\n");
         fwrite($myfile, "[strings]\n");
         foreach (array_unique(array_merge(array_keys($for_base_lang), array_keys($for_base_lang_2))) as $key) {
             $val = post_param_string($key, null);
@@ -850,7 +850,7 @@ class Module_admin_lang
                     @copy($path, $path_backup) or intelligent_write_error($path_backup);
                     sync_file($path_backup);
                 }
-                $myfile = @fopen($path, GOOGLE_APPENGINE ? 'wb' : 'at');
+                $myfile = @fopen($path, GOOGLE_APPENGINE ? 'wb' : 'ab');
                 if ($myfile === false) {
                     intelligent_write_error($path);
                 }
@@ -865,7 +865,7 @@ class Module_admin_lang
                             warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
                         }
                     }
-                    fwrite($myfile, "\n"); // Weird bug with IIS GOOGLE_APPENGINE?'wb':'wt' writing needs this to be on a separate line
+                    fwrite($myfile, "\n");
                 }
                 if (count($runtime_processing) != 0) {
                     fwrite($myfile, "[runtime_processing]\n");
@@ -874,7 +874,7 @@ class Module_admin_lang
                             warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
                         }
                     }
-                    fwrite($myfile, "\n"); // Weird bug with IIS GOOGLE_APPENGINE?'wb':'wt' writing needs this to be on a separate line
+                    fwrite($myfile, "\n");
                 }
                 fwrite($myfile, "[strings]\n");
                 fwrite($myfile, $out);

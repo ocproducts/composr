@@ -37,7 +37,18 @@
 			<div class="buttons_group post_buttons wiki_post_buttons">
 				{BUTTONS}
 
-				{+START,IF,{$AND,{$JS_ON},{STAFF_ACCESS}}}
+				{+START,INCLUDE,BUTTON_SCREEN_ITEM}
+					{+START,IF,{$ADDON_INSTALLED,tickets}}
+						URL={$PAGE_LINK,_SEARCH:report_content:content_type=wiki_post:content_id={ID}:redirect={$SELF_URL&}}
+						TITLE={!report_content:REPORT_THIS}
+						FULL_TITLE={!report_content:REPORT_THIS}
+						IMG=buttons/report
+						IMMEDIATE=0
+						REL=report
+					{+END}
+				{+END}
+
+				{+START,IF,{STAFF_ACCESS}}
 					<div id="cell_mark_{ID*}" class="cns_off mass_select_marker wiki_mass_select_marker">
 						<form class="webstandards_checker_off" title="{!MARKER}: {ID*}" method="post" action="index.php" id="form_mark_{ID*}" autocomplete="off">
 							<div>

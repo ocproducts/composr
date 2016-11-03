@@ -117,8 +117,8 @@ function give_award($award_id, $content_id, $time = null)
 
     $GLOBALS['SITE_DB']->query_insert('award_archive', array('a_type_id' => $award_id, 'member_id' => $member_id, 'content_id' => $content_id, 'date_and_time' => $time));
 
-    decache('main_awards');
-    decache('main_multi_content');
+    delete_cache_entry('main_awards');
+    delete_cache_entry('main_multi_content');
 }
 
 /**
@@ -208,7 +208,7 @@ function handle_award_setting($content_type, $id)
             $will_have_award = (post_param_integer('award_' . strval($row['id']), 0) == 1);
 
             if (($will_have_award) && ($has_award)) { // Has to be recached
-                decache('main_awards');
+                delete_cache_entry('main_awards');
             }
 
             if (($will_have_award) && (!$has_award)) { // Set

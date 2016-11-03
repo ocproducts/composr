@@ -46,7 +46,7 @@ function inline_language_editing($codename, $lang)
     }
     // Tack language strings onto this file
     list($codename, $value) = explode('=', $codename, 2);
-    $myfile = fopen($save_path, 'at');
+    $myfile = fopen($save_path, 'ab');
     fwrite($myfile, "\n" . $codename . '=' . $value);
     fclose($myfile);
     // Fake-load the string
@@ -57,7 +57,7 @@ function inline_language_editing($codename, $lang)
         $orig_contents = file_get_contents($inc);
         $contents = str_replace("'" . $codename . '=' . $value . "'", "'" . $codename . "'", $orig_contents);
         if ($orig_contents != $contents) {
-            $myfile = fopen($inc, GOOGLE_APPENGINE ? 'wb' : 'at');
+            $myfile = fopen($inc, GOOGLE_APPENGINE ? 'wb' : 'ab');
             @flock($myfile, LOCK_EX);
             if (!GOOGLE_APPENGINE) {
                 ftruncate($myfile, 0);

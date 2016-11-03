@@ -61,7 +61,7 @@ function _ensure_thumbnail($full_url, $thumb_url, $thumb_dir, $table, $id, $thum
             require_code('galleries2');
             create_video_thumb($full_url, $thumb_path);
         } else {
-            $thumb_url = convert_image($full_url, $thumb_path, -1, -1, intval($thumb_width), false);
+            $thumb_url = convert_image($full_url, $thumb_path, null, null, intval($thumb_width), false);
         }
     }
 
@@ -105,19 +105,19 @@ function convert_image_plus($orig_url, $dimensions = null, $output_dir = 'upload
     if ($dimensions === null) {
         $dimensions = get_option('thumb_width');
     }
-    $exp_dimensions = explode('x', $dimensions);
+    $exp_dimensions = array_map('intval', explode('x', $dimensions, 2));
     if (!is_numeric($exp_dimensions[0])) {
-        $exp_dimensions[0] = '-1';
+        $exp_dimensions[0] = null;
     }
     if (count($exp_dimensions) == 1) {
-        $exp_dimensions[1] = '-1';
+        $exp_dimensions[1] = null;
     } else {
         if (is_numeric($exp_dimensions[1])) {
-            if ($exp_dimensions[1] == '0') {
-                $exp_dimensions[1] = '1';
+            if ($exp_dimensions[1] == 0) {
+                $exp_dimensions[1] = 1;
             }
         } else {
-            $exp_dimensions[1] = '-1';
+            $exp_dimensions[1] = null;
         }
     }
 
@@ -186,11 +186,11 @@ function convert_image_plus($orig_url, $dimensions = null, $output_dir = 'upload
                 if (($algorithm == 'crop') || ($algorithm == 'pad_horiz_crop_horiz')) {
                     // Is it too wide, requiring cropping?
                     $scale_to = floatval($source_y) / floatval($exp_dimensions[1]);
-                    $will_modify_image = intval(round(floatval($source_x) / $scale_to)) != intval($exp_dimensions[0]);
+                    $will_modify_image = intval(round(floatval($source_x) / $scale_to)) != $exp_dimensions[0];
                 } else {
                     // Is the image too short, requiring padding?
                     $scale_to = floatval($source_x) / floatval($exp_dimensions[0]);
-                    $will_modify_image = intval(round(floatval($source_y) / $scale_to)) != intval($exp_dimensions[1]);
+                    $will_modify_image = intval(round(floatval($source_y) / $scale_to)) != $exp_dimensions[1];
                 }
             } elseif ($source_aspect < $destination_aspect) {
                 // The image is taller than the output
@@ -198,11 +198,11 @@ function convert_image_plus($orig_url, $dimensions = null, $output_dir = 'upload
                 if (($algorithm == 'crop') || ($algorithm == 'pad_vert_crop_vert')) {
                     // Is it too tall, requiring cropping?
                     $scale_to = floatval($source_x) / floatval($exp_dimensions[0]);
-                    $will_modify_image = intval(round(floatval($source_y) / $scale_to)) != intval($exp_dimensions[1]);
+                    $will_modify_image = intval(round(floatval($source_y) / $scale_to)) != $exp_dimensions[1];
                 } else {
                     // Is the image too narrow, requiring padding?
                     $scale_to = floatval($source_y) / floatval($exp_dimensions[1]);
-                    $will_modify_image = intval(round(floatval($source_x) / $scale_to)) != intval($exp_dimensions[0]);
+                    $will_modify_image = intval(round(floatval($source_x) / $scale_to)) != $exp_dimensions[0];
                 }
             } else {
                 // They're the same, within the tolerances of floating point arithmentic. Just scale it.
@@ -216,22 +216,22 @@ function convert_image_plus($orig_url, $dimensions = null, $output_dir = 'upload
 
             // Now do the cropping, padding and scaling
             if ($will_modify_image) {
-                $thumbnail_url = @_convert_image($orig_url, $save_path, intval($exp_dimensions[0]), intval($exp_dimensions[1]), -1, false, null, false, $only_make_smaller, array('type' => $algorithm, 'background' => $background, 'where' => $where, 'scale_to' => $scale_to));
+                $thumbnail_url = @_convert_image($orig_url, $save_path, $exp_dimensions[0], $exp_dimensions[1], null, false, null, false, $only_make_smaller, array('type' => $algorithm, 'background' => $background, 'where' => $where, 'scale_to' => $scale_to));
             } else {
                 // Just resize
-                $thumbnail_url = @_convert_image($orig_url, $save_path, intval($exp_dimensions[0]), intval($exp_dimensions[1]), -1, false, null, false, $only_make_smaller);
+                $thumbnail_url = @_convert_image($orig_url, $save_path, $exp_dimensions[0], $exp_dimensions[1], null, false, null, false, $only_make_smaller);
             }
 
         case 'width':
         case 'height':
             // We just need to scale to the given dimension
-            $thumbnail_url = @_convert_image($orig_url, $save_path, ($algorithm == 'width') ? intval($exp_dimensions[0]) : -1, ($algorithm == 'height') ? intval($exp_dimensions[1]) : -1, -1, false, null, false, $only_make_smaller);
+            $thumbnail_url = @_convert_image($orig_url, $save_path, ($algorithm == 'width') ? $exp_dimensions[0] : null, ($algorithm == 'height') ? $exp_dimensions[1] : null, null, false, null, false, $only_make_smaller);
             break;
 
         case 'box':
         default:
             // We just need to scale to the given dimension
-            $thumbnail_url = @_convert_image($orig_url, $save_path, -1, -1, intval($exp_dimensions[0]), false, null, false, $only_make_smaller);
+            $thumbnail_url = @_convert_image($orig_url, $save_path, null, null, $exp_dimensions[0], false, null, false, $only_make_smaller);
             break;
     }
 
@@ -245,9 +245,9 @@ function convert_image_plus($orig_url, $dimensions = null, $output_dir = 'upload
  *
  * @param  URLPATH $from The URL to the image to resize. May be either relative or absolute
  * @param  PATH $to The file path (including filename) to where the resized image will be saved. May be changed by reference if it cannot save an image there for some reason
- * @param  integer $width The maximum width we want our new image to be (-1 means "don't factor this in")
- * @param  integer $height The maximum height we want our new image to be (-1 means "don't factor this in")
- * @param  integer $box_width This is only considered if both $width and $height are -1. If set, it will fit the image to a box of this dimension (suited for resizing both landscape and portraits fairly)
+ * @param  ?integer $width The maximum width we want our new image to be (null: don't factor this in)
+ * @param  ?integer $height The maximum height we want our new image to be (null: don't factor this in)
+ * @param  ?integer $box_width This is only considered if both $width and $height are null. If set, it will fit the image to a box of this dimension (suited for resizing both landscape and portraits fairly) (null: use width or height)
  * @param  boolean $exit_on_error Whether to exit Composr if an error occurs
  * @param  ?string $ext2 The file extension representing the file type to save with (null: same as our input file)
  * @param  boolean $using_path Whether $from was in fact a path, not a URL
@@ -257,7 +257,7 @@ function convert_image_plus($orig_url, $dimensions = null, $output_dir = 'upload
  *
  * @ignore
  */
-function _convert_image($from, &$to, $width, $height, $box_width = -1, $exit_on_error = true, $ext2 = null, $using_path = false, $only_make_smaller = false, $thumb_options = null)
+function _convert_image($from, &$to, $width, $height, $box_width = null, $exit_on_error = true, $ext2 = null, $using_path = false, $only_make_smaller = false, $thumb_options = null)
 {
     disable_php_memory_limit();
 
@@ -294,18 +294,7 @@ function _convert_image($from, &$to, $width, $height, $box_width = -1, $exit_on_
                 $from_file = false;
                 $exif = false;
             } else {
-                if (!file_exists(dirname($to))) {
-                    if (@mkdir(dirname($to), 0777)) {
-                        fix_permissions(dirname($to));
-                        sync_file(dirname($to));
-                    } else {
-                        intelligent_write_error(dirname($to));
-                    }
-                }
-
-                $myfile = fopen($to, 'wb');
-                fwrite($myfile, $from_file);
-                fclose($myfile);
+                file_put_contents($to, $from_file);
                 fix_permissions($to);
                 sync_file($to);
                 $exif = function_exists('exif_read_data') ? @exif_read_data($to) : false;
@@ -361,7 +350,7 @@ function _convert_image($from, &$to, $width, $height, $box_width = -1, $exit_on_
         // Simpler algorithm
 
         // If we're not sure if this is gonna stretch to fit a width or stretch to fit a height
-        if (($width == -1) && ($height == -1)) {
+        if (($width === null) && ($height === null)) {
             if ($sx > $sy) {
                 $width = $box_width;
             } else {
@@ -369,7 +358,7 @@ function _convert_image($from, &$to, $width, $height, $box_width = -1, $exit_on_
             }
         }
 
-        if (($width != -1) && ($height != -1)) {
+        if (($width !== null) && ($height !== null)) {
             if ((floatval($sx) / floatval($width)) > (floatval($sy) / floatval($height))) {
                 $_width = $width;
                 $_height = intval($sy * ($width / $sx));
@@ -377,10 +366,10 @@ function _convert_image($from, &$to, $width, $height, $box_width = -1, $exit_on_
                 $_height = $height;
                 $_width = intval($sx * ($height / $sy));
             }
-        } elseif ($height == -1) {
+        } elseif ($height === null) {
             $_width = $width;
             $_height = intval($width / ($sx / $sy));
-        } elseif ($width == -1) {
+        } elseif ($width === null) {
             $_height = $height;
             $_width = intval($height / ($sy / $sx));
         }
@@ -400,9 +389,7 @@ function _convert_image($from, &$to, $width, $height, $box_width = -1, $exit_on_
                 if ($using_path) {
                     copy($from, $to);
                 } else {
-                    $_to = @fopen($to, 'wb') or intelligent_write_error($to);
-                    fwrite($_to, $from_file);
-                    fclose($_to);
+                    @file_put_contents($to, $from_file) or intelligent_write_error($to);
                 }
                 fix_permissions($to);
                 sync_file($to);
@@ -619,7 +606,7 @@ function _convert_image($from, &$to, $width, $height, $box_width = -1, $exit_on_
         $test = @imagepng($dest, $to, 9);
         if ($test) {
             require_code('images_png');
-            png_compress($to, $width <= 300 && $width != -1 || $height <= 300 && $height != -1 || $box_width <= 300 && $box_width != -1);
+            png_compress($to, $width <= 300 && $width !== null || $height <= 300 && $height !== null || $box_width <= 300 && $box_width !== null);
         }
     } elseif ((function_exists('imagejpeg')) && (($ext2 == 'jpg') || ($ext2 == 'jpeg'))) {
         $test = @imagejpeg($dest, $to, intval(get_option('jpeg_quality')));

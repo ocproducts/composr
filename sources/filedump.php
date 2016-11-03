@@ -28,7 +28,7 @@ function find_broken_filedump_links()
     $paths_broken = array();
 
     require_code('files2');
-    $all_files = get_directory_contents(get_custom_file_base() . '/uploads/filedump', '', false, true);
+    $all_files = get_directory_contents(get_custom_file_base() . '/uploads/filedump', '', IGNORE_ACCESS_CONTROLLERS, true);
 
     $paths_used = find_filedump_links();
     foreach ($paths_used as $path => $details) {

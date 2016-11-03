@@ -24,7 +24,10 @@ class ticket_type_test_set extends cms_test_case
     {
         parent::setUp();
 
+        require_lang('tickets');
+        require_code('tickets');
         require_code('tickets2');
+
         $this->ticket_type_id = add_ticket_type('platinum', 0, 0);
         $ticket_type_name = $GLOBALS['SITE_DB']->query_select_value('ticket_types', 'ticket_type_name', array('id' => $this->ticket_type_id));
         $this->assertTrue('platinum' == get_translated_text($ticket_type_name));

@@ -298,7 +298,7 @@ class Module_filedump
         // Find all files in the filedump directory
         $db_rows = array();
         $files = array();
-        $dir_contents = get_directory_contents(get_custom_file_base() . '/uploads/filedump' . $place, trim($place, '/'), false, $recurse == 1);
+        $dir_contents = get_directory_contents(get_custom_file_base() . '/uploads/filedump' . $place, trim($place, '/'), IGNORE_ACCESS_CONTROLLERS, $recurse == 1);
         foreach ($dir_contents as $filename) {
             $_place = dirname($filename);
             if ($_place == '.') {
@@ -537,7 +537,7 @@ class Module_filedump
         }
 
         // Find directories we could move stuff into / upload to
-        $directories = get_directory_contents(get_custom_file_base() . '/uploads/filedump', '', false, true, false);
+        $directories = get_directory_contents(get_custom_file_base() . '/uploads/filedump', '', IGNORE_ACCESS_CONTROLLERS, true, false);
         $directories[] = '';
         sort($directories);
         $other_directories = $directories;
@@ -1168,7 +1168,7 @@ class Module_filedump
                         break;
 
                     case 'move':
-                        $path_target = get_custom_file_base() . '/uploads/filedump' . $target . $file;
+                        $path_target = get_custom_file_base() . '/uploads/filedump/' . $target . $file;
                         rename($path, $path_target) or intelligent_write_error($path);
                         sync_file('uploads/filedump' . $path_target);
 

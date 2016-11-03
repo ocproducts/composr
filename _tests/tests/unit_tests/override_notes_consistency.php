@@ -22,7 +22,7 @@ class override_notes_consistency_test_set extends cms_test_case
     {
         require_code('files');
         require_code('files2');
-        $files = get_directory_contents(get_file_base(), '', true);
+        $files = get_directory_contents(get_file_base(), '', 0);
         foreach ($files as $file) {
             if (substr($file, -4) != '.php') {
                 continue;

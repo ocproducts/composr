@@ -190,7 +190,7 @@ function _cms_profile_log_line($line)
             $PROFILER_PATH .= '--in-progress.log';
         }
 
-        $PROFILER_FILEHANDLE = fopen($PROFILER_PATH, 'at');
+        $PROFILER_FILEHANDLE = fopen($PROFILER_PATH, 'ab');
 
         // Pre-logging
         _cms_profile_log_line('URL: ' . get_self_url_easy(true));

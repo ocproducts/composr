@@ -49,7 +49,6 @@ class Hook_rss_tickets
         }
 
         require_code('tickets');
-        require_code('tickets2');
 
         $ticket_types = selectcode_to_idlist_using_callback($_filters, '', null, null, null, null, false);
         if (count($ticket_types) != 0) {
@@ -58,10 +57,10 @@ class Hook_rss_tickets
                 if (!has_category_access(get_member(), 'tickets', strval($ticket_type_id))) {
                     continue;
                 }
-                $rows = array_merge($rows, get_tickets(get_member(), $ticket_type_id, false, false, true));
+                $rows = array_merge($rows, get_tickets(array('ticket_type_id' => $ticket_type_id, 'only_open' => true)));
             }
         } else {
-            $rows = get_tickets(get_member(), null, false, false, true);
+            $rows = get_tickets(array('only_open' => true));
         }
 
         require_code('feedback');

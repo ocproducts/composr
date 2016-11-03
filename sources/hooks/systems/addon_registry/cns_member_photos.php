@@ -119,7 +119,7 @@ class Hook_addon_registry_cns_member_photos
     public function tpl_previews()
     {
         return array(
-            'templates/CNS_EDIT_PHOTO_TAB.tpl' => 'cns_edit_photo_tab'
+            'templates/CNS_EDIT_PHOTO_TAB.tpl' => 'cns_edit_photo_tab',
         );
     }
 

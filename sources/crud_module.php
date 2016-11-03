@@ -452,16 +452,6 @@ abstract class Standard_crud_module
             }
         }
 
-        if (get_value('xhtml_strict') === '1') {
-            $this->second_stage_preview = true;
-            if ($this->cat_crud_module !== null) {
-                $this->second_stage_preview = true;
-            }
-            if ($this->alt_crud_module !== null) {
-                $this->second_stage_preview = true;
-            }
-        }
-
         if (get_option('edit_under') == '0') {
             $this->special_edit_frontend = true;
             if ($this->cat_crud_module !== null) {
@@ -1276,7 +1266,7 @@ abstract class Standard_crud_module
 
         $keep = symbol_tempcode('KEEP');
         $iframe_url = mixed();
-        if (!$this->special_edit_frontend && (has_js())) {
+        if (!$this->special_edit_frontend) {
             $iframe_url = find_script('iframe') . '?zone=' . urlencode(get_zone_name()) . '&opens_below=1';
             foreach ($map as $key => $val) {
                 $iframe_url .= '&' . $key . '=' . urlencode(str_replace('_SELF', get_page_name(), $val));

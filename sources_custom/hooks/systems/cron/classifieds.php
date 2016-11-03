@@ -53,8 +53,8 @@ class Hook_cron_classifieds
                 // Expiring
                 if ($entry['ce_last_moved'] < $time) { // We have stolen use of the standard Composr "ce_last_moved" property as a "next move" property
                     $GLOBALS['SITE_DB']->query_update('catalogue_entries', array('ce_validated' => 0), array('id' => $entry['id']), '', 1);
-                    decache('main_cc_embed');
-                    decache('main_recent_cc_entries');
+                    delete_cache_entry('main_cc_embed');
+                    delete_cache_entry('main_recent_cc_entries');
                     require_code('catalogues2');
                     calculate_category_child_count_cache($entry['cc_id']);
                 } elseif (($entry['ce_last_moved'] < $time + 60 * 60 * 24) && ($entry['ce_last_moved'] > $time + 60 * 60 * 23)) { /* one hour time window; assumes CRON runs at least once per hour */

@@ -113,7 +113,7 @@ class Hook_cron_block_caching
                     if ($request['c_store_as_tempcode'] == 1) {
                         $cache = make_string_tempcode($cache->evaluate());
                     }
-                    put_into_cache($codename, $ttl, $cache_identifier, $request['c_staff_status'], $request['c_member'], $request['c_groups'], $request['c_is_bot'], $request['c_timezone'], $cache, array_keys($LANGS_REQUESTED), array_keys($JAVASCRIPTS), array_keys($CSSS), true);
+                    set_cache_entry($codename, $ttl, $cache_identifier, $cache, $info['special_cache_flags'], array_keys($LANGS_REQUESTED), array_keys($JAVASCRIPTS), array_keys($CSSS), true, $request['c_staff_status'], $request['c_member'], $request['c_groups'], $request['c_is_bot'], $request['c_is_ssl'], $request['c_timezone'], $request['c_lang']);
                 }
                 $LANGS_REQUESTED += $backup_langs_requested;
                 $REQUIRED_ALL_LANG += $backup_required_all_lang;

@@ -39,7 +39,7 @@ function init__database()
     }
     $DB_SCOPE_CHECK = array(true);
     if (((!isset($SITE_INFO['no_extra_logs'])) || ($SITE_INFO['no_extra_logs'] != '1')) && (is_file(get_custom_file_base() . '/data_custom/queries.log'))) {
-        $QUERY_FILE_LOG = fopen(get_custom_file_base() . '/data_custom/queries.log', 'at');
+        $QUERY_FILE_LOG = fopen(get_custom_file_base() . '/data_custom/queries.log', 'ab');
     } else {
         $QUERY_FILE_LOG = null;
     }
@@ -1654,7 +1654,7 @@ class DatabaseConnector
         }
 
         if (count($all_values) === 1) { // usually $all_values only has length of 1
-            if ((get_value('enable_delayed_inserts') === '1') && (in_array($table, array('stats', 'banner_clicks', 'member_tracking', 'usersonline_track', 'download_logging'/*FUDGE: Ideally we would define this list via database_relations.php, but performance matters*/))) && (substr(get_db_type(), 0, 5) === 'mysql')) {
+            if ((function_exists('get_value')) && (get_value('enable_delayed_inserts') === '1') && (in_array($table, array('stats', 'banner_clicks', 'member_tracking', 'usersonline_track', 'download_logging'/*FUDGE: Ideally we would define this list via database_relations.php, but performance matters*/))) && (substr(get_db_type(), 0, 5) === 'mysql')) {
                 $query = 'INSERT DELAYED INTO ' . $this->table_prefix . $table . ' (' . $keys . ') VALUES (' . $all_values[0] . ')';
             } else {
                 $query = 'INSERT INTO ' . $this->table_prefix . $table . ' (' . $keys . ') VALUES (' . $all_values[0] . ')';

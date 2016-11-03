@@ -69,9 +69,9 @@ Composr forms can include a 'black hole' which is a specially hidden field that 
 We integrate the Project Honey Pot service, for injection of a hidden Honey Pot link onto pages. Spambots following the link will flag as spammers in the Project Honey Pot system. This feeds the HTTP:BL block list, which is one of the RBL services Composr can use.
 You need to specifically configure the options for Honey Pot -- it requires you to sign up for their service, and fill in some special configuration options.
 
-[title="2"]Reported posts[/title]
+[title="2"]Reported content/posts[/title]
 
-If someone spams on the forum (assuming you are running [concept]Conversr[/concept]) then they can use the 'report post' feature to alert the staff to the spammer activity.
+If someone spams then they can use the 'report content'/'report post' feature to alert the staff to the spammer activity.
 This is described in the [page="_SEARCH:tut_censor"]Policing a community site tutorial[/page].
 
 [title="2"]What we don't do[/title]

@@ -163,7 +163,7 @@ class Hook_addon_registry_stats
             'templates/STATS_GRAPH.tpl' => 'administrative__stats_screen',
             'templates/STATS_SCREEN.tpl' => 'administrative__stats_screen',
             'templates/STATS_OVERVIEW_SCREEN.tpl' => 'administrative__stats_screen_overview',
-            'templates/STATS_SCREEN_ISCREEN.tpl' => 'administrative__stats_screen_iscreen'
+            'templates/STATS_SCREEN_ISCREEN.tpl' => 'administrative__stats_screen_iscreen',
         );
     }
 

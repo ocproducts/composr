@@ -28,7 +28,8 @@ class CMSPostWrite
     {
         cms_verify_parameters_phpdoc();
 
-        report_post($post_id, $reason);
+        require_code('report_content');
+        report_post($post_id, $reason, is_invisible() ? 1 : 0);
     }
 
     /**

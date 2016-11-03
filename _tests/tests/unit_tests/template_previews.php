@@ -140,7 +140,7 @@ class template_previews_test_set extends cms_test_case
             $_out = $out->evaluate();
 
             if (stripos($_out, '<html') !== false && strpos($_out, '<xsl') === false) {
-                $result = check_xhtml($_out, false, false, false, true, true, false, false);
+                $result = check_xhtml($_out, false, false, false, true, true, true, false, false, true);
                 if (($result !== null) && (count($result['errors']) == 0)) {
                     $result = null;
                 }
@@ -223,14 +223,10 @@ class template_previews_test_set extends cms_test_case
                 fclose(fopen(get_file_base() . '/_tests/screens_tested/consistency__' . $function . '.tmp', 'wb'));
                 fix_permissions(get_file_base() . '/_tests/screens_tested/consistency__' . $function . '.tmp');
             } else {
-                $myfile = fopen(get_file_base() . '/_tests/screens_tested/v1__' . '.tmp', 'wb');
-                fwrite($myfile, $_out1);
-                fclose($myfile);
+                file_put_contents(get_file_base() . '/_tests/screens_tested/v1__' . '.tmp', $_out1);
                 fix_permissions(get_file_base() . '/_tests/screens_tested/v1__' . '.tmp');
 
-                $myfile = fopen(get_file_base() . '/_tests/screens_tested/v2__' . '.tmp', 'wb');
-                fwrite($myfile, $_out2);
-                fclose($myfile);
+                file_put_contents(get_file_base() . '/_tests/screens_tested/v2__' . '.tmp', $_out2);
                 fix_permissions(get_file_base() . '/_tests/screens_tested/v2__' . '.tmp');
 
                 require_code('diff');

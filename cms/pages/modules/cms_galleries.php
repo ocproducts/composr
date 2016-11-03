@@ -295,10 +295,9 @@ class Module_cms_galleries extends Standard_crud_module
         check_privilege('mass_import');
 
         $condition = 'only_member_galleries_of_id';
-        $member_id = get_param_integer('member_id', -1);
-        if ($member_id == -1) {
+        $member_id = get_param_integer('member_id', null);
+        if ($member_id === null) {
             $condition = mixed();
-            $member_id = null;
         }
 
         $cat = get_param_string('cat', '');
@@ -578,7 +577,7 @@ class Module_cms_galleries extends Standard_crud_module
                     }
                 } else {
                     $thumb_path = get_custom_file_base() . '/uploads/galleries_thumbs/' . rawurldecode($file);
-                    $thumb_url = convert_image($url, $thumb_path, -1, -1, intval(get_option('thumb_width')), false);
+                    $thumb_url = convert_image($url, $thumb_path, null, null, intval(get_option('thumb_width')), false);
 
                     // See if we need to do watermarking
                     $watermark = (post_param_integer('ss_watermark', 0) == 1);
@@ -700,7 +699,7 @@ class Module_cms_galleries extends Standard_crud_module
             }
         } else {
             $thumb_path = get_custom_file_base() . '/' . rawurldecode($thumb_url);
-            $thumb_url = convert_image($url, $thumb_path, -1, -1, intval(get_option('thumb_width')), true);
+            $thumb_url = convert_image($url, $thumb_path, null, null, intval(get_option('thumb_width')), true);
 
             $exif = get_exif_data(get_custom_file_base() . '/' . rawurldecode($url), $file);
 
@@ -840,7 +839,7 @@ class Module_cms_galleries extends Standard_crud_module
         $archive_url = build_url(array('page' => 'galleries'), get_module_zone('galleries'));
 
         $only_owned = has_privilege(get_member(), 'edit_midrange_content', 'cms_galleries') ? null : get_member();
-        $tree = form_input_tree_list(do_lang_tempcode('IMAGE'), do_lang_tempcode('DESCRIPTION_IMAGE'), 'id', null, 'choose_image', array('filter' => 'only_conventional_galleries', 'only_owned' => $only_owned, 'editable_filter' => true), true, null, false, null, has_js() && $this->supports_mass_delete);
+        $tree = form_input_tree_list(do_lang_tempcode('IMAGE'), do_lang_tempcode('DESCRIPTION_IMAGE'), 'id', null, 'choose_image', array('filter' => 'only_conventional_galleries', 'only_owned' => $only_owned, 'editable_filter' => true), true, null, false, null, $this->supports_mass_delete);
         return array($tree, $search_url, $archive_url);
     }
 
@@ -1451,7 +1450,7 @@ class Module_cms_galleries_alt extends Standard_crud_module
         $archive_url = build_url(array('page' => 'galleries'), get_module_zone('galleries'));
 
         $only_owned = has_privilege(get_member(), 'edit_midrange_content', 'cms_galleries') ? null : get_member();
-        $tree = form_input_tree_list(do_lang_tempcode('VIDEO'), '', 'id', null, 'choose_video', array('only_owned' => $only_owned, 'editable_filter' => true), true, null, false, null, has_js() && $this->supports_mass_delete);
+        $tree = form_input_tree_list(do_lang_tempcode('VIDEO'), '', 'id', null, 'choose_video', array('only_owned' => $only_owned, 'editable_filter' => true), true, null, false, null, $this->supports_mass_delete);
         return array($tree, $search_url, $archive_url);
     }
 

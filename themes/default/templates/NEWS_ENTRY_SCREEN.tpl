@@ -48,6 +48,12 @@
 		3_URL={NEWSLETTER_URL*}
 		3_TITLE={+START,IF_NON_EMPTY,{NEWSLETTER_URL}}{!newsletter:NEWSLETTER_SEND}{+END}
 		3_ICON=menu/site_meta/newsletters
+		{+START,IF,{$ADDON_INSTALLED,tickets}}
+			4_URL={$PAGE_LINK,_SEARCH:report_content:content_type=news:content_id={ID}:redirect={$SELF_URL&}}
+			4_TITLE={!report_content:REPORT_THIS}
+			4_ICON=buttons/report
+			4_REL=report
+		{+END}
 	{+END}
 
 	<div class="float_surrounder lined_up_boxes">

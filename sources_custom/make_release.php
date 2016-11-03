@@ -660,9 +660,7 @@ function populate_build_files_list($dir = '', $pretend_dir = '')
             }
 
             // Write the file out
-            $tmp = fopen($builds_path . '/builds/build/' . $version_branch . '/' . $pretend_dir . $file, 'wb');
-            fwrite($tmp, $MAKE_INSTALLERS__FILE_ARRAY[$pretend_dir . $file]);
-            fclose($tmp);
+            file_put_contents($builds_path . '/builds/build/' . $version_branch . '/' . $pretend_dir . $file, $MAKE_INSTALLERS__FILE_ARRAY[$pretend_dir . $file]);
             fix_permissions($builds_path . '/builds/build/' . $version_branch . '/' . $pretend_dir . $file);
         }
     }
@@ -698,9 +696,7 @@ function make_files_manifest() // Builds files.dat, the Composr file manifest (u
 
     $file_manifest = serialize($files);
 
-    $myfile = fopen(get_file_base() . '/data/files.dat', 'wb');
-    fwrite($myfile, $file_manifest);
-    fclose($myfile);
+    file_put_contents(get_file_base() . '/data/files.dat', $file_manifest);
     fix_permissions(get_file_base() . '/data/files.dat');
 
     $MAKE_INSTALLERS__FILE_ARRAY['data/files.dat'] = $file_manifest;
@@ -709,9 +705,7 @@ function make_files_manifest() // Builds files.dat, the Composr file manifest (u
     require_code('version2');
     $version_branch = get_version_branch();
     $builds_path = get_builds_path();
-    $tmp = fopen($builds_path . '/builds/build/' . $version_branch . '/data/files.dat', 'wb');
-    fwrite($tmp, $file_manifest);
-    fclose($tmp);
+    file_put_contents($builds_path . '/builds/build/' . $version_branch . '/data/files.dat', $file_manifest);
     fix_permissions($builds_path . '/builds/build/' . $version_branch . '/data/files.dat');
 }
 
@@ -728,7 +722,7 @@ function make_database_manifest() // Builds db_meta.dat, which is used for datab
     $privilege_addons = array();
 
     require_code('files2');
-    $files = get_directory_contents(get_file_base(), '', true);
+    $files = get_directory_contents(get_file_base(), '', 0);
     foreach ($files as $file) {
         if (substr($file, -4) != '.php' && substr($file, -strlen('_custom')) != '_custom') {
             continue;
@@ -877,9 +871,7 @@ function make_database_manifest() // Builds db_meta.dat, which is used for datab
 
     // Save
     $path = get_file_base() . '/data/db_meta.dat';
-    $myfile = fopen($path, GOOGLE_APPENGINE ? 'wb' : 'wt');
-    fwrite($myfile, serialize($data));
-    fclose($myfile);
+    file_put_contents($path, serialize($data));
     fix_permissions($path);
     sync_file($path);
 

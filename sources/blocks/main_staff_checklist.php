@@ -132,7 +132,7 @@ class Block_main_staff_checklist
         $recur_every = post_param_string('recur_every', null);
         if (($new_task !== null) && ($recur_interval !== null) && ($recur_every !== null)) {
             $GLOBALS['SITE_DB']->query_insert('staff_checklist_cus_tasks', array('task_title' => $new_task, 'add_date' => time(), 'recur_interval' => $recur_interval, 'recur_every' => $recur_every, 'task_is_done' => null));
-            decache('main_staff_checklist');
+            delete_cache_entry('main_staff_checklist');
         }
         $custom_tasks = new Tempcode();
         $rows = $GLOBALS['SITE_DB']->query_select('staff_checklist_cus_tasks', array('*'));

@@ -356,9 +356,7 @@ class RevisionEngineFiles
         }
 
         $max_rows = $this->total_revisions($directory, $filename_id, $ext);
-        if (!has_js()) {
-            $max = $max_rows; // No AJAX pagination if no JS
-        }
+
         $revisions = $this->find_revisions($directory, $filename_id, $ext, $action, null, $max, $start);
 
         $do_actionlog = has_actual_page_access(get_member(), 'admin_actionlog');

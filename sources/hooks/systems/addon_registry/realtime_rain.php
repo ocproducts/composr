@@ -393,7 +393,7 @@ class Hook_addon_registry_realtime_rain
     {
         return array(
             'templates/REALTIME_RAIN_OVERLAY.tpl' => 'administrative__realtime_rain_overlay',
-            'templates/REALTIME_RAIN_BUBBLE.tpl' => 'administrative__realtime_rain_bubble'
+            'templates/REALTIME_RAIN_BUBBLE.tpl' => 'administrative__realtime_rain_bubble',
         );
     }
 

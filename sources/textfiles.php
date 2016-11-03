@@ -119,7 +119,7 @@ function write_text_file($codename, $lang, $out)
         make_missing_directory(dirname($path));
     }
 
-    $myfile = @fopen($path, GOOGLE_APPENGINE ? 'wb' : 'at');
+    $myfile = @fopen($path, GOOGLE_APPENGINE ? 'wb' : 'ab');
     if ($myfile === false) {
         intelligent_write_error($path);
     }
@@ -137,7 +137,7 @@ function write_text_file($codename, $lang, $out)
 
     // Backup with a timestamp (useful if for example an addon update replaces changes)
     $path .= '.' . strval(time());
-    $myfile = @fopen($path, GOOGLE_APPENGINE ? 'wb' : 'at');
+    $myfile = @fopen($path, GOOGLE_APPENGINE ? 'wb' : 'ab');
     if ($myfile === false) {
         intelligent_write_error($path);
     }

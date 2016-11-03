@@ -14,6 +14,11 @@ Also, EXIF data (in JPEG and TIFF files) will be checked for descriptions.
 
 The orphaned files importer will auto-select any orphaned files that are put in a directory of the same name as the gallery you are importing. This is useful if you have been organising your gallery images/videos into a directory structure before-hand, as it stops you having to manually re-select what-goes-where when you do the import. Note that the gallery structure is only one-level-deep, there is no support for subdirectory nesting; however, that is not required anyway as gallery names must be unique and thus there is no potential for directory name conflict.
 
+[box="Tip"]
+If you are importing a lot of large images from a digital camera you may want to size the images down first using a tool such as [url="Image Resizer"]http://www.bricelam.net/ImageResizer/[/url] or the inbuilt Preview app on a Mac.
+This will speed up upload and reduce changes of hitting timeouts.
+[/box]
+
 [title="3"]EXIF[/title]
 
 On gallery import, EXIF data may be gathered.

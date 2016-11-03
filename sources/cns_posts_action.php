@@ -156,7 +156,7 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
 
     if (!running_script('install')) {
         require_code('antispam');
-        inject_action_spamcheck($poster_name_if_guest, get_param_string('email', null, INPUT_FILTER_GET_COMPLEX));
+        inject_action_spamcheck($poster_name_if_guest, post_param_string('email', null, INPUT_FILTER_GET_COMPLEX));
     }
 
     if ($check_permissions) {
@@ -504,7 +504,7 @@ function cns_decache_cms_blocks($updated_forum_id, $forum_name = null, $member =
         $decache[] = array('main_staff_checklist', null);
     }
 
-    decache($decache);
+    delete_cache_entry($decache);
 
     if ($member !== null) {
         decache_private_topics($member);

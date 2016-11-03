@@ -122,7 +122,7 @@ class Hook_addon_registry_forum_blocks
         return array(
             'templates/BLOCK_MAIN_FORUM_TOPICS.tpl' => 'block_main_forum_topics',
             'templates/BLOCK_SIDE_FORUM_NEWS.tpl' => 'block_side_forum_news',
-            'templates/BLOCK_MAIN_FORUM_NEWS.tpl' => 'block_main_forum_news'
+            'templates/BLOCK_MAIN_FORUM_NEWS.tpl' => 'block_main_forum_news',
         );
     }
 

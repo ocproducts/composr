@@ -119,7 +119,7 @@ class Hook_addon_registry_cns_signatures
     public function tpl_previews()
     {
         return array(
-            'templates/CNS_EDIT_SIGNATURE_TAB.tpl' => 'cns_edit_signature_tab'
+            'templates/CNS_EDIT_SIGNATURE_TAB.tpl' => 'cns_edit_signature_tab',
         );
     }
 

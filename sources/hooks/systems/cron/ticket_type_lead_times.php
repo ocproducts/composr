@@ -39,9 +39,10 @@ class Hook_cron_ticket_type_lead_times
         }
         set_value('last_ticket_lead_time_calc', strval($time), true);
 
+        require_lang('tickets');
         require_code('tickets');
         require_code('tickets2');
-        require_lang('tickets');
+
         update_ticket_type_lead_times();
     }
 }

@@ -110,7 +110,6 @@ After installing this addon your shout box will essentially be treated as an emb
     {
         return array(
             'requires' => array(
-                'JavaScript enabled',
                 'chat',
             ),
             'recommends' => array(),

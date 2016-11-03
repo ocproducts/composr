@@ -729,7 +729,7 @@ class Hook_import_ipb2
                         list($photo_thumb_path) = find_unique_path('uploads/cns_photos_thumbs', $filename);
 
                         require_code('images');
-                        $photo_thumb_url = convert_image($photo_url, $photo_thumb_path, -1, -1, intval(get_option('thumb_width')), false, null, true);
+                        $photo_thumb_url = convert_image($photo_url, $photo_thumb_path, null, null, intval(get_option('thumb_width')), false, null, true);
                     }
 
                     $row['avatar'] = $row2['avatar_location'];

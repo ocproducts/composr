@@ -85,7 +85,7 @@ if (!empty($request_method_name) && isset($SERVER_DEFINE[$request_method_name]))
 
 if ((is_file(TAPATALK_LOG)) && (cms_is_writable(TAPATALK_LOG))) {
     // Request
-    $log_file = fopen(TAPATALK_LOG, 'at');
+    $log_file = fopen(TAPATALK_LOG, 'ab');
     fwrite($log_file, TAPATALK_REQUEST_ID . ' -- ' . date('Y-m-d H:i:s') . " *REQUEST*:\n");
     fwrite($log_file, 'GET: ' . serialize($_GET) . "\n");
     fwrite($log_file, 'COOKIE: ' . serialize($_COOKIE) . "\n");
@@ -105,7 +105,7 @@ if ((is_file(TAPATALK_LOG)) && (cms_is_writable(TAPATALK_LOG))) {
     ob_start();
     function _do_response_logging()
     {
-        $log_file = fopen(TAPATALK_LOG, 'at');
+        $log_file = fopen(TAPATALK_LOG, 'ab');
         fwrite($log_file, TAPATALK_REQUEST_ID . ' -- ' . date('Y-m-d H:i:s') . " *RESPONSE*:\n");
         fwrite($log_file, 'HEADERS: ' . serialize(headers_list()) . "\n");
         fwrite($log_file, ob_get_contents() . "\n");
