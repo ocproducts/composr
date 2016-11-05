@@ -108,8 +108,8 @@ function cns_may_edit_post_by($post_id, $post_time, $resource_owner, $forum_id, 
     }
 
     if (is_null($forum_id)) {
-        if (!has_privilege($member_id, 'moderate_personal_topic')) {
-            if (($resource_owner != $member_id) || (!has_privilege($member_id, 'delete_personal_topic_posts'))) {
+        if (!has_privilege($member_id, 'moderate_private_topic')) {
+            if (($resource_owner != $member_id) || (!has_privilege($member_id, 'delete_private_topic_posts'))) {
                 return false;
             }
         }
@@ -130,7 +130,7 @@ function cns_may_edit_post_by($post_id, $post_time, $resource_owner, $forum_id, 
         }
     }
 
-    if (!is_null($forum_id) || !has_privilege($member_id, 'moderate_personal_topic')) {
+    if (!is_null($forum_id) || !has_privilege($member_id, 'moderate_private_topic')) {
         if (!has_edit_permission('low', $member_id, $resource_owner, 'topics', array('forums', $forum_id))) {
             return false;
         }
@@ -178,8 +178,8 @@ function cns_may_delete_post_by($post_id, $post_time = null, $resource_owner, $f
     }
 
     if (is_null($forum_id)) {
-        if (!has_privilege($member_id, 'moderate_personal_topic')) {
-            if (($resource_owner != $member_id) || (!has_privilege($member_id, 'delete_personal_topic_posts'))) {
+        if (!has_privilege($member_id, 'moderate_private_topic')) {
+            if (($resource_owner != $member_id) || (!has_privilege($member_id, 'delete_private_topic_posts'))) {
                 return false;
             }
         }
@@ -193,7 +193,7 @@ function cns_may_delete_post_by($post_id, $post_time = null, $resource_owner, $f
         }
     }
 
-    if (!is_null($forum_id) || !has_privilege($member_id, 'moderate_personal_topic')) {
+    if (!is_null($forum_id) || !has_privilege($member_id, 'moderate_private_topic')) {
         if (!has_delete_permission('low', $member_id, $resource_owner, 'topics', array('forums', $forum_id))) {
             return false;
         }

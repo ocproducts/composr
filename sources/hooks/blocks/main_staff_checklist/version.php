@@ -47,7 +47,7 @@ class Hook_checklist_version
         if ($version_outdated) {
             $url = new Tempcode(); // Don't want to point people to upgrade addons if on an old version
         } else {
-            $url = build_url(array('page' => 'admin_addons', 'type' => 'browse'), get_module_zone('admin_messaging'));
+            $url = build_url(array('page' => 'admin_addons', 'type' => 'browse'), get_module_zone('admin_addons'));
         }
 
         require_lang('addons');

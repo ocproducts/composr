@@ -45,48 +45,52 @@ function init__database_helper()
 /**
  * Check a set of fields aren't going to exceed key limits.
  *
+ * @param  ID_TEXT $table_name The table name
  * @param  boolean $primary_key Whether this will be in a primary key
  * @param  array $fields The fields (a map between field name and field type [field type must start '*' if it is to be counted])
  * @param  ID_TEXT $id_name The name of what we are checking (only used to generate clear error messages)
  * @param  boolean $skip_size_check Whether to skip the size check for the table (only do this for addon modules that don't need to support anything other than MySQL)
  * @param  boolean $skip_null_check Whether to skip the check for NULL string fields
  * @param  boolean $save_bytes Whether to use lower-byte table storage, with tradeoffs of not being able to support all unicode characters; use this if key length is an issue
+ * @param  boolean $return_on_error Whether to return on errors
+ * @return boolean Whether the size limit is not exceeded
  *
  * @ignore
  */
-function _check_sizes($primary_key, $fields, $id_name, $skip_size_check = false, $skip_null_check = false, $save_bytes = false)
+function _check_sizes($table_name, $primary_key, $fields, $id_name, $skip_size_check = false, $skip_null_check = false, $save_bytes = false, $return_on_error = false)
 {
     // Check constraints
     $take_unicode_into_account = $save_bytes ? 3 : 4;
-    $data_sizes = array(  // The maximum size fields could be from a database-neutral perspective
-                          'AUTO' => 4,
-                          'AUTO_LINK' => 4,
-                          'INTEGER' => 4,
-                          'UINTEGER' => 4,
-                          'REAL' => 4,
-                          'SHORT_INTEGER' => 2,
-                          'BINARY' => 1,
-                          'MEMBER' => 4,
-                          'GROUP' => 4,
-                          'TIME' => 4,
-                          'LONG_TRANS' => 4,
-                          'SHORT_TRANS' => 4,
-                          'LONG_TRANS__COMCODE' => 255 + 1,
-                          'SHORT_TRANS__COMCODE' => 255 + 1,
-                          'SHORT_TEXT' => $primary_key ? (150) : (255 + 1), /* We underestimate for primary key, as it is very unlikely to be very high and the limit only exists on our own 'xml' database driver as a run-time limit */
-                          'LONG_TEXT' => 255 + 1,
-                          'ID_TEXT' => $primary_key ? (16) : (80 + 1), /* We underestimate for primary key, as it is very unlikely to be very high and the limit only exists on our own 'xml' database driver as a run-time limit */
-                          'MINIID_TEXT' => 40 + 1,
-                          'IP' => 15 + 1,
-                          'LANGUAGE_NAME' => 5 + 1,
-                          'URLPATH' => 255 + 1,
-                          'unicode_SHORT_TEXT' => $take_unicode_into_account * 255 + 1,
-                          'unicode_LONG_TEXT' => $take_unicode_into_account * 255 + 1,
-                          'unicode_ID_TEXT' => $take_unicode_into_account * 80 + 1,
-                          'unicode_IP' => $take_unicode_into_account * 15 + 1,
-                          'unicode_LANGUAGE_NAME' => $take_unicode_into_account * 5 + 1,
-                          'unicode_URLPATH' => $take_unicode_into_account * 255 + 1,
-                          'unicode_MD5' => $take_unicode_into_account * 33 + 1
+    $data_sizes = array(
+        // The maximum size fields could be from a database-neutral perspective
+        'AUTO' => 4,
+        'AUTO_LINK' => 4,
+        'INTEGER' => 4,
+        'UINTEGER' => 4,
+        'REAL' => 4,
+        'SHORT_INTEGER' => 2,
+        'BINARY' => 1,
+        'MEMBER' => 4,
+        'GROUP' => 4,
+        'TIME' => 4,
+        'LONG_TRANS' => 4,
+        'SHORT_TRANS' => 4,
+        'LONG_TRANS__COMCODE' => 255 + 1,
+        'SHORT_TRANS__COMCODE' => 255 + 1,
+        'SHORT_TEXT' => $primary_key ? (150) : (255 + 1), /* We underestimate for primary key, as it is very unlikely to be very high and the limit only exists on our own 'xml' database driver as a run-time limit */
+        'LONG_TEXT' => 255 + 1,
+        'ID_TEXT' => $primary_key ? (16) : (80 + 1), /* We underestimate for primary key, as it is very unlikely to be very high and the limit only exists on our own 'xml' database driver as a run-time limit */
+        'MINIID_TEXT' => 40 + 1,
+        'IP' => 15 + 1,
+        'LANGUAGE_NAME' => 5 + 1,
+        'URLPATH' => 255 + 1,
+        'unicode_SHORT_TEXT' => $take_unicode_into_account * 255 + 1,
+        'unicode_LONG_TEXT' => $take_unicode_into_account * 255 + 1,
+        'unicode_ID_TEXT' => $take_unicode_into_account * 80 + 1,
+        'unicode_IP' => $take_unicode_into_account * 15 + 1,
+        'unicode_LANGUAGE_NAME' => $take_unicode_into_account * 5 + 1,
+        'unicode_URLPATH' => $take_unicode_into_account * 255 + 1,
+        'unicode_MD5' => $take_unicode_into_account * 33 + 1
     );
     $keywords = get_db_keywords();
     //if (in_array(strtoupper($table_name), $keywords)) fatal_exit($table_name . ' is a keyword'); // No point, as we have table prefixes
@@ -145,18 +149,25 @@ function _check_sizes($primary_key, $fields, $id_name, $skip_size_check = false,
     }
     if ((!$skip_size_check) && (substr($id_name, 0, 1) != '#')) {
         if ($key_size >= ($primary_key ? DB_MAX_PRIMARY_KEY_SIZE : DB_MAX_KEY_SIZE)) {
+            if ($return_on_error) {
+                return false;
+            }
             fatal_exit('Key too long at ' . integer_format($key_size) . ' bytes [' . $id_name . ']'); // 252 for firebird
         }
-        if ($total_size >= DB_MAX_ROW_SIZE) {
+        if (($total_size >= DB_MAX_ROW_SIZE) && ($table_name != 'f_member_custom_fields')) {
             fatal_exit('Fieldset (row) too long at ' . integer_format($total_size) . ' bytes [' . $id_name . ']');
         }
         if ($key_size_unicode >= DB_MAX_KEY_SIZE_UNICODE) {
+            if ($return_on_error) {
+                return false;
+            }
             fatal_exit('Unicode version of key too long at ' . integer_format($key_size_unicode) . ' bytes [' . $id_name . ']'); // 252 for firebird
         }
-        if ($total_size_unicode >= DB_MAX_ROW_SIZE_UNICODE) {
+        if (($total_size_unicode >= DB_MAX_ROW_SIZE_UNICODE) && ($table_name != 'f_member_custom_fields')) {
             fatal_exit('Unicode version of fieldset (row) too long at ' . integer_format($total_size_unicode) . ' bytes [' . $id_name . ']');
         }
     }
+    return true;
 }
 
 /**
@@ -183,8 +194,10 @@ function _helper_create_table($this_ref, $table_name, $fields, $skip_size_check 
         fatal_exit('Inappropriate identifier, too long: ' . $table_name); // (the +7 is for prefix: max length of 7 chars allocated for prefix)
     }
 
-    if (!$skip_size_check) {
-        _check_sizes(true, $fields, $table_name, false, false, $save_bytes);
+    if (!$skip_size_check || running_script('restore')) {
+        if (!_check_sizes($table_name, true, $fields, $table_name, false, false, $save_bytes, running_script('restore'))) {
+            $save_bytes = true; // Automation for restore.php
+        }
     }
 
     // Note that interbase has a 31000byte limit on LONG_TEXT/LONG_TRANS, because we can't use blobs on it (those have too many restraints)
@@ -266,7 +279,7 @@ function _helper_create_index($this_ref, $table_name, $index_name, $fields, $uni
             }
             $fields_full[$field] = $db_type;
         }
-        _check_sizes(false, $fields_full, $index_name, false, true, true/*indexes don't use so many bytes as keys somehow*/);
+        _check_sizes($table_name, false, $fields_full, $index_name, false, true, true/*indexes don't use so many bytes as keys somehow*/);
     }
     //}
 

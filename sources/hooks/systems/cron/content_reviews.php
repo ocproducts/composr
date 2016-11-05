@@ -90,7 +90,8 @@ class Hook_cron_content_reviews
                     if (!is_null($object_fs)) {
                         $filename = $object_fs->convert_id_to_filename($content_type, $content_id);
                         if (!is_null($filename)) {
-                            $object_fs->resource_delete($content_type, $filename, '');
+                            $subpath = $object_fs->search($content_type, $content_id, true);
+                            $object_fs->resource_delete($content_type, $filename, dirname($subpath));
                         }
                     }
                     break;

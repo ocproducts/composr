@@ -1065,6 +1065,7 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
         (strpos($text, 'has been disabled for security reasons') === false) &&
         (strpos($text, 'max_questions')/*mysql limit*/ === false) &&
         (strpos($text, 'Error at offset') === false) &&
+        (strpos($text, 'expects parameter 1 to be a valid path, string given') === false) &&
         (strpos($text, 'gd-png: fatal libpng error') === false) &&
         (strpos($text, 'No word lists can be found for the language &quot;en&quot;') === false) &&
         (strpos($text, 'Unable to allocate memory for pool') === false) &&
@@ -1087,11 +1088,13 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
         (strpos($text, 'MySQL server has gone away') === false) &&
         (strpos($text, 'Incorrect key file') === false) &&
         (strpos($text, 'Too many connections') === false) &&
+        (strpos($text, 'duplicate key in table') === false) &&
         (strpos($text, 'Incorrect string value') === false) &&
         (strpos($text, 'Can\'t create/write to file') === false) &&  // MySQL
         (strpos($text, 'Error writing file') === false) && // E.g. cannot PHP create a temporary file
         (strpos($text, 'possibly out of free disk space') === false) && 
         (strpos($text, 'Illegal mix of collations') === false) &&
+        (strpos($text, 'Query execution was interrupted') === false) &&
         (strpos($text, 'The MySQL server is running with the --read-only option so it cannot execute this statement') === false) &&
         (strpos($text, 'marked as crashed and should be repaired') === false) &&
         (strpos($text, 'connect to') === false) &&

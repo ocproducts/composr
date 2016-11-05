@@ -21,6 +21,7 @@
 
 		var button=document.createElement('input');
 		button.type='button';
+		button.className='button_micro buttons__proceed';
 		button.value='{!CALCULATE_SIZE;}';
 		var max_size_field=document.getElementById('max_size');
 		button.onclick=function() {

@@ -616,7 +616,7 @@ class Module_tickets
                     'POST_WARNING' => '',
                     'COMMENT_TEXT' => '',
                     'GET_EMAIL' => is_guest(),
-                    'EMAIL_OPTIONAL' => ((is_guest()) && ($ticket_type_details['guest_emails_mandatory'] == 1)),
+                    'EMAIL_OPTIONAL' => ((is_guest()) && ($ticket_type_details['guest_emails_mandatory'] == 0)),
                     'GET_TITLE' => $new,
                     'EM' => $em,
                     'DISPLAY' => 'block',

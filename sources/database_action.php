@@ -174,6 +174,7 @@ function get_false_permissions()
         array('STAFF_ACTIONS', 'see_stack_dump'),
         array('STAFF_ACTIONS', 'view_profiling_modes'),
         array('STAFF_ACTIONS', 'access_overrun_site'),
+        array('SUBMISSION', 'feature'),
         array('SUBMISSION', 'bypass_validation_highrange_content'),
         array('SUBMISSION', 'bypass_validation_midrange_content'),
         array('SUBMISSION', 'edit_highrange_content'),
