@@ -1412,6 +1412,8 @@ class Module_topics
      */
     public function attach_quotes($quotes)
     {
+        require_code('comcode_cleanup');
+
         $post = new Tempcode();
         foreach ($quotes as $quote) {
             $_postdetails = $GLOBALS['FORUM_DB']->query_select('f_posts', array('p_cache_forum_id', 'p_post', 'p_poster_name_if_guest', 'p_topic_id', 'p_intended_solely_for', 'p_poster', 'p_validated', 'p_ip_address'), array('id' => $quote), '', 1);
@@ -1450,7 +1452,7 @@ class Module_topics
                 '_GUID' => '5542508cad43a0cd5798afbb06f9e616',
                 'ID' => strval($quote),
                 'TITLE' => $_topic[0]['t_cache_first_title'],
-                'POST' => preg_replace('#\[staff_note\].*\[/staff_note\]#Us', '', get_translated_text($_postdetails[0]['p_post'], $GLOBALS['FORUM_DB'])),
+                'POST' => comcode_censored_raw_code_access(get_translated_text($_postdetails[0]['p_post'], $GLOBALS['FORUM_DB'])),
                 'BY' => $_postdetails[0]['p_poster_name_if_guest'],
                 'BY_ID' => strval($_postdetails[0]['p_poster']),
             ), null, false, null, '.txt', 'text'));
@@ -1570,7 +1572,8 @@ class Module_topics
             if ((array_key_exists(0, $post_rows)) && ($post_rows[0]['p_cache_forum_id'] !== null) && (has_category_access(get_member(), 'forums', strval($post_rows[0]['p_cache_forum_id'])))) {
                 $existing_title = $post_rows[0]['p_title'];
                 $existing_description = $post_rows[0]['t_description'];
-                $post = preg_replace('#\[staff_note\].*\[/staff_note\]#Us', '', get_translated_text($post_rows[0]['p_post'], $GLOBALS['FORUM_DB']));
+                require_code('comcode_cleanup');
+                $post = comcode_censored_raw_code_access(get_translated_text($post_rows[0]['p_post'], $GLOBALS['FORUM_DB']));
             }
         }
 
@@ -2095,7 +2098,8 @@ class Module_topics
 
         $_postdetails = post_param_string('post', null);
         if (is_null($_postdetails)) {
-            $__post = preg_replace('#\[staff_note\].*\[/staff_note\]#Us', '', get_translated_text($post_info[0]['p_post'], $GLOBALS['FORUM_DB']));
+            require_code('comcode_cleanup');
+            $__post = comcode_censored_raw_code_access(get_translated_text($post_info[0]['p_post'], $GLOBALS['FORUM_DB']), $post_info[0]['p_poster']);
             $post = do_template('CNS_REPORTED_POST_FCOMCODE', array(
                 '_GUID' => 'e0f65423f3cb7698d5f04431dbe52ddb',
                 'POST_ID' => strval($post_id),

@@ -980,7 +980,7 @@ function report_post($post_id, $reason = '')
         $member = '[page="_SEARCH:members:view:' . strval($post_info[0]['p_poster']) . '"]' . $poster . '[/page]';
     }
 
-    $__post = preg_replace('#\[staff_note\].*\[/staff_note\]#Us', '', get_translated_text($post_info[0]['p_post'], $GLOBALS['FORUM_DB']));
+    $__post = comcode_censored_raw_code_access(get_translated_text($post_info[0]['p_post'], $GLOBALS['FORUM_DB']), $post_info[0]['p_poster']);
     $post = do_template('CNS_REPORTED_POST_FCOMCODE', array('_GUID' => '6e9a43a3503c357b52b724e11d3d4eef', 'POST_ID' => strval($post_id), 'MEMBER' => $member, 'TOPIC_TITLE' => $topic_title, 'POST' => $__post, 'POSTER' => $poster), null, false, null, '.txt', 'text');
     if ($reason != '') {
         $post->attach($reason);
