@@ -294,9 +294,6 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
                                              'hphp.files.list' => '',
                                              'hphp' => '',
 
-                                             // Tests
-                                             'test' => 'exports/backups',
-
                                              // LEGACY: Old files
                                              'info.php' => '', // Pre-v10 equivalent to _config.php
                                              'persistant_cache' => '', // Old misspelling
@@ -506,7 +503,7 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
         if (preg_match('#^exports/static(/|$)#', strtolower($filepath)) != 0) {
             return true; // Empty directory, so has to be a special exception
         }
-        if (preg_match('#^exports/builds(/|$)#', strtolower($filepath)) != 0) {
+        if (preg_match('#^exports/(builds|backups/test)(/|$)#', strtolower($filepath)) != 0) {
             return true; // Needed to stop build recursion
         }
         if (preg_match('#^_tests(/|$)#', strtolower($filepath)) != 0) {

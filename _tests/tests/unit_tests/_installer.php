@@ -70,7 +70,10 @@ class _installer_test_set extends cms_test_case
         $table_prefix = 'cms_unit_test_';
 
         // Cleanup old install
-        $tables = $GLOBALS['SITE_DB']->query('SHOW TABLES FROM ' . $database);
+        $tables = $GLOBALS['SITE_DB']->query('SHOW TABLES FROM ' . $database, null, null, true);
+        if ($tables === null) {
+            $tables = array();
+        }
         foreach ($tables as $table) {
             if (substr($table['Tables_in_' . $database], 0, strlen($table_prefix)) == $table_prefix) {
                 $GLOBALS['SITE_DB']->query('DROP TABLE ' . $database . '.' . $table['Tables_in_' . $database]);

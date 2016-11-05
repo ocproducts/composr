@@ -26,6 +26,10 @@ class tracker_categories_test_set extends cms_test_case
         $addons = find_all_hooks('systems', 'addon_registry');
         foreach ($addons as $addon => $place) {
             if ($place == 'sources') {
+                if ($addon == 'cns_reported_posts' || $addon == 'staff_messaging') { // LEGACY
+                    continue;
+                }
+
                 $this->assertTrue(in_array($addon, $categories), $addon);
             }
         }
