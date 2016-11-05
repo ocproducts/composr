@@ -78,15 +78,19 @@ class Hook_cleanup_page_stats
             @set_time_limit(0);
         }
 
-        // Write install.php file
+        // Read in template file and find marker in it
         $template = get_custom_file_base() . '/data_custom/modules/admin_cleanup/page_stats.php.pre';
         if (!file_exists($template)) {
             $template = get_file_base() . '/data/modules/admin_cleanup/page_stats.php.pre';
         }
         $_install_php_file = file_get_contents($template);
+        $look_for = '//{!!DB!!}';
+        $place = strpos($_install_php_file, $look_for);
+
+        // Write install.php file
         $install_php_file = cms_tempnam();
         $tmpfile = fopen($install_php_file, 'wb');
-        fwrite($tmpfile, substr($_install_php_file, 0, strpos($_install_php_file, '{!!DB!!}')));
+        fwrite($tmpfile, substr($_install_php_file, 0, $place));
 
         // Get old data
         do {
@@ -122,7 +126,7 @@ class Hook_cleanup_page_stats
             }
         } while ($data != array());
 
-        fwrite($tmpfile, substr($_install_php_file, strpos($_install_php_file, '{!!DB!!}') + 8));
+        fwrite($tmpfile, substr($_install_php_file, $place + strlen($look_for)));
 
         // Make tar
         require_code('tar');

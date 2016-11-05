@@ -294,16 +294,16 @@ class TapatalkPush extends TapatalkBasePush
 
             'title' => $post_row['t_cache_first_title'],
             'content' => trim(strip_comcode($content)),
-            'author' => $post_row['p_poster_name_if_guest'],
-            'authorid' => strval($post_row['p_poster']),
-            'author_type' => self::check_return_user_type($post_row['p_poster']),
             'dateline' => $post_row['p_time'],
 
+            'author' => $GLOBALS['FORUM_DRIVER']->get_username(get_member()),
+            'authorid' => get_member(),
+            'author_type' => self::check_return_user_type(get_member()),
             'author_ip' => self::getClientIp(),
             'author_ua' => self::getClientUserAgent(),
             'from_app' => self::getIsFromApp(),
 
-            'userid' => implode(',', array_map('strval', $member_ids)),
+            'userid' => implode(',', array_map('strval', $member_ids)), // Being sent to these members
 
             'push' => 1,
         );

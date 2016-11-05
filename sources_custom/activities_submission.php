@@ -150,9 +150,9 @@ function activities_ajax_submit_handler()
                         ($map['PRIVACY'] == 'public') ? 1 : 0
                     );
 
-                    if ($stored_id > 0) {
+                    if ($stored_id !== null) {
                         $response .= '<success>1</success><feedback>Message received.</feedback>';
-                    } elseif ($stored_id == -1) {
+                    } else {
                         $response .= '<success>0</success><feedback>Message already received.</feedback>';
                     }
                 }
