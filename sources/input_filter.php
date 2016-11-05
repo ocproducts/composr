@@ -92,7 +92,7 @@ function check_input_field_string($name, &$val, $posted, $filters)
         if ((function_exists('has_privilege') || !$posted) && $name !== 'page'/*Too early in boot if 'page'*/) {
             if (($filters & INPUT_FILTER_EARLY_XSS) != 0) {
                 if (!$posted/*get parameters really shouldn't be so crazy so as for the filter to do anything!*/ || !has_privilege(get_member(), 'unfiltered_input')) {
-                    hard_filter_input_data__html($val);
+                    hard_filter_input_data__html($val, true);
                     hard_filter_input_data__filesystem($val);
                 }
             }
@@ -246,8 +246,9 @@ function hard_filter_input_data__dynamic_firewall($name, &$val)
  * Only called for non-privileged users, filters/alters rather than blocks, due to false-positive likelihood.
  *
  * @param  string $val The data
+ * @param  boolean $lite Do a lite-check if we're not sure this is even actually HTML
  */
-function hard_filter_input_data__html(&$val)
+function hard_filter_input_data__html(&$val, $lite = false)
 {
     require_code('comcode');
 
@@ -316,6 +317,10 @@ function hard_filter_input_data__html(&$val)
         $val = preg_replace('#([<"\'].*\s)o([nN])(.*=)#s', '${1}&#111;${2}${3}', $val);
         $val = preg_replace('#([<"\'].*\s)O([nN])(.*=)#s', '${1}&#79;${2}${3}', $val);
     } while ($before != $val);
+
+    if ($lite) {
+        return;
+    }
 
     // Check tag balancing (we don't want to allow partial tags to compound together against separately checked chunks)
     $len = strlen($val);

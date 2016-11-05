@@ -395,7 +395,10 @@ function ajax_tree_script()
     header('Content-Type: text/xml');
     $hook = filter_naughty_harsh(get_param_string('hook'));
     require_code('hooks/systems/ajax_tree/' . $hook);
-    $object = object_factory('Hook_ajax_tree_' . $hook);
+    $object = object_factory('Hook_ajax_tree_' . $hook, true);
+    if ($object === null) {
+        warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+    }
     $id = get_param_string('id', '', INPUT_FILTER_GET_COMPLEX);
     if ($id == '') {
         $id = null;

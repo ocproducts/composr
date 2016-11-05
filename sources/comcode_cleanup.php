@@ -19,6 +19,27 @@
  */
 
 /**
+ * Censor some Comcode raw code so that another user can see it.
+ * This function isn't designed to be perfectly secure, and we don't guarantee it's always run, but as a rough thing we prefer to do it.
+ *
+ * @param  string $comcode Comcode
+ * @param  ?MEMBER $aggressive Force an HTML-evaluation of the Comcode through this security ID then back to Comcode, as a security technique (null: don't)
+ * @return string Censored Comcode
+ */
+function comcode_censored_raw_code_access($comcode, $aggressive = null)
+{
+    if ($aggressive !== null) {
+        $eval = comcode_to_tempcode($comcode, $aggressive);
+        require_code('comcode_from_html');
+        $comcode = semihtml_to_comcode($comcode, true);
+        return $comcode;
+    }
+
+    $comcode = preg_replace('#\[staff_note\].*\[/staff_note\]#Us', '', $comcode);
+    return $comcode;
+}
+
+/**
  * Filter external media, copying it locally.
  *
  * @param  string $text Comcode / HTML

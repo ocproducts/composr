@@ -294,9 +294,6 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
         'hphp-static-cache' => '',
         'hphp.files.list' => '',
         'hphp' => '',
-
-        // Tests
-        'test' => 'exports/backups',
     );
 
     $ignore_extensions = array( // Case insensitive, define in lower case
@@ -503,7 +500,7 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
         if (preg_match('#^exports/static(/|$)#', strtolower($filepath)) != 0) {
             return true; // Empty directory, so has to be a special exception
         }
-        if (preg_match('#^exports/builds(/|$)#', strtolower($filepath)) != 0) {
+        if (preg_match('#^exports/(builds|backups/test)(/|$)#', strtolower($filepath)) != 0) {
             return true; // Needed to stop build recursion
         }
         if (preg_match('#^_tests(/|$)#', strtolower($filepath)) != 0) {

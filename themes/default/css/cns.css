@@ -799,6 +799,7 @@ hr.cns_sig_barrier {
 
 .topic_list_topic {
 	margin: 0.5em 0;
+	overflow: hidden;
 }
 
 .topic_list_title {

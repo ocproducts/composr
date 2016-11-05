@@ -132,8 +132,10 @@ function execute_task_background($task_row)
 
         if ($result !== null) {
             list($mime_type, $content_result) = $result;
-            @unlink($content_result[1]);
-            sync_file($content_result[1]);
+            if (is_array($content_result)) {
+                @unlink($content_result[1]);
+                sync_file($content_result[1]);
+            }
         }
     }
 
