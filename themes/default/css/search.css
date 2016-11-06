@@ -36,7 +36,7 @@
 	margin-{!en_right}: 5px;
 }
 
-/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
 	.main_search_form .search_content {
 		width: 300px;
 		max-width: 100%;
@@ -68,13 +68,13 @@
 	max-width: 40em;
 }
 
-/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
 	.search_option label {
 		float: {!en_left};
 	}
 /*{+END}*/
 
-/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
 	.search_option label {
 		float: {!en_left};
 		width: 250px;

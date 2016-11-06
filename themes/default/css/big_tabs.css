@@ -36,15 +36,19 @@
 }
 
 .comcode_big_tab {
-	/*{+START,IF,{$MOBILE}}*/
-		float: left;
-		margin: 1em 0;
-	/*{+END}*/
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		margin-left: 186px; /* 2px gap to workaround IE lameness */
-		min-height: 190px;
-	/*{+END}*/
 	padding: 1em;
 	border: 2px solid {$GET,pale_border};
 	background-color: {$GET,area_background};
 }
+/*{+START,CSS_MODE,mobile}*/
+	.comcode_big_tab {
+		float: left;
+		margin: 1em 0;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,desktop}*/
+	.comcode_big_tab {
+		margin-left: 186px; /* 2px gap to workaround IE lameness */
+		min-height: 190px;
+	}
+/*{+END}*/

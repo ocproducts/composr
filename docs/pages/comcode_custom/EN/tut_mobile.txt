@@ -1,12 +1,14 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Mobile design[/title]
 
-[media width="150" description="Mobile mode for the forum. This site is the out-of-the-box default, the panels are shown underneath the main page. On real sites you'll likely want to turn these off on mobile mode and move them to their own pages." float="right"]data_custom/images/docs/tut_mobile/mobile.png[/media]
+[media width="150" description="Mobile mode for the forum. This site is the out-of-the-box default, the panels are shown underneath the main page. On real sites with strong mobile optimiation you'd likely want to turn these off on mobile mode and move them to their own pages." float="right"]data_custom/images/docs/tut_mobile/mobile.png[/media]
 [media width="150" description="Showing the default menu type in mobile mode" float="right"]data_custom/images/docs/tut_mobile/mobile_menu.png[/media]
 Composr has great support for mobile. You can design for mobile in two ways:
 1) Mobile mode
 2) Responsive Design
 
-This tutorial explains which you might choose, and provides some guidance.
+In-fact, the default Composr theme is a hybrid theme that does both. Desktop mode uses responsive design so that it also looks good on tablets and phones. Mobile mode is auto-detected on mobiles and uses less bandwidth, and other differences that make it better tuned than a typical responsive-design site would be.
+
+This tutorial explains the advantages of the different techniques, and provides some guidance.
 
 There is also an API for making native mobile apps for Composr called [page="_SEARCH:tut_mobile_sdk"]Composr Mobile SDK[/page].
 
@@ -14,23 +16,21 @@ There is also an API for making native mobile apps for Composr called [page="_SE
 
 [title="2"]The two methods[/title]
 
-Responsive design allows page layout to adapt to different browser sizes (i.e. different screen sizes, particularly between desktops, tablets, and smartphones). It is fun to test on a desktop machine -- on a responsive site you can resize your browser window and see major changes to how a page looks. Adaptability was always a consideration to some extent in web design, but responsive design takes it to a totally different level. Responsive design is based around "media queries", whereby the CSS author defines the browser width thresholds where different style rules will apply and the different rules for each. As a standard CSS technology there is nothing special Composr has to support to allow you to use it -- you can use it right away as long as you are comfortable writing CSS (which you need to be anyway if you are doing a major themeing effort).
+Responsive design allows page layout to adapt to different browser sizes (i.e. different screen sizes, particularly between desktops, tablets, and smartphones). It is fun to test on a desktop machine -- on a responsive site you can resize your browser window and see major changes to how a page looks. Adaptability was always a consideration to some extent in web design ("fluid design"), but responsive design takes it to a totally different level. Responsive design is based around "media queries", whereby the CSS author defines the browser width thresholds where different style rules will apply and the different rules for each. As a standard CSS technology there is nothing special Composr has to support to allow you to use it -- you can use it right away as long as you are comfortable writing CSS (which you need to be anyway if you are doing a major themeing effort).
 
-Mobile mode on the other hand works via serving different HTML based on whether the viewer is on a desktop/tablet machine compared to a smartphone. Composr supports QVGA mobile resolution for all frontend screens in mobile mode. The choice between mobile and desktop mode is made by automatic analysis of the browser "user agent". The default theme also has a link in the footer to change what was autodetected.
+Mobile mode on the other hand works via serving different HTML/CSS based on whether the viewer is on a desktop/tablet machine compared to a smartphone. Composr supports QVGA (320px width) and higher mobile resolution for all frontend screens in mobile mode. The choice between mobile and desktop mode is made by automatic analysis of the browser "user agent". The default theme also has a link in the footer to change what was autodetected.
 
 [title="2"]Which is better?[/title]
 
-There is an engineering decision to be made for any site to decide what is best for that site. Don't just assume responsive design is newer and better, because there really are trade-offs involved. If you look at popular sites like Google or Facebook or YouTube, you'll see they have a separate mobile mode, and it's for this kind of reasoning. Other popular and modern websites, like tech news sites or company sites, often have really good responsive design.
+There is an engineering decision to be made for any site to decide what is best for that site. Don't just assume responsive design is newer and better, because there really are trade-offs involved. If you look at popular sites you'll often see they have a separate mobile mode, and it's for this kind of reasoning. Other popular and modern websites, like tech news sites or company sites, often have really good responsive design. This is why the default theme has a hybrid system, so you get the best of both worlds.
 
-The default theme uses a small amount of responsive design so that pages look good on both tablets and desktops.
-Otherwise, mobile mode is the way mobile pages are served in the default theme. This however is only our default: we do it like that for practical reasons, as most users aren't in a position to put a lot of thought into maintaining quality responsive design CSS (it's a bit too complex for the average webmaster).
-
-Ultimately the control and decision is in your hands.
+Ultimately the control and decision for your own themeing is in your hands.
 
 Pros of responsive design:
  - Optimise against a wider range of devices, including different sizes of tablet and phone
  - Show something mind-blowing for desktop users with huge browser windows
  - No complexity of there being a mode choice in the system
+ - Some technies expect it for the site to be 'modern'
 
 Pros of mobile mode:
  - Simpler to test: only two modes
@@ -38,13 +38,14 @@ Pros of mobile mode:
  - More powerful than CSS, as HTML structure can be served in a totally different way
  - Page structure can be optimised based on screen size and bandwidth; for example, long pages can be served to desktop users, and lots of smaller linked pages to mobile users
  - Lower bandwidth: it does not send all style rules for all devices to mobile users on poor network connections
+ - Other changes can be applied to mobile, such as simplified editing functionality, and touch-optimised UI
 
 If sites are relatively simple, giving content without a lot of features, and a good amount of design time is being put into the theme, we would recommend a responsive design. Also, magazine-style sites work really well as responsive designs.
 If sites have a lot of features through which interaction might happen, and you don't have a lot of time/experience for themeing and optimising it all, the mobile mode is a more efficient way of building out your site.
 
 [title="2"]Configuring mobile mode[/title]
 
-You can choose to enable mobile mode only on a per-page basis if your content/layout isn't fully compatible (most complex fixed width designs would have problems if a lot of attention is not given). Devices like iPhones automatically go into mobile mode, so you don't want it to load up mobile display settings and overlay them on content that doesn't work, as it can make a big mess.
+You can choose to enable mobile mode only on a per-page basis if your content/layout isn't fully compatible (most complex fixed-width designs would have problems if a lot of attention is not given). Devices like iPhones automatically go into mobile mode, so you don't want it to load up mobile display settings and overlay them on content that doesn't work, as it can make a big mess.
 To activate the feature you need to put this in your [tt]themes/<themename>/theme.ini[/tt] file:
 [code="INI"]
 mobile_pages=forumview,topicview,topics,vforums
@@ -79,11 +80,26 @@ This does not show to mobile devices.
 
 This works in Comcode pages, templates, and also CSS.
 
-If you do not want certain pages to use mobile mode at all then you can edit the theme settings to white-list which pages you have taken to time to optimise for mobile.
+For CSS you can also use the [tt]CSS_MODE[/tt] directive. For example:
+[code="CSS"]
+/*{+START,CSS_MODE,mobile}*/
+	.example {
+		color: red;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,desktop}*/
+	.example {
+		color: green;
+	}
+/*{+END}*/
+[/code]
+This will mark sections to use full responsive-design on desktop mode (media rules) and do rule filtering on mobile mode so that only the mobile-relevant bit is output.
 
-[title="2"]Using responsive design techniques[/title]
+The particular modes ([tt]mobile[/tt], [tt]desktop[/tt]) can be configured in [tt]global.css[/tt] with particular width ranges, and to define the exact rules to apply on mobile mode. This is discussed more in the [page="_SEARCH:tut_tempcode"]Tempcode programming tutorial[/page].
 
-Responsive design is straight-forward to implement for anyone familar with CSS. Rules are coded into the CSS under media queries such as:
+[title="2"]Using responsive design techniques directly[/title]
+
+Responsive design is straight-forward to implement directly for anyone familar with CSS. Rules are coded into the CSS under media queries such as:
 [code="CSS"]
 @media screen and (max-width:999px) {
 	* {
@@ -98,18 +114,17 @@ In practice you add rules targeting particular display widths to rearrange conte
 Responsive design is quite easy to test: you just resize the browser window up and down and see things immediately change.
 
 Typically responsive design will be done to target for:
- - Smartphones (320px)
- - Small tablets (640px)
- - Large tablets (768px)
- - Regular desktop windows, i.e. non-full-screen (990px, leaves 34px for scrollbars)
- - Very large desktop windows (1200px or more)
+ - Smartphones in portrait mode (320px)
+ - Smartphones in landscape mode / Small tablets in portrait mode (768px)
+ - Small tablets in landscape mode / Large tablets in portrait mode / Regular desktop windows (i.e. non-full-screen) (990px, leaves 34px for scrollbars)
+ - Large tablets in landscape mode / Very large desktop windows (1200px or more)
 
 It is generally wise to start making things look good on smartphones, then tune things for the larger viewports. This is because:
 1) Smartphones are the most common device for casual browsing
 2) It is a better situation to have something blown up to a larger size (actually users often like this) then it is to have it not fitting on a mobile screen
 
-Composr's default theme supplies high-resolution icons for hi-dpi ("retina") displays using CSS media queries and [tt]srcset[/tt] in the HTML.
-This means evn if a design is blown up, the user will still benefit from higher fidelity graphics than the adjusted viewport may otherwise suggest.
+Composr's default theme supplies high-resolution icons for hi-dpi ("retina") displays using CSS dpi media queries and [tt]srcset[/tt] in the HTML.
+This means even if a design is blown up, the user will still benefit from higher fidelity graphics than the adjusted viewport may otherwise suggest.
 In fact, the very basis for hi-dpi displays is to operate like this -- the extra resolution is used for fidelity, not for cramming more in.
 When designs are blown up then the pixels referred to in CSS are not real pixels, they are proportional to the viewport that has been designed.
 
@@ -187,9 +202,9 @@ I'm going to simplify things down a bit for my explanation, removing the stuff i
 
 You can see mobile mode is fitted to the device-width. This is to make optimum use of the screen for fitting stuff on, which is arguably the best thing for a device of such limited size. If you are going to spend time making a very mobile-optimised site, you'd probably change this to a width in pixels that you'd designed for, and smile knowing that it was prettier for retina users (higher fidelity mapped onto the width, not scaling your images down so much, and seeing smoother anti-aliased fonts) but discernible without zooming for all smartphone users who have a certain base device resolution.
 
-You can see that tablets have different settings depending on whether Composr is set to fixed-width or not. If Composr is set to fixed-width, it matches the viewport to the default fixed width our CSS declares (982 pixels). Otherwise, it uses device-width in a similar way to smartphones.
+You can see that tablets have different settings depending on whether Composr is set to fixed-width or not. If Composr is set to fixed-width, it matches the viewport to the default fixed-width our CSS declares (982 pixels). Otherwise, it uses device-width in a similar way to smartphones.
 
-[title="3"]An example: fixed width mobile designs[/title]
+[title="3"]An example: fixed-width mobile designs[/title]
 
 Let's say your base smartphone will be the resolution of the original iPhone, i.e. a width of 320 pixels.
 (The retina iPhones have upwards from 640 pixels)
@@ -204,7 +219,7 @@ On a retina iPhone, it would be scaled 2x, although the user would not have any 
 
 [title="3"]A scenario: fluid mobile designs[/title]
 
-If you want to fit as much onto the screen as possible, rather than going for the fixed width but variable fidelity, then you may still want to do some trickery.
+If you want to fit as much onto the screen as possible, rather than going for the fixed-width but variable fidelity, then you may still want to do some trickery.
 
 For example, you may want a logo to stretch right across the screen, yet have the rest of the design be fluid.
 

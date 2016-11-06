@@ -113,6 +113,8 @@ function string_scan($lang, $do_guessing = false)
     );
 
     $lang_strings_admin_initial = array_map('trim', explode("\n", trim('
+        UNKNOWN_CSS_MODE
+        CORRUPT_CSS_MODE
         NEWS_SUMMARY_REQUIRED
         CONFIG_OPTION_news_summary_required
         OWNER

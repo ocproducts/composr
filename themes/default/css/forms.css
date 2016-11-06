@@ -5,17 +5,17 @@
 
 /* General form-related styles */
 
-/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
 	label {
 		{$BETA_CSS_PROPERTY,user-select: none;} {$,To stop accidental touching when touching inputs}
 	}
 /*{+END}*/
 
-.required_field_warning_wrap {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
+	.required_field_warning_wrap {
 		text-align: center;
-	/*{+END}*/
-}
+	}
+/*{+END}*/
 
 .required_field_warning {
 	border: 1px solid {$GET,standard_border};
@@ -27,12 +27,14 @@
 	font-weight: bold;
 	font-size: 0.85em;
 	margin: 1.5em 0 1em 0;
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		display: inline-block;
-	/*{+END}*/
 	{$BETA_CSS_PROPERTY,border-radius: 5px;}
 	{$BETA_CSS_PROPERTY,user-select: none;} {$,To stop accidental touching on mobile form filling in}
 }
+/*{+START,CSS_MODE,desktop}*/
+	.required_field_warning {
+		display: inline-block;
+	}
+/*{+END}*/
 
 .required_star {
 	{$BETA_CSS_PROPERTY,opacity: 0.4;}
@@ -127,7 +129,7 @@ Curved borders would be cool, but it does not work well with the carefully defin
 	padding-top: 0.95em !important;
 }
 
-/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
 	th.form_table_field_name {
 		border-bottom: 0 !important;
 	}
@@ -302,7 +304,7 @@ th.form_table_field_name a, /* Extra specificity to take precedence over th.de_t
 	margin-top: 2px;
 }
 
-/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
 	.input_upload, .input_upload_required {
 		max-width: 240px;
 	}
@@ -552,7 +554,7 @@ span.validated_checkbox+input[name="validated"].input_tick {
 	margin: 1em 0;
 }
 
-/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
 	.mobile.preview_box {
 		padding: 209px 36px 159px 34px;
 		width: 314px;
@@ -580,11 +582,12 @@ span.validated_checkbox+input[name="validated"].input_tick {
 	padding: 4px;
 }
 
-@media screen and (max-width:500px) {
+/*{+START,CSS_MODE,mobile}*/
 	.post_options_wrap {
 		display: none;
 	}
 }
+/*{+END}*/
 
 .posting_form_main_comcode_button {
 	float: {!en_right};
@@ -740,7 +743,7 @@ span.validated_checkbox+input[name="validated"].input_tick {
 	width: 6em;
 }
 
-/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
 	.form_table input[type="file"] {
 		max-width: 6em;
 	}

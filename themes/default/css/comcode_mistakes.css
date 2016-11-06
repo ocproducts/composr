@@ -3,20 +3,20 @@
  Copyright (c) ocProducts, 2004-2016
 */
 
-.comcode_error_help_div {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
+	.comcode_error_help_div {
 		float: {!en_right};
 		width: 35%;
 		{$BETA_CSS_PROPERTY,box-sizing: border-box;}
 		margin-bottom: 1em;
-	/*{+END}*/
-}
+	}
+/*{+END}*/
 
-.comcode_error_details_div {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
+	.comcode_error_details_div {
 		width: 65%;
 		{$BETA_CSS_PROPERTY,box-sizing: border-box;}
 		padding-{!en_right}: 1em;
 		margin-bottom: 1em;
-	/*{+END}*/
-}
+	}
+/*{+END}*/

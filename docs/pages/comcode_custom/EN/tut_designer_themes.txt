@@ -179,7 +179,7 @@ This template is specifically created so that you can easily slot in new JavaScr
 
 Testing:
 [list="1"]
-[*] It is a good idea to verify your theme is stable across different Composr screens. When you defined the global layout and associated CSS it is possible you made some bad assumptions, like assuming fixed width styles can be placed on [tt]body[/tt] (which is bad if Composr uses [tt]global.css[/tt] inside an iframe, for example). First do a verification manually by viewing a few screens; good choices are:[list="i"][*] the forum index[*] doing a website search[*] previewing some changes from an edit form[/list]
+[*] It is a good idea to verify your theme is stable across different Composr screens. When you defined the global layout and associated CSS it is possible you made some bad assumptions, like assuming fixed-width styles can be placed on [tt]body[/tt] (which is bad if Composr uses [tt]global.css[/tt] inside an iframe, for example). First do a verification manually by viewing a few screens; good choices are:[list="i"][*] the forum index[*] doing a website search[*] previewing some changes from an edit form[/list]
 [*] Next you can verify your theme more formally by using the 'Screen previews' feature from Admin Zone > Style > Themes. It provides details of all screens, and you can check them for how well they work. Don't spend ages on this unless you have made very extensive modifications or the site is going to use a very wide number of default Composr features, but at least do some checks on some random selections to give yourself greater confidence.
 [*][page="_SEARCH:tut_browsers"]Test your theme for all the major browsers[/page].
 [/list]

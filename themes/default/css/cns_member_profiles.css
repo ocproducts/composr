@@ -17,7 +17,7 @@
 	width: 100%;
 }
 
-/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
 	.cns_profile_column {
 		padding: 0.5em;
 		font-size: 0.9em;
@@ -35,7 +35,7 @@
 	}
 /*{+END}*/
 
-/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
 	.cns_profile_column {
 		float: right;
 		width: 14em;
@@ -135,12 +135,12 @@ table.cns_profile_about_section .associated_details {
 =========================
 */
 
-.cns_sig_requirements {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
+	.cns_sig_requirements {
 		width: 25em;
 		margin: 1em auto !important;
-	/*{+END}*/
-}
+	}
+/*{+END}*/
 
 .cns_avatar_page_old_avatar {
 	float: {!en_right};

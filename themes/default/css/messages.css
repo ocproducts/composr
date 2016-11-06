@@ -12,14 +12,16 @@
 	text-align: justify;
 }
 
-.ssm_warn, .ssm_inform {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
+	.ssm_warn, .ssm_inform {
 		padding: 85px 220px 100px 30px;
-	/*{+END}*/
-	/*{+START,IF,{$MOBILE}}*/
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.ssm_warn, .ssm_inform {
 		padding-bottom: 170px;
-	/*{+END}*/
-}
+	}
+/*{+END}*/
 
 .ssm_warn {
 	background: url('{$IMG;,messageicons/warn_large}') right 20px no-repeat;
@@ -43,8 +45,10 @@
 
 .closed_site_special_message {
 	margin: {$?,{$MOBILE},3em 2em,10em auto};
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		width: 38em;
-	/*{+END}*/
 	text-align: center;
 }
+/*{+START,CSS_MODE,desktop}*/
+	.closed_site_special_message {
+		width: 38em;
+	}
+/*{+END}*/

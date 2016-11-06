@@ -121,7 +121,7 @@ This file defines styles for Conversr (abbreviated as CNS).
 	display: table-cell;
 }
 
-/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
 	.cns_forum_box_left {
 		{$BETA_CSS_PROPERTY,border-top-left-radius: 10px;}
 	}
@@ -143,7 +143,7 @@ This file defines styles for Conversr (abbreviated as CNS).
 .cns_topic_list th, .cns_forum_grouping th, .cns_topic_list td, .cns_forum_grouping td, .cns_topic>div>div>div {
 	border: 1px solid {$GET,main_background};
 }
-/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
 	.cns_topic_list td {
 		padding: 1em 0.5em;
 	}
@@ -172,16 +172,20 @@ div.cns_table_footer>div>div {
 
 .cns_buttons_screen {
 	white-space: nowrap;
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+}
+/*{+START,CSS_MODE,desktop}*/
+	.cns_buttons_screen {
 		text-align: right;
 		float: {!en_right};
 		margin: 1.5em 0 1.5em 1em !important;
-	/*{+END}*/
-	/*{+START,IF,{$MOBILE}}*/
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.cns_buttons_screen {
 		text-align: center;
 		margin: 1.5em 0 1.5em 0 !important;
-	/*{+END}*/
-}
+	}
+/*{+END}*/
 
 /*
 =========================
@@ -237,16 +241,20 @@ div.cns_table_footer>div>div {
 	display: table-cell;
 }
 .cns_topic>div>div>div:first-child {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		width: 130px;
-	/*{+END}*/
-	/*{+START,IF,{$MOBILE}}*/
-		width: 80px;
-	/*{+END}*/
 	background-color: {$GET,area_background};
 	padding: 0.3em;
 	vertical-align: middle;
 }
+/*{+START,CSS_MODE,desktop}*/
+	.cns_topic>div>div>div:first-child {
+		width: 130px;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.cns_topic>div>div>div:first-child {
+		width: 80px;
+	}
+/*{+END}*/
 
 .cns_post_box .cns_topic>div>div>div {
 	border: 0;
@@ -378,7 +386,7 @@ div.cns_table_footer>div>div {
 	padding-{!en_right}: 1em;
 }
 
-/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
 	.cns_topic_post_member_details {
 		padding: 0.5em;
 	}
@@ -387,12 +395,14 @@ div.cns_table_footer>div>div {
 .cns_topic_post_member_details {
 	text-align: center;
 	vertical-align: top !important;
-	/*{+START,IF,{$MOBILE}}*/
-		width: 80px;
-	/*{+END}*/
 }
+/*{+START,CSS_MODE,mobile}*/
+	.cns_topic_post_member_details {
+		width: 80px;
+	}
+/*{+END}*/
 
-/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
 	.cns_topic .cns_topic_post_member_details img {
 		max-width: 100%;
 	}
@@ -401,11 +411,13 @@ div.cns_table_footer>div>div {
 .cns_topic_poster_name {
 	text-align: center;
 	display: inline-block;
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		{$BETA_CSS_PROPERTY,word-wrap: break-word;}
-	/*{+END}*/
 	margin: 1em 0;
 }
+/*{+START,CSS_MODE,desktop}*/
+	.cns_topic_poster_name {
+		{$BETA_CSS_PROPERTY,word-wrap: break-word;}
+	}
+/*{+END}*/
 
 .cns_topic_post_avatar {
 	margin: 0 auto;
@@ -418,15 +430,17 @@ div.cns_table_footer>div>div {
 	vertical-align: top;
 }
 
-.cns_post_main_column.buttons_group {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
+	.cns_post_main_column.buttons_group {
 		padding: 1em;
-	/*{+END}*/
-	/*{+START,IF,{$MOBILE}}*/
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.cns_post_main_column.buttons_group {
 		padding: 0.5em;
 		text-align: center;
-	/*{+END}*/
-}
+	}
+/*{+END}*/
 .cns_post_main_column .buttons_group {
 	margin: 0;
 	padding: 0;
@@ -457,10 +471,12 @@ hr.cns_sig_barrier {
 	width: 40%;
 	background-color: {$GET,divider_line};
 	margin: 1em 1em 1em 0;
-	/*{+START,IF,{$MOBILE}}*/
-		display: none;
-	/*{+END}*/
 }
+/*{+START,CSS_MODE,mobile}*/
+	hr.cns_sig_barrier {
+		display: none;
+	}
+/*{+END}*/
 
 .cns_post_emphasis {
 	text-align: center;
@@ -477,11 +493,13 @@ hr.cns_sig_barrier {
 }
 
 .cns_topic_control_functions {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		font-size: 0.9em;
-	/*{+END}*/
 	margin: 0.25em 0;
 }
+/*{+START,CSS_MODE,desktop}*/
+	.cns_topic_control_functions {
+		font-size: 0.9em;
+	}
+/*{+END}*/
 
 .cns_topic_control_functions select {
 	max-width: 10.5em;
@@ -491,22 +509,20 @@ hr.cns_sig_barrier {
 	vertical-align: middle;
 }
 
-/*{+START,IF,{$MOBILE}}*/
-	@media screen and (max-width:500px) {
-		.cns_topic_control_functions .horiz_field_sep_rightward {
-			width: 100%;
-		}
-		.cns_topic_control_functions label {
-			min-width: 8.5em;
-			display: inline-block;
-		}
-		.cns_topic_control_functions select {
-			width: 9em;
-			max-width: none;
-		}
-		.cns_topic_control_functions input {
-			width: 5em;
-		}
+/*{+START,CSS_MODE,mobile}*/
+	.cns_topic_control_functions .horiz_field_sep_rightward {
+		width: 100%;
+	}
+	.cns_topic_control_functions label {
+		min-width: 8.5em;
+		display: inline-block;
+	}
+	.cns_topic_control_functions select {
+		width: 9em;
+		max-width: none;
+	}
+	.cns_topic_control_functions input {
+		width: 5em;
 	}
 /*{+END}*/
 
@@ -579,7 +595,7 @@ hr.cns_sig_barrier {
 	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,lgrad}\, {$GET,dgrad});}
 }
 
-/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
 	.cns_forum_grouping th {
 		width: 50%;
 	}
@@ -606,7 +622,7 @@ hr.cns_sig_barrier {
 	text-align: {!en_left};
 }
 
-/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
 	.cns_forum_grouping td .horizontal_meta_details, .cns_forum_grouping td  .associated_link, .cns_topic_list  .horizontal_meta_details {
 		width: auto;
 		display: block !important;
@@ -646,7 +662,7 @@ hr.cns_sig_barrier {
 	margin-top: 0.25em;
 }
 
-/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
 	.cns_forum_topic_title_bits_left {
 		display: block;
 		margin: 0.5em 0;
@@ -697,7 +713,7 @@ hr.cns_sig_barrier {
 	padding: 0.5em;
 }
 
-/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
 	.cns_forum_topic_indent {
 		margin-left: 0.25em;
 	}
@@ -738,26 +754,30 @@ hr.cns_sig_barrier {
 }
 
 .cns_whisper_choose_box {
-	/*{+START,IF,{$MOBILE}}*/
+}
+/*{+START,CSS_MODE,mobile}*/
+	.cns_whisper_choose_box {
 		margin-bottom: 1em;
 		width: 100%;
 		float: left;
-	/*{+END}*/
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,desktop}*/
+	.cns_whisper_choose_box {
 		margin-bottom: 3em;
 		padding: 4em 2em 4em 4em;
 		width: 50%;
 		{$BETA_CSS_PROPERTY,box-sizing: border-box;}
-	/*{+END}*/
-}
+	}
+/*{+END}*/
 .cns_whisper_choose_box .box {
 	margin-top: 0;
 }
-.cns_whisper_choose_box.right {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
+	.cns_whisper_choose_box.right {
 		padding: 4em 4em 4em 2em;
-	/*{+END}*/
-}
+	}
+/*{+END}*/
 
 .cns_whisper_choose_box p:first-child {
 	min-height: 11em; /* Makes the left/right boxes the same height */
@@ -786,10 +806,12 @@ hr.cns_sig_barrier {
 	margin: 0.5em;
 	font-size: 0.85em;
 	color: {$GET,area_key_text};
-	/*{+START,IF,{$MOBILE}}*/
-		display: none;
-	/*{+END}*/
 }
+/*{+START,CSS_MODE,mobile}*/
+	.cns_member_signature {
+		display: none;
+	}
+/*{+END}*/
 
 /*
 =========================

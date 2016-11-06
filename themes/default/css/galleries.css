@@ -88,10 +88,12 @@
 	border: 1px solid {$GET,standard_border};
 	background-color: {$GET,area_background};
 	{$BETA_CSS_PROPERTY,box-shadow: 3px 3px 10px {$GET,standard_border};}
-	/*{+START,IF,{$MOBILE}}*/
-		display: inline-block;
-	/*{+END}*/
 }
+/*{+START,CSS_MODE,mobile}*/
+	.gallery_regular_thumb {
+		display: inline-block;
+	}
+/*{+END}*/
 
 .gallery_media_title_cropped * {
 	vertical-align: middle;
@@ -166,14 +168,18 @@
 .flow_mode_thumb {
 	{$BETA_CSS_PROPERTY,opacity: 0.7;}
 	display: inline-block;
-	/*{+START,IF,{$MOBILE}}*/
-		margin: 0.5em;
-	/*{+END}*/
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		margin: 0 1em;
-	/*{+END}*/
 	{$BETA_CSS_PROPERTY,transform: scale(1);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 }
+/*{+START,CSS_MODE,mobile}*/
+	.flow_mode_thumb {
+		margin: 0.5em;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,desktop}*/
+	.flow_mode_thumb {
+		margin: 0 1em;
+	}
+/*{+END}*/
 .flow_mode_thumb:hover, body.touch_enabled .flow_mode_thumb {
 	{$BETA_CSS_PROPERTY,opacity: 1.0;}
 	{$BETA_CSS_PROPERTY,transition: opacity 0.2s linear !important;}
@@ -220,7 +226,7 @@
 	max-width: 100%;
 }
 
-/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
 	.media_box .gallery_entry_details {
 		margin-left: 1em;
 		max-width: 18em;
@@ -289,12 +295,14 @@
 }
 
 .gallery_tease_pic {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		width: 40em;
-	/*{+END}*/
 	margin: 0 auto;
 	{$BETA_CSS_PROPERTY,box-shadow: 3px 3px 10px {$GET,point_of_interest_border};}
 }
+/*{+START,CSS_MODE,desktop}*/
+	.gallery_tease_pic {
+		width: 40em;
+	}
+/*{+END}*/
 
 .gallery_tease_pic_pic {
 	float: {!en_right};

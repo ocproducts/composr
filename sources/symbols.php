@@ -487,6 +487,53 @@ function ecv($lang, $escaped, $type, $name, $param)
                 }
                 break;
 
+            case 'CSS_MODE':
+                if (isset($param[1])) {
+                    $param[0] = $param[0]->evaluate();
+                    $param[1] = $param[1]->evaluate();
+
+                    global $TEMPCODE_SETGET;
+                    if (!isset($TEMPCODE_SETGET[$param[0]])) {
+                        attach_message(do_lang_tempcode('UNKNOWN_CSS_MODE', escape_html($param[0])));
+                        break;
+                    }
+
+                    $css_mode = explode(',', $TEMPCODE_SETGET[$param[0]]);
+                    if (!isset($css_mode[1]) || !in_array($css_mode[1], array('mobileModeDiscard', 'mobileModeKeep', 'mobileModeMedia'))) {
+                        $css_mode[1] = 'mobileModeDiscard';
+                    }
+
+                    $matches = array();
+                    if (preg_match('#^(\d+)-(\d+|infinity)$#', $css_mode[0], $matches) == 0) {
+                        attach_message(do_lang_tempcode('CORRUPT_CSS_MODE', escape_html($param[0])));
+                        break;
+                    }
+
+                    if ((is_mobile()) && ($css_mode[1] == 'mobileModeKeep')) {
+                        // Optimisation
+                        $value = $param[1];
+                    } elseif ((!is_mobile()) || ($css_mode[1] != 'mobileModeDiscard')) {
+                        // Media rules
+                        $from = $matches[1];
+                        $to = $matches[2];
+                        $media_rule = '';
+                        if ($from != '0') {
+                            $media_rule .= '(min-width: ' . $from . 'px)';
+                        }
+                        if ($to != 'infinity') {
+                            if ($media_rule != '') {
+                                $media_rule .= ' and ';
+                            }
+                            $media_rule .= '(max-width: ' . $to . 'px)';
+                        }
+                        $value = '@media ' . $media_rule . ' { ' . $param[1] . '}';
+                    }
+                } else {
+                    attach_message(do_lang_tempcode('CORRUPT_CSS_MODE', escape_html($param[0])));
+                }
+
+                break;
+
             default:
                 require_code('site');
                 attach_message(do_lang_tempcode('UNKNOWN_DIRECTIVE', escape_html($name)), 'warn');

@@ -1,18 +1,20 @@
 /* Tabs */
 
 .page_running_tracker .tab {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+	display: inline-block;
+}
+/*{+START,CSS_MODE,desktop}*/
+	.page_running_tracker .tab {
 		width: 110px;
-	/*{+END}*/
-
-	/*{+START,IF,{$MOBILE}}*/
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.page_running_tracker .tab {
 		width: auto;
 		text-align: left;
 		min-width: 0;
-	/*{+END}*/
-
-	display: inline-block;
-}
+	}
+/*{+END}*/
 
 .page_running_tracker .tab span {
 	display: inline-block;

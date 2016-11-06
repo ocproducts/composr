@@ -50,14 +50,18 @@
 .points_give_choices {
 	font-size: 0.9em;
 	padding-right: 1em;
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+}
+/*{+START,CSS_MODE,desktop}*/
+	.points_give_choices {
 		border-right: 1px solid {$GET,pale_border};
 		margin-right: 27em;
-	/*{+END}*/
-	/*{+START,IF,{$MOBILE}}*/
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.points_give_choices {
 		margin-right: 1em;
-	/*{+END}*/
-}
+	}
+/*{+END}*/
 
 .points_give_choices .sub_option {
 	font-size: 0.9em;
@@ -66,15 +70,19 @@
 
 .points_give_shared_options {
 	float: right;
-	/*{+START,IF,{$MOBILE}}*/
+}
+/*{+START,CSS_MODE,mobile}*/
+	.points_give_shared_options {
 		width: 21.9em;
 		margin: 4em 0em 1em 0em;
-	/*{+END}*/
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,desktop}*/
+	.points_give_shared_options {
 		width: 23em;
 		margin-top: 1em;
-	/*{+END}*/
-}
+	}
+/*{+END}*/
 
 .points_boxes {
 	float: right;
@@ -96,14 +104,18 @@
 
 table.points_summary_table {
 	border-collapse: collapse;
-	/*{+START,IF,{$MOBILE}}*/
+}
+/*{+START,CSS_MODE,mobile}*/
+	table.points_summary_table {
 		margin-left: 2em;
 		width: 100%;
-	/*{+END}*/
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,desktop}*/
+	table.points_summary_table {
 		margin-left: 0;
-	/*{+END}*/
-}
+	}
+/*{+END}*/
 
 table.points_summary_table thead {
 	display: none;

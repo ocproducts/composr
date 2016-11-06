@@ -10,7 +10,7 @@
 	padding-{!en_left}: 1em;
 }
 
-/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
 	.download_box_description.pic {
 		margin-right: 180px;
 	}
@@ -30,7 +30,7 @@
 	width: 55%;
 }
 
-/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
 	.download_description {
 		margin-{!en_right}: 18em;
 	}
@@ -56,7 +56,7 @@
 
 /* Floated Right */
 
-/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
 	.download_metadata {
 		float: {!en_right};
 		width: 17em;

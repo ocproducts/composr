@@ -18,6 +18,36 @@ When editing theme CSS we recommend you comment out code you're removing and hea
 
 /*
 =========================
+====Responsive modes=====
+=========================
+*/
+
+/*
+These define CSS_MODEs. They work both as responsive design breakpoints, and rule output control for mobile mode.
+
+In desktop mode:
+ mode directives are turned into corresponding @media rules (i.e. responsive design)
+
+In mobile mode:
+ anything marked with "mobileModeMedia" will be turned into @media rules
+ anything marked with "mobileModeKeep" will be output directly
+ anything marked with "mobileModeDiscard" skipped (to save on file-size)
+*/
+
+/* The basic ones */
+{$CSS_MODE,mobile,0-982,mobileModeKeep}
+{$CSS_MODE,desktop,983-infinity,mobileModeDiscard}
+
+/* Extra ones; useful if you are providing better specificity for particular tested ranges (make sure the base-line of each range works for the rules you set; assuming we are using retina/hi-dpi properly rather than to cram more onto the screen) */
+{$CSS_MODE,smartphone_fixed_viewport,320-320,mobileModeMedia}/*This would only be used if you set a fixed (non-responsive) viewport of 320 (QVGA, portrait mode); not used by default*/
+{$CSS_MODE,smartphone_portrait,320-666,mobileModeMedia}/*Based on up to what iPhone6 can do; higher-res phones like phablets may fall under the smartphone_landscape range even in portrait mode which is fine*/
+{$CSS_MODE,smartphone_landscape,667-982,mobileModeMedia}/*Based on from iPhone6 landscape up to our tablet size; also good for small tablets in portrait mode*/
+{$CSS_MODE,tablet_fixed_viewport,982-982,mobileModeDiscard}/*This corresponds to the fixed width tablet mode viewport defined in HTML_HEAD.tpl optimised for landscape mode; fixed width is not on by default, so tablet is the same as desktop in that case*/
+{$CSS_MODE,desktop,982-infinity,mobileModeMedia}/*1024 is considered the industry-standard, which is 982 with scrollbar; also good for small tablets in landscape mode and large tablets in portrait mode*/
+{$CSS_MODE,large_desktop,1200-infinity,mobileModeMedia}/*Also good for tablets in landscape mode*/
+
+/*
+=========================
 ========Colours==========
 =========================
 */
@@ -347,7 +377,7 @@ iframe {
 }
 
 
-/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
 	select {
 		max-width: 100px;
 	}
@@ -405,24 +435,24 @@ body.website_body.frame {
 }
 
 /*{+START,IF,{$CONFIG_OPTION,fixed_width}}*/
-/*{+START,IF,{$NOT,{$MOBILE}}}*/
-	html>body#main_website { /* #main_website targets only the main site screen, avoiding frames etc */
-		/* Want to change the tiled background?
-			Try this Google search to get image ideas http://www.google.co.uk/search?tbm=isch&q=tile+background
-			Find how to edit the referenced "outer_background" theme image by doing an Admin Zone search for "outer_background"
-		*/
-		background: url('{$IMG_INLINE;,outer_background}');
-	}
-	#main_website #main_website_inner {
-		width: 980px;
-		position: relative;
-		margin: 15px auto 15px auto;
-		border: 1px solid {$GET,fixed_width_border};
-		{$BETA_CSS_PROPERTY,box-shadow: 0 0 20px {$GET,standard_border};}
-	}
+	/*{+START,CSS_MODE,desktop}*/
+		html>body#main_website { /* #main_website targets only the main site screen, avoiding frames etc */
+			/* Want to change the tiled background?
+				Try this Google search to get image ideas http://www.google.co.uk/search?tbm=isch&q=tile+background
+				Find how to edit the referenced "outer_background" theme image by doing an Admin Zone search for "outer_background"
+			*/
+			background: url('{$IMG_INLINE;,outer_background}');
+		}
+		#main_website #main_website_inner {
+			width: 980px;
+			position: relative;
+			margin: 15px auto 15px auto;
+			border: 1px solid {$GET,fixed_width_border};
+			{$BETA_CSS_PROPERTY,box-shadow: 0 0 20px {$GET,standard_border};}
+		}
+	/*{+END}*/
 
-	/* Responsive design for tablets etc */
-	@media screen and (max-width:1024px) {
+	/*{+START,CSS_MODE,tablet_fixed_viewport}*/
 		#main_website #main_website_inner {
 			margin: 0 0 0 0.5em;
 			border: 0;
@@ -432,8 +462,7 @@ body.website_body.frame {
 		.global_banner {
 			top: 0 !important;
 		}
-	}
-/*{+END}*/
+	/*{+END}*/
 /*{+END}*/
 
 body.website_body, #wysiwyg_editor {
@@ -447,12 +476,13 @@ body.website_body, #wysiwyg_editor {
 
 body#main_website {
 	margin: 0;
-
-	/* To stop it scaling down if we are applying "width=device-width" and forcing a page to displaying non-mobile */
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		min-width: 1000px;
-	/*{+END}*/
 }
+/* To stop it scaling down if we are applying "width=device-width" and forcing a page to displaying non-mobile */
+/*{+START,CSS_MODE,desktop}*/
+	body#main_website {
+		min-width: 1000px;
+	}
+/*{+END}*/
 
 body#main_website #main_website_inner .global_middle_outer {
 	min-height: 450px;
@@ -472,12 +502,14 @@ header {
 
 header h1 {
 	margin: 0;
-	/*{+START,IF,{$MOBILE}}*/
-		width: 100%;
-		text-align: center;
-	/*{+END}*/
 	border: 0;
 }
+/*{+START,CSS_MODE,mobile}*/
+	header h1 {
+		width: 100%;
+		text-align: center;
+	}
+/*{+END}*/
 
 .global_banner {
 	text-align: center;
@@ -527,18 +559,22 @@ header h1 {
 	background-color: {$GET,lgrad};
 	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,lgrad}\, {$GET,dgrad}) !important;}
 	color: {$GET,WB};
-	/*{+START,IF,{$MOBILE}}*/
-		position: relative;
-	/*{+END}*/
 	min-height: 3.4em;
 }
+/*{+START,CSS_MODE,mobile}*/
+	.global_navigation {
+		position: relative;
+	}
+/*{+END}*/
 
 .global_navigation_inner {
 	overflow: hidden;
-	/*{+START,IF,{$MOBILE}}*/
-		margin-left: 8em !important; /* Space for the menu button, which is position:absolute */
-	/*{+END}*/
 }
+/*{+START,CSS_MODE,mobile}*/
+	.global_navigation_inner {
+		margin-left: 8em !important; /* Space for the menu button, which is position:absolute */
+	}
+/*{+END}*/
 
 .global_navigation .top_buttons, .global_navigation .top_form {
 	padding: 0.5em 0;
@@ -547,11 +583,13 @@ header h1 {
 }
 
 .global_navigation .top_buttons {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		margin-left: 1.5em;
-	/*{+END}*/
 	margin-top: 1px; /* To force it align correctly with the form in a different block (which is taller) */
 }
+/*{+START,CSS_MODE,desktop}*/
+	.global_navigation .top_buttons {
+		margin-left: 1.5em;
+	}
+/*{+END}*/
 
 .global_navigation .top_form {
 	margin-top: 3px; /* To force it align correctly with the form in a different block (which is taller) */
@@ -621,7 +659,9 @@ header h1 {
 
 .global_breadcrumbs {
 	padding: 7px 0 7px 0;
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+}
+/*{+START,CSS_MODE,desktop}*/
+	.global_breadcrumbs {
 		/*{+START,IF,{$CONFIG_OPTION,fixed_width}}*/
 			text-align: {!en_right};
 		/*{+END}*/
@@ -629,12 +669,12 @@ header h1 {
 			float: {!en_right};
 		/*{+END}*/
 		margin-left: 0.5em;
-	/*{+END}*/
-}
+	}
+/*{+END}*/
 .global_breadcrumbs abbr, .global_breadcrumbs a, .global_breadcrumbs span {
 	white-space: nowrap !important;
 }
-/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
 	.global_breadcrumbs {
 		margin-bottom: 1em;
 	}
@@ -701,8 +741,8 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 	display: table;
 	clear: both;
 }
-/*{+START,IF,{$NOT,{$CONFIG_OPTION,collapse_user_zones}}}*/
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
+	/*{+START,IF,{$NOT,{$CONFIG_OPTION,collapse_user_zones}}}*/
 		.zone_running_ .global_middle_outer {
 			margin-top: 0; /* Splash page style design, tighter spacing */
 		}
@@ -714,16 +754,15 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 /*{+END}*/
 
 .global_middle {
-	/*overflow: hidden; Breaks Safari so we'll let the surrounding element contain floats*/
-
 	margin-bottom: 1em;
-
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+}
+/*{+START,CSS_MODE,desktop}*/
+	.global_middle {
 		/* Add some spacing. This will be overwritten to 1.5em in rules below if we have panels */
 		padding-{!en_left}: 1em;
 		padding-{!en_right}: 1em;
-	/*{+END}*/
-}
+	}
+/*{+END}*/
 
 .zone_running_docs .comcode_page {
 	line-height: 1.35em;
@@ -732,7 +771,7 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 	max-width: 100%;
 }
 
-/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
 	.global_middle, .panel_solo {
 		padding-{!en_left}: 2px;
 		padding-{!en_right}: 2px;
@@ -762,63 +801,80 @@ body.popup_spacer h2 {
 	margin-top: 0;
 }
 
-#panel_bottom {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
+	#panel_bottom {
 		margin: 0 1em;
-	/*{+END}*/
-	/*{+START,IF,{$MOBILE}}*/
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	#panel_bottom {
 		margin: 0 2px;
-	/*{+END}*/
-}
+	}
+/*{+END}*/
 
-#panel_top .cns_member_bar_etc { /* Should not be flush with site borders (but the menu above it will be, so don't do the whole panel */
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/* Should not be flush with site borders (but the menu above it will be, so don't do the whole panel */
+/*{+START,CSS_MODE,desktop}*/
+	#panel_top .cns_member_bar_etc {
 		margin: 0 1em;
-	/*{+END}*/
-	/*{+START,IF,{$MOBILE}}*/
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	#panel_top .cns_member_bar_etc {
 		margin: 0 2px;
-	/*{+END}*/
-}
+	}
+/*{+END}*/
 
 #panel_left {
 	float: {!en_left};
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+}
+/*{+START,CSS_MODE,desktop}*/
+	#panel_left {
 		margin-{!en_left}: 1em;
-	/*{+END}*/
-	/*{+START,IF,{$MOBILE}}*/
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	#panel_left {
 		padding-{!en_left}: 2px;
 		padding-{!en_right}: 1px;
 		{$BETA_CSS_PROPERTY,box-sizing: border-box;}
-	/*{+END}*/
-}
+	}
+/*{+END}*/
 
 #panel_right {
 	float: {$?,{$MOBILE},{!en_left},{!en_right}};
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+}
+/*{+START,CSS_MODE,desktop}*/
+	#panel_right {
 		margin-{!en_right}: 1em;
-	/*{+END}*/
-	/*{+START,IF,{$MOBILE}}*/
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	#panel_right {
 		padding-{!en_right}: 2px;
 		padding-{!en_left}: 1px;
 		{$BETA_CSS_PROPERTY,box-sizing: border-box;}
-	/*{+END}*/
-}
+	}
+/*{+END}*/
 
 .global_side_panel {
 	{$BETA_CSS_PROPERTY,word-wrap: break-word;}
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		width: 13em;
-	/*{+END}*/
-	/*{+START,IF,{$MOBILE}}*/
-		width: 50%;
-	/*{+END}*/
 	color: {$GET,slightly_seeded_gray_text};
 }
+/*{+START,CSS_MODE,desktop}*/
+	.global_side_panel {
+		width: 13em;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.global_side_panel {
+		width: 50%;
+	}
+/*{+END}*/
 .global_middle_faux>.global_side_panel {
 	width: auto;
 }
 
-/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
 	/* Spacing around middle column if it adjoins panels */
 	#panel_left ~ .global_middle {
 		margin-{!en_left}: 13em;
@@ -888,10 +944,12 @@ footer {
 	/*{+START,IF,{$NOT,{$CONFIG_OPTION,fixed_width}}}*/
 		{$BETA_CSS_PROPERTY,box-shadow: 0 0 2px 2px {$GET,footer_tinting};}
 	/*{+END}*/
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		padding: 1.5em;
-	/*{+END}*/
 }
+/*{+START,CSS_MODE,desktop}*/
+	footer {
+		padding: 1.5em;
+	}
+/*{+END}*/
 
 footer .button_hyperlink, footer a, footer a:visited, footer .horizontal_links {
 	color: {$GET,footer_text};
@@ -901,18 +959,18 @@ footer a:hover, footer .button_hyperlink:hover {
 	color: {$GET,footer_tinting};
 }
 
-/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
 	footer .global_footer_left, footer .global_footer_right {
 		padding-left: 0.5em;
 		padding-right: 0.5em;
 	}
 /*{+END}*/
 
-footer .global_footer_left {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
+	footer .global_footer_left {
 		float: {!en_left};
-	/*{+END}*/
-}
+	}
+/*{+END}*/
 
 footer .footer_button_loading {
 	{$BETA_CSS_PROPERTY,opacity: 0.4;} display: inline-block;/*Needed for IE8*/
@@ -923,12 +981,14 @@ footer .global_footer_left .horizontal_buttons {
 	white-space: nowrap;
 	margin-top: 0;
 	font-size: 0; /* Fixes wrapping problem */
-	/*{+START,IF,{$MOBILE}}*/
-		float: left;
-	/*{+END}*/
 }
+/*{+START,CSS_MODE,mobile}*/
+	footer .global_footer_left .horizontal_buttons {
+		float: left;
+	}
+/*{+END}*/
 
-/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
 	footer .global_footer_left .su_form {
 		float: right;
 	}
@@ -957,12 +1017,12 @@ footer .special_page_type_form select option {
 	color: {$GET,native_ui_foreground};
 }
 
-footer .global_footer_left .horizontal_buttons, footer .su_form, footer .special_page_type_form {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
+	footer .global_footer_left .horizontal_buttons, footer .su_form, footer .special_page_type_form {
 		float: left;
 		padding-right: 14px;
-	/*{+END}*/
-}
+	}
+/*{+END}*/
 footer .global_footer_left .horizontal_buttons {
 	margin-top: 5px;
 }
@@ -986,36 +1046,42 @@ footer .invisible_ref_point {
 	width: 0;
 }
 
-footer .global_copyright {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
+	footer .global_copyright {
 		text-align: center;
-	/*{+END}*/
-	/*{+START,IF,{$MOBILE}}*/
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	footer .global_copyright {
 		margin: 0.5em 0;
-	/*{+END}*/
-}
+	}
+/*{+END}*/
 
 footer .global_minilinks {
 	padding-bottom: 0.3em;
 	font-size: 0.9em;
 	white-space: nowrap; /* Stops logout link wrapping around in Firefox 3.6 */
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		text-align: center;
-	/*{+END}*/
 	margin-right: 3em; /* Make tidy gap away from the font sizer */
 }
+/*{+START,CSS_MODE,desktop}*/
+	footer .global_minilinks {
+		text-align: center;
+	}
+/*{+END}*/
 
 footer .global_minilinks .footer_links {
 	width: auto;
 	font-size: 1.1em;
-	/*{+START,IF,{$MOBILE}}*/
+}
+/*{+START,CSS_MODE,mobile}*/
+	footer .global_minilinks .footer_links {
 		margin: 0;
 		padding: 0;
 		list-style-type: none;
-	/*{+END}*/
-}
+	}
+/*{+END}*/
 
-/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
 	footer .global_minilinks .footer_links li {
 		min-width: 6em;
 		margin-right: 1em;
@@ -1060,11 +1126,11 @@ body .accessibility_hidden { /* Contents should be made visible (or interpreted)
 	display: block; /* stops browser bugs where it interacts with the layout flow incorrectly */
 }
 
-.non_accessibility_redundancy { /* Contents should be skipped by screen readers */
-	/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
+	.non_accessibility_redundancy { /* Contents should be skipped by screen readers */
 		display: none;
-	/*{+END}*/
-}
+	}
+/*{+END}*/
 
 /*
 =========================
@@ -1212,12 +1278,14 @@ body input.button_hyperlink, body input.button_hyperlink:hover {
 .trinav_wrap {
 	overflow: hidden;
 	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,main_2_background}\, {$GET,main_background});}
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		margin-bottom: 2em;
-	/*{+END}*/
 	{$BETA_CSS_PROPERTY,border-radius: 20px;}
 	color: {$GET,heading_text};
 }
+/*{+START,CSS_MODE,desktop}*/
+	.trinav_wrap {
+		margin-bottom: 2em;
+	}
+/*{+END}*/
 .trinav_wrap.nograd {
 	background-image: none;
 }
@@ -1228,27 +1296,33 @@ body input.button_hyperlink, body input.button_hyperlink:hover {
 }
 .trinav_left {
 	float: left;
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		margin-left: 2em;
-	/*{+END}*/
-	/*{+START,IF,{$MOBILE}}*/
-		width: 110px;
-		margin-left: 0.5em;
-	/*{+END}*/
 	text-align: left;
 }
+/*{+START,CSS_MODE,desktop}*/
+	.trinav_left {
+		margin-left: 2em;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.trinav_left {
+		width: 110px;
+		margin-left: 0.5em;
+	}
+/*{+END}*/
 .trinav_mid { /* Used for putting a button in the middle of the left/right pagination, for example */
 	text-align: center;
 }
-.trinav_mid.text {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
+	.trinav_mid.text {
 		padding-top: 6px;
-	/*{+END}*/
-	/*{+START,IF,{$MOBILE}}*/
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.trinav_mid.text {
 		padding-top: 1px;
-	/*{+END}*/
-}
-/*{+START,IF,{$NOT,{$MOBILE}}}*/
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,desktop}*/
 	.trinav_mid.text>span:before {
 		content: "(";
 	}
@@ -1258,16 +1332,20 @@ body input.button_hyperlink, body input.button_hyperlink:hover {
 /*{+END}*/
 .trinav_right {
 	float: right;
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		margin-left: 1em;
-		margin-right: 2em;
-	/*{+END}*/
-	/*{+START,IF,{$MOBILE}}*/
-		width: 110px;
-		margin-right: 0.5em;
-	/*{+END}*/
 	text-align: right;
 }
+/*{+START,CSS_MODE,desktop}*/
+	.trinav_right {
+		margin-left: 1em;
+		margin-right: 2em;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.trinav_right {
+		width: 110px;
+		margin-right: 0.5em;
+	}
+/*{+END}*/
 
 /* An inline avatar */
 .embedded_mini_avatar {
@@ -1677,15 +1755,19 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 }
 
 .fp_col_block {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		width: 50%;
-	/*{+END}*/
-	/*{+START,IF,{$MOBILE}}*/
-		margin: 1em 0;
-		max-width: 100%;
-	/*{+END}*/
 	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
 }
+/*{+START,CSS_MODE,desktop}*/
+	.fp_col_block {
+		width: 50%;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.fp_col_block {
+		margin: 1em 0;
+		max-width: 100%;
+	}
+/*{+END}*/
 
 .fp_col_block .pagination {
 	float: none;
@@ -1717,14 +1799,16 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 	font-size: 0.9em;
 	color: {$GET,area_text};
 	border-bottom: 1px dotted {$GET,pale_border};
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		width: 25em;
-	/*{+END}*/
 	max-width: 100%;
 	padding-{!en_left}: 0.5em;
 	padding-bottom: 0.5em;
 	margin-bottom: 1em;
 }
+/*{+START,CSS_MODE,desktop}*/
+	.meta_details {
+		width: 25em;
+	}
+/*{+END}*/
 .boxless_space .meta_details {
 	padding-{!en_left}: 0;
 	margin-top: -0.5em !important;
@@ -1861,7 +1945,7 @@ hr.spaced_rule {
 .right.float_separation, .inline.spaced {
 	margin-{!en_left}: 1em;
 }
-@media screen and (max-width:800px) {
+/*{+START,CSS_MODE,mobile}*/
 	.left.responsive {
 		float: none;
 	}
@@ -1878,6 +1962,7 @@ hr.spaced_rule {
 		width: auto !important;
 	}
 }
+/*{+END}*/
 
 .inline_lined_up {
 	white-space: nowrap;
@@ -2338,7 +2423,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	margin-top: 1.5em;
 }
 
-/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
 	.index_screen_fancier_screen_entries {
 		margin-{!en_left}: 1em;
 	}
@@ -2468,7 +2553,7 @@ div.ajax_loading, p.ajax_loading {
 =========================
 */
 
-/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
 	.lined_up_boxes .right {
 		margin-left: 1em;
 	}
@@ -2478,7 +2563,7 @@ div.ajax_loading, p.ajax_loading {
 	}
 /*{+END}*/
 
-/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
 	.lined_up_boxes .right {
 		width: 100%;
 	}
@@ -2586,13 +2671,17 @@ div.ajax_loading, p.ajax_loading {
 
 .post .post_thread_children {
 	margin-top: 1em;
-	/*{+START,IF,{$MOBILE}}*/
-		margin-left: 7px;
-	/*{+END}*/
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		margin-left: 20px;
-	/*{+END}*/
 }
+/*{+START,CSS_MODE,mobile}*/
+	.post .post_thread_children {
+		margin-left: 7px;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,desktop}*/
+	.post .post_thread_children {
+		margin-left: 20px;
+	}
+/*{+END}*/
 
 .post_buttons {
 	text-align: left !important; /* Overrides buttons_group */
@@ -2661,10 +2750,12 @@ div .post_buttons>*, div .buttons_group_faded>* {
 .comments_posting_form_inner {
 	text-align: {!en_left};
 	padding: 1em 0 0 0;
-	/*{+START,IF,{$MOBILE}}*/
-		overflow: hidden;
-	/*{+END}*/
 }
+/*{+START,CSS_MODE,mobile}*/
+	.comments_posting_form_inner {
+		overflow: hidden;
+	}
+/*{+END}*/
 
 .comments_posting_form_inner th, .comments_posting_form_inner td.one_line {
 	padding: {$?,{$MOBILE},0.5em 0.5em 0.5em 0,0.5em 1.5em 0.5em 0.5em};
@@ -2674,10 +2765,12 @@ div .post_buttons>*, div .buttons_group_faded>* {
 	font-weight: bold !important;
 	border-right: 1px solid {$GET,pale_border};
 	text-align: right;
-	/*{+START,IF,{$MOBILE}}*/
-		min-width: 4.5em;
-	/*{+END}*/
 }
+/*{+START,CSS_MODE,mobile}*/
+	.comments_posting_form_inner th {
+		min-width: 4.5em;
+	}
+/*{+END}*/
 .comments_posting_form_inner th>* {
 	text-align: right !important;
 }
@@ -2725,15 +2818,19 @@ div .post_buttons>*, div .buttons_group_faded>* {
 
 .comments_posting_form_end {
 	overflow: hidden;
-	/*{+START,IF,{$MOBILE}}*/
+}
+/*{+START,CSS_MODE,mobile}*/
+	.comments_posting_form_end {
 		margin: 0;
 		padding: 0;
 		text-align: center;
-	/*{+END}*/
-	/*{+START,IF,{$NOT,{$MOBILE}}}*//*{+START,IF,{$NOT,{!takes_lots_of_space}}}*/
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,desktop}*//*{+START,IF,{$NOT,{!takes_lots_of_space}}}*/
+	.comments_posting_form_end {
 		margin: 0 0 1em 13.5em;
-	/*{+END}*//*{+END}*/
-}
+	}
+/*{+END}*//*{+END}*/
 
 .comments_posting_form_end input {
 	float: left;
@@ -2994,28 +3091,34 @@ There is 'actions_list' too (defined elsewhere). These are for links that are gi
 */
 
 ul.associated_links_block_group.horizontal_links>li:first-child:before, p.associated_link:before, div.associated_link:before {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+	{$BETA_CSS_PROPERTY,opacity: 0.7;}
+	font-size: 0.8em;
+}
+/*{+START,CSS_MODE,desktop}*/
+	ul.associated_links_block_group.horizontal_links>li:first-child:before, p.associated_link:before, div.associated_link:before {
 		content: "( " !important;
-	/*{+END}*/
-	{$BETA_CSS_PROPERTY,opacity: 0.7;}
-	font-size: 0.8em;
-}
+	}
+/*{+END}*/
 ul.associated_links_block_group.horizontal_links>li:last-child:after, p.associated_link:after, div.associated_link:after {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		content: " )" !important;
-	/*{+END}*/
 	{$BETA_CSS_PROPERTY,opacity: 0.7;}
 	font-size: 0.8em;
 }
+/*{+START,CSS_MODE,desktop}*/
+	ul.associated_links_block_group.horizontal_links>li:last-child:after, p.associated_link:after, div.associated_link:after {
+		content: " )" !important;
+	}
+/*{+END}*/
 span.associated_link, a.associated_link, form.associated_link {
 	white-space: nowrap;
 }
 ul.associated_links_block_group>li:before, span.associated_link:before, a.associated_link:before, form.associated_link:before {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		content: "(" !important;
-	/*{+END}*/
 	{$BETA_CSS_PROPERTY,opacity: 0.7;}
 }
+/*{+START,CSS_MODE,desktop}*/
+	ul.associated_links_block_group>li:before, span.associated_link:before, a.associated_link:before, form.associated_link:before {
+		content: "(" !important;
+	}
+/*{+END}*/
 ul.associated_links_block_group>li:first-child:before, span.associated_link:first-child:before, a.associated_link:first-child:before, form.associated_link:first-child:before {
 	vertical-align: baseline !important;
 }
@@ -3023,22 +3126,29 @@ ul.associated_links_block_group.horizontal_links>li:after { /* Undoes the above 
 	content: "" !important;
 }
 ul.associated_links_block_group>li:after, span.associated_link:after, a.associated_link:after, form.associated_link:after {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		content: ")" !important;
-	/*{+END}*/
 	{$BETA_CSS_PROPERTY,opacity: 0.7;}
 }
+/*{+START,CSS_MODE,desktop}*/
+	ul.associated_links_block_group>li:after, span.associated_link:after, a.associated_link:after, form.associated_link:after {
+		content: ")" !important;
+	}
+/*{+END}*/
 
 ul.associated_links_block_group.horizontal_links>li:before,
 .horizontal_meta_details li:before,
 .horizontal_links>li:before,
 .horizontal_ticker li:before {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		content: "\00b7" !important; /* a &middot; */
-	/*{+END}*/
 	padding: {$?,{$MOBILE},0 0.2em 0 0.1em,0 0.5em 0 0.1em};
 	vertical-align: -20%;
 }
+/*{+START,CSS_MODE,desktop}*/
+	ul.associated_links_block_group.horizontal_links>li:before,
+	.horizontal_meta_details li:before,
+	.horizontal_links>li:before,
+	.horizontal_ticker li:before {
+		content: "\00b7" !important; /* a &middot; */
+	}
+/*{+END}*/
 .horizontal_meta_details li:before {
 	vertical-align: middle;
 }
@@ -3098,10 +3208,12 @@ ul.associated_link li img {
 }
 ul.horizontal_links li img, ul.associated_link li img, ul.horizontal_links a, ul.horizontal_links form {
 	vertical-align: middle;
-	/*{+START,IF,{$MOBILE}}*/
-		white-space: nowrap !important;
-	/*{+END}*/
 }
+/*{+START,CSS_MODE,mobile}*/
+	ul.horizontal_links li img, ul.associated_link li img, ul.horizontal_links a, ul.horizontal_links form {
+		white-space: nowrap !important;
+	}
+/*{+END}*/
 
 .associated_links_block_group>li{
 	margin: 0.5em 0 !important;
@@ -3299,19 +3411,23 @@ div>.button_micro:first-child, div>.button_screen:first-child, div>.button_scree
 	padding: 3px 30px 4px 5px;
 	background-size: 18px 18px;
 	font-size: 13px;
-	/*{+START,IF,{$MOBILE}}*/
-		margin: 0.25em 0.1em !important;
-	/*{+END}*/
 }
+/*{+START,CSS_MODE,mobile}*/
+	.button_screen_item {
+		margin: 0.25em 0.1em !important;
+	}
+/*{+END}*/
 .button_micro {
 	padding: 1px 3px 2px 3px;
 	font-size: 12px;
 	margin: 1px 0.25em 0 0.25em; /* Push it up a bit due to confined space */
 	text-shadow: 1px 1px 1px {$GET,dark_shadow};
-	/*{+START,IF,{$MOBILE}}*/
-		line-height: 0.9em;
-	/*{+END}*/
 }
+/*{+START,CSS_MODE,mobile}*/
+	.button_micro {
+		line-height: 0.9em;
+	}
+/*{+END}*/
 div .button_micro {
 	background-image: none !important; /* Too loud for such a small space */
 	{$BETA_CSS_PROPERTY,border-radius: 4px;}
@@ -3834,14 +3950,16 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 	border-left: 0;
 	border-right: 0;
 	border-top: 0;
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		border-bottom: 1px solid;
-		border-color: {$GET,tab_border};
-	/*{+END}*/
 	height: 25px;
 }
+/*{+START,CSS_MODE,desktop}*/
+	.tabs {
+		border-bottom: 1px solid;
+		border-color: {$GET,tab_border};
+	}
+/*{+END}*/
 
-/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
 	.tabs {
 		border-bottom: 1px solid {$GET,tab_border};
 		overflow: hidden;
@@ -3861,15 +3979,19 @@ a.tab, a.tab:visited, a.tab:hover {
 	cursor: pointer;
 	line-height: 1em;
 	{$BETA_CSS_PROPERTY,opacity: 0.6;}
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+}
+/*{+START,CSS_MODE,desktop}*/
+	.tab {
 		background-image: url('{$IMG;,tab}') !important;
-	/*{+END}*/
-	/*{+START,IF,{$MOBILE}}*/
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.tab {
 		min-width: 107px; /* Allows 3 per row, neat alignment */
 		border-left: 1px solid {$GET,tab_border};
 		border-top: 1px solid {$GET,tab_border};
-	/*{+END}*/
-}
+	}
+/*{+END}*/
 
 a.tab>img+span {
 	padding-top: 0;
@@ -3878,7 +4000,7 @@ a.tab>span {
 	padding-top: 3px;
 }
 
-/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
 	.tab_surround .tab {
 		min-width: 100px; /* Allows 3 per row, neat alignment (for nested tabs) */
 	}
@@ -3910,30 +4032,31 @@ a.tab>span {
 .tab_first {
 }
 
-/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
 	.tab_last {
 		border-right: 1px solid;
 		border-color: {$GET,tab_border};
 	}
 /*{+END}*/
 
-/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
 	.tab:nth-child(3n+0) {
 		border-right: 1px solid {$GET,tab_border};
 	}
 /*{+END}*/
 
-div[role="tabpanel"] {
-	/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
+	div[role="tabpanel"] {
 		padding-left: 2px;
 		padding-right: 2px;
-	/*{+END}*/
-
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,desktop}*/
+	div[role="tabpanel"] {
 		padding-left: 1em;
 		padding-right: 1em;
-	/*{+END}*/
-}
+	}
+/*{+END}*/
 div[role="tabpanel"]>:first-child {
 	margin-top: 1em;
 }
@@ -4265,10 +4388,6 @@ body div.comcode_table_of_contents>div.box_inner>ol>li {
 .attachment {
 	margin: 1em 0;
 	margin-bottom: 1px !important; /* Overrides 0 on .left>figure, .right>figure */
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		border: 1px solid {$GET,standard_border};
-		padding: 0.5em !important;
-	/*{+END}*/
 	font-size: 0.9em;
 	/*display: inline-block; Actually table works better, shows margins even when not floated*/
 	display: table;
@@ -4276,6 +4395,12 @@ body div.comcode_table_of_contents>div.box_inner>ol>li {
 	max-width: 100%;
 	background: {$GET,WB};
 }
+/*{+START,CSS_MODE,desktop}*/
+	.attachment {
+		border: 1px solid {$GET,standard_border};
+		padding: 0.5em !important;
+	}
+/*{+END}*/
 figure {
 	margin: 1em 0;
 }
@@ -4594,16 +4719,20 @@ a[title="{!VIRTUAL_ROOT}"]:hover {
 
 .overlay_close_button {
 	position: absolute;
-	/*{+START,IF,{$MOBILE}}*/
-		top: 0;
-		right: 0;
-	/*{+END}*/
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		top: -16px;
-		right: -16px;
-	/*{+END}*/
 	cursor: pointer;
 }
+/*{+START,CSS_MODE,mobile}*/
+	.overlay_close_button {
+		top: 0;
+		right: 0;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,desktop}*/
+	.overlay_close_button {
+		top: -16px;
+		right: -16px;
+	}
+/*{+END}*/
 
 .overlay img.lightbox_image {
 	display: block;

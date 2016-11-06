@@ -3,7 +3,7 @@
  Copyright (c) ocProducts, 2004-2016
 */
 
-/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
 	.calendar_week th a, .calendar_month th a, .calendar_day th a, .calendar_week th span, .calendar_month th span, .calendar_day th span {
 		writing-mode: tb-rl;
 	}
@@ -23,7 +23,7 @@ abbr.dtstart, abbr.dtend {
 	border-collapse: collapse;
 }
 
-/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
 	.calendar_year_wrap {
 		display: block;
 	}
@@ -41,13 +41,15 @@ abbr.dtstart, abbr.dtend {
 
 .calendar_year_month {
 	height: 150px;
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		width: 33%;
-	/*{+END}*/
 	vertical-align: top;
 	text-align: center;
 	padding: 0.5em;
 }
+/*{+START,CSS_MODE,desktop}*/
+	.calendar_year_month {
+		width: 33%;
+	}
+/*{+END}*/
 
 .calendar_year_month table {
 	border-collapse: collapse;
@@ -233,7 +235,7 @@ abbr.dtstart, abbr.dtend {
 	margin-top: 2em;
 }
 
-/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
 	.event_interest_box {
 		width: 50%;
 		padding: 0.5em;
@@ -260,11 +262,21 @@ abbr.dtstart, abbr.dtend {
 .side_calendar .calendar_priority_free_time,
 .side_calendar .calendar_free_time,
 .side_calendar .calendar_active {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		font-size: 0.8em; /* On mobile we don't display in a side panel so actually there is more width - plus we want bigger cells for fat fingers */
-	/*{+END}*/
 	padding: 0.5em 0.2em;
 }
+/*{+START,CSS_MODE,desktop}*/
+	.side_calendar .calendar_priority_na,
+	.side_calendar .calendar_priority_1,
+	.side_calendar .calendar_priority_2,
+	.side_calendar .calendar_priority_3,
+	.side_calendar .calendar_priority_4,
+	.side_calendar .calendar_priority_5,
+	.side_calendar .calendar_priority_free_time,
+	.side_calendar .calendar_free_time,
+	.side_calendar .calendar_active {
+		font-size: 0.8em; /* On mobile we don't display in a side panel so actually there is more width - plus we want bigger cells for fat fingers */
+	}
+/*{+END}*/
 
 .calendar_priority_na,
 .calendar_priority_1,
@@ -350,7 +362,7 @@ td.day_spacer:hover {
 	overflow: hidden;
 }
 
-/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
 	.event_right {
 		float: right;
 		width: 15em;
@@ -378,7 +390,7 @@ td.day_spacer:hover {
 	width: auto;
 }
 
-/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
 	.event_right {
 		float: left;
 		width: 100%;

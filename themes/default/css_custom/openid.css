@@ -6,20 +6,19 @@
 #openid {
 	background: url({$IMG;,openid/indicator}) center center no-repeat;
 	margin: 0 auto;
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		width: 440px;
-		/*height: 162px;*/
-	/*{+END}*/
 	font: 12px 'Arial';
 }
+/*{+START,CSS_MODE,desktop}*/
+	#openid {
+		width: 440px;
+		/*height: 162px;*/
+	}
+/*{+END}*/
 
 #openid_inputarea {
 	clear: both;
 	display: none;
 	background: url({$IMG;,openid/balloon}) no-repeat;
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		width: 410px;
-	/*{+END}*/
 	height: 48px;
 	color: white;
 	position: absolute;visibility: hidden;height:0; /* Intentionally take the message out of the flow and hide it - it takes too much space */
@@ -27,6 +26,11 @@
 	margin-top: 35px;
 	padding-top: 17px;
 }
+/*{+START,CSS_MODE,desktop}*/
+	#openid_inputarea {
+		width: 410px;
+	}
+/*{+END}*/
 
 #openid_inputarea #openid_username {
 	margin: 0 4px 0 8px;

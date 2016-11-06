@@ -156,8 +156,8 @@ Here are the top 100 buzzwords that will help you understand what web designers 
 			<td>A small icon that shows in the browser tab when someone is visiting your website, and next to a bookmark to it (when users bookmark your site).</td>
 		</tr>
 		<tr>
-			<td>Fixed width vs Fluid width</td>
-			<td>A fixed width website is designed to have a particular width, often with a background showing at the edges if the web browser window is wider than this width. Most websites are fixed width as it is easier to design for a consistent display. Sites that are not fixed width are fluid width.</td>
+			<td>Fixed-width vs Fluid</td>
+			<td>A fixed-width website is designed to have a particular width, often with a background showing at the edges if the web browser window is wider than this width. Sites that are not fixed-width are fluid. Most websites are fluid nowadays as it goes hand-in-hand with responsive design.</td>
 		</tr>
 		<tr>
 			<td>Flash</td>

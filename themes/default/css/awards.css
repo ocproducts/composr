@@ -5,18 +5,25 @@
 
 .award_extra_details {
 	float: left;
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		width: 200px;
-	/*{+END}*/
 }
 
+/*{+START,CSS_MODE,desktop}*/
+	.award_extra_details {
+		width: 200px;
+	}
+/*{+END}*/
+
 .award_main {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		margin-left: 220px;
-	/*{+END}*/
-	/*{+START,IF,{$MOBILE}}*/
-		float: left;
-	/*{+END}*/
 	border-left: 1px solid {$GET,standard_border};
 	padding-left: 2em;
 }
+/*{+START,CSS_MODE,desktop}*/
+	.award_main {
+		margin-left: 220px;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.award_main {
+		float: left;
+	}
+/*{+END}*/

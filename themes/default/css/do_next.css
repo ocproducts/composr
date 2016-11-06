@@ -5,22 +5,26 @@
 
 .do_next_page_question {
 	font-size: 1em;
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		margin-bottom: 3em;
-	/*{+END}*/
 }
+/*{+START,CSS_MODE,desktop}*/
+	.do_next_page_question {
+		margin-bottom: 3em;
+	}
+/*{+END}*/
 
 .do_next_section_wrap {
 	margin: 2em auto;
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		width: 606px;
-	/*{+END}*/
 	text-align: center;
 	{$BETA_CSS_PROPERTY,border-radius: 15px;}
 	background: {$GET,area_background};
 	padding: 0.7em;
 	{$BETA_CSS_PROPERTY,box-shadow: 0px 0px 20px {$GET,standard_border};}
 }
+/*{+START,CSS_MODE,desktop}*/
+	.do_next_section_wrap {
+		width: 606px;
+	}
+/*{+END}*/
 
 .do_next_section_wrap h2 {
 	margin-top: 0;

@@ -34,11 +34,13 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 
 .global_messages {
 	margin: 0;
-	/*{+START,IF,{$MOBILE}}*/
+}
+/*{+START,CSS_MODE,mobile}*/
+	.global_messages {
 		padding-left: 2px;
 		padding-right: 2px;
-	/*{+END}*/
-}
+	}
+/*{+END}*/
 
 .global_messages .box___message {
 	background-image: none !important;
@@ -60,7 +62,7 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 	padding: 18px 0 7px 0;
 }
 
-/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
 	.global_middle {
 		padding-left: 0;
 		padding-right: 0;

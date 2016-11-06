@@ -8,15 +8,17 @@
 }
 
 .login_page {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+	background: url('{$IMG;,background_image}') no-repeat 20px 44px;
+}
+/*{+START,CSS_MODE,desktop}*/
+	.login_page {
 		text-align: center;
 		width: 80%;
 		padding: 0.5em;
 		margin: 0 auto;
 		min-height: 300px;
-	/*{+END}*/
-	background: url('{$IMG;,background_image}') no-repeat 20px 44px;
-}
+	}
+/*{+END}*/
 
 .login_page input[type="text"], .login_page input[type="password"] {
 	background: rgba(255,255,255,0.5);
@@ -26,7 +28,7 @@
 	margin-top: 0;
 }
 
-/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
 	.login_page_form label {
 		width: 7em;
 		display: inline-block;
@@ -54,23 +56,27 @@ table.login_page_form {
 
 .login_page_options {
 	text-align: left;
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		width: 278px; /* On Firefox Windows it needs more space than Chrome Windows which needs more space than Chrome Mac */
-		float: left;
-	/*{+END}*/
 	margin-top: 0.5em;
 }
+/*{+START,CSS_MODE,desktop}*/
+	.login_page_options {
+		width: 278px; /* On Firefox Windows it needs more space than Chrome Windows which needs more space than Chrome Mac */
+		float: left;
+	}
+/*{+END}*/
 
 .login_page_options label {
 	display: block;
 }
 
 .login_page_options .associated_details {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		padding-left: 2em;
-	/*{+END}*/
 	display: inline-block;
 }
+/*{+START,CSS_MODE,desktop}*/
+	.login_page_options .associated_details {
+		padding-left: 2em;
+	}
+/*{+END}*/
 
 .login_note {
 	font-size: 0.85em;

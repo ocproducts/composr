@@ -81,7 +81,7 @@
 	margin-top: 0.5em;
 }
 
-/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
 	.chat_room_options, .chat_room_actions {
 		float: {!en_left};
 		width: 50%;
@@ -123,7 +123,7 @@
 	margin-bottom: 0;
 }
 
-/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
 	.chat_room_options, .chat_room_actions {
 		padding: 0.5em;
 	}
@@ -233,30 +233,34 @@
 }
 
 .chat_lobby_friends {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		float: {!en_left};
-		width: 16.5em;
-	/*{+END}*/
 	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
 }
+/*{+START,CSS_MODE,desktop}*/
+	.chat_lobby_friends {
+		float: {!en_left};
+		width: 16.5em;
+	}
+/*{+END}*/
 
 .chat_lobby_friends input {
 	vertical-align: middle;
 }
 
 .chat_lobby_convos {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+	margin-top: 1em;
+	margin-{!en_left}: 0.75em;
+	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+}
+/*{+START,CSS_MODE,desktop}*/
+	.chat_lobby_convos {
 		float: {!en_left};
 		width: 27em;
 		margin-{!en_right}: 1em;
 		border-{!en_right}: 1px solid {$GET,pale_border};
 		min-height: 29.5em;
 		padding-{!en_right}: 0.5em;
-	/*{+END}*/
-	margin-top: 1em;
-	margin-{!en_left}: 0.75em;
-	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
-}
+	}
+/*{+END}*/
 
 .chat_lobby_convos_tabs {
 	border-left: 0;
@@ -502,10 +506,12 @@ ul.icon_links_block_group {
 	margin: 0;
 	padding: 0;
 	float: right;
-	/*{+START,IF,{$MOBILE}}*/
-		margin: 1em 0;
-	/*{+END}*/
 }
+/*{+START,CSS_MODE,mobile}*/
+	ul.icon_links_block_group {
+		margin: 1em 0;
+	}
+/*{+END}*/
 
 ul.icon_links_block_group>li {
 	list-style-type: none;
