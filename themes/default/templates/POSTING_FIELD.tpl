@@ -98,7 +98,7 @@
 		{+START,IF_NON_EMPTY,{$TRIM,{EMOTICON_CHOOSER}}}
 			{+START,IF,{$NOT,{$MATCH_KEY_MATCH,_WILD:cms_news}}}
 				{+START,IF,{$NOT,{$MOBILE}}}{+START,IF,{$OR,{$CONFIG_OPTION,is_on_emoticon_choosers},{$AND,{$CNS},{$JS_ON}}}}
-					<div{+START,IF,{$CONFIG_OPTION,is_on_emoticon_choosers}} class="emoticon_chooser box"{+END}>
+					<div{+START,IF,{$CONFIG_OPTION,is_on_emoticon_choosers}} class="emoticon_chooser box block_desktop"{+END}>
 						{+START,IF,{$AND,{$CNS},{$JS_ON}}}
 							<span class="right horiz_field_sep associated_link"><a rel="nofollow" target="_blank" href="{$FIND_SCRIPT*,emoticons}?field_name={NAME*}{$KEEP*,0,1}" onclick="window.faux_open(maintain_theme_in_link('{$FIND_SCRIPT;*,emoticons}?field_name={NAME;*}{$KEEP;*,0,1}'),'site_emoticon_chooser','width=300,height=320,status=no,resizable=yes,scrollbars=no'); return false;" title="{!EMOTICONS_POPUP} {!LINK_NEW_WINDOW}">{$?,{$CONFIG_OPTION,is_on_emoticon_choosers},{!VIEW_ARCHIVE},{!EMOTICONS_POPUP}}</a></span>
 						{+END}
@@ -156,7 +156,7 @@
 				{!ATTACHMENTS}
 
 				{+START,IF,{$NOT,{$MOBILE}}}
-					<img class="activate_rich_semantic_tooltip help_icon" onclick="this.onmouseover(event);" title="{$STRIP_TAGS,{!ATTACHMENT_HELP}}" onmouseover="activate_rich_semantic_tooltip(this,event);" alt="{!HELP}" src="{$IMG*,icons/16x16/help}" srcset="{$IMG*,icons/32x32/help} 2x" />
+					<img class="activate_rich_semantic_tooltip help_icon inline_desktop" onclick="this.onmouseover(event);" title="{$STRIP_TAGS,{!ATTACHMENT_HELP}}" onmouseover="activate_rich_semantic_tooltip(this,event);" alt="{!HELP}" src="{$IMG*,icons/16x16/help}" srcset="{$IMG*,icons/32x32/help} 2x" />
 				{+END}
 			</span>
 

@@ -1,4 +1,4 @@
-<div class="comcode_supported">
+<div class="comcode_supported block_desktop">
 	<input type="hidden" name="comcode__{NAME*}" value="1" />
 
 	<ul class="horizontal_links horiz_field_sep">

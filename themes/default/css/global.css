@@ -1340,8 +1340,18 @@ body input.button_hyperlink, body input.button_hyperlink:hover {
 
 .help_icon {
 	cursor: pointer;
-	margin-left: 0.5em;
 }
+/*{+START,CSS_MODE,desktop}*/
+	.help_icon {
+		margin-left: 0.5em;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.help_icon {
+		display: block;
+		margin-top: 0.5em;
+	}
+/*{+END}*/
 
 /* Makes a link tag (a) look like it's not anything special (we use these tags as tab points sometimes) */
 .non_link,
