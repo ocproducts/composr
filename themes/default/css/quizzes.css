@@ -27,10 +27,14 @@
 .quiz_field_name_column {
 	width: 28em;
 }
-
 .quiz_field_input_column {
 	width: 100%;
 }
+/*{+START,CSS_MODE,mobile}*/
+	.quiz_field_name_column, .quiz_field_input_column {
+		width: auto;
+	}
+/*{+END}*/
 
 .quiz_form th {
 	padding: 0.5em 2em 0.5em 4em;
@@ -128,7 +132,7 @@
 	font-weight: bold;
 }
 
-.quiz_form tr.field_input .constrain_field {
+.quiz_form tr.field_input div {
 	margin-right: 35px;
 	display: block;
 }

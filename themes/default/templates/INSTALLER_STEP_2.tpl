@@ -1,6 +1,6 @@
 <form title="{!TERMS}" class="installer_cms_licence" action="install.php" method="post" autocomplete="off">
 	<div class="installer_terms_title"><label for="licence">{!TERMS}</label></div>
-	<div class="constrain_field">
+	<div>
 		<textarea readonly="readonly" class="mono_textbox wide_field" id="licence" name="licence" cols="90" rows="17">{LICENCE*}</textarea>
 	</div>
 </form>
@@ -11,12 +11,12 @@
 	<div class="float_surrounder">
 		<div id="install_newsletter">
 			<p class="accessibility_hidden"><label for="email">{!EMAIL_ADDRESS}</label></p>
-			<div class="constrain_field">
+			<div>
 				<input maxlength="255" class="wide_field field_input_non_filled" id="email" name="email" type="text" alt="{!EMAIL_ADDRESS}" value="{!EMAIL_ADDRESS}" size="25" onfocus="placeholder_focus(this);" onblur="placeholder_blur(this);" />
 			</div>
 
 			<p class="accessibility_hidden"><label for="interest_level">{!INST_SUBSCRIPTION_LEVEL}</label></p>
-			<div class="constrain_field">
+			<div>
 				<select class="wide_field" id="interest_level" name="interest_level">
 					<option value="4">{!ONEWSLETTER_4}</option>
 					<option selected="selected" value="3">{!ONEWSLETTER_3}</option>

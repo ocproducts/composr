@@ -1018,7 +1018,6 @@ function ModalWindow()
 						'value': (this.defaultValue===null)?'':this.defaultValue
 					});
 					var input_wrap=this.element('div',{
-						'class': 'constrain_field'
 					});
 					input_wrap.appendChild(this.input);
 					container.appendChild(input_wrap);

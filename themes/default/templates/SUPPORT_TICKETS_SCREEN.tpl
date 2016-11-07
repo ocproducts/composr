@@ -46,7 +46,7 @@
 						{!TICKET_TYPE}
 					</th>
 					{+START,IF,{$NOT,{$MOBILE}}}
-						<th>
+						<th class="cell_desktop">
 							{!COUNT_POSTS}
 						</th>
 					{+END}

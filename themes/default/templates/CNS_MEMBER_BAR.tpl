@@ -1,6 +1,6 @@
 <section id="tray_{!MEMBER|}" class="box cns_information_bar_outer">
 	<h2 class="toggleable_tray_title">
-		<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode,false,'{!MEMBER|}');"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!MEMBER}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" srcset="{$IMG*,2x/trays/contract2} 2x" /></a>
+		<a class="toggleable_tray_button inline_desktop" href="#" onclick="return toggleable_tray(this.parentNode.parentNode,false,'{!MEMBER|}');"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!MEMBER}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" srcset="{$IMG*,2x/trays/contract2} 2x" /></a>
 
 		<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode,false,'{!MEMBER|}');">{!MEMBER_INFORMATION,{$USERNAME*,{$MEMBER},1}}{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,search}} / {!SEARCH}{+END}</a>
 	</h2>
@@ -8,17 +8,17 @@
 	<div class="toggleable_tray">
 		<div class="cns_information_bar float_surrounder">
 			{+START,IF_NON_EMPTY,{AVATAR_URL}}
-				<div{+START,IF,{$NOT,{$MOBILE}}} style="min-height: {$MAX,100,{MAX_AVATAR_HEIGHT|}}px"{+END} class="cns_member_column cns_member_column_a">
+				<div style="min-height: {$MAX,100,{MAX_AVATAR_HEIGHT|}}px" class="cns_member_column cns_member_column_a">
 					<img alt="{!AVATAR}" title="{!AVATAR}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{AVATAR_URL}}" />
 				</div>
 			{+END}
 
-			<div{+START,IF,{$NOT,{$MOBILE}}} style="min-height: {$MAX,100,{MAX_AVATAR_HEIGHT|}}px"{+END} class="cns_member_column cns_member_column_b">
+			<div style="min-height: {$MAX,100,{MAX_AVATAR_HEIGHT|}}px" class="cns_member_column cns_member_column_b">
 				<p class="cns_member_column_title">{!WELCOME_BACK,<a href="{PROFILE_URL*}">{$DISPLAYED_USERNAME*,{USERNAME}}</a>}</p>
 				{+START,IF,{$NOT,{$IS_HTTPAUTH_LOGIN}}}
-					{+START,IF,{$NOT,{$MOBILE}}}
-						<form class="inline horiz_field_sep associated_link" title="{!LOGOUT}" method="post" action="{LOGOUT_URL*}" autocomplete="off"><input class="button_hyperlink" type="submit" value="{!LOGOUT}" /></form>
-					{+END}
+					<div class="inline_desktop">
+						<form class="inline associated_link" title="{!LOGOUT}" method="post" action="{LOGOUT_URL*}" autocomplete="off"><input class="button_hyperlink" type="submit" value="{!LOGOUT}" /></form>
+					</div>
 				{+END}
 
 				<dl class="meta_details_list">
@@ -30,7 +30,7 @@
 				</dl>
 			</div>
 
-			<div{+START,IF,{$NOT,{$MOBILE}}} style="min-height: {$MAX,100,{MAX_AVATAR_HEIGHT|}}px"{+END} class="cns_member_column cns_member_column_c">
+			<div style="min-height: {$MAX,100,{MAX_AVATAR_HEIGHT|}}px" class="cns_member_column cns_member_column_c">
 				{+START,IF,{$ADDON_INSTALLED,search}}{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,search}}
 					<div class="box nested"><div class="box_inner">{+START,INCLUDE,MEMBER_BAR_SEARCH}{+END}</div></div>
 				{+END}{+END}
@@ -43,7 +43,7 @@
 				</div>
 			</div>
 
-			<nav{+START,IF,{$NOT,{$MOBILE}}} style="min-height: {$MAX,100,{MAX_AVATAR_HEIGHT|}}px"{+END} class="cns_member_column cns_member_column_d">
+			<nav style="min-height: {$MAX,100,{MAX_AVATAR_HEIGHT|}}px" class="cns_member_column cns_member_column_d">
 				{$,<p class="cns_member_column_title">{!VIEW}:</p>}
 				<ul class="actions_list">
 					<!--<li><a href="{PRIVATE_TOPIC_URL*}">{!PRIVATE_TOPICS}{+START,IF_NON_EMPTY,{PT_EXTRA}} <span class="cns_member_column_pts">{PT_EXTRA}</span>{+END}</a></li>-->

@@ -64,9 +64,23 @@
 
 .chat_posting_area textarea {
 	margin-top: 0;
-	width: 20em;
 	margin-right: 1em;
 }
+/*{+START,CSS_MODE,mobile}*/
+	.chat_posting_area textarea {
+		width: 100%;
+		box-sizing: border-box;
+	}
+
+	.chat_posting_area .left {
+		float: none;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,desktop}*/
+	.chat_posting_area textarea {
+		width: 20em;
+	}
+/*{+END}*/
 
 .below_main_chat_window {
 	margin-top: 2em;

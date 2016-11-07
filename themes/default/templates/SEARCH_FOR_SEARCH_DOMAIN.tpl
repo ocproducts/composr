@@ -1,6 +1,6 @@
 <tr>
 	<th class="results_table_name search_for_search_domain">{LANG*}</th>
-	<td class="form_table_field_input">
+	<td class="form_table_field_input search_for_search_domain_checkbox">
 		{+START,IF,{$NOT,{ADVANCED_ONLY}}}
 			<div class="accessibility_hidden"><label for="search_{NAME*}">{LANG*}</label></div>
 			<input type="checkbox" id="search_{NAME*}"{+START,IF,{CHECKED}} checked="checked"{+END} name="search_{NAME*}" value="1" />

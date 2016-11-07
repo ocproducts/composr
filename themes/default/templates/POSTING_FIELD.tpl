@@ -43,13 +43,13 @@
 		{+END}
 	{+END}
 	{+START,IF_NON_EMPTY,{$TRIM,{$GET,posting_field}}}
-		<th{+START,IF,{$NOT,{$MOBILE}}} colspan="2"{+END} class="table_heading_cell{+START,IF,{REQUIRED}} required{+END}">
+		<th colspan="2" class="table_heading_cell{+START,IF,{REQUIRED}} required{+END}">
 			{$GET,posting_field}
 		</th>
 	{+END}
 </tr>
 <tr class="field_input">
-	<td class="{+START,IF,{REQUIRED}} required{+END} form_table_huge_field"{+START,IF,{$NOT,{$MOBILE}}} colspan="2"{+END}>
+	<td class="{+START,IF,{REQUIRED}} required{+END} form_table_huge_field" colspan="2">
 		{+START,IF_PASSED,DEFAULT_PARSED}
 			<textarea cols="1" rows="1" style="display: none" readonly="readonly" disabled="disabled" name="{NAME*}_parsed">{DEFAULT_PARSED*}</textarea>
 		{+END}
@@ -66,7 +66,7 @@
 				</div>
 			{+END}
 
-			<div id="container_for_{NAME*}" class="constrain_field container_for_wysiwyg">
+			<div id="container_for_{NAME*}" class="container_for_wysiwyg">
 				<textarea{+START,IF,{$NOT,{$MOBILE}}} onchange="manage_scroll_height(this);" onkeyup="manage_scroll_height(this);"{+END} accesskey="x" class="{CLASS*}{+START,IF,{REQUIRED}} posting_required{+END} wide_field posting_field_textarea" tabindex="{TABINDEX_PF*}" id="{NAME*}" name="{NAME*}" cols="70" rows="17">{POST*}</textarea>
 
 				{+START,IF_PASSED,WORD_COUNTER}
@@ -147,7 +147,7 @@
 
 {+START,IF,{$AND,{$NOT,{$BROWSER_MATCHES,simplified_attachments_ui}},{$IS_NON_EMPTY,{ATTACHMENTS}}}}
 	<tr class="form_table_field_spacer">
-		<th{+START,IF,{$NOT,{$MOBILE}}} colspan="2"{+END} class="table_heading_cell">
+		<th colspan="2" class="table_heading_cell">
 			{+START,IF,{$JS_ON}}
 				<a class="toggleable_tray_button" id="fes_attachments" onclick="toggle_subordinate_fields(this.getElementsByTagName('img')[0]); return false;" href="#"><img alt="{!EXPAND}: {!ATTACHMENTS}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
 			{+END}
@@ -168,7 +168,7 @@
 		</th>
 	</tr>
 	<tr style="display: none" class="field_input">
-		<td class="form_table_huge_field"{+START,IF,{$NOT,{$MOBILE}}} colspan="2"{+END}>
+		<td class="form_table_huge_field" colspan="2">
 			{ATTACHMENTS}
 
 			<input type="hidden" name="posting_ref_id" value="{$RAND%}" />

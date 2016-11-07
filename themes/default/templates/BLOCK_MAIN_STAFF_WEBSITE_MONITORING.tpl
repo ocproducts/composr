@@ -39,7 +39,7 @@
 			<form title="{!SITE_WATCHLIST}: {!EDIT}"{+START,IF,{$JS_ON}} style="display: none" aria-hidden="true"{+END} action="{URL*}" method="post" id="website_monitoring_list_{$GET%,RAND_WEBSITE_MONITORING}_form" autocomplete="off">
 				{$INSERT_SPAMMER_BLACKHOLE}
 
-				<div class="constrain_field">
+				<div>
 					<label for="website_monitoring_list_edit" class="accessibility_hidden">{!EDIT}</label>
 					<textarea class="wide_field" id="website_monitoring_list_edit" name="website_monitoring_list_edit" rows="10" cols="90">{+START,LOOP,SITES_BEING_WATCHED}{_loop_key*}={_loop_var*}&#10;&#10;{+END}</textarea>
 				</div>

@@ -12,10 +12,14 @@
 .cns_profile_about_field_name_column {
 	width: 13em;
 }
-
 .cns_profile_about_field_value_column {
 	width: 100%;
 }
+/*{+START,CSS_MODE,mobile}*/
+	.cns_profile_about_field_name_column, .cns_profile_about_field_value_column {
+		width: auto;
+	}
+/*{+END}*/
 
 /*{+START,CSS_MODE,mobile}*/
 	.cns_profile_column {

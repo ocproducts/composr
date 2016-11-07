@@ -10,7 +10,7 @@
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<h2><label for="tempcode">Tempcode</label></h2>
-	<div class="constrain_field">
+	<div>
 		<textarea id="tempcode" name="tempcode" cols="70" rows="17" class="wide_field textarea_scroll"></textarea>
 	</div>
 

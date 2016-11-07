@@ -1,6 +1,6 @@
 {$REQUIRE_JAVASCRIPT,editing}
 
-<div id="container_for_{NAME*}" class="constrain_field">
+<div id="container_for_{NAME*}">
 	<textarea{+START,IF,{$NOT,{$MOBILE}}} onchange="manage_scroll_height(this);" onkeyup="manage_scroll_height(this);"{+END} tabindex="{TABINDEX*}" class="input_text{REQUIRED*}{+START,IF,{SCROLLS}} textarea_scroll{+END} wide_field" cols="70" rows="{+START,IF_PASSED,ROWS}{ROWS*}{+END}{+START,IF_NON_PASSED,ROWS}7{+END}" id="{NAME*}" name="{NAME*}"{+START,IF_PASSED,MAXLENGTH} maxlength="{MAXLENGTH*}"{+END}>{DEFAULT*}</textarea>
 	<script>// <![CDATA[
 		{+START,IF,{$IN_STR,{REQUIRED},wysiwyg}}

@@ -14,12 +14,16 @@ For example:
 
 
 .menu_type__dropdown {
-	/*{+START,IF,{$CONFIG_OPTION,fixed_width}}{+START,IF,{$NOT,{$MOBILE}}}*/
-		width: 980px;
-		margin: 0 auto;
-	/*{+END}{+END}*/
 	overflow: hidden;
 }
+/*{+START,IF,{$CONFIG_OPTION,fixed_width}}*/
+	/*{+START,CSS_MODE,desktop}*/
+		.menu_type__dropdown {
+			width: 980px;
+			margin: 0 auto;
+		}
+	/*{+END}*/
+/*{+END}*/
 
 .menu_type__dropdown li.toplevel {
 	float: {!en_left};
@@ -29,13 +33,22 @@ For example:
 	font-size: 0.9em;
 	padding: 0.5em 0.25em;
 	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
-	/*{+START,IF,{$AND,{$CONFIG_OPTION,fixed_width},{$NOT,{$MOBILE}}}}*/
-		width: 109px;
-	/*{+END}*/
-	/*{+START,IF,{$NAND,{$CONFIG_OPTION,fixed_width},{$NOT,{$MOBILE}}}}*/
-		width: {$DIV_FLOAT*,100,9}%;
-	/*{+END}*/
 }
+/*{+START,CSS_MODE,desktop}*/
+	.menu_type__dropdown li.toplevel {
+		/*{+START,IF,{$NOT,{$CONFIG_OPTION,fixed_width}}}*/
+			width: {$DIV_FLOAT*,100,9}%;
+		/*{+END}*/
+		/*{+START,IF,{$CONFIG_OPTION,fixed_width}}*/
+			width: 109px;
+		/*{+END}*/
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.menu_type__dropdown li.toplevel {
+		width: {$DIV_FLOAT*,100,9}%;
+	}
+/*{+END}*/
 
 .menu_type__dropdown li.toplevel.last {
 	border-{!en_right}: 1px solid #cacaca;

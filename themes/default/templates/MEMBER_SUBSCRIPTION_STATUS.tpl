@@ -21,7 +21,7 @@
 					</th>
 
 					{+START,IF,{$NOT,{$MOBILE}}}
-						<th>
+						<th class="cell_desktop">
 							{!PAYMENT_GATEWAY}
 						</th>
 					{+END}
@@ -39,11 +39,9 @@
 								{ITEM_NAME*}
 							{+END}
 
-							{+START,IF,{$MOBILE}}
-								<p class="assocated_details">
-									<span class="field_name">{!PAYMENT_GATEWAY}:</span> {VIA*}
-								</p>
-							{+END}
+							<p class="assocated_details block_mobile">
+								<span class="field_name">{!PAYMENT_GATEWAY}:</span> {VIA*}
+							</p>
 						</th>
 
 						<td>
@@ -55,7 +53,7 @@
 						</td>
 
 						{+START,IF,{$NOT,{$MOBILE}}}
-							<td>
+							<td class="cell_desktop">
 								{VIA*}
 							</td>
 						{+END}

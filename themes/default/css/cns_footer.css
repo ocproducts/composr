@@ -15,10 +15,14 @@
 .cns_bottom_bar_left_column {
 	width: 10em;
 }
-
 .cns_bottom_bar_right_column {
 	width: 100%;
 }
+/*{+START,CSS_MODE,mobile}*/
+	.cns_bottom_bar_left_column, .cns_bottom_bar_right_column {
+		width: auto;
+	}
+/*{+END}*/
 
 .cns_stats_table {
 	border: 0;

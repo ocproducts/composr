@@ -80,9 +80,9 @@
 		</p>
 	{+END}
 
-	{+START,IF,{$OR,{$IS_NON_EMPTY,{MODERATOR_ACTIONS}},{$AND,{$NOT,{$MOBILE}},{$IS_NON_EMPTY,{MARKED_POST_ACTIONS}}},{MAY_CHANGE_MAX}}}
-		<div class="box cns_topic_control_functions"><div class="box_inner">
-			{+START,IF,{$NOT,{$MOBILE}}}<span class="field_name">{!CONTROL_FUNCTIONS}:</span>{+END}
+	{+START,IF,{$OR,{$IS_NON_EMPTY,{MODERATOR_ACTIONS}},{$IS_NON_EMPTY,{MARKED_POST_ACTIONS}},{THREADED}}}
+		<div class="box cns_topic_control_functions{+START,IF,{$NOR,{$IS_NON_EMPTY,{MARKED_POST_ACTIONS}},{THREADED}}} block_desktop{+END}"><div class="box_inner">
+			{+START,IF,{$NOT,{$MOBILE}}}<span class="field_name inline_desktop">{!CONTROL_FUNCTIONS}:</span>{+END}
 
 			{+START,IF_NON_EMPTY,{MODERATOR_ACTIONS}}
 				<form title="{!TOPIC_ACTIONS}" action="{$URL_FOR_GET_FORM*,{ACTION_URL}}" method="get" class="inline horiz_field_sep_rightward" autocomplete="off">
@@ -101,7 +101,7 @@
 			{+START,IF,{$NOT,{$MOBILE}}}
 				{+START,IF_NON_EMPTY,{MARKED_POST_ACTIONS}}
 					{+START,IF,{$JS_ON}}
-						<form title="{!MARKED_POST_ACTIONS}" action="{$URL_FOR_GET_FORM*,{ACTION_URL}}" method="get" class="inline horiz_field_sep_rightward" autocomplete="off">
+						<form title="{!MARKED_POST_ACTIONS}" action="{$URL_FOR_GET_FORM*,{ACTION_URL}}" method="get" class="inline horiz_field_sep_rightward block_desktop" autocomplete="off">
 							{$HIDDENS_FOR_GET_FORM,{ACTION_URL}}
 
 							<div class="inline">

@@ -3,7 +3,7 @@
 <form title="{!PRIMARY_PAGE_FORM}" action="{POST_URL*}" method="post" autocomplete="off" onsubmit="return modsecurity_workaround(this);">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
-	<div class="constrain_field">
+	<div>
 		<label for="xml" class="accessibility_hidden">XML</label>
 		<textarea name="xml" id="xml" cols="30" rows="30" class="wide_field">{XML*}</textarea>
 	</div>

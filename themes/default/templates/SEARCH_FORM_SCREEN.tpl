@@ -65,7 +65,7 @@
 						<th class="form_table_field_name">{!SEARCH_FOR}</th>
 						<td class="form_table_field_input" colspan="2">
 							<div class="accessibility_hidden"><label for="search_content">{!SEARCH_FOR}</label></div>
-							<div class="constrain_field">
+							<div>
 								<input maxlength="255"{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" onkeyup="update_ajax_search_list(this,event{+START,IF_PASSED,SEARCH_TYPE},'{SEARCH_TYPE;^*}'{+END});" onkeypress="if (enter_pressed(event)) this.form.submit();" class="search_content wide_field" type="search" size="{$?,{$MOBILE},30,48}" id="search_content" name="content" value="{+START,IF_PASSED,CONTENT}{CONTENT*}{+END}" />
 							</div>
 
@@ -100,7 +100,7 @@
 						<th class="form_table_field_name">{USER_LABEL*}</th>
 						<td class="form_table_field_input" colspan="2">
 							<div class="accessibility_hidden"><label for="search_author">{USER_LABEL*}</label></div>
-							<div class="constrain_field">
+							<div>
 								<span class="invisible_ref_point"></span><input{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="80" class="wide_field" onkeyup="update_ajax_author_list(this,event);" type="text" value="{AUTHOR*}" id="search_author" name="author" />
 							</div>
 						</td>
@@ -169,7 +169,7 @@
 						<td class="form_table_field_input" colspan="2">
 							<div class="accessibility_hidden"><label for="search_direction">{!DIRECTION}</label></div>
 							<div class="accessibility_hidden"><label for="search_sort">{!SORT_BY}</label></div>
-							<select class="search_sort" id="search_sort" name="sort">
+							<select id="search_sort" name="sort">
 								<option{+START,IF,{$EQ,{SORT},relevance}} selected="selected"{+END} value="relevance">{!RELEVANCE_SORT}</option>
 								<option{+START,IF,{$EQ,{SORT},add_date}} selected="selected"{+END} value="add_date">{!DATE}</option>
 								<option{+START,IF,{$EQ,{SORT},title}} selected="selected"{+END} value="title">{!TITLE}</option>

@@ -428,7 +428,7 @@
 	<div>
 		<p class="lonely_label accessibility_hidden"><label for="css">CSS</label>:</p>
 
-		<div class="constrain_field">
+		<div>
 			<textarea onkeydown="if (key_pressed(event,9)) { insert_textbox(this,'	'); return false; }" id="css" class="wide_field textarea_scroll" cols="70" rows="30" name="css">{CSS*}</textarea>
 		</div>
 
@@ -469,7 +469,7 @@
 		</h2>
 		<div class="toggleable_tray" style="display: {$JS_ON,none,block}" aria-expanded="false">
 			<form title="{!ORIGINAL}" action="{$BASE_URL*}/index.php" method="post" autocomplete="off">
-				<div class="constrain_field">
+				<div>
 					<textarea id="f_old" name="f_old" cols="70" rows="23" readonly="readonly" class="wide_field">{OLD_CONTENTS*}</textarea>
 				</div>
 			</form>

@@ -25,10 +25,14 @@
 .download_field_name_column {
 	width: 45%;
 }
-
 .download_field_value_column {
 	width: 55%;
 }
+/*{+START,CSS_MODE,mobile}*/
+	.download_field_name_column, .download_field_value_column {
+		width: auto;
+	}
+/*{+END}*/
 
 /*{+START,CSS_MODE,desktop}*/
 	.download_description {

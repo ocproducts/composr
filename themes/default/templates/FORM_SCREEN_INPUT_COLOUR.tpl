@@ -23,7 +23,7 @@
 {+END}
 {+START,IF,{$NOT,{RAW_FIELD}}}
 	<tr class="field_input">
-		<td{+START,IF,{$NOT,{$MOBILE}}} colspan="2"{+END} class="form_table_huge_field_description_is_under form_table_huge_field{+START,IF,{REQUIRED}} required{+END}">
+		<td colspan="2" class="form_table_huge_field_description_is_under form_table_huge_field{+START,IF,{REQUIRED}} required{+END}">
 			<div id="colours_go_here_{NAME*}">
 				<div aria-busy="true" class="spaced">
 					<div class="ajax_loading vertical_alignment">

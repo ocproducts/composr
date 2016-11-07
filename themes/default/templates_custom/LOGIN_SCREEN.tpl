@@ -26,38 +26,22 @@
 			{PASSION}
 
 			<div class="float_surrounder">
-				{+START,IF,{$MOBILE}}
-					<div class="login_page_form">
-						<p class="constrain_field">
-							<label for="login_username">{$LOGIN_LABEL}</label>
-							<input maxlength="80" type="text" value="{USERNAME*}" id="login_username" name="login_username" size="15" />
-						</p>
-
-						<p class="constrain_field">
-							<label for="password">{!PASSWORD}</label>
-							<input maxlength="255" type="password" id="password" name="password" size="15" />
-						</p>
-					</div>
-				{+END}
-
-				{+START,IF,{$NOT,{$MOBILE}}}
-					<table class="map_table autosized_table login_page_form">
-						<tbody>
-							<tr>
-								<th class="de_th"><label for="login_username">{$LOGIN_LABEL}</label>:</th>
-								<td>
-									<input maxlength="80" type="text" value="{USERNAME*}" id="login_username" name="login_username" size="25" />
-								</td>
-							</tr>
-							<tr>
-								<th class="de_th"><label for="password">{!PASSWORD}</label>:</th>
-								<td>
-									<input maxlength="255" type="password" id="password" name="password" size="25" />
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				{+END}
+				<table class="map_table autosized_table login_page_form">
+					<tbody>
+						<tr>
+							<th class="de_th"><label for="login_username">{$LOGIN_LABEL}</label>:</th>
+							<td>
+								<input maxlength="80" type="text" value="{USERNAME*}" id="login_username" name="login_username" size="25" />
+							</td>
+						</tr>
+						<tr>
+							<th class="de_th"><label for="password">{!PASSWORD}</label>:</th>
+							<td>
+								<input maxlength="255" type="password" id="password" name="password" size="25" />
+							</td>
+						</tr>
+					</tbody>
+				</table>
 
 				{+START,IF,{$CONFIG_OPTION,password_cookies}}
 					<div class="login_page_options">

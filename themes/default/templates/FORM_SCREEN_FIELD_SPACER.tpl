@@ -1,6 +1,6 @@
 <!-- form_table_field_spacer (don't remove this comment when templating) -->
 <tr class="form_table_field_spacer">
-	<th{+START,IF,{$NOT,{$MOBILE}}} colspan="2"{+END} class="table_heading_cell vertical_alignment">
+	<th colspan="2" class="table_heading_cell vertical_alignment">
 		{+START,IF_PASSED,TITLE}
 			{+START,IF,{$JS_ON}}{+START,IF_NON_PASSED_OR_FALSE,FORCE_OPEN}
 				<a class="toggleable_tray_button" id="fes{TITLE|}" onkeypress="return this.onclick.call(this,event);" onclick="toggle_subordinate_fields(this.getElementsByTagName('img')[0],'fes{TITLE|}_help'); return false;" href="#"><img class="vertical_alignment right" alt="{!CONTRACT}: {TITLE*}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract}" srcset="{$IMG*,2x/trays/contract} 2x" /></a>

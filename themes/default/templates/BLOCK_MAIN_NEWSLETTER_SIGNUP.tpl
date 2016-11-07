@@ -12,7 +12,7 @@
 
 		<p class="accessibility_hidden"><label for="baddress">{!EMAIL_ADDRESS}</label></p>
 
-		<div class="constrain_field">
+		<div>
 			<input class="wide_field field_input_non_filled" id="baddress" name="address{NID*}" onfocus="placeholder_focus(this);" onblur="placeholder_blur(this);" value="{!EMAIL_ADDRESS}" />
 		</div>
 

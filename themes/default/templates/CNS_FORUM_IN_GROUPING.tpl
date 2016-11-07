@@ -29,20 +29,18 @@
 			</div>
 		{+END}
 
-		{+START,IF,{$MOBILE}}
-			<div role="note">
-				<ul class="horizontal_meta_details associated_details">
-					<li><span class="field_name">{!COUNT_TOPICS}:</span> {$PREG_REPLACE,\,\d\d\d$,k,{NUM_TOPICS*}}</li>
-					<li><span class="field_name">{!COUNT_POSTS}:</span> {$PREG_REPLACE,\,\d\d\d$,k,{NUM_POSTS*}}</li>
-				</ul>
-			</div>
-		{+END}
+		<div role="note" class="block_mobile">
+			<ul class="horizontal_meta_details associated_details">
+				<li><span class="field_name">{!COUNT_TOPICS}:</span> {$PREG_REPLACE,\,\d\d\d$,k,{NUM_TOPICS*}}</li>
+				<li><span class="field_name">{!COUNT_POSTS}:</span> {$PREG_REPLACE,\,\d\d\d$,k,{NUM_POSTS*}}</li>
+			</ul>
+		</div>
 	</td>
 	{+START,IF,{$NOT,{$MOBILE}}}
-		<td class="cns_forum_num_topics cns_column4">
+		<td class="cns_forum_num_topics cns_column4 cell_desktop">
 			{$PREG_REPLACE,\,\d\d\d$,k,{NUM_TOPICS*}}
 		</td>
-		<td class="cns_forum_num_posts cns_column5">
+		<td class="cns_forum_num_posts cns_column5 cell_desktop">
 			{$PREG_REPLACE,\,\d\d\d$,k,{NUM_POSTS*}}
 		</td>
 	{+END}

@@ -25,10 +25,14 @@
 .purchase_wizard_field_name_column {
 	width: 16em;
 }
-
 .purchase_wizard_field_input_column {
 	width: 100%;
 }
+/*{+START,CSS_MODE,mobile}*/
+	.purchase_wizard_field_name_column, .purchase_wizard_field_input_column {
+		width: auto;
+	}
+/*{+END}*/
 
 /*
 =========================

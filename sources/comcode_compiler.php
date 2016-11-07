@@ -1286,6 +1286,13 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                                 $cells = preg_split('/(\n\!| \!\!|\n\|| \|\|)/', $row, -1, PREG_SPLIT_DELIM_CAPTURE);
                                                 array_shift($cells); // First one is non-existent empty
                                                 $spec = true;
+
+                                                $num_cells_in_row = count($cells) / 2;
+
+                                                $inter_padding = 3.0;
+
+                                                $total_box_width = (100.0 - $inter_padding * ($num_cells_in_row - 1));
+
                                                 // Find which to float
                                                 $to_float = null;
                                                 foreach ($cells as $i => $cell) {
@@ -1299,26 +1306,40 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
 
                                                 $tag_output->attach(do_template('COMCODE_FAKE_TABLE_WRAP_START'));
 
-                                                // Do floated one (if float based)
+                                                // Do the floated one (if float based)
                                                 $i_dir_1 = (($to_float === 1) ? 'left' : 'right');
                                                 $i_dir_2 = (($to_float != 1) ? 'left' : 'right');
+                                                if ($num_cells_in_row === 1) {
+                                                    $padding_amount = '0';
+                                                } else {
+                                                    $padding_amount = float_to_raw_string($inter_padding, 2);
+                                                }
                                                 if (preg_match('#(^|\s)wide($|\s)#', $caption) != 0) {
-                                                    // Float based
+                                                    // Float based...
+
+                                                    $cell_i = ($to_float === 1) ? 0 : (count($cells) - 1);
+                                                    if (array_key_exists($cell_i, $ratios)) {
+                                                        $width = $ratios[$cell_i];
+                                                    } else {
+                                                        $width = float_to_raw_string($total_box_width / $num_cells_in_row, 2) . '%';
+                                                    }
+
                                                     $tag_output->attach(do_template('COMCODE_FAKE_TABLE_WIDE_START_CELL', array(
                                                         '_GUID' => 'ced8c3a142f74296a464b085ba6891c9',
-                                                        'WIDTH' => array_key_exists(($to_float === 1) ? 0 : (count($cells) - 1), $ratios) ? $ratios[($to_float === 1) ? 0 : (count($cells) - 1)] : ((count($cells) === 2) ? '0' : float_to_raw_string(97.0 / (floatval(count($cells)) / 2.0 - 1.0), 2) . '%'),
+                                                        'WIDTH' => $width,
                                                         'FLOAT' => $i_dir_1,
                                                         'PADDING' => ($to_float === 1) ? '' : '-left',
-                                                        'PADDING_AMOUNT' => (count($cells) === 2) ? '0' : float_to_raw_string(3.0 / (floatval(count($cells) - 2) / 2.0), 2),
+                                                        'PADDING_AMOUNT' => $padding_amount,
                                                     )));
                                                 } else {
-                                                    // Inline-block based
+                                                    // Inline-block based...
+
                                                     $tag_output->attach(do_template('COMCODE_FAKE_TABLE_START_CELL', array(
                                                         '_GUID' => '90be72fcbb6b9d8a312da0bee5b86cb3',
                                                         'WIDTH' => array_key_exists($to_float, $ratios) ? $ratios[$to_float] : '',
                                                         'FLOAT' => $i_dir_1,
                                                         'PADDING' => ($to_float === 1) ? '' : '-left',
-                                                        'PADDING_AMOUNT' => (count($cells) === 2) ? '0' : float_to_raw_string(3.0 / (floatval(count($cells) - 2.0) / 2.0), 2),
+                                                        'PADDING_AMOUNT' => $padding_amount,
                                                     )));
                                                 }
                                                 $tag_output->attach(comcode_to_tempcode(isset($cells[$to_float]) ? trim($cells[$to_float]) : '', $source_member, $as_admin, $wrap_pos, $pass_id, $connection, $semiparse_mode, $preparse_mode, $in_semihtml, $structure_sweep, $check_only, $highlight_bits, $on_behalf_of_member));
@@ -1329,28 +1350,41 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                                 foreach ($cells as $i => $cell) {
                                                     if ($i % 2 === 1) {
                                                         if ($i != $to_float) {
+                                                            $padding_amount = float_to_raw_string($inter_padding, 2);
+
+                                                            if (array_key_exists($cell_i, $ratios)) {
+                                                                $width = $ratios[$cell_i];
+                                                            } else {
+                                                                $width = float_to_raw_string($total_box_width / $num_cells_in_row, 2) . '%';
+                                                            }
+
                                                             if (preg_match('#(^|\s)wide($|\s)#', $caption) != 0) {
-                                                                // Float based
+                                                                // Float based...
+
                                                                 $tag_output->attach(do_template('COMCODE_FAKE_TABLE_WIDE_CELL', array(
                                                                     '_GUID' => '9bac42a1b62c5c9a2f758639fcb3bb2f',
-                                                                    'WIDTH' => array_key_exists($cell_i, $ratios) ? $ratios[$cell_i] : (float_to_raw_string(97.0 / (floatval(count($cells)) / 2.0), 2) . '%'),
+                                                                    'WIDTH' => $width,
                                                                     'FLOAT' => $i_dir_1,
                                                                     'PADDING' => (($to_float === 1) || ($cell_i != 0)) ? '-left' : '',
-                                                                    'PADDING_AMOUNT' => (count($cells) === 2) ? '0' : float_to_raw_string(3.0 / (floatval(count($cells) - 2) / 2.0), 2),
+                                                                    'PADDING_AMOUNT' => $padding_amount,
                                                                 )));
                                                             } else {
-                                                                // Inline-block based
+                                                                // Inline-block based...
+
                                                                 $tag_output->attach(do_template('COMCODE_FAKE_TABLE_CELL', array(
                                                                     '_GUID' => '0f15f9d5554635ed7ac154c9dc5c72b8',
                                                                     'WIDTH' => array_key_exists($cell_i, $ratios) ? $ratios[$cell_i] : '',
                                                                     'FLOAT' => $i_dir_1,
                                                                     'PADDING' => (($to_float === 1) || ($cell_i != 0)) ? '-left' : '',
-                                                                    'PADDING_AMOUNT' => (count($cells) === 2) ? '0' : float_to_raw_string(3.0 / (floatval(count($cells) - 2) / 2.0), 2),
+                                                                    'PADDING_AMOUNT' => $padding_amount,
                                                                 )));
                                                             }
+
                                                             $tag_output->attach(comcode_to_tempcode(trim($cell), $source_member, $as_admin, $wrap_pos, $pass_id, $connection, $semiparse_mode, $preparse_mode, $in_semihtml, $structure_sweep, $check_only, $highlight_bits, $on_behalf_of_member));
+
                                                             $tag_output->attach(do_template('COMCODE_FAKE_TABLE_END_CELL'));
                                                         }
+
                                                         $cell_i++;
                                                     }
                                                 }

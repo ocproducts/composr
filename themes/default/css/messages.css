@@ -4,9 +4,18 @@
 */
 
 .site_special_message {
-	padding: {$?,{$MOBILE},3,9}em 0;
 	text-align: center;
 }
+/*{+START,CSS_MODE,desktop}*/
+	.site_special_message {
+		padding: 9em 0;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.site_special_message {
+		padding: 3em 0;
+	}
+/*{+END}*/
 
 .page_running_contact .site_special_message {
 	text-align: justify;
@@ -27,9 +36,16 @@
 	background: url('{$IMG;,messageicons/warn_large}') right 20px no-repeat;
 }
 
-.expanded_advice {
-	padding: 0 {$?,{$MOBILE},0,230px} 200px 0;
-}
+/*{+START,CSS_MODE,desktop}*/
+	.expanded_advice {
+		padding: 0 230px 200px 0;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.expanded_advice {
+		padding: 0 0 200px 0;
+	}
+/*{+END}*/
 
 .ssm_inform {
 	background: url('{$IMG;,messageicons/inform_large}') right 20px no-repeat;
@@ -44,11 +60,16 @@
 }
 
 .closed_site_special_message {
-	margin: {$?,{$MOBILE},3em 2em,10em auto};
 	text-align: center;
 }
 /*{+START,CSS_MODE,desktop}*/
 	.closed_site_special_message {
+		margin: 10em auto;
 		width: 38em;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.closed_site_special_message {
+		margin: 3em 2em;
 	}
 /*{+END}*/

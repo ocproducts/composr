@@ -2,9 +2,7 @@
 	<div class="wide_table_wrap"><table class="map_table form_table wide_table">
 		{+START,IF,{$NOT,{$MOBILE}}}
 			<colgroup>
-				{+START,IF,{$NOT,{$MOBILE}}}
-					<col class="attachments_field_name_column" />
-				{+END}
+				<col class="attachments_field_name_column column_desktop" />
 				<col class="attachments_field_input_column" />
 			</colgroup>
 		{+END}
@@ -12,12 +10,10 @@
 		<tbody>
 			<tr>
 				{+START,IF,{$NOT,{$MOBILE}}}
-					<th class="form_table_field_name vertical_alignment">
+					<th class="form_table_field_name vertical_alignment cell_desktop">
 						{!ATTACHMENT,{I*}}
 
-						{+START,IF,{$NOT,{$MOBILE}}}
-							<img class="activate_rich_semantic_tooltip help_icon" onclick="this.onmouseover(event);" title="{!ATTACHMENT_HELP_2=,{$GET,IMAGE_TYPES}}" onmouseover="activate_rich_semantic_tooltip(this,event);" alt="{!HELP}" src="{$IMG*,icons/16x16/help}" srcset="{$IMG*,icons/32x32/help} 2x" />
-						{+END}
+						<img class="activate_rich_semantic_tooltip help_icon" onclick="this.onmouseover(event);" title="{!ATTACHMENT_HELP_2=,{$GET,IMAGE_TYPES}}" onmouseover="activate_rich_semantic_tooltip(this,event);" alt="{!HELP}" src="{$IMG*,icons/16x16/help}" srcset="{$IMG*,icons/32x32/help} 2x" />
 					</th>
 				{+END}
 				<td class="form_table_field_input">

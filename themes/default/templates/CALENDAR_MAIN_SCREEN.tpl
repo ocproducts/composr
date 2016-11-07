@@ -44,13 +44,11 @@
 	<div class="trinav_right">
 		<a class="button_screen buttons__next" href="{NEXT_URL*}" rel="{+START,IF,{NEXT_NO_FOLLOW}}nofollow {+END}next" accesskey="k"><span>{!NEXT}</span></a>
 	</div>
-	{+START,IF,{$NOT,{$MOBILE}}}
-		<div class="trinav_mid">
-			{+START,IF_NON_EMPTY,{ADD_URL}}
-				<a class="button_screen menu___generic_admin__add_one" rel="add" href="{ADD_URL*}"><span>{!ADD_CALENDAR_EVENT}</span></a>
-			{+END}
-		</div>
-	{+END}
+	<div class="trinav_mid block_desktop">
+		{+START,IF_NON_EMPTY,{ADD_URL}}
+			<a class="button_screen menu___generic_admin__add_one" rel="add" href="{ADD_URL*}"><span>{!ADD_CALENDAR_EVENT}</span></a>
+		{+END}
+	</div>
 </div>
 
 <div class="horizontal_scrolling">

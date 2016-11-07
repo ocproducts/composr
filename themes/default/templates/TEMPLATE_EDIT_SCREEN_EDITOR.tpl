@@ -36,7 +36,7 @@
 			</div>
 
 			<h3><label for="f{I*}_new">{!TEMPLATE}</label></h3>
-			<div class="constrain_field">
+			<div>
 				<textarea onkeydown="if (key_pressed(event,9)) { insert_textbox(this,'	'); return false; }" id="f{I*}_new" name="f{I*}_new" cols="70" rows="22" class="wide_field textarea_scroll">{CONTENTS*}</textarea>
 			</div>
 
@@ -46,9 +46,7 @@
 					<a class="non_link" href="#" onclick="event.returnValue=false; toggleable_tray(this.parentNode.parentNode); return false;">{!ORIGINAL}</a>:
 				</h3>
 				<div class="toggleable_tray" style="display: {$JS_ON,none,block}" aria-expanded="false">
-					<div class="constrain_field">
-						<div class="whitespace_visible code">{OLD_CONTENTS*}</div>
-					</div>
+					<div class="whitespace_visible code">{OLD_CONTENTS*}</div>
 				</div>
 			</div>
 

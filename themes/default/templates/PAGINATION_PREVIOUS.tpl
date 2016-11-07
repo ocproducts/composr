@@ -1,1 +1,1 @@
-<span>&laquo;{+START,IF,{$NOT,{$MOBILE}}}&nbsp;{!PREVIOUS}{+END}</span>
+<span>&laquo;{+START,IF,{$NOT,{$MOBILE}}}<span class="inline_desktop">&nbsp;{!PREVIOUS}</span>{+END}</span>

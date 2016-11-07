@@ -14,13 +14,13 @@ header {
 	border-bottom: 3px solid #cacaca;
 }
 
-{+START,IF,{$MOBILE}}
+/*{+START,CSS_MODE,mobile}*/
 	.global_navigation_inner span {
 		float: right;
 		margin: 0.75em;
 		font-size: 1.2em;
 	}
-{+END}
+/*{+END}*/
 
 #main_website #main_website_inner {
 	border: 0;
@@ -98,12 +98,14 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 	{$BETA_CSS_PROPERTY,background-image: none !important;}
 }
 
-.footer_inner {
-	/*{+START,IF,{$CONFIG_OPTION,fixed_width}}{+START,IF,{$NOT,{$MOBILE}}}*/
-		width: 980px;
-		margin: 0 auto;
-	/*{+END}{+END}*/
-}
+/*{+START,IF,{$CONFIG_OPTION,fixed_width}}*/
+	/*{+START,CSS_MODE,desktop}*/
+		.footer_inner {
+			width: 980px;
+			margin: 0 auto;
+		}
+	/*{+END}*/
+/*{+END}*/
 
 footer .global_footer_left #special_page_type {
 	width: auto;
@@ -141,6 +143,12 @@ footer .global_minilinks {
 .adminzone_search input {
 	vertical-align: middle;
 }
+
+/*{+START,CSS_MODE,mobile}*/
+	.adminzone_search .buttons__menu__pages__help {
+		display: none !important;
+	}
+/*{+END}*/
 
 /*
 =========================

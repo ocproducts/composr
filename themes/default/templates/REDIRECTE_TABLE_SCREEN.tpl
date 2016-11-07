@@ -101,7 +101,7 @@
 			<label for="m_notes">{!NOTES_ABOUT_REDIRECTS}</label>
 		</p>
 
-		<div class="constrain_field">
+		<div>
 			<textarea class="wide_field" id="m_notes" name="notes" cols="50" rows="10">{NOTES*}</textarea>
 		</div>
 	</div></div>

@@ -43,9 +43,16 @@
 	margin: 0;
 }
 
-.points_earned {
-	margin-right: {$?,{$MOBILE},5.1,15}em;
-}
+/*{+START,CSS_MODE,desktop}*/
+	.points_earned {
+		margin-right: 15em;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.points_earned {
+		margin-right: 5.1em;
+	}
+/*{+END}*/
 
 .points_give_choices {
 	font-size: 0.9em;

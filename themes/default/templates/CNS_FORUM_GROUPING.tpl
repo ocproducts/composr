@@ -18,8 +18,8 @@
 					<colgroup>
 						<col class="cns_forum_grouping_column1" />
 						<col class="cns_forum_grouping_column2" />
-						<col class="cns_forum_grouping_column3" />
-						<col class="cns_forum_grouping_column4" />
+						<col class="cns_forum_grouping_column3 column_desktop" />
+						<col class="cns_forum_grouping_column4 column_desktop" />
 						<col class="cns_forum_grouping_column5" />
 					</colgroup>
 				{+END}
@@ -33,10 +33,10 @@
 							{!FORUM_NAME}
 						</th>
 						{+START,IF,{$NOT,{$MOBILE}}}
-							<th class="cns_forum_grouping_centered_header">
+							<th class="cns_forum_grouping_centered_header cell_desktop">
 								{!COUNT_TOPICS}
 							</th>
-							<th class="cns_forum_grouping_centered_header">
+							<th class="cns_forum_grouping_centered_header cell_desktop">
 								{!COUNT_POSTS}
 							</th>
 						{+END}
@@ -56,8 +56,8 @@
 				{+END}
 				<div class="cns_column1{+START,IF,{$MOBILE}} cns_forum_box_bleft{+END}"></div>
 				{+START,IF,{$NOT,{$MOBILE}}}
-					<div class="cns_column1"></div>
-					<div class="cns_column1"></div>
+					<div class="cns_column1 block_desktop"></div>
+					<div class="cns_column1 block_desktop"></div>
 				{+END}
 				<div class="cns_column1 cns_forum_box_bright"></div>
 			</div></div></div>

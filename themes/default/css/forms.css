@@ -186,13 +186,20 @@ th.form_table_field_name a, /* Extra specificity to take precedence over th.de_t
 .form_table_field_input select, .form_table_field_input input, .form_table_field_input img {
 	vertical-align: middle;
 }
-.form_table_field_input .constrain_field {
-	display: inline;
-}
 .form_table_field_input .wide_field {
-	width: {$?,{$MOBILE},100%,26em};
 	max-width: 100%;
+	box-sizing: border-box;
 }
+/*{+START,CSS_MODE,desktop}*/
+	.form_table_field_input .wide_field {
+		width: 26em;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.form_table_field_input .wide_field {
+		width: 100%;
+	}
+/*{+END}*/
 
 /* Tone it all down for forms inside tabs */
 .tab_surround tbody th, .tab_surround tbody td, .tab_surround .form_table .required {
@@ -285,6 +292,12 @@ th.form_table_field_name a, /* Extra specificity to take precedence over th.de_t
 .input_author_required, .input_username_required, .input_email_required, .input_codename_required,
 .input_tick_required, .input_float_required, .input_text_required, .input_upload_required {
 }
+
+/*{+START,CSS_MODE,mobile}*/
+	.form_table_field_input input {
+		max-width: 170px !important;
+	}
+/*{+END}*/
 
 .input_dimensions {
 	display: inline-block;
@@ -636,14 +649,17 @@ span.validated_checkbox+input[name="validated"].input_tick {
 .attachments_field_name_column {
 	width: 18em;
 }
-
 .box .attachments_field_name_column {
 	width: 14em;
 }
-
 .attachments_field_input_column {
 	width: 100%;
 }
+/*{+START,CSS_MODE,mobile}*/
+	.attachments_field_name_column, .box .attachments_field_name_column, .attachments_field_input_column {
+		width: auto;
+	}
+/*{+END}*/
 
 /* Permissions */
 

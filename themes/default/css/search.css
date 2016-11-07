@@ -52,6 +52,10 @@
 	text-align: {!en_right};
 }
 
+.search_for_search_domain, .search_for_search_domain_checkbox, .search_for_search_domain_more {
+	vertical-align: middle;
+}
+
 .boolean_options {
 	margin-{!en_left}: 40px;
 }
@@ -101,6 +105,13 @@
 	vertical-align: middle;
 }
 
-.search_sort {
-	max-width: 100%;
-}
+/*{+START,CSS_MODE,desktop}*/
+	#search_sort, #search_direction {
+		max-width: 100%;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	#search_sort, #search_direction {
+		max-width: 140px !important;
+	}
+/*{+END}*/

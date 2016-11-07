@@ -11,7 +11,7 @@
 			</th>
 			{+START,IF,{$NOT,{$MOBILE}}}
 				{+START,IF,{$HAS_PRIVILEGE,show_user_browsing}}
-					<th>
+					<th class="cell_desktop">
 						{!LOCATION}
 					</th>
 				{+END}
@@ -52,17 +52,15 @@
 				<td>
 					{!MINUTES_AGO,{TIME*}}
 
-					{+START,IF,{$MOBILE}}
-						{+START,IF,{$HAS_PRIVILEGE,show_user_browsing}}
-							<p class="associated_details">
-								{$GET,location}
-							</p>
-						{+END}
+					{+START,IF,{$HAS_PRIVILEGE,show_user_browsing}}
+						<p class="associated_details block_mobile">
+							{$GET,location}
+						</p>
 					{+END}
 				</td>
 				{+START,IF,{$NOT,{$MOBILE}}}
 					{+START,IF,{$HAS_PRIVILEGE,show_user_browsing}}
-						<td>
+						<td class="cell_desktop">
 							{$GET,location}
 						</td>
 					{+END}

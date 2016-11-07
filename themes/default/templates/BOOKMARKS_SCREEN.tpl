@@ -19,28 +19,28 @@
 					<tr>
 						<th>{!CAPTION}</th>
 						<td>
-							<div class="constrain_field">
+							<div>
 								<div class="accessibility_hidden"><label for="caption_{ID*}">{!CAPTION}</label></div>
-								<input maxlength="255" size="{$?,{$MOBILE},30,50}" class="wide_field" type="text" id="caption_{ID*}" name="caption" value="{CAPTION*}" />
+								<input maxlength="255" class="wide_field" type="text" id="caption_{ID*}" name="caption" value="{CAPTION*}" />
 							</div>
 						</td>
 					</tr>
 					<tr>
 						<th>{!FOLDER}</th>
 						<td>
-							<div class="constrain_field">
+							<div>
 								<div class="accessibility_hidden"><label for="folder_{ID*}">{!FOLDER}</label></div>
-								<input maxlength="80" size="{$?,{$MOBILE},30,50}" disabled="disabled" type="text" id="folder_{ID*}" name="folder" value="{FOLDER*}" />
+								<input maxlength="80" disabled="disabled" type="text" id="folder_{ID*}" name="folder" value="{FOLDER*}" />
 							</div>
 						</td>
 					</tr>
 					<tr>
 						<th>{!PAGE_LINK}</th>
 						<td>
-							<div class="constrain_field">
+							<div>
 								<div class="accessibility_hidden"><label for="page_link_{ID*}">{!PAGE_LINK}</label></div>
 								<a class="bookmark_preview_link external_link vertical_alignment" href="{$PAGE_LINK*,{PAGE_LINK}}" title="{!PREVIEW} {!LINK_NEW_WINDOW}" target="_blank">{!PREVIEW}</a>
-								<input maxlength="255" size="{$?,{$MOBILE},30,31}" type="text" id="page_link_{ID*}" name="page_link" value="{PAGE_LINK*}" />
+								<input maxlength="255" size="30" type="text" id="page_link_{ID*}" name="page_link" value="{PAGE_LINK*}" />
 							</div>
 						</td>
 					</tr>

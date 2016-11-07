@@ -36,11 +36,15 @@
 /*{+END}*/
 
 table.login_page_form {
-	width: 45%;
-	float: left;
-	padding-right: 1em;
 	margin-top: 1em;
 }
+/*{+START,CSS_MODE,desktop}*/
+	table.login_page_form {
+		width: 45%;
+		float: left;
+		padding-right: 1em;
+	}
+/*{+END}*/
 
 .login_page_form th {
 	text-align: {!en_right};

@@ -6,9 +6,7 @@
 			<span class="closed_ticket">{!CLOSED}</span>
 		{+END}
 
-		{+START,IF,{$MOBILE}}
-			<p><span class="field_name">{!COUNT_POSTS}:</span> {NUM_POSTS*}</p>
-		{+END}
+		<p class="block_desktop"><span class="field_name">{!COUNT_POSTS}:</span> {NUM_POSTS*}</p>
 
 		{+START,IF_NON_EMPTY,{EXTRA_DETAILS}}
 			<br />
@@ -21,7 +19,7 @@
 	</td>
 
 	{+START,IF,{$NOT,{$MOBILE}}}
-		<td class="ticket_num_posts">
+		<td class="ticket_num_posts cell_desktop">
 			{NUM_POSTS*}
 		</td>
 	{+END}

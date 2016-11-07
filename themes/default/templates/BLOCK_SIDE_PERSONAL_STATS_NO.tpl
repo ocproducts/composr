@@ -6,7 +6,7 @@
 			{$INSERT_SPAMMER_BLACKHOLE}
 
 			<div>
-				<div class="constrain_field">
+				<div>
 					<div class="accessibility_hidden"><label for="ps_login_username">{$LOGIN_LABEL}</label></div>
 					<input maxlength="80" class="wide_field login_block_username field_input_non_filled" type="text" onfocus="placeholder_focus(this);" onblur="placeholder_blur(this);" value="{!USERNAME}" id="ps_login_username" name="login_username" />
 					<div class="accessibility_hidden"><label for="ps_password">{!PASSWORD}</label></div>

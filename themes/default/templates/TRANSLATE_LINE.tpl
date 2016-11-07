@@ -12,14 +12,14 @@
 	</th>
 	<td class="translate_line_second" onmouseover="document.getElementById('trans_{NAME;*}').disabled=false;">
 		<div class="accessibility_hidden"><label for="old__trans_{NAME*}">{!OLD} {NAME*}</label></div>
-		<div class="constrain_field">
+		<div>
 			<textarea disabled="disabled" readonly="readonly" class="translate_original_text wide_field" cols="60" rows="{$ADD,{$DIV,{$LENGTH,{OLD}},80},1}" id="old__trans_{NAME*}" name="old__{NAME*}">{OLD*}</textarea>
 		</div>
 
 		<div class="arrow_ruler"><img alt="" src="{$IMG*,arrow_ruler_small}" /></div>
 
 		<div class="accessibility_hidden"><label for="trans_{NAME*}">{NAME*}</label></div>
-		<div class="constrain_field">
+		<div>
 			<textarea{+START,IF,{$AND,{$JS_ON},{$EQ,{OLD},{CURRENT}}}} disabled="disabled"{+END}{+START,IF_PASSED,TRANSLATE_AUTO} onclick="if (this.value=='') this.value='{TRANSLATE_AUTO;^*}';"{+END} class="wide_field translate_field" cols="60" rows="{+START,IF,{$EQ,{CURRENT},}}{$ADD,{$DIV,{$LENGTH,{OLD}},80},1}{+END}{+START,IF,{$NEQ,{CURRENT},}}{$ADD,{$DIV,{$LENGTH,{CURRENT}},80},1}{+END}" id="trans_{NAME*}" name="{NAME*}">{CURRENT*}</textarea>
 		</div>
 	</td>

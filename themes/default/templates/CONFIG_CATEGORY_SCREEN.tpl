@@ -37,7 +37,7 @@
 				<tbody>
 					{+START,IF_NON_EMPTY,{GROUP_DESCRIPTION}}
 						<tr class="form_table_field_spacer">
-							<th{+START,IF,{$NOT,{$MOBILE}}} colspan="2"{+END} class="table_heading_cell">
+							<th colspan="2" class="table_heading_cell">
 								{GROUP_DESCRIPTION*}
 							</th>
 						</tr>

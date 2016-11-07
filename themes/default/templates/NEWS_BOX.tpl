@@ -25,25 +25,25 @@
 		<h3>{$GET,content_box_title}</h3>
 	{+END}
 
-	{+START,IF,{$AND,{$NOT,{BLOG}},{$IS_NON_EMPTY,{AUTHOR_URL}}}}
-		<div class="newscat_img newscat_img_author">
-			{+START,IF,{$NOT,{$MOBILE}}}{+START,IF_NON_EMPTY,{CATEGORY}}
+	{+START,IF,{$AND,{$NOT,{BLOG}},{$IS_NON_EMPTY,{AUTHOR_URL}}}}{+START,IF,{$NOT,{$MOBILE}}}
+		<div class="newscat_img newscat_img_author block_desktop">
+			{+START,IF_NON_EMPTY,{CATEGORY}}
 				<img src="{IMG*}" alt="" />
-			{+END}{+END}
+			{+END}
 		</div>
-	{+END}
+	{+END}{+END}
 
-	{+START,IF,{$NOT,{$IS_NON_EMPTY,{AUTHOR_URL}}}}
-		<div class="newscat_img newscat_img_member">
-			{+START,IF,{$NOT,{$MOBILE}}}{+START,IF_NON_EMPTY,{$AVATAR,{SUBMITTER}}}
+	{+START,IF,{$NOT,{$IS_NON_EMPTY,{AUTHOR_URL}}}}{+START,IF,{$NOT,{$MOBILE}}}
+		<div class="newscat_img newscat_img_member block_desktop">
+			{+START,IF_NON_EMPTY,{$AVATAR,{SUBMITTER}}}
 				<img src="{$ENSURE_PROTOCOL_SUITABILITY*,{$AVATAR,{SUBMITTER}}}" title="{!AVATAR}" alt="{!AVATAR}" />
-			{+END}{+END}
+			{+END}
 
-			{+START,IF,{$NOT,{$MOBILE}}}{+START,IF,{$CNS}}{+START,IF_NON_EMPTY,{$CNS_RANK_IMAGE,{SUBMITTER}}}
+			{+START,IF,{$CNS}}{+START,IF_NON_EMPTY,{$CNS_RANK_IMAGE,{SUBMITTER}}}
 				<p>{$CNS_RANK_IMAGE,{SUBMITTER}}</p>
-			{+END}{+END}{+END}
+			{+END}
 		</div>
-	{+END}
+	{+END}{+END}
 
 	<div class="meta_details" role="note">
 		<ul class="meta_details_list">

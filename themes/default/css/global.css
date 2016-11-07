@@ -376,10 +376,10 @@ iframe {
 	direction: {!dir};
 }
 
-
 /*{+START,CSS_MODE,mobile}*/
 	select {
 		max-width: 100px;
+		white-space: nowrap !important;
 	}
 
 	/* This prevents automatic zooming when selecting inputs */
@@ -395,12 +395,72 @@ iframe {
 		overflow-x: visible !important;
 		overflow-y: visible !important;
 	}
-	.field_name_column, .field_input_column {
+	.field_name_column, .field_name_column_shorter, .field_input_column, .field_input_column, .field_sup_column, .results_table col {
 		width: auto !important;
 	}
 	* {
 		white-space: normal !important;
 		{$BETA_CSS_PROPERTY,word-wrap: break-word !important;}
+	}
+
+	.inline_desktop {
+		display: none !important;
+	}
+	.inline_mobile {
+		display: inline !important;
+	}
+
+	.block_desktop {
+		display: none !important;
+	}
+	.block_mobile {
+		display: block !important;
+	}
+
+	.column_desktop {
+		visibility: collapse !important;
+		display: none !important;
+	}
+	.column_mobile {
+		visibility: visible !important;
+	}
+
+	.cell_desktop {
+		display: none !important;
+	}
+	.cell_mobile {
+		display: table-cell !important;
+	}
+/*{+END}*/
+
+/*{+START,CSS_MODE,desktop}*/
+	.inline_desktop {
+		display: inline !important;
+	}
+	.inline_mobile {
+		display: none !important;
+	}
+
+	.block_desktop {
+		display: block !important;
+	}
+	.block_mobile {
+		display: none !important;
+	}
+
+	.column_desktop {
+		visibility: visible !important;
+	}
+	.column_mobile {
+		visibility: collapse !important;
+		display: none !important;
+	}
+
+	.cell_desktop {
+		display: table-cell !important;
+	}
+	.cell_mobile {
+		display: none !important;
 	}
 /*{+END}*/
 
@@ -840,16 +900,15 @@ body.popup_spacer h2 {
 	}
 /*{+END}*/
 
-#panel_right {
-	float: {$?,{$MOBILE},{!en_left},{!en_right}};
-}
 /*{+START,CSS_MODE,desktop}*/
 	#panel_right {
+		float: {!en_right};
 		margin-{!en_right}: 1em;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
 	#panel_right {
+		float: {!en_left};
 		padding-{!en_right}: 2px;
 		padding-{!en_left}: 1px;
 		{$BETA_CSS_PROPERTY,box-sizing: border-box;}
@@ -1163,9 +1222,18 @@ body .accessibility_hidden { /* Contents should be made visible (or interpreted)
 /* Used for styling the 'last edited' information */
 .edited {
 	font-size: 0.85em;
-	padding-{!en_left}: {$?,{$MOBILE},0.7,2}em;
 	font-style: italic;
 }
+/*{+START,CSS_MODE,desktop}*/
+	.edited {
+		padding-{!en_left}: 2em;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.edited {
+		padding-{!en_left}: 0.7em;
+	}
+/*{+END}*/
 div.edited {
 	margin: 2em 0;
 }
@@ -1193,9 +1261,18 @@ div.edited {
 
 /* Makes an item of media (e.g. an image) get framed nicely. NB: We do not use this for galleries (which are more elaborate), although that has similar styling with .gallery_grid_cell */
 .media_box {
-	margin: {$?,{$MOBILE},1,1.5}em 0;
 	text-align: center;
 }
+/*{+START,CSS_MODE,desktop}*/
+	.media_box {
+		margin: 1.5em 0;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.media_box {
+		margin: 1em 0;
+	}
+/*{+END}*/
 .media_box a {
 	outline: 0;
 }
@@ -1291,9 +1368,11 @@ body input.button_hyperlink, body input.button_hyperlink:hover {
 }
 
 /* Used e.g. for "paginating" through the calendar (i.e. infinite pagination left/right) */
-.trinav_left, .trinav_mid, .trinav_right {
-	margin: 1em 0 2em 0;
-}
+/*{+START,CSS_MODE,desktop}*/
+	.trinav_left, .trinav_mid, .trinav_right {
+		margin: 1em 0 2em 0;
+	}
+/*{+END}*/
 .trinav_left {
 	float: left;
 	text-align: left;
@@ -1306,22 +1385,12 @@ body input.button_hyperlink, body input.button_hyperlink:hover {
 /*{+START,CSS_MODE,mobile}*/
 	.trinav_left {
 		width: 110px;
-		margin-left: 0.5em;
 	}
 /*{+END}*/
 .trinav_mid { /* Used for putting a button in the middle of the left/right pagination, for example */
 	text-align: center;
+	padding-top: 9px;
 }
-/*{+START,CSS_MODE,desktop}*/
-	.trinav_mid.text {
-		padding-top: 6px;
-	}
-/*{+END}*/
-/*{+START,CSS_MODE,mobile}*/
-	.trinav_mid.text {
-		padding-top: 1px;
-	}
-/*{+END}*/
 /*{+START,CSS_MODE,desktop}*/
 	.trinav_mid.text>span:before {
 		content: "(";
@@ -1343,7 +1412,6 @@ body input.button_hyperlink, body input.button_hyperlink:hover {
 /*{+START,CSS_MODE,mobile}*/
 	.trinav_right {
 		width: 110px;
-		margin-right: 0.5em;
 	}
 /*{+END}*/
 
@@ -1907,9 +1975,16 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 	padding-{!en_left}: 4em;
 }
 
-.mini_indent {
-	padding-{!en_left}: 2em;
-}
+/*{+START,CSS_MODE,desktop}*/
+	.mini_indent {
+		padding-{!en_left}: 2em;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.mini_indent {
+		padding-{!en_left}: 0.75em;
+	}
+/*{+END}*/
 
 hr.spaced_rule {
 	margin: 2em 0;
@@ -1993,8 +2068,8 @@ ul.horizontal_links.horiz_field_sep {
 }
 
 /* Used e.g. on links that should not get split between lines */
-.must_show_together {
-	white-space: nowrap;
+.must_show_together, .must_show_together * {
+	white-space: nowrap !important;
 }
 
 /*
@@ -2029,15 +2104,37 @@ table.scrollable_inside {
 	/*{+END}*/
 }
 
+/*{+START,CSS_MODE,mobile}*/
+	/* Deconstructs table to blocks, for easy layout fit */
+
+	.map_table.mobile_friendly, .map_table.mobile_friendly tbody, .map_table.mobile_friendly tr, .map_table.mobile_friendly th, .map_table.mobile_friendly td {
+		display: block;
+	}
+
+	.map_table.mobile_friendly th, .map_table.mobile_friendly td {
+		border-radius: 0 !important;
+		border-left: 1px solid {$GET,standard_border} !important;
+		border-right: 1px solid {$GET,standard_border} !important;
+	}
+
+	.map_table.mobile_friendly th {
+		border-bottom: 0 !important;
+		text-align: left !important;
+	}
+
+	.map_table.mobile_friendly td {
+		border-top: 0 !important;
+	}
+/*{+END}*/
+
 .spaced_table th, .spaced_table td {
 	padding: 0.7em;
 }
-
-{+START,IF,{$MOBILE}}
+/*{+START,CSS_MODE,mobile}*/
 	.spaced_table td {
 		overflow-x: auto;
 	}
-{+END}
+/*{+END}*/
 
 /* Undo any descendant spacing for nested tables made in WYSIWYG */
 .results_table table[cellpadding="0"] td, .results_table table[cellpadding="0"] th {
@@ -2261,10 +2358,19 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 }
 
 .results_table_sorter {
-	max-width: {$?,{$MOBILE},315,400}px;
 	float: {!en_left};
 	margin-{!en_right}: 0.75em;
 }
+/*{+START,CSS_MODE,desktop}*/
+	.results_table_sorter {
+		max-width: 400px;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.results_table_sorter {
+		max-width: 315px;
+	}
+/*{+END}*/
 
 .pagination_spacing {
 	margin: 1em 0;
@@ -2354,16 +2460,30 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 .results_launcher a:hover {
 	background-color: {$GET,area_hover_2_background};
 }
-.pagination a,
-.pagination a:visited,
-.pagination a:hover,
-.pagination span,
-.results_launcher a,
-.results_launcher a:visited,
-.results_launcher a:hover,
-.results_launcher span {
-	padding: 2px {$?,{$MOBILE},10,6}px !important;
-}
+/*{+START,CSS_MODE,desktop}*/
+	.pagination a,
+	.pagination a:visited,
+	.pagination a:hover,
+	.pagination span,
+	.results_launcher a,
+	.results_launcher a:visited,
+	.results_launcher a:hover,
+	.results_launcher span {
+		padding: 2px 6px !important;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.pagination a,
+	.pagination a:visited,
+	.pagination a:hover,
+	.pagination span,
+	.results_launcher a,
+	.results_launcher a:visited,
+	.results_launcher a:hover,
+	.results_launcher span {
+		padding: 2px 10px !important;
+	}
+/*{+END}*/
 
 .results_launcher {
 	font-size: 0.8em;
@@ -2573,9 +2693,16 @@ div.ajax_loading, p.ajax_loading {
 	}
 /*{+END}*/
 
-.ratings {
-	width: {$?,{$MOBILE},100%,10em};
-}
+/*{+START,CSS_MODE,desktop}*/
+	.ratings {
+		width: 10em;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.ratings {
+		width: 100%;
+	}
+/*{+END}*/
 
 .RATING_BOX .rating_inner {
 	text-align: center;
@@ -2624,9 +2751,16 @@ div.ajax_loading, p.ajax_loading {
 	padding-left: 2px;
 }
 
-.trackbacks {
-	width: {$?,{$MOBILE},100%,14em};
-}
+/*{+START,CSS_MODE,desktop}*/
+	.trackbacks {
+		width: 14em;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.trackbacks {
+		width: 100%;
+	}
+/*{+END}*/
 
 .box___trackback label {
 	display: block;
@@ -2742,10 +2876,14 @@ div .post_buttons>*, div .buttons_group_faded>* {
 .comments_field_name_column {
 	width: 12em;
 }
-
 .comments_field_input_column {
 	width: 100%;
 }
+/*{+START,CSS_MODE,mobile}*/
+	.comments_field_name_column, .comments_field_input_column {
+		width: auto;
+	}
+/*{+END}*/
 
 .comments_posting_form_inner {
 	text-align: {!en_left};
@@ -2757,9 +2895,16 @@ div .post_buttons>*, div .buttons_group_faded>* {
 	}
 /*{+END}*/
 
-.comments_posting_form_inner th, .comments_posting_form_inner td.one_line {
-	padding: {$?,{$MOBILE},0.5em 0.5em 0.5em 0,0.5em 1.5em 0.5em 0.5em};
-}
+/*{+START,CSS_MODE,desktop}*/
+	.comments_posting_form_inner th, .comments_posting_form_inner td.one_line {
+		padding: 0.5em 1.5em 0.5em 0.5em;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.comments_posting_form_inner th, .comments_posting_form_inner td.one_line {
+		padding: 0.5em 1em 0.5em 0;
+	}
+/*{+END}*/
 
 .comments_posting_form_inner th {
 	font-weight: bold !important;
@@ -2775,10 +2920,18 @@ div .post_buttons>*, div .buttons_group_faded>* {
 	text-align: right !important;
 }
 
-.comments_posting_form_inner td {
-	padding-left: {$?,{$MOBILE},0.5em,1.5em};
-	padding-right: {$?,{$MOBILE},0,1em};
-}
+/*{+START,CSS_MODE,desktop}*/
+	.comments_posting_form_inner td {
+		padding-left: 1.5em;
+		padding-right: 1em;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.comments_posting_form_inner td {
+		padding-left: 1em;
+		padding-right: 0.5em;
+	}
+/*{+END}*/
 
 .comments_posting_form_inner textarea {
 	color: {$GET,comfortable_input_field_text};
@@ -2819,18 +2972,17 @@ div .post_buttons>*, div .buttons_group_faded>* {
 .comments_posting_form_end {
 	overflow: hidden;
 }
-/*{+START,CSS_MODE,mobile}*/
-	.comments_posting_form_end {
-		margin: 0;
-		padding: 0;
-		text-align: center;
-	}
-/*{+END}*/
 /*{+START,CSS_MODE,desktop}*//*{+START,IF,{$NOT,{!takes_lots_of_space}}}*/
 	.comments_posting_form_end {
 		margin: 0 0 1em 13.5em;
 	}
 /*{+END}*//*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.comments_posting_form_end {
+		margin: 0 0 1em 1em;
+		padding: 0;
+	}
+/*{+END}*/
 
 .comments_posting_form_end input {
 	float: left;
@@ -2847,6 +2999,11 @@ div .post_buttons>*, div .buttons_group_faded>* {
 	font-size: 0.85em;
 	text-align: center;
 }
+/*{+START,CSS_MODE,mobile}*/
+	.comments_captcha {
+		margin: 0 auto;
+	}
+/*{+END}*/
 
 .comments_captcha img, .comments_captcha iframe, .comments_captcha input {
 	margin: 0 5px 2px 5px;
@@ -3138,7 +3295,6 @@ ul.associated_links_block_group.horizontal_links>li:before,
 .horizontal_meta_details li:before,
 .horizontal_links>li:before,
 .horizontal_ticker li:before {
-	padding: {$?,{$MOBILE},0 0.2em 0 0.1em,0 0.5em 0 0.1em};
 	vertical-align: -20%;
 }
 /*{+START,CSS_MODE,desktop}*/
@@ -3146,7 +3302,16 @@ ul.associated_links_block_group.horizontal_links>li:before,
 	.horizontal_meta_details li:before,
 	.horizontal_links>li:before,
 	.horizontal_ticker li:before {
+		padding: 0 0.5em 0 0.1em;
 		content: "\00b7" !important; /* a &middot; */
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	ul.associated_links_block_group.horizontal_links>li:before,
+	.horizontal_meta_details li:before,
+	.horizontal_links>li:before,
+	.horizontal_ticker li:before {
+		padding: 0 0.2em 0 0.1em;
 	}
 /*{+END}*/
 .horizontal_meta_details li:before {
@@ -3341,12 +3506,6 @@ ul.buttons_group, ul.associated_links_block_group {
 	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
 	margin-left: 0 !important;
 	margin-right: 0 !important;
-}
-.fields_set_contents .constrain_field, .fields_set_contents .wide_field {
-	max-width: 500px;
-}
-.fields_set_contents .constrain_field, .fields_set_contents input .wide_field {
-	display: inline;
 }
 
 /*
@@ -4513,6 +4672,21 @@ a[rel="lightbox"] {
 	width: {$DIV,{$CONFIG_OPTION,thumb_width},2}px;
 	height: auto;
 }
+
+.fake_table_cell {
+	display: inline-block;
+}
+/*{+START,CSS_MODE,mobile}*/
+	.fake_table_cell {
+		display: block !important;
+		padding: 0 !important;
+		width: auto !important;
+		float: none !important;
+	}
+	.fake_table_cell + .fake_table_cell {
+		margin: 1em 0;
+	}
+/*{+END}*/
 
 /*
 =========================

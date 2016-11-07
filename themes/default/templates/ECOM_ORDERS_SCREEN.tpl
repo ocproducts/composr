@@ -7,7 +7,7 @@
 			<th>{!AMOUNT}</th>
 			<th>{!DATE_TIME}</th>
 			{+START,IF,{$NOT,{$MOBILE}}}
-				<th>{!STATUS}</th>
+				<th class="cell_desktop">{!STATUS}</th>
 			{+END}
 		</tr>
 	</thead>
@@ -25,11 +25,9 @@
 						<strong>{ORDER_TITLE*}</strong>
 					{+END}
 
-					{+START,IF,{$MOBILE}}
-						<p class="assocated_details">
-							<span class="field_name">{!STATUS}:</span> {STATE*}
-						</p>
-					{+END}
+					<p class="assocated_details block_mobile">
+						<span class="field_name">{!STATUS}:</span> {STATE*}
+					</p>
 				</td>
 				<td>
 					{$CURRENCY_SYMBOL}{AMOUNT*}
@@ -38,14 +36,14 @@
 					{TIME*}
 				</td>
 				{+START,IF,{$NOT,{$MOBILE}}}
-					<td>
+					<td class="cell_desktop">
 						{STATE*}
 					</td>
 				{+END}
 			</tr>
 			{+START,IF_NON_EMPTY,{NOTE}}
 				<tr>
-					<td colspan="5">
+					<td colspan="{$?,{$MOBILE},3,4}">
 						{NOTE*}
 					</td>
 				</tr>

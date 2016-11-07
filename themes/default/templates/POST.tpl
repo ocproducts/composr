@@ -62,7 +62,7 @@
 
 					{+START,IF,{$NOT,{$MOBILE}}}
 						{+START,IF,{$JS_ON}}{+START,IF_NON_EMPTY,{ID}}{+START,IF_NON_PASSED_OR_FALSE,PREVIEWING}{+START,IF,{$MATCH_KEY_MATCH,_SEARCH:topicview}}
-							<div id="cell_mark_{ID*}" class="cns_off post_action_link inline_block">
+							<div id="cell_mark_{ID*}" class="cns_off post_action_link inline_block mobile_inline">
 								<form class="webstandards_checker_off" title="{!MARKER} #{ID*}" method="post" action="index.php" id="form_mark_{ID*}" autocomplete="off">
 									{$INSERT_SPAMMER_BLACKHOLE}
 

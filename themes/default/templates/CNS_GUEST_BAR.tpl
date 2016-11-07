@@ -1,6 +1,6 @@
 <section id="tray_{!MEMBER|}" class="box cns_information_bar_outer">
 	<h2 class="toggleable_tray_title">
-		<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode,false,'{!MEMBER|}');"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!_LOGIN}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" srcset="{$IMG*,2x/trays/contract2} 2x" /></a>
+		<a class="toggleable_tray_button inline_desktop" href="#" onclick="return toggleable_tray(this.parentNode.parentNode,false,'{!MEMBER|}');"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!_LOGIN}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" srcset="{$IMG*,2x/trays/contract2} 2x" /></a>
 
 		<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode,false,'{!MEMBER|}');">{!_LOGIN}{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,search}} / {!SEARCH}{+END}</a>
 	</h2>
@@ -21,7 +21,7 @@
 						{+END}
 						<input class="button_screen_item menu__site_meta__user_actions__login" type="submit" value="{!_LOGIN}" />
 
-						<ul class="horizontal_links associated_links_block_group horiz_field_sep">
+						<ul class="horizontal_links associated_links_block_group">
 							<li><a href="{JOIN_URL*}">{!_JOIN}</a></li>
 							<li><a onclick="return open_link_as_overlay(this);" rel="nofollow" href="{FULL_LOGIN_URL*}" title="{!MORE}: {!_LOGIN}">{!MORE}</a></li>
 						</ul>

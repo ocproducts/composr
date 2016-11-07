@@ -29,25 +29,30 @@
 }
 
 .cns_member_column, .cns_guest_column {
-	padding: 0.8em;
 	vertical-align: top;
 	margin-{!en_left}: -1px;
 }
 /*{+START,CSS_MODE,desktop}*/
 	.cns_member_column, .cns_guest_column {
+		padding: 0.8em;
 		float: {!en_left};
 		border-{!en_left}: 1px solid {$GET,pale_border};
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
 	.cns_member_column, .cns_guest_column {
-		display: inline-block;
+		margin: 0.5em;
 	}
 /*{+END}*/
 
 /*{+START,CSS_MODE,desktop}*/
 	.cns_member_column {
 		height: 9em; /* 8em seems okay on Mac, 9em needed on Windows */
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.cns_member_column {
+		min-height: auto;
 	}
 /*{+END}*/
 
@@ -71,9 +76,13 @@
 }
 
 .cns_guest_column_b {
-	float: {!en_right};
 	text-align: {!en_right};
 }
+/*{+START,CSS_MODE,mobile}*/
+	.cns_guest_column_b {
+		float: {!en_right};
+	}
+/*{+END}*/
 
 .cns_member_column_a {
 	text-align: center;
@@ -87,7 +96,7 @@
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
 	.cns_member_column_a {
-		float: right;
+		display: none;
 	}
 /*{+END}*/
 
@@ -103,17 +112,12 @@
 		width: 20em;
 	}
 /*{+END}*/
-/*{+START,CSS_MODE,mobile}*/
-	.cns_member_column_b {
-		max-width: 13em;
-	}
-/*{+END}*/
 
 .cns_member_column_c {
 }
 /*{+START,CSS_MODE,desktop}*/
 	.cns_member_column_c {
-		width: 25.3em; /* The extra 0.3em needed for iPad */
+		width: 17.3em; /* The extra 0.3em needed for iPad */
 	}
 /*{+END}*/
 
@@ -123,7 +127,8 @@
 
 /*{+START,CSS_MODE,mobile}*/
 	.cns_member_column_d li {
-		width: 45%;
+		width: calc(50% - 5px);
+		box-sizing: border-box;
 		float: left;
 	}
 /*{+END}*/
@@ -183,7 +188,7 @@
 
 .cns_search_box input[type="text"] {
 	margin: 0;
-	width: 14em;
+	width: calc(100% - 8em);
 }
 
 .cns_member_column_last_visit {

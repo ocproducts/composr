@@ -92,3 +92,6 @@
 	display: inline-block;
 }
 
+.filedump_image_sizes input {
+	width: calc(100% - 5em);
+}

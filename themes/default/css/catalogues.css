@@ -8,10 +8,14 @@
 .catalogue_fieldmap_field_name_column {
 	width: 13em;
 }
-
 .catalogue_fieldmap_field_value_column {
 	width: 100%;
 }
+/*{+START,CSS_MODE,mobile}*/
+	.catalogue_fieldmap_field_name_column, .catalogue_fieldmap_field_value_column {
+		width: auto;
+	}
+/*{+END}*/
 
 /* Tabular display */
 

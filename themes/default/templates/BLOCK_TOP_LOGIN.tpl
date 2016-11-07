@@ -3,7 +3,7 @@
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		{+START,IF,{$NOT,{$MOBILE}}}
-			<div class="inline">
+			<div class="inline_desktop">
 				<div class="accessibility_hidden"><label for="s_login_username">{$LOGIN_LABEL}</label></div>
 				<input maxlength="80" size="10" accesskey="l" class="field_input_non_filled" type="text" onfocus="placeholder_focus(this);" onblur="placeholder_blur(this);" value="{!USERNAME}" id="s_login_username" name="login_username" />
 				<div class="accessibility_hidden"><label for="s_password">{!PASSWORD}</label></div>
@@ -20,7 +20,7 @@
 
 		<ul class="horizontal_links">
 			{+START,IF_NON_EMPTY,{JOIN_URL}}<li><img alt="" src="{$IMG*,icons/24x24/menu/site_meta/user_actions/join}" srcset="{$IMG*,icons/48x48/menu/site_meta/user_actions/join} 2x" /> <a href="{JOIN_URL*}">{!_JOIN}</a></li>{+END}
-			<li><img alt="" src="{$IMG*,icons/24x24/menu/site_meta/user_actions/login}" srcset="{$IMG*,icons/48x48/menu/site_meta/user_actions/login} 2x" /> <a onclick="return open_link_as_overlay(this);" rel="nofollow" href="{FULL_LOGIN_URL*}" title="{!MORE}: {!_LOGIN}">{$?,{$MOBILE},{!_LOGIN},{!OPTIONS}}</a></li>
+			<li><img alt="" src="{$IMG*,icons/24x24/menu/site_meta/user_actions/login}" srcset="{$IMG*,icons/48x48/menu/site_meta/user_actions/login} 2x" /> <a onclick="return open_link_as_overlay(this);" rel="nofollow" href="{FULL_LOGIN_URL*}" title="{!MORE}: {!_LOGIN}">{+START,IF,{$NOT,{$MOBILE}}}<span class="inline_desktop">{!OPTIONS}</span>{+END}<span class="inline_mobile">{!_LOGIN}</span></a></li>
 		</ul>
 	</form>
 {+END}
