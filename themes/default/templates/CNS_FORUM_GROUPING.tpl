@@ -16,7 +16,7 @@
 			<table class="columned_table wide_table cns_forum_grouping" itemprop="significantLinks">
 				{+START,IF,{$NOT,{$MOBILE}}}
 					<colgroup>
-						<col class="cns_forum_grouping_column1" />
+						<col class="cns_forum_grouping_column1 column_desktop" />
 						<col class="cns_forum_grouping_column2" />
 						<col class="cns_forum_grouping_column3 column_desktop" />
 						<col class="cns_forum_grouping_column4 column_desktop" />
@@ -27,7 +27,7 @@
 				<thead>
 					<tr>
 						{+START,IF,{$NOT,{$MOBILE}}}
-							<th class="ocf_forum_box_left"></th>
+							<th class="ocf_forum_box_left cell_desktop"></th>
 						{+END}
 						<th{+START,IF,{$MOBILE}} class="cns_forum_box_left"{+END}>
 							{!FORUM_NAME}

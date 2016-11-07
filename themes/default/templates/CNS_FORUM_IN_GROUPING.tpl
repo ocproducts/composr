@@ -1,6 +1,6 @@
 <tr>
 	{+START,IF,{$NOT,{$MOBILE}}}
-		<td class="cns_forum_new_post_indicator cns_column1">
+		<td class="cns_forum_new_post_indicator cns_column1 cell_desktop">
 			<img width="32" height="32" title="{LANG_NEW_POST_OR_NOT*}" alt="{LANG_NEW_POST_OR_NOT*}" src="{$IMG*,cns_general/{NEW_POST_OR_NOT*}}" />
 		</td>
 	{+END}

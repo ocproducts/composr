@@ -2776,9 +2776,36 @@ div.ajax_loading, p.ajax_loading {
 	display: block;
 }
 
+.comments_header {
+	margin: 0.4em 0 0 0;
+}
+/*{+START,CSS_MODE,desktop}*/
+	.comments_header {
+		float: left;
+	}
+/*{+END}*/
+
 .comments_sorting_box {
 	margin-top: 0.45em;
 }
+/*{+START,CSS_MODE,desktop}*/
+	.comments_sorting_box {
+		float: right;
+		margin-left: 1em;
+	}
+/*{+END}*/
+
+/*{+START,CSS_MODE,desktop}*/
+	.comments_notification_buttons {
+		float: right;
+		margin-left: 1em;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.comments_notification_buttons {
+		margin-top: 0.5em;
+	}
+/*{+END}*/
 
 .content_screen_comments .comments_wrapper {
 	margin-top: 2em;
