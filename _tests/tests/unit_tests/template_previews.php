@@ -123,7 +123,7 @@ class template_previews_test_set extends cms_test_case
                 }
                 if ($list_2[1] == $function) {
                     // Ignore templates designed for indirect inclusion
-                    if ($template_2 == 'templates/GLOBAL_HELPER_PANEL.tpl' || $template_2 == 'templates/GLOBAL_HTML_WRAP_mobile.tpl' || $template_2 == 'templates/HTML_HEAD.tpl' || $template_2 == 'templates/MEMBER_TOOLTIP.tpl' || $template_2 == 'templates/FORM_STANDARD_END.tpl' || $template_2 == 'templates/MEMBER_BAR_SEARCH.tpl' || $template_2 == 'templates/MENU_LINK_PROPERTIES.tpl') {
+                    if ($template_2 == 'templates/GLOBAL_HELPER_PANEL.tpl' || $template_2 == 'templates/HTML_HEAD.tpl' || $template_2 == 'templates/MEMBER_TOOLTIP.tpl' || $template_2 == 'templates/FORM_STANDARD_END.tpl' || $template_2 == 'templates/MEMBER_BAR_SEARCH.tpl' || $template_2 == 'templates/MENU_LINK_PROPERTIES.tpl') {
                         continue;
                     }
 

@@ -88,7 +88,6 @@ class template_no_unused_test_set extends cms_test_case
             'FORM_STANDARD_END',
             'GALLERY_POPULAR',
             'GLOBAL_HELPER_PANEL',
-            'GLOBAL_HTML_WRAP_mobile',
             'HANDLE_CONFLICT_RESOLUTION',
             'HTML_HEAD',
             'HYPERLINK',

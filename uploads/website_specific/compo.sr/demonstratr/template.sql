@@ -4286,7 +4286,6 @@ insert into `cms_addons_files` values('core_form_interfaces','data/ckeditor/plug
  ('core_primary_layout','themes/default/css/helper_panel.css','4090'),
  ('core_primary_layout','themes/default/css/messages.css','4091'),
  ('core_primary_layout','themes/default/templates/GLOBAL_HTML_WRAP.tpl','4092'),
- ('core_primary_layout','themes/default/templates/GLOBAL_HTML_WRAP_mobile.tpl','4093'),
  ('core_primary_layout','themes/default/templates/GLOBAL_HELPER_PANEL.tpl','4094'),
  ('core_primary_layout','themes/default/templates/CLOSED_SITE.tpl','4095'),
  ('core_primary_layout','themes/default/templates/SCREEN_TITLE.tpl','4096'),

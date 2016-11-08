@@ -104,7 +104,6 @@ class Hook_addon_registry_core_primary_layout
             'themes/default/css/helper_panel.css',
             'themes/default/css/messages.css',
             'themes/default/templates/GLOBAL_HTML_WRAP.tpl',
-            'themes/default/templates/GLOBAL_HTML_WRAP_mobile.tpl',
             'themes/default/templates/GLOBAL_HELPER_PANEL.tpl',
             'themes/default/templates/CLOSED_SITE.tpl',
             'themes/default/templates/SCREEN_TITLE.tpl',
@@ -135,7 +134,6 @@ class Hook_addon_registry_core_primary_layout
             'text/MAIL_SUBJECT.txt' => 'mail_subject',
             'templates/MAIL.tpl' => 'mail',
             'templates/GLOBAL_HTML_WRAP.tpl' => 'global_html_wrap',
-            'templates/GLOBAL_HTML_WRAP_mobile.tpl' => 'global_html_wrap',
             'templates/GLOBAL_HELPER_PANEL.tpl' => 'global_html_wrap',
             'templates/SCREEN_TITLE.tpl' => 'screen_title',
         );
