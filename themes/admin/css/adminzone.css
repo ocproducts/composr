@@ -14,8 +14,28 @@ header {
 	border-bottom: 3px solid #cacaca;
 }
 
+/*{+START,CSS_MODE,desktop}*/
+	.admin_navigation_inner {
+		display: none;
+	}
+/*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	.global_navigation_inner span {
+	.admin_navigation {
+		border-top: 1px solid {$GET,standard_border};
+		border-bottom: 1px solid {$GET,standard_border};
+		background-color: {$GET,lgrad};
+		{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,lgrad}\, {$GET,dgrad}) !important;}
+		color: {$GET,WB};
+		min-height: 3.4em;
+		position: relative;
+	}
+
+	.admin_navigation_inner {
+		overflow: hidden;
+		margin-left: 8em !important; /* Space for the menu button, which is position:absolute */
+	}
+
+	.admin_navigation_inner span {
 		float: right;
 		margin: 0.75em;
 		font-size: 1.2em;

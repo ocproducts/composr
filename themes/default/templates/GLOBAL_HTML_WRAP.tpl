@@ -75,15 +75,9 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 		</div>
 
 		{$,The main panels and content; float_surrounder contains the layout into a rendering box so that the footer etc can sit underneath}
-		<div class="global_middle_outer float_surrounder">
+		<div class="global_middle_outer">
 			{$SET,has_left_panel,{$IS_NON_EMPTY,{$TRIM,{$LOAD_PANEL,left}}}}
 			{$SET,has_right_panel,{$IS_NON_EMPTY,{$TRIM,{$LOAD_PANEL,right}}}}
-
-			{+START,IF,{$GET,has_left_panel}}
-				<div id="panel_left" class="global_side_panel" role="complementary" itemscope="itemscope" itemtype="http://schema.org/WPSideBar">
-					<div class="stuck_nav">{$LOAD_PANEL,left}</div>
-				</div>
-			{+END}
 
 			<article class="global_middle {$?,{$GET,has_left_panel},has_left_panel,has_no_left_panel} {$?,{$GET,has_right_panel},has_right_panel,has_no_right_panel}" role="main">
 				{$,Breadcrumbs}
@@ -100,6 +94,12 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 				{$,The main site, whatever 'page' is being loaded}
 				{MIDDLE}
 			</article>
+
+			{+START,IF,{$GET,has_left_panel}}
+				<div id="panel_left" class="global_side_panel" role="complementary" itemscope="itemscope" itemtype="http://schema.org/WPSideBar">
+					<div class="stuck_nav">{$LOAD_PANEL,left}</div>
+				</div>
+			{+END}
 
 			{+START,IF,{$GET,has_right_panel}}
 				<div id="panel_right" class="global_side_panel" role="complementary" itemscope="itemscope" itemtype="http://schema.org/WPSideBar">

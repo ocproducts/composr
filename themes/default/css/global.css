@@ -573,6 +573,13 @@ body#standalone_html_wrap {
 	margin: 0;
 }
 
+body.popup_spacer {
+	padding: 1em !important;
+}
+body.popup_spacer h2 {
+	margin-top: 0;
+}
+
 header {
 	background-color: {$GET,main_background};
 }
@@ -808,38 +815,79 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 	background-color: {$GET,fixed_width_background} !important;
 }
 
+/* Should not be flush with site borders (but the menu above it will be, so don't do the whole panel */
+/*{+START,CSS_MODE,desktop}*/
+	#panel_top .cns_member_bar_etc {
+		margin: 0 1em;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	#panel_top .cns_member_bar_etc {
+		margin: 0 2px;
+	}
+/*{+END}*/
+
+.zone_running_docs .comcode_page {
+	line-height: 1.35em;
+}
+.zone_running_docs .comcode_page img {
+	max-width: 100%;
+}
+
 .global_middle_outer {
 	margin-top: 0.8em;
-	overflow: visible !important;
 }
-/* We normally hide stuff with overflow:hidden, but some share buttons use absolute positioned layers that need to escape our box */
-.global_middle_outer:after {
-	content: "";
-	display: table;
-	clear: both;
+
+.global_side_panel h2 {
+	border-bottom: 1px solid;
+	text-transform: lowercase;
+	font-weight: normal;
+	width: 50%;
+	padding-{!en_left}: 10px;
+	margin-{!en_left}: 10px;
+}
+
+.global_side_panel {
+	{$BETA_CSS_PROPERTY,word-wrap: break-word;}
+	color: {$GET,slightly_seeded_gray_text};
+}
+
+.global_middle_faux>.global_side_panel {
+	width: auto;
 }
 
 /*{+START,CSS_MODE,desktop}*/
+	.global_middle_outer {
+		{$BETA_CSS_PROPERTY,display: flex;}
+	}
+
 	.global_middle {
 		/* Add some spacing. This will be overwritten to 1.5em in rules below if we have panels */
 		padding-{!en_left}: 1em;
 		padding-{!en_right}: 1em;
 		margin-bottom: 1em;
-		float: left;
 		box-sizing: border-box;
-		width: 100%;
+		order: 1;
+		flex: 1;
 	}
 
-	/* Spacing around middle column if it adjoins panels */
-	.global_middle.has_left_panel, .global_middle.has_right_panel {
-		width: calc(100% - 14em);
+	#panel_left {
+		order: 0;
+		margin-{!en_left}: 1em;
 	}
-	.global_middle.has_left_panel.has_right_panel {
-		width: calc(100% - 28em);
+
+	#panel_right {
+		order: 2;
+		margin-{!en_right}: 1em;
 	}
 
 	.global_side_panel {
 		margin-top: -1em;
+		width: 13em;
+	}
+
+	#panel_bottom {
+		margin: 0 1em;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
@@ -863,65 +911,9 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 	.overlay.alert .box_inner div, .overlay.confirm .box_inner div {
 		{$BETA_CSS_PROPERTY,user-select: none;} {$,To stop accidental touching when dismissing}
 	}
-/*{+END}*/
 
-.zone_running_docs .comcode_page {
-	line-height: 1.35em;
-}
-.zone_running_docs .comcode_page img {
-	max-width: 100%;
-}
-
-body.popup_spacer {
-	padding: 1em !important;
-}
-body.popup_spacer h2 {
-	margin-top: 0;
-}
-
-/* Should not be flush with site borders (but the menu above it will be, so don't do the whole panel */
-/*{+START,CSS_MODE,desktop}*/
-	#panel_top .cns_member_bar_etc {
-		margin: 0 1em;
-	}
-/*{+END}*/
-/*{+START,CSS_MODE,mobile}*/
-	#panel_top .cns_member_bar_etc {
-		margin: 0 2px;
-	}
-/*{+END}*/
-
-.global_side_panel h2 {
-	border-bottom: 1px solid;
-	text-transform: lowercase;
-	font-weight: normal;
-	width: 50%;
-	padding-{!en_left}: 10px;
-	margin-{!en_left}: 10px;
-}
-
-.global_side_panel {
-	{$BETA_CSS_PROPERTY,word-wrap: break-word;}
-	color: {$GET,slightly_seeded_gray_text};
-}
-
-/*{+START,CSS_MODE,desktop}*/
 	#panel_left {
 		float: {!en_left};
-		margin-{!en_left}: 1em;
-	}
-	#panel_right {
-		float: {!en_right};
-		margin-{!en_right}: 1em;
-	}
-
-	.global_side_panel {
-		width: 13em;
-	}
-/*{+END}*/
-/*{+START,CSS_MODE,mobile}*/
-	#panel_left {
-		float: {!en_right};
 		padding-{!en_left}: 2px;
 		padding-{!en_right}: 1px;
 		{$BETA_CSS_PROPERTY,box-sizing: border-box;}
@@ -936,18 +928,7 @@ body.popup_spacer h2 {
 	.global_side_panel {
 		width: 50%;
 	}
-/*{+END}*/
 
-	.global_middle_faux>.global_side_panel {
-	width: auto;
-}
-
-/*{+START,CSS_MODE,desktop}*/
-	#panel_bottom {
-		margin: 0 1em;
-	}
-/*{+END}*/
-/*{+START,CSS_MODE,mobile}*/
 	#panel_bottom {
 		margin: 0 2px;
 	}
@@ -989,6 +970,7 @@ body.popup_spacer h2 {
 }
 
 footer {
+	clear: both;
 	background-color: {$GET,footer_background};
 	margin-top: 2em;
 	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,footer_background}\, {$GET,footer_2_background});}
