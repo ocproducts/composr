@@ -30,8 +30,11 @@
 
 /*{+START,CSS_MODE,mobile}*/
 	.login_page_form label {
-		width: 7em;
 		display: inline-block;
+	}
+
+	.login_page_form label .must_show_together {
+		white-space: normal !important;
 	}
 /*{+END}*/
 

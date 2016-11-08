@@ -23,16 +23,17 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 				{+START,IF,{$NOT,{$MOBILE}}}
 					{$SET-,BANNER,{$BANNER}} {$,This is to avoid evaluating the banner twice}
 					{+START,IF_NON_EMPTY,{$GET,BANNER}}
-						<div class="global_banner">{$GET,BANNER}</div>
+						<div class="global_banner block_desktop">{$GET,BANNER}</div>
 					{+END}
 				{+END}
 
 				{$,The main logo}
-				<h1 class="logo_outer"><a target="_self" href="{$PAGE_LINK*,:}" rel="home"><img class="logo" src="{$?*,{$MOBILE},{$IMG,logo/standalone_logo},{$LOGO_URL}}"{+START,IF,{$NOT,{$MOBILE}}} width="{$IMG_WIDTH*,{$LOGO_URL},1}" height="{$IMG_HEIGHT*,{$LOGO_URL},1}"{+END} title="{!HOME}" alt="{$SITE_NAME*}" /></a></h1>
+				<h1 class="logo_outer"><a target="_self" href="{$PAGE_LINK*,:}" rel="home"><img class="logo" src="{$LOGO_URL*}" title="{!HOME}" alt="{$SITE_NAME*}" /></a></h1>
 
 				{$,Main menu}
 				<div class="global_navigation">
-					{$BLOCK,block=menu,param={$CONFIG_OPTION,header_menu_call_string},type={$?,{$MOBILE},mobile,dropdown}}
+					{+START,IF,{$NOT,{$MOBILE}}}<div class="block_desktop">{$BLOCK,block=menu,param={$CONFIG_OPTION,header_menu_call_string},type=dropdown}</div>{+END}
+					<div class="block_mobile">{$BLOCK,block=menu,param={$CONFIG_OPTION,header_menu_call_string},type=mobile}</div>
 
 					<div class="global_navigation_inner">
 						{$,Login form for guests}
@@ -44,7 +45,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 
 						{$,Search box for logged in users [could show to guests, except space is lacking]}
 						{+START,IF,{$AND,{$ADDON_INSTALLED,search},{$NOT,{$MOBILE}},{$NOT,{$IS_GUEST}}}}
-							<div class="top_form">
+							<div class="top_form block_desktop">
 								{$BLOCK,block=top_search,failsafe=1}
 							</div>
 						{+END}
@@ -61,76 +62,65 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 			</header>
 		{+END}
 
-		{+START,IF,{$NOT,{$MOBILE}}}
-			{$,By default the top panel contains the admin menu, community menu, member bar, etc}
-			{+START,IF_NON_EMPTY,{$TRIM,{$LOAD_PANEL,top}}}
-				<div id="panel_top">
-					{$LOAD_PANEL,top}
-				</div>
-			{+END}
-
-			{$,Composr may show little messages for you as it runs relating to what you are doing or the state the site is in}
-			<div class="global_messages" id="global_messages">
-				{$MESSAGES_TOP}
+		{$,By default the top panel contains the admin menu, community menu, member bar, etc}
+		{+START,IF_NON_EMPTY,{$TRIM,{$LOAD_PANEL,top}}}
+			<div id="panel_top">
+				{$LOAD_PANEL,top}
 			</div>
-
-			{$,The main panels and content; float_surrounder contains the layout into a rendering box so that the footer etc can sit underneath}
-			<div class="global_middle_outer float_surrounder">
-				{+START,IF_NON_EMPTY,{$TRIM,{$LOAD_PANEL,left}}}
-					<div id="panel_left" class="global_side_panel" role="complementary" itemscope="itemscope" itemtype="http://schema.org/WPSideBar">
-						<div class="stuck_nav">{$LOAD_PANEL,left}</div>
-					</div>
-				{+END}
-
-				{+START,IF_NON_EMPTY,{$TRIM,{$LOAD_PANEL,right}}}
-					<div id="panel_right" class="global_side_panel" role="complementary" itemscope="itemscope" itemtype="http://schema.org/WPSideBar">
-						{+START,IF_NON_EMPTY,{$TRIM,{$LOAD_PANEL,right}}}
-							<div class="stuck_nav">{$LOAD_PANEL,right}</div>
-						{+END}
-					</div>
-				{+END}
-
-				<article class="global_middle" role="main">
-					{$,Breadcrumbs}
-					{+START,IF,{$IN_STR,{$BREADCRUMBS},<a}}{+START,IF,{$SHOW_HEADER}}
-						<nav class="global_breadcrumbs breadcrumbs" itemprop="breadcrumb" id="global_breadcrumbs">
-							<img width="20" height="20" class="breadcrumbs_img" src="{$IMG*,1x/breadcrumbs}" srcset="{$IMG*,2x/breadcrumbs} 2x" title="{!YOU_ARE_HERE}" alt="{!YOU_ARE_HERE}" />
-							{$BREADCRUMBS}
-						</nav>
-					{+END}{+END}
-
-					{$,Associated with the SKIP_NAVIGATION link defined further up}
-					<a id="maincontent"></a>
-
-					{$,The main site, whatever 'page' is being loaded}
-					{+END}
-					{$,Intentional breakup of directive so that output streaming has a top-level stopping point before MIDDLE}
-					{+START,IF,{$NOT,{$MOBILE}}}
-						{MIDDLE}
-					{+END}
-					{+START,IF,{$NOT,{$MOBILE}}}
-				</article>
-			</div>
-
-			{+START,IF_NON_EMPTY,{$TRIM,{$LOAD_PANEL,bottom}}}
-				<div id="panel_bottom" role="complementary">
-					{$LOAD_PANEL,bottom}
-				</div>
-			{+END}
-
-			{+START,IF_NON_EMPTY,{$MESSAGES_BOTTOM}}
-				<div class="global_messages">
-					{$MESSAGES_BOTTOM}
-				</div>
-			{+END}
-
-			{+START,IF,{$SHOW_FOOTER}}
-				{+START,IF,{$EQ,{$CONFIG_OPTION,sitewide_im,1},1}}{$CHAT_IM}{+END}
-			{+END}
 		{+END}
 
-		{+START,IF,{$MOBILE}}
-			{+START,INCLUDE,GLOBAL_HTML_WRAP_mobile}{+END}
+		{$,Composr may show little messages for you as it runs relating to what you are doing or the state the site is in}
+		<div class="global_messages" id="global_messages">
+			{$MESSAGES_TOP}
+		</div>
+
+		{$,The main panels and content; float_surrounder contains the layout into a rendering box so that the footer etc can sit underneath}
+		<div class="global_middle_outer float_surrounder">
+			{+START,IF_NON_EMPTY,{$TRIM,{$LOAD_PANEL,left}}}
+				<div id="panel_left" class="global_side_panel" role="complementary" itemscope="itemscope" itemtype="http://schema.org/WPSideBar">
+					<div class="stuck_nav">{$LOAD_PANEL,left}</div>
+				</div>
+			{+END}
+
+			{+START,IF_NON_EMPTY,{$TRIM,{$LOAD_PANEL,right}}}
+				<div id="panel_right" class="global_side_panel" role="complementary" itemscope="itemscope" itemtype="http://schema.org/WPSideBar">
+					{+START,IF_NON_EMPTY,{$TRIM,{$LOAD_PANEL,right}}}
+						<div class="stuck_nav">{$LOAD_PANEL,right}</div>
+					{+END}
+				</div>
+			{+END}
+
+			<article class="global_middle" role="main">
+				{$,Breadcrumbs}
+				{+START,IF,{$IN_STR,{$BREADCRUMBS},<a}}{+START,IF,{$SHOW_HEADER}}
+					<nav class="global_breadcrumbs breadcrumbs" itemprop="breadcrumb" id="global_breadcrumbs">
+						<img width="20" height="20" class="breadcrumbs_img" src="{$IMG*,1x/breadcrumbs}" srcset="{$IMG*,2x/breadcrumbs} 2x" title="{!YOU_ARE_HERE}" alt="{!YOU_ARE_HERE}" />
+						{$BREADCRUMBS}
+					</nav>
+				{+END}{+END}
+
+				{$,Associated with the SKIP_NAVIGATION link defined further up}
+				<a id="maincontent"></a>
+
+				{$,The main site, whatever 'page' is being loaded}
+				{MIDDLE}
+			</article>
+		</div>
+
+		{+START,IF_NON_EMPTY,{$TRIM,{$LOAD_PANEL,bottom}}}
+			<div id="panel_bottom" role="complementary">
+				{$LOAD_PANEL,bottom}
+			</div>
+		{+END}
+
+		{+START,IF_NON_EMPTY,{$MESSAGES_BOTTOM}}
+			<div class="global_messages">
+				{$MESSAGES_BOTTOM}
+			</div>
+		{+END}
+
+		{+START,IF,{$SHOW_FOOTER}}
+			{+START,IF,{$EQ,{$CONFIG_OPTION,sitewide_im,1},1}}{$CHAT_IM}{+END}
 		{+END}
 
 		{$,Late messages happen if something went wrong during outputting everything (i.e. too late in the process to show the error in the normal place)}
@@ -144,22 +134,22 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 		{$,This is the main site footer}
 		{+START,IF,{$SHOW_FOOTER}}
 			<footer class="float_surrounder" itemscope="itemscope" itemtype="http://schema.org/WPFooter" role="contentinfo">
-				<div class="global_footer_left">
+				<div class="global_footer_left block_desktop">
 					{+START,SET,FOOTER_BUTTONS}
 						{+START,IF,{$CONFIG_OPTION,bottom_show_top_button}}
-							<li><a rel="back_to_top" accesskey="g" href="#">{$?,{$MOBILE},{!_BACK_TO_TOP},<img width="24" height="24" title="{!BACK_TO_TOP}" alt="{!BACK_TO_TOP}" src="{$IMG*,icons/24x24/tool_buttons/top}" srcset="{$IMG*,icons/48x48/tool_buttons/top} 2x" />}</a></li>
+							<li><a rel="back_to_top" accesskey="g" href="#"><img width="24" height="24" title="{!BACK_TO_TOP}" alt="{!BACK_TO_TOP}" src="{$IMG*,icons/24x24/tool_buttons/top}" srcset="{$IMG*,icons/48x48/tool_buttons/top} 2x" /></a></li>
 						{+END}
-						{+START,IF,{$NOT,{$MOBILE}}}{+START,IF,{$ADDON_INSTALLED,realtime_rain}}{+START,IF,{$CONFIG_OPTION,bottom_show_realtime_rain_button}}{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,admin_realtime_rain}}{+START,IF,{$NEQ,{$ZONE}:{$PAGE},adminzone:admin_realtime_rain}}
-							<li><a id="realtime_rain_button" onclick="if (typeof window.load_realtime_rain!='undefined') return load_realtime_rain(); else return false;" href="{$PAGE_LINK*,adminzone:admin_realtime_rain}">{$?,{$MOBILE},{!realtime_rain:REALTIME_RAIN},<img width="24" height="24" id="realtime_rain_img" title="{!realtime_rain:REALTIME_RAIN}" alt="{!realtime_rain:REALTIME_RAIN}" src="{$IMG*,icons/24x24/tool_buttons/realtime_rain_on}" srcset="{$IMG*,icons/48x48/tool_buttons/realtime_rain_on} 2x" />}</a></li>
-						{+END}{+END}{+END}{+END}{+END}
+						{+START,IF,{$ADDON_INSTALLED,realtime_rain}}{+START,IF,{$CONFIG_OPTION,bottom_show_realtime_rain_button}}{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,admin_realtime_rain}}{+START,IF,{$NEQ,{$ZONE}:{$PAGE},adminzone:admin_realtime_rain}}
+							<li><a id="realtime_rain_button" onclick="if (typeof window.load_realtime_rain!='undefined') return load_realtime_rain(); else return false;" href="{$PAGE_LINK*,adminzone:admin_realtime_rain}"><img width="24" height="24" id="realtime_rain_img" title="{!realtime_rain:REALTIME_RAIN}" alt="{!realtime_rain:REALTIME_RAIN}" src="{$IMG*,icons/24x24/tool_buttons/realtime_rain_on}" srcset="{$IMG*,icons/48x48/tool_buttons/realtime_rain_on} 2x" /></a></li>
+						{+END}{+END}{+END}{+END}
 						{+START,IF,{$HAS_ZONE_ACCESS,adminzone}}
 							{+START,IF,{$ADDON_INSTALLED,commandr}}{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,admin_commandr}}{+START,IF,{$CONFIG_OPTION,bottom_show_commandr_button}}{+START,IF,{$NEQ,{$ZONE}:{$PAGE},adminzone:admin_commandr}}
-								<li><a id="commandr_button" accesskey="o"{+START,IF,{$NOT,{$MOBILE}}} onclick="if (typeof window.load_commandr!='undefined') return load_commandr(); else return false;"{+END} href="{$PAGE_LINK*,adminzone:admin_commandr}">{$?,{$MOBILE},{!commandr:COMMANDR},<img width="24" height="24" id="commandr_img" title="{!commandr:COMMANDR_DESCRIPTIVE_TITLE}" alt="{!commandr:COMMANDR_DESCRIPTIVE_TITLE}" src="{$IMG*,icons/24x24/tool_buttons/commandr_on}" srcset="{$IMG*,icons/48x48/tool_buttons/commandr_on} 2x" />}</a></li>
+								<li><a id="commandr_button" accesskey="o" onclick="if (typeof window.load_commandr!='undefined') return load_commandr(); else return false;" href="{$PAGE_LINK*,adminzone:admin_commandr}"><img width="24" height="24" id="commandr_img" title="{!commandr:COMMANDR_DESCRIPTIVE_TITLE}" alt="{!commandr:COMMANDR_DESCRIPTIVE_TITLE}" src="{$IMG*,icons/24x24/tool_buttons/commandr_on}" srcset="{$IMG*,icons/48x48/tool_buttons/commandr_on} 2x" /></a></li>
 							{+END}{+END}{+END}{+END}
-							<li><a href="{$PAGE_LINK*,adminzone:}">{$?,{$MOBILE},{!ADMIN_ZONE},<img width="24" height="24" title="{!ADMIN_ZONE}" alt="{!ADMIN_ZONE}" src="{$IMG*,icons/24x24/menu/adminzone/adminzone}" srcset="{$IMG*,icons/48x48/menu/adminzone/adminzone} 2x" />}</a></li>
-							{+START,IF,{$NOT,{$MOBILE}}}{+START,IF,{$EQ,{$BRAND_NAME},Composr}}
-								<li><a id="software_chat_button" accesskey="-" onclick="if (typeof window.load_software_chat!='undefined') return load_software_chat(event); else return false;" href="#">{$?,{$MOBILE},{!SOFTWARE_CHAT},<img width="24" height="24" id="software_chat_img" title="{!SOFTWARE_CHAT}" alt="{!SOFTWARE_CHAT}" src="{$IMG*,icons/24x24/tool_buttons/software_chat}" srcset="{$IMG*,icons/48x48/tool_buttons/software_chat} 2x" />}</a></li>
-							{+END}{+END}
+							<li><a href="{$PAGE_LINK*,adminzone:}"><img width="24" height="24" title="{!ADMIN_ZONE}" alt="{!ADMIN_ZONE}" src="{$IMG*,icons/24x24/menu/adminzone/adminzone}" srcset="{$IMG*,icons/48x48/menu/adminzone/adminzone} 2x" /></a></li>
+							{+START,IF,{$EQ,{$BRAND_NAME},Composr}}
+								<li><a id="software_chat_button" accesskey="-" onclick="if (typeof window.load_software_chat!='undefined') return load_software_chat(event); else return false;" href="#"><img width="24" height="24" id="software_chat_img" title="{!SOFTWARE_CHAT}" alt="{!SOFTWARE_CHAT}" src="{$IMG*,icons/24x24/tool_buttons/software_chat}" srcset="{$IMG*,icons/48x48/tool_buttons/software_chat} 2x" /></a></li>
+							{+END}
 						{+END}
 					{+END}
 					{+START,IF_NON_EMPTY,{$TRIM,{$GET,FOOTER_BUTTONS}}}{+START,IF,{$NOT,{$MOBILE}}}
@@ -193,10 +183,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 
 				<div class="global_footer_right">
 					<nav class="global_minilinks">
-						<ul class="{+START,IF,{$NOT,{$MOBILE,1}}}horizontal_links {+END}footer_links">
-							{+START,IF,{$MOBILE}}
-								{$GET,FOOTER_BUTTONS}
-							{+END}
+						<ul class="footer_links">
 							{+START,IF,{$CONFIG_OPTION,bottom_show_sitemap_button}}
 								<li><a accesskey="3" rel="site_map" href="{$PAGE_LINK*,_SEARCH:sitemap}">{!SITEMAP}</a></li>
 							{+END}
@@ -223,6 +210,15 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 									<li><a href="{$SELF_URL*,1,0,0,keep_mobile=1}">{!MOBILE_VERSION}</a></li>
 								{+END}
 							{+END}
+							{+START,IF,{$HAS_ZONE_ACCESS,adminzone}}
+								{+START,IF,{$ADDON_INSTALLED,commandr}}{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,admin_commandr}}{+START,IF,{$CONFIG_OPTION,bottom_show_commandr_button}}{+START,IF,{$NEQ,{$ZONE}:{$PAGE},adminzone:admin_commandr}}
+									<li class="inlineblock_mobile"><a id="commandr_button" accesskey="o" href="{$PAGE_LINK*,adminzone:admin_commandr}">{!commandr:COMMANDR}</a></li>
+								{+END}{+END}{+END}{+END}
+								<li class="inlineblock_mobile"><a href="{$PAGE_LINK*,adminzone:}">{!ADMIN_ZONE}</a></li>
+							{+END}
+							{+START,IF,{$CONFIG_OPTION,bottom_show_top_button}}
+								<li class="inlineblock_mobile"><a rel="back_to_top" accesskey="g" href="#">{!_BACK_TO_TOP}</a></li>
+							{+END}
 							{+START,IF_NON_EMPTY,{$HONEYPOT_LINK}}
 								<li class="accessibility_hidden">{$HONEYPOT_LINK}</li>
 							{+END}
@@ -239,10 +235,6 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 						{$,Uncomment to show user's time {$DATE} {$TIME}}
 
 						{$COPYRIGHT`}
-
-						{+START,IF,{$NOT,{$MOBILE}}}
-							{+START,INCLUDE,FONT_SIZER}{+END}
-						{+END}
 					</div>
 				</div>
 			</footer>

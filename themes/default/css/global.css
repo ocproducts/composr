@@ -410,6 +410,13 @@ iframe {
 		display: inline !important;
 	}
 
+	.inlineblock_desktop {
+		display: none !important;
+	}
+	.inlineblock_mobile {
+		display: inline-block !important;
+	}
+
 	.block_desktop {
 		display: none !important;
 	}
@@ -438,6 +445,13 @@ iframe {
 		display: inline !important;
 	}
 	.inline_mobile {
+		display: none !important;
+	}
+
+	.inlineblock_desktop {
+		display: inline-block !important;
+	}
+	.inlineblock_mobile {
 		display: none !important;
 	}
 
@@ -1131,18 +1145,32 @@ footer .global_minilinks {
 footer .global_minilinks .footer_links {
 	width: auto;
 	font-size: 1.1em;
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
 }
-/*{+START,CSS_MODE,mobile}*/
-	footer .global_minilinks .footer_links {
+
+/*{+START,CSS_MODE,desktop}*/
+	.footer_links>li:before {
+		vertical-align: -20%;
+		padding: 0 0.5em 0 0.1em;
+		content: "\00b7" !important; /* a &middot; */
+	}
+	.footer_links li:first-child:before {
+		/* Undoes the middot/comma separator */
+		content: "" !important;
+		padding-left: 0 !important;
+		padding-right: 0 !important;
+	}
+	.footer_links>li {
+		display: inline;
 		margin: 0;
 		padding: 0;
-		list-style-type: none;
 	}
 /*{+END}*/
-
 /*{+START,CSS_MODE,mobile}*/
 	footer .global_minilinks .footer_links li {
-		min-width: 6em;
+		min-width: 7em;
 		margin-right: 1em;
 		display: inline-block;
 		list-style-type: none;
