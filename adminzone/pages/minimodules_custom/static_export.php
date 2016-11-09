@@ -85,6 +85,7 @@ require_code('sitemap');
 require_code('static_export');
 if (get_param_integer('save__pages', 1) == 1) {
     $member = get_member();
+    require_code('users_inactive_occasionals');
     create_session($GLOBALS['FORUM_DRIVER']->get_guest_id());
     clear_permissions_runtime_cache();
 
@@ -289,6 +290,7 @@ if (trim($post)!="")
 <p>' . do_lang('MESSAGE_SENT', null, null, null, $lang) . '</p>
 ';
     if (get_param_integer('save__mailer', 1) == 1) {
+        require_code('crypt');
         $mailer_path = get_custom_file_base() . '/pages/html_custom/' . $lang . '/mailer_temp.htm';
         @mkdir(dirname($mailer_path), 0777);
         file_put_contents($mailer_path, $mailer_script);

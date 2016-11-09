@@ -940,6 +940,8 @@ class Hook_wowbb
      */
     public function import_calendar($db, $table_prefix, $file_base)
     {
+        require_code('calendar2');
+
         $rows = $db->query('SELECT * FROM ' . $table_prefix . 'calendar');
         foreach ($rows as $row) {
             if (import_check_if_imported('event', strval($row['event_id']))) {

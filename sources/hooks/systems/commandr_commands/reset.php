@@ -36,6 +36,7 @@ class Hook_commandr_command_reset
         if ((array_key_exists('h', $options)) || (array_key_exists('help', $options))) {
             return array('', do_command_help('reset', array('h'), array()), '', '');
         } else {
+            require_code('users_active_actions');
             cms_eatcookie('commandr_dir');
             cms_eatcookie('commandr_state');
             cms_eatcookie('commandr_state_code');

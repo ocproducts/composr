@@ -70,6 +70,7 @@ function get_download_archive_size()
         }
     }
 
+    require_code('files');
     return clean_file_size($value);
 }
 

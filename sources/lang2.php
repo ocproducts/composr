@@ -220,6 +220,7 @@ function create_selection_list_lang_files($lang = null)
     ksort($_lang_files);
 
     require_lang('lang');
+    require_code('lang_compile');
 
     $lang_files = new Tempcode();
     foreach (array_keys($_lang_files) as $lang_file) {

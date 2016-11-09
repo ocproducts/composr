@@ -23,6 +23,7 @@ class backups_test_set extends cms_test_case
         require_lang('backups');
         require_code('backup');
         require_code('tar');
+        require_code('files');
 
         set_option('backup_server_hostname', '');
         $backup_name = 'test_backup';

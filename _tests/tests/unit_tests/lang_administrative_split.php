@@ -21,6 +21,7 @@ class lang_administrative_split_test_set extends cms_test_case
     public function setUp()
     {
         require_code('string_scan');
+        require_code('lang_compile');
 
         parent::setUp();
     }

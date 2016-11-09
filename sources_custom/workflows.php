@@ -624,6 +624,7 @@ function workflow_update_handler()
 
     // Now use it to find this content's validation field...
 
+    require_code('content');
     $ob = get_content_object($content_details[0]['content_type']);
 
     // Grab information about the hook

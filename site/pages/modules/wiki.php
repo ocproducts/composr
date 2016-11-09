@@ -731,6 +731,7 @@ class Module_wiki
             escape_html($date),
             $action,
         );
+        require_code('templates_results_table');
         return results_entry($_revision, false);
     }
 
