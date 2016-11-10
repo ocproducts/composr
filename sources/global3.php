@@ -2410,7 +2410,7 @@ function browser_matches($code, $comcode = null)
     $is_safari = strpos($browser, 'applewebkit') !== false;
     $is_chrome = strpos($browser, 'chrome/') !== false;
     $is_gecko = (strpos($browser, 'gecko') !== false) && !$is_safari;
-    $is_ie = ((strpos($browser, 'msie') !== false) || (strpos($browser, 'trident') !== false));
+    $is_ie = ((strpos($browser, 'msie') !== false) || (strpos($browser, 'trident') !== false) || (strpos($browser, 'edge/') !== false));
     $is_ie8 = (strpos($browser, 'msie 8') !== false) && ($is_ie);
     $is_ie9 = (strpos($browser, 'msie 9') !== false) && ($is_ie);
     $is_ie8_plus = $is_ie; // Below IE8 not supported/recognised
