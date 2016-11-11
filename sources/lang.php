@@ -375,6 +375,14 @@ function get_site_default_lang()
             if (array_key_exists('lang', $_GET)) {
                 return $_GET['lang'];
             }
+
+            // Auto-detect if not got to selection step yet
+            if (get_param_integer('step', 1) == 1) {
+                $lang = get_lang_browser();
+                if ($lang !== null) {
+                    return $lang;
+                }
+            }
         }
         return fallback_lang();
     }
