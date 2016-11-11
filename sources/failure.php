@@ -339,7 +339,7 @@ function _sanitise_error_msg($text)
  *
  * @param  mixed $text The error message (string or Tempcode)
  * @param  ID_TEXT $template Name of the terminal page template
- * @param  boolean $support_match_key_messages ?Whether match key messages / redirects should be supported (null: detect)
+ * @param  ?boolean $support_match_key_messages ?Whether match key messages / redirects should be supported (null: detect)
  * @return mixed Never returns (i.e. exits)
  * @ignore
  */
@@ -1372,6 +1372,7 @@ function _access_denied($class, $param, $force_login)
     set_http_status_code('401'); // Stop spiders ever storing the URL that caused this
 
     if ((running_script('messages')) && (get_param_string('action', 'new') == 'new')) { // Architecturally hackerish chat erroring. We do this as a session may have expired while the background message checker is running (e.g. after a computer unsuspend) and we don't want to leave it doing relatively intensive access-denied pages responses
+        require_code('chat_poller');
         chat_null_exit();
     }
 

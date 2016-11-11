@@ -25,6 +25,7 @@ require_code('addons2');
 require_code('version');
 require_code('version2');
 require_code('downloads2');
+require_code('galleries2');
 require_code('files');
 require_code('tar');
 
