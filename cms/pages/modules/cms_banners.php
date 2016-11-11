@@ -861,7 +861,7 @@ class Module_cms_banners_cat extends Standard_crud_module
      * @param  Tempcode $title The title (output of get_screen_title)
      * @param  Tempcode $description Some description to show, saying what happened
      * @param  ?AUTO_LINK $id The ID of whatever was just handled (null: N/A)
-     * @param  ID_TEXT $type The type ID we were working in (null: N/A)
+     * @param  ID_TEXT $type The type ID we were working in
      * @return Tempcode The UI
      */
     public function _do_next_manager($title, $description, $id, $type)

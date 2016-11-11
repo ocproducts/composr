@@ -45,7 +45,7 @@
 			</tr>
 			{+START,IF_NON_EMPTY,{NOTE}}
 				<tr>
-					<td colspan="5">
+					<td colspan="{$?,{$MOBILE},4,5}">
 						{NOTE*}
 					</td>
 				</tr>

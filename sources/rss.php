@@ -128,7 +128,10 @@ class CMS_RSS
             xml_set_start_namespace_decl_handler($xml_parser, 'startNamespace');
             xml_set_end_namespace_decl_handler($xml_parser, 'endNameSpace');
 
-            //$data = convert_to_internal_encoding($data);    xml_parser does it for us, and we can't disable it- so run with it instead of our own. Shame as it's inferior.
+            /*
+            require_code('character_sets');
+            $data = convert_to_internal_encoding($data);    xml_parser does it for us, and we can't disable it- so run with it instead of our own. Shame as it's inferior.
+            */
 
             if (strpos($data, '<!ENTITY') === false) {
                 $extra_data = "<" . "?xml version=\"1.0\" encoding=\"" . $GLOBALS['HTTP_CHARSET'] . "\" ?" . ">

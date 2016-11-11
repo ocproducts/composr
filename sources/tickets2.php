@@ -300,7 +300,7 @@ function get_tickets($member_id, $ticket_type_id = null, $override_view_others_t
  * @param  AUTO_LINK $ticket_type Return location for the ticket type
  * @param  integer $start Start offset in pagination
  * @param  ?integer $max Max per page in pagination (null: no limit)
- * @return mixed The array of maps (Each map is: title, message, member, date) (null: no such ticket)
+ * @return ?mixed The array of maps (Each map is: title, message, member, date) (null: no such ticket)
  */
 function get_ticket_posts($ticket_id, &$forum, &$topic_id, &$ticket_type, $start = 0, $max = null)
 {

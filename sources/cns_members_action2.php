@@ -1537,6 +1537,13 @@ function cns_set_custom_field($member_id, $field_id, $value, $type = null, $defe
                     $change[$db_fieldname] = $value;
                     break;
             }
+        } elseif ($value === null) {
+            switch ($storage_type) {
+                case 'integer':
+                case 'float':
+                    $change[$db_fieldname] = $value;
+                    break;
+            }
         } else {
             $change[$db_fieldname] = $value;
         }

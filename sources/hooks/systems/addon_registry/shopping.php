@@ -610,6 +610,8 @@ class Hook_addon_registry_shopping
             'FIELD_1' => lorem_phrase(),
             'FIELD_1_PLAIN' => lorem_phrase(),
             'FIELD_2' => placeholder_number(),
+            'FIELD_3_PLAIN' => placeholder_number(),
+            'FIELD_3' => placeholder_number(),
             'FIELD_2_PLAIN' => placeholder_number(),
             'FIELD_7' => placeholder_image(),
             'FIELD_7_PLAIN' => placeholder_url(),

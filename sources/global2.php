@@ -1308,7 +1308,7 @@ function get_complex_base_url($at)
  * Use with caution, as this has very limited CSRF protection compared to post_param_string.
  *
  * @param  ID_TEXT $name The name of the parameter to get
- * @param  ?mixed $default The default value to give the parameter if the parameter value is not defined (null: allow missing parameter) (false: give error on missing parameter)
+ * @param  ?~mixed $default The default value to give the parameter if the parameter value is not defined (null: allow missing parameter) (false: give error on missing parameter)
  * @return ?string The parameter value (null: missing)
  */
 function either_param_string($name, $default = false)
@@ -1341,7 +1341,7 @@ function either_param_string($name, $default = false)
  * Implements additional security over the direct PHP access mechanism which should not be used.
  *
  * @param  ID_TEXT $name The name of the parameter to get
- * @param  ?mixed $default The default value to give the parameter if the parameter value is not defined (null: allow missing parameter) (false: give error on missing parameter)
+ * @param  ?~mixed $default The default value to give the parameter if the parameter value is not defined (null: allow missing parameter) (false: give error on missing parameter)
  * @param  boolean $html Whether we are cleaning for HTML rather than Comcode/plain-text
  * @param  boolean $conv_from_wysiwyg Whether to convert WYSIWYG contents to Comcode automatically
  * @return ?string The parameter value (null: missing)
@@ -1426,7 +1426,7 @@ function post_param_string($name, $default = false, $html = false, $conv_from_wy
  * Implements additional security over the direct PHP access mechanism which should not be used.
  *
  * @param  ID_TEXT $name The name of the parameter to get
- * @param  ?mixed $default The default value to give the parameter if the parameter value is not defined (null: allow missing parameter) (false: give error on missing parameter)
+ * @param  ?~mixed $default The default value to give the parameter if the parameter value is not defined (null: allow missing parameter) (false: give error on missing parameter)
  * @param  boolean $no_security Whether to skip the security check. Does not currently do anything
  * @return ?string The parameter value (null: missing)
  */
@@ -1467,7 +1467,7 @@ function get_param_string($name, $default = false, $no_security = false)
  *
  * @param  array $array The array we're extracting parameters from
  * @param  string $name The name of the parameter
- * @param  ?mixed $default The default value to give the parameter if the parameter value is not defined (null: allow missing parameter) (false: give error on missing parameter)
+ * @param  ?~mixed $default The default value to give the parameter if the parameter value is not defined (null: allow missing parameter) (false: give error on missing parameter)
  * @param  boolean $integer Whether the parameter has to be an integer
  * @param  ?boolean $posted Whether the parameter is a POST parameter (null: undetermined)
  * @return string The value of the parameter
@@ -1476,7 +1476,7 @@ function get_param_string($name, $default = false, $no_security = false)
  */
 function __param($array, $name, $default, $integer = false, $posted = false)
 {
-    if ((!isset($array[$name])) || (($integer) && ($array[$name] === ''))) {
+    if ((!isset($array[$name])) || ($array[$name] === false) || (($integer) && ($array[$name] === ''))) {
         if ($default !== false) {
             return $default;
         }
@@ -1524,7 +1524,7 @@ function simulated_wildcard_match($context, $word, $full_cover = false)
  * You should always use integer specified versions when inputting integers, for the added security that type validation allows. If the value is of the wrong type, it indicates a hack attempt and will be logged.
  *
  * @param  ID_TEXT $name The name of the parameter to get
- * @param  ?mixed $default The default value to give the parameter if the parameter value is not defined or the empty string (null: allow missing parameter) (false: give error on missing parameter)
+ * @param  ?~mixed $default The default value to give the parameter if the parameter value is not defined or the empty string (null: allow missing parameter) (false: give error on missing parameter)
  * @return ?integer The parameter value (null: not set, and null given as default)
  */
 function either_param_integer($name, $default = false)
@@ -1549,7 +1549,7 @@ function either_param_integer($name, $default = false)
  * This function is the integeric partner of post_param_string, as it returns the value as an integer.
  *
  * @param  ID_TEXT $name The name of the parameter to get
- * @param  ?mixed $default The default value to give the parameter if the parameter value is not defined or the empty string (null: allow missing parameter) (false: give error on missing parameter)
+ * @param  ?~mixed $default The default value to give the parameter if the parameter value is not defined or the empty string (null: allow missing parameter) (false: give error on missing parameter)
  * @return ?integer The parameter value (null: not set, and null given as default)
  */
 function post_param_integer($name, $default = false)
@@ -1591,7 +1591,7 @@ function post_param_integer($name, $default = false)
  * This function is the integeric partner of get_param_string, as it returns the value as an integer.
  *
  * @param  ID_TEXT $name The name of the parameter to get
- * @param  ?mixed $default The default value to give the parameter if the parameter value is not defined or the empty string (null: allow missing parameter) (false: give error on missing parameter)
+ * @param  ?~mixed $default The default value to give the parameter if the parameter value is not defined or the empty string (null: allow missing parameter) (false: give error on missing parameter)
  * @param  boolean $not_string_ok If a string is given, use the default parameter rather than giving an error (only use this if you are suffering from a parameter conflict situation between different parts of Composr)
  * @return ?integer The parameter value (null: not set, and null given as default)
  */

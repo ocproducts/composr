@@ -84,8 +84,6 @@ class Hook_sw_news
             return;
         }
 
-        require_code('news');
-
         $admin_groups = $GLOBALS['FORUM_DRIVER']->get_super_admin_groups();
         $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
         $GLOBALS['SITE_DB']->query_delete('group_privileges', array('privilege' => 'have_personal_category', 'the_page' => 'cms_news'));
@@ -100,7 +98,7 @@ class Hook_sw_news
             $news_cats = $GLOBALS['SITE_DB']->query_select('news_categories', array('id'), array('nc_owner' => null));
             foreach ($news_cats as $news_cat) {
                 if (($news_cat['id'] > db_get_first_id()) && ($news_cat['id'] < db_get_first_id() + 7)) {
-                    require_code('news');
+                    require_code('news2');
                     delete_news_category($news_cat['id']);
                 }
             }

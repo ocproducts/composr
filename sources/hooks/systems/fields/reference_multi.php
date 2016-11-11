@@ -154,6 +154,7 @@ class Hook_fields_reference_multi
     public function get_field_inputter($_cf_name, $_cf_description, $field, $actual_value, $new)
     {
         /*
+        require_code('catalogues');
         $_list = new Tempcode();
         $list = create_selection_list_catalogue_entries_tree($field['c_name'], intval($actual_value), null, false);
         if (($field['cf_required'] == 0) || ($actual_value === '') || (is_null($actual_value)) || ($list->is_empty())) {
