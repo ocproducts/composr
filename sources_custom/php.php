@@ -196,7 +196,7 @@ function get_php_file_api($filename, $include_code = true)
                         }
 
                         $parts = _cleanup_array(preg_split('/\s/', substr($ltrim, 6)));
-                        if (($parts[0][0] != '?') && (array_key_exists('default', $parameters[$arg_counter])) && (is_null($parameters[$arg_counter]['default']))) {
+                        if ((strpos($parts[0], '?') === false) && (array_key_exists('default', $parameters[$arg_counter])) && (is_null($parameters[$arg_counter]['default']))) {
                             attach_message(do_lang_tempcode('UNALLOWED_NULL', escape_html($parameters[$arg_counter]['name']), escape_html($function_name), array(escape_html('null'))), 'warn');
                             continue 2;
                         }
@@ -299,14 +299,22 @@ function get_php_file_api($filename, $include_code = true)
                 check_function_type($parameter['type'], $function_name, $parameter['name'], $default, array_key_exists('range', $parameter) ? $parameter['range'] : null, array_key_exists('set', $parameter) ? $parameter['set'] : null);
 
                 // Check that null is fully specified
-                if ($parameter['type'][0] == '?') {
+                if (strpos($parameter['type'], '?') !== false) {
                     if (strpos($parameter['description'], '(null: ') === false) {
                         attach_message(do_lang_tempcode('NULL_MEANING_NOT_SPECIFIED', escape_html($parameter['name']), escape_html($function_name), array(escape_html('null'))), 'warn');
                     }
+                } else {
+                    if (strpos($parameter['description'], '(null: ') !== false) {
+                        attach_message(do_lang_tempcode('NULL_MEANING_SHOULDNT_BE_SPECIFIED', escape_html($parameter['name']), escape_html($function_name), array(escape_html('null'))), 'warn');
+                    }
                 }
-                if ($parameter['type'][0] == '~') {
+                if (strpos($parameter['type'], '~') !== false) {
                     if (strpos($parameter['description'], '(false: ') === false) {
                         attach_message(do_lang_tempcode('NULL_MEANING_NOT_SPECIFIED', escape_html($parameter['name']), escape_html($function_name), array(escape_html('false'))), 'warn');
+                    }
+                } else {
+                    if (strpos($parameter['description'], '(false: ') !== false) {
+                        attach_message(do_lang_tempcode('NULL_MEANING_SHOULDNT_BE_SPECIFIED', escape_html($parameter['name']), escape_html($function_name), array(escape_html('false'))), 'warn');
                     }
                 }
             }
@@ -315,14 +323,22 @@ function get_php_file_api($filename, $include_code = true)
                 check_function_type($return['type'], $function_name, '(return)', null, array_key_exists('range', $return) ? $return['range'] : null, array_key_exists('set', $return) ? $return['set'] : null);
 
                 // Check that null is fully specified
-                if ($return['type'][0] == '?') {
+                if (strpos($return['type'], '?') !== false) {
                     if (strpos($return['description'], '(null: ') === false) {
                         attach_message(do_lang_tempcode('NULL_MEANING_NOT_SPECIFIED', escape_html('(return)'), escape_html($function_name), array(escape_html('null'))), 'warn');
                     }
+                } else {
+                    if (strpos($return['description'], '(null: ') !== false) {
+                        attach_message(do_lang_tempcode('NULL_MEANING_SHOULDNT_BE_SPECIFIED', escape_html('(return)'), escape_html($function_name), array(escape_html('null'))), 'warn');
+                    }
                 }
-                if ($return['type'][0] == '~') {
+                if (strpos($return['type'], '~') !== false) {
                     if (strpos($return['description'], '(false: ') === false) {
                         attach_message(do_lang_tempcode('NULL_MEANING_NOT_SPECIFIED', escape_html('(return)'), escape_html($function_name), array(escape_html('false'))), 'warn');
+                    }
+                } else {
+                    if (strpos($return['description'], '(false: ') !== false) {
+                        attach_message(do_lang_tempcode('NULL_MEANING_SHOULDNT_BE_SPECIFIED', escape_html('(return)'), escape_html($function_name), array(escape_html('false'))), 'warn');
                     }
                 }
             } else {
@@ -591,7 +607,7 @@ function check_function_type($type, $function_name, $name, $value, $range, $set,
         'mixed'
     );
 
-    $_type = (($type[0] == '?') || ($type[0] == '~')) ? substr($type, 1) : $type;
+    $_type = ltrim($type, '?~');
 
     if (!in_array($_type, $valid_types)) {
         attach_message(do_lang_tempcode('INVALID_PARAMETER_TYPE', escape_html($type), escape_html($function_name)), 'warn');
@@ -671,8 +687,8 @@ function check_function_type($type, $function_name, $name, $value, $range, $set,
  */
 function test_fail_php_type_check($type, $function_name, $name, $value, $echo = false)
 {
-    $null_allowed = ($type[0] == '?');
-    $false_allowed = ($type[0] == '~');
+    $null_allowed = (strpos($type, '?') !== false);
+    $false_allowed = (strpos($type, '~') !== false);
     $_type = preg_replace('#[^\w]#', '', $type);
 
     if ((is_null($value)) && (!$null_allowed)) {
@@ -1014,11 +1030,11 @@ function convert_from_php_to_hhvm_hack($filename)
  */
 function cms_type_to_hhvm_type($t)
 {
-    if ($t[0] == '~') {
+    if (strpos($t, '~') !== false) {
         return 'mixed';
     }
     $nullable = false;
-    if ($t[0] == '@') {
+    if (strpos($t, '?') !== false) {
         $nullable = true;
         $t = substr($t, 1);
     }

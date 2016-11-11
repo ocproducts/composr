@@ -160,7 +160,7 @@ function date_from_week_of_year($year, $week)
 /**
  * Find a list of pairs specifying the times the event occurs, for 20 years into the future, in user-time.
  *
- * @param  ID_TEXT $timezone The timezone for the event (null: current user's timezone)
+ * @param  ID_TEXT $timezone The timezone for the event
  * @param  BINARY $do_timezone_conv Whether the time should be converted to the viewer's own timezone
  * @param  integer $start_year The year the event starts at. This and the below are in server time
  * @param  integer $start_month The month the event starts at
@@ -1682,7 +1682,7 @@ function end_find_concrete_day_of_month_wrap($event)
 /**
  * Find details of when an event happens. Preferably the next recurrence, but if it is in the past, the first.
  *
- * @param  ID_TEXT $timezone The timezone for the event (null: current user's timezone)
+ * @param  ?ID_TEXT $timezone The timezone for the event (null: current user's timezone)
  * @param  BINARY $do_timezone_conv Whether the time should be converted to the viewer's own timezone
  * @param  integer $start_year The year the event starts at. This and the below are in server time
  * @param  integer $start_month The month the event starts at
@@ -1705,6 +1705,10 @@ function end_find_concrete_day_of_month_wrap($event)
  */
 function get_calendar_event_first_date($timezone, $do_timezone_conv, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year, $end_month, $end_day, $end_monthly_spec_type, $end_hour, $end_minute, $recurrence, $recurrences, $force_first = false)
 {
+    if ($timezone === null) {
+        $timezone = get_users_timezone();
+    }
+
     if ($force_first) {
         $times = array();
     } else {
