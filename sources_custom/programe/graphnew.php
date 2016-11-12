@@ -402,13 +402,13 @@ function dographquery(&$whichresult, $word, $parent){
 	$whichresult[]=-1;
 	$whichresult[]=-1;
 
-	$selectcode = mysql_query($query);
+	$selectcode = mysqli_query($GLOBALS['SITE_DB']->connection_write[0], $query);
 	if ($selectcode){
-		if(!mysql_numrows($selectcode)){
+		if(!mysqli_num_rows($selectcode)){
 			return $whichresult;
 		}
 		else{
-			while ($q = mysql_fetch_array($selectcode)){
+			while ($q = mysqli_fetch_array($selectcode)){
 				if ($q[1]==1){
 					$whichresult[0]=$q[0];
 
@@ -463,13 +463,13 @@ function findtemplate($id){
 
 	$query = "select template from templates where id=$id";
 	debugger($query,2);
-	$selectcode = mysql_query($query);
+	$selectcode = mysqli_query($GLOBALS['SITE_DB']->connection_write[0], $query);
 	if ($selectcode){
-		if(!mysql_numrows($selectcode)){
+		if(!mysqli_num_rows($selectcode)){
 			return "";
 		}
 		else{
-			while ($q = mysql_fetch_array($selectcode)){
+			while ($q = mysqli_fetch_array($selectcode)){
 				return $q[0];
 			}
 		}
@@ -603,13 +603,13 @@ function checkcache($combined,&$template,&$inputstarvals,&$thatstarvals,&$topics
 {
 	$ccquery="select template,inputstarvals,thatstarvals,topicstarvals,patternmatched,inputmatched from gmcache where combined='" . addslashes($combined) . "' and " . whichbots();	
 
-	$selectcode = mysql_query($ccquery);
+	$selectcode = mysqli_query($GLOBALS['SITE_DB']->connection_write[0], $ccquery);
 	if ($selectcode){
-		if(!mysql_numrows($selectcode)){
+		if(!mysqli_num_rows($selectcode)){
 			return false;
 		}
 		else{
-			while ($q = mysql_fetch_array($selectcode)){
+			while ($q = mysqli_fetch_array($selectcode)){
 
 				$template=findtemplate($q[0]);
 				$inputstarvals=explode(",",$q[1]);
@@ -649,7 +649,7 @@ function fillcache($combined,$mytemplate,$inputstarvals,$thatstarvals,$topicstar
 
 	$ccquery="insert into gmcache (bot, combined,template,inputstarvals,thatstarvals,topicstarvals,patternmatched,inputmatched) values ($selectbot,'" . addslashes($combined) . "'," . $mytemplate . ",'" . addslashes(arraytostring($inputstarvals)) . "','" . addslashes(arraytostring($thatstarvals)) . "','" . addslashes(arraytostring($topicstarvals)) . "','" . addslashes($patternmatched) . "','" . addslashes($inputmatched) . "')";
 
-	$selectcode = mysql_query($ccquery);
+	$selectcode = mysqli_query($GLOBALS['SITE_DB']->connection_write[0], $ccquery);
 	if ($selectcode){
 	}
 

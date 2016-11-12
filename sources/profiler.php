@@ -73,9 +73,6 @@ function cms_profile_is_enabled()
     if (!function_exists('get_self_url_easy')) {
         return false;
     }
-    if (!function_exists('clean_file_size')) {
-        return false;
-    }
 
     global $PROFILING_ALLOWED, $PROFILING_LINUX_FULL;
     if (!isset($PROFILING_ALLOWED)) {
@@ -222,6 +219,8 @@ function _cms_profiler_script_end()
     // Lock out further profiling
     global $PROFILING_ALLOWED;
     $PROFILING_ALLOWED = false;
+
+    require_code('files');
 
     // Post-logging
     _cms_profile_log_line(''); // Spacer line

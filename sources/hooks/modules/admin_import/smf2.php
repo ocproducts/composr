@@ -1738,6 +1738,7 @@ class Hook_import_smf2
     public function import_news_and_categories($db, $table_prefix, $file_base)
     {
         require_code('news');
+        require_code('news2');
 
         $rows = $db->query_select('tp_variables', array('value1 AS title', 'id'), array('type' => 'category'), '', null, null, true);
         if ($rows === null) {

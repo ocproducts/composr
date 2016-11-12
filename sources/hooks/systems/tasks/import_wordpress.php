@@ -329,6 +329,7 @@ class Hook_task_import_wordpress
                                     $submitter = $GLOBALS['FORUM_DRIVER']->get_guest_id(); // If comment is made by a non-member, assign comment to guest account
                                 }
 
+                                require_code('feedback');
                                 $forum = (find_overridden_comment_forum('news') === null) ? get_option('comments_forum_name') : find_overridden_comment_forum('news');
 
                                 $comment_parent_id = mixed();

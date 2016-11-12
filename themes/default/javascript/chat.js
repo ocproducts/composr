@@ -432,7 +432,18 @@ function chat_post(event, current_room_id, field_name, font_name, font_colour) {
                 catch (e) {
                 }
             };
-            do_ajax_request(maintain_theme_in_link(url) + window.top_window.keep_stub(false), func, 'room_id=' + encodeURIComponent(current_room_id) + '&message=' + encodeURIComponent(message_text) + '&font=' + encodeURIComponent(font_name) + '&colour=' + encodeURIComponent(font_colour) + '&message_id=' + encodeURIComponent((window.top_window.last_message_id === null) ? -1 : window.top_window.last_message_id) + '&event_id=' + encodeURIComponent(window.top_window.last_event_id) + keep_stub(false));
+            var error_func = function () {
+                window.top_window.currently_sending_message = false;
+                element.disabled = false;
+
+                // Reschedule the next check (cc_timer was reset already higher up in function)
+                window.top_window.cc_timer = window.top_window.setTimeout(function () {
+                    window.top_window.chat_check(false, window.top_window.last_message_id, window.top_window.last_event_id);
+                }, window.MESSAGE_CHECK_INTERVAL);
+            };
+            var full_url = maintain_theme_in_link(url + window.top_window.keep_stub(false));
+            var post_data = 'room_id=' + encodeURIComponent(current_room_id) + '&message=' + encodeURIComponent(message_text) + '&font=' + encodeURIComponent(font_name) + '&colour=' + encodeURIComponent(font_colour) + '&message_id=' + encodeURIComponent((window.top_window.last_message_id === null) ? -1 : window.top_window.last_message_id) + '&event_id=' + encodeURIComponent(window.top_window.last_event_id);
+            do_ajax_request(full_url, [func, error_func], post_data);
         }
 
         return false;
@@ -468,9 +479,14 @@ function chat_check(backlog, message_id, event_id) {
                 url = '{$FIND_SCRIPT;,messages}?action=new&room_id=' + encodeURIComponent(_room_id) + '&message_id=' + encodeURIComponent(message_id ? message_id : -1) + '&event_id=' + encodeURIComponent(event_id);
             }
             if (window.location.href.indexOf('no_reenter_message=1') != -1) url = url + '&no_reenter_message=1';
-            do_ajax_request(maintain_theme_in_link(url + keep_stub(false)), function (ajax_result_frame, ajax_result) {
+            var full_url = maintain_theme_in_link(url + keep_stub(false));
+            var func = function (ajax_result_frame, ajax_result) {
                 chat_check_response(ajax_result_frame, ajax_result, backlog/*backlog = skip_incoming_sound*/);
-            });
+            };
+            var error_func = function () {
+                chat_check_response(null, null);
+            }
+            do_ajax_request(full_url, [func, error_func]);
             return false;
         }
         return null;
@@ -493,10 +509,12 @@ function chat_check_timeout(backlog, message_id, event_id) {
 
 // Deal with the new messages response. Wraps around process_chat_xml_messages as it also adds timers to ensure the message check continues to function even if background errors might have happened.
 function chat_check_response(ajax_result_frame, ajax_result, skip_incoming_sound) {
-    if (skip_incoming_sound === undefined) skip_incoming_sound = false;
+    if (ajax_result != null) {
+        if (skip_incoming_sound === undefined) skip_incoming_sound = false;
 
-    var temp = process_chat_xml_messages(ajax_result, skip_incoming_sound);
-    if (temp == -2) return false;
+        var temp = process_chat_xml_messages(ajax_result, skip_incoming_sound);
+        if (temp == -2) return false;
+    }
 
     // Schedule the next check
     if (window.cc_timer) {

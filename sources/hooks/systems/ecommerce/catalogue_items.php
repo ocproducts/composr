@@ -480,6 +480,7 @@ class Hook_ecommerce_catalogue_items
 
         $product_link = hyperlink($product_url, $entry['product_name'], false, true, do_lang('INDEX'));
 
+        require_code('templates_results_table');
         $shopping_cart->attach(
             results_entry(
                 array(

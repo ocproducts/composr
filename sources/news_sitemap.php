@@ -47,6 +47,7 @@ function build_news_sitemap()
 
     $guest_id = $GLOBALS['FORUM_DRIVER']->get_guest_id();
     $has_guest_page_access = has_actual_page_access($guest_id, 'news', $zone);
+    require_code('users2');
     $modal_member_id = get_modal_user();
     $has_member_page_access = true;
     if ($modal_member_id !== null) {

@@ -34,7 +34,9 @@
 		<input class="button_screen buttons__proceed" type="submit" value="{!PROCEED}" />
 	</p>
 
-	<p>&dagger; Currently we do not directly ship additional languages with Composr. However community translations (made on Transifex) may be distributed in the addon directory.</p>
+	{+START,IF,{$EQ,{$SUBSTR_COUNT,{LANGUAGES},</option>},1}}
+		<p>&dagger; Currently we do not directly ship additional languages with Composr. However community translations (made on Transifex) may be distributed in the addon directory.</p>
+	{+END}
 </form>
 
 

@@ -65,6 +65,8 @@ function do_work()
     require_code('config2');
     set_option('post_read_history_days', '0'); // Needed for a little sanity in recent post retrieval
 
+    require_code('crypt');
+
     set_mass_import_mode();
 
     // members (remember to test the username autocompleter, and birthdays)

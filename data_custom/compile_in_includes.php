@@ -46,6 +46,8 @@ if ((!$undo) && (!$do)) {
 }
 
 $file_base = dirname(__DIR__);
+
+require_code('files2');
 $files = get_directory_contents($file_base, '');
 
 foreach ($files as $file) {

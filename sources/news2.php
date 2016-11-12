@@ -451,7 +451,7 @@ function send_rss_ping($show_errors = true)
  * @param  BINARY $allow_trackbacks Whether the news may have trackbacks
  * @param  LONG_TEXT $notes Notes for the news
  * @param  LONG_TEXT $news_article The news entry (blank means no entry)
- * @param  AUTO_LINK $main_news_category The primary news category (null: personal)
+ * @param  ?AUTO_LINK $main_news_category The primary news category (null: personal)
  * @param  ?array $news_categories The IDs of the news categories that this is in (null: do not change)
  * @param  SHORT_TEXT $meta_keywords Meta keywords
  * @param  LONG_TEXT $meta_description Meta description

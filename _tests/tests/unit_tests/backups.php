@@ -23,6 +23,7 @@ class backups_test_set extends cms_test_case
         require_lang('backups');
         require_code('backup');
         require_code('tar');
+        require_code('files');
 
         set_option('backup_server_hostname', '');
         $backup_name = 'test_backup';
@@ -62,11 +63,13 @@ $SITE_INFO[\'table_prefix\'] = \'bt_\';
         ';
         file_put_contents($config_path, $config_php);
 
-        $test = http_download_file(get_base_url() . '/exports/backups/test/restore.php', null, null, false, 'Composr', null, null, null, null, null, null, null, null, 100.0); // TODO: Change in v11
-        $success = ($test !== null);
-        $this->assertTrue($success, 'Failed to run restorer script');
-        if (!$success) {
-            return;
+        for ($i = 0; $i < 2; $i++) {
+            $test = http_download_file(get_base_url() . '/exports/backups/test/restore.php', null, null, false, 'Composr', null, null, null, null, null, null, null, null, 100.0); // TODO: Change in v11
+            $success = ($test !== null);
+            $this->assertTrue($success, 'Failed to run restorer script on iteration ' . strval($i + 1));
+            if (!$success) {
+                return;
+            }
         }
 
         $db = new DatabaseConnector(get_db_site(), get_db_site_host(), get_db_site_user(), get_db_site_password(), 'bt_');

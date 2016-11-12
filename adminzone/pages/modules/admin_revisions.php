@@ -259,6 +259,7 @@ class Module_admin_revisions
             $_revision[] = $delete;
         }*/
 
+        require_code('templates_results_table');
         return results_entry($_revision, false);
     }
 

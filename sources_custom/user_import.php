@@ -115,6 +115,7 @@ function do_user_import()
                 if ($username !== null) {
                     // Add
                     if ($password === null) {
+                        require_code('crypt');
                         $password = produce_salt();
                     }
                     cns_make_member($username, $password, $email_address, $groups, $dob_day, $dob_month, $dob_year, $custom_fields, $timezone, $primary_group, 1, null, null, '', null, '', 0, 0, 1, '', $photo_url, '', 1, null, null, 1, 1, null, '', false, 'plain');

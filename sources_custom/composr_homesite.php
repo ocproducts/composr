@@ -238,7 +238,7 @@ function demonstratr_add_site_raw($server, $codename, $email_address, $password)
     require_code('tar');
     $tar = tar_open(special_demonstratr_dir() . '/template.tar', 'rb');
     $path_short = substr($path, strlen(get_custom_file_base() . '/'));
-    tar_extract_to_folder($tar, $path_short);
+    @tar_extract_to_folder($tar, $path_short);
     tar_close($tar);
     require_code('files2');
     $contents = get_directory_contents($path, $path, 0, true, true);

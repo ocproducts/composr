@@ -402,6 +402,8 @@ function step_1()
         }
     }
 
+    // Language selection...
+
     if (file_exists('lang_custom/langs.ini')) {
         $lookup = better_parse_ini_file(get_custom_file_base() . '/lang_custom/langs.ini');
     } else {
@@ -451,6 +453,8 @@ function step_1()
             $tlanguages->attach($entry);
         }
     }
+
+    // UI...
 
     $url = 'install.php?step=2';
     if (in_safe_mode()) {
@@ -2506,11 +2510,11 @@ function handle_self_referencing_embedment()
 
             case 'logo':
                 header('Content-type: image/png');
-                if (!file_exists(get_file_base() . '/themes/default/images/' . get_site_default_lang() . '/logo/standalone_logo.png')) {
-                    $out = file_array_get('themes/default/images/' . get_site_default_lang() . '/logo/standalone_logo.png');
+                if (!file_exists(get_file_base() . '/themes/default/images/' . fallback_lang() . '/logo/standalone_logo.png')) {
+                    $out = file_array_get('themes/default/images/' . fallback_lang() . '/logo/standalone_logo.png');
                     echo $out;
                 } else {
-                    print(file_get_contents(get_file_base() . '/themes/default/images/' . get_site_default_lang() . '/logo/standalone_logo.png'));
+                    print(file_get_contents(get_file_base() . '/themes/default/images/' . fallback_lang() . '/logo/standalone_logo.png'));
                     exit();
                 }
                 exit();

@@ -87,7 +87,7 @@ function cns_validate_post($post_id, $topic_id = null, $forum_id = null, $poster
  * Edit a post.
  *
  * @param  AUTO_LINK $post_id The ID of the post that we're editing.
- * @param  BINARY $validated Whether the post is validated (null: decide based on permissions).
+ * @param  ?BINARY $validated Whether the post is validated (null: decide based on permissions).
  * @param  SHORT_TEXT $title The title of the post (may be blank).
  * @param  LONG_TEXT $post The post.
  * @param  BINARY $skip_sig Whether to skip showing the posters signature in the post.

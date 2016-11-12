@@ -76,7 +76,7 @@ function get_future_version_information()
  * Get branch version number for a Composr version.
  *
  * @param  ?float $general General version number (null: on disk version)
- * @return string Branch version number (null: on disk version)
+ * @return string Branch version number
  */
 function get_version_branch($general = null)
 {

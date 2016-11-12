@@ -164,7 +164,7 @@ function url_default_parameters__disable()
 /**
  * Find a default property, defaulting to the average of what is there already, or the given default if really necessary.
  *
- * @param  integer $setting The current setting (null: we have to work it out); if non-null, the function will immediately return
+ * @param  ?integer $setting The current setting (null: we have to work it out); if non-null, the function will immediately return
  * @param  ID_TEXT $db_property The property
  * @param  ID_TEXT $table The table to average within
  * @param  integer $default The last-resort default

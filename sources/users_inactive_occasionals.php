@@ -326,7 +326,7 @@ function try_su_login($member)
 /**
  * Try and login via HTTP authentication. This function is only called if HTTP authentication is currently active. With HTTP authentication we trust the PHP_AUTH_USER setting.
  *
- * @return ?MEMBER Logged in member (null: no login happened)
+ * @return ?MEMBER Logged in member (null: no log in happened)
  */
 function try_httpauth_login()
 {
@@ -366,7 +366,7 @@ function try_httpauth_login()
 /**
  * Do a cookie login.
  *
- * @return MEMBER Logged in member (null: no login happened)
+ * @return ?MEMBER Logged in member (null: no log in happened)
  */
 function try_cookie_login()
 {

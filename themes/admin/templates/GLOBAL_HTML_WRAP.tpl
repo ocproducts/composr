@@ -173,7 +173,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 					</div>
 
 					<nav class="global_minilinks">
-						<ul class="{+START,IF,{$NOT,{$MOBILE,1}}}horizontal_links {+END}footer_links">
+						<ul class="{+START,IF,{$NOT,{$MOBILE}}}horizontal_links {+END}footer_links">
 							<li><a href="{$PAGE_LINK*,:}">{!HOME}</a></li>
 							{+START,IF,{$MOBILE}}
 								{$GET,FOOTER_BUTTONS}

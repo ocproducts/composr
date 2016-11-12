@@ -115,6 +115,7 @@ END;
         $from_version .= '.' . $d;
     }
 }
+require_code('version2');
 $from_version = get_version_dotted__from_anything($from_version); // Canonicalise
 
 require_code('uploads/website_specific/compo.sr/upgrades/make_upgrader.php');

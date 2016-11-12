@@ -54,7 +54,7 @@ function get_table_backup($log_file, $db_meta, $db_meta_indices, &$install_php_f
             }
             $array .= "        '" . $name . "' => '" . $type . "'";
         }
-        fwrite($install_php_file, preg_replace('#^#m', '//', "    \$GLOBALS['SITE_DB']->create_table('$table',array(\n$array), true, true);\n"));
+        fwrite($install_php_file, preg_replace('#^#m', '//', "    \$GLOBALS['SITE_DB']->create_table('$table', array(\n$array), true, true);\n"));
 
         require_code('database_relations');
         if (table_has_purpose_flag($table, TABLE_PURPOSE__NO_BACKUPS)) {
@@ -108,7 +108,7 @@ function get_table_backup($log_file, $db_meta, $db_meta_indices, &$install_php_f
     // For each index, build up a Composr index creation command
     $indices = $GLOBALS['SITE_DB']->query_select($db_meta_indices, array('*'));
     foreach ($indices as $index) {
-        if (fwrite($install_php_file, preg_replace('#^#m', '//', '   $GLOBALS[\'SITE_DB\']->create_index(\'' . $index['i_table'] . '\',\'' . $index['i_name'] . '\',array(\'' . str_replace(',', '\',\'', $index['i_fields']) . '\'));' . "\n")) == 0) {
+        if (fwrite($install_php_file, preg_replace('#^#m', '//', '    $GLOBALS[\'SITE_DB\']->create_index(\'' . $index['i_table'] . '\', \'' . $index['i_name'] . '\', array(\'' . str_replace(',', '\', \'', $index['i_fields']) . '\'));' . "\n")) == 0) {
             warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
         }
     }

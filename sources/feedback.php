@@ -98,7 +98,7 @@ function find_overridden_comment_forum($feedback_code, $category_id = null)
  *
  * @param  ID_TEXT $content_type Content type
  * @param  ID_TEXT $content_id Content ID
- * @return array A tuple: Content title (null: unknown), Submitter (null: unknown), URL (for use within current browser session), URL (for use in emails / sharing), Content meta aware info array
+ * @return array A tuple: Content title (null means unknown), Submitter (null means unknown), URL (for use within current browser session), URL (for use in emails / sharing), Content meta aware info array
  */
 function get_details_behind_feedback_code($content_type, $content_id)
 {
