@@ -1873,7 +1873,6 @@ function step_5_core()
         'm_name' => '*ID_TEXT',
         'm_type' => 'ID_TEXT'
     ));
-    $GLOBALS['SITE_DB']->create_index('db_meta', 'findtransfields', array('m_type'));
 
     $GLOBALS['SITE_DB']->drop_table_if_exists('db_meta_indices');
     $GLOBALS['SITE_DB']->create_table('db_meta_indices', array(
@@ -1881,6 +1880,8 @@ function step_5_core()
         'i_name' => '*ID_TEXT',
         'i_fields' => '*ID_TEXT',
     ));
+
+    $GLOBALS['SITE_DB']->create_index('db_meta', 'findtransfields', array('m_type'));
 
     $GLOBALS['SITE_DB']->drop_table_if_exists('translate');
     $GLOBALS['SITE_DB']->create_table('translate', array(
