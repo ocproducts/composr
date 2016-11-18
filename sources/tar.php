@@ -348,8 +348,9 @@ function tar_add_folder(&$resource, $logfile, $path, $max_size = null, $subpath 
  * @param  boolean $use_afm Whether to extract via the AFM (assumes AFM has been set up prior to this function call)
  * @param  ?array $files The files to extract (null: all)
  * @param  boolean $comcode_backups Whether to take backups of Comcode pages
+ * @param  boolean $report_errors Whether to report errors
  */
-function tar_extract_to_folder(&$resource, $path, $use_afm = false, $files = null, $comcode_backups = false)
+function tar_extract_to_folder(&$resource, $path, $use_afm = false, $files = null, $comcode_backups = false, $report_errors = true)
 {
     if (!array_key_exists('directory', $resource)) {
         tar_get_directory($resource);
@@ -435,7 +436,7 @@ function tar_extract_to_folder(&$resource, $path, $use_afm = false, $files = nul
 
                 $myfile = @fopen(get_custom_file_base() . '/' . $path . $file['path'], 'wb');
                 if ($myfile === false) {
-                    if (error_reporting() != 0) {
+                    if ($report_errors) {
                         intelligent_write_error(get_custom_file_base() . '/' . $path . $file['path']);
                     }
                 } else {

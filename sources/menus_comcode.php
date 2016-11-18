@@ -187,7 +187,9 @@ function build_comcode_menu($comcode, $menu, $source_member, $type)
         $i++;
     }
 
-    for ($x = 0; $x < count($stack); $x++) {
+    // Reverse the order into a proper tree structure
+    $stack_size = count($stack);
+    for ($x = 0; $x < $stack_size; $x++) {
         $this_level = $current_level;
         $current_level = array_pop($stack);
         if ($current_level === null) {
@@ -196,5 +198,6 @@ function build_comcode_menu($comcode, $menu, $source_member, $type)
         }
         $current_level['children'][] = $this_level;
     }
+
     return _render_menu($current_level, $source_member, $type);
 }

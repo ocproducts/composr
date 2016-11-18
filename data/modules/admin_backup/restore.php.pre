@@ -173,7 +173,8 @@ if ($sql_buildup != '') {
 
 require_code('tempcode_compiler');
 $css_nocache = _do_template('default', '/css/', 'no_cache', 'no_cache', 'EN', '.css');
-$tpl = do_template('RESTORE_HTML_WRAP', array('_GUID' => '8e3b9d894d8ef06b5057fb654f7db59b', 'CSS_NOCACHE' => $css_nocache, 'MESSAGE' => do_lang('SUCCESS')));
+require_lang('backups');
+$tpl = do_template('RESTORE_HTML_WRAP', array('_GUID' => '8e3b9d894d8ef06b5057fb654f7db59b', 'CSS_NOCACHE' => $css_nocache, 'MESSAGE' => do_lang('BACKUP_RESTORE_SUCCESS')));
 echo $tpl->evaluate();
 
 /**

@@ -384,7 +384,7 @@ function _generic_exit($text, $template, $support_match_key_messages = false)
         @header('Content-type: text/plain; charset=' . get_charset());
         set_http_status_code('500');
         safe_ini_set('ocproducts.xss_detect', '0');
-        debug_print_backtrace();
+        @debug_print_backtrace();
         exit((is_object($text) ? strip_html($text->evaluate()) : $text) . "\n");
     }
 
