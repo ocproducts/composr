@@ -174,7 +174,11 @@ function make_backup($file, $b_type = 'full', $max_size = 100) // This is called
     $install_php_file_tmp_path = cms_tempnam();
     $install_php_file = fopen($install_php_file_tmp_path, 'wb');
 
-    fwrite($install_php_file, substr($_install_php_file, 0, $place));
+    if (fwrite($install_php_file, substr($_install_php_file, 0, $place)) == 0) {
+        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+    }
+
+    // (nothing currently goes between the marker)
 
     if (fwrite($install_php_file, substr($_install_php_file, $place + strlen($look_for))) == 0) {
         warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));

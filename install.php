@@ -136,7 +136,7 @@ if (array_key_exists('default_lang', $_POST)) {
 }
 $USER_LANG_CACHED = $INSTALL_LANG;
 
-// Languages we can use
+// Language files we can use
 require_lang('global');
 require_lang('critical_error');
 require_lang('installer');
@@ -773,21 +773,20 @@ function step_4()
     $db_site_user = $PROBED_FORUM_CONFIG['sql_user'];
     $db_site_password = $PROBED_FORUM_CONFIG['sql_pass'];
     $db_site = $PROBED_FORUM_CONFIG['sql_database'];
-    $db_forums_host = $db_site_host;
-    $db_forums_user = $db_site_user;
-    $db_forums_password = $db_site_password;
-    $db_forums = $db_site;
     $board_prefix = $PROBED_FORUM_CONFIG['board_url'];
     $member_cookie = $PROBED_FORUM_CONFIG['cookie_member_id'];
     $pass_cookie = $PROBED_FORUM_CONFIG['cookie_member_hash'];
+    $multi_lang_content = file_exists(get_file_base() . '/.git')/*randomise in dev mode*/ ? mt_rand(0, 1) : 0;
+    $domain = preg_replace('#:.*#', '', cms_srv('HTTP_HOST'));
 
     $specifics = $GLOBALS['FORUM_DRIVER']->install_specifics();
 
     // Now we've gone through all the work of detecting it, lets grab from _config.php to see what we had last time we installed
     global $SITE_INFO;
     if ((file_exists(get_file_base() . '/_config.php')) && (filesize(get_file_base() . '/_config.php') != 0)) {
+        // De-set what we know we can't re-use because we have better info now
         require_once(get_file_base() . '/_config.php');
-        if ($PROBED_FORUM_CONFIG['sql_database'] != '') {
+        if (($PROBED_FORUM_CONFIG['sql_database'] != '') && ($forum_type != 'cns') && ($forum_type != 'none')) {
             if ((!array_key_exists('forum_type', $SITE_INFO)) || ($SITE_INFO['forum_type'] != $forum_type)) { // Don't want to throw detected versions of these away
                 unset($SITE_INFO['user_cookie']);
                 unset($SITE_INFO['pass_cookie']);
@@ -807,7 +806,52 @@ function step_4()
             unset($SITE_INFO['db_site']);
         }
         unset($SITE_INFO['base_url']);
+
+        // Copy from last time
+        if (isset($SITE_INFO['cookie_domain'])) {
+            $cookie_domain = $SITE_INFO['cookie_domain'];
+        }
+        if (isset($SITE_INFO['cookie_path'])) {
+            $cookie_path = $SITE_INFO['cookie_path'];
+        }
+        if (isset($SITE_INFO['cookie_days'])) {
+            $cookie_days = $SITE_INFO['cookie_days'];
+        }
+        if (isset($SITE_INFO['table_prefix'])) {
+            $table_prefix = $SITE_INFO['table_prefix'];
+        }
+        if (isset($SITE_INFO['db_site_host'])) {
+            $db_site_host = $SITE_INFO['db_site_host'];
+        }
+        if (isset($SITE_INFO['db_site_user'])) {
+            $db_site_user = $SITE_INFO['db_site_user'];
+        }
+        if (isset($SITE_INFO['db_site_password'])) {
+            $db_site_password = $SITE_INFO['db_site_password'];
+        }
+        if (isset($SITE_INFO['db_site'])) {
+            $db_site = $SITE_INFO['db_site'];
+        }
+        if (isset($SITE_INFO['member_cookie'])) {
+            $member_cookie = $SITE_INFO['member_cookie'];
+        }
+        if (isset($SITE_INFO['pass_cookie'])) {
+            $pass_cookie = $SITE_INFO['pass_cookie'];
+        }
+        if (isset($SITE_INFO['domain'])) {
+            $domain = $SITE_INFO['domain'];
+        }
+        if (!file_exists(get_file_base() . '/.git')) {
+            if (isset($SITE_INFO['multi_lang_content'])) {
+                $multi_lang_content = intval($SITE_INFO['multi_lang_content']);
+            }
+        }
     }
+
+    $db_forums_host = $db_site_host;
+    $db_forums_user = $db_site_user;
+    $db_forums_password = $db_site_password;
+    $db_forums = $db_site;
 
     $sections = new Tempcode();
 
@@ -843,7 +887,6 @@ function step_4()
         }
     }
 
-    $domain = preg_replace('#:.*#', '', cms_srv('HTTP_HOST'));
     $ftp_folder = '/' . $webdir_stub . basename(cms_srv('SCRIPT_NAME'));
     $ftp_domain = $domain;
 
@@ -882,7 +925,7 @@ function step_4()
     $options->attach(make_option(do_lang_tempcode('MASTER_PASSWORD'), example('', 'CHOOSE_MASTER_PASSWORD'), 'master_password', $master_password, true));
     require_lang('config');
     $options->attach(make_tick(do_lang_tempcode('SEND_ERROR_EMAILS_OCPRODUCTS'), example('', 'CONFIG_OPTION_send_error_emails_ocproducts'), 'send_error_emails_ocproducts', 1));
-    $options->attach(make_tick(do_lang_tempcode('MULTI_LANG_CONTENT'), example('', 'MULTI_LANG_CONTENT_TEXT'), 'multi_lang_content', file_exists(get_file_base() . '/.git')/*randomise in dev mode*/ ? mt_rand(0, 1) : 0));
+    $options->attach(make_tick(do_lang_tempcode('MULTI_LANG_CONTENT'), example('', 'MULTI_LANG_CONTENT_TEXT'), 'multi_lang_content', $multi_lang_content));
     $sections->attach(do_template('INSTALLER_STEP_4_SECTION', array('_GUID' => 'f051465e86a7a53ec078e0d9de773993', 'HIDDEN' => $hidden, 'TITLE' => $title, 'TEXT' => $text, 'OPTIONS' => $options)));
     $hidden->attach(form_input_hidden('self_learning_cache', '1'));
 
