@@ -348,8 +348,9 @@ function tar_add_folder(&$resource, $logfile, $path, $max_size = null, $subpath 
  * @param  boolean $use_afm Whether to extract via the AFM (assumes AFM has been set up prior to this function call)
  * @param  ?array $files The files to extract (null: all)
  * @param  boolean $comcode_backups Whether to take backups of Comcode pages
+ * @param  boolean $report_errors Whether to report errors
  */
-function tar_extract_to_folder(&$resource, $path, $use_afm = false, $files = null, $comcode_backups = false)
+function tar_extract_to_folder(&$resource, $path, $use_afm = false, $files = null, $comcode_backups = false, $report_errors = true)
 {
     if (!array_key_exists('directory', $resource)) {
         tar_get_directory($resource);
@@ -435,20 +436,23 @@ function tar_extract_to_folder(&$resource, $path, $use_afm = false, $files = nul
 
                 $myfile = @fopen(get_custom_file_base() . '/' . $path . $file['path'], 'wb');
                 if ($myfile === false) {
-                    intelligent_write_error(get_custom_file_base() . '/' . $path . $file['path']);
+                    if ($report_errors) {
+                        intelligent_write_error(get_custom_file_base() . '/' . $path . $file['path']);
+                    }
+                } else {
+                    if (fwrite($myfile, $data['data']) < strlen($data['data'])) {
+                        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                    }
+                    $full_path = get_custom_file_base() . '/' . $path . $file['path'];
+                    @chmod($full_path, $data['mode']);
+                    if ($data['mtime'] == 0) {
+                        $data['mtime'] = time();
+                    }
+                    @touch($full_path, $data['mtime']);
+                    fclose($myfile);
+                    fix_permissions($full_path);
+                    sync_file($full_path);
                 }
-                if (fwrite($myfile, $data['data']) < strlen($data['data'])) {
-                    warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-                }
-                $full_path = get_custom_file_base() . '/' . $path . $file['path'];
-                @chmod($full_path, $data['mode']);
-                if ($data['mtime'] == 0) {
-                    $data['mtime'] = time();
-                }
-                @touch($full_path, $data['mtime']);
-                fclose($myfile);
-                fix_permissions($full_path);
-                sync_file($full_path);
             } else {
                 afm_make_file($path . $file['path'], $data['data'], ($data['mode'] & 0002) != 0);
             }

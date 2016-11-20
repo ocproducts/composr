@@ -103,7 +103,7 @@ class Block_main_quotes
         $i = 0;
         $line = array();
         while (true) {
-            $line[$i] = fgets($myfile, 1024);
+            $line[$i] = fgets($myfile);
 
             if (($line[$i] === false) || ($line[$i] === null)) {
                 break;
