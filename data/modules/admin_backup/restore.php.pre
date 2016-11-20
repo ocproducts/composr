@@ -108,7 +108,7 @@ if (cms_srv('REQUEST_METHOD') != 'POST') {
 // This is necessary for re-entrant code, and because we can't load it all through the PHP parser at once!
 
 $time_start = time();
-$time_max = $time_start + 10;
+$time_max = $time_start + get_param_integer('time_limit', 10);
 
 // Open file
 $data_file = fopen(dirname(__FILE__) . '/restore_data.php', 'rb');

@@ -14,7 +14,7 @@ MySQL is designed as a lightweight database system, not as a full database manag
 
 phpMyAdmin is powerful web application for managing databases and database contents.
 
-It is also possible to install phpMyAdmin manually on almost any PHP web hosting package.
+It is also possible to install phpMyAdmin manually on almost any PHP webhosting package.
 [/surround]
 
 [title="2"]Corrupted databases[/title]

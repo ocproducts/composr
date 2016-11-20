@@ -114,6 +114,8 @@ function string_scan($lang, $do_guessing = false)
 
     $lang_strings_admin_initial = array_map('trim', explode("\n", trim('
         NEWS_SUMMARY_REQUIRED
+        BACKUP_RESTORE_SUCCESS
+        CONTINUE_RESTORATION
         CONFIG_OPTION_news_summary_required
         OWNER
         TICKETS_STAFF
