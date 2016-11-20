@@ -173,13 +173,13 @@ function cns_ensure_groups_cached($groups)
         return;
     }
 
-    $count = persistent_cache_get('GROUPS_COUNT');
+    $total_groups = persistent_cache_get('GROUPS_COUNT');
 
     $groups_to_load = '';
-    $counter = 0;
-    foreach ($groups as $group) {
+    $expected_load_count = 0;
+    foreach (array_values($groups) as $group) {
         if (!array_key_exists($group, $USER_GROUPS_CACHED)) {
-            if (($count !== null) && ($count < 100)) {
+            if (($total_groups !== null) && ($total_groups < 100)) {
                 $USER_GROUPS_CACHED[$group] = persistent_cache_get('GROUP_' . strval($group));
                 if ($USER_GROUPS_CACHED[$group] !== null) {
                     continue;
@@ -190,15 +190,15 @@ function cns_ensure_groups_cached($groups)
                 $groups_to_load .= ' OR ';
             }
             $groups_to_load .= 'g.id=' . strval($group);
-            $counter++;
+            $expected_load_count++;
         }
     }
-    if ($counter == 0) {
+    if ($expected_load_count == 0) {
         return;
     }
     $extra_groups = $GLOBALS['FORUM_DB']->query('SELECT g.* FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_groups g WHERE ' . $groups_to_load, null, null, false, true, array('g_name' => 'SHORT_TRANS', 'g_title' => 'SHORT_TRANS'));
 
-    if (count($extra_groups) != $counter) {
+    if (count($extra_groups) < $expected_load_count) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'group'));
     }
 
@@ -210,7 +210,7 @@ function cns_ensure_groups_cached($groups)
 
         $USER_GROUPS_CACHED[$extra_group['id']] = $extra_group;
 
-        if (($count !== null) && ($count < 100)) {
+        if (($total_groups !== null) && ($total_groups < 100)) {
             persistent_cache_set('GROUP_' . strval($extra_group['id']), $extra_group);
         }
     }

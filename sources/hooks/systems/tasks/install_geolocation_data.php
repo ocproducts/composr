@@ -46,7 +46,7 @@ class Hook_task_install_geolocation_data
         }
         $to_insert = array('begin_num' => array(), 'end_num' => array(), 'country' => array());
         while (!feof($file)) {
-            $data = fgets($file, 1024);
+            $data = fgets($file);
             if ($data === false) {
                 continue;
             }
