@@ -2202,6 +2202,55 @@ function _form_input_date($name, $required, $null_default, $do_time, $default_ti
 }
 
 /**
+ * Get the Tempcode for a date component input.
+ *
+ * @param  mixed $pretty_name A human intelligible name for this input field
+ * @param  mixed $description A description for this input field
+ * @param  ID_TEXT $name The name which this input field is for
+ * @param  boolean $want_year Gather year
+ * @param  boolean $want_month Gather month
+ * @param  boolean $want_day Gather day
+ * @param  integer $start_year Start year in selection range
+ * @param  integer $end_year End year in selection range
+ * @param  ?integer $default_year Default year (null: current year)
+ * @param  ?integer $default_month Default month (null: current month)
+ * @param  ?integer $default_day Default day (null: current day)
+ * @param  boolean $required Whether this is a required input field
+ * @param  ?integer $tabindex The tab index of the field (null: not specified)
+ * @return Tempcode The input field
+ */
+function form_input_date_components($pretty_name, $description, $name, $want_year, $want_month, $want_day, $start_year, $end_year, $default_year, $default_month, $default_day, $required, $tabindex = null)
+{
+    $tabindex = get_form_field_tabindex($tabindex);
+
+    require_lang('dates');
+
+    $_default = filter_form_field_default($name, is_null($default) ? '' : strval($default));
+    $default = ($_default == '') ? null : intval($_default);
+
+    $required = filter_form_field_required($name, $required);
+
+    $default_timestamp = tz_time(time(), get_users_timezone());
+
+    $_required = ($required) ? '_required' : '';
+    $input = do_lorem_template('FORM_SCREEN_INPUT_DATE_COMPONENTS', array(
+        'REQUIRED' => $_required,
+        'TABINDEX' => strval($tabindex),
+        'NAME' => $name,
+        'PRETTY_NAME' => $pretty_name,
+        'WANT_YEAR' => $want_year,
+        'START_YEAR' => strval(min($start_year, $default_year)),
+        'END_YEAR' => strval(max($end_year, $default_year)),
+        'YEAR' => ($default_year === null) ? date('Y') : strval($default_year, $default_timestamp),
+        'WANT_MONTH' => $want_month,
+        'MONTH' => ($default_month === null) ? date('m') : strval($default_month, $default_timestamp),
+        'WANT_DAY' => $want_day,
+        'DAY' => ($default_day === null) ? date('d') : strval($default_day, $default_timestamp),
+    ));
+    return _form_input($name, $pretty_name, $description, $input, $required, false, $tabindex);
+}
+
+/**
  * Get the Tempcode for an integer-only input.
  *
  * @param  mixed $pretty_name A human intelligible name for this input field

@@ -51,7 +51,15 @@ class Module_purchase
 
         delete_privilege('access_ecommerce_in_test_mode');
 
-        $cpf = array('currency', 'payment_cardholder_name', 'payment_card_type', 'payment_card_number', 'payment_card_start_date', 'payment_card_expiry_date', 'payment_card_issue_number', 'payment_card_cv2');
+        $cpf = array(
+            'currency',
+            'payment_cardholder_name',
+            'payment_card_type',
+            'payment_card_number',
+            'payment_card_start_date',
+            'payment_card_expiry_date',
+            'payment_card_issue_number',
+        );
         foreach ($cpf as $_cpf) {
             $GLOBALS['FORUM_DRIVER']->install_delete_custom_field($_cpf);
         }
@@ -87,7 +95,15 @@ class Module_purchase
             foreach ($cpf as $f => $l) {
                 $GLOBALS['FORUM_DRIVER']->install_create_custom_field($f, $l[0], 0, 0, 1, 0, '', $l[1], 0, $l[2]);
             }
-            $cpf = array('payment_cardholder_name' => array(100, 'short_text', ''), 'payment_card_type' => array(26, 'list', 'American Express|Delta|Diners Card|JCB|Master Card|Solo|Switch|Visa'), 'payment_card_number' => array(20, 'integer', ''), 'payment_card_start_date' => array(5, 'short_text', 'mm/yy'), 'payment_card_expiry_date' => array(5, 'short_text', 'mm/yy'), 'payment_card_issue_number' => array(2, 'short_text', ''), 'payment_card_cv2' => array(4, 'short_text', ''));
+
+            $cpf = array(
+                'payment_cardholder_name' => array(100, 'short_text', ''),
+                'payment_card_type' => array(26, 'list', 'American Express|Delta|Diners Card|JCB|Master Card|Solo|Switch|Visa'),
+                'payment_card_number' => array(20, 'integer', ''),
+                'payment_card_start_date' => array(5, 'year_month', 'mm/yy'),
+                'payment_card_expiry_date' => array(5, 'year_month', 'mm/yy'),
+                'payment_card_issue_number' => array(2, 'short_text', ''),
+            );
             foreach ($cpf as $f => $l) {
                 $GLOBALS['FORUM_DRIVER']->install_create_custom_field($f, $l[0], 0, 0, 1, 0, '', $l[1], 1, $l[2]);
             }
@@ -511,7 +527,19 @@ class Module_purchase
                 warn_exit(do_lang_tempcode('NO_SSL_SETUP'));
             }
 
-            list($fields, $hidden, $verified_account_logo) = get_transaction_form_fields(null, $purchase_id, $item_name, float_to_raw_string($price), $currency, ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) ? intval($length) : null, ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) ? $length_units : '', $via);
+            $needs_shipping_address = (method_exists('needs_shipping_address')) && ($object->needs_shipping_address());
+
+            list($fields, $hidden, $verified_account_logo) = get_transaction_form_fields(
+                null,
+                $purchase_id,
+                $item_name,
+                float_to_raw_string($price),
+                $currency,
+                ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) ? intval($length) : null,
+                ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) ? $length_units : '',
+                $via,
+                $needs_shipping_address
+            );
 
             $finish_url = build_url(array('page' => '_SELF', 'type' => 'finish'), '_SELF');
 

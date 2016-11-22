@@ -356,7 +356,19 @@ function render_cart_payment_form()
             $hidden = new Tempcode();
             $verified_account_logo = '';
         } else {
-            list($fields, $hidden, $verified_account_logo) = get_transaction_form_fields(null, strval($order_id), $item_name, float_to_raw_string($price), get_option('currency'), null, '');
+            $needs_shipping_address = true;
+
+            list($fields, $hidden, $verified_account_logo) = get_transaction_form_fields(
+                null,
+                strval($order_id),
+                $item_name,
+                float_to_raw_string($price),
+                get_option('currency'),
+                null,
+                '',
+                get_option('payment_gateway'),
+                $needs_shipping_address
+            );
         }
 
         $finish_url = build_url(array('page' => 'purchase', 'type' => 'finish'), get_module_zone('purchase'));

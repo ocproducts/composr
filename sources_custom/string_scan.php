@@ -9156,7 +9156,7 @@ function string_scan($lang, $do_guessing = false)
         SPECIAL_CPF__cms_longitude
         SPECIAL_CPF__cms_mobile_phone_number
         SPECIAL_CPF__cms_mobile_phone_number_DESCRIPTION
-        SPECIAL_CPF__cms_payment_card_cv2
+        CARD_CV2
         SPECIAL_CPF__cms_payment_card_expiry_date
         SPECIAL_CPF__cms_payment_card_issue_number
         SPECIAL_CPF__cms_payment_card_number

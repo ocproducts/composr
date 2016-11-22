@@ -248,33 +248,38 @@ class Hook_secpay
      * Perform a transaction.
      *
      * @param  ?ID_TEXT $trans_id The transaction ID (null: generate one).
-     * @param  SHORT_TEXT $name Cardholder name.
-     * @param  SHORT_TEXT $card_number Card number.
-     * @param  SHORT_TEXT $amount Transaction amount.
-     * @param  ID_TEXT $currency The currency
-     * @param  SHORT_TEXT $expiry_date Card Expiry date.
-     * @param  integer $issue_number Card Issue number.
-     * @param  SHORT_TEXT $start_date Card Start date.
+     * @param  SHORT_TEXT $cardholder_name Cardholder name.
      * @param  SHORT_TEXT $card_type Card Type.
      * @set    "Visa" "Master Card" "Switch" "UK Maestro" "Maestro" "Solo" "Delta" "American Express" "Diners Card" "JCB"
-     * @param  SHORT_TEXT $cv2 Card CV2 number (security number).
-    TODO billing
-     * @param  SHORT_TEXT $shipping_firstname First name
-     * @param  SHORT_TEXT $shipping_lastname Last name
-     * @param  LONG_TEXT $shipping_street_address Street address
-     * @param  SHORT_TEXT $shipping_city Town/City
-     * @param  SHORT_TEXT $shipping_county County
-     * @param  SHORT_TEXT $shipping_state State
-     * @param  SHORT_TEXT $shipping_post_code Postcode/Zip
-     * @param  SHORT_TEXT $shipping_country Country
-     * @param  SHORT_TEXT $shipping_email E-mail address
-     * @param  SHORT_TEXT $shipping_phone Phone number
+     * @param  SHORT_TEXT $card_number Card number.
+     * @param  SHORT_TEXT $card_start_date Card Start date.
+     * @param  SHORT_TEXT $card_expiry_date Card Expiry date.
+     * @param  integer $card_issue_number Card Issue number.
+     * @param  SHORT_TEXT $card_cv2 Card CV2 number (security number).
+     * @param  SHORT_TEXT $amount Transaction amount.
+     * @param  ID_TEXT $currency The currency
+     * @param  LONG_TEXT $billing_street_address Street address (billing, i.e. AVS)
+     * @param  SHORT_TEXT $billing_city Town/City (billing, i.e. AVS)
+     * @param  SHORT_TEXT $billing_county County (billing, i.e. AVS)
+     * @param  SHORT_TEXT $billing_state State (billing, i.e. AVS)
+     * @param  SHORT_TEXT $billing_post_code Postcode/Zip (billing, i.e. AVS)
+     * @param  SHORT_TEXT $billing_country Country (billing, i.e. AVS)
+     * @param  SHORT_TEXT $shipping_firstname First name (shipping)
+     * @param  SHORT_TEXT $shipping_lastname Last name (shipping)
+     * @param  LONG_TEXT $shipping_street_address Street address (shipping)
+     * @param  SHORT_TEXT $shipping_city Town/City (shipping)
+     * @param  SHORT_TEXT $shipping_county County (shipping)
+     * @param  SHORT_TEXT $shipping_state State (shipping)
+     * @param  SHORT_TEXT $shipping_post_code Postcode/Zip (shipping)
+     * @param  SHORT_TEXT $shipping_country Country (shipping)
+     * @param  SHORT_TEXT $shipping_email E-mail address (shipping)
+     * @param  SHORT_TEXT $shipping_phone Phone number (shipping)
      * @param  ?integer $length The subscription length in the units. (null: not a subscription)
      * @param  ?ID_TEXT $length_units The length units. (null: not a subscription)
      * @set    d w m y
      * @return array A tuple: success (boolean), trans-ID (string), message (string), raw message (string).
      */
-    public function do_transaction($trans_id, $name, $card_number, $amount, $currency, $expiry_date, $issue_number, $start_date, $card_type, $cv2, TODO billing address, $shipping_firstname = '', $shipping_lastname = '', $shipping_street_address = '', $shipping_city = '', $shipping_county = '', $shipping_state = '', $shipping_post_code = '', $shipping_country = '', $shipping_email = '', $shipping_phone = '', $length = null, $length_units = null)
+    public function do_transaction($trans_id, $cardholder_name, $card_type, $card_number, $card_start_date, $card_expiry_date, $card_issue_number, $card_cv2, $amount, $currency, $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country, $shipping_firstname = '', $shipping_lastname = '', $shipping_street_address = '', $shipping_city = '', $shipping_county = '', $shipping_state = '', $shipping_post_code = '', $shipping_country = '', $shipping_email = '', $shipping_phone = '', $length = null, $length_units = null)
     {
         if (is_null($trans_id)) {
             $trans_id = $this->generate_trans_id();
@@ -282,7 +287,7 @@ class Hook_secpay
         $username = $this->_get_username();
         $password_2 = get_option('vpn_password');
         $digest = md5($trans_id . strval($amount) . get_option('ipn_password'));
-        $options = 'currency=' . $currency . ',card_type=' . str_replace(',', '', $card_type) . ',digest=' . $digest . ',cv2=' . strval(intval($cv2));
+        $options = 'currency=' . $currency . ',card_type=' . str_replace(',', '', $card_type) . ',digest=' . $digest . ',cv2=' . strval(intval($card_cv2)) . ',mand_cv2=true';
         if (ecommerce_test_mode()) {
             $options .= ',test_status=true';
         }
@@ -291,9 +296,34 @@ class Hook_secpay
             $options .= ',repeat=' . $first_repeat . '/' . $length_units_2 . '/0/' . $amount;
         }
 
+        $item_name = $GLOBALS['SITE_DB']->query_select_value('trans_expecting', 'e_item_name', array('id' => $trans_id));
+
+        $shipping_street_address_lines = explode("\n", $shipping_street_address, 2);
+        $shipping_address = 'ship_name=' . $shipping_firstname . ' ' . $shipping_last . ',';
+        $shipping_address . ='ship_addr_1=' . $shipping_street_address_lines[0] . ',';
+        $shipping_address . ='ship_addr_2=' . $shipping_street_address_lines[1] . ',';
+        $shipping_address . ='ship_city=' . $shipping_city . ',';
+        $shipping_address . ='ship_state=' . $shipping_state . ',';
+        $shipping_address . ='ship_country=' . $shipping_country . ',';
+        $shipping_address . ='ship_post_code=' . $shipping_post_code . ',';
+        $shipping_address . ='ship_tel=' . $shipping_phone . ',';
+        $shipping_address . ='ship_email=' . $shipping_email;
+
+        $billing_street_address_lines = explode("\n", $billing_street_address, 2);
+        $billing_address = 'bill_name=' . $billing_firstname . ' ' . $billing_last . ',';
+        $billing_address . ='bill_addr_1=' . $billing_street_address_lines[0] . ',';
+        $billing_address . ='bill_addr_2=' . $billing_street_address_lines[1] . ',';
+        $billing_address . ='bill_city=' . $billing_city . ',';
+        $billing_address . ='bill_state=' . $billing_state . ',';
+        $billing_address . ='bill_country=' . $billing_country . ',';
+        $billing_address . ='bill_post_code=' . $billing_post_code . ',';
+        $billing_address . ='bill_tel=' . $billing_phone . ',';
+        $billing_address . ='bill_email=' . $billing_email;
+
         require_lang('ecommerce');
+
         require_code('xmlrpc');
-        $result = xml_rpc('https://www.secpay.com:443/secxmlrpc/make_call', 'SECVPN.validateCardFull', array($username, $password_2, $trans_id, get_ip_address(), $name, $card_number, $amount, $expiry_date, $issue_number, $start_date, '', '', '', $options));
+        $result = xml_rpc('https://www.secpay.com:443/secxmlrpc/make_call', 'SECVPN.validateCardFull', array($username, $password_2, $trans_id, get_ip_address(), $cardholder_name, $card_number, $amount, $card_expiry_date, $card_issue_number, $card_start_date, $currency, '', '', $options, $item_name, $shipping_address, $billing_address));
         $pos_1 = strpos($result, '<value>');
         if ($pos_1 === false) {
             fatal_exit(do_lang('INTERNAL_ERROR'));

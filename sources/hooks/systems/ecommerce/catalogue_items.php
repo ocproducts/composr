@@ -20,6 +20,16 @@
 class Hook_ecommerce_catalogue_items
 {
     /**
+     * Find whether a shipping address is needed.
+     *
+     * @return boolean Whether a shipping address is needed.
+     */
+    function needs_shipping_address()
+    {
+        return true;
+    }
+
+    /**
      * Get the products handled by this eCommerce hook.
      *
      * IMPORTANT NOTE TO PROGRAMMERS: This function may depend only on the database, and not on get_member() or any GET/POST values.

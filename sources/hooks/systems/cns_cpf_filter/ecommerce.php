@@ -36,15 +36,17 @@ class Hook_cns_cpf_filter_ecommerce
         // Not configurable per-member yet
         //    $cpf = array_merge($cpf, array('currency' => true,));
 
-        // Local payment
+        // Local payment (we only store these locally if doing local payment, if we've gone through PCI checks)
         if (get_option('use_local_payment') == '1') {
+            // Payment details
             $cpf = array_merge($cpf, array('payment_cardholder_name' => true, 'payment_card_type' => true, 'payment_card_number' => true, 'payment_card_start_date' => true, 'payment_card_expiry_date' => true, 'payment_card_issue_number' => true));
-
-            if ((get_forum_type() == 'cns') && ($GLOBALS['FORUM_DB']->query_select_value('f_usergroup_subs', 'COUNT(*)') > 0)) {
-                $cpf = array_merge($cpf, array('payment_card_cv2' => true));
+            $cpf = array_merge($cpf, array('billing_street_address' => true, 'billing_city' => true, 'billing_post_code' => true, 'billing_country' => true, 'billing_mobile_phone_number' => true));
+            if (get_option('cpf_enable_county') == '1') {
+                $cpf = array_merge($cpf, array('billing_county' => true));
             }
-
-            TODO billing address
+            if (get_option('cpf_enable_state') == '1') {
+                $cpf = array_merge($cpf, array('billing_state' => true));
+            }
         }
 
         return $cpf;

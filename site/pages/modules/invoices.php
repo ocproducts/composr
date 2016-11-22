@@ -229,7 +229,19 @@ class Module_invoices
         $products = $object->get_products(false, $type_code);
         $invoice_title = $products[$type_code][4];
 
-        list($fields, $hidden) = get_transaction_form_fields(null, strval($id), $invoice_title, float_to_raw_string($row['i_amount']), get_option('currency'), null, '');
+        $needs_shipping_address = (method_exists('needs_shipping_address')) && ($object->needs_shipping_address());
+
+        list($fields, $hidden) = get_transaction_form_fields(
+            null,
+            strval($id),
+            $invoice_title,
+            float_to_raw_string($row['i_amount']),
+            get_option('currency'),
+            null,
+            '',
+            get_option('payment_gateway'),
+            $needs_shipping_address
+        );
 
         $text = do_lang_tempcode('TRANSACT_INFO');
 

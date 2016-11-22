@@ -10079,7 +10079,6 @@ insert into `cms_f_custom_fields` values('1','0','About me','Some personally wri
  ('22','0','cms_payment_card_start_date','','mm/yy','0','0','1','short_text','0','0','0','21','','1','0',''),
  ('23','0','cms_payment_card_expiry_date','','mm/yy','0','0','1','short_text','0','0','0','22','','1','0',''),
  ('24','0','cms_payment_card_issue_number','','','0','0','1','short_text','0','0','0','23','','1','0',''),
- ('25','0','cms_payment_card_cv2','','','0','0','1','short_text','0','0','0','24','','1','0',''),
  ('26','1','cms_sites','','','0','0','0','short_text','0','0','0','25','','0','0',''),
  ('27','0','cms_role','','','0','0','1','short_text','0','0','0','26','','0','0',''),
  ('28','1','cms_points_gained_wiki','','0','0','0','0','integer','0','0','0','27','','0','0',''),
