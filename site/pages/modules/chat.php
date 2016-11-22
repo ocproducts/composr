@@ -311,14 +311,18 @@ class Module_chat
             ), $room_check[0], 'chat', strval($room_id));
         }
 
+        if ($type == 'browse' || $type == 'room') {
+            breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('CHAT_LOBBY'))));
+        }
+
         if ($type == 'download_logs') {
             attach_to_screen_header('<meta name="robots" content="noindex" />'); // XHTMLXHTML
 
             $this->title = get_screen_title('CHAT_DOWNLOAD_LOGS');
         }
 
-        if ($type == 'browse' || $type == 'room') {
-            breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('CHAT_LOBBY'))));
+        if ($type == '_download_logs') {
+            $this->title = get_screen_title('CHAT_DOWNLOAD_LOGS');
         }
 
         if ($type == 'private') {
@@ -353,12 +357,8 @@ class Module_chat
             $this->title = get_screen_title('DUMP_FRIEND');
         }
 
-        if ($type == 'chat_save_options') {
+        if ($type == 'options') {
             $this->title = get_screen_title('CHATROOM');
-        }
-
-        if ($type == '_chat_download_logs') {
-            $this->title = get_screen_title('CHAT_DOWNLOAD_LOGS');
         }
 
         if ($type == 'set_effects') {

@@ -94,6 +94,11 @@ function can_static_cache()
         return false;
     }
 
+    global $HTTP_STATUS_CODE;
+    if ($HTTP_STATUS_CODE == '404') { // TODO: in v11 is integer
+        return false;
+    }
+
     return true;
 }
 
