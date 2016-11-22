@@ -9175,7 +9175,7 @@ function string_scan($lang, $do_guessing = false)
         SPECIAL_CPF__cms_payment_card_number
         SPECIAL_CPF__cms_payment_card_start_date
         SPECIAL_CPF__cms_payment_cardholder_name
-        SPECIAL_CPF__cms_payment_type
+        SPECIAL_CPF__cms_payment_card_type
         SPECIAL_CPF__cms_points_gained_chat
         SPECIAL_CPF__cms_points_gained_given
         SPECIAL_CPF__cms_points_gained_rating

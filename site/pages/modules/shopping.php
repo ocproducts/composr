@@ -35,7 +35,7 @@ class Module_shopping
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 7;
+        $info['version'] = 8;
         $info['update_require_upgrade'] = true;
         $info['locked'] = false;
         return $info;
@@ -128,13 +128,14 @@ class Module_shopping
             $GLOBALS['SITE_DB']->create_index('shopping_logging', 'calculate_bandwidth', array('date_and_time'));
 
             $GLOBALS['SITE_DB']->create_table('shopping_order_addresses', array(
-                // Field names are based upon PayPal ones; they are filled after an order is made (maybe via what comes back from IPN), and presented in the admin orders UI
+                // These are filled after an order is made (maybe via what comes back from IPN, maybe from what is set for a local payment), and presented in the admin orders UI
                 'id' => '*AUTO',
                 'order_id' => '?AUTO_LINK',
                 'address_name' => 'SHORT_TEXT',
                 'address_street' => 'LONG_TEXT',
                 'address_city' => 'SHORT_TEXT',
-                'address_state' => 'SHORT_TEXT', // NB: Not in PayPal
+                'address_county' => 'SHORT_TEXT',
+                'address_state' => 'SHORT_TEXT',
                 'address_zip' => 'SHORT_TEXT',
                 'address_country' => 'SHORT_TEXT',
                 'receiver_email' => 'SHORT_TEXT',
@@ -158,6 +159,10 @@ class Module_shopping
             $GLOBALS['SITE_DB']->change_primary_key('shopping_cart', array('id'));
 
             $GLOBALS['SITE_DB']->delete_index_if_exists('shopping_order', 'recent_shopped');
+        }
+
+        if (($upgrade_from !== null) && ($upgrade_from < 8)) {
+            $GLOBALS['SITE_DB']->add_table_field('shopping_order_addresses', 'address_county', 'SHORT_TEXT');
         }
     }
 
@@ -586,42 +591,8 @@ class Module_shopping
 
             // Take payment
             if (perform_local_payment()) {
-                $trans_id = post_param_string('trans_id');
-
-                $transaction_rows = $GLOBALS['SITE_DB']->query_select('trans_expecting', array('*'), array('id' => $trans_id), '', 1);
-                if (!array_key_exists(0, $transaction_rows)) {
-                    warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
-                }
-                $transaction_row = $transaction_rows[0];
-
-                $amount = $transaction_row['e_amount'];
-                $length = $transaction_row['e_length'];
-                $length_units = $transaction_row['e_length_units'];
-                $currency = $transaction_row['e_currency'];
-
-                $name = post_param_string('name');
-                $card_number = post_param_string('card_number');
-                $expiry_date = str_replace('/', '', post_param_string('expiry_date'));
-                $issue_number = post_param_integer('issue_number', null);
-                $start_date = str_replace('/', '', post_param_string('start_date'));
-                $card_type = post_param_string('card_type');
-                $cv2 = post_param_string('cv2');
-
-                list($success, , $message, $message_raw) = $object->do_transaction($trans_id, $name, $card_number, $amount, $currency, $expiry_date, $issue_number, $start_date, $card_type, $cv2, $length, $length_units);
-
-                if (($success) || (!is_null($length))) {
-                    $status = ((!is_null($length)) && (!$success)) ? 'SCancelled' : 'Completed';
-                    handle_confirmed_transaction($transaction_row['e_purchase_id'], $transaction_row['e_item_name'], $status, $message_raw, '', '', $amount, get_option('currency'), $trans_id, '', is_null($length) ? '' : strtolower(strval($length) . ' ' . $length_units), $via);
-                }
-
-                if ($success) {
-                    $member_id = $transaction_row['e_member_id'];
-                    require_code('notifications');
-                    dispatch_notification('payment_received', null, do_lang('PAYMENT_RECEIVED_SUBJECT', $trans_id), do_notification_lang('PAYMENT_RECEIVED_BODY', float_format(floatval($amount)), get_option('currency'), get_site_name()), array($member_id), A_FROM_SYSTEM_PRIVILEGED);
-                }
+                list($success, $message, $message_raw) = handle_local_payment();
             }
-
-            attach_message(do_lang_tempcode('SUCCESS'), 'inform');
 
             // Process transaction
             if (has_interesting_post_fields()) {

@@ -359,6 +359,8 @@ class Hook_addon_registry_ecommerce
         return array(
             lorem_globalise(do_lorem_template('PURCHASE_WIZARD_STAGE_TRANSACT', array(
                 'FIELDS' => placeholder_fields(),
+                'HIDDEN' => '',
+                'VERIFIED_ACCOUNT_LOGO' => placeholder_image_url(),
             )), null, '', true)
         );
     }

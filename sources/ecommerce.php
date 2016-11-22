@@ -114,28 +114,33 @@ function get_transaction_form_fields($trans_id, $purchase_id, $item_name, $amoun
         'e_length_units' => $length_units,
     ));
 
+    require_lang('cns_special_cpf');
+
     require_code('form_templates');
 
     $fields = new Tempcode();
     $hidden = new Tempcode();
 
-    $fields->attach(form_input_line(do_lang_tempcode('CARDHOLDER_NAME'), do_lang_tempcode('DESCRIPTION_CARDHOLDER_NAME'), 'name', ecommerce_test_mode() ? $GLOBALS['FORUM_DRIVER']->get_username(get_member()) : get_cms_cpf('payment_cardholder_name'), true));
-    $fields->attach(form_input_list(do_lang_tempcode('CARD_TYPE'), '', 'card_type', $object->create_selection_list_card_types(ecommerce_test_mode() ? 'Visa' : get_cms_cpf('payment_type'))));
+    $fields->attach(form_input_line(do_lang_tempcode('CARDHOLDER_NAME'), do_lang_tempcode('DESCRIPTION_CARDHOLDER_NAME'), 'cardholder_name', ecommerce_test_mode() ? $GLOBALS['FORUM_DRIVER']->get_username(get_member()) : get_cms_cpf('payment_cardholder_name'), true));
+    $fields->attach(form_input_list(do_lang_tempcode('CARD_TYPE'), '', 'card_type', $object->create_selection_list_card_types(ecommerce_test_mode() ? 'Visa' : get_cms_cpf('payment_card_type'))));
     $fields->attach(form_input_line(do_lang_tempcode('CARD_NUMBER'), do_lang_tempcode('DESCRIPTION_CARD_NUMBER'), 'card_number', ecommerce_test_mode() ? '4444333322221111' : get_cms_cpf('payment_card_number'), true));
-    $fields->attach(form_input_line(do_lang_tempcode('CARD_START_DATE'), do_lang_tempcode('DESCRIPTION_CARD_START_DATE'), 'start_date', ecommerce_test_mode() ? date('m/y', utctime_to_usertime(time() - 60 * 60 * 24 * 365)) : get_cms_cpf('payment_card_start_date'), true));
-    $fields->attach(form_input_line(do_lang_tempcode('CARD_EXPIRY_DATE'), do_lang_tempcode('DESCRIPTION_CARD_EXPIRY_DATE'), 'expiry_date', ecommerce_test_mode() ? date('m/y', utctime_to_usertime(time() + 60 * 60 * 24 * 365)) : get_cms_cpf('payment_card_expiry_date'), true));
-    $fields->attach(form_input_integer(do_lang_tempcode('CARD_ISSUE_NUMBER'), do_lang_tempcode('DESCRIPTION_CARD_ISSUE_NUMBER'), 'issue_number', intval(get_cms_cpf('payment_card_issue_number')), false));
-    $fields->attach(form_input_line(do_lang_tempcode('CARD_CV2'), do_lang_tempcode('DESCRIPTION_CARD_CV2'), 'cv2', ecommerce_test_mode() ? '123' : get_cms_cpf('payment_card_cv2'), true));
+    $fields->attach(form_input_line(do_lang_tempcode('CARD_START_DATE'), do_lang_tempcode('DESCRIPTION_CARD_START_DATE'), 'card_start_date', ecommerce_test_mode() ? date('m/y', utctime_to_usertime(time() - 60 * 60 * 24 * 365)) : get_cms_cpf('payment_card_start_date'), true));
+    $fields->attach(form_input_line(do_lang_tempcode('CARD_EXPIRY_DATE'), do_lang_tempcode('DESCRIPTION_CARD_EXPIRY_DATE'), 'card_expiry_date', ecommerce_test_mode() ? date('m/y', utctime_to_usertime(time() + 60 * 60 * 24 * 365)) : get_cms_cpf('payment_card_expiry_date'), true));
+    $fields->attach(form_input_integer(do_lang_tempcode('CARD_ISSUE_NUMBER'), do_lang_tempcode('DESCRIPTION_CARD_ISSUE_NUMBER'), 'card_issue_number', intval(get_cms_cpf('payment_card_issue_number')), false));
+    $fields->attach(form_input_line(do_lang_tempcode('CARD_CV2'), do_lang_tempcode('DESCRIPTION_CARD_CV2'), 'card_cv2', ecommerce_test_mode() ? '123' : get_cms_cpf('payment_card_cv2'), true));
 
     // Shipping address fields
-    require_lang('cns_special_cpf');
-    $fields->attach(form_input_line(do_lang_tempcode('SPECIAL_CPF__cms_firstname'), '', 'first_name', get_cms_cpf('firstname'), true));
-    $fields->attach(form_input_line(do_lang_tempcode('SPECIAL_CPF__cms_lastname'), '', 'last_name', get_cms_cpf('last_name'), true));
-    $fields->attach(form_input_line(do_lang_tempcode('SPECIAL_CPF__cms_street_address'), '', 'address1', get_cms_cpf('street_address'), true));
-    $fields->attach(form_input_line(do_lang_tempcode('SPECIAL_CPF__cms_city'), '', 'city', get_cms_cpf('city'), true));
-    $fields->attach(form_input_line(do_lang_tempcode('SPECIAL_CPF__cms_state'), '', 'zip', get_cms_cpf('state'), true));
-    $fields->attach(form_input_line(do_lang_tempcode('SPECIAL_CPF__cms_post_code'), '', 'zip', get_cms_cpf('post_code'), true));
-    $fields->attach(form_input_line(do_lang_tempcode('SPECIAL_CPF__cms_country'), '', 'country', get_cms_cpf('country'), true));
+    $fields->attach(form_input_line(do_lang_tempcode('SPECIAL_CPF__cms_firstname'), '', 'shipping_firstname', get_cms_cpf('firstname'), true));
+    $fields->attach(form_input_line(do_lang_tempcode('SPECIAL_CPF__cms_lastname'), '', 'shipping_lastname', get_cms_cpf('last_name'), true));
+    // TODO: $shipping_name
+    $fields->attach(form_input_line(do_lang_tempcode('SPECIAL_CPF__cms_street_address'), '', 'shipping_street_address', get_cms_cpf('street_address'), true));
+    $fields->attach(form_input_line(do_lang_tempcode('SPECIAL_CPF__cms_city'), '', 'shipping_city', get_cms_cpf('city'), true));
+    // TODO county if enabled
+    $fields->attach(form_input_line(do_lang_tempcode('SPECIAL_CPF__cms_state'), '', 'shipping_state', get_cms_cpf('state'), true)); // TODO: if enabled
+    $fields->attach(form_input_line(do_lang_tempcode('SPECIAL_CPF__cms_post_code'), '', 'shipping_post_code', get_cms_cpf('post_code'), true));
+    $fields->attach(form_input_line(do_lang_tempcode('SPECIAL_CPF__cms_country'), '', 'shipping_country', get_cms_cpf('country'), true));
+    // TODO $receiver_email
+    // TODO $contact_phone
 
     $hidden->attach(form_input_hidden('trans_id', $trans_id));
 
@@ -424,6 +429,71 @@ function handle_transaction_script()
     }
 
     return $purchase_id;
+}
+
+/**
+ * Handle a particular transaction as determined by the POST request.
+ *
+ * @return array A triple: success status, formatted status message, raw status message
+ */
+function handle_local_payment()
+{
+    $trans_id = post_param_string('trans_id');
+
+    $transaction_rows = $GLOBALS['SITE_DB']->query_select('trans_expecting', array('*'), array('id' => $trans_id), '', 1);
+    if (!array_key_exists(0, $transaction_rows)) {
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+    }
+    $transaction_row = $transaction_rows[0];
+
+    $amount = $transaction_row['e_amount'];
+    $length = $transaction_row['e_length'];
+    $length_units = $transaction_row['e_length_units'];
+    $currency = $transaction_row['e_currency'];
+
+    $cardholder_name = post_param_string('cardholder_name');
+    $card_number = post_param_string('card_number');
+    $card_expiry_date = post_param_string('card_expiry_date_year') . '/' . post_param_string('card_expiry_date_month');
+    $card_issue_number = post_param_integer('card_issue_number', null);
+    $card_start_date = post_param_string('card_start_date_year') . '/' . post_param_string('card_start_date_month');
+    $card_type = post_param_string('card_type');
+    $card_cv2 = post_param_string('card_cv2');
+
+    $shipping_firstname = post_param_string('shipping_firstname', '');
+    $shipping_lastname = post_param_string('shipping_lastname', '');
+    $shipping_name = post_param_string('shipping_name', '');
+    $shipping_street_address = post_param_string('shipping_street_address', '');
+    $shipping_city = post_param_string('shipping_city', '');
+    $shipping_county = post_param_string('shipping_county', '');
+    $shipping_state = post_param_string('shipping_state', '');
+    $shipping_post_code = post_param_string('shipping_post_code', '');
+    $shipping_country = post_param_string('shipping_country', '');
+    $shipping_receiver_email = post_param_string('shipping_receiver_email', '');
+    $shipping_contact_phone = post_param_string('shipping_contact_phone', '');
+
+    // TODO: Save into CPFs
+
+    list($success, , $message, $message_raw) = $object->do_transaction($trans_id, $cardholder_name, $card_number, $amount, $currency, $card_expiry_date, $card_issue_number, $card_start_date, $card_type, $card_cv2, $length, $length_units, $shipping_firstname, $shipping_lastname, $shipping_name, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country, $shipping_receiver_email, $shipping_contact_phone);
+
+    if (($success) || ($length !== null)) {
+        $status = (($length !== null) && (!$success)) ? 'SCancelled' : 'Completed';
+        handle_confirmed_transaction($transaction_row['e_purchase_id'], $transaction_row['e_item_name'], $status, $message_raw, '', '', $amount, $currency, $trans_id, '', ($length === null) ? '' : strtolower(strval($length) . ' ' . $length_units), $via);
+    }
+
+    if ($success) {
+        $member_id = $transaction_row['e_member_id'];
+        if ($member_id !== null) {
+            require_code('notifications');
+            dispatch_notification('payment_received', null, do_lang('PAYMENT_RECEIVED_SUBJECT', $trans_id), do_notification_lang('PAYMENT_RECEIVED_BODY', float_format(floatval($amount)), $currency, get_site_name()), array($member_id), A_FROM_SYSTEM_PRIVILEGED);
+        }
+    }
+
+    if (is_numeric($message)) {
+        // Not usable
+        $message = null;
+    }
+
+    return array($success, $message, $message_raw);
 }
 
 /**

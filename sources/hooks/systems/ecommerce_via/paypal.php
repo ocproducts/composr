@@ -402,19 +402,20 @@ class Hook_paypal
         }
 
         if (is_null($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order_addresses', 'id', array('order_id' => $order_id)))) {
-            $shipping_address = array();
-            $shipping_address['order_id'] = $order_id;
-            $shipping_address['address_name'] = post_param_string('address_name', '');
-            $shipping_address['address_street'] = post_param_string('address_street', '');
-            $shipping_address['address_zip'] = post_param_string('address_zip', '');
-            $shipping_address['address_city'] = post_param_string('address_city', '');
-            $shipping_address['address_state'] = '';
-            $shipping_address['address_country'] = post_param_string('address_country', '');
-            $shipping_address['receiver_email'] = post_param_string('payer_email', '');
-            $shipping_address['contact_phone'] = post_param_string('contact_phone', '');
-            $shipping_address['first_name'] = post_param_string('first_name', '');
-            $shipping_address['last_name'] = post_param_string('last_name', '');
-
+            $shipping_address = array(
+                'order_id' => $order_id,
+                'first_name' => post_param_string('first_name', ''),
+                'last_name' => post_param_string('last_name', ''),
+                'address_name' => post_param_string('address_name', ''),
+                'address_street' => post_param_string('address_street', ''),
+                'address_city' => post_param_string('address_city', ''),
+                'address_county' => '',
+                'address_state' => '',
+                'address_zip' => post_param_string('address_zip', ''),
+                'address_country' => post_param_string('address_country', ''),
+                'receiver_email' => post_param_string('payer_email', ''),
+                'contact_phone' => post_param_string('contact_phone', ''),
+            );
             return $GLOBALS['SITE_DB']->query_insert('shopping_order_addresses', $shipping_address, true);
         }
 

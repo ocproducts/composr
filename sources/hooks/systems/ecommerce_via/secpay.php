@@ -261,9 +261,10 @@ class Hook_secpay
      * @param  ?integer $length The subscription length in the units. (null: not a subscription)
      * @param  ?ID_TEXT $length_units The length units. (null: not a subscription)
      * @set    d w m y
+    TODO more
      * @return array A tuple: success (boolean), trans-ID (string), message (string), raw message (string).
      */
-    public function do_transaction($trans_id, $name, $card_number, $amount, $currency, $expiry_date, $issue_number, $start_date, $card_type, $cv2, $length = null, $length_units = null)
+    public function do_transaction($trans_id, $name, $card_number, $amount, $currency, $expiry_date, $issue_number, $start_date, $card_type, $cv2, $length = null, $length_units = null, $shipping_firstname = '', $shipping_lastname = '', $shipping_name = '', $shipping_street_address = '', $shipping_city = '', $shipping_county = '', $shipping_state = '', $shipping_post_code = '', $shipping_country = '', $shipping_receiver_email = '', $shipping_contact_phone = '')
     {
         if (is_null($trans_id)) {
             $trans_id = $this->generate_trans_id();
@@ -307,7 +308,7 @@ class Hook_secpay
 
         $purchase_id = post_param_integer('customfld1', '-1');
         if (addon_installed('shopping')) {
-            $this->store_shipping_address($purchase_id);
+            $this->store_shipping_address($purchase_id, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_country, $shipping_post_code);
         }
 
         return array($success, $trans_id, $message, $message_raw);
@@ -451,28 +452,47 @@ class Hook_secpay
      * Store shipping address for orders.
      *
      * @param  AUTO_LINK $order_id Order ID.
+    TODO: more
      * @return ?mixed Address ID (null: No address record found).
      */
-    public function store_shipping_address($order_id)
+    public function store_shipping_address($order_id, $shipping_firstname = '', $shipping_lastname = '', $shipping_name = '', $shipping_street_address = '', $shipping_city = '', $shipping_county = '', $shipping_state = '', $shipping_post_code = '', $shipping_country = '', $shipping_receiver_email = '', $shipping_contact_phone = '')
     {
         if (is_null(post_param_string('first_name', null))) {
             return null;
         }
 
         if (is_null($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order_addresses', 'id', array('order_id' => $order_id)))) {
-            $shipping_address = array();
-            $shipping_address['order_id'] = $order_id;
-            $shipping_address['address_name'] = post_param_string('ship_addr_1', '');
-            $shipping_address['address_street'] = post_param_string('ship_addr_2', '');
-            $shipping_address['address_zip'] = post_param_string('ship_post_code', '');
-            $shipping_address['address_city'] = post_param_string('ship_city', '');
-            $shipping_address['address_state'] = post_param_string('ship_state', '');
-            $shipping_address['address_country'] = post_param_string('ship_country', '');
-            $shipping_address['receiver_email'] = '';
-            $shipping_address['contact_phone'] = post_param_string('ship_tel', '');
-            $shipping_address['first_name'] = trim(post_param_string('ship_name', '') . ', ' . post_param_string('ship_company', ''), ' ,');
-            $shipping_address['last_name'] = '';
-
+            if (empty($shipping_firstname . $shipping_lastname . $shipping_street_address . $shipping_city . $shipping_county . $shipping_state . $shipping_country . $shipping_post_code)) {
+                $shipping_address = array(
+                    'order_id' => $order_id,
+                    'first_name' => trim(post_param_string('ship_name', '') . ', ' . post_param_string('ship_company', ''), ' ,'),
+                    'last_name' => '',
+                    'address_name' => post_param_string('ship_addr_1', ''),
+                    'address_street' => post_param_string('ship_addr_2', ''),
+                    'address_city' => post_param_string('ship_city', ''),
+                    'address_state' => post_param_string('ship_state', ''),
+                    'address_county' => '',
+                    'address_zip' => post_param_string('ship_post_code', ''),
+                    'address_country' => post_param_string('ship_country', ''),
+                    'receiver_email' => '',
+                    'contact_phone' => post_param_string('ship_tel', ''),
+                );
+            } else {
+                $shipping_address = array(
+                    'order_id' => $order_id,
+                    'first_name' => $shipping_firstname,
+                    'last_name' => $shipping_lastname,
+                    'address_name' => $shipping_name,
+                    'address_street' => $shipping_street_address,
+                    'address_city' => $shipping_city,
+                    'address_state' => $shipping_state,
+                    'address_county' => $shipping_county,
+                    'address_zip' => $shipping_post_code,
+                    'address_country' => $shipping_country,
+                    'receiver_email' => $shipping_receiver_email,
+                    'contact_phone' => $shipping_contact_phone,
+                );
+            }
             return $GLOBALS['SITE_DB']->query_insert('shopping_order_addresses', $shipping_address, true);
         }
 

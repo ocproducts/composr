@@ -354,13 +354,19 @@ function render_cart_payment_form()
         if (is_null($order_id)) {
             $fields = new Tempcode();
             $hidden = new Tempcode();
+            $verified_account_logo = '';
         } else {
-            list($fields, $hidden) = get_transaction_form_fields(null, strval($order_id), $item_name, float_to_raw_string($price), get_option('currency'), null, '');
+            list($fields, $hidden, $verified_account_logo) = get_transaction_form_fields(null, strval($order_id), $item_name, float_to_raw_string($price), get_option('currency'), null, '');
         }
 
         $finish_url = build_url(array('page' => 'purchase', 'type' => 'finish'), get_module_zone('purchase'));
 
-        $result = do_template('PURCHASE_WIZARD_STAGE_TRANSACT', array('_GUID' => 'a70d6995baabb7e41e1af68409361f3c', 'FIELDS' => $fields, 'HIDDEN' => $hidden));
+        $result = do_template('PURCHASE_WIZARD_STAGE_TRANSACT', array(
+            '_GUID' => 'a70d6995baabb7e41e1af68409361f3c',
+            'FIELDS' => $fields,
+            'HIDDEN' => $hidden,
+            'VERIFIED_ACCOUNT_LOGO' => $verified_account_logo,
+        ));
 
         require_javascript('checking');
 

@@ -475,6 +475,7 @@ class Module_admin_orders
                 'ADDRESS_NAME' => $address['address_name'],
                 'ADDRESS_STREET' => $address['address_street'],
                 'ADDRESS_CITY' => $address['address_city'],
+                'ADDRESS_COUNTY' => $address['address_county'],
                 'ADDRESS_STATE' => $address['address_state'],
                 'ADDRESS_ZIP' => $address['address_zip'],
                 'ADDRESS_COUNTRY' => $address['address_country'],
@@ -784,6 +785,9 @@ class Module_admin_orders
             if ($order['address_city'] != '') {
                 $address[] = $order['address_city'];
             }
+            if ($order['address_county'] != '') {
+                $address[] = $order['address_county'];
+            }
             if ($order['address_state'] != '') {
                 $address[] = $order['address_state'];
             }
@@ -795,6 +799,9 @@ class Module_admin_orders
             }
             if ($order['contact_phone'] != '') {
                 $address[] = do_lang('PHONE_NUMBER') . ': ' . $order['contact_phone'];
+            }
+            if ($order['receiver_email'] != '') {
+                $address[] = do_lang('EMAIL_ADDRESS') . ': ' . $order['receiver_email'];
             }
             $full_address = implode("\n", $address);
             $orders[do_lang('FULL_ADDRESS')] = $full_address;

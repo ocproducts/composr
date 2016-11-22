@@ -323,6 +323,7 @@ class Hook_addon_registry_shopping
             'ADDRESS_NAME' => lorem_phrase(),
             'ADDRESS_STREET' => lorem_phrase(),
             'ADDRESS_CITY' => lorem_phrase(),
+            'ADDRESS_COUNTY' => lorem_phrase(),
             'ADDRESS_STATE' => lorem_phrase(),
             'ADDRESS_ZIP' => lorem_phrase(),
             'ADDRESS_COUNTRY' => lorem_phrase(),
