@@ -578,8 +578,6 @@ class Module_purchase
                     handle_transaction_script();
                 }
 
-                attach_message(do_lang_tempcode('SUCCESS'), 'inform');
-
                 $product_object = find_product($type_code);
 
                 if (method_exists($product_object, 'get_finish_url')) {

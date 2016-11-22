@@ -333,7 +333,7 @@ class Hook_ccbill
             $shipping_address['address_street'] = post_param_string('address1', '');
             $shipping_address['address_zip'] = post_param_string('zipcode', '');
             $shipping_address['address_city'] = post_param_string('city', '');
-            $shipping_address['address_city'] = post_param_string('state', '');
+            $shipping_address['address_state'] = post_param_string('state', '');
             $shipping_address['address_country'] = post_param_string('country', '');
             $shipping_address['receiver_email'] = post_param_string('email', '');
             $shipping_address['contact_phone'] = post_param_string('phone_number', '');
