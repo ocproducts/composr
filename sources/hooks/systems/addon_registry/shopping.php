@@ -318,17 +318,17 @@ class Hook_addon_registry_shopping
         ));
 
         $shipping_address = do_lorem_template('ECOM_SHIPPING_ADDRESS', array(
-            'FIRST_NAME' => lorem_phrase(),
-            'LAST_NAME' => lorem_phrase(),
-            'ADDRESS_NAME' => lorem_phrase(),
-            'ADDRESS_STREET' => lorem_phrase(),
-            'ADDRESS_CITY' => lorem_phrase(),
-            'ADDRESS_COUNTY' => lorem_phrase(),
-            'ADDRESS_STATE' => lorem_phrase(),
-            'ADDRESS_ZIP' => lorem_phrase(),
-            'ADDRESS_COUNTRY' => lorem_phrase(),
-            'RECEIVER_EMAIL' => lorem_phrase(),
-            'CONTACT_PHONE' => lorem_phrase(),
+            'FIRSTNAME' => lorem_phrase(),
+            'LASTNAME' => lorem_phrase(),
+            'BUILDING_ADDRESS' => lorem_phrase(),
+            'STREET_ADDRESS' => lorem_phrase(),
+            'CITY' => lorem_phrase(),
+            'COUNTY' => lorem_phrase(),
+            'STATE' => lorem_phrase(),
+            'ZIP' => lorem_phrase(),
+            'COUNTRY' => lorem_phrase(),
+            'EMAIL' => lorem_phrase(),
+            'PHONE' => lorem_phrase(),
         ));
 
         return array(

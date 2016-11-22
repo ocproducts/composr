@@ -329,17 +329,17 @@ class Hook_ccbill
         if (is_null($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order_addresses', 'id', array('order_id' => $order_id)))) {
             $shipping_address = array(
                 'order_id' => $order_id,
-                'first_name' => post_param_string('customer_fname', ''),
-                'last_name' => post_param_string('customer_lname', ''),
-                'address_name' => post_param_string('address1', ''),
-                'address_street' => post_param_string('address2', ''),
-                'address_city' => post_param_string('city', ''),
-                'address_county' => '',
-                'address_state' => post_param_string('state', ''),
-                'address_zip' => post_param_string('zipcode', ''),
-                'address_country' => post_param_string('country', ''),
-                'receiver_email' => post_param_string('email', ''),
-                'contact_phone' => post_param_string('phone_number', ''),
+                'firstname' => post_param_string('customer_fname', ''),
+                'lastname' => post_param_string('customer_lname', ''),
+                'building_address' => post_param_string('address1', ''),
+                'street_address' => post_param_string('address2', ''),
+                'city' => post_param_string('city', ''),
+                'county' => '',
+                'state' => post_param_string('state', ''),
+                'post_code' => post_param_string('zipcode', ''),
+                'country' => post_param_string('country', ''),
+                'email' => post_param_string('email', ''),
+                'phone' => post_param_string('phone_number', ''),
             );
             return $GLOBALS['SITE_DB']->query_insert('shopping_order_addresses', $shipping_address, true);
         }

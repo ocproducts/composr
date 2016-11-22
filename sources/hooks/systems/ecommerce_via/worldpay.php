@@ -322,17 +322,17 @@ class Hook_worldpay
         if (is_null($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order_addresses', 'id', array('order_id' => $order_id)))) {
             $shipping_address = array(
                 'order_id' => $order_id,
-                'first_name' => post_param_string('delvName', ''),
-                'last_name' => '',
-                'address_name' => '',
-                'address_street' => post_param_string('delvAddress', ''),
-                'address_city' => post_param_string('city', ''),
-                'address_county' => '',
-                'address_state' => '',
-                'address_zip' => post_param_string('delvPostcode', ''),
-                'address_country' => post_param_string('delvCountryString', ''),
-                'receiver_email' => post_param_string('email', ''),
-                'contact_phone' => post_param_string('tel', ''),
+                'firstname' => post_param_string('delvName', ''),
+                'lastname' => '',
+                'building_address' => '',
+                'street_address' => post_param_string('delvAddress', ''),
+                'city' => post_param_string('city', ''),
+                'county' => '',
+                'state' => '',
+                'post_code' => post_param_string('delvPostcode', ''),
+                'country' => post_param_string('delvCountryString', ''),
+                'email' => post_param_string('email', ''),
+                'phone' => post_param_string('tel', ''),
             );
             return $GLOBALS['SITE_DB']->query_insert('shopping_order_addresses', $shipping_address, true);
         }

@@ -404,17 +404,17 @@ class Hook_paypal
         if (is_null($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order_addresses', 'id', array('order_id' => $order_id)))) {
             $shipping_address = array(
                 'order_id' => $order_id,
-                'first_name' => post_param_string('first_name', ''),
-                'last_name' => post_param_string('last_name', ''),
-                'address_name' => post_param_string('address_name', ''),
-                'address_street' => post_param_string('address_street', ''),
-                'address_city' => post_param_string('address_city', ''),
-                'address_county' => '',
-                'address_state' => '',
-                'address_zip' => post_param_string('address_zip', ''),
-                'address_country' => post_param_string('address_country', ''),
-                'receiver_email' => post_param_string('payer_email', ''),
-                'contact_phone' => post_param_string('contact_phone', ''),
+                'firstname' => post_param_string('first_name', ''),
+                'lastname' => post_param_string('last_name', ''),
+                'building_address' => post_param_string('address_name', ''),
+                'street_address' => post_param_string('address_street', ''),
+                'city' => post_param_string('address_city', ''),
+                'county' => '',
+                'state' => '',
+                'post_code' => post_param_string('address_zip', ''),
+                'country' => post_param_string('address_country', ''),
+                'email' => post_param_string('payer_email', ''),
+                'phone' => post_param_string('contact_phone', ''),
             );
             return $GLOBALS['SITE_DB']->query_insert('shopping_order_addresses', $shipping_address, true);
         }

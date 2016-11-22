@@ -131,17 +131,17 @@ class Module_shopping
                 // These are filled after an order is made (maybe via what comes back from IPN, maybe from what is set for a local payment), and presented in the admin orders UI
                 'id' => '*AUTO',
                 'order_id' => '?AUTO_LINK',
-                'address_name' => 'SHORT_TEXT',
-                'address_street' => 'LONG_TEXT',
-                'address_city' => 'SHORT_TEXT',
-                'address_county' => 'SHORT_TEXT',
-                'address_state' => 'SHORT_TEXT',
-                'address_zip' => 'SHORT_TEXT',
-                'address_country' => 'SHORT_TEXT',
-                'receiver_email' => 'SHORT_TEXT',
-                'contact_phone' => 'SHORT_TEXT',
-                'first_name' => 'SHORT_TEXT', // NB: May be full-name, or include company name
-                'last_name' => 'SHORT_TEXT',
+                'firstname' => 'SHORT_TEXT', // NB: May be full-name, or include company name
+                'lastname' => 'SHORT_TEXT',
+                'building_address' => 'SHORT_TEXT',
+                'street_address' => 'LONG_TEXT',
+                'city' => 'SHORT_TEXT',
+                'county' => 'SHORT_TEXT',
+                'state' => 'SHORT_TEXT',
+                'post_code' => 'SHORT_TEXT',
+                'country' => 'SHORT_TEXT',
+                'email' => 'SHORT_TEXT',
+                'phone' => 'SHORT_TEXT',
             ));
             $GLOBALS['SITE_DB']->create_index('shopping_order_addresses', 'order_id', array('order_id'));
         }
@@ -163,6 +163,18 @@ class Module_shopping
 
         if (($upgrade_from !== null) && ($upgrade_from < 8)) {
             $GLOBALS['SITE_DB']->add_table_field('shopping_order_addresses', 'address_county', 'SHORT_TEXT');
+
+            $GLOBALS['SITE_DB']->alter_table_field('shopping_order_addresses', 'first_name', 'SHORT_TEXT', 'firstname');
+            $GLOBALS['SITE_DB']->alter_table_field('shopping_order_addresses', 'last_name', 'SHORT_TEXT', 'lastname');
+            $GLOBALS['SITE_DB']->alter_table_field('shopping_order_addresses', 'address_name', 'SHORT_TEXT', 'building_address');
+            $GLOBALS['SITE_DB']->alter_table_field('shopping_order_addresses', 'address_street', 'SHORT_TEXT', 'street_address');
+            $GLOBALS['SITE_DB']->alter_table_field('shopping_order_addresses', 'address_city', 'SHORT_TEXT', 'city');
+            $GLOBALS['SITE_DB']->alter_table_field('shopping_order_addresses', 'address_county', 'SHORT_TEXT', 'county');
+            $GLOBALS['SITE_DB']->alter_table_field('shopping_order_addresses', 'address_state', 'SHORT_TEXT', 'state');
+            $GLOBALS['SITE_DB']->alter_table_field('shopping_order_addresses', 'address_zip', 'SHORT_TEXT', 'post_code');
+            $GLOBALS['SITE_DB']->alter_table_field('shopping_order_addresses', 'address_country', 'SHORT_TEXT', 'country');
+            $GLOBALS['SITE_DB']->alter_table_field('shopping_order_addresses', 'receiver_email', 'SHORT_TEXT', 'email');
+            $GLOBALS['SITE_DB']->alter_table_field('shopping_order_addresses', 'contact_phone', 'SHORT_TEXT', 'phone');
         }
     }
 

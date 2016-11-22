@@ -470,17 +470,17 @@ class Module_admin_orders
             $address = $row[0];
             $shipping_address = do_template('ECOM_SHIPPING_ADDRESS', array(
                 '_GUID' => '332bc2e28a75cff64e6856bbeda6102e',
-                'FIRST_NAME' => $address['first_name'],
-                'LAST_NAME' => $address['last_name'],
-                'ADDRESS_NAME' => $address['address_name'],
-                'ADDRESS_STREET' => $address['address_street'],
-                'ADDRESS_CITY' => $address['address_city'],
-                'ADDRESS_COUNTY' => $address['address_county'],
-                'ADDRESS_STATE' => $address['address_state'],
-                'ADDRESS_ZIP' => $address['address_zip'],
-                'ADDRESS_COUNTRY' => $address['address_country'],
-                'RECEIVER_EMAIL' => $address['receiver_email'],
-                'CONTACT_PHONE' => $address['contact_phone'],
+                'FIRSTNAME' => $address['firstname'],
+                'LASTNAME' => $address['lastname'],
+                'BUILDING_ADDRESS' => $address['building_address'],
+                'STREET_ADDRESS' => $address['street_address'],
+                'CITY' => $address['city'],
+                'COUNTY' => $address['county'],
+                'STATE' => $address['state'],
+                'POST_CODE' => $address['post_code'],
+                'COUNTRY' => $address['country'],
+                'EMAIL' => $address['email'],
+                'PHONE' => $address['phone'],
             ));
         } else {
             $shipping_address = new Tempcode();
@@ -776,32 +776,35 @@ class Module_admin_orders
 
             // Put address together
             $address = array();
-            if ($order['first_name'] . $order['last_name'] != '') {
-                $address[] = trim($order['first_name'] . ' ' . $order['last_name']);
+            if ($order['firstname'] . $order['lastname'] != '') {
+                $address[] = trim($order['firstname'] . ' ' . $order['lastname']);
             }
-            if ($order['address_name'] != '') {
-                $address[] = $order['address_name'];
+            if ($order['building_address'] != '') {
+                $address[] = $order['building_address'];
             }
-            if ($order['address_city'] != '') {
-                $address[] = $order['address_city'];
+            if ($order['street_address'] != '') {
+                $address[] = $order['street_address'];
             }
-            if ($order['address_county'] != '') {
-                $address[] = $order['address_county'];
+            if ($order['city'] != '') {
+                $address[] = $order['city'];
             }
-            if ($order['address_state'] != '') {
-                $address[] = $order['address_state'];
+            if ($order['county'] != '') {
+                $address[] = $order['county'];
             }
-            if ($order['address_zip'] != '') {
-                $address[] = $order['address_zip'];
+            if ($order['state'] != '') {
+                $address[] = $order['state'];
             }
-            if ($order['address_country'] != '') {
-                $address[] = $order['address_country'];
+            if ($order['post_code'] != '') {
+                $address[] = $order['post_code'];
             }
-            if ($order['contact_phone'] != '') {
-                $address[] = do_lang('PHONE_NUMBER') . ': ' . $order['contact_phone'];
+            if ($order['country'] != '') {
+                $address[] = $order['country'];
             }
-            if ($order['receiver_email'] != '') {
-                $address[] = do_lang('EMAIL_ADDRESS') . ': ' . $order['receiver_email'];
+            if ($order['email'] != '') {
+                $address[] = do_lang('EMAIL_ADDRESS') . ': ' . $order['email'];
+            }
+            if ($order['phone'] != '') {
+                $address[] = do_lang('PHONE_NUMBER') . ': ' . $order['phone'];
             }
             $full_address = implode("\n", $address);
             $orders[do_lang('FULL_ADDRESS')] = $full_address;
