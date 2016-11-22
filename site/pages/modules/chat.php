@@ -312,7 +312,7 @@ class Module_chat
         }
 
         if ($type == 'download_logs') {
-            inform_non_canonical_parameter('id');
+            attach_to_screen_header('<meta name="robots" content="noindex" />'); // XHTMLXHTML
 
             $this->title = get_screen_title('CHAT_DOWNLOAD_LOGS');
         }

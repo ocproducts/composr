@@ -140,11 +140,7 @@ class Module_topicview
 
         inform_non_canonical_parameter('threaded');
         inform_non_canonical_parameter('post_id');
-        foreach (array_keys($_GET) as $key) {
-            if (substr($key, 0, 3) == 'kfs') {
-                inform_non_canonical_parameter($key);
-            }
-        }
+        inform_non_canonical_parameter('#^kfs.*$#');
 
         if (!is_null($id)) {
             set_extra_request_metadata($topic_info['metadata'], $topic_info['row'], 'topic', strval($id));

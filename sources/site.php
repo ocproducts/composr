@@ -37,21 +37,21 @@ function init__site()
 
     global $NON_CANONICAL_PARAMS;
     // We only bother listing ones the software itself may inject - otherwise admin responsible for their own curation of canonical settings
-    $NON_CANONICAL_PARAMS = array('wide_high', 'wide', 'wide_print', 'filtered', 'utheme', 'active_filter', 'redirected', 'redirect_url', 'redirect', 'redirect_passon');
+    $NON_CANONICAL_PARAMS = array('wide_high' => false, 'wide' => false, 'wide_print' => false, 'filtered' => false, 'utheme' => false, 'active_filter' => true, 'redirected' => true, 'redirect_url' => true, 'redirect' => true, 'redirect_passon' => true);
     inform_non_canonical_parameter('#^(.*_)?(max|start|sort)$#');
     if (function_exists('get_value')) {
         $is_non_canonical = false;
         $canonical_keep_params = explode(',', is_null(get_value('canonical_keep_params')) ? 'keep_devtest' : get_value('canonical_keep_params'));
         foreach (array_intersect(array_keys($_GET), array('keep_session'/*may be inserted later*/)) as $key) {
             if ((is_string($key)) && (substr($key, 0, 5) == 'keep_') && (!@in_array($key, $canonical_keep_params))) {
-                $NON_CANONICAL_PARAMS[] = $key;
+                $NON_CANONICAL_PARAMS[$key] = true;
                 $is_non_canonical = true;
             }
         }
         if (($is_non_canonical) && (get_bot_type() !== null)) { // Force bots onto the canonical URL if there were non-standard keep parameters, as they may ignore even the canonical meta tag.
             $non_canonical = array();
             if (is_array($NON_CANONICAL_PARAMS)) {
-                foreach ($NON_CANONICAL_PARAMS as $n) {
+                foreach (array_keys($NON_CANONICAL_PARAMS) as $n) {
                     $non_canonical[$n] = null;
                 }
             }
@@ -308,8 +308,9 @@ function attach_to_screen_header($data)
  * @sets_output_state
  *
  * @param  ID_TEXT $param Parameter name
+ * @param  boolean $block_page_from_static_cache_if_present If set to true and if this parameter is present in the URL then no static cache save will happen
  */
-function inform_non_canonical_parameter($param)
+function inform_non_canonical_parameter($param, $block_page_from_static_cache_if_present = true)
 {
     global $NON_CANONICAL_PARAMS;
 
@@ -324,7 +325,7 @@ function inform_non_canonical_parameter($param)
             }
         }
     } else {
-        $NON_CANONICAL_PARAMS[] = $param;
+        $NON_CANONICAL_PARAMS[$param] = $block_page_from_static_cache_if_present;
     }
 }
 

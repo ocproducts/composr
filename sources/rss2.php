@@ -238,8 +238,17 @@ function rss_backend_script()
     $echo = do_template($prefix . 'WRAPPER', array('SELECT' => $select, 'CUTOFF' => strval($cutoff), 'MODE' => $mode, 'MODE_NICE' => $mode_nice, 'RSS_CLOUD' => $rss_cloud, 'VERSION' => cms_version_pretty(), 'COPYRIGHT' => $copyright, 'DATE' => $date, 'LOGO_URL' => $logo_url, 'ABOUT' => $site_about, 'CONTENT' => $content, 'SELF_URL' => get_self_url_easy()), null, false, null, '.xml', 'xml');
     $echo->evaluate_echo();
 
-    require_code('site');
-    save_static_caching($echo, 'text/xml');
+    if ($mode != 'comments') {
+        require_code('site');
+
+        // This is just signaling to the static cache in this case, as there's no HTML <head>
+        inform_non_canonical_parameter('cutoff');
+        inform_non_canonical_parameter('days');
+        inform_non_canonical_parameter('max');
+        inform_non_canonical_parameter('select');
+
+        save_static_caching($echo, 'text/xml');
+    }
 }
 
 /**

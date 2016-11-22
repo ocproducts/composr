@@ -82,6 +82,8 @@ class Module_report_content
 
         require_lang('report_content');
 
+        attach_to_screen_header('<meta name="robots" content="noindex" />'); // XHTMLXHTML
+
         if ($type == 'browse') {
             $this->title = get_screen_title('REPORT_CONTENT');
         }
