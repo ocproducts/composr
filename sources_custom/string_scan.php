@@ -4485,7 +4485,6 @@ function string_scan($lang, $do_guessing = false)
         FTP_PASSWORD
         FTP_SERVER_URL
         FTP_USERNAME
-        FULL_ADDRESS
         FULL_BACKUP
         FULL_PERMISSION_LIST_SEE_FILE
         FUSED_LANG_STRINGS
@@ -6011,7 +6010,6 @@ function string_scan($lang, $do_guessing = false)
         REBRAND_DASHBOARD
         REBRAND_NAME
         RECEIVER_DETAILS
-        RECEIVER_EMAIL
         RECOMMENDED
         RECURRANCE_DAYS
         RECURRENCES
@@ -7145,6 +7143,8 @@ function string_scan($lang, $do_guessing = false)
         ACTIVITY_LIKES_UNTITLED
         ACTIVITY_PASSED_TEST
         ACTIVITY_SUBSCRIBED_EVENT
+        SHIPPING_ADDRESS
+        PAYMENT_DETAILS
         ADD
         ADDED
         ADDED_COMCODE_ONLY
@@ -7342,13 +7342,6 @@ function string_scan($lang, $do_guessing = false)
         CAPTCHA
         CAPTCHA_NO_SESSION
         CAPTION
-        CARDHOLDER_NAME
-        CARD_CV2
-        CARD_EXPIRY_DATE
-        CARD_ISSUE_NUMBER
-        CARD_NUMBER
-        CARD_START_DATE
-        CARD_TYPE
         CARE_PLEASE
         CART_EMPTIED
         CART_EMPTY
@@ -8320,12 +8313,6 @@ function string_scan($lang, $do_guessing = false)
         MEDIA_TYPE_video_websafe
         MEDIA_TYPE_vimeo
         MEDIA_TYPE_youtube
-        SHIPPING_ADDRESS_CITY
-        SHIPPING_ADDRESS_COUNTRY
-        SHIPPING_ADDRESS_NAME
-        SHIPPING_ADDRESS_STATE
-        SHIPPING_ADDRESS_STREET
-        SHIPPING_ADDRESS_ZIP
         MEMBER
         MEMBERS
         MEMBERSHIP_LENGTH

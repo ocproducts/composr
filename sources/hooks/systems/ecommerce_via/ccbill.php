@@ -272,7 +272,7 @@ class Hook_ccbill
     /**
      * Handle IPN's. The function may produce output, which would be returned to the Payment Gateway. The function may do transaction verification.
      *
-     * @return array A long tuple of collected data.
+     * @return array A long tuple of collected data. Emulates some of the key variables of the PayPal IPN response.
      */
     public function handle_transaction()
     {
@@ -331,8 +331,7 @@ class Hook_ccbill
                 'order_id' => $order_id,
                 'firstname' => post_param_string('customer_fname', ''),
                 'lastname' => post_param_string('customer_lname', ''),
-                'building_address' => post_param_string('address1', ''),
-                'street_address' => post_param_string('address2', ''),
+                'street_address' => trim(post_param_string('address1', '') . "\n" . post_param_string('address2', '')),
                 'city' => post_param_string('city', ''),
                 'county' => '',
                 'state' => post_param_string('state', ''),

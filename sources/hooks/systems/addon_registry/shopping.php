@@ -317,10 +317,10 @@ class Hook_addon_registry_shopping
             'ORDER_STATUS' => lorem_word(),
         ));
 
+        require_lang('cns_special_cpf');
         $shipping_address = do_lorem_template('ECOM_SHIPPING_ADDRESS', array(
             'FIRSTNAME' => lorem_phrase(),
             'LASTNAME' => lorem_phrase(),
-            'BUILDING_ADDRESS' => lorem_phrase(),
             'STREET_ADDRESS' => lorem_phrase(),
             'CITY' => lorem_phrase(),
             'COUNTY' => lorem_phrase(),

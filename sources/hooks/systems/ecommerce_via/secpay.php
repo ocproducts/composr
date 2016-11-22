@@ -258,13 +258,23 @@ class Hook_secpay
      * @param  SHORT_TEXT $card_type Card Type.
      * @set    "Visa" "Master Card" "Switch" "UK Maestro" "Maestro" "Solo" "Delta" "American Express" "Diners Card" "JCB"
      * @param  SHORT_TEXT $cv2 Card CV2 number (security number).
+    TODO billing
+     * @param  SHORT_TEXT $shipping_firstname First name
+     * @param  SHORT_TEXT $shipping_lastname Last name
+     * @param  LONG_TEXT $shipping_street_address Street address
+     * @param  SHORT_TEXT $shipping_city Town/City
+     * @param  SHORT_TEXT $shipping_county County
+     * @param  SHORT_TEXT $shipping_state State
+     * @param  SHORT_TEXT $shipping_post_code Postcode/Zip
+     * @param  SHORT_TEXT $shipping_country Country
+     * @param  SHORT_TEXT $shipping_email E-mail address
+     * @param  SHORT_TEXT $shipping_phone Phone number
      * @param  ?integer $length The subscription length in the units. (null: not a subscription)
      * @param  ?ID_TEXT $length_units The length units. (null: not a subscription)
      * @set    d w m y
-    TODO more
      * @return array A tuple: success (boolean), trans-ID (string), message (string), raw message (string).
      */
-    public function do_transaction($trans_id, $name, $card_number, $amount, $currency, $expiry_date, $issue_number, $start_date, $card_type, $cv2, $length = null, $length_units = null, $shipping_firstname = '', $shipping_lastname = '', $shipping_building_address = '', $shipping_street_address = '', $shipping_city = '', $shipping_county = '', $shipping_state = '', $shipping_post_code = '', $shipping_country = '', $shipping_email = '', $shipping_phone = '')
+    public function do_transaction($trans_id, $name, $card_number, $amount, $currency, $expiry_date, $issue_number, $start_date, $card_type, $cv2, TODO billing address, $shipping_firstname = '', $shipping_lastname = '', $shipping_street_address = '', $shipping_city = '', $shipping_county = '', $shipping_state = '', $shipping_post_code = '', $shipping_country = '', $shipping_email = '', $shipping_phone = '', $length = null, $length_units = null)
     {
         if (is_null($trans_id)) {
             $trans_id = $this->generate_trans_id();
@@ -306,10 +316,7 @@ class Hook_secpay
         $message_raw = array_key_exists('message', $map) ? $map['message'] : '';
         $message = $success ? do_lang('ACCEPTED_MESSAGE', $message_raw) : do_lang('DECLINED_MESSAGE', $message_raw);
 
-        $purchase_id = post_param_integer('customfld1', '-1');
-        if (addon_installed('shopping')) {
-            $this->store_shipping_address($purchase_id, $shipping_firstname, $shipping_lastname, $shipping_building_address, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_country, $shipping_post_code, $shipping_email, $shipping_phone);
-        }
+        $purchase_id = $GLOBALS['SITE_DB']->query_select_value('trans_expecting', 'e_purchase_id', array('id' => $trans_id));
 
         return array($success, $trans_id, $message, $message_raw);
     }
@@ -317,14 +324,10 @@ class Hook_secpay
     /**
      * Handle IPN's. The function may produce output, which would be returned to the Payment Gateway. The function may do transaction verification.
      *
-     * @return array A long tuple of collected data.
+     * @return array A long tuple of collected data. Emulates some of the key variables of the PayPal IPN response.
      */
     public function handle_transaction()
     {
-        /*$myfile = fopen(get_file_base() . '/data_custom/ecommerce.log', 'at');      Useful for debugging
-        fwrite($myfile, serialize($_POST));
-        fclose($myfile);*/
-
         $txn_id = post_param_string('trans_id');
         if (substr($txn_id, 0, 7) == 'subscr_') {
             $subscription = true;
@@ -425,6 +428,10 @@ class Hook_secpay
             dispatch_notification('payment_received', null, do_lang('PAYMENT_RECEIVED_SUBJECT', $txn_id, null, null, get_lang($member_id)), do_notification_lang('PAYMENT_RECEIVED_BODY', float_format(floatval($mc_gross)), $mc_currency, get_site_name(), get_lang($member_id)), array($member_id), A_FROM_SYSTEM_PRIVILEGED);
         }
 
+        if (addon_installed('shopping')) {
+            $this->store_shipping_address($purchase_id);
+        }
+
         // Subscription stuff
         if (get_param_integer('subc', 0) == 1) {
             if (!$success) {
@@ -432,18 +439,14 @@ class Hook_secpay
             }
         }
 
+        // We need to echo the output of our finish page to SecPay's IPN caller
         if ($success) {
             $_url = build_url(array('page' => 'purchase', 'type' => 'finish', 'type_code' => get_param_string('type_code', null)), get_module_zone('purchase'));
         } else {
             $_url = build_url(array('page' => 'purchase', 'type' => 'finish', 'cancel' => 1, 'message' => do_lang_tempcode('DECLINED_MESSAGE', $message)), get_module_zone('purchase'));
         }
         $url = $_url->evaluate();
-
         echo http_download_file($url, null, false);
-
-        if (addon_installed('shopping')) {
-            $this->store_shipping_address($purchase_id);
-        }
 
         return array($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, '', '');
     }
@@ -452,47 +455,28 @@ class Hook_secpay
      * Store shipping address for orders.
      *
      * @param  AUTO_LINK $order_id Order ID.
-    TODO: more
      * @return ?mixed Address ID (null: No address record found).
      */
-    public function store_shipping_address($order_id, $firstname = '', $lastname = '', $building_address = '', $street_address = '', $city = '', $county = '', $state = '', $post_code = '', $country = '', $email = '', $phone = '')
+    public function store_shipping_address($order_id)
     {
         if (is_null(post_param_string('first_name', null))) {
             return null;
         }
 
         if (is_null($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order_addresses', 'id', array('order_id' => $order_id)))) {
-            if (empty($firstname . $lastname . $building_address, $street_address . $city . $county . $state . $post_code . $country . $email . $phone)) {
-                $shipping_address = array(
-                    'order_id' => $order_id,
-                    'firstname' => trim(post_param_string('ship_name', '') . ', ' . post_param_string('ship_company', ''), ' ,'),
-                    'lastname' => '',
-                    'building_address' => post_param_string('ship_addr_1', ''),
-                    'street_address' => post_param_string('ship_addr_2', ''),
-                    'city' => post_param_string('ship_city', ''),
-                    'county' => '',
-                    'state' => post_param_string('ship_state', ''),
-                    'post_code' => post_param_string('ship_post_code', ''),
-                    'country' => post_param_string('ship_country', ''),
-                    'email' => '',
-                    'phone' => post_param_string('ship_tel', ''),
-                );
-            } else {
-                $shipping_address = array(
-                    'order_id' => $order_id,
-                    'firstname' => $firstname,
-                    'lastname' => $lastname,
-                    'building_address' => $building_address,
-                    'street_address' => $street_address,
-                    'city' => $city,
-                    'county' => $county,
-                    'state' => $state,
-                    'post_code' => $post_code,
-                    'country' => $country,
-                    'email' => $email,
-                    'phone' => $phone,
-                );
-            }
+            $shipping_address = array(
+                'order_id' => $order_id,
+                'firstname' => trim(post_param_string('ship_name', '') . ', ' . post_param_string('ship_company', ''), ' ,'),
+                'lastname' => '',
+                'street_address' => trim(post_param_string('ship_addr_1', '') . "\n" . post_param_string('ship_addr_2', '')),
+                'city' => post_param_string('ship_city', ''),
+                'county' => '',
+                'state' => post_param_string('ship_state', ''),
+                'post_code' => post_param_string('ship_post_code', ''),
+                'country' => post_param_string('ship_country', ''),
+                'email' => '',
+                'phone' => post_param_string('ship_tel', ''),
+            );
             return $GLOBALS['SITE_DB']->query_insert('shopping_order_addresses', $shipping_address, true);
         }
 

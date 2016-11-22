@@ -38,7 +38,13 @@ class Hook_cns_cpf_filter_ecommerce
 
         // Local payment
         if (get_option('use_local_payment') == '1') {
-            $cpf = array_merge($cpf, array('payment_cardholder_name' => true, 'payment_card_type' => true, 'payment_card_number' => true, 'payment_card_start_date' => true, 'payment_card_expiry_date' => true, 'payment_card_issue_number' => true, 'payment_card_cv2' => true));
+            $cpf = array_merge($cpf, array('payment_cardholder_name' => true, 'payment_card_type' => true, 'payment_card_number' => true, 'payment_card_start_date' => true, 'payment_card_expiry_date' => true, 'payment_card_issue_number' => true));
+
+            if ((get_forum_type() == 'cns') && ($GLOBALS['FORUM_DB']->query_select_value('f_usergroup_subs', 'COUNT(*)') > 0)) {
+                $cpf = array_merge($cpf, array('payment_card_cv2' => true));
+            }
+
+            TODO billing address
         }
 
         return $cpf;

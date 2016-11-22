@@ -31,6 +31,6 @@ class Hook_cns_cpf_filter_shopping_cart
     public function to_enable()
     {
         // Contact details
-        return array('firstname' => true, 'lastname' => true, 'street_address' => true, 'city' => true/*Too specific to force on, may be done via config instead, 'county' => true, 'state' => true*/, 'post_code' => true, 'country' => true);
+        return array('firstname' => true, 'lastname' => true, 'street_address' => true, 'city' => true/*Too specific to force on, may be done via config instead, 'county' => true, 'state' => true*/, 'post_code' => true, 'country' => true, 'mobile_phone_number' => true);
     }
 }

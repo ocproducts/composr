@@ -467,12 +467,13 @@ class Module_admin_orders
         // Shipping address display
         $row = $GLOBALS['SITE_DB']->query_select('shopping_order_addresses', array('*'), array('order_id' => $id), '', 1);
         if (array_key_exists(0, $row)) {
+            require_lang('cns_special_cpf');
+
             $address = $row[0];
             $shipping_address = do_template('ECOM_SHIPPING_ADDRESS', array(
                 '_GUID' => '332bc2e28a75cff64e6856bbeda6102e',
                 'FIRSTNAME' => $address['firstname'],
                 'LASTNAME' => $address['lastname'],
-                'BUILDING_ADDRESS' => $address['building_address'],
                 'STREET_ADDRESS' => $address['street_address'],
                 'CITY' => $address['city'],
                 'COUNTY' => $address['county'],
@@ -779,9 +780,6 @@ class Module_admin_orders
             if ($order['firstname'] . $order['lastname'] != '') {
                 $address[] = trim($order['firstname'] . ' ' . $order['lastname']);
             }
-            if ($order['building_address'] != '') {
-                $address[] = $order['building_address'];
-            }
             if ($order['street_address'] != '') {
                 $address[] = $order['street_address'];
             }
@@ -807,7 +805,7 @@ class Module_admin_orders
                 $address[] = do_lang('PHONE_NUMBER') . ': ' . $order['phone'];
             }
             $full_address = implode("\n", $address);
-            $orders[do_lang('FULL_ADDRESS')] = $full_address;
+            $orders[do_lang('SHIPPING_ADDRESS')] = $full_address;
 
             $data[] = $orders;
         }

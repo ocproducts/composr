@@ -151,7 +151,7 @@ class Hook_paypal
     /**
      * Handle IPN's. The function may produce output, which would be returned to the Payment Gateway. The function may do transaction verification.
      *
-     * @return array A long tuple of collected data.
+     * @return array A long tuple of collected data. Emulates some of the key variables of the PayPal IPN response.
      */
     public function handle_transaction()
     {
@@ -406,8 +406,7 @@ class Hook_paypal
                 'order_id' => $order_id,
                 'firstname' => post_param_string('first_name', ''),
                 'lastname' => post_param_string('last_name', ''),
-                'building_address' => post_param_string('address_name', ''),
-                'street_address' => post_param_string('address_street', ''),
+                'street_address' => trim(post_param_string('address_name', '') . "\n" . post_param_string('address_street', '')),
                 'city' => post_param_string('address_city', ''),
                 'county' => '',
                 'state' => '',

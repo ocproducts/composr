@@ -1680,6 +1680,14 @@ function version_specific()
             perform_search_replace($reps);
         }
 
+        if ($version_database < 11.0) {
+            if (multi_lang_content()) {
+                $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'f_custom_fields f JOIN ' . get_table_prefix() . 'translate t ON t.id=f.cf_name SET text_original=\'cms_payment_card_type\' WHERE text_original=\'cms_payment_type\'');
+            } else {
+                $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'f_custom_fields SET cf_name=\'cms_payment_card_type\' WHERE cf_name=\'cms_payment_type\'');
+            }
+        }
+
         return true;
     }
 

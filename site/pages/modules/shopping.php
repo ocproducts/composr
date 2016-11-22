@@ -133,7 +133,6 @@ class Module_shopping
                 'order_id' => '?AUTO_LINK',
                 'firstname' => 'SHORT_TEXT', // NB: May be full-name, or include company name
                 'lastname' => 'SHORT_TEXT',
-                'building_address' => 'SHORT_TEXT',
                 'street_address' => 'LONG_TEXT',
                 'city' => 'SHORT_TEXT',
                 'county' => 'SHORT_TEXT',
@@ -166,8 +165,7 @@ class Module_shopping
 
             $GLOBALS['SITE_DB']->alter_table_field('shopping_order_addresses', 'first_name', 'SHORT_TEXT', 'firstname');
             $GLOBALS['SITE_DB']->alter_table_field('shopping_order_addresses', 'last_name', 'SHORT_TEXT', 'lastname');
-            $GLOBALS['SITE_DB']->alter_table_field('shopping_order_addresses', 'address_name', 'SHORT_TEXT', 'building_address');
-            $GLOBALS['SITE_DB']->alter_table_field('shopping_order_addresses', 'address_street', 'SHORT_TEXT', 'street_address');
+            $GLOBALS['SITE_DB']->alter_table_field('shopping_order_addresses', 'address_street', 'LONG_TEXT', 'street_address');
             $GLOBALS['SITE_DB']->alter_table_field('shopping_order_addresses', 'address_city', 'SHORT_TEXT', 'city');
             $GLOBALS['SITE_DB']->alter_table_field('shopping_order_addresses', 'address_county', 'SHORT_TEXT', 'county');
             $GLOBALS['SITE_DB']->alter_table_field('shopping_order_addresses', 'address_state', 'SHORT_TEXT', 'state');
