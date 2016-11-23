@@ -286,7 +286,9 @@ class Hook_worldpay
         }
 
         if (addon_installed('shopping')) {
-            $this->store_shipping_address($purchase_id);
+            if (preg_match('#' . str_replace('xxx', '.*', preg_quote(do_lang('shopping:CART_ORDER', 'xxx'), '#')) . '#', $item_name) != 0) {
+                $this->store_shipping_address(intval($purchase_id));
+            }
         }
 
         return array($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, '', '');

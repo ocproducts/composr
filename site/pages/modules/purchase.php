@@ -51,7 +51,7 @@ class Module_purchase
 
         delete_privilege('access_ecommerce_in_test_mode');
 
-        $cpf = array('currency', 'payment_cardholder_name', 'payment_type', 'payment_card_number', 'payment_card_start_date', 'payment_card_expiry_date', 'payment_card_issue_number', 'payment_card_cv2');
+        $cpf = array('currency', 'payment_cardholder_name', 'payment_type', 'payment_card_number', 'payment_card_start_date', 'payment_card_expiry_date', 'payment_card_issue_number');
         foreach ($cpf as $_cpf) {
             $GLOBALS['FORUM_DRIVER']->install_delete_custom_field($_cpf);
         }
@@ -559,6 +559,14 @@ class Module_purchase
                 $cv2 = post_param_string('cv2');
 
                 list($success, , $message, $message_raw) = $object->do_transaction($trans_id, $name, $card_number, $amount, $currency, $expiry_date, $issue_number, $start_date, $card_type, $cv2, $length, $length_units);
+
+                $item_name = $transaction_row['e_item_name'];
+
+                if (addon_installed('shopping')) {
+                    if (preg_match('#' . str_replace('xxx', '.*', preg_quote(do_lang('shopping:CART_ORDER', 'xxx'), '#')) . '#', $item_name) != 0) {
+                        $this->store_shipping_address(intval($transaction_row['e_purchase_id']));
+                    }
+                }
 
                 if (($success) || (!is_null($length))) {
                     $status = ((!is_null($length)) && (!$success)) ? 'SCancelled' : 'Completed';

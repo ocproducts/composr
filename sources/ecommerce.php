@@ -73,7 +73,7 @@ function ecommerce_get_currency_symbol($currency = null)
 }
 
 /**
- * Find a transaction fee from a transaction amount. Regular fees aren't taken into account.
+ * Get transaction form fields.
  *
  * @param  ?ID_TEXT $trans_id The transaction ID (null: auto-generate)
  * @param  ID_TEXT $purchase_id The purchase ID
@@ -125,7 +125,7 @@ function get_transaction_form_fields($trans_id, $purchase_id, $item_name, $amoun
     $fields->attach(form_input_line(do_lang_tempcode('CARD_START_DATE'), do_lang_tempcode('DESCRIPTION_CARD_START_DATE'), 'start_date', ecommerce_test_mode() ? date('m/y', utctime_to_usertime(time() - 60 * 60 * 24 * 365)) : get_cms_cpf('payment_card_start_date'), true));
     $fields->attach(form_input_line(do_lang_tempcode('CARD_EXPIRY_DATE'), do_lang_tempcode('DESCRIPTION_CARD_EXPIRY_DATE'), 'expiry_date', ecommerce_test_mode() ? date('m/y', utctime_to_usertime(time() + 60 * 60 * 24 * 365)) : get_cms_cpf('payment_card_expiry_date'), true));
     $fields->attach(form_input_integer(do_lang_tempcode('CARD_ISSUE_NUMBER'), do_lang_tempcode('DESCRIPTION_CARD_ISSUE_NUMBER'), 'issue_number', intval(get_cms_cpf('payment_card_issue_number')), false));
-    $fields->attach(form_input_line(do_lang_tempcode('CARD_CV2'), do_lang_tempcode('DESCRIPTION_CARD_CV2'), 'cv2', ecommerce_test_mode() ? '123' : get_cms_cpf('payment_card_cv2'), true));
+    $fields->attach(form_input_line(do_lang_tempcode('CARD_CV2'), do_lang_tempcode('DESCRIPTION_CARD_CV2'), 'cv2', ecommerce_test_mode() ? '123' : '', true));
 
     // Shipping address fields
     require_lang('cns_special_cpf');
@@ -286,7 +286,7 @@ function find_all_products($site_lang = false)
 /**
  * Find product.
  *
- * @param  ID_TEXT $search The item name/product_id
+ * @param  ID_TEXT $search The item name/product codename
  * @param  boolean $site_lang Whether to make sure the language for item_name is the site default language (crucial for when we read/go to third-party sales systems and use the item_name as a key).
  * @param  boolean $search_item_names Whether $search refers to the item name rather than the product codename
  * @return ?object The product-class object (null: not found).
@@ -329,7 +329,7 @@ function find_product($search, $site_lang = false, $search_item_names = false)
  * @param  ID_TEXT $search The product codename/item name
  * @param  boolean $site_lang Whether to make sure the language for item_name is the site default language (crucial for when we read/go to third-party sales systems and use the item_name as a key).
  * @param  boolean $search_item_names Whether $search refers to the item name rather than the product codename
- * @return array A pair: The product-class map, and the formal product name (both will be null if not found).
+ * @return array A pair: The product-class map, and the product codename (both will be null if not found).
  */
 function find_product_row($search, $site_lang = false, $search_item_names = false)
 {

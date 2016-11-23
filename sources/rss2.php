@@ -39,7 +39,7 @@ function backend_cloud_script()
     if ($protocol == 'http-post') {
         exit('false');
     }
-    $port = post_param_integer('port', '80');
+    $port = post_param_integer('port', 80);
     // $watching_channel = $_POST['channels'];
     $status = _cloud_register_them($path, $procedure, $protocol, $port, get_param_string('type', ''));
     if (!$status) {

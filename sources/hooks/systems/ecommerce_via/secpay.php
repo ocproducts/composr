@@ -305,10 +305,7 @@ class Hook_secpay
         $message_raw = array_key_exists('message', $map) ? $map['message'] : '';
         $message = $success ? do_lang('ACCEPTED_MESSAGE', $message_raw) : do_lang('DECLINED_MESSAGE', $message_raw);
 
-        $purchase_id = post_param_integer('customfld1', '-1');
-        if (addon_installed('shopping')) {
-            $this->store_shipping_address($purchase_id);
-        }
+        $purchase_id = post_param_string('customfld1', '-1');
 
         return array($success, $trans_id, $message, $message_raw);
     }

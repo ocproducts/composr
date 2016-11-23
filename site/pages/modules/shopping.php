@@ -609,6 +609,14 @@ class Module_shopping
 
                 list($success, , $message, $message_raw) = $object->do_transaction($trans_id, $name, $card_number, $amount, $currency, $expiry_date, $issue_number, $start_date, $card_type, $cv2, $length, $length_units);
 
+                $item_name = $transaction_row['e_item_name'];
+
+                if (addon_installed('shopping')) {
+                    if (preg_match('#' . str_replace('xxx', '.*', preg_quote(do_lang('shopping:CART_ORDER', 'xxx'), '#')) . '#', $item_name) != 0) {
+                        $this->store_shipping_address(intval($transaction_row['e_purchase_id']));
+                    }
+                }
+
                 if (($success) || (!is_null($length))) {
                     $status = ((!is_null($length)) && (!$success)) ? 'SCancelled' : 'Completed';
                     handle_confirmed_transaction($transaction_row['e_purchase_id'], $transaction_row['e_item_name'], $status, $message_raw, '', '', $amount, $currency, $trans_id, '', is_null($length) ? '' : strtolower(strval($length) . ' ' . $length_units), $via);
