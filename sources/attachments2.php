@@ -188,6 +188,10 @@ function do_comcode_attachments($comcode, $type, $id, $previewing_only = false, 
  */
 function _handle_data_url_attachments(&$comcode, $type, $id, $connection)
 {
+    if (substr($comcode, 0, 6) == '[html]') {
+        return; // The whole thing is probably [html]. Probably came from WYSIWYG. We can't do the "data:" conversion during semihtml_to_comcode as that doesn't know $type and $id. And would be a bad idea to re-parse [html] context here.
+    }
+
     if (function_exists('imagepng')) {
         $matches = array();
         $matches2 = array();
