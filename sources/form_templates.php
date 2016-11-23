@@ -2225,9 +2225,6 @@ function form_input_date_components($pretty_name, $description, $name, $want_yea
 
     require_lang('dates');
 
-    $_default = filter_form_field_default($name, is_null($default) ? '' : strval($default));
-    $default = ($_default == '') ? null : intval($_default);
-
     $required = filter_form_field_required($name, $required);
 
     $default_timestamp = tz_time(time(), get_users_timezone());
@@ -2241,11 +2238,11 @@ function form_input_date_components($pretty_name, $description, $name, $want_yea
         'WANT_YEAR' => $want_year,
         'START_YEAR' => strval(min($start_year, $default_year)),
         'END_YEAR' => strval(max($end_year, $default_year)),
-        'YEAR' => ($default_year === null) ? date('Y') : strval($default_year, $default_timestamp),
+        'YEAR' => ($default_year === null) ? date('Y', $default_timestamp) : strval($default_year),
         'WANT_MONTH' => $want_month,
-        'MONTH' => ($default_month === null) ? date('m') : strval($default_month, $default_timestamp),
+        'MONTH' => ($default_month === null) ? date('m', $default_timestamp) : strval($default_month),
         'WANT_DAY' => $want_day,
-        'DAY' => ($default_day === null) ? date('d') : strval($default_day, $default_timestamp),
+        'DAY' => ($default_day === null) ? date('d', $default_timestamp) : strval($default_day),
     ));
     return _form_input($name, $pretty_name, $description, $input, $required, false, $tabindex);
 }

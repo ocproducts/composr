@@ -229,7 +229,7 @@ class Module_invoices
         $products = $object->get_products(false, $type_code);
         $invoice_title = $products[$type_code][4];
 
-        $needs_shipping_address = (method_exists('needs_shipping_address')) && ($object->needs_shipping_address());
+        $needs_shipping_address = (method_exists($object, 'needs_shipping_address')) && ($object->needs_shipping_address());
 
         list($fields, $hidden) = get_transaction_form_fields(
             null,

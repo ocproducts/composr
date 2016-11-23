@@ -30,6 +30,33 @@
 	width: 100%;
 }
 
+.local_payment_form {
+	border: 1px dashed {$GET,point_of_interest_border};
+	background-color: {$GET,point_of_interest_background};
+	padding: 0.5em;
+	overflow: hidden;
+}
+
+.local_payment_form_transact_info {
+}
+
+.local_payment_verified_account_logo {
+	float: right;
+	margin-left: 1em;
+}
+
+.verified_merchant_label {
+	background: url('{$IMG;,ecommerce/checkmark}') no-repeat top left;
+	padding-left: 25px;
+	min-height: 25px;
+}
+
+.verified_merchant_logo {
+	float: right;
+	width: 94px;
+	margin-left: 1em;
+}
+
 /*
 =========================
 =========Buttons=========

@@ -246,7 +246,7 @@ function find_all_products($site_lang = false)
 /**
  * Find product.
  *
- * @param  ID_TEXT $search The item name/product_id
+ * @param  ID_TEXT $search The item name/product codename
  * @param  boolean $site_lang Whether to make sure the language for item_name is the site default language (crucial for when we read/go to third-party sales systems and use the item_name as a key).
  * @param  boolean $search_item_names Whether $search refers to the item name rather than the product codename
  * @return ?object The product-class object (null: not found).
@@ -289,7 +289,7 @@ function find_product($search, $site_lang = false, $search_item_names = false)
  * @param  ID_TEXT $search The product codename/item name
  * @param  boolean $site_lang Whether to make sure the language for item_name is the site default language (crucial for when we read/go to third-party sales systems and use the item_name as a key).
  * @param  boolean $search_item_names Whether $search refers to the item name rather than the product codename
- * @return array A pair: The product-class map, and the formal product name (both will be null if not found).
+ * @return array A pair: The product-class map, and the product codename (both will be null if not found).
  */
 function find_product_row($search, $site_lang = false, $search_item_names = false)
 {
@@ -333,7 +333,7 @@ function perform_local_payment()
     $via = get_option('payment_gateway');
     require_code('hooks/systems/ecommerce_via/' . filter_naughty_harsh($via));
     $object = object_factory('Hook_' . $via);
-    return ((get_option('use_local_payment') == '1') && (method_exists($object, 'do_transaction')));
+    return ((get_option('use_local_payment') == '1') && (method_exists($object, 'do_local_transaction')));
 }
 
 /**
@@ -356,12 +356,14 @@ function get_transaction_form_fields($trans_id, $purchase_id, $item_name, $amoun
         $via = get_option('payment_gateway');
     }
 
+    require_code('hooks/systems/ecommerce_via/' . filter_naughty_harsh($via));
+    $object = object_factory('Hook_' . $via);
+
+    if (!method_exists($object, 'do_local_transaction')) {
+        warn_exit(do_lang_tempcode('LOCAL_PAYMENT_NOT_SUPPORTED', escape_html($via)));
+    }
+
     if (is_null($trans_id)) {
-        require_code('hooks/systems/ecommerce_via/' . filter_naughty_harsh($via));
-        $object = object_factory('Hook_' . $via);
-        if (!method_exists($object, 'do_transaction')) {
-            warn_exit(do_lang_tempcode('LOCAL_PAYMENT_NOT_SUPPORTED', escape_html($via)));
-        }
         $trans_id = $object->generate_trans_id();
     }
 
@@ -398,7 +400,7 @@ function get_transaction_form_fields($trans_id, $purchase_id, $item_name, $amoun
         $card_cv2 = '123';
     } else {
         $cardholder_name = get_cms_cpf('payment_cardholder_name');
-        $card_type = get_cms_cpf('payment_card_type'))))
+        $card_type = get_cms_cpf('payment_card_type');
         $card_number = get_cms_cpf('payment_card_number');
         list($card_start_date_year, $card_start_date_month) = explode('/', get_cms_cpf('payment_card_start_date'));
         list($card_expiry_date_year, $card_expiry_date_month) = explode('/', get_cms_cpf('payment_card_expiry_date'));
@@ -409,7 +411,9 @@ function get_transaction_form_fields($trans_id, $purchase_id, $item_name, $amoun
     $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('TITLE' => do_lang_tempcode('PAYMENT_DETAILS'))));
 
     $fields->attach(form_input_line(do_lang_cpf('payment_cardholder_name'), do_lang_tempcode('DESCRIPTION_CARDHOLDER_NAME'), 'payment_cardholder_name', $cardholder_name, true));
-    $fields->attach(form_input_list(do_lang_cpf('payment_card_type'), '', 'payment_card_type', $object->create_selection_list_card_types($card_type)));
+    if (method_exists($object, 'create_selection_list_card_types')) {
+        $fields->attach(form_input_list(do_lang_cpf('payment_card_type'), '', 'payment_card_type', $object->create_selection_list_card_types($card_type)));
+    }
     $fields->attach(form_input_line(do_lang_cpf('payment_card_number'), do_lang_tempcode('DESCRIPTION_CARD_NUMBER'), 'payment_card_number', $card_number, true, null, 16, 'text', null, '^\d*$'));
     $fields->attach(form_input_date_components(do_lang_cpf('payment_card_start_date'), do_lang_tempcode('DESCRIPTION_CARD_START_DATE'), 'payment_card_start_date', true, true, false, intval(date('Y')) - 16, intval(date('Y')), $card_start_date_year, $card_start_date_month, null, false));
     $fields->attach(form_input_date_components(do_lang_cpf('payment_card_expiry_date'), do_lang_tempcode('DESCRIPTION_CARD_EXPIRY_DATE'), 'payment_card_expiry_date', true, true, false, intval(date('Y')), intval(date('Y')) + 16, $card_expiry_date_year, $card_expiry_date_month, null, true));
@@ -417,7 +421,7 @@ function get_transaction_form_fields($trans_id, $purchase_id, $item_name, $amoun
     $fields->attach(form_input_line(do_lang_tempcode('CARD_CV2'), do_lang_tempcode('DESCRIPTION_CARD_CV2'), 'payment_card_cv2', $card_cv2, true, null, 4, 'text', null, '^\d*$'));
 
     if ((!is_guest()) && (get_forum_type() == 'cns')) {
-        $fields->attach(form_input_tick(do_lang_tempcode('SAVE_TO_ACCOUNT'), '', 'payment_save_to_account', $ticked));
+        $fields->attach(form_input_tick(do_lang_tempcode('SAVE_TO_ACCOUNT'), '', 'payment_save_to_account', get_cms_cpf('payment_cardholder_name') == ''));
     }
 
     // Billing address fields...
@@ -425,7 +429,7 @@ function get_transaction_form_fields($trans_id, $purchase_id, $item_name, $amoun
     $fields->attach(get_address_fields('billing_', get_cms_cpf('billing_street_address'), get_cms_cpf('billing_city'), get_cms_cpf('billing_county'), get_cms_cpf('billing_state'), get_cms_cpf('billing_post_code'), get_cms_cpf('billing_country')));
 
     if ((!is_guest()) && (get_forum_type() == 'cns')) {
-        $fields->attach(form_input_tick(do_lang_tempcode('SAVE_TO_ACCOUNT'), '', 'billing_save_to_account', $ticked));
+        $fields->attach(form_input_tick(do_lang_tempcode('SAVE_TO_ACCOUNT'), '', 'billing_save_to_account', get_cms_cpf('billing_street_address') == ''));
     }
 
     // Shipping address fields...
@@ -440,7 +444,7 @@ function get_transaction_form_fields($trans_id, $purchase_id, $item_name, $amoun
         $fields->attach(form_input_line(do_lang_tempcode('PHONE_NUMBER'), '', 'shipping_phone', get_cms_cpf('mobile_phone_number'), true));
 
         if ((!is_guest()) && (get_forum_type() == 'cns')) {
-            $fields->attach(form_input_tick(do_lang_tempcode('SAVE_TO_ACCOUNT'), '', 'shipping_save_to_account', $ticked));
+            $fields->attach(form_input_tick(do_lang_tempcode('SAVE_TO_ACCOUNT'), '', 'shipping_save_to_account', get_cms_cpf('firstname') == ''));
         }
     }
 
@@ -478,7 +482,7 @@ function get_address_fields($prefix, $street_address, $city, $county, $state, $p
         $fields->attach(form_input_line(do_lang_cpf('state'), '', $prefix . 'state', $state, true));
     }
     $fields->attach(form_input_line(do_lang_cpf('post_code'), '', $prefix . 'post_code', $post_code, true, null, 12));
-    $fields->attach(form_input_list(do_lang_cpf('country'), '', $prefix . 'country', create_region_selection_list(array($country)), false, true));
+    $fields->attach(form_input_list(do_lang_cpf('country'), '', $prefix . 'country', create_region_selection_list(array($country)), null, false, true));
     return $fields;
 }
 
@@ -500,9 +504,11 @@ function do_lang_cpf($cpf_name)
 /**
  * Handle a particular local transaction as determined by the POST request.
  *
+ * @param  ID_TEXT $via The payment gateway
+ * @param  object $object The payment gateway object
  * @return array A triple: success status, formatted status message, raw status message
  */
-function handle_local_payment()
+function handle_local_payment($via, $object)
 {
     // Grab transaction details...
 
@@ -513,6 +519,8 @@ function handle_local_payment()
         warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
     }
     $transaction_row = $transaction_rows[0];
+
+    $purchase_id = $transaction_row['e_purchase_id'];
 
     $amount = $transaction_row['e_amount'];
     $length = $transaction_row['e_length'];
@@ -548,20 +556,24 @@ function handle_local_payment()
     $shipping_country = post_param_string('shipping_country', '');
     $shipping_email = post_param_string('shipping_email', '');
     $shipping_phone = post_param_string('shipping_phone', '');
-    $shipping_address = array(
-        'order_id' => $order_id,
-        'firstname' => $firstname,
-        'lastname' => $lastname,
-        'street_address' => $street_address,
-        'city' => $city,
-        'county' => $county,
-        'state' => $state,
-        'post_code' => $post_code,
-        'country' => $country,
-        'email' => $email,
-        'phone' => $phone,
-    );
-    $GLOBALS['SITE_DB']->query_insert('shopping_order_addresses', $shipping_address, true);
+    if (addon_installed('shopping')) {
+        if ($transaction_row['e_type_code'] == 'cart_orders') {
+            $shipping_address = array(
+                'order_id' => intval($purchase_id),
+                'firstname' => $shipping_firstname,
+                'lastname' => $shipping_lastname,
+                'street_address' => $shipping_street_address,
+                'city' => $shipping_city,
+                'county' => $shipping_county,
+                'state' => $shipping_state,
+                'post_code' => $shipping_post_code,
+                'country' => $shipping_country,
+                'email' => $shipping_email,
+                'phone' => $shipping_phone,
+            );
+            $GLOBALS['SITE_DB']->query_insert('shopping_order_addresses', $shipping_address, true);
+        }
+    }
 
     // Save into CPFs...
 
@@ -612,7 +624,7 @@ function handle_local_payment()
 
     // Process order...
 
-    list($success, , $message, $message_raw) = $object->do_transaction($trans_id, $cardholder_name, $card_type, $card_number, $card_start_date, $card_expiry_date, $card_issue_number, $card_cv2, $amount, $currency, $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country, $shipping_email, $shipping_phone, $length, $length_units);
+    list($success, , $message, $message_raw) = $object->do_local_transaction($trans_id, $cardholder_name, $card_type, $card_number, $card_start_date, $card_expiry_date, $card_issue_number, $card_cv2, $amount, $currency, $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country, $shipping_email, $shipping_phone, $length, $length_units);
 
     if (($success) || ($length !== null)) {
         $status = (($length !== null) && (!$success)) ? 'SCancelled' : 'Completed';
@@ -644,7 +656,7 @@ function handle_local_payment()
  *
  * @return ID_TEXT The ID of the purchase-type (meaning depends on item_name)
  */
-function handle_transaction_script()
+function handle_ipn_transaction_script()
 {
     if ((file_exists(get_file_base() . '/data_custom/ecommerce.log')) && (is_writable_wrap(get_file_base() . '/data_custom/ecommerce.log'))) {
         $myfile = fopen(get_file_base() . '/data_custom/ecommerce.log', 'at');
@@ -660,7 +672,7 @@ function handle_transaction_script()
 
     ob_start();
 
-    list($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, $period) = $object->handle_transaction();
+    list($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, $period) = $object->handle_ipn_transaction();
 
     $type_code = handle_confirmed_transaction($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, $period, $via);
 

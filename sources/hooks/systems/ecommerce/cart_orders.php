@@ -70,7 +70,7 @@ class Hook_ecommerce_cart_orders
      *
      * @return boolean Whether a shipping address is needed.
      */
-    function needs_shipping_address()
+    public function needs_shipping_address()
     {
         return true;
     }

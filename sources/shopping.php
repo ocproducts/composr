@@ -355,10 +355,11 @@ function render_cart_payment_form()
             $fields = new Tempcode();
             $hidden = new Tempcode();
             $verified_account_logo = '';
+            $payment_processing_link = '';
         } else {
             $needs_shipping_address = true;
 
-            list($fields, $hidden, $verified_account_logo) = get_transaction_form_fields(
+            list($fields, $hidden, $verified_account_logo, $payment_processing_link) = get_transaction_form_fields(
                 null,
                 strval($order_id),
                 $item_name,
@@ -373,11 +374,16 @@ function render_cart_payment_form()
 
         $finish_url = build_url(array('page' => 'purchase', 'type' => 'finish'), get_module_zone('purchase'));
 
+        $verified_account_logo = TODO;
+        $payment_processing_link = TODO;
+
         $result = do_template('PURCHASE_WIZARD_STAGE_TRANSACT', array(
             '_GUID' => 'a70d6995baabb7e41e1af68409361f3c',
             'FIELDS' => $fields,
             'HIDDEN' => $hidden,
-            'VERIFIED_ACCOUNT_LOGO' => $verified_account_logo,
+            'LOGO' => $verified_account_logo,
+            'PAYMENT_PROCESSING_LINK' => $payment_processing_link,
+            'ERROR_MSG' => '',
         ));
 
         require_javascript('checking');

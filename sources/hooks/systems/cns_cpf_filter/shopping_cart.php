@@ -32,10 +32,10 @@ class Hook_cns_cpf_filter_shopping_cart
     {
         $cpf = array();
 
-        $cpf = array_merge($ret, array('firstname' => true, 'lastname' => true));
+        $cpf = array_merge($cpf, array('firstname' => true, 'lastname' => true));
 
         // Shipping address
-        $cpf = array_merge($ret, array('street_address' => true, 'city' => true/*Too specific to force on, may be done via config instead, 'county' => true, 'state' => true*/, 'post_code' => true, 'country' => true, 'mobile_phone_number' => true));
+        $cpf = array_merge($cpf, array('street_address' => true, 'city' => true/*Too specific to force on, may be done via config instead, 'county' => true, 'state' => true*/, 'post_code' => true, 'country' => true, 'mobile_phone_number' => true));
 
         return $cpf;
     }

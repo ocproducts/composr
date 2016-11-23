@@ -69,8 +69,11 @@ class Hook_secpay
         $username = $this->_get_username();
         $ipn_url = $this->_get_remote_form_url();
         $trans_id = $this->generate_trans_id();
+        $digest = md5($trans_id . float_to_raw_string($amount) . get_option('ipn_password'));
+
         $GLOBALS['SITE_DB']->query_insert('trans_expecting', array(
             'id' => $trans_id,
+            'e_type_code' => $type_code,
             'e_purchase_id' => $purchase_id,
             'e_item_name' => $item_name,
             'e_member_id' => get_member(),
@@ -82,7 +85,7 @@ class Hook_secpay
             'e_length' => null,
             'e_length_units' => '',
         ));
-        $digest = md5($trans_id . float_to_raw_string($amount) . get_option('ipn_password'));
+
         return do_template('ECOM_BUTTON_VIA_SECPAY', array(
             '_GUID' => 'e68e80cb637f8448ef62cd7d73927722',
             'TYPE_CODE' => $type_code,
@@ -155,8 +158,10 @@ class Hook_secpay
         $trans_id = $this->generate_trans_id();
         $digest = md5($trans_id . float_to_raw_string($amount) . get_option('ipn_password'));
         list($length_units_2, $first_repeat) = $this->_translate_subscription_details($length, $length_units);
+
         $GLOBALS['SITE_DB']->query_insert('trans_expecting', array(
             'id' => $trans_id,
+            'e_type_code' => $type_code,
             'e_purchase_id' => $purchase_id,
             'e_item_name' => $item_name,
             'e_member_id' => get_member(),
@@ -168,6 +173,7 @@ class Hook_secpay
             'e_length' => $length,
             'e_length_units' => $length_units,
         ));
+
         return do_template('ECOM_SUBSCRIPTION_BUTTON_VIA_SECPAY', array(
             '_GUID' => 'e5e6d6835ee6da1a6cf02ff8c2476aa6',
             'TYPE_CODE' => $type_code,
@@ -279,7 +285,7 @@ class Hook_secpay
      * @set    d w m y
      * @return array A tuple: success (boolean), trans-ID (string), message (string), raw message (string).
      */
-    public function do_transaction($trans_id, $cardholder_name, $card_type, $card_number, $card_start_date, $card_expiry_date, $card_issue_number, $card_cv2, $amount, $currency, $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country, $shipping_firstname = '', $shipping_lastname = '', $shipping_street_address = '', $shipping_city = '', $shipping_county = '', $shipping_state = '', $shipping_post_code = '', $shipping_country = '', $shipping_email = '', $shipping_phone = '', $length = null, $length_units = null)
+    public function do_local_transaction($trans_id, $cardholder_name, $card_type, $card_number, $card_start_date, $card_expiry_date, $card_issue_number, $card_cv2, $amount, $currency, $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country, $shipping_firstname = '', $shipping_lastname = '', $shipping_street_address = '', $shipping_city = '', $shipping_county = '', $shipping_state = '', $shipping_post_code = '', $shipping_country = '', $shipping_email = '', $shipping_phone = '', $length = null, $length_units = null)
     {
         if (is_null($trans_id)) {
             $trans_id = $this->generate_trans_id();
@@ -299,26 +305,23 @@ class Hook_secpay
         $item_name = $GLOBALS['SITE_DB']->query_select_value('trans_expecting', 'e_item_name', array('id' => $trans_id));
 
         $shipping_street_address_lines = explode("\n", $shipping_street_address, 2);
-        $shipping_address = 'ship_name=' . $shipping_firstname . ' ' . $shipping_last . ',';
-        $shipping_address . ='ship_addr_1=' . $shipping_street_address_lines[0] . ',';
-        $shipping_address . ='ship_addr_2=' . $shipping_street_address_lines[1] . ',';
-        $shipping_address . ='ship_city=' . $shipping_city . ',';
-        $shipping_address . ='ship_state=' . $shipping_state . ',';
-        $shipping_address . ='ship_country=' . $shipping_country . ',';
-        $shipping_address . ='ship_post_code=' . $shipping_post_code . ',';
-        $shipping_address . ='ship_tel=' . $shipping_phone . ',';
-        $shipping_address . ='ship_email=' . $shipping_email;
+        $shipping_address = 'ship_name=' . $shipping_firstname . ' ' . $shipping_lastname . ',';
+        $shipping_address .= 'ship_addr_1=' . $shipping_street_address_lines[0] . ',';
+        $shipping_address .= 'ship_addr_2=' . $shipping_street_address_lines[1] . ',';
+        $shipping_address .= 'ship_city=' . $shipping_city . ',';
+        $shipping_address .= 'ship_state=' . $shipping_state . ',';
+        $shipping_address .= 'ship_country=' . $shipping_country . ',';
+        $shipping_address .= 'ship_post_code=' . $shipping_post_code . ',';
+        $shipping_address .= 'ship_tel=' . $shipping_phone . ',';
+        $shipping_address .= 'ship_email=' . $shipping_email;
 
         $billing_street_address_lines = explode("\n", $billing_street_address, 2);
-        $billing_address = 'bill_name=' . $billing_firstname . ' ' . $billing_last . ',';
-        $billing_address . ='bill_addr_1=' . $billing_street_address_lines[0] . ',';
-        $billing_address . ='bill_addr_2=' . $billing_street_address_lines[1] . ',';
-        $billing_address . ='bill_city=' . $billing_city . ',';
-        $billing_address . ='bill_state=' . $billing_state . ',';
-        $billing_address . ='bill_country=' . $billing_country . ',';
-        $billing_address . ='bill_post_code=' . $billing_post_code . ',';
-        $billing_address . ='bill_tel=' . $billing_phone . ',';
-        $billing_address . ='bill_email=' . $billing_email;
+        $billing_address = 'bill_addr_1=' . $billing_street_address_lines[0] . ',';
+        $billing_address .= 'bill_addr_2=' . $billing_street_address_lines[1] . ',';
+        $billing_address .= 'bill_city=' . $billing_city . ',';
+        $billing_address .= 'bill_state=' . $billing_state . ',';
+        $billing_address .= 'bill_country=' . $billing_country . ',';
+        $billing_address .= 'bill_post_code=' . $billing_post_code;
 
         require_lang('ecommerce');
 
@@ -346,8 +349,6 @@ class Hook_secpay
         $message_raw = array_key_exists('message', $map) ? $map['message'] : '';
         $message = $success ? do_lang('ACCEPTED_MESSAGE', $message_raw) : do_lang('DECLINED_MESSAGE', $message_raw);
 
-        $purchase_id = $GLOBALS['SITE_DB']->query_select_value('trans_expecting', 'e_purchase_id', array('id' => $trans_id));
-
         return array($success, $trans_id, $message, $message_raw);
     }
 
@@ -356,7 +357,7 @@ class Hook_secpay
      *
      * @return array A long tuple of collected data. Emulates some of the key variables of the PayPal IPN response.
      */
-    public function handle_transaction()
+    public function handle_ipn_transaction()
     {
         $txn_id = post_param_string('trans_id');
         if (substr($txn_id, 0, 7) == 'subscr_') {
@@ -459,7 +460,9 @@ class Hook_secpay
         }
 
         if (addon_installed('shopping')) {
-            $this->store_shipping_address($purchase_id);
+            if ($transaction_row['e_type_code'] == 'cart_orders') {
+                $this->store_shipping_address(intval($purchase_id));
+            }
         }
 
         // Subscription stuff

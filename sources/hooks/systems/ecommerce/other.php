@@ -28,7 +28,7 @@ class Hook_ecommerce_other
      *
      * @return boolean Whether a shipping address is needed.
      */
-    function needs_shipping_address()
+    public function needs_shipping_address()
     {
         return false;
     }

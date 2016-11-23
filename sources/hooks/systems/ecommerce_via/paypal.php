@@ -153,9 +153,9 @@ class Hook_paypal
      *
      * @return array A long tuple of collected data. Emulates some of the key variables of the PayPal IPN response.
      */
-    public function handle_transaction()
+    public function handle_ipn_transaction()
     {
-        $purchase_id = post_param_integer('custom', '-1');
+        $purchase_id = post_param('custom', '-1');
 
         // Read in stuff we'll just log
         $reason_code = post_param_string('reason_code', '');
@@ -342,7 +342,10 @@ class Hook_paypal
 
         // Shopping cart
         if (addon_installed('shopping')) {
-            $this->store_shipping_address($purchase_id);
+            list(, $type_code) = find_product_row($item_name, true, true);
+            if ($type_code == 'cart_orders') {
+                $this->store_shipping_address(intval($purchase_id));
+            }
         }
 
         return array($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, $period);

@@ -150,8 +150,8 @@ class Hook_fields_year_month
     {
         $input_name = empty($field['cf_input_name']) ? ('field_' . strval($field['id'])) : $field['cf_input_name'];
 
-        $start_year = intval(date('Y') - 15;
-        $end_year = intval(date('Y') + 15;
+        $start_year = intval(date('Y')) - 15;
+        $end_year = intval(date('Y')) + 15;
 
         $default_year = null;
         $default_month = null;

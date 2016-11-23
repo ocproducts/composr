@@ -50,4 +50,4 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 require($FILE_BASE . '/sources/global.php');
 
 require_code('ecommerce');
-handle_transaction_script();
+handle_ipn_transaction_script();

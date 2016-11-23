@@ -78,6 +78,7 @@ class Module_purchase
 
             $GLOBALS['SITE_DB']->create_table('trans_expecting', array( // Used by payment gateways that return limited information back via IPN
                 'id' => '*ID_TEXT',
+                'e_type_code' => 'ID_TEXT',
                 'e_purchase_id' => 'ID_TEXT',
                 'e_item_name' => 'SHORT_TEXT',
                 'e_member_id' => 'MEMBER',
@@ -134,6 +135,7 @@ class Module_purchase
             $GLOBALS['SITE_DB']->alter_table_field('transactions', 'pending_reason', 'SHORT_TEXT', 't_pending_reason');
 
             $GLOBALS['FORUM_DB']->add_table_field('trans_expecting', 'e_currency', 'ID_TEXT', get_option('currency'));
+            $GLOBALS['FORUM_DB']->add_table_field('trans_expecting', 'e_type_code', 'ID_TEXT');
 
             $GLOBALS['SITE_DB']->alter_table_field('trans_expecting', 'e_session_id', 'ID_TEXT');
         }
@@ -527,9 +529,9 @@ class Module_purchase
                 warn_exit(do_lang_tempcode('NO_SSL_SETUP'));
             }
 
-            $needs_shipping_address = (method_exists('needs_shipping_address')) && ($object->needs_shipping_address());
+            $needs_shipping_address = (method_exists($object, 'needs_shipping_address')) && ($object->needs_shipping_address());
 
-            list($fields, $hidden, $verified_account_logo) = get_transaction_form_fields(
+            list($fields, $hidden, $verified_account_logo, $payment_processing_link) = get_transaction_form_fields(
                 null,
                 $purchase_id,
                 $item_name,
@@ -543,11 +545,16 @@ class Module_purchase
 
             $finish_url = build_url(array('page' => '_SELF', 'type' => 'finish'), '_SELF');
 
+            $verified_account_logo = TODO;
+            $payment_processing_link = TODO;
+
             $result = do_template('PURCHASE_WIZARD_STAGE_TRANSACT', array(
                 '_GUID' => '15cbba9733f6ff8610968418d8ab527e',
                 'FIELDS' => $fields,
                 'HIDDEN' => $hidden,
-                'VERIFIED_ACCOUNT_LOGO' => $verified_account_logo,
+                'LOGO' => $verified_account_logo,
+                'PAYMENT_PROCESSING_LINK' => $payment_processing_link,
+                'ERROR_MSG' => '',
             ));
             return $this->_wrap($result, $this->title, $finish_url);
         }
@@ -572,13 +579,13 @@ class Module_purchase
 
         if (get_param_integer('cancel', 0) == 0) {
             if (perform_local_payment()) { // We need to try and run the transaction
-                handle_local_payment();
+                handle_local_payment($via, $object);
             }
 
             $type_code = get_param_string('type_code', '');
             if ($type_code != '') {
                 if (has_interesting_post_fields()) { // Alternative to IPN, *if* posted fields sent here
-                    list($success, $message, $message_raw) = handle_local_payment();
+                    list($success, $message, $message_raw) = handle_ipn_transaction_script();
                 }
 
                 $product_object = find_product($type_code);

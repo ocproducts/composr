@@ -126,6 +126,7 @@ class Hook_ccbill
 
         $GLOBALS['SITE_DB']->query_insert('trans_expecting', array(
             'id' => $trans_id,
+            'e_type_code' => $type_code,
             'e_purchase_id' => $purchase_id,
             'e_item_name' => $item_name,
             'e_member_id' => get_member(),
@@ -204,6 +205,7 @@ class Hook_ccbill
 
         $GLOBALS['SITE_DB']->query_insert('trans_expecting', array(
             'id' => $trans_id,
+            'e_type_code' => $type_code,
             'e_purchase_id' => $purchase_id,
             'e_item_name' => $item_name,
             'e_member_id' => get_member(),
@@ -274,7 +276,7 @@ class Hook_ccbill
      *
      * @return array A long tuple of collected data. Emulates some of the key variables of the PayPal IPN response.
      */
-    public function handle_transaction()
+    public function handle_ipn_transaction()
     {
         // assign posted variables to local variables
         $trans_id = post_param_string('customTransId');
@@ -308,7 +310,9 @@ class Hook_ccbill
         $mc_currency = ($_mc_currency === 0) ? get_option('currency') : $this->currency_numeric_to_alphabetic_code[$_mc_currency];
 
         if (addon_installed('shopping')) {
-            $this->store_shipping_address($purchase_id);
+            if ($transaction_row['e_type_code'] == 'cart_orders') {
+                $this->store_shipping_address(intval($purchase_id));
+            }
         }
 
         return array($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $trans_id, '');

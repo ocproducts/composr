@@ -601,12 +601,12 @@ class Module_shopping
 
             // Take payment
             if (perform_local_payment()) {
-                list($success, $message, $message_raw) = handle_local_payment();
+                list($success, $message, $message_raw) = handle_local_payment($via, $object);
             }
 
             // Process transaction
             if (has_interesting_post_fields()) {
-                $order_id = handle_transaction_script();
+                $order_id = handle_ipn_transaction_script();
 
                 $product_object = find_product(do_lang('CART_ORDER', $order_id));
 

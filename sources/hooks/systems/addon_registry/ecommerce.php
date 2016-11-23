@@ -175,6 +175,7 @@ class Hook_addon_registry_ecommerce
             'themes/default/templates/ECOM_VIEW_MANUAL_TRANSACTIONS_LINE.tpl',
             'themes/default/templates/ECOM_VIEW_MANUAL_TRANSACTIONS_SCREEN.tpl',
             'themes/default/templates/MEMBER_SUBSCRIPTION_STATUS.tpl',
+            'themes/default/images/ecommerce/checkmark.png',
             'sources/hooks/systems/cron/manual_subscription_notification.php',
             'sources/hooks/systems/cron/subscription_mails.php',
             'adminzone/pages/modules/admin_ecommerce.php',
@@ -360,7 +361,9 @@ class Hook_addon_registry_ecommerce
             lorem_globalise(do_lorem_template('PURCHASE_WIZARD_STAGE_TRANSACT', array(
                 'FIELDS' => placeholder_fields(),
                 'HIDDEN' => '',
-                'VERIFIED_ACCOUNT_LOGO' => placeholder_image_url(),
+                'LOGO' => placeholder_image(),
+                'PAYMENT_PROCESSING_LINK' => placeholder_link(),
+                'ERROR_MSG' => '',
             )), null, '', true)
         );
     }
