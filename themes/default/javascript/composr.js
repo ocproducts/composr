@@ -6,14 +6,14 @@
         create = Object.create,
         assign = Object.assign,
         encodeUC = encodeURIComponent,
+        decodeUC = decodeURIComponent,
         emptyObj = {},
         emptyArr = [],
-        rootEl = document.documentElement,
+        docEl = document.documentElement,
         emptyEl = document.createElement('div'),
         emptyElStyle = emptyEl.style,
         emptyInputEl = document.createElement('input'),
 
-        isArray = Array.isArray,
         toArray = Function.bind.call(Function.call, emptyArr.slice),
         forEach = Function.bind.call(Function.call, emptyArr.forEach),
         includes = Function.bind.call(Function.call, emptyArr.includes),
@@ -83,10 +83,10 @@
         $COPYRIGHT: symbols.COPYRIGHT,
         $DOMAIN: symbols.DOMAIN,
         $FORUM_BASE_URL: symbols.FORUM_BASE_URL,
-        $BASE_URL: (symbols.BASE_URL),
-        $BASE_URL_S: (symbols.BASE_URL) + '/', // With trailing slash
-        $CUSTOM_BASE_URL: (symbols.CUSTOM_BASE_URL),
-        $BASE_URL_NOHTTP: (symbols.BASE_URL_NOHTTP),
+        $BASE_URL: strVal(symbols.BASE_URL),
+        $BASE_URL_S: strVal(symbols.BASE_URL) + '/', // With trailing slash
+        $CUSTOM_BASE_URL: strVal(symbols.CUSTOM_BASE_URL),
+        $BASE_URL_NOHTTP: strVal(symbols.BASE_URL_NOHTTP),
         $BASE_URL_NOHTTP_S: strVal(symbols.BASE_URL_NOHTTP) + '/', // With trailing slash
         $CUSTOM_BASE_URL_NOHTTP: strVal(symbols.CUSTOM_BASE_URL_NOHTTP),
         $BRAND_NAME: strVal(symbols.BRAND_NAME),
@@ -129,11 +129,8 @@
         },
 
         // Just some more useful stuff, (not tempcode symbols)
-        $TOUCH_ENABLED: ('ontouchstart' in document.documentElement),
-        $EXTRA: {
-            canTryUrlSchemes: boolVal(symbols.EXTRA.can_try_url_schemes),
-            staffTooltipsUrlPatterns: (symbols.EXTRA.staff_tooltips_url_patterns || {})
-        },
+        canTryUrlSchemes: boolVal(symbols.EXTRA.can_try_url_schemes),
+        staffTooltipsUrlPatterns: (symbols.EXTRA.staff_tooltips_url_patterns || {}),
 
         // Export useful stuff
         toArray: toArray,
@@ -149,6 +146,8 @@
         isIE: isIE,
         isEdge: isEdge,
         isChrome: isChrome,
+
+        isTouchEnabled: ('ontouchstart' in docEl),
 
         uid: uid,
         isEmptyObj: isEmptyObj,
@@ -260,7 +259,7 @@
     // Used to uniquely identify objects/functions
     function uid(obj) {
         if ((obj == null) || ((typeof obj !== 'object') && (typeof obj !== 'function'))) {
-            return 0;
+            throw new Error('$cms.uid(obj): Invalid value provided for `obj`.');
         }
 
         if (hasOwn(obj, $cms.id)) {
@@ -330,7 +329,7 @@
     }
 
     function isArrayOrPlainObj(val) {
-        return isArray(val) || isPlainObj(val);
+        return (val != null) && (Array.isArray(val) || isPlainObj(val));
     }
 
     function hasMatchingKey(obj, keys) {
@@ -403,15 +402,12 @@
         return (obj != null) && (internal(obj) === 'Date');
     }
 
-    function isNumeric(val) { // Inspired by jQuery.isNumeric
+    // Inspired by jQuery.isNumeric
+    function isNumeric(val) {
         // parseFloat NaNs numeric-cast false positives ("")
         // ...but misinterprets leading-number strings, particularly hex literals ("0x...")
         val = (typeof val === 'string') ? parseFloat(val) : val;
         return Number.isFinite(val);
-    }
-
-    function funcArg(context, arg, payload) {
-        return (typeof arg === 'function') ? arg.call(context, payload) : arg;
     }
 
     function isArrayLike(obj, minLength) {
@@ -433,6 +429,18 @@
         max = +max || 1000000000000000;
 
         return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    // Bind a number of an object's methods to that object. Remaining arguments
+    // are the method names to be bound. Useful for ensuring that all callbacks
+    // defined on an object belong to it.
+    function bindAll(obj/*, ...methodNames*/) {
+        var i, len = arguments.length, key;
+        for (i = 1; i < len; i++) {
+            key = arguments[i];
+            obj[key] = obj[key].bind(obj);
+        }
+        return obj;
     }
 
     function each(obj, callback, args) {
@@ -474,29 +482,34 @@
         return obj;
     }
 
-    function _extend(target, source, deepClone, ownSrcOnly, undefinedTgtOnly) {
+    var EXTEND_DEEP = 1,
+        EXTEND_SRC_OWN_ONLY = 2,
+        EXTEND_TGT_UNDEF_ONLY = 4;
+
+    function _extend(target, source, mask) {
         var key, src, tgt;
 
-        deepClone = !!deepClone;
-        ownSrcOnly = !!ownSrcOnly;
-        undefinedTgtOnly = !!undefinedTgtOnly;
+        mask = +mask || 0;
+
+        var deep = !!(mask & EXTEND_DEEP),
+            srcOwnOnly = !!(mask & EXTEND_SRC_OWN_ONLY),
+            tgtUndefOnly = !!(mask & EXTEND_TGT_UNDEF_ONLY);
 
         for (key in source) {
-            tgt = target[key];
             src = source[key];
+            tgt = target[key];
 
-            if ((src === undefined) || (ownSrcOnly && !hasOwn(source, key)) || (undefinedTgtOnly && (tgt !== undefined))) {
+            if ((src === undefined) || (srcOwnOnly && !hasOwn(source, key)) || (tgtUndefOnly && (tgt !== undefined))) {
                 continue;
             }
 
-            if (deepClone && src && isArrayOrPlainObj(src)) {
-                if (isArray(src) && !isArray(tgt)) {
+            if (deep && src && isArrayOrPlainObj(src)) {
+                if (Array.isArray(src) && !Array.isArray(tgt)) {
                     tgt = target[key] = [];
                 } else if (isPlainObj(src) && !isPlainObj(tgt)) {
                     tgt = target[key] = {};
                 }
-
-                _extend(tgt, src, deepClone, ownSrcOnly, undefinedTgtOnly);
+                _extend(tgt, src, mask);
             } else {
                 target[key] = src;
             }
@@ -505,37 +518,20 @@
 
     // Copy all but undefined properties from one or more
     // objects to the `target` object.
-    function extend(target, /*...*/sources) {
-        var deep = false;
-        sources = toArray(arguments, 1);
-
-        if (typeof target === 'boolean') {
-            deep = target;
-            target = sources.shift();
+    function extend(target/*, ...sources*/) {
+        for (var i = 1, len = arguments.length; i < len; i++) {
+            _extend(target, arguments[i]);
         }
-
-        sources.forEach(function (source) {
-            _extend(target, source, deep);
-        });
 
         return target
     }
 
     // Copy all but undefined properties from one or more
     // objects to the `target` object.
-    function extendOwn(target, /*...*/sources) {
-        var deep = false;
-        sources = toArray(arguments, 1);
-
-        if (typeof target === 'boolean') {
-            deep = target;
-            target = sources.shift();
+    function extendOwn(target/*, ...sources*/) {
+        for (var i = 1, len = arguments.length; i < len; i++) {
+            _extend(target, arguments[i], EXTEND_SRC_OWN_ONLY);
         }
-
-        sources.forEach(function (source) {
-            _extend(target, source, deep, true);
-        });
-
         return target
     }
 
@@ -544,7 +540,7 @@
         sources = toArray(arguments, 1);
 
         for (var key in defaults) {
-            for (var i, len = sources.length; i < len; i++) {
+            for (var i = 0, len = sources.length; i < len; i++) {
                 if ((sources[i] != null) && (sources[i][key] !== undefined)) {
                     defaults[key] = sources[i][key];
                 }
@@ -557,10 +553,7 @@
     // If the value of the named `property` is a function then invoke it with the
     // `object` as context; otherwise, return it.
     function result(object, property, fallback) {
-        var value = (object != null) ? object[property] : undefined;
-        if (value === undefined) {
-            value = fallback;
-        }
+        var value = ((object != null) && (object[property] !== undefined)) ? object[property] : fallback;
         return (typeof value === 'function') ? value.call(object) : value;
     }
 
@@ -634,18 +627,22 @@
     }
 
     function boolVal(val) {
-        return !!val && ((val === true) || (val === 1) || (val === '1') || !falsy(val));
+        var p;
+        return !!val && (val !== '0') && ((typeof val !== 'object') || !((p = isPlainObj(val)) || isArrayLike(val)) || (p ? hasEnumerable(val) : (val.length !== 0)));
     }
 
     function intVal(val, defaultValue) {
-        defaultValue = (defaultValue !== undefined) ? defaultValue : 0;
+        if (defaultValue === undefined) {
+            defaultValue = 0;
+        }
         return ((val != null) && Number.isFinite(val = parseInt(val))) ? val : defaultValue;
     }
 
     // Sensible PHP-like string coercion
     function strVal(val, defaultValue) {
-        var type;
-        defaultValue = (defaultValue !== undefined) ? defaultValue : '';
+        if (defaultValue === undefined) {
+            defaultValue = '';
+        }
 
         if (!val) {
             return (val === 0) ? '0' : defaultValue;
@@ -665,16 +662,15 @@
 
     // String interpolation
     function format(str, values) {
-        var alen = arguments.length;
         str = strVal(str);
 
-        if ((str === '') || (alen < 2)) {
+        if ((str === '') || (arguments.length < 2)) {
             return str; // Nothing to do
         }
 
         if ((values == null) || (typeof values !== 'object')) {
             // values provided as multiple parameters?
-            values = (alen > 2) ? toArray(arguments, 1) : [values];
+            values = toArray(arguments, 1);
             values.unshift(''); // Add empty string at index 0 so that interpolation starts from '{1}'
         } else if (isArrayLike(values)) {
             // Array(-ish?) object provided with values
@@ -821,11 +817,11 @@
     }
 
     $cms.set_post_data_flag = function set_post_data_flag() {
-        var forms = document.getElementsByTagName('form'), form, post_data;
-        for (var i = 0;i < forms.length; i++) {
+        var forms = $cms.dom.$$('form'), form, post_data;
+        for (var i = 0; i < forms.length; i++) {
             form = forms[i];
 
-            if (typeof form.elements['post_data'] == 'undefined') {
+            if (form.elements['post_data'] === undefined) {
                 post_data = document.createElement('input');
                 post_data.value = '';
             } else {
@@ -882,11 +878,8 @@
 
     // Inspired by cookie.js: https://github.com/js-cookie/js-cookie
     function CookieMonster() {
-        // Bind contexts
-        this.get = this.get.bind(this);
-        this.getAll = this.getAll.bind(this);
-        this.set = this.set.bind(this);
-        this.remove = this.remove.bind(this);
+        // Bind method context
+        bindAll(this, ['get', 'getAll', 'set', 'remove']);
     }
 
     CookieMonster.prototype.get = function get(cookieName) {
@@ -1056,10 +1049,10 @@
             emptyInputEl.style.cssText = 'position:absolute;visibility:hidden;';
 
             if ((type === 'range') && (emptyInputEl.style.WebkitAppearance !== undefined)) {
-                rootEl.appendChild(emptyInputEl);
+                docEl.appendChild(emptyInputEl);
 
                 bool = (getComputedStyle(emptyInputEl).WebkitAppearance !== 'textfield') && (emptyInputEl.offsetHeight !== 0);
-                rootEl.removeChild(emptyInputEl);
+                docEl.removeChild(emptyInputEl);
             } else if ((type === 'url') || (type === 'email')) {
                 bool = emptyInputEl.checkValidity && (emptyInputEl.checkValidity() === false);
             } else {
@@ -1069,7 +1062,6 @@
 
         $cms.support.inputTypes[type] = !!bool;
     }
-
 
     /* DOM helper methods */
     $cms.dom || ($cms.dom = {});
@@ -1176,7 +1168,6 @@
 
             // Special case: <select[multiple]>
             var values = [], i;
-
             for (i = 0; i < el.options.length; i++) {
                 if (el.options[i].selected) {
                     values.push(el.options[i].value);
@@ -1186,7 +1177,7 @@
             return values;
         }
 
-        el.value = strVal((typeof value === 'function') ? funcArg(el, value, $cms.dom.val(el)) : value);
+        el.value = strVal((typeof value === 'function') ? value.call(el, $cms.dom.val(el)) : value);
     };
 
     $cms.dom.text = function (el, text) {
@@ -1194,8 +1185,7 @@
             return el.textContent;
         }
 
-        el.textContent = strVal((typeof text === 'function') ? funcArg(el, text, el.textContent) : text);
-        return el.textContent;
+        el.textContent = strVal((typeof text === 'function') ? text.call(el, el.textContent) : text);
     };
 
     // "true"  => true
@@ -1243,7 +1233,7 @@
                 (offset = $cms.dom.offset(el)) && offset.width;
         }
 
-        $cms.dom.css(el, 'width', (typeof value === 'function') ? funcArg(el, value, $cms.dom.width(el)) : value);
+        $cms.dom.css(el, 'width', (typeof value === 'function') ? value.call(el, $cms.dom.width(el)) : value);
     };
 
     $cms.dom.height = function (el, value) {
@@ -1255,13 +1245,13 @@
                 (offset = $cms.dom.offset(el)) && offset.height;
         }
 
-        $cms.dom.css(el, 'height', (typeof value === 'function') ? funcArg(el, value, $cms.dom.height(el)) : value);
+        $cms.dom.css(el, 'height', (typeof value === 'function') ? value.call(el, $cms.dom.height(el)) : value);
     };
 
     $cms.dom.offset = function (el, coordinates) {
         if (coordinates === undefined) {
             if (!document.documentElement.contains(el)) {
-                return {top: 0, left: 0};
+                return { top: 0, left: 0 };
             }
 
             var rect = el.getBoundingClientRect();
@@ -1273,7 +1263,7 @@
             };
         }
 
-        var coords = funcArg(el, coordinates, $cms.dom.offset(el)),
+        var coords = (typeof coordinates === 'function') ? coordinates.call(el, $cms.dom.offset(el)) : coordinates,
             parentOffset = $cms.dom.offset($cms.dom.offsetParent(el)),
             props = {
                 top: coords.top - parentOffset.top,
@@ -1431,7 +1421,7 @@
             handler.proxy = function (e) {
                 var args = [e, el];
                 e.data = data;
-                if (isArray(e._args)) {
+                if (Array.isArray(e._args)) {
                     merge(args, e._args);
                 }
                 var result = callback.apply(el, args);
@@ -1609,7 +1599,7 @@
         if (value === undefined) {
             if (typeof property === 'string') {
                 return el.style[camelize(property)] || getComputedStyle(el).getPropertyValue(property);
-            } else if (isArray(property)) {
+            } else if (Array.isArray(property)) {
                 var computedStyle = getComputedStyle(el),
                     props = {};
                 property.forEach(function (prop) {
@@ -1733,7 +1723,7 @@
             duration = undefined;
         }
 
-        duration = (duration != null) ? +duration : 400;
+        duration = intVal(duration, 400);
 
         var target = $cms.dom.css(el, 'opacity');
 
@@ -1771,7 +1761,7 @@
             duration = undefined;
         }
 
-        duration = (duration != null) ? +duration : 400;
+        duration = intVal(duration, 400);
 
         if ('animate' in emptyEl) { // Progressive enhancement using the web animations API
             var keyFrames = [{ opacity: $cms.dom.css(el, 'opacity')}, { opacity: 0 }],
@@ -1780,7 +1770,6 @@
 
             animation.onfinish = function () {
                 $cms.dom.hide(el);
-
                 if (callback) {
                     callback.call(el);
                 }
@@ -1818,7 +1807,7 @@
 
     /* Returns the output character produced by a KeyboardEvent, or empty string if none */
     $cms.dom.keyOutput = function (keyboardEvent, checkOutput) {
-        var key = keyboardEvent.key, type;
+        var key = keyboardEvent.key;
 
         if ((typeof key !== 'string') || (key.length !== 1)) {
             key = '';
@@ -1844,7 +1833,7 @@
         return key;
     };
 
-    $cms.dom.isActionEvent = function (e) {
+    /*$cms.dom.isActionEvent = */function isActionEvent(e) {
         if ((e.type === 'click') && ((e.button === 0) || (e.button === 1))) {  // 0 = Left Click, 1 = Middle Click
             return true;
         }
@@ -1854,7 +1843,7 @@
         }
 
         return false;
-    };
+    }
 
     function setAttr(el, name, value) {
         (value != null) ? el.setAttribute(name, value) : el.removeAttribute(name);
@@ -1991,7 +1980,7 @@
         });
 
         function add(value) {
-            if (isArray(value)) {
+            if (Array.isArray(value)) {
                 return value.forEach(add);
             }
             result.push({name: name, value: value});
@@ -2236,7 +2225,7 @@
     // JS port of the cms_url_encode function used by the tempcode filter '&' (UL_ESCAPED)
     $cms.filter.url = function filterUrl(urlPart, canTryUrlSchemes) {
         var urlPartEncoded = urlencode(strVal(urlPart));
-        canTryUrlSchemes = (canTryUrlSchemes !== undefined) ? !!canTryUrlSchemes : $cms.$EXTRA.canTryUrlSchemes;
+        canTryUrlSchemes = (canTryUrlSchemes !== undefined) ? !!canTryUrlSchemes : $cms.canTryUrlSchemes;
 
         if ((urlPartEncoded !== urlPart) && canTryUrlSchemes) {
             // These interfere with URL Scheme processing because they get pre-decoded and make things ambiguous
@@ -3574,14 +3563,16 @@
             assume_ctrl = !!assume_ctrl;
 
             var element = $cms.dom.id(this.object.name);
-            if (element.disabled) return;
-            var i;
-            var selected_before = (element.value == '') ? [] : (this.object.multi_selection ? element.value.split(',') : [element.value]);
+            if (element.disabled) {
+                return;
+            }
+            var i,
+                selected_before = (element.value == '') ? [] : (this.object.multi_selection ? element.value.split(',') : [element.value]);
 
             cancel_bubbling(event);
             event.preventDefault();
 
-            if ((!assume_ctrl) && (event.shiftKey) && (this.object.multi_selection)) {
+            if (!assume_ctrl && event.shiftKey && this.object.multi_selection) {
                 // We're holding down shift so we need to force selection of everything bounded between our last click spot and here
                 var all_a = $cms.dom.id('tree_list__root_' + this.object.name).getElementsByTagName('label');
                 var pos_last = -1;
@@ -3626,9 +3617,9 @@
             } else if (type === 's') {
                 type = 'e';
             }
-            var real_selected_id = this.getAttribute('id').substr(7 + this.object.name.length);
-            var xml_node = this.object.getElementByIdHack(real_selected_id, type);
-            var selected_id = (this.object.use_server_id) ? xml_node.getAttribute('serverid') : real_selected_id;
+            var real_selected_id = this.getAttribute('id').substr(7 + this.object.name.length),
+                xml_node = this.object.getElementByIdHack(real_selected_id, type),
+                selected_id = (this.object.use_server_id) ? xml_node.getAttribute('serverid') : real_selected_id;
 
             if (xml_node.getAttribute('selectable') == 'true' || this.object.all_nodes_selectable) {
                 var selected_after = selected_before;
@@ -3645,8 +3636,7 @@
                     }
                 } else if (selected_after.indexOf(selected_id) == -1) {
                     selected_after.push(selected_id);
-                    if (!this.object.multi_selection) // This is a bit of a hack to make selection look nice, even though we aren't storing natural IDs of what is selected
-                    {
+                    if (!this.object.multi_selection) {// This is a bit of a hack to make selection look nice, even though we aren't storing natural IDs of what is selected
                         var anchors = $cms.dom.id('tree_list__root_' + this.object.name).getElementsByTagName('label');
                         for (i = 0; i < anchors.length; i++) {
                             this.object.makeElementLookSelected(anchors[i], false);
@@ -3661,9 +3651,15 @@
                 element.value = selected_after.join(',');
                 element.selected_title = (selected_after.length == 1) ? xml_node.getAttribute('title') : element.value;
                 element.selected_editlink = xml_node.getAttribute('edit');
-                if (element.value == '') element.selected_title = '';
-                if (element.onchange) element.onchange();
-                if (element.fakeonchange !== undefined && element.fakeonchange) element.fakeonchange();
+                if (element.value == '') {
+                    element.selected_title = '';
+                }
+                if (element.onchange) {
+                    element.onchange();
+                }
+                if (element.fakeonchange !== undefined && element.fakeonchange) {
+                    element.fakeonchange();
+                }
             }
 
             if (!assume_ctrl) {
@@ -3828,8 +3824,7 @@
                             return;
                         }
                         for (var i = 0; i < button_set.length; i++) {
-                            if (result.toLowerCase() == button_set[i].toLowerCase()) // match
-                            {
+                            if (result.toLowerCase() === button_set[i].toLowerCase()) {// match
                                 callback(result);
                                 return;
                             }
@@ -4861,7 +4856,7 @@ function activate_tooltip(el, event, tooltip, width, pic, height, bottom, no_del
         return;
     }
 
-    if (!have_links && $cms.$TOUCH_ENABLED) {
+    if (!have_links && $cms.isTouchEnabled) {
         return; // Too erratic
     }
 
@@ -7150,7 +7145,7 @@ function set_locked(field, is_locked, chosen_ob) {
 }
 
 function set_required(fieldName, isRequired) {
-    var radio_button = $cms.dom.id('choose_' + fieldName);
+    var radio_button = $cms.dom.$('#choose_' + fieldName);
 
     isRequired = !!isRequired;
 
@@ -7185,54 +7180,53 @@ function set_required(fieldName, isRequired) {
         }
     }
 
-    var element = $cms.dom.id(fieldName);
+    var element = $cms.dom.$('#' + fieldName);
 
     if (element) {
         element.className = element.className.replace(/(input_[a-z_]+)_required/g, '$1');
 
-        if (element.plupload_object !== undefined) {
-            element.plupload_object.settings.required = isRequired;
-        }
-
         if (isRequired) {
             element.className = element.className.replace(/(input_[a-z_]+)/g, '$1_required');
+        }
+
+        if (element.plupload_object) {
+            element.plupload_object.settings.required = isRequired;
         }
     }
 
     if (!isRequired) {
-        var error = $cms.dom.id('error__' + fieldName);
+        var error = $cms.dom.$('#error__' + fieldName);
         if (error) {
             error.style.display = 'none';
         }
     }
 }
 
-function disable_preview_scripts(under) {
-    if (under === undefined) {
-        under = document;
+function disable_preview_scripts(context) {
+    if (context === undefined) {
+        context = document;
     }
 
     var elements, i;
 
-    elements = under.querySelectorAll('button, input[type="button"], input[type="image"]');
+    elements = $cms.dom.$$(context, 'button, input[type="button"], input[type="image"]');
     for (i = 0; i < elements.length; i++) {
-        elements[i].onclick = no_go;
+        elements[i].onclick = nope;
     }
 
     // Make sure links in the preview don't break it - put in a new window
-    elements = under.getElementsByTagName('a');
+    elements = $cms.dom.$$(context, 'a');
     for (i = 0; i < elements.length; i++) {
         if (elements[i].href && elements[i].href.includes('://')) {
             try {
                 if (!elements[i].href.toLowerCase().startsWith('javascript:') && (elements[i].target !== '_self') && (elements[i].target !== '_blank')) {// guard due to weird Firefox bug, JS actions still opening new window
                     elements[i].target = 'false_blank'; // Real _blank would trigger annoying CSS. This is better anyway.
                 }
-            } catch (e) {
-            }// IE can have security exceptions
+            } catch (ignore) {} // IE can have security exceptions
         }
     }
 
-    function no_go() {
+    function nope() {
         window.fauxmodal_alert('{!NOT_IN_PREVIEW_MODE;^}');
         return false;
     }

@@ -22,6 +22,7 @@
 
     function CatalogueEditingScreen() {
         CatalogueEditingScreen.base(this, arguments);
+
         catalogue_field_change_watching();
     }
 

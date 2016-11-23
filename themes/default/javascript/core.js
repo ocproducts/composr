@@ -267,7 +267,7 @@
             }
 
             // Are we dealing with a touch device?
-            if ($cms.$TOUCH_ENABLED) {
+            if ($cms.isTouchEnabled) {
                 document.body.classList.add('touch_enabled');
             }
 
@@ -686,7 +686,7 @@
 
             /* Thumbnail tooltips */
             if ($cms.$DEV_MODE || loc.replace($cms.$BASE_URL_NOHTTP, '').includes('/cms/')) {
-                var urlPatterns = $cms.$EXTRA.staffTooltipsUrlPatterns,
+                var urlPatterns = $cms.staffTooltipsUrlPatterns,
                     links, pattern, hook, patternRgx;
 
                 if ($cms.isEmptyObj(urlPatterns)) {
@@ -1374,7 +1374,7 @@
     function convert_tooltip(el) {
         var title = el.title;
 
-        if (!title || $cms.$TOUCH_ENABLED || el.classList.contains('leave_native_tooltip')) {
+        if (!title || $cms.isTouchEnabled || el.classList.contains('leave_native_tooltip')) {
             return;
         }
 
