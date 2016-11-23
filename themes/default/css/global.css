@@ -830,12 +830,13 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 .zone_running_docs .comcode_page {
 	line-height: 1.35em;
 }
-.zone_running_docs .comcode_page img {
-	max-width: 100%;
-}
 
 .global_middle_outer {
 	margin-top: 0.8em;
+}
+
+.global_middle img {
+	max-width: 100%;
 }
 
 .global_side_panel h2 {
@@ -1270,7 +1271,6 @@ div.edited {
 	border: 1px solid {$GET,standard_border};
 	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
 	{$BETA_CSS_PROPERTY,box-shadow: 3px 3px 10px {$GET,standard_border};}
-	max-width: 100%;
 }
 
 .scale_down { /* Membership of this class is used as a tag to turn on image scale-to-fit */
@@ -3516,10 +3516,6 @@ ul.buttons_group, ul.associated_links_block_group {
 
 .box___confirm_screen {
 	margin-bottom: 2em;
-}
-
-.box___confirm_screen img {
-	max-width: 100%;
 }
 
 /*

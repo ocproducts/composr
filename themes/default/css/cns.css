@@ -472,9 +472,6 @@ div.cns_table_footer>div>div {
 	line-height: 1.6em;
 }
 
-.cns_topic_post_area img {
-	max-width: 100%;
-}
 .cns_topic_post_area #map_canvas img { /*some exceptions may need defining for the above*/
 	max-width: none;
 }
