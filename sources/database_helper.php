@@ -315,7 +315,12 @@ function _helper_create_index($this_ref, $table_name, $index_name, $fields, $uni
     if ((multi_lang_content()) && (strpos($index_name, '__combined') !== false) && (substr($index_name, 0, 1) == '#') && ($table_name != 'translate')) {
         $ok_to_create = false;
     }
-    $this_ref->query_insert('db_meta_indices', array('i_table' => $table_name, 'i_name' => $index_name, 'i_fields' => implode(',', $fields)), false, true); // Allow errors because sometimes bugs when developing can call for this happening twice
+    $insert_map = array('i_table' => $table_name, 'i_name' => $index_name, 'i_fields' => implode(',', $fields));
+    $test = $this_ref->query_select('db_meta_indices', array('*'), $insert_map);
+    if (!empty($test)) { // Already exists, so we'll recreate it
+        _helper_delete_index_if_exists($this_ref, $table_name, $index_name);
+    }
+    $this_ref->query_insert('db_meta_indices', $insert_map);
 
     if ($ok_to_create) {
         $this_ref->ensure_connected();

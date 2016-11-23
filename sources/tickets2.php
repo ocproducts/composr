@@ -504,7 +504,7 @@ function get_ticket_meta_details($ticket_id, $hard_error = true)
  * @param  ?integer $total_ticket_posts Return total number of posts in the ticket (null: don't collect)
  * @param  integer $start Start offset in pagination
  * @param  ?integer $max Max per page in pagination (null: no limit)
- * @return mixed The array of maps (Each map is: title, message, member, date) (null: no such ticket)
+ * @return ?mixed The array of maps (Each map is: title, message, member, date) (null: no such ticket)
  */
 function get_ticket_posts($ticket_id, &$forum = null, &$topic_id = null, &$total_ticket_posts = null, $start = 0, $max = null)
 {

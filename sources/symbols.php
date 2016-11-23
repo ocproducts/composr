@@ -1995,6 +1995,7 @@ function ecv_MESSAGES_BOTTOM($lang, $escaped, $param)
         attach_message_su($messages_bottom);
     }
     if (get_param_string('special_page_type', '') == 'memory') {
+        require_code('view_modes');
         attach_message_memory_usage($messages_bottom);
     }
     $value = $messages_bottom->evaluate();

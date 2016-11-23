@@ -287,18 +287,27 @@ function fatal_exit($text)
     }
     require_code('tempcode_compiler');
     $css_nocache = _do_template('default', '/css/', 'no_cache', 'no_cache', 'EN', '.css');
-    $out_final = do_template('INSTALLER_HTML_WRAP', array(
-        '_GUID' => '990e78523cee0b6782e1e09d73a700a7',
-        'CSS_NOCACHE' => $css_nocache,
-        'DEFAULT_FORUM' => '',
-        'PASSWORD_PROMPT' => '',
-        'CSS_URL' => $css_url,
-        'CSS_URL_2' => $css_url_2,
-        'LOGO_URL' => $logo_url,
-        'STEP' => integer_format(intval($_GET['step'])),
-        'CONTENT' => $echo,
-        'VERSION' => $version,
-    ));
+    if (running_script('restore')) {
+        $out_final = do_template('RESTORE_HTML_WRAP', array(
+            '_GUID' => '190e78523cee0b6782e1e09d73a700a7',
+            'CSS_NOCACHE' => $css_nocache,
+            'MESSAGE' => $echo,
+            'ERROR' => true,
+        ));
+    } else {
+        $out_final = do_template('INSTALLER_HTML_WRAP', array(
+            '_GUID' => '990e78523cee0b6782e1e09d73a700a7',
+            'CSS_NOCACHE' => $css_nocache,
+            'DEFAULT_FORUM' => '',
+            'PASSWORD_PROMPT' => '',
+            'CSS_URL' => $css_url,
+            'CSS_URL_2' => $css_url_2,
+            'LOGO_URL' => $logo_url,
+            'STEP' => integer_format(intval($_GET['step'])),
+            'CONTENT' => $echo,
+            'VERSION' => $version,
+        ));
+    }
     $out_final->evaluate_echo();
 
     exit();
@@ -505,18 +514,27 @@ function warn_exit($text)
     }
     require_code('tempcode_compiler');
     $css_nocache = _do_template('default', '/css/', 'no_cache', 'no_cache', 'EN', '.css');
-    $out_final = do_template('INSTALLER_HTML_WRAP', array(
-        '_GUID' => '710e7ea5c186b4c42bb3a5453dd915ed',
-        'CSS_NOCACHE' => $css_nocache,
-        'DEFAULT_FORUM' => '',
-        'PASSWORD_PROMPT' => '',
-        'CSS_URL' => $css_url,
-        'CSS_URL_2' => $css_url_2,
-        'LOGO_URL' => $logo_url,
-        'STEP' => integer_format(intval($_GET['step'])),
-        'CONTENT' => $echo,
-        'VERSION' => $version,
-    ));
+    if (running_script('restore')) {
+        $out_final = do_template('RESTORE_HTML_WRAP', array(
+            '_GUID' => '190e78523cee0b6782e1e09d73a700a7',
+            'CSS_NOCACHE' => $css_nocache,
+            'MESSAGE' => $echo,
+            'ERROR' => true,
+        ));
+    } else {
+        $out_final = do_template('INSTALLER_HTML_WRAP', array(
+            '_GUID' => '710e7ea5c186b4c42bb3a5453dd915ed',
+            'CSS_NOCACHE' => $css_nocache,
+            'DEFAULT_FORUM' => '',
+            'PASSWORD_PROMPT' => '',
+            'CSS_URL' => $css_url,
+            'CSS_URL_2' => $css_url_2,
+            'LOGO_URL' => $logo_url,
+            'STEP' => integer_format(intval($_GET['step'])),
+            'CONTENT' => $echo,
+            'VERSION' => $version,
+        ));
+    }
     $out_final->evaluate_echo();
 
     exit();

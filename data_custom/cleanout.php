@@ -477,6 +477,8 @@ function cleanup()
     require_code('database_relations');
     $table_purposes = get_table_purpose_flags();
 
+    require_code('files');
+
     if ($clean_all_attachments) {
         deldir_contents(get_custom_file_base() . '/uploads/attachments', true);
         $GLOBALS['SITE_DB']->query_delete('attachment_refs');

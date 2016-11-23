@@ -19,7 +19,9 @@
 
 		<div class="installer_main_inner">
 			<div class="box box___restore_html_wrap"><div class="box_inner">
-				<h1>Restoring the website</h1>
+				{+START,IF_NON_PASSED_OR_FALSE,ERROR}
+					<h1>Restoring the website</h1>
+				{+END}
 
 				{MESSAGE}
 			</div></div>

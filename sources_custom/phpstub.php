@@ -273,7 +273,7 @@ function array_reverse($array, $preserve_keys = false)
  *
  * @param  mixed $needle Needle.
  * @param  array $haystack Haystack.
- * @return mixed The key (false: not found).
+ * @return ~mixed The key (false: not found).
  */
 function array_search($needle, $haystack)
 {
@@ -1675,7 +1675,7 @@ function include_once($filename)
  * Gets the value of a configuration option. Note: On Phalanger any unknown config options will produce a warning if fetched.
  *
  * @param  string $varname Config option.
- * @return mixed Value of option (empty: no such config option, or an empty value) (false: ditto).
+ * @return ~mixed Value of option (empty: no such config option, or an empty value) (false: ditto).
  */
 function ini_get($varname)
 {
@@ -4790,7 +4790,7 @@ function inet_pton($address)
  * Converts a packed internet address to a human readable representation.
  *
  * @param  string $in_addr Converts a packed internet address to a human readable representation.
- * @return string A string representation of the address (false: error).
+ * @return ~string A string representation of the address (false: error).
  */
 function inet_ntop($in_addr)
 {

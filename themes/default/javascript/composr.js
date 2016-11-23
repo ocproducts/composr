@@ -3898,12 +3898,12 @@
                 // If status is 'OK'
                 if (xhr.status && okStatusCodes.includes(xhr.status)) {
                     // Process the result
-                    if ((typeof ajaxCallbacks[i] === 'function') && (!xhr.responseXML/*Not payload handler and not stack trace*/ || !xhr.responseXML.firstChild)) {
-                        ajaxCallbacks[i](xhr);
-                        return true; // (break)
+                    if ((!xhr.responseXML/*Not payload handler and not stack trace*/ || !xhr.responseXML.firstChild)) {
+                        return this.callAjaxMethod(ajaxCallbacks[i], xhr, null);
                     }
-                    var xml;
 
+                    // XML result. Handle with a potentially complex call
+                    var xml;
                     if (xhr.responseXML && xhr.responseXML.firstChild) {
                         xml = xhr.responseXML;
                     } else {
@@ -3913,8 +3913,15 @@
                     if (xml) {
                         xml.validateOnParse = false;
                         processRequestChange(xml.documentElement || xml, i);
+                    } else {
+                        // Error parsing
+                        return this.callAjaxMethod(ajaxCallbacks[i], null, null);
                     }
                 } else {
+                    // HTTP error...
+
+                    this.callAjaxMethod(ajaxCallbacks[i], null, null);
+
                     try {
                         if ((xhr.status === 0) || (xhr.status === 12029)) {// 0 implies site down, or network down
                             if (!window.network_down && !window.unloaded) {
@@ -3937,10 +3944,18 @@
             ajaxInstances || (ajaxInstances = []);
             ajaxCallbacks || (ajaxCallbacks = []);
 
+            var method = null;
+            var methodEl = ajaxResultFrame.querySelector('method');
+            if (methodEl || (ajaxCallbacks[i])) {
+                method = methodEl ? eval('return ' + merge_text_nodes(methodEl)) : ajaxCallbacks[i];
+            }
+
             var messageEl = ajaxResultFrame.querySelector('message');
             if (messageEl) {
                 // Either an error or a message was returned. :(
                 var message = messageEl.firstChild.data;
+
+                this.callAjaxMethod(method, null, null);
 
                 if (ajaxResultFrame.querySelector('error')) {
                     // It's an error :|
@@ -3954,19 +3969,11 @@
 
             var ajaxResultEl = ajaxResultFrame.querySelector('result');
             if (!ajaxResultEl) {
+                this.callAjaxMethod(method, null, null);
                 return;
             }
 
-            var methodEl = ajaxResultFrame.querySelector('method');
-            if (methodEl || (typeof ajaxCallbacks[i] === 'function')) {
-                var method = methodEl ? eval('return ' + merge_text_nodes(methodEl)) : ajaxCallbacks[i];
-
-                if (method.response !== undefined) {
-                    method.response(ajaxResultFrame, ajaxResultEl);
-                } else {
-                    method(ajaxResultFrame, ajaxResultEl);
-                }
-            }
+            this.callAjaxMethod(ajaxResultFrame, ajaxResultEl);
         }
 
         function handleErrorsInResult(xhr) {
@@ -3986,8 +3993,28 @@
                 fauxmodal_alert(xhr.responseText, null, '{!ERROR_OCCURRED;^}', true);
             }
         }
-    }
 
+        function callAjaxMethod(method, ajaxResultFrame, ajaxResult)
+        {
+            if (method instanceof Array) {
+                if (ajaxResultFrame != null) {
+                    method = (typeof method[0] == 'undefined') ? null : method[0];
+                } else {
+                    method = (typeof method[1] == 'undefined') ? null : method[1];
+                }
+            } else {
+                if (ajaxResultFrame == null) method = null; // No failure method given, so don't call
+            }
+
+            if (method != null) {
+                if (typeof method.response != 'undefined') {
+                    method.response(ajaxResultFrame, ajaxResult);
+                } else {
+                    method(ajaxResultFrame, ajaxResult);
+                }
+            }
+        }
+    }
 
     function get_csrf_token() {
         return read_cookie($cms.$SESSION_COOKIE_NAME); // Session also works as a CSRF-token, as client-side knows it (AJAX)
@@ -4247,7 +4274,7 @@ function noop() {}
         var is_safari = browser.includes('applewebkit');
         var is_chrome = browser.includes('chrome/');
         var is_gecko = browser.includes('gecko') && !is_safari;
-        var _is_ie = browser.includes('msie') || browser.includes('trident');
+        var _is_ie = browser.includes('msie') || browser.includes('trident') || browser.includes('edge/');
         var is_ie_8 = browser.includes('msie 8') && (_is_ie);
         var is_ie_8_plus = is_ie_8;
         var is_ie_9 = browser.includes('msie 9') && (_is_ie);
@@ -5135,7 +5162,7 @@ function resize_frame(name, min_height) {
         }
 
         if (h + 'px' != frame_element.style.height) {
-            if (frame_element.scrolling !== 'auto') {
+            if ((frame_element.scrolling !== 'auto' && frame_element.scrolling !== 'yes') || (frame_element.style.height == '0px')) {
                 frame_element.style.height = ((h >= min_height) ? h : min_height) + 'px';
                 if (frame_window.parent) {
                     window.setTimeout(function () {
