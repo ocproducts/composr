@@ -69,7 +69,7 @@ class Hook_payment_gateway_paypal
             $user_details['country'] = get_cms_cpf('country');
         }
 
-        return do_template('ECOM_BUTTON_VIA_PAYPAL', array(
+        return do_template('ECOM_TRANSACTION_BUTTON_VIA_PAYPAL', array(
             '_GUID' => 'b0d48992ed17325f5e2330bf90c85762',
             'TYPE_CODE' => $type_code,
             'ITEM_NAME' => $item_name,
@@ -123,7 +123,7 @@ class Hook_payment_gateway_paypal
      */
     public function make_cancel_button($purchase_id)
     {
-        return do_template('ECOM_CANCEL_BUTTON_VIA_PAYPAL', array('_GUID' => '091d7449161eb5c4f6129cf89e5e8e7e', 'PURCHASE_ID' => $purchase_id));
+        return do_template('ECOM_SUBSCRIPTION_CANCEL_BUTTON_VIA_PAYPAL', array('_GUID' => '091d7449161eb5c4f6129cf89e5e8e7e', 'PURCHASE_ID' => $purchase_id));
     }
 
     /**

@@ -114,7 +114,7 @@ class Hook_payment_gateway_worldpay
             'e_length_units' => '',
         ));
 
-        return do_template('ECOM_BUTTON_VIA_WORLDPAY', array(
+        return do_template('ECOM_TRANSACTION_BUTTON_VIA_WORLDPAY', array(
             '_GUID' => '56c78a4e16c0e7f36fcfbe57d37bc3d3',
             'TYPE_CODE' => $type_code,
             'ITEM_NAME' => $item_name,
@@ -212,7 +212,7 @@ class Hook_payment_gateway_worldpay
     public function make_cancel_button($purchase_id)
     {
         $cancel_url = build_url(array('page' => 'subscriptions', 'type' => 'cancel', 'id' => $purchase_id), get_module_zone('subscriptions'));
-        return do_template('ECOM_CANCEL_BUTTON_VIA_WORLDPAY', array('_GUID' => '187fba57424e7850b9e21fc147de48eb', 'CANCEL_URL' => $cancel_url, 'PURCHASE_ID' => $purchase_id));
+        return do_template('ECOM_SUBSCRIPTION_CANCEL_BUTTON_VIA_WORLDPAY', array('_GUID' => '187fba57424e7850b9e21fc147de48eb', 'CANCEL_URL' => $cancel_url, 'PURCHASE_ID' => $purchase_id));
     }
 
     /**

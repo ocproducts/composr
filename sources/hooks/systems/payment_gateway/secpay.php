@@ -86,7 +86,7 @@ class Hook_payment_gateway_secpay
             'e_length_units' => '',
         ));
 
-        return do_template('ECOM_BUTTON_VIA_SECPAY', array(
+        return do_template('ECOM_TRANSACTION_BUTTON_VIA_SECPAY', array(
             '_GUID' => 'e68e80cb637f8448ef62cd7d73927722',
             'TYPE_CODE' => $type_code,
             'DIGEST' => $digest,
@@ -201,7 +201,7 @@ class Hook_payment_gateway_secpay
     public function make_cancel_button($purchase_id)
     {
         $cancel_url = build_url(array('page' => 'subscriptions', 'type' => 'cancel', 'id' => $purchase_id), get_module_zone('subscriptions'));
-        return do_template('ECOM_CANCEL_BUTTON_VIA_SECPAY', array('_GUID' => 'bd02018c985e2345be71eed537b2f841', 'CANCEL_URL' => $cancel_url, 'PURCHASE_ID' => $purchase_id));
+        return do_template('ECOM_SUBSCRIPTION_CANCEL_BUTTON_VIA_SECPAY', array('_GUID' => 'bd02018c985e2345be71eed537b2f841', 'CANCEL_URL' => $cancel_url, 'PURCHASE_ID' => $purchase_id));
     }
 
     /**

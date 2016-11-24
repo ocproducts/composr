@@ -213,30 +213,30 @@ class Hook_addon_registry_ecommerce
             'sources/hooks/systems/config/transaction_percentage_cost.php',
             'sources/hooks/systems/config/transaction_flat_cost.php',
 
-            'themes/default/templates/ECOM_BUTTON_VIA_PAYPAL.tpl',
-            'themes/default/templates/ECOM_CANCEL_BUTTON_VIA_PAYPAL.tpl',
+            'themes/default/templates/ECOM_TRANSACTION_BUTTON_VIA_PAYPAL.tpl',
+            'themes/default/templates/ECOM_SUBSCRIPTION_CANCEL_BUTTON_VIA_PAYPAL.tpl',
             'themes/default/templates/ECOM_SUBSCRIPTION_BUTTON_VIA_PAYPAL.tpl',
             'sources/hooks/systems/payment_gateway/paypal.php',
             'sources/hooks/systems/config/primary_paypal_email.php',
 
-            'themes/default/templates/ECOM_BUTTON_VIA_SECPAY.tpl',
-            'themes/default/templates/ECOM_CANCEL_BUTTON_VIA_SECPAY.tpl',
+            'themes/default/templates/ECOM_TRANSACTION_BUTTON_VIA_SECPAY.tpl',
+            'themes/default/templates/ECOM_SUBSCRIPTION_CANCEL_BUTTON_VIA_SECPAY.tpl',
             'themes/default/templates/ECOM_SUBSCRIPTION_BUTTON_VIA_SECPAY.tpl',
             'sources/hooks/systems/payment_gateway/secpay.php',
 
-            'themes/default/templates/ECOM_BUTTON_VIA_WORLDPAY.tpl',
-            'themes/default/templates/ECOM_CANCEL_BUTTON_VIA_WORLDPAY.tpl',
+            'themes/default/templates/ECOM_TRANSACTION_BUTTON_VIA_WORLDPAY.tpl',
+            'themes/default/templates/ECOM_SUBSCRIPTION_CANCEL_BUTTON_VIA_WORLDPAY.tpl',
             'themes/default/templates/ECOM_SUBSCRIPTION_BUTTON_VIA_WORLDPAY.tpl',
             'sources/hooks/systems/payment_gateway/worldpay.php',
             'themes/default/templates/ECOM_LOGOS_WORLDPAY.tpl',
 
-            'themes/default/templates/ECOM_BUTTON_VIA_CCBILL.tpl',
-            'themes/default/templates/ECOM_CANCEL_BUTTON_VIA_CCBILL.tpl',
+            'themes/default/templates/ECOM_TRANSACTION_BUTTON_VIA_CCBILL.tpl',
+            'themes/default/templates/ECOM_SUBSCRIPTION_CANCEL_BUTTON_VIA_CCBILL.tpl',
             'themes/default/templates/ECOM_SUBSCRIPTION_BUTTON_VIA_CCBILL.tpl',
             'sources/hooks/systems/payment_gateway/ccbill.php',
 
-            'themes/default/templates/ECOM_BUTTON_VIA_AUTHORIZE.tpl',
-            'themes/default/templates/ECOM_CANCEL_BUTTON_VIA_AUTHORIZE.tpl',
+            'themes/default/templates/ECOM_TRANSACTION_BUTTON_VIA_AUTHORIZE.tpl',
+            'themes/default/templates/ECOM_SUBSCRIPTION_CANCEL_BUTTON_VIA_AUTHORIZE.tpl',
             'themes/default/templates/ECOM_SUBSCRIPTION_BUTTON_VIA_AUTHORIZE.tpl',
             'sources/hooks/systems/payment_gateway/authorize.php',
             'lang/EN/ecommerce_gateway_authorize.ini',
@@ -260,18 +260,18 @@ class Hook_addon_registry_ecommerce
             'templates/PURCHASE_WIZARD_STAGE_TRANSACT.tpl' => 'purchase_wizard_stage_transact',
             'templates/PURCHASE_WIZARD_SCREEN.tpl' => 'purchase_wizard_screen',
             'templates/ECOM_LOGOS_WORLDPAY.tpl' => 'ecom_logos_worldpay',
-            'templates/ECOM_BUTTON_VIA_WORLDPAY.tpl' => 'ecom_button_via_worldpay',
+            'templates/ECOM_TRANSACTION_BUTTON_VIA_WORLDPAY.tpl' => 'ecom_button_via_worldpay',
             'templates/ECOM_SUBSCRIPTION_BUTTON_VIA_WORLDPAY.tpl' => 'ecom_subscription_button_via_worldpay',
-            'templates/ECOM_CANCEL_BUTTON_VIA_WORLDPAY.tpl' => 'ecom_cancel_button_via_worldpay',
-            'templates/ECOM_BUTTON_VIA_PAYPAL.tpl' => 'ecom_button_via_paypal',
+            'templates/ECOM_SUBSCRIPTION_CANCEL_BUTTON_VIA_WORLDPAY.tpl' => 'ecom_cancel_button_via_worldpay',
+            'templates/ECOM_TRANSACTION_BUTTON_VIA_PAYPAL.tpl' => 'ecom_button_via_paypal',
             'templates/ECOM_SUBSCRIPTION_BUTTON_VIA_PAYPAL.tpl' => 'ecom_subscription_button_via_paypal',
-            'templates/ECOM_CANCEL_BUTTON_VIA_PAYPAL.tpl' => 'ecom_cancel_button_via_paypal',
-            'templates/ECOM_BUTTON_VIA_SECPAY.tpl' => 'ecom_button_via_secpay',
+            'templates/ECOM_SUBSCRIPTION_CANCEL_BUTTON_VIA_PAYPAL.tpl' => 'ecom_cancel_button_via_paypal',
+            'templates/ECOM_TRANSACTION_BUTTON_VIA_SECPAY.tpl' => 'ecom_button_via_secpay',
             'templates/ECOM_SUBSCRIPTION_BUTTON_VIA_SECPAY.tpl' => 'ecom_subscription_button_via_secpay',
-            'templates/ECOM_CANCEL_BUTTON_VIA_SECPAY.tpl' => 'ecom_cancel_button_via_secpay',
-            'templates/ECOM_BUTTON_VIA_CCBILL.tpl' => 'ecom_button_via_ccbill',
+            'templates/ECOM_SUBSCRIPTION_CANCEL_BUTTON_VIA_SECPAY.tpl' => 'ecom_cancel_button_via_secpay',
+            'templates/ECOM_TRANSACTION_BUTTON_VIA_CCBILL.tpl' => 'ecom_button_via_ccbill',
             'templates/ECOM_SUBSCRIPTION_BUTTON_VIA_CCBILL.tpl' => 'ecom_subscription_button_via_ccbill',
-            'templates/ECOM_CANCEL_BUTTON_VIA_CCBILL.tpl' => 'ecom_cancel_button_via_ccbill',
+            'templates/ECOM_SUBSCRIPTION_CANCEL_BUTTON_VIA_CCBILL.tpl' => 'ecom_cancel_button_via_ccbill',
             'templates/PURCHASE_WIZARD_STAGE_GUEST.tpl' => 'purchase_wizard_stage_guest',
             'templates/PURCHASE_WIZARD_STAGE_CHOOSE.tpl' => 'purchase_wizard_stage_choose',
             'templates/PURCHASE_WIZARD_STAGE_MESSAGE.tpl' => 'purchase_wizard_stage_message',
@@ -436,7 +436,7 @@ class Hook_addon_registry_ecommerce
     public function tpl_preview__ecom_button_via_worldpay()
     {
         return array(
-            lorem_globalise(do_lorem_template('ECOM_BUTTON_VIA_WORLDPAY', array(
+            lorem_globalise(do_lorem_template('ECOM_TRANSACTION_BUTTON_VIA_WORLDPAY', array(
                 'TYPE_CODE' => lorem_phrase(),
                 'ITEM_NAME' => lorem_word(),
                 'DIGEST' => lorem_phrase(),
@@ -490,7 +490,7 @@ class Hook_addon_registry_ecommerce
     public function tpl_preview__ecom_cancel_button_via_worldpay()
     {
         return array(
-            lorem_globalise(do_lorem_template('ECOM_CANCEL_BUTTON_VIA_WORLDPAY', array(
+            lorem_globalise(do_lorem_template('ECOM_SUBSCRIPTION_CANCEL_BUTTON_VIA_WORLDPAY', array(
                 'CANCEL_URL' => placeholder_url(),
                 'PURCHASE_ID' => placeholder_id(),
             )), null, '', true)
@@ -507,7 +507,7 @@ class Hook_addon_registry_ecommerce
     public function tpl_preview__ecom_button_via_paypal()
     {
         return array(
-            lorem_globalise(do_lorem_template('ECOM_BUTTON_VIA_PAYPAL', array(
+            lorem_globalise(do_lorem_template('ECOM_TRANSACTION_BUTTON_VIA_PAYPAL', array(
                 'TYPE_CODE' => lorem_phrase(),
                 'ITEM_NAME' => lorem_word(),
                 'PURCHASE_ID' => placeholder_id(),
@@ -554,7 +554,7 @@ class Hook_addon_registry_ecommerce
     public function tpl_preview__ecom_cancel_button_via_paypal()
     {
         return array(
-            lorem_globalise(do_lorem_template('ECOM_CANCEL_BUTTON_VIA_PAYPAL', array(
+            lorem_globalise(do_lorem_template('ECOM_SUBSCRIPTION_CANCEL_BUTTON_VIA_PAYPAL', array(
                 'PURCHASE_ID' => placeholder_id(),
             )), null, '', true)
         );
@@ -570,7 +570,7 @@ class Hook_addon_registry_ecommerce
     public function tpl_preview__ecom_button_via_secpay()
     {
         return array(
-            lorem_globalise(do_lorem_template('ECOM_BUTTON_VIA_SECPAY', array(
+            lorem_globalise(do_lorem_template('ECOM_TRANSACTION_BUTTON_VIA_SECPAY', array(
                 'TYPE_CODE' => lorem_phrase(),
                 'DIGEST' => lorem_phrase(),
                 'TEST' => lorem_phrase(),
@@ -624,7 +624,7 @@ class Hook_addon_registry_ecommerce
     public function tpl_preview__ecom_cancel_button_via_secpay()
     {
         return array(
-            lorem_globalise(do_lorem_template('ECOM_CANCEL_BUTTON_VIA_SECPAY', array(
+            lorem_globalise(do_lorem_template('ECOM_SUBSCRIPTION_CANCEL_BUTTON_VIA_SECPAY', array(
                 'CANCEL_URL' => placeholder_url(),
                 'PURCHASE_ID' => placeholder_id(),
             )), null, '', true)
@@ -641,7 +641,7 @@ class Hook_addon_registry_ecommerce
     public function tpl_preview__ecom_button_via_ccbill()
     {
         return array(
-            lorem_globalise(do_lorem_template('ECOM_BUTTON_VIA_CCBILL', array(
+            lorem_globalise(do_lorem_template('ECOM_TRANSACTION_BUTTON_VIA_CCBILL', array(
                 'TYPE_CODE' => lorem_phrase(),
                 'ITEM_NAME' => lorem_phrase(),
                 'PURCHASE_ID' => placeholder_id(),
@@ -701,7 +701,7 @@ class Hook_addon_registry_ecommerce
     public function tpl_preview__ecom_cancel_button_via_ccbill()
     {
         return array(
-            lorem_globalise(do_lorem_template('ECOM_CANCEL_BUTTON_VIA_CCBILL', array(
+            lorem_globalise(do_lorem_template('ECOM_SUBSCRIPTION_CANCEL_BUTTON_VIA_CCBILL', array(
                 'CANCEL_URL' => placeholder_url(),
                 'PURCHASE_ID' => placeholder_id(),
             )), null, '', true)

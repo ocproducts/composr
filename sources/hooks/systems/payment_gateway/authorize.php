@@ -169,7 +169,7 @@ class Hook_payment_gateway_authorize
             'e_length_units' => '',
         ));
 
-        return do_template('ECOM_BUTTON_VIA_AUTHORIZE', array(
+        return do_template('ECOM_TRANSACTION_BUTTON_VIA_AUTHORIZE', array(
             'TYPE_CODE' => $type_code,
             'FORM_URL' => $form_url,
             'SEQUENCE' => strval($sequence),
@@ -210,7 +210,7 @@ class Hook_payment_gateway_authorize
      */
     public function make_cancel_button($purchase_id)
     {
-        return do_template('ECOM_CANCEL_BUTTON_VIA_AUTHORIZE', array('_GUID' => '191d7449161eb5c4f6129cf89e5e8e7e', 'PURCHASE_ID' => $purchase_id));
+        return do_template('ECOM_SUBSCRIPTION_CANCEL_BUTTON_VIA_AUTHORIZE', array('_GUID' => '191d7449161eb5c4f6129cf89e5e8e7e', 'PURCHASE_ID' => $purchase_id));
     }
 
     /**

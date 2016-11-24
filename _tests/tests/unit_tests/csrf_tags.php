@@ -47,10 +47,10 @@ class csrf_tags_test_set extends cms_test_case
                     }
 
                     if (in_array($f, array(
-                        'ECOM_BUTTON_VIA_CCBILL.tpl',
-                        'ECOM_BUTTON_VIA_PAYPAL.tpl',
-                        'ECOM_BUTTON_VIA_SECPAY.tpl',
-                        'ECOM_BUTTON_VIA_WORLDPAY.tpl',
+                        'ECOM_TRANSACTION_BUTTON_VIA_CCBILL.tpl',
+                        'ECOM_TRANSACTION_BUTTON_VIA_PAYPAL.tpl',
+                        'ECOM_TRANSACTION_BUTTON_VIA_SECPAY.tpl',
+                        'ECOM_TRANSACTION_BUTTON_VIA_WORLDPAY.tpl',
                         'ECOM_CART_BUTTON_VIA_PAYPAL.tpl',
                         'ECOM_SUBSCRIPTION_BUTTON_VIA_CCBILL.tpl',
                         'ECOM_SUBSCRIPTION_BUTTON_VIA_PAYPAL.tpl',

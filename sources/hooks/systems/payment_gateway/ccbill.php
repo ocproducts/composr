@@ -138,7 +138,7 @@ class Hook_payment_gateway_ccbill
             'e_length_units' => '',
         ));
 
-        return do_template('ECOM_BUTTON_VIA_CCBILL', array(
+        return do_template('ECOM_TRANSACTION_BUTTON_VIA_CCBILL', array(
             '_GUID' => '24a0560541cedd4c45898f4d19e99249',
             'TYPE_CODE' => strval($type_code),
             'ITEM_NAME' => strval($item_name),
@@ -246,7 +246,7 @@ class Hook_payment_gateway_ccbill
      */
     public function make_cancel_button($purchase_id)
     {
-        return do_template('ECOM_CANCEL_BUTTON_VIA_CCBILL', array('_GUID' => 'f1aaed809380c3fdca22728393eaef75', 'PURCHASE_ID' => $purchase_id));
+        return do_template('ECOM_SUBSCRIPTION_CANCEL_BUTTON_VIA_CCBILL', array('_GUID' => 'f1aaed809380c3fdca22728393eaef75', 'PURCHASE_ID' => $purchase_id));
     }
 
     /**
