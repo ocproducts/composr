@@ -307,7 +307,7 @@ class Hook_secpay
         $shipping_street_address_lines = explode("\n", $shipping_street_address, 2);
         $shipping_address = 'ship_name=' . $shipping_firstname . ' ' . $shipping_lastname . ',';
         $shipping_address .= 'ship_addr_1=' . $shipping_street_address_lines[0] . ',';
-        $shipping_address .= 'ship_addr_2=' . $shipping_street_address_lines[1] . ',';
+        $shipping_address .= 'ship_addr_2=' . (isset($shipping_street_address_lines[1]) ? $shipping_street_address_lines[1] : '') . ',';
         $shipping_address .= 'ship_city=' . $shipping_city . ',';
         $shipping_address .= 'ship_state=' . $shipping_state . ',';
         $shipping_address .= 'ship_country=' . $shipping_country . ',';
@@ -317,7 +317,7 @@ class Hook_secpay
 
         $billing_street_address_lines = explode("\n", $billing_street_address, 2);
         $billing_address = 'bill_addr_1=' . $billing_street_address_lines[0] . ',';
-        $billing_address .= 'bill_addr_2=' . $billing_street_address_lines[1] . ',';
+        $billing_address .= 'bill_addr_2=' . (isset($billing_street_address_lines[1]) ? $billing_street_address_lines[1] : '') . ',';
         $billing_address .= 'bill_city=' . $billing_city . ',';
         $billing_address .= 'bill_state=' . $billing_state . ',';
         $billing_address .= 'bill_country=' . $billing_country . ',';
@@ -346,7 +346,7 @@ class Hook_secpay
         }
 
         $success = ((array_key_exists('code', $map)) && (($map['code'] == 'A') || ($map['code'] == 'P:P')));
-        $message_raw = array_key_exists('message', $map) ? $map['message'] : '';
+        $message_raw = array_key_exists('message', $map) ? $map['message'] : do_lang('INTERNAL_ERROR');
         $message = $success ? do_lang('ACCEPTED_MESSAGE', $message_raw) : do_lang('DECLINED_MESSAGE', $message_raw);
 
         return array($success, $trans_id, $message, $message_raw);

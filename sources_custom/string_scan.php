@@ -8919,6 +8919,7 @@ function string_scan($lang, $do_guessing = false)
         PURCHASE_CUSTOM_PRODUCT
         PURCHASE_DISABLED
         PURCHASE_FINISHED
+        PURCHASE_FINISHED_SIMPLE
         PURCHASE_MAIL
         PURCHASE_MAIL_BODY
         PURCHASE_MAIL_SUBJECT

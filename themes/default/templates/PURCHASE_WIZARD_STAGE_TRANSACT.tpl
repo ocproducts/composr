@@ -8,24 +8,24 @@
    </div>
 {+END}
 
-<div class="local_payment_form">
-	{+START,IF_NON_EMPTY,{LOGO}{PAYMENT_PROCESSING_LINK}}
+<div class="local_payment_merchant_details">
+	{+START,IF_NON_EMPTY,{CONFIDENCE_LOGOS}{PAYMENT_PROCESSOR_LINKS}}
 		<div class="local_payment_verified_account_logo">
-			{+START,IF_NON_EMPTY,{LOGO}}
-				<div class="verified_merchant_logo">
-					{LOGO}
+			{+START,IF_NON_EMPTY,{CONFIDENCE_LOGOS}}
+				<div class="confidence_logos">
+					{CONFIDENCE_LOGOS}
 				</div>
 			{+END}
 
-			{+START,IF_NON_EMPTY,{PAYMENT_PROCESSING_LINK}}
-				<div class="verified_merchant_label">
-					{PAYMENT_PROCESSING_LINK}
+			{+START,IF_NON_EMPTY,{PAYMENT_PROCESSOR_LINKS}}
+				<div class="payment_processor_links">
+					{PAYMENT_PROCESSOR_LINKS}
 				</div>
 			{+END}
 		</div>
 	{+END}
 
-	<div class="local_payment_form_transact_info">
+	<div class="local_payment_transact_info">
 		<p>{!TRANSACT_INFO}</p>
 	</div>
 </div>

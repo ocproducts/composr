@@ -350,12 +350,12 @@ function render_cart_payment_form()
         if ($order_id === null) {
             $fields = new Tempcode();
             $hidden = new Tempcode();
-            $verified_account_logo = '';
-            $payment_processing_link = '';
+            $confidence_logos = '';
+            $payment_processor_links = '';
         } else {
             $needs_shipping_address = true;
 
-            list($fields, $hidden, $verified_account_logo, $payment_processing_link) = get_transaction_form_fields(
+            list($fields, $hidden, $confidence_logos, $payment_processor_links) = get_transaction_form_fields(
                 null,
                 strval($order_id),
                 $item_name,
@@ -374,8 +374,8 @@ function render_cart_payment_form()
             '_GUID' => 'a70d6995baabb7e41e1af68409361f3c',
             'FIELDS' => $fields,
             'HIDDEN' => $hidden,
-            'LOGO' => $verified_account_logo,
-            'PAYMENT_PROCESSING_LINK' => $payment_processing_link,
+            'CONFIDENCE_LOGOS' => $confidence_logos,
+            'PAYMENT_PROCESSOR_LINKS' => $payment_processor_links,
             'ERROR_MSG' => '',
         ));
 

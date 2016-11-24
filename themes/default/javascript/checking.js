@@ -476,13 +476,18 @@ function check_field(the_element,the_form,for_preview)
 		// Standard field-type checks
 		if ((the_element.className.indexOf('date')!=-1) && (the_element.name.match(/\_(day|month|year)$/)) && (my_value!=''))
 		{
-			var day=the_form.elements[the_element.name.replace(/\_(day|month|year)$/,'_day')].options[the_form.elements[the_element.name.replace(/\_(day|month|year)$/,'_day')].selectedIndex].value;
-			var month=the_form.elements[the_element.name.replace(/\_(day|month|year)$/,'_month')].options[the_form.elements[the_element.name.replace(/\_(day|month|year)$/,'_month')].selectedIndex].value;
-			var year=the_form.elements[the_element.name.replace(/\_(day|month|year)$/,'_year')].options[the_form.elements[the_element.name.replace(/\_(day|month|year)$/,'_year')].selectedIndex].value;
-			var source_date=new Date(year,month-1,day);
-			if (year!=source_date.getFullYear()) error_msg='{!javascript:NOT_A_DATE;^}';
-			if (month!=source_date.getMonth()+1) error_msg='{!javascript:NOT_A_DATE;^}';
-			if (day!=source_date.getDate()) error_msg='{!javascript:NOT_A_DATE;^}';
+			var _day=the_form.elements[the_element.name.replace(/\_(day|month|year)$/,'_day')];
+			var _month=the_form.elements[the_element.name.replace(/\_(day|month|year)$/,'_month')];
+			var _year=the_form.elements[the_element.name.replace(/\_(day|month|year)$/,'_year')];
+			if (_day && _month && _year) {
+				var day=_day.options[_day.selectedIndex].value;
+				var month=_month.options[_month.selectedIndex].value;
+				var year=_year.options[_year.selectedIndex].value;
+				var source_date=new Date(year,month-1,day);
+				if (year!=source_date.getFullYear()) error_msg='{!javascript:NOT_A_DATE;^}';
+				if (month!=source_date.getMonth()+1) error_msg='{!javascript:NOT_A_DATE;^}';
+				if (day!=source_date.getDate()) error_msg='{!javascript:NOT_A_DATE;^}';
+			}
 		}
 		if (((the_class=='input_email') || (the_class=='input_email_required')) && (my_value!='') && (!my_value.match(/^[a-zA-Z0-9\._\-\+]+@[a-zA-Z0-9\._\-]+$/)))
 		{

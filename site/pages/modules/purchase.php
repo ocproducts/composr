@@ -540,7 +540,7 @@ class Module_purchase
         } else { // Handle the transaction internally
             $needs_shipping_address = (method_exists($object, 'needs_shipping_address')) && ($object->needs_shipping_address());
 
-            list($fields, $hidden, $verified_account_logo, $payment_processing_link) = get_transaction_form_fields(
+            list($fields, $hidden, $confidence_logos, $payment_processor_links) = get_transaction_form_fields(
                 null,
                 $purchase_id,
                 $item_name,
@@ -558,8 +558,8 @@ class Module_purchase
                 '_GUID' => '15cbba9733f6ff8610968418d8ab527e',
                 'FIELDS' => $fields,
                 'HIDDEN' => $hidden,
-                'LOGO' => $verified_account_logo,
-                'PAYMENT_PROCESSING_LINK' => $payment_processing_link,
+                'LOGO' => $confidence_logos,
+                'PAYMENT_PROCESSING_LINK' => $payment_processor_links,
                 'ERROR_MSG' => '',
             ));
             return $this->_wrap($result, $this->title, $finish_url);
@@ -585,13 +585,13 @@ class Module_purchase
 
         if (get_param_integer('cancel', 0) == 0) {
             if (perform_local_payment()) { // We need to try and run the transaction
-                handle_local_payment($via, $object);
+                list($success, $message, $message_raw) = handle_local_payment($via, $object);
             }
 
             $type_code = get_param_string('type_code', '');
             if ($type_code != '') {
-                if (has_interesting_post_fields()) { // Alternative to IPN, *if* posted fields sent here
-                    list($success, $message, $message_raw) = handle_ipn_transaction_script();
+                if ((!perform_local_payment()) && (has_interesting_post_fields())) { // Alternative to IPN, *if* posted fields sent here
+                    handle_ipn_transaction_script();
                 }
 
                 $product_object = find_product($type_code);

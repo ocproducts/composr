@@ -734,6 +734,7 @@ class Hook_addon_registry_core_form_interfaces
             'REQUIRED' => '',
             'NAME' => $name . '1',
             'DEFAULT' => '',
+            'SIZE' => '40',
         ));
         $input1 = do_lorem_template('FORM_SCREEN_FIELDS_SET_ITEM', array(
             'SET_NAME' => $name,

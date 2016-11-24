@@ -357,7 +357,7 @@ function perform_local_payment()
  * @param  ID_TEXT $length_units The length units
  * @param  ?ID_TEXT $via The service the payment will go via via (null: autodetect).
  * @param  boolean $needs_shipping_address Whether a shipping address is needed.
- * @return array A pair: The form fields, Hidden fields
+ * @return array A tuple: The form fields, Hidden fields, Confidence logos, Payment processor links
  */
 function get_transaction_form_fields($trans_id, $purchase_id, $item_name, $amount, $currency, $length, $length_units, $via = null, $needs_shipping_address = false)
 {
@@ -455,7 +455,7 @@ function get_transaction_form_fields($trans_id, $purchase_id, $item_name, $amoun
         $fields->attach(form_input_line(do_lang_cpf('firstname'), '', 'shipping_firstname', get_cms_cpf('firstname'), true));
         $fields->attach(form_input_line(do_lang_cpf('lastname'), '', 'shipping_lastname', get_cms_cpf('lastname'), true));
         $fields->attach(get_address_fields('shipping_', get_cms_cpf('street_address'), get_cms_cpf('city'), get_cms_cpf('county'), get_cms_cpf('state'), get_cms_cpf('post_code'), get_cms_cpf('country')));
-        $fields->attach(form_input_line(do_lang_tempcode('EMAIL_ADDRESS'), '', 'shipping_email', $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member()), true));
+        $fields->attach(form_input_email(do_lang_tempcode('EMAIL_ADDRESS'), '', 'shipping_email', $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member()), true));
         $fields->attach(form_input_line(do_lang_tempcode('PHONE_NUMBER'), '', 'shipping_phone', get_cms_cpf('mobile_phone_number'), true));
 
         if ((!is_guest()) && (get_forum_type() == 'cns') && (get_option('store_credit_card_numbers') == '1')) {
@@ -470,7 +470,20 @@ function get_transaction_form_fields($trans_id, $purchase_id, $item_name, $amoun
 
     // ---
 
-    return array($fields, $hidden);
+    if (method_exists($object, 'get_confidence_logos')) {
+        $confidence_logos = $object->get_confidence_logos();
+    } else {
+        $confidence_logos = new Tempcode();
+    }
+    if (method_exists($object, 'get_payment_processor_links')) {
+        $payment_processor_links = $object->get_payment_processor_links();
+    } else {
+        $payment_processor_links = new Tempcode();
+    }
+
+    require_javascript('shopping');
+
+    return array($fields, $hidden, $confidence_logos, $payment_processor_links);
 }
 
 /**
@@ -488,16 +501,26 @@ function get_transaction_form_fields($trans_id, $purchase_id, $item_name, $amoun
 function get_address_fields($prefix, $street_address, $city, $county, $state, $post_code, $country)
 {
     $fields = new Tempcode();
+
     $fields->attach(form_input_text(do_lang_cpf('street_address'), '', $prefix . 'street_address', $street_address, true));
+
     $fields->attach(form_input_line(do_lang_cpf('city'), '', $prefix . 'city', $city, true));
+
     if (get_option('cpf_enable_county') == '1') {
         $fields->attach(form_input_line(do_lang_cpf('county'), '', $prefix . 'county', $county, true));
     }
+
     if (get_option('cpf_enable_state') == '1') {
         $fields->attach(form_input_line(do_lang_cpf('state'), '', $prefix . 'state', $state, true));
     }
-    $fields->attach(form_input_line(do_lang_cpf('post_code'), '', $prefix . 'post_code', $post_code, true, null, 12));
-    $fields->attach(form_input_list(do_lang_cpf('country'), '', $prefix . 'country', create_region_selection_list(array($country)), null, false, true));
+
+    $fields->attach(form_input_line(do_lang_cpf('post_code'), '', $prefix . 'post_code', $post_code, true, null, 12, 'text', null, null, null, 8));
+
+    $countries = new Tempcode();
+    $countries->attach(form_input_list_entry('', $country == ''));
+    $countries->attach(create_region_selection_list(array($country)));
+    $fields->attach(form_input_list(do_lang_cpf('country'), '', $prefix . 'country', $countries, null, false, true));
+
     return $fields;
 }
 

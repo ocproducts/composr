@@ -343,9 +343,9 @@ class Module_shopping
         } else {
             $where['ordered_by'] = get_member();
         }
-        $result = $GLOBALS['SITE_DB']->query_select('shopping_cart', array('*'), $where);
+        $shopping_cart_rows = $GLOBALS['SITE_DB']->query_select('shopping_cart', array('*'), $where);
 
-        $max_rows = count($result);
+        $max_rows = count($shopping_cart_rows);
 
         if ($max_rows > 0) {
             $shopping_cart = new Tempcode();
@@ -368,7 +368,7 @@ class Module_shopping
             $sub_tot = 0.0;
             $shipping_cost = 0.0;
 
-            foreach ($result as $value) {
+            foreach ($shopping_cart_rows as $value) {
                 $products_ids[] = $value['product_id'];
 
                 $_hook = $value['product_type'];

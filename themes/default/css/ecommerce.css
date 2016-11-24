@@ -30,14 +30,18 @@
 	width: 100%;
 }
 
-.local_payment_form {
+.local_payment_merchant_details {
 	border: 1px dashed {$GET,point_of_interest_border};
 	background-color: {$GET,point_of_interest_background};
 	padding: 0.5em;
 	overflow: hidden;
 }
 
-.local_payment_form_transact_info {
+.local_payment_merchant_details p {
+	margin: 0;
+}
+
+.local_payment_transact_info {
 }
 
 .local_payment_verified_account_logo {
@@ -45,13 +49,13 @@
 	margin-left: 1em;
 }
 
-.verified_merchant_label {
+.payment_processor_links {
 	background: url('{$IMG;,ecommerce/checkmark}') no-repeat top left;
 	padding-left: 25px;
 	min-height: 25px;
 }
 
-.verified_merchant_logo {
+.confidence_logos {
 	float: right;
 	width: 94px;
 	margin-left: 1em;

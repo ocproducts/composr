@@ -622,7 +622,7 @@ function form_input_codename($pretty_name, $description, $name, $default, $requi
  * @param  ?string $pattern_error Custom regex pattern validation error (null: none)
  * @return Tempcode The input field
  */
-function form_input_line($pretty_name, $description, $name, $default, $required, $tabindex = null, $_maxlength = null, $type = 'text', $placeholder = null, $pattern = null, $pattern_error = null)
+function form_input_line($pretty_name, $description, $name, $default, $required, $tabindex = null, $_maxlength = null, $type = 'text', $placeholder = null, $pattern = null, $pattern_error = null, $size = 30)
 {
     if (is_null($default)) {
         $default = '';
@@ -638,7 +638,18 @@ function form_input_line($pretty_name, $description, $name, $default, $required,
     if ((is_null($maxlength)) && (!is_null($_maxlength))) {
         $maxlength = strval($_maxlength);
     }
-    $input = do_template('FORM_SCREEN_INPUT_LINE', array('_GUID' => '02789c9af25cbc971e86bfcc0ad322d5', 'PLACEHOLDER' => $placeholder, 'MAXLENGTH' => $maxlength, 'TABINDEX' => strval($tabindex), 'REQUIRED' => $_required, 'NAME' => $name, 'DEFAULT' => $default, 'TYPE' => $type, 'PATTERN' => $pattern));
+    $input = do_template('FORM_SCREEN_INPUT_LINE', array(
+        '_GUID' => '02789c9af25cbc971e86bfcc0ad322d5',
+        'PLACEHOLDER' => $placeholder,
+        'MAXLENGTH' => $maxlength,
+        'SIZE' => strval($size),
+        'TABINDEX' => strval($tabindex),
+        'REQUIRED' => $_required,
+        'NAME' => $name,
+        'DEFAULT' => $default,
+        'TYPE' => $type,
+        'PATTERN' => $pattern,
+    ));
     return _form_input($name, $pretty_name, $description, $input, $required, false, $tabindex, false, false, '', (is_null($pattern_error) && !is_null($pattern)) ? strip_html($description->evaluate()) : $pattern_error);
 }
 
@@ -861,7 +872,7 @@ function form_input_line_comcode($pretty_name, $description, $name, $default, $r
     $tabindex = get_form_field_tabindex($tabindex);
 
     $_required = ($required) ? '_required' : '';
-    $input = do_template('FORM_SCREEN_INPUT_LINE', array('_GUID' => 'b47034df1d68c1465d045fca822071a1', 'MAXLENGTH' => get_field_restrict_property('maxlength', $name), 'TABINDEX' => strval($tabindex), 'REQUIRED' => $_required, 'NAME' => $name, 'DEFAULT' => $default));
+    $input = do_template('FORM_SCREEN_INPUT_LINE', array('_GUID' => 'b47034df1d68c1465d045fca822071a1', 'MAXLENGTH' => get_field_restrict_property('maxlength', $name), 'TABINDEX' => strval($tabindex), 'REQUIRED' => $_required, 'NAME' => $name, 'DEFAULT' => $default, 'SIZE' => '40'));
     return _form_input($name, $pretty_name, $description, $input, $required, true, $tabindex);
 }
 

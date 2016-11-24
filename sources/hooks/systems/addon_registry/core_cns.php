@@ -549,6 +549,7 @@ class Hook_addon_registry_core_cns
             'REQUIRED' => '',
             'NAME' => $name,
             'DEFAULT' => '',
+            'SIZE' => '40',
         ));
         $fields->attach(do_lorem_template('FORM_SCREEN_FIELD', array(
             'REQUIRED' => true,
