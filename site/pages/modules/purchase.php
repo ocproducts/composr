@@ -103,7 +103,7 @@ class Module_purchase
                 'payment_card_number' => array(20, 'integer', ''),
                 'payment_card_start_date' => array(5, 'year_month', 'mm/yy'),
                 'payment_card_expiry_date' => array(5, 'year_month', 'mm/yy'),
-                'payment_card_issue_number' => array(2, 'short_text', ''),
+                'payment_card_issue_number' => array(2, 'integer', ''),
             );
             foreach ($cpf as $f => $l) {
                 $GLOBALS['FORUM_DRIVER']->install_create_custom_field($f, $l[0], 0, 0, 1, 0, '', $l[1], 1, $l[2]);
@@ -138,6 +138,16 @@ class Module_purchase
             $GLOBALS['FORUM_DB']->add_table_field('trans_expecting', 'e_type_code', 'ID_TEXT');
 
             $GLOBALS['SITE_DB']->alter_table_field('trans_expecting', 'e_session_id', 'ID_TEXT');
+
+            require_code('cns_members');
+            $cf_id = find_cms_cpf_field_id('cms_payment_card_issue_number');
+            if ($cf_id !== null) {
+                $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_type' => 'integer'), array('id' => $cf_id));
+                $GLOBALS['FORUM_DB']->delete_index_if_exists('f_member_custom_fields', 'mcf_ft_29');
+                $GLOBALS['FORUM_DB']->query_update('f_member_custom_fields', array('field_' . strval($cf_id) => '0'), array('field_' . strval($cf_id) => ''));
+                $GLOBALS['FORUM_DB']->alter_table_field('f_member_custom_fields', 'field_' . strval($cf_id), '?INTEGER');
+                $GLOBALS['FORUM_DB']->query_update('f_member_custom_fields', array('field_' . strval($cf_id) => null), array('field_' . strval($cf_id) => 0));
+            }
         }
     }
 

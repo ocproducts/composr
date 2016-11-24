@@ -473,7 +473,7 @@ We have summarised the PCI compliance rules below in a way streamlined toward Co
 | Yes
 |-
 ! Database isolation
-| The web server and MySQL server must be different machines [this actually comes from PA-DSS].
+| The web server and MySQL server must be different machines [this actually comes from PA DSS].
 | Yes
 | No
 |-
@@ -498,7 +498,7 @@ We have summarised the PCI compliance rules below in a way streamlined toward Co
 | Yes
 |-
 ! Avoid storing card data
-| Only enable the "Store credit card numbers in member profiles" option if it is important to your business.
+| Only enable the "Store credit card numbers" option if it is important to your business.
 | No
 | Yes
 |-
@@ -523,7 +523,7 @@ We have summarised the PCI compliance rules below in a way streamlined toward Co
  2_key="Payment gateway"  2_value="The infrastructure for performing advanced financial transactions"
  3_key="Instant Payment Notification"  3_value="A system, originally created by PayPal, for determining the progress of a financial transaction or ongoing subscription."
  4_key="Product"          4_value="An item in the eCommerce system that defines everything relating to the natural view of a product or service, including handling of any actions associated with a sale being completed or retracted; these products are not like supermarket products -- they are very aggrandised and dynamic"
- 5_key="PCI"              5_value="The trade body for regulating eCommerce standards. When we refer to PCI compliance we are typically referring to PCI Data Security Standard (PCI-DSS)."
+ 5_key="PCI"              5_value="The trade body for regulating eCommerce standards. When we refer to PCI compliance we are typically referring to PCI Data Security Standard (PCI DSS)."
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]

@@ -156,6 +156,10 @@ function string_scan($lang, $do_guessing = false)
         MAIL_TEST_UNKNOWN
         EDIT_LIVE_POLL
         DESCRIPTION_MAIL_DOMAIN
+        CREDIT_CARD_CLEANUP_DAYS
+        CONFIG_OPTION_credit_card_cleanup_days
+        STORE_CREDIT_CARD_NUMBERS
+        CONFIG_OPTION_store_credit_card_numbers
         RSS
         PGE_M
         PGE_B

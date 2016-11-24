@@ -391,21 +391,23 @@ function get_transaction_form_fields($trans_id, $purchase_id, $item_name, $amoun
     if (ecommerce_test_mode()) {
         $cardholder_name = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
         $card_type = 'Visa';
-        $card_number = '4444333322221111';
+        $card_number = 4444333322221111;
         $card_start_date_year = intval(date('Y', utctime_to_usertime(time() - 60 * 60 * 24 * 365)));
         $card_start_date_month = intval(date('m', utctime_to_usertime(time() - 60 * 60 * 24 * 365)));
         $card_expiry_date_year = intval(date('Y', utctime_to_usertime(time() + 60 * 60 * 24 * 365)));
         $card_expiry_date_month = intval(date('m', utctime_to_usertime(time() + 60 * 60 * 24 * 365)));
-        $card_issue_number = intval(intval(get_cms_cpf('payment_card_issue_number')));
-        $card_cv2 = '123';
+        $card_issue_number = 1;
+        $card_cv2 = 123;
     } else {
         $cardholder_name = get_cms_cpf('payment_cardholder_name');
         $card_type = get_cms_cpf('payment_card_type');
-        $card_number = get_cms_cpf('payment_card_number');
+        $_card_number = get_cms_cpf('payment_card_number');
+        $card_number = ($_card_number === null) ? null : intval($_card_number);
         list($card_start_date_year, $card_start_date_month) = explode('/', get_cms_cpf('payment_card_start_date'));
         list($card_expiry_date_year, $card_expiry_date_month) = explode('/', get_cms_cpf('payment_card_expiry_date'));
-        $card_issue_number = intval(get_cms_cpf('payment_card_issue_number'));
-        $card_cv2 = '';
+        $_card_issue_number = get_cms_cpf('payment_card_issue_number');
+        $card_issue_number = ($_card_issue_number === null) ? null : intval($_card_issue_number);
+        $card_cv2 = null;
     }
 
     $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('TITLE' => do_lang_tempcode('PAYMENT_DETAILS'))));
@@ -414,13 +416,13 @@ function get_transaction_form_fields($trans_id, $purchase_id, $item_name, $amoun
     if (method_exists($object, 'create_selection_list_card_types')) {
         $fields->attach(form_input_list(do_lang_cpf('payment_card_type'), '', 'payment_card_type', $object->create_selection_list_card_types($card_type)));
     }
-    $fields->attach(form_input_line(do_lang_cpf('payment_card_number'), do_lang_tempcode('DESCRIPTION_CARD_NUMBER'), 'payment_card_number', $card_number, true, null, 16, 'text', null, '^\d*$'));
+    $fields->attach(form_input_integer(do_lang_cpf('payment_card_number'), do_lang_tempcode('DESCRIPTION_CARD_NUMBER'), 'payment_card_number', $card_number, true, null, 16));
     $fields->attach(form_input_date_components(do_lang_cpf('payment_card_start_date'), do_lang_tempcode('DESCRIPTION_CARD_START_DATE'), 'payment_card_start_date', true, true, false, intval(date('Y')) - 16, intval(date('Y')), $card_start_date_year, $card_start_date_month, null, false));
     $fields->attach(form_input_date_components(do_lang_cpf('payment_card_expiry_date'), do_lang_tempcode('DESCRIPTION_CARD_EXPIRY_DATE'), 'payment_card_expiry_date', true, true, false, intval(date('Y')), intval(date('Y')) + 16, $card_expiry_date_year, $card_expiry_date_month, null, true));
     $fields->attach(form_input_integer(do_lang_cpf('payment_card_issue_number'), do_lang_tempcode('DESCRIPTION_CARD_ISSUE_NUMBER'), 'payment_card_issue_number', $card_issue_number, false));
-    $fields->attach(form_input_line(do_lang_tempcode('CARD_CV2'), do_lang_tempcode('DESCRIPTION_CARD_CV2'), 'payment_card_cv2', $card_cv2, true, null, 4, 'text', null, '^\d*$'));
+    $fields->attach(form_input_integer(do_lang_tempcode('CARD_CV2'), do_lang_tempcode('DESCRIPTION_CARD_CV2'), 'payment_card_cv2', $card_cv2, true, null, 4));
 
-    if ((!is_guest()) && (get_forum_type() == 'cns')) {
+    if ((!is_guest()) && (get_forum_type() == 'cns') && (get_option('store_credit_card_numbers') == '1')) {
         $fields->attach(form_input_tick(do_lang_tempcode('SAVE_TO_ACCOUNT'), '', 'payment_save_to_account', get_cms_cpf('payment_cardholder_name') == ''));
     }
 
@@ -428,7 +430,7 @@ function get_transaction_form_fields($trans_id, $purchase_id, $item_name, $amoun
 
     $fields->attach(get_address_fields('billing_', get_cms_cpf('billing_street_address'), get_cms_cpf('billing_city'), get_cms_cpf('billing_county'), get_cms_cpf('billing_state'), get_cms_cpf('billing_post_code'), get_cms_cpf('billing_country')));
 
-    if ((!is_guest()) && (get_forum_type() == 'cns')) {
+    if ((!is_guest()) && (get_forum_type() == 'cns') && (get_option('store_credit_card_numbers') == '1')) {
         $fields->attach(form_input_tick(do_lang_tempcode('SAVE_TO_ACCOUNT'), '', 'billing_save_to_account', get_cms_cpf('billing_street_address') == ''));
     }
 
@@ -443,7 +445,7 @@ function get_transaction_form_fields($trans_id, $purchase_id, $item_name, $amoun
         $fields->attach(form_input_line(do_lang_tempcode('EMAIL_ADDRESS'), '', 'shipping_email', $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member()), true));
         $fields->attach(form_input_line(do_lang_tempcode('PHONE_NUMBER'), '', 'shipping_phone', get_cms_cpf('mobile_phone_number'), true));
 
-        if ((!is_guest()) && (get_forum_type() == 'cns')) {
+        if ((!is_guest()) && (get_forum_type() == 'cns') && (get_option('store_credit_card_numbers') == '1')) {
             $fields->attach(form_input_tick(do_lang_tempcode('SAVE_TO_ACCOUNT'), '', 'shipping_save_to_account', get_cms_cpf('firstname') == ''));
         }
     }
@@ -577,12 +579,12 @@ function handle_local_payment($via, $object)
 
     // Save into CPFs...
 
-    if ((get_param_integer('payment_save_to_account', 0) == 1) && (get_forum_type() == 'cns')) {
+    if ((get_param_integer('payment_save_to_account', 0) == 1) && (get_forum_type() == 'cns') && (get_option('store_credit_card_numbers') == '1')) {
         require_code('cns_members_action2');
         $changes = array();
         $changes += cns_set_custom_field(get_member(), find_cms_cpf_field_id('cms_payment_cardholder_name'), $cardholder_name, null, true);
         $changes += cns_set_custom_field(get_member(), find_cms_cpf_field_id('cms_payment_card_type'), $card_type, null, true);
-        $changes += cns_set_custom_field(get_member(), find_cms_cpf_field_id('cms_payment_card_number'), $card_number, null, true);
+        //$changes += cns_set_custom_field(get_member(), find_cms_cpf_field_id('cms_payment_card_number'), $card_number, null, true);   PCI rules mean we can't save this without encrypting it and obfuscating when displayed; too onerous to force encryption keys that aren't backed up, so let's save everything but this
         $changes += cns_set_custom_field(get_member(), find_cms_cpf_field_id('cms_payment_card_start_date'), $card_start_date, null, true);
         $changes += cns_set_custom_field(get_member(), find_cms_cpf_field_id('cms_payment_card_expiry_date'), $card_expiry_date, null, true);
         $changes += cns_set_custom_field(get_member(), find_cms_cpf_field_id('cms_payment_card_issue_number'), $card_issue_number, null, true);
@@ -591,7 +593,7 @@ function handle_local_payment($via, $object)
         }
     }
 
-    if ((get_param_integer('billing_save_to_account', 0) == 1) && (get_forum_type() == 'cns')) {
+    if ((get_param_integer('billing_save_to_account', 0) == 1) && (get_forum_type() == 'cns') && (get_option('store_credit_card_numbers') == '1')) {
         require_code('cns_members_action2');
         $changes = array();
         $changes += cns_set_custom_field(get_member(), find_cms_cpf_field_id('cms_billing_street_address'), $billing_street_address, null, true);
@@ -605,7 +607,7 @@ function handle_local_payment($via, $object)
         }
     }
 
-    if ((get_param_integer('shipping_save_to_account', 0) == 1) && (get_forum_type() == 'cns')) {
+    if ((get_param_integer('shipping_save_to_account', 0) == 1) && (get_forum_type() == 'cns') && (get_option('store_credit_card_numbers') == '1')) {
         require_code('cns_members_action2');
         $changes = array();
         $changes += cns_set_custom_field(get_member(), find_cms_cpf_field_id('cms_firstname'), $shipping_firstname, null, true);

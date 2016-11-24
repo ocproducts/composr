@@ -2256,9 +2256,10 @@ function form_input_date_components($pretty_name, $description, $name, $want_yea
  * @param  ?integer $default The default value for this input field (null: no default)
  * @param  boolean $required Whether this is a required input field
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
+ * @param  ?integer $maxlength Maximum input length (null: no maximum length, regular HTML5 number input)
  * @return Tempcode The input field
  */
-function form_input_integer($pretty_name, $description, $name, $default, $required, $tabindex = null)
+function form_input_integer($pretty_name, $description, $name, $default, $required, $tabindex = null, $maxlength = null)
 {
     $tabindex = get_form_field_tabindex($tabindex);
 
@@ -2268,7 +2269,14 @@ function form_input_integer($pretty_name, $description, $name, $default, $requir
     $required = filter_form_field_required($name, $required);
 
     $_required = ($required) ? '_required' : '';
-    $input = do_template('FORM_SCREEN_INPUT_INTEGER', array('_GUID' => 'da09e21f329f300f71dd4dd518cb6242', 'TABINDEX' => strval($tabindex), 'REQUIRED' => $_required, 'NAME' => $name, 'DEFAULT' => is_null($default) ? '' : strval($default)));
+    $input = do_template('FORM_SCREEN_INPUT_INTEGER', array(
+        '_GUID' => 'da09e21f329f300f71dd4dd518cb6242',
+        'TABINDEX' => strval($tabindex),
+        'REQUIRED' => $_required,
+        'NAME' => $name,
+        'DEFAULT' => is_null($default) ? '' : strval($default),
+        'MAXLENGTH' => ($maxlength === null) ? null : strval($maxlength),
+    ));
     return _form_input($name, $pretty_name, $description, $input, $required, false, $tabindex);
 }
 
