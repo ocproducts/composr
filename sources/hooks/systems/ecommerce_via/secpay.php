@@ -30,7 +30,7 @@ class Hook_secpay
      */
     protected function _get_username()
     {
-        return ecommerce_test_mode() ? get_option('ipn_test') : get_option('ipn');
+        return ecommerce_test_mode() ? get_option('payment_gateway_test_username') : get_option('payment_gateway_username');
     }
 
     /**
@@ -69,7 +69,7 @@ class Hook_secpay
         $username = $this->_get_username();
         $ipn_url = $this->_get_remote_form_url();
         $trans_id = $this->generate_trans_id();
-        $digest = md5($trans_id . float_to_raw_string($amount) . get_option('ipn_password'));
+        $digest = md5($trans_id . float_to_raw_string($amount) . get_option('payment_gateway_password'));
 
         $GLOBALS['SITE_DB']->query_insert('trans_expecting', array(
             'id' => $trans_id,
@@ -156,7 +156,7 @@ class Hook_secpay
         $username = $this->_get_username();
         $ipn_url = $this->_get_remote_form_url();
         $trans_id = $this->generate_trans_id();
-        $digest = md5($trans_id . float_to_raw_string($amount) . get_option('ipn_password'));
+        $digest = md5($trans_id . float_to_raw_string($amount) . get_option('payment_gateway_password'));
         list($length_units_2, $first_repeat) = $this->_translate_subscription_details($length, $length_units);
 
         $GLOBALS['SITE_DB']->query_insert('trans_expecting', array(
@@ -214,8 +214,8 @@ class Hook_secpay
     {
         require_lang('ecommerce');
         $username = $this->_get_username();
-        $password = get_option('ipn_password');
-        $password_2 = get_option('vpn_password');
+        $password = get_option('payment_gateway_password');
+        $password_2 = get_option('payment_gateway_vpn_password');
         $result = xml_rpc('https://www.secpay.com:443/secxmlrpc/make_call', 'SECVPN.repeatCardFullAddr', array($username, $password_2, $trans_id, -1, $password, '', '', '', '', '', 'repeat_change=true, repeat=false'), true);
         if ($result === null) {
             return false;
@@ -291,8 +291,8 @@ class Hook_secpay
             $trans_id = $this->generate_trans_id();
         }
         $username = $this->_get_username();
-        $password_2 = get_option('vpn_password');
-        $digest = md5($trans_id . strval($amount) . get_option('ipn_password'));
+        $password_2 = get_option('payment_gateway_vpn_password');
+        $digest = md5($trans_id . strval($amount) . get_option('payment_gateway_vpn_password'));
         $options = 'currency=' . $currency . ',card_type=' . str_replace(',', '', $card_type) . ',digest=' . $digest . ',cv2=' . strval(intval($card_cv2)) . ',mand_cv2=true';
         if (ecommerce_test_mode()) {
             $options .= ',test_status=true';
@@ -445,10 +445,10 @@ class Hook_secpay
         // Validate
         $hash = post_param_string('hash');
         if ($subscription) {
-            $my_hash = md5('trans_id=' . $txn_id . '&' . 'req_cv2=true' . '&' . get_option('ipn_digest'));
+            $my_hash = md5('trans_id=' . $txn_id . '&' . 'req_cv2=true' . '&' . get_option('payment_gateway_digest'));
         } else {
             $repeat = $this->_translate_subscription_details($transaction_row['e_length'], $transaction_row['e_length_units']);
-            $my_hash = md5('trans_id=' . $txn_id . '&' . 'req_cv2=true' . '&' . 'repeat=' . $repeat . '&' . get_option('ipn_digest'));
+            $my_hash = md5('trans_id=' . $txn_id . '&' . 'req_cv2=true' . '&' . 'repeat=' . $repeat . '&' . get_option('payment_gateway_digest'));
         }
         if ($hash != $my_hash) {
             fatal_ipn_exit(do_lang('IPN_UNVERIFIED'));

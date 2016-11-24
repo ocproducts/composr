@@ -68,7 +68,7 @@ class Module_subscriptions
 
         if (is_null($upgrade_from)) {
             $GLOBALS['SITE_DB']->create_table('subscriptions', array(
-                'id' => '*AUTO', // linked to IPN with this
+                'id' => '*AUTO',
                 's_type_code' => 'ID_TEXT',
                 's_member_id' => 'MEMBER',
                 's_state' => 'ID_TEXT', // pending|new|active|cancelled (pending means payment has been requested)

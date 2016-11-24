@@ -41,7 +41,7 @@ class Hook_worldpay
      */
     protected function _get_username()
     {
-        return ecommerce_test_mode() ? get_option('ipn_test') : get_option('ipn');
+        return ecommerce_test_mode() ? get_option('payment_gateway_test_username') : get_option('payment_gateway_username');
     }
 
     /**
@@ -61,7 +61,7 @@ class Hook_worldpay
      */
     public function get_confidence_logos()
     {
-        $inst_id = ecommerce_test_mode() ? get_option('ipn_test') : get_option('ipn');
+        $inst_id = ecommerce_test_mode() ? get_option('payment_gateway_test_username') : get_option('payment_gateway_username');
         $address = str_replace("\n", '<br />', escape_html(get_option('pd_address')));
         $email = get_option('pd_email');
         $number = get_option('pd_number');
@@ -95,7 +95,7 @@ class Hook_worldpay
         $ipn_url = $this->_get_remote_form_url();
         $email_address = $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member());
         $trans_id = $this->generate_trans_id();
-        $digest_option = get_option('ipn_digest');
+        $digest_option = get_option('payment_gateway_digest');
         //$digest = md5((($digest_option == '') ? ($digest_option . ':') : '') . $trans_id . ':' . float_to_raw_string($amount) . ':' . $currency);  Deprecated
         $digest = md5((($digest_option == '') ? ($digest_option . ':') : '') . ';' . 'cartId:amount:currency;' . $trans_id . ';' . float_to_raw_string($amount) . ';' . $currency);
 
@@ -167,7 +167,7 @@ class Hook_worldpay
                 $first_repeat = 60 * 60 * 24 * 365 * $length;
                 break;
         }
-        $digest_option = get_option('ipn_digest');
+        $digest_option = get_option('payment_gateway_digest');
         //$digest = md5((($digest_option == '') ? ($digest_option . ':') : '') . $trans_id . ':' . float_to_raw_string($amount) . ':' . $currency . $length_units_2 . strval($length));   Deprecated
         $digest = md5((($digest_option == '') ? ($digest_option . ':') : '') . ';' . 'cartId:amount:currency:intervalUnit:intervalMult;' . $trans_id . ';' . float_to_raw_string($amount) . ';' . $currency . $length_units_2 . strval($length));
 
@@ -282,7 +282,7 @@ class Hook_worldpay
         $mc_currency = post_param_string('authCurrency');
         $email = $GLOBALS['FORUM_DRIVER']->get_member_email_address($member_id);
 
-        if (post_param_string('callbackPW') != get_option('callback_password')) {
+        if (post_param_string('callbackPW') != get_option('payment_gateway_callback_password')) {
             fatal_ipn_exit(do_lang('IPN_UNVERIFIED'));
         }
 

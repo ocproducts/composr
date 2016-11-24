@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_ipn
+class Hook_config_payment_gateway_vpn_username
 {
     /**
      * Gets the details relating to the config option.
@@ -31,14 +31,14 @@ class Hook_config_ipn
     public function get_details()
     {
         return array(
-            'human_name' => 'IPN_ADDRESS',
+            'human_name' => 'PAYMENT_GATEWAY_VPN_USERNAME',
             'type' => 'line',
             'category' => 'ECOMMERCE',
             'group' => 'PAYMENT_GATEWAY',
-            'explanation' => 'CONFIG_OPTION_ipn',
+            'explanation' => 'CONFIG_OPTION_payment_gateway_vpn_username',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 2,
+            'order_in_category_group' => 5,
 
             'addon' => 'ecommerce',
         );
@@ -51,6 +51,6 @@ class Hook_config_ipn
      */
     public function get_default()
     {
-        return get_option('staff_address');
+        return '';
     }
 }

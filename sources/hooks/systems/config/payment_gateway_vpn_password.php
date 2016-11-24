@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_ipn_digest
+class Hook_config_payment_gateway_vpn_password
 {
     /**
      * Gets the details relating to the config option.
@@ -31,14 +31,14 @@ class Hook_config_ipn_digest
     public function get_details()
     {
         return array(
-            'human_name' => 'IPN_DIGEST',
+            'human_name' => 'PAYMENT_GATEWAY_VPN_PASSWORD',
             'type' => 'line',
             'category' => 'ECOMMERCE',
             'group' => 'PAYMENT_GATEWAY',
-            'explanation' => 'CONFIG_OPTION_ipn_digest',
+            'explanation' => 'CONFIG_OPTION_payment_gateway_vpn_password',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 3,
+            'order_in_category_group' => 6,
 
             'addon' => 'ecommerce',
         );

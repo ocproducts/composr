@@ -76,7 +76,7 @@ class Module_purchase
         if (is_null($upgrade_from)) {
             add_privilege('ECOMMERCE', 'access_ecommerce_in_test_mode', false);
 
-            $GLOBALS['SITE_DB']->create_table('trans_expecting', array( // Used by payment gateways that return limited information back via IPN
+            $GLOBALS['SITE_DB']->create_table('trans_expecting', array( // Used by payment gateways that return limited information back via IPN, or for local transactions
                 'id' => '*ID_TEXT',
                 'e_type_code' => 'ID_TEXT',
                 'e_purchase_id' => 'ID_TEXT',
@@ -151,6 +151,14 @@ class Module_purchase
                 $GLOBALS['FORUM_DB']->alter_table_field('f_member_custom_fields', 'field_' . strval($cf_id), '?INTEGER');
                 $GLOBALS['FORUM_DB']->query_update('f_member_custom_fields', array('field_' . strval($cf_id) => null), array('field_' . strval($cf_id) => 0));
             }
+
+            rename_config_option('ipn', 'payment_gateway_username');
+            rename_config_option('ipn_test', 'payment_gateway_test_username');
+            rename_config_option('ipn_password', 'payment_gateway_password');
+            rename_config_option('ipn_digest', 'payment_gateway_digest');
+            rename_config_option('vpn_username', 'payment_gateway_vpn_username');
+            rename_config_option('vpn_password', 'payment_gateway_vpn_password');
+            rename_config_option('callback_password', 'payment_gateway_callback_password');
         }
     }
 

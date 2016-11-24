@@ -67,7 +67,7 @@ class Module_invoices
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
         $GLOBALS['SITE_DB']->create_table('invoices', array(
-            'id' => '*AUTO', // linked to IPN with this
+            'id' => '*AUTO',
             'i_type_code' => 'ID_TEXT',
             'i_member_id' => 'MEMBER',
             'i_state' => 'ID_TEXT', // new|pending|paid|delivered (pending means payment has been requested)

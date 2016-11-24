@@ -1532,7 +1532,7 @@ function string_scan($lang, $do_guessing = false)
         CALCULATE
         CALCULATED_SIZE
         CALCULATE_SIZE
-        CALLBACK_PASSWORD
+        PAYMENT_GATEWAY_CALLBACK_PASSWORD
         CALL_HOME
         CANCEL
         CANCELLED
@@ -2436,7 +2436,7 @@ function string_scan($lang, $do_guessing = false)
         CONFIG_OPTION_brute_force_login_minutes
         CONFIG_OPTION_brute_force_threshold
         CONFIG_OPTION_call_home
-        CONFIG_OPTION_callback_password
+        CONFIG_OPTION_payment_gateway_callback_password
         CONFIG_OPTION_captcha_noise
         CONFIG_OPTION_captcha_on_feedback
         CONFIG_OPTION_captcha_single_guess
@@ -2633,10 +2633,10 @@ function string_scan($lang, $do_guessing = false)
         CONFIG_OPTION_invites_per_day
         CONFIG_OPTION_ip_forwarding
         CONFIG_OPTION_ip_strict_for_sessions
-        CONFIG_OPTION_ipn
-        CONFIG_OPTION_ipn_digest
-        CONFIG_OPTION_ipn_password
-        CONFIG_OPTION_ipn_test
+        CONFIG_OPTION_payment_gateway_username
+        CONFIG_OPTION_payment_gateway_digest
+        CONFIG_OPTION_payment_gateway_password
+        CONFIG_OPTION_payment_gateway_test_username
         CONFIG_OPTION_is_on_anonymous_posts
         CONFIG_OPTION_is_on_automatic_mark_topic_read
         CONFIG_OPTION_is_on_banner_buy
@@ -2963,8 +2963,8 @@ function string_scan($lang, $do_guessing = false)
         CONFIG_OPTION_video_height_setting
         CONFIG_OPTION_video_width_setting
         CONFIG_OPTION_vote_member_ip_restrict
-        CONFIG_OPTION_vpn_password
-        CONFIG_OPTION_vpn_username
+        CONFIG_OPTION_payment_gateway_vpn_username
+        CONFIG_OPTION_payment_gateway_vpn_password
         CONFIG_OPTION_web_notifications_enabled
         CONFIG_OPTION_website_email
         CONFIG_OPTION_webstandards_compat
@@ -4811,12 +4811,12 @@ function string_scan($lang, $do_guessing = false)
         INVOICES
         INVOICE_AMOUNT_TEXT
         INVOICE_SPECIAL
-        IPN_ADDRESS
-        IPN_ADDRESS_TEST
+        PAYMENT_GATEWAY_USERNAME
+        PAYMENT_GATEWAY_TEST_USERNAME
         IPN_BAD_TRIAL
-        IPN_DIGEST
+        PAYMENT_GATEWAY_DIGEST
         IPN_EMAIL_ERROR
-        IPN_PASSWORD
+        PAYMENT_GATEWAY_PASSWORD
         IPN_SOCKET_ERROR
         IPN_SUB_PERIOD_WRONG
         IPN_SUB_RECURRING_WRONG
@@ -6719,8 +6719,8 @@ function string_scan($lang, $do_guessing = false)
         VIEW_SUBSCRIBERS
         VOTE_MEMBER_IP_RESTRICT
         VOTING
-        VPN_PASSWORD
-        VPN_USERNAME
+        PAYMENT_GATEWAY_VPN_USERNAME
+        PAYMENT_GATEWAY_VPN_PASSWORD
         VR_DAILY
         VR_MONTHLY
         VR_NEVER

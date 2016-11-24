@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_vpn_password
+class Hook_config_payment_gateway_test_username
 {
     /**
      * Gets the details relating to the config option.
@@ -31,14 +31,14 @@ class Hook_config_vpn_password
     public function get_details()
     {
         return array(
-            'human_name' => 'VPN_PASSWORD',
+            'human_name' => 'PAYMENT_GATEWAY_TEST_USERNAME',
             'type' => 'line',
             'category' => 'ECOMMERCE',
-            'group' => 'PAYMENT_GATEWAY',
-            'explanation' => 'CONFIG_OPTION_vpn_password',
+            'group' => 'PAYMENT_GATEWAY_TESTING_MODE',
+            'explanation' => 'CONFIG_OPTION_payment_gateway_test_username',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 6,
+            'order_in_category_group' => 2,
 
             'addon' => 'ecommerce',
         );
@@ -51,6 +51,6 @@ class Hook_config_vpn_password
      */
     public function get_default()
     {
-        return '';
+        return get_option('staff_address');
     }
 }

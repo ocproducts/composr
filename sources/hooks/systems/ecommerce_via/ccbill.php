@@ -64,7 +64,7 @@ class Hook_ccbill
      */
     private function get_account_id()
     {
-        return ecommerce_test_mode() ? get_option('ipn_test') : get_option('ipn');
+        return ecommerce_test_mode() ? get_option('payment_gateway_test_username') : get_option('payment_gateway_username');
     }
 
     /**
@@ -114,15 +114,15 @@ class Hook_ccbill
         }
 
         $account_num = $this->get_account_id();
-        $subaccount_nums = explode(',', get_option('vpn_username'));
+        $subaccount_nums = explode(',', get_option('payment_gateway_vpn_username'));
         $subaccount_num = sprintf('%04d', $subaccount_nums[0]); // First value is for simple transactions, has to be exactly 4 digits
-        $form_name = explode(',', get_option('ipn_digest'));
+        $form_name = explode(',', get_option('payment_gateway_digest'));
         $form_name = $form_name[0]; // First value is for simple transactions
         // CCBill oddly requires us to pass this parameter for single transactions,
         // this will show up as a confusing "$X.XX for 99 days" message to customers on the CCBill form.
         // To fix this - you need to set up a "custom dynamic description" which removes that message, by contacting CCBill support.
         $form_period = '99';
-        $digest = md5(float_to_raw_string($amount) . $form_period . $currency . get_option('vpn_password'));
+        $digest = md5(float_to_raw_string($amount) . $form_period . $currency . get_option('payment_gateway_vpn_password'));
 
         $GLOBALS['SITE_DB']->query_insert('trans_expecting', array(
             'id' => $trans_id,
@@ -196,12 +196,12 @@ class Hook_ccbill
         }
 
         $account_num = $this->get_account_id();
-        $subaccount_nums = explode(',', get_option('vpn_username'));
+        $subaccount_nums = explode(',', get_option('payment_gateway_vpn_username'));
         $subaccount_num = sprintf('%04d', count($subaccount_nums) === 1 ? $subaccount_nums[0] : $subaccount_nums[1]); // Second value is for subscriptions, has to be exactly 4 digits
         $form_name = explode(',', get_option('ccbill_form_names'));
         $form_name = count($form_name) === 1 ? $form_name[0] : $form_name[1]; // Second value is for subscriptions
         $form_period = strval($length * $this->length_unit_to_days[$length_units]);
-        $digest = md5(float_to_raw_string($amount) . $form_period . float_to_raw_string($amount) . $form_period . '99' . $currency . get_option('vpn_password')); // formPrice.formPeriod.formRecurringPrice.formRecurringPeriod.formRebills.currencyCode.salt
+        $digest = md5(float_to_raw_string($amount) . $form_period . float_to_raw_string($amount) . $form_period . '99' . $currency . get_option('payment_gateway_vpn_password')); // formPrice.formPeriod.formRecurringPrice.formRecurringPeriod.formRebills.currencyCode.salt
 
         $GLOBALS['SITE_DB']->query_insert('trans_expecting', array(
             'id' => $trans_id,
@@ -291,8 +291,8 @@ class Hook_ccbill
         $subscription_id = post_param_string('subscription_id', '');
         $denial_id = post_param_string('denialId', '');
         $response_digest = post_param_string('responseDigest');
-        $success_response_digest = md5($subscription_id . '1' . get_option('vpn_password')); // responseDigest must have this value on success
-        $denial_response_digest = md5($denial_id . '0' . get_option('vpn_password')); // responseDigest must have this value on failure
+        $success_response_digest = md5($subscription_id . '1' . get_option('payment_gateway_vpn_password')); // responseDigest must have this value on success
+        $denial_response_digest = md5($denial_id . '0' . get_option('payment_gateway_vpn_password')); // responseDigest must have this value on failure
 
         if (($response_digest !== $success_response_digest) && ($response_digest !== $denial_response_digest)) {
             fatal_ipn_exit(do_lang('IPN_UNVERIFIED')); // Hacker?!!!
