@@ -35,7 +35,7 @@ class Module_purchase
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 6;
+        $info['version'] = 7;
         $info['locked'] = false;
         $info['update_require_upgrade'] = true;
         return $info;
@@ -135,6 +135,9 @@ class Module_purchase
             $GLOBALS['SITE_DB']->alter_table_field('transactions', 'pending_reason', 'SHORT_TEXT', 't_pending_reason');
 
             $GLOBALS['FORUM_DB']->add_table_field('trans_expecting', 'e_currency', 'ID_TEXT', get_option('currency'));
+        }
+
+        if ((!is_null($upgrade_from)) && ($upgrade_from < 7)) {
             $GLOBALS['FORUM_DB']->add_table_field('trans_expecting', 'e_type_code', 'ID_TEXT');
 
             $GLOBALS['SITE_DB']->alter_table_field('trans_expecting', 'e_session_id', 'ID_TEXT');
@@ -535,10 +538,6 @@ class Module_purchase
                 'TEXT' => $text,
             ));
         } else { // Handle the transaction internally
-            if ((!tacit_https()) && (!ecommerce_test_mode())) {
-                warn_exit(do_lang_tempcode('NO_SSL_SETUP'));
-            }
-
             $needs_shipping_address = (method_exists($object, 'needs_shipping_address')) && ($object->needs_shipping_address());
 
             list($fields, $hidden, $verified_account_logo, $payment_processing_link) = get_transaction_form_fields(
@@ -554,9 +553,6 @@ class Module_purchase
             );
 
             $finish_url = build_url(array('page' => '_SELF', 'type' => 'finish'), '_SELF');
-
-            $verified_account_logo = TODO;
-            $payment_processing_link = TODO;
 
             $result = do_template('PURCHASE_WIZARD_STAGE_TRANSACT', array(
                 '_GUID' => '15cbba9733f6ff8610968418d8ab527e',

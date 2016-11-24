@@ -53,7 +53,10 @@ function init__ecommerce()
  */
 function ecommerce_test_mode()
 {
-    return get_option('ecommerce_test_mode') == '1';
+    if (($GLOBALS['DEV_MODE']) && (get_param_integer('keep_ecommerce_local_test', 0) == 1)) {
+        return true;
+    }
+    return (get_option('ecommerce_test_mode') == '1');
 }
 
 /**
@@ -112,7 +115,7 @@ function get_transaction_fee($amount, $via)
  */
 function make_transaction_button($type_code, $item_name, $purchase_id, $amount, $currency, $via = null)
 {
-    if (is_null($via)) {
+    if ($via === null) {
         $via = get_option('payment_gateway');
     }
     require_code('hooks/systems/ecommerce_via/' . filter_naughty_harsh($via));
@@ -136,7 +139,7 @@ function make_transaction_button($type_code, $item_name, $purchase_id, $amount, 
  */
 function make_subscription_button($type_code, $item_name, $purchase_id, $amount, $length, $length_units, $currency, $via = null)
 {
-    if (is_null($via)) {
+    if ($via === null) {
         $via = get_option('payment_gateway');
     }
     require_code('hooks/systems/ecommerce_via/' . filter_naughty_harsh($via));
@@ -171,7 +174,7 @@ function make_cart_payment_button($order_id, $currency)
 
     if (!method_exists($object, 'make_cart_transaction_button')) {
         $amount = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'tot_price', array('id' => $order_id));
-        return $object->make_transaction_button($order_id, do_lang('CART_ORDER', $order_id), $order_id, $amount, $currency);
+        return $object->make_transaction_button('cart_orders', do_lang('CART_ORDER', $order_id), $order_id, $amount, $currency);
     }
 
     return $object->make_cart_transaction_button($items, $currency, $order_id);
@@ -228,7 +231,7 @@ function find_all_products($site_lang = false)
     foreach (array_keys($_hooks) as $hook) {
         require_code('hooks/systems/ecommerce/' . filter_naughty_harsh($hook));
         $object = object_factory('Hook_ecommerce_' . filter_naughty_harsh($hook), true);
-        if (is_null($object)) {
+        if ($object === null) {
             continue;
         }
         $_products = $object->get_products($site_lang);
@@ -257,7 +260,7 @@ function find_product($search, $site_lang = false, $search_item_names = false)
     foreach (array_keys($_hooks) as $hook) {
         require_code('hooks/systems/ecommerce/' . filter_naughty_harsh($hook));
         $object = object_factory('Hook_ecommerce_' . filter_naughty_harsh($hook), true);
-        if (is_null($object)) {
+        if ($object === null) {
             continue;
         }
 
@@ -297,7 +300,7 @@ function find_product_row($search, $site_lang = false, $search_item_names = fals
     foreach (array_keys($_hooks) as $hook) {
         require_code('hooks/systems/ecommerce/' . filter_naughty_harsh($hook));
         $object = object_factory('Hook_ecommerce_' . filter_naughty_harsh($hook), true);
-        if (is_null($object)) {
+        if ($object === null) {
             continue;
         }
 
@@ -330,6 +333,12 @@ function find_product_row($search, $site_lang = false, $search_item_names = fals
  */
 function perform_local_payment()
 {
+    if (($GLOBALS['DEV_MODE']) && (get_param_integer('keep_ecommerce_local_test', 0) == 1)) {
+        require_code('config2');
+        set_option('payment_gateway', 'secpay');
+        return true;
+    }
+
     $via = get_option('payment_gateway');
     require_code('hooks/systems/ecommerce_via/' . filter_naughty_harsh($via));
     $object = object_factory('Hook_' . $via);
@@ -352,7 +361,11 @@ function perform_local_payment()
  */
 function get_transaction_form_fields($trans_id, $purchase_id, $item_name, $amount, $currency, $length, $length_units, $via = null, $needs_shipping_address = false)
 {
-    if (is_null($via)) {
+    if ((!tacit_https()) && (!ecommerce_test_mode())) {
+        warn_exit(do_lang_tempcode('NO_SSL_SETUP'));
+    }
+
+    if ($via === null) {
         $via = get_option('payment_gateway');
     }
 
@@ -363,7 +376,7 @@ function get_transaction_form_fields($trans_id, $purchase_id, $item_name, $amoun
         warn_exit(do_lang_tempcode('LOCAL_PAYMENT_NOT_SUPPORTED', escape_html($via)));
     }
 
-    if (is_null($trans_id)) {
+    if ($trans_id === null) {
         $trans_id = $object->generate_trans_id();
     }
 
@@ -711,14 +724,14 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
     // Try and locate the product
     if ($is_subscription) { // Subscription
         $type_code = $GLOBALS['SITE_DB']->query_select_value_if_there('subscriptions', 's_type_code', array('id' => intval($purchase_id)));
-        if (is_null($type_code)) {
+        if ($type_code === null) {
             fatal_ipn_exit(do_lang('NO_SUCH_SUBSCRIPTION', strval($purchase_id)));
         }
         $item_name = '_' . $type_code;
 
         // Find what we sold
         list($found,) = find_product_row($type_code, true, false);
-        if (!is_null($found)) {
+        if ($found !== null) {
             $item_name = $found[4];
         }
 
@@ -738,7 +751,7 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
             exit(); // We ignore separate payment signal for subscriptions (for Paypal it is web_accept)
         }
     }
-    if (is_null($found)) {
+    if ($found === null) {
         fatal_ipn_exit(do_lang('PRODUCT_NO_SUCH') . ' - ' . $item_name, true);
     }
 
@@ -853,9 +866,9 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
         if ($found[0] == PRODUCT_SUBSCRIPTION) {
             require_code('notifications');
             $member_id = $GLOBALS['SITE_DB']->query_select_value_if_there('subscriptions', 's_member_id', array('id' => intval($purchase_id)));
-            if (!is_null($member_id)) {
+            if ($member_id !== null) {
                 $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
-                if (is_null($username)) {
+                if ($username === null) {
                     $username = do_lang('GUEST');
                 }
                 if ($payment_status == 'Completed') { // Completed

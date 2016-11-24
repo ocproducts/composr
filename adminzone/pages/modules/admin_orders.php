@@ -99,7 +99,7 @@ class Module_admin_orders
 
         $action = either_param_string('action', '');
 
-        if ($type == 'order_det' || $action == 'order_act' || $action == '_add_note' || $action == 'order_export' || $action == '_order_export') {
+        if ($type == 'order_details' || $action == 'order_act' || $action == '_add_note' || $action == 'order_export' || $action == '_order_export') {
             breadcrumb_set_parents(array(array('_SEARCH:admin_ecommerce_logs:browse', do_lang_tempcode('ECOMMERCE')), array('_SELF:_SELF:browse', do_lang_tempcode('ORDERS')), array('_SELF:_SELF:show_orders', do_lang_tempcode('ORDERS'))));
         }
 
@@ -113,7 +113,7 @@ class Module_admin_orders
             breadcrumb_set_self(do_lang_tempcode('DONE'));
         }
 
-        if ($type == 'order_det') {
+        if ($type == 'order_details') {
             $this->title = get_screen_title('MY_ORDER_DETAILS');
         }
 
@@ -174,7 +174,7 @@ class Module_admin_orders
         if ($type == 'show_orders') {
             return $this->show_orders();
         }
-        if ($type == 'order_det') {
+        if ($type == 'order_details') {
             return $this->order_details();
         }
         if ($type == 'order_act') {
@@ -296,7 +296,7 @@ class Module_admin_orders
         $order_entries = new Tempcode();
         foreach ($rows as $row) {
             if ($row['purchase_through'] == 'cart') {
-                $view_url = build_url(array('page' => '_SELF', 'type' => 'order_det', 'id' => $row['id']), '_SELF');
+                $view_url = build_url(array('page' => '_SELF', 'type' => 'order_details', 'id' => $row['id']), '_SELF');
 
                 $order_title = do_lang('CART_ORDER', strval($row['id']));
             } else {
@@ -562,11 +562,11 @@ class Module_admin_orders
         if ($last_action == 'dispatched') {
             // Display dispatch mail preview
             $res = $GLOBALS['SITE_DB']->query_select('shopping_order', array('*'), array('id' => $id), '', 1);
-            $order_det = $res[0];
+            $order_details = $res[0];
 
-            $member_name = $GLOBALS['FORUM_DRIVER']->get_username($order_det['c_member']);
+            $member_name = $GLOBALS['FORUM_DRIVER']->get_username($order_details['c_member']);
 
-            $message = do_lang('ORDER_DISPATCHED_MAIL_MESSAGE', comcode_escape(get_site_name()), comcode_escape($member_name), array(strval($id)), get_lang($order_det['c_member']));
+            $message = do_lang('ORDER_DISPATCHED_MAIL_MESSAGE', comcode_escape(get_site_name()), comcode_escape($member_name), array(strval($id)), get_lang($order_details['c_member']));
 
             $fields->attach(form_input_text(do_lang_tempcode('DISPATCH_MAIL_PREVIEW'), do_lang_tempcode('DISPATCH_MAIL_PREVIEW_DESCRIPTION'), 'dispatch_mail_content', $message, true));
 
@@ -626,13 +626,13 @@ class Module_admin_orders
         }
 
         $res = $GLOBALS['SITE_DB']->query_select('shopping_order', array('*'), array('id' => $order_id), '', 1);
-        $order_det = $res[0];
+        $order_details = $res[0];
 
-        if (is_guest($order_det['c_member'])) {
+        if (is_guest($order_details['c_member'])) {
             attach_message(do_lang_tempcode('NO_NOTE_GUEST'), 'warn');
         } else {
             require_code('notifications');
-            dispatch_notification('order_dispatched', null, do_lang('ORDER_DISPATCHED_MAIL_SUBJECT', get_site_name(), strval($order_id), null, get_lang($order_det['c_member'])), $message, array($order_det['c_member']), A_FROM_SYSTEM_PRIVILEGED);
+            dispatch_notification('order_dispatched', null, do_lang('ORDER_DISPATCHED_MAIL_SUBJECT', get_site_name(), strval($order_id), null, get_lang($order_details['c_member'])), $message, array($order_details['c_member']), A_FROM_SYSTEM_PRIVILEGED);
         }
     }
 

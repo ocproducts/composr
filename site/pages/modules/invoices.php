@@ -205,17 +205,13 @@ class Module_invoices
     }
 
     /**
-     * Show my invoices.
+     * Pay invoice.
      *
      * @return Tempcode The interface.
      */
     public function pay()
     {
         $id = get_param_integer('id');
-
-        if ((!tacit_https()) && (!ecommerce_test_mode())) {
-            warn_exit(do_lang_tempcode('NO_SSL_SETUP'));
-        }
 
         $post_url = build_url(array('page' => 'purchase', 'type' => 'finish'), get_module_zone('purchase'));
 

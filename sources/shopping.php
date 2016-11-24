@@ -172,7 +172,7 @@ function log_cart_actions($action)
 
     $id = $GLOBALS['SITE_DB']->query_select_value_if_there('shopping_logging', 'id', $where);
 
-    if (is_null($id)) {
+    if ($id === null) {
         $GLOBALS['SITE_DB']->query_insert(
             'shopping_logging',
             array(
@@ -263,7 +263,7 @@ function render_cart_payment_form()
             'tax_opted_out' => $tax_opt_out,
         );
 
-        if (is_null($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order', 'id'))) {
+        if ($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order', 'id') === null) {
             $insert['id'] = hexdec('1701D'); // Start offset
         }
 
@@ -282,7 +282,7 @@ function render_cart_payment_form()
         require_code('hooks/systems/ecommerce/' . filter_naughty_harsh($hook), true);
 
         $object = object_factory('Hook_ecommerce_' . filter_naughty_harsh($hook), true);
-        if (is_null($object)) {
+        if ($object === null) {
             continue;
         }
 
@@ -345,13 +345,9 @@ function render_cart_payment_form()
     if (!perform_local_payment()) { // Pass through to the gateway's HTTP server
         $result = make_cart_payment_button($order_id, get_option('currency'));
     } else { // Handle the transaction internally
-        if ((!tacit_https()) && (!ecommerce_test_mode())) {
-            warn_exit(do_lang_tempcode('NO_SSL_SETUP'));
-        }
-
         $price = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'tot_price', array('id' => $order_id));
         $item_name = do_lang('CART_ORDER', strval($order_id));
-        if (is_null($order_id)) {
+        if ($order_id === null) {
             $fields = new Tempcode();
             $hidden = new Tempcode();
             $verified_account_logo = '';
@@ -373,9 +369,6 @@ function render_cart_payment_form()
         }
 
         $finish_url = build_url(array('page' => 'purchase', 'type' => 'finish'), get_module_zone('purchase'));
-
-        $verified_account_logo = TODO;
-        $payment_processing_link = TODO;
 
         $result = do_template('PURCHASE_WIZARD_STAGE_TRANSACT', array(
             '_GUID' => 'a70d6995baabb7e41e1af68409361f3c',
@@ -492,7 +485,7 @@ function update_stock($order_id)
         require_code('hooks/systems/ecommerce/' . filter_naughty_harsh($hook), true);
 
         $object = object_factory('Hook_ecommerce_' . $hook, true);
-        if (is_null($object)) {
+        if ($object === null) {
             continue;
         }
 

@@ -2230,7 +2230,7 @@ function form_input_date_components($pretty_name, $description, $name, $want_yea
     $default_timestamp = tz_time(time(), get_users_timezone());
 
     $_required = ($required) ? '_required' : '';
-    $input = do_lorem_template('FORM_SCREEN_INPUT_DATE_COMPONENTS', array(
+    $input = do_template('FORM_SCREEN_INPUT_DATE_COMPONENTS', array(
         'REQUIRED' => $_required,
         'TABINDEX' => strval($tabindex),
         'NAME' => $name,
