@@ -631,7 +631,7 @@ class Module_shopping
             }
 
             // Process transaction
-            if (has_interesting_post_fields()) {
+            if ((!perform_local_payment()) && (has_interesting_post_fields())) { // Alternative to IPN, *if* posted fields sent here
                 $order_id = handle_transaction_script();
 
                 $product_object = find_product(do_lang('CART_ORDER', $order_id));
