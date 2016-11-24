@@ -235,7 +235,13 @@ class Hook_addon_registry_ecommerce
             'themes/default/templates/ECOM_SUBSCRIPTION_BUTTON_VIA_CCBILL.tpl',
             'sources/hooks/systems/ecommerce_via/ccbill.php',
 
+            'themes/default/templates/ECOM_BUTTON_VIA_AUTHORIZE.tpl',
+            'themes/default/templates/ECOM_CANCEL_BUTTON_VIA_AUTHORIZE.tpl',
+            'themes/default/templates/ECOM_SUBSCRIPTION_BUTTON_VIA_AUTHORIZE.tpl',
+            'sources/hooks/systems/ecommerce_via/authorize.php',
             'lang/EN/ecommerce_gateway_authorize.ini',
+            'themes/default/templates/ECOM_LOGOS_AUTHORIZE.tpl',
+            'themes/default/templates/ECOM_PAYMENT_PROCESSOR_LINKS_AUTHORIZE.tpl',
         );
     }
 

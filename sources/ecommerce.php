@@ -481,10 +481,10 @@ function get_transaction_form_fields($trans_id, $purchase_id, $item_name, $amoun
 
     // ---
 
-    if (method_exists($object, 'get_confidence_logos')) {
-        $confidence_logos = $object->get_confidence_logos();
+    if (method_exists($object, 'get_logos')) {
+        $logos = $object->get_logos();
     } else {
-        $confidence_logos = new Tempcode();
+        $logos = new Tempcode();
     }
     if (method_exists($object, 'get_payment_processor_links')) {
         $payment_processor_links = $object->get_payment_processor_links();
@@ -494,7 +494,7 @@ function get_transaction_form_fields($trans_id, $purchase_id, $item_name, $amoun
 
     require_javascript('shopping');
 
-    return array($fields, $hidden, $confidence_logos, $payment_processor_links);
+    return array($fields, $hidden, $logos, $payment_processor_links);
 }
 
 /**

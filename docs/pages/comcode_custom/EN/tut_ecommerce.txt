@@ -23,7 +23,7 @@ Cheque processing is relatively straight forward, but more infrastructure is nee
 1) By getting an agent to fully handle the transaction and relay the funds
 2) By having a merchant account with a bank, using the banks infrastructure and your bank account to manage the transaction yourself
 
-Composr, by default, allows payment via PayPal, WorldPay, SecPay, CCBill and Authorize.net, although it could be extended to support any kind of payment gateway if extended and customised by an appropriate professional. PayPal is fully supported; others are not regularly tested.
+Composr, by default, allows payment via PayPal, WorldPay, SecPay, CCBill and Authorize.Net, although it could be extended to support any kind of payment gateway if extended and customised by an appropriate professional. PayPal is fully supported; others are not regularly tested.
 
 PayPal was chosen because it is without doubt the leading form of payment on the Internet, easy to setup, and flexible in that it can provide support for funding direct from bank accounts, or cheque, as well as debit and credit card processing. Lots of people do not like PayPal policies, but we have no official position on this -- development priorities simply follow funding.
 [/surround]
@@ -378,7 +378,7 @@ Manual transactions may also be used to input transactions that are totally exte
 
 [title="2"]Local payments[/title]
 
-Composr supports taking in payments 'locally' (i.e. not redirecting to a third-party site to take the payment). Not all the payment gateways within Composr allow local payments though, either due to the gateways not supporting it or just because it has not yet been implemented. At the time of writing the SecPay and Authorize.net gateways support it.
+Composr supports taking in payments 'locally' (i.e. not redirecting to a third-party site to take the payment). Not all the payment gateways within Composr allow local payments though, either due to the gateways not supporting it or just because it has not yet been implemented. At the time of writing the SecPay and Authorize.Net gateways support it.
 
 Local payments should be considered with great caution because it requires a high level of PCI compliance, a very complex and expensive (increasingly so) process that carries legal liability.
 
@@ -520,7 +520,7 @@ We have summarised the PCI compliance rules below in a way streamlined toward Co
 
 [concepts
  1_key="PayPal"           1_value="The most popular online payment gateway"
- 2_key="Payment gateway"  2_value="The infrastructure for performing advanced financial transactions"
+ 2_key="Payment gateway"  2_value="A third-party infrastructure for performing eCommerce transactions"
  3_key="Instant Payment Notification"  3_value="A system, originally created by PayPal, for determining the progress of a financial transaction or ongoing subscription."
  4_key="Product"          4_value="An item in the eCommerce system that defines everything relating to the natural view of a product or service, including handling of any actions associated with a sale being completed or retracted; these products are not like supermarket products -- they are very aggrandised and dynamic"
  5_key="PCI"              5_value="The trade body for regulating eCommerce standards. When we refer to PCI compliance we are typically referring to PCI Data Security Standard (PCI DSS)."

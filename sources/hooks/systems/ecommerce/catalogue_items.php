@@ -720,9 +720,9 @@ class Hook_ecommerce_catalogue_items
 }
 
 /**
- * Update order status,transaction ID after transaction.
+ * Update stock count after transaction.
  *
- * @param  AUTO_LINK $entry_id Purchase/Order ID.
+ * @param  AUTO_LINK $entry_id Product ID.
  * @param  array $details Details of product.
  */
 function handle_catalogue_items($entry_id, $details)

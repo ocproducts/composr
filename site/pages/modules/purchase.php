@@ -532,7 +532,7 @@ class Module_purchase
                 $transaction_button = make_transaction_button($type_code, $item_name, $purchase_id, floatval($price), $currency, $via);
             }
             $tpl = ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) ? 'PURCHASE_WIZARD_STAGE_SUBSCRIBE' : 'PURCHASE_WIZARD_STAGE_PAY';
-            $logos = method_exists($purchase_object, 'get_confidence_logos') ? $purchase_object->get_confidence_logos() : new Tempcode();
+            $logos = method_exists($purchase_object, 'get_logos') ? $purchase_object->get_logos() : new Tempcode();
             $result = do_template($tpl, array(
                 'LOGOS' => $logos,
                 'TRANSACTION_BUTTON' => $transaction_button,
@@ -548,7 +548,7 @@ class Module_purchase
         } else { // Handle the transaction internally
             $needs_shipping_address = (method_exists($object, 'needs_shipping_address')) && ($object->needs_shipping_address());
 
-            list($fields, $hidden, $confidence_logos, $payment_processor_links) = get_transaction_form_fields(
+            list($fields, $hidden, $logos, $payment_processor_links) = get_transaction_form_fields(
                 null,
                 $purchase_id,
                 $item_name,
@@ -566,7 +566,7 @@ class Module_purchase
                 '_GUID' => '15cbba9733f6ff8610968418d8ab527e',
                 'FIELDS' => $fields,
                 'HIDDEN' => $hidden,
-                'LOGO' => $confidence_logos,
+                'LOGO' => $logos,
                 'PAYMENT_PROCESSING_LINK' => $payment_processor_links,
                 'ERROR_MSG' => '',
             ));

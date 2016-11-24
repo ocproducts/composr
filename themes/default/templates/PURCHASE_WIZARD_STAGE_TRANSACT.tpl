@@ -9,11 +9,11 @@
 {+END}
 
 <div class="local_payment_merchant_details">
-	{+START,IF_NON_EMPTY,{CONFIDENCE_LOGOS}{PAYMENT_PROCESSOR_LINKS}}
+	{+START,IF_NON_EMPTY,{LOGOS}{PAYMENT_PROCESSOR_LINKS}}
 		<div class="local_payment_verified_account_logo">
-			{+START,IF_NON_EMPTY,{CONFIDENCE_LOGOS}}
-				<div class="confidence_logos">
-					{CONFIDENCE_LOGOS}
+			{+START,IF_NON_EMPTY,{LOGOS}}
+				<div class="logos">
+					{LOGOS}
 				</div>
 			{+END}
 

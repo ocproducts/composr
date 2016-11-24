@@ -205,23 +205,15 @@ class Hook_secpay
     }
 
     /**
-     * Find whether the hook auto-cancels (if it does, auto cancel the given trans-ID).
+     * Find whether the hook auto-cancels (if it does, auto cancel the given subscription).
      *
-     * @param  string $trans_id Transaction ID to cancel.
+     * @param  AUTO_LINK $subscription_id ID of the subscription to cancel.
      * @return ?boolean True: yes. False: no. (null: cancels via a user-URL-directioning)
      */
-    /*function auto_cancel($trans_id)     Not currently implemented
+    public function auto_cancel($subscription_id)
     {
-        require_lang('ecommerce');
-        $username = $this->_get_username();
-        $password = get_option('payment_gateway_password');
-        $password_2 = get_option('payment_gateway_vpn_password');
-        $result = xml_rpc('https://www.secpay.com:443/secxmlrpc/make_call', 'SECVPN.repeatCardFullAddr', array($username, $password_2, $trans_id, -1, $password, '', '', '', '', '', 'repeat_change=true, repeat=false'), true);
-        if ($result === null) {
-            return false;
-        }
-        return (strpos($result, '&code=A&') !== false);
-    }*/
+        return false;
+    }
 
     /**
      * Find a transaction fee from a transaction amount. Regular fees aren't taken into account.
@@ -231,7 +223,7 @@ class Hook_secpay
      */
     public function get_transaction_fee($amount)
     {
-        return 0.39; // the fee for <60 transactions per month. If it's more, I'd hope Composr's simple accountancy wasn't being relied on (it shouldn't be)!
+        return 0.39;
     }
 
     /**

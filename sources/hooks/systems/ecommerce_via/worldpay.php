@@ -59,7 +59,7 @@ class Hook_worldpay
      *
      * @return Tempcode The stuff.
      */
-    public function get_confidence_logos()
+    public function get_logos()
     {
         $inst_id = ecommerce_test_mode() ? get_option('payment_gateway_test_username') : get_option('payment_gateway_username');
         $address = str_replace("\n", '<br />', escape_html(get_option('pd_address')));
@@ -216,12 +216,12 @@ class Hook_worldpay
     }
 
     /**
-     * Find whether the hook auto-cancels (if it does, auto cancel the given trans-ID).
+     * Find whether the hook auto-cancels (if it does, auto cancel the given subscription).
      *
-     * @param  string $trans_id Transaction ID to cancel.
+     * @param  AUTO_LINK $subscription_id ID of the subscription to cancel.
      * @return ?boolean True: yes. False: no. (null: cancels via a user-URL-directioning)
      */
-    public function auto_cancel($trans_id)
+    public function auto_cancel($subscription_id)
     {
         return false;
     }

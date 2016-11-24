@@ -127,12 +127,12 @@ class Hook_paypal
     }
 
     /**
-     * Find whether the hook auto-cancels (if it does, auto cancel the given trans-ID).
+     * Find whether the hook auto-cancels (if it does, auto cancel the given subscription).
      *
-     * @param  string $trans_id Transaction ID to cancel.
+     * @param  AUTO_LINK $subscription_id ID of the subscription to cancel.
      * @return ?boolean True: yes. False: no. (null: cancels via a user-URL-directioning)
      */
-    public function auto_cancel($trans_id)
+    public function auto_cancel($subscription_id)
     {
         return null;
     }
