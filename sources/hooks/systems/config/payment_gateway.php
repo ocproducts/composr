@@ -66,9 +66,9 @@ class Hook_config_payment_gateway
     public function field_inputter($name, $myrow, $human_name, $explanation)
     {
         $list = '';
-        $all_via = find_all_hooks('systems', 'ecommerce_via');
-        foreach (array_keys($all_via) as $via) {
-            $list .= static_evaluate_tempcode(form_input_list_entry($via, $via == get_option($name)));
+        $all_payment_gateways = find_all_hooks('systems', 'payment_gateway');
+        foreach (array_keys($all_payment_gateways) as $payment_gateway) {
+            $list .= static_evaluate_tempcode(form_input_list_entry($payment_gateway, $payment_gateway == get_option($name)));
         }
         return form_input_list($human_name, $explanation, $name, make_string_tempcode($list));
     }

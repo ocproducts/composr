@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_authorize
+class Hook_payment_gateway_authorize
 {
     // Requires:
     //  the live login is the Composr Composr "Gateway username" option

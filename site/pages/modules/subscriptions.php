@@ -35,7 +35,7 @@ class Module_subscriptions
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 5;
+        $info['version'] = 6;
         $info['locked'] = false;
         $info['update_require_upgrade'] = true;
         return $info;
@@ -77,7 +77,7 @@ class Module_subscriptions
                 's_time' => 'TIME',
                 's_auto_fund_source' => 'ID_TEXT', // The payment gateway
                 's_auto_fund_key' => 'SHORT_TEXT', // Used by PayPal for nothing much, but is of real use if we need to schedule our own subscription transactions
-                's_via' => 'ID_TEXT', // An eCommerce hook or 'manual'
+                's_payment_gateway' => 'ID_TEXT', // An eCommerce hook or 'manual'
 
                 // Copied through from what the hook says at setup, in case the hook later changes
                 's_length' => 'INTEGER',
@@ -137,6 +137,10 @@ class Module_subscriptions
             }
 
             $GLOBALS['SITE_DB']->add_table_field('f_usergroup_subs', 's_auto_recur', 'BINARY', 1);
+        }
+
+        if ((!is_null($upgrade_from)) && ($upgrade_from < 6)) {
+            $GLOBALS['SITE_DB']->alter_table_field('subscriptions', 's_payment_gateway', 'ID_TEXT', 's_payment_gateway');
         }
 
         $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_bak;
@@ -248,14 +252,14 @@ class Module_subscriptions
     public function cancel()
     {
         $id = get_param_integer('id');
-        $via = $GLOBALS['SITE_DB']->query_select_value_if_there('subscriptions', 's_via', array('id' => $id));
-        if (is_null($via)) {
+        $payment_gateway = $GLOBALS['SITE_DB']->query_select_value_if_there('subscriptions', 's_payment_gateway', array('id' => $id));
+        if (is_null($payment_gateway)) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }
 
-        if (($via != 'manual') && ($via != '')) {
-            require_code('hooks/systems/ecommerce_via/' . filter_naughty($via));
-            $hook = object_factory($via);
+        if (($payment_gateway != 'manual') && ($payment_gateway != '')) {
+            require_code('hooks/systems/payment_gateway/' . filter_naughty($payment_gateway));
+            $hook = object_factory($payment_gateway);
             if ($hook->auto_cancel($id) !== true) {
                 // Because we cannot TRIGGER a REMOTE cancellation, we have it so the local user action triggers that notification, informing the staff to manually do a remote cancellation
                 require_code('notifications');

@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_ccbill
+class Hook_payment_gateway_ccbill
 {
     // Requires:
     //  you have to contact support to enable dynamic pricing and generate the encryption key for your account

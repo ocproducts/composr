@@ -129,7 +129,7 @@ The option requirements for PayPal are as follows:
 </tbody></table>
 [/html]
 
-Documentation for other Payment gateways is provided in notes at the top of the [tt]sources/hooks/systems/ecommerce_via/<gateway>.php[/tt] file. Payment systems tend to be a bit complex and ones other than PayPal are best set up by programmers who know the particular ways messages and security works between your site and the gateway.
+Documentation for other Payment gateways is provided in notes at the top of the [tt]sources/hooks/systems/payment_gateway/<gateway>.php[/tt] file. Payment systems tend to be a bit complex and ones other than PayPal are best set up by programmers who know the particular ways messages and security works between your site and the gateway.
 
 [title="3"]Test mode[/title]
 

@@ -45,7 +45,7 @@
 				<td colspan="5">
 					{+START,LOOP,TRANSACTION_DETAILS}
 						<p class="mini_indent">
-							<span class="right">{T_STATUS*} ({$?,{$IS_EMPTY,{T_VIA}},{!ecommerce:MANUAL_TRANSACTION},{T_VIA*}})</span>
+							<span class="right">{T_STATUS*} ({$?,{$IS_EMPTY,{T_PAYMENT_GATEWAY}},{!ecommerce:MANUAL_TRANSACTION},{T_PAYMENT_GATEWAY*}})</span>
 							<strong>{$DATE_AND_TIME*,0,1,0,{T_TIME}}</strong>, {T_ITEM_TITLE*} @ {T_AMOUNT*} {T_CURRENCY*}
 						</p>
 						{+START,IF_NON_EMPTY,{T_PENDING_REASON}{T_REASON}{T_MEMO}}

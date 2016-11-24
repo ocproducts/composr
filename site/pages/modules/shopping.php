@@ -557,9 +557,9 @@ class Module_shopping
      */
     public function finish()
     {
-        $via = get_option('payment_gateway');
-        require_code('hooks/systems/ecommerce_via/' . filter_naughty_harsh($via));
-        $object = object_factory('Hook_' . $via);
+        $payment_gateway = get_option('payment_gateway');
+        require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
+        $object = object_factory('Hook_payment_gateway_' . $payment_gateway);
 
         $message = mixed();
         if (method_exists($object, 'get_callback_url_message')) {
@@ -575,7 +575,7 @@ class Module_shopping
 
             // Take payment
             if (perform_local_payment()) {
-                list($success, $message, $message_raw) = handle_local_payment($via, $object);
+                list($success, $message, $message_raw) = handle_local_payment($payment_gateway, $object);
             }
 
             // Process transaction

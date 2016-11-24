@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_secpay
+class Hook_payment_gateway_secpay
 {
     /**
      * Get the gateway username.

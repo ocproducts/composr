@@ -79,10 +79,10 @@ function ecommerce_get_currency_symbol($currency = null)
  * Find a transaction fee from a transaction amount. Regular fees aren't taken into account.
  *
  * @param  float $amount A transaction amount.
- * @param  ID_TEXT $via The service the payment went via.
+ * @param  ID_TEXT $payment_gateway The payment gateway the payment went via.
  * @return float The fee
  */
-function get_transaction_fee($amount, $via)
+function get_transaction_fee($amount, $payment_gateway)
 {
     if (get_option('transaction_flat_cost') . get_option('transaction_percentage_cost') != '') {
         $fee = 0.0;
@@ -95,16 +95,16 @@ function get_transaction_fee($amount, $via)
         return round($fee, 2);
     }
 
-    if ($via == '') {
+    if ($payment_gateway == '') {
         return 0.0;
     }
-    if ($via == 'manual') {
+    if ($payment_gateway == 'manual') {
         return 0.0;
     }
 
-    if ((file_exists(get_file_base() . '/sources/hooks/systems/ecommerce_via/' . $via . '.php')) || (file_exists(get_file_base() . '/sources_custom/hooks/systems/ecommerce_via/' . $via . '.php'))) {
-        require_code('hooks/systems/ecommerce_via/' . filter_naughty_harsh($via));
-        $object = object_factory('Hook_' . $via);
+    if ((file_exists(get_file_base() . '/sources/hooks/systems/payment_gateway/' . $payment_gateway . '.php')) || (file_exists(get_file_base() . '/sources_custom/hooks/systems/payment_gateway/' . $payment_gateway . '.php'))) {
+        require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
+        $object = object_factory('Hook_payment_gateway_' . $payment_gateway);
         if (method_exists($object, 'get_transaction_fee')) {
             return $object->get_transaction_fee($amount);
         }
@@ -121,16 +121,16 @@ function get_transaction_fee($amount, $via)
  * @param  ID_TEXT $purchase_id The purchase ID.
  * @param  float $amount A transaction amount.
  * @param  ID_TEXT $currency The currency to use.
- * @param  ?ID_TEXT $via The service the payment will go via via (null: autodetect).
+ * @param  ?ID_TEXT $payment_gateway The payment gateway the payment will go via (null: autodetect).
  * @return Tempcode The button
  */
-function make_transaction_button($type_code, $item_name, $purchase_id, $amount, $currency, $via = null)
+function make_transaction_button($type_code, $item_name, $purchase_id, $amount, $currency, $payment_gateway = null)
 {
-    if ($via === null) {
-        $via = get_option('payment_gateway');
+    if ($payment_gateway === null) {
+        $payment_gateway = get_option('payment_gateway');
     }
-    require_code('hooks/systems/ecommerce_via/' . filter_naughty_harsh($via));
-    $object = object_factory('Hook_' . $via);
+    require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
+    $object = object_factory('Hook_payment_gateway_' . $payment_gateway);
     return $object->make_transaction_button($type_code, $item_name, $purchase_id, $amount, $currency);
 }
 
@@ -145,16 +145,16 @@ function make_transaction_button($type_code, $item_name, $purchase_id, $amount, 
  * @param  ID_TEXT $length_units The length units.
  * @set    d w m y
  * @param  ID_TEXT $currency The currency to use.
- * @param  ?ID_TEXT $via The service the payment will go via via (null: autodetect).
+ * @param  ?ID_TEXT $payment_gateway The payment gateway the payment will go via (null: autodetect).
  * @return Tempcode The button
  */
-function make_subscription_button($type_code, $item_name, $purchase_id, $amount, $length, $length_units, $currency, $via = null)
+function make_subscription_button($type_code, $item_name, $purchase_id, $amount, $length, $length_units, $currency, $payment_gateway = null)
 {
-    if ($via === null) {
-        $via = get_option('payment_gateway');
+    if ($payment_gateway === null) {
+        $payment_gateway = get_option('payment_gateway');
     }
-    require_code('hooks/systems/ecommerce_via/' . filter_naughty_harsh($via));
-    $object = object_factory('Hook_' . $via);
+    require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
+    $object = object_factory('Hook_payment_gateway_' . $payment_gateway);
     return $object->make_subscription_button($type_code, $item_name, $purchase_id, $amount, $length, $length_units, $currency);
 }
 
@@ -177,11 +177,11 @@ function make_cart_payment_button($order_id, $currency)
         );
     }
 
-    $via = get_option('payment_gateway');
+    $payment_gateway = get_option('payment_gateway');
 
-    require_code('hooks/systems/ecommerce_via/' . filter_naughty_harsh($via));
+    require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
 
-    $object = object_factory('Hook_' . $via);
+    $object = object_factory('Hook_payment_gateway_' . $payment_gateway);
 
     if (!method_exists($object, 'make_cart_transaction_button')) {
         $amount = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'tot_price', array('id' => $order_id));
@@ -195,19 +195,19 @@ function make_cart_payment_button($order_id, $currency)
  * Make a subscription cancellation button.
  *
  * @param  AUTO_LINK $purchase_id The purchase ID.
- * @param  ID_TEXT $via The service the payment will go via via.
+ * @param  ID_TEXT $payment_gateway The payment gateway the payment will go via.
  * @return ?Tempcode The button (null: no special cancellation -- just delete the subscription row to stop Composr regularly re-charging)
  */
-function make_cancel_button($purchase_id, $via)
+function make_cancel_button($purchase_id, $payment_gateway)
 {
-    if ($via == '') {
+    if ($payment_gateway == '') {
         return null;
     }
-    if ($via == 'manual') {
+    if ($payment_gateway == 'manual') {
         return null;
     }
-    require_code('hooks/systems/ecommerce_via/' . filter_naughty_harsh($via));
-    $object = object_factory('Hook_' . $via);
+    require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
+    $object = object_factory('Hook_payment_gateway_' . $payment_gateway);
     if (!method_exists($object, 'make_cancel_button')) {
         return null;
     }
@@ -350,9 +350,9 @@ function perform_local_payment()
         return true;
     }
 
-    $via = get_option('payment_gateway');
-    require_code('hooks/systems/ecommerce_via/' . filter_naughty_harsh($via));
-    $object = object_factory('Hook_' . $via);
+    $payment_gateway = get_option('payment_gateway');
+    require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
+    $object = object_factory('Hook_payment_gateway_' . $payment_gateway);
     return ((get_option('use_local_payment') == '1') && (method_exists($object, 'do_local_transaction')));
 }
 
@@ -366,25 +366,25 @@ function perform_local_payment()
  * @param  ID_TEXT $currency The currency
  * @param  ?integer $length The length (null: not a subscription)
  * @param  ID_TEXT $length_units The length units
- * @param  ?ID_TEXT $via The service the payment will go via via (null: autodetect).
+ * @param  ?ID_TEXT $payment_gateway The payment gateway the payment will go via (null: autodetect).
  * @param  boolean $needs_shipping_address Whether a shipping address is needed.
  * @return array A tuple: The form fields, Hidden fields, Confidence logos, Payment processor links
  */
-function get_transaction_form_fields($trans_id, $purchase_id, $item_name, $amount, $currency, $length, $length_units, $via = null, $needs_shipping_address = false)
+function get_transaction_form_fields($trans_id, $purchase_id, $item_name, $amount, $currency, $length, $length_units, $payment_gateway = null, $needs_shipping_address = false)
 {
     if ((!tacit_https()) && (!ecommerce_test_mode())) {
         warn_exit(do_lang_tempcode('NO_SSL_SETUP'));
     }
 
-    if ($via === null) {
-        $via = get_option('payment_gateway');
+    if ($payment_gateway === null) {
+        $payment_gateway = get_option('payment_gateway');
     }
 
-    require_code('hooks/systems/ecommerce_via/' . filter_naughty_harsh($via));
-    $object = object_factory('Hook_' . $via);
+    require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
+    $object = object_factory('Hook_payment_gateway_' . $payment_gateway);
 
     if (!method_exists($object, 'do_local_transaction')) {
-        warn_exit(do_lang_tempcode('LOCAL_PAYMENT_NOT_SUPPORTED', escape_html($via)));
+        warn_exit(do_lang_tempcode('LOCAL_PAYMENT_NOT_SUPPORTED', escape_html($payment_gateway)));
     }
 
     if ($trans_id === null) {
@@ -553,11 +553,11 @@ function do_lang_cpf($cpf_name)
 /**
  * Handle a particular local transaction as determined by the POST request.
  *
- * @param  ID_TEXT $via The payment gateway
+ * @param  ID_TEXT $payment_gateway The payment gateway
  * @param  object $object The payment gateway object
  * @return array A triple: success status, formatted status message, raw status message
  */
-function handle_local_payment($via, $object)
+function handle_local_payment($payment_gateway, $object)
 {
     // Grab transaction details...
 
@@ -677,7 +677,7 @@ function handle_local_payment($via, $object)
 
     if (($success) || ($length !== null)) {
         $status = (($length !== null) && (!$success)) ? 'SCancelled' : 'Completed';
-        handle_confirmed_transaction($transaction_row['e_purchase_id'], $transaction_row['e_item_name'], $status, $message_raw, '', '', $amount, $currency, $trans_id, '', ($length === null) ? '' : strtolower(strval($length) . ' ' . $length_units), $via);
+        handle_confirmed_transaction($transaction_row['e_purchase_id'], $transaction_row['e_item_name'], $status, $message_raw, '', '', $amount, $currency, $trans_id, '', ($length === null) ? '' : strtolower(strval($length) . ' ' . $length_units), $payment_gateway);
     }
 
     // Send notification...
@@ -715,15 +715,15 @@ function handle_ipn_transaction_script()
         fclose($myfile);
     }
 
-    $via = get_param_string('from', get_option('payment_gateway'));
-    require_code('hooks/systems/ecommerce_via/' . filter_naughty_harsh($via));
-    $object = object_factory('Hook_' . $via);
+    $payment_gateway = get_param_string('from', get_option('payment_gateway'));
+    require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
+    $object = object_factory('Hook_payment_gateway_' . $payment_gateway);
 
     ob_start();
 
     list($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, $period) = $object->handle_ipn_transaction();
 
-    $type_code = handle_confirmed_transaction($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, $period, $via);
+    $type_code = handle_confirmed_transaction($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, $period, $payment_gateway);
 
     if (method_exists($object, 'show_payment_response')) {
         echo $object->show_payment_response($type_code, $purchase_id);
@@ -748,10 +748,10 @@ function handle_ipn_transaction_script()
  * @param  SHORT_TEXT $txn_id The transaction ID
  * @param  SHORT_TEXT $parent_txn_id The ID of the parent transaction
  * @param  string $period The subscription period (blank: N/A / unknown: trust is correct on the gateway)
- * @param  ID_TEXT $via The payment gateway
+ * @param  ID_TEXT $payment_gateway The payment gateway
  * @return ID_TEXT The product purchased
  */
-function handle_confirmed_transaction($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, $period, $via)
+function handle_confirmed_transaction($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, $period, $payment_gateway)
 {
     $is_subscription = ($item_name == '');
 
@@ -791,13 +791,13 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
 
     // Check price, if one defined
     if (($mc_gross != $found[1]) && ($found[1] != '?')) {
-        if (($payment_status == 'Completed') && ($via != 'manual')) {
+        if (($payment_status == 'Completed') && ($payment_gateway != 'manual')) {
             fatal_ipn_exit(do_lang('PURCHASE_WRONG_PRICE', $item_name, $mc_gross, $found[1]), $is_subscription);
         }
     }
     $expected_currency = isset($found[5]) ? $found[5] : get_option('currency');
     if ($mc_currency != $expected_currency) {
-        if (($payment_status != 'SCancelled') && ($via != 'manual')) {
+        if (($payment_status != 'SCancelled') && ($payment_gateway != 'manual')) {
             fatal_ipn_exit(do_lang('PURCHASE_WRONG_CURRENCY', $item_name, $mc_currency, $expected_currency));
         }
     }
@@ -815,7 +815,7 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
         't_currency' => $mc_currency,
         't_parent_txn_id' => $parent_txn_id,
         't_time' => time(),
-        't_via' => $via,
+        't_payment_gateway' => $payment_gateway,
     ));
 
     $found['txn_id'] = $txn_id;
@@ -845,7 +845,7 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
     if ($found[0] == PRODUCT_INVOICE) {
         $price = $GLOBALS['SITE_DB']->query_select_value('invoices', 'i_amount', array('id' => intval($purchase_id)));
         if ($price != $mc_gross) {
-            if ($via != 'manual') {
+            if ($payment_gateway != 'manual') {
                 fatal_ipn_exit(do_lang('PURCHASE_WRONG_PRICE', $item_name, $mc_gross, $price));
             }
         }
@@ -858,7 +858,7 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
 
     // Subscription: Completed (Made active)
     if (($payment_status == 'Completed') && ($found[0] == PRODUCT_SUBSCRIPTION)) {
-        $GLOBALS['SITE_DB']->query_update('subscriptions', array('s_auto_fund_source' => $via, 's_auto_fund_key' => $txn_id, 's_state' => 'active'), array('id' => intval($purchase_id)), '', 1);
+        $GLOBALS['SITE_DB']->query_update('subscriptions', array('s_auto_fund_source' => $payment_gateway, 's_auto_fund_key' => $txn_id, 's_state' => 'active'), array('id' => intval($purchase_id)), '', 1);
     }
 
     // Subscription: Modified
@@ -868,7 +868,7 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
 
     // Subscription: Cancelled
     if (($payment_status == 'SCancelled') && ($found[0] == PRODUCT_SUBSCRIPTION)) {
-        $GLOBALS['SITE_DB']->query_update('subscriptions', array('s_auto_fund_source' => $via, 's_auto_fund_key' => $txn_id, 's_state' => 'cancelled'), array('id' => intval($purchase_id)), '', 1);
+        $GLOBALS['SITE_DB']->query_update('subscriptions', array('s_auto_fund_source' => $payment_gateway, 's_auto_fund_key' => $txn_id, 's_state' => 'cancelled'), array('id' => intval($purchase_id)), '', 1);
     }
 
     // Invoice handling

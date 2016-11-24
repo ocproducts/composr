@@ -121,7 +121,7 @@ class Module_purchase
                 't_time' => '*TIME',
                 't_pending_reason' => 'SHORT_TEXT',
                 't_memo' => 'LONG_TEXT',
-                't_via' => 'ID_TEXT'
+                't_payment_gateway' => 'ID_TEXT'
             ));
         }
 
@@ -159,6 +159,8 @@ class Module_purchase
             rename_config_option('vpn_username', 'payment_gateway_vpn_username');
             rename_config_option('vpn_password', 'payment_gateway_vpn_password');
             rename_config_option('callback_password', 'payment_gateway_callback_password');
+
+            $GLOBALS['SITE_DB']->alter_table_field('transactions', 't_payment_gateway', 'ID_TEXT', 't_payment_gateway');
         }
     }
 
@@ -443,9 +445,9 @@ class Module_purchase
         $type_code = get_param_string('type_code');
         $object = find_product($type_code);
 
-        $via = get_param_string('via', get_option('payment_gateway'));
-        require_code('hooks/systems/ecommerce_via/' . filter_naughty_harsh($via));
-        $purchase_object = object_factory('Hook_' . $via);
+        $payment_gateway = get_option('payment_gateway');
+        require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
+        $purchase_object = object_factory('Hook_payment_gateway_' . $payment_gateway);
 
         $test = $this->_check_availability($type_code);
         if (!is_null($test)) {
@@ -479,7 +481,7 @@ class Module_purchase
                     's_time' => time(),
                     's_auto_fund_source' => '',
                     's_auto_fund_key' => '',
-                    's_via' => $via,
+                    's_payment_gateway' => $payment_gateway,
                     's_length' => $temp[$type_code][3]['length'],
                     's_length_units' => $temp[$type_code][3]['length_units'],
                 ), true));
@@ -527,9 +529,9 @@ class Module_purchase
 
         if (!perform_local_payment()) { // Pass through to the gateway's HTTP server
             if ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) {
-                $transaction_button = make_subscription_button($type_code, $item_name, $purchase_id, floatval($price), $length, $length_units, $currency, $via);
+                $transaction_button = make_subscription_button($type_code, $item_name, $purchase_id, floatval($price), $length, $length_units, $currency, $payment_gateway);
             } else {
-                $transaction_button = make_transaction_button($type_code, $item_name, $purchase_id, floatval($price), $currency, $via);
+                $transaction_button = make_transaction_button($type_code, $item_name, $purchase_id, floatval($price), $currency, $payment_gateway);
             }
             $tpl = ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) ? 'PURCHASE_WIZARD_STAGE_SUBSCRIBE' : 'PURCHASE_WIZARD_STAGE_PAY';
             $logos = method_exists($purchase_object, 'get_logos') ? $purchase_object->get_logos() : new Tempcode();
@@ -556,7 +558,7 @@ class Module_purchase
                 $currency,
                 ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) ? intval($length) : null,
                 ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) ? $length_units : '',
-                $via,
+                $payment_gateway,
                 $needs_shipping_address
             );
 
@@ -582,9 +584,9 @@ class Module_purchase
      */
     public function finish()
     {
-        $via = get_option('payment_gateway');
-        require_code('hooks/systems/ecommerce_via/' . filter_naughty_harsh($via));
-        $object = object_factory('Hook_' . $via);
+        $payment_gateway = get_option('payment_gateway');
+        require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
+        $object = object_factory('Hook_payment_gateway_' . $payment_gateway);
 
         $message = mixed();
         if (method_exists($object, 'get_callback_url_message')) {
@@ -593,7 +595,7 @@ class Module_purchase
 
         if (get_param_integer('cancel', 0) == 0) {
             if (perform_local_payment()) { // We need to try and run the transaction
-                list($success, $message, $message_raw) = handle_local_payment($via, $object);
+                list($success, $message, $message_raw) = handle_local_payment($payment_gateway, $object);
             }
 
             $type_code = get_param_string('type_code', '');

@@ -64,7 +64,7 @@ function find_member_subscriptions($member_id, $usergroup_subscriptions_only = f
                     's_time' => $sub_trans['t_time'],
                     's_auto_fund_source' => '',
                     's_auto_fund_key' => '',
-                    's_via' => $sub_trans['t_via'],
+                    's_payment_gateway' => $sub_trans['t_payment_gateway'],
                     's_length' => $sub_trans_2[0]['s_length'],
                     's_length_units' => $sub_trans_2[0]['s_length_units'],
                 );
@@ -115,7 +115,7 @@ function find_member_subscriptions($member_id, $usergroup_subscriptions_only = f
                 $item_name = $product_row[4];
             }
 
-            $is_manual = ($sub['s_via'] == 'manual');
+            $is_manual = ($sub['s_payment_gateway'] == 'manual');
 
             $length = $sub['s_length'];
             $length_units = $sub['s_length_units']; // y-year, m-month, w-week, d-day
@@ -165,7 +165,7 @@ function find_member_subscriptions($member_id, $usergroup_subscriptions_only = f
 
                 'state' => $sub['s_state'],
 
-                'via' => $sub['s_via'],
+                'via' => $sub['s_payment_gateway'],
                 'auto_fund_source' => $sub['s_auto_fund_source'],
                 'auto_fund_key' => $sub['s_auto_fund_key'],
 
