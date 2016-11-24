@@ -84,6 +84,17 @@ function ecommerce_get_currency_symbol($currency = null)
  */
 function get_transaction_fee($amount, $via)
 {
+    if (get_option('transaction_flat_cost') . get_option('transaction_percentage_cost') != '') {
+        $fee = 0.0;
+        if (get_option('transaction_flat_cost') != '') {
+            $fee += floatval(get_option('transaction_flat_cost'));
+        }
+        if (get_option('transaction_percentage_cost') != '') {
+            $fee += floatval(get_option('transaction_percentage_cost')) / 100.0 * $amount);
+        }
+        return round($fee, 2);
+    }
+
     if ($via == '') {
         return 0.0;
     }

@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_store_credit_card_numbers
+class Hook_config_transaction_percentage_cost
 {
     /**
      * Gets the details relating to the config option.
@@ -31,15 +31,16 @@ class Hook_config_store_credit_card_numbers
     public function get_details()
     {
         return array(
-            'human_name' => 'STORE_CREDIT_CARD_NUMBERS',
-            'type' => 'tick',
-            'category' => 'ECOMMERCE',
-            'group' => 'SHOPPING',
-            'explanation' => 'CONFIG_OPTION_store_credit_card_numbers',
+            'human_name' => 'TRANSACTION_PERCENTAGE_COST',
+            'type' => 'float',
+            'category' => 'TRANSACTION_FEES',
+            'group' => 'ECOMMERCE',
+            'explanation' => 'CONFIG_OPTION_transaction_percentage_cost',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => false,
 
-            'addon' => 'shopping',
+            'addon' => 'ecommerce',
         );
     }
 
@@ -50,6 +51,6 @@ class Hook_config_store_credit_card_numbers
      */
     public function get_default()
     {
-        return '0';
+        return '';
     }
 }

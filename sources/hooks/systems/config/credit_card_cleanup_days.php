@@ -50,10 +50,6 @@ class Hook_config_credit_card_cleanup_days
      */
     public function get_default()
     {
-        if (get_option('use_local_payment') == '0') {
-            return null;
-        }
-
         return '365';
     }
 }

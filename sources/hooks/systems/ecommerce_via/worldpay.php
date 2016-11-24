@@ -27,7 +27,7 @@ class Hook_worldpay
     //  the "Payment Response URL" set in control panel should be set to "http://<WPDISPLAY ITEM=MC_callback>"
     //  the "Payment Response enabled?" and "Enable Recurring Payment Response" and "Enable the Shopper Response" should all be ticked (checked)
     //  the "Payment Response password" is the Composr "Callback password" option; it may be blank
-    //  the "Installation ID" (a number given to you) is the Composr "Gateway username" and also "Testing mode gateway username" (it's all the same installation ID)
+    //  the "Installation ID" (a number given to you) is the Composr "Gateway username" option and also "Testing mode gateway username" option (it's all the same installation ID)
     //  the "MD5 secret for transactions" is the Composr "Gateway digest code" option; it may be blank
     //  the account must be set as 'live' in control panel once testing is done
     //  the "Shopper Redirect URL" should be left blank - arbitrary URLs are not supported, and Composr automatically injects a redirect response into Payment Response URL
@@ -59,7 +59,7 @@ class Hook_worldpay
      *
      * @return Tempcode The stuff.
      */
-    public function get_logos()
+    public function get_confidence_logos()
     {
         $inst_id = ecommerce_test_mode() ? get_option('ipn_test') : get_option('ipn');
         $address = str_replace("\n", '<br />', escape_html(get_option('pd_address')));

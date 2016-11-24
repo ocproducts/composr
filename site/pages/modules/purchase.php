@@ -524,7 +524,7 @@ class Module_purchase
                 $transaction_button = make_transaction_button($type_code, $item_name, $purchase_id, floatval($price), $currency, $via);
             }
             $tpl = ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) ? 'PURCHASE_WIZARD_STAGE_SUBSCRIBE' : 'PURCHASE_WIZARD_STAGE_PAY';
-            $logos = method_exists($purchase_object, 'get_logos') ? $purchase_object->get_logos() : new Tempcode();
+            $logos = method_exists($purchase_object, 'get_confidence_logos') ? $purchase_object->get_confidence_logos() : new Tempcode();
             $result = do_template($tpl, array(
                 'LOGOS' => $logos,
                 'TRANSACTION_BUTTON' => $transaction_button,
