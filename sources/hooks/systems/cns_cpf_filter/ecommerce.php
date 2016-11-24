@@ -38,7 +38,7 @@ class Hook_cns_cpf_filter_ecommerce
 
         // Local payment
         if (get_option('use_local_payment') == '1') {
-            $cpf = array_merge($cpf, array('payment_type' => true, 'payment_cardholder_name' => true, 'payment_card_type' => true, 'payment_card_number' => true, 'payment_card_start_date' => true, 'payment_card_expiry_date' => true, 'payment_card_issue_number' => true));
+            $cpf = array_merge($cpf, array('payment_type' => true, 'payment_cardholder_name' => true, 'payment_card_type' => true, /*'payment_card_number' => true PCI stops us storing this without a lot of extra work, */'payment_card_start_date' => true, 'payment_card_expiry_date' => true, 'payment_card_issue_number' => true));
         }
 
         return $cpf;
