@@ -319,6 +319,7 @@ class Module_shopping
         require_code('templates_results_table');
         require_code('form_templates');
         require_css('shopping');
+        require_css('ecommerce');
         require_javascript('shopping');
 
         log_cart_actions('View cart');
