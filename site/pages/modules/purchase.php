@@ -582,7 +582,7 @@ class Module_purchase
 
             $type_code = get_param_string('type_code', '');
             if ($type_code != '') {
-                if (has_interesting_post_fields()) { // Alternative to IPN, *if* posted fields sent here
+                if ((!perform_local_payment()) && (has_interesting_post_fields())) { // Alternative to IPN, *if* posted fields sent here
                     handle_transaction_script();
                 }
 
