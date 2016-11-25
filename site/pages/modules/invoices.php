@@ -45,8 +45,9 @@ class Module_invoices
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 2;
+        $info['version'] = 3;
         $info['locked'] = false;
+        $info['update_require_upgrade'] = true;
         return $info;
     }
 
@@ -66,16 +67,22 @@ class Module_invoices
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        $GLOBALS['SITE_DB']->create_table('invoices', array(
-            'id' => '*AUTO',
-            'i_type_code' => 'ID_TEXT',
-            'i_member_id' => 'MEMBER',
-            'i_state' => 'ID_TEXT', // new|pending|paid|delivered (pending means payment has been requested)
-            'i_amount' => 'SHORT_TEXT', // can't always find this from i_type_code
-            'i_special' => 'SHORT_TEXT', // depending on i_type_code, would trigger something special such as a key upgrade
-            'i_time' => 'TIME',
-            'i_note' => 'LONG_TEXT'
-        ));
+        if ($upgrade_from === null) {
+            $GLOBALS['SITE_DB']->create_table('invoices', array(
+                'id' => '*AUTO',
+                'i_type_code' => 'ID_TEXT',
+                'i_member_id' => 'MEMBER',
+                'i_state' => 'ID_TEXT', // new|pending|paid|delivered (pending means payment has been requested)
+                'i_amount' => 'SHORT_TEXT', // can't always find this from i_type_code
+                'i_special' => 'SHORT_TEXT', // depending on i_type_code, would trigger something special such as a key upgrade
+                'i_time' => 'TIME',
+                'i_note' => 'LONG_TEXT'
+            ));
+        }
+
+        if (($upgrade_from !== null) && ($upgrade_from < 3)) {
+            $GLOBALS['SITE_DB']->create_index('invoices', 'i_member_id', array('i_member_id'));
+        }
     }
 
     /**

@@ -24,6 +24,33 @@
 class Hook_payment_gateway_secpay
 {
     /**
+     * Find a transaction fee from a transaction amount. Regular fees aren't taken into account.
+     *
+     * @param  float $amount A transaction amount.
+     * @return float The fee.
+     */
+    public function get_transaction_fee($amount)
+    {
+        return 0.39;
+    }
+
+    /**
+     * Get a list of card types.
+     *
+     * @param  ?string $it The card type to select by default (null: don't care).
+     * @return Tempcode The list.
+     */
+    public function create_selection_list_card_types($it = null)
+    {
+        $list = new Tempcode();
+        $array = array('Visa', 'Master Card', 'Switch', 'UK Maestro', 'Maestro', 'Solo', 'Delta', 'American Express', 'Diners Card', 'JCB');
+        foreach ($array as $x) {
+            $list->attach(form_input_list_entry($x, $it == $x));
+        }
+        return $list;
+    }
+
+    /**
      * Get the gateway username.
      *
      * @return string The answer.
@@ -205,146 +232,6 @@ class Hook_payment_gateway_secpay
     }
 
     /**
-     * Find whether the hook auto-cancels (if it does, auto cancel the given subscription).
-     *
-     * @param  AUTO_LINK $subscription_id ID of the subscription to cancel.
-     * @return ?boolean True: yes. False: no. (null: cancels via a user-URL-directioning)
-     */
-    public function auto_cancel($subscription_id)
-    {
-        return false;
-    }
-
-    /**
-     * Find a transaction fee from a transaction amount. Regular fees aren't taken into account.
-     *
-     * @param  float $amount A transaction amount.
-     * @return float The fee.
-     */
-    public function get_transaction_fee($amount)
-    {
-        return 0.39;
-    }
-
-    /**
-     * Get a list of card types.
-     *
-     * @param  ?string $it The card type to select by default (null: don't care).
-     * @return Tempcode The list.
-     */
-    public function create_selection_list_card_types($it = null)
-    {
-        $list = new Tempcode();
-        $array = array('Visa', 'Master Card', 'Switch', 'UK Maestro', 'Maestro', 'Solo', 'Delta', 'American Express', 'Diners Card', 'JCB');
-        foreach ($array as $x) {
-            $list->attach(form_input_list_entry($x, $it == $x));
-        }
-        return $list;
-    }
-
-    /**
-     * Perform a transaction.
-     *
-     * @param  ?ID_TEXT $trans_id The transaction ID (null: generate one).
-     * @param  SHORT_TEXT $cardholder_name Cardholder name.
-     * @param  SHORT_TEXT $card_type Card Type.
-     * @set    "Visa" "Master Card" "Switch" "UK Maestro" "Maestro" "Solo" "Delta" "American Express" "Diners Card" "JCB"
-     * @param  SHORT_TEXT $card_number Card number.
-     * @param  SHORT_TEXT $card_start_date Card Start date.
-     * @param  SHORT_TEXT $card_expiry_date Card Expiry date.
-     * @param  integer $card_issue_number Card Issue number.
-     * @param  SHORT_TEXT $card_cv2 Card CV2 number (security number).
-     * @param  SHORT_TEXT $amount Transaction amount.
-     * @param  ID_TEXT $currency The currency
-     * @param  LONG_TEXT $billing_street_address Street address (billing, i.e. AVS)
-     * @param  SHORT_TEXT $billing_city Town/City (billing, i.e. AVS)
-     * @param  SHORT_TEXT $billing_county County (billing, i.e. AVS)
-     * @param  SHORT_TEXT $billing_state State (billing, i.e. AVS)
-     * @param  SHORT_TEXT $billing_post_code Postcode/Zip (billing, i.e. AVS)
-     * @param  SHORT_TEXT $billing_country Country (billing, i.e. AVS)
-     * @param  SHORT_TEXT $shipping_firstname First name (shipping)
-     * @param  SHORT_TEXT $shipping_lastname Last name (shipping)
-     * @param  LONG_TEXT $shipping_street_address Street address (shipping)
-     * @param  SHORT_TEXT $shipping_city Town/City (shipping)
-     * @param  SHORT_TEXT $shipping_county County (shipping)
-     * @param  SHORT_TEXT $shipping_state State (shipping)
-     * @param  SHORT_TEXT $shipping_post_code Postcode/Zip (shipping)
-     * @param  SHORT_TEXT $shipping_country Country (shipping)
-     * @param  SHORT_TEXT $shipping_email E-mail address (shipping)
-     * @param  SHORT_TEXT $shipping_phone Phone number (shipping)
-     * @param  ?integer $length The subscription length in the units. (null: not a subscription)
-     * @param  ?ID_TEXT $length_units The length units. (null: not a subscription)
-     * @set    d w m y
-     * @return array A tuple: success (boolean), trans-ID (string), message (string), raw message (string).
-     */
-    public function do_local_transaction($trans_id, $cardholder_name, $card_type, $card_number, $card_start_date, $card_expiry_date, $card_issue_number, $card_cv2, $amount, $currency, $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country, $shipping_firstname = '', $shipping_lastname = '', $shipping_street_address = '', $shipping_city = '', $shipping_county = '', $shipping_state = '', $shipping_post_code = '', $shipping_country = '', $shipping_email = '', $shipping_phone = '', $length = null, $length_units = null)
-    {
-        if ($trans_id === null) {
-            $trans_id = $this->generate_trans_id();
-        }
-        $username = $this->_get_username();
-        $password_2 = get_option('payment_gateway_vpn_password');
-        $digest = md5($trans_id . strval($amount) . get_option('payment_gateway_vpn_password'));
-        $options = 'currency=' . $currency . ',card_type=' . str_replace(',', '', $card_type) . ',digest=' . $digest . ',cv2=' . strval(intval($card_cv2)) . ',mand_cv2=true';
-        if (ecommerce_test_mode()) {
-            $options .= ',test_status=true';
-        }
-        if ($length !== null) {
-            list($length_units_2, $first_repeat) = $this->_translate_subscription_details($length, $length_units);
-            $options .= ',repeat=' . $first_repeat . '/' . $length_units_2 . '/0/' . $amount;
-        }
-
-        $item_name = $GLOBALS['SITE_DB']->query_select_value('trans_expecting', 'e_item_name', array('id' => $trans_id));
-
-        $shipping_street_address_lines = explode("\n", $shipping_street_address, 2);
-        $shipping_address = 'ship_name=' . $shipping_firstname . ' ' . $shipping_lastname . ',';
-        $shipping_address .= 'ship_addr_1=' . $shipping_street_address_lines[0] . ',';
-        $shipping_address .= 'ship_addr_2=' . (isset($shipping_street_address_lines[1]) ? $shipping_street_address_lines[1] : '') . ',';
-        $shipping_address .= 'ship_city=' . $shipping_city . ',';
-        $shipping_address .= 'ship_state=' . $shipping_state . ',';
-        $shipping_address .= 'ship_country=' . $shipping_country . ',';
-        $shipping_address .= 'ship_post_code=' . $shipping_post_code . ',';
-        $shipping_address .= 'ship_tel=' . $shipping_phone . ',';
-        $shipping_address .= 'ship_email=' . $shipping_email;
-
-        $billing_street_address_lines = explode("\n", $billing_street_address, 2);
-        $billing_address = 'bill_addr_1=' . $billing_street_address_lines[0] . ',';
-        $billing_address .= 'bill_addr_2=' . (isset($billing_street_address_lines[1]) ? $billing_street_address_lines[1] : '') . ',';
-        $billing_address .= 'bill_city=' . $billing_city . ',';
-        $billing_address .= 'bill_state=' . $billing_state . ',';
-        $billing_address .= 'bill_country=' . $billing_country . ',';
-        $billing_address .= 'bill_post_code=' . $billing_post_code;
-
-        require_lang('ecommerce');
-
-        require_code('xmlrpc');
-        $result = xml_rpc('https://www.secpay.com:443/secxmlrpc/make_call', 'SECVPN.validateCardFull', array($username, $password_2, $trans_id, get_ip_address(), $cardholder_name, $card_number, $amount, $card_expiry_date, $card_issue_number, $card_start_date, $currency, '', '', $options, $item_name, $shipping_address, $billing_address));
-        $pos_1 = strpos($result, '<value>');
-        if ($pos_1 === false) {
-            fatal_exit(do_lang('INTERNAL_ERROR'));
-        }
-        $pos_2 = strpos($result, '</value>');
-        $value = @html_entity_decode(trim(substr($result, $pos_1 + 7, $pos_2 - $pos_1 - 7)), ENT_QUOTES, get_charset());
-        if (substr($value, 0, 1) == '?') {
-            $value = substr($value, 1);
-        }
-        $_map = explode('&', $value);
-        $map = array();
-        foreach ($_map as $x) {
-            $explode = explode('=', $x);
-            if (count($explode) == 2) {
-                $map[$explode[0]] = $explode[1];
-            }
-        }
-
-        $success = ((array_key_exists('code', $map)) && (($map['code'] == 'A') || ($map['code'] == 'P:P')));
-        $message_raw = array_key_exists('message', $map) ? $map['message'] : do_lang('INTERNAL_ERROR');
-        $message = $success ? do_lang('ACCEPTED_MESSAGE', $message_raw) : do_lang('DECLINED_MESSAGE', $message_raw);
-
-        return array($success, $trans_id, $message, $message_raw);
-    }
-
-    /**
      * Handle IPN's. The function may produce output, which would be returned to the Payment Gateway. The function may do transaction verification.
      *
      * @return array A long tuple of collected data. Emulates some of the key variables of the PayPal IPN response.
@@ -506,5 +393,118 @@ class Hook_payment_gateway_secpay
         }
 
         return null;
+    }
+
+    /**
+     * Find whether the hook auto-cancels (if it does, auto cancel the given subscription).
+     *
+     * @param  AUTO_LINK $subscription_id ID of the subscription to cancel.
+     * @return ?boolean True: yes. False: no. (null: cancels via a user-URL-directioning)
+     */
+    public function auto_cancel($subscription_id)
+    {
+        return false;
+    }
+
+    /**
+     * Perform a transaction.
+     *
+     * @param  ?ID_TEXT $trans_id The transaction ID (null: generate one).
+     * @param  SHORT_TEXT $cardholder_name Cardholder name.
+     * @param  SHORT_TEXT $card_type Card Type.
+     * @set    "Visa" "Master Card" "Switch" "UK Maestro" "Maestro" "Solo" "Delta" "American Express" "Diners Card" "JCB"
+     * @param  SHORT_TEXT $card_number Card number.
+     * @param  SHORT_TEXT $card_start_date Card Start date.
+     * @param  SHORT_TEXT $card_expiry_date Card Expiry date.
+     * @param  integer $card_issue_number Card Issue number.
+     * @param  SHORT_TEXT $card_cv2 Card CV2 number (security number).
+     * @param  SHORT_TEXT $amount Transaction amount.
+     * @param  ID_TEXT $currency The currency
+     * @param  LONG_TEXT $billing_street_address Street address (billing, i.e. AVS)
+     * @param  SHORT_TEXT $billing_city Town/City (billing, i.e. AVS)
+     * @param  SHORT_TEXT $billing_county County (billing, i.e. AVS)
+     * @param  SHORT_TEXT $billing_state State (billing, i.e. AVS)
+     * @param  SHORT_TEXT $billing_post_code Postcode/Zip (billing, i.e. AVS)
+     * @param  SHORT_TEXT $billing_country Country (billing, i.e. AVS)
+     * @param  SHORT_TEXT $shipping_firstname First name (shipping)
+     * @param  SHORT_TEXT $shipping_lastname Last name (shipping)
+     * @param  LONG_TEXT $shipping_street_address Street address (shipping)
+     * @param  SHORT_TEXT $shipping_city Town/City (shipping)
+     * @param  SHORT_TEXT $shipping_county County (shipping)
+     * @param  SHORT_TEXT $shipping_state State (shipping)
+     * @param  SHORT_TEXT $shipping_post_code Postcode/Zip (shipping)
+     * @param  SHORT_TEXT $shipping_country Country (shipping)
+     * @param  SHORT_TEXT $shipping_email E-mail address (shipping)
+     * @param  SHORT_TEXT $shipping_phone Phone number (shipping)
+     * @param  ?integer $length The subscription length in the units. (null: not a subscription)
+     * @param  ?ID_TEXT $length_units The length units. (null: not a subscription)
+     * @set    d w m y
+     * @return array A tuple: success (boolean), message (string), raw message (string).
+     */
+    public function do_local_transaction($trans_id, $cardholder_name, $card_type, $card_number, $card_start_date, $card_expiry_date, $card_issue_number, $card_cv2, $amount, $currency, $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country, $shipping_firstname = '', $shipping_lastname = '', $shipping_street_address = '', $shipping_city = '', $shipping_county = '', $shipping_state = '', $shipping_post_code = '', $shipping_country = '', $shipping_email = '', $shipping_phone = '', $length = null, $length_units = null)
+    {
+        if ($trans_id === null) {
+            $trans_id = $this->generate_trans_id();
+        }
+        $username = $this->_get_username();
+        $password_2 = get_option('payment_gateway_vpn_password');
+        $digest = md5($trans_id . strval($amount) . get_option('payment_gateway_vpn_password'));
+        $options = 'currency=' . $currency . ',card_type=' . str_replace(',', '', $card_type) . ',digest=' . $digest . ',cv2=' . strval(intval($card_cv2)) . ',mand_cv2=true';
+        if (ecommerce_test_mode()) {
+            $options .= ',test_status=true';
+        }
+        if ($length !== null) {
+            list($length_units_2, $first_repeat) = $this->_translate_subscription_details($length, $length_units);
+            $options .= ',repeat=' . $first_repeat . '/' . $length_units_2 . '/0/' . $amount;
+        }
+
+        $item_name = $GLOBALS['SITE_DB']->query_select_value('trans_expecting', 'e_item_name', array('id' => $trans_id));
+
+        $shipping_street_address_lines = explode("\n", $shipping_street_address, 2);
+        $shipping_address = 'ship_name=' . $shipping_firstname . ' ' . $shipping_lastname . ',';
+        $shipping_address .= 'ship_addr_1=' . $shipping_street_address_lines[0] . ',';
+        $shipping_address .= 'ship_addr_2=' . (isset($shipping_street_address_lines[1]) ? $shipping_street_address_lines[1] : '') . ',';
+        $shipping_address .= 'ship_city=' . $shipping_city . ',';
+        $shipping_address .= 'ship_state=' . $shipping_state . ',';
+        $shipping_address .= 'ship_country=' . $shipping_country . ',';
+        $shipping_address .= 'ship_post_code=' . $shipping_post_code . ',';
+        $shipping_address .= 'ship_tel=' . $shipping_phone . ',';
+        $shipping_address .= 'ship_email=' . $shipping_email;
+
+        $billing_street_address_lines = explode("\n", $billing_street_address, 2);
+        $billing_address = 'bill_addr_1=' . $billing_street_address_lines[0] . ',';
+        $billing_address .= 'bill_addr_2=' . (isset($billing_street_address_lines[1]) ? $billing_street_address_lines[1] : '') . ',';
+        $billing_address .= 'bill_city=' . $billing_city . ',';
+        $billing_address .= 'bill_state=' . $billing_state . ',';
+        $billing_address .= 'bill_country=' . $billing_country . ',';
+        $billing_address .= 'bill_post_code=' . $billing_post_code;
+
+        require_lang('ecommerce');
+
+        require_code('xmlrpc');
+        $result = xml_rpc('https://www.secpay.com:443/secxmlrpc/make_call', 'SECVPN.validateCardFull', array($username, $password_2, $trans_id, get_ip_address(), $cardholder_name, $card_number, $amount, $card_expiry_date, $card_issue_number, $card_start_date, $currency, '', '', $options, $item_name, $shipping_address, $billing_address));
+        $pos_1 = strpos($result, '<value>');
+        if ($pos_1 === false) {
+            fatal_exit(do_lang('INTERNAL_ERROR'));
+        }
+        $pos_2 = strpos($result, '</value>');
+        $value = @html_entity_decode(trim(substr($result, $pos_1 + 7, $pos_2 - $pos_1 - 7)), ENT_QUOTES, get_charset());
+        if (substr($value, 0, 1) == '?') {
+            $value = substr($value, 1);
+        }
+        $_map = explode('&', $value);
+        $map = array();
+        foreach ($_map as $x) {
+            $explode = explode('=', $x);
+            if (count($explode) == 2) {
+                $map[$explode[0]] = $explode[1];
+            }
+        }
+
+        $success = ((array_key_exists('code', $map)) && (($map['code'] == 'A') || ($map['code'] == 'P:P')));
+        $message_raw = array_key_exists('message', $map) ? $map['message'] : do_lang('INTERNAL_ERROR');
+        $message = $success ? do_lang('ACCEPTED_MESSAGE', $message_raw) : do_lang('DECLINED_MESSAGE', $message_raw);
+
+        return array($success, $message, $message_raw);
     }
 }

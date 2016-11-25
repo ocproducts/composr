@@ -27,6 +27,21 @@ class Hook_payment_gateway_authorize
     //  the live login is the Composr Composr "Gateway username" option
     //  the testing login is the Composr "Testing mode gateway username" option
     //  the transaction key is the Composr "Gateway digest code" option; it may be blank ; if they are different for the live and testing logins then separate them with ";"
+    // The subscription button isn't great. The merchant needs to manually go into the Authorize.Net backend and configure the subscription details for the transaction. That's an API limitation. Probably best to use PayPal to be honest, or go through a full PCI compliance and do local payments (which works well).
+
+    protected $api_parameters = null;
+    protected $url = null;
+
+    /**
+     * Find a transaction fee from a transaction amount. Regular fees aren't taken into account.
+     *
+     * @param  float $amount A transaction amount.
+     * @return float The fee.
+     */
+    public function get_transaction_fee($amount)
+    {
+        return 0.3 + 0.029 * $amount;
+    }
 
     /**
      * Get authorize access detail
@@ -49,17 +64,17 @@ class Hook_payment_gateway_authorize
     /**
      * Calculate fingerprint for form.
      *
-     * @param  string $loginid Login Id.
+     * @param  string $login_id Login ID.
      * @param  string $x_tran_key Transaction key
      * @param  float $amount A transaction amount.
      * @param  integer $sequence Sequence number.
      * @param  integer $timestamp Timestamp
      * @param  ID_TEXT $currency The currency to use.
-     * @return ARRAY
+     * @return string Fingerprint
      */
-    protected function _get_finger_print($loginid, $x_tran_key, $amount, $sequence, $timestamp, $currency)
+    protected function _get_finger_print($login_id, $x_tran_key, $amount, $sequence, $timestamp, $currency)
     {
-        return $this->_hmac($x_tran_key, $loginid . '^' . strval($sequence) . '^' . strval($timestamp) . '^' . float_to_raw_string($amount) . '^' . $currency);
+        return $this->_hmac($x_tran_key, $login_id . '^' . strval($sequence) . '^' . strval($timestamp) . '^' . float_to_raw_string($amount) . '^' . $currency);
     }
 
     /**
@@ -143,16 +158,17 @@ class Hook_payment_gateway_authorize
      */
     public function make_transaction_button($type_code, $item_name, $purchase_id, $amount, $currency)
     {
-        list($loginid, $transaction_key) = $this->_get_access_details();
+        // http://www.authorize.net/content/dam/authorize/documents/SIM_guide.pdf
+
+        list($login_id, $transaction_key) = $this->_get_access_details();
 
         $form_url = $this->_get_remote_form_url();
 
         $timestamp = time();
+        $sequence = mt_rand(1, mt_getrandmax()); // Any random number
+        $fingerprint = $this->_get_finger_print($login_id, $transaction_key, $amount, $sequence, $timestamp, $currency);
 
-        $sequence = mt_rand(1, mt_getrandmax());
-
-        // Insert the form elements required for SIM
-        $fingerprint = $this->_get_finger_print($loginid, $transaction_key, $amount, $sequence, $time_stamp, $currency);
+        $trans_id = $this->generate_trans_id();
 
         $GLOBALS['SITE_DB']->query_insert('trans_expecting', array(
             'id' => $trans_id,
@@ -176,7 +192,7 @@ class Hook_payment_gateway_authorize
             'TIMESTAMP' => strval($timestamp),
             'FINGERPRINT' => $fingerprint,
             'PURCHASE_ID' => $purchase_id,
-            'LOGINID' => $loginid,
+            'LOGIN_ID' => $login_id,
             'AMOUNT' => float_to_raw_string($amount),
             'IS_TEST' => ecommerce_test_mode(),
             'CUST_ID' => strval(get_member()),
@@ -199,7 +215,49 @@ class Hook_payment_gateway_authorize
      */
     public function make_subscription_button($type_code, $item_name, $purchase_id, $amount, $length, $length_units, $currency)
     {
-        // TODO
+        // http://www.authorize.net/content/dam/authorize/documents/SIM_guide.pdf (DPM not SIM, see Appendix C)
+
+        list($login_id, $transaction_key) = $this->_get_access_details();
+
+        $form_url = $this->_get_remote_form_url();
+
+        $timestamp = time();
+        $sequence = mt_rand(1, mt_getrandmax());
+        $fingerprint = $this->_get_finger_print($login_id, $transaction_key, $amount, $sequence, $timestamp, $currency);
+
+        $trans_id = $this->generate_trans_id();
+
+        $GLOBALS['SITE_DB']->query_insert('trans_expecting', array(
+            'id' => $trans_id,
+            'e_type_code' => $type_code,
+            'e_purchase_id' => $purchase_id,
+            'e_item_name' => $item_name,
+            'e_member_id' => get_member(),
+            'e_amount' => float_to_raw_string($amount),
+            'e_currency' => $currency,
+            'e_ip_address' => get_ip_address(),
+            'e_session_id' => get_session_id(),
+            'e_time' => time(),
+            'e_length' => null,
+            'e_length_units' => '',
+        ));
+
+        return do_template('ECOM_SUBSCRIPTION_BUTTON_VIA_AUTHORIZE', array(
+            '_GUID' => '8c8b9ce1f60323e118da1bef416adff3',
+            'TYPE_CODE' => $type_code,
+            'FORM_URL' => $form_url,
+            'SEQUENCE' => strval($sequence),
+            'TIMESTAMP' => strval($timestamp),
+            'FINGERPRINT' => $fingerprint,
+            'PURCHASE_ID' => $purchase_id,
+            'LOGIN_ID' => $login_id,
+            'AMOUNT' => float_to_raw_string($amount),
+            'IS_TEST' => ecommerce_test_mode(),
+            'CUST_ID' => strval(get_member()),
+            'CURRENCY' => $currency,
+            'LENGTH' => strval($length),
+            'LENGTH_UNITS' => $length_units,
+        ));
     }
 
     /**
@@ -211,6 +269,66 @@ class Hook_payment_gateway_authorize
     public function make_cancel_button($purchase_id)
     {
         return do_template('ECOM_SUBSCRIPTION_CANCEL_BUTTON_VIA_AUTHORIZE', array('_GUID' => '191d7449161eb5c4f6129cf89e5e8e7e', 'PURCHASE_ID' => $purchase_id));
+    }
+
+    /**
+     * Handle IPN's. The function may produce output, which would be returned to the Payment Gateway. The function may do transaction verification.
+     *
+     * @return array A long tuple of collected data. Emulates some of the key variables of the PayPal IPN response.
+     */
+    public function handle_ipn_transaction()
+    {
+        $success = (post_param_string('x_response_code', '') == '1');
+        $response_text = post_param_string('x_response_reason_text', '');
+        $subscription_id = post_param_string('x_subscription_id', '');
+        $period = '';
+        $transaction_id = post_param_string('x_trans_id', '');
+        $purchase_id = post_param_string('x_description', '');
+        $reason_code = post_param_string('x_response_reason_code', '');
+        $amount = post_param_integer('x_amount', 0);
+        $currency = post_param_string('x_currency_code', get_option('currency'));
+        $parent_txn_id = '';
+        $pending_reason = '';
+        $memo = '';
+        $item_name = $GLOBALS['SITE_DB']->query_select_value('trans_expecting', 'e_item_name', array('e_purchase_id' => $purchase_id));
+        if ($subscription_id != '') {
+            $payment_status = $success ? 'Completed' : 'SCancelled';
+        } else {
+            $payment_status = $success ? 'Completed' : 'Failed';
+        }
+        $txn_id = ($subscription_id != '') ? $subscription_id : $transaction_id;
+
+        if (addon_installed('shopping')) {
+            $this->store_shipping_address($purchase_id);
+        }
+
+        return array($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $amount, $currency, $txn_id, $parent_txn_id, $period);
+    }
+
+    /**
+     * Store shipping address for orders.
+     *
+     * @param  AUTO_LINK $order_id Order ID.
+     * @return ?mixed Address ID (null: No address record found).
+     */
+    public function store_shipping_address($order_id)
+    {
+        if ($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order_addresses', 'id', array('order_id' => $order_id)) === null) {
+            $shipping_address = array(
+                'order_id' => $order_id,
+                'firstname' => trim(post_param_string('x_ship_to_first_name', '') . ', ' . post_param_string('x_ship_to_company', ''), ' ,'),
+                'lastname' => post_param_string('x_ship_to_last_name', ''),
+                'street_address' => post_param_string('x_ship_to_address', ''),
+                'city' => post_param_string('x_ship_to_city', ''),
+                'county' => '',
+                'state' => post_param_string('x_ship_to_state', ''),
+                'post_code' => post_param_string('x_ship_to_zip', ''),
+                'country' => post_param_string('x_ship_to_country', ''),
+                'email' => post_param_string('x_email', ''),
+                'phone' => post_param_string('x_phone', ''),
+            );
+            return $GLOBALS['SITE_DB']->query_insert('shopping_order_addresses', $shipping_address, true);
+        }
     }
 
     /**
@@ -230,12 +348,10 @@ class Hook_payment_gateway_authorize
         $response = http_download_file($this->url, null, true, false, 'Composr', array($this->api_parameters), null, null, null, null, null, null, null, 12.0, true); // TODO: Update in v11
 
         if ($response !== null) {
-            $response_result = $this->parse_return($response);
-            $success = ($response_result[0] == 'OK') ? true : false;
-            $result = array($success, $response_result[1], $response_result[2], $response_result[3]);
+            list($result_code, $code, $text, $subscription_id) = $this->_parse_arb_return($response);
+            $success = ($result_code == 'OK');
         } else {
             $success = false;
-            $result = array(false, null, null, null);
         }
 
         return $success;
@@ -248,35 +364,24 @@ class Hook_payment_gateway_authorize
      */
     protected function _set_cancelation_api_parameters($subscription_id)
     {
-        list($loginid, $transaction_key) = $this->_get_access_details();
+        list($login_id, $transaction_key) = $this->_get_access_details();
 
         if (ecommerce_test_mode()) {
             //URL for test account
-            $this->url = "https://apitest.authorize.net/xml/v1/request.api";
+            $this->url = 'https://apitest.authorize.net/xml/v1/request.api';
         } else {
             //URL for live account
-            $this->url = "https://api.authorize.net/xml/v1/request.api";
+            $this->url = 'https://api.authorize.net/xml/v1/request.api';
         }
 
         $this->api_parameters =
-            "<ARBCancelSubscriptionRequest xmlns=\"AnetApi/xml/v1/schema/AnetApiSchema.xsd\">" .
-            "<merchantAuthentication>" .
-            "<name>" . $loginid . "</name>" .
-            "<transactionKey>" . $transaction_key . "</transactionKey>" .
-            "</merchantAuthentication>" .
-            "<subscriptionId>" . $subscription_id . "</subscriptionId>" .
-            "</ARBCancelSubscriptionRequest>";
-    }
-
-    /**
-     * Find a transaction fee from a transaction amount. Regular fees aren't taken into account.
-     *
-     * @param  float $amount A transaction amount.
-     * @return float The fee.
-     */
-    public function get_transaction_fee($amount)
-    {
-        return 0.3 + 0.029 * $amount;
+            '<ARBCancelSubscriptionRequest xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd">' .
+                '<merchantAuthentication>' .
+                    '<name>' . $login_id . '</name>' .
+                    '<transactionKey>' . $transaction_key . '</transactionKey>' .
+                '</merchantAuthentication>' .
+                '<subscriptionId>' . strval($subscription_id) . '</subscriptionId>' .
+            '</ARBCancelSubscriptionRequest>';
     }
 
     /**
@@ -316,42 +421,360 @@ class Hook_payment_gateway_authorize
      */
     public function do_local_transaction($trans_id, $cardholder_name, $card_type, $card_number, $card_start_date, $card_expiry_date, $card_issue_number, $card_cv2, $amount, $currency, $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country, $shipping_firstname = '', $shipping_lastname = '', $shipping_street_address = '', $shipping_city = '', $shipping_county = '', $shipping_state = '', $shipping_post_code = '', $shipping_country = '', $shipping_email = '', $shipping_phone = '', $length = null, $length_units = null)
     {
-        // TODO
+        $card_number = str_replace(array('-', ' '), array('', ''), $card_number);
+
+        $purchase_id = post_param_string('customfld1', '-1');
+
+        if ($purchase_id != '-1') {
+            $description = $purchase_id;
+        }
+
+        $result = array(false, null, null, null); // Default until re-set
+
+        $cardholder_name_parts = explode(' ', $cardholder_name);
+        if (count($cardholder_name_parts) > 1) {
+            $billing_lastname = $cardholder_name_parts[count($cardholder_name_parts) - 1];
+            unset($cardholder_name_parts[count($cardholder_name_parts) - 1]);
+        } else {
+            $billing_lastname = '';
+        }
+        $billing_firstname = implode(' ', $cardholder_name_parts);
+
+        if ($length === null) {
+            // Direct transaction...
+
+            $this->_set_aim_parameters($card_number, $card_expiry_date, $card_cv2, $description, $amount, $billing_firstname, $billing_lastname, $billing_street_address, $billing_city, $billing_state, $billing_post_code, $billing_country, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_state, $shipping_post_code, $shipping_country, $shipping_email, $shipping_phone);
+
+            $response_data = http_download_file($this->url, null, true, false, 'Composr', $this->api_parameters, null, null, null, null, null, null, null, 12.0); // TODO: Update in v11
+
+            if ($response_data !== null) {
+                $response_result = explode($this->api_parameters['x_delim_char'], $response_data);
+
+                /*
+                Response Format, a big list of details, 68 in total, but these are the key ones...
+                $response_result[0] = Response Code. 1=Approved, 2=Declined, 3=Error
+                $response_result[1] = Response Subcode. A code used by the system for internal transaction tracking.
+                $response_result[2] = Response Reason Code. A code representing more details about the result of the transaction.
+                $response_result[3] = Response Reason Text. Brief description of the result, which corresponds with the Response Reason Code.
+                $response_result[6] = Transaction ID
+                */
+
+                if (!array_key_exists(1, $response_result)) {
+                    $response_result[1] = '';
+                }
+                if (!array_key_exists(2, $response_result)) {
+                    $response_result[2] = '';
+                }
+                if (!array_key_exists(3, $response_result)) {
+                    $response_result[3] = '';
+                }
+                if (!array_key_exists(6, $response_result)) {
+                    $response_result[6] = '';
+                }
+
+                $success = ($response_result[0] == 1);
+                $code = ($success) ? $response_result[6] : $response_result[2];
+                $response_reason_text = ($success) ? 'success' : $response_result[3];
+                $result = array($success, $code, $response_reason_text, $response_result[1]);
+            }
+        } else {
+            // Subscription...
+
+            /*
+            Response Format, XML...
+            */
+
+            if ($length_units == 'm') {
+                $length_units = 'months';
+            }
+            if ($length_units == 'd') {
+                $length_units = 'days';
+            }
+            if ($length_units == 'y') {
+                $length_units = 'months';
+                $length = 12 * $length;
+            }
+
+            $start_date = date('Y-m-d');
+
+            $this->_set_arb_parameters($card_number, $card_expiry_date, $card_cv2, $start_date, $length, $length_units, $description, $amount, $billing_firstname, $billing_lastname, $billing_street_address, $billing_city, $billing_state, $billing_post_code, $billing_country, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_state, $shipping_post_code, $shipping_country, $shipping_email, $shipping_phone);
+
+            $response_data = http_download_file($this->url, null, true, false, 'Composr', array($this->api_parameters), null, null, null, null, null, null, null, 30.0, true); // TODO: Update in v11
+
+            if ($response_data !== null) {
+                list($result_code, $code, $text, $subscription_id) = $this->_parse_arb_return($response_data);
+
+                $success = ($result_code == 'OK');
+
+                if ($success) {
+                    $text = do_lang('SUCCESS');
+                }
+
+                $result = array($success, $text, $code);
+            }
+        }
+
+        return $result;
     }
 
     /**
-     * Handle IPN's. The function may produce output, which would be returned to the Payment Gateway. The function may do transaction verification.
+     * This function defines the parameters needed to make an Advanced Integration Method (AIM) call.
      *
-     * @return array A long tuple of collected data. Emulates some of the key variables of the PayPal IPN response.
+     * @param  SHORT_TEXT $card_number Card number.
+     * @param  SHORT_TEXT $card_expiry_date Card Expiry date.
+     * @param  SHORT_TEXT $card_cv2 Card CV2 number (security number).
+     * @param  string $description Description
+     * @param  SHORT_TEXT $amount Transaction amount.
+     * @param  SHORT_TEXT $billing_firstname Cardholder first name.
+     * @param  SHORT_TEXT $billing_lastname Cardholder last name.
+     * @param  LONG_TEXT $billing_street_address Street address (billing, i.e. AVS)
+     * @param  SHORT_TEXT $billing_city Town/City (billing, i.e. AVS)
+     * @param  SHORT_TEXT $billing_state State (billing, i.e. AVS)
+     * @param  SHORT_TEXT $billing_post_code Postcode/Zip (billing, i.e. AVS)
+     * @param  SHORT_TEXT $billing_country Country (billing, i.e. AVS)
+     * @param  SHORT_TEXT $shipping_firstname First name (shipping)
+     * @param  SHORT_TEXT $shipping_lastname Last name (shipping)
+     * @param  LONG_TEXT $shipping_street_address Street address (shipping)
+     * @param  SHORT_TEXT $shipping_city Town/City (shipping)
+     * @param  SHORT_TEXT $shipping_state State (shipping)
+     * @param  SHORT_TEXT $shipping_post_code Postcode/Zip (shipping)
+     * @param  SHORT_TEXT $shipping_country Country (shipping)
+     * @param  SHORT_TEXT $shipping_email E-mail address (shipping)
+     * @param  SHORT_TEXT $shipping_phone Phone number (shipping)
      */
-    public function handle_ipn_transaction()
+    protected function _set_aim_parameters($card_number, $card_expiry_date, $card_cv2, $description, $amount, $billing_firstname, $billing_lastname, $billing_street_address, $billing_city, $billing_state, $billing_post_code, $billing_country, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_state, $shipping_post_code, $shipping_country, $shipping_email, $shipping_phone)
     {
-        // TODO
+        // http://www.authorize.net/content/dam/authorize/documents/AIM_guide.pdf
+
+        $this->api_parameters = array();
+
+        list($login_id, $transaction_key) = $this->_get_access_details();
+
+        $this->url = ecommerce_test_mode() ? 'https://test.authorize.net/gateway/transact.dll' : 'https://secure.authorize.net/gateway/transact.dll';
+
+        $this->api_parameters['x_login'] = $login_id;
+        $this->api_parameters['x_tran_key'] = $transaction_key;
+        $this->api_parameters['x_version'] = '3.1';
+        $this->api_parameters['x_type'] = 'AUTH_CAPTURE';
+        $this->api_parameters['x_method'] = 'CC';
+        $this->api_parameters['x_card_num'] = $card_number;
+        $this->api_parameters['x_exp_date'] = $card_expiry_date;
+        $this->api_parameters['x_description'] = $description;
+        $this->api_parameters['x_delim_data'] = true;
+        $this->api_parameters['x_delim_char'] = '|';
+        $this->api_parameters['x_relay_response'] = false;
+        $this->api_parameters['x_amount'] = $amount;
+        $this->api_parameters['x_card_code'] = $card_cv2;
+        $this->api_parameters['x_customer_ip'] = get_ip_address();
+
+        if ($billing_firstname != '') {
+            $this->api_parameters['x_first_name'] = $billing_firstname;
+        }
+        if ($billing_lastname != '') {
+            $this->api_parameters['x_last_name'] = $billing_lastname;
+        }
+        if ($billing_city != '') {
+            $this->api_parameters['x_city'] = $billing_city;
+        }
+        if ($billing_state != '') {
+            $this->api_parameters['x_state'] = $billing_state;
+        }
+        if ($billing_post_code != '') {
+            $this->api_parameters['x_zip'] = $billing_post_code;
+        }
+        if ($billing_country != '') {
+            $this->api_parameters['x_country'] = $billing_country;
+        }
+
+        if ($shipping_firstname != '') {
+            $this->api_parameters['x_first_name'] = $shipping_firstname;
+        }
+        if ($shipping_lastname != '') {
+            $this->api_parameters['x_last_name'] = $shipping_lastname;
+        }
+        if ($shipping_city != '') {
+            $this->api_parameters['x_city'] = $shipping_city;
+        }
+        if ($shipping_state != '') {
+            $this->api_parameters['x_state'] = $shipping_state;
+        }
+        if ($shipping_post_code != '') {
+            $this->api_parameters['x_zip'] = $shipping_post_code;
+        }
+        if ($shipping_country != '') {
+            $this->api_parameters['x_country'] = $shipping_country;
+        }
+        if ($shipping_email != '') {
+            $this->api_parameters['x_email'] = $shipping_email;
+        }
     }
 
     /**
-     * Store shipping address for orders.
+     * This function defines the parameters needed to make an ARB (Automated Recurring Billing) call.
      *
-     * @param  AUTO_LINK $order_id Order ID.
-     * @return ?mixed Address ID (null: No address record found).
+     * @param  SHORT_TEXT $card_number Card number.
+     * @param  SHORT_TEXT $card_expiry_date Card Expiry date.
+     * @param  SHORT_TEXT $card_cv2 Card CV2 number (security number).
+     * @param  SHORT_TEXT $start_date Start date.
+     * @param  ?integer $length The subscription length in the units. (null: not a subscription)
+     * @param  ?ID_TEXT $length_units The length units. (null: not a subscription)
+     * @set    d w m y
+     * @param  string $description Description
+     * @param  SHORT_TEXT $amount Transaction amount.
+     * @param  SHORT_TEXT $billing_firstname Cardholder first name.
+     * @param  SHORT_TEXT $billing_lastname Cardholder last name.
+     * @param  LONG_TEXT $billing_street_address Street address (billing, i.e. AVS)
+     * @param  SHORT_TEXT $billing_city Town/City (billing, i.e. AVS)
+     * @param  SHORT_TEXT $billing_state State (billing, i.e. AVS)
+     * @param  SHORT_TEXT $billing_post_code Postcode/Zip (billing, i.e. AVS)
+     * @param  SHORT_TEXT $billing_country Country (billing, i.e. AVS)
+     * @param  SHORT_TEXT $shipping_firstname First name (shipping)
+     * @param  SHORT_TEXT $shipping_lastname Last name (shipping)
+     * @param  LONG_TEXT $shipping_street_address Street address (shipping)
+     * @param  SHORT_TEXT $shipping_city Town/City (shipping)
+     * @param  SHORT_TEXT $shipping_state State (shipping)
+     * @param  SHORT_TEXT $shipping_post_code Postcode/Zip (shipping)
+     * @param  SHORT_TEXT $shipping_country Country (shipping)
+     * @param  SHORT_TEXT $shipping_email E-mail address (shipping)
+     * @param  SHORT_TEXT $shipping_phone Phone number (shipping)
      */
-    public function store_shipping_address($order_id)
+    protected function _set_arb_parameters($card_number, $card_expiry_date, $card_cv2, $start_date, $length, $length_units, $description, $amount, $billing_firstname, $billing_lastname, $billing_street_address, $billing_city, $billing_state, $billing_post_code, $billing_country, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_state, $shipping_post_code, $shipping_country, $shipping_email, $shipping_phone)
     {
-        if ($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order_addresses', 'id', array('order_id' => $order_id)) === null) {
-            $shipping_address = array(
-                'order_id' => $order_id,
-                'firstname' => trim(post_param_string('x_ship_to_first_name', '') . ', ' . post_param_string('x_ship_to_company', ''), ' ,'),
-                'lastname' => post_param_string('x_ship_to_last_name', ''),
-                'street_address' => post_param_string('x_ship_to_address', ''),
-                'city' => post_param_string('x_ship_to_city', ''),
-                'county' => '',
-                'state' => post_param_string('x_ship_to_state', ''),
-                'post_code' => post_param_string('x_ship_to_zip', ''),
-                'country' => post_param_string('x_ship_to_country', ''),
-                'email' => post_param_string('x_email', ''),
-                'phone' => post_param_string('x_phone', ''),
-            );
-            return $GLOBALS['SITE_DB']->query_insert('shopping_order_addresses', $shipping_address, true);
+        // http://www.authorize.net/content/dam/authorize/documents/ARB_guide.pdf
+
+        list($login_id, $transaction_key) = $this->_get_access_details();
+
+        if (ecommerce_test_mode()) {
+            //URL for test account
+            $this->url = 'https://apitest.authorize.net/xml/v1/request.api';
+        } else {
+            //URL for live account
+            $this->url = 'https://api.authorize.net/xml/v1/request.api';
+        }
+
+        $this->api_parameters =
+        '<ARBCreateSubscriptionRequest xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd">' .
+            '<merchantAuthentication>' .
+                '<name>' . $login_id . '</name>' .
+                '<transactionKey>' . $transaction_key . '</transactionKey>' .
+            '</merchantAuthentication>' .
+            '<subscription>' .
+                '<name>' . $description . '</name>' .
+
+                '<customer>' .
+                    '<id>' . strval(get_member()) . '</id>' .
+                    '<email>' . $shipping_email . '</email>' .
+                '</customer>' .
+
+                '<paymentSchedule>' .
+                    '<interval>' .
+                        '<length>' . strval($length) . '</length>' .
+                        '<unit>' . $length_units . '</unit>' .
+                    '</interval>' .
+                    '<startDate>' . $start_date . '</startDate>' .
+                    '<totalOccurrences>9999</totalOccurrences>' .
+                '</paymentSchedule>' .
+
+                '<amount>' . $amount . '</amount>' .
+
+                '<payment>' .
+                    '<creditCard>' .
+                        '<cardNumber>' . $card_number . '</cardNumber>' .
+                        '<expirationDate>' . $card_expiry_date . '</expirationDate>' .
+                        '<cardCode>' . $card_cv2 . '</cardCode>' .
+                    '</creditCard>' .
+                '</payment>';
+
+        $this->api_parameters .=
+                '<billTo>';
+        if ($billing_firstname != '') {
+            $this->api_parameters .= '<firstName>' . $billing_firstname . '</firstName>';
+        }
+        if ($billing_lastname != '') {
+            $this->api_parameters .= '<lastName>' . $billing_lastname . '</lastName>';
+        }
+        if ($billing_street_address != '') {
+            $this->api_parameters .= '<address>' . $billing_street_address . '</address>';
+        }
+        if ($billing_city != '') {
+            $this->api_parameters .= '<city>' . $billing_city . '</city>';
+        }
+        if ($billing_state != '') {
+            $this->api_parameters .= '<state>' . $billing_state . '</state>';
+        }
+        if ($billing_post_code != '') {
+            $this->api_parameters .= '<zip>' . $billing_post_code . '</zip>';
+        }
+        if ($billing_country != '') {
+            $this->api_parameters .= '<country>' . $billing_country . '</country>';
+        }
+        $this->api_parameters .=
+                '</billTo>';
+
+        $this->api_parameters .=
+                '<shipTo>';
+        if ($shipping_firstname != '') {
+            $this->api_parameters .= '<firstName>' . $shipping_firstname . '</firstName>';
+        }
+        if ($shipping_lastname != '') {
+            $this->api_parameters .= '<lastName>' . $shipping_lastname . '</lastName>';
+        }
+        if ($shipping_street_address != '') {
+            $this->api_parameters .= '<address>' . $shipping_street_address . '</address>';
+        }
+        if ($shipping_city != '') {
+            $this->api_parameters .= '<city>' . $shipping_city . '</city>';
+        }
+        if ($shipping_state != '') {
+            $this->api_parameters .= '<state>' . $shipping_state . '</state>';
+        }
+        if ($shipping_post_code != '') {
+            $this->api_parameters .= '<zip>' . $shipping_post_code . '</zip>';
+        }
+        if ($shipping_country != '') {
+            $this->api_parameters .= '<country>' . $shipping_country . '</country>';
+        }
+        $this->api_parameters .=
+                '</shipTo>';
+
+        $this->api_parameters .=
+            '</subscription>' .
+        '</ARBCreateSubscriptionRequest>';
+    }
+
+    /**
+     * Function to parse ARB Authorize.net response.
+     *
+     * @param string $response The response
+     * @return array A tuple: Result code (e.g. "OK"), Status Code, Text, Subscription ID
+     */
+    protected function _parse_arb_return($response)
+    {
+       $result_code  = $this->_substring_between($response, '<resultCode>', '</resultCode>');
+       $code = $this->_substring_between($response, '<code>', '</code>'); // in <message>
+       $text = $this->_substring_between($response, '<text>', '</text>'); // in <message>
+       $subscription_id = $this->_substring_between($response,  '<subscriptionId>', '</subscriptionId>');
+
+       return array(strtoupper($result_code), $code, $text, $subscription_id);
+    }
+
+    /**
+     * Helper function for parsing response, gets a substring between two text strings.
+     *
+     * @param string $haystack The response
+     * @param string $start Start text
+     * @param string $end End text
+     * @return ?string The substring (null: error)
+     */
+    protected function _substring_between($haystack, $start, $end)
+    {
+        if (strpos($haystack, $start) === false || strpos($haystack, $end) === false) {
+            return null;
+        } else {
+            $start_position = strpos($haystack, $start) + strlen($start);
+            $end_position = strpos($haystack, $end);
+
+            return substr($haystack, $start_position, $end_position - $start_position);
         }
     }
 }

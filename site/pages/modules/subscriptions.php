@@ -141,6 +141,8 @@ class Module_subscriptions
 
         if ((!is_null($upgrade_from)) && ($upgrade_from < 6)) {
             $GLOBALS['SITE_DB']->alter_table_field('subscriptions', 's_payment_gateway', 'ID_TEXT', 's_payment_gateway');
+
+            $GLOBALS['SITE_DB']->create_index('subscriptions', 's_member_id', array('s_member_id'));
         }
 
         $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_bak;

@@ -161,6 +161,9 @@ class Module_purchase
             rename_config_option('callback_password', 'payment_gateway_callback_password');
 
             $GLOBALS['SITE_DB']->alter_table_field('transactions', 't_payment_gateway', 'ID_TEXT', 't_payment_gateway');
+
+            $GLOBALS['SITE_DB']->create_index('transactions', 't_time', array('t_time'));
+            $GLOBALS['SITE_DB']->create_index('transactions', 't_type_code', array('t_type_code'));
         }
     }
 

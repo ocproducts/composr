@@ -24,13 +24,24 @@
 class Hook_payment_gateway_paypal
 {
     /**
+     * Find a transaction fee from a transaction amount. Regular fees aren't taken into account.
+     *
+     * @param  float $amount A transaction amount.
+     * @return float The fee
+     */
+    public function get_transaction_fee($amount)
+    {
+        return round(0.25 + 0.034 * $amount, 2);
+    }
+
+    /**
      * Get the PayPal payment address.
      *
      * @return string The answer.
      */
     protected function _get_payment_address()
     {
-        return trim(ecommerce_test_mode() ? get_option('payment_gateway_test_username') : get_option('payment_gateway_username');
+        return ecommerce_test_mode() ? get_option('payment_gateway_test_username') : get_option('payment_gateway_username');
     }
 
     /**
@@ -116,6 +127,47 @@ class Hook_payment_gateway_paypal
     }
 
     /**
+     * Make a transaction (payment) button for multiple shopping cart items.
+     * Optional method, provides more detail than make_transaction_button.
+     *
+     * @param  array $items Items array.
+     * @param  Tempcode $currency Currency symbol.
+     * @param  AUTO_LINK $order_id Order ID.
+     * @return Tempcode The button.
+     */
+    public function make_cart_transaction_button($items, $currency, $order_id)
+    {
+        $payment_address = $this->_get_payment_address();
+
+        $ipn_url = $this->_get_remote_form_url();
+
+        $notification_text = do_lang_tempcode('CHECKOUT_NOTIFICATION_TEXT', strval($order_id));
+
+        $user_details = array();
+
+        if (!is_guest()) {
+            $user_details['first_name'] = get_cms_cpf('firstname');
+            $user_details['last_name'] = get_cms_cpf('lastname');
+            $user_details['address1'] = get_cms_cpf('street_address');
+            $user_details['city'] = get_cms_cpf('city');
+            $user_details['state'] = get_cms_cpf('state');
+            $user_details['zip'] = get_cms_cpf('post_code');
+            $user_details['country'] = get_cms_cpf('country');
+        }
+
+        return do_template('ECOM_CART_BUTTON_VIA_PAYPAL', array(
+            '_GUID' => '89b7edf976ef0143dd8dfbabd3378c95',
+            'ITEMS' => $items,
+            'CURRENCY' => $currency,
+            'PAYMENT_ADDRESS' => $payment_address,
+            'IPN_URL' => $ipn_url,
+            'ORDER_ID' => strval($order_id),
+            'NOTIFICATION_TEXT' => $notification_text,
+            'MEMBER_ADDRESS' => $user_details,
+        ));
+    }
+
+    /**
      * Make a subscription cancellation button.
      *
      * @param  ID_TEXT $purchase_id The purchase ID.
@@ -127,35 +179,13 @@ class Hook_payment_gateway_paypal
     }
 
     /**
-     * Find whether the hook auto-cancels (if it does, auto cancel the given subscription).
-     *
-     * @param  AUTO_LINK $subscription_id ID of the subscription to cancel.
-     * @return ?boolean True: yes. False: no. (null: cancels via a user-URL-directioning)
-     */
-    public function auto_cancel($subscription_id)
-    {
-        return null;
-    }
-
-    /**
-     * Find a transaction fee from a transaction amount. Regular fees aren't taken into account.
-     *
-     * @param  float $amount A transaction amount.
-     * @return float The fee
-     */
-    public function get_transaction_fee($amount)
-    {
-        return round(0.25 + 0.034 * $amount, 2);
-    }
-
-    /**
      * Handle IPN's. The function may produce output, which would be returned to the Payment Gateway. The function may do transaction verification.
      *
      * @return array A long tuple of collected data. Emulates some of the key variables of the PayPal IPN response.
      */
     public function handle_ipn_transaction()
     {
-        $purchase_id = post_param('custom', '-1');
+        $purchase_id = post_param_string('custom', '-1');
 
         // Read in stuff we'll just log
         $reason_code = post_param_string('reason_code', '');
@@ -352,47 +382,6 @@ class Hook_payment_gateway_paypal
     }
 
     /**
-     * Make a transaction (payment) button for multiple shopping cart items.
-     * Optional method, provides more detail than make_transaction_button.
-     *
-     * @param  array $items Items array.
-     * @param  Tempcode $currency Currency symbol.
-     * @param  AUTO_LINK $order_id Order ID.
-     * @return Tempcode The button.
-     */
-    public function make_cart_transaction_button($items, $currency, $order_id)
-    {
-        $payment_address = $this->_get_payment_address();
-
-        $ipn_url = $this->_get_remote_form_url();
-
-        $notification_text = do_lang_tempcode('CHECKOUT_NOTIFICATION_TEXT', strval($order_id));
-
-        $user_details = array();
-
-        if (!is_guest()) {
-            $user_details['first_name'] = get_cms_cpf('firstname');
-            $user_details['last_name'] = get_cms_cpf('lastname');
-            $user_details['address1'] = get_cms_cpf('street_address');
-            $user_details['city'] = get_cms_cpf('city');
-            $user_details['state'] = get_cms_cpf('state');
-            $user_details['zip'] = get_cms_cpf('post_code');
-            $user_details['country'] = get_cms_cpf('country');
-        }
-
-        return do_template('ECOM_CART_BUTTON_VIA_PAYPAL', array(
-            '_GUID' => '89b7edf976ef0143dd8dfbabd3378c95',
-            'ITEMS' => $items,
-            'CURRENCY' => $currency,
-            'PAYMENT_ADDRESS' => $payment_address,
-            'IPN_URL' => $ipn_url,
-            'ORDER_ID' => strval($order_id),
-            'NOTIFICATION_TEXT' => $notification_text,
-            'MEMBER_ADDRESS' => $user_details,
-        ));
-    }
-
-    /**
      * Store shipping address for orders.
      *
      * @param  AUTO_LINK $order_id Order ID.
@@ -432,5 +421,16 @@ class Hook_payment_gateway_paypal
     public function get_callback_url_message()
     {
         return get_param_string('message', null, true);
+    }
+
+    /**
+     * Find whether the hook auto-cancels (if it does, auto cancel the given subscription).
+     *
+     * @param  AUTO_LINK $subscription_id ID of the subscription to cancel.
+     * @return ?boolean True: yes. False: no. (null: cancels via a user-URL-directioning)
+     */
+    public function auto_cancel($subscription_id)
+    {
+        return null;
     }
 }

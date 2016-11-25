@@ -239,7 +239,6 @@ class Hook_addon_registry_ecommerce
             'themes/default/templates/ECOM_SUBSCRIPTION_CANCEL_BUTTON_VIA_AUTHORIZE.tpl',
             'themes/default/templates/ECOM_SUBSCRIPTION_BUTTON_VIA_AUTHORIZE.tpl',
             'sources/hooks/systems/payment_gateway/authorize.php',
-            'lang/EN/ecommerce_gateway_authorize.ini',
             'themes/default/templates/ECOM_LOGOS_AUTHORIZE.tpl',
             'themes/default/templates/ECOM_PAYMENT_PROCESSOR_LINKS_AUTHORIZE.tpl',
         );

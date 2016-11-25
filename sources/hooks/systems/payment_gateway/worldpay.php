@@ -23,6 +23,7 @@
  */
 class Hook_payment_gateway_worldpay
 {
+    // This is the Hosted Payment Pages API http://support.worldpay.com/support/kb/gg/hpp/Content/Home.htm
     // Requires:
     //  the "Payment Response URL" set in control panel should be set to "http://<WPDISPLAY ITEM=MC_callback>"
     //  the "Payment Response enabled?" and "Enable Recurring Payment Response" and "Enable the Shopper Response" should all be ticked (checked)
@@ -33,6 +34,17 @@ class Hook_payment_gateway_worldpay
     //  the "Shopper Redirect URL" should be left blank - arbitrary URLs are not supported, and Composr automatically injects a redirect response into Payment Response URL
     //  Logos, refund policies, and contact details [e-mail, phone, postal], may need coding into the templates (Worldpay have policies and checks). ECOM_LOGOS_WORLDPAY.tpl is included into the payment process automatically and does much of this
     //  FuturePay must be enabled for subscriptions to work (contact WorldPay about it)
+
+    /**
+     * Find a transaction fee from a transaction amount. Regular fees aren't taken into account.
+     *
+     * @param  float $amount A transaction amount.
+     * @return float The fee.
+     */
+    public function get_transaction_fee($amount)
+    {
+        return 0.045 * $amount; // for credit card. Debit card is a flat 50p
+    }
 
     /**
      * Get the gateway username.
@@ -216,28 +228,6 @@ class Hook_payment_gateway_worldpay
     }
 
     /**
-     * Find whether the hook auto-cancels (if it does, auto cancel the given subscription).
-     *
-     * @param  AUTO_LINK $subscription_id ID of the subscription to cancel.
-     * @return ?boolean True: yes. False: no. (null: cancels via a user-URL-directioning)
-     */
-    public function auto_cancel($subscription_id)
-    {
-        return false;
-    }
-
-    /**
-     * Find a transaction fee from a transaction amount. Regular fees aren't taken into account.
-     *
-     * @param  float $amount A transaction amount.
-     * @return float The fee.
-     */
-    public function get_transaction_fee($amount)
-    {
-        return 0.045 * $amount; // for credit card. Debit card is a flat 50p
-    }
-
-    /**
      * Handle IPN's. The function may produce output, which would be returned to the Payment Gateway. The function may do transaction verification.
      *
      * @return array A long tuple of collected data. Emulates some of the key variables of the PayPal IPN response.
@@ -345,5 +335,16 @@ class Hook_payment_gateway_worldpay
         }
 
         return null;
+    }
+
+    /**
+     * Find whether the hook auto-cancels (if it does, auto cancel the given subscription).
+     *
+     * @param  AUTO_LINK $subscription_id ID of the subscription to cancel.
+     * @return ?boolean True: yes. False: no. (null: cancels via a user-URL-directioning)
+     */
+    public function auto_cancel($subscription_id)
+    {
+        return false;
     }
 }

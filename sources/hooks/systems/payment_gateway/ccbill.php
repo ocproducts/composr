@@ -58,6 +58,17 @@ class Hook_payment_gateway_ccbill
     );
 
     /**
+     * Find a transaction fee from a transaction amount. Regular fees aren't taken into account.
+     *
+     * @param  float $amount A transaction amount.
+     * @return float The fee
+     */
+    public function get_transaction_fee($amount)
+    {
+        return 0.12 * $amount; // A wild guess for now
+    }
+
+    /**
      * Get the CCBill account ID
      *
      * @return string The answer.
@@ -250,28 +261,6 @@ class Hook_payment_gateway_ccbill
     }
 
     /**
-     * Find whether the hook auto-cancels (if it does, auto cancel the given subscription).
-     *
-     * @param  AUTO_LINK $subscription_id ID of the subscription to cancel.
-     * @return ?boolean True: yes. False: no. (null: cancels via a user-URL-directioning)
-     */
-    public function auto_cancel($subscription_id)
-    {
-        return false;
-    }
-
-    /**
-     * Find a transaction fee from a transaction amount. Regular fees aren't taken into account.
-     *
-     * @param  float $amount A transaction amount.
-     * @return float The fee
-     */
-    public function get_transaction_fee($amount)
-    {
-        return 0.12 * $amount; // A wild guess for now
-    }
-
-    /**
      * Handle IPN's. The function may produce output, which would be returned to the Payment Gateway. The function may do transaction verification.
      *
      * @return array A long tuple of collected data. Emulates some of the key variables of the PayPal IPN response.
@@ -348,5 +337,16 @@ class Hook_payment_gateway_ccbill
         }
 
         return null;
+    }
+
+    /**
+     * Find whether the hook auto-cancels (if it does, auto cancel the given subscription).
+     *
+     * @param  AUTO_LINK $subscription_id ID of the subscription to cancel.
+     * @return ?boolean True: yes. False: no. (null: cancels via a user-URL-directioning)
+     */
+    public function auto_cancel($subscription_id)
+    {
+        return false;
     }
 }

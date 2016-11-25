@@ -90,7 +90,7 @@ function get_transaction_fee($amount, $payment_gateway)
             $fee += floatval(get_option('transaction_flat_cost'));
         }
         if (get_option('transaction_percentage_cost') != '') {
-            $fee += floatval(get_option('transaction_percentage_cost')) / 100.0 * $amount);
+            $fee += floatval(get_option('transaction_percentage_cost')) / 100.0 * $amount;
         }
         return round($fee, 2);
     }
@@ -673,7 +673,7 @@ function handle_local_payment($payment_gateway, $object)
 
     // Process order...
 
-    list($success, , $message, $message_raw) = $object->do_local_transaction($trans_id, $cardholder_name, $card_type, $card_number, $card_start_date, $card_expiry_date, $card_issue_number, $card_cv2, $amount, $currency, $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country, $shipping_email, $shipping_phone, $length, $length_units);
+    list($success, $message, $message_raw) = $object->do_local_transaction($trans_id, $cardholder_name, $card_type, $card_number, $card_start_date, $card_expiry_date, $card_issue_number, $card_cv2, $amount, $currency, $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country, $shipping_email, $shipping_phone, $length, $length_units);
 
     if (($success) || ($length !== null)) {
         $status = (($length !== null) && (!$success)) ? 'SCancelled' : 'Completed';
