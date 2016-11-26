@@ -657,7 +657,7 @@ function make_cart_payment_button($order_id, $currency)
 
     if (!method_exists($object, 'make_cart_transaction_button')) {
         $amount = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'tot_price', array('id' => $order_id));
-        return $object->make_transaction_button('cart_orders', do_lang('CART_ORDER', $order_id), $order_id, $amount, $currency);
+        return $object->make_transaction_button('cart_orders', do_lang('CART_ORDER', $order_id), strval($order_id), $amount, $currency);
     }
 
     return $object->make_cart_transaction_button($items, $currency, $order_id);
