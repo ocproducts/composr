@@ -248,12 +248,12 @@ class Hook_ecommerce_via_ccbill
     }
 
     /**
-     * Find whether the hook auto-cancels (if it does, auto cancel the given trans-ID).
+     * Find whether the hook auto-cancels (if it does, auto cancel the given subscription).
      *
-     * @param  string $trans_id Transaction ID to cancel.
+     * @param  AUTO_LINK $subscription_id ID of the subscription to cancel.
      * @return ?boolean True: yes. False: no. (null: cancels via a user-URL-directioning)
      */
-    public function auto_cancel($trans_id)
+    public function auto_cancel($subscription_id)
     {
         return false;
     }
@@ -308,7 +308,9 @@ class Hook_ecommerce_via_ccbill
         $mc_currency = ($_mc_currency === 0) ? get_option('currency') : $this->currency_numeric_to_alphabetic_code[$_mc_currency];
 
         if (addon_installed('shopping')) {
-            $this->store_shipping_address($purchase_id);
+            if (preg_match('#' . str_replace('xxx', '.*', preg_quote(do_lang('shopping:CART_ORDER', 'xxx'), '#')) . '#', $item_name) != 0) {
+                $this->store_shipping_address(intval($purchase_id));
+            }
         }
 
         return array($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $trans_id, '');
@@ -333,7 +335,7 @@ class Hook_ecommerce_via_ccbill
             $shipping_address['address_street'] = post_param_string('address1', '');
             $shipping_address['address_zip'] = post_param_string('zipcode', '');
             $shipping_address['address_city'] = post_param_string('city', '');
-            $shipping_address['address_city'] = post_param_string('state', '');
+            $shipping_address['address_state'] = post_param_string('state', '');
             $shipping_address['address_country'] = post_param_string('country', '');
             $shipping_address['receiver_email'] = post_param_string('email', '');
             $shipping_address['contact_phone'] = post_param_string('phone_number', '');

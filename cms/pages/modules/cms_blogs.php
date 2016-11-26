@@ -262,9 +262,6 @@ class Module_cms_blogs extends Standard_crud_module
             $notes = get_param_string('notes', $notes, INPUT_FILTER_GET_COMPLEX);
 
             if ($main_news_category === null) {
-                global $NON_CANONICAL_PARAMS;
-                $NON_CANONICAL_PARAMS[] = 'cat';
-
                 $param_cat = get_param_string('cat', '');
                 if ($param_cat == '') {
                     $main_news_category = null;

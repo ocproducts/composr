@@ -275,6 +275,7 @@ function _helper_show_forum_topics($this_ref, $name, $limit, $start, &$max_rows,
     } else {
         $topic_filter_sup = '';
     }
+    $topic_filter_sup .= ' AND t_validated=1';
     if (($filter_topic_title == '') && ($filter_topic_description == '')) {
         if (($filter_topic_title == '') && ($filter_topic_description == '')) {
             $query = 'SELECT * FROM ' . $this_ref->db->get_table_prefix() . 'f_topics top' . $GLOBALS['FORUM_DB']->prefer_index('f_topics', 'unread_forums', false);

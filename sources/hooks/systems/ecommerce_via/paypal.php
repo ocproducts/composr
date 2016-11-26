@@ -127,12 +127,12 @@ class Hook_ecommerce_via_paypal
     }
 
     /**
-     * Find whether the hook auto-cancels (if it does, auto cancel the given trans-ID).
+     * Find whether the hook auto-cancels (if it does, auto cancel the given subscription).
      *
-     * @param  string $trans_id Transaction ID to cancel.
+     * @param  AUTO_LINK $subscription_id ID of the subscription to cancel.
      * @return ?boolean True: yes. False: no. (null: cancels via a user-URL-directioning)
      */
-    public function auto_cancel($trans_id)
+    public function auto_cancel($subscription_id)
     {
         return null;
     }
@@ -155,7 +155,7 @@ class Hook_ecommerce_via_paypal
      */
     public function handle_transaction()
     {
-        $purchase_id = post_param_integer('custom', '-1');
+        $purchase_id = post_param_string('custom', '-1');
 
         // Read in stuff we'll just log
         $reason_code = post_param_string('reason_code', '');
@@ -340,7 +340,9 @@ class Hook_ecommerce_via_paypal
 
         // Shopping cart
         if (addon_installed('shopping')) {
-            $this->store_shipping_address($purchase_id);
+            if (preg_match('#' . str_replace('xxx', '.*', preg_quote(do_lang('shopping:CART_ORDER', 'xxx'), '#')) . '#', $item_name) != 0) {
+                $this->store_shipping_address(intval($purchase_id));
+            }
         }
 
         return array($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, $period);

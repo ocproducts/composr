@@ -50,6 +50,10 @@ class Hook_config_comcode_page_default_review_freq
      */
     public function get_default()
     {
+        if (!addon_installed('content_reviews')) {
+            return null;
+        }
+
         return '0';
     }
 }

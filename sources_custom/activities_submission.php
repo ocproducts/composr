@@ -332,7 +332,7 @@ function log_newest_activity($id, $timeout = 1000, $force = false)
 
         // Read the current value
         rewind($fp);
-        $old_id = intval(fgets($fp, 1024));
+        $old_id = intval(fgets($fp));
         // See if we should be updating the file (IDs increase numerically)
         if ($force || ($old_id < $id)) {
             // If so then wipe the file (since we're in append mode,

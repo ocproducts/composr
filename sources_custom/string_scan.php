@@ -127,6 +127,8 @@ function string_scan($lang, $do_guessing = false)
         MAINTENANCE_SCRIPT_ACCESS
         CONFIG_OPTION_maintenance_script_htaccess
         NEWS_SUMMARY_REQUIRED
+        BACKUP_RESTORE_SUCCESS
+        CONTINUE_RESTORATION
         CONFIG_OPTION_news_summary_required
         OWNER
         TICKETS_STAFF

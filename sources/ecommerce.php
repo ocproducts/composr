@@ -73,7 +73,7 @@ function ecommerce_get_currency_symbol($currency = null)
 }
 
 /**
- * Find a transaction fee from a transaction amount. Regular fees aren't taken into account.
+ * Get transaction form fields.
  *
  * @param  ?ID_TEXT $trans_id The transaction ID (null: auto-generate)
  * @param  ID_TEXT $purchase_id The purchase ID
@@ -125,7 +125,7 @@ function get_transaction_form_fields($trans_id, $purchase_id, $item_name, $amoun
     $fields->attach(form_input_line(do_lang_tempcode('CARD_START_DATE'), do_lang_tempcode('DESCRIPTION_CARD_START_DATE'), 'start_date', ecommerce_test_mode() ? date('m/y', utctime_to_usertime(time() - 60 * 60 * 24 * 365)) : get_cms_cpf('payment_card_start_date'), true));
     $fields->attach(form_input_line(do_lang_tempcode('CARD_EXPIRY_DATE'), do_lang_tempcode('DESCRIPTION_CARD_EXPIRY_DATE'), 'expiry_date', ecommerce_test_mode() ? date('m/y', utctime_to_usertime(time() + 60 * 60 * 24 * 365)) : get_cms_cpf('payment_card_expiry_date'), true));
     $fields->attach(form_input_integer(do_lang_tempcode('CARD_ISSUE_NUMBER'), do_lang_tempcode('DESCRIPTION_CARD_ISSUE_NUMBER'), 'issue_number', intval(get_cms_cpf('payment_card_issue_number')), false));
-    $fields->attach(form_input_line(do_lang_tempcode('CARD_CV2'), do_lang_tempcode('DESCRIPTION_CARD_CV2'), 'cv2', ecommerce_test_mode() ? '123' : get_cms_cpf('payment_card_cv2'), true));
+    $fields->attach(form_input_line(do_lang_tempcode('CARD_CV2'), do_lang_tempcode('DESCRIPTION_CARD_CV2'), 'cv2', ecommerce_test_mode() ? '123' : '', true));
 
     // Shipping address fields
     require_lang('cns_special_cpf');
@@ -133,7 +133,7 @@ function get_transaction_form_fields($trans_id, $purchase_id, $item_name, $amoun
     $fields->attach(form_input_line(do_lang_tempcode('SPECIAL_CPF__cms_lastname'), '', 'last_name', get_cms_cpf('last_name'), true));
     $fields->attach(form_input_line(do_lang_tempcode('SPECIAL_CPF__cms_street_address'), '', 'address1', get_cms_cpf('street_address'), true));
     $fields->attach(form_input_line(do_lang_tempcode('SPECIAL_CPF__cms_city'), '', 'city', get_cms_cpf('city'), true));
-    $fields->attach(form_input_line(do_lang_tempcode('SPECIAL_CPF__cms_state'), '', 'zip', get_cms_cpf('state'), true));
+    $fields->attach(form_input_line(do_lang_tempcode('SPECIAL_CPF__cms_state'), '', 'state', get_cms_cpf('state'), true));
     $fields->attach(form_input_line(do_lang_tempcode('SPECIAL_CPF__cms_post_code'), '', 'zip', get_cms_cpf('post_code'), true));
     $fields->attach(form_input_line(do_lang_tempcode('SPECIAL_CPF__cms_country'), '', 'country', get_cms_cpf('country'), true));
 
@@ -161,10 +161,12 @@ function get_transaction_fee($amount, $via)
         return 0.0;
     }
 
-    if ((file_exists(get_file_base() . '/sources/hooks/systems/ecommerce_via/' . $via)) || (file_exists(get_file_base() . '/sources_custom/hooks/systems/ecommerce_via/' . $via))) {
+    if ((file_exists(get_file_base() . '/sources/hooks/systems/ecommerce_via/' . $via . '.php')) || (file_exists(get_file_base() . '/sources_custom/hooks/systems/ecommerce_via/' . $via . '.php'))) {
         require_code('hooks/systems/ecommerce_via/' . filter_naughty_harsh($via));
         $object = object_factory('Hook_ecommerce_via_' . $via);
-        return $object->get_transaction_fee($amount);
+        if (method_exists($object, 'get_transaction_fee')) {
+            return $object->get_transaction_fee($amount);
+        }
     }
 
     return 0.0;
@@ -279,7 +281,7 @@ function find_all_products($site_lang = false)
 /**
  * Find product.
  *
- * @param  ID_TEXT $search The item name/product_id
+ * @param  ID_TEXT $search The item name/product codename
  * @param  boolean $site_lang Whether to make sure the language for item_name is the site default language (crucial for when we read/go to third-party sales systems and use the item_name as a key).
  * @param  boolean $search_item_names Whether $search refers to the item name rather than the product codename
  * @return ?object The product-class object (null: not found).
@@ -316,7 +318,7 @@ function find_product($search, $site_lang = false, $search_item_names = false)
  * @param  ID_TEXT $search The product codename/item name
  * @param  boolean $site_lang Whether to make sure the language for item_name is the site default language (crucial for when we read/go to third-party sales systems and use the item_name as a key).
  * @param  boolean $search_item_names Whether $search refers to the item name rather than the product codename
- * @return array A pair: The product-class map, and the formal product name (both will be null if not found).
+ * @return array A pair: The product-class map, and the product codename (both will be null if not found).
  */
 function find_product_row($search, $site_lang = false, $search_item_names = false)
 {
@@ -641,7 +643,7 @@ function make_cart_payment_button($order_id, $currency)
 
     if (!method_exists($object, 'make_cart_transaction_button')) {
         $amount = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'tot_price', array('id' => $order_id));
-        return $object->make_transaction_button($order_id, do_lang('CART_ORDER', $order_id), $order_id, $amount, $currency);
+        return $object->make_transaction_button('cart_orders', do_lang('CART_ORDER', $order_id), strval($order_id), $amount, $currency);
     }
 
     return $object->make_cart_transaction_button($items, $currency, $order_id);

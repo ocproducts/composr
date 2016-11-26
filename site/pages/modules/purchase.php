@@ -51,7 +51,7 @@ class Module_purchase
 
         delete_privilege('access_ecommerce_in_test_mode');
 
-        $cpf = array('currency', 'payment_cardholder_name', 'payment_type', 'payment_card_number', 'payment_card_start_date', 'payment_card_expiry_date', 'payment_card_issue_number', 'payment_card_cv2');
+        $cpf = array('currency', 'payment_cardholder_name', 'payment_type', 'payment_card_number', 'payment_card_start_date', 'payment_card_expiry_date', 'payment_card_issue_number');
         foreach ($cpf as $_cpf) {
             $GLOBALS['FORUM_DRIVER']->install_delete_custom_field($_cpf);
         }
@@ -560,6 +560,14 @@ class Module_purchase
 
                 list($success, , $message, $message_raw) = $object->do_transaction($trans_id, $name, $card_number, $amount, $currency, $expiry_date, $issue_number, $start_date, $card_type, $cv2, $length, $length_units);
 
+                $item_name = $transaction_row['e_item_name'];
+
+                if (addon_installed('shopping')) {
+                    if (preg_match('#' . str_replace('xxx', '.*', preg_quote(do_lang('shopping:CART_ORDER', 'xxx'), '#')) . '#', $item_name) != 0) {
+                        $this->store_shipping_address(intval($transaction_row['e_purchase_id']));
+                    }
+                }
+
                 if (($success) || ($length !== null)) {
                     $status = (($length !== null) && (!$success)) ? 'SCancelled' : 'Completed';
                     handle_confirmed_transaction($transaction_row['e_purchase_id'], $transaction_row['e_item_name'], $status, $message_raw, '', '', $amount, $currency, $trans_id, '', ($length === null) ? '' : strtolower(strval($length) . ' ' . $length_units), $via);
@@ -574,11 +582,9 @@ class Module_purchase
 
             $type_code = get_param_string('type_code', '');
             if ($type_code != '') {
-                if (has_interesting_post_fields()) { // Alternative to IPN, *if* posted fields sent here
+                if ((!perform_local_payment()) && (has_interesting_post_fields())) { // Alternative to IPN, *if* posted fields sent here
                     handle_transaction_script();
                 }
-
-                attach_message(do_lang_tempcode('SUCCESS'), 'inform');
 
                 $product_object = find_product($type_code);
 

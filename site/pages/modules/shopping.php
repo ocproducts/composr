@@ -319,6 +319,7 @@ class Module_shopping
         require_code('templates_results_table');
         require_code('form_templates');
         require_css('shopping');
+        require_css('ecommerce');
         require_javascript('shopping');
 
         log_cart_actions('View cart');
@@ -607,6 +608,14 @@ class Module_shopping
 
                 list($success, , $message, $message_raw) = $object->do_transaction($trans_id, $name, $card_number, $amount, $currency, $expiry_date, $issue_number, $start_date, $card_type, $cv2, $length, $length_units);
 
+                $item_name = $transaction_row['e_item_name'];
+
+                if (addon_installed('shopping')) {
+                    if (preg_match('#' . str_replace('xxx', '.*', preg_quote(do_lang('shopping:CART_ORDER', 'xxx'), '#')) . '#', $item_name) != 0) {
+                        $this->store_shipping_address(intval($transaction_row['e_purchase_id']));
+                    }
+                }
+
                 if (($success) || ($length !== null)) {
                     $status = (($length !== null) && (!$success)) ? 'SCancelled' : 'Completed';
                     handle_confirmed_transaction($transaction_row['e_purchase_id'], $transaction_row['e_item_name'], $status, $message_raw, '', '', $amount, get_option('currency'), $trans_id, '', ($length === null) ? '' : strtolower(strval($length) . ' ' . $length_units), $via);
@@ -615,14 +624,12 @@ class Module_shopping
                 if ($success) {
                     $member_id = $transaction_row['e_member_id'];
                     require_code('notifications');
-                    dispatch_notification('payment_received', null, do_lang('PAYMENT_RECEIVED_SUBJECT', $trans_id), do_notification_lang('PAYMENT_RECEIVED_BODY', float_format(floatval($amount)), get_option('currency'), get_site_name()), array($member_id), A_FROM_SYSTEM_PRIVILEGED);
+                    dispatch_notification('payment_received', null, do_lang('PAYMENT_RECEIVED_SUBJECT', $trans_id), do_notification_lang('PAYMENT_RECEIVED_BODY', float_format(floatval($amount)), $currency, get_site_name()), array($member_id), A_FROM_SYSTEM_PRIVILEGED);
                 }
             }
 
-            attach_message(do_lang_tempcode('SUCCESS'), 'inform');
-
             // Process transaction
-            if (has_interesting_post_fields()) {
+            if ((!perform_local_payment()) && (has_interesting_post_fields())) { // Alternative to IPN, *if* posted fields sent here
                 $order_id = handle_transaction_script();
 
                 $product_object = find_product(do_lang('CART_ORDER', $order_id));

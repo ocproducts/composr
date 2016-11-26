@@ -350,6 +350,7 @@ iframe {
 /*{+START,IF,{$MOBILE}}*/
 	select {
 		max-width: 100px;
+		white-space: nowrap !important;
 	}
 
 	/* This prevents automatic zooming when selecting inputs */

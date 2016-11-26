@@ -1828,7 +1828,7 @@ class Module_topics
         $hidden_fields->attach(form_input_hidden('from_url', get_self_url(true, false, array('type' => get_param_string('type', 'browse')))));
 
         $map = array('page' => '_SELF', 'type' => '_add_reply', 'parent_id' => $parent_id, 'timestamp' => get_param_integer('timestamp', null));
-        $test = get_param_string('kfs' . (($forum_id === null) ? '' : strval($forum_id)), null);
+        $test = get_param_string('kfs' . (($forum_id === null) ? '' : strval($forum_id)), null, INPUT_FILTER_GET_COMPLEX);
         if (($test !== null) && ($test !== '0')) {
             $map['kfs' . (($forum_id === null) ? '' : strval($forum_id))] = $test;
         }
@@ -2272,7 +2272,7 @@ END;
 
                     $text = do_lang_tempcode('SUCCESS');
                     $map = array('page' => 'topicview', 'type' => 'first_unread', 'id' => $topic_id);
-                    $test = get_param_string('kfs' . (($forum_id === null) ? '' : strval($forum_id)), null);
+                    $test = get_param_string('kfs' . (($forum_id === null) ? '' : strval($forum_id)), null, INPUT_FILTER_GET_COMPLEX);
                     if (($test !== null) && ($test !== '0')) {
                         $map['kfs' . (($forum_id === null) ? '' : strval($forum_id))] = $test;
                     }
@@ -2346,7 +2346,7 @@ END;
                 $url = find_post_id_url($post_id);
             } else {
                 $map = array('page' => 'topicview', 'type' => 'findpost', 'id' => $post_id);
-                $test = get_param_string('kfs' . (($forum_id === null) ? '' : strval($forum_id)), null);
+                $test = get_param_string('kfs' . (($forum_id === null) ? '' : strval($forum_id)), null, INPUT_FILTER_GET_COMPLEX);
                 if (($test !== null) && ($test !== '0')) {
                     $map['kfs' . (($forum_id === null) ? '' : strval($forum_id))] = $test;
                 }
@@ -2366,7 +2366,7 @@ END;
             $topic_validated = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_validated', array('id' => $topic_id));
             if (($topic_validated == 0) && (!has_privilege(get_member(), 'jump_to_unvalidated'))) {
                 $map = array('page' => 'forumview', 'id' => $forum_id);
-                $test = get_param_string('kfs' . (($forum_id === null) ? '' : strval($forum_id)), null);
+                $test = get_param_string('kfs' . (($forum_id === null) ? '' : strval($forum_id)), null, INPUT_FILTER_GET_COMPLEX);
                 if (($test !== null) && ($test !== '0')) {
                     $map['kfs' . (($forum_id === null) ? '' : strval($forum_id))] = $test;
                 }
@@ -2923,7 +2923,7 @@ END;
         if ($redirect != '') {
             $map['redirect'] = $redirect;
         }
-        $test = get_param_string('kfs' . (($forum_id === null) ? '' : strval($forum_id)), null);
+        $test = get_param_string('kfs' . (($forum_id === null) ? '' : strval($forum_id)), null, INPUT_FILTER_GET_COMPLEX);
         if (($test !== null) && ($test !== '0')) {
             $map['kfs' . (($forum_id === null) ? '' : strval($forum_id))] = $test;
         }

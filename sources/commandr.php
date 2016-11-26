@@ -76,7 +76,7 @@ function commandr_script()
         while (true) { // Goes on until ctrl+C
             fwrite($stdout, "\n> ");
 
-            $command = fgets($stdin, 102400);
+            $command = fgets($stdin);
             if (trim($command) == 'exit') {
                 break;
             }
