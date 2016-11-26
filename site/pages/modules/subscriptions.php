@@ -261,8 +261,8 @@ class Module_subscriptions
 
         if (($payment_gateway != 'manual') && ($payment_gateway != '')) {
             require_code('hooks/systems/payment_gateway/' . filter_naughty($payment_gateway));
-            $hook = object_factory($payment_gateway);
-            if ($hook->auto_cancel($id) !== true) {
+            $payment_gateway_object = object_factory($payment_gateway);
+            if ($payment_gateway_object->auto_cancel($id) !== true) {
                 // Because we cannot TRIGGER a REMOTE cancellation, we have it so the local user action triggers that notification, informing the staff to manually do a remote cancellation
                 require_code('notifications');
                 $username = $GLOBALS['FORUM_DRIVER']->get_username(get_member());

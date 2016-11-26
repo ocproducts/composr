@@ -295,15 +295,15 @@ class Hook_payment_gateway_worldpay
     /**
      * Show a payment response after IPN runs (for hooks that handle redirects in this way).
      *
-     * @param  ID_TEXT $product Product.
+     * @param  ID_TEXT $type_code The product codename.
      * @param  ID_TEXT $purchase_id Purchase ID.
      * @return string The response.
      */
-    public function show_payment_response($product, $purchase_id)
+    public function show_payment_response($type_code, $purchase_id)
     {
         $txn_id = post_param_string('transId');
         $message = do_lang('TRANSACTION_ID_WRITTEN', $txn_id);
-        $url = build_url(array('page' => 'purchase', 'type' => 'finish', 'message' => $message, 'product' => $product, 'purchase_id' => $purchase_id, 'from' => 'worldpay'), get_module_zone('purchase'));
+        $url = build_url(array('page' => 'purchase', 'type' => 'finish', 'type_code' => $type_code, 'message' => $message, 'from' => 'worldpay'), get_module_zone('purchase'));
         return '<meta http-equiv="refresh" content="0;url=' . escape_html($url->evaluate()) . '" />';
     }
 

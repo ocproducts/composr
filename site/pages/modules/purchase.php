@@ -347,8 +347,8 @@ class Module_purchase
         $type_code = get_param_string('type_code');
 
         $text = new Tempcode();
-        $object = find_product($type_code);
-        if (is_null($object)) {
+        $product_object = find_product($type_code);
+        if (is_null($product_object)) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }
 
@@ -358,21 +358,21 @@ class Module_purchase
         }
 
         // Work out what next step is
-        $terms = method_exists($object, 'get_terms') ? $object->get_terms($type_code) : '';
-        $fields = method_exists($object, 'get_needed_fields') ? $object->get_needed_fields($type_code) : null;
+        $terms = method_exists($product_object, 'get_terms') ? $product_object->get_terms($type_code) : '';
+        $fields = method_exists($product_object, 'get_needed_fields') ? $product_object->get_needed_fields($type_code) : null;
         if ((!is_null($fields)) && ($fields->is_empty())) {
             $fields = null;
         }
         $url = build_url(array('page' => '_SELF', 'type' => ($terms == '') ? (is_null($fields) ? 'pay' : 'details') : 'terms', 'type_code' => $type_code, 'id' => get_param_integer('id', -1)), '_SELF', null, true);
 
-        if (method_exists($object, 'product_info')) {
-            $text->attach($object->product_info(get_param_integer('type_code'), $this->title));
+        if (method_exists($product_object, 'product_info')) {
+            $text->attach($product_object->product_info(get_param_integer('type_code'), $this->title));
         } else {
-            if (!method_exists($object, 'get_message')) {
+            if (!method_exists($product_object, 'get_message')) {
                 // Ah, not even a message to show - jump ahead
                 return redirect_screen($this->title, $url, '');
             }
-            $text->attach($object->get_message($type_code));
+            $text->attach($product_object->get_message($type_code));
         }
 
         return $this->_wrap(do_template('PURCHASE_WIZARD_STAGE_MESSAGE', array('_GUID' => '8667b6b544c4cea645a52bb4d087f816', 'TITLE' => '', 'TEXT' => $text)), $this->title, $url);
@@ -391,7 +391,7 @@ class Module_purchase
 
         $type_code = get_param_string('type_code');
 
-        $object = find_product($type_code);
+        $product_object = find_product($type_code);
 
         $test = $this->_check_availability($type_code);
         if (!is_null($test)) {
@@ -399,8 +399,8 @@ class Module_purchase
         }
 
         // Work out what next step is
-        $terms = $object->get_terms($type_code);
-        $fields = $object->get_needed_fields($type_code);
+        $terms = $product_object->get_terms($type_code);
+        $fields = $product_object->get_needed_fields($type_code);
         if ((!is_null($fields)) && ($fields->is_empty())) {
             $fields = null;
         }
@@ -424,7 +424,7 @@ class Module_purchase
 
         $type_code = get_param_string('type_code');
 
-        $object = find_product($type_code);
+        $product_object = find_product($type_code);
 
         $test = $this->_check_availability($type_code);
         if (!is_null($test)) {
@@ -432,7 +432,7 @@ class Module_purchase
         }
 
         // Work out what next step is
-        $fields = $object->get_needed_fields($type_code, get_param_integer('id', -1));
+        $fields = $product_object->get_needed_fields($type_code, get_param_integer('id', -1));
         $url = build_url(array('page' => '_SELF', 'type' => 'pay', 'type_code' => $type_code), '_SELF', null, true);
 
         return $this->_wrap(do_template('PURCHASE_WIZARD_STAGE_DETAILS', array('_GUID' => '7fcbb0be5e90e52163bfec01f22f4ea0', 'TEXT' => is_array($fields) ? $fields[1] : '', 'FIELDS' => is_array($fields) ? $fields[0] : $fields)), $this->title, $url);
@@ -446,29 +446,30 @@ class Module_purchase
     public function pay()
     {
         $type_code = get_param_string('type_code');
-        $object = find_product($type_code);
+        $product_object = find_product($type_code);
 
         $payment_gateway = get_option('payment_gateway');
         require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
-        $purchase_object = object_factory('Hook_payment_gateway_' . $payment_gateway);
+        $payment_gateway_object = object_factory('Hook_payment_gateway_' . $payment_gateway);
 
         $test = $this->_check_availability($type_code);
         if (!is_null($test)) {
             return $test;
         }
 
-        $temp = $object->get_products(true, $type_code);
+        $temp = $product_object->get_products(true, $type_code);
         $price = $temp[$type_code][1];
         $item_name = $temp[$type_code][4];
         $currency = isset($temp[$type_code][5]) ? $temp[$type_code][5] : get_option('currency');
 
-        if (method_exists($object, 'set_needed_fields')) {
-            $purchase_id = $object->set_needed_fields($type_code);
+        if (method_exists($product_object, 'set_needed_fields')) {
+            $purchase_id = $product_object->set_needed_fields($type_code);
         } else {
             $purchase_id = strval(get_member());
         }
 
         if ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) {
+            // For a subscription we need to add in the subscription record in advance of payment. This will become our $purchase_id
             $_purchase_id = $GLOBALS['SITE_DB']->query_select_value_if_there('subscriptions', 'id', array(
                 's_type_code' => $type_code,
                 's_member_id' => get_member(),
@@ -500,6 +501,7 @@ class Module_purchase
         }
 
         if ($price == '0') {
+            // Free product, so bought instantly
             $payment_status = 'Completed';
             $reason_code = '';
             $pending_reason = '';
@@ -517,41 +519,17 @@ class Module_purchase
 
         $text = mixed();
         if (get_param_integer('include_message', 0) == 1) {
+            // Request to show message on the payment screen (we would have been hot-linked straight to here)
             $text = new Tempcode();
-            if (method_exists($object, 'product_info')) {
-                $text->attach($object->product_info(get_param_integer('product'), $this->title));
-            } elseif (method_exists($object, 'get_message')) {
-                $text->attach($object->get_message($type_code));
+            if (method_exists($product_object, 'product_info')) {
+                $text->attach($product_object->product_info(get_param_integer('product'), $this->title));
+            } elseif (method_exists($product_object, 'get_message')) {
+                $text->attach($product_object->get_message($type_code));
             }
         }
 
-        if (!perform_local_payment()) { // Pass through to the gateway's HTTP server
-            if ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) {
-                $transaction_button = make_subscription_button($type_code, $item_name, $purchase_id, floatval($price), $length, $length_units, $currency, $payment_gateway);
-            } else {
-                $transaction_button = make_transaction_button($type_code, $item_name, $purchase_id, floatval($price), $currency, $payment_gateway);
-            }
-
-            $tpl = ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) ? 'PURCHASE_WIZARD_STAGE_SUBSCRIBE' : 'PURCHASE_WIZARD_STAGE_PAY';
-
-            $logos = method_exists($purchase_object, 'get_logos') ? $purchase_object->get_logos() : new Tempcode();
-            $payment_processor_links = method_exists($purchase_object, 'get_payment_processor_links') ? $purchase_object->get_payment_processor_links() : new Tempcode();
-
-            $result = do_template($tpl, array(
-                'TRANSACTION_BUTTON' => $transaction_button,
-                'CURRENCY' => $currency,
-                'ITEM_NAME' => $item_name,
-                'TITLE' => $this->title,
-                'LENGTH' => is_null($length) ? '' : strval($length),
-                'LENGTH_UNITS' => $length_units,
-                'PURCHASE_ID' => $purchase_id,
-                'PRICE' => float_to_raw_string(floatval($price)),
-                'TEXT' => $text,
-                'LOGOS' => $logos,
-                'PAYMENT_PROCESSOR_LINKS' => $payment_processor_links,
-            ));
-        } else { // Handle the transaction internally
-            $needs_shipping_address = (method_exists($object, 'needs_shipping_address')) && ($object->needs_shipping_address());
+        if (perform_local_payment()) { // Handle the transaction internally
+            $needs_shipping_address = (method_exists($product_object, 'needs_shipping_address')) && ($product_object->needs_shipping_address());
 
             list($fields, $hidden, $logos, $payment_processor_links) = get_transaction_form_fields(
                 $type_code,
@@ -565,8 +543,9 @@ class Module_purchase
                 $needs_shipping_address
             );
 
-            $finish_url = build_url(array('page' => '_SELF', 'type' => 'finish'), '_SELF');
+            $finish_url = build_url(array('page' => '_SELF', 'type' => 'finish', 'type_code' => $type_code), '_SELF');
 
+            // Credit card form
             $result = do_template('PURCHASE_WIZARD_STAGE_TRANSACT', array(
                 '_GUID' => '15cbba9733f6ff8610968418d8ab527e',
                 'FIELDS' => $fields,
@@ -575,7 +554,34 @@ class Module_purchase
                 'PAYMENT_PROCESSOR_LINKS' => $payment_processor_links,
             ));
             return $this->_wrap($result, $this->title, $finish_url);
+        } else { // Pass through to the gateway's HTTP server
+            if ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) {
+                $transaction_button = make_subscription_button($type_code, $item_name, $purchase_id, floatval($price), $length, $length_units, $currency, $payment_gateway);
+            } else {
+                $transaction_button = make_transaction_button($type_code, $item_name, $purchase_id, floatval($price), $currency, $payment_gateway);
+            }
+
+            $tpl = ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) ? 'PURCHASE_WIZARD_STAGE_SUBSCRIBE' : 'PURCHASE_WIZARD_STAGE_PAY';
+
+            $logos = method_exists($payment_gateway_object, 'get_logos') ? $payment_gateway_object->get_logos() : new Tempcode();
+            $payment_processor_links = method_exists($payment_gateway_object, 'get_payment_processor_links') ? $payment_gateway_object->get_payment_processor_links() : new Tempcode();
+
+            // Form with pay button on
+            $result = do_template($tpl, array(
+                'TRANSACTION_BUTTON' => $transaction_button,
+                'CURRENCY' => $currency,
+                'ITEM_NAME' => $item_name,
+                'TITLE' => $this->title,
+                'LENGTH' => is_null($length) ? '' : strval($length),
+                'LENGTH_UNITS' => $length_units,
+                'PURCHASE_ID' => $purchase_id,
+                'PRICE' => float_to_raw_string(floatval($price)),
+                'TEXT' => $text,
+                'LOGOS' => $logos,
+                'PAYMENT_PROCESSOR_LINKS' => $payment_processor_links,
+            ));
         }
+
         return $this->_wrap($result, $this->title, null);
     }
 
@@ -588,11 +594,13 @@ class Module_purchase
     {
         $payment_gateway = get_option('payment_gateway');
         require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
-        $object = object_factory('Hook_payment_gateway_' . $payment_gateway);
+        $payment_gateway_object = object_factory('Hook_payment_gateway_' . $payment_gateway);
 
-        $message = mixed();
-        if (method_exists($object, 'get_callback_url_message')) {
-            $message = $object->get_callback_url_message();
+        $message = get_param_string('message', null);
+        if ($message === null) {
+            if (method_exists($payment_gateway_object, 'get_callback_url_message')) {
+                $message = $payment_gateway_object->get_callback_url_message();
+            }
         }
 
         if (get_param_integer('cancel', 0) == 1) {
@@ -604,26 +612,25 @@ class Module_purchase
         }
 
         if (perform_local_payment()) { // We need to try and run the transaction
-            list($success, $message, $message_raw) = do_local_transaction($payment_gateway, $object);
+            list($success, $message, $message_raw) = do_local_transaction($payment_gateway, $payment_gateway_object);
             if (!$success) {
                 warn_exit($message);
             }
         }
 
+        // We know success at this point...
+
         if ((!perform_local_payment()) && (has_interesting_post_fields())) { // Alternative to IPN, *if* posted fields sent here
-            handle_ipn_transaction_script();
+            handle_ipn_transaction_script(); // This is just in case the IPN doesn't arrive somehow, we still know success because the gateway sent us here on success
         }
 
         $redirect = get_param_string('redirect', null); // TODO: Correct flag in v11
 
         if ($redirect === null) {
-            $type_code = get_param_string('type_code', '');
-            if ($type_code != '') {
-                $product_object = find_product($type_code);
-
-                if (method_exists($product_object, 'get_finish_url')) {
-                    $redirect = $product_object->get_finish_url($type_code, $message, get_param_integer('purchase_id', null));
-                }
+            $type_code = get_param_string('type_code');
+            $product_object = find_product($type_code);
+            if (method_exists($product_object, 'get_finish_url')) {
+                $redirect = $product_object->get_finish_url($type_code, $message);
             }
         }
 
@@ -642,12 +649,12 @@ class Module_purchase
      */
     public function _check_availability($type_code)
     {
-        $object = find_product($type_code);
-        if (!method_exists($object, 'is_available')) {
+        $product_object = find_product($type_code);
+        if (!method_exists($product_object, 'is_available')) {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
 
-        $availability_status = $object->is_available($type_code, get_member());
+        $availability_status = $product_object->is_available($type_code, get_member());
 
         switch ($availability_status) {
             case ECOMMERCE_PRODUCT_ALREADY_HAS:

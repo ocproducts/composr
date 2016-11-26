@@ -106,11 +106,11 @@ function find_member_subscriptions($member_id, $usergroup_subscriptions_only = f
                 $usergroup_name = mixed();
 
                 $type_code = $sub['s_type_code'];
-                $object = find_product($type_code);
-                if (is_null($object)) {
+                $product_object = find_product($type_code);
+                if (is_null($product_object)) {
                     continue;
                 }
-                $products = $object->get_products(false, $type_code);
+                $products = $product_object->get_products(false, $type_code);
                 $product_row = $products[$type_code];
                 $item_name = $product_row[4];
             }

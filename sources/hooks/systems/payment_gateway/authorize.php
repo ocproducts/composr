@@ -471,7 +471,7 @@ class Hook_payment_gateway_authorize
 
                 $success = ($response_result[0] == 1);
                 $message_raw = ($success) ? $response_result[6] : $response_result[2];
-                $message = $success ? do_lang('SUCCESS') : do_lang('DECLINED_MESSAGE', $response_result[3]);
+                $message = $success ? do_lang_tempcode('ACCEPTED_MESSAGE', do_lang('SUCCESS')) : do_lang_tempcode('DECLINED_MESSAGE', escape_html($response_result[3]));
                 $result = array($success, $message, $message_raw);
             }
         } else {
@@ -502,7 +502,7 @@ class Hook_payment_gateway_authorize
                 list($result_code, $code, $text, $authorizedotnet_subscription_id) = $this->_parse_arb_return($response_data);
 
                 $success = ($result_code == 'OK');
-                $message = $success ? do_lang('SUCCESS') : do_lang('DECLINED_MESSAGE', $text);
+                $message = $success ? do_lang_tempcode('ACCEPTED_MESSAGE', do_lang('SUCCESS')) : do_lang_tempcode('DECLINED_MESSAGE', escape_html($text));
                 $message_raw = $code;
 
                 $result = array($success, $message, $message_raw);

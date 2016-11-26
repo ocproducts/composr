@@ -355,9 +355,9 @@ class Hook_payment_gateway_secpay
 
         // We need to echo the output of our finish page to SecPay's IPN caller
         if ($success) {
-            $_url = build_url(array('page' => 'purchase', 'type' => 'finish', 'type_code' => get_param_string('type_code', null)), get_module_zone('purchase'));
+            $_url = build_url(array('page' => 'purchase', 'type' => 'finish', 'type_code' => $transaction_row['e_type_code']), get_module_zone('purchase'));
         } else {
-            $_url = build_url(array('page' => 'purchase', 'type' => 'finish', 'cancel' => 1, 'message' => do_lang_tempcode('DECLINED_MESSAGE', $message)), get_module_zone('purchase'));
+            $_url = build_url(array('page' => 'purchase', 'type' => 'finish', 'type_code' => $transaction_row['e_type_code'], 'cancel' => 1, 'message' => do_lang_tempcode('DECLINED_MESSAGE', $message)), get_module_zone('purchase'));
         }
         $url = $_url->evaluate();
         echo http_download_file($url, null, false);
@@ -502,7 +502,7 @@ class Hook_payment_gateway_secpay
 
         $success = ((array_key_exists('code', $map)) && (($map['code'] == 'A') || ($map['code'] == 'P:P')));
         $message_raw = array_key_exists('message', $map) ? $map['message'] : do_lang('INTERNAL_ERROR');
-        $message = $success ? do_lang('ACCEPTED_MESSAGE', $message_raw) : do_lang('DECLINED_MESSAGE', $message_raw);
+        $message = $success ? do_lang_tempcode('ACCEPTED_MESSAGE', escape_html($message_raw)) : do_lang_tempcode('DECLINED_MESSAGE', escape_html($message_raw));
 
         return array($success, $message, $message_raw);
     }

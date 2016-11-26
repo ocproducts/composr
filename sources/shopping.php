@@ -31,8 +31,8 @@ function get_product_details()
 {
     $_hook = get_param_string('hook');
     require_code('hooks/systems/ecommerce/' . filter_naughty_harsh($_hook));
-    $object = object_factory('Hook_ecommerce_' . filter_naughty_harsh($_hook));
-    $products = $object->get_product_details();
+    $product_object = object_factory('Hook_ecommerce_' . filter_naughty_harsh($_hook));
+    $products = $product_object->get_product_details();
 
     return $products;
 }
@@ -68,8 +68,8 @@ function add_to_cart($product_det)
 {
     $_hook = get_param_string('hook');
     require_code('hooks/systems/ecommerce/' . filter_naughty_harsh($_hook));
-    $object = object_factory('Hook_ecommerce_' . filter_naughty_harsh($_hook));
-    $object->add_to_cart($product_det);
+    $product_object = object_factory('Hook_ecommerce_' . filter_naughty_harsh($_hook));
+    $product_object->add_to_cart($product_det);
 }
 
 /**
@@ -279,12 +279,12 @@ function render_cart_payment_form()
 
         require_code('hooks/systems/ecommerce/' . filter_naughty_harsh($hook), true);
 
-        $object = object_factory('Hook_ecommerce_' . filter_naughty_harsh($hook), true);
-        if ($object === null) {
+        $product_object = object_factory('Hook_ecommerce_' . filter_naughty_harsh($hook), true);
+        if ($product_object === null) {
             continue;
         }
 
-        $temp = $object->get_products(false, $type_code);
+        $temp = $product_object->get_products(false, $type_code);
         if (!isset($temp[$type_code])) {
             continue;
         }
@@ -297,8 +297,8 @@ function render_cart_payment_form()
 
         $item_name = $temp[$type_code][4];
 
-        if (method_exists($object, 'set_needed_fields')) {
-            $purchase_id = $object->set_needed_fields($type_code);
+        if (method_exists($product_object, 'set_needed_fields')) {
+            $purchase_id = $product_object->set_needed_fields($type_code);
         } else {
             $purchase_id = strval(get_member());
         }
@@ -307,14 +307,14 @@ function render_cart_payment_form()
 
         $length_units = '';
 
-        if (method_exists($object, 'calculate_product_price')) {
-            $price = $object->calculate_product_price($item['price'], $item['price_pre_tax'], $item['product_weight']);
+        if (method_exists($product_object, 'calculate_product_price')) {
+            $price = $product_object->calculate_product_price($item['price'], $item['price_pre_tax'], $item['product_weight']);
         } else {
             $price = $item['price'];
         }
 
-        if (method_exists($object, 'calculate_tax') && ($tax_opt_out == 0)) {
-            $tax = round($object->calculate_tax($item['price'], $item['price_pre_tax']), 2);
+        if (method_exists($product_object, 'calculate_tax') && ($tax_opt_out == 0)) {
+            $tax = round($product_object->calculate_tax($item['price'], $item['price_pre_tax']), 2);
         } else {
             $tax = 0.0;
         }
@@ -366,14 +366,14 @@ function render_cart_payment_form()
             );
         }
 
-        $finish_url = build_url(array('page' => 'shopping', 'type' => 'finish'), get_module_zone('purchase'));
+        $finish_url = build_url(array('page' => 'shopping', 'type' => 'finish', 'type_code' => 'cart_orders'), get_module_zone('purchase'));
 
         $result = do_template('PURCHASE_WIZARD_STAGE_TRANSACT', array(
             '_GUID' => 'a70d6995baabb7e41e1af68409361f3c',
             'FIELDS' => $fields,
             'HIDDEN' => $hidden,
             'LOGOS' => $logos,
-            'PAYMENT_PROCESSOR_LINKS' => placeholder_link(),
+            'PAYMENT_PROCESSOR_LINKS' => $payment_processor_links,
         ));
 
         $result = do_template('PURCHASE_WIZARD_SCREEN', array('_GUID' => 'dfc7b8460e81dfd6d083e5f5d2b606a4', 'TITLE' => '', 'CONTENT' => $result, 'URL' => $finish_url));
@@ -479,13 +479,13 @@ function update_stock($order_id)
 
         require_code('hooks/systems/ecommerce/' . filter_naughty_harsh($hook), true);
 
-        $object = object_factory('Hook_ecommerce_' . $hook, true);
-        if ($object === null) {
+        $product_object = object_factory('Hook_ecommerce_' . $hook, true);
+        if ($product_object === null) {
             continue;
         }
 
-        if (method_exists($object, 'reduce_stock')) {
-            $object->reduce_stock($ordered_items['p_id'], $ordered_items['p_quantity']);
+        if (method_exists($product_object, 'reduce_stock')) {
+            $product_object->reduce_stock($ordered_items['p_id'], $ordered_items['p_quantity']);
         }
     }
 }

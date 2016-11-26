@@ -440,8 +440,8 @@ class Module_admin_ecommerce_logs
         $custom_expiry = post_param_date('cexpiry');
         $mc_currency = get_option('currency');
 
-        $object = find_product($type_code);
-        $products = $object->get_products(true);
+        $product_object = find_product($type_code);
+        $products = $product_object->get_products(true);
         if ($mc_gross == '') {
             $mc_gross = $products[$type_code][1];
             if (isset($products[$type_code][5])) {

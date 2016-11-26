@@ -377,21 +377,21 @@ class Module_shopping
 
                 require_code('hooks/systems/ecommerce/' . filter_naughty_harsh($_hook));
 
-                $object = object_factory('Hook_ecommerce_' . filter_naughty_harsh($_hook));
+                $product_object = object_factory('Hook_ecommerce_' . filter_naughty_harsh($_hook));
 
-                if (method_exists($object, 'show_cart_entry')) {
-                    $object->show_cart_entry($shopping_cart, $value);
+                if (method_exists($product_object, 'show_cart_entry')) {
+                    $product_object->show_cart_entry($shopping_cart, $value);
                 }
 
                 // Tax
                 $tax = 0;
-                if (method_exists($object, 'calculate_tax')) {
-                    $tax = $object->calculate_tax($value['price'], $value['price_pre_tax']);
+                if (method_exists($product_object, 'calculate_tax')) {
+                    $tax = $product_object->calculate_tax($value['price'], $value['price_pre_tax']);
                 }
 
                 // Shipping
-                if (method_exists($object, 'calculate_shipping_cost')) {
-                    $shipping_cost = $object->calculate_shipping_cost($value['product_weight']);
+                if (method_exists($product_object, 'calculate_shipping_cost')) {
+                    $shipping_cost = $product_object->calculate_shipping_cost($value['product_weight']);
                 } else {
                     $shipping_cost = 0;
                 }
@@ -497,13 +497,13 @@ class Module_shopping
             foreach ($pids as $pid) {
                 $qty = post_param_integer('quantity_' . $pid);
 
-                $object = find_product($pid);
+                $product_object = find_product($pid);
 
                 $remove = post_param_integer('remove_' . $pid, 0);
 
                 if ($remove == 0) {
-                    if (method_exists($object, 'get_available_quantity')) {
-                        $available_qty = $object->get_available_quantity($pid, false);
+                    if (method_exists($product_object, 'get_available_quantity')) {
+                        $available_qty = $product_object->get_available_quantity($pid, false);
 
                         if ((!is_null($available_qty)) && ($available_qty <= $qty)) {
                             $qty = $available_qty;
@@ -559,11 +559,13 @@ class Module_shopping
     {
         $payment_gateway = get_option('payment_gateway');
         require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
-        $object = object_factory('Hook_payment_gateway_' . $payment_gateway);
+        $payment_gateway_object = object_factory('Hook_payment_gateway_' . $payment_gateway);
 
-        $message = mixed();
-        if (method_exists($object, 'get_callback_url_message')) {
-            $message = $object->get_callback_url_message();
+        $message = get_param_string('message', null);
+        if ($message === null) {
+            if (method_exists($payment_gateway_object, 'get_callback_url_message')) {
+                $message = $payment_gateway_object->get_callback_url_message();
+            }
         }
 
         require_code('shopping');
@@ -579,28 +581,29 @@ class Module_shopping
         }
 
         if (perform_local_payment()) {
-            list($success, $message, $message_raw) = do_local_transaction($payment_gateway, $object);
+            list($success, $message, $message_raw) = do_local_transaction($payment_gateway, $payment_gateway_object);
             if (!$success) {
                 attach_message($message, 'warn');
                 return $this->view_shopping_cart();
             }
         }
 
+        // We know success at this point...
+
         empty_cart();
 
         log_cart_actions('Completed payment');
 
         if ((!perform_local_payment()) && (has_interesting_post_fields())) { // Alternative to IPN, *if* posted fields sent here
-            $order_id = handle_ipn_transaction_script();
+            handle_ipn_transaction_script(); // This is just in case the IPN doesn't arrive somehow, we still know success because the gateway sent us here on success
         }
 
         $redirect = get_param_string('redirect', null); // TODO: Correct flag in v11
 
         if ($redirect === null) {
-            $product_object = find_product(do_lang('CART_ORDER', $order_id));
-
+            $product_object = find_product('cart_orders');
             if (method_exists($product_object, 'get_finish_url')) {
-                $redirect = $product_object->get_finish_url('cart_orders', $message, get_param_integer('purchase_id', null));
+                $redirect = $product_object->get_finish_url('cart_orders', $message);
             }
         }
 

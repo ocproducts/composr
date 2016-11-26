@@ -667,6 +667,6 @@ class Hook_ecommerce_catalogue_items
  */
 function handle_catalogue_items($entry_id, $details)
 {
-    $object = object_factory('Hook_ecommerce_catalogue_items');
-    $object->reduce_stock($entry_id, 1);
+    $product_object = object_factory('Hook_ecommerce_catalogue_items');
+    $product_object->reduce_stock($entry_id, 1);
 }

@@ -104,9 +104,9 @@ function get_transaction_fee($amount, $payment_gateway)
 
     if ((file_exists(get_file_base() . '/sources/hooks/systems/payment_gateway/' . $payment_gateway . '.php')) || (file_exists(get_file_base() . '/sources_custom/hooks/systems/payment_gateway/' . $payment_gateway . '.php'))) {
         require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
-        $object = object_factory('Hook_payment_gateway_' . $payment_gateway);
-        if (method_exists($object, 'get_transaction_fee')) {
-            return $object->get_transaction_fee($amount);
+        $payment_gateway_object = object_factory('Hook_payment_gateway_' . $payment_gateway);
+        if (method_exists($payment_gateway_object, 'get_transaction_fee')) {
+            return $payment_gateway_object->get_transaction_fee($amount);
         }
     }
 
@@ -130,8 +130,8 @@ function make_transaction_button($type_code, $item_name, $purchase_id, $amount, 
         $payment_gateway = get_option('payment_gateway');
     }
     require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
-    $object = object_factory('Hook_payment_gateway_' . $payment_gateway);
-    return $object->make_transaction_button($type_code, $item_name, $purchase_id, $amount, $currency);
+    $payment_gateway_object = object_factory('Hook_payment_gateway_' . $payment_gateway);
+    return $payment_gateway_object->make_transaction_button($type_code, $item_name, $purchase_id, $amount, $currency);
 }
 
 /**
@@ -154,8 +154,8 @@ function make_subscription_button($type_code, $item_name, $purchase_id, $amount,
         $payment_gateway = get_option('payment_gateway');
     }
     require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
-    $object = object_factory('Hook_payment_gateway_' . $payment_gateway);
-    return $object->make_subscription_button($type_code, $item_name, $purchase_id, $amount, $length, $length_units, $currency);
+    $payment_gateway_object = object_factory('Hook_payment_gateway_' . $payment_gateway);
+    return $payment_gateway_object->make_subscription_button($type_code, $item_name, $purchase_id, $amount, $length, $length_units, $currency);
 }
 
 /**
@@ -181,14 +181,14 @@ function make_cart_payment_button($order_id, $currency)
 
     require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
 
-    $object = object_factory('Hook_payment_gateway_' . $payment_gateway);
+    $payment_gateway_object = object_factory('Hook_payment_gateway_' . $payment_gateway);
 
-    if (!method_exists($object, 'make_cart_transaction_button')) {
+    if (!method_exists($payment_gateway_object, 'make_cart_transaction_button')) {
         $amount = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'tot_price', array('id' => $order_id));
-        return $object->make_transaction_button('cart_orders', do_lang('CART_ORDER', $order_id), strval($order_id), $amount, $currency);
+        return $payment_gateway_object->make_transaction_button('cart_orders', do_lang('CART_ORDER', $order_id), strval($order_id), $amount, $currency);
     }
 
-    return $object->make_cart_transaction_button($items, $currency, $order_id);
+    return $payment_gateway_object->make_cart_transaction_button($items, $currency, $order_id);
 }
 
 /**
@@ -207,11 +207,11 @@ function make_cancel_button($purchase_id, $payment_gateway)
         return null;
     }
     require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
-    $object = object_factory('Hook_payment_gateway_' . $payment_gateway);
-    if (!method_exists($object, 'make_cancel_button')) {
+    $payment_gateway_object = object_factory('Hook_payment_gateway_' . $payment_gateway);
+    if (!method_exists($payment_gateway_object, 'make_cancel_button')) {
         return null;
     }
-    return $object->make_cancel_button($purchase_id);
+    return $payment_gateway_object->make_cancel_button($purchase_id);
 }
 
 /**
@@ -241,16 +241,16 @@ function find_all_products($site_lang = false)
     $products = array();
     foreach (array_keys($_hooks) as $hook) {
         require_code('hooks/systems/ecommerce/' . filter_naughty_harsh($hook));
-        $object = object_factory('Hook_ecommerce_' . filter_naughty_harsh($hook), true);
-        if ($object === null) {
+        $product_object = object_factory('Hook_ecommerce_' . filter_naughty_harsh($hook), true);
+        if ($product_object === null) {
             continue;
         }
-        $_products = $object->get_products($site_lang);
+        $_products = $product_object->get_products($site_lang);
         foreach ($_products as $type_code => $details) {
             if (!array_key_exists(4, $details)) {
                 $details[4] = do_lang('CUSTOM_PRODUCT_' . $type_code, null, null, null, $site_lang ? get_site_default_lang() : null);
             }
-            $details[] = $object;
+            $details[] = $product_object;
             $products[$type_code] = $details;
         }
     }
@@ -270,12 +270,12 @@ function find_product($search, $site_lang = false, $search_item_names = false)
     $_hooks = find_all_hooks('systems', 'ecommerce');
     foreach (array_keys($_hooks) as $hook) {
         require_code('hooks/systems/ecommerce/' . filter_naughty_harsh($hook));
-        $object = object_factory('Hook_ecommerce_' . filter_naughty_harsh($hook), true);
-        if ($object === null) {
+        $product_object = object_factory('Hook_ecommerce_' . filter_naughty_harsh($hook), true);
+        if ($product_object === null) {
             continue;
         }
 
-        $_products = $object->get_products($site_lang, $search, $search_item_names);
+        $_products = $product_object->get_products($site_lang, $search, $search_item_names);
 
         $type_code = mixed();
         foreach ($_products as $type_code => $product_row) {
@@ -285,11 +285,11 @@ function find_product($search, $site_lang = false, $search_item_names = false)
 
             if ($search_item_names) {
                 if (($product_row[4] == $search) || ('_' . $type_code == $search)) {
-                    return $object;
+                    return $product_object;
                 }
             } else {
                 if ($type_code == $search) {
-                    return $object;
+                    return $product_object;
                 }
             }
         }
@@ -310,12 +310,12 @@ function find_product_row($search, $site_lang = false, $search_item_names = fals
     $_hooks = find_all_hooks('systems', 'ecommerce');
     foreach (array_keys($_hooks) as $hook) {
         require_code('hooks/systems/ecommerce/' . filter_naughty_harsh($hook));
-        $object = object_factory('Hook_ecommerce_' . filter_naughty_harsh($hook), true);
-        if ($object === null) {
+        $product_object = object_factory('Hook_ecommerce_' . filter_naughty_harsh($hook), true);
+        if ($product_object === null) {
             continue;
         }
 
-        $_products = $object->get_products($site_lang, $search, $search_item_names);
+        $_products = $product_object->get_products($site_lang, $search, $search_item_names);
 
         $type_code = mixed();
         foreach ($_products as $type_code => $product_row) {
@@ -352,8 +352,8 @@ function perform_local_payment()
 
     $payment_gateway = get_option('payment_gateway');
     require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
-    $object = object_factory('Hook_payment_gateway_' . $payment_gateway);
-    return ((get_option('use_local_payment') == '1') && (method_exists($object, 'do_local_transaction')));
+    $payment_gateway_object = object_factory('Hook_payment_gateway_' . $payment_gateway);
+    return ((get_option('use_local_payment') == '1') && (method_exists($payment_gateway_object, 'do_local_transaction')));
 }
 
 /**
@@ -381,13 +381,13 @@ function get_transaction_form_fields($type_code, $item_name, $purchase_id, $amou
     }
 
     require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
-    $purchase_object = object_factory('Hook_payment_gateway_' . $payment_gateway);
+    $payment_gateway_object = object_factory('Hook_payment_gateway_' . $payment_gateway);
 
-    if (!method_exists($purchase_object, 'do_local_transaction')) {
+    if (!method_exists($payment_gateway_object, 'do_local_transaction')) {
         warn_exit(do_lang_tempcode('LOCAL_PAYMENT_NOT_SUPPORTED', escape_html($payment_gateway)));
     }
 
-    $trans_id = $purchase_object->generate_trans_id(); // gateway-compatible, probably random, transaction ID
+    $trans_id = $payment_gateway_object->generate_trans_id(); // gateway-compatible, probably random, transaction ID
 
     $GLOBALS['SITE_DB']->query_insert('trans_expecting', array(
         'id' => $trans_id,
@@ -476,8 +476,8 @@ function get_transaction_form_fields($type_code, $item_name, $purchase_id, $amou
     $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('TITLE' => do_lang_tempcode('PAYMENT_DETAILS'))));
 
     $fields->attach(form_input_line(do_lang_cpf('payment_cardholder_name'), do_lang_tempcode('DESCRIPTION_CARDHOLDER_NAME'), 'payment_cardholder_name', $cardholder_name, true));
-    if (method_exists($purchase_object, 'create_selection_list_card_types')) {
-        $fields->attach(form_input_list(do_lang_cpf('payment_card_type'), '', 'payment_card_type', $purchase_object->create_selection_list_card_types($card_type)));
+    if (method_exists($payment_gateway_object, 'create_selection_list_card_types')) {
+        $fields->attach(form_input_list(do_lang_cpf('payment_card_type'), '', 'payment_card_type', $payment_gateway_object->create_selection_list_card_types($card_type)));
     }
     $fields->attach(form_input_integer(do_lang_cpf('payment_card_number'), do_lang_tempcode('DESCRIPTION_CARD_NUMBER'), 'payment_card_number', $card_number, true, null, 16));
     $fields->attach(form_input_date_components(do_lang_cpf('payment_card_start_date'), do_lang_tempcode('DESCRIPTION_CARD_START_DATE'), 'payment_card_start_date', true, true, false, intval(date('Y')) - 16, intval(date('Y')), $card_start_date_year, $card_start_date_month, null, false));
@@ -520,8 +520,8 @@ function get_transaction_form_fields($type_code, $item_name, $purchase_id, $amou
 
     // ---
 
-    $logos = method_exists($purchase_object, 'get_logos') ? $purchase_object->get_logos() : new Tempcode();
-    $payment_processor_links = method_exists($purchase_object, 'get_payment_processor_links') ? $purchase_object->get_payment_processor_links() : new Tempcode();
+    $logos = method_exists($payment_gateway_object, 'get_logos') ? $payment_gateway_object->get_logos() : new Tempcode();
+    $payment_processor_links = method_exists($payment_gateway_object, 'get_payment_processor_links') ? $payment_gateway_object->get_payment_processor_links() : new Tempcode();
 
     require_javascript('shopping');
 
@@ -585,10 +585,10 @@ function do_lang_cpf($cpf_name)
  * Handle a particular local transaction as determined by the POST request.
  *
  * @param  ID_TEXT $payment_gateway The payment gateway
- * @param  object $object The payment gateway object
+ * @param  object $payment_gateway_object The payment gateway object
  * @return array A triple: success status, formatted status message, raw status message
  */
-function do_local_transaction($payment_gateway, $object)
+function do_local_transaction($payment_gateway, $payment_gateway_object)
 {
     // Grab transaction details...
 
@@ -608,7 +608,7 @@ function do_local_transaction($payment_gateway, $object)
     $currency = $transaction_row['e_currency'];
 
     $cardholder_name = post_param_string('payment_cardholder_name');
-    $card_type = post_param_string('payment_card_type');
+    $card_type = post_param_string('payment_card_type', '');
     $card_number = post_param_string('payment_card_number');
     $card_start_date = post_param_string('payment_card_start_date_year') . '/' . post_param_string('payment_card_start_date_month');
     $card_expiry_date = post_param_string('payment_card_expiry_date_year') . '/' . post_param_string('payment_card_expiry_date_month');
@@ -704,7 +704,7 @@ function do_local_transaction($payment_gateway, $object)
 
     // Process order...
 
-    list($success, $message, $message_raw) = $object->do_local_transaction($trans_id, $cardholder_name, $card_type, $card_number, $card_start_date, $card_expiry_date, $card_issue_number, $card_cv2, $amount, $currency, $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country, $shipping_email, $shipping_phone, $length, $length_units);
+    list($success, $message, $message_raw) = $payment_gateway_object->do_local_transaction($trans_id, $cardholder_name, $card_type, $card_number, $card_start_date, $card_expiry_date, $card_issue_number, $card_cv2, $amount, $currency, $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country, $shipping_email, $shipping_phone, $length, $length_units);
 
     if (($success) || ($length !== null)) {
         $status = (($length !== null) && (!$success)) ? 'SCancelled' : 'Completed';
@@ -748,16 +748,16 @@ function handle_ipn_transaction_script()
 
     $payment_gateway = get_param_string('from', get_option('payment_gateway'));
     require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
-    $object = object_factory('Hook_payment_gateway_' . $payment_gateway);
+    $payment_gateway_object = object_factory('Hook_payment_gateway_' . $payment_gateway);
 
     ob_start();
 
-    list($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, $period) = $object->handle_ipn_transaction();
+    list($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, $period) = $payment_gateway_object->handle_ipn_transaction();
 
     $type_code = handle_confirmed_transaction($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, $period, $payment_gateway);
 
-    if (method_exists($object, 'show_payment_response')) {
-        echo $object->show_payment_response($type_code, $purchase_id);
+    if (method_exists($payment_gateway_object, 'show_payment_response')) {
+        echo $payment_gateway_object->show_payment_response($type_code, $purchase_id);
     }
 
     return $purchase_id;
@@ -909,11 +909,11 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
 
     // Set order dispatch status
     if ($payment_status == 'Completed') {
-        $object = find_product($type_code, true);
+        $product_object = find_product($type_code, true);
 
-        if ((is_object($object)) && (!method_exists($object, 'get_product_dispatch_type'))) { // If hook does not have dispatch method setting take dispatch method as automatic
+        if ((is_object($product_object)) && (!method_exists($product_object, 'get_product_dispatch_type'))) { // If hook does not have dispatch method setting take dispatch method as automatic
             $found['ORDER_STATUS'] = 'ORDER_STATUS_dispatched';
-        } elseif (is_object($object) && $object->get_product_dispatch_type($purchase_id) == 'automatic') {
+        } elseif (is_object($product_object) && $product_object->get_product_dispatch_type($purchase_id) == 'automatic') {
             $found['ORDER_STATUS'] = 'ORDER_STATUS_dispatched';
         } else {
             $found['ORDER_STATUS'] = 'ORDER_STATUS_payment_received'; // Dispatch has to happen manually still
