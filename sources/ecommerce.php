@@ -346,7 +346,7 @@ function perform_local_payment()
 {
     if (($GLOBALS['DEV_MODE']) && (get_param_integer('keep_ecommerce_local_test', 0) == 1)) {
         require_code('config2');
-        set_option('payment_gateway', 'secpay');
+        set_option('payment_gateway', 'authorize');
         return true;
     }
 
@@ -359,7 +359,6 @@ function perform_local_payment()
 /**
  * Get a form for transacting local payments.
  *
- * @param  ?ID_TEXT $trans_id The transaction ID (null: auto-generate)
  * @param  ID_TEXT $type_code The product codename.
  * @param  SHORT_TEXT $item_name The item name
  * @param  ID_TEXT $purchase_id The purchase ID
@@ -371,7 +370,7 @@ function perform_local_payment()
  * @param  boolean $needs_shipping_address Whether a shipping address is needed.
  * @return array A tuple: The form fields, Hidden fields, Confidence logos, Payment processor links
  */
-function get_transaction_form_fields($trans_id, $type_code, $item_name, $purchase_id, $amount, $currency, $length, $length_units, $payment_gateway = null, $needs_shipping_address = false)
+function get_transaction_form_fields($type_code, $item_name, $purchase_id, $amount, $currency, $length, $length_units, $payment_gateway = null, $needs_shipping_address = false)
 {
     if ((!tacit_https()) && (!ecommerce_test_mode())) {
         warn_exit(do_lang_tempcode('NO_SSL_SETUP'));
@@ -388,9 +387,7 @@ function get_transaction_form_fields($trans_id, $type_code, $item_name, $purchas
         warn_exit(do_lang_tempcode('LOCAL_PAYMENT_NOT_SUPPORTED', escape_html($payment_gateway)));
     }
 
-    if ($trans_id === null) {
-        $trans_id = $object->generate_trans_id();
-    }
+    $trans_id = $object->generate_trans_id(); // gateway-compatible, probably random, transaction ID
 
     $GLOBALS['SITE_DB']->query_insert('trans_expecting', array(
         'id' => $trans_id,

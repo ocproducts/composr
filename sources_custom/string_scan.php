@@ -7062,7 +7062,6 @@ function string_scan($lang, $do_guessing = false)
         AVATARS_MISC
         MEMBER_HAS_SUBSCRIPTIONS
         SAVE_TO_ACCOUNT
-        TRANSACTION_ERROR
         ADD_AUTHOR
         ADD_CALENDAR_EVENT
         ADD_CATALOGUE_ENTRY

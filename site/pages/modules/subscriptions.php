@@ -265,13 +265,12 @@ class Module_subscriptions
             if ($hook->auto_cancel($id) !== true) {
                 // Because we cannot TRIGGER a REMOTE cancellation, we have it so the local user action triggers that notification, informing the staff to manually do a remote cancellation
                 require_code('notifications');
-                $trans_id = $GLOBALS['SITE_DB']->query_select_value('transactions', 'id', array('t_purchase_id' => strval($id)));
                 $username = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
-                dispatch_notification('subscription_cancelled_staff', null, do_lang('SUBSCRIPTION_CANCELLED_SUBJECT', null, null, null, get_site_default_lang()), do_notification_lang('SUBSCRIPTION_CANCELLED_BODY', $trans_id, $username, null, get_site_default_lang()));
+                dispatch_notification('subscription_cancelled_staff', null, do_lang('SUBSCRIPTION_CANCELLED_SUBJECT', null, null, null, get_site_default_lang()), do_notification_lang('SUBSCRIPTION_CANCELLED_BODY', strval($id), $username, null, get_site_default_lang()));
             }
         }
 
-        $GLOBALS['SITE_DB']->query_delete('subscriptions', array('id' => $id, 's_member_id' => get_member()), '', 1);
+        $GLOBALS['SITE_DB']->query_update('subscriptions', array('s_state' => 'cancelled'), array('id' => $id, 's_member_id' => get_member()), '', 1);
 
         $url = build_url(array('page' => '_SELF'), '_SELF');
         return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));

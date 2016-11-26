@@ -170,6 +170,7 @@ class Hook_payment_gateway_authorize
 
         $trans_id = $this->generate_trans_id();
 
+        // No 'custom' field for gateway to encode $purchase_id next to $item_name, so we need to pass through a single transaction ID
         $GLOBALS['SITE_DB']->query_insert('trans_expecting', array(
             'id' => $trans_id,
             'e_type_code' => $type_code,
@@ -227,6 +228,7 @@ class Hook_payment_gateway_authorize
 
         $trans_id = $this->generate_trans_id();
 
+        // No 'custom' field for gateway to encode $purchase_id next to $item_name, so we need to pass through a single transaction ID
         $GLOBALS['SITE_DB']->query_insert('trans_expecting', array(
             'id' => $trans_id,
             'e_type_code' => $type_code,
@@ -387,7 +389,7 @@ class Hook_payment_gateway_authorize
     /**
      * Perform a transaction.
      *
-     * @param  ?ID_TEXT $trans_id The transaction ID (null: generate one).
+     * @param  ID_TEXT $trans_id The transaction ID.
      * @param  SHORT_TEXT $cardholder_name Cardholder name.
      * @param  SHORT_TEXT $card_type Card Type.
      * @set    "Visa" "Master Card" "Switch" "UK Maestro" "Maestro" "Solo" "Delta" "American Express" "Diners Card" "JCB"
@@ -423,12 +425,6 @@ class Hook_payment_gateway_authorize
     {
         $card_number = str_replace(array('-', ' '), array('', ''), $card_number);
 
-        $purchase_id = post_param_string('customfld1', '-1');
-
-        if ($purchase_id != '-1') {
-            $description = $purchase_id;
-        }
-
         $result = array(false, null, null, null); // Default until re-set
 
         $cardholder_name_parts = explode(' ', $cardholder_name);
@@ -443,7 +439,7 @@ class Hook_payment_gateway_authorize
         if ($length === null) {
             // Direct transaction...
 
-            $this->_set_aim_parameters($card_number, $card_expiry_date, $card_cv2, $description, $amount, $billing_firstname, $billing_lastname, $billing_street_address, $billing_city, $billing_state, $billing_post_code, $billing_country, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_state, $shipping_post_code, $shipping_country, $shipping_email, $shipping_phone);
+            $this->_set_aim_parameters($card_number, $card_expiry_date, $card_cv2, $trans_id, $amount, $billing_firstname, $billing_lastname, $billing_street_address, $billing_city, $billing_state, $billing_post_code, $billing_country, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_state, $shipping_post_code, $shipping_country, $shipping_email, $shipping_phone);
 
             $response_data = http_download_file($this->url, null, true, false, 'Composr', $this->api_parameters, null, null, null, null, null, null, null, 12.0); // TODO: Update in v11
 
@@ -473,9 +469,9 @@ class Hook_payment_gateway_authorize
                 }
 
                 $success = ($response_result[0] == 1);
-                $code = ($success) ? $response_result[6] : $response_result[2];
-                $response_reason_text = ($success) ? 'success' : $response_result[3];
-                $result = array($success, $code, $response_reason_text, $response_result[1]);
+                $message_raw = ($success) ? $response_result[6] : $response_result[2];
+                $message = $success ? do_lang('SUCCESS') : do_lang('DECLINED_MESSAGE', $response_result[3]);
+                $result = array($success, $message, $message_raw);
             }
         } else {
             // Subscription...
@@ -497,20 +493,18 @@ class Hook_payment_gateway_authorize
 
             $start_date = date('Y-m-d');
 
-            $this->_set_arb_parameters($card_number, $card_expiry_date, $card_cv2, $start_date, $length, $length_units, $description, $amount, $billing_firstname, $billing_lastname, $billing_street_address, $billing_city, $billing_state, $billing_post_code, $billing_country, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_state, $shipping_post_code, $shipping_country, $shipping_email, $shipping_phone);
+            $this->_set_arb_parameters($card_number, $card_expiry_date, $card_cv2, $start_date, $length, $length_units, $trans_id, $amount, $billing_firstname, $billing_lastname, $billing_street_address, $billing_city, $billing_state, $billing_post_code, $billing_country, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_state, $shipping_post_code, $shipping_country, $shipping_email, $shipping_phone);
 
             $response_data = http_download_file($this->url, null, true, false, 'Composr', array($this->api_parameters), null, null, null, null, null, null, null, 30.0, true); // TODO: Update in v11
 
             if ($response_data !== null) {
-                list($result_code, $code, $text, $subscription_id) = $this->_parse_arb_return($response_data);
+                list($result_code, $code, $text, $authorizedotnet_subscription_id) = $this->_parse_arb_return($response_data);
 
                 $success = ($result_code == 'OK');
+                $message = $success ? do_lang('SUCCESS') : do_lang('DECLINED_MESSAGE', $text);
+                $message_raw = $code;
 
-                if ($success) {
-                    $text = do_lang('SUCCESS');
-                }
-
-                $result = array($success, $text, $code);
+                $result = array($success, $message, $message_raw);
             }
         }
 
@@ -523,7 +517,7 @@ class Hook_payment_gateway_authorize
      * @param  SHORT_TEXT $card_number Card number.
      * @param  SHORT_TEXT $card_expiry_date Card Expiry date.
      * @param  SHORT_TEXT $card_cv2 Card CV2 number (security number).
-     * @param  string $description Description
+     * @param  ID_TEXT $trans_id Transaction ID
      * @param  SHORT_TEXT $amount Transaction amount.
      * @param  SHORT_TEXT $billing_firstname Cardholder first name.
      * @param  SHORT_TEXT $billing_lastname Cardholder last name.
@@ -542,7 +536,7 @@ class Hook_payment_gateway_authorize
      * @param  SHORT_TEXT $shipping_email E-mail address (shipping)
      * @param  SHORT_TEXT $shipping_phone Phone number (shipping)
      */
-    protected function _set_aim_parameters($card_number, $card_expiry_date, $card_cv2, $description, $amount, $billing_firstname, $billing_lastname, $billing_street_address, $billing_city, $billing_state, $billing_post_code, $billing_country, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_state, $shipping_post_code, $shipping_country, $shipping_email, $shipping_phone)
+    protected function _set_aim_parameters($card_number, $card_expiry_date, $card_cv2, $trans_id, $amount, $billing_firstname, $billing_lastname, $billing_street_address, $billing_city, $billing_state, $billing_post_code, $billing_country, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_state, $shipping_post_code, $shipping_country, $shipping_email, $shipping_phone)
     {
         // http://www.authorize.net/content/dam/authorize/documents/AIM_guide.pdf
 
@@ -559,7 +553,7 @@ class Hook_payment_gateway_authorize
         $this->api_parameters['x_method'] = 'CC';
         $this->api_parameters['x_card_num'] = $card_number;
         $this->api_parameters['x_exp_date'] = $card_expiry_date;
-        $this->api_parameters['x_description'] = $description;
+        $this->api_parameters['x_description'] = $trans_id;
         $this->api_parameters['x_delim_data'] = true;
         $this->api_parameters['x_delim_char'] = '|';
         $this->api_parameters['x_relay_response'] = false;
@@ -619,7 +613,7 @@ class Hook_payment_gateway_authorize
      * @param  ?integer $length The subscription length in the units. (null: not a subscription)
      * @param  ?ID_TEXT $length_units The length units. (null: not a subscription)
      * @set    d w m y
-     * @param  string $description Description
+     * @param  ID_TEXT $trans_id Transaction ID
      * @param  SHORT_TEXT $amount Transaction amount.
      * @param  SHORT_TEXT $billing_firstname Cardholder first name.
      * @param  SHORT_TEXT $billing_lastname Cardholder last name.
@@ -638,7 +632,7 @@ class Hook_payment_gateway_authorize
      * @param  SHORT_TEXT $shipping_email E-mail address (shipping)
      * @param  SHORT_TEXT $shipping_phone Phone number (shipping)
      */
-    protected function _set_arb_parameters($card_number, $card_expiry_date, $card_cv2, $start_date, $length, $length_units, $description, $amount, $billing_firstname, $billing_lastname, $billing_street_address, $billing_city, $billing_state, $billing_post_code, $billing_country, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_state, $shipping_post_code, $shipping_country, $shipping_email, $shipping_phone)
+    protected function _set_arb_parameters($card_number, $card_expiry_date, $card_cv2, $start_date, $length, $length_units, $trans_id, $amount, $billing_firstname, $billing_lastname, $billing_street_address, $billing_city, $billing_state, $billing_post_code, $billing_country, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_state, $shipping_post_code, $shipping_country, $shipping_email, $shipping_phone)
     {
         // http://www.authorize.net/content/dam/authorize/documents/ARB_guide.pdf
 
@@ -659,7 +653,7 @@ class Hook_payment_gateway_authorize
                 '<transactionKey>' . $transaction_key . '</transactionKey>' .
             '</merchantAuthentication>' .
             '<subscription>' .
-                '<name>' . $description . '</name>' .
+                '<name>' . $trans_id . '</name>' .
 
                 '<customer>' .
                     '<id>' . strval(get_member()) . '</id>' .

@@ -568,41 +568,47 @@ class Module_shopping
 
         require_code('shopping');
 
-        if (get_param_integer('cancel', 0) == 0) {
-            empty_cart();
+        if (get_param_integer('cancel', 0) == 1) {
+            delete_pending_orders_for_current_user(); // Don't lock the stock unless they go back to the cart again
 
-            log_cart_actions('Completed payment');
-
-            // Take payment
-            if (perform_local_payment()) {
-                list($success, $message, $message_raw) = do_local_transaction($payment_gateway, $object);
-                if (!$success) {
-                    attach_message(do_lang_tempcode('TRANSACTION_ERROR', escape_html($message)), 'warn');
-                    return $this->view_shopping_cart();
-                }
+            if ($message !== null) {
+                return $this->wrap(do_template('PURCHASE_WIZARD_STAGE_FINISH', array('_GUID' => '6eafce1925e5069ceb438ec24754b47d', 'TITLE' => $this->title, 'MESSAGE' => $message)), $this->title, null);
             }
 
-            // Process transaction
-            if ((!perform_local_payment()) && (has_interesting_post_fields())) {
-                $order_id = handle_ipn_transaction_script();
+            return inform_screen(get_screen_title('PURCHASING'), do_lang_tempcode('PRODUCT_PURCHASE_CANCEL'), true);
+        }
 
-                $product_object = find_product(do_lang('CART_ORDER', $order_id));
-
-                if (method_exists($product_object, 'get_finish_url')) {
-                    return redirect_screen($this->title, $product_object->get_finish_url(), $message);
-                }
+        if (perform_local_payment()) {
+            list($success, $message, $message_raw) = do_local_transaction($payment_gateway, $object);
+            if (!$success) {
+                attach_message($message, 'warn');
+                return $this->view_shopping_cart();
             }
-
-            return $this->wrap(do_template('PURCHASE_WIZARD_STAGE_FINISH', array('_GUID' => '3857e761ab75f314f4960805bc76b936', 'TITLE' => $this->title, 'MESSAGE' => $message)), $this->title, null);
         }
 
-        delete_pending_orders_for_current_user(); // Don't lock the stock unless they go back to the cart again
+        empty_cart();
 
-        if ($message !== null) {
-            return $this->wrap(do_template('PURCHASE_WIZARD_STAGE_FINISH', array('_GUID' => '6eafce1925e5069ceb438ec24754b47d', 'TITLE' => $this->title, 'MESSAGE' => $message)), $this->title, null);
+        log_cart_actions('Completed payment');
+
+        if ((!perform_local_payment()) && (has_interesting_post_fields())) { // Alternative to IPN, *if* posted fields sent here
+            $order_id = handle_ipn_transaction_script();
         }
 
-        return inform_screen(get_screen_title('PURCHASING'), do_lang_tempcode('PRODUCT_PURCHASE_CANCEL'), true);
+        $redirect = get_param_string('redirect', null); // TODO: Correct flag in v11
+
+        if ($redirect === null) {
+            $product_object = find_product(do_lang('CART_ORDER', $order_id));
+
+            if (method_exists($product_object, 'get_finish_url')) {
+                $redirect = $product_object->get_finish_url('cart_orders', $message, get_param_integer('purchase_id', null));
+            }
+        }
+
+        if ($redirect !== null) {
+            return redirect_screen($this->title, $redirect, $message);
+        }
+
+        return $this->wrap(do_template('PURCHASE_WIZARD_STAGE_FINISH', array('_GUID' => '3857e761ab75f314f4960805bc76b936', 'TITLE' => $this->title, 'MESSAGE' => $message)), $this->title, null);
     }
 
     /**

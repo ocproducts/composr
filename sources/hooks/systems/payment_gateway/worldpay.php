@@ -111,6 +111,7 @@ class Hook_payment_gateway_worldpay
         //$digest = md5((($digest_option == '') ? ($digest_option . ':') : '') . $trans_id . ':' . float_to_raw_string($amount) . ':' . $currency);  Deprecated
         $digest = md5((($digest_option == '') ? ($digest_option . ':') : '') . ';' . 'cartId:amount:currency;' . $trans_id . ';' . float_to_raw_string($amount) . ';' . $currency);
 
+        // No 'custom' field for gateway to encode $purchase_id next to $item_name, so we need to pass through a single transaction ID
         $GLOBALS['SITE_DB']->query_insert('trans_expecting', array(
             'id' => $trans_id,
             'e_type_code' => $type_code,
@@ -183,6 +184,7 @@ class Hook_payment_gateway_worldpay
         //$digest = md5((($digest_option == '') ? ($digest_option . ':') : '') . $trans_id . ':' . float_to_raw_string($amount) . ':' . $currency . $length_units_2 . strval($length));   Deprecated
         $digest = md5((($digest_option == '') ? ($digest_option . ':') : '') . ';' . 'cartId:amount:currency:intervalUnit:intervalMult;' . $trans_id . ';' . float_to_raw_string($amount) . ';' . $currency . $length_units_2 . strval($length));
 
+        // No 'custom' field for gateway to encode $purchase_id next to $item_name, so we need to pass through a single transaction ID
         $GLOBALS['SITE_DB']->query_insert('trans_expecting', array(
             'id' => $trans_id,
             'e_type_code' => $type_code,

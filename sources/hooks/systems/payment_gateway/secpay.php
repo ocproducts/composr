@@ -98,6 +98,7 @@ class Hook_payment_gateway_secpay
         $trans_id = $this->generate_trans_id();
         $digest = md5($trans_id . float_to_raw_string($amount) . get_option('payment_gateway_password'));
 
+        // No 'custom' field for gateway to encode $purchase_id next to $item_name, so we need to pass through a single transaction ID
         $GLOBALS['SITE_DB']->query_insert('trans_expecting', array(
             'id' => $trans_id,
             'e_type_code' => $type_code,
@@ -186,6 +187,7 @@ class Hook_payment_gateway_secpay
         $digest = md5($trans_id . float_to_raw_string($amount) . get_option('payment_gateway_password'));
         list($length_units_2, $first_repeat) = $this->_translate_subscription_details($length, $length_units);
 
+        // No 'custom' field for gateway to encode $purchase_id next to $item_name, so we need to pass through a single transaction ID
         $GLOBALS['SITE_DB']->query_insert('trans_expecting', array(
             'id' => $trans_id,
             'e_type_code' => $type_code,
@@ -409,7 +411,7 @@ class Hook_payment_gateway_secpay
     /**
      * Perform a transaction.
      *
-     * @param  ?ID_TEXT $trans_id The transaction ID (null: generate one).
+     * @param  ID_TEXT $trans_id The transaction ID.
      * @param  SHORT_TEXT $cardholder_name Cardholder name.
      * @param  SHORT_TEXT $card_type Card Type.
      * @set    "Visa" "Master Card" "Switch" "UK Maestro" "Maestro" "Solo" "Delta" "American Express" "Diners Card" "JCB"
@@ -443,9 +445,6 @@ class Hook_payment_gateway_secpay
      */
     public function do_local_transaction($trans_id, $cardholder_name, $card_type, $card_number, $card_start_date, $card_expiry_date, $card_issue_number, $card_cv2, $amount, $currency, $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country, $shipping_firstname = '', $shipping_lastname = '', $shipping_street_address = '', $shipping_city = '', $shipping_county = '', $shipping_state = '', $shipping_post_code = '', $shipping_country = '', $shipping_email = '', $shipping_phone = '', $length = null, $length_units = null)
     {
-        if ($trans_id === null) {
-            $trans_id = $this->generate_trans_id();
-        }
         $username = $this->_get_username();
         $password_2 = get_option('payment_gateway_vpn_password');
         $digest = md5($trans_id . strval($amount) . get_option('payment_gateway_vpn_password'));

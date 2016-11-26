@@ -354,7 +354,6 @@ function render_cart_payment_form()
             $needs_shipping_address = true;
 
             list($fields, $hidden, $logos, $payment_processor_links) = get_transaction_form_fields(
-                null,
                 $type_code,
                 $item_name,
                 strval($order_id),
@@ -367,7 +366,7 @@ function render_cart_payment_form()
             );
         }
 
-        $finish_url = build_url(array('page' => 'purchase', 'type' => 'finish'), get_module_zone('purchase'));
+        $finish_url = build_url(array('page' => 'shopping', 'type' => 'finish'), get_module_zone('purchase'));
 
         $result = do_template('PURCHASE_WIZARD_STAGE_TRANSACT', array(
             '_GUID' => 'a70d6995baabb7e41e1af68409361f3c',

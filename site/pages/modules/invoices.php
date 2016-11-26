@@ -235,7 +235,6 @@ class Module_invoices
         $needs_shipping_address = (method_exists($object, 'needs_shipping_address')) && ($object->needs_shipping_address());
 
         list($fields, $hidden) = get_transaction_form_fields(
-            null,
             $type_code,
             $invoice_title,
             strval($id),

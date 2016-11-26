@@ -77,7 +77,7 @@ class Module_purchase
             add_privilege('ECOMMERCE', 'access_ecommerce_in_test_mode', false);
 
             $GLOBALS['SITE_DB']->create_table('trans_expecting', array( // Used by payment gateways that return limited information back via IPN, or for local transactions
-                'id' => '*ID_TEXT',
+                'id' => '*ID_TEXT', // NB: This is often different from the 'transactions.id' field
                 'e_type_code' => 'ID_TEXT',
                 'e_purchase_id' => 'ID_TEXT',
                 'e_item_name' => 'SHORT_TEXT',
@@ -554,7 +554,6 @@ class Module_purchase
             $needs_shipping_address = (method_exists($object, 'needs_shipping_address')) && ($object->needs_shipping_address());
 
             list($fields, $hidden, $logos, $payment_processor_links) = get_transaction_form_fields(
-                null,
                 $type_code,
                 $item_name,
                 $purchase_id,
@@ -596,43 +595,43 @@ class Module_purchase
             $message = $object->get_callback_url_message();
         }
 
-        if (get_param_integer('cancel', 0) == 0) {
-            if (perform_local_payment()) { // We need to try and run the transaction
-                list($success, $message, $message_raw) = do_local_transaction($payment_gateway, $object);
-                if (!$success) {
-                    attach_message(do_lang_tempcode('TRANSACTION_ERROR', escape_html($message)), 'warn');
-                    return $this->pay();
-                }
+        if (get_param_integer('cancel', 0) == 1) {
+            if ($message !== null) {
+                return $this->_wrap(do_template('PURCHASE_WIZARD_STAGE_FINISH', array('_GUID' => '859c31e8f0f02a2a46951be698dd22cf', 'TITLE' => $this->title, 'MESSAGE' => $message)), $this->title, null);
             }
 
+            return inform_screen(get_screen_title('PURCHASING'), do_lang_tempcode('PRODUCT_PURCHASE_CANCEL'), true);
+        }
+
+        if (perform_local_payment()) { // We need to try and run the transaction
+            list($success, $message, $message_raw) = do_local_transaction($payment_gateway, $object);
+            if (!$success) {
+                warn_exit($message);
+            }
+        }
+
+        if ((!perform_local_payment()) && (has_interesting_post_fields())) { // Alternative to IPN, *if* posted fields sent here
+            handle_ipn_transaction_script();
+        }
+
+        $redirect = get_param_string('redirect', null); // TODO: Correct flag in v11
+
+        if ($redirect === null) {
             $type_code = get_param_string('type_code', '');
             if ($type_code != '') {
-                if ((!perform_local_payment()) && (has_interesting_post_fields())) { // Alternative to IPN, *if* posted fields sent here
-                    handle_ipn_transaction_script();
-                }
-
                 $product_object = find_product($type_code);
 
-                $redirect = get_param_string('redirect', null); // TODO: Correct flag in v11
-                if ($redirect === null) {
-                    if (method_exists($product_object, 'get_finish_url')) {
-                        $redirect = $product_object->get_finish_url($type_code, $message, get_param_integer('purchase_id', null));
-                    }
-                }
-
-                if ($redirect !== null) {
-                    return redirect_screen($this->title, $redirect, $message);
+                if (method_exists($product_object, 'get_finish_url')) {
+                    $redirect = $product_object->get_finish_url($type_code, $message, get_param_integer('purchase_id', null));
                 }
             }
-
-            return $this->_wrap(do_template('PURCHASE_WIZARD_STAGE_FINISH', array('_GUID' => '43f706793719ea893c280604efffacfe', 'TITLE' => $this->title, 'MESSAGE' => $message)), $this->title, null);
         }
 
-        if (!is_null($message)) {
-            return $this->_wrap(do_template('PURCHASE_WIZARD_STAGE_FINISH', array('_GUID' => '859c31e8f0f02a2a46951be698dd22cf', 'TITLE' => $this->title, 'MESSAGE' => $message)), $this->title, null);
+        if ($redirect !== null) {
+            return redirect_screen($this->title, $redirect, $message);
         }
 
-        return inform_screen(get_screen_title('PURCHASING'), do_lang_tempcode('PRODUCT_PURCHASE_CANCEL'), true);
+        return $this->_wrap(do_template('PURCHASE_WIZARD_STAGE_FINISH', array('_GUID' => '43f706793719ea893c280604efffacfe', 'TITLE' => $this->title, 'MESSAGE' => $message)), $this->title, null);
     }
 
     /**

@@ -135,6 +135,7 @@ class Hook_payment_gateway_ccbill
         $form_period = '99';
         $digest = md5(float_to_raw_string($amount) . $form_period . $currency . get_option('payment_gateway_vpn_password'));
 
+        // No 'custom' field for gateway to encode $purchase_id next to $item_name, so we need to pass through a single transaction ID
         $GLOBALS['SITE_DB']->query_insert('trans_expecting', array(
             'id' => $trans_id,
             'e_type_code' => $type_code,
@@ -214,6 +215,7 @@ class Hook_payment_gateway_ccbill
         $form_period = strval($length * $this->length_unit_to_days[$length_units]);
         $digest = md5(float_to_raw_string($amount) . $form_period . float_to_raw_string($amount) . $form_period . '99' . $currency . get_option('payment_gateway_vpn_password')); // formPrice.formPeriod.formRecurringPrice.formRecurringPeriod.formRebills.currencyCode.salt
 
+        // No 'custom' field for gateway to encode $purchase_id next to $item_name, so we need to pass through a single transaction ID
         $GLOBALS['SITE_DB']->query_insert('trans_expecting', array(
             'id' => $trans_id,
             'e_type_code' => $type_code,
