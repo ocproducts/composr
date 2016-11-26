@@ -347,6 +347,9 @@ class Module_shopping
 
         $max_rows = count($shopping_cart_rows);
 
+        $grand_total = 0.0;
+        $shipping_cost = 0.0;
+
         if ($max_rows > 0) {
             $shopping_cart = new Tempcode();
 
@@ -364,16 +367,12 @@ class Module_shopping
                 ), null
             );
 
-            $i = 1;
-            $sub_tot = 0.0;
-            $shipping_cost = 0.0;
-
-            foreach ($shopping_cart_rows as $value) {
+            foreach ($shopping_cart_rows as $i => $value) {
                 $products_ids[] = $value['product_id'];
 
                 $_hook = $value['product_type'];
 
-                $value['sl_no'] = $i;
+                $value['sl_no'] = $i + 1;
 
                 require_code('hooks/systems/ecommerce/' . filter_naughty_harsh($_hook));
 
@@ -396,9 +395,7 @@ class Module_shopping
                     $shipping_cost = 0;
                 }
 
-                $sub_tot += round($value['price'] + $tax + $shipping_cost, 2) * $value['quantity'];
-
-                $i++;
+                $grand_total += round($value['price'] + $tax + $shipping_cost, 2) * $value['quantity'];
             }
 
             $results_table = results_table(do_lang_tempcode('SHOPPING'), 0, 'cart_start', $max_rows, 'cart_max', $max_rows, $fields_title, $shopping_cart, null, null, null, 'sort', null, null, 'cart');
@@ -406,23 +403,15 @@ class Module_shopping
             $update_cart_url = build_url(array('page' => '_SELF', 'type' => 'update_cart'), '_SELF');
             $empty_cart_url = build_url(array('page' => '_SELF', 'type' => 'empty_cart'), '_SELF');
 
-            $payment_form = render_cart_payment_form();
-
-            $proceed_box = do_template('ECOM_SHOPPING_CART_PROCEED', array(
-                '_GUID' => '02c90b68ca06620d39a42727766ce8b0',
-                'SUB_TOTAL' => float_format($sub_tot),
-                'SHIPPING_COST' => float_format($shipping_cost),
-                'GRAND_TOTAL' => float_format($sub_tot),
-                'PROCEED' => do_lang_tempcode('PROCEED'),
-                'CURRENCY' => ecommerce_get_currency_symbol(),
-                'PAYMENT_FORM' => $payment_form,
-            ));
+            list($payment_form, $finish_url) = render_cart_payment_form();
         } else {
             $update_cart_url = new Tempcode();
             $empty_cart_url = new Tempcode();
 
             $results_table = do_lang_tempcode('CART_EMPTY');
-            $proceed_box = new Tempcode();
+
+            $payment_form = new Tempcode();
+            $finish_url = '';
         }
 
         $ecom_catalogue_count = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'COUNT(*)', array('c_ecommerce' => 1));
@@ -443,14 +432,18 @@ class Module_shopping
             '_GUID' => 'badff09daf52ee1c84b472c44be1bfae',
             'TITLE' => $this->title,
             'RESULTS_TABLE' => $results_table,
-            'FORM_URL' => $update_cart_url,
+            'UPDATE_CART_URL' => $update_cart_url,
             'CONTINUE_SHOPPING_URL' => $continue_shopping_url,
             'MESSAGE' => '',
             'PRODUCT_IDS' => $products_ids_val,
             'EMPTY_CART_URL' => $empty_cart_url,
-            'PROCEED_BOX' => $proceed_box,
             'ALLOW_OPTOUT_TAX' => $allow_opt_out_tax,
             'ALLOW_OPTOUT_TAX_VALUE' => strval($allow_opt_out_tax_value),
+            'SHIPPING_COST' => float_format($shipping_cost),
+            'GRAND_TOTAL' => float_format($grand_total),
+            'CURRENCY' => ecommerce_get_currency_symbol(),
+            'PAYMENT_FORM' => $payment_form,
+            'FINISH_URL' => $finish_url,
         ));
 
         require_code('templates_internalise_screen');

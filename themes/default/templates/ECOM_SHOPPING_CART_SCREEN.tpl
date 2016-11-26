@@ -1,6 +1,6 @@
 {TITLE}
 
-<form title="{!PRIMARY_PAGE_FORM}" action="{FORM_URL*}" method="post" itemscope="itemscope" itemtype="http://schema.org/CheckoutPage" autocomplete="off">
+<form title="{!PRIMARY_PAGE_FORM}" action="{UPDATE_CART_URL*}" method="post" itemscope="itemscope" itemtype="http://schema.org/CheckoutPage" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	{RESULTS_TABLE}
@@ -36,5 +36,42 @@
 	</div>
 </form>
 
-{$,From the ECOM_SHOPPING_CART_PROCEED template}
-{PROCEED_BOX}
+{+START,IF_NON_EMPTY,{PRODUCT_IDS}}
+	<table class="columned_table cart_payment_summary">
+		<tbody>
+			<tr>
+				<th class="de_th">
+					{!GRAND_TOTAL}
+				</th>
+				<td>
+					<span class="price">{$CURRENCY_SYMBOL}{GRAND_TOTAL*}</span>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+{+END}
+
+{+START,IF_NON_EMPTY,{PAYMENT_FORM}}
+	{$,Either a form or a button}
+
+	{+START,IF_NON_EMPTY,{FINISH_URL}}
+		{$,Form}
+
+		<h2>{!PAYMENT_HEADING}</h2>
+
+		<form title="{!PRIMARY_PAGE_FORM}" method="post" enctype="multipart/form-data" action="{FINISH_URL*}" autocomplete="off">
+			{$INSERT_SPAMMER_BLACKHOLE}
+
+			{PAYMENT_FORM}
+
+			<p class="purchase_button">
+				<input id="proceed_button" onclick="if (typeof this.form=='undefined') var form=window.form_submitting; else var form=this.form; return do_form_submit(form,event);" class="button_screen buttons__proceed" accesskey="u" type="button" value="{!MAKE_PAYMENT}" />
+			</p>
+		</form>
+	{+END}
+
+	{+START,IF_EMPTY,{FINISH_URL}}
+		{$,Button}
+		{PAYMENT_FORM}
+	{+END}
+{+END}

@@ -136,6 +136,10 @@ class Hook_ecommerce_catalogue_items
     {
         require_code('catalogues');
 
+        if (get_page_name() == 'purchase') {
+            return ECOMMERCE_PRODUCT_DISABLED; // Don't list within purchase module, we only want it as a part of a cart order
+        }
+
         $res = $GLOBALS['SITE_DB']->query_select('catalogue_entries', array('*'), array('id' => intval($type_code)), '', 1);
         if (!array_key_exists(0, $res)) {
             return ECOMMERCE_PRODUCT_MISSING;

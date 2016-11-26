@@ -1,10 +1,4 @@
-{+START,IF_NON_EMPTY,{TITLE}}
-	{TITLE}
-{+END}
-{+START,IF_EMPTY,{TITLE}}
-	{$,TITLE may be blank, when this screen is embedded into the shopping cart [PURCHASE_WIZARD_STAGE_TRANSACT > PURCHASE_WIZARD_SCREEN > ECOM_SHOPPING_CART_PROCEED > ECOM_SHOPPING_CART_SCREEN]}
-	<h2>{!PAYMENT_HEADING}</h2>
-{+END}
+{TITLE}
 
 {+START,IF_NON_EMPTY,{URL}}
 <form title="{!PRIMARY_PAGE_FORM}"{+START,IF_NON_PASSED_OR_FALSE,GET} method="post" enctype="multipart/form-data" action="{URL*}"{+END}{+START,IF_PASSED_AND_TRUE,GET} method="get" action="{$URL_FOR_GET_FORM*,{URL}}"{+END} autocomplete="off">

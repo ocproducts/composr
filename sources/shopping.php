@@ -234,9 +234,9 @@ FOR MAKING PURCHASE
 */
 
 /**
- * Payment step.
+ * Render the cart payment form.
  *
- * @return Tempcode The result of execution.
+ * @return array Payment form, Payment form URL.
  */
 function render_cart_payment_form()
 {
@@ -341,7 +341,9 @@ function render_cart_payment_form()
     $GLOBALS['SITE_DB']->query_update('shopping_order', array('tot_price' => $total_price), array('id' => $order_id), '', 1);
 
     if (!perform_local_payment()) { // Pass through to the gateway's HTTP server
-        $result = make_cart_payment_button($order_id, get_option('currency'));
+        $payment_form = make_cart_payment_button($order_id, get_option('currency'));
+
+        $finish_url = new Tempcode();
     } else { // Handle the transaction internally
         $price = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'tot_price', array('id' => $order_id));
         $item_name = do_lang('CART_ORDER', strval($order_id));
@@ -366,9 +368,7 @@ function render_cart_payment_form()
             );
         }
 
-        $finish_url = build_url(array('page' => 'shopping', 'type' => 'finish', 'type_code' => 'cart_orders'), get_module_zone('purchase'));
-
-        $result = do_template('PURCHASE_WIZARD_STAGE_TRANSACT', array(
+        $payment_form = do_template('PURCHASE_WIZARD_STAGE_TRANSACT', array(
             '_GUID' => 'a70d6995baabb7e41e1af68409361f3c',
             'FIELDS' => $fields,
             'HIDDEN' => $hidden,
@@ -376,10 +376,10 @@ function render_cart_payment_form()
             'PAYMENT_PROCESSOR_LINKS' => $payment_processor_links,
         ));
 
-        $result = do_template('PURCHASE_WIZARD_SCREEN', array('_GUID' => 'dfc7b8460e81dfd6d083e5f5d2b606a4', 'TITLE' => '', 'CONTENT' => $result, 'URL' => $finish_url));
+        $finish_url = build_url(array('page' => 'shopping', 'type' => 'finish', 'type_code' => 'cart_orders'), get_module_zone('purchase'));
     }
 
-    return $result;
+    return array($payment_form, $finish_url);
 }
 
 /**

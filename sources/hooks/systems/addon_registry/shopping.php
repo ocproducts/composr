@@ -153,7 +153,6 @@ class Hook_addon_registry_shopping
             'themes/default/templates/ECOM_ORDERS_SCREEN.tpl',
             'themes/default/templates/ECOM_SHIPPING_ADDRESS.tpl',
             'themes/default/templates/ECOM_CART_BUTTON_VIA_PAYPAL.tpl',
-            'themes/default/templates/ECOM_SHOPPING_CART_PROCEED.tpl',
             'themes/default/templates/ECOM_SHOPPING_CART_SCREEN.tpl',
             'themes/default/templates/ECOM_SHOPPING_ITEM_QUANTITY_FIELD.tpl',
             'themes/default/templates/ECOM_SHOPPING_ITEM_REMOVE_FIELD.tpl',
@@ -178,7 +177,6 @@ class Hook_addon_registry_shopping
             'templates/ECOM_SHOPPING_ITEM_QUANTITY_FIELD.tpl' => 'shopping_cart_screen',
             'templates/ECOM_SHOPPING_ITEM_REMOVE_FIELD.tpl' => 'shopping_cart_screen',
             'templates/ECOM_CART_BUTTON_VIA_PAYPAL.tpl' => 'ecom_cart_button_via_paypal',
-            'templates/ECOM_SHOPPING_CART_PROCEED.tpl' => 'shopping_cart_screen',
             'templates/ECOM_SHOPPING_CART_SCREEN.tpl' => 'shopping_cart_screen',
             'templates/ECOM_ORDERS_SCREEN.tpl' => 'ecom_orders_screen',
             'templates/ECOM_ORDERS_DETAILS_SCREEN.tpl' => 'ecom_orders_details_screen',
@@ -442,27 +440,24 @@ class Hook_addon_registry_shopping
         ));
         //results_table ends
 
-        $proceed_box = do_lorem_template('ECOM_SHOPPING_CART_PROCEED', array(
-            'SUB_TOTAL' => float_format(floatval(placeholder_number())),
-            'SHIPPING_COST' => float_format(floatval(placeholder_number())),
-            'GRAND_TOTAL' => float_format(floatval(placeholder_number())),
-            'PROCEED' => lorem_phrase(),
-            'CURRENCY' => lorem_word(),
-            'PAYMENT_FORM' => placeholder_form(),
-        ));
-
         return array(
             lorem_globalise(do_lorem_template('ECOM_SHOPPING_CART_SCREEN', array(
                 'TITLE' => lorem_title(),
                 'RESULTS_TABLE' => $results_table,
-                'FORM_URL' => placeholder_url(),
+                'UPDATE_CART_URL' => placeholder_url(),
                 'CONTINUE_SHOPPING_URL' => placeholder_url(),
                 'MESSAGE' => lorem_phrase(),
                 'PRODUCT_IDS' => placeholder_id(),
                 'EMPTY_CART_URL' => placeholder_url(),
-                'PROCEED_BOX' => $proceed_box,
                 'ALLOW_OPTOUT_TAX' => lorem_phrase(),
                 'ALLOW_OPTOUT_TAX_VALUE' => lorem_phrase(),
+                'SUB_TOTAL' => float_format(floatval(placeholder_number())),
+                'SHIPPING_COST' => float_format(floatval(placeholder_number())),
+                'GRAND_TOTAL' => float_format(floatval(placeholder_number())),
+                'PROCEED' => lorem_phrase(),
+                'CURRENCY' => lorem_word(),
+                'PAYMENT_FORM' => placeholder_form(),
+                'FINISH_URL' => placeholder_url(),
             )), null, '', true)
         );
     }
