@@ -1840,7 +1840,7 @@ function render_catalogue_entry_screen($id, $no_title = false, $attach_to_url_fi
     // Finding any hook exists for this product
     if (addon_installed('ecommerce')) {
         $object = find_product(strval($id));
-        if (is_object($object) && method_exists($object, 'get_custom_product_map_fields')) {
+        if ((is_object($object)) && (method_exists($object, 'get_custom_product_map_fields'))) {
             $object->get_custom_product_map_fields($id, $map);
         }
     }

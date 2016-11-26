@@ -73,7 +73,7 @@ class Hook_payment_gateway_worldpay
      */
     public function get_logos()
     {
-        $inst_id = ecommerce_test_mode() ? get_option('payment_gateway_test_username') : get_option('payment_gateway_username');
+        $inst_id = $this->_get_username();
         $address = str_replace("\n", '<br />', escape_html(get_option('pd_address')));
         $email = get_option('pd_email');
         $number = get_option('pd_number');

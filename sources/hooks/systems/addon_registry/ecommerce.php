@@ -384,7 +384,7 @@ class Hook_addon_registry_ecommerce
                 'FIELDS' => placeholder_fields(),
                 'HIDDEN' => '',
                 'LOGO' => placeholder_image(),
-                'PAYMENT_PROCESSING_LINK' => placeholder_link(),
+                'PAYMENT_PROCESSOR_LINKS' => placeholder_link(),
             )), null, '', true)
         );
     }
@@ -400,6 +400,9 @@ class Hook_addon_registry_ecommerce
     {
         $fields = do_lorem_template('PURCHASE_WIZARD_STAGE_TRANSACT', array(
             'FIELDS' => placeholder_fields(),
+            'HIDDEN' => '',
+            'LOGO' => placeholder_image(),
+            'PAYMENT_PROCESSOR_LINKS' => placeholder_link(),
         ));
 
         return array(
@@ -441,6 +444,7 @@ class Hook_addon_registry_ecommerce
     {
         return array(
             lorem_globalise(do_lorem_template('ECOM_LOGOS_AUTHORIZE', array(
+                'CUSTOMER_ID' => placeholder_id(),
             )), null, '', true)
         );
     }
@@ -1042,7 +1046,6 @@ class Hook_addon_registry_ecommerce
     {
         return array(
             lorem_globalise(do_lorem_template('PURCHASE_WIZARD_STAGE_PAY', array(
-                'LOGOS' => placeholder_image(),
                 'TRANSACTION_BUTTON' => placeholder_button(),
                 'CURRENCY' => placeholder_number(),
                 'ITEM_NAME' => lorem_word(),
@@ -1051,6 +1054,8 @@ class Hook_addon_registry_ecommerce
                 'LENGTH_UNITS' => '$',
                 'PURCHASE_ID' => placeholder_id(),
                 'PRICE' => '123.45',
+                'LOGOS' => placeholder_image(),
+                'PAYMENT_PROCESSOR_LINKS' => lorem_phrase(),
             )), null, '', true)
         );
     }

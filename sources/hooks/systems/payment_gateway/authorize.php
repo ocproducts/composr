@@ -27,6 +27,7 @@ class Hook_payment_gateway_authorize
     //  the live login is the Composr Composr "Gateway username" option
     //  the testing login is the Composr "Testing mode gateway username" option
     //  the transaction key is the Composr "Gateway digest code" option; it may be blank ; if they are different for the live and testing logins then separate them with ";"
+    //  the customer ID is the Composr "Gateway VPN username" option
     // The subscription button isn't great. The merchant needs to manually go into the Authorize.Net backend and configure the subscription details for the transaction. That's an API limitation. Probably best to use PayPal to be honest, or go through a full PCI compliance and do local payments (which works well).
 
     protected $api_parameters = null;
@@ -122,7 +123,7 @@ class Hook_payment_gateway_authorize
     {
         // TODO: Force CSP off on v11
 
-        return do_template('ECOM_LOGOS_AUTHORIZE', array('_GUID' => '5b3254b330b3b1719d66d2b754c7a8c8'));
+        return do_template('ECOM_LOGOS_AUTHORIZE', array('_GUID' => '5b3254b330b3b1719d66d2b754c7a8c8', 'CUSTOMER_ID' => get_option('payment_gateway_vpn_username')));
     }
 
     /**

@@ -14,6 +14,6 @@
 	<input type="hidden" name="x_recurring_billing" value="TRUE" />
 
 	<div class="purchase_button">
-		<input style="border: 0px" type="image" src="https://www.authorize.net/resources/images/merchants/products/buy_now_blue.gif" name="submit" alt="Authorize.net - Simple Checkout" />
+		<input class="button_screen menu__rich_content__ecommerce__purchase" type="submit" value="{!MAKE_PAYMENT}" alt="Authorize.net - Simple Checkout" />
 	</div>
 </form>

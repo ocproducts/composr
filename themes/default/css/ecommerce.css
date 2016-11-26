@@ -30,35 +30,43 @@
 	width: 100%;
 }
 
-.local_payment_merchant_details {
+.local_payment_merchant_details_wrap {
 	border: 1px dashed {$GET,point_of_interest_border};
 	background-color: {$GET,point_of_interest_background};
-	padding: 0.5em;
-	overflow: hidden;
 }
 
-.local_payment_merchant_details p {
-	margin: 0;
+.local_payment_merchant_details {
+	display: table;
+	width: 100%;
+}
+
+.local_payment_merchant_details>div {
+	display: table-row;
+}
+
+.local_payment_transact_info, .payment_processor_links, .local_payment_verified_account_logo {
+	display: table-cell;
+	vertical-align: middle;
+	padding: 0.5em;
 }
 
 .local_payment_transact_info {
 }
 
-.local_payment_verified_account_logo {
-	float: right;
-	margin-left: 1em;
-}
-
 .payment_processor_links {
-	background: url('{$IMG;,ecommerce/checkmark}') no-repeat top left;
-	padding-left: 25px;
-	min-height: 25px;
+	background: url('{$IMG;,ecommerce/checkmark}') no-repeat left center;
+	padding-left: 24px;
 }
 
-.logos {
-	float: right;
-	width: 94px;
-	margin-left: 1em;
+.local_payment_verified_account_logo {
+}
+
+.local_payment_merchant_details p, .local_payment_merchant_details_simple p {
+	margin: 0;
+}
+
+.local_payment_merchant_details_wrap + .ecommerce_button, .local_payment_merchant_details + .ecommerce_button {
+	margin-top: 1em;
 }
 
 /*

@@ -185,7 +185,7 @@ function make_cart_payment_button($order_id, $currency)
 
     if (!method_exists($object, 'make_cart_transaction_button')) {
         $amount = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'tot_price', array('id' => $order_id));
-        return $object->make_transaction_button('cart_orders', do_lang('CART_ORDER', $order_id), $order_id, $amount, $currency);
+        return $object->make_transaction_button('cart_orders', do_lang('CART_ORDER', $order_id), strval($order_id), $amount, $currency);
     }
 
     return $object->make_cart_transaction_button($items, $currency, $order_id);
@@ -381,13 +381,13 @@ function get_transaction_form_fields($type_code, $item_name, $purchase_id, $amou
     }
 
     require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
-    $object = object_factory('Hook_payment_gateway_' . $payment_gateway);
+    $purchase_object = object_factory('Hook_payment_gateway_' . $payment_gateway);
 
-    if (!method_exists($object, 'do_local_transaction')) {
+    if (!method_exists($purchase_object, 'do_local_transaction')) {
         warn_exit(do_lang_tempcode('LOCAL_PAYMENT_NOT_SUPPORTED', escape_html($payment_gateway)));
     }
 
-    $trans_id = $object->generate_trans_id(); // gateway-compatible, probably random, transaction ID
+    $trans_id = $purchase_object->generate_trans_id(); // gateway-compatible, probably random, transaction ID
 
     $GLOBALS['SITE_DB']->query_insert('trans_expecting', array(
         'id' => $trans_id,
@@ -476,8 +476,8 @@ function get_transaction_form_fields($type_code, $item_name, $purchase_id, $amou
     $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('TITLE' => do_lang_tempcode('PAYMENT_DETAILS'))));
 
     $fields->attach(form_input_line(do_lang_cpf('payment_cardholder_name'), do_lang_tempcode('DESCRIPTION_CARDHOLDER_NAME'), 'payment_cardholder_name', $cardholder_name, true));
-    if (method_exists($object, 'create_selection_list_card_types')) {
-        $fields->attach(form_input_list(do_lang_cpf('payment_card_type'), '', 'payment_card_type', $object->create_selection_list_card_types($card_type)));
+    if (method_exists($purchase_object, 'create_selection_list_card_types')) {
+        $fields->attach(form_input_list(do_lang_cpf('payment_card_type'), '', 'payment_card_type', $purchase_object->create_selection_list_card_types($card_type)));
     }
     $fields->attach(form_input_integer(do_lang_cpf('payment_card_number'), do_lang_tempcode('DESCRIPTION_CARD_NUMBER'), 'payment_card_number', $card_number, true, null, 16));
     $fields->attach(form_input_date_components(do_lang_cpf('payment_card_start_date'), do_lang_tempcode('DESCRIPTION_CARD_START_DATE'), 'payment_card_start_date', true, true, false, intval(date('Y')) - 16, intval(date('Y')), $card_start_date_year, $card_start_date_month, null, false));
@@ -520,16 +520,8 @@ function get_transaction_form_fields($type_code, $item_name, $purchase_id, $amou
 
     // ---
 
-    if (method_exists($object, 'get_logos')) {
-        $logos = $object->get_logos();
-    } else {
-        $logos = new Tempcode();
-    }
-    if (method_exists($object, 'get_payment_processor_links')) {
-        $payment_processor_links = $object->get_payment_processor_links();
-    } else {
-        $payment_processor_links = new Tempcode();
-    }
+    $logos = method_exists($purchase_object, 'get_logos') ? $purchase_object->get_logos() : new Tempcode();
+    $payment_processor_links = method_exists($purchase_object, 'get_payment_processor_links') ? $purchase_object->get_payment_processor_links() : new Tempcode();
 
     require_javascript('shopping');
 

@@ -497,11 +497,6 @@ class Module_purchase
         } else {
             $length = null;
             $length_units = '';
-
-            // Add cataloue item order to shopping_orders
-            if (method_exists($object, 'add_purchase_order')) {
-                $purchase_id = strval($object->add_purchase_order($type_code, $temp[$type_code]));
-            }
         }
 
         if ($price == '0') {
@@ -536,10 +531,13 @@ class Module_purchase
             } else {
                 $transaction_button = make_transaction_button($type_code, $item_name, $purchase_id, floatval($price), $currency, $payment_gateway);
             }
+
             $tpl = ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) ? 'PURCHASE_WIZARD_STAGE_SUBSCRIBE' : 'PURCHASE_WIZARD_STAGE_PAY';
+
             $logos = method_exists($purchase_object, 'get_logos') ? $purchase_object->get_logos() : new Tempcode();
+            $payment_processor_links = method_exists($purchase_object, 'get_payment_processor_links') ? $purchase_object->get_payment_processor_links() : new Tempcode();
+
             $result = do_template($tpl, array(
-                'LOGOS' => $logos,
                 'TRANSACTION_BUTTON' => $transaction_button,
                 'CURRENCY' => $currency,
                 'ITEM_NAME' => $item_name,
@@ -549,6 +547,8 @@ class Module_purchase
                 'PURCHASE_ID' => $purchase_id,
                 'PRICE' => float_to_raw_string(floatval($price)),
                 'TEXT' => $text,
+                'LOGOS' => $logos,
+                'PAYMENT_PROCESSOR_LINKS' => $payment_processor_links,
             ));
         } else { // Handle the transaction internally
             $needs_shipping_address = (method_exists($object, 'needs_shipping_address')) && ($object->needs_shipping_address());
@@ -571,8 +571,8 @@ class Module_purchase
                 '_GUID' => '15cbba9733f6ff8610968418d8ab527e',
                 'FIELDS' => $fields,
                 'HIDDEN' => $hidden,
-                'LOGO' => $logos,
-                'PAYMENT_PROCESSING_LINK' => $payment_processor_links,
+                'LOGOS' => $logos,
+                'PAYMENT_PROCESSOR_LINKS' => $payment_processor_links,
             ));
             return $this->_wrap($result, $this->title, $finish_url);
         }

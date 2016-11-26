@@ -153,7 +153,6 @@ class Hook_addon_registry_shopping
             'themes/default/templates/ECOM_ORDERS_SCREEN.tpl',
             'themes/default/templates/ECOM_SHIPPING_ADDRESS.tpl',
             'themes/default/templates/ECOM_CART_BUTTON_VIA_PAYPAL.tpl',
-            'themes/default/templates/ECOM_ITEM_DETAILS.tpl',
             'themes/default/templates/ECOM_SHOPPING_CART_PROCEED.tpl',
             'themes/default/templates/ECOM_SHOPPING_CART_SCREEN.tpl',
             'themes/default/templates/ECOM_SHOPPING_ITEM_QUANTITY_FIELD.tpl',
@@ -176,7 +175,6 @@ class Hook_addon_registry_shopping
             'templates/ECOM_ADMIN_ORDERS_SCREEN.tpl' => 'administrative__ecom_admin_orders_screen',
             'templates/ECOM_SHIPPING_ADDRESS.tpl' => 'administrative__ecom_admin_orders_details_screen',
             'templates/ECOM_ADMIN_ORDERS_DETAILS_SCREEN.tpl' => 'administrative__ecom_admin_orders_details_screen',
-            'templates/ECOM_ITEM_DETAILS.tpl' => 'ecommerce_item_details',
             'templates/ECOM_SHOPPING_ITEM_QUANTITY_FIELD.tpl' => 'shopping_cart_screen',
             'templates/ECOM_SHOPPING_ITEM_REMOVE_FIELD.tpl' => 'shopping_cart_screen',
             'templates/ECOM_CART_BUTTON_VIA_PAYPAL.tpl' => 'ecom_cart_button_via_paypal',
@@ -329,22 +327,6 @@ class Hook_addon_registry_shopping
                 'NOTES' => lorem_phrase(),
                 'ORDER_ACTIONS' => $order_actions,
                 'SHIPPING_ADDRESS' => $shipping_address,
-            )), null, '', true)
-        );
-    }
-
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
-    public function tpl_preview__ecommerce_item_details()
-    {
-        return array(
-            lorem_globalise(do_lorem_template('ECOM_ITEM_DETAILS', array(
-                'FIELDS' => placeholder_fields(),
             )), null, '', true)
         );
     }

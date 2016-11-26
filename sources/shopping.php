@@ -373,7 +373,7 @@ function render_cart_payment_form()
             'FIELDS' => $fields,
             'HIDDEN' => $hidden,
             'LOGOS' => $logos,
-            'PAYMENT_PROCESSOR_LINKS' => $payment_processor_links,
+            'PAYMENT_PROCESSOR_LINKS' => placeholder_link(),
         ));
 
         $result = do_template('PURCHASE_WIZARD_SCREEN', array('_GUID' => 'dfc7b8460e81dfd6d083e5f5d2b606a4', 'TITLE' => '', 'CONTENT' => $result, 'URL' => $finish_url));
@@ -484,8 +484,8 @@ function update_stock($order_id)
             continue;
         }
 
-        if (method_exists($object, 'update_stock')) {
-            $object->update_stock($ordered_items['p_id'], $ordered_items['p_quantity']);
+        if (method_exists($object, 'reduce_stock')) {
+            $object->reduce_stock($ordered_items['p_id'], $ordered_items['p_quantity']);
         }
     }
 }
