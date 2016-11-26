@@ -393,19 +393,19 @@ class Hook_payment_gateway_paypal
             return null;
         }
 
-        if (is_null($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order_addresses', 'id', array('order_id' => $order_id)))) {
+        if (is_null($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order_addresses', 'id', array('a_order_id' => $order_id)))) {
             $shipping_address = array(
-                'order_id' => $order_id,
-                'firstname' => post_param_string('first_name', ''),
-                'lastname' => post_param_string('last_name', ''),
-                'street_address' => trim(post_param_string('address_name', '') . "\n" . post_param_string('address_street', '')),
-                'city' => post_param_string('address_city', ''),
-                'county' => '',
-                'state' => '',
-                'post_code' => post_param_string('address_zip', ''),
-                'country' => post_param_string('address_country', ''),
-                'email' => post_param_string('payer_email', ''),
-                'phone' => post_param_string('contact_phone', ''),
+                'a_order_id' => $order_id,
+                'a_firstname' => post_param_string('first_name', ''),
+                'a_lastname' => post_param_string('last_name', ''),
+                'a_street_address' => trim(post_param_string('address_name', '') . "\n" . post_param_string('address_street', '')),
+                'a_city' => post_param_string('address_city', ''),
+                'a_county' => '',
+                'a_state' => '',
+                'a_post_code' => post_param_string('address_zip', ''),
+                'a_country' => post_param_string('address_country', ''),
+                'a_email' => post_param_string('payer_email', ''),
+                'a_phone' => post_param_string('contact_phone', ''),
             );
             return $GLOBALS['SITE_DB']->query_insert('shopping_order_addresses', $shipping_address, true);
         }

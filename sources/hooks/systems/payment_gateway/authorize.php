@@ -313,19 +313,19 @@ class Hook_payment_gateway_authorize
      */
     public function store_shipping_address($order_id)
     {
-        if ($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order_addresses', 'id', array('order_id' => $order_id)) === null) {
+        if ($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order_addresses', 'id', array('a_order_id' => $order_id)) === null) {
             $shipping_address = array(
-                'order_id' => $order_id,
-                'firstname' => trim(post_param_string('x_ship_to_first_name', '') . ', ' . post_param_string('x_ship_to_company', ''), ' ,'),
-                'lastname' => post_param_string('x_ship_to_last_name', ''),
-                'street_address' => post_param_string('x_ship_to_address', ''),
-                'city' => post_param_string('x_ship_to_city', ''),
-                'county' => '',
-                'state' => post_param_string('x_ship_to_state', ''),
-                'post_code' => post_param_string('x_ship_to_zip', ''),
-                'country' => post_param_string('x_ship_to_country', ''),
-                'email' => post_param_string('x_email', ''),
-                'phone' => post_param_string('x_phone', ''),
+                'a_order_id' => $order_id,
+                'a_firstname' => trim(post_param_string('x_ship_to_first_name', '') . ', ' . post_param_string('x_ship_to_company', ''), ' ,'),
+                'a_lastname' => post_param_string('x_ship_to_last_name', ''),
+                'a_street_address' => post_param_string('x_ship_to_address', ''),
+                'a_city' => post_param_string('x_ship_to_city', ''),
+                'a_county' => '',
+                'a_state' => post_param_string('x_ship_to_state', ''),
+                'a_post_code' => post_param_string('x_ship_to_zip', ''),
+                'a_country' => post_param_string('x_ship_to_country', ''),
+                'a_email' => post_param_string('x_email', ''),
+                'a_phone' => post_param_string('x_phone', ''),
             );
             return $GLOBALS['SITE_DB']->query_insert('shopping_order_addresses', $shipping_address, true);
         }

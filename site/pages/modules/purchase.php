@@ -573,7 +573,6 @@ class Module_purchase
                 'HIDDEN' => $hidden,
                 'LOGO' => $logos,
                 'PAYMENT_PROCESSING_LINK' => $payment_processor_links,
-                'ERROR_MSG' => '',
             ));
             return $this->_wrap($result, $this->title, $finish_url);
         }
@@ -598,7 +597,11 @@ class Module_purchase
 
         if (get_param_integer('cancel', 0) == 0) {
             if (perform_local_payment()) { // We need to try and run the transaction
-                list($success, $message, $message_raw) = handle_local_payment($payment_gateway, $object);
+                list($success, $message, $message_raw) = do_local_transaction($payment_gateway, $object);
+                if (!$success) {
+                    attach_message($message, 'warn');
+                    return $this->pay();
+                }
             }
 
             $type_code = get_param_string('type_code', '');

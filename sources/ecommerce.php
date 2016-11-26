@@ -557,7 +557,7 @@ function do_lang_cpf($cpf_name)
  * @param  object $object The payment gateway object
  * @return array A triple: success status, formatted status message, raw status message
  */
-function handle_local_payment($payment_gateway, $object)
+function do_local_transaction($payment_gateway, $object)
 {
     // Grab transaction details...
 
@@ -608,17 +608,17 @@ function handle_local_payment($payment_gateway, $object)
     if (addon_installed('shopping')) {
         if ($transaction_row['e_type_code'] == 'cart_orders') {
             $shipping_address = array(
-                'order_id' => intval($purchase_id),
-                'firstname' => $shipping_firstname,
-                'lastname' => $shipping_lastname,
-                'street_address' => $shipping_street_address,
-                'city' => $shipping_city,
-                'county' => $shipping_county,
-                'state' => $shipping_state,
-                'post_code' => $shipping_post_code,
-                'country' => $shipping_country,
-                'email' => $shipping_email,
-                'phone' => $shipping_phone,
+                'a_order_id' => intval($purchase_id),
+                'a_firstname' => $shipping_firstname,
+                'a_lastname' => $shipping_lastname,
+                'a_street_address' => $shipping_street_address,
+                'a_city' => $shipping_city,
+                'a_county' => $shipping_county,
+                'a_state' => $shipping_state,
+                'a_post_code' => $shipping_post_code,
+                'a_country' => $shipping_country,
+                'a_email' => $shipping_email,
+                'a_phone' => $shipping_phone,
             );
             $GLOBALS['SITE_DB']->query_insert('shopping_order_addresses', $shipping_address, true);
         }

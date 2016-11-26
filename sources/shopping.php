@@ -376,7 +376,6 @@ function render_cart_payment_form()
             'HIDDEN' => $hidden,
             'LOGOS' => $logos,
             'PAYMENT_PROCESSOR_LINKS' => $payment_processor_links,
-            'ERROR_MSG' => '',
         ));
 
         require_javascript('checking');

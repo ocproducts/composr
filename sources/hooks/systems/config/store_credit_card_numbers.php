@@ -39,7 +39,7 @@ class Hook_config_store_credit_card_numbers
             'shared_hosting_restricted' => '0',
             'list_options' => '',
 
-            'addon' => 'shopping',
+            'addon' => 'ecommerce',
         );
     }
 

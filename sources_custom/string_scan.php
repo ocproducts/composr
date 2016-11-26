@@ -118,6 +118,12 @@ function string_scan($lang, $do_guessing = false)
         CONTINUE_RESTORATION
         CONFIG_OPTION_news_summary_required
         OWNER
+        CONFIG_OPTION_transaction_flat_cost
+        CONFIG_OPTION_transaction_percentage_cost
+        TRANSACTION_FLAT_COST
+        TRANSACTION_PERCENTAGE_COST
+        PAYMENT_GATEWAY_authorize
+        PAYMENT_GATEWAY_ccbill
         TICKETS_STAFF
         NO_CNS
         DOCS
@@ -7053,6 +7059,9 @@ function string_scan($lang, $do_guessing = false)
         AVATARS_CARTOONS
         AVATARS_THEMATIC
         AVATARS_MISC
+        MEMBER_HAS_SUBSCRIPTIONS
+        SAVE_TO_ACCOUNT
+        TRANSACTION_ERROR
         ADD_AUTHOR
         ADD_CALENDAR_EVENT
         ADD_CATALOGUE_ENTRY

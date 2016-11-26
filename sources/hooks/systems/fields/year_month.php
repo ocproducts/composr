@@ -178,8 +178,8 @@ class Hook_fields_year_month
         $id = $field['id'];
         $stub = 'field_' . strval($id);
 
-        $year = post_param_integer($stub . '_year');
-        $month = post_param_integer($stub . '_month');
+        $year = post_param_integer($stub . '_year', null);
+        $month = post_param_integer($stub . '_month', null);
         if (is_null($year)) {
             return $editing ? STRING_MAGIC_NULL : '';
         }

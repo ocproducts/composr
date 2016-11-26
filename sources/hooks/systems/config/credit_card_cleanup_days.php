@@ -39,7 +39,7 @@ class Hook_config_credit_card_cleanup_days
             'shared_hosting_restricted' => '0',
             'list_options' => '',
 
-            'addon' => 'shopping',
+            'addon' => 'ecommerce',
         );
     }
 

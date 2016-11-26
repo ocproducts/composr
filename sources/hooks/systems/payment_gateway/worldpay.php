@@ -313,23 +313,19 @@ class Hook_payment_gateway_worldpay
      */
     public function store_shipping_address($order_id)
     {
-        if (is_null(post_param_string('first_name', null))) {
-            return null;
-        }
-
-        if (is_null($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order_addresses', 'id', array('order_id' => $order_id)))) {
+        if (is_null($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order_addresses', 'id', array('a_order_id' => $order_id)))) {
             $shipping_address = array(
-                'order_id' => $order_id,
-                'firstname' => post_param_string('delvName', ''),
-                'lastname' => '',
-                'street_address' => post_param_string('delvAddress', ''),
-                'city' => post_param_string('city', ''),
-                'county' => '',
-                'state' => '',
-                'post_code' => post_param_string('delvPostcode', ''),
-                'country' => post_param_string('delvCountryString', ''),
-                'email' => post_param_string('email', ''),
-                'phone' => post_param_string('tel', ''),
+                'a_order_id' => $order_id,
+                'a_firstname' => post_param_string('delvName', ''),
+                'a_lastname' => '',
+                'a_street_address' => post_param_string('delvAddress', ''),
+                'a_city' => post_param_string('city', ''),
+                'a_county' => '',
+                'a_state' => '',
+                'a_post_code' => post_param_string('delvPostcode', ''),
+                'a_country' => post_param_string('delvCountryString', ''),
+                'a_email' => post_param_string('email', ''),
+                'a_phone' => post_param_string('tel', ''),
             );
             return $GLOBALS['SITE_DB']->query_insert('shopping_order_addresses', $shipping_address, true);
         }

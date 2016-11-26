@@ -375,19 +375,19 @@ class Hook_payment_gateway_secpay
             return null;
         }
 
-        if ($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order_addresses', 'id', array('order_id' => $order_id)) === null) {
+        if ($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order_addresses', 'id', array('a_order_id' => $order_id)) === null) {
             $shipping_address = array(
-                'order_id' => $order_id,
-                'firstname' => trim(post_param_string('ship_name', '') . ', ' . post_param_string('ship_company', ''), ' ,'),
-                'lastname' => '',
-                'street_address' => trim(post_param_string('ship_addr_1', '') . "\n" . post_param_string('ship_addr_2', '')),
-                'city' => post_param_string('ship_city', ''),
-                'county' => '',
-                'state' => post_param_string('ship_state', ''),
-                'post_code' => post_param_string('ship_post_code', ''),
-                'country' => post_param_string('ship_country', ''),
-                'email' => '',
-                'phone' => post_param_string('ship_tel', ''),
+                'a_order_id' => $order_id,
+                'a_firstname' => trim(post_param_string('ship_name', '') . ', ' . post_param_string('ship_company', ''), ' ,'),
+                'a_lastname' => '',
+                'a_street_address' => trim(post_param_string('ship_addr_1', '') . "\n" . post_param_string('ship_addr_2', '')),
+                'a_city' => post_param_string('ship_city', ''),
+                'a_county' => '',
+                'a_state' => post_param_string('ship_state', ''),
+                'a_post_code' => post_param_string('ship_post_code', ''),
+                'a_country' => post_param_string('ship_country', ''),
+                'a_email' => '',
+                'a_phone' => post_param_string('ship_tel', ''),
             );
             return $GLOBALS['SITE_DB']->query_insert('shopping_order_addresses', $shipping_address, true);
         }

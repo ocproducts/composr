@@ -465,23 +465,23 @@ class Module_admin_orders
         ));
 
         // Shipping address display
-        $row = $GLOBALS['SITE_DB']->query_select('shopping_order_addresses', array('*'), array('order_id' => $id), '', 1);
+        $row = $GLOBALS['SITE_DB']->query_select('shopping_order_addresses', array('*'), array('a_order_id' => $id), '', 1);
         if (array_key_exists(0, $row)) {
             require_lang('cns_special_cpf');
 
             $address = $row[0];
             $shipping_address = do_template('ECOM_SHIPPING_ADDRESS', array(
                 '_GUID' => '332bc2e28a75cff64e6856bbeda6102e',
-                'FIRSTNAME' => $address['firstname'],
-                'LASTNAME' => $address['lastname'],
-                'STREET_ADDRESS' => $address['street_address'],
-                'CITY' => $address['city'],
-                'COUNTY' => $address['county'],
-                'STATE' => $address['state'],
-                'POST_CODE' => $address['post_code'],
-                'COUNTRY' => $address['country'],
-                'EMAIL' => $address['email'],
-                'PHONE' => $address['phone'],
+                'FIRSTNAME' => $address['a_firstname'],
+                'LASTNAME' => $address['a_lastname'],
+                'STREET_ADDRESS' => $address['a_street_address'],
+                'CITY' => $address['a_city'],
+                'COUNTY' => $address['a_county'],
+                'STATE' => $address['a_state'],
+                'POST_CODE' => $address['a_post_code'],
+                'COUNTRY' => $address['a_country'],
+                'EMAIL' => $address['a_email'],
+                'PHONE' => $address['a_phone'],
             ));
         } else {
             $shipping_address = new Tempcode();
@@ -760,7 +760,7 @@ class Module_admin_orders
         $qry = 'SELECT t1.*,(t2.included_tax*t2.p_quantity) AS tax_amt,t3.*
             FROM ' . get_table_prefix() . 'shopping_order t1
             LEFT JOIN ' . get_table_prefix() . 'shopping_order_details t2 ON t1.id=t2.order_id
-            LEFT JOIN ' . get_table_prefix() . 'shopping_order_addresses t3 ON t1.id=t3.order_id
+            LEFT JOIN ' . get_table_prefix() . 'shopping_order_addresses t3 ON t1.id=t3.a_order_id
             WHERE ' . $cond;
         $rows = $GLOBALS['SITE_DB']->query($qry);
         remove_duplicate_rows($rows);
@@ -777,32 +777,32 @@ class Module_admin_orders
 
             // Put address together
             $address = array();
-            if ($order['firstname'] . $order['lastname'] != '') {
-                $address[] = trim($order['firstname'] . ' ' . $order['lastname']);
+            if ($order['a_firstname'] . $order['a_lastname'] != '') {
+                $address[] = trim($order['a_firstname'] . ' ' . $order['a_lastname']);
             }
-            if ($order['street_address'] != '') {
-                $address[] = $order['street_address'];
+            if ($order['a_street_address'] != '') {
+                $address[] = $order['a_street_address'];
             }
-            if ($order['city'] != '') {
-                $address[] = $order['city'];
+            if ($order['a_city'] != '') {
+                $address[] = $order['a_city'];
             }
-            if ($order['county'] != '') {
-                $address[] = $order['county'];
+            if ($order['a_county'] != '') {
+                $address[] = $order['a_county'];
             }
-            if ($order['state'] != '') {
-                $address[] = $order['state'];
+            if ($order['a_state'] != '') {
+                $address[] = $order['a_state'];
             }
-            if ($order['post_code'] != '') {
-                $address[] = $order['post_code'];
+            if ($order['a_post_code'] != '') {
+                $address[] = $order['a_post_code'];
             }
-            if ($order['country'] != '') {
-                $address[] = $order['country'];
+            if ($order['a_country'] != '') {
+                $address[] = $order['a_country'];
             }
-            if ($order['email'] != '') {
-                $address[] = do_lang('EMAIL_ADDRESS') . ': ' . $order['email'];
+            if ($order['a_email'] != '') {
+                $address[] = do_lang('EMAIL_ADDRESS') . ': ' . $order['a_email'];
             }
-            if ($order['phone'] != '') {
-                $address[] = do_lang('PHONE_NUMBER') . ': ' . $order['phone'];
+            if ($order['a_phone'] != '') {
+                $address[] = do_lang('PHONE_NUMBER') . ': ' . $order['a_phone'];
             }
             $full_address = implode("\n", $address);
             $orders[do_lang('SHIPPING_ADDRESS')] = $full_address;

@@ -2,12 +2,6 @@
 	{$PARAGRAPH,{TEXT}}
 {+END}
 
-{+START,IF_NON_EMPTY,{ERROR_MSG}}
-   <div class="subscription_error">
-      {!TRANSACTION_ERROR,{ERROR_MSG}}
-   </div>
-{+END}
-
 <div class="local_payment_merchant_details">
 	{+START,IF_NON_EMPTY,{LOGOS}{PAYMENT_PROCESSOR_LINKS}}
 		<div class="local_payment_verified_account_logo">
