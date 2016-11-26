@@ -36,4 +36,5 @@
 	</div>
 </form>
 
+{$,From the ECOM_SHOPPING_CART_PROCEED template}
 {PROCEED_BOX}

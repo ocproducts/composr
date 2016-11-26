@@ -555,8 +555,9 @@ class Module_purchase
 
             list($fields, $hidden, $logos, $payment_processor_links) = get_transaction_form_fields(
                 null,
-                $purchase_id,
+                $type_code,
                 $item_name,
+                $purchase_id,
                 float_to_raw_string($price),
                 $currency,
                 ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) ? intval($length) : null,
@@ -599,7 +600,7 @@ class Module_purchase
             if (perform_local_payment()) { // We need to try and run the transaction
                 list($success, $message, $message_raw) = do_local_transaction($payment_gateway, $object);
                 if (!$success) {
-                    attach_message($message, 'warn');
+                    attach_message(do_lang_tempcode('TRANSACTION_ERROR', escape_html($message)), 'warn');
                     return $this->pay();
                 }
             }

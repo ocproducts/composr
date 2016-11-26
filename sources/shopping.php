@@ -242,8 +242,6 @@ function render_cart_payment_form()
 {
     require_code('ecommerce');
 
-    $title = get_screen_title('PAYMENT_HEADING');
-
     $cart_items = find_products_in_cart();
 
     $purchase_id = null;
@@ -357,8 +355,9 @@ function render_cart_payment_form()
 
             list($fields, $hidden, $logos, $payment_processor_links) = get_transaction_form_fields(
                 null,
-                strval($order_id),
+                $type_code,
                 $item_name,
+                strval($order_id),
                 float_to_raw_string($price),
                 get_option('currency'),
                 null,
@@ -378,9 +377,7 @@ function render_cart_payment_form()
             'PAYMENT_PROCESSOR_LINKS' => $payment_processor_links,
         ));
 
-        require_javascript('checking');
-
-        return do_template('PURCHASE_WIZARD_SCREEN', array('_GUID' => 'dfc7b8460e81dfd6d083e5f5d2b606a4', 'TITLE' => $title, 'CONTENT' => $result, 'URL' => $finish_url));
+        $result = do_template('PURCHASE_WIZARD_SCREEN', array('_GUID' => 'dfc7b8460e81dfd6d083e5f5d2b606a4', 'TITLE' => '', 'CONTENT' => $result, 'URL' => $finish_url));
     }
 
     return $result;

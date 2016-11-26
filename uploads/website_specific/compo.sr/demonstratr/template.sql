@@ -6003,7 +6003,6 @@ insert into `cms_addons_files` values('random_quotes','text/EN/quotes.txt','5344
  ('shopping','themes/default/templates/ECOM_CART_BUTTON_VIA_PAYPAL.tpl','5807'),
  ('shopping','themes/default/templates/ECOM_ITEM_DETAILS.tpl','5808'),
  ('shopping','themes/default/templates/ECOM_SHOPPING_CART_PROCEED.tpl','5809'),
- ('shopping','themes/default/templates/ECOM_SHOPPING_CART_STAGE_PAY.tpl','5810'),
  ('shopping','themes/default/templates/ECOM_SHOPPING_CART_SCREEN.tpl','5811'),
  ('shopping','themes/default/templates/ECOM_SHOPPING_ITEM_QUANTITY_FIELD.tpl','5812'),
  ('shopping','themes/default/templates/ECOM_SHOPPING_ITEM_REMOVE_FIELD.tpl','5813'),

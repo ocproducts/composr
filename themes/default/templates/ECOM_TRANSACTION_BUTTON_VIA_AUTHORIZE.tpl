@@ -1,4 +1,4 @@
-<form title="{!MAKE_PAYMENT}" class="left" action="{FORM_URL*}" method="post" autocomplete="off">
+<form title="{!MAKE_PAYMENT}" class="ecommerce_button" action="{FORM_URL*}" method="post" autocomplete="off">
 	<input type="hidden" name="x_fp_sequence" value="{SEQUENCE*}" />
 	<input type="hidden" name="x_fp_timestamp" value="{TIMESTAMP*}" />
 	<input type="hidden" name="x_fp_hash" value="{FINGERPRINT*}" />

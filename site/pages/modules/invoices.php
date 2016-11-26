@@ -236,8 +236,9 @@ class Module_invoices
 
         list($fields, $hidden) = get_transaction_form_fields(
             null,
-            strval($id),
+            $type_code,
             $invoice_title,
+            strval($id),
             float_to_raw_string($row['i_amount']),
             get_option('currency'),
             null,

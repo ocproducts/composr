@@ -155,7 +155,6 @@ class Hook_addon_registry_shopping
             'themes/default/templates/ECOM_CART_BUTTON_VIA_PAYPAL.tpl',
             'themes/default/templates/ECOM_ITEM_DETAILS.tpl',
             'themes/default/templates/ECOM_SHOPPING_CART_PROCEED.tpl',
-            'themes/default/templates/ECOM_SHOPPING_CART_STAGE_PAY.tpl',
             'themes/default/templates/ECOM_SHOPPING_CART_SCREEN.tpl',
             'themes/default/templates/ECOM_SHOPPING_ITEM_QUANTITY_FIELD.tpl',
             'themes/default/templates/ECOM_SHOPPING_ITEM_REMOVE_FIELD.tpl',
@@ -197,23 +196,6 @@ class Hook_addon_registry_shopping
             'templates/CATALOGUE_products_GRID_ENTRY_FIELD.tpl' => 'grid_category_screen__products',
             'templates/CATALOGUE_products_GRID_ENTRY_WRAP.tpl' => 'grid_category_screen__products',
             'templates/RESULTS_products_TABLE.tpl' => 'results_products_table',
-            'templates/ECOM_SHOPPING_CART_STAGE_PAY.tpl' => 'shopping_cart_stage_pay'
-        );
-    }
-
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
-    public function tpl_preview__shopping_cart_stage_pay()
-    {
-        return array(
-            lorem_globalise(do_lorem_template('ECOM_SHOPPING_CART_STAGE_PAY', array(
-                'TRANSACTION_BUTTON' => placeholder_button(),
-            )), null, '', true)
         );
     }
 

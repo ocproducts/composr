@@ -1,3 +1,5 @@
+{$,Used to display the shipping address of an order}
+
 <table class="map_table shipping_address autosized_table"><tbody>
 	<tr><th>{!NAME}</th><td>{FIRSTNAME*} {LASTNAME*}</td></tr>
 	<tr><th>{$PREG_REPLACE,.*: ,,{!SPECIAL_CPF__cms_street_address}}</th><td>{$REPLACE*,\n,<br />,{STREET_ADDRESS}}</td></tr>

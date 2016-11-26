@@ -1,3 +1,5 @@
+{$,Embedded into catalogue views for example, not used for the shopping cart itself}
+
 <div class="float_surrounder">
 	<div class="add_to_cart">
 		{+START,IF_NON_EMPTY,{ACTION_URL}}

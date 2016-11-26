@@ -1,4 +1,4 @@
-<form title="{!MAKE_PAYMENT}" class="left" action="{IPN_URL*}" method="post" autocomplete="off">
+<form title="{!MAKE_PAYMENT}" class="ecommerce_button" action="{IPN_URL*}" method="post" autocomplete="off">
 	<input type="hidden" name="trans_id" value="subscr_{TRANS_ID*}" />
 	<input type="hidden" name="merchant" value="{USERNAME*}" />
 	<input type="hidden" name="digest" value="{DIGEST*}" />

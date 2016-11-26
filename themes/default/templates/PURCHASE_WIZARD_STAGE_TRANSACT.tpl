@@ -1,3 +1,5 @@
+{$,Template is used for local payments only; may be embedded into shopping cart as well as serving in the purchase module}
+
 {+START,IF_PASSED,TEXT}
 	{$PARAGRAPH,{TEXT}}
 {+END}

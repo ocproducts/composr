@@ -74,7 +74,6 @@ class template_no_unused_test_set extends cms_test_case
             'COMMANDR_CNS_NOTIFICATION',
             'COMMANDR_PT_NOTIFICATION',
             'CROP_TEXT_MOUSE_OVER_INLINE',
-            'ECOM_SHOPPING_CART_STAGE_PAY',
             'EMOTICON_IMG_CODE_DIR',
             'EMOTICON_IMG_CODE_THEMED',
             'FILEDUMP_FOOTER',

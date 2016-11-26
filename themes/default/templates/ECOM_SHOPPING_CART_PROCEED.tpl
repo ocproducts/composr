@@ -1,3 +1,5 @@
+{$,Embedded in the ECOM_SHOPPING_CART_SCREEN template}
+
 <table class="columned_table cart_payment_summary">
 	<tbody>
 		<tr>
@@ -12,7 +14,6 @@
 </table>
 
 {+START,IF_NON_EMPTY,{PAYMENT_FORM}}
-	<div class="cart_proceed_button">
-		{PAYMENT_FORM}
-	</div>
+	{$,Either a form or a button}
+	{PAYMENT_FORM}
 {+END}

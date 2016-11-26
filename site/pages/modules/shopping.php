@@ -577,7 +577,7 @@ class Module_shopping
             if (perform_local_payment()) {
                 list($success, $message, $message_raw) = do_local_transaction($payment_gateway, $object);
                 if (!$success) {
-                    attach_message($message, 'warn');
+                    attach_message(do_lang_tempcode('TRANSACTION_ERROR', escape_html($message)), 'warn');
                     return $this->view_shopping_cart();
                 }
             }

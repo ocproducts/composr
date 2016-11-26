@@ -54,11 +54,8 @@ table.cart_payment_summary .price {
 	font-weight: bold;
 }
 
-.cart_proceed_button {
+.ecommerce_button {
 	float: right;
-}
-
-.cart_proceed_button form {
 	padding-left: 2em;
 }
 
