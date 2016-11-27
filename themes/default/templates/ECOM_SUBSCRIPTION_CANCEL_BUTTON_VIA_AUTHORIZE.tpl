@@ -1,1 +1,1 @@
-<a href="{$PAGE_LINK*,_SEARCH:subscriptions:{PURCHASE_ID}}">{!SUBSCRIPTION_CANCEL}</a>
+<a href="{CANCEL_URL*}">{!SUBSCRIPTION_CANCEL}</a>

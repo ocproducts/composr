@@ -66,8 +66,10 @@ class Hook_payment_gateway_paypal
      */
     public function make_transaction_button($type_code, $item_name, $purchase_id, $amount, $currency)
     {
+        // https://www.paypal.com/au/webapps/mpp/website-payments-standard
+
         $payment_address = $this->_get_payment_address();
-        $ipn_url = $this->_get_remote_form_url();
+        $form_url = $this->_get_remote_form_url();
 
         $user_details = array();
         if (!is_guest()) {
@@ -88,7 +90,7 @@ class Hook_payment_gateway_paypal
             'AMOUNT' => float_to_raw_string($amount),
             'CURRENCY' => $currency,
             'PAYMENT_ADDRESS' => $payment_address,
-            'IPN_URL' => $ipn_url,
+            'FORM_URL' => $form_url,
             'MEMBER_ADDRESS' => $user_details,
         ));
     }
@@ -111,7 +113,7 @@ class Hook_payment_gateway_paypal
         // NB: We don't support PayPal's "recur_times", but that's fine because it's really not that useful (we can just set a long non-recurring subscription to the same effect)
 
         $payment_address = $this->_get_payment_address();
-        $ipn_url = $this->_get_remote_form_url();
+        $form_url = $this->_get_remote_form_url();
         return do_template('ECOM_SUBSCRIPTION_BUTTON_VIA_PAYPAL', array(
             '_GUID' => '7c8b9ce1f60323e118da1bef416adff3',
             'TYPE_CODE' => $type_code,
@@ -122,7 +124,7 @@ class Hook_payment_gateway_paypal
             'AMOUNT' => float_to_raw_string($amount),
             'CURRENCY' => $currency,
             'PAYMENT_ADDRESS' => $payment_address,
-            'IPN_URL' => $ipn_url,
+            'FORM_URL' => $form_url,
         ));
     }
 
@@ -139,7 +141,7 @@ class Hook_payment_gateway_paypal
     {
         $payment_address = $this->_get_payment_address();
 
-        $ipn_url = $this->_get_remote_form_url();
+        $form_url = $this->_get_remote_form_url();
 
         $notification_text = do_lang_tempcode('CHECKOUT_NOTIFICATION_TEXT', strval($order_id));
 
@@ -160,7 +162,7 @@ class Hook_payment_gateway_paypal
             'ITEMS' => $items,
             'CURRENCY' => $currency,
             'PAYMENT_ADDRESS' => $payment_address,
-            'IPN_URL' => $ipn_url,
+            'FORM_URL' => $form_url,
             'ORDER_ID' => strval($order_id),
             'NOTIFICATION_TEXT' => $notification_text,
             'MEMBER_ADDRESS' => $user_details,
@@ -431,6 +433,10 @@ class Hook_payment_gateway_paypal
      */
     public function auto_cancel($subscription_id)
     {
+        // To implement this automatically we need to implement the REST API with oAuth, which is quite a lot of work.
+        // Should work for make_subscription_button-created subscriptions though, as long as they start "I-" not "S-"
+        // http://stackoverflow.com/questions/3809587/can-you-cancel-a-paypal-automatic-payment-via-api-subscription-created-via-hos
+
         return null;
     }
 }

@@ -23,6 +23,7 @@
  */
 class Hook_payment_gateway_ccbill
 {
+    // https://www.ccbill.com/cs/manuals/CCBill_Background_Post_Users_Guide.pdf
     // Requires:
     //  you have to contact support to enable dynamic pricing and generate the encryption key for your account
     //  the "Account ID" (a number given to you) is the Composr "Gateway username" and also "Testing mode gateway username" (it's all the same installation ID)
@@ -79,17 +80,6 @@ class Hook_payment_gateway_ccbill
     }
 
     /**
-     * Generate a transaction ID.
-     *
-     * @return string A transaction ID.
-     */
-    public function generate_trans_id()
-    {
-        require_code('crypt');
-        return get_rand_password();
-    }
-
-    /**
      * Make a transaction (payment) button.
      *
      * @param  ID_TEXT $type_code The product codename.
@@ -107,9 +97,7 @@ class Hook_payment_gateway_ccbill
         $currency = strval($this->currency_alphabetic_to_numeric_code[$currency]);
 
         $payment_address = strval($this->get_account_id());
-        $ipn_url = 'https://bill.ccbill.com/jpost/signup.cgi';
-
-        $trans_id = $this->generate_trans_id();
+        $form_url = 'https://bill.ccbill.com/jpost/signup.cgi';
 
         $user_details = array();
         if (!is_guest()) {
@@ -135,21 +123,6 @@ class Hook_payment_gateway_ccbill
         $form_period = '99';
         $digest = md5(float_to_raw_string($amount) . $form_period . $currency . get_option('payment_gateway_vpn_password'));
 
-        // No 'custom' field for gateway to encode $purchase_id next to $item_name, so we need to pass through a single transaction ID
-        $GLOBALS['SITE_DB']->query_insert('trans_expecting', array(
-            'id' => $trans_id,
-            'e_type_code' => $type_code,
-            'e_purchase_id' => $purchase_id,
-            'e_item_name' => $item_name,
-            'e_member_id' => get_member(),
-            'e_amount' => float_to_raw_string($amount),
-            'e_ip_address' => get_ip_address(),
-            'e_session_id' => get_session_id(),
-            'e_time' => time(),
-            'e_length' => null,
-            'e_length_units' => '',
-        ));
-
         return do_template('ECOM_TRANSACTION_BUTTON_VIA_CCBILL', array(
             '_GUID' => '24a0560541cedd4c45898f4d19e99249',
             'TYPE_CODE' => strval($type_code),
@@ -158,8 +131,7 @@ class Hook_payment_gateway_ccbill
             'AMOUNT' => float_to_raw_string($amount),
             'CURRENCY' => $currency,
             'PAYMENT_ADDRESS' => $payment_address,
-            'IPN_URL' => $ipn_url,
-            'TRANS_ID' => $trans_id,
+            'FORM_URL' => $form_url,
             'MEMBER_ADDRESS' => $user_details,
             'ACCOUNT_NUM' => $account_num,
             'SUBACCOUNT_NUM' => $subaccount_num,
@@ -190,9 +162,7 @@ class Hook_payment_gateway_ccbill
         $currency = strval($this->currency_alphabetic_to_numeric_code[$currency]);
 
         $payment_address = strval($this->get_account_id());
-        $ipn_url = 'https://bill.ccbill.com/jpost/signup.cgi';
-
-        $trans_id = $this->generate_trans_id();
+        $form_url = 'https://bill.ccbill.com/jpost/signup.cgi';
 
         $user_details = array();
         if (!is_guest()) {
@@ -215,21 +185,6 @@ class Hook_payment_gateway_ccbill
         $form_period = strval($length * $this->length_unit_to_days[$length_units]);
         $digest = md5(float_to_raw_string($amount) . $form_period . float_to_raw_string($amount) . $form_period . '99' . $currency . get_option('payment_gateway_vpn_password')); // formPrice.formPeriod.formRecurringPrice.formRecurringPeriod.formRebills.currencyCode.salt
 
-        // No 'custom' field for gateway to encode $purchase_id next to $item_name, so we need to pass through a single transaction ID
-        $GLOBALS['SITE_DB']->query_insert('trans_expecting', array(
-            'id' => $trans_id,
-            'e_type_code' => $type_code,
-            'e_purchase_id' => $purchase_id,
-            'e_item_name' => $item_name,
-            'e_member_id' => get_member(),
-            'e_amount' => float_to_raw_string($amount),
-            'e_ip_address' => get_ip_address(),
-            'e_session_id' => get_session_id(),
-            'e_time' => time(),
-            'e_length' => $length,
-            'e_length_units' => $length_units,
-        ));
-
         return do_template('ECOM_SUBSCRIPTION_BUTTON_VIA_CCBILL', array(
             '_GUID' => 'f8c174f38ae06536833f1510027ba233',
             'TYPE_CODE' => strval($type_code),
@@ -240,8 +195,7 @@ class Hook_payment_gateway_ccbill
             'AMOUNT' => float_to_raw_string($amount),
             'CURRENCY' => $currency,
             'PAYMENT_ADDRESS' => $payment_address,
-            'IPN_URL' => $ipn_url,
-            'TRANS_ID' => $trans_id,
+            'FORM_URL' => $form_url,
             'MEMBER_ADDRESS' => $user_details,
             'ACCOUNT_NUM' => $account_num,
             'SUBACCOUNT_NUM' => $subaccount_num,
@@ -269,15 +223,7 @@ class Hook_payment_gateway_ccbill
      */
     public function handle_ipn_transaction()
     {
-        // assign posted variables to local variables
-        $trans_id = post_param_string('customTransId');
         $purchase_id = post_param_integer('customPurchaseId');
-
-        $transaction_rows = $GLOBALS['SITE_DB']->query_select('trans_expecting', array('*'), array('id' => $trans_id, 'e_purchase_id' => $purchase_id), '', 1);
-        if (!array_key_exists(0, $transaction_rows)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
-        }
-        $transaction_row = $transaction_rows[0];
 
         $subscription_id = post_param_string('subscription_id', '');
         $denial_id = post_param_string('denialId', '');
@@ -290,8 +236,8 @@ class Hook_payment_gateway_ccbill
         }
 
         $success = ($success_response_digest === $response_digest);
-        $is_subscription = (bool)post_param_integer('customIsSubscription');
-        $item_name = $is_subscription ? '' : $transaction_row['e_item_name'];
+        $is_subscription = (post_param_integer('customIsSubscription') == 1);
+        $item_name = $is_subscription ? '' : post_param_string('customItemName');
         $payment_status = $success ? 'Completed' : 'Failed';
         $reason_code = post_param_integer('reasonForDeclineCode', 0);
         $pending_reason = '';
@@ -299,14 +245,16 @@ class Hook_payment_gateway_ccbill
         $mc_gross = post_param_string('initialPrice');
         $_mc_currency = post_param_integer('baseCurrency', 0);
         $mc_currency = ($_mc_currency === 0) ? get_option('currency') : $this->currency_numeric_to_alphabetic_code[$_mc_currency];
+        $txn_id = post_param_string('consumerUniqueId');
 
         if (addon_installed('shopping')) {
-            if ($transaction_row['e_type_code'] == 'cart_orders') {
+            list(, $type_code) = find_product_row($item_name, true, true);
+            if ($type_code == 'cart_orders') {
                 $this->store_shipping_address(intval($purchase_id));
             }
         }
 
-        return array($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $trans_id, '');
+        return array($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, '');
     }
 
     /**
@@ -349,6 +297,9 @@ class Hook_payment_gateway_ccbill
      */
     public function auto_cancel($subscription_id)
     {
+        // https://www.ccbill.com/cs/manuals/Custom_Cancellation_Software.pdf
+        // Can't do it because we don't have customer's username and password ("login_id", "password")
+
         return false;
     }
 }

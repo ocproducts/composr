@@ -23,6 +23,12 @@
  */
 class Hook_payment_gateway_secpay
 {
+    // Requires:
+    //  You have the SecPay Username set as the Composr "Gateway username" option
+    //  You have the SecPay Username set as the Composr "Testing mode gateway username" option
+    //  You have the SecPay "Remote Password" option set as the Composr "Gateway password" option
+    //  You have the SecPay "VPN password" option set as the Composr "Gateway VPN password" option
+
     /**
      * Find a transaction fee from a transaction amount. Regular fees aren't taken into account.
      *
@@ -93,8 +99,10 @@ class Hook_payment_gateway_secpay
      */
     public function make_transaction_button($type_code, $item_name, $purchase_id, $amount, $currency)
     {
+        // https://www.secpay.com/sc_api.html
+
         $username = $this->_get_username();
-        $ipn_url = $this->_get_remote_form_url();
+        $form_url = $this->_get_remote_form_url();
         $trans_id = $this->generate_trans_id();
         $digest = md5($trans_id . float_to_raw_string($amount) . get_option('payment_gateway_password'));
 
@@ -125,7 +133,7 @@ class Hook_payment_gateway_secpay
             'AMOUNT' => float_to_raw_string($amount),
             'CURRENCY' => $currency,
             'USERNAME' => $username,
-            'IPN_URL' => $ipn_url,
+            'FORM_URL' => $form_url,
         ));
     }
 
@@ -181,8 +189,10 @@ class Hook_payment_gateway_secpay
      */
     public function make_subscription_button($type_code, $item_name, $purchase_id, $amount, $length, $length_units, $currency)
     {
+        // https://www.secpay.com/sc_api.html
+
         $username = $this->_get_username();
-        $ipn_url = $this->_get_remote_form_url();
+        $form_url = $this->_get_remote_form_url();
         $trans_id = $this->generate_trans_id();
         $digest = md5($trans_id . float_to_raw_string($amount) . get_option('payment_gateway_password'));
         list($length_units_2, $first_repeat) = $this->_translate_subscription_details($length, $length_units);
@@ -217,7 +227,7 @@ class Hook_payment_gateway_secpay
             'AMOUNT' => float_to_raw_string($amount),
             'CURRENCY' => $currency,
             'USERNAME' => $username,
-            'IPN_URL' => $ipn_url,
+            'FORM_URL' => $form_url,
         ));
     }
 
@@ -241,7 +251,7 @@ class Hook_payment_gateway_secpay
     public function handle_ipn_transaction()
     {
         $txn_id = post_param_string('trans_id');
-        if (substr($txn_id, 0, 7) == 'subscr_') {
+        if (substr($txn_id, 0, 7) == 'subscr_') { // "subscr_" was added in by us explicitly in ECOM_SUBSCRIPTION_BUTTON_VIA_SECPAY.tpl
             $subscription = true;
             $txn_id = substr($txn_id, 7);
         } else {
@@ -326,10 +336,10 @@ class Hook_payment_gateway_secpay
         // Validate
         $hash = post_param_string('hash');
         if ($subscription) {
-            $my_hash = md5('trans_id=' . $txn_id . '&' . 'req_cv2=true' . '&' . get_option('payment_gateway_digest'));
+            $my_hash = md5('trans_id=' . $txn_id . '&' . 'req_cv2=true' . '&' . get_option('payment_gateway_vpn_password'));
         } else {
             $repeat = $this->_translate_subscription_details($transaction_row['e_length'], $transaction_row['e_length_units']);
-            $my_hash = md5('trans_id=' . $txn_id . '&' . 'req_cv2=true' . '&' . 'repeat=' . $repeat . '&' . get_option('payment_gateway_digest'));
+            $my_hash = md5('trans_id=' . $txn_id . '&' . 'req_cv2=true' . '&' . 'repeat=' . $repeat . '&' . get_option('payment_gateway_vpn_password'));
         }
         if ($hash != $my_hash) {
             fatal_ipn_exit(do_lang('IPN_UNVERIFIED'));
@@ -405,13 +415,28 @@ class Hook_payment_gateway_secpay
      */
     public function auto_cancel($subscription_id)
     {
-        return false;
+        $username = $this->_get_username();
+        $password = get_option('payment_gateway_password');
+        $password_2 = get_option('payment_gateway_vpn_password');
+
+        $trans_id = $GLOBALS['SITE_DB']->query_select_value_if_there('transactions', 'id', array('t_purchase_id' => strval($subscription_id)));
+        if ($trans_id === null) {
+            return false;
+        }
+        $trans_id = 'subscr_' . $trans_id;
+
+        require_code('xmlrpc');
+        $result = xml_rpc('https://www.secpay.com:443/secxmlrpc/make_call', 'SECVPN.repeatCardFullAddr', array($username, $password_2, $trans_id, -1, $password, '', '', '', '', '', 'repeat_change=true,repeat=false'));
+        $map = $this->_parse_result($result);
+        $success = ((array_key_exists('code', $map)) && (($map['code'] == 'A') || ($map['code'] == 'P:P')));
+
+        return $success;
     }
 
     /**
-     * Perform a transaction.
+     * Perform a transaction (local not remote).
      *
-     * @param  ID_TEXT $trans_id The transaction ID.
+     * @param  ID_TEXT $trans_id The transaction ID we have generated for this transaction.
      * @param  SHORT_TEXT $cardholder_name Cardholder name.
      * @param  SHORT_TEXT $card_type Card Type.
      * @set    "Visa" "Master Card" "Switch" "UK Maestro" "Maestro" "Solo" "Delta" "American Express" "Diners Card" "JCB"
@@ -445,6 +470,8 @@ class Hook_payment_gateway_secpay
      */
     public function do_local_transaction($trans_id, $cardholder_name, $card_type, $card_number, $card_start_date, $card_expiry_date, $card_issue_number, $card_cv2, $amount, $currency, $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country, $shipping_firstname = '', $shipping_lastname = '', $shipping_street_address = '', $shipping_city = '', $shipping_county = '', $shipping_state = '', $shipping_post_code = '', $shipping_country = '', $shipping_email = '', $shipping_phone = '', $length = null, $length_units = null)
     {
+        // https://www.secpay.com/xmlrpc/
+
         $username = $this->_get_username();
         $password_2 = get_option('payment_gateway_vpn_password');
         $digest = md5($trans_id . strval($amount) . get_option('payment_gateway_vpn_password'));
@@ -481,7 +508,27 @@ class Hook_payment_gateway_secpay
         require_lang('ecommerce');
 
         require_code('xmlrpc');
+        if ($length !== null) {
+            $trans_id = 'subscr_' . $trans_id;
+        }
         $result = xml_rpc('https://www.secpay.com:443/secxmlrpc/make_call', 'SECVPN.validateCardFull', array($username, $password_2, $trans_id, get_ip_address(), $cardholder_name, $card_number, $amount, $card_expiry_date, $card_issue_number, $card_start_date, $currency, '', '', $options, $item_name, $shipping_address, $billing_address));
+        $map = $this->_parse_result($result);
+
+        $success = ((array_key_exists('code', $map)) && (($map['code'] == 'A') || ($map['code'] == 'P:P')));
+        $message_raw = array_key_exists('message', $map) ? $map['message'] : do_lang('INTERNAL_ERROR');
+        $message = $success ? do_lang_tempcode('ACCEPTED_MESSAGE', escape_html($message_raw)) : do_lang_tempcode('DECLINED_MESSAGE', escape_html($message_raw));
+
+        return array($success, $message, $message_raw);
+    }
+
+    /**
+     * Parse the result of the XMLRPC call.
+     *
+     * @param  string $result The result.
+     * @return array The map of result data.
+     */
+    protected function _parse_result($result)
+    {
         $pos_1 = strpos($result, '<value>');
         if ($pos_1 === false) {
             fatal_exit(do_lang('INTERNAL_ERROR'));
@@ -500,10 +547,6 @@ class Hook_payment_gateway_secpay
             }
         }
 
-        $success = ((array_key_exists('code', $map)) && (($map['code'] == 'A') || ($map['code'] == 'P:P')));
-        $message_raw = array_key_exists('message', $map) ? $map['message'] : do_lang('INTERNAL_ERROR');
-        $message = $success ? do_lang_tempcode('ACCEPTED_MESSAGE', escape_html($message_raw)) : do_lang_tempcode('DECLINED_MESSAGE', escape_html($message_raw));
-
-        return array($success, $message, $message_raw);
+        return $map;
     }
 }

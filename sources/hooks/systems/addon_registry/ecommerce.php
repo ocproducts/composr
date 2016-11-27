@@ -483,7 +483,7 @@ class Hook_addon_registry_ecommerce
                 'AMOUNT' => placeholder_number(),
                 'CURRENCY' => lorem_phrase(),
                 'USERNAME' => lorem_word(),
-                'IPN_URL' => placeholder_url(),
+                'FORM_URL' => placeholder_url(),
                 'EMAIL_ADDRESS' => lorem_word(),
             )), null, '', true)
         );
@@ -511,7 +511,7 @@ class Hook_addon_registry_ecommerce
                 'FIRST_REPEAT' => lorem_phrase(),
                 'CURRENCY' => lorem_phrase(),
                 'USERNAME' => lorem_word(),
-                'IPN_URL' => placeholder_url(),
+                'FORM_URL' => placeholder_url(),
                 'TEST_MODE' => true,
                 'EMAIL_ADDRESS' => lorem_word(),
             )), null, '', true)
@@ -529,7 +529,6 @@ class Hook_addon_registry_ecommerce
     {
         return array(
             lorem_globalise(do_lorem_template('ECOM_SUBSCRIPTION_CANCEL_BUTTON_VIA_WORLDPAY', array(
-                'CANCEL_URL' => placeholder_url(),
                 'PURCHASE_ID' => placeholder_id(),
             )), null, '', true)
         );
@@ -552,7 +551,7 @@ class Hook_addon_registry_ecommerce
                 'AMOUNT' => placeholder_number(),
                 'CURRENCY' => lorem_phrase(),
                 'PAYMENT_ADDRESS' => lorem_word(),
-                'IPN_URL' => placeholder_url(),
+                'FORM_URL' => placeholder_url(),
                 'MEMBER_ADDRESS' => placeholder_array(),
             )), null, '', true)
         );
@@ -577,7 +576,7 @@ class Hook_addon_registry_ecommerce
                 'AMOUNT' => placeholder_number(),
                 'CURRENCY' => lorem_phrase(),
                 'PAYMENT_ADDRESS' => lorem_word(),
-                'IPN_URL' => placeholder_url(),
+                'FORM_URL' => placeholder_url(),
             )), null, '', true)
         );
     }
@@ -618,7 +617,7 @@ class Hook_addon_registry_ecommerce
                 'AMOUNT' => placeholder_number(),
                 'CURRENCY' => lorem_phrase(),
                 'USERNAME' => lorem_word(),
-                'IPN_URL' => placeholder_url(),
+                'FORM_URL' => placeholder_url(),
             )), null, '', true)
         );
     }
@@ -646,7 +645,7 @@ class Hook_addon_registry_ecommerce
                 'AMOUNT' => placeholder_number(),
                 'CURRENCY' => lorem_phrase(),
                 'USERNAME' => lorem_word(),
-                'IPN_URL' => placeholder_url(),
+                'FORM_URL' => placeholder_url(),
                 'PRICE' => placeholder_number(),
             )), null, '', true)
         );
@@ -686,8 +685,7 @@ class Hook_addon_registry_ecommerce
                 'AMOUNT' => placeholder_number(),
                 'CURRENCY' => lorem_phrase(),
                 'PAYMENT_ADDRESS' => lorem_paragraph(),
-                'IPN_URL' => placeholder_url(),
-                'TRANS_ID' => placeholder_id(),
+                'FORM_URL' => placeholder_url(),
                 'MEMBER_ADDRESS' => placeholder_array(),
                 'ACCOUNT_NUM' => placeholder_id(),
                 'SUBACCOUNT_NUM' => placeholder_id(),
@@ -717,8 +715,7 @@ class Hook_addon_registry_ecommerce
                 'AMOUNT' => placeholder_number(),
                 'CURRENCY' => lorem_phrase(),
                 'PAYMENT_ADDRESS' => lorem_paragraph(),
-                'IPN_URL' => placeholder_url(),
-                'TRANS_ID' => placeholder_id(),
+                'FORM_URL' => placeholder_url(),
                 'MEMBER_ADDRESS' => placeholder_array(),
                 'ACCOUNT_NUM' => placeholder_id(),
                 'SUBACCOUNT_NUM' => placeholder_id(),
@@ -740,7 +737,6 @@ class Hook_addon_registry_ecommerce
     {
         return array(
             lorem_globalise(do_lorem_template('ECOM_SUBSCRIPTION_CANCEL_BUTTON_VIA_CCBILL', array(
-                'CANCEL_URL' => placeholder_url(),
                 'PURCHASE_ID' => placeholder_id(),
             )), null, '', true)
         );
@@ -811,6 +807,7 @@ class Hook_addon_registry_ecommerce
     {
         return array(
             lorem_globalise(do_lorem_template('ECOM_SUBSCRIPTION_CANCEL_BUTTON_VIA_AUTHORIZE', array(
+                'CANCEL_URL' => placeholder_url(),
                 'PURCHASE_ID' => placeholder_id(),
             )), null, '', true)
         );

@@ -271,7 +271,8 @@ class Hook_payment_gateway_authorize
      */
     public function make_cancel_button($purchase_id)
     {
-        return do_template('ECOM_SUBSCRIPTION_CANCEL_BUTTON_VIA_AUTHORIZE', array('_GUID' => '191d7449161eb5c4f6129cf89e5e8e7e', 'PURCHASE_ID' => $purchase_id));
+        $cancel_url = build_url(array('page' => 'subscriptions', 'type' => 'cancel', 'id' => $purchase_id), get_module_zone('subscriptions'));
+        return do_template('ECOM_SUBSCRIPTION_CANCEL_BUTTON_VIA_AUTHORIZE', array('_GUID' => '191d7449161eb5c4f6129cf89e5e8e7e', 'CANCEL_URL' => $cancel_url, 'PURCHASE_ID' => $purchase_id));
     }
 
     /**
@@ -388,9 +389,9 @@ class Hook_payment_gateway_authorize
     }
 
     /**
-     * Perform a transaction.
+     * Perform a transaction (local not remote).
      *
-     * @param  ID_TEXT $trans_id The transaction ID.
+     * @param  ID_TEXT $trans_id The transaction ID we have generated for this transaction.
      * @param  SHORT_TEXT $cardholder_name Cardholder name.
      * @param  SHORT_TEXT $card_type Card Type.
      * @set    "Visa" "Master Card" "Switch" "UK Maestro" "Maestro" "Solo" "Delta" "American Express" "Diners Card" "JCB"

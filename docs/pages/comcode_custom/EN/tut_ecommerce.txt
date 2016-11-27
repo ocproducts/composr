@@ -23,7 +23,7 @@ Cheque processing is relatively straight forward, but more infrastructure is nee
 1) By getting an agent to fully handle the transaction and relay the funds
 2) By having a merchant account with a bank, using the banks infrastructure and your bank account to manage the transaction yourself
 
-Composr, by default, allows payment via PayPal, WorldPay, SecPay, CCBill and Authorize.Net, although it could be extended to support any kind of payment gateway if extended and customised by an appropriate professional. PayPal is fully supported; others are not regularly tested.
+Composr, by default, allows payment via PayPal, WorldPay, SecPay, CCBill and Authorize.Net, although it could be extended to support any kind of payment gateway if extended and customised by an appropriate professional. PayPal is fully supported; others are not regularly tested and intended for developers (usage instructions are included as comments within Composr's source code for the particular payment gateway).
 
 PayPal was chosen because it is without doubt the leading form of payment on the Internet, easy to setup, and flexible in that it can provide support for funding direct from bank accounts, or cheque, as well as debit and credit card processing. Lots of people do not like PayPal policies, but we have no official position on this -- development priorities simply follow funding.
 [/surround]
@@ -244,6 +244,9 @@ You can delete a usergroup subscription from the bottom of its edit form.
 
 You can manually put someone into a subscription using a "Manual transaction". If you do so, it is up to you to manually expire members if they cease payments. You can do this from:
 Admin Zone > Audit > eCommerce > View manual subscriptions
+
+Note that for some payment gateways you need to be mindful about how subscription cancellation happens. At the time of writing only PayPal automatically cancels the subscription (and hence usergroup membership) within Composr once a subscription is remotely terminated. Some payment gateways can automatically cancel a subscription when a user [i]locally[/i] requests it in Composr, and in such a case Composr will automatically cancel the subscription on its end too. So, unless you're using PayPal, if you get an e-mail from a payment gateway saying a subscription is terminated you should manually make sure the user is kicked out of the subscription usergroup within Composr.
+Be very careful when deleting users because subscriptions will be left hanging when you do and would need to be manually cleaned up.
 [/surround]
 
 [title="2"]Invoices[/title]

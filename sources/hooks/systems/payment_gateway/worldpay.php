@@ -104,7 +104,7 @@ class Hook_payment_gateway_worldpay
     public function make_transaction_button($type_code, $item_name, $purchase_id, $amount, $currency)
     {
         $username = $this->_get_username();
-        $ipn_url = $this->_get_remote_form_url();
+        $form_url = $this->_get_remote_form_url();
         $email_address = $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member());
         $trans_id = $this->generate_trans_id();
         $digest_option = get_option('payment_gateway_digest');
@@ -137,7 +137,7 @@ class Hook_payment_gateway_worldpay
             'AMOUNT' => float_to_raw_string($amount),
             'CURRENCY' => $currency,
             'USERNAME' => $username,
-            'IPN_URL' => $ipn_url,
+            'FORM_URL' => $form_url,
             'EMAIL_ADDRESS' => $email_address,
         ));
     }
@@ -157,8 +157,10 @@ class Hook_payment_gateway_worldpay
      */
     public function make_subscription_button($type_code, $item_name, $purchase_id, $amount, $length, $length_units, $currency)
     {
+        // https://support.worldpay.com/support/kb/bg/recurringpayments/rpfp.html
+
         $username = $this->_get_username();
-        $ipn_url = $this->_get_remote_form_url();
+        $form_url = $this->_get_remote_form_url();
         $trans_id = $this->generate_trans_id();
         $length_units_2 = '1';
         $first_repeat = time();
@@ -213,7 +215,7 @@ class Hook_payment_gateway_worldpay
             'FIRST_REPEAT' => date('Y-m-d', $first_repeat),
             'CURRENCY' => $currency,
             'USERNAME' => $username,
-            'IPN_URL' => $ipn_url,
+            'FORM_URL' => $form_url,
         ));
     }
 
@@ -225,8 +227,7 @@ class Hook_payment_gateway_worldpay
      */
     public function make_cancel_button($purchase_id)
     {
-        $cancel_url = build_url(array('page' => 'subscriptions', 'type' => 'cancel', 'id' => $purchase_id), get_module_zone('subscriptions'));
-        return do_template('ECOM_SUBSCRIPTION_CANCEL_BUTTON_VIA_WORLDPAY', array('_GUID' => '187fba57424e7850b9e21fc147de48eb', 'CANCEL_URL' => $cancel_url, 'PURCHASE_ID' => $purchase_id));
+        return do_template('ECOM_SUBSCRIPTION_CANCEL_BUTTON_VIA_WORLDPAY', array('_GUID' => '187fba57424e7850b9e21fc147de48eb', 'PURCHASE_ID' => $purchase_id));
     }
 
     /**
@@ -236,9 +237,7 @@ class Hook_payment_gateway_worldpay
      */
     public function handle_ipn_transaction()
     {
-        // Test case...
-        //$_POST = unserialize('a:36:{s:8:"testMode";s:3:"100";s:8:"authCost";s:4:"15.0";s:8:"currency";s:3:"GBP";s:7:"address";s:1:"a";s:13:"countryString";s:11:"South Korea";s:10:"callbackPW";s:10:"s35645dxr4";s:12:"installation";s:5:"84259";s:3:"fax";s:1:"a";s:12:"countryMatch";s:1:"B";s:7:"transId";s:9:"222873126";s:3:"AVS";s:4:"0000";s:12:"amountString";s:11:"&#163;15.00";s:8:"postcode";s:1:"a";s:7:"msgType";s:10:"authResult";s:4:"name";s:1:"a";s:3:"tel";s:1:"a";s:11:"transStatus";s:1:"Y";s:4:"desc";s:15:"Property Advert";s:8:"cardType";s:10:"Mastercard";s:4:"lang";s:2:"en";s:9:"transTime";s:13:"1171243476007";s:16:"authAmountString";s:11:"&#163;15.00";s:10:"authAmount";s:4:"15.0";s:9:"ipAddress";s:12:"84.9.162.135";s:4:"cost";s:4:"15.0";s:6:"instId";s:5:"84259";s:6:"amount";s:4:"15.0";s:8:"compName";s:32:"The Accessible Property Register";s:7:"country";s:2:"KR";s:11:"MC_callback";s:63:"www.kivi.co.uk/ClientFiles/APR/data/ecommerce.php?from=worldpay";s:14:"rawAuthMessage";s:22:"cardbe.msg.testSuccess";s:5:"email";s:16:"vaivak@gmail.com";s:12:"authCurrency";s:3:"GBP";s:11:"rawAuthCode";s:1:"A";s:6:"cartId";s:32:"3ecd645f632f0304067fb565e71b4dcd";s:8:"authMode";s:1:"A";}');
-        //$_GET = unserialize('a:3:{s:4:"from";s:8:"worldpay";s:7:"msgType";s:10:"authResult";s:12:"installation";s:5:"84259";}');
+        // http://support.worldpay.com/support/kb/bg/paymentresponse/pr0000.html
 
         $code = post_param_string('transStatus');
         if ($code == 'C') {
@@ -343,6 +342,8 @@ class Hook_payment_gateway_worldpay
      */
     public function auto_cancel($subscription_id)
     {
+        // They created a username and password initially. They need to login using this at https://futurepay.worldpay.com/fp/jsp/common/login_shopper.jsp
+
         return false;
     }
 }
