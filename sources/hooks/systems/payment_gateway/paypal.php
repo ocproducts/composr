@@ -66,21 +66,10 @@ class Hook_payment_gateway_paypal
      */
     public function make_transaction_button($type_code, $item_name, $purchase_id, $amount, $currency)
     {
-        // https://www.paypal.com/au/webapps/mpp/website-payments-standard
+        // https://developer.paypal.com/docs/classic/paypal-payments-standard/integration-guide/formbasics/
 
         $payment_address = $this->_get_payment_address();
         $form_url = $this->_get_remote_form_url();
-
-        $user_details = array();
-        if (!is_guest()) {
-            $user_details['first_name'] = get_cms_cpf('firstname');
-            $user_details['last_name'] = get_cms_cpf('lastname');
-            $user_details['address1'] = get_cms_cpf('street_address');
-            $user_details['city'] = get_cms_cpf('city');
-            $user_details['state'] = get_cms_cpf('state');
-            $user_details['zip'] = get_cms_cpf('post_code');
-            $user_details['country'] = get_cms_cpf('country');
-        }
 
         return do_template('ECOM_TRANSACTION_BUTTON_VIA_PAYPAL', array(
             '_GUID' => 'b0d48992ed17325f5e2330bf90c85762',
@@ -91,40 +80,7 @@ class Hook_payment_gateway_paypal
             'CURRENCY' => $currency,
             'PAYMENT_ADDRESS' => $payment_address,
             'FORM_URL' => $form_url,
-            'MEMBER_ADDRESS' => $user_details,
-        ));
-    }
-
-    /**
-     * Make a subscription (payment) button.
-     *
-     * @param  ID_TEXT $type_code The product codename.
-     * @param  SHORT_TEXT $item_name The human-readable product title.
-     * @param  ID_TEXT $purchase_id The purchase ID.
-     * @param  float $amount A transaction amount.
-     * @param  integer $length The subscription length in the units.
-     * @param  ID_TEXT $length_units The length units.
-     * @set    d w m y
-     * @param  ID_TEXT $currency The currency to use.
-     * @return Tempcode The button.
-     */
-    public function make_subscription_button($type_code, $item_name, $purchase_id, $amount, $length, $length_units, $currency)
-    {
-        // NB: We don't support PayPal's "recur_times", but that's fine because it's really not that useful (we can just set a long non-recurring subscription to the same effect)
-
-        $payment_address = $this->_get_payment_address();
-        $form_url = $this->_get_remote_form_url();
-        return do_template('ECOM_SUBSCRIPTION_BUTTON_VIA_PAYPAL', array(
-            '_GUID' => '7c8b9ce1f60323e118da1bef416adff3',
-            'TYPE_CODE' => $type_code,
-            'ITEM_NAME' => $item_name,
-            'LENGTH' => strval($length),
-            'LENGTH_UNITS' => $length_units,
-            'PURCHASE_ID' => $purchase_id,
-            'AMOUNT' => float_to_raw_string($amount),
-            'CURRENCY' => $currency,
-            'PAYMENT_ADDRESS' => $payment_address,
-            'FORM_URL' => $form_url,
+            'MEMBER_ADDRESS' => $this->_build_member_address(),
         ));
     }
 
@@ -145,28 +101,71 @@ class Hook_payment_gateway_paypal
 
         $notification_text = do_lang_tempcode('CHECKOUT_NOTIFICATION_TEXT', strval($order_id));
 
-        $user_details = array();
-
-        if (!is_guest()) {
-            $user_details['first_name'] = get_cms_cpf('firstname');
-            $user_details['last_name'] = get_cms_cpf('lastname');
-            $user_details['address1'] = get_cms_cpf('street_address');
-            $user_details['city'] = get_cms_cpf('city');
-            $user_details['state'] = get_cms_cpf('state');
-            $user_details['zip'] = get_cms_cpf('post_code');
-            $user_details['country'] = get_cms_cpf('country');
-        }
-
         return do_template('ECOM_CART_BUTTON_VIA_PAYPAL', array(
             '_GUID' => '89b7edf976ef0143dd8dfbabd3378c95',
             'ITEMS' => $items,
             'CURRENCY' => $currency,
             'PAYMENT_ADDRESS' => $payment_address,
             'FORM_URL' => $form_url,
+            'MEMBER_ADDRESS' => $this->_build_member_address(),
             'ORDER_ID' => strval($order_id),
             'NOTIFICATION_TEXT' => $notification_text,
-            'MEMBER_ADDRESS' => $user_details,
         ));
+    }
+
+    /**
+     * Make a subscription (payment) button.
+     *
+     * @param  ID_TEXT $type_code The product codename.
+     * @param  SHORT_TEXT $item_name The human-readable product title.
+     * @param  ID_TEXT $purchase_id The purchase ID.
+     * @param  float $amount A transaction amount.
+     * @param  integer $length The subscription length in the units.
+     * @param  ID_TEXT $length_units The length units.
+     * @set    d w m y
+     * @param  ID_TEXT $currency The currency to use.
+     * @return Tempcode The button.
+     */
+    public function make_subscription_button($type_code, $item_name, $purchase_id, $amount, $length, $length_units, $currency)
+    {
+        $payment_address = $this->_get_payment_address();
+        $form_url = $this->_get_remote_form_url();
+        return do_template('ECOM_SUBSCRIPTION_BUTTON_VIA_PAYPAL', array(
+            '_GUID' => '7c8b9ce1f60323e118da1bef416adff3',
+            'TYPE_CODE' => $type_code,
+            'ITEM_NAME' => $item_name,
+            'LENGTH' => strval($length),
+            'LENGTH_UNITS' => $length_units,
+            'PURCHASE_ID' => $purchase_id,
+            'AMOUNT' => float_to_raw_string($amount),
+            'CURRENCY' => $currency,
+            'PAYMENT_ADDRESS' => $payment_address,
+            'FORM_URL' => $form_url,
+            'MEMBER_ADDRESS' => $this->_build_member_address(),
+        ));
+    }
+
+    /**
+     * Get a member address/etc for use in payment buttons.
+     *
+     * @return array A map of member address details (form field name => address value).
+     */
+    protected function _build_member_address()
+    {
+        $member_address = array();
+        if (!is_guest()) {
+            $member_address['first_name'] = get_cms_cpf('firstname');
+            $member_address['last_name'] = get_cms_cpf('lastname');
+            $address_lines = explode("\n", get_cms_cpf('street_address'));
+            $member_address['address1'] = $address_lines[0];
+            unset($address_lines[0]);
+            $member_address['address2'] = implode(', ', $address_lines);
+            $member_address['city'] = get_cms_cpf('city');
+            $member_address['state'] = get_cms_cpf('state');
+            $member_address['zip'] = get_cms_cpf('post_code');
+            $member_address['country'] = get_cms_cpf('country');
+        }
+        return $member_address;
     }
 
     /**

@@ -11,6 +11,15 @@
 		<input type="hidden" name="test_status" value="true" />
 	{+END}
 	<input type="hidden" name="md_flds" value="trans_id:req_cv2" />
+	{+START,IF_NON_EMPTY,{MEMBER_ADDRESS}}
+		{+START,LOOP,MEMBER_ADDRESS}
+			{+START,IF_NON_EMPTY,{_loop_key*}}
+				{+START,IF_NON_EMPTY,{_loop_var*}}
+					<input type="hidden" name="{_loop_key*}" value="{_loop_var*}" />
+				{+END}
+			{+END}
+		{+END}
+	{+END}
 
 	<div class="purchase_button">
 		<input onclick="disable_button_just_clicked(this);" class="button_screen menu__rich_content__ecommerce__purchase" type="submit" value="{!MAKE_PAYMENT}" />

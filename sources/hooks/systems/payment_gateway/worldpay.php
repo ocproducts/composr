@@ -131,14 +131,15 @@ class Hook_payment_gateway_worldpay
             '_GUID' => '56c78a4e16c0e7f36fcfbe57d37bc3d3',
             'TYPE_CODE' => $type_code,
             'ITEM_NAME' => $item_name,
+            'PURCHASE_ID' => $trans_id, // cartID in Worldpay, has to be unique so we generate a transaction ID and store true purchase_id within that
             'DIGEST' => $digest,
             'TEST_MODE' => ecommerce_test_mode(),
-            'PURCHASE_ID' => $trans_id, // cartID in Worldpay, has to be unique so we generate a transaction ID and store true purchase_id within that
             'AMOUNT' => float_to_raw_string($amount),
             'CURRENCY' => $currency,
             'USERNAME' => $username,
             'FORM_URL' => $form_url,
             'EMAIL_ADDRESS' => $email_address,
+            'MEMBER_ADDRESS' => $this->_build_member_address(),
         ));
     }
 
@@ -205,18 +206,45 @@ class Hook_payment_gateway_worldpay
         return do_template('ECOM_SUBSCRIPTION_BUTTON_VIA_WORLDPAY', array(
             '_GUID' => '1f88716137762a467edbf5fbb980c6fe',
             'TYPE_CODE' => $type_code,
+            'ITEM_NAME' => $item_name,
+            'PURCHASE_ID' => strval($trans_id),
             'DIGEST' => $digest,
             'TEST' => ecommerce_test_mode(),
             'LENGTH' => strval($length),
             'LENGTH_UNITS_2' => $length_units_2,
-            'ITEM_NAME' => $item_name,
-            'PURCHASE_ID' => strval($trans_id),
             'AMOUNT' => float_to_raw_string($amount),
             'FIRST_REPEAT' => date('Y-m-d', $first_repeat),
             'CURRENCY' => $currency,
             'USERNAME' => $username,
             'FORM_URL' => $form_url,
+            'MEMBER_ADDRESS' => $this->_build_member_address(),
         ));
+    }
+
+    /**
+     * Get a member address/etc for use in payment buttons.
+     *
+     * @return array A map of member address details (form field name => address value).
+     */
+    protected function _build_member_address()
+    {
+        $member_address = array();
+        if (!is_guest()) {
+            $member_address['name'] = trim(get_cms_cpf('firstname') . ' ' . get_cms_cpf('lastname'));
+            $address_lines = explode("\n", get_cms_cpf('street_address'));
+            $member_address['address1'] = $address_lines[0];
+            $member_address['address2'] = $address_lines[1];
+            unset($address_lines[1]);
+            unset($address_lines[0]);
+            $member_address['address3'] = implode(', ', $address_lines);
+            $member_address['town'] = get_cms_cpf('city');
+            $member_address['region'] = get_cms_cpf('state');
+            $member_address['postcode'] = get_cms_cpf('post_code');
+            $member_address['country'] = get_cms_cpf('country');
+            $member_address['tel'] = get_cms_cpf('mobile_phone_number');
+            $member_address['email'] = $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member());
+        }
+        return $member_address;
     }
 
     /**
@@ -315,11 +343,19 @@ class Hook_payment_gateway_worldpay
     public function store_shipping_address($order_id)
     {
         if (is_null($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order_addresses', 'id', array('a_order_id' => $order_id)))) {
+            $_name = explode(' ', post_param_string('delvName', ''));
+            $name = array();
+            if (count($_name) > 0) {
+                $name[1] = $_name[count($_name) - 1];
+                unset($_name[count($_name) - 1]);
+            }
+            $name[0] = implode(' ', $_name);
+
             $shipping_address = array(
                 'a_order_id' => $order_id,
-                'a_firstname' => post_param_string('delvName', ''),
-                'a_lastname' => '',
-                'a_street_address' => post_param_string('delvAddress', ''),
+                'a_firstname' => $name[0],
+                'a_lastname' => $name[1],
+                'a_street_address' => trim(post_param_string('delvAddress1', '') . ' ' . post_param_string('delvAddress2', '') . ' ' . post_param_string('delvAddress3', '')),
                 'a_city' => post_param_string('city', ''),
                 'a_county' => '',
                 'a_state' => '',

@@ -4,7 +4,7 @@
 	<input type="hidden" name="cartId" value="{PURCHASE_ID*}" />
 	<input type="hidden" name="amount" value="{AMOUNT*}" />
 	<input type="hidden" name="currency" value="{CURRENCY*}" />
-	<input type="hidden" name="desc" value="{ITEM_NAME*}" />
+	<input type="hidden" name="desc" value="{!SUBSCRIPTION_FOR,{$USERNAME*}} ({ITEM_NAME*})" />
 	{+START,IF,{TEST_MODE}}
 		<input type="hidden" name="testMode" value="100" />
 	{+END}
@@ -12,6 +12,15 @@
 	<input type="hidden" name="lang" value="{$LANG*}" />
 	<input type="hidden" name="signatureFields" value="cartId:amount:currency:intervalUnit:intervalMult" />
 	<input type="hidden" name="signature" value="{DIGEST*}" />
+	{+START,IF_NON_EMPTY,{MEMBER_ADDRESS}}
+		{+START,LOOP,MEMBER_ADDRESS}
+			{+START,IF_NON_EMPTY,{_loop_key*}}
+				{+START,IF_NON_EMPTY,{_loop_var*}}
+					<input type="hidden" name="{_loop_key*}" value="{_loop_var*}" />
+				{+END}
+			{+END}
+		{+END}
+	{+END}
 
 	<input type="hidden" name="futurePayType" value="regular" />
 	<input type="hidden" name="startDate" value="{FIRST_REPEAT*}" />

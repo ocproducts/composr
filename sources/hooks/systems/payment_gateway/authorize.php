@@ -189,11 +189,13 @@ class Hook_payment_gateway_authorize
 
         return do_template('ECOM_TRANSACTION_BUTTON_VIA_AUTHORIZE', array(
             'TYPE_CODE' => $type_code,
+            'ITEM_NAME' => $item_name,
+            'PURCHASE_ID' => $purchase_id,
             'FORM_URL' => $form_url,
+            'MEMBER_ADDRESS' => $this->_build_member_address(),
             'SEQUENCE' => strval($sequence),
             'TIMESTAMP' => strval($timestamp),
             'FINGERPRINT' => $fingerprint,
-            'PURCHASE_ID' => $purchase_id,
             'LOGIN_ID' => $login_id,
             'AMOUNT' => float_to_raw_string($amount),
             'IS_TEST' => ecommerce_test_mode(),
@@ -248,11 +250,13 @@ class Hook_payment_gateway_authorize
         return do_template('ECOM_SUBSCRIPTION_BUTTON_VIA_AUTHORIZE', array(
             '_GUID' => '8c8b9ce1f60323e118da1bef416adff3',
             'TYPE_CODE' => $type_code,
+            'ITEM_NAME' => $item_name,
+            'PURCHASE_ID' => $purchase_id,
             'FORM_URL' => $form_url,
+            'MEMBER_ADDRESS' => $this->_build_member_address(),
             'SEQUENCE' => strval($sequence),
             'TIMESTAMP' => strval($timestamp),
             'FINGERPRINT' => $fingerprint,
-            'PURCHASE_ID' => $purchase_id,
             'LOGIN_ID' => $login_id,
             'AMOUNT' => float_to_raw_string($amount),
             'IS_TEST' => ecommerce_test_mode(),
@@ -261,6 +265,28 @@ class Hook_payment_gateway_authorize
             'LENGTH' => strval($length),
             'LENGTH_UNITS' => $length_units,
         ));
+    }
+
+    /**
+     * Get a member address/etc for use in payment buttons.
+     *
+     * @return array A map of member address details (form field name => address value).
+     */
+    protected function _build_member_address()
+    {
+        $member_address = array();
+        if (!is_guest()) {
+            $member_address['x_first_name'] = get_cms_cpf('firstname');
+            $member_address['x_last_name'] = get_cms_cpf('lastname');
+            $member_address['x_address'] = get_cms_cpf('street_address');
+            $member_address['x_city'] = get_cms_cpf('city');
+            $member_address['x_state'] = get_cms_cpf('state');
+            $member_address['x_zip'] = get_cms_cpf('post_code');
+            $member_address['x_country'] = get_cms_cpf('country');
+            $member_address['x_phone'] = get_cms_cpf('mobile_phone_number');
+            $member_address['x_email'] = $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member());
+        }
+        return $member_address;
     }
 
     /**
@@ -286,8 +312,8 @@ class Hook_payment_gateway_authorize
         $response_text = post_param_string('x_response_reason_text', '');
         $subscription_id = post_param_string('x_subscription_id', '');
         $period = '';
-        $transaction_id = post_param_string('x_trans_id', '');
-        $purchase_id = post_param_string('x_description', '');
+        $_transaction_id = post_param_string('x_trans_id');
+        $purchase_id = preg_replace('# .*$#', '', post_param_string('x_description'));
         $reason_code = post_param_string('x_response_reason_code', '');
         $amount = post_param_integer('x_amount', 0);
         $currency = post_param_string('x_currency_code', get_option('currency'));
@@ -300,7 +326,7 @@ class Hook_payment_gateway_authorize
         } else {
             $payment_status = $success ? 'Completed' : 'Failed';
         }
-        $txn_id = ($subscription_id != '') ? $subscription_id : $transaction_id;
+        $txn_id = ($subscription_id != '') ? $subscription_id : $_transaction_id;
 
         if (addon_installed('shopping')) {
             $this->store_shipping_address($purchase_id);

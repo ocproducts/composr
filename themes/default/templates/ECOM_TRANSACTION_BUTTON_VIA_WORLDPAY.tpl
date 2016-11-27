@@ -12,6 +12,15 @@
 	<input type="hidden" name="lang" value="{$LANG*}" />
 	<input type="hidden" name="signatureFields" value="cartId:amount:currency" />
 	<input type="hidden" name="signature" value="{DIGEST*}" />
+	{+START,IF_NON_EMPTY,{MEMBER_ADDRESS}}
+		{+START,LOOP,MEMBER_ADDRESS}
+			{+START,IF_NON_EMPTY,{_loop_key*}}
+				{+START,IF_NON_EMPTY,{_loop_var*}}
+					<input type="hidden" name="{_loop_key*}" value="{_loop_var*}" />
+				{+END}
+			{+END}
+		{+END}
+	{+END}
 
 	<div class="purchase_button">
 		<input onclick="disable_button_just_clicked(this);" class="button_screen menu__rich_content__ecommerce__purchase" type="submit" value="{!MAKE_PAYMENT}" />

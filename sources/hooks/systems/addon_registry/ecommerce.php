@@ -262,21 +262,21 @@ class Hook_addon_registry_ecommerce
             'templates/ECOM_LOGOS_WORLDPAY.tpl' => 'ecom_logos_worldpay',
             'templates/ECOM_LOGOS_AUTHORIZE.tpl' => 'ecom_logos_authorize',
             'templates/ECOM_PAYMENT_PROCESSOR_LINKS_AUTHORIZE.tpl' => 'ecom_payment_processor_links_authorize',
-            'templates/ECOM_TRANSACTION_BUTTON_VIA_WORLDPAY.tpl' => 'ecom_button_via_worldpay',
+            'templates/ECOM_TRANSACTION_BUTTON_VIA_WORLDPAY.tpl' => 'ecom_transaction_button_via_worldpay',
             'templates/ECOM_SUBSCRIPTION_BUTTON_VIA_WORLDPAY.tpl' => 'ecom_subscription_button_via_worldpay',
-            'templates/ECOM_SUBSCRIPTION_CANCEL_BUTTON_VIA_WORLDPAY.tpl' => 'ecom_cancel_button_via_worldpay',
-            'templates/ECOM_TRANSACTION_BUTTON_VIA_PAYPAL.tpl' => 'ecom_button_via_paypal',
+            'templates/ECOM_SUBSCRIPTION_CANCEL_BUTTON_VIA_WORLDPAY.tpl' => 'ecom_subscription_cancel_button_via_worldpay',
+            'templates/ECOM_TRANSACTION_BUTTON_VIA_PAYPAL.tpl' => 'ecom_transaction_button_via_paypal',
             'templates/ECOM_SUBSCRIPTION_BUTTON_VIA_PAYPAL.tpl' => 'ecom_subscription_button_via_paypal',
-            'templates/ECOM_SUBSCRIPTION_CANCEL_BUTTON_VIA_PAYPAL.tpl' => 'ecom_cancel_button_via_paypal',
-            'templates/ECOM_TRANSACTION_BUTTON_VIA_SECPAY.tpl' => 'ecom_button_via_secpay',
+            'templates/ECOM_SUBSCRIPTION_CANCEL_BUTTON_VIA_PAYPAL.tpl' => 'ecom_subscription_cancel_button_via_paypal',
+            'templates/ECOM_TRANSACTION_BUTTON_VIA_SECPAY.tpl' => 'ecom_transaction_button_via_secpay',
             'templates/ECOM_SUBSCRIPTION_BUTTON_VIA_SECPAY.tpl' => 'ecom_subscription_button_via_secpay',
-            'templates/ECOM_SUBSCRIPTION_CANCEL_BUTTON_VIA_SECPAY.tpl' => 'ecom_cancel_button_via_secpay',
-            'templates/ECOM_TRANSACTION_BUTTON_VIA_CCBILL.tpl' => 'ecom_button_via_ccbill',
+            'templates/ECOM_SUBSCRIPTION_CANCEL_BUTTON_VIA_SECPAY.tpl' => 'ecom_subscription_cancel_button_via_secpay',
+            'templates/ECOM_TRANSACTION_BUTTON_VIA_CCBILL.tpl' => 'ecom_transaction_button_via_ccbill',
             'templates/ECOM_SUBSCRIPTION_BUTTON_VIA_CCBILL.tpl' => 'ecom_subscription_button_via_ccbill',
-            'templates/ECOM_SUBSCRIPTION_CANCEL_BUTTON_VIA_CCBILL.tpl' => 'ecom_cancel_button_via_ccbill',
-            'templates/ECOM_TRANSACTION_BUTTON_VIA_AUTHORIZE.tpl' => 'ecom_button_via_authorize',
+            'templates/ECOM_SUBSCRIPTION_CANCEL_BUTTON_VIA_CCBILL.tpl' => 'ecom_subscription_cancel_button_via_ccbill',
+            'templates/ECOM_TRANSACTION_BUTTON_VIA_AUTHORIZE.tpl' => 'ecom_transaction_button_via_authorize',
             'templates/ECOM_SUBSCRIPTION_BUTTON_VIA_AUTHORIZE.tpl' => 'ecom_subscription_button_via_authorize',
-            'templates/ECOM_SUBSCRIPTION_CANCEL_BUTTON_VIA_AUTHORIZE.tpl' => 'ecom_cancel_button_via_authorize',
+            'templates/ECOM_SUBSCRIPTION_CANCEL_BUTTON_VIA_AUTHORIZE.tpl' => 'ecom_subscription_cancel_button_via_authorize',
             'templates/PURCHASE_WIZARD_STAGE_GUEST.tpl' => 'purchase_wizard_stage_guest',
             'templates/PURCHASE_WIZARD_STAGE_CHOOSE.tpl' => 'purchase_wizard_stage_choose',
             'templates/PURCHASE_WIZARD_STAGE_MESSAGE.tpl' => 'purchase_wizard_stage_message',
@@ -471,19 +471,20 @@ class Hook_addon_registry_ecommerce
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__ecom_button_via_worldpay()
+    public function tpl_preview__ecom_transaction_button_via_worldpay()
     {
         return array(
             lorem_globalise(do_lorem_template('ECOM_TRANSACTION_BUTTON_VIA_WORLDPAY', array(
-                'TYPE_CODE' => lorem_phrase(),
-                'ITEM_NAME' => lorem_word(),
+                'TYPE_CODE' => lorem_word(),
+                'ITEM_NAME' => lorem_phrase(),
+                'PURCHASE_ID' => placeholder_id(),
                 'DIGEST' => lorem_phrase(),
                 'TEST_MODE' => lorem_phrase(),
-                'PURCHASE_ID' => placeholder_id(),
                 'AMOUNT' => placeholder_number(),
                 'CURRENCY' => lorem_phrase(),
                 'USERNAME' => lorem_word(),
                 'FORM_URL' => placeholder_url(),
+                'MEMBER_ADDRESS' => placeholder_array(),
                 'EMAIL_ADDRESS' => lorem_word(),
             )), null, '', true)
         );
@@ -500,18 +501,19 @@ class Hook_addon_registry_ecommerce
     {
         return array(
             lorem_globalise(do_lorem_template('ECOM_SUBSCRIPTION_BUTTON_VIA_WORLDPAY', array(
-                'TYPE_CODE' => lorem_phrase(),
+                'TYPE_CODE' => lorem_word(),
+                'ITEM_NAME' => lorem_phrase(),
+                'PURCHASE_ID' => placeholder_id(),
                 'DIGEST' => lorem_phrase(),
                 'TEST' => lorem_phrase(),
                 'LENGTH' => placeholder_number(),
                 'LENGTH_UNITS_2' => lorem_phrase(),
-                'ITEM_NAME' => lorem_word(),
-                'PURCHASE_ID' => placeholder_id(),
                 'AMOUNT' => placeholder_number(),
                 'FIRST_REPEAT' => lorem_phrase(),
                 'CURRENCY' => lorem_phrase(),
                 'USERNAME' => lorem_word(),
                 'FORM_URL' => placeholder_url(),
+                'MEMBER_ADDRESS' => placeholder_array(),
                 'TEST_MODE' => true,
                 'EMAIL_ADDRESS' => lorem_word(),
             )), null, '', true)
@@ -525,7 +527,7 @@ class Hook_addon_registry_ecommerce
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__ecom_cancel_button_via_worldpay()
+    public function tpl_preview__ecom_subscription_cancel_button_via_worldpay()
     {
         return array(
             lorem_globalise(do_lorem_template('ECOM_SUBSCRIPTION_CANCEL_BUTTON_VIA_WORLDPAY', array(
@@ -541,12 +543,12 @@ class Hook_addon_registry_ecommerce
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__ecom_button_via_paypal()
+    public function tpl_preview__ecom_transaction_button_via_paypal()
     {
         return array(
             lorem_globalise(do_lorem_template('ECOM_TRANSACTION_BUTTON_VIA_PAYPAL', array(
-                'TYPE_CODE' => lorem_phrase(),
-                'ITEM_NAME' => lorem_word(),
+                'TYPE_CODE' => lorem_word(),
+                'ITEM_NAME' => lorem_phrase(),
                 'PURCHASE_ID' => placeholder_id(),
                 'AMOUNT' => placeholder_number(),
                 'CURRENCY' => lorem_phrase(),
@@ -570,13 +572,14 @@ class Hook_addon_registry_ecommerce
             lorem_globalise(do_lorem_template('ECOM_SUBSCRIPTION_BUTTON_VIA_PAYPAL', array(
                 'TYPE_CODE' => lorem_phrase(),
                 'ITEM_NAME' => lorem_phrase(),
+                'PURCHASE_ID' => placeholder_id(),
                 'LENGTH' => placeholder_number(),
                 'LENGTH_UNITS' => lorem_phrase(),
-                'PURCHASE_ID' => placeholder_id(),
                 'AMOUNT' => placeholder_number(),
                 'CURRENCY' => lorem_phrase(),
                 'PAYMENT_ADDRESS' => lorem_word(),
                 'FORM_URL' => placeholder_url(),
+                'MEMBER_ADDRESS' => placeholder_array(),
             )), null, '', true)
         );
     }
@@ -588,7 +591,7 @@ class Hook_addon_registry_ecommerce
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__ecom_cancel_button_via_paypal()
+    public function tpl_preview__ecom_subscription_cancel_button_via_paypal()
     {
         return array(
             lorem_globalise(do_lorem_template('ECOM_SUBSCRIPTION_CANCEL_BUTTON_VIA_PAYPAL', array(
@@ -604,20 +607,21 @@ class Hook_addon_registry_ecommerce
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__ecom_button_via_secpay()
+    public function tpl_preview__ecom_transaction_button_via_secpay()
     {
         return array(
             lorem_globalise(do_lorem_template('ECOM_TRANSACTION_BUTTON_VIA_SECPAY', array(
-                'TYPE_CODE' => lorem_phrase(),
+                'TYPE_CODE' => lorem_word(),
+                'ITEM_NAME' => lorem_phrase(),
+                'PURCHASE_ID' => placeholder_id(),
                 'DIGEST' => lorem_phrase(),
                 'TEST' => lorem_phrase(),
                 'TRANS_ID' => placeholder_id(),
-                'ITEM_NAME' => lorem_phrase(),
-                'PURCHASE_ID' => placeholder_id(),
                 'AMOUNT' => placeholder_number(),
                 'CURRENCY' => lorem_phrase(),
                 'USERNAME' => lorem_word(),
                 'FORM_URL' => placeholder_url(),
+                'MEMBER_ADDRESS' => placeholder_array(),
             )), null, '', true)
         );
     }
@@ -634,18 +638,19 @@ class Hook_addon_registry_ecommerce
         return array(
             lorem_globalise(do_lorem_template('ECOM_SUBSCRIPTION_BUTTON_VIA_SECPAY', array(
                 'TYPE_CODE' => lorem_phrase(),
+                'ITEM_NAME' => lorem_phrase(),
+                'PURCHASE_ID' => placeholder_id(),
                 'DIGEST' => lorem_phrase(),
                 'TEST' => lorem_phrase(),
                 'TRANS_ID' => placeholder_id(),
                 'FIRST_REPEAT' => lorem_phrase(),
                 'LENGTH' => placeholder_number(),
                 'LENGTH_UNITS_2' => lorem_phrase(),
-                'ITEM_NAME' => lorem_phrase(),
-                'PURCHASE_ID' => placeholder_id(),
                 'AMOUNT' => placeholder_number(),
                 'CURRENCY' => lorem_phrase(),
                 'USERNAME' => lorem_word(),
                 'FORM_URL' => placeholder_url(),
+                'MEMBER_ADDRESS' => placeholder_array(),
                 'PRICE' => placeholder_number(),
             )), null, '', true)
         );
@@ -658,7 +663,7 @@ class Hook_addon_registry_ecommerce
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__ecom_cancel_button_via_secpay()
+    public function tpl_preview__ecom_subscription_cancel_button_via_secpay()
     {
         return array(
             lorem_globalise(do_lorem_template('ECOM_SUBSCRIPTION_CANCEL_BUTTON_VIA_SECPAY', array(
@@ -675,11 +680,11 @@ class Hook_addon_registry_ecommerce
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__ecom_button_via_ccbill()
+    public function tpl_preview__ecom_transaction_button_via_ccbill()
     {
         return array(
             lorem_globalise(do_lorem_template('ECOM_TRANSACTION_BUTTON_VIA_CCBILL', array(
-                'TYPE_CODE' => lorem_phrase(),
+                'TYPE_CODE' => lorem_word(),
                 'ITEM_NAME' => lorem_phrase(),
                 'PURCHASE_ID' => placeholder_id(),
                 'AMOUNT' => placeholder_number(),
@@ -709,9 +714,9 @@ class Hook_addon_registry_ecommerce
             lorem_globalise(do_lorem_template('ECOM_SUBSCRIPTION_BUTTON_VIA_CCBILL', array(
                 'TYPE_CODE' => lorem_phrase(),
                 'ITEM_NAME' => lorem_phrase(),
+                'PURCHASE_ID' => placeholder_id(),
                 'LENGTH' => placeholder_number(),
                 'LENGTH_UNITS_2' => lorem_phrase(),
-                'PURCHASE_ID' => placeholder_id(),
                 'AMOUNT' => placeholder_number(),
                 'CURRENCY' => lorem_phrase(),
                 'PAYMENT_ADDRESS' => lorem_paragraph(),
@@ -733,7 +738,7 @@ class Hook_addon_registry_ecommerce
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__ecom_cancel_button_via_ccbill()
+    public function tpl_preview__ecom_subscription_cancel_button_via_ccbill()
     {
         return array(
             lorem_globalise(do_lorem_template('ECOM_SUBSCRIPTION_CANCEL_BUTTON_VIA_CCBILL', array(
@@ -749,16 +754,18 @@ class Hook_addon_registry_ecommerce
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__ecom_button_via_authorize()
+    public function tpl_preview__ecom_transaction_button_via_authorize()
     {
         return array(
             lorem_globalise(do_lorem_template('ECOM_TRANSACTION_BUTTON_VIA_AUTHORIZE', array(
-                'TYPE_CODE' => lorem_phrase(),
+                'TYPE_CODE' => lorem_word(),
+                'ITEM_NAME' => lorem_phrase(),
+                'PURCHASE_ID' => placeholder_id(),
                 'FORM_URL' => placeholder_url(),
+                'MEMBER_ADDRESS' => placeholder_array(),
                 'SEQUENCE' => placeholder_number(),
                 'TIMESTAMP' => placeholder_date_raw(),
                 'FINGERPRINT' => lorem_word(),
-                'PURCHASE_ID' => placeholder_id(),
                 'LOGIN_ID' => lorem_word(),
                 'AMOUNT' => placeholder_number(),
                 'IS_TEST' => false,
@@ -780,11 +787,13 @@ class Hook_addon_registry_ecommerce
         return array(
             lorem_globalise(do_lorem_template('ECOM_SUBSCRIPTION_BUTTON_VIA_AUTHORIZE', array(
                 'TYPE_CODE' => lorem_phrase(),
+                'ITEM_NAME' => lorem_phrase(),
+                'PURCHASE_ID' => placeholder_id(),
                 'FORM_URL' => placeholder_url(),
+                'MEMBER_ADDRESS' => placeholder_array(),
                 'SEQUENCE' => placeholder_number(),
                 'TIMESTAMP' => placeholder_date_raw(),
                 'FINGERPRINT' => lorem_word(),
-                'PURCHASE_ID' => placeholder_id(),
                 'LOGIN_ID' => lorem_word(),
                 'AMOUNT' => placeholder_number(),
                 'IS_TEST' => false,
@@ -803,7 +812,7 @@ class Hook_addon_registry_ecommerce
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__ecom_cancel_button_via_authorize()
+    public function tpl_preview__ecom_subscription_cancel_button_via_authorize()
     {
         return array(
             lorem_globalise(do_lorem_template('ECOM_SUBSCRIPTION_CANCEL_BUTTON_VIA_AUTHORIZE', array(

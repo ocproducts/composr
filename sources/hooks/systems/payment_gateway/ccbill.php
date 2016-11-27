@@ -99,19 +99,6 @@ class Hook_payment_gateway_ccbill
         $payment_address = strval($this->get_account_id());
         $form_url = 'https://bill.ccbill.com/jpost/signup.cgi';
 
-        $user_details = array();
-        if (!is_guest()) {
-            $user_details['customer_fname'] = get_cms_cpf('firstname');
-            $user_details['customer_lname'] = get_cms_cpf('lastname');
-            $user_details['address1'] = get_cms_cpf('street_address');
-            $user_details['email'] = $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member());
-            $user_details['city'] = get_cms_cpf('city');
-            $user_details['state'] = get_cms_cpf('state');
-            $user_details['zipcode'] = get_cms_cpf('post_code');
-            $user_details['country'] = get_cms_cpf('country');
-            $user_details['username'] = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
-        }
-
         $account_num = $this->get_account_id();
         $subaccount_nums = explode(',', get_option('payment_gateway_vpn_username'));
         $subaccount_num = sprintf('%04d', $subaccount_nums[0]); // First value is for simple transactions, has to be exactly 4 digits
@@ -132,7 +119,7 @@ class Hook_payment_gateway_ccbill
             'CURRENCY' => $currency,
             'PAYMENT_ADDRESS' => $payment_address,
             'FORM_URL' => $form_url,
-            'MEMBER_ADDRESS' => $user_details,
+            'MEMBER_ADDRESS' => $this->_build_member_address(),
             'ACCOUNT_NUM' => $account_num,
             'SUBACCOUNT_NUM' => $subaccount_num,
             'FORM_NAME' => $form_name,
@@ -164,19 +151,6 @@ class Hook_payment_gateway_ccbill
         $payment_address = strval($this->get_account_id());
         $form_url = 'https://bill.ccbill.com/jpost/signup.cgi';
 
-        $user_details = array();
-        if (!is_guest()) {
-            $user_details['customer_fname'] = get_cms_cpf('firstname');
-            $user_details['customer_lname'] = get_cms_cpf('lastname');
-            $user_details['address1'] = get_cms_cpf('street_address');
-            $user_details['email'] = $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member());
-            $user_details['city'] = get_cms_cpf('city');
-            $user_details['state'] = get_cms_cpf('state');
-            $user_details['zipcode'] = get_cms_cpf('post_code');
-            $user_details['country'] = get_cms_cpf('country');
-            $user_details['username'] = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
-        }
-
         $account_num = $this->get_account_id();
         $subaccount_nums = explode(',', get_option('payment_gateway_vpn_username'));
         $subaccount_num = sprintf('%04d', count($subaccount_nums) === 1 ? $subaccount_nums[0] : $subaccount_nums[1]); // Second value is for subscriptions, has to be exactly 4 digits
@@ -189,20 +163,42 @@ class Hook_payment_gateway_ccbill
             '_GUID' => 'f8c174f38ae06536833f1510027ba233',
             'TYPE_CODE' => strval($type_code),
             'ITEM_NAME' => strval($item_name),
+            'PURCHASE_ID' => strval($purchase_id),
             'LENGTH' => strval($length),
             'LENGTH_UNITS' => $length_units,
-            'PURCHASE_ID' => strval($purchase_id),
             'AMOUNT' => float_to_raw_string($amount),
             'CURRENCY' => $currency,
             'PAYMENT_ADDRESS' => $payment_address,
             'FORM_URL' => $form_url,
-            'MEMBER_ADDRESS' => $user_details,
+            'MEMBER_ADDRESS' => $this->_build_member_address(),
             'ACCOUNT_NUM' => $account_num,
             'SUBACCOUNT_NUM' => $subaccount_num,
             'FORM_NAME' => $form_name,
             'FORM_PERIOD' => $form_period,
             'DIGEST' => $digest,
         ));
+    }
+
+    /**
+     * Get a member address/etc for use in payment buttons.
+     *
+     * @return array A map of member address details (form field name => address value).
+     */
+    protected function _build_member_address()
+    {
+        $member_address = array();
+        if (!is_guest()) {
+            $member_address['customer_fname'] = get_cms_cpf('firstname');
+            $member_address['customer_lname'] = get_cms_cpf('lastname');
+            $member_address['address1'] = get_cms_cpf('street_address');
+            $member_address['email'] = $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member());
+            $member_address['city'] = get_cms_cpf('city');
+            $member_address['state'] = get_cms_cpf('state');
+            $member_address['zipcode'] = get_cms_cpf('post_code');
+            $member_address['country'] = get_cms_cpf('country');
+            $member_address['username'] = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
+        }
+        return $member_address;
     }
 
     /**

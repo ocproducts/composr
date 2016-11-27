@@ -125,53 +125,17 @@ class Hook_payment_gateway_secpay
         return do_template('ECOM_TRANSACTION_BUTTON_VIA_SECPAY', array(
             '_GUID' => 'e68e80cb637f8448ef62cd7d73927722',
             'TYPE_CODE' => $type_code,
+            'ITEM_NAME' => $item_name,
+            'PURCHASE_ID' => strval($purchase_id),
             'DIGEST' => $digest,
             'TEST' => ecommerce_test_mode(),
             'TRANS_ID' => $trans_id,
-            'ITEM_NAME' => $item_name,
-            'PURCHASE_ID' => strval($purchase_id),
             'AMOUNT' => float_to_raw_string($amount),
             'CURRENCY' => $currency,
             'USERNAME' => $username,
             'FORM_URL' => $form_url,
+            'MEMBER_ADDRESS' => $this->_build_member_address(),
         ));
-    }
-
-    /**
-     * Find details for a subscription in secpay format.
-     *
-     * @param  integer $length The subscription length in the units.
-     * @param  ID_TEXT $length_units The length units.
-     * @set    d w m y
-     * @return array A tuple: the period in secpay units, the date of the first repeat.
-     */
-    protected function _translate_subscription_details($length, $length_units)
-    {
-        switch ($length_units) {
-            case 'd':
-                $length_units_2 = 'daily';
-                $single_length = 60 * 60 * 24;
-                break;
-            case 'w':
-                $length_units_2 = 'weekly';
-                $single_length = 60 * 60 * 24 * 7;
-                break;
-            case 'm':
-                $length_units_2 = 'monthly';
-                $single_length = 60 * 60 * 24 * 31;
-                break;
-            case 'y':
-                $length_units_2 = 'yearly';
-                $single_length = 60 * 60 * 24 * 365;
-                break;
-        }
-        if (($length_units == 'm') && ($length == 3)) {
-            $length_units_2 = 'quarterly';
-            $single_length = 60 * 60 * 24 * 92;
-        }
-        $first_repeat = date('Ymd', time() + $single_length);
-
-        return array($length_units_2, $first_repeat);
     }
 
     /**
@@ -216,19 +180,81 @@ class Hook_payment_gateway_secpay
         return do_template('ECOM_SUBSCRIPTION_BUTTON_VIA_SECPAY', array(
             '_GUID' => 'e5e6d6835ee6da1a6cf02ff8c2476aa6',
             'TYPE_CODE' => $type_code,
+            'ITEM_NAME' => $item_name,
+            'PURCHASE_ID' => strval($purchase_id),
             'DIGEST' => $digest,
             'TEST' => ecommerce_test_mode(),
             'TRANS_ID' => $trans_id,
             'FIRST_REPEAT' => $first_repeat,
             'LENGTH' => strval($length),
             'LENGTH_UNITS_2' => $length_units_2,
-            'ITEM_NAME' => $item_name,
-            'PURCHASE_ID' => strval($purchase_id),
             'AMOUNT' => float_to_raw_string($amount),
             'CURRENCY' => $currency,
             'USERNAME' => $username,
             'FORM_URL' => $form_url,
+            'MEMBER_ADDRESS' => $this->_build_member_address(),
         ));
+    }
+
+    /**
+     * Find details for a subscription in secpay format.
+     *
+     * @param  integer $length The subscription length in the units.
+     * @param  ID_TEXT $length_units The length units.
+     * @set    d w m y
+     * @return array A tuple: the period in secpay units, the date of the first repeat.
+     */
+    protected function _translate_subscription_details($length, $length_units)
+    {
+        switch ($length_units) {
+            case 'd':
+                $length_units_2 = 'daily';
+                $single_length = 60 * 60 * 24;
+                break;
+            case 'w':
+                $length_units_2 = 'weekly';
+                $single_length = 60 * 60 * 24 * 7;
+                break;
+            case 'm':
+                $length_units_2 = 'monthly';
+                $single_length = 60 * 60 * 24 * 31;
+                break;
+            case 'y':
+                $length_units_2 = 'yearly';
+                $single_length = 60 * 60 * 24 * 365;
+                break;
+        }
+        if (($length_units == 'm') && ($length == 3)) {
+            $length_units_2 = 'quarterly';
+            $single_length = 60 * 60 * 24 * 92;
+        }
+        $first_repeat = date('Ymd', time() + $single_length);
+
+        return array($length_units_2, $first_repeat);
+    }
+
+    /**
+     * Get a member address/etc for use in payment buttons.
+     *
+     * @return array A map of member address details (form field name => address value).
+     */
+    protected function _build_member_address()
+    {
+        $member_address = array();
+        if (!is_guest()) {
+            $member_address['ship_name'] = trim(get_cms_cpf('firstname') . ' ' . get_cms_cpf('lastname'));
+            $address_lines = explode("\n", get_cms_cpf('street_address'));
+            $member_address['ship_addr_1'] = $address_lines[0];
+            unset($address_lines[0]);
+            $member_address['ship_addr_2'] = implode(', ', $address_lines);
+            $member_address['ship_city'] = get_cms_cpf('city');
+            $member_address['ship_state'] = get_cms_cpf('state');
+            $member_address['ship_post_code'] = get_cms_cpf('post_code');
+            $member_address['ship_country'] = get_cms_cpf('country');
+            $member_address['ship_tel'] = get_cms_cpf('mobile_phone_number');
+            $member_address['ship_email'] = $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member());
+        }
+        return $member_address;
     }
 
     /**
@@ -388,10 +414,18 @@ class Hook_payment_gateway_secpay
         }
 
         if ($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order_addresses', 'id', array('a_order_id' => $order_id)) === null) {
+            $_name = explode(' ', post_param_string('ship_name', ''));
+            $name = array();
+            if (count($_name) > 0) {
+                $name[1] = $_name[count($_name) - 1];
+                unset($_name[count($_name) - 1]);
+            }
+            $name[0] = implode(' ', $_name);
+
             $shipping_address = array(
                 'a_order_id' => $order_id,
-                'a_firstname' => trim(post_param_string('ship_name', '') . ', ' . post_param_string('ship_company', ''), ' ,'),
-                'a_lastname' => '',
+                'a_firstname' => $name[0],
+                'a_lastname' => trim($name[1] . ', ' . post_param_string('ship_company', ''), ' ,'),
                 'a_street_address' => trim(post_param_string('ship_addr_1', '') . "\n" . post_param_string('ship_addr_2', '')),
                 'a_city' => post_param_string('ship_city', ''),
                 'a_county' => '',
