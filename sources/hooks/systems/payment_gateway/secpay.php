@@ -28,6 +28,7 @@ class Hook_payment_gateway_secpay
     //  You have the SecPay Username set as the Composr "Testing mode gateway username" option
     //  You have the SecPay "Remote Password" option set as the Composr "Gateway password" option
     //  You have the SecPay "VPN password" option set as the Composr "Gateway VPN password" option
+    //  You have the SecPay "Hash key" option set as the Composr "Gateway digest code" option 
 
     /**
      * Find a transaction fee from a transaction amount. Regular fees aren't taken into account.
@@ -362,10 +363,10 @@ class Hook_payment_gateway_secpay
         // Validate
         $hash = post_param_string('hash');
         if ($subscription) {
-            $my_hash = md5('trans_id=' . $txn_id . '&' . 'req_cv2=true' . '&' . get_option('payment_gateway_vpn_password'));
+            $my_hash = md5('trans_id=' . $txn_id . '&' . 'req_cv2=true' . '&' . get_option('payment_gateway_digest'));
         } else {
             $repeat = $this->_translate_subscription_details($transaction_row['e_length'], $transaction_row['e_length_units']);
-            $my_hash = md5('trans_id=' . $txn_id . '&' . 'req_cv2=true' . '&' . 'repeat=' . $repeat . '&' . get_option('payment_gateway_vpn_password'));
+            $my_hash = md5('trans_id=' . $txn_id . '&' . 'req_cv2=true' . '&' . 'repeat=' . $repeat . '&' . get_option('payment_gateway_digest'));
         }
         if ($hash != $my_hash) {
             fatal_ipn_exit(do_lang('IPN_UNVERIFIED'));
@@ -451,7 +452,7 @@ class Hook_payment_gateway_secpay
     {
         $username = $this->_get_username();
         $password = get_option('payment_gateway_password');
-        $password_2 = get_option('payment_gateway_vpn_password');
+        $vpn_password = get_option('payment_gateway_vpn_password');
 
         $trans_id = $GLOBALS['SITE_DB']->query_select_value_if_there('transactions', 'id', array('t_purchase_id' => strval($subscription_id)));
         if ($trans_id === null) {
@@ -460,7 +461,7 @@ class Hook_payment_gateway_secpay
         $trans_id = 'subscr_' . $trans_id;
 
         require_code('xmlrpc');
-        $result = xml_rpc('https://www.secpay.com:443/secxmlrpc/make_call', 'SECVPN.repeatCardFullAddr', array($username, $password_2, $trans_id, -1, $password, '', '', '', '', '', 'repeat_change=true,repeat=false'));
+        $result = xml_rpc('https://www.secpay.com:443/secxmlrpc/make_call', 'SECVPN.repeatCardFullAddr', array($username, $vpn_password, $trans_id, -1, $password, '', '', '', '', '', 'repeat_change=true,repeat=false'));
         $map = $this->_parse_result($result);
         $success = ((array_key_exists('code', $map)) && (($map['code'] == 'A') || ($map['code'] == 'P:P')));
 
@@ -507,8 +508,8 @@ class Hook_payment_gateway_secpay
         // https://www.secpay.com/xmlrpc/
 
         $username = $this->_get_username();
-        $password_2 = get_option('payment_gateway_vpn_password');
-        $digest = md5($trans_id . strval($amount) . get_option('payment_gateway_vpn_password'));
+        $vpn_password = get_option('payment_gateway_vpn_password');
+        $digest = md5($trans_id . strval($amount) . get_option('payment_gateway_password'));
         $options = 'currency=' . $currency . ',card_type=' . str_replace(',', '', $card_type) . ',digest=' . $digest . ',cv2=' . strval(intval($card_cv2)) . ',mand_cv2=true';
         if (ecommerce_test_mode()) {
             $options .= ',test_status=true';
@@ -545,7 +546,7 @@ class Hook_payment_gateway_secpay
         if ($length !== null) {
             $trans_id = 'subscr_' . $trans_id;
         }
-        $result = xml_rpc('https://www.secpay.com:443/secxmlrpc/make_call', 'SECVPN.validateCardFull', array($username, $password_2, $trans_id, get_ip_address(), $cardholder_name, $card_number, $amount, $card_expiry_date, $card_issue_number, $card_start_date, $currency, '', '', $options, $item_name, $shipping_address, $billing_address));
+        $result = xml_rpc('https://www.secpay.com:443/secxmlrpc/make_call', 'SECVPN.validateCardFull', array($username, $vpn_password, $trans_id, get_ip_address(), $cardholder_name, $card_number, $amount, $card_expiry_date, $card_issue_number, $card_start_date, $currency, '', '', $options, $item_name, $shipping_address, $billing_address));
         $map = $this->_parse_result($result);
 
         $success = ((array_key_exists('code', $map)) && (($map['code'] == 'A') || ($map['code'] == 'P:P')));
