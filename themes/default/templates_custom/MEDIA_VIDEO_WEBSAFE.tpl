@@ -14,13 +14,13 @@
 		{+END}
 	{+END}
 
-	<video width="{WIDTH*}" height="{HEIGHT*}" poster="{THUMB_URL*}" controls="controls" preload="none" id="{$GET%,player_id}">
+	<video width="{$MIN*,950,{WIDTH}}" height="{$MIN*,{$MULT,{HEIGHT},{$DIV_FLOAT,950,{WIDTH}}},{HEIGHT}}" poster="{THUMB_URL*}" controls="controls" preload="none" id="{$GET%,player_id}">
 		<source type="{MIME_TYPE*}" src="{URL*}" />
-		<object width="{WIDTH*}" height="{HEIGHT*}" type="application/x-shockwave-flash" data="{$BASE_URL*}/data_custom/mediaelement/flashmediaelement.swf">
+		<object width="{$MIN*,950,{WIDTH}}" height="{$MIN*,{$MULT,{HEIGHT},{$DIV_FLOAT,950,{WIDTH}}},{HEIGHT}}" type="application/x-shockwave-flash" data="{$BASE_URL*}/data_custom/mediaelement/flashmediaelement.swf">
 			<param name="movie" value="{$BASE_URL*}/data_custom/mediaelement/flashmediaelement.swf" />
 			<param name="flashvars" value="controls=true&amp;file={URL&*}" />
 
-			<img src="{THUMB_URL*}" width="{WIDTH*}" height="{HEIGHT*}" alt="No video playback capabilities" title="No video playback capabilities" />
+			<img src="{THUMB_URL*}" width="{$MIN*,950,{WIDTH}}" height="{$MIN*,{$MULT,{HEIGHT},{$DIV_FLOAT,950,{WIDTH}}},{HEIGHT}}" alt="No video playback capabilities" title="No video playback capabilities" />
 		</object>
 	</video>
 
@@ -31,10 +31,10 @@
 			var player=new MediaElementPlayer('#{$GET%,player_id}',{
 				{$,Scale to a maximum width because we can always maximise - for object/embed players we can use max-width for this}
 				{+START,IF_NON_EMPTY,{WIDTH}}
-					videoWidth: {$MIN,1000,{WIDTH%}},
+					videoWidth: {$MIN%,950,{WIDTH}},
 				{+END}
 				{+START,IF_NON_EMPTY,{HEIGHT}}
-					videoHeight: {$MIN,{$MULT,{HEIGHT},{$DIV_FLOAT,1000,{WIDTH}}},{HEIGHT%}},
+					videoHeight: {$MIN%,{$MULT,{HEIGHT},{$DIV_FLOAT,950,{WIDTH}}},{HEIGHT}},
 				{+END}
 
 				enableKeyboard: true,
@@ -62,7 +62,7 @@
 	{$,Uncomment for a download link \{+START,INCLUDE,MEDIA__DOWNLOAD_LINK\}\{+END\}}
 {+END}
 {+START,IF,{$GET,raw_video}}
-	<video{+START,IF_NON_EMPTY,{THUMB_URL}} poster="{THUMB_URL*}"{+END} width="{WIDTH*}" height="{HEIGHT*}" controls="controls">
+	<video{+START,IF_NON_EMPTY,{THUMB_URL}} poster="{THUMB_URL*}"{+END} width="{$MIN*,950,{WIDTH}}" height="{$MIN*,{$MULT,{HEIGHT},{$DIV_FLOAT,950,{WIDTH}}},{HEIGHT}}" controls="controls">
 		<source src="{$ENSURE_PROTOCOL_SUITABILITY*,{URL}}" type="{MIME_TYPE*}" />
 		<span>{DESCRIPTION}</span>
 	</video>

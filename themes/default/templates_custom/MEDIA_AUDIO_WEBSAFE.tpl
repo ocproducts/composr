@@ -28,10 +28,10 @@
 			var player=new MediaElementPlayer('#{$GET%,player_id}',{
 				{$,Scale to a maximum width because we can always maximise - for object/embed players we can use max-width for this}
 				{+START,IF_NON_EMPTY,{WIDTH}}
-					audioWidth: {$MIN,1000,{WIDTH%}},
+					audioWidth: {$MIN%,950,{WIDTH}},
 				{+END}
 				{+START,IF_NON_EMPTY,{HEIGHT}}
-					audioHeight: {$MIN,{$MULT,{HEIGHT},{$DIV_FLOAT,1000,{WIDTH}}},{HEIGHT%}},
+					audioHeight: {$MIN%,{$MULT,{HEIGHT},{$DIV_FLOAT,950,{WIDTH}}},{HEIGHT}},
 				{+END}
 
 				enableKeyboard: true,
